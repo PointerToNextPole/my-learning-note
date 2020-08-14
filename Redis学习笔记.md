@@ -372,10 +372,17 @@ key都是字符串，而<font color=FF0000>value可以是字符串、数字、�
 
 **TIPS**
 
-- LPUSH + LPOP = Stack
-- LPUSH + RPOP = Queue
-- LPUSH + LTRIM = Capped Collection
-- LPUSH + BRPOP = Message Queue
+- LPUSH + LPOP = Stack （左进左出，先进先出）
+
+- LPUSH + RPOP = Queue （左进右出）
+
+- LPUSH + LTRIM = Capped Collections （左进左剪）
+
+  - 固定集合（capped collections）是性能出色的有着固定大小的集合，以LRU（Least Recently Used最近最少使用）规则和插入顺序进行age-out（老化移出）处理，自动维护集合中对象的插入顺序，在创建时需要预先指定大小。如果空间用完，新添加的对象将会取代集合中最旧的对象永远保持最新的数据
+
+    摘自：[Capped Collection(固定集合)](https://blog.csdn.net/fireq3/article/details/84475682)
+
+- LPUSH + BRPOP = Message Queue（左进 右阻塞出）
 
 ### From 2.10
 
