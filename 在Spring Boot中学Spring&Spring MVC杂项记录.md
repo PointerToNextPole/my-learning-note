@@ -118,7 +118,7 @@ public String eyeColor(){
 
 ## <font color=FF0000>**@RunWith**</font>
 
-**@RunWith的<font color=FF0000>作用</font>就是一个运行器**
+**@RunWith的<font color=FF0000>作用</font>就是一个运行器**，它是JUnit的注解，提供一个测试运行器来指导JUnit如何运行。
 
 例如：
 

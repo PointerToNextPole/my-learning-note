@@ -4,6 +4,10 @@
 
 ## 杂项
 
+Spring Boot和Spring最大的区别在于：自动配置（Spring Boot无需像Spring一样自己写配置了），约定大于配置。
+
+
+
 Spring Boot的自动配置原理在External Libraries的autoconfigure下
 
 
