@@ -261,9 +261,9 @@ PONG
   |  type  |    O(1)    |
 - **处理结构和内部编码**
 
-  <img src="https://i.loli.net/2020/08/14/HvxnzKUpRVcFQjM.png" style="zoom: 40%;" />
+  <img src="https://i.loli.net/2020/08/14/HvxnzKUpRVcFQjM.png" style="zoom: 33%;" />
 
-<img src="https://i.loli.net/2020/08/14/NXv1l9Q5ZgOtayx.png" style="zoom: 20%;" />
+<img src="https://i.loli.net/2020/08/14/NXv1l9Q5ZgOtayx.png" style="zoom: 18%;" />
 
 - **单线程架构**
 
@@ -335,11 +335,11 @@ key都是字符串，而<font color=FF0000>value可以是字符串、数字、�
 
 三种方案比较
 
-|   命令    |             优点             |                 缺点                  |
-| :-------: | :--------------------------: | :-----------------------------------: |
-| string v1 |    编程简单、可能节约内存    | 1.序列化开销 2.设置属性要操作整个结构 |
-| string v2 |      直观、可以部分更新      |    1.内存占用比较大 2.key比较分散     |
-|   Hash    | 直观、节约空间、可以部分更新 |     1. 编程稍微复杂 2.ttl不好控制     |
+|   命令    |             优点             |                   缺点                   |
+| :-------: | :--------------------------: | :--------------------------------------: |
+| string v1 |    编程简单、可能节约内存    | 1.序列化开销<br>2.设置属性要操作整个结构 |
+| string v2 |      直观、可以部分更新      |    1.内存占用比较大2.key比较分散    |
+|   Hash    | 直观、节约空间、可以部分更新 |    1. 编程稍微复杂 2.ttl不好控制    |
 
 ### From 2.8 - 2.9
 
@@ -533,3 +533,71 @@ Jedis(String host, int port, int connectionTimeout, int soTimeout)
 
 **Jedis连接池示意图**
 
+<img src="https://i.loli.net/2020/08/14/6AuHVZ9nafOpktP.png" style="zoom:30%;" />
+
+**方案对比**
+
+|        |                             优点                             |                             缺点                             |
+| :----: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+|  直连  |            简单方便适用于少量长期连接的场景             | 存在每次新建/关闭TCP开销<br> 资源无法控制,存在连接泄露的可能<br> Jedis对象线程不安全 |
+| 连接池 | Jedis预先生成，降低开销使用连接池的形式保护和控制资源的使用 | 相对于直连,使用相对麻烦，尤其在资源的管理上需要很多参数来保证，一旦规划不合理也会出现问题。 |
+
+**Jedis连接池的简单使用**
+
+```java
+//初始化Jedis连接池， 通常来讲JedisPool是单例的。
+GenericObjectPoolConfig = poolConfig = new GenericObjectPoolConfig();
+JedisPool jedisPool = new JedisPool(poolConfig, "127.0.0.1", 6379);
+```
+
+### From 3.3 - 3.4
+
+暂时没有使用redis for py or for golang的可能，所以略过
+
+### From 3.5
+
+- commons-pool配置(1)-资源数控制
+
+  |  参数名   |            含义             | 默认值 | 使用建议 |
+  | :-------: | :-------------------------: | :----: | :------: |
+  | MaxTotal  |      资源池最大连接数       |   8    |          |
+  |  maxIdle  |  资源池允许对打空闲连接数   |   8    |          |
+  |  minIdle  |  资源池确保最少空闲连接数   |   0    |          |
+  | jmxEnable | 是否开启jmx监控，可用于监控 |  true  | 建议开启 |
+
+- commons-pool配置(2)-借还参数
+
+  |       参数名       |                             含义                             |      默认值      |     使用建议     |
+  | :----------------: | :----------------------------------------------------------: | :--------------: | :--------------: |
+  | blockWhenExhausted | 当资源池用尽后，调用者是否要等待。只有当为true时，下面的maxWaitMillis才会生效 |       true       |  建议使用默认值  |
+  |   maxWaitMillis    |     当资源池连接用尽后,调用者的最大等待时间(单位为毫秒)      | -1：表示永不过时 | 不建议使用默认值 |
+  |    testOnBorrow    | 向资源池借用连接时是否做连接有效性检测(ping) ,无效连接会被移除 |      false       |    建议false     |
+  |    testOnReturn    | 向资源池归还连接时是否做连接有效性检测(ping) ,无效连接会被移除 |      false       |    建议false     |
+
+**确定适合的maxTotal**
+
+- 业务希望Redis并发量
+- 客户端执行命令时间
+- Redis资源:例如nodes(例如应用个数) * maxTotal是不能超过redis的最大连接数。(config get maxclients)
+- 资源开销:例如虽然希望控制空闲连接，但是不希望因为连接池的频繁释放创建连接造成不必靠开销。
+
+**适合的maxIdle和minIdle**
+
+- 建议maxIdle = max Total
+  - 减少创建新连接的开销。
+
+- 建议预热minIdle
+  - 减少第一次启动后的新连接开销。
+
+### From 4.2
+
+慢查询： //todo
+
+**慢查询的生命周期视图**
+
+<img src="https://i.loli.net/2020/08/14/NoemlvfYRU4xQip.png" style="zoom: 28%;" />
+
+两点说明：
+
+- 慢查询发生在第3阶段
+- 客户端超时不一定慢查询，但慢查询是客户端超时的一个可能因素
