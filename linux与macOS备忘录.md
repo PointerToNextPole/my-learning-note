@@ -722,7 +722,7 @@ lengthn=${#array_name[n]}
 
 - 查看历史命令：⌘ + ;
 
-  
+  <img src="https://i.loli.net/2020/08/14/3HbJQrVvmDOESKA.png" style="zoom: 45%;" />
 
 - 查看剪贴板历史：⌘ +⇧ + h
 
@@ -735,6 +735,8 @@ lengthn=${#array_name[n]}
 - 上一条命令：⌃ + p
 
 - 搜索命令历史：⌃ + r
+
+  <img src="https://i.loli.net/2020/08/14/NyGkMtgEbeIR96J.png" style="zoom: 45%;" />
 
 - **删除家族**
 
