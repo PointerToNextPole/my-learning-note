@@ -598,13 +598,55 @@ JedisPool jedisPool = new JedisPool(poolConfig, "127.0.0.1", 6379);
 
 ### From 4.2
 
-慢查询： //todo
+**慢查询定义**：
+
+ Redis 的慢查询日志功能用于<mark><font color=FF0000>记录执行时间超过给定时长的命令请求</font>， 用户可以通过这个功能产生的日志来<font color=FF0000>监视和优化查询速度</font></mark>。
 
 **慢查询的生命周期视图**
 
 <img src="https://i.loli.net/2020/08/14/NoemlvfYRU4xQip.png" style="zoom: 28%;" />
 
-两点说明：
+**两点说明：**
 
 - 慢查询发生在第3阶段
 - 客户端超时不一定慢查询，但慢查询是客户端超时的一个可能因素
+
+**服务器配置有两个和慢查询日志相关的选项：**
+
+- `slowlog-log-slower-than`：<mark> 选项指定执行时间超过多少<font color=FF0000>微秒</font></mark>（`1` 秒等于 `1,000,000` 微秒）<mark>的命令请求会被记录到日志上</mark>。默认值为10000
+
+  - slowlog-log-slower-than = 0，则记录所有命令
+  - slowlog-log-slower-than < 0，则不记录命令
+
+- `slowlog-max-len` ：<mark>选项指定服务器最多保存多少条慢查询日志</mark>。
+
+  服务器使用<font color=FF0000>先进先出</font>的方式保存多条慢查询日志： <mark>当服务器储存的慢查询日志数量等于 `slowlog-max-len` 选项的值时， 服务器在添加一条新的慢查询日志之前， 会先将最旧的一条慢查询日志删除</mark>。默认值为128
+
+摘自：[慢查询日志](http://redisbook.com/preview/slowlog/content.html)
+
+**配置方法：**
+
+- 修改配置文件并重启（不推荐，在程序运行时将不可用）
+
+- 动态配置
+
+  ```sh
+  config set slow-max-len 1000
+  config set slowlog-log-slower-than 1000
+  ```
+
+**慢查询命令**
+
+```sh
+slowlog get [n] # 获取慢查询队列
+slowlog len     # 获取慢查询队列长度
+slowlog reset   # 清空慢查询队列
+```
+
+**运维经验**
+
+- slowlog-max-len不要设置过大 ,默认10ms ,通常设置1ms
+- slowlog-log-slower-than不要设置过小 ,通常设置1000左右。
+- 理解命令生命周期。
+- 定期持久化慢查询。
+
