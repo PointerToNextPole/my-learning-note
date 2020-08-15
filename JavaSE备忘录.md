@@ -46,5 +46,20 @@ public <T> T methodName(T paramName){
 
 
 
+#### Java 方法引用（Method references）` ::`
+
+形如 `ClassName::methodName` 或者 `objectName::methodName` 的表达式，我们把它叫做方法引用（Method Reference）。它的原型来自：eta conversion (η-conversion)
+
+**方法引用有四种，分别是：**
+
+- 指向静态方法的引用
+- 指向某个对象的实例方法的引用
+- 指向某个类型的实例方法的引用
+- 指向构造方法的引用
+
+摘自：[Java 8 方法引用](http://liwenkun.me/2017/03/23/java-8-method-references/)
+
+
+
 #### Java流式编程
 
