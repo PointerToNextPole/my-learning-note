@@ -457,9 +457,9 @@ java -jar jar包名.jar --spring.config.location=配置文件地址
 
 ## <font color=FF0000>**From 17**</font>
 
-<font size=3>**外部配置加载顺序**</br>
+**外部配置加载顺序**
 
-Spring Boot也可以从以下顺序（<mark>按照优先级从高到低</mark>）加载位置，高优先级的配置会覆盖低优先级的配置，所有配置会形成互补配置</br>
+Spring Boot也可以从以下顺序（<mark>按照优先级从高到低</mark>）加载位置，高优先级的配置会覆盖低优先级的配置，所有配置会形成互补配置<
 
 **简单版如下：**
 
@@ -482,7 +482,7 @@ Spring Boot也可以从以下顺序（<mark>按照优先级从高到低</mark>�
 
 ## <font color=FF0000>**From 18**</font>
 
-<font size=3>配置文件到底能写什么，怎么写：可见官方文档 [**Appendix A: Common Application properties**](https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#common-application-properties)  
+配置文件到底能写什么，怎么写：可见官方文档 [**Appendix A: Common Application properties**](https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#common-application-properties)  
 
 - Spring Boot启动的时候加载主配置类，开启了自动配置功能（使用的是：`@EnableAutoConfiguration`）
 
@@ -496,9 +496,8 @@ Spring Boot也可以从以下顺序（<mark>按照优先级从高到低</mark>�
 
   以上总结：将类路径下META-INF/Spring-factories里面配置的所有EnableAutoConfiguration的值加入到容器中
 
-- 
+  
 
-</font>
 
 
 

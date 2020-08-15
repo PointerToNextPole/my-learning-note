@@ -686,7 +686,7 @@ public class CoffeeOrder implements Serializable {
 
 **根据<mark>方法名</mark>定义查询**
 
-- **find...By / read...By / query...By / get...By**
+- **find...By / read...By / query...By / get...By**：在这里find / read / query / get 被看作同义词，都表示查询
 - **count...By**：作计数
 - **...OrderBy...[Asc / Desc]**：根据哪个字段来进行升序和降序
 - **And / Or / IngoreCase**：多个条件
