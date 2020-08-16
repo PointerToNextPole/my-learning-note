@@ -875,6 +875,20 @@ public void setIntHeader(String header, int headerValue)
 部分摘自：[傻傻分不清之 Cookie、Session、Token、JWT](https://juejin.im/post/6844904034181070861)，<font color=FF0000>后面还有Token和JWT的内容，建议阅读</font>
 
 
+### <font color=FF0000>redirect & forward</font>
+
+**Forward**：直接转发方式。客户端和浏览器只发出一次请求，Servlet、HTML、JSP或其它信息资源，由第二个信息资源响应该请求，在请求对象request中，保存的对象对于每个信息资源是共享的。
+
+**Redirect**：间接转发方式。实际是两次HTTP请求，服务器端在响应第一次请求的时候，让浏览器再向另外一个URL发出请求，从而达到转发的目的。
+
+**举个通俗的例子：**
+
+直接转发就相当于：“A找B借钱，B说没有，B去找C借，借到借不到都会把消息传递给A”；
+
+间接转发就相当于："A找B借钱，B说没有，让A去找C借"。
+
+
+
 
 
 ### <font color=FF0000>双向绑定</font>

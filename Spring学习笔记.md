@@ -4,7 +4,7 @@
 
 ## <font color=FF0000>**From 1.8**</font>
 
-<font size=3>**Spring简介**</br>
+**Spring简介**
 
 Spring是一个<mark>**容器**</mark>（可以管理所有的<mark>**组件（类）**</mark>）框架
 
@@ -17,13 +17,11 @@ Spring是一个<mark>**容器**</mark>（可以管理所有的<mark>**组件（�
 - 组件化
 - 一站式
 
-</font>
-
 
 
 ## <font color=FF0000>**From 1.9**</font>
 
-<font size=3>**简介**</br>
+**简介**
 
 - **Test**：Spring的单元测试模块
   - spring-test-x.x.x.RELEASE
@@ -49,13 +47,11 @@ Spring是一个<mark>**容器**</mark>（可以管理所有的<mark>**组件（�
 
 **总结：**用哪个模块导入哪个包
 
-</font>
-
 
 
 ## <font color=FF0000>**From 1.12**</font>
 
-<font size=3>**IOC**</br>
+**IOC**
 
 IOC：（Inversion Of Control 控制反转），
 
@@ -70,13 +66,11 @@ IOC：（Inversion Of Control 控制反转），
 
 **DI**（Dependency Injection 依赖注入）：IOC是一种思想，而<mark>DI对于IOC思想的实现</mark>
 
-容器能知道哪个组件（类）运行的时候，需要另外一个组件（类）；<mark>容器通过**反射**的形式，讲容器中准备好的对象**注入（利用反射机制给属性赋值）**到需要的组件中
+容器能知道哪个组件（类）运行的时候，需要另外一个组件（类）；<mark>容器通过**反射**的形式，讲容器中准备好的对象**注入（利用反射机制给属性赋值）**到需要的组件中</mark>
 
-</font>
+
 
 ## <font color=FF0000>**From 1.14**</font>
-
-<font size=3>****</br>
 
 写配置：spring的配置文件中集合了spring的IOC容器管理的所有组件
 
@@ -103,11 +97,11 @@ id：这个对象的唯一标识
 </bean>
 ```
 
-</font>
+
 
 ## <font color=FF0000>**From 1.15**</font>
 
-<font size=3>**在测试类中测试IOC**</br>
+**在测试类中测试IOC**
 
 ```java
 public class IOCTest{
@@ -126,19 +120,17 @@ public class IOCTest{
 }
 ```
 
-</font>
-
 
 
 ## <font color=FF0000>**From 1.16**</font>
 
-<font size=3>**扩展**</br>
+**扩展**
 
 - src，源码包开始的路径，称之为类路径的开始；同时，在编译之后，所有源码包里的内容都会被合并放在类路径下
   - 对于一般Java应用：包中的内容在/bin/文件下
   - 对于web应用，包中的内容在/WEB-INF/classes/文件下
 
-**细节**</br>
+**细节**
 
 - 对于1.15的`ClassPathXmlApplicationContext()`，这是ioc容器配置文件在<mark>类路径下所使用的方法</mark>。同时还有另一个方法：`FileSystemXmlApplicationContext()`，这是ioc容器配置文件在<mark>磁盘路径下</mark>（内填绝对地址）
 - 给容器中注册一个组件，我们也从容器中按照id拿到了这个组件的对象；组件的创建工作是容器完成的。
@@ -148,13 +140,11 @@ public class IOCTest{
   - ioc组件在创建这个组件对象的时候，`<property>`会利用<mark>**setter**</mark>方法为JavaBean的属性进行赋值
   - <mark>JavaBean的属性名（\<property name=?>）是由getter/setter方法的名称决定的（即：将getter/setter的get/set去掉剩下的小写字母单词就是属性名）</mark>
 
-</font>
-
 
 
 ## <font color=FF0000>**From 2.1**</font>
 
-<font size=3>**根据bean的类型从IOC容器中获取bean的实例**</br>
+**根据bean的类型从IOC容器中获取bean的实例**
 
 ```java
 Person bean = ioc.getBean(Person.class);
@@ -166,13 +156,11 @@ Person bean = ioc.getBean(Person.class);
 Person bean = ioc.getBean("person02", Person.class);
 ```
 
-</font>
-
 
 
 ## <font color=FF0000>**From 2.2**</font>
 
-<font size=3>**通过有参构造器的方法从IOC容器中获取bean的实例**</br>
+**通过有参构造器的方法从IOC容器中获取bean的实例**
 
 在ioc.xml中要使用\<construction-arg>，示例如下：
 
@@ -191,13 +179,11 @@ Person bean = ioc.getBean("person02", Person.class);
 Person bean = ioc.getBean("person03");
 ```
 
-</font>
-
 
 
 ## <font color=FF0000>**From 2.3**</font>
 
-<font size=3>**另一种通过有参构造器的方法从IOC容器中获取bean的实例**</br>
+**另一种通过有参构造器的方法从IOC容器中获取bean的实例**
 
 若<mark>严格按照组件属性声明的**顺序**进行配置</mark>，可以在`<construction-arg ...>`中不配置name，只配置value
 
@@ -228,7 +214,7 @@ Person bean = ioc.getBean("person03");
 
 ## <font color=FF0000>**From 2.4**</font>
 
-<font size=3>**通过名称空间从IOC容器中获取bean的实例**</br>
+**通过名称空间从IOC容器中获取bean的实例**
 
 在xml文件中，<mark>名称空间是用来防止标签重复的</mark>，比如：
 
@@ -259,14 +245,10 @@ Person bean = ioc.getBean("person03");
   </bean>
   ```
 
-  
-
-</font>
 
 
 
 ## <font color=FF0000>**From 2.2**</font>
 
-<font size=3>**从IOC容器中获取bean的实例**</br>
+**从IOC容器中获取bean的实例**
 
-</font>

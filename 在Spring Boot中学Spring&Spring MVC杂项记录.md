@@ -72,7 +72,7 @@ public String eyeColor(){
 
 ## <font color=FF0000>**Spring MVC三层架构注解详解@Controller、@Service和@Repository**</font>
 
-<font size=3><mark>Spring MVC采用经典的三层分层控制结构</mark>，在<mark style=background-color:red>持久层</mark>，<mark style=background-color:lime>业务层</mark>和<mark style=background-color:aqua>控制层</mark>分别采用<mark style=background-color:red>@Repository</mark>、<mark style=background-color:lime>@Service</mark>、<mark style=background-color:aqua>@Controller</mark>对分层中的类进行注解，而@Component对那些比较中立的类进行注解
+<mark>Spring MVC采用经典的三层分层控制结构</mark>，在<mark style=background-color:red>持久层</mark>，<mark style=background-color:lime>业务层</mark>和<mark style=background-color:aqua>控制层</mark>分别采用<mark style=background-color:red>@Repository</mark>、<mark style=background-color:lime>@Service</mark>、<mark style=background-color:aqua>@Controller</mark>对分层中的类进行注解，而@Component对那些比较中立的类进行注解
 
 以上摘取自：[**Spring MVC三层架构注解详解@Controller、@Service和@Repository**](https://blog.csdn.net/qq_41357573/article/details/84454502)，<font color=FF0000>**下面还有详细讲解，由于事件原因未仔细钻研**</font>。</font>
 
@@ -89,16 +89,16 @@ public String eyeColor(){
 摘自：[SpringFramework5.0 @Indexed注解 简单解析](https://www.jianshu.com/p/f61f2e020a2f)
 
 ## <font color=FF0000>**组件（@Component）**</font>
-<font size=3>**什么是组件**</br>
+**什么是组件**
 
 个人的理解，<mark>组件是为了实现某个功能而整合在一起的方法及数据的集合</mark>，为了描述组件的特征组件中还包含一些描述信息，诸如组件的名称或ID，提供哪些接口，版本信息等。<mark>通常组件是以二进制文件提供的</mark>，但也可以以源代码的形式提供，只是这种情况不多见。</br>
-**组件和类的关系**</br>
-<mark>组件可以理解为类的超集，它可能包含若干个类，当然也可以只有一个类；此外组件往往需要提供一些额外的描述信息，供组件管理器管理，而类缺乏这些信息。类加上这些必要的信息，基本上就差不多等同于组件了。</mark>不过，通常组件是以二进制形式发布，而<mark>类是源代码层面的东西</mark>。</br>
+**组件和类的关系**
+<mark>组件可以理解为类的超集，它可能包含若干个类，当然也可以只有一个类；此外组件往往需要提供一些额外的描述信息，供组件管理器管理，而类缺乏这些信息。类加上这些必要的信息，基本上就差不多等同于组件了。</mark>不过，通常组件是以二进制形式发布，而<mark>类是源代码层面的东西</mark>。
 以上摘取自：[**组件、接口、类、对象之间的关系**](http://www.cppblog.com/cforce/archive/2012/07/06/181972.aspx)
-</font>
+
 
 ## <font color=FF0000>**@Autowired**</font>
-<font size=3>@Autowired 注释，<mark>它可以对<font color=FF0000>**类成员变量、方法及构造函数**</font>进行标注，完成<font color=FF0000>**自动装配**</font>的工作</mark>。 <font color=FF0000>**通过 @Autowired的使用来消除 set ，get方法**</font>。<mark>在使用@Autowired之前，我们对一个**bean**配置起属性时，是这时用的</mark>
+@Autowired 注释，<mark>它可以对<font color=FF0000>**类成员变量、方法及构造函数**</font>进行标注，完成<font color=FF0000>**自动装配**</font>的工作</mark>。 <font color=FF0000>**通过 @Autowired的使用来消除 set ，get方法**</font>。<mark>在使用@Autowired之前，我们对一个**bean**配置起属性时，是这时用的</mark>
 
 ```xml
 <property name="属性名" value="属性值"/>
@@ -106,7 +106,7 @@ public String eyeColor(){
 
 通过这种方式来，配置比较繁琐，而且代码比较多。在Spring 2.5 引入了 @Autowired 注释
 
-以上摘取自：[@Autowired用法详解](https://www.cnblogs.com/fnlingnzb-learner/p/9723834.html) </font>
+以上摘取自：[@Autowired用法详解](https://www.cnblogs.com/fnlingnzb-learner/p/9723834.html)
 
 **补充**：@Autowired，@Resource，@Inject都可以用来作为<mark>自动装配</mark>的注解，区别如下：
 
@@ -276,8 +276,6 @@ public class HelloController {}
 
 ## <font color=FF0000>**Properties文件**</font>
 
-<font size=3>
-
 - properties文件是一个文本文件
 - properties文件的语法有两种，一种是注释，一种是配置属性
   - <mark>注释在前面加上#号</mark>
@@ -348,7 +346,9 @@ public class HelloController {}
 
   摘自：[理解AOP@Before,@After,@AfterReturning,@AfterThrowing执行顺序](https://www.iteye.com/blog/jaychang-2350743)
 
-#### 特别补充：@Around
+#### 特别补充：
+
+#### @Around
 
 **@Around的作用**
 
@@ -571,9 +571,9 @@ public class MailModuleProperties {
 
 是Spring里面最低层的接口，提供了最简单的容器的功能，只提供了实例化对象和拿对象的功能；
 
-Spring Ioc容器的实现，从根源上是BeanFactory，但真正可以作为一个可以独立使用的ioc容器还是DefaultListableBeanFactory，因此可以这么说，DefaultListableBeanFactory 是整个spring ioc的始祖。
+<font color=FF0000>Spring Ioc容器的实现，从根源上是BeanFactory</font>，但真正可以作为一个可以独立使用的ioc容器还是DefaultListableBeanFactory，因此可以这么说，DefaultListableBeanFactory 是整个spring ioc的始祖。
 
-<img src="https://upload-images.jianshu.io/upload_images/12234310-6bf928fc2231465a.png?imageMogr2/auto-orient/strip|imageView2/2/w/753/format/webp" alt="img" style="zoom:80%;" />
+<img src="https://s1.ax1x.com/2020/08/16/dV2XQA.jpg" alt="img" style="zoom:75%;" />
 
 **ApplicationContext：**
 
@@ -591,11 +591,11 @@ Spring Ioc容器的实现，从根源上是BeanFactory，但真正可以作为�
 
 <mark>如果说BeanFactory是Sping的心脏，那么ApplicationContext就是完整的身躯了。</mark>
 
-![ApplicationContext结构图](https://upload-images.jianshu.io/upload_images/12234310-a14ad5a594b524fb.png?imageMogr2/auto-orient/strip|imageView2/2/format/webp)
+<img src="https://i.loli.net/2020/08/16/aLe6bvRPEzy5Ssg.jpg" alt="ApplicationContext结构图" style="zoom: 50%;" />
 
-​                                                                   ApplicationContext结构图![ApplicationContext类结构树](https://upload-images.jianshu.io/upload_images/12234310-be1edded652cea7b.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+​                                                                                   ApplicationContext结构图<img src="https://i.loli.net/2020/08/16/3MN6rOGaTSXoj2v.jpg" alt="ApplicationContext类结构树" style="zoom: 50%;" />
 
-​                                                                 ApplicationContext类结构树
+​                                                                                    ApplicationContext类结构树
 
 |     ApplicationContext常用实现类      |                             作用                             |
 | :-----------------------------------: | :----------------------------------------------------------: |
