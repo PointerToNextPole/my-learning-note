@@ -6,6 +6,26 @@
 
 
 
+#### JDK & JRE
+
+- **JRE**（Java Runtime Environment java运行时环境）包含了java虚拟机，java基础类库。是使用java语言编写的程序运行所需要的软件环境，<font color=FF0000>是提供给想运行java程序的**用户**使用的</font>。
+
+- **JDK**（Java Development Kit java开发工具包）是程序员使用java语言编写java程序所需的开发工具包，<font color=FF0000>是提供给程序员使用的</font>。JDK包含了JRE，同时还包含了编译java源码的编译器javac，还包含了很多java程序调试和分析的工具：jconsole，jvisualvm等工具软件，还包含了java程序编写所需的文档和demo例子程序。
+
+- **总结：**如果你需要运行java程序，只需安装JRE就可以了。如果你需要编写java程序，需要安装JDK。
+
+  JRE根据不同操作系统（如：windows，linux等）和不同JRE提供商（IBM,ORACLE等）有很多版本。
+
+摘自：[JRE 和 JDK 的区别是什么？ - 王博的回答 - 知乎](https://www.zhihu.com/question/20317448/answer/14737358)
+
+补充：
+
+<img src="https://i.loli.net/2020/08/16/T3Ldk5zv4Pl7JAR.png" style="zoom:50%;" />
+
+另外，最新的jdk已经不包含jre了，判断依据：是否有javac命令
+
+
+
 #### Java除法
 
 整形除以整形，结果等于<font color=FF0000>**整形**</font>
