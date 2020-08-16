@@ -1,17 +1,21 @@
 \*斜体\*
 
-## **在markdown中可以使用\<mark>\</mark>来时让文字背景高亮，效果如下**</br>
-<mark>在markdown中可以使用\<mark>\</mark>来时让文字背景高亮，效果如下</mark></br>
-\<mark>标签默认背景颜色为黄色，如果想要其他颜色，可以使用style属性，style=background-color:colorName</br>**示例如下：**</br>
-<mark style=background-color:red>\<mark>标签默认背景颜色为黄色，如果想要其他颜色，可以使用style属性，style=background-color:colorName</br></mark>
-若要换成其他颜色，使用其他<mark><font size=3 color=FF0000>**颜色关键字(Color Keywords)**</font></mark>即可：其他颜色关键字可见：**https://www.html.cn/book/css/appendix/color-keywords.htm#basic**</br>
-再者：如果要同时设置背景色和字体颜色，需要使用分号（ **;** ）分隔两个设置，示例如下：</br>
-<mark style=color:red;background-color:lime>如果要同时设置背景色和字体颜色，需要使用分号（ **;** ）分隔两个设置</mark></br>
+
+
+## **在markdown中可以使用\<mark>\</mark>来时让文字背景高亮，效果如下**
+<mark>在markdown中可以使用\<mark>\</mark>来时让文字背景高亮，效果如下</mark>
+\<mark>标签默认背景颜色为黄色，如果想要其他颜色，可以使用style属性，style=background-color:colorName
+
+**示例如下：**
+<mark style=background-color:red>\<mark>标签默认背景颜色为黄色，如果想要其他颜色，可以使用style属性，style=background-color:colorName</mark>
+若要换成其他颜色，使用其他<mark><font size=3 color=FF0000>**颜色关键字(Color Keywords)**</font></mark>即可：其他颜色关键字可见：**https://www.html.cn/book/css/appendix/color-keywords.htm#basic**
+再者：如果要同时设置背景色和字体颜色，需要使用分号（ **;** ）分隔两个设置，示例如下：
+<mark style=color:red;background-color:lime>如果要同时设置背景色和字体颜色，需要使用分号（ **;** ）分隔两个设置</mark>
 虽然上面的\<mark style=background-color:>\<font>...\</font>\</mark>也可以实现类似的效果
 
 
 
-## **在markdown中添加<mark>代码块</mark>，可以在\```之后加上语言名称，即可实现对应语言的语法高亮。示例如下**</br>
+## **在markdown中添加<mark>代码块</mark>，可以在\```之后加上语言名称，即可实现对应语言的语法高亮。示例如下**
   ```java
    @AutoConfigurationPackage
    @Import({EnableAutoConfigurationImportSelector.class})
@@ -42,17 +46,17 @@
 
 
 
-## 使用markdown生成页内跳转方法：**</br>
+## 使用markdown生成页内跳转方法：**
 
-定义一个锚(id)：\<span id="jump">跳转到的地方\</span></br>
-使用markdown语法：\[点击跳转\](#jump)</br>
+定义一个锚(id)：\<span id="jump">跳转到的地方\</span>
+使用markdown语法：\[点击跳转\](#jump)
 
-## **类似的markdown插入跳转的方法：**</br>
-\[链接文字\](链接网址 "Optinal title")</br>
-<font color=FF0000>**示例如下：**</font></br>
+## **类似的markdown插入跳转的方法：**
+\[链接文字\](链接网址 "Optinal title")
+<font color=FF0000>**示例如下：**</font>
 **This is an [example link](http://www.baidu.com/ "With a Title").** 
 
-## **markdown插入图片**</br>
+## **markdown插入图片**
 
 **有两种方法：**
 
@@ -67,15 +71,15 @@
 
 至于更多markdown中插入图片的问题，比如：[**markdown多张图片并排显示**](https://www.cnblogs.com/jaycethanks/p/12201959.html)，遇到再说。
 
-## **markdown插入表格**</br>
+## **markdown插入表格**
 
-<font color=FF0000>**模板如下：**</font></br>
-<font color=FF0000 size=4>\|</font>title1<font color=FF0000 size=4>\|</font>title2<font color=FF0000 size=4>\|</font>...<font color=FF0000 size=4>\|</font></br>
-<font color=FF0000 size=4>\|-\|-\|-\|-\|</font></br>
-<font color=FF0000 size=4>|</font>1-1<font color=FF0000 size=4>|</font>1-2<font color=FF0000 size=4>|</font>...<font color=FF0000 size=4>|</font></br>
-<font color=FF0000 size=4>|</font>2-1<font color=FF0000 size=4>|</font>2-2<font color=FF0000 size=4>|</font>...<font color=FF0000 size=4>|</font></br>
-<font color=FF0000 size=4>|</font>...<font color=FF0000 size=4>|</font>...<font color=FF0000 size=4>|</font>...<font color=FF0000 size=4>|</font></br>
-效果如下：</br>
+<font color=FF0000>**模板如下：**</font>
+<font color=FF0000 size=4>\|</font>title1<font color=FF0000 size=4>\|</font>title2<font color=FF0000 size=4>\|</font>...<font color=FF0000 size=4>\|</font>
+<font color=FF0000 size=4>\|-\|-\|-\|-\|</font>
+<font color=FF0000 size=4>|</font>1-1<font color=FF0000 size=4>|</font>1-2<font color=FF0000 size=4>|</font>...<font color=FF0000 size=4>|</font>
+<font color=FF0000 size=4>|</font>2-1<font color=FF0000 size=4>|</font>2-2<font color=FF0000 size=4>|</font>...<font color=FF0000 size=4>|</font>
+<font color=FF0000 size=4>|</font>...<font color=FF0000 size=4>|</font>...<font color=FF0000 size=4>|</font>...<font color=FF0000 size=4>|</font>
+效果如下：
 
 |title1|title2|...|
 |-|-|-|

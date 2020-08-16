@@ -194,7 +194,7 @@ SOAP：简单对象访问协议（Simple Object Access Protocol）是一种<mark
 
 **RESTful架构有一些典型的<font color=FF0000>设计误区</font>**
 
-**<font color=FF0000>最常见的一种设计错误，就是URI包含动词</font>。**因为"资源"表示一种实体，所以应该是名词，URI不应该有动词，动词应该放在HTTP协议中。
+**<font color=FF0000>最常见的一种设计错误，就是URI包含动词</font>。**因为"资源"表示一种实体，<font color=FF0000>所以应该是名词</font>，URI不应该有动词，动词应该放在HTTP协议中。
 
 举例来说：某个URI是/posts/show/1，其中show是动词，这个URI就设计错了，<mark>正确的写法应该是/posts/1，然后用GET方法表示show</mark>。
 
@@ -303,8 +303,6 @@ POJO类的作用是方便程序员使用数据库中的数据表，对于程序�
 
 类似的可参考：[OAuth 2.0 的一个简单解释](http://www.ruanyifeng.com/blog/2019/04/oauth_design.html)
 
-
-
 ## <font color=FF0000>JSP</font>
 
 **JSP的本质其实就是Servlet**。只是JSP当初设计的目的是为了简化Servlet输出HTML代码。
@@ -315,6 +313,483 @@ POJO类的作用是方便程序员使用数据库中的数据表，对于程序�
 - 前后端分离，后端只需要返回JSON给前端，页面完全不需要后端管
 
 摘自：[2020年了，不学jsp后学什么代替？ - Java3y的回答 - 知乎 ](https://www.zhihu.com/question/382065572/answer/1102140696)
+
+
+
+### <font color=FF0000>Tomcat</font>
+
+**启动tomcat**
+
+在 Windows 上，可以通过执行下面的命令来启动 Tomcat：
+
+```sh
+%CATALINA_HOME%\bin\startup.bat
+```
+
+ 或者
+
+```shell
+C:\apache-tomcat-5.5.29\bin\startup.bat
+```
+
+在 Unix（Solaris、Linux 等） 上，可以通过执行下面的命令来启动 Tomcat：
+
+```sh
+$CATALINA_HOME/bin/startup.sh
+```
+
+ 或者
+
+```
+/usr/local/apache-tomcat-5.5.29/bin/startup.sh
+```
+
+**关闭tomcat**
+
+在 Windows 上，可以通过执行下面的命令来停止 Tomcat：
+
+```
+C:\apache-tomcat-5.5.29\bin\shutdown
+```
+
+在 Unix（Solaris、Linux 等） 上，可以通过执行下面的命令来停止 Tomcat：
+
+```
+/usr/local/apache-tomcat-5.5.29/bin/shutdown.sh
+```
+
+
+
+### <font color=FF0000>Servlet的生命周期</font>
+
+Servlet 生命周期可被定义为从创建直到毁灭的整个过程。以下是 Servlet 遵循的过程：
+
+- Servlet 通过调用<font color=FF0000> **init ()** </font>方法进行<font color=FF0000>初始化</font>。
+
+  <mark>init 方法被设计成只调用一次。它在第一次创建 Servlet 时被调用，在后续每次用户请求时不再调用</mark>。
+
+  同时，Servlet 创建于用户第一次调用对应于该 Servlet 的 URL 时，但是您也可以指定 Servlet 在服务器第一次启动时被加载。
+
+  <mark>当用户调用一个 Servlet 时，就会创建一个 Servlet 实例，每一个用户请求都会产生一个新的线程，适当的时候移交给 doGet 或 doPost 方法</mark>。init() 方法简单地创建或加载一些数据，这些数据将被用于 Servlet 的整个生命周期。
+
+  init 方法的定义如下：
+
+  ```java
+  public void init() throws ServletException {
+    // 初始化代码...
+  }
+  ```
+
+- Servlet 调用 **<font color=FF0000>service()</font>** 方法来<font color=FF0000>处理客户端的请求</font>。
+
+  service() 方法是执行实际任务的主要方法。<mark>Servlet 容器（即 Web 服务器）调用 service() 方法来处理来自客户端（浏览器）的请求，并把格式化的响应写回给客户端</mark>。
+
+  <mark>每次服务器接收到一个 Servlet 请求时，服务器会产生一个新的线程并调用服务</mark>。service() 方法检查 HTTP 请求类型（GET、POST、PUT、DELETE 等），并在适当的时候调用 doGet、doPost、doPut，doDelete 等方法。
+
+  下面是该方法的特征：
+
+  ```java
+  public void service(ServletRequest request, 
+                      ServletResponse response) 
+        throws ServletException, IOException{
+  }
+  ```
+
+  service() 方法由容器调用，service 方法在适当的时候调用 doGet、doPost、doPut、doDelete 等方法。所以，<font color=FF0000>您不用对 service() 方法做任何动作，您只需要根据来自客户端的请求类型来重写 doGet() 或 doPost() 即可</font>。
+
+  doGet() 和 doPost() 方法是每次服务请求中最常用的方法。下面是这两种方法的特征。
+
+  - **doGet() 方法**
+
+    <font color=FF0000>GET 请求来自于一个 URL 的正常请求</font>，或者来自于一个未指定 METHOD 的 HTML 表单，它由 doGet() 方法处理。
+
+    ```java
+    public void doGet(HttpServletRequest request,
+                      HttpServletResponse response)
+        throws ServletException, IOException {
+        // Servlet 代码
+    }
+    ```
+
+  - **doPost() 方法**
+
+    <font color=FF0000>POST 请求来自于一个特别指定了 METHOD 为 POST 的 **HTML 表单**</font>，它由 doPost() 方法处理。
+
+    ```java
+    public void doPost(HttpServletRequest request,
+                       HttpServletResponse response)
+        throws ServletException, IOException {
+        // Servlet 代码
+    }
+    ```
+
+- Servlet 通过调用 <font color=FF0000>**destroy()** </font>方法<font color=FF0000>终止（结束）</font>。
+
+  <font color=FF0000>destroy() 方法只会被调用一次，在 Servlet 生命周期结束时被调用</font>。<mark>destroy() 方法可以让您的 Servlet 关闭数据库连接、停止后台线程、把 Cookie 列表或点击计数器写入到磁盘，并执行其他类似的清理活动</mark>。
+
+  在调用 destroy() 方法之后，servlet 对象被标记为垃圾回收。destroy 方法定义如下所示：
+
+  ```java
+    public void destroy() {
+      // 终止化代码...
+    }
+  ```
+
+- 最后，Servlet 是由<font color=FF0000> JVM 的垃圾回收器进行垃圾回收的</font>。
+
+### <font color=FF0000>实现Servlet</font>
+
+Servlet 是服务 HTTP 请求并实现 javax.servlet.Servlet 接口的 Java 类。<mark>Web 应用程序开发人员通常编写 Servlet 来扩展 javax.servlet.http.HttpServlet，并<font color=FF0000>实现 Servlet 接口的抽象类</font>专门用来处理 HTTP 请求</mark>。
+
+### <font color=FF0000>Get和Post方法</font>
+
+- **GET 方法**
+
+  GET 方法向页面请求发送已编码的用户信息。<font color=FF0000>页面和已编码的信息中间用 ? 字符分隔</font>，如下所示：
+
+  ```
+  http://www.test.com/hello?key1=value1&key2=value2
+  ```
+
+  GET 方法是<font color=FF0000>默认的从浏览器向 Web 服务器传递信息的方法</font>，它会产生一个很长的字符串，出现在浏览器的地址栏中。如果您要向服务器传递的是密码或其他的敏感信息，请不要使用 GET 方法。<mark>GET 方法有大小限制：请求字符串中最多只能有 1024 个字符</mark>。
+
+  这些信息使用 QUERY_STRING 头传递，并可以通过 QUERY_STRING 环境变量访问，Servlet 使用 **doGet()** 方法处理这种类型的请求。
+
+- **POST 方法**
+
+  另一个向后台程序传递信息的比较可靠的方法是 POST 方法。POST 方法打包信息的方式与 GET 方法基本相同，但是 <font color=FF0000>POST 方法不是把信息作为 URL 中 ? 字符后的文本字符串进行发送，而是把这些信息作为一个单独的消息。消息以标准输出的形式传到后台程序，您可以解析和使用这些标准输出</font>。Servlet 使用 doPost() 方法处理这种类型的请求。
+
+### <font color=FF0000>使用 Servlet 读取表单数据</font>
+
+Servlet 处理表单数据，这些数据会根据不同的情况使用不同的方法自动解析：
+
+- **getParameter()：**您<font color=FF0000>可以调用 request.getParameter() 方法来获取表单参数的值</font>。
+- **getParameterValues()：**如果<font color=FF0000>参数出现一次以上，则调用该方法，并返回多个值</font>，例如复选框。
+- **getParameterNames()：**如果您想要<font color=FF0000>得到当前请求中的所有参数的完整列表</font>，则调用该方法。
+
+### <font color=FF0000>Servlet的Http请求</font>
+
+当浏览器请求网页时，它会向 Web 服务器发送特定信息，这些信息不能被直接读取，因为<font color=FF0000>这些信息是作为 HTTP **请求的头**的一部分进行传输的</font>。
+
+**浏览器端的重要头信息**
+
+| 头信息              | 描述                                                         |
+| :------------------ | :----------------------------------------------------------- |
+| Accept              | 这个头信息指定浏览器或其他客户端可以处理的 MIME 类型。值 **image/png** 或 **image/jpeg** 是最常见的两种可能值。 |
+| Accept-Charset      | 这个头信息指定浏览器可以用来显示信息的字符集。例如 ISO-8859-1。 |
+| Accept-Encoding     | 这个头信息指定浏览器知道如何处理的编码类型。值 **gzip** 或 **compress** 是最常见的两种可能值。 |
+| Accept-Language     | 这个头信息指定客户端的首选语言，在这种情况下，Servlet 会产生多种语言的结果。例如，en、en-us、ru 等。 |
+| Authorization       | 这个头信息用于客户端在访问受密码保护的网页时识别自己的身份。 |
+| Connection          | 这个头信息指示客户端是否可以处理持久 HTTP 连接。持久连接允许客户端或其他浏览器通过单个请求来检索多个文件。值 **Keep-Alive** 意味着使用了持续连接。 |
+| Content-Length      | 这个头信息只适用于 POST 请求，并给出 POST 数据的大小（以字节为单位）。 |
+| Cookie              | 这个头信息把之前发送到浏览器的 cookies 返回到服务器。        |
+| Host                | 这个头信息指定原始的 URL 中的主机和端口。                    |
+| If-Modified-Since   | 这个头信息表示只有当页面在指定的日期后已更改时，客户端想要的页面。如果没有新的结果可以使用，服务器会发送一个 304 代码，表示 **Not Modified** 头信息。 |
+| If-Unmodified-Since | 这个头信息是 If-Modified-Since 的对立面，它指定只有当文档早于指定日期时，操作才会成功。 |
+| Referer             | 这个头信息指示所指向的 Web 页的 URL。例如，如果您在网页 1，点击一个链接到网页 2，当浏览器请求网页 2 时，网页 1 的 URL 就会包含在 Referer 头信息中。 |
+| User-Agent          | 这个头信息识别发出请求的浏览器或其他客户端，并可以向不同类型的浏览器返回不同的内容。 |
+
+**读取 HTTP 头的方法**
+
+下面的方法可用在 Servlet 程序中读取 HTTP 头。这些方法通过<font color=FF0000> HttpServletRequest</font> 对象可用。
+
+| 序号 | 方法 & 描述                                                  |
+| :--- | :----------------------------------------------------------- |
+| 1    | **Cookie[] getCookies()**<br/> 返回一个数组，包含客户端发送该请求的所有的 Cookie 对象。 |
+| 2    | **Enumeration getAttributeNames()**<br> 返回一个枚举，包含提供给该请求可用的属性名称。 |
+| 3    | **Enumeration getHeaderNames()**<br> 返回一个枚举，包含在该请求中包含的所有的头名。 |
+| 4    | **Enumeration getParameterNames()**<br> 返回一个 String 对象的枚举，包含在该请求中包含的参数的名称。 |
+| 5    | **HttpSession getSession()**<br> 返回与该请求关联的当前 session 会话，或者如果请求没有 session 会话，则创建一个。 |
+| 6    | **HttpSession getSession(boolean create)**<br> 返回与该请求关联的当前 HttpSession，或者如果没有当前会话，且创建是真的，则返回一个新的 session 会话。 |
+| 7    | **Locale getLocale()**<br> 基于 Accept-Language 头，返回客户端接受内容的首选的区域设置。 |
+| 8    | **Object getAttribute(String name)**<br> 以对象形式返回已命名属性的值，如果没有给定名称的属性存在，则返回 null。 |
+| 9    | **ServletInputStream getInputStream()**<br> 使用 ServletInputStream，以二进制数据形式检索请求的主体。 |
+| 10   | **String getAuthType()**<br> 返回用于保护 Servlet 的身份验证方案的名称，例如，"BASIC" 或 "SSL"，如果JSP没有受到保护则返回 null。 |
+| 11   | **String getCharacterEncoding()**<br> 返回请求主体中使用的字符编码的名称。 |
+| 12   | **String getContentType()**<br> 返回请求主体的 MIME 类型，如果不知道类型则返回 null。 |
+| 13   | **String getContextPath()**<br> 返回指示请求上下文的请求 URI 部分。 |
+| 14   | **String getHeader(String name)**<br> 以字符串形式返回指定的请求头的值。 |
+| 15   | **String getMethod()**<br> 返回请求的 HTTP 方法的名称，例如，GET、POST 或 PUT。 |
+| 16   | **String getParameter(String name)**<br> 以字符串形式返回请求参数的值，或者如果参数不存在则返回 null。 |
+| 17   | **String getPathInfo()**<br> 当请求发出时，返回与客户端发送的 URL 相关的任何额外的路径信息。 |
+| 18   | **String getProtocol()**<br> 返回请求协议的名称和版本。          |
+| 19   | **String getQueryString()**<br> 返回包含在路径后的请求 URL 中的查询字符串。 |
+| 20   | **String getRemoteAddr()**<br> 返回发送请求的客户端的互联网协议（IP）地址。 |
+| 21   | **String getRemoteHost()**<br> 返回发送请求的客户端的完全限定名称。 |
+| 22   | **String getRemoteUser()**<br> 如果用户已通过身份验证，则返回发出请求的登录用户，或者如果用户未通过身份验证，则返回 null。 |
+| 23   | **String getRequestURI()**<br> 从协议名称直到 HTTP 请求的第一行的查询字符串中，返回该请求的 URL 的一部分。 |
+| 24   | **String getRequestedSessionId()**<br> 返回由客户端指定的 session 会话 ID。 |
+| 25   | **String getServletPath()**<br> 返回调用 JSP 的请求的 URL 的一部分。 |
+| 26   | **String[] getParameterValues(String name)**<br> 返回一个字符串对象的数组，包含所有给定的请求参数的值，如果参数不存在则返回 null。 |
+| 27   | **boolean isSecure()**<br> 返回一个布尔值，指示请求是否使用安全通道，如 HTTPS。 |
+| 28   | **int getContentLength()**<br> 以字节为单位返回请求主体的长度，并提供输入流，或者如果长度未知则返回 -1。 |
+| 29   | **int getIntHeader(String name)**<br> 返回指定的请求头的值为一个 int 值。 |
+| 30   | **int getServerPort()**<br> 返回接收到这个请求的端口号。         |
+| 31   | **int getParameterMap()**<br> 将参数封装成 Map 类型。            |
+
+### <font color=FF0000>Servlet的Http响应</font>
+
+当一个 Web 服务器响应一个 HTTP 请求时，响应通常包括一个状态行、一些响应报头、一个空行和文档。
+
+状态行包括 HTTP 版本（在本例中为 HTTP/1.1）、一个状态码（在本例中为 200）和一个对应于状态码的短消息（在本例中为 OK）。
+
+下表总结了从 Web 服务器端返回到浏览器的最有用的 HTTP 1.1 响应报头，您会在 Web 编程中频繁地使用它们：
+
+| 头信息              | 描述                                                         |
+| :------------------ | :----------------------------------------------------------- |
+| Allow               | 这个头信息指定服务器支持的请求方法（GET、POST 等）。         |
+| Cache-Control       | 这个头信息指定响应文档在何种情况下可以安全地缓存。可能的值有：**public、private** 或 **no-cache** 等。Public 意味着文档是可缓存，Private 意味着文档是单个用户私用文档，且只能存储在私有（非共享）缓存中，no-cache 意味着文档不应被缓存。 |
+| Connection          | 这个头信息指示浏览器是否使用持久 HTTP 连接。值 **close** 指示浏览器不使用持久 HTTP 连接，值 **keep-alive** 意味着使用持久连接。 |
+| Content-Disposition | 这个头信息可以让您请求浏览器要求用户以给定名称的文件把响应保存到磁盘。 |
+| Content-Encoding    | 在传输过程中，这个头信息指定页面的编码方式。                 |
+| Content-Language    | 这个头信息表示文档编写所使用的语言。例如，en、en-us、ru 等。 |
+| Content-Length      | 这个头信息指示响应中的字节数。只有当浏览器使用持久（keep-alive）HTTP 连接时才需要这些信息。 |
+| Content-Type        | 这个头信息提供了响应文档的 MIME（Multipurpose Internet Mail Extension）类型。 |
+| Expires             | 这个头信息指定内容过期的时间，在这之后内容不再被缓存。       |
+| Last-Modified       | 这个头信息指示文档的最后修改时间。然后，客户端可以缓存文件，并在以后的请求中通过 **If-Modified-Since** 请求头信息提供一个日期。 |
+| Location            | 这个头信息应被包含在所有的带有状态码的响应中。在 300s 内，这会通知浏览器文档的地址。浏览器会自动重新连接到这个位置，并获取新的文档。 |
+| Refresh             | 这个头信息指定浏览器应该如何尽快请求更新的页面。您可以指定页面刷新的秒数。 |
+| Retry-After         | 这个头信息可以与 503（Service Unavailable 服务不可用）响应配合使用，这会告诉客户端多久就可以重复它的请求。 |
+| Set-Cookie          | 这个头信息指定一个与页面关联的 cookie。                      |
+
+**设置 HTTP 响应报头的方法**
+
+下面的方法可用于在 Servlet 程序中设置 HTTP 响应报头。这些方法通过HttpServletResponse对象可用。
+
+| 序号 | 方法 & 描述                                                  |
+| :--- | :----------------------------------------------------------- |
+| 1    | **String encodeRedirectURL(String url)**<br> 为 sendRedirect 方法中使用的指定的 URL 进行编码，或者如果编码不是必需的，则返回 URL 未改变。 |
+| 2    | **String encodeURL(String url)**<br> 对包含 session 会话 ID 的指定 URL 进行编码，或者如果编码不是必需的，则返回 URL 未改变。 |
+| 3    | **boolean containsHeader(String name)**<br> 返回一个布尔值，指示是否已经设置已命名的响应报头。 |
+| 4    | **boolean isCommitted()**<br> 返回一个布尔值，指示响应是否已经提交。 |
+| 5    | **void addCookie(Cookie cookie)**<br> 把指定的 cookie 添加到响应。 |
+| 6    | **void addDateHeader(String name, long date)**<br> 添加一个带有给定的名称和日期值的响应报头。 |
+| 7    | **void addHeader(String name, String value)**<br> 添加一个带有给定的名称和值的响应报头。 |
+| 8    | **void addIntHeader(String name, int value)**<br> 添加一个带有给定的名称和整数值的响应报头。 |
+| 9    | **void flushBuffer()**<br> 强制任何在缓冲区中的内容被写入到客户端。 |
+| 10   | **void reset()**<br> 清除缓冲区中存在的任何数据，包括状态码和头。 |
+| 11   | **void resetBuffer()**<br> 清除响应中基础缓冲区的内容，不清除状态码和头。 |
+| 12   | **void sendError(int sc)**<br> 使用指定的状态码发送错误响应到客户端，并清除缓冲区。 |
+| 13   | **void sendError(int sc, String msg)**<br> 使用指定的状态发送错误响应到客户端。 |
+| 14   | **void sendRedirect(String location)**<br> 使用指定的重定向位置 URL 发送临时重定向响应到客户端。 |
+| 15   | **void setBufferSize(int size)**<br> 为响应主体设置首选的缓冲区大小。 |
+| 16   | **void setCharacterEncoding(String charset)**<br> 设置被发送到客户端的响应的字符编码（MIME 字符集）例如，UTF-8。 |
+| 17   | **void setContentLength(int len)**<br> 设置在 HTTP Servlet 响应中的内容主体的长度，该方法设置 HTTP Content-Length 头。 |
+| 18   | **void setContentType(String type)**<br> 如果响应还未被提交，设置被发送到客户端的响应的内容类型。 |
+| 19   | **void setDateHeader(String name, long date)**<br> 设置一个带有给定的名称和日期值的响应报头。 |
+| 20   | **void setHeader(String name, String value)**<br> 设置一个带有给定的名称和值的响应报头。 |
+| 21   | **void setIntHeader(String name, int value)**<br> 设置一个带有给定的名称和整数值的响应报头。 |
+| 22   | **void setLocale(Locale loc)**<br> 如果响应还未被提交，设置响应的区域。 |
+| 23   | **void setStatus(int sc)**<br> 为该响应设置状态码。              |
+
+### <font color=FF0000>Servlet http状态码</font>
+
+HTTP 请求和 HTTP 响应消息的格式是类似的，结构如下：
+
+- 初始状态行 + 回车换行符（回车+换行）
+- 零个或多个标题行+回车换行符
+- 一个空白行，即回车换行符
+- 一个可选的消息主体，比如文件、查询数据或查询输出
+
+**服务器的响应头如下所示：**
+
+```http
+HTTP/1.1 200 OK
+Content-Type: text/html
+Header2: ...
+...
+HeaderN: ...
+  (Blank Line)
+<!doctype ...>
+<html>
+<head>...</head>
+<body>
+...
+</body>
+</html>
+```
+
+**设置 HTTP 状态代码的方法**
+
+下面的方法可用于在 Servlet 程序中设置 HTTP 状态码。这些方法通过 HttpServletResponse 对象可用。
+
+| 序号 | 方法 & 描述                                                  |
+| :--- | :----------------------------------------------------------- |
+| 1    | **public void setStatus ( int statusCode )**<br> 该方法设置一个任意的状态码。setStatus 方法接受一个 int（状态码）作为参数。如果您的响应包含了一个特殊的状态码和文档，请确保在使用 *PrintWriter* 实际返回任何内容之前调用 setStatus。 |
+| 2    | **public void sendRedirect(String url)**<br> 该方法生成一个 302 响应，连同一个带有新文档 URL 的 *Location* 头。 |
+| 3    | **public void sendError(int code, String message)**<br> 该方法发送一个状态码（通常为 404），连同一个在 HTML 文档内部自动格式化并发送到客户端的短消息。 |
+
+### <font color=FF0000>Servlet 过滤器</font>
+
+Servlet 过滤器是可用于 Servlet 编程的 Java 类，可以实现以下<font color=FF0000>目的</font>：
+
+- 在<font color=FF0000>客户端的请求访问后端资源之前</font>，拦截这些请求。
+- 在<font color=FF0000>服务器的响应发送回客户端之前</font>，处理这些响应。
+
+总结：拦截请求和处理响应
+
+**根据规范建议的各种类型的过滤器：**
+
+- 身份验证过滤器（Authentication Filters）。
+- 数据压缩过滤器（Data compression Filters）。
+- 加密过滤器（Encryption Filters）。
+- 触发资源访问事件过滤器。
+- 图像转换过滤器（Image Conversion Filters）。
+- 日志记录和审核过滤器（Logging and Auditing Filters）。
+- MIME-TYPE 链过滤器（MIME-TYPE Chain Filters）。
+- 标记化过滤器（Tokenizing Filters）。
+- XSL/T 过滤器（XSL/T Filters），转换 XML 内容。
+
+过滤器通过 Web 部署描述符（<font color=FF0000>web.xml</font>）中的 XML 标签来声明，然后映射到您的应用程序的部署描述符中的 Servlet 名称或 URL 模式。
+
+当 Web 容器启动 Web 应用程序时，它会为您在部署描述符中声明的每一个过滤器创建一个实例。
+
+Filter的执行顺序与在web.xml配置文件中的配置顺序一致，一般把Filter配置在所有的Servlet之前。
+
+**Servlet 过滤器方法**
+
+过滤器是一个实现了 javax.servlet.Filter 接口的 Java 类。javax.servlet.Filter 接口定义了三个方法：
+
+| 序号 | 方法 & 描述                                                  |
+| :--- | :----------------------------------------------------------- |
+| 1    | **public void doFilter (ServletRequest, ServletResponse, FilterChain)**<br> 该方法完成实际的过滤操作，当客户端请求方法与过滤器设置匹配的URL时，Servlet容器将先调用过滤器的doFilter方法。FilterChain用户访问后续过滤器。 |
+| 2    | **public void init(FilterConfig filterConfig)**<br> web 应用程序启动时，web 服务器将创建Filter 的实例对象，并调用其init方法，读取web.xml配置，完成对象的初始化功能，从而为后续的用户请求作好拦截的准备工作（filter对象只会创建一次，init方法也只会执行一次）。开发人员通过init方法的参数，可获得代表当前filter配置信息的FilterConfig对象。 |
+| 3    | **public void destroy()**<br> Servlet容器在销毁过滤器实例前调用该方法，在该方法中释放Servlet过滤器占用的资源。 |
+
+后面还有示例，由于繁琐且使用较少，这里不再赘述：[Servlet 编写过滤器](https://www.runoob.com/servlet/servlet-writing-filters.html)
+
+### <font color=FF0000>Servlet Cookie 处理</font>
+
+Cookie 是存储在客户端计算机上的文本文件，并保留了各种跟踪信息。Java Servlet 显然支持 HTTP Cookie。
+
+**识别返回用户包括三个步骤：**
+
+- 服务器脚本向浏览器发送一组 Cookie。例如：姓名、年龄或识别号码等。
+- 浏览器将这些信息存储在本地计算机上，以备将来使用。
+- <mark>当下一次浏览器向 Web 服务器发送任何请求时，<font color=FF0000>浏览器会把这些 Cookie 信息发送到服务器，服务器将使用这些信息来识别用户。</font></mark>
+
+**Cookie 剖析**
+
+Cookie 通常设置在 HTTP 头信息中（虽然 JavaScript 也可以直接在浏览器上设置一个 Cookie）。设置 Cookie 的 Servlet 会发送如下的头信息：
+
+```http
+HTTP/1.1 200 OK
+Date: Fri, 04 Feb 2000 21:03:38 GMT
+Server: Apache/1.3.9 (UNIX) PHP/4.0b3
+Set-Cookie: name=xyz; expires=Friday, 04-Feb-07 22:03:38 GMT; 
+                 path=/; domain=runoob.com
+Connection: close
+Content-Type: text/html
+```
+
+<font color=FF0000>Set-Cookie 头包含了一个名称值对、一个 GMT 日期、一个路径和一个域</font>。名称和值会被 URL 编码。expires 字段是一个指令，告诉浏览器在给定的时间和日期之后"忘记"该 Cookie。
+
+**Servlet Cookie 方法**
+
+| 序号 | 方法 & 描述                                                  |
+| :--- | :----------------------------------------------------------- |
+| 1    | **public void setDomain(String pattern)**<br> 该方法设置 cookie 适用的域，例如 runoob.com。 |
+| 2    | **public String getDomain()**<br> 该方法获取 cookie 适用的域，例如 runoob.com。 |
+| 3    | **public void setMaxAge(int expiry)**<br> 该方法设置 cookie 过期的时间（以秒为单位）。如果不这样设置，cookie 只会在当前 session 会话中持续有效。 |
+| 4    | **public int getMaxAge()**<br> 该方法返回 cookie 的最大生存周期（以秒为单位），默认情况下，-1 表示 cookie 将持续下去，直到浏览器关闭。 |
+| 5    | **public String getName()**<br> 该方法返回 cookie 的名称。名称在创建后不能改变。 |
+| 6    | **public void setValue(String newValue)**<br> 该方法设置与 cookie 关联的值。 |
+| 7    | **public String getValue()**<br> 该方法获取与 cookie 关联的值。  |
+| 8    | **public void setPath(String uri)**<br> 该方法设置 cookie 适用的路径。如果您不指定路径，与当前页面相同目录下的（包括子目录下的）所有 URL 都会返回 cookie。 |
+| 9    | **public String getPath()**<br> 该方法获取 cookie 适用的路径。   |
+| 10   | **public void setSecure(boolean flag)**<br> 该方法设置布尔值，表示 cookie 是否应该只在加密的（即 SSL）连接上发送。 |
+| 11   | **public void setComment(String purpose)**<br> 设置cookie的注释。该注释在浏览器向用户呈现 cookie 时非常有用。 |
+| 12   | **public String getComment()**<br> 获取 cookie 的注释，如果 cookie 没有注释则返回 null。 |
+
+### <font color=FF0000>Servlet Session 跟踪</font>
+
+HTTP 是一种<font color=FF0000>**"无状态"**</font>协议，<mark>这意味着每次客户端检索网页时，客户端打开一个单独的连接到 Web 服务器，服务器会自动不保留之前客户端请求的任何记录</mark>。
+
+#### **有以下三种方式来维持 Web 客户端和 Web 服务器之间的 session 会话：**
+
+- **Cookies**
+
+  一个 Web 服务器可以分配一个唯一的 session 会话 ID 作为每个 Web 客户端的 cookie，对于客户端的后续请求可以使用接收到的 cookie 来识别。
+
+  <mark>这可能不是一个有效的方法，因为很多浏览器不支持 cookie，所以我们建议不要使用这种方式来维持 session 会话</mark>。
+
+- **隐藏的表单字段**
+
+  <font color=FF0000>一个 Web 服务器可以发送一个隐藏的 HTML 表单字段，以及一个唯一的 session 会话 ID</font>，如下所示：
+
+  ```html
+  <input type="hidden" name="sessionid" value="12345">
+  ```
+
+  该条目意味着，<font color=FF0000>当表单被提交时，指定的名称和值会被自动包含在 GET 或 POST 数据中。每次当 Web 浏览器发送回请求时，session_id 值可以用于保持不同的 Web 浏览器的跟踪</font>。
+
+  这可能是一种保持 session 会话跟踪的有效方式，但是<font color=FF0000>点击常规的超文本链接（\<a href...>）不会导致表单提交，因此隐藏的表单字段也不支持常规的 session 会话跟踪</font>。
+
+- <font color=FF0000>**URL 重写**</font>
+
+  <font color=FF0000>您可以在每个 URL 末尾追加一些额外的数据来标识 session 会话，服务器会把该 session 会话标识符与已存储的有关 session 会话的数据相关联</font>。
+
+  例如，`http://w3cschool.cc/file.htm;sessionid=12345`，session 会话标识符被附加为 sessionid=12345，标识符可被 Web 服务器访问以识别客户端。
+
+  <font color=FF0000>URL 重写是一种更好的维持 session 会话的方式，它在浏览器不支持 cookie 时能够很好地工作，但是它的缺点是会动态生成每个 URL 来为页面分配一个 session 会话 ID，即使是在很简单的静态 HTML 页面中也会如此</font>。
+
+#### HttpSession 对象
+
+除了上述的三种方式，Servlet 还提供了 <font color=FF0000>HttpSession 接口</font>，<font color=FF0000>该接口提供了一种跨多个页面请求或访问网站时**识别用户以及存储有关用户信息的方式**</font>。
+
+Servlet 容器使用这个接口来创建一个 HTTP 客户端和 HTTP 服务器之间的 session 会话。会话持续一个指定的时间段，跨多个连接或页面请求。
+
+您会通过调用 HttpServletRequest 的公共方法 **getSession()** 来获取 HttpSession 对象，如下所示：
+
+```java
+HttpSession session = request.getSession();
+```
+
+你需要在向客户端发送任何文档内容之前调用 *request.getSession()*。下面总结了 HttpSession 对象中可用的几个重要的方法：
+
+| 序号 | 方法 & 描述                                                  |
+| :--- | :----------------------------------------------------------- |
+| 1    | **public Object getAttribute(String name)** <br>该方法返回在该 session 会话中具有指定名称的对象，如果没有指定名称的对象，则返回 null。 |
+| 2    | **public Enumeration getAttributeNames()**<br> 该方法返回 String 对象的枚举，String 对象包含所有绑定到该 session 会话的对象的名称。 |
+| 3    | **public long getCreationTime()**<br> 该方法返回该 session 会话被创建的时间，自格林尼治标准时间 1970 年 1 月 1 日午夜算起，以毫秒为单位。 |
+| 4    | **public String getId()**<br> 该方法返回一个包含分配给该 session 会话的唯一标识符的字符串。 |
+| 5    | **public long getLastAccessedTime()**<br> 该方法返回客户端最后一次发送与该 session 会话相关的请求的时间自格林尼治标准时间 1970 年 1 月 1 日午夜算起，以毫秒为单位。 |
+| 6    | **public int getMaxInactiveInterval()**<br> 该方法返回 Servlet 容器在客户端访问时保持 session 会话打开的最大时间间隔，以秒为单位。 |
+| 7    | **public void invalidate()**<br> 该方法指示该 session 会话无效，并解除绑定到它上面的任何对象。 |
+| 8    | **public boolean isNew()**<br> 如果客户端还不知道该 session 会话，或者如果客户选择不参入该 session 会话，则该方法返回 true。 |
+| 9    | **public void removeAttribute(String name)**<br> 该方法将从该 session 会话移除指定名称的对象。 |
+| 10   | **public void setAttribute(String name, Object value)**<br> 该方法使用指定的名称绑定一个对象到该 session 会话。 |
+| 11   | **public void setMaxInactiveInterval(int interval)**<br> 该方法在 Servlet 容器指示该 session 会话无效之前，指定客户端请求之间的时间，以秒为单位。 |
+
+### <font color=FF0000>Servlet 网页重定向</font>
+
+重定向请求到另一个网页的最简单的方式是使用 response 对象的 sendRedirect() 方法。下面是该方法的定义：
+
+```java
+public void HttpServletResponse.sendRedirect(String location) throws IOException 
+```
+
+该方法把响应连同状态码和新的网页位置发送回浏览器。您也可以通过把 setStatus() 和 setHeader() 方法一起使用来达到同样的效果：
+
+```java
+String site = "http://www.runoob.com" ;
+response.setStatus(response.SC_MOVED_TEMPORARILY);
+response.setHeader("Location", site); 
+```
+
+### <font color=FF0000>Servlet 自动刷新页面</font>
+
+Java Servlet 提供了一个机制，使得网页会在给定的时间间隔自动刷新。
+
+刷新网页的最简单的方式是使用响应对象的方法 **setIntHeader()**。以下是这种方法的定义：
+
+```java
+public void setIntHeader(String header, int headerValue)
+```
+
+此方法把头信息 "Refresh" 连同一个表示时间间隔的整数值（以秒为单位）发送回浏览器。
+
+以上关于Servlet的内容摘自：[RUNOOB - Servlet 教程](https://www.runoob.com/servlet/servlet-tutorial.html)
 
 
 
@@ -362,11 +837,23 @@ POJO类的作用是方便程序员使用数据库中的数据表，对于程序�
 
 **只使用session的痛点**：<font color=FF0000>Session 的致命弱点是不容易在多台服务器之间共享</font>，所以这也限制了 Session 的使用。这就需要用cookie
 
-**<font color=FF0000>Cookie</font> 通过<font color=FF0000>在客户端记录</font>信息<font color=FF0000>确定用户身份</font>**，**<font color=FF0000>Session</font> 通过<font color=FF0000>在服务器端记录</font>信息<font color=FF0000>确定用户身份</font>**。
+#### <mark style=background-color:aqua>**<font color=FF0000>Cookie</font> 通过<font color=FF0000>在客户端记录</font>信息<font color=FF0000>确定用户身份</font>**，**<font color=FF0000>Session</font> 通过<font color=FF0000>在服务器端记录</font>信息<font color=FF0000>确定用户身份</font>**。</mark>
 
 session 的运行依赖 session id，而 <font color=FF0000>session id 是存在 cookie 中的</font>，也就是说，如果浏览器禁用了 cookie ，同时 session 也会失效（但是可以通过其它方式实现，比如在 url 中传递 session_id）
 
 **<mark style=background-color:aqua><font color=FF0000>如果客户端的浏览器禁用了 Cookie 怎么办？</font></mark>**一般这种情况下，会使用一种叫做<font color=FF0000>URL重写</font>的技术来<font color=FF0000>进行会话跟踪</font>，即每次HTTP交互，<font color=FF0000>URL后面都会被附加上一个诸如 sid=xxxxx 这样的参数，服务端据此来识别用户</font>。
+
+#### **补充：cookie的重要属性**
+
+| 属性       | 说明                                                         |
+| ---------- | ------------------------------------------------------------ |
+| name=value | 键值对，设置Cookie的名称及相对应的值，都必须是字符串类型<br/>如果值为Unicode字符，需要为字符编码。<br/>如果值为1 -进制数据，则需要使用BASE64编码。 |
+| domain     | 指定cookie所属域名,默认是当前域名                            |
+| path       | 指定cookie在哪个路径(路由)下生效， 默认是''/'。<br/>如果设置为/abc ，则只有/abc 下的路由可以访问到该cookie,如: /abc/read |
+| maxAge     | cookie失效的时间，单位秒。如果为整数，则该cookie在maxAge秒后失效。如果为负数，该cookie为临时cookie，关闭浏览器即失效，浏览器也不会以任何形式保存该cookie。如果为0,表示删除该cookie。 默认为-1。另外，这个方法比expires好用。 |
+| expires    | 过期时间，在设置的某个时间点后该cookie就会失效。<br/>一般浏览器的cookie都是默认储存的，当关闭浏览器结束这个会话的时候，这个cookie也就会被删除 |
+| secure     | 该cookie是否仅被使用安全协议传输。安全协议有HTTPS, SSL等，在网络上传输数据之前先将数据加密。默认为false。<br/>当secure值为true时，cookie 在HTTP中是无效，在HTTPS中才有效。 |
+| httpOnly   | 如果给某个cookie设置了httpOnly属性,则无法通过JS脚本读取到该cookie的信息，但还是能通过Application中手动修改cookie,所以只是在-定程度上可以防止XSS攻击，不是绝对的安全 |
 
 
 
