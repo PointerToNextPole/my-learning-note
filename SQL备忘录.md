@@ -184,27 +184,27 @@ SELECT NOW() FROM table_name
 - <font color=FF0000>**内连接**</font> `inner join ... on ...` /  `join ... on ...`
   展现出来的是共同的数据
 
-```sql
-select m.Province,S.Name from member m inner join ShippingArea s on m.Province=s.ShippingAreaID
-```
+	```sql
+	select m.Province,S.Name from member m inner join ShippingArea s on m.Province=s.ShippingAreaID
+	```
 **相当于：<font color=FF0000>等值连接</font>**
 
-```sql
-select m.Province,S.Name from member m, ShippingArea s where m.Province=s.ShippingAreaID
-```
+	```sql
+	select m.Province,S.Name from member m, ShippingArea s where m.Province=s.ShippingAreaID
+	```
 - <font color=FF0000>**左连接（左外连接）**</font>  `left join ... on ...`
 将返回左表的所有行。如果左表的某行在右表中没有匹配行，则将为右表返回空值左连接：
-```sql
-select m.Province, S.Name from member m left join ShippingArea s on m.Province=s.ShippingAreaID
-```
+	```sql
+	select m.Province, S.Name from member m left join ShippingArea s on m.Province=s.ShippingAreaID
+	```
 <mark>**以左表为主表，右表没数据为null**</mark>
 - <font color=FF0000>**右连接（右外连接）**</font>`right join ... on ...`
 将返回右表的所有行。如果右表的某行在左表中没有匹配行，则将为左表返回空值：右表为主表，左表中没数据的为null**
 - <font color=FF0000>**全外连接**</font>  `full join ... on ...`
 <mark>**完整外部联接返回左表和右表中的所有行。当某行在另一个表中没有匹配行时，则另一个表的选择列表列包含空值。**</mark>如果表之间有匹配行，则整个结果集行包含基表的数据值。
-```sql
-select m.Province,S.Name from member m full join ShippingArea s on m.Province=s.ShippingAreaID
-```
+	```sql
+	select m.Province,S.Name from member m full join ShippingArea s on m.Province=s.ShippingAreaID
+	```
 - <font color=FF0000>**自然连接**</font> `natural join`
 
   自然连接(Natural join)是一种特殊的等值连接，<font color=FF0000>不用指定连接列，也不能使用ON语句</font>。它<font color=FF0000>要求两个关系中进行比较的分量<font color=FF0000>必须是相同的属性组</font>，**并且在结果中把重复的属性列去掉</font>**。而等值连接并不去掉重复的属性列。
@@ -373,82 +373,77 @@ create table tbl_name(
 
 - **AVG**  返回指定组中的平均值，空值被忽略。
 
-```sql
-select  prd_no, avg(qty) from sales group by prd_no
-```
+  ```sql
+  select  prd_no, avg(qty) from sales group by prd_no
+  ```
 
 - **COUNT**  返回指定组中项目的数量。
-```sql
-      select  count(prd_no) from sales 
-```
+	```sql
+	select  count(prd_no) from sales 
+	```
 
 - **MAX**  返回指定数据的最大值。
-      
-```sql
-      select  prd_no, max(qty) from sales group by prd_no 
-```
+	```sql
+	select  prd_no, max(qty) from sales group by prd_no 
+	```
 
 - **MIN**  返回指定数据的最小值。
-      
-```sql
-      select  prd_no, min(qty) from sales group by prd_no
-```
+	```sql
+	select  prd_no, min(qty) from sales group by prd_no
+	```
 
 - **SUM**  返回指定数据的和，只能用于数字列，空值被忽略。
-      
-```sql
-      select  prd_no, sum(qty) from sales group by prd_no
-```
+	```sql
+	select  prd_no, sum(qty) from sales group by prd_no
+	```
 
 - **COUNT_BIG**  返回指定组中的项目数量，与COUNT函数不同的是COUNT_BIG返回bigint值，而COUNT返回的是int值。
-  
-```sql
-     select  count_big(prd_no) from sales
-```
+	```sql
+	select  count_big(prd_no) from sales
+	```
 
 - **GROUPING**  产生一个附加的列，当用CUBE或ROLLUP运算符添加行时，输出值为1.当所添加的行不是由CUBE或ROLLUP产生时，输出值为0.
-  
-```sql
-     select  prd_no,sum(qty),grouping(prd_no) from sales group by prd_no with rollup
-```
+	```sql
+	select  prd_no,sum(qty),grouping(prd_no) from sales group by prd_no with rollup
+	```
 
 - **BINARY_CHECKSUM**  返回对表中的行或表达式列表计算的二进制校验值，用于检测表中行的更改。
-  
-```sql
-     select  prd_no, binary_checksum(qty) from sales group by prd_no
-```
+	```sql
+	select  prd_no, binary_checksum(qty) from sales group by prd_no
+	```
 
 - **CHECKSUM_AGG**  返回指定数据的校验值，空值被忽略。
-
+  
      ```sql
      select  prd_no, checksum_agg(binary_checksum(*)) from sales group by prd_no
      ```
-
+```
+     
 - **CHECKSUM**  返回在表的行上或在表达式列表上计算的校验值，用于生成哈希索引。
 
 - **STDEV**  返回给定表达式中所有值的统计标准偏差。
 
      ```sql
-     select  stdev(prd_no) from sales
-     ```
+     select stdev(prd_no) from sales
+```
 
 - **STDEVP**  返回给定表达式中的所有值的填充统计标准偏差。
 
   ```sql
-  select  stdevp(prd_no) from sales
+  select stdevp(prd_no) from sales
   ```
 
 - **VAR**  返回给定表达式中所有值的统计方差。
 
   ```sql
-  select  var(prd_no) from sales
+  select var(prd_no) from sales
   ```
 
 - **VARP**  返回给定表达式中所有值的填充的统计方差。
 
-      ```sql
-   select  varp(prd_no) from sales
-      ```
+  ```sql
+  select varp(prd_no) from sales
+  ```
 
 以上节选自博文：[**sql中的聚合函数**](https://blog.csdn.net/qq_39209045/article/details/81093734)
 
