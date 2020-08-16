@@ -942,6 +942,44 @@ public void setIntHeader(String header, int headerValue)
 
 
 
+### <font color=FF0000>HTTP</font>
+
+**用户单击鼠标后所发生的事件按顺序如下（以访问清华大学的网站为例）:**
+
+1. 浏览器分析链接指向页面的URL（http://www.tsinghua.edu.cn/chn/index.htm）。
+
+2. 浏览器向DNS请求解析www.tsinghua.edu.cn的IP地址。
+
+3. 域名系统DNS解析出清华大学服务器的IP地址。
+
+4. 浏览器与该服务器建立TCP连接（默认端口号为80）。
+
+5. 浏览器发出HTTP请求: GET /chn/index.htm。
+
+6. 服务器通过HTTP响应把文件index.htm发送给浏览器。
+
+7. TCP连接释放。
+
+8. 浏览器解释文件index.htm， 并将Web页显示给用户 。
+
+**常见应用层协议小结**
+
+|  应用程序   | 使用协议 | 熟知端口号 |
+| :---------: | :------: | :--------: |
+| FTP数据连接 |   TCP    |     20     |
+| FTP控制连接 |   TCP    |     21     |
+|   TELNET    |   TCP    |     23     |
+|    SMTP     |   TCP    |     25     |
+|     DNS     |   UDP    |     53     |
+|    TFTP     |   UDP    |     69     |
+|    HTTP     |   TCP    |     80     |
+|    POP3     |   TCP    |    110     |
+|    SNMP     |   UDP    |    161     |
+
+摘自：《王道计算机网络》
+
+
+
 ### <font color=FF0000>双向绑定</font>
 
 <font color=FF0000>单向绑定</font>就是把Model绑定到View，当我们用JavaScript代码更新Model时，View就会自动更新。
