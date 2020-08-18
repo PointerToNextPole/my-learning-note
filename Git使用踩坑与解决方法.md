@@ -341,3 +341,19 @@ git push 默认推送到master。
 
 摘自：[segmentfault Salamander的回答 -- git pull和git merge 区别? ](https://segmentfault.com/q/1010000009076820)
 
+
+
+//TODO
+
+```sh
+# 创建一个新的分支branchName
+git checkout -b branchName
+```
+
+```sh
+#push到branchName的分支下
+git push --set-upstream origin branchName
+```
+
+
+

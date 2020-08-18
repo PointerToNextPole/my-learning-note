@@ -787,7 +787,3 @@ lengthn=${#array_name[n]}
   ⌘+⌥+e,并且可以搜索
 
 以上摘自：[iTerm 2 常用快捷键](https://www.cnblogs.com/ckmiao/p/6279195.html)
-
-
-
-[进程名]: 
