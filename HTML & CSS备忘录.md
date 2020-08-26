@@ -1747,3 +1747,136 @@ HTML5 的 `<picture>` 元素<font color=FF0000>可以设置多张图片</font>�
 
 摘自：[runoob - CSS 选择器](https://www.runoob.com/cssref/css-selectors.html)
 
+
+
+***
+
+
+
+## Less
+
+#### **less的特点：**
+
+- 变量：就像写其他语言一样，免于多处修改。
+- 混合：class 之间的轻松引入和继承。
+- 嵌套：选择器之间的嵌套使你的 less 非常简洁。
+- 函数&运算：就像 js 一样，对 less 变量的操控更灵活。
+
+摘自：[浅谈css预处理器，Sass、Less和Stylus](https://zhuanlan.zhihu.com/p/23382462)
+
+
+
+#### **注释**
+
+```less
+// 不会被编译到css文件中，相当于：给开发人员看的注释
+/* 会被编译到css文件中，相当于：给客户看的注释 */
+```
+
+
+
+#### **声明**
+
+- 声明变量，示例：
+
+  ```less
+  @color:pink; //声明变量
+  background: @color; //使用声明的变量
+  ```
+
+- 声明属性（比如margin），示例：
+
+  ```less
+  @m:margin; //声明属性
+  @{m}: 0;     //使用声明的属性
+  ```
+
+- 声明选择器，示例：
+
+  ```less
+  @selector: #wrap;  //声明选择器
+  @{selector}{       //使用声明的选择器
+    //...
+  }
+  ```
+
+- 类似的还有URL，同样使用`@{url}`
+
+
+
+#### 延迟加载
+
+如果定义变量两次，将搜索并使用当前范围内变量的上一次定义。此方法类似于CSS本身，<font color=FF0000>其中值是从定义中的最后一个属性提取的</font>。
+
+摘自：[Less 变量延迟加载范围](https://www.w3cschool.cn/less/less_lazy_loading_scope.html)
+
+**原因：**会等到less中的所有文本都被“读完”，然后再将less中的变量替换成css
+
+
+
+#### less中的&
+
+内层选择器前面的 & 符号就表示<font color=FF0000>对父选择器的引用</font>。
+
+在一个内层选择器的前面，如果<mark>没有 & 符号，则它<font color=FF0000>被解析为父选择器的后代</font></mark>；如果<mark>有 & 符号，它就<font color=FF0000>被解析为父元素自身或父元素的伪类</font></mark>。同时用在选择器中的&还可以反转嵌套的顺序并且可以应用到多个类名上
+
+摘自：[less 的 & 详解](https://www.jianshu.com/p/127b0974cfc3)
+
+
+
+#### less的混合
+
+混合就是将一系列属性从一个规则集引入另一个规则集的方式
+
+1. 普通混合
+2. 不带输出的混合
+3. 带参数的混合
+4. 带参数并且有默认值的混合
+5. 带多个参数的混合
+6. 命名参数
+7. 匹配模式
+8. arguments变量
+
+
+
+#### less计算
+
+不同于css，less中是可以进行表达式计算的
+
+示例：
+
+```less
+#wrap .foo{
+  width: (100 + 100px);
+}
+```
+
+另外，由示例发现：less的表达式只需其中一方带单位即可
+
+
+
+#### less继承
+
+
+
+#### less避免编译
+
+```less
+~"foo"
+```
+
+
+
+***
+
+
+
+## Sass
+
+**Sass 与 Scss的区别**
+
+SCSS 语法使用 `.scss` 文件扩展名。<mark>除了极少部分的例外， 它是 CSS 的超集</mark>，也就是说 **所有有效的 CSS 也同样都是有效的 SCSS** 。 由于其与 CSS 的相似性，它是最容易上手的语法， 也是最流行的语法。
+
+<mark>缩进语法（类似于Python的缩进）</mark>是 Sass 的原始语法，因此它使用文件 扩展名 `.sass` 。由于这个扩展名的原因，这种语法有时直接被称为 “Sass"。 <font color=FF0000>缩进语法支持与 SCSS 相同的所有特性，但是它使用 缩进而不是花括号和分号来描述文档的格式</font>。
+
+摘自：https://sass.bootcss.com/documentation/syntax
