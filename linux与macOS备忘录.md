@@ -76,8 +76,8 @@
 
 **⌘ + ␣ **
 
-- 短按：spotlight
-- 长按：呼出 / 关闭 Siri
+- **短按：**spotlight
+- **长按：**呼出 / 关闭 Siri
 
 
 
@@ -99,6 +99,14 @@ cd `brew --prefix go`
 #方法二
 cd $(brew --prefix go)
 ```
+
+**创建文件夹并进入该文件夹**
+
+```sh
+mkdir folder-name && cd $_
+```
+
+这里的 `&&` 和 `$_`下面都有解释。
 
 **类似的：`open`命令**
 
@@ -191,7 +199,124 @@ rm -rf folderName # -r表示递归，-f表示强行删除
 
 `|`**的用法：**这个特殊的`|`字符告诉命令行解释器（Shell）**<font color=FF0000>将前一个命令的输出通过“管道”导入到接下来的一行命令作为输入</font>**。
 
-摘自：[维基百科 - 管道 (Unix)]([https://zh.wikipedia.org/wiki/%E7%AE%A1%E9%81%93_(Unix)](https://zh.wikipedia.org/wiki/管道_(Unix)))
+摘自：[维基百科 - 管道 (Unix)]([https://zh.wikipedia.org/wiki/%E7%AE%A1%E9%81%93_(Unix)](https://zh.wikipedia.org/wiki/管道_(Unix))
+
+
+
+#### `&`, `;` `&&` ,  `||`, `()`, `{}`
+
+- **&** 命令<font color=FF0000>**同时**执行</font>
+
+  ```sh
+  command1 & command2 & command3   
+  ```
+
+-  **;**   <font color=FF0000>**不管**前面命令执行成功没有，后面的命令**继续执行**</font>
+
+   ```sh
+   command1; command2; command3
+   ```
+
+-  **&&** <font color=FF0000>**只有**前面命令执行成功，后面命令**才继续执行**</font>
+
+   ```sh
+   command1 && command2 [&& command3 ...]
+   ```
+
+   - 命令之间使用 && 连接，实现逻辑与的功能。
+
+   - 只有在 && 左边的命令返回真（命令返回值 $? == 0），&& 右边的命令才会被执行。
+
+   - 只要有一个命令返回假（命令返回值 $? == 1），后面的命令就不会被执行。
+
+- **||**  如果<font color=FF0000>前面的命令**没有执行成功**</font>，<font color=FF0000>后面的命令**就开始执行**</font>
+
+  ```sh
+  command1 || command2 [|| command3 ...]
+  ```
+
+  - 命令之间使用 || 连接，实现逻辑或的功能。
+
+  - 只有在 || 左边的命令返回假（命令返回值 $? == 1），|| 右边的命令才会被执行。这和 c 语言中的逻辑或语法功能相同，即实现短路逻辑或操作。
+
+  - 只要有一个命令返回真（命令返回值 $? == 0），后面的命令就不会被执行。
+
+- **()**  为了在当前shell中执行一组命令，可以用命令分隔符(即",")隔开每一个命令，并把所有的命令用圆括号()括起来。
+
+  ```sh
+  (command1; command2; command3 [; ...] )
+  ```
+
+  - 一条命令需要独占一个物理行，如果需要将多条命令放在同一行，命令之间使用命令分隔符`;`分隔。执行的效果等同于多个独立的命令单独执行的效果。
+- <font color=FF0000>`()` 表示在当前 shell 中**将多个命令作为一个整体执行**</font>。<mark>需要注意的是，使用 `()` 括起来的命令在执行前面都不会切换当前工作目录，也就是说命令组合都是在当前工作目录下被执行的，尽管命令中有切换目录的命令</mark>。
+  
+- 命令组合常和命令执行控制结合起来使用
+  
+- **{}**  如果使用`{}`来代替`()`，那么相应的命令将在子shell而不是当前shell中作为一个整体被执行，只有在{}中所有命令的输出作为一个整体被重定向时，其中的命令才被放到子shell中执行，否则在当前shell执行。
+
+  ```bash
+  { command1; command2; command3 [; ...] }
+  ```
+
+  <font color=FF0000>**注意：**在使用{}时，{}与命令之间必须使用一个空格</font>
+
+摘自：[Linux 命令行 &&与||](https://www.jianshu.com/p/25b0d6c9dc9f)
+
+**//todo**
+
+**花括号扩展（Brace expansion）**
+
+
+
+#### Shell特殊变量： $0, $#, $*, $@, $?, $$, $!, $_和命令行参数$n
+
+变量名只能包含数字、字母和下划线，因为<font color=FF0000>某些包含其他字符的变量有特殊含义，这样的变量被称为**特殊变量**</font>。
+
+- **$0 ：** <font color=FF0000>**获取**</font>当前执行<font color=FF0000>脚本的**文件名**包括**路径**</font>
+  
+  - **dirname $0 ：**  <font color=FF0000>只取</font>当前执行脚本的<font color=FF0000>路径</font>
+  - **basename $0 ：**  <font color=FF0000>只取</font>当前执行脚本<font color=FF0000>文件名</font>
+  
+- **$# ：**获取执行命令行(脚本)<font color=FF0000>参数的总个数</font>
+
+- **$@ ：** 获取这个执行程序的<font color=FF0000>所有参数</font>
+
+- **$* ：** 获取当前shell 的所有参数（注意与$@区别）
+
+- **$! ：** 获取<font color=FF0000>**上一个**执行命令的**PID**</font>
+
+- **$$ ：** 获取<font color=FF0000>**当前**shell的**PID**</font>
+
+- **$_ ：** 获取<font color=FF0000>在此**之前执行**的命令或者脚本的**最后一个参数**</font>
+
+- **$? ：** 获取<font color=FF0000>**上一个**命令的**退出状态**</font>
+
+  所谓<font color=FF0000>退出状态</font>，就是<font color=FF0000>上一个命令执行后的返回结果</font>。退出时**返回值的表示含义如下**：
+
+  - **0**： 表示运行成功
+  - **2** ：权限拒绝
+  - **1~125**： 表示运行失败，脚本命令、系统命令或者参数传递错误
+  - **126** ：找到了该命令，但是无法执行
+  - **127** ：未找到要运行的命令
+  - **128** ：命令被系统强制结束
+
+- **$n ：** <font color=FF0000>传递给脚本或函数的参数</font>。<mark>n 是一个数字，表示第几个参数。例如，第一个参数是$1，第二个参数是$2</mark>。
+
+**其中：$* 和 $@ 的区别**
+
+$* 和 $@ 都表示传递给函数或脚本的所有参数，不被双引号`" "`包含时，都以"$1" "$2" … "$n" 的形式输出所有参数。
+
+但是当它们被双引号" "包含时，<font color=FF0000>**"$*"** </font>会将<font color=FF0000>所有的参数作为一个整体</font>，以<font color=FF0000>"$1 $2 … $n"的形式输出所有参数</font>；<font color=FF0000>**"$@"** </font>会将<font color=FF0000>各个参数分开</font>，以<font color=FF0000>"$1" "$2" … "$n" 的形式输出所有参数</font>。
+
+摘自：[Shell特殊变量： $0, $#, $*, $@, $?, $$, $!, $_和命令行参数$n](https://blog.csdn.net/w746805370/article/details/51044352)
+
+**补充：!$**
+
+>  !$ refers to the last argument from the previous bash command.  	
+>
+> **翻译：!$表示：上一条bash命令的最后一个参数**
+
+摘自：[stack overflow - What does ./!$ mean in Linux?](https://stackoverflow.com/questions/38515790/what-does-mean-in-linux)
 
 
 

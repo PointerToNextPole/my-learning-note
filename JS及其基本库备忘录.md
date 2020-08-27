@@ -298,11 +298,41 @@ window.onload = funcRef;
 
 ## jQuery
 
+#### **jQuery 语法**
+
+jQuery 语法是通过选取 HTML 元素，并对选取的元素执行某些操作。
+
+基础语法：
+
+```js
+$(selector).action(){
+  //...
+}
+```
+
+- 美元符号定义 jQuery
+- 选择符（selector）"查询"和"查找" HTML 元素
+- jQuery 的 action() 执行对元素的操作
+
+**补充：**jQuery 使用的语法是 XPath 与 CSS 选择器语法的组合
+
+
+
+#### CSS选择器
+
+Query 选择器基于元素的 id、类（class）、类型、属性、属性值等"查找"（或选择）HTML 元素。 它基于已经存在的 [CSS 选择器](https://www.runoob.com/cssref/css-selectors.html)，除此之外，它还有一些自定义的选择器。
+
+
+
 //todo
 
 `.toggleClass()`
 
 `.data()`
+
+
+
+
 
 
 

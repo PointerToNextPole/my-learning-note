@@ -1353,6 +1353,56 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
 
 
 
+#### @import
+
+**@import**是CSS@规则，<font color=FF0000>用于从其他样式表导入样式规则</font>。这些规则必须先于所有其他类型的规则，@charset 规则除外： 因为它不是一个嵌套语句，@import不能在条件组的规则中使用。
+
+因此，<mark>用户代理可以避免为不支持的媒体类型检索资源，作者可以指定依赖媒体的@import规则</mark>。这些条件导入在URI之后指定逗号分隔的媒体查询。在没有任何媒体查询的情况下，导入是无条件的。指定所有的媒体具有相同的效果。
+
+**语法**
+
+```css
+@import url;
+@import url list-of-media-queries;
+```
+
+- **url：**<font color=FF0000>是一个表示要引入资源位置的 \<string> 或者 \<uri></font> 。 <mark>这个 URL 可以是绝对路径或者相对路径</mark>。 要注意的是这个 URL 不需要指明一个文件； 可以只指明包名，然后合适的文件会被自动选择 (e.g. chrome://communicator/skin/)。
+- **list-of-media-queries：**<font color=FF0000>是一个**逗号分隔**的 媒体查询 条件列表，决定通过URL引入的 CSS 规则 在什么条件下应用</font>。如果浏览器不支持列表中的任何一条媒体查询条件，就不会引入URL指明的CSS文件。
+
+摘自：[MDN - @import](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@import)
+
+
+
+#### !important
+
+`!important`主要用于<font color=FF0000>**提升**指定样式规则的**优先级**</font>。**示例：**
+
+```css
+div{
+		color:red!important;
+		color:blue;
+}
+```
+
+因为后面的blue会覆盖前面的red，结果应该显示蓝色字，但是<font color=FF0000>因为我们在red上加了**!important**，提升了red的优先级</font>，所以结果显示为红色字。
+
+同时：如果同一个样式，<font color=FF0000>**不是**定义在同一个大括号内，!important**也是可以正常发挥作用**的</font>。**示例如下：**
+
+```css
+div{
+		color:red!mportant;
+}
+div{
+		color:blue;
+}
+```
+
+<font color=FF0000>在所有的浏览器中都会显示**红色字**。</font>
+
+摘自：[css !important的使用](https://www.jianshu.com/p/3d1b4a58c3ef)
+
+
+
 ### CSS3 盒子模型
 
 <mark>弹性盒子</mark>是 CSS3 的<mark>一种新的布局模式</mark>。
@@ -1696,6 +1746,43 @@ HTML5 的 `<picture>` 元素<font color=FF0000>可以设置多张图片</font>�
 
 
 
+#### calc()方法
+
+alac() 此 CSS 函数允许在声明 CSS 属性值时执行一些计算。它可以用在如下场合：\<length>、\<frequency>, \<angle>、\<time>、\<percentage>、\<number>、 \<integer>。
+
+**语法：**
+
+```css
+property: calc(expression)
+```
+
+**示例：**
+
+```css
+width: calc(100% - 80px);
+```
+
+此 calc()函数用一个表达式作为它的参数，用这个表达式的结果作为值。<font color=FF0000>这个表达式可以是任何如下操作符的组合</font>，采用标准操作符处理法则的简单表达式。
+
+- **+**：加法。
+- **-** ：减法。
+- *****：乘法，乘数中至少有一个是\<number>
+- **/**：除法，除数（/右面的数）必须是\<number>
+
+表达式中的运算对象可以使用任意 \<length> 值。如果你愿意，你<font color=FF0000>可以在一个表达式中混用这类值的不同单位</font>。在需要时，你<font color=FF0000>还可以使用小括号来建立计算顺序</font>。
+
+**备注**
+
+- <font color=FF0000>**+ 和 - 运算符的两边必须要有空白字符**</font>。比如，`calc(50% -8px)` 会被解析成为一个无效的表达式，解析结果是：一个百分比 后跟一个负数长度值。而加有空白字符的、有效的表达式 `calc(8px + -50%)` 会被解析成为：一个长度 后跟一个加号 再跟一个负百分比。
+- <mark>***** 和 **/** 这两个运算符前后不需要空白字符，但如果考虑到统一性，仍然推荐加上空白符</mark>。
+- 用 0 作除数会使 HTML 解析器抛出异常。
+- 涉及自动布局和固定布局的表格中的表列、表列组、表行、表行组和表单元格的宽度和高度百分比的数学表达式，`auto` 可视为已指定。
+- `calc()` 函数支持嵌套，但支持的方式是：把被嵌套的 `calc()` 函数全当成普通的括号。（译者注：所以，函数内直接用括号就好了。）
+
+摘自：[MDN - calc()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/calc)
+
+
+
 #### 总结 / 文档：CSS 选择器
 
 | 选择器                                                       | 例子                  | 例子描述                                           | CSS  |
@@ -1763,6 +1850,42 @@ HTML5 的 `<picture>` 元素<font color=FF0000>可以设置多张图片</font>�
 - 函数&运算：就像 js 一样，对 less 变量的操控更灵活。
 
 摘自：[浅谈css预处理器，Sass、Less和Stylus](https://zhuanlan.zhihu.com/p/23382462)
+
+
+
+#### 将Less编译成css的方法
+
+- **使用node.js编译（推荐）**
+
+  ```sh
+  lessc compiled.less > output.css
+  ```
+
+- **浏览器使用**
+
+  在浏览器中使用Less.js是开始开发的最简单方法，而且使用较少的开发也很方便，但是在生产中，<mark>当性能和可靠性非常重要时，建议使用Node.js或许多可用的第三方工具之一进行预编译</mark>。
+
+  第一将你写的less样式表.通过link链进HTML并且将rel属性设置为stylesheet/less
+
+  ```html
+  <link rel="stylesheet/less" type="text/css" href="styles.less"/>
+  <!-- 下面这种写法也行，自行选择 -->
+  <link rel="stylesheet" type="text/less" href="styles.less"/>
+  ```
+
+  接下来下载[less.js](https://github.com/less/less.js/archive/master.zip)并将script标记在`head`元素中:
+
+  ```
+  <head>
+  <link rel="stylesheet" type="text/less" href="styles.less"/>
+  <script src="less.js" type="text/javascript"></script>
+  </head>
+  复制代码
+  ```
+
+- **3.下载koala软件编译less**
+
+以上摘自：[less的几种编译成css的方法](https://juejin.im/post/6844903891922845710)
 
 
 
@@ -1853,6 +1976,10 @@ HTML5 的 `<picture>` 元素<font color=FF0000>可以设置多张图片</font>�
 
 另外，由示例发现：less的表达式只需其中一方带单位即可
 
+**补充：**
+
+CSS出了一个calc()方法，不过只适合用于长度的计算。
+
 
 
 #### less继承
@@ -1880,3 +2007,24 @@ SCSS 语法使用 `.scss` 文件扩展名。<mark>除了极少部分的例外，
 <mark>缩进语法（类似于Python的缩进）</mark>是 Sass 的原始语法，因此它使用文件 扩展名 `.sass` 。由于这个扩展名的原因，这种语法有时直接被称为 “Sass"。 <font color=FF0000>缩进语法支持与 SCSS 相同的所有特性，但是它使用 缩进而不是花括号和分号来描述文档的格式</font>。
 
 摘自：https://sass.bootcss.com/documentation/syntax
+
+
+
+#### 将sass文件编译成css文件
+
+```sh
+sass compiled_file.sass:output_file.css
+```
+
+**使用sass自动监视sass文件的变化，<font color=FF0000>自动编译</font>（类似于热部署），避免每次都需要输入命令**
+
+```sh
+sass comiled_file_folder:output_folder
+```
+
+**输出css文件的样式**
+
+- **nested**：嵌套
+- **compact**：紧凑
+- **expanded**：扩展
+- **compressed**：压缩
