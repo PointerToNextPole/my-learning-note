@@ -2002,11 +2002,17 @@ CSS出了一个calc()方法，不过只适合用于长度的计算。
 
 **Sass 与 Scss的区别**
 
-SCSS 语法使用 `.scss` 文件扩展名。<mark>除了极少部分的例外， 它是 CSS 的超集</mark>，也就是说 **所有有效的 CSS 也同样都是有效的 SCSS** 。 由于其与 CSS 的相似性，它是最容易上手的语法， 也是最流行的语法。
+SCSS（Sassy CSS） 语法使用 `.scss` 文件扩展名。<mark>除了极少部分的例外， 它是 CSS 的超集</mark>，也就是说 **所有有效的 CSS 也同样都是有效的 SCSS** 。 由于其与 CSS 的相似性，它是最容易上手的语法， 也是最流行的语法。
 
 <mark>缩进语法（类似于Python的缩进）</mark>是 Sass 的原始语法，因此它使用文件 扩展名 `.sass` 。由于这个扩展名的原因，这种语法有时直接被称为 “Sass"。 <font color=FF0000>缩进语法支持与 SCSS 相同的所有特性，但是它使用 缩进而不是花括号和分号来描述文档的格式</font>。
 
 摘自：https://sass.bootcss.com/documentation/syntax
+
+**Scss和Sass<font color=FF0000>代码写法上</font>的区别，如图：**
+
+|                             Scss                             |                             Sass                             |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+| <img src="https://s1.ax1x.com/2020/08/27/d5iUIS.png" style="zoom:40%;" /> | <img src="https://s1.ax1x.com/2020/08/27/d5iIMR.png" style="zoom:48%;" /> |
 
 
 
@@ -2016,17 +2022,193 @@ SCSS 语法使用 `.scss` 文件扩展名。<mark>除了极少部分的例外，
 sass compiled_file.sass:output_file.css
 ```
 
-**使用sass自动监视sass文件的变化，<font color=FF0000>自动编译</font>（类似于热部署），避免每次都需要输入命令**
+**使用sass自动监视sass文件的变化，<font color=FF0000>自动编译</font>（类似于热部署），避免每次都需要输入命令，这时只需加上参数`--watch`即可**
 
 ```sh
-sass comiled_file_folder:output_folder
+sass --watch comiled_file_folder:output_folder
 ```
 
 
 
-**输出css文件的样式**
+#### **输出css文件的样式**
 
-- **nested**：嵌套
+- **nested**：嵌套<font color=FF0000>（默认）</font>
 - **compact**：紧凑
 - **expanded**：扩展
 - **compressed**：压缩
+
+**由上面的编译成css文件，结合输出文件的格式，于是有参数 `--style`，示例：**
+
+```sh
+sass --watch comiled_file_folder:output_folder --style compact
+```
+
+
+
+#### Scss变量
+
+```scss
+$attribute: value
+```
+
+示例：
+
+```scss
+$primary-color: #1269b5;
+```
+
+甚至可以在其他声明中使用变量，示例：
+
+```scss
+$primary-border: 1px solid $primary-color;
+```
+
+另外：在创建变量名时候，对于单词间连接，可以使用`-`，也可以使用`_`；但是最好做到风格统一
+
+
+
+#### 嵌套时调用父选择器
+
+使用`&`，将会引用父选择器。示例：
+
+- scss代码
+
+   ```scss
+    &:hover{
+    	background-color: #0d2f7e;
+    	color: #fff;
+    }
+   ```
+
+    编译css，结果：
+
+    ```css
+    .nav ul a:hover {
+      background-color: #0d2f7e;
+    	color: #fff;
+    }
+    ```
+
+- scss代码
+
+   ```scss
+     & &-text{
+       font-size: 15px;
+     }
+   ```
+
+    编译css，结果：
+
+   ```css
+   .nav .nav-test {
+     font-size: 15px;
+   }
+   ```
+
+
+
+#### 属性嵌套
+
+示例：
+
+- 原本：
+
+  ```scss
+  body{
+    body-family: Helvetica, Arial, sans-serif;
+    body-size: 15px;
+    body-weight: normal;
+  }
+  ```
+
+- 经过属性嵌套后：
+
+  ```scss
+  body{
+    font: {
+    	family: Helvetica, Arial, sans-serif;
+    	size: 15px;
+    	weight: normal;
+    }
+  }
+  ```
+
+**甚至：**
+
+- 原本：
+
+  ```scss
+  .nav{
+    border: 1px solid #000;
+    border-left: 0;
+    border-right: 0;
+  }
+  ```
+
+- 经过属性嵌套后：
+
+  ```scss
+  .nav{
+    border: 1px solid #000 {
+      left: 0;
+      right: 0;
+      }
+  }
+  ```
+
+  
+
+#### mixin
+
+<font color=FF0000>**定义**mixin</font>，语法：
+
+```scss
+@mixin mixin-name (para1, para2, ...){
+  //样式
+}
+```
+
+<font color=FF0000>**调用**mixin</font>，语法：
+
+```scss
+@include: mixin-name;
+```
+
+
+
+#### 继承 @extend
+
+示例：
+
+```scss
+.alert{
+  padding: 15px;
+}
+
+//alert-info继承.alert
+.alert-info { 
+	@extend: .alert;
+  background-color: #d9edf7;
+}
+```
+
+另外需要注意的是：<font color=FF0000>与父类相关的选择器中的样式，也会被子类继承下来</font>。示例：
+
+```scss
+.alert{
+  padding: 15px;
+}
+
+.alert a{
+  font-weight: bold;
+}
+
+#alert-info也会继承alert下面的a
+.alert-info { 
+	@extend: .alert;
+  background-color: #d9edf7;
+}
+```
+
+
+
