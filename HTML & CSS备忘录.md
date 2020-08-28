@@ -2045,6 +2045,14 @@ sass --watch comiled_file_folder:output_folder --style compact
 
 
 
+#### 启用sass命令行
+
+```sh
+sass -i
+```
+
+
+
 #### Scss变量
 
 ```scss
@@ -2211,4 +2219,347 @@ $primary-border: 1px solid $primary-color;
 ```
 
 
+
+#### @import
+
+CSS本身就有@import的功能，在一个css文件中，使用@import可以将其他的css文件包含进来。不过，每次使用@import，浏览器都会发出一次新的Http请求，下载被导入的css文件，这样的话会消耗服务器的资源。
+
+sass<font color=FF0000>扩展</font>了css的@import
+
+partial文件名以下划线开头（`_`），文件类型仍为scss，示例：`_base.scss`
+
+而在引入时，无需加上下划线，也不需要填写文件类型；示例：
+
+```scss
+@import "base";
+```
+
+
+
+#### comment
+
+jquery有三种注释：
+
+- **/*\*/** <mark>不会出现在compressed模式编译的css文件中</mark>
+- **//**     不会显示在编译后的css文件中
+- **/*! */** <font color=FF0000>强制输出的注释内容</font>
+
+
+
+#### Data Type
+
+```scss
+type-of(variable) //查看变量类型
+
+type-of(5)                //"number"
+type-of(5px) 							//"number"
+
+type-of(hello)  					//"string"
+type-of("hello") 					//"string"
+
+type-of(1px solid #000)   //"list"
+
+type-of(#ff0000)					//"color"
+type-of(red) 							//"color"
+type-of(rgb(255, 0, 0))   //"color"
+type-of(hsl(0, 100%, 50%))//"color"
+```
+
+
+
+#### number
+
+`8 / 2`结果是： `8/2`，原因是有类似用法：`font: 16px/1.8 serif`，如果想要得到的结果为数字，则要将表达式放入括号：`(8 / 2)`
+
+```scss
+5px + 5px     //10px
+5px - 2				//3px
+5px * 2 			//10px
+5px * 2px 		//10px*px
+(10px / 2px)  //5
+10px / 2px		//10px/2px
+10px / 2			//10px/2
+(10px / 2) 		//5px
+```
+
+
+
+#### 数字函数
+
+- **abs()** 绝对值
+- **round()**：四舍五入
+- **ceil()**：向上取整
+- **floor()**：向下取整
+- **percentage()**：转化为百分比
+
+- max()
+- min()
+
+
+
+#### 字符串
+
+sass中的字符串有两种，带引号和不带引号两种。
+
+其中带引号的，可以加上空格；不带引号的不能加上空格。
+
+- 带引号的字符串加上（+）不带引号的字符串返回带引号的字符串
+
+  ```scss
+  "hello" + world    //"helloworld"
+  ```
+
+- 不带引号的字符串加上（+）带引号的字符串返回不带引号的字符串
+
+  ```scss
+  hello + "world"     //helloworld
+  ```
+
+- 不带引号的字符串加上（+）不带引号的字符串返回不带引号的字符串
+
+  ```scss
+  hello + world				//helloworld
+  ```
+
+**另外：**
+
+```scss
+hello - world          //"hello-world"
+```
+
+```scss
+hello / world          //"hello/world"
+//之所以存在是因为，有意义
+```
+
+```scss
+hello * world					 将会报错：Error: Undefined operation "hello * world".
+//字符串的乘法没有意义，
+```
+
+
+
+#### 字符串函数
+
+- **to-upper-case()：**
+
+- **to-lower-case()：**
+- **str-length()：**得到字符串的长度
+
+- **str-index()：**获取字符串的位置，**示例：**
+
+  ```scss
+  str-index(str, sub_str)
+  ```
+
+- **str-insert()：**插入字符串，示例：
+
+  ```scss
+  str-insert(inserted_str, insert_str, insert_index)
+  ```
+
+
+
+#### 颜色函数
+
+- **RGB颜色函数**
+  - **[rgb($red,$green,$blue)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#rgb-instance_method)**：根据**红**、**绿**、**蓝**三个值创建一个颜色；
+  - **[rgba($red,$green,$blue,$alpha)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#rgba-instance_method)**：根据**红**、**绿**、**蓝**和**透明度**值创建一个颜色；
+  - **[red($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#red-instance_method)**：从一个颜色中获取其中**红色**值；
+  - **[green($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#green-instance_method)**：从一个颜色中获取其中**绿色**值；
+  - **[blue($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#blue-instance_method)**：从一个颜色中获取其中**蓝色**值；
+  - **[mix($color-1,$color-2,[$weight])](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#mix-instance_method)**：把两种颜色混合在一起。
+
+- **HSL颜色函数**
+  - **[hsl($hue,$saturation,$lightness)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#hsl-instance_method)**：通过色相（hue）、饱和度(saturation)和亮度（lightness）的值创建一个颜色；
+  - **[hsla($hue,$saturation,$lightness,$alpha)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#hsla-instance_method)**：通过色相（hue）、饱和度(saturation)、亮度（lightness）和透明（alpha）的值创建一个颜色；
+  - **[hue($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#hue-instance_method)**：从一个颜色中获取色相（hue）值；
+  - **[saturation($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#saturation-instance_method)**：从一个颜色中获取饱和度（saturation）值；
+  - **[lightness($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#lightness-instance_method)**：从一个颜色中获取亮度（lightness）值；
+  - **[adjust-hue($color,$degrees)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#adjust_hue-instance_method)**：通过改变一个颜色的色相值，创建一个新的颜色；
+  - **[lighten($color,$amount)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#lighten-instance_method)**：通过改变颜色的亮度值，让颜色变亮，创建一个新的颜色；
+  - **[darken($color,$amount)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#darken-instance_method)**：通过改变颜色的亮度值，让颜色变暗，创建一个新的颜色；
+  - **[saturate($color,$amount)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#saturate-instance_method)**：通过改变颜色的饱和度值，让颜色更饱和，从而创建一个新的颜色
+  - **[desaturate($color,$amount)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#desaturate-instance_method)**：通过改变颜色的饱和度值，让颜色更少的饱和，从而创建出一个新的颜色；
+  - **[grayscale($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#grayscale-instance_method)**：将一个颜色变成灰色，相当于`desaturate($color,100%)`;
+  - **[complement($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#complement-instance_method)**：返回一个补充色，相当于`adjust-hue($color,180deg)`;
+  - **[invert($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#invert-instance_method)**：反回一个反相色，红、绿、蓝色值倒过来，而透明度不变。
+
+- **Opacity函数**
+  - **[alpha($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#alpha-instance_method) /[opacity($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#opacity-instance_method)**：获取颜色透明度值；
+  - **[rgba($color, $alpha)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#rgba-instance_method)**：改变颜色的透明度值；
+  - **[opacify($color, $amount)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#opacify-instance_method) / [fade-in($color, $amount)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#fade_in-instance_method)**：使颜色<font color=FF0000>更不透明</font>；
+  - **[transparentize($color, $amount)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#transparentize-instance_method) / [fade-out($color, $amount)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#fade_out-instance_method)**：使颜色<font color=FF0000>更加透明</font>。
+
+摘自：[Sass中文网 - Sass基础——颜色函数](https://www.sass.hk/skill/sass25.html)
+
+
+
+#### 列表函数
+
+- **length($list)：**返回`$list`长度（如果不是list,返回1）
+- **nth($list,$index)：**返回`$list`中第`$index`列表项值（如果索引值不在列表范围内，将会报错）
+  - **nth(list, element)：**获取list中element的索引
+- **index($list,$value)：**返回`$value`在`$list`中的位置
+- **append($list,$value[,$separator])：**使用`$separator`分隔符将`$value`列表项添加到`$list`最后（如果没有显式指定`$separator`分隔符，会以当前分隔符分隔）
+- **join($list-1,$list-2[,$separator]):**使用`$separator`分隔符将`$list-2`附加到`$list-1`（如果没有显式指定分隔符，将对`$list-1`中的分隔符）
+- **zip(\*$lists):**将多个`$list`组合在一起成为一个多维列表。如果列表源长度并不是所有都相同，结果列表长度将以最短的一个为准
+- **reject($list,$value)：**这是Compass中的一个函数，将`$value`值从`$list`中删除
+- **compact(\*$args)：**Compass函数，返回一个删除非真值的新列表
+
+摘自：[Sass中文网 - 理解Sass的list](https://www.sass.hk/skill/sass31.html)
+
+
+
+#### Map
+
+- 定义：
+
+  ```scss
+  $map: (key1: value1, key2: value2[, key3: value3])
+  ```
+
+- 取值：
+
+  - 由key获取一个value
+
+      ```scss
+    map-get($map-name, map-key)
+    ```
+
+  - 获取全部的value
+
+    ```scss
+    map-values($map-name)
+    ```
+
+- 获取map的全部key，返回一个列表
+
+  ```scss
+  map-keys($map-name)
+  ```
+
+- 判断map中是否含有指定的key，返回true / false
+
+  ```scss
+  map-has-key($map-name, key-name)
+  ```
+
+- 合并map
+
+  ```scss
+  map-merge($map1, $map2)
+  ```
+
+- map移除一个键值对
+
+  ```scss
+  map-remove($map-name, key1[, key2])
+  ```
+
+
+
+####  Boolean
+
+包含 and or not运算符
+
+
+
+#### interpolation
+
+可以让我们将一个值<font color=FF0000>（变量）</font>插入到另一个值<font color=FF0000>（常量）</font>中，使用方式：
+
+```scss
+#{$variable}
+```
+
+**使用场景，示例：**
+
+- ```scss
+  $version: "0.0.1";
+  /*当前版本号是：#{$version}*/
+  ```
+
+- ```scss
+  $name: "info";
+  $attr: "border";
+  
+  .alert-#{$name}{
+    #{$attr}-color: #ccc;
+  }
+  ```
+
+
+
+#### @if
+
+**语法：**
+
+```scss
+@if condition {
+  /*todo*/
+}@else if condition {
+  /*todo*/
+}@else {
+  /*todo*/
+}
+```
+
+
+
+#### @for
+
+**语法：**
+
+```scss
+@for $var from <开始值> [through | to] <结束值> {
+  /*todo*/
+}
+```
+
+<font color=FF0000>**其中：through相当于`≤`，to相当于`<`**</font>
+
+
+
+#### @each
+
+@each用于循环list（类似于foreach），语法：
+
+```scss
+@each $var in $list{
+  /*todo*/
+}
+```
+
+
+
+#### @while
+
+语法：
+
+```scss
+@while condition {
+  /*todo*/
+}
+```
+
+
+
+#### 自定义函数
+
+语法：
+
+```scss
+@function func-name (param1, param2[, param3, ...]){
+  /*todo*/
+}
+```
+
+
+
+#### 警告与错误
+
+```scss
+@warn "warning info";
+```
 
