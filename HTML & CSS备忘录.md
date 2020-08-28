@@ -2222,11 +2222,11 @@ $primary-border: 1px solid $primary-color;
 
 #### @import
 
-CSS本身就有@import的功能，在一个css文件中，使用@import可以将其他的css文件包含进来。不过，每次使用@import，浏览器都会发出一次新的Http请求，下载被导入的css文件，这样的话会消耗服务器的资源。
+CSS本身就有@import的功能，在一个css文件中，使用@import可以将其他的css文件包含进来。不过，每次使用@import，浏览器都会发出一次新的Http请求，下载被导入的css文件，这样的话会消耗服务器的资源。sass<font color=FF0000>扩展</font>了css的@import
 
-sass<font color=FF0000>扩展</font>了css的@import
+SASS会以文件为单位进行编译，<font color=FF0000>如果不想某个scss文件单独编译，可以将其处理为partial文件，也即在文件名前加上一个下划线，比如`_base.css`</font>
 
-partial文件名以下划线开头（`_`），文件类型仍为scss，示例：`_base.scss`
+
 
 而在引入时，无需加上下划线，也不需要填写文件类型；示例：
 
