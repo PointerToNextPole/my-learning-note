@@ -393,7 +393,121 @@ throw出去的异常将会被catch会捕捉到，放（拼接）在catch的参�
 
 #### JavaScript 变量提升
 
+JavaScript 中，函数及变量的声明都将被提升到函数的最顶部。变量可以先使用后声明，也就是变量可以先使用再声明。这就是"hoisting(变量提升)"。
 
+变量提升：函数声明和变量声明总是会被解释器悄悄地被<font color=FF0000>"提升"</font>到方法体的最顶部（不是真的被提升，下面还有说明）。
+
+另外，要注意的是：<font color=FF0000>JavaScript **只有声明的变量会提升，初始化的不会**</font>。示例如下：
+
+```js
+var x = 5; // 初始化 x
+
+elem = document.getElementById("demo"); // 查找元素
+elem.innerHTML = x + " " + y;           // 显示 x 和 y
+
+var y = 7; // 初始化 y
+```
+
+结果为：x 为：5，y 为：undefined
+
+**由上现象可知：**对于大多数程序员来说并不知道 JavaScript 变量提升。如果程序员不能很好的理解变量提升，他们写的程序就容易出现一些问题。为了避免这些问题，通常我们在每个作用域开始前声明这些变量，这也是正常的 JavaScript 解析步骤，易于我们理解。
+
+
+
+#### JavaScript 严格模式(use strict)
+
+"use strict" 指令在 JavaScript 1.8.5 (ECMAScript5) 中新增。它不是一条语句，但是一个字面量表达式，在 JavaScript 旧版本中会被忽略。<mark>"use strict" 的目的是指定代码在严格条件下执行</mark>。
+
+**为什么使用严格模式:**
+
+- 消除Javascript语法的一些不合理、不严谨之处，减少一些怪异行为;
+
+- 消除代码运行的一些不安全之处，保证代码运行的安全；
+- 提高编译器效率，增加运行速度；
+- 为未来新版本的Javascript做好铺垫。
+
+"严格模式"体现了Javascript更合理、更安全、更严谨的发展方向，包括IE 10在内的主流浏览器，都已经支持它，许多大项目已经开始全面拥抱它。
+
+另一方面，同样的代码，在"严格模式"中，可能会有不一样的运行结果；一些在"正常模式"下可以运行的语句，在"严格模式"下将不能运行。掌握这些内容，有助于更细致深入地理解Javascript，让你变成一个更好的程序员。
+
+
+
+**严格模式的限制**
+
+- 不允许使用未声明的变量
+- 不允许删除变量或对象，或函数（使用delete）
+- 不允许变量重名
+- 不允许使用八进制
+- 不允许使用转义字符
+- 不允许对只读属性赋值
+- 不允许对一个使用getter方法读取的属性进行赋值
+- 不允许删除一个不允许删除的属性
+- 变量名不能使用 "eval" 字符串
+- 变量名不能使用 "eval" 字符串
+- 由于一些安全原因，在作用域 eval() 创建的变量不能被调用
+- 禁止this关键字指向全局对象
+
+限制的示例请看：[JavaScript 严格模式(use strict)](https://www.runoob.com/js/js-strict.html)
+
+**为了向将来Javascript的新版本过渡，严格模式新增了一些保留关键字：**
+
+- implements
+- interface
+- let
+- package
+- private
+- protected
+- public
+- static
+- yield
+
+
+
+#### JavaScript 使用误区
+
+```js
+var x = 10;
+var y = "10";
+if (x == y)
+```
+
+<font color=FF0000>结果：返回true</font>
+
+在严格的比较运算中，<font color=FF0000>=== 为恒等计算符，同时**检查表达式的值**与**类型**</font>，以下 if 条件语句返回 false：
+
+```js
+var x = 10;
+var y = "10";
+if (x === y)
+```
+
+**数组易错点：**
+
+- JavaScript 不支持使用名字来索引数组，只允许使用数字索引。
+
+- 在 JavaScript 中, **对象** 使用 **名字作为索引**。
+
+**Undefined 不是 Null**
+
+在 JavaScript 中, **null** 用于对象, **undefined** 用于变量，属性和方法。
+
+对象只有被定义才有可能为 null，否则为 undefined。
+
+**程序块作用域**
+
+在每个代码块中 JavaScript 不会创建一个新的作用域，<font color=FF0000>一般各个代码块的作用域都是全局的</font>。示例如下：
+
+```js
+// 以下代码的的变量 i 返回 10，而不是 undefined：
+for (var i = 0; i < 10; i++) {
+  // some code
+}
+return i;
+```
+
+
+
+#### **JavaScript 表单**
 
 
 
