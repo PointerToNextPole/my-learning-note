@@ -2,6 +2,401 @@
 
 
 
+## JavaScript
+
+#### JavaScript基础
+
+DOM (**D**ocument **O**bject **M**odel)（文档对象模型）是用于访问 HTML 元素的正式 W3C 标准。
+
+- 直接写入 HTML 输出流
+
+  ```js
+  document.write("<h1>这是一个标题</h1>");
+  ```
+
+- 改变 HTML 内容
+
+  ```js
+  x=document.getElementById("demo");  //查找元素
+  x.innerHTML="Hello JavaScript";    //改变内容
+  ```
+
+- 改变 HTML 图像
+
+  ```js
+  element=document.getElementById('myimage');
+  element.src="/images/pic_bulboff.gif";
+  ```
+
+- 改变 HTML 样式
+
+  ```js
+  x=document.getElementById("demo")  //找到元素 
+  x.style.color="#ff0000";           //改变样式
+  ```
+
+  
+
+#### js关键字
+
+|					 |						|						 |							|
+| -------- | ---------- | ---------- | ------------ |
+| abstract | else       | instanceof | super        |
+| boolean  | enum       | int        | switch       |
+| break    | export     | interface  | synchronized |
+| byte     | extends    | let        | this         |
+| case     | false      | long       | throw        |
+| catch    | final      | native     | throws       |
+| char     | finally    | new        | transient    |
+| class    | float      | null       | true         |
+| const    | for        | package    | try          |
+| continue | function   | private    | typeof       |
+| debugger | goto       | protected  | var          |
+| default  | if         | public     | void         |
+| delete   | implements | return     | volatile     |
+| do       | import     | short      | while        |
+| double   | in         | static     | with         |
+
+
+
+#### JavaScript 变量
+
+**js命名规则**
+
+- 变量<font color=FF0000>必须以字母开头</font>
+- 变量也能以 $ 和 _ 符号开头（不过我们不推荐这么做）
+- 变量名称<font color=FF0000>对大小写敏感</font>（y 和 Y 是不同的变量）
+
+
+
+#### JavaScript 数据类型
+
+- **<font color=FF0000>值类型(基本类型)</font>**：字符串（String）、数字(Number)、布尔(Boolean)、对空（Null）、未定义（Undefined）、Symbol（Symbol 是 ES6 引入了一种新的原始数据类型，表示独一无二的值。））
+
+- **<font color=FF0000>引用数据类型</font>**：对象(Object)、数组(Array)、函数(Function)。
+- 对象数据类型：Object、Date、Array
+- 2 个不包含任何值的数据类型：null、undefined
+
+**Undefined 和 Null**
+
+Undefined 这个值表示变量不含有值。
+
+可以通过将变量的值设置为 null 来清空变量。
+
+
+
+#### JavaScript 事件
+
+一些常见的HTML事件的列表:
+
+| 事件        | 描述                         |
+| :---------- | :--------------------------- |
+| onchange    | HTML 元素改变                |
+| onclick     | 用户点击 HTML 元素           |
+| onmouseover | 用户在一个HTML元素上移动鼠标 |
+| onmouseout  | 用户从一个HTML元素上移开鼠标 |
+| onkeydown   | 用户按下键盘按键             |
+| onload      | 浏览器已完成页面的加载       |
+
+更多事件列表: [JavaScript 参考手册 - HTML DOM 事件](https://www.runoob.com/jsref/dom-obj-event.html)。
+
+
+
+#### JavaScript 字符串
+
+**字符串中可以使用转义字符转义的特殊字符：**
+
+| 代码 |    输出     |
+| :--: | :---------: |
+|  \'  |   单引号    |
+|  \"  |   双引号    |
+|  \\  |   反斜杠    |
+|  \n  |    换行     |
+|  \r  |    回车     |
+|  \t  | tab(制表符) |
+|  \b  |   退格符    |
+|  \f  |   换页符    |
+
+<font color=FF0000>**字符串属性**</font>
+
+|                 属性                 |                             描述                             |
+| :----------------------------------: | :----------------------------------------------------------: |
+|             constructor              | 返回创建<font color=FF0000>字符串</font>属性的函数（下面有更多解释） |
+| <font color=FF0000>**length**</font> |                     **返回字符串的长度**                     |
+|            **prototype**             |                  允许您向对象添加属性和方法                  |
+
+**字符串方法**
+
+| 方法                | 描述                                                         |
+| :------------------ | :----------------------------------------------------------- |
+| charAt()            | 返回指定索引位置的字符                                       |
+| charCodeAt()        | 返回指定索引位置字符的 Unicode 值                            |
+| concat()            | 连接两个或多个字符串，返回连接后的字符串                     |
+| fromCharCode()      | 将 Unicode 转换为字符串                                      |
+| indexOf()           | 返回字符串中检索指定字符第一次出现的位置                     |
+| lastIndexOf()       | 返回字符串中检索指定字符最后一次出现的位置                   |
+| localeCompare()     | 用本地特定的顺序来比较两个字符串                             |
+| match()             | 找到一个或多个正则表达式的匹配                               |
+| replace()           | 替换与正则表达式匹配的子串                                   |
+| search()            | 检索与正则表达式相匹配的值                                   |
+| slice()             | 提取字符串的片断，并在新的字符串中返回被提取的部分           |
+| split()             | 把字符串分割为子字符串数组                                   |
+| substr()            | 从起始索引号提取字符串中指定数目的字符                       |
+| substring()         | 提取字符串中两个指定的索引号之间的字符                       |
+| toLocaleLowerCase() | 根据主机的语言环境把字符串转换为小写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
+| toLocaleUpperCase() | 根据主机的语言环境把字符串转换为大写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
+| toLowerCase()       | 把字符串转换为小写                                           |
+| toString()          | 返回字符串对象值                                             |
+| toUpperCase()       | 把字符串转换为大写                                           |
+| trim()              | 移除字符串首尾空白                                           |
+| valueOf()           | 返回某个字符串对象的原始值                                   |
+
+更多方法实例可以参见：[JavaScript String 对象](https://www.runoob.com/jsref/jsref-obj-string.html)。
+
+
+
+#### JavaScript 比较 和 逻辑运算符
+
+- **===** ：绝对等于（值和类型均相等）
+
+- **!==**： <font color=FF0000>不绝对等于</font>（<font color=FF0000>**值和类型有一个不相等，或两个都不相等**</font>）
+
+
+
+#### For 循环
+
+- 一般for循环
+
+- for-in循环，示例：
+
+  ```js
+  for(elem in elems){
+    //code
+  }
+  ```
+
+- foreach循环
+
+  //todo
+
+
+
+#### JavaScript typeof, null, 和 undefined
+
+可以使用 typeof 操作符来检测变量的数据类型。**实例**
+
+```js
+typeof "John"        // 返回 string
+typeof 3.14         // 返回 number
+typeof false         // 返回 boolean
+typeof [1,2,3,4]       // 返回 object，这里要注意：数组是一种特殊的对象类型。
+typeof {name:'John', age:34} // 返回 object
+```
+
+<font color=FF0000>**undefined 和 null 的区别**</font>
+
+```js
+typeof undefined             // undefined
+typeof null                  // object
+null === undefined           // false
+null == undefined            // true
+```
+
+更多类型
+
+```js
+typeof NaN                    // 返回 number
+typeof new Date()             // 返回 object
+typeof function () {}         // 返回 function
+typeof myCar                  // 返回 undefined (如果 myCar 没有声明)
+typeof null                   // 返回 object
+```
+
+
+
+#### JavaScript 类型转换
+
+**constructor 属性**：返回所有 JavaScript 变量的构造函数。
+
+```js
+"John".constructor                 // 返回函数 String()  { [native code] }
+(3.14).constructor                 // 返回函数 Number()  { [native code] }
+false.constructor                  // 返回函数 Boolean() { [native code] }
+[1,2,3,4].constructor              // 返回函数 Array()   { [native code] }
+{name:'John', age:34}.constructor  // 返回函数 Object()  { [native code] }
+new Date().constructor             // 返回函数 Date()    { [native code] }
+function () {}.constructor         // 返回函数 Function(){ [native code] }
+```
+
+**转换为字符串**
+
+- **<font color=FF0000>全局方法</font>** **String()** 可以将数字转换为字符串，<font color=FF0000>该方法（全局方法）可用于任何类型的数字，字母，变量，表达式</font>。示例：
+
+  ```js
+  String(x)         // 将变量 x 转换为字符串并返回
+  String(123)       // 将数字 123 转换为字符串并返回
+  String(100 + 23)  // 将数字表达式转换为字符串并返回
+  ```
+
+- Number / Boolean / Date 的方法 **toString()** 也是有同样的效果，示例：
+
+  ```js
+  x.toString()
+  (123).toString()
+  (100 + 23).toString()
+  ```
+
+- 更多数字转换为字符串的方法：
+
+  | 方法            | 描述                                                 |
+  | :-------------- | :--------------------------------------------------- |
+  | toExponential() | 把对象的值转换为指数计数法。                         |
+  | toFixed()       | 把数字转换为字符串，结果的小数点后有指定位数的数字。 |
+  | toPrecision()   | 把数字格式化为指定的长度。                           |
+
+- 关于日期转换为字符串的函数：
+
+  | 方法              | 描述                                        |
+  | :---------------- | :------------------------------------------ |
+  | getDate()         | 从 Date 对象返回一个月中的某一天 (1 ~ 31)。 |
+  | getDay()          | 从 Date 对象返回一周中的某一天 (0 ~ 6)。    |
+  | getFullYear()     | 从 Date 对象以四位数字返回年份。            |
+  | getHours()        | 返回 Date 对象的小时 (0 ~ 23)。             |
+  | getMilliseconds() | 返回 Date 对象的毫秒(0 ~ 999)。             |
+  | getMinutes()      | 返回 Date 对象的分钟 (0 ~ 59)。             |
+  | getMonth()        | 从 Date 对象返回月份 (0 ~ 11)。             |
+  | getSeconds()      | 返回 Date 对象的秒数 (0 ~ 59)。             |
+  | getTime()         | 返回 1970 年 1 月 1 日至今的毫秒数。        |
+
+  更多请参考：[Date 方法](https://www.runoob.com/jsref/jsref-obj-date.html) 
+
+**将字符串转换为数字**
+
+<font color=FF0000>**全局方法**</font> **Number()** 可以将字符串转换为数字。
+
+- 字符串包含数字(如 "3.14") 转换为数字 (如 3.14).
+
+- 空字符串转换为 0。
+
+- 其他的字符串会转换为 NaN (不是个数字)。
+
+示例如下：
+
+```js
+Number("3.14")    // 返回 3.14
+Number(" ")       // 返回 0
+Number("")        // 返回 0
+Number("99 88")   // 返回 NaN
+```
+
+在 [Number 方法](https://www.runoob.com/jsref/jsref-obj-number.html) 中，你可以查看到更多关于字符串转为数字的方法，比如：
+
+| 方法         | 描述                               |
+| :----------- | :--------------------------------- |
+| parseFloat() | 解析一个字符串，并返回一个浮点数。 |
+| parseInt()   | 解析一个字符串，并返回一个整数。   |
+
+**一元运算符 +**
+
+**Operator +** 可用于将变量转换为数字。示例： 
+
+```js
+var y = "5";   // y 是一个字符串
+var x = + y;   // x 是一个数字
+```
+
+<font color=FF0000>如果变量不能转换，它仍然会是一个数字，但值为 NaN</font> (不是一个数字)，示例：
+
+```js
+var y = "John";   // y 是一个字符串
+var x = + y;      // x 是一个数字 (NaN)
+```
+
+**将布尔值转换为数字**
+
+全局方法 **Number()** 可将布尔值转换为数字。
+
+```js
+Number(false)   // 返回 0
+Number(true)   // 返回 1
+```
+
+**将日期转换为数字**
+
+全局方法 **Number()** 可将日期转换为数字，示例：
+
+```js
+d = new Date();
+Number(d)     // 返回 1404568027739
+```
+
+日期方法 **getTime()** 也有相同的效果。
+
+```js
+d = new Date();
+d.getTime()    // 返回 1404568027739
+```
+
+
+
+#### JavaScript 正则表达式
+
+正则表达式语法：
+
+```
+/正则表达式主体/修饰符(可选)
+```
+
+示例：
+
+```js
+var patt = /runoob/i
+```
+
+- **/runoob/i** 是一个正则表达式。
+  - **runoob** 是一个**正则表达式主体** (用于检索)。
+  - **i** 是一个**修饰符** (搜索不区分大小写)。
+
+在 JavaScript 中，正则表达式通常用于两个字符串方法 : **search() 和 replace()**。
+
+- **search() 方法** 用于检索字符串中指定的子字符串，或检索与正则表达式相匹配的子字符串，并<font color=FF0000>返回子串的起始位置</font>。
+
+- **replace() 方法** 用于在字符串中用一些字符替换另一些字符，或替换一个与正则表达式匹配的子串。
+
+**正则表达式修饰符**
+
+**修饰符** 可以在全局搜索中不区分大小写:
+
+| 修饰符 | 描述                                                     |
+| :----- | :------------------------------------------------------- |
+| i      | 执行对大小写不敏感的匹配。                               |
+| g      | 执行全局匹配（查找所有匹配而非在找到第一个匹配后停止）。 |
+| m      | 执行多行匹配。                                           |
+
+**使用 RegExp 对象**
+
+在 JavaScript 中，RegExp 对象是一个预定义了属性和方法的正则表达式对象。
+
+- **test()** 方法<font color=FF0000>用于检测一个字符串是否匹配某个模式</font>，如果字符串中含有匹配的文本，则返回 true，否则返回 false。
+
+- **exec()** 方法是一个正则表达式方法。exec() 方法用于检索字符串中的正则表达式的匹配。
+
+  <font color=FF0000>该函数返回一个数组，其中存放匹配的结果</font>。<font color=FF0000>如果未找到匹配，则返回值为 null</font>。
+
+
+
+#### throw
+
+throw出去的异常将会被catch会捕捉到，放（拼接）在catch的参数中。
+
+
+
+#### JavaScript 变量提升
+
+
+
+
+
 #### onclick对元素绑定js方法
 
 ```html
@@ -295,6 +690,167 @@ window.onload = funcRef;
 ***
 
 
+
+
+
+***
+
+## AJAX
+
+AJAX（Asynchronous JavaScript and XML <font color=FF0000>异步的 JavaScript 和 XML</font>）是一种使用现有标准的新方法，用于创建快速动态网页的技术。
+
+AJAX 最大的优点是在<font color=FF0000>不重新加载整个页面的情况下，可以与服务器交换数据并更新部分网页内容</font>。即：<font color=FF0000>通过在后台与服务器进行少量数据交换，AJAX 可以使网页实现异步更新</font>；而传统的网页（不使用 AJAX）如果需要更新内容，必需重载整个网页面。
+
+**AJAX 工作原理**
+
+<img src="https://i.loli.net/2020/08/28/zmGg7KVBkWH5Zj2.png" style="zoom:85%;" />
+
+AJAX是基于现有的Internet标准，并且联合使用它们：
+
+- **XMLHttpRequest对象** (异步的与服务器交换数据)
+- **JavaScript / DOM** (信息显示/交互)
+- **CSS** (给数据定义样式)
+- **XML** (作为转换数据的格式)
+
+
+
+#### AJAX - XMLHttpRequest 对象
+
+**XMLHttpRequest 对象**：所有现代浏览器（IE7+、Firefox、Chrome、Safari 以及 Opera）均支持 XMLHttpRequest 对象（IE5 和 IE6 使用 ActiveXObject）。<font color=FF0000>XMLHttpRequest 用于在后台与服务器交换数据</font>。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。
+
+**创建 XMLHttpRequest 对象**
+
+**语法：**
+
+```js
+variable=new XMLHttpRequest();
+```
+
+老版本的 Internet Explorer （IE5 和 IE6）使用 ActiveX 对象：
+
+```js
+variable=new ActiveXObject("Microsoft.XMLHTTP");
+```
+
+为了应对所有的现代浏览器，包括 IE5 和 IE6，请<font color=FF0000>检查浏览器是否支持 XMLHttpRequest 对象</font>。如果支持，则创建 XMLHttpRequest 对象。如果不支持，则创建 ActiveXObject。代码示例如下：
+
+```js
+var xmlhttp;
+if (window.XMLHttpRequest) {    
+  //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+  xmlhttp=new XMLHttpRequest();
+} else {
+  // IE6, IE5 浏览器执行代码
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
+}
+```
+
+
+
+#### AJAX - 向服务器发送请求请求
+
+如需将请求发送到服务器，<font color=FF0000>使用 XMLHttpRequest 对象的 open() 和 send() 方法</font>：
+
+- **open(method, url, async)**：规定<font color=FF0000>请求的类型</font>、<font color=FF0000>URL</font> 以及<font color=FF0000>是否异步处理请求</font>。
+  - **method**：请求的类型；GET 或 POST
+  - **url**：文件在服务器上的位置
+  - **async**：<font color=FF0000>true（异步）</font>或 <font color=FF0000>false（同步）</font>
+- **send(string)**：将请求发送到服务器。
+  - **string**：<font color=FF0000>仅用于 POST 请求</font>
+
+**GET 还是 POST？**
+
+<font color=FF0000>与 POST 相比，GET 更简单也更快</font>，并且在大部分情况下都能用。
+
+然而，<font color=FF0000>在以下情况中，请使用 POST 请求</font>：
+
+- 无法使用缓存文件（更新服务器上的文件或数据库）
+- **向服务器发送大量数据**（<font color=FF0000>POST 没有数据量限制</font>）
+- <font color=FF0000>**发送包含未知字符的用户输入时**</font>，POST 比 GET 更稳定也更可靠
+
+**使用GET请求**
+
+通过 GET 方法发送信息，请向 URL 添加信息，可以使用？，示例：
+
+```js
+xmlhttp.open("GET","/try/ajax/demo_get2.php?fname=Henry&lname=Ford",true); 
+xmlhttp.send();
+```
+
+**使用POST请求**
+
+如果<font color=FF0000>需要像 HTML 表单那样 POST 数据，请**使用 setRequestHeader() 来添加 HTTP 头**</font>。然后在 send() 方法中规定您希望发送的数据。示例如下：
+
+```js
+xmlhttp.open("POST","/try/ajax/demo_post2.php",true); 
+xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded"); 
+xmlhttp.send("fname=Henry&lname=Ford");
+```
+
+setRequestHeader(header,value)：向请求添加 HTTP 头
+
+- header: 规定头的名称
+- value: 规定头的值
+
+**异步 - True 或 False？**
+
+XMLHttpRequest 对象如果要用于 AJAX 的话，其 open() 方法的 async 参数必须设置为 true：
+
+```js
+xmlhttp.open("GET","ajax_test.html",true);
+```
+
+<mark>对于 web 开发人员来说，发送异步请求是一个巨大的进步。很多在服务器执行的任务都相当费时。AJAX 出现之前，这可能会引起应用程序挂起或停止</mark>。**<font color=FF0000>通过 AJAX，JavaScript 无需等待服务器的响应</font>**，而是：
+
+- 在等待服务器响应时执行其他脚本
+- 当响应就绪后对响应进行处理
+
+<mark><font color=FF0000>不推荐使用</font> async=false，但是对于一些小型的请求，也是可以的。</mark>
+
+
+
+#### AJAX - 服务器 响应
+
+如<font color=FF0000>需获得来自服务器的响应</font>，<font color=FF0000>请使用 XMLHttpRequest 对象的 responseText 或 responseXML 属性</font>。
+
+- **response<font color=FF0000>Text</font>**：获得<font color=FF0000>字符串</font>形式的响应数据。
+
+  如果来自服务器的响应<font color=FF0000>并非 XML</font>，请<font color=FF0000>使用 responseText </font>属性。
+
+  responseText 属性返回字符串形式的响应，示例：
+
+  ```js
+  document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+  ```
+
+- **response<font color=FF0000>XML</font>**：获得 <font color=FF0000>XML</font> 形式的响应数据。
+
+  如果来自服务器的响应是 XML，而且需要作为 XML 对象进行解析，请使用 responseXML 属性
+
+
+
+#### AJAX - onreadystatechange 事件
+
+当请求被发送到服务器时，我们需要执行一些基于响应的任务。
+
+每当 readyState 改变时（readyState 属性存有 XMLHttpRequest 的状态信息），就会触发 onreadystatechange 事件。
+
+**XMLHttpRequest 对象的三个重要的属性：**
+
+- **onreadystatechange**：存储函数（或函数名），<font color=FF0000>**每当 readyState 属性改变时，就会调用该函数**</font>。另外，<font color=FF0000>onreadystatechange 事件被触发 4 次（0 - 4）, 分别是： 0-1、1-2、2-3、3-4，对应着 readyState 的每个变化。</font>
+- **readyState：**<font color=FF0000>**存有 XMLHttpRequest 的状态**</font>。从 0 到 4 发生变化。
+  - 0: 请求未初始化
+  - 1: 服务器连接已建立
+  - 2: 请求已接收
+  - 3: 请求处理中
+  - 4: 请求已完成，且响应已就绪
+- **status：**HTTP状态码
+  - 200: "OK"
+  - 404: 未找到页面
+
+总结：[AJAX 实例](https://www.runoob.com/ajax/ajax-examples.html)，其中包含许多场景的实例，对于实际使用有帮助。
+
+***
 
 ## jQuery
 
@@ -826,7 +1382,307 @@ jQuery 提供多个处理尺寸的重要方法：
 
 #### jQuery 遍历
 
-https://www.runoob.com/jquery/jquery-traversing.html
+jQuery 遍历，意为"移动"，用于根据其相对于其他元素的关系来"查找"（或选取）HTML 元素。以某项选择开始，并沿着这个选择移动，直到抵达您期望的元素为止。
+
+下图展示了一个家族树。通过 jQuery 遍历，您能够从被选（当前的）元素开始，轻松地在家族树中向上移动（祖先），向下移动（子孙），水平移动（同胞）。这种移动被称为<font color=FF0000>对 DOM 进行遍历</font>。
+
+其中DOM中祖先的说法，类似于数据结构中树的说法。
+
+
+
+#### jQuery 遍历 - 祖先
+
+jquery用于向上遍历 DOM 树的方法：
+
+- **parent()**：parent() 方法<font color=FF0000>返回被选元素的**直接**父元素</font>。该方法只会向上一级对 DOM 树进行遍历。**示例：**
+
+  ```js
+  //返回每个 \<span> 元素的直接父元素
+  $(document).ready(function(){  
+    $("span").parent(); 
+  });
+  ```
+
+- **parents()**：返回被选元素的<font color=FF0000>所有祖先元素</font>，它一路向上直到文档的根元素 (\<html>)。示例：
+
+  ```js
+  //返回所有<span> 元素的所有祖先
+  $(document).ready(function(){  
+    $("span").parents(); 
+  });
+  ```
+
+- **parentsUntil()**：parentsUntil() 方法返回<font color=FF0000>介于两个给定元素之间的所有祖先元素</font>。示例：
+
+  ```js
+  //返回介于 <span> 与 <div> 元素之间的所有祖先元素
+  $(document).ready(function(){
+    $("span").parentsUntil("div"); 
+  });
+  ```
+
+  
+
+#### jQuery 遍历 - 后代
+
+通过 jQuery，能够向下遍历 DOM 树，以查找元素的后代。下面是两个用于向下遍历 DOM 树的 jQuery 方法：
+
+- **children()**：返回被选元素的<mark style=background-color:silver><font color=FF0000>**所有**</font></mark> <mark style=background-color:aqua><font color=FF0000>**直接**</font></mark> <font color=FF0000>子元素</font>。该方法只会向下一级对 DOM 树进行遍历。**示例**
+
+  ```js
+  //返回每个 <div> 元素的所有直接子元素
+  $(document).ready(function(){  
+    $("div").children(); 
+  });
+  ```
+
+- **find()**：find() 方法<font color=FF0000>返回被选元素的后代元素</font>，一路向下<font color=FF0000>直到最后一个后代</font>。**示例**
+
+  ```js
+  //返回属于 <div> 后代的所有 <span> 元素
+  $(document).ready(function(){
+    $("div").find("span"); 
+  });
+  ```
+
+
+
+
+#### jQuery 遍历 - 同胞(siblings)
+
+
+同胞拥有相同的父元素。通过 jQuery，能够在 DOM 树中<font color=FF0000>遍历元素的同胞元素</font>。
+
+**在 DOM 树进行水平遍历的方法：**
+
+- **siblings()**：<font color=FF0000>返回被选元素的所有同胞元素</font>。示例：
+
+  ```js
+  //返回 <h2> 的所有同胞元素
+  $(document).ready(function(){  
+    $("h2").siblings(); 
+  });
+  ```
+
+  也可以<font color=FF0000>使用可选参数</font>来<font color=FF0000>过滤</font>对同胞元素的搜索
+
+  ```js
+  //返回属于 <h2> 的同胞元素的所有 <p> 元素
+  $(document).ready(function(){  
+    $("h2").siblings("p"); 
+  });
+  ```
+
+- **next()**：<font color=FF0000>返回被选元素的**下一个同胞元素**</font>。该方法<font color=FF0000>只返回一个元素</font>。示例：
+
+  ```js
+  //返回 <h2> 的下一个同胞元素
+  $(document).ready(function(){  
+    $("h2").next(); 
+  });
+  ```
+
+- **nextAll()**：返回<font color=FF0000>被选元素的所有跟随的同胞元素</font>（<mark>即被选元素<font color=FF0000>右边的</font>、<font color=FF0000>所有兄弟节点（**不包含兄弟节点的子节点**）</font></mark>）。示例：
+
+  ```js
+  //返回 <h2> 的所有跟随的同胞元素
+  $(document).ready(function(){  
+    $("h2").nextAll(); 
+  });
+  ```
+
+- **nextUntil()**：返回<font color=FF0000>介于两个给定参数之间（不包含边界的两个元素）的所有跟随的同胞元素</font>。示例：
+
+  ```js
+  //返回介于 <h2> 与 <h6> 元素之间的所有同胞元素
+  $(document).ready(function(){  
+    $("h2").nextUntil("h6"); 
+  });
+  ```
+
+- **prev()**：和next()类似，方向相反
+
+- **prevAll()**：和nextAll()类似，方向相反
+
+- **prevUntil()**：和nextUtil()类似，方向相反
+
+  
+
+#### jQuery 遍历- 过滤
+
+- 三个最基本的过滤方法是：**first(), last() 和 eq()**，它们允许您<font color=FF0000>基于其在一组元素中的位置来**选择一个特定的元素**</font>。
+  - **first()**：返回被选元素（被过滤返回的元素列表）的首个元素。示例：
+
+    ```js
+    //选取首个 <div> 元素内部的第一个 <p> 元素
+    $(document).ready(function(){  
+      $("div p").first(); 
+    });
+    ```
+
+  - **last()**：返回被选元素的最后一个元素。示例：
+
+    ```js
+    //选择最后一个 <div> 元素中的最后一个 <p> 元素
+    $(document).ready(function(){  
+      $("div p").last(); 
+    });
+    ```
+
+  - **eq()**：返回被选元素中<font color=FF0000>带有指定**索引号**的元素</font>。**<font color=FF0000>索引号从 0 开始</font>**，因此首个元素的索引号是 0 而不是 1。示例：
+
+    ```js
+    //选取第二个 <p> 元素（索引号 1）
+    $(document).ready(function(){  
+      $("p").eq(1); 
+    });
+    ```
+
+- 其他过滤方法，比如 **filter() 和 not()** 允许您<font color=FF0000>选取匹配或不匹配某项指定标准的元素</font>。
+
+  - **filter()**：允许<font color=FF0000>**自定义规定**一个标准，不匹配这个标准的元素会被从集合中删除，匹配的元素会被返回</font>。
+
+    ```js
+    //返回带有类名 "url" 的所有 <p> 元素
+    $(document).ready(function(){  
+      $("p").filter(".url"); 
+    });
+    ```
+
+  - **not()**：返回不匹配标准的所有元素。<font color=FF0000>**not() 方法与 filter() 相反**</font>。
+
+    ```js
+    //返回不带有类名 "url" 的所有 <p> 元素
+    $(document).ready(function(){  
+      $("p").not(".url"); 
+    });
+    ```
+
+
+
+#### AJAX
+
+AJAX = 异步 JavaScript 和 XML（Asynchronous JavaScript and XML）。
+
+- **jQuery load() **：load() 方法从服务器加载数据，并把返回的数据放入被选元素中。
+
+  **语法:**
+
+  ```js
+  $(selector).load(URL, data, callback);
+  ```
+
+  - **URL：**<font color=FF0000>必需</font>，规定您希望加载的 URL资源；也可以把 jQuery 选择器添加到 URL 参数。
+
+  - **data：**<font color=FF0000>可选</font>，<font color=FF0000>规定与请求一同发送的查询字符串键/值对集合</font>。
+
+  - **callback：**<font color=FF0000>可选</font>，是 load() 方法完成后所执行的函数名称。
+
+    回调函数可以设置不同的参数：
+
+    - **responseTxt** - 包含调用成功时的结果内容
+    - **statusTXT** - 包含调用的状态
+    - **xhr** - 包含 XMLHttpRequest 对象
+
+
+
+#### jQuery - AJAX get() 和 post() 方法
+
+jQuery get() 和 post() 方法用于通过 HTTP GET 或 POST 请求从服务器请求数据。
+
+- **GET** - 从指定的资源<font color=FF0000>**请求**</font>数据，基本上用于从服务器获得（取回）数据。另外，<font color=FF0000>GET 方法**可能返回**缓存数据</font>。
+
+  **jQuery $.get() 方法**：通过 HTTP GET 请求从服务器上请求数据。语法：
+
+  ```js
+  $.get(URL,callback);
+  ```
+
+  - **URL**：<font color=FF0000>必需</font>，参数规定您<font color=FF0000>希望请求的 URL</font>。
+  - **callback**：<font color=FF0000>可选</font>，参数是<font color=FF0000>**请求成功后**所执行的函数名</font>。
+
+- **POST** - 向指定的资源<font color=FF0000>**提交**</font>要处理的数据，可用于从服务器获取数据。不过，<font color=FF0000>POST 方法**不会缓存**数据</font>，并且<font color=FF0000>**常用于连同请求一起发送数据**</font>。
+
+  **jQuery $.post() 方法**：通过 HTTP POST 请求向服务器提交数据。**语法:**
+
+  ```js
+  $.post(URL,data,callback);
+  ```
+
+  - **URL**：<font color=FF0000>必需</font>，参数规定您希望请求的 URL。
+  - **data**：可选，参数规定<font color=FF0000>连同请求发送的数据</font>。
+  - **callback**：可选，参数是请求成功后所执行的函数名。
+
+
+
+#### jQuery - noConflict() 方法
+
+如果其他 JavaScript 框架也使用 $ 符号作为简写怎么办？
+
+其中某些框架也使用 $ 符号作为简写（就像 jQuery），如果您在用的两种不同的框架正在使用相同的简写符号，有可能导致脚本停止运行。<mark>jQuery 的团队考虑到了这个问题，并实现了 noConflict() 方法</mark>。示例如下：
+
+```js
+$.noConflict();
+jQuery(document).ready(function(){
+  jQuery("button").click(function(){
+    jQuery("p").text("jQuery 仍然在工作!");
+  });
+});
+```
+
+如果你的 jQuery 代码块使用 $ 简写，并且您不愿意改变这个快捷方式，那么您可以把 $ 符号作为变量传递给 ready 方法。这样就可以在函数内使用 $ 符号了 - 而在函数外，依旧不得不使用 "jQuery"
+
+示例如下：（注意functoin中的$）
+
+```js
+$.noConflict();
+jQuery(document).ready(function($){
+  $("button").click(function(){
+    $("p").text("jQuery 仍然在工作!");
+  });
+});
+```
+
+
+
+#### 总结
+
+```js
+$.ajax({name:value, name:value, ... })
+```
+
+该参数规定 AJAX 请求的一个或多个名称/值对。
+
+下面的表格中列出了可能的名称/值：
+
+| 名称                         | 值/描述                                                      |
+| :--------------------------- | :----------------------------------------------------------- |
+| async                        | 布尔值，表示请求是否异步处理。默认是 true。                  |
+| beforeSend(*xhr*)            | 发送请求前运行的函数。                                       |
+| cache                        | 布尔值，表示浏览器是否缓存被请求页面。默认是 true。          |
+| complete(*xhr,status*)       | 请求完成时运行的函数（在请求成功或失败之后均调用，即在 success 和 error 函数之后）。 |
+| contentType                  | 发送数据到服务器时所使用的内容类型。默认是："application/x-www-form-urlencoded"。 |
+| context                      | 为所有 AJAX 相关的回调函数规定 "this" 值。                   |
+| data                         | 规定要发送到服务器的数据。                                   |
+| dataFilter(*data*,*type*)    | 用于处理 XMLHttpRequest 原始响应数据的函数。                 |
+| dataType                     | 预期的服务器响应的数据类型。                                 |
+| error(*xhr,status,error*)    | 如果请求失败要运行的函数。                                   |
+| global                       | 布尔值，规定是否为请求触发全局 AJAX 事件处理程序。默认是 true。 |
+| ifModified                   | 布尔值，规定是否仅在最后一次请求以来响应发生改变时才请求成功。默认是 false。 |
+| jsonp                        | 在一个 jsonp 中重写回调函数的字符串。                        |
+| jsonpCallback                | 在一个 jsonp 中规定回调函数的名称。                          |
+| password                     | 规定在 HTTP 访问认证请求中使用的密码。                       |
+| processData                  | 布尔值，规定通过请求发送的数据是否转换为查询字符串。默认是 true。 |
+| scriptCharset                | 规定请求的字符集。                                           |
+| success(*result,status,xhr*) | 当请求成功时运行的函数。                                     |
+| timeout                      | 设置本地的请求超时时间（以毫秒计）。                         |
+| traditional                  | 布尔值，规定是否使用参数序列化的传统样式。                   |
+| type                         | 规定请求的类型（GET 或 POST）。                              |
+| url                          | 规定发送请求的 URL。默认是当前页面。                         |
+| username                     | 规定在 HTTP 访问认证请求中使用的用户名。                     |
+| xhr                          | 用于创建 XMLHttpRequest 对象的函数。                         |
+
+摘自：[jQuery ajax() 方法](https://www.runoob.com/jquery/ajax-ajax.html)
 
 
 

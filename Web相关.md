@@ -1153,3 +1153,15 @@ public void setIntHeader(String header, int headerValue)
 3. 属性型(Attribute)：属性型面包屑给出的当前页面的分类信息。
 
 摘自：[维基百科 - 面包屑导航]([https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%8C%85%E5%B1%91%E5%AF%BC%E8%88%AA](https://zh.wikipedia.org/wiki/面包屑导航))
+
+
+
+#### <font color=FF0000>浏览器对象模型（BOM）</font>
+
+浏览器对象模型(BOM)指的是<font color=FF0000>由Web浏览器暴露的所有对象组成的表示模型</font>。<font color=FF0000>BOM</font>与DOM不同，其<font color=FF0000>既没有标准的实现</font>，<font color=FF0000>也没有严格的定义, 所以浏览器厂商可以自由地实现BOM</font>。
+
+作为显示文档的窗口, 浏览器程序将其视为对象的分层集合。当浏览器分析文档时, 它将创建一个对象的集合, 以定义文档, 并详细说明它应如何显示。浏览器创建的对象称为文档对象。它是浏览器使用的更大的对象集合的一部分。此浏览器对象集合统称为浏览器对象模型或BOM。
+
+BOM层次结构的顶层是窗口对象, 它包含有关显示文档的窗口的信息。某些窗口对象本身就是描述文档和相关信息的对象。
+
+摘自：[维基百科 - 浏览器对象模型](https://zh.wikipedia.org/wiki/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B)
