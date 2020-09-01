@@ -887,6 +887,131 @@ javascript:void(func())
 
 
 
+#### JavaScript 异步编程
+
+异步（Asynchronous, async）是与同步（Synchronous, sync）相对的概念。
+
+在我们学习的传统单线程编程中，程序的运行是同步的（同步不意味着所有步骤同时运行，而是指<font color=FF0000>步骤在一个控制流序列中**按顺序执行**</font>）。而<font color=FF0000>异步的概念则是不保证同步的概念</font>，也就是说，一个<font color=FF0000>异步过程的执行将不再与原有的序列有顺序关系。</font>
+
+<mark>**简单来理解就是：同步按你的代码顺序执行，异步不按照代码顺序执行，异步的执行效果更高**</mark>
+
+JavaScript 中的<font color=FF0000>异步操作函数往往通过**回调函数**来实现异步任务的结果处理</font>。
+
+<font color=FF0000>回调函数</font>就是一个函数，它是在我们启动一个异步任务的时候就告诉它：等你完成了这个任务之后要干什么。这样一来主线程几乎不用关心异步任务的状态了，他自己会善始善终。
+
+示例：
+
+```js
+setTimeout(function () {
+    document.getElementById("demo").innerHTML="RUNOOB!";
+}, 3000);
+```
+
+这个函数执行之后会产生一个子线程，子线程会等待 3 秒，然后执行回调函数 "print"，在命令行输出 "RUNOOB!"。
+
+
+
+#### JavaScript Promise
+
+Promise 是一个 ECMAScript 6 提供的类，目的是更加优雅地书写复杂的异步任务。
+
+**构造 Promise**
+现在我们新建一个 Promise 对象：
+
+```js
+new Promise(function (resolve, reject) {
+    // code
+});
+```
+
+Promise 构造函数只有一个参数，是一个函数（即上面的function），这个函数在构造之后会直接被异步运行，所以我们称之为<font color=FF0000>起始函数</font>。起始函数<font color=FF0000>包含两个参数 resolve 和 reject</font>。其中，<font color=FF0000>resolve 和 reject 都是函数</font>，其中<font color=FF0000>调用 resolve 代表一切正常</font>，<font color=FF0000>reject 是出现异常时所调用的</font>
+
+Promise 类有 `.then()` ` .catch()` 和 `.finally()` 三个方法，<font color=FF0000>这三个方法的参数都是一个函数</font>
+
+- **.then()** ：可以将参数中的函数<font color=FF0000>添加到当前 Promise 的正常执行序列</font>
+
+- **.catch()** ：则是设定 Promise 的<font color=FF0000>异常处理序列</font>
+
+- **.finally()** ：是在 <font color=FF0000>Promise 执行的最后一定会执行的序列</font>
+
+示例：
+
+```js
+new Promise(function (resolve, reject) {
+    var a = 0;
+    var b = 1;
+    if (b == 0) reject("Diveide zero");
+    else resolve(a / b);
+}).then(function (value) {
+    console.log("a / b = " + value);
+}).catch(function (err) {
+    console.log(err);
+}).finally(function () {
+    console.log("End");
+});
+```
+
+**异步函数**
+
+异步函数（async function）是 <font color=FF0000>ECMAScript 2017</font> (ECMA-262) 标准的规范，几乎被所有浏览器所支持，除了 Internet Explorer。
+
+示例：
+
+```js
+async function asyncFunc() {
+    await print(1000, "First");
+    await print(4000, "Second");
+    await print(3000, "Third");
+}
+asyncFunc();
+```
+
+<font color=FF0000>异步函数 async function 中可以使用 await 指令，await 指令后必须跟着一个 Promise，异步函数会在这个 Promise 运行中暂停，直到其运行结束再继续运行</font>。
+
+示例：
+
+```js
+async function asyncFunc() {
+    let value = await new Promise(
+        function (resolve, reject) {
+            resolve("Return value");
+        }
+    );
+    console.log(value);
+}
+asyncFunc();
+```
+
+//todo 这里没有完全看懂，需要以后再了解....
+
+
+
+#### JavaScript 代码规范
+
+代码规范通常包括以下几个方面:
+
+- 变量和函数的命名规则
+  - 变量名推荐使用驼峰法来命名**camelCase**
+- 空格，缩进，注释的使用规则
+  - 通常运算符 ( = + - * / ) 前后需要添加空格
+  - 通常使用 4 个空格符号来缩进代码块
+- 其他常用规范
+  - 复杂语句的通用规则:
+    - 将左花括号放在第一行的结尾。
+    - <font color=FF0000>左花括号前添加一空格</font>
+    - <font color=FF0000>将右花括号独立放在一行</font>
+    - 不要以分号结束一个复杂的声明。
+  - 对象定义的规则
+    - 将左花括号与类名放在同一行。
+    - 冒号与属性值间有个空格。
+    - 字符串使用双引号，数字不需要。
+    - 最后一个属性-值对后面不要添加逗号。
+    - 将右花括号独立放在一行，并以分号作为结束符号。
+
+
+
+https://www.runoob.com/js/js-function-definition.html
+
 
 
 #### onclick对元素绑定js方法
