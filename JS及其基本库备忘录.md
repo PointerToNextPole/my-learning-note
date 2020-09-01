@@ -37,28 +37,6 @@ DOM (**D**ocument **O**bject **M**odel)（文档对象模型）是用于访问 H
 
   
 
-#### js关键字
-
-|					 |						|						 |							|
-| -------- | ---------- | ---------- | ------------ |
-| abstract | else       | instanceof | super        |
-| boolean  | enum       | int        | switch       |
-| break    | export     | interface  | synchronized |
-| byte     | extends    | let        | this         |
-| case     | false      | long       | throw        |
-| catch    | final      | native     | throws       |
-| char     | finally    | new        | transient    |
-| class    | float      | null       | true         |
-| const    | for        | package    | try          |
-| continue | function   | private    | typeof       |
-| debugger | goto       | protected  | var          |
-| default  | if         | public     | void         |
-| delete   | implements | return     | volatile     |
-| do       | import     | short      | while        |
-| double   | in         | static     | with         |
-
-
-
 #### JavaScript 变量
 
 **js命名规则**
@@ -167,7 +145,7 @@ Undefined 这个值表示变量不含有值。
 
 - 一般for循环
 
-- for-in循环，示例：
+- for-in循环，for-in 循环实际是为循环”enumerable“对象而设计的。示例：
 
   ```js
   for(elem in elems){
@@ -175,9 +153,49 @@ Undefined 这个值表示变量不含有值。
   }
   ```
 
-- foreach循环
+  <font color=FF0000>不推荐用 for-in 来循环一个**数组**，因为，不像对象，数组的`index`跟普通的对象属性不一样，是重要的数值序列指标</font>。
 
-  //todo
+- forEach循环（ JavaScript5 引入）
+
+  forEach() 方法用于调用<font color=FF0000>数组</font>的每个元素，并将元素传递给回调函数。
+  
+  **语法：**
+  
+  ```js
+  array.forEach(function(currentValue, index, arr), thisValue)
+  ```
+  
+  **参数：**
+  
+  - **function(currentValue, index, arr)**：<font color=FF0000>必需</font>。 数组中每个元素需要调用的函数。
+    - **currentValue**	必需。当前元素
+    - **index**	可选。当前元素的索引值。
+    - **arr**	可选。当前元素所属的数组对象。
+  - **thisValue**：<font color=FF0000>可选</font>。传递给函数的值一般用 "this" 值。
+  
+  **示例：**
+  
+  ```js
+  myArray.forEach(function (value) {
+    console.log(value);
+  });
+  ```
+  
+  写法简单了许多，但<mark>也有短处：你不能中断循环(使用`break`语句或使用`continue`语句。</mark>（但是支持return）
+  
+- for-of循环
+
+  ```js
+  for (var value of myArray) {
+    console.log(value);
+  }
+  ```
+
+  它既比传统的 for 循环简洁，同时弥补了 forEach 和 for-in 循环的短板。
+
+  //todo  for-of的具体使用参考下面的文章。
+
+摘自：[JavaScript里的循环方法：forEach，for-in，for-of](https://www.webhek.com/post/javascript-loop-foreach-for-in-for-of.html)
 
 
 
@@ -508,6 +526,366 @@ return i;
 
 
 #### **JavaScript 表单**
+
+HTML 表单验证可以通过 JavaScript 来完成。
+
+
+
+## HTML 约束验证
+
+HTML5 新增了 HTML 表单的验证方式：约束验证（constraint validation）。约束验证是表单被提交时浏览器用来实现验证的一种算法。
+
+**HTML 约束验证基于：**
+
+- **HTML 输入属性**
+
+  | 属性     | 描述                     |
+  | :------- | :----------------------- |
+  | disabled | 规定输入的元素不可用     |
+  | max      | 规定输入元素的最大值     |
+  | min      | 规定输入元素的最小值     |
+  | pattern  | 规定输入元素值的模式     |
+  | required | 规定输入元素字段是必需的 |
+  | type     | 规定输入元素的类型       |
+
+  完整列表，请查看 [HTML 输入属性](https://www.runoob.com/html/html5-form-attributes.html)。
+
+- **CSS 伪类选择器**
+
+  | 选择器    | 描述                                    |
+  | :-------- | :-------------------------------------- |
+  | :disabled | 选取属性为 "disabled" 属性的 input 元素 |
+  | :invalid  | 选取无效的 input 元素                   |
+  | :optional | 选择没有"required"属性的 input 元素     |
+  | :required | 选择有"required"属性的 input 元素       |
+  | :valid    | 选取有效值的 input 元素                 |
+
+  完整列表，请查看 [CSS 伪类](https://www.runoob.com/css/css-pseudo-classes.html)。
+
+- **DOM 属性和方法**
+
+
+
+#### JavaScript 验证 API
+
+示例：
+
+```html
+<p>输入数字并点击验证按钮:</p>
+<!-- 注意这里的type=“number” -->
+<input id="id1" type="number" min="100" max="300" required>
+<button onclick="myFunction()">验证</button>
+
+<p>如果输入的数字小于 100 或大于300，会提示错误信息。</p>
+
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+    var inpObj = document.getElementById("id1");
+    if (inpObj.checkValidity() == false) {
+        document.getElementById("demo").innerHTML = inpObj.validationMessage;
+    } else {
+        document.getElementById("demo").innerHTML = "输入正确";
+    }
+}
+</script>
+```
+
+**约束验证 DOM 方法**
+
+| Property            | Description                                                  |
+| :------------------ | :----------------------------------------------------------- |
+| checkValidity()     | 如果 input 元素中的数据是合法的返回 true，否则返回 false。   |
+| setCustomValidity() | 设置 input 元素的 validationMessage 属性，用于自定义错误提示信息的方法。使用 setCustomValidity 设置了自定义提示后，validity.customError 就会变成true，则 checkValidity 总是会返回false。如果要重新判断需要取消自定义提示，方式如下：<br>`setCustomValidity('')`<br>`setCustomValidity(null) `<br>`setCustomValidity(undefined)` |
+
+**约束验证 DOM 属性**
+
+| 属性              | 描述                                  |
+| :---------------- | :------------------------------------ |
+| validity          | 布尔属性值，返回 input 输入值是否合法 |
+| validationMessage | 浏览器错误提示信息                    |
+| willValidate      | 指定 input 是否需要验证               |
+
+**Validity 属性**
+
+input 元素的 **validity 属性**包含一系列关于 validity 数据属性:
+
+| 属性            | 描述                                                       |
+| :-------------- | :--------------------------------------------------------- |
+| customError     | 设置为 true, 如果设置了自定义的 validity 信息。            |
+| patternMismatch | 设置为 true, 如果元素的值不匹配它的模式属性。              |
+| rangeOverflow   | 设置为 true, 如果元素的值大于设置的最大值。                |
+| rangeUnderflow  | 设置为 true, 如果元素的值小于它的最小值。                  |
+| stepMismatch    | 设置为 true, 如果元素的值不是按照规定的 step 属性设置。    |
+| tooLong         | 设置为 true, 如果元素的值超过了 maxLength 属性设置的长度。 |
+| typeMismatch    | 设置为 true, 如果元素的值不是预期相匹配的类型。            |
+| valueMissing    | 设置为 true，如果元素 (required 属性) 没有值。             |
+| valid           | 设置为 true，如果元素的值是合法的。                        |
+
+
+
+#### JavaScript关键字
+
+## JavaScript 保留关键字
+
+Javascript 的保留关键字不可以用作变量、标签或者函数名。有些保留关键字是作为 Javascript 以后扩展使用。
+
+
+|					 |					 |						|						|							 |
+| -------- | --------- | ---------- | --------- | ------------ |
+| abstract | arguments | boolean    | break     | byte         |
+| case     | catch     | char       | class*    | const        |
+| continue | debugger  | default    | delete    | do           |
+| double   | else      | enum*      | eval      | export*      |
+| extends* | false     | final      | finally   | float        |
+| for      | function  | goto       | if        | implements   |
+| import*  | in        | instanceof | int       | interface    |
+| let      | long      | native     | new       | null         |
+| package  | private   | protected  | public    | return       |
+| short    | static    | super*     | switch    | synchronized |
+| this     | throw     | throws     | transient | true         |
+| try      | typeof    | var        | void      | volatile     |
+| while    | with      | yield      |           |              |
+
+
+
+#### JavaScript this关键字
+
+<font color=FF0000>JavaScript 中 this 不是固定不变的，它会随着执行环境的改变而改变</font>。
+
+- 在**对象方法**中，this 表示**该方法所属的对象**。
+- 如果**单独使用**，this 表示**全局对象**（在严格模式下也是这样）。
+- 在**函数**中，this 表示**全局对象**。
+- 在**函数**中，在**严格模式**下，**this 是未定义的**(undefined)。
+- 在**事件**中，this 表示**接收事件的元素**。
+- 类似 call() 和 apply() 方法可以将 this 引用到任何对象。
+
+
+
+#### JavaScript let
+
+ES2015(ES6) 新增加了两个重要的 JavaScript 关键字: **let** 和 **const**。
+
+- **let** 声明的变量只在 let 命令所在的代码块内有效。
+
+- **const** 声明一个只读的常量，一旦声明，常量的值就不能改变。
+
+而在 ES6 之前，JavaScript 只有两种作用域： **全局变量** 与 **函数内的局部变量**。需要注意的是：
+
+```js
+function myFunction() {
+    var carName = "Volvo";   // 局部作用域
+}
+```
+
+这里的carName<font color=FF0000>**确实是**局部变量</font>，且是**函数内的局部变量**
+
+**全局变量**
+
+在函数体外或代码块外使用 **var** 和 **let** 关键字声明的变量也有点类似。它们的作用域都是 **全局的**:
+
+```js
+var x = 2;       // 全局作用域
+let x = 2;       // 全局作用域
+```
+
+**HTML 代码中使用全局变量**
+
+在 JavaScript 中, 全局作用域是针对 JavaScript 环境。<font color=FF0000>在 HTML 中, 全局作用域是针对 window 对象</font>。
+
+- 使用 **var** 关键字声明的全局作用域变量属于 window 对象
+
+- 使用 **let** 关键字声明的全局作用域变量不属于 window 对象（如果调用就会是undefined）
+
+**重置变量**
+
+- 使用 **var** 关键字声明的变量在任何地方都可以修改：
+
+  ```js
+  var x = 2;  // x 为 2
+  var x = 3;  // 现在 x 为 3
+  ```
+
+- 在相同的<font color=FF0000>作用域</font>或<font color=FF0000>块级作用域</font>中，<font color=FF0000>不能使用 **let** 关键字来重置 **var** 关键字声明的变量</font>：
+
+  ```js
+  var x = 2;       // 合法
+  let x = 3;       // 不合法
+  
+  {
+      var x = 4;   // 合法
+      let x = 5   // 不合法
+  }
+  ```
+
+- 在相同的作用域或块级作用域中，<font color=FF0000>不能使用 **var** 关键字来重置 **let** 关键字声明的变量</font>：
+
+  ```js
+  let x = 2;       // 合法
+  var x = 3;       // 不合法
+  
+  {
+      let x = 4;   // 合法
+      var x = 5;   // 不合法
+  }
+  ```
+
+- **let** 关键字在不同作用域，或不同块级作用域中是可以重新声明赋值的
+
+  ```js
+  let x = 2;       // 合法
+  
+  {
+      let x = 3;   // 合法
+  }
+  
+  {
+      let x = 4;   // 合法
+  }
+  ```
+
+**变量提升**
+
+- var 关键字定义的变量可以在使用后声明，也就是变量可以先使用再声明
+- let 关键字定义的变量则不可以在使用后声明，也就是变量需要先声明再使用。
+
+
+
+#### JavaScript const
+
+const 用于声明一个或多个常量，<font color=FF0000>**声明时必须进行初始化**</font>，且初始化后值不可再修改：
+
+`const`定义常量与使用`let` 定义的变量<font color=FF0000>相似</font>：
+
+- 二者都是块级作用域
+- 都不能和它所在作用域内的其他变量或函数拥有相同的名称
+
+两者还有以下两点<font color=FF0000>**区别**</font>：
+
+- <font color=FF0000>`const`声明的常量必须初始化，而`let`声明的变量不用</font>
+- <font color=FF0000>const 定义常量的值不能通过再赋值修改，也不能再次声明。而 let 定义的变量值可以修改</font>。
+
+**const关键字没有变量提升**：const 关键字定义的变量则不可以在使用后声明，也就是变量需要先声明再使用。
+
+**const并非真正的常量**：**const 的本质：** <font color=FF0000>const 定义的变量并非常量，并非不可变，它定义了一个常量引用一个值</font>。使用 const 定义的对象或者数组，其实是可变的。下面的代码并不会报错：
+
+```js
+// 创建常量对象
+const car = {type:"Fiat", model:"500", color:"white"};
+// 修改属性:
+car.color = "red";
+// 添加属性
+car.owner = "Johnson";
+// 显示属性
+document.getElementById("demo").innerHTML = "Car owner is " + car.owner; 
+```
+
+但是我们不能对常量对象重新赋值：
+
+```js
+const car = {type:"Fiat", model:"500", color:"white"};
+car = {type:"Volvo", model:"EX60", color:"red"};    // 错误
+```
+
+**重置变量**
+
+- 使用 **var** 关键字声明的变量在任何地方都可以修改
+
+- 在<font color=FF0000>相同的作用域或块级作用域</font>中，<font color=FF0000>不能使用</font> **const** 关键字来重置 **var**、**let**、**const**关键字声明的变量
+
+- **const** 关键字在<font color=FF0000>不同作用域</font>，或<font color=FF0000>不同块级作用域</font>中是<font color=FF0000>可以重新声明赋值</font>的，示例：
+
+  ```js
+  const x = 2;       // 合法
+  
+  {
+      const x = 3;   // 合法
+  }
+  
+  {
+      const x = 4;   // 合法
+  }
+  ```
+
+
+
+#### JavaScript JSON
+
+JSON（**J**ava**S**cript **O**bject **N**otation） 是用于存储和传输数据的格式。通常用于服务端向网页传递数据 。
+
+**JSON 字符串转换为 JavaScript 对象**
+
+通常我们从服务器中读取 JSON 数据，并在网页中显示数据。
+
+简单起见，我们网页中直接设置 JSON 字符串：
+
+- 首先，创建 JavaScript 字符串，字符串为 JSON 格式的数据：
+
+  ```js
+  var text = '{ "sites" : [' +
+  '{ "name":"Runoob" , "url":"www.runoob.com" },' +
+  '{ "name":"Google" , "url":"www.google.com" },' +
+  '{ "name":"Taobao" , "url":"www.taobao.com" } ]}';
+  ```
+
+- 然后，<font color=FF0000>使用 JavaScript 内置函数 `JSON.parse()` 将字符串转换为 JavaScript 对象</font>
+
+  ```js
+  var obj = JSON.parse(text);
+  ```
+
+- 最后，在你的页面中使用新的 JavaScript 对象
+
+**相关函数**
+
+| 函数                                                         | 描述                                           |
+| :----------------------------------------------------------- | :--------------------------------------------- |
+| [JSON.parse()](https://www.runoob.com/js/javascript-json-parse.html) | 用于将一个 JSON 字符串转换为 JavaScript 对象。 |
+| [JSON.stringify()](https://www.runoob.com/js/javascript-json-stringify.html) | 用于将 JavaScript 值转换为 JSON 字符串。       |
+
+
+
+#### javascript:void(0) 含义
+
+**javascript:void(0)** 中最关键的是 **void** 关键字， <font color=FF0000>**void**</font> 是 JavaScript 中非常重要的关键字，<font color=FF0000>该操作符**指定要计算一个表达式但是不返回值**</font>
+
+语法格式如下：
+
+```js
+void func()
+javascript:void func()
+```
+
+或者
+
+```js
+void(func())
+javascript:void(func())
+```
+
+下面的代码创建了一个超级链接，当用户点击以后不会发生任何事。示例：
+
+```html
+<a href="javascript:void(0)">单击此处什么也不会发生</a>
+```
+
+以下实例中，在用户点击链接后显示警告信息：
+
+```html
+<p>点击以下链接查看结果：</p>
+<a href="javascript:void(alert('Warning!!!'))">点我!</a>
+```
+
+**href="#"与href="javascript:void(0)"的区别**
+
+- <font color=FF0000>**`#`** 包含了一个位置信息</font>，默认的锚是**`#top`** 也就是网页的上端。
+
+  在页面很长的时候会使用 **#** 来定位页面的具体位置，格式为：**# + id**。
+
+- javascript:void(0)，仅仅<font color=FF0000>表示一个死链接</font>。如果你要定义一个死链接请使用 javascript:void(0) 。
+
+
 
 
 
