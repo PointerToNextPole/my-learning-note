@@ -2,7 +2,7 @@
 
 
 
-#### Vue.js是什么
+### Vue.js是什么
 
 Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<font color=FF0000>**渐进式框架**</font>。与其它大型框架不同的是，<mark>Vue 被设计为可以自底向上逐层应用</mark>。<mark>Vue 的核心库只关注视图层</mark>，不仅易于上手，还便于与第三方库或既有项目整合。另一方面，当与[现代化的工具链](https://cn.vuejs.org/v2/guide/single-file-components.html)以及各种[支持类库](https://github.com/vuejs/awesome-vue#libraries--plugins)结合使用时，Vue 也完全能够为复杂的单页应用提供驱动。
 
@@ -28,7 +28,7 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 
 
 
-#### 绑定attribute的另一种方法（第一种是上面的示例）
+### 绑定attribute的另一种方法（第一种是上面的示例）
 
 示例：
 
@@ -52,7 +52,7 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 
 
 
-#### 条件（v-if）
+### 条件（v-if）
 
 示例：
 
@@ -72,7 +72,7 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 
 
 
-#### 循环
+### 循环
 
 示例：
 
@@ -100,7 +100,7 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 
 
 
-#### 处理用户输入
+### 处理用户输入
 
 为了让用户和你的应用进行交互，我们<font color=FF0000>可以用 **`v-on`** 指令添加一个事件监听器</font>，通过它调用在 Vue 实例中定义的方法。
 
@@ -130,7 +130,7 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 
 
 
-#### 组件化应用构建
+### 组件化应用构建
 
 组件系统是 Vue 的另一个重要概念，因为它是一种抽象，允许我们使用小型、独立和通常可复用的组件构建大型应用。仔细想想，几乎任意类型的应用界面都可以抽象为一个组件树：
 
@@ -138,13 +138,13 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 
 在 Vue 里，一个组件本质上是一个拥有预定义选项的一个 Vue 实例。
 
-#### //todo，这里没有完全看懂...不过可能要等到看完“组件基础”之后才会好些
+### //todo，这里没有完全看懂...不过可能要等到看完“组件基础”之后才会好些
 
 https://cn.vuejs.org/v2/guide/index.html#%E4%B8%8E%E8%87%AA%E5%AE%9A%E4%B9%89%E5%85%83%E7%B4%A0%E7%9A%84%E5%85%B3%E7%B3%BB
 
 
 
-#### Vue实例
+### Vue实例
 
 每个 Vue 应用都是通过用 `Vue` 函数创建一个新的 **Vue 实例**开始的：
 
@@ -160,7 +160,7 @@ var vm = new Vue({  //这里的vm表示viewModel，这个命名很常见（参�
 
 
 
-#### 数据与方法
+### 数据与方法
 
 当一个<font color=FF0000> Vue 实例被创建</font>时，<font color=FF0000>它将 `data` 对象中的所有的 property 加入到 Vue 的**响应式系统**中</font>。当这些 property 的值发生改变时，视图将会产生“响应”，即匹配更新为新的值。
 
@@ -233,7 +233,7 @@ watch: {
 
 
 
-#### 实例生命周期钩子
+### 实例生命周期钩子
 
 每个 Vue 实例在被创建时都要经过一系列的初始化过程——例如，需要设置数据监听、编译模板、将实例挂载到 DOM 并在数据变化时更新 DOM 等。<mark>同时在这个过程中也会运行一些叫做**生命周期钩子**的函数，这给了用户在不同阶段添加自己的代码的机会</mark>。（类似于AOP）
 
@@ -258,7 +258,7 @@ new Vue({
 
 <img src="https://s1.ax1x.com/2020/08/31/dOZOqP.png" style="zoom:40%;" />
 
-#### 模板语法
+### 模板语法
 
 Vue.js 使用了基于 HTML 的模板语法，<font color=FF0000>允许开发者声明式地将 DOM 绑定至底层 Vue 实例的数据</font>。<mark>所有 Vue.js 的模板都是合法的 HTML，所以能被遵循规范的浏览器和 HTML 解析器解析</mark>。
 
@@ -413,7 +413,7 @@ Mustache 标签将会被替代为对应数据对象上 `msg` property 的值。�
 
 
 
-#### 缩写
+### 缩写
 
 <font color=FF0000>**v- 前缀**</font>作为一种视觉提示，用来识别模板中 Vue 特定的 attribute。<mark>当你在使用 Vue.js 为现有标签添加动态行为 (dynamic behavior) 时，v- 前缀很有帮助</mark>，<font color=FF0000>然而</font>，<mark>对于一些频繁用到的指令来说，就会感到使用繁琐</mark>。同时，在构建由 Vue 管理所有模板的单页面应用程序 (SPA - single page application) 时，v- 前缀也变得没那么重要了。因此，Vue 为 v-bind 和 v-on 这两个最常用的指令，提供了特定简写：
 
@@ -447,7 +447,7 @@ Mustache 标签将会被替代为对应数据对象上 `msg` property 的值。�
 
 
 
-#### 计算属性
+### 计算属性
 
 **计算属性**
 模板内的表达式非常便利，但是设计它们的初衷是用于简单运算的。<mark>在模板中放入太多的逻辑会让模板过重且难以维护</mark>。对于任何复杂逻辑，你都应当使用<font color=FF0000>**计算属性**</font>。示例如下：
@@ -511,7 +511,7 @@ computed: {
 
 
 
-#### 侦听器
+### 侦听器
 
 虽然<mark>计算属性在大多数情况下更合适</mark>，但有时<mark>也需要一个自定义的侦听器</mark>。这就是为什么 Vue 通过 `watch` 选项提供了一个更通用的方法，来响应数据的变化。<font color=FF0000>当需要在数据变化时执行异步或开销较大的操作时，这个方式是最有用的</font>。
 
@@ -533,7 +533,7 @@ var watchExampleVM = new Vue({
 
 
 
-#### Class 与 Style 绑定
+### Class 与 Style 绑定
 
 操作元素的 class 列表和内联样式是数据绑定的一个常见需求。因为它们都是 attribute，所以我们可以用 `v-bind` 处理它们：只需要通过表达式计算出字符串结果即可。不过，字符串拼接麻烦且易错。因此，在将 `v-bind` 用于 `class` 和 `style` 时，Vue.js 做了专门的增强。<font color=FF0000>表达式结果的类型除了字符串之外，还可以是对象或数组</font>。
 
@@ -706,7 +706,7 @@ var watchExampleVM = new Vue({
 
 
 
-#### 条件渲染
+### 条件渲染
 
 - **v-if**
 
@@ -793,7 +793,7 @@ var watchExampleVM = new Vue({
 
 
 
-#### 列表渲染
+### 列表渲染
 
 我们可以用 `v-for` 指令<font color=FF0000>基于一个数组</font>来渲染一个列表。`v-for` 指令需要使用 `item in items` 形式的特殊语法，其中 `items` 是源数据数组，而 `item` 则是被迭代的数组元素的**别名**。
 
@@ -978,7 +978,7 @@ new Vue({
 <my-component v-for="item in items" :key="item.id"></my-component>
 ```
 
-然而，任何数据都不会被自动传递到组件里，因为组件有自己独立的作用域。为了把迭代数据传递到组件里，我们要使用 prop：
+然而，<font color=FF0000>任何数据都不会被自动传递到组件里，因为组件有自己独立的作用域。为了把迭代数据传递到组件里，我们要使用 prop</font>：
 
 ```html
 <my-component
@@ -988,4 +988,506 @@ new Vue({
   v-bind:key="item.id"
 ></my-component>
 ```
+
+不自动将 `item` 注入到组件里的原因是，这会使得组件与 `v-for` 的运作紧密耦合。明确组件数据的来源能够使组件在其他场合重复使用。
+
+
+
+### 事件处理
+
+可以用 `v-on` 指令监听 DOM 事件，并在触发时运行一些 JavaScript 代码。
+
+- 简单使用，示例：
+
+  ```html
+  <div id="example-1">
+    <button v-on:click="counter += 1">Add 1</button>
+    <p>The button above has been clicked {{ counter }} times.</p>
+  </div>
+  
+  <script>
+  var example1 = new Vue({
+    el: '#example-1',
+    data: {
+      counter: 0
+    }
+  })
+  </script>
+  ```
+
+- 然而许多事件处理逻辑会更为复杂，所以<mark>直接把 JavaScript 代码写在 `v-on` 指令中是不可行的</mark>。因此<font color=FF0000> `v-on` 还可以接收一个需要调用的方法名称</font>。
+
+  示例：
+
+  ```html
+  <div id="example-2">
+    <!-- `greet` 是在下面定义的方法名 -->
+    <button v-on:click="greet">Greet</button>
+  </div>
+  
+  <script>
+  var example2 = new Vue({
+    el: '#example-2',
+    data: {
+      name: 'Vue.js'
+    },
+    // 在 `methods` 对象中定义方法
+    methods: {
+      greet: function (event) {
+        // `this` 在方法里指向当前 Vue 实例
+        alert('Hello ' + this.name + '!')
+        // `event` 是原生 DOM 事件
+        if (event) {
+          alert(event.target.tagName)
+        }
+      }
+    }
+  })
+  
+  // 也可以用 JavaScript 直接调用方法
+  example2.greet() // => 'Hello Vue.js!'
+  </script>
+  ```
+
+- <font color=FF0000>除了直接绑定</font>到一个方法，也可以在<font color=FF0000>内联 JavaScript 语句</font>中调用方法：
+
+  ```html
+  <div id="example-3">
+    <button v-on:click="say('hi')">Say hi</button>
+    <button v-on:click="say('what')">Say what</button>
+  </div>
+  
+  <script>
+  new Vue({
+    el: '#example-3',
+    methods: {
+      say: function (message) {
+        alert(message)
+      }
+    }
+  })
+  </script>
+  ```
+
+- <font color=FF0000>有时也需要在内联语句处理器中访问原始的 DOM 事件。可以用特殊变量 `$event` 把它传入方法</font>：
+
+  ```html
+  <button v-on:click="warn('Form cannot be submitted yet.', $event)">
+    Submit
+  </button>
+  
+  <script>
+  new Vue({
+    // ...
+  	methods: {
+  	  warn: function (message, event) {
+  	    // 现在我们可以访问原生事件对象
+  	    if (event) {
+  	      event.preventDefault()
+  	    }
+  	    alert(message)
+  	  }
+  	}
+  })
+  </script>
+  ```
+
+
+
+**事件修饰符**
+
+在事件处理程序中调用 event.preventDefault() 或 event.stopPropagation() 是非常常见的需求。尽管我们可以在方法中轻松实现这点，但<font color=FF0000>更好的方式是：方法只有纯粹的数据逻辑，而不是去处理 DOM 事件细节。</font>
+
+为了解决这个问题，<font color=FF0000>Vue.js 为 v-on 提供了事件修饰符</font>。之前提过，修饰符是由点开头的指令后缀来表示的。
+
+- **.stop**
+
+  ```html
+  <!-- 阻止单击事件继续传播 -->
+  <a v-on:click.stop="doThis"></a>
+  ```
+
+- **.prevent**
+
+  ```html
+  <!-- 提交事件不再重载页面 -->
+  <form v-on:submit.prevent="onSubmit"></form>
+  
+  <!-- 修饰符可以串联 -->
+  <a v-on:click.stop.prevent="doThat"></a>
+  
+  <!-- 只有修饰符 -->
+  <form v-on:submit.prevent></form>
+  ```
+
+- **.capture**
+
+  ```html
+  <!-- 添加事件监听器时使用事件捕获模式 -->c
+  <!-- 即内部元素触发的事件先在此处理，然后才交由内部元素进行处理 -->
+  <div v-on:click.capture="doThis">...</div>
+  ```
+
+- **.self**
+
+  ```html
+  <!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+  <!-- 即事件不是从内部元素触发的 -->
+  <div v-on:click.self="doThat">...</div>
+  ```
+
+- **.once**：2.1.4 新增
+
+  ```html
+  <!-- 点击事件将只会触发一次 -->
+  <a v-on:click.once="doThis"></a>
+  ```
+
+- **.passive**：2.3.0 新增
+
+  Vue 还对应 addEventListener 中的 passive 选项提供了 .passive 修饰符。
+
+  ```html
+  <!-- 滚动事件的默认行为 (即滚动行为) 将会立即触发 而不会等待 `onScroll` 完成  -->
+  <!-- 这其中包含 `event.preventDefault()` 的情况 -->
+  <div v-on:scroll.passive="onScroll">...</div>
+  ```
+
+  这个 `.passive` 修饰符尤其能够提升移动端的性能。
+  
+  
+
+**按键修饰符**
+
+在监听键盘事件时，我们经常需要检查详细的按键。<font color=FF0000>Vue 允许为 v-on 在监听键盘事件时添加按键修饰符</font>：
+
+```html
+<!-- 只有在 `key` 是 `Enter` 时调用 `vm.submit()` -->
+<input v-on:keyup.enter="submit">
+```
+
+你可以直接将 KeyboardEvent.key 暴露的<font color=FF0000>任意有效按键名转换为 kebab-case（使用`-`连接符连接） 来作为修饰符</font>。
+
+```html
+<input v-on:keyup.page-down="onPageDown">
+```
+
+在上述示例中，处理函数只会在 `$event.key` 等于 `PageDown` 时被调用。
+
+
+
+**按键码**（keyCode 的事件用法已经被废弃了并可能不会被最新的浏览器支持）
+
+使用 `keyCode` attribute 也是允许的：
+
+```html
+<input v-on:keyup.13="submit">
+```
+
+为了在必要的情况下支持旧浏览器，Vue 提供了绝大多数常用的按键码的别名：
+
+- **.enter**
+- **.tab**
+- **.delete**： (捕获“删除”和“退格”键)
+- **.esc**
+- **.space**
+- **.up**
+- **.down**
+- **.left**
+- **.right**
+
+你还可以通过全局 config.keyCodes 对象自定义按键修饰符别名：
+
+```js
+// 可以使用 `v-on:keyup.f1`
+Vue.config.keyCodes.f1 = 112
+```
+
+
+
+**系统修饰键（2.1.0 新增）**
+
+可以用如下修饰符来实现仅在按下相应按键时才触发鼠标或键盘事件的监听器。
+
+- **.ctrl**
+- **.alt**
+- **.shift**
+- **.meta**
+
+注意：在 Mac 系统键盘上，<font color=FF0000>meta 对应 command 键 (⌘)。在 Windows 系统键盘 meta 对应 Windows 徽标键 (⊞)</font>。在 Sun 操作系统键盘上，meta 对应实心宝石键 (◆)。在其他特定键盘上，尤其在 MIT 和 Lisp 机器的键盘、以及其后继产品，比如 Knight 键盘、space-cadet 键盘，meta 被标记为“META”。在 Symbolics 键盘上，meta 被标记为“META”或者“Meta”。
+
+示例：
+
+```html
+<!-- Alt + C 这里也是修饰符的串联--> 
+<input v-on:keyup.alt.67="clear">
+
+<!-- Ctrl + Click -->
+<div v-on:click.ctrl="doSomething">Do something</div>
+```
+
+
+
+**.exact 修饰符（2.5.0 新增）**
+
+`.exact` 修饰符允许你控制由精确的系统修饰符组合触发的事件。
+
+```html
+<!-- 即使 Alt 或 Shift 被一同按下时也会触发 -->
+<button v-on:click.ctrl="onClick">A</button>
+
+<!-- 有且只有 Ctrl 被按下的时候才触发 -->
+<button v-on:click.ctrl.exact="onCtrlClick">A</button>
+
+<!-- 没有任何系统修饰符被按下的时候才触发 -->
+<button v-on:click.exact="onClick">A</button>
+```
+
+
+
+**鼠标按钮修饰符**（2.2.0 新增）
+
+- **.left**
+- **.right**
+- **.middle**
+
+这些修饰符会限制处理函数仅响应特定的鼠标按钮。
+
+
+
+### 表单输入绑定
+
+你<font color=FF0000>可以用 `v-model` 指令</font>在表单 `<input>`、`<textarea>` 及 `<select>` 元素上<font color=FF0000>创建双向数据绑定</font>。<font color=FF0000>它会根据控件类型自动选取正确的方法来更新元素</font>。尽管有些神奇，但<mark> `v-model` 本质上不过是语法糖</mark>。它负责监听用户的输入事件以更新数据，并对一些极端场景进行一些特殊处理。
+
+补充：<mark>`v-model` 会忽略所有表单元素的 `value`、`checked`、`selected` attribute 的初始值而总是将 Vue 实例的数据作为数据来源</mark>。你应该通过 JavaScript 在组件的 `data` 选项中声明初始值。
+
+**`v-model` 在内部为不同的输入元素使用不同的 property 并抛出不同的事件：**
+
+- text 和 textarea 元素使用 `value` property 和 `input` 事件；
+- checkbox 和 radio 使用 `checked` property 和 `change` 事件；
+- select 字段将 `value` 作为 prop 并将 `change` 作为事件。
+
+注意：<mark>对于需要使用输入法 (如中文、日文、韩文等) 的语言</mark>，你会发现 <font color=FF0000>v-model 不会在输入法组合文字过程中得到更新</font>。如果你也想处理这个过程，<font color=FF0000>请使用 input 事件</font>。
+
+
+
+**值绑定**
+
+对于单选按钮，复选框及选择框的选项，v-model 绑定的值通常是静态字符串 (对于复选框也可以是布尔值)：
+
+```html
+<!-- 当选中时，`picked` 为字符串 "a" -->
+<input type="radio" v-model="picked" value="a">
+
+<!-- `toggle` 为 true 或 false -->
+<input type="checkbox" v-model="toggle">
+
+<!-- 当选中第一个选项时，`selected` 为字符串 "abc" -->
+<select v-model="selected">
+  <option value="abc">ABC</option>
+</select>
+```
+
+但是有时我们可能<font color=FF0000>想把值绑定到 Vue 实例的一个动态 property 上</font>，<font color=FF0000>这时可以用 `v-bind` 实现</font>，并且这个 property 的值可以不是字符串。
+
+
+
+**修饰符**
+
+- .lazy：<font color=FF0000>在**默认情况**下，v-model 在每次 input 事件触发后将输入框的值与数据进行同步</font> (除了上述输入法组合文字时)。你<font color=FF0000>可以添加 lazy 修饰符，从而转为在 change 事件之后进行同步</font>：
+
+  ```html
+  <!-- 在“change”时而非“input”时更新 -->
+  <input v-model.lazy="msg">
+  ```
+
+- **.number**：如果<font color=FF0000>想**自动将用户的输入值转为数值类型**，可以给 v-model 添加 number 修饰符</font>：
+
+  ```html
+  <input v-model.number="age" type="number">
+  ```
+
+  这通常很有用，因为即使在 type="number" 时，HTML 输入元素的值也总会返回字符串。如果这个值无法被 parseFloat() 解析，则会返回原始的值。
+
+- **.trim**：如果<font color=FF0000>要自动过滤用户输入的首尾空白字符，可以给 v-model 添加 trim 修饰符</font>：
+
+  ```html
+  <input v-model.trim="msg">
+  ```
+
+
+
+### 组件基础
+
+示例：
+
+```html
+<div id="components-demo">
+    <button-counter></button-counter>
+</div>
+
+<script>
+    // 定义一个名为 button-counter 的新组件
+    Vue.component('button-counter', {
+        data: function () {
+            return {
+                count: 0
+            }
+        },
+        template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+    })
+  
+    new Vue({
+        el: '#components-demo'
+    })
+</script>
+```
+
+因为组件是可复用的 Vue 实例，所以它们与 `new Vue` 接收相同的选项，例如 `data`、`computed`、`watch`、`methods` 以及生命周期钩子等。仅有的例外是像 `el` 这样根实例特有的选项。
+
+
+
+**data 必须是一个函数**
+
+当我们定义这个 `<button-counter>` 组件时，你可能会发现它的 `data` 并不是像这样直接提供一个对象：
+
+```js
+data: {
+  count: 0
+}
+```
+
+取而代之的是，<font color=FF0000>**一个组件的 `data` 选项必须是一个函数**</font>，因此<font color=FF0000>每个实例可以维护一份被返回对象的独立的拷贝</font>：
+
+```js
+data: function () {
+  return {
+    count: 0
+  }
+}
+```
+
+
+
+**组件的组织**
+
+通常一个应用会<font color=FF0000>以一棵嵌套的组件树的形式来组织</font>：
+
+<img src="https://i.loli.net/2020/09/02/5oAQZ3tPiYILTlz.png" style="zoom: 43%;" />
+
+例如，你可能会有页头、侧边栏、内容区等组件，每个组件又包含了其它的像导航链接、博文之类的组件。
+
+为了能在模板中使用，这些组件必须先注册以便 Vue 能够识别。这里<font color=FF0000>**有两种组件的注册类型**：**全局注册**和**局部注册**</font>。<mark>目前，我们的组件都只是通过 `Vue.component` **全局注册**的</mark>：
+
+```js
+Vue.component('my-component-name', {
+  // ... options ...
+})
+```
+
+全局注册的组件可以用在其被注册之后的任何 (通过 `new Vue`) 新创建的 Vue 根实例，也包括其组件树中的所有子组件的模板中。
+
+
+
+**通过 Prop 向子组件传递数据**
+
+早些时候，我们提到了创建一个博文组件的事情。**问题是**<mark>如果你<font color=FF0000>不能向这个组件传递某一篇博文的标题或内容之类的我们想展示的数据</font>的话，它是没有办法使用的。这也正是 prop 的由来</mark>。
+
+**Prop 是你可以在组件上注册的一些自定义 attribute**。当一个值传递给一个 prop attribute 的时候，它就变成了那个组件实例的一个 property。为了给博文组件传递一个标题，我们可以用一个 `props` 选项将其包含在该组件可接受的 prop 列表中：
+
+```js
+Vue.component('blog-post', {
+  props: ['title'],
+  template: '<h3>{{ title }}</h3>'
+})
+```
+
+
+
+
+
+
+
+
+
+### 组件注册
+
+**组件名**
+
+在注册一个组件的时候，我们始终需要给它一个名字。比如在全局注册的时候我们已经看到了：
+
+```js
+Vue.component('my-component-name', { /* ... */ })
+```
+
+该组件名就是 `Vue.component` 的第一个参数。
+
+你给予组件的名字可能依赖于你打算拿它来做什么。当直接在 DOM 中使用一个组件 (而不是在字符串模板或单文件组件) 的时候，我们<font color=FF0000>强烈推荐遵循 W3C 规范中的自定义组件名 (字母全小写且必须包含一个连字符)</font>。这会帮助你避免和当前以及未来的 HTML 元素相冲突。
+
+
+
+**组件名大小写**
+
+定义组件名的方式有两种：
+
+- **使用 kebab-case**
+
+  ```js
+  Vue.component('my-component-name', { /* ... */ })
+  ```
+
+  当使用 kebab-case (短横线分隔命名) 定义一个组件时，你也<font color=FF0000>必须在引用这个自定义元素时使用 kebab-case</font>，例如 `<my-component-name>`。
+
+- **使用 PascalCase**
+
+  ```js
+  Vue.component('MyComponentName', { /* ... */ })
+  ```
+
+  <font color=FF0000>当使用 PascalCase (首字母大写命名) 定义一个组件时，你在**引用这个自定义元素时两种命名法都可以使用**</font>。<mark>也就是说 `<my-component-name>` 和 `<MyComponentName>` 都是可接受的</mark>。注意，尽管如此，直接在 DOM (即非字符串的模板) 中使用时只有 kebab-case 是有效的。
+
+
+
+**局部注册**
+
+**全局注册往往是不够理想的**。比如，如果你使用一个像 webpack 这样的构建系统，<font color=FF0000>全局注册所有的组件意味着**即便你已经不再使用一个组件了**，**它仍然会被包含在你最终的构建结果中**</font>。这造成了用户下载的 JavaScript 的无谓的增加。
+
+在这些情况下，你<font color=FF0000>可以通过一个普通的 JavaScript 对象来定义组件</font>：
+
+```js
+var ComponentA = { /* ... */ }
+var ComponentB = { /* ... */ }
+var ComponentC = { /* ... */ }
+```
+
+然后<font color=FF0000>在 `components` 选项中定义你想要使用的组件</font>：
+
+```js
+new Vue({
+  el: '#app',
+  components: {
+    'component-a': ComponentA,
+    'component-b': ComponentB
+  }
+})
+```
+
+<font color=FF0000>对于 `components` 对象中的每个 property 来说，其 property 名就是自定义元素的名字</font>，其 property 值就是这个组件的选项对象。
+
+<mark>**注意**：**局部注册的组件在其<font color=FF0000>子组件</font>中不可用**</mark>。例如，如果你希望 `ComponentA` 在 `ComponentB` 中可用，则你需要这样写：
+
+```js
+var ComponentA = { /* ... */ }
+
+var ComponentB = {
+  components: {
+    'component-a': ComponentA  //
+  },
+  // ...
+}
+```
+
+
+
+### prop
 

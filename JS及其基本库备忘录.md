@@ -531,7 +531,7 @@ HTML 表单验证可以通过 JavaScript 来完成。
 
 
 
-## HTML 约束验证
+#### HTML 约束验证
 
 HTML5 新增了 HTML 表单的验证方式：约束验证（constraint validation）。约束验证是表单被提交时浏览器用来实现验证的一种算法。
 
@@ -1010,7 +1010,223 @@ asyncFunc();
 
 
 
-https://www.runoob.com/js/js-function-definition.html
+#### JavaScript函数
+
+语法：
+
+```js
+function functionName(parameters) {
+  //code
+}
+```
+
+函数声明后不会立即执行，会在我们需要的时候调用到。
+
+**函数表达式**
+
+JavaScript 函数可以通过一个表达式定义。函数表达式可以存储在变量中，示例：
+
+```js
+var x = function (a, b) {return a * b};
+```
+
+<font color=FF0000>在函数表达式存储在变量后，变量也可作为一个函数使用</font>，示例：
+
+```js
+var x = function (a, b) {return a * b};
+var z = x(4, 3);
+```
+
+<font color=FF0000>这个函数实际上是一个 **匿名函数** (函数没有名称)。函数存储在变量中，不需要函数名称，通常通过变量名来调用</font>。
+
+**Function() 构造函数**
+
+函数同样可以通过内置的 JavaScript 函数构造器（Function()）定义。示例：
+
+```js
+var myFunction = new Function("a", "b", "return a * b");
+var x = myFunction(4, 3);
+```
+
+不过没有必要，可以写成：
+
+```js
+var myFunction = function (a, b) {return a * b};
+var x = myFunction(4, 3);
+```
+
+**函数提升（Hoisting）**
+
+提升（Hoisting）是 JavaScript 默认<font color=FF0000>将当前作用域提升到前面去的的行为</font>。
+
+函数可以在声明之前调用：
+
+```js
+myFunction(5);
+
+function myFunction(y) {
+    return y * y;
+}
+```
+
+**自调用函数**
+
+- **函数表达式可以 "自调用"。自调用表达式会自动调用。**
+
+- <font color=FF0000>如果表达式后面紧跟 () ，则会自动调用。</font>
+
+- <font color=FF0000>不能自调用声明的函数。</font>
+
+通过添加括号，来说明它是一个函数表达式：
+
+```js
+(function () {
+  var x = "Hello!!";   // 我将调用自己
+})();
+```
+
+**函数是对象**
+
+在 JavaScript 中使用 **typeof** 操作符判断函数类型将返回 "function" 。
+
+但是JavaScript 函数描述为一个对象更加准确。<font color=FF0000>JavaScript 函数有 **属性** 和 **方法**</font>。<font color=FF0000>arguments.length 属性返回函数调用过程接收到的参数个数</font>：
+
+```js
+function myFunction(a, b) {
+  return arguments.length;
+}
+```
+
+toString() 方法将函数作为一个字符串返回:
+
+```js
+function myFunction(a, b) {
+    return a * b;
+}
+var txt = myFunction.toString();
+```
+
+**箭头函数**
+
+ES6 新增了箭头函数。箭头函数表达式的语法比普通函数表达式更简洁。
+
+```js
+(param1, param2, …, paramN) => { expression }
+
+(param1, param2, …, paramN) => expression(单一)
+//相当于：(param1, param2, …, paramN) =>{ return expression; }
+```
+
+当<font color=FF0000>只有一个参数</font>时，圆括号是可选的：
+
+```js
+(单一参数) => {expression}
+单一参数 => {expression}
+```
+
+<font color=FF0000>没有参数</font>的函数应该写成一对圆括号:
+
+```js
+() => {expression}
+```
+
+示例：
+
+```js
+const x = (x, y) => x * y;
+```
+
+另外：箭头函数是不能提升的，所以需要在使用之前定义。
+
+
+
+#### JavaScript 函数参数
+
+JavaScript 函数对参数的值没有进行任何的检查。
+
+**函数显式参数(Parameters)与隐式参数(Arguments)**
+
+- 函数显式参数在函数定义时列出。
+- 函数隐式参数在函数调用时传递给函数真正的值。
+
+**参数规则**
+
+- JavaScript 函数<font color=FF0000>定义显式参数时没有指定数据类型</font>。
+
+- JavaScript 函数<font color=FF0000>对隐式参数没有进行类型检测</font>。
+
+- JavaScript 函数<font color=FF0000>对隐式参数的个数没有进行检测</font>。
+
+**默认参数**
+
+- **ES5中：**<font color=FF0000>如果函数在调用时未提供隐式参数，参数会默认设置为： **undefined**</font>。有时这是可以接受的，但是建议最好为参数设置一个默认值，比如说0。
+
+  示例：
+
+  ```js
+  //方法一
+  function myFunction(x, y) {
+      if (y === undefined) {
+            y = 0;
+      } 
+  }
+  
+  //方法二，更简单的方式
+  function myFunction(x, y) {
+      y = y || 0;
+  }
+  ```
+
+- **ES6中：** <font color=FF0000>支持函数带有默认参数</font>
+
+  示例：
+
+  ```js
+  function myFunction(x, y = 10){
+    //code
+  }
+  ```
+
+**arguments 对象**
+
+JavaScript 函数有个<font color=FF0000>内置的对象 arguments 对象</font>。<font color=FF0000>argument 对象包含了函数调用的参数数组</font>。
+
+示例：
+
+```js
+x = findMax(1, 123, 500, 115, 44, 88);
+ 
+function findMax() {
+    var i, max = arguments[0];
+    
+    if(arguments.length < 2) return max;
+ 
+    for (i = 0; i < arguments.length; i++) {
+        if (arguments[i] > max) {
+            max = arguments[i];
+        }
+    }
+    return max;
+}
+```
+
+
+
+### JavaScript 函数调用
+
+<font color=FF0000>JavaScript 函数有 **4 种**调用方式</font>。每种方式的不同在于 **this** 的初始化。
+
+- **作为一个函数调用**
+
+  函数不属于任何对象。但是在 JavaScript 中它始终是默认的全局对象。而在 HTML 中默认的全局对象是 HTML 页面本身，所以函数是属于 HTML 页面。
+
+- **函数作为方法调用**
+
+- **使用构造函数调用函数**
+
+- **作为函数方法调用函数**
+
+
 
 
 
