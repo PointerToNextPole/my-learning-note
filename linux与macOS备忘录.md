@@ -96,6 +96,12 @@
 
 
 
+**更多快捷键，请参看设置中的键盘选项：**
+
+<img src="https://s1.ax1x.com/2020/09/02/wpQmKP.png" style="zoom:45%;" />
+
+
+
 ### <font color=FF0000>Mac命令行使用</font>
 
 ##### `cd`命令，在命令行中进入查找输出的地址，如：

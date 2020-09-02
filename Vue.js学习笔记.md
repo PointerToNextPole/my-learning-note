@@ -1402,11 +1402,226 @@ Vue.component('blog-post', {
 })
 ```
 
+<font color=FF0000>Prop 是你可以在组件上注册的一些自定义 attribute</font>。当一个值传递给一个 prop attribute 的时候，它就变成了那个组件实例的一个 property。<mark>为了给博文组件传递一个标题，我们可以用一个 `props` 选项将其包含在该组件可接受的 prop 列表中</mark>：
+
+```js
+Vue.component('blog-post', {
+  props: ['title'],  								//注意这里的props
+  template: '<h3>{{ title }}</h3>'
+})
+```
+
+<font color=FF0000>一个组件默认可以拥有任意数量的 prop</font>，任何值都可以传递给任何 prop。在上述模板中，<mark>你会发现<font color=FF0000>我们能够在组件实例中访问这个值，就像访问 `data` 中的值一样</font></mark>。
 
 
 
+**单个根元素**
+
+当构建一个 `<blog-post>` 组件时，f你的模板最终会包含的东西远不止一个标题：
+
+```html
+<h3>{{ title }}</h3>
+```
+
+最起码，你会包含这篇博文的正文：
+
+```html
+<h3>{{ title }}</h3>
+<div v-html="content"></div>
+```
+
+然而如果你在模板中尝试这样写，Vue 会显示一个错误，并解释道 **every component must have a single root element (每个组件必须只有一个根元素)**。<font color=FF0000>你可以将模板的内容包裹在一个父元素内，来修复这个问题</font>，例如：
+
+```html
+<div class="blog-post">
+  <h3>{{ title }}</h3>
+  <div v-html="content"></div>
+</div>
+```
 
 
+
+**监听子组件事件**
+
+在我们开发 \<blog-post> 组件时，它的一些功能<font color=FF0000>可能要求我们和父级组件进行沟通</font>。 <mark>Vue 实例提供了一个自定义事件的系统来解决这个问题</mark>。<font color=FF0000>父级组件可以像处理 native DOM 事件一样通过 v-on 监听子组件实例的任意事件。同时子组件可以通过调用内建的 `$emit` 方法并传入事件名称来触发一个事件</font>
+
+**//todo 这里没有完全看懂...**
+
+
+
+**使用事件抛出一个值**
+
+有的时候<font color=FF0000>用一个事件来抛出一个特定的值是非常有用的</font>。例如我们可能想让 `<blog-post>` 组件决定它的文本要放大多少。这时可以使用 `$emit` 的第二个参数来提供这个值：
+
+```html
+<button v-on:click="$emit('enlarge-text', 0.1)">
+  Enlarge text
+</button>
+```
+
+然后<font color=FF0000>当在父级组件监听这个事件的时候，我们可以通过 `$event` 访问到被抛出的这个值</font>：
+
+```html
+<blog-post
+  ...
+  v-on:enlarge-text="postFontSize += $event"
+></blog-post>
+```
+
+或者，如果这个事件处理函数是一个方法：
+
+```html
+<blog-post
+  ...
+  v-on:enlarge-text="onEnlargeText"
+></blog-post>
+```
+
+那么这个值将会作为第一个参数传入这个方法：
+
+```html
+methods: {
+  onEnlargeText: function (enlargeAmount) {
+    this.postFontSize += enlargeAmount
+  }
+}
+```
+
+
+
+**在组件上使用 v-model**
+
+自定义事件也可以用于创建支持 `v-model` 的自定义输入组件。
+
+```html
+<input v-model="searchText">
+```
+
+等价于：
+
+```html
+<input
+  v-bind:value="searchText"
+  v-on:input="searchText = $event.target.value"
+>
+```
+
+<font color=FF0000>当用在组件上时，`v-model` 则会这样：</font>
+
+```html
+<custom-input
+  v-bind:value="searchText"
+  v-on:input="searchText = $event"
+></custom-input>
+```
+
+<font color=FF0000>为了让它正常工作，这个组件内的 `<input>` 必须：</font>
+
+- 将其 `value` attribute 绑定到一个名叫 `value` 的 prop 上
+- 在其 `input` 事件被触发时，将新的值通过自定义的 `input` 事件抛出
+
+写成代码之后是这样的：
+
+```html
+Vue.component('custom-input', {
+  props: ['value'],
+  template: `
+    <input
+      v-bind:value="value"
+      v-on:input="$emit('input', $event.target.value)"
+    >
+  `
+})
+```
+
+现在 `v-model` 就应该可以在这个组件上完美地工作起来了：
+
+```html
+<custom-input v-model="searchText"></custom-input>
+```
+
+
+
+**通过插槽分发内容**
+
+和 HTML 元素一样，我们经常<font color=FF0000>需要向一个组件传递内容</font>，像这样：
+
+```html
+<alert-box>
+  Something bad happened.
+</alert-box>
+```
+
+可能会渲染出这样的东西：
+
+<img src="https://i.loli.net/2020/09/02/R3di65CIomZn1O4.png" style="zoom: 45%;" />
+
+幸好，Vue 自定义的 `<slot>` （插槽）元素让这变得非常简单：
+
+```js
+Vue.component('alert-box', {
+  template: `
+    <div class="demo-alert-box">
+      <strong>Error!</strong>
+      <slot></slot>
+    </div>
+  `
+})
+```
+
+如你所见，我们只要在需要的地方加入插槽就行了——就这么简单！
+
+
+
+**动态组件**
+
+有的时候，在不同组件之间进行动态切换是非常有用的，比如在一个多标签的界面里：
+
+<img src="https://i.loli.net/2020/09/02/ZtpCuUbs2Kjdi9m.png" style="zoom:50%;" />
+
+<font color=FF0000>上述内容可以通过 Vue 的 `<component>` 元素加一个特殊的 <font size = 5>**`is`** </font>attribute 来实现：</font>
+
+```html
+<!-- 组件会在 `currentTabComponent` 改变时改变 -->
+<component v-bind:is="currentTabComponent"></component>
+```
+
+在上述示例中，`currentTabComponent` 可以包括
+
+- 已注册组件的名字
+- 一个组件的选项对象
+
+请留意，这个 attribute 可以用于常规 HTML 元素，但这些元素将被视为组件，这意味着所有的 attribute 都会作为 DOM attribute 被绑定。对于像 value 这样的 property，若想让其如预期般工作，你需要使用 .prop 修饰器。
+
+**//todo 这里还是没有看懂...**
+
+
+
+**解析 DOM 模板时的注意事项**
+
+有些 HTML 元素，诸如 `<ul>`、`<ol>`、`<table>` 和 `<select>`，对于哪些元素可以出现在其内部是有严格限制的。而有些元素，诸如 `<li>`、`<tr>` 和 `<option>`，只能出现在其它某些特定的元素内部。
+
+这会导致我们使用这些有约束条件的元素时遇到一些问题。例如：
+
+```html
+<table>
+  <blog-post-row></blog-post-row>
+</table>
+```
+
+这个自定义组件 `<blog-post-row>` 会被作为无效的内容提升到外部，并导致最终渲染结果出错。幸好这个特殊的 `is` attribute 给了我们一个变通的办法：
+
+```html
+<table>
+  <tr is="blog-post-row"></tr>
+</table>
+```
+
+需要注意的是**如果我们从以下来源使用模板的话，这条限制是不存在的**：
+
+- 字符串 (例如：template: '...')
+- 单文件组件 (.vue)
+- \<script type="text/x-template">
 
 
 
@@ -1491,3 +1706,933 @@ var ComponentB = {
 
 ### prop
 
+**Prop 的大小写 (camelCase vs kebab-case)**
+
+<mark>HTML 中的 attribute 名是大小写不敏感的，所以浏览器会把所有大写字符解释为小写字符</mark>。这意味着<font color=FF0000>当你使用 DOM 中的模板时，camelCase (驼峰命名法) 的 prop 名**需要**使用其等价的 kebab-case (短横线分隔命名) 命名</font>：
+
+```html
+Vue.component('blog-post', {
+  // 在 JavaScript 中是 camelCase 的
+  props: ['postTitle'],
+  template: '<h3>{{ postTitle }}</h3>'
+})
+<!-- 在 HTML 中是 kebab-case 的 -->
+<blog-post post-title="hello!"></blog-post>
+```
+
+重申一次，如果你使用字符串模板，那么这个限制就不存在了。
+
+
+
+**Prop 类型**
+
+到这里，我们只看到了以字符串数组形式列出的 prop：
+
+```js
+props: ['title', 'likes', 'isPublished', 'commentIds', 'author']
+```
+
+但是，<mark>通常你希望每个 prop 都有指定的值类型</mark>。这时，你<font color=FF0000>可以以对象形式列出 prop，这些 property 的名称和值分别是 prop 各自的名称和类型</font>：
+
+```js
+props: {
+  title: String,
+  likes: Number,
+  isPublished: Boolean,
+  commentIds: Array,
+  author: Object,
+  callback: Function,
+  contactsPromise: Promise // or any other constructor
+}
+```
+
+
+
+**传递静态或动态 Prop**
+
+像这样，你已经知道了可以像这样给 prop 传入一个<font color=FF0000>静态</font>的值：
+
+```html
+<blog-post title="My journey with Vue"></blog-post>
+```
+
+你也知道 prop 可以通过 `v-bind` <font color=FF0000>动态赋值</font>，例如：
+
+```html
+<!-- 动态赋予一个变量的值 -->
+<blog-post v-bind:title="post.title"></blog-post>
+
+<!-- 动态赋予一个复杂表达式的值 -->
+<blog-post
+  v-bind:title="post.title + ' by ' + post.author.name"
+></blog-post>
+```
+
+<mark>在上述两个示例中，我们<font color=FF0000>传入的值都是字符串类型的</font></mark>，但实际上<font color=FF0000>任何类型的值都可以传给一个 prop</font>。
+
+- 传入数字
+
+  ```html
+  <!-- 即便 `42` 是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
+  <!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
+  <blog-post v-bind:likes="42"></blog-post>
+  
+  <!-- 用一个变量进行动态赋值。-->
+  <blog-post v-bind:likes="post.likes"></blog-post>
+  ```
+
+- 传入布尔值
+
+  ```html
+  <!-- 包含该 prop 没有值的情况在内，都意味着 `true`。-->
+  <blog-post is-published></blog-post>
+  
+  <!-- 即便 `false` 是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
+  <!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
+  <blog-post v-bind:is-published="false"></blog-post>
+  
+  <!-- 用一个变量进行动态赋值。-->
+  <blog-post v-bind:is-published="post.isPublished"></blog-post>
+  ```
+
+- 传入数组
+
+  ```html
+  <!-- 即便数组是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
+  <!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
+  <blog-post v-bind:comment-ids="[234, 266, 273]"></blog-post>
+  
+  <!-- 用一个变量进行动态赋值。-->
+  <blog-post v-bind:comment-ids="post.commentIds"></blog-post>
+  ```
+
+- 传入对象
+
+  ```html
+  <!-- 即便对象是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
+  <!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
+  <blog-post
+    v-bind:author="{
+      name: 'Veronica',
+      company: 'Veridian Dynamics'
+    }"
+  ></blog-post>
+  
+  <!-- 用一个变量进行动态赋值。-->
+  <blog-post v-bind:author="post.author"></blog-post>
+  ```
+
+- 传入一个对象的所有 property
+
+  ```html
+  <blog-post v-bind="post"></blog-post>
+  
+  <script>
+  post: {
+    id: 1,
+    title: 'My Journey with Vue'
+  }
+  </script>
+  ```
+
+  等价于
+
+  ```html
+  <blog-post
+    v-bind:id="post.id"
+    v-bind:title="post.title"
+  ></blog-post>
+  ```
+
+
+
+**单向数据流**
+
+<font color=FF0000>所有的 prop 都使得其父子 prop 之间形成了一个**单向下行绑定**：父级 prop 的更新会向下流动到子组件中，但是反过来则不行。</font><mark>这样会<font color=FF0000>**防止**从子组件意外变更父级组件的状态</font>，从而导致你的应用的数据流向难以理解。</mark>
+
+额外的，<font color=FF0000>每次父级组件发生变更时，子组件中所有的 prop 都将会刷新为最新的值</font>。这意味着你<font color=FF0000>**不**应该</font>A在一个子组件内部改变 prop。如果你这样做了，Vue 会在浏览器的控制台中发出警告。
+
+**这里有<font color=FF0000>两种常见的试图变更一个 prop 的情形</font>：**
+
+- 这个 <font color=FF0000>prop 用来**传递一个初始值**；这个子组件接下来**希望将其作为一个本地的 prop 数据来使用**</font>。在这种情况下，<font color=FF0000>最好定义一个本地的 data property 并将这个 prop 用作其初始值</font>：
+
+  ```js
+  props: ['initialCounter'],
+  data: function () {
+    return {
+      counter: this.initialCounter
+    }
+  }
+  ```
+
+- 这个 <font color=FF0000>prop **以一种原始的值传入**且**需要进行转换**</font>。在这种情况下，<font color=FF0000>最好使用这个 prop 的值来定义一个计算属性</font>：
+
+  ```js
+  props: ['size'],
+  computed: {
+    normalizedSize: function () {
+      return this.size.trim().toLowerCase()
+    }
+  }
+  ```
+
+
+
+**Prop 验证**
+
+我们'<font color=FF0000>'可以为组件的 prop 指定验证要求</font>，<mark>例如你知道的这些类型。如果有一个需求没有被满足，则 Vue 会在浏览器控制台中警告你</mark>。这在开发一个会被别人用到的组件时尤其有帮助。
+
+<mark><font color=FF0000>为了定制 prop 的验证方式</font>，你<font color=FF0000>可以为 `props` 中的值提供一个带有验证需求的对象</font>，而不是一个字符串数组</mark>。
+
+**<font color=FF0000>示例：</font>（看得出来，这个示例知识点不少）**
+
+```js
+Vue.component('my-component', {
+  props: {
+    // 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
+    propA: Number,
+    
+    // 多个可能的类型
+    propB: [String, Number],
+    
+    // 必填的字符串
+    propC: {
+      type: String,
+      required: true
+    },
+    
+    // 带有默认值的数字
+    propD: {
+      type: Number,
+      default: 100
+    },
+    
+    // 带有默认值的对象
+    propE: {
+      type: Object,
+      // 对象或数组默认值必须从一个工厂函数获取
+      default: function () {
+        return { message: 'hello' }
+      }
+    },
+    
+    // 自定义验证函数
+    propF: {
+      validator: function (value) {
+        // 这个值必须匹配下列字符串中的一个
+        return ['success', 'warning', 'danger'].indexOf(value) !== -1
+      }
+    }
+  }
+})
+```
+
+当 prop 验证失败的时候，(开发环境构建版本的) Vue 将会产生一个控制台的警告。
+
+
+
+**类型检查**
+
+type 可以是下列原生构造函数中的一个：
+
+- **String**
+- **Number**
+- **Boolean**
+- **Array**
+- **Object**
+- **Date**
+- **Function**
+- **Symbol**
+
+**额外的**，<font color=FF0000>`type` 还可以是一个自定义的构造函数，并且通过 `instanceof` 来进行检查确认</font>。例如，给定下列现成的构造函数：
+
+```
+function Person (firstName, lastName) {
+  this.firstName = firstName
+  this.lastName = lastName
+}
+```
+
+你可以使用：
+
+```
+Vue.component('blog-post', {
+  props: {
+    author: Person
+  }
+})
+```
+
+来验证 `author` prop 的值是否是通过 `new Person` 创建的。
+
+
+
+**非 Prop 的 Attribute**
+
+一个非 prop 的 attribute 是指传向一个组件，但是该组件并没有相应 prop 定义的 attribute。
+
+因为<mark>显式定义的 prop 适用于向一个子组件传入信息</mark>，然而<font color=FF0000>组件库的作者并不总能预见组件会被用于怎样的场景。这也是为什么组件可以接受任意的 attribute</font>，<font color=FF0000>而这些 attribute 会被添加到这个组件的根元素上</font>。
+
+例如，想象一下你通过一个 Bootstrap 插件使用了一个第三方的 `<bootstrap-date-input>` 组件，这个插件需要在其 `<input>` 上用到一个 `data-date-picker` attribute。我们可以将这个 attribute 添加到你的组件实例上：
+
+```html
+<bootstrap-date-input data-date-picker="activated"></bootstrap-date-input>
+```
+
+然后这个 `data-date-picker="activated"` attribute 就会自动添加到 `<bootstrap-date-input>` 的根元素上。
+
+
+
+**替换/合并已有的 Attribute**
+
+想象一下 `<bootstrap-date-input>` 的模板是这样的：
+
+```html
+<input type="date" class="form-control">
+```
+
+为了给我们的日期选择器插件定制一个主题，我们可能需要像这样添加一个特别的类名：
+
+```html
+<bootstrap-date-input
+  data-date-picker="activated"
+  class="date-picker-theme-dark"
+></bootstrap-date-input>
+```
+
+在这种情况下，我们定义了两个不同的 `class` 的值：
+
+- `form-control`，这是<mark>在组件的模板内设置好的</mark>
+- `date-picker-theme-dark`，这是<mark>从组件的父级传入的</mark>
+
+对于<font color=FF0000>**绝大多数 attribute** </font>来说，<font color=FF0000>从外部提供给组件的值会替换掉组件内部设置好的值</font>。所以如果传入 `type="text"` 就会替换掉 `type="date"` 并把它破坏！庆幸的是，`class` 和 `style` attribute 会稍微智能一些，即两边的值会被合并起来，从而得到最终的值：`form-control date-picker-theme-dark`。
+
+
+
+**禁用 Attribute 继承**
+
+如果你<font color=FF0000>**不**希望组件的根元素**继承** attribute</font>，你<font color=FF0000>可以在组件的选项中设置 `inheritAttrs: false`</font>。例如：
+
+```js
+Vue.component('my-component', {
+  inheritAttrs: false,
+  // ...
+})
+```
+
+这尤其适合配合实例的 `$attrs` property 使用，该 property 包含了传递给一个组件的 attribute 名和 attribute 值，例如：
+
+```js
+{
+  required: true,
+  placeholder: 'Enter your username'
+}
+```
+
+有了 `inheritAttrs: false` 和 `$attrs`，你就可以手动决定这些 attribute 会被赋予哪个元素。在撰写[基础组件](https://cn.vuejs.org/v2/style-guide/#基础组件名-强烈推荐)的时候是常会用到的：
+
+```js
+Vue.component('base-input', {
+  inheritAttrs: false,
+  props: ['label', 'value'],
+  template: `
+    <label>
+      {{ label }}
+      <input
+        v-bind="$attrs"
+        v-bind:value="value"
+        v-on:input="$emit('input', $event.target.value)"
+      >
+    </label>
+  `
+})
+```
+
+
+
+#### 自定义事件
+
+**事件名**
+
+<mark>不同于组件和 prop</mark>，<font color=FF0000>**事件名**不存在任何自动化的大小写转换</font>。而是触发的事件名需要完全匹配监听这个事件所用的名称。举个例子，如果触发一个 camelCase 名字的事件：
+
+```js
+this.$emit('myEvent')
+```
+
+则监听这个名字的 kebab-case 版本是不会有任何效果的：
+
+```html
+<!-- 没有效果 -->
+<my-component v-on:my-event="doSomething"></my-component>
+```
+
+不同于组件和 prop，事件名不会被用作一个 JavaScript 变量名或 property 名，所以就没有理由使用 camelCase 或 PascalCase 了。并且 `v-on` 事件监听器在 DOM 模板中会被自动转换为全小写 (因为 HTML 是大小写不敏感的)，所以 `v-on:myEvent` 将会变成 `v-on:myevent`——导致 `myEvent` 不可能被监听到。
+
+<font color=FF0000>因此，我们推荐你**始终使用 kebab-case 的事件名**。</font>
+
+
+
+**自定义组件的 v-model**（2.2.0+ 新增）
+
+一个组件上的 v-model 默认会利用名为 value 的 prop 和名为 input 的事件，但是像单选框、复选框等类型的输入控件可能会将 value attribute 用于不同的目的。model 选项可以用来避免这样的冲突：
+
+```js
+Vue.component('base-checkbox', {
+  model: {
+    prop: 'checked',
+    event: 'change'
+  },
+  props: {
+    checked: Boolean
+  },
+  template: `
+    <input
+      type="checkbox"
+      v-bind:checked="checked"
+      v-on:change="$emit('change', $event.target.checked)"
+    >
+  `
+})
+```
+
+现在在这个组件上使用 `v-model` 的时候：
+
+```html
+<base-checkbox v-model="lovingVue"></base-checkbox>
+```
+
+这里的 `lovingVue` 的值将会传入这个名为 `checked` 的 prop。同时当 `<base-checkbox>` 触发一个 `change` 事件并附带一个新的值的时候，这个 `lovingVue` 的 property 将会被更新。
+
+**//todo 这里没有完全看懂...**
+
+
+
+**将原生事件绑定到组件**
+
+你可能有很多次<font color=FF0000>想要在一个组件的根元素上直接监听一个原生事件</font>。这时，你<font color=FF0000>可以使用 `v-on` 的 `.native` 修饰符</font>：
+
+```html
+<base-input v-on:focus.native="onFocus"></base-input>
+```
+
+在有的时候这是很有用的，不过在你尝试监听一个类似 `<input>` 的非常特定的元素时，这并不是个好主意。比如上述 `<base-input>` 组件可能做了如下重构，所以根元素实际上是一个 `<label>` 元素：
+
+```html
+<label>
+  {{ label }}
+  <input
+    v-bind="$attrs"
+    v-bind:value="value"
+    v-on:input="$emit('input', $event.target.value)"
+  >
+</label>
+```
+
+这时，<mark>父级的 `.native` 监听器将静默失败</mark>。它不会产生任何报错，但是<mark> `onFocus` 处理函数不会如你预期地被调用</mark>。
+
+<mark>为了解决这个问题</mark>，<font color=FF0000>Vue 提供了一个 `$listeners` property，它是一个对象，里面包含了作用在这个组件上的所有监听器</font>。例如：
+
+```js
+{
+  focus: function (event) { /* ... */ }
+  input: function (value) { /* ... */ },
+}
+```
+
+有了这个 `$listeners` property，你就可以配合 `v-on="$listeners"` 将所有的事件监听器指向这个组件的某个特定的子元素。对于类似 `<input>` 的你希望它也可以配合 `v-model` 工作的组件来说，为这些监听器创建一个类似下述 `inputListeners` 的计算属性通常是非常有用的：
+
+```js
+Vue.component('base-input', {
+  inheritAttrs: false,
+  props: ['label', 'value'],
+  computed: {
+    inputListeners: function () {
+      var vm = this
+      // `Object.assign` 将所有的对象合并为一个新对象
+      return Object.assign({},
+        // 我们从父级添加所有的监听器
+        this.$listeners,
+        // 然后我们添加自定义监听器，
+        // 或覆写一些监听器的行为
+        {
+          // 这里确保组件配合 `v-model` 的工作
+          input: function (event) {
+            vm.$emit('input', event.target.value)
+          }
+        }
+      )
+    }
+  },
+  template: `
+    <label>
+      {{ label }}
+      <input
+        v-bind="$attrs"
+        v-bind:value="value"
+        v-on="inputListeners"
+      >
+    </label>
+  `
+})
+```
+
+现在 `<base-input>` 组件是一个**完全透明的包裹器**了，也就是说它可以完全像一个普通的 `<input>` 元素一样使用了：所有跟它相同的 attribute 和监听器都可以工作，不必再使用 `.native` 监听器。
+
+**//todo 这里依然没看懂....**
+
+
+
+**.sync 修饰符**（2.3.0+ 新增）
+
+在有些情况下，我们<font color=FF0000>可能需要对一个 prop 进行“双向绑定”</font>。不幸的是，<mark>真正的**双向绑定会带来维护上的问题**，因为**子组件可以变更父组件**，且在父组件和子组件都没有明显的变更来源</mark>。
+
+这也是为什么我们推荐以 `update:myPropName` 的模式触发事件取而代之。举个例子，在一个包含 `title` prop 的假设的组件中，我们可以用以下方法表达对其赋新值的意图：
+
+```js
+this.$emit('update:title', newTitle)
+```
+
+然后父组件可以监听那个事件并根据需要更新一个本地的数据 property。例如：
+
+```html
+<text-document
+  v-bind:title="doc.title"
+  v-on:update:title="doc.title = $event"
+></text-document>
+```
+
+为了方便起见，<font color=FF0000>我们为这种模式提供一个缩写，即 `.sync` 修饰符</font>：
+
+```html
+<text-document v-bind:title.sync="doc.title"></text-document>
+```
+
+**//todo 这里依然没看懂....**
+
+
+
+#### 插槽（<font color=FF0000>向一个组件传递内容</font>）
+
+在 2.6.0 中，我们为具名插槽和作用域插槽引入了一个新的统一的语法 (即 `v-slot` 指令)。它取代了 `slot` 和 `slot-scope` 这两个目前已被废弃但未被移除且仍在[文档中](https://cn.vuejs.org/v2/guide/components-slots.html#废弃了的语法)的 attribute。
+
+**插槽内容**
+
+Vue 实现了一套内容分发的 API，这套 API 的设计灵感源自 [Web Components 规范草案](https://github.com/w3c/webcomponents/blob/gh-pages/proposals/Slots-Proposal.md)，将 `<slot>` 元素作为承载分发内容的出口。
+
+它允许你像这样合成组件：
+
+```html
+<navigation-link url="/profile">
+  Your Profile
+</navigation-link>
+```
+
+然后你在 `<navigation-link>` 的模板中可能会写为：
+
+```html
+<a
+  v-bind:href="url"
+  class="nav-link"
+>
+  <slot></slot>
+</a>
+```
+
+当组件渲染的时候，<font color=FF0000>`<slot></slot>` 将会被替换为“Your Profile”。插槽内可以包含任何模板代码，包括 HTML</font>：
+
+```html
+<navigation-link url="/profile">
+  <!-- 添加一个 Font Awesome 图标 -->
+  <span class="fa fa-user"></span>
+  Your Profile
+</navigation-link>
+```
+
+甚至其它的组件：
+
+```html
+<navigation-link url="/profile">
+  <!-- 添加一个图标的组件 -->
+  <font-awesome-icon name="user"></font-awesome-icon>
+  Your Profile
+</navigation-link>
+```
+
+如果 `<navigation-link>` 的 `template` 中**没有**包含一个 `<slot>` 元素，则该组件起始标签和结束标签之间的任何内容都会被抛弃。
+
+
+
+**编译作用域**
+
+当你想在一个插槽中使用数据时，例如：
+
+```html
+<navigation-link url="/profile">
+  Logged in as {{ user.name }}
+</navigation-link>
+```
+
+该插槽跟模板的其它地方一样可以访问相同的实例 property (也就是相同的“作用域”)，<font color=FF0000>而**不能**访问 `<navigation-link>` 的作用域</font>。例如 `url` 是访问不到的：
+
+```html
+<navigation-link url="/profile">
+  Clicking here will send you to: {{ url }}
+  <!--
+  这里的 `url` 会是 undefined，因为其 (指该插槽的) 内容是传递给
+	<navigation-link>的，而不是在 <navigation-link> 组件内部定义的。
+  -->
+</navigation-link>
+```
+
+作为一条规则，请记住：<font color=FF0000>**父级模板里的所有内容都是在父级作用域中编译的；子模板里的所有内容都是在子作用域中编译的**</font>。
+
+
+
+**后备 (也<font color=FF0000>就是默认的</font>) 内容**
+
+有时为一个插槽设置具体的<font color=FF0000>后备</font>内容是很有用的，它<mark>只会在没有提供内容的时候被渲染</mark>。例如在一个 `<submit-button>` 组件中：
+
+```html
+<button type="submit">
+  <slot></slot>
+</button>
+```
+
+我们可能希望这个 `<button>` 内绝大多数情况下都渲染文本“Submit”。<font color=FF0000>为了将“Submit”作为后备内容，我们可以将它放在 `<slot>` 标签内</font>
+
+```html
+<button type="submit">
+  <slot>Submit</slot>
+</button>
+```
+
+现在当我在一个父级组件中使用 `<submit-button>` 并且不提供任何插槽内容时：
+
+```html
+<submit-button></submit-button>
+```
+
+后备内容“Submit”将会被渲染：
+
+```html
+<button type="submit">
+  Submit
+</button>
+```
+
+但是如果我们提供内容：
+
+```html
+<submit-button>
+  Save
+</submit-button>
+```
+
+则这个提供的内容将会被渲染从而取代后备内容：
+
+```html
+<button type="submit">
+  Save
+</button>
+```
+
+
+
+**具名插槽**（自 2.6.0 起有所更新，`slot`被废弃）
+
+有时我们需要多个插槽。例如对于一个带有如下模板的 `<base-layout>` 组件：
+
+```html
+<div class="container">
+  <header>
+    <!-- 我们希望把页头放这里 -->
+  </header>
+  <main>
+    <!-- 我们希望把主要内容放这里 -->
+  </main>
+  <footer>
+    <!-- 我们希望把页脚放这里 -->
+  </footer>
+</div>
+```
+
+对于这样的情况，<font color=FF0000>`<slot>` 元素有一个特殊的 attribute：`name`</font>。这个 attribute 可以用来定义额外的插槽：
+
+```html
+<div class="container">
+  <header>
+    <slot name="header"></slot>
+  </header>
+  <main>
+    <slot></slot>
+  </main>
+  <footer>
+    <slot name="footer"></slot>
+  </footer>
+</div>
+```
+
+<font color=FF0000>一个不带 `name` 的 `<slot>` 出口会带有隐含的名字“default”</font>。
+
+<mark>在向具名插槽提供内容的时候</mark>，<font color=FF0000>我们可以在一个 `<template>` 元素上使用<font size=5> `v-slot` </font>指令</font>，**<font color=FF0000>并以 `v-slot` 的参数的形式提供其名称</font>**：
+
+```html
+<base-layout>
+  <template v-slot:header>
+    <h1>Here might be a page title</h1>
+  </template>
+
+  <p>A paragraph for the main content.</p>
+  <p>And another one.</p>
+
+  <template v-slot:footer>
+    <p>Here's some contact info</p>
+  </template>
+</base-layout>
+```
+
+现在 `<template>` 元素中的所有内容都将会被传入相应的插槽。**任何没有被包裹在带有 `v-slot` 的 `<template>` 中的内容都会被视为默认插槽的内容。**
+
+可以在一个 `<template>` 中包裹默认插槽的内容：
+
+```html
+<base-layout>
+  <!-- ... -->
+  
+  <template v-slot:default>   <!-- 注意这里的default -->
+    <p>A paragraph for the main content.</p>
+    <p>And another one.</p>
+  </template>
+  
+  <!-- ... -->
+</base-layout>
+```
+
+
+
+**作用域插槽**（自 2.6.0 起有所更新。 `slot-scope` 被废弃）
+
+有时'<font color=FF0000>'让插槽内容能够**访问子组件中**才有**的数据**</font>是很有用的。例如，设想一个带有如下模板的 `<current-user>` 组件：
+
+```html
+<span>
+  <slot>{{ user.lastName }}</slot>
+</span
+```
+
+我们可能想换掉备用内容，用名而非姓来显示。如下：
+
+```html
+<current-user>
+  {{ user.firstName }}
+</current-user>
+```
+
+然而<font color=FF0000>上述代码**不会正常工作**</font>，因为<font color=FF0000>只有 `<current-user>` 组件可以访问到 `user`</font> 而我们提供的内容是在父级渲染的。
+
+<font color=FF0000>为了让 `user` 在父级的插槽内容（子元素）中可用</font>，<font color=FF0000>我们可以将 `user` 作为 `<slot>` 元素的一个 attribute 绑定上去</font>：
+
+```html
+<span>
+  <slot v-bind:user="user">
+    {{ user.lastName }}
+  </slot>
+</span>
+```
+
+<font color=FF0000>绑定在 `<slot>` 元素上的 attribute 被称为**插槽 prop**</font>。现在在父级作用域中，我们可以使用带值的 `v-slot` 来定义我们提供的插槽 prop 的名字：
+
+```html
+<current-user>
+  <template v-slot:default="slotProps">
+    {{ slotProps.user.firstName }}
+  </template>
+</current-user>
+```
+
+在这个例子中，我们选择将包含所有插槽 prop 的对象命名为 `slotProps`，但你也可以使用任意你喜欢的名字。
+
+
+
+**独占默认插槽的缩写语法**
+
+在上述情况下，<font color=FF0000>当被提供的内容**只有默认插槽**时，组件的标签才可以被当作插槽的模板来使用</font>。这样我们就可以把 `v-slot` 直接用在组件上：
+
+```html
+<current-user v-slot:default="slotProps">
+  {{ slotProps.user.firstName }}
+</current-user>
+```
+
+这种写法还可以更简单。就像假定未指明的内容对应默认插槽一样，<font color=FF0000>不带参数的 `v-slot` 被假定对应默认插槽（缩写写法）</font>：
+
+```html
+<current-user v-slot="slotProps">
+  {{ slotProps.user.firstName }}
+</current-user>
+```
+
+注意默认插槽的<font color=FF0000>缩写语法**不能**和具名插槽混用</font>，<font color=FF0000>因为它会导致作用域不明确</font>：
+
+```html
+<!-- 无效，会导致警告 -->
+<current-user v-slot="slotProps">
+  {{ slotProps.user.firstName }}
+  <template v-slot:other="otherSlotProps">
+    slotProps is NOT available here
+  </template>
+</current-user>
+```
+
+<mark>只要出现多个插槽，请始终为所有的插槽使用完整的基于 `<template>` 的语法</mark>，<font color=FF0000>即：不能省略</font>：
+
+```html
+<current-user>
+  <template v-slot:default="slotProps">
+    {{ slotProps.user.firstName }}
+  </template>
+
+  <template v-slot:other="otherSlotProps">
+    ...
+  </template>
+</current-user>
+```
+
+
+
+**解构插槽 Prop**
+
+**作用域插槽的内部<font color=FF0000>工作原理</font>**是<font color=FF0000>将你的插槽内容包括在一个传入单个参数的函数里</font>：
+
+```js
+function (slotProps) {
+  // 插槽内容
+}
+```
+
+这意味着<mark> `v-slot` 的值实际上<font color=FF0000>可以是任何能够作为函数定义中的参数的 JavaScript 表达式</font></mark>。所以在支持的环境下 ([单文件组件](https://cn.vuejs.org/v2/guide/single-file-components.html)或[现代浏览器](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#浏览器兼容))，你也可以使用 [ES2015 解构](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#解构对象)来传入具体的插槽 prop，如下：
+
+```html
+<current-user v-slot="{ user }">
+  {{ user.firstName }}
+</current-user>
+```
+
+这样可以使模板更简洁，尤其是在该插槽提供了多个 prop 的时候。它同样<font color=FF0000>开启了 prop 重命名等其它可能</font>，<font color=FF0000>例如将 `user` 重命名为 `person`</font>：
+
+```html
+<current-user v-slot="{ user: person }">
+  {{ person.firstName }}
+</current-user>
+```
+
+<mark>你甚至可以定义后备内容，用于插槽 prop 是 undefined 的情形</mark>：
+
+```html
+<current-user v-slot="{ user = { firstName: 'Guest' } }"> <!--设置默认值-->
+  {{ user.firstName }}
+</current-user>
+```
+
+
+
+**动态插槽名**（2.6.0 新增）
+
+<font color=FF0000>动态指令参数</font>也可以用在 v-slot 上，来定义动态的插槽名：
+
+```html
+<base-layout>
+  <template v-slot:[dynamicSlotName]>
+    ...
+  </template>
+</base-layout>
+```
+
+
+
+**具名插槽的缩写**（2.6.0 新增）
+
+跟 `v-on` 和 `v-bind` 一样，<font color=FF0000>`v-slot` 也有缩写，即把参数之前的所有内容 (`v-slot:`) 替换为字符 <font size=5>`#`</font></font>。例如 `v-slot:header` 可以被重写为 `#header`：
+
+```html
+<base-layout>
+  <template #header>
+    <h1>Here might be a page title</h1>
+  </template>
+
+  <p>A paragraph for the main content.</p>
+  <p>And another one.</p>
+
+  <template #footer>
+    <p>Here's some contact info</p>
+  </template>
+</base-layout>
+```
+
+然而，和其它指令一样，<font color=FF0000>该缩写只在其有参数的时候才可用</font>。这意味着以下语法是无效的：
+
+```html
+<!-- 这样会触发一个警告 -->
+<current-user #="{ user }">
+  {{ user.firstName }}
+</current-user>
+```
+
+<mark>如果你希望使用缩写的话，你必须始终以明确插槽名取而代之</mark>：
+
+```html
+<current-user #default="{ user }">
+  {{ user.firstName }}
+</current-user>
+```
+
+
+
+**其它**
+
+**<font color=FF0000>插槽 prop 允许我们将插槽转换为可复用的模板</font>，这些模板可以基于输入的 prop 渲染出不同的内容。**这在设计封装数据逻辑同时允许父级组件自定义部分布局的可复用组件时是最有用的。
+
+例如，我们要实现一个 `<todo-list>` 组件，它是一个列表且包含布局和过滤逻辑：
+
+```html
+<ul>
+  <li
+    v-for="todo in filteredTodos"
+    v-bind:key="todo.id"
+  >
+    {{ todo.text }}
+  </li>
+</ul>
+```
+
+我们可以将每个 todo 作为父级组件的插槽，以此通过父级组件对其进行控制，然后将 `todo` 作为一个插槽 prop 进行绑定：
+
+```html
+<ul>
+  <li
+    v-for="todo in filteredTodos"
+    v-bind:key="todo.id"
+  >
+    <!--
+    我们为每个 todo 准备了一个插槽，
+    将 `todo` 对象作为一个插槽的 prop 传入。
+    -->
+    <slot name="todo" v-bind:todo="todo">
+      <!-- 后备内容 -->
+      {{ todo.text }}
+    </slot>
+  </li>
+</ul>
+```
+
+现在当我们使用 `<todo-list>` 组件的时候，我们可以选择为 todo 定义一个不一样的 `<template>` 作为替代方案，并且可以从子组件获取数据：
+
+```html
+<todo-list v-bind:todos="todos">
+  <template v-slot:todo="{ todo }">
+    <span v-if="todo.isComplete">✓</span>
+    {{ todo.text }}
+  </template>
+</todo-list>
+```
