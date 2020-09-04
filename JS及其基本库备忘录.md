@@ -1228,6 +1228,8 @@ function findMax() {
 
 
 
+https://www.runoob.com/js/js-function-invocation.html
+
 
 
 #### onclick对元素绑定js方法

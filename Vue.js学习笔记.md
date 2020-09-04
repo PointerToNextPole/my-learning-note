@@ -1575,7 +1575,7 @@ Vue.component('alert-box', {
 
 **动态组件**
 
-有的时候，在不同组件之间进行动态切换是非常有用的，比如在一个多标签的界面里：
+有的时候，在<font color=FF0000>不同组件之间进行动态切换</font>是非常有用的，比如在一个多标签的界面里：
 
 <img src="https://i.loli.net/2020/09/02/ZtpCuUbs2Kjdi9m.png" style="zoom:50%;" />
 
@@ -2636,3 +2636,1365 @@ function (slotProps) {
   </template>
 </todo-list>
 ```
+
+
+
+
+
+### 动态组件 & 异步组件
+
+**在动态组件上使用 keep-alive**
+
+我们之前曾经在一个多标签的界面中使用 `is` attribute 来切换不同的组件：
+
+```html
+<component v-bind:is="currentTabComponent"></component>
+```
+
+当在这些组件之间切换的时候，你<font color=FF0000>有时会想保持这些组件的状态，以**避免反复重渲染**导致的性能问题</font>。例如我们来展开说一说这个多标签界面：
+
+<img src="https://i.loli.net/2020/09/03/vYAouU64iLq7GHN.png" style="zoom:45%;" />
+
+你会注意到，如果你选择了一篇文章，切换到 *Archive* 标签，然后再切换回 *Posts*，是不会继续展示你之前选择的文章的。这是因为你<font color=FF0000>每次切换新标签的时候，Vue 都创建了一个新的 `currentTabComponent` 实例</font>。
+
+重新创建动态组件的行为通常是非常有用的，但是在这个案例中，<mark>我们更希望那些标签的组件实例能够被在它们第一次被创建的时候缓存下来</mark>。为了解决这个问题，<font color=FF0000>**我们可以用一个 `<keep-alive>` 元素将其动态组件包裹起来**</font>。
+
+```html
+<!-- 失活的组件将会被缓存！-->
+<keep-alive>
+  <component v-bind:is="currentTabComponent"></component>
+</keep-alive>
+```
+
+
+
+**异步组件**
+
+在大型应用中，我们<mark>可能需要将应用分割成小一些的代码块，并且只在需要的时候才从服务器加载一个模块</mark>。为了简化，<font color=FF0000>Vue 允许你以一个<font size=5>工厂函数</font>的方式定义你的组件</font>，<font color=FF0000>这个工厂函数会<font size=5>**异步解析你的组件定义**</font></font>。<font color=FF0000>Vue **只有在这个组件需要被渲染的时候才会触发该工厂函数**，<font size=5>**且会把结果缓存起来供未来重渲染**</font></font>。例如：
+
+```js
+Vue.component('async-example', function (resolve, reject) {
+  setTimeout(function () {
+    // 向 `resolve` 回调传递组件定义
+    resolve({
+      template: '<div>I am async!</div>'
+    })
+  }, 1000)
+})
+```
+
+如你所见，这个工厂函数会收到一个 resolve 回调，<mark>这个回调函数<font color=FF0000>会在你从服务器得到组件定义的时候被调用</font></mark>。你也可以调用 reject(reason) 来表示加载失败。这里的 setTimeout 是为了演示用的，如何获取组件取决于你自己。一个推荐的做法是将异步组件和 webpack 的 code-splitting 功能一起配合使用：
+
+```js
+Vue.component('async-webpack-example', function (resolve) {
+  // 这个特殊的 `require` 语法将会告诉 webpack自动将你的构建代码切割成多个包
+  // ，这些包会通过 Ajax 请求加载
+  require(['./my-async-component'], resolve)
+})
+```
+
+你也可以在工厂函数中返回一个 `Promise`，所以把 webpack 2 和 ES2015 语法加在一起，我们可以这样使用动态导入：
+
+```js
+Vue.component(
+  'async-webpack-example',
+  // 这个动态导入会返回一个 `Promise` 对象。
+  () => import('./my-async-component')
+)
+```
+
+当使用局部注册的时候，你也可以直接提供一个返回 Promise 的函数：
+
+```js
+new Vue({
+  // ...
+  components: {
+    'my-component': () => import('./my-async-component')
+  }
+})
+```
+
+
+
+**处理加载状态**（2.3.0+ 新增）
+
+这里的异步组件工厂函数也可以返回一个如下格式的对象：
+
+```js
+const AsyncComponent = () => ({
+  // 需要加载的组件 (应该是一个 `Promise` 对象)
+  component: import('./MyComponent.vue'),
+  // 异步组件加载时使用的组件
+  loading: LoadingComponent,
+  // 加载失败时使用的组件
+  error: ErrorComponent,
+  // 展示加载时组件的延时时间。默认值是 200 (毫秒)
+  delay: 200,
+  // 如果提供了超时时间且组件加载也超时了，
+  // 则使用加载失败时使用的组件。默认值是：`Infinity`
+  timeout: 3000
+})
+```
+
+**//todo 这里什么是工厂函数？**
+
+
+
+### 处理边界情况
+
+**访问元素 & 组件**
+
+在绝大多数情况下，我们<mark>最好不要触达另一个组件实例内部或手动操作 DOM 元素</mark>。不过也确实在一些情况下做这些事情是合适的。
+
+
+
+**<font color=FF0000>访问根实例</font>**
+
+在每个 `new Vue` 实例的子组件中，<font color=FF0000>其<font size=5>**根实例**</font>可以通过<font size=5> `$root`</font> property 进行访问</font>。例如，在这个根实例中：
+
+```js
+// Vue 根实例
+new Vue({
+  data: {
+    foo: 1
+  },
+  computed: {
+    bar: function () { /* ... */ }
+  },
+  methods: {
+    baz: function () { /* ... */ }
+  }
+})
+```
+
+<font color=FF0000>所有的子组件</font>都可以将这个实例作为一个全局 store 来访问或使用。
+
+```js
+// 获取根组件的数据
+this.$root.foo
+
+// 写入根组件的数据
+this.$root.foo = 2
+
+// 访问根组件的计算属性
+this.$root.bar
+
+// 调用根组件的方法
+this.$root.baz()
+```
+
+
+
+**<font color=FF0000>访问父级组件</font>实例**
+
+和 `$root` 类似，<font color=FF0000><font size=5>`$parent`</font> property 可以用来**从一个子组件访问父组件**的实例</font>。它提供了一种机会，可以在后期随时触达父级组件，以替代将数据以 prop 的方式传入子组件的方式。
+
+<mark>**<font color=FF0000>注意：</font>**在<font color=FF0000>绝大多数情况下</font>，<font color=FF0000>触达父级组件会使得你的应用更难调试和理解</font>，尤其是当你变更了父级组件的数据的时候。当我们稍后回看那个组件的时候，很难找出那个变更是从哪里发起的。</mark>
+
+另外在一些可能适当的时候，你需要特别地共享一些组件库。举个例子，在和 JavaScript API 进行交互而不渲染 HTML 的抽象组件内，诸如这些假设性的 Google 地图组件一样：
+
+```html
+<google-map>
+  <google-map-markers v-bind:places="iceCreamShops"></google-map-markers>
+</google-map>
+```
+
+这个 `<google-map>` 组件可以定义一个 `map` property，所有的子组件都需要访问它。<mark>在这种情况下 `<google-map-markers>` 可能想要通过类似 `this.$parent.getMap` 的方式访问那个地图，以便为其添加一组标记</mark>。
+
+请留意，尽管如此，<font color=FF0000>通过这种模式构建出来的那个组件的内部仍然是容易出现问题的</font>。比如，设想一下我们添加一个新的 `<google-map-region>` 组件，当 `<google-map-markers>` 在其内部出现的时候，只会渲染那个区域内的标记：
+
+```html
+<google-map>
+  <google-map-region v-bind:shape="cityBoundaries">
+    <google-map-markers v-bind:places="iceCreamShops"></google-map-markers>
+  </google-map-region>
+</google-map>
+```
+
+那么在 `<google-map-markers>` 内部你可能发现自己需要一些类似这样的 hack：
+
+```js
+var map = this.$parent.map || this.$parent.$parent.map
+```
+
+很快它就会失控。这也是我们针对需要向任意更深层级的组件提供上下文信息时推荐[依赖注入](https://cn.vuejs.org/v2/guide/components-edge-cases.html#依赖注入)的原因。
+
+
+
+**访问<font color=FF0000>子组件实例</font>或<font color=FF0000>子元素</font>**
+
+<font color=FF0000>尽管存在 prop 和事件，有的时候你仍可能需要在 JavaScript 里直接访问一个子组件</font>。为了达到这个目的，<font color=FF0000>你可以通过<font size=5> `ref`</font> 这个 attribute **为子组件赋予一个 ID 引用</font>**。例如：
+
+```html
+<base-input ref="usernameInput"></base-input>
+```
+
+现在在你已经定义了这个 `ref` 的组件里，你可以使用：
+
+```js
+//注意：ref的使用
+this.$refs.usernameInput
+```
+
+来访问这个 `<base-input>` 实例，以便不时之需。比如程序化地从一个父级组件聚焦这个输入框。在刚才那个例子中，该 `<base-input>` 组件也可以使用一个类似的 `ref` 提供对内部这个指定元素的访问，例如：
+
+```html
+<input ref="input">
+```
+
+甚至可以通过其父级组件定义方法：
+
+```js
+methods: {
+  // 用来从父级组件聚焦输入框
+  focus: function () {
+    this.$refs.input.focus()
+  }
+}
+```
+
+这样就允许父级组件通过下面的代码聚焦 `<base-input>` 里的输入框：
+
+```js
+this.$refs.usernameInput.focus()
+```
+
+当 `ref` 和 `v-for` 一起使用的时候，你得到的 ref 将会是一个包含了对应数据源的这些子组件的数组。
+
+
+
+**依赖注入**
+
+在此之前，在我们描述访问父级组件实例的时候，展示过一个类似这样的例子：
+
+```html
+<google-map>
+  <google-map-region v-bind:shape="cityBoundaries">
+    <google-map-markers v-bind:places="iceCreamShops"></google-map-markers>
+  </google-map-region>
+</google-map>
+```
+
+在这个组件里，所有 `<google-map>` 的后代都需要访问一个 `getMap` 方法，以便知道要跟哪个地图进行交互。不幸的是，使用 `$parent` property 无法很好的扩展到更深层级的嵌套组件上。这也是<font color=FF0000>依赖注入</font>的用武之地，<font color=FF0000>它用到了两个新的实例选项：<font size=5>`provide`</font>（发送） 和<font size=5> `inject`</font>（接收）</font>。
+
+<font color=FF0000>`provide` 选项允许我们<font size=5>**指定**</font>我们想要**提供给后代组件的数据 / 方法**</font>。在这个例子中，就是 `<google-map>` 内部的 `getMap` 方法：
+
+```js
+provide: function () {
+  return {
+    getMap: this.getMap
+  }
+}
+```
+
+然后在任何后代组件里，我们都可以<font color=FF0000>使用<font size=5> `inject`</font> </font>选项来<font color=FF0000><font size=5>**接收**</font></font>指定的<font color=FF0000>我们想要添加在这个实例上的 property</font>：
+
+```js
+inject: ['getMap']
+```
+
+你可以在这里看到完整的示例。<mark>相比` $parent` 来说，这个用法可以让我们在任意后代组件中访问 getMap，而不需要暴露整个 `<google-map> `实例</mark>。这允许我们更好的持续研发该组件，而不需要担心我们可能会改变/移除一些子组件依赖的东西。同时这些组件之间的接口是始终明确定义的，就和 props 一样。
+
+实际上，你<mark>可以把依赖注入看作一部分“大范围有效的 prop”</mark>，除了：
+
+- 祖先组件不需要知道哪些后代组件使用它提供的 property
+- 后代组件不需要知道被注入的 property 来自哪里
+
+
+
+**程序化的事件侦听器**
+
+现在，你已经知道了 `$emit` 的用法，它可以被 `v-on` 侦听，但是 Vue 实例同时在其事件接口中提供了其它的方法。我们可以：
+
+- **$<font color=FF0000>on</font>(eventName, eventHandler)**：<font color=FF0000>侦听</font>一个事件
+- **$<font color=FF0000>once</font>(eventName, eventHandler)**：<font color=FF0000>一次性侦听</font>一个事件
+- **$<font color=FF0000>off</font>(eventName, eventHandler)** ：<font color=FF0000>停止侦听</font>一个事件
+
+你<mark>通常不会用到这些</mark>，但是当你<mark>需要在一个组件实例上手动侦听事件时，它们是派得上用场的</mark>。它们也可以用于代码组织工具。例如，你可能经常看到这种集成一个第三方库的模式：
+
+```js
+// 一次性将这个日期选择器附加到一个输入框上
+// 它会被挂载到 DOM 上。
+mounted: function () {
+  // Pikaday 是一个第三方日期选择器的库
+  this.picker = new Pikaday({
+    field: this.$refs.input,
+    format: 'YYYY-MM-DD'
+  })
+},
+// 在组件被销毁之前，
+// 也销毁这个日期选择器。
+beforeDestroy: function () {
+  this.picker.destroy()
+}
+```
+
+<font color=FF0000>这里有两个潜在的问题：</font>
+
+- 它需要在这个组件实例中保存这个 `picker`，如果可以的话最好只有生命周期钩子可以访问到它。这并不算严重的问题，但是它可以被视为杂物。
+- 我们的建立代码独立于我们的清理代码，这使得我们比较难于程序化地清理我们建立的所有东西。
+
+你应该通过一个程序化的侦听器解决这两个问题：
+
+```js
+mounted: function () {
+  var picker = new Pikaday({
+    field: this.$refs.input,
+    format: 'YYYY-MM-DD'
+  })
+
+  //调用$once()
+  this.$once('hook:beforeDestroy', function () {
+    picker.destroy()
+  })
+}
+```
+
+使用了这个策略，我甚至可以让多个输入框元素同时使用不同的 Pikaday，每个新的实例都程序化地在后期清理它自己：
+
+```js
+mounted: function () {
+  this.attachDatepicker('startDateInput')
+  this.attachDatepicker('endDateInput')
+},
+methods: {
+  attachDatepicker: function (refName) {
+    var picker = new Pikaday({
+      field: this.$refs[refName],
+      format: 'YYYY-MM-DD'
+    })
+
+    this.$once('hook:beforeDestroy', function () {
+      picker.destroy()
+    })
+  }
+}
+```
+
+
+
+#### **循环引用**
+
+- **递归组件**
+
+  <font color=FF0000>组件是可以在它们自己的模板中调用自身的</font>。不过<font color=FF0000>它们只能通过 `name` 选项来做这件事</font>：
+
+  ```js
+  name: 'unique-name-of-my-component'
+  ```
+
+  <mark>当你使用 `Vue.component` 全局注册一个组件时，这个全局的 ID 会自动设置为该组件的 `name` 选项</mark>。
+
+  ```js
+  Vue.component('unique-name-of-my-component', {
+    // ...
+  })
+  ```
+
+  稍有不慎，递归组件就可能导致无限循环：
+
+  ```js
+  name: 'stack-overflow',
+  template: '<div><stack-overflow></stack-overflow></div>'
+  ```
+
+  类似上述的组件将会导致“max stack size exceeded”错误，所以请确保递归调用是条件性的 (例如使用一个最终会得到 `false` 的 `v-if`)。
+
+- **组件之间的循环引用**
+
+  假设你需要构建一个文件目录树，像访达或资源管理器那样的。你可能有一个 `<tree-folder>` 组件，模板是这样的：
+
+  ```html
+  <p>
+    <span>{{ folder.name }}</span>
+    <tree-folder-contents :children="folder.children"/>
+  </p>
+  ```
+
+  还有一个 `<tree-folder-contents>` 组件，模板是这样的：
+
+  ```html
+  <ul>
+    <li v-for="child in children">
+      <tree-folder v-if="child.children" :folder="child"/>
+      <span v-else>{{ child.name }}</span>
+    </li>
+  </ul>
+  ```
+
+  当你仔细观察的时候，<mark>你会发现这些组件在渲染树中互为对方的后代 和 祖先</mark>——一个悖论！当通过 `Vue.component` 全局注册组件的时候，这个悖论会被自动解开。如果你是这样做的，那么你可以跳过这里。
+
+  然而，如果你使用一个模块系统依赖/导入组件，例如通过 webpack 或 Browserify，你会遇到一个错误：
+
+  ```
+  Failed to mount component: template or render function not defined.
+  ```
+
+  为了解释这里发生了什么，我们先把两个组件称为 A 和 B。模块系统发现它需要 A，但是首先 A 依赖 B，但是 B 又依赖 A，但是 A 又依赖 B，如此往复。这变成了一个循环，不知道如何不经过其中一个组件而完全解析出另一个组件。为了解决这个问题，我们需要给模块系统一个点，在那里“A *反正*是需要 B 的，但是我们不需要先解析 B。”
+
+  在我们的例子中，把 `<tree-folder>` 组件设为了那个点。我们知道那个产生悖论的子组件是 `<tree-folder-contents>` 组件，所以我们会等到生命周期钩子 `beforeCreate` 时去注册它：
+
+  ```js
+  beforeCreate: function () {
+    this.$options.components.TreeFolderContents = require('./tree-folder-contents.vue').default
+  }
+  ```
+
+  或者，在本地注册组件的时候，你可以使用 webpack 的异步 `import`：
+
+  ```js
+  components: {
+    TreeFolderContents: () => import('./tree-folder-contents.vue')
+  }
+  ```
+
+  这样问题就解决了！
+
+  //todo 这里没用看懂...
+
+
+
+#### 模板定义的替代品（两种）
+
+- **内联模板**
+
+  当 <font size=5>`inline-template`</font> 这个特殊的 attribute 出现在一个子组件上时，<font color=FF0000>这个组件将会使用<font size=5> **其** </font>里面的内容作为模板</font>，而不是将其作为被分发的内容。这使得模板的撰写工作更加灵活。
+
+  ```html
+  <my-component inline-template>
+    <div>
+      <p>These are compiled as the component's own template.</p>
+      <p>Not parent's transclusion content.</p>
+    </div>
+  </my-component>
+  ```
+
+  内联模板需要定义在 Vue 所属的 DOM 元素内。
+
+- **X-Template**
+
+  另一个定义模板的方式是<font color=FF0000>在一个 `<script>` 元素中，并为其带上 `text/x-template` 的类型</font>，<font color=FF0000>然后通过一个 id 将模板引用过去</font>。例如：
+
+  ```html
+  <script type="text/x-template" id="hello-world-template">
+    <p>Hello hello hello</p>
+  </script>
+  
+  <script>
+  	Vue.component('hello-world', {
+  	  template: '#hello-world-template'
+  	})
+</script>
+  ```
+  
+  <mark>x-template 需要定义在 Vue 所属的 DOM 元素外</mark>（如上示例）。
+
+
+
+#### **控制更新**
+
+感谢 <font color=FF0000>Vue 的响应式系统</font>，<font color=FF0000>它始终知道何时进行更新</font> (如果你用对了的话)。不过还是有一些边界情况，你想要强制更新，尽管表面上看响应式的数据没有发生改变。也有一些情况是你想阻止不必要的更新。
+
+- **强制更新**
+
+  你可能还没有留意到数组或对象的变更检测注意事项，或者你可能依赖了一个未被 Vue 的响应式系统追踪的状态。
+
+  然而，如果你已经做到了上述的事项仍然发现在极少数的情况下需要手动强制更新，那么你可以通过 `$forceUpdate` 来做这件事。
+
+- **通过 v-once 创建低开销的静态组件**
+
+  渲染普通的 HTML 元素在 Vue 中是非常快速的，但有的时候你可能有一个组件，这个组件包含了**大量**静态内容。在这种情况下，你可以在根元素上添加 `v-once` attribute 以确保这些内容只计算一次然后缓存起来，就像这样：
+
+  ```js
+  Vue.component('terms-of-service', {
+    template: `
+      <div v-once>
+        <h1>Terms of Service</h1>
+        ... a lot of static content ...
+      </div>
+    `
+  })
+  ```
+
+
+
+
+
+### 进入/离开 & 列表过渡
+
+**概述**
+
+Vue 在插入、更新或者移除 DOM （<font color=FF0000>即：修改DOM</font>）时，<font color=FF0000>提供多种不同方式的应用过渡效果</font>。包括以下工具：
+
+- 在 CSS 过渡和动画中自动应用 class
+- 可以配合使用第三方 CSS 动画库，如 Animate.css
+- 在过渡钩子函数中使用 JavaScript 直接操作 DOM
+- 可以配合使用第三方 JavaScript 动画库，如 Velocity.js
+
+
+
+**单元素/组件的过渡**
+
+Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在下列情形中，可以给任何元素和组件添加进入 / 离开过渡
+
+- 条件渲染 (使用 `v-if`)
+- 条件展示 (使用 `v-show`)
+- 动态组件
+- 组件根节点
+
+示例：
+
+```html
+<div id="demo">
+  <button v-on:click="show = !show">
+    Toggle
+  </button>
+  <transition name="fade">
+    <p v-if="show">hello</p>
+  </transition>
+</div>
+
+<script>
+	new Vue({
+	  el: '#demo',
+	  data: {
+	    show: true
+	  }
+	})
+</script>
+
+<style type="text/css">
+	.fade-enter-active, .fade-leave-active {
+	  transition: opacity .5s;
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+	  opacity: 0;
+	}
+</style>
+```
+
+**当插入或删除<font color=FF0000>包含在 `transition` 组件中的元素</font>时，Vue 将会做以下处理：**
+
+1. <font color=FF0000>自动嗅探</font>目标元素<font color=FF0000>是否应用了 CSS 过渡或动画</font>，如果是，在恰当的时机添加 / 删除 CSS 类名。
+2. 如果过渡组件提供了 JavaScript 钩子函数，这些钩子函数将在恰当的时机被调用。
+3. 如果没有找到 JavaScript 钩子并且也没有检测到 CSS 过渡/动画，DOM 操作 (插入/删除) 在下一帧中立即执行。(注意：此指浏览器逐帧动画机制，和 Vue 的 `nextTick` 概念不同)
+
+
+
+#### **过渡的类名**
+
+<font color=FF0000>在进入/离开的过渡中，会有 <font size=5>6</font> 个 class 切换</font>。
+
+1. **v-enter：**定义<font color=FF0000>进入过渡的**开始**状态</font>。<mark>在元素被插入之前生效，在元素被插入之后的下一帧移除</mark>。
+2. **v-enter-active：**定义<font color=FF0000>进入过渡**生效时**的状态</font>。<font color=FF0000>在整个进入过渡的阶段中应用</font>，在元素被插入之前生效，在过渡/动画完成之后移除。这个类可以被用来定义进入过渡的过程时间，延迟和曲线函数。
+3. **v-enter-to（2.1.8 版及以上）：**定义<font color=FF0000>进入过渡的**结束**状态</font>。在元素被插入之后下一帧生效 (与此同时 `v-enter` 被移除)，在过渡/动画完成之后移除。
+4. **v-leave：**定义<font color=FF0000>离开过渡的开始状态</font>。在离开过渡被触发时立刻生效，下一帧被移除。
+5. **v-leave-active：**定义<font color=FF0000>离开过渡**生效时**的状态</font>。<font color=FF0000>在整个离开过渡的阶段中应用</font>，在离开过渡被触发时立刻生效，在过渡/动画完成之后移除。这个类可以被用来定义离开过渡的过程时间，延迟和曲线函数。
+6. **v-leave-to（2.1.8 版及以上）：**定义<font color=FF0000>离开过渡的**结束**状态</font>。在离开过渡被触发之后下一帧生效 (与此同时 `v-leave` 被删除)，在过渡/动画完成之后移除。
+
+<img src="https://i.loli.net/2020/09/03/l57omcAKrqJVjLP.png" style="zoom:55%;" />
+
+对于这些在过渡中切换的类名来说，<font color=FF0000>如果你使用一个没有名字的 `<transition>`，则 `v-` 是这些类名的默认前缀</font>。如果你使用了 `<transition name="my-transition">`，那么 `v-enter` 会替换为 `my-transition-enter`。
+
+<font color=FF0000>**`v-enter-active` 和 `v-leave-active`** 可以控制进入 / 离开过渡的不同的缓和曲线</font>
+
+
+
+**CSS 过渡**
+
+<font color=FF0000>**常用的过渡都是使用 CSS 过渡**</font>
+
+下面是一个简单例子：
+
+```html
+<div id="example-1">
+  <button @click="show = !show">
+    Toggle render
+  </button>
+  <transition name="slide-fade">
+    <p v-if="show">hello</p>
+  </transition>
+</div>
+
+<script>
+	new Vue({
+	  el: '#example-1',
+	  data: {
+	    show: true
+	  }
+	})
+</script>
+
+<style>
+/* 可以设置不同的进入和离开动画 */
+/* 设置持续时间和动画函数 */
+	.slide-fade-enter-active {
+	  transition: all .3s ease;
+	}
+	.slide-fade-leave-active {
+	  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+	}
+	.slide-fade-enter, .slide-fade-leave-to
+	/* .slide-fade-leave-active for below version 2.1.8 */ {
+	  transform: translateX(10px);
+	  opacity: 0;
+	}
+<style>
+```
+
+
+
+**CSS 动画**
+
+<mark>CSS 动画用法同 CSS 过渡</mark>，<font color=FF0000>**区别是**</font><mark>在动画中 `v-enter` 类名在<font color=FF0000>节点插入 DOM 后不会立即删除</font>，而是在 `animationend` 事件触发时删除</mark>。
+
+示例：(省略了兼容性前缀)
+
+```html
+<div id="example-2">
+  <button @click="show = !show">Toggle show</button>
+  <transition name="bounce">
+    <p v-if="show">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis enim libero, at lacinia diam fermentum id. Pellentesque habitant morbi tristique senectus et netus.</p>
+  </transition>
+</div>
+
+<script>
+	new Vue({
+	  el: '#example-2',
+	  data: {
+	    show: true
+	  }
+	})
+</script>
+
+<style>
+	.bounce-enter-active {
+	  animation: bounce-in .5s;
+	}
+	.bounce-leave-active {
+	  animation: bounce-in .5s reverse;
+	}
+	@keyframes bounce-in {
+	  0% {
+	    transform: scale(0);
+	  }
+	  50% {
+	    transform: scale(1.5);
+	  }
+	  100% {
+	    transform: scale(1);
+	  }
+	}
+</style>
+```
+
+
+
+#### **自定义过渡的类名**
+
+我们<font color=FF0000>可以通过以下 attribute 来自定义过渡类名</font>：
+
+- **enter-class**
+- **enter-active-class**
+- **enter-to-class** (2.1.8+)
+- **leave-class**
+- **leave-active-class**
+- **leave-to-class** (2.1.8+)
+
+<font color=FF0000>他们的优先级高于普通的类名</font>（和6个过渡类名一样），这对于 Vue 的过渡系统和其他第三方 CSS 动画库，如 [Animate.css](https://daneden.github.io/animate.css/) 结合使用十分有用。
+
+示例：
+
+```html
+<link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+
+<div id="example-3">
+  <button @click="show = !show">
+    Toggle render
+  </button>
+  <transition
+    name="custom-classes-transition"
+    enter-active-class="animated tada"
+    leave-active-class="animated bounceOutRight"
+  >
+    <p v-if="show">hello</p>
+  </transition>
+</div>
+
+<script>
+	new Vue({
+	  el: '#example-3',
+	  data: {
+	    show: true
+	  }
+	})
+</script>
+```
+
+
+
+#### **同时使用过渡和动画**
+
+<font color=FF0000>Vue 为了知道过渡的完成，**必须设置相应的事件监听器**</font>。<font color=FF0000>它可以是 <font size=5>`transitionend` </font>或<font size=5> `animationend`</font></font>，这取决于给元素应用的 CSS 规则。如果你使用其中任何一种，Vue 能自动识别类型并设置监听。
+
+但是，在一些场景中，你<font color=FF0000>需要给同一个元素同时设置两种过渡动效</font>，比如<mark> `animation` 很快的被触发并完成了，而 `transition` 效果还没结束</mark>。在这种情况中，你就<font color=FF0000>需要使用 `type` attribute 并设置 `animation` 或 `transition` 来明确声明你需要 Vue 监听的类型</font>。
+
+
+
+#### **显性的过渡持续时间**（2.2.0 新增）
+
+在很多情况下，Vue 可以自动得出过渡效果的完成时机。默认情况下，Vue 会等待其在过渡效果的根元素的第一个 `transitionend` 或 `animationend` 事件。然而也可以不这样设定——比如，我们可以拥有一个精心编排的一系列过渡效果，其中一些嵌套的内部元素相比于过渡效果的根元素有延迟的或更长的过渡效果。
+
+在这种情况下你可以用 `<transition>` 组件上的 <font size=5>`duration`</font> prop <font color=FF0000>定制一个显性的过渡持续时间 (以毫秒计)</font>：
+
+```html
+<transition :duration="1000">...</transition>
+```
+
+你<font color=FF0000>也可以定制进入和移出的持续时间</font>：
+
+```html
+<transition :duration="{ enter: 500, leave: 800 }">...</transition>
+```
+
+
+
+#### 初始渲染的过渡
+
+可以通过 `appear` attribute <font color=FF0000>设置节点在**初始渲染**的过渡</font>
+
+```html
+<transition appear>
+  <!-- ... -->
+</transition>
+```
+
+这里默认和进入/离开过渡一样，同样也可以自定义 CSS 类名。
+
+```html
+<transition
+  appear
+  appear-class="custom-appear-class"
+  appear-to-class="custom-appear-to-class" (2.1.8+)
+  appear-active-class="custom-appear-active-class"
+>
+  <!-- ... -->
+</transition>
+```
+
+
+
+#### **多个元素的过渡**
+
+我们之后讨论多个组件的过渡，对于原生标签可以使用 v-if / v-else。最常见的多标签过渡是一个列表和描述这个列表为空消息的元素：
+
+```html
+<transition>
+  <table v-if="items.length > 0">
+    <!-- ... -->
+  </table>
+  <p v-else>Sorry, no items found.</p>
+</transition>
+```
+
+可以这样使用，但是<font color=FF0000>有一点需要注意</font>：
+
+当有**相同标签名**的元素切换时，需要通过 `key` attribute 设置唯一的值来标记以让 Vue 区分它们，否则 Vue 为了效率只会替换相同标签内部的内容。即使在技术上没有必要，**给在 `<transition>` 组件中的多个元素设置 key 是一个更好的实践。**
+
+示例：
+
+```html
+<transition>
+  <button v-if="isEditing" key="save">
+    Save
+  </button>
+  <button v-else key="edit">
+    Edit
+  </button>
+</transition>
+```
+
+
+
+#### 多个组件的过渡
+
+多个组件的过渡简单很多 - 我们不需要使用 key attribute。相反，我们只需要<font color=FF0000>使用动态组件</font>：
+
+```html
+<transition name="component-fade" mode="out-in">
+  <component v-bind:is="view"></component>
+</transition>
+
+<script>
+	new Vue({
+	  el: '#transition-components-demo',
+	  data: {
+	    view: 'v-a'
+	  },
+	  components: {
+	    'v-a': {
+	      template: '<div>Component A</div>'
+	    },
+	    'v-b': {
+	      template: '<div>Component B</div>'
+	    }
+	  }
+	})
+</script>
+
+<style>
+	.component-fade-enter-active, .component-fade-leave-active {
+	  transition: opacity .3s ease;
+	}
+	.component-fade-enter, .component-fade-leave-to
+	/* .component-fade-leave-active for below version 2.1.8 */ {
+	  opacity: 0;
+	}
+</style>
+```
+
+
+
+#### 列表过渡
+
+目前为止，关于过渡我们已经讲到：
+
+- 单个节点
+- 同一时间渲染多个节点中的一个
+
+那么怎么同时渲染整个列表，比如使用 `v-for`？在这种场景中，使用 `<transition-group>` 组件。在我们深入例子之前，先了解关于这个组件的几个特点：
+
+- 不同于 `<transition>`，它会以一个真实元素呈现：默认为一个 `<span>`。你也可以通过 `tag` attribute 更换为其他元素。
+- 过渡模式不可用，因为我们不再相互切换特有的元素。
+- 内部元素**总是需要**提供唯一的 `key` attribute 值。
+- CSS 过渡的类将会应用在内部的元素中，而不是这个组/容器本身。
+
+
+
+**列表的排序过渡**
+
+`<transition-group>` 组件还有一个特殊之处。不仅可以进入和离开动画，还可以改变定位。要使用这个新功能只需了解新增的 **`v-move` class**，它会在元素的改变定位的过程中应用。<mark>像之前的类名一样，可以通过 `name` attribute 来自定义前缀，也可以通过 `move-class` attribute 手动设置</mark>。
+
+`v-move` 对于设置过渡的切换时机和过渡曲线非常有用
+
+
+
+#### 可复用的过渡
+
+过渡可以通过 Vue 的组件系统<font color=FF0000>实现复用</font>。要创建一个可复用过渡组件，你<font color=FF0000>需要做的就是将 `<transition>` 或者 `<transition-group>` 作为根组件，然后将任何子组件放置在其中就可以了</font>。
+
+
+
+#### 动态过渡
+
+在 Vue 中即使是过渡也是数据驱动的！动态过渡最基本的例子是通过 `name` attribute 来绑定动态值。
+
+```html
+<transition v-bind:name="transitionName">
+  <!-- ... -->
+</transition>
+```
+
+当你想用 Vue 的过渡系统来定义的 CSS 过渡/动画在不同过渡间切换会非常有用。
+
+所有过渡 attribute 都可以动态绑定，但我们不仅仅只有 attribute 可以利用，还可以通过事件钩子获取上下文中的所有数据，因为事件钩子都是方法。这意味着，根据组件的状态不同，你的 JavaScript 过渡会有不同的表现
+
+
+
+### 状态过渡
+
+Vue 的过渡系统提供了非常多简单的方法设置进入、离开和列表的动效。那么<font color=FF0000>对于数据元素本身的动效</font>呢，比如：
+
+- 数字和运算
+- 颜色的显示
+- SVG 节点的位置
+- 元素的大小和其他的 property
+
+<mark>这些数据要么本身就以数值形式存储，要么可以转换为数值</mark>。有了这些数值后，我们就可以结合 Vue 的响应式和组件系统，使用第三方库来实现切换元素的过渡状态。
+
+
+
+**把过渡放到组件里**
+
+管理太多的状态过渡会很快的增加 Vue 实例或者组件的复杂性，幸好很多的动画可以提取到专用的子组件。
+
+
+
+### 混入
+
+混入 (mixin) 提供了一种非常灵活的方式，来<font color=FF0000>分发 Vue 组件中的可复用功能</font>。<font color=FF0000>一个混入对象可以包含**任意组件选项**</font>。当<font color=FF0FFF>组件</font> <font color=FF0000>使用</font> <font color=0000FF>混入对象</font>时，**所有**<font color=FF0000>混入对象</font>的<font color=0000FF>**选项**</font>将被“混合”进入该组件本身的选项。
+
+示例：
+
+```js
+// 定义一个混入对象
+var myMixin = {
+  created: function () {
+    this.hello()
+  },
+  methods: {
+    hello: function () {
+      console.log('hello from mixin!')
+    }
+  }
+}
+
+// 定义一个使用混入对象的组件
+var Component = Vue.extend({
+  mixins: [myMixin]
+})
+
+var component = new Component() // => "hello from mixin!"
+```
+
+
+
+##### 选项合并
+
+当 <font color=FF0000>组件</font> 和 <font color=FF0000>混入对象</font> 含<font color=FF0000>有同名选项</font>时，<font color=FF0000>这些选项将以恰当的方式进行“合并”</font>。
+
+比如，<font color=FF0000>**数据对象**在内部会进行**递归合并**</font>，并<font color=FF0000>在发生**冲突时以组件数据优先**</font>。
+
+```js
+var mixin = {
+  data: function () {  //有一个data函数
+    return {
+      message: 'hello',
+      foo: 'abc'
+    }
+  }
+}
+
+new Vue({
+  mixins: [mixin],
+  data: function () {  //还有一个data函数
+    return {
+      message: 'goodbye',
+      bar: 'def'
+    }
+  },
+  created: function () {
+    console.log(this.$data)
+    // => { message: "goodbye", foo: "abc", bar: "def" }（组件优先）
+  }
+})
+```
+
+同名钩子函数将合并为一个数组，因此都将被调用。另外，<font color=FF0000>**混入对象的钩子**</font>将在<font color=000FFF>组件自身钩子</font><font color=FF0FFF>**之前**</font>调用。
+
+```js
+var mixin = {
+  created: function () {
+    console.log('混入对象的钩子被调用')
+  }
+}
+
+new Vue({
+  mixins: [mixin],
+  created: function () {
+    console.log('组件钩子被调用')
+  }
+})
+
+// => "混入对象的钩子被调用"
+// => "组件钩子被调用"
+```
+
+值为对象的选项，例如 `methods`、`components` 和 `directives`，将被合并为同一个对象。两个对象键名冲突时，取组件对象的键值对。
+
+```js
+var mixin = {
+  methods: {
+    foo: function () {
+      console.log('foo')
+    },
+    conflicting: function () {
+      console.log('from mixin')
+    }
+  }
+}
+
+var vm = new Vue({
+  mixins: [mixin],
+  methods: {
+    bar: function () {
+      console.log('bar')
+    },
+    conflicting: function () {
+      console.log('from self')
+    }
+  }
+})
+
+vm.foo() // => "foo"
+vm.bar() // => "bar"
+vm.conflicting() // => "from self"
+```
+
+注意：`Vue.extend()` 也使用同样的策略进行合并。
+
+
+
+**全局混入**
+
+<font color=FF0000>混入也可以进行**全局注册**</font>。使用时格外小心！<font color=FF0000>一旦使用全局混入，它将影响**每一个**之后创建的 Vue 实例</font>。使用恰当时，这可以用来为自定义选项注入处理逻辑。
+
+```js
+// 为自定义的选项 'myOption' 注入一个处理器。
+// 使用Vue.mixin以全局混入？
+Vue.mixin({
+  created: function () {
+    var myOption = this.$options.myOption
+    if (myOption) {
+      console.log(myOption)
+    }
+  }
+})
+
+new Vue({
+  myOption: 'hello!'
+})
+// => "hello!"
+```
+
+
+
+##### 自定义选项合并策略
+
+自定义选项将使用默认策略，即简单地覆盖已有值。<mark>如果想让<font color=FF0000>自定义选项以自定义逻辑合并</font>，可以向 `Vue.config.optionMergeStrategies` 添加一个函数</mark>：
+
+```js
+Vue.config.optionMergeStrategies.myOption = function (toVal, fromVal) {
+  // 返回合并后的值
+}
+```
+
+对于多数值为对象的选项，可以使用与 `methods` 相同的合并策略：
+
+```js
+var strategies = Vue.config.optionMergeStrategies
+strategies.myOption = strategies.methods
+```
+
+
+
+### 自定义指令
+
+除了核心功能默认内置的指令 (`v-model` 和 `v-show`)，<font color=FF0000>Vue 也允许注册自定义指令</font>。注意，在 Vue2.0 中，代码复用和抽象的主要形式是组件。然而，<mark>有的情况下，你仍然需要对普通 DOM 元素进行底层操作，这时候就会用到自定义指令</mark>。
+
+<img src="https://i.loli.net/2020/09/03/6GCYNlw29JhMdpL.png" style="zoom: 50%;" />
+
+当页面加载时，该元素将获得焦点。事实上，只要你在打开这个页面后还没点击过任何内容，这个输入框就应当还是处于聚焦状态。现在让我们用指令来实现这个功能：
+
+```js
+// 注册一个全局自定义指令 `v-focus`
+Vue.directive('focus', {
+  // 当被绑定的元素插入到 DOM 中时……
+  inserted: function (el) {
+    // 聚焦元素
+    el.focus()
+  }
+})
+```
+
+如果<font color=FF0000>想注册局部指令</font>，组件中也接受一个 `directives` 的选项：
+
+```js
+directives: {
+  focus: {
+    // 指令的定义
+    inserted: function (el) {
+      el.focus()
+    }
+  }
+}
+```
+
+然后你可以在模板中任何元素上使用新的 `v-focus` property，如下：
+
+```html
+<input v-focus>
+```
+
+
+
+##### 钩子函数
+
+一个指令定义对象可以<font color=FF0000>提供如下几个钩子函数</font> (均为可选)：
+
+- **bind**：<font color=FF0000>只调用一次</font>，<font color=FF0000>指令第一次绑定到元素时调用</font>。在这里可以进行一次性的初始化设置。
+- **inserted**：<font color=FF0000>被绑定元素插入父节点时调用</font> (仅保证父节点存在，但不一定已被插入文档中)。
+- **update**：<font color=FF0000>所在组件的 VNode 更新时调用</font>，**但是<font color=FF0000>可能发生在其 子VNode 更新之前</font>**。指令的值可能发生了改变，也可能没有。但是你可以通过比较更新前后的值来忽略不必要的模板更新 (详细的钩子函数参数见下)。
+- **componentUpdated**：指令所在<font color=FF0000>组件的 VNode 及其 子VNode</font> <font color=FF0000>**全部更新后**</font>调用。
+- **unbind**：<font color=FF0000>只调用一次</font>，<font color=FF0000>**指令与元素解绑**时调用</font>。
+
+
+
+**钩子函数参数（el、binding、vnode 和 oldVnode）**
+
+指令钩子函数会被传入以下参数：
+
+- **el**：<font color=FF0000>指令所绑定的元素</font>，可以用来直接操作 DOM。
+- **binding**：<font color=FF0000>一个对象</font>，包含以下 property：
+  - **name**：<font color=FF0000>指令名</font>，不包括 `v-` 前缀。
+  - **value**：<font color=FF0000>指令的绑定值</font>，例如：`v-my-directive="1 + 1"` 中，绑定值为 `2`。
+  - **oldValue**：<font color=FF0000>指令绑定的前一个值</font>，仅在 `update` 和 `componentUpdated` 钩子中可用。无论值是否改变都可用。
+  - **expression**：<font color=FF0000>**字符串形式**的指令表达式</font>。例如 `v-my-directive="1 + 1"` 中，表达式为 `"1 + 1"`。
+  - **arg**：<font color=FF0000>传给指令的参数</font>，可选。例如 `v-my-directive:foo` 中，参数为 `"foo"`。
+  - **modifiers**：一个包含修饰符的对象。例如：`v-my-directive.foo.bar` 中，修饰符对象为 `{ foo: true, bar: true }`。
+- **vnode**：<font color=FF0000>Vue 编译生成的虚拟节点</font>。移步 [VNode API](https://cn.vuejs.org/v2/api/#VNode-接口) 来了解更多详情。
+- **oldVnode**：<font color=FF0000>上一个虚拟节点</font>，仅在 `update` 和 `componentUpdated` 钩子中可用。
+
+<font color=FF0000>**注意**</font>：<font color=FF0000>除了 `el` 之外，其它参数都应该是**只读的**</font>，切勿进行修改。如果需要在钩子之间共享数据，建议通过元素的 [`dataset`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/dataset) 来进行。
+
+示例：
+
+```html
+<div id="hook-arguments-example" v-demo:foo.a.b="message"></div>
+
+<script>
+	Vue.directive('demo', {
+  bind: function (el, binding, vnode) {
+    var s = JSON.stringify
+    el.innerHTML =
+      'name: '       + s(binding.name) + '<br>' +
+      'value: '      + s(binding.value) + '<br>' +
+      'expression: ' + s(binding.expression) + '<br>' +
+      'argument: '   + s(binding.arg) + '<br>' +
+      'modifiers: '  + s(binding.modifiers) + '<br>' +
+      'vnode keys: ' + Object.keys(vnode).join(', ')
+  }
+})
+
+new Vue({
+  el: '#hook-arguments-example',
+  data: {
+    message: 'hello!'
+  }
+})
+</script>
+```
+
+
+
+**动态指令参数**
+
+<font color=FF0000>指令的参数可以是**动态**的</font>。例如，在 `v-mydirective:[argument]="value"` 中，<font color=FF0000>`argument` 参数可以根据组件实例数据进行更新</font>！这使得自定义指令可以在应用中被灵活使用。
+
+
+
+**函数简写**
+
+在很多时候，你可能想在 `bind` 和 `update` 时触发相同行为，而不关心其它的钩子。比如这样写：
+
+```js
+Vue.directive('color-swatch', function (el, binding) {
+  el.style.backgroundColor = binding.value
+})
+```
+
+
+
+**对象字面量**
+
+如果指令需要多个值，可以传入一个 JavaScript 对象字面量。记住，指令函数能够接受所有合法的 JavaScript 表达式。
+
+```html
+<div v-demo="{ color: 'white', text: 'hello!' }"></div>
+
+<script>
+	Vue.directive('demo', function (el, binding) {
+	  console.log(binding.value.color) // => "white"
+	  console.log(binding.value.text)  // => "hello!"
+	})
+</script>  
+```
+
+
+
+### 渲染函数 & JSX
+
+**基础**
+
+<font color=FF0000>Vue 推荐在绝大多数情况下使用模板来创建你的 HTML</font>。然而在一些场景中，你真的需要 JavaScript 的完全编程的能力。这时你可以用**渲染函数**，它比模板更接近编译器。
+
+**示例：** render函数
+
+```js
+Vue.component('anchored-heading', {
+  render: function (createElement) {
+    return createElement(
+      'h' + this.level,   // 标签名称
+      this.$slots.default // 子节点数组
+    )
+  },
+  props: {
+    level: {
+      type: Number,
+      required: true
+    }
+  }
+})
+```
+
+
+
+**节点、树以及虚拟 DOM**
+
+在深入渲染函数之前，了解一些浏览器的工作原理是很重要的。以下面这段 HTML 为例：
+
+```html
+<div>
+  <h1>My title</h1>
+  Some text content
+  <!-- TODO: Add tagline -->
+</div>
+```
+
+<mark>当浏览器读到这些代码时，它会建立一个“DOM 节点”树来保持追踪所有内容</mark>，如同你会画一张家谱树来追踪家庭成员的发展一样。
+
+上述 HTML 对应的 DOM 节点树如下图所示：
+
+<img src="https://i.loli.net/2020/09/03/wNJg7vfEa4IpFds.png" style="zoom: 42%;" />
+
+每个元素都是一个节点。每段文字也是一个节点。甚至注释也都是节点。一个节点就是页面的一个部分。就像家谱树一样，每个节点都可以有孩子节点 (也就是说每个部分可以包含其它的一些部分)。
+
+高效地更新所有这些节点会是比较困难的，不过所幸你不必手动完成这个工作。你只需要告诉 Vue 你希望页面上的 HTML 是什么，这可以是在一个模板里：
+
+```html
+<h1>{{ blogTitle }}</h1>
+```
+
+<font color=FF0000>或者一个渲染函数里</font>：
+
+```js
+render: function (createElement) {
+  return createElement('h1', this.blogTitle)
+}
+```
+
+在这两种情况下，Vue 都会自动保持页面的更新，即便 `blogTitle` 发生了改变。
+
+
+
+**虚拟 DOM**
+
+<font color=FF0000>Vue 通过建立一个**虚拟 DOM** 来追踪自己要如何改变真实 DOM</font>。请仔细看这行代码：
+
+```js
+return createElement('h1', this.blogTitle)
+```
+
+`createElement` 到底会返回什么呢？其实不是一个实际的 DOM 元素。它更准确的名字可能是 `createNodeDescription`，因为它所包含的信息会告诉 Vue 页面上需要渲染什么样的节点，包括及其子节点的描述信息。<font color=FF0000>我们把这样的节点描述为“虚拟节点 (virtual node)”，也常简写它为“**VNode**”</font>。<mark>“虚拟 DOM”是我们对由 Vue 组件树建立起来的整个 VNode 树的称呼</mark>。
+
+
+
+**createElement 参数**
+
+接下来你需要熟悉的是如何在 `createElement` 函数中使用模板中的那些功能。这里是 `createElement` 接受的参数：
+
+```js
+// @returns {VNode}
+createElement(
+  // {String | Object | Function}
+  // 一个 HTML 标签名、组件选项对象，或者
+  // resolve 了上述任何一种的一个 async 函数。必填项。
+  'div',
+
+  // {Object}
+  // 一个与模板中 attribute 对应的数据对象。可选。
+  {
+    // (详情见下一节)
+  },
+
+  // {String | Array}
+  // 子级虚拟节点 (VNodes)，由 `createElement()` 构建而成，
+  // 也可以使用字符串来生成“文本虚拟节点”。可选。
+  [
+    '先写一些文字',
+    createElement('h1', '一则头条'),
+    createElement(MyComponent, {
+      props: {
+        someProp: 'foobar'
+      }
+    })
+  ]
+)
+```
+
+
+
+**深入数据对象**
+
+有一点要注意：正如 `v-bind:class` 和 `v-bind:style` 在模板语法中会被特别对待一样，它们在 VNode 数据对象中也有对应的顶层字段。该对象也允许你绑定普通的 HTML attribute，也允许绑定如 `innerHTML` 这样的 DOM property (这会覆盖 `v-html` 指令)。
+
+```js
+{
+  // 与 `v-bind:class` 的 API 相同，
+  // 接受一个字符串、对象或字符串和对象组成的数组
+  'class': {
+    foo: true,
+    bar: false
+  },
+  // 与 `v-bind:style` 的 API 相同，
+  // 接受一个字符串、对象，或对象组成的数组
+  style: {
+    color: 'red',
+    fontSize: '14px'
+  },
+  // 普通的 HTML attribute
+  attrs: {
+    id: 'foo'
+  },
+  // 组件 prop
+  props: {
+    myProp: 'bar'
+  },
+  // DOM property
+  domProps: {
+    innerHTML: 'baz'
+  },
+  // 事件监听器在 `on` 内，
+  // 但不再支持如 `v-on:keyup.enter` 这样的修饰器。
+  // 需要在处理函数中手动检查 keyCode。
+  on: {
+    click: this.clickHandler
+  },
+  // 仅用于组件，用于监听原生事件，而不是组件内部使用
+  // `vm.$emit` 触发的事件。
+  nativeOn: {
+    click: this.nativeClickHandler
+  },
+  // 自定义指令。注意，你无法对 `binding` 中的 `oldValue`
+  // 赋值，因为 Vue 已经自动为你进行了同步。
+  directives: [
+    {
+      name: 'my-custom-directive',
+      value: '2',
+      expression: '1 + 1',
+      arg: 'foo',
+      modifiers: {
+        bar: true
+      }
+    }
+  ],
+  // 作用域插槽的格式为
+  // { name: props => VNode | Array<VNode> }
+  scopedSlots: {
+    default: props => createElement('span', props.text)
+  },
+  // 如果组件是其它组件的子组件，需为插槽指定名称
+  slot: 'name-of-slot',
+  // 其它特殊顶层 property
+  key: 'myKey',
+  ref: 'myRef',
+  // 如果你在渲染函数中给多个元素都应用了相同的 ref 名，
+  // 那么 `$refs.myRef` 会变成一个数组。
+  refInFor: true
+}
+```
+
+//todo 这类没有看懂...
+
+
+
