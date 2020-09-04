@@ -1218,17 +1218,239 @@ function findMax() {
 
 - **作为一个函数调用**
 
-  函数不属于任何对象。但是在 JavaScript 中它始终是默认的全局对象。而在 HTML 中默认的全局对象是 HTML 页面本身，所以函数是属于 HTML 页面。
+  <font color=FF0000>函数不属于任何对象。但是在 JavaScript 中它始终是默认的全局对象</font>。而在 <mark>HTML 中默认的全局对象是 HTML 页面本身</mark>，所以函数是属于 HTML 页面。
+
+  this对象：当<font color=FF0000>函数没有被自身的对象调用时 **this** 的值就会变成全局对象</font>。在 web 浏览器中全局对象是浏览器窗口（window 对象）。
 
 - **函数作为方法调用**
 
+  在 JavaScript 中你可以将函数定义为对象的方法。这里的**this**对象是当前方法所在的对象
+
 - **使用构造函数调用函数**
+
+  如果函数调用前使用了 **new** 关键字, 则是调用了构造函数。
+
+  这看起来就像创建了新的函数，但实际上 <font color=FF0000>**JavaScript 函数是重新创建的对象**</font>。示例：
+
+  ```js
+  // 构造函数:
+  function myFunction(arg1, arg2) {
+      this.firstName = arg1;
+      this.lastName  = arg2;
+  }
+   
+  // This creates a new object
+  var x = new myFunction("John","Doe");
+  x.firstName;                             // 返回 "John"
+  ```
 
 - **作为函数方法调用函数**
 
+  在 JavaScript 中, <font color=FF0000>函数是对象。JavaScript **函数有它的属性和方法**</font>。
+
+  <font color=FF0000>**call()** 和 **apply()** 是**预定义**的函数方法</font>。 <font color=FF0000>两个方法可用于调用函数</font>，<font color=FF0000>两个方法的**第一个参数必须是对象本身**</font>。
+  示例：
+
+  ```js
+  function myFunction(a, b) {
+      return a * b;
+  }
+  myObject = myFunction.call(myObject, 10, 2);     // 返回 20
+  ```
+
+  两个方法都使用了对象本身作为第一个参数。 两者的区别在于第二个参数： 
+
+  - **apply**<font color=FF0000>传入的是一个参数数组</font>，也就是将多个参数组合成为一个数组传入
+
+  - **call**则作为call的参数传入（从第二个参数开始）。
+  
+  在 JavaScript <font color=FF0000>严格模式(strict mode)下</font>, 在<font color=FF0000>调用函数时第一个参数会成为 **this** 的值</font>， 即使该参数不是一个对象。
+  
+  在 JavaScript <font color=FF0000>非严格模式(non-strict mode)下</font>, <font color=FF0000>如果第一个参数的值是 null 或 undefined</font>, 它<font color=FF0000>将使用全局对象替代</font>。
+  
+  注意：通过 call() 或 apply() 方法你可以设置 **this** 的值, 且作为已存在对象的新方法调用。
 
 
-https://www.runoob.com/js/js-function-invocation.html
+
+#### JavaScript 闭包
+
+私有变量可以用到闭包。
+
+所有函数都能访问全局变量。 实际上，<font color=FF0000>在 JavaScript 中，**所有函数都能访问它们上一层的作用域**</font>。同时，<font color=FF0000>JavaScript 支持嵌套函数。嵌套函数可以访问上一层的函数变量</font>。
+
+示例：
+
+```js
+function add() {
+    var counter = 0;
+    function plus() {counter += 1;}
+    plus();    
+    return counter; 
+}
+//调用
+add(); // counter = 1
+add(); // counter = 2
+add(); // counter = 3
+```
+
+同时由于<font color=FF0000>函数可以自我调用</font>，所以闭包可以这样：
+
+```js
+var add = (function () {
+    var counter = 0;
+    return function () {return counter += 1;}
+})();
+ 
+add(); // counter = 1
+add(); // counter = 2
+add(); // counter = 3
+```
+
+
+
+#### JavaScript HTML DOM
+
+通过 HTML DOM，可访问 JavaScript HTML 文档的所有元素。
+
+网页被加载时，浏览器会创建页面的文档对象模型（DOM / Document Object Model）。
+
+**查找 HTML 元素有三种方法**
+
+- 通过 id 找到 HTML 元素
+
+  ```js
+  var x=document.getElementById("intro");
+  ```
+
+- 通过标签名找到 HTML 元素
+
+  ```js
+  var y=x.getElementsByTagName("p");
+  ```
+
+- 通过类名找到 HTML 元素
+
+  ```js
+  var x=document.getElementsByClassName("intro");
+  ```
+
+  
+
+#### JavaScript HTML DOM - 改变 HTML
+
+如需改变 HTML 元素的属性，请使用这个语法：
+
+```js
+document.getElementById(id).attribute=new-attribute
+```
+
+
+
+#### JavaScript HTML DOM - 改变CSS
+
+如需改变 HTML 元素的样式，请使用这个语法：
+
+```js
+document.getElementById(id).style.property=new-style
+```
+
+**使用事件**
+
+HTML DOM 允许我们通过触发事件来执行代码。比如以下事件：
+
+- 元素被点击。
+- 页面加载完成。
+- 输入框被修改。
+- ……
+
+示例如下：
+
+```html
+<!--注意：这里onclick中的js代码被引号""包含-->
+<button type="button" 
+        onclick="document.getElementById('id1').style.color='red'">
+  点我!</button>
+```
+
+与上面代码类似的：引号中的js代码可以被封装成一个函数，而在引号中只调用函数即可。
+
+```html
+<button onclick="displayDate()">点这里</button>
+<script>
+	function displayDate(){
+		document.getElementById("demo").innerHTML=Date();
+	}
+</script>
+```
+
+同时，这里的onclick事件也可以被修改为：
+
+- **onload 和 onunload 事件：**onload 和 onunload 事件会在用户进入或离开页面时被触发。<font color=FF0000>onload 和 onunload 事件可用于处理 cookie</font>。
+- **onchange 事件：**<font color=FF0000>onchange 事件常结合**对输入字段的验证**来使用</font>。
+- **onmouseover 和 onmouseout 事件：**onmouseover 和 onmouseout 事件可用于在用户的鼠标移至 HTML 元素上方或移出元素时触发函数。
+- **onmousedown、onmouseup 以及 onclick 事件：**onmousedown, onmouseup 以及 onclick 构成了鼠标点击事件的所有部分。首先当点击鼠标按钮时，会触发 onmousedown 事件，当释放鼠标按钮时，会触发 onmouseup 事件，最后，当完成鼠标点击时，会触发 onclick 事件。
+
+
+
+#### JavaScript HTML DOM EventListener
+
+**addEventListener() 方法**
+
+- addEventListener() 方法用于<font color=FF0000>向指定元素添加事件句柄</font>。
+- addEventListener() 方法<font color=FF0000>添加的事件句柄**不会覆盖已存在的事件句柄**</font>。
+- 你<font color=FF0000>可以**向一个元素添加多个事件句柄**</font>。
+- 你可以<font color=FF0000>向同个元素添加多个同类型的事件句柄</font>，如：两个 "click" 事件。
+- 你可以<font color=FF0000>向**任何 DOM 对象**添加事件监听</font>，不仅仅是 HTML 元素。如： window 对象。
+- addEventListener() 方法可以更简单的控制事件（<font color=FF0000>冒泡与捕获</font>）。
+
+**语法：**
+
+```js
+element.addEventListener(event, function, useCapture);
+```
+
+- **event：**<font color=FF0000>事件的类型</font> 
+
+- **function：**<font color=FF0000>事件触发后调用的函数</font>。
+
+- **useCapture：**是个布尔值<font color=FF0000>用于描述事件是冒泡还是捕获</font>。该参数是<font color=FF0000>可选</font>的。
+
+
+
+
+
+#### JavaScript HTML DOM 元素 (节点)
+
+- **appendChild(node)：**创建新的 HTML 元素 (节点)，用于<font color=FF0000>添加新元素到尾部</font>
+
+  要创建新的 HTML 元素 (节点)需要先创建一个元素，然后在已存在的元素中添加它。
+
+  示例：
+
+  ```js
+  //创建<p> 元素
+  var para = document.createElement("p");
+  //<p> 元素创建一个新的文本节点
+  var node = document.createTextNode("这是一个新的段落。");
+  //将文本节点添加到 <p> 元素中：
+  para.appendChild(node);
+   
+  var element = document.getElementById("div1");
+  element.appendChild(para);
+  ```
+
+- **insertBefore(node)：**将新元素添加到开始位置
+
+- **removeChild(node)：**移除一个元素
+- **replaceChild(node)：**替换一个元素
+
+
+
+#### JavaScript HTML DOM 集合(Collection)
+
+
+
+
 
 
 
