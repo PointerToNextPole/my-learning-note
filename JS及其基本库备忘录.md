@@ -2386,6 +2386,289 @@ window.onload = funcRef;
 
 
 
+## JSON
+
+JSON: **J**ava**S**cript **O**bject **N**otation(JavaScript 对象表示法)
+
+JSON 独立于语言：JSON 使用 Javascript语法来描述数据对象，但是 JSON 仍然独立于语言和平台。JSON 解析器和 JSON 库支持许多不同的编程语言。 目前非常多的动态（PHP，JSP，.NET）编程语言都支持JSON。
+
+**与 XML 相同之处**
+
+- JSON 是纯文本
+- JSON 具有"自我描述性"（人类可读）
+- JSON 具有层级结构（值中存在值）
+- JSON 可通过 JavaScript 进行解析
+- JSON 数据可使用 AJAX 进行传输
+
+**与 XML 不同之处**
+
+- 没有结束标签
+- 更短
+- 读写的速度更快
+- 能够使用内建的 JavaScript eval() 方法进行解析
+- 使用数组
+- 不使用保留字
+
+
+
+#### JSON 语法
+
+**JSON 语法规则**
+
+JSON 语法是 JavaScript 对象表示语法的子集。
+
+- 数据在名称/值对中
+- 数据由逗号分隔
+- 大括号保存对象
+- 中括号保存数组
+
+**JSON 名称/值对**
+
+JSON 数据的书写格式是：名称/值对。名称/值对包括字段名称（在双引号中），后面写一个冒号，然后是值。
+
+示例：
+
+```json
+"name" : "菜鸟教程"
+```
+
+**另外：JSON 文件**
+
+- JSON 文件的文件类型是 ".json"
+- JSON 文本的 MIME 类型是 "application/json"
+
+
+
+#### JSON 值
+
+JSON 值可以是：
+
+- 数字（整数或浮点数）
+- 字符串（在双引号中）
+- 逻辑值（true 或 false）
+- 数组（在中括号`[]`中）
+- 对象（在大括号中）
+- null
+
+
+
+#### JSON 对象
+
+示例：
+
+```json
+{ "name":"runoob", "alexa":10000, "site":null }
+```
+
+**访问对象值**
+
+- 你可以使用点号<font color=FF0000 size=5>**`.`**</font>来访问对象的值：
+
+  ```js
+  var myObj = { "name":"runoob", "alexa":10000, "site":null };
+  var x = myObj.name;
+  ```
+
+- 你也可以使用中括号<font color=FF0000 size=5>**`[]`**</font>来访问对象的值：
+
+  ```js
+  var myObj = { "name":"runoob", "alexa":10000, "site":null };
+  var x = myObj["name"];
+  ```
+
+- 你可以使用 for-in 来循环对象的属性：
+
+  **实例**
+
+  ```js
+  var myObj = { "name":"runoob", "alexa":10000, "site":null }; 
+  for (x in myObj) {
+    document.getElementById("demo").innerHTML += x + "<br>"; 
+  }
+  ```
+
+- 循环对象
+
+  - 可以使用 for-in 来循环对象的属性
+
+    ```js
+    var myObj = { "name":"runoob", "alexa":10000, "site":null };
+    for (x in myObj) {
+        document.getElementById("demo").innerHTML += x + "<br>";
+    }
+    //name alexa site
+    ```
+
+  - 在 for-in 循环对象的属性时，使用中括号（[]）来访问属性的值：
+
+    ```js
+    var myObj = { "name":"runoob", "alexa":10000, "site":null };
+    for (x in myObj) {
+        document.getElementById("demo").innerHTML += myObj[x] + "<br>";
+    }
+    ```
+
+**嵌套 JSON 对象**
+
+JSON 对象中可以包含另外一个 JSON 对象：
+
+**实例**
+
+```json
+myObj = {    
+  "name":"runoob",    
+  "alexa":10000,    
+  "sites": {        
+    "site1":"www.runoob.com",        
+    "site2":"m.runoob.com",        
+    "site3":"c.runoob.com"    
+  } 
+}
+```
+
+你可以使用点号<font color=FF0000 size=5>**`.`**</font>或者中括号<font color=FF0000 size=5>**`[]`**</font>来访问嵌套的 JSON 对象。
+
+```js
+x = myObj.sites.site1;
+// 或者
+x = myObj.sites["site1"];
+```
+
+**修改值**
+
+- 你可以使用点号<font color=FF0000 size=5>**`.`**</font>来修改 JSON 对象的值
+
+  ```js
+  myObj.sites.site1 = "www.google.com";
+  ```
+
+- 你可以使用中括号<font color=FF0000 size=5>**`[]`**</font>来修改 JSON 对象的值：
+
+  ```js
+  myObj.sites["site1"] = "www.google.com";
+  ```
+
+**删除对象属性**
+
+我们可以使用 **delete** 关键字来删除 JSON 对象的属性
+
+- 使用点号<font color=FF0000 size=5>**`.`**</font>
+
+  ```js
+  delete myObj.sites.site1;
+  ```
+
+- 使用中括号<font color=FF0000 size=5>**`[]`**</font>
+
+  ```js
+  delete myObj.sites["site1"]
+  ```
+
+
+
+#### JSON.parse()
+
+JSON 通常用于与服务端交换数据。在接收服务器数据时一般是字符串。
+
+<font color=FF0000>我们可以使用 JSON.parse() 方法将数据转换为 JavaScript 对象。</font>
+
+**语法**
+
+```js
+JSON.parse(text[, reviver])
+```
+
+**参数说明：**
+
+- **text：**<font color=FF0000>必需</font>， 一个有效的<font color=FF0000> JSON</font> 字符串。
+- **reviver：** <font color=FF0000>可选</font>，一个<font color=FF0000>转换结果的函数</font>， <font color=FF0000>将为对象的每个成员调用此函数</font>。
+
+**解析“函数”（解析字符串形式的函数）**
+
+<font color=FF0000>JSON 不允许包含函数，但你可以将函数作为字符串存储，之后再将字符串转换为函数</font>。
+
+示例：
+
+```js
+var text = '{ "name":"Runoob", "alexa":"function () {return 10000;}", "site":"www.runoob.com"}'; 
+var obj = JSON.parse(text);
+obj.alexa = eval("(" + obj.alexa + ")");  
+
+document.getElementById("demo").innerHTML = obj.name + " Alexa 排名：" + obj.alexa();
+```
+
+
+
+#### JSON.stringify()
+
+JSON 通常用于与服务端交换数据。在向服务器发送数据时一般是字符串。
+
+我们<font color=FF0000>可以使用 JSON.stringify() 方法将 JavaScript 对象转换为字符串</font>。
+
+**语法**
+
+```js
+JSON.stringify(value[, replacer[, space]])
+```
+
+**参数说明：**
+
+- **value：**<font color=FF0000>必需</font>， 要转换的 JavaScript 值（<font color=FF0000>通常为对象或数组</font>）。
+
+- **replacer：**<font color=FF0000>可选</font>。用于转换结果的函数或数组。
+
+  如果 replacer 为<font color=FF0000>函数</font>，则 JSON.stringify 将调用该函数，并传入每个成员的键和值。使用返回值而不是原始值。如果此函数返回 undefined，则排除成员。根对象的键是一个空字符串：""。
+
+  如果 replacer 是一个<font color=FF0000>数组</font>，则仅转换该数组中具有键值的成员。成员的转换顺序与键在数组中的顺序一样。当 value 参数也为数组时，将忽略 replacer 数组。
+
+- **space：**<font color=FF0000>可选</font>，文本添加缩进、空格和换行符，如果 space 是一个数字，则返回值文本在每个级别缩进指定数目的空格，如果 space 大于 10，则文本缩进 10 个空格。space 也可以使用非数字，如：\t。
+
+**解析<font color=FF0000>“函数”</font>**
+
+JSON 不允许包含函数，JSON.stringify() 会删除 JavaScript 对象的函数，包括 key 和 value。
+
+我们可以<font color=FF0000>在执行 JSON.stringify() 函数前将函数转换为字符串</font>来避免以上问题的发生：
+
+示例：
+
+```js
+var obj = { "name":"Runoob", "alexa":function () {return 10000;}, "site":"www.runoob.com"}; 
+obj.alexa = obj.alexa.toString(); 
+var myJSON = JSON.stringify(obj);  
+
+document.getElementById("demo").innerHTML = myJSON;
+```
+
+
+
+#### JSON 使用
+
+**把 JSON 文本转换为 JavaScript 对象**
+
+JSON<font color=FF0000> 最常见的用法</font>之一，是<font color=FF0000>从 web 服务器上读取 JSON 数据（作为文件或作为 HttpRequest）</font>，将 JSON 数据转换为 JavaScript 对象，然后在网页中使用该数据。
+
+由于 JSON 语法是 JavaScript 语法的子集，<font color=FF0000>JavaScript 函数 eval() 可用于将 JSON 文本转换为 JavaScript 对象</font>。
+
+eval() 函数使用的是 JavaScript 编译器，可解析 JSON 文本，然后生成 JavaScript 对象。<font color=FF0000>必须把文本包围在括号中，这样才能避免语法错误</font>，示例：
+
+```js
+var obj = eval ("(" + txt + ")");
+```
+
+
+
+#### JSONP 教程
+
+<font color=FF0000>JSONP (JSON with Padding)</font> 是 <font color=FF0000>json 的一种"使用模式"</font>，<font color=FF0000>可以让网页从**别的域名**（网站）那获取资料，即跨域读取数据。</font>
+
+为什么我们从不同的域（网站）访问数据需要一个特殊的技术( JSONP )呢？这是因为同源策略。
+
+同源策略，它是由 Netscape 提出的一个著名的安全策略，现在所有支持 JavaScript 的浏览器都会使用这个策略。
+
+
+
+
+
 
 
 ***
