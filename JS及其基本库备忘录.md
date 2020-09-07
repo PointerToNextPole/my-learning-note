@@ -105,29 +105,29 @@ Undefined 这个值表示变量不含有值。
 
 **字符串方法**
 
-| 方法                | 描述                                                         |
-| :------------------ | :----------------------------------------------------------- |
-| charAt()            | 返回指定索引位置的字符                                       |
-| charCodeAt()        | 返回指定索引位置字符的 Unicode 值                            |
-| concat()            | 连接两个或多个字符串，返回连接后的字符串                     |
-| fromCharCode()      | 将 Unicode 转换为字符串                                      |
-| indexOf()           | 返回字符串中检索指定字符第一次出现的位置                     |
-| lastIndexOf()       | 返回字符串中检索指定字符最后一次出现的位置                   |
-| localeCompare()     | 用本地特定的顺序来比较两个字符串                             |
-| match()             | 找到一个或多个正则表达式的匹配                               |
-| replace()           | 替换与正则表达式匹配的子串                                   |
-| search()            | 检索与正则表达式相匹配的值                                   |
-| slice()             | 提取字符串的片断，并在新的字符串中返回被提取的部分           |
-| split()             | 把字符串分割为子字符串数组                                   |
-| substr()            | 从起始索引号提取字符串中指定数目的字符                       |
-| substring()         | 提取字符串中两个指定的索引号之间的字符                       |
-| toLocaleLowerCase() | 根据主机的语言环境把字符串转换为小写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
-| toLocaleUpperCase() | 根据主机的语言环境把字符串转换为大写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
-| toLowerCase()       | 把字符串转换为小写                                           |
-| toString()          | 返回字符串对象值                                             |
-| toUpperCase()       | 把字符串转换为大写                                           |
-| trim()              | 移除字符串首尾空白                                           |
-| valueOf()           | 返回某个字符串对象的原始值                                   |
+| 方法                                | 描述                                                         |
+| :---------------------------------- | :----------------------------------------------------------- |
+| charAt()                            | 返回指定索引位置的字符                                       |
+| charCodeAt()                        | 返回指定索引位置字符的 Unicode 值                            |
+| concat()                            | 连接两个或多个字符串，返回连接后的字符串                     |
+| fromCharCode()                      | 将 Unicode 转换为字符串                                      |
+| <font color=FF0000>indexOf()</font> | 返回字符串中检索指定字符第一次出现的位置                     |
+| lastIndexOf()                       | 返回字符串中检索指定字符最后一次出现的位置                   |
+| localeCompare()                     | 用本地特定的顺序来比较两个字符串                             |
+| match()                             | 找到一个或多个正则表达式的匹配                               |
+| <font color=FF0000>replace()</font> | 替换与正则表达式匹配的子串                                   |
+| search()                            | 检索与正则表达式相匹配的值                                   |
+| slice()                             | 提取字符串的片断，并在新的字符串中返回被提取的部分           |
+| split()                             | 把字符串分割为子字符串数组                                   |
+| substr()                            | 从起始索引号提取字符串中指定数目的字符                       |
+| substring()                         | 提取字符串中两个指定的索引号之间的字符                       |
+| toLocaleLowerCase()                 | 根据主机的语言环境把字符串转换为小写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
+| toLocaleUpperCase()                 | 根据主机的语言环境把字符串转换为大写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
+| toLowerCase()                       | 把字符串转换为小写                                           |
+| toString()                          | 返回字符串对象值                                             |
+| toUpperCase()                       | 把字符串转换为大写                                           |
+| trim()                              | 移除字符串首尾空白                                           |
+| valueOf()                           | 返回某个字符串对象的原始值                                   |
 
 更多方法实例可以参见：[JavaScript String 对象](https://www.runoob.com/jsref/jsref-obj-string.html)。
 
@@ -1417,6 +1417,45 @@ element.addEventListener(event, function, useCapture);
 
 
 
+**removeEventListener()方法**
+
+语法：
+
+```js
+element.removeElementListener(event, function);
+```
+
+
+
+**补充：事件传递有两种方式：冒泡与捕获**
+
+事件冒泡和事件捕获分别由微软和网景公司提出，这两个概念都是为了解决页面中事件流（事件发生顺序）的问题。
+
+考虑下面这段代码：
+
+```html
+<div id="outer">
+    <p id="inner">Click me!</p>
+</div>
+```
+
+上面的代码当中一个div元素当中有一个p子元素，<font color=FF0000>如果两个元素都有一个click的处理函数</font>，那么我们怎么才能知道哪一个函数会首先被触发呢？
+为了解决这个问题微软和网景提出了两种几乎完全相反的概念。
+
+- 事件冒泡
+
+  微软提出了名为`事件冒泡(event bubbling)`的事件流。事件冒泡可以形象地比喻为把一颗石头投入水中，泡泡会一直从水底冒出水面。也就是说，事件会从最内层的元素开始发生，一直向上传播，直到document对象。
+
+  因此在事件冒泡的概念下在p元素上发生click事件的顺序应该是**`p -> div -> body -> html -> document`**
+
+- 事件捕获
+
+  网景提出另一种事件流名为`事件捕获(event capturing)`。与事件冒泡相反，事件会从最外层开始发生，直到最具体的元素。
+
+  因此在事件捕获的概念下在p元素上发生click事件的顺序应该是**`document -> html -> body -> div -> p`**
+
+摘自：[JS中事件冒泡与捕获](https://segmentfault.com/a/1190000005654451)
+
 
 
 #### JavaScript HTML DOM 元素 (节点)
@@ -1448,9 +1487,393 @@ element.addEventListener(event, function, useCapture);
 
 #### JavaScript HTML DOM 集合(Collection)
 
+getElementsByTagName() 方法返回 [HTMLCollection](https://www.runoob.com/jsref/dom-htmlcollection.html) 对象。
+
+```js
+// 获取文档所有的 <p> 元素（哪怕是嵌套内层的）
+var x = document.getElementsByTagName("p");
+// 访问第二个 <p> 元素可以是以下代码:
+y = x[1];
+```
+
+**另外，HTMLCollection 不是一个数组！**
+
+HTMLCollection 看起来可能是一个数组，但其实不是。
+
+你可以像数组一样，使用索引来获取元素。
+
+所以，HTMLCollection 无法使用数组的方法： valueOf(), pop(), push(), 或 join() 。
 
 
 
+#### JavaScript HTML DOM 节点列表
+
+**NodeList** 对象是一个从文档中获取的<font color=FF0000>节点列表</font> (集合) 。
+
+所有浏览器的 **childNodes** 属性返回的是 NodeList 对象。
+
+<font color=FF0000>大部分浏览器的 **querySelectorAll()** 返回 NodeList 对象</font>。
+
+**HTMLCollection 与 NodeList 的区别**
+
+- [HTMLCollection](https://www.runoob.com/js/js-htmldom-collections.html) 是 HTML 元素的集合。NodeList 是一个文档节点的集合。
+- 不同：
+  - **HTMLCollection** 元素可以通过 name，id 或索引来获取。
+  - **NodeList** <font color=FF0000>只能</font>通过索引来获取。
+  - 只有 NodeList 对象有包含属性节点和文本节点。
+
+- 类似：
+  - NodeList 与 HTMLCollection 都与数组对象有点类似，可以使用索引 (0, 1, 2, 3, 4, ...) 来获取元素。
+  - NodeList 与 HTMLCollection 都有 length 属性。
+
+
+
+#### JavaScript 对象
+
+- **创建对象，语法如下：**
+
+  ```js
+  // 以构造函数形式来调用
+  new Object([value])
+  ```
+
+  Object 构造函数，会根据给定的参数创建对象，具体有以下情况：
+
+  - 如果给定值是 null 或 undefined，将会创建并返回一个空对象。
+  - 如果传进去的是一个基本类型的值，则会构造其包装类型的对象。
+  - 如果传进去的是引用类型的值，仍然会返回这个值，经他们复制的变量保有和源对象相同的引用地址。
+  - 当以非构造函数形式被调用时，Object 的行为等同于 new Object()。
+
+- **可以使用对象字面量来创建对象**，语法格式如下：
+
+  ```js
+  { name1 : value1, name2 : value2,...nameN : valueN }
+  ```
+
+  示例：
+
+  ```js
+  person={firstname:"John",lastname:"Doe",age:50,eyecolor:"blue"};
+  ```
+
+- **使用<font color=FF0000>对象构造器</font>**
+
+  示例：
+
+  ```js
+  function person(firstname,lastname,age,eyecolor)
+  {
+      this.firstname=firstname;
+      this.lastname=lastname;
+      this.age=age;
+      this.eyecolor=eyecolor;
+  }
+  ```
+
+  一旦有了对象构造器，就可以创建新的对象实例，就像这样：
+
+  ```js
+  var myFather=new person("John","Doe",50,"blue");
+  var myMother=new person("Sally","Rally",48,"green");
+  ```
+
+**JavaScript for...in 循环**
+
+JavaScript for...in 语句循环遍历对象的属性。 for...in 循环中的代码块<font color=FF0000>将针对每个属性执行一次</font>。
+
+**语法**
+
+```js
+for (variable in object){
+	//code
+}
+```
+
+示例：
+
+```js
+var person={fname:"John",lname:"Doe",age:25}; 
+ 
+for (x in person){
+    txt=txt + person[x];
+}
+```
+
+**JavaScript 的对象是可变的**
+
+对象是可变的，它们是通过<font color=FF0000>引用</font>来传递的。
+
+以下实例的 person 对象不会创建副本：
+
+```js
+var x = person;  // 不会创建 person 的副本，是引用
+```
+
+<font color=FF0000>如果修改来 x ，person 的属性也会改变</font>，注意这里是引用，是浅拷贝
+
+实例
+
+```js
+//x.age 和 person.age 都会改变
+var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"}  var x = person; x.age = 10;           
+```
+
+
+
+#### JavaScript prototype（原型对象）
+
+<font color=FF0000>所有的 JavaScript 对象都会从一个 prototype（原型对象）中**继承**属性和方法</font>。
+
+- Date 对象从 Date.prototype 继承。
+- Array 对象从 Array.prototype 继承。
+- Person 对象从 Person.prototype 继承。
+
+所有 JavaScript 中的对象都是位于原型链顶端的 Object 的实例。
+
+<font color=FF0000>JavaScript 对象有一个指向一个原型对象的链。当试图访问一个对象的属性时，它不仅仅在该对象上搜寻，还会搜寻该对象的原型，以及该对象的原型的原型，依次层层向上搜索，直到找到一个名字匹配的属性或到达原型链的末尾</font>。
+
+`Date` 对象，`Array` 对象， 以及 `Person` 对象从 `Object.prototype` 继承。
+
+**添加属性和方法**
+
+有的时候我们想要在所有已经存在的对象添加新的属性或方法。另外，有时候我们想要在对象的构造函数中添加属性或方法。
+
+- 使用 prototype 属性就可以给对象的构造函数添加新的属性
+
+- 当然我们也可以使用 prototype 属性就可以给对象的构造函数添加新的方法
+
+示例：
+
+```js
+function Person(first, last, age, eyecolor) {  
+  this.firstName = first;
+  this.lastName = last;  
+  this.age = age;  
+  this.eyeColor = eyecolor; 
+}  
+
+//使用 prototype 属性就可以给对象的构造函数添加新的属性
+Person.prototype.nationality = "English";
+
+//使用 prototype 属性就可以给对象的构造函数添加新的方法
+Person.prototype.name = function() {
+  return this.firstName + " " + this.lastName;
+};
+```
+
+
+
+#### JavaScript Number 对象
+
+**<font color=FF0000>所有 JavaScript 数字均为 64 位</font>**
+
+JavaScript 不是类型语言。与许多其他编程语言不同，<mark>JavaScript 不定义不同类型的数字，比如整数、短、长、浮点等等</mark>。
+
+在JavaScript中，<mark>数字不分为整数类型和浮点型类型，<font color=FF0000>**所有的数字都是由 浮点型类型**</font></mark>。JavaScript 采用 IEEE754 标准定义的 64 位浮点格式表示数字，它能表示最大值为 ±1.7976931348623157e+308，最小值为 ±5e-324。
+
+| 值 (aka Fraction/Mantissa) |       指数        |    Sign    |
+| :------------------------: | :---------------: | :--------: |
+|      52 bits (0 - 51)      | 11 bits (50 - 62) | 1 bit (63) |
+
+**精度**
+
+- 整数（不使用小数点或指数计数法）最多为 15 位。
+  - 超过15位的一律变成100,000,000,000,000,000（15个0）
+
+- 小数的最大位数是 17
+
+**八进制和十六进制**
+
+要加上前缀`0`和`0x`
+
+默认情况下，JavaScript 数字为十进制显示。但是你可以使用 toString() 方法 输出16进制、8进制、2进制。
+
+示例：
+
+```js
+var myNumber=128;
+myNumber.toString(16);  // 返回 80
+myNumber.toString(8);  // 返回 200
+myNumber.toString(2);  // 返回 10000000
+```
+
+**无穷大（Infinity）**
+
+- <font color=FF0000>当数字运算结果超过了JavaScript所能表示的数字**上限**（溢出），结果为一个特殊的无穷大（infinity）值</font>，在JavaScript中以Infinity表示。
+- 同样地，当负数的值超过了JavaScript所能表示的负数范围，结果为负无穷大，在JavaScript中以-Infinity表示。
+
+**NaN - 非数字值**
+
+NaN 属性是代表非数字值的特殊值。该属性用于指示某个值不是数字。可以把 Number 对象设置为该值，来指示其不是数字值。
+
+你可以使用 <font color=FF0000>isNaN() 全局函数来判断一个值是否是 NaN 值</font>。
+
+补充：无穷大是一个数字
+
+**数字可以是数字或者对象**
+
+示例如下：
+
+```js
+var x = 123;
+var y = new Number(123);
+typeof(x) // 返回 Number
+typeof(y) // 返回 Object
+```
+
+**Number 属性**
+
+| 属性                     | 描述                                                  |
+| :----------------------- | :---------------------------------------------------- |
+| Number.MAX_VALUE         | 最大值                                                |
+| Number.MIN_VALUE         | 最小值                                                |
+| Number.NaN               | 非数字                                                |
+| Number.NEGATIVE_INFINITY | 负无穷，在溢出时返回                                  |
+| Number.POSITIVE_INFINITY | 正无穷，在溢出时返回                                  |
+| Number.EPSILON           | 表示 1 和比最接近 1 且大于 1 的最小 Number 之间的差别 |
+| Number.MIN_SAFE_INTEGER  | 最小安全整数。                                        |
+| Number.MAX_SAFE_INTEGER  | 最大安全整数。                                        |
+
+**数字方法**
+
+| 方法                   | 描述                                                         |
+| :--------------------- | :----------------------------------------------------------- |
+| Number.parseFloat()    | 将字符串转换成浮点数，和全局方法 [parseFloat()](https://www.runoob.com/jsref/jsref-parsefloat.html) 作用一致。 |
+| Number.parseInt()      | 将字符串转换成整型数字，和全局方法 [parseInt()](https://www.runoob.com/jsref/jsref-parseint.html) 作用一致。 |
+| Number.isFinite()      | 判断传递的参数是否为有限数字。                               |
+| Number.isInteger()     | 判断传递的参数是否为整数。                                   |
+| Number.isNaN()         | 判断传递的参数是否为 isNaN()。                               |
+| Number.isSafeInteger() | 判断传递的参数是否为安全整数。                               |
+
+**数字类型原型上的一些方法**
+
+| 方法            | 描述                                                         |
+| :-------------- | :----------------------------------------------------------- |
+| toExponential() | 返回一个数字的指数形式的字符串，如：1.23e+2                  |
+| toFixed()       | 返回指定小数位数的表示形式。<br>`var a=123; b=a.toFixed(2); // b="123.00"` |
+| toPrecision()   | 返回一个指定精度的数字。如下例子中，a=123 中，3会由于精度限制消失：<br>`var a=123; b=a.toPrecision(2); // b="1.2e+2"` |
+
+
+
+#### JavaScript Date（日期） 对象
+
+Date 对象用于处理日期和时间。 可以通过 new 关键词来定义 Date 对象
+
+<font color=FF0000>有四种方式初始化日期：</font>
+
+- ```js
+  new Date();
+  ```
+
+  示例：
+
+  ```js
+  var today = new Date()
+  ```
+
+- ```js
+  new Date(value);
+  ```
+
+  示例：
+
+  ```js
+  var d2 = new Date(79,5,24)
+  ```
+
+- ```js
+  new Date(dateString);
+  ```
+
+  示例：
+
+  ```js
+  var d1 = new Date("October 13, 1975 11:13:00")
+  ```
+
+- ```js
+  new Date(year, monthIndex [, day [, hours [, minutes [, seconds [, milliseconds]]]]]);
+  ```
+
+  示例：
+
+  ```js
+  var d3 = new Date(79,5,24,11,33,0)
+  ```
+
+**设置日期**
+
+通过使用针对日期对象的方法，我们可以很容易地对日期进行操作。
+
+在下面的例子中，我们为日期对象设置了一个特定的日期 (2010 年 1 月 14 日)：
+
+```js
+var myDate=new Date();
+myDate.setFullYear(2010,0,14);
+```
+
+在下面的例子中，我们将日期对象设置为 5 天后的日期：
+
+```js
+var myDate=new Date();
+myDate.setDate(myDate.getDate()+5);
+```
+
+**注意:** <mark>如果增加天数会改变月份或者年份，那么日期对象会自动完成这种转换</mark>。
+
+
+
+
+
+#### JavaScript Array（数组） 对象
+
+创建一个数组，有三种方法。下面的代码定义了一个名为 myCars的数组对象：
+
+- 常规方式：
+
+  ```js
+  var myCars=new Array();
+  myCars[0]="Saab";   
+  myCars[1]="Volvo";
+  myCars[2]="BMW";
+  ```
+
+- 简洁方式:
+
+  ```js
+  var myCars=new Array("Saab","Volvo","BMW");
+  ```
+
+- 字面:
+
+  ```js
+  var myCars=["Saab","Volvo","BMW"];
+  ```
+
+  
+
+#### JavaScript Math（算数） 对象
+
+JavaScript 提供 8 种可被 Math 对象访问的算数值：
+
+- Math.E
+- Math.PI
+- Math.SQRT2
+- Math.SQRT1_2
+- Math.LN2
+- Math.LN10
+- Math.LOG2E
+- Math.LOG10E
+
+
+
+#### JavaScript Window - 浏览器对象模型
+
+浏览器对象模型 (BOM) 使 JavaScript 有能力与浏览器"对话"。
+
+浏览器对象模型（**B**rowser **O**bject **M**odel (BOM)）尚无正式标准。
+
+由于现代浏览器已经（几乎）实现了 JavaScript 交互性方面的相同方法和属性，因此常被认为是 BOM 的方法和属性。
 
 
 
