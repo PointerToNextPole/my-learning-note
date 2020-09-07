@@ -1871,9 +1871,224 @@ JavaScript 提供 8 种可被 Math 对象访问的算数值：
 
 浏览器对象模型 (BOM) 使 JavaScript 有能力与浏览器"对话"。
 
-浏览器对象模型（**B**rowser **O**bject **M**odel (BOM)）尚无正式标准。
+浏览器对象模型（**B**rowser **O**bject **M**odel (BOM)）尚无正式标准。但所有浏览器都支持 window 对象。它表示浏览器窗口。
 
 由于现代浏览器已经（几乎）实现了 JavaScript 交互性方面的相同方法和属性，因此常被认为是 BOM 的方法和属性。
+
+<font color=FF0000>所有 JavaScript 全局对象、函数以及变量均自动成为 window 对象的成员</font>。全局变量是 window 对象的属性，全局函数是 window 对象的方法；甚至 HTML DOM 的 document 也是 window 对象的属性之一
+
+如下
+
+```js
+window.document.getElementById("header");
+//等价于
+document.getElementById("header");
+```
+
+**Window 尺寸**
+
+有三种方法能够确定浏览器窗口的尺寸。
+
+- 对于Internet Explorer、Chrome、Firefox、Opera 以及 Safari：
+  - window.innerHeight - 浏览器窗口的内部高度(包括滚动条)
+  - window.innerWidth - 浏览器窗口的内部宽度(包括滚动条)
+
+- 对于 Internet Explorer 8、7、6、5：
+  - document.documentElement.clientHeight
+  - document.documentElement.clientWidth
+
+- 或者
+  - document.body.clientHeight
+  - document.body.clientWidth
+
+示例：
+
+```js
+// 计算浏览器窗口的高度和宽度
+var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+```
+
+**其他一些 Window 方法**
+
+- window.open() - 打开新窗口
+- window.close() - 关闭当前窗口
+- window.moveTo() - 移动当前窗口
+- window.resizeTo() - 调整当前窗口的尺寸
+
+
+
+#### JavaScript Window Screen
+
+window.screen 对象包含有关用户屏幕的信息。<font color=FF0000>**window.screen**对象在编写时可以不使用 window 这个前缀</font>。
+
+**一些属性：**
+
+- **screen.availWidth** ： <font color=FF0000>可用</font>的屏幕宽度
+- **screen.availHeight** ：<font color=FF0000>可用</font>的屏幕高度
+
+
+
+#### JavaScript Window Location
+
+window.location 对象用于<font color=FF0000>获得当前页面的地址 (URL)</font>，<font color=FF0000>并把浏览器重定向到新的页面</font>。<font color=FF0000>在编写时**可不使用 window 这个前缀**</font>。
+
+**相关属性**
+
+- **location.hostname** 	返回 web 主机的域名
+- **location.pathname**    返回当前页面的路径和文件名
+- **location.port**                返回 web 主机的端口 （80 或 443）
+- **location.protocol**       返回所使用的 web 协议（http: 或 https:）
+- **location.href**               返回当前页面的 URL
+- **location.assign()**        方法加载新的文档。
+
+
+
+#### JavaScript Window History
+
+<font color=FF0000>window.history 对象包含浏览器的历史</font>。在编写时<font color=FF0000>可不使用 window 这个前缀</font>。
+
+为了保护用户隐私，对 JavaScript 访问该对象的方法做出了限制。
+
+**相关方法：**
+
+- **history.back()：** 与在浏览器点击后退按钮相同
+- **history.forward()：** 与在浏览器中点击向前按钮相同
+
+
+
+#### JavaScript Window Navigator
+
+window.navigator 对象<font color=FF0000>包含有关访问者浏览器的信息</font>，在编写时可不使用 window 这个前缀
+
+- **navigator.appCodeName：**    浏览器代号
+- **navigator.appName：**             浏览器名称
+- **navigator.appVersion：**          浏览器版本
+- **navigator.cookieEnabled：**    启用Cookies
+- **navigator.platform：**               硬件平台
+- **navigator.userAgent：**             用户代理
+- **navigator.systemLanguage：** 用户代理语言
+
+**警告：**来自 navigator 对象的信息具有误导性，不应该被用于检测浏览器版本，这是因为：
+
+- <font color=FF0000>navigator 数据可被浏览器使用者更改</font>
+- <mark>一些浏览器对测试站点会识别错误</mark>
+- <mark>浏览器无法报告晚于浏览器发布的新操作系统</mark>
+
+
+
+#### JavaScript 计时事件
+
+我们可以<font color=FF0000>在一个设定的时间间隔之后来执行代码</font>。我们称之为计时事件。
+
+**两个关键方法：**
+
+- **setInterval() ：** <font color=FF0000>间隔指定的毫秒数**不停地**执行指定的代码</font>。另外：**window.setInterval()** 方法可以不使用 window 前缀，直接使用函数 **setInterval()**。
+
+  **语法**
+
+  ```js
+  window.setInterval(function, milliseconds);
+  ```
+
+  - 第一个参数是函数（function）
+
+  - 第二个参数<font color=FF0000>间隔的**毫秒数**</font>
+
+  **示例：**
+
+  ```js
+  // 每三秒弹出 "hello" 
+  setInterval(function(){alert("Hello")},3000);
+  ```
+
+- **clearInterval()：** 用于停止 setInterval() 方法执行的函数代码
+
+  语法：
+
+  ```js
+  window.clearInterval(intervalVariable)
+  ```
+
+  window.clearInterval()方法可以不使用window前缀，直接使用函数**clearInterval()**。
+
+  <mark>要使用clearTimeout() 方法, 你<font color=FF0000>必须在创建超时方法中（setTimeout）使用全局变量</font></mark>
+
+- **setTimeout()：** <font color=FF0000>在指定的毫秒数后执行指定代码</font>。
+
+  **语法**
+
+  ```js
+  myVar= window.setTimeout(function, milliseconds);
+  ```
+
+- **clearTimeout()：** 方法用于<font color=FF0000>停止执行setTimeout()方法的函数代码</font>。
+
+  **语法**
+
+  ```js
+  window.clearTimeout(timeoutVariable)
+  ```
+
+  类似clearInterval()，使用clearTimeout() 方法, 你必须在创建超时方法中（setTimeout）使用全局变量:
+
+
+
+#### JavaScript Cookie
+
+JavaScript 可以使用<font color=FF0000> **document.cookie** 属性来创建 、读取、及删除 cookie</font>。
+
+**使用 JavaScript 创建Cookie**
+
+- JavaScript 中，创建 cookie 如下所示：
+
+  ```js
+  document.cookie="username=John Doe";
+  ```
+
+- 您还<font color=FF0000>可以用expires参数，为 cookie 添加一个过期时间（以 UTC 或 GMT 时间）</font>。**<font color=FF0000>默认情况下，cookie 在浏览器关闭时删除</font>**：
+
+  ```js
+  document.cookie="username=John Doe; expires=Thu, 18 Dec 2043 12:00:00 GMT";
+  ```
+
+- 您可以<font color=FF0000>使用 path 参数</font><font color=FF0000>告诉浏览器 cookie 的路径</font>。默认情况下，cookie 属于当前页面。
+
+  ```js
+  document.cookie="username=John Doe; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
+  ```
+
+**使用 JavaScript 使用 Cookie**
+
+- 在 JavaScript 中, 可以使用以下代码来读取 cookie：
+
+  ```js
+  var x = document.cookie;
+  ```
+
+  document.cookie 将以字符串的方式返回所有的 cookie，类型格式： cookie1=value; cookie2=value; cookie3=value;
+
+- **使用 JavaScript 修改 Cookie**
+
+  在 JavaScript 中，<font color=FF0000>修改 cookie 类似于创建 cookie（**即覆盖**）</font>，如下所示：
+
+  ```js
+  document.cookie="username=John Smith; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
+  ```
+
+- **使用 JavaScript 删除 Cookie**
+
+  删除 cookie 非常简单。您只需要设置 expires 参数为以前的时间即可，如下所示
+
+  ```js
+  document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  ```
+
+  <font color=FF0000>注意，当您删除时不必指定 cookie 的值。</font>
+
+
+
+补充：[JavaScript 实例](https://www.runoob.com/js/js-examples.html)
 
 
 
