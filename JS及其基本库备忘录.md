@@ -2092,6 +2092,16 @@ JavaScript 可以使用<font color=FF0000> **document.cookie** 属性来创建 �
 
 
 
+#### 原型链
+
+js以原型链的形式，保证函数或对象中的方法、属性可以让向下传递，按照面向对象的说法，这就是继承。而<font color=FF0000>js通过原型链才得以实现函数或对象的继承</font>。
+
+//todo
+
+
+
+
+
 #### onclick对元素绑定js方法
 
 ```html

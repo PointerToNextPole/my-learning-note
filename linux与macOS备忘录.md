@@ -6,10 +6,10 @@
 
 #### <font color=FF0000>基础键</font>
 
-**⌘ : Command**
+**⌘ : Command** <font color=FF0000>**Option键在键盘映射中相当于windows中的win键 / meta键**</font>
 **⇧ : Shift**
-**⌥ : Option**
-**⌃ : Control**
+**⌥ : Option** <font color=FF0000>**Option键在键盘映射中相当于windows中的Alt键**</font>
+**⌃ : Control** <font color=FF0000>**Control键在键盘映射中相当于windows中的Ctrl键**</font>
 **↩︎ / ⌅ : Return / Enter**
 **⇪ : caps lock**
 **⎋ : Escape (Esc)**
