@@ -2,6 +2,111 @@
 
 
 
+## HTML
+
+**\<hr\>**是horizontal rule的缩写
+
+
+
+#### CDATA
+
+**CDATA**，意为character data，是标记语言SGML与XML，<font color=FF0000>表示文档的特定部分是普通的字符数据</font>，而不是非字符数据或有特定、限定结构的字符数据。
+
+**摘自：**[wiki - CDATA](https://zh.wikipedia.org/wiki/CDATA)
+
+<font color=FF0000>所有 XML 文档中的文本均会被解析器解析，除了 CDATA 区段（CDATA section）中的文本会被解析器忽略。</font>
+
+CDATA 的形式如下：\<![CDATA[ 文本内容 ]]> 。
+
+CDATA 的文本内容中不能出现字符串 `]]>`。另外，CDATA 不能嵌套。
+
+XML 实例：在 CDATA 标记中的信息被解析器原封不动地传给应用程序，并且不解析该段信息中的任何控制标记。 CDATA 区域是由 `<![CDATA[` 为开始标记，以 `]]>` 为结束标记，注意 CDATA 为大写。
+
+**摘自：**[XML 中的 ﹤!\[CDATA\[]\]>，及其解析](https://blog.csdn.net/qq_33266987/article/details/54288051)
+
+#### PCDATA
+
+PCDATA 指的是<font color=FF0000>被解析的字符数据</font>（Parsed Character Data）。
+
+XML 解析器通常会解析 XML 文档中所有的文本。
+
+<font color=FF0000>当某个 XML 元素被解析时，其标签之间的文本也会被解析：</font>
+
+```xml
+<message>此文本也会被解析</message>
+```
+
+解析器之所以这么做是因为 XML 元素可包含其他元素，就像这个例子中，其中的 <name> 元素包含着另外的两个元素(first 和 last)：
+
+```xml
+<name><first>Bill</first><last>Gates</last></name>
+```
+
+而解析器会把它分解为像这样的子元素：
+
+```xml
+<name>
+   <first>Bill</first>
+   <last>Gates</last>
+</name>
+```
+
+摘自：[W3school - XML CDATA](https://www.w3school.com.cn/xml/xml_cdata.asp)
+
+
+
+#### \<figure>
+
+**HTML `<figure>` 元素**代表一段独立的内容，<font color=FF0000>经常与说明（caption）\<figcaption>配合使用，并且作为一个独立的引用单元</font>。当它属于主内容流（main flow）时，它的位置独立于主体。这个标签经常是在主文中引用的图片，插图，表格，代码段等等，当这部分转移到附录中或者其他页面时不会影响到主体。
+
+**效果：**
+
+<img src="https://i.loli.net/2020/11/17/Y2VJ586S1XEKQkN.png" alt="DeAnsA.png" style="zoom:40%;" />
+
+##### **使用说明**
+
+- 通常，`<figure>`是图像，插图，图表，代码片段等，在文档的主流程中引用，但可以移动到文档的另一部分或附录而不影响主流程。
+- 作为sectioning root，\<figure>元素的内容轮廓将从文档的主要轮廓中排除。
+- 通过在其中插入\<figcaption>（作为第一个或最后一个子元素），可以将标题与`<figure>`元素相关联。图中找到的第一个`<figcaption>`元素显示为图的标题。
+
+摘自：[MDN - \<figure>：可附标题内容元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/figure)
+
+
+
+#### \<section>
+
+HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独立部分</font>，它没有更具体的语义元素来表示，一般来说会有包含一个标题。
+
+##### **使用说明**
+
+- 一般通过是否包含一个标题 (\<h1>-\<h6> element) 作为子节点 来 辨识每一个\<section>。
+- 如果 \<section> 元素的内容可以单独在多个媒体上发表，应该使用 \<article> 而不是 \<section>。
+- 不要把\<section>元素作为一个普通的容器来使用，这是本应该是\<div>的用法（特别是当片段（the sectioning ）仅仅是为了美化样式的时候）。 一般来说，一个 \<section> 应该出现在文档大纲中。
+
+摘自：[MDN - \<section>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/section)
+
+
+
+#### box-sizing
+
+
+
+
+
+#### \<textarea\>完全去除边框：
+
+```css
+textarea{
+  border: none;
+  resize: none;
+  cursor: pointer;
+}
+```
+
+摘自：[textarea 完全去除边框](https://blog.csdn.net/qq_32849999/article/details/102978744)
+
+
+
 //TODO
 
 ```HTML
@@ -10,7 +115,7 @@
 
 
 
-
+## CSS
 
 ### padding margin border的区别
 
@@ -81,7 +186,7 @@ margin: 40px;
 
 Collapsing margins: margins 折叠现象只存在于临近或有从属关系的元素，垂直方向的 margin 中。
 
-详细说明如下：
+**详细说明如下：**
 
 - 如果只提供一个，将用于全部的四条边；
 - 如果提供两个，第一个用于上－下，第二个用于左－右；
@@ -96,6 +201,10 @@ body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别
 ```
 
 摘自：[CSS padding margin border属性详解](https://www.cnblogs.com/linjiqin/p/3556497.html)
+
+**补充：**
+
+![](https://i.loli.net/2020/10/06/rKV25lxOgMSGjmL.png)
 
 
 
@@ -274,6 +383,8 @@ body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别
 
 font 属性可以用来作为 font-style, font-variant, font-weight, font-size, line-height 和 font-family 属性的简写，或将元素的字体设置为系统字体。
 
+补充：<mark><font color=FF0000>**line-height CSS 属性**</font>用于设置多行元素的空间量，如多行文本的间距</mark>。<font color=FF0000>**对于块级元素，它指定元素行盒（line boxes）的最小高度。对于非替代的 inline 元素，它用于计算行盒（line box）的高度**</font>。
+
 **用em来设置字体大小**
 
 为了避免Internet Explorer 中无法调整文本的问题，许多开发者使用 em 单位代替像素。em的尺寸单位由W3C建议。1em和当前字体大小相等。在浏览器中默认的文字大小是16px。因此，1em的默认大小是16px。可以通过下面这个公式将像素转换为em：px/16=em
@@ -339,11 +450,23 @@ font 属性可以用来作为 font-style, font-variant, font-weight, font-size, 
 
 - **块元素**是一个元素，占用了全部宽度，<font color=FF0000>在前后都是换行符</font>。
 
-  块元素有：\<h1>，\<p>，\<div>
+  每个块级元素都从新的一行开始，并且其后的元素也另起一行。（很霸道，一个块级元素独占一行）
+
+  <mark>元素的高度、宽度、行高以及顶和底边距都<font color=FF0000>**可设置**</font></mark>。
+
+  <font color=FF0000>元素宽度在不设置的情况下，**是它本身父容器的100%**（和父元素的宽度一致），除非设定一个宽度</font>。
+
+  **块元素有：\<h1>，\<p>，\<div>**
 
 - **内联元素**只需要必要的宽度，<font color=FF0000>不强制换行</font>。
 
-  内联元素有：\<span>，\<a>
+  和其他元素都在一行上；
+  
+  <mark>元素的高度、宽度及顶部和底部边距<font color=FF0000>不可设置</font></mark>；
+  
+  <font color=FF0000>元素的宽度就是它包含的文字或图片的宽度，不可改变。</font>
+  
+  **内联元素有：\<span>，\<a>**
 
 **使得元素变成块元素和内联元素**
 
@@ -354,9 +477,17 @@ font 属性可以用来作为 font-style, font-variant, font-weight, font-size, 
 
 **简单来说：**就是<mark>将<font color=FF0000>**对象**呈现为 **inline** 对象</font>，但是<font color=FF0000>**对象的内容**作为 **block** 对象</font>呈现</mark>。之后的内联对象会被排列在同一行内。比如我们可以给一个 link（a 元素）inline-block 属性值，使其既具有 block 的宽度高度特性又具有 inline 的同行特性。
 
+内联块状元素（inline-block）就是同时具备内联元素、块状元素的特点。
+
+inline-block 元素特点：
+
+1、和其他元素都在一行上；
+
+2、元素的高度、宽度、行高以及顶和底边距都可设置。
+
 **另外：**IE（低版本 IE）本来是不支持 inline-block 的，所以在 IE 中对内联元素使用 display:inline-block，理论上 IE 是不识别的，但使用 display:inline-block 在 IE 下会触发 layout，从而使内联元素拥有了 display:inline-block 属性的表象。
 
-摘自：[block，inline和inline-block概念和区别](https://www.cnblogs.com/KeithWang/p/3139517.html)
+摘自：[block，inline和inline-block概念和区别](https://www.cnblogs.com/KeithWang/p/3139517.html)  [CSS： inline、block和inline-block的区别](https://www.cnblogs.com/adongyo/p/11290826.html)
 
 
 
@@ -366,15 +497,43 @@ font 属性可以用来作为 font-style, font-variant, font-weight, font-size, 
 
 position 属性的五个值：
 
-- **static**：HTML 元素的默认值，即没有定位，遵循正常的文档流对象。
+- **static**：HTML 元素的<font color=FF0000>默认值</font>，即没有定位，遵循正常的文档流对象。
+
+  浏览器会按照源码的顺序，决定每个元素的位置，这称为“正常的页面流”（normal flow）。每个块级元素占据自己的区块（block），元素与元素之间不产生重叠，这个位置就是元素的默认位置。
+
+  <mark>注意，static定位所导致的元素位置，是浏览器自主决定的，所以这时top、bottom、left、right这四个属性无效。</mark>
+
 - **relative**：相对定位元素的定位是相对其正常位置。
+
+  relative表示，相对于默认位置（即static时的位置）进行偏移，即定位基点是元素的默认位置。
+
+  它<mark>必须搭配top、bottom、left、right这四个属性一起使用，用来指定偏移的方向和距离</mark>。
+
 - **fixed**：<mark>元素的位置相对于浏览器窗口是固定位置</mark>。
-- **absolute**：<mark>绝对定位的元素的位置相对于最近的已定位父元素</mark>，如果元素没有已定位的父元素，那么它的位置相对于\<html>:
+
+  它如果搭配`top`、`bottom`、`left`、`right`这四个属性一起使用，表示元素的初始位置是基于视口计算的，否则初始位置就是元素的默认位置。
+
+- **absolute**：<font color=FF0000>**绝对定位的元素的位置相对于最近的<mark>已定位</mark>父元素**</font>，如果元素没有已定位的父元素，那么它的位置相对于\<html>
+
+  absolute表示，相对于上级元素（一般是父元素）进行偏移，即定位基点是父元素。
+
+  <font color=FF0000>它有一个重要的限制条件：定位基点（一般是父元素）不能是static定位，否则定位基点就会变成整个网页的根元素html</font>。另外，<mark>absolute定位也必须搭配top、bottom、left、right这四个属性一起使用</mark>。
+
 - **sticky**：sticky 英文字面意思是粘，粘贴，所以可以把它称之为粘性定位。**position: sticky;** 基于用户的滚动位置来定位。粘性定位的元素是依赖于用户的滚动，在 **position:relative** 与 **position:fixed** 定位之间切换。
+
+  **使用场景**：<font color=FF0000>网页的搜索工具栏，初始加载时在自己的默认位置（relative定位），页面向下滚动时，工具栏变成固定位置，始终停留在页面头部（fixed定位）</font>。
+
+  <mark>sticky<font color=FF0000>**生效的前提**</font>是，<font color=FF0000>必须搭配top、bottom、left、right这四个属性一起使用，不能省略</font>，否则等同于relative定位，不产生"动态固定"的效果</mark>。原因是这四个属性用来定义"偏移距离"，浏览器把它当作sticky的生效门槛。
+
+  它的<font color=FF0000>**具体规则**</font>是，<font color=FF0000>当页面滚动，父元素开始脱离视口时（即部分不可见），只要与sticky元素的距离达到生效门槛，relative定位自动切换为fixed定位</font>；<font color=FF0000>等到父元素完全脱离视口时（即完全不可见），fixed定位自动切换回relative定位。</font>
+
+  注意，除了已被淘汰的 IE 以外，其他浏览器目前都支持`sticky`。但是，Safari 浏览器需要加上浏览器前缀`-webkit-`。
+
+  部分摘自：[阮一峰的网络日志 - CSS 定位详解](https://www.ruanyifeng.com/blog/2019/11/css-position.html)
 
 **重叠的元素**
 
-元素的定位与文档流无关，所以它们可以覆盖页面上的其它元素。<mark>z-index属性指定了一个元素的堆叠顺序（哪个元素应该放在前面，或后面）</mark>。一个元素可以有正数或负数的堆叠顺序，<mark>具有更高堆叠顺序的元素总是在较低的堆叠顺序元素的前面</mark>。
+元素的定位与文档流无关，所以它们可以覆盖页面上的其它元素。<mark>z-index属性指定了一个元素的堆叠顺序（哪个元素应该放在前面，或后面）</mark>。一个元素可以有正数或负数的堆叠顺序，<font color=FF0000>具有更高堆叠顺序的元素总是在较低的堆叠顺序元素的前面</font>。
 
 
 
@@ -429,11 +588,13 @@ float: right;
   text-align: center;
   ```
 
-- 图片居中对齐
+- 居中对齐
 
   ```css
   margin: auto;
   ```
+  
+  另外，需要注意的是：对于行内块级元素（display:inline-block），想要用`margin: auto;`实现居中对齐，需要加上`display: block`。比如：\<button>
 
 
 
@@ -577,6 +738,53 @@ CSS3中属性的透明度是 **opacity**，示例：
 ```css
 opacity:0.4;
 ```
+
+
+
+#### filter
+
+**filter** CSS属性<font color=FF0000>将模糊或颜色偏移等图形效果应用于元素</font>。<font color=FF0000>滤镜通常用于调整图像，背景和边框的渲染。</font>
+
+示例：
+
+```css
+/* URL to SVG filter */
+filter: url("filters.svg#filter-id");
+
+/* <filter-function> values */
+filter: blur(5px);
+filter: brightness(0.4);
+filter: contrast(200%);
+filter: drop-shadow(16px 16px 20px blue);
+filter: grayscale(50%);
+filter: hue-rotate(90deg);
+filter: invert(75%);
+filter: opacity(25%);
+filter: saturate(30%);
+filter: sepia(60%);
+```
+
+摘自：[MDN - filter](https://developer.mozilla.org/zh-CN/docs/Web/CSS/filter)
+
+##### blur()：是filter的一种
+
+blur() CSS 方法将高斯模糊应用于输出图片. 结果为 \<filter-function>。
+
+**语法：**
+
+```css
+blur(radius)
+```
+
+**值：**
+
+**radius：**<font color=FF0000>模糊的半径，值为\<length></font>。 它定义了高斯函数的标准偏差值，即屏幕上有多少像素相互融合; 因此，较大的值会产生更多模糊。 值为0会使输入保持不变。 该值为空则为0。
+
+摘自：[MDN - blur()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/filter-function/blur())
+
+
+
+
 
 
 
@@ -1010,19 +1218,19 @@ Chrome 和 Safari 要求前缀 -webkit- 版本.
 
 **总结：2D 转换方法**
 
-| 函数                                 | 描述                                     |
-| :----------------------------------- | :--------------------------------------- |
-| matrix(*n*, *n*, *n*, *n*, *n*, *n*) | 定义 2D 转换，使用六个值的矩阵。         |
-| translate(*x*, *y*)                  | 定义 2D 转换，沿着 X 和 Y 轴移动元素。   |
-| translateX(*n*)                      | 定义 2D 转换，沿着 X 轴移动元素。        |
-| translateY(*n*)                      | 定义 2D 转换，沿着 Y 轴移动元素。        |
-| scale(*x*, *y*)                      | 定义 2D 缩放转换，改变元素的宽度和高度。 |
-| scaleX(*n*)                          | 定义 2D 缩放转换，改变元素的宽度。       |
-| scaleY(*n*)                          | 定义 2D 缩放转换，改变元素的高度。       |
-| rotate(*angle*)                      | 定义 2D 旋转，在参数中规定角度。         |
-| skew(*x-angle*, *y-angle*)           | 定义 2D 倾斜转换，沿着 X 和 Y 轴。       |
-| skewX(*angle*)                       | 定义 2D 倾斜转换，沿着 X 轴。            |
-| skewY(*angle*)                       | 定义 2D 倾斜转换，沿着 Y 轴。            |
+| 函数                                      | 描述                                                        |
+| :---------------------------------------- | :---------------------------------------------------------- |
+| matrix(*n*, *n*, *n*, *n*, *n*, *n*)      | 定义 2D 转换，使用六个值的矩阵。                            |
+| translate(*x*, *y*)                       | 定义 2D 转换，沿着 X 和 Y 轴移动元素。                      |
+| <font color=FF0000>translateX</font>(*n*) | 定义 2D 转换，<font color=FF0000>沿着 X 轴移动元素</font>。 |
+| <font color=FF0000>translateY</font>(*n*) | 定义 2D 转换，<font color=FF0000>沿着 Y 轴移动元素</font>。 |
+| scale(*x*, *y*)                           | 定义 2D 缩放转换，改变元素的宽度和高度。                    |
+| scaleX(*n*)                               | 定义 2D 缩放转换，改变元素的宽度。                          |
+| scaleY(*n*)                               | 定义 2D 缩放转换，改变元素的高度。                          |
+| rotate(*angle*)                           | 定义 2D 旋转，在参数中规定角度。                            |
+| skew(*x-angle*, *y-angle*)                | 定义 2D 倾斜转换，沿着 X 和 Y 轴。                          |
+| skewX(*angle*)                            | 定义 2D 倾斜转换，沿着 X 轴。                               |
+| skewY(*angle*)                            | 定义 2D 倾斜转换，沿着 Y 轴。                               |
 
 
 
@@ -1417,6 +1625,8 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
 
 弹性容器内包含了<font color=FF0000>一个</font>或<font color=FF0000>多个</font>弹性子元素。弹性子元素<font color=FF0000>通常在弹性盒子内一行显示</font>。<font color=FF0000>**默认情况每个容器只有一行**</font>。
 
+<font color=FF0000 size=4>**注意，设为 Flex 布局以后，子元素的float、clear和vertical-align属性将失效。**</font>
+
 #### Flex容器（父容器）
 
 - **flex-direction**
@@ -1499,52 +1709,116 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
 
 #### Flex项目（子项目）
 
-- order：排序指定
+以下6个属性设置在项目上
 
-  **语法：**
+- **order**：定义项目的<font color=FF0000>排列顺序</font>。数值越小，排列越靠前，默认为0，可以为负值。
 
   ```css
-  order: <integer>
+  .item {
+  	order: <integer>;
+  }
   ```
 
-  \<integer>：用整数值来定义排列顺序，<font color=FF0000>数值小的排在前面</font>。可以为负值。
+- **flex-grow**定义项目的<font color=FF0000>**放大比例**</font>，<font color=FF0000>**默认为0**</font>，即如果存在剩余空间，也不放大。
 
-- **align-self**
+  <font color=FF0000>如果所有项目的flex-grow属性都为1，则它们将等分剩余空间（如果有的话）。如果一个项目的flex-grow属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍</font>。
 
-  align-self属性用于设置弹性元素自身在侧轴（纵轴）方向上的对齐方式。
+  ```css
+  .item {
+    flex-grow: <number>; /* default 0 */
+  }
+  ```
+
+- **flex-shrink**：定义了项目的<font color=FF0000>**缩小比例**</font>，<font color=FF0000>**默认为1**</font>，即如果空间不足，该项目将缩小。
+
+  <font color=FF0000>如果所有项目的flex-shrink属性都为1，当空间不足时，都将等比例缩小。如果一个项目的flex-shrink属性为0，其他项目都为1，则空间不足时，前者不缩小</font>。
+
+  ```css
+  .item {
+    flex-shrink: <number>; /* default 1 */
+  }
+  ```
+
+- **flex-basis**：定义了在<font color=FF0000>**flex-basis给上面两个属性分配多余空间之前, 计算项目是否有多余空间, 默认值为 auto, 即项目本身的大小**</font>。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。
+
+  ```css
+  .item {
+    flex-basis: <length> | auto; /* default auto */
+  }
+  ```
+
+- **flex**：flex属性是flex-grow, flex-shrink 和 flex-basis的简写，<font color=FF0000>默认值为0 1 auto。后两个属性可选</font>。
 
   **语法**
 
   ```css
-  align-self: auto | flex-start | flex-end | center | baseline | stretch
-  ```
-
-  - **auto**：<font color=FF0000>默认值</font>，如果'align-self'的值为'auto'，则其计算值为元素的父元素的'align-items'值，<font color=FF0000>如果其没有父元素，则计算值为'stretch'</font>。
-  - **flex-start**：弹性盒子元素的<font color=FF0000>侧轴（纵轴）</font>起始位置的边界紧靠住该行的侧轴<font color=FF0000>起始边界</font>。
-  - **flex-end**：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴<font color=FF0000>结束边界</font>。
-  - **center**：弹性盒子元素在该行的侧轴（纵轴）上<font color=FF0000>居中放置</font>。（如果该行的尺寸小于弹性盒子元素的尺寸，则会向两个方向溢出相同的长度）。
-  - **baseline**：如弹性盒子元素的行内轴<font color=FF0000>与侧轴为同一条</font>，则该值与'flex-start'等效。其它情况下，该值将与基线对齐。
-  - **stretch**：如果指定侧轴大小的属性值为'auto'，则其值会使项目的边距盒的尺寸尽可能接近所在行的尺寸，但同时会遵照'min/max-width/height'属性的限制。
-
-- **flex**
-
-  flex属性用于指定弹性子元素如何分配空间。
-
-  语法
-
-  ```css
-  flex: auto | initial | none | inherit |  [ flex-grow ] || [ flex-shrink ] || [ flex-basis ]
+  .item {
+  	1	qI'm 	1qI'm 	q	qq	q221qq1 | initial | none | inherit |  [ flex-grow ] || [ flex-shrink ] || [ flex-basis ]
+  }
   ```
 
   - auto: 计算值为 1 1 auto
   - initial: 计算值为 0 1 auto
   - none：计算值为 0 0 auto
   - inherit：从父元素继承
-  - [ flex-grow ]：定义弹性盒子元素的扩展比率。
-  - [ flex-shrink ]：定义弹性盒子元素的收缩比率。
-  - [ flex-basis ]：定义弹性盒子元素的默认基准值。
 
-**补充：示图一张**
+- **align-self**：<font color=FF0000>允许单个项目有与其他项目不一样的对齐方式</font>，设置弹性元素自身在侧轴（纵轴）方向上的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
+
+  **语法**
+
+  ```css
+  .item {
+  	align-self: auto | flex-start | flex-end | center | baseline | stretch
+  }
+  ```
+
+  - **auto**：<font color=FF0000>默认值</font>，如果'align-self'的值为'auto'，则其计算值为元素的父元素的'align-items'值，<font color=FF0000>如果其没有父元素，则计算值为'stretch'</font>。
+
+  - **flex-start**：弹性盒子元素的<font color=FF0000>侧轴（纵轴）</font>起始位置的边界紧靠住该行的侧轴<font color=FF0000>起始边界</font>。
+  - **flex-end**：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴<font color=FF0000>结束边界</font>。
+  - **center**：弹性盒子元素在该行的侧轴（纵轴）上<font color=FF0000>居中放置</font>。（如果该行的尺寸小于弹性盒子元素的尺寸，则会向两个方向溢出相同的长度）。
+  - **baseline**：如弹性盒子元素的行内轴<font color=FF0000>与侧轴为同一条</font>，则该值与'flex-start'等效。其它情况下，该值将与基线对齐。
+  - **stretch**：如果指定侧轴大小的属性值为'auto'，则其值会使项目的边距盒的尺寸尽可能接近所在行的尺寸，但同时会遵照'min/max-width/height'属性的限制。
+
+以上摘自：[RUNOOB - CSS3 弹性盒子(Flex Box)](https://www.runoob.com/css3/css3-flexbox.html)  [阮一峰的网络日志  - Flex 布局教程：语法篇](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)  
+
+具体实例：[阮一峰的网络日志  - Flex 布局教程：实例篇](http://www.ruanyifeng.com/blog/2015/07/flex-examples.html)
+
+
+
+**补充：**
+
+- flex: 1; === flex: 1 1 (0 / 任意数字+任意长度单位); <font color=FF0000>（就是代表均匀分配元素）</font>
+- flex: initial; === flex: 0 1 auto;
+- flex: none; === flex: 0 0 auto;
+
+​			摘自：[flex:1 到底代表什么?](https://zhuanlan.zhihu.com/p/136223806)
+
+-  place-content 是 align-content 和 justify-content 的简写属性；而 place-items 是 align-items 和 justify-items 的简写属性。即：
+
+  ```css
+  .flex__container {
+      place-content: center;
+      place-items: center;
+  }
+  /*等效于：*/
+  .flex__container {
+      align-content: center;
+      justify-content: center;
+  
+      align-items: center;
+      justify-items: center;
+  }
+  ```
+
+  摘自：[收藏！40 个 CSS 布局技巧](https://zhuanlan.zhihu.com/p/161822219)
+
+- flex和inline-flex的区别
+
+  - flex： 将对象作为<font color=FF0000>弹性伸缩盒</font>显示
+  - inline-flex：将对象作为<font color=FF0000>**内联**块级弹性伸缩盒</font>显示
+
+  摘自：[display：flex和display: inline-flex区别](https://www.jianshu.com/p/4d596708f61b)
 
 ![](https://i.loli.net/2020/08/25/A3Qhi7IHJotxzMr.png)
 
@@ -1834,11 +2108,271 @@ width: calc(100% - 80px);
 
 摘自：[runoob - CSS 选择器](https://www.runoob.com/cssref/css-selectors.html)
 
-
-
 ***
 
 
+
+## web兼容
+
+#### CSS Hack
+
+面对浏览器诸多的兼容性问题，经常需要通过修改CSS样式来调试，其中用的最多的就是CSS Hack。所谓CSS Hack就是针对不同的浏览器书写不同的CSS样式，通过使用某个浏览器单独识别的样式代码，控制该浏览器的显示效果。
+
+摘自：[常用的hack技巧！](https://www.jianshu.com/p/a65486c56d19)
+
+
+
+#### 条件注释
+
+条件注释（conditional comment）是<font color=FF0000>于HTML源码中被 Microsoft Internet Explorer 有条件解释的语句</font>。条件注释<font color=FF0000>可被用来向 Internet Explorer 提供及隐藏代码</font>。
+
+条件注释<font color=FF0000>最初于微软的 Internet Explorer 5浏览器中出现，并且直至 Internet Explorer 9 均支持</font>。<mark>微软已宣布于 Internet Explorer 10 中以标准模式处理页面 - 如 HTML5 - 时停止支持，但是旧版网页使用这种技术（于兼容性视图）将继续有效</mark>。JScript 条件注释于 Internet Explorer 4 中被引进，而在 Internet Explorer 10 中继续受支持，无论于标准模式或者兼容性模式之中，但在 Windows 应用商店应用程序中不受支持。
+
+##### **语法：**
+
+有两种“条件注释”：<font color=FF0000>**下层显示 (downlevel revealed)**</font>和<font color=FF0000>**下层隐藏(downlevel hidden)**</font>。
+
+|                           注释类型                           |                        句法或可能取值                        |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                        标准 HTML 注释                        |                 \<!-- Comment content  --\>                  |
+|  <font color=FF0000>**上层显示**</font>（downlevel-hidden）  | <font color=red>\<!--</font><font color=blue>[if expression]</font><font color=FF0000>></font> *HTML* <font color=FF0000><!</font><font color=blue>[endif]</font><font color=FF0000>--\></font> |
+| <font color=FF0000>**下层隐藏**</font>（downlevel-revealed） | <font color=FF0000>\<!</font>[if *expression*]<font color=FF0000>></font> *HTML* <font color=FF0000><!</font>[endif]<font color=FF0000>\></font> |
+
+于每个条件注释之中的句法块内的 HTML 表示任意的 HTML 内容块，包括脚本。<font color=FF0000>两种条件注释均使用条件**表达式**以指示注释块内的内容应该被解析还是被忽略</font>。条件表达式由特性，操作符，和/或决定于其特性的值组成。
+
+下表展示了支持的特性并描述了每种特性支持的值。
+
+|      项目      |         示例          |                             说明                             |
+| :------------: | :-------------------: | :----------------------------------------------------------: |
+|       IE       |        [if IE]        | 字符串 "IE" 是一种对应于用以浏览网页的 Internet Explorer 的版本的一种*特性*。 |
+|     value      |       [if IE 7]       | 一个对应于浏览器版本的<font color=FF0000>整数</font>或<font color=FF0000>浮点数</font>。<font color=FF0000>返回一个布尔值<，版本号和浏览器版本相匹配时为 true</font> |
+| WindowsEdition |  [if WindowsEdition]  | 适用于 Windows 7 上的 Internet Explorer 8。字符串 "WindowsEdition" 是一种对应于用以浏览该网页的 Microsoft Windows 版本的*特性*。 |
+|     value      | [if WindowsEdition 1] | 一个对应于用以浏览该网页的 Windows 的*版本*的整数。返回一个布尔值，数值和使用的版本相匹配时为真 true。关于所支持的值和它们所描述的版本的更多信息，参见GetProductInfo 函数的 *pdwReturnedProductType* 参数。 |
+|      true      |       [if true]       |                       永远等价于 true.                       |
+|     false      |      [if false]       |                      永远等价于 false.                       |
+
+可用于创造条件注释的算符如下表：
+
+| 项目 |           示例           |                             说明                             |
+| :--: | :----------------------: | :----------------------------------------------------------: |
+|  !   |         [if !IE]         | NOT 运算符。这被放在 *特性*, *算符*, 或者 *子表达式* 的前面以反转该表达式的布尔值含义。 |
+|  lt  |      [if lt IE 5.5]      |          小于运算符。第一项小于第二项时返回 true。           |
+| lte  |      [if lte IE 6]       |    小于或等于运算符。第一项小于或等于第二项时返回 true。     |
+|  gt  |       [if gt IE 5]       |          大于运算符。第一项大于第二项时返回 true。           |
+| gte  |      [if gte IE 7]       |    大于或等于运算符。第一项大于或等于第二项时返回 true。     |
+| ( )  |       [if !(IE 7)]       |   子表达式运算符。用以连接布尔算符以创造更加复杂的表达式。   |
+|  &   | [if (gt IE 5)&(lt IE 7)] |          AND 运算符。所有子表达式为真时返回 true。           |
+|  \|  |   [if (IE 6)\|(IE 7)]    |         OR 运算符。子表达式任意一个为真时返回 true。         |
+
+- **<font color=FF0000>下层隐藏</font>的条件注释**
+
+  如下是两个“下层隐藏”条件注释的示例。
+
+  - 示例中的指令将会让 IE 8 读取指定的 CSS 文件，而 IE 7 或者其它版本的 IE 将会忽略它。非 IE 的浏览器同样会把它忽略因为它看起来像一条标准的 HTML 注释
+
+    ```html
+    <!--[if IE 8]>
+    <link href="ie8only.css" rel="stylesheet">
+    <![endif]-->
+    ```
+
+  - 示例里的标记将会让 IE 5 至 7 读取其内的 CSS 样式。通过对这种标记的不同的使用你也可以挑出 IE 6, IE 5 或者比指定版本更新（大）或更旧（小）版本的 IE。
+
+    ```html
+    <!--[if lte IE 7]>
+    <style>
+    	/* CSS here */
+    </style>
+    <![endif]-->
+    ```
+
+- **<font color=FF0000>下层显示</font>的条件注释**
+
+  如下是一个“下层显示”条件“注释”的示例，<font color=FF0000>它除了误导向的名字之外，根本*不是一个 (X)HTML* 注释，使用默认的微软语法</font>：
+
+  ```html
+  <![if !IE]>
+  <link href="non-ie.css" rel="stylesheet">
+  <![endif]>
+  ```
+
+  这个示例展示了应该<font color=FF0000>仅对非 IE 浏览器暴露的内容</font>，由于该条件对 IE 为假（并且因此该内容被忽略），而这些标签自身在非 IE 浏览器中是无法识别的（并因此被忽略）。这不是有效的 HTML 或 XHTML。
+
+  那如果想要符合W3C标准要如何写呢？答案如下：
+  
+  ```html
+  <!--[if !IE]>-->
+  <link href="non-ie.css" rel="stylesheet">
+  <!--<![endif]-->
+  ```
+
+示例：
+
+```html
+<!--[if !IE]>-->
+<script type="text/javascript" src="<%=Page.ResolveClientUrl("~/Scripts/jquery-2.1.4.min.js")  %>"></script>
+<!--<![endif]-->
+
+<!--[if lt IE 9]>
+    <script type="text/javascript" src="<%=Page.ResolveClientUrl("~/Scripts/jquery-1.12.4.min.js")%>"></script>
+<![endif]-->
+```
+
+当使用IE5-IE9时，正常识别条件注释，跳过 **!IE** 的部分，读取 **lt IE 9** 里面的内容，当使用其他版本时忽略条件注释，读取2.1.4版本jQuery
+
+摘自：[维基百科 - 条件注释](https://zh.wikipedia.org/wiki/%E6%9D%A1%E4%BB%B6%E6%B3%A8%E9%87%8A)  [条件注释的两种形式——下层隐藏与下层显示](https://zhuanlan.zhihu.com/p/150115755)
+
+**使用示例：**
+
+```html
+<!--[if !IE]><!--> 除IE外都可识别 <!--<![endif]-->
+<!--[if IE]> 所有的IE可识别 <![endif]-->
+<!--[if IE 6]> 仅IE6可识别 <![endif]-->
+<!--[if lt IE 6]> IE6以及IE6以下版本可识别 <![endif]-->
+<!--[if gte IE 6]> IE6以及IE6以上版本可识别 <![endif]-->
+<!--[if IE 7]> 仅IE7可识别 <![endif]-->
+<!--[if lt IE 7]> IE7以及IE7以下版本可识别 <![endif]-->
+<!--[if gte IE 7]> IE7以及IE7以上版本可识别 <![endif]-->
+<!--[if IE 8]> 仅IE8可识别 <![endif]-->
+<!--[if IE 9]> 仅IE9可识别 <![endif]-->
+```
+
+摘自：[条件注释判断浏览器<!--[if !IE]><!--[if IE]><!--[if lt IE 6]><!--[if gte IE 6]>](https://www.cnblogs.com/dtdxrk/archive/2012/03/06/2381868.html)
+
+
+
+#### flex兼容
+
+Flexbox布局的语法经过几年发生了很大的变化，也给Flexbox的使用带来一定的局限性，因为语法版本众多，浏览器支持不一致，致使Flexbox布局使用不多。
+
+Flexbox布局主要有三种语法版本：
+
+2009版本，我们称之为老版本，使用的是“display:box”或者“display:inline-box”；
+
+2011版本，我们称之为混合版本，使用的是“display:flexbox”或者“display:inline-flexbox”；
+
+2013版本，也就是最新语法版本，使用的是“display:flex”或者“display:inline-flex”。
+
+https://www.jianshu.com/p/654cd19da3e7
+
+
+
+#### 兼容IE8的方法：
+
+- **HTML5标签兼容方案：html5shiv.js**
+
+  GitHub地址：https://github.com/aFarkas/html5shiv/
+
+  IE8不支持HTML5的新标签，如\<header>、\<nav>等标签在IE8无法渲染。html5shiv.js可帮助IE6-8浏览器兼容HTML5语义化标签。
+
+  **使用方法：**在页面中引用html5shiv.js文件。必须添加在页面的\<head>元素内，因为IE浏览器必须在元素解析前知道这个元素，所以这个js文件不能在页面底部引用。
+
+- **CSS3媒体查询兼容方案：Respond.js**
+
+  GitHub地址：https://github.com/scottjehl/Respond
+
+  IE8不支持CSS媒体查询，对响应式设计大大不利。Respond.js可帮助IE6-8兼容“min/max-width”媒体查询条件。
+
+  使用方法：在页面中所有css文件的引用位置之后引用Respond.js。而且Respond.js的引用得越早，用户看到页面闪烁的机会越小。
+
+- **CSS3字体单位“rem”兼容方案：rem.js**
+
+  GitHub地址：https://github.com/chuckcarpenter/REM-unit-polyfill
+
+  CSS3引入了新的字体大小单位rem，与em的“相对于其父元素来设置字体大小”的功能不同，rem是相对于根元素\<html>的字体大小比率单位，成了目前主流的单位之一。IE9+开始支持，IE8就只能通过引入js库来支持了。
+
+  使用方法：在页面中引用rem.js文件。需要引用在页脚，也就是\<body>末尾，在所有css文件引用和DOM元素之后。
+
+- **CSS3“background-size”属性的“cover”和“contain”属性值兼容方案：background-size polyfill**
+
+  GitHub地址：https://github.com/louisremi/background-size-polyfill
+
+  “background-size”是CSS3新引入的属性，其中有两个属性值非常常用，分别为“cover”和“contain”。“cover”可以把背景图像扩展至足够大，以使背景图像完全覆盖背景区域，背景图像的某些部分也许无法显示在背景定位区域中。“contain”可以把图像图像扩展至最大尺寸，以使其宽度和高度完全适应内容区域。IE8同样不支持，非常不方便。这时可以引用“background-size polyfill”库来兼容。
+
+  使用方法：与以上几个库不同，“background-size polyfill”的代码文件需要在css中引用。在所有用到这两个“background-size”属性值的地方，加一行“-ms-behavior”属性：
+
+  ```css
+  .selector { 
+      background-size: cover;
+      /* 以下相对路径是相对于文档，而非css文件！ */
+      /* 使用绝对路径可以避免混淆 */
+      -ms-behavior: url(/backgroundsize.min.htc);
+  }
+  ```
+
+- **JS数组的forEach方法兼容方案：自行实现**
+
+  IE8的数组对象没有forEach方法，晕。所以自行声明即可，代码如下：
+
+  ```js
+  if ( !Array.prototype.forEach ) {
+      Array.prototype.forEach = function forEach( callback, thisArg ) {
+          var T, k;
+          if ( this == null ) {
+              throw new TypeError( "this is null or not defined" );
+          }
+          var O = Object(this);
+          var len = O.length >>> 0;
+          if ( typeof callback !== "function" ) {
+              throw new TypeError( callback + " is not a function" );
+          }
+          if ( arguments.length > 1 ) {
+              T = thisArg;
+          }
+          k = 0;
+          while( k < len ) {
+              var kValue;
+              if ( k in O ) {
+                  kValue = O[ k ];
+                  callback.call( T, kValue, k, O );
+              }
+              k++;
+          }
+      };
+  }
+  ```
+
+- **SVG图形兼容方案：优雅降级**
+
+  参考文章：http://www.zhangxinxu.com/wordpress/2013/09/svg-fallbacks/
+
+  对于svg图形是真的无法直接兼容了，因此使用优雅降级，在IE8下显示替代的jpg、png或gif图片。有三种比较实用的方法：一是用js修改\<img>的src属性，这里省略；二是用HTML的hack实现优雅降级，类似于如下代码：
+
+  ```html
+  <svg width="96" height="96">
+    <image xlink:href="svg.svg" src="svg.png" width="96" height="96" />
+  </svg>
+  ```
+
+  支持\<svg>标签的浏览器会显示svg.svg，老版本浏览器会无视\<svg>标签，渲染\<image>标签，从而显示svg.png。
+
+  此外，还有一种比较巧妙的方法：
+
+  ```html
+  <img src="image.svg" onerror="this.src='image.png'">
+  ```
+
+  此法有弊端：当image.png出现问题无法载入时，会陷入死循环。
+
+- **Canvas兼容方案：Excanvas.js**
+
+  下载地址：http://code.google.com/p/explorercanvas/downloads/list
+
+  Canvas的功能非常强大，兼容IE8的工作也很繁巨。可能有很大一部分情况要用优雅降级，但是一些情况下可以使用Google出的Excanvas.js库。它是利用IE支持的VML对象来模拟Canvas的绘图的，有些情况下可用，但无法穷尽Canvas的所有功能。
+
+  使用方法：在页面中引用Excanvas.js文件，最好在\<head>标签中。
+
+  具体注意事项可以参考文章：http://rockyuse.iteye.com/blog/1618298
+
+- **Canvas+WebGL兼容方案：优雅降级**
+
+  最近WebGL库——Three.js越来越流行了，但它只支持IE11+，IE8的兼容好像无解……所以只能优雅降级，但是效果肯定大打折扣。
+
+摘自：[前端页面兼容ie8解决方法](https://www.cnblogs.com/vickya/p/8033944.html)
+
+
+
+***
 
 ## Less
 
@@ -2561,5 +3095,16 @@ hello * world					 将会报错：Error: Undefined operation "hello * world".
 
 ```scss
 @warn "warning info";
+```
+
+
+
+## bootstrap
+
+```html
+<!--悬浮向左-->
+<span class="push-left"></span>
+<!--悬浮向右-->
+<span class=“push-right”></span>
 ```
 

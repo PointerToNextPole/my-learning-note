@@ -79,6 +79,24 @@
 
 
 
+#### 查单词
+
+- **单指长按 / 三指按住：**在官方应用中调出字典查词
+
+- **⌃ + ⌘ +D：**在非官方应用中打开字典查词，如下所示：
+
+  <img src="https://s1.ax1x.com/2020/10/28/B3xx7F.png" style="zoom: 45%;" />
+
+- 在spotlight中查词，不过：可能所查单词不在第一个选项中：如下所示。只需要按下**⌘ + L**即可将光标移动到字典选项处
+
+  |                          开始                          |                   使用**⌘ + L**选中                    |
+  | :----------------------------------------------------: | :----------------------------------------------------: |
+  | ![](https://i.loli.net/2020/10/28/HXsaGPgTZry2L5e.png) | ![](https://i.loli.net/2020/10/28/arEv7TKuqQRZj9g.png) |
+
+- 使用**⌥ + ⎋**以读单词
+
+
+
 #### **⌃ + 方向键**
 
 - **⌃ + ←：相当于四指滑动的左滑，前往左侧的页面**
@@ -131,6 +149,61 @@ open folder/fileName.filetype     #打开默认的打开方式打开文件（如
 
 
 
+#### <font color=FF0000>open命令</font>
+
+- 使用默认应用打开<font color=FF0000>指定</font>文件
+
+  ```sh
+  open fileName
+  ```
+
+- 使用默认应用打开<font color=FF0000>一批（对应规则的）</font>文件
+
+  ```sh
+  open *.fileType
+  ```
+
+- 用<font color=FF0000>指定的应用程序</font>来打开<font color=FF0000>指定</font>的文件
+
+  ```sh
+  open -a appName fileName
+  ```
+
+- 用系统<font color=FF0000>默认的文本编辑器</font>来打开指定的<font color=FF0000>文本文件</font>
+
+  ```sh
+  open -e txtFileName
+  ```
+
+  - 使用<font color=FF0000>默认对应的文本编辑器</font>打开文件
+
+    ```sh
+    open -t fileName
+    ```
+
+- 打开文件， 如果是macOS则使用Finder打开文件夹
+
+  ```sh
+  open foldName
+  open .
+  ```
+
+- 打开<font color=FF0000>文件所在文件夹</font>
+
+  ```sh
+  open -R fileName
+  ```
+
+- 打开某个url，注意：要加上`http://` 或 `https://`
+
+  ```sh
+  open https://url
+  ```
+
+摘自：[用open命令实现从终端到可视化界面的切换](https://www.jianshu.com/p/10395015ebc8)
+
+
+
 #### <font color=FF0000>Homebrew使用</font>
 
 - Homebrew是使用ruby开发的Mac的软件包管理器
@@ -157,6 +230,60 @@ open folder/fileName.filetype     #打开默认的打开方式打开文件（如
 | 查看Homebrew安装位置 | `brew --prefix` |
 | 查看软件包在Homebrew中安装的位置 | `brew --prefix wget` |
 
+#### **补充：** 
+
+- ##### 关于taps(third-party-repositories)，相关命令：`brew tap`
+
+  brew tap可以为brew的软件的 跟踪, 更新, 安装添加更多的的`tap formulae
+
+  如果你在核心仓库没有找到你需要的软件,那么你就需要安装第三方的仓库去安装你需要的软件
+
+  tap命令的仓库源默认来至于Github，但是这个命令也不限制于这一个地方
+
+  - **brew tap** 
+
+    没有参数会自动更新已经存在的`tap`并列出当前已经`tapped`的仓库
+
+  - **brew tap \<user>/\<repo>** 
+
+    在本地对这个 `https://github.com/user/repo` 仓库上做了一个浅度的克隆，完成之后 `brew`就可以在这个仓库包含的`formulae`上工作,好比就在`Homebrew`规范的仓库,你可使用`brew install` 或者`brew uninstall `安装或者卸载这个仓库上的软件。当你执行`brew update`这个命令时，`tap` 和 `formulae` 就会自定更新
+
+  - **brew tap \<user>/\<repo> URL** 
+
+    在本地对这个 `URL` 仓库上做了一个浅度的克隆,和上面一个参数命令是不一样的,`URL`没有默认关联到`Github`,这个`URL`没有要求必须是`HTTP`协议，任何位置和任何协议而且**Git**也是能很好的处理的
+
+  - **brew untap \<user>/\<repo> [\<user>/\<repo> \<user>/\<repo> ...]**
+
+    移除已经安装的`tap`.这个仓库被删除,`brew`就不在可用在这个仓库的`formulae`.可以同时删除几个仓库
+
+  **仓库命名的规范**
+
+  - 在 `Github`上,你的仓库名称必须是`homebrew-something`,为了使用一个参数的`brew tap`命令,`homebrew-`这个前缀不是可选的,是必须的。
+    对于两个参数的`brew tap`命令没有这个限制,但是必须给出明确的全部的`URL`地址
+  - 当你在命令行使用`brew tap`时，你可以省略`homebrew-`这个前缀的
+
+  也就是说:`brew tap username/foobar`是作为长版本`brew tap username/homebrew-foobar`使用的一个简写.**`brew`可以自己添加`homebrew-`前缀的在需要的时候**
+  
+  摘自： [homebrew的tap功能详解](https://segmentfault.com/a/1190000012826983)
+  
+- ##### brew link
+
+  对于homebrew管理的应用上来说，在安装后可能表现为：不能识别该命令；这些问题实际上是很fatal的，会导致一系列的后续错误。
+
+  摘自：[深入理解brew link命令](https://blog.csdn.net/weixin_33730836/article/details/86400319)
+
+  `brew link` creates symlinks to installations you performed manually in `Cellar`. This allows you to have the flexibility to install things on your own but still have those participate as dependencies in `homebrew` formulas.
+
+  摘自：[stack overflow - What does “brew link” do?](https://stackoverflow.com/questions/33268389/what-does-brew-link-do)
+
+
+
+#### macOS清理DNS缓存
+
+```sh
+sudo killall -HUP mDNSResponder
+```
+
 
 
 #### 切换到root用户模式
@@ -175,6 +302,45 @@ exit
 #### 打开外接存储设备
 
 进入根目录，进入Volume文件夹，这里存放所有外接存储设备
+
+
+
+#### Linux命令缩写由来
+
+```
+- ls: list
+- rm: remove 
+- mkdir: make directory
+- mkfs: make filesystem
+- mknod: make node
+- chown: change owner
+- cp: copy
+- insmod: install module 
+- lsmod: list modules
+- rmmod: remove module
+- env: environment 
+- cat: concatenate
+- gcc: GNU Compiler Collection
+- man: manual
+- ps: processes
+- pwd: print working directory
+- ifconfig: interface configuration
+- sync: synchronize
+- tty: teletypewriter
+
+```
+
+//todo
+
+https://www.zhihu.com/question/49073893/
+
+
+
+#### bc命令（Basic Calculator）
+
+开启一个CLI下的计算器，同时：按下quit以退出。如下示图：
+
+<img src="https://i.loli.net/2020/10/26/z8nFIPWBCyDaef9.png" alt="BuATWn.png" style="zoom:50%;" />
 
 
 
@@ -333,6 +499,40 @@ $* 和 $@ 都表示传递给函数或脚本的所有参数，不被双引号`" "
 
 
 
+#### tree命令
+
+**最常用的两个规则：**
+
+- **tree -L N**  查看文件夹的树状结构，最多深入N层
+- **-a**               显示所有文件和目录（包括隐藏文件）
+
+**更详细的：**
+
+- <font color=FF0000>**-a**</font>   显示所有文件和目录。
+- **-A**   使用ASNI绘图字符显示树状图而非以ASCII字符组合。
+- <font color=FF0000>**-C**</font>   在文件和目录清单<font color=FF0000>加上色彩</font>，便于区分各种类型。
+- <font color=FF0000>**-d**</font>   <font color=FF0000>显示目录名称而非内容</font>。
+- <font color=FF0000>**-D**</font>   <font color=FF0000>列出文件或目录的更改时间</font>。
+- **-f**   在每个文件或目录之前，显示完整的相对路径名称。
+- **-F**   在执行文件，目录，Socket，符号连接，管道名称名称，各自加上”*”,”/”,”=”,”@”,”|”号。
+- **-g**   列出文件或目录的所属群组名称，没有对应的名称时，则显示群组识别码。
+- **-i**   不以阶梯状列出文件或目录名称。
+- **-I**   <范本样式> 不显示符合范本样式的文件或目录名称。
+- **-l**   如遇到性质为符号连接的目录，直接列出该连接所指向的原始目录。
+- **-n**   不在文件和目录清单加上色彩。
+- **-N**   直接列出文件和目录名称，包括控制字符。
+- <font color=FF0000>**-p**</font>   <font color=FF0000>列出权限标示</font>。
+- **-P**   <范本样式> 只显示符合范本样式的文件或目录名称。
+- **-q**   用”?”号取代控制字符，列出文件和目录名称。
+- <font color=FF0000>**-s**</font>   <font color=FF0000>列出文件或目录大小</font>。
+- **-t**   用文件和目录的更改时间排序。
+- <font color=FF0000>**-u**</font>   <font color=FF0000>列出文件或目录的拥有者名称，没有对应的名称时，则显示用户识别码</font>。
+- **-x**   将范围局限在现行的文件系统中，若指定目录下的某些子目录，其存放于另一个文件系统上，则将该子目录予以排除在寻找范围外。
+
+摘自：[命令行使用之tree命令](https://www.jianshu.com/p/f117be185c6f)
+
+
+
 #### grep命令
 
 **grep**（**<font color=FF0000>global</font>** search **<font color=FF0000>regular expression(RE)</font>** and **<font color=FF0000>print</font>** out the line，全面搜索正则表达式并把行打印出来）是一种强大的<font color=FF0000>文本搜索工具</font>，它<font color=FF0000>能使用正则表达式搜索文本，并把匹配的行打印出来</font>。
@@ -419,7 +619,7 @@ u             #指定用户的所有进程
 
 `ps [options]`输出示例：
 
-<img src="https://s1.ax1x.com/2020/08/06/ageYqI.png" style="zoom: 50%;" />
+<img src="https://i.loli.net/2020/10/26/cPDQRw63uYlG4a5.png" alt="ageYqI.png" style="zoom:55%;" />
 
 - USER: 行程拥有者
 - PID: pid
@@ -596,6 +796,16 @@ curl由于可自定义各种请求参数所以在模拟web请求方面更擅长�
 
 
 
+#### cat  (concatenate)
+
+cat命令<font color=FF0000>连接文件并打印到标准输出设备上</font>，cat经常用来显示文件的内容，类似于下的type命令。
+
+注意：当文件较大时，文本在屏幕上迅速闪过（滚屏），用户往往看不清所显示的内容。因此，一般用more等命令分屏显示。为了控制滚屏，可以按Ctrl+S键，停止滚屏；按Ctrl+Q键可以恢复滚屏。按Ctrl+C（中断）键可以终止该命令的执行，并且返回Shell提示符状态。
+
+
+
+
+
 ### Linux权限详解
 
 Linux 下文件的权限类型一般包括<font color=FF0000>读，写，执行</font>。对应字母为<font color=FF0000> r、w、x</font>。
@@ -680,6 +890,36 @@ rx = 4 +1 = 5.           若要同时设置 r-x （可读可运行不可写）�
 
 
 
+### chown
+
+chown（英文全拼：change ownerp）命令用于设置文件所有者和文件关联组的命令。
+
+利用 chown 将指定文件的拥有者改为指定的用户或组，用户可以是用户名或者用户 ID，组可以是组名或者组 ID，文件是以空格分开的要改变权限的文件列表，支持通配符。 。
+
+chown 需要超级用户 root 的权限才能执行此命令。只有超级用户和属于组的文件所有者才能变更文件关联组。非超级用户如需要设置关联组可能需要使用 chgrp 命令
+
+语法：
+
+```bash
+chown [-cfhvR] [--help] [--version] user[:group] file...
+```
+
+**参数** :
+
+- user : 新的文件拥有者的使用者 ID
+- group : 新的文件拥有者的使用者组(group)
+- -c : 显示更改的部分的信息
+- -f : 忽略错误信息
+- -h :修复符号链接
+- -v : 显示详细的处理信息
+- -R : 处理指定目录以及其子目录下的所有文件
+- --help : 显示辅助说明
+- --version : 显示版本
+
+摘自：[Linux chown 命令](https://www.runoob.com/linux/linux-comm-chown.html)
+
+
+
 #### which命令
 
 which指令会在环境变量$PATH设置的目录里查找符合条件的文件
@@ -713,6 +953,12 @@ lsof（list open files）是一个查看当前系统文件的工具。在linux�
 - -v 显示版本信息
 
 ***
+
+
+
+#### ifconfig
+
+
 
 
 

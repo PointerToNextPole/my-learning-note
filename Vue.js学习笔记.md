@@ -1,4 +1,4 @@
-re
+# Vue.js学习笔记
 
 
 
@@ -1324,7 +1324,7 @@ Vue.config.keyCodes.f1 = 112
 ```html
 <div id="components-demo">
     <button-counter></button-counter>
-</div>
+</div>el
 
 <script>
     // 定义一个名为 button-counter 的新组件
@@ -3998,3 +3998,1221 @@ createElement(
 
 
 
+补充：
+
+v-text：将数据解析为纯文本
+
+
+
+//todo
+
+
+
+#### 模版占位符template
+
+**需求：**下图div用v-for做了列表循环，现在想要span也一起循环，应该怎么做？
+
+```html
+<div id="app">
+    <div>
+        <div v-for="(item, index) in list" :key="item.id">{{item.text}}--{{index}}</div>
+        <span>{{item.text}}</span>
+    </div>
+</div>
+```
+
+**有3种方法可以实现**
+
+- 直接用v-for对span也循环一次
+
+  ```html
+  <div id="app">
+      <div>
+          <div v-for="(item, index) in list" :key="item.id">{{item.text}}--{{index}}</div>
+          <span v-for="(item, index) in list" :key="item.id">{{item.text}}</span>
+      </div>
+  </div>
+  ```
+
+- 在div和span外面包裹一个div，给这个div加循环
+
+  ```html
+  <div id="app">
+      <div v-for="(item, index) in list" :key="item.id">
+          <div>{{item.text}}--{{index}}</div>
+          <span>{{item.text}}</span>
+      </div>
+  </div>
+  ```
+
+- 不想额外增加一个div，此时应该使用template来实现<font color=FF0000>（推荐）</font>
+
+  ```html
+  <div id="app">
+      <template v-for="(item, index) in list" :key="item.id">
+          <div>{{item.text}}--{{index}}</div>
+          <span>{{item.text}}</span>
+      </template>
+  </div>
+  ```
+
+**总结：**<font color=FF0000>template的作用是模板占位符，可帮助我们包裹元素，但在循环过程当中，template不会被渲染到页面上。</font>
+
+摘自：[vue中template的作用及使用](https://www.cnblogs.com/tu-0718/p/11177236.html)
+
+
+
+#### 非props
+
+非Prop特性：指的是一个未被组件注册的特性。<font color=FF0000>当组件接收了一个非Prop特性时，**该特性会被添加到这个组件的根元素上**。</font>
+
+##### **props特性 与 非props特性的区别**
+
+- **props特性：**
+
+  - <font color=0000FF>可以传递给子组件使用。</font>
+  - <font color=FF0000>不会在dom元素中显示出来。</font>
+  - <font color=fuchsia>不会替换已有的特性。</font>
+
+- **非props特性：**
+
+  - <font color=0000FF>不可以传递给子组件。</font>
+
+  - <font color=FF0000>会在dom元素上显示出来。</font>
+
+  - <font color=fuchsia>会替换掉已有的特性</font>。只有class和style特性才会与非prop特性合并。
+
+摘自：[复习之props特性与非props特性](https://zhuanlan.zhihu.com/p/170645692)
+
+
+
+#### Vue.extend(options)
+
+- **参数**：{Object} options
+- **用法**：使用<font color=FF0000>基础 Vue 构造器，创建一个“子类”</font>。参数是一个包含组件选项的对象。
+
+
+
+**Vue.extend 和 Vue.component、component 的区别**
+
+1. Vue.component、component两者都是需要先进行组件注册，然后在 template 中使用注册的标签名来实现组件的使用。Vue.extend 则是编程式的写法（动态）
+2. 关于组件的显示与否，需要在父组件中传入一个状态来控制 或者 在组件外部用 v-if / v-show 来实现控制，而 Vue.extend 的显示与否是手动的去做组件的挂载和销毁。
+3. Vue.component component 在组件中需要使用 slot 等自定义UI时更加灵活，而 Vue.extend 由于没有 template的使用，没有slot 都是通过 props 来控制UI，更加局限一些。
+   摘自：[Vue.extend 编程式插入组件](https://juejin.cn/post/6844903998672076813)
+
+
+
+#### Vue.use()
+
+语法：
+
+```js
+Vue.use(MyPlugin, { someOption: true }) //也可以传入一个可选的选项对象：
+```
+
+- 如果插件是一个对象，必须提供 install 方法。
+- **如果插件是一个函数，它会被作为 install 方法**。install 方法调用时，`会将 Vue 作为参数传入`。
+- Vue.use(plugin)调用之后，插件的install方法就会默认接受到一个参数，这个参数就是Vue（原理部分会将）
+
+Vue.use() 方法需要在调用 `new Vue()` 之前被调用。
+
+通过全局方法 Vue.use() 使用插件。它需要<font color=FF0000>在你调用 new Vue() 启动应用之前完成</font>：
+
+```vue
+// 调用 MyPlugin.install(Vue)
+Vue.use(MyPlugin)
+
+new Vue({
+  // ...组件选项
+})
+```
+
+Vue.use <font color=FF0000>会自动阻止多次注册相同插件，届时即使多次调用也只会注册一次该插件。</font>
+
+**补充：**（摘自：[vue.use()方法从源码到使用](https://juejin.cn/post/6844903842035793928)）
+
+我们发现 <font color=FF0000>Vue.use() 的注册本质上就是执行了一个 install 方法，install 里的内容由开发者自己定义</font>，通俗讲就是一个钩子可能更贴近语义化而已。
+
+在 install 里我们可以拿到 Vue 那么和 Vue 相关的周边工作都可以考虑放在 Vue.use() 方法里，比如：
+
+- directive注册
+- mixin注册
+- filters注册
+- components注册
+- prototype挂载
+- ...
+
+
+
+#### $on & $emit
+
+**$on & $emit** 解决的问题分别是：事件的定义和消费。
+
+**举个例子：**函数中的 <font color=FF0000>**this.$emit("start", args)**  触发了一个自定义事件 "start"</font>。然后<font color=0000FF>监听器 **this.$on('start',function(...) )** 监听到这个自定义事件 **"start"** 的触发，执行了监听器里面的函数。并接收了 $emit 传过来的参数 （args）</font>
+
+- **$on** 是用来在<font color=FF0000>**监听**(注册)自定义事件</font>的 **（接收数据）**，<font color=FF0000>同时：可以为一个事件（event）绑定多个方法（callback）</font>
+
+  **语法：**
+
+  ```vue
+  vm.$on(event, callback)
+  ```
+
+  **参数：**
+
+  - **event  {string | Array}：**自定义事件的名称，<font color=FF0000>可以使用数组的方式多次注册</font>。数组方式必须在2.2.0+中才支持（与上面的为一个事件（event）绑定多个方法（callback）对应）
+
+  - **callback  {Function}：**自定义事件触发后，所执行的方法、函数
+
+  总结：$on可以定义多个事件（使用Array），也可以为同一个事件绑定多个处理函数（callback）
+
+  **示例：**
+
+  ```vue
+  vm.$on('myEvent', function(data) {
+      console.log(data);
+  });
+  ```
+
+- **$emit** 是<font color=FF0000>手动**触发**当前实例上的一个指定事件</font> （发送数据）
+
+  **语法：**
+
+  ```vue
+  vm.$emit(eventName, [...args])
+  ```
+
+  **参数：**
+
+  - **eventName {string}：** 需要触发的事件名称
+  - **[...args]：** 传递的参数，多个参数用数组，单个参数就可以直接用参数本身的格式
+
+  **示例：**
+
+  ```vue
+  vm.$emit('myEvent', 'happy');
+  ```
+
+示例如下：
+
+```html
+<html>
+  <head>
+    <title>$emit 和 $on</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="root">
+      <!--使用$emit-->
+      <button @click="boost">触发事件</button>
+    </div>
+    <script>
+      new Vue({
+        el: '#root',
+        data() {
+          return {
+            message: 'hello vue'
+          }
+        },
+        created() {
+          /**声明$on*/
+          this.$on('my_events', this.handleEvents)
+        },
+        methods: {
+          handleEvents(e) {
+            console.log(this.message, e)
+          },
+          boost() {
+            /**声明$emit*/
+            this.$emit('my_events', 'my params')            
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
+```
+
+
+
+#### watch侦听器
+
+侦听器的名字以被监视的对象命名，根据被监视的对象的变化自动发生变化
+
+- 常见用法
+- 绑定方法
+- deep + handler
+- immediate
+- 绑定多个 handler
+- 监听对象属性
+
+
+
+#### class 和 style 绑定的高级用法
+
+```html
+<div :class="['active', 'normal']">数组绑定多个class</div> <!--也可以使用'active' + ' normal'，不过使用数组更合理-->
+<div :class="[{active: isActive}, 'normal']">数组包含对象绑定class</div>  <!--这里的isActive是bool-->
+<div :class="[showWarning(), 'normal']">数组包含方法绑定class</div> <!--showWarning()会返回一个class名字的字符串-->
+<div :style="[warning, bold]">数组绑定多个style</div> <!--这里的warning和bold是css的对象-->
+<div :style="[warning, mix()]">数组包含方法绑定style</div>
+<div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }">style多重值</div> <!--会优先取得最后一个值，不兼容的情况下，会取倒数第二个值；以此类推-->
+```
+
+
+
+#### checked属性
+
+在Vue中通过checked属性值来判定radio / \<select>是否选中，示例如下：
+
+```html
+<input type='radio' :name='groupName' :checked='option.checked'>{{option.text}}
+```
+
+类似的还有value和selected。
+
+**以下摘自官方文档：**
+
+v-model 在内部为不同的输入元素使用不同的 property 并抛出不同的事件：
+
+- text 和 textarea 元素使用 <font color=FF0000>**value**</font> property 和 <font color=FF0000>**input** 事件</font>；
+- checkbox 和 radio 使用 <font color=FF0000>**checked**</font> property 和 <font color=FF0000>**change** 事件</font>；
+- select 字段将 value 作为<font color=FF0000> **prop**</font> 并将 <font color=FF0000>**change**</font> 作为事件。
+
+摘自：[vue官方文档 -- 表单输入绑定](https://cn.vuejs.org/v2/guide/forms.html)
+
+
+
+#### Vue.nextTick( [callback, context] )
+
+- **参数**：
+
+  - {Function} [callback]
+  - {Object} [context]
+
+- **用法**：
+
+  在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
+
+摘自：[Vue.js API -- Vue.nextTick](https://cn.vuejs.org/v2/api/index.html#Vue-nextTick)
+
+
+
+#### $event
+
+需要在内联语句处理器中访问原始的 DOM 事件。可以用特殊变量 `$event` 把它传入方法
+
+```html
+<button v-on:click="warn('Form cannot be submitted yet.', $event)">
+  Submit
+</button>
+<script>
+// ...
+methods: {
+  warn: function (message, event) {
+    // 现在我们可以访问原生事件对象
+    if (event) {
+      event.preventDefault()
+    }
+    alert(message)
+  }
+}
+</script>
+```
+
+摘自：[vue官方文档 - 事件处理](https://cn.vuejs.org/v2/guide/events.html)
+
+
+
+## Element.UI备忘录
+
+#### \<el-table>
+
+- 如果要指定表格每列的「标题」和每列的「字段」的位置（左中右），可以在\<el-table-column>分别设置header-align和align为 ["left" "center" "right"] 以进行修改。
+
+- 如果可以使用，每列的「标题」出现换行的情况，这样很影响美观；可以在\<el-table-column>中设置width="pixel number"以修改column宽度，使得该列不至于换行。示例如下：
+
+  ```html
+  <el-table-column :width='400'></el-table-column>
+  ```
+
+  当然：并不是推荐使用width，而是推荐使用<font color=FF0000>**min-width**</font>，因为min-width可实现自适应
+
+- **几个style属性**
+
+  - **row-style**：设置的就是表格行的样式
+
+    ```js
+    :row-style="{height:'15px'}
+    ```
+
+  - **header-row-style**：设置了表头行的样式
+
+    ```js
+    :header-row-style="{height:'20px'}"
+    ```
+
+  - **cell-style**：设置表格单元格的样式
+
+    ```js
+    :cell-style="{padding:'0px'}"
+    ```
+
+  - **header-cell-style**：设置表头的单元格样式
+
+    ```js
+    :header-cell-style="{padding:'0px',background:'#eef1f6'}"
+    ```
+
+- <font color=FF0000>如果想要在**el-table**中使用（添加）class</font>，需要制定 Table 组件的 `row-class-name` 属性来为 Table 中的某一行添加 class，从而可以在类中添加属性
+
+  **补充：**
+
+  - **header-cell-class-name**：表头单元格的 className 的回调方法，也可以使用字符串为所有表头单元格设置一个固定的 className
+
+    - **类型：**Function({row, column, rowIndex, columnIndex}) **/** String，分为 函数形式 和 字符串形式
+
+    - **函数形式：**将headerStyle方法传递给header-cell-class-name
+
+      ```html
+      <el-table 
+      	:data="tableData[lang]" 
+        class="table" 
+        stripe 
+        border 
+        :header-cell-class-name="headerStyle"
+      >
+        
+      <script>
+      headerStyle ({row, column, rowIndex, columnIndex}) {
+      	return 'tableStyle'
+      }
+      </script>
+        
+      <style lang = "scss">
+      .tableStyle{
+        background-color: #1989fa!important;
+        color:#fff;
+        font-weight:400;
+      }
+      ```
+
+    - **字符串形式：**直接将tableStyle名称赋值给header-cell-class-name
+
+      ```html
+      <el-table 
+        :data="tableData[lang]" 
+        class="table" 
+        stripe 
+        border 
+        header-cell-class-name="tableStyle"
+      >
+        
+      <style lang = "scss">
+      .tableStyle{
+        background-color: #1989fa!important;
+        color:#fff;
+        font-weight:400;
+      }
+      ```
+
+  - **header-cell-style**：表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style。
+
+    - **类型：**Function({row, column, rowIndex, columnIndex}) **/** Object 分为 函数形式 和 字符串形式
+
+    - **函数形式：**将tableHeaderStyle方法传递给header-cell-style
+
+      ```html
+      <el-table 
+        :data="tableData[lang]" 
+        class="table" 
+        stripe 
+        border 
+        :header-cell-style='tableHeaderStyle'
+      >
+      
+      <script>
+      tableHeaderStyle ({row, column, rowIndex, columnIndex}) {
+      	return 'background-color:#1989fa;color:#fff;font-weight:400;'
+      }
+      </script>
+      ```
+
+    - **对象形式：**直接在对象中编写样式
+
+      ```html
+      <el-table 
+        :data="tableData[lang]" 
+        class="table" 
+        stripe 
+        border 
+        :header-cell-style="{
+          'background-color': '#1989fa',
+          'color': '#fff',
+          'font-weight': '400'
+      }">
+      ```
+
+  - **header-row-class-name：**表头行的className 的回调方法，也可以使用字符串为所有表头行设置一个固定的 className。
+
+    类型：Function({row, rowIndex})/String 
+
+    使用方式与header-cell-class-name类似，不过：<font color=FF0000>header-row-class-name是添加在tr上面的，header-cell-class-name是添加在th上面的</font>。
+
+    所以<font color=FF0000>想让添加在tr上的样式显示，需要关闭element-ui中原本的th的样式，否则会被覆盖！</font>（例如背景色）
+
+    <img src="https://i.loli.net/2020/11/17/LKqfCixXlEc9vRB.png" alt="DVVOaV.png" style="zoom:80%;" />
+
+  - **header-row-style**：表头行的 style 的回调方法，也可以使用一个固定的 Object 为所有表头行设置一样的 Style。
+
+    - 类型：Function({row, rowIndex})/Object
+
+      使用方式与header-cell-style类似
+
+  - **row-class-name**：行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className。
+
+    - 类型：Function({row, rowIndex})/String
+
+      使用方式与header-cell-class-name类似
+
+  - **row-style**：行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style。
+
+    - 类型：Function({row, rowIndex})/Object，使用方式与header-cell-style类似
+
+    - 函数形式：将tableRowStyle方法传给row-style
+
+      ```html
+      <el-table 
+        :data="tableData[lang]" 
+        class="table" 
+        border 
+        :row-style="tableRowStyle"
+      >
+      
+      <script>
+      // 修改table tr行的背景色
+      tableRowStyle ({ row, rowIndex }) {
+        return 'background-color:#ecf5ff'
+      }
+      </script>
+      ```
+
+- **滚动条功能**：通过设置<font color=FF0000>**max-height**</font>属性<font color=FF0000>为 Table 指定最大高度</font>。此时若表格所需的高度大于最大高度，则会显示一个滚动条。
+
+- **自定义表头或者某一列有三种方法：**
+
+  - 使用render-header方法，示例：
+
+    ```html
+    <el-table-column
+    	prop="delete"
+    	label="删除"
+    	:render-header="renderHeader"
+    	width="120">
+    	<template slot-scope="scope">
+    	  <el-button @click="handleDelete(scope.row)">删除</el-button>
+    	</template>
+    </el-table-column>
+    
+    <script>
+    export default {
+    methods:
+    	//修改表格的头信息
+      renderHeader(h, { column }) {
+        // 重新渲染表头
+        if (column.property == 'delete') {
+          return h('i', {
+            class:
+              this.clickDeleteTime == 1
+                ? 'el-icon-delete c-red'
+                : 'el-icon-delete',
+            style: 'font-size:24px',
+            on: {//这个是你的点击方法
+              click: () => {
+                this.clearAll()
+              }
+            }
+          })
+        }
+      },
+    }
+    </script>
+    ```
+
+    不过这种方法，目前还不熟练
+
+  - 使用slot（推荐使用），在官方文档中的解释：
+
+    <img src="https://i.loli.net/2020/10/24/NEwPBFXAjonm1rL.png" alt="BVGnhD.png" style="zoom: 45%;" />
+
+    示例：
+
+    ```html
+    <el-table-column
+      prop="delete"
+      label="删除"
+      width="120">
+      <template
+        slot="header"
+        slot-scope="{ column, $index }">
+        <i class="el-icon-delete" @click="clearAll"></i>
+      </template>
+      <template slot-scope="scope">
+        <el-button type="" @click="handleDelete(scope.row)">
+          删除
+        </el-button>
+      </template>
+    </el-table-column>
+    ```
+
+  - 使用cell-style等属性，官方文档说明如下：
+
+    <img src="https://i.loli.net/2020/10/24/bN4ktDuMorFWnxl.png" alt="BVwqc8.png" style="zoom:50%;" />
+
+    示例如下：
+
+    ```html
+    <el-table :data="tableData" :cell-style="cellStyle">
+      ...
+    </el-table>
+    
+    <script>
+      export default {
+        methods: {
+          cellStyle(row,column,rowIndex,columnIndex){
+            //根据报警级别显示颜色
+            if(row.column.label==="告警级别"&& row.row.alarmLevel==="紧急告警"){
+              return 'color:red'
+            }else if(row.column.label==="告警级别"&& row.row.alarmLevel==="一般告警" ){
+              return 'color:yellow'
+            }
+          }
+        }
+      }
+    </script>
+    ```
+  
+- **通过 <font color=FF0000>"scope.row.属性名"</font> 可以获取当前行对应的属性值**，示例如下：
+
+  ```html
+  <el-table-column label="操作" width="160">
+  	<template slot-scope="scope">
+  		<el-button size="mini" type="primary" plain 
+                 @click = "showName(scope.row.name)">点击获取姓名属性</el-button>
+  	</template>
+  </el-table-column>
+  ```
+
+  <img src="https://i.loli.net/2020/11/17/yzjw1fil5uJto8F.gif" alt="DEz4aj.gif" style="zoom: 45%;" />
+
+  同样的：可以通过**"scope.row.属性名"**和三目运算符给特殊的属性值设定样式
+
+  ```html
+  <el-table-column prop="name" :label="langConfig.table.name[lang]" width="200">
+  	<template slot-scope="scope">
+  		<div :class="scope.row.name === '王大虎' ? 'specialColor':''">{{scope.row.name}}</div>
+    </template>
+  </el-table-column>
+  
+  <style>
+  	.specialColor{
+      color:red;
+    }
+  </style>
+  ```
+  
+  再者：<font color=FF0000>**"scope.row"**是该列全部的数据</font>
+  
+- 对于在el-table中添加checkbox，获取所有选择的行的方法：
+
+  ```html
+  <el-table :data="dataSrc" ref="foo">
+  	<el-table-column type="selection"></el-table-column>
+  </el-table>
+  
+  <script>
+  this.$refs.foo.selection //这是一个列表，包含所有选择的行中的信息
+  </script>
+  ```
+
+  
+
+摘自：[element-ui自定义表格头部的两种方法](https://www.cnblogs.com/wenxinsj/p/10613764.html)   [自定义element-ui的table字体颜色，及背景色](https://blog.csdn.net/qq_32610671/article/details/90731672)  [Element-UI中关于table表格的那些骚操作](https://www.jianshu.com/p/2251cda42425)
+
+[Element table 获取所有选择的行](https://blog.csdn.net/qq_36537108/article/details/89261394)
+
+
+
+#### \<el-popover>
+
+自定义**el-popover**示例：
+
+```html
+<el-popover placement="bottom" trigger="hover" width="300">
+  <div style="display: flex; align-items: flex-start; padding: 20px">
+    <i class="el-icon-info" style="font-size: 16px; color: red; margin-right: 10px; margin-top: 3px"></i>
+    <div style="display: flex; flex-direction: column; justify-content: flex-start">
+      <p style="font-size: 16px; margin-bottom: 10px">驳回原因</p>
+      <p style="font-size: 14px">{{detail_info.check_reject}}</p>
+    </div>
+  </div>
+  <i slot="reference" class="el-icon-info" style="color: red; padding-right: 2px; font-size: 16px"></i>
+</el-popover>
+```
+
+对于：placement可以取的值有：top / top-start / top-end / bottom / bottom-start / bottom-end / left / left-start / left-end / right / right-start / right-end；其中默认值为bottom
+
+摘自：[element.ui 官方文档 -- popover](https://element.eleme.cn/#/zh-CN/component/popover)
+
+
+
+#### \<el-icon>
+
+- 如果需要设置大小，可以设置font-size
+
+
+
+#### \<el-dialog>
+
+想要<font color=FF0000>**直接去掉**</font>**el-dialog\_\_header**(title)和**el-dialog\_\_footer**，似乎目前还没有找到方法...不过，找到了变相去掉的方法：可以用slot以单独控制其中的某个数据显示及样式。示例：
+
+```html
+<el-dialog :visible.sync="dialogVisible">
+	<div slot="title" class="header-title">
+  	<span v-show="name" class="title-name">name {{ name }}</span>
+    <span class="title-age">age {{ age }}</span>
+   </div>
+   <span>这是一段/span>
+   <span slot="footer" class="dialog-footer">
+   	<el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+   </span>
+</el-dialog>
+```
+
+思路参考自：[element-ui之dialog对话框组件title插槽的使用](https://blog.csdn.net/hbjiankely/article/details/88218237)
+
+<font color=FF0000>在el-dialog中：有默认间距，且间距较大，这时候可以修改margin为负值以缩小间距。</font>
+
+
+
+#### \<el-form>
+
+- \<el-form>中的\<el-form-item>中自带了label属性，用以为某一输入框之类的form作为标识，而由于并不方便对这个label的样式进行设置，所以可以使用slot对其进行自定义：
+
+  ```html
+  <span slot="label">foo</span>
+  ```
+
+  示例：
+
+  ```html
+  <el-form-item>
+    <span slot="label">foo</span>
+    <template>
+    	<el-select v-model="newRecord.deliveryVehicle" placeholder="请选择" class="select"></el-select>
+    </template>
+  </el-form-item>
+  ```
+
+  同样的：可以使用slot的还有error和default
+
+如果想要让多个表单在一行（默认每个表单一行），可以在el-form中配置inline / :inline="true"
+
+#### \<el-form-item>
+
+对于el-form-item中表单验证的功能，需要通过`rules`属性传入约定的验证属性规则，并且需要在表单中绑定`rules`（:rules="rules"），<font color=FF0000>另外，非常重要的是：需要在提交时进行验证</font>。示例如下：
+
+```html
+<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  <el-form-item label="活动名称" prop="name">
+    <el-input v-model="ruleForm.name"></el-input>
+  </el-form-item>
+</el-form>
+
+<script>
+	data() {
+    return {
+			rules: {
+				name: [
+					{ required: true, message: '请输入活动名称', trigger: 'blur' },
+					{ min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+			]
+		}
+  },
+  methods: {
+  	submitForm(formName) {
+      //this.$refs.ruleForm.validate()
+  	  this.$refs[formName].validate((valid) => {
+  	    if (valid) {
+  	      alert('submit!');
+  	    } else {
+  	      console.log('error submit!!');
+  	      return false;
+  	    }
+  	  });
+  	},
+  	resetForm(formName) {
+  	  this.$refs[formName].resetFields();
+  	}
+}
+
+</script>
+```
+
+摘自：[element.ui 官方文档](https://element.eleme.cn/#/zh-CN/component/form)
+
+**更进一步的验证：**
+
+- 官方文档上的验证（不确定是否有效）：
+
+  ```js
+  //type: [数字类型 'number', 整数: 'integer', 浮点数: 'float']
+  {type: 'number', message: '请输入数字类型', trigger: 'blur'},
+  {type: 'integer', message: '请输入数字类型', trigger: 'change'}, // 'change'是表单的值改变的时候会触发验
+  ```
+
+- 使用正则表达式验证：
+
+  ```js
+  {pattern: /^(([0-9]+)|([0-9]+\.[0-9]{0,8}))$/, message: '支持八位小数的正数',}
+  ```
+
+- 使用自由度更强的验证
+
+  ```js
+  data() {
+    /** 设置验证函数 */
+    const userValidator = (rule, value, callback) => {
+      if (value.length > 3) {
+        callback()
+      } else {
+        callback(new Error('用户名长度必须大于3'))
+      }
+    }
+    
+    return {
+      data: {
+        user: 'sam',
+        region: '区域二'
+      },
+      
+      rules: {
+        user: [
+          { required: true, trigger: 'change', message: '用户名必须录入' },
+          /** 绑定验证函数 */
+          { validator: userValidator, trigger: 'change' }
+        ]
+      }
+    }
+  }
+  ```
+
+**补充：**
+
+- 动态添加验证条件
+
+  ```js
+  addRule() {
+      const userValidator = (rule, value, callback) => {
+        if (value.length > 3) {
+          this.inputError = ''
+          this.inputValidateStatus = ''
+          callback()
+        } else {
+          callback(new Error('用户名长度必须大于3'))
+        }
+      }
+      const newRule = [
+        ...this.rules.user,
+        { validator: userValidator, trigger: 'change' }
+      ]
+      this.rules = Object.assign({}, this.rules, { user: newRule })
+  }
+  ```
+
+- **手动控制校验状态**
+
+  - validate-status：验证状态，枚举值，共四种：
+    - success：验证成功
+    - error：验证失败
+    - validating：验证中
+    - (空)：未验证
+
+  - error：自定义错误提示
+
+  示例：
+
+  - 设置 el-form-item 属性
+
+    ```html
+    <el-form-item
+      label="用户名"
+      prop="user"
+      :error="error"
+      :validate-status="status"
+    >
+    <!-- ... -->
+    </el-form-item>
+    ```
+
+  - 自定义 status 和 error
+
+    ```js
+    showError() {
+      this.status = 'error'
+      this.error = '用户名输入有误'
+    },
+    showSuccess() {
+      this.status = 'success'
+      this.error = ''
+    },
+    showValidating() {
+      this.status = 'validating'
+      this.error = ''
+    }
+    ```
+
+#### \<el-input>
+
+在el-input中可以设置<font color=FF0000>**maxlength** 和 **minlength** 的HTML原生属性，用来限制输入框的字符长度</font>；其中字符长度是用 Javascript 的字符串长度统计的。<font color=FF0000>对于类型为 text 或 textarea 的输入框，在使用 maxlength 属性限制最大输入长度的同时，可通过设置 **show-word-limit** 属性来展示字数统计。</font>
+
+
+
+#### \<el-button>
+
+在\<el-button>中自定义图片之类，要用\<div>\</div>包裹整个自定义内容
+
+示例如下：
+
+```html
+<el-button type="primary" style="padding: 0">
+  <div class="add_btn">
+    <img src="static/imgs/waybillcharge/icon_order@2x.png" class="order_icon">
+    <p class="add">添加</p>
+  </div>
+</el-button>
+```
+
+
+
+#### \<el-scrollbar>
+
+这个组件的功能是滚动条，而且关于该滚动条的说明在官方文档中是没有的...源码是：https://github.com/ElemeFE/element/blob/dev/packages/scrollbar/src/main.js
+
+如果想要一个横向滚动的滚动条：只需要将标签的height设为100%。
+
+**相关参数（非官方，存疑）**
+
+|   参数    |               说明               |  类型   | 可选值 | 默认值 |
+| :-------: | :------------------------------: | :-----: | :----: | :----: |
+| wrapClass |      可选参数，容器的样式名      | string  |   -    |   -    |
+| viewClass |    可选参数，展示视图的样式名    | string  |   -    |   -    |
+| wrapStyle |       可选参数，容器的样式       | string  |   -    |   -    |
+| viewStyle |     可选参数，展示视图的样式     | string  |   -    |   -    |
+|  native   |    可选参数，是否使用原生滚动    | boolean |   -    | false  |
+| noresize  | 可选参数，容器大小是否是不可变的 | boolean |   -    | false  |
+|    tag    |     可选参数，渲染容器的标签     | string  |   -    |  div   |
+
+摘自：[Element-UI 框架 el-scrollbar 组件](https://juejin.im/post/6844903793377673230)
+
+
+
+#### \<el-drawer>
+
+- **el-drawer设置宽度：**Drawer 抽屉 默认宽度为30%，想要改变宽度只需要使用 :size=“size” （或者size="val_px"）给组件传值就可以了。示例如下：
+
+```html
+<el-drawer title="我是标题" :visible.sync="drawer" :with-header="false" :size="size">
+  <span>我来啦!</span>
+</el-drawer>
+
+<script>
+export default {
+	data() {
+		return {
+			size: '400px'
+		};
+	}
+}
+</script>
+```
+
+摘自：[Element Drawer 抽屉改变默认宽度](https://blog.csdn.net/weixin_44640323/article/details/108794124)
+
+
+
+#### $message
+
+$message的type有：default（不写） / success / warning / error
+
+**$message有两种写法：**
+
+- ```js
+  this.$message({
+    message: 'foo',
+    type: 'success'
+  })
+  ```
+
+- ```js
+  this.$message.success('foo')
+  ```
+
+
+
+
+
+#### Vue项目文件结构
+
+**（使用`vue create proj_name` 或 `vue init webpack proj_name`生成）**
+
+**一级目录：**
+
+```sh
+├── .babelrc           babel（语法解析器）配置
+├── .editorconfig      编辑器语法的配置（比如Tab等于两个空格）
+├── .eslintignore			 eslint忽略文文件路径的配置
+├── .eslintrc.js       eslint（代码规范工具）配置 
+├── .gitignore         git忽略上传文件的配置
+├── .postcssrc.js      postcss的配置项
+├── README.md
+├── build              项目打包webpack的配置内容（目前的层次，一般不需要修改...）
+		├── build.js 
+		├── check-versions.js 
+		├── logo.png 
+		├── utils.js 
+		├── vue-loader.conf.js 
+		├── webpack.base.conf.js     基础的webpack配置项
+		├── webpack.dev.conf.js      开发环境的webpack配置项
+		└── webpack.prod.conf.js     生产环境的webpack配置项
+├── config						 放置项目的配置文件
+		├── dev.env.js							 放置开发的配置信息
+		├── index.js								 放置基础的配置信息
+		└── prod.env.js							 放置生产的配置信息
+├── index.html         项目首页默认的模版文件
+├── node_modules 			 存放第三方依赖的包
+├── package-lock.json  package锁文件，确定第三方包的具体版本，保持团队编程统一
+├── package.json       第三方模块的依赖
+├── src 							 存放项目的源代码
+			├── App.vue                 项目最原始的根组件
+			├── assets                  项目中的图片类资源
+			│   └── logo.png
+			├── components							存放项目中的小组件
+			│   └── HelloWorld.vue
+			├── main.js									项目的入口文件
+			└── router
+    			└── index.js						放置所有的路由
+└── static             存放静态文件、模拟的json数据
+```
+
+
+
+## Vue Router
+
+路由就是根据网址的不同，返回不同的内容给用户
+
+
+
+#### **路由的两种显示模式：**
+
+- hash模式（<font color=FF0000>vue-router默认使用</font>）：地址栏包含`#`符号，`#`以后的内容不会被后台获取。可以减少到后台访问的次数；但需要参数传递时，将无法满足需求。出现404时，后台不会报错。<font color=FF0000>**另外，`#`是特殊字符，在很多场合不被满足；所以使用较少**</font>
+
+- history模式（更加普遍）：具有对url历史记录进行修改的功能。出现404时，后台会报错
+
+  修改方式：
+
+  ```js
+  export default new Router {
+    mode: 'history',
+    router: [
+      //...
+    ]
+  }
+  ```
+
+
+
+<font color=FF0000>组件也有生命周期</font>，所以vue router也可使用生命周期函数
+
+
+
+#### 默认路由
+
+```js
+routers: [
+  {path: '/', redirect: '/foo'},
+  {path: '/foo', component: 'foo'}
+  {path: '/bar', component: 'bar'}
+]
+```
+
+
+
+#### 路由中的参数传递
+
+- **接收参数：**通过传统的 `?` 传递参数：使用`this.$route.query.itemName`获取url中的`?itemName=val`的val
+
+  而对于**传递参数：**
+
+  ```js
+  funcName(param1, param2, ...){
+    this.$router.push({
+        path: '/foo',
+        query: {arg1: param1, arg2: param2, ...},
+    })
+  }
+  ```
+
+  
+
+- 通过RESTful传递参数：使用`this.$route.params.itemName`获取参数
+
+  比如下面的id和name
+
+  ```js
+  router: [{path: '/register/:id/:name', component: register}]
+  ```
+
+  通过`this.$route.params.id`和`this.$route.params.name`获取
+
+  
+
+#### \<router-link>
+
+**router-link组件的props：**
+
+- **to：**字符串或是对象类型。作用：目标路由的链接，相当于a标签的href属性；是必须的。对应的编程式的导航是router.push()方法，将to的值传入router.push()里
+
+- **tag：**想要把\<router-link>渲染成其他标签（默认渲染成**\<a>**），可以使用tag属性，示例：
+
+  ```html
+  <router-link to="/login" tag=“span”>登录</router-link>
+  
+  <!-- 渲染结果 -->
+  <span class>登录</span>
+  ```
+
+- **replace：**布尔类型值。相当于调用router.replace()，页面切换时不会留下历史记录。非必须。
+- **active-class：**class属性字符串类型。表示激活这个链接时，添加的class，默认是router-link-class
+- **exact：**布尔类型值（默认false）。表示开启router-link的严格模式；激活默认类名的依据是 inclusive match （全包含匹配）这个链接只有在地址是「这个」的时候被激活
+- **append：** 布尔类型值。设置该属性后，则在当前的相对路径前加上基路径。
+- **event：**字符串类型值或者是数组字符串。声明可以用来触发导航事件。
+- **exact-active-class：**字符串类型值（默认router-link-exact-active）。配置当链接被精确匹配的时候应该激活的 class。
+
+摘自：[Vue路由\<router-link>属性的使用](https://www.jianshu.com/p/d3f689309d7a) / [\<router-link>组件](https://www.jianshu.com/p/8b8616df24a6) / [vue学习笔记一之](https://www.cnblogs.com/wangpengfei8313/p/8074614.html)
+
+
+
+#### **\<router-view>**
+
+**\<router-view>的作用是挂载路由**（更通俗的讲就是：显示的是当前路由地址所对应的内容）
+
+**举例：**点击这个链接跳转到其他组件的情况，通常会跳转到新的页面，蛋是，我们不想跳转到新页面，只在当前页面切换着显示，那么就要涉及到路由的嵌套了，也可以说是子路由的使用。
+
+
+
+####  Router 配置项
+
+- **mode：** [hash histoty]
+
+  作为有服务端渲染的应用，不希望有`#`，上述是 hash 模式，<font color=FF0000>`#` 更多是用来做定位的，同时它不会被搜索引擎解析，导致网站 SEO 效果不好</font>。
+
+- **base**：页面基础路径
+
+  设置之后，<font color=FF0000>使用 vue-router api 进行跳转 都会加上这个 base 路径</font>
+
+
+
+
+摘自：[Vue-router之配置](https://www.jianshu.com/p/860c77649ba9)
+
+
+
+#### router的跳转方法的参数
+
+**比如：**
+
+```js
+router.push(location, onComplete?, onAbort?)
+```
+
+**其中：**onComplete和onAbort是在路由跳转完成和失败时分别执行的<font color=FF0000>回调函数</font>
+
+
+
+***
+
+## Vue cli
+
+##### 查看vue cli的版本，可以使用如下两种方式：
+
+```sh
+vue --version
+vue -V
+```
+
+
+
+##### 项目启动命令
+
+- 在vue-cli3中启动项目的命令是：
+
+  ```sh
+  npm run serve
+  ```
+
+- 而在vue-cli2中启动项目的命令是：
+
+  ```sh
+  npm run dev
+  ```
+
+
+
+
+#### vue add命令
+
+如果你想在一个已经被创建好的项目中安装一个插件，可以使用 vue add 命令，示例如下：
+
+```sh
+vue add eslint
+```
+
+这个命令将 `@vue/eslint` 解析为完整的包名 `@vue/cli-plugin-eslint`，然后从 npm 安装它，调用它的生成器。<font color=FF0000>这个和之前的用法等价</font>
+
+```sh
+vue add cli-plugin-eslint
+```
+
+**vue add 插件名解析**
+
+| Vue add 语法        | 等价于                    | 解析的npm包             |
+| :------------------ | :------------------------ | :---------------------- |
+| vue add @vue/eslint | vue add cli-plugin-eslint | @vue/cli-plugin-eslint  |
+| vue add apollo      | -                         | vue-cli-plugin-apollo   |
+| vue add @foo/bar    | -                         | @foo/vue-cli-plugin-bar |
+
+**另外：**vue add命令接受两个参数：
+
+- plugin： 插件名称，必填。
+- registry： 安装插件指定的安装源，只针对于 npm 包管理器，选填。
+
+**补充：**
+
+vue add 的设计意图是为了安装和调用 Vue CLI 插件。这不意味着替换掉普通的 npm 包。对于这些普通的 npm 包，你仍然需要选用包管理器。
+
+警告：我们推荐在运行 vue add 之前将项目的最新状态提交，因为<font color=FF0000>该命令可能调用插件的文件生成器并很有可能更改你现有的文件。</font>
+
+**vue add和npm install的区别**（摘自：[Vue add 与 npm install 有什么区别？？？](https://forum.vuejs.org/t/vue-add-npm-install/58275)   [Vue创建一个新的项目、vue add 和npm install区别](https://codeleading.com/article/35174593221/)）
+
+- 区别就是vue add装的是vue cli插件，npm装的是npm插件
+
+- vue add可能会改变现有的项目结构，但是npm install仅仅是安装包而不会改变项目的结构
+
+  add如果你下载的库, 特别是 Ui 库, 希望对脚手架结构产生影响，那就选择vue add xxx
+
+  npm如果不希望对脚手架结构产生影响, 只是单纯的使用, 比如 axios 这个插件，那就选择npm install xxx
+
+- vue add 除了會 npm install 之外，還會幫你配置好一個範例文件。需要注意的是這個指令會更改你現有的文件內容。
+  特別的是使用 vue add router 或是 vue add vuex，他們雖然不是插件，但Vue CLI會幫你配置好文件，例如 vue add router 會幫你配置 router.js 文件以及生成 About.vue 和 Home.vue 並在 App.vue 內建立了簡單的路由範例，而 vue add vuex 會幫你配置好一個 store.js 文件。

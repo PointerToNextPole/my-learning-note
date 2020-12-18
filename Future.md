@@ -32,3 +32,33 @@
 
 摘自：[为什么初期的前端工程师工资都很高？ - 差点兔了的回答 - 知乎](https://www.zhihu.com/question/34999421/answer/1265536336)
 
+
+
+
+
+- 命令行、Git
+- HTML5、CSS3、BFC、定位、层叠上下文、边距折叠、浮动布局、flex布局、grid布局、兼容
+- 渲染机制、白屏、FOUC、异步加载、重绘与回流、8种数据类型、运算符优先级、箭头函数、声明前置、函数作用域、块级作用域、作用域链、IIFE、递归、递归优化、柯里化、字符串数组方法（ES5/6）、引用类型、深浅拷贝、正则表达式（贪婪、分组、前瞻）
+- 同步与异步、任务队列、微任务与宏任务、节流、防抖、原型、class、原型链、Object.create、组合继承、class继承、call/apply/bind、Object.assign、Mixin、Getter/Setter、闭包、模块封装、高阶函数
+- DOM操作、DOM事件流（冒泡、捕获、阻止默认、passive、事件代理）、Cookie/Session鉴权机制、
+- Http：状态码、缓存、Session、JWT、Auth2机制、XSS、CSRF原理
+- XMLHttpRequest2、fetch、Ajax封装、Comet、Websocket、Mock.js、curl、异步、回调、Promise、async/await、同源策略、JSONP、CORS、服务器中转
+- CommonJS规范、NPM、Yarn、开发Package、模块化、IIFE、Parcel.js、ES6的原生Module、NPM Scripts与工程化
+- Webpack、手写loader与Plugin、Babel、编译原理
+- Vue、Vue Router、Vuex、ElementUI/其他
+- React、create-react-app、css modules、styled-component、React Hooks、React Router、Redux/Mobx、Antd/其他
+- 小程序、云开发
+- 网站性能优化、构建优化、TypeScript
+
+**手写代码要求**
+
+- 封装ajax
+- 封装bind
+- 封装防抖节流
+- 手写Promise
+- 手写React Hooks
+- 手写Webpack Loader、Plugin
+- 手写MVC、MVVM、React、模块加载器
+
+摘自：[2020年，前端工作好找吗？ - 饥人谷若愚的回答 - 知乎](https://www.zhihu.com/question/407227582/answer/1389395178)
+

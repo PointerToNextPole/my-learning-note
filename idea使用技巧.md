@@ -195,9 +195,11 @@ https://www.jetbrains.com/help/idea/getting-started.html
     - `Alt + Left / Right`：<font color=FF0000>**切换当前编辑文件为：当前编辑文件列表左边 / 右边的页面**</font>
   - **⎋ **：<font color=FF0000>**光标返回编辑区**</font>
 
+- **⌘ + .** ：收起 / 展开父层代码
+
 - 列操作
   
-  - 按下`Alt` <font size=4 color=FF0000>**/**</font> **⌥** ，选中需要列操作的列，开始列操作
+  - 按下`Alt` <font size=4 color=FF0000>**/**</font> **⌥** ，选中需要列操作的列，开始列操作（在WebStorm中似乎是**⇧ + ⌥**）
   - **⌃ + ⌘ + G**：<font color=FF0000>**选中所有光标所选中的内容**</font><mark>（行操作的灵魂所在）</mark>
   
 - <font color=FF0000>**对于HTML文件的IDEA快捷键**</font>

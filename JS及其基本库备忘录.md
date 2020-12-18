@@ -1,4 +1,4 @@
-# JS及其基本库备忘录
+`JS及其基本库备忘录
 
 
 
@@ -105,29 +105,29 @@ Undefined 这个值表示变量不含有值。
 
 **字符串方法**
 
-| 方法                                | 描述                                                         |
-| :---------------------------------- | :----------------------------------------------------------- |
-| charAt()                            | 返回指定索引位置的字符                                       |
-| charCodeAt()                        | 返回指定索引位置字符的 Unicode 值                            |
-| concat()                            | 连接两个或多个字符串，返回连接后的字符串                     |
-| fromCharCode()                      | 将 Unicode 转换为字符串                                      |
-| <font color=FF0000>indexOf()</font> | 返回字符串中检索指定字符第一次出现的位置                     |
-| lastIndexOf()                       | 返回字符串中检索指定字符最后一次出现的位置                   |
-| localeCompare()                     | 用本地特定的顺序来比较两个字符串                             |
-| match()                             | 找到一个或多个正则表达式的匹配                               |
-| <font color=FF0000>replace()</font> | 替换与正则表达式匹配的子串                                   |
-| search()                            | 检索与正则表达式相匹配的值                                   |
-| slice()                             | 提取字符串的片断，并在新的字符串中返回被提取的部分           |
-| split()                             | 把字符串分割为子字符串数组                                   |
-| substr()                            | 从起始索引号提取字符串中指定数目的字符                       |
-| substring()                         | 提取字符串中两个指定的索引号之间的字符                       |
-| toLocaleLowerCase()                 | 根据主机的语言环境把字符串转换为小写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
-| toLocaleUpperCase()                 | 根据主机的语言环境把字符串转换为大写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
-| toLowerCase()                       | 把字符串转换为小写                                           |
-| toString()                          | 返回字符串对象值                                             |
-| toUpperCase()                       | 把字符串转换为大写                                           |
-| trim()                              | 移除字符串首尾空白                                           |
-| valueOf()                           | 返回某个字符串对象的原始值                                   |
+| 方法                                   | 描述                                                         |
+| :------------------------------------- | :----------------------------------------------------------- |
+| charAt()                               | 返回指定索引位置的字符                                       |
+| charCodeAt()                           | 返回指定索引位置字符的 Unicode 值                            |
+| <font color=FF0000>**concat()**</font> | 连接（合并）两个或多个字符串，返回连接后的字符串             |
+| fromCharCode()                         | 将 Unicode 转换为字符串                                      |
+| <font color=FF0000>indexOf()</font>    | 返回字符串中检索指定字符第一次出现的位置                     |
+| lastIndexOf()                          | 返回字符串中检索指定字符最后一次出现的位置                   |
+| localeCompare()                        | 用本地特定的顺序来比较两个字符串                             |
+| match()                                | 找到一个或多个正则表达式的匹配                               |
+| <font color=FF0000>replace()</font>    | 替换与正则表达式匹配的子串                                   |
+| search()                               | 检索与正则表达式相匹配的值                                   |
+| slice()                                | 提取字符串的片断，并在新的字符串中返回被提取的部分           |
+| split()                                | 把字符串分割为子字符串数组                                   |
+| substr()                               | 从起始索引号提取字符串中指定数目的字符                       |
+| substring()                            | 提取字符串中两个指定的索引号之间的字符                       |
+| toLocaleLowerCase()                    | 根据主机的语言环境把字符串转换为小写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
+| toLocaleUpperCase()                    | 根据主机的语言环境把字符串转换为大写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
+| toLowerCase()                          | 把字符串转换为小写                                           |
+| toString()                             | 返回字符串对象值                                             |
+| toUpperCase()                          | 把字符串转换为大写                                           |
+| trim()                                 | 移除字符串首尾空白                                           |
+| valueOf()                              | 返回某个字符串对象的原始值                                   |
 
 更多方法实例可以参见：[JavaScript String 对象](https://www.runoob.com/jsref/jsref-obj-string.html)。
 
@@ -266,11 +266,11 @@ function () {}.constructor         // 返回函数 Function(){ [native code] }
 
 - 更多数字转换为字符串的方法：
 
-  | 方法            | 描述                                                 |
-  | :-------------- | :--------------------------------------------------- |
-  | toExponential() | 把对象的值转换为指数计数法。                         |
-  | toFixed()       | 把数字转换为字符串，结果的小数点后有指定位数的数字。 |
-  | toPrecision()   | 把数字格式化为指定的长度。                           |
+  | 方法                                    | 描述                                                         |
+  | :-------------------------------------- | :----------------------------------------------------------- |
+  | toExponential()                         | 把对象的值转换为指数计数法。                                 |
+  | <font color=FF0000>**toFixed()**</font> | 把数字转换为字符串，结果的小数点后有<font color=FF0000>通过**四舍五入**指定位数的数字</font>。 |
+  | toPrecision()                           | 把数字格式化为指定的长度。                                   |
 
 - 关于日期转换为字符串的函数：
 
@@ -290,7 +290,7 @@ function () {}.constructor         // 返回函数 Function(){ [native code] }
 
 **将字符串转换为数字**
 
-<font color=FF0000>**全局方法**</font> **Number()** 可以将字符串转换为数字。
+<font color=FF0000>**全局方法**</font> <font color=FF0000>**Number()** 可以将字符串转换为数字。</font>
 
 - 字符串包含数字(如 "3.14") 转换为数字 (如 3.14).
 
@@ -354,6 +354,12 @@ Number(d)     // 返回 1404568027739
 d = new Date();
 d.getTime()    // 返回 1404568027739
 ```
+
+
+
+#### JS获取对象的结构：constructor
+
+//TODO
 
 
 
@@ -1410,10 +1416,10 @@ element.addEventListener(event, function, useCapture);
 ```
 
 - **event：**<font color=FF0000>事件的类型</font> 
-
 - **function：**<font color=FF0000>事件触发后调用的函数</font>。
-
 - **useCapture：**是个布尔值<font color=FF0000>用于描述事件是冒泡还是捕获</font>。该参数是<font color=FF0000>可选</font>的。
+  - 如果为 false（默认值），则在冒泡阶段设置处理程序。
+  - 如果为 true，则在捕获阶段设置处理程序。
 
 
 
@@ -1454,7 +1460,7 @@ element.removeElementListener(event, function);
 
   因此在事件捕获的概念下在p元素上发生click事件的顺序应该是**`document -> html -> body -> div -> p`**
 
-摘自：[JS中事件冒泡与捕获](https://segmentfault.com/a/1190000005654451)
+摘自：[JS中事件冒泡与捕获](https://segmentfault.com/a/1190000005654451) 具体更多可以参考：[Javascript info -- 冒泡和捕获](https://zh.javascript.info/bubbling-and-capturing)
 
 
 
@@ -1525,6 +1531,21 @@ HTMLCollection 看起来可能是一个数组，但其实不是。
 - 类似：
   - NodeList 与 HTMLCollection 都与数组对象有点类似，可以使用索引 (0, 1, 2, 3, 4, ...) 来获取元素。
   - NodeList 与 HTMLCollection 都有 length 属性。
+
+#### **补充：**document.querySelector()和document.querySelectorAll()
+
+**document.querySelector()**：文档对象模型Document引用的querySelector()方法<font color=FF0000>返回文档中与指定选择器或选择器组匹配的**第一个 HTMLElement对象**</font>。 <font color=FF0000>如果找不到匹配项，则返回null</font>。( 匹配是使用<font color=FF0000>深度优先先序遍历</font>，从文档标记中的第一个元素开始，并按子节点的顺序依次遍历。)
+
+**语法：**
+
+```js
+element = document.querySelector(selectors);
+```
+
+**参数：**selectors
+包含一个或多个要匹配的选择器的 DOM字符串DOMString。 <font color=FF0000>该字符串必须是有效的CSS选择器字符串</font>；如果不是，则引发SYNTAX_ERR异常。
+
+如果您需要与指定选择器匹配的所有元素的列表，则应该使用querySelectorAll() 。
 
 
 
@@ -1850,7 +1871,25 @@ myDate.setDate(myDate.getDate()+5);
   var myCars=["Saab","Volvo","BMW"];
   ```
 
-  
+
+补充：
+
+- **Array.isArray()** ：用于确定传递的值是否是一个 Array。示例如下：
+
+  ```js
+  Array.isArray([1, 2, 3]);  // true
+  Array.isArray({foo: 123});  // false
+  Array.isArray("foobar");  // false
+  Array.isArray(undefined);  // false
+  ```
+
+  - **语法：**Array.isArray(obj)
+
+  - **参数：**obj 需要检测的值。
+
+  - **返回值：**如果值是 Array，则为true; 否则为false。
+
+
 
 #### JavaScript Math（算数） 对象
 
@@ -1954,6 +1993,15 @@ window.location 对象用于<font color=FF0000>获得当前页面的地址 (URL)
 
 - **history.back()：** 与在浏览器点击后退按钮相同
 - **history.forward()：** 与在浏览器中点击向前按钮相同
+- **history.go()**：载入到会话历史中的某一特定页面， 通过与当前页面相对位置来标志 (当前页面的相对位置标志为0)。
+
+**补充：**
+
+**HTML5** 引入了 <font color=FF0000>history.pushState()</font> 和 <font color=0000FF>history.replaceState()</font> 方法，它们分别可以<font color=FF0000>添加</font>和<font color=0000FF>修改</font>**历史记录条目**。这些方法通常与window.onpopstate 配合使用。
+
+<mark>使用 history.pushState() 可以改变referrer，它在用户发送 XMLHttpRequest 请求时在HTTP头部使用，改变state后创建的 XMLHttpRequest 对象的referrer都会被改变</mark>。因为referrer是标识创建 XMLHttpRequest 对象时 this 所代表的window对象中document的URL。
+
+摘自： [MDN - History API](https://developer.mozilla.org/zh-CN/docs/Web/API/History_API)
 
 
 
@@ -2379,7 +2427,7 @@ Console 对象可以接入浏览器控制台（如：Firefox 的 Web Console）�
 
 #### GlobalEventHandlers.onload
 
-[`GlobalEventHandlers`](https://developer.mozilla.org/zh-CN/docs/Web/API/GlobalEventHandlers) mixin 的 `onload` 属性是一个事件处理程序用于处理[`Window`](https://developer.mozilla.org/zh-CN/docs/Web/API/Window), [`XMLHttpRequest`](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest), [`<img>`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/img) 等元素的加载事件，当资源已加载时被触发。
+GlobalEventHandlers mixin 的 onload 属性是一个事件处理程序用于处理Window, XMLHttpRequest, \<img> 等元素的加载事件，当资源已加载时被触发。
 
 **语法**
 
@@ -2391,6 +2439,56 @@ window.onload = funcRef;
 当 window load事件触发时，funcRef 方法会被调用；funcRef 是窗口加载事件触发时调用的处理函数。
 
 摘自：[MDN web docs - GlobalEventHandlers.onload](https://developer.mozilla.org/zh-CN/docs/Web/API/GlobalEventHandlers/onload)
+
+
+
+#### Node.textContent
+
+Node 接口的 **textContent** 属性表示一个节点及其后代的文本内容。用法：
+
+```js
+let text = someNode.textContent;
+someOtherNode.textContent = string;
+```
+
+**textContent 的值取决于具体情况：**
+
+- 如果<font color=FF0000>节点是一个 document</font>，<font color=FF0000>或者一个 DOCTYPE</font> ，则 textContent 返回 null。
+- 如果节点是个 CDATA section、注释、processing instruction 或者 text node，textContent 返回节点内部的文本内容，例如 Node.nodeValue。
+- 对于其他节点类型，textContent 将所有子节点的 textContent 合并后返回，除了注释和processing instructions。（如果该节点没有子节点的话，返回一个空字符串。）
+
+**与 innerText 的区别：**
+
+不要被 Node.textContent 和 HTMLElement.innerText 的区别搞混了。虽然名字看起来很相似，但有重要的不同之处：
+
+- <font color=FF0000>textContent 会获取所有元素的内容，包括 \<script> 和 \<style> 元素</font>，然而<font color=0000FF> innerText 只展示给人看的元素</font>。
+- <font color=FF0000>textContent会返回节点中的每一个元素</font>。相反，<font color=0000FF>innerText受 CSS 样式的影响，并且不会返回隐藏元素的文本</font>。
+  - 此外，<font color=0000FF>由于 innerText 受 CSS 样式的影响，它会触发回流（ reflow ）去确保是最新的计算样式</font>。（回流在计算上可能会非常昂贵，因此应尽可能避免。）
+- 与 textContent 不同的是, 在 Internet Explorer (小于和等于 11 的版本) 中对 innerText 进行修改， 不仅会移除当前元素的子节点，而且还会永久性地破坏所有后代文本节点。在之后不可能再次将节点再次插入到任何其他元素或同一元素中。
+
+**与 innerHTML 的区别：**
+
+正如其名称，<font style="color: fuchsia">Element.innerHTML 返回 HTML</font>。通常，为了在元素中检索或写入文本，人们使用 innerHTML。但是，textContent 通常具有更好的性能，因为文本不会被解析为HTML。
+
+**此外，使用 textContent 可以防止 XSS 攻击。**
+
+摘自：[MDN - Node.textContent](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/textContent)
+
+
+
+#### JS forEach
+
+**语法：**
+
+```js
+array1.forEach(element => do_something(element))
+```
+
+
+
+#### 列表操作
+
+- **concat**：两个列表合并（有返回参数，为合并后的列表）
 
 ***
 
@@ -2580,7 +2678,7 @@ x = myObj.sites["site1"];
 
 JSON 通常用于与服务端交换数据。在接收服务器数据时一般是字符串。
 
-<font color=FF0000>我们可以使用 JSON.parse() 方法将数据转换为 JavaScript 对象。</font>
+**<font color=FF0000>我们可以使用 JSON.parse() 方法将数据转换为 JavaScript 对象。</font>**
 
 **语法**
 
@@ -2639,7 +2737,7 @@ JSON 不允许包含函数，JSON.stringify() 会删除 JavaScript 对象的函�
 
 我们可以<font color=FF0000>在执行 JSON.stringify() 函数前将函数转换为字符串</font>来避免以上问题的发生：
 
-示例：
+**示例：**
 
 ```js
 var obj = { "name":"Runoob", "alexa":function () {return 10000;}, "site":"www.runoob.com"}; 
@@ -2839,6 +2937,66 @@ xmlhttp.open("GET","ajax_test.html",true);
 总结：[AJAX 实例](https://www.runoob.com/ajax/ajax-examples.html)，其中包含许多场景的实例，对于实际使用有帮助。
 
 ***
+
+
+
+## ECMAScript
+
+ES6及更高版本不能兼容所有浏览器，而ES5**相对来说**可以很好的兼容这些浏览器；我们在编写时，写ES6+，而使用Babel将ES6+的代码转变为ES5。同时，Babel会被配置在Webpack这样的构建工具当中，通过在Webpack中配置Babel就可以很方便的将ES6+的语法打包成ES5的语法。
+
+
+
+#### NRM
+
+由于npm速度并不快，所以可以考虑使用nrm以替代；安装命令：
+
+```bash
+npm install -g nrm
+```
+
+**NRM常用命令**
+
+- 查看可选源: `nrm Is`
+- 测试源响应时间: `nrm test taobao`
+- 切换源: `nrm use taobao`
+- 增加定制源: `nrm add imooc http://192.168.1.100:6666`
+
+- 删除源: `nrm del imooc`
+
+
+
+#### 构建imooc-es-cli的开发环境
+
+（imooc-es-cli是讲师配置好的脚手架，初学就先使用讲师配置的脚手架）
+
+- 初始化
+  - 进入到要初始化项目的文件夹
+  - 初始化命令：imooc-es-cli init
+    - 需要输入新建项目的项目名称
+
+- 进入项目：cd es-demo
+- 安装依赖包：npm install
+- 启动项目：npm run start
+
+
+
+#### 文件夹与相关文件的作用
+
+- build文件夹下是webpack的配置文件
+
+- src文件夹下是源码，会被webpack打包编译
+
+- static文件夹下的文件并不会被webpack打包和编译，会被直接复制到生产环境中，所以：需要编译的代码不要放在static文件夹下。
+
+- package-lock.json和package.json文件是依赖的包管理的配置文件
+
+
+
+#### ES6
+
+
+
+
 
 ## jQuery
 
@@ -3686,19 +3844,6 @@ $.ajax({name:value, name:value, ... })
 
 
 
-***
-
-## bootstrap
-
-```html
-<!--悬浮向左-->
-<span class="push-left"></span>
-<!--悬浮向右-->
-<span class=“push-right”></span>
-```
-
-
-
 #### Collapse：折叠插件
 
-//todo
+## //todo
