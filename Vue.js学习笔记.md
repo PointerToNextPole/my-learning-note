@@ -3686,8 +3686,10 @@ strategies.myOption = strategies.methods
 
 当页面加载时，该元素将获得焦点。事实上，只要你在打开这个页面后还没点击过任何内容，这个输入框就应当还是处于聚焦状态。现在让我们用指令来实现这个功能：
 
+<font color=FF0000>注册全局指令，示例：</font>
+
 ```js
-// 注册一个全局自定义指令 `v-focus`
+// 注册一个全局自定义指令 `v-focus`（注意：下面名字的是focus，而注册的是v-focus）
 Vue.directive('focus', {
   // 当被绑定的元素插入到 DOM 中时……
   inserted: function (el) {
@@ -4091,13 +4093,13 @@ v-text：将数据解析为纯文本
 - **参数**：{Object} options
 - **用法**：使用<font color=FF0000>基础 Vue 构造器，创建一个“子类”</font>。参数是一个包含组件选项的对象。
 
-
+Vue.extend() 创建的是一个组件构造器，而不是一个具体的组件实例。所以他不能直接在new Vue中这样使用： new Vue({components: foo})；最终还是要通过Vue.components注册才可以使用的。 
 
 **Vue.extend 和 Vue.component、component 的区别**
 
-1. Vue.component、component两者都是需要先进行组件注册，然后在 template 中使用注册的标签名来实现组件的使用。Vue.extend 则是编程式的写法（动态）
+1. Vue.component、component两者都是需要先进行组件注册，然后在 template 中使用注册的标签名来实现组件的使用。Vue.extend 则是编程式的写法（<font color=FF0000>动态创建组件</font>）
 2. 关于组件的显示与否，需要在父组件中传入一个状态来控制 或者 在组件外部用 v-if / v-show 来实现控制，而 Vue.extend 的显示与否是手动的去做组件的挂载和销毁。
-3. Vue.component component 在组件中需要使用 slot 等自定义UI时更加灵活，而 Vue.extend 由于没有 template的使用，没有slot 都是通过 props 来控制UI，更加局限一些。
+3. <font color=FF0000>Vue.component component 在组件中需要使用 slot 等自定义UI时更加灵活，而 Vue.extend 由于没有 template的使用，没有slot 都是通过 props 来控制UI，更加局限一些。</font>
    摘自：[Vue.extend 编程式插入组件](https://juejin.cn/post/6844903998672076813)
 
 
@@ -4141,6 +4143,85 @@ Vue.use <font color=FF0000>会自动阻止多次注册相同插件，届时即�
 - components注册
 - prototype挂载
 - ...
+
+
+
+#### Vue.directive函数
+
+- **语法：**
+
+  ```js
+  Vue.directive( id, definition] )
+  ```
+
+- **参数**：
+
+  - `{string} id`
+  - `{Function | Object} [definition]`
+
+- **用法**：注册或获取全局指令。
+
+可以参考vue官方文档的[自定义指令](https://cn.vuejs.org/v2/guide/custom-directive.html) 做进一步补充
+
+
+
+#### provide / inject
+
+**类型**：
+
+- **provide**：`Object | () => Object`
+- **inject**：`Array<string> | { [key: string]: string | Symbol | Object }`
+
+**功能：**允许一个祖先组件向其所有子孙后代注入一个依赖，不论组件层次有多深，并在其上下游关系成立的时间里始终生效。
+
+代码示例如下：
+
+```js
+// 父级组件提供 'foo'
+var Provider = {
+  provide: {
+    foo: 'bar'
+  },
+  // ...
+}
+
+// 子组件注入 'foo'
+var Child = {
+  inject: ['foo'],
+  created () {
+    console.log(this.foo) // => "bar"
+  }
+  // ...
+}
+```
+
+#### 补充：（摘自：[聊聊 Vue 中 provide/inject 的应用](https://juejin.cn/post/6844903989935341581)）
+
+- **解决痛点：**
+
+  使用 $root 依然能够取到根节点，那么我们何必使用 provide/inject 呢？
+
+  在实际开发中，一个项目常常有多人开发，每个人有可能需要不同的全局变量，如果所有人的全局变量都统一定义在根组件，势必会引起变量冲突等问题。
+
+  使用 provide/inject 不同模块的入口组件传给各自的后代组件可以完美的解决该问题。
+
+- <font color=FF0000>**慎用provide / inject**</font>
+
+  Vuex 和 provide/inject 最大的区别在于：Vuex 中的全局状态的每次修改是可以追踪回溯的，而<font color=FF0000> provide/inject 中变量的修改是无法控制的，换句话说，你不知道是哪个组件修改了这个全局状态。</font>
+
+  <font color=FF0000>Vue 的设计理念借鉴了 React 中的单向数据流原则</font>（虽然有 sync 这种破坏单向数据流的家伙），而 <font color=FF0000>provide/inject 明显破坏了单向数据流原则</font>。试想，<font color=FF0000>如果有多个后代组件同时依赖于一个祖先组件提供的状态，那么只要有一个组件修改了该状态，那么所有组件都会受到影响。这一方面增加了耦合度，另一方面，使得数据变化不可控</font>。如果在多人协作开发中，这将成为一个噩梦。
+
+  在这里，我总结了两条条使用 provide/inject 做全局状态管理的原则：
+
+  1. 多人协作时，做好作用域隔离
+  2. 尽量使用一次性数据作为全局状态
+
+  看起来，使用 provide/inject 做全局状态管理好像很危险，那么<font color=FF0000>有没有 provide/inject 更好的使用方式呢？当然有，那就是使用 provide/inject 编写组件。而使用 provide/inject 做组件开发，是 Vue 官方文档中提倡的一种做法。</font>
+
+
+
+
+Vue
 
 
 
@@ -4235,6 +4316,45 @@ Vue.use <font color=FF0000>会自动阻止多次注册相同插件，届时即�
 
 
 
+#### vm.$mount
+
+```vue
+vm.$mount( elementOrSelector] )
+```
+
+- **参数**：
+
+  - {Element | string} [elementOrSelector]
+  - {boolean} [hydrating]
+
+- <font color=FF0000>**返回值：**vm - 实例自身</font>
+
+- **用法：**<font color=FF0000>如果 Vue 实例在实例化时没有收到 el 选项，则它处于“未挂载”状态，没有关联的 DOM 元素。可以使用 vm.$mount() 手动地挂载一个未挂载的实例。</font>
+
+  如果没有提供 elementOrSelector 参数，模板将被渲染为文档之外的的元素，并且你必须使用原生 DOM API 把它插入文档中。
+
+  这个方法返回实例自身，因而可以链式调用其它实例方法。
+
+- **示例：**
+
+  ```js
+  var MyComponent = Vue.extend({
+    template: '<div>Hello!</div>'
+  })
+  
+  // 创建并挂载到 #app (会替换 #app)
+  new MyComponent().$mount('#app')
+  
+  // 同上
+  new MyComponent({ el: '#app' })
+  
+  // 或者，在文档之外渲染并且随后挂载
+  var component = new MyComponent().$mount()
+  document.getElementById('app').appendChild(component.$el)
+  ```
+
+  
+
 #### watch侦听器
 
 侦听器的名字以被监视的对象命名，根据被监视的对象的变化自动发生变化
@@ -4245,6 +4365,64 @@ Vue.use <font color=FF0000>会自动阻止多次注册相同插件，届时即�
 - immediate
 - 绑定多个 handler
 - 监听对象属性
+
+
+
+#### 过滤器 filter
+
+Vue.js 允许你自定义过滤器，<font color=FF0000>可被用于一些常见的文本格式化</font>。过滤器可以用在两个地方：**双花括号插值和 `v-bind` 表达式** (后者从 2.1.0+ 开始支持)。过滤器应该被添加在 JavaScript 表达式的尾部，由“管道”符号（`|`，这里类似于linux中的「管道」概念）指示：
+
+```html
+<!-- 在双花括号中 -->
+{{ message | capitalize }}
+
+<!-- 在 `v-bind` 中 -->
+<div v-bind:id="rawId | formatId"></div>
+```
+
+- 定义本地的过滤器：
+
+  ```js
+  filters: {
+    capitalize: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    }
+  }
+  ```
+
+- 定义全局过滤器：
+
+  ```js
+  Vue.filter('capitalize', function (value) {
+    if (!value) return ''
+    value = value.toString()
+    return value.charAt(0).toUpperCase() + value.slice(1)
+  })
+  
+  new Vue({
+    // ...
+  })
+  ```
+
+当全局过滤器和局部过滤器重名时，会采用局部过滤器（就近原则）
+
+过滤器可以串联（类似于管道）：
+
+```js
+{{ message | filterA | filterB }}
+```
+
+过滤器可以是 JavaScript 函数，可以接收参数：
+
+```js
+{{ message | filterA('arg1', arg2) }}
+```
+
+这里，filterA 被定义为接收三个参数的过滤器函数。其中 message 的值作为第一个参数，普通字符串 'arg1' 作为第二个参数，表达式 arg2 的值作为第三个参数。
+
+摘自：[Vue官方文档 - 过滤器](https://cn.vuejs.org/v2/guide/filters.html)
 
 
 
@@ -4321,6 +4499,51 @@ methods: {
 ```
 
 摘自：[vue官方文档 - 事件处理](https://cn.vuejs.org/v2/guide/events.html)
+
+
+
+#### Vue项目文件结构
+
+**（使用`vue create proj_name` 或 `vue init webpack proj_name`生成）**
+
+**一级目录：**
+
+```sh
+├── .babelrc           babel（语法解析器）配置
+├── .editorconfig      编辑器语法的配置（比如Tab等于两个空格）
+├── .eslintignore			 eslint忽略文文件路径的配置
+├── .eslintrc.js       eslint（代码规范工具）配置 
+├── .gitignore         git忽略上传文件的配置
+├── .postcssrc.js      postcss的配置项
+├── README.md
+├── build              项目打包webpack的配置内容（目前的层次，一般不需要修改...）
+		├── build.js 
+		├── check-versions.js 
+		├── logo.png 
+		├── utils.js 
+		├── vue-loader.conf.js 
+		├── webpack.base.conf.js     基础的webpack配置项
+		├── webpack.dev.conf.js      开发环境的webpack配置项
+		└── webpack.prod.conf.js     生产环境的webpack配置项
+├── config						 放置项目的配置文件
+		├── dev.env.js							 放置开发的配置信息
+		├── index.js								 放置基础的配置信息
+		└── prod.env.js							 放置生产的配置信息
+├── index.html         项目首页默认的模版文件
+├── node_modules 			 存放第三方依赖的包
+├── package-lock.json  package锁文件，确定第三方包的具体版本，保持团队编程统一
+├── package.json       第三方模块的依赖
+├── src 							 存放项目的源代码
+			├── App.vue                 项目最原始的根组件
+			├── assets                  项目中的图片类资源
+			│   └── logo.png
+			├── components							存放项目中的小组件
+			│   └── HelloWorld.vue
+			├── main.js									项目的入口文件
+			└── router
+    			└── index.js						放置所有的路由
+└── static             存放静态文件、模拟的json数据
+```
 
 
 
@@ -4942,9 +5165,9 @@ export default {
 
 
 
-#### $message
+#### $message（类似的还有Notification）
 
-$message的type有：default（不写） / success / warning / error
+$message的type有：info（defalut） / success / warning / error
 
 **$message有两种写法：**
 
@@ -4955,56 +5178,137 @@ $message的type有：default（不写） / success / warning / error
   })
   ```
 
-- ```js
+- 为type注册了方法：
+  
+  ```js
   this.$message.success('foo')
   ```
 
 
 
+#### Notification
 
+**message属性支持传入HTML片段**
 
-#### Vue项目文件结构
+将dangerouslyUseHTMLString属性设置为 true，message 就会被当作 HTML 片段处理。示例如下：
 
-**（使用`vue create proj_name` 或 `vue init webpack proj_name`生成）**
+```html
+<template>
+  <el-button
+    plain
+    @click="open">
+    使用 HTML 片段
+  </el-button>
+</template>
 
-**一级目录：**
-
-```sh
-├── .babelrc           babel（语法解析器）配置
-├── .editorconfig      编辑器语法的配置（比如Tab等于两个空格）
-├── .eslintignore			 eslint忽略文文件路径的配置
-├── .eslintrc.js       eslint（代码规范工具）配置 
-├── .gitignore         git忽略上传文件的配置
-├── .postcssrc.js      postcss的配置项
-├── README.md
-├── build              项目打包webpack的配置内容（目前的层次，一般不需要修改...）
-		├── build.js 
-		├── check-versions.js 
-		├── logo.png 
-		├── utils.js 
-		├── vue-loader.conf.js 
-		├── webpack.base.conf.js     基础的webpack配置项
-		├── webpack.dev.conf.js      开发环境的webpack配置项
-		└── webpack.prod.conf.js     生产环境的webpack配置项
-├── config						 放置项目的配置文件
-		├── dev.env.js							 放置开发的配置信息
-		├── index.js								 放置基础的配置信息
-		└── prod.env.js							 放置生产的配置信息
-├── index.html         项目首页默认的模版文件
-├── node_modules 			 存放第三方依赖的包
-├── package-lock.json  package锁文件，确定第三方包的具体版本，保持团队编程统一
-├── package.json       第三方模块的依赖
-├── src 							 存放项目的源代码
-			├── App.vue                 项目最原始的根组件
-			├── assets                  项目中的图片类资源
-			│   └── logo.png
-			├── components							存放项目中的小组件
-			│   └── HelloWorld.vue
-			├── main.js									项目的入口文件
-			└── router
-    			└── index.js						放置所有的路由
-└── static             存放静态文件、模拟的json数据
+<script>
+  export default {
+    methods: {
+      open() {
+        this.$notify({
+          title: 'HTML 片段',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>这是 <i>HTML</i> 片段</strong>'
+        });
+      }
+    }
+  }
+</script>
 ```
+
+<font color=FF0000>**注意：**</font>message 属性虽然支持传入 HTML 片段，但是<font color=FF0000>在网站上动态渲染任意 HTML 是非常危险的，因为容易导致 XSS 攻击</font>。因此在 dangerouslyUseHTMLString 打开的情况下，请确保 message 的内容是可信的，永远不要将用户提交的内容赋值给 message 属性。
+
+**全局方法**
+
+Element 为 Vue.prototype 添加了全局方法 $notify。因此在 vue instance 中可以采用本页面中的方式调用 Notification。
+
+**单独引用**单独引入 Notification：
+
+```javascript
+import { Notification } from 'element-ui';
+```
+
+此时调用方法为 Notification(options)。我们也为每个 type 定义了各自的方法，如 Notification.success(options)。并且可以调用 Notification.closeAll() 手动关闭所有实例。
+
+
+
+#### v-loading
+
+**v-loading提供了两种模式：指令与服务**
+
+- 指令式是这样的：
+
+  ```html
+   <el-button
+      type="primary"
+      @click="openFullScreen"
+      v-loading.fullscreen.lock="fullscreenLoading">
+      指令方式
+   </el-button>
+  export default {
+      data() {
+        return {
+          fullscreenLoading: false
+        }
+      },
+  } 
+  ```
+
+- 服务式是这样的：
+
+  ```js
+  import { Loading } from 'element-ui';
+  let loadingInstance = Loading.service(options);
+  // 以服务的方式调用的 Loading 需要异步关闭
+  this.$nextTick(() => { 
+    loadingInstance.close();
+  });
+  ```
+
+  可以看出，两种模式一个是自定义指令，一个是定义了一个全局方法。
+
+打开element-ui源码v-loading文件夹下的index.js文件
+
+```js
+import directive from './src/directive'; // loading指令实现
+import service from './src/index'; // loading服务方式实现
+ 
+export default {
+  install(Vue) {
+    Vue.use(directive);
+    Vue.prototype.$loading = service;
+  },
+  directive,
+  service
+};
+```
+
+此文件对外暴露了三个属性，分别是 **install函数**、**directive指令实现**以及**service服务方式实现**
+
+此文件会被 element组件入口文件（src/index.js） 引入, 并且把 directive指令 全局注册了一遍以及在 Vue 原型上扩展了 $loading 方法
+
+```js
+//element-ui 2.14.1 line 178
+Vue.use(Loading.directive);
+//element-ui 2.14.1 line 185
+Vue.prototype.$loading = Loading.service;
+```
+
+摘自：[从ElementUI的loading组件说起](https://alfxjx.github.io/2019/07/20/%E4%BB%8EElement%E7%9A%84loading%E7%BB%84%E4%BB%B6%E8%AF%B4%E8%B5%B7/)
+
+**补充：**需要注意的是，<font color=FF0000>以服务的方式调用的全屏 Loading 是单例的</font>：若在前一个全屏 Loading 关闭前再次调用全屏 Loading，并不会创建一个新的 Loading 实例，而是返回现有全屏 Loading 的实例
+
+```js
+let loadingInstance1 = Loading.service({ fullscreen: true });
+let loadingInstance2 = Loading.service({ fullscreen: true });
+console.log(loadingInstance1 === loadingInstance2); // true
+```
+
+此时调用它们中任意一个的 close 方法都能关闭这个全屏 Loading。
+
+如果完整引入了 Element，那么 Vue.prototype 上会有一个全局方法 $loading，它的调用方式为：this.$loading(options)，同样会返回一个 Loading 实例。
+
+摘自：[element-ui -- Loading 加载](https://element.eleme.cn/#/zh-CN/component/loading#zheng-ye-jia-zai)
 
 
 

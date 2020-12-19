@@ -357,6 +357,31 @@ d.getTime()    // 返回 1404568027739
 
 
 
+#### instanceof
+
+instanceof 运算符用于<font color=FF0000>检测构造函数的 prototype 属性是否出现在某个实例对象的原型链上</font>。返回值为 true / false
+
+示例如下：
+
+```js
+function Car(make, model, year) {
+  this.make = make;
+  this.model = model;
+  this.year = year;
+}
+const auto = new Car('Honda', 'Accord', 1998);
+
+console.log(auto instanceof Car);
+// expected output: true
+
+console.log(auto instanceof Object);
+// expected output: true
+```
+
+
+
+
+
 #### JS获取对象的结构：constructor
 
 //TODO
@@ -405,7 +430,7 @@ var patt = /runoob/i
 
 - **exec()** 方法是一个正则表达式方法。exec() 方法用于检索字符串中的正则表达式的匹配。
 
-  <font color=FF0000>该函数返回一个数组，其中存放匹配的结果</font>。<font color=FF0000>如果未找到匹配，则返回值为 null</font>。
+  <font color=FF0000>**该函数返回一个数组**，其中存放匹配的结果</font>。<font color=FF0000>如果未找到匹配，则返回值为 null</font>。
 
 
 
@@ -1649,7 +1674,7 @@ var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"}  var x 
 - Array 对象从 Array.prototype 继承。
 - Person 对象从 Person.prototype 继承。
 
-所有 JavaScript 中的对象都是位于原型链顶端的 Object 的实例。
+<font color=FF0000>**所有 JavaScript 中的对象都是位于原型链顶端的 Object 的实例。**</font>
 
 <font color=FF0000>JavaScript 对象有一个指向一个原型对象的链。当试图访问一个对象的属性时，它不仅仅在该对象上搜寻，还会搜寻该对象的原型，以及该对象的原型的原型，依次层层向上搜索，直到找到一个名字匹配的属性或到达原型链的末尾</font>。
 
@@ -1681,6 +1706,17 @@ Person.prototype.name = function() {
   return this.firstName + " " + this.lastName;
 };
 ```
+
+#### Object.prototype.toString()
+
+在 JavaScript 中, 想要判断某个对象值属于哪种内置类型, 最靠谱的做法就是通过 Object.prototype.toString 方法。示例如下：
+
+```js
+var arr = [];
+console.log(Object.prototype.toString.call(arr))  //"[object Array]"
+```
+
+
 
 
 
