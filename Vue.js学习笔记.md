@@ -5141,6 +5141,28 @@ router.push(location, onComplete?, onAbort?)
 
 
 
+#### router.addRoutes
+
+语法：
+
+```js
+router.addRoutes(routes: Array<RouteConfig>)
+```
+
+作用：动态添加更多的路由规则，即：添加路由。参数必须是一个符合 routes 选项要求的数组。
+
+示例如下：
+
+```js
+addRoute() {
+    this.$router.addRoutes([
+        {path: '/b', component: B}
+    ])
+},
+```
+
+
+
 ***
 
 ## Vue cli
