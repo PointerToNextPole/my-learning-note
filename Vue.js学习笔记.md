@@ -511,7 +511,7 @@ computed: {
 
 
 
-### 侦听器
+### 侦听器watch
 
 虽然<mark>计算属性在大多数情况下更合适</mark>，但有时<mark>也需要一个自定义的侦听器</mark>。这就是为什么 Vue 通过 `watch` 选项提供了一个更通用的方法，来响应数据的变化。<font color=FF0000>当需要在数据变化时执行异步或开销较大的操作时，这个方式是最有用的</font>。
 
@@ -2666,6 +2666,20 @@ function (slotProps) {
 </keep-alive>
 ```
 
+**补充：**
+
+**keep-alive的Props**：
+
+- `include` - 字符串或正则表达式。只有名称匹配的组件会被缓存。
+- `exclude` - 字符串或正则表达式。任何名称匹配的组件都不会被缓存。
+- `max` - 数字。最多可以缓存多少组件实例。
+
+当组件在 \<keep-alive> 内被切换，它的 activated 和 deactivated 这两个生命周期钩子函数将会被对应执行。
+
+摘自：[vue api文档 -  keep-alive](https://cn.vuejs.org/v2/api/#keep-alive)
+
+**另外：更多详细的讲解可以看[Vue keep-alive深入理解及实践总结](https://juejin.cn/post/6844903919273918477)**
+
 
 
 **异步组件**
@@ -4088,6 +4102,29 @@ v-text：将数据解析为纯文本
 
 
 
+#### vue import路径中的@
+
+以根目录的方式定义相对路径，一般为src文件（vue在<font color=FF0000>webpack.base.conf.js</font>文件中配置，示例如下：）
+
+```js
+module.exports = {
+  resolve: {
+    // 在导入语句没带文件后缀时，webpack会自动按照顺序添加后缀名查找
+    extensions: ['.js', '.vue', '.json'],
+    // 配置别名
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js',
+      // 将项目根目录中，src的路径配置为别名@
+      '@': resolve('src'),
+    }
+  }
+}
+```
+
+摘自：[Vue 导入文件import、路径@和.的区别](https://www.cnblogs.com/taohuaya/p/10651902.html)
+
+
+
 #### Vue.extend(options)
 
 - **参数**：{Object} options
@@ -4220,11 +4257,6 @@ var Child = {
 
 
 
-
-Vue
-
-
-
 #### $on & $emit
 
 **$on & $emit** 解决的问题分别是：事件的定义和消费。
@@ -4314,6 +4346,12 @@ Vue
 </html>
 ```
 
+#### 补充：其他事件处理侦听器
+
+- 通过 `$on(eventName, eventHandler)` 侦听一个事件
+- 通过 `$once(eventName, eventHandler)` <font color=FF0000>一次性侦听</font>一个事件
+- 通过 `$off(eventName, eventHandler)` <font color=FF0000>停止侦听</font>一个事件
+
 
 
 #### vm.$mount
@@ -4353,7 +4391,39 @@ vm.$mount( elementOrSelector] )
   document.getElementById('app').appendChild(component.$el)
   ```
 
-  
+
+
+
+#### render
+
+- **类型：**(createElement: () => VNode) => VNode
+
+- **详细**：
+
+  <font color=FF0000>**字符串模板的代替方案**</font>，<mark>允许你发挥 JavaScript 最大的编程能力。该渲染函数接收一个 `createElement` 方法作为第一个参数用来创建 `VNode`</mark>。
+
+  如果组件是一个函数组件，渲染函数还会接收一个额外的 `context` 参数，为没有实例的函数组件提供上下文信息。
+
+Vue 通过建立一个**虚拟 DOM** 来追踪自己要如何改变真实 DOM。请仔细看这行代码：
+
+//....
+
+**示例如下：**
+
+```js
+function anonymous() { 
+  with(this){
+    return _h('div',{attrs:{"id":"app"}},["\n  "+_s(message)+"\n"])} 
+}
+```
+
+
+
+
+
+
+
+
 
 #### watch侦听器
 
@@ -4461,6 +4531,33 @@ v-model 在内部为不同的输入元素使用不同的 property 并抛出不�
 
 
 
+#### render函数
+
+render 函数即渲染函数，它是个函数，render 函数的返回值是VNode（即：虚拟节点，也就是我们要渲染的节点）
+<font color=FF0000>createElement 是 render 函数的参数，它本身也是个函数，并且有三个参数。</font>如下：
+
+```js
+createElement(tag, options, VNodes)
+```
+
+- **createElement 第一个参数<font color=FF0000>tag</font>，是<font color=FF0000>必填</font>的：可以是String | Object | Function** 
+  - String，表示的是HTML 标签名
+  - Object ，一个含有数据的组件选项对象
+  - Function ，返回了一个含有标签名或者组件选项对象的async 函数
+- **createElement 第二个参数<font color=FF0000>options</font>，是<font color=FF0000>选填</font>的：一个与模板中属性对应的数据对象** **常用的有class | style | attrs | domProps | on**
+  - class：控制类名
+  - style ：样式
+  - attrs ：用来写正常的 html 属性 id src 等等
+  - domProps :用来写原生的dom 属性
+  - on：用来写原生方法
+- **createElement 第三个参数<font color=FF0000>VNodes</font>，是<font color=FF0000>选填</font>的：代表子级虚拟节点 (VNodes)，由 createElement() 构建而成，正常来讲接收的是一个字符串或者一个数组，一般数组用的是比较多的**
+
+<font color=FF0000>**将h作为createElement的别名是 Vue 生态系统中的一个通用惯例**</font>，实际上也是 JSX 所要求的。<mark>从 Vue 的 Babel 插件的3.4.0版本开始，我们会在以 ES2015 语法声明的含有 JSX 的任何方法和 getter 中 (不是函数或箭头函数中) 自动注入const h = this.$createElement，这样你就可以去掉(h)参数了</mark>。对于更早版本的插件，如果h在当前作用域中不可用，应用会抛错。
+
+摘自：[Vue - 渲染函数render](https://juejin.cn/post/6844903919764635655)
+
+
+
 #### Vue.nextTick( [callback, context] )
 
 - **参数**：
@@ -4473,6 +4570,34 @@ v-model 在内部为不同的输入元素使用不同的 property 并抛出不�
   在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
 
 摘自：[Vue.js API -- Vue.nextTick](https://cn.vuejs.org/v2/api/index.html#Vue-nextTick)
+
+
+
+#### v-if和v-for为什么不能连用（写在一行）
+
+由于v-for的优先级更高，会先运行；而v-if优先级较低，后运行。等v-for所有数据都运行完了，v-if再运行（去除异常情况）会造成性能浪费。
+
+
+
+#### 一些命名规则
+
+在vue的内部，<font color=FF0000>**\_**符号开头定义的变量是供内部私有使用的</font>，而<font color=FF0000>**$** 符号定义的变量是供用户使用的</font>，而且<font color=FF0000>用户自定义的变量不能以\_或$开头，以防止内部冲突</font>。
+
+
+
+#### Vue template和is
+
+- **vue template**
+
+  渲染一个“元组件”为动态组件。依 `is` 的值，来决定哪个组件被渲染。
+
+- **vue :is**
+
+  预期：string | Object (组件的选项对象)
+
+  用于<font color=FF0000>动态组件</font>且基于 DOM 内模板的限制来工作。
+
+可以参考：官方文档中给的[**示例**](https://codesandbox.io/s/github/vuejs/vuejs.org/tree/master/src/v2/examples/vue-20-dynamic-components)
 
 
 

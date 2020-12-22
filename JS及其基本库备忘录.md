@@ -1716,7 +1716,25 @@ var arr = [];
 console.log(Object.prototype.toString.call(arr))  //"[object Array]"
 ```
 
+在JS中，可以通过Object.prototype.toString方法，判断某个对象之属于哪种内置类型。分为null、string、boolean、number、undefined、array、function、object、date、math。
 
+摘自：[浅谈Object.prototype.toString.call()方法](https://www.jianshu.com/p/585926ae62cc)
+
+**补充：**
+
+- 使用  ***.constructor.name** 可以实现类似的功能
+
+- 另外，如下代码也一样：
+
+  ```js
+  var arr = [1, 2, 3]
+  Array.isArray(arr)
+  arr instanceof Array
+  arr.constructor === Array
+  Object.prototype.toString.call(arr) === '[object Array]'
+  ```
+
+摘自：[谈谈 Object.prototype.toString](https://juejin.cn/post/6844903477940846600)
 
 
 
@@ -1877,8 +1895,6 @@ myDate.setDate(myDate.getDate()+5);
 ```
 
 **注意:** <mark>如果增加天数会改变月份或者年份，那么日期对象会自动完成这种转换</mark>。
-
-
 
 
 
@@ -2520,11 +2536,100 @@ someOtherNode.textContent = string;
 array1.forEach(element => do_something(element))
 ```
 
+补充：
+
+```js
+array.forEach((item, index, arr)) => {
+  arr[index] = item * 2
+}
+```
+
+
+
+#### Array.prototype.map()
+
+**map()** 方法创建一个新数组，其结果是该数组中的每个元素是调用一次提供的函数后的返回值。
+
+```js
+const array1 = [1, 4, 9, 16];
+
+// pass a function to map
+const map1 = array1.map(x => x * 2);
+```
+
+**Array.prototype.map()可以起到和forEach类似的作用**
+
+
+
+#### for ... of
+
+for ... of语句<font color=FF0000>在可迭代对象（包括 Array，Map，Set，String，TypedArray，arguments 对象等等）上创建一个迭代循环</font>，调用自定义迭代钩子，并为每个不同属性的值执行语句
+
+#### **for ... of和for ... in的区别：**
+
+无论是for...in还是for...of语句都是迭代一些东西。它们之间的主要区别在于它们的迭代方式。
+
+- for...in 语句以任意顺序迭代对象的可枚举属性。
+- for...of 语句遍历可迭代对象定义要迭代的数据。
+
+摘自：[MDN - for ... of](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...of)
+
+**更多：**
+
+- 推荐<font color=FF0000>在循环对象属性的时候，使用for...in</font>，<font color=0000FF>在遍历数组的时候的时候使用for...of</font>。
+- **<font color=FF0000>for...in循环出的是key</font>，<font color=0000FF>for...of循环出的是value</font>（<font color=FF0000>for in是遍历键名</font>，<font color=0000FF>for of是遍历键值</font>）**
+- 注意，<font color=0000FF>for...of是ES6新引入的特性</font>。修复了ES5引入的for...in的不足
+- <font color=FF0000>for...of不能循环普通的对象，需要通过和Object.keys()搭配使用</font>
+- for of兼容性还不够,移动端安卓微信浏览器貌似不支持，苹果的可以;web端IE支持也不够，chrome可以。
+
+摘自：[javascript总for of和for in的区别？](https://segmentfault.com/q/1010000006658882)
+
 
 
 #### 列表操作
 
 - **concat**：两个列表合并（有返回参数，为合并后的列表）
+
+
+
+#### 栈内存和堆内存
+
+对于JS中的基本数据类型，如String,Number,Boolean,Undefined,Null是存在于栈内存中的，在栈内存中储存变量名及相应的值。而Object,Array,Function存在于堆内存中，在堆内存中储存变量名及引用位置。
+
+
+
+#### js判断数组中是否存在某值
+
+- **array.indexOf(el)：**判断数组中是否存在某个值，如果存在返回数组元素的下标，否则返回-1
+
+- **array.includes(searchElement[, startIndex])：**判断一个数组是否包含一个指定的值，如果存在返回 true，否则返回false。
+
+  **参数如下：**
+
+  - **searchElement：**需要查找的元素值
+  - **startIndex：**从该索引处开始查找 searchElement。<font color=FF0000>如果为负值，则按升序从 array.length + startIndex 的索引开始搜索</font>。默认为 0
+
+- **array.find(callback[, thisArg])：**<font color=FF0000>返回数组中满足条件的第一个元素的值</font>，如果没有，返回undefined
+
+  **参数如下：**
+
+  - **callback**
+    - element 当前遍历到的元素。
+    - index 当前遍历到的索引。
+    - array 数组本身
+  - **thisArg**（可选）：指定 callback 的 this 参数
+
+- **array.findIndex(callback[, thisArg])：**<font color=FF0000>返回数组中满足条件的第一个元素的索引（下标）, 如果没有找到，返回-1</font>
+
+  **参数如下：**
+
+  - **callback**
+    - element 当前遍历到的元素。
+    - index 当前遍历到的索引。
+    - array 数组本身。
+  - **thisArg（可选）：**指定 callback 的 this 参数。
+
+摘自：[js判断数组中是否存在某个值](https://segmentfault.com/a/1190000014202195)
 
 ***
 
@@ -2811,7 +2916,20 @@ var obj = eval ("(" + txt + ")");
 
 
 
+#### JSX
 
+JSX是Javascript和XML结合的一种格式。React发明了JSX，利用HTML语法来创建虚拟DOM。<mark>当遇到\<，JSX就当HTML解析，遇到{就当JavaScript解析。</mark>
+
+
+
+#### JS异步执行的运行机制
+
+1. 所有同步任务都在主线程上执行，形成一个[执行栈](http://www.ruanyifeng.com/blog/2013/11/stack.html)（execution context stack）。
+2. 主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
+
+3. 一旦"执行栈"中的所有同步任务执行完毕（同步任务执行完毕），系统就会读取"任务队列"，看看里面有哪些事件（看看哪些异步事件执行完毕，是否产生什么结果）。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
+
+4. 主线程不断重复上面的第三步。
 
 
 
@@ -2978,7 +3096,7 @@ xmlhttp.open("GET","ajax_test.html",true);
 
 ## ECMAScript
 
-ES6及更高版本不能兼容所有浏览器，而ES5**相对来说**可以很好的兼容这些浏览器；我们在编写时，写ES6+，而使用Babel将ES6+的代码转变为ES5。同时，Babel会被配置在Webpack这样的构建工具当中，通过在Webpack中配置Babel就可以很方便的将ES6+的语法打包成ES5的语法。
+ES6及更高版本不能兼容所有浏览器，而ES5**相对来说**可以很好的兼容这些浏览器；我们在编写时，写ES6+，而<font color=FF0000>使用Babel将ES6+的代码转变为ES5</font>。同时，Babel会被配置在Webpack这样的构建工具当中，通过在Webpack中配置Babel就可以很方便的将ES6+的语法打包成ES5的语法。
 
 
 
@@ -3025,10 +3143,6 @@ npm install -g nrm
 - static文件夹下的文件并不会被webpack打包和编译，会被直接复制到生产环境中，所以：需要编译的代码不要放在static文件夹下。
 
 - package-lock.json和package.json文件是依赖的包管理的配置文件
-
-
-
-#### ES6
 
 
 
