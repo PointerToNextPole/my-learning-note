@@ -5493,8 +5493,6 @@ routers: [
   }
   ```
 
-  
-
 - 通过RESTful传递参数：使用`this.$route.params.itemName`获取参数
 
   比如下面的id和name
@@ -5505,7 +5503,16 @@ routers: [
 
   通过`this.$route.params.id`和`this.$route.params.name`获取
 
-  
+
+
+
+每个路由应该映射一个组件。 其中"component" 可以是通过 Vue.extend() 创建的组件构造器，或者，只是一个组件配置对象。
+
+#### **我们<font color=FF0000>可以在任何组件内通过 `this.$router` 访问路由器</font>，<font color=FF0000>也可以通过 `this.$route` 访问当前路由</font>**
+
+
+
+
 
 #### \<router-link>
 
@@ -5541,6 +5548,43 @@ routers: [
 
 
 
+#### 动态路由匹配
+
+我们经常需要把某种模式匹配到的所有路由，全都映射到同个组件（比如针对不同用户，进入同一个“用户主页”组件，不过用户id不同），我们可以在 `vue-router` 的路由路径中使用“动态路径参数”(dynamic segment) 来达到这个效果。代码示例如下：
+
+```js
+const User = {
+  template: '<div>User</div>'
+}
+
+const router = new VueRouter({
+  routes: [
+    // 动态路径参数 以冒号开头
+    { path: '/user/:id', component: User }
+  ]
+})
+```
+
+这时：像 `/user/foo` 和 `/user/bar` 都将映射到相同的路由。
+
+一个“路径参数”使用冒号 `:` 标记。当匹配到一个路由时，参数值会被设置到`this.$route.params`，可以在每个组件内使用。于是，我们可以更新 `User` 的模板，输出当前用户的 ID：
+
+```js
+const User = {
+  template: '<div>User {{ $route.params.id }}</div>'
+}
+```
+
+<font color=FF0000>**提醒：**</font>当使用路由参数时，例如从 `/user/foo` 导航到 `/user/bar`，<font color=FF0000>**原来的组件实例会被复用**</font>。因为两个路由都渲染同个组件，比起销毁再创建，复用则显得更加高效。**不过，这也意味着<font color=FF0000>组件的生命周期钩子不会再被调用</font>**。
+
+
+
+#### 嵌套路由
+
+使用children（数组）配置：children 配置就是像 routes 配置一样的路由配置数组，<font color=FF0000>**可以嵌套多层路由**</font>。
+
+
+
 ####  Router 配置项
 
 - **mode：** [hash histoty]
@@ -5552,21 +5596,68 @@ routers: [
   设置之后，<font color=FF0000>使用 vue-router api 进行跳转 都会加上这个 base 路径</font>
 
 
-
-
 摘自：[Vue-router之配置](https://www.jianshu.com/p/860c77649ba9)
 
 
 
-#### router的跳转方法的参数
+#### 命名路由
 
-**比如：**
+给一个路由起一个名称（别名）来标识一个路由显得更方便一些（不需要写繁杂的path）。
 
-```js
-router.push(location, onComplete?, onAbort?)
-```
 
-**其中：**onComplete和onAbort是在路由跳转完成和失败时分别执行的<font color=FF0000>回调函数</font>
+
+#### router.push(location, onComplete?, onAbort?)
+
+**参数：**
+
+- location可以是path，也可以是router name，<font color=FF0000>还可以带参数</font>。如下示例：
+
+  ```js
+  // 字符串
+  router.push('home')
+  // 对象
+  router.push({ path: 'home' })
+  // 命名的路由
+  router.push({ name: 'user', params: { userId: '123' }})
+  // 带查询参数，变成 /register?plan=private
+  router.push({ path: 'register', query: { plan: 'private' }})
+  ```
+
+  **另外：如果提供了 path，params 会被忽略，上述例子中的 query 并不属于这种情况。**下面例子的做法，你需要提供路由的 name 或手写完整的带有参数的 path：
+
+  ```js
+  const userId = '123'
+  router.push({ name: 'user', params: { userId }}) // -> /user/123
+  router.push({ path: `/user/${userId}` }) // -> /user/123
+  // 这里的 params 不生效
+  router.push({ path: '/user', params: { userId }}) // -> /user
+  ```
+
+  同样的规则也适用于 router-link 组件的 to 属性。
+
+- onComplete和onAbort（可省略）：是在路由跳转完成和失败时分别执行的<font color=FF0000>回调函数</font>
+
+想要导航到不同的 URL，则使用 router.push 方法。这个方法会向 <font color=FF0000>history 栈添加一个新的记录</font>，所以，当用户点击浏览器后退按钮时，则回到之前的 URL。
+
+当你点击 \<router-link> 时，router.push()方法会在内部调用，所以说，点击 \<router-link :to="...">（声明式） 等同于调用 router.push(...)（编程式）
+
+
+
+#### router.replace(location, onComplete?, onAbort?)
+
+跟 router.push 很像，唯一的不同就是，它<font color=FF0000>不会向 history 添加新记录</font>，而是跟它的方法名一样 —— <font color=FF0000>替换掉当前的 history 记录</font>。
+
+**router.replace(...)（编程式）和\<router-link :to="..." replace>（声明式）作用相同**
+
+
+
+#### 其他router的导航方法
+
+- **router.go(n)：**在 history 记录中向前或者后退多少步，类似于window.history.go(n)
+- **router.forward()：**在浏览器记录中前进一步
+- **router.back()：**在浏览器记录中回退一步
+
+- **router.go(100) / router.go(-100)：**如果 history 记录不够用，那就默默地失败呗
 
 
 
@@ -5589,6 +5680,118 @@ addRoute() {
     ])
 },
 ```
+
+
+
+#### 命名视图
+
+有时候想同时 (同级) 展示多个视图，而不是嵌套展示，例如创建一个布局，有 sidebar (侧导航) 和 main (主内容) 两个视图，这个时候命名视图就派上用场了。你可以在界面中拥有多个单独命名的视图，而不是只有一个单独的出口。<font color=FF0000>如果 router-view 没有设置名字，那么默认为 default</font>。
+
+```html
+<router-view class="view one"></router-view>
+<router-view class="view two" name="a"></router-view>
+<router-view class="view three" name="b"></router-view>
+```
+
+一个视图使用一个组件渲染，因此对于同个路由，多个视图就需要多个组件。确保正确使用 `components` 配置 (带上 s)：
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/',
+      components: {
+        default: Foo,
+        a: Bar,
+        b: Baz
+      }
+    }
+  ]
+})
+```
+
+
+
+#### 重定向
+
+“重定向”的意思是，当用户访问 `/a`时，URL 将会被替换成 `/b`，然后匹配路由为 `/b`。重定向也是通过 `routes` 配置来完成。
+
+- 从 path a 重定向到 path b：
+
+  ```js
+  const router = new VueRouter({
+    routes: [
+      { path: '/a', redirect: '/b' }
+    ]
+  })
+  ```
+
+- 重定向的目标也可以是一个命名的路由：
+
+  ```js
+  const router = new VueRouter({
+    routes: [
+      { path: '/a', redirect: { name: 'foo' }}
+    ]
+  })
+  ```
+
+- 还可以是一个方法，动态返回重定向目标：
+
+  ```js
+  const router = new VueRouter({
+    routes: [
+      { path: '/a', redirect: to => {
+        // 方法接收 目标路由 作为参数
+        // return 重定向的 字符串路径/路径对象
+      }}
+    ]
+  })
+  ```
+
+
+
+#### 别名
+
+`/a` 的别名是 `/b`，<font color=FF0000>意味着，当用户访问 `/b` 时，URL 会保持为 `/b`，但是路由匹配则为 `/a`</font>，就像用户访问 `/a` 一样。示例如下：
+
+```js
+const router = new VueRouter({
+  routes: [
+    { path: '/a', component: A, alias: '/b' }
+  ]
+})
+```
+
+
+
+#### 导航守卫
+
+vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫导航。<font color=FF0000>有多种机会植入路由导航过程中：全局的、单个路由独享的、或者组件级的</font>。
+
+- **全局前置守卫**
+
+  你可以<font color=FF0000>使用 router.beforeEach 注册一个全局前置守卫</font>：
+
+  ```js
+  const router = new VueRouter({ ... })
+  
+  router.beforeEach((to, from, next) => {
+    // ...
+  })
+  ```
+
+  当一个导航触发时，全局前置守卫按照创建顺序调用。<font color=FF0000>守卫是异步解析执行，此时导航在所有守卫 resolve 完之前一直处于 **等待中**</font>。
+
+  每个守卫方法接收三个参数：
+
+  - **to: Route：**<font color=FF0000>即将要进入的目标路由对象</font>
+  - **from: Route：**当前导航<font color=FF0000>正要离开的路由</font>
+  - **next: Function：** <font color=FF0000>一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数。</font>
+    - **next()：** <font color=FF0000>进行管道中的下一个钩子</font>。如果全部钩子执行完了，则导航的状态就是 confirmed (确认的)。
+    - **next(false)：** <font color=FF0000>中断当前的导航</font>。如果浏览器的 URL 改变了 (可能是用户手动或者浏览器后退按钮)，那么 URL 地址会重置到 from 路由对应的地址。
+    - **next('/') 或 next({ path: '/' })：** <font color=FF0000>跳转到一个不同的地址</font>。当前的导航被中断，然后进行一个新的导航。你可以向 next 传递任意位置对象，且允许设置诸如 replace: true、name: 'home' 之类的选项以及任何用在 router-link 的 to prop 或 router.push 中的选项。
+    - **next(error)：** (2.4.0+) <font color=FF0000>如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。</font>
 
 
 
@@ -5621,20 +5824,50 @@ vue -V
 
 
 
+#### preset 和 ~/.vuerc
+
+一个 Vue CLI preset 是一个包含创建新项目所需预定义选项和插件的 JSON 对象，让用户无需在命令提示中选择它们。
+
+在使用vue cli创建一个项目中，如果你决定手动选择特性，在操作提示的最后你可以选择将已选项保存为一个将来可复用的 preset。
+
+在 `vue create` 过程中保存的 preset 会被放在你的 home 目录下的一个配置文件中 (`~/.vuerc`)。你可以通过直接编辑这个文件来调整、添加、删除保存好的 preset。
+
+**preset实例如下：**
+
+```json
+{
+  "useConfigFiles": true,
+  "cssPreprocessor": "sass",
+  "plugins": {
+    "@vue/cli-plugin-babel": {},
+    "@vue/cli-plugin-eslint": {
+      "config": "airbnb",
+      "lintOn": ["save", "commit"]
+    },
+    "@vue/cli-plugin-router": {},
+    "@vue/cli-plugin-vuex": {}
+  }
+}
+```
+
+
+
 
 #### vue add命令
 
-如果你想在一个已经被创建好的项目中安装一个插件，可以使用 vue add 命令，示例如下：
+如果你<font color=FF0000>想在一个已经被创建好的项目中安装一个插件，可以使用 vue add 命令</font>，示例如下：
 
 ```sh
 vue add eslint
 ```
 
-这个命令将 `@vue/eslint` 解析为完整的包名 `@vue/cli-plugin-eslint`，然后从 npm 安装它，调用它的生成器。<font color=FF0000>这个和之前的用法等价</font>
+<mark>这个命令将 `@vue/eslint` 解析为完整的包名 `@vue/cli-plugin-eslint`，然后从 npm 安装它，调用它的生成器</mark>。<font color=FF0000>这个和之前的用法等价</font>
 
 ```sh
 vue add cli-plugin-eslint
 ```
+
+如果不带 `@vue` 前缀，该命令会换作解析一个 unscoped 的包。
 
 **vue add 插件名解析**
 
@@ -5657,9 +5890,9 @@ vue add 的设计意图是为了安装和调用 Vue CLI 插件。这不意味着
 
 **vue add和npm install的区别**（摘自：[Vue add 与 npm install 有什么区别？？？](https://forum.vuejs.org/t/vue-add-npm-install/58275)   [Vue创建一个新的项目、vue add 和npm install区别](https://codeleading.com/article/35174593221/)）
 
-- 区别就是vue add装的是vue cli插件，npm装的是npm插件
+- 区别就是<font color=FF0000>vue add装的是vue cli插件</font>，<font color=FF0000>npm装的是npm插件</font>
 
-- vue add可能会改变现有的项目结构，但是npm install仅仅是安装包而不会改变项目的结构
+- <font color=FF0000>vue add可能会改变现有的项目结构</font>，但是<font color=FF0000>npm install仅仅是安装包而不会改变项目的结构</font>
 
   add如果你下载的库, 特别是 Ui 库, 希望对脚手架结构产生影响，那就选择vue add xxx
 
@@ -5667,3 +5900,106 @@ vue add 的设计意图是为了安装和调用 Vue CLI 插件。这不意味着
 
 - vue add 除了會 npm install 之外，還會幫你配置好一個範例文件。需要注意的是這個指令會更改你現有的文件內容。
   特別的是使用 vue add router 或是 vue add vuex，他們雖然不是插件，但Vue CLI會幫你配置好文件，例如 vue add router 會幫你配置 router.js 文件以及生成 About.vue 和 Home.vue 並在 App.vue 內建立了簡單的路由範例，而 vue add vuex 會幫你配置好一個 store.js 文件。
+
+
+
+#### 浏览器适配
+
+你会发现有 package.json 文件里的 browserslist 字段 (或一个单独的 .browserslistrc 文件)，指定了项目的目标浏览器的范围。这个值会被 @babel/preset-env 和 Autoprefixer 用来确定需要转译的 JavaScript 特性和需要添加的 CSS 浏览器前缀。
+
+即：vue-cli中自带了@babel/preset-env和Autoprefixer，以进行浏览器适配
+
+
+
+#### 静态资源处理
+
+静态资源可以通过两种方式进行处理：
+
+- 在 JavaScript 被导入或在 template/CSS 中通过相对路径被引用。<font color=FF0000>这类引用会被 webpack 处理。</font>
+
+  当你在 JavaScript、CSS 或 `*.vue` 文件中使用相对路径 (必须以 `.` 开头) 引用一个静态资源时，该资源将会被包含进入 webpack 的依赖图中。在其编译过程中，所有诸如 `<img src="...">`、`background: url(...)` 和 CSS `@import` 的资源 URL **都会被解析为一个模块依赖**。
+
+  例如，`url(./image.png)` 会被翻译为 `require('./image.png')`，而：
+
+  ```html
+  <img src="./image.png">
+  ```
+
+  将会被编译到：
+
+  ```js
+  h('img', { attrs: { src: require('./image.png') }})
+  ```
+
+- 放置在 `public` 目录下或通过绝对路径被引用。这类资源将会直接被拷贝，而<font color=FF0000>不会经过 webpack 的处理</font>。<font color=FF0000>这样做是不被推荐的</font>
+
+  推荐将资源作为你的模块依赖图的一部分导入，这样它们会<font color=FF0000>通过 webpack 的处理并获得如下好处</font>：
+
+  - <font color=FF0000>脚本和样式表会被压缩且打包在一起，从而避免额外的网络请求。</font>
+  - 文件丢失会直接在编译时报错，而不是到了用户端才产生 404 错误。
+  - 最终生成的文件名包含了内容哈希，因此你不必担心浏览器会缓存它们的老版本。
+
+   `public` 目录提供的是一个**应急手段**，当你通过绝对路径引用它时，留意应用将会部署到哪里。
+
+  <font color=FF0000> **那么何时使用 public 文件夹**</font>
+
+  - 你需要在构建输出中指定一个文件的名字。
+  - 你有上千个图片，需要动态引用它们的路径。
+  - 有些库可能和 webpack 不兼容，这时你除了将其用一个独立的 \<script> 标签引入没有别的选择。
+
+
+
+#### URL 转换规则
+
+- 如果 URL 是一个绝对路径 (例如 `/images/foo.png`)，它将会被保留不变。
+
+- 如果 URL 以 `.` 开头，它会作为一个相对模块请求被解释且基于你的文件系统中的目录结构进行解析。
+
+- 如果 URL 以 `~` 开头，其后的任何内容都会作为一个模块请求被解析。这意味着你甚至可以引用 Node 模块中的资源：
+
+  ```html
+  <img src="~some-npm-package/foo.png">
+  ```
+
+- 如果 URL 以 `@` 开头，它也会作为一个模块请求被解析。它的用处在于 <font color=FF0000>Vue CLI 默认会设置一个指向 `<projectRoot>/src` 的别名 `@`。</font>**(仅作用于模版中)**
+
+
+
+#### CSS相关
+
+Vue CLI 项目天生支持 PostCSS、CSS Modules 和包含 Sass、Less、Stylus 在内的预处理器
+
+你可以在创建项目的时候选择预处理器 (Sass/Less/Stylus)。如果当时没有选好，内置的 webpack 仍然会被预配置为可以完成所有的处理。你也可以手动安装相应的 webpack loader：
+
+```bash
+# Sass
+npm install -D sass-loader sass
+
+# Less
+npm install -D less-loader less
+
+# Stylus
+npm install -D stylus-loader stylus
+```
+
+
+
+#### vue.config.js
+
+**vue.config.js** 是一个可选的配置文件，如果项目的 (和 package.json 同级的) 根目录中存在这个文件，那么它会被 @vue/cli-service 自动加载。你也可以使用 package.json 中的 vue 字段，但是注意这种写法需要你严格遵照 JSON 的格式来写。
+
+
+
+#### 模式
+
+**模式**是 Vue CLI 项目中一个重要的概念。默认情况下，一个 Vue CLI 项目有三个模式：
+
+- development 模式用于 vue-cli-service serve
+- test 模式用于 vue-cli-service test:unit
+- production 模式用于 vue-cli-service build 和 vue-cli-service test:e2e
+
+你可以通过传递 --mode 选项参数为命令行覆写默认的模式。例如，如果你想要在构建命令中使用开发环境变量：
+
+```text
+vue-cli-service build --mode development
+```
