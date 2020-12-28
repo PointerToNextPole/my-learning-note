@@ -1100,14 +1100,14 @@ new Vue({
 
 为了解决这个问题，<font color=FF0000>Vue.js 为 v-on 提供了事件修饰符</font>。之前提过，修饰符是由点开头的指令后缀来表示的。
 
-- **.stop**
+- **.stop：**阻止事件的冒泡传播（防止向上传播）
 
   ```html
   <!-- 阻止单击事件继续传播 -->
   <a v-on:click.stop="doThis"></a>
   ```
 
-- **.prevent**
+- **.prevent：**用来阻止标签的默认行为
 
   ```html
   <!-- 提交事件不再重载页面 -->
@@ -1128,7 +1128,7 @@ new Vue({
   <div v-on:click.capture="doThis">...</div>
   ```
 
-- **.self**
+- **.self：**只关心并触发自己标签上的特定动作的事件（不关心冒泡上来的事件，和.stop类似）
 
   ```html
   <!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
@@ -1136,7 +1136,7 @@ new Vue({
   <div v-on:click.self="doThat">...</div>
   ```
 
-- **.once**：2.1.4 新增
+- **.once**：2.1.4 新增，事件只会触发一次
 
   ```html
   <!-- 点击事件将只会触发一次 -->
@@ -5512,8 +5512,6 @@ routers: [
 
 
 
-
-
 #### \<router-link>
 
 **router-link组件的props：**
@@ -5769,9 +5767,11 @@ const router = new VueRouter({
 
 vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫导航。<font color=FF0000>有多种机会植入路由导航过程中：全局的、单个路由独享的、或者组件级的</font>。
 
+参数（param）或查询（query）的改变并不会触发进入/离开的导航守卫。你可以通过观察 $route 对象来应对这些变化，或使用 beforeRouteUpdate 的组件内守卫。
+
 - **全局前置守卫**
 
-  你可以<font color=FF0000>使用 router.beforeEach 注册一个全局前置守卫</font>：
+  你可以<font color=FF0000>使用 **router.beforeEach** 注册一个全局**前置守卫**</font>：
 
   ```js
   const router = new VueRouter({ ... })
@@ -5786,12 +5786,140 @@ vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫
   每个守卫方法接收三个参数：
 
   - **to: Route：**<font color=FF0000>即将要进入的目标路由对象</font>
+
   - **from: Route：**当前导航<font color=FF0000>正要离开的路由</font>
+
   - **next: Function：** <font color=FF0000>一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数。</font>
+
     - **next()：** <font color=FF0000>进行管道中的下一个钩子</font>。如果全部钩子执行完了，则导航的状态就是 confirmed (确认的)。
     - **next(false)：** <font color=FF0000>中断当前的导航</font>。如果浏览器的 URL 改变了 (可能是用户手动或者浏览器后退按钮)，那么 URL 地址会重置到 from 路由对应的地址。
     - **next('/') 或 next({ path: '/' })：** <font color=FF0000>跳转到一个不同的地址</font>。当前的导航被中断，然后进行一个新的导航。你可以向 next 传递任意位置对象，且允许设置诸如 replace: true、name: 'home' 之类的选项以及任何用在 router-link 的 to prop 或 router.push 中的选项。
     - **next(error)：** (2.4.0+) <font color=FF0000>如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。</font>
+
+    另外：<font color=FF0000>确保 next 函数在任何给定的导航守卫中都被严格调用一次</font>。它可以出现多于一次，但是只能在所有的逻辑路径都不重叠的情况下，否则钩子永远都不会被解析或报错。
+
+- **全局解析守卫**
+
+  在 2.5.0+ 你可以用 <font color=FF0000>**router.beforeResolve**</font> 注册一个<font color=FF0000>**全局守卫**</font>。这和 router.beforeEach 类似，区别是<font color=FF0000>在**导航被确认之前**，同时**在所有组件内守卫和异步路由组件被解析之后**，**解析守卫就被调用**</font>。
+
+- **全局后置钩子**
+
+  你也可以注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 next 函数也不会改变导航本身：
+
+  ```js
+  router.afterEach((to, from) => {
+    // ...
+  })
+  ```
+
+- **路由独享的守卫（<font color=FF0000>局部</font>）**
+
+  你可以在路由配置上直接定义 beforeEnter 守卫：
+
+  ```js
+  const router = new VueRouter({
+    routes: [
+      {
+        path: '/foo',
+        component: Foo,
+        beforeEnter: (to, from, next) => {
+          // ...
+        }
+      }
+    ]
+  })
+  ```
+
+  这些守卫与全局前置守卫的方法参数是一样的。
+
+- **组件内的守卫**
+
+  可以在路由组件内直接定义以下路由导航守卫：
+
+  - **beforeRouteEnter(to, from, next)：**在渲染该组件的对应路由被 <font color=FF0000>confirm 前</font>调用。<font color=FF0000>**不能获取组件实例 this**，因为当守卫执行前，组件实例还没被创建</font>。
+
+    不过，你可以通过传一个回调给 next来访问组件实例。在导航被确认的时候执行回调，并且把组件实例作为回调方法的参数。如下示例：
+
+    ```js
+    beforeRouteEnter (to, from, next) {
+      next(vm => {
+        // 通过 `vm` 访问组件实例
+      })
+    }
+    ```
+
+  - **beforeRouteUpdate(to, from, next)： (2.2 新增)** 在<font color=FF0000>当前路由改变</font>，但是该组件被复用时调用举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。<font color=FF0000>可以访问组件实例 this</font>。<font color=FF0000>**由于this 已经可用了，所以不支持传递回调**</font>
+
+  - **beforeRouteLeave(to, from, next)：**<font color=FF0000>导航离开</font>该组件的对应路由时调用，<font color=FF0000>可以访问组件实例 this</font>。<font color=FF0000>**由于this 已经可用了，所以不支持传递回调**</font>
+
+
+
+#### 完整的导航解析流程
+
+1. 导航被触发。
+2. 在失活的组件里调用 `beforeRouteLeave` 守卫。（离开某一路由）
+3. 调用全局的 `beforeEach` 守卫。
+4. 在重用的组件里调用 `beforeRouteUpdate` 守卫 (2.2+)。
+5. 在路由配置里调用 `beforeEnter`。
+6. 解析异步路由组件。
+7. 在被激活的组件里调用 `beforeRouteEnter`。
+8. 调用全局的 `beforeResolve` 守卫 (2.5+)。
+9. 导航被确认。
+10. 调用全局的 `afterEach` 钩子。
+11. 触发 DOM 更新。
+12. 调用 `beforeRouteEnter` 守卫中传给 `next` 的回调函数，创建好的组件实例会作为回调函数的参数传入。
+
+
+
+#### 数据获取
+
+有时候，进入某个路由后，需要从服务器获取数据。<mark>例如，在渲染用户信息时，你需要从服务器获取用户的数据。我们可以通过两种方式来实现</mark>：
+
+- **导航完成之后获取**：先完成导航，然后<font color=FF0000>在接下来的组件生命周期钩子中获取数据</font>。在数据获取期间显示“加载中”之类的指示。
+
+  使用这种方式时，会马上导航和渲染组件，然后<font color=FF0000>在组件的 created 钩子中获取数据</font>。这让我们有机会在数据获取期间展示一个 loading 状态，还可以在不同视图间展示不同的 loading 状态。
+
+- **导航完成之前获取**：导航完成前，<font color=FF0000>在路由进入的守卫中获取数据，在数据获取成功后执行导航</font>。
+
+  通过这种方式，我们<font color=FF0000>在导航转入新的路由前获取数据</font>。我们可以<font color=FF0000>在接下来的组件的 beforeRouteEnter 守卫中获取数据</font>，当数据获取成功后只调用 next 方法。
+
+
+
+#### 滚动行为
+
+使用前端路由，<font color=FF0000>当切换到新路由时，想要页面滚到顶部，或者是保持原先的滚动位置，就像重新加载页面那样</font>。 vue-router 能做到，而且更好，它让你可以自定义路由切换时页面如何滚动。
+
+<mark>**注意: 这个功能只在支持 history.pushState 的浏览器中可用。**</mark>
+
+当创建一个 Router 实例，你可以提供一个 scrollBehavior 方法：
+
+```js
+const router = new VueRouter({
+  routes: [...],
+  scrollBehavior (to, from, savedPosition) {
+    // return 期望滚动到哪个的位置
+  }
+})
+```
+
+<font color=FF0000>scrollBehavior 方法接收 to 和 from 路由对象。第三个参数 savedPosition 当且仅当 popstate 导航 (通过浏览器的 前进/后退 按钮触发) 时才可用。</font>（记录浏览器在按下前进/后退按钮前的位置状态）
+
+这个方法返回滚动位置的对象信息，长这样：
+
+- { x: number, y: number }
+- { selector: string, offset? : { x: number, y: number }} (offset 只在 2.6.0+ 支持)
+
+如果返回一个 falsy (译者注：falsy 不是 false，[参考这里](https://developer.mozilla.org/zh-CN/docs/Glossary/Falsy))的值，或者是一个空对象，那么不会发生滚动。
+
+**举例：**
+
+```js
+scrollBehavior (to, from, savedPosition) {
+  return { x: 0, y: 0 }
+}
+```
+
+对于所有路由导航，简单地让页面滚动到顶部。
 
 
 
@@ -6003,3 +6131,186 @@ npm install -D stylus-loader stylus
 ```text
 vue-cli-service build --mode development
 ```
+
+
+
+## Vuex
+
+#### 介绍
+
+Vuex 是一个专为 Vue.js 应用程序开发的<font color=FF0000>**状态管理模式**</font>。它<font color=FF0000>采用集中式存储管理应用的所有组件的状态</font>，并<font color=FF0000>以相应的规则保证状态以一种可预测的方式发生变化</font>。
+
+#### 基本思想
+
+把组件的共享状态抽取出来，以一个全局单例模式管理。在这种模式下，我们的组件树构成了一个巨大的“视图”，不管在树的哪个位置，任何组件都能获取状态或者触发行为！
+
+通过定义和隔离状态管理中的各种概念并通过强制规则维持视图和状态间的独立性，我们的代码将会变得更结构化且易维护。
+
+#### 使用场景
+
+<mark>如果您不打算开发大型单页应用，使用 Vuex 可能是繁琐冗余的。确实是如此——如果您的应用够简单，您最好不要使用 Vuex。一个简单的 store 模式 (opens new window)就足够您所需了</mark>。但是，如果您需要构建一个中大型单页应用，您很可能会考虑如何更好地在组件外部管理状态，Vuex 将会成为自然而然的选择。引用 Redux 的作者 Dan Abramov 的话说就是：
+
+> Flux 架构就像眼镜：您自会知道什么时候需要它。
+
+
+
+#### 安装
+
+在一个模块化的打包系统中，您必须显式地通过 Vue.use() 来安装 Vuex：
+
+```js
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
+```
+
+<mark>当使用全局 script 标签引用 Vuex 时，不需要以上安装过程。</mark>
+
+<font color=FF0000>**依赖：**</font>Vuex 依赖 Promise。如果你支持的浏览器并没有实现 Promise (比如 IE)，那么你可以使用一个 polyfill 的库，例如 es6-promise。
+
+
+
+#### 核心基础
+
+每一个 Vuex 应用的核心就是 store（仓库）。<font color=FF0000>“store”基本上就是一个容器，它包含着你的应用中大部分的**状态 (state)**。</font>Vuex 和单纯的全局对象有以下两点不同：
+
+- **Vuex 的状态存储是响应式的**。<font color=FF0000>当 Vue 组件从 store 中读取状态的时候，若 store 中的状态发生变化，那么相应的组件也会相应地得到高效更新。</font>
+
+- **你不能直接改变 store 中的状态**。<font color=FF0000>改变 store 中的状态的唯一途径就是显式地**提交 (commit) mutation**。这样使得我们可以方便地跟踪每一个状态的变化，从而让我们能够实现一些工具帮助我们更好地了解我们的应用</font>。
+
+
+
+安装 Vuex 之后，让我们来创建一个 store。创建过程直截了当——仅需要提供一个初始 state 对象和一些 mutation：
+
+```js
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
+
+const store = new Vuex.Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment (state) {
+      state.count++
+    }
+  }
+})
+```
+
+现在，你可以通过 store.state 来获取状态对象，以及通过 store.commit 方法触发状态变更：
+
+```js
+store.commit('increment')
+
+console.log(store.state.count) // -> 1
+```
+
+
+
+#### State
+
+Vuex 使用单一状态树 —— 是的，用一个对象就包含了全部的应用层级状态。至此它便作为一个“唯一数据源 (SSOT)”而存在。<font color=FF0000>这也意味着，每个应用将仅仅包含一个 store 实例</font>。<mark>单一状态树让我们能够直接地定位任一特定的状态片段，在调试的过程中也能轻易地取得整个当前应用状态的快照</mark>。
+
+如何在 Vue 组件中展示状态呢？由于 Vuex 的状态存储是响应式的，<font color=FF0000>从 store 实例中读取状态最简单的方法就是在<mark><font color=FF0000>**计算属性**</font></mark>中返回某个状态</font>：
+
+```js
+// 创建一个 Counter 组件
+const Counter = {
+  template: `<div>{{ count }}</div>`,
+  computed: {
+    count () {
+      return store.state.count
+    }
+  }
+}
+```
+
+每当 store.state.count 变化的时候, 都会重新求取计算属性，并且触发更新相关联的 DOM。
+
+然而，这种模式导致组件依赖全局状态单例。<font color=FF0000>在模块化的构建系统中，在每个需要使用 state 的组件中需要频繁地导入，并且在测试组件时需要模拟状态</font>。（这便造成麻烦）
+
+#### <font color=FF0000>**改进：**</font>
+
+Vuex 通过 store 选项，提供了一种机制将状态从根组件<font color=FF0000>“注入”到每一个子组件中</font>（需调用 Vue.use(Vuex)）：
+
+```js
+const app = new Vue({
+  el: '#app',
+  // 把 store 对象提供给 “store” 选项，这可以把 store 的实例注入所有的子组件
+  store,
+  components: { Counter },
+  template: `
+    <div class="app">
+      <counter></counter>
+    </div>
+  `
+})
+```
+
+通过在根实例中注册 store 选项，该 store 实例会注入到根组件下的所有子组件中，且子组件能通过 this.$store 访问到。让我们更新下 Counter 的实现：
+
+```js
+const Counter = {
+  template: `<div>{{ count }}</div>`,
+  computed: {
+    count () {
+      return this.$store.state.count
+    }
+  }
+}
+```
+
+#### mapstate辅助函数
+
+当一个组件需要获取多个状态的时候，将这些状态都声明为计算属性会有些重复和冗余。为了解决这个问题，我们可以使用 `mapState` 辅助函数帮助我们生成计算属性。示例如下：
+
+```js
+// 在单独构建的版本中辅助函数为 Vuex.mapState
+import { mapState } from 'vuex'
+
+export default {
+  // ...
+  computed: mapState({
+    // 箭头函数可使代码更简练
+    count: state => state.count,
+
+    // 传字符串参数 'count' 等同于 `state => state.count`
+    countAlias: 'count',
+
+    // 为了能够使用 `this` 获取局部状态，必须使用常规函数
+    countPlusLocalState (state) {
+      return state.count + this.localCount
+    }
+  })
+}
+```
+
+当映射的计算属性的名称与 state 的子节点名称相同时，我们也可以给 mapState 传一个字符串数组。
+
+```js
+computed: mapState([
+  // 映射 this.count 为 store.state.count
+  'count'
+])
+```
+
+#### **对象展开运算符**
+
+<font color=FF0000>mapState 函数返回的是一个对象</font>。我们如何将它与局部计算属性混合使用呢？通常，我们需要使用一个工具函数将多个对象合并为一个，以使我们可以将最终对象传给 computed 属性。但是自从有了对象展开运算符，我们可以极大地简化写法：
+
+```js
+computed: {
+  localComputed () { /* ... */ },
+  // 使用对象展开运算符将此对象混入到外部对象中
+  ...mapState({
+    // ...
+  })
+}
+```
+
+###  
+

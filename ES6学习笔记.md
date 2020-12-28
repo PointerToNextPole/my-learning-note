@@ -12,6 +12,10 @@
 
 
 
+
+
+
+
 #### 展开运算符
 
 - **函数传参**：<font color=FF0000>展开运算符可以展开数组，所以不再需要apply方法，将数组转为函数的参数了</font>。
@@ -51,19 +55,19 @@
   - 两个对象连接返回新的对象
 
     ```js
-    let x = {  name: 'autumn'}
-    let y = {	 age: 18}
+    let x = {name: 'autumn'}
+    let y = {age: 18}
     let z = {...x,...y}
-    console.log(z)  //结果为：{name: "autumn", age: 18}
+    console.log(z)  //结果为 {name: "autumn", age: 18}
     ```
 
   - 两个数组连接返回新的数组
 
     ```js
-    let x = {name: 'autumn'}
-    let y = {age: 18}
-    let z = {...x,...y}
-    console.log(z)  //结果为 {name: "autumn", age: 18}
+    let x = ['autumn']
+    let y = ['wscats']
+    let z = [...x, ...y]
+    console.log(z)// ["autumn", "wscats"]
     ```
 
   - 数组加上对象返回新的数组
@@ -104,7 +108,7 @@
     	age:18
     }
     let y = {
-    	...x,             //name: ['autumn','wscats'],age:18
+    	...x,             //name: ['autumn','wscats'], age:18
     	arr: [...x.name]  //['autumn','wscats']
     }
     console.log(y)
@@ -265,3 +269,4 @@ function foo() {
 export default foo;
 export {foo as default}; //这样写也是可以的
 ```
+

@@ -1,4 +1,4 @@
-`JS及其基本库备忘录
+# JS及其基本库备忘录
 
 
 
@@ -2287,6 +2287,28 @@ function potentiallyBuggyCode() {
 
 
 
+#### falsy
+
+**falsy 值 (虚值) 是<font color=FF0000>在 Boolean 上下文中认定为 false 的值</font>。**
+
+JavaScript 在需要用到布尔类型值的上下文中使用强制类型转换(Type Conversion )将值转换为布尔值，例如条件语句和循环语句。
+
+**在 JavaScript 中只有 8 个 falsy 值。**
+
+| false      | false 关键字                                                 |      |
+| ---------- | ------------------------------------------------------------ | ---- |
+| 0          | 数值 zero                                                    |      |
+| -0         | 数值 负 zero                                                 |      |
+| 0n         | 当 BigInt作为布尔值使用时, 遵从其作为数值的规则. `0n` 是 *falsy* 值. |      |
+| "", '', `` | 这是一个空字符串 (字符串的长度为零). JavaScript 中的字符串可用双引号 `**""**`, 单引号 `''`, 或 [模板字面量](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) **````** 定义。 |      |
+| null       | null - 缺少值                                                |      |
+| undefined  | undefined - 原始值                                           |      |
+| NaN        | NaN - 非数值                                                 |      |
+
+摘自：[MDN官方文档 - Falsy](https://developer.mozilla.org/zh-CN/docs/Glossary/Falsy)
+
+
+
 #### window.open()
 
 ```javascript
@@ -2358,101 +2380,55 @@ let windowObjectReference = window.open(strUrl, strWindowName, [strWindowFeature
 
 Console 对象可以接入浏览器控制台（如：Firefox 的 Web Console），在不同浏览器上它的实现细节可能是不一样的.
 
-`Console` 对象可以<font color=FF0000>从任何全局对象中访问到</font>，如 [`Window`](https://developer.mozilla.org/zh-CN/docs/Web/API/Window)，[`WorkerGlobalScope`](https://developer.mozilla.org/zh-CN/docs/Web/API/WorkerGlobalScope) 以及控制台属性中的特殊变量。它被定义为 [`Window.console`](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/console)，而且可直接通过 `console` 调用。
+Console 对象可以从任何全局对象中访问到，如 Window，WorkerGlobalScope 以及控制台属性中的特殊变量。它被定义为 Window.console，而且可直接通过 console 调用。
 
 **方法**
 
-- [`Console.assert()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/assert)
+- **Console.assert()：**判断第一个参数是否为真，false 的话抛出异常并且在控制台输出相应信息。
 
-  判断第一个参数是否为真，`false` 的话抛出异常并且在控制台输出相应信息。
+- **Console.clear()：**清空控制台，并输出 Console was cleared。
 
-- [`Console.clear()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/clear)
+- **Console.count()：**以参数为标识记录调用的次数，调用时在控制台打印标识以及调用次数。
 
-  清空控制台，并输出 `Console was cleared`。
+- **Console.countReset()：**重置指定标签的计数器值。
 
-- [`Console.count()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/count)
+- **Console.debug()：**在控制台打印一条 "debug" 级别的消息。
 
-  以参数为标识记录调用的次数，调用时在控制台打印标识以及调用次数。
+- **Console.dir()：**显示一个由特定的 Javascript 对象列表组成的可交互列表。这个列表可以使用三角形隐藏和显示来审查子对象的内容。
 
-- [`Console.countReset()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/countReset)
+- **Console.dirxml()：**打印 XML/HTML 元素表示的指定对象，否则显示 JavaScript 对象视图。
 
-  重置指定标签的计数器值。
+- Console.error()：<font color=FF0000>**常用**</font>，打印一条错误信息，使用方法可以参考 string substitution。
 
-- [`Console.debug()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/debug)
+- **Console.exception()：** error() 方法的别称。
 
-  在控制台打印一条 `"debug"` 级别的消息。
+- **Console.group()：**创建一个新的内联 group, 后续所有打印内容将会以子层级的形式展示。调用 groupEnd()来闭合组。
 
-- [`Console.dir()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/dir)
+- **Console.groupCollapsed()：**创建一个新的内联 group。使用方法和 group() 相同，不同的是，groupCollapsed() 方法打印出来的内容默认是折叠的。调用groupEnd()来闭合组。
 
-  显示一个由特定的 Javascript 对象列表组成的可交互列表。这个列表可以使用三角形隐藏和显示来审查子对象的内容。.
+- **Console.groupEnd()：**闭合当前内联 group。
 
-- [`Console.dirxml()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/dirxml)
+- Console.info()：<font color=FF0000>**常用**</font>，打印资讯类说明信息，使用方法可以参考 string substitution。
 
-  打印 XML/HTML 元素表示的指定对象，否则显示 JavaScript 对象视图。
+- Console.log()：<font color=FF0000>**常用**</font>，打印内容的通用方法，使用方法可以参考 string substitution。
 
-- [`Console.error()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/error)：<font color=FF0000>**常用**</font>
+- **Console.profile() ：**er's built-in profiler (for example, the Firefox performance tool). You can specify an optional name for the profile.
 
-  打印一条错误信息，使用方法可以参考 [string substitution](https://developer.mozilla.org/en-US/docs/Web/API/console#Using_string_substitutions)。
+- **Console.profileEnd() ：**Stops the profiler. You can see the resulting profile in the browser's performance tool (for example, the Firefox performance tool).
 
-- [`Console.exception()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/exception) 
+- **Console.table()：**将列表型的数据打印成表格。
 
-  `error()` 方法的别称。
+- **Console.time()：**启动一个以入参作为特定名称的计时器，在显示页面中可同时运行的计时器上限为10,000.
 
-- [`Console.group()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/group)
+- **Console.timeEnd()：**结束特定的 计时器 并以豪秒打印其从开始到结束所用的时间。
 
-  创建一个新的内联 [group](https://developer.mozilla.org/en-US/docs/Web/API/console#Using_groups_in_the_console), 后续所有打印内容将会以子层级的形式展示。调用 `groupEnd()`来闭合组。
+- **Console.timeLog()：**打印特定 计时器 所运行的时间。
 
-- [`Console.groupCollapsed()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/groupCollapsed)
+- **Console.timeStamp() ：**添加一个标记到浏览器的 Timeline 或 Waterfall 工具。
 
-  创建一个新的内联 [group](https://developer.mozilla.org/en-US/docs/Web/API/console#Using_groups_in_the_console)。使用方法和 `group()` 相同，不同的是，`groupCollapsed()` 方法打印出来的内容默认是折叠的。调用`groupEnd()`来闭合组。
+- **Console.trace()：**输出一个 stack trace。
 
-- [`Console.groupEnd()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/groupEnd)
-
-  闭合当前内联 [group](https://developer.mozilla.org/en-US/docs/Web/API/console#Using_groups_in_the_console)。
-
-- [`Console.info()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/info)：<font color=FF0000>**常用**</font>
-
-  打印资讯类说明信息，使用方法可以参考 [string substitution](https://developer.mozilla.org/en-US/docs/Web/API/console#Using_string_substitutions)。
-
-- [`Console.log()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/log)：<font color=FF0000>**常用**</font>
-
-  打印内容的通用方法，使用方法可以参考 [string substitution](https://developer.mozilla.org/en-US/docs/Web/API/console#Using_string_substitutions)。
-
-- [`Console.profile()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/profile) 
-
-  Starts the browser's built-in profiler (for example, the [Firefox performance tool](https://developer.mozilla.org/en-US/docs/Tools/Performance)). You can specify an optional name for the profile.
-
-- [`Console.profileEnd()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/profileEnd) 
-
-  Stops the profiler. You can see the resulting profile in the browser's performance tool (for example, the [Firefox performance tool](https://developer.mozilla.org/en-US/docs/Tools/Performance)).
-
-- [`Console.table()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/table)
-
-  将列表型的数据打印成表格。
-
-- [`Console.time()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/time)
-
-  启动一个以入参作为特定名称的[计时器](https://developer.mozilla.org/en-US/docs/Web/API/console#Timers)，在显示页面中可同时运行的计时器上限为10,000.
-
-- [`Console.timeEnd()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/timeEnd)
-
-  结束特定的 [计时器](https://developer.mozilla.org/en-US/docs/Web/API/console#Timers) 并以豪秒打印其从开始到结束所用的时间。
-
-- [`Console.timeLog()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/timeLog)
-
-  打印特定 [计时器](https://developer.mozilla.org/en-US/docs/Web/API/console#Timers) 所运行的时间。
-
-- [`Console.timeStamp()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/timeStamp) 
-
-  添加一个标记到浏览器的 [Timeline](https://developer.chrome.com/devtools/docs/timeline) 或 [Waterfall](https://developer.mozilla.org/en-US/docs/Tools/Performance/Waterfall) 工具。
-
-- [`Console.trace()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/trace)
-
-  输出一个 [stack trace](https://developer.mozilla.org/en-US/docs/Web/API/console#Stack_traces)。
-
-- [`Console.warn()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Console/warn)：<font color=FF0000>**常用**</font>
-
-  打印一个警告信息，可以使用 [string substitution](https://developer.mozilla.org/en-US/docs/Web/API/console#Using_string_substitutions) 和额外的参数。
+- Console.warn()：常用，打印一个警告信息，可以使用 string substitution 和额外的参数。
 
 摘自：[MDN web docs - Console](https://developer.mozilla.org/zh-CN/docs/Web/API/Console)
 
