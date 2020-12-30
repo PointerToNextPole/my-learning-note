@@ -296,6 +296,8 @@ axios.get('/user/12345')
 
 
 
+***
+
 ## gem
 
 Gem是封装起来的Ruby应用程序或代码库，是 Ruby 模块 (叫做 Gems) 的包管理器。

@@ -2309,27 +2309,44 @@ JavaScript 在需要用到布尔类型值的上下文中使用强制类型转换
 
 
 
+#### yield
+
+yield 关键字用来<font color=FF0000>暂停和恢复一个生成器函数（(function* 或遗留的生成器函数）</font>。
+
+**语法**
+
+```js
+[rv] = yield [expression];
+```
+
+- **expression：**定义通过迭代器协议从生成器函数返回的值。如果省略，则返回undefined。
+- **rv：**返回传递给生成器的next()方法的可选值，以恢复其执行。
+
+
+
+#### CORS
+
+CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource sharing）。
+
+<font color=FF0000>它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。</font>
+
+
+
+
+
 #### window.open()
 
 ```javascript
 let windowObjectReference = window.open(strUrl, strWindowName, [strWindowFeatures]);
 ```
 
-- `WindowObjectReference`
+- **WindowObjectReference：**打开的新窗口对象的引用。如果调用失败，返回值会是 `null 。如果`父子窗口满足“[同源策略](https://developer.mozilla.org/cn/JavaScript的同源策略)”，你可以通过这个引用访问新窗口的属性或方法。
 
-  打开的新窗口对象的引用。如果调用失败，返回值会是 `null 。如果`父子窗口满足“[同源策略](https://developer.mozilla.org/cn/JavaScript的同源策略)”，你可以通过这个引用访问新窗口的属性或方法。
+- **strUrl：**新窗口需要载入的url地址。strUrl可以是web上的html页面也可以是图片文件或者其他任何浏览器支持的文件格式。注意：如果strUrl 是一个空值，那么打开的窗口将会是带有默认工具栏的空白窗口（加载`about:blank`）。
 
-- `strUrl`
+- **strWindowName：**新窗口的名称。该字符串可以用来作为超链接或表单 [ 元素的目标属性值。字符串中不能含有空白字符。注意：strWindowName 并不是新窗口的标题。
 
-  新窗口需要载入的url地址。strUrl可以是web上的html页面也可以是图片文件或者其他任何浏览器支持的文件格式。注意：如果strUrl 是一个空值，那么打开的窗口将会是带有默认工具栏的空白窗口（加载`about:blank`）。
-
-- `strWindowName`
-
-  新窗口的名称。该字符串可以用来作为超链接 [``](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/a) 或表单 [``](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/form) 元素的目标属性值。字符串中不能含有空白字符。注意：strWindowName 并不是新窗口的标题。
-
-- `strWindowFeatures`
-
-  可选参数。是一个字符串值，这个值列出了将要打开的窗口的一些特性(窗口功能和工具栏) 。 字符串中不能包含任何空白字符，特性之间用逗号分隔开。参考
+- **strWindowFeatures：**可选参数。是一个字符串值，这个值列出了将要打开的窗口的一些特性(窗口功能和工具栏) 。 字符串中不能包含任何空白字符，特性之间用逗号分隔开。参考
 
 摘自：[MDN web docs - Window.open()](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/open)
 
@@ -2501,6 +2518,12 @@ someOtherNode.textContent = string;
 **此外，使用 textContent 可以防止 XSS 攻击。**
 
 摘自：[MDN - Node.textContent](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/textContent)
+
+
+
+#### JS表达式
+
+如果一个“字符串”可以被赋值给一个变量（类似于“右值”），便可以称为JS表达式
 
 
 

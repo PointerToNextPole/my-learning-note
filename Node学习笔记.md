@@ -69,14 +69,17 @@
 - npm install系列
 
   - **npm install** **<font color=FF0000>=</font>** **npm i**。在git clone项目的时候，项目文件中并没有 node_modules文件夹，项目的依赖文件可能很大。直接执行，<font color=FF0000>npm会根据package.json配置文件中的依赖配置下载安装</font>。
-
-  - **-global** **<font color=FF0000>=</font>** **-g**，全局安装，安装后的包位于系统预设目录下
-
+- **-global** **<font color=FF0000>=</font>** **-g**，全局安装，安装后的包位于系统预设目录下
   - **--save** **<font color=FF0000>=</font>** **-S**，<font color=FF0000>安装的包将写入package.json里面的dependencies</font>，<mark>dependencies：生产环境需要依赖的库</mark>
-
-  - **--save-dev** **<font color=FF0000>=</font>** **-D**，<font color=FF0000>安装的包将写入packege.json里面的devDependencies</font>，<mark>devdependencies：只有开发环境下需要依赖的库</mark>
+- **--save-dev** **<font color=FF0000>=</font>** **-D**，<font color=FF0000>安装的包将写入packege.json里面的devDependencies</font>，<mark>devdependencies：只有开发环境下需要依赖的库</mark>
+  
+另外：在package name后面添加@版本号，可以安装指定版本号的包
 
 摘自：[npm install说明](https://www.jianshu.com/p/b3e407942ac5)
+
+**补充：**
+
+- npm info packageName：查看包的信息，及其历史版本的信息等
 
 
 
@@ -101,7 +104,7 @@ npm install 提供了3种独立的、可选的用于保存和更新在你主要�
 
 #### npm init
 
-在现代新建一个 JS 相关的项目往往都是从 `package.json` 文件开始的，不过这个文件里需要的字段实在是太多了，正常人都记不住，所以 <font color=FF0000>npm 官方提供了 **`npm init`** 命令帮助我们快速初始化 **`package.json`** 文件</font>。执行之后会有一个交互式的命令行让你输入需要的字段值，当然如果你想直接使用默认值，也可以使用 **`npm init -y`** 来超速初始化。
+在现代新建一个 JS 相关的项目往往都是从 `package.json` 文件开始的，不过这个文件里需要的字段实在是太多了，正常人都记不住，所以 <font color=FF0000>npm 官方提供了 **`npm init`** 命令帮助我们快速初始化 **`package.json`** 文件</font>。执行之后会有一个交互式的命令行让你输入需要的字段值，当然如果你想直接使用默认值，也可以使用 **`npm init -y`** 来更加快速初始化的；其中：**`-y`** 表示所有的选项都是允许的。
 
 随着技术的快速发展，发现初始化 package.json 已经无法满足大家的需求了，<font color=FF0000>越来越多的项目需要进行整个项目的初始化。脚手架工具应运而生</font>，除了有通用的脚手架工具 yeoman, sao 之外，<font color=FF0000>很多项目也会开发针对自己项目的脚手架工具，例如 vue-cli, create-react-app 以及专门用来初始化 ThinkJS 项目的脚手架工具 think-cli</font>。
 
