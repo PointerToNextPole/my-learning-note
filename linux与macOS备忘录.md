@@ -384,7 +384,7 @@ rm -rf folderName # -r表示递归，-f表示强行删除
 
 #### `&`, `;` `&&` ,  `||`, `()`, `{}`
 
-- **&** 命令<font color=FF0000>**同时**执行</font>
+- **&** 命令<font color=FF0000>**同时**执行</font>（并发）
 
   ```sh
   command1 & command2 & command3   
@@ -396,7 +396,7 @@ rm -rf folderName # -r表示递归，-f表示强行删除
    command1; command2; command3
    ```
 
--  **&&** <font color=FF0000>**只有**前面命令执行成功，后面命令**才继续执行**</font>
+-  **&&** <font color=FF0000>**只有**前面命令执行成功，后面命令**才继续执行**</font>（继发）
 
    ```sh
    command1 && command2 [&& command3 ...]

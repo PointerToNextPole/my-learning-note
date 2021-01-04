@@ -35,7 +35,33 @@ DOM (**D**ocument **O**bject **M**odel)（文档对象模型）是用于访问 H
   x.style.color="#ff0000";           //改变样式
   ```
 
-  
+- **<font color=FF0000>设置</font>** HTML 样式，语法如下：
+
+  ```js
+  element.setAttribute(attributeName, attributeValue);
+  ```
+
+#### **补充：**
+
+除了innerHTML外，还有outerHTML： element  DOM接口的outerHTML属性获取描述元素（包括其后代）的序列化HTML片段。它也可以设置为用从给定字符串解析的节点替换元素。
+
+**语法**
+
+- ```js
+  let content = element.outerHTML;
+  ```
+
+  返回时，内容包含描述元素及其后代的序列化HTML片段。
+
+- ```js
+  element.outerHTML = content;
+  ```
+
+  将元素替换为通过使用元素的父作为片段解析算法的上下文节点解析字符串内容生成的节点。
+
+摘自：[MDN - element.outerHTML](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/outerHTML)
+
+
 
 #### JavaScript 变量
 
@@ -984,7 +1010,7 @@ new Promise(function (resolve, reject) {
 
 **异步函数**
 
-异步函数（async function）是 <font color=FF0000>ECMAScript 2017</font> (ECMA-262) 标准的规范，几乎被所有浏览器所支持，除了 Internet Explorer。
+异步函数（async function）是 <font color=FF0000>ECMAScript 2017</font> (ECMA-262) 标准的规范，几乎被所有浏览器所支持，除了 Internet Explorer。<mark>它们是基于promises的语法糖，使异步代码更易于编写和阅读</mark>
 
 示例：
 
@@ -997,7 +1023,7 @@ async function asyncFunc() {
 asyncFunc();
 ```
 
-<font color=FF0000>异步函数 async function 中可以使用 await 指令，await 指令后必须跟着一个 Promise，异步函数会在这个 Promise 运行中暂停，直到其运行结束再继续运行</font>。
+<mark>异步函数 <font color=FF0000>**async function 中可以使用 await 指令**</font>，<font color=FF0000>**await** 指令后**必须**跟着一个 **Promise**</font>，异步函数会在这个 Promise 运行中暂停，直到其运行结束再继续运行</mark>。
 
 示例：
 
@@ -1013,7 +1039,24 @@ async function asyncFunc() {
 asyncFunc();
 ```
 
-//todo 这里没有完全看懂，需要以后再了解....
+##### **更多补充：**
+
+- **async关键字：**
+
+  我们使用 async 关键字，把它放在函数声明之前，使其成为 async function。异步函数是一个知道怎样使用 await 关键字调用异步代码的函数。
+
+  ```js
+  async function hello() { return "Hello" };
+  hello();
+  ```
+
+  现在<font color=FF0000>调用该函数会返回一个 promise</font>。这是异步函数的特征之一 —— <font color=FF0000>**它保证函数的返回值为 promise**</font>（自动）。
+
+- **await关键字：**
+
+  当 await 关键字与异步函数一起使用时，它的真正优势就变得明显了 —— 事实上， <font color=FF0000>await 只在异步函数里面才起作用</font>。它可以放在任何异步的，基于 promise 的函数之前。<font color=FF0000>它会暂停代码在该行上，直到 promise 完成，然后返回结果值</font>。在暂停的同时，其他正在等待执行的代码就有机会执行了。
+
+摘自：[async和await:让异步编程更简单](https://developer.mozilla.org/zh-CN/docs/learn/JavaScript/%E5%BC%82%E6%AD%A5/Async_await)
 
 
 
@@ -1365,7 +1408,60 @@ add(); // counter = 3
   var x=document.getElementsByClassName("intro");
   ```
 
-  
+
+**补充：**
+
+#### **Element.classList**
+
+Element.classList 是一个只读属性，返回一个元素的类属性的实时 DOMTokenList 集合。
+相比将 element.className 作为以空格分隔的字符串来使用，classList 是一种更方便的访问元素的类列表的方法。
+
+- **语法**
+
+  ```js
+  const elementClasses = elementNodeReference.classList;
+  ```
+
+- **返回值**
+  elementClasses 是一个 DOMTokenList 表示  elementNodeReference 的类属性 。如果类属性未设置或为空，那么 elementClasses.length 返回 0。<font color=FF0000>element.classList 本身是只读的，但是你可以使用 add(className) 和 remove(className) 方法修改它</font>。
+
+  - add(className) /  remove(className)，甚至其中的add() / remove()可以放多组类值，甚至可以通过使用展开语法添加或移除多个类值。示例如下：
+
+    ```js
+    // 添加或移除多个类值
+    div.classList.add("foo", "bar", "baz");
+    div.classList.remove("foo", "bar", "baz");
+    
+    // 使用展开语法添加或移除多个类值
+    const cls = ["foo", "bar"];
+    div.classList.add(...cls);
+    div.classList.remove(...cls);
+    ```
+
+  - **`item(index)`**：返回元素中索引值对应的类名。索引值从 0 开始。如果索引值在区间范围外则返回 null
+
+  - **`toggle(className)`**方法，如果该类值已存在，则移除它，否则添加它。另外，该函数还可添加触发条件：`toggle(className, conditionExpression)`若条件满足则添加/ 移除该类值。
+
+    ```js
+    // 如果 visible 类值已存在，则移除它，否则添加它
+    div.classList.toggle("visible");
+    
+    // add/remove visible, depending on test conditional, i less than 10
+    div.classList.toggle("visible", i < 10 );
+    ```
+
+  - **`contains(className)`**：判断是否存在该类值
+
+  - **`replace(replacedClassName, replacingClassName)`**：将replacedClassName替换为replacingClassName。
+
+    ```js
+    // 将类值 "foo" 替换成 "bar"
+    div.classList.replace("foo", "bar");
+    ```
+
+摘自：[MDN - Element.classList](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/classList
+
+
 
 #### JavaScript HTML DOM - 改变 HTML
 
@@ -2324,13 +2420,62 @@ yield 关键字用来<font color=FF0000>暂停和恢复一个生成器函数（(
 
 
 
-#### CORS
+#### Fetch
 
-CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource sharing）。
+Fetch API 提供了一个 JavaScript 接口， 提供了对 Request 和 Response （以及其他与网络请求有关的）对象的通用定义；用于访问和操纵 HTTP 管道的一些具体部分，例如请求和响应。它还提供了一个全局 fetch() 方法，该方法提供了一种简单，合理的方式来跨网络异步获取资源。
 
-<font color=FF0000>它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。</font>
+一个基本的 fetch 请求设置起来很简单。<font color=FF0000>fetch() 必须接受一个参数——资源的路径</font>。无论请求成功与否，它都返回一个 Promise 对象，resolve 对应请求的 Response。
 
+看看下面的代码：
 
+```js
+fetch('http://example.com/movies.json')
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+    console.log(myJson);
+  });
+```
+
+这里我们通过网络获取一个 JSON 文件并将其打印到控制台。最简单的用法是只提供一个参数用来指明想 fetch() 到的资源路径，然后返回一个包含响应结果的promise（一个 Response 对象）。
+
+<font color=FF0000>也可以传一个可选的第二个参数 init</font>
+
+**fetch语法如下：**
+
+**语法**
+
+```js
+Promise<Response> fetch(input[, init]);
+```
+
+**参数**
+
+- **?input**
+
+  定义要获取的资源。这可能是：一个 USVString 字符串，包含要获取资源的 URL。一些浏览器会接受 blob: 和 data: 作为 schemes.一个 Request 对象。
+
+- **init 可选**
+
+  一个配置项对象，包括所有对请求的设置。可选的参数有：
+
+  - **method:** 请求使用的方法，如 GET、POST。
+  - **headers:** 请求的头信息，形式为 Headers 的对象或包含 ByteString 值的对象字面量。
+  - **body:** 请求的 body 信息：可能是一个 Blob、BufferSource、FormData、URLSearchParams 或者 USVString 对象。注意 GET 或 HEAD 方法的请求不能包含 body 信息。
+  - **mode:** 请求的模式，如 cors、 no-cors 或者 same-origin。
+  - **credentials:** 请求的 credentials，如 omit、same-origin 或者 include。为了在当前域名内自动发送 cookie ， 必须提供这个选项， 从 Chrome 50 开始， 这个属性也可以接受 FederatedCredential 实例或是一个 PasswordCredential 实例。
+  - **cache:**  请求的 cache 模式: default、 no-store、 reload 、 no-cache、 force-cache或者 only-if-cached 。
+  - **redirect:** 可用的 redirect 模式: follow (自动重定向), error (如果产生重定向将自动终止并且抛出一个错误）, 或者 manual (手动处理重定向). 在Chrome中默认使用follow（Chrome 47之前的默认值是manual）。
+  - **referrer:** 一个 USVString 可以是 no-referrer、client或一个 URL。默认是 client。
+  - **referrerPolicy:** 指定了HTTP头部referer字段的值。可能为以下值之一： no-referrer、 no-referrer-when-downgrade、 origin、 origin-when-cross-origin、 unsafe-url 。
+  - **integrity:** 包括请求的  subresource integrity 值 （ 例如： sha256-BpfBw7ivV8q2jLiT13fxDYAe2tJllusRSZ273h2nFSE=）。
+
+**返回值**
+
+一个 Promise，resolve 时回传 Response 对象。
+
+摘自：[MDN - Fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API)  [MDN - 使用 Fetch](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch#%E6%94%AF%E6%8C%81%E7%9A%84%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0)  [WorkerOrGlobalScope.fetch()](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/fetch)
 
 
 

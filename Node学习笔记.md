@@ -73,6 +73,7 @@
   - **--save** **<font color=FF0000>=</font>** **-S**，<font color=FF0000>安装的包将写入package.json里面的dependencies</font>，<mark>dependencies：生产环境需要依赖的库</mark>
 - **--save-dev** **<font color=FF0000>=</font>** **-D**，<font color=FF0000>安装的包将写入packege.json里面的devDependencies</font>，<mark>devdependencies：只有开发环境下需要依赖的库</mark>
   
+
 另外：在package name后面添加@版本号，可以安装指定版本号的包
 
 摘自：[npm install说明](https://www.jianshu.com/p/b3e407942ac5)
@@ -150,6 +151,279 @@ npm root -g
   npm config set registry https://registry.npm.taobao.org
   ```
 
+
+
+#### npm scripts
+
+**以下内容摘自：[npm scripts 使用指南](http://www.ruanyifeng.com/blog/2016/10/npm_scripts.html)**
+
+npm 允许在package.json文件里面，使用scripts字段定义脚本命令。
+
+```js
+{
+  // ...
+  "scripts": {
+    "build": "node build.js"
+  }
+}
+```
+
+上面代码是package.json文件的一个片段，里面的scripts字段是一个对象。它的每一个属性，对应一段脚本。比如，build命令对应的脚本是node build.js。
+
+命令行下使用npm run命令，就可以执行这段脚本。
+
+```sh
+$ npm run build
+# 等同于执行
+$ node build.js
+```
+
+这些定义在package.json里面的脚本，就称为 npm 脚本。它的优点很多。
+
+- 项目的相关脚本，可以集中在一个地方。
+- 不同项目的脚本命令，只要功能相同，就可以有同样的对外接口。用户不需要知道怎么测试你的项目，只要运行npm run test即可。
+- 可以利用 npm 提供的很多辅助功能。
+
+查看当前项目的所有 npm 脚本命令，可以使用不带任何参数的`npm run`命令。
+
+```bash
+$ npm run
+```
+
+- **原理：**
+
+  npm 脚本的原理非常简单。<font color=FF0000>每当执行npm run，就会自动新建一个 Shell，在这个 Shell 里面执行指定的脚本命令</font>。因此，只要是 Shell（一般是 Bash）可以运行的命令，就可以写在 npm 脚本里面。
+
+  比较特别的是，npm run新建的这个 Shell，会将当前目录的node_modules/.bin子目录加入PATH变量，执行结束后，再将PATH变量恢复原样。这意味着，当前目录的node_modules/.bin子目录里面的所有脚本，都可以直接用脚本名调用，而不必加上路径。比如，当前项目的依赖里面有 Mocha，只要直接写mocha test就可以了。
+
+	 ```javascript
+	"test": "mocha test"
+	 ```
+	
+	而不用写成下面这样。
+	
+	```sh
+	"test": "./node_modules/.bin/mocha test"
+	```
+	
+	<font color=FF0000>由于 npm 脚本的唯一要求就是可以在 Shell 执行，因此它不一定是 Node 脚本，任何可执行文件都可以写在里面。</font>
+	
+	npm 脚本的退出码，也遵守 Shell 脚本规则。如果退出码不是**`0`**，npm 就认为这个脚本执行失败。
+	
+- **通配符**
+
+  由于 npm 脚本就是 Shell 脚本，因为可以使用 Shell 通配符。
+
+  ```sh
+  "lint": "jshint *.js"
+  "lint": "jshint **/*.js"
+  ```
+
+- **传参**
+
+  向 npm 脚本传入参数，要使用 `--` 标明。
+
+  ```javascript
+  "lint": "jshint **.js"
+  ```
+
+  向上面的 `npm run lint` 命令传入参数，必须写成下面这样。
+
+  ```bash
+  $ npm run lint --  --reporter checkstyle > checkstyle.xml
+  ```
+
+- **执行顺序**
+
+  如果 npm 脚本里面需要执行多个任务，那么需要明确它们的执行顺序。
+
+  如果是<font color=FF0000>**并行执行**（即同时的平行执行），可以使用 **`&`** 符号</font>。
+
+  ```bash
+  $ npm run script1.js & npm run script2.js
+  ```
+
+  如果是<font color=FF0000>**继发执行**（即只有前一个任务成功，才执行下一个任务），可以使用 **`&&`** 符号</font>。
+
+  ```bash
+  $ npm run script1.js && npm run script2.js
+  ```
+
+  这两个符号是 Bash 的功能。此外，还可以使用 node 的任务管理模块：[script-runner](https://github.com/paulpflug/script-runner)、[npm-run-all](https://github.com/mysticatea/npm-run-all)、[redrun](https://github.com/coderaiser/redrun)。
+
+- **默认值**
+
+  一般来说，npm 脚本由用户提供。但是，npm 对两个脚本提供了默认值。也就是说，这两个脚本不用定义，就可以直接使用。
+  
+  ```javascript
+  "start": "node server.js"，
+"install": "node-gyp rebuild"
+  ```
+  
+  上面代码中，`npm run start`的默认值是`node server.js`，前提是项目根目录下有`server.js`这个脚本；`npm run install`的默认值是`node-gyp rebuild`，前提是项目根目录下有`binding.gyp`文件。
+  
+- **钩子**
+
+  <font color=FF0000>npm 脚本有 `pre` 和 `post` 两个钩子</font>。举例来说，`build` 脚本命令的钩子就是 `prebuild` 和 `postbuild` 。
+
+  ```js
+  "prebuild": "echo I run before the build script",
+  "build": "cross-env NODE_ENV=production webpack",
+  "postbuild": "echo I run after the build script"
+  ```
+
+  <font color=FF0000>用户执行 **`npm run build`** 的时候，会自动按照下面的顺序执行。</font>
+
+  ```bash
+  npm run prebuild && npm run build && npm run postbuild
+  ```
+
+  **npm 默认提供下面这些钩子**
+
+  - prepublish，postpublish
+  - preinstall，postinstall
+  - preuninstall，postuninstall
+  - preversion，postversion
+  - pretest，posttest
+  - prestop，poststop
+  - prestart，poststart
+  - prerestart，postrestart
+
+  <font color=FF0000>自定义的脚本命令也可以加上 `pre` 和 `post` 钩子。比如， `myscript` 这个脚本命令，也有 `premyscript` 和 `postmyscript` 钩子。不过，双重的 `pre` 和 `post` 无效，比如 `prepretest` 和 `postposttest` 是无效的。</font>
+
+  npm 提供一个 `npm_lifecycle_event` 变量，返回当前正在运行的脚本名称，比如 `pretest` 、`test` 、`posttest` 等等
+
+- **简写形式**
+
+  四个常用的 npm 脚本有简写形式。
+
+  - `npm start` 是 `npm run start` 的简写
+  - `npm stop` 是 `npm run stop` 的简写
+  - `npm test` 是 `npm run test` 的简写
+  - `npm restart` 是 `npm run stop && npm run restart && npm run start` 的简写
+
+  `npm start`、`npm stop` 和 `npm restart` 都比较好理解，而`npm restart`是一个复合命令，实际上会执行三个脚本命令：`stop`、`restart`、`start`。具体的执行顺序如下。
+
+  - prerestart
+  - prestop
+  - stop
+  - poststop
+  - restart
+  - prestart
+  - start
+  - poststart
+  - postrestart
+
+- **变量**
+
+  npm 脚本有一个非常强大的功能，就是可以使用 npm 的内部变量。
+
+  首先，<font color=FF0000>通过 **`npm_package_`** 前缀，npm 脚本可以拿到package.json里面的字段</font>。比如，下面是一个package.json。
+
+  ```json
+  {
+    "name": "foo", 
+    "version": "1.2.5",
+    "scripts": {
+      "view": "node view.js"
+    }
+  }
+  ```
+
+  那么，<font color=FF0000>变量**`npm_package_name`** 返回 **`foo`**，变量**`npm_package_version`**返回**`1.2.5`**</font>。
+
+  ```js
+  // view.js
+  console.log(process.env.npm_package_name); // foo
+  console.log(process.env.npm_package_version); // 1.2.5
+  ```
+
+  上面代码中，我们通过环境变量`process.env` 对象，拿到`package.json` 的字段值。如果是 Bash 脚本，可以用`$npm_package_name`和`$npm_package_version` 取到这两个值。
+
+  `npm_package_` 前缀也支持嵌套的 `package.json` 字段。
+
+  ```json
+  "repository": {
+    "type": "git",
+    "url": "xxx"
+  },
+  scripts: {
+    "view": "echo $npm_package_repository_type"
+  }
+  ```
+
+  上面代码中，`repository` 字段的 `type` 属性，可以通过 `npm_package_repository_type` 取到。
+
+  另外一个例子：
+
+  ```json
+  "scripts": {
+    "install": "foo.js"
+  }
+  ```
+
+  上面代码中，`npm_package_scripts_install` 变量的值等于 `foo.js`。
+
+  npm 脚本还可以通过 `npm_config_` 前缀，拿到 npm 的配置变量，即 `npm config get xxx` 命令返回的值。比如，当前模块的发行标签，可以通过`npm_config_tag`取到。
+
+  ```js
+  "view": "echo $npm_config_tag",
+  ```
+
+  注意，`package.json` 里面的 `config` 对象，可以被环境变量覆盖。
+
+  ```json
+  { 
+    "name" : "foo",
+    "config" : { "port" : "8080" },
+    "scripts" : { "start" : "node server.js" }
+  }
+  ```
+
+  上面代码中，`npm_package_config_port` 变量返回的是`8080`。这个值可以用下面的方法覆盖。
+
+  ```bash
+  $ npm config set foo:port 80
+  ```
+
+  最后，`env` 命令可以列出所有环境变量。
+
+  ```js
+  "env": "env"
+  ```
+
+- **常用脚本示例**
+
+  ```json
+  // 删除目录
+  "clean": "rimraf dist/*",
+  
+  // 本地搭建一个 HTTP 服务
+  "serve": "http-server -p 9090 dist/",
+  
+  // 打开浏览器
+  "open:dev": "opener http://localhost:9090",
+  
+  // 实时刷新
+   "livereload": "live-reload --port 9091 dist/",
+  
+  // 构建 HTML 文件
+  "build:html": "jade index.jade > dist/index.html",
+  
+  // 只要 CSS 文件有变动，就重新执行构建
+  "watch:css": "watch 'npm run build:css' assets/styles/",
+  
+  // 只要 HTML 文件有变动，就重新执行构建
+  "watch:html": "watch 'npm run build:html' assets/html",
+  
+  // 部署到 Amazon S3
+  "deploy:prod": "s3-cli sync ./dist/ s3://example-com/prod-site/",
+  
+  // 构建 favicon
+  "build:favicon": "node scripts/favicon.js",
+  ```
+
+  
 
 
 

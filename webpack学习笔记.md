@@ -354,6 +354,8 @@ webpack-dev-server可以用来实现<font color=FF0000>热部署</font>，即修
   }
   ```
 
+  另外：如其名，webpack-dev-server只在development环境中需要被使用（配置），production环境不需要使用（配置）
+
   <font color=FF0000>**启用模拟服务器的作用：使用http协议，而不是file协议，file协议无法使用ajax等web服务**</font>
 
 - 自己手动实现webpack-dev-server，在package.json配置文件中的scripts（如下示例）。然后自己使用node编写server.js代码（非常复杂，不推荐）
@@ -432,7 +434,7 @@ module: {
 }
 ```
 
-**babel/polyfill：**用于对于一些<font color=FF0000>更低版本</font>的浏览器，提供ES6支持。在 **`import "@babel/polyfill"`** 时默认将所有的适配内容都放入输出的js文件中，这样会导致js文件臃肿，所以可以使用**`useBuiltIns: "usage"`**（见上面）以设置放入输出js文件的，只有业务代码中被使用的那部分。不过，babel/polyfill会污染全局环境，所以只推荐在业务代码中使用，而如果写的是框架，则建议使用**`@babel/plugin-transform-runtime`**
+**babel/polyfill：**用于对于一些<font color=FF0000>更低版本</font>的浏览器，提供ES6支持。在 **`import "@babel/polyfill"`** 时默认将所有的适配内容都放入输出的js文件中，这样会导致js文件臃肿，所以可以使用**`useBuiltIns: "usage"`**（见上面）以设置放入输出js文件的，只有业务代码中被使用的那部分（<font color=FF0000>**按需打包**</font>）。不过，babel/polyfill会污染全局环境，所以只推荐在业务代码中使用，而如果写的是框架，则建议使用**`@babel/plugin-transform-runtime`**
 
 babel的配置文件是**`.babelrc`**
 
@@ -456,3 +458,67 @@ options: {
 ```
 
 同样presets调用的顺序也是从下到上，从右到左
+
+
+
+#### Tree Shaking
+
+对于ES Module引入时候，默认会将业务代码中所有ES6代码打包引入，而不管这个代码块是否被调用。这样就没有做到<font color=FF0000>按需使用</font>，而这时可以使用<font color=FF0000>**Tree Shaking**，实现想要的效果</font>。Tree Shaking<font color=FF0000>只支持</font>ES Module代码的引入。代码使用如下：
+
+```js
+//webpack.config.js
+optimization: {
+  usedExports: true
+}
+
+//package.json，最外层
+{
+  "sideEffects": ['@babel/polly-fill'], //即使没有用到，也不希望被忽略的模块@babel/polly-fill。如果没有可以直接写false
+}
+```
+
+另外：即使不使用的那些代码，在<font color=FF0000>开发环境</font>的打包中，那些不用的代码将不会被删掉，而是告知你只使用了哪些代码，便于你开发。而在生产环境的打包中，将会直接删掉那些不用的代码。
+
+<font color=FF0000>**补充：**</font>在生产环境的打包中，Tree Shaking是自动生效的，即：你不需要写**`optimization: { usedExports: true }`**，不过sideEffects还是要写的。
+
+
+
+#### Development模式和Production模式的区分打包
+
+由于Development和Production是两种模式，所以不建议它们共享一个webpack.config.js，在打包时还需要分别修改配置，容易造成遗漏和BUG，所以建议两种模式分别使用两个不同的配置文件，比如：`webpack.dev.conf.js`和`webpack.prod.conf.js`
+
+相对应的需要在package.json分别配置dev环境和prod环境的npm scripts
+
+```json
+"scripts": {
+  "dev": "webpack-dev-server --config webpack.dev.conf.js", //后面的--config webpack.dev.conf.js表示选择哪个配置文件
+  "build": "webpack --config webpack.prod.conf.js ", //build是指打包上线的代码，即production
+}
+```
+
+由于`webpack.dev.conf.js`和`webpack.prod.conf.js`中存在很多相同的配置（代码），可以添加一个`webpack.common.conf.js`存放公共代码，把公用代码放入其中。同时，想要合并两个配置文件，需要安装插件：`webpack-merge`，且dev / prod的配置中也需要进行修改，以`webpack.dev.conf.js`为例：
+
+```js
+const commonConfig = require('./webpack.common.conf.js')
+
+//dev的配置
+const devConfig = {
+  //...
+}
+
+module.exports = merge(commonConfig, devConfig)
+```
+
+另外，可以新建一个build文件夹，将`webpack.dev.conf.js`、`webpack.prod.conf.js`以及`webpack.common.conf.js`三个配置文件放入其中。不过这时package.json需要修改对应的配置文件的路径
+
+```json
+"scripts": {
+  "dev": "webpack-dev-server --config ./build/webpack.dev.conf.js", //后面的--config webpack.dev.conf.js表示选择哪个配置文件
+  "build": "webpack --config ./build/webpack.prod.conf.js ", //build是指打包上线的代码，即production
+}
+```
+
+
+
+#### Code Splitting 代码分割
+

@@ -1215,6 +1215,76 @@ BOM层次结构的顶层是窗口对象, 它包含有关显示文档的窗口的
 #### <font color=FF0000>前端路由和后端路由</font>
 
 - **后端路由: **对于普通的网站，<font color=FF0000>所有的超链接都是URL地址</font>，<font color=FF0000>所有的URL地址都对应服务器上对应的资源</font>
-
 - **前端路由: **对于<font color=FF0000>单页面应用程序</font>来说，主要<font color=FF0000>通过URL中的hash（#号）来实现不同页面之间的切换（与锚点相似）</font>。同时，hash有一个特点: <font color=FF0000>HTTP请求中不会包含hash相关的内容</font>；所以，单页面程序中的页面跳转主要用hash实现
 - 在单页面应用程序中，'<font color=FF0000>**这种通过hash改变来切换页面的方式，称作前端路由**</font>（ 区别于后端路由）
+
+
+
+#### CORS
+
+CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource sharing）。
+
+<font color=FF0000>它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。</font>
+
+**补充：**
+
+跨源资源共享 (CORS) （或通俗地译为跨域资源共享）是一种基于HTTP 头的机制，该机制通过允许服务器标示除了它自己以外的其它origin（域，协议和端口），这样浏览器可以访问加载这些资源
+
+出于安全性，浏览器限制脚本内发起的跨源HTTP请求。跨源域资源共享（ CORS ）机制允许 Web 应用服务器进行跨源访问控制，从而使跨源数据传输得以<font color=FF0000>安全进行</font>。现代浏览器支持在 API 容器中（例如 XMLHttpRequest 或 Fetch ）使用 CORS，以降低跨源 HTTP 请求所带来的风险。
+
+
+
+**什么情况下需要 CORS ？**
+这份 [cross-origin sharing standard](http://www.w3.org/TR/cors/) 允许在下列场景中使用跨站点 HTTP 请求：
+
+- 前文提到的由 XMLHttpRequest 或 Fetch 发起的跨源 HTTP 请求。
+- Web 字体 (CSS 中通过 @font-face 使用跨源字体资源)，因此，网站就可以发布 TrueType 字体资源，并只允许已授权网站进行跨站调用。
+- WebGL 贴图
+
+- 使用 drawImage 将 Images/video 画面绘制到 canvas
+
+
+
+<font color=FF0000>CORS需要浏览器和服务器同时支持</font>。目前，所有浏览器都支持该功能，IE浏览器不能低于IE10。
+
+<font color=FF0000>整个CORS通信过程，都是浏览器自动完成，不需要用户参与</font>。对于开发者来说，CORS通信与同源的AJAX通信没有差别，代码完全一样。浏览器一旦发现AJAX请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。
+
+因此，实现CORS通信的关键是服务器。只要服务器实现了CORS接口，就可以跨源通信。
+
+
+
+**浏览器将CORS请求分成两类：简单请求（simple request）和非简单请求（not-so-simple request）。**
+
+只要<font color=FF0000>同时满足以下两大条件，就属于简单请求</font>。
+
+- 请求方法是以下三种方法之一：
+  - HEAD
+  - GET
+  - POST
+- HTTP的头信息不超出以下几种字段：
+  - Accept
+  - Accept-Language
+  - Content-Language
+  - Last-Event-ID
+  - Content-Type：只限于三个值`application/x-www-form-urlencoded`、`multipart/form-data`、`text/plain`
+
+凡是<font color=FF0000>不同时满足上面两个条件，就属于非简单请求</font>。
+
+**具体讲解：**
+
+- **简单请求**
+
+  对于简单请求，浏览器直接发出CORS请求。具体来说，就是在头信息之中，增加一个**`Origin`**字段。`Origin`字段用来说明，本次请求来自哪个源（协议 + 域名 + 端口）。服务器根据这个值，决定是否同意这次请求。
+
+- **非简单请求**
+
+  非简单请求是那种对服务器有特殊要求的请求，比如请求方法是PUT或DELETE，或者Content-Type字段的类型是application/json。
+
+  <mark>非简单请求的CORS请求，会<font color=FF0000>在正式通信之前，增加一次HTTP查询请求，称为**"预检"请求**（preflight）</font></mark>。
+
+  浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些HTTP动词和头信息字段。只有得到肯定答复，浏览器才会发出正式的XMLHttpRequest请求，否则就报错
+
+  一旦服务器通过了"预检"请求，以后每次浏览器正常的CORS请求，就都跟简单请求一样，会有一个Origin头信息字段。服务器的回应，也都会有一个Access-Control-Allow-Origin头信息字段。
+
+摘自：[跨域资源共享 CORS 详解](https://www.ruanyifeng.com/blog/2016/04/cors.html)
+

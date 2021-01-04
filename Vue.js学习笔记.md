@@ -6152,6 +6152,18 @@ Vuex 是一个专为 Vue.js 应用程序开发的<font color=FF0000>**状态管�
 
 > Flux 架构就像眼镜：您自会知道什么时候需要它。
 
+#### **补充使用场景：**
+
+有什么状态时需要我们在多个组件间共享的呢？如果你做过大型开放，你一定遇到过多个状态，在多个界面间的共享问题。比如用户的登录状态、用户名称、头像、地理位置信息等等。比如商品的收藏、购物车中的物品等等。<font color=FF0000>这些状态信息，我们都可以放在统一的地方，对它进行保存和管理，而且它们还是响应式的</font>
+
+Vue已经帮我们做好了单个界面的状态管理，但是如果是多个界面呢？多个试图都依赖同一个状态（一个状态改了，多个界面需要进行更新），不同界面的Actions都想修改同一个状态（Home.vue需要修改，Profile.vue也需要修改这个状态）。
+也就是说对于某些状态(状态1/状态2/状态3)来说只属于我们某一个试图，但是也有一些状态(状态a/状态b/状态c)属于多个试图共同想要维护的。状态1/状态2/状态3你放在自己的房间中，你自己管理自己用，没问题。但是状态a/状态b/状态c我们希望交给一个大管家来统一帮助我们管理！！！没错，Vuex就是为我们提供这个大管家的工具。
+
+**全局单例模式（大管家）**
+我们现在要做的就是将共享的状态抽取出来，交给我们的大管家，统一进行管理。之后，你们每个试图，按照我规定好的规定，进行访问和修改等操作。这就是Vuex背后的基本思想。
+
+摘自：[Vuex详细教程](https://www.cnblogs.com/wugongzi/p/13413274.html)
+
 
 
 #### 安装
@@ -6314,3 +6326,72 @@ computed: {
 
 ###  
 
+#### Mutation
+
+Vuex的store中的state是响应式的，当state中的数据发生改变时,，Vue组件会自动更新。这就要求我们必须遵守一些Vuex对应的规则:
+提前在store中初始化好所需的属性。当给state中的对象添加新属性时, 使用下面的方式:
+
+- 方式一：使用Vue.set(obj, 'newProp', 123)
+- 方式二：用心对象给旧对象重新赋值
+
+示例如下：
+
+```js
+//给state添加一个height属性
+const store = new Vuex.Store({
+  state: {
+    name: 'why', age: 18
+  }
+  mutations: {
+  	updateInfo(state, payload) {
+  		//方法一：Vue.set()
+  		Vue.set(state.info, 'height', payload.height)
+  		//方法二：给info赋值一个新的对象
+  		state.info = {...state.info, 'height': payload.height}
+		}
+	}
+})
+```
+
+
+
+**Mutation常量类型**
+
+我们来考虑下面的问题：
+在mutation中， 我们定义了很多事件类型(也就是其中的方法名称)。<font color=FF0000>当我们的项目增大时， Vuex管理的状态越来越多， 需要更新状态的情况越来越多， 那么意味着Mutation中的方法越来越多</font>。<font color=FF0000>方法过多， 使用者需要花费大量的经历去记住这些方法， 甚至是多个文件间来回切换， 查看方法名称， 甚至如果不是复制的时候， 可能还会出现写错的情况</font>。如何避免上述的问题呢?
+在各种Flux实现中， 一种很常见的方案就是使用常量替代Mutation事件的类型。我们可以将这些常量放在一个单独的文件中， 方便管理以及让整个app所有的事件类型一目了然。具体怎么做呢?我们可以创建一个文件: mutation-types.js， 并且在其中定义我们的常量。定义常量时， 我们可以使用ES2015中的风格， 使用一个常量来作为函数的名称。
+
+```js
+// mutation-types.js
+export const SOME_MUTATION = ''
+```
+
+```js
+// store.js
+import Vuex from 'vuex'
+import { SOME_MUTATION } from './mutation-types'
+
+const store = new Vuex.Store({
+  state: { ... },
+  mutations: {
+    // 我们可以使用 ES2015 风格的计算属性命名功能来使用一个常量作为函数名
+    [SOME_MUTATION] (state) {
+      // mutate state
+    }
+  }
+})
+```
+
+
+
+#### Action
+
+context是什么？context是和store对象具有相同方法和属性的对象。也就是说， 我们可以通过context去进行commit相关的操作， 也可以获取context，state等。但是注意， 这里它们并不是同一个对象， 为什么呢? 我们后面学习Modules的时候， 再具体说。这样的代码是否多此一举呢？我们定义了actions， 然后又在actions中去进行commit， 这不是脱裤放屁吗？事实上并不是这样， 如果在Vuex中有异步操作， 那么我们就可以在actions中完成了。
+
+
+
+#### Module
+
+局部状态通过 context.state 暴露出来，根节点状态则为 context.rootState
+
+摘自：[Vuex详细教程](https://www.cnblogs.com/wugongzi/p/13413274.html)

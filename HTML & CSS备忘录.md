@@ -2160,6 +2160,19 @@ width: calc(100% - 80px);
 
 摘自：[runoob - CSS 选择器](https://www.runoob.com/cssref/css-selectors.html)
 
+#### 补充：
+
+关于nth-of-type：CSS 伪类是<font color=FF0000>针对具有一组兄弟节点的标签, 用 n 来筛选出在一组兄弟节点的位置</font>。示例如下。<font color=FF0000>n从1开始</font>
+
+```css
+/* 在每组兄弟元素中选择第四个 <p> 元素 */
+p:nth-of-type(4n) {
+  color: lime;
+}
+```
+
+
+
 ***
 
 
