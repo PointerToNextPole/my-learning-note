@@ -1261,14 +1261,23 @@ CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource s
   - HEAD
   - GET
   - POST
-- HTTP的头信息不超出以下几种字段：
+- 除了被用户代理自动设置的首部字段（例如 Connection，User-Agent）和在 Fetch 规范中定义为 禁用首部名称的其他首部，允许人为设置的字段为 Fetch 规范定义的 对 CORS 安全的首部字段集合该集合为：
   - Accept
   - Accept-Language
   - Content-Language
-  - Last-Event-ID
-  - Content-Type：只限于三个值`application/x-www-form-urlencoded`、`multipart/form-data`、`text/plain`
+  - Content-Type的值仅限于下列三者之一：
+    - text/plain
+    - multipart/form-data
+    - application/x-www-form-urlencoded
+  - DPR
+  - Downlink
+  - Save-Data
+  - Viewport-Width
+  - Width
+- 请求中的任意XMLHttpRequestUpload 对象均没有注册任何事件监听器；XMLHttpRequestUpload 对象可以使用 XMLHttpRequest.upload 属性访问。
+- 请求中没有使用 ReadableStream 对象。
 
-凡是<font color=FF0000>不同时满足上面两个条件，就属于非简单请求</font>。
+**凡是<font color=FF0000>不同时满足上面两个条件，就属于非简单请求</font>。**
 
 **具体讲解：**
 
@@ -1285,6 +1294,10 @@ CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource s
   浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些HTTP动词和头信息字段。只有得到肯定答复，浏览器才会发出正式的XMLHttpRequest请求，否则就报错
 
   一旦服务器通过了"预检"请求，以后每次浏览器正常的CORS请求，就都跟简单请求一样，会有一个Origin头信息字段。服务器的回应，也都会有一个Access-Control-Allow-Origin头信息字段。
+  **补充：**
 
-摘自：[跨域资源共享 CORS 详解](https://www.ruanyifeng.com/blog/2016/04/cors.html)
+  规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），<mark>浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），从而获知服务端是否允许该跨源请求。服务器确认允许之后，才发起实际的 HTTP 请求</mark>。在预检请求的返回中，服务器端也可以通知客户端，是否需要携带身份凭证（包括 Cookies 和 HTTP 认证相关数据）。
+  CORS请求失败会产生错误，但是为了安全，在JavaScript代码层面是无法获知到底具体是哪里出了问题。你只能查看浏览器的控制台以得知具体是哪里出现了错误。
+
+摘自：[跨域资源共享 CORS 详解](https://www.ruanyifeng.com/blog/2016/04/cors.html)  [MDN - 跨源资源共享（CORS）](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)(另外，这其中还有很多没有看懂的，需要继续阅读)
 

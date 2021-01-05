@@ -225,6 +225,56 @@ Undefined 这个值表示变量不含有值。
 
 
 
+#### Array.prototype.reduce()
+
+**reduce()** 方法<font color=FF0000>对数组中的每个元素执行一个自定义的reducer函数（升序执行），将其结果汇总为单个返回值</font>。示例如下：
+
+```js
+const array1 = [1, 2, 3, 4];
+const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+// 1 + 2 + 3 + 4
+console.log(array1.reduce(reducer));  // expected output: 10
+
+// 5 + 1 + 2 + 3 + 4，其中5为初始值（initialValue）
+console.log(array1.reduce(reducer, 5));  // expected output: 15
+```
+
+**reducer 函数接收4个参数：**
+
+1. Accumulator (acc) ：累计器
+2. Current Value (cur) ：当前值
+3. Current Index (idx) ：当前索引
+4. Source Array (src) ：源数组
+
+**reducer** 函数的返回值分配给累计器，该返回值在数组的每个迭代中被记住，并最后成为最终的单个结果值。
+
+**语法**
+
+```js
+arr.reduce( callback( accumulator, currentValue [, index [, array]]) [, initialValue] )
+```
+
+**参数**
+
+- **callback：**执行数组中每个值（如果没有提供 initialValue则第一个值除外）的函数，包含四个参数：
+
+  - **accumulator：**累计器累计回调的返回值; 它是上一次调用回调时返回的累积值，或initialValue（见于下方）。
+
+  - **currentValue：**数组中正在处理的元素。
+
+  - **index：** <font color=FF0000>可选</font>，数组中正在处理的当前元素的索引。 如果提供了initialValue，则起始索引号为0，否则从索引1起始。
+
+  - **array：**<font color=FF0000>可选</font>，调用reduce()的数组
+
+- **initialValue：**<font color=FF0000>可选</font>，作为第一次调用 callback函数时的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。
+
+**返回值：**函数累计处理的结果
+
+摘自：[MDN - Array.prototype.reduce()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
+
+
+
 #### JavaScript typeof, null, 和 undefined
 
 可以使用 typeof 操作符来检测变量的数据类型。**实例**
@@ -970,9 +1020,20 @@ setTimeout(function () {
 
 #### JavaScript Promise
 
-Promise 是一个 ECMAScript 6 提供的类，目的是更加优雅地书写复杂的异步任务。
+Promise 是一个 ECMAScript 6 提供的类，目的是更加优雅地书写复杂的异步任务。<font color=FF0000>本质上 Promise 是一个函数返回的对象，对象用于表示一个**异步操作**的最终完成 (或失败)及其结果值</font>。
 
-**构造 Promise**
+**补充：**一个 Promise 对象代表一个在这个 promise 被创建出来时不一定已知的值。它让您能够把异步操作最终的成功返回值或者失败原因和相应的处理程序关联起来。 这样使得异步方法可以像同步方法那样返回值：<font color=FF0000>异步方法并不会立即返回最终的值，而是会返回一个 promise，以便在未来某个时候把值交给使用者。</font>
+
+一个 Promise 必然处于以下几种状态之一：
+
+- **待定（pending）：**初始状态，既没有被兑现，也没有被拒绝。
+- **已兑现（fulfilled）：**意味着操作成功完成。
+- **已拒绝（rejected）：** 意味着操作失败。
+
+待定（pending）状态的 Promise 对象要么会通过一个值被兑现（fulfilled），要么会通过一个原因（错误）被拒绝（rejected）。
+
+#### **构造 Promise**
+
 现在我们新建一个 Promise 对象：
 
 ```js
@@ -983,7 +1044,7 @@ new Promise(function (resolve, reject) {
 
 Promise 构造函数只有一个参数，是一个函数（即上面的function），这个函数在构造之后会直接被异步运行，所以我们称之为<font color=FF0000>起始函数</font>。起始函数<font color=FF0000>包含两个参数 resolve 和 reject</font>。其中，<font color=FF0000>resolve 和 reject 都是函数</font>，其中<font color=FF0000>调用 resolve 代表一切正常</font>，<font color=FF0000>reject 是出现异常时所调用的</font>
 
-Promise 类有 `.then()` ` .catch()` 和 `.finally()` 三个方法，<font color=FF0000>这三个方法的参数都是一个函数</font>
+Promise 类有 **`.then()`** **` .catch()`** 和 **`.finally()`** 三个方法，<font color=FF0000>这三个方法的参数都是一个函数</font>
 
 - **.then()** ：可以将参数中的函数<font color=FF0000>添加到当前 Promise 的正常执行序列</font>
 
@@ -1008,7 +1069,103 @@ new Promise(function (resolve, reject) {
 });
 ```
 
-**异步函数**
+**在使用 Promise 时，会有以下约定：**
+
+- 在本轮 事件循环 运行完成之前，回调函数是不会被调用的。
+- 即使异步操作已经完成（成功或失败），在这之后通过 then() 添加的回调函数也会被调用。
+- <font color=FF0000>通过**多次调用 then()** 可以**添加多个回调函数**，它们会按照插入顺序进行执行</font>。
+
+#### Promise 很棒的一点就是链式调用（chaining）：
+
+<font color=FF0000>连续执行两个或者多个异步操作是一个常见的需求，在上一个操作执行成功之后，开始下一个的操作，并带着上一步操作所返回的结果</font>。我们可以通过创造一个 **Promise 链**来实现这种需求。<font color=FF0000>then() 函数会返回一个**和原来不同的新的 Promise**</font>。
+
+**注意：**执行的函数一定要有返回值，否则，callback 将无法获取上一个 Promise 的结果（如果使用箭头函数，() => x 比 () => { return x; } 更简洁一些，但后一种保留 return 的写法才支持使用多个语句）。
+
+**补充：**因为 Promise.prototype.then 和 Promise.prototype.catch 方法返回的是 promise， 所以它们可以被链式调用。
+
+![原链接：https://mdn.mozillademos.org/files/8633/promises.png](https://i.loli.net/2021/01/05/WDzh3PxfvlRNqCp.png)
+
+链式调用中的 promise 们就像俄罗斯套娃一样，是嵌套起来的，但又像是一个栈，每个都必须从顶端被弹出。链式调用中的第一个 promise 是嵌套最深的一个，也将是第一个被弹出的。
+
+#### 构造函数
+
+- **Promise()：**<font color=FF0000>创建一个新的 Promise 对象</font>。该构造函数主要用于包装还没有添加 promise 支持的函数。
+
+#### 组合：
+
+<font color=FF0000>Promise.all(iterable) 和 Promise.race(iterable) 是并行运行异步操作的两个组合式工具</font>。
+
+我们可以发起并行操作，然后等多个操作全部结束后进行下一步操作，如下：
+
+```js
+Promise.all([func1(), func2(), func3()])
+.then(([result1, result2, result3]) => { /* use result1, result2 and result3 */ });
+```
+
+可以使用一些聪明的 JavaScript 写法实现<font color=FF0000>时序组合</font>：
+
+```js
+[func1, func2, func3].reduce((p, f) => p.then(f), Promise.resolve())
+.then(result3 => { /* use result3 */ });
+```
+
+#### 静态方法
+
+- **Promise.all(iterable)：**<font color=FF0000>这个方法返回一个新的promise对象：该promise对象在iterable参数对象里所有的promise对象都成功的时候才会触发成功，一旦有任何一个iterable里面的promise对象失败则立即触发该promise对象的失败</font>。
+
+  这个新的promise对象在<font color=FF0000>触发成功状态</font>以后，会把一个包含iterable里所有promise返回值的数组作为成功回调的返回值，<font color=FF0000>顺序跟iterable的顺序保持一致</font>；如果这个新的promise对象<font color=FF0000>触发了失败状态</font>，<font color=FF0000>它会把iterable里第一个触发失败的promise对象的错误信息作为它的失败错误信息</font>。Promise.all方法常被用于处理多个promise对象的状态集合。（可以参考jQuery.when方法---译者注）
+
+- **Promise.allSettled(iterable)：**等到所有promises都已敲定（settled）（<font color=FF0000>每个promise都已兑现（fulfilled）或已拒绝（rejected）</font>）。 返回一个promise，该promise在所有promise完成后完成。并带有一个对象数组，每个对象对应每个promise的结果。
+
+- **Promise.any(iterable)：**接收一个Promise对象的集合，<font color=FF0000>当其中的一个 promise **成功**</font>，就返回那个成功的promise的值。
+
+- **Promise.race(iterable)：**当iterable参数里的<font color=FF0000>任意一个子promise被**成功或失败**后</font>，父promise马上也会用子promise的成功返回值或失败详情作为参数调用父promise绑定的相应句柄，并返回该promise对象。
+
+- **Promise.reject(reason)：**<font color=FF0000>返回一个**状态为失败**的Promise对象</font>，并将给定的失败信息传递给对应的处理方法
+
+- **Promise.resolve(value)：**<font color=FF0000>返回一个状态由给定value决定的Promise对象</font>。如果该值是thenable(即，带有then方法的对象)，<font color=FF0000>返回的Promise对象的最终状态由then方法执行决定</font>；否则的话（该value为空，基本类型或者不带then方法的对象），返回的Promise对象状态为fulfilled，并且将该value传递给对应的then方法。通常而言，如果您不知道一个值是否是Promise对象，使用Promise.resolve(value) 来返回一个Promise对象,这样就能将该value以Promise对象形式使用。
+
+#### Promise 原型
+
+- **属性：**
+  - **Promise.prototype.constructor** 返回被创建的实例函数.  默认为 Promise 函数.
+
+- **方法**
+  - **Promise.prototype.catch(onRejected)：**<font color=FF0000>添加一个拒绝(rejection) 回调到当前 promise，返回一个新的promise</font>。当这个回调函数被调用，新 promise 将以它的返回值来resolve，否则如果当前promise 进入fulfilled状态，则以当前promise的完成结果作为新promise的完成结果。
+  - **Promise.prototype.then(onFulfilled, onRejected)：**<font color=FF0000>添加解决（fulfillment）和拒绝（rejection）回调到当前 promise</font>，返回一个新的 promise，将以回调的返回值来resolve。
+  - **Promise.prototype.finally(onFinally)：**添加一个事件处理回调于当前promise对象，并且在原promise对象解析完毕后，返回一个新的promise对象。回调会在当前promise运行完毕后被调用，无论当前promise的状态是完成(fulfilled)还是失败(rejected)
+
+#### 创建Promise
+
+<mark>Promise 对象是由关键字 new 及其构造函数来创建的</mark>。<font color=FF0000>该构造函数会把一个叫做“处理器函数”（executor function）的函数作为它的参数</font>。<mark>这个“处理器函数”接受两个函数——resolve 和 reject ——作为其参数</mark>。当异步任务顺利完成且返回结果值时，会调用 resolve 函数；而当异步任务失败且返回失败原因（通常是一个错误对象）时，会调用reject 函数。
+
+```js
+const myFirstPromise = new Promise((resolve, reject) => {
+  // ?做一些异步操作，最终会调用下面两者之一:
+  //
+  //   resolve(someValue); // fulfilled
+  // ?或
+  //   reject("failure reason"); // rejected
+});
+```
+
+<font color=FF0000>想要某个函数拥有promise功能，只需让其返回一个promise即可。</font>
+
+```js
+function myAsyncFunction(url) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.onload = () => resolve(xhr.responseText);
+    xhr.onerror = () => reject(xhr.statusText);
+    xhr.send();
+  });
+};
+```
+
+**以上补充内容摘自：**[MDN - 使用 Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Using_promises)  /  [MDN - Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+
+#### **异步函数**
 
 异步函数（async function）是 <font color=FF0000>ECMAScript 2017</font> (ECMA-262) 标准的规范，几乎被所有浏览器所支持，除了 Internet Explorer。<mark>它们是基于promises的语法糖，使异步代码更易于编写和阅读</mark>
 

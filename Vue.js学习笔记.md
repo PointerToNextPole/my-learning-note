@@ -6394,4 +6394,3 @@ context是什么？context是和store对象具有相同方法和属性的对象�
 
 局部状态通过 context.state 暴露出来，根节点状态则为 context.rootState
 
-摘自：[Vuex详细教程](https://www.cnblogs.com/wugongzi/p/13413274.html)

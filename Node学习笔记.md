@@ -423,11 +423,47 @@ $ npm run
   "build:favicon": "node scripts/favicon.js",
   ```
 
-  
+
+
+#### npx笔记
+
+摘自：[阮一峰 - npx 使用教程](https://www.ruanyifeng.com/blog/2019/02/npx.html)
+
+npm 从5.2版开始，增加了 npx 命令。
+
+**解决的问题**
+
+<font color=FF0000>npx 想要解决的主要问题，就是调用项目内部安装的模块</font>。比如，项目内部安装了测试工具 Mocha。
+
+一般来说，调用 Mocha ，只能在项目脚本和 package.json 的scripts字段里面， 如果想在命令行下调用，必须像下面这样。
+
+```bash
+# 项目的根目录下执行
+$ node-modules/.bin/mocha --version
+```
+
+<font color=FF0000>npx 就是想解决这个问题，让项目内部安装的模块用起来更方便，只要像下面这样调用就行了。</font>
+
+```bash
+$ npx mocha --version
+```
+
+<font color=FF0000>npx 的原理很简单，就是运行的时候，会到node_modules/.bin路径和环境变量$PATH里面，检查命令是否存在</font>。
+
+由于 npx 会检查环境变量$PATH，所以系统命令也可以调用。
+
+```bash
+# 等同于 ls
+$ npx ls
+```
+
+注意，Bash 内置的命令不在$PATH里面，所以不能用。比如，cd是 Bash 命令，因此就不能用npx cd。
 
 
 
-#### 一些笔记
+
+
+#### Node相关笔记
 
 以下内容摘自：[一杯茶的时间，上手 Node.js](https://zhuanlan.zhihu.com/p/97413574)
 
@@ -520,8 +556,6 @@ $ npm run
     > ```
 
   - **module：** 模块对象
-
-
 
 
 
