@@ -22,7 +22,7 @@ Axios是一个 **异步请求** 技术，即：基于XMLHttpRequest对象发起�
 > - 不容易调试
 >
 > 摘自：[ajax和axios的区别是什么？](https://www.html.cn/qa/frontend/19023.html)
-同时Vue的作者尤雨溪也推荐使用Axios
+同时Vue的作者尤雨溪也推荐使用Axiosd
 
 
 
@@ -253,7 +253,7 @@ const instance = axios.create({
 
 某个请求的响应包含以下信息
 
-```
+```js
 {
   // `data` 由服务器提供的响应
   data: {},
@@ -279,7 +279,7 @@ const instance = axios.create({
 
 使用 then 时，你将接收下面这样的响应 :
 
-```
+```js
 axios.get('/user/12345')
   .then(function(response) {
     console.log(response.data);
@@ -291,6 +291,19 @@ axios.get('/user/12345')
 ```
 
 在使用 catch 时，或传递 rejection callback 作为 then 的第二个参数时，响应可以通过 error 对象可被使用，正如在错误处理这一节所讲。
+
+
+
+#### 关于Vue的使用
+
+- 将vue的http原型（Vue内部的异步）修改为axios：`Vue.prototype.$http = axios`，这时调用`$http`就是在调用axios，示例如下：
+
+  ```js
+  this.$http.get('url').then((res) => {})
+  this.$http.post('url').then((res) => {})
+  ```
+
+  
 
 
 

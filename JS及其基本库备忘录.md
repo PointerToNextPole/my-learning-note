@@ -2932,6 +2932,17 @@ for ... of语句<font color=FF0000>在可迭代对象（包括 Array，Map，Set
 
 摘自：[js判断数组中是否存在某个值](https://segmentfault.com/a/1190000014202195)
 
+
+
+#### JS判断对象是否包含某个key
+
+有两种方法：
+
+- **`'key' in obj`**：返回一个bool值
+- **`obj.hasOwnProperty("key")`**：返回一个bool值
+
+摘自：[JS中判断对象是否包含某个key的方法](https://blog.csdn.net/sinat_34241861/article/details/107347288)
+
 ***
 
 

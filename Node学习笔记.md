@@ -19,7 +19,7 @@
   npm install     										#通过package.json安装，将项目依赖的包都在文件内声明
   ```
 
-  安装之前，*`npm install`*会先检查，*`node_modules`*目录之中是否已经存在指定模块。如果存在，就不再重新安装了，即使远程仓库已经有了一个新版本，也是如此。
+  安装之前，npm install会先检查，node_modules目录之中是否已经存在指定模块。如果存在，就不再重新安装了，即使远程仓库已经有了一个新版本，也是如此。
 
   如果你希望，一个模块不管是否安装过，npm 都要强制重新安装，可以使用`*-f`或`*--force`参数。
 
@@ -69,10 +69,10 @@
 - npm install系列
 
   - **npm install** **<font color=FF0000>=</font>** **npm i**。在git clone项目的时候，项目文件中并没有 node_modules文件夹，项目的依赖文件可能很大。直接执行，<font color=FF0000>npm会根据package.json配置文件中的依赖配置下载安装</font>。
-- **-global** **<font color=FF0000>=</font>** **-g**，全局安装，安装后的包位于系统预设目录下
-  - **--save** **<font color=FF0000>=</font>** **-S**，<font color=FF0000>安装的包将写入package.json里面的dependencies</font>，<mark>dependencies：生产环境需要依赖的库</mark>
-- **--save-dev** **<font color=FF0000>=</font>** **-D**，<font color=FF0000>安装的包将写入packege.json里面的devDependencies</font>，<mark>devdependencies：只有开发环境下需要依赖的库</mark>
   
+  - **-global** **<font color=FF0000>=</font>** **-g**，全局安装，安装后的包位于系统预设目录下
+  - **--save** **<font color=FF0000>=</font>** **-S**，<font color=FF0000>安装的包将写入package.json里面的dependencies</font>，<mark>dependencies：生产环境需要依赖的库</mark>
+  - **--save-dev** **<font color=FF0000>=</font>** **-D**，<font color=FF0000>安装的包将写入packege.json里面的devDependencies</font>，<mark>devdependencies：只有开发环境下需要依赖的库</mark>
 
 另外：在package name后面添加@版本号，可以安装指定版本号的包
 
@@ -81,6 +81,7 @@
 **补充：**
 
 - npm info packageName：查看包的信息，及其历史版本的信息等
+- npm config ls：查看所有Node环境配置
 
 
 
@@ -150,6 +151,26 @@ npm root -g
   ```sh
   npm config set registry https://registry.npm.taobao.org
   ```
+
+- 使用官方镜像
+
+  ```sh
+  npm config set registry https://registry.npmjs.org
+  ```
+
+- 通过cnpm
+
+  ```sh
+  npm install -g cnpm --registry=https://registry.npm.taobao.org
+  ```
+
+- 临时使用淘宝镜像
+
+  ```sh
+  npm --registry https://registry.npm.taobao.org install express
+  ```
+
+摘自：[npm换源](https://www.jianshu.com/p/f311a3a155ff)
 
 
 
