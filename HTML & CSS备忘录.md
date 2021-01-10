@@ -258,6 +258,40 @@ body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别
 
 ![](https://i.loli.net/2020/10/06/rKV25lxOgMSGjmL.png)
 
+#### **补充：**
+
+- **边距塌陷：**给两个盒子同时设置外边距，他们最终的距离可能不是两者外边距之和。
+
+  这种现象会发生在相邻盒子间或父子盒子间，当他们都设置了边距时。
+
+  - 如果都是正数，则取最大值。
+  - 如果相同，则取其任一。
+  - 如果正负都有，取最大正数与最小负数之和。
+  - 如果都是负数，则取两者中最小的
+
+  另外，<font color=FF0000>设置元素为BFC可以解决边距塌陷的问题。</font>
+
+- **块格式化上下文**（Block Formatting Context，BFC） 是Web页面的可视CSS渲染的一部分，是块盒子的布局过程发生的区域，也是浮动元素与其他元素交互的区域。
+
+  下列方式会创建块格式化上下文：
+
+  - 根元素（\<html>）
+  - 浮动元素（元素的 float 不是 none）
+  - 绝对定位元素（元素的 position 为 absolute 或 fixed）
+  - 行内块元素（元素的 display 为 inline-block）
+  - 表格单元格（元素的 display 为 table-cell，HTML表格单元格默认为该值）
+  - 表格标题（元素的 display 为 table-caption，HTML表格标题默认为该值）
+  - 匿名表格单元格元素（元素的 display 为 table、table-row、 table-row-group、table-header-group、table-footer-group（分别是HTML table、row、tbody、thead、tfoot 的默认属性）或 inline-table）
+  - overflow 计算值(Computed)不为 visible 的块元素
+  - display 值为 flow-root 的元素
+  - contain 值为 layout、content 或 paint 的元素
+  - 弹性元素（display 为 flex 或 inline-flex 元素的直接子元素）
+  - 网格元素（display 为 grid 或 inline-grid 元素的直接子元素）
+  - 多列容器（元素的 column-count 或 column-width 不为 auto，包括 column-count 为 1）
+  - column-span 为 all 的元素始终会创建一个新的BFC，即使该元素没有包裹在一个多列容器中（标准变更，Chrome bug）。
+
+  摘自：[MDN - 块格式化上下文](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
+
 
 
 #### id & class
@@ -435,7 +469,11 @@ body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别
 
 font 属性可以用来作为 font-style, font-variant, font-weight, font-size, line-height 和 font-family 属性的简写，或将元素的字体设置为系统字体。
 
-补充：<mark><font color=FF0000>**line-height CSS 属性**</font>用于设置多行元素的空间量，如多行文本的间距</mark>。<font color=FF0000>**对于块级元素，它指定元素行盒（line boxes）的最小高度。对于非替代的 inline 元素，它用于计算行盒（line box）的高度**</font>。
+**补充：**
+
+- <mark><font color=FF0000>**line-height CSS 属性**</font>用于设置多行元素的空间量，如多行文本的间距</mark>。<font color=FF0000>**对于块级元素，它指定元素行盒（line boxes）的最小高度。对于非替代的 inline 元素，它用于计算行盒（line box）的高度**</font>。
+
+- **letter-spacing：**用于设置文本字符的间距表现。
 
 **用em来设置字体大小**
 
@@ -1542,7 +1580,23 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
   }
   ```
 
-  这里没有看懂，建议看[MDN - box-sizing](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-sizing)
+  在 CSS 盒子模型的默认定义里，你对一个元素所设置的 width 与 height 只会应用到这个元素的内容区。如果这个元素有任何的 border 或 padding ，绘制到屏幕上时的盒子宽度和高度会加上设置的边框和内边距值。这意味着当你调整一个元素的宽度和高度时需要时刻注意到这个元素的边框和内边距。当我们实现响应式布局时，这个特点尤其烦人。
+
+  box-sizing 属性可以被用来调整这些表现:
+
+  - content-box  是默认值。如果你设置一个元素的宽为100px，那么这个元素的内容区会有100px 宽，并且任何边框和内边距的宽度都会被增加到最后绘制出来的元素宽度中。
+  - border-box 告诉浏览器：你想要设置的边框和内边距的值是包含在width内的。也就是说，如果你将一个元素的width设为100px，那么这100px会包含它的border和padding，内容区的实际宽度是width减去(border + padding)的值。大多数情况下，这使得我们更容易地设定一个元素的宽高。
+
+  另外：border-box不包含margin
+
+  摘自：[MDN - box-sizing](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-sizing)
+
+  **补充：**（如果上面没有看懂的话，可以看看下面的）
+
+  盒子模型中盒子宽度和高度的计算方式会根据<font color=FF0000>盒子的类型的不同而不同</font>，而盒子类型是根据box-sizing的属性设置的。
+
+  - box-sizing的默认值是content-box。css属性中的width和height设置的是内容区域的宽高，而盒子的宽高则需要加上内边距（padding）和宽高（width / height）
+  - border-box：css中width和height的值分别是content宽高 + padding + border的值的和
 
 - **outline-offset**
 
