@@ -81,7 +81,68 @@
 **补充：**
 
 - npm info packageName：查看包的信息，及其历史版本的信息等
-- npm config ls：查看所有Node环境配置
+- npm config ls / npm config list：查看所有Node环境配置
+
+- npm config set cache cache-path：设置缓存
+- npm config set prefix prefix-path：设置路径
+
+#### npm config相关使用
+
+```sh
+npm config set <key> <value> [-g|--global]
+npm config get <key>
+npm config delete <key>
+npm config list [-l] [--json]
+npm config edit
+npm get <key>
+npm set <key> <value> [-g|--global]
+```
+
+**Description**
+
+npm gets its config settings from the command line, environmentvariables, `npmrc` files, and in some cases, the `package.json` file.
+
+See npmrc for more information about the npmrc files.
+
+See config for a more thorough discussion of the mechanisms involved.
+
+The `npm config` command can be used to update and edit the contents of the user and global npmrc files.
+
+**Sub-commands**
+
+Config supports the following sub-commands:
+
+- set：Sets the config key to the value. If value is omitted, then it sets it to "true".
+
+```bash
+npm config set key value
+```
+
+- `get`：Echo the config value to stdout.
+
+```bash
+npm config get key
+```
+
+- `list`：Show all the config settings. Use `-l` to also show defaults. Use `--json` to show the settings in json format.
+
+```bash
+npm config list
+```
+
+- `delete`：Deletes the key from all configuration files.
+
+```bash
+npm config delete key
+```
+
+- `edit`：Opens the config file in an editor. Use the `--global` flag to edit the global config.
+
+```bash
+npm config edit
+```
+
+摘自：[npm-config](https://docs.npmjs.com/cli/v6/commands/npm-config)
 
 
 

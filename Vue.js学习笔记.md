@@ -4183,6 +4183,16 @@ Vue.use <font color=FF0000>会自动阻止多次注册相同插件，届时即�
 - prototype挂载
 - ...
 
+另外：如果该插件 / 组件b不提供`use()`方法，需要主动注册，示例如下：
+
+```js
+import VeLine from 'v-charts/lib/line.common'
+
+Vue.component('ve-line', VeLine)
+```
+
+
+
 
 
 #### Vue.directive函数
