@@ -2962,7 +2962,7 @@ for ... of语句<font color=FF0000>在可迭代对象（包括 Array，Map，Set
 
 - **FileReader.error：** 只读，一个DOMException，表示在读取文件时发生的错误 。
 
-- FileReader.readyState： 只读，表示FileReader状态的数字。取值如下：
+- <font color=FF0000>**FileReader.readyState：** </font>只读，<font color=FF0000>表示FileReader状态的数字</font>。取值如下：
 
   | 常量名  | 值   | 描述                  |
   | ------- | ---- | --------------------- |
@@ -2970,14 +2970,14 @@ for ... of语句<font color=FF0000>在可迭代对象（包括 Array，Map，Set
   | LOADING | 1    | 数据正在被加载.       |
   | DONE    | 2    | 已完成全部的读取请求. |
 
-- **FileReader.result：**只读，文件的内容。该属性仅在读取操作完成后才有效，数据的格式取决于使用哪个方法来启动读取操作。
+- <font color=FF0000>**FileReader.result：**</font>只读，<font color=FF0000>文件的内容</font>。该属性仅在读取操作完成后才有效，数据的格式取决于使用哪个方法来启动读取操作。
 
 **事件处理**
 
 - FileReader.onabort：处理abort事件。该事件在读取操作被中断时触发。
 - FileReader.onerror：处理error事件。该事件在读取操作发生错误时触发。
-- FileReader.onload：处理load事件。该事件在读取操作完成时触发。
-- FileReader.onloadstart：处理loadstart事件。该事件在读取操作开始时触发。
+- FileReader.onload：<font color=FF0000>处理load事件</font>。该事件<font color=FF0000>在读取操作完成时触发</font>。
+- FileReader.onloadstart：<font color=FF0000>处理loadstart事件</font>。该事件<font color=FF0000>在读取操作开始时触发</font>。
 - FileReader.onloadend：处理loadend事件。该事件在读取操作结束时（要么成功，要么失败）触发。
 - FileReader.onprogress：处理progress事件。该事件在读取Blob时触发。
 
@@ -2990,6 +2990,12 @@ for ... of语句<font color=FF0000>在可迭代对象（包括 Array，Map，Set
 - FileReader.readAsText()：开始读取指定的Blob中的内容。一旦完成，result属性中将包含一个字符串以表示所读取的文件内容。
 
 摘自：[MDN - FileReader](https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader)
+
+
+
+#### Event.target
+
+触发事件的对象 (某个DOM元素) 的引用。当事件处理程序在事件的冒泡或捕获阶段被调用时，它与event.currentTarget不同。
 
 ***
 
