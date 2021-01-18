@@ -275,6 +275,40 @@ arr.reduce( callback( accumulator, currentValue [, index [, array]]) [, initialV
 
 
 
+#### Array.prototype.filter()
+
+**filter()** 方法创建一个新数组, 其包含通过所提供函数实现的测试（即满足条件）的所有元素。 
+
+-  **示例如下：**
+
+  ```js
+  const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
+  const result = words.filter(word => word.length > 6);
+  console.log(result);
+  // expected output: Array ["exuberant", "destruction", "present"]
+  ```
+
+- **语法**
+
+  ```js
+  var newArray = arr.filter(callback(element[, index[, array]])[, thisArg])
+  ```
+
+- **参数**
+
+  - callback：用来测试数组的每个元素的函数。返回 true 表示该元素通过测试，保留该元素，false 则不保留。它接受以下三个参数：
+  - element：数组中当前正在处理的元素。
+  - index：（可选）正在处理的元素在数组中的索引。
+  - array：（可选）调用了 filter 的数组本身。
+  - thisArg：（可选）执行 callback 时，用于 this 的值。
+
+- **返回值**
+  一个<font color=FF0000>新的</font>、由通过测试的元素组成的数组，<font color=FF0000>如果没有任何数组元素通过测试，则返回空数组</font>。
+
+摘自：[MDN - Array.prototype.filter()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
+
+
+
 #### JavaScript typeof, null, 和 undefined
 
 可以使用 typeof 操作符来检测变量的数据类型。**实例**
@@ -2757,7 +2791,7 @@ Console 对象可以从任何全局对象中访问到，如 Window，WorkerGloba
 
 作为 Web Storage API 的接口，**`Storage`** <mark>提供了访问特定域名下的<font color=FF0000>**会话存储**</font>（sessionStorage）或<font color=FF0000>**本地存储**</font>（localStorage）的功能</mark>，例如，可以添加、修改或删除存储的数据项。
 
-如果你想要操作一个域名的会话存储，可以使用 [`Window.sessionStorage`](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/sessionStorage)；如果想要操作一个域名的本地存储，可以使用 [`Window.localStorage`](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/localStorage)。
+如果你想要操作一个域名的会话存储，可以使用 Window.sessionStorage；如果想要操作一个域名的本地存储，可以使用 Window.localStorage。
 
 - **属性**
   **`Storage.length`** 只读，返回一个整数，表示存储在 Storage 对象中的数据项数量。

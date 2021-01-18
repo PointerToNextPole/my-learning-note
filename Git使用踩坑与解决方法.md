@@ -180,7 +180,7 @@ git clone git@github.com:***.git
 
 出现：
 
-```
+```markdown
 Warning: Permanently added the RSA host key for IP address '13.229.188.59' to the list of known hosts.
 git@github.com: Permission denied (publickey).
 fatal: Could not read from remote repository.
@@ -201,7 +201,7 @@ git push
 
 出现：
 
-```
+```markdown
 To github.com:PointerToNextPole/community.git
  ! [rejected]        master -> master (non-fast-forward)
 error: 推送一些引用到 'github.com:PointerToNextPole/community.git' 失败

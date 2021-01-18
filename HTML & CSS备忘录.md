@@ -1584,8 +1584,9 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
 
   box-sizing 属性可以被用来调整这些表现:
 
-  - content-box  是默认值。如果你设置一个元素的宽为100px，那么这个元素的内容区会有100px 宽，并且任何边框和内边距的宽度都会被增加到最后绘制出来的元素宽度中。
-  - border-box 告诉浏览器：你想要设置的边框和内边距的值是包含在width内的。也就是说，如果你将一个元素的width设为100px，那么这100px会包含它的border和padding，内容区的实际宽度是width减去(border + padding)的值。大多数情况下，这使得我们更容易地设定一个元素的宽高。
+  - **content-box：**是默认值。如果你设置一个元素的宽为100px，那么这个元素的内容区会有100px 宽，并且任何边框和内边距的宽度都会被增加到最后绘制出来的元素宽度中。
+  - **border-box：**告诉浏览器：你想要设置的边框和内边距的值是包含在width内的。也就是说，如果你将一个元素的width设为100px，那么这100px会包含它的border和padding，内容区的实际宽度是width减去(border + padding)的值。大多数情况下，这使得我们更容易地设定一个元素的宽高。
+  - **inherit：**继承 父元素 box-sizing属性的值
 
   另外：border-box不包含margin
 
@@ -1597,6 +1598,13 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
 
   - box-sizing的默认值是content-box。css属性中的width和height设置的是内容区域的宽高，而盒子的宽高则需要加上内边距（padding）和宽高（width / height）
   - border-box：css中width和height的值分别是content宽高 + padding + border的值的和
+
+  摘自：[动画解释 CSS 盒子模型、布局方式、box-sizing、替换元素和边距塌陷，CSS 布局不再难！](https://www.bilibili.com/video/BV13V411z7do)
+
+  content-box：标准盒模型，CSS定义的宽高只包含content的宽高
+  border-box：IE盒模型，CSS定义的宽高包括了content，padding和border
+
+  摘自：[学会使用box-sizing布局](https://www.jianshu.com/p/e2eb0d8c9de6)
 
 - **outline-offset**
 

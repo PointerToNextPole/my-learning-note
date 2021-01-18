@@ -4183,7 +4183,7 @@ Vue.use <font color=FF0000>会自动阻止多次注册相同插件，届时即�
 - prototype挂载
 - ...
 
-另外：如果该插件 / 组件b不提供`use()`方法，需要主动注册，示例如下：
+另外：如果该插件 / 组件不提供`use()`方法，需要主动注册，示例如下：
 
 ```js
 import VeLine from 'v-charts/lib/line.common'
@@ -4993,6 +4993,30 @@ methods: {
 
 
 
+#### \<el-upload>
+
+- accept：对上传文件格式限制，示例如下：
+
+  ```html
+  <el-upload accept=".jpg,.jpeg,.png"></el-upload>
+  ```
+
+  摘自：[element UI upload组件上传附件格式限制](https://blog.csdn.net/github_37847992/article/details/80390673)
+
+- list-type：用于设置文件列表的样式类型，可选值有[text, picture, picture-card]，默认值为text
+
+  - **text，如下示例：**
+
+    <img src="https://i.loli.net/2021/01/18/nyVGHNzXxptMlhc.png" style="zoom:50%; float: left" />
+
+  - **picture，如下示例：**
+
+    <img src="https://i.loli.net/2021/01/18/Gl3PEwtQYfmbWBJ.png" style="zoom:50%;float:left" />
+
+  - picture-card，示例如下：
+
+    <img src="https://i.loli.net/2021/01/18/y58l7pmwRT2KMHh.png" style="zoom:50%;float:left" />
+
 #### \<el-dialog>
 
 想要<font color=FF0000>**直接去掉**</font>**el-dialog\_\_header**(title)和**el-dialog\_\_footer**，似乎目前还没有找到方法...不过，找到了变相去掉的方法：可以用slot以单独控制其中的某个数据显示及样式。示例：
@@ -5214,6 +5238,20 @@ methods: {
   </div>
 </el-button>
 ```
+
+如果想要自定义el-button中的内容，比如：将字体修改为蓝色，可以使用如下方法：
+
+```html
+<el-button type="foo">foo text</el-button>
+
+<style scope lang="scss">
+  .el-button--foo {
+    // 自定义样式
+  }
+</style>
+```
+
+更多可以参考：[改变element-UI 中 el-button的颜色](https://blog.csdn.net/weixin_44242623/article/details/106851582)
 
 
 
