@@ -266,3 +266,9 @@ export default foo;
 export {foo as default}; //这样写也是可以的
 ```
 
+
+
+
+
+## 《深入理解ES6》阅读笔记
+

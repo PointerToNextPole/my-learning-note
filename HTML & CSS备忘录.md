@@ -1903,7 +1903,11 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
 **补充：**
 
 - flex: 1; === flex: 1 1 (0 / 任意数字+任意长度单位); <font color=FF0000>（就是代表均匀分配元素）</font>
+
+  <font color=FF0000>补充：flex: 1也可以表示占满剩余空间（相对于后面70%的，见后面 --> ）</font>，同时相对应的：`flex: 1 1 70%`表示占据70%的空间
+
 - flex: initial; === flex: 0 1 auto;
+
 - flex: none; === flex: 0 0 auto;
 
 ​			摘自：[flex:1 到底代表什么?](https://zhuanlan.zhihu.com/p/136223806)

@@ -5017,6 +5017,8 @@ methods: {
 
     <img src="https://i.loli.net/2021/01/18/y58l7pmwRT2KMHh.png" style="zoom:50%;float:left" />
 
+
+
 #### \<el-dialog>
 
 想要<font color=FF0000>**直接去掉**</font>**el-dialog\_\_header**(title)和**el-dialog\_\_footer**，似乎目前还没有找到方法...不过，找到了变相去掉的方法：可以用slot以单独控制其中的某个数据显示及样式。示例：
@@ -5038,6 +5040,12 @@ methods: {
 思路参考自：[element-ui之dialog对话框组件title插槽的使用](https://blog.csdn.net/hbjiankely/article/details/88218237)
 
 <font color=FF0000>在el-dialog中：有默认间距，且间距较大，这时候可以修改margin为负值以缩小间距。</font>
+
+
+
+#### \<el-date-picker>
+
+el-date-picker如果想要选择一个日期范围，可以使用`picker-options`绑定一个函数进行设置；同时，这样做默认会对开始日期和结束如期产生限制，使其必须在选择的范围内，这时可以使用`unlink-panels`以取消绑定
 
 
 
