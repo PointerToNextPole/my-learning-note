@@ -1,7 +1,5 @@
 # JS及其基本库备忘录
 
-
-
 ## JavaScript
 
 #### JavaScript基础
@@ -9,34 +7,34 @@
 DOM (**D**ocument **O**bject **M**odel)（文档对象模型）是用于访问 HTML 元素的正式 W3C 标准。
 
 - 直接写入 HTML 输出流
-
+  
   ```js
   document.write("<h1>这是一个标题</h1>");
   ```
 
 - 改变 HTML 内容
-
+  
   ```js
   x=document.getElementById("demo");  //查找元素
   x.innerHTML="Hello JavaScript";    //改变内容
   ```
 
 - 改变 HTML 图像
-
+  
   ```js
   element=document.getElementById('myimage');
   element.src="/images/pic_bulboff.gif";
   ```
 
 - 改变 HTML 样式
-
+  
   ```js
   x=document.getElementById("demo")  //找到元素 
   x.style.color="#ff0000";           //改变样式
   ```
 
 - **<font color=FF0000>设置</font>** HTML 样式，语法如下：
-
+  
   ```js
   element.setAttribute(attributeName, attributeValue);
   ```
@@ -50,18 +48,16 @@ DOM (**D**ocument **O**bject **M**odel)（文档对象模型）是用于访问 H
 - ```js
   let content = element.outerHTML;
   ```
-
+  
   返回时，内容包含描述元素及其后代的序列化HTML片段。
 
 - ```js
   element.outerHTML = content;
   ```
-
+  
   将元素替换为通过使用元素的父作为片段解析算法的上下文节点解析字符串内容生成的节点。
 
 摘自：[MDN - element.outerHTML](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/outerHTML)
-
-
 
 #### JavaScript 变量
 
@@ -71,14 +67,14 @@ DOM (**D**ocument **O**bject **M**odel)（文档对象模型）是用于访问 H
 - 变量也能以 $ 和 _ 符号开头（不过我们不推荐这么做）
 - 变量名称<font color=FF0000>对大小写敏感</font>（y 和 Y 是不同的变量）
 
-
-
 #### JavaScript 数据类型
 
 - **<font color=FF0000>值类型(基本类型)</font>**：字符串（String）、数字(Number)、布尔(Boolean)、对空（Null）、未定义（Undefined）、Symbol（Symbol 是 ES6 引入了一种新的原始数据类型，表示独一无二的值。））
 
 - **<font color=FF0000>引用数据类型</font>**：对象(Object)、数组(Array)、函数(Function)。
+
 - 对象数据类型：Object、Date、Array
+
 - 2 个不包含任何值的数据类型：null、undefined
 
 **Undefined 和 Null**
@@ -87,77 +83,75 @@ Undefined 这个值表示变量不含有值。
 
 可以通过将变量的值设置为 null 来清空变量。
 
-
-
 #### JavaScript 事件
 
 一些常见的HTML事件的列表:
 
-| 事件        | 描述                         |
-| :---------- | :--------------------------- |
-| onchange    | HTML 元素改变                |
-| onclick     | 用户点击 HTML 元素           |
+| 事件          | 描述               |
+|:----------- |:---------------- |
+| onchange    | HTML 元素改变        |
+| onclick     | 用户点击 HTML 元素     |
 | onmouseover | 用户在一个HTML元素上移动鼠标 |
 | onmouseout  | 用户从一个HTML元素上移开鼠标 |
-| onkeydown   | 用户按下键盘按键             |
-| onload      | 浏览器已完成页面的加载       |
+| onkeydown   | 用户按下键盘按键         |
+| onload      | 浏览器已完成页面的加载      |
 
 更多事件列表: [JavaScript 参考手册 - HTML DOM 事件](https://www.runoob.com/jsref/dom-obj-event.html)。
 
+补充：input输入事件：onfocus（focus） -> 键盘输入 -> onkeydown（keydown） -> onkeypress（keypress） -> onkeyup（keyup） -> oninput（input） -> 失去焦点 -> onchange（change） -> onblur（blur)
 
+摘自：[input输入框事件](https://www.jianshu.com/p/4517117abd8e)
 
 #### JavaScript 字符串
 
 **字符串中可以使用转义字符转义的特殊字符：**
 
-| 代码 |    输出     |
-| :--: | :---------: |
-|  \'  |   单引号    |
-|  \"  |   双引号    |
-|  \\  |   反斜杠    |
-|  \n  |    换行     |
-|  \r  |    回车     |
-|  \t  | tab(制表符) |
-|  \b  |   退格符    |
-|  \f  |   换页符    |
+| 代码  | 输出       |
+|:---:|:--------:|
+| \'  | 单引号      |
+| \"  | 双引号      |
+| \\  | 反斜杠      |
+| \n  | 换行       |
+| \r  | 回车       |
+| \t  | tab(制表符) |
+| \b  | 退格符      |
+| \f  | 换页符      |
 
 <font color=FF0000>**字符串属性**</font>
 
-|                 属性                 |                             描述                             |
-| :----------------------------------: | :----------------------------------------------------------: |
-|             constructor              | 返回创建<font color=FF0000>字符串</font>属性的函数（下面有更多解释） |
-| <font color=FF0000>**length**</font> |                     **返回字符串的长度**                     |
-|            **prototype**             |                  允许您向对象添加属性和方法                  |
+| 属性                                   | 描述                                              |
+|:------------------------------------:|:-----------------------------------------------:|
+| constructor                          | 返回创建<font color=FF0000>字符串</font>属性的函数（下面有更多解释） |
+| <font color=FF0000>**length**</font> | **返回字符串的长度**                                    |
+| **prototype**                        | 允许您向对象添加属性和方法                                   |
 
 **字符串方法**
 
-| 方法                                   | 描述                                                         |
-| :------------------------------------- | :----------------------------------------------------------- |
-| charAt()                               | 返回指定索引位置的字符                                       |
-| charCodeAt()                           | 返回指定索引位置字符的 Unicode 值                            |
-| <font color=FF0000>**concat()**</font> | 连接（合并）两个或多个字符串，返回连接后的字符串             |
-| fromCharCode()                         | 将 Unicode 转换为字符串                                      |
-| <font color=FF0000>indexOf()</font>    | 返回字符串中检索指定字符第一次出现的位置                     |
-| lastIndexOf()                          | 返回字符串中检索指定字符最后一次出现的位置                   |
+| 方法                                     | 描述                                           |
+|:-------------------------------------- |:-------------------------------------------- |
+| charAt()                               | 返回指定索引位置的字符                                  |
+| charCodeAt()                           | 返回指定索引位置字符的 Unicode 值                        |
+| <font color=FF0000>**concat()**</font> | 连接（合并）两个或多个字符串，返回连接后的字符串                     |
+| fromCharCode()                         | 将 Unicode 转换为字符串                             |
+| <font color=FF0000>indexOf()</font>    | 返回字符串中检索指定字符第一次出现的位置                         |
+| lastIndexOf()                          | 返回字符串中检索指定字符最后一次出现的位置                        |
 | localeCompare()                        | 用本地特定的顺序来比较两个字符串                             |
-| match()                                | 找到一个或多个正则表达式的匹配                               |
-| <font color=FF0000>replace()</font>    | 替换与正则表达式匹配的子串                                   |
-| search()                               | 检索与正则表达式相匹配的值                                   |
-| slice()                                | 提取字符串的片断，并在新的字符串中返回被提取的部分           |
-| split()                                | 把字符串分割为子字符串数组                                   |
-| substr()                               | 从起始索引号提取字符串中指定数目的字符                       |
-| substring()                            | 提取字符串中两个指定的索引号之间的字符                       |
+| match()                                | 找到一个或多个正则表达式的匹配                              |
+| <font color=FF0000>replace()</font>    | 替换与正则表达式匹配的子串                                |
+| search()                               | 检索与正则表达式相匹配的值                                |
+| slice()                                | 提取字符串的片断，并在新的字符串中返回被提取的部分                    |
+| split()                                | 把字符串分割为子字符串数组                                |
+| substr()                               | 从起始索引号提取字符串中指定数目的字符                          |
+| substring()                            | 提取字符串中两个指定的索引号之间的字符                          |
 | toLocaleLowerCase()                    | 根据主机的语言环境把字符串转换为小写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
 | toLocaleUpperCase()                    | 根据主机的语言环境把字符串转换为大写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
-| toLowerCase()                          | 把字符串转换为小写                                           |
-| toString()                             | 返回字符串对象值                                             |
-| toUpperCase()                          | 把字符串转换为大写                                           |
-| trim()                                 | 移除字符串首尾空白                                           |
-| valueOf()                              | 返回某个字符串对象的原始值                                   |
+| toLowerCase()                          | 把字符串转换为小写                                    |
+| toString()                             | 返回字符串对象值                                     |
+| toUpperCase()                          | 把字符串转换为大写                                    |
+| trim()                                 | 移除字符串首尾空白                                    |
+| valueOf()                              | 返回某个字符串对象的原始值                                |
 
 更多方法实例可以参见：[JavaScript String 对象](https://www.runoob.com/jsref/jsref-obj-string.html)。
-
-
 
 #### JavaScript 比较 和 逻辑运算符
 
@@ -165,24 +159,22 @@ Undefined 这个值表示变量不含有值。
 
 - **!==**： <font color=FF0000>不绝对等于</font>（<font color=FF0000>**值和类型有一个不相等，或两个都不相等**</font>）
 
-
-
 #### For 循环
 
 - 一般for循环
 
 - for-in循环，for-in 循环实际是为循环”enumerable“对象而设计的。示例：
-
+  
   ```js
   for(elem in elems){
     //code
   }
   ```
-
+  
   <font color=FF0000>不推荐用 for-in 来循环一个**数组**，因为，不像对象，数组的`index`跟普通的对象属性不一样，是重要的数值序列指标</font>。
 
 - forEach循环（ JavaScript5 引入）
-
+  
   forEach() 方法用于调用<font color=FF0000>数组</font>的每个元素，并将元素传递给回调函数。
   
   **语法：**
@@ -194,9 +186,9 @@ Undefined 这个值表示变量不含有值。
   **参数：**
   
   - **function(currentValue, index, arr)**：<font color=FF0000>必需</font>。 数组中每个元素需要调用的函数。
-    - **currentValue**	必需。当前元素
-    - **index**	可选。当前元素的索引值。
-    - **arr**	可选。当前元素所属的数组对象。
+    - **currentValue**    必需。当前元素
+    - **index**    可选。当前元素的索引值。
+    - **arr**    可选。当前元素所属的数组对象。
   - **thisValue**：<font color=FF0000>可选</font>。传递给函数的值一般用 "this" 值。
   
   **示例：**
@@ -208,22 +200,20 @@ Undefined 这个值表示变量不含有值。
   ```
   
   写法简单了许多，但<mark>也有短处：你不能中断循环(使用`break`语句或使用`continue`语句。</mark>（但是支持return）
-  
-- for-of循环
 
+- for-of循环
+  
   ```js
   for (var value of myArray) {
     console.log(value);
   }
   ```
-
+  
   它既比传统的 for 循环简洁，同时弥补了 forEach 和 for-in 循环的短板。
-
+  
   //todo  for-of的具体使用参考下面的文章。
 
 摘自：[JavaScript里的循环方法：forEach，for-in，for-of](https://www.webhek.com/post/javascript-loop-foreach-for-in-for-of.html)
-
-
 
 #### Array.prototype.reduce()
 
@@ -258,13 +248,13 @@ arr.reduce( callback( accumulator, currentValue [, index [, array]]) [, initialV
 **参数**
 
 - **callback：**执行数组中每个值（如果没有提供 initialValue则第一个值除外）的函数，包含四个参数：
-
+  
   - **accumulator：**累计器累计回调的返回值; 它是上一次调用回调时返回的累积值，或initialValue（见于下方）。
-
+  
   - **currentValue：**数组中正在处理的元素。
-
+  
   - **index：** <font color=FF0000>可选</font>，数组中正在处理的当前元素的索引。 如果提供了initialValue，则起始索引号为0，否则从索引1起始。
-
+  
   - **array：**<font color=FF0000>可选</font>，调用reduce()的数组
 
 - **initialValue：**<font color=FF0000>可选</font>，作为第一次调用 callback函数时的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。
@@ -273,14 +263,12 @@ arr.reduce( callback( accumulator, currentValue [, index [, array]]) [, initialV
 
 摘自：[MDN - Array.prototype.reduce()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
 
-
-
 #### Array.prototype.filter()
 
 **filter()** 方法创建一个新数组, 其包含通过所提供函数实现的测试（即满足条件）的所有元素。 
 
--  **示例如下：**
-
+- **示例如下：**
+  
   ```js
   const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
   const result = words.filter(word => word.length > 6);
@@ -289,13 +277,13 @@ arr.reduce( callback( accumulator, currentValue [, index [, array]]) [, initialV
   ```
 
 - **语法**
-
+  
   ```js
   var newArray = arr.filter(callback(element[, index[, array]])[, thisArg])
   ```
 
 - **参数**
-
+  
   - callback：用来测试数组的每个元素的函数。返回 true 表示该元素通过测试，保留该元素，false 则不保留。它接受以下三个参数：
   - element：数组中当前正在处理的元素。
   - index：（可选）正在处理的元素在数组中的索引。
@@ -307,8 +295,6 @@ arr.reduce( callback( accumulator, currentValue [, index [, array]]) [, initialV
 
 摘自：[MDN - Array.prototype.filter()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)
 
-
-
 #### Array.prototype.sort()
 
 sort() 方法用原地算法对数组的元素进行排序，并返回数组。<font color=FF0000>**默认排序顺序是在将元素转换为字符串**，然后**比较它们的UTF-16代码单元值序列**（字典序？？）时构建的</font>
@@ -316,13 +302,13 @@ sort() 方法用原地算法对数组的元素进行排序，并返回数组。<
 同时和C++的**比较器**一样，sort函数可以自定义比较函数。
 
 - **语法**
-
+  
   ```js
   arr.sort([compareFunction])
   ```
 
 - **参数**
-
+  
   - compareFunction： 可选，用来指定按某种顺序进行排列的函数。如果省略，元素按照转换为的字符串的各个字符的Unicode位点进行排序。
     - firstEl：第一个用于比较的元素。
     - secondEl：第二个用于比较的元素。
@@ -332,20 +318,18 @@ sort() 方法用原地算法对数组的元素进行排序，并返回数组。<
 
 摘自：[MDN - Array.prototype.sort()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
 
-
-
 #### Array.prototype.slice() 切片
 
 slice() 方法<font color=FF0000>**返回一个新的数组对象**</font>，这一对象是一个<font color=FF0000>由 begin 和 end 决定的原数组的**浅拷贝**</font>（包括 begin，不包括end）。<font color=FF0000>原始数组不会被改变</font>。
 
 - **语法**
-
+  
   ```js
   arr.slice([begin[, end]])
   ```
 
 - **参数**
-
+  
   - **begin** <font color=FF0000>可选</font>，提取起始处的索引（从 0 开始），从该索引开始提取原数组元素。
     - <font color=FF0000>如果该参数为负数，则表示从原数组中的倒数第几个元素开始提取</font>，slice(-2) 表示提取原数组中的倒数第二个元素到最后一个元素（包含最后一个元素）。
     - <font color=FF0000>如果省略 begin，则 slice 从索引 0 开始。</font>
@@ -369,8 +353,6 @@ slice() 方法<font color=FF0000>**返回一个新的数组对象**</font>，这
 如果向两个数组任一中添加了新元素，则另一个不会受到影响。
 
 摘自：[MDN - Array.prototype.slice()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)
-
-
 
 #### JavaScript typeof, null, 和 undefined
 
@@ -403,8 +385,6 @@ typeof myCar                  // 返回 undefined (如果 myCar 没有声明)
 typeof null                   // 返回 object
 ```
 
-
-
 #### JavaScript 类型转换
 
 **constructor 属性**：返回所有 JavaScript 变量的构造函数。
@@ -422,7 +402,7 @@ function () {}.constructor         // 返回函数 Function(){ [native code] }
 **转换为字符串**
 
 - **<font color=FF0000>全局方法</font>** **String()** 可以将数字转换为字符串，<font color=FF0000>该方法（全局方法）可用于任何类型的数字，字母，变量，表达式</font>。示例：
-
+  
   ```js
   String(x)         // 将变量 x 转换为字符串并返回
   String(123)       // 将数字 123 转换为字符串并返回
@@ -430,7 +410,7 @@ function () {}.constructor         // 返回函数 Function(){ [native code] }
   ```
 
 - Number / Boolean / Date 的方法 **toString()** 也是有同样的效果，示例：
-
+  
   ```js
   x.toString()
   (123).toString()
@@ -438,27 +418,27 @@ function () {}.constructor         // 返回函数 Function(){ [native code] }
   ```
 
 - 更多数字转换为字符串的方法：
-
-  | 方法                                    | 描述                                                         |
-  | :-------------------------------------- | :----------------------------------------------------------- |
-  | toExponential()                         | 把对象的值转换为指数计数法。                                 |
+  
+  | 方法                                      | 描述                                                             |
+  |:--------------------------------------- |:-------------------------------------------------------------- |
+  | toExponential()                         | 把对象的值转换为指数计数法。                                                 |
   | <font color=FF0000>**toFixed()**</font> | 把数字转换为字符串，结果的小数点后有<font color=FF0000>通过**四舍五入**指定位数的数字</font>。 |
-  | toPrecision()                           | 把数字格式化为指定的长度。                                   |
+  | toPrecision()                           | 把数字格式化为指定的长度。                                                  |
 
 - 关于日期转换为字符串的函数：
-
-  | 方法              | 描述                                        |
-  | :---------------- | :------------------------------------------ |
+  
+  | 方法                | 描述                            |
+  |:----------------- |:----------------------------- |
   | getDate()         | 从 Date 对象返回一个月中的某一天 (1 ~ 31)。 |
-  | getDay()          | 从 Date 对象返回一周中的某一天 (0 ~ 6)。    |
-  | getFullYear()     | 从 Date 对象以四位数字返回年份。            |
-  | getHours()        | 返回 Date 对象的小时 (0 ~ 23)。             |
-  | getMilliseconds() | 返回 Date 对象的毫秒(0 ~ 999)。             |
-  | getMinutes()      | 返回 Date 对象的分钟 (0 ~ 59)。             |
-  | getMonth()        | 从 Date 对象返回月份 (0 ~ 11)。             |
-  | getSeconds()      | 返回 Date 对象的秒数 (0 ~ 59)。             |
-  | getTime()         | 返回 1970 年 1 月 1 日至今的毫秒数。        |
-
+  | getDay()          | 从 Date 对象返回一周中的某一天 (0 ~ 6)。   |
+  | getFullYear()     | 从 Date 对象以四位数字返回年份。           |
+  | getHours()        | 返回 Date 对象的小时 (0 ~ 23)。       |
+  | getMilliseconds() | 返回 Date 对象的毫秒(0 ~ 999)。       |
+  | getMinutes()      | 返回 Date 对象的分钟 (0 ~ 59)。       |
+  | getMonth()        | 从 Date 对象返回月份 (0 ~ 11)。       |
+  | getSeconds()      | 返回 Date 对象的秒数 (0 ~ 59)。       |
+  | getTime()         | 返回 1970 年 1 月 1 日至今的毫秒数。      |
+  
   更多请参考：[Date 方法](https://www.runoob.com/jsref/jsref-obj-date.html) 
 
 **将字符串转换为数字**
@@ -482,10 +462,10 @@ Number("99 88")   // 返回 NaN
 
 在 [Number 方法](https://www.runoob.com/jsref/jsref-obj-number.html) 中，你可以查看到更多关于字符串转为数字的方法，比如：
 
-| 方法         | 描述                               |
-| :----------- | :--------------------------------- |
+| 方法           | 描述                |
+|:------------ |:----------------- |
 | parseFloat() | 解析一个字符串，并返回一个浮点数。 |
-| parseInt()   | 解析一个字符串，并返回一个整数。   |
+| parseInt()   | 解析一个字符串，并返回一个整数。  |
 
 **一元运算符 +**
 
@@ -528,8 +508,6 @@ d = new Date();
 d.getTime()    // 返回 1404568027739
 ```
 
-
-
 #### instanceof
 
 instanceof 运算符用于<font color=FF0000>检测构造函数的 prototype 属性是否出现在某个实例对象的原型链上</font>。返回值为 true / false
@@ -551,15 +529,9 @@ console.log(auto instanceof Object);
 // expected output: true
 ```
 
-
-
-
-
 #### JS获取对象的结构：constructor
 
 //TODO
-
-
 
 #### JavaScript 正则表达式
 
@@ -589,11 +561,11 @@ var patt = /runoob/i
 
 **修饰符** 可以在全局搜索中不区分大小写:
 
-| 修饰符 | 描述                                                     |
-| :----- | :------------------------------------------------------- |
-| i      | 执行对大小写不敏感的匹配。                               |
-| g      | 执行全局匹配（查找所有匹配而非在找到第一个匹配后停止）。 |
-| m      | 执行多行匹配。                                           |
+| 修饰符 | 描述                           |
+|:--- |:---------------------------- |
+| i   | 执行对大小写不敏感的匹配。                |
+| g   | 执行全局匹配（查找所有匹配而非在找到第一个匹配后停止）。 |
+| m   | 执行多行匹配。                      |
 
 **使用 RegExp 对象**
 
@@ -602,16 +574,12 @@ var patt = /runoob/i
 - **test()** 方法<font color=FF0000>用于检测一个字符串是否匹配某个模式</font>，如果字符串中含有匹配的文本，则返回 true，否则返回 false。
 
 - **exec()** 方法是一个正则表达式方法。exec() 方法用于检索字符串中的正则表达式的匹配。
-
+  
   <font color=FF0000>**该函数返回一个数组**，其中存放匹配的结果</font>。<font color=FF0000>如果未找到匹配，则返回值为 null</font>。
-
-
 
 #### throw
 
 throw出去的异常将会被catch会捕捉到，放（拼接）在catch的参数中。
-
-
 
 #### JavaScript 变量提升
 
@@ -634,8 +602,6 @@ var y = 7; // 初始化 y
 
 **由上现象可知：**对于大多数程序员来说并不知道 JavaScript 变量提升。如果程序员不能很好的理解变量提升，他们写的程序就容易出现一些问题。为了避免这些问题，通常我们在每个作用域开始前声明这些变量，这也是正常的 JavaScript 解析步骤，易于我们理解。
 
-
-
 #### JavaScript 严格模式(use strict)
 
 "use strict" 指令在 JavaScript 1.8.5 (ECMAScript5) 中新增。它不是一条语句，但是一个字面量表达式，在 JavaScript 旧版本中会被忽略。<mark>"use strict" 的目的是指定代码在严格条件下执行</mark>。
@@ -645,14 +611,14 @@ var y = 7; // 初始化 y
 - 消除Javascript语法的一些不合理、不严谨之处，减少一些怪异行为;
 
 - 消除代码运行的一些不安全之处，保证代码运行的安全；
+
 - 提高编译器效率，增加运行速度；
+
 - 为未来新版本的Javascript做好铺垫。
 
 "严格模式"体现了Javascript更合理、更安全、更严谨的发展方向，包括IE 10在内的主流浏览器，都已经支持它，许多大项目已经开始全面拥抱它。
 
 另一方面，同样的代码，在"严格模式"中，可能会有不一样的运行结果；一些在"正常模式"下可以运行的语句，在"严格模式"下将不能运行。掌握这些内容，有助于更细致深入地理解Javascript，让你变成一个更好的程序员。
-
-
 
 **严格模式的限制**
 
@@ -682,8 +648,6 @@ var y = 7; // 初始化 y
 - public
 - static
 - yield
-
-
 
 #### JavaScript 使用误区
 
@@ -727,13 +691,9 @@ for (var i = 0; i < 10; i++) {
 return i;
 ```
 
-
-
 #### **JavaScript 表单**
 
 HTML 表单验证可以通过 JavaScript 来完成。
-
-
 
 #### HTML 约束验证
 
@@ -742,33 +702,31 @@ HTML5 新增了 HTML 表单的验证方式：约束验证（constraint validatio
 **HTML 约束验证基于：**
 
 - **HTML 输入属性**
-
-  | 属性     | 描述                     |
-  | :------- | :----------------------- |
-  | disabled | 规定输入的元素不可用     |
-  | max      | 规定输入元素的最大值     |
-  | min      | 规定输入元素的最小值     |
-  | pattern  | 规定输入元素值的模式     |
+  
+  | 属性       | 描述           |
+  |:-------- |:------------ |
+  | disabled | 规定输入的元素不可用   |
+  | max      | 规定输入元素的最大值   |
+  | min      | 规定输入元素的最小值   |
+  | pattern  | 规定输入元素值的模式   |
   | required | 规定输入元素字段是必需的 |
-  | type     | 规定输入元素的类型       |
-
+  | type     | 规定输入元素的类型    |
+  
   完整列表，请查看 [HTML 输入属性](https://www.runoob.com/html/html5-form-attributes.html)。
 
 - **CSS 伪类选择器**
-
-  | 选择器    | 描述                                    |
-  | :-------- | :-------------------------------------- |
+  
+  | 选择器       | 描述                            |
+  |:--------- |:----------------------------- |
   | :disabled | 选取属性为 "disabled" 属性的 input 元素 |
-  | :invalid  | 选取无效的 input 元素                   |
-  | :optional | 选择没有"required"属性的 input 元素     |
-  | :required | 选择有"required"属性的 input 元素       |
-  | :valid    | 选取有效值的 input 元素                 |
-
+  | :invalid  | 选取无效的 input 元素                |
+  | :optional | 选择没有"required"属性的 input 元素    |
+  | :required | 选择有"required"属性的 input 元素     |
+  | :valid    | 选取有效值的 input 元素               |
+  
   完整列表，请查看 [CSS 伪类](https://www.runoob.com/css/css-pseudo-classes.html)。
 
 - **DOM 属性和方法**
-
-
 
 #### JavaScript 验证 API
 
@@ -798,36 +756,34 @@ function myFunction() {
 
 **约束验证 DOM 方法**
 
-| Property            | Description                                                  |
-| :------------------ | :----------------------------------------------------------- |
-| checkValidity()     | 如果 input 元素中的数据是合法的返回 true，否则返回 false。   |
+| Property            | Description                                                                                                                                                                                                                                                |
+|:------------------- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| checkValidity()     | 如果 input 元素中的数据是合法的返回 true，否则返回 false。                                                                                                                                                                                                                     |
 | setCustomValidity() | 设置 input 元素的 validationMessage 属性，用于自定义错误提示信息的方法。使用 setCustomValidity 设置了自定义提示后，validity.customError 就会变成true，则 checkValidity 总是会返回false。如果要重新判断需要取消自定义提示，方式如下：<br>`setCustomValidity('')`<br>`setCustomValidity(null) `<br>`setCustomValidity(undefined)` |
 
 **约束验证 DOM 属性**
 
-| 属性              | 描述                                  |
-| :---------------- | :------------------------------------ |
+| 属性                | 描述                     |
+|:----------------- |:---------------------- |
 | validity          | 布尔属性值，返回 input 输入值是否合法 |
-| validationMessage | 浏览器错误提示信息                    |
-| willValidate      | 指定 input 是否需要验证               |
+| validationMessage | 浏览器错误提示信息              |
+| willValidate      | 指定 input 是否需要验证        |
 
 **Validity 属性**
 
 input 元素的 **validity 属性**包含一系列关于 validity 数据属性:
 
-| 属性            | 描述                                                       |
-| :-------------- | :--------------------------------------------------------- |
-| customError     | 设置为 true, 如果设置了自定义的 validity 信息。            |
-| patternMismatch | 设置为 true, 如果元素的值不匹配它的模式属性。              |
-| rangeOverflow   | 设置为 true, 如果元素的值大于设置的最大值。                |
-| rangeUnderflow  | 设置为 true, 如果元素的值小于它的最小值。                  |
-| stepMismatch    | 设置为 true, 如果元素的值不是按照规定的 step 属性设置。    |
+| 属性              | 描述                                     |
+|:--------------- |:-------------------------------------- |
+| customError     | 设置为 true, 如果设置了自定义的 validity 信息。       |
+| patternMismatch | 设置为 true, 如果元素的值不匹配它的模式属性。             |
+| rangeOverflow   | 设置为 true, 如果元素的值大于设置的最大值。              |
+| rangeUnderflow  | 设置为 true, 如果元素的值小于它的最小值。               |
+| stepMismatch    | 设置为 true, 如果元素的值不是按照规定的 step 属性设置。     |
 | tooLong         | 设置为 true, 如果元素的值超过了 maxLength 属性设置的长度。 |
 | typeMismatch    | 设置为 true, 如果元素的值不是预期相匹配的类型。            |
-| valueMissing    | 设置为 true，如果元素 (required 属性) 没有值。             |
-| valid           | 设置为 true，如果元素的值是合法的。                        |
-
-
+| valueMissing    | 设置为 true，如果元素 (required 属性) 没有值。       |
+| valid           | 设置为 true，如果元素的值是合法的。                   |
 
 #### JavaScript关键字
 
@@ -835,8 +791,7 @@ input 元素的 **validity 属性**包含一系列关于 validity 数据属性:
 
 Javascript 的保留关键字不可以用作变量、标签或者函数名。有些保留关键字是作为 Javascript 以后扩展使用。
 
-
-|					 |					 |						|						|							 |
+|          |           |            |           |              |
 | -------- | --------- | ---------- | --------- | ------------ |
 | abstract | arguments | boolean    | break     | byte         |
 | case     | catch     | char       | class*    | const        |
@@ -852,8 +807,6 @@ Javascript 的保留关键字不可以用作变量、标签或者函数名。有
 | try      | typeof    | var        | void      | volatile     |
 | while    | with      | yield      |           |              |
 
-
-
 #### JavaScript this关键字
 
 <font color=FF0000>JavaScript 中 this 不是固定不变的，它会随着执行环境的改变而改变</font>。
@@ -864,8 +817,6 @@ Javascript 的保留关键字不可以用作变量、标签或者函数名。有
 - 在**函数**中，在**严格模式**下，**this 是未定义的**(undefined)。
 - 在**事件**中，this 表示**接收事件的元素**。
 - 类似 call() 和 apply() 方法可以将 this 引用到任何对象。
-
-
 
 #### JavaScript let
 
@@ -905,14 +856,14 @@ let x = 2;       // 全局作用域
 **重置变量**
 
 - 使用 **var** 关键字声明的变量在任何地方都可以修改：
-
+  
   ```js
   var x = 2;  // x 为 2
   var x = 3;  // 现在 x 为 3
   ```
 
 - 在相同的<font color=FF0000>作用域</font>或<font color=FF0000>块级作用域</font>中，<font color=FF0000>不能使用 **let** 关键字来重置 **var** 关键字声明的变量</font>：
-
+  
   ```js
   var x = 2;       // 合法
   let x = 3;       // 不合法
@@ -924,7 +875,7 @@ let x = 2;       // 全局作用域
   ```
 
 - 在相同的作用域或块级作用域中，<font color=FF0000>不能使用 **var** 关键字来重置 **let** 关键字声明的变量</font>：
-
+  
   ```js
   let x = 2;       // 合法
   var x = 3;       // 不合法
@@ -936,7 +887,7 @@ let x = 2;       // 全局作用域
   ```
 
 - **let** 关键字在不同作用域，或不同块级作用域中是可以重新声明赋值的
-
+  
   ```js
   let x = 2;       // 合法
   
@@ -953,8 +904,6 @@ let x = 2;       // 全局作用域
 
 - var 关键字定义的变量可以在使用后声明，也就是变量可以先使用再声明
 - let 关键字定义的变量则不可以在使用后声明，也就是变量需要先声明再使用。
-
-
 
 #### JavaScript const
 
@@ -999,7 +948,7 @@ car = {type:"Volvo", model:"EX60", color:"red"};    // 错误
 - 在<font color=FF0000>相同的作用域或块级作用域</font>中，<font color=FF0000>不能使用</font> **const** 关键字来重置 **var**、**let**、**const**关键字声明的变量
 
 - **const** 关键字在<font color=FF0000>不同作用域</font>，或<font color=FF0000>不同块级作用域</font>中是<font color=FF0000>可以重新声明赋值</font>的，示例：
-
+  
   ```js
   const x = 2;       // 合法
   
@@ -1012,8 +961,6 @@ car = {type:"Volvo", model:"EX60", color:"red"};    // 错误
   }
   ```
 
-
-
 #### JavaScript JSON
 
 JSON（**J**ava**S**cript **O**bject **N**otation） 是用于存储和传输数据的格式。通常用于服务端向网页传递数据 。
@@ -1025,7 +972,7 @@ JSON（**J**ava**S**cript **O**bject **N**otation） 是用于存储和传输数
 简单起见，我们网页中直接设置 JSON 字符串：
 
 - 首先，创建 JavaScript 字符串，字符串为 JSON 格式的数据：
-
+  
   ```js
   var text = '{ "sites" : [' +
   '{ "name":"Runoob" , "url":"www.runoob.com" },' +
@@ -1034,7 +981,7 @@ JSON（**J**ava**S**cript **O**bject **N**otation） 是用于存储和传输数
   ```
 
 - 然后，<font color=FF0000>使用 JavaScript 内置函数 `JSON.parse()` 将字符串转换为 JavaScript 对象</font>
-
+  
   ```js
   var obj = JSON.parse(text);
   ```
@@ -1043,12 +990,10 @@ JSON（**J**ava**S**cript **O**bject **N**otation） 是用于存储和传输数
 
 **相关函数**
 
-| 函数                                                         | 描述                                           |
-| :----------------------------------------------------------- | :--------------------------------------------- |
-| [JSON.parse()](https://www.runoob.com/js/javascript-json-parse.html) | 用于将一个 JSON 字符串转换为 JavaScript 对象。 |
-| [JSON.stringify()](https://www.runoob.com/js/javascript-json-stringify.html) | 用于将 JavaScript 值转换为 JSON 字符串。       |
-
-
+| 函数                                                                           | 描述                               |
+|:---------------------------------------------------------------------------- |:-------------------------------- |
+| [JSON.parse()](https://www.runoob.com/js/javascript-json-parse.html)         | 用于将一个 JSON 字符串转换为 JavaScript 对象。 |
+| [JSON.stringify()](https://www.runoob.com/js/javascript-json-stringify.html) | 用于将 JavaScript 值转换为 JSON 字符串。    |
 
 #### javascript:void(0) 含义
 
@@ -1084,12 +1029,10 @@ javascript:void(func())
 **href="#"与href="javascript:void(0)"的区别**
 
 - <font color=FF0000>**`#`** 包含了一个位置信息</font>，默认的锚是**`#top`** 也就是网页的上端。
-
+  
   在页面很长的时候会使用 **#** 来定位页面的具体位置，格式为：**# + id**。
 
 - javascript:void(0)，仅仅<font color=FF0000>表示一个死链接</font>。如果你要定义一个死链接请使用 javascript:void(0) 。
-
-
 
 #### JavaScript 异步编程
 
@@ -1112,8 +1055,6 @@ setTimeout(function () {
 ```
 
 这个函数执行之后会产生一个子线程，子线程会等待 3 秒，然后执行回调函数 "print"，在命令行输出 "RUNOOB!"。
-
-
 
 #### JavaScript Promise
 
@@ -1209,7 +1150,7 @@ Promise.all([func1(), func2(), func3()])
 #### 静态方法
 
 - **Promise.all(iterable)：**<font color=FF0000>这个方法返回一个新的promise对象：该promise对象在iterable参数对象里所有的promise对象都成功的时候才会触发成功，一旦有任何一个iterable里面的promise对象失败则立即触发该promise对象的失败</font>。
-
+  
   这个新的promise对象在<font color=FF0000>触发成功状态</font>以后，会把一个包含iterable里所有promise返回值的数组作为成功回调的返回值，<font color=FF0000>顺序跟iterable的顺序保持一致</font>；如果这个新的promise对象<font color=FF0000>触发了失败状态</font>，<font color=FF0000>它会把iterable里第一个触发失败的promise对象的错误信息作为它的失败错误信息</font>。Promise.all方法常被用于处理多个promise对象的状态集合。（可以参考jQuery.when方法---译者注）
 
 - **Promise.allSettled(iterable)：**等到所有promises都已敲定（settled）（<font color=FF0000>每个promise都已兑现（fulfilled）或已拒绝（rejected）</font>）。 返回一个promise，该promise在所有promise完成后完成。并带有一个对象数组，每个对象对应每个promise的结果。
@@ -1225,9 +1166,11 @@ Promise.all([func1(), func2(), func3()])
 #### Promise 原型
 
 - **属性：**
+  
   - **Promise.prototype.constructor** 返回被创建的实例函数.  默认为 Promise 函数.
 
 - **方法**
+  
   - **Promise.prototype.catch(onRejected)：**<font color=FF0000>添加一个拒绝(rejection) 回调到当前 promise，返回一个新的promise</font>。当这个回调函数被调用，新 promise 将以它的返回值来resolve，否则如果当前promise 进入fulfilled状态，则以当前promise的完成结果作为新promise的完成结果。
   - **Promise.prototype.then(onFulfilled, onRejected)：**<font color=FF0000>添加解决（fulfillment）和拒绝（rejection）回调到当前 promise</font>，返回一个新的 promise，将以回调的返回值来resolve。
   - **Promise.prototype.finally(onFinally)：**添加一个事件处理回调于当前promise对象，并且在原promise对象解析完毕后，返回一个新的promise对象。回调会在当前promise运行完毕后被调用，无论当前promise的状态是完成(fulfilled)还是失败(rejected)
@@ -1296,23 +1239,21 @@ asyncFunc();
 ##### **更多补充：**
 
 - **async关键字：**
-
+  
   我们使用 async 关键字，把它放在函数声明之前，使其成为 async function。异步函数是一个知道怎样使用 await 关键字调用异步代码的函数。
-
+  
   ```js
   async function hello() { return "Hello" };
   hello();
   ```
-
+  
   现在<font color=FF0000>调用该函数会返回一个 promise</font>。这是异步函数的特征之一 —— <font color=FF0000>**它保证函数的返回值为 promise**</font>（自动）。
 
 - **await关键字：**
-
+  
   当 await 关键字与异步函数一起使用时，它的真正优势就变得明显了 —— 事实上， <font color=FF0000>await 只在异步函数里面才起作用</font>。它可以放在任何异步的，基于 promise 的函数之前。<font color=FF0000>它会暂停代码在该行上，直到 promise 完成，然后返回结果值</font>。在暂停的同时，其他正在等待执行的代码就有机会执行了。
 
 摘自：[async和await:让异步编程更简单](https://developer.mozilla.org/zh-CN/docs/learn/JavaScript/%E5%BC%82%E6%AD%A5/Async_await)
-
-
 
 #### JavaScript 代码规范
 
@@ -1335,8 +1276,6 @@ asyncFunc();
     - 字符串使用双引号，数字不需要。
     - 最后一个属性-值对后面不要添加逗号。
     - 将右花括号独立放在一行，并以分号作为结束符号。
-
-
 
 #### JavaScript函数
 
@@ -1466,8 +1405,6 @@ const x = (x, y) => x * y;
 
 另外：箭头函数是不能提升的，所以需要在使用之前定义。
 
-
-
 #### JavaScript 函数参数
 
 JavaScript 函数对参数的值没有进行任何的检查。
@@ -1488,9 +1425,9 @@ JavaScript 函数对参数的值没有进行任何的检查。
 **默认参数**
 
 - **ES5中：**<font color=FF0000>如果函数在调用时未提供隐式参数，参数会默认设置为： **undefined**</font>。有时这是可以接受的，但是建议最好为参数设置一个默认值，比如说0。
-
+  
   示例：
-
+  
   ```js
   //方法一
   function myFunction(x, y) {
@@ -1506,9 +1443,9 @@ JavaScript 函数对参数的值没有进行任何的检查。
   ```
 
 - **ES6中：** <font color=FF0000>支持函数带有默认参数</font>
-
+  
   示例：
-
+  
   ```js
   function myFunction(x, y = 10){
     //code
@@ -1523,12 +1460,12 @@ JavaScript 函数有个<font color=FF0000>内置的对象 arguments 对象</font
 
 ```js
 x = findMax(1, 123, 500, 115, 44, 88);
- 
+
 function findMax() {
     var i, max = arguments[0];
-    
+
     if(arguments.length < 2) return max;
- 
+
     for (i = 0; i < arguments.length; i++) {
         if (arguments[i] > max) {
             max = arguments[i];
@@ -1538,58 +1475,56 @@ function findMax() {
 }
 ```
 
-
-
 ### JavaScript 函数调用
 
 <font color=FF0000>JavaScript 函数有 **4 种**调用方式</font>。每种方式的不同在于 **this** 的初始化。
 
 - **作为一个函数调用**
-
+  
   <font color=FF0000>函数不属于任何对象。但是在 JavaScript 中它始终是默认的全局对象</font>。而在 <mark>HTML 中默认的全局对象是 HTML 页面本身</mark>，所以函数是属于 HTML 页面。
-
+  
   this对象：当<font color=FF0000>函数没有被自身的对象调用时 **this** 的值就会变成全局对象</font>。在 web 浏览器中全局对象是浏览器窗口（window 对象）。
 
 - **函数作为方法调用**
-
+  
   在 JavaScript 中你可以将函数定义为对象的方法。这里的**this**对象是当前方法所在的对象
 
 - **使用构造函数调用函数**
-
+  
   如果函数调用前使用了 **new** 关键字, 则是调用了构造函数。
-
+  
   这看起来就像创建了新的函数，但实际上 <font color=FF0000>**JavaScript 函数是重新创建的对象**</font>。示例：
-
+  
   ```js
   // 构造函数:
   function myFunction(arg1, arg2) {
       this.firstName = arg1;
       this.lastName  = arg2;
   }
-   
+  
   // This creates a new object
   var x = new myFunction("John","Doe");
   x.firstName;                             // 返回 "John"
   ```
 
 - **作为函数方法调用函数**
-
+  
   在 JavaScript 中, <font color=FF0000>函数是对象。JavaScript **函数有它的属性和方法**</font>。
-
+  
   <font color=FF0000>**call()** 和 **apply()** 是**预定义**的函数方法</font>。 <font color=FF0000>两个方法可用于调用函数</font>，<font color=FF0000>两个方法的**第一个参数必须是对象本身**</font>。
   示例：
-
+  
   ```js
   function myFunction(a, b) {
       return a * b;
   }
   myObject = myFunction.call(myObject, 10, 2);     // 返回 20
   ```
-
+  
   两个方法都使用了对象本身作为第一个参数。 两者的区别在于第二个参数： 
-
+  
   - **apply**<font color=FF0000>传入的是一个参数数组</font>，也就是将多个参数组合成为一个数组传入
-
+  
   - **call**则作为call的参数传入（从第二个参数开始）。
   
   在 JavaScript <font color=FF0000>严格模式(strict mode)下</font>, 在<font color=FF0000>调用函数时第一个参数会成为 **this** 的值</font>， 即使该参数不是一个对象。
@@ -1597,8 +1532,6 @@ function findMax() {
   在 JavaScript <font color=FF0000>非严格模式(non-strict mode)下</font>, <font color=FF0000>如果第一个参数的值是 null 或 undefined</font>, 它<font color=FF0000>将使用全局对象替代</font>。
   
   注意：通过 call() 或 apply() 方法你可以设置 **this** 的值, 且作为已存在对象的新方法调用。
-
-
 
 #### JavaScript 闭包
 
@@ -1628,13 +1561,11 @@ var add = (function () {
     var counter = 0;
     return function () {return counter += 1;}
 })();
- 
+
 add(); // counter = 1
 add(); // counter = 2
 add(); // counter = 3
 ```
-
-
 
 #### JavaScript HTML DOM
 
@@ -1645,23 +1576,22 @@ add(); // counter = 3
 **查找 HTML 元素有三种方法**
 
 - 通过 id 找到 HTML 元素
-
+  
   ```js
   var x=document.getElementById("intro");
   ```
 
 - 通过标签名找到 HTML 元素
-
+  
   ```js
   var y=x.getElementsByTagName("p");
   ```
 
 - 通过类名找到 HTML 元素
-
+  
   ```js
   var x=document.getElementsByClassName("intro");
   ```
-
 
 **补充：**
 
@@ -1671,16 +1601,16 @@ Element.classList 是一个只读属性，返回一个元素的类属性的实�
 相比将 element.className 作为以空格分隔的字符串来使用，classList 是一种更方便的访问元素的类列表的方法。
 
 - **语法**
-
+  
   ```js
   const elementClasses = elementNodeReference.classList;
   ```
 
 - **返回值**
   elementClasses 是一个 DOMTokenList 表示  elementNodeReference 的类属性 。如果类属性未设置或为空，那么 elementClasses.length 返回 0。<font color=FF0000>element.classList 本身是只读的，但是你可以使用 add(className) 和 remove(className) 方法修改它</font>。
-
+  
   - add(className) /  remove(className)，甚至其中的add() / remove()可以放多组类值，甚至可以通过使用展开语法添加或移除多个类值。示例如下：
-
+    
     ```js
     // 添加或移除多个类值
     div.classList.add("foo", "bar", "baz");
@@ -1691,11 +1621,11 @@ Element.classList 是一个只读属性，返回一个元素的类属性的实�
     div.classList.add(...cls);
     div.classList.remove(...cls);
     ```
-
+  
   - **`item(index)`**：返回元素中索引值对应的类名。索引值从 0 开始。如果索引值在区间范围外则返回 null
-
+  
   - **`toggle(className)`**方法，如果该类值已存在，则移除它，否则添加它。另外，该函数还可添加触发条件：`toggle(className, conditionExpression)`若条件满足则添加/ 移除该类值。
-
+    
     ```js
     // 如果 visible 类值已存在，则移除它，否则添加它
     div.classList.toggle("visible");
@@ -1703,19 +1633,17 @@ Element.classList 是一个只读属性，返回一个元素的类属性的实�
     // add/remove visible, depending on test conditional, i less than 10
     div.classList.toggle("visible", i < 10 );
     ```
-
+  
   - **`contains(className)`**：判断是否存在该类值
-
+  
   - **`replace(replacedClassName, replacingClassName)`**：将replacedClassName替换为replacingClassName。
-
+    
     ```js
     // 将类值 "foo" 替换成 "bar"
     div.classList.replace("foo", "bar");
     ```
 
 摘自：[MDN - Element.classList](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/classList
-
-
 
 #### JavaScript HTML DOM - 改变 HTML
 
@@ -1724,8 +1652,6 @@ Element.classList 是一个只读属性，返回一个元素的类属性的实�
 ```js
 document.getElementById(id).attribute=new-attribute
 ```
-
-
 
 #### JavaScript HTML DOM - 改变CSS
 
@@ -1758,9 +1684,9 @@ HTML DOM 允许我们通过触发事件来执行代码。比如以下事件：
 ```html
 <button onclick="displayDate()">点这里</button>
 <script>
-	function displayDate(){
-		document.getElementById("demo").innerHTML=Date();
-	}
+    function displayDate(){
+        document.getElementById("demo").innerHTML=Date();
+    }
 </script>
 ```
 
@@ -1770,8 +1696,6 @@ HTML DOM 允许我们通过触发事件来执行代码。比如以下事件：
 - **onchange 事件：**<font color=FF0000>onchange 事件常结合**对输入字段的验证**来使用</font>。
 - **onmouseover 和 onmouseout 事件：**onmouseover 和 onmouseout 事件可用于在用户的鼠标移至 HTML 元素上方或移出元素时触发函数。
 - **onmousedown、onmouseup 以及 onclick 事件：**onmousedown, onmouseup 以及 onclick 构成了鼠标点击事件的所有部分。首先当点击鼠标按钮时，会触发 onmousedown 事件，当释放鼠标按钮时，会触发 onmouseup 事件，最后，当完成鼠标点击时，会触发 onclick 事件。
-
-
 
 #### JavaScript HTML DOM EventListener
 
@@ -1796,8 +1720,6 @@ element.addEventListener(event, function, useCapture);
   - 如果为 false（默认值），则在冒泡阶段设置处理程序。
   - 如果为 true，则在捕获阶段设置处理程序。
 
-
-
 **removeEventListener()方法**
 
 语法：
@@ -1805,8 +1727,6 @@ element.addEventListener(event, function, useCapture);
 ```js
 element.removeElementListener(event, function);
 ```
-
-
 
 **补充：事件传递有两种方式：冒泡与捕获**
 
@@ -1824,29 +1744,27 @@ element.removeElementListener(event, function);
 为了解决这个问题微软和网景提出了两种几乎完全相反的概念。
 
 - 事件冒泡
-
+  
   微软提出了名为`事件冒泡(event bubbling)`的事件流。事件冒泡可以形象地比喻为把一颗石头投入水中，泡泡会一直从水底冒出水面。也就是说，事件会从最内层的元素开始发生，一直向上传播，直到document对象。
-
+  
   因此在事件冒泡的概念下在p元素上发生click事件的顺序应该是**`p -> div -> body -> html -> document`**
 
 - 事件捕获
-
+  
   网景提出另一种事件流名为`事件捕获(event capturing)`。与事件冒泡相反，事件会从最外层开始发生，直到最具体的元素。
-
+  
   因此在事件捕获的概念下在p元素上发生click事件的顺序应该是**`document -> html -> body -> div -> p`**
 
 摘自：[JS中事件冒泡与捕获](https://segmentfault.com/a/1190000005654451) 具体更多可以参考：[Javascript info -- 冒泡和捕获](https://zh.javascript.info/bubbling-and-capturing)
 
-
-
 #### JavaScript HTML DOM 元素 (节点)
 
 - **appendChild(node)：**创建新的 HTML 元素 (节点)，用于<font color=FF0000>添加新元素到尾部</font>
-
+  
   要创建新的 HTML 元素 (节点)需要先创建一个元素，然后在已存在的元素中添加它。
-
+  
   示例：
-
+  
   ```js
   //创建<p> 元素
   var para = document.createElement("p");
@@ -1854,7 +1772,7 @@ element.removeElementListener(event, function);
   var node = document.createTextNode("这是一个新的段落。");
   //将文本节点添加到 <p> 元素中：
   para.appendChild(node);
-   
+  
   var element = document.getElementById("div1");
   element.appendChild(para);
   ```
@@ -1862,9 +1780,8 @@ element.removeElementListener(event, function);
 - **insertBefore(node)：**将新元素添加到开始位置
 
 - **removeChild(node)：**移除一个元素
+
 - **replaceChild(node)：**替换一个元素
-
-
 
 #### JavaScript HTML DOM 集合(Collection)
 
@@ -1885,7 +1802,25 @@ HTMLCollection 看起来可能是一个数组，但其实不是。
 
 所以，HTMLCollection 无法使用数组的方法： valueOf(), pop(), push(), 或 join() 。
 
+#### document.getElementById
 
+Document的方法 getElementById()返回一个匹配特定 ID的元素。由于<font color=FF0000>元素的 ID 在大部分情况下要求是独一无二的</font>，这个方法自然而然地成为了一个高效查找特定元素的方法。
+<font color=FF0000>如果需要查找到那些没有ID 的元素，你可以考虑通过CSS选择器使用 querySelector()（见下面）。</font>
+
+- **语法**
+  
+  ```js
+  var element = document.getElementById(id);
+  ```
+
+- **参数**
+  
+  - element是一个 Element 对象。如果当前文档中拥有特定ID的元素不存在则返回null.
+  - <font color=FF0000>id是大小写敏感的字符串</font>，代表了所要查找的元素的唯一ID.
+
+- **返回值**
+  
+  - 返回一个匹配到 ID 的 DOM Element 对象。<font color=FF0000>若在当前 Document 下没有找到，则返回 null</font>。
 
 #### JavaScript HTML DOM 节点列表
 
@@ -1898,16 +1833,19 @@ HTMLCollection 看起来可能是一个数组，但其实不是。
 **HTMLCollection 与 NodeList 的区别**
 
 - [HTMLCollection](https://www.runoob.com/js/js-htmldom-collections.html) 是 HTML 元素的集合。NodeList 是一个文档节点的集合。
+
 - 不同：
+  
   - **HTMLCollection** 元素可以通过 name，id 或索引来获取。
   - **NodeList** <font color=FF0000>只能</font>通过索引来获取。
   - 只有 NodeList 对象有包含属性节点和文本节点。
 
 - 类似：
+  
   - NodeList 与 HTMLCollection 都与数组对象有点类似，可以使用索引 (0, 1, 2, 3, 4, ...) 来获取元素。
   - NodeList 与 HTMLCollection 都有 length 属性。
 
-#### **补充：**document.querySelector()和document.querySelectorAll()
+#### **补充**：document.querySelector()和document.querySelectorAll()
 
 **document.querySelector()**：文档对象模型Document引用的querySelector()方法<font color=FF0000>返回文档中与指定选择器或选择器组匹配的**第一个 HTMLElement对象**</font>。 <font color=FF0000>如果找不到匹配项，则返回null</font>。( 匹配是使用<font color=FF0000>深度优先先序遍历</font>，从文档标记中的第一个元素开始，并按子节点的顺序依次遍历。)
 
@@ -1922,40 +1860,38 @@ element = document.querySelector(selectors);
 
 如果您需要与指定选择器匹配的所有元素的列表，则应该使用querySelectorAll() 。
 
-
-
 #### JavaScript 对象
 
 - **创建对象，语法如下：**
-
+  
   ```js
   // 以构造函数形式来调用
   new Object([value])
   ```
-
+  
   Object 构造函数，会根据给定的参数创建对象，具体有以下情况：
-
+  
   - 如果给定值是 null 或 undefined，将会创建并返回一个空对象。
   - 如果传进去的是一个基本类型的值，则会构造其包装类型的对象。
   - 如果传进去的是引用类型的值，仍然会返回这个值，经他们复制的变量保有和源对象相同的引用地址。
   - 当以非构造函数形式被调用时，Object 的行为等同于 new Object()。
 
 - **可以使用对象字面量来创建对象**，语法格式如下：
-
+  
   ```js
   { name1 : value1, name2 : value2,...nameN : valueN }
   ```
-
+  
   示例：
-
+  
   ```js
   person={firstname:"John",lastname:"Doe",age:50,eyecolor:"blue"};
   ```
 
 - **使用<font color=FF0000>对象构造器</font>**
-
+  
   示例：
-
+  
   ```js
   function person(firstname,lastname,age,eyecolor)
   {
@@ -1965,9 +1901,9 @@ element = document.querySelector(selectors);
       this.eyecolor=eyecolor;
   }
   ```
-
+  
   一旦有了对象构造器，就可以创建新的对象实例，就像这样：
-
+  
   ```js
   var myFather=new person("John","Doe",50,"blue");
   var myMother=new person("Sally","Rally",48,"green");
@@ -1981,7 +1917,7 @@ JavaScript for...in 语句循环遍历对象的属性。 for...in 循环中的�
 
 ```js
 for (variable in object){
-	//code
+    //code
 }
 ```
 
@@ -1989,7 +1925,7 @@ for (variable in object){
 
 ```js
 var person={fname:"John",lname:"Doe",age:25}; 
- 
+
 for (x in person){
     txt=txt + person[x];
 }
@@ -2013,8 +1949,6 @@ var x = person;  // 不会创建 person 的副本，是引用
 //x.age 和 person.age 都会改变
 var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"}  var x = person; x.age = 10;           
 ```
-
-
 
 #### JavaScript prototype（原型对象）
 
@@ -2075,7 +2009,7 @@ console.log(Object.prototype.toString.call(arr))  //"[object Array]"
 - 使用  ***.constructor.name** 可以实现类似的功能
 
 - 另外，如下代码也一样：
-
+  
   ```js
   var arr = [1, 2, 3]
   Array.isArray(arr)
@@ -2086,8 +2020,6 @@ console.log(Object.prototype.toString.call(arr))  //"[object Array]"
 
 摘自：[谈谈 Object.prototype.toString](https://juejin.cn/post/6844903477940846600)
 
-
-
 #### JavaScript Number 对象
 
 **<font color=FF0000>所有 JavaScript 数字均为 64 位</font>**
@@ -2096,13 +2028,14 @@ JavaScript 不是类型语言。与许多其他编程语言不同，<mark>JavaSc
 
 在JavaScript中，<mark>数字不分为整数类型和浮点型类型，<font color=FF0000>**所有的数字都是由 浮点型类型**</font></mark>。JavaScript 采用 IEEE754 标准定义的 64 位浮点格式表示数字，它能表示最大值为 ±1.7976931348623157e+308，最小值为 ±5e-324。
 
-| 值 (aka Fraction/Mantissa) |       指数        |    Sign    |
-| :------------------------: | :---------------: | :--------: |
-|      52 bits (0 - 51)      | 11 bits (50 - 62) | 1 bit (63) |
+| 值 (aka Fraction/Mantissa) | 指数                | Sign       |
+|:-------------------------:|:-----------------:|:----------:|
+| 52 bits (0 - 51)          | 11 bits (50 - 62) | 1 bit (63) |
 
 **精度**
 
 - 整数（不使用小数点或指数计数法）最多为 15 位。
+  
   - 超过15位的一律变成100,000,000,000,000,000（15个0）
 
 - 小数的最大位数是 17
@@ -2148,37 +2081,35 @@ typeof(y) // 返回 Object
 
 **Number 属性**
 
-| 属性                     | 描述                                                  |
-| :----------------------- | :---------------------------------------------------- |
-| Number.MAX_VALUE         | 最大值                                                |
-| Number.MIN_VALUE         | 最小值                                                |
-| Number.NaN               | 非数字                                                |
-| Number.NEGATIVE_INFINITY | 负无穷，在溢出时返回                                  |
-| Number.POSITIVE_INFINITY | 正无穷，在溢出时返回                                  |
+| 属性                       | 描述                                  |
+|:------------------------ |:----------------------------------- |
+| Number.MAX_VALUE         | 最大值                                 |
+| Number.MIN_VALUE         | 最小值                                 |
+| Number.NaN               | 非数字                                 |
+| Number.NEGATIVE_INFINITY | 负无穷，在溢出时返回                          |
+| Number.POSITIVE_INFINITY | 正无穷，在溢出时返回                          |
 | Number.EPSILON           | 表示 1 和比最接近 1 且大于 1 的最小 Number 之间的差别 |
-| Number.MIN_SAFE_INTEGER  | 最小安全整数。                                        |
-| Number.MAX_SAFE_INTEGER  | 最大安全整数。                                        |
+| Number.MIN_SAFE_INTEGER  | 最小安全整数。                             |
+| Number.MAX_SAFE_INTEGER  | 最大安全整数。                             |
 
 **数字方法**
 
-| 方法                   | 描述                                                         |
-| :--------------------- | :----------------------------------------------------------- |
+| 方法                     | 描述                                                                                        |
+|:---------------------- |:----------------------------------------------------------------------------------------- |
 | Number.parseFloat()    | 将字符串转换成浮点数，和全局方法 [parseFloat()](https://www.runoob.com/jsref/jsref-parsefloat.html) 作用一致。 |
-| Number.parseInt()      | 将字符串转换成整型数字，和全局方法 [parseInt()](https://www.runoob.com/jsref/jsref-parseint.html) 作用一致。 |
-| Number.isFinite()      | 判断传递的参数是否为有限数字。                               |
-| Number.isInteger()     | 判断传递的参数是否为整数。                                   |
-| Number.isNaN()         | 判断传递的参数是否为 isNaN()。                               |
-| Number.isSafeInteger() | 判断传递的参数是否为安全整数。                               |
+| Number.parseInt()      | 将字符串转换成整型数字，和全局方法 [parseInt()](https://www.runoob.com/jsref/jsref-parseint.html) 作用一致。    |
+| Number.isFinite()      | 判断传递的参数是否为有限数字。                                                                           |
+| Number.isInteger()     | 判断传递的参数是否为整数。                                                                             |
+| Number.isNaN()         | 判断传递的参数是否为 isNaN()。                                                                       |
+| Number.isSafeInteger() | 判断传递的参数是否为安全整数。                                                                           |
 
 **数字类型原型上的一些方法**
 
-| 方法            | 描述                                                         |
-| :-------------- | :----------------------------------------------------------- |
-| toExponential() | 返回一个数字的指数形式的字符串，如：1.23e+2                  |
-| toFixed()       | 返回指定小数位数的表示形式。<br>`var a=123; b=a.toFixed(2); // b="123.00"` |
+| 方法              | 描述                                                                                      |
+|:--------------- |:--------------------------------------------------------------------------------------- |
+| toExponential() | 返回一个数字的指数形式的字符串，如：1.23e+2                                                               |
+| toFixed()       | 返回指定小数位数的表示形式。<br>`var a=123; b=a.toFixed(2); // b="123.00"`                            |
 | toPrecision()   | 返回一个指定精度的数字。如下例子中，a=123 中，3会由于精度限制消失：<br>`var a=123; b=a.toPrecision(2); // b="1.2e+2"` |
-
-
 
 #### JavaScript Date（日期） 对象
 
@@ -2189,9 +2120,9 @@ Date 对象用于处理日期和时间。 可以通过 new 关键词来定义 Da
 - ```js
   new Date();
   ```
-
+  
   示例：
-
+  
   ```js
   var today = new Date()
   ```
@@ -2199,9 +2130,9 @@ Date 对象用于处理日期和时间。 可以通过 new 关键词来定义 Da
 - ```js
   new Date(value);
   ```
-
+  
   示例：
-
+  
   ```js
   var d2 = new Date(79,5,24)
   ```
@@ -2209,9 +2140,9 @@ Date 对象用于处理日期和时间。 可以通过 new 关键词来定义 Da
 - ```js
   new Date(dateString);
   ```
-
+  
   示例：
-
+  
   ```js
   var d1 = new Date("October 13, 1975 11:13:00")
   ```
@@ -2219,9 +2150,9 @@ Date 对象用于处理日期和时间。 可以通过 new 关键词来定义 Da
 - ```js
   new Date(year, monthIndex [, day [, hours [, minutes [, seconds [, milliseconds]]]]]);
   ```
-
+  
   示例：
-
+  
   ```js
   var d3 = new Date(79,5,24,11,33,0)
   ```
@@ -2246,6 +2177,42 @@ myDate.setDate(myDate.getDate()+5);
 
 **注意:** <mark>如果增加天数会改变月份或者年份，那么日期对象会自动完成这种转换</mark>。
 
+#### JS时间戳与日期之间的转换
+
+- **将时间戳转换成日期格式**
+
+  ```js
+  var date = new Date(timeStamp); //获取一个时间对象
+  
+  date.getFullYear();  // 获取完整的年份(4位,1970)
+  date.getMonth();  // 获取月份(0-11,0代表1月,用的时候记得加上1)
+  date.getDate();  // 获取日(1-31)
+  date.getTime();  // 获取时间(从1970.1.1开始的毫秒数)
+  date.getHours();  // 获取小时数(0-23)
+  date.getMinutes();  // 获取分钟数(0-59)
+  date.getSeconds();  // 获取秒数(0-59)
+  ```
+
+- **将日期格式转换成时间戳**
+
+  ```js
+  var timeStr = '2014-04-23 18:55:49:123';
+  var date = new Date(timeStr); //传入一个时间格式，如果不传入就是获取现在的时间了，这样做不兼容火狐。
+  // 可以这样做
+  var date = new Date(timeStr.replace(/-/g, '/'));
+  
+  // 有三种方式获取
+  time1 = date.getTime();  // 1398250549123
+  time2 = date.valueOf(); // 1398250549123
+  time3 = Date.parse(date); // 1398250549000 
+  ```
+
+  **三种获取的区别：**
+
+  第一、第二种：会精确到毫秒；第三种：只能精确到秒，毫秒将用0来代替。比如上面代码输出的结果(一眼就能看出区别)：
+
+摘自：[js时间戳与日期格式之间的互转](https://segmentfault.com/a/1190000000481753)
+
 
 
 #### JavaScript Array（数组） 对象
@@ -2253,7 +2220,7 @@ myDate.setDate(myDate.getDate()+5);
 创建一个数组，有三种方法。下面的代码定义了一个名为 myCars的数组对象：
 
 - 常规方式：
-
+  
   ```js
   var myCars=new Array();
   myCars[0]="Saab";   
@@ -2262,36 +2229,33 @@ myDate.setDate(myDate.getDate()+5);
   ```
 
 - 简洁方式:
-
+  
   ```js
   var myCars=new Array("Saab","Volvo","BMW");
   ```
 
 - 字面:
-
+  
   ```js
   var myCars=["Saab","Volvo","BMW"];
   ```
 
-
 补充：
 
 - **Array.isArray()** ：用于确定传递的值是否是一个 Array。示例如下：
-
+  
   ```js
   Array.isArray([1, 2, 3]);  // true
   Array.isArray({foo: 123});  // false
   Array.isArray("foobar");  // false
   Array.isArray(undefined);  // false
   ```
-
+  
   - **语法：**Array.isArray(obj)
-
+  
   - **参数：**obj 需要检测的值。
-
+  
   - **返回值：**如果值是 Array，则为true; 否则为false。
-
-
 
 #### JavaScript Math（算数） 对象
 
@@ -2305,8 +2269,6 @@ JavaScript 提供 8 种可被 Math 对象访问的算数值：
 - Math.LN10
 - Math.LOG2E
 - Math.LOG10E
-
-
 
 #### JavaScript Window - 浏览器对象模型
 
@@ -2331,14 +2293,17 @@ document.getElementById("header");
 有三种方法能够确定浏览器窗口的尺寸。
 
 - 对于Internet Explorer、Chrome、Firefox、Opera 以及 Safari：
+  
   - window.innerHeight - 浏览器窗口的内部高度(包括滚动条)
   - window.innerWidth - 浏览器窗口的内部宽度(包括滚动条)
 
 - 对于 Internet Explorer 8、7、6、5：
+  
   - document.documentElement.clientHeight
   - document.documentElement.clientWidth
 
 - 或者
+  
   - document.body.clientHeight
   - document.body.clientWidth
 
@@ -2352,12 +2317,10 @@ var height = window.innerHeight || document.documentElement.clientHeight || docu
 
 **其他一些 Window 方法**
 
-- window.open() - 打开新窗口
-- window.close() - 关闭当前窗口
-- window.moveTo() - 移动当前窗口
-- window.resizeTo() - 调整当前窗口的尺寸
-
-
+- window.open() ：打开新窗口
+- window.close() ：关闭当前窗口
+- window.moveTo() ：移动当前窗口
+- window.resizeTo() ：调整当前窗口的尺寸
 
 #### JavaScript Window Screen
 
@@ -2368,22 +2331,18 @@ window.screen 对象包含有关用户屏幕的信息。<font color=FF0000>**win
 - **screen.availWidth** ： <font color=FF0000>可用</font>的屏幕宽度
 - **screen.availHeight** ：<font color=FF0000>可用</font>的屏幕高度
 
-
-
 #### JavaScript Window Location
 
 window.location 对象用于<font color=FF0000>获得当前页面的地址 (URL)</font>，<font color=FF0000>并把浏览器重定向到新的页面</font>。<font color=FF0000>在编写时**可不使用 window 这个前缀**</font>。
 
 **相关属性**
 
-- **location.hostname** 	返回 web 主机的域名
+- **location.hostname**     返回 web 主机的域名
 - **location.pathname**    返回当前页面的路径和文件名
 - **location.port**                返回 web 主机的端口 （80 或 443）
 - **location.protocol**       返回所使用的 web 协议（http: 或 https:）
 - **location.href**               返回当前页面的 URL
 - **location.assign()**        方法加载新的文档。
-
-
 
 #### JavaScript Window History
 
@@ -2405,8 +2364,6 @@ window.location 对象用于<font color=FF0000>获得当前页面的地址 (URL)
 
 摘自： [MDN - History API](https://developer.mozilla.org/zh-CN/docs/Web/API/History_API)
 
-
-
 #### JavaScript Window Navigator
 
 window.navigator 对象<font color=FF0000>包含有关访问者浏览器的信息</font>，在编写时可不使用 window 这个前缀
@@ -2425,8 +2382,6 @@ window.navigator 对象<font color=FF0000>包含有关访问者浏览器的信�
 - <mark>一些浏览器对测试站点会识别错误</mark>
 - <mark>浏览器无法报告晚于浏览器发布的新操作系统</mark>
 
-
-
 #### JavaScript 计时事件
 
 我们可以<font color=FF0000>在一个设定的时间间隔之后来执行代码</font>。我们称之为计时事件。
@@ -2434,55 +2389,53 @@ window.navigator 对象<font color=FF0000>包含有关访问者浏览器的信�
 **两个关键方法：**
 
 - **setInterval() ：** <font color=FF0000>间隔指定的毫秒数**不停地**执行指定的代码</font>。另外：**window.setInterval()** 方法可以不使用 window 前缀，直接使用函数 **setInterval()**。
-
+  
   **语法**
-
+  
   ```js
   window.setInterval(function, milliseconds);
   ```
-
+  
   - 第一个参数是函数（function）
-
+  
   - 第二个参数<font color=FF0000>间隔的**毫秒数**</font>
-
+  
   **示例：**
-
+  
   ```js
   // 每三秒弹出 "hello" 
   setInterval(function(){alert("Hello")},3000);
   ```
 
 - **clearInterval()：** 用于停止 setInterval() 方法执行的函数代码
-
+  
   语法：
-
+  
   ```js
   window.clearInterval(intervalVariable)
   ```
-
+  
   window.clearInterval()方法可以不使用window前缀，直接使用函数**clearInterval()**。
-
+  
   <mark>要使用clearTimeout() 方法, 你<font color=FF0000>必须在创建超时方法中（setTimeout）使用全局变量</font></mark>
 
 - **setTimeout()：** <font color=FF0000>在指定的毫秒数后执行指定代码</font>。
-
+  
   **语法**
-
+  
   ```js
   myVar= window.setTimeout(function, milliseconds);
   ```
 
 - **clearTimeout()：** 方法用于<font color=FF0000>停止执行setTimeout()方法的函数代码</font>。
-
+  
   **语法**
-
+  
   ```js
   window.clearTimeout(timeoutVariable)
   ```
-
+  
   类似clearInterval()，使用clearTimeout() 方法, 你必须在创建超时方法中（setTimeout）使用全局变量:
-
-
 
 #### JavaScript Cookie
 
@@ -2491,19 +2444,19 @@ JavaScript 可以使用<font color=FF0000> **document.cookie** 属性来创建 �
 **使用 JavaScript 创建Cookie**
 
 - JavaScript 中，创建 cookie 如下所示：
-
+  
   ```js
   document.cookie="username=John Doe";
   ```
 
 - 您还<font color=FF0000>可以用expires参数，为 cookie 添加一个过期时间（以 UTC 或 GMT 时间）</font>。**<font color=FF0000>默认情况下，cookie 在浏览器关闭时删除</font>**：
-
+  
   ```js
   document.cookie="username=John Doe; expires=Thu, 18 Dec 2043 12:00:00 GMT";
   ```
 
 - 您可以<font color=FF0000>使用 path 参数</font><font color=FF0000>告诉浏览器 cookie 的路径</font>。默认情况下，cookie 属于当前页面。
-
+  
   ```js
   document.cookie="username=John Doe; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
   ```
@@ -2511,36 +2464,32 @@ JavaScript 可以使用<font color=FF0000> **document.cookie** 属性来创建 �
 **使用 JavaScript 使用 Cookie**
 
 - 在 JavaScript 中, 可以使用以下代码来读取 cookie：
-
+  
   ```js
   var x = document.cookie;
   ```
-
+  
   document.cookie 将以字符串的方式返回所有的 cookie，类型格式： cookie1=value; cookie2=value; cookie3=value;
 
 - **使用 JavaScript 修改 Cookie**
-
+  
   在 JavaScript 中，<font color=FF0000>修改 cookie 类似于创建 cookie（**即覆盖**）</font>，如下所示：
-
+  
   ```js
   document.cookie="username=John Smith; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
   ```
 
 - **使用 JavaScript 删除 Cookie**
-
+  
   删除 cookie 非常简单。您只需要设置 expires 参数为以前的时间即可，如下所示
-
+  
   ```js
   document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
   ```
-
+  
   <font color=FF0000>注意，当您删除时不必指定 cookie 的值。</font>
 
-
-
 补充：[JavaScript 实例](https://www.runoob.com/js/js-examples.html)
-
-
 
 #### 原型链
 
@@ -2548,18 +2497,12 @@ js以原型链的形式，保证函数或对象中的方法、属性可以让向
 
 //todo
 
-
-
-
-
 #### onclick对元素绑定js方法
 
 ```html
 <div onclick="method-name()">
 </div>
 ```
-
-
 
 #### JS中的调试
 
@@ -2578,45 +2521,43 @@ function potentiallyBuggyCode() {
 
 摘自：[MDN web docs - debugger](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/debugger)
 
-
-
 #### var和let
 
 - <font color=FF0000>在 ES6 之前，我们都是用 var 来声明变量，而且 JS 只有函数作用域和全局作用域，没有块级作用域，所以`{}`限定不了 var 声明变量的访问范围。</font>
-
+  
   ```javascript
   { 
     var i = 9;
   } 
   console.log(i);  // 9
   ```
-
+  
   ES6 新增了`let`命令，用来声明局部变量。它的用法类似于`var`，<font color=FF0000>但是所声明的变量，只在`let`命令所在的代码块内有效，而且有暂时性死区的约束</font>
-
+  
   ```javascript
   { 
     let i = 9;     // i变量只在 花括号内有效！！！
   } 
   console.log(i);  // Uncaught ReferenceError: i is not defined
   ```
-
+  
   由于上述特性，`let`非常适合用于 `for`循环内部的块级作用域。
 
 - 用`let`声明的变量，**<font color=FF0000>不存在变量提升</font>**（相关概念见下方）。而且<font color=FF0000>要求必须 等`let`声明语句执行完之后，变量才能使用，不然会报`Uncaught ReferenceError`错误。</font>示例：
-
+  
   ```javascript
   console.log(aicoder);    // 错误：Uncaught ReferenceError ...
   let aicoder = 'aicoder.com';
   // 这里就可以安全使用aicoder
   ```
-
+  
   > ES6 明确规定，如果区块中存在let和const命令，这个区块对这些命令声明的变量，从一开始就形成了封闭作用域。凡是在声明之前就使用这些变量，就会报错。
   > 总之，在代码块内，使用let命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区”（temporal dead zone，简称 TDZ）。
 
 - **let变量不能重复声明**
-
+  
   let<font color=FF0000>不允许在相同作用域内，重复声明同一个变量。否则报错</font>：`Uncaught SyntaxError: Identifier 'XXX' has already been declared`
-
+  
   ```javascript
   let a = 0;
   let a = 'sss';
@@ -2635,8 +2576,6 @@ function potentiallyBuggyCode() {
 
 摘自：[MDN web docs - Hoisting（变量提升）](https://developer.mozilla.org/zh-CN/docs/Glossary/Hoisting)
 
-
-
 #### falsy
 
 **falsy 值 (虚值) 是<font color=FF0000>在 Boolean 上下文中认定为 false 的值</font>。**
@@ -2645,19 +2584,17 @@ JavaScript 在需要用到布尔类型值的上下文中使用强制类型转换
 
 **在 JavaScript 中只有 8 个 falsy 值。**
 
-| false      | false 关键字                                                 |      |
-| ---------- | ------------------------------------------------------------ | ---- |
-| 0          | 数值 zero                                                    |      |
-| -0         | 数值 负 zero                                                 |      |
-| 0n         | 当 BigInt作为布尔值使用时, 遵从其作为数值的规则. `0n` 是 *falsy* 值. |      |
-| "", '', `` | 这是一个空字符串 (字符串的长度为零). JavaScript 中的字符串可用双引号 `**""**`, 单引号 `''`, 或 [模板字面量](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) **````** 定义。 |      |
-| null       | null - 缺少值                                                |      |
-| undefined  | undefined - 原始值                                           |      |
-| NaN        | NaN - 非数值                                                 |      |
+| false      | false 关键字                                                                                                                                                                  |     |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| 0          | 数值 zero                                                                                                                                                                    |     |
+| -0         | 数值 负 zero                                                                                                                                                                  |     |
+| 0n         | 当 BigInt作为布尔值使用时, 遵从其作为数值的规则. `0n` 是 *falsy* 值.                                                                                                                            |     |
+| "", '', `` | 这是一个空字符串 (字符串的长度为零). JavaScript 中的字符串可用双引号 `**""**`, 单引号 `''`, 或 [模板字面量](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) **````** 定义。 |     |
+| null       | null - 缺少值                                                                                                                                                                 |     |
+| undefined  | undefined - 原始值                                                                                                                                                            |     |
+| NaN        | NaN - 非数值                                                                                                                                                                  |     |
 
 摘自：[MDN官方文档 - Falsy](https://developer.mozilla.org/zh-CN/docs/Glossary/Falsy)
-
-
 
 #### yield
 
@@ -2671,8 +2608,6 @@ yield 关键字用来<font color=FF0000>暂停和恢复一个生成器函数（(
 
 - **expression：**定义通过迭代器协议从生成器函数返回的值。如果省略，则返回undefined。
 - **rv：**返回传递给生成器的next()方法的可选值，以恢复其执行。
-
-
 
 #### Fetch
 
@@ -2707,13 +2642,13 @@ Promise<Response> fetch(input[, init]);
 **参数**
 
 - **?input**
-
+  
   定义要获取的资源。这可能是：一个 USVString 字符串，包含要获取资源的 URL。一些浏览器会接受 blob: 和 data: 作为 schemes.一个 Request 对象。
 
 - **init 可选**
-
+  
   一个配置项对象，包括所有对请求的设置。可选的参数有：
-
+  
   - **method:** 请求使用的方法，如 GET、POST。
   - **headers:** 请求的头信息，形式为 Headers 的对象或包含 ByteString 值的对象字面量。
   - **body:** 请求的 body 信息：可能是一个 Blob、BufferSource、FormData、URLSearchParams 或者 USVString 对象。注意 GET 或 HEAD 方法的请求不能包含 body 信息。
@@ -2730,8 +2665,6 @@ Promise<Response> fetch(input[, init]);
 一个 Promise，resolve 时回传 Response 对象。
 
 摘自：[MDN - Fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API)  [MDN - 使用 Fetch](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch#%E6%94%AF%E6%8C%81%E7%9A%84%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0)  [WorkerOrGlobalScope.fetch()](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/fetch)
-
-
 
 #### window.open()
 
@@ -2762,7 +2695,7 @@ let windowObjectReference = window.open(strUrl, strWindowName, [strWindowFeature
 #### window.location.reload()
 
 - **语法：**
-
+  
   ```javascript
   object.reload(forcedReload);
   ```
@@ -2772,25 +2705,21 @@ let windowObjectReference = window.open(strUrl, strWindowName, [strWindowFeature
 
 摘自：[MDN web docs - Location.reload()](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/reload)
 
-
-
 #### alert()、confirm()、prompt()
 
 - **alert()**：alert 方法有一个参数，即希望对用户显示的文本字符串。该字符串不是 HTML 格式。该消息框提供了一个“确定”按钮让用户关闭该消息框，并且该消息框是模式对话框，也就是说，用户必须先关闭该消息框然后才能继续进行操作。
-
+  
   <img src="https://s1.ax1x.com/2020/07/29/aZWwng.png" style="zoom:50%;" />
 
 - **confirm()**：使用确认消息框可向用户问一个“是-或-否”问题，并且用户可以选择单击“确定”按钮或者单击“取消”按钮。<font color=FF0000>confirm 方法的返回值为 true 或 false</font>。该消息框也是模式对话框：用户必须在响应该对话框（单击一个按钮）将其关闭后，才能进行下一步操作。
-
+  
   <img src="https://s1.ax1x.com/2020/07/29/aZhEz6.png" style="zoom:50%;" />
 
 - **prompt()**：提示消息框提供了一个文本字段，用户可以在此字段输入一个答案来响应您的提示。该消息框有一个“确定”按钮和一个“取消”按钮。如果您提供了一个辅助字符串参数，则提示消息框将在文本字段显示该辅助字符串作为默认响应。否则，默认文本为 ""。
-
+  
   <img src="https://s1.ax1x.com/2020/07/29/aZhJQf.png" style="zoom:50%;" />
 
 摘自：[**JS alert()、confirm()、prompt()的区别**](https://www.imooc.com/article/6751)
-
-
 
 #### Console
 
@@ -2848,8 +2777,6 @@ Console 对象可以从任何全局对象中访问到，如 Window，WorkerGloba
 
 摘自：[MDN web docs - Console](https://developer.mozilla.org/zh-CN/docs/Web/API/Console)
 
-
-
 #### JS存储对象（Storage）
 
 作为 Web Storage API 的接口，**`Storage`** <mark>提供了访问特定域名下的<font color=FF0000>**会话存储**</font>（sessionStorage）或<font color=FF0000>**本地存储**</font>（localStorage）的功能</mark>，例如，可以添加、修改或删除存储的数据项。
@@ -2867,8 +2794,6 @@ Console 对象可以从任何全局对象中访问到，如 Window，WorkerGloba
 
 摘自：[MDN web docs - Storage](https://developer.mozilla.org/zh-CN/docs/Web/API/Storage)
 
-
-
 #### GlobalEventHandlers.onload
 
 GlobalEventHandlers mixin 的 onload 属性是一个事件处理程序用于处理Window, XMLHttpRequest, \<img> 等元素的加载事件，当资源已加载时被触发。
@@ -2879,12 +2804,9 @@ GlobalEventHandlers mixin 的 onload 属性是一个事件处理程序用于处�
 window.onload = funcRef;
 ```
 
-
 当 window load事件触发时，funcRef 方法会被调用；funcRef 是窗口加载事件触发时调用的处理函数。
 
 摘自：[MDN web docs - GlobalEventHandlers.onload](https://developer.mozilla.org/zh-CN/docs/Web/API/GlobalEventHandlers/onload)
-
-
 
 #### Node.textContent
 
@@ -2918,13 +2840,9 @@ someOtherNode.textContent = string;
 
 摘自：[MDN - Node.textContent](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/textContent)
 
-
-
 #### JS表达式
 
 如果一个“字符串”可以被赋值给一个变量（类似于“右值”），便可以称为JS表达式
-
-
 
 #### JS forEach
 
@@ -2942,8 +2860,6 @@ array.forEach((item, index, arr)) => {
 }
 ```
 
-
-
 #### Array.prototype.map()
 
 **map()** 方法创建一个新数组，其结果是该数组中的每个元素是调用一次提供的函数后的返回值。
@@ -2956,8 +2872,6 @@ const map1 = array1.map(x => x * 2);
 ```
 
 **Array.prototype.map()可以起到和forEach类似的作用**
-
-
 
 #### for ... of
 
@@ -2982,35 +2896,29 @@ for ... of语句<font color=FF0000>在可迭代对象（包括 Array，Map，Set
 
 摘自：[javascript总for of和for in的区别？](https://segmentfault.com/q/1010000006658882)
 
-
-
 #### 列表操作
 
 - **concat**：两个列表合并（有返回参数，为合并后的列表）
 
-
-
 #### 栈内存和堆内存
 
 对于JS中的基本数据类型，如String,Number,Boolean,Undefined,Null是存在于栈内存中的，在栈内存中储存变量名及相应的值。而Object,Array,Function存在于堆内存中，在堆内存中储存变量名及引用位置。
-
-
 
 #### js判断数组中是否存在某值
 
 - **array.indexOf(el)：**判断数组中是否存在某个值，如果存在返回数组元素的下标，否则返回-1
 
 - **array.includes(searchElement[, startIndex])：**判断一个数组是否包含一个指定的值，如果存在返回 true，否则返回false。
-
+  
   **参数如下：**
-
+  
   - **searchElement：**需要查找的元素值
   - **startIndex：**从该索引处开始查找 searchElement。<font color=FF0000>如果为负值，则按升序从 array.length + startIndex 的索引开始搜索</font>。默认为 0
 
 - **array.find(callback[, thisArg])：**<font color=FF0000>返回数组中满足条件的第一个元素的值</font>，如果没有，返回undefined
-
+  
   **参数如下：**
-
+  
   - **callback**
     - element 当前遍历到的元素。
     - index 当前遍历到的索引。
@@ -3018,9 +2926,9 @@ for ... of语句<font color=FF0000>在可迭代对象（包括 Array，Map，Set
   - **thisArg**（可选）：指定 callback 的 this 参数
 
 - **array.findIndex(callback[, thisArg])：**<font color=FF0000>返回数组中满足条件的第一个元素的索引（下标）, 如果没有找到，返回-1</font>
-
+  
   **参数如下：**
-
+  
   - **callback**
     - element 当前遍历到的元素。
     - index 当前遍历到的索引。
@@ -3028,8 +2936,6 @@ for ... of语句<font color=FF0000>在可迭代对象（包括 Array，Map，Set
   - **thisArg（可选）：**指定 callback 的 this 参数。
 
 摘自：[js判断数组中是否存在某个值](https://segmentfault.com/a/1190000014202195)
-
-
 
 #### JS判断对象是否包含某个key
 
@@ -3039,8 +2945,6 @@ for ... of语句<font color=FF0000>在可迭代对象（包括 Array，Map，Set
 - **`obj.hasOwnProperty("key")`**：返回一个bool值
 
 摘自：[JS中判断对象是否包含某个key的方法](https://blog.csdn.net/sinat_34241861/article/details/107347288)
-
-
 
 #### FileReader
 
@@ -3060,12 +2964,12 @@ for ... of语句<font color=FF0000>在可迭代对象（包括 Array，Map，Set
 - **FileReader.error：** 只读，一个DOMException，表示在读取文件时发生的错误 。
 
 - <font color=FF0000>**FileReader.readyState：** </font>只读，<font color=FF0000>表示FileReader状态的数字</font>。取值如下：
-
-  | 常量名  | 值   | 描述                  |
-  | ------- | ---- | --------------------- |
-  | EMPTY   | 0    | 还没有加载任何数据.   |
-  | LOADING | 1    | 数据正在被加载.       |
-  | DONE    | 2    | 已完成全部的读取请求. |
+  
+  | 常量名     | 值   | 描述          |
+  | ------- | --- | ----------- |
+  | EMPTY   | 0   | 还没有加载任何数据.  |
+  | LOADING | 1   | 数据正在被加载.    |
+  | DONE    | 2   | 已完成全部的读取请求. |
 
 - <font color=FF0000>**FileReader.result：**</font>只读，<font color=FF0000>文件的内容</font>。该属性仅在读取操作完成后才有效，数据的格式取决于使用哪个方法来启动读取操作。
 
@@ -3088,15 +2992,110 @@ for ... of语句<font color=FF0000>在可迭代对象（包括 Array，Map，Set
 
 摘自：[MDN - FileReader](https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader)
 
-
-
 #### Event.target
 
 触发事件的对象 (某个DOM元素) 的引用。当事件处理程序在事件的冒泡或捕获阶段被调用时，它与event.currentTarget不同。
 
+#### JS获取div高度
+
+对于一个元素而言，<font color=FF0000>默认的style对象是没有高度的（style.height=""）。可以说style是它的外部属性，但一个对象应该有一个高度（自身属性）</font>。补充：`style`属性只能获取元素标签`style`属性里的值
+
+如果这时想要获取该元素的高度，可以使用如下方法
+
+有两种方法：
+
+- offsetHeight 、clientHeight
+
+- getComputedStyle
+
+**offsetHeight 和 clientHeight 的区别：**
+
+<font color=FF0000>offsetHeight的值包括元素内容+内边距+边框</font>，而<font color=FF0000>clientHeight的值等于元素内容+内边距</font>。区别就在于有没有边框~
+
+**getComputedStyle**
+
+`getComputedStyle`方法获取的是最终应用在元素上的所有CSS属性对象（即使没有CSS代码，也会把默认的祖宗八代都显示出来）；这和<font color=FF0000>`style`属性只能获取**内联样式**的行为形成了鲜明的对比</font>。除此之外，<font color=FF0000>`getComputedStyle`是只读的</font>，但是`style`能文能武，可读可写，我们也可以利用它动态设置元素的高度。示例如下：
+
+```js
+window.getComputedStyle(div);
+```
+
+如果想要高度，可以使用`getPropertyValue`**方法来帮忙**`getPropertyValue`方法可以获取CSS样式申明对象上的属性值。示例如下：
+
+```js
+console.log(window.getComputedStyle(div).getPropertyValue('height')); // 200px
+```
+
+摘自：[JS获取div高度的方法](https://www.jianshu.com/p/58c12245c2cc)
+
 ***
 
+## JS场景实践案例
 
+- 只能输入和粘贴汉字 
+  
+  ```html
+  <input onkeyup="value=value.replace(/[^\u4E00-\u9FA5]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5]/g,''))" /> 
+  ```
+
+- 只能输入和粘贴数字 
+  
+  ```html
+  <input onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
+  ```
+
+- 数字脚本 
+  
+  ```html
+  <input onkeyup="if(/\D/.test(this.value)){alert('只能输入数字');this.value='';}" />
+  ```
+
+- 只能输入数字和英文 
+  
+  ```html
+  <input onkeyup="value=value.replace(/[\W]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))">
+  ```
+
+- 简易禁止输入汉字：输入法不转换，但可粘贴上
+  
+  ```html
+  <input style="ime-mode:disabled">
+  ```
+
+- 输入数字和小数点 
+  
+  ```html
+  <input onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
+  ```
+
+- 只能数字和"-",例如在输入时间的时候可以用到 
+  
+  ```html
+  <input onkeyup="value=value.replace(/[^\w&=]|_/ig,'')" onblur="value=value.replace(/[^\w&-]|_/ig,'')" /> 
+  ```
+
+摘自：[限制input输入类型(多种方法实现)](https://www.cnblogs.com/eaysun/p/5490603.html)
+
+**补充：**
+
+限制输入框输入的只能是金额（非负，小数点后最多两位，自动纠错）
+
+```js
+onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/\.{2,}/g,'.').replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')
+```
+
+使用示例如下：
+
+```js
+<el-input       onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/\.{2,}/g,'.').replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3') 
+/>
+```
+
+
+
+
+
+***
 
 ## JSON
 
@@ -3120,8 +3119,6 @@ JSON 独立于语言：JSON 使用 Javascript语法来描述数据对象，但�
 - 能够使用内建的 JavaScript eval() 方法进行解析
 - 使用数组
 - 不使用保留字
-
-
 
 #### JSON 语法
 
@@ -3149,8 +3146,6 @@ JSON 数据的书写格式是：名称/值对。名称/值对包括字段名称�
 - JSON 文件的文件类型是 ".json"
 - JSON 文本的 MIME 类型是 "application/json"
 
-
-
 #### JSON 值
 
 JSON 值可以是：
@@ -3161,8 +3156,6 @@ JSON 值可以是：
 - 数组（在中括号`[]`中）
 - 对象（在大括号中）
 - null
-
-
 
 #### JSON 对象
 
@@ -3175,23 +3168,23 @@ JSON 值可以是：
 **访问对象值**
 
 - 你可以使用点号<font color=FF0000 size=5>**`.`**</font>来访问对象的值：
-
+  
   ```js
   var myObj = { "name":"runoob", "alexa":10000, "site":null };
   var x = myObj.name;
   ```
 
 - 你也可以使用中括号<font color=FF0000 size=5>**`[]`**</font>来访问对象的值：
-
+  
   ```js
   var myObj = { "name":"runoob", "alexa":10000, "site":null };
   var x = myObj["name"];
   ```
 
 - 你可以使用 for-in 来循环对象的属性：
-
+  
   **实例**
-
+  
   ```js
   var myObj = { "name":"runoob", "alexa":10000, "site":null }; 
   for (x in myObj) {
@@ -3200,9 +3193,9 @@ JSON 值可以是：
   ```
 
 - 循环对象
-
+  
   - 可以使用 for-in 来循环对象的属性
-
+    
     ```js
     var myObj = { "name":"runoob", "alexa":10000, "site":null };
     for (x in myObj) {
@@ -3210,9 +3203,9 @@ JSON 值可以是：
     }
     //name alexa site
     ```
-
+  
   - 在 for-in 循环对象的属性时，使用中括号（[]）来访问属性的值：
-
+    
     ```js
     var myObj = { "name":"runoob", "alexa":10000, "site":null };
     for (x in myObj) {
@@ -3249,13 +3242,13 @@ x = myObj.sites["site1"];
 **修改值**
 
 - 你可以使用点号<font color=FF0000 size=5>**`.`**</font>来修改 JSON 对象的值
-
+  
   ```js
   myObj.sites.site1 = "www.google.com";
   ```
 
 - 你可以使用中括号<font color=FF0000 size=5>**`[]`**</font>来修改 JSON 对象的值：
-
+  
   ```js
   myObj.sites["site1"] = "www.google.com";
   ```
@@ -3265,18 +3258,16 @@ x = myObj.sites["site1"];
 我们可以使用 **delete** 关键字来删除 JSON 对象的属性
 
 - 使用点号<font color=FF0000 size=5>**`.`**</font>
-
+  
   ```js
   delete myObj.sites.site1;
   ```
 
 - 使用中括号<font color=FF0000 size=5>**`[]`**</font>
-
+  
   ```js
   delete myObj.sites["site1"]
   ```
-
-
 
 #### JSON.parse()
 
@@ -3309,8 +3300,6 @@ obj.alexa = eval("(" + obj.alexa + ")");
 document.getElementById("demo").innerHTML = obj.name + " Alexa 排名：" + obj.alexa();
 ```
 
-
-
 #### JSON.stringify()
 
 JSON 通常用于与服务端交换数据。在向服务器发送数据时一般是字符串。
@@ -3328,9 +3317,9 @@ JSON.stringify(value[, replacer[, space]])
 - **value：**<font color=FF0000>必需</font>， 要转换的 JavaScript 值（<font color=FF0000>通常为对象或数组</font>）。
 
 - **replacer：**<font color=FF0000>可选</font>。用于转换结果的函数或数组。
-
+  
   如果 replacer 为<font color=FF0000>函数</font>，则 JSON.stringify 将调用该函数，并传入每个成员的键和值。使用返回值而不是原始值。如果此函数返回 undefined，则排除成员。根对象的键是一个空字符串：""。
-
+  
   如果 replacer 是一个<font color=FF0000>数组</font>，则仅转换该数组中具有键值的成员。成员的转换顺序与键在数组中的顺序一样。当 value 参数也为数组时，将忽略 replacer 数组。
 
 - **space：**<font color=FF0000>可选</font>，文本添加缩进、空格和换行符，如果 space 是一个数字，则返回值文本在每个级别缩进指定数目的空格，如果 space 大于 10，则文本缩进 10 个空格。space 也可以使用非数字，如：\t。
@@ -3351,8 +3340,6 @@ var myJSON = JSON.stringify(obj);
 document.getElementById("demo").innerHTML = myJSON;
 ```
 
-
-
 #### JSON 使用
 
 **把 JSON 文本转换为 JavaScript 对象**
@@ -3367,8 +3354,6 @@ eval() 函数使用的是 JavaScript 编译器，可解析 JSON 文本，然后�
 var obj = eval ("(" + txt + ")");
 ```
 
-
-
 #### JSONP 教程
 
 <font color=FF0000>JSONP (JSON with Padding)</font> 是 <font color=FF0000>json 的一种"使用模式"</font>，<font color=FF0000>可以让网页从**别的域名**（网站）那获取资料，即跨域读取数据。</font>
@@ -3377,24 +3362,19 @@ var obj = eval ("(" + txt + ")");
 
 同源策略，它是由 Netscape 提出的一个著名的安全策略，现在所有支持 JavaScript 的浏览器都会使用这个策略。
 
-
-
 #### JSX
 
 JSX是Javascript和XML结合的一种格式。React发明了JSX，利用HTML语法来创建虚拟DOM。<mark>当遇到\<，JSX就当HTML解析，遇到{就当JavaScript解析。</mark>
 
-
-
 #### JS异步执行的运行机制
 
 1. 所有同步任务都在主线程上执行，形成一个[执行栈](http://www.ruanyifeng.com/blog/2013/11/stack.html)（execution context stack）。
+
 2. 主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
 
 3. 一旦"执行栈"中的所有同步任务执行完毕（同步任务执行完毕），系统就会读取"任务队列"，看看里面有哪些事件（看看哪些异步事件执行完毕，是否产生什么结果）。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
 
 4. 主线程不断重复上面的第三步。
-
-
 
 ***
 
@@ -3414,8 +3394,6 @@ AJAX是基于现有的Internet标准，并且联合使用它们：
 - **JavaScript / DOM** (信息显示/交互)
 - **CSS** (给数据定义样式)
 - **XML** (作为转换数据的格式)
-
-
 
 #### AJAX - XMLHttpRequest 对象
 
@@ -3447,8 +3425,6 @@ if (window.XMLHttpRequest) {
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
 }
 ```
-
-
 
 #### AJAX - 向服务器发送请求请求
 
@@ -3510,27 +3486,23 @@ xmlhttp.open("GET","ajax_test.html",true);
 
 <mark><font color=FF0000>不推荐使用</font> async=false，但是对于一些小型的请求，也是可以的。</mark>
 
-
-
 #### AJAX - 服务器 响应
 
 如<font color=FF0000>需获得来自服务器的响应</font>，<font color=FF0000>请使用 XMLHttpRequest 对象的 responseText 或 responseXML 属性</font>。
 
 - **response<font color=FF0000>Text</font>**：获得<font color=FF0000>字符串</font>形式的响应数据。
-
+  
   如果来自服务器的响应<font color=FF0000>并非 XML</font>，请<font color=FF0000>使用 responseText </font>属性。
-
+  
   responseText 属性返回字符串形式的响应，示例：
-
+  
   ```js
   document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
   ```
 
 - **response<font color=FF0000>XML</font>**：获得 <font color=FF0000>XML</font> 形式的响应数据。
-
+  
   如果来自服务器的响应是 XML，而且需要作为 XML 对象进行解析，请使用 responseXML 属性
-
-
 
 #### AJAX - onreadystatechange 事件
 
@@ -3555,13 +3527,9 @@ xmlhttp.open("GET","ajax_test.html",true);
 
 ***
 
-
-
 ## ECMAScript
 
 ES6及更高版本不能兼容所有浏览器，而ES5**相对来说**可以很好的兼容这些浏览器；我们在编写时，写ES6+，而<font color=FF0000>使用Babel将ES6+的代码转变为ES5</font>。同时，Babel会被配置在Webpack这样的构建工具当中，通过在Webpack中配置Babel就可以很方便的将ES6+的语法打包成ES5的语法。
-
-
 
 #### NRM
 
@@ -3574,28 +3542,30 @@ npm install -g nrm
 **NRM常用命令**
 
 - 查看可选源: `nrm Is`
+
 - 测试源响应时间: `nrm test taobao`
+
 - 切换源: `nrm use taobao`
+
 - 增加定制源: `nrm add imooc http://192.168.1.100:6666`
 
 - 删除源: `nrm del imooc`
-
-
 
 #### 构建imooc-es-cli的开发环境
 
 （imooc-es-cli是讲师配置好的脚手架，初学就先使用讲师配置的脚手架）
 
 - 初始化
+  
   - 进入到要初始化项目的文件夹
   - 初始化命令：imooc-es-cli init
     - 需要输入新建项目的项目名称
 
 - 进入项目：cd es-demo
+
 - 安装依赖包：npm install
+
 - 启动项目：npm run start
-
-
 
 #### 文件夹与相关文件的作用
 
@@ -3606,10 +3576,6 @@ npm install -g nrm
 - static文件夹下的文件并不会被webpack打包和编译，会被直接复制到生产环境中，所以：需要编译的代码不要放在static文件夹下。
 
 - package-lock.json和package.json文件是依赖的包管理的配置文件
-
-
-
-
 
 ## jQuery
 
@@ -3631,8 +3597,6 @@ $(selector).action(){
 
 **补充：**jQuery 使用的语法是 XPath 与 CSS 选择器语法的组合
 
-
-
 #### CSS选择器
 
 jQuery 选择器允许您对 HTML 元素组或单个元素进行操作。
@@ -3640,38 +3604,36 @@ jQuery 选择器允许您对 HTML 元素组或单个元素进行操作。
 jQuery 选择器基于元素的 id、类（class）、类型、属性、属性值等"查找"（或选择）HTML 元素。 它基于已经存在的 [CSS 选择器](https://www.runoob.com/cssref/css-selectors.html)，除此之外，它还有一些自定义的选择器。
 
 - **元素选择器**
-
+  
   ```js
   $("p")
   ```
 
 - **#id 选择器**
-
+  
   ```js
   $("#test")
   ```
 
 - **.class 选择器**
-
+  
   ```js
   $(".test")
   ```
 
 **更多示例：**
 
-| 语法                                               | 描述                                                         |
-| :------------------------------------------------- | :----------------------------------------------------------- |
-| $("*")                                             | 选取所有元素                                                 |
-| <font color=FF0000>**$(this)**</font>              | 选取<font color=FF0000>当前 HTML 元素</font>                 |
-| $("p.intro")                                       | 选取 class 为 intro 的 \<p> 元素                             |
-| <font color=FF0000>**$("p:first")**</font>         | 选取<font color=FF0000>第一个 \<p> 元素</font>               |
-| $("ul li:first")                                   | 选取第一个 \<ul> 元素的第一个 \<li> 元素                     |
-| $("ul li:first-child")                             | 选取每个 \<ul> 元素的第一个 \<li> 元素                       |
-| <font color=FF0000>**$("[href]")**</font>          | 选取<font color=FF0000>带有 href 属性的元素</font>           |
-| $("a[target<font color=FF0000>=</font>'_blank']")  | 选取所有 target 属性值<font color=FF0000>等于</font> "_blank" 的 \<a> 元素 |
+| 语法                                                 | 描述                                                              |
+|:-------------------------------------------------- |:--------------------------------------------------------------- |
+| $("*")                                             | 选取所有元素                                                          |
+| <font color=FF0000>**$(this)**</font>              | 选取<font color=FF0000>当前 HTML 元素</font>                          |
+| $("p.intro")                                       | 选取 class 为 intro 的 \<p> 元素                                      |
+| <font color=FF0000>**$("p:first")**</font>         | 选取<font color=FF0000>第一个 \<p> 元素</font>                         |
+| $("ul li:first")                                   | 选取第一个 \<ul> 元素的第一个 \<li> 元素                                     |
+| $("ul li:first-child")                             | 选取每个 \<ul> 元素的第一个 \<li> 元素                                      |
+| <font color=FF0000>**$("[href]")**</font>          | 选取<font color=FF0000>带有 href 属性的元素</font>                       |
+| $("a[target<font color=FF0000>=</font>'_blank']")  | 选取所有 target 属性值<font color=FF0000>等于</font> "_blank" 的 \<a> 元素  |
 | $("a[target<font color=FF0000>!=</font>'_blank']") | 选取所有 target 属性值<font color=FF0000>不等于</font> "_blank" 的 \<a> 元素 |
-
-
 
 #### jQuery 事件（action）
 
@@ -3683,104 +3645,99 @@ $("p").click(function(){
 });
 ```
 
-
-
 **所有用于处理事件的 jQuery 方法：**
 
-| 方法                                                         | 描述                                                         |
-| :----------------------------------------------------------- | :----------------------------------------------------------- |
-| [bind()](https://www.runoob.com/jquery/event-bind.html)      | 向元素添加事件处理程序                                       |
-| [<font color=FF0000>blur()</font>](https://www.runoob.com/jquery/event-blur.html) | 添加/触发失去焦点事件                                        |
-| [change()](https://www.runoob.com/jquery/event-change.html)  | 添加/触发 change 事件                                        |
-| [<font color=FF0000>click()</font>](https://www.runoob.com/jquery/event-click.html) | <font color=FF0000>当按钮点击事件被触发时</font>，添加/触发 click 事件 |
-| [<font color=FF0000>dblclick()</font>](https://www.runoob.com/jquery/event-dblclick.html) | <font color=FF0000>双击元素时</font>，添加/触发 double click 事件 |
-| [delegate()](https://www.runoob.com/jquery/event-delegate.html) | 向匹配元素的当前或未来的子元素添加处理程序                   |
-| [die()](https://www.runoob.com/jquery/event-die.html)        | 在版本 1.9 中被移除。移除所有通过 live() 方法添加的事件处理程序 |
-| [error()](https://www.runoob.com/jquery/event-error.html)    | 在版本 1.8 中被废弃。添加/触发 error 事件                    |
-| [event.currentTarget](https://www.runoob.com/jquery/jq-event-currenttarget.html) | 在事件冒泡阶段内的当前 DOM 元素                              |
-| [event.data](https://www.runoob.com/jquery/event-data.html)  | 包含当前执行的处理程序被绑定时传递到事件方法的可选数据       |
-| [event.delegateTarget](https://www.runoob.com/jquery/event-delegatetarget.html) | 返回当前调用的 jQuery 事件处理程序所添加的元素               |
-| [event.isDefaultPrevented()](https://www.runoob.com/jquery/event-isdefaultprevented.html) | 返回指定的 event 对象上是否调用了 event.preventDefault()     |
-| [event.isImmediatePropagationStopped()](https://www.runoob.com/jquery/event-isimmediatepropagationstopped.html) | 返回指定的 event 对象上是否调用了 event.stopImmediatePropagation() |
-| [event.isPropagationStopped()](https://www.runoob.com/jquery/event-ispropagationstopped.html) | 返回指定的 event 对象上是否调用了 event.stopPropagation()    |
-| [event.namespace](https://www.runoob.com/jquery/event-namespace.html) | 返回当事件被触发时指定的命名空间                             |
-| [event.pageX](https://www.runoob.com/jquery/event-pagex.html) | 返回相对于文档左边缘的鼠标位置                               |
-| [event.pageY](https://www.runoob.com/jquery/event-pagey.html) | 返回相对于文档上边缘的鼠标位置                               |
-| [event.preventDefault()](https://www.runoob.com/jquery/event-preventdefault.html) | 阻止事件的默认行为                                           |
-| [event.relatedTarget](https://www.runoob.com/jquery/jq-event-relatedtarget.html) | 返回当鼠标移动时哪个元素进入或退出                           |
-| [event.result](https://www.runoob.com/jquery/event-result.html) | 包含由被指定事件触发的事件处理程序返回的最后一个值           |
-| [event.stopImmediatePropagation()](https://www.runoob.com/jquery/event-stopimmediatepropagation.html) | 阻止其他事件处理程序被调用                                   |
-| [event.stopPropagation()](https://www.runoob.com/jquery/event-stoppropagation.html) | 阻止事件向上冒泡到 DOM 树，阻止任何父处理程序被事件通知      |
-| [event.target](https://www.runoob.com/jquery/jq-event-target.html) | 返回哪个 DOM 元素触发事件                                    |
-| [event.timeStamp](https://www.runoob.com/jquery/jq-event-timestamp.html) | 返回从 1970 年 1 月 1 日到事件被触发时的毫秒数               |
-| [event.type](https://www.runoob.com/jquery/jq-event-type.html) | 返回哪种事件类型被触发                                       |
-| [event.which](https://www.runoob.com/jquery/event-which.html) | 返回指定事件上哪个键盘键或鼠标按钮被按下                     |
-| [event.metaKey](https://www.runoob.com/jquery/event_metakey.html) | 事件触发时 META 键是否被按下                                 |
-| [<font color=FF0000>focus()</font>](https://www.runoob.com/jquery/event-focus.html) | 添加/触发 focus 事件                                         |
-| [focusin()](https://www.runoob.com/jquery/event-focusin.html) | 添加事件处理程序到 focusin 事件                              |
-| [focusout()](https://www.runoob.com/jquery/event-focusout.html) | 添加事件处理程序到 focusout 事件                             |
-| [<font color=FF0000>hover()</font>](https://www.runoob.com/jquery/event-hover.html) | 添加两个事件处理程序到 hover 事件                            |
-| [keydown()](https://www.runoob.com/jquery/event-keydown.html) | 添加/触发 keydown 事件                                       |
-| [keypress()](https://www.runoob.com/jquery/event-keypress.html) | 添加/触发 keypress 事件                                      |
-| [keyup()](https://www.runoob.com/jquery/event-keyup.html)    | 添加/触发 keyup 事件                                         |
-| [live()](https://www.runoob.com/jquery/event-live.html)      | 在版本 1.9 中被移除。添加一个或多个事件处理程序到当前或未来的被选元素 |
-| [load()](https://www.runoob.com/jquery/event-load.html)      | 在版本 1.8 中被废弃。添加一个事件处理程序到 load 事件        |
-| [<font color=FF0000>mousedown()</font>](https://www.runoob.com/jquery/event-mousedown.html) | <font color=FF0000>鼠标指针移动到元素上方，并按下鼠标按键时</font>，添加/触发 mousedown 事件 |
-| [<font color=FF0000>mouseenter()</font>](https://www.runoob.com/jquery/event-mouseenter.html) | <font color=FF0000>鼠标指针穿过元素时</font>，添加/触发 mouseenter 事件 |
-| [<font color=FF0000>mouseleave()</font>](https://www.runoob.com/jquery/event-mouseleave.html) | <font color=FF0000>鼠标指针离开元素时</font>，添加/触发 mouseleave 事件 |
-| [mousemove()](https://www.runoob.com/jquery/event-mousemove.html) | 添加/触发 mousemove 事件                                     |
-| [mouseout()](https://www.runoob.com/jquery/event-mouseout.html) | 添加/触发 mouseout 事件                                      |
-| [mouseover()](https://www.runoob.com/jquery/event-mouseover.html) | 添加/触发 mouseover 事件                                     |
-| [<font color=FF0000>mouseup()</font>](https://www.runoob.com/jquery/event-mouseup.html) | <font color=FF0000>在元素上松开鼠标按钮时</font>，添加/触发 mouseup 事件 |
-| [off()](https://www.runoob.com/jquery/event-off.html)        | 移除通过 on() 方法添加的事件处理程序                         |
-| [on()](https://www.runoob.com/jquery/event-on.html)          | 向元素添加事件处理程序                                       |
-| [one()](https://www.runoob.com/jquery/event-one.html)        | 向被选元素添加一个或多个事件处理程序。该处理程序只能被每个元素触发一次 |
-| [$.proxy()](https://www.runoob.com/jquery/event-proxy.html)  | 接受一个已有的函数，并返回一个带特定上下文的新的函数         |
-| [ready()](https://www.runoob.com/jquery/event-ready.html)    | 规定当 DOM 完全加载时要执行的函数                            |
-| [resize()](https://www.runoob.com/jquery/event-resize.html)  | 添加/触发 resize 事件                                        |
-| [scroll()](https://www.runoob.com/jquery/event-scroll.html)  | 添加/触发 scroll 事件                                        |
-| [select()](https://www.runoob.com/jquery/event-select.html)  | 添加/触发 select 事件                                        |
-| [submit()](https://www.runoob.com/jquery/event-submit.html)  | 添加/触发 submit 事件                                        |
-| [toggle()](https://www.runoob.com/jquery/event-toggle.html)  | 在版本 1.9 中被移除。添加 click 事件之间要切换的两个或多个函数 |
-| [trigger()](https://www.runoob.com/jquery/event-trigger.html) | 触发绑定到被选元素的所有事件                                 |
-| [triggerHandler()](https://www.runoob.com/jquery/event-triggerhandler.html) | 触发绑定到被选元素的指定事件上的所有函数                     |
-| [unbind()](https://www.runoob.com/jquery/event-unbind.html)  | 从被选元素上移除添加的事件处理程序                           |
-| [undelegate()](https://www.runoob.com/jquery/event-undelegate.html) | 从现在或未来的被选元素上移除事件处理程序                     |
-| [unload()](https://www.runoob.com/jquery/event-unload.html)  | 在版本 1.8 中被废弃。添加事件处理程序到 unload 事件          |
-| [contextmenu()](https://www.runoob.com/jquery/event-contextmenu.html) | 添加事件处理程序到 contextmenu 事件                          |
-| [$.holdReady()](https://www.runoob.com/jquery/event-holdready.html) | 用于暂停或恢复.ready() 事件的执行                            |
+| 方法                                                                                                              | 描述                                                                |
+|:--------------------------------------------------------------------------------------------------------------- |:----------------------------------------------------------------- |
+| [bind()](https://www.runoob.com/jquery/event-bind.html)                                                         | 向元素添加事件处理程序                                                       |
+| [<font color=FF0000>blur()</font>](https://www.runoob.com/jquery/event-blur.html)                               | 添加/触发失去焦点事件                                                       |
+| [change()](https://www.runoob.com/jquery/event-change.html)                                                     | 添加/触发 change 事件                                                   |
+| [<font color=FF0000>click()</font>](https://www.runoob.com/jquery/event-click.html)                             | <font color=FF0000>当按钮点击事件被触发时</font>，添加/触发 click 事件              |
+| [<font color=FF0000>dblclick()</font>](https://www.runoob.com/jquery/event-dblclick.html)                       | <font color=FF0000>双击元素时</font>，添加/触发 double click 事件             |
+| [delegate()](https://www.runoob.com/jquery/event-delegate.html)                                                 | 向匹配元素的当前或未来的子元素添加处理程序                                             |
+| [die()](https://www.runoob.com/jquery/event-die.html)                                                           | 在版本 1.9 中被移除。移除所有通过 live() 方法添加的事件处理程序                            |
+| [error()](https://www.runoob.com/jquery/event-error.html)                                                       | 在版本 1.8 中被废弃。添加/触发 error 事件                                       |
+| [event.currentTarget](https://www.runoob.com/jquery/jq-event-currenttarget.html)                                | 在事件冒泡阶段内的当前 DOM 元素                                                |
+| [event.data](https://www.runoob.com/jquery/event-data.html)                                                     | 包含当前执行的处理程序被绑定时传递到事件方法的可选数据                                       |
+| [event.delegateTarget](https://www.runoob.com/jquery/event-delegatetarget.html)                                 | 返回当前调用的 jQuery 事件处理程序所添加的元素                                       |
+| [event.isDefaultPrevented()](https://www.runoob.com/jquery/event-isdefaultprevented.html)                       | 返回指定的 event 对象上是否调用了 event.preventDefault()                       |
+| [event.isImmediatePropagationStopped()](https://www.runoob.com/jquery/event-isimmediatepropagationstopped.html) | 返回指定的 event 对象上是否调用了 event.stopImmediatePropagation()             |
+| [event.isPropagationStopped()](https://www.runoob.com/jquery/event-ispropagationstopped.html)                   | 返回指定的 event 对象上是否调用了 event.stopPropagation()                      |
+| [event.namespace](https://www.runoob.com/jquery/event-namespace.html)                                           | 返回当事件被触发时指定的命名空间                                                  |
+| [event.pageX](https://www.runoob.com/jquery/event-pagex.html)                                                   | 返回相对于文档左边缘的鼠标位置                                                   |
+| [event.pageY](https://www.runoob.com/jquery/event-pagey.html)                                                   | 返回相对于文档上边缘的鼠标位置                                                   |
+| [event.preventDefault()](https://www.runoob.com/jquery/event-preventdefault.html)                               | 阻止事件的默认行为                                                         |
+| [event.relatedTarget](https://www.runoob.com/jquery/jq-event-relatedtarget.html)                                | 返回当鼠标移动时哪个元素进入或退出                                                 |
+| [event.result](https://www.runoob.com/jquery/event-result.html)                                                 | 包含由被指定事件触发的事件处理程序返回的最后一个值                                         |
+| [event.stopImmediatePropagation()](https://www.runoob.com/jquery/event-stopimmediatepropagation.html)           | 阻止其他事件处理程序被调用                                                     |
+| [event.stopPropagation()](https://www.runoob.com/jquery/event-stoppropagation.html)                             | 阻止事件向上冒泡到 DOM 树，阻止任何父处理程序被事件通知                                    |
+| [event.target](https://www.runoob.com/jquery/jq-event-target.html)                                              | 返回哪个 DOM 元素触发事件                                                   |
+| [event.timeStamp](https://www.runoob.com/jquery/jq-event-timestamp.html)                                        | 返回从 1970 年 1 月 1 日到事件被触发时的毫秒数                                     |
+| [event.type](https://www.runoob.com/jquery/jq-event-type.html)                                                  | 返回哪种事件类型被触发                                                       |
+| [event.which](https://www.runoob.com/jquery/event-which.html)                                                   | 返回指定事件上哪个键盘键或鼠标按钮被按下                                              |
+| [event.metaKey](https://www.runoob.com/jquery/event_metakey.html)                                               | 事件触发时 META 键是否被按下                                                 |
+| [<font color=FF0000>focus()</font>](https://www.runoob.com/jquery/event-focus.html)                             | 添加/触发 focus 事件                                                    |
+| [focusin()](https://www.runoob.com/jquery/event-focusin.html)                                                   | 添加事件处理程序到 focusin 事件                                              |
+| [focusout()](https://www.runoob.com/jquery/event-focusout.html)                                                 | 添加事件处理程序到 focusout 事件                                             |
+| [<font color=FF0000>hover()</font>](https://www.runoob.com/jquery/event-hover.html)                             | 添加两个事件处理程序到 hover 事件                                              |
+| [keydown()](https://www.runoob.com/jquery/event-keydown.html)                                                   | 添加/触发 keydown 事件                                                  |
+| [keypress()](https://www.runoob.com/jquery/event-keypress.html)                                                 | 添加/触发 keypress 事件                                                 |
+| [keyup()](https://www.runoob.com/jquery/event-keyup.html)                                                       | 添加/触发 keyup 事件                                                    |
+| [live()](https://www.runoob.com/jquery/event-live.html)                                                         | 在版本 1.9 中被移除。添加一个或多个事件处理程序到当前或未来的被选元素                             |
+| [load()](https://www.runoob.com/jquery/event-load.html)                                                         | 在版本 1.8 中被废弃。添加一个事件处理程序到 load 事件                                  |
+| [<font color=FF0000>mousedown()</font>](https://www.runoob.com/jquery/event-mousedown.html)                     | <font color=FF0000>鼠标指针移动到元素上方，并按下鼠标按键时</font>，添加/触发 mousedown 事件 |
+| [<font color=FF0000>mouseenter()</font>](https://www.runoob.com/jquery/event-mouseenter.html)                   | <font color=FF0000>鼠标指针穿过元素时</font>，添加/触发 mouseenter 事件           |
+| [<font color=FF0000>mouseleave()</font>](https://www.runoob.com/jquery/event-mouseleave.html)                   | <font color=FF0000>鼠标指针离开元素时</font>，添加/触发 mouseleave 事件           |
+| [mousemove()](https://www.runoob.com/jquery/event-mousemove.html)                                               | 添加/触发 mousemove 事件                                                |
+| [mouseout()](https://www.runoob.com/jquery/event-mouseout.html)                                                 | 添加/触发 mouseout 事件                                                 |
+| [mouseover()](https://www.runoob.com/jquery/event-mouseover.html)                                               | 添加/触发 mouseover 事件                                                |
+| [<font color=FF0000>mouseup()</font>](https://www.runoob.com/jquery/event-mouseup.html)                         | <font color=FF0000>在元素上松开鼠标按钮时</font>，添加/触发 mouseup 事件            |
+| [off()](https://www.runoob.com/jquery/event-off.html)                                                           | 移除通过 on() 方法添加的事件处理程序                                             |
+| [on()](https://www.runoob.com/jquery/event-on.html)                                                             | 向元素添加事件处理程序                                                       |
+| [one()](https://www.runoob.com/jquery/event-one.html)                                                           | 向被选元素添加一个或多个事件处理程序。该处理程序只能被每个元素触发一次                               |
+| [$.proxy()](https://www.runoob.com/jquery/event-proxy.html)                                                     | 接受一个已有的函数，并返回一个带特定上下文的新的函数                                        |
+| [ready()](https://www.runoob.com/jquery/event-ready.html)                                                       | 规定当 DOM 完全加载时要执行的函数                                               |
+| [resize()](https://www.runoob.com/jquery/event-resize.html)                                                     | 添加/触发 resize 事件                                                   |
+| [scroll()](https://www.runoob.com/jquery/event-scroll.html)                                                     | 添加/触发 scroll 事件                                                   |
+| [select()](https://www.runoob.com/jquery/event-select.html)                                                     | 添加/触发 select 事件                                                   |
+| [submit()](https://www.runoob.com/jquery/event-submit.html)                                                     | 添加/触发 submit 事件                                                   |
+| [toggle()](https://www.runoob.com/jquery/event-toggle.html)                                                     | 在版本 1.9 中被移除。添加 click 事件之间要切换的两个或多个函数                             |
+| [trigger()](https://www.runoob.com/jquery/event-trigger.html)                                                   | 触发绑定到被选元素的所有事件                                                    |
+| [triggerHandler()](https://www.runoob.com/jquery/event-triggerhandler.html)                                     | 触发绑定到被选元素的指定事件上的所有函数                                              |
+| [unbind()](https://www.runoob.com/jquery/event-unbind.html)                                                     | 从被选元素上移除添加的事件处理程序                                                 |
+| [undelegate()](https://www.runoob.com/jquery/event-undelegate.html)                                             | 从现在或未来的被选元素上移除事件处理程序                                              |
+| [unload()](https://www.runoob.com/jquery/event-unload.html)                                                     | 在版本 1.8 中被废弃。添加事件处理程序到 unload 事件                                  |
+| [contextmenu()](https://www.runoob.com/jquery/event-contextmenu.html)                                           | 添加事件处理程序到 contextmenu 事件                                          |
+| [$.holdReady()](https://www.runoob.com/jquery/event-holdready.html)                                             | 用于暂停或恢复.ready() 事件的执行                                             |
 
 摘自：[jQuery 参考手册 - jQuery 事件 方法](https://www.runoob.com/jquery/jquery-ref-events.html)
-
-
 
 #### jQuery 效果- 隐藏和显示
 
 - **hide() 和 show()**
-
+  
   **语法：**
-
+  
   ```javascript
   $(selector).hide(speed,easing_function,callback);
   $(selector).show(speed,easing_function,callback);
   ```
-
+  
   - 可选的 <font color=FF0000>**speed**</font> 参数规定<font color=FF0000>隐藏/显示的速度</font>，可以取以下值：<font color=FF0000>"slow"、"fast" 或毫秒</font>。
-
+  
   - 可选的<font color=FF0000>**easing_function**</font>参数规定<font color=FF0000>过渡使用哪种缓动函数</font>，jQuery自身提供"linear" 和 "swing"，其他可以使用相关的插件，比如：[jQuery Easing 插件](http://gsgd.co.uk/sandbox/jquery/easing/)
+  
   - 可选的 <font color=FF0000>**callback** </font>参数是<font color=FF0000>隐藏或显示完成后所执行的函数名称</font>。
 
 - **toggle()**：可以<font color=FF0000>使用 toggle() 方法来切换 hide() 和 show() 方法</font>。
-
+  
   **语法：**
-
+  
   ```js
   $(selector).toggle(speed,easing_function,callback);
   ```
-
+  
   参数与hide()、show()一致
-
-
 
 #### jQuery 效果 - 淡入淡出
 
@@ -3789,72 +3746,68 @@ $("p").click(function(){
 jQuery 拥有下面四种 fade 方法：
 
 - **fadeIn()**：用于<font color=FF0000>淡入**已隐藏**的元素</font>。**语法:**
-
+  
   ```js
   $(selector).fadeIn(speed,callback);
   ```
-
+  
   - 可选的 speed 参数规定效果的时长。它可以取以下值："slow"、"fast" 或毫秒。.
-
+  
   - 可选的 callback 参数是 fading 完成后所执行的函数名称。
 
 - **fadeOut()**：用于<font color=FF0000>淡出**可见**元素</font>。**语法:**
-
+  
   ```js
   $(selector).fadeOut(speed,callback);
   ```
 
 - **fadeToggle()**：可以<font color=FF0000>在 fadeIn() 与 fadeOut() 方法之间进行切换</font>。
-
+  
   - 如果元素已淡出，则 fadeToggle() 会向元素添加淡入效果。
-
+  
   - 如果元素已淡入，则 fadeToggle() 会向元素添加淡出效果。
-
+  
   **语法:**
-
+  
   ```js
   $(selector).fadeToggle(speed,callback);
   ```
 
 - **fadeTo()**：允许渐变为给定的不透明度（值介于 0 与 1 之间），**语法:**
-
+  
   ```js
   $(selector).fadeTo(speed,opacity,callback);
   ```
-
+  
   其中：必需的 opacity 参数将淡入淡出效果设置为给定的不透明度（值介于 0 与 1 之间）。
-
-
 
 #### jQuery 效果 - 滑动
 
 jQuery 拥有以下滑动方法：
 
 - **slideDown()**：用于<font color=FF0000>向下滑动元素</font>。**语法:**
-
+  
   ```js
   $(selector).slideDown(speed,callback);
   ```
 
 - **slideUp()**：用于向上滑动元素。**语法:**
-
+  
   ```js
   $(selector).slideUp(speed,callback);
   ```
 
 - **slideToggle()**：可以在 slideDown() 与 slideUp() 方法之间进行切换。
-
+  
   如果元素向下滑动，则 slideToggle() 可向上滑动它们。
-
+  
   如果元素向上滑动，则 slideToggle() 可向下滑动它们。
-
+  
   **语法：**
-
+  
   ```js
   $(selector).slideToggle(speed,callback);
   ```
-
-
 
 #### jQuery 效果- 动画
 
@@ -3867,6 +3820,7 @@ $(selector).animate({params},speed,callback);
 - **params**：**<font color=FF0000>必需</font>**，参数定义形成动画的 CSS 属性。
 
 - **speed**：<font color=FF0000>可选</font>， 参数规定效果的时长。它可以取以下值："slow"、"fast" 或毫秒。
+
 - **callback**：<font color=FF0000>可选</font>，参数是动画完成后所执行的函数名称。
 
 **示例：**
@@ -3876,8 +3830,6 @@ $("button").click(function(){
   $("div").animate({left:'250px'});
 });
 ```
-
-
 
 #### jQuery 停止动画
 
@@ -3897,15 +3849,11 @@ $(selector).stop(stopAll,goToEnd);
 
 因此，默认地，stop() 会清除在被选元素上指定的当前动画。
 
-
-
 #### jQuery - 链(Chaining)
 
 通过 jQuery，可以把动作/方法链接在一起。
 
 Chaining 允许我们<font color=FF0000>在一条语句中运行多个 jQuery 方法（在相同的元素上）</font>。
-
-
 
 #### jQuery - 获取内容和属性（DOM 操作）
 
@@ -3933,14 +3881,12 @@ $("button").click(function(){
 });
 ```
 
-
-
 #### jQuery - 设置内容和属性
 
 - text()、html() 以及 val()<font color=FF0000>拥有回调函数</font>。
-
+  
   <font color=FF0000>回调函数有两个参数</font>：被选元素列表中当前元素的下标，以及原始（旧的）值。<font color=FF0000>然后以函数新值返回您希望使用的字符串。</font>示例：
-
+  
   ```js
   $("#btn1").click(function(){
       $("#test1").text(function(i,origText){
@@ -3950,18 +3896,18 @@ $("button").click(function(){
   ```
 
 - **attr()**：设置属性
-
+  
   - jQuery attr() 方法也<font color=FF0000>用于设置/改变属性值</font>。**示例：**
-
+    
     ```js
     //演示如何改变（设置）链接中 href 属性的值
     $("button").click(function(){
       $("#runoob").attr("href","http://www.runoob.com/jquery");
     });
     ```
-
+  
   - attr() 方法也允许您<font color=FF0000>同时设置多个属性</font>。**示例：**
-
+    
     ```js
     //演示如何同时设置 href 和 title 属性
     $("button").click(function(){    
@@ -3971,9 +3917,9 @@ $("button").click(function(){
       });
     });
     ```
-
+  
   - jQuery 方法 attr()，也提供回调函数。<font color=FF0000>回调函数有**两个参数**</font>：<font color=FF0000>被选元素列表中当前元素的下标，以及原始（旧的）值</font>。然后以函数新值返回您希望使用的字符串。**示例：**
-
+    
     ```js
     $("button").click(function(){
       $("#runoob").attr("href", function(i,origValue){
@@ -3982,82 +3928,76 @@ $("button").click(function(){
     });
     ```
 
-
-
 #### jQuery - 添加元素
 
 用于添加新内容的四个 jQuery 方法：
 
 - **append()：** 在被选元素的<font color=FF0000>结尾</font>插入内容（<font color=FF0000>仍然在该元素的内部）</font>，**示例：**
-
+  
   ```js
   $("p").append("追加文本");
   ```
 
 - **prepend()：** 在被选元素的<font color=FF0000>开头</font>插入内容，**示例：**
-
+  
   ```js
   $("p").prepend("在开头追加文本");
   ```
 
 - **after()：** 在<font color=FF0000>**被选元素之后**</font>插入内容，**示例：**
-
+  
   ```js
   $("img").after("在后面添加文本");
   ```
 
 - **before()：** 在<font color=FF0000>**被选元素之前**</font>插入内容，**示例：**
-
+  
   ```js
   $("img").before("在前面添加文本");
   ```
 
 **补充：**四个方法插入多个元素亦可。示例：
 
-  ```js
-  function appendText()
-  {
-      var txt1="<p>文本。</p>";              // 使用 HTML 标签创建文本
-      var txt2=$("<p></p>").text("文本。");  // 使用 jQuery 创建文本
-      var txt3=document.createElement("p");
-      txt3.innerHTML="文本。";               // 使用 DOM 创建文本 text with DOM
-      $("body").append(txt1,txt2,txt3);        // 追加新元素
-  }
-  ```
-
-
+```js
+function appendText()
+{
+    var txt1="<p>文本。</p>";              // 使用 HTML 标签创建文本
+    var txt2=$("<p></p>").text("文本。");  // 使用 jQuery 创建文本
+    var txt3=document.createElement("p");
+    txt3.innerHTML="文本。";               // 使用 DOM 创建文本 text with DOM
+    $("body").append(txt1,txt2,txt3);        // 追加新元素
+}
+```
 
 #### jQuery - 删除元素
 
 如需删除元素和内容，一般可使用以下两个 jQuery 方法：
 
 - **remove()** ：删除<font color=FF0000>被选元素（**及其**子元素）</font>，示例：
-
+  
   ```js
   $("#div1").remove();
   ```
-
+  
   jQuery remove() 方法<font color=FF0000>也可接受一个参数，允许您**对被删元素进行过滤**</font>。
-
+  
   ```js
   //删除 class="italic" 的所有 <p> 元素
   $("p").remove(".italic");
   ```
 
 - **empty()** ：从被选元素<font color=FF0000>中的删除子元素</font>，示例：
-
+  
   ```js
   $("#div1").empty();
   ```
-
-
 
 #### jQuery - 获取并设置 CSS 类
 
 jQuery 拥有若干进行 CSS 操作的方法
 
 - **addClass()**： 向被选元素<font color=FF0000>添加一个或**多个类**</font>，当然，在添加类时，您也<font color=FF0000>可以**选取多个元素**</font>，也可以<font color=FF0000>**在方法中规定多个类**</font>。示例：
-
+  
   ```js
   $("button").click(function(){
     // 选取多个元素           在方法中规定多个类
@@ -4066,7 +4006,7 @@ jQuery 拥有若干进行 CSS 操作的方法
   ```
 
 - **removeClass()**： 从被选元素<font color=FF0000>删除一个或**多个类**</font>，与addClass()类似，<font color=FF0000>可以**选取多个元素**</font>。**示例：**
-
+  
   ```js
   $("button").click(function(){
     $("h1,h2,p").removeClass("blue");
@@ -4074,7 +4014,7 @@ jQuery 拥有若干进行 CSS 操作的方法
   ```
 
 - **toggleClass()**： 对被选元素进行<font color=FF0000>添加 / 删除类的切换</font>操作。与addClass()类似，<font color=FF0000>可以**选取多个元素**</font>（可以用来实现比如电灯这种只有两种状态的东西）。**示例：**
-
+  
   ```js
   $("button").click(function(){
     $("h1,h2,p").toggleClass("blue");
@@ -4082,47 +4022,45 @@ jQuery 拥有若干进行 CSS 操作的方法
   ```
 
 - **css()**：<font color=FF0000> 设置或返回</font>一个或多个样式属性
-
+  
   - **<font color=FF0000>返回</font> CSS 属性**，语法如下：
-
+    
     ```js
-  css("propertyname");
+    css("propertyname");
     ```
-
+    
     示例如下：
-
+    
     ```js
     //返回首个匹配元素的 background-color 值
     $("p").css("background-color");
     ```
   
   - **<font color=FF0000>设置</font> CSS 属性**，语法如下：
-  
+    
     ```js
-  css("propertyname","value");
+    css("propertyname","value");
     ```
-  
+    
     示例如下：
-  
+    
     ```js
     //为所有匹配元素设置 background-color 值：
     $("p").css("background-color","yellow");
     ```
   
   - <font color=FF0000>设置多个 CSS 属性</font>，语法如下：
-  
+    
     ```js
     css({"propertyname":"value","propertyname":"value",...});
     ```
-  
+    
     示例如下：
-  
+    
     ```js
     //为所有匹配元素设置 background-color 和 font-size：
     $("p").css({"background-color":"yellow","font-size":"200%"});
     ```
-
-
 
 #### jQuery 尺寸
 
@@ -4137,8 +4075,6 @@ jQuery 提供多个处理尺寸的重要方法：
 - **outerWidth()**：返回元素的宽度（包括内边距和边框）
 - **outerHeight()**：返回元素的高度（包括内边距和边框）
 
-
-
 #### jQuery 遍历
 
 jQuery 遍历，意为"移动"，用于根据其相对于其他元素的关系来"查找"（或选取）HTML 元素。以某项选择开始，并沿着这个选择移动，直到抵达您期望的元素为止。
@@ -4147,14 +4083,12 @@ jQuery 遍历，意为"移动"，用于根据其相对于其他元素的关系�
 
 其中DOM中祖先的说法，类似于数据结构中树的说法。
 
-
-
 #### jQuery 遍历 - 祖先
 
 jquery用于向上遍历 DOM 树的方法：
 
 - **parent()**：parent() 方法<font color=FF0000>返回被选元素的**直接**父元素</font>。该方法只会向上一级对 DOM 树进行遍历。**示例：**
-
+  
   ```js
   //返回每个 \<span> 元素的直接父元素
   $(document).ready(function(){  
@@ -4163,7 +4097,7 @@ jquery用于向上遍历 DOM 树的方法：
   ```
 
 - **parents()**：返回被选元素的<font color=FF0000>所有祖先元素</font>，它一路向上直到文档的根元素 (\<html>)。示例：
-
+  
   ```js
   //返回所有<span> 元素的所有祖先
   $(document).ready(function(){  
@@ -4172,7 +4106,7 @@ jquery用于向上遍历 DOM 树的方法：
   ```
 
 - **parentsUntil()**：parentsUntil() 方法返回<font color=FF0000>介于两个给定元素之间的所有祖先元素</font>。示例：
-
+  
   ```js
   //返回介于 <span> 与 <div> 元素之间的所有祖先元素
   $(document).ready(function(){
@@ -4180,14 +4114,12 @@ jquery用于向上遍历 DOM 树的方法：
   });
   ```
 
-  
-
 #### jQuery 遍历 - 后代
 
 通过 jQuery，能够向下遍历 DOM 树，以查找元素的后代。下面是两个用于向下遍历 DOM 树的 jQuery 方法：
 
 - **children()**：返回被选元素的<mark style=background-color:silver><font color=FF0000>**所有**</font></mark> <mark style=background-color:aqua><font color=FF0000>**直接**</font></mark> <font color=FF0000>子元素</font>。该方法只会向下一级对 DOM 树进行遍历。**示例**
-
+  
   ```js
   //返回每个 <div> 元素的所有直接子元素
   $(document).ready(function(){  
@@ -4196,7 +4128,7 @@ jquery用于向上遍历 DOM 树的方法：
   ```
 
 - **find()**：find() 方法<font color=FF0000>返回被选元素的后代元素</font>，一路向下<font color=FF0000>直到最后一个后代</font>。**示例**
-
+  
   ```js
   //返回属于 <div> 后代的所有 <span> 元素
   $(document).ready(function(){
@@ -4204,27 +4136,23 @@ jquery用于向上遍历 DOM 树的方法：
   });
   ```
 
-
-
-
 #### jQuery 遍历 - 同胞(siblings)
-
 
 同胞拥有相同的父元素。通过 jQuery，能够在 DOM 树中<font color=FF0000>遍历元素的同胞元素</font>。
 
 **在 DOM 树进行水平遍历的方法：**
 
 - **siblings()**：<font color=FF0000>返回被选元素的所有同胞元素</font>。示例：
-
+  
   ```js
   //返回 <h2> 的所有同胞元素
   $(document).ready(function(){  
     $("h2").siblings(); 
   });
   ```
-
+  
   也可以<font color=FF0000>使用可选参数</font>来<font color=FF0000>过滤</font>对同胞元素的搜索
-
+  
   ```js
   //返回属于 <h2> 的同胞元素的所有 <p> 元素
   $(document).ready(function(){  
@@ -4233,7 +4161,7 @@ jquery用于向上遍历 DOM 树的方法：
   ```
 
 - **next()**：<font color=FF0000>返回被选元素的**下一个同胞元素**</font>。该方法<font color=FF0000>只返回一个元素</font>。示例：
-
+  
   ```js
   //返回 <h2> 的下一个同胞元素
   $(document).ready(function(){  
@@ -4242,7 +4170,7 @@ jquery用于向上遍历 DOM 树的方法：
   ```
 
 - **nextAll()**：返回<font color=FF0000>被选元素的所有跟随的同胞元素</font>（<mark>即被选元素<font color=FF0000>右边的</font>、<font color=FF0000>所有兄弟节点（**不包含兄弟节点的子节点**）</font></mark>）。示例：
-
+  
   ```js
   //返回 <h2> 的所有跟随的同胞元素
   $(document).ready(function(){  
@@ -4251,7 +4179,7 @@ jquery用于向上遍历 DOM 树的方法：
   ```
 
 - **nextUntil()**：返回<font color=FF0000>介于两个给定参数之间（不包含边界的两个元素）的所有跟随的同胞元素</font>。示例：
-
+  
   ```js
   //返回介于 <h2> 与 <h6> 元素之间的所有同胞元素
   $(document).ready(function(){  
@@ -4265,31 +4193,30 @@ jquery用于向上遍历 DOM 树的方法：
 
 - **prevUntil()**：和nextUtil()类似，方向相反
 
-  
-
 #### jQuery 遍历- 过滤
 
 - 三个最基本的过滤方法是：**first(), last() 和 eq()**，它们允许您<font color=FF0000>基于其在一组元素中的位置来**选择一个特定的元素**</font>。
+  
   - **first()**：返回被选元素（被过滤返回的元素列表）的首个元素。示例：
-
+    
     ```js
     //选取首个 <div> 元素内部的第一个 <p> 元素
     $(document).ready(function(){  
       $("div p").first(); 
     });
     ```
-
+  
   - **last()**：返回被选元素的最后一个元素。示例：
-
+    
     ```js
     //选择最后一个 <div> 元素中的最后一个 <p> 元素
     $(document).ready(function(){  
       $("div p").last(); 
     });
     ```
-
+  
   - **eq()**：返回被选元素中<font color=FF0000>带有指定**索引号**的元素</font>。**<font color=FF0000>索引号从 0 开始</font>**，因此首个元素的索引号是 0 而不是 1。示例：
-
+    
     ```js
     //选取第二个 <p> 元素（索引号 1）
     $(document).ready(function(){  
@@ -4298,18 +4225,18 @@ jquery用于向上遍历 DOM 树的方法：
     ```
 
 - 其他过滤方法，比如 **filter() 和 not()** 允许您<font color=FF0000>选取匹配或不匹配某项指定标准的元素</font>。
-
+  
   - **filter()**：允许<font color=FF0000>**自定义规定**一个标准，不匹配这个标准的元素会被从集合中删除，匹配的元素会被返回</font>。
-
+    
     ```js
     //返回带有类名 "url" 的所有 <p> 元素
     $(document).ready(function(){  
       $("p").filter(".url"); 
     });
     ```
-
+  
   - **not()**：返回不匹配标准的所有元素。<font color=FF0000>**not() 方法与 filter() 相反**</font>。
-
+    
     ```js
     //返回不带有类名 "url" 的所有 <p> 元素
     $(document).ready(function(){  
@@ -4317,62 +4244,56 @@ jquery用于向上遍历 DOM 树的方法：
     });
     ```
 
-
-
 #### AJAX
 
 AJAX = 异步 JavaScript 和 XML（Asynchronous JavaScript and XML）。
 
 - **jQuery load() **：load() 方法从服务器加载数据，并把返回的数据放入被选元素中。
-
+  
   **语法:**
-
+  
   ```js
   $(selector).load(URL, data, callback);
   ```
-
+  
   - **URL：**<font color=FF0000>必需</font>，规定您希望加载的 URL资源；也可以把 jQuery 选择器添加到 URL 参数。
-
+  
   - **data：**<font color=FF0000>可选</font>，<font color=FF0000>规定与请求一同发送的查询字符串键/值对集合</font>。
-
+  
   - **callback：**<font color=FF0000>可选</font>，是 load() 方法完成后所执行的函数名称。
-
+    
     回调函数可以设置不同的参数：
-
+    
     - **responseTxt** - 包含调用成功时的结果内容
     - **statusTXT** - 包含调用的状态
     - **xhr** - 包含 XMLHttpRequest 对象
-
-
 
 #### jQuery - AJAX get() 和 post() 方法
 
 jQuery get() 和 post() 方法用于通过 HTTP GET 或 POST 请求从服务器请求数据。
 
 - **GET** - 从指定的资源<font color=FF0000>**请求**</font>数据，基本上用于从服务器获得（取回）数据。另外，<font color=FF0000>GET 方法**可能返回**缓存数据</font>。
-
+  
   **jQuery $.get() 方法**：通过 HTTP GET 请求从服务器上请求数据。语法：
-
+  
   ```js
   $.get(URL,callback);
   ```
-
+  
   - **URL**：<font color=FF0000>必需</font>，参数规定您<font color=FF0000>希望请求的 URL</font>。
   - **callback**：<font color=FF0000>可选</font>，参数是<font color=FF0000>**请求成功后**所执行的函数名</font>。
 
 - **POST** - 向指定的资源<font color=FF0000>**提交**</font>要处理的数据，可用于从服务器获取数据。不过，<font color=FF0000>POST 方法**不会缓存**数据</font>，并且<font color=FF0000>**常用于连同请求一起发送数据**</font>。
-
+  
   **jQuery $.post() 方法**：通过 HTTP POST 请求向服务器提交数据。**语法:**
-
+  
   ```js
   $.post(URL,data,callback);
   ```
-
+  
   - **URL**：<font color=FF0000>必需</font>，参数规定您希望请求的 URL。
   - **data**：可选，参数规定<font color=FF0000>连同请求发送的数据</font>。
   - **callback**：可选，参数是请求成功后所执行的函数名。
-
-
 
 #### jQuery - noConflict() 方法
 
@@ -4402,8 +4323,6 @@ jQuery(document).ready(function($){
 });
 ```
 
-
-
 #### 总结
 
 ```js
@@ -4414,48 +4333,40 @@ $.ajax({name:value, name:value, ... })
 
 下面的表格中列出了可能的名称/值：
 
-| 名称                         | 值/描述                                                      |
-| :--------------------------- | :----------------------------------------------------------- |
-| async                        | 布尔值，表示请求是否异步处理。默认是 true。                  |
-| beforeSend(*xhr*)            | 发送请求前运行的函数。                                       |
-| cache                        | 布尔值，表示浏览器是否缓存被请求页面。默认是 true。          |
-| complete(*xhr,status*)       | 请求完成时运行的函数（在请求成功或失败之后均调用，即在 success 和 error 函数之后）。 |
+| 名称                           | 值/描述                                                       |
+|:---------------------------- |:---------------------------------------------------------- |
+| async                        | 布尔值，表示请求是否异步处理。默认是 true。                                   |
+| beforeSend(*xhr*)            | 发送请求前运行的函数。                                                |
+| cache                        | 布尔值，表示浏览器是否缓存被请求页面。默认是 true。                               |
+| complete(*xhr,status*)       | 请求完成时运行的函数（在请求成功或失败之后均调用，即在 success 和 error 函数之后）。         |
 | contentType                  | 发送数据到服务器时所使用的内容类型。默认是："application/x-www-form-urlencoded"。 |
-| context                      | 为所有 AJAX 相关的回调函数规定 "this" 值。                   |
-| data                         | 规定要发送到服务器的数据。                                   |
-| dataFilter(*data*,*type*)    | 用于处理 XMLHttpRequest 原始响应数据的函数。                 |
-| dataType                     | 预期的服务器响应的数据类型。                                 |
-| error(*xhr,status,error*)    | 如果请求失败要运行的函数。                                   |
-| global                       | 布尔值，规定是否为请求触发全局 AJAX 事件处理程序。默认是 true。 |
-| ifModified                   | 布尔值，规定是否仅在最后一次请求以来响应发生改变时才请求成功。默认是 false。 |
-| jsonp                        | 在一个 jsonp 中重写回调函数的字符串。                        |
-| jsonpCallback                | 在一个 jsonp 中规定回调函数的名称。                          |
-| password                     | 规定在 HTTP 访问认证请求中使用的密码。                       |
-| processData                  | 布尔值，规定通过请求发送的数据是否转换为查询字符串。默认是 true。 |
-| scriptCharset                | 规定请求的字符集。                                           |
-| success(*result,status,xhr*) | 当请求成功时运行的函数。                                     |
-| timeout                      | 设置本地的请求超时时间（以毫秒计）。                         |
-| traditional                  | 布尔值，规定是否使用参数序列化的传统样式。                   |
-| type                         | 规定请求的类型（GET 或 POST）。                              |
-| url                          | 规定发送请求的 URL。默认是当前页面。                         |
-| username                     | 规定在 HTTP 访问认证请求中使用的用户名。                     |
-| xhr                          | 用于创建 XMLHttpRequest 对象的函数。                         |
+| context                      | 为所有 AJAX 相关的回调函数规定 "this" 值。                               |
+| data                         | 规定要发送到服务器的数据。                                              |
+| dataFilter(*data*,*type*)    | 用于处理 XMLHttpRequest 原始响应数据的函数。                             |
+| dataType                     | 预期的服务器响应的数据类型。                                             |
+| error(*xhr,status,error*)    | 如果请求失败要运行的函数。                                              |
+| global                       | 布尔值，规定是否为请求触发全局 AJAX 事件处理程序。默认是 true。                      |
+| ifModified                   | 布尔值，规定是否仅在最后一次请求以来响应发生改变时才请求成功。默认是 false。                  |
+| jsonp                        | 在一个 jsonp 中重写回调函数的字符串。                                     |
+| jsonpCallback                | 在一个 jsonp 中规定回调函数的名称。                                      |
+| password                     | 规定在 HTTP 访问认证请求中使用的密码。                                     |
+| processData                  | 布尔值，规定通过请求发送的数据是否转换为查询字符串。默认是 true。                        |
+| scriptCharset                | 规定请求的字符集。                                                  |
+| success(*result,status,xhr*) | 当请求成功时运行的函数。                                               |
+| timeout                      | 设置本地的请求超时时间（以毫秒计）。                                         |
+| traditional                  | 布尔值，规定是否使用参数序列化的传统样式。                                      |
+| type                         | 规定请求的类型（GET 或 POST）。                                       |
+| url                          | 规定发送请求的 URL。默认是当前页面。                                       |
+| username                     | 规定在 HTTP 访问认证请求中使用的用户名。                                    |
+| xhr                          | 用于创建 XMLHttpRequest 对象的函数。                                 |
 
 摘自：[jQuery ajax() 方法](https://www.runoob.com/jquery/ajax-ajax.html)
-
-
 
 //todo
 
 `.toggleClass()`
 
 `.data()`
-
-
-
-
-
-
 
 #### Collapse：折叠插件
 

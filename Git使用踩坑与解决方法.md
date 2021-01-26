@@ -1,12 +1,8 @@
 # git使用踩坑与解决方法
 
-
-
 #### 所有关于git的内容都可以参考
 
 https://git-scm.com/book/zh/v2
-
-
 
 #### <font color=FF0000>From 1.3</font>
 
@@ -46,36 +42,30 @@ $ git config --system --list
 
 这时使用命令`git config --global --unset user.mail`即可将其删除（在`git config --list`中查不到）。
 
-
-
 #### <font color=FF0000>From  1.4</font>
 
 **建造Git仓库有两种场景**
 
 - 把<font color=FF0000>已有</font>的项目代码纳入Git管理
-
+  
   ```bash
   $ cd target_file_path
   $ git init git_proj_name
   ```
 
 - <font color=FF0000>新建</font>的项目直接用Git管理
-
+  
   ```bash
   $ cd target_file_path
   $ git init your_project #会在当前路路径下创建和项⽬目名称同名的⽂文件夹
   $ cd your_project
   ```
 
-
-
 #### <font color=FF0000>From 1.5</font>
 
 ```bash
 $ git add -u #对git已经跟踪了的文件，一起提交到暂存区
 ```
-
-
 
 #### <font color=FF0000>From 1.6</font>
 
@@ -92,8 +82,6 @@ $ git mv orgin_file_name target_file_name #将原始文件改名为目标文件�
 $ git reset --hard  #暂存区工作路径下的所有变更都会清理掉，相当于还原
 ```
 
-
-
 #### <font color=FF0000>From 1.7</font>
 
 **`git log`命令**
@@ -103,15 +91,9 @@ $ git log --oneline  #以精简模式显示
 $ git log -n4  #输出最近的4个commit（4可以改动）
 ```
 
-
-
 ```bash
 $ git branch -v  #查看本地有多少分支 
 ```
-
-
-
-
 
 #### <font color=FF0000>Win端下对已安装git进行版本升级</font>
 
@@ -129,8 +111,6 @@ git update-git-for-windows
 
 摘自：[Windows下如何对已安装的git进行版本升级？== eastegg的回答](https://segmentfault.com/q/1010000011704285)
 
-
-
 #### <font color=FF0000>使用https url clone项目</font>
 
 很多朋友在用github管理项目的时候，都是直接使用https url克隆到本地，当然也有有些人使用 SSH url 克隆到本地。然而，为什么绝大多数人会使用https url克隆呢？
@@ -145,8 +125,6 @@ https可以随意克隆github上的项目，而不管是谁的；而SSH是你必
 
 摘自：[github设置添加SSH](https://www.cnblogs.com/ayseeing/p/3572582.html)
 
-
-
 #### <font color=FF0000>Github 上的账户的SSH keys与仓库的Deploy keys的区别</font>
 
 - **Github账户的SSH keys**，相当于这个账号的最高级key，只要是这个账号有的权限（任何项目），都能进行操作。
@@ -155,8 +133,6 @@ https可以随意克隆github上的项目，而不管是谁的；而SSH是你必
 说白了就相当于你有一所大别墅，<mark>SSH key能开别墅中的任何一个房间。而Deploy key只能开进别墅中的一个单间。</mark>
 
 摘自：[github 上的账户的SSH keys与仓库的Deploy keys有何区别](https://segmentfault.com/q/1010000007356879)
-
-
 
 #### <font color=FF0000>查看</font>
 
@@ -167,8 +143,6 @@ where git
 ```
 
 摘自：[查看本地git安装位置](https://blog.csdn.net/weixin_42685022/article/details/84061043)
-
-
 
 #### <font color=FF0000>问题汇总，出现如下问题：</font>
 
@@ -218,8 +192,6 @@ git push -u origin +master
 
 ***
 
-
-
 #### <font color=FF0000>用户名和邮箱</font>
 
 **<font color=FF0000>查看</font>用户名和邮箱地址：**
@@ -261,8 +233,6 @@ $  git config --list
 
 参考：[Git修改和配置用户名和邮箱](https://www.cnblogs.com/sunshinekevin/p/11617547.html)
 
-
-
 #### <font color=FF0000>Git 工作区、暂存区和版本库</font>
 
 - **工作区：**就是你<mark>在电脑里能看到的目录</mark>。
@@ -273,16 +243,13 @@ $  git config --list
 
 摘自：[Git 工作区、暂存区和版本库](https://www.runoob.com/git/git-workspace-index-repo.html)
 
-
-
 - `git log` 会按时间先后顺序列出所有的提交，最近的更新排在最上面。这个命令会列出每个提交的 SHA-1 校验和、作者的名字和电子邮件地址、提交时间以及提交说明。
+  
   - 其中一个比较有用的选项是 `-p` 或 `--patch` ，它会显示每次提交所引入的差异（按 **补丁** 的格式输出）。
   - 你也可以限制显示的日志条目数量，例如使用 `-2` 选项来只显示最近的两次提交
-  -  你也可以为 `git log` 附带一系列的总结性选项。 比如你想看到每次提交的简略统计信息，可以使用 `--stat` 选项
+  - 你也可以为 `git log` 附带一系列的总结性选项。 比如你想看到每次提交的简略统计信息，可以使用 `--stat` 选项
 
 - `git show` 此命令可以用于显示各种类型对象的相关信息
-
-
 
 #### <font color=FF0000>Git设置添加一个新的远程 Git 仓库</font>
 
@@ -293,26 +260,22 @@ git remote add <shortname> <url>
 git remote add origin git@github.com:PointerToNextPole/community.git
 ```
 
-
-
-
-
 - 在提交（push）代码之后，若发现提交的代码存在问题，这时可以输入如下命令：
-
+  
   ```shell
   git commit --amend --no-edit
   ```
-
+  
   以修改提交
 
 - 在提交（push）代码之后，若发现提交代码的注释（-m message）存在问题，这时可以输入如下命令：
-
+  
   ```shell
   git commit --amend
   ```
-
+  
   这时候会通过vim打开「提交」的相关信息（如下），只需要对其进行修改即可
-
+  
   <img src="https://s1.ax1x.com/2020/06/26/NrRojI.png" style="zoom: 40%;" />
 
 另外：在push代码时候可能需要使用如下命令，才能提交
@@ -320,8 +283,6 @@ git remote add origin git@github.com:PointerToNextPole/community.git
 ```shell
 git push -u orgin +master
 ```
-
-
 
 #### git pull 和 git merge的区别
 
@@ -341,8 +302,6 @@ git push 默认推送到master。
 
 摘自：[segmentfault Salamander的回答 -- git pull和git merge 区别? ](https://segmentfault.com/q/1010000009076820)
 
-
-
 //TODO
 
 ```sh
@@ -354,6 +313,3 @@ git checkout -b branchName
 #push到branchName的分支下
 git push --set-upstream origin branchName
 ```
-
-
-

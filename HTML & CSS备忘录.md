@@ -1,12 +1,8 @@
 # HTML & CSS备忘录
 
-
-
 ## HTML
 
 **\<hr\>**是horizontal rule的缩写
-
-
 
 #### \<meta>
 
@@ -29,9 +25,9 @@ HTML \<meta> 元素表示那些不能由其它 HTML 元相关（meta-related）�
 - **content：**此属性包含http-equiv 或name 属性的值，具体取决于所使用的值。
 
 - **http-equiv：**
-
+  
   属性定义了一个编译指示指令。这个属性叫做 **http-equiv**(alent) 是因为所有允许的值都是特定HTTP头部的名称，如下：
-
+  
   - **content-security-policy：** 它允许页面作者定义当前页的内容策略。 内容策略主要指定允许的服务器源和脚本端点，这有助于防止跨站点脚本攻击。
   - **content-type：** 如果使用这个属性，其值必须是"text/html; charset=utf-8"。注意：该属性只能用于 MIME type 为 text/html 的文档，不能用于MIME类型为XML的文档。
   - **default-style：**设置默认 CSS 样式表组的名称。
@@ -42,23 +38,19 @@ HTML \<meta> 元素表示那些不能由其它 HTML 元相关（meta-related）�
 
 **HTML5 新属性**
 
-| 属性       | 值                                                     | 描述                                              |
-| :--------- | :----------------------------------------------------- | :------------------------------------------------ |
-| charset    | *character_set*                                        | 定义文档的字符编码。                              |
-| content    | *text*                                                 | 定义与 http-equiv 或 name 属性相关的元信息。      |
-| http-equiv | content-type default-style refresh                     | 把 content 属性关联到 HTTP 头部。                 |
-| name       | application-name author description generator keywords | 把 content 属性关联到一个名称。                   |
+| 属性         | 值                                                      | 描述                               |
+|:---------- |:------------------------------------------------------ |:-------------------------------- |
+| charset    | *character_set*                                        | 定义文档的字符编码。                       |
+| content    | *text*                                                 | 定义与 http-equiv 或 name 属性相关的元信息。  |
+| http-equiv | content-type default-style refresh                     | 把 content 属性关联到 HTTP 头部。         |
+| name       | application-name author description generator keywords | 把 content 属性关联到一个名称。             |
 | scheme     | *format/URI*                                           | HTML5不支持。 定义用于翻译 content 属性值的格式。 |
-
-
 
 #### 表单属性
 
 - **maxlength / minlength：**用于\<input>和\<textarea>，作用是限制输入最多的和最少的字符数量
 
 - **autocomplete：**可用于以文本或数字值作为输入的 \<input> 元素 ， \<textarea> 元素, \<select> 元素, 和\<form> 元素。 autocomplete 允许web开发人员指定，如果有任何权限 user agent 必须提供填写表单字段值的自动帮助，并为浏览器提供关于字段中所期望的信息类型的指导。<mark>建议值的来源通常取决于浏览器。 通常，值来自用户输入的过去值，但它们也可能来自预先配置的值。 </mark>
-
-
 
 #### CDATA
 
@@ -105,8 +97,6 @@ XML 解析器通常会解析 XML 文档中所有的文本。
 
 摘自：[W3school - XML CDATA](https://www.w3school.com.cn/xml/xml_cdata.asp)
 
-
-
 #### \<figure>
 
 **HTML `<figure>` 元素**代表一段独立的内容，<font color=FF0000>经常与说明（caption）\<figcaption>配合使用，并且作为一个独立的引用单元</font>。当它属于主内容流（main flow）时，它的位置独立于主体。这个标签经常是在主文中引用的图片，插图，表格，代码段等等，当这部分转移到附录中或者其他页面时不会影响到主体。
@@ -123,8 +113,6 @@ XML 解析器通常会解析 XML 文档中所有的文本。
 
 摘自：[MDN - \<figure>：可附标题内容元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/figure)
 
-
-
 #### \<section>
 
 HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独立部分</font>，它没有更具体的语义元素来表示，一般来说会有包含一个标题。
@@ -137,13 +125,34 @@ HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独
 
 摘自：[MDN - \<section>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/section)
 
+### \<input>
 
+如果想要输入的值位于中间 / 右边，只需要设置text-align: center / right即可，同时，placeholder也会跟着居中 / 居右
 
-#### box-sizing
+- **input输入事件：**onfocus（focus） -> 键盘输入 -> onkeydown（keydown） -> onkeypress（keypress） -> onkeyup（keyup） -> oninput（input） -> 失去焦点 -> onchange（change） -> onblur（blur)
+  
+  摘自：[input输入框事件](https://www.jianshu.com/p/4517117abd8e)
 
-
-
-
+- #### **\<input type="hidden">**
+  
+  <font color=FF0000>`"hidden"` 类型的 `<input>` 元素允许 Web 开发者存放一些用户不可见、不可改的数据，在用户提交表单时，这些数据会一并发送出</font>。比如，正被请求或编辑的内容的 ID，或是一个唯一的安全令牌。这些隐藏的 `<input>`元素在渲染完成的页面中完全不可见，而且没有方法可以使它重新变为可见。
+  
+  **使用场景：**隐藏的 `<input>` 可以用于任何有需要提交给服务器的、用户无法查看或编辑的数据的地方。让我们看一些说明其用法的例子吧。
+  
+  - 跟踪被编辑的内容：
+    
+    隐藏输入的最常见用途之一是当被编辑的表单提交时，保持跟踪数据库数据的更新。
+  
+  - 改善网站安全性：
+    隐藏输入表单还用于存储和提交安全令牌或机密信息，以提高网站的安全性。基本思路是，如果用户填写敏感表格，例如在其银行网站上将某笔款项转入另一个帐户的表格，他们将被提供的密钥和证明他们就是他们所说的真实身份，并且他们使用正确的表单来提交转移请求。
+  
+  摘自：[MDN - \<input type="hidden">](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input/hidden)
+  
+  **补充：**
+  
+  隐藏域在页面中对于用户是不可见的，在表单中插入隐藏域的目的在于收集或发送信息，以利于被处理表单的程序所使用
+  
+  （隐藏只是在网页页面上面不显示输入框，但是虽然隐藏了，还是具有form传值功能。一般用来传值，而不必让用户看到。）
 
 #### \<textarea\>完全去除边框：
 
@@ -156,16 +165,6 @@ textarea{
 ```
 
 摘自：[textarea 完全去除边框](https://blog.csdn.net/qq_32849999/article/details/102978744)
-
-
-
-//TODO
-
-```HTML
-<input type="hidden" id="">
-```
-
-
 
 ## CSS
 
@@ -215,6 +214,7 @@ margin: 40px;
 ```
 
 补充：
+
 ```css
 {
   /*第一个数字表示上下的间距，第二个数字表示左右的间距*/
@@ -223,8 +223,8 @@ margin: 40px;
 }
 /*等价于*/
 {
-	margin-top: 10px;
-	margin-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 ```
 
@@ -261,20 +261,20 @@ body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别
 #### **补充：**
 
 - **边距塌陷：**给两个盒子同时设置外边距，他们最终的距离可能不是两者外边距之和。
-
+  
   这种现象会发生在相邻盒子间或父子盒子间，当他们都设置了边距时。
-
+  
   - 如果都是正数，则取最大值。
   - 如果相同，则取其任一。
   - 如果正负都有，取最大正数与最小负数之和。
   - 如果都是负数，则取两者中最小的
-
+  
   另外，<font color=FF0000>设置元素为BFC可以解决边距塌陷的问题。</font>
 
 - **块格式化上下文**（Block Formatting Context，BFC） 是Web页面的可视CSS渲染的一部分，是块盒子的布局过程发生的区域，也是浮动元素与其他元素交互的区域。
-
+  
   下列方式会创建块格式化上下文：
-
+  
   - 根元素（\<html>）
   - 浮动元素（元素的 float 不是 none）
   - 绝对定位元素（元素的 position 为 absolute 或 fixed）
@@ -289,23 +289,21 @@ body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别
   - 网格元素（display 为 grid 或 inline-grid 元素的直接子元素）
   - 多列容器（元素的 column-count 或 column-width 不为 auto，包括 column-count 为 1）
   - column-span 为 all 的元素始终会创建一个新的BFC，即使该元素没有包裹在一个多列容器中（标准变更，Chrome bug）。
-
+  
   摘自：[MDN - 块格式化上下文](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
-
-
 
 #### id & class
 
 - **id选择器**
-
+  
   - id 选择器可以<mark>为标有特定 id 的 HTML 元素指定特定的样式</mark>。
-
+  
   - HTML元素以id属性来设置id选择器，**<font color=FF0000>CSS 中 id 选择器以 "#" 来定义</font>**。
-
+  
   - <mark>ID属性不要以数字开头</mark>，数字开头的ID在 Mozilla/Firefox 浏览器中不起作用。
-
+    
     示例如下：
-
+    
     ```html
     <!DOCTYPE html>
     <html>
@@ -315,8 +313,8 @@ body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别
     <style>
     #para1
     {
-    	text-align:center;
-    	color:red;
+        text-align:center;
+        color:red;
     } 
     </style>
     </head>
@@ -329,107 +327,100 @@ body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别
     ```
 
 - **class 选择器**
-
+  
   - class 选择器用于描述一组元素的样式，<font color=FF0000>class 选择器有别于id选择器，**class可以在多个元素中使用**</font>。
-
+  
   - class 选择器在HTML中以class属性表示，在 CSS 中，<font color=FF0000>**类选择器以一个点"."号显示**</font>
-
-
 
 #### 多重样式（继承）优先级
 
 **内联样式）Inline style > （内部样式）Internal style sheet >（外部样式）External style sheet > 浏览器默认样式**（类似于就近原则）
 
-
-
 #### CSS Cursor
 
-| 值                                | 描述                                                         |
-| :-------------------------------- | :----------------------------------------------------------- |
+| 值                                 | 描述                                                       |
+|:--------------------------------- |:-------------------------------------------------------- |
 | *url*                             | 需使用的自定义光标的 URL。注释：请在此列表的末端始终定义一种普通的光标，以防没有由 URL 定义的可用光标。 |
-| <font color=FF0000>default</font> | <font color=FF0000>默认</font>光标（通常是一个箭头）         |
-| <font color=FF0000>auto</font>    | <font color=FF0000>默认</font>。浏览器设置的光标。           |
-| crosshair                         | 光标呈现为十字线。                                           |
-| pointer                           | 光标呈现为指示链接的指针（一只手）                           |
-| move                              | 此光标指示某对象可被移动。                                   |
-| e-resize                          | 此光标指示矩形框的边缘可被向右（东）移动。                   |
-| ne-resize                         | 此光标指示矩形框的边缘可被向上及向右移动（北/东）。          |
-| nw-resize                         | 此光标指示矩形框的边缘可被向上及向左移动（北/西）。          |
-| n-resize                          | 此光标指示矩形框的边缘可被向上（北）移动。                   |
-| se-resize                         | 此光标指示矩形框的边缘可被向下及向右移动（南/东）。          |
-| sw-resize                         | 此光标指示矩形框的边缘可被向下及向左移动（南/西）。          |
-| s-resize                          | 此光标指示矩形框的边缘可被向下移动（南）。                   |
-| w-resize                          | 此光标指示矩形框的边缘可被向左移动（西）。                   |
-| text                              | 此光标指示文本。                                             |
-| wait                              | 此光标指示程序正忙（通常是一只表或沙漏）。                   |
-| help                              | 此光标指示可用的帮助（通常是一个问号或一个气球）。           |
+| <font color=FF0000>default</font> | <font color=FF0000>默认</font>光标（通常是一个箭头）                  |
+| <font color=FF0000>auto</font>    | <font color=FF0000>默认</font>。浏览器设置的光标。                   |
+| crosshair                         | 光标呈现为十字线。                                                |
+| pointer                           | 光标呈现为指示链接的指针（一只手）                                        |
+| move                              | 此光标指示某对象可被移动。                                            |
+| e-resize                          | 此光标指示矩形框的边缘可被向右（东）移动。                                    |
+| ne-resize                         | 此光标指示矩形框的边缘可被向上及向右移动（北/东）。                               |
+| nw-resize                         | 此光标指示矩形框的边缘可被向上及向左移动（北/西）。                               |
+| n-resize                          | 此光标指示矩形框的边缘可被向上（北）移动。                                    |
+| se-resize                         | 此光标指示矩形框的边缘可被向下及向右移动（南/东）。                               |
+| sw-resize                         | 此光标指示矩形框的边缘可被向下及向左移动（南/西）。                               |
+| s-resize                          | 此光标指示矩形框的边缘可被向下移动（南）。                                    |
+| w-resize                          | 此光标指示矩形框的边缘可被向左移动（西）。                                    |
+| text                              | 此光标指示文本。                                                 |
+| wait                              | 此光标指示程序正忙（通常是一只表或沙漏）。                                    |
+| help                              | 此光标指示可用的帮助（通常是一个问号或一个气球）。                                |
 
 另外这里的内容可以参考：[MDN - Cursor](https://developer.mozilla.org/zh-CN/docs/Web/CSS/cursor)，这里内容更加全面
-
-
 
 ### CSS背景
 
 - #### background-color
-
+  
   定义了元素的背景颜色。CSS中，颜色值通常以以下方式定义:
-
+  
   - 十六进制 - 如："#ff0000"
   - RGB - 如："rgb(255,0,0)"
   - 颜色名称 - 如："red"
 
 - #### background-image
-
+  
   描述了元素的背景图像。示例：
-
+  
   ```css
   body {
-  	background-image:url('paper.gif');
+      background-image:url('paper.gif');
   }
   ```
 
 - #### background-repeat
-
+  
   属性定义背景图像的重复方式。背景图像<mark>可以沿着水平轴，垂直轴，两个轴重复，或者根本不重复</mark>。
-
-  |  **单值**   | **等价于双值（XY两个方向）** |
-  | :---------: | :--------------------------: |
-  | `repeat-x`  |      `repeat no-repeat`      |
-  | `repeat-y`  |      `no-repeat repeat`      |
-  |  `repeat`   |       `repeat repeat`        |
-  |   `space`   |        `space space`         |
-  |   `round`   |        `round round`         |
-  | `no-repeat` |    `no-repeat no-repeat`     |
-
+  
+  | **单值**      | **等价于双值（XY两个方向）**     |
+  |:-----------:|:---------------------:|
+  | `repeat-x`  | `repeat no-repeat`    |
+  | `repeat-y`  | `no-repeat repeat`    |
+  | `repeat`    | `repeat repeat`       |
+  | `space`     | `space space`         |
+  | `round`     | `round round`         |
+  | `no-repeat` | `no-repeat no-repeat` |
+  
   在双值语法中, 第一个值表示<mark>水平重复行为</mark>, 第二个值表示<mark>垂直重复行为</mark>. 下面是关于每一个值是怎么工作的具体说明:
-
-  |  `repeat`   | 图像会按需重复来覆盖整个背景图片所在的区域. 最后一个图像会被裁剪, 如果它的大小不合适的话. |
-  | :---------: | :----------------------------------------------------------: |
-  |   `space`   | 图像会尽可能得重复, 但是不会裁剪. 第一个和最后一个图像会被固定在元素(element)的相应的边上, 同时空白会均匀地分布在图像之间. [`background-position`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-position)属性会被忽视, 除非只有一个图像能被无裁剪地显示. 只在一种情况下裁剪会发生, 那就是图像太大了以至于没有足够的空间来完整显示一个图像. |
-  |   `round`   | 随着允许的空间在尺寸上的增长, 被重复的图像将会伸展(没有空隙), 直到有足够的空间来添加一个图像. 当下一个图像被添加后, 所有的当前的图像会被压缩来腾出空间. 例如, 一个图像原始大小是260px, 重复三次之后, 可能会被伸展到300px, 直到另一个图像被加进来. 这样他们就可能被压缩到225px.译者注: 关键是浏览器怎么计算什么时候应该添加一个图像进来, 而不是继续伸展. |
-  | `no-repeat` | 图像不会被重复(因为背景图像所在的区域将可能没有完全被覆盖). 那个没有被重复的背景图像的位置是由[`background-position`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-position)属性来决定. |
-
+  
+  | `repeat`    | 图像会按需重复来覆盖整个背景图片所在的区域. 最后一个图像会被裁剪, 如果它的大小不合适的话.                                                                                                                                                                                         |
+  |:-----------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+  | `space`     | 图像会尽可能得重复, 但是不会裁剪. 第一个和最后一个图像会被固定在元素(element)的相应的边上, 同时空白会均匀地分布在图像之间. [`background-position`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-position)属性会被忽视, 除非只有一个图像能被无裁剪地显示. 只在一种情况下裁剪会发生, 那就是图像太大了以至于没有足够的空间来完整显示一个图像. |
+  | `round`     | 随着允许的空间在尺寸上的增长, 被重复的图像将会伸展(没有空隙), 直到有足够的空间来添加一个图像. 当下一个图像被添加后, 所有的当前的图像会被压缩来腾出空间. 例如, 一个图像原始大小是260px, 重复三次之后, 可能会被伸展到300px, 直到另一个图像被加进来. 这样他们就可能被压缩到225px.译者注: 关键是浏览器怎么计算什么时候应该添加一个图像进来, 而不是继续伸展.                                       |
+  | `no-repeat` | 图像不会被重复(因为背景图像所在的区域将可能没有完全被覆盖). 那个没有被重复的背景图像的位置是由[`background-position`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-position)属性来决定.                                                                                    |
+  
   以上关于background-repeat摘自：[MDN - background-repeat](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-repeat)
 
 - #### **background-attachment**
-
+  
   决定背景图像的位置是在视口内固定，或者随着包含它的区块滚动。
+  
+  - fixed：此关键属性值表示背景相对于视口固定。即使一个元素拥有滚动机制，背景也不会随着元素的内容滚动。
 
-  - 
-    fixed：此关键属性值表示背景相对于视口固定。即使一个元素拥有滚动机制，背景也不会随着元素的内容滚动。
-  
 - local：此关键属性值表示背景相对于元素的内容固定。如果一个元素拥有滚动机制，背景将会随着元素的内容滚动， 并且背景的绘制区域和定位区域是相对于可滚动的区域而不是包含他们的边框。
-  
+
 - scroll：此关键属性值表示背景相对于元素本身固定， 而不是随着它的内容滚动（对元素边框是有效的）。
   
   以上关于background-attachment的内容摘自：[MDN - background-attachment](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-attachment)
-  
+
 - #### background-position
-
+  
   background-position 为每一个背景图片设置初始位置。 这个位置是相对于由 background-origin 定义的位置图层的。
-
+  
   示例：
-
+  
   ```css
   /* Keyword values */
   background-position: top;
@@ -460,10 +451,8 @@ body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别
   background-position: initial;
   background-position: unset; 
   ```
-
+  
   以上关于background-position的内容摘自：[MDN - background-position](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-position)
-
-
 
 #### CSS字体
 
@@ -479,8 +468,6 @@ font 属性可以用来作为 font-style, font-variant, font-weight, font-size, 
 
 为了避免Internet Explorer 中无法调整文本的问题，许多开发者使用 em 单位代替像素。em的尺寸单位由W3C建议。1em和当前字体大小相等。在浏览器中默认的文字大小是16px。因此，1em的默认大小是16px。可以通过下面这个公式将像素转换为em：px/16=em
 
-
-
 #### CSS链接
 
 四个链接状态：
@@ -495,8 +482,6 @@ font 属性可以用来作为 font-style, font-variant, font-weight, font-size, 
 - a:hover 必须跟在 a:link 和 a:visited后面
 - a:active 必须跟在 a:hover后面
 
-
-
 #### CSS轮廓
 
 轮廓（outline）是绘制于元素周围的一条线，位于边框边缘的外围，可起到突出元素的作用。
@@ -505,26 +490,22 @@ font 属性可以用来作为 font-style, font-variant, font-weight, font-size, 
 
 <img src="https://s1.ax1x.com/2020/08/24/drTiRO.jpg" style="zoom:80%;" />
 
-
-
 #### 分组选择器 & 嵌套选择器
 
 - **分组选择器**
-
+  
   为了尽量减少代码，你可以使用分组选择器。
-
+  
   每个选择器用逗号分隔。
 
 - **嵌套选择器**
-
+  
   在下面的例子设置了三个样式：
-
+  
   - **p{ }**: 为所有 **p** 元素指定一个样式。
   - **.marked{ }**: 为所有 **class="marked"** 的元素指定一个样式。
   - <mark>**.marked p{ }**: 为所有 **class="marked"** 元素内的 **p** 元素指定一个样式</mark>。
   - <mark>**p.marked{ }**: 为所有 **class="marked"** 的 **p** 元素指定一个样式</mark>。
-
-
 
 #### display:none & visibility:hidden
 
@@ -534,22 +515,20 @@ font 属性可以用来作为 font-style, font-variant, font-weight, font-size, 
 
 - display:none可以隐藏某个元素，<mark>且隐藏的元素不会占用任何空间</mark>。也就是说，该元素不但被隐藏了，而且<font color=FF0000>该元素原本占用的空间也会从页面布局中消失</font>。
 
-
-
 #### 块和内联元素
 
 - **块元素**是一个元素，占用了全部宽度，<font color=FF0000>在前后都是换行符</font>。
-
+  
   每个块级元素都从新的一行开始，并且其后的元素也另起一行。（很霸道，一个块级元素独占一行）
-
+  
   <mark>元素的高度、宽度、行高以及顶和底边距都<font color=FF0000>**可设置**</font></mark>。
-
+  
   <font color=FF0000>元素宽度在不设置的情况下，**是它本身父容器的100%**（和父元素的宽度一致），除非设定一个宽度</font>。
-
+  
   **块元素有：\<h1>，\<p>，\<div>**
 
 - **内联元素**只需要必要的宽度，<font color=FF0000>不强制换行</font>。
-
+  
   和其他元素都在一行上；
   
   <mark>元素的高度、宽度及顶部和底部边距<font color=FF0000>不可设置</font></mark>；
@@ -579,8 +558,6 @@ inline-block 元素特点：
 
 摘自：[block，inline和inline-block概念和区别](https://www.cnblogs.com/KeithWang/p/3139517.html)  [CSS： inline、block和inline-block的区别](https://www.cnblogs.com/adongyo/p/11290826.html)
 
-
-
 #### CSS Position
 
 元素可以使用的顶部，底部，左侧和右侧属性定位。然而，这些属性无法工作，除非是先设定position属性。他们也有不同的工作方式，这取决于定位方法。
@@ -588,44 +565,42 @@ inline-block 元素特点：
 position 属性的五个值：
 
 - **static**：HTML 元素的<font color=FF0000>默认值</font>，即没有定位，遵循正常的文档流对象。
-
+  
   浏览器会按照源码的顺序，决定每个元素的位置，这称为“正常的页面流”（normal flow）。每个块级元素占据自己的区块（block），元素与元素之间不产生重叠，这个位置就是元素的默认位置。
-
+  
   <mark>注意，static定位所导致的元素位置，是浏览器自主决定的，所以这时top、bottom、left、right这四个属性无效。</mark>
 
 - **relative**：相对定位元素的定位是相对其正常位置。
-
+  
   relative表示，相对于默认位置（即static时的位置）进行偏移，即定位基点是元素的默认位置。
-
+  
   它<mark>必须搭配top、bottom、left、right这四个属性一起使用，用来指定偏移的方向和距离</mark>。
 
 - **fixed**：<mark>元素的位置相对于浏览器窗口是固定位置</mark>。
-
+  
   它如果搭配`top`、`bottom`、`left`、`right`这四个属性一起使用，表示元素的初始位置是基于视口计算的，否则初始位置就是元素的默认位置。
 
 - **absolute**：<font color=FF0000>**绝对定位的元素的位置相对于最近的<mark>已定位</mark>父元素**</font>，如果元素没有已定位的父元素，那么它的位置相对于\<html>
-
+  
   absolute表示，相对于上级元素（一般是父元素）进行偏移，即定位基点是父元素。
-
+  
   <font color=FF0000>它有一个重要的限制条件：定位基点（一般是父元素）不能是static定位，否则定位基点就会变成整个网页的根元素html</font>。另外，<mark>absolute定位也必须搭配top、bottom、left、right这四个属性一起使用</mark>。
 
 - **sticky**：sticky 英文字面意思是粘，粘贴，所以可以把它称之为粘性定位。**position: sticky;** 基于用户的滚动位置来定位。粘性定位的元素是依赖于用户的滚动，在 **position:relative** 与 **position:fixed** 定位之间切换。
-
+  
   **使用场景**：<font color=FF0000>网页的搜索工具栏，初始加载时在自己的默认位置（relative定位），页面向下滚动时，工具栏变成固定位置，始终停留在页面头部（fixed定位）</font>。
-
+  
   <mark>sticky<font color=FF0000>**生效的前提**</font>是，<font color=FF0000>必须搭配top、bottom、left、right这四个属性一起使用，不能省略</font>，否则等同于relative定位，不产生"动态固定"的效果</mark>。原因是这四个属性用来定义"偏移距离"，浏览器把它当作sticky的生效门槛。
-
+  
   它的<font color=FF0000>**具体规则**</font>是，<font color=FF0000>当页面滚动，父元素开始脱离视口时（即部分不可见），只要与sticky元素的距离达到生效门槛，relative定位自动切换为fixed定位</font>；<font color=FF0000>等到父元素完全脱离视口时（即完全不可见），fixed定位自动切换回relative定位。</font>
-
+  
   注意，除了已被淘汰的 IE 以外，其他浏览器目前都支持`sticky`。但是，Safari 浏览器需要加上浏览器前缀`-webkit-`。
-
+  
   部分摘自：[阮一峰的网络日志 - CSS 定位详解](https://www.ruanyifeng.com/blog/2019/11/css-position.html)
 
 **重叠的元素**
 
 元素的定位与文档流无关，所以它们可以覆盖页面上的其它元素。<mark>z-index属性指定了一个元素的堆叠顺序（哪个元素应该放在前面，或后面）</mark>。一个元素可以有正数或负数的堆叠顺序，<font color=FF0000>具有更高堆叠顺序的元素总是在较低的堆叠顺序元素的前面</font>。
-
-
 
 #### CSS 布局 - Overflow
 
@@ -633,17 +608,15 @@ CSS overflow 属性<mark>可以控制内容溢出元素框时在对应的元素�
 
 overflow属性有以下值：
 
-|   值    |                             描述                             |
-| :-----: | :----------------------------------------------------------: |
-| visible |         默认值。内容不会被修剪，会呈现在元素框之外。         |
-| hidden  |            内容会被修剪，并且其余内容是不可见的。            |
+| 值       | 描述                                        |
+|:-------:|:-----------------------------------------:|
+| visible | 默认值。内容不会被修剪，会呈现在元素框之外。                    |
+| hidden  | 内容会被修剪，并且其余内容是不可见的。                       |
 | scroll  | <mark>内容会被修剪，但是浏览器会显示滚动条以便查看其余的内容</mark>。 |
-|  auto   |   如果内容被修剪，则浏览器会显示滚动条以便查看其余的内容。   |
-| inherit |           规定应该从父元素继承 overflow 属性的值。           |
+| auto    | 如果内容被修剪，则浏览器会显示滚动条以便查看其余的内容。              |
+| inherit | 规定应该从父元素继承 overflow 属性的值。                 |
 
 **注意：**overflow 属性只工作于指定高度的块元素上。
-
-
 
 #### CSS Float
 
@@ -668,34 +641,30 @@ float: right;
 }
 ```
 
-
-
 #### 水平 & 垂直对齐
 
 - 文本居中对齐
-
+  
   ```css
   text-align: center;
   ```
 
 - 居中对齐
-
+  
   ```css
   margin: auto;
   ```
   
   另外，需要注意的是：对于行内块级元素（display:inline-block），想要用`margin: auto;`实现居中对齐，需要加上`display: block`。比如：\<button>
 
-
-
 #### CSS 组合选择符
 
 在 CSS3 中包含了四种组合方式：
 
 - **后代选择器**（以空格` `分隔）
-
+  
   后代选择器用于选取某元素的后代元素，示例：
-
+  
   ```css
   /*选取所有 <p> 元素插入到 <div> 元素中*/
   div p
@@ -705,9 +674,9 @@ float: right;
   ```
 
 - **子元素选择器**（以大于`>`号分隔）
-
+  
   后代选择器用于选取某元素的后代元素，示例：
-
+  
   ```css
   /*选择了<div>元素中所有直接子元素 <p> */
   div>p
@@ -717,9 +686,9 @@ float: right;
   ```
 
 - **相邻兄弟选择器**（以加号`+`分隔）
-
+  
   相邻兄弟选择器（Adjacent sibling selector）可选择紧接在另一元素后的元素，且二者有相同父元素。如果需要选择紧接在另一个元素后的元素，而且二者有相同的父元素，可以使用相邻兄弟选择器
-
+  
   ```css
   /*选取了所有位于 <div> 元素后的第一个 <p> 元素*/
   div+p
@@ -729,9 +698,9 @@ float: right;
   ```
 
 - **普通兄弟选择器**（以破折号`~`分隔）
-
+  
   后续兄弟选择器选取所有指定元素之后的相邻兄弟元素。
-
+  
   ```css
   /*选取了所有 <div> 元素之后的所有相邻兄弟元素 <p> */
   div~p
@@ -739,8 +708,6 @@ float: right;
     background-color:yellow;
   }
   ```
-
-
 
 #### CSS 伪类(Pseudo-classes)
 
@@ -760,7 +727,7 @@ button:hover {
 **语法：**
 
 - 伪类的语法：
-
+  
   ```css
   selector:pseudo-class {
     property: value;
@@ -768,7 +735,7 @@ button:hover {
   ```
 
 - CSS类也可以使用伪类：
-
+  
   ```css
   selector.class:pseudo-class {
     property:value;
@@ -776,8 +743,6 @@ button:hover {
   ```
 
 摘自：[MDN - 伪类](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Pseudo-classes)
-
-
 
 #### 伪元素
 
@@ -803,23 +768,21 @@ selector::pseudo-element {
 
 **所有CSS伪类/元素**
 
-| 选择器                                                       | 示例           | 示例说明                                         |
-| :----------------------------------------------------------- | :------------- | :----------------------------------------------- |
-| [:link](https://www.runoob.com/cssref/sel-link.html)         | a:link         | 选择所有未访问链接                               |
-| [:visited](https://www.runoob.com/cssref/sel-visited.html)   | a:visited      | 选择所有访问过的链接                             |
-| [:active](https://www.runoob.com/cssref/sel-active.html)     | a:active       | 选择正在活动链接                                 |
-| [:hover](https://www.runoob.com/cssref/sel-hover.html)       | a:hover        | 把鼠标放在链接上的状态                           |
-| [:focus](https://www.runoob.com/cssref/sel-focus.html)       | input:focus    | 选择元素输入后具有焦点                           |
-| [:first-letter](https://www.runoob.com/cssref/sel-firstletter.html) | p:first-letter | 选择每个\<p> 元素的第一个字母                    |
-| [:first-line](https://www.runoob.com/cssref/sel-firstline.html) | p:first-line   | 选择每个\<p> 元素的第一行                        |
-| [:first-child](https://www.runoob.com/cssref/sel-firstchild.html) | p:first-child  | 选择器匹配属于任意元素的第一个子元素的 \<p> 元素 |
-| [:before](https://www.runoob.com/cssref/sel-before.html)     | p:before       | 在每个\<p>元素之前插入内容                       |
-| [:after](https://www.runoob.com/cssref/sel-after.html)       | p:after        | 在每个\<p>元素之后插入内容                       |
-| [:lang(*language*)](https://www.runoob.com/cssref/sel-lang.html) | p:lang(it)     | 为\<p>元素的lang属性选择一个开始值               |
+| 选择器                                                                 | 示例             | 示例说明                        |
+|:------------------------------------------------------------------- |:-------------- |:--------------------------- |
+| [:link](https://www.runoob.com/cssref/sel-link.html)                | a:link         | 选择所有未访问链接                   |
+| [:visited](https://www.runoob.com/cssref/sel-visited.html)          | a:visited      | 选择所有访问过的链接                  |
+| [:active](https://www.runoob.com/cssref/sel-active.html)            | a:active       | 选择正在活动链接                    |
+| [:hover](https://www.runoob.com/cssref/sel-hover.html)              | a:hover        | 把鼠标放在链接上的状态                 |
+| [:focus](https://www.runoob.com/cssref/sel-focus.html)              | input:focus    | 选择元素输入后具有焦点                 |
+| [:first-letter](https://www.runoob.com/cssref/sel-firstletter.html) | p:first-letter | 选择每个\<p> 元素的第一个字母           |
+| [:first-line](https://www.runoob.com/cssref/sel-firstline.html)     | p:first-line   | 选择每个\<p> 元素的第一行             |
+| [:first-child](https://www.runoob.com/cssref/sel-firstchild.html)   | p:first-child  | 选择器匹配属于任意元素的第一个子元素的 \<p> 元素 |
+| [:before](https://www.runoob.com/cssref/sel-before.html)            | p:before       | 在每个\<p>元素之前插入内容             |
+| [:after](https://www.runoob.com/cssref/sel-after.html)              | p:after        | 在每个\<p>元素之后插入内容             |
+| [:lang(*language*)](https://www.runoob.com/cssref/sel-lang.html)    | p:lang(it)     | 为\<p>元素的lang属性选择一个开始值       |
 
 以上部分摘自：[MDN - 伪元素](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Pseudo-elements)
-
-
 
 #### CSS 图像透明度
 
@@ -828,8 +791,6 @@ CSS3中属性的透明度是 **opacity**，示例：
 ```css
 opacity:0.4;
 ```
-
-
 
 #### filter
 
@@ -872,12 +833,6 @@ blur(radius)
 
 摘自：[MDN - blur()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/filter-function/blur())
 
-
-
-
-
-
-
 #### CSS 媒体类型
 
 **媒介类型(Media Types)允许你定义以何种媒介来提交文档。文档可以被显示在显示器、纸媒介或者听觉浏览器等等。**
@@ -885,20 +840,18 @@ blur(radius)
 **@media规则**
 @media 规则使你有能力在相同的样式表中，使用不同的样式规则来针对不同的媒介。
 
-| 媒体类型   | 描述                                                   |
-| :--------- | :----------------------------------------------------- |
-| all        | 用于所有的媒体设备。                                   |
-| aural      | 用于语音和音频合成器。                                 |
-| braille    | 用于盲人用点字法触觉回馈设备。                         |
-| embossed   | 用于分页的盲人用点字法打印机。                         |
-| handheld   | 用于小的手持的设备。                                   |
-| print      | 用于打印机。                                           |
-| projection | 用于方案展示，比如幻灯片。                             |
-| screen     | 用于电脑显示器。                                       |
+| 媒体类型       | 描述                          |
+|:---------- |:--------------------------- |
+| all        | 用于所有的媒体设备。                  |
+| aural      | 用于语音和音频合成器。                 |
+| braille    | 用于盲人用点字法触觉回馈设备。             |
+| embossed   | 用于分页的盲人用点字法打印机。             |
+| handheld   | 用于小的手持的设备。                  |
+| print      | 用于打印机。                      |
+| projection | 用于方案展示，比如幻灯片。               |
+| screen     | 用于电脑显示器。                    |
 | tty        | 用于使用固定密度字母栅格的媒体，比如电传打字机和终端。 |
-| tv         | 用于电视机类型的设备。                                 |
-
-
+| tv         | 用于电视机类型的设备。                 |
 
 #### 属性选择器
 
@@ -933,8 +886,6 @@ a[class~="logo"] {
 }
 ```
 
-
-
 #### CSS计数器
 
 本质上CSS计数器是<font color=FF0000>由CSS维护的变量</font>，<mark>这些变量可能根据CSS规则增加以跟踪使用次数</mark>。这允许你根据文档位置来调整内容表现。 CSS计数器是CSS2.1中自动计数编号部分的实现。
@@ -947,21 +898,21 @@ a[class~="logo"] {
 
 ```html
 <head>
-	<style>
-		body {
-		  counter-reset: section;           /* 重置计数器成0 */
-		}
-		h3:before {
-		  counter-increment: section;      /* 增加计数器值 */
-		  content: "Section " counter(section) ": "; /* 显示计数器 */
-		}
-	</style>
+    <style>
+        body {
+          counter-reset: section;           /* 重置计数器成0 */
+        }
+        h3:before {
+          counter-increment: section;      /* 增加计数器值 */
+          content: "Section " counter(section) ": "; /* 显示计数器 */
+        }
+    </style>
 </head>
 
 <body>
-	<h3>Introduction</h3>
-	<h3>Body</h3>
-	<h3>Conclusion</h3>
+    <h3>Introduction</h3>
+    <h3>Body</h3>
+    <h3>Conclusion</h3>
 </body>
 ```
 
@@ -978,12 +929,12 @@ CSS计数器对创建有序列表特别有用，因为在子元素中会自动�
   <style>
     ol {
       counter-reset: section;                /* 为每个ol元素创建新的计数器实例 */
-  		list-style-type: none;
+          list-style-type: none;
     }
-		li:before {
-  		counter-increment: section;            /* 只增加计数器的当前实例 */
-  		content: counters(section, ".") " ";   /* 为所有计数器实例增加以“.”分隔的值 */
-		}
+        li:before {
+          counter-increment: section;            /* 只增加计数器的当前实例 */
+          content: counters(section, ".") " ";   /* 为所有计数器实例增加以“.”分隔的值 */
+        }
   </style>
 </head>
 
@@ -1024,13 +975,9 @@ CSS计数器对创建有序列表特别有用，因为在子元素中会自动�
 
 摘自：[MDN - 使用CSS计数器](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Counters)
 
-
-
 #### CSS 实例链接
 
 这里有非常多的情况及对应实例：https://www.runoob.com/css/css-examples.html
-
-
 
 #### **CSS3 模块**
 
@@ -1043,53 +990,49 @@ CSS计数器对创建有序列表特别有用，因为在子元素中会自动�
 - 多列布局
 - 用户界面
 
-
-
 #### CSS边框
 
 - **border-radius**：圆角
-
+  
   示例：
-
+  
   ```css
   border-radius:25px;
   ```
 
 - **box-shadow**：盒阴影
-
+  
   可以在同一个元素上设置多个阴影效果，并用逗号将他们分隔开。该属性<mark>可设置的值包括阴影的X轴偏移量、Y轴偏移量、模糊半径、扩散半径和颜色</mark>。
-
+  
   **取值**
-
+  
   - `inset`
-
+    
     如果没有指定`inset`，默认阴影在边框外，即阴影向外扩散。 使用 `inset` 关键字会使得阴影落在盒子内部，这样看起来就像是内容被压低了。 此时阴影会在边框之内 (即使是透明边框）、背景之上、内容之下。
-
+  
   - `<offset-x>` `<offset-y>`
-
+    
     这是头两个 [`<length>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/length) 值，用来设置阴影偏移量。x,y 是按照数学二维坐标系来计算的，只不过y垂直方向向下。 `<offset-x>` 设置水平偏移量，正值阴影则位于元素右边，负值阴影则位于元素左边。 `<offset-y>` 设置垂直偏移量，正值阴影则位于元素下方，负值阴影则位于元素上方。可用单位请查看 [`<length>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/length) 。
-
+    
     如果两者都是0，那么阴影位于元素后面。这时如果设置了`<blur-radius>` 或`<spread-radius>` 则有模糊效果。需要考虑 `inset` 
-
+  
   - `<blur-radius>`
-
+    
     这是第三个 [`<length>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/length) 值。值越大，模糊面积越大，阴影就越大越淡。 不能为负值。默认为0，此时阴影边缘锐利。本规范不包括如何计算模糊半径的精确算法，但是，它详细说明如下：
-
+  
   > 对于长而直的阴影边缘，它会创建一个过渡颜色用于模糊 以阴影边缘为中心、模糊半径为半径的局域，过渡颜色的范围在完整的阴影颜色到它最外面的终点的透明之间。 （译者注：对此有兴趣的可以了解下数字图像处理的模糊算法。）
-
+  
   - `<spread-radius>`
-
+    
     这是第四个 [`<length>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/length) 值。取正值时，阴影扩大；取负值时，阴影收缩。默认为0，此时阴影与元素同样大。需要考虑 `inset` 
-
+  
   - `<color>`
-
+    
     相关事项查看 [`<length>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/color_value) 。如果没有指定，则由浏览器决定——通常是[`color`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/color)的值，不过目前Safari取透明。
-
+  
   相关摘自：[MDN - box-shadow](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-shadow)
 
 - **border-image**：边界图片
-
-
 
 #### CSS3 背景
 
@@ -1100,8 +1043,6 @@ CSS计数器对创建有序列表特别有用，因为在子元素中会自动�
 - background-origin
 - background-clip
 
-
-
 #### CSS3 渐变
 
 CSS3 渐变（gradients）可以让你在两个或多个指定的颜色之间显示平稳的过渡。
@@ -1109,17 +1050,17 @@ CSS3 渐变（gradients）可以让你在两个或多个指定的颜色之间显
 CSS3 定义了两种类型的渐变（gradients）：
 
 - **线性渐变（Linear Gradients）**- 向下/向上/向左/向右/对角方向
-
+  
   - **语法**
-
+    
     ```css
     background-image: linear-gradient(direction, color-stop1, color-stop2, ...);
     ```
-
+  
   - 可以使用<mark>预定义方向</mark>（to bottom、to top、to right、to left、to bottom right，等等）
-
+    
     **示例：**
-
+    
     ```css
     /*演示了从左上角开始（到右下角）的线性渐变。起点是红色，慢慢过渡到黄色：*/
     #grad {
@@ -1127,34 +1068,34 @@ CSS3 定义了两种类型的渐变（gradients）：
       background-image: linear-gradient(to bottom right, red, yellow);
     }
     ```
-
+  
   - **使用角度**
-
+    
     如果你想要在渐变的方向上做更多的控制，你可以定义一个角度，而不用预定义方向（to bottom、to top、to right、to left、to bottom right，等等）。
-
+    
     **语法**
-
+    
     ```css
     background-image: linear-gradient(angle, color-stop1, color-stop2);
     ```
-
+    
     角度是指水平线和渐变线之间的角度，逆时针方向计算。换句话说，<mark>0deg</mark> 将创建一个<mark>从下到上的渐变</mark>，<mark>90deg</mark> 将创建一个<mark>从左到右的渐变</mark>。
-
+    
     <img src="https://i.loli.net/2020/08/25/GB2mqyRKZiTP8zS.jpg" style="zoom:50%;" />
-
+  
   - **使用多个颜色节点**，示例：
-
+    
     ```css
     /*带有多个颜色节点的从上到下的线性渐变*/
     #grad {
       background-image: linear-gradient(red, yellow, green);
     }
     ```
-
+  
   - **使用透明度**（transparent）
-
+    
     rgba() 函数中的最后一个参数可以是从 0 到 1 的值，它定义了颜色的透明度：0 表示完全透明，1 表示完全不透明。
-
+    
     ```css
     #grad {
       background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1));
@@ -1162,30 +1103,26 @@ CSS3 定义了两种类型的渐变（gradients）：
     ```
 
 - **径向渐变（Radial Gradients）**- 由它们的中心定义
-
+  
   径向渐变由它的中心定义。
-
+  
   为了创建一个径向渐变，你也必须至少定义两种颜色节点。颜色节点即你想要呈现平稳过渡的颜色。同时，你也可以指定渐变的中心、形状（圆形或椭圆形）、大小。默认情况下，渐变的中心是 center（表示在中心点），渐变的形状是 ellipse（表示椭圆形），渐变的大小是 farthest-corner（表示到最远的角落）。
-
-
 
 #### CSS3 文本属性
 
-| 属性                                                         | 描述                                                    | CSS  |
-| :----------------------------------------------------------- | :------------------------------------------------------ | :--: |
-| [hanging-punctuation](https://www.runoob.com/cssref/css3-pr-hanging-punctuation.html) | 规定标点字符是否位于线框之外。                          |  3   |
-| [punctuation-trim](https://www.runoob.com/cssref/css3-pr-punctuation-trim.html) | 规定是否对标点字符进行修剪。                            |  3   |
-| [text-align-last](https://www.runoob.com/cssref/css3-pr-text-align-last.html) | 设置如何对齐最后一行或紧挨着强制换行符之前的行。        |  3   |
-| [text-emphasis](https://www.runoob.com/css3/css3-pr-text-emphasis.html) | 向元素的文本应用重点标记以及重点标记的前景色。          |  3   |
-| [text-justify](https://www.runoob.com/cssref/css3-pr-text-justify.html) | 规定当 text-align 设置为 "justify" 时所使用的对齐方法。 |  3   |
-| [text-outline](https://www.runoob.com/cssref/css3-pr-text-outline.html) | 规定文本的轮廓。                                        |  3   |
-| [text-overflow](https://www.runoob.com/cssref/css3-pr-text-overflow.html) | 规定当文本溢出包含元素时发生的事情。                    |  3   |
-| [text-shadow](https://www.runoob.com/cssref/css3-pr-text-shadow.html) | 向文本添加阴影。                                        |  3   |
-| [text-wrap](https://www.runoob.com/cssref/css3-pr-text-wrap.html) | 规定文本的换行规则。                                    |  3   |
-| [word-break](https://www.runoob.com/cssref/css3-pr-word-break.html) | 规定非中日韩文本的换行规则。                            |  3   |
-| [word-wrap](https://www.runoob.com/cssref/css3-pr-word-wrap.html) | 允许对长的不可分割的单词进行分割并换行到下一行。        |  3   |
-
- 
+| 属性                                                                                    | 描述                                      | CSS |
+|:------------------------------------------------------------------------------------- |:--------------------------------------- |:---:|
+| [hanging-punctuation](https://www.runoob.com/cssref/css3-pr-hanging-punctuation.html) | 规定标点字符是否位于线框之外。                         | 3   |
+| [punctuation-trim](https://www.runoob.com/cssref/css3-pr-punctuation-trim.html)       | 规定是否对标点字符进行修剪。                          | 3   |
+| [text-align-last](https://www.runoob.com/cssref/css3-pr-text-align-last.html)         | 设置如何对齐最后一行或紧挨着强制换行符之前的行。                | 3   |
+| [text-emphasis](https://www.runoob.com/css3/css3-pr-text-emphasis.html)               | 向元素的文本应用重点标记以及重点标记的前景色。                 | 3   |
+| [text-justify](https://www.runoob.com/cssref/css3-pr-text-justify.html)               | 规定当 text-align 设置为 "justify" 时所使用的对齐方法。 | 3   |
+| [text-outline](https://www.runoob.com/cssref/css3-pr-text-outline.html)               | 规定文本的轮廓。                                | 3   |
+| [text-overflow](https://www.runoob.com/cssref/css3-pr-text-overflow.html)             | 规定当文本溢出包含元素时发生的事情。                      | 3   |
+| [text-shadow](https://www.runoob.com/cssref/css3-pr-text-shadow.html)                 | 向文本添加阴影。                                | 3   |
+| [text-wrap](https://www.runoob.com/cssref/css3-pr-text-wrap.html)                     | 规定文本的换行规则。                              | 3   |
+| [word-break](https://www.runoob.com/cssref/css3-pr-word-break.html)                   | 规定非中日韩文本的换行规则。                          | 3   |
+| [word-wrap](https://www.runoob.com/cssref/css3-pr-word-wrap.html)                     | 允许对长的不可分割的单词进行分割并换行到下一行。                | 3   |
 
 #### CSS3 字体
 
@@ -1203,16 +1140,14 @@ CSS3 定义了两种类型的渐变（gradients）：
 
 所有的字体描述和里面的@font-face规则定义：
 
-|    描述符     | 值                                                           |                             描述                             |
-| :-----------: | :----------------------------------------------------------- | :----------------------------------------------------------: |
-|  font-family  | *name*                                                       |                    必需。规定字体的名称。                    |
-|      src      | *URL*                                                        |                  必需。定义字体文件的 URL。                  |
-| font-stretch  | normal<br/>condensed<br/>ultra-condensed<br/>extra-condensed<br/>semi-condensed<br/>expanded<br/>semi-expanded<br/>extra-expanded<br/>ultra-expanded |          可选。定义如何拉伸字体。默认是 "normal"。           |
-|  font-style   | normalitalicoblique                                          |           可选。定义字体的样式。默认是 "normal"。            |
-|  font-weight  | normal<br/>bold<br/>100<br/>200<br/>300<br/>400<br/>500<br/>600<br/>700<br/>800<br/>900 |           可选。定义字体的粗细。默认是 "normal"。            |
-| unicode-range | *unicode-range*                                              | 可选。定义字体支持的 UNICODE 字符范围。默认是 "U+0-10FFFF"。 |
-
-
+| 描述符           | 值                                                                                                                                                    | 描述                                        |
+|:-------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------- |:-----------------------------------------:|
+| font-family   | *name*                                                                                                                                               | 必需。规定字体的名称。                               |
+| src           | *URL*                                                                                                                                                | 必需。定义字体文件的 URL。                           |
+| font-stretch  | normal<br/>condensed<br/>ultra-condensed<br/>extra-condensed<br/>semi-condensed<br/>expanded<br/>semi-expanded<br/>extra-expanded<br/>ultra-expanded | 可选。定义如何拉伸字体。默认是 "normal"。                 |
+| font-style    | normalitalicoblique                                                                                                                                  | 可选。定义字体的样式。默认是 "normal"。                  |
+| font-weight   | normal<br/>bold<br/>100<br/>200<br/>300<br/>400<br/>500<br/>600<br/>700<br/>800<br/>900                                                              | 可选。定义字体的粗细。默认是 "normal"。                  |
+| unicode-range | *unicode-range*                                                                                                                                      | 可选。定义字体支持的 UNICODE 字符范围。默认是 "U+0-10FFFF"。 |
 
 #### CSS3 2D 转换
 
@@ -1222,8 +1157,8 @@ CSS3 定义了两种类型的渐变（gradients）：
 
 紧跟在 -webkit-, -ms- 或 -moz- 前的数字为支持该前缀属性的第一个浏览器版本号。
 
-| 属性                                | Chrome            | Edge          | Firefox        | Safari       | Opera                            |
-| :---------------------------------- | ----------------- | ------------- | -------------- | ------------ | -------------------------------- |
+| 属性                                  | Chrome            | Edge          | Firefox        | Safari       | Opera                            |
+|:----------------------------------- | ----------------- | ------------- | -------------- | ------------ | -------------------------------- |
 | transform                           | 36.0 4.0 -webkit- | 10.0 9.0 -ms- | 16.0 3.5 -moz- | 3.2 -webkit- | 23.0 15.0 -webkit- 12.1 10.5 -o- |
 | transform-origin (two-value syntax) | 36.0 4.0 -webkit- | 10.0 9.0 -ms- | 16.0 3.5 -moz- | 3.2 -webkit- | 23.0 15.0 -webkit- 12.1 10.5 -o- |
 
@@ -1233,96 +1168,92 @@ Chrome 和 Safari 要求前缀 -webkit- 版本.
 
 **注意：** Internet Explorer 9 要求前缀 -ms- 版本.
 
-
-
 **2D变换方法：**
 
 - **translate()**：根据左(X轴)和顶部(Y轴)位置给定的参数，从当前元素<font color=FF0000>位置移动</font>。**示例：**
-
+  
   ```css
   div
   {
-  	transform: translate(50px,100px);
-  	-ms-transform: translate(50px,100px); /* IE 9 */
-  	-webkit-transform: translate(50px,100px); /* Safari and Chrome */
+      transform: translate(50px,100px);
+      -ms-transform: translate(50px,100px); /* IE 9 */
+      -webkit-transform: translate(50px,100px); /* Safari and Chrome */
   }
   ```
 
 - **rotate()**：在一个给定度数<font color=FF0000>顺时针旋转</font>的元素。<mark>负值是允许的，这样是元素逆时针旋转</mark>。示例：
-
+  
   ```css
   div
   {
-  	transform: rotate(30deg);
-  	-ms-transform: rotate(30deg); /* IE 9 */
-  	-webkit-transform: rotate(30deg); /* Safari and Chrome */
+      transform: rotate(30deg);
+      -ms-transform: rotate(30deg); /* IE 9 */
+      -webkit-transform: rotate(30deg); /* Safari and Chrome */
   }
   ```
 
 - **scale()**：<font color=FF0000>元素增加或减少的大小</font>，取决于宽度（X轴）和高度（Y轴）的参数。示例：
-
+  
   ```css
   /*scale(2,3)转变宽度为原来的大小的2倍，和其原始大小3倍的高度。*/
   div
   {
     -ms-transform:scale(2,3); /* IE 9 */
-  	-webkit-transform: scale(2,3); /* Safari */
-  	transform: scale(2,3); /* 标准语法 */
+      -webkit-transform: scale(2,3); /* Safari */
+      transform: scale(2,3); /* 标准语法 */
   }
   ```
 
 - **skew()**
-
+  
   定义了一个元素在二维平面上的倾斜转换。
-
+  
   **语法**
-
+  
   ```css
   transform:skew(<angle> [,<angle>]);
   ```
-
+  
   包含两个参数值，分别表示X轴和Y轴倾斜的角度，如果第二个参数为空，则默认为0，参数为负表示向相反方向倾斜。
-
+  
   **另外：**
-
+  
   - `skewX(<angle>);`  表示只在X轴(水平方向)倾斜。
-
+  
   - `skewY(<angle>); ` 表示只在Y轴(垂直方向)倾斜。
-
+  
   **示例：**
-
+  
   ```css
   div
   {
-  	transform: skew(30deg,20deg);
-  	-ms-transform: skew(30deg,20deg); /* IE 9 */
-  	-webkit-transform: skew(30deg,20deg); /* Safari and Chrome */
+      transform: skew(30deg,20deg);
+      -ms-transform: skew(30deg,20deg); /* IE 9 */
+      -webkit-transform: skew(30deg,20deg); /* Safari and Chrome */
   }
   ```
 
 - **matrix()**
-
+  
   matrix()方法将2D变换方法合并成一个。matrix 方法有六个参数，包含旋转，缩放，移动（平移）和倾斜功能。
-
+  
   <mark>`matrix(a, b, c, d, tx, ty)` 是 `matrix3d(a, b, 0, 0, c, d, 0, 0, 0, 0, 1, 0, tx, ty, 0, 1)` 的简写。</mark>
 
 **总结：2D 转换方法**
 
-| 函数                                      | 描述                                                        |
-| :---------------------------------------- | :---------------------------------------------------------- |
-| matrix(*n*, *n*, *n*, *n*, *n*, *n*)      | 定义 2D 转换，使用六个值的矩阵。                            |
-| translate(*x*, *y*)                       | 定义 2D 转换，沿着 X 和 Y 轴移动元素。                      |
+| 函数                                        | 描述                                             |
+|:----------------------------------------- |:---------------------------------------------- |
+| matrix(*n*, *n*, *n*, *n*, *n*, *n*)      | 定义 2D 转换，使用六个值的矩阵。                             |
+| translate(*x*, *y*)                       | 定义 2D 转换，沿着 X 和 Y 轴移动元素。                       |
 | <font color=FF0000>translateX</font>(*n*) | 定义 2D 转换，<font color=FF0000>沿着 X 轴移动元素</font>。 |
 | <font color=FF0000>translateY</font>(*n*) | 定义 2D 转换，<font color=FF0000>沿着 Y 轴移动元素</font>。 |
-| scale(*x*, *y*)                           | 定义 2D 缩放转换，改变元素的宽度和高度。                    |
-| scaleX(*n*)                               | 定义 2D 缩放转换，改变元素的宽度。                          |
-| scaleY(*n*)                               | 定义 2D 缩放转换，改变元素的高度。                          |
-| rotate(*angle*)                           | 定义 2D 旋转，在参数中规定角度。                            |
-| skew(*x-angle*, *y-angle*)                | 定义 2D 倾斜转换，沿着 X 和 Y 轴。                          |
-| skewX(*angle*)                            | 定义 2D 倾斜转换，沿着 X 轴。                               |
-| skewY(*angle*)                            | 定义 2D 倾斜转换，沿着 Y 轴。                               |
-
-
+| scale(*x*, *y*)                           | 定义 2D 缩放转换，改变元素的宽度和高度。                         |
+| scaleX(*n*)                               | 定义 2D 缩放转换，改变元素的宽度。                            |
+| scaleY(*n*)                               | 定义 2D 缩放转换，改变元素的高度。                            |
+| rotate(*angle*)                           | 定义 2D 旋转，在参数中规定角度。                             |
+| skew(*x-angle*, *y-angle*)                | 定义 2D 倾斜转换，沿着 X 和 Y 轴。                         |
+| skewX(*angle*)                            | 定义 2D 倾斜转换，沿着 X 轴。                             |
+| skewY(*angle*)                            | 定义 2D 倾斜转换，沿着 Y 轴。                             |
 
 #### CSS 3D转换
 
@@ -1332,8 +1263,8 @@ Chrome 和 Safari 要求前缀 -webkit- 版本.
 
 紧跟在 -webkit-, -ms- 或 -moz- 前的数字为支持该前缀属性的第一个浏览器版本号。
 
-| 属性                                  | Chrome             | Edge | Firefox         | Safari       | Opera              |
-| :------------------------------------ | ------------------ | ---- | --------------- | ------------ | ------------------ |
+| 属性                                    | Chrome             | Edge | Firefox         | Safari       | Opera              |
+|:------------------------------------- | ------------------ | ---- | --------------- | ------------ | ------------------ |
 | transform                             | 36.0 12.0 -webkit- | 10.0 | 16.0 10.0 -moz- | 4.0 -webkit- | 23.0 15.0 -webkit- |
 | transform-origin (three-value syntax) | 36.0 12.0 -webkit- | 10.0 | 16.0 10.0 -moz- | 4.0 -webkit- | 23.0 15.0 -webkit- |
 | transform-style                       | 36.0 12.0 -webkit- | 11.0 | 16.0 10.0 -moz- | 4.0 -webkit- | 23.0 15.0 -webkit- |
@@ -1343,35 +1274,33 @@ Chrome 和 Safari 要求前缀 -webkit- 版本.
 
 **转换属性**
 
-| 属性                                                         | 描述                                 | CSS  |
-| :----------------------------------------------------------- | :----------------------------------- | :--- |
-| [transform](https://www.runoob.com/cssref/css3-pr-transform.html) | 向元素应用 2D 或 3D 转换。           | 3    |
-| [transform-origin](https://www.runoob.com/cssref/css3-pr-transform-origin.html) | 允许你改变被转换元素的位置。         | 3    |
-| [transform-style](https://www.runoob.com/cssref/css3-pr-transform-style.html) | 规定被嵌套元素如何在 3D 空间中显示。 | 3    |
-| [perspective](https://www.runoob.com/cssref/css3-pr-perspective.html) | 规定 3D 元素的透视效果。             | 3    |
-| [perspective-origin](https://www.runoob.com/cssref/css3-pr-perspective-origin.html) | 规定 3D 元素的底部位置。             | 3    |
-| [backface-visibility](https://www.runoob.com/cssref/css3-pr-backface-visibility.html) | 定义元素在不面对屏幕时是否可见。     | 3    |
+| 属性                                                                                    | 描述                   | CSS |
+|:------------------------------------------------------------------------------------- |:-------------------- |:--- |
+| [transform](https://www.runoob.com/cssref/css3-pr-transform.html)                     | 向元素应用 2D 或 3D 转换。    | 3   |
+| [transform-origin](https://www.runoob.com/cssref/css3-pr-transform-origin.html)       | 允许你改变被转换元素的位置。       | 3   |
+| [transform-style](https://www.runoob.com/cssref/css3-pr-transform-style.html)         | 规定被嵌套元素如何在 3D 空间中显示。 | 3   |
+| [perspective](https://www.runoob.com/cssref/css3-pr-perspective.html)                 | 规定 3D 元素的透视效果。       | 3   |
+| [perspective-origin](https://www.runoob.com/cssref/css3-pr-perspective-origin.html)   | 规定 3D 元素的底部位置。       | 3   |
+| [backface-visibility](https://www.runoob.com/cssref/css3-pr-backface-visibility.html) | 定义元素在不面对屏幕时是否可见。     | 3   |
 
 **3D 转换方法**
 
-| 函数                                                         | 描述                                      |
-| :----------------------------------------------------------- | :---------------------------------------- |
-| matrix3d(*n*, *n*, *n*, *n*, *n*, *n*,  *n*, *n*, *n*, *n*, *n*, *n*, *n*, *n*, *n*, *n*) | 定义 3D 转换，使用 16 个值的 4x4 矩阵。   |
-| translate3d(*x*, *y* ,*z*)                                   | 定义 3D 转化。                            |
-| translateX(*x*)                                              | 定义 3D 转化，仅使用用于 X 轴的值。       |
-| translateY(*y*)                                              | 定义 3D 转化，仅使用用于 Y 轴的值。       |
-| translateZ(*z*)                                              | 定义 3D 转化，仅使用用于 Z 轴的值。       |
-| scale3d(*x*, *y* ,*z*)                                       | 定义 3D 缩放转换。                        |
-| scaleX(*x*)                                                  | 定义 3D 缩放转换，通过给定一个 X 轴的值。 |
-| scaleY(*y*)                                                  | 定义 3D 缩放转换，通过给定一个 Y 轴的值。 |
-| scaleZ(*z*)                                                  | 定义 3D 缩放转换，通过给定一个 Z 轴的值。 |
-| rotate3d(*x*, *y*, *z*, *angle*)                             | 定义 3D 旋转。                            |
-| rotateX(*angle*)                                             | 定义沿 X 轴的 3D 旋转。                   |
-| rotateY(*angle*)                                             | 定义沿 Y 轴的 3D 旋转。                   |
-| rotateZ(*angle*)                                             | 定义沿 Z 轴的 3D 旋转。                   |
-| perspective(*n*)                                             | 定义 3D 转换元素的透视视图。              |
-
-
+| 函数                                                                                        | 描述                         |
+|:----------------------------------------------------------------------------------------- |:-------------------------- |
+| matrix3d(*n*, *n*, *n*, *n*, *n*, *n*,  *n*, *n*, *n*, *n*, *n*, *n*, *n*, *n*, *n*, *n*) | 定义 3D 转换，使用 16 个值的 4x4 矩阵。 |
+| translate3d(*x*, *y* ,*z*)                                                                | 定义 3D 转化。                  |
+| translateX(*x*)                                                                           | 定义 3D 转化，仅使用用于 X 轴的值。      |
+| translateY(*y*)                                                                           | 定义 3D 转化，仅使用用于 Y 轴的值。      |
+| translateZ(*z*)                                                                           | 定义 3D 转化，仅使用用于 Z 轴的值。      |
+| scale3d(*x*, *y* ,*z*)                                                                    | 定义 3D 缩放转换。                |
+| scaleX(*x*)                                                                               | 定义 3D 缩放转换，通过给定一个 X 轴的值。   |
+| scaleY(*y*)                                                                               | 定义 3D 缩放转换，通过给定一个 Y 轴的值。   |
+| scaleZ(*z*)                                                                               | 定义 3D 缩放转换，通过给定一个 Z 轴的值。   |
+| rotate3d(*x*, *y*, *z*, *angle*)                                                          | 定义 3D 旋转。                  |
+| rotateX(*angle*)                                                                          | 定义沿 X 轴的 3D 旋转。            |
+| rotateY(*angle*)                                                                          | 定义沿 Y 轴的 3D 旋转。            |
+| rotateZ(*angle*)                                                                          | 定义沿 Z 轴的 3D 旋转。            |
+| perspective(*n*)                                                                          | 定义 3D 转换元素的透视视图。           |
 
 #### CSS3 过渡（transition）
 
@@ -1395,15 +1324,13 @@ div
 
 **过渡属性**
 
-| 属性                                                         | 描述                                         | CSS  |
-| :----------------------------------------------------------- | :------------------------------------------- | :--- |
-| [transition](https://www.runoob.com/cssref/css3-pr-transition.html) | 简写属性，用于在一个属性中设置四个过渡属性。 | 3    |
-| [transition-property](https://www.runoob.com/cssref/css3-pr-transition-property.html) | 规定应用过渡的 CSS 属性的名称。              | 3    |
-| [transition-duration](https://www.runoob.com/cssref/css3-pr-transition-duration.html) | 定义过渡效果花费的时间。默认是 0。           | 3    |
-| [transition-timing-function](https://www.runoob.com/cssref/css3-pr-transition-timing-function.html) | 规定过渡效果的时间曲线。默认是 "ease"。      | 3    |
-| [transition-delay](https://www.runoob.com/cssref/css3-pr-transition-delay.html) | 规定过渡效果何时开始。默认是 0。             | 3    |
-
-
+| 属性                                                                                                  | 描述                      | CSS |
+|:--------------------------------------------------------------------------------------------------- |:----------------------- |:--- |
+| [transition](https://www.runoob.com/cssref/css3-pr-transition.html)                                 | 简写属性，用于在一个属性中设置四个过渡属性。  | 3   |
+| [transition-property](https://www.runoob.com/cssref/css3-pr-transition-property.html)               | 规定应用过渡的 CSS 属性的名称。      | 3   |
+| [transition-duration](https://www.runoob.com/cssref/css3-pr-transition-duration.html)               | 定义过渡效果花费的时间。默认是 0。      | 3   |
+| [transition-timing-function](https://www.runoob.com/cssref/css3-pr-transition-timing-function.html) | 规定过渡效果的时间曲线。默认是 "ease"。 | 3   |
+| [transition-delay](https://www.runoob.com/cssref/css3-pr-transition-delay.html)                     | 规定过渡效果何时开始。默认是 0。       | 3   |
 
 #### CSS3 动画
 
@@ -1430,25 +1357,23 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
 
 **@keyframes 规则和所有动画属性：**
 
-| 属性                                                         | 描述                                                         | CSS  |
-| :----------------------------------------------------------- | :----------------------------------------------------------- | :--- |
-| [@keyframes](https://www.runoob.com/cssref/css3-pr-animation-keyframes.html) | 规定动画。                                                   | 3    |
-| [animation](https://www.runoob.com/cssref/css3-pr-animation.html) | 所有动画属性的简写属性。                                     | 3    |
-| [animation-name](https://www.runoob.com/cssref/css3-pr-animation-name.html) | 规定 @keyframes 动画的名称。                                 | 3    |
-| [animation-duration](https://www.runoob.com/cssref/css3-pr-animation-duration.html) | 规定动画完成一个周期所花费的秒或毫秒。默认是 0。             | 3    |
-| [animation-timing-function](https://www.runoob.com/cssref/css3-pr-animation-timing-function.html) | 规定动画的速度曲线。默认是 "ease"。                          | 3    |
-| [animation-fill-mode](https://www.runoob.com/cssref/css3-pr-animation-fill-mode.html) | 规定当动画不播放时（当动画完成时，或当动画有一个延迟未开始播放时），要应用到元素的样式。 | 3    |
-| [animation-delay](https://www.runoob.com/cssref/css3-pr-animation-delay.html) | 规定动画何时开始。默认是 0。                                 | 3    |
-| [animation-iteration-count](https://www.runoob.com/cssref/css3-pr-animation-iteration-count.html) | 规定动画被播放的次数。默认是 1。                             | 3    |
-| [animation-direction](https://www.runoob.com/cssref/css3-pr-animation-direction.html) | 规定动画是否在下一周期逆向地播放。默认是 "normal"。          | 3    |
-| [animation-play-state](https://www.runoob.com/cssref/css3-pr-animation-play-state.html) | 规定动画是否正在运行或暂停。默认是 "running"。               | 3    |
-
-
+| 属性                                                                                                | 描述                                           | CSS |
+|:------------------------------------------------------------------------------------------------- |:-------------------------------------------- |:--- |
+| [@keyframes](https://www.runoob.com/cssref/css3-pr-animation-keyframes.html)                      | 规定动画。                                        | 3   |
+| [animation](https://www.runoob.com/cssref/css3-pr-animation.html)                                 | 所有动画属性的简写属性。                                 | 3   |
+| [animation-name](https://www.runoob.com/cssref/css3-pr-animation-name.html)                       | 规定 @keyframes 动画的名称。                         | 3   |
+| [animation-duration](https://www.runoob.com/cssref/css3-pr-animation-duration.html)               | 规定动画完成一个周期所花费的秒或毫秒。默认是 0。                    | 3   |
+| [animation-timing-function](https://www.runoob.com/cssref/css3-pr-animation-timing-function.html) | 规定动画的速度曲线。默认是 "ease"。                        | 3   |
+| [animation-fill-mode](https://www.runoob.com/cssref/css3-pr-animation-fill-mode.html)             | 规定当动画不播放时（当动画完成时，或当动画有一个延迟未开始播放时），要应用到元素的样式。 | 3   |
+| [animation-delay](https://www.runoob.com/cssref/css3-pr-animation-delay.html)                     | 规定动画何时开始。默认是 0。                              | 3   |
+| [animation-iteration-count](https://www.runoob.com/cssref/css3-pr-animation-iteration-count.html) | 规定动画被播放的次数。默认是 1。                            | 3   |
+| [animation-direction](https://www.runoob.com/cssref/css3-pr-animation-direction.html)             | 规定动画是否在下一周期逆向地播放。默认是 "normal"。               | 3   |
+| [animation-play-state](https://www.runoob.com/cssref/css3-pr-animation-play-state.html)           | 规定动画是否正在运行或暂停。默认是 "running"。                 | 3   |
 
 #### CSS3 多列
 
 - **column-count**：指定了需要分割的列数。示例：
-
+  
   ```css
   /*将 <div> 元素中的文本分为 3 列*/
   div {
@@ -1459,7 +1384,7 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
   ```
 
 - **column-gap**：指定了列与列间的间隙。示例：
-
+  
   ```css
   /*指定了列与列间的间隙为 40 像素*/
   div {
@@ -1470,7 +1395,7 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
   ```
 
 - **column-rule-style**：指定了列与列间的边框样式。示例：
-
+  
   ```css
   div {
       -webkit-column-rule-style: solid; /* Chrome, Safari, Opera */
@@ -1480,7 +1405,7 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
   ```
 
 - **column-rule-width**：指定了两列的边框厚度。示例：
-
+  
   ```css
   div {
       -webkit-column-rule-width: 1px; /* Chrome, Safari, Opera */
@@ -1490,7 +1415,7 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
   ```
 
 - **column-rule-color**：指定了两列的边框颜色。示例：
-
+  
   ```css
   div {
       -webkit-column-rule-color: lightblue; /* Chrome, Safari, Opera */
@@ -1500,7 +1425,7 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
   ```
 
 - **column-rule**：是 column-rule-* 所有属性的简写。示例：
-
+  
   ```css
   /*设置了列直接的边框的厚度，样式及颜色*/
   div {
@@ -1511,7 +1436,7 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
   ```
 
 - **column-span**：指定元素跨越多少列。示例：
-
+  
   ```css
   /*指定 <h2> 元素跨越所有列*/
   h2 {
@@ -1521,35 +1446,33 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
   ```
 
 - **column-width**：指定了列的宽度。示例：
-
+  
   ```css
   div {
       -webkit-column-width: 100px; /* Chrome, Safari, Opera */
       column-width: 100px;
   }
   ```
+  
+  **CSS3 的多列属性：**
 
- **CSS3 的多列属性：**
-
-| 属性                                                         | 描述                                      |
-| :----------------------------------------------------------- | :---------------------------------------- |
-| [column-count](https://www.runoob.com/cssref/css3-pr-column-count.html) | 指定元素应该被分割的列数。                |
-| [column-fill](https://www.runoob.com/cssref/css3-pr-column-fill.html) | 指定如何填充列                            |
-| [column-gap](https://www.runoob.com/cssref/css3-pr-column-gap.html) | 指定列与列之间的间隙                      |
-| [column-rule](https://www.runoob.com/cssref/css3-pr-column-rule.html) | 所有 column-rule-* 属性的简写             |
-| [column-rule-color](https://www.runoob.com/cssref/css3-pr-column-rule-color.html) | 指定两列间边框的颜色                      |
-| [column-rule-style](https://www.runoob.com/cssref/css3-pr-column-rule-style.html) | 指定两列间边框的样式                      |
-| [column-rule-width](https://www.runoob.com/cssref/css3-pr-column-rule-width.html) | 指定两列间边框的厚度                      |
-| [column-span](https://www.runoob.com/cssref/css3-pr-column-span.html) | 指定元素要跨越多少列                      |
-| [column-width](https://www.runoob.com/cssref/css3-pr-column-width.html) | 指定列的宽度                              |
-| [columns](https://www.runoob.com/cssref/css3-pr-columns.html) | column-width 与 column-count 的简写属性。 |
-
-
+| 属性                                                                                | 描述                                 |
+|:--------------------------------------------------------------------------------- |:---------------------------------- |
+| [column-count](https://www.runoob.com/cssref/css3-pr-column-count.html)           | 指定元素应该被分割的列数。                      |
+| [column-fill](https://www.runoob.com/cssref/css3-pr-column-fill.html)             | 指定如何填充列                            |
+| [column-gap](https://www.runoob.com/cssref/css3-pr-column-gap.html)               | 指定列与列之间的间隙                         |
+| [column-rule](https://www.runoob.com/cssref/css3-pr-column-rule.html)             | 所有 column-rule-* 属性的简写             |
+| [column-rule-color](https://www.runoob.com/cssref/css3-pr-column-rule-color.html) | 指定两列间边框的颜色                         |
+| [column-rule-style](https://www.runoob.com/cssref/css3-pr-column-rule-style.html) | 指定两列间边框的样式                         |
+| [column-rule-width](https://www.runoob.com/cssref/css3-pr-column-rule-width.html) | 指定两列间边框的厚度                         |
+| [column-span](https://www.runoob.com/cssref/css3-pr-column-span.html)             | 指定元素要跨越多少列                         |
+| [column-width](https://www.runoob.com/cssref/css3-pr-column-width.html)           | 指定列的宽度                             |
+| [columns](https://www.runoob.com/cssref/css3-pr-columns.html)                     | column-width 与 column-count 的简写属性。 |
 
 #### CSS3 用户界面
 
 - **resize**：指定一个元素是否应该由用户去调整大小（比如用户改变窗口的大小）。示例：
-
+  
   ```css
   div
   {
@@ -1557,19 +1480,23 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
       overflow:auto;
   }
   ```
-
+  
   **取值**
-
+  
   - **none** 元素不能被用户缩放。
+  
   - **both** 允许用户在水平和垂直方向上调整元素的大小。
+  
   - **horizontal** 允许用户在水平方向上调整元素的大小。
+  
   - **vertical** 允许用户在垂直方向上调整元素的大小。
-
+  
   - **block**
+  
   - **inline**
 
 - **box-sizing**：以确切的方式定义适应某个区域的具体内容。示例：
-
+  
   ```css
   div
   {
@@ -1579,44 +1506,44 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
       float:left;
   }
   ```
-
+  
   在 CSS 盒子模型的默认定义里，你对一个元素所设置的 width 与 height 只会应用到这个元素的内容区。如果这个元素有任何的 border 或 padding ，绘制到屏幕上时的盒子宽度和高度会加上设置的边框和内边距值。这意味着当你调整一个元素的宽度和高度时需要时刻注意到这个元素的边框和内边距。当我们实现响应式布局时，这个特点尤其烦人。
-
+  
   box-sizing 属性可以被用来调整这些表现:
-
+  
   - **content-box：**是默认值。如果你设置一个元素的宽为100px，那么这个元素的内容区会有100px 宽，并且任何边框和内边距的宽度都会被增加到最后绘制出来的元素宽度中。
   - **border-box：**告诉浏览器：你想要设置的边框和内边距的值是包含在width内的。也就是说，如果你将一个元素的width设为100px，那么这100px会包含它的border和padding，内容区的实际宽度是width减去(border + padding)的值。大多数情况下，这使得我们更容易地设定一个元素的宽高。
   - **inherit：**继承 父元素 box-sizing属性的值
-
+  
   另外：border-box不包含margin
-
+  
   摘自：[MDN - box-sizing](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-sizing)
-
+  
   **补充：**（如果上面没有看懂的话，可以看看下面的）
-
+  
   盒子模型中盒子宽度和高度的计算方式会根据<font color=FF0000>盒子的类型的不同而不同</font>，而盒子类型是根据box-sizing的属性设置的。
-
+  
   - box-sizing的默认值是content-box。css属性中的width和height设置的是内容区域的宽高，而盒子的宽高则需要加上内边距（padding）和宽高（width / height）
   - border-box：css中width和height的值分别是content宽高 + padding + border的值的和
-
+  
   摘自：[动画解释 CSS 盒子模型、布局方式、box-sizing、替换元素和边距塌陷，CSS 布局不再难！](https://www.bilibili.com/video/BV13V411z7do)
-
+  
   content-box：标准盒模型，CSS定义的宽高只包含content的宽高
   border-box：IE盒模型，CSS定义的宽高包括了content，padding和border
-
+  
   摘自：[学会使用box-sizing布局](https://www.jianshu.com/p/e2eb0d8c9de6)
 
 - **outline-offset**
-
+  
   对轮廓进行偏移，并在超出边框边缘的位置绘制轮廓。
-
+  
   轮廓与边框有两点不同：
-
+  
   - 轮廓不占用空间
   - 轮廓可能是非矩形
-
+  
   示例：
-
+  
   ```css
   /*规定边框边缘之外 15 像素处的轮廓*/
   div
@@ -1629,20 +1556,18 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
 
 **新的用户界面特性**
 
-| 属性                                                         | 说明                                           | CSS  |
-| :----------------------------------------------------------- | :--------------------------------------------- | :--- |
-| [appearance](https://www.runoob.com/cssref/css3-pr-appearance.html) | 允许您使一个元素的外观像一个标准的用户界面元素 | 3    |
-| [box-sizing](https://www.runoob.com/cssref/css3-pr-box-sizing.html) | 允许你以适应区域而用某种方式定义某些元素       | 3    |
-| [icon](https://www.runoob.com/cssref/css3-pr-icon.html)      | 为创作者提供了将元素设置为图标等价物的能力。   | 3    |
-| [nav-down](https://www.runoob.com/cssref/css3-pr-nav-down.html) | 指定在何处使用箭头向下导航键时进行导航         | 3    |
-| [nav-index](https://www.runoob.com/cssref/css3-pr-nav-index.html) | 指定一个元素的Tab的顺序                        | 3    |
-| [nav-left](https://www.runoob.com/cssref/css3-pr-nav-left.html) | 指定在何处使用左侧的箭头导航键进行导航         | 3    |
-| [nav-right](https://www.runoob.com/cssref/css3-pr-nav-right.html) | 指定在何处使用右侧的箭头导航键进行导航         | 3    |
-| [nav-up](https://www.runoob.com/cssref/css3-pr-nav-up.html)  | 指定在何处使用箭头向上导航键时进行导航         | 3    |
-| [outline-offset](https://www.runoob.com/cssref/css3-pr-outline-offset.html) | 外轮廓修饰并绘制超出边框的边缘                 | 3    |
-| [resize](https://www.runoob.com/cssref/css3-pr-resize.html)  | 指定一个元素是否是由用户调整大小               | 3    |
-
-
+| 属性                                                                          | 说明                      | CSS |
+|:--------------------------------------------------------------------------- |:----------------------- |:--- |
+| [appearance](https://www.runoob.com/cssref/css3-pr-appearance.html)         | 允许您使一个元素的外观像一个标准的用户界面元素 | 3   |
+| [box-sizing](https://www.runoob.com/cssref/css3-pr-box-sizing.html)         | 允许你以适应区域而用某种方式定义某些元素    | 3   |
+| [icon](https://www.runoob.com/cssref/css3-pr-icon.html)                     | 为创作者提供了将元素设置为图标等价物的能力。  | 3   |
+| [nav-down](https://www.runoob.com/cssref/css3-pr-nav-down.html)             | 指定在何处使用箭头向下导航键时进行导航     | 3   |
+| [nav-index](https://www.runoob.com/cssref/css3-pr-nav-index.html)           | 指定一个元素的Tab的顺序           | 3   |
+| [nav-left](https://www.runoob.com/cssref/css3-pr-nav-left.html)             | 指定在何处使用左侧的箭头导航键进行导航     | 3   |
+| [nav-right](https://www.runoob.com/cssref/css3-pr-nav-right.html)           | 指定在何处使用右侧的箭头导航键进行导航     | 3   |
+| [nav-up](https://www.runoob.com/cssref/css3-pr-nav-up.html)                 | 指定在何处使用箭头向上导航键时进行导航     | 3   |
+| [outline-offset](https://www.runoob.com/cssref/css3-pr-outline-offset.html) | 外轮廓修饰并绘制超出边框的边缘         | 3   |
+| [resize](https://www.runoob.com/cssref/css3-pr-resize.html)                 | 指定一个元素是否是由用户调整大小        | 3   |
 
 #### CSS3 图片
 
@@ -1654,26 +1579,22 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
 - **.bottomleft**：左下角
 - **.bottomright**：右下角
 
-
-
 #### CSS 框大小
 
 - **不使用 CSS3 box-sizing 属性**
   默认情况下，元素的宽度与高度计算方式如下：
-
+  
   - width(宽) + padding(内边距) + border(边框) = 元素实际宽度
-
+  
   - height(高) + padding(内边距) + border(边框) = 元素实际高度
-
+  
   这就意味着我们在设置元素的 width/height 时，元素真实展示的高度与宽度会更大(因为元素的边框与内边距也会计算在 width/height 中)。
 
 - <font color=FF0000>**使用 CSS3 box-sizing 属性**</font>
-
+  
   CSS3 `box-sizing` 属性在一个元素的 width 和 height 中包含 padding(内边距) 和 border(边框)。
-
+  
   <mark>如果在元素上设置了 `box-sizing: border-box;` 则 padding(内边距) 和 border(边框) 也包含在 width 和 height 中</mark>
-
-
 
 #### @import
 
@@ -1693,16 +1614,14 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
 
 摘自：[MDN - @import](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@import)
 
-
-
 #### !important
 
 `!important`主要用于<font color=FF0000>**提升**指定样式规则的**优先级**</font>。**示例：**
 
 ```css
 div{
-		color:red!important;
-		color:blue;
+        color:red!important;
+        color:blue;
 }
 ```
 
@@ -1712,18 +1631,16 @@ div{
 
 ```css
 div{
-		color:red!mportant;
+        color:red!mportant;
 }
 div{
-		color:blue;
+        color:blue;
 }
 ```
 
 <font color=FF0000>在所有的浏览器中都会显示**红色字**。</font>
 
 摘自：[css !important的使用](https://www.jianshu.com/p/3d1b4a58c3ef)
-
-
 
 ### CSS3 盒子模型
 
@@ -1744,30 +1661,30 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
 #### Flex容器（父容器）
 
 - **flex-direction**
-
+  
   flex-direction 属性指定了弹性子元素在父容器中的位置
-
+  
   **语法**
-
+  
   ```css
   flex-direction: row | row-reverse | column | column-reverse
   ```
-
+  
   - **row**：横向从左到右排列（左对齐），默认的排列方式。
   - **row-reverse**：反转横向排列（右对齐，从后往前排，最后一项排在最前面）。
   - **column**：纵向排列。
   - **column-reverse**：反转纵向排列，从后往前排，最后一项排在最上面。
 
 - **justify-content 属性**
-
+  
   内容对齐（justify-content）属性应用在弹性容器上，把弹性项沿着弹性容器的主轴线（main axis）对齐。
-
+  
   **语法**
-
+  
   ```css
   justify-content: flex-start | flex-end | center | space-between | space-around
   ```
-
+  
   - **flex-start**：弹性项目<font color=FF0000>向**行头**紧挨着填充</font>。这个<font color=FF0000>是默认值</font>。<font color=FF0000>第一个弹性项的main-start外边距边线被放置在该行的**main-start边线**</font>，而后续弹性项依次平齐摆放
   - **flex-end**：弹性项目<font color=FF0000>向**行尾**紧挨着填充</font>。<font color=FF0000>第一个弹性项的main-end外边距边线被放置在该行的**main-end边线**</font>，而后续弹性项依次平齐摆放。
   - **center**：弹性项目居中紧挨着填充。（<mark>如果剩余的自由空间是负的，则弹性项目将在两个方向上同时溢出</mark>）。
@@ -1775,15 +1692,15 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
   - **space-around**：弹性项目<mark>平均分布在该行</mark>上，<font color=FF0000>两边留有一半的间隔空间</font>。<mark>如果剩余空间为负或者只有一个弹性项，则该值等同于center</mark>。否则，弹性项目沿该行分布，且<font color=FF0000>彼此间隔相等（比如是20px）</font>，同时<font color=FF0000>首尾两边和弹性容器之间留有一半的间隔（1/2*20px=10px）</font>。
 
 - **align-items 属性**
-
+  
   align-items<mark>设置或检索弹性盒子元素在<font color=FF0000>侧轴（纵轴）方向上的对齐方式</font></mark>。
-
+  
   **语法**
-
+  
   ```css
   align-items: flex-start | flex-end | center | baseline | stretch
   ```
-
+  
   - **flex-start**：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴<font color=FF0000>起始</font>边界。
   - **flex-end**：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴<font color=FF0000>结束</font>边界。
   - **center**：弹性盒子元素在该行的侧轴（纵轴）上居中放置。（如果该行的尺寸小于弹性盒子元素的尺寸，则会向两个方向溢出相同的长度）。
@@ -1791,29 +1708,29 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
   - **stretch**：<font color=FF0000>默认值</font>，如果指定侧轴大小的属性值为'auto'，则其值会使项目的边距盒的尺寸尽可能接近所在行的尺寸，但同时会遵照'min/max-width/height'属性的限制。
 
 - **flex-wrap 属性**
-
+  
   **flex-wrap** 属性用于指定弹性盒子的子元素换行方式。
-
+  
   **语法**
-
+  
   ```css
   flex-wrap: nowrap|wrap|wrap-reverse|initial|inherit;
   ```
-
+  
   - **nowrap**： <font color=FF0000>默认</font>， 弹性容器为<font color=FF0000>单行</font>。该情况下<mark>弹性子项**可能会**溢出容器</mark>。
   - **wrap**： 弹性容器为<font color=FF0000>多行</font>。该情况下<mark>弹性子项溢出的部分会被放置到新行</mark>，子项内部会发生断行
   - **wrap-reverse**：反转 wrap 排列。
 
 - **align-content 属性**
-
+  
   align-content 属性用于<font color=FF0000>修改 flex-wrap属性的行为</font>。类似于align-items, 但它不是设置弹性子元素的对齐，而是<font color=FF0000>**设置各个行的对齐**</font>。
-
+  
   **语法**
-
+  
   ```css
   align-content: flex-start | flex-end | center | space-between | space-around | stretch
   ```
-
+  
   - **stretch** - <font color=FF0000>默认</font>。各行将会<font color=FF0000>伸展以占用剩余的空间</font>。
   - **flex-start** - 各行向弹性盒容器的<font color=FF0000>起始位置堆叠</font>。
   - **flex-end** - 各行向弹性盒容器的<font color=FF0000>结束位置堆叠</font>。
@@ -1826,17 +1743,17 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
 以下6个属性设置在项目上
 
 - **order**：定义项目的<font color=FF0000>排列顺序</font>。数值越小，排列越靠前，默认为0，可以为负值。
-
+  
   ```css
   .item {
-  	order: <integer>;
+      order: <integer>;
   }
   ```
 
 - **flex-grow**定义项目的<font color=FF0000>**放大比例**</font>，<font color=FF0000>**默认为0**</font>，即如果存在剩余空间，也不放大。
-
+  
   <font color=FF0000>如果所有项目的flex-grow属性都为1，则它们将等分剩余空间（如果有的话）。如果一个项目的flex-grow属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍</font>。
-
+  
   ```css
   .item {
     flex-grow: <number>; /* default 0 */
@@ -1844,9 +1761,9 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
   ```
 
 - **flex-shrink**：定义了项目的<font color=FF0000>**缩小比例**</font>，<font color=FF0000>**默认为1**</font>，即如果空间不足，该项目将缩小。
-
+  
   <font color=FF0000>如果所有项目的flex-shrink属性都为1，当空间不足时，都将等比例缩小。如果一个项目的flex-shrink属性为0，其他项目都为1，则空间不足时，前者不缩小</font>。
-
+  
   ```css
   .item {
     flex-shrink: <number>; /* default 1 */
@@ -1854,7 +1771,7 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
   ```
 
 - **flex-basis**：定义了在<font color=FF0000>**flex-basis给上面两个属性分配多余空间之前, 计算项目是否有多余空间, 默认值为 auto, 即项目本身的大小**</font>。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。
-
+  
   ```css
   .item {
     flex-basis: <length> | auto; /* default auto */
@@ -1862,85 +1779,85 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
   ```
 
 - **flex**：flex属性是flex-grow, flex-shrink 和 flex-basis的简写，<font color=FF0000>默认值为0 1 auto。后两个属性可选</font>。
-
+  
   **语法**
-
+  
   ```css
   .item {
-  	1	qI'm 	1qI'm 	q	qq	q221qq1 | initial | none | inherit |  [ flex-grow ] || [ flex-shrink ] || [ flex-basis ]
+      1    qI'm     1qI'm     q    qq    q221qq1 | initial | none | inherit |  [ flex-grow ] || [ flex-shrink ] || [ flex-basis ]
   }
   ```
-
+  
   - auto: 计算值为 1 1 auto
   - initial: 计算值为 0 1 auto
   - none：计算值为 0 0 auto
   - inherit：从父元素继承
 
 - **align-self**：<font color=FF0000>允许单个项目有与其他项目不一样的对齐方式</font>，设置弹性元素自身在侧轴（纵轴）方向上的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
-
+  
   **语法**
-
+  
   ```css
   .item {
-  	align-self: auto | flex-start | flex-end | center | baseline | stretch
+      align-self: auto | flex-start | flex-end | center | baseline | stretch
   }
   ```
-
+  
   - **auto**：<font color=FF0000>默认值</font>，如果'align-self'的值为'auto'，则其计算值为元素的父元素的'align-items'值，<font color=FF0000>如果其没有父元素，则计算值为'stretch'</font>。
-
+  
   - **flex-start**：弹性盒子元素的<font color=FF0000>侧轴（纵轴）</font>起始位置的边界紧靠住该行的侧轴<font color=FF0000>起始边界</font>。
+  
   - **flex-end**：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴<font color=FF0000>结束边界</font>。
+  
   - **center**：弹性盒子元素在该行的侧轴（纵轴）上<font color=FF0000>居中放置</font>。（如果该行的尺寸小于弹性盒子元素的尺寸，则会向两个方向溢出相同的长度）。
+  
   - **baseline**：如弹性盒子元素的行内轴<font color=FF0000>与侧轴为同一条</font>，则该值与'flex-start'等效。其它情况下，该值将与基线对齐。
+  
   - **stretch**：如果指定侧轴大小的属性值为'auto'，则其值会使项目的边距盒的尺寸尽可能接近所在行的尺寸，但同时会遵照'min/max-width/height'属性的限制。
 
 以上摘自：[RUNOOB - CSS3 弹性盒子(Flex Box)](https://www.runoob.com/css3/css3-flexbox.html)  [阮一峰的网络日志  - Flex 布局教程：语法篇](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)  
 
 具体实例：[阮一峰的网络日志  - Flex 布局教程：实例篇](http://www.ruanyifeng.com/blog/2015/07/flex-examples.html)
 
-
-
 **补充：**
 
 - flex: 1; === flex: 1 1 (0 / 任意数字+任意长度单位); <font color=FF0000>（就是代表均匀分配元素）</font>
-
+  
   <font color=FF0000>补充：flex: 1也可以表示占满剩余空间（相对于后面70%的，见后面 --> ）</font>，同时相对应的：`flex: 1 1 70%`表示占据70%的空间
 
 - flex: initial; === flex: 0 1 auto;
 
 - flex: none; === flex: 0 0 auto;
 
-​			摘自：[flex:1 到底代表什么?](https://zhuanlan.zhihu.com/p/136223806)
+​            摘自：[flex:1 到底代表什么?](https://zhuanlan.zhihu.com/p/136223806)
 
--  place-content 是 align-content 和 justify-content 的简写属性；而 place-items 是 align-items 和 justify-items 的简写属性。即：
-
+- place-content 是 align-content 和 justify-content 的简写属性；而 place-items 是 align-items 和 justify-items 的简写属性。即：
+  
   ```css
   .flex__container {
-      place-content: center;
-      place-items: center;
+     place-content: center;
+     place-items: center;
   }
   /*等效于：*/
   .flex__container {
-      align-content: center;
-      justify-content: center;
+     align-content: center;
+     justify-content: center;
   
-      align-items: center;
-      justify-items: center;
+     align-items: center;
+     justify-items: center;
   }
   ```
-
+  
   摘自：[收藏！40 个 CSS 布局技巧](https://zhuanlan.zhihu.com/p/161822219)
 
 - flex和inline-flex的区别
-
+  
   - flex： 将对象作为<font color=FF0000>弹性伸缩盒</font>显示
   - inline-flex：将对象作为<font color=FF0000>**内联**块级弹性伸缩盒</font>显示
-
+  
   摘自：[display：flex和display: inline-flex区别](https://www.jianshu.com/p/4d596708f61b)
 
 ![](https://i.loli.net/2020/08/25/A3Qhi7IHJotxzMr.png)
-
-
 
 #### CSS3 多媒体查询
 
@@ -1970,7 +1887,7 @@ CSS3 的多媒体查询继承了 CSS2 多媒体类型的所有思想： 取代�
 除非你使用了 not 或 only 操作符，否则所有的样式会适应在所有设备上显示效果。
 
 - **not:** not是用来<font color=FF0000>排除掉某些特定的设备</font>的，比如 @media not print（非打印设备）。
-
+  
   **补充**（摘自：[MDN - 使用媒体查询](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Media_queries)）：用于否定媒体查询，<mark>如果不满足这个条件则返回true，否则返回false</mark>。 如果出现在以逗号分隔的查询列表中，它将仅否定应用了该查询的特定查询。 如果使用not运算符，则还必须指定媒体类型。
 
 - **only:** 用来<font color=FF0000>定某种特别的媒体类型</font>。对于支持Media Queries的移动设备来说，如果存在only关键字，移动设备的Web浏览器会忽略only关键字并直接根据后面的表达式应用样式文件。对于不支持Media Queries的设备但能够读取Media Type类型的Web浏览器，遇到only关键字时会忽略这个样式文件。
@@ -1985,16 +1902,14 @@ CSS3 的多媒体查询继承了 CSS2 多媒体类型的所有思想： 取代�
 
 **CSS3 多媒体类型**
 
-| 值     | 描述                             |
-| :----- | :------------------------------- |
-| all    | 用于所有多媒体类型设备           |
-| print  | 用于打印机                       |
+| 值      | 描述               |
+|:------ |:---------------- |
+| all    | 用于所有多媒体类型设备      |
+| print  | 用于打印机            |
 | screen | 用于电脑屏幕，平板，智能手机等。 |
-| speech | 用于屏幕阅读器                   |
+| speech | 用于屏幕阅读器          |
 
 更多相关媒体类型 / 媒体功能参见：[Runoob - CSS3 @media 查询](https://www.runoob.com/cssref/css3-pr-mediaquery.html)
-
-
 
 #### 响应式 Web 设计 - Viewport
 
@@ -2018,8 +1933,6 @@ Viewport 是<font color=FF0000>用户网页的可视区域</font>，翻译为中
 - **maximum-scale**：<mark>允许用户缩放到的最大比例</mark>。
 - **minimum-scale**：<mark>允许用户缩放到的最小比例</mark>。
 - **user-scalable**：<mark>用户是否可以手动缩放</mark>。
-
-
 
 #### 响应式 Web 设计 - 网格视图
 
@@ -2053,8 +1966,6 @@ Viewport 是<font color=FF0000>用户网页的可视区域</font>，翻译为中
 .col-11 {width: 91.66%;}
 .col-12 {width: 100%;}
 ```
-
-
 
 #### 响应式 Web 设计 - 媒体查询
 
@@ -2101,8 +2012,6 @@ orientation：portrait | landscape
 
 以上部分内容摘自：[MDN - 使用媒体查询](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Media_queries)
 
-
-
 #### 响应式 Web 设计 - 图片
 
 **图片**
@@ -2115,7 +2024,8 @@ orientation：portrait | landscape
 
 背景图片可以响应调整大小或缩放。以下是三个不同的方法：
 
--  如果 background-size 属性设置为 <font color=FF0000>"contain"</font>, 背景图片将<font color=FF0000>按比例自适应内容区域</font>。
+- 如果 background-size 属性设置为 <font color=FF0000>"contain"</font>, 背景图片将<font color=FF0000>按比例自适应内容区域</font>。
+
 - 如果 background-size 属性设置为 <font color=FF0000>"100% 100%"</font> ，背景图片将<font color=FF0000>延展覆盖整个区域</font>
 
 - 如果 background-size 属性设置为 <font color=FF0000>"cover"</font>，则会把背景图像扩展至足够大，以使<font color=FF0000>背景图像完全覆盖背景区域</font>。注意该属性保持了图片的比例因此<font color=FF0000>背景图像的某些部分无法显示在背景定位区域中</font>。
@@ -2135,8 +2045,6 @@ HTML5 的 `<picture>` 元素<font color=FF0000>可以设置多张图片</font>�
 ```
 
 `srcset` 属性的必须的，定义了图片资源。
-
-
 
 #### calc()方法
 
@@ -2172,8 +2080,6 @@ width: calc(100% - 80px);
 - `calc()` 函数支持嵌套，但支持的方式是：把被嵌套的 `calc()` 函数全当成普通的括号。（译者注：所以，函数内直接用括号就好了。）
 
 摘自：[MDN - calc()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/calc)
-
-
 
 #### 总结 / 文档：CSS 选择器
 
@@ -2226,7 +2132,7 @@ width: calc(100% - 80px);
 
 摘自：[runoob - CSS 选择器](https://www.runoob.com/cssref/css-selectors.html)
 
-#### 补充：
+**补充：**
 
 关于nth-of-type：CSS 伪类是<font color=FF0000>针对具有一组兄弟节点的标签, 用 n 来筛选出在一组兄弟节点的位置</font>。示例如下。<font color=FF0000>n从1开始</font>
 
@@ -2239,9 +2145,31 @@ p:nth-of-type(4n) {
 
 
 
+#### div实现“可输入”
+
+可以使用contenteditable属性。示例如下：
+
+```html
+<div class='input' contenteditable placeholder='请输入文字' />
+
+<style>
+    .input{
+        width:200px;
+        height:24px;
+        line-height:24px;
+        font-size:14px;
+        padding:5px 8px;
+        border:1px solid #ddd;
+    }
+    .input:empty::before {
+        content: attr(placeholder);
+    }
+</style>
+```
+
+摘自：[div模拟input实现输入框](https://blog.csdn.net/qq_36671474/article/details/68064132)
+
 ***
-
-
 
 ## web兼容
 
@@ -2250,8 +2178,6 @@ p:nth-of-type(4n) {
 面对浏览器诸多的兼容性问题，经常需要通过修改CSS样式来调试，其中用的最多的就是CSS Hack。所谓CSS Hack就是针对不同的浏览器书写不同的CSS样式，通过使用某个浏览器单独识别的样式代码，控制该浏览器的显示效果。
 
 摘自：[常用的hack技巧！](https://www.jianshu.com/p/a65486c56d19)
-
-
 
 #### 条件注释
 
@@ -2263,72 +2189,72 @@ p:nth-of-type(4n) {
 
 有两种“条件注释”：<font color=FF0000>**下层显示 (downlevel revealed)**</font>和<font color=FF0000>**下层隐藏(downlevel hidden)**</font>。
 
-|                           注释类型                           |                        句法或可能取值                        |
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
-|                        标准 HTML 注释                        |                 \<!-- Comment content  --\>                  |
-|  <font color=FF0000>**上层显示**</font>（downlevel-hidden）  | <font color=red>\<!--</font><font color=blue>[if expression]</font><font color=FF0000>></font> *HTML* <font color=FF0000><!</font><font color=blue>[endif]</font><font color=FF0000>--\></font> |
-| <font color=FF0000>**下层隐藏**</font>（downlevel-revealed） | <font color=FF0000>\<!</font>[if *expression*]<font color=FF0000>></font> *HTML* <font color=FF0000><!</font>[endif]<font color=FF0000>\></font> |
+| 注释类型                                                   | 句法或可能取值                                                                                                                                                                                         |
+|:------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| 标准 HTML 注释                                             | \<!-- Comment content  --\>                                                                                                                                                                     |
+| <font color=FF0000>**上层显示**</font>（downlevel-hidden）   | <font color=red>\<!--</font><font color=blue>[if expression]</font><font color=FF0000>></font> *HTML* <font color=FF0000><!</font><font color=blue>[endif]</font><font color=FF0000>--\></font> |
+| <font color=FF0000>**下层隐藏**</font>（downlevel-revealed） | <font color=FF0000>\<!</font>[if *expression*]<font color=FF0000>></font> *HTML* <font color=FF0000><!</font>[endif]<font color=FF0000>\></font>                                                |
 
 于每个条件注释之中的句法块内的 HTML 表示任意的 HTML 内容块，包括脚本。<font color=FF0000>两种条件注释均使用条件**表达式**以指示注释块内的内容应该被解析还是被忽略</font>。条件表达式由特性，操作符，和/或决定于其特性的值组成。
 
 下表展示了支持的特性并描述了每种特性支持的值。
 
-|      项目      |         示例          |                             说明                             |
-| :------------: | :-------------------: | :----------------------------------------------------------: |
-|       IE       |        [if IE]        | 字符串 "IE" 是一种对应于用以浏览网页的 Internet Explorer 的版本的一种*特性*。 |
-|     value      |       [if IE 7]       | 一个对应于浏览器版本的<font color=FF0000>整数</font>或<font color=FF0000>浮点数</font>。<font color=FF0000>返回一个布尔值<，版本号和浏览器版本相匹配时为 true</font> |
-| WindowsEdition |  [if WindowsEdition]  | 适用于 Windows 7 上的 Internet Explorer 8。字符串 "WindowsEdition" 是一种对应于用以浏览该网页的 Microsoft Windows 版本的*特性*。 |
-|     value      | [if WindowsEdition 1] | 一个对应于用以浏览该网页的 Windows 的*版本*的整数。返回一个布尔值，数值和使用的版本相匹配时为真 true。关于所支持的值和它们所描述的版本的更多信息，参见GetProductInfo 函数的 *pdwReturnedProductType* 参数。 |
-|      true      |       [if true]       |                       永远等价于 true.                       |
-|     false      |      [if false]       |                      永远等价于 false.                       |
+| 项目             | 示例                    | 说明                                                                                                                                 |
+|:--------------:|:---------------------:|:----------------------------------------------------------------------------------------------------------------------------------:|
+| IE             | [if IE]               | 字符串 "IE" 是一种对应于用以浏览网页的 Internet Explorer 的版本的一种*特性*。                                                                               |
+| value          | [if IE 7]             | 一个对应于浏览器版本的<font color=FF0000>整数</font>或<font color=FF0000>浮点数</font>。<font color=FF0000>返回一个布尔值<，版本号和浏览器版本相匹配时为 true</font>       |
+| WindowsEdition | [if WindowsEdition]   | 适用于 Windows 7 上的 Internet Explorer 8。字符串 "WindowsEdition" 是一种对应于用以浏览该网页的 Microsoft Windows 版本的*特性*。                                |
+| value          | [if WindowsEdition 1] | 一个对应于用以浏览该网页的 Windows 的*版本*的整数。返回一个布尔值，数值和使用的版本相匹配时为真 true。关于所支持的值和它们所描述的版本的更多信息，参见GetProductInfo 函数的 *pdwReturnedProductType* 参数。 |
+| true           | [if true]             | 永远等价于 true.                                                                                                                        |
+| false          | [if false]            | 永远等价于 false.                                                                                                                       |
 
 可用于创造条件注释的算符如下表：
 
-| 项目 |           示例           |                             说明                             |
-| :--: | :----------------------: | :----------------------------------------------------------: |
-|  !   |         [if !IE]         | NOT 运算符。这被放在 *特性*, *算符*, 或者 *子表达式* 的前面以反转该表达式的布尔值含义。 |
-|  lt  |      [if lt IE 5.5]      |          小于运算符。第一项小于第二项时返回 true。           |
-| lte  |      [if lte IE 6]       |    小于或等于运算符。第一项小于或等于第二项时返回 true。     |
-|  gt  |       [if gt IE 5]       |          大于运算符。第一项大于第二项时返回 true。           |
-| gte  |      [if gte IE 7]       |    大于或等于运算符。第一项大于或等于第二项时返回 true。     |
-| ( )  |       [if !(IE 7)]       |   子表达式运算符。用以连接布尔算符以创造更加复杂的表达式。   |
-|  &   | [if (gt IE 5)&(lt IE 7)] |          AND 运算符。所有子表达式为真时返回 true。           |
-|  \|  |   [if (IE 6)\|(IE 7)]    |         OR 运算符。子表达式任意一个为真时返回 true。         |
+| 项目  | 示例                       | 说明                                                   |
+|:---:|:------------------------:|:----------------------------------------------------:|
+| !   | [if !IE]                 | NOT 运算符。这被放在 *特性*, *算符*, 或者 *子表达式* 的前面以反转该表达式的布尔值含义。 |
+| lt  | [if lt IE 5.5]           | 小于运算符。第一项小于第二项时返回 true。                              |
+| lte | [if lte IE 6]            | 小于或等于运算符。第一项小于或等于第二项时返回 true。                        |
+| gt  | [if gt IE 5]             | 大于运算符。第一项大于第二项时返回 true。                              |
+| gte | [if gte IE 7]            | 大于或等于运算符。第一项大于或等于第二项时返回 true。                        |
+| ( ) | [if !(IE 7)]             | 子表达式运算符。用以连接布尔算符以创造更加复杂的表达式。                         |
+| &   | [if (gt IE 5)&(lt IE 7)] | AND 运算符。所有子表达式为真时返回 true。                            |
+| \|  | [if (IE 6)\|(IE 7)]      | OR 运算符。子表达式任意一个为真时返回 true。                           |
 
 - **<font color=FF0000>下层隐藏</font>的条件注释**
-
+  
   如下是两个“下层隐藏”条件注释的示例。
-
+  
   - 示例中的指令将会让 IE 8 读取指定的 CSS 文件，而 IE 7 或者其它版本的 IE 将会忽略它。非 IE 的浏览器同样会把它忽略因为它看起来像一条标准的 HTML 注释
-
+    
     ```html
     <!--[if IE 8]>
     <link href="ie8only.css" rel="stylesheet">
     <![endif]-->
     ```
-
+  
   - 示例里的标记将会让 IE 5 至 7 读取其内的 CSS 样式。通过对这种标记的不同的使用你也可以挑出 IE 6, IE 5 或者比指定版本更新（大）或更旧（小）版本的 IE。
-
+    
     ```html
     <!--[if lte IE 7]>
     <style>
-    	/* CSS here */
+        /* CSS here */
     </style>
     <![endif]-->
     ```
 
 - **<font color=FF0000>下层显示</font>的条件注释**
-
+  
   如下是一个“下层显示”条件“注释”的示例，<font color=FF0000>它除了误导向的名字之外，根本*不是一个 (X)HTML* 注释，使用默认的微软语法</font>：
-
+  
   ```html
   <![if !IE]>
   <link href="non-ie.css" rel="stylesheet">
   <![endif]>
   ```
-
+  
   这个示例展示了应该<font color=FF0000>仅对非 IE 浏览器暴露的内容</font>，由于该条件对 IE 为假（并且因此该内容被忽略），而这些标签自身在非 IE 浏览器中是无法识别的（并因此被忽略）。这不是有效的 HTML 或 XHTML。
-
+  
   那如果想要符合W3C标准要如何写呢？答案如下：
   
   ```html
@@ -2370,8 +2296,6 @@ p:nth-of-type(4n) {
 
 摘自：[条件注释判断浏览器<!--[if !IE]><!--[if IE]><!--[if lt IE 6]><!--[if gte IE 6]>](https://www.cnblogs.com/dtdxrk/archive/2012/03/06/2381868.html)
 
-
-
 #### flex兼容
 
 Flexbox布局的语法经过几年发生了很大的变化，也给Flexbox的使用带来一定的局限性，因为语法版本众多，浏览器支持不一致，致使Flexbox布局使用不多。
@@ -2386,42 +2310,40 @@ Flexbox布局主要有三种语法版本：
 
 https://www.jianshu.com/p/654cd19da3e7
 
-
-
 #### 兼容IE8的方法：
 
 - **HTML5标签兼容方案：html5shiv.js**
-
+  
   GitHub地址：https://github.com/aFarkas/html5shiv/
-
+  
   IE8不支持HTML5的新标签，如\<header>、\<nav>等标签在IE8无法渲染。html5shiv.js可帮助IE6-8浏览器兼容HTML5语义化标签。
-
+  
   **使用方法：**在页面中引用html5shiv.js文件。必须添加在页面的\<head>元素内，因为IE浏览器必须在元素解析前知道这个元素，所以这个js文件不能在页面底部引用。
 
 - **CSS3媒体查询兼容方案：Respond.js**
-
+  
   GitHub地址：https://github.com/scottjehl/Respond
-
+  
   IE8不支持CSS媒体查询，对响应式设计大大不利。Respond.js可帮助IE6-8兼容“min/max-width”媒体查询条件。
-
+  
   使用方法：在页面中所有css文件的引用位置之后引用Respond.js。而且Respond.js的引用得越早，用户看到页面闪烁的机会越小。
 
 - **CSS3字体单位“rem”兼容方案：rem.js**
-
+  
   GitHub地址：https://github.com/chuckcarpenter/REM-unit-polyfill
-
+  
   CSS3引入了新的字体大小单位rem，与em的“相对于其父元素来设置字体大小”的功能不同，rem是相对于根元素\<html>的字体大小比率单位，成了目前主流的单位之一。IE9+开始支持，IE8就只能通过引入js库来支持了。
-
+  
   使用方法：在页面中引用rem.js文件。需要引用在页脚，也就是\<body>末尾，在所有css文件引用和DOM元素之后。
 
 - **CSS3“background-size”属性的“cover”和“contain”属性值兼容方案：background-size polyfill**
-
+  
   GitHub地址：https://github.com/louisremi/background-size-polyfill
-
+  
   “background-size”是CSS3新引入的属性，其中有两个属性值非常常用，分别为“cover”和“contain”。“cover”可以把背景图像扩展至足够大，以使背景图像完全覆盖背景区域，背景图像的某些部分也许无法显示在背景定位区域中。“contain”可以把图像图像扩展至最大尺寸，以使其宽度和高度完全适应内容区域。IE8同样不支持，非常不方便。这时可以引用“background-size polyfill”库来兼容。
-
+  
   使用方法：与以上几个库不同，“background-size polyfill”的代码文件需要在css中引用。在所有用到这两个“background-size”属性值的地方，加一行“-ms-behavior”属性：
-
+  
   ```css
   .selector { 
       background-size: cover;
@@ -2432,9 +2354,9 @@ https://www.jianshu.com/p/654cd19da3e7
   ```
 
 - **JS数组的forEach方法兼容方案：自行实现**
-
+  
   IE8的数组对象没有forEach方法，晕。所以自行声明即可，代码如下：
-
+  
   ```js
   if ( !Array.prototype.forEach ) {
       Array.prototype.forEach = function forEach( callback, thisArg ) {
@@ -2464,44 +2386,42 @@ https://www.jianshu.com/p/654cd19da3e7
   ```
 
 - **SVG图形兼容方案：优雅降级**
-
+  
   参考文章：http://www.zhangxinxu.com/wordpress/2013/09/svg-fallbacks/
-
+  
   对于svg图形是真的无法直接兼容了，因此使用优雅降级，在IE8下显示替代的jpg、png或gif图片。有三种比较实用的方法：一是用js修改\<img>的src属性，这里省略；二是用HTML的hack实现优雅降级，类似于如下代码：
-
+  
   ```html
   <svg width="96" height="96">
     <image xlink:href="svg.svg" src="svg.png" width="96" height="96" />
   </svg>
   ```
-
+  
   支持\<svg>标签的浏览器会显示svg.svg，老版本浏览器会无视\<svg>标签，渲染\<image>标签，从而显示svg.png。
-
+  
   此外，还有一种比较巧妙的方法：
-
+  
   ```html
   <img src="image.svg" onerror="this.src='image.png'">
   ```
-
+  
   此法有弊端：当image.png出现问题无法载入时，会陷入死循环。
 
 - **Canvas兼容方案：Excanvas.js**
-
+  
   下载地址：http://code.google.com/p/explorercanvas/downloads/list
-
+  
   Canvas的功能非常强大，兼容IE8的工作也很繁巨。可能有很大一部分情况要用优雅降级，但是一些情况下可以使用Google出的Excanvas.js库。它是利用IE支持的VML对象来模拟Canvas的绘图的，有些情况下可用，但无法穷尽Canvas的所有功能。
-
+  
   使用方法：在页面中引用Excanvas.js文件，最好在\<head>标签中。
-
+  
   具体注意事项可以参考文章：http://rockyuse.iteye.com/blog/1618298
 
 - **Canvas+WebGL兼容方案：优雅降级**
-
+  
   最近WebGL库——Three.js越来越流行了，但它只支持IE11+，IE8的兼容好像无解……所以只能优雅降级，但是效果肯定大打折扣。
 
 摘自：[前端页面兼容ie8解决方法](https://www.cnblogs.com/vickya/p/8033944.html)
-
-
 
 ***
 
@@ -2516,30 +2436,28 @@ https://www.jianshu.com/p/654cd19da3e7
 
 摘自：[浅谈css预处理器，Sass、Less和Stylus](https://zhuanlan.zhihu.com/p/23382462)
 
-
-
 #### 将Less编译成css的方法
 
 - **使用node.js编译（推荐）**
-
+  
   ```sh
   lessc compiled.less > output.css
   ```
 
 - **浏览器使用**
-
+  
   在浏览器中使用Less.js是开始开发的最简单方法，而且使用较少的开发也很方便，但是在生产中，<mark>当性能和可靠性非常重要时，建议使用Node.js或许多可用的第三方工具之一进行预编译</mark>。
-
+  
   第一将你写的less样式表.通过link链进HTML并且将rel属性设置为stylesheet/less
-
+  
   ```html
   <link rel="stylesheet/less" type="text/css" href="styles.less"/>
   <!-- 下面这种写法也行，自行选择 -->
   <link rel="stylesheet" type="text/less" href="styles.less"/>
   ```
-
+  
   接下来下载[less.js](https://github.com/less/less.js/archive/master.zip)并将script标记在`head`元素中:
-
+  
   ```
   <head>
   <link rel="stylesheet" type="text/less" href="styles.less"/>
@@ -2552,8 +2470,6 @@ https://www.jianshu.com/p/654cd19da3e7
 
 以上摘自：[less的几种编译成css的方法](https://juejin.im/post/6844903891922845710)
 
-
-
 #### **注释**
 
 ```less
@@ -2561,26 +2477,24 @@ https://www.jianshu.com/p/654cd19da3e7
 /* 会被编译到css文件中，相当于：给客户看的注释 */
 ```
 
-
-
 #### **声明**
 
 - 声明变量，示例：
-
+  
   ```less
   @color:pink; //声明变量
   background: @color; //使用声明的变量
   ```
 
 - 声明属性（比如margin），示例：
-
+  
   ```less
   @m:margin; //声明属性
   @{m}: 0;     //使用声明的属性
   ```
 
 - 声明选择器，示例：
-
+  
   ```less
   @selector: #wrap;  //声明选择器
   @{selector}{       //使用声明的选择器
@@ -2590,8 +2504,6 @@ https://www.jianshu.com/p/654cd19da3e7
 
 - 类似的还有URL，同样使用`@{url}`
 
-
-
 #### 延迟加载
 
 如果定义变量两次，将搜索并使用当前范围内变量的上一次定义。此方法类似于CSS本身，<font color=FF0000>其中值是从定义中的最后一个属性提取的</font>。
@@ -2600,8 +2512,6 @@ https://www.jianshu.com/p/654cd19da3e7
 
 **原因：**会等到less中的所有文本都被“读完”，然后再将less中的变量替换成css
 
-
-
 #### less中的&
 
 内层选择器前面的 & 符号就表示<font color=FF0000>对父选择器的引用</font>。
@@ -2609,8 +2519,6 @@ https://www.jianshu.com/p/654cd19da3e7
 在一个内层选择器的前面，如果<mark>没有 & 符号，则它<font color=FF0000>被解析为父选择器的后代</font></mark>；如果<mark>有 & 符号，它就<font color=FF0000>被解析为父元素自身或父元素的伪类</font></mark>。同时用在选择器中的&还可以反转嵌套的顺序并且可以应用到多个类名上
 
 摘自：[less 的 & 详解](https://www.jianshu.com/p/127b0974cfc3)
-
-
 
 #### less的混合
 
@@ -2624,8 +2532,6 @@ https://www.jianshu.com/p/654cd19da3e7
 6. 命名参数
 7. 匹配模式
 8. arguments变量
-
-
 
 #### less计算
 
@@ -2645,11 +2551,7 @@ https://www.jianshu.com/p/654cd19da3e7
 
 CSS出了一个calc()方法，不过只适合用于长度的计算。
 
-
-
 #### less继承
-
-
 
 #### less避免编译
 
@@ -2657,11 +2559,7 @@ CSS出了一个calc()方法，不过只适合用于长度的计算。
 ~"foo"
 ```
 
-
-
 ***
-
-
 
 ## Sass
 
@@ -2675,11 +2573,9 @@ SCSS（Sassy CSS） 语法使用 `.scss` 文件扩展名。<mark>除了极少部
 
 **Scss和Sass<font color=FF0000>代码写法上</font>的区别，如图：**
 
-|                             Scss                             |                             Sass                             |
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
+| Scss                                                                      | Sass                                                                      |
+|:-------------------------------------------------------------------------:|:-------------------------------------------------------------------------:|
 | <img src="https://s1.ax1x.com/2020/08/27/d5iUIS.png" style="zoom:40%;" /> | <img src="https://s1.ax1x.com/2020/08/27/d5iIMR.png" style="zoom:48%;" /> |
-
-
 
 #### 将sass文件编译成css文件
 
@@ -2692,8 +2588,6 @@ sass compiled_file.sass:output_file.css
 ```sh
 sass --watch comiled_file_folder:output_folder
 ```
-
-
 
 #### **输出css文件的样式**
 
@@ -2708,15 +2602,11 @@ sass --watch comiled_file_folder:output_folder
 sass --watch comiled_file_folder:output_folder --style compact
 ```
 
-
-
 #### 启用sass命令行
 
 ```sh
 sass -i
 ```
-
-
 
 #### Scss变量
 
@@ -2738,54 +2628,50 @@ $primary-border: 1px solid $primary-color;
 
 另外：在创建变量名时候，对于单词间连接，可以使用`-`，也可以使用`_`；但是最好做到风格统一
 
-
-
 #### 嵌套时调用父选择器
 
 使用`&`，将会引用父选择器。示例：
 
 - scss代码
-
-   ```scss
-    &:hover{
-    	background-color: #0d2f7e;
-    	color: #fff;
-    }
-   ```
-
+  
+  ```scss
+   &:hover{
+       background-color: #0d2f7e;
+       color: #fff;
+   }
+  ```
+  
     编译css，结果：
-
-    ```css
-    .nav ul a:hover {
-      background-color: #0d2f7e;
-    	color: #fff;
-    }
-    ```
+  
+  ```css
+  .nav ul a:hover {
+    background-color: #0d2f7e;
+      color: #fff;
+  }
+  ```
 
 - scss代码
-
-   ```scss
-     & &-text{
-       font-size: 15px;
-     }
-   ```
-
+  
+  ```scss
+    & &-text{
+      font-size: 15px;
+    }
+  ```
+  
     编译css，结果：
-
-   ```css
-   .nav .nav-test {
-     font-size: 15px;
-   }
-   ```
-
-
+  
+  ```css
+  .nav .nav-test {
+    font-size: 15px;
+  }
+  ```
 
 #### 属性嵌套
 
 示例：
 
 - 原本：
-
+  
   ```scss
   body{
     body-family: Helvetica, Arial, sans-serif;
@@ -2795,13 +2681,13 @@ $primary-border: 1px solid $primary-color;
   ```
 
 - 经过属性嵌套后：
-
+  
   ```scss
   body{
     font: {
-    	family: Helvetica, Arial, sans-serif;
-    	size: 15px;
-    	weight: normal;
+        family: Helvetica, Arial, sans-serif;
+        size: 15px;
+        weight: normal;
     }
   }
   ```
@@ -2809,7 +2695,7 @@ $primary-border: 1px solid $primary-color;
 **甚至：**
 
 - 原本：
-
+  
   ```scss
   .nav{
     border: 1px solid #000;
@@ -2819,7 +2705,7 @@ $primary-border: 1px solid $primary-color;
   ```
 
 - 经过属性嵌套后：
-
+  
   ```scss
   .nav{
     border: 1px solid #000 {
@@ -2828,8 +2714,6 @@ $primary-border: 1px solid $primary-color;
       }
   }
   ```
-
-  
 
 #### mixin
 
@@ -2847,8 +2731,6 @@ $primary-border: 1px solid $primary-color;
 @include: mixin-name;
 ```
 
-
-
 #### 继承 @extend
 
 示例：
@@ -2860,7 +2742,7 @@ $primary-border: 1px solid $primary-color;
 
 //alert-info继承.alert
 .alert-info { 
-	@extend: .alert;
+    @extend: .alert;
   background-color: #d9edf7;
 }
 ```
@@ -2878,12 +2760,10 @@ $primary-border: 1px solid $primary-color;
 
 #alert-info也会继承alert下面的a
 .alert-info { 
-	@extend: .alert;
+    @extend: .alert;
   background-color: #d9edf7;
 }
 ```
-
-
 
 #### @import
 
@@ -2891,15 +2771,11 @@ CSS本身就有@import的功能，在一个css文件中，使用@import可以将
 
 SASS会以文件为单位进行编译，<font color=FF0000>如果不想某个scss文件单独编译，可以将其处理为partial文件，也即在文件名前加上一个下划线，比如`_base.css`</font>
 
-
-
 而在引入时，无需加上下划线，也不需要填写文件类型；示例：
 
 ```scss
 @import "base";
 ```
-
-
 
 #### comment
 
@@ -2909,28 +2785,24 @@ jquery有三种注释：
 - **//**     不会显示在编译后的css文件中
 - **/*! */** <font color=FF0000>强制输出的注释内容</font>
 
-
-
 #### Data Type
 
 ```scss
 type-of(variable) //查看变量类型
 
 type-of(5)                //"number"
-type-of(5px) 							//"number"
+type-of(5px)                             //"number"
 
-type-of(hello)  					//"string"
-type-of("hello") 					//"string"
+type-of(hello)                      //"string"
+type-of("hello")                     //"string"
 
 type-of(1px solid #000)   //"list"
 
-type-of(#ff0000)					//"color"
-type-of(red) 							//"color"
+type-of(#ff0000)                    //"color"
+type-of(red)                             //"color"
 type-of(rgb(255, 0, 0))   //"color"
 type-of(hsl(0, 100%, 50%))//"color"
 ```
-
-
 
 #### number
 
@@ -2938,29 +2810,30 @@ type-of(hsl(0, 100%, 50%))//"color"
 
 ```scss
 5px + 5px     //10px
-5px - 2				//3px
-5px * 2 			//10px
-5px * 2px 		//10px*px
+5px - 2                //3px
+5px * 2             //10px
+5px * 2px         //10px*px
 (10px / 2px)  //5
-10px / 2px		//10px/2px
-10px / 2			//10px/2
-(10px / 2) 		//5px
+10px / 2px        //10px/2px
+10px / 2            //10px/2
+(10px / 2)         //5px
 ```
-
-
 
 #### 数字函数
 
 - **abs()** 绝对值
+
 - **round()**：四舍五入
+
 - **ceil()**：向上取整
+
 - **floor()**：向下取整
+
 - **percentage()**：转化为百分比
 
 - max()
+
 - min()
-
-
 
 #### 字符串
 
@@ -2969,21 +2842,21 @@ sass中的字符串有两种，带引号和不带引号两种。
 其中带引号的，可以加上空格；不带引号的不能加上空格。
 
 - 带引号的字符串加上（+）不带引号的字符串返回带引号的字符串
-
+  
   ```scss
   "hello" + world    //"helloworld"
   ```
 
 - 不带引号的字符串加上（+）带引号的字符串返回不带引号的字符串
-
+  
   ```scss
   hello + "world"     //helloworld
   ```
 
 - 不带引号的字符串加上（+）不带引号的字符串返回不带引号的字符串
-
+  
   ```scss
-  hello + world				//helloworld
+  hello + world                //helloworld
   ```
 
 **另外：**
@@ -2998,36 +2871,34 @@ hello / world          //"hello/world"
 ```
 
 ```scss
-hello * world					 将会报错：Error: Undefined operation "hello * world".
+hello * world                     将会报错：Error: Undefined operation "hello * world".
 //字符串的乘法没有意义，
 ```
-
-
 
 #### 字符串函数
 
 - **to-upper-case()：**
 
 - **to-lower-case()：**
+
 - **str-length()：**得到字符串的长度
 
 - **str-index()：**获取字符串的位置，**示例：**
-
+  
   ```scss
   str-index(str, sub_str)
   ```
 
 - **str-insert()：**插入字符串，示例：
-
+  
   ```scss
   str-insert(inserted_str, insert_str, insert_index)
   ```
 
-
-
 #### 颜色函数
 
 - **RGB颜色函数**
+  
   - **[rgb($red,$green,$blue)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#rgb-instance_method)**：根据**红**、**绿**、**蓝**三个值创建一个颜色；
   - **[rgba($red,$green,$blue,$alpha)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#rgba-instance_method)**：根据**红**、**绿**、**蓝**和**透明度**值创建一个颜色；
   - **[red($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#red-instance_method)**：从一个颜色中获取其中**红色**值；
@@ -3036,6 +2907,7 @@ hello * world					 将会报错：Error: Undefined operation "hello * world".
   - **[mix($color-1,$color-2,[$weight])](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#mix-instance_method)**：把两种颜色混合在一起。
 
 - **HSL颜色函数**
+  
   - **[hsl($hue,$saturation,$lightness)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#hsl-instance_method)**：通过色相（hue）、饱和度(saturation)和亮度（lightness）的值创建一个颜色；
   - **[hsla($hue,$saturation,$lightness,$alpha)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#hsla-instance_method)**：通过色相（hue）、饱和度(saturation)、亮度（lightness）和透明（alpha）的值创建一个颜色；
   - **[hue($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#hue-instance_method)**：从一个颜色中获取色相（hue）值；
@@ -3051,14 +2923,13 @@ hello * world					 将会报错：Error: Undefined operation "hello * world".
   - **[invert($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#invert-instance_method)**：反回一个反相色，红、绿、蓝色值倒过来，而透明度不变。
 
 - **Opacity函数**
+  
   - **[alpha($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#alpha-instance_method) /[opacity($color)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#opacity-instance_method)**：获取颜色透明度值；
   - **[rgba($color, $alpha)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#rgba-instance_method)**：改变颜色的透明度值；
   - **[opacify($color, $amount)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#opacify-instance_method) / [fade-in($color, $amount)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#fade_in-instance_method)**：使颜色<font color=FF0000>更不透明</font>；
   - **[transparentize($color, $amount)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#transparentize-instance_method) / [fade-out($color, $amount)](http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#fade_out-instance_method)**：使颜色<font color=FF0000>更加透明</font>。
 
 摘自：[Sass中文网 - Sass基础——颜色函数](https://www.sass.hk/skill/sass25.html)
-
-
 
 #### 列表函数
 
@@ -3074,61 +2945,55 @@ hello * world					 将会报错：Error: Undefined operation "hello * world".
 
 摘自：[Sass中文网 - 理解Sass的list](https://www.sass.hk/skill/sass31.html)
 
-
-
 #### Map
 
 - 定义：
-
+  
   ```scss
   $map: (key1: value1, key2: value2[, key3: value3])
   ```
 
 - 取值：
-
+  
   - 由key获取一个value
-
-      ```scss
+    
+    ```scss
     map-get($map-name, map-key)
     ```
-
+  
   - 获取全部的value
-
+    
     ```scss
     map-values($map-name)
     ```
 
 - 获取map的全部key，返回一个列表
-
+  
   ```scss
   map-keys($map-name)
   ```
 
 - 判断map中是否含有指定的key，返回true / false
-
+  
   ```scss
   map-has-key($map-name, key-name)
   ```
 
 - 合并map
-
+  
   ```scss
   map-merge($map1, $map2)
   ```
 
 - map移除一个键值对
-
+  
   ```scss
   map-remove($map-name, key1[, key2])
   ```
 
-
-
-####  Boolean
+#### Boolean
 
 包含 and or not运算符
-
-
 
 #### interpolation
 
@@ -3154,8 +3019,6 @@ hello * world					 将会报错：Error: Undefined operation "hello * world".
   }
   ```
 
-
-
 #### @if
 
 **语法：**
@@ -3170,8 +3033,6 @@ hello * world					 将会报错：Error: Undefined operation "hello * world".
 }
 ```
 
-
-
 #### @for
 
 **语法：**
@@ -3184,8 +3045,6 @@ hello * world					 将会报错：Error: Undefined operation "hello * world".
 
 <font color=FF0000>**其中：through相当于`≤`，to相当于`<`**</font>
 
-
-
 #### @each
 
 @each用于循环list（类似于foreach），语法：
@@ -3195,8 +3054,6 @@ hello * world					 将会报错：Error: Undefined operation "hello * world".
   /*todo*/
 }
 ```
-
-
 
 #### @while
 
@@ -3208,8 +3065,6 @@ hello * world					 将会报错：Error: Undefined operation "hello * world".
 }
 ```
 
-
-
 #### 自定义函数
 
 语法：
@@ -3220,15 +3075,11 @@ hello * world					 将会报错：Error: Undefined operation "hello * world".
 }
 ```
 
-
-
 #### 警告与错误
 
 ```scss
 @warn "warning info";
 ```
-
-
 
 ## bootstrap
 
@@ -3238,4 +3089,3 @@ hello * world					 将会报错：Error: Undefined operation "hello * world".
 <!--悬浮向右-->
 <span class=“push-right”></span>
 ```
-

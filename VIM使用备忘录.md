@@ -25,18 +25,16 @@
 **查找：**
 
 - **左斜杠/ ：从光标所在<font color=FF0000>位置向文件尾</font>搜索**
-
+  
   示例：`／hello`
 
 - **问号？：从光标所在<font color=FF0000>位置向文件头</font>搜索**
-
+  
   示例：`？hello`
 
 **撤销：**
 
 - `u`： 撤销上一步的操作
-
-
 
 **光标移动**：
 
@@ -44,27 +42,19 @@
 - **$ (⇧ + 4)**：移动到行尾
 - **⇧ + L**：将光标移动到文件的末尾
 
-
-
 **切换大小写**
 
 u：小写
 
 U：大写
 
-
-
 **退出**
 
 ZZ：命令模式下保存当前文件所做的修改后退出vi
 
-
-
 **注释**
 
 `"` 作为注释
-
-
 
 ***
 
@@ -76,13 +66,9 @@ ZZ：命令模式下保存当前文件所做的修改后退出vi
 - viusal模式
 - 命令模式（在normal模式下，键入`:`）
 
-
-
 **normal模式**
 
 - `:w` 写入保存
-
-
 
 **进入vim，默认进入的是<font color=FF0000>normal模式</font>，在normal模式下进入<font color=FF0000>Insert模式</font>**
 
@@ -93,16 +79,12 @@ ZZ：命令模式下保存当前文件所做的修改后退出vi
 - A                                   在<font color=00FF00>该行最后面写入</font>
 - O                                   在<font color=0000FF>该行上一行写入</font>
 
-
-
 **VIM有分屏模式：**
 
 - vs (vertical split)    竖分屏
 - sp (split)                横分屏
 - q                            退出分屏模式（退出顺序类似栈）
 - 输入set nu[mber]来给<font color=FF0000>代码加上行号</font>
-
-
 
 **VIM的全局替换示例**
 
@@ -113,12 +95,14 @@ ZZ：命令模式下保存当前文件所做的修改后退出vi
 - /         用于分隔
 
 - %        表示全部文件
+
 - s           表示替换操作
+
 - java      被替换的字符串
+
 - python   替换的字符串
+
 - g        表示全局替换
-
-
 
 **visual模式（可视化模式）**
 visual模式一般用于<font color=FF0000>块状选择文本，从而进行批量操作</font>。进入方式：在normal模式下
@@ -127,15 +111,11 @@ visual模式一般用于<font color=FF0000>块状选择文本，从而进行批�
 - 键入V           进行<font color=FF0000>行选择</font>，使用<font color=FF0000>方向键（上下），或者jk</font>以批量选中多行
 - 键入**⌃ + v**    进行<font color=FF0000>方块选择</font>（实际用法与v类似）
 
-
-
 **VIM在insert模式下的快速纠错<font color=FF0000>（同时这些命令在终端下也可以使用！）</font>**
 
 - **⌃ + h**        删除<font color=FF0000>上一个字符</font>
 - **⌃ + w**       删除<font color=FF0000>上一个单词</font>
 - **⌃ + u**        当<font color=FF0000>光标在当前行的最后，则删除当前行</font>；否则，<font color=FF0000>删除当前光标之前的内容</font>
-
-
 
 <font color=FF0000>**在终端下还有一些快捷键**</font>
 
@@ -152,8 +132,6 @@ visual模式一般用于<font color=FF0000>块状选择文本，从而进行批�
 
 - 可以使用 **⌃ + c** 或者  **⌃ + [** 以替代**⎋**，其中<font color=FF0000>不推荐使用**⌃ + c**</font>，因为这可能会影响VIM的插件
 - 可以在<font color=FF0000>normal模式</font>下键入`gi`以快速跳转到上次编辑的地方继续编辑
-
-
 
 **VIM在normal模式下的光标移动**
 
@@ -209,19 +187,25 @@ visual模式一般用于<font color=FF0000>块状选择文本，从而进行批�
 - `x`       快速删除一个<font color=FF0000>字符</font>
 
 - `dw`     快速删除(delete)一个<font color=FF0000>单词</font>，默认为`daw`
-  - `daw`		 删除一个单词，并包含周围的空格（delete around word）
+  
+  - `daw`         删除一个单词，并包含周围的空格（delete around word）
   - `diw`         删除一个单词，不包含周围的空格（delete inner word）
 
 - `d + num` / `x + num` 都可以搭配数字来执行多次
+
 - `dd`        删除当前行
+
 - `dt*`       从光标处删除到`*`字符处，<font color=FF0000>\*字符不删</font>（delete to *）
+
 - `d0`         从光标处删除到行首<font color=FF0000>（光标处的字符不删）</font>
+
 - `d$`         从光标处删除到行尾
+
 - `num + x` / `num + dd` 删除光标所在及后面的共num个字符 / 删除光标所在行及后面的共num行（同样的，可以在Visual模式下进行删除）
 
 **快速修改**
 
-- `r`  / `R`	替换一个字符（replace）/ 替换一个字符并将光标移动到下一个字符上
+- `r`  / `R`    替换一个字符（replace）/ 替换一个字符并将光标移动到下一个字符上
 - `c`     配合文本对象，进行快速修改（change）
   - `C` 删除整行，并进入插入模式
   - `caw`    与`daw`类似：删除一个单词，包含周围的空格，并进入插入模式
@@ -242,6 +226,7 @@ visual模式一般用于<font color=FF0000>块状选择文本，从而进行批�
 - `substitute` 查找文本并替换文本，支持正则表达式
 
 - 示例如下：`: [range]s[ubstitute]/{pattern}/{string}/[flags]`
+  
   - `range`  操作范围，比如：`10, 20`表示10-20行，`%`表示全部
   - `pattern` 搜索模式
   - `string`  要替换后的文本
@@ -309,11 +294,11 @@ visual模式一般用于<font color=FF0000>块状选择文本，从而进行批�
 
 **标签切换操作**
 
-|     Ex命令     | 普通模式命令 |          用途           |
-| :------------: | :----------: | :---------------------: |
-| :tabn[ext] {N} |    {N}gt     | 切换到序号为{N}的标签页 |
-|   :tabn[ext]   |      gt      |    切换到下一标签页     |
-| :tabp[revious] |      gT      |    切换到上一标签页     |
+| Ex命令           | 普通模式命令 | 用途            |
+|:--------------:|:------:|:-------------:|
+| :tabn[ext] {N} | {N}gt  | 切换到序号为{N}的标签页 |
+| :tabn[ext]     | gt     | 切换到下一标签页      |
+| :tabp[revious] | gT     | 切换到上一标签页      |
 
 ***
 
@@ -335,10 +320,13 @@ visual模式一般用于<font color=FF0000>块状选择文本，从而进行批�
 **normal模式的复制粘贴**
 
 - `y`  复制（yank）
+
 - `p`  粘贴（put）
+
 - `d*` 剪切（dd / diw / daw）
 
 - 使用v(isual)命令选中复制的地方，复制与粘贴
+
 - 对于文本对象（text object）：`yiw`复制一个单词，`yy`<font color=FF0000>复制一行</font>
 
 **在insert模式中使用复制粘贴**
@@ -395,17 +383,11 @@ visual模式一般用于<font color=FF0000>块状选择文本，从而进行批�
 
 ***
 
-
-
-
-
 **杂项：**
 
 在normal模式下，键入`:help + 命令` 以获取相关的帮助文档
 
 在normal模式下键入：`:syntax on `使得文本<font color=FF0000>语法高亮</font>
-
-
 
 ***
 
@@ -418,28 +400,28 @@ visual模式一般用于<font color=FF0000>块状选择文本，从而进行批�
 - 常用配置，比如`:set nu`设置行号，`colorscheme hybird`设置主题
 
 - 常用的vim映射（即：自定义快捷键），
-
+  
   - 比如noremap \<leader>w :w\<cr> 保存文件，示例：
-
+    
     ```vimscript
     " 设置','为leader键
     " 在insert模式下键入 ,+w 即等价于 Esc+w
     let mapleader=','  
     inoremap <leader>w <Esc>:w<cr>
     ```
-
+  
   - 基本映射是指在<font color=FF0000>normal模式</font>下的映射，当然还有其他模式的映射，示例：
-
+    
     使用map就可以实现映射。比如
-
+    
     - `:map - x`  按下 `-` 就会删除字符（实现`x`的功能），若要取消该map映射，只需要输入命令`:unmap -`
     - `:map <space> viw` 按下 **␣** 时就会选中整个单词
     - `:map <c-d> `    使用**⌃+d**执行dd删除一行 
-
+  
   - normal / visual / insert / command 模式都可以定义映射，用nmap / vamp / imap / cmap 定义映射只在normal / visual / insert / command模式下分别有效，示例：
-
+    
     `:vmap \ U`在visual模式下将选中的文本设置为大写
-
+  
   - vim映射分为递归映射（如A映射为B，B映射为C，C映射为A，这样映射将无法解释）和非递归映射，nmap / vamp / imap / cmap的非递归映射分别对应为：n<font color=FF0000>no</font><font color=0000FF>re</font>map / v<font color=FF0000>no</font><font color=0000FF>re</font>amp / i<font color=FF0000>no</font><font color=0000FF>re</font>map / c<font color=FF0000>no</font><font color=0000FF>re</font>map 其中<font color=FF0000>no</font>表示非，<font color=0000FF>re</font>表示递归
 
 - 自定义的vimscript函数 和 插件的配置
@@ -449,4 +431,3 @@ visual模式一般用于<font color=FF0000>块状选择文本，从而进行批�
 ### VIM插件
 
 vim有很多插件管理器，常见的有：vim-plug，Vundle，Pathogen，Dein.Vim，volt等
-

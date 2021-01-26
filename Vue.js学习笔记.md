@@ -1,7 +1,5 @@
 # Vue.js学习笔记
 
-
-
 ### Vue.js是什么
 
 Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<font color=FF0000>**渐进式框架**</font>。与其它大型框架不同的是，<mark>Vue 被设计为可以自底向上逐层应用</mark>。<mark>Vue 的核心库只关注视图层</mark>，不仅易于上手，还便于与第三方库或既有项目整合。另一方面，当与[现代化的工具链](https://cn.vuejs.org/v2/guide/single-file-components.html)以及各种[支持类库](https://github.com/vuejs/awesome-vue#libraries--plugins)结合使用时，Vue 也完全能够为复杂的单页应用提供驱动。
@@ -26,8 +24,6 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 
 **另外，这里的vue是一个全局变量**
 
-
-
 ### 绑定attribute的另一种方法（第一种是上面的示例）
 
 示例：
@@ -50,8 +46,6 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 
 你看到的 `v-bind` attribute 被称为**指令**。指令带有前缀 `v-`，以表示<font color=FF0000>它们是 Vue 提供的特殊 attribute</font>。可能你已经猜到了，它们会在渲染的 DOM 上应用特殊的响应式行为。在这里，该指令的意思是：“将这个元素节点的 `title` attribute 和 Vue 实例的 `message` property 保持一致”。
 
-
-
 ### 条件（v-if）
 
 示例：
@@ -69,8 +63,6 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
     })
 </script>
 ```
-
-
 
 ### 循环
 
@@ -97,8 +89,6 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
     })
 </script>
 ```
-
-
 
 ### 处理用户输入
 
@@ -128,8 +118,6 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 
 ##### <mark>Vue 还提供了<font color=FF0000> `v-model` </font>指令，它能轻松<font color=FF0000>实现**表单输入**和**应用状态**之间的**双向绑定**</font>。</mark>
 
-
-
 ### 组件化应用构建
 
 组件系统是 Vue 的另一个重要概念，因为它是一种抽象，允许我们使用小型、独立和通常可复用的组件构建大型应用。仔细想想，几乎任意类型的应用界面都可以抽象为一个组件树：
@@ -141,8 +129,6 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 ### //todo，这里没有完全看懂...不过可能要等到看完“组件基础”之后才会好些
 
 https://cn.vuejs.org/v2/guide/index.html#%E4%B8%8E%E8%87%AA%E5%AE%9A%E4%B9%89%E5%85%83%E7%B4%A0%E7%9A%84%E5%85%B3%E7%B3%BB
-
-
 
 ### Vue实例
 
@@ -157,8 +143,6 @@ var vm = new Vue({  //这里的vm表示viewModel，这个命名很常见（参�
 当创建一个 Vue 实例时，你<font color=FF0000>可以传入一个**选项对象**</font>。这篇教程主要描述的就是如何使用这些选项来创建你想要的行为。作为参考，你也可以在 [API 文档](https://cn.vuejs.org/v2/api/#选项-数据)中浏览完整的选项列表。
 
 一个 Vue 应用由一个通过 `new Vue` 创建的<font color=FF0000>**根 Vue 实例**</font>，以及可选的嵌套的、可复用的组件树组成。
-
-
 
 ### 数据与方法
 
@@ -230,8 +214,6 @@ watch: {
     }
   },
 ```
-
-
 
 ### 实例生命周期钩子
 
@@ -383,22 +365,22 @@ Mustache 标签将会被替代为对应数据对象上 `msg` property 的值。�
 在这个示例中，当 `eventName` 的值为 `"focus"` 时，`v-on:[eventName]` 将等价于 `v-on:focus`。
 
 - **对动态参数的值的约束**
-
+  
   <font color=FF0000>动态参数预期会求出一个字符串，异常情况下值为 `null`</font>。这个特殊的<font color=FF0000> `null` 值**可以被显性地用于移除绑定**</font>。任何其它非字符串类型的值都将会触发一个警告。
 
 - **对动态参数表达式的约束**
-
+  
   - 动态参数表达式<font color=FF0000>有一些语法约束</font>，因为某些字符，<font color=FF0000>如空格和引号，放在 HTML attribute 名里是无效的</font>。例如：
-
+    
     ```html
     <!-- 这会触发一个编译警告 -->
     <a v-bind:['foo' + bar]="value"> ... </a>
     ```
-
+    
     <mark>变通的办法是使用没有空格或引号的表达式，或用计算属性替代这种复杂表达式</mark>。
-
+  
   - 在 DOM 中使用模板时 (直接在一个 HTML 文件里撰写模板)，还<font color=FF0000>需要避免使用大写字符来命名键名</font>，因为浏览器会把 attribute 名全部强制转为小写：
-
+    
     ```html
     <!-- 在 DOM 中使用模板时这段代码会被转换为 `v-bind:[someattr]`。
     除非在实例中有一个名为“someattr”的 property，否则代码不会工作。-->
@@ -411,14 +393,12 @@ Mustache 标签将会被替代为对应数据对象上 `msg` property 的值。�
 <form v-on:submit.prevent="onSubmit">...</form>
 ```
 
-
-
 ### 缩写
 
 <font color=FF0000>**v- 前缀**</font>作为一种视觉提示，用来识别模板中 Vue 特定的 attribute。<mark>当你在使用 Vue.js 为现有标签添加动态行为 (dynamic behavior) 时，v- 前缀很有帮助</mark>，<font color=FF0000>然而</font>，<mark>对于一些频繁用到的指令来说，就会感到使用繁琐</mark>。同时，在构建由 Vue 管理所有模板的单页面应用程序 (SPA - single page application) 时，v- 前缀也变得没那么重要了。因此，Vue 为 v-bind 和 v-on 这两个最常用的指令，提供了特定简写：
 
 - **v-bind 缩写（<font color=FF0000>:</font>）**
-
+  
   ```html
   <!-- 完整语法 -->
   <a v-bind:href="url">...</a>
@@ -431,7 +411,7 @@ Mustache 标签将会被替代为对应数据对象上 `msg` property 的值。�
   ```
 
 - **v-on 缩写（<font color=FF0000>@</font>）**
-
+  
   ```html
   <!-- 完整语法 -->
   <a v-on:click="doSomething">...</a>
@@ -442,10 +422,8 @@ Mustache 标签将会被替代为对应数据对象上 `msg` property 的值。�
   <!-- 动态参数的缩写 (2.6.0+) -->
   <a @[event]="doSomething"> ... </a>
   ```
-
+  
   它们看起来可能与普通的 HTML 略有不同，但 <font color=FF0000>`:` 与 `@` 对于 attribute 名来说都是合法字符</font>，<mark>在所有支持 Vue 的浏览器都能被正确地解析</mark>。而且，<font color=FF0000>它们不会出现在最终渲染的标记中</font>。缩写语法是完全可选的，但随着你更深入地了解它们的作用，你会庆幸拥有它们。
-
-
 
 ### 计算属性
 
@@ -509,8 +487,6 @@ computed: {
 }
 ```
 
-
-
 ### 侦听器watch
 
 虽然<mark>计算属性在大多数情况下更合适</mark>，但有时<mark>也需要一个自定义的侦听器</mark>。这就是为什么 Vue 通过 `watch` 选项提供了一个更通用的方法，来响应数据的变化。<font color=FF0000>当需要在数据变化时执行异步或开销较大的操作时，这个方式是最有用的</font>。
@@ -520,7 +496,7 @@ computed: {
 ```js
 var watchExampleVM = new Vue({
   //...
-	watch: {
+    watch: {
     // 如果 `question` 发生改变，这个函数就会运行
     question: function (newQuestion, oldQuestion) {
       this.answer = 'Waiting for you to stop typing...'
@@ -530,8 +506,6 @@ var watchExampleVM = new Vue({
   //...
 }
 ```
-
-
 
 ### Class 与 Style 绑定
 
@@ -616,37 +590,37 @@ var watchExampleVM = new Vue({
   ```
 
 - **用在组件上**
-
+  
   当在一个自定义组件上使用 `class` property 时，这些 class 将被添加到该组件的根元素上面。这个元素上已经存在的 class 不会被覆盖。
-
+  
   例如，如果你声明了这个组件：
-
+  
   ```html
   Vue.component('my-component', {
     template: '<p class="foo bar">Hi</p>'
   })
   ```
-
+  
   然后在使用它的时候添加一些 class：
-
+  
   ```html
   <my-component class="baz boo"></my-component>
   ```
-
+  
   HTML 将被渲染为：
-
+  
   ```html
   <p class="foo bar baz boo">Hi</p>
   ```
-
+  
   对于带数据绑定 class 也同样适用：
-
+  
   ```html
   <my-component v-bind:class="{ active: isActive }"></my-component>
   ```
-
+  
   当 `isActive` 为 truthy 时，HTML 将被渲染成为：
-
+  
   ```html
   <p class="foo bar active">Hi</p>
   ```
@@ -654,9 +628,9 @@ var watchExampleVM = new Vue({
 **绑定内联样式**
 
 - **对象语法**
-
+  
   `v-bind:style` 的对象语法十分直观——看着非常像 CSS，但其实是一个 JavaScript 对象。CSS property 名可以用驼峰式 (camelCase) 或短横线分隔 (kebab-case，记得用引号括起来) 来命名：
-
+  
   ```html
   <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
   
@@ -667,9 +641,9 @@ var watchExampleVM = new Vue({
   }
   </script>
   ```
-
+  
   当然：较上面的写法，直接绑定到一个样式对象通常更好，这会让模板更清晰：
-
+  
   ```html
   <div v-bind:style="styleObject"></div>
   <script>
@@ -681,12 +655,12 @@ var watchExampleVM = new Vue({
   }
   </script>
   ```
-
+  
   同样的，对象语法常常结合返回对象的计算属性使用。
 
 - **数组语法**
   `v-bind:style` 的数组语法可以将多个样式对象应用到同一个元素上：
-
+  
   ```html
   <div v-bind:style="[baseStyles, overridingStyles]"></div>
   ```
@@ -695,37 +669,35 @@ var watchExampleVM = new Vue({
   当 `v-bind:style` 使用需要添加浏览器引擎前缀的 CSS property 时，如 transform，Vue.js 会自动侦测并添加相应的前缀。
 
 - **多重值（2.3.0+）**
-
+  
   你可以为 `style` 绑定中的 property 提供一个包含多个值的数组，常用于提供多个带前缀的值，例如：
-
+  
   ```html
   <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
   ```
-
+  
   这样写只会渲染数组中最后一个被浏览器支持的值。在本例中，如果浏览器支持不带浏览器前缀的 flexbox，那么就只会渲染 `display: flex`。
-
-
 
 ### 条件渲染
 
 - **v-if**
-
+  
   `v-if` 指令用于条件性地渲染一块内容。这块内容只会在指令的表达式返回 truthy 值的时候被渲染。
-
+  
   ```html
   <h1 v-if="awesome">Vue is awesome!</h1>
   ```
-
+  
   也可以用 `v-else` 添加一个“else 块”：
-
+  
   ```html
   <h1 v-if="awesome">Vue is awesome!</h1>
   <h1 v-else>Oh no 😢</h1>
   ```
-
+  
   **在 \<template> 元素上使用 v-if 条件渲染分组**
   因为 `v-if` 是一个指令，所以必须将它添加到一个元素上。但是如果想切换多个元素呢？此时可以把一个 \<template> 元素当做不可见的包裹元素，并在上面使用 v-if。最终的渲染结果将不包含 \<template> 元素。
-
+  
   ```html
   <template v-if="ok">
     <h1>Title</h1>
@@ -736,16 +708,16 @@ var watchExampleVM = new Vue({
 
 - **v-else**
   你可以使用 v-else 指令来表示 v-if 的“else 块”：
-
+  
   ```html
   <div v-if="Math.random() > 0.5"> Now you see me </div>
   <div v-else> Now you don't </div>
   ```
 
 - **v-else-if**（2.1.0 新增）
-
+  
   v-else-if，顾名思义，充当 v-if 的“else-if 块”，可以连续使用：
-
+  
   ```html
   <div v-if="type === 'A'"> A </div>
   <div v-else-if="type === 'B'"> B </div>
@@ -754,9 +726,9 @@ var watchExampleVM = new Vue({
   ```
 
 - **用 key 管理可复用的元素**
-
+  
   Vue 为你提供了一种方式来表达“这两个元素是完全独立的，不要复用它们”。只需添加一个具有唯一值的 `key` attribute 即可：
-
+  
   ```html
   <template v-if="loginType === 'username'">
     <label>Username</label>
@@ -791,8 +763,6 @@ var watchExampleVM = new Vue({
 **v-if 与 v-for 一起使用**
 <font color=FF0000>不推荐**（在同一个元素上）**同时使用 v-if 和 v-for</font>，当 `v-if` 与 `v-for` 一起使用时，`v-for` 具有比 `v-if` 更高的优先级。请查阅[列表渲染指南](https://cn.vuejs.org/v2/guide/list.html#v-for-with-v-if)以获取详细信息。
 
-
-
 ### 列表渲染
 
 我们可以用 `v-for` 指令<font color=FF0000>基于一个数组</font>来渲染一个列表。`v-for` 指令需要使用 `item in items` 形式的特殊语法，其中 `items` 是源数据数组，而 `item` 则是被迭代的数组元素的**别名**。
@@ -822,7 +792,7 @@ var example1 = new Vue({
 **在 v-for 里使用对象**
 
 - 可以用 `v-for` 来<font color=FF0000>遍历一个对象的 property</font>
-
+  
   ```html
   <ul id="v-for-object" class="demo">
     <li v-for="value in object">
@@ -843,39 +813,39 @@ var example1 = new Vue({
   })
   </script>
   ```
-
+  
   结果：
-
+  
   - How to do lists in Vue
   - Jane Doe
   - 2016-04-10
 
 - 也可以提供<font color=FF0000>第二个的参数</font>为<font color=FF0000> property 名称</font> (也就是键名)：
-
+  
   ```html
   <div v-for="(value, name) in object"> <!--注意这里写法-->
     {{ name }}: {{ value }}  
   </div>
   ```
-
+  
   结果：
-
+  
   title: How to do lists in Vue
-
+  
   author: Jane Doe
-
+  
   publishedAt: 2016-04-10
 
 - 还可以用<font color=FF0000>第三个参数</font>作为<font color=FF0000>索引</font>：
-
+  
   ```html
   <div v-for="(value, name, index) in object"> <!--注意这里写法-->
     {{ index }}. {{ name }}: {{ value }}
   </div>
   ```
-
+  
   结果：
-
+  
   0. title: How to do lists in Vue
   1. author: Jane Doe
   2. publishedAt: 2016-04-10
@@ -901,7 +871,7 @@ var example1 = new Vue({
 ##### **数组更新检测**
 
 - **变更方法：**Vue <mark>将被侦听的</mark><font color=FF0000>数组的变更方法</font><mark>进行了包裹</mark>，所以它们（的使用？？？）也将会触发视图更新。这些被包裹过的方法包括：
-
+  
   - **push()**
   - **pop()**
   - **shift()**
@@ -909,18 +879,18 @@ var example1 = new Vue({
   - **splice()**
   - **sort()**
   - **reverse()**
-
+  
   你可以打开控制台，然后对前面例子的 items 数组尝试调用变更方法。比如 example1.items.push({ message: 'Baz' })。
 
 - **替换数组**
   变更方法，顾名思义：会变更调用了这些方法的原始数组。相比之下，<font color=FF0000>也有非变更方法</font>，例如 <mark>`filter()`、`concat()` 和 `slice()`；<font color=FF0000>它们不会变更原始数组，**而总是返回一个新数组**</font></mark>。当使用非变更方法时，可以用新数组替换旧数组：
-
+  
   ```js
   example1.items = example1.items.filter(function (item) {
     return item.message.match(/Foo/)
   })
   ```
-
+  
   你可能认为这将导致 Vue 丢弃现有 DOM 并重新渲染整个列表。幸运的是，事实并非如此。<mark>Vue 为了使得 DOM 元素得到最大范围的重用而实现了一些智能的启发式方法，所以用一个含有相同元素的数组去替换原来的数组是非常高效的操作</mark>。
 
 **显示过滤/排序后的结果**
@@ -934,15 +904,15 @@ var example1 = new Vue({
 <script>
 new Vue({
   data: {
-  	numbers: [ 1, 2, 3, 4, 5 ]
-	},
-	computed: {
-  	evenNumbers: function () {
-    	return this.numbers.filter(function (number) {
-      	return number % 2 === 0
-    	})
-  	}
-	}
+      numbers: [ 1, 2, 3, 4, 5 ]
+    },
+    computed: {
+      evenNumbers: function () {
+        return this.numbers.filter(function (number) {
+          return number % 2 === 0
+        })
+      }
+    }
 });
 </script>
 ```
@@ -957,15 +927,15 @@ new Vue({
 <script>
 new Vue({
   data: {
-	  sets: [[ 1, 2, 3, 4, 5 ], [6, 7, 8, 9, 10]]
-	},
-	methods: {
-	  even: function (numbers) {
-	    return numbers.filter(function (number) {
-	      return number % 2 === 0
-	    })
-	  }
-	}
+      sets: [[ 1, 2, 3, 4, 5 ], [6, 7, 8, 9, 10]]
+    },
+    methods: {
+      even: function (numbers) {
+        return numbers.filter(function (number) {
+          return number % 2 === 0
+        })
+      }
+    }
 });
 </script>
 ```
@@ -991,14 +961,12 @@ new Vue({
 
 不自动将 `item` 注入到组件里的原因是，这会使得组件与 `v-for` 的运作紧密耦合。明确组件数据的来源能够使组件在其他场合重复使用。
 
-
-
 ### 事件处理
 
 可以用 `v-on` 指令监听 DOM 事件，并在触发时运行一些 JavaScript 代码。
 
 - 简单使用，示例：
-
+  
   ```html
   <div id="example-1">
     <button v-on:click="counter += 1">Add 1</button>
@@ -1016,9 +984,9 @@ new Vue({
   ```
 
 - 然而许多事件处理逻辑会更为复杂，所以<mark>直接把 JavaScript 代码写在 `v-on` 指令中是不可行的</mark>。因此<font color=FF0000> `v-on` 还可以接收一个需要调用的方法名称</font>。
-
+  
   示例：
-
+  
   ```html
   <div id="example-2">
     <!-- `greet` 是在下面定义的方法名 -->
@@ -1050,7 +1018,7 @@ new Vue({
   ```
 
 - <font color=FF0000>除了直接绑定</font>到一个方法，也可以在<font color=FF0000>内联 JavaScript 语句</font>中调用方法：
-
+  
   ```html
   <div id="example-3">
     <button v-on:click="say('hi')">Say hi</button>
@@ -1070,7 +1038,7 @@ new Vue({
   ```
 
 - <font color=FF0000>有时也需要在内联语句处理器中访问原始的 DOM 事件。可以用特殊变量 `$event` 把它传入方法</font>：
-
+  
   ```html
   <button v-on:click="warn('Form cannot be submitted yet.', $event)">
     Submit
@@ -1079,20 +1047,18 @@ new Vue({
   <script>
   new Vue({
     // ...
-  	methods: {
-  	  warn: function (message, event) {
-  	    // 现在我们可以访问原生事件对象
-  	    if (event) {
-  	      event.preventDefault()
-  	    }
-  	    alert(message)
-  	  }
-  	}
+      methods: {
+        warn: function (message, event) {
+          // 现在我们可以访问原生事件对象
+          if (event) {
+            event.preventDefault()
+          }
+          alert(message)
+        }
+      }
   })
   </script>
   ```
-
-
 
 **事件修饰符**
 
@@ -1101,14 +1067,14 @@ new Vue({
 为了解决这个问题，<font color=FF0000>Vue.js 为 v-on 提供了事件修饰符</font>。之前提过，修饰符是由点开头的指令后缀来表示的。
 
 - **.stop：**阻止事件的冒泡传播（防止向上传播）
-
+  
   ```html
   <!-- 阻止单击事件继续传播 -->
   <a v-on:click.stop="doThis"></a>
   ```
 
 - **.prevent：**用来阻止标签的默认行为
-
+  
   ```html
   <!-- 提交事件不再重载页面 -->
   <form v-on:submit.prevent="onSubmit"></form>
@@ -1121,7 +1087,7 @@ new Vue({
   ```
 
 - **.capture**
-
+  
   ```html
   <!-- 添加事件监听器时使用事件捕获模式 -->c
   <!-- 即内部元素触发的事件先在此处理，然后才交由内部元素进行处理 -->
@@ -1129,7 +1095,7 @@ new Vue({
   ```
 
 - **.self：**只关心并触发自己标签上的特定动作的事件（不关心冒泡上来的事件，和.stop类似）
-
+  
   ```html
   <!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
   <!-- 即事件不是从内部元素触发的 -->
@@ -1137,25 +1103,23 @@ new Vue({
   ```
 
 - **.once**：2.1.4 新增，事件只会触发一次
-
+  
   ```html
   <!-- 点击事件将只会触发一次 -->
   <a v-on:click.once="doThis"></a>
   ```
 
 - **.passive**：2.3.0 新增
-
+  
   Vue 还对应 addEventListener 中的 passive 选项提供了 .passive 修饰符。
-
+  
   ```html
   <!-- 滚动事件的默认行为 (即滚动行为) 将会立即触发 而不会等待 `onScroll` 完成  -->
   <!-- 这其中包含 `event.preventDefault()` 的情况 -->
   <div v-on:scroll.passive="onScroll">...</div>
   ```
-
+  
   这个 `.passive` 修饰符尤其能够提升移动端的性能。
-  
-  
 
 **按键修饰符**
 
@@ -1173,8 +1137,6 @@ new Vue({
 ```
 
 在上述示例中，处理函数只会在 `$event.key` 等于 `PageDown` 时被调用。
-
-
 
 **按键码**（keyCode 的事件用法已经被废弃了并可能不会被最新的浏览器支持）
 
@@ -1203,8 +1165,6 @@ new Vue({
 Vue.config.keyCodes.f1 = 112
 ```
 
-
-
 **系统修饰键（2.1.0 新增）**
 
 可以用如下修饰符来实现仅在按下相应按键时才触发鼠标或键盘事件的监听器。
@@ -1226,8 +1186,6 @@ Vue.config.keyCodes.f1 = 112
 <div v-on:click.ctrl="doSomething">Do something</div>
 ```
 
-
-
 **.exact 修饰符（2.5.0 新增）**
 
 `.exact` 修饰符允许你控制由精确的系统修饰符组合触发的事件。
@@ -1243,8 +1201,6 @@ Vue.config.keyCodes.f1 = 112
 <button v-on:click.exact="onClick">A</button>
 ```
 
-
-
 **鼠标按钮修饰符**（2.2.0 新增）
 
 - **.left**
@@ -1252,8 +1208,6 @@ Vue.config.keyCodes.f1 = 112
 - **.middle**
 
 这些修饰符会限制处理函数仅响应特定的鼠标按钮。
-
-
 
 ### 表单输入绑定
 
@@ -1268,8 +1222,6 @@ Vue.config.keyCodes.f1 = 112
 - select 字段将 `value` 作为 prop 并将 `change` 作为事件。
 
 注意：<mark>对于需要使用输入法 (如中文、日文、韩文等) 的语言</mark>，你会发现 <font color=FF0000>v-model 不会在输入法组合文字过程中得到更新</font>。如果你也想处理这个过程，<font color=FF0000>请使用 input 事件</font>。
-
-
 
 **值绑定**
 
@@ -1290,32 +1242,28 @@ Vue.config.keyCodes.f1 = 112
 
 但是有时我们可能<font color=FF0000>想把值绑定到 Vue 实例的一个动态 property 上</font>，<font color=FF0000>这时可以用 `v-bind` 实现</font>，并且这个 property 的值可以不是字符串。
 
-
-
 **修饰符**
 
 - .lazy：<font color=FF0000>在**默认情况**下，v-model 在每次 input 事件触发后将输入框的值与数据进行同步</font> (除了上述输入法组合文字时)。你<font color=FF0000>可以添加 lazy 修饰符，从而转为在 change 事件之后进行同步</font>：
-
+  
   ```html
   <!-- 在“change”时而非“input”时更新 -->
   <input v-model.lazy="msg">
   ```
 
 - **.number**：如果<font color=FF0000>想**自动将用户的输入值转为数值类型**，可以给 v-model 添加 number 修饰符</font>：
-
+  
   ```html
   <input v-model.number="age" type="number">
   ```
-
+  
   这通常很有用，因为即使在 type="number" 时，HTML 输入元素的值也总会返回字符串。如果这个值无法被 parseFloat() 解析，则会返回原始的值。
 
 - **.trim**：如果<font color=FF0000>要自动过滤用户输入的首尾空白字符，可以给 v-model 添加 trim 修饰符</font>：
-
+  
   ```html
   <input v-model.trim="msg">
   ```
-
-
 
 ### 组件基础
 
@@ -1336,7 +1284,7 @@ Vue.config.keyCodes.f1 = 112
         },
         template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
     })
-  
+
     new Vue({
         el: '#components-demo'
     })
@@ -1344,8 +1292,6 @@ Vue.config.keyCodes.f1 = 112
 ```
 
 因为组件是可复用的 Vue 实例，所以它们与 `new Vue` 接收相同的选项，例如 `data`、`computed`、`watch`、`methods` 以及生命周期钩子等。仅有的例外是像 `el` 这样根实例特有的选项。
-
-
 
 **data 必须是一个函数**
 
@@ -1367,8 +1313,6 @@ data: function () {
 }
 ```
 
-
-
 **组件的组织**
 
 通常一个应用会<font color=FF0000>以一棵嵌套的组件树的形式来组织</font>：
@@ -1387,8 +1331,6 @@ Vue.component('my-component-name', {
 
 全局注册的组件可以用在其被注册之后的任何 (通过 `new Vue`) 新创建的 Vue 根实例，也包括其组件树中的所有子组件的模板中。
 
-
-
 **通过 Prop 向子组件传递数据**
 
 早些时候，我们提到了创建一个博文组件的事情。**问题是**<mark>如果你<font color=FF0000>不能向这个组件传递某一篇博文的标题或内容之类的我们想展示的数据</font>的话，它是没有办法使用的。这也正是 prop 的由来</mark>。
@@ -1406,14 +1348,12 @@ Vue.component('blog-post', {
 
 ```js
 Vue.component('blog-post', {
-  props: ['title'],  								//注意这里的props
+  props: ['title'],                                  //注意这里的props
   template: '<h3>{{ title }}</h3>'
 })
 ```
 
 <font color=FF0000>一个组件默认可以拥有任意数量的 prop</font>，任何值都可以传递给任何 prop。在上述模板中，<mark>你会发现<font color=FF0000>我们能够在组件实例中访问这个值，就像访问 `data` 中的值一样</font></mark>。
-
-
 
 **单个根元素**
 
@@ -1439,15 +1379,11 @@ Vue.component('blog-post', {
 </div>
 ```
 
-
-
 **监听子组件事件**
 
 在我们开发 \<blog-post> 组件时，它的一些功能<font color=FF0000>可能要求我们和父级组件进行沟通</font>。 <mark>Vue 实例提供了一个自定义事件的系统来解决这个问题</mark>。<font color=FF0000>父级组件可以像处理 native DOM 事件一样通过 v-on 监听子组件实例的任意事件。同时子组件可以通过调用内建的 `$emit` 方法并传入事件名称来触发一个事件</font>
 
 **//todo 这里没有完全看懂...**
-
-
 
 **使用事件抛出一个值**
 
@@ -1486,8 +1422,6 @@ methods: {
   }
 }
 ```
-
-
 
 **在组件上使用 v-model**
 
@@ -1540,8 +1474,6 @@ Vue.component('custom-input', {
 <custom-input v-model="searchText"></custom-input>
 ```
 
-
-
 **通过插槽分发内容**
 
 和 HTML 元素一样，我们经常<font color=FF0000>需要向一个组件传递内容</font>，像这样：
@@ -1571,8 +1503,6 @@ Vue.component('alert-box', {
 
 如你所见，我们只要在需要的地方加入插槽就行了——就这么简单！
 
-
-
 **动态组件**
 
 有的时候，在<font color=FF0000>不同组件之间进行动态切换</font>是非常有用的，比如在一个多标签的界面里：
@@ -1594,8 +1524,6 @@ Vue.component('alert-box', {
 请留意，这个 attribute 可以用于常规 HTML 元素，但这些元素将被视为组件，这意味着所有的 attribute 都会作为 DOM attribute 被绑定。对于像 value 这样的 property，若想让其如预期般工作，你需要使用 .prop 修饰器。
 
 **//todo 这里还是没有看懂...**
-
-
 
 **解析 DOM 模板时的注意事项**
 
@@ -1623,8 +1551,6 @@ Vue.component('alert-box', {
 - 单文件组件 (.vue)
 - \<script type="text/x-template">
 
-
-
 ### 组件注册
 
 **组件名**
@@ -1639,29 +1565,25 @@ Vue.component('my-component-name', { /* ... */ })
 
 你给予组件的名字可能依赖于你打算拿它来做什么。当直接在 DOM 中使用一个组件 (而不是在字符串模板或单文件组件) 的时候，我们<font color=FF0000>强烈推荐遵循 W3C 规范中的自定义组件名 (字母全小写且必须包含一个连字符)</font>。这会帮助你避免和当前以及未来的 HTML 元素相冲突。
 
-
-
 **组件名大小写**
 
 定义组件名的方式有两种：
 
 - **使用 kebab-case**
-
+  
   ```js
   Vue.component('my-component-name', { /* ... */ })
   ```
-
+  
   当使用 kebab-case (短横线分隔命名) 定义一个组件时，你也<font color=FF0000>必须在引用这个自定义元素时使用 kebab-case</font>，例如 `<my-component-name>`。
 
 - **使用 PascalCase**
-
+  
   ```js
   Vue.component('MyComponentName', { /* ... */ })
   ```
-
+  
   <font color=FF0000>当使用 PascalCase (首字母大写命名) 定义一个组件时，你在**引用这个自定义元素时两种命名法都可以使用**</font>。<mark>也就是说 `<my-component-name>` 和 `<MyComponentName>` 都是可接受的</mark>。注意，尽管如此，直接在 DOM (即非字符串的模板) 中使用时只有 kebab-case 是有效的。
-
-
 
 **局部注册**
 
@@ -1702,8 +1624,6 @@ var ComponentB = {
 }
 ```
 
-
-
 ### prop
 
 **Prop 的大小写 (camelCase vs kebab-case)**
@@ -1721,8 +1641,6 @@ Vue.component('blog-post', {
 ```
 
 重申一次，如果你使用字符串模板，那么这个限制就不存在了。
-
-
 
 **Prop 类型**
 
@@ -1745,8 +1663,6 @@ props: {
   contactsPromise: Promise // or any other constructor
 }
 ```
-
-
 
 **传递静态或动态 Prop**
 
@@ -1771,7 +1687,7 @@ props: {
 <mark>在上述两个示例中，我们<font color=FF0000>传入的值都是字符串类型的</font></mark>，但实际上<font color=FF0000>任何类型的值都可以传给一个 prop</font>。
 
 - 传入数字
-
+  
   ```html
   <!-- 即便 `42` 是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
   <!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
@@ -1782,7 +1698,7 @@ props: {
   ```
 
 - 传入布尔值
-
+  
   ```html
   <!-- 包含该 prop 没有值的情况在内，都意味着 `true`。-->
   <blog-post is-published></blog-post>
@@ -1796,7 +1712,7 @@ props: {
   ```
 
 - 传入数组
-
+  
   ```html
   <!-- 即便数组是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
   <!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
@@ -1807,7 +1723,7 @@ props: {
   ```
 
 - 传入对象
-
+  
   ```html
   <!-- 即便对象是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
   <!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
@@ -1823,7 +1739,7 @@ props: {
   ```
 
 - 传入一个对象的所有 property
-
+  
   ```html
   <blog-post v-bind="post"></blog-post>
   
@@ -1834,17 +1750,15 @@ props: {
   }
   </script>
   ```
-
+  
   等价于
-
+  
   ```html
   <blog-post
     v-bind:id="post.id"
     v-bind:title="post.title"
   ></blog-post>
   ```
-
-
 
 **单向数据流**
 
@@ -1855,7 +1769,7 @@ props: {
 **这里有<font color=FF0000>两种常见的试图变更一个 prop 的情形</font>：**
 
 - 这个 <font color=FF0000>prop 用来**传递一个初始值**；这个子组件接下来**希望将其作为一个本地的 prop 数据来使用**</font>。在这种情况下，<font color=FF0000>最好定义一个本地的 data property 并将这个 prop 用作其初始值</font>：
-
+  
   ```js
   props: ['initialCounter'],
   data: function () {
@@ -1866,7 +1780,7 @@ props: {
   ```
 
 - 这个 <font color=FF0000>prop **以一种原始的值传入**且**需要进行转换**</font>。在这种情况下，<font color=FF0000>最好使用这个 prop 的值来定义一个计算属性</font>：
-
+  
   ```js
   props: ['size'],
   computed: {
@@ -1875,8 +1789,6 @@ props: {
     }
   }
   ```
-
-
 
 **Prop 验证**
 
@@ -1891,22 +1803,22 @@ Vue.component('my-component', {
   props: {
     // 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
     propA: Number,
-    
+
     // 多个可能的类型
     propB: [String, Number],
-    
+
     // 必填的字符串
     propC: {
       type: String,
       required: true
     },
-    
+
     // 带有默认值的数字
     propD: {
       type: Number,
       default: 100
     },
-    
+
     // 带有默认值的对象
     propE: {
       type: Object,
@@ -1915,7 +1827,7 @@ Vue.component('my-component', {
         return { message: 'hello' }
       }
     },
-    
+
     // 自定义验证函数
     propF: {
       validator: function (value) {
@@ -1928,8 +1840,6 @@ Vue.component('my-component', {
 ```
 
 当 prop 验证失败的时候，(开发环境构建版本的) Vue 将会产生一个控制台的警告。
-
-
 
 **类型检查**
 
@@ -1965,8 +1875,6 @@ Vue.component('blog-post', {
 
 来验证 `author` prop 的值是否是通过 `new Person` 创建的。
 
-
-
 **非 Prop 的 Attribute**
 
 一个非 prop 的 attribute 是指传向一个组件，但是该组件并没有相应 prop 定义的 attribute。
@@ -1980,8 +1888,6 @@ Vue.component('blog-post', {
 ```
 
 然后这个 `data-date-picker="activated"` attribute 就会自动添加到 `<bootstrap-date-input>` 的根元素上。
-
-
 
 **替换/合并已有的 Attribute**
 
@@ -2006,8 +1912,6 @@ Vue.component('blog-post', {
 - `date-picker-theme-dark`，这是<mark>从组件的父级传入的</mark>
 
 对于<font color=FF0000>**绝大多数 attribute** </font>来说，<font color=FF0000>从外部提供给组件的值会替换掉组件内部设置好的值</font>。所以如果传入 `type="text"` 就会替换掉 `type="date"` 并把它破坏！庆幸的是，`class` 和 `style` attribute 会稍微智能一些，即两边的值会被合并起来，从而得到最终的值：`form-control date-picker-theme-dark`。
-
-
 
 **禁用 Attribute 继承**
 
@@ -2048,8 +1952,6 @@ Vue.component('base-input', {
 })
 ```
 
-
-
 #### 自定义事件
 
 **事件名**
@@ -2070,8 +1972,6 @@ this.$emit('myEvent')
 不同于组件和 prop，事件名不会被用作一个 JavaScript 变量名或 property 名，所以就没有理由使用 camelCase 或 PascalCase 了。并且 `v-on` 事件监听器在 DOM 模板中会被自动转换为全小写 (因为 HTML 是大小写不敏感的)，所以 `v-on:myEvent` 将会变成 `v-on:myevent`——导致 `myEvent` 不可能被监听到。
 
 <font color=FF0000>因此，我们推荐你**始终使用 kebab-case 的事件名**。</font>
-
-
 
 **自定义组件的 v-model**（2.2.0+ 新增）
 
@@ -2105,8 +2005,6 @@ Vue.component('base-checkbox', {
 这里的 `lovingVue` 的值将会传入这个名为 `checked` 的 prop。同时当 `<base-checkbox>` 触发一个 `change` 事件并附带一个新的值的时候，这个 `lovingVue` 的 property 将会被更新。
 
 **//todo 这里没有完全看懂...**
-
-
 
 **将原生事件绑定到组件**
 
@@ -2181,8 +2079,6 @@ Vue.component('base-input', {
 
 **//todo 这里依然没看懂....**
 
-
-
 **.sync 修饰符**（2.3.0+ 新增）
 
 在有些情况下，我们<font color=FF0000>可能需要对一个 prop 进行“双向绑定”</font>。不幸的是，<mark>真正的**双向绑定会带来维护上的问题**，因为**子组件可以变更父组件**，且在父组件和子组件都没有明显的变更来源</mark>。
@@ -2209,8 +2105,6 @@ this.$emit('update:title', newTitle)
 ```
 
 **//todo 这里依然没看懂....**
-
-
 
 #### 插槽（<font color=FF0000>向一个组件传递内容</font>）
 
@@ -2261,8 +2155,6 @@ Vue 实现了一套内容分发的 API，这套 API 的设计灵感源自 [Web C
 
 如果 `<navigation-link>` 的 `template` 中**没有**包含一个 `<slot>` 元素，则该组件起始标签和结束标签之间的任何内容都会被抛弃。
 
-
-
 **编译作用域**
 
 当你想在一个插槽中使用数据时，例如：
@@ -2280,14 +2172,12 @@ Vue 实现了一套内容分发的 API，这套 API 的设计灵感源自 [Web C
   Clicking here will send you to: {{ url }}
   <!--
   这里的 `url` 会是 undefined，因为其 (指该插槽的) 内容是传递给
-	<navigation-link>的，而不是在 <navigation-link> 组件内部定义的。
+    <navigation-link>的，而不是在 <navigation-link> 组件内部定义的。
   -->
 </navigation-link>
 ```
 
 作为一条规则，请记住：<font color=FF0000>**父级模板里的所有内容都是在父级作用域中编译的；子模板里的所有内容都是在子作用域中编译的**</font>。
-
-
 
 **后备 (也<font color=FF0000>就是默认的</font>) 内容**
 
@@ -2336,8 +2226,6 @@ Vue 实现了一套内容分发的 API，这套 API 的设计灵感源自 [Web C
   Save
 </button>
 ```
-
-
 
 **具名插槽**（自 2.6.0 起有所更新，`slot`被废弃）
 
@@ -2399,17 +2287,15 @@ Vue 实现了一套内容分发的 API，这套 API 的设计灵感源自 [Web C
 ```html
 <base-layout>
   <!-- ... -->
-  
+
   <template v-slot:default>   <!-- 注意这里的default -->
     <p>A paragraph for the main content.</p>
     <p>And another one.</p>
   </template>
-  
+
   <!-- ... -->
 </base-layout>
 ```
-
-
 
 **作用域插槽**（自 2.6.0 起有所更新。 `slot-scope` 被废弃）
 
@@ -2452,8 +2338,6 @@ Vue 实现了一套内容分发的 API，这套 API 的设计灵感源自 [Web C
 ```
 
 在这个例子中，我们选择将包含所有插槽 prop 的对象命名为 `slotProps`，但你也可以使用任意你喜欢的名字。
-
-
 
 **独占默认插槽的缩写语法**
 
@@ -2499,8 +2383,6 @@ Vue 实现了一套内容分发的 API，这套 API 的设计灵感源自 [Web C
 </current-user>
 ```
 
-
-
 **解构插槽 Prop**
 
 **作用域插槽的内部<font color=FF0000>工作原理</font>**是<font color=FF0000>将你的插槽内容包括在一个传入单个参数的函数里</font>：
@@ -2535,8 +2417,6 @@ function (slotProps) {
 </current-user>
 ```
 
-
-
 **动态插槽名**（2.6.0 新增）
 
 <font color=FF0000>动态指令参数</font>也可以用在 v-slot 上，来定义动态的插槽名：
@@ -2548,8 +2428,6 @@ function (slotProps) {
   </template>
 </base-layout>
 ```
-
-
 
 **具名插槽的缩写**（2.6.0 新增）
 
@@ -2586,8 +2464,6 @@ function (slotProps) {
   {{ user.firstName }}
 </current-user>
 ```
-
-
 
 **其它**
 
@@ -2637,10 +2513,6 @@ function (slotProps) {
 </todo-list>
 ```
 
-
-
-
-
 ### 动态组件 & 异步组件
 
 **在动态组件上使用 keep-alive**
@@ -2679,8 +2551,6 @@ function (slotProps) {
 摘自：[vue api文档 -  keep-alive](https://cn.vuejs.org/v2/api/#keep-alive)
 
 **另外：更多详细的讲解可以看[Vue keep-alive深入理解及实践总结](https://juejin.cn/post/6844903919273918477)**
-
-
 
 **异步组件**
 
@@ -2728,8 +2598,6 @@ new Vue({
 })
 ```
 
-
-
 **处理加载状态**（2.3.0+ 新增）
 
 这里的异步组件工厂函数也可以返回一个如下格式的对象：
@@ -2752,15 +2620,11 @@ const AsyncComponent = () => ({
 
 **//todo 这里什么是工厂函数？**
 
-
-
 ### 处理边界情况
 
 **访问元素 & 组件**
 
 在绝大多数情况下，我们<mark>最好不要触达另一个组件实例内部或手动操作 DOM 元素</mark>。不过也确实在一些情况下做这些事情是合适的。
-
-
 
 **<font color=FF0000>访问根实例</font>**
 
@@ -2797,8 +2661,6 @@ this.$root.bar
 this.$root.baz()
 ```
 
-
-
 **<font color=FF0000>访问父级组件</font>实例**
 
 和 `$root` 类似，<font color=FF0000><font size=5>`$parent`</font> property 可以用来**从一个子组件访问父组件**的实例</font>。它提供了一种机会，可以在后期随时触达父级组件，以替代将数据以 prop 的方式传入子组件的方式。
@@ -2832,8 +2694,6 @@ var map = this.$parent.map || this.$parent.$parent.map
 ```
 
 很快它就会失控。这也是我们针对需要向任意更深层级的组件提供上下文信息时推荐[依赖注入](https://cn.vuejs.org/v2/guide/components-edge-cases.html#依赖注入)的原因。
-
-
 
 **访问<font color=FF0000>子组件实例</font>或<font color=FF0000>子元素</font>**
 
@@ -2875,8 +2735,6 @@ this.$refs.usernameInput.focus()
 
 当 `ref` 和 `v-for` 一起使用的时候，你得到的 ref 将会是一个包含了对应数据源的这些子组件的数组。
 
-
-
 **依赖注入**
 
 在此之前，在我们描述访问父级组件实例的时候，展示过一个类似这样的例子：
@@ -2913,8 +2771,6 @@ inject: ['getMap']
 
 - 祖先组件不需要知道哪些后代组件使用它提供的 property
 - 后代组件不需要知道被注入的 property 来自哪里
-
-
 
 **程序化的事件侦听器**
 
@@ -2985,48 +2841,46 @@ methods: {
 }
 ```
 
-
-
 #### **循环引用**
 
 - **递归组件**
-
+  
   <font color=FF0000>组件是可以在它们自己的模板中调用自身的</font>。不过<font color=FF0000>它们只能通过 `name` 选项来做这件事</font>：
-
+  
   ```js
   name: 'unique-name-of-my-component'
   ```
-
+  
   <mark>当你使用 `Vue.component` 全局注册一个组件时，这个全局的 ID 会自动设置为该组件的 `name` 选项</mark>。
-
+  
   ```js
   Vue.component('unique-name-of-my-component', {
     // ...
   })
   ```
-
+  
   稍有不慎，递归组件就可能导致无限循环：
-
+  
   ```js
   name: 'stack-overflow',
   template: '<div><stack-overflow></stack-overflow></div>'
   ```
-
+  
   类似上述的组件将会导致“max stack size exceeded”错误，所以请确保递归调用是条件性的 (例如使用一个最终会得到 `false` 的 `v-if`)。
 
 - **组件之间的循环引用**
-
+  
   假设你需要构建一个文件目录树，像访达或资源管理器那样的。你可能有一个 `<tree-folder>` 组件，模板是这样的：
-
+  
   ```html
   <p>
     <span>{{ folder.name }}</span>
     <tree-folder-contents :children="folder.children"/>
   </p>
   ```
-
+  
   还有一个 `<tree-folder-contents>` 组件，模板是这样的：
-
+  
   ```html
   <ul>
     <li v-for="child in children">
@@ -3035,45 +2889,43 @@ methods: {
     </li>
   </ul>
   ```
-
+  
   当你仔细观察的时候，<mark>你会发现这些组件在渲染树中互为对方的后代 和 祖先</mark>——一个悖论！当通过 `Vue.component` 全局注册组件的时候，这个悖论会被自动解开。如果你是这样做的，那么你可以跳过这里。
-
+  
   然而，如果你使用一个模块系统依赖/导入组件，例如通过 webpack 或 Browserify，你会遇到一个错误：
-
+  
   ```
   Failed to mount component: template or render function not defined.
   ```
-
+  
   为了解释这里发生了什么，我们先把两个组件称为 A 和 B。模块系统发现它需要 A，但是首先 A 依赖 B，但是 B 又依赖 A，但是 A 又依赖 B，如此往复。这变成了一个循环，不知道如何不经过其中一个组件而完全解析出另一个组件。为了解决这个问题，我们需要给模块系统一个点，在那里“A *反正*是需要 B 的，但是我们不需要先解析 B。”
-
+  
   在我们的例子中，把 `<tree-folder>` 组件设为了那个点。我们知道那个产生悖论的子组件是 `<tree-folder-contents>` 组件，所以我们会等到生命周期钩子 `beforeCreate` 时去注册它：
-
+  
   ```js
   beforeCreate: function () {
     this.$options.components.TreeFolderContents = require('./tree-folder-contents.vue').default
   }
   ```
-
+  
   或者，在本地注册组件的时候，你可以使用 webpack 的异步 `import`：
-
+  
   ```js
   components: {
     TreeFolderContents: () => import('./tree-folder-contents.vue')
   }
   ```
-
+  
   这样问题就解决了！
-
+  
   //todo 这里没用看懂...
-
-
 
 #### 模板定义的替代品（两种）
 
 - **内联模板**
-
+  
   当 <font size=5>`inline-template`</font> 这个特殊的 attribute 出现在一个子组件上时，<font color=FF0000>这个组件将会使用<font size=5> **其** </font>里面的内容作为模板</font>，而不是将其作为被分发的内容。这使得模板的撰写工作更加灵活。
-
+  
   ```html
   <my-component inline-template>
     <div>
@@ -3082,43 +2934,41 @@ methods: {
     </div>
   </my-component>
   ```
-
+  
   内联模板需要定义在 Vue 所属的 DOM 元素内。
 
 - **X-Template**
-
+  
   另一个定义模板的方式是<font color=FF0000>在一个 `<script>` 元素中，并为其带上 `text/x-template` 的类型</font>，<font color=FF0000>然后通过一个 id 将模板引用过去</font>。例如：
-
+  
   ```html
   <script type="text/x-template" id="hello-world-template">
     <p>Hello hello hello</p>
   </script>
   
   <script>
-  	Vue.component('hello-world', {
-  	  template: '#hello-world-template'
-  	})
-</script>
+      Vue.component('hello-world', {
+        template: '#hello-world-template'
+      })
+  </script>
   ```
   
   <mark>x-template 需要定义在 Vue 所属的 DOM 元素外</mark>（如上示例）。
-
-
 
 #### **控制更新**
 
 感谢 <font color=FF0000>Vue 的响应式系统</font>，<font color=FF0000>它始终知道何时进行更新</font> (如果你用对了的话)。不过还是有一些边界情况，你想要强制更新，尽管表面上看响应式的数据没有发生改变。也有一些情况是你想阻止不必要的更新。
 
 - **强制更新**
-
+  
   你可能还没有留意到数组或对象的变更检测注意事项，或者你可能依赖了一个未被 Vue 的响应式系统追踪的状态。
-
+  
   然而，如果你已经做到了上述的事项仍然发现在极少数的情况下需要手动强制更新，那么你可以通过 `$forceUpdate` 来做这件事。
 
 - **通过 v-once 创建低开销的静态组件**
-
+  
   渲染普通的 HTML 元素在 Vue 中是非常快速的，但有的时候你可能有一个组件，这个组件包含了**大量**静态内容。在这种情况下，你可以在根元素上添加 `v-once` attribute 以确保这些内容只计算一次然后缓存起来，就像这样：
-
+  
   ```js
   Vue.component('terms-of-service', {
     template: `
@@ -3130,10 +2980,6 @@ methods: {
   })
   ```
 
-
-
-
-
 ### 进入/离开 & 列表过渡
 
 **概述**
@@ -3144,8 +2990,6 @@ Vue 在插入、更新或者移除 DOM （<font color=FF0000>即：修改DOM</fo
 - 可以配合使用第三方 CSS 动画库，如 Animate.css
 - 在过渡钩子函数中使用 JavaScript 直接操作 DOM
 - 可以配合使用第三方 JavaScript 动画库，如 Velocity.js
-
-
 
 **单元素/组件的过渡**
 
@@ -3169,21 +3013,21 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 </div>
 
 <script>
-	new Vue({
-	  el: '#demo',
-	  data: {
-	    show: true
-	  }
-	})
+    new Vue({
+      el: '#demo',
+      data: {
+        show: true
+      }
+    })
 </script>
 
 <style type="text/css">
-	.fade-enter-active, .fade-leave-active {
-	  transition: opacity .5s;
-	}
-	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-	  opacity: 0;
-	}
+    .fade-enter-active, .fade-leave-active {
+      transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+      opacity: 0;
+    }
 </style>
 ```
 
@@ -3192,8 +3036,6 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 1. <font color=FF0000>自动嗅探</font>目标元素<font color=FF0000>是否应用了 CSS 过渡或动画</font>，如果是，在恰当的时机添加 / 删除 CSS 类名。
 2. 如果过渡组件提供了 JavaScript 钩子函数，这些钩子函数将在恰当的时机被调用。
 3. 如果没有找到 JavaScript 钩子并且也没有检测到 CSS 过渡/动画，DOM 操作 (插入/删除) 在下一帧中立即执行。(注意：此指浏览器逐帧动画机制，和 Vue 的 `nextTick` 概念不同)
-
-
 
 #### **过渡的类名**
 
@@ -3212,8 +3054,6 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 
 <font color=FF0000>**`v-enter-active` 和 `v-leave-active`** 可以控制进入 / 离开过渡的不同的缓和曲线</font>
 
-
-
 **CSS 过渡**
 
 <font color=FF0000>**常用的过渡都是使用 CSS 过渡**</font>
@@ -3231,32 +3071,30 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 </div>
 
 <script>
-	new Vue({
-	  el: '#example-1',
-	  data: {
-	    show: true
-	  }
-	})
+    new Vue({
+      el: '#example-1',
+      data: {
+        show: true
+      }
+    })
 </script>
 
 <style>
 /* 可以设置不同的进入和离开动画 */
 /* 设置持续时间和动画函数 */
-	.slide-fade-enter-active {
-	  transition: all .3s ease;
-	}
-	.slide-fade-leave-active {
-	  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-	}
-	.slide-fade-enter, .slide-fade-leave-to
-	/* .slide-fade-leave-active for below version 2.1.8 */ {
-	  transform: translateX(10px);
-	  opacity: 0;
-	}
+    .slide-fade-enter-active {
+      transition: all .3s ease;
+    }
+    .slide-fade-leave-active {
+      transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active for below version 2.1.8 */ {
+      transform: translateX(10px);
+      opacity: 0;
+    }
 <style>
 ```
-
-
 
 **CSS 动画**
 
@@ -3273,36 +3111,34 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 </div>
 
 <script>
-	new Vue({
-	  el: '#example-2',
-	  data: {
-	    show: true
-	  }
-	})
+    new Vue({
+      el: '#example-2',
+      data: {
+        show: true
+      }
+    })
 </script>
 
 <style>
-	.bounce-enter-active {
-	  animation: bounce-in .5s;
-	}
-	.bounce-leave-active {
-	  animation: bounce-in .5s reverse;
-	}
-	@keyframes bounce-in {
-	  0% {
-	    transform: scale(0);
-	  }
-	  50% {
-	    transform: scale(1.5);
-	  }
-	  100% {
-	    transform: scale(1);
-	  }
-	}
+    .bounce-enter-active {
+      animation: bounce-in .5s;
+    }
+    .bounce-leave-active {
+      animation: bounce-in .5s reverse;
+    }
+    @keyframes bounce-in {
+      0% {
+        transform: scale(0);
+      }
+      50% {
+        transform: scale(1.5);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
 </style>
 ```
-
-
 
 #### **自定义过渡的类名**
 
@@ -3336,24 +3172,20 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 </div>
 
 <script>
-	new Vue({
-	  el: '#example-3',
-	  data: {
-	    show: true
-	  }
-	})
+    new Vue({
+      el: '#example-3',
+      data: {
+        show: true
+      }
+    })
 </script>
 ```
-
-
 
 #### **同时使用过渡和动画**
 
 <font color=FF0000>Vue 为了知道过渡的完成，**必须设置相应的事件监听器**</font>。<font color=FF0000>它可以是 <font size=5>`transitionend` </font>或<font size=5> `animationend`</font></font>，这取决于给元素应用的 CSS 规则。如果你使用其中任何一种，Vue 能自动识别类型并设置监听。
 
 但是，在一些场景中，你<font color=FF0000>需要给同一个元素同时设置两种过渡动效</font>，比如<mark> `animation` 很快的被触发并完成了，而 `transition` 效果还没结束</mark>。在这种情况中，你就<font color=FF0000>需要使用 `type` attribute 并设置 `animation` 或 `transition` 来明确声明你需要 Vue 监听的类型</font>。
-
-
 
 #### **显性的过渡持续时间**（2.2.0 新增）
 
@@ -3370,8 +3202,6 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 ```html
 <transition :duration="{ enter: 500, leave: 800 }">...</transition>
 ```
-
-
 
 #### 初始渲染的过渡
 
@@ -3395,8 +3225,6 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
   <!-- ... -->
 </transition>
 ```
-
-
 
 #### **多个元素的过渡**
 
@@ -3428,8 +3256,6 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 </transition>
 ```
 
-
-
 #### 多个组件的过渡
 
 多个组件的过渡简单很多 - 我们不需要使用 key attribute。相反，我们只需要<font color=FF0000>使用动态组件</font>：
@@ -3440,34 +3266,32 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 </transition>
 
 <script>
-	new Vue({
-	  el: '#transition-components-demo',
-	  data: {
-	    view: 'v-a'
-	  },
-	  components: {
-	    'v-a': {
-	      template: '<div>Component A</div>'
-	    },
-	    'v-b': {
-	      template: '<div>Component B</div>'
-	    }
-	  }
-	})
+    new Vue({
+      el: '#transition-components-demo',
+      data: {
+        view: 'v-a'
+      },
+      components: {
+        'v-a': {
+          template: '<div>Component A</div>'
+        },
+        'v-b': {
+          template: '<div>Component B</div>'
+        }
+      }
+    })
 </script>
 
 <style>
-	.component-fade-enter-active, .component-fade-leave-active {
-	  transition: opacity .3s ease;
-	}
-	.component-fade-enter, .component-fade-leave-to
-	/* .component-fade-leave-active for below version 2.1.8 */ {
-	  opacity: 0;
-	}
+    .component-fade-enter-active, .component-fade-leave-active {
+      transition: opacity .3s ease;
+    }
+    .component-fade-enter, .component-fade-leave-to
+    /* .component-fade-leave-active for below version 2.1.8 */ {
+      opacity: 0;
+    }
 </style>
 ```
-
-
 
 #### 列表过渡
 
@@ -3483,21 +3307,15 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 - 内部元素**总是需要**提供唯一的 `key` attribute 值。
 - CSS 过渡的类将会应用在内部的元素中，而不是这个组/容器本身。
 
-
-
 **列表的排序过渡**
 
 `<transition-group>` 组件还有一个特殊之处。不仅可以进入和离开动画，还可以改变定位。要使用这个新功能只需了解新增的 **`v-move` class**，它会在元素的改变定位的过程中应用。<mark>像之前的类名一样，可以通过 `name` attribute 来自定义前缀，也可以通过 `move-class` attribute 手动设置</mark>。
 
 `v-move` 对于设置过渡的切换时机和过渡曲线非常有用
 
-
-
 #### 可复用的过渡
 
 过渡可以通过 Vue 的组件系统<font color=FF0000>实现复用</font>。要创建一个可复用过渡组件，你<font color=FF0000>需要做的就是将 `<transition>` 或者 `<transition-group>` 作为根组件，然后将任何子组件放置在其中就可以了</font>。
-
-
 
 #### 动态过渡
 
@@ -3513,8 +3331,6 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 
 所有过渡 attribute 都可以动态绑定，但我们不仅仅只有 attribute 可以利用，还可以通过事件钩子获取上下文中的所有数据，因为事件钩子都是方法。这意味着，根据组件的状态不同，你的 JavaScript 过渡会有不同的表现
 
-
-
 ### 状态过渡
 
 Vue 的过渡系统提供了非常多简单的方法设置进入、离开和列表的动效。那么<font color=FF0000>对于数据元素本身的动效</font>呢，比如：
@@ -3526,13 +3342,9 @@ Vue 的过渡系统提供了非常多简单的方法设置进入、离开和列�
 
 <mark>这些数据要么本身就以数值形式存储，要么可以转换为数值</mark>。有了这些数值后，我们就可以结合 Vue 的响应式和组件系统，使用第三方库来实现切换元素的过渡状态。
 
-
-
 **把过渡放到组件里**
 
 管理太多的状态过渡会很快的增加 Vue 实例或者组件的复杂性，幸好很多的动画可以提取到专用的子组件。
-
-
 
 ### 混入
 
@@ -3560,8 +3372,6 @@ var Component = Vue.extend({
 
 var component = new Component() // => "hello from mixin!"
 ```
-
-
 
 ##### 选项合并
 
@@ -3647,8 +3457,6 @@ vm.conflicting() // => "from self"
 
 注意：`Vue.extend()` 也使用同样的策略进行合并。
 
-
-
 **全局混入**
 
 <font color=FF0000>混入也可以进行**全局注册**</font>。使用时格外小心！<font color=FF0000>一旦使用全局混入，它将影响**每一个**之后创建的 Vue 实例</font>。使用恰当时，这可以用来为自定义选项注入处理逻辑。
@@ -3671,8 +3479,6 @@ new Vue({
 // => "hello!"
 ```
 
-
-
 ##### 自定义选项合并策略
 
 自定义选项将使用默认策略，即简单地覆盖已有值。<mark>如果想让<font color=FF0000>自定义选项以自定义逻辑合并</font>，可以向 `Vue.config.optionMergeStrategies` 添加一个函数</mark>：
@@ -3689,8 +3495,6 @@ Vue.config.optionMergeStrategies.myOption = function (toVal, fromVal) {
 var strategies = Vue.config.optionMergeStrategies
 strategies.myOption = strategies.methods
 ```
-
-
 
 ### 自定义指令（使用directive）
 
@@ -3732,8 +3536,6 @@ directives: {
 <input v-focus>
 ```
 
-
-
 ##### 钩子函数
 
 一个指令定义对象可以<font color=FF0000>提供如下几个钩子函数</font> (均为可选)：
@@ -3743,8 +3545,6 @@ directives: {
 - **update**：<font color=FF0000>所在组件的 VNode 更新时调用</font>，**但是<font color=FF0000>可能发生在其 子VNode 更新之前</font>**。指令的值可能发生了改变，也可能没有。但是你可以通过比较更新前后的值来忽略不必要的模板更新 (详细的钩子函数参数见下)。
 - **componentUpdated**：指令所在<font color=FF0000>组件的 VNode 及其 子VNode</font> <font color=FF0000>**全部更新后**</font>调用。
 - **unbind**：<font color=FF0000>只调用一次</font>，<font color=FF0000>**指令与元素解绑**时调用</font>。
-
-
 
 **钩子函数参数（el、binding、vnode 和 oldVnode）**
 
@@ -3769,7 +3569,7 @@ directives: {
 <div id="hook-arguments-example" v-demo:foo.a.b="message"></div>
 
 <script>
-	Vue.directive('demo', {
+    Vue.directive('demo', {
   bind: function (el, binding, vnode) {
     var s = JSON.stringify
     el.innerHTML =
@@ -3791,13 +3591,9 @@ new Vue({
 </script>
 ```
 
-
-
 **动态指令参数**
 
 <font color=FF0000>指令的参数可以是**动态**的</font>。例如，在 `v-mydirective:[argument]="value"` 中，<font color=FF0000>`argument` 参数可以根据组件实例数据进行更新</font>！这使得自定义指令可以在应用中被灵活使用。
-
-
 
 **函数简写**
 
@@ -3809,8 +3605,6 @@ Vue.directive('color-swatch', function (el, binding) {
 })
 ```
 
-
-
 **对象字面量**
 
 如果指令需要多个值，可以传入一个 JavaScript 对象字面量。记住，指令函数能够接受所有合法的 JavaScript 表达式。
@@ -3819,16 +3613,14 @@ Vue.directive('color-swatch', function (el, binding) {
 <div v-demo="{ color: 'white', text: 'hello!' }"></div>
 
 <script>
-	Vue.directive('demo', function (el, binding) {
-	  console.log(binding.value.color) // => "white"
-	  console.log(binding.value.text)  // => "hello!"
-	})
+    Vue.directive('demo', function (el, binding) {
+      console.log(binding.value.color) // => "white"
+      console.log(binding.value.text)  // => "hello!"
+    })
 </script>  
 ```
 
 补充：可以看看如下视频，[v-for？v-if？如何在Vue中自己写一个指令？](https://www.bilibili.com/video/BV1dK4y1h7Xj)
-
-
 
 ### 渲染函数 & JSX
 
@@ -3854,8 +3646,6 @@ Vue.component('anchored-heading', {
   }
 })
 ```
-
-
 
 **节点、树以及虚拟 DOM**
 
@@ -3893,8 +3683,6 @@ render: function (createElement) {
 
 在这两种情况下，Vue 都会自动保持页面的更新，即便 `blogTitle` 发生了改变。
 
-
-
 **虚拟 DOM**
 
 <font color=FF0000>Vue 通过建立一个**虚拟 DOM** 来追踪自己要如何改变真实 DOM</font>。请仔细看这行代码：
@@ -3904,8 +3692,6 @@ return createElement('h1', this.blogTitle)
 ```
 
 `createElement` 到底会返回什么呢？其实不是一个实际的 DOM 元素。它更准确的名字可能是 `createNodeDescription`，因为它所包含的信息会告诉 Vue 页面上需要渲染什么样的节点，包括及其子节点的描述信息。<font color=FF0000>我们把这样的节点描述为“虚拟节点 (virtual node)”，也常简写它为“**VNode**”</font>。<mark>“虚拟 DOM”是我们对由 Vue 组件树建立起来的整个 VNode 树的称呼</mark>。
-
-
 
 **createElement 参数**
 
@@ -3939,8 +3725,6 @@ createElement(
   ]
 )
 ```
-
-
 
 **深入数据对象**
 
@@ -4014,17 +3798,11 @@ createElement(
 
 补充：这里可以看看 [Vue中的Render函数原来是这个意思！](https://www.bilibili.com/video/BV1364y1F7H4)
 
-
-
 补充：
 
 v-text：将数据解析为纯文本
 
-
-
 //todo
-
-
 
 #### 模版占位符template
 
@@ -4042,7 +3820,7 @@ v-text：将数据解析为纯文本
 **有3种方法可以实现**
 
 - 直接用v-for对span也循环一次
-
+  
   ```html
   <div id="app">
       <div>
@@ -4053,7 +3831,7 @@ v-text：将数据解析为纯文本
   ```
 
 - 在div和span外面包裹一个div，给这个div加循环
-
+  
   ```html
   <div id="app">
       <div v-for="(item, index) in list" :key="item.id">
@@ -4064,7 +3842,7 @@ v-text：将数据解析为纯文本
   ```
 
 - 不想额外增加一个div，此时应该使用template来实现<font color=FF0000>（推荐）</font>
-
+  
   ```html
   <div id="app">
       <template v-for="(item, index) in list" :key="item.id">
@@ -4078,8 +3856,6 @@ v-text：将数据解析为纯文本
 
 摘自：[vue中template的作用及使用](https://www.cnblogs.com/tu-0718/p/11177236.html)
 
-
-
 #### 非props
 
 非Prop特性：指的是一个未被组件注册的特性。<font color=FF0000>当组件接收了一个非Prop特性时，**该特性会被添加到这个组件的根元素上**。</font>
@@ -4087,22 +3863,20 @@ v-text：将数据解析为纯文本
 ##### **props特性 与 非props特性的区别**
 
 - **props特性：**
-
+  
   - <font color=0000FF>可以传递给子组件使用。</font>
   - <font color=FF0000>不会在dom元素中显示出来。</font>
   - <font color=fuchsia>不会替换已有的特性。</font>
 
 - **非props特性：**
-
+  
   - <font color=0000FF>不可以传递给子组件。</font>
-
+  
   - <font color=FF0000>会在dom元素上显示出来。</font>
-
+  
   - <font color=fuchsia>会替换掉已有的特性</font>。只有class和style特性才会与非prop特性合并。
 
 摘自：[复习之props特性与非props特性](https://zhuanlan.zhihu.com/p/170645692)
-
-
 
 #### vue import路径中的@
 
@@ -4125,8 +3899,6 @@ module.exports = {
 
 摘自：[Vue 导入文件import、路径@和.的区别](https://www.cnblogs.com/taohuaya/p/10651902.html)
 
-
-
 #### Vue.extend(options)
 
 - **参数**：{Object} options
@@ -4140,8 +3912,6 @@ Vue.extend() 创建的是一个组件构造器，而不是一个具体的组件�
 2. 关于组件的显示与否，需要在父组件中传入一个状态来控制 或者 在组件外部用 v-if / v-show 来实现控制，而 Vue.extend 的显示与否是手动的去做组件的挂载和销毁。
 3. <font color=FF0000>Vue.component component 在组件中需要使用 slot 等自定义UI时更加灵活，而 Vue.extend 由于没有 template的使用，没有slot 都是通过 props 来控制UI，更加局限一些。</font>
    摘自：[Vue.extend 编程式插入组件](https://juejin.cn/post/6844903998672076813)
-
-
 
 #### Vue.use()
 
@@ -4191,28 +3961,22 @@ import VeLine from 'v-charts/lib/line.common'
 Vue.component('ve-line', VeLine)
 ```
 
-
-
-
-
 #### Vue.directive函数
 
 - **语法：**
-
+  
   ```js
   Vue.directive( id, definition] )
   ```
 
 - **参数**：
-
+  
   - `{string} id`
   - `{Function | Object} [definition]`
 
 - **用法**：注册或获取全局指令。
 
 可以参考vue官方文档的[自定义指令](https://cn.vuejs.org/v2/guide/custom-directive.html) 做进一步补充
-
-
 
 #### provide / inject
 
@@ -4247,27 +4011,25 @@ var Child = {
 #### 补充：（摘自：[聊聊 Vue 中 provide/inject 的应用](https://juejin.cn/post/6844903989935341581)）
 
 - **解决痛点：**
-
+  
   使用 $root 依然能够取到根节点，那么我们何必使用 provide/inject 呢？
-
+  
   在实际开发中，一个项目常常有多人开发，每个人有可能需要不同的全局变量，如果所有人的全局变量都统一定义在根组件，势必会引起变量冲突等问题。
-
+  
   使用 provide/inject 不同模块的入口组件传给各自的后代组件可以完美的解决该问题。
 
 - <font color=FF0000>**慎用provide / inject**</font>
-
+  
   Vuex 和 provide/inject 最大的区别在于：Vuex 中的全局状态的每次修改是可以追踪回溯的，而<font color=FF0000> provide/inject 中变量的修改是无法控制的，换句话说，你不知道是哪个组件修改了这个全局状态。</font>
-
+  
   <font color=FF0000>Vue 的设计理念借鉴了 React 中的单向数据流原则</font>（虽然有 sync 这种破坏单向数据流的家伙），而 <font color=FF0000>provide/inject 明显破坏了单向数据流原则</font>。试想，<font color=FF0000>如果有多个后代组件同时依赖于一个祖先组件提供的状态，那么只要有一个组件修改了该状态，那么所有组件都会受到影响。这一方面增加了耦合度，另一方面，使得数据变化不可控</font>。如果在多人协作开发中，这将成为一个噩梦。
-
+  
   在这里，我总结了两条条使用 provide/inject 做全局状态管理的原则：
-
+  
   1. 多人协作时，做好作用域隔离
   2. 尽量使用一次性数据作为全局状态
-
+  
   看起来，使用 provide/inject 做全局状态管理好像很危险，那么<font color=FF0000>有没有 provide/inject 更好的使用方式呢？当然有，那就是使用 provide/inject 编写组件。而使用 provide/inject 做组件开发，是 Vue 官方文档中提倡的一种做法。</font>
-
-
 
 #### $on & $emit
 
@@ -4276,23 +4038,23 @@ var Child = {
 **举个例子：**函数中的 <font color=FF0000>**this.$emit("start", args)**  触发了一个自定义事件 "start"</font>。然后<font color=0000FF>监听器 **this.$on('start',function(...) )** 监听到这个自定义事件 **"start"** 的触发，执行了监听器里面的函数。并接收了 $emit 传过来的参数 （args）</font>
 
 - **$on** 是用来在<font color=FF0000>**监听**(注册)自定义事件</font>的 **（接收数据）**，<font color=FF0000>同时：可以为一个事件（event）绑定多个方法（callback）</font>
-
+  
   **语法：**
-
+  
   ```vue
   vm.$on(event, callback)
   ```
-
+  
   **参数：**
-
+  
   - **event  {string | Array}：**自定义事件的名称，<font color=FF0000>可以使用数组的方式多次注册</font>。数组方式必须在2.2.0+中才支持（与上面的为一个事件（event）绑定多个方法（callback）对应）
-
+  
   - **callback  {Function}：**自定义事件触发后，所执行的方法、函数
-
+  
   总结：$on可以定义多个事件（使用Array），也可以为同一个事件绑定多个处理函数（callback）
-
+  
   **示例：**
-
+  
   ```vue
   vm.$on('myEvent', function(data) {
       console.log(data);
@@ -4300,20 +4062,20 @@ var Child = {
   ```
 
 - **$emit** 是<font color=FF0000>手动**触发**当前实例上的一个指定事件</font> （发送数据）
-
+  
   **语法：**
-
+  
   ```vue
   vm.$emit(eventName, [...args])
   ```
-
+  
   **参数：**
-
+  
   - **eventName {string}：** 需要触发的事件名称
   - **[...args]：** 传递的参数，多个参数用数组，单个参数就可以直接用参数本身的格式
-
+  
   **示例：**
-
+  
   ```vue
   vm.$emit('myEvent', 'happy');
   ```
@@ -4364,8 +4126,6 @@ var Child = {
 - 通过 `$once(eventName, eventHandler)` <font color=FF0000>一次性侦听</font>一个事件
 - 通过 `$off(eventName, eventHandler)` <font color=FF0000>停止侦听</font>一个事件
 
-
-
 #### vm.$mount
 
 ```vue
@@ -4373,20 +4133,20 @@ vm.$mount( elementOrSelector] )
 ```
 
 - **参数**：
-
+  
   - {Element | string} [elementOrSelector]
   - {boolean} [hydrating]
 
 - <font color=FF0000>**返回值：**vm - 实例自身</font>
 
 - **用法：**<font color=FF0000>如果 Vue 实例在实例化时没有收到 el 选项，则它处于“未挂载”状态，没有关联的 DOM 元素。可以使用 vm.$mount() 手动地挂载一个未挂载的实例。</font>
-
+  
   如果没有提供 elementOrSelector 参数，模板将被渲染为文档之外的的元素，并且你必须使用原生 DOM API 把它插入文档中。
-
+  
   这个方法返回实例自身，因而可以链式调用其它实例方法。
 
 - **示例：**
-
+  
   ```js
   var MyComponent = Vue.extend({
     template: '<div>Hello!</div>'
@@ -4403,17 +4163,14 @@ vm.$mount( elementOrSelector] )
   document.getElementById('app').appendChild(component.$el)
   ```
 
-
-
-
 #### render
 
 - **类型：**(createElement: () => VNode) => VNode
 
 - **详细**：
-
+  
   <font color=FF0000>**字符串模板的代替方案**</font>，<mark>允许你发挥 JavaScript 最大的编程能力。该渲染函数接收一个 `createElement` 方法作为第一个参数用来创建 `VNode`</mark>。
-
+  
   如果组件是一个函数组件，渲染函数还会接收一个额外的 `context` 参数，为没有实例的函数组件提供上下文信息。
 
 Vue 通过建立一个**虚拟 DOM** 来追踪自己要如何改变真实 DOM。请仔细看这行代码：
@@ -4429,14 +4186,6 @@ function anonymous() {
 }
 ```
 
-
-
-
-
-
-
-
-
 #### watch侦听器
 
 侦听器的名字以被监视的对象命名，根据被监视的对象的变化自动发生变化
@@ -4447,8 +4196,6 @@ function anonymous() {
 - immediate
 - 绑定多个 handler
 - 监听对象属性
-
-
 
 #### 过滤器 filter
 
@@ -4463,7 +4210,7 @@ Vue.js 允许你自定义过滤器，<font color=FF0000>可被用于一些常见
 ```
 
 - 定义本地的过滤器：
-
+  
   ```js
   filters: {
     capitalize: function (value) {
@@ -4475,7 +4222,7 @@ Vue.js 允许你自定义过滤器，<font color=FF0000>可被用于一些常见
   ```
 
 - 定义全局过滤器：
-
+  
   ```js
   Vue.filter('capitalize', function (value) {
     if (!value) return ''
@@ -4506,8 +4253,6 @@ Vue.js 允许你自定义过滤器，<font color=FF0000>可被用于一些常见
 
 摘自：[Vue官方文档 - 过滤器](https://cn.vuejs.org/v2/guide/filters.html)
 
-
-
 #### class 和 style 绑定的高级用法
 
 ```html
@@ -4518,8 +4263,6 @@ Vue.js 允许你自定义过滤器，<font color=FF0000>可被用于一些常见
 <div :style="[warning, mix()]">数组包含方法绑定style</div>
 <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }">style多重值</div> <!--会优先取得最后一个值，不兼容的情况下，会取倒数第二个值；以此类推-->
 ```
-
-
 
 #### checked属性
 
@@ -4540,8 +4283,6 @@ v-model 在内部为不同的输入元素使用不同的 property 并抛出不�
 - select 字段将 value 作为<font color=FF0000> **prop**</font> 并将 <font color=FF0000>**change**</font> 作为事件。
 
 摘自：[vue官方文档 -- 表单输入绑定](https://cn.vuejs.org/v2/guide/forms.html)
-
-
 
 #### render函数
 
@@ -4568,50 +4309,40 @@ createElement(tag, options, VNodes)
 
 摘自：[Vue - 渲染函数render](https://juejin.cn/post/6844903919764635655)
 
-
-
 #### Vue.nextTick( [callback, context] )
 
 - **参数**：
-
+  
   - {Function} [callback]
   - {Object} [context]
 
 - **用法**：
-
+  
   在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
 
 摘自：[Vue.js API -- Vue.nextTick](https://cn.vuejs.org/v2/api/index.html#Vue-nextTick)
-
-
 
 #### v-if和v-for为什么不能连用（写在一行）
 
 由于v-for的优先级更高，会先运行；而v-if优先级较低，后运行。等v-for所有数据都运行完了，v-if再运行（去除异常情况）会造成性能浪费。
 
-
-
 #### 一些命名规则
 
 在vue的内部，<font color=FF0000>**\_**符号开头定义的变量是供内部私有使用的</font>，而<font color=FF0000>**$** 符号定义的变量是供用户使用的</font>，而且<font color=FF0000>用户自定义的变量不能以\_或$开头，以防止内部冲突</font>。
 
-
-
 #### Vue template和is
 
 - **vue template**
-
+  
   渲染一个“元组件”为动态组件。依 `is` 的值，来决定哪个组件被渲染。
 
 - **vue :is**
-
+  
   预期：string | Object (组件的选项对象)
-
+  
   用于<font color=FF0000>动态组件</font>且基于 DOM 内模板的限制来工作。
 
 可以参考：官方文档中给的[**示例**](https://codesandbox.io/s/github/vuejs/vuejs.org/tree/master/src/v2/examples/vue-20-dynamic-components)
-
-
 
 #### $event
 
@@ -4637,13 +4368,37 @@ methods: {
 
 摘自：[vue官方文档 - 事件处理](https://cn.vuejs.org/v2/guide/events.html)
 
-
-
 #### 添加实例 property
+
+//TODO
 
 摘自：[Vue.js Cookbook - 添加实例 property](https://cn.vuejs.org/v2/cookbook/adding-instance-properties.html)
 
+#### 深度作用选择器
 
+如果你希望 `scoped` 样式中的一个选择器能够作用得“更深”，例如影响子组件，你可以使用 `>>>` 操作符：
+
+```html
+<style scoped>
+.a >>> .b { /* ... */ }
+</style>
+```
+
+上述代码将会编译成：
+
+```css
+.a[data-v-f3f3eg9] .b { /* ... */ }
+```
+
+<font color=FF0000>有些像 Sass 之类的预处理器无法正确解析 `>>>`。这种情况下你可以使用 `/deep/` 操作符取而代之——这是一个 `>>>` 的别名，同样可以正常工作。</font>
+
+摘自：[vue loader官方文档](https://vue-loader-v14.vuejs.org/zh-cn/features/scoped-css.html)
+
+另外，`深度作用选择器`可以用作**样式穿透**
+
+使用**`>>>`**提高自定义class / id的优先级
+
+详见：[想要改变插件里组件的样式？使用样式穿透！【Vue】](https://www.bilibili.com/video/BV1Jv41117QN)
 
 ## Element.UI备忘录
 
@@ -4652,64 +4407,64 @@ methods: {
 - 如果要指定表格每列的「标题」和每列的「字段」的位置（左中右），可以在\<el-table-column>分别设置header-align和align为 ["left" "center" "right"] 以进行修改。
 
 - 如果可以使用，每列的「标题」出现换行的情况，这样很影响美观；可以在\<el-table-column>中设置width="pixel number"以修改column宽度，使得该列不至于换行。示例如下：
-
+  
   ```html
   <el-table-column :width='400'></el-table-column>
   ```
-
+  
   当然：并不是推荐使用width，而是推荐使用<font color=FF0000>**min-width**</font>，因为min-width可实现自适应
 
 - **几个style属性**
-
+  
   - **row-style**：设置的就是表格行的样式
-
+    
     ```js
     :row-style="{height:'15px'}
     ```
-
+  
   - **header-row-style**：设置了表头行的样式
-
+    
     ```js
     :header-row-style="{height:'20px'}"
     ```
-
+  
   - **cell-style**：设置表格单元格的样式
-
+    
     ```js
     :cell-style="{padding:'0px'}"
     ```
-
+  
   - **header-cell-style**：设置表头的单元格样式
-
+    
     ```js
     :header-cell-style="{padding:'0px',background:'#eef1f6'}"
     ```
 
 - <font color=FF0000>如果想要在**el-table**中使用（添加）class</font>，需要制定 Table 组件的 `row-class-name` 属性来为 Table 中的某一行添加 class，从而可以在类中添加属性
-
+  
   **补充：**
-
+  
   - **header-cell-class-name**：表头单元格的 className 的回调方法，也可以使用字符串为所有表头单元格设置一个固定的 className
-
+    
     - **类型：**Function({row, column, rowIndex, columnIndex}) **/** String，分为 函数形式 和 字符串形式
-
+    
     - **函数形式：**将headerStyle方法传递给header-cell-class-name
-
+      
       ```html
       <el-table 
-      	:data="tableData[lang]" 
+          :data="tableData[lang]" 
         class="table" 
         stripe 
         border 
         :header-cell-class-name="headerStyle"
       >
-        
+      
       <script>
       headerStyle ({row, column, rowIndex, columnIndex}) {
-      	return 'tableStyle'
+          return 'tableStyle'
       }
       </script>
-        
+      
       <style lang = "scss">
       .tableStyle{
         background-color: #1989fa!important;
@@ -4717,9 +4472,9 @@ methods: {
         font-weight:400;
       }
       ```
-
+    
     - **字符串形式：**直接将tableStyle名称赋值给header-cell-class-name
-
+      
       ```html
       <el-table 
         :data="tableData[lang]" 
@@ -4728,7 +4483,7 @@ methods: {
         border 
         header-cell-class-name="tableStyle"
       >
-        
+      
       <style lang = "scss">
       .tableStyle{
         background-color: #1989fa!important;
@@ -4736,13 +4491,13 @@ methods: {
         font-weight:400;
       }
       ```
-
+  
   - **header-cell-style**：表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style。
-
+    
     - **类型：**Function({row, column, rowIndex, columnIndex}) **/** Object 分为 函数形式 和 字符串形式
-
+    
     - **函数形式：**将tableHeaderStyle方法传递给header-cell-style
-
+      
       ```html
       <el-table 
         :data="tableData[lang]" 
@@ -4754,13 +4509,13 @@ methods: {
       
       <script>
       tableHeaderStyle ({row, column, rowIndex, columnIndex}) {
-      	return 'background-color:#1989fa;color:#fff;font-weight:400;'
+          return 'background-color:#1989fa;color:#fff;font-weight:400;'
       }
       </script>
       ```
-
+    
     - **对象形式：**直接在对象中编写样式
-
+      
       ```html
       <el-table 
         :data="tableData[lang]" 
@@ -4773,35 +4528,35 @@ methods: {
           'font-weight': '400'
       }">
       ```
-
+  
   - **header-row-class-name：**表头行的className 的回调方法，也可以使用字符串为所有表头行设置一个固定的 className。
-
+    
     类型：Function({row, rowIndex})/String 
-
+    
     使用方式与header-cell-class-name类似，不过：<font color=FF0000>header-row-class-name是添加在tr上面的，header-cell-class-name是添加在th上面的</font>。
-
+    
     所以<font color=FF0000>想让添加在tr上的样式显示，需要关闭element-ui中原本的th的样式，否则会被覆盖！</font>（例如背景色）
-
+    
     <img src="https://i.loli.net/2020/11/17/LKqfCixXlEc9vRB.png" alt="DVVOaV.png" style="zoom:80%;" />
-
+  
   - **header-row-style**：表头行的 style 的回调方法，也可以使用一个固定的 Object 为所有表头行设置一样的 Style。
-
+    
     - 类型：Function({row, rowIndex})/Object
-
+      
       使用方式与header-cell-style类似
-
+  
   - **row-class-name**：行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className。
-
+    
     - 类型：Function({row, rowIndex})/String
-
+      
       使用方式与header-cell-class-name类似
-
+  
   - **row-style**：行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style。
-
+    
     - 类型：Function({row, rowIndex})/Object，使用方式与header-cell-style类似
-
+    
     - 函数形式：将tableRowStyle方法传给row-style
-
+      
       ```html
       <el-table 
         :data="tableData[lang]" 
@@ -4821,24 +4576,24 @@ methods: {
 - **滚动条功能**：通过设置<font color=FF0000>**max-height**</font>属性<font color=FF0000>为 Table 指定最大高度</font>。此时若表格所需的高度大于最大高度，则会显示一个滚动条。
 
 - **自定义表头或者某一列有三种方法：**
-
+  
   - 使用render-header方法，示例：
-
+    
     ```html
     <el-table-column
-    	prop="delete"
-    	label="删除"
-    	:render-header="renderHeader"
-    	width="120">
-    	<template slot-scope="scope">
-    	  <el-button @click="handleDelete(scope.row)">删除</el-button>
-    	</template>
+        prop="delete"
+        label="删除"
+        :render-header="renderHeader"
+        width="120">
+        <template slot-scope="scope">
+          <el-button @click="handleDelete(scope.row)">删除</el-button>
+        </template>
     </el-table-column>
     
     <script>
     export default {
     methods:
-    	//修改表格的头信息
+        //修改表格的头信息
       renderHeader(h, { column }) {
         // 重新渲染表头
         if (column.property == 'delete') {
@@ -4859,15 +4614,15 @@ methods: {
     }
     </script>
     ```
-
+    
     不过这种方法，目前还不熟练
-
+  
   - 使用slot（推荐使用），在官方文档中的解释：
-
+    
     <img src="https://i.loli.net/2020/10/24/NEwPBFXAjonm1rL.png" alt="BVGnhD.png" style="zoom: 45%;" />
-
+    
     示例：
-
+    
     ```html
     <el-table-column
       prop="delete"
@@ -4885,13 +4640,13 @@ methods: {
       </template>
     </el-table-column>
     ```
-
+  
   - 使用cell-style等属性，官方文档说明如下：
-
+    
     <img src="https://i.loli.net/2020/10/24/bN4ktDuMorFWnxl.png" alt="BVwqc8.png" style="zoom:50%;" />
-
+    
     示例如下：
-
+    
     ```html
     <el-table :data="tableData" :cell-style="cellStyle">
       ...
@@ -4912,43 +4667,43 @@ methods: {
       }
     </script>
     ```
-  
-- **通过 <font color=FF0000>"scope.row.属性名"</font> 可以获取当前行对应的属性值**，示例如下：
 
+- **通过 <font color=FF0000>"scope.row.属性名"</font> 可以获取当前行对应的属性值**，示例如下：
+  
   ```html
   <el-table-column label="操作" width="160">
-  	<template slot-scope="scope">
-  		<el-button size="mini" type="primary" plain 
+      <template slot-scope="scope">
+          <el-button size="mini" type="primary" plain 
                  @click = "showName(scope.row.name)">点击获取姓名属性</el-button>
-  	</template>
+      </template>
   </el-table-column>
   ```
-
+  
   <img src="https://i.loli.net/2020/11/17/yzjw1fil5uJto8F.gif" alt="DEz4aj.gif" style="zoom: 45%;" />
-
+  
   同样的：可以通过**"scope.row.属性名"**和三目运算符给特殊的属性值设定样式
-
+  
   ```html
   <el-table-column prop="name" :label="langConfig.table.name[lang]" width="200">
-  	<template slot-scope="scope">
-  		<div :class="scope.row.name === '王大虎' ? 'specialColor':''">{{scope.row.name}}</div>
+      <template slot-scope="scope">
+          <div :class="scope.row.name === '王大虎' ? 'specialColor':''">{{scope.row.name}}</div>
     </template>
   </el-table-column>
   
   <style>
-  	.specialColor{
+      .specialColor{
       color:red;
     }
   </style>
   ```
   
   再者：<font color=FF0000>**"scope.row"**是该列全部的数据</font>
-  
-- 对于在el-table中添加checkbox，获取所有选择的行的方法：
 
+- 对于在el-table中添加checkbox，获取所有选择的行的方法：
+  
   ```html
   <el-table :data="dataSrc" ref="foo">
-  	<el-table-column type="selection"></el-table-column>
+      <el-table-column type="selection"></el-table-column>
   </el-table>
   
   <script>
@@ -4956,13 +4711,9 @@ methods: {
   </script>
   ```
 
-  
-
 摘自：[element-ui自定义表格头部的两种方法](https://www.cnblogs.com/wenxinsj/p/10613764.html)   [自定义element-ui的table字体颜色，及背景色](https://blog.csdn.net/qq_32610671/article/details/90731672)  [Element-UI中关于table表格的那些骚操作](https://www.jianshu.com/p/2251cda42425)
 
 [Element table 获取所有选择的行](https://blog.csdn.net/qq_36537108/article/details/89261394)
-
-
 
 #### \<el-popover>
 
@@ -4985,39 +4736,33 @@ methods: {
 
 摘自：[element.ui 官方文档 -- popover](https://element.eleme.cn/#/zh-CN/component/popover)
 
-
-
 #### \<el-icon>
 
 - 如果需要设置大小，可以设置font-size
 
-
-
 #### \<el-upload>
 
 - accept：对上传文件格式限制，示例如下：
-
+  
   ```html
   <el-upload accept=".jpg,.jpeg,.png"></el-upload>
   ```
-
+  
   摘自：[element UI upload组件上传附件格式限制](https://blog.csdn.net/github_37847992/article/details/80390673)
 
 - list-type：用于设置文件列表的样式类型，可选值有[text, picture, picture-card]，默认值为text
-
+  
   - **text，如下示例：**
-
+    
     <img src="https://i.loli.net/2021/01/18/nyVGHNzXxptMlhc.png" style="zoom:50%; float: left" />
-
+  
   - **picture，如下示例：**
-
+    
     <img src="https://i.loli.net/2021/01/18/Gl3PEwtQYfmbWBJ.png" style="zoom:50%;float:left" />
-
+  
   - picture-card，示例如下：
-
+    
     <img src="https://i.loli.net/2021/01/18/y58l7pmwRT2KMHh.png" style="zoom:50%;float:left" />
-
-
 
 #### \<el-dialog>
 
@@ -5025,13 +4770,13 @@ methods: {
 
 ```html
 <el-dialog :visible.sync="dialogVisible">
-	<div slot="title" class="header-title">
-  	<span v-show="name" class="title-name">name {{ name }}</span>
+    <div slot="title" class="header-title">
+      <span v-show="name" class="title-name">name {{ name }}</span>
     <span class="title-age">age {{ age }}</span>
    </div>
    <span>这是一段/span>
    <span slot="footer" class="dialog-footer">
-   	<el-button @click="dialogVisible = false">取 消</el-button>
+       <el-button @click="dialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
    </span>
 </el-dialog>
@@ -5041,33 +4786,29 @@ methods: {
 
 <font color=FF0000>在el-dialog中：有默认间距，且间距较大，这时候可以修改margin为负值以缩小间距。</font>
 
-
-
 #### \<el-date-picker>
 
 el-date-picker如果想要选择一个日期范围，可以使用`picker-options`绑定一个函数进行设置；同时，这样做默认会对开始日期和结束如期产生限制，使其必须在选择的范围内，这时可以使用`unlink-panels`以取消绑定
 
-
-
 #### \<el-form>
 
 - \<el-form>中的\<el-form-item>中自带了label属性，用以为某一输入框之类的form作为标识，而由于并不方便对这个label的样式进行设置，所以可以使用slot对其进行自定义：
-
+  
   ```html
   <span slot="label">foo</span>
   ```
-
+  
   示例：
-
+  
   ```html
   <el-form-item>
     <span slot="label">foo</span>
     <template>
-    	<el-select v-model="newRecord.deliveryVehicle" placeholder="请选择" class="select"></el-select>
+        <el-select v-model="newRecord.deliveryVehicle" placeholder="请选择" class="select"></el-select>
     </template>
   </el-form-item>
   ```
-
+  
   同样的：可以使用slot的还有error和default
 
 如果想要让多个表单在一行（默认每个表单一行），可以在el-form中配置inline / :inline="true"
@@ -5084,30 +4825,30 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
 </el-form>
 
 <script>
-	data() {
+    data() {
     return {
-			rules: {
-				name: [
-					{ required: true, message: '请输入活动名称', trigger: 'blur' },
-					{ min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-			]
-		}
+            rules: {
+                name: [
+                    { required: true, message: '请输入活动名称', trigger: 'blur' },
+                    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            ]
+        }
   },
   methods: {
-  	submitForm(formName) {
+      submitForm(formName) {
       //this.$refs.ruleForm.validate()
-  	  this.$refs[formName].validate((valid) => {
-  	    if (valid) {
-  	      alert('submit!');
-  	    } else {
-  	      console.log('error submit!!');
-  	      return false;
-  	    }
-  	  });
-  	},
-  	resetForm(formName) {
-  	  this.$refs[formName].resetFields();
-  	}
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      }
 }
 
 </script>
@@ -5118,7 +4859,7 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
 **更进一步的验证：**
 
 - 官方文档上的验证（不确定是否有效）：
-
+  
   ```js
   //type: [数字类型 'number', 整数: 'integer', 浮点数: 'float']
   {type: 'number', message: '请输入数字类型', trigger: 'blur'},
@@ -5126,13 +4867,13 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
   ```
 
 - 使用正则表达式验证：
-
+  
   ```js
   {pattern: /^(([0-9]+)|([0-9]+\.[0-9]{0,8}))$/, message: '支持八位小数的正数',}
   ```
 
 - 使用自由度更强的验证
-
+  
   ```js
   data() {
     /** 设置验证函数 */
@@ -5143,13 +4884,13 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
         callback(new Error('用户名长度必须大于3'))
       }
     }
-    
+  
     return {
       data: {
         user: 'sam',
         region: '区域二'
       },
-      
+  
       rules: {
         user: [
           { required: true, trigger: 'change', message: '用户名必须录入' },
@@ -5164,7 +4905,7 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
 **补充：**
 
 - 动态添加验证条件
-
+  
   ```js
   addRule() {
       const userValidator = (rule, value, callback) => {
@@ -5185,19 +4926,20 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
   ```
 
 - **手动控制校验状态**
-
+  
   - validate-status：验证状态，枚举值，共四种：
+    
     - success：验证成功
     - error：验证失败
     - validating：验证中
     - (空)：未验证
-
+  
   - error：自定义错误提示
-
+  
   示例：
-
+  
   - 设置 el-form-item 属性
-
+    
     ```html
     <el-form-item
       label="用户名"
@@ -5208,9 +4950,9 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
     <!-- ... -->
     </el-form-item>
     ```
-
+  
   - 自定义 status 和 error
-
+    
     ```js
     showError() {
       this.status = 'error'
@@ -5229,6 +4971,28 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
 #### \<el-input>
 
 在el-input中可以设置<font color=FF0000>**maxlength** 和 **minlength** 的HTML原生属性，用来限制输入框的字符长度</font>；其中字符长度是用 Javascript 的字符串长度统计的。<font color=FF0000>对于类型为 text 或 textarea 的输入框，在使用 maxlength 属性限制最大输入长度的同时，可通过设置 **show-word-limit** 属性来展示字数统计。</font>
+
+如果想要实现“可自适应文本高度的文本域”可以使用autosize属性，另外，使用该属性后，表单的其他组件也会随着该组件的扩张 / 缩小而自适应。<font color=FF0000>**教训：**</font>在使用autosize的同时，不要对input指定高度height，这样会让其他组件自适应失效，如果实在要用，可以使用min-height。
+
+**\<el-input>边框消失：**可以使用深度作用选择器，示例如下
+
+```html
+<div class="inputDeep">
+    <el-input></el-input>
+</div>
+
+<style>
+ /* 利用穿透，设置input边框隐藏 */
+  .inputDeep>>>.el-input__inner {
+    border: 0;
+  }
+  /* 如果你的 el-input type 设置成textarea ，就要用这个了 */
+  .inputDeep>>>.el-textarea__inner {
+    border: 0;
+    resize: none;/* 这个是去掉 textarea 下面拉伸的那个标志，如下图 */
+  }
+</style>
+```
 
 
 
@@ -5261,8 +5025,6 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
 
 更多可以参考：[改变element-UI 中 el-button的颜色](https://blog.csdn.net/weixin_44242623/article/details/106851582)
 
-
-
 #### \<el-scrollbar>
 
 这个组件的功能是滚动条，而且关于该滚动条的说明在官方文档中是没有的...源码是：https://github.com/ElemeFE/element/blob/dev/packages/scrollbar/src/main.js
@@ -5271,19 +5033,17 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
 
 **相关参数（非官方，存疑）**
 
-|   参数    |               说明               |  类型   | 可选值 | 默认值 |
-| :-------: | :------------------------------: | :-----: | :----: | :----: |
-| wrapClass |      可选参数，容器的样式名      | string  |   -    |   -    |
-| viewClass |    可选参数，展示视图的样式名    | string  |   -    |   -    |
-| wrapStyle |       可选参数，容器的样式       | string  |   -    |   -    |
-| viewStyle |     可选参数，展示视图的样式     | string  |   -    |   -    |
-|  native   |    可选参数，是否使用原生滚动    | boolean |   -    | false  |
-| noresize  | 可选参数，容器大小是否是不可变的 | boolean |   -    | false  |
-|    tag    |     可选参数，渲染容器的标签     | string  |   -    |  div   |
+| 参数        | 说明               | 类型      | 可选值 | 默认值   |
+|:---------:|:----------------:|:-------:|:---:|:-----:|
+| wrapClass | 可选参数，容器的样式名      | string  | -   | -     |
+| viewClass | 可选参数，展示视图的样式名    | string  | -   | -     |
+| wrapStyle | 可选参数，容器的样式       | string  | -   | -     |
+| viewStyle | 可选参数，展示视图的样式     | string  | -   | -     |
+| native    | 可选参数，是否使用原生滚动    | boolean | -   | false |
+| noresize  | 可选参数，容器大小是否是不可变的 | boolean | -   | false |
+| tag       | 可选参数，渲染容器的标签     | string  | -   | div   |
 
 摘自：[Element-UI 框架 el-scrollbar 组件](https://juejin.im/post/6844903793377673230)
-
-
 
 #### \<el-drawer>
 
@@ -5296,18 +5056,16 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
 
 <script>
 export default {
-	data() {
-		return {
-			size: '400px'
-		};
-	}
+    data() {
+        return {
+            size: '400px'
+        };
+    }
 }
 </script>
 ```
 
 摘自：[Element Drawer 抽屉改变默认宽度](https://blog.csdn.net/weixin_44640323/article/details/108794124)
-
-
 
 #### $message（类似的还有Notification）
 
@@ -5327,8 +5085,6 @@ $message的type有：info（defalut） / success / warning / error
   ```js
   this.$message.success('foo')
   ```
-
-
 
 #### Notification
 
@@ -5374,14 +5130,12 @@ import { Notification } from 'element-ui';
 
 此时调用方法为 Notification(options)。我们也为每个 type 定义了各自的方法，如 Notification.success(options)。并且可以调用 Notification.closeAll() 手动关闭所有实例。
 
-
-
 #### v-loading
 
 **v-loading提供了两种模式：指令与服务**
 
 - 指令式是这样的：
-
+  
   ```html
    <el-button
       type="primary"
@@ -5399,7 +5153,7 @@ import { Notification } from 'element-ui';
   ```
 
 - 服务式是这样的：
-
+  
   ```js
   import { Loading } from 'element-ui';
   let loadingInstance = Loading.service(options);
@@ -5408,7 +5162,7 @@ import { Notification } from 'element-ui';
     loadingInstance.close();
   });
   ```
-
+  
   可以看出，两种模式一个是自定义指令，一个是定义了一个全局方法。
 
 打开element-ui源码v-loading文件夹下的index.js文件
@@ -5416,7 +5170,7 @@ import { Notification } from 'element-ui';
 ```js
 import directive from './src/directive'; // loading指令实现
 import service from './src/index'; // loading服务方式实现
- 
+
 export default {
   install(Vue) {
     Vue.use(directive);
@@ -5454,22 +5208,18 @@ console.log(loadingInstance1 === loadingInstance2); // true
 
 摘自：[element-ui -- Loading 加载](https://element.eleme.cn/#/zh-CN/component/loading#zheng-ye-jia-zai)
 
-
-
 ## Vue Router
 
 路由就是根据网址的不同，返回不同的内容给用户
-
-
 
 #### **路由的两种显示模式：**
 
 - hash模式（<font color=FF0000>vue-router默认使用</font>）：地址栏包含`#`符号，`#`以后的内容不会被后台获取。可以减少到后台访问的次数；但需要参数传递时，将无法满足需求。出现404时，后台不会报错。<font color=FF0000>**另外，`#`是特殊字符，在很多场合不被满足；所以使用较少**</font>
 
 - history模式（更加普遍）：具有对url历史记录进行修改的功能。出现404时，后台会报错
-
+  
   修改方式：
-
+  
   ```js
   export default new Router {
     mode: 'history',
@@ -5479,11 +5229,7 @@ console.log(loadingInstance1 === loadingInstance2); // true
   }
   ```
 
-
-
 <font color=FF0000>组件也有生命周期</font>，所以vue router也可使用生命周期函数
-
-
 
 #### 默认路由
 
@@ -5495,14 +5241,12 @@ routers: [
 ]
 ```
 
-
-
 #### 路由中的参数传递
 
 - **接收参数：**通过传统的 `?` 传递参数：使用`this.$route.query.itemName`获取url中的`?itemName=val`的val
-
+  
   而对于**传递参数：**
-
+  
   ```js
   funcName(param1, param2, ...){
     this.$router.push({
@@ -5513,23 +5257,18 @@ routers: [
   ```
 
 - 通过RESTful传递参数：使用`this.$route.params.itemName`获取参数
-
+  
   比如下面的id和name
-
+  
   ```js
   router: [{path: '/register/:id/:name', component: register}]
   ```
-
+  
   通过`this.$route.params.id`和`this.$route.params.name`获取
-
-
-
 
 每个路由应该映射一个组件。 其中"component" 可以是通过 Vue.extend() 创建的组件构造器，或者，只是一个组件配置对象。
 
 #### **我们<font color=FF0000>可以在任何组件内通过 `this.$router` 访问路由器</font>，<font color=FF0000>也可以通过 `this.$route` 访问当前路由</font>**
-
-
 
 #### \<router-link>
 
@@ -5538,7 +5277,7 @@ routers: [
 - **to：**字符串或是对象类型。作用：目标路由的链接，相当于a标签的href属性；是必须的。对应的编程式的导航是router.push()方法，将to的值传入router.push()里
 
 - **tag：**想要把\<router-link>渲染成其他标签（默认渲染成**\<a>**），可以使用tag属性，示例：
-
+  
   ```html
   <router-link to="/login" tag=“span”>登录</router-link>
   
@@ -5547,23 +5286,24 @@ routers: [
   ```
 
 - **replace：**布尔类型值。相当于调用router.replace()，页面切换时不会留下历史记录。非必须。
+
 - **active-class：**class属性字符串类型。表示激活这个链接时，添加的class，默认是router-link-class
+
 - **exact：**布尔类型值（默认false）。表示开启router-link的严格模式；激活默认类名的依据是 inclusive match （全包含匹配）这个链接只有在地址是「这个」的时候被激活
+
 - **append：** 布尔类型值。设置该属性后，则在当前的相对路径前加上基路径。
+
 - **event：**字符串类型值或者是数组字符串。声明可以用来触发导航事件。
+
 - **exact-active-class：**字符串类型值（默认router-link-exact-active）。配置当链接被精确匹配的时候应该激活的 class。
 
 摘自：[Vue路由\<router-link>属性的使用](https://www.jianshu.com/p/d3f689309d7a) / [\<router-link>组件](https://www.jianshu.com/p/8b8616df24a6) / [vue学习笔记一之](https://www.cnblogs.com/wangpengfei8313/p/8074614.html)
-
-
 
 #### **\<router-view>**
 
 **\<router-view>的作用是挂载路由**（更通俗的讲就是：显示的是当前路由地址所对应的内容）
 
 **举例：**点击这个链接跳转到其他组件的情况，通常会跳转到新的页面，蛋是，我们不想跳转到新页面，只在当前页面切换着显示，那么就要涉及到路由的嵌套了，也可以说是子路由的使用。
-
-
 
 #### 动态路由匹配
 
@@ -5594,41 +5334,32 @@ const User = {
 
 <font color=FF0000>**提醒：**</font>当使用路由参数时，例如从 `/user/foo` 导航到 `/user/bar`，<font color=FF0000>**原来的组件实例会被复用**</font>。因为两个路由都渲染同个组件，比起销毁再创建，复用则显得更加高效。**不过，这也意味着<font color=FF0000>组件的生命周期钩子不会再被调用</font>**。
 
-
-
 #### 嵌套路由
 
 使用children（数组）配置：children 配置就是像 routes 配置一样的路由配置数组，<font color=FF0000>**可以嵌套多层路由**</font>。
 
-
-
-####  Router 配置项
+#### Router 配置项
 
 - **mode：** [hash histoty]
-
+  
   作为有服务端渲染的应用，不希望有`#`，上述是 hash 模式，<font color=FF0000>`#` 更多是用来做定位的，同时它不会被搜索引擎解析，导致网站 SEO 效果不好</font>。
 
 - **base**：页面基础路径
-
+  
   设置之后，<font color=FF0000>使用 vue-router api 进行跳转 都会加上这个 base 路径</font>
 
-
 摘自：[Vue-router之配置](https://www.jianshu.com/p/860c77649ba9)
-
-
 
 #### 命名路由
 
 给一个路由起一个名称（别名）来标识一个路由显得更方便一些（不需要写繁杂的path）。
-
-
 
 #### router.push(location, onComplete?, onAbort?)
 
 **参数：**
 
 - location可以是path，也可以是router name，<font color=FF0000>还可以带参数</font>。如下示例：
-
+  
   ```js
   // 字符串
   router.push('home')
@@ -5639,9 +5370,9 @@ const User = {
   // 带查询参数，变成 /register?plan=private
   router.push({ path: 'register', query: { plan: 'private' }})
   ```
-
+  
   **另外：如果提供了 path，params 会被忽略，上述例子中的 query 并不属于这种情况。**下面例子的做法，你需要提供路由的 name 或手写完整的带有参数的 path：
-
+  
   ```js
   const userId = '123'
   router.push({ name: 'user', params: { userId }}) // -> /user/123
@@ -5649,7 +5380,7 @@ const User = {
   // 这里的 params 不生效
   router.push({ path: '/user', params: { userId }}) // -> /user
   ```
-
+  
   同样的规则也适用于 router-link 组件的 to 属性。
 
 - onComplete和onAbort（可省略）：是在路由跳转完成和失败时分别执行的<font color=FF0000>回调函数</font>
@@ -5658,25 +5389,21 @@ const User = {
 
 当你点击 \<router-link> 时，router.push()方法会在内部调用，所以说，点击 \<router-link :to="...">（声明式） 等同于调用 router.push(...)（编程式）
 
-
-
 #### router.replace(location, onComplete?, onAbort?)
 
 跟 router.push 很像，唯一的不同就是，它<font color=FF0000>不会向 history 添加新记录</font>，而是跟它的方法名一样 —— <font color=FF0000>替换掉当前的 history 记录</font>。
 
 **router.replace(...)（编程式）和\<router-link :to="..." replace>（声明式）作用相同**
 
-
-
 #### 其他router的导航方法
 
 - **router.go(n)：**在 history 记录中向前或者后退多少步，类似于window.history.go(n)
+
 - **router.forward()：**在浏览器记录中前进一步
+
 - **router.back()：**在浏览器记录中回退一步
 
 - **router.go(100) / router.go(-100)：**如果 history 记录不够用，那就默默地失败呗
-
-
 
 #### router.addRoutes
 
@@ -5697,8 +5424,6 @@ addRoute() {
     ])
 },
 ```
-
-
 
 #### 命名视图
 
@@ -5727,14 +5452,12 @@ const router = new VueRouter({
 })
 ```
 
-
-
 #### 重定向
 
 “重定向”的意思是，当用户访问 `/a`时，URL 将会被替换成 `/b`，然后匹配路由为 `/b`。重定向也是通过 `routes` 配置来完成。
 
 - 从 path a 重定向到 path b：
-
+  
   ```js
   const router = new VueRouter({
     routes: [
@@ -5744,7 +5467,7 @@ const router = new VueRouter({
   ```
 
 - 重定向的目标也可以是一个命名的路由：
-
+  
   ```js
   const router = new VueRouter({
     routes: [
@@ -5754,7 +5477,7 @@ const router = new VueRouter({
   ```
 
 - 还可以是一个方法，动态返回重定向目标：
-
+  
   ```js
   const router = new VueRouter({
     routes: [
@@ -5765,8 +5488,6 @@ const router = new VueRouter({
     ]
   })
   ```
-
-
 
 #### 别名
 
@@ -5780,8 +5501,6 @@ const router = new VueRouter({
 })
 ```
 
-
-
 #### 导航守卫
 
 vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫导航。<font color=FF0000>有多种机会植入路由导航过程中：全局的、单个路由独享的、或者组件级的</font>。
@@ -5789,9 +5508,9 @@ vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫
 参数（param）或查询（query）的改变并不会触发进入/离开的导航守卫。你可以通过观察 $route 对象来应对这些变化，或使用 beforeRouteUpdate 的组件内守卫。
 
 - **全局前置守卫**
-
+  
   你可以<font color=FF0000>使用 **router.beforeEach** 注册一个全局**前置守卫**</font>：
-
+  
   ```js
   const router = new VueRouter({ ... })
   
@@ -5799,32 +5518,32 @@ vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫
     // ...
   })
   ```
-
+  
   当一个导航触发时，全局前置守卫按照创建顺序调用。<font color=FF0000>守卫是异步解析执行，此时导航在所有守卫 resolve 完之前一直处于 **等待中**</font>。
-
+  
   每个守卫方法接收三个参数：
-
+  
   - **to: Route：**<font color=FF0000>即将要进入的目标路由对象</font>
-
+  
   - **from: Route：**当前导航<font color=FF0000>正要离开的路由</font>
-
+  
   - **next: Function：** <font color=FF0000>一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数。</font>
-
+    
     - **next()：** <font color=FF0000>进行管道中的下一个钩子</font>。如果全部钩子执行完了，则导航的状态就是 confirmed (确认的)。
     - **next(false)：** <font color=FF0000>中断当前的导航</font>。如果浏览器的 URL 改变了 (可能是用户手动或者浏览器后退按钮)，那么 URL 地址会重置到 from 路由对应的地址。
     - **next('/') 或 next({ path: '/' })：** <font color=FF0000>跳转到一个不同的地址</font>。当前的导航被中断，然后进行一个新的导航。你可以向 next 传递任意位置对象，且允许设置诸如 replace: true、name: 'home' 之类的选项以及任何用在 router-link 的 to prop 或 router.push 中的选项。
     - **next(error)：** (2.4.0+) <font color=FF0000>如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。</font>
-
+    
     另外：<font color=FF0000>确保 next 函数在任何给定的导航守卫中都被严格调用一次</font>。它可以出现多于一次，但是只能在所有的逻辑路径都不重叠的情况下，否则钩子永远都不会被解析或报错。
 
 - **全局解析守卫**
-
+  
   在 2.5.0+ 你可以用 <font color=FF0000>**router.beforeResolve**</font> 注册一个<font color=FF0000>**全局守卫**</font>。这和 router.beforeEach 类似，区别是<font color=FF0000>在**导航被确认之前**，同时**在所有组件内守卫和异步路由组件被解析之后**，**解析守卫就被调用**</font>。
 
 - **全局后置钩子**
-
+  
   你也可以注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 next 函数也不会改变导航本身：
-
+  
   ```js
   router.afterEach((to, from) => {
     // ...
@@ -5832,9 +5551,9 @@ vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫
   ```
 
 - **路由独享的守卫（<font color=FF0000>局部</font>）**
-
+  
   你可以在路由配置上直接定义 beforeEnter 守卫：
-
+  
   ```js
   const router = new VueRouter({
     routes: [
@@ -5848,17 +5567,17 @@ vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫
     ]
   })
   ```
-
+  
   这些守卫与全局前置守卫的方法参数是一样的。
 
 - **组件内的守卫**
-
+  
   可以在路由组件内直接定义以下路由导航守卫：
-
+  
   - **beforeRouteEnter(to, from, next)：**在渲染该组件的对应路由被 <font color=FF0000>confirm 前</font>调用。<font color=FF0000>**不能获取组件实例 this**，因为当守卫执行前，组件实例还没被创建</font>。
-
+    
     不过，你可以通过传一个回调给 next来访问组件实例。在导航被确认的时候执行回调，并且把组件实例作为回调方法的参数。如下示例：
-
+    
     ```js
     beforeRouteEnter (to, from, next) {
       next(vm => {
@@ -5866,12 +5585,10 @@ vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫
       })
     }
     ```
-
+  
   - **beforeRouteUpdate(to, from, next)： (2.2 新增)** 在<font color=FF0000>当前路由改变</font>，但是该组件被复用时调用举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。<font color=FF0000>可以访问组件实例 this</font>。<font color=FF0000>**由于this 已经可用了，所以不支持传递回调**</font>
-
+  
   - **beforeRouteLeave(to, from, next)：**<font color=FF0000>导航离开</font>该组件的对应路由时调用，<font color=FF0000>可以访问组件实例 this</font>。<font color=FF0000>**由于this 已经可用了，所以不支持传递回调**</font>
-
-
 
 #### 完整的导航解析流程
 
@@ -5888,21 +5605,17 @@ vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫
 11. 触发 DOM 更新。
 12. 调用 `beforeRouteEnter` 守卫中传给 `next` 的回调函数，创建好的组件实例会作为回调函数的参数传入。
 
-
-
 #### 数据获取
 
 有时候，进入某个路由后，需要从服务器获取数据。<mark>例如，在渲染用户信息时，你需要从服务器获取用户的数据。我们可以通过两种方式来实现</mark>：
 
 - **导航完成之后获取**：先完成导航，然后<font color=FF0000>在接下来的组件生命周期钩子中获取数据</font>。在数据获取期间显示“加载中”之类的指示。
-
+  
   使用这种方式时，会马上导航和渲染组件，然后<font color=FF0000>在组件的 created 钩子中获取数据</font>。这让我们有机会在数据获取期间展示一个 loading 状态，还可以在不同视图间展示不同的 loading 状态。
 
 - **导航完成之前获取**：导航完成前，<font color=FF0000>在路由进入的守卫中获取数据，在数据获取成功后执行导航</font>。
-
+  
   通过这种方式，我们<font color=FF0000>在导航转入新的路由前获取数据</font>。我们可以<font color=FF0000>在接下来的组件的 beforeRouteEnter 守卫中获取数据</font>，当数据获取成功后只调用 next 方法。
-
-
 
 #### 滚动行为
 
@@ -5940,8 +5653,6 @@ scrollBehavior (to, from, savedPosition) {
 
 对于所有路由导航，简单地让页面滚动到顶部。
 
-
-
 ***
 
 ## Vue CLI
@@ -5951,17 +5662,19 @@ Vue CLI是一种脚手架，是一个基于 Vue.js 进行快速开发的<font co
 **Vue CLI的优势**
 
 - 通过 @vue/cli 实现的交互式的项目脚手架。
+
 - 通过 @vue/cli + @vue/cli-service-global 实现的零配置原型开发。
+
 - 一个运行时依赖 (@vue/cli-service)，该依赖：
+  
   - 可升级；
   - 基于 webpack 构建，并带有合理的默认配置；
   - 可以通过项目内的配置文件进行配置；
   - 可以通过插件进行扩展。
 
 - 一个丰富的官方插件集合，集成了前端生态中最好的工具。(Node Vue Vue-Router Webpack Yarn)
+
 - 一套完全图形化的创建和管理 Vue.js 项目的用户界面。
-
-
 
 ##### 查看Vue CLI的版本，可以使用如下两种方式：
 
@@ -5970,23 +5683,19 @@ vue --version
 vue -V
 ```
 
-
-
 ##### 项目启动命令
 
 - 在vue-cli3中启动项目的命令是：
-
+  
   ```sh
   npm run serve
   ```
 
 - 而在vue-cli2中启动项目的命令是：
-
+  
   ```sh
   npm run dev
   ```
-
-
 
 #### preset 和 ~/.vuerc
 
@@ -6014,9 +5723,6 @@ vue -V
 }
 ```
 
-
-
-
 #### vue add命令
 
 如果你<font color=FF0000>想在一个已经被创建好的项目中安装一个插件，可以使用 vue add 命令</font>，示例如下：
@@ -6035,8 +5741,8 @@ vue add cli-plugin-eslint
 
 **vue add 插件名解析**
 
-| Vue add 语法        | 等价于                    | 解析的npm包             |
-| :------------------ | :------------------------ | :---------------------- |
+| Vue add 语法          | 等价于                       | 解析的npm包                 |
+|:------------------- |:------------------------- |:----------------------- |
 | vue add @vue/eslint | vue add cli-plugin-eslint | @vue/cli-plugin-eslint  |
 | vue add apollo      | -                         | vue-cli-plugin-apollo   |
 | vue add @foo/bar    | -                         | @foo/vue-cli-plugin-bar |
@@ -6057,15 +5763,13 @@ vue add 的设计意图是为了安装和调用 Vue CLI 插件。这不意味着
 - 区别就是<font color=FF0000>vue add装的是vue cli插件</font>，<font color=FF0000>npm装的是npm插件</font>
 
 - <font color=FF0000>vue add可能会改变现有的项目结构</font>，但是<font color=FF0000>npm install仅仅是安装包而不会改变项目的结构</font>
-
+  
   add如果你下载的库, 特别是 Ui 库, 希望对脚手架结构产生影响，那就选择vue add xxx
-
+  
   npm如果不希望对脚手架结构产生影响, 只是单纯的使用, 比如 axios 这个插件，那就选择npm install xxx
 
 - vue add 除了會 npm install 之外，還會幫你配置好一個範例文件。需要注意的是這個指令會更改你現有的文件內容。
   特別的是使用 vue add router 或是 vue add vuex，他們雖然不是插件，但Vue CLI會幫你配置好文件，例如 vue add router 會幫你配置 router.js 文件以及生成 About.vue 和 Home.vue 並在 App.vue 內建立了簡單的路由範例，而 vue add vuex 會幫你配置好一個 store.js 文件。
-
-
 
 #### 浏览器适配
 
@@ -6073,45 +5777,43 @@ vue add 的设计意图是为了安装和调用 Vue CLI 插件。这不意味着
 
 即：vue-cli中自带了@babel/preset-env和Autoprefixer，以进行浏览器适配
 
-
-
 #### 静态资源处理
 
 静态资源可以通过两种方式进行处理：
 
 - 在 JavaScript 被导入或在 template/CSS 中通过相对路径被引用。<font color=FF0000>这类引用会被 webpack 处理。</font>
-
+  
   当你在 JavaScript、CSS 或 `*.vue` 文件中使用相对路径 (必须以 `.` 开头) 引用一个静态资源时，该资源将会被包含进入 webpack 的依赖图中。在其编译过程中，所有诸如 `<img src="...">`、`background: url(...)` 和 CSS `@import` 的资源 URL **都会被解析为一个模块依赖**。
-
+  
   例如，`url(./image.png)` 会被翻译为 `require('./image.png')`，而：
-
+  
   ```html
   <img src="./image.png">
   ```
-
+  
   将会被编译到：
-
+  
   ```js
   h('img', { attrs: { src: require('./image.png') }})
   ```
 
 - 放置在 `public` 目录下或通过绝对路径被引用。这类资源将会直接被拷贝，而<font color=FF0000>不会经过 webpack 的处理</font>。<font color=FF0000>这样做是不被推荐的</font>
-
+  
   推荐将资源作为你的模块依赖图的一部分导入，这样它们会<font color=FF0000>通过 webpack 的处理并获得如下好处</font>：
-
+  
   - <font color=FF0000>脚本和样式表会被压缩且打包在一起，从而避免额外的网络请求。</font>
+  
   - 文件丢失会直接在编译时报错，而不是到了用户端才产生 404 错误。
+  
   - 最终生成的文件名包含了内容哈希，因此你不必担心浏览器会缓存它们的老版本。
-
-   `public` 目录提供的是一个**应急手段**，当你通过绝对路径引用它时，留意应用将会部署到哪里。
-
+    
+    `public` 目录提供的是一个**应急手段**，当你通过绝对路径引用它时，留意应用将会部署到哪里。
+  
   <font color=FF0000> **那么何时使用 public 文件夹**</font>
-
+  
   - 你需要在构建输出中指定一个文件的名字。
   - 你有上千个图片，需要动态引用它们的路径。
   - 有些库可能和 webpack 不兼容，这时你除了将其用一个独立的 \<script> 标签引入没有别的选择。
-
-
 
 #### URL 转换规则
 
@@ -6120,14 +5822,12 @@ vue add 的设计意图是为了安装和调用 Vue CLI 插件。这不意味着
 - 如果 URL 以 `.` 开头，它会作为一个相对模块请求被解释且基于你的文件系统中的目录结构进行解析。
 
 - 如果 URL 以 `~` 开头，其后的任何内容都会作为一个模块请求被解析。这意味着你甚至可以引用 Node 模块中的资源：
-
+  
   ```html
   <img src="~some-npm-package/foo.png">
   ```
 
 - 如果 URL 以 `@` 开头，它也会作为一个模块请求被解析。它的用处在于 <font color=FF0000>Vue CLI 默认会设置一个指向 `<projectRoot>/src` 的别名 `@`。</font>**(仅作用于模版中)**
-
-
 
 #### CSS相关
 
@@ -6146,13 +5846,9 @@ npm install -D less-loader less
 npm install -D stylus-loader stylus
 ```
 
-
-
 #### vue.config.js
 
 **vue.config.js** 是一个可选的配置文件，如果项目的 (和 package.json 同级的) 根目录中存在这个文件，那么它会被 @vue/cli-service 自动加载。你也可以使用 package.json 中的 vue 字段，但是注意这种写法需要你严格遵照 JSON 的格式来写。
-
-
 
 #### 模式
 
@@ -6167,8 +5863,6 @@ npm install -D stylus-loader stylus
 ```text
 vue-cli-service build --mode development
 ```
-
-
 
 ## Vuex
 
@@ -6200,8 +5894,6 @@ Vue已经帮我们做好了单个界面的状态管理，但是如果是多个�
 
 摘自：[Vuex详细教程](https://www.cnblogs.com/wugongzi/p/13413274.html)
 
-
-
 #### 安装
 
 在一个模块化的打包系统中，您必须显式地通过 Vue.use() 来安装 Vuex：
@@ -6217,8 +5909,6 @@ Vue.use(Vuex)
 
 <font color=FF0000>**依赖：**</font>Vuex 依赖 Promise。如果你支持的浏览器并没有实现 Promise (比如 IE)，那么你可以使用一个 polyfill 的库，例如 es6-promise。
 
-
-
 #### 核心基础
 
 每一个 Vuex 应用的核心就是 store（仓库）。<font color=FF0000>“store”基本上就是一个容器，它包含着你的应用中大部分的**状态 (state)**。</font>Vuex 和单纯的全局对象有以下两点不同：
@@ -6226,8 +5916,6 @@ Vue.use(Vuex)
 - **Vuex 的状态存储是响应式的**。<font color=FF0000>当 Vue 组件从 store 中读取状态的时候，若 store 中的状态发生变化，那么相应的组件也会相应地得到高效更新。</font>
 
 - **你不能直接改变 store 中的状态**。<font color=FF0000>改变 store 中的状态的唯一途径就是显式地**提交 (commit) mutation**。这样使得我们可以方便地跟踪每一个状态的变化，从而让我们能够实现一些工具帮助我们更好地了解我们的应用</font>。
-
-
 
 安装 Vuex 之后，让我们来创建一个 store。创建过程直截了当——仅需要提供一个初始 state 对象和一些 mutation：
 
@@ -6256,8 +5944,6 @@ store.commit('increment')
 
 console.log(store.state.count) // -> 1
 ```
-
-
 
 #### State
 
@@ -6360,7 +6046,7 @@ computed: {
 }
 ```
 
-###  
+### 
 
 #### Mutation
 
@@ -6379,17 +6065,15 @@ const store = new Vuex.Store({
     name: 'why', age: 18
   }
   mutations: {
-  	updateInfo(state, payload) {
-  		//方法一：Vue.set()
-  		Vue.set(state.info, 'height', payload.height)
-  		//方法二：给info赋值一个新的对象
-  		state.info = {...state.info, 'height': payload.height}
-		}
-	}
+      updateInfo(state, payload) {
+          //方法一：Vue.set()
+          Vue.set(state.info, 'height', payload.height)
+          //方法二：给info赋值一个新的对象
+          state.info = {...state.info, 'height': payload.height}
+        }
+    }
 })
 ```
-
-
 
 **Mutation常量类型**
 
@@ -6418,21 +6102,13 @@ const store = new Vuex.Store({
 })
 ```
 
-
-
 #### Action
 
 context是什么？context是和store对象具有相同方法和属性的对象。也就是说， 我们可以通过context去进行commit相关的操作， 也可以获取context，state等。但是注意， 这里它们并不是同一个对象， 为什么呢? 我们后面学习Modules的时候， 再具体说。这样的代码是否多此一举呢？我们定义了actions， 然后又在actions中去进行commit， 这不是脱裤放屁吗？事实上并不是这样， 如果在Vuex中有异步操作， 那么我们就可以在actions中完成了。
 
-
-
 #### Module
 
 局部状态通过 context.state 暴露出来，根节点状态则为 context.rootState
-
-
-
-
 
 ## Vue项目杂项
 
@@ -6469,8 +6145,6 @@ Webpack 处理的静态资源放在 `/src` 目录中和其它源文件放一起�
 
 任何放在 `static/` 中文件需要以绝对路径的形式引用：`/static/[filename]`。如果更改 `assetSubDirectory` 的值为 `assets`，那么路径需改为 `/assets/[filename]`。
 
-
-
 #### Vue项目文件结构
 
 **（使用`vue create proj_name` 或 `vue init webpack proj_name`生成）**
@@ -6480,44 +6154,36 @@ Webpack 处理的静态资源放在 `/src` 目录中和其它源文件放一起�
 ```markdown
 ├── .babelrc           babel（语法解析器）配置
 ├── .editorconfig      编辑器语法的配置（比如Tab等于两个空格）
-├── .eslintignore			 eslint忽略文文件路径的配置
+├── .eslintignore             eslint忽略文文件路径的配置
 ├── .eslintrc.js       eslint（代码规范工具）配置 
 ├── .gitignore         git忽略上传文件的配置
 ├── .postcssrc.js      postcss的配置项
 ├── README.md
 ├── build              项目打包webpack的配置内容（目前的层次，一般不需要修改...）
-		├── build.js 
-		├── check-versions.js 
-		├── logo.png 
-		├── utils.js 
-		├── vue-loader.conf.js 
-		├── webpack.base.conf.js     基础的webpack配置项
-		├── webpack.dev.conf.js      开发环境的webpack配置项
-		└── webpack.prod.conf.js     生产环境的webpack配置项
-├── config						 放置项目的配置文件
-		├── dev.env.js							 放置开发的配置信息
-		├── index.js								 放置基础的配置信息
-		└── prod.env.js							 放置生产的配置信息
+        ├── build.js 
+        ├── check-versions.js 
+        ├── logo.png 
+        ├── utils.js 
+        ├── vue-loader.conf.js 
+        ├── webpack.base.conf.js     基础的webpack配置项
+        ├── webpack.dev.conf.js      开发环境的webpack配置项
+        └── webpack.prod.conf.js     生产环境的webpack配置项
+├── config                         放置项目的配置文件
+        ├── dev.env.js                             放置开发的配置信息
+        ├── index.js                                 放置基础的配置信息
+        └── prod.env.js                             放置生产的配置信息
 ├── index.html         项目首页默认的模版文件
-├── node_modules 			 存放第三方依赖的包
+├── node_modules              存放第三方依赖的包
 ├── package-lock.json  package锁文件，确定第三方包的具体版本，保持团队编程统一
 ├── package.json       第三方模块的依赖
-├── src 							 存放项目的源代码
-			├── App.vue                 项目最原始的根组件
-			├── assets                  项目中的图片类资源
-			│   └── logo.png
-			├── components							存放项目中的小组件
-			│   └── HelloWorld.vue
-			├── main.js									项目的入口文件
-			└── router
-    			└── index.js						放置所有的路由
+├── src                              存放项目的源代码
+            ├── App.vue                 项目最原始的根组件
+            ├── assets                  项目中的图片类资源
+            │   └── logo.png
+            ├── components                            存放项目中的小组件
+            │   └── HelloWorld.vue
+            ├── main.js                                    项目的入口文件
+            └── router
+                └── index.js                        放置所有的路由
 └── static             存放静态文件、模拟的json数据
 ```
-
-
-
-#### 样式穿透
-
-使用**`>>>`**提高自定义class / id的优先级
-
-[想要改变插件里组件的样式？使用样式穿透！【Vue】](https://www.bilibili.com/video/BV1Jv41117QN)
