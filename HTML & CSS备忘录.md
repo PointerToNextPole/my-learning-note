@@ -133,6 +133,8 @@ HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独
   
   摘自：[input输入框事件](https://www.jianshu.com/p/4517117abd8e)
 
+- 修改输入框光标的颜色：可以使用caret-color属性
+
 - #### **\<input type="hidden">**
   
   <font color=FF0000>`"hidden"` 类型的 `<input>` 元素允许 Web 开发者存放一些用户不可见、不可改的数据，在用户提交表单时，这些数据会一并发送出</font>。比如，正被请求或编辑的内容的 ID，或是一个唯一的安全令牌。这些隐藏的 `<input>`元素在渲染完成的页面中完全不可见，而且没有方法可以使它重新变为可见。
@@ -2168,6 +2170,14 @@ p:nth-of-type(4n) {
 ```
 
 摘自：[div模拟input实现输入框](https://blog.csdn.net/qq_36671474/article/details/68064132)
+
+
+
+#### text-indent
+
+text-indent 属性能定义一个块元素首行文本内容之前的缩进量。
+
+摘自：[MDN - text-indent](https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-indent)
 
 ***
 

@@ -4996,6 +4996,27 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
 
 
 
+#### \<el-select>
+
+在使用\<el-select>时，可能会出现el-option的label过长，从而让el-select整体被动拉长的情况。这时可以使用如下方法，使得el-option过长则自动带滚轮
+
+```html
+<!-- 全局样式 -->
+<style lang="scss">
+.el-select-dropdown {
+  max-width: 300px;
+}
+
+.el-select-dropdown__item {
+  overflow: visible;
+}
+</style>
+```
+
+摘自：[设置el-option的宽度和el-select 宽度相同，选项内容超出显示滚动条](https://blog.csdn.net/qq_37548296/article/details/104899231)
+
+
+
 #### \<el-button>
 
 在\<el-button>中自定义图片之类，要用\<div>\</div>包裹整个自定义内容
@@ -5025,6 +5046,8 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
 
 更多可以参考：[改变element-UI 中 el-button的颜色](https://blog.csdn.net/weixin_44242623/article/details/106851582)
 
+
+
 #### \<el-scrollbar>
 
 这个组件的功能是滚动条，而且关于该滚动条的说明在官方文档中是没有的...源码是：https://github.com/ElemeFE/element/blob/dev/packages/scrollbar/src/main.js
@@ -5044,6 +5067,10 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
 | tag       | 可选参数，渲染容器的标签     | string  | -   | div   |
 
 摘自：[Element-UI 框架 el-scrollbar 组件](https://juejin.im/post/6844903793377673230)
+
+不过没有必要使用el-scrollbar，使用原生的overflow / overflow-x / overflow-y : scroll即可
+
+
 
 #### \<el-drawer>
 

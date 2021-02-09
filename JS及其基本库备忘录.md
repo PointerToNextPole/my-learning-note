@@ -2211,7 +2211,7 @@ myDate.setDate(myDate.getDate()+5);
 
   第一、第二种：会精确到毫秒；第三种：只能精确到秒，毫秒将用0来代替。比如上面代码输出的结果(一眼就能看出区别)：
 
-摘自：[js时间戳与日期格式之间的互转](https://segmentfault.com/a/1190000000481753)
+  摘自：[js时间戳与日期格式之间的互转](https://segmentfault.com/a/1190000000481753)
 
 
 
@@ -3087,13 +3087,36 @@ onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'').replace('.','$#$').
 使用示例如下：
 
 ```js
-<el-input       onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/\.{2,}/g,'.').replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3') 
+<el-input       onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/\.{2,}/g,'.').replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')" 
 />
 ```
 
 
 
+#### window.setInterval
 
+WindowOrWorkerGlobalScope 的 setInterval() 方法重复调用一个函数或执行一个代码段，在每次调用之间具有固定的时间延迟。
+
+在窗口和工作接口上提供的setInterval()方法重复调用函数或执行代码片段，每次调用之间有固定的时间延迟。<font color=FF0000>它返回一个时间间隔ID，该ID唯一地标识时间间隔，因此您可以稍后通过调用**clearInterval()来删除它**</font>。这个方法是由WindowOrWorkerGlobalScope mixin定义的。
+
+- **语法**
+
+  ```js
+  var intervalID = scope.setInterval(func, delay, [arg1, arg2, ...]);
+  var intervalID = scope.setInterval(code, delay);
+  ```
+
+- **参数**
+  - func：要重复调用的函数。 每经过指定 延迟 毫秒后执行的函数 。该函数不接受任何参数，也没有返回值。
+  - code：这个语法是可选的，你可以传递一个字符串来代替一个函数对象，你传递的字符串会被编译然后每个delay毫秒时间内执行一次。这个语法因为存在安全风险所以不被推荐使用。
+  - delay：是每次延迟的毫秒数 (一秒等于1000毫秒)，函数的每次调用会在该延迟之后发生。和setTimeout一样，实际的延迟时间可能会稍长一点。这个时间计算单位是毫秒（千分之一秒），这个定时器会使指定方法或者代码段执行的时候进行时间延迟。如果这个参数值小于10，则默认使用值为10。请注意，真正延迟时间或许更长； 请参考示例： Reasons for delays longer than specified in WindowOrWorkerGlobalScope.setTimeout() 
+  - arg1, ..., argN （可选）当定时器过期的时候，将被传递给func指定函数的附加参数。
+- **返回值**
+  此返回值intervalID是一个非零数值，用来标识通过setInterval()创建的计时器，这个值可以用来作为clearInterval()的参数来清除对应的计时器 。
+
+值得注意的是，setInterval()和setTimeout()共享同一个ID池，并且clearInterval()和clearTimeout()在技术上是可互换使用的。但是，我们必须去匹配clearInterval()和clearTimeout()对应的id，以避免代码杂乱无章，增强代码的可维护性。
+
+**补充：**经过测试，setInterval(function, intervalTime)第一次执行function是在intervalTime之后。
 
 ***
 
