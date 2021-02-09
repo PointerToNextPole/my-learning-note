@@ -197,7 +197,249 @@ h1 ｛color:blue；｝
 
 
 
+#### P31
+
+<font color=FF0000>媒体查询中可使用的逻辑关键字有两个：</font>
+
+- **and**
+
+  连接的两个或多个媒体特性必须同时满足条件，整个查询得到的结果才是真值。例如，（color）and （orientation:landscape）and（min-device-width:800px）表示三个条件都要满足：当媒体环境是彩色的、横向放着，而且设备的屏幕宽至少为800像素，才会应用样株式表。
+
+- **not**
+
+  对整个查询取反。 假如所有条件都为真，那样式表不会应用到文档上。 例如，not（color）and（orientation:landscape）and（min-device-width:800px）表示三个条目都满足时，整个语句得到的结果与之相反。 因此，当媒体环境是彩色的、横向放着，而且设备的屏幕宽至少为800像素，样式表不会应用到文档上。 除此之外的情况下，都将应用样式表。
+
+注意，<font color=FF0000>not 关键字只能在媒体查询的开头使用</font>。<mark>写为这样是无效的：（color）and not（min-device-width:800px）。如果真这样写，媒体查询将被忽略</mark>。 还要注意，太旧的浏览器不支持媒体查询，因此会跳过媒体描述符以 not开头的样式表。
+
+<font color=FF0000>媒体设备不支持OR关键字。 不过，分隔多个媒体查询的逗号相当于OR</font>。 例如，screen，print 的意思是，“为屏幕或印刷媒体时应用样式＂；而screen and（max-color:2）or（monochrome）是无效的，会被忽略，正确的写法是 screen and（max-color:2）screen and（monochrome）。
+
+<font color=FF0000>此外还有一个only关键词，**专门用于保证向后兼容**（是的，这是真的）</font>。
+
+- **only**
+
+  在<font color=FF0000>**不支持**媒体查询的旧浏览器中</font><font color=000FF0>隐藏样式表</font>。<mark> 例如，如果想在所有媒体中应用一个样式表，但是只在支持媒体查询的浏览器中应用，可以这样写：`＠import url(new.css) only all`。在支持媒体查询的浏览器中，only关键字被忽略，样式表会应用到文档上。而在不支持媒体查询的浏览器中，媒体类型为 only all，而这是无效的，因此不会应用样式表</mark>。 <font color=FF0000>注意，only关键字只能用在媒体查询的开头</font>。
 
 
 
+#### P32
 
+下面列出所有可用的描述符（截至2017年年末）:
+
+<img src="https://i.loli.net/2021/02/09/rXNkB176FcLzytp.png" style="zoom:45%;" />
+
+此外，还有来由两种新增的值
+
+- \<ratio>
+- \<resolution>
+
+
+
+#### P32
+
+**特性查询**
+
+2015~2016年间，CSS新增了一个功能：<font color=FF0000>根据用户代理是否支持特定的CSS 属性及其值来应用一段样式：这个功能称为**特性查询**（feature query）</font>。
+
+特性查询在结构上与媒体查询很像。 假设我们想在用户代理支持color 属性时 （显然是支持的）为元素设定颜色，可以这样写：
+
+```css
+＠supports(color:black){
+  body {color:black;}
+  h1 {color:purple;}
+  h2 {color:navy;}
+}
+```
+
+上述代码的意思其实是：<font color=FF0000>如果你能识别并处理 color: black这样的属性和值组合，那就应用这段样式；否则，跳过这段样式</font>。如果用户代理不支持＠supports，整段样式都会跳过.
+
+特性查询是渐进增强样式的完美方式。比如说你想在浮动布局之外增加栅格布局，可以保留现有的布局方式，在样式表中添加下面这段样株式：
+
+```css
+＠supports(display: grid){
+  section #main{
+    display: grid;
+  }
+	/* 去掉旧布局的样式*/
+	/* 栅格布局的样式*/
+｝
+```
+
+这段样式在支持栅格布局的浏览器中应用，（它会覆盖旧的页面布局，然后应用通过栅格实现的新布局。 不支持栅格布局的旧浏览器很可能也不支持＠supports，因此会跳过整段样式，就像没出现过一样。
+
+***
+
+与媒体查询一样，（特性查询也支持使用逻辑运算微假如想在用户代理同时支持栅格布局和CSS 形状时应用一段样式，可以这样写：
+
+```css
+＠supports(display:grid) and (shape-outside:circle()) {
+	/*栅格和形状样株式*/
+}
+```
+
+这与下述写法是等效的：
+
+```css
+＠supports(display:grid)
+	＠supports(shape-outside:circle()) {
+		/* 栅格和形状样式 */
+	}
+}
+```
+
+
+
+#### P52
+
+<font color=FF0000>**在类选择符和ID选择符之间选择（区别）**</font>
+
+- 如前所示，<font color=FF0000>类（class）可以赋予任意个元素，warning 这个类名赋子了p 元素和 span 元素</font>，比外可以赋予更多的元素。而ID就不同了，<font color=FF0000>**在一个HTML 文档中，一个ID 能且只能使用一次**</font>。因此，如果文档中有个元素的 id 属性值为lead-para，其他元素的id 属性就不能再设为这个值.
+
+  <font color=FF0000>实际上，浏览器不一定总会检查 HTML 中的 ID 是不是唯一的。也就是说，如果HTML 文档中的多个元素具有相同的 ID 属性，相同的样式可能会应用到每个元素上。这是不正确的行为，但却可能发生</font>。 文档中出现多个相同的 ID 值还不利于DOM 脚本编程，因为getElementById()等函数预期只有一个 ID 属性为指定值的元素。
+
+  与类选择符不同，ID选择符不能串在一起使用，因为 ID属性的值不能是以空格分隔的列表。
+
+- <font color=FF0000>类选择符（class）和 ID 选择符之间的另一个区别是，用户代理判断该把哪个样式应用到元素时，ID选择符的权重更高</font>。
+
+此外还要注意，<font color=FF0000>类选择符和 ID 选择符可能是区分大小写的， 这取决于文档语言</font>。 <font color=FF0000>**根据 HTML规范，类和ID 的值是区分大小写的，因此类选择符和ID选择符的大小写必须与文档中的一致**</font>。 因此，对于下述 CSS 和 HTML 而言，元素中的文本不会显示为粗体：
+
+```css
+p.criticalInfo {font-weight:bold;}
+```
+
+```html
+<p class=＂criticalinfo＂>Don't look down.</p>
+```
+
+因为字母i的大小写不一样，所以上例中的选择符无法匹配元素。
+
+
+
+#### P53 属性选择符
+
+不管是类选择符还是ID 选择符，我们选择的其实都是属性的值。 前两节使用的句法专门针对 HTML，XHTML，SVG和MathML 文档（截至写作本书时）。<mark>在其他标记语言中，这样编写的类选择符和ID选择符可能无法使用（class和id属性或许根本不存在）。为了解决这个问题，CSS2 引入了属性选择符（attribute selector），根据属性及其值选择元素</mark>。 <font color=FF0000>属性选择符大致可以分为四类： 简单属性选择符</font>（simple attribute selectors）、 <font color=FF0000>精准属性值选择符</font>（ exact attribute value selectors）、<font color=FF0000>部分匹配属性值选择符</font>（partial-match attribute value selectors）和<font color=FF0000>起始值属性选择符</font>（leading-value attribute selectors）。
+
+
+
+#### P53 - P54 简单属性选择符
+
+如果想选择具有某个属性的元素，而不管属性的值是什么，可以使用简单属性选择符。列如，若想选择县有class 属性（可以包含任何值）的所有h1元素，把文本设为银色。
+
+可以这样写：
+
+```css
+h1[class] {
+  color: silver;
+}
+```
+
+对下面的标记来说：
+
+```html
+<h1 class=＂hoopla＂>Hello</h1>
+<h1>Serenity</h1>
+<h1 class=＂fancy＂>Fooling</h1>
+```
+
+效果如下：
+
+<img src="https://i.loli.net/2021/02/09/tyRUwG7MXInQBW9.png" style="zoom:40%;" />
+
+此外，还可以基于多个属性选择。 为此，要把多个属性选择符串在一起。 例如，若<mark>想让同时具有href和title属性的 HTML 超链接显示为粗体</mark>，可以这样写：
+
+```css
+a[href][title] {font-weight:bold;}
+```
+
+对下述标记来说，第一个链接会显示为粗体，而第二个和第三个链接都不会显示为粗体：
+
+```html
+<a href="http://www.w3.org/" title="W3C Home">W3C</a><br/>
+<a href="http://www.webstandards.org">Standards Info</a><br/>
+<a title="Not a link">dead.letter</a>
+```
+
+
+
+#### P55 - P56 精准属性值选择符
+
+此外，还可以进一步缩小范围，只选择属性为特定值的元素。 比如说我们想把指向 Web服务器上某个文档的超链接显示为粗体，可以这么写：
+
+```css
+a[href="http://www.css-discuss.org/about.html"]{
+  font-weight: bold;
+}
+```
+
+这个规则把 `href` 属性的值为 `http://www.css-discuss.orglabout.html` 的a元素显示为粗体。任何变化，即便没有 `www.` 部分，或者换成安全协议 `https`，都无法匹配。
+
+可以为任何元素指定任何属性和值的组合。 然而，如果属性和值的组合在文档中未出现，那么选择符不匹配任何元素。 同样，XML语言也很适合使用这种方式应用样式。
+
+与选择属性时一样，可以把多个属性和值选择符串在一起。例如，若想把 href 属性的值为 http://www.w3.org/，而且title属性的值为W3CHome的HTML超链接显示为两倍字号，可以这样写：
+
+```css
+a[href="http://www.w3.org/"][title="W3C Home"]{
+	font-size: 200%;
+}
+```
+
+
+
+#### P57 根据部分属性值选择
+
+有时，我们想根据属性值的一部分选择元素，而不是完整的值。CSS 为这种情况提供』多种选择，以不同的方式匹配属性值的子串。这些方式的概述见下表
+
+<p align='center'><font size=4>使用属性选择符匹配子串表</font></p>
+
+|      形式       |                             说明                             |
+| :-------------: | :----------------------------------------------------------: |
+| [foo \|= "bar"] | 选择的元素<font color=FF0000>有foo属性</font>，且<font color=FF0000>其值以bar和一个英文破折号（U+002D）开头</font>， <font color=FF0000>或者值就是bar本身</font><br>这个规则选择foo属性的值为bar，或者以bar-开头的元素 |
+| [foo ~= "bar"]  | 选择的元素<font color=FF0000>有foo属性</font>，且其值是<font color=FF0000>包含bar这个词的**一组词**</font><br>这个规则选择一组以空格分隔的属性 |
+| [foo *= "bar"]  | 选择的元素<font color=FF0000>有foo属性</font>，且<font color=FF0000>其值包含子串bar</font> |
+| [foo ^= "bar"]  | 选择的元素<font color=FF0000>有foo属性</font>，且<font color=FF0000>其值以bar开头</font> |
+| [foo $= "bar"]  | 选择的元素<font color=FF0000>有foo属性</font>，且<font color=FF0000>其值以bar结尾</font> |
+
+
+
+#### P70 选择<font color=FF0000>紧邻</font>同胞元素，`+`
+
+为了正常工作，CSS要求两个元素的顺序与“原始顺序”一样。 在前面的示例中，0元素后面是ul元素。因此，可以使用ol+ ul选择后一个元素，但是不能使用相同的句法选择前一个元素。 若想让 `ul + ol` 成功匹配，有序列表必须紧跟在无序列表后面。注意，两个元素之间的文本不影响紧邻同胞连结符的作用。以下述标记片段为例
+
+```html
+<div>
+    <ol>
+        <li>List item 1</li>
+        <li>List item 1</li>
+        <li>List item 1</li>
+    </ol>
+    This is some text that is part of the 'div'.
+    <ul>
+        <li>A list item</li>
+        <li>Another list item</li>
+        <li>Yet another list item</li>
+    </ul>
+</div>
+```
+
+即使两个列表之间有文本，仍然不妨碍使用 `ol + ul` 匹配第二个列表。 这是<font color=FF0000>因为**处在中间的文本不算是同胞元素，而是父元素div的一部分**。 如果把那段文本放在p元素中，`ol + ul` 就无法匹配第二个列表</font>。此时，可以写成`ol + p + ul` 。
+
+
+
+#### P71 选择后续同胞（兄弟结点）
+
+Select入一个新的同胞连结符，名为一般同胞连结符（general siblingcombinator）这个连结符使用波浪号（~）表示，<font color=FF0000>选择**一个元素后面**同属一个父元素的另一个元素</font>。
+
+举个例子。若想让h2后面与它同属一个父元素的ol元素的文本倾斜，可以编写 `h2 ~ ol {font-style:italic;}`。<font color=FF0000>两个元素不一定非得是紧邻同胞，不过是的话也能匹配</font>。
+
+
+
+#### P71 伪类选择符
+
+讲到伪类选择符（pseudo-class selector），事情就变得有趣了。 <font color=FF0000>利用这种选择符可以为文档中不一定真实存在的结构指定样式，或者为某些元素 （甚至文档本身） 的特定状态赋予幽灵类</font>。
+
+
+
+#### P73
+
+深人讨论之前，<font color=FF0000>对伪类要明确一点：伪类始终指代所依附的元素。 </font>这听起来有点奇怪，但是又理所当然，不是吗？之所以强调这一点，是因为有几个结构伪类容易让人误以为是描述符，认为指代的是后代元素。
+
+下面笔者举个例子。2003年，我的第一个孩子出生时，我（像你一样）在网上宣布了这个好消息。有些人对我表示了祝贺，还用CSS 开起了玩笑，比如 <font color=FF0000>#ericmeyer:first-child</font>选择符。 <font color=FF0000>这个选择符的问题是，**它选择的是我，而不是我的女儿**，而且我必须是爸妈的第一个孩子才行（碰巧我是）。若想正确选择我的第一个孩子，选择符应该是 `#ericmeyer > :first-child`</font>。

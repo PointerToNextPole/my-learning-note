@@ -2093,8 +2093,8 @@ width: calc(100% - 80px);
 | [*element*](https://www.w3school.com.cn/cssref/selector_element.asp) | p                     | 选择所有 \<p> 元素。                                         |    1    |
 | [*element*,*element*](https://www.w3school.com.cn/cssref/selector_element_comma.asp) | div,p                 | 选择所有\<div> 元素和所有\<p> 元素。                         |    1    |
 | [<font color=FF0000>*element* *element*</font>](https://www.w3school.com.cn/cssref/selector_element_element.asp) | div p                 | <font color=FF0000>选择\<div>元素**内部**的所有\<p>元素。</font> |    1    |
-| [*element*>*element*](https://www.w3school.com.cn/cssref/selector_element_gt.asp) | div>p                 | 选择父元素为\<div>元素的所有\<p>元素。                       |    2    |
-| [*element*+*element*](https://www.w3school.com.cn/cssref/selector_element_plus.asp) | div+p                 | 选择紧接在\<div>元素之后的所有\<p>元素。                     |    2    |
+| [*element*>*element*](https://www.w3school.com.cn/cssref/selector_element_gt.asp) | div>p                 | 选择<font color=FF0000>父元素</font>为\<div>元素的所有\<p>元素。 |    2    |
+| [*element*+*element*](https://www.w3school.com.cn/cssref/selector_element_plus.asp) | div+p                 | 选择<font color=FF0000>紧接在\<div>元素之后</font>的所有\<p>元素。 |    2    |
 | [[*attribute*\]](https://www.w3school.com.cn/cssref/selector_attribute.asp) | [target]              | 选择带有 target 属性所有元素。                               |    2    |
 | [[*attribute*=*value*\]](https://www.w3school.com.cn/cssref/selector_attribute_value.asp) | [target=_blank]       | 选择 target="_blank" 的所有元素。                            |    2    |
 | [[*attribute*~=*value*\]](https://www.w3school.com.cn/cssref/selector_attribute_value_contain.asp) | [title~=flower]       | 选择 title 属性包含单词 "flower" 的所有元素。                |    2    |

@@ -2,7 +2,7 @@
 
 
 
-## **在markdown中可以使用\<mark>\</mark>来时让文字背景高亮，效果如下**
+#### **在markdown中可以使用\<mark>\</mark>来时让文字背景高亮，效果如下**
 <mark>在markdown中可以使用\<mark>\</mark>来时让文字背景高亮，效果如下</mark>
 \<mark>标签默认背景颜色为黄色，如果想要其他颜色，可以使用style属性，style=background-color:colorName
 
@@ -15,7 +15,7 @@
 
 
 
-## **在markdown中添加<mark>代码块</mark>，可以在\```之后加上语言名称，即可实现对应语言的语法高亮。示例如下**
+#### **在markdown中添加<mark>代码块</mark>，可以在\```之后加上语言名称，即可实现对应语言的语法高亮。示例如下**
   ```java
    @AutoConfigurationPackage
    @Import({EnableAutoConfigurationImportSelector.class})
@@ -27,7 +27,7 @@
 
 
 
-## **若要用markdown生成多级列表，方法如下：在'-'前按下Tab即可；效果如下**
+#### **若要用markdown生成多级列表，方法如下：在'-'前按下Tab即可；效果如下**
 - 一级列表1
   - 二级列表1
   - 二级列表2
@@ -36,7 +36,7 @@
 
 
 
-## **类似的，若要生成有序多级列表，方法如下：在写下一级有序列表时前缩进4个空格（按下Tab）即可；效果如下**
+#### **类似的，若要生成有序多级列表，方法如下：在写下一级有序列表时前缩进4个空格（按下Tab）即可；效果如下**
 
 1. 一级列表1
    1. 二级列表1
@@ -46,17 +46,19 @@
 
 
 
-## 使用markdown生成页内跳转方法：**
+#### 使用markdown生成页内跳转方法：
 
 定义一个锚(id)：\<span id="jump">跳转到的地方\</span>
 使用markdown语法：\[点击跳转\](#jump)
 
-## **类似的markdown插入跳转的方法：**
+#### **类似的markdown插入跳转的方法：**
 \[链接文字\](链接网址 "Optinal title")
 <font color=FF0000>**示例如下：**</font>
 **This is an [example link](http://www.baidu.com/ "With a Title").** 
 
-## **markdown插入图片**
+
+
+#### **markdown插入图片**
 
 **有两种方法：**
 
@@ -71,7 +73,9 @@
 
 至于更多markdown中插入图片的问题，比如：[**markdown多张图片并排显示**](https://www.cnblogs.com/jaycethanks/p/12201959.html)，遇到再说。
 
-## **markdown插入表格**
+
+
+#### **markdown插入表格**
 
 <font color=FF0000>**模板如下：**</font>
 <font color=FF0000 size=4>\|</font>title1<font color=FF0000 size=4>\|</font>title2<font color=FF0000 size=4>\|</font>...<font color=FF0000 size=4>\|</font>
@@ -87,9 +91,23 @@
 |2-1|2-2|...|
 |...|...|...|
 
-## **Markdown插入分割线**
+
+
+#### **Markdown插入分割线**
 
 使用\***以产生分割线，如下：
 
 ***
+
+
+
+#### markdown中使标题居中
+
+```html
+<div align='center' ><font size='40'>实习总结报告</font></div>
+```
+
+效果如下：
+
+<div align='center' ><font size='40'>实习总结报告</font></div>
 
