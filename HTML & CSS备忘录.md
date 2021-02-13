@@ -572,7 +572,7 @@ position 属性的五个值：
   
   <mark>注意，static定位所导致的元素位置，是浏览器自主决定的，所以这时top、bottom、left、right这四个属性无效。</mark>
 
-- **relative**：相对定位元素的定位是相对其正常位置。
+- **relative**：相对定位元素的定位是相对其正常位置。<font color=FF0000>**（相对于自身定位）**</font>
   
   relative表示，相对于默认位置（即static时的位置）进行偏移，即定位基点是元素的默认位置。
   
@@ -582,7 +582,7 @@ position 属性的五个值：
   
   它如果搭配`top`、`bottom`、`left`、`right`这四个属性一起使用，表示元素的初始位置是基于视口计算的，否则初始位置就是元素的默认位置。
 
-- **absolute**：<font color=FF0000>**绝对定位的元素的位置相对于最近的<mark>已定位</mark>父元素**</font>，如果元素没有已定位的父元素，那么它的位置相对于\<html>
+- **absolute**：<font color=FF0000>**绝对定位的元素的位置相对于最近的<mark>已定位的</mark>父元素（即：父元素带有position属性（一般是relative）。如果没有，absolute将相对于body移动）**</font>，如果元素没有已定位的父元素，那么它的位置相对于\<html>
   
   absolute表示，相对于上级元素（一般是父元素）进行偏移，即定位基点是父元素。
   
@@ -2124,7 +2124,7 @@ width: calc(100% - 80px);
 | [:nth-last-of-type(*n*)](https://www.w3school.com.cn/cssref/selector_nth-last-of-type.asp) | p:nth-last-of-type(2) | 同上，但是从最后一个子元素开始计数。                         |    3    |
 | [:last-child](https://www.w3school.com.cn/cssref/selector_last-child.asp) | p:last-child          | 选择属于其父元素最后一个子元素每个\<p>元素。                 |    3    |
 | [:root](https://www.w3school.com.cn/cssref/selector_root.asp) | :root                 | 选择文档的根元素。                                           |    3    |
-| [:empty](https://www.w3school.com.cn/cssref/selector_empty.asp) | p:empty               | 选择没有子元素的每个\<p>元素（包括文本节点）。               |    3    |
+| [:empty](https://www.w3school.com.cn/cssref/selector_empty.asp) | p:empty               | 选择<font color=FF0000>没有子元素</font>的每个\<p>元素（<font color=FF0000>包括文本节点</font>）。 |    3    |
 | [:target](https://www.w3school.com.cn/cssref/selector_target.asp) | #news:target          | 选择当前活动的 #news 元素。                                  |    3    |
 | [:enabled](https://www.w3school.com.cn/cssref/selector_enabled.asp) | input:enabled         | 选择每个启用的\<input>元素。                                 |    3    |
 | [:disabled](https://www.w3school.com.cn/cssref/selector_disabled.asp) | input:disabled        | 选择每个禁用的\<input>元素                                   |    3    |

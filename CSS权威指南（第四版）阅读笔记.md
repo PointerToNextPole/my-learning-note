@@ -443,3 +443,163 @@ Select入一个新的同胞连结符，名为一般同胞连结符（general sib
 深人讨论之前，<font color=FF0000>对伪类要明确一点：伪类始终指代所依附的元素。 </font>这听起来有点奇怪，但是又理所当然，不是吗？之所以强调这一点，是因为有几个结构伪类容易让人误以为是描述符，认为指代的是后代元素。
 
 下面笔者举个例子。2003年，我的第一个孩子出生时，我（像你一样）在网上宣布了这个好消息。有些人对我表示了祝贺，还用CSS 开起了玩笑，比如 <font color=FF0000>#ericmeyer:first-child</font>选择符。 <font color=FF0000>这个选择符的问题是，**它选择的是我，而不是我的女儿**，而且我必须是爸妈的第一个孩子才行（碰巧我是）。若想正确选择我的第一个孩子，选择符应该是 `#ericmeyer > :first-child`</font>。
+
+
+
+#### P74 选择空元素
+
+使用 `:empty` 伪类<font color=FF0000>可以选择没有任何子代的元素</font>，<font color=FF0000>**甚至连文本节点都没有（包括文本和空白）**</font>。CMS 经常生成没有任何内容的空元素，此时便可以使用这个伪类。例如，`p:empty{ display: none; }`能禁止显示空段落。
+
+注意，为了能正确匹配，从解析的角度来看，元素必须真的为空，没有有空白、 可见内容或后代元素。对下面几个元素来说，只有第一个和最后一个能被p:empty 匹配：
+
+```html
+<p></p>
+
+<p> </p>
+
+<p>
+</p>
+
+<p><!—-a comment--></p>
+```
+
+<font color=FF0000>第二个和第三个段落不能被：empty 匹配，因为它们不是空的，而是分别有一个空格和一个换行符</font>。这两种空白都算文本节点，因此也就不是空的。<font color=FF0000>最后一个段落之所以能匹配，是因为注释不是内容，也不是空白</font>。然而，如果在注释的某一边加上一个空格或一个换行符，p:empty就无法匹配了。
+
+
+
+#### P76 - P77
+
+`:only-of-type` 匹配同胞中唯一的那种元素（那种元素只有一个），而 `:only-child` 只匹配完全没有同胞的元素（只有着一个元素）。
+
+`:only-of-type` <font color=FF0000>指代的是元素，而不是其他任何东西</font>（就是标记，如div、p等）。 
+
+
+
+#### P79
+
+`:first-child` 和 `:last-child` 这两个伪类结合在一起的效果相当于 `:only-child。 下述两个规则选择的是相同的元素：
+
+```css
+p:only-child {color:red;}
+p:first-child:last-child {background-color:red;}
+```
+
+这两个规则在一起把段落设为红底红字（<mark>这么做显然不好</mark>）。
+
+
+
+#### P80 选择第一个和最后一个某种元素
+
+除了选择一个元素中的第一个和最后一个子代（`:first-child` 、`:last-child`）之外，还可以选择一个元素中某种元素的第一个或最后一个。 （`:first-of-type`、`:last-of-type`）
+
+
+
+#### P81
+
+我们可以把伪类`:first-of-type`、 `last-of-type` 连在一起，达到 `:only-of-type` 的效果。下述两个规则选择的是相同的元素：
+
+```css
+table:only-of-type {color:red;}
+table:first-of-type:last-of-type {background:red;}
+```
+
+
+
+#### P81
+
+`:nth-child()` 伪类。 我们<font color=FF0000>可以在括号中填上</font>整数，<font color=FF0000>**甚至是简单的代数式**</font>，选择任何想选择的子元素。
+
+括号中可以使用简单的代数式定义公式。代数式的形式为`an + b` 或 `an - b`，其中 `a` 和 `b` 是具体的整数，n 原封不动。而且，`b` 和 `-b`是可选的，如果不需要，可以不用。<font color=FF0000>这里的n表示0、1、2、3、4，一直到无穷大</font>。
+
+正因为元素从1数起（元素的第一个子元素的下标为 1），要稍微转个圈才能推出 `:nth-child(2n)` 选择的是偶数位的子代，而 `:nth-child(2n+1)` 或 `:nth-child(2n-1)` 选择的是奇数位的子代义你可以选择记住，也可以使用两个特殊的关键字：`even` 和 `odd`。示例如下：
+
+```css
+tr:nth-child(odd) {background:silver;}
+```
+
+**补充：**摘自 [MDN - :nth-child](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:nth-child)
+
+`a` 和 `b` 都必须为整数，并且元素的第一个子元素的下标为 1。换言之就是，该伪类匹配所有下标在集合 { an + b; n = 0, 1, 2, ...} 中的子元素。<font color=FF0000>另外需要特别注意的是，`an` 必须写在 `b` 的前面，不能写成 `b+an` 的形式</font>
+
+
+
+#### P84 - P85
+
+`:nth-last-child()` 它的作用与 `:nth-child()` 一样，只不过是<font color=FF0000>从一组同胞的最后一个元素开始</font>，从后向前计算。
+
+`:nth-child()` 和 `:nth-last-child()` 伪类有对应的 `:nth-of-type()` 和 `:nth-last-of-type()`。
+
+
+
+#### P88 已访问链接的<font color=FF0000>隐私保护</font>
+
+有超过十年的时间，已访问的链接可以使用任何可用的 CSS 属性装饰，与未访问链接无异。 然而，大约在2005年，有几个人通过示例揭露，通过视觉样式和简单的DOM 脚本可以判断用户是否访问过特定的页面。例如，对 `:visited { font-weight: bold;}`规则来说，脚本可以找出所有加粗的链接，告诉用户他们访问计哪些网站。 <font color=FF0000>更糟的是，已访问的网站可能会被服务器收集。 不使用脚本的话，还可以通过背景图像达到相同的效果</font>。
+
+<mark>对你来说这可能不是什么严重的问题，但在有些国家，访问某些网站（反对党，未经批准的宗教组织、邪教或腐败网站等）可能招致牢狱之灾。 钓鱼网站还可以利用这一点查出用户访问过哪些在线银行</mark>。<font color=FF0000>鉴于此，相关方采取了两个措施。</font>
+
+首先，<font color=FF0000>只能把**颜色相关的属性**应用到已访问的链接上，包括：color，background-color，column-rule-color，outline-color，border-color，以及各边的边框颜色属性（例如 border-top-color）。**除此之外的属性将被忽略**</font>。<font color=FF0000>此外，`:link` 定义的样式除了应用到未访问的链接上之外，也会应用到已访问的链接上，因此 `:link` 能“装饰所有超链接”，而不只是“装饰所有未访问的超链接”</font>。
+
+其次，如果<font color=FF0000>通过 DOM 查询已访问链接的样式，返回的值跟未访问时一样</font>。 因此，如果把已访问链接的颜色设为紫色，而未访问链接的颜色设为蓝色，那么通过DOM 查询颜色时，返回的是蓝色，而不是紫色。
+
+从2017年年末起，这一行为在所有浏览模式中都提供，而不仅限于“隐私浏览”模式。尽管只能使用有限的CSS 属性区分已访问链接和未访问链接，为了可用性和可访问性，我们还是要充分利用有限的属性把已访问的链接和未访问的链接区分开。
+
+
+
+#### P86 - P89
+
+|   伪类   |                             说明                             |
+| :------: | :----------------------------------------------------------: |
+|  :link   | 指代用作超链接的锚记（即具有href属性），而且<font color=FF0000>指向尚未访问的地址</font> |
+| :visited | 指代<font color=FF0000>指向已访问地址的超链接</font>。 <mark>出于安全考虑，能应用到已访问链接上的样式十分有限</mark> |
+|  :focus  | 指代<font color=FF0000>当前获得输入焦点的元素</font>，即可以接受键盘输入或以某种方式激活 |
+|  :hover  | 指代<font color=FF0000>鼠标指针放置其上的元素</font>，<font color=FF0000>例如鼠标指针悬停在超链接上</font> |
+| :active  | 指代<font color=FF0000>由用户输入激活的元素</font>，<mark>例如用户单击超链接时按下鼠标按键的那段时间</mark> |
+
+很多网页都有类似下面的样式：
+
+```css
+a:link {color: navy;}
+a:visited {color: gray;}
+a:focus {color: orange;}
+a:hover {color: red;}
+a:active {color: yellow;}
+```
+
+<font color=FF0000>这些伪类的顺序可不是随意的，通常推荐的顺序是“link - visited - hover - active”，不过后来改成了“link - visited - focus - hover - active”</font>
+
+
+
+#### P90 - P91
+
+|      伪类      |                             说明                             |
+| :------------: | :----------------------------------------------------------: |
+|    :enabled    | 指代<font color=FF0000>启用</font>的用户界面元素（例如表单元素），即接受输入的元素 |
+|   :disabled    | 指代<font color=FF0000>禁用</font>的用户界面元素（例如表单元素），即不接受输入的元素 |
+|    :checked    |          指代由用户或文档默认选中的单选按钮或复选框          |
+| :indeterminate | <font color=FF0000>指代既未选中也没有未选中的单选按钮或复选框； 这个状态只能由DOM脚本设定，不能由用户设定</font> |
+|    :default    | 指代<font color=FF0000>默认选中的单选按钮，复选框或选项</font> |
+|     :valid     | 指代<font color=FF0000>满足所有数据有效性语义</font>的输入框 |
+|    :invalid    | 指代<font color=FF0000>不满足所有数据有效性语义</font>的输入框 |
+|   :in-range    | 指代<font color=FF0000>输入的值在最小值和最大值之间的输入框</font> |
+| :out-of-range  | 指代<font color=FF0000>输入的值小于控件允许的最小值或大于控件允许的最大值的输入框</font> |
+|   :required    |       指代<font color=FF0000>必须输入</font>值的输入框       |
+|   :optional    |     指代<font color=FF0000>无需一定输入</font>值的输入框     |
+|  :read-write   |      指代<font color=FF0000>可由用户编辑</font>的输入框      |
+|   :read-only   |     指代<font color=FF0000>不能由用户编辑</font>的输入框     |
+
+Selectors Level3 为这种状态提供了`:checked` 伪类，但是不知为何，没有 `:unchecked` 伪类。<font color=FF0000>不过，可以使用否定伪类（`:not`）选择未被选中的复选框 `:input[type="checkbox"]:not(:checked)` 只有单选按钮和复选框才能被选中</font>
+
+***
+
+通过 CSS 装饰单选按钮和复选框能实现的效果十分有限。 然而，<font color=FF0000>使用这些伪类能做的事情却是无限的。 例如，可以结合 `:checked` 和紧邻同胞连结符装饰复选框和单选按钮的标注（label），如下所示（**非常有用**）：</font>
+
+```html
+<style>
+	input[type="checkbox"]:checked + label {
+		color: red;
+		font-style: italic;
+	}
+</style>
+<input id="chbx" type="checkbox"> <label for="chbx">I am a label</label>
+```
+
