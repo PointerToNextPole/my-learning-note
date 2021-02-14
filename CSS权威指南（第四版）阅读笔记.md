@@ -603,3 +603,98 @@ Selectors Level3 为这种状态提供了`:checked` 伪类，但是不知为何�
 <input id="chbx" type="checkbox"> <label for="chbx">I am a label</label>
 ```
 
+
+
+#### P94
+
+下面的示例为获得焦点的电子邮件地址输入框设定背景图，一个在输入的地址无效时显示，一个在输入的地址有效时显示。
+
+```html
+<style>
+input[type="email"]:focus {
+	background-position: 100% 50%;
+	background-repeat: no-repeat;
+}
+input[type="email"]:focus:invalid {
+	background-image: url(warning.jpg);
+}
+input[type="email"]:focus:valid {
+	background-image: url(checkmark.jpg);
+}
+</style>
+
+<input type="email">
+```
+
+效果如下：
+
+<img src="https://i.loli.net/2021/02/14/L7nVlFkXPe9mQpG.png" style="zoom:50%;" />
+
+
+
+#### P96 :target 伪类
+
+URL中有个片段标识符（fragment identifier），它所指向的文档片段（在CSS中）称为目标（target）。URL片段标识符指向的目标元素可以使用 `:target`伪类特别装饰。即便不知道“片段标识符”这个术语，你肯定也见过。 比如下面这URL：
+
+http://www.w3.org/TR/css3-selectors/#target-pseudo
+
+<font color=FF0000>这个URL中的 target-pseudo 部分就是片段标识符，由 `#` 符号标记。如果对应的页面（`http://www.w3.org/TR/css3-selectors/` ）中有ID为target-pseudo的元素，那个元素就是片段标识符的目标。</font>
+
+借助 `:target` 伪类，我们可以突出显示文档中的任何目标元素，或者为不同的目标元素定义不同的样式，例如作为目标的标题使用一个样式，作为目标的表格使用一个样式等。
+
+<font color=FF0000>`:target` 伪类定义的样式在两种情况下不会应用：</font>
+
+- 页面的URL中没有片段标识符。
+
+- 页面的URL中有片段标识符，但是文档中没有与之匹配的元素。
+
+
+
+#### P97 :lang伪类
+
+如果<font color=FF0000>想根据文本使用的语言选择元素，可以使用 `:lang()` 伪类</font>。在匹配方式上，<font color=FF0000>`:lang()` 伪类与 `|=` 属性选择符类似。 </font>假设想让使用法语编写的元素倾斜显示，可以编写下述规则中的任何一个：
+
+```css
+*:lang(fr) {font-style: italic;}
+*[lang|="fr"] {font-style: italic;}
+```
+
+伪类选择符与属性选择符之间的主要区别是语言信息有多个来源，有时可能来自元素自身之外。 <font color=FF0000>对属性选择符来说，元素自身必须有lang属性才能匹配</font>。<font color=FF0000>而 `:lang` 伪类能匹配设定了语言的元素的后代</font>。Selectors Level3 是这样规定的：
+
+> 在HTML中，语言可以通过lang属性判断，也可以通过 meta元素和协议（例如HTTP首部）判断。XML使用 xml:lang属性，此外还可能有文档语言专用的方法。
+
+<font color=FF0000>`:lang` 伪类可以使用各种信息，而 `|=` 属性选择符只能用于标记中有lang 属性的元素。因此，**伪类比属性选择符更可靠**，多数情況下是装饰特定语言的理想之选。</font>
+
+
+
+#### P98 - P100 :not伪类
+
+<font color=FF0000>选择不满足条件的元素，可以使用 Selectors Level3引入的否定伪类 `:not()` </font>。这个伪类与其他选择符不太一样，而且自身有一些限制。 
+
+`:not()` 伪类依附在元素上，括号中是简单的选择符。<font color=FF0000>根据W3C的定义，简单的选择符指：一个类型选择符（元素）、通用选择符（*），属性选择符（css定义的、或自定义的属性），类选择符（class）、ID选择符（id）<font size="5"> **或**</font> 伪类</font>。
+
+基本上，简单选择符是指没有祖辈 - 后代关系的选择符。
+
+<font color=FF0000>注意定义中的<font size=5>**“或”**</font>，它的意思是 `:not()` 伪类中只能使用其中一个选择符</font>。 不能使用群组选择符，也不能使用连结符，因此不能使用后代选择符，因为后代选择符中分隔元素的空格是连结符。
+
+严格来说，`:not()`伪类的括号中可以使用通用选择符，但这么做意义不大。毕竟，`p:not(*)` 的意思是“选择不是元素的 p元素”。试想，怎么可能存在不是元素的元素。` p:not(p)`与之类似，也选择不了任何元素。 此外，还有`p:not(div)`这样的选择符，即选择不是div元素的p元素，这相当于选择所有p元素。 可见，没有什么缘由这样做。
+
+- <font color=FF0000>**否定伪类不能嵌套**，因此`p:not(:not(p))`是无效的，将被忽略</font>。逻辑上，这与直接使用p没有区别，所以没必要这么做。 <font color=FF0000>此外，在括号中不能引用伪元素，因为伪元素不是简单选择符</font>。
+
+- <font color=FF0000>否定伪类可以串在一起（串联），作用相当于“也不是”</font>。例如，你可能想选择 class为link，但既不是列表项目也不是段落的元素：
+
+```css
+*.link:not(li):not(p) {font-style: italic;}
+```
+
+这个规则的意思是，“选择class 属性值中包含link这个词，但不是li或p的所有元素”。
+
+
+
+#### P100 - P101 伪元素选择符
+
+伪元素与伪类很像，为了实现特定的效果，它在文档中插入虚构的元素<font color=FF0000>CSS2定义了四个基本的伪元素</font>，分别用于<font color=FF0000>装饰元素的首字母</font>，<font color=FF0000>首行</font>，以及<font color=FF0000>创建和装饰“前置”和“后置”内容</font>。CSS2之后的规范又定义了其他伪元素（例如 `::marker`），我们将在相关的章节中探讨。 这一节介绍CSS2 定义的那四个，因为它们由来已久，借此机会还可以讨论伪元素的行为。
+
+伪类使用一个冒号，而伪元素使用一对冒号，例如 `::first-line`。 这么做是为了把伪元素与伪类区分开。 <mark>一开始并不是这样的，在CSS2中，这两种选择符都使用一个冒号。因此，为了向后兼容，浏览器也接受使用单个冒号的伪元素选择符。 但是，不要因为这样就懈怠。 为了确保你编写的 CSS在未来还能继续使用，应该使用正确的冒号个数，毕竟我们无法预知浏览器什么时候不再接受单个冒号的伪元素选择符</mark>。
+
+注意，<font color=FF0000><font size="4">**所有伪元素只能出现在选择符的最后**</font>。p::first-line em是无效的，因为伪元素在选择符的主词前面（主词是选择符中的最后一个元素）。这也表明一个选择符中只能有一个伪元素</font>，不过在CSS以后的版本中可能会取消这一限制。
