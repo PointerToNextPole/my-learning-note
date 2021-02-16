@@ -698,3 +698,148 @@ http://www.w3.org/TR/css3-selectors/#target-pseudo
 伪类使用一个冒号，而伪元素使用一对冒号，例如 `::first-line`。 这么做是为了把伪元素与伪类区分开。 <mark>一开始并不是这样的，在CSS2中，这两种选择符都使用一个冒号。因此，为了向后兼容，浏览器也接受使用单个冒号的伪元素选择符。 但是，不要因为这样就懈怠。 为了确保你编写的 CSS在未来还能继续使用，应该使用正确的冒号个数，毕竟我们无法预知浏览器什么时候不再接受单个冒号的伪元素选择符</mark>。
 
 注意，<font color=FF0000><font size="4">**所有伪元素只能出现在选择符的最后**</font>。p::first-line em是无效的，因为伪元素在选择符的主词前面（主词是选择符中的最后一个元素）。这也表明一个选择符中只能有一个伪元素</font>，不过在CSS以后的版本中可能会取消这一限制。
+
+
+
+#### P101 - P103
+
+-  `::first-letter` 伪元素用于<font color=FF0000>装饰**任何非行内元素**的首字母</font>，或者开头的标点符号和首字母（如果文本以标点符号开头）
+- `::first-line` 用于装饰元素的<font color=FF0000>首行文本</font>
+
+对 `::first-letter`和 `::first-line` 的限制
+
+目前，`::first-letter` 和 `::first-line`伪元素只能应用到块级元素上，例如标题或段落，不能应用到行内元素上，例如超链接。`::first-line` 和 `::first-letter` 样式中可以使用的CSS属性也有限制，见下表：
+
+允许伪元素使用的属性
+
+|  ::first-letter  |   ::first-line   |
+| :--------------: | :--------------: |
+|   所有字体属性   |   所有字体属性   |
+|   所有背景属性   |   所有背景属性   |
+| 所有文本装饰属性 |  所有外边距属性  |
+| 所有行内排版属性 |  所有内边距属性  |
+| 所有行内布局属性 |   所有边框属性   |
+|   所有边框属性   | 所有文本装饰属性 |
+|    box-shadow    | 所有行内排版属性 |
+|      color       |      color       |
+|     opacity      |     opacity      |
+
+
+
+#### P103 - P104
+
+使用CSS 可以插入生成的内容（generated content），生成的这些内容可以直接使用 `::before` 和 `::after` 伪元素装饰。示例如下：
+
+```css
+h2::before {content: "]]"; color: silver;}
+body::after {content: "The End.";}
+```
+
+
+
+#### P105
+
+继承（inheritance）是指把一个元素的某些属性值传给其后代的机制。 <font color=FF0000>确定应该把哪些值应用到元素上时，用户代理不仅要考虑继承，还要考虑声明的特指度（specificity），以及声明的来源。这个过程称为层叠（cascade）</font>。
+
+
+
+#### P105 特指度
+
+我们可以使用多种不同的方法选择元素。 实际上，同一个元素可能会被两个或多个规则选择，而且每个规则的选择符不尽相同。以下面三对规则为例，假设每一对规则匹配相同的元素：
+
+```css
+h1 {color: red;}
+body h1 {color: green;}
+
+h2.grape {color: purple;}
+h2 {color: silver;}
+
+html > body table tr[id="totals"] td ul > li {color: maroon;}
+li#answer {color: navy;}
+```
+
+每对规则中只有一个能胜出，因为<font color=FF0000>匹配的元素只能显示为其中一个颜色</font>。 那么我们如何知道哪个规则胜出呢？
+
+<mark>答案隐藏在每个选择符的特指度中。<font color=FF0000>**用户代理会计算每个规则中选择符的特指度，然后将其依附到规则中的每个声明上**。 **如果两个或多个属性声明有冲突，特指度最高的声明胜出**</font>。</mark>
+
+选择符的特指度由选择符本身的组成部分决定。 一个特指度值由四部分构成，例如0, 0, 0, 0选择符的特指度通过下述规则确定：
+
+- 选择符中的每个 <font color=FF0000>ID 属性</font>值加<font color=FF0000>0, 1, 0, 0</font>。
+- 选择符中的每个<font color=FF0000>类属性值</font>、<font color=FF0000>属性选择</font>或<font color=FF0000>伪类</font>加<font color=FF0000>0, 0, 1, 0</font>。
+- 选择符中的每个<font color=FF0000>元素</font>和<font color=FF0000>伪元素</font>加<font color=FF0000>0, 0, 0, 1</font>。伪类到底有没有特指度在CSS2中表述的有些自相矛盾，不过<mark>CSS2.1明确指出，伪元素有特指度</mark>。
+- <font color=FF0000>连结符和通用选择符不增加特指度</font>。
+
+**下面给出几个规则中选择符的特指度**
+
+```css
+h1 {color: red;} 												/* specificity = 0,0,0,1 */
+p em {color: purple;} 									/* specificity = 0,0,0,2 */
+.grape {color: purple;} 								/* specificity = 0,0,1,0 */
+*.bright {color: yellow;} 							/* specificity = 0,0,1,0 */
+p.bright em.dark {color: maroon;} 			/* specificity = 0,0,2,2 */
+#id216 {color: blue;} 									/* specificity = 0,1,0,0 */
+div#sidebar *[href] {color: silver;} 		/* specificity = 0,1,1,1 */
+```
+
+上面冲突示例的结果：
+
+```css
+h1 {color: red;} 																								/* 0,0,0,1 */
+body h1 {color: green;}																				 	/* 0,0,0,2 (winner)*/
+
+h2.grape {color: purple;} 																			/* 0,0,1,1 (winner) */
+h2 {color: silver;} 																						/* 0,0,0,1 */
+
+html > body table tr[id="totals"] td ul > li {color: maroon;} 	/* 0,0,1,7 */
+li#answer {color: navy;} 																				/* 0,1,0,1(winner) */
+```
+
+<font color=FF0000 size="4">**特指度从左向右比较**</font>
+
+
+
+#### P09 ID 和属性选择符的特指度
+
+<font color=FF0000>ID选择符</font> 和 <font color=FF0000>选择id属性的属性选择符</font> 之间在特指度上是有区别的，这一点一定要注意。来看前述示例中的第三对规则：
+
+```css
+html > body table tr[id="totals"] td ul > li {color: maroon;} /* 0,0,1,7 */
+li#answer {color: navy;} 																			/* 0,1,0,1 (wins) */
+```
+
+第二个规则中的ID 选择符（#answer）为选择符的总特指度贡献0, 1, 0, 0。然而，第一个规则中的属性选择符（ [id="totals"] ）为总特指度贡献0, 0, 1, 0。 因此，对下述规则来说，id为meadow的元素将显示为绿色：
+
+```css
+#meadow {color: green;} /* 0,1,0,0 */
+*[id="meadow"] {color: red;} /* 0,0,1,0 */
+```
+
+
+
+#### P109 行内样式的特指度
+
+<font color=FF0000>目前见到的特指度都以零开头</font>，因此你可能在想，那一位为什么要存在呢？存在必定有用。<font color=FF0000>那一位是为行内样式声明保留的，行内样式声明的特指度比其他声明都高</font>。 
+
+
+
+#### P110 importance
+
+有时某个声明可能非常重要，超过其他所有声明，CSS称之为重要声明（important declaration，原因显而易见）。这种声明要在声明末尾的分号之前插入 `!important` ，例如：
+
+```css
+p.dark {color: #333 !important; background: white;}
+```
+
+这里，颜色值 `#333` 使用 `!important` 标记，而背景色 `white` 没有。 如果想把两个声明都标记为重要的，每个声明中都要插入 `!important`:
+
+```css
+p.dark {color: #333 !important; background: white !important;}
+```
+
+`!important` 的位置必须正确，否则声明将失效。`!important` 始终放在声明末尾的分号之前对值为多个关键字的属性（例如font）来说，`!important` 的位置尤其重要：
+
+```css
+p.light {color: yellow; font: smaller Times, serif !important;}
+```
+
+如果把 `!important` 放在font 声明的其他位置，整个声明都将失效，而且整个样式都不会应用到元素上。
