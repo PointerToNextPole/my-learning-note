@@ -565,7 +565,7 @@ a:hover {color: red;}
 a:active {color: yellow;}
 ```
 
-<font color=FF0000>这些伪类的顺序可不是随意的，通常推荐的顺序是“link - visited - hover - active”，不过后来改成了“link - visited - focus - hover - active”</font>
+<font color=FF0000>这些伪类的顺序可不是随意的，通常推荐的顺序是“link - visited - hover - active”，不过后来改成了“link - visited - focus - hover - active”</font>（解释原因见：P118）
 
 
 
@@ -843,3 +843,463 @@ p.light {color: yellow; font: smaller Times, serif !important;}
 ```
 
 如果把 `!important` 放在font 声明的其他位置，整个声明都将失效，而且整个样式都不会应用到元素上。
+
+<font color=FF0000>带有 `!important` 的声明对特指度没有影响，但是会与不重要的声明分开处理。 其实，所有带 `!important` 的声明会放在一起，而特指度冲突就在这个范围内解决</font>。同样，非重要的声明作为一个整体，其中的冲突使用特指度解决。 因此，<font color=FF0000>重要声明和非重要声明冲突时，重要声明始终胜出</font>。
+
+
+
+#### P112
+
+祖先的属性值会沿着树状图向下传播到后代元素，直到没有后代为止。 <font color=FF0000>属性值绝不向上传播，即元素的样式绝不传给祖辈元素</font>。
+
+在HTML中，**<font color=FF0000>向上传播规则有个例外</font>**：<mark>应用到body 元素上的背景样式会传给 html元素。html是文档的根元素，用于定义渲染文档的画布。<font color=FF0000>这一例外仅发生在为body元素定义了背景而没有为html元素定义背景的情况下</font>。</mark>
+
+
+
+#### P112 - P113 不继承
+
+很多属性是不继承的，这通常是为了避免得到意外的结果。例如，<font color=FF0000>border属性就不继承</font>。如果继承边框，文档将变得杂乱无章，除非编写样式时付出额外的精力去掉继承的边框。
+
+此外，<font color=FF0000>基于同样的原因，**多数**盒模型属性也不继承，包括外边距、内边距、背景和边框</font>。试想，你肯定不想让段落中的所有链接都从父元素那里继承30像素的左外边距。其次，<font color=FF0000 size="5">**继承的值没有特指度，连零都没有（在和零比较时，零胜出）**</font>。这看起来似乎只是理论上的不同，但是等你了解到继承的值没有特指度将产生怎样的结果时，便会发现这种差距绝不能忽视（如下示例）。
+
+```html
+<style>
+* {color: gray;}
+h1#page-title {color: black;}
+</style>
+
+<h1 id="page-title">Meerkat <em>Central</em></h1>
+<p>Welcome to the best place on the web for meerkat information!</p>
+```
+
+<img src="https://i.loli.net/2021/02/16/zMrgjALTJi6b2xQ.png" style="zoom: 33%;" />
+
+<font color=FF0000>因为通用选择符应用于全部元素，而且特指度为零，所以它声明的颜色gray 击败继承的颜色black</font>（<font color=FF0000>由于继承的值根本没有特指度</font>）。因此，em元素渲染为灰色，而不是黑色。
+
+<font color=FF0000>这个例子充分体现了滥用通用选择符的潜在危险</font>。 <font color=FF0000>通用选择符能匹配任何元素，它往往会终结继承。 这个问题有变通解决方法，但是通常最好从一开始就不滥用通用选择符</font>。
+
+
+
+#### P115 CSS层叠规则
+
+**CSS 的层叠规则如下：**
+
+- 找到匹配特定元素的所有规则。
+
+- <font color=FF0000>按显式权重排序应用到特定元素上的所有声明</font>。以 `!important` 标记的规则比没有这一标记的权重高。
+- 按来源排序应用到特定元素上的所有声明。 <mark>声明有三个来源：创作人员、 读者和用户代理。 正常情况下，创作人员编写的样式击败读者提供的样式； 读者样式中以 `!important` 标记的声明比其他样式权重高，包括创作人员编写的样式中以 `!important` 标记的声明； 创作人员和读者样式覆盖用户代理的默认样式</mark>。
+- 按特指度排序应用到特定元素上的所有声明。 特指度高的声明具有较高的权重。
+- <font color=FF0000>**按声明的前后位置排序**应用到特定元素上的所有声明。 样式表或文档中<font size="4">**靠后的声明权重较高**</font>。**导入的样式表中的声明放在当前样式表中所有声明的前面**</font>。
+
+
+
+#### P115
+
+如果两个规则应用到同一个元素上，而其中一个以！important标记，那么有此标记的规则胜出：
+
+```html
+<style>
+  p {color: gray !important;}
+</style>
+
+<p style="color: black;">Well, <em>hello</em> there!</p>
+```
+
+虽然<font color=FF0000 size="4">**有个颜色由段落的 style 属性提供，但是 `!important` 标记的规则依然胜出，因此段落将显示为灰色。em元素会继承灰色**</font>。
+
+
+
+#### P115 - P116
+
+<font color=FF0000>如果显式权重相同，就要考虑规则的来源</font>。如果匹配元素的两个样式权重相同，而一个在创作人员编写的样式表中，另一个在读者提供的样式表中，那么元素将使用创作人员编写的样式表中的样式。 例如，假设下面两个样式分别来自指定的位置：
+
+```css
+p em {color: black;} /* author's style sheet */
+p em {color: yellow;} /* reader's style sheet */
+```
+
+此时，段落中的强调文本将显示为黑色，而不是黄色，因为同样的权重下，创作人员编写的样式战胜读者提供的样式。<font color=FF0000>然而，如果两个规则都用 `!important` 标记，那情况就变了：</font>
+
+```css
+p em {color: black !important;} /* author's style sheet */
+p em {color: yellow !important;} /* reader's style sheet */
+```
+
+<font color=FF0000>现在，段落中的强调文本将显示为黄色，而不是黑色（即：读者编写的样式胜出）</font>。
+
+
+
+#### P116
+
+在声明的权重上，基本要考虑五个方面。下面按<font color=FF0000>权重**从高到低**列出</font>：
+
+- <font color=FF0000>读者提供的样式中以 `!important` 标记的声明</font>。
+
+- 创作人员编写的样式中以 `!important` 标记的声明。
+
+- 创作人员编写的常规声明。
+
+- 读者提供的常规声明。
+
+- 用户代理的默认声明。
+
+创作人员通常只需考虑前四点，因为创作人员编写的任何样式都会覆盖用户代理的默认样株式。
+
+
+
+#### P118
+
+因为样式在样式表中的前后位置对效果有影响，所以通常才推荐按照一定的顺序编写链接的样式。 链接样式的推荐顺序是“link-visited-focus-hover-active”（LVFHA），如下所示：
+
+```css
+a:active {color: orange;}
+a:focus {color: green;}
+a:hover {color: red;}
+a:link {color: blue;}
+a:visited {color: purple;}
+```
+
+读过本章的内容之后我们知道，<font color=FF0000>这些选择符的特指度相等，都是0, 0, 1, 0。 因为它们的显式权重、来源和特指度都一样，所以最后一个匹配的规则将胜出</font>。 <mark>单击或激活（例如使用键盘）未访问的链接时，匹配其中四个规则，:link，:focus，:hover和 :active。因此，这四个规则中的最后一个胜出</mark>。对LVFHA顺序来说，:active 将胜出，这通常正是创作人员想要的。
+
+
+
+#### P119 - P120 CSS之外的表现提示
+
+文档除了CSS 之外可能包含<font color=FF0000>表现提示（presentational hint）</font>，例如font 元素。 这种表现提示的特指度为o，而且认为出现在创作人员编写的样式表的开头。 表现提示将被创作人员编写的样式或读者提供的样式覆盖，但是不会被用户代理的默认样式覆盖。 css3把CSS 外部的表现提示视作用户代理默认样式表的一部分，而且假定出现在默认样式表的最后（不过，写作本书时，规范没有这么表述）。
+
+
+
+#### P121
+
+接受关键字的属性， 所取的关键字必须在那个属性允许使用的关键字范围之内。 <mark>如果两个属性使用相同的关键字，在不同的属性中相同的关键字可能具有不一样的行为。 例如，letter-spacing属性的 normal关键字与font-style属性的 normal关键字就相差很大</mark>。
+
+
+
+#### P122 - P123 全局关键字
+
+CSS3定义了几个“全局”关键字，规范中的每个属性都能使用：**inherit，initial和unset.**
+
+- **inherit：**<font color=FF0000>关键字inherit把元素某个属性的值设为与父元素同一属性的值一样</font>。也就是说，<font color=FF0000>这个关键字强制继承，即便是在通常情况下不继承时。 很多时候无需这么做，因为多数属性会自动继承</font>。
+
+  <font color=FF0000>使用inherit 还能把通常情况下不从父元素继承的属性值强制拉过来</font>。比如说，border属性不会继承（这是正确的行为）。如果想让span 继承父元素的边框，只需使用 `span { border: inherit; }`
+
+- **initial：**<font color=FF0000>关键字initial 把属性的值设为预定义的初始值，相当于“重设”值</font>。例如，font-weight属性的默认值是 normal。因此，font-weight: initial的作用与font-weight: normal一样。
+
+- **unset：**<font color=FF0000>关键字 unset是inherit和initial的通用替身</font>。<font color=FF0000>对继承的属性来说，unset的作用与inherit一样；对不继承的属性来说，unset的作用与initial一样</font>。
+
+
+
+#### P123 all
+
+<font color=FF0000>inherit、initial、unset这三个全局关键字在所有属性中都可以使用</font>。<font color=FF0000>有个特殊的属性只接受这几个全局关键字：all</font>。
+
+<font color=FF0000>all表示除 direction和 unicode-bidi 之外的所有属性</font>。 因此，如果为一个元素声明 `all: inherit`，意思是除direction和unicode-bidi之外的所有属性都从父元素上继承值。
+
+- 取值：inherit |initial |unset
+
+- 初始值：参见各属性
+
+
+
+#### P125 字符串
+
+如果字符串值中有换行,可以转义换行符。CSS 会去掉换行符,就像从未换行一样。因此，下面两个字符串在CSS看来是一样的：
+
+```
+"This is the right place \
+for a newline."
+"This is the right place for a newline."
+```
+
+如果真想在字符串中插入一个换行符,在需要换行的地方使用Unicode字符\A：
+
+```
+"This is a better place \Afor a newline."
+```
+
+
+
+#### P128
+
+按照某些属性的定义，取值范围外的数字会被设为与所用值最接近的数（这种行为一般称为 clamping）.
+
+
+
+#### P128 弹性值
+
+弹性值（fraction value或flex value）是\<number>后跟fr。因此，单位弹性值是1fr。这个概念由栅格布局引入，用于把布局中不受限制的空间分成几部分。
+
+
+
+#### P128
+
+**长度单位分两种：绝对长度单位和<font color=FF0000>相对长度单位</font>**
+
+
+
+#### P129 **绝对长度单位：**
+
+#### **绝对长度单位有<font color=FF0000>七个</font>**
+
+- 英寸（in）
+- 厘米（cm）
+- 毫米（mm）
+- 四分之一毫米（q）
+- 点（pt）：点是一个标准的印刷度量单位，<mark>1英寸有72个点</mark>
+- 派卡（pc）：派卡（pica）也是印刷术语，<mark>1派卡等于12点，1英寸等于6派卡</mark>
+- 像素（px）：像素是屏幕上的小点，不过CSS定义的像素较为抽象。<mark>在CSS中，1像素所占的尺寸够1英寸中放下96像素。</mark> 
+
+
+
+#### P131 **分辨率单位**
+
+随着媒体查询和响应式设计的出现，为了描述显示器的分辨率，出现了三个新单位。
+
+- **点每英寸（dpi）：**在长为1英寸的范围内能显示的点数。 可以指打印机输出的点，也可以指 LED 屏幕等设备上的物理像素点，或者电子墨水屏（例如Kindle用的）上的图像单元。
+- **点每厘米（dpcm）**
+- **点每像素单位（dppx）：**CSS中每个px单位显示的点数。从CSS3起，1dppx相当于 96dpi，因为CSS就是按照这个换算比例定义像素单位的。不过，这个比例在CSS未来的版本中可能会变0010A
+
+
+
+#### P132 相对长度单位
+
+**<font color=FF0000>相对长度单位中的“相对”是指其长度是相对其他东西而言的</font>。相对长度的实际值（或绝对值）<font color=FF0000>根据不受其控制的因素而变</font>，例如屏幕分辨率，视区宽度、用户的偏好设置等。**比外，有些相对单位的实际尺寸始终相对当前元素，因此在元素之间也有差异。
+
+
+
+#### P132 - P133 em和ex单位
+
+按CSS的定义，1em等于元素的 font-size属性值。如果元素的font-size为14像素，那么对那个元素来说，1em就等于14像素。
+
+<font color=FF0000>**理论上**，1em 等于所用字体中小写字母m的宽度</font>。其实，“em”这个名称就是由此而来的。<font color=FF0000>这是一个古老的排版术语。然而，CSS没有采用这个定义</font>。
+
+<font color=FF0000>ex指所用字体中小写字母x的高度</font>。 因此，如果两个段落的字号都是24点，但是使用的字体不同，那么ex的值也不一样。 这是因为不同字体中的x高度有所不同
+
+
+
+#### P134 rem单位
+
+与em单位类似，rem也基于声明的字号。二者之间的区别是（很微小），em相对当前元素的字号计算，而 rem 始终相对根元素计算。在HTML中，根元素是html。因此，`font-size: 1rem;` 声明把元素的字号设为与文档根元素的字号一样大。
+
+<font color=FF0000>rem 的实际作用相当于重设字号</font>：不管祖辈元素把字号设为多大，`font-size: 1rem;` 都会把字号还原成根元素设定的大小。通常，<font color=FF0000>1rem是用户的默认字号</font>，除非你（或用户）为根元素设定了其他字号。
+
+
+
+#### P134 ch单位
+
+CSS3 新增了一个有趣的单位：ch。这个单位基本上可以理解为“一个字符”。CSS3规范是这样定义的：
+
+> 等于渲染时所用字体中“0”（零，U+0030）字形的进距。
+
+<font color=FF0000>“进距”（advance measure）其实是CSS自造的，对应于字体排印中的“进宽”（advancewidth）</font>。CSS使用“距”是因为有些文字不是从右向左或从左向右写的，而是从上到下或从下到上写的，而此时应该用“进高”而非“进宽”。简单起见，本节采用“进宽”一说。
+
+抛开繁杂的细节，<font color=FF0000>**简单来说**，<font size="4">**字形的进宽指一个字形的起点到下一个字形的起点之间的距离**</font>。 一般情况下，这段距离等于字形本身的宽度加上侧边的间距（**间距可以为正也可以为负**）</font>。
+
+
+
+#### P136 视区相关的单位
+
+<font color=FF0000>CSS3 还新增了三个与视区尺寸相关的单位</font>。 <mark>这些单位根据视区的尺寸计算，比如浏览器窗口、可打印区域，移动设备的显示屏等</mark>。
+
+- 视区电度单位（vw）
+
+  这个单位<font color=FF0000>根据视区的宽度计算，然后除以100</font>。因此，如果视区的宽度是937像素，那么1vw等于9.37px。如果视区的宽度有变，例如把浏览器窗口拉宽或缩窄，vw的值随之改变。
+
+- 视区高度单位（vh）
+
+  这个单位<font color=FF0000>根据视区的高度计算，然后除以100</font>。因此，如果视区的高度是650像素，那么1vh等于6.5px。如果视区的高度有变，例如把浏览器窗口拉高或缩矮，vh的值随之改变。
+
+- 视区尺寸最小值单位（vmin）
+
+  <font color=FF0000>这个单位等于视区宽度或高度的1/100，始终取宽度和高度中较小的那个</font>。 因此，如果一个视区的宽度为937像素，高度为650像素，那么1vmin等于6.5px.
+
+- 视区尺寸最大值单位（vmax）
+
+  <font color=FF0000>这个单位等于视区宽度或高度的1/100，始终取宽度和高度中较大的那个</font>。 因此，如果一个视区的宽度为937像素，高度为650像素，那么1vmax等于9.37px。
+
+<mark>这些单位特别适合用于创建全视区界面，例如移动设备的界面，因为元素是根据视区的尺寸而变化的，与文档树中的任何元素都没关系</mark>。 因此，轻易就能填满整个视区，或者至少填满视区的大部分，而不用担心特定情况下视区的具体尺寸。
+
+
+
+#### P138 计算值
+
+为方便你做数学计算，CSS 提供了`calc()` 值。括号中可以使用简单的数学算式。<mark>允许使用的运算符有+（加）、-（减）、*（乘）、/（除），以及括号</mark>。另外，<font color=FF0000>`calc()` 不允许做指数运算</font>。
+
+<mark style="background: fuchsia">注意：允许在 `calc()` 中使用括号似乎是浏览器提供的便利措施，因为 `calc()` 的句法定义中没有提到括号。因此，浏览器可能会继续支持，不过使用时要小心</mark>。
+
+<font color=FF0000>在允许使用这些值的地方，都能使用` calc()`：\<length>、\<frequency>、\<angle>、\<time>、\<percentage>、\<number>和\<integer></font>。这些单位类型也都能在 `calc()` 中使用，不过有些限制要注意。
+
+基本的限制是，calc（）会检查括号中各个值的类型，确保是兼容的。 检查的方式如下：
+
+- <font color=FF0000>`+` 和 `-` 号两侧的值必须使用相同的单位类型</font>，或者是 \<number> 和 \<integer>（此时结果为一个\<numbe>值）。因此，`5 + 2.7` 是有效的，结果为7.7；而 `5em + 2.7` 无效，因为一边有长度单位，一边没有。<font color=FF0000>注意，`5em + 20px` 是有效的，因为 em 和 px 都是长度单位</font>。
+
+- <font color=FF0000>计算的两个值中必须有一个是 \<number>（注意，它包括整数）</font>。因此，2.5rem * 2和2 * 2.5rem 都是有效的，结果均为 5rem。而`2.5rem * 2rem` 是无效的，因为这样得到的结果是 5rem<sup>2</sup>，这是面积单位，而不是长度单位了。
+
+- <font color=FF0000>`/` 计算的两个值中右边的那个必须是\<number></font>。左边是\<integer>时，结果为一个\<number>值；杏则，结果的单位与左边的值一样。 因此，`30em / 2.75`是有效的，而`30 / 2.75em`是无效的。
+
+- 此外，<font color=FF0000>任何情况下都不能除以零</font>。`30px / 0` 这样的算式很明显，但有时并不显而易见。
+
+此外还有一个小限制要注意，即**<font color=FF0000> + 和 - 运算符的两侧必须有空白，\* 和 / 没有这一限制，这样有助于避免混淆负数</font>**
+
+除此之外，<font color=FF0000>规范要求用户代理至少要支持 `calc()` 中的算式可以使用20个算子</font>，<mark>算子可以是数字、百分数，也可以是大小量（长度）。<font color=FF0000>超过这一限制的算式应该视为无效的</font></mark>。
+
+
+
+#### P139 属性值
+
+在一些CSS 属性中，可以使用样式对应的元素上的 HTML 属性值。 方法是使用 `attr()` 表达式。
+
+例如，使用生成的内容时，可以插入任何属性的值。如下示例：
+
+```css
+p::before {content: "[" attr(id) "]";}
+```
+
+这个表达式把id 属性的值放在括号里，加在有id属性的段落前面。 
+
+```html
+<p id="leadoff">This is the first paragraph.</p>
+<p>This is the second paragraph.</p>
+<p id="conclusion">This is the third paragraph.</p>
+```
+
+<img src="https://i.loli.net/2021/02/17/iPpJ27CbEBMyh9e.png" style="zoom:40%;" />
+
+<font color=FF0000>**理论上**，只要在表达式中指定值的类型，`attr()` 可以获取任何属性的值</font>。
+
+
+
+#### P140 - P141 颜色
+
+怎样设定页面中使用的颜色？在HTML中，<font color=FF0000>有两个选择：可以使用数量不多的颜色名，例如red或purple，或者使用有点晦涩的十六进制代码</font>。CSS也支持这两种方法， 不过还提供了其他我觉得更直观的方法。
+
+如果只想使用基本的颜色，最简单的方法是使用颜色的名称。 CSS 把这种颜色称为具名颜色（named color）。早期，CSS中有16个基本的颜色关键字，对应HTML4.01定义的那16个颜色。这些具名颜色见下：
+
+aqua     gray 	 	 navy 		silver
+
+black     green 		olive 		teal
+
+blue 	  lime 	  	purple    white
+
+fuchsia  maroon 	red 		yellow
+
+截至2017年年末，最新的CSS颜色规范包含这16个具名颜色，不过它们属于一个更大的列表，一共有148个颜色关键字。 
+
+
+
+#### P141 函数式RGB颜色
+
+有两种颜色值使用函数式RGB 表示法，而不使用十六进制表示法。这种颜色值的一般句法是 rgb（color），其中color是三个值，可以是百分数或整数。百分数的取值范围是0~100％，整数的取值范围是0~255。
+
+<font color=FF0000>一个颜色值中**不能混用**整数和百分数</font>
+
+<font color=FF0000>百分数表示法中可以使用小数</font>， 有时，<font color=FF0000>基于特定的原因，你可能想把红色通道指定为25.5％，绿色通道指定为40％，蓝色通道指定为98.6％</font>:
+
+```css
+h2 {color: rgb(25.5%,40%,98.6%);}
+```
+
+<font color=FF0000>不支持小数的用户代理应该把小数**归整到最近的整数**，得到 `rgb(26％, 40％, 99％)` </font>。使用三个整数时，各个通道只能使用整数。
+
+<font color=FF0000>不管使用哪种表示法，超出取值范围的数将“裁剪”为最近的边界值</font>。 例如，大于100％或小于0％的值将变成 100％和0％。
+
+
+
+#### P143 RGBa
+
+从CSS3起，上述两种函数式RGB 表示法发展成了函数式RGBa表示法。 这种表示法在RGB 的三个通道后面增加了一个 alpha值，即“red-green-blue-alpha＂，简称RGBa。这里的alpha指alpha通道，用于衡量不透明度。
+
+毫无疑问，alpha 值始终是0-1范围内的实数。 超出范围的值要么被忽略， 要么被重置为最近的有效值。<font color=FF0000>alpha值不能使用 \<percentage>表示，即便数值一样也不行</font>。
+
+
+
+#### P145 十六进制RGB值
+
+如果每个十六进制数中的内个数字相等，（CSS 允许使用简短表示法。一般的句法是#RGB:
+
+```css
+h1 {color: #000;} /* set H1s to black */
+h2 {color: #666;} /* set H2s to dark gray */
+h3 {color: #FFF;} /* set H3s to white */
+```
+
+可以看出，每个颜色值中只有三个数字。可是，00和FF之间的十六进制数需要两个数字，这里总共只有三个数字，这样怎么行呢？
+
+其实，<font color=FF0000>浏览器会把每个数字复制成两个。 因此，#F00 变成了#FF0000，#6FA 变成了#66FFAA，#FFF变成了#FFFFFF，即白色（white）</font>。不是每个颜色都能像这样表示。比如说，中灰色就要写成标准的十六进制表示法，即#808080。 这个颜色不能使用简短表示法表示。与之最接近的是#888，它等同于 #888888。
+
+
+
+#### P145 十六进制RGBa颜色
+
+（截至2017年年末）有个新的十六进制表示法在后面添加一个十六进制值，表示 alpha通道的值。 
+
+<mark>与不带 alpha 值的十六进制表示法一样，如果四个十六进制值中的两个数字都一样，可以简写。 因此，#663399AA 可以写成#639A</mark>。 
+
+
+
+#### P146 HSL和HSLa颜色
+
+<mark>CSS3新增了HSL表示法（不过与一般的颜色理论不同）</mark>。<font color=FF0000>HSD是Hue（色相）Saturation（饱和度）和Lightness（明度）的简称，其中色相是角度值，取值范围是0 ~ 360，饱和度是从0（无饱和度）~ 100（完全饱和）的百分数，明度是从0（全暗）~ 100（全明）的百分数</font>。
+
+<font color=FF0000>饱和度衡量颜色的强度</font>。 <mark>饱和度为 0％时，不管色相角度为多少，得到的都是不太暗的灰色；饱和度为100％时，在明度一定时，色相最饱满</mark>。<font color=FF0000>明度定义颜色有多暗或多亮</font>。<mark>明度为0％时，不管色相和饱和度为多少，始终为黑色；而明度为100％时，得到的是白色</mark>。
+
+RGB 有对应的 RGBa，类似地，<font color=FF0000>HSL有对应的HSLa</font>。<mark>HSLa在HSL的三个值后面加上一个alpha值，取值范围是0~1</mark>。 
+
+
+
+#### P149 颜色关键字
+
+<font color=FF0000>有两个特殊的关键字**可以在任何允许使用颜色值的地方使用**：transparent 和 currentColor</font>。
+
+从名称可以看出，<font color=FF0000>transparent 表示完全透明的颜色。按照 CSS Color Module的定义，它与 `rgba(0, 0, 0, 0)` 等效</font>，而这就是transparent 计算得到的值。 <mark>这个关键字不常用于设定文本颜色，不过却是元素背景色的默认值。 此外，还可以用它为元素定义只占空间但不可见的边框，定义渐变时也常用</mark>，这些话题将在后面的章节中讨论。
+
+<font color=FF0000>currentColor的意思是，“当前元素 color属性计算得到的值”</font>。 对下述规则来说：
+
+```css
+main {color: gray; border-color: currentColor;}
+```
+
+第一个声明把main元素的前景色设为gray，第二个声明使用 currentColor 复制 color属性计算得到的值（这里是 `rgb(50%, 50%,  50%)`，等同于gray），然后应用到 main元素的边框上。
+
+
+
+#### P149 - P150 角度
+
+讲完 HSL中的色相角度，现在比较适合讨论角度单位。 角度一般使用 \<angle> 表示，即一个 \<number> 后跟下列四个单位中的一个。
+
+- deg：度数，完整的圆周是360度。
+
+- grad：<font color=FF0000>百分度</font>（gradian，也叫grade或gon），<font color=FF0000>完整的圆周是400百分度</font>
+
+- rad：弧度，完整的圆周是2π（近似于 6.28）.
+
+- turn：<font color=FF0000>圈数，一个完整的圆周是一圈</font>。这个单位在旋转动画中最有用，比如说让一个元素旋转10圈就是10turn（可惜，复数形式turns 是无效的，将被忽略； 至少截至2017年年末是这样）.
+
+
+
+#### P150 时间和频率
+
+<font color=FF0000>属性的值为一段时间时，使用 \<time>表示，它是一个 \<number> 值后跟s（秒）或ms（毫秒）。时间值最常在过渡和动画中使用，用干定义持续时间或延迟时间</font>。
+
+<mark>视听CSS 也能用到时间值，用于定义持续时间或延迟时间。 不过，写作本书时，对视听CSS的支持极其有限</mark>
+
+<mark>视听CSS中还有一种值 \<frequency>它是一个 \<number> 值后跟Hz（赫兹）或kHz（千赫兹）</mark>。一同往常，这个单位的标识符不区分大小写，因此Hz和 hz是等效的。 
+
+
+
+#### P151
+
+2017年年末，CSS新增了一个特性。这个特性的术语是“自定义属性”（custom property），不过它的作用其实是在CSS 中创建变量。这个名称词不达意，它并不创建特殊的CSS属性（像color或font 之类的）。示例如下：
+
+```css
+html {
+	--base-color: #639;
+	--highlight-color: #AEA;
+}
+h1 {color: var(--base-color);}
+h2 {color: var(--highlight-color);}
+```
+
+<font color=FF0000>自定义标识符以两个连字符开头（`--`）。调用的方法是使用 `var()` 值类型。 注意，这些名称是区分大小写的</font>，因此 `--main-color` 和 `--Main-color` 是完全不同的两个标识符。
+
+这些自定义标识符通常被称为“CSS 变量”，这解释了为什么使用 `var()` 调用它们。
