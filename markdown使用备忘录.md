@@ -115,66 +115,48 @@
 
 
 
+## CSDN的markdown编辑器详细使用说明、语法快速索引手册
 
+地址：https://blog.csdn.net/davidhzq/article/details/100904811
 
-### 本文目录
+#### 本文目录
 
-- - [Markdown介绍](https://blog.csdn.net/davidhzq/article/details/100904811#Markdown_1)
-  - [快捷键](https://blog.csdn.net/davidhzq/article/details/100904811#_4)
-  - [1、标题](https://blog.csdn.net/davidhzq/article/details/100904811#1_19)
-  - [2、粗体/斜体/删除线/字体底色](https://blog.csdn.net/davidhzq/article/details/100904811#2_30)
-  - [3、上标/下标](https://blog.csdn.net/davidhzq/article/details/100904811#3_48)
-  - [4、无序排列](https://blog.csdn.net/davidhzq/article/details/100904811#4_60)
-  - [5、有序排列](https://blog.csdn.net/davidhzq/article/details/100904811#5_72)
-  - [6、待办事项](https://blog.csdn.net/davidhzq/article/details/100904811#6_83)
-  - [7、引用](https://blog.csdn.net/davidhzq/article/details/100904811#7_93)
-  - [8、脚注](https://blog.csdn.net/davidhzq/article/details/100904811#8_101)
-  - [9、自动注释](https://blog.csdn.net/davidhzq/article/details/100904811#9_120)
-  - [10、链接](https://blog.csdn.net/davidhzq/article/details/100904811#10_131)
-  - - [ a) 地址链接](https://blog.csdn.net/davidhzq/article/details/100904811#emspa__134)
-    - [ b) 文字链接](https://blog.csdn.net/davidhzq/article/details/100904811#emspb__141)
-  - [11、图片链接](https://blog.csdn.net/davidhzq/article/details/100904811#11_148)
-  - - [ a) 一般图片](https://blog.csdn.net/davidhzq/article/details/100904811#emspa__150)
-    - [ b) 带尺寸图片](https://blog.csdn.net/davidhzq/article/details/100904811#emspb__163)
-    - [ c) 图片居中](https://blog.csdn.net/davidhzq/article/details/100904811#emspc__176)
-    - [ d) 图片居中且带尺寸](https://blog.csdn.net/davidhzq/article/details/100904811#emspd__188)
-  - [12、参考式链接](https://blog.csdn.net/davidhzq/article/details/100904811#12_197)
-  - [13、表格](https://blog.csdn.net/davidhzq/article/details/100904811#13_200)
-  - [14、代码块](https://blog.csdn.net/davidhzq/article/details/100904811#14_234)
-  - [高端用法：](https://blog.csdn.net/davidhzq/article/details/100904811#_253)
+- [Markdown介绍](https://blog.csdn.net/davidhzq/article/details/100904811#Markdown_1)
+- [1、标题](https://blog.csdn.net/davidhzq/article/details/100904811#1_19)
+- [2、粗体/斜体/删除线/字体底色](https://blog.csdn.net/davidhzq/article/details/100904811#2_30)
+- [3、上标/下标](https://blog.csdn.net/davidhzq/article/details/100904811#3_48)
+- [4、无序排列](https://blog.csdn.net/davidhzq/article/details/100904811#4_60)
+- [5、有序排列](https://blog.csdn.net/davidhzq/article/details/100904811#5_72)
+- [6、待办事项](https://blog.csdn.net/davidhzq/article/details/100904811#6_83)
+- [7、引用](https://blog.csdn.net/davidhzq/article/details/100904811#7_93)
+- [8、脚注](https://blog.csdn.net/davidhzq/article/details/100904811#8_101)
+- [9、自动注释](https://blog.csdn.net/davidhzq/article/details/100904811#9_120)
+- [10、链接](https://blog.csdn.net/davidhzq/article/details/100904811#10_131)
+  - [ a) 地址链接](https://blog.csdn.net/davidhzq/article/details/100904811#emspa__134)
+  - [ b) 文字链接](https://blog.csdn.net/davidhzq/article/details/100904811#emspb__141)
+- [11、图片链接](https://blog.csdn.net/davidhzq/article/details/100904811#11_148)
+  - [ a) 一般图片](https://blog.csdn.net/davidhzq/article/details/100904811#emspa__150)
+  - [ b) 带尺寸图片](https://blog.csdn.net/davidhzq/article/details/100904811#emspb__163)
+  - [ c) 图片居中](https://blog.csdn.net/davidhzq/article/details/100904811#emspc__176)
+  - [ d) 图片居中且带尺寸](https://blog.csdn.net/davidhzq/article/details/100904811#emspd__188)
+- [12、参考式链接](https://blog.csdn.net/davidhzq/article/details/100904811#12_197)
+- [13、表格](https://blog.csdn.net/davidhzq/article/details/100904811#13_200)
+- [14、代码块](https://blog.csdn.net/davidhzq/article/details/100904811#14_234)
+- [高端用法：](https://blog.csdn.net/davidhzq/article/details/100904811#_253)
   - [1、Latex数学公式](https://blog.csdn.net/davidhzq/article/details/100904811#1Latex_255)
   - [2、甘特图](https://blog.csdn.net/davidhzq/article/details/100904811#2_272)
   - [4、Mermaid流程图](https://blog.csdn.net/davidhzq/article/details/100904811#4Mermaid_331)
   - [5、Flowchart流程图](https://blog.csdn.net/davidhzq/article/details/100904811#5Flowchart_353)
   - [导出与导入](https://blog.csdn.net/davidhzq/article/details/100904811#_383)
   - [离线写博客](https://blog.csdn.net/davidhzq/article/details/100904811#_390)
-  - [最后](https://blog.csdn.net/davidhzq/article/details/100904811#_396)
-
-
+- [最后](https://blog.csdn.net/davidhzq/article/details/100904811#_396)
 
 ## Markdown介绍
 
  Markdown 是一种轻量级标记语言，它允许人们使用易读易写的纯文本格式编写文档，然后转换成格式丰富的HTML页面。这几年Markdown编辑器以其独到的优势迅速火起来了，很多写作平台都开始支持了。
  Markdown语法常用的也就十个左右，Markdown编辑器深受技术人员和效率写手的喜爱，很多Markdown编辑器还可以轻松地将文本转换为pdf等格式。
 
-## 快捷键
-
- 助记：其中四个命令是Ctrl+字母（同office里面一样），其余的都是Ctrl+shift+字母。
-
-- 撤销：Ctrl + Z（同office一样）
-- 重做：Ctrl + Y（同office一样）
-- 标题：Ctrl + Shift + H（标题的英文是headline，所以取字母H）
-- 加粗：Ctrl + B（同office一样）
-- 插入链接：Ctrl + Shift + L（链接的英文是Link，所以取字母L）
-- 插入代码：Ctrl + Shift + K（本来可以用Code的字母C，但是C被人用了，K是Keyword的意思，因为代码语法高亮显示，主要是显示keyword）
-- 插入图片：Ctrl + Shift + G（图形是Graphic，取字母G）
-- 有序列表：Ctrl + Shift + O（有序的是Order，取字母O）
-- 无序列表：Ctrl + Shift + U（无序的是Unordered，取字母U）
-- 横线：Ctrl + Shift + R（这个我也不知道为什么……）
-- 斜体：Ctrl + I（同office一样）
-- 引用：Ctrl + Shift + Q（引用是Quote，取字母Q）
-
-## 1、标题
+#### 1、标题
 
  助记：#+空格，1个#号表示1级标题，6个#表示6级标题，#号越多字体越小。
 
@@ -185,62 +167,55 @@
 #### 标题4
 ##### 标题5
 ###### 标题6
-123456
 ```
 
 ![在这里插入图片描述](https://i.loli.net/2021/02/20/ZXlApKwSYExoGBv.png)
 
-## 2、粗体/斜体/删除线/字体底色
+#### 2、粗体/斜体/删除线/字体底色
 
 ```code
 **粗体是每边两个星号**
-1
 ```
 
 **粗体是每边两个星号**
 
 ```code
 *斜体是每边一个星号*
-1
 ```
 
 *斜体是每边一个星号*
 
 ```code
 ~~删除线是每边两个波浪线~~
-1
 ```
 
-删除线是每边两个波浪线
+~~删除线是每边两个波浪线
 
 ```code
 ==字体底色是每边两个等号==
-1
 ```
 
-字体底色是每边两个等号
+==字体底色是每边两个等号==
 
-## 3、上标/下标
+#### 3、上标/下标
 
 - 助记：**上标**每边一个^符号
 
 ```code
 2^10^ 运算结果是 1024。
-1
 ```
 
-210 运算结果是 1024。
+2^10^ 运算结果是 1024。
 
 - 助记：**下标**每边一个~符号
 
 ```code
 H~2~O 就是水。
-1
 ```
 
-H2O 就是水。
+H~2~O 就是水。
 
-## 4、无序排列
+#### 4、无序排列
 
  助记：列表分为三种无序列表、有序列表、待办事项列表。
  无序列表是：-（减号）+空格，或：*+空格，或：+（加号）+空格，效果都是一样的，样式只有小黑点一种。
@@ -249,29 +224,27 @@ H2O 就是水。
 - 无序
 * 无序
 + 无序
-123
 ```
 
 - 无序
 - 无序
 - 无序
 
-## 5、有序排列
+#### 5、有序排列
 
  助记：有序列表是：数字+.(英文句号)+空格，样式只有数字一种。
 
 ```code
 1. 有序
 2. 有序
-3.	有序
-123
+3. 有序
 ```
 
 1. 有序
 2. 有序
 3. 有序
 
-## 6、待办事项
+#### 6、待办事项
 
  助记：计划事项是：-（减号）+空格+[+空格+]+空格
  已完成事项：-（减号）+空格+[+字母x（大小写都可以）+]+空格
@@ -279,50 +252,49 @@ H2O 就是水。
 ```code
 - [ ] 计划任务
 - [x] 完成任务
-12
 ```
 
--  计划任务
--  完成任务
+-  [ ] 计划任务
+-  [x] 完成任务
 
-## 7、引用
+#### 7、引用
 
  引用主要用于形成一个带底色的方框，表示引用其他的文字或说明。
  助记：>(大于号)+空格
 
 ```code
 > 这里是引用的文字
-1
 ```
 
 > 这里是引用的文字
 
-## 8、脚注
+#### 8、脚注
 
  脚注是对某一段话，某一个词的备注说明，专业性表格或技术论文中经常使用。
 
-- 助记(引用)：[^数字]
+- 助记(引用)：\[^数字]
 
 ```code
 这是一段话[^1]
 这是二段话[^2]
-12
 ```
 
 这是一段话[1](https://blog.csdn.net/davidhzq/article/details/100904811#fn1)
 这是二段话[2](https://blog.csdn.net/davidhzq/article/details/100904811#fn2)
 
-- 助记：冒号[^数字]
+- 助记：冒号\[^数字]
 
 ```code
 [^1]:这是脚注1
 [^2]:这是脚注2
-12
 ```
+
+[^1]:这是脚注1
+[^2]:这是脚注2
 
 脚注的内容可以写在任何地方，但预览或发布时会自动显示在页面最底下，并在上面添加一个分割线。
 
-## 9、自动注释
+#### 9、自动注释
 
  脚注是对某一段话，某一个词的专有说明，而自动注释可以对文中所有出现的某个词进行说明，并以鼠标提示的方式进行说明。
  助记：被说明的词前后空格或跟着标点符号，
@@ -330,105 +302,114 @@ H2O 就是水。
 
 ```code
 Markdown兼容标准的 HTML 语法。
-*[HTML]:一种超文本标记语言、
-12
+*[HTML]:一种超文本标记语言
 ```
 
 Markdown兼容标准的 HTML 语法。
+*[HTML]:一种超文本标记语言
 
-## 10、链接
+#### 10、链接
 
  助记：常用链接有三种，地址链接，文字链接，图片链接(参见下文单独的说明)
 
-###  a) 地址链接
+#####  a) 地址链接
 
  助记：<http开头的地址>
 
 ```code
 <https://www.baidu.com>
-1
 ```
 
-[https://www.baidu.com](https://www.baidu.com/)
+<https://www.baidu.com>
 
-###  b) 文字链接
+#####  b) 文字链接
 
  助记：`[文字内容](http开头的地址)`
 
 ```code
 [百度](https://www.baidu.com/)
-1
 ```
 
 [百度](https://www.baidu.com/)
 
-## 11、图片链接
+#### 11、图片链接
 
-###  a) 一般图片
+#####  a) 一般图片
 
  助记：
 
 ```
 ![图片提示性文字，可不(图片地址)图片地址)]
+```
+
 在一般文字链接前面多了一个叹号！
-12
+
 例如：
+
+```
 ![头像](https://avatar.csdn.net/1/F/F/3_davidhzq.jpg)
 显示如下的头像图标：
-123
 ```
 
 ![头像](https://i.loli.net/2021/02/20/9ElxsnFbAdOtKgT.gif)
 
-###  b) 带尺寸图片
+#####  b) 带尺寸图片
 
  助记：
 
 ```
 ![图片提示性文字，可不写](图片地址 =尺寸)，=号前面有空格
-在末尾多了一个 =号
-12
-例如：
-![头像](https://avatar.csdn.net/1/F/F/3_davidhzq.jpg =130x130)
-显示如下的头像图标：
-123
 ```
+
+在末尾多了一个 =号
+
+例如：
+
+```code
+![头像](https://avatar.csdn.net/1/F/F/3_davidhzq.jpg =130x130)
+```
+
+显示如下的头像图标：
 
 ![img](https://i.loli.net/2021/02/20/SGU3HOCd9koLz1x.gif)
 
-###  c) 图片居中
+#####  c) 图片居中
 
  助记：
 
 ```
 ![图片提示性文字，可不写](图片地址#pic_center)，#号前面不能有空格
-1
-例如：
-![头像](https://avatar.csdn.net/1/F/F/3_davidhzq.jpg#pic_center)
-显示如下的头像图标：
-123
 ```
+
+例如：
+
+```code
+![头像](https://avatar.csdn.net/1/F/F/3_davidhzq.jpg#pic_center)
+```
+
+显示如下的头像图标：
 
 ![图片](https://i.loli.net/2021/02/20/4JCng2IGzsYfOFq.gif)
 
-###  d) 图片居中且带尺寸
+#####  d) 图片居中且带尺寸
 
  助记：将上述两者结合即可
 
+​	例如：
+
 ```code
-例如：
 ![头像](https://avatar.csdn.net/1/F/F/3_davidhzq.jpg#pic_center =130x130)
-显示如下的头像图标：
-123
 ```
+
+显示如下的头像图标：
 
 ![图片](https://i.loli.net/2021/02/20/4JCng2IGzsYfOFq.gif)
 
-## 12、参考式链接
+#### 12、参考式链接
 
  CSDN目前不支持这种链接，它用的也比较少，使用上有点类似于脚注。脚注是给某段文字加文字性说明，参考式链接是给某段文字加链接。类似于HTML中的文章内部 锚和命名。
 
-## 13、表格
+#### 13、表格
 
  表格的语法格式如下：竖线表示表格每一列，横线以上是表头，其余表格线系统自动添加。
 
@@ -438,7 +419,6 @@ Markdown兼容标准的 HTML 语法。
 电脑		| ￥5600
 电话 	| ￥3500
 PAD    	| ￥2000
-12345
 ```
 
 | 项目 | 价格   |
@@ -449,9 +429,9 @@ PAD    	| ￥2000
 
 **可以使用冒号来定义对齐方式：**
 
-使用 **:**---------**:** 居中（或者没有:号，默认也是居中）
-使用 **:**----------居左
-使用----------**:** 居右
+- 使用 **:**---------**:** 居中（或者没有:号，默认也是居中）
+- 使用 **:**----------居左
+- 使用----------**:** 居右
 
 ```code
 项目    	| 价格
@@ -468,34 +448,32 @@ PAD    	| ￥2000
 | 电话 | ￥3500 |
 | PAD  | ￥2000 |
 
-## 14、代码块
+#### 14、代码块
 
  助记：```开始，```结束，中间是代码，`是键盘数字1前面那个按键，开始标记后面可插入编程语言的名字，CSDN支持常见的十几多种编程语言，如图：
 ![在这里插入图片描述](https://i.loli.net/2021/02/20/PGfz154gnr2cVSH.png)
 
 ```
-　```javascript
-　//代码高亮显示例子
-　var aa= 'this';
-　var bb= 'that';
-　let cc= aa+ bb;
-　```
-123456
+​```javascript
+　	//代码高亮显示例子
+　	var aa= 'this';
+　	var bb= 'that';
+　	let cc= aa+ bb;
+​```
 ```
-
 效果如下：
-
 ```javascript
 //代码高亮显示例子
 var aa= 'this';
 var bb= 'that';
 let cc= aa+ bb;
-1234
 ```
 
-## 高端用法：
 
-## 1、Latex数学公式
+
+#### 高端用法：
+
+##### 1、Latex数学公式
 
  CSDN可以使用latex语法来渲染数学公式，例如：
 
@@ -505,15 +483,17 @@ n\in\mathbb N$ 是通过欧拉积分
 $$
 \Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
 $$
-12345
 ```
 
-Gamma公式展示 Γ ( n ) = ( n − 1 ) ! ∀ n ∈ N \Gamma(n) = (n-1)!\quad\forall n\in\mathbb NΓ(*n*)=(*n*−1)!∀*n*∈N 是通过欧拉积分
-Γ ( z ) = ∫ 0 ∞ t z − 1 e − t d t   . \Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.Γ(*z*)=∫0∞​*t**z*−1*e*−*t**d**t*.
+Gamma公式展示 $\Gamma(n) = (n-1)!\quad\forall
+n\in\mathbb N$ 是通过欧拉积分
+$$
+\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
+$$
 更多latex数学符号详见：[常用数学符号的 LaTeX 表示方法](https://www.mohu.org/info/symbols/symbols.htm)
 kaTeX数学表达式参见：[KaTeX](https://khan.github.io/KaTeX/)
 
-## 2、甘特图
+##### 2、甘特图
 
  一个常见的甘特图例子如下：
 
@@ -529,36 +509,106 @@ kaTeX数学表达式参见：[KaTeX](https://khan.github.io/KaTeX/)
 	        计划二               :         des4, after des3, 5d
 　```
 	#甘特图代码例子
-1234567891011
 ~~~
 
-Mon 06Mon 13Mon 20已完成进行中计划一计划二现有任务Adding GANTT diagram functionality to mermaid
-
+```mermaid
+gantt
+        dateFormat  YYYY-MM-DD
+        title Adding GANTT diagram functionality to mermaid
+        section 现有任务
+        已完成               :done,    des1, 2014-01-06,2014-01-08
+        进行中               :active,  des2, 2014-01-09, 3d
+        计划一               :         des3, after des2, 5d
+        计划二               :         des4, after des3, 5d
+```
 更多甘特图用法参考：[参考文档](https://mermaidjs.github.io/#/gantt)
 
-3、UML序列图
+##### 3、UML序列图
+
  一个常见的UML序列图例子如下：
 
 ~~~code
-	```mermaid
+```mermaid
 	sequenceDiagram
-	张三 ->> 李四: 你好！李四, 最近怎么样?
-	李四-->>王五: 你最近怎么样，王五？
-	李四--x 张三: 我很好，谢谢!
-	李四-x 王五: 我很好，谢谢!
-	Note right of 王五: 李四想了很长时间, 文字太长了<br/>不适合放在一行.
-
-	李四-->>张三: 打量着王五...
-	张三->>王五: 很好... 王五, 你怎么样?
-	```
-	#UML序列图代码例子
-123456789101112
+		张三 ->> 李四: 你好！李四, 最近怎么样?
+		李四-->>王五: 你最近怎么样，王五？
+		李四--x 张三: 我很好，谢谢!
+		李四-x 王五: 我很好，谢谢!
+		Note right of 王五: 李四想了很长时间, 文字太长了<br/>不适合放在一行.
+		李四-->>张三: 打量着王五...
+		张三->>王五: 很好... 王五, 你怎么样?
+```
+#UML序列图代码例子
 ~~~
 
-张三李四王五你好！李四, 最近怎么样?你最近怎么样，王五？我很好，谢谢!我很好，谢谢!李四想了很长时间, 文字太长了 不适合放在一行.打量着王五...很好... 王五, 你怎么样?张三李四王五
-
-
+```mermaid
+	sequenceDiagram
+		张三 ->> 李四: 你好！李四, 最近怎么样?
+		李四-->>王五: 你最近怎么样，王五？
+		李四--x 张三: 我很好，谢谢!
+		李四-x 王五: 我很好，谢谢!
+		Note right of 王五: 李四想了很长时间, 文字太长了<br/>不适合放在一行.
+		李四-->>张三: 打量着王五...
+		张三->>王五: 很好... 王五, 你怎么样?
+```
 
 更多UML序列图用法参考： [参考文档](https://mermaidjs.github.io/#/sequenceDiagram)
 
-## 4、Mermaid流程图
+##### 4、Mermaid流程图
+
+ 一个常见的Mermaid流程图例子如下：
+
+```code
+​```mermaid
+	graph LR
+	A[长方形] -- 链接 --> B((圆))
+	A --> C(圆角长方形)
+	B --> D{菱形}
+	C --> D
+​```
+#Mermaid流程图代码例子
+```
+
+```mermaid
+graph LR
+	A[长方形] -- 链接 --> B((圆))
+	A --> C(圆角长方形)
+	B --> D{菱形}
+	C --> D
+```
+
+更多Mermaid流程图用法参考：[参考文档](https://mermaidjs.github.io/#/flowchart?id=graph)
+
+##### 5、Flowchart流程图
+
+ 一个常见的Flowchart流程图例子如下：
+
+```code
+​```mermaid
+	flowchart
+	st=>start: 开始
+	e=>end: 结束
+	op=>operation: 我的操作
+	cond=>condition: 确认？
+
+	st->op->cond
+	cond(yes)->e
+	cond(no)->op
+​```
+#Flowchart流程图代码例子
+```
+
+```mermaid
+flowchart
+	st=>start: 开始
+	e=>end: 结束
+	op=>operation: 我的操作
+	cond=>condition: 确认？
+	
+	st->op->cond
+	cond(yes)->e
+	cond(no)->op
+```
+
+更多Flowchart流程图用法参考：[参考文档](http://flowchart.js.org/)
+

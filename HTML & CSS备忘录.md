@@ -4,6 +4,8 @@
 
 **\<hr\>**是horizontal rule的缩写
 
+
+
 #### \<meta>
 
 HTML \<meta> 元素表示那些不能由其它 HTML 元相关（meta-related）元素（(\<base>、\<link>, \<script>、\<style> 或 \<title>）之一表示的任何元数据信息。
@@ -35,6 +37,8 @@ HTML \<meta> 元素表示那些不能由其它 HTML 元相关（meta-related）�
   - **refresh：** 这个属性指定：
     - 如果 content 只包含一个正整数，则为重新载入页面的时间间隔(秒)；
     - 如果 content 包含一个正整数，并且后面跟着字符串 ';url=' 和一个合法的 URL，则是重定向到指定链接的时间间隔(秒)
+
+
 
 **HTML5 新属性**
 
@@ -97,6 +101,8 @@ XML 解析器通常会解析 XML 文档中所有的文本。
 
 摘自：[W3school - XML CDATA](https://www.w3school.com.cn/xml/xml_cdata.asp)
 
+
+
 #### \<figure>
 
 **HTML `<figure>` 元素**代表一段独立的内容，<font color=FF0000>经常与说明（caption）\<figcaption>配合使用，并且作为一个独立的引用单元</font>。当它属于主内容流（main flow）时，它的位置独立于主体。这个标签经常是在主文中引用的图片，插图，表格，代码段等等，当这部分转移到附录中或者其他页面时不会影响到主体。
@@ -125,7 +131,9 @@ HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独
 
 摘自：[MDN - \<section>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/section)
 
-### \<input>
+
+
+#### \<input>
 
 如果想要输入的值位于中间 / 右边，只需要设置text-align: center / right即可，同时，placeholder也会跟着居中 / 居右
 
@@ -156,6 +164,8 @@ HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独
   
   （隐藏只是在网页页面上面不显示输入框，但是虽然隐藏了，还是具有form传值功能。一般用来传值，而不必让用户看到。）
 
+
+
 #### \<textarea\>完全去除边框：
 
 ```css
@@ -167,6 +177,40 @@ textarea{
 ```
 
 摘自：[textarea 完全去除边框](https://blog.csdn.net/qq_32849999/article/details/102978744)
+
+
+
+#### 锚点
+
+锚点是网页制作中超级链接的一种，又叫命名锚记。命名锚记像一个迅速定位器一样是一种页面内的超级链接，运用相当普遍。英文名为：anchor
+
+- 声明示例如下：
+
+  ```html
+  <a name="top">这里是TOP部分</a>
+  <a name="content">这里是CONTENT部分</a>
+  <a name="foot">这里是FOOT部分</a>
+  ```
+
+  <font color=FF0000>可以使用 id 属性来替代 name 属性，命名锚同样有效</font>。
+
+- **锚点的访问有两种方法**
+
+  - 一种是利用超链接标签 `<a></a>` 制作锚点链接，主要用于页面内的锚点访问
+
+    ```html
+    <a href="#top">点击我链接到TOP</a>
+    <a href="#content">点击我链接到CONTENT</a>
+    <a href="#foot">点击我链接到FOOT</a>
+    ```
+
+  - 另一种方式是<font color=FF0000>直接在页面地址后面加锚点标记，主要用于不同页面之间的锚点访问</font>
+
+    <mark>假如本页面的地址是 `http://文件路径/index.html`，要访问foot锚点只要访问如下链接即可：`http://文件路径/index.html#foot`</mark>
+
+摘自：[html中的锚点介绍和使用](https://blog.csdn.net/yangkai_hudong/article/details/14163483)
+
+
 
 ## CSS
 

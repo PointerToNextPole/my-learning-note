@@ -704,7 +704,7 @@ http://www.w3.org/TR/css3-selectors/#target-pseudo
 #### P101 - P103
 
 -  `::first-letter` 伪元素用于<font color=FF0000>装饰**任何非行内元素**的首字母</font>，或者开头的标点符号和首字母（如果文本以标点符号开头）
-- `::first-line` 用于装饰元素的<font color=FF0000>首行文本</font>
+-  `::first-line` 用于装饰元素的<font color=FF0000>首行文本</font>
 
 对 `::first-letter`和 `::first-line` 的限制
 
@@ -1303,3 +1303,325 @@ h2 {color: var(--highlight-color);}
 <font color=FF0000>自定义标识符以两个连字符开头（`--`）。调用的方法是使用 `var()` 值类型。 注意，这些名称是区分大小写的</font>，因此 `--main-color` 和 `--Main-color` 是完全不同的两个标识符。
 
 这些自定义标识符通常被称为“CSS 变量”，这解释了为什么使用 `var()` 调用它们。
+
+
+
+## Chapter 5 : font
+
+#### P155
+
+<font color=FF0000>CSS2开始支持使用＠font-face 下载指定的自定义字体</font>，不过直到 2009年前后这个功能才以一致的方式被广泛支持。<mark>现在，借助（Typekit）等在线服务，网站可以使用任何想用的字体</mark>。一般来说，只要你有权使用一个字体，就能在设计中使用它。
+
+<font color=FF0000>然而，要注意，这并不表明你能完全控制字体。如果字体下载失败，或者字体的格式不被用户的浏览器支持，那么文本将使用后备字体显示</font>。 这是好事，因为即使指定的字体无法使用，依然能把内容呈现给用户。 <font color=FF0000>不过要注意的是，你不能完全依赖某个字体，千万不要觉得设计成什么样就会显示成什么样</font>。
+
+
+
+#### P155 - P156
+
+我们熟知的“字体” 通常包含多个变体，分别针对粗体、斜体等。 例如你可能熟悉（至少听说过）的Times字体，其实它有多种变体，包括 TimesRegular，TimesBold，TimesItalic，TimesBoldItalic等。<font color=FF0000>Times 的这些变体各自都是一个字型（font face），我们通常说的Times，其实是这些不同字型的统称。也就是说，Times其实是一个字体族（font family），而不是一个字体</font>。大多数人都会把字体理解为单个实体。
+
+为了覆盖所有情况，CSS定义了五种通用字体族：
+
+- 衬线字体
+- 无衬线字体
+- 等宽字体
+- 草书字体
+- 奇幻字体
+
+
+
+#### P158
+
+```css
+h1 {font-family: Georgia;}
+```
+
+这个规则假设用户代理中安装了Georgia 字体，如果没有这款字体，用户代理不会使用这个规则。用户代理不会将其忽略，如果找不到名为“Georgia”的字体，将会使用用户代理的默认字体显示h1元素。
+
+然而，不必灰心。 结合字体名称和通用字体族，可以尽量让结果与预想接近。 接看上例，对下述规则来说，如果用户代理中有Georgia字体，就使用Georgia字体，否则使用其他无衬线字体：
+
+```css
+h1 {font-family: Georgia, serif;}
+```
+
+如果你没有安装Georgia，但是安装了Times，用户代理可能会使用Times显示h1元素。即便Times 与Georgia 不完全一样，但是足够接近。
+
+<mark>鉴于此，强烈建议始终在 font-family 规则中指定通用字体族。 这样做相当于提供一种后备机制，在用户代理找不到匹配的字体时，选择一个字体代替。</mark>
+
+
+
+```css
+p {font-family: Times, 'Times New Roman', 'New Century Schoolbook', Georgia, 'New York', serif;}
+```
+
+用户代理会按照所列的顺序査找字体。 如果找不到列出的任何一款字体，用户代理将选择一款可用的衬线字体.
+
+
+
+#### P159 使用引号
+
+在上例中，你可能注意到了之前没见过的单引号。<font color=FF0000>在font-family 声明中，如果字体名称中有一个或多个空格（例如“New York”），或者字体名称中有符号（例如#或$），建议使用引号</font>。因此，名为Karrank％的字体就应该放在引号里：
+
+```css
+h2 {font-family: Wedgie, 'Karrank%', Klingon, fantasy;}
+```
+
+<font color=FF0000>如果没有引号，用户代理可能会忽略那个字体名称，然后接着处理规则后面的部分</font>。<mark>注意，把包含符号的字体名称放在引号里不是强制要求，只是推荐做法，相当于CSS规逗中所说的最佳实践</mark>。 
+
+<font color=FF0000>font-family使用的引号既可以是单引号，也可以是双引号</font>。注意，<font color=FF0000>如果把 font-family 规则放在style属性中（一般不应该这么做），使用的引号要与属性使用的不同。 因此，如果font-family 规则放在双引号里，那么规则内部就要使用单引号</font>，如下所示：
+
+```html
+<p style="font-family: 'New Century Schoolbook', Times, serif;">...</p>
+```
+
+
+
+#### P160 - P161 ＠font-face
+
+＠font-face 的作用是让你在设计中使用自定义的字体，这个特性首次出现在CSS2中，不过直到21 世纪头十年的后半期才实现。 尽管无法保证每个终端用户都能用上你指定的字体，但是这个特性却得到了广泛支持。
+
+假设你想使用的字体没有广泛安装，而是个十分特别的字体，借助＠font-face的魔力，你可以定义一个专门的字体族名称，对应于服务器上的一个字体文件。 用户代理将下载那个文件，使用它渲染页面中的文本，就好像用户的设备中安装了那个字体一样。 下面举个例子：
+
+```css
+@font-face {
+	font-family: "SwitzeraADF";
+	src: url("SwitzeraADF-Regular.otf");
+}
+```
+
+用户代理见到 `font-family: SwitzeraADF` 声明后，会加载对应的 `.otf` 文件，然后使用它渲染文本。
+
+<font color=FF0000>`＠font-face` 是惰性加载字型的。 这表明，仅当需要使用指定的字型渲染文本时，才会加载，否则不加载</font>。 <mark>其实， 浏览器不管是否需要，都会先行下载声明的全部字型，这是浏览器的缺陷</mark>。
+
+
+
+#### P161 - P162
+
+定义字体的全部参数都在`＠font-face {}` 结构中编写。这些参数称为描述符（descriptor），与属性十分相似，格式为 `descriptor: value;` 。 其实，多数描述符都直接使用现有的属性名，稍后将做详细说明。
+
+<font color=FF0000>描述符中有两个是必需的：font-family和src</font>
+
+<font color=FF0000>src的作用</font>不言而喻：<font color=FF0000>为定义的字型提供一个或多个源</font>，<mark>如果有多个源，之间以逗号分隔</mark>。<font color=FF0000>字型的源可以指向任何 URI，不过有个限制：字型必须与样式表同源</font>。因此，不能把src指向别人的网站，下载别人的字体。你要在自己的服务器中存储一份本地副本，或者使用同时提供样式表和字体文件的字体托管服务。
+
+<font color=FF0000>同源限制有个例外：使用HTTP首部 `Access-Control-Allow-Origin` 设定服务器，允许跨站加载</font>
+
+
+
+#### P162
+
+你可能觉得奇怪，这里的 font-family和前一节所讲的有何不同？区别是，<font color=FF0000>这里（@font-face）的font-family是字体族描述符</font>，而<font color=FF0000>前一节中的font-family是字体族属性</font>。
+
+其实，<font color=FF0000>＠font-face 做的是低层定义，是为字体相关的属性（如 font-family）服务的</font>。<mark>通过描述符 `font-family: "SwitzeraADF";` 定义一个字体族名称之后，用户代理的字体族名称表中便会出现“SwitzeraADF”条目，与Helvetica，Georgia，Courier 等具有同等地位，可以在 font-family属性的值中引用</mark>：
+
+```css
+@font-face {
+	font-family: "SwitzeraADF"; /* descriptor 描述符 */
+	src: url("SwitzeraADF-Regular.otf");
+}
+h1 {font-family: SwitzeraADF, Helvetica, sans-serif;} /* property 属性*/
+```
+
+<font color=FF0000>注意，**font-family描述符的值和font-family 属性中出现的那个字体族名是一样的**。如果不一样，h1规则将忽略font-family 属性值中列出的第一个字体族名称，解析后一个</font>。只要成功下载了字体文件，而且文件的格式是用户代理支持的，那个字体就会像其他字体一样用于渲染文本。
+
+
+
+#### P163
+
+如果想告诉用户代理所用的字体是什么格式，可以使用可选的 format()
+
+```css
+@font-face {
+	font-family: "SwitzeraADF";
+	src: url("SwitzeraADF-Regular.otf") format("opentype");
+}
+```
+
+这样做的好处是，<font color=FF0000>让用户代理跳过不支持的字体格式，从而减少带宽用量，提升加载速度</font>。
+
+<mark>此外，使用 format() 还能为不带有常规扩展名的字体文件指定格式，以防用户代理不识别</mark>：
+
+```css
+@font-face {
+	font-family: "SwitzeraADF";
+	src: url("SwitzeraADF-Regular.otf") format("opentype"),
+	url("SwitzeraADF-Regular.true") format("truetype");
+}
+```
+
+
+
+#### P164 可用的字体格式值
+
+|        值         |              格式              |
+| :---------------: | :----------------------------: |
+| embedded-opentype |    EOT (Embedded OpenType)     |
+|     opentype      |         OTF (OpenType)         |
+|        svg        | SVG (Scalable Vector Graphics) |
+|     truetype      |         TTF (TrueType)         |
+|       woff        |  WOFF (Web Open Font Format)   |
+
+
+
+除了使用 `url()` 和 `format()` 组合之外，还可以使用 local()（名称表明了作用）指定已经安装在用户设备中的字体族名称（可以是多个）:
+
+```css
+@font-face {
+	font-family: "SwitzeraADF";
+	src: local("Switzera-Regular"),
+			 local("SwitzeraADF-Regular "),
+			 url("SwitzeraADF-Regular.otf") format("opentype"),
+			 url("SwitzeraADF-Regular.true") format("truetype");
+}
+```
+
+这里，用户代理先检查设备中是否有名为“Switzera-Regular” 或 “SwitzeraADF-Regular”的字体族，如果有，使用 SwitzeraADF 这个名称指代本地安装的字体；如果没有，尝试从远端下载url()中指定的字体文件。
+
+
+
+#### P166 - P168 其他字体描述符
+
+除了必须的font-family和src描述符，还有几个可选的描述符用于为字型指定属性值。
+
+|            描述符            |    默认值    |                             说明                             |
+| :--------------------------: | :----------: | :----------------------------------------------------------: |
+|          font-style          |    normal    |                   区分常规、斜体和倾斜字型                   |
+|         font-weight          |    normal    |                  区分不同的字重（例如加粗）                  |
+|         font-stretch         |    normal    |             区分不同的字符宽度（例如紧缩和加宽）             |
+|         font-variant         |    normal    | 区分众多字形变体（例如小号大写字母），在很多方面与CSS中的font-feature-settings很像 |
+| font-feature-settings normal |    normal    |         直接访问OpenType 的低层特性（例如启用连字）          |
+|        unicode-range         | U+0 - 10FFFF |                 定义指定字体中可用的字符范围                 |
+
+有一个字体描述符没有对应的CSS属性，即 `unicode-range` 。这个描述符用于指定自定义字体可以应用到哪些字符上。 使用符号字体，或者想确保只有特定语言使用指定字型时用得到这个描述符。
+
+默认情况下，这个描述符的值涵盖全部Unicode字符。 这表明，只要字体中有某个字符的字形，就能用它渲染那个字符。 多数情况下，这正是我们想要的。然而，有时我们想使用特定的字型渲染特定的内容。 下面是从 CSS Fonts Module Level3规范中摘取的两
+
+```css
+unicode-range: U+590-5FF; /* 希伯来语字符 */
+unicode-range: U+4E00-9FFF, U+FF00-FF9F, U+30??; /* 日语汉字、平假字、片假名 */
+```
+
+第二个例子指定了多个范围，以逗号分隔，涵盖所有日语字符。<font color=FF0000>里面奇怪的 `U+30??` 值 unicode-range 允许使用的特殊格式，问号是通配符，意思是“任何数字“ 。因此，`U+30??` 等效于 U+3000-30FF</font>。unicode-range 的值中只允许使用问号这一个“特殊的”字符。
+
+<font color=FF0000>范围必须从小到大，反过来（例如U+400-300）会导致解析错误而被忽略</font>。除了范围之外，<font color=FF0000>还可以声明单个码位，例如 U+221E</font>。 单个码位通常与其他码位和范围结合起来使用，比如像下面这样：
+
+```css
+unicode-range: U+4E00-9FFF, U+FF00-FF9F, U+30??, U+A5; /* 日语汉字，平假名，片假名，外加货币符号¥ */
+```
+
+可以指定一个码位，让指定的字体渲染唯一的字符。 要不要这么做取决于你自己 你的设计，字体文件的大小和用户的网速。
+
+<font color=FF0000>＠font-face 是惰性加载的，因此可以使用 unicode-range 限制只下载页面中真正需要用到的字型</font>。
+
+
+
+#### P172 字重 font-weight
+
+- <font color=FF0000>取值：normal | bold | bolder | lighter | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900</font>
+
+- <font color=FF0000>初始值：normal</font>
+
+- **字重的工作方式**
+
+  为了弄清用户代理如何确定一个字体变体的粗细（或字重），先要理解关键字 100到900。这些数字关键字对应于字体设计中的九级字重。<mark>如果一个字体族中有全部九级字重，那么这些数字就直接对应于预定义的级别，100是最细的，900是最粗的</mark>。
+
+  其实，这些数字并不表示字重本身。CSS 规范只是说，每个数字对应的权重至少和前面的数字具有相同的字重。因此，100，200，300和400可能都对应于同样细的变体；500和600对应于同样粗的变体；700，800和900则对应同样较粗的变体。 只要后面的数字关键字对应的粗细不比前面的数字关键字细就行。
+
+- **增大字重 bolder**
+
+  <font color=FF0000>如果把一个元素的字重设为 bolder，用户代理首先要确定从父元素继承的 font-weight值是什么，然后选择比继承的字重高一级的最小数字</font>。 <mark>如果找不到，用户代理把元素的字重设为下一个数字值，直到900；到顶后，就把字重设为 900</mark>
+
+- **减小字重 lighter**
+
+  lighter的工作方式与bolder类似，只不过是让用户代理向下减小字重。
+
+
+
+#### P180 字号 font-size
+
+- <font color=FF0000>取值：xx-small | x-small | small | medium | large | x-large | xx-large | smaller | larger | \<length> | \<percentage></font>
+
+- <font color=FF0000>初始值：medium</font>
+
+- font-size 属性与渲染结果之间的关系由字体设计者决定。 <font color=FF0000>这个关系在字体中通过em方框（或em盒子）表示</font>。<mark>em方框（以及字号）与字体中字符的边界没有关系，其实它指的是在没有行距（CSS中的line-height）的情况下两条基线之间的距离</mark>。字体中完全有可能存在高度超过基线之间距离的字符。<font color=FF0000>鉴于此，设计字体时要确保所有字符都比em方框小</font>。事实上，多数字体就是这么做的。 
+
+- **绝对大小**
+
+  font-size 支持的绝对大小值有七个：XX-Small，x-small，small，medium，large，x-large 和xx-large。这几个关键字没有固定的大小，而是相对而言的。
+
+  根据<font color=FF0000>CSS1规范</font>，这些绝对大小之间相差的倍数（成叫换算系数）是向上1.5，同下0.66。因此，如果medium相当于 10px，那么large应该是15px，后来，人们觉得换算系数太大，因此<font color=FF0000>CSS2</font>建议取1.0~1.2，而<font color=FF0000>CSS3草案</font>提供更为复茶的计算方式（例如，small是medium8/9，xx-small是medium的3/5）。<font color=FF0000>不过，这些只是简易的换算系数，用户代理随时可以调整。</font>
+
+  |  关键字  | CSS1 | CSS2 | CSS3 (草案) |
+  | :------: | :--: | :--: | :---------: |
+  | xx-small | 5px  | 9px  |    10px     |
+  | x-small  | 7px  | 11px |    12px     |
+  |  small   | 11px | 13px |    14px     |
+  |  medium  | 16px | 16px |    16px     |
+  |  large   | 24px | 19px |    19px     |
+  | x-large  | 36px | 23px |    24px     |
+  | xx-large | 54px | 28px |    32px     |
+
+
+
+#### P191 - P192 字形 font-style
+
+- <font color=FF0000>取值：italic | oblique | normal</font>
+
+- <font color=FF0000>初始值：normal</font>
+- 简单来说，斜体是一种单独的字型，各字母的构造有些改动，体现外观上的不同。衬线字体在这一点上的体现尤为明显，除了字符有点斜之外，字符本身还可能会做调整。而倾斜体只是竖直体的倾斜版本。
+
+
+
+#### //TODO
+
+#### ... // 由于后面过于冷僻繁杂，所以本章后面的内容暂时省略
+
+
+
+## Chapter 6 文本属性
+
+#### P214 缩进文本 text-indent
+
+- **基本信息**
+
+  - 取值：\<length> | \<percentage>
+  - 初始值：0
+  - 适用于：块级元素
+
+- <mark>text-indent属性把元素的第一行文本缩进指定的长度</mark>，<font color=FF0000>缩进的长度可以是负值</font>。这个属性通常用于缩进段落的第一行。
+
+- text-indent 属性可以用在任何块级元素上，缩进将沿着行内方向展开。<font color=FF0000>text-indent属性不能用于行内元素或置换元素（如图像）。然而，如果图像在块级元素的第一行里，它将随行中的其他文本一起后移</font>。
+
+  text-indent 属性的值可以是负值，这样可以实现一些有趣的效果。 最常见的用法是实现悬挂缩进，，即首行相比元素的其他内容悬挂在一边。<font color=FF0000>使用负值时要小心，以防前几个词被浏览器窗口的边缘吃掉</font>。为免出现这种显示问题，建议加上外边距或内边距
+
+- 注意，文本缩进只影响元素的第一行，即便有换行也是如此。<font color=FF0000>**text-indent会继承，因此可能会出现预料之外的效果**</font>。
+
+
+
+#### P217 文本对齐 text-align
+
+- text-align控制元素中各文本的对齐方式
+
+- **基础信息**
+
+  - **取值：**start | end | left | right | center | justify | match-parent | start end
+  - **初始值：**<font color=FF0000>在**CSS3**中是start</font>，<font color=FF0000>在**CSS2.1**中，由**用户代理指定**</font>，有可能根据书写方向而定（例如，英语等西方语言是left）
+
+  - **适用于：**块级元素
+
+  - **计算值：**指定的值，match-parent除外
+
+- **`text-align：center` 和 `<center>`的区别：**
+
+  毫无疑问，center 使元素中的各行文本居中对齐。你可能以为 `text-align: center` 的作用与 `<CENTER>`元素一样，其实不然。`<CENTER>`不仅影响文本，还能把整个元素（如表格）居中显示，而text-align不控制元素的对齐方式，只影响元素中的内容。
+
+
+
+#### P220  对齐最后一行 text-align-last
+
+有时，你可能<font color=FF0000>想使用不同于其他内容的方式对齐元素的最后一行</font>。例如，在两端对齐的文本块中，可能想左对齐最后一行，或者把左对齐换成居中对齐。 此时，可以使用text-align-last 属性.
+
+- **基础信息**
+  - 取值：auto | start | end | left | right | center | justify
+  - 初始值：auto
+  - 适用于：块级元素
+- 
