@@ -2,7 +2,7 @@
 
 
 
-## **SQL通配符**
+#### **SQL通配符**
 
 |           通配符           |            描述            |
 | :------------------------: | :------------------------: |
@@ -15,7 +15,7 @@
 
 
 
-## SQL注释
+#### SQL注释
 
 **SQL注释分为<font color=FF0000>单行注释</font>和<font color=FF0000>块注释</font>**
 
@@ -37,7 +37,7 @@
 
 
 
-## ALTER TABLE 语句
+#### ALTER TABLE 语句
 
 ALTER TABLE 语句用于在已有的表中添加、修改或删除列。
 
@@ -66,7 +66,7 @@ ALTER TABLE 语句用于在已有的表中添加、修改或删除列。
 
 摘自：[**W3School - SQL ALTER TABLE 语句**](https://www.w3school.com.cn/sql/sql_alter.asp)
 
-#### **补充：**SQL 中 ALTER 和 UPDATE 的区别
+**补充：SQL 中 ALTER 和 UPDATE 的区别**
 
 ALTER 是DDL（Data Definition Language 数据定义语言）语句，是修改数据库中对象（表，数据库，视图...）的语句
 
@@ -76,7 +76,7 @@ UPDATE 是DML（Data Manipulation Language 数据操控语言）语句，是修�
 
 
 
-## SQL identity函数（属于SQL Server）
+#### SQL identity函数（属于SQL Server）
 
 **含义：**identity表示该字段的值会自动更新，不需要我们维护，通常情况下我们不可以直接给identity修饰的字符赋值，否则编译时会报错。
 
@@ -117,7 +117,7 @@ insert into student2 values ('李四','女');
 
 
 
-## 标识列
+#### 标识列
 
 标识列：是SQL Server中的标识列又称标识符列，习惯上又叫自增列。标识列的创建与修改，通常在企业管理器和用Transact-SQL语句都可实现。
 
@@ -133,7 +133,7 @@ insert into student2 values ('李四','女');
 
 
 
-## DDL / DML / DCL区别
+#### DDL / DML / DCL区别
 
 - **DDL** (Data Definition Language 数据定义语言) 用于<mark style=color:red>**操作对象和对象的属性，这种对象包括数据库本身，以及数据库对象，像：表、视图等等**</mark>，DDL对这些对象和属性的管理和定义具体表现在<mark>**create、drop和alter**</mark>上。特别注意：DDL操作的“对象”的概念，”对象“包括对象及对象的属性，而且对象最小也比记录大个层次。
 - **DML** (Data Manipulation Language 数据操控语言) 用于操作数据库对象中包含的数据，也就是说<mark style=color:red>**操作的单位是记录**</mark>。DML的<mark>**主要语句(操作)：insert、delete、update**</mark>
@@ -145,7 +145,7 @@ insert into student2 values ('李四','女');
 
 
 
-## SQL limit 和 offset
+#### SQL limit 和 offset
 
 limit是属于mysql的语法，<mark>用来从某个值开始，取出之后的N条数据的语法</mark>。<mark>用于限制查询结果返回的数量，常用于分页查询</mark>
 
@@ -165,7 +165,7 @@ limit是属于mysql的语法，<mark>用来从某个值开始，取出之后的N
 
 
 
-## SQL NOW()函数
+#### SQL NOW()函数
 
 NOW 函数返回当前的日期和时间。示例如下：
 
@@ -177,7 +177,7 @@ SELECT NOW() FROM table_name
 
 
 
-## **SQL的多种连接**
+#### **SQL的多种连接**
 
 #### <font color=FF0000>**内连接（等值连接）、左外连接、右外连接、全连接、自然连接、自身连接、交叉连接**</font>
 
@@ -187,7 +187,7 @@ SELECT NOW() FROM table_name
 	```sql
 	select m.Province,S.Name from member m inner join ShippingArea s on m.Province=s.ShippingAreaID
 	```
-**相当于：<font color=FF0000>等值连接</font>**
+	**相当于：<font color=FF0000>等值连接</font>**
 
 	```sql
 	select m.Province,S.Name from member m, ShippingArea s where m.Province=s.ShippingAreaID
@@ -201,7 +201,7 @@ SELECT NOW() FROM table_name
 - <font color=FF0000>**右连接（右外连接）**</font>`right join ... on ...`
 将返回右表的所有行。如果右表的某行在左表中没有匹配行，则将为左表返回空值：右表为主表，左表中没数据的为null**
 - <font color=FF0000>**全外连接**</font>  `full join ... on ...`
-<mark>**完整外部联接返回左表和右表中的所有行。当某行在另一个表中没有匹配行时，则另一个表的选择列表列包含空值。**</mark>如果表之间有匹配行，则整个结果集行包含基表的数据值。
+	<mark>**完整外部联接返回左表和右表中的所有行。当某行在另一个表中没有匹配行时，则另一个表的选择列表列包含空值。**</mark>如果表之间有匹配行，则整个结果集行包含基表的数据值。
 	```sql
 	select m.Province,S.Name from member m full join ShippingArea s on m.Province=s.ShippingAreaID
 	```
@@ -268,7 +268,7 @@ SELECT NOW() FROM table_name
 
 
 
-## constraints（约束）
+#### constraints（约束）
 
 **SQL 中，我们有如下约束：**
 
@@ -300,7 +300,7 @@ create table tbl_name(
 
 
 
-## distinct关键字
+#### distinct关键字
 
 > 在表中，一个列可能会包含多个重复值，有时您也许希望仅仅列出不同（distinct）的值。
 >
@@ -317,7 +317,7 @@ create table tbl_name(
 
 
 
-## having关键字
+#### having关键字
 
 > 在 SQL 中增加 HAVING 子句原因是，WHERE 关键字无法与聚合函数一起使用。
 >
@@ -337,7 +337,7 @@ create table tbl_name(
 
 
 
-## union关键字
+#### union关键字
 
 > SQL UNION 操作符合并两个或多个 SELECT 语句的结果。
 >
@@ -367,7 +367,33 @@ create table tbl_name(
 
 
 
-## SQL聚合函数
+#### TRUNCATE 清空表操作
+
+<font color=FF0000>TRUNCATE TABLE 语句比DELET删除表中的所有行更快</font>。从逻辑上讲，<font color=FF0000>TRUNCATE TABLE它类似于DELETE没有WHERE子句的语句</font>。
+
+TRUNCATE TABLE语句从表中删除所有行，但<font color=FF0000>**表结构及其列，约束，索引等保持不变**</font>。要删除表及其数据，可以使用该DROP TABLE语句，但是需谨慎操作。
+
+**基本语法：**
+
+```sql
+TRUNCATE TABLE table_name;
+```
+
+**TRUNCATE TABLE 和 DELETE的区别：**
+
+尽管DELETE和TRUNCATE TABLE似乎具有相同的效果，但是<font color=FF0000>它们的工作方式不同</font>。这是这两个语句之间的一些主要区别：
+
+- TRUNCATE TABLE语句删除并重新创建表，并使任何自动增量值都重置为其初始值（通常为1）。
+
+- DELETE可让您根据可选WHERE子句过滤要删除的行，TRUNCATE TABLE而不支持WHERE子句则仅删除所有行。
+
+- <font color=FF0000>TRUNCATE TABLE与DELETE相比，它更快并且使用的系统资源更少</font>，<mark>因为DELETE扫描表以生成受影响的行数，然后逐行删除行，并为每个删除的行在数据库日志中记录一个条目，而TRUNCATE TABLE只删除所有行而不提供任何其他信息。</mark>
+
+摘自：[SQL 清空表(TRUNCATE TABLE 语句)](https://www.nhooo.com/sql/sql-truncate-table-statement.html)
+
+
+
+#### SQL聚合函数
 
 聚合函数是<mark>对一组值执行计算并返回单一的值的函数</mark>，它经常与SELECT语句的GROUP BY子句一同使用；包含：
 
@@ -417,15 +443,13 @@ create table tbl_name(
      ```sql
      select  prd_no, checksum_agg(binary_checksum(*)) from sales group by prd_no
      ```
-```
-     
 - **CHECKSUM**  返回在表的行上或在表达式列表上计算的校验值，用于生成哈希索引。
 
 - **STDEV**  返回给定表达式中所有值的统计标准偏差。
 
-     ```sql
-     select stdev(prd_no) from sales
-```
+  ```sql
+  select stdev(prd_no) from sales
+  ```
 
 - **STDEVP**  返回给定表达式中的所有值的填充统计标准偏差。
 
@@ -467,7 +491,7 @@ create table tbl_name(
 
 
 
-### Schema
+#### Schema
 
 //TODO
 

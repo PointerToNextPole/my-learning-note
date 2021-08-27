@@ -4031,9 +4031,9 @@ var Child = {
   
   看起来，使用 provide/inject 做全局状态管理好像很危险，那么<font color=FF0000>有没有 provide/inject 更好的使用方式呢？当然有，那就是使用 provide/inject 编写组件。而使用 provide/inject 做组件开发，是 Vue 官方文档中提倡的一种做法。</font>
 
-#### $on & $emit
+#### \$on & \$emit
 
-**$on & $emit** 解决的问题分别是：事件的定义和消费。
+**\$on & ​\$emit** 解决的问题分别是：事件的定义和消费。
 
 **举个例子：**函数中的 <font color=FF0000>**this.$emit("start", args)**  触发了一个自定义事件 "start"</font>。然后<font color=0000FF>监听器 **this.$on('start',function(...) )** 监听到这个自定义事件 **"start"** 的触发，执行了监听器里面的函数。并接收了 $emit 传过来的参数 （args）</font>
 
@@ -4253,6 +4253,8 @@ Vue.js 允许你自定义过滤器，<font color=FF0000>可被用于一些常见
 
 摘自：[Vue官方文档 - 过滤器](https://cn.vuejs.org/v2/guide/filters.html)
 
+
+
 #### class 和 style 绑定的高级用法
 
 ```html
@@ -4263,6 +4265,8 @@ Vue.js 允许你自定义过滤器，<font color=FF0000>可被用于一些常见
 <div :style="[warning, mix()]">数组包含方法绑定style</div>
 <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }">style多重值</div> <!--会优先取得最后一个值，不兼容的情况下，会取倒数第二个值；以此类推-->
 ```
+
+
 
 #### checked属性
 
@@ -4283,6 +4287,8 @@ v-model 在内部为不同的输入元素使用不同的 property 并抛出不�
 - select 字段将 value 作为<font color=FF0000> **prop**</font> 并将 <font color=FF0000>**change**</font> 作为事件。
 
 摘自：[vue官方文档 -- 表单输入绑定](https://cn.vuejs.org/v2/guide/forms.html)
+
+
 
 #### render函数
 
@@ -4309,6 +4315,8 @@ createElement(tag, options, VNodes)
 
 摘自：[Vue - 渲染函数render](https://juejin.cn/post/6844903919764635655)
 
+
+
 #### Vue.nextTick( [callback, context] )
 
 - **参数**：
@@ -4322,13 +4330,19 @@ createElement(tag, options, VNodes)
 
 摘自：[Vue.js API -- Vue.nextTick](https://cn.vuejs.org/v2/api/index.html#Vue-nextTick)
 
+
+
 #### v-if和v-for为什么不能连用（写在一行）
 
 由于v-for的优先级更高，会先运行；而v-if优先级较低，后运行。等v-for所有数据都运行完了，v-if再运行（去除异常情况）会造成性能浪费。
 
+
+
 #### 一些命名规则
 
 在vue的内部，<font color=FF0000>**\_**符号开头定义的变量是供内部私有使用的</font>，而<font color=FF0000>**$** 符号定义的变量是供用户使用的</font>，而且<font color=FF0000>用户自定义的变量不能以\_或$开头，以防止内部冲突</font>。
+
+
 
 #### Vue template和is
 
@@ -4343,6 +4357,8 @@ createElement(tag, options, VNodes)
   用于<font color=FF0000>动态组件</font>且基于 DOM 内模板的限制来工作。
 
 可以参考：官方文档中给的[**示例**](https://codesandbox.io/s/github/vuejs/vuejs.org/tree/master/src/v2/examples/vue-20-dynamic-components)
+
+
 
 #### $event
 
@@ -4367,6 +4383,8 @@ methods: {
 ```
 
 摘自：[vue官方文档 - 事件处理](https://cn.vuejs.org/v2/guide/events.html)
+
+
 
 #### 添加实例 property
 
@@ -4400,6 +4418,128 @@ methods: {
 
 详见：[想要改变插件里组件的样式？使用样式穿透！【Vue】](https://www.bilibili.com/video/BV1Jv41117QN)
 
+
+
+#### v-if和v-show的区别
+
+v-if如果不满足，则对应的元素则不会在页面中渲染出来；而v-show如果不满足，对应的 元素会在页面中渲染出来，不过会加上`display: none`。
+
+**两者的最佳实践：**
+
+- v-if适用于结果定下来（很少改变）的情况
+- v-show适用于结果经常变化的情况，这时只需要改动css（修改`display: none`）即可使其展示。
+
+摘自：[v-if 和 v-show 的区别【Vue面试题】](https://www.bilibili.com/video/BV11y4y1h7hi)
+
+
+
+#### v-model内置修饰符
+
+当我们学习表单输入绑定时，我们看到 v-model 有内置修饰符—— `.trim`、`.number` 和 `.lazy`。
+
+- `.trim`：会忽略掉输入的空格
+- `.number`：会将输入的内容（str）转化为数字（num）
+- `.lazy`：v-model绑定的值会开启“懒策略”，直到当前组件失焦（blur），v-model绑定的值才会变化
+
+但是，在某些情况下，你可能还需要添加自己的自定义修饰符。
+
+让我们创建一个示例自定义修饰符 `capitalize`，它将 `v-model` 绑定提供的字符串的第一个字母大写。
+
+
+
+## Vue3及学习补充
+
+#### 生命周期
+
+![实例的生命周期](https://v3.cn.vuejs.org/images/lifecycle.svg)
+
+- **初始化事件 & 生命周期：**分析代码中的事件绑定和生命周期函数
+- **beforeCreate：**在实例生成之前自动执行的函数
+- **初始化注入 & 响应性：**分析数据和模版之间双向绑定，和依赖注入的相关内容
+- **created：**在实例生成之后自动执行的函数
+- **beforeMount：**在组建内容被渲染到页面之前执行；将模版（如果有）变成渲染函数之后自动执行
+- **mounted：**在组件内容被渲染到页面之后自动执行
+- **beforeUpdate：**当data中的数据发生变化时<font color=FF0000>立即</font>自动执行的函数。打印dom还是修改前的内容
+- **updated：**当data中数据发生变化，<mark>同时页面完成更新后</mark>，自动执行的函数。打印dom是修改后的内容
+- **beforeUnmount：**当组件销毁时，立即自动执行的函数。仍可以打印出dom（dom仍未被销毁）
+- **unmounted：**当组件销毁时，<font color=FF0000>且dom完全被销毁</font>，自动执行的函数。不能打印出dom（dom已经被销毁）
+
+
+
+#### $attrs
+
+父组件使用子组件，如果在使用过程中添加新的属性，需要子组件接收，而接收可以通过 `$attrs.property-name`实现
+
+示例如下，下面父组件向子组件传递了class属性：
+
+```vue
+template: `
+	<div>
+    <demo class="green"/>
+	</div>
+`
+
+app.component('demo', {
+	template: `
+		<div :class="$attrs.class">foo</div>
+	`
+})
+```
+
+**官方文档解释：**
+
+包含了父作用域中不作为组件 props 或自定义事件的 attribute 绑定和事件。当一个组件没有声明任何 prop 时，这里会包含所有父作用域的绑定，并且可以通过 v-bind="$attrs" 传入内部组件——这在创建高阶的组件时会非常有用。
+
+摘自：[vue官方文档API - 实例 property - attr](https://v3.cn.vuejs.org/api/instance-properties.html#attrs)
+
+**补充：**
+
+$attrs其实是一个proxy对象，将父组件传给子组件的non-prop都放在里面，比如这里的例子中是
+
+```js
+Proxy {
+  class: 'green'
+}
+```
+
+既然$attrs是一个proxy对象，所以不仅仅在template中使用，也可以在子组件的data属性和生命周期钩子中使用
+
+
+
+#### v-if和v-show
+
+- v-if每次执行都是在执行渲染：如果v-if为false，则所对应的dom会被销毁；同时在原dom上会加上 \<!--v-if-->的注释
+- v-show每次执行并非都真的渲染，如果v-show为false，对应的dom会被加上 style="display: none"
+
+
+
+#### 一个事件绑定多个函数
+
+在Vue中一个事件（比如@click）可以绑定多个函数，但是在调用时，函数要加上括号；如下示例：
+
+```vue
+<button @click='fn(), fn2()'>foobar</button>
+```
+
+
+
+#### checkbox的vue中的补充属性
+
+由于checkbox对应的v-model数据类型只能是bool型，所以vue添加了 **true-value** 和 **false-value** 两个属性，使得v-model的数据类型可以是其他基础类型，也包括数组、对象和方法（不过，经过测试，似乎数组、对象和方法都会原封不动的变成字符串）；示例如下：
+
+```vue
+template: `
+  <div>
+    {{message}}
+    <input type="checkbox" v-model="message" true-value="foo" false-value="bar" />
+  </div>
+`
+```
+
+
+
+***
+
 ## Element.UI备忘录
 
 #### \<el-table>
@@ -4413,6 +4553,8 @@ methods: {
   ```
   
   当然：并不是推荐使用width，而是推荐使用<font color=FF0000>**min-width**</font>，因为min-width可实现自适应
+
+- <font color=FF0000>通过 **Scoped slot** 可以获取到 row（当前行的信息）, column（当前列的信息）, $index（当前行的行号，从0开始） 和 store（table 内部的状态管理）的数据</font>
 
 - **几个style属性**
   
@@ -4692,7 +4834,7 @@ methods: {
   
   <style>
       .specialColor{
-      color:red;
+      	color:red;
     }
   </style>
   ```
@@ -4707,13 +4849,35 @@ methods: {
   </el-table>
   
   <script>
-  this.$refs.foo.selection //这是一个列表，包含所有选择的行中的信息
+  	this.$refs.foo.selection //这是一个列表，包含所有选择的行中的信息
   </script>
   ```
+
+- 选择多行数据时，使用type=“selection”；同时，<font color=FF0000>如果不想要全选的checkbox</font>，可以使用如下方法：
+
+  ```css
+  .el-table__header-wrapper  .el-checkbox{
+    display:none;
+  }
+  ```
+
+  效果如下：
+
+  ![image-20210303181036068](https://i.loli.net/2021/03/03/sNBvlkf1zFJqbLK.png)
+
+  摘自：[element-ui 表格表头禁用全选功能](https://blog.csdn.net/qq_45364616/article/details/103370365)
+
+- **el-table的checkbox的相关事件：**
+
+  - **select：**当用户手动勾选数据行的 Checkbox 时触发的事件	参数：selection, row
+  - **select-all：**当用户手动勾选全选 Checkbox 时触发的事件	参数：selection
+  - **selection-change：**<font color=FF0000>**当选择项发生变化时会触发该事件**</font>	参数：selection
 
 摘自：[element-ui自定义表格头部的两种方法](https://www.cnblogs.com/wenxinsj/p/10613764.html)   [自定义element-ui的table字体颜色，及背景色](https://blog.csdn.net/qq_32610671/article/details/90731672)  [Element-UI中关于table表格的那些骚操作](https://www.jianshu.com/p/2251cda42425)
 
 [Element table 获取所有选择的行](https://blog.csdn.net/qq_36537108/article/details/89261394)
+
+
 
 #### \<el-popover>
 
@@ -4736,9 +4900,13 @@ methods: {
 
 摘自：[element.ui 官方文档 -- popover](https://element.eleme.cn/#/zh-CN/component/popover)
 
+
+
 #### \<el-icon>
 
 - 如果需要设置大小，可以设置font-size
+
+
 
 #### \<el-upload>
 
@@ -4786,9 +4954,13 @@ methods: {
 
 <font color=FF0000>在el-dialog中：有默认间距，且间距较大，这时候可以修改margin为负值以缩小间距。</font>
 
+
+
 #### \<el-date-picker>
 
 el-date-picker如果想要选择一个日期范围，可以使用`picker-options`绑定一个函数进行设置；同时，这样做默认会对开始日期和结束如期产生限制，使其必须在选择的范围内，这时可以使用`unlink-panels`以取消绑定
+
+
 
 #### \<el-form>
 
@@ -4812,6 +4984,8 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
   同样的：可以使用slot的还有error和default
 
 如果想要让多个表单在一行（默认每个表单一行），可以在el-form中配置inline / :inline="true"
+
+
 
 #### \<el-form-item>
 
@@ -4968,13 +5142,17 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
     }
     ```
 
+
+
 #### \<el-input>
 
 在el-input中可以设置<font color=FF0000>**maxlength** 和 **minlength** 的HTML原生属性，用来限制输入框的字符长度</font>；其中字符长度是用 Javascript 的字符串长度统计的。<font color=FF0000>对于类型为 text 或 textarea 的输入框，在使用 maxlength 属性限制最大输入长度的同时，可通过设置 **show-word-limit** 属性来展示字数统计。</font>
 
-如果想要实现“可自适应文本高度的文本域”可以使用autosize属性，另外，使用该属性后，表单的其他组件也会随着该组件的扩张 / 缩小而自适应。<font color=FF0000>**教训：**</font>在使用autosize的同时，不要对input指定高度height，这样会让其他组件自适应失效，如果实在要用，可以使用min-height。
+如果想要实现“可自适应文本高度的文本域”可以使用autosize属性，另外，使用该属性后，表单的其他组件也会随着该组件的扩张 / 缩小而自适应。
 
-**\<el-input>边框消失：**可以使用深度作用选择器，示例如下
+<font color=FF0000>**教训：**</font>在使用autosize的同时，不要对input指定高度height，这样会让其他组件自适应失效，如果实在要用，可以使用min-height。
+
+**\<el-input>边框消失：**可以使用深度作用选择器，示例如下：
 
 ```html
 <div class="inputDeep">
@@ -5074,7 +5252,7 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
 
 #### \<el-drawer>
 
-- **el-drawer设置宽度：**Drawer 抽屉 默认宽度为30%，想要改变宽度只需要使用 :size=“size” （或者size="val_px"）给组件传值就可以了。示例如下：
+- **el-drawer设置宽度：**Drawer 抽屉 默认宽度为30%，想要改变宽度只需要使用 :size=“size” （或者size="valOfPixel + px"）给组件传值就可以了。示例如下：
 
 ```html
 <el-drawer title="我是标题" :visible.sync="drawer" :with-header="false" :size="size">
@@ -5157,6 +5335,8 @@ import { Notification } from 'element-ui';
 
 此时调用方法为 Notification(options)。我们也为每个 type 定义了各自的方法，如 Notification.success(options)。并且可以调用 Notification.closeAll() 手动关闭所有实例。
 
+
+
 #### v-loading
 
 **v-loading提供了两种模式：指令与服务**
@@ -5234,6 +5414,8 @@ console.log(loadingInstance1 === loadingInstance2); // true
 如果完整引入了 Element，那么 Vue.prototype 上会有一个全局方法 $loading，它的调用方式为：this.$loading(options)，同样会返回一个 Loading 实例。
 
 摘自：[element-ui -- Loading 加载](https://element.eleme.cn/#/zh-CN/component/loading#zheng-ye-jia-zai)
+
+
 
 ## Vue Router
 
@@ -5679,6 +5861,30 @@ scrollBehavior (to, from, savedPosition) {
 ```
 
 对于所有路由导航，简单地让页面滚动到顶部。
+
+
+
+#### 补充：
+
+**CDN方式引入Vue-Router**
+
+```html
+<script src="/static/js/vue-router.js"></script>
+<script>
+  const router = new VueRouter({
+    mode: "history", // 默认使用hash模式，url会出现#
+  });
+
+  const app = new Vue({
+    router,
+    el: "#app",
+  });
+</script>
+```
+
+摘自：[JS：CDN方式引入Vue-Router](https://blog.csdn.net/mouday/article/details/106772721)
+
+
 
 ***
 
@@ -6214,3 +6420,8 @@ Webpack 处理的静态资源放在 `/src` 目录中和其它源文件放一起�
                 └── index.js                        放置所有的路由
 └── static             存放静态文件、模拟的json数据
 ```
+
+
+
+## Vue打包踩坑记录
+

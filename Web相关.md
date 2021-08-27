@@ -1,14 +1,112 @@
-
-
-
-
-
-
 # Web相关备忘录
 
 
 
-### <font color=FF0000>编写web程序时出现的问题</font>
+#### unicode相关
+
+<font color=FF0000>Unicode 是一种字符集标准，用于对来自世界上不同语言、文字系统和符号进行编号和字符定义</font>。<mark>通过给每个字符分配一个编号，程序员可以创建字符编码，让计算机在同一个文件或程序中存储、处理和传输任何语言组合</mark>。
+
+<mark>在 Unicode 定义之前，在同一数据中混合使用不同的语言是很困难的，而且容易出错</mark>。例如，一个字符集存储的是日文字符，而另一个字符集存储的是阿拉伯字母。如果没有明确标明数据的哪些部分属于哪个字符集，其他程序和计算机就会错误地显示文本，或者在处理过程中损坏文本。如果你曾经见过像 (“”) 被替换为胡言乱语 Ã‚Â£，那么你就已经看到过这个被称为  Mojibake 的问题。
+
+<font color=FF0000 size=4>**网络上最常见的 Unicode 字符编码是UTF-8**</font>。还存在一些其他编码，如 UTF-16或过时的 UCS-2，但推荐使用 UTF-8。
+
+摘自：[MDN - Unicode](https://developer.mozilla.org/zh-CN/docs/Glossary/Unicode)
+
+<font color=FF0000 size=4>**阅读前注意：**</font>下面这篇文章，写于2014年，部分内容或已过时
+
+1. <font size=4>**Unicode是什么？**</font>
+
+   Unicode源于一个很简单的想法：将全世界所有的字符包含在一个集合里，计算机只要支持这一个字符集，就能显示所有的字符，再也不会有乱码了。
+
+   <mark>它从0开始，为每个符号指定一个编号</mark>，<font color=FF0000>这叫做"码点"（code point）</font>。比如，码点0的符号就是null（表示所有二进制位都是0）。
+
+   ```
+   U+0000 = null
+   ```
+
+   上式中，U+表示 <font color=FF0000>**紧跟在后面的十六进制数是Unicode的码点**</font>。
+
+   <mark>目前（2014年），Unicode的最新版本是7.0版，一共收入了109449个符号，其中的中日韩文字为74500个</mark>。可以近似认为，全世界现有的符号当中，三分之二以上来自东亚文字。比如，中文"好"的码点是十六进制的597D。
+
+   <font color=FF0000>这么多符号，Unicode不是一次性定义的，而是<font size=4>**分区定义**</font></font>。<font color=FF0000>每个区可以存放65536个（216）字符，称为一个平面（plane）</font>。<font color=FF0000>目前，一共有17个（2^5^）平面，也就是说，整个Unicode字符集的大小现在是2^21^</font>。
+
+   <font color=FF0000><font size=4>**最前面的65536个字符位**</font>，称为<font size=4>**基本平面（Basic Multilingual Plane，缩写BMP）**</font></font>，<font color=FF0000>它的码点范围是从0一直到2^16^-1，写成16进制就是从U+0000到U+FFFF</font>。<mark>**所有最常见的字符都放在这个平面**，这是Unicode最先定义和公布的一个平面</mark>。
+
+   <font color=FF0000><font size=4>**剩下的字符**</font>都放在<font size=4>**辅助平面（Supplementary Multilingual Plane 缩写SMP）**</font></font>，<mark>码点范围从U+010000一直到U+10FFFF</mark>。
+
+2. <font size=4>**UTF-32与UTF-8**</font>
+
+   Unicode只规定了每个字符的码点，到底用什么样的字节序表示这个码点，就涉及到<font color=FF0000 size=4>**编码方法**</font>。
+
+   <font color=FF0000>最直观</font>的编码方法是，<font color=FF0000>每个码点使用四个字节表示</font>，字节内容一一对应码点。<font color=FF0000>这种编码方法就叫做UTF-32</font>。比如，码点0就用四个字节的0表示，码点597D就在前面加两个字节的0。
+
+   ```
+   U+0000 = 0x0000 0000
+   U+597D = 0x0000 597D
+   ```
+
+   UTF-32的<font color=0000FF>优点</font>在于，<font color=0000FF>转换规则简单直观，查找效率高</font>。<font color=FF0000>缺点</font>在于<font color=FF0000>浪费空间</font>，同样内容的英语文本，它会比ASCII编码大四倍。<mark>这个缺点很致命，导致实际上没有人使用这种编码方法</mark>，<font color=FF0000>HTML 5标准就明文规定，网页不得编码成UTF-32</font>。
+
+   人们真正需要的是一种节省空间的编码方法，这导致了UTF-8的诞生。**UTF-8是一种<font size=4>变长的编码方法，字符长度从1个字节到4个字节不等</font>。**<font color=FF0000>越是常用的字符，字节越短，最前面的128个字符，只使用1个字节表示，与ASCII码完全相同</font>。
+
+   | 编号范围            | 字节 |
+   | ------------------- | ---- |
+   | 0x0000 - 0x007F     | 1    |
+   | 0x0080 - 0x07FF     | 2    |
+   | 0x0800 - 0xFFFF     | 3    |
+   | 0x010000 - 0x10FFFF | 4    |
+
+   由于UTF-8这种节省空间的特性，导致它成为互联网上最常见的网页编码。
+
+3. <font size=4>**UTF-16简介**</font>
+
+   UTF-16编码<mark>介于UTF-32与UTF-8之间</mark>，<font color=FF0000>**同时结合了定长和变长两种编码方法的特点**</font>。
+
+   它的编码规则很简单：<font color=FF0000>基本平面的字符占用2个字节，辅助平面的字符占用4个字节</font>。<mark>**也就是说，UTF-16的编码长度要么是2个字节（U+0000到U+FFFF），要么是4个字节（U+010000到U+10FFFF）。**</mark>
+
+   <mark style=background-color:aqua>于是就有一个问题，当我们遇到两个字节，怎么看出它本身是一个字符，还是需要跟其他两个字节放在一起解读？</mark>
+
+   说来很巧妙，我也不知道是不是故意的设计，<font color=FF0000 size=4>**在基本平面内，从U+D800到U+DFFF是一个空段**（共2^12^个），即这些码点不对应任何字符。因此，这个空段可以用来映射辅助平面的字符</font>。
+
+   具体来说，<font color=FF0000>辅助平面的字符位共有2^20^个，也就是说，对应这些字符至少需要20个二进制位</font>。<font color=FF0000>UTF-16将这20位拆成两半</font>，<font color=FF0000 size=4>**前10位映射在U+D800到U+DBFF（空间大小2^10^），称为高位（H），后10位映射在U+DC00到U+DFFF（空间大小2^10^），称为低位（L）**</font>。这意味着，一个辅助平面的字符，被拆成两个基本平面的字符表示。
+
+   **所以，当我们遇到两个字节，发现它的码点在U+D800到U+DBFF之间，就可以断定，紧跟在后面的两个字节的码点，应该在U+DC00到U+DFFF之间，这四个字节必须放在一起解读。**
+
+4. <font size=4>**UTF-16的转码公式**</font>
+
+   Unicode码点转成UTF-16的时候，首先区分这是基本平面字符，还是辅助平面字符。如果是前者，直接将码点转为对应的十六进制形式，长度为两字节。
+
+   ```
+   U+597D = 0x597D
+   ```
+
+   如果是辅助平面字符，Unicode 3.0版给出了转码公式。
+
+   ```js
+   H = Math.floor((c - 0x10000) / 0x400) + 0xD800
+   L = (c - 0x10000) % 0x400 + 0xDC00
+   ```
+
+   以字符![img](https://i.loli.net/2021/08/23/S9ch8BUR1Q3iWVz.png)为例，它是一个辅助平面字符，码点为U+1D306，将其转为UTF-16的计算过程如下。
+
+   ```js
+   H = Math.floor((0x1D306-0x10000)/0x400)+0xD800 = 0xD834
+   L = (0x1D306-0x10000) % 0x400+0xDC00 = 0xDF06
+   ```
+
+   所以，字符![img](https://i.loli.net/2021/08/23/S9ch8BUR1Q3iWVz.png)的UTF-16编码就是0xD834 DF06，长度为四个字节。
+
+5. <font size=4>**JavaScript使用哪一种编码？**</font>
+
+   JavaScript语言采用Unicode字符集，但是只支持一种编码方法。这种编码既不是UTF-16，也不是UTF-8，更不是UTF-32。上面那些编码方法，JavaScript都不用。<font color=FF0000 size=4>**JavaScript用的是UCS-2！**</font>
+
+摘自：[阮一峰 - Unicode与JavaScript详解](http://www.ruanyifeng.com/blog/2014/12/unicode.html)
+
+
+
+
+
+#### <font color=FF0000>编写web程序时出现的问题</font>
 
 - 出现如下情况：
 
@@ -18,7 +116,7 @@
 
 
 
-### <font color=FF0000>80端口和8080端口</font>
+#### <font color=FF0000>80端口和8080端口</font>
 
 <font color=FF0000>80是**http协议的默认端口**</font>，是在输入网站的时候其实浏览器（非IE）已经帮你输入协议了，所以你输入http://baidu.com，其实是访问http://baidu.com:80，而<font color=FF0000>8080，一般用于webcahe</font>，<font color=FF0000>一般是用来连接代理的</font>。完全不一样的两个，比如linux服务器里apache默认跑80端口，而apache-tomcat默认跑8080端口，其实端口没有实际意义只是一个接口，主要是看服务的监听端口，如果baidu的服务器监听的81端口，那么你直接输入就不行了就要输入http://baidu.com:81这样才能正常访问
 
@@ -26,13 +124,13 @@
 
 
 
-## <font color=FF0000>URL</font>
+#### <font color=FF0000>URL</font>
 
 URL中 `%十六进制数字` 代表的是十六进制的ASCII码
 
 
 
-### <font color=FF0000>HTML的转义字符</font>
+#### <font color=FF0000>HTML的转义字符</font>
 
 | 特殊符号           | 命名实体   | 十进制编码 | 特殊符号              | 命名实体    | 十进制编码 |
 | ------------------ | ---------- | ---------- | --------------------- | ----------- | ---------- |
@@ -156,15 +254,15 @@ URL中 `%十六进制数字` 代表的是十六进制的ASCII码
 
 
 
-## <font color=FF0000>SOAP & REST</font>
+#### <font color=FF0000>SOAP & REST</font>
 
-#### SOAP
+##### SOAP
 
 SOAP：简单对象访问协议（Simple Object Access Protocol）是一种<mark>基于 XML 的协议</mark>，可以和现存的许多因特网协议和格式结合使用，包括超文本传输协议（HTTP），简单邮件传输协议（SMTP），多用途网际邮件扩充协议（MIME），基于“通用”传输协议是 SOAP的一个优点。它还支持从消息系统到远程过程调用（Remote Procedure Call，RPC）等大量的应用程序。SOAP提供了一系列的标准，如WSRM（WS-Reliable Messaging）形式化契约确保可靠性与安全性，确保异步处理与调用；WS-Security、WS-Transactions和WS-Coordination等标准提供了上下文信息与对话状态管理
 
 ***
 
-#### Rest
+##### Rest
 
 **REST（Representational State Transfer）表现层状态转化**，如果一个架构符合REST原则，就称它为RESTful架构。
 
@@ -267,7 +365,7 @@ SOAP：简单对象访问协议（Simple Object Access Protocol）是一种<mark
 
 
 
-## <font color=FF0000>POJO</font>
+#### <font color=FF0000>POJO</font>
 
 POJO（Plain Ordinary Java Object）即普通Java类，具有一部分getter/setter方法的那种类就可以称作POJO。
 
@@ -278,7 +376,7 @@ POJO类的作用是方便程序员使用数据库中的数据表，对于程序�
 
 摘自：[POJO和JavaBean的区别](https://blog.csdn.net/tiantangdizhibuxiang/article/details/81784873)
 
-#### entity、bo、vo、po、dto、pojo的定义与区别
+##### entity、bo、vo、po、dto、pojo的定义与区别
 
 - **Entity：**最常用实体类，<font color=FF0000>基本和数据表一一对应，一个实体一张表</font>。
 - **Bo (business object)：**即<font color=FF0000>业务对象</font>，Bo就是<mark>把<font color=FF0000>**业务逻辑**</font>封装为一个对象</mark>，这个对象可以包括一个或多个其它的对象。通过调用Dao方法，结合Po或Vo进行业务操作。
@@ -295,7 +393,7 @@ POJO类的作用是方便程序员使用数据库中的数据表，对于程序�
 
 
 
-## <font color=FF0000>OAuth</font>
+#### <font color=FF0000>OAuth</font>
 
 **OAuth（Open Authorization）**。OAuth协议为用户资源的授权提供了一个安全的、开放而又简易的标准。与以往的授权方式不同之处是OAuth的授权不会使第三方触及到用户的帐号信息（如用户名与密码），即<mark>第三方无需使用用户的用户名与密码就可以申请获得该用户资源的授权</mark>，因此OAuth是安全的。
 
@@ -303,7 +401,9 @@ POJO类的作用是方便程序员使用数据库中的数据表，对于程序�
 
 类似的可参考：[OAuth 2.0 的一个简单解释](http://www.ruanyifeng.com/blog/2019/04/oauth_design.html)
 
-## <font color=FF0000>JSP</font>
+
+
+#### <font color=FF0000>JSP</font>
 
 **JSP的本质其实就是Servlet**。只是JSP当初设计的目的是为了简化Servlet输出HTML代码。
 
@@ -466,7 +566,7 @@ POJO类的作用是方便程序员使用数据库中的数据表，对于程序�
 
 
 
-### <font color=FF0000>Tomcat</font>
+#### <font color=FF0000>Tomcat</font>
 
 **启动tomcat**
 
@@ -510,7 +610,7 @@ C:\apache-tomcat-5.5.29\bin\shutdown
 
 
 
-### <font color=FF0000>Servlet的生命周期</font>
+#### <font color=FF0000>Servlet的生命周期</font>
 
 Servlet 生命周期可被定义为从创建直到毁灭的整个过程。以下是 Servlet 遵循的过程：
 
@@ -587,11 +687,11 @@ Servlet 生命周期可被定义为从创建直到毁灭的整个过程。以下
 
 - 最后，Servlet 是由<font color=FF0000> JVM 的垃圾回收器进行垃圾回收的</font>。
 
-### <font color=FF0000>实现Servlet</font>
+#### <font color=FF0000>实现Servlet</font>
 
 Servlet 是服务 HTTP 请求并实现 javax.servlet.Servlet 接口的 Java 类。<mark>Web 应用程序开发人员通常编写 Servlet 来扩展 javax.servlet.http.HttpServlet，并<font color=FF0000>实现 Servlet 接口的抽象类</font>专门用来处理 HTTP 请求</mark>。
 
-### <font color=FF0000>Get和Post方法</font>
+#### <font color=FF0000>Get和Post方法</font>
 
 - **GET 方法**
 
@@ -609,7 +709,7 @@ Servlet 是服务 HTTP 请求并实现 javax.servlet.Servlet 接口的 Java 类�
 
   另一个向后台程序传递信息的比较可靠的方法是 POST 方法。POST 方法打包信息的方式与 GET 方法基本相同，但是 <font color=FF0000>POST 方法不是把信息作为 URL 中 ? 字符后的文本字符串进行发送，而是把这些信息作为一个单独的消息。消息以标准输出的形式传到后台程序，您可以解析和使用这些标准输出</font>。Servlet 使用 doPost() 方法处理这种类型的请求。
 
-### <font color=FF0000>使用 Servlet 读取表单数据</font>
+#### <font color=FF0000>使用 Servlet 读取表单数据</font>
 
 Servlet 处理表单数据，这些数据会根据不同的情况使用不同的方法自动解析：
 
@@ -617,7 +717,7 @@ Servlet 处理表单数据，这些数据会根据不同的情况使用不同的
 - **getParameterValues()：**如果<font color=FF0000>参数出现一次以上，则调用该方法，并返回多个值</font>，例如复选框。
 - **getParameterNames()：**如果您想要<font color=FF0000>得到当前请求中的所有参数的完整列表</font>，则调用该方法。
 
-### <font color=FF0000>Servlet的Http请求</font>
+#### <font color=FF0000>Servlet的Http请求</font>
 
 当浏览器请求网页时，它会向 Web 服务器发送特定信息，这些信息不能被直接读取，因为<font color=FF0000>这些信息是作为 HTTP **请求的头**的一部分进行传输的</font>。
 
@@ -677,7 +777,7 @@ Servlet 处理表单数据，这些数据会根据不同的情况使用不同的
 | 30   | **int getServerPort()**<br> 返回接收到这个请求的端口号。         |
 | 31   | **int getParameterMap()**<br> 将参数封装成 Map 类型。            |
 
-### <font color=FF0000>Servlet的Http响应</font>
+#### <font color=FF0000>Servlet的Http响应</font>
 
 当一个 Web 服务器响应一个 HTTP 请求时，响应通常包括一个状态行、一些响应报头、一个空行和文档。
 
@@ -732,7 +832,7 @@ Servlet 处理表单数据，这些数据会根据不同的情况使用不同的
 | 22   | **void setLocale(Locale loc)**<br> 如果响应还未被提交，设置响应的区域。 |
 | 23   | **void setStatus(int sc)**<br> 为该响应设置状态码。              |
 
-### <font color=FF0000>Servlet http状态码</font>
+#### <font color=FF0000>Servlet http状态码</font>
 
 HTTP 请求和 HTTP 响应消息的格式是类似的，结构如下：
 
@@ -769,7 +869,7 @@ HeaderN: ...
 | 2    | **public void sendRedirect(String url)**<br> 该方法生成一个 302 响应，连同一个带有新文档 URL 的 *Location* 头。 |
 | 3    | **public void sendError(int code, String message)**<br> 该方法发送一个状态码（通常为 404），连同一个在 HTML 文档内部自动格式化并发送到客户端的短消息。 |
 
-### <font color=FF0000>Servlet 过滤器</font>
+#### <font color=FF0000>Servlet 过滤器</font>
 
 Servlet 过滤器是可用于 Servlet 编程的 Java 类，可以实现以下<font color=FF0000>目的</font>：
 
@@ -808,7 +908,7 @@ Filter的执行顺序与在web.xml配置文件中的配置顺序一致，一般�
 
 后面还有示例，由于繁琐且使用较少，这里不再赘述：[Servlet 编写过滤器](https://www.runoob.com/servlet/servlet-writing-filters.html)
 
-### <font color=FF0000>Servlet Cookie 处理</font>
+#### <font color=FF0000>Servlet Cookie 处理</font>
 
 Cookie 是存储在客户端计算机上的文本文件，并保留了各种跟踪信息。Java Servlet 显然支持 HTTP Cookie。
 
@@ -851,7 +951,7 @@ Content-Type: text/html
 | 11   | **public void setComment(String purpose)**<br> 设置cookie的注释。该注释在浏览器向用户呈现 cookie 时非常有用。 |
 | 12   | **public String getComment()**<br> 获取 cookie 的注释，如果 cookie 没有注释则返回 null。 |
 
-### <font color=FF0000>Servlet Session 跟踪</font>
+#### <font color=FF0000>Servlet Session 跟踪</font>
 
 HTTP 是一种<font color=FF0000>**"无状态"**</font>协议，<mark>这意味着每次客户端检索网页时，客户端打开一个单独的连接到 Web 服务器，服务器会自动不保留之前客户端请求的任何记录</mark>。
 
@@ -911,7 +1011,7 @@ HttpSession session = request.getSession();
 | 10   | **public void setAttribute(String name, Object value)**<br> 该方法使用指定的名称绑定一个对象到该 session 会话。 |
 | 11   | **public void setMaxInactiveInterval(int interval)**<br> 该方法在 Servlet 容器指示该 session 会话无效之前，指定客户端请求之间的时间，以秒为单位。 |
 
-### <font color=FF0000>Servlet 网页重定向</font>
+#### <font color=FF0000>Servlet 网页重定向</font>
 
 重定向请求到另一个网页的最简单的方式是使用 response 对象的 sendRedirect() 方法。下面是该方法的定义：
 
@@ -927,7 +1027,7 @@ response.setStatus(response.SC_MOVED_TEMPORARILY);
 response.setHeader("Location", site); 
 ```
 
-### <font color=FF0000>Servlet 自动刷新页面</font>
+#### <font color=FF0000>Servlet 自动刷新页面</font>
 
 Java Servlet 提供了一个机制，使得网页会在给定的时间间隔自动刷新。
 
@@ -943,7 +1043,7 @@ public void setIntHeader(String header, int headerValue)
 
 
 
-### <font color=FF0000>Web容器的作用域</font>
+#### <font color=FF0000>Web容器的作用域</font>
 
 几乎所有web应用容器都提供了四种类似Map的结构：**application / session / request / page**，Jsp或者Servlet通过向着这四个对象放入数据，从而实现Jsp和Servlet之间数据的共享。
 
@@ -979,7 +1079,7 @@ public void setIntHeader(String header, int headerValue)
 
 
 
-### <font color=FF0000>Session和Cookie</font>
+#### <font color=FF0000>Session和Cookie</font>
 
 会话（Session）：指用户登录网站后的一系列动作，比如浏览商品添加到购物车并购买。会话跟踪是 Web 程序中常用的技术，用来**跟踪用户的整个会话**。
 
@@ -993,7 +1093,7 @@ public void setIntHeader(String header, int headerValue)
 
 **<mark style=background-color:aqua><font color=FF0000>如果客户端的浏览器禁用了 Cookie 怎么办？</font></mark>**一般这种情况下，会使用一种叫做<font color=FF0000>URL重写</font>的技术来<font color=FF0000>进行会话跟踪</font>，即每次HTTP交互，<font color=FF0000>URL后面都会被附加上一个诸如 sid=xxxxx 这样的参数，服务端据此来识别用户</font>。
 
-#### **补充：cookie的重要属性**
+##### **补充：cookie的重要属性**
 
 | 属性       | 说明                                                         |
 | ---------- | ------------------------------------------------------------ |
@@ -1005,7 +1105,7 @@ public void setIntHeader(String header, int headerValue)
 | secure     | 该cookie是否仅被使用安全协议传输。安全协议有HTTPS, SSL等，在网络上传输数据之前先将数据加密。默认为false。<br/>当secure值为true时，cookie 在HTTP中是无效，在HTTPS中才有效。 |
 | httpOnly   | 如果给某个cookie设置了httpOnly属性,则无法通过JS脚本读取到该cookie的信息，但还是能通过Application中手动修改cookie,所以只是在-定程度上可以防止XSS攻击，不是绝对的安全 |
 
-#### session 认证流程
+##### session 认证流程
 
 - 用户<font color=FF0000>**第一次请求服务器**</font>的时候，服务器根据用户提交的相关信息，创建对应的 Session
 - 请求返回时将此 Session 的唯一标识信息 SessionID 返回给浏览器
@@ -1014,7 +1114,7 @@ public void setIntHeader(String header, int headerValue)
 
 根据以上流程可知，**SessionID 是连接 Cookie 和 Session 的一道桥梁**，大部分系统也是根据此原理来验证用户登录状态。
 
-#### Cookie 和 Session 的区别
+##### Cookie 和 Session 的区别
 
 - **安全性：** Session 比 Cookie 安全，Session 是存储在服务器端的，Cookie 是存储在客户端的。
 - **存取值的类型不同**：<mark>Cookie 只支持存字符串数据，想要设置其他类型的数据，需要将其转换成字符串，Session 可以存任意数据类型</mark>
@@ -1025,7 +1125,7 @@ public void setIntHeader(String header, int headerValue)
 部分摘自：[傻傻分不清之 Cookie、Session、Token、JWT](https://juejin.im/post/6844904034181070861)，<font color=FF0000>后面还有Token和JWT的内容，建议阅读</font>
 
 
-### <font color=FF0000>redirect & forward</font>
+#### <font color=FF0000>redirect & forward</font>
 
 **Forward**：直接转发方式。客户端和浏览器只发出一次请求，Servlet、HTML、JSP或其它信息资源，由第二个信息资源响应该请求，在请求对象request中，保存的对象对于每个信息资源是共享的。
 
@@ -1037,7 +1137,7 @@ public void setIntHeader(String header, int headerValue)
 
 间接转发就相当于："A找B借钱，B说没有，让A去找C借"。
 
-#### **具体阐述：**
+##### **具体阐述：**
 
 - 间接转发方式，有时也叫<font color=FF0000>重定向</font>，它<font color=FF0000>一般用于避免用户的非正常访问</font>。<mark>例如：用户在没有登录的情况下访问后台资源，Servlet可以将该HTTP请求重定向到登录页面，让用户登录以后再访问</mark>。在Servlet中，通过调用response对象的SendRedirect()方法，告诉浏览器重定向访问指定的URL，示例代码如下：　
 
@@ -1092,7 +1192,7 @@ public void setIntHeader(String header, int headerValue)
 
 
 
-### <font color=FF0000>HTTP</font>
+#### <font color=FF0000>HTTP</font>
 
 **用户单击鼠标后所发生的事件按顺序如下（以访问清华大学的网站为例）:**
 
@@ -1130,7 +1230,7 @@ public void setIntHeader(String header, int headerValue)
 
 
 
-### <font color=FF0000>双向绑定</font>
+#### <font color=FF0000>双向绑定</font>
 
 <font color=FF0000>单向绑定</font>就是把Model绑定到View，当我们用JavaScript代码更新Model时，View就会自动更新。
 
@@ -1138,7 +1238,7 @@ public void setIntHeader(String header, int headerValue)
 
 
 
-### <font color=FF0000>面包屑导航</font>
+#### <font color=FF0000>面包屑导航</font>
 
 页面路径（英语：Breadcrumb或Breadcrumb Trail/Navigation），又称面包屑导航，是在用户界面中的一种导航辅助。<mark>它是用户一个在程序或文件中确定和转移他们位置的一种方法</mark>。面包屑这个词来自糖果屋这个童话故事；故事中，汉赛尔与葛丽特企图依靠洒下的面包屑找到回家的路。
 
@@ -1301,3 +1401,218 @@ CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource s
 
 摘自：[跨域资源共享 CORS 详解](https://www.ruanyifeng.com/blog/2016/04/cors.html)  [MDN - 跨源资源共享（CORS）](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)(另外，这其中还有很多没有看懂的，需要继续阅读)
 
+
+
+#### MIME
+
+**MIME 简介**
+
+<font color=FF0000>MIME, Mutipurpose Internet Mail Extensions，多用途 Internet 邮箱扩展</font>。<font color=FF0000>MIME 是描述消息内容类型的 internet 标准</font>。<mark>在创建之初，是为了在发送电子邮件时附加多媒体数据，让邮件客户程序根据其类型进行处理</mark>。<font color=FF0000>现在 MIME TYPE 被 HTTP 协议支持后，使得HTTP能够传输各种各样的文件</font>。
+
+**浏览器与 MIME-TYPE**
+
+浏览器通过 MIME TYE,也就是该资源的媒体类型，来决定以什么形式显示数据。
+
+<mark>媒体类型通常是通过 HTTP 协议，由 Web 服务器请求头中的 Content-Type 来告知浏览器数据类型的</mark>，比如：
+
+```http
+Content-Type: text/HTML
+```
+
+表示内容是 text/HTML 类型，也就是超文本文件。注意，必须是 "text/HTML" 而不是 "HTML/text".因为 MIME 是经过 ietf 组织协商，以 RFC 的形式发布在网上的。
+
+**自定义的类型**
+
+需要注意的是：<font color=FF0000>**只有一些在互联网上获得广泛应用的格式才会获得一个 MIME Type**</font>，<font color=FF0000>如果是某个客户端**自己定义的格式**，**一般只能以 application/x- 开头**</font>。
+
+Internet 中有一个专门组织来对 MIME 标准进行修订，但是由于 Internet 发展过快，很多应用程序便使用在类别中以 x- 开头的方法标识这个类别还没有成为标准，例如 x-gzip,x-tar等。
+
+其实是不是标准无关紧要，只要客户端和服务器都能识别这个格式就可以了。在 app 端会使用自定义标准来保证数据安全。
+
+MIME类型与文档的后缀相关，因此服务器使用文档的后缀来区分不同文件的 MIME 类型，服务器中必须规定文件后缀和MIME类型之间的对应关系。而客户端从服务器上接收数据的时候，它只是从服务器接收数据流，并不了解文档的名字，因此服务器需要使用附加信息来告诉客户程序数据的 MIME 类型。服务器将首先发送以下两行 MIME 标识信息，这个信息并不是真正的数据文件的一部分。
+
+```http
+Context-type: text/html
+
+```
+
+注意，第二行为一个空格，这是必须的，使用这个空行的目的是将 MIME 信息与真正的数据内容分离开。
+
+**MIME TYPE语法 及常见分类**
+
+<font color=FF0000>通用结构：`type/subtype`</font>
+<font color=FF0000>MIME 类型对大小写不敏感，但是通常传统写法是小写。</font>
+ *分类*
+
+| 分类                                  | 描述                                           | 典型类型                                                     |
+| ------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------ |
+| <font color=FF0000>text</font>        | <font color=FF0000>表明是普通文本</font>       | text/plain, text/html, text/css, text/javascript             |
+| image                                 | 表示是某种图像，不包括视频文件，但是包括动态图 | image/gif /image/png, image/jpeg, image/bmp, image/webp      |
+| audio                                 | 音频文件                                       | audio/midi, audio/mpeg, audio/webm, audio/ogg, audio/wav,    |
+| video                                 | 表示某种视频文件                               | video/webm, video/ogg                                        |
+| <font color=FF0000>application</font> | <font color=FF0000>表示某种二进制数据</font>   | application/octet-stream,/pkcs12, application/vnd.mspowerpoint, application/xhtml+xml, application/xml,  application/pdf,application/json |
+
+<font color=FF0000>对于 text 文件类型若是没有特定的 subtype，就使用 text/plain</font>；类似的，<font color=FF0000>二进制文件如果没有特定或已知的 subtype，就使用 application/octet-stream</font>.
+
+**重要的 MIME 类型**
+
+- **text/plain：**<font color=FF0000>文本文件默认值，意思是未知的文本文件，浏览器认为是可以直接展示的</font>。
+
+- **text/css：**<font color=FF0000>任何一个 CSS 文件想要在网页上被解释执行就必须设为 text/css 文件</font>。<mark>如果服务器将 MIME 类型设置为 text/plain 或 application/octet-stream 发送，这种情况下，文件并不能被浏览器识别为 CSS 文件并且会被直接忽略</mark>。
+
+- **text/html：**所有的 HTML 内容都应该使用这种格式。
+
+摘自：[网络：什么是 MIME TYPE?](https://www.jianshu.com/p/24c5433ce31b)
+
+<font size=4>**补充：**</font>
+
+互联网号码分配机构（IANA）是负责跟踪所有官方MIME类型的官方机构
+
+**重要：**<font color=FF0000>浏览器通常使用MIME类型（而不是文件扩展名）来确定如何处理URL，因此Web服务器在响应头中添加正确的MIME类型非常重要</font>。<font color=FF0000>如果配置不正确，浏览器可能会曲解文件内容，网站将无法正常工作，并且下载的文件也会被错误处理</font>。
+
+摘自：[MDN - MIME 类型](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types)
+
+<font size=4>**补充二：**</font>
+
+阮一峰的《MIME笔记》<font color=FF0000>（提示，由于文章是2008年写的，所以应该会有些内容是过时的，或不完整的）</font>
+
+MIME是对传统电子邮件的一个扩展，现在已经成为电子邮件实际上的标准。
+
+<mark>传统的电子邮件是1982年定下技术规范的，文件是RFC 822</mark>。
+
+<font color=FF0000>它的一个重要特点，就是规定电子邮件只能使用ASCII字符。这导致了三个结果</font>：<font color=FF0000>1）非英语字符都不能在电子邮件中使用；2）电子邮件中不能插入二进制文件（如图片）；3）电子邮件不能有附件</font>。
+
+这实际上无法接受的，因此到了1992年，工程师们决定扩展电子邮件的技术规范，提出一系列补充规范，这就是MIME的由来。
+
+**MIME对传统电子邮件的扩展，表现在它在信件头部分添加了几条语句，主要有三条。**
+
+- **第一条是：**
+
+  ```http
+  MIME-Version: 1.0
+  ```
+
+  这条语句是必须的，而且1.0这个版本值是不变的，即使MIME本身已经升级了好几次。
+
+  有了这条语句，收信端就知道这封信使用了MIME规范。
+
+- **第二条语句是：**
+
+  ```http
+  Content-Type: text/plain; charset="ISO-8859-1"
+  ```
+
+  <font color=FF0000>这一行是极端重要的，它表明传递的信息类型和采用的编码</font>。
+
+  <font color=FF0000>Content-Type表明信息类型，<font size=4>**缺省值为" text/plain"**</font>。**它包含了主要类型（primary type）和次要类型（subtype）两个部分**，两者之间用"/"分割</font>。主要类型有9种，分别是application、audio、example、image、message、model、multipart、text、video。
+
+  <font color=FF0000 size=4>**如果信息的主要类型是"text"，那么还必须指明编码类型"charset"，缺省值是ASCII**</font>，其他可能值有"ISO-8859-1"、"UTF-8"、"GB2312"等等。
+
+  整个Content-Type这一行，不仅使用在电子邮件，后来也被移植到了HTTP协议中，所以现在只要是在网上传播的HTTP信息，都带有Content-Type头，以表明信息类型。
+
+- <mark>电子邮件的传统格式不支持非ASCII编码和二进制数据，因此**MIME规定了第三条语句**：</mark>
+
+  ```http
+  Content-transfer-encoding: base64
+  ```
+
+  这条语句指明了编码转换的方式。Content-transfer-encoding的值有5种----"7bit"、"8bit"、"binary"、"quoted-printable"和"base64"----其中"7bit"是缺省值，即不用转化的ASCII字符。真正常用是"quoted-printable"和"base64"两种
+
+  <font color=FF0000>**补充：**不知道为什么Content-transfer-encoding这个属性，在mdn中没有搜到，在搜索引擎中搜索结果也很少</font>
+
+摘自：[阮一峰 - MIME笔记](https://www.ruanyifeng.com/blog/2008/06/mime.html)
+
+
+
+#### Base64
+
+**Base64索引表**
+
+| 数值 | <mark>字符</mark> | 数值 | <mark>字符</mark> | 数值 | <mark>字符</mark> | 数值 | <makr>字符</mark> |
+| :--: | :---------------: | :--: | :---------------: | :--: | :---------------: | :--: | :---------------: |
+|  0   |         A         |  16  |         Q         |  32  |         g         |  48  |         w         |
+|  1   |         B         |  17  |         R         |  33  |         h         |  49  |         x         |
+|  2   |         C         |  18  |         S         |  34  |         i         |  50  |         y         |
+|  3   |         D         |  19  |         T         |  35  |         j         |  51  |         z         |
+|  4   |         E         |  20  |         U         |  36  |         k         |  52  |         0         |
+|  5   |         F         |  21  |         V         |  37  |         l         |  53  |         1         |
+|  6   |         G         |  22  |         W         |  38  |         m         |  54  |         2         |
+|  7   |         H         |  23  |         X         |  39  |         n         |  55  |         3         |
+|  8   |         I         |  24  |         Y         |  40  |         o         |  56  |         4         |
+|  9   |         J         |  25  |         Z         |  41  |         p         |  57  |         5         |
+|  10  |         K         |  26  |         a         |  42  |         q         |  58  |         6         |
+|  11  |         L         |  27  |         b         |  43  |         r         |  59  |         7         |
+|  12  |         M         |  28  |         c         |  44  |         s         |  60  |         8         |
+|  13  |         N         |  29  |         d         |  45  |         t         |  61  |         9         |
+|  14  |         O         |  30  |         e         |  46  |         u         |  62  |         +         |
+|  15  |         P         |  31  |         f         |  47  |         v         |  63  |         /         |
+
+摘自：[wiki - Base64](https://zh.wikipedia.org/wiki/Base64)
+
+所谓Base64，就是说选出64个字符----小写字母a-z、大写字母A-Z、数字0-9、符号"+"、"/"（再加上作为垫字的"="，实际上是65个字符）----作为一个基本字符集。然后，其他所有符号都转换成这个字符集中的字符。
+
+**具体来说，转换方式可以分为四步。**
+
+- **第一步**，<font color=FF0000>**将每三个字节作为一组**，一共是24个二进制位</font>。
+- **第二步**，<font color=FF0000>**将这24个二进制位分为四组**，每个组有6个二进制位</font>。
+- **第三步**，<font color=FF0000>在每组前面加两个00，扩展成32个二进制位，即四个字节</font>。
+- **第四步**，<font color=FF0000>**根据索引表**，得到扩展后的每个字节的对应符号</font>，这就是Base64的编码值。
+
+因为，Base64将三个字节转化成四个字节，因此Base64编码后的文本，会比原文本大出三分之一左右。
+
+**举一个具体的实例，演示英语单词Man如何转成Base64编码。**
+
+![image-20210823164828151](https://i.loli.net/2021/08/23/nfjBv3gHG7YpwP5.png)
+
+- **第一步**，"M"、"a"、"n"的ASCII值分别是77、97、110，对应的二进制值是01001101、01100001、01101110，将它们连成一个24位的二进制字符串010011010110000101101110。
+
+- **第二步**，将这个24位的二进制字符串分成4组，每组6个二进制位：010011、010110、000101、101110。
+
+- **第三步**，在每组前面加两个00，扩展成32个二进制位，即四个字节：00010011、00010110、00000101、00101110。它们的十进制值分别是19、22、5、46。
+
+- 第四步，根据上表，得到每个值对应Base64编码，即T、W、F、u。
+
+<font size=4>**如果字节数不足三，则这样处理：**</font>
+
+- **二个字节的情况：**将这<font color=FF0000>**二个字节**</font>的一共16个二进制位，按照上面的规则，<font color=FF0000>**转成三组**</font>，<font color=FF0000>最后一组除了前面加两个0以外，**后面也要加两个0**</font>。这样得到一个三位的Base64编码，<font color=FF0000>**再在末尾补上<font size=4>一个"="号</font>**</font>。
+
+  比如，"Ma"这个字符串是两个字节，可以转化成三组00010011、00010110、00010000以后，对应Base64值分别为T、W、E，再补上一个"="号，因此<font color=FF0000>"Ma"的Base64编码就是TWE=</font>。
+
+- **一个字节的情况：**将这<font color=FF0000>**一个字节**</font>的8个二进制位，按照上面的规则<font color=FF0000>**转成二组**</font>，最后一组除了前面加二个0以外，<font color=FF0000>**后面再加4个0**</font>。这样得到一个二位的Base64编码，<font color=FF0000>**再在末尾补上<font size=4>两个"="号</font>**</font>。
+
+比如，"M"这个字母是一个字节，可以转化为二组00010011、00010000，对应的Base64值分别为T、Q，再补上二个"="号，因此"M"的Base64编码就是TQ==。
+
+摘自：[阮一峰 - Base64笔记](https://www.ruanyifeng.com/blog/2008/06/base64.html)
+
+另外，也可以看视频：[原理到实现 | 一个视频完全掌握base64编码](https://www.bilibili.com/video/BV1Wt4y1q7dH)
+
+
+
+
+
+#### 浏览器指纹
+
+通过Cookie来跟踪识别你的身份已经不是什么新技术了，也已经有了很多反跟踪的方法。但是现在存在一种方法，无需广告商为你设置标识，只需读取你的浏览器信息，就可以确定你的身份。这种方法称为“**浏览器指纹**”。
+
+每个人的浏览器似乎都是一样的，但实际上，几乎每个浏览器提供的信息都是不同的。
+
+**浏览器能提供以下一些信息：**
+
+- 是否开启了Cookie
+- 超级Cookie限制
+- 触屏支持
+- “请勿跟踪”
+- 平台
+- 时区
+- 屏幕大小和颜色深度
+- 系统字体
+- 用户代理
+- 语言
+- WebGL指纹
+- HTTP_ACCEPT头
+- 浏览器插件
+- Canvas指纹
+
+将所有这些信息结合起来，就成为了我这个浏览器独一无二的指纹。
+
+摘自：[你是如何被广告跟踪的？](https://zhuanlan.zhihu.com/p/34591096)

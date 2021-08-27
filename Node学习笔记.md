@@ -339,7 +339,7 @@ $ npm run
   
   ```javascript
   "start": "node server.js"，
-"install": "node-gyp rebuild"
+  "install": "node-gyp rebuild"
   ```
   
   上面代码中，`npm run start`的默认值是`node server.js`，前提是项目根目录下有`server.js`这个脚本；`npm run install`的默认值是`node-gyp rebuild`，前提是项目根目录下有`binding.gyp`文件。
@@ -541,7 +541,9 @@ $ npx ls
 
 注意，Bash 内置的命令不在$PATH里面，所以不能用。比如，cd是 Bash 命令，因此就不能用npx cd。
 
+**补充：**
 
+直到这里我还是不太理解npx的作用，不过在看了《再学JavaScript ES(6-11)全版本语法大全》的11-2后明白了：在没有全局安装工具时，是无法直接用工具命令去使用它的（比如如果没有全局安装webpack，无法在项目中直接使用`webpack xxx`，而且由于在一台机器内开发多个项目，且webpack版本未必一致时，webpack不建议全局安装）；这时可以使用npx，输入命令`npx 工具命令 xxx`（比如：`npx webpack xxx`）
 
 
 

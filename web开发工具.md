@@ -553,9 +553,94 @@ ws.onclose = function(evt) {
   });
   ```
 
-以上摘自：[阮一峰 - WebSocket 教程](http://www.ruanyifeng.com/blog/2017/05/websocket.html)，补充内容摘自：[MDN - WebSocket](https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket) 和 [WebSocket协议：5分钟从入门到精通](https://zhuanlan.zhihu.com/p/32739737)（另外，该文章中包含大量原理性的内容，比如报文格式等，由于HTTP并不熟悉，所以以后再看）**//TODO**
+以上摘自：[阮一峰 - WebSocket 教程](http://www.ruanyifeng.com/blog/2017/05/websocket.html)，补充内容摘自：[MDN - WebSocket](https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket) 和 [WebSocket协议：5分钟从入门到精通](https://zhuanlan.zhihu.com/p/32739737)（另外，该文章中包含大量原理性的内容，比如报文格式等，由于HTTP相关遗忘了大半，所以以后再看）**//TODO**
 
 
+
+## Server Sent Event (SSE)
+
+#### 使用服务器发送事件
+
+在Web应用程序中使用服务器发送事件很简单。<mark>在服务器端，只需要按照一定的格式返回事件流，在客户端中，只需要为一些事件类型绑定监听函数，和处理其他普通的事件没多大区别</mark>。
+
+**从服务器接受事件**
+
+<font color=FF0000>服务器发送事件API也就是 **EventSource接口**</font>，在你创建一个新的EventSource对象的同时，你可以指定一个接受事件的URI。例如：
+
+```js
+const evtSource = new EventSource("ssedemo.php");
+```
+
+<font color=FF0000>如果发送事件的脚本<font size=4>**不同源**</font>，**应该创建一个新的包含URL和options参数的EventSource对象**</font>。例如，假设客户端脚本在example.com上：
+
+```js
+const evtSource = new EventSource("//api.example.com/ssedemo.php", { withCredentials: true } );
+```
+
+一旦你成功初始化了一个事件源，就可以<font color=FF0000>（在浏览器端）对 message 事件添加一个处理函数开始监听从服务器发出的消息</font>了:
+
+```js
+evtSource.onmessage = function(event) {
+  const newElement = document.createElement("li");
+  const eventList = document.getElementById("list");
+
+  newElement.innerHTML = "message: " + event.data;
+  eventList.appendChild(newElement);
+}
+```
+
+上面的代码监听了那些从服务器发送来的所有没有指定事件类型的消息(没有event字段的消息)，然后把消息内容显示在页面文档中。
+
+你<mark>也可以使用addEventListener()方法来监听其他类型的事件</mark>（代码略，详见网页）
+
+**错误处理**
+
+当发生错误(例如请求超时或与HTTP访问控制（CORS）有关的问题), 会生成一个错误事件. 您可以通过在EventSource对象上使用onerror回调来对此采取措施：
+
+```js
+evtSource.onerror = function(err) {
+  console.error("EventSource failed:", err);
+};
+```
+
+**关闭事件流**
+
+默认情况下，如果客户端和服务器之间的连接关闭，则连接将重新启动。可以使用.close()方法终止连接。
+
+```js
+evtSource.close();
+```
+
+摘自：[MDN - 使用服务器发送事件](https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events/Using_server-sent_events)
+
+#### EventSource
+
+<font color=FF0000>**EventSource 是服务器推送的一个网络事件接口**</font>。<font color=FF0000>一个EventSource实例会**对HTTP服务开启一个持久化的连接**，以 **text/event-stream 格式**发送事件, 会一直保持开启直到被要求关闭</font>。
+
+一旦连接开启，来自服务端传入的消息会以事件的形式分发至你代码中。如果接收消息中有一个事件字段，触发的事件与事件字段的值相同。如果没有事件字段存在，则将触发通用事件。
+
+<mark>与 WebSockets不同的是，服务端推送是单向的</mark>。数据信息被单向从服务端到客户端分发. 当不需要以消息形式将数据从客户端发送到服务器时，这使它们成为绝佳的选择。例如，对于处理社交媒体状态更新，新闻提要或将数据传递到客户端存储机制（如IndexedDB或Web存储）之类的，EventSource无疑是一个有效方案。
+
+- **构造函数**
+  - <font color=FF0000>**EventSource()：**以指定的 USVString 创建一个新的 EventSource。</font>
+- **属性：**此接口从其父接口 EventTarget 继承属性。
+  - **EventSource.onerror：**是一个 event handler，当<font color=FF0000>发生错误</font>时被调用，并且在此对象上派发 error 事件。
+  - **EventSource.onmessage：**是一个 event handler，当收到一个 <font color=FF0000>message 事件</font>，即消息来自源头时被调用。
+  - **EventSource.onopen：**是一个 event handler，当收到一个<font color=FF0000>open 事件</font>，即连接刚打开时被调用。
+  - **EventSource.readyState：**只读，一个 unsigned short 值，<font color=FF0000>代表连接状态</font>。<font color=FF0000>可能值是 CONNECTING (0), OPEN (1), 或者 CLOSED (2)</font>。
+  - **EventSource.url：**只读，一个DOMString，<font color=FF0000>代表事件源的 URL</font>。
+- **事件接收器**
+  - EventSource.onerror
+  - EventSource.onmessage
+  - EventSource.onopen
+- **方法：**此接口从其父接口 EventTarget 继承方法。
+  - **EventSource.close()：**<font color=FF0000>如果存在，则关闭连接，并且设置 readyState 属性为 CLOSED</font>。<font color=FF0000>如果连接已经被关闭，此方法不会再进行任何操作</font>。
+- **事件**
+  - error
+  - message
+  - open
+
+摘自：[MDN - EventSource](https://developer.mozilla.org/zh-CN/docs/Web/API/EventSource)
 
 ***
 
@@ -597,3 +682,87 @@ Gem是封装起来的Ruby应用程序或代码库，是 Ruby 模块 (叫做 Gems
   ```
 
 摘自：[npm和gem](https://blog.csdn.net/u011099640/article/details/53083845)
+
+
+
+## QRCode.js
+
+Github地址：https://github.com/davidshimjs/qrcodejs
+
+**官方示例：**
+
+```html
+<div id="qrcode"></div>
+<script type="text/javascript">
+var qrcode = new QRCode(document.getElementById("qrcode"), {
+	text: "http://jindo.dev.naver.com/collie",
+	width: 128,
+	height: 128,
+	colorDark : "#000000",
+	colorLight : "#ffffff",
+	correctLevel : QRCode.CorrectLevel.H
+});
+</script>
+```
+
+and you can use some methods
+
+```
+qrcode.clear(); // clear the code.
+qrcode.makeCode("http://naver.com"); // make another code.
+```
+
+**参数**
+
+| 参数         | 默认值                | 说明             | 备注                                                         |
+| ------------ | --------------------- | ---------------- | ------------------------------------------------------------ |
+| text         | string                | 二维码内容字符串 | 如果是url的话，为了微信和QQ可以识别，连接中的中文使用encodeURIComponent进行编码 |
+| width        | 256                   | 图像宽度         | 单位像素（百分比不行）                                       |
+| height       | 256                   | 图像高度         | 单位像素（百分比不行）                                       |
+| colorDark    | '#000'                | 二维码前景色     | 英文\十六进制\rgb\rgba\transparent都可以                     |
+| colorLight   | ‘#fff’                | 二维码背景色     | 英文\十六进制\rgb\rgba\transparent都可以                     |
+| correctLevel | QRCode.CorrectLevel.L | 容错级别         | <font color=FF0000>**由低到高 .L M Q H**</font>              |
+
+**方法**
+
+- clear：清除QR code
+- makeCode(text: String)：重新绘制QR code （仅在不支持 Canvas 的浏览器下有效）
+
+**常见问题**
+
+- 长字符串显示模糊问题
+  - **原因：**显示模糊的问题，是canvas的问题。由于字符串比较长，尤其是需要传一个连接地址，后面还加一些参数的时候，就会加大二维码的像素复杂度，而本身canvas在绘制的时候，就一直有像素模糊的问题，尤其是在手机上的时候
+  - **解决方法：**先将生成的二维码进行倍数扩大，然后在css上面固定其显示宽高，这样就可以扩大显示像素精度。
+
+- 因为url太长，导致二维码加载报错。一般报错提醒 Error: code length overflow. (1756>1056)
+  - 一般都是容错率设置为最高导致的，此时把容错率调低一级便可以
+
+摘自：[前端QRCode.js生成二维码（解决长字符串模块和报错问题）](https://www.cnblogs.com/whkl-m/p/10797776.html)
+
+
+
+#### html2canvas
+
+**一些杂乱的经验总结：**
+
+- **用法：**
+
+  ```js
+  import html2canvas from 'html2canvas'
+  
+  html2canvas(element[, options]).then(function(canvas) {
+    // ...
+    // do something with canvas
+  }) 
+  ```
+
+  - 其中element是DOM对象，通过`document.querySelector()`等获取元素的方法获取
+  - options对应的是设置Configuration / Options，具体可以查看 [html2canvas - document - configuration / options](https://html2canvas.hertzen.com/configuration)
+
+- options中 的 width和height的不需要添加单位，默认为`px`。
+
+- html2canvas的将html转换为canvas是根据 屏幕像素 进行的，如果使用插入图片、且使用`object-fit`、`background-size`的需要注意，如果图片的容器比图片的像素值小，想导出图片、插入的图片会有损。
+
+- Scale的默认值为「**当前屏幕**」的`window.devicePixelRatio`，其中踩到坑的是MacBook Pro的 `window.devicePixelRatio`为2。生成的canvas会比预期大一倍，要将scale设为1
+
+更多参考文章：[高质量前端快照方案：来自页面的「自拍」](https://segmentfault.com/a/1190000021275782)

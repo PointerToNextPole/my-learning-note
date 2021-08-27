@@ -164,7 +164,7 @@ spellcheck属性用来表明浏览器是否应该对元素的内容进行拼写�
 
 #### P30 - P31 tabindex
 
-HTML页面上的键盘焦点可以通过按Tab键在各元素之间切换。用tabindex属性可以改变默认的转移顺序。
+<font color=FF0000>HTML页面上的键盘焦点可以通过按Tab键在各元素之间切换。用tabindex属性可以改变默认的转移顺序。</font>
 
 ```html
 <label>Name: <input type="text" name="name" tabindex="1"/></label>
