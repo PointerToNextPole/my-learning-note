@@ -1,4 +1,4 @@
-# Web相关备忘录
+# **Web**相关备忘录
 
 
 
@@ -102,35 +102,93 @@
 
 摘自：[阮一峰 - Unicode与JavaScript详解](http://www.ruanyifeng.com/blog/2014/12/unicode.html)
 
+<font size=4>**补充：**</font>
+
+**UTF-8**
+
+UTF-8 最大的一个特点，就是<font color=FF0000> 它是一种变长的编码方式</font>。它<font color=FF0000> 可以使用1~4个字节表示一个符号</font>，根据不同的符号而变化字节长度。
+
+**UTF-8 的编码规则很简单，只有二条：**
+
+- <font color=FF0000>对于 **单字节** 的符号，**字节的第一位设为0**（和下面的多字节的对应，用 多少个1 标示是多少个字节）</font>，后面7位为这个符号的 Unicode 码。因此对于英语字母，UTF-8 编码和 ASCII 码是相同的。
+
+- <font color=FF0000> 对于 <font size=4>**n字节**</font> 的符号（n > 1），<font size=4>**第一个字节的前n位都设为1**，**第n + 1位设为0**</font></font>，<font color=FF0000> 后面字节（即剩余的字节） 的前两位一律设为10</font>。<mark>剩下的没有提及的二进制位，全部为这个符号的 Unicode 码</mark>。
+
+下表总结了编码规则，字母`x`表示可用编码的位。
+
+| Unicode符号范围 (十六进制) | UTF-8编码方式（二进制）                                      |
+| -------------------------- | ------------------------------------------------------------ |
+| 0000 0000 ～ 0000 007F     | 0xxxxxxx                                                     |
+| 0000 0080 ～ 0000 07FF     | <font color=FF0000>110</font>xxxxx <font color=FF0000>10</font>xxxxxx |
+| 0000 0800 ～ 0000 FFFF     | <font color=FF0000>1110</font>xxxx <font color=FF0000>10</font>xxxxxx <font color=FF0000>10</font>xxxxxx |
+| 0001 0000 ～ 0010 FFFF     | <font color=FF0000>11110</font>xxx <font color=FF0000>10</font>xxxxxx <font color=FF0000>10</font>xxxxxx <font color=FF0000>10</font>xxxxxx |
+
+跟据上表，解读 UTF-8 编码非常简单。如果一个字节的第一位是0，则这个字节单独就是一个字符；如果第一位是1，则连续有多少个1，就表示当前字符占用多少个字节。
+
+**下面，还是以汉字严为例，演示如何实现 UTF-8 编码。**
+
+“严”字 的 Unicode 是 4E25 (<mark style="background:LightSlateGray">100</mark><mark style="background:fuchsia">111000</mark><mark style="background:aqua">100101</mark>)，<font color=FF0000>**根据上表**</font>，可以<font color=FF0000>发现 4E25 处在第三行的范围内 (0000 0800 - 0000 FFFF)（即：确定字节数）</font>，<mark>因此 “严” 的 UTF-8 编码需要三个字节，即格式是1110xxxx 10xxxxxx 10xxxxxx</mark>。然后，<font color=FF0000>**从 “严” 的最后一个二进制位开始，依次 <font size=4>从后向前填入</font> 格式中的x，<font size=4>多出的位补0</font>**</font> 。这样就得到了，严的 UTF-8 编码是 <mark>1110</mark><mark style="background:red">0</mark><mark style="background:LightSlateGray">100</mark> <mark>10</mark><mark style="background:fuchsia">111000</mark> <mark>10</mark><mark style="background:aqua">100101</mark>（其中mark为<mark style="background:red">红色</mark>的 0，是补上的 0），转换成十六进制就是 E4B8A5。
+
+摘自：[阮一峰 - 字符编码笔记：ASCII，Unicode 和 UTF-8](https://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html)
 
 
 
+#### HTML 编码
 
-#### <font color=FF0000>编写web程序时出现的问题</font>
+**痛点：**不是每一个 Unicode 字符都能直接在 HTML 语言里面显示
 
-- 出现如下情况：
+- 不是每个 Unicode 字符都可以打印出来，有些没有可打印形式，比如换行符的码点是十进制的10（十六进制的A），就没有对应的字面形式。
 
-  <img src="https://s1.ax1x.com/2020/07/05/US9DqP.png" style="zoom: 45%;" />
+- 小于号（<）和大于号（>）用来定义 HTML 标签，其他需要用到这两个符号的场合，必须防止它们被解释成标签。
 
-  其中<font color=FF0000>**一种解释原因**</font>（无法确认是所有）是：当前访问的页面不存在（物理上不存在） / 当前程序能访问到的中的资源中没有该资源（资源存在，但程序找不到）。
+- 由于 Unicode 字符太多，无法找到一种输入法，可以直接输入所有这些字符。换言之，没有一种键盘，有办法输入所有符号。
 
+- 网页不允许混合使用多种编码，如果使用 UTF-8 编码的同时，又想插入其他编码的字符，就会很困难。
 
+HTML 为了解决上面这些问题，<font color=FF0000> **允许使用 Unicode 码点表示字符**</font>，浏览器会自动将码点转成对应的字符。
 
-#### <font color=FF0000>80端口和8080端口</font>
+字符的码点表示法是 &#N;（十进制，N代表码点）或者 &#xN;（十六进制，N代表码点），比如，字符a可以写成a（十进制）或者a（十六进制），字符中可以写成中（十进制）或者中（十六进制），浏览器会自动转换它们。
 
-<font color=FF0000>80是**http协议的默认端口**</font>，是在输入网站的时候其实浏览器（非IE）已经帮你输入协议了，所以你输入http://baidu.com，其实是访问http://baidu.com:80，而<font color=FF0000>8080，一般用于webcahe</font>，<font color=FF0000>一般是用来连接代理的</font>。完全不一样的两个，比如linux服务器里apache默认跑80端口，而apache-tomcat默认跑8080端口，其实端口没有实际意义只是一个接口，主要是看服务的监听端口，如果baidu的服务器监听的81端口，那么你直接输入就不行了就要输入http://baidu.com:81这样才能正常访问
+```html
+<p>hello</p>
+<!-- 等同于 -->
+<p>&#104;&#101;&#108;&#108;&#111;</p>
+<!-- 等同于 -->
+<p>&#x68;&#x65;&#x6c;&#x6c;&#x6f;</p>
+```
 
-摘自：[80端口跟8080端口有什么具体区别？ - 死神的沙漏的回答 - 知乎](https://www.zhihu.com/question/26698345/answer/33709330)
+注意，<font color=FF0000> HTML 标签本身不能使用码点表示，否则浏览器会认为这是所要显示的文本内容，而不是标签</font>。比如，\<p>一旦写成<\&#112;>或者 `&#60;&#112;&#62;`，浏览器就不再认为这是标签了，而会当作文本内容将其显示为\<p>。
 
+**字符的实体表示法**
 
+<mark>数字表示法的不方便之处，在于必须知道每个字符的码点，很难记忆。为了能够快速输入，HTML 为一些特殊字符，规定了容易记忆的名字，允许通过名字来表示它们，这称为<font color=FF0000> **实体表示法**</font>（entity）</mark>。
 
-#### <font color=FF0000>URL</font>
+实体的写法是&name;，其中的name是字符的名字。下面是其中一些特殊字符，及其对应的实体。
 
-URL中 `%十六进制数字` 代表的是十六进制的ASCII码
+- <：\&lt;
+- \> :  \&gt;
+- " ：\&quot;
+- ' ：\&apos;
+- & ：\&amp;
+- © ：\&copy;
+- \# ：\&num;
+- § ：\&sect;
+- ¥ ：\&yen;
+- $ ：\&dollar;
+- £ ：\&pound;
+- ¢ ：\&cent;
+- % ：\&percnt;
+- \* ：\&ast;
+- @ ：\&commat;
+- ^ ：&Hat;
+- ± ：\&plusmn;
+- 空格 ：\&nbsp;
 
+字符的数字表示法和实体表示法，都可以表示正常情况无法输入的字符，逃脱了浏览器的限制，所以英语里面称为“escape”，中文翻译为“字符的转义”。
 
+摘自：[HTML 字符编码](https://wangdoc.com/html/encode.html)
 
-#### <font color=FF0000>HTML的转义字符</font>
+#### HTML的转义字符
 
 | 特殊符号           | 命名实体   | 十进制编码 | 特殊符号              | 命名实体    | 十进制编码 |
 | ------------------ | ---------- | ---------- | --------------------- | ----------- | ---------- |
@@ -251,6 +309,319 @@ URL中 `%十六进制数字` 代表的是十六进制的ASCII码
 | <mark>**Ε**</mark> | \&Epsilon; | <mark>**Λ**</mark> | \&Lambda; | <mark>**Φ**</mark> | \&Phi;     | <mark>**Τ**</mark> | \&Tau;    | <mark>**ς**</mark> | \&sigmaf;  |
 
 摘自：[Html 特殊符号](https://www.cnblogs.com/knowledgesea/p/3210703.html)
+
+
+
+#### 百分号编码
+
+百分号编码（英语：Percent-encoding），<font color=FF0000> 又称：URL编码（URL encoding）是特定上下文的统一资源定位符 （URL）的编码机制</font>，实际上也适用于统一资源标志符（URI）的编码。<mark>也用于为 application/x-www-form-urlencoded（的）MIME准备数据</mark>，因为它用于通过HTTP的请求操作（request）提交HTML表单数据。
+
+**URI的字符类型**
+
+URI所允许的字符分作 **保留** 与 **未保留** 。<font color=FF0000> **保留**字符 是 **那些具有特殊含义的字符**</font>，例如：斜线字符用于URL（或URI）不同部分的分界符；<font color=FF0000> **未保留**字符 没有这些特殊含义</font>。<font color=FF0000> 百分号编码 把保留字符表示为特殊字符序列</font>。上述情形随URI与URI的不同版本规格会有轻微的变化。
+
+RFC 3986 section 2.2 保留字符 (2005年1月)，如下：
+
+| !    | *    | '    | (    | )    | ;    | :    | @    | &    | =    | +    | $    | ,    | /    | ?    | #    | [    | ]    |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+
+RFC 3986 section 2.3 未保留字符 (2005年1月)，如下：
+
+| A    | B    | C    | D    | E    | F    | G    | H    | I    | J    | K    | L    | M    | N    | O    | P    | Q    | R    | S    | T    | U    | V    | W    | X    | Y    | Z    |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| a    | b    | c    | d    | e    | f    | g    | h    | i    | j    | k    | l    | m    | n    | o    | p    | q    | r    | s    | t    | u    | v    | w    | x    | y    | z    |
+| 0    | 1    | 2    | 3    | 4    | 5    | 6    | 7    | 8    | 9    | -    | _    | .    | ~    |      |      |      |      |      |      |      |      |      |      |      |      |
+
+<font color=FF0000> URI中的其它字符（比如汉字）必须用百分号编码</font>。
+
+**对保留字符的百分号编码**
+
+如果一个 保留字符 在特定上下文中具有特殊含义（称作 "reserved purpose"），且 URI 中必须使用该字符用于其它目的，那么该字符必须百分号编码。百分号编码一个保留字符，首先需要把该字符的 ASCII 的值表示为两个16进制的数字，然后在其前面放置转义字符 ("%")，置入 URI 中的相应位置。(对于 非ASCII 字符, 需要转换为UTF-8字节序，然后每个字节按照上述方式表示。)
+
+例如，"/", 如果用作 URI 的路径成份的分界符, 则是具有特殊含义的保留字符。如果该字符需要出现在URI一个路径成分的内部，则三字符序列 "%2F" 或 "%2f" 就用于代替原本的"/"出现在该URI路径成分的内部.
+
+| !    | #    | $    | &    | '    | (    | )    | *    | +    | ,    | /    | :    | ;    | =    | ?    | @    | [    | ]    |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| %21  | %23  | %24  | %26  | %27  | %28  | %29  | %2A  | %2B  | %2C  | %2F  | %3A  | %3B  | %3D  | %3F  | %40  | %5B  | %5D  |
+
+在特定上下文中没有特殊含义的保留字符也可以被百分号编码，在语义上与不百分号编码的该字符没有差别.
+
+在URI的"查询"成分 (? 字符后的部分) 中, 例如 "/" 仍然是保留字符但是没有特殊含义，除非一个特定的URI有其它规定. 该/字符在没有特殊含义时不需要百分号编码.
+
+如果保留字符具有特殊含义，那么该保留字符用百分号编码的URI与该保留字符仅用其自身表示的URI具有不同的语义。
+
+摘自：[wiki - 百分号编码](https://zh.wikipedia.org/wiki/%E7%99%BE%E5%88%86%E5%8F%B7%E7%BC%96%E7%A0%81)
+
+<font size=4>**补充：**</font>
+
+不同的操作系统、不同的浏览器、不同的网页字符集，如果让浏览器自动进行 URL编码 会导致编码结果完全不同，因为使用了不同的编码方式（详见引用链接）。
+
+为了预防这种问题，应该使用Javascript先对URL编码，然后再向服务器提交，不要给浏览器插手的机会。**有三种方法：**
+
+- **escape()：**不推荐使用
+- **encodeURI()：**只能整体编码
+- **encodeURIComponent()：**与encodeURI()的区别是，它用于对URL的组成部分进行个别编码，而不用于对整个URL进行编码。
+
+**关于这篇文章的补充：**由于这篇文章2010年的，很多东西与当前（2021年）不符了。在Chrome中浏览器自动的URL编码采用 UTF-8编码方式。
+
+摘自：[阮一峰 - 关于URL编码](https://www.ruanyifeng.com/blog/2010/02/url_encoding.html)
+
+百分号编码又叫做URL编码，<mark>是一种编码机制</mark>，<font color=FF0000>只要用于URI（包含 URL 和 URN）编码中</font>。
+
+一、URL是什么？
+ URL（Uniform Resource Locator），统一资源定位符，<font color=FF0000>是地址的别名</font>。<font color=FF0000>包含了关于文件储存位置和浏览器应该如何处理他的信息</font>。互联网上的每一个文件都有唯一的URL。
+
+**URL分为三个部分：**
+
+- 第一部分模式；
+
+- 第二部分文件所在的主机名称
+
+- 第三部分路径（目录+文件名）
+
+一般来说，URL只能使用英文字母、阿拉伯数字和某些标点符号，不能使用其他的文字和符号
+
+URL只能使用ASCII 字符集来通过网络进行发送。由于URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的ASCII 码的格式。
+
+<mark>URL编码通常会使用 % 后面跟随两个十六进制数字来替换 非ASCII 字符</mark>；
+
+<font color=FF0000>URL不能包含空格。所以进行编码时经常使用 + 来替换空格</font>；
+
+**为什么会需要编码？**
+
+那是因为这样东西不适合传输。<font color=FF0000>原因可能有很多种：大小过大，包含隐私数据</font>。<font color=FF0000>对于URL而言，之所以进行编码是因为URL中有一些字符会引起歧义</font>。
+
+**例如：**URL参数字符串中使用键值对这样的形式来传参，键值对之间使用了 & 符号分隔。
+
+如果 value字符串中包含了 @ 或 & 等字符，那么一定会造成接收URL的服务器解析错误，因此就需要对造成歧义的 @ 和 & 进行转义，对其进行编码。
+
+还有，如果URL的字符集使用的ASCII 码，不是 Unicode，这就意味着不可以在 URL 中包含任何的非 ASCII 码，例如：中文，否则客户端浏览器和服务器设定的字符集不同的情况下，输入的中文就会出现乱码。
+
+百分号编码（URL编码）会对URL不允许出现的字符或者其他特殊情况的允许的字符进行编码，对于被编码的字符，最终会转为百分号 % 开头，后面跟这昂个十六进制数字的形式。例如：空格（SP）是不允许的字符，在ACSII码中对应的的二进制值是 00100000 ，最终转换为 %20。
+
+<font color=FF0000>URL编码的原则就是**使用安全的字符**（没有特殊用途或者特殊意义的可打印字符）**去掉那些不安全的字符**，**以保证内容的正常显示**</font>。
+
+**需要编码的字符**
+
+RFC3986文档中规定，URL中只需要包含英文字母（a\~zA\~Z）、数字（0~9）、（- \_ . ~）四个特殊字符以及所有保留字符。
+
+URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的ASCII 码的格式。
+
+有一些字符需要经过编码才不会引起URL语义的转变
+
+
+
+#### 浏览器访问网站的工作流程
+
+- 输入URL之后，浏览器会进行DNS查找，找到URL所在服务器的域名（补充：在进行DNS解析之前，浏览器会先判断是否需要重定向和缓存检查）
+
+- 找到服务器之后，浏览器会通过TCP握手与服务器建立连接。如果是基于HTTPS的连接，会多一步<font color=FF0000 size=4> **TLS握手**</font>，建立加密的隧道，保证数据不被监听和篡改。
+
+- 在建立连接之后，浏览器会发送 HTTP / HTTPS 请求，一般服务器的响应就是 html 的网页代码。
+
+  - 浏览器在接收服务器响应时，由于 TCP的慢启动（slow start）的机制，浏览器会先收到前 14kb 的数据；后面才会慢慢增加传输速度（这里的 14kb 衍生出了“首屏优化，首屏的资源要小于14kb”的限制）
+
+- 在收到html 文件之后，浏览器开始渲染网页，共有五个步骤，被称为：<font color=FF0000 size=4> **关键渲染路径**</font>
+
+  - **构建 DOM (Document Object Model) 树**
+
+    - 浏览器解析 HTML、构建DOM 树是顺序执行的（从上到下），并且只有一个主线程负责解析
+    - 如果在解析的过程中遇到 \<script> 标签，浏览器会加载 JS 文件，并执行里面的代码；这时候主线程会暂停解析HTML，直到JS代码执行完毕，才会继续
+    - 对于图片、CSS文件、rel属性设置为defer async 的 \<script> 标签，将不会影响主线程；而是会异步的加载
+    - 浏览器有一个预扫描线程 (Pre Scanner / Preload Scanner ？) ，会扫描HTML 代码，预先下载 CSS文件、字体、JS代码
+
+    <img src="https://i.loli.net/2021/10/19/k1zobO8ZBEnAVcx.png" alt="image-20211019182116485" style="zoom:40%;" />
+
+  - **构建 CSSOM (CSS Object Model) 树**
+
+    <img src="https://i.loli.net/2021/10/19/Lzy9VXM2JuYEeIF.png" alt="image-20211019180750859" style="zoom: 40%;" />
+
+    CSSOM 树是 CSS在浏览器中的对象表示，也是树状结构
+
+  - **合并 DOM 树 和 CSSOM 树（形成渲染树）**
+
+    浏览器会从DOM的根节点开始，合并 CSSOM 中的样式到 DOM中的每个节点，形成一棵渲染树 (Render Tree)
+
+    <img src="https://i.loli.net/2021/10/19/oAuSFHbZWYXcajT.png" alt="image-20211019182315113" style="zoom:40%;" />
+
+  - **布局**
+
+    生成渲染树之后，浏览器会根据样式计算每个可见节点的宽高和位置等，对每个节点进行布局规划。对于像图片这样的节点（置换元素？）如果没有指定宽高，浏览器会先忽略它的大小（如下图）
+
+    <img src="https://i.loli.net/2021/10/19/qV5uGPlobEwmk2M.png" alt="image-20211019182426724" style="zoom:40%;" />
+
+    在图片加载完成之后，浏览器会根据图片的宽高和位置，<font color=FF0000 size=4> **再次计算受影响的节点的大小和位置**</font>，这个过程被称为<font color=FF0000 size=4> **回流 (reflow)**</font>。如下图：
+
+    <img src="https://i.loli.net/2021/10/19/mPIbkxRulrdTKCE.png" alt="image-20211019182604357" style="zoom:40%;" />
+
+    可见节点即：没有设置display: none 的节点。
+
+  - **绘制**
+
+    在第一次布局完成之后，浏览器会真正将节点和节点的样式绘制到屏幕上。这个过程要求十分快速，否则会影响动画和交互的性能。如果之前发生了回流，浏览器还会发生<font color=FF0000> **重绘**</font>，将变化的布局重新绘制到屏幕上。在绘制期间，也有可能会有 <font color=FF0000> 组合</font>发生。在渲染节点时，可能会产生新的图层，比如：\<video />、opacity、will-change、transform 等属性的节点，浏览器需要将这些图层组合起来，按正确的堆叠顺序渲染。同样，回流和重绘操作也会引发重新组合操作
+
+- 上面五步完成之后，设置 rel为 refer / async的 \<script> 标签中的 JS 文件，开始加载并执行。完成之后，整个网页便加载完成了
+
+摘自：[浏览器的工作原理是什么?](https://www.bilibili.com/video/BV1Dh411J71c)
+
+
+
+#### 关键渲染路径 (Critical Rendering Path / CRP)
+
+关键渲染路径<font color=FF0000> 是浏览器将 HTML，CSS 和 JavaScript 转换为屏幕上的像素所经历的**步骤序列**</font>。优化关键渲染路径可提高渲染性能。<font color=FF0000>关键渲染路径 **包含了 文档对象模型 (DOM)，CSS 对象模型 (CSSOM)，渲染树和布局**</font>。
+
+**<font color=FF0000> 概述</font>如下：**
+
+- 在解析 HTML 时会创建文档对象模型 (DOM)。HTML 可以请求 JavaScript，而 JavaScript  反过来，又可以更改 DOM。
+
+- HTML 包含（样式）或请求样式，依次来构建 CSS 对象模型。
+- 浏览器引擎将两者结合起来以创建 渲染树。
+- 布局确定页面上所有内容的大小和位置。
+- 确定布局后，将像素绘制到屏幕上。
+
+<font size=4>**理解 CRP**</font>
+<mark>Web 性能包含了服务器请求和响应、加载、执行脚本、渲染、布局和绘制每个像素到屏幕上</mark>。
+
+网页请求从 HTML 文件请求开始。服务器返回 HTML -- 响应头和数据。然后浏览器开始解析 HTML，转换收到的数据为 DOM 树。<font color=FF0000> 浏览器<font size=4>**每次发现外部资源就初始化请求**</font>，无论是样式、脚本或者嵌入的图片引用。<font size=4>**有时请求会阻塞，这意味着解析剩下的 HTML 会被终止直到重要的资源被处理**</font></font>。浏览器接着解析 HTML，发请求和构造 DOM 直到文件结尾 ，这时开始构造 CSS对象模型。等到 DOM 和 CSSOM 完成之后，浏览器构造渲染树，计算所有可见内容的样式。一旦渲染树完成布局开始，定义所有渲染树元素的位置和大小。完成之后，页面被渲染完成，或者说是绘制到屏幕上。
+
+- **文本对象模型 (DOM)**
+  <font color=FF0000> DOM构建是增量的</font>。 <font color=FF0000 size=4>**HTML响应变成令牌（token，补充：这里的token似乎和鉴权的Token没有关系，似乎是编译原理中的概念），令牌变成节点**</font>，而节点又变成DOM树。<font color=FF0000>  单个DOM节点以 <font size=4>**startTag令牌开始，以endTag令牌结束**</font>。 <font size=4>**节点包含有关HTML元素的所有相关信息。 该信息是使用令牌描述的**</font></font>。 节点根据令牌层次结构连接到DOM树中。 如果另一组 startTag 和 endTag 令牌位于一组 startTag 和 endTag 之间，则您在节点内有一个节点，这就是我们定义DOM树层次结构的方式。
+
+  节点数量越多，关键渲染路径中的后续事件将花费的时间就越长。 测一下吧！ 几个额外的节点不会有什么区别，但“DIV癖”（divitis）可能会导致问题。
+
+- **CSS 对象模型 (CSSOM)**
+  <font color=FF0000> DOM 包含页面所有的内容</font>。CSSOM 包含了页面所有的样式，也就是如何展示 DOM 的信息。<font color=FF0000> CSSOM 跟 DOM 很像，但是不同</font>。<font color=FF0000> DOM 构造是增量的，CSSOM 却不是</font>。<font color=FF0000 size=4> **CSS 是渲染阻塞的：浏览器会阻塞页面渲染直到它接收和执行了所有的 CSS。CSS 是渲染阻塞是因为规则可以被覆盖，所以内容不能被渲染直到 CSSOM 的完成**</font>。
+
+  CSS 有其自身的规则集合用来定义标识。注意 CSS 中的 C 代表的是“层叠”。CSS 规则是级联的。随着解析器转换标识为节点，节点的后代继承了样式。像处理 HTML 那样的增量处理功能没有被应用到 CSS 上，因为后续规则可能被之前的所覆盖。CSS 对象模型随着 CSS 的解析而被构建，但是直到完成都不能被用来构建渲染树，因为样式将会被之后的解析所覆盖而不应该被渲染到屏幕上。
+
+  <mark>从选择器性能的角度，更少的特定选择器是比更多的要快</mark>。例如，.foo {} 是比 .bar .foo {} 更快的因为当浏览器发现  .foo ，接下来必须沿着 DOM 向上走来检查 .foo 是不是有一个祖先 .bar。越是具体的标签浏览器就需要更多的工作，但这样的弊端未必值得优化。
+
+  如果你测量过解析 CSS 的时间，你将会被浏览器实在地快所震惊。更具体的规则更昂贵因为它必须遍历更多的 DOM 树节点，但这所带来的额外的消耗通常很小。先测量一下。然后按需优化。特定化或许不是你的低垂的果实。在 CSS 中选择器的性能优化，提升仅仅是毫秒级的。有其他一些方式来优化 CSS，例如压缩和使用媒体查询来异步处理 CSS 为非阻塞的请求。
+
+- **渲染树**
+  <mark>渲染树包括了内容和样式：DOM 和 CSSOM 树结合为渲染树</mark>。<font color=FF0000> 为了构造渲染树，浏览器检查每个节点，**从 DOM 树的根节点开始，并且决定哪些 CSS 规则被添加**</font>。
+
+  <font color=FF0000> 渲染树只包含了可见内容。头部（通常）不包含任何可见信息，因此不会被包含在渲染树种</font>。如果有元素上有 `display: none;`，它本身和其后代都不会出现在渲染树中。
+
+- **布局**
+  一旦渲染树被构建，布局变成了可能。<mark>布局取决于屏幕的尺寸。布局这个步骤决定了在哪里和如何在页面上放置元素，决定了每个元素的宽和高，以及他们之间的相关性</mark>。
+
+  什么是一个元素的宽？块级元素，根据定义，默认有父级宽度的 100%。一个宽度 50% 的元素，将占据父级宽度的一半。除非另外定义，body 有 100% 的宽，意味着它占据视窗的 100%。设备的宽度影响布局。 
+
+  视窗的元标签定义了布局视窗的宽度，从而影响布局。没有的话，浏览器使用视窗的默认宽度，默认全屏浏览器通常是 960px。在默认情况下像你的手机浏览器的全屏浏览器，通过设置 \<meta name="viewport" content="width=device-width">，宽度将会是设备的宽度而不是默认的视窗宽度。设备宽度当用户在横向和纵向模式旋转他们的手机时将会改变。布局发生在每次设备旋转或浏览器缩放时。
+
+  布局性能受 DOM 影响 -- 节点数越多，布局就需要更长的时间。布局将会变成瓶颈，如果期间需要滚动或者其他动画将会导致迟滞。20ms 的延迟在加载或者方向改变时或许还可以接受，但在动画或滚动时就会迟滞。任何渲染树改变的时候，像添加节点、改变内容或者在一个节点更新盒模型样式的时候布局就会发生。
+
+  为了减小布局事件的频率和时长，批量更新或者避免改动盒模型属性。
+
+- **绘制**
+  最后一步是将像素绘制在屏幕上。<font color=FF0000> 一旦渲染树创建并且布局完成，像素就可以被绘制在屏幕上</font>。加载时，整个屏幕被绘制出来。之后，<font color=FF0000> **只有受影响的屏幕区域会被重绘，浏览器被优化为只重绘需要绘制的最小区域**</font>。绘制时间取决于何种类型的更新被附加在渲染树上。绘制是一个非常快的过程，所以聚焦在提升性能时这大概不是最有效的部分，重点要记住的是当测量一个动画帧需要的时间需要考虑到布局和重绘时间。添加到节点的样式会增加渲染时间，但是移除样式增加的 0.001ms 或许不能让你的优化物有所值。记住先测量。然后你可决定它的优化优先级。
+
+<font size=4>**优化 CRP**</font>
+<font color=FF0000> 提升页面加载速度需要通过**被加载资源的优先级**、**控制它们加载的顺序**和**减小这些资源的体积**</font>。性能提示包含：
+
+- 通过异步重要资源的下载来减小请求数量
+- 优化必须的请求数量和每个请求的文件体积
+- 通过<font color=FF0000> **区分关键资源的优先级来优化被加载关键资源的顺序**</font>，来缩短关键路径长度。
+
+摘自：[MDN - 关键渲染路径](https://developer.mozilla.org/zh-CN/docs/Web/Performance/Critical_rendering_path)
+
+<font size=4>**补充**</font>
+
+**关键渲染路径中的令牌：**
+
+HTML中 尖括号 里的文本，具有特殊含义，属于标记。<font color=FF0000> **每当遇到一个标记，浏览器会发出一个令牌**</font>。**这些令牌包括**：
+
+- 文档类型 DOCTYPE
+- 开始标签 start tag
+- 结束标签 end tag
+- 注释 comment
+- 字符 character
+- 文件结束end-of-file
+
+<font color=FF0000 size=4> 整个流程都由令牌解析器来完成，当令牌解析器在执行这一流程时，有另一个流程正在消耗这些令牌。并按照某种规则将它们转换为节点对象。</font>
+
+<font color=FF0000> 令牌解析器发出了 **起始令牌** 和 **结束令牌**，这样就可以显示节点之间的关系</font>，比如StartTag：head令牌出现在EndTag：HTML令牌前面，表示head令牌是HTML令牌的子级。
+
+摘自：[笔记](https://www.jianshu.com/p/219a9462ff90)
+
+**將 HTML 轉換成 DOM 樹**
+
+當我們請求某個 URL 以後，瀏覽器獲得響應的數據並將所有的標記轉換到我們在屏幕上所看到的 `HTML`，有沒有想過這中間發生了什麼？
+
+**瀏覽器會遵循定義好的完善步驟，從處理 HTML 和構建 DOM 開始:**
+
+- 瀏覽器從磁盤或網絡中讀取 HTML 原始字節，並根據文件的指定編碼將它們轉成字符。
+- 當遇到 HTML **標記**時，瀏覽器會發出一個令牌，生成諸如 `StartTag: HTML` `StartTag:head` `Tag: meta` `EndTag: head` 這樣的令牌 ，整個瀏覽由令牌生成器來完成。
+- 在令牌生成的同時，另一個流程會同時消耗這些令牌並轉換成 `HTML` `head` 這些節點對象，起始和結束令牌表明了節點之間的關係。
+- 當所有的令牌消耗完以後就轉換成了DOM（文檔對象模型）。
+
+![](https://codertw.com/wp-content/uploads/img/95mZC7G291.jpg)
+
+摘自：[詳解CRP：如何最大化提升首屏渲染速度](https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/677333/)
+
+**渲染树的其他补充：**
+
+尽管不同的渲染引擎渲染流程不同，但是都需要解析 HTML 和 CSS 用于生成渲染树。前端开发接触最多的渲染引擎是 WebKit（以及在其基础上派生的 Blink)，接下来本文会以 Webkit 为基础介绍渲染树。
+
+![The Compositing Forest](https://s2.loli.net/2022/02/08/oQWuJlNCZEjtheA.jpg)
+
+图片来自 [GPU Accelerated Compositing in Chrome](https://link.segmentfault.com/?enc=GCJMy40VlEdNxgjk5%2BzJzg%3D%3D.zS4%2Fsck9kvYrD0zGIFLXw9uvAG18cpxAl3wOPia0lOhfMzcq1J3gRUb54jDmKMeBPPa2rKSSkUYsuSm3kf8TvCSlrTx4rRID8%2BZjYX1qnEZaADlewiFFPDpz2of2XF4c)
+
+上图中，除了我们熟悉的 DOM 树外，还有 RenderObject 树，RenderLayer 树，GraphicsLayer 树，它们共同构成了 "渲染森林"。
+
+- **RenderObject**
+
+  RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对应，RenderObject 也构成了一颗树。但是RenderObject 的树与 DOM 节点并不是一一对应关系。《Webkit 技术内幕》指出，如果满足下列条件，则会创建一个 RenderObject：
+
+  - DOM 树中的 document 节点；
+  - DOM 树中的可见节点（webkit 不会为非可视节点创建 RenderObject 节点）；
+  - 为了处理需要，Webkit 建立匿名的 RenderObject 节点，如表示块元素的 RenderBlock（RenderObject 的子类）节点。
+
+  将 DOM 节点绘制在页面上，除了要知道渲染节点的信息外，还需要各渲染节点的层级。浏览器提供了 RenderLayer 来定义渲染层级。
+
+- **RenderLayer**
+
+  RenderLayer 是浏览器基于 RenderObject 创建的。RenderLayer 最初是用来生成层叠上下文 (stacking context)，以保证页面元素按照正确的层级展示。同样的， RenderObject 和 RenderLayer 也不是一一对应的，RenderObject 如果满足以下条件，则会创建对应的 RenderLayer （ [GPU Accelerated Compositing in Chrome](https://link.segmentfault.com/?enc=cQ6Sn%2B1ylo7UKQ1kTT3zFQ%3D%3D.VaozdfL6Johksdd3rWFa0RhGqY82D0QQgYeiRAoSJImCa%2F6%2BXsAbdp1ddIO7s5m5kONAq%2BrewIvHztpgVBzKBiGCIwFB1uwr%2FfwXpWlhgv%2Fw%2FUf4FTfE1xrJVivrGJhg)）：
+
+  - 文档的根节点；
+  - 具有明确 CSS 定位信息的节点（如 relative，absolute 或者 transform）
+  - 透明节点；
+  - 有 overflow，mask 或者 reflection 属性的节点；
+  - 有 filter 属性的节点；
+  - 有 3D Context 或者加速的 2D Context 的 Canvas 节点；
+  - 对应 Video 元素的节点。
+
+  我们可以将每一个 RenderLayer 想象成一个图层。渲染就是在每个 RenderLayer 图层上，将 RenderObject 绘制出来。这个过程可以使用 CPU 绘制，这就是软件绘图。但是软件绘图是无法处理 3D 的绘图上下文，每一层的 RenderObject 中都不能包含使用 3D 绘图的节点，例如有 3D Contex 的 Canvas 节点，也不能支持 CSS 3D 变化属性。此外，页面动画中，每次元素尺寸或者位置变动，都要重新去构造 RenderLayer 树，触发 Layout 及其后续的渲染流水线。这样会导致页面帧率的下降，造成视觉上的卡顿。所以现代浏览器引入了由 GPU 完成的硬件加速绘图。
+
+  在获得了每一层的信息后，需要将其合并到同一个图像上，这个过程就是合成（Compositing），使用了合成技术的称之为合成化渲染。
+
+  在软件渲染中，实际上是不需要合成的，因为软件渲染是按照从前到后的顺序在同一个内存空间完成每一层的绘制。在现代浏览器尤其是移动端设备中，使用 GPU 完成的硬件加速绘图更为常见。由 GPU 完成的硬件加速绘图需要合成，而合成都是使用 GPU 完成的，这整个过程称之为硬件加速的合成化渲染。
+  现代浏览器中，并不是所有的绘图都需要使用 GPU 来完成，《Webkit 技术内幕》中指出：
+
+  > 对于常见的 2D 绘图操作，使用 GPU 来绘图不一定比使用 CPU 绘图在性能上有优势，例如绘制文字、点、线等，原因是 CPU 的使用缓存机制有效减少了重复绘制的开销而不需要 GPU 并行性。
+
+// TODO
+
+摘自：[从浏览器渲染原理谈动画性能优化](https://segmentfault.com/a/1190000041295744)
+
+
+
+#### <font color=FF0000>编写web程序时出现的问题</font>
+
+- 出现如下情况：
+
+  <img src="https://s1.ax1x.com/2020/07/05/US9DqP.png" style="zoom: 45%;" />
+
+  其中<font color=FF0000>**一种解释原因**</font>（无法确认是所有）是：当前访问的页面不存在（物理上不存在） / 当前程序能访问到的中的资源中没有该资源（资源存在，但程序找不到）。
+
+
+
+#### <font color=FF0000>80端口和8080端口</font>
+
+<font color=FF0000>80是**http协议的默认端口**</font>，是在输入网站的时候其实浏览器（非IE）已经帮你输入协议了，所以你输入http://baidu.com，其实是访问http://baidu.com:80，而<font color=FF0000>8080，一般用于webcahe</font>，<font color=FF0000>一般是用来连接代理的</font>。完全不一样的两个，比如linux服务器里apache默认跑80端口，而apache-tomcat默认跑8080端口，其实端口没有实际意义只是一个接口，主要是看服务的监听端口，如果baidu的服务器监听的81端口，那么你直接输入就不行了就要输入http://baidu.com:81这样才能正常访问
+
+摘自：[80端口跟8080端口有什么具体区别？ - 死神的沙漏的回答 - 知乎](https://www.zhihu.com/question/26698345/answer/33709330)
 
 
 
@@ -1403,6 +1774,58 @@ CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource s
 
 
 
+#### SRI ( Subresource Integrity )
+
+子资源完整性( SRI )是允许浏览器检查其获得的资源（例如从 CDN 获得的）是否被篡改的一项安全特性。它通过验证获取文件的哈希值是否和你提供的哈希值一样来判断资源是否被篡改。
+
+使用 内容分发网络 (CDNs) 在多个站点之间共享脚本和样式表等文件可以提高站点性能并节省带宽。然而，使用CDN也存在风险，如果攻击者获得对 CDN 的控制权，则可以将任意恶意内容注入到 CDN 上的文件中 （或完全替换掉文件)，因此可能潜在地攻击所有从该 CDN 获取文件的站点。
+
+子资源完整性通过确保 Web 应用程序获得的文件未经第三方注入或其他任何形式的修改来降低这种攻击的风险。
+
+**需要注意的是：**SRI并不能规避所有的风险
+
+**如何使用 SRI**
+
+将使用 base64 编码过后的文件哈希值写入你所引用的 \<script> 或 \<link> 标签的 integrity 属性值中即可启用子资源完整性功能。
+
+integrity 值分成两个部分，第一部分指定哈希值的生成算法（目前支持 sha256、sha384 及 sha512），第二部分是经过 base64 编码的实际哈希值，两者之间通过一个短横（-）分割。
+
+**生成 SRI 哈希的工具**
+
+你可以用 openssl 在命令行中执行如下命令来生成 SRI 哈希值：
+
+```sh
+cat FILENAME.js | openssl dgst -sha384 -binary | openssl enc -base64 -A         
+```
+
+或者用 **shasum** 在命令行中执行：
+
+```sh
+shasum -b -a 384 FILENAME.js | xxd -r -p | base64
+```
+
+**内容安全策略及子资源完整性**
+
+你可以根据内容安全策略来配置你的服务器使得指定类型的文件遵守 SRI。这是通过在 CSP 头部添加 require-sri-for 指令实现的：
+
+```http
+Content-Security-Policy: require-sri-for script;
+```
+
+这条指令规定了所有 JavaScript 都要有 **integrity** 属性，且通过验证才能被加载。
+
+你也可以指定所有样式表也要通过 SRI 验证：
+
+```http
+Content-Security-Policy: require-sri-for style;
+```
+
+你也可以对两者都加上验证。
+
+摘自：[MDN - Subresource Integrity](https://developer.mozilla.org/zh-CN/docs/Web/Security/Subresource_Integrity)
+
+
+
 #### MIME
 
 **MIME 简介**
@@ -1528,7 +1951,7 @@ MIME是对传统电子邮件的一个扩展，现在已经成为电子邮件实�
 
 **Base64索引表**
 
-| 数值 | <mark>字符</mark> | 数值 | <mark>字符</mark> | 数值 | <mark>字符</mark> | 数值 | <makr>字符</mark> |
+| 数值 | <mark>字符</mark> | 数值 | <mark>字符</mark> | 数值 | <mark>字符</mark> | 数值 | <mark>字符</mark> |
 | :--: | :---------------: | :--: | :---------------: | :--: | :---------------: | :--: | :---------------: |
 |  0   |         A         |  16  |         Q         |  32  |         g         |  48  |         w         |
 |  1   |         B         |  17  |         R         |  33  |         h         |  49  |         x         |
@@ -1586,7 +2009,20 @@ MIME是对传统电子邮件的一个扩展，现在已经成为电子邮件实�
 
 另外，也可以看视频：[原理到实现 | 一个视频完全掌握base64编码](https://www.bilibili.com/video/BV1Wt4y1q7dH)
 
+<font size=4>**为什么要使用Base64？**</font>
 
+> 我们知道在计算机中的字节共有256个组合，对应就是ascii码，而<mark>ascii码的128～255之间的值是不可见字符</mark>。而<font color=FF0000> 在网络上交换数据时，比如说从A地传到B地，往往要经过多个路由设备，由于<font size=4>**不同的设备对字符的处理方式有一些不同，这样那些不可见字符就有可能被处理错误，这是不利于传输的**</font></font>。**所以就先把数据先做一个Base64编码，统统变成可见字符，这样出错的可能性就大降低了**。
+> 摘自：[为什么要使用base64编码，有哪些情景需求？ - wuxinliulei的回答 - 知乎](https://www.zhihu.com/question/36306744/answer/71626823)
+
+**解释与补充：**
+
+- 虽然默认ASCII码只有7位（128个字符），但是一个ASCII码用一个字节（8bit）表示，即最高位（MSB）为 0。base64的3个ASCII字符转4个base64即：3个8位字符转变为4个6位字符。
+
+- Base64主要在做兼容不同规格的网路设备
+
+  > 真正的原因是二进制不兼容。某些二进制值，在一些硬件上，比如在不同的路由器，老电脑上，表示的意义不一样，做的处理也不一样。同样，一些老的软件，网络协议也有类似的问题。
+  >
+  > 摘自：[为什么要使用base64编码，有哪些情景需求？ - Wang Kai的回答 - 知乎](https://www.zhihu.com/question/36306744/answer/673975520)
 
 
 
@@ -1616,3 +2052,197 @@ MIME是对传统电子邮件的一个扩展，现在已经成为电子邮件实�
 将所有这些信息结合起来，就成为了我这个浏览器独一无二的指纹。
 
 摘自：[你是如何被广告跟踪的？](https://zhuanlan.zhihu.com/p/34591096)
+
+
+
+#### 单页面应用（SPA）
+
+单页应用（英语：single-page application，缩写SPA）是一种网络应用程序或网站的模型，它<font color=FF0000> 通过动态重写当前页面来与用户交互</font>，而非传统的从服务器重新加载整个新页面。<font color=FF0000> 这种方法避免了页面之间切换打断用户体验，使应用程序更像一个桌面应用程序</font>。在单页应用中，<font color=FF0000> 所有必要的代码（HTML、JavaScript和CSS）都通过单个页面的加载而检索，或者根据需要（通常是为响应用户操作）动态装载适当的资源并添加到页面</font>。尽管可以用位置散列或HTML5历史API来提供应用程序中单独逻辑页面的感知和导航能力，但<font color=FF0000> 页面在过程中的任何时间点都不会重新加载，也不会将控制转移到其他页面</font>。与单页应用的交互通常涉及到与网页服务器后端的动态通信。
+
+摘自：[wiki - 单页应用](https://zh.wikipedia.org/wiki/单页应用)
+
+
+
+#### Comet （web技术）
+
+Comet是一种用于 <font color=FF0000> web的推送技术，能使服务器实时地将更新的信息传送到客户端，而无须客户端发出请求</font>，目前<font color=FF0000> **有两种实现方式，长轮询和iframe流**</font>。
+
+**实现方式**
+
+- **长轮询：**长轮询是<font color=FF0000> 在打开一条连接以后保持，等待服务器推送来数据再关闭的方式</font>。
+
+- **iframe流：**iframe流方式是<font color=FF0000> **在页面中插入一个隐藏的iframe**，利用其src属性在服务器和客户端之间建立一条长链接</font>，<font color=FF0000> 服务器向iframe传输数据</font>（通常是HTML，内有负责插入信息的javascript），<font color=FF0000> 来实时更新页面</font>。 <mark>iframe流方式的优点是浏览器兼容好</mark>，Google公司在一些产品中使用了iframe流，如Google Talk。
+
+在HTML5标准中，定义了客户端和服务器通讯的WebSocket方式，在得到浏览器支持以后，<font color=FF0000 size=4> **WebSocket将会取代Comet成为服务器推送的方法**</font>，目前Google Chrome、Firefox、Opera、Safari等主流版本均支持，Internet Explorer从10开始支持。
+
+摘自：[wiki - Comet (web技术)](https://zh.wikipedia.org/wiki/Comet_(web%E6%8A%80%E6%9C%AF))
+
+
+
+#### WebDAV（基于Web的分布式编写和版本控制）
+
+**基于Web的分布式编写和版本控制**（WebDAV）<font color=FF0000> 是超文本传输协议（HTTP）的扩展</font>，<font color=FF0000> 有利于用户间**协同编辑**和**管理存储**在万维网服务器文档</font>。WebDAV由互联网工程任务组的工作组在RFC 4918中定义。
+
+<font color=FF0000> **WebDAV协议为用户在服务器上创建、更改和移动文档提供了一个框架**</font>。WebDAV协议最重要的功能包括<mark style="background:aqua">**维护作者或修改日期的属性**</mark>、<mark>**命名空间管理**</mark>、<mark style="background:fuchsia">**集合和覆盖保护**</mark>。
+
+- <mark style="background:aqua">**维护属性**</mark>包括创建、删除和查询文件信息等。
+- <mark>**命名空间管理**</mark>处理在服务器名称空间内复制和移动网页的能力。
+- <mark style="background:fuchsia">**集合**</mark>（Collections）处理各种资源的创建、删除和列举。<mark style="background:fuchsia">**覆盖保护**</mark>处理与锁定文件相关的方面。
+
+许多现代操作系统为WebDAV提供了内置的客户端支持。
+
+<font size=4>**实现**</font>
+WebDAV扩展了request方法所允许的标准HTTP谓词和HTTP头。增加的谓词包括：
+
+- COPY：将资源从一个URI复制到另一个URI
+- LOCK：锁定一个资源。WebDAV支持共享锁和互斥锁。
+- MKCOL：创建集合（即目录）
+- MOVE：将资源从一个URI移动到另一个URI
+- PROPFIND：从Web资源中检索以XML格式存储的属性。它也被重载，以允许一个检索远程系统的集合结构（也叫目录层次结构）。
+- PROPPATCH：在单个原子性动作中更改和删除资源的多个属性
+- UNLOCK：解除资源的锁定
+
+摘自：[wiki - 基于Web的分布式编写和版本控制](https://zh.wikipedia.org/wiki/%E5%9F%BA%E4%BA%8EWeb%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%96%E5%86%99%E5%92%8C%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6)
+
+
+
+#### 混合开发
+
+**混合开发流派：**
+
+- **H5加壳派：**以Ionic和Uni-App为代表，基于WebView（Android下是WebView，iOS下是WKWebView）控件加载H5页面，同时通过框架预先实现的一些能力，实现对设备摄像头、文件系统等设备能力的调用。
+
+- **JS Run原生派：**以RN 和 Weex为代表，使用JS进行编写，在运行时映射成原生控件运行。
+
+- **自成一派：**以Flutter为代表，这货直接自己弄了个引擎和运行时，自带体系（UI组件和渲染器），除了设备能力外UI方面全权Handle。
+
+| 技术类型     | UI渲染          | 性能 | 开发效率 | 代表框架       |
+| ------------ | --------------- | ---- | -------- | -------------- |
+| H5加壳派     | WebView渲染     | 一般 | 高       | Ionic、Uni-App |
+| JS Run原生派 | 原生控件渲染    | 好   | 中       | RN、Weex       |
+| 自成一派     | 调用系统API渲染 | 好   | 高       | Flutter        |
+
+
+
+#### URL Scheme
+
+URL Schemes 有两个单词：
+
+- **URL：**我们都很清楚，http://www.apple.com 就是个 URL，我们也叫它链接或网址；
+- **Schemes：**表示的是一个 URL 中的一个位置——<mark>最初始的位置，即 ://之前的那段字符</mark>。比如 http://www.apple.com 这个网址的 Schemes 是 http。
+
+根据我们上面对 URL Schemes 的使用，我们可以很轻易地理解，在以本地应用为主的 iOS 上，我们可以像定位一个网页一样，用一种特殊的 URL 来定位一个应用甚至应用里某个具体的功能。而定位这个应用的，就应该这个应用的 URL 的 Schemes 部分，也就是开头儿那部分。比如短信，就是 `sms:`
+
+你可以完全按照理解一个网页的 URL ——也就是它的网址——的方式来理解一个 iOS 应用的 URL，拿苹果的网站和 iOS 上的微信来做个简单对比：
+
+|                   | 网页（苹果）                         | iOS 应用（微信）              |
+| :---------------- | :----------------------------------- | :---------------------------- |
+| 网站首页/打开应用 | http://www.apple.com                 | weixin://                     |
+| 子页面/具体功能   | http://www.apple.com/mac/（Mac页面） | weixin://dl/moments（朋友圈） |
+
+摘自：[URL Schemes 使用详解](https://sspai.com/post/31500)
+
+**URL Schemes 从功能上分为了 4 种：**
+
+1. **基础 URL Schemes**：用于启动应用，比如：[drafts4://](drafts4://)；
+2. **复杂 URL Schemes**：用于直接打开应用的具体功能，比如：[drafts4://dictate](drafts4://dictate)；
+3. **变形 URL Schemes：**用于输入内容，含有第三方应用的特殊语法，比如：在 Launch Center Pro 里用这一条 drafts4://create?text=[prompt]；
+4. **x-callback-URL：**前面的 URL Schemes 只能执行一个动作，而 x-callback-URL 可以根据根据前一段 URL Schemes 的执行情况决定进一步的行动。
+
+摘自：[入门 iOS 自动化：读懂 URL Schemes](https://sspai.com/post/44591)
+
+**URL Schemes在应用中的“注册”**
+
+- macOS 在<font color=FF0000>Info.plist</font> 文件中。
+- Windows 通过往<font color=FF0000>注册表</font>的 HKCR (HKEY_CALSSES_ROOT) 目录下添加一条记录来完成该协议的注册。
+
+摘自：[pc网页端调起客户端应用的那些事--electron](https://blog.csdn.net/dengdongxia/article/details/105906975) 该链接中还有开发相关的设置，这里略，需要用了再看。
+
+**URL Schemes的一些缺点**
+
+URL Scheme方式优点是开发简单，但弊端也很明显：
+
+我们只能通过固定协议格式的链接来实现跳转，而且<font color=FF0000>打开H5页面时，会出现一个提示框：“是否打开XXX”。用户确认了才会跳转到App中，增加了用户流程</font>
+
+<mark>微信、QQ等把URL Scheme 打开App这种方式给禁了，但是它们都各自维护着一个白名单，如果Scheme不在该白名单内，那么就不能在他们的App内打开这个App</mark>（如果被封锁了那么用户只能通过右上角浏览器内打开App）
+
+摘自：[什么是Deeplink？以及Deeplink的原理-阿里云开发者社区](https://developer.aliyun.com/article/780283)
+
+**URL Scheme列表：**
+
+- [URL Scheme 分享](https://st3376519.huoban.com/share/1985010/VGi2N5Vf0C1MVnHCVWiBc8L9g15c9VGJbMGcFrb6/172707/list)
+- [【基础知识】现在很火的app上的deeplink技术，到底是什么？](https://cloud.tencent.com/developer/article/1049347) 在最后的附录中
+
+#### DeepLink
+
+“Deeplink”又名“深度链接”，<mark>是一种能将用户直接从网页带到App指定页面的技术</mark>。
+
+目前广义上的 “深度链接” 概念包含了 DeepLink 和 Deferred Deeplink，主要触发场景分为两种：
+
+- 用户**已安装目标App**情况下：在web网页点击链接，就能直接跳转到App内指定页面。
+- 用户**未安装目标App**情况下：在web网页点击链接，会先跳转应用商店，下载后首次打开App，会自动跳转到指定页面。
+
+![](https://i.loli.net/2021/10/23/k2RwgbMQpvWyiUC.jpg)
+
+**Deeplink在实际运用中能起到什么效果？**
+
+Deeplink（深度链接）能被运用于任意渠道触点（微信、QQ、微博、短信、邮箱、各大浏览器、其他App等），<font color=FF0000>直接从这些平台跳转至目标内容页</font>，省去中间“打开App首页”“搜索页面”等无效步骤。
+
+<mark>深度链接（Deeplink）对于“App社交分享、裂变传播转化、沉默用户唤醒、用户流失召回、DSP广告投放、短信邮箱营销、地推首单激活、搜索引擎引流”等运营场景都有着奇效，一方面能快速实现场景还原，带来更高效的用户体验；另一方面，缩短转化路径，减少App推广拉新环节中20%以上的流失率</mark>。
+
+其中涉及到的一些技术要点：
+
+- **URL Scheme（iOS/Android都适用）**
+
+  URL Scheme 是实现 Deeplink兼容性最高、也最简单的一项方法，原生App可以先向操作系统注册一个URL，其中Scheme的作用是从不同平台唤醒相应App。
+
+- **进阶版深度链接：Universal link（iOS 9.2及以上适用）**
+
+  Universal Link是 iOS 9 以后苹果推出的通用链接技术，能够方便的通过一个https链接来打开App指定页面，不需要额外的判断；如果没有安装App，则跳转到自定义地址。
+
+  <mark>相对Scheme的优势在于，Universal Link 是一个 Web Link，因此少了很多麻烦：</mark>
+
+  <font color=FF0000>当用户已安装该 App 时，不需要加载任何页面以及判断提示，能够立即唤醒 App，用户未安装App，则跳去对应的 web link（自定义页面）</font>。
+  Universal Links支持从其他App中的UIWebView中跳转到目标App。
+  绝大多数平台都支持Universal Link，能被搜索引擎索引，iOS微信7.0.5版本也解除了对Universal Link的限制，目前微信7.0.5以上版本已经能流畅运行Universal Link。
+  在Deeplink的实现方案中，Universal Link相比Scheme无疑具有更优的用户体验，iOS9.2及以上的版本更推荐使用Universal Link唤醒App。
+
+-  **App Link**——Andriod M（6）以后
+
+  App Link是由安卓发布的，在Andriod M以后才能使用。用户可以点击一个H5链接时直接跳转到 App 指定页面，而不会让用户点击”是否打开xx“。所以App Link比URL Scheme方式体验更好。
+
+  注：因为目前App Link在中国大陆内使用不便。所以国内的Top第三方如友盟+暂未支持AppLink这种方式，Andriod端只能使用URL Scheme这种方式。但据小编所知，后续友盟+会支持AppLink这种拉起App方式。
+
+- **巧用工具，快速实现深度链接（Deeplink）**
+
+  <font color=FF0000>Deeplink虽然无非是通过Scheme、Universal Link、App link这几种方法</font>，<mark>但这几项技术是基于系统和平台实现的，Android及iOS在几个系统版本的迭代后，配置方式会有新的变化，且安卓机型众多、浏览器众多等问题也会导致出现兼容上的麻烦，开发者自行研发的话，资源配置以及系统更新后的维护成本相对较高，还要考虑各种各样的跳转场景问题</mark>。
+
+  <font color=FF0000>基于这些困扰，许多想要敏捷开发的开发者就会选择使用第三方服务，省去复杂的配置和维护工作，同时更能保障深度链接服务的稳定运行</font>。
+
+摘自：[深度链接(Deeplink)的实现与使用 - 心心相印印的文章 - 知乎](https://zhuanlan.zhihu.com/p/394363004) 部分摘自：[什么是Deeplink？以及Deeplink的原理](https://developer.aliyun.com/article/780283)
+
+<font size=4>**补充：**</font>
+
+deep linking 强大的地方是<font color=FF0000>**能携带信息**</font>。虽然URL Schemes 也可以用 query 携带信息；但是：你点击了我生成的deeplink 去下载客户端 然后安装 注册 这么多步骤 等你登录的时候 客户端能上报deeplink的信息 知道你点了谁的；而这时 URL Schemes 的 query肯定丢失了
+
+来自：微信群友
+
+
+
+#### SEO TDK
+
+可以参考：[SEO优化中的TDK三大标签是什么？SEO标签讲解](https://www.boxuegu.com/news/367.html)
+
+
+
+#### 序列帧
+
+Apple 官网喜欢用用户滚动页面 实现 播放视频（动画）效果，其中关键技术：序列帧。
+
+如果是播放视频的效果：是使用 canvas，在canvas中渲染图片，并根据页面的滚动 切换图片，形成播放效果。
+
+学习自：[仿苹果 AirPods-Pro 产品页黑人动画之序列帧](https://zhuanlan.zhihu.com/p/89895329)
+
+如果是动画（视频似乎也可以）的效果，可以使用 Steven lei 的 [trigger](https://github.com/triggerjs/trigger)；类似的，也可以使用 gsap 的 scrollTrigger 结合 timeline
+
+了解自：codingstartup群 群友

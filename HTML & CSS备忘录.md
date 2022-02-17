@@ -4,7 +4,19 @@
 
 ## HTML
 
-**\<hr\>**是horizontal rule的缩写
+
+
+#### Lorem Ipsum
+
+Lorem ipsum，简称为Lipsum，是指一篇常用于排版设计领域的拉丁文文章，主要的目的为测试文章或文字在不同字型、版型下看起来的效果。中文的类似用法则称为乱数假文、随机假文。
+
+摘自：[wiki -  Lorem Ipsum](https://zh.wikipedia.org/wiki/Lorem_ipsum)
+
+另外，在 html 页面中同样可以作为测试字使用。
+
+
+
+**\<hr\>** 是horizontal rule的缩写
 
 
 
@@ -14,7 +26,7 @@ HTML \<label> 元素（标签）表示用户界面中某个元素的说明。
 
 **将一个 \<label> 和一个 \<input> 元素相关联主要有这些优点：**
 
-- 标签文本不仅与其相应的文本输入元素在视觉上相关联，程序中也是如此。 这意味着，当用户聚焦到这个表单输入元素时，屏幕阅读器可以读出标签，让使用辅助技术的用户更容易理解应输入什么数据。
+- 标签文本不仅与其相应的文本输入元素在视觉上相关联，程序中也是如此。 这意味着，当用户聚焦到这个表单输入元素时，屏幕阅读器可以:读出标签，让使用辅助技术的用户更容易理解应输入什么数据。
 - 你可以点击关联的标签来聚焦或者激活这个输入元素，就像直接点击输入元素一样。这扩大了元素的可点击区域，让包括使用触屏设备在内的用户更容易激活这个元素。
 
 <font color=FF0000>将一个 \<label> 和一个 \<input> 元素匹配在一起，你需要给 \<input> 一个 id 属性。而 \<label> 需要一个 for 属性，其值和  \<input> 的 id 一样。</font>
@@ -155,6 +167,50 @@ HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向�
 - **name**（HTML4有效，HTML5已废除）
 - **rev**（HTML4有效，HTML5已废除）
 - **sharp**（HTML4有效，HTML5已废除）
+
+**\<a> 的作用**
+
+- **链接到外部地址**
+
+  ```html
+  <a href="http://www.mozilla.com/">External Link</a>
+  ```
+
+- **链接到本页的某个部分**（注：即作为 锚点）
+
+  ```html
+  <a href="#属性">Description of Same-Page Links</a>
+  ```
+
+- **创建一个可点击的图片** 类似的使得用 \<a>包裹 div，使得整个 div 都可以点击跳转
+
+  ```html
+  <a href="https://developer.mozilla.org/en-US/">
+    <img src="https://mdn.mozillademos.org/files/6851/mdn_logo.png" alt="MDN logo" />
+  </a>
+  ```
+
+- **创建一个email链接：**这是常见的创建按钮或链接，将用户的电子邮件程序打开，让他们发送新邮件。这是通过使用一个mailto链接完成的。这里有一个简单的例子：
+
+  ```html
+  <a href="mailto:nowhere@mozilla.org">Send email to nowhere</a>
+  ```
+
+  **创建电话链接：**提供电话链接有助于用户查看连接到手机的网络文档和笔记本电脑。
+
+  ```html
+  <a href="tel:+491570156">+49 157 0156</a>
+  ```
+
+  **发短信：**
+
+  ```html
+  <a href="sms:"13764567708">13764567708</a>
+  ```
+
+  <font color=FF0000>**注：发现这里的无论是 mailto协议、tel协议 以及 sms协议 都和 url scheme 有些类似；可以说URL Scheme 是一种自定义的协议**</font>
+
+- **使用 download 属性将 \<canvas> 保存为 PNG 格式：**有点没搞懂，这里略，详见引用链接
 
 摘自：[MDN - \<a>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/a)
 
@@ -303,6 +359,16 @@ HTML \<legend> 元素用于表示其父元素 \<fieldset> 的内容标题。
 
 HTML \<meta> 元素表示那些不能由其它 HTML 元相关（meta-related）元素（(\<base>、\<link>, \<script>、\<style> 或 \<title>）之一表示的任何元数据信息。
 
+|                  | 描述                                                         |
+| :--------------- | ------------------------------------------------------------ |
+| 内容分类         | 元数据内容，如果 itemprop 属性存在：流数据，表述内容         |
+| 允许的内容       | 这是一个 空元素                                              |
+| 标签省略         | 因为这是一个void元素，必须有开始标签而闭合标签可以省略       |
+| 允许的父元素     | \<meta charset>, \<meta http-equiv>: \<head> 元素. 如果 http-equiv 不是编码声明, 它也可以放在\<noscript>元素内，它本身在 \<head>元素内部。 |
+| 默认无障碍语义   | 没有相应的语义                                               |
+| 允许的无障碍语义 | 没有允许的语义                                               |
+| DOM 接口         | HTMLMetaElement                                              |
+
 ##### **meta 元素定义的元数据的类型包括以下几种：**
 
 - 如果<font color=FF0000>设置了 name 属性</font>，meta 元素<font color=FF0000>提供的是文档级别（document-level）的元数据</font>，应用于整个页面。
@@ -313,41 +379,235 @@ HTML \<meta> 元素表示那些不能由其它 HTML 元相关（meta-related）�
 
 - 如果<font color=FF0000>设置了 itemprop 属性</font>，meta 元素<font color=FF0000>提供用户定义的元数据</font>。
 
-##### **属性**
+##### <font size=4>**属性**</font>
 
-**注意：**全局属性 name 在 \<meta> 元素中具有特殊的语义；另外， 在同一个 \<meta> 标签中，name, http-equiv 或者 charset 三者中任何一个属性存在时，itemprop 属性不能被使用。
+**注意：**全局属性 name 在 \<meta> 元素中具有特殊的语义；另外，<font color=FF0000>  在<font size=4>**同一个 \<meta> 标签中**</font>，name, http-equiv 或者 charset 三者中<font size=4>**任何一个属性存在**</font>时，<font size=4>**itemprop 属性不能被使用** </font></font>。
 
 - **charset：**这个属性<font color=FF0000>声明了文档的字符编码</font>。<mark>如果使用了这个属性</mark>，<font color=FF0000>其值必须是</font>与ASCII大小写无关（ASCII case-insensitive）的<font color=FF0000>"utf-8"</font>。
 
-- **content：**此属性包含http-equiv 或name 属性的值，具体取决于所使用的值。
+- **content：**此属性包含 http-equiv 或 name 属性的值，具体取决于所使用的值。
 
 - **http-equiv：**
   
-  属性定义了一个编译指示指令。这个属性叫做 **http-equiv**(alent) 是因为所有允许的值都是特定HTTP头部的名称，如下：
+  属性定义了一个编译指示指令。这个属性叫做 **http-equiv**(alent) 是因为<font color=FF0000> 所有允许的值都是特定HTTP头部的名称</font>，如下：
   
-  - **content-security-policy：** 它允许页面作者定义当前页的内容策略。 内容策略主要指定允许的服务器源和脚本端点，这有助于防止跨站点脚本攻击。
-  - **content-type：** 如果使用这个属性，其值必须是"text/html; charset=utf-8"。注意：该属性只能用于 MIME type 为 text/html 的文档，不能用于MIME类型为XML的文档。
+  - **content-security-policy：** 它允许页面作者<font color=FF0000> 定义当前页的内容策略</font>。 内容策略<font color=FF0000> 主要指定允许的服务器源和脚本端点，这有助于防止跨站点脚本攻击</font>。
+  - **content-type：** <font color=FF0000> 如果使用这个属性，其值必须是"text/html; charset=utf-8"</font>。注意：该属性只能用于 MIME type 为 text/html 的文档，不能用于MIME类型为XML的文档。
   - **default-style：**设置默认 CSS 样式表组的名称。
-  - **x-ua-compatible：** 如果指定，则 content 属性必须具有值 "IE=edge"。用户代理必须忽略此指示。
+  - **x-ua-compatible：** <font color=FF0000>如果指定，则 content 属性必须具有值 "IE=edge" </font>。用户代理必须忽略此指示。
   - **refresh：** 这个属性指定：
-    - 如果 content 只包含一个正整数，则为重新载入页面的时间间隔(秒)；
-    - 如果 content 包含一个正整数，并且后面跟着字符串 ';url=' 和一个合法的 URL，则是重定向到指定链接的时间间隔(秒)
+    - 如果 <font color=FF0000> content **只包含**一个正整数，则为 **重新载入页面的时间间隔(秒)** </font>；
+    - 如果 <font color=FF0000> content 包含一个正整数，并且后面跟着字符串 ';url=' 和一个合法的 URL</font>，则是<font color=FF0000> **重定向到指定链接**的时间间隔(秒)</font>
   
-- **name：**name 和 content 属性可以一起使用，以名-值对的方式给文档提供元数据，其中 name 作为元数据的名称，content 作为元数据的值。
+- **name：**<font color=FF0000> name 和 content 属性可以一起使用，以名-值对的方式给文档提供元数据</font>，其中 name 作为元数据的名称，content 作为元数据的值。
 
 摘自：[MDN - \<meta>：文档级元数据元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/meta)
+
+#### http-equiv
+
+http-equiv顾名思义，相当于http的文件头作用，它可以向浏览器传回一些有用的信息，以帮助正确和精确地显示网页内容，与之对应的属性值为content，content中的内容其实就是各个参数的变量值。
+
+meat标签的http-equiv属性语法格式是：＜meta http-equiv="参数" content="参数变量值"＞ ；其中http-equiv属性主要有以下几种参数：
+
+- **Expires(期限)：**可以用于设定网页的到期时间。一旦网页过期，必须到服务器上重新传输。必须使用GMT的时间格式。用法：
+
+  ```html
+  <meta http-equiv="expires" content="Wed, 20 Jun 2007 22:33:00 GMT">
+  ```
+
+- **Pragma(cache模式)：**是用于设定禁止浏览器从本地机的缓存中调阅页面内容，设定后一旦离开网页就无法从Cache中再调出。这样设定，访问者将无法脱机浏览。用法：
+
+  ```html
+  <meta http-equiv="Pragma" content="no-cache">
+  ```
+
+- **Refresh(刷新)：**自动刷新并指向新页面。用法：
+
+  ```html
+  <meta http-equiv="Refresh" content="2；URL=http://www.net.cn/">
+  ```
+
+  注意：其中的2是指停留2秒钟后自动刷新到URL网址。
+
+- **Set-Cookie(cookie设定)：**如果网页过期，那么存盘的cookie将被删除。 注意：必须使用GMT的时间格式。用法：
+
+  ```html
+  <meta http-equiv="Set-Cookie" content="cookievalue=xxx;expires=Wednesday, 20-Jun-2007 22:33:00 GMT; path=/">
+  ```
+
+- **Window-target(显示窗口的设定)：**强制页面在当前窗口以独立页面显示。注意：用来防止别人在框架里调用自己的页面。用法：
+
+  ```html
+  <meta http-equiv="Window-target" content="_top">
+  ```
+
+- **content-Type(显示字符集的设定)：**设定页面使用的字符集。用法：
+
+  ```html
+  <meta http-equiv="content-Type" content="text/html; charset=gb2312">
+  ```
+
+- **Pics-label(网页等级评定)：**在IE的internet选项中有一项内容设置，可以防止浏览一些受限制的网站，而网站的限制级别就是通过meta属性来设置的。用法：
+
+  ```html
+  <meta http-equiv="Pics-label" contect="">  
+  ```
+
+- **Page_Enter、Page_Exit**
+
+  - **Page_Enter：**设定进入页面时的特殊效果
+
+    ```html
+    <meta http-equiv="Page-Enter" contect="revealTrans(duration=1.0,transtion=12)">
+    ```
+
+  - **Page_Exit：**设定离开页面时的特殊效果
+
+    ```html
+    <meta http-equiv="Page-Exit" contect="revealTrans(duration=1.0,transtion=12)">
+    ```
+
+  Duration的值为网页动态过渡的时间，单位为秒。
+
+  Transition是过渡方式，它的值为0到23，分别对应24种过渡方式。如下表：
+
+  |                          |                          |                          |                          |
+  | ------------------------ | ------------------------ | ------------------------ | ------------------------ |
+  | 0：盒状收缩              | 1：盒状放射              | 2：圆形收缩              | 3：圆形放射              |
+  | 4：由下往上              | 5：由上往下              | 6：从左至右              | 7：从右至左              |
+  | 8：垂直百叶窗            | 9：水平百叶窗            | 10：水平格状百叶窗       | 11：垂直格状百叶窗       |
+  | 12：随意溶解             | 13：从左右两端向中间展开 | 14：从中间向左右两端展开 | 15：从上下两端向中间展开 |
+  | 16：从中间向上下两端展开 | 17：从右上角向左下角展开 | 18：从右下角向左上角展开 | 19：从左上角向右下角展开 |
+  | 20：从左下角向右上角展开 | 21：水平线状展开         | 22：垂直线状展开         | 23：随机产生一种过渡方式 |
+
+-  **cache-control（清除缓存）：**再访问这个网站要重新下载！
+
+  ```html
+  <meta http-equiv="cache-control" content="no-cache">
+  ```
+
+- **expires：**设定网页的到期时间：
+
+  ```html
+  <meta http-equiv="expires" content="0">
+  ```
+
+- **keywords：**关键字,给搜索引擎用的
+
+  ```html
+  <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+  ```
+
+- **description：**页面描述
+
+  ```html
+  <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+  ```
+
+摘自：[Meta Http-equiv属性详解](https://cnbin.github.io/blog/2016/02/03/http-equivshu-xing-xiang-jie/)
+
+
+
+#### format-detection
+
+format-detection翻译成中文的意思是“格式检测”，是用来检测html里的一些格式的，那关于meta的format-detection属性主要是有以下几个设置：
+
+```html
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta name="format-detection" content="adress=no">
+```
+
+也可以连写：
+
+```html
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+```
+
+**解释：**
+
+- **telephone：**你明明写的一串数字没加链接样式，而iPhone会自动把你这个文字加链接样式、并且点击这个数字还会自动拨号！想去掉这个拨号链接该如何操作呢？这时我们的meta又该大显神通了，代码如下：
+  - **telephone=no：**就<font color=FF0000> 禁止</font>了把数字转化为拨号链接！
+  - **telephone=yes：**就<font color=FF0000> 开启</font>了把数字转化为拨号链接，要开启转化功能，这个meta就不用写了,在默认是情况下就是开启！
+  
+- **email：**告诉设备不识别邮箱，点击之后不自动发送
+
+  - **email=no：**禁止作为邮箱地址！
+
+  - **email=yes：**就开启了把文字默认为邮箱地址，这个meta就不用写了,在默认是情况下就是开启！
+
+- **adress**
+
+  - adress=no：禁止跳转至地图！
+  - adress=yes：就开启了点击地址直接跳转至地图的功能,在默认是情况下就是开启！
+
+摘自：[meta的format-detection属性](https://www.jianshu.com/p/82a85a53d5b4)
+
+
+
+#### \<base>
+
+<font color=FF0000> HTML \<base> 元素 指定用于一个文档中包含的所有相对 URL 的根 URL。一份（文档）中只能有一个 \<base> 元素</font>。
+
+一个文档的基本 URL，可以通过使用 document.baseURI 的 JS 脚本查询。如果文档不包含 \<base> 元素，baseURI 默认为 document.location.href。
+
+| 属性             | 描述                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| 内容类别         | 元数据内容。                                                 |
+| 合法的内容       | 无，它是一个empty element                                    |
+| 标签省略         | <font color=FF0000> 该标签不能有结束标签</font>。            |
+| 合法的父级       | <font color=FF0000> 任何不带有任何其他 \<base> 元素的 \<head> 元素</font> |
+| 合法的 ARIA 角色 | 无                                                           |
+| DOM 接口         | HTMLBaseElement                                              |
+
+**示例：**
+
+```html
+<base href="http://www.example.com/">
+<base target="_blank">
+<base target="_top" href="http://www.example.com/">
+```
+
+**属性**
+
+<font color=FF0000> **如果指定了以下任一属性，这个元素必须在其他任何属性是URL的元素之前**</font>。例如：\<link> 的 href 属性。
+
+- **href：**<mark>用于文档中相对 URL 地址的基础 URL。允许绝对和相对URL</mark>。
+
+- **target：**<mark>默认浏览上下文的关键字或作者定义的名称</mark>，<mark>当没有明确目标的链接 \<a> 或表单 \<form> 导致导航被激活时显示其结果</mark>。该属性值定位到浏览上下文（例如选项卡，窗口或内联框 \<iframe> ）。
+
+  **以下的关键字指定特殊的意思：**
+
+  - **\_self：**载入结果到当前浏览上下文中。（该值是元素的默认值）。
+  - **\_blank：**载入结果到一个新的未命名的浏览上下文。
+  - **\_parent：**载入结果到父级浏览上下文（如果当前页是内联框）。如果没有父级结构，该选项的行为和 \_self一样。
+  - **\_top：**载入结果到顶级浏览上下文（该浏览上下文是当前上下文的最顶级上下文）。如果没有父级，该选项的行为和 \_self一样。
+
+**使用说明**
+
+- **多个 \<base> 元素：**<mark>如果指定了多个 \<base> 元素</mark>，<font color=FF0000> 只会使用第一个 href 和 target 值, 其余都会被忽略</font>。
+
+- **页内锚：**指向文档中某个片段的链接，例如 \<a href="#some-id"> 用 \<base> 解析，触发对带有附加片段的基本 URL 的 HTTP 请求。
+
+  例如：给定 \<base href="https://example.com">
+
+  以及此链接 \<a href="#anchor">Anker\</a>
+
+  链接指向 https://example.com/#anchor
+
+摘自：[MDN - \<base>：文档根 URL 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/base)
 
 
 
 #### **HTML5 新属性**
 
-| 属性         | 值                                                      | 描述                               |
-|:---------- |:------------------------------------------------------ |:-------------------------------- |
-| charset    | *character_set*                                        | 定义文档的字符编码。                       |
-| content    | *text*                                                 | 定义与 http-equiv 或 name 属性相关的元信息。  |
-| http-equiv | content-type default-style refresh                     | 把 content 属性关联到 HTTP 头部。         |
-| name       | application-name author description generator keywords | 把 content 属性关联到一个名称。             |
-| scheme     | *format/URI*                                           | HTML5不支持。 定义用于翻译 content 属性值的格式。 |
+| 属性       | 值                                                     | 描述                                              |
+| :--------- | :----------------------------------------------------- | :------------------------------------------------ |
+| charset    | character_set                                          | 定义文档的字符编码。                              |
+| content    | text                                                   | 定义与 http-equiv 或 name 属性相关的元信息。      |
+| http-equiv | content-type default-style refresh                     | 把 content 属性关联到 HTTP 头部。                 |
+| name       | application-name author description generator keywords | 把 content 属性关联到一个名称。                   |
+| scheme     | format/URI                                             | HTML5不支持。 定义用于翻译 content 属性值的格式。 |
 
 #### 表单属性
 
@@ -525,6 +785,50 @@ XML 解析器通常会解析 XML 文档中所有的文本。
 
 
 
+#### \<picture>
+
+HTML \<picture> 元素 <font color=FF0000> 通过包含零或多个 \<source> 元素和一个 \<img> 元素来为不同的显示/设备场景提供图像版本</font>。<mark>浏览器会选择最匹配的子 \<source> 元素</mark>，<font color=FF0000> 如果没有匹配的，就选择 \<img> 元素的 src 属性中的 URL</font>。然后，所选图像呈现在 \<img> 元素占据的空间中。
+
+**示例如下：**
+
+```html
+<picture>
+    <source srcset="/media/cc0-images/surfer-240-200.jpg"
+            media="(min-width: 800px)">
+    <img src="/media/cc0-images/painted-hand-298-332.jpg" alt="" />
+</picture>
+```
+
+要决定加载哪个URL，<font color=FF0000> user agent 检查每个 \<source> 的 srcset、media 和 type 属性</font>，<mark>来选择最匹配页面当前布局、显示设备特征等的兼容图像</mark>。
+
+| 属性              | 描述                                                         |
+| :---------------- | ------------------------------------------------------------ |
+| 内容分类          | 流内容，表述内容，嵌入内容。                                 |
+| 允许的内容        | 零或多个 \<source> 元素，以及紧随其后的一个 \<img> 元素，可以混合一些脚本支持的元素。 |
+| 标签省略          | <font color=FF0000> 不允许，开始标签和结束标签都不能省略</font>。 |
+| 允许的父元素      | 任何可以包含嵌入内容的元素。                                 |
+| 允许的 ARIA roles | 无                                                           |
+| DOM 接口          | HTMLPictureElement                                           |
+
+你可以使用 object-position 属性调整元素框架内图像的位置，用 object-fit 属性控制图片如何调整大小来适应框架。另外，<font color=FF0000> **是在子 \<img> 元素上使用这些属性，不是 \<picture> 元素**</font>。
+
+**属性**
+
+- **media 属性：**media 属性<font color=FF0000>允许你提供一个用于给用户代理作为选择 \<source> 元素的依据的媒体条件(media condition)</font>（类似于媒体查询）。如果这个媒体条件匹配结果为 false，那么这个 \<source> 元素会被跳过。
+- **type 属性：**type 属性<font color=FF0000>允许你为 \<source> 元素的 srcset 属性指向的资源指定一个 MIME 类型</font>。如果用户代理不支持指定的类型，那么这个 \<source> 元素会被跳过。
+
+摘自：[MDN - \<picture>：picture 元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/picture)
+
+
+
+#### source
+
+HTML \<source> 元素为 \<picture>, \<audio> 或者 \<video> 元素指定多个媒体资源。这是一个空元素。它通常用于以不同浏览器支持的多种格式提供相同的媒体内容。
+
+摘自：[MDN - Source](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/source)
+
+
+
 #### HTML语义化
 
 **HTML语义化是什么？**
@@ -650,12 +954,12 @@ XML 解析器通常会解析 XML 文档中所有的文本。
 
 - **part：**<font color=FF0000>实验性质</font>。元素的部件名称的空格分隔列表。Part名称允许CSS通过 ::part() 伪元素选择和设置阴影关联树中的特定元素。
 
-- **slot：**<font color=FF0000>**将shadow DOM阴影关联树中的一个沟槽分配给一个元素**</font>：具有slot属性的元素被分配给由\<slot>元素创建的沟槽，其name属性的值与slot属性的值匹配。
+- **slot：**<font color=FF0000>**将 shadow DOM 阴影关联树中的一个沟槽分配给一个元素**</font>：具有slot属性的元素被分配给由\<slot>元素创建的沟槽，其name属性的值与slot属性的值匹配。
 
 - **spellcheck：**<font color=FF0000>实验性质</font>。枚举属性，<font color=FF0000>定义**是否可以检查元素是否存在拼写错误**</font>。它可能具有以下值：
 
-  - **true**，<font color=FF0000>表示如果可能，应检查元素是否存在拼写错误</font>；
-  - **false**，表示<font color=FF0000>不应检查元素的拼写错误</font>。
+  - **true：**<font color=FF0000>表示如果可能，应检查元素是否存在拼写错误</font>；
+  - **false：**表示<font color=FF0000>不应检查元素的拼写错误</font>。
 
 - **style：**<font color=FF0000>含要应用于元素的CSS样式声明</font>。 请注意，建议在单独的文件中定义样式。 该属性和\<style>元素主要用于快速样式化，例如用于测试目的。
 
@@ -669,8 +973,8 @@ XML 解析器通常会解析 XML 文档中所有的文本。
 
 - **translate：**<font color=FF0000>实验性质</font>。枚举属性，<font color=FF0000>用于指定**在页面本地化时**是否转换元素的属性值及其Text 节点子节点的值，或者是否保持它们不变</font>。它可以具有以下值：
 
-  - <font color=FF0000>**空字符串和"yes"**</font>，<font color=FF0000>表示元素将被翻译</font>。
-  - **"no"**, 表示该元素不会被翻译。
+  - <font color=FF0000>**空字符串和"yes："**</font><font color=FF0000>表示元素将被翻译</font>。
+  - **"no："**表示该元素不会被翻译。
 
 摘自：[MDN - 全局属性](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes)
 
@@ -901,8 +1205,8 @@ HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独
 | hidden                                 | 不显示的控件，其值仍会提交到服务器。举个例子，右边就是一个隐形的控件。 |       |
 | image                                  | 带图像的 submit 按钮。显示的图像由 src 属性规定。如果 src 缺失，alt 属性就会显示。 |       |
 | month                                  | 输入年和月的控件，没有时区。                                 | HTML5 |
-| number                                 | 用于输入数字的控件。如果支持的话，会显示滚动按钮并提供缺省验证（即只能输入数字）。拥有动态键盘的设备上会显示数字键盘。 |       |
-| password                               | 单行的文本区域，其值会被遮盖。如果站点不安全，会警告用户。   |       |
+| <font color=FF0000>**number**</font>   | 用于输入数字的控件。如果支持的话，会显示滚动按钮并提供缺省验证（即只能输入数字）。拥有动态键盘的设备上会显示数字键盘。 |       |
+| password                               | 单行的文本区域，<mark>其值会被遮盖</mark>。如果站点不安全，会警告用户。 |       |
 | radio                                  | 单选按钮，允许在多个拥有相同 name 值的选项中选中其中一个。   |       |
 | range                                  | 此控件用于输入不需要精确的数字。控件是一个范围组件，默认值为正中间的值。同时使用htmlattrdefmin  和 htmlattrdefmax来规定值的范围。 | HTML5 |
 | reset                                  | 此按钮将表单的所有内容重置为默认值。不推荐。                 |       |
@@ -916,7 +1220,42 @@ HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独
 | <font color=FF0000>**废弃的值**</font> |                                                              |       |
 | datetime                               | 用于输入基于UTC时区的日期和时间（时、分、秒及秒的小数部分）。 |       |
 
+**\<input> 元素的属性包括全局HTML属性和以下属性：**
 
+| 属性                                    | 相关的 type                      | 描述                                                         |
+| :-------------------------------------- | :------------------------------- | :----------------------------------------------------------- |
+| accept                                  | file                             | 用于规定文件上传控件中期望的文件类型                         |
+| alt                                     | image                            | image type的alt属性，是可访问性的要求。                      |
+| autocomplete                            | 所有                             | 用于表单的自动填充功能                                       |
+| autofocus                               | 所有                             | 页面加载时自动聚焦到此表单控件                               |
+| capture                                 | file                             | 文件上传控件中媒体拍摄的方式                                 |
+| checked                                 | radio, checkbox                  | 用于控制控件是否被选中                                       |
+| dirname                                 | text, search                     | 表单区域的一个名字，用于在提交表单时发送元素的方向性         |
+| disabled                                | 所有                             | 表单控件是否被禁用                                           |
+| form                                    | 所有                             | 将控件和一个form元素联系在一起                               |
+| formaction                              | image, submit                    | 用于提交表单的URL                                            |
+| formenctype                             | image, submit                    | 表单数据集的编码方式，用于表单提交                           |
+| formmethod                              | image, submit                    | 用于表单提交的HTTP方法                                       |
+| formnovalidate                          | image, submit                    | 提交表单时绕过对表单控件的验证                               |
+| formtarget                              | image, submit                    | 表单提交的浏览上下文                                         |
+| height                                  | image                            | 和 \<img> 的height属性相同；垂直方向                         |
+| list                                    | 绝大部分                         | 自动填充选项的 \<datalist> 的id值                            |
+| max                                     | 数字 type                        | 最大值                                                       |
+| maxlength                               | password, search, tel, text, url | value 的最大长度（最多字符数目）                             |
+| min                                     | 数字 type                        | 最小值                                                       |
+| minlength                               | password, search, tel, text, url | value 的最小长度（最少字符数目）                             |
+| multiple                                | email, file                      | 布尔值。 是否允许多个值                                      |
+| name                                    | 所有                             | input表单控件的名字。以名字/值对的形式随表单一起提交         |
+| pattern                                 | password, text, tel              | 匹配有效 value 的模式（pattern）                             |
+| placeholder                             | password, search, tel, text, url | 当表单控件为空时，控件中显示的内容                           |
+| readonly                                | 绝大部分                         | 布尔值。存在时表示控件的值不可编辑                           |
+| <font color=FF0000> **required**</font> | 绝大部分                         | 布尔值。<font color=FF0000> **表示此值为必填项或者提交表单前必须先检查该值**</font> |
+| size                                    | email, password, tel, text       | 控件的大小                                                   |
+| src                                     | image                            | 和 \<img> 的src 属性一样；图像资源的地址                     |
+| step                                    | 数字type                         | 有效的递增值                                                 |
+| type                                    | 所有                             | input表单控件的type                                          |
+| value                                   | 所有                             | 表单控件的值。以名字/值对的形式随表单一起提交                |
+| width                                   | image                            | 与 \<img> 的width 属性一样                                   |
 
 #### \<textarea\>完全去除边框：
 
@@ -964,6 +1303,39 @@ textarea{
 
 
 
+#### \<mark>
+
+- **概要**
+  HTML标记文本元素(\<mark>)表示为引用或符号目的而标记或突出显示的文本，这是由于标记的段落在封闭上下文中的相关性或重要性造成的。
+
+  这个 HTML mark 标签代表突出显示的文字,例如可以为了标记特定上下文中的文本而使用这个标签。举个例子，它可以用来显示搜索引擎搜索后关键词。
+
+  | 属性                 | 内容                                                  |
+  | :------------------- | ----------------------------------------------------- |
+  | Content categories   | Flow content, phrasing content, palpable content.     |
+  | Permitted content    | Phrasing content.                                     |
+  | Tag omission         | None, both the starting and ending tag are mandatory. |
+  | Permitted parents    | Any element that accepts phrasing content.            |
+  | Implicit ARIA role   | No corresponding role                                 |
+  | Permitted ARIA roles | Any                                                   |
+  | DOM interface        | HTMLElement                                           |
+
+- **属性：**这个元素只包含了 全局属性
+
+- **使用说明：**\<mark>元素的典型使用场景包括：
+
+  - 当用在引用 (\<q>、\<blockquote> ) 中时，通常用来显示有特殊意义的文本，但不在原材料中标记出来；或者是用来显示特殊审查的材料，即使原作者不认为它特别重要。
+  - 另外，\<mark>元素还用来显示与用户当前活动相关的一部分文档内容。例如，它可能被用于显示匹配搜索结果中的单词。
+  - 不要为了语法高亮而用 \<mark> 元素；你应该用 \<strong> 元素结合适当的CSS来实现这个目的（语法高亮）。
+
+  > 不要把 \<mark> 元素和  \<strong> 元素搞混淆；\<strong> 元素用来表示文本在上下文的重要性的， 而 \<mark> 元素是用来表示上下文的关联性的.
+
+摘自：[MDN - \<mark>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/mark)
+
+注： \<mark> 标签 在 markdown 中是有效的，同时，在 html 中也是有效的。
+
+
+
 #### tabindex
 
 tabindex 全局属性 指示其元素是否可以聚焦，以及它是否/在何处参与顺序键盘导航（通常使用Tab键，因此得名）。<font color=FF0000>（可以在下面“ 摘自的url ”按下<font size=5>⇥</font>看下效果）</font>
@@ -982,29 +1354,38 @@ tabindex 全局属性 指示其元素是否可以聚焦，以及它是否/在何
 
 #### \<script>
 
-HTML \<script> 元素用于嵌入或引用可执行脚本。这通常用作嵌入或者指向 JavaScript 代码。\<script> 元素也能在其他语言中使用，比如 WebGL 的 GLSL 着色器语言。
+HTML \<script> 元素用于<font color=FF0000> 嵌入或引用可执行脚本</font>。这通常用作嵌入或者指向 JavaScript 代码。\<script> 元素也能在其他语言中使用，比如 WebGL 的 GLSL 着色器语言。
+
+| 属性             | 描述                                                         |
+| :--------------- | ------------------------------------------------------------ |
+| 内容分类         | 元数据内容, 流式元素, 短语元素.                              |
+| 可用内容         | 动态脚本，如 text/javascript.                                |
+| 标签省略         | <font color=FF0000> 不允许，开始标签和结束标签都不能省略。</font> |
+| 可用父元素       | 一些元素可以接受元数据内容, 或则是一些元素可以接受短语元素。 |
+| 隐含的 ARIA 角色 | 没有对应的角色                                               |
+| 允许的 ARIA 角色 | 不允许任何角色                                               |
+| DOM接口          | HTMLScriptElement                                            |
 
 **属性**
+
 该元素包含全局属性。
 
-- **async (HTML5)**
+- <font color=FF0000 size=4> **async (HTML5)：**</font>  对于<font color=FF0000>普通脚本</font>，如果存在 async 属性，那么<font color=FF0000>普通脚本会被并行请求，并尽快解析和执行</font>。
 
-  对于普通脚本，如果存在 async 属性，那么普通脚本会被并行请求，并尽快解析和执行。
-  对于模块脚本，如果存在 async 属性，那么脚本及其所有依赖都会在延缓队列中执行，因此它们会被并行请求，并尽快解析和执行。
-  该属性能够消除解析阻塞的 Javascript。解析阻塞的 Javascript 会导致浏览器必须加载并且执行脚本，之后才能继续解析。defer 在这一点上也有类似的作用。
-  这是个布尔属性：布尔属性的存在意味着 true 值，布尔属性的缺失意味着 false 值。
-  关于浏览器支持请参见浏览器兼容性。另可参见文章asm.js的异步脚本。
+  对于<font color=FF0000>模块脚本</font>，如果存在 async 属性，那么<font color=FF0000>脚本**及其所有依赖**都会在延缓队列中执行，因此它们会被并行请求，并尽快解析和执行</font>。
 
-- **crossorigin**
+  <font color=FF0000 size=4>**该属性能够消除解析阻塞的 Javascript。解析阻塞的 Javascript 会导致浏览器必须加载并且执行脚本，之后才能继续解析**</font>。defer 在这一点上也有类似的作用。
 
-  那些没有通过标准CORS (en-US)检查的正常script 元素传递最少的信息到 window.onerror。可以使用本属性来使那些将静态资源放在另外一个域名的站点打印错误信息。参考 CORS 设置属性了解对有效参数的更具描述性的解释。
+  这<font color=FF0000>是个**布尔属性**</font>：布尔属性的存在意味着 true 值，布尔属性的缺失意味着 false 值。
+
+- **crossorigin：**那些没有通过标准 CORS 检查的正常 script 元素传递最少的信息到 window.onerror。<font color=FF0000>可以使用本属性来使那些将静态资源放在另外一个域名的站点打印错误信息</font>。参考 CORS 设置属性了解对有效参数的更具描述性的解释。
 
   ```html
   <script src="" crossorigin="anonymous"></script>
   ```
-
-- **defer**
-  这个布尔属性被设定用来通知浏览器该脚本将在文档完成解析后，触发 DOMContentLoaded (en-US) 事件前执行。
+  
+- <font color=FF0000 size=4> **defer：**</font>这个 布尔属性 被设定用来通知浏览器该脚本将在文档完成解析后，触发 DOMContentLoaded 事件前执行。
+  
   有 defer 属性的脚本会阻止 DOMContentLoaded 事件，直到脚本被加载并且解析完成。
 
   > 如果缺少 src 属性（即内嵌脚本），该属性不应被使用，因为这种情况下它不起作用。
@@ -1019,28 +1400,213 @@ HTML \<script> 元素用于嵌入或引用可执行脚本。这通常用作嵌�
 
 - **referrerpolicy**
 
-- **src：**这个属性定义引用外部脚本的URI，这可以用来代替直接在文档中嵌入脚本。指定了 src 属性的script元素标签内不应该再有嵌入的脚本。
+- **src：**这个属性<font color=FF0000> 定义引用外部脚本的 URI</font>，这可以用来代替直接在文档中嵌入脚本。指定了 src 属性的 script 元素标签内不应该再有嵌入的脚本。
 
-- **type**
-  该属性定义script元素包含或src引用的脚本语言。属性的值为MIME类型; 支持的MIME类型包括text/javascript, text/ecmascript, application/javascript, 和application/ecmascript。如果没有定义这个属性，脚本会被视作JavaScript。
-  如果MIME类型不是JavaScript类型（上述支持的类型），则该元素所包含的内容会被当作数据块而不会被浏览器执行。
-  如果type属性为module，代码会被当作JavaScript模块 。请参见ES6 in Depth: Modules
-  在Firefox中可以通过定义type=application/javascript;version=1.8来使用如let声明这类的JS高版本中的先进特性。 但请注意这是个非标准功能，其他浏览器，特别是基于Chrome的浏览器可能会不支持。
-  关于如何引入特殊编程语言，请参见这篇文章。
+- **type：**该属性定义 script 元素<font color=FF0000> 包含或 src 引用的脚本语言</font>。<font color=FF0000> 属性的值为MIME类型；支持的MIME类型包括 text/javascript，text/ecmascript, application/javascript, 和 application/ecmascript</font>。<mark>如果没有定义这个属性，脚本会被视作 JavaScript</mark>。
+  
+  <mark>如果 MIME 类型不是 JavaScript 类型（上述支持的类型）</mark>，<font color=FF0000> 则该元素所包含的内容**会被当作数据块** 而 **不会被浏览器执行** </font>。
+  
+  <font color=FF0000> **如果 type 属性为 module，代码会被当作 JavaScript 模块**。</font>🧪
+  
+  在Firefox中可以通过定义 type=application/javascript;version=1.8 来使用如 let 声明这类的 JS 高版本中的先进特性。 但请注意这是个非标准功能，其他浏览器，特别是基于 Chrome 的浏览器可能会不支持。
+  
+- **text：**和 textContent 属性类似，本属性用于设置元素的文本内容。但和 textContent  不一样的是，本属性在节点插入到 DOM 之后，此属性被解析为可执行代码。
 
-- **text**
-  和 textContent 属性类似，本属性用于设置元素的文本内容。但和 textContent  不一样的是，本属性在节点插入到DOM之后，此属性被解析为可执行代码。
+**过时的属性**
 
-- **过时的属性**
+- charset
+- language
 
-  - charset
-  - language
+摘自：[MDN - \<script>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script)
+
+<font color=FF0000 size=4>**补充：**</font>在使用 \<script src="url"> 时，在最后加上 ?callback=cbFn（如果原链接有 ?foo=bar，则在最后加上&callback=cbFn；另外，这里的callback是定死的，不能替换），将会执行 cbFn方法（前提是cbFn已定义好），示例如下：
+
+```html
+<script>
+	function init () {
+	  var map = new BMapGL.Map('map')
+	  var point = new BMapGL.Point(116.404, 39.915)
+	  map.centerAndZoom(point, 10)
+	  // 可使用滚轮将地图放大缩小
+	  map.enableScrollWheelZoom(true)
+	}
+	
+	window.onload = function () {
+	  var script = document.createElement('script')
+	  script.src = 'https://api.map.baidu.com/api?v=1.0&type=webgl&ak=hDdCF04FamUm94EiU6j0ASAewm5PKoE4&callback=init'
+	  document.body.appendChild(script)
+	}
+</script>
+```
+
+这里的cbFn 即为 init 函数。这个也可以作为 JSONP 的原理。另一个示例如下：
+
+```html
+<script>
+	window.callback = functino(data) {
+    console.log(data)
+  }
+</script>
+<script src="http://localhost:8081/index.js"></script>
+```
+
+其中：index.js 的内容为
+
+```json
+callback: {
+  foo: 'bar'
+}
+```
+
+最后将会打印出 {foo: 'bar'}
+
+
+
+#### \<iframe>
+
+HTML内联框架元素 (\<iframe>) 表示嵌套的 浏览上下文（browsing context）。它能够将另一个HTML页面嵌入到当前页面中。
+
+每个嵌入的浏览上下文（embedded browsing context）都有自己的会话历史记录（session history）和 DOM树。<font color=FF0000> 包含嵌入内容的浏览上下文称为父级浏览上下文。顶级浏览上下文（没有父级）通常是由 Window 对象表示的浏览器窗口</font>。
+
+**属性：**该元素包含全局属性。
+
+- **allow：**用于为 \<iframe> 指定其特征策略。
+
+- **allowfullscreen：**设置为 true 时，可以通过调用 \<iframe> 的 requestFullscreen() 方法激活全屏模式。
+
+  <mark>这是一个历史遗留属性，已经被重新定义为 allow="fullscreen"。</mark>
+
+- **allowpaymentrequest：**设置为 true 时，跨域的 \<iframe> 就可以调用 Payment Request API。
+  <mark>这是一个历史遗留属性，已经被重新定义为 allow="payment"。</mark>
+
+- **csp：**🧪 对嵌入的资源配置内容安全策略。 
+
+- **width：**以CSS像素格式HTML5，或以像素格式HTML 4.01，或以百分比格式指定的 frame 的宽度。默认值是300。
+
+- **height：**以CSS像素格式HTML5，或像素格式HTML 4.01，或百分比格式指定frame的高度。默认值为150。
+
+- **importance：**🧪表示 \<iframe> 的 src 属性指定的资源的加载优先级。允许的值有：
+
+  - **auto (<font color=FF0000>default</font>）：**不指定优先级。浏览器根据自身情况决定资源的加载顺序
+  - **high：**资源的加载优先级较高
+  - **low：**资源的加载优先级较低
+
+- **name：**用于定位嵌入的浏览上下文的名称。该名称可以用作 \<a> 标签与 \<form> 标签的 target 属性值，也可以用作 \<input> 标签和 \<button> 标签的 formtarget 属性值，还可以用作 window.open() 方法的 windowName 参数值。
+
+- **referrerpolicy：**表示在获取 iframe 资源时如何发送 referrer 首部：
+
+  - **no-referrer：**不发送 Referer 首部。
+  - **no-referrer-when-downgrade (default)：**向不受 TLS (HTTPS) 保护的 origin 发送请求时，不发送 Referer 首部。
+  - **origin：**referrer 首部中仅包含来源页面的源。换言之，仅包含来源页面的 scheme, host, 以及 port。
+  - **origin-when-cross-origin：**发起跨域请求时，仅在 referrer 中包含来源页面的源。发起同源请求时，仍然会在 referrer 中包含来源页面在服务器上的路径信息。
+  - **same-origin：**对于 same origin （同源）请求，发送 referrer 首部，否则不发送。
+  - **strict-origin：**仅当被请求页面和来源页面具有相同的协议安全等级时才发送 referrer 首部（比如从采用 HTTPS 协议的页面请求另一个采用 HTTPS 协议的页面）。如果被请求页面的协议安全等级较低，则不会发送 referrer 首部（比如从采用 HTTPS 协议的页面请求采用 HTTP 协议的页面）。
+  - **strict-origin-when-cross-origin：**当发起同源请求时，在 referrer 首部中包含完整的 URL。当被请求页面与来源页面不同源但是有相同协议安全等级时（比如 HTTPS→HTTPS），在 referrer 首部中仅包含来源页面的源。当被请求页面的协议安全等级较低时（比如 HTTPS→HTTP），不发送 referrer 首部。
+  - **unsafe-url：**始终在 referrer 首部中包含源以及路径 （但不包括 fragment，密码，或用户名）。这个值是不安全的, 因为这样做会暴露受 TLS 保护的资源的源和路径信息。
+
+- **sandbox：**该属性对呈现在 iframe 框架中的内容启用一些额外的限制条件。属性值可以为空字符串（这种情况下会启用所有限制），也可以是用空格分隔的一系列指定的字符串。有效的值有：
+
+  - **allow-downloads-without-user-activation：**🧪 允许在没有征求用户同意的情况下下载文件.
+  - **allow-forms：**允许嵌入的浏览上下文提交表单。如果没有使用该关键字，则无法提交表单。
+  - **allow-modals：**允许嵌入的浏览上下文打开模态窗口。
+  - **allow-orientation-lock：**允许嵌入的浏览上下文锁定屏幕方向（译者注：比如智能手机、平板电脑的水平朝向或垂直朝向）。
+  - **allow-pointer-lock：**允许嵌入的浏览上下文使用 Pointer Lock API.
+  - **allow-popups：**允许弹窗 (例如 window.open, target="_blank", showModalDialog)。如果没有使用该关键字，相应的功能将自动被禁用。
+  - **allow-popups-to-escape-sandbox：**允许沙箱化的文档打开新窗口，并且新窗口不会继承沙箱标记。例如，安全地沙箱化一个广告页面，而不会在广告链接到的新页面中启用相同的限制条件。
+  - **allow-presentation：**允许嵌入的浏览上下文开始一个 presentation session。
+  - **allow-same-origin：**如果没有使用该关键字，嵌入的浏览上下文将被视为来自一个独立的源，这将使 same-origin policy 同源检查失败。
+  - **allow-scripts：**允许嵌入的浏览上下文运行脚本（但不能创建弹窗）。如果没有使用该关键字，就无法运行脚本。
+  - **allow-storage-access-by-user-activation：**🧪 允许嵌入的浏览上下文通过 Storage Access API 使用父级浏览上下文的存储功能。
+  - **allow-top-navigation：**允许嵌入的浏览上下文导航（加载）内容到顶级的浏览上下文。
+  - **allow-top-navigation-by-user-activation：**允许嵌入的浏览上下文在经过用户允许后导航（加载）内容到顶级的浏览上下文。
+
+- **src：**被嵌套的页面的 URL 地址。使用 about:blank 值可以嵌入一个遵从同源策略的空白页。在 Firefox （version 65及更高版本）、基于 Chromium 的浏览器、Safari/iOS 中使用代码移除 iframe 的 src 属性（例如通过 Element.removeAttribute() ）会导致 about:blank 被载入 frame。
+- **srcdoc：** HTML5 only 该属性是一段HTML代码，这些代码会被渲染到 iframe 中。如果浏览器不支持 srcdoc 属性，则会渲染 src 属性表示的内容。
+
+**已废弃的属性**
+
+align、frameborder、longdesc 、marginheight 、marginwidth 、scrolling 
+
+摘自：[MDN - \<iframe>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/iframe)
+
+更多iframe相关，可参考：[Iframe 有什么好处，有什么坏处？国内还有哪些知名网站仍用Iframe，为什么？有哪些原来用的现在抛弃了？又是为什么？ - 知乎](https://www.zhihu.com/question/20653055)
+
+
+
+#### manifest（<font color=FF0000>注意已从标准中 移除</font>）
+
+manifest 属性是 HTML5 中的新属性。
+
+**定义和用法**
+manifest 属性<font color=FF0000>规定文档的缓存 manifest 的位置</font>。（补充：manifest文件的后缀名必须为**.appcache**）
+HTML5 引入了应用程序缓存，<mark>这意味着 Web 应用程序可以被缓存，然后在无互联网连接的时候进行访问</mark>。
+**应用程序缓存使得应用程序有三个优点：**
+
+- **离线浏览：**用户可以在离线时使用应用程序
+- **快速：**缓存的资源可以更快地加载
+- **减少服务器加载：**浏览器只从服务器上下载已更新 / 已更改的资源
+
+manifest 属性<font color=FF0000>应该被 Web 应用程序中您想要缓存的每个页面包含</font>。
+manifest 文件<font color=FF0000>是一个简单的文本文件，列举出了浏览器用于离线访问而缓存的资源</font>。
+
+**语法**
+
+```html
+<html manifest="URL">
+```
+
+**属性：**
+
+- URL：文档的缓存 manifest 的地址。可能的值：
+  - **绝对 URL：**指向另一个网站（比如 href="http://www.example.com/demo.appcache"）
+  - **相对 URL：**指向网站内的一个文件（比如 href="demo.appcache"）
+
+**示例：**
+
+```html
+<html manifest="demo.appcache">
+```
+
+摘自：[RUNOOB - HTML \<html> manifest 属性](https://www.runoob.com/tags/att-html-manifest.html)
+
+manifest 文件是简单的文本文件，它告知浏览器被缓存的内容（以及不缓存的内容）。
+**manifest 文件可分为三个部分：**
+
+- **CACHE MANIFEST：**在此标题下列出的文件将在首次下载后进行缓存
+- **NETWORK：**在此标题下列出的文件需要与服务器的连接，且不会被缓存
+- **FALLBACK：**在此标题下列出的文件规定当页面无法访问时的回退页面（比如 404 页面）
+
+摘自：[RUNOOB - HTML5 应用程序缓存](https://www.runoob.com/html/html5-app-cache.html)
 
 ***
 
 
 
 ## CSS
+
+#### user agent stylesheet
+
+user agent stylesheet 是 UA（一般理解为 浏览器）内置的 基本元素样式，不同的 UA 有不同的设计。
+
+**不同浏览器的 user agent stylesheet 链接如下：**
+
+- Gecko (Firefox): https://searchfox.org/mozilla-central/source/layout/style/res/html.css
+
+- Chromium (Chrome): https://chromium.googlesource.com/chromium/src/third_party/+/master/blink/renderer/core/html/resources/html.css
+
+- WebKit (Safari): https://trac.webkit.org/browser/trunk/Source/WebCore/css/html.css
+
+**学习自：**CodingStartup 的 [div===span？是，也不是](https://www.bilibili.com/video/BV19h411q7d8)
+
+**补充：**浏览器中的 基本元素 是 shadow dom，无法看到其中的内部的样式；可以通过打开 DevTools 的 show user agent shadow DOM，在 DevTools 中便可以看到 这些内部样式。
+
+**Chrome 开启 show user agent shadow DOM 方法：**
+
+<img src="https://s2.loli.net/2022/02/12/OaGd6fB15TqovE2.png" alt="image-20220212162137972" style="zoom: 48%;" />xue
+
+学习自：[stack overflow - How to show CSS Styles of Shadow Dom in Chrome DevTools](https://stackoverflow.com/questions/19316610/how-to-show-css-styles-of-shadow-dom-in-chrome-devtools)
+
+
 
 ### padding margin border的区别
 
@@ -1150,13 +1716,13 @@ body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别
   下列方式会创建块格式化上下文：
   
   - 根元素（\<html>）
-  - 浮动元素（元素的 float 不是 none）
-  - 绝对定位元素（元素的 position 为 absolute 或 fixed）
-  - 行内块元素（元素的 display 为 inline-block）
+  - <font color=FF0000>浮动元素（元素的 float 不是 none）</font>
+  - <font color=FF0000>绝对定位元素（元素的 position 为 absolute 或 fixed）</font>
+  - <font color=FF0000>行内块元素（元素的 display 为 inline-block）</font>
   - 表格单元格（元素的 display 为 table-cell，HTML表格单元格默认为该值）
   - 表格标题（元素的 display 为 table-caption，HTML表格标题默认为该值）
   - 匿名表格单元格元素（元素的 display 为 table、table-row、 table-row-group、table-header-group、table-footer-group（分别是HTML table、row、tbody、thead、tfoot 的默认属性）或 inline-table）
-  - overflow 计算值(Computed)不为 visible 的块元素
+  - <font color=FF0000>overflow 计算值(Computed)不为 visible 的块元素</font>
   - display 值为 flow-root 的元素
   - contain 值为 layout、content 或 paint 的元素
   - 弹性元素（display 为 flex 或 inline-flex 元素的直接子元素）
@@ -1165,6 +1731,73 @@ body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别
   - column-span 为 all 的元素始终会创建一个新的BFC，即使该元素没有包裹在一个多列容器中（标准变更，Chrome bug）。
   
   摘自：[MDN - 块格式化上下文](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
+  
+  **补充：**
+  
+  **格式化上下文( formatting contexts )**
+  
+  格式化上下文有几种类型，包括：
+  
+  - <font color=FF0000>**块**</font>格式化上下文 block formatting contexts，即BFC
+  - <font color=FF0000>**内联**</font>格式化上下文 inline formatting contexts，即 <font color=FF0000 size=4>**IFC**</font>
+  - <font color=FF0000>**灵活**</font>格式化上下文 flex formatting contexts。
+  
+  <font color=FF0000>页面上的所有内容都是格式化上下文 formatting context 的一部分</font>，<font color=FF0000>或者是一个以特定方式显示的区域</font>。块格式上下文（BFC）将根据块布局规则布局子元素，<font color=FF0000>**灵活格式上下文 flex formatting context 将其子元素布局为灵活项flex items等**</font>。每个格式上下文在其上下文中都有特定的布局规则
+  
+  <font color=FF0000>文档最外层元素使用块布局规则或称为初始块格式上下文</font>。<mark>这意味着 \<html> 元素块中的每个元素都是按照正常流程遵循块和内联布局规则进行布局的</mark>。\<html> 元素不是唯一能够创建块格式上下文的元素。默认为块布局的任何元素也会为其后代元素创建块格式上下文。此外，还有一些CSS属性可以使元素创建一个BFC（这里略，详见其他地方）
+  
+  摘自：[MDN - Introduction to formatting contexts 格式化上下文简介](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts)
+
+**补充：**
+
+#### 行内格式化上下文 <font color=FF0000>IFC</font>（Inline formatting context）
+
+行内格式化上下文是一个网页的渲染结果的一部分。其中，<font color=FF0000>**各行内框 ( inline boxes ) 一个接一个地排列**</font>，其排列顺序根据书写模式（writing-mode）的设置来决定：
+
+- 对于<font color=FF0000>水平书写模式</font>（由 writing-mode 属性控制），<font color=FF0000>各个框从左边开始水平地排列</font>
+
+- 对于<font color=FF0000>垂直书写模式，各个框从顶部开始水平地排列</font>
+
+摘自：[MDN - 行内格式化上下文（Inline formatting context）](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Inline_formatting_context)
+
+补充：感觉上面的介绍好像没看懂，参考：[MDN - Introduction to formatting contexts 格式化上下文简介](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts) 中的介绍：
+
+<font color=FF0000>内联格式上下文**存在于其他格式上下文中**，可以将其视为段落的上下文</font>。段落创建了一个内联格式上下文，<font color=FF0000>其中在文本中使用诸如 \<strong>、\<a> 或 \<span> 元素等内容</font>。
+
+box model 不完全适用于参与内联格式上下文。在水平书写模式行中，水平填充、边框和边距将应用于元素，并左右移动文本。但是，元素上方和下方边距将不适用。应用垂直填充和边框可能会在内容的上方和下方重叠，因为在内联格式上下文中，填充和边框不会将行框撑开。
+
+![image-20220115194847850](https://s2.loli.net/2022/01/15/acflMQ3Xz7NCKkP.png)
+
+摘自：[MDN - Introduction to formatting contexts 格式化上下文简介](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts)
+
+**补充：**在学习 标准流（标准文档流）和 BFC 的同时，发现了这样一篇文章：[CSS 布局的本质是什么](https://zhuanlan.zhihu.com/p/395050907) 摘自部分以做补充：
+
+根据操作系统不同，会有不同的界面的开发方式。安卓、ios、windows 等都有各自的创建 ui 的库，但是更底层的绘图库却是有标准的：跨平台的绘图 api 接口标准 OpenGL 以及 windows 下的 DirectX。
+
+现在开发 web 应用并不会直接基于 dom api，而是会选择某一个前端框架，比如 vue、react、angular 等。<font color=FF0000>这些框架实现了组件的功能，也就是对页面做的逻辑的拆分，把相同功能的 html、css、js 聚合在一起，使之可以复用</font>。并且<font color=FF0000>提供了 mvvm 的功能，自动做数据到具体 dom 的映射，而不再需要开发者手动操作 dom</font>。
+<font color=FF0000>前端框架做的事情相当于是 web 应用的逻辑层，最终的渲染和交互还是通过 dom api</font>，但是 <font color=FF0000>用户不需要直接操作，而是在逻辑层描述组件和数据，由前端框架完成数据到 dom 的自动映射</font>。
+
+（盒子模型）盒与盒之间也是有区别的，有的盒可以在同一行显示，有的则是独占一行，而且对内容的位置的计算方式也不一样。于是<font color=FF0000><font size=4>**提供了 display 样式来设置盒类型**</font></font>（注：这种说法，之前没听说过），比如 block、inline、inline-block、flex、table-cell、grid 等，分别<font size=4>设置成不同的盒类型，就会使用不同的计算规则</font>。
+
+- **block** 的元素会独占一行、可以设置内容的宽高，具体计算规则叫做 BFC。
+- **inline** 的元素宽高由内容撑开不可设置，不会独占一行，具体计算规则叫做 IFC。
+- **flex** 的子元素可以自动计算空白部分，由 flex 样式指定分配比例，具体计算规则叫做 <font color=FF0000 size=4>**FFC**</font>。<mark>（注：之前没听过）</mark>
+- **grid** 的子元素则是可以拆分成多个行列来计算位置，具体计算规则叫 <font color=FF0000 size=4>**GFC**</font>。<mark>（注：之前没听过）</mark>
+
+这些都是不同盒类型的布局计算规则。
+
+> 注：在 stack overflow 有这样一个问题：[How many CSS formatting contexts are there?](https://stackoverflow.com/questions/16908438/how-many-css-formatting-contexts-are-there) 同样解释了这个问题：
+>
+> In general, a "formatting context" is simply an area in which descendant boxes of a certain kind (e.g. block, inline, flex-item) are laid out (or formatted) in normal flow.
+>
+> In CSS2.1, there are only two kinds of formatting context: block and inline. Both of these are described as appropriate in [section 9.4](http://www.w3.org/TR/CSS21/visuren.html#normal-flow). There is no such thing as a table formatting context, at least not as defined by CSS2.1; instead it simply says that [a table box establishes a block formatting context](http://www.w3.org/TR/CSS21/tables.html#model), however its contents are laid out in a tabular fashion.
+>
+> Other types of formatting context are defined in their respective CSS3 modules, so there may not be an exhaustive list. That said, some examples include:
+>
+> - [Flexbox](http://www.w3.org/TR/css3-flexbox): flex containers establish flex formatting contexts.
+> - [Grid Layout](http://www.w3.org/TR/css3-grid-layout): grid containers establish grid formatting contexts.
+
+摘自：[CSS 布局的本质是什么](https://zhuanlan.zhihu.com/p/395050907)
 
 #### id & class
 
@@ -1219,7 +1852,7 @@ float CSS属性指定一个元素应沿其容器的左侧或右侧放置，允�
 可选值
 
 - **left：**表明元素必须浮动在其所在的块容器左侧的关键字。
-- right：表明元素必须浮动在其所在的块容器右侧的关键字。
+- **right：**表明元素必须浮动在其所在的块容器右侧的关键字。
 - **none：**<mark>表明元素不进行浮动的关键字</mark>。
 - **inline-start：**<mark style="background: fuchsia">关键字，表明元素必须浮动在其所在块容器的开始一侧，在ltr脚本中是左侧，在rtl脚本中是右侧</mark>。
 - **inline-end：**<mark style="background: fuchsia">关键字，表明元素必须浮动在其所在块容器的结束一侧，在ltr脚本中是右侧，在rtl脚本中是左侧</mark>。
@@ -1251,6 +1884,53 @@ float 和 `margin-left: auto` & `margin-right: auto`的关系：在flexbox中，
 
 可以使用 `margin-left: auto` 替代 `float: right` ， `margin-right: auto` 替代 `float: left`（这里使用绝对定位似乎也可以实现）。跟进一步：如果flexbox使用了`flex-wrap: wrap` 且 右侧没有空间了，那只能换行，且放到下一行的右侧。这种情况下，是用绝对定位也不行了（无法放到下一行，只能放到该行末尾，会出现覆盖的情况）；这时使用`margin-right: auto`依然是有效的。原理是：使用auto<font color=FF0000>会将所有剩余空间都占满</font>；类似的可参考《CSS权威指南》
 
+#### clear
+
+ **clear** CSS 属性指定一个元素是否必须移动（清除浮动后）到在它之前的浮动元素下面。clear 属性适用于浮动和非浮动元素。
+
+<font color=FF0000>如果一个元素（注：按照按照这个示例的说法，这个元素有id属性 container）里只有浮动元素，那它的高度会是0</font>（注：即塌陷）。如果你想要它自适应即包含所有浮动元素，那你需要清除它的子元素。一种方法叫做clearfix，即clear一个不浮动的 ::after 伪元素（注：即给该元素加一个 ::after 伪元素）。
+
+```css
+#container::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+```
+
+- 语法
+
+  ```css
+  /* Keyword values */
+  clear: none;
+  clear: left;
+  clear: right;
+  clear: both;
+  clear: inline-start;
+  clear: inline-end;
+  
+  /* Global values */
+  clear: inherit;
+  clear: initial;
+  clear: unset;
+  ```
+
+- 值
+
+  - **none：**元素*不会*向下移动清除之前的浮动。
+
+  - **left：**元素被向下移动用于清除之前的左浮动。
+
+  - **right：**元素被向下移动用于清除之前的右浮动。
+
+  - **both：**元素被向下移动用于清除之前的左右浮动。
+
+  - **inline-start：**该关键字表示该元素向下移动以清除其包含块的起始侧上的浮动。即在某个区域的左侧浮动或右侧浮动。
+
+  - **inline-end：**该关键字表示该元素向下移动以清除其包含块的末端的浮点，即在某个区域的右侧浮动或左侧浮动。
+
+摘自：[MDN - clear](https://developer.mozilla.org/zh-CN/docs/Web/CSS/clear)
+
 
 
 #### CSS Cursor
@@ -1258,7 +1938,7 @@ float 和 `margin-left: auto` & `margin-right: auto`的关系：在flexbox中，
 | 值                                    | 描述                                                         |
 | :------------------------------------ | :----------------------------------------------------------- |
 | url                                   | 需使用的自定义光标的图片URL。注释：请在此列表的末端始终定义一种普通的光标，以防没有由 URL 定义的可用光标。 |
-| <font color=FF0000>default</font>     | <font color=FF0000>默认</font>光标（通常是一个箭头）         |
+| <font color=FF0000>**default**</font> | <font color=FF0000>**默认**</font>光标（通常是一个箭头）     |
 | <font color=FF0000>auto</font>        | <font color=FF0000>默认</font>。浏览器设置的光标。           |
 | crosshair                             | 光标呈现为十字线。                                           |
 | <font color=FF0000>pointer</font>     | 光标呈现为指示链接的指针（一只手）                           |
@@ -1280,11 +1960,13 @@ float 和 `margin-left: auto` & `margin-right: auto`的关系：在flexbox中，
 
 另外这里的内容可以参考：[MDN - Cursor](https://developer.mozilla.org/zh-CN/docs/Web/CSS/cursor)，这里内容更加全面
 
+注，这里有三个补充：all-scroll、row-resize、col-resize，用于拖动 分割线，自定义元素的宽高。详见上面的 MDN - Cursor 以及 CodingStartup 的视频：[[JS] 实现可调侧栏](https://www.bilibili.com/video/BV1L54y197vj)
+
 
 
 ### CSS背景
 
-- #### background-color
+- **background-color**
   
   定义了元素的背景颜色。CSS中，颜色值通常以以下方式定义:
   
@@ -1292,7 +1974,7 @@ float 和 `margin-left: auto` & `margin-right: auto`的关系：在flexbox中，
   - RGB - 如："rgb(255,0,0)"
   - 颜色名称 - 如："red"
 
-- #### background-image
+- **background-image**
   
   描述了元素的背景图像。示例：
   
@@ -1302,7 +1984,7 @@ float 和 `margin-left: auto` & `margin-right: auto`的关系：在flexbox中，
   }
   ```
 
-- #### background-repeat
+- **background-repeat**
   
   属性定义背景图像的重复方式。背景图像<mark>可以沿着水平轴，垂直轴，两个轴重复，或者根本不重复</mark>。
   
@@ -1317,16 +1999,16 @@ float 和 `margin-left: auto` & `margin-right: auto`的关系：在flexbox中，
   
   在双值语法中, 第一个值表示<mark>水平重复行为</mark>, 第二个值表示<mark>垂直重复行为</mark>. 下面是关于每一个值是怎么工作的具体说明：
   
-  |    值     |                             说明                             |
-  | :-------: | :----------------------------------------------------------: |
-  |  repeat   | 图像会按需重复来覆盖整个背景图片所在的区域. 最后一个图像会被裁剪, 如果它的大小不合适的话. |
-  |   space   | 图像会尽可能得重复, 但是不会裁剪. 第一个和最后一个图像会被固定在元素(element)的相应的边上, 同时空白会均匀地分布在图像之间. background-position属性会被忽视, 除非只有一个图像能被无裁剪地显示. 只在一种情况下裁剪会发生, 那就是图像太大了以至于没有足够的空间来完整显示一个图像. |
-  |   round   | 随着允许的空间在尺寸上的增长, 被重复的图像将会伸展(没有空隙), 直到有足够的空间来添加一个图像. 当下一个图像被添加后, 所有的当前的图像会被压缩来腾出空间. 例如, 一个图像原始大小是260px, 重复三次之后, 可能会被伸展到300px, 直到另一个图像被加进来. 这样他们就可能被压缩到225px.译者注: 关键是浏览器怎么计算什么时候应该添加一个图像进来, 而不是继续伸展. |
+  | 值        | 说明                                                         |
+  | :-------- | :----------------------------------------------------------- |
+  | repeat    | 图像会按需重复来覆盖整个背景图片所在的区域. 最后一个图像会被裁剪, 如果它的大小不合适的话. |
+  | space     | 图像会尽可能得重复, 但是不会裁剪. 第一个和最后一个图像会被固定在元素(element)的相应的边上, 同时空白会均匀地分布在图像之间. background-position属性会被忽视, 除非只有一个图像能被无裁剪地显示. 只在一种情况下裁剪会发生, 那就是图像太大了以至于没有足够的空间来完整显示一个图像. |
+  | round     | 随着允许的空间在尺寸上的增长, 被重复的图像将会伸展(没有空隙), 直到有足够的空间来添加一个图像. 当下一个图像被添加后, 所有的当前的图像会被压缩来腾出空间. 例如, 一个图像原始大小是260px, 重复三次之后, 可能会被伸展到300px, 直到另一个图像被加进来. 这样他们就可能被压缩到225px.译者注: 关键是浏览器怎么计算什么时候应该添加一个图像进来, 而不是继续伸展. |
   | no-repeat | 图像不会被重复(因为背景图像所在的区域将可能没有完全被覆盖). 那个没有被重复的背景图像的位置是由background-position属性来决定. |
   
   以上关于background-repeat摘自：[MDN - background-repeat](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-repeat)
   
-- #### **background-attachment**
+- **background-attachment**
   
   决定背景图像的位置是在视口内固定，或者随着包含它的区块滚动。
   
@@ -1337,7 +2019,7 @@ float 和 `margin-left: auto` & `margin-right: auto`的关系：在flexbox中，
   
   以上关于background-attachment的内容摘自：[MDN - background-attachment](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-attachment)
   
-- #### background-position
+- **background-position**
   
   background-position 为每一个背景图片设置初始位置。 这个位置是相对于由 background-origin 定义的位置图层的。
   
@@ -1375,6 +2057,20 @@ float 和 `margin-left: auto` & `margin-right: auto`的关系：在flexbox中，
   ```
   
   以上关于background-position的内容摘自：[MDN - background-position](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-position)
+  
+- **background-origin**
+
+  background-origin <font color=FF0000>规定了指定背景图片background-image 属性的**原点位置的背景相对区域**</font>
+  
+  注意：当使用 background-attachment 为fixed时，该属性将被忽略不起作用。
+  
+  **属性值**
+  
+  - **border-box：**背景图片的摆放以border区域为参考
+  - **padding-box：**背景图片的摆放以padding区域为参考
+  - **content-box：**背景图片的摆放以content区域为参考
+  
+  摘自：[MDN - background-origin](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-origin)
 
 
 
@@ -1528,7 +2224,7 @@ position 属性的五个值：
   
   <font color=FF0000>它有一个重要的限制条件：定位基点（一般是父元素）不能是static定位，否则定位基点就会变成整个网页的根元素html</font>。另外，<mark>absolute定位也必须搭配top、bottom、left、right这四个属性一起使用</mark>。
 
-- **sticky**：sticky 英文字面意思是粘，粘贴，所以可以把它称之为粘性定位。**position: sticky;** 基于用户的滚动位置来定位。粘性定位的元素是依赖于用户的滚动，在 **position:relative** 与 **position:fixed** 定位之间切换。
+- **sticky**：sticky 英文字面意思是粘，粘贴，所以可以把它称之为粘性定位。<font color=FF0000>**position: sticky;** 基于用户的滚动位置来定位。粘性定位的元素是依赖于用户的滚动，在 **position:relative** 与 **position:fixed** 定位之间切换</font>。
   
   **使用场景**：<font color=FF0000>网页的搜索工具栏，初始加载时在自己的默认位置（relative定位），页面向下滚动时，工具栏变成固定位置，始终停留在页面头部（fixed定位）</font>。
   
@@ -1583,8 +2279,7 @@ float: right;
 示例：
 
 ```css
-.text_line
-{
+.text_line {
     clear:both;
 }
 ```
@@ -1676,7 +2371,7 @@ button:hover {
 }
 ```
 
-伪类连同伪元素一起，他们允许你不仅仅是根据文档 DOM 树中的内容对元素应用样式，而且还允许你根据诸如像导航历史这样的外部因素来应用样式（例如 [`:visited`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:visited)），同样的，可以根据内容的状态（例如在一些表单元素上的 [`:checked`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:checked)），或者鼠标的位置（例如 [`:hover`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:hover) 让你知道是否鼠标在一个元素上悬浮）来应用样式。
+伪类连同伪元素一起，他们允许你不仅仅是根据文档 DOM 树中的内容对元素应用样式，而且还允许你根据诸如像导航历史这样的外部因素来应用样式（例如 `:visited`），同样的，可以根据内容的状态（例如在一些表单元素上的 `:checked`），或者鼠标的位置（例如 `:hover` 让你知道是否鼠标在一个元素上悬浮）来应用样式。
 
 **语法：**
 
@@ -1756,6 +2451,8 @@ opacity:0.4;
 
 **filter** CSS属性<font color=FF0000>将模糊或颜色偏移等图形效果应用于元素</font>。<font color=FF0000>滤镜通常用于调整图像，背景和边框的渲染。</font>
 
+<mark>CSS 标准里包含了一些已实现预定义效果的函数</mark>。你也可以参考一个 SVG 滤镜，通过一个 URL 链接到 SVG 滤镜元素(SVG filter element)
+
 示例：
 
 ```css
@@ -1773,25 +2470,46 @@ filter: invert(75%);
 filter: opacity(25%);
 filter: saturate(30%);
 filter: sepia(60%);
+
+/* Multiple filters */
+filter: contrast(175%) brightness(3%);
+
+/* Use no filter */
+filter: none;
+
+/* Global values */
+filter: inherit;
+filter: initial;
+filter: unset;
 ```
 
 摘自：[MDN - filter](https://developer.mozilla.org/zh-CN/docs/Web/CSS/filter)
 
-##### blur()：是filter的一种
+由于MDN 中说的并不是很清楚，所以又去阅读了：[CSS filter 有哪些神奇用途](https://segmentfault.com/a/1190000040058430)
 
-blur() CSS 方法将高斯模糊应用于输出图片. 结果为 \<filter-function>。
+### 基本概念
 
-**语法：**
+CSS filter 属性将模糊或颜色偏移等图形效果应用于元素形成滤镜，<font color=FF0000>滤镜通常用于调整图像，背景和边框的渲染</font>。它的<font color=FF0000>值可以为 **filter 函数** \<filter-function>（注：如下面的代码 第一行） 或 **使用 url 添加的svg滤镜**（注：如下面的代码 第二行）</font>。
 
 ```css
-blur(radius)
+filter: <filter-function> [<filter-function>]* | none
+filter: url(file.svg#filter-element-id)
 ```
 
-**值：**
+\<filter-function> 可以用于 filter 和 backdrop-filter 属性。它的数据类型由下列过滤器函数之一指定。每个函数需要一个参数，如果参数无效，则滤镜不会生效。以下是对滤镜函数含义的解释：
 
-**radius：**<font color=FF0000>模糊的半径，值为\<length></font>。 它定义了高斯函数的标准偏差值，即屏幕上有多少像素相互融合; 因此，较大的值会产生更多模糊。 值为0会使输入保持不变。 该值为空则为0。
+- **blur()：**<font color=FF0000>模糊</font>图像
+- **brightness() ：**让图像<font color=FF0000>更明亮或更暗淡</font>
+- **contrast()：**<font color=FF0000>增加或减少</font>图像的<font color=FF0000>对比度</font>
+- **drop-shadow()：**在<font color=FF0000>图像后方应用投影</font>
+- **grayscale()：**将图像<font color=FF0000>转为灰度图</font>
+- **hue-rotate()：**<font color=FF0000>改变</font>图像的<font color=FF0000>整体色调</font>
+- **invert()：**<font color=FF0000>反转</font>图像<font color=FF0000>颜色</font>
+- **opacity()：**<font color=FF0000>改变</font>图像<font color=FF0000>透明度</font>
+- **saturate()：**<font color=FF0000>**超饱和**</font> 或 <font color=FF0000>**去饱和** 输入的图像</font>
+- **sepia()：**将图像<font color=FF0000>转为棕褐色</font>
 
-摘自：[MDN - blur()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/filter-function/blur())
+摘自：[CSS filter 有哪些神奇用途](https://segmentfault.com/a/1190000040058430) 另外，该博客中还有相关使用示例的介绍，这里由于篇幅省略；可以看看，讲得很清楚。
 
 
 
@@ -1979,47 +2697,58 @@ CSS计数器对创建有序列表特别有用，因为在子元素中会自动�
 #### CSS边框
 
 - **border-radius**：圆角
-  
+
   示例：
-  
+
   ```css
   border-radius:25px;
   ```
 
 - **box-shadow**：盒阴影
-  
-  可以在同一个元素上设置多个阴影效果，并用逗号将他们分隔开。该属性<mark style="background: fuchsia">可设置的值包括阴影的X轴偏移量、Y轴偏移量、模糊半径、扩散半径和颜色</mark>。
-  
+
+  可以在同一个元素上设置多个阴影效果，并用逗号将他们分隔开。该属性 <font color=FF0000>可设置的值包括阴影的 **X轴偏移量**、**Y轴偏移量**、**模糊半径**、**扩散半径** 和 **颜色**</font>。
+
+  **向元素添加单个 box-shadow 效果时使用以下规则：**
+
+  - 当给出两个、三个或四个 \<length>值时
+    - 如果只给出两个值, 那么这两个值将会被当作 \<offset-x> \<offset-y> 来解释。
+    - 如果给出了第三个值, 那么第三个值将会被当作 \<blur-radius>解释。
+    - 如果给出了第四个值, 那么第四个值将会被当作 \<spread-radius>来解释。
+  - 可选，inset关键字。
+  - 可选，\<color>值。
+
+  若要对同一个元素添加多个阴影效果，请使用逗号将每个阴影规则分隔开。
+
   **取值**
-  
+
   - **inset**
     
-    如果没有指定inset，默认阴影在边框外，即阴影向外扩散。 使用 inset 关键字会使得阴影落在盒子内部，这样看起来就像是内容被压低了。 此时阴影会在边框之内 (即使是透明边框）、背景之上、内容之下。
-  
+    <font color=FF0000>如果没有指定inset，默认阴影在边框外，即阴影向外扩散</font>。 <font color=FF0000>使用 inset 关键字会使得阴影落在盒子内部，这样看起来就像是内容被压低了</font>。 此时阴影会在边框之内 (即使是透明边框）、背景之上、内容之下。
+
   - **\<offset-x>** **\<offset-y>**
     
-    这是头两个 \<length> 值，用来设置阴影偏移量。x,y 是按照数学二维坐标系来计算的，只不过y垂直方向向下。 \<offset-x> 设置水平偏移量，正值阴影则位于元素右边，负值阴影则位于元素左边。 \<offset-y> 设置垂直偏移量，正值阴影则位于元素下方，负值阴影则位于元素上方。可用单位请查看 \<length> 。
+    这是头两个 \<length> 值，用来设置阴影偏移量。x, y 是按照数学二维坐标系来计算的，只不过y垂直方向向下。 \<offset-x> 设置水平偏移量，<mark>正值阴影则位于元素右边，负值阴影则位于元素左边</mark>。 \<offset-y> 设置垂直偏移量，<mark>正值阴影则位于元素下方，负值阴影则位于元素上方</mark>。可用单位请查看 \<length> 。
     
     如果两者都是0，那么阴影位于元素后面。这时如果设置了\<blur-radius> 或\<spread-radius> 则有模糊效果。需要考虑 inset 
-  
+
   - **\<blur-radius> ** **阴影模糊半径** 
     
     这是第三个 \<length> 值。值越大，模糊面积越大，阴影就越大越淡。 不能为负值。默认为0，此时阴影边缘锐利。本规范不包括如何计算模糊半径的精确算法，但是，它详细说明如下：
-  
+
   > 对于长而直的阴影边缘，它会创建一个过渡颜色用于模糊 以阴影边缘为中心、模糊半径为半径的局域，过渡颜色的范围在完整的阴影颜色到它最外面的终点的透明之间。 （译者注：对此有兴趣的可以了解下数字图像处理的模糊算法。）
-  
+
   - **\<spread-radius>** **阴影扩散半径**
     
     这是第四个 \<length> 值。取正值时，阴影扩大；取负值时，阴影收缩。默认为0，此时阴影与元素同样大。需要考虑 inset 
-  
+
   - **\<color>** **阴影颜色**
     
     相关事项查看 \<length> 。如果没有指定，则由浏览器决定——通常是color的值，不过目前Safari取透明。
-  
+
   相关摘自：[MDN - box-shadow](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-shadow)
 
   ##### <mark>**补充：**text-shadow用法和box-shadow一样，是用来对于文字进行设置阴影</mark>
-  
+
 - **border-image**：边界图片
 
 
@@ -2074,6 +2803,54 @@ CSS计数器对创建有序列表特别有用，因为在子元素中会自动�
 | luminosity  |          亮度模式。          |
 
 摘自：[MDN - background-blend-mode](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-blend-mode)、 [RUNOOB - CSS background-blend-mode 属性](https://www.runoob.com/cssref/pr-background-blend-mode.html)
+
+注：上面的属性值对应的效果，参见 [MDN - \<blend-mode>](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
+
+**补充：**
+
+#### \<blend-mode>
+
+\<blend-mode> <font color=FF0000 size=4>**是一种 CSS 数据类型**</font>（<mark>注：\<blend-mode> 不是一种标签，而是一个数据类型，类似于 \<length></mark>，具体介绍详见：[MDN - CSS 基本数据类型](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Types) ），<font color=FF0000>用于描述当元素重叠时，颜色应当如何呈现</font>。它<font color=FF0000>被用于 background-blend-mode 和 mix-blend-mode 属性</font>。
+
+当层重叠时，混合模式是计算像素最终颜色值的方法，每种混合模式采用前景和背景的颜色值，执行其计算并返回最终的颜色值。最终的可见层是对混合层中的每个重叠像素执行混合模式计算的结果。
+
+下面还有 包含的属性值，由于上面（background-blend-mode）已经包含了，所以这里略。不过，MDN 的文档中还包含属性值对应的效果图，可以参考下。
+
+摘自：[MDN - \<blend-mode>](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
+
+#### CSS 基本数据类型
+
+<font color=FF0000>CSS 基本数据类型是 组件值类型( component value type ) 的一种</font>。用于定义 CSS属性和函数可以接受的变量（关键字和单位）的种类。
+
+数据类型由放置在不等式符号 "<" 和 ">" 之间的关键字表示：
+
+- \<angle>
+- \<basic-shape>
+- \<blend-mode>
+- \<color>
+- \<custom-ident>
+- \<filter-function>
+- \<flex>
+- \<frequency>
+- \<gradient>
+- \<image>
+- \<integer>
+- \<length>
+- \<number>
+- \<percentage>
+- \<position>
+- \<ratio>
+- \<resolution>
+- \<shape-box>
+- \<single-transition-timing-function>
+- \<string>
+- \<time>
+- \<transform-function>
+- \<url>
+
+摘自：[MDN - CSS 基本数据类型](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Types)
+
+
 
 
 
@@ -2255,7 +3032,7 @@ CSS3 定义了两种类型的渐变（gradients）：
 **可选值**
 
 - **normal：**使用默认的断行规则。
-- **break-all：**<font color=FF0000>对于**非CJK (CJK 指中文/日文/韩文) 文本**，可在任意字符间断行</font>。
+- **break-all：**<font color=FF0000>对于**非CJK (CJK 指中文/日文/韩文) 文本**，可在**任意字符间断行**</font>。
 - **keep-all：**CJK 文本不断行。 Non-CJK 文本表现同 normal。
 - **break-word ：（<font color=FF0000>废弃</font>）**他的效果是word-break: normal 和 overflow-wrap: anywhere  的合，不论 overflow-wrap的值是多少。
 
@@ -2270,7 +3047,7 @@ CSS 属性 overflow-wrap 是用来说明当一个不能被分开的字符串太�
 - **normal：**行只能在正常的单词断点处中断。（例如两个单词之间的空格）。
 - **break-word：**表示如果行内没有多余的地方容纳该单词到结尾，则那些正常的不能被分割的单词会被强制分割换行。
 
-与word-break相比，overflow-wrap仅在无法将整个单词放在自己的行而不会溢出的情况下才会产生中断。
+<font color=FF0000 size=4>**与word-break相比，overflow-wrap仅在无法将整个单词放在自己的行而不会溢出的情况下才会产生中断**</font>。
 
 注：<font color=FF0000>word-wrap 属性原本属于微软的一个私有属性，在 CSS3 现在的文本规范草案中已经被重名为 overflow-wrap</font> 。 word-wrap 现在被当作 overflow-wrap 的 “别名”。 稳定的谷歌 Chrome 和 Opera 浏览器版本支持这种新语法。
 
@@ -2340,6 +3117,36 @@ text-orientation CSS 属性<font color=FF0000>设定行中字符的方向</font>
   - unset
 
 摘自：[MDN - writing-mode](https://developer.mozilla.org/zh-CN/docs/Web/CSS/writing-mode)
+
+**补充：**
+
+注：text-orientation 一般与 writing-mode 配合使用，同时一般使用 writing-mode 大概率（不绝对）要使用 text-orientation。如下示例：
+
+```html
+<p class="text">foo 123 你好</p>
+<style>
+.text {
+  writing-mode: vertical-rl;
+}
+</style>
+```
+
+效果如下，同时也是不合适的：
+
+<img src="https://s2.loli.net/2022/02/08/fgdnSolbc5GTC9E.png" alt="image-20220208144748538" style="zoom:50%;" />
+
+如果加上 text-orientation 即：
+
+```css
+.text {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
+```
+
+效果如下，这显然是比较合适的：
+
+<img src="https://s2.loli.net/2022/02/08/5qkHnlWOLwDIVuZ.png" alt="image-20220208145023666" style="zoom:50%;" />
 
 
 
@@ -2851,9 +3658,67 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
 
 
 
+#### @规则 (at-rule)
+
+一个 @规则 是一个CSS 语句，以 at符号开头，'@' (U+0040 COMMERCIAL AT)，后跟一个标识符，并包括直到下一个分号的所有内容， ';' (U+003B SEMICOLON)，或下一个CSS块，以先到者为准。
+
+**下面是一些 @规则, 由它们的标示符指定，每种规则都有不同的语法：**
+
+- **@charset：**<font color=FF0000>定义样式表使用的字符集</font>.
+- **@import：**<font color=FF0000>告诉 CSS 引擎引入一个外部样式表</font>.
+- **@namespace：**告诉 CSS 引擎必须考虑XML命名空间。
+- <font color=FF0000>**嵌套 @规则**， 是嵌套语句的子集，**不仅可以作为样式表里的一个语句，也可以用在条件规则组里**</font>：
+  - **@media：**如果满足媒介查询的条件则条件规则组里的规则生效。
+  - **@page：**描述打印文档时布局的变化.
+  - **@font-face：**描述将下载的外部的字体。 
+  - **@keyframes：**描述 CSS 动画的中间步骤 . 
+  - **@supports：**如果满足给定条件则条件规则组里的规则生效。 
+  - **@document：**如果文档样式表满足给定条件则条件规则组里的规则生效。 (<mark>推延至 CSS Level 4 规范</mark>)
+
+摘自：[MDN - @规则](https://developer.mozilla.org/zh-CN/docs/Web/CSS/At-rule)
+
+#### @charset
+
+概述
+ @charset CSS @规则  <font color=FF0000>指定样式表中使用的字符编码</font>。它<font color=FF0000 size=4>**必须是样式表中的第一个元素**</font>，<font color=FF0000>而 <font size=4>**前面不得有任何字符**</font></font>。因为它不是一个嵌套语句，所以不能在 @规则条件组 中使用。<font color=FF0000>**如果有多个 @charset @规则被声明，只有第一个会被使用**</font>，而且<font color=FF0000>不能在HTML元素或HTML页面的字符集相关 \<style> 元素内的样式属性内使用</font>。
+
+此 @规则 在某些 CSS 属性中使用非 ASCII 字符时非常有用，例如 content。
+
+在样式表中有多种方法去声明字符编码，浏览器会按照以下顺序尝试下边的方法（一旦找到就停止并得出结果）：
+
+1. 文件的开头的 Unicode byte-order 字符值。
+2. 由Content-Type：HTTP header 中的 charset 属性给出的值或用于提供样式表的协议中的等效值。
+3. CSS @规则 @charset。
+4. 使用参考文档定义的字符编码： \<link> 元素的 charset 属性。 该方法在 HTML5 标准中已废除，无法使用。
+5. 假设文档是 UTF-8。
+
+语法
+
+```css
+@charset "UTF-8";
+@charset "iso-8859-15";
+```
+
+- **charset：**它是一个 \<string> 表示字符编码被使用。<font color=FF0000>它必须是在被 IANA-registry 声明过的 web-safe 字符编码中的一个</font>，<font color=FF0000 size=4>**还必须被双引号包围, 遵循一个空格字符 (U+0020)，并且立即以分号结束**</font>。 如果有多个相关的编码名字，只有被标记为 preferred  的那个才会被使用。
+
+例子
+
+```css
+@charset "UTF-8";
+@charset "utf-8"; /*大小写不敏感*/
+/* 设置css的编码格式为Unicode UTF-8 */
+@charset 'iso-8859-15'; /* 无效的, 使用了错误的引号 */
+@charset 'UTF-8';       /* 无效的, 使用了错误的引号 */
+@charset  "UTF-8";      /* 无效的, 多于一个空格 */
+ @charset "UTF-8";      /* 无效的, 在at-rule之前多了一个空格 */
+@charset UTF-8;         /* Invalid, without ' or ", the charset is not a CSS <string> */
+```
+
+摘自：[MDN - @charset](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@charset)
+
 #### @import
 
-**@import**是CSS@规则，<font color=FF0000>用于从其他样式表导入样式规则</font>。这些规则必须先于所有其他类型的规则，@charset 规则除外： 因为它不是一个嵌套语句，@import不能在条件组的规则中使用。
+**@import**是 CSS @规则，<font color=FF0000>用于从其他样式表导入样式规则</font>。<font color=FF0000>这些规则必须先于所有其他类型的规则</font>，@charset 规则除外： 因为它不是一个嵌套语句，@import不能在条件组的规则中使用。
 
 因此，<mark>用户代理可以避免为不支持的媒体类型检索资源，作者可以指定依赖媒体的@import规则</mark>。这些条件导入在URI之后指定逗号分隔的媒体查询。在没有任何媒体查询的情况下，导入是无条件的。指定所有的媒体具有相同的效果。
 
@@ -2868,6 +3733,103 @@ CSS3 可以创建动画，它可以取代许多网页动画图像、Flash 动画
 - **list-of-media-queries：**<font color=FF0000>是一个**逗号分隔**的 媒体查询 条件列表，决定通过URL引入的 CSS 规则 在什么条件下应用</font>。如果浏览器不支持列表中的任何一条媒体查询条件，就不会引入URL指明的CSS文件。
 
 摘自：[MDN - @import](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@import)
+
+#### @supports
+
+**@supports** CSS的 @规则。您<font color=FF0000>可以**指定依赖于浏览器中的一个或多个特定的CSS功能的支持声明**</font>。这<font color=FF0000>被称为特性查询</font>。<mark>该规则可以放在代码的顶层，也可以嵌套在任何其他条件组规则中</mark>。
+
+```css
+/* 支持 grid布局 */
+@supports (display: grid) {
+  div {
+    display: grid;
+  }
+}
+/* 不支持 grid布局 */
+@supports not (display: grid) {
+  div {
+    float: right;
+  }
+}
+```
+
+<font color=FF0000>**在 JavaScript 中，可以通过 CSS 对象模型接口 CSSSupportsRule 来访问 @supports**</font>。
+
+**语法**
+
+@supports @规则 <font color=FF0000>**由一组样式声明和一条支持条件构成**</font>。<font color=FF0000>支**持条件由一条或多条使用 逻辑与（and）、逻辑或（or）、逻辑非（not）结合的名称-值对（name-value pair）组成**</font>。<font color=FF0000>**可以使用圆括号调整操作符的优先级**</font>。
+
+- **声明语法**
+
+  最基本的支持条件就是 CSS 声明，也就是<font color=FF0000>一个 CSS 属性后跟一个值，中间用冒号分开</font>。<font color=FF0000>如果 transform-origin 的实现语法认为 `5% 5%  ` 是有效的值，则下面的表达式会返回 true</font>。
+
+  ```css
+  @supports (transform-origin: 5% 5%) {}
+  ```
+
+- **函数语法**
+  第二种基本支持条件是支持函数，几乎所有浏览器都支持这种语法，但函数本身仍在标准化进程中。
+
+- **selector()** 🧪
+  测试浏览器是否支持经过测试的选择器语法。如果浏览器支持子组合器，则以下示例返回true：
+
+  ```css
+  @supports selector(A > B) {}
+  ```
+
+- **not 操作符**
+
+  将 <font color=FF0000>not 操作符放在任何表达式之前就能否定一条表达式</font>。<mark>如果 transform-origin 的实现语法认为 10em 10em 10em 是无效的，则下面的表达式会返回 true</mark>。
+
+  ```css
+  @supports not (transform-origin: 10em 10em 10em) {}
+  ```
+
+  <font color=FF0000>和其他操作符一样，not 操作符可以应用在任意复杂度的表达式上</font>。下面的几个例子中都是合法的表达式：
+
+  ```css
+  @supports not (not (transform-origin: 2px)) {}
+  @supports (display: grid) and (not (display: inline-grid)) {}
+  ```
+
+  <mark>**注意：**如果 not 操作符位于表达式的最外层，则没有必要使用圆括号将它括起来。但如果要将该表达式与其他表达式连接起来使用，比如 and 和 or，则需要外面的圆括号</mark>。
+
+- **and 操作符**
+
+  and 操作符用来将两个原始的表达式做逻辑与后生成一个新的表达式，如果两个原始表达式的值都为真，则生成的表达式也为真。在下例中，当且仅当两个原始表达式同时为真时，整个表达式才为真：
+
+  ```css
+  @supports (display: table-cell) and (display: list-item) {}
+  ```
+
+  可以将多个合取词并置而不需要更多的括号。以下两者都是等效的：
+
+  ```css
+  @supports (display: table-cell) and (display: list-item) and (display:run-in) {}
+  @supports (display: table-cell) and ((display: list-item) and (display:run-in)) {}
+  ```
+
+- **or 操作符**
+
+  or 操作符用来将两个原始的表达式做逻辑或后生成一个新的表达式，如果两个原始表达式的值有一个或者都为真，则生成的表达式也为真。在下例中，当两个原始表达式中至少有一个为真时，整个表达式才为真：
+
+  ```css
+  @supports (transform-style: preserve) or (-moz-transform-style: preserve) {}
+  ```
+
+  可以将多个析取词并置而不需要更多的括号。以下两者都是等效的：
+
+  ```css
+  @supports (transform-style: preserve) or (-moz-transform-style: preserve) or
+            (-o-transform-style: preserve) or (-webkit-transform-style: preserve) {}
+  
+  @supports (transform-style: preserve-3d) or ((-moz-transform-style: preserve-3d) or
+            ((-o-transform-style: preserve-3d) or (-webkit-transform-style: preserve-3d))) {}
+  ```
+
+  **注意：**在使用 and 和 or 操作符时，如果是为了定义多个表达式的执行顺序，则必须使用圆括号。如果不这样做的话，该条件就是无效的，会导致整个 @规则 失效。
+
+摘自：[MDN - @supports](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@support)
 
 
 
@@ -2949,7 +3911,11 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
   - **center**：弹性项目居中紧挨着填充。（<mark>如果剩余的自由空间是负的，则弹性项目将在两个方向上同时溢出</mark>）。
   - **space-between**：弹性项目<mark>平均分布在该行</mark>上。<mark>如果剩余<font color=FF0000>空间为负</font>或者<font color=FF0000>只有一个弹性项</font>，则该值<font color=FF0000>等同于flex-start</font></mark>。否则，第1个弹性项的外边距和行的main-start边线对齐，而最后1个弹性项的外边距和行的main-end边线对齐，然后剩余的弹性项分布在该行上，相邻项目的间隔相等。
   - **space-around**：弹性项目<mark>平均分布在该行</mark>上，<font color=FF0000>两边留有一半的间隔空间</font>。<mark>如果剩余空间为负或者只有一个弹性项，则该值等同于center</mark>。否则，弹性项目沿该行分布，且<font color=FF0000>彼此间隔相等（比如是20px）</font>，同时<font color=FF0000>首尾两边和弹性容器之间留有一半的间隔（1/2*20px=10px）</font>。
-
+  - **space-evenly：**flex项都沿着主轴均匀分布在指定的对齐容器中。相邻flex项之间的间距，主轴起始位置到第一个flex项的间距，主轴结束位置到最后一个flex项的间距，都完全一样。
+  - **stretch：**均匀排列每个元素'auto'-sized 的元素会被拉伸以适应容器的大小
+  - **safe：**与对齐关键字一起使用，如果选定的关键字会导致元素溢出容器造成数据丢失，那么将会使用 start 代替它。
+  - **unsafe**
+  
 - **align-items 属性**
   
   align-items<mark>设置或检索弹性盒子元素在<font color=FF0000>侧轴（纵轴）方向上的对齐方式</font></mark>。
@@ -3280,6 +4246,39 @@ orientation：portrait | landscape
 
 以上部分内容摘自：[MDN - 使用媒体查询](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Media_queries)
 
+**补充：**
+
+#### prefers-color-scheme
+
+prefers-color-scheme CSS <font color=FF0000 size=4>**媒体特性 **</font> 用于<font color=FF0000>检测用户是否有将系统的主题色设置为亮色或者暗色</font>。
+
+**语法**
+
+- **no-preference：**表示系统未得知用户在这方面的选项。在布尔值上下文中，其执行结果为 false。
+- **light：**表示用户已告知系统他们选择使用浅色主题的界面。
+- **dark：**表示用户已告知系统他们选择使用暗色主题的界面。
+
+> 译者注：“未得知”、“已告知”等用语，英文原文如此。
+> **“未得知”** 可理解为：浏览器的宿主系统不支持设置主题色，或者支持主题色并默认为/被设为了未设置/无偏好。
+> **“已告知”** 为：浏览器的宿主系统支持设置主题色，且被设置为了亮色或者暗色。
+
+目前，<mark>若结果为 no-preference，无法通过此媒体特性获知宿主系统是否支持设置主题色，或者用户是否主动将其设置为无偏好</mark>。出于隐私保护等方面的考虑，用户或用户代理也可能在一些情况下在浏览器内部将其设置为 no-preference。
+
+示例如下：
+
+```css
+@media (prefers-color-scheme: dark) {
+  .day.dark-scheme   { background:  #333; color: white; }
+  .night.dark-scheme { background: black; color:  #ddd; }
+}
+@media (prefers-color-scheme: light) {
+  .day.light-scheme   { background: white; color:  #555; }
+  .night.light-scheme { background:  #eee; color: black; }
+}
+```
+
+摘自：[MDN - prefers-color-scheme](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media/prefers-color-scheme)
+
 
 
 #### 响应式 Web 设计 - 图片
@@ -3302,9 +4301,9 @@ orientation：portrait | landscape
 
 **HTML5 \<picture> 元素**
 
-HTML5 的 `<picture>` 元素<font color=FF0000>可以设置多张图片</font>。
+HTML5 的 \<picture> 元素<font color=FF0000>可以设置多张图片</font>。
 
-`<picture>` 元素类似于 `<video>` 和 `<audio>` 元素。可以设备不同的资源，第一个设置的资源为首选使用的，示例：
+\<picture> 元素类似于 \<video> 和 \<audio> 元素。可以设备不同的资源，第一个设置的资源为首选使用的，示例：
 
 ```css
 <picture>
@@ -3314,7 +4313,7 @@ HTML5 的 `<picture>` 元素<font color=FF0000>可以设置多张图片</font>�
 </picture>
 ```
 
-`srcset` 属性的必须的，定义了图片资源。
+srcset 属性的必须的，定义了图片资源。
 
 
 
@@ -3406,7 +4405,9 @@ width: calc(100% - 80px);
 
 摘自：[runoob - CSS 选择器](https://www.runoob.com/cssref/css-selectors.html)
 
-![v2-18e482112459a3b01c95119bae5e2f4b_720w](https://i.loli.net/2021/05/31/hExIljRiqPX6kOy.jpg)
+![img](https://s2.loli.net/2022/01/16/yafVOHADUo5QsmM.png)
+
+摘自：[2021年你可能不知道的 CSS 特性](https://zhuanlan.zhihu.com/p/376238191)
 
 **补充：**
 
@@ -3421,9 +4422,35 @@ p:nth-of-type(4n) {
 
 
 
+#### :nth-child
+
+**:nth-child(an+b)** 这个 CSS 伪类首先找到所有当前元素的兄弟元素，然后按照位置先后顺序从1开始排序，选择的结果为CSS伪类:nth-child括号中表达式（an+b）匹配到的元素集合（n=0，1，2，3...）。
+
+**示例：**
+
+- `0n+3` 或简单的 `3` 匹配第三个元素。
+- `1n+0` 或简单的 `n` 匹配每个元素。（兼容性提醒：在 Android 浏览器 4.3 以下的版本 `n` 和 `1n` 的匹配方式不一致。`1n` 和 `1n+0` 是一致的，可根据喜好任选其一来使用。）
+- `2n+0` 或简单的 `2n` 匹配位置为 2、4、6、8...的元素（n=0时，2n+0=0，第0个元素不存在，因为是从1开始排序)。你可以使用关键字 **even** 来替换此表达式。
+- `2n+1` 匹配位置为 1、3、5、7...的元素。你可以使用关键字 **odd** 来替换此表达式。
+- `3n+4` 匹配位置为 4、7、10、13...的元素。
+
+a 和 b 都必须为整数，并且元素的第一个子元素的下标为 1。换言之就是，该伪类匹配所有下标在集合 { an + b; n = 0, 1, 2, ...} 中的子元素。另外需要特别注意的是，*an* 必须写在 *b* 的前面，不能写成 *b+an* 的形式。
+
+- **tr:nth-child(2n+1)：**表示HTML表格中的奇数行。
+- **tr:nth-child(odd)：**表示HTML表格中的奇数行。
+- **tr:nth-child(2n)：**表示HTML表格中的偶数行。
+- **tr:nth-child(even)：**表示HTML表格中的偶数行。
+- **span:nth-child(0n+1)：**表示子元素中第一个且为span的元素，与 :first-child 选择器作用相同。
+- **span:nth-child(1)：**表示父元素中子元素为第一的并且名字为span的标签被选中
+- **span:nth-child(-n+3)：**匹配前三个子元素中的span元素。
+
+摘自：[MDN - nth-child](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:nth-child)
+
+
+
 #### 给placeholoder加上颜色
 
-- 方法一：用`:: placeholder`（<font color=FF0000>比较简洁，但这是一个实验功能，兼容性比较差</font>）
+- 方法一：用`::placeholder`（<font color=FF0000>比较简洁，但这是一个实验功能，兼容性比较差</font>）
 
   伪元素 ::placeholder可以选择一个表单元素的占位文本，它允许开发者和设计师自定义占位文本的样式。
 
@@ -3486,6 +4513,23 @@ p:nth-of-type(4n) {
   ```
 
 摘自：[MDN - ::placeholder](https://developer.mozilla.org/zh-CN/docs/Web/CSS/::placeholder)  [如何修改placeholder样式](https://juejin.cn/post/6844903697135173645)
+
+**补充：**
+
+#### :placeholder-shown 🧪
+
+> 注：这是一个实验性质的功能
+
+:placeholder-shown CSS 伪类 在 \<input> 或 \<textarea> 元素显示 placeholder text 时生效。示例如下：
+
+```css
+/* 选择所有显示占位符(placeholder)的元素 */
+:placeholder-shown {
+  border: 2px solid silver;
+}
+```
+
+摘自：[MDN - :placeholder-shown](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:placeholder-shown)
 
 
 
@@ -3578,13 +4622,295 @@ var( <custom-property-name> , <declaration-value>? )
 
 摘自：[MDN - var()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/var())
 
-**补充：**CSS自定义属性
+<font size=4>**补充：**</font>
 
-自定义属性（有时候也被称作CSS变量或者级联变量）是由CSS作者定义的，它包含的值可以在整个文档中重复使用。由自定义属性标记设定值（比如： --main-color: black;），由var() 函数来获取值（比如： color: var(--main-color);）
+**CSS自定义属性**
+
+自定义属性（有时候也被称作CSS变量或者级联变量）是由CSS作者定义的，它包含的值可以在整个文档中重复使用。由自定义属性标记设定值（比如： --main-color: black;），<font color=FF0000>**由var() 函数来获取值**</font>（比如： color: var(--main-color);）
 
 注意：自定义属性名是大小写敏感的，--my-color 和 --My-color 会被认为是两个不同的自定义属性。
 
 摘自：[MDN - 使用CSS自定义属性（变量）](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Using_CSS_custom_properties)
+
+<mark>今年三月，微软宣布 Edge 浏览器将支持 CSS 变量。这个重要的 CSS 新功能，所有主要浏览器已经都支持了</mark>。
+
+声明变量的时候，变量名前面要加两根连词线（ -- ）。
+
+```css
+body {
+  --foo: #7F583F;
+  --bar: #F7EFD2;
+}
+```
+
+上面代码中，body 选择器里面声明了两个变量：--foo 和 --bar。
+
+它们与color、font-size 等正式属性没有什么不同，只是没有默认含义。所以 CSS 变量（CSS variable）又叫做"CSS 自定义属性"（CSS custom properties）。因为变量与自定义的 CSS 属性其实是一回事。
+
+你可能会问，<mark>为什么选择两根连词线（--）表示变量？因为 \$foo 被 Sass 用掉了，@foo 被 Less 用掉了。为了不产生冲突，官方的 CSS 变量就改用两根连词线了</mark>。
+
+<mark style="background:aqua">各种值都可以放入 CSS 变量</mark>：
+
+```css
+:root{
+  --main-color: #4d4e53;
+  --main-bg: rgb(255, 255, 255);
+  --logo-border-color: rebeccapurple;
+
+  --header-height: 68px;
+  --content-padding: 10px 20px;
+
+  --base-line-height: 1.428571429;
+  --transition-duration: .35s;
+  --external-link: "external link";
+  --margin-top: calc(2vh + 20px);
+}
+```
+
+变量名大小写敏感，--header-color和--Header-Color是两个不同变量。
+
+**var() 函数用于读取变量。**
+
+```css
+a {
+  color: var(--foo);
+  text-decoration-color: var(--bar);
+}
+```
+
+var() 函数<font color=FF0000>还可以使用第二个参数，表示变量的默认值。如果该变量不存在，就会使用这个默认值</font>。
+
+```css
+color: var(--foo, #7F583F);
+```
+
+第二个参数不处理内部的逗号或空格，都视作参数的一部分。
+
+```css
+var(--font-stack, "Roboto", "Helvetica");
+var(--pad, 10px 15px 20px);
+```
+
+<font color=FF0000>var() 函数还可以用在变量的声明</font>。
+
+```css
+:root {
+  --primary-color: red;
+  --logo-text: var(--primary-color);
+}
+```
+
+<font color=FF0000>**注意，变量值只能用作属性值，不能用作属性名**</font>。
+
+```css
+.foo {
+  --side: margin-top;
+  /* 无效 */
+  var(--side): 20px;
+}
+```
+
+上面代码中，变量 --side 用作属性名，这是无效的。
+
+**变量值的类型**
+
+<font color=FF0000>如果变量值是一个字符串，**可以与其他字符串拼接**</font>。
+
+```css
+--bar: 'hello';
+--foo: var(--bar)' world';
+```
+
+利用这一点，可以 debug。
+
+```css
+body::after {
+  /* 就是将变量的键值对通过 after伪元素，打印出来。*/
+  content: '--screen-category : 'var(--screen-category);
+}
+```
+
+<font color=FF0000>如果变量值是数值，不能与数值单位直接连用</font>。
+
+```css
+.foo {
+  --gap: 20;
+  /* 无效 */
+  margin-top: var(--gap)px;
+}
+```
+
+<font color=FF0000>**上面代码中，数值与单位直接写在一起，这是无效的。必须使用 calc() 函数，将它们连接**</font>。
+
+```css
+.foo {
+  --gap: 20;
+  margin-top: calc(var(--gap) * 1px);
+}
+```
+
+<font color=FF0000>**如果变量值带有单位，就不能写成字符串**</font>。
+
+```css
+/* 无效 */
+.foo {
+  --foo: '20px';
+  font-size: var(--foo);
+}
+
+/* 有效 */
+.foo {
+  --foo: 20px;
+  font-size: var(--foo);
+}
+```
+
+**作用域**
+
+同一个 CSS 变量，可以在多个选择器内声明。读取的时候，优先级最高的声明生效。这与 CSS 的"层叠"（cascade）规则是一致的。
+
+下面是一个[例子](http://jsbin.com/buwahixoqo/edit?html,css,output)。
+
+```html
+<style>
+  :root { --color: blue; }
+  div { --color: green; }
+  #alert { --color: red; }
+  * { color: var(--color); }
+</style>
+
+<p>蓝色</p>
+<div>绿色</div>
+<div id="alert">红色</div>
+```
+
+上面代码中，三个选择器都声明了 --color 变量。不同元素读取这个变量的时候，会采用优先级最高的规则，因此三段文字的颜色是不一样的。
+
+这就是说，变量的作用域就是它所在的选择器的有效范围。
+
+```css
+body {
+  --foo: #7F583F;
+}
+
+.content {
+  --bar: #F7EFD2;
+}
+```
+
+上面代码中，变量 --foo 的作用域是 body 选择器的生效范围，--bar 的作用域是 .content 选择器的生效范围。
+
+由于这个原因，全局的变量通常放在根元素 :root 里面，确保任何选择器都可以读取它们。
+
+```css
+:root {
+  --main-color: #06c;
+}
+```
+
+**响应式布局**
+
+CSS 是动态的，页面的任何变化，都会导致采用的规则变化。
+
+<font color=FF0000>利用这个特点，可以在响应式布局的 media 命令里面声明变量，使得不同的屏幕宽度有不同的变量值</font>。
+
+```css
+body {
+  --primary: #7F583F;
+  --secondary: #F7EFD2;
+}
+
+a {
+  color: var(--primary);
+  text-decoration-color: var(--secondary);
+}
+
+@media screen and (min-width: 768px) {
+  body {
+    --primary:  #F7EFD2;
+    --secondary: #7F583F;
+  }
+}
+```
+
+**兼容性处理**
+
+对于不支持 CSS 变量的浏览器，<mark>可以采用下面的写法</mark>。
+
+```css
+a {
+  color: #7F583F;
+  color: var(--primary);
+}
+```
+
+<font color=FF0000>**也可以使用 @support 命令进行检测**</font>。
+
+```css
+@supports ( (--a: 0)) {
+  /* supported */
+}
+
+@supports ( not (--a: 0)) {
+  /* not supported */
+}
+```
+
+**JavaScript 操作**
+
+<font color=FF0000>**JavaScript 也可以检测浏览器是否支持 CSS 变量**</font>。（注意下面的用法）
+
+```css
+const isSupported =
+  window.CSS &&
+  window.CSS.supports &&
+  window.CSS.supports('--a', 0);
+
+if (isSupported) {
+  /* supported */
+} else {
+  /* not supported */
+}
+```
+
+<font color=FF0000 size=4>**JavaScript 操作 CSS 变量的写法如下：**</font>
+
+```js
+// 设置变量
+document.body.style.setProperty('--primary', '#7F583F');
+
+// 读取变量
+document.body.style.getPropertyValue('--primary').trim();
+// '#7F583F'
+
+// 删除变量
+document.body.style.removeProperty('--primary');
+```
+
+这意味着，JavaScript 可以将任意值存入样式表。下面是一个监听事件的例子，事件信息被存入 CSS 变量。
+
+```css
+const docStyle = document.documentElement.style;
+
+document.addEventListener('mousemove', (e) => {
+  docStyle.setProperty('--mouse-x', e.clientX);
+  docStyle.setProperty('--mouse-y', e.clientY);
+});
+```
+
+<font color=FF0000>那些对 CSS 无用的信息，也可以放入 CSS 变量</font>。
+
+```js
+--foo: if(x > 5) this.width = 10;
+```
+
+<font color=FF0000>上面代码中，--foo 的值在 CSS 里面是无效语句，但是可以被 JavaScript 读取。这意味着，可以把样式设置写在 CSS 变量中，让 JavaScript 读取</font>。
+
+所以，CSS 变量提供了 JavaScript 与 CSS 通信的一种途径。
+
+摘自：[阮一峰 - CSS 变量教程](https://www.ruanyifeng.com/blog/2017/05/css-variables.html)
+
+
 
 #### counter()
 
@@ -3645,7 +4971,7 @@ clamp() 函数接收三个用逗号分隔的表达式作为参数，按最小值
 
 **url()**
 
-url()不再局限于`background-image`属性中，还可以用于：
+url()不再局限于 background-image 属性中，还可以用于：
 
 ```css
 background-image: url("https://mdn.mozillademos.org/files/16761/star.gif");
@@ -3672,6 +4998,12 @@ mask-image: url("masks.svg#mask1");
 
 
 原文: https://www.w3cplus.com/css/css-functions-guide.html 
+
+#### env()
+
+// TODO
+
+摘自：[MDN - env()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/env())
 
 
 
@@ -3701,10 +5033,6 @@ body{
 ```
 
 [背景图片的适配问题](https://blog.csdn.net/weixin_43612234/article/details/85417227)
-
-
-
-
 
 
 
@@ -3750,15 +5078,113 @@ list-style CSS 属性是一个简写对属性集合，包括list-style-type, lis
 
 
 
+#### :target 伪类
+
+:target CSS 伪类 代表一个唯一的页面元素(目标元素)，其id 与当前<font color=FF0000>URL片段</font>（section，也可以被称为锚点？）匹配 
+
+**解释起来比较麻烦，直接看如下示例，做下实验：**
+
+```html
+<h3>Table of Contents</h3>
+<ol>
+ <li><a href="#p1">Jump to the first paragraph!</a></li>
+ <li><a href="#p2">Jump to the second paragraph!</a></li>
+ <li><a href="#nowhere">This link goes nowhere, because the target doesn't exist.</a></li>
+</ol>
+
+<h3>My Fun Article</h3>
+<p id="p1">You can target <i>this paragraph</i> using a URL fragment. Click on the link above to try out!</p>
+<p id="p2">This is <i>another paragraph</i>, also accessible from the links above. Isn't that delightful?</p>
+
+<!-- 样式 -->
+<style>
+p:target {
+  background-color: gold;
+}
+
+/* 在目标元素中增加一个伪元素*/
+p:target::before {
+  font: 70% sans-serif;
+  content: "►";
+  color: limegreen;
+  margin-right: .25em;
+}
+
+/*在目标元素中使用italic样式*/
+p:target i {
+  color: red;
+}
+</style>
+```
+
+被选中的列表项会导致下方的文字高亮
+
+摘自：[MDN - :target](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:target) ，同样的示例也可以参考：[简书 - target伪类](https://www.jianshu.com/p/487a6f38036d)
+
+#### :is() 伪类选择器 🧪
+
+> 注意：**这是一个实验中的功能**
+
+:is() CSS 伪类 函数将选择器列表作为参数，并选择该列表中任意一个选择器可以选择的元素。这对于以更紧凑的形式编写大型选择器非常有用。
+
+注意，<mark>许多浏览器通过一个更旧的、带前缀的伪类:any()来支持这个功能，包括旧版本的Chrome、Firefox和Safari</mark>。这与:is()的工作方式完全相同，只是它需要厂商前缀，不支持复杂的选择器。
+
+摘自：[MDN - :is() (:matches(), :any())](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:is)
+
+**示例如下：**
+
+不用 :is伪类的写法：
+
+```css
+li a, artcile a, section a { color: #000000; }
+h1 a, h2 a, h3 a { color: blue; }
+```
+
+使用 :is伪类的写法：
+
+```css
+:is(li, article, p) a { color: #999999; }
+:is(h1, h2, h3) a { color: green; }
+```
+
+<font color=FF0000>:is() 也可以用于各种选择器的组合中，例如子节点选择器、邻居节点选择器等</font>，下边的代码展示了选择子节点的方式：
+
+```css
+:is(article, p) :is(h2, li) a { color: #ff3344; }
+```
+
+展开就等于：
+
+```css
+article h2 a, article li a, p h2 a, p li a { color: #ff3344; }
+```
+
+**与其它伪类选择器结合**
+
+假设有一个需求，当一个文章所有的 h1-h6 标题，hover 的时候，在后面加上一个 "#"，如果使用传统的方式，我们会写成：
+
+```css
+h1:hover::after, h2:hover::after, h3:hover::after, 
+h4:hover::after, h5:hover::after, h6:hover::after { content: "#"; }
+```
+
+如果使用 :is() 伪类选择器，则可以写成：
+
+```css
+:is(h1, h2, h3, h4, h5, h6):hover::after { content: "#";}
+```
+
+摘自：[CSS :is() 伪类选择器使用指南](https://zxuqian.cn/css-is-pseudo-class-selector/)
+
 #### :indeterminate
 
-`:indeterminate` <font color=FF0000>CSS 伪类</font> 表示状态不确定的表单元素
+**:indeterminate** <font color=FF0000>CSS 伪类</font> 表示状态不确定的表单元素
 
 表单选择框元素（checkbox）状态样式如下：
 
 <img src="https://i.loli.net/2021/02/23/gOs3ADKmN6GWerE.png" alt="https://i2.wp.com/css-tricks.com/wp-content/uploads/2016/12/indeterminate-checkboxes.png?w=1430&ssl=1" style="zoom: 50%;" />
 
-`:indeterminate`可作用的对象有：
+:indeterminate 可作用的对象有：
 
 - \<input type="checkbox"> 元素，其 indeterminate 属性被 JavaScript设置为 true 。
 - \<input type="radio"> 元素, 表单中拥有相同 name值的所有单选按钮都未被选中时。
@@ -3839,23 +5265,25 @@ CSS 伪类函数 :host() <font color=FF0000>选择包含使用这段 CSS 的 Sha
 
 摘自：[MDN - outline](https://developer.mozilla.org/zh-CN/docs/Web/CSS/outline)
 
+补充：页面上，输入框如果被聚焦，会出现 outline，这时候可以使用 `outline: none` 使其消失
+
 
 
 #### user-select
 
-- CSS 属性 user-select 控制用户能否选中文本。除了文本框内，它对被载入为 chrome 的内容没有影响。
+CSS 属性 user-select <font color=FF0000>控制用户能否选中文本</font>。除了文本框内，它对被载入为 chrome 的内容没有影响。
 
 - **形式化语法**
   auto | text | none | contain | all
 - **语法**
-  - **none：**元素及其子元素的文本不可选中。 请注意这个Selection 对象可以包含这些元素。 从Firefox 21开始， none 表现的像 -moz-none，因此可以使用 -moz-user-select: text 在子元素上重新启用选择。
-  - **auto：**auto 的具体取值取决于一系列条件，具体如下：
+  - **none：**<font color=FF0000>元素及其子元素的文本不可选中</font>。 请注意这个Selection 对象可以包含这些元素。 从Firefox 21开始， none 表现的像 -moz-none，因此可以使用 -moz-user-select: text 在子元素上重新启用选择。
+  - **auto：**<font color=FF0000>auto 的具体取值取决于一系列条件</font>，具体如下：
     - 在 ::before 和 ::after 伪元素上，采用的属性值是 none
     - 如果元素是可编辑元素，则采用的属性值是 contain
     - 否则，如果此元素的父元素的 user-select 采用的属性值为 all，则该元素采用的属性值也为 all
     - 否则，如果此元素的父元素的 user-select 采用的属性值为 none，则该元素采用的属性值也为 none
     - 否则，采用的属性值为 text
-  - **text：**用户可以选择文本。
+  - **text：**<mark>用户可以选择文本</mark>
   - **all：**在一个HTML编辑器中，当双击子元素或者上下文时，那么包含该子元素的最顶层元素也会被选中。
   - **contain：**允许在元素内选择；但是，选区将被限制在该元素的边界之内。
   - **element**（IE 专有别名）：与 contain 相同，但仅在 Internet Explorer 中受支持。
@@ -3865,65 +5293,75 @@ CSS 伪类函数 :host() <font color=FF0000>选择包含使用这段 CSS 的 Sha
 
 
 
+#### touch-action
+
+CSS属性 **touch-action** 用于 <font color=FF0000>设置触摸屏用户如何操纵元素的区域</font>（<font color=FF0000>例如，浏览器内置的缩放功能</font>）。
+
+```css
+/* Keyword values */
+touch-action: auto;
+touch-action: none;
+touch-action: pan-x;
+touch-action: pan-left;
+touch-action: pan-right;
+touch-action: pan-y;
+touch-action: pan-up;
+touch-action: pan-down;
+touch-action: pinch-zoom;
+touch-action: manipulation;
+
+/* Global values */
+touch-action: inherit;
+touch-action: initial;
+touch-action: unset;
+```
+
+<font color=FF0000>默认情况下，平移（滚动）和缩放手势 **由浏览器专门处理**</font>。 <mark>使用 pointer_events 的应用程序将<font color=FF0000>在浏览器开始处理触摸手势时收到一个 pointercancel 事件</font></mark>。 通过明确指定浏览器应该处理哪些手势，应用程序可以在 pointermove 和 pointerup 监听器中为其余的手势提供自己的行为。 使用 Touch_events 的应用程序通过调用 preventDefault() 禁用浏览器处理手势，但也应使用触摸操作确保浏览器在调用任何事件侦听器之前，了解应用程序的意图。
+
+当手势开始时，浏览器与触摸的元素及其所有祖先的触摸动作值相交直到一个实现手势（换句话说，第一个包含滚动元素）的触摸动作值。 这意味着在实践中，触摸动作通常仅适用于具有某些自定义行为的单个元素，而无需在该元素的任何后代上明确指定触摸动作。 手势开始之后，触摸动作值的更改将不会对当前手势的行为产生任何影响。
+
+- **语法：**
+
+  **touch-action 属性可以被指定为：**
+
+  - 任何一个关键字 auto、none、manipulation，或
+
+  - 零或任何一个关键字 pan-x、pan-left、pan-right，加零或任何一个关键字 pan-y、pan-up、pan-down，加可选关键字 pinch-zoom.
+
+- **值：**
+
+  - **auto：**<font color=FF0000>当触控事件发生在元素上时，由浏览器来决定进行哪些操作</font>，比如对viewport进行平滑、缩放等。
+
+  - **none：**<font color=FF0000>当触控事件发生在元素上时，不进行任何操作</font>
+
+  - **pan-x：**<font color=FF0000>启用单指水平平移手势</font>。<mark>可以与 **pan-y 、pan-up、pan-down** 和／或 **pinch-zoom** 组合使用</mark>。
+
+  - **pan-y：**<font color=FF0000>启用单指垂直平移手势</font>。<mark>可以与 **pan-x 、pan-left 、pan-right** 和／或 **pinch-zoom** 组合使用</mark>。
+
+  - **manipulation：**<font color=FF0000>浏览器只允许进行滚动和持续缩放操作</font>。任何其它被auto值支持的行为不被支持。启用平移和缩小缩放手势，但禁用其他非标准手势，例如双击以进行缩放。 禁用双击可缩放功能可减少浏览器在用户点击屏幕时延迟生成点击事件的需要。 这是“**pan-x pan-y pinch-zoom**”（为了兼容性本身仍然有效）的别名。
+
+  - **pan-left, pan-right, pan-up, pan-down：🧪** <font color=FF0000>启用以指定方向滚动开始的单指手势</font>。 一旦滚动开始，方向可能仍然相反。 请注意，滚动“向上”（**pan-up**）意味着用户正在将其手指向下拖动到屏幕表面上，同样 **pan-left** 表示用户将其手指向右拖动。 多个方向可以组合，除非有更简单的表示（例如，“**pan-left pan-right**”无效，因为“**pan-x**”更简单，而“**pan-left pan-down**”有效）。
+
+  - **pinch-zoom：**<font color=FF0000>启用多手指平移和缩放页面</font>。 这可以与任何平移值组合。
+
+摘自：[MDN - touch-action](https://developer.mozilla.org/zh-CN/docs/Web/CSS/touch-action)
+
+
+
 #### autocomplete
 
 默认情况下，浏览器会记录用户网页上提交的输入框的信息。这使得浏览器能够提供自动补全（在用户开始输入的时候给用户提供可能的内容）和自动填充（在加载的时候预先填充某些字段）功能。
 
 这些功能通常是默认启用的，但可能涉及用户的隐私，因此浏览器允许用户禁用这些功能。
 
-要禁用的表单自动填充，你可以将 autocomplete 的属性设置为 "off"：`autocomplete = "off"`
+要禁用的表单自动填充，你可以将 autocomplete 的属性设置为 "off"：**autocomplete = "off"**
 
-设置 `autocomplete="off"` 会有两种效果：
+设置 **autocomplete="off"** 会有两种效果：
 
 - 这会告诉浏览器，不要为了以后在类似表单上自动填充而保存用户输入的数据。但浏览器不一定遵守。
 - 这会阻止浏览器缓存会话历史记录中的数据。若表单数据缓存于会话历史记录，用户提交表单后，再点击返回按钮返回之前的表单页面，则会显示用户之前输入的数据。
 
 摘自：[MDN - 如何关闭表单自动填充](https://developer.mozilla.org/zh-CN/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion)
-
-
-
-#### :target伪类
-
-:target CSS 伪类 代表一个唯一的页面元素(目标元素)，其id 与当前<font color=FF0000>URL片段</font>（section，也可以被称为锚点？）匹配 
-
-**解释起来比较麻烦，直接看如下示例，做下实验：**
-
-```html
-<h3>Table of Contents</h3>
-<ol>
- <li><a href="#p1">Jump to the first paragraph!</a></li>
- <li><a href="#p2">Jump to the second paragraph!</a></li>
- <li><a href="#nowhere">This link goes nowhere, because the target doesn't exist.</a></li>
-</ol>
-
-<h3>My Fun Article</h3>
-<p id="p1">You can target <i>this paragraph</i> using a URL fragment. Click on the link above to try out!</p>
-<p id="p2">This is <i>another paragraph</i>, also accessible from the links above. Isn't that delightful?</p>
-
-<!-- 样式 -->
-<style>
-p:target {
-  background-color: gold;
-}
-
-/* 在目标元素中增加一个伪元素*/
-p:target::before {
-  font: 70% sans-serif;
-  content: "►";
-  color: limegreen;
-  margin-right: .25em;
-}
-
-/*在目标元素中使用italic样式*/
-p:target i {
-  color: red;
-}
-</style>
-```
-
-被选中的列表项会导致下方的文字高亮
-
-摘自：[MDN - :target](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:target) ，同样的示例也可以参考：[简书 - target伪类](https://www.jianshu.com/p/487a6f38036d)
 
 
 
@@ -3967,21 +5405,73 @@ content 属性与 `::before` 及 `::after` 伪元素配合使用，来插入生�
 
 **Content属性值**
 
-|                     值                      |                             说明                             |
-| :-----------------------------------------: | :----------------------------------------------------------: |
-|                    none                     |                设置Content，如果指定成Nothing                |
-|                   normal                    | 设置content，如果指定的话，正常，默认是"none"（该是nothing） |
-|                   counter                   |                        设定计数器内容                        |
-| <font color=FF0000>attr*(attribute)*</font> |  <font color=FF0000>设置Content作为选择器的属性之一</font>   |
-|                  *string*                   |                  设置Content到你指定的文本                   |
-|                 open-quote                  |                    设置Content是开口引号                     |
-|                 close-quote                 |                    设置Content是闭合引号                     |
-|                no-open-quote                |                 如果指定，移除内容的开始引号                 |
-|               no-close-quote                |                 如果指定，移除内容的闭合引号                 |
-|    <font color=FF0000>url(*url*)</font>     | <font color=FF0000>设置某种媒体（图像，声音，视频等内容）</font> |
-|                   inherit                   |           指定的content属性的值，应该从父元素继承            |
+|                    值                     |                             说明                             |
+| :---------------------------------------: | :----------------------------------------------------------: |
+|                   none                    |                设置Content，如果指定成Nothing                |
+|                  normal                   | 设置content，如果指定的话，正常，默认是"none"（该是nothing） |
+|                  counter                  |                        设定计数器内容                        |
+| <font color=FF0000>attr(attribute)</font> |  <font color=FF0000>设置Content作为选择器的属性之一</font>   |
+|                 *string*                  |                  设置Content到你指定的文本                   |
+|                open-quote                 |                    设置Content是开口引号                     |
+|                close-quote                |                    设置Content是闭合引号                     |
+|               no-open-quote               |                 如果指定，移除内容的开始引号                 |
+|              no-close-quote               |                 如果指定，移除内容的闭合引号                 |
+|    <font color=FF0000>url(url)</font>     | <font color=FF0000>设置某种媒体（图像，声音，视频等内容）</font> |
+|                  inherit                  |           指定的content属性的值，应该从父元素继承            |
 
 摘自：[CSS content 属性](https://www.runoob.com/cssref/pr-gen-content.html)
+
+
+
+#### width
+
+width 属性用于设置元素的宽度。width 默认设置内容区域的宽度，但<mark>如果 box-sizing 属性被设置为 border-box，就转而设置边框区域的宽度</mark>。
+
+<font color=FF0000>min-width 和 max-width 属性的优先级高于 width</font>。
+
+**width 属性也指定为：**
+
+- 下面关键字值之一：min-content，max-content，fit-content，auto。
+- 一个长度值 \<length> 或者百分比值 \<percentage>。
+
+**值**
+
+- **\<length>：**使用绝对值定义宽度。
+
+- **\<percentage>：**使用外层元素的容纳区块宽度（the containing block's width）的百分比定义宽度。
+
+- **auto：**<mark>浏览器将会为指定的元素计算并选择一个宽度</mark>。
+
+- **max-content：🧪 **<font color=FF0000>元素内容固有的（intrinsic）合适宽度</font>。
+
+- **min-content：🧪 **<font color=FF0000>元素内容固有的最小宽度</font>。
+
+- **fit-content：🧪 **取以下两种值中的较大值：
+
+  - 固有的最小宽度
+  - 固有首选宽度（max-content）和可用宽度（available）两者中的较小值
+
+  可表示为：min(max-content, max(min-content, \<length-percentage>))
+
+摘自：[MDN - width](https://developer.mozilla.org/zh-CN/docs/Web/CSS/width)
+
+参考：[理解CSS3 max/min-content及fit-content等width值](https://www.zhangxinxu.com/wordpress/2016/05/css3-width-max-contnet-min-content-fit-content/)
+
+#### \<length>
+
+长度 \<length> 是用于表示距离尺寸的 CSS 数据类型。许多 CSS 属性会用到长度，比如 width、margin、padding、font-size、border-width 和 text-shadow。
+
+**语法**
+\<length> 数据类型由一个 \<number> 和一个长度单位构成。 与所有 CSS 维度一样，单位的字面值与数字之间没有空格。 数字为 0 时，长度单位是可选的。
+
+> 注：由于这里单位较多，这里略；只摘录有必要的，其他见 下面的链接
+
+- vmin：视口高度 vw 和宽度 vh 两者之间的最小值。
+- vmax：视口高度 vw 和宽度 vh 两者之间的最大值。
+
+摘自：[MDN - \<length>](https://developer.mozilla.org/zh-CN/docs/Web/CSS/length)
+
+补充：知乎上有这样一个问题：[css样式的百分比都相对于谁？ - 知乎](https://www.zhihu.com/question/36079531) 感觉很有意义，推荐阅读
 
 
 
@@ -3992,18 +5482,17 @@ content 属性与 `::before` 及 `::after` 伪元素配合使用，来插入生�
 
 **取值**
 
-- **contain**
-  被替换的内容将被缩放，以在填充元素的内容框时保持其宽高比。 整个对象在填充盒子的同时保留其长宽比，因此如果宽高比与框的宽高比不匹配，该对象将被添加“黑边”。
-- **cover**
-  被替换的内容在保持其宽高比的同时填充元素的整个内容框。如果对象的宽高比与内容框不相匹配，该对象将被剪裁以适应内容框。
-- **fill<font color=FF0000>（默认）</font>**
-  被替换的内容正好填充元素的内容框。整个对象将完全填充此框。<font color=FF0000>如果对象的宽高比与内容框不相匹配，那么该对象将被拉伸以适应内容框</font>。
-- **none**
-  被替换的内容将保持其原有的尺寸。
-- **scale-down**
-  内容的尺寸与 none 或 contain 中的一个相同，取决于它们两个之间谁得到的对象尺寸会更小一些。
+- **contain：**<font color=FF0000>被替换的内容将被缩放，以在填充元素的内容框时保持其宽高比</font>。 整个对象在填充盒子的同时保留其长宽比，因此如果宽高比与框的宽高比不匹配，该对象将被添加“黑边”。
+- **cover：**被替换的内容在<font color=FF0000>保持其宽高比的同时填充元素的整个内容框</font>。如果对象的宽高比与内容框不相匹配，该对象将被剪裁以适应内容框。
+- **fill<font color=FF0000>（默认）：</font>**<font color=FF0000>被替换的内容正好填充元素的内容框</font>。整个对象将完全填充此框。<font color=FF0000>如果对象的宽高比与内容框不相匹配，那么 <font size=4>**该对象将被拉伸以适应内容框**</font></font>。
+- **none：**被替换的内容将<font color=FF0000>保持其原有的尺寸</font>。
+- **scale-down：**<font color=FF0000>内容的尺寸与 none 或 contain 中的一个相同，取决于它们两个之间谁得到的对象尺寸会更小一些</font>。
 
 摘自：[MDN - object-fit](https://developer.mozilla.org/zh-CN/docs/Web/CSS/object-fit)
+
+补充：这个可以 作为图片的展示，之前是使用 background-image + background-size 去实现的；现在发现 object-fit 同样可以。
+
+另外，参考文章：[张鑫旭 - 半深入理解CSS3 object-position/object-fit属性](https://www.zhangxinxu.com/wordpress/2015/03/css3-object-position-object-fit/)
 
 #### object-position
 
@@ -4013,28 +5502,78 @@ CSS 属性 object-position 规定了<font color=FF0000>可替换元素</font>的
 
 
 
-#### \<iframe>
-
-HTML内联框架元素 (\<iframe>) 表示嵌套的browsing context。它能够将另一个HTML页面嵌入到当前页面中。
-
-
-
 #### pointer-events
 
-pointer-events是css3的一个属性，指定在什么情况下元素可以成为鼠标事件的target（包括鼠标的样式）
+pointer-events是css3的一个属性，<font color=FF0000>指定在什么情况下元素可以成为鼠标事件的target</font>（包括鼠标的样式）
 
-pointer-events属性有很多值，但是对于浏览器来说，只有auto和none两个值可用，其它的几个是针对SVG的(本身这个属性就来自于SVG技术)。
+<mark>pointer-events属性有很多值</mark>，但是<font color=FF0000>对于浏览器来说，只有auto和none两个值可用</font>，<mark>其它的几个是针对SVG的（本身这个属性就来自于SVG技术）</mark>。
 
 - **auto（默认）：**效果和没有定义pointer-events属性相同（即默认），<font color=FF0000>鼠标不会穿透当前层</font>。在SVG中，该值和visiblePainted的效果相同。
 - **none：**<font color=FF0000>元素永远不会成为鼠标事件的target（目标）。但是，当其后代元素的pointer-events属性指定其他值时，鼠标事件可以指向后代元素，在这种情况下，鼠标事件将在捕获或冒泡阶段触发父元素的事件侦听器。</font>
 
-摘自：[非常有用的pointer-events属性](https://www.cnblogs.com/kunmomo/p/11752669.html)
+摘自：[非常有用的pointer-events属性](https://www.cnblogs.com/kunmomo/p/11752669.html) 另外，这个博客还有一些pointer-events的使用示例，比如地图工具栏，很详细地说明了使用场景
+
+
+
+#### will-change
+
+CSS 属性 <font color=FF0000> will-change 为 web 开发者提供了一种告知浏览器该元素会有哪些变化的方法，这样浏览器可以在元素属性真正发生变化之前提前做好对应的优化准备工作</font>。 <mark>这种优化可以将一部分复杂的计算工作提前准备好，使页面的反应更为快速灵敏</mark>。
+
+**用好这个属性并不是很容易：**
+
+- **不要将 will-change 应用到太多元素上：**浏览器已经尽力尝试去优化一切可以优化的东西了。有一些更强力的优化，如果与 will-change 结合在一起的话，有可能会消耗很多机器资源，如果过度使用的话，可能导致页面响应缓慢或者消耗非常多的资源。
+- **有节制地使用：**<mark> **通常**，当元素恢复到初始状态时，**浏览器会丢弃掉之前做的优化工作**</mark>。但是<font color=FF0000> **如果直接在样式表中显式声明了 will-change 属性，则表示目标元素可能会经常变化，浏览器会将优化工作保存得比之前更久（即：浏览器将对应的优化工作一直保存在内存中）**</font>。所以最佳实践是当元素变化之前和之后通过脚本来切换 will-change 的值。
+- <font color=FF0000> **不要过早应用 will-change 优化：**</font><mark>如果你的页面在性能方面没什么问题，则不要添加 will-change 属性来榨取一丁点的速度</mark>。 <font color=FF0000> will-change 的设计初衷是作为最后的优化手段，用来尝试解决现有的性能问题。它**不应该被用来预防性能问题**</font>。<mark>过度使用 will-change 会导致大量的内存占用，并会导致更复杂的渲染过程，因为浏览器会试图准备可能存在的变化过程。这会导致更严重的性能问题</mark>。
+- **给它足够的工作时间：**<font color=FF0000> 这个属性是用来让页面开发者告知浏览器哪些属性可能会变化的。然后浏览器可以选择在变化发生前提前去做一些优化工作。所以给浏览器一点时间去真正做这些优化工作是非常重要的</font>。使用时需要尝试去找到一些方法提前一定时间获知元素可能发生的变化，然后为它加上 will-change 属性。
+
+| 属性           | 值           |
+| :------------- | ------------ |
+| 初始值         | auto         |
+| 适用元素       | all elements |
+| 是否是继承属性 | 否           |
+| 计算值         | as specified |
+| Animation type | discrete     |
+
+**语法：**
+
+```css
+auto | <animateable-feature>
+where 
+<animateable-feature> = scroll-position | contents | <custom-ident>
+```
+
+**取值：**
+
+- **auto：**表示没有特别指定哪些属性会变化，<font color=FF0000> **浏览器需要自己去猜**，然后使用浏览器经常使用的一些常规方法优化</font>。
+- **\<animateable-feature> 可以是以下值：**
+  - **scroll-position：**表示开发者希望在<font color=FF0000> 不久后 **改变滚动条的位置**，或者使之产生动画</font>。
+  - **contents：**表示开发者希望在<font color=FF0000> 不久后 **改变元素内容中的某些东西**，或者使它们产生动画</font>。
+  - **\<custom-ident>：**表示开发者希望在<font color=FF0000> 不久后改变指定的属性名或者使之产生动画</font>。如果属性名是简写，则代表所有与之对应的简写或者全写的属性。
+
+```css
+will-change: auto
+will-change: scroll-position
+will-change: contents
+will-change: transform        // Example of <custom-ident>
+will-change: opacity          // Example of <custom-ident>
+will-change: left, top        // Example of two <animateable-feature>
+
+will-change: unset
+will-change: initial
+will-change: inherit
+```
+
+摘自：[MDN - will-change](https://developer.mozilla.org/zh-CN/docs/Web/CSS/will-change)
 
 
 
 #### text-decoration
 
 text-decoration 这个 CSS 属性是用于设置文本的修饰线外观的（下划线、上划线、贯穿线/删除线  或 闪烁）它是 text-decoration-line, text-decoration-color, text-decoration-style, 和新出现的 text-decoration-thickness 属性的缩写。
+
+文本修饰属性会延伸到子元素。这意味着如果祖先元素指定了文本修饰属性，子元素则不能将其删除。
+
+**属性：**
 
 - **text-decoration-line：**文本修饰的位置, 如下划线underline，删除线line-through
 - **text-decoration-color：**文本修饰的颜色
@@ -4123,11 +5662,11 @@ CSS 属性 text-align-last  <font color=FF0000>描述的是一段文本中最后
 
 #### vertical-align
 
-CSS 的属性 vertical-align <font color=FF0000>用来指定行内元素（inline）或表格单元格（table-cell）元素的垂直对齐方式</font>。
+CSS 的属性 vertical-align <font color=FF0000>用来指定 <font size=4>**行内元素 ( inline )**</font> 或 <font size=4>**表格单元格 ( table-cell )**</font> 元素的垂直对齐方式</font>。
 
 **vertical-align属性可被用于两种环境：**
 
-- 使行内元素盒模型与其行内元素容器垂直对齐。例如，用于垂直对齐一行文本内的图片
+- 使 <font color=FF0000>**行内元素盒模型**</font> 与其 <font color=FF0000>**行内元素容器**</font> 垂直对齐。例如，用于垂直对齐一行文本内的图片
 
   <img src="https://i.loli.net/2021/08/20/qbGZoYeHary5Aus.png" alt="image-20210820110216620" style="zoom: 33%;" />
 
@@ -4135,37 +5674,36 @@ CSS 的属性 vertical-align <font color=FF0000>用来指定行内元素（inlin
 
   <img src="https://i.loli.net/2021/08/20/uYdcp1AFb2vHUqK.png" alt="image-20210820110341093" style="zoom: 33%;" />
 
-**注意：**vertical-align 只对行内元素、表格单元格元素生效：不能用它垂直对齐块级元素。
+**注意：**<font color=FF0000>**vertical-align 只对行内元素、表格单元格元素生效**：不能用它垂直对齐块级元素</font>。
 
 **vertical-align 属性指定为下面列出的值之一。**
 
-行内元素的值
+- <font size=4>**行内元素的值**</font>
 
-- **相对父元素的值：**这些值使元素相对其父元素垂直对齐：
+  - **<font color=FF0000 size=4>相对父元素</font> 的值：**这些值使元素相对其父元素垂直对齐：
+    - **baseline：**<font color=FF0000>使元素的基线与父元素的基线对齐</font>。HTML规范没有详细说明部分可替换元素的基线，如 \<textarea> ，这意味着<font color=FF0000>这些元素使用此值的表现 **因浏览器而异**</font>。
+    - **sub：**使<font color=FF0000>元素的 **基线** 与父元素的 <font color=FF0000>**下标基线**</font> 对齐</font>
+    - <font color=FF0000>**super：**</font>使<font color=FF0000>元素的 **基线** 与父元素的 <font color=FF0000>**上标基线**</font> 对齐</font>
+    - **text-top：**使<font color=FF0000>元素的 **顶部** 与父元素的 **字体顶部** 对齐</font>
+    - **text-bottom：**使元素的 <font color=FF0000>**底部**</font> 与父元素的 <font color=FF0000>**字体底部**</font> 对齐。
+    - **middle：**使元素的 <font color=FF0000>中部</font>与 父元素的 <font color=FF0000>**基线** **加上** 父元素 **x-height**（译注：x高度）的 **一半**</font>对齐。
+    - **\<length>：**使元素的 <font color=FF0000>**基线**</font> 对齐到 父元素的 <font color=FF0000>**基线之上** </font>的 <font color=FF0000>**给定长度**</font>。可以是负数。
+    - **\<percentage>：**使元素的 <font color=FF0000>**基线**</font> 对齐到父元素的<font color=FF0000>**基线之上**</font>的 <font color=FF0000>**给定百分比**</font>，该百分比是line-height属性的百分比。可以是负数。
+  - **<font color=FF0000 size=4>相对行</font> 的值：**下列值使元素相对整行垂直对齐：
+    - **top：**使 <font color=FF0000>**元素及其后代元素** 的 **顶部**</font> 与 <font color=FF0000>**整行的顶部**</font> 对齐。
+    - **bottom：**使 <font color=FF0000>**元素及其后代元素的底部**</font> 与 <font color=FF0000>**整行的底部**</font> 对齐。
 
-  - **baseline：**使元素的基线与父元素的基线对齐。HTML规范没有详细说明部分可替换元素的基线，如<textarea> ，这意味着这些元素使用此值的表现因浏览器而异。
-  - **sub：**使元素的基线与父元素的下标基线对齐。
-  - **super：**使元素的基线与父元素的上标基线对齐。
-  - **text-top：**使元素的顶部与父元素的字体顶部对齐。
-  - **text-bottom：**使元素的底部与父元素的字体底部对齐。
-  - **middle：**使元素的中部与父元素的基线加上父元素x-height（译注：x高度）的一半对齐。
-  - **\<length>：**使元素的基线对齐到父元素的基线之上的给定长度。可以是负数。
-  - **\<percentage>：**使元素的基线对齐到父元素的基线之上的给定百分比，该百分比是line-height属性的百分比。可以是负数。
-    相对行的值
-
-- **下列值使元素相对整行垂直对齐：**
-
-  - **top：**使元素及其后代元素的顶部与整行的顶部对齐。
-  - **bottom：**使元素及其后代元素的底部与整行的底部对齐。
 
   没有基线的元素，使用外边距的下边缘替代。
 
-- 表格单元格的值
-  - **baseline (以及 sub, super, text-top, text-bottom, \<length>, \<percentage>)：**使单元格的基线，与该行中所有以基线对齐的其它单元格的基线对齐。
+- <font size=4>**表格单元格的值**</font>
+
+  - **baseline（以及 sub, super, text-top, text-bottom, \<length>, \<percentage>）：**使单元格的基线，与该行中所有以基线对齐的其它单元格的基线对齐。
   - **top：**使单元格内边距的上边缘与该行顶部对齐。
   - **middle：**使单元格内边距盒模型在该行内居中对齐。
   - **bottom：**使单元格内边距的下边缘与该行底部对齐。
-    可以是负数。
+
+  可以是负数。
 
 摘自：[MDN - vertical-align](https://developer.mozilla.org/zh-CN/docs/Web/CSS/vertical-align)
 
@@ -4185,6 +5723,141 @@ CSS 的属性 vertical-align <font color=FF0000>用来指定行内元素（inlin
 
 
 
+#### scroll-snap-type 🧪
+
+> 这是一个实验中的功能
+
+scroll-snap-type CSS 属性定义在滚动容器中的一个临时点（snap point）如何被严格的执行。
+
+此属性不能用来指定任何精确的动画或者物理运动效果来执行临时点，而是交给用户代理来处理。
+
+```css
+/* 关键值 */
+scroll-snap-type: none;
+scroll-snap-type: x;
+scroll-snap-type: y;
+scroll-snap-type: block;
+scroll-snap-type: inline;
+scroll-snap-type: both;
+
+/* 可选 mandatory | proximity*/
+scroll-snap-type: x mandatory;
+scroll-snap-type: y proximity;
+scroll-snap-type: both mandatory;
+/* etc */
+
+/* 全局值 */
+scroll-snap-type: inherit;
+scroll-snap-type: initial;
+scroll-snap-type: unset;
+```
+
+**语法**
+
+- **取值**
+
+  - **none：**当这个滚动容器的可视的 viewport 是滚动的，它必须忽略临时点。
+
+  - **x：**滚动容器只捕捉其水平轴上的捕捉位置。
+
+  - **y：**滚动容器只捕捉其垂直轴上的捕捉位置。
+
+  - **block：**滚动容器仅捕捉到其块轴上的捕捉位置。
+
+  - **inline：**滚动容器仅捕捉到其内联轴上的捕捉位置。
+
+  - **both：**滚动容器会独立捕捉到其两个轴上的位置（可能会捕捉到每个轴上的不同元素）
+
+  - **mandatory：**如果它当前没有被滚动，这个滚动容器的可视视图将静止在临时点上。意思是当滚动动作结束，如果可能，它会临时在那个点上。如果内容被添加、移动、删除或者重置大小，滚动偏移将被调整为保持静止在临时点上。
+
+  - **proximity：**如果它当前没有被滚动，这个滚动容器的可视视图将基于基于用户代理滚动的参数去到临时点上。如果内容被添加、移动、删除或者重置大小，滚动偏移将被调整为保持静止在临时点上。
+
+- **正式语法**
+
+  ```css
+  none | [ x | y | block | inline | both ] [ mandatory | proximity ]?
+  ```
+
+摘自：[MDN - scroll-snap-type](https://developer.mozilla.org/zh-CN/docs/Web/CSS/scroll-snap-type)
+
+
+
+#### 滚动条相关
+
+<font size=4>**CSS滚动条选择器**</font> 🧪
+
+**描述：**这个 ::-webkit-scrollbar CSS伪类选择器影响了一个元素的滚动条的样式。::-webkit-scrollbar 仅仅在支持WebKit的浏览器（例如，谷歌Chrome, 苹果Safari）可以使用。
+
+**你可以使用以下伪元素选择器去修改各式webkit浏览器的滚动条样式：**
+
+- **::-webkit-scrollbar**：整个滚动条.
+- **::-webkit-scrollbar-button**：<font color=FF0000>滚动条上的按钮（上下箭头）</font>
+- **::-webkit-scrollbar-thumb**：<font color=FF0000>滚动条上的滚动滑块</font>
+- **::-webkit-scrollbar-track**：<font color=FF0000>滚动条轨道</font>
+- **::-webkit-scrollbar-track-piece**：<font color=FF0000>滚动条没有滑块的轨道部分</font>
+- **::-webkit-scrollbar-corner**：当同时有垂直滚动条和水平滚动条时交汇的部分.
+- **::-webkit-resizer**：某些元素的corner部分的部分样式(例:textarea的可拖动按钮).
+
+摘自：[MDN - ::-webkit-scrollbar](https://developer.mozilla.org/zh-CN/docs/Web/CSS/::-webkit-scrollbar)
+
+<font size=4>**scrollbar-color 🧪**</font> 
+
+scrollbar-color：该CSS属性设置 滚动条轨道 和 拇指 的颜色。
+
+- track（轨道）是指滚动条，其一般是固定的而不管滚动位置的背景。
+
+- thumb（拇指）是指滚动条通常漂浮在轨道的顶部上的移动部分（即：滚动条）。
+
+**语法**
+
+```css
+/* Keyword values */
+scrollbar-color: auto | dark | light;
+
+/* <color> values */
+scrollbar-color: rebeccapurple green;   /* Two valid colors. The first applies to the thumb of the scrollbar, the second to the track. */
+
+/* Global values */
+scrollbar-color: inherit | initial | unset;
+```
+
+值：\<scrollbar-color>：定义滚动条的颜色。
+
+| 值                | 描述                                                         |
+| ----------------- | ------------------------------------------------------------ |
+| auto              | 在没有任何其他相关滚动条颜色属性的情况下，滚动条的轨道部分默认平台渲染。（注：即默认值） |
+| dark              | 显示黑色滚动条，可以是平台提供的滚动条的深色变体，也可以是带深色的自定义滚动条。 |
+| light             | 显示一个轻量滚动条，可以是平台提供的滚动条的轻微变体，也可以是带有浅色的自定义滚动条。 |
+| \<color> \<color> | 将第一种颜色应用于滚动条拇指，第二种颜色应用于滚动条轨道。   |
+
+摘自：[MDN - scrollbar-color](https://developer.mozilla.org/zh-CN/docs/Web/CSS/scrollbar-color)
+
+<font size=4>**scrollbar-width 🧪**</font>
+
+**语法**
+
+```css
+/* Keyword values */
+scrollbar-width: auto | thin | none;
+
+/* Global values */
+scrollbar-width: inherit | initial | unset;
+```
+
+**值：** **\<scrollbar-width>** 将滚动条的宽度定义为数值宽度或者预定义宽度，当被定义为预定义宽度时，则必须为下列值之一：
+
+| 值   | 描述                                                   |
+| ---- | ------------------------------------------------------ |
+| auto | 系统默认的滚动条宽度                                   |
+| thin | 系统提供的瘦滚动条宽度，或者比默认滚动条宽度更窄的宽度 |
+| none | 不显示滚动条，但是该元素依然可以滚动                   |
+
+摘自：[MDN - scrollbar-width](https://developer.mozilla.org/zh-CN/docs/Web/CSS/scrollbar-width)
+
+另外，参考视频：[使用纯 CSS 自定义滚动条样式](https://www.bilibili.com/video/BV1bS4y1V7k7)
+
+
+
 #### ARIA
 
 Accessible Rich Internet Applications **(ARIA)** 是<font color=FF0000>能够让残障人士更加便利的访问 Web 内容和使用 Web 应用（特别是那些由JavaScript 开发的）的一套机制</font>。
@@ -4194,6 +5867,101 @@ ARIA是对超文本标记语言（HTML ）的补充，以便在没有其他机�
 ARIA 是一组特殊的易用性属性，可以添加到任意标签上，尤其适用于 HTML。<font color=FF0000>role 属性定义了对象的通用类型（例如文章、警告，或幻灯片）</font>。额外的 ARIA 属性提供了其他有用的特性，例如表单的描述或进度条的当前值。
 
 摘自：[MDN - ARIA](https://developer.mozilla.org/zh-CN/docs/Web/Accessibility/ARIA)
+
+
+
+#### 浏览器引擎前缀
+
+<font color=FF0000> 浏览器厂商们有时会给实验性的或者非标准的 CSS 属性和 JavaScript API 添加前缀</font>，这样开发者就可以用这些新的特性进行试验，同时（理论上）防止他们的试验代码被依赖，从而在标准化过程中破坏 web 开发者的代码。<mark>开发者应该等到浏览器行为标准化之后再使用未加前缀的属性</mark>。
+
+浏览器厂商们正在努力停止使用前缀来表示实验性质的代码的行为。Web开发者一直在生产环境的网站上使用这些实验性代码，这使得浏览器厂商更难保证浏览器兼容性和处理新特性；这也伤害了更小众的浏览器，它们被迫添加其他浏览器前缀以加载热门网站。
+
+现在的趋势是将实验性功能添加在需要用户自行设置偏好或标记（flag）的地方，同时编写一个更小规模的规范，以更快达到稳定状态。
+
+**CSS 前缀**
+主流浏览器引擎前缀:
+
+- **-webkit- ：**（谷歌，Safari，新版Opera浏览器，以及几乎所有iOS系统中的浏览器（包括 iOS 系统中的火狐浏览器）；基本上所有基于WebKit 内核的浏览器）
+
+  - **补充：**WebKit是一种用来让网页浏览器绘制网页的排版引擎。它被用于Apple Safari。其分支Blink被用于基于Chromium的网页浏览器，如Opera与Google Chrome。
+
+    摘自：[wiki - WebKit](https://zh.wikipedia.org/wiki/WebKit)
+
+- **-moz- ：**（火狐浏览器）
+
+- **-o- ：**（旧版Opera浏览器）
+
+- **-ms- ：**（IE浏览器 和 Edge浏览器）
+
+**API 前缀**
+
+- 接口前缀：略
+- 属性和方法前缀：略
+
+摘自：[MDN - 浏览器引擎前缀](https://developer.mozilla.org/zh-CN/docs/Glossary/Vendor_Prefix)
+
+
+
+#### \<svg>
+
+可以参考：[[CSS] 打勾动画](https://www.bilibili.com/video/BV1ME411F7BG)，只是简单入门
+
+
+
+## CSS 样式 实现经验
+
+**实现 自定义的复选框：**
+
+```html
+<input class="switch" type="checkbox" id="connect" />
+<label for="connect"></label>
+
+<style>
+  .switch{   /*隐藏复选框，通过label来响应点击*/
+   position: absolute; /*不能使用 display：none，那样会把它从键盘tab键切换焦点的队列中删除*/
+   clip: rect(0,0,0,0)    
+}
+.switch + label {   /*设置未选中状态的label样式*/
+   display: inline-block;
+   height: 15px;
+   width: 30px;
+   border-radius: 10px;
+   background-color: #eee;
+   position: relative;
+}
+.switch + label:before {  /*可滑动的小按钮为label:before伪类*/
+   content: '';
+   display: inline-block;
+   position: absolute;
+   height: 15px;
+   width: 15px;
+   border-radius: 50%;
+   background-color: #fff;
+   right: 0;
+   top: 0;
+   box-shadow: 0 0 2px #666;
+}
+.switch:checked + label {  /*设置选中状态的label样式*/
+   background-color: yellowgreen;
+}
+.switch:checked + label:before {
+   left: 0;
+}
+</style>
+```
+
+效果如下：
+
+<img src="https://i.loli.net/2021/09/22/WQNPyUenGYwxcvu.png" style="zoom:50%;" />
+
+
+摘自：[CSS的N个编码技巧](https://juejin.cn/post/6924206099193135111) 另外，上面还有更多样式的技巧，推荐复习。
+
+
+
+**给 SVG 图片添加颜色**
+
+参考：https://codepen.io/chriscoyier/pen/lcDBd
 
 
 
@@ -4208,14 +5976,78 @@ ARIA 是一组特殊的易用性属性，可以添加到任意标签上，尤其
 
 <font color=FF0000>页面渲染的一般过程为 <font size=4>**JS > CSS > 计算样式 > 布局 > 绘制 > 渲染层合并**</font> 。而在这个过程中，**重排和重绘是整个环节中最为耗时的两环，从重绘和重排的概念上看，重排比重绘更加的消耗性能**</font>，所以我们尽量避免着这两个环节。从性能方面考虑,最理想的渲染流水线是没有布局和绘制环节的,只需要做渲染层的合并即可。
 
-**如何更好的写CSS&HTML**
+**如何更好的写CSS & HTML**
 
-- 首先定义项目的基准样式：如重置样式,公用样式变量,兼容性处理等,且最好用less/sass/stylus等来写我们的css
+- 首先定义项目的基准样式：如重置样式、公用样式变量、兼容性处理等，且最好用less / sass / stylus 等来写我们的 css
 - <mark>把项目的公共布局及样式抽离出来：如公用的头部，公用的尾部，公用的tab等</mark>
 - 避免样式重复赋值，避免样式重叠：如避免在业务或者组件里面写全局样式，样式层级不要过深
 - 用好z-index，position
 
 摘自：[我们应该如何写好HTML&CSS](https://juejin.cn/post/6854573211548549127)
+
+
+
+#### CSS 命名规范
+
+**BEM ( Block, Element, Modifier )**
+
+BEM 规范试图将整个用户界面分解成一个个小的可重复使用的 <font color=FF0000>**组件**</font>
+
+- **B 意为「区块」 ( Block )**。在实际中，这里「区块」<font color=FF0000>可以表示一个网站导航、页眉、页脚或者其他一些设计区块</font>。命名示例：
+
+  ```css
+  .stick-man { ... }
+  ```
+
+- **E 代表着「元素」 ( Element )**。整体的区块设计往往并不是孤立的，元素是组件的一部分。它们可视作子组件，也就是父组件的组成部分。如果使用 BEM 命名规范的话，这些 <font color=FF0000>元素的类名都可以通过在 **两条下划线 ( `__` )** 后加上元素名称来产生</font>
+
+  ```css
+  .stick-man__head { ... }
+  .stick-man__arms { ... }
+  .stick-man__feet { ... }
+  ```
+
+- **M 代表修饰符 ( Modifiers )。**在现实场景里，这可能是一个 red 或者 blue 的按钮。这就是 组件当中的限定修饰。
+
+  如果使用 BEM 的话，这些<font color=FF0000>修饰符的类名都可以通过在 **两条连字符 ( `--` )** 后加上元素名来产生</font>。示例：
+
+  ```css
+  .stick-man--blue { ... }
+  .stick-man--red { ... }
+  ```
+
+摘自：[[译] 这些 CSS 命名规范将省下你大把调试时间](https://juejin.cn/post/6844903556420632583)
+
+**什么时候应该用 BEM 格式**
+
+- 使用 BEM 的诀窍是，<font color=FF0000>你要知道什么时候哪些东西是应该写成 BEM 格式的</font>
+- <font color=FF0000>并不是每个地方都应该使用 BEM 命名方式。当需要明确关联性的模块关系时，应当使用 BEM 格式</font>
+- <mark>比如只是一条公共的单独的样式，就没有使用 BEM 格式的意义</mark>
+
+**在 CSS 预处理器中使用 BEM 格式**
+
+- <mark>BEM 的一个槽点是，命名方式长而难看，书写不雅</mark>。相比 BEM 格式带来的便利来说，我们应客观看待。
+- 而且，一般来说会 <mark>使用 LESS/SASS 等预处理器语言来编写 CSS，利用其语言特性书写起来要简单很多</mark>。
+
+**以 LESS 为例：**
+
+```less
+.article {
+    max-width: 1200px;
+    &__body {
+        padding: 20px;
+    }
+    &__button {
+        padding: 5px 8px;
+        &--primary {background: blue;}
+        &--success {background: green;}
+    }
+}
+```
+
+摘自：[CSS — BEM 命名规范](https://juejin.cn/post/6844903672162304013)
+
+另外，知乎帖子：[如何看待 CSS 中 BEM 的命名方式？ - 知乎](https://www.zhihu.com/question/21935157) 可以参考阅读，由于比较忙所以暂时没读
 
 ***
 

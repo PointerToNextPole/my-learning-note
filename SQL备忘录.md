@@ -365,6 +365,8 @@ create table tbl_name(
 >
 > ​                                                                                 -- [RUNOOB - SQL UNION 操作符](https://www.runoob.com/sql/sql-union.html)
 
+其他类似的运算符还有：except（差集）、intersect（交集），但是mysql似乎只支持 uion
+
 
 
 #### TRUNCATE 清空表操作

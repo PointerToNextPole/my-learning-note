@@ -9,7 +9,7 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 ```html
 <div id="app">
     {{message}}
-</div>
+</div>rorws
 <script>
     var app = new Vue({
         el: '#app',  //el表示element

@@ -6,9 +6,27 @@
 
 
 
+#### Axios是什么
+
+<font color=FF0000> Axios 是一个 <font size=4>**基于 promise**</font> 网络请求库，作用于node.js 和浏览器中。 它是 isomorphic 的（即同一套代码可以运行在浏览器和node.js中）。<font color=FF0000> **在服务端它使用原生 node.js http 模块, 而在客户端 (浏览端) 则使用 XMLHttpRequests**</font>。
+
+**特性**
+
+- 从浏览器创建 XMLHttpRequests
+- 从 node.js 创建 http 请求
+- 支持 Promise API
+- 拦截请求和响应
+- 转换请求和响应数据
+- 取消请求
+- 自动转换JSON数据
+- 客户端支持防御XSRF
+
+
+
 #### 引言
 
 Axios是一个 **异步请求** 技术，即：基于XMLHttpRequest对象发起的请求都是异步请求
+
 **异步请求特点：**请求之后页面不动，响应回来更新的是页面的局部，多个请求之间互不影响，并行执行
 
 **为什么不推荐使用AJAX？：**ajax确实用来发送异步请求，但：
@@ -67,6 +85,8 @@ axios.all([getUserAccount(), getUserPermissions()])
 
 #### Axios的RESTful风格的API
 
+或者也可以被称为：请求方式别名
+
 - **axios.request(config)**
 - **axios.get(url[, config])**
 - **axios.delete(url[, config])**
@@ -76,15 +96,17 @@ axios.all([getUserAccount(), getUserPermissions()])
 - **axios.put(url[, data[, config]])**
 - **axios.patch(url[, data[, config]])**
 
+<font color=FF0000> **在使用别名方法时， url、method、data 这些属性都不必在配置中指定**</font>。
+
 
 
 #### Axios的配置对象
 
-可以使用自定义配置新建一个 axios 实例
+可以使用自定义配置<font color=FF0000> 新建一个 axios 实例</font>
 
 **axios.create([config])**
 
-```
+```js
 const instance = axios.create({
   baseURL: 'https://some-domain.com/api/',
   timeout: 1000,
@@ -93,22 +115,32 @@ const instance = axios.create({
 ```
 
 **实例方法**
+
 以下是可用的实例方法。指定的配置将与实例的配置合并。
 
 - **axios#request(config)**
+
 - **axios#get(url[, config])**
+
 - **axios#delete(url[, config])**
+
 - **axios#head(url[, config])**
+
 - **axios#options(url[, config])**
+
 - **axios#post(url[, data[, config]])**
+
 - **axios#put(url[, data[, config]])**
+
 - **axios#patch(url[, data[, config]])**
+
+- **axios#<font color=FF0000>getUri</font>([config])**
 
 
 
 #### 请求配置
 
-这些是创建请求时可以用的配置选项。只有 `url` 是必需的。如果没有指定 `method`，请求将默认使用 `get` 方法。
+这些是创建请求时可以用的<font color=FF0000> **配置选项**</font>。只有 `url` 是必需的。如果没有指定 `method`，请求将默认使用 `get` 方法。
 
 ```js
 {
@@ -253,7 +285,7 @@ const instance = axios.create({
 
 某个请求的响应包含以下信息
 
-```
+```js
 {
   // `data` 由服务器提供的响应
   data: {},
@@ -279,7 +311,7 @@ const instance = axios.create({
 
 使用 then 时，你将接收下面这样的响应 :
 
-```
+```js
 axios.get('/user/12345')
   .then(function(response) {
     console.log(response.data);
@@ -291,6 +323,101 @@ axios.get('/user/12345')
 ```
 
 在使用 catch 时，或传递 rejection callback 作为 then 的第二个参数时，响应可以通过 error 对象可被使用，正如在错误处理这一节所讲。
+
+
+
+#### 默认配置
+
+您可以指定默认配置，它将作用于每个请求。
+
+**全局 axios 默认值**
+
+```js
+axios.defaults.baseURL = 'https://api.example.com';
+axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+```
+
+**自定义实例默认值**
+
+```js
+// 创建实例时配置默认值
+const instance = axios.create({
+  baseURL: 'https://api.example.com'
+});
+
+// 创建实例后修改默认值
+instance.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+```
+
+**配置的优先级**
+
+<font color=FF0000> 配置将会**按优先级进行合并** </font>。它的**顺序**是：<font color=FF0000> 在lib/defaults.js中找到的库默认值，然后是实例的 defaults 属性，最后是请求的 config 参数。后面的优先级要高于前面的</font>。
+
+```js
+// 使用库提供的默认配置创建实例
+// 此时超时配置的默认值是 `0`
+const instance = axios.create();
+
+// 重写库的超时默认值
+// 现在，所有使用此实例的请求都将等待2.5秒，然后才会超时
+instance.defaults.timeout = 2500;
+
+// 重写此请求的超时时间，因为该请求需要很长时间
+instance.get('/longRequest', {
+  timeout: 5000
+});
+```
+
+
+
+#### 拦截器
+
+在请求或响应被 then 或 catch 处理前拦截它们。
+
+```js
+// 添加请求request 拦截器
+axios.interceptors.request.use(function (config) {
+    // 在发送请求之前做些什么
+    return config;
+  }, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+  });
+
+// 添加响应response 拦截器
+axios.interceptors.response.use(function (response) {
+    // 2xx 范围内的状态码都会触发该函数。
+    // 对响应数据做点什么
+    return response;
+  }, function (error) {
+    // 超出 2xx 范围的状态码都会触发该函数。
+    // 对响应错误做点什么
+    return Promise.reject(error);
+  });
+```
+
+如果你稍后<font color=FF0000> 需要移除拦截器</font>，可以这样：
+
+```js
+const myInterceptor = axios.interceptors.request.use(function () {/*...*/});
+axios.interceptors.request.eject(myInterceptor);
+```
+
+可以<font color=FF0000> 给自定义的 axios 实例添加拦截器</font>。
+
+```js
+const instance = axios.create();
+instance.interceptors.request.use(function () {/*...*/});
+```
+
+
+
+#### 注意事项
+
+**Promises**
+
+axios 依赖原生的ES6 Promise实现而被支持。 如果你的环境不支持 ES6 Promise，你可以使用polyfill（ES6-promise）。
 
 
 
@@ -553,7 +680,29 @@ ws.onclose = function(evt) {
   });
   ```
 
-以上摘自：[阮一峰 - WebSocket 教程](http://www.ruanyifeng.com/blog/2017/05/websocket.html)，补充内容摘自：[MDN - WebSocket](https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket) 和 [WebSocket协议：5分钟从入门到精通](https://zhuanlan.zhihu.com/p/32739737)（另外，该文章中包含大量原理性的内容，比如报文格式等，由于HTTP相关遗忘了大半，所以以后再看）**//TODO**
+以上摘自：[阮一峰 - WebSocket 教程](http://www.ruanyifeng.com/blog/2017/05/websocket.html)，补充内容摘自：[MDN - WebSocket](https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket) 
+
+<font size=4>**补充：**</font>
+
+<font color=FF0000>**WebSocket是HTML5出的东西（协议）**</font>，也就是说HTTP协议没有变化，或者说没关系，**但<font color=FF0000>HTTP是不支持持久连接的</font>（长连接，循环连接的不算）**<font color=FF0000>（即：WS 是持久连接的）</font>
+
+<mark>Websocket 其实是一个新协议</mark>，<font color=FF0000>跟HTTP协议基本没有关系，只是为了兼容现有浏览器的握手规范而已</font>，也就是说它是HTTP协议上的一种补充可以通过这样一张图理解：
+
+![](https://i.loli.net/2021/10/23/VDIfd1yRteNBPpY.png)
+
+<font color=FF0000>**Websocket是一个持久化的协议，相对于HTTP这种非持久的协议来说**</font>。
+简单的举个例子吧，用目前应用比较广泛的PHP生命周期来解释。
+<font color=FF0000>HTTP的生命周期通过Request来界定，也就是一个Request 一个Response</font>，那么在HTTP1.0中，这次HTTP请求就结束了。
+在HTTP1.1中进行了改进，使得有一个keep-alive，也就是说，在一个HTTP连接中，可以发送多个Request，接收多个Response。
+<font color=FF0000>但是请记住 Request = Response</font>， 在HTTP中永远是这样，<font color=FF0000>也就是说一个request只能有一个response。而且这个response也是被动的，不能主动发起</font>。（补充：在HTTP2.0加入了 Server Send 后，是否可以说是持久化的协议了？？）
+
+<font size=4>**关于这种说法的补充：**</font>摘自：[WebSocket 是什么原理？为什么可以实现持久连接？ - 董可人的回答 - 知乎](https://www.zhihu.com/question/20215561/answer/40250050)
+
+在以前 HTTP 协议中所谓的 keep-alive connection 是指在一次 TCP 连接中完成多个 HTTP 请求，但是对每个请求仍然要单独发 header；所谓的 polling 是指从客户端（一般就是浏览器）不断主动的向服务器发 HTTP 请求查询是否有新数据。<font color=FF0000>这两种模式有一个共同的缺点，就是除了真正的数据部分外，服务器和客户端还要大量交换 HTTP header，信息交换效率很低。**它们建立的“长连接”都是伪·长连接**，只不过好处是不需要对现有的 HTTP server 和浏览器架构做修改就能实现</font>。
+
+WebSocket 解决的第一个问题是，通过第一个 HTTP request 建立了 TCP 连接之后，之后的交换数据都不需要再发 HTTP request了，使得这个长连接变成了一个真·长连接
+
+摘自：[WebSocket 是什么原理？为什么可以实现持久连接？ - Ovear的回答 - 知乎](https://www.zhihu.com/question/20215561/answer/40316953) 另外，该链接中大部分内容被摘抄到了“计算机网络.md” 中，搜索链接标题即可
 
 
 
@@ -617,7 +766,7 @@ evtSource.close();
 
 <font color=FF0000>**EventSource 是服务器推送的一个网络事件接口**</font>。<font color=FF0000>一个EventSource实例会**对HTTP服务开启一个持久化的连接**，以 **text/event-stream 格式**发送事件, 会一直保持开启直到被要求关闭</font>。
 
-一旦连接开启，来自服务端传入的消息会以事件的形式分发至你代码中。如果接收消息中有一个事件字段，触发的事件与事件字段的值相同。如果没有事件字段存在，则将触发通用事件。
+<font color=FF0000>一旦连接开启，来自服务端传入的消息会 **以事件的形式** 分发至你代码中</font>。<mark>如果接收消息中有一个事件字段，触发的事件与事件字段的值相同。如果没有事件字段存在，则将触发通用事件</mark>。
 
 <mark>与 WebSockets不同的是，服务端推送是单向的</mark>。数据信息被单向从服务端到客户端分发. 当不需要以消息形式将数据从客户端发送到服务器时，这使它们成为绝佳的选择。例如，对于处理社交媒体状态更新，新闻提要或将数据传递到客户端存储机制（如IndexedDB或Web存储）之类的，EventSource无疑是一个有效方案。
 
@@ -756,7 +905,7 @@ qrcode.makeCode("http://naver.com"); // make another code.
   }) 
   ```
 
-  - 其中element是DOM对象，通过`document.querySelector()`等获取元素的方法获取
+  - 其中element是DOM对象，通过 document.querySelector() 等获取元素的方法获取
   - options对应的是设置Configuration / Options，具体可以查看 [html2canvas - document - configuration / options](https://html2canvas.hertzen.com/configuration)
 
 - options中 的 width和height的不需要添加单位，默认为`px`。
@@ -766,3 +915,11 @@ qrcode.makeCode("http://naver.com"); // make another code.
 - Scale的默认值为「**当前屏幕**」的`window.devicePixelRatio`，其中踩到坑的是MacBook Pro的 `window.devicePixelRatio`为2。生成的canvas会比预期大一倍，要将scale设为1
 
 更多参考文章：[高质量前端快照方案：来自页面的「自拍」](https://segmentfault.com/a/1190000021275782)
+
+
+
+#### pnpm
+
+官方GitHub地址：https://github.com/pnpm/pnpm，可以阅读readme.md 以了解。
+
+关于原理：硬连接( hard link ) / 软连接( symlink 符号连接 ) 可以参考：[pnpm原理](https://juejin.cn/post/6916101419703468045#heading-8)
