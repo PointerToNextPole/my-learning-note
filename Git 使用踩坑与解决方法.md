@@ -146,49 +146,79 @@ where git
 
 #### <font color=FF0000>问题汇总，出现如下问题：</font>
 
-键入如下命令：
+- **键入命令：**
 
-```bash
-git clone git@github.com:***.git
-```
+  ```bash
+  git clone git@github.com:***.git
+  ```
 
-出现：
+  出现：
 
-```markdown
-Warning: Permanently added the RSA host key for IP address '13.229.188.59' to the list of known hosts.
-git@github.com: Permission denied (publickey).
-fatal: Could not read from remote repository.
+  ```
+  Warning: Permanently added the RSA host key for IP address '13.229.188.59' to the list of known hosts.
+  git@github.com: Permission denied (publickey).
+  fatal: Could not read from remote repository.
+  
+  Please make sure you have the correct access rights
+  and the repository exists.
+  ```
 
-Please make sure you have the correct access rights
-and the repository exists.
-```
+  参考：[Permanently added the RSA host key for IP address '13.250.177.223' to t he list of known hosts.](https://blog.csdn.net/yushuangping/article/details/84240863) 或者见官方教程：[用户头像  ==>  Setting  ==>  SSH and GPG keys  ==>  generate a GPG key and add it to your account  ==>  Adding a new GPG key to your GitHub account](https://help.github.com/en/github/authenticating-to-github/adding-a-new-gpg-key-to-your-github-account)
 
-参考：[Permanently added the RSA host key for IP address '13.250.177.223' to t he list of known hosts.](https://blog.csdn.net/yushuangping/article/details/84240863) 或者见官方教程：[用户头像  ==>  Setting  ==>  SSH and GPG keys  ==>  generate a GPG key and add it to your account  ==>  Adding a new GPG key to your GitHub account](https://help.github.com/en/github/authenticating-to-github/adding-a-new-gpg-key-to-your-github-account)
+- **键入命令：**
 
-***
+  ```bash
+  git push
+  ```
 
-键入命令：
+  - **出现：**
 
-```shell
-git push
-```
+    ```bash
+    To github.com:userName/projName.git
+     ! [rejected]        master -> master (non-fast-forward)
+    error: 推送一些引用到 'github.com:userName/projName.git' 失败
+    提示：更新被拒绝，因为您当前分支的最新提交落后于其对应的远程分支。
+    提示：再次推送前，先与远程变更合并（如 'git pull ...'）。详见
+    提示：'git push --help' 中的 'Note about fast-forwards' 小节。
+    ```
 
-出现：
+    解决方法：使用如下命令
 
-```markdown
-To github.com:PointerToNextPole/community.git
- ! [rejected]        master -> master (non-fast-forward)
-error: 推送一些引用到 'github.com:PointerToNextPole/community.git' 失败
-提示：更新被拒绝，因为您当前分支的最新提交落后于其对应的远程分支。
-提示：再次推送前，先与远程变更合并（如 'git pull ...'）。详见
-提示：'git push --help' 中的 'Note about fast-forwards' 小节。
-```
+    ```bash
+    git push -u origin +master
+    ```
 
-解决方法：
+  - **出现：**
 
-```shell
-git push -u origin +master
-```
+    ```
+    remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
+    remote: Please see https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/ for more information.
+    fatal: Authentication failed for 'https://github.com/PointerToNextPole/my-learning-note.git/'
+    ```
+
+    这是由于 Github 更新了提交策略导致（具体说明，详见上面的链接：[Token authentication requirements for Git operations](https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/)）。解决方法如下：
+
+    - **生成 Token：**具体步骤详见 [Creating a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)。另外，GitHub 的 Docs 中也有中文译文，这篇同样，页面上设置即可。
+
+    - **在命令行中使用 Token：**这里主要讨论 “策略生效之前就已经在本地“ 的老项目 更新后无法提交的问题
+
+      - **已经有仓库：**为仓库添加token
+
+        ```sh
+        git remote set-url origin https://<your-token>@github.com/<GitHub-user-name>/<repo-name>.git
+        ```
+
+      - **原本没有仓库：**git clone 添加token
+
+        ```sh
+        git clone https://<your-token>@github.com/<GitHub-user-name>/<repo-name>.git
+        ```
+
+      「在命令行中使用 Token」这部分摘自：[GitHub改为token验证后,如何提交代码?](https://python.iitter.com/other/39385.html)
+
+---
+
+
 
 ***
 
@@ -218,7 +248,7 @@ error: cannot overwrite multiple values with a single value
        Use a regexp, --add or --replace-all to change user.email.
 ```
 
-**需要使用参数**`--replace-all`
+**需要使用参数 **`--replace-all`
 
 ```bash
 $  git config --global --replace-all user.email "输入你的邮箱" 
