@@ -40,7 +40,7 @@ $ git config --system --list
 
 <mark>在配置`git config --global user.**`时出现将 `user.email `写成（配制成）`user.mail`，这时git并不会报错，且会记录到git list（可通过`git config --list`）查到</mark>
 
-这时使用命令`git config --global --unset user.mail`即可将其删除（在`git config --list`中查不到）。
+这时使用命令`git config --global --unset user.mail`即可将其删除（在 `git config --list`中查不到）。
 
 #### <font color=FF0000>From  1.4</font>
 
@@ -193,7 +193,7 @@ where git
     ```
     remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
     remote: Please see https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/ for more information.
-    fatal: Authentication failed for 'https://github.com/PointerToNextPole/my-learning-note.git/'
+    fatal: Authentication failed for 'https://github.com/github-user-name/proj-name.git/'
     ```
 
     这是由于 Github 更新了提交策略导致（具体说明，详见上面的链接：[Token authentication requirements for Git operations](https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/)）。解决方法如下：
@@ -222,7 +222,7 @@ where git
 
 ***
 
-#### <font color=FF0000>用户名和邮箱</font>
+#### 用户名和邮箱
 
 **<font color=FF0000>查看</font>用户名和邮箱地址：**
 
@@ -263,83 +263,127 @@ $  git config --list
 
 参考：[Git修改和配置用户名和邮箱](https://www.cnblogs.com/sunshinekevin/p/11617547.html)
 
-#### <font color=FF0000>Git 工作区、暂存区和版本库</font>
+#### 一些其他 git config 配置
+
+- 如下命令能让Git以彩色显示：
+
+  ```sh
+  git config --global color.ui auto
+  ```
+
+- <font color=FF0000>**可以为Git命令设定别名**</font>。例如：把「checkout」缩略为「co」，然后就使用「co」来执行命令。
+
+  ```sh
+  git config --global alias.co checkout
+  ```
+
+  以上摘自：[猴子都能懂的GIT入门 - 教程1 Git的基础 - 初期设定](https://backlog.com/git-tutorial/cn/intro/intro2_2.html)
+
+  
+
+#### Git 工作区、暂存区和版本库
 
 - **工作区：**就是你<mark>在电脑里能看到的目录</mark>。
 - **暂存区：**英文叫stage, 或index。<mark>一般存放在 ".git目录下" 下的index文件（.git/index）中</mark>，所以我们把暂存区有时也叫作索引（index）。
-- **版本库：**工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。
+- **版本库：**工作区有一个隐藏目录.git，这个不算工作区，而是 Git 的版本库。
 
 ![工作区、版本库中的暂存区和版本库之间的关系](https://www.runoob.com/wp-content/uploads/2015/02/1352126739_7909.jpg)
 
 摘自：[Git 工作区、暂存区和版本库](https://www.runoob.com/git/git-workspace-index-repo.html)
 
-- `git log` 会按时间先后顺序列出所有的提交，最近的更新排在最上面。这个命令会列出每个提交的 SHA-1 校验和、作者的名字和电子邮件地址、提交时间以及提交说明。
-  
+- **git log：**会按时间先后顺序列出所有的提交，最近的更新排在最上面。这个命令会列出每个提交的 SHA-1 校验和、作者的名字和电子邮件地址、提交时间以及提交说明。
   - 其中一个比较有用的选项是 `-p` 或 `--patch` ，它会显示每次提交所引入的差异（按 **补丁** 的格式输出）。
   - 你也可以限制显示的日志条目数量，例如使用 `-2` 选项来只显示最近的两次提交
   - 你也可以为 `git log` 附带一系列的总结性选项。 比如你想看到每次提交的简略统计信息，可以使用 `--stat` 选项
+  
+- **git show：**此命令可以用于显示各种类型对象的相关信息
 
-- `git show` 此命令可以用于显示各种类型对象的相关信息
 
-#### <font color=FF0000>Git设置添加一个新的远程 Git 仓库</font>
 
-```shell
-#Syntax
-git remote add <shortname> <url>
-#Example
-git remote add origin git@github.com:PointerToNextPole/community.git
+#### Git 设置添加一个新的远程 Git 仓库
+
+语法：
+
+```sh
+# 在目录中创建新的 Git 仓库
+git init
+# 为远端的仓库地址 repo-url 起别名。如果有多个远端仓库，只需要使用多个 git remote add 即可
+git remote add <shortname> <repo-url>
 ```
 
-- 在提交（push）代码之后，若发现提交的代码存在问题，这时可以输入如下命令：
-  
-  ```shell
-  git commit --amend --no-edit
-  ```
-  
-  以修改提交
+示例：
 
-- 在提交（push）代码之后，若发现提交代码的注释（-m message）存在问题，这时可以输入如下命令：
-  
-  ```shell
-  git commit --amend
-  ```
-  
-  这时候会通过vim打开「提交」的相关信息（如下），只需要对其进行修改即可
-  
-  <img src="https://s1.ax1x.com/2020/06/26/NrRojI.png" style="zoom: 40%;" />
+```sh
+git remote add origin git@github.com:userName/projName.git
+```
 
-另外：在push代码时候可能需要使用如下命令，才能提交
+在提交（push）代码之后，如果发现提交的代码存在问题，这时可以输入如下命令，以修改提交。
 
 ```shell
-git push -u orgin +master
+git commit --amend --no-edit
 ```
+
+在提交（push）代码之后，若发现提交代码的注释（-m message）存在问题，这时可以输入如下命令：
+
+```shell
+git commit --amend
+```
+
+这时候会通过 vim 打开「提交」的相关信息（如下），只需要对其进行修改即可
+
+<img src="https://s1.ax1x.com/2020/06/26/NrRojI.png" style="zoom: 40%;" />
+
+另外：使用 如下命令，相当于预设了 git push 的参数（比如：远端仓库 和 分支名），之后直接使用 git push 命令即可，无需使用参数( 如：git push \<repo> \<branch>， 比如 git push -u origin master )了（因为已经预设了）。另外，在 GitHub 创建项目的提示中也有这个（不知道为什么现在找不到了...）.
+
+```sh
+# 这里的 origin 就是上面 git remote add 设置的
+git push -u origin master
+```
+
+以上 git push -u 的内容参考自：
+
+> 就是你第一次使用 git push -u origin master 之后，第二次【下次，以后】可以直接使用 git pull 拉取代码，就不需要输入完整的命令 git pull origin master 来拉取代码了。即 第二次 使用 git pull 等同于执行 git pull origin master。然后第二次也可以用 git push推送代码而不用git push origin master。即第二次 使用 git push 等同于执行 git push origin master。
+>
+> 摘自：[git push -u的含义和用法](https://blog.csdn.net/chenzz444/article/details/104408607) 的评论区
+
+<font size=4>**其他 git remote 命令**</font>
+
+- **git remove -v：**显示所有远程仓库
+- **git remote show [remote]：**显示某个远程仓库的信息
+- **git remote rm name：**删除远程仓库
+- **git remote rename old_name new_name：**修改仓库名
+
+​	以上摘自：[RUNOOB - git remote 命令](https://www.runoob.com/git/git-remote.html)
+
+
 
 #### git pull 和 git merge的区别
 
 **git pull = git fetch + git merge**
 
-- fetch和push命令可以分别对远程分支进行fetch和push操作
+- fetch 和 push 可以分别对远程分支进行 fetch 和 push 操作
 
-- pull不是直接跟远程分支对话的。
+- pull 不是直接跟远程分支对话的
 
-fetch同pull的区别在于：
+**fetch 和 pull的区别在于：**
 
-- git fetch：是从远程获取最新版本到本地，不会自动merge
-- git pull：是从远程获取最新版本并merge到本地仓库
+- **git fetch：**是从远程获取最新版本到本地，不会自动 merge
+- **git pull：**是从远程获取最新版本并 merge 到本地仓库
 
 从安全角度出发，git fetch比git pull更安全，因为我们可以先比较本地与远程的区别后，选择性的合并。
-git push 默认推送到master。
+
+git push 默认推送到 master
 
 摘自：[segmentfault Salamander的回答 -- git pull和git merge 区别? ](https://segmentfault.com/q/1010000009076820)
 
 //TODO
 
 ```sh
-# 创建一个新的分支branchName
+# 创建一个新的分支 branchName
 git checkout -b branchName
 ```
 
 ```sh
-#push到branchName的分支下
+# push 到 branchName 的分支下
 git push --set-upstream origin branchName
 ```

@@ -229,6 +229,34 @@ style中可以写驼峰也可以写短横线分隔 (kebab-case)，但是短横�
 
 
 
+#### 关于 v-bind 的个人补充：
+
+v-bind() 可以用于 \<style> 标签，如下示例摘自：[Vue3 成为默认版本后新文档 - SFC CSS Features - v-bind() in CSS](https://vuejs.org/api/sfc-css-features.html#v-bind-in-css)
+
+```vue
+<template>
+  <div class="text">hello</div>
+</template>
+
+<script>
+export default {
+  data() {
+    return { color: 'red' }
+  }
+}
+</script>
+
+<style>
+.text { color: v-bind(color); }
+</style>
+```
+
+同样，这个语法 也适用于 \<script setup>
+
+如上摘自：[Vue3 成为默认版本后新文档 - SFC CSS Features - v-bind() in CSS](https://vuejs.org/api/sfc-css-features.html#v-bind-in-css)，另外，可以参考：[Vue3 \<style>状态驱动 CSS 变量](https://www.qiyuandi.com/zhanzhang/zonghe/17302.html)
+
+
+
 **v-on修饰符**
 
 - .stop - 调用event.stopPropagation()。

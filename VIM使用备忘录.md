@@ -60,8 +60,8 @@ ZZ：命令模式下保存当前文件所做的修改后退出vi
 
 ### <font color=FF0000>**VIM常用的模式**</font>
 
-- normal模式
-- insert模式
+- normal 模式
+- insert 模式
 - 分屏模式
 - viusal模式
 - 命令模式（在normal模式下，键入`:`）

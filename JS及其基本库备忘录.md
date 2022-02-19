@@ -7582,6 +7582,8 @@ const reg = /abc/
 console.log(Object.getPrototypeOf(reg).constructor.name) // 'RegExp'
 ```
 
+另外，上面说了 JS 的数据类型，不知道具体有哪些，可以参考：[MDN - JavaScript 标准内置对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects)，有时间做一下笔记。
+
 **补充：Object.prototype.toString 执行步骤**
 
 <font color=FF0000 size=4>**在 ECMAScript 5 中，Object.prototype.toString() 被调用时，会进行如下步骤：**</font>
