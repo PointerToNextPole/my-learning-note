@@ -21,6 +21,7 @@
 **粘贴：**
 
 - `p`：粘贴在光标所在的行
+- `P`：粘贴复制到当前行的上一行
 
 **查找：**
 
@@ -117,7 +118,7 @@ visual模式一般用于<font color=FF0000>块状选择文本，从而进行批�
 - **⌃ + w**       删除<font color=FF0000>上一个单词</font>
 - **⌃ + u**        当<font color=FF0000>光标在当前行的最后，则删除当前行</font>；否则，<font color=FF0000>删除当前光标之前的内容</font>
 
-<font color=FF0000>**在终端下还有一些快捷键**</font>
+<font color=FF0000>**在终端下还有一些快捷键**</font>（注：这个应该是 emacs 的快捷键了...）
 
 - **⌃ + a**        光标移动到<font color=FF0000>当前行的开头</font>
 - **⌃ + e**         光标移动到<font color=FF0000>当前行的结尾</font>
@@ -173,7 +174,7 @@ visual模式一般用于<font color=FF0000>块状选择文本，从而进行批�
 - `M`   跳转到屏幕的中间(Middle)
 - `L`     跳转到屏幕的结尾(Lower)
 - **⌃ + u**   向上翻页 (upward)
-- **⌃ + f**    向下翻页 (forward)
+- **⌃ + f**    向下翻页 (forward)。**注：**在 emacs 中 ，这个快捷键是向后移动一个字符
 - `zz`          把屏幕设为中间
 
 ***
@@ -431,3 +432,15 @@ visual模式一般用于<font color=FF0000>块状选择文本，从而进行批�
 ### VIM插件
 
 vim有很多插件管理器，常见的有：vim-plug，Vundle，Pathogen，Dein.Vim，volt等
+
+***
+
+### 需求和解决方法
+
+- 将某一行代码上移一行：dd + k + p
+
+  - dd：将删除该行并将其添加到默认寄存器
+  - k：将向上移动一条线（j将向下移动一条线）
+  - P：将粘贴在当前行之上
+
+  学习自：[vi - 在Vim中上下移动整行](https://www.itranslater.com/qa/details/2109078928726950912)
