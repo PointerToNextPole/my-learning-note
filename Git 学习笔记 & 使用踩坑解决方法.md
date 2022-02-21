@@ -274,7 +274,7 @@ commit、tree、blob 三者之间的关系
 对之前的（不仅仅是第一次） `git commit -m msg` 的msg 进行变更。需要使用「变基」，`git rebase` ，如下：
 
 ```sh
-git rebase -i targetCommitHash # -i 表示交互式的
+git rebase -i targetCommitHash # -i 表示交互式的，另外，需要注意的是：targetCommitHash 需要是 被修改msg 的 commit 的前面的 commit 的 hash
 ```
 
 交互结果如下：
@@ -438,7 +438,31 @@ normal 模式键入 `:wq!`，显示如下：
 - **[*.]\<file>[.ext]：**忽略的文件
 - **foder/：**忽略文件夹
 
-另外，在 实际使用 git 时，发现有些想要忽略文件的文件，已经
+另外，在 实际使用 git 时，发现有些想要忽略文件的文件，已经被添加到暂存区了；这时候就需要从暂存区中删除（而不从项目目录中删除），就需要使用 `git rm --cached fileName` 以把文件从暂存区中删除。
+
+#### From 2.16
+
+<font color=FF0000 size=4>Git 的备份</font>
+
+**Git 常用的传输协议：**
+
+| 常⽤协议         | 语法格式                                                     | 说明                      |
+| ---------------- | ------------------------------------------------------------ | ------------------------- |
+| 本地协议（1）    | /path/to/repo.git                                            | 哑协议                    |
+| 本地协议（2）    | ﬁle:///path/to/repo.git                                      | 智能协议                  |
+| http / https协议 | http://git-server.com:port/path/to/repo.git<br>https://git-server.com:port/path/to/repo.git | 平时接触到的 都是智能协议 |
+| ssh协议          | user@git-server.com:path/to/repo.git                         | ⼯作中最常⽤ 的智能协议   |
+
+**哑协议与智能协议之间的区别**
+
+- 直观区别：哑协议传输进度不可⻅见，智能协议传输可见。
+- 传输速度：智能协议⽐哑协议传输速度快。
+
+所以更推荐智能协议
+
+在使用 `git clone` 命令时，可以加上 `--bare` 参数，表示clone的仓库不带工作区；以后在 push 时可以方便些
+
+这里还提及了 `git remote` 相关的 命令，是将本地 git 和 远端的git 仓库建立联系的命令。下面有说，这里略
 
 
 
