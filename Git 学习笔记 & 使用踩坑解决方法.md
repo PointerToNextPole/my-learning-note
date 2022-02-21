@@ -433,7 +433,12 @@ normal 模式键入 `:wq!`，显示如下：
 
 #### From 2.15
 
-<font color=FF0000 size=4>使用 .gitignore文件</font>
+<font color=FF0000 size=4>使用 .gitignore文件</font>，一般格式为：
+
+- **[*.]\<file>[.ext]：**忽略的文件
+- **foder/：**忽略文件夹
+
+另外，在 实际使用 git 时，发现有些想要忽略文件的文件，已经
 
 
 
