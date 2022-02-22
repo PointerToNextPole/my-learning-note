@@ -97,9 +97,8 @@ git log -n4  # 查看最近的几个commit，这里是4
 
 ```bash
 git branch -v # 查看本地有多少分支。另外，-a选项时查看远端有多少分支；同时，这两个选项可以连起来写，即 -av
-git checkout -b branchName commitHash # 创建一个新的分支，并**切换到新分支上**。其中：branchName 为分支名，commitHash 为提交的SHA hash（即：Secure Hash Algorithm hash）；表示根据「哪一个提交」创建一个分支。另外，commitHash 可以通过 git log 查到。
+git checkout -b branchName commitHash # 创建一个新的分支，并 **切换到该新创建的分支上**。其中：branchName 为分支名，commitHash 为提交的SHA hash（即：Secure Hash Algorithm hash）；表示根据「哪一个提交」创建一个分支。另外，commitHash 可以通过 git log 查到。
 # 上面 hash 相关的内容了解自：careerkarma.com/blog/git-log
-# TODO 这里 -b 的作用虽然可以猜到一些，但是还是要查一下...
 ```
 
 可以使用 git log branchName，查看某一个分支的日志。同样，也可以使用 git log --all 命令，查看所有分支的信日志。如下所示，输入 git log --all，会输出所有的（共两个）分支，master 和 testBranch：
@@ -257,13 +256,20 @@ commit、tree、blob 三者之间的关系
 
 另外，这里的 commitHash 可以用 HEAD 进行指代，同时也可以用 HEAD 进行其他指代，比如：HEAD\^ 表示HEAD 的父亲，同理：HEAD\^\^1 可以表示为 HEAD 父亲的父亲  
 
-#### // TODO 这里听的有点懵，搜一下 ^ ~ 的用法。
+**补充：** ^ / ~ 的用法
+
+#### // TODO
 
 #### From 2.1
 
-删除分支，使用 `git branch -d branchName` ，这里要补充下 git branch -d 和 -D 的区别：
+删除分支，使用 `git branch -d branchName`。
 
-#### // TODO
+**补充：git branch 的 -d 和 -D 选项 的区别：**
+
+- **git branch -d：**会<font color=FF0000>在删除前检查 merge 状态</font>（其与上游分支 或者 （其）与head）。
+- **git branch -D：**是 `git branch --delete --force` 的简写，它<font color=FF0000>会直接删除</font>（**注：**即，不会检查 merge 状态）。
+
+摘自：[删除分支 git branch -d与git branch -D的区别](https://blog.csdn.net/qq_33592641/article/details/103871482)
 
 #### From 2.2
 
@@ -399,7 +405,7 @@ normal 模式键入 `:wq!`，显示如下：
 
 另外，一般让 暂存区的 部分文件 恢复成和 HEAD 一样，可以添加参数 `git reset HEAD <file>...`
 
-课程在这里提了一下 `git stash` 命令，作用是：将修改的内容保存至堆栈区，以方便你临时切出去修改其他东西之后再回来，修改内容依然存在。
+课程在这里提了一下 `git stash` 命令，作用是：将修改的内容保存至<font color=FF0000>**堆栈区**</font>，以方便你临时切出去修改其他东西之后再回来，修改内容依然存在。另外，下面的 2.14 有更多讲解。
 
 #### From 2.9
 
@@ -438,14 +444,40 @@ normal 模式键入 `:wq!`，显示如下：
 
 #### From 2.14
 
-<font color=FF0000 size=4>开发中临时加塞了紧急任务，该如何处理？</font>即，对代码做了修改；但是突然来的任务不需要这里的修改，需要切出去；这时候需要使用 `git stash` 命令。在使用 `git stash` 命令之后，可以使用 `git stash list` 查看 stash 列表。如下：
+<font color=FF0000 size=4>开发中临时加塞了紧急任务，该如何处理？</font>即，对代码做了修改；但是突然来的任务不需要这里的修改，需要切出去；这时候需要使用 `git stash` 命令，将修改的内容存储到堆栈区。在使用 `git stash` 命令之后，可以使用 `git stash list` 查看 stash 列表。如下：
 
 <img src="https://s2.loli.net/2022/02/21/Ohz13RoFg9fqUVs.png" alt="image-20220221210139366" style="zoom:50%;" />
 
-在处理完任务后，可以使用 `git stash pop` 或者 `git stash apply` 命令进行恢复 stash
+在处理完任务后，可以使用 `git stash pop` 或者 `git stash apply` 命令进行恢复 stash（注，补充：暂存的内容可以恢复到其他任意指定的分支上）。相关命令如下：
 
 - `git stash apply`：环境将会恢复，stash 中的数据，将不会被清除。
-- `git stash pop`：环境会恢复，stash 中的数据将会被清理
+
+  可以使用 `git stash apply <stashName>`（如stash@{1}）指定恢复哪个stash到当前的工作目录
+
+- `git stash pop`：将当前stash中的内容弹出，并应用到当前分支对应的工作目录上。环境会恢复，stash 中的数据将会被清理。
+
+  如果从stash中恢复的内容和当前目录中的内容发生了冲突，也就是说，恢复的内容和当前目录修改了同一行的数据，那么会提示报错，需要解决冲突，可以通过创建新的分支来解决冲突。
+
+- `git stash save <msg>` ：作用等同于git stash，区别是可以加一些注释
+
+- `git stash list`：查看当前stash中的内容
+
+- `git stash drop stashName`：从堆栈中移除某个指定的stash，stashName 即：类似 stash@{1}
+
+- `git stash clear`：清除堆栈中的所有内容
+
+- `git stash show`：查看堆栈中最新保存的stash和当前目录的差异
+
+  可以通过 `git stash show <stashName>` 的方式，指定某一个 stash 与当前目录的差异
+
+  通过 `git stash show [<stashName>] -p` 查看详细的不同
+
+- `git stash branch`：从最新的stash创建分支。
+
+  应用场景：当储藏了部分工作，暂时不去理会，继续在当前分支进行开发，后续想将stash中的内容恢复到当前工作目录时，如果是针对同一个文件的修改（即便不是同行数据），那么可能会发生冲突，恢复失败，这里通过创建新的分支来解决。可以用于解决stash中的内容和当前目录的内容发生冲突的情景。
+  发生冲突时，需手动解决冲突。
+
+「命令相关内容」摘自：[git stash详解](https://blog.csdn.net/stone_yw/article/details/80795669)
 
 #### From 2.15
 
@@ -497,6 +529,8 @@ normal 模式键入 `:wq!`，显示如下：
 在团队合作时，公共分支是严禁拉到本地后，做变基( rebase )操作的。因为公共分支的历史不能被更改，所以不能使用 “会更改历史记录” 的 rebase 操作的。
 
 可能产生的问题：做了变基之后，其他同事的代码 对应的 commit 会因为历史变更，让他本地的代码的头指针 和远端代码的头指针不是 fast-forward 了，导致在 push 代码时会报错。
+
+#### // TODO 到这里 git 部分就讲完了，剩下的是 github gitlab CI/CD 的部分；暂时用不到，略。
 
 
 
@@ -741,6 +775,20 @@ git push -u origin master
 - **git remote rename old_name new_name：**修改仓库名
 
 ​	以上摘自：[RUNOOB - git remote 命令](https://www.runoob.com/git/git-remote.html)
+
+
+
+#### git clone
+
+<font size=4>**git clone 做了什么？**</font>
+
+1. 自动将服务器默认命名为 origin（**注：**相当于 `git push -u origin master`）
+2. 创建远程分支origin / branch（指向master分支的指针）
+3. 创建名为 master 的本地分支
+
+删除远程分支以及追踪分支的命令： `git push origin --delete <branch>`
+
+摘自：[删除分支 git branch -d与git branch -D的区别](https://blog.csdn.net/qq_33592641/article/details/103871482)
 
 
 
