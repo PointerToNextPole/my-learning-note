@@ -61,10 +61,16 @@ git config --system --list
   cd your_project
   ```
 
+**补充：**
+
+`git init --bare <directory>`：在指定目录创建一个空的 Git 仓库。运行这个命令会创建一个名为 directory，只包含 .git 子目录的空目录。
+
+补充内容摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
 #### From 1.5
 
 ```bash
-git add -u # 对git已经跟踪了的文件，将其一起提交到暂存区
+git add -u # 对git已经跟踪了的文件，将其一起提交到暂存区；另外，对于新添加的文件，将不会被添加
 ```
 
 另外，本讲 讲了“Git 的工作区、暂存区和版本库”；由于第一次没有记录，第二次重学时，下面已经记录了，这里略。
@@ -73,10 +79,20 @@ git add -u # 对git已经跟踪了的文件，将其一起提交到暂存区
 
 ```bash
 git add file_name  # 将文件加入git管理
-git rm file_name  # 将文件从git管理中移除（注：就是 git add 的逆向操作）
+git rm file_name  # 将文件从git管理中移除( remove tracked file from the git index)，也可同时从“工作区”和“暂存区”移除。
 
-git mv orgin_file_name target_file_name # 使用 git 将原始文件改名为目标文件名，类似于先 mv 再 git add 
+git mv orgin_file_name target_file_name # 使用 git 将原始文件改名为目标文件名，类似于先 mv 再 git add
 ```
+
+补充：关于 **git rm**：
+
+> **summary:** The git rm command is used to remove files from a Git repository.
+>
+> The primary function of `git rm` is to remove tracked files from the Git index. Additionally, `git rm` can be used to remove files from both the staging index and the working directory 即：git rm 可以从「工作区」和「缓存区」中移除文件
+>
+> There is no option to remove a file from only the working directory. The files being operated on must be identical to the files in the current `HEAD`  即：git rm 无法只移除工作区的文件（可用 rm 命令实现），同时，git rm 只能删除 当前 HEAD 的文件
+>
+> 详见：[Atlassian git tutorials - git rm](https://www.atlassian.com/git/tutorials/undoing-changes/git-rm)
 
 **git还原**
 
@@ -96,7 +112,7 @@ git log -n4  # 查看最近的几个commit，这里是4
 为了更好的讲解 git log，这里创建下分支：
 
 ```bash
-git branch -v # 查看本地有多少分支。另外，-a选项时查看远端有多少分支；同时，这两个选项可以连起来写，即 -av
+git branch -v # 查看各个分支，以及最后提交的信息。另外，-a 选项时查看本地和远端有多少分支(-a 等价于 --all)；同时，这两个选项可以连起来写，即 -av
 git checkout -b branchName commitHash # 创建一个新的分支，并 **切换到该新创建的分支上**。其中：branchName 为分支名，commitHash 为提交的SHA hash（即：Secure Hash Algorithm hash）；表示根据「哪一个提交」创建一个分支。另外，commitHash 可以通过 git log 查到。
 # 上面 hash 相关的内容了解自：careerkarma.com/blog/git-log
 ```
@@ -183,6 +199,8 @@ git checkout -b branchName commitHash # 创建一个新的分支，并 **切换�
 
 另外，上面没搞懂为什么一会儿用 `git cat-file -t`，一会儿用 `git cat-file -p` 很懵，看到下面“commit、tree、blob 三者之间的关系” 就会明白。
 
+**补充：** git cat-file 还有 -s 选项，表示显示 对象 (\<object>) 的大小。其他选项和参数详见：[Pro Git - git cat-file - options](https://git-scm.com/docs/git-cat-file#_options)
+
 #### From 1.10
 
 commit、tree、blob 三者之间的关系
@@ -258,7 +276,12 @@ commit、tree、blob 三者之间的关系
 
 **补充：** ^ / ~ 的用法
 
-#### // TODO
+- `^`：表示第几个父/母亲 ——　git存在多个分支合并的情况，所以不只有1对父母亲
+- `~`：表示向上找第几代，相当于连续几个 `^`
+
+**注：**这里稍微有点不理解，但是根据例子还是有规律可循的：默认垂直的那个分支是被优先选择的（即：^ / ^1 的情况）；^2 表示没有选择垂直的分支的另一个分支。~ 直接就是去垂直的那一个分支了。
+
+学习自：[git 中 HEAD^ 和 HEAD~ 是啥](https://www.jianshu.com/p/624bf81a3290)
 
 #### From 2.1
 
@@ -515,10 +538,20 @@ normal 模式键入 `:wq!`，显示如下：
 #### From 4
 
 - 不同人修改了不同文件如何处理？                 Git 会自动合并
+
 - 不同人修改了同文件的不同区域如何处理？  Git 会自动合并
+
 - 不同人修改了同文件的同一区域如何处理？  Git 不会自动合并，需要开发者自行协商
+
 - 同时变更了文件名和文件内容如何处理？      Git 会自动合并
+
 - 把同一文件改成了不同的文件名如何处理？ Git 不会自动合并，需要开发者自行协商
+
+  **补充：**发生冲突的示意图：
+
+  ![img](https://s2.loli.net/2022/02/24/U2Do3IfxqX7AteL.gif)
+
+  摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
 
 #### From 5.1
 
@@ -649,16 +682,16 @@ where git # 注：类似的，可以通过 type git 起到类似的效果
 
 ```bash
 # 设置用户名
-$ git config user.name
+git config user.name
 # 设置用户邮箱
-$ git config user.email
+git config user.email
 ```
 
 **<font color=FF0000>修改</font>用户名和邮箱地址：**
 
 ```bash
-$  git config --global user.name  "xxxx"
-$  git config --global user.email  "xxxx"
+git config --global user.name  "xxxx"
+git config --global user.email  "xxxx"
 ```
 
 **如果在修改用户名和邮箱地址时出现如下情况：**
@@ -672,14 +705,8 @@ error: cannot overwrite multiple values with a single value
 **需要使用选项 **`--replace-all`
 
 ```bash
-$  git config --global --replace-all user.email "输入你的邮箱" 
-$  git config --global --replace-all user.name "输入你的用户名"
-```
-
-**补充：查看git配置列表**
-
-```bash
-$  git config --list
+git config --global --replace-all user.email "输入你的邮箱" 
+git config --global --replace-all user.name "输入你的用户名"
 ```
 
 参考：[Git修改和配置用户名和邮箱](https://www.cnblogs.com/sunshinekevin/p/11617547.html)
@@ -700,12 +727,26 @@ $  git config --list
 
   以上摘自：[猴子都能懂的GIT入门 - 教程1 Git的基础 - 初期设定](https://backlog.com/git-tutorial/cn/intro/intro2_2.html)
 
+- **查看 Git 配置列表**
+
+  ```bash
+  git config --list
+  ```
+
+- 编辑Git配置文件
+
+  ```bash
+  git config -e [--global]
+  ```
+
+  以上内容摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
   
 
 #### Git 工作区、暂存区和版本库
 
-- **工作区：**就是你<mark>在电脑里能看到的目录</mark>。
-- **暂存区：**英文叫stage, 或index。<mark>一般存放在 ".git目录下" 下的index文件（.git/index）中</mark>，所以我们把暂存区有时也叫作索引（index）。（注：将文件从工作区到暂存区，通过 `git add` ）
+- **工作区：**就是你<mark>在电脑里能看到的目录</mark>
+- **暂存区：**英文叫 stage 或 index （**注：**vue3 作为 vue 默认版时，vue的官网也重写了；而当前 ( 2022/2/23 ) vue 新官网中文版还没正式上线，目前的网站为：https://staging-cn.vuejs.org ，其中 staging 的 应该就是 “暂存” 之意 ）。<mark>一般存放在 ".git目录下" 下的index文件（.git/index）中</mark>，所以我们把暂存区有时也叫作索引（index）。（注：将文件从工作区到暂存区，通过 `git add` ）
 - **版本库：**工作区有一个隐藏目录 .git，这个不算工作区，而是 Git 的版本库。（注：从暂存区到版本区，通过 `git commit` )
 
 ![工作区、版本库中的暂存区和版本库之间的关系](https://www.runoob.com/wp-content/uploads/2015/02/1352126739_7909.jpg)
@@ -778,6 +819,32 @@ git push -u origin master
 
 
 
+#### git add
+
+- **`git add .`：**提交所有<font color=FF0000>修改的</font>和<font color=FF0000>新建的</font>数据暂存区
+
+- **`git add -u`：**u 即 update，提交所有<font color=FF0000>被删除</font>和<font color=FF0000>修改</font>的文件到数据暂存区
+
+  **使用场景：**文件删除后，在用git add -u后，就能看见文件已经被提交到暂存区了。这个就可以以备不时之需，假如文件删错了，还能恢复回来
+
+- **`git add -A`：**A 即 all，提交所有<font color=FF0000>被删除、被替换、被修改和新增的</font>文件到数据暂存区
+
+  **`git add -A` 与 `git add .` 和 `git add -u` 差异的地方：**具有替换的文件的功能，在 git 中，会将 内容相同的文件，视作是同一个文件；如果一个文件被删除，而一个文件被新增，且和被删除文件的内容一样；则会被认为是同一个文件，且是被替换了。在 `git add -A` 后，运行 `git status`，会有如下输出：
+
+  <img src="https://s2.loli.net/2022/02/23/mfI6l51qQUZoLs9.png" alt="image-20220223161117243" style="zoom:50%;" />
+
+  其中 `bar.txt -> bar2.txt` 表示替换。
+
+  摘抄学习自：[git add -A /git add -u/git add .的用法](https://blog.csdn.net/dayewandou/article/details/78513578)
+
+- **`git add ./*.js`：**支持正则表达式
+
+- **`git add -p`：**添加每个变化前，都会要求确认。对于同一个文件的多处变化，可以实现分次提交
+
+  摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
+
+
 #### git clone
 
 <font size=4>**git clone 做了什么？**</font>
@@ -789,6 +856,55 @@ git push -u origin master
 删除远程分支以及追踪分支的命令： `git push origin --delete <branch>`
 
 摘自：[删除分支 git branch -d与git branch -D的区别](https://blog.csdn.net/qq_33592641/article/details/103871482)
+
+
+
+#### git help
+
+git 内置了对命令非常详细的解释，可以供我们快速查阅
+
+- `git help`：查找可用命令
+
+- `git help -a`：查找所有可用命令
+
+- `git help <command>`：在文档当中查找特定的命令
+
+摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
+
+
+#### 获取某些文件，某些分支，某次提交等 git 信息
+
+- `git log --stat`：显示commit历史，以及每次commit发生变更的文件
+- `git log -S [keyword]`：搜索提交历史，根据关键词
+- `git log [tag] HEAD --pretty=format:%s`：显示某个commit之后的所有变动，每个commit占据一行
+- `git log [tag] HEAD --grep feature`：显示某个commit之后的所有变动，其"提交说明"必须符合搜索条件
+- 显示某个文件的版本历史，包括文件改名
+  - `git log --follow [file]`
+  - `git whatchanged [file]`
+- `git log -p [file]`：显示指定文件相关的每一次diff
+- `git log -5 --pretty --oneline`：显示过去5次提交
+- `git shortlog -sn`：显示所有提交过的用户，按提交次数排序
+- `git blame [file]`：<font color=FF0000 size=4>**显示指定文件是什么人在什么时间修改过**</font>
+- `git diff`：<font color=FF0000 size=4>显示暂存区和工作区的差异</font>
+- `git diff --cached [file]`：<font color=FF0000>**显示暂存区和上一个commit的差异**</font>
+- `git diff HEAD`：<font color=FF0000>显示工作区与当前分支最新commit之间的差异</font>
+- `git diff [first-branch]...[second-branch]`：<font color=FF0000>显示两次提交之间的差异</font>
+- `git diff --shortstat "@{0 day ago}"`：显示今天你写了多少行代码
+- `git diff --staged`：<font color=FF0000>**比较暂存区和版本库差异**</font>
+- `git diff --cached`：<font color=FF0000>**比较暂存区和版本库差异**</font>
+- `git diff --stat`：仅仅比较统计信息
+- `git show [commit]`：显示某次提交的元数据和内容变化
+- `git show --name-only [commit]`：显示某次提交发生变化的文件
+- `git show [commit]:[filename]`：显示某次提交时，某个文件的内容
+- `git reflog`：显示当前分支的最近几次提交
+- `git branch -r`：<font color=FF0000>查看远程分支</font>。**注：**-r 等价于 --remotes
+- `git branch <new_branch>`：创建新的分支
+- `git branch -v`：<font color=FF0000>查看各个分支最后提交信息</font>
+- `git branch --merged`：查看已经被合并到当前分支的分支
+- `git branch --no-merged`：查看尚未被合并到当前分支的分支
+
+摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
 
 
@@ -844,6 +960,29 @@ git push -u origin master
 
   ![取消过去的提交](https://s2.loli.net/2022/02/22/W7fAJwoh5YLaZ69.png)
 
+  摘自：[猴子都能懂的GIT入门 - 改写提交 - 取消过去的提交](https://backlog.com/git-tutorial/cn/stepup/stepup6_2.html)
+
+  <font size=4>**git revert 的进阶使用**</font>
+
+  - **git revert  + HEAD + ^ / ~**
+
+  - **git revert commitHash**：完整的 commit 或者该 commit 前7位即可
+
+  - **git revert HEAD [, HEAD + ^/ ~ , ... ]**：回退连续的几个commit
+
+    比如回退最新的三个commit：`git revert HEAD,HEAD~1,HEAD~2`
+
+  - **git revert commitX...commitY**：commitX...commitY 代表一个左开右闭区间 (commitX, commitY]，不包括 commitX，包括commitY。其中 commitY 为起点 commit，commitX 为终点 commit 的下一个 commit。
+
+    **注：**看了下下面的示例，发现 commitX 是 seniorCommit，commitY 是 juniorCommit；不知道是不是规则。
+
+    **示例：**
+
+    - git revert HEAD~3...HEAD
+    - git revert 6a2cc3d...6a43ed0
+
+  摘自：[git revert 详解](https://www.jianshu.com/p/5c562c0790fd)
+
   根据：[猴子都能懂的GIT入门 - 教程3 改写提交！- 2. revert](https://backlog.com/git-tutorial/cn/stepup/stepup7_2.html) 的示例，键入 `git revert HEAD` 命令（**注：**根据上图所示，应该可以通过 HEAD 配合 ^ / ~ 进行选择 commit 节点，从而改变非 HEAD 的 commit 节点），让如下状态的 git 管理的文件
 
   ![数据库的历史记录](https://s2.loli.net/2022/02/22/iAGwOkx6gBt3eZL.png)
@@ -852,7 +991,7 @@ git push -u origin master
 
   ![revert之後的数据库的历史记录](https://s2.loli.net/2022/02/22/8tabURMBpyxvIGH.png)
 
-  产生如下两个现象：
+  **产生如下两个现象：**
 
   - 让最后一行的文字被撤销，即让最后一行的文字（也是 HEAD 节点添加的）被撤销
 
@@ -866,6 +1005,8 @@ git push -u origin master
   - 键入 `git log` 会发现 多了一条日志：
 
     <img src="https://s2.loli.net/2022/02/22/dvu927Reqrkz4x8.png" alt="image-20220222205722482" style="zoom:50%;" />
+    
+    即：添加了一条 comit 记录。
 
 - <font size=4>**git reset**</font>
 
@@ -891,7 +1032,47 @@ git push -u origin master
 
   具体示例参见：《玩转 Git 三剑客 》2.8、2.11；另外，[猴子都能懂的GIT入门 - 教程3 改写提交！- 3. reset](https://backlog.com/git-tutorial/cn/stepup/stepup7_3.html) 中也有类似的示例，由于和 《玩转 Git 三剑客 》2.8、2.11 很类似，这里略。
 
-- <font size=4>**git restore**</font> // TODO
+- <font size=4>**git restore**</font>
+
+  **自己总结：**
+
+  - `git restore <file>...`：对于工作区中被修改的文件，进行还原
+
+  - `git restore --staged <file>...`：将从工作区被添加到 暂存区中的文件，回滚到工作区中；但是修改的内容不变（不还原）。即：`git add <file>...` 的 逆操作。
+
+  **自己试验的示例如下：**
+
+  对一个文件进行修改，这是运行 git status，会显示<font color=FF0000>类似</font>下面的内容：
+
+  <img src="https://s2.loli.net/2022/02/23/IOZbsuxlwEPiRKk.png" alt="image-20220223200832317" style="zoom:50%;" />
+
+  运行红框中的命令 `git restore <file>...`，本次修改的内容将会被消除。
+
+  不运行上面的 `git restore <file>...` 命令，而将其添加到「暂存区」（staged，即：使用 git add），之后运行 `git status` 会显示类似下面的内容：
+
+  <img src="https://s2.loli.net/2022/02/23/Y1gdt95UnlGuHJz.png" alt="image-20220223201730281" style="zoom:50%;" />
+
+  这时候，运行 红框中的命令 `git restore --staged <file>...` ，刚刚添加到「暂存区」的文件将会被移出「暂存区」，回到「工作区」；同时，被修改的内容不变，还需要 `git restore <file>...` 将其复原。
+
+  **以下关于 `git restore` 的内容摘自**：[GIT撤销修改 restore](https://www.jianshu.com/p/dcef204dba74)
+
+  `git restore --staged [file]`  表示从暂存区将文件的状态修改成 unstage  状态。当然，也可以不指定确切的文件 ，例如：
+  `git restore --staged *.java` 表示将所有暂存区的java文件恢复状态；`git restore --staged .` 表示将当前目录所有暂存区文件恢复状态。
+
+  **另外，如果 有错误的文件已经被 commit ，有如下三种方法：**
+
+  - `git restore -s HEAD~1 <file>` ：将版本回退到当前快照的前一个版本
+  - `git restore -s commitHash <file>` ：指定明确的 commit id ，回退到指定的快照中
+  - `git reset --soft HEAD^` ：撤销 commit 至上一次 commit 的版本
+
+  **注：**从上面的示例可以见，`git restore -s <commitHash | HEAD^/~> <file>` 可以让版本回退到某个版本。
+
+<font size=4>**git revert 和 git reset 的区别**</font>
+
+- **reset：**<font color=FF0000>回朔到指定的commit版本</font>，<font color=FF0000 size=4>**指定的 commit 版本之后的操作 commit 都重置了**</font>。
+- **revert：**<font color=FF0000 size=4>删除指定的 commit 操作的内容</font>，<font color=FF0000>**指定的commit之前和之后commit操作都不受影响**</font>，与此同时 <font color=FF0000 size=4>这个操作也会作为一个 commit 进行提交</font>（即：会新增一条 commit）。更容易理解的说法：git revert是用一次新的commit来回滚之前的commit
+
+摘自：[git revert 详解](https://www.jianshu.com/p/5c562c0790fd) ，[git revert 用法](https://www.cnblogs.com/0616--ataozhijia/p/3709917.html)
 
 
 
@@ -939,7 +1120,7 @@ git push -u origin master
 
   ![分支](https://s2.loli.net/2022/02/22/bzRpQgWOSfD6KoN.png)
 
-  master 分支时，<font color=FF0000>如果 master 分支的状态没有被更改过，那么这个合并是非常简单的</font>。 <font color=FF0000>**bugfix 分支的历史记录包含master 分支所有的历史记录，所以通过把 master 分支的位置移动到bugfix的最新分支上，Git 就会合并**</font>。 <font color=FF0000 size=4>**这样的合并被称为 fast-forward（快进）合并**</font>。（**注：**这里没有产生新的节点)
+  master 分支时，<font color=FF0000>如果 master 分支的状态没有被更改过（注：即 fast-forward ），那么这个合并是非常简单的</font>。 <font color=FF0000>**bugfix 分支的历史记录包含master 分支所有的历史记录，所以通过把 master 分支的位置移动到bugfix的最新分支上，Git 就会合并**</font>。 <font color=FF0000 size=4>**这样的合并被称为 fast-forward（快进）合并**</font>。（**注：**这里没有产生新的节点)
 
   ![fast-forward合并](https://s2.loli.net/2022/02/22/k2slWP59tGAhvIS.png)
 
@@ -954,6 +1135,26 @@ git push -u origin master
   **注意：**执行合并时，<font color=FF0000>如果设定了 non fast-forward 选项，即使在能够 fast-forward 合并的情况下也会生成新的提交并合并</font>。执行 non fast-forward 后，分支会维持原状。那么要查明在这个分支里的操作就很容易了。
 
   ![non fast-forward合并](https://s2.loli.net/2022/02/22/6iu5WpJUtR4KdmT.png)
+
+  **补充：**
+
+  Git 可执行两种类型的合并：fast-forward 和 no-fast-forward。
+
+  - **Fast-forward ( --ff )：**
+
+    <font color=FF0000>在当前分支相比于我们要合并的分支没有额外的提交（commit）时，可以执行 fast-forward 合并</font>。<font color=FF0000>Git</font> 很懒，<font color=FF0000>首先会尝试执行最简单的选项：fast-forward</font>！这类合并<font color=FF0000>不会创建新的提交</font>，而是<font color=FF0000>会将我们正在合并的分支上的提交直接合并到当前分支</font>。
+
+    ![img](https://pic2.zhimg.com/v2-0a0431c992211561f14ee66f1cf0ea89_b.gif)
+
+  - **No-fast-foward ( --no-ff )：**
+
+    <mark>如果你的当前分支相比于你想要合并的分支没有任何提交，那当然很好，但很遗憾现实情况很少如此</mark>！如果我们<font color=FF0000>在当前分支上提交我们想要合并的分支不具备的改变，那么 git 将会执行 no-fast-forward 合并</font>。
+
+    <font color=FF0000>**使用 no-fast-forward 合并时，Git 会在当前活动分支上创建新的 merging commit**</font>。这个提交的父提交（parent commit）即指向这个活动分支，也指向我们想要合并的分支！
+
+    ![img](https://s2.loli.net/2022/02/23/1vajGPTt4wAy76D.gif)
+
+  摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
 
 - <font size=4>**rebase**</font>
 
@@ -972,6 +1173,8 @@ git push -u origin master
   <font color=FF0000 size=4>**rebase 之后，master 的 HEAD 位置不变**</font>。因此，要合并 master 分支和 bugfix 分支，即是<font color=FF0000>将 master 的 HEAD 移动到 bugfix 的 HEAD这里</font>。
 
   ![使用rebase合并分支](https://s2.loli.net/2022/02/22/ekvPxlNRAaLFdh1.png)
+  
+  
 
 <font size=4>**总结**</font>
 
@@ -989,7 +1192,7 @@ git push -u origin master
 
 <font size=4>**git merge 命令**</font>
 
-**git merge \<commit>：**将指定分支导入到HEAD指定的分支。**注：**这里是\<commit> 而不是 \<branch>？不清楚，待定 // TODO
+**git merge \<branch>：**将指定分支导入到HEAD指定的分支。
 
 **merge 有一个特殊选项：squash**（注：意为 拥挤( n )，压缩( verb ) ）。用这个选项指定分支的合并，就可以 <font color=FF0000 size=4>**把所有汇合的提交添加到分支上**</font>（注：如下图所示，将 X 和 Y 两个提交合并在一起，并通过 git merge，生成新的节点）。
 
@@ -1057,4 +1260,14 @@ rebase 的时候，修改冲突后的提交不是使用 commit 命令，而是�
 在 [猴子都能懂的GIT入门 - - 教程3 改写提交！- 4. cherry-pick](https://backlog.com/git-tutorial/cn/stepup/stepup7_4.html) 有示例。命令为 `git cherry-pick commitHash` 其实挺简单；大致意思就是，在一个分支（假设为 A）中，将另一个分支（假设为 B）的 commit （commitHash 所对应的 commit）中的内容导入该分支 ( A ) 中（只是倒入这个 commitHash 指定的 commit，他后面无论有什么变化，都不导入）；另外，该操作可能会导致冲突，如果出现，需要手动清除冲突（示例中就存在冲突）。
 
 
+
+#### git read-tree
+
+这是一个比较底层的命令，这里提一下，Pro Git  中的解释是：
+
+> git-read-tree - Reads tree information into the index
+>
+> 即：读取树状的信息，将其放入索引区（暂存区）
+
+摘自：[Pro Git - giit-read-tree](https://git-scm.com/docs/git-read-tree)
 

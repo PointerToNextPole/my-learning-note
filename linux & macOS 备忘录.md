@@ -127,6 +127,12 @@
 
 ### <font color=FF0000>Mac命令行使用</font>
 
+**修改终端用户名：**
+
+```sh
+sudo scutil --set HostName yourTargetName
+```
+
 ##### `cd`命令，在命令行中进入查找输出的地址，如：
 
 ```bash

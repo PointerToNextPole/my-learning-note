@@ -9256,7 +9256,7 @@ history.replaceState(stateObj, title[, url]);
 
   <font size=4>**补充：**</font>
 
-  submit事件触发后默认会<font color=FF0000> **重载页面** </font>
+  submit 事件触发后默认会<font color=FF0000> **重载页面** </font>
 
   摘自：[Vue3官方文档 - 事件处理 - 事件修饰符](https://v3.cn.vuejs.org/guide/events.html#事件修饰符)
 
@@ -9307,6 +9307,8 @@ history.replaceState(stateObj, title[, url]);
   可以冒泡，不可以取消
 
   摘自：[MDN - Window: hashchange event](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/hashchange_event)
+  
+  **注：**这个事件是 vue-router hash模式的原理
 
 <font size=4>**补充：**</font>
 
