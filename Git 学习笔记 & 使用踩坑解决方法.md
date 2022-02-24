@@ -10,6 +10,7 @@
 - [atlassian 公司出的 git 教程](https://www.atlassian.com/git/tutorials) 要比git 官方文档易读很多
 - [猴子都能懂的GIT入门](https://backlog.com/git-tutorial/cn/) 适合入门，及建立知识框架
 - [工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100) 画了一些动图，便于理解
+- [图解Git](https://marklodato.github.io/visual-git-guide/index-zh-cn.html) 一些图解，说了一些上一篇文章没说的东西
 - [给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960) 一些补充的命令
 
 
