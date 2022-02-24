@@ -1,8 +1,18 @@
 # Git 学习笔记 & 使用踩坑解决方法
 
-#### 所有关于git的内容都可以参考
 
-https://git-scm.com/book/zh/v2
+
+#### 一些资料
+
+- git官方文档：https://git-scm.com/docs 
+- 官方中文书籍：https://git-scm.com/book/zh/v2。
+
+- [atlassian 公司出的 git 教程](https://www.atlassian.com/git/tutorials) 要比git 官方文档易读很多
+- [猴子都能懂的GIT入门](https://backlog.com/git-tutorial/cn/) 适合入门，及建立知识框架
+- [工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100) 画了一些动图，便于理解
+- [给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960) 一些补充的命令
+
+
 
 #### From 1.3
 
@@ -81,10 +91,11 @@ git add -u # 对git已经跟踪了的文件，将其一起提交到暂存区；�
 git add file_name  # 将文件加入git管理
 git rm file_name  # 将文件从git管理中移除( remove tracked file from the git index)，也可同时从“工作区”和“暂存区”移除。
 
-git mv orgin_file_name target_file_name # 使用 git 将原始文件改名为目标文件名，类似于先 mv 再 git add
+git mv orgin_file_name target_file_name # 使用 git 将原始文件改名为目标文件名，类似于先 mv 再 git add。另外，git mv 也同样，可以起到移动文件的目的。
+# 还有 git mv -f origin_file existing_file 命令：强制重命名或移动，这个文件已经存在，将要覆盖掉
 ```
 
-补充：关于 **git rm**：
+**补充：**关于 **git rm**：
 
 > **summary:** The git rm command is used to remove files from a Git repository.
 >
@@ -171,9 +182,9 @@ git checkout -b branchName commitHash # 创建一个新的分支，并 **切换�
 
     类似的，运行 `git cat-file -t hashVal` 输出的结果为 tag。
 
-    运行命令 `git cat-file -p hashVal` 可以打印出对应的内容（-p 选项就是查看对应内容的），这些信息包含 tag 的指向（指向的是 object）。如下：
+    运行命令 `git cat-file -p hashVal` 可以打印出对应的内容（-p 选项就是查看对应内容的），这些信息包含 tag 的指向（指向的是 object）。
 
-    <img src="https://s2.loli.net/2022/02/20/KQcgz9PkRY7xuGB.png" alt="image-20220220162811336" style="zoom:50%;" />
+    // 这里图床丢了一张图片...
 
     对这个对象运行 `git cat-file -t 198010a`（198010a 是上面 object 对应的 hash 值），可以发现他是一个 commit
 
@@ -266,7 +277,7 @@ commit、tree、blob 三者之间的关系
 
 <img src="https://s2.loli.net/2022/02/20/oCgbVur1HTXO8Wl.png" alt="image-20220220195359974" style="zoom:50%;" />
 
-提示中也提及了，保存分离头指针为一个分支的方法：`git branch branchName detachedHEADHash`
+提示中也提及了，保存分离头指针为一个分支的方法：`git branch branchName commitHash`
 
 #### From 1.12
 
@@ -473,29 +484,29 @@ normal 模式键入 `:wq!`，显示如下：
 
 在处理完任务后，可以使用 `git stash pop` 或者 `git stash apply` 命令进行恢复 stash（注，补充：暂存的内容可以恢复到其他任意指定的分支上）。相关命令如下：
 
-- `git stash apply`：环境将会恢复，stash 中的数据，将不会被清除。
+- **git stash apply：**环境将会恢复，stash 中的数据，将不会被清除。
 
   可以使用 `git stash apply <stashName>`（如stash@{1}）指定恢复哪个stash到当前的工作目录
 
-- `git stash pop`：将当前stash中的内容弹出，并应用到当前分支对应的工作目录上。环境会恢复，stash 中的数据将会被清理。
+- **git stash pop：**将当前stash中的内容弹出，并应用到当前分支对应的工作目录上。环境会恢复，stash 中的数据将会被清理。
 
   如果从stash中恢复的内容和当前目录中的内容发生了冲突，也就是说，恢复的内容和当前目录修改了同一行的数据，那么会提示报错，需要解决冲突，可以通过创建新的分支来解决冲突。
 
-- `git stash save <msg>` ：作用等同于git stash，区别是可以加一些注释
+- **git stash save \<msg> ：**作用等同于git stash，区别是可以加一些注释
 
-- `git stash list`：查看当前stash中的内容
+- **git stash list：**查看当前stash中的内容
 
-- `git stash drop stashName`：从堆栈中移除某个指定的stash，stashName 即：类似 stash@{1}
+- **git stash drop stashName：**从堆栈中移除某个指定的stash，stashName 即：类似 stash@{1}
 
-- `git stash clear`：清除堆栈中的所有内容
+- **git stash clear：**清除堆栈中的所有内容
 
-- `git stash show`：查看堆栈中最新保存的stash和当前目录的差异
+- **git stash show：**查看堆栈中最新保存的stash和当前目录的差异
 
   可以通过 `git stash show <stashName>` 的方式，指定某一个 stash 与当前目录的差异
 
   通过 `git stash show [<stashName>] -p` 查看详细的不同
 
-- `git stash branch`：从最新的stash创建分支。
+- **git stash branch：**从最新的stash创建分支。
 
   应用场景：当储藏了部分工作，暂时不去理会，继续在当前分支进行开发，后续想将stash中的内容恢复到当前工作目录时，如果是针对同一个文件的修改（即便不是同行数据），那么可能会发生冲突，恢复失败，这里通过创建新的分支来解决。可以用于解决stash中的内容和当前目录的内容发生冲突的情景。
   发生冲突时，需手动解决冲突。
@@ -806,30 +817,44 @@ git push -u origin master
 
 > 就是你第一次使用 git push -u origin master 之后，第二次【下次，以后】可以直接使用 git pull 拉取代码，就不需要输入完整的命令 git pull origin master 来拉取代码了。即 第二次 使用 git pull 等同于执行 git pull origin master。然后第二次也可以用 git push推送代码而不用git push origin master。即第二次 使用 git push 等同于执行 git push origin master。
 >
-> 摘自：[git push -u的含义和用法](https://blog.csdn.net/chenzz444/article/details/104408607) 的评论区
+> 摘自：[git push -u 的含义和用法](https://blog.csdn.net/chenzz444/article/details/104408607) 的评论区
+
+**补充：**
+**git push [remote] --all：**推送所有分支到远程仓库
+
+补充内容摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
 <font size=4>**其他 git remote 命令**</font>
 
 - **git remove -v：**显示所有远程仓库
-- **git remote show [remote]：**显示某个远程仓库的信息
-- **git remote rm name：**删除远程仓库
-- **git remote rename old_name new_name：**修改仓库名
 
-​	以上摘自：[RUNOOB - git remote 命令](https://www.runoob.com/git/git-remote.html)
+- **git remote show [remote]：**显示某个远程仓库的信息
+
+- **git remote rm repoName：**删除远程仓库
+
+- **git remote rename oldName newName：**修改仓库名
+
+  摘自：[RUNOOB - git remote 命令](https://www.runoob.com/git/git-remote.html)
+
+- **git remote add [shortname] [url]**：增加一个新的远程仓库，并命名
+
+- **git remote set-url repoRename remoteUrl：**设置远程仓库地址（用于修改远程仓库地址）
+
+  摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
 
 
 #### git add
 
-- **`git add .`：**提交所有<font color=FF0000>修改的</font>和<font color=FF0000>新建的</font>数据暂存区
+- **git add .：**提交所有<font color=FF0000>修改的</font>和<font color=FF0000>新建的</font>数据暂存区
 
-- **`git add -u`：**u 即 update，提交所有<font color=FF0000>被删除</font>和<font color=FF0000>修改</font>的文件到数据暂存区
+- **git add -u：**u 即 update，提交所有<font color=FF0000>被删除</font>和<font color=FF0000>修改</font>的文件到数据暂存区
 
   **使用场景：**文件删除后，在用git add -u后，就能看见文件已经被提交到暂存区了。这个就可以以备不时之需，假如文件删错了，还能恢复回来
 
-- **`git add -A`：**A 即 all，提交所有<font color=FF0000>被删除、被替换、被修改和新增的</font>文件到数据暂存区
+- **git add -A：**A 即 all，提交所有<font color=FF0000>被删除、被替换、被修改和新增的</font>文件到数据暂存区
 
-  **`git add -A` 与 `git add .` 和 `git add -u` 差异的地方：**具有替换的文件的功能，在 git 中，会将 内容相同的文件，视作是同一个文件；如果一个文件被删除，而一个文件被新增，且和被删除文件的内容一样；则会被认为是同一个文件，且是被替换了。在 `git add -A` 后，运行 `git status`，会有如下输出：
+  **git add -A 与 git add . 和 git add -u 差异的地方：**具有替换的文件的功能，在 git 中，会将 内容相同的文件，视作是同一个文件；如果一个文件被删除，而一个文件被新增，且和被删除文件的内容一样；则会被认为是同一个文件，且是被替换了。在 `git add -A` 后，运行 `git status`，会有如下输出：
 
   <img src="https://s2.loli.net/2022/02/23/mfI6l51qQUZoLs9.png" alt="image-20220223161117243" style="zoom:50%;" />
 
@@ -837,11 +862,25 @@ git push -u origin master
 
   摘抄学习自：[git add -A /git add -u/git add .的用法](https://blog.csdn.net/dayewandou/article/details/78513578)
 
-- **`git add ./*.js`：**支持正则表达式
+- **git add [dir]：**添加指定目录到暂存区，包括子目录
 
-- **`git add -p`：**添加每个变化前，都会要求确认。对于同一个文件的多处变化，可以实现分次提交
+- **git add ./*.js：**支持正则表达式
+
+- **git add -p：**添加每个变化前，都会要求确认。对于同一个文件的多处变化，可以实现分次提交
 
   摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
+
+
+#### git commit 相关命令
+
+- **git commit [file1] [file2] ... -m msg：**提交暂存区的指定文件到仓库区
+- **git commit -a：**提交工作区自上次commit之后的变化，直接到仓库区
+- **git commit -v：**<font color=FF0000>**提交时显示所有diff信息**</font>
+- **git commit --amend -m msg：**使用一次新的commit，替代上一次提交。如果代码没有任何新变化，则用来改写上一次commit的提交信息
+- **git commit --amend [file1] [file2] ...：**重做上一次commit，并包括指定文件的新变化
+
+摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
 
 
@@ -863,11 +902,11 @@ git push -u origin master
 
 git 内置了对命令非常详细的解释，可以供我们快速查阅
 
-- `git help`：查找可用命令
+- **git help：**查找可用命令
 
-- `git help -a`：查找所有可用命令
+- **git help -a：**查找所有可用命令
 
-- `git help <command>`：在文档当中查找特定的命令
+- **git help \<command>：**在文档当中查找特定的命令
 
 摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
@@ -875,34 +914,34 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
 
 #### 获取某些文件，某些分支，某次提交等 git 信息
 
-- `git log --stat`：显示commit历史，以及每次commit发生变更的文件
-- `git log -S [keyword]`：搜索提交历史，根据关键词
-- `git log [tag] HEAD --pretty=format:%s`：显示某个commit之后的所有变动，每个commit占据一行
-- `git log [tag] HEAD --grep feature`：显示某个commit之后的所有变动，其"提交说明"必须符合搜索条件
-- 显示某个文件的版本历史，包括文件改名
-  - `git log --follow [file]`
-  - `git whatchanged [file]`
-- `git log -p [file]`：显示指定文件相关的每一次diff
-- `git log -5 --pretty --oneline`：显示过去5次提交
-- `git shortlog -sn`：显示所有提交过的用户，按提交次数排序
-- `git blame [file]`：<font color=FF0000 size=4>**显示指定文件是什么人在什么时间修改过**</font>
-- `git diff`：<font color=FF0000 size=4>显示暂存区和工作区的差异</font>
-- `git diff --cached [file]`：<font color=FF0000>**显示暂存区和上一个commit的差异**</font>
-- `git diff HEAD`：<font color=FF0000>显示工作区与当前分支最新commit之间的差异</font>
-- `git diff [first-branch]...[second-branch]`：<font color=FF0000>显示两次提交之间的差异</font>
-- `git diff --shortstat "@{0 day ago}"`：显示今天你写了多少行代码
-- `git diff --staged`：<font color=FF0000>**比较暂存区和版本库差异**</font>
-- `git diff --cached`：<font color=FF0000>**比较暂存区和版本库差异**</font>
-- `git diff --stat`：仅仅比较统计信息
-- `git show [commit]`：显示某次提交的元数据和内容变化
-- `git show --name-only [commit]`：显示某次提交发生变化的文件
-- `git show [commit]:[filename]`：显示某次提交时，某个文件的内容
-- `git reflog`：显示当前分支的最近几次提交
-- `git branch -r`：<font color=FF0000>查看远程分支</font>。**注：**-r 等价于 --remotes
-- `git branch <new_branch>`：创建新的分支
-- `git branch -v`：<font color=FF0000>查看各个分支最后提交信息</font>
-- `git branch --merged`：查看已经被合并到当前分支的分支
-- `git branch --no-merged`：查看尚未被合并到当前分支的分支
+- **git log --stat：**显示commit历史，以及每次commit发生变更的文件
+- **git log -S [keyword]：**搜索提交历史，根据关键词
+- **git log [tag] HEAD --pretty=format:%s：**显示某个commit之后的所有变动，每个commit占据一行
+- **git log [tag] HEAD --grep feature：**显示某个commit之后的所有变动，其"提交说明"必须符合搜索条件
+- **显示某个文件的版本历史，包括文件改名**
+  - git log --follow [file]
+  - git whatchanged [file]
+- **git log -p [file]：**显示指定文件相关的每一次diff
+- **git log -5 --pretty --oneline：**显示过去5次提交
+- **git shortlog -sn：**显示所有提交过的用户，按提交次数排序
+- **git blame [file]：**<font color=FF0000 size=4>**显示指定文件是什么人在什么时间修改过**</font>
+- **git diff：**<font color=FF0000 size=4>显示暂存区和工作区的差异</font>
+- **git diff --cached [file]：**<font color=FF0000>**显示暂存区和上一个commit的差异**</font>
+- **git diff HEAD：**<font color=FF0000>显示工作区与当前分支最新commit之间的差异</font>
+- **git diff [first-branch]...[second-branch]：**显示两次提交之间的差异
+- **git diff --shortstat "@{0 day ago}"：**显示今天你写了多少行代码
+- **git diff --staged：**<font color=FF0000>**比较暂存区和版本库差异**</font>
+- **git diff --cached：**<font color=FF0000>**比较暂存区和版本库差异**</font>
+- **git diff --stat：**仅仅比较统计信息
+- **git show [commit]：**显示某次提交的元数据和内容变化
+- **git show --name-only [commit]：**显示某次提交发生变化的文件
+- **git show [commit]:[filename]：**显示某次提交时，某个文件的内容
+- **git reflog：**显示当前分支的最近几次提交
+- **git branch -r：**<font color=FF0000>查看远程分支</font>。**注：**-r 等价于 --remotes
+- **git branch <new_branch>：**创建新的分支
+- **git branch -v：**<font color=FF0000>查看各个分支最后提交信息</font>
+- **git branch --merged：**查看已经被合并到当前分支的分支
+- **git branch --no-merged：**查看尚未被合并到当前分支的分支
 
 摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
@@ -1008,6 +1047,16 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
     
     即：添加了一条 comit 记录。
 
+  **补充：图示如下：**
+
+  假设 ec5be 添加了一个 index.js 文件。但之后我们发现其实我们再也不需要由这个提交引入的修改了。那就还原 ec5be 提交吧！
+
+  ![img](https://s2.loli.net/2022/02/24/PFadH6tCj9nWxXT.gif)
+
+  完美！提交 9e78i 还原了由提交 ec5be 引入的修改。在撤销特定的提交时，git revert 非常有用，同时也不会修改分支的历史。
+
+  补充内容摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
+
 - <font size=4>**git reset**</font>
 
   <font color=FF0000 size=4>**git reset 可以遗弃不再使用的提交**</font>。执行遗弃时，需要<font color=FF0000>**根据影响的范围而指定不同的模式**</font>，可以 <font color=FF0000>**指定是否复原 索引 或 工作树 的内容**</font>。（注：由上可知，<font color=FF0000>**git reset 必定会修改 HEAD 的位置**</font>；另外，也可以从下面表格看出）
@@ -1016,11 +1065,11 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
 
   <font size=4>**除了 <font color=FF0000>默认的 mixed 模式</font>，还有 soft 和 hard 模式**</font>。欲了解受各模式影响的部分，请参照下面的表格。
 
-  | 模式名称 | 是否修改 HEAD的位置 | 是否修改 索引 | 是否修改 工作树 |
-  | :------: | :-----------------: | :-----------: | :-------------: |
-  |   soft   |        修改         |    不修改     |     不修改      |
-  |  mixed   |        修改         |     修改      |     不修改      |
-  |   hard   |        修改         |     修改      |      修改       |
+  | 模式名称 | 是否修改 HEAD的位置 | 是否修改索引（暂存区） | 是否修改工作树 |
+  | :------: | :-----------------: | :--------------------: | :------------: |
+  |   soft   |        修改         |         不修改         |     不修改     |
+  |  mixed   |        修改         |          修改          |     不修改     |
+  |   hard   |        修改         |          修改          |      修改      |
 
   **注，**一些自己的总结：HEAD 无论什么模式，都会被修改；soft 模式，只有 HEAD 会被修改；hard 模式，三者都会被修改
 
@@ -1032,13 +1081,35 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
 
   具体示例参见：《玩转 Git 三剑客 》2.8、2.11；另外，[猴子都能懂的GIT入门 - 教程3 改写提交！- 3. reset](https://backlog.com/git-tutorial/cn/stepup/stepup7_3.html) 中也有类似的示例，由于和 《玩转 Git 三剑客 》2.8、2.11 很类似，这里略。
 
+  <font size=4>**补充：**</font>
+
+  - **软重置：**
+
+    软重置会将 HEAD 移至指定的提交（或与 HEAD 相比的提交的索引），而不会移除该提交之后加入的修改！
+
+    假设我们不想保留添加了一个 style.css 文件的提交 9e78i，而且我们也不想保留添加了一个 index.js 文件的提交 035cc。但是，我们确实又想要保留新添加的 style.css 和 index.js 文件！这是软重置的一个完美用例。
+
+    ![img](https://s2.loli.net/2022/02/24/nNqOBR7pXSeViIu.gif)
+
+    输入 git status 后，你会看到我们仍然可以访问在之前的提交上做过的所有修改。这很好，这意味着我们可以修复这些文件的内容，之后再重新提交它们！
+
+  - **硬重置：**
+
+    有时候我们并不想保留特定提交引入的修改。不同于软重置，我们应该再也无需访问它们。Git 应该直接将整体状态直接重置到特定提交之前的状态：这甚至包括你在工作目录中和暂存文件上的修改。
+
+    ![img](https://s2.loli.net/2022/02/24/f5IWNtFjAQrl9pV.gif)
+
+    Git 丢弃了 9e78i 和 035cc 引入的修改，并将状态重置到了 ec5be 的状态。
+
+  补充内容摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
+
 - <font size=4>**git restore**</font>
 
   **自己总结：**
 
-  - `git restore <file>...`：对于工作区中被修改的文件，进行还原
+  - **git restore \<file>...：**对于工作区中被修改的文件，进行还原
 
-  - `git restore --staged <file>...`：将从工作区被添加到 暂存区中的文件，回滚到工作区中；但是修改的内容不变（不还原）。即：`git add <file>...` 的 逆操作。
+  - **git restore --staged \<file>...：**将从工作区被添加到 暂存区中的文件，回滚到工作区中；但是修改的内容不变（不还原）。即：`git add <file>...` 的 逆操作。
 
   **自己试验的示例如下：**
 
@@ -1061,9 +1132,9 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
 
   **另外，如果 有错误的文件已经被 commit ，有如下三种方法：**
 
-  - `git restore -s HEAD~1 <file>` ：将版本回退到当前快照的前一个版本
-  - `git restore -s commitHash <file>` ：指定明确的 commit id ，回退到指定的快照中
-  - `git reset --soft HEAD^` ：撤销 commit 至上一次 commit 的版本
+  - **git restore -s HEAD~1 \<file> ：**将版本回退到当前快照的前一个版本
+  - **git restore -s commitHash \<file> ：**指定明确的 commit id ，回退到指定的快照中
+  - **git reset --soft HEAD^ ：**撤销 commit 至上一次 commit 的版本
 
   **注：**从上面的示例可以见，`git restore -s <commitHash | HEAD^/~> <file>` 可以让版本回退到某个版本。
 
@@ -1156,6 +1227,12 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
 
   摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
 
+  **补充：**
+
+  **git merge 有一个 `--no-ff` 的选项：**<font color=FF0000>在合并时创建一个新的合并后的提交，不要 Fast-Foward 合并，这样可以生成 merge 提交</font>
+
+  补充内容学习自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
 - <font size=4>**rebase**</font>
 
   跟merge的例子一样，如下图所示，bugfix分支是从master分支分叉出来的。
@@ -1174,7 +1251,38 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
 
   ![使用rebase合并分支](https://s2.loli.net/2022/02/22/ekvPxlNRAaLFdh1.png)
   
+  <font size=4>**补充：**</font>
   
+  git rebase 会将当前分支的提交复制到指定的分支之上。
+  
+  ![https://pic2.zhimg.com/v2-6b8427b4baf6cdfb08b852ab1cdb4941_b.gif](https://s2.loli.net/2022/02/24/PAu9XB4nV1wZ6Gp.gif)
+  
+  **变基与合并有一个重大的区别：**Git 不会尝试确定要保留或不保留哪些文件。我们执行 rebase 的分支总是含有我们想要保留的最新近的修改！这样我们不会遇到任何合并冲突，而且可以保留一个漂亮的、线性的 Git 历史记录。
+  
+  **交互式变基（Interactive Rebase）**
+  
+  在为提交执行变基之前，我们可以修改它们！我们可以使用交互式变基来完成这一任务。交互式变基在你当前开发的分支上以及想要修改某些提交时会很有用。
+  
+  **在我们正在 rebase 的提交上，我们可以执行以下 6 个动作：**
+  
+  - **reword：**修改提交信息。**注：**即编辑 commit 的 msg
+  - **edit：**修改此提交；
+  - **squash：**将提交融合到前一个提交中；
+  - **fixup：**将提交融合到前一个提交中，不保留该提交的日志消息；
+  - **exec：**在每个提交上运行我们想要 rebase 的命令；
+  - **drop：**移除该提交。
+  
+  很棒！这样我们就能完全控制我们的提交了。如果你想要移除一个提交，只需 drop 即可。
+  
+  ![https://pic4.zhimg.com/v2-7189da3226d1fdedeb6a297fbc2b1177_b.gif](https://s2.loli.net/2022/02/24/S9KjiUEZNoRQB36.gif)
+  
+  如果你想把多个提交融合到一起以便得到清晰的提交历史，那也没有问题！
+  
+  ![img](https://s2.loli.net/2022/02/24/1mHqAysCPIY9drT.gif)
+  
+  交互式变基能为你在 rebase 时提供大量控制，甚至可以控制当前的活动分支。
+  
+  补充内容摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
 
 <font size=4>**总结**</font>
 
@@ -1222,6 +1330,18 @@ rebase 的时候，修改冲突后的提交不是使用 commit 命令，而是�
 
 ![合并FETCH_HEAD](https://s2.loli.net/2022/02/22/mRhTzNADxVoPnX7.png)
 
+**补充：**
+
+- **git fetch 示意图：**
+
+  ![https://pic2.zhimg.com/v2-686ae54f78ea69b6c00cc8b159cf7369_b.gif](https://s2.loli.net/2022/02/24/xZMOgY6LENzCp3u.gif)
+
+- **git pull 示意图：**
+
+  ![https://pic2.zhimg.com/v2-1298832b975cf9cf0ad6c399ec5da32d_b.gif](https://s2.loli.net/2022/02/24/L6tx2VHDyfsCArh.gif)
+
+补充内容摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
+
 
 
 <font size=4>**git pull 和 git merge的区别**</font>
@@ -1242,6 +1362,12 @@ rebase 的时候，修改冲突后的提交不是使用 commit 命令，而是�
 
 摘自：[segmentfault Salamander的回答 -- git pull和git merge 区别? ](https://segmentfault.com/q/1010000009076820)
 
+**补充：**
+
+git pull 有 `--no-ff` 选项，表示：抓取远程仓库所有分支更新并合并到本地，不要快进合并
+
+补充内容摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
 
 
 #### git cherry-pick
@@ -1259,6 +1385,40 @@ rebase 的时候，修改冲突后的提交不是使用 commit 命令，而是�
 
 在 [猴子都能懂的GIT入门 - - 教程3 改写提交！- 4. cherry-pick](https://backlog.com/git-tutorial/cn/stepup/stepup7_4.html) 有示例。命令为 `git cherry-pick commitHash` 其实挺简单；大致意思就是，在一个分支（假设为 A）中，将另一个分支（假设为 B）的 commit （commitHash 所对应的 commit）中的内容导入该分支 ( A ) 中（只是倒入这个 commitHash 指定的 commit，他后面无论有什么变化，都不导入）；另外，该操作可能会导致冲突，如果出现，需要手动清除冲突（示例中就存在冲突）。
 
+**补充：**
+
+假设 dev 分支上的提交 76d12 为 index.js 文件添加了一项修改，而我们希望将其整合到 master 分支中。<mark>我们并不想要整个 dev 分支，而只需要这个提交</mark>！
+
+![img](https://s2.loli.net/2022/02/24/yLq3CbzrYGjS1Mh.gif)
+
+现在 master 分支包含 76d12 引入的修改了。
+
+补充内容摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
+
+
+
+#### git <font color=FF0000>ref</font>log
+
+注意上面的红色的字体，即 reflog 的意思为 ref + log。
+
+键入 git reflog 显示的效果图示例如下：
+
+<img src="https://s2.loli.net/2022/02/24/wU4PkXDcx2ftbaQ.png" alt="image-20220224200700730" style="zoom:45%;" />
+
+git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **展示已经执行过的所有动作的日志**</font>。<font color=FF0000>包括合并、重置、还原，基本上包含你对你的分支所做的任何修改</font>。
+
+![https://pic1.zhimg.com/v2-cda251045d9d8b2d5b65db533b6ba3cc_b.gif](https://s2.loli.net/2022/02/24/9jVnWPaielUhvuL.gif)
+
+如果你犯了错，你<font color=FF0000>可以根据 reflog 提供的信息通过重置 HEAD 来轻松地重做</font>！
+
+假设我们实际上并不需要合并原有分支。当我们执行 git reflog 命令时，我们可以看到这个 repo 的状态在合并前位于 HEAD@{1}。那我们就执行一次 git reset，将 HEAD 重新指向在 HEAD@{1} 的位置。
+
+![https://pic3.zhimg.com/v2-4131550e150396f1dfc6a8242c6d103a_b.gif](https://s2.loli.net/2022/02/24/KeGSCd8XDB4EmhW.gif)
+
+我们可以看到最新的动作已被推送给 reflog。
+
+摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
+
 
 
 #### git read-tree
@@ -1270,4 +1430,28 @@ rebase 的时候，修改冲突后的提交不是使用 commit 命令，而是�
 > 即：读取树状的信息，将其放入索引区（暂存区）
 
 摘自：[Pro Git - giit-read-tree](https://git-scm.com/docs/git-read-tree)
+
+
+
+#### 分支命令补充
+
+- **git branch -m oldBranchName newBranchName：**分支重命名
+- **git checkout -：**切换到上一个分支
+- **git branch --set-upstream [branch] [remote-branch]：**建立追踪关系，在现有分支与指定的远程分支之间
+- **删除远程分支：**
+  - git push origin --delete [branch-name]
+  - git branch -dr [remote/branch]
+
+摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
+
+
+## 其他 git 命令
+
+- **git archive：**生成一个可供发布的压缩包
+- **git apply ../sync.patch：**打补丁
+- **git apply --check ../sync.patch**：测试补丁能否成功
+- **git --version：**查看Git的版本
+
+摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 

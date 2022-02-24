@@ -6500,6 +6500,7 @@ PerformanceObserver <font color=FF0000>用于监测性能度量事件</font>，<
 
 - **构造器**
   **new URL()：**创建并返回一个URL对象，该URL对象引用使用绝对URL字符串，相对URL字符串和基本URL字符串指定的URL。
+  
 - **属性**
   - **hash：**<font color=FF0000>包含'#'的USVString</font>，后跟URL的片段标识符。
   - **host：**一个USVString，其中包含域（即主机名），后跟（如果指定了端口）“：”和URL的端口。
@@ -6514,12 +6515,50 @@ PerformanceObserver <font color=FF0000>用于监测性能度量事件</font>，<
   - <font color=FF0000>**searchParams：**</font>只读，
     - <font color=FF0000>**URLSearchParams：**</font>对象，可用于访问search中找到的各个查询参数。
   - **username：**包含在域名前面指定的用户名的 USVString。
+  
 - **方法**
-  - **toString()：**返回包含整个URL的USVString。 它是URL.href的同义词，尽管它不能用于修改值。
-  - **toJSON()：**返回包含整个URL的USVString。 它返回与href属性相同的字符串。
+  - **toString()：**返回包含整个 URL 的 USVString。 它是 URL.href 的同义词，尽管它不能用于修改值。
+  - **toJSON()：**返回包含整个 URL 的 USVString。 它返回与 href 属性相同的字符串。
+  
 - **静态方法**
-  - **createObjectURL()：**返回一个DOMString ，包含一个唯一的blob链接（该链接协议为以blob:，后跟唯一标识浏览器中的对象的掩码）。
-  - **revokeObjectURL()：**销毁之前使用URL.createObjectURL()方法创建的URL实例。
+  
+  - **createObjectURL()：**返回一个 DOMString ，包含一个唯一的 blob 链接（该链接协议为以 `blob:`，后跟唯一标识浏览器中的对象的掩码）。
+  
+    <font size=4>**补充：**</font>
+  
+    URL.createObjectURL() 静态方法 会创建一个 DOMString，其中包含一个表示参数中给出的对象的 URL。这个 URL 的生命周期和创建它的窗口中的 document 绑定。这个新的 URL 对象表示指定的 File 对象或 Blob 对象。
+  
+    **语法：**
+  
+    ```js
+    objectURL = URL.createObjectURL(object);
+    ```
+  
+    - **参数：**
+  
+      **object：**用于创建 URL 的 File 对象、Blob 对象或者 MediaSource 对象。
+  
+    - **返回值：**一个 DOMString 包含了一个对象 URL，该 URL 可用于指定源 object 的内容。
+  
+    补充内容摘自：[MDN - URL.createObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/createObjectURL)
+  
+  - **revokeObjectURL()：**销毁之前使用 URL.createObjectURL() 方法创建的URL实例。
+  
+    <font size=4>**补充：**</font>
+  
+    URL.revokeObjectURL() 静态方法用来<font color=FF0000>释放一个之前已经存在的、通过调用 URL.createObjectURL() 创建的 URL 对象</font>。当你结束使用某个 URL 对象之后，应该通过调用这个方法来让浏览器知道不用在内存中继续保留对这个文件的引用了。
+  
+    **语法：**
+  
+    ```js
+    window.URL.revokeObjectURL(objectURL);
+    ```
+  
+    - **参数：**
+      **objectURL：**一个 DOMString，表示通过调用 URL.createObjectURL() 方法产生的 URL 对象。
+    - **返回值：**undefined
+  
+    补充内容摘自：[MDN - URL.revokeObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/revokeObjectURL)
 
 摘自：[MDN - URL](https://developer.mozilla.org/zh-CN/docs/Web/API/URL)
 
@@ -11168,6 +11207,22 @@ XMLHttpRequestEventTarget --|> EventTarget : Inheritance
       　　}
       }
       ```
+      
+      **补充：**
+      
+      XMLHttpRequest 属性 responseType <font color=FF0000>是一个枚举字符串值</font>，<font color=FF0000>用于**指定响应中包含的数据类型**</font>。它还<font color=FF0000>允许更改响应类型</font>。如果<mark>将 responseType 的值设置为空字符串</mark>，则<font color=FF0000>会使用 text 作为默认值</font>。
+      
+      **可选值**
+      
+      - **""：**空的 responseType 字符串 <font color=FF0000 size=4>与默认类型 "text" 相同</font>。
+      - **"arraybuffer"：**response 是一个包含二进制数据的 JavaScript ArrayBuffer。
+      - **"blob"：**response 是一个包含二进制数据的 Blob 对象。
+      - **"document"：**response 是一个 HTML Document 或 XML XMLDocument，根据接收到的数据的 MIME 类型而定。
+      - **"json"：**response 是通过将接收到的数据内容解析为 JSON 而创建的 JavaScript 对象。
+      - **"text"：**response 是 <font color=FF0000>DOMString 对象中的文本</font>。
+      - **"ms-stream"：**👎 略
+      
+      以上内容摘自：[MDN - XMLHttpRequest.responseType](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/responseType)
 
   * **可以获得数据传输的进度信息**
 

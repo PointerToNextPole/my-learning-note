@@ -289,6 +289,17 @@ open folder/fileName.filetype     #打开默认的打开方式打开文件（如
 
 
 
+#### Mac 自带截图，如何去除影印
+
+```sh
+# 去阴影
+defaults write com.apple.screencapture disable-shadow -bool TRUE
+# 有阴影
+defaults write com.apple.screencapture disable-shadow -bool FALSE
+```
+
+
+
 #### macOS清理DNS缓存
 
 ```sh
