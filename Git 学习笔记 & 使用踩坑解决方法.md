@@ -234,6 +234,16 @@ commit、tree、blob 三者之间的关系
 
 这里说明了 commit、tree、blob 之间的关系，至于上面 使用 `git cat-file -t` 和 `git cat-file -p` 用的有点懵，对文件结构不了解；看完了这个，清楚了很多。
 
+**补充：**
+
+这里 commit、tree、blob 三者的关系，在视频 [[中文] 这才是真正的 Git——Git 内部原理揭秘！（freeCodeConf 2019 深圳站）](https://www.bilibili.com/video/av77252063) 的开始，也有讲解。下图是是其中的 ppt，同样说明了关系：
+
+<img src="https://s2.loli.net/2022/02/24/sTJUXl4vY3NQ2dt.png" alt="image-20220224232018021" style="zoom: 25%;" />
+
+另外，commit、tree、blob 这三者 都是一创建就不可变更的 (immutable)；refs 是可以变更的，相当于一个指针。
+
+以上内容学习自：[[中文] 这才是真正的 Git——Git 内部原理揭秘！（freeCodeConf 2019 深圳站）](https://www.bilibili.com/video/av77252063) 
+
 #### From 1.11
 
 根据实验表明：commit、tree、blob 三者都会被加入到 objects 文件夹下。如下文件结构
@@ -510,8 +520,12 @@ normal 模式键入 `:wq!`，显示如下：
 
   应用场景：当储藏了部分工作，暂时不去理会，继续在当前分支进行开发，后续想将stash中的内容恢复到当前工作目录时，如果是针对同一个文件的修改（即便不是同行数据），那么可能会发生冲突，恢复失败，这里通过创建新的分支来解决。可以用于解决stash中的内容和当前目录的内容发生冲突的情景。
   发生冲突时，需手动解决冲突。
+  
+  「命令相关内容」摘自：[git stash详解](https://blog.csdn.net/stone_yw/article/details/80795669)
+  
+- **git stash push：**在看[[中文] 这才是真正的 Git——Git 内部原理揭秘！（freeCodeConf 2019 深圳站）](https://www.bilibili.com/video/av77252063) 时候，发现这样一条命令：git stash push [-u | --include-untracked]，可以让你获得一个干净的工作区间。
 
-「命令相关内容」摘自：[git stash详解](https://blog.csdn.net/stone_yw/article/details/80795669)
+
 
 #### From 2.15
 
@@ -558,7 +572,7 @@ normal 模式键入 `:wq!`，显示如下：
 
 - 把同一文件改成了不同的文件名如何处理？ Git 不会自动合并，需要开发者自行协商
 
-  **补充：**发生冲突的示意图：
+  **补充：**发生冲突的图解：
 
   ![img](https://s2.loli.net/2022/02/24/U2Do3IfxqX7AteL.gif)
 
@@ -943,7 +957,13 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
 - **git branch --merged：**查看已经被合并到当前分支的分支
 - **git branch --no-merged：**查看尚未被合并到当前分支的分支
 
-摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+​	摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
+- **git show-branch：**查看git 分支之间的区别
+
+- **git bisect：**当代码出现问题时，想要找到是哪一个变更导致了该问题的出现；此时，会很自然的想要使用二分法；而人工二分法非常麻烦，git 会自动做二分法，你只需要告诉 git 这个二分结果是好的还是坏的，从而定位到变更的地方。
+
+  学习自：[[中文] 这才是真正的 Git——Git 内部原理揭秘！（freeCodeConf 2019 深圳站）](https://www.bilibili.com/video/av77252063) 
 
 
 
@@ -1047,7 +1067,7 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
     
     即：添加了一条 comit 记录。
 
-  **补充：图示如下：**
+  **补充：图解如下：**
 
   假设 ec5be 添加了一个 index.js 文件。但之后我们发现其实我们再也不需要由这个提交引入的修改了。那就还原 ec5be 提交吧！
 
@@ -1332,11 +1352,11 @@ rebase 的时候，修改冲突后的提交不是使用 commit 命令，而是�
 
 **补充：**
 
-- **git fetch 示意图：**
+- **git fetch 图解：**
 
   ![https://pic2.zhimg.com/v2-686ae54f78ea69b6c00cc8b159cf7369_b.gif](https://s2.loli.net/2022/02/24/xZMOgY6LENzCp3u.gif)
 
-- **git pull 示意图：**
+- **git pull 图解：**
 
   ![https://pic2.zhimg.com/v2-1298832b975cf9cf0ad6c399ec5da32d_b.gif](https://s2.loli.net/2022/02/24/L6tx2VHDyfsCArh.gif)
 
@@ -1446,7 +1466,7 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 
 
 
-## 其他 git 命令
+#### 其他 git 命令
 
 - **git archive：**生成一个可供发布的压缩包
 - **git apply ../sync.patch：**打补丁
@@ -1454,4 +1474,14 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 - **git --version：**查看Git的版本
 
 摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
+
+
+#### 一些 git 原理性的问题
+
+- 为什么要把文件的权限和文件名储存在Tree object里面而不是Blob object呢？
+
+  // TODO
+
+  
 
