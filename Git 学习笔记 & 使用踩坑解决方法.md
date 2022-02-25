@@ -6,11 +6,11 @@
 
 - git官方文档：https://git-scm.com/docs 
 - 官方中文书籍：https://git-scm.com/book/zh/v2。
-
 - [atlassian 公司出的 git 教程](https://www.atlassian.com/git/tutorials) 要比git 官方文档易读很多
 - [猴子都能懂的GIT入门](https://backlog.com/git-tutorial/cn/) 适合入门，及建立知识框架
 - [工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100) 画了一些动图，便于理解
 - [图解Git](https://marklodato.github.io/visual-git-guide/index-zh-cn.html) 一些图解，说了一些上一篇文章没说的东西
+- [这才是真正的GIT——GIT内部原理](https://www.lzane.com/tech/git-internal) 一共有三篇，这是第一篇。说明了一些 git 原理性的东西，配合动图，清晰易懂
 - [给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960) 一些补充的命令
 
 
@@ -215,7 +215,7 @@ git checkout -b branchName commitHash # 创建一个新的分支，并 **切换�
 
 #### From 1.10
 
-commit、tree、blob 三者之间的关系
+commit、tree、blob 三者（注：这三者都是 git 中的对象(object) ）之间的关系
 
 ![image-20220220174718938](https://s2.loli.net/2022/02/20/TkZIqPmWVj5lv2o.png)
 
@@ -241,9 +241,121 @@ commit、tree、blob 三者之间的关系
 
 <img src="https://s2.loli.net/2022/02/24/sTJUXl4vY3NQ2dt.png" alt="image-20220224232018021" style="zoom: 25%;" />
 
+## Git是怎么储存信息的
+
+这里会用一个简单的例子让大家直观感受一下git是怎么储存信息的。
+
+首先我们先创建两个文件
+
+```shell
+git init
+echo '111' > a.txt
+echo '222' > b.txt
+git add *.txt
+```
+
+Git会将整个数据库储存在`.git/`目录下，如果你此时去查看`.git/objects`目录，你会发现仓库里面多了两个object。
+
+```shell
+$ tree .git/objects
+.git/objects
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── info
+└── pack
+```
+
+好奇的我们来看一下里面存的是什么东西
+
+```sh
+cat .git/objects/58/c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+xKOR0a044K%
+```
+
+怎么是一串乱码？这是因为Git将信息压缩成二进制文件。但是不用担心，因为Git也提供了一个能够帮助你探索它的api `git cat-file [-t] [-p]`， `-t`可以查看object的类型，`-p`可以查看object储存的具体内容。
+
+```shell
+$ git cat-file -t 58c9
+blob
+$ git cat-file -p 58c9
+111
+```
+
+可以发现这个 object 是一个 blob 类型的节点，他的内容是111，也就是说这个 object 储存着 a.txt 文件的内容。
+
+这里我们遇到第一种Git object，blob类型，它只储存的是一个文件的内容，不包括文件名等其他信息。然后将这些信息经过SHA1哈希算法得到对应的哈希值 58c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c，作为这个object在Git仓库中的唯一身份证。
+
+也就是说，我们此时的Git仓库是这样子的：
+
+<img src="https://s2.loli.net/2022/02/25/XmEILVnUKR6jOiu.png" alt="https://www.lzane.com/tech/git-internal/p1s1.png" style="zoom:80%;" />
+
+我们继续探索，我们创建一个commit。
+
+```shell
+$ git commit -am '[+] init'
+$ tree .git/objects
+.git/objects
+├── 0c
+│   └── 96bfc59d0f02317d002ebbf8318f46c7e47ab2
+├── 4c
+│   └── aaa1a9ae0b274fba9e3675f9ef071616e5b209
+...
+```
+
+我们会发现当我们commit完成之后，Git仓库里面多出来两个object。同样使用`cat-file`命令，我们看看它们分别是什么类型以及具体的内容是什么。
+
+```sh
+$ git cat-file -t 4caaa1
+tree
+$ git cat-file -p 4caaa1
+100644 blob 58c9bdf9d017fcd178dc8c0... 	a.txt
+100644 blob c200906efd24ec5e783bee7...	b.txt
+```
+
+这里我们遇到了第二种 Git object 类型——tree，它将当前的目录结构打了一个快照。从它储存的内容来看可以发现它储存了一个目录结构（类似于文件夹），以及每一个文件（或者子文件夹）的权限、类型、对应的身份证（SHA1值）、以及文件名。
+
+此时的Git仓库是这样的：
+
+<img src="https://s2.loli.net/2022/02/25/dV3PM69ylRZriWL.png" alt="https://www.lzane.com/tech/git-internal/p1s2.png" style="zoom:80%;" />
+
+```sh
+$ git cat-file -t 0c96bf
+commit
+$ git cat-file -p 0c96bf
+tree 4caaa1a9ae0b274fba9e3675f9ef071616e5b209
+author lzane 李泽帆  1573302343 +0800
+committer lzane 李泽帆  1573302343 +0800
+[+] init
+```
+
+接着我们发现了第三种 Git object 类型——commit（**注：**commit 对象也是由 commit 命令创建的；不过是先创建 tree 对象，然后再创建 commit 对象 ），它储存的是一个提交的信息，包括对应目录结构的快照tree的哈希值，上一个提交的哈希值（这里由于是第一个提交，所以没有父节点。在一个merge提交中还会出现多个父节点），提交的作者以及提交的具体时间，最后是该提交的信息。
+
+此时我们去看Git仓库是这样的：
+
+<img src="https://s2.loli.net/2022/02/25/cxpkSemdHl2JnFD.png" alt="img" style="zoom:80%;" />
+
+到这里我们就知道Git是怎么储存一个提交的信息的了，那有同学就会问，我们平常接触的分支信息储存在哪里呢？
+
+```sh
+$ cat .git/HEAD
+ref: refs/heads/master
+$ cat .git/refs/heads/master
+0c96bfc59d0f02317d002ebbf8318f46c7e47ab2
+```
+
+在Git仓库里面，HEAD、分支、普通的Tag可以简单的理解成是一个指针，指向对应commit的SHA1值。
+
+<img src="https://s2.loli.net/2022/02/25/PcZYAbotzXFW8EI.png" alt="img" style="zoom: 80%;" />
+
+其实还有第四种Git object，类型是tag，在添加含附注的tag（`git tag -a`）的时候会新建，这里不详细介绍，有兴趣的朋友按照上文中的方法可以深入探究。
+
+至此我们知道了Git是什么储存一个文件的内容、目录结构、commit信息和分支的。**其本质上是一个key-value的数据库加上默克尔树形成的有向无环图（DAG）**。这里可以蹭一下区块链的热度，区块链的数据结构也使用了默克尔树。
+
 另外，commit、tree、blob 这三者 都是一创建就不可变更的 (immutable)；refs 是可以变更的，相当于一个指针。
 
-以上内容学习自：[[中文] 这才是真正的 Git——Git 内部原理揭秘！（freeCodeConf 2019 深圳站）](https://www.bilibili.com/video/av77252063) 
+以上内容摘自：[这才是真正的GIT——GIT内部原理](https://www.lzane.com/tech/git-internal) 演讲视频：[[中文] 这才是真正的 Git——Git 内部原理揭秘！（freeCodeConf 2019 深圳站）](https://www.bilibili.com/video/av77252063) 
 
 #### From 1.11
 
@@ -377,6 +489,12 @@ normal 模式下，键入 `:wq`，以保存；这时候会显示：
 这时候进行检查：`git log`，效果图如下；会发现 3ab109b 和 3903518 被合并成了 2ba50c92（这个 commit 是新生成的）；另外，新的 commit msg 成功显示，合并之前的 commit msg 也被成功保留：
 
 ![image-20220221143337478](https://s2.loli.net/2022/02/21/KYFqk9elCxmWunX.png)
+
+**补充：**
+
+如果要合并的是最近的几个commit，可以用`git reset --soft HEAD~n && git commit -m <msg>` 来实现
+
+补充内容摘自：[这才是真正的GIT——GIT实用技巧](https://www.lzane.com/tech/git-tips)
 
 #### From 2.5
 
@@ -960,12 +1078,6 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
 
 ​	摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
-- **git show-branch：**查看git 分支之间的区别
-
-- **git bisect：**当代码出现问题时，想要找到是哪一个变更导致了该问题的出现；此时，会很自然的想要使用二分法；而人工二分法非常麻烦，git 会自动做二分法，你只需要告诉 git 这个二分结果是好的还是坏的，从而定位到变更的地方。
-
-  学习自：[[中文] 这才是真正的 Git——Git 内部原理揭秘！（freeCodeConf 2019 深圳站）](https://www.bilibili.com/video/av77252063) 
-
 
 
 #### Git 标签
@@ -1319,9 +1431,23 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
 
 摘自：[猴子都能懂的GIT入门 - 分支的合并](https://backlog.com/git-tutorial/cn/stepup/stepup1_4.html)
 
+**补充：**
+
+**git rebase 与 git merge的最大区别是：**它会更改变更历史对应的 commit 节点。
+
+如下图，当在 feature 分支中执行 rebase master 时，Git 会以 master 分支对应的 commit 节点为起点，新增两个**全新**的 commit 代替 feature分支中的commit节点。其原因是新的commit指向的parent变了，所以对应的SHA1值也会改变，所以没办法复用原feature分支中的commit。（这句话的理解需要[这篇文章](https://www.lzane.com/tech/git-internal/)的基础知识）
+
+![title](https://s2.loli.net/2022/02/25/tOn9hli6L2aQH7S.png)
+
+补充内容摘自：[这才是真正的GIT——分支合并](https://www.lzane.com/tech/git-merge/)
+
+
+
 <font size=4>**git merge 命令**</font>
 
 **git merge \<branch>：**将指定分支导入到HEAD指定的分支。
+
+**注意，在实际开发时发现：**在运行 git merge 之前，需要将被合并分支的内容均 commited；否则无法将想要的内容<font color=FF0000 size=4>**完全**合并成功</font>。
 
 **merge 有一个特殊选项：squash**（注：意为 拥挤( n )，压缩( verb ) ）。用这个选项指定分支的合并，就可以 <font color=FF0000 size=4>**把所有汇合的提交添加到分支上**</font>（注：如下图所示，将 X 和 Y 两个提交合并在一起，并通过 git merge，生成新的节点）。
 
@@ -1478,11 +1604,160 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 
 
 
+#### git 具体需求的解决方法
+
+- <font size=4>**找回丢失的commit节点或分支**</font>：使用 `git reflog` 获取 commitHash，再使用 `git reset --hard commitHash`，示例如下
+
+  <img src="https://s2.loli.net/2022/02/25/9WDyShMasfiRQ1e.gif" alt="https://www.lzane.com/tech/git-tips/git_reflog.gif" style="zoom:80%;" />
+
+  主要思路为：**找到要返回的commit object的哈希值，然后执行`git reset`恢复**。
+
+  我们知道 Git 的出现就是为了尽量保证我们的操作不被丢失，在 [Git内部原理](https://www.lzane.com/tech/git-internal/) 中我们讲过，<font color=FF0000>git object ( commit、tree、blob ) 一旦被创建，就不可变更 ( immutable )</font>；所以只要找到它对应的哈希值，就能找回。但是 <font color=FF0000>ref</font> 呢？在 [Git内部原理](https://www.lzane.com/tech/git-internal/) 中我们也讲过，<font color=FF0000>它是一个可变的指针</font>，比如说你在 master 中提交了一个 commit，那当前的 master 这个 ref 就会指向新的 commit object 的哈希值。reflog 就是将这些可变指针的历史给记录下来，可以理解成 **ref的log**，也可以理解成 **版本控制的版本控制**。
+
+- <font size=4>**提交一个文件中的部分修改**</font>：使用 `git add -i`，具体如下：
+
+  <img src="https://s2.loli.net/2022/02/25/FeqsIg7XVDk38QZ.gif" alt="https://www.lzane.com/tech/git-tips/git_add_i.gif" style="zoom:80%;" />
+
+- <font size=4>**从整个历史中删除一个文件**</font>
+
+  代码要开源了，但发现其中包括密钥文件或内网ip怎么办？
+
+  ```bash
+  git filter-branch --tree-filter 'rm -f passwords.txt' HEAD
+  ```
+
+  可以使用 filter-branch 命令，它的实现原理是将每个 commit checkout出来，然后执行你给它的命令，像上面的 `rm -f passwords.txt`，然后重新 commit 回去。
+
+  ⚠️ 这个操作属于高危操作，会修改历史变更记录链，产生全新的commit object。所以执行前请通知仓库的所有开发者，执行后所有开发者从新的分支继续开发，弃用以前的所有分支。
+
+- <font size=4>**查看git 分支之间的区别**</font>
+
+  ```sh
+  git show-branch
+  ```
+
+- <font size=4>**二分查找出现问题的变更节点**</font>
+
+  当代码出现问题时，想要找到是哪一个变更导致了该问题的出现；此时，会很自然的想要使用二分法；而人工二分法非常麻烦，git 会自动做二分法，你只需要告诉 git 这个二分结果是好的还是坏的，从而定位到变更的地方。
+
+  ```sh
+  git bisect
+  ```
+
+  学习自：[[中文] 这才是真正的 Git——Git 内部原理揭秘！（freeCodeConf 2019 深圳站）](https://www.bilibili.com/video/av77252063) 
+
+
+
+#### git 图解
+
+<img src="https://marklodato.github.io/visual-git-guide/basic-usage.svg" alt="img" style="zoom: 70%;" />
+
+**上面的四条命令在工作目录、暂存目录（也叫做索引）和仓库之间复制文件：**
+
+- **git add files：**把当前文件放入暂存区域。
+- **git commit：**给暂存区域生成快照并提交。
+- **git reset -- files：**用来撤销最后一次 `git add files`，你也可以用 `git reset` 撤销所有暂存区域文件。
+- **git checkout -- files：**把文件从暂存区域复制到工作目录，用来丢弃本地修改。
+
+**也可以跳过暂存区域直接从仓库取出文件或者直接提交代码：**
+
+<img src="https://marklodato.github.io/visual-git-guide/basic-usage-2.svg" alt="img" style="zoom:70%;" />
+
+- **git commit -a：**相当于运行 `git add` 把所有当前目录下的文件加入暂存区域再运行 `git commit`
+- **git commit files：**进行一次包含最后一次提交加上工作目录中文件快照的提交，并且文件被添加到暂存区域。
+- **git checkout HEAD -- files：**回滚到复制最后一次提交。
+
+
+
+
+
+#### git 的合并原理
+
+在看怎么合并两个分支之前，我们先来看一下怎么合并两个文件，因为两个文件的合并是两个分支合并的基础。
+
+大家应该都听说过“三向合并”这个词，不知道大家有没有思考过为什么两个文件的合并需要三向合并，只有二向是否可以自动完成合并。如下图
+
+<img src="https://s2.loli.net/2022/02/25/jeQPNk6WspSnVtf.png" alt="title" style="zoom: 85%;" />
+
+很明显答案是不能，如上图的例子，Git没法确定这一行代码是我修改的，还是对方修改的，或者之前就没有这行代码，是我们俩同时新增的。此时Git没办法帮我们做自动合并。
+
+所以我们需要三向合并，<font color=FF0000 size=4>所谓三向合并，就是找到两个文件的一个合并base</font>（**注：**base 就是合并的依据），如下图，这样子Git就可以很清楚的知道说，对方修改了这一行代码，而我们没有修改，自动帮我们合并这两个文件为 Print(“hello”)。
+
+![title](https://www.lzane.com/tech/git-merge/img_4.png)
+
+接下来我们了解一下什么是冲突？<font color=FF0000 size=4>冲突简单的来说就是三向合并中的三方都互不相同</font>，即参考合并base，我们的分支和别人的分支都对同个地方做了修改。
+
+<img src="https://s2.loli.net/2022/02/25/MXheTb8wdt4vz5G.png" alt="title" style="zoom:95%;" />
+
+<font size=4>**合并策略**</font>
+
+Git会有很多合并策略，其中常见的是 Fast-forward、Recursive 、Ours、Theirs、Octopus。<font color=FF0000 size=4>**默认Git会帮你自动挑选合适的合并策略**</font>  ，如果你需要强制指定，使用 `git merge -s <strategyName>`
+
+- **Fast-forward：**<font color=FF0000>Fast-forward 是最简单的一种合并策略</font>，Git 只需要将 master 分支的指向移动到最后一个 commit 节点上。Fast-forward 是 Git 在合并两个没有分叉的分支时的默认行为，<font color=FF0000>如果不想要这种表现，想明确记录下每次的合并，可以使用 `git merge --no-ff`</font>。
+
+- **Recursive：**<font color=FF0000 size=4>Recursive 是 Git 分支合并策略中 **最重要** 也是 **最常用** 的策略，是 Git 在 **合并两个有分叉的分支时** 的 **默认行为**</font>。其算法可以简单描述为：<font color=FF0000 size=4>递归寻找路径最短的唯一共同祖先节点，然后以其为 base节点进行递归三向合并</font>
+
+  当 Git 在寻找路径最短的共同祖先节点的时候，是可能找到多个最短的共同祖先节点的；这样会带来：以哪一个节点作为 base，而使用不同的base 带来不同的结果（甚至是冲突）。<font color=FF0000>怎么保证Git能够找到正确的合并 base 节点，尽可能的减少冲突呢</font>？答案就是，<font color=FF0000 size=4>Git 在寻找路径最短的共同祖先节点时，**如果满足条件的祖先节点不唯一，那么 Git 会继续递归往下寻找直至唯一**</font>。Recursive 策略已经被大量的场景证明它是一个尽量减少冲突的合并策略。
+
+  需要注意 Git 只是使用这些策略尽量的去帮你减少冲突，如果冲突不可避免，那 Git 就会提示冲突，需要手工解决。（也就是真正意义上的冲突）。
+
+- **Ours & Theirs：**Ours 和 Theirs这两种合并策略也是比较简单的，简单来说就是保留双方的历史记录，但<font color=FF0000>完全忽略掉这一方的文件变更</font>（**注：**“这一方”是谁，是根据策略是 Our，还是 Theirs 决定的）。使用Our，则抛弃被合并的分支，使用 Theirs 则抛弃当前（可以立即为 master）分支
+
+- **Octopus：**一般来说我们的合并节点都只有两个parent（即合并两条分支），而这种合并策略可以做两个以上分支的合并，这也是git merge两个以上分支时的默认行为。
+
+**注：**以上内容经过一定的省略和整理，存在不理解的可以参见原文
+
+以上内容摘自：[这才是真正的GIT——分支合并](https://www.lzane.com/tech/git-merge)
+
+
+
+#### 更新一个文件的内容这个过程会发生什么事
+
+原本的git状态：
+
+<img src="https://s2.loli.net/2022/02/25/56tHkLrMvQ13JdG.png" alt="https://www.lzane.com/tech/git-internal/3area.png" style="zoom: 67%;" />
+
+运行 `echo "333" > a.txt` 将 a.txt 的内容从 111 修改成 333，此时如下图可以看到，此时索引区域和git仓库没有任何变化。
+
+<img src="https://s2.loli.net/2022/02/26/blek1d8GDrMN3RE.gif" alt="https://www.lzane.com/tech/git-internal/p2s1.gif" style="zoom:77%;" />
+
+运行 `git add a.txt` 将 a.txt 加入到索引区域，此时如下图所示 ，git 在仓库里面新建了一个 blob object，储存了新的文件内容。并且更新了索引将 a.txt 指向了新建的 blob object。
+
+<img src="https://s2.loli.net/2022/02/26/Kwxi7AShH9NLVFz.gif" alt="https://www.lzane.com/tech/git-internal/p2s2.gif" style="zoom:77%;" />
+
+运行git commit -m 'update'提交这次修改。如下图所示：
+
+<img src="https://s2.loli.net/2022/02/26/mlVvn9YJAP3N7H5.gif" alt="https://www.lzane.com/tech/git-internal/p2s3.gif" style="zoom:77%;" />
+
+- Git 首先根据当前的索引生产一个 tree object  ，充当新提交的一个快照。
+- 创建一个新的 commit object，将这次 commit 的信息储存起来，并且 parent 指向上一个 commit，组成一条链记录变更历史。
+- 将 master 分支的指针移到新的 commit 结点。
+
+摘自：[这才是真正的GIT——GIT内部原理](https://www.lzane.com/tech/git-internal/)
+
+
+
 #### 一些 git 原理性的问题
 
-- 为什么要把文件的权限和文件名储存在Tree object里面而不是Blob object呢？
+- **为什么要把文件的权限和文件名储存在Tree object里面而不是Blob object呢？**
 
-  // TODO
+  想象一下修改一个文件的命名。如果将文件名保存在blob里面，那么Git 只能多复制一份原始内容形成一个新的blob object。而Git的实现方法只需要创建一个新的tree object将对应的文件名更改成新的即可，原本的blob object可以复用，节约了空间。
 
-  
+  **理解：**创建一个 blob 可能会很大，而 创建一个 tree 只需要一些索引（指针？）即可；相对而言（根据数学期望而言？），应该是创建 tree 更节约空间。
+
+- **每次commit，Git储存的是全新的文件快照还是储存文件的变更部分？**
+
+  由上面的例子我们可以看到，<font color=FF0000 size=4>**Git储存的是全新的文件快照，而不是文件的变更记录**</font>。也就是说，就算你只是在文件中添加一行，Git也会新建一个全新的blob object。那这样子是不是很浪费空间呢？
+
+  这其实是Git在空间和时间上的一个取舍（**注：**即用空间换时间），思考一下你<mark>要 checkout 一个 commit，或对比两个commit 之间的差异</mark>。<font color=FF0000>如果Git储存的是问卷的变更部分，那么为了拿到一个commit的内容，Git都只能从第一个commit开始，然后一直计算变更，直到目标commit，这会花费很长时间</font>。而相反，Git采用的储存全新文件快照的方法能使这个操作变得很快，直接从快照里面拿取内容就行了。
+
+  当然，<font color=FF0000>**在涉及网络传输或者Git仓库真的体积很大的时候，Git会有垃圾回收机制gc，不仅会清除无用的object，还会把已有的相似object打包压缩**</font>。
+
+- **Git怎么保证历史记录不可篡改？**
+
+  <font color=FF0000>通过SHA1哈希算法和哈系树来保证</font>。<mark>假设你偷偷修改了历史变更记录上一个文件的内容，那么这个问卷的blob object的SHA1哈希值就变了，与之相关的tree object的SHA1也需要改变，commit的SHA1也要变，这个commit之后的所有commit SHA1值也要跟着改变</mark>。又<font color=FF0000>由于Git是分布式系统，即所有人都有一份完整历史的Git仓库，所以所有人都能很轻松的发现存在问题</font>。
+
+摘自：[这才是真正的GIT——GIT内部原理](https://www.lzane.com/tech/git-internal/)
+
+
 
