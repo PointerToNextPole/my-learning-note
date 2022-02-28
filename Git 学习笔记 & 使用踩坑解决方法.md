@@ -1480,11 +1480,9 @@ rebase 的时候，修改冲突后的提交不是使用 commit 命令，而是�
 **补充：**
 
 - **git fetch 图解：**
-
   ![https://pic2.zhimg.com/v2-686ae54f78ea69b6c00cc8b159cf7369_b.gif](https://s2.loli.net/2022/02/24/xZMOgY6LENzCp3u.gif)
 
 - **git pull 图解：**
-
   ![https://pic2.zhimg.com/v2-1298832b975cf9cf0ad6c399ec5da32d_b.gif](https://s2.loli.net/2022/02/24/L6tx2VHDyfsCArh.gif)
 
 补充内容摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
@@ -1650,14 +1648,16 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 
 #### git 图解
 
+<font size=4>**基本用法：**</font>
+
 <img src="https://marklodato.github.io/visual-git-guide/basic-usage.svg" alt="img" style="zoom: 70%;" />
 
 **上面的四条命令在工作目录、暂存目录（也叫做索引）和仓库之间复制文件：**
 
 - **git add files：**把当前文件放入暂存区域。
 - **git commit：**给暂存区域生成快照并提交。
-- **git reset -- files：**用来撤销最后一次 `git add files`，你也可以用 `git reset` 撤销所有暂存区域文件。
-- **git checkout -- files：**把文件从暂存区域复制到工作目录，用来丢弃本地修改。
+- <font color=FF0000 size=4>**git reset -- files：**</font>用来<font color=FF0000>撤销最后一次 `git add files`</font>，你<font color=FF0000>也可以用 `git reset` 撤销所有暂存区域文件</font>。
+- <font color=FF0000 size=4>**git checkout -- files：**</font><font color=FF0000>把文件从暂存区域复制到工作目录，用来丢弃本地修改</font>。
 
 **也可以跳过暂存区域直接从仓库取出文件或者直接提交代码：**
 
@@ -1667,7 +1667,97 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 - **git commit files：**进行一次包含最后一次提交加上工作目录中文件快照的提交，并且文件被添加到暂存区域。
 - **git checkout HEAD -- files：**回滚到复制最后一次提交。
 
+<font size=4>**git diff**</font>
 
+<img src="https://marklodato.github.io/visual-git-guide/diff.svg" alt="img" style="zoom: 65%;"/>
+
+**注：**注意上图，git diff 的默认值，和不同参数之间 效果的区别。
+
+<font size=4>**git commit**</font>
+
+提交时，git用暂存区域的文件创建一个新的提交，并把此时的节点设为父节点。然后把当前分支指向新的提交节点。下图中，当前分支是main。 在运行命令之前，main 指向 ed489，提交后，main 指向新的节点 f0cec 并以 ed489 作为父节点。
+
+<img src="https://marklodato.github.io/visual-git-guide/commit-main.svg" alt="img" style="zoom:65%;" />
+
+<font color=FF0000>**即便当前分支是某次提交的祖父节点，git 会同样操作**</font>。下图中，在 main分支的祖父节点 stable分支进行一次提交，生成了 1800b。 这样，stable分支 就不再是 main分支的祖父节点。此时，合并 (或者 衍合) 是必须的。
+
+<img src="https://marklodato.github.io/visual-git-guide/commit-stable.svg" alt="img" style="zoom:68%;" />
+
+如果想更改一次提交，使用 `git commit --amend`。git 会使用与当前提交相同的父节点进行一次新提交，旧的提交会被取消。
+
+<img src="https://marklodato.github.io/visual-git-guide/commit-amend.svg" alt="img" style="zoom:67%;" />
+
+<font size=4>**git checkout**</font>
+
+<font color=FF0000 size=4>**checkout命令 用于从历史提交（或者暂存区域）中拷贝文件到工作目录**</font>，<font color=FF0000>也可用于切换分支</font>。
+
+<font color=FF0000>**当给定某个文件名**</font>（或者打开 -p选项，或者 文件名 和 -p选项 同时打开）时，<font color=FF0000 size=4>**git 会从指定的提交中拷贝文件到暂存区域和工作目录**</font>（**注：**<mark>注意，如下图，是同时拷入 暂存区 和 工作区；另外，这也是最上面所说的 `git add files` 的逆操作</mark>）。比如，<font color=FF0000>`git checkout HEAD~ foo.c` 会将提交节点 *HEAD~* （即当前提交节点的父节点）中的 `foo.c` 复制到工作目录并且加到暂存区域中</font>。（如果命令中没有指定提交节点，则会从暂存区域中拷贝内容）注意当前分支不会发生变化。
+
+<img src="https://marklodato.github.io/visual-git-guide/checkout-files.svg" alt="img" style="zoom:67%;" />
+
+<font color=FF0000>**如果既没有指定文件名，也没有指定分支名，而是一个标签、远程分支、SHA-1值或者是像 *main~3* 类似的东西，就得到一个匿名分支，称作 *detached HEAD*（被分离的 *HEAD*标识）**</font>。这样可以很方便地在历史版本之间互相切换。比如说你想要编译 1.6.6.1版本的 git，你可以运行 `git checkout v1.6.6.1`（<font color=FF0000>这是一个标签，而非分支名</font>），编译，安装，然后切换回另一个分支，比如说 `git checkout main`。然而，当提交操作涉及到“分离的HEAD”时，其行为会略有不同，详情见在[下面](https://marklodato.github.io/visual-git-guide/index-zh-cn.html#detached)。
+
+<img src="https://marklodato.github.io/visual-git-guide/checkout-detached.svg" alt="img" style="zoom:67%;" />
+
+<font size=4>**HEAD 标识处于分离状态时的提交操作**</font>
+
+<font color=FF0000>**当 *HEAD* 处于分离状态（不依附于任一分支）时，提交操作可以正常进行，但是不会更新任何已命名的分支**</font>（你可以认为这是在更新一个匿名分支）
+
+<img src="https://marklodato.github.io/visual-git-guide/commit-detached.svg" alt="img" style="zoom:67%;" />
+
+一旦此后你切换到别的分支，比如说 main，那么这个提交节点（可能）再也不会被引用到，然后就会被丢弃掉了（**注：**可以理解为回收掉了( GC ) ）。注意这个命令之后就不会有东西引用 2eecb。
+
+<img src="https://marklodato.github.io/visual-git-guide/checkout-after-detached.svg" alt="img" style="zoom:67%;" />
+
+但是，如果你想保存这个状态，可以用命令`git checkout -b <name>`来创建一个新的分支。
+
+<img src="https://marklodato.github.io/visual-git-guide/checkout-b-detached.svg" alt="img" style="zoom:67%;" />
+
+<font size=4>**git reset**</font>
+
+<font color=FF0000>**reset命令 把当前分支指向另一个位置，并且有选择的变动工作目录和索引**</font>（**注：**有选择的即 通过选项）。<font color=FF0000>也用来在从历史仓库中复制文件到索引，而不动工作目录</font>。
+
+如果不给选项，那么当前分支指向到那个提交。如果用 `--hard` 选项，那么工作目录也更新，如果用 `--soft` 选项，那么都不变。
+
+<img src="https://marklodato.github.io/visual-git-guide/reset-commit.svg" alt="img" style="zoom:67%;" />
+
+如果<font color=FF0000>没有给出提交点的版本号，那么**默认用 *HEAD***</font>。这样，<font color=FF0000>分支指向不变，但是索引会回滚到最后一次提交</font>，如果用 `--hard` 选项，工作目录也同样。
+
+<img src="https://marklodato.github.io/visual-git-guide/reset.svg" alt="img" style="zoom:67%;" />
+
+如果给了文件名（或者 -p选项），那么工作效果和带文件名的 checkout 差不多，除了索引被更新。
+
+<img src="https://marklodato.github.io/visual-git-guide/reset-files.svg" alt="img" style="zoom:67%;" />
+
+<font size=4>**git merge**</font>
+
+merge 命令把不同分支合并起来。合并前，索引必须和当前提交相同。如果另一个分支是当前提交的祖父节点，那么合并命令将什么也不做。 另一种情况是如果当前提交是另一个分支的祖父节点，就导致 *fast-forward* 合并。指向只是简单的移动，并生成一个新的提交。
+
+<img src="https://marklodato.github.io/visual-git-guide/merge-ff.svg" alt="img" style="zoom:67%;" />
+
+否则就是一次真正的合并。默认把当前提交（*ed489* 如下所示）和另一个提交( *33104* )以及他们的共同祖父节点( *b325c* )进行一次[三方合并](http://en.wikipedia.org/wiki/Three-way_merge)。结果是先保存当前目录和索引，然后和父节点 *33104* 一起做一次新提交。
+
+<img src="https://marklodato.github.io/visual-git-guide/merge.svg" alt="img" style="zoom:67%;" />
+
+<font size=4>**Cherry Pick**</font>
+
+cherry-pick命令 "复制"一个提交节点并在当前分支做一次完全一样的新提交。
+
+<img src="https://marklodato.github.io/visual-git-guide/cherry-pick.svg" alt="img" style="zoom:67%;" />
+
+<font size=4>**Rebase**</font>
+
+衍合（**即：**变基）是合并命令的另一种选择。合并把两个父分支合并进行一次提交，提交历史不是线性的。衍合在当前分支上重演另一个分支的历史，提交历史是线性的。 本质上，这是线性化的自动的 cherry-pick
+
+<img src="https://marklodato.github.io/visual-git-guide/rebase.svg" alt="img" style="zoom:67%;" />
+
+上面的命令都在 *topic* 分支中进行，而不是 *main* 分支，在 *main* 分支上重演，并且把分支指向新的节点。注意旧提交没有被引用，将被回收。
+
+要限制回滚范围，使用 `--onto` 选项。下面的命令在 *main* 分支上重演当前分支从 *169a6* 以来的最近几个提交，即 *2c33a*。
+
+<img src="https://marklodato.github.io/visual-git-guide/rebase-onto.svg" alt="img" style="zoom:67%;" />
+
+摘自：[图解Git](https://marklodato.github.io/visual-git-guide/index-zh-cn.html)
 
 
 
@@ -1758,6 +1848,3 @@ Git会有很多合并策略，其中常见的是 Fast-forward、Recursive 、Our
   <font color=FF0000>通过SHA1哈希算法和哈系树来保证</font>。<mark>假设你偷偷修改了历史变更记录上一个文件的内容，那么这个问卷的blob object的SHA1哈希值就变了，与之相关的tree object的SHA1也需要改变，commit的SHA1也要变，这个commit之后的所有commit SHA1值也要跟着改变</mark>。又<font color=FF0000>由于Git是分布式系统，即所有人都有一份完整历史的Git仓库，所以所有人都能很轻松的发现存在问题</font>。
 
 摘自：[这才是真正的GIT——GIT内部原理](https://www.lzane.com/tech/git-internal/)
-
-
-
