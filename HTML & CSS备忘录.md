@@ -3205,6 +3205,30 @@ Chrome 和 Safari 要求前缀 -webkit- 版本.
   }
   ```
 
+  <font color=FF0000 size=4>**补充：**使用 scale 可突破 chrome 字体 12px 的限制</font>
+  
+  思路：先将 font-size 设置为 targetFontSize 的 1 / scaleVal 倍；比如 想要font-size 设置为 10px，即：targetFontSize 为 10px，可将 scaleVal 设置为 0.5（即：transform: scale(0.5) ），然后 此时 font-size 便可先设置为 20px。示例如下：
+  
+  ```html
+  <div class="container">
+    <p class="scale">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero fuga rerum enim quae labore expedita quis iste incidunt sequi. Deserunt.</p>
+  </div>
+  
+  <style>
+  .container {
+    width: 1000px;
+    height: 100px;
+    background: lightblue;
+  }
+  .scale {
+    font-size: 20px;
+    transform: scale(0.5) translate(-50%, -50%);
+  }
+  </style>
+  ```
+  
+  注意：<font color=FF0000 size=4>使用 scale 之后，字体会出现位移；所以，需要使用 translate(-50%, -50%) 来抵消位移</font>
+  
 - **skew()**
   
   定义了一个元素在二维平面上的倾斜转换。
