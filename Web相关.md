@@ -2246,3 +2246,54 @@ Apple 官网喜欢用用户滚动页面 实现 播放视频（动画）效果，
 如果是动画（视频似乎也可以）的效果，可以使用 Steven lei 的 [trigger](https://github.com/triggerjs/trigger)；类似的，也可以使用 gsap 的 scrollTrigger 结合 timeline
 
 了解自：codingstartup群 群友
+
+
+
+#### JSBridge
+
+<font color=FF0000>**JSBridge 是一种 JS 实现的 Bridge，连接着桥两端的 Native（注：这里的 Native 是指移动端原生应用） 和 H5**</font>。它<font color=FF0000>在 APP 内方便地让 Native 调用 JS，JS 调用 Native ，是双向通信的通道</font>。JSBridge <mark>**主要提供了 JS 调用 Native 代码的能力**，实现原生功能如查看本地相册、打开摄像头、指纹支付等</mark>。
+
+**注：**双向通道的含义是：
+
+> - **JS 向 Native 发送消息：**调用相关功能、<font color=FF0000>通知 Native 当前 JS 的相关状态</font>等。
+> - **Native 向 JS 发送消息 :** 回溯调用结果、消息推送、<font color=FF0000>通知 JS 当前 Native 的状态</font>等。
+>
+> 摘自：[JSBridge的原理](https://juejin.cn/post/6844903585268891662)
+
+**H5 与 Native 对比**
+
+|    name     |                        H5                         |                       Native                       |
+| :---------: | :-----------------------------------------------: | :------------------------------------------------: |
+|   稳定性    |          调用系统浏览器内核，稳定性较差           |               使用原生内核，更加稳定               |
+|   灵活性    |               版本迭代快，上线灵活                |      迭代慢，需要应用商店审核，上线速度受限制      |
+| 受网速 影响 |                       较大                        |                        较小                        |
+|   流畅度    |          有时加载慢，给用户“卡顿”的感觉           |                加载速度快，更加流畅                |
+|  用户体验   |          功能受浏览器限制，体验有时较差           |   原生系统 api 丰富，能实现的功能较多，体验较好    |
+|  可移植性   | 兼容跨平台跨系统，如 PC 与 移动端，iOS 与 Android | 可移植性较低，对于 iOS 和 Android 需要维护两套代码 |
+
+<font size=4>**JSBridge 的双向通信原理**</font>
+
+- **JS 调用 Native：**JS 调用 Native 的实现方式较多，主要有拦截 URL Scheme 、重写 prompt 、注入 API 等方法
+  - **拦截 URL Scheme：**Android 和 iOS 都可以通过拦截 URL Scheme 并解析 scheme 来决定是否进行对应的 Native 代码逻辑处理
+  - **重写 prompt 等原生 JS 方法**
+    - Android 4.2 之前注入对象的接口是 addJavascriptInterface ，但是由于安全原因慢慢不被使用。一般会通过修改浏览器的部分 Window 对象的方法来完成操作。<mark>主要是拦截 alert、confirm、prompt、console.log 四个方法，分别被 Webview 的 onJsAlert、onJsConfirm、onConsoleMessage、onJsPrompt 监听</mark>。
+    - iOS 由于安全机制， <mark>WKWebView 对 alert、confirm、prompt 等方法做了拦截，如果通过此方式进行 Native 与 JS 交互，需要实现 WKWebView 的三个 WKUIDelegate 代理方法</mark>。
+  - **注入 API：**<font color=FF0000>基于 Webview 提供的能力</font>，我们<font color=FF0000>可以向 Window 上注入对象或方法</font>。<font color=FF0000>JS 通过这个对象或方法进行调用时，执行对应的逻辑操作，可以直接调用 Native 的方法</font>。使用该方式时，JS 需要等到 Native 执行完对应的逻辑后才能进行回调里面的操作。
+- **Native 调用 JS：**Native 调用 JS 比较简单，只要 <font color=FF0000>H5 将 JS 方法暴露在 Window 上给 Native 调用即可</font>。
+
+<font size=4>**JSBridge 的使用**</font>
+
+- **如何引用**
+  - **由 H5 引用：**在我司移动端初期版本时采用的是该方式，采用本地引入 npm 包的方式进行调用。这种方式可以确定 JSBridge 是存在的，可直接调用 Native 方法。但是如果后期 Bridge 的实现方式改变，双方需要做更多的兼容，维护成本高
+  - **由 Native 注入：**这是当前我司移动端选用的方式。在考虑到后期业务需要的情况下，进行了重新设计，选用 Native 注入的方式来引用 JSBridge。这样有利于保持 API 与 Native 的一致性，但是缺点是在 Native 注入的方法和时机都受限，JS 调用 Native 之前需要先判断 JSBridge 是否注入成功
+- **使用规范：**见链接，略
+
+摘自：[小白必看，JSBridge 初探](https://www.zoo.team/article/jsbridge)
+
+// TODO 阅读文章
+
+
+
+#### JNI
+
+可以参考文章：[Android JNI(一)——NDK与JNI基础](https://www.jianshu.com/p/87ce6f565d37) 感觉介绍得不错
