@@ -888,8 +888,8 @@ HTML \<source> 元素为 \<picture>, \<audio> 或者 \<video> 元素指定多个
 
 - **draggable：**一种枚举属性，<font color=FF0000>指示是否可以 使用 Drag and Drop API 拖动元素</font>。它可以有以下的值：
 
-  - **true**, 这<font color=FF0000>表明元素可能被拖动</font>
-  - **false**, 这<font color=FF0000>表明元素可能不会被拖动</font>
+  - **true：** <font color=FF0000>表明元素可能被拖动</font>
+  - **false：**<font color=FF0000>表明元素可能不会被拖动</font>
 
 - **dropzone：**<font color=FF0000>实验性质</font>。枚举属性，<font color=FF0000>指示可以使用 Drag and Drop API 在元素上**拖拽哪些类型的内容**</font>。 它可以具有以下值：
 
@@ -4612,6 +4612,12 @@ a 和 b 都必须为整数，并且元素的第一个子元素的下标为 1。�
 
 摘自：[MDN - document.execCommand](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand)
 
+**补充：** contenteditable 有一个类似功能的 js 属性为：Document.designMode
+
+> document.designMode 控制整个文档是否可编辑。有效值为 "on" 和 "off" 。
+>
+> 摘自：[MDN - Document.designMode](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/designMode)
+
 
 
 #### attr()
@@ -5501,7 +5507,7 @@ width 属性用于设置元素的宽度。width 默认设置内容区域的宽�
 
 #### object-fit
 
-<font color=FF0000>object-fit CSS 属性**指定可替换元素**</font>（这个名词，隔壁的《CSS权威指南阅读笔记》有解释）<font color=FF0000>的内容应该如何适应到其使用的高度和宽度确定的框。</font>
+<font color=FF0000>object-fit CSS 属性**指定 <font size=4>可替换元素</font>**</font>（这个名词，隔壁的《CSS权威指南阅读笔记》有解释）<font color=FF0000>的内容应该如何适应到其使用的高度和宽度确定的框。</font>
 <mark>您可以通过使用 object-position 属性来切换被替换元素的内容对象在元素框内的对齐方式。</mark>
 
 **取值**
@@ -5520,7 +5526,7 @@ width 属性用于设置元素的宽度。width 默认设置内容区域的宽�
 
 #### object-position
 
-CSS 属性 object-position 规定了<font color=FF0000>可替换元素</font>的内容，在这里我们称其为对象（即 object-position 中的 object），在其内容框中的位置。可替换元素的内容框中未被对象所覆盖的部分，则会显示该元素的背景（background）。
+CSS 属性 object-position 规定了<font color=FF0000 size=4>**可替换元素**</font>的内容，在这里我们称其为对象（即 object-position 中的 object），在其内容框中的位置。可替换元素的内容框中未被对象所覆盖的部分，则会显示该元素的背景（background）。
 
 摘自：[MDN - object-position](https://developer.mozilla.org/zh-CN/docs/Web/CSS/object-position)
 

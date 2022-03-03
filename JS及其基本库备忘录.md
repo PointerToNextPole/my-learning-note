@@ -2651,7 +2651,7 @@ Promise.resolve().then(f)
 
 #### **异步函数**
 
-异步函数（async function）是 <font color=FF0000>ECMAScript 2017</font> (ECMA-262) 标准的规范，几乎被所有浏览器所支持，除了 Internet Explorer。<mark>它们是基于promises的语法糖，使异步代码更易于编写和阅读</mark>（<font color=FF0000>**同时，<font size=4>async/await也是generator的语法糖</font>**</font>）
+异步函数 ( async function ) 是 <font color=FF0000>ECMAScript 2017</font> (ECMA-262) 标准的规范，几乎被所有浏览器所支持，除了 Internet Explorer。<mark>它们是基于promises的语法糖，使异步代码更易于编写和阅读</mark>（<font color=FF0000>**同时，<font size=4>async/await 也是 generator 的语法糖</font>**</font>）
 
 **示例：**
 
@@ -2745,6 +2745,127 @@ async function* asyncGenerator() {
 
 
 
+#### Generator
+
+生成器对象是由一个 [generator function](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/function*)（注：为 function*） 返回的,并且它符合可迭代协议和迭代器协议。
+
+方法
+
+- **Generator.prototype.next()：**返回一个由 yield 表达式生成的值。
+
+  > next() 方法返回一个包含属性 done 和 value 的对象。该方法也可以通过接受一个参数用以向生成器传值。
+  >
+  > - **语法**
+  >
+  >   ```js
+  >   gen.next(value)
+  >   ```
+  >
+  > - **参数**
+  >   **value：**向生成器传递的值.
+  >
+  > - **返回值：**返回的对象包含两个属性
+  >
+  >   - **done (布尔类型)：**如果迭代器超过迭代序列的末尾，则值为 true。 在这种情况下，value可选地指定迭代器的返回值。
+  >     如果迭代器能够生成序列中的下一个值，则值为false。 这相当于没有完全指定done属性。
+  >   - **value：**迭代器返回的任意的Javascript值。当 done 的值为 true 时可以忽略该值。
+  >
+  > - **示例：**使用 next() 方法；下面的例子展示了一个简单的生成器, 以及调用 next 后方法的返回值:
+  >
+  >   ```js
+  >   function* gen() { yield 1; yield 2; yield 3; }
+  >   
+  >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
+  >   g.next();      // "Object { value: 1, done: false }"
+  >   g.next();      // "Object { value: 2, done: false }"
+  >   g.next();      // "Object { value: 3, done: false }"
+  >   g.next();      // "Object { value: undefined, done: true }"
+  >   ```
+  >
+  >   **向生成器传值**
+  >
+  >   在此示例中，使用值调用next。 <font color=FF0000>请注意，第一次调用没有记录任何内容，因为生成器最初没有产生任何结果</font>。
+  >
+  >   ```js
+  >   function* gen() {
+  >     while(true) {
+  >       var value = yield null;
+  >       console.log(value);
+  >     }
+  >   }
+  >   
+  >   var g = gen();
+  >   g.next(1); // "{ value: null, done: false }"
+  >   g.next(2); // 2
+  >   // "{ value: null, done: false }"
+  >   ```
+  >
+  > 摘自：[MDN - Generator.prototype.next()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator/next)
+
+- **Generator.prototype.return()：**返回给定的值并结束生成器。
+
+  > **语法：**
+  >
+  > ```js
+  > gen.return(value) // 注意，不是在 generator 函数中调用 return
+  > ```
+  >
+  > - **参数**
+  >   **value：**需要返回的值
+  > - **返回值：**返回该函数参数中给定的值
+  >
+  > **示例：**
+  >
+  > ```js
+  > function* gen() { yield 1; yield 2; yield 3; }
+  > var g = gen();
+  > 
+  > g.next();        // { value: 1, done: false }
+  > g.return("foo"); // { value: "foo", done: true } 注：这里 done 变成了 true。另外，如果return中没有带参数，则 value 为 undefined；如果带了参数，则 value 为参数的值
+  > g.next();        // { value: undefined, done: true } 这里再调用 next()，done 始终都是 true。
+  > ```
+  >
+  > 如果对已经处于 “完成” 状态 的生成器调用 return(value)，则生成器将保持在“完成”状态。<mark>如果没有提供参数，则返回对象的 value 属性与示例最后的 .next() 方法相同</mark>。如果提供了参数，则参数将被设置为返回对象的 value 属性的值。
+  >
+  > 摘自：[MDN - Generator.prototype.return()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator/return)
+
+- **Generator.prototype.throw()：**向生成器抛出一个错误。
+
+  > throw() 方法<font color=FF0000>用来向生成器抛出异常</font>，并恢复生成器的执行，返回带有 done 及 value 两个属性的对象。
+  >
+  > **语法：**
+  >
+  > ```js
+  > gen.throw(exception)
+  > ```
+  >
+  > - **参数：** exception：用于抛出的异常。 使用 Error 的实例对调试非常有帮助。**注：**如下示例，exception 是 Error 对象
+  > - **返回值：**带有两个属性的对象：
+  >   - **done (boolean)：**如果迭代器已经返回了迭代序列的末尾，则值为 true。在这种情况下，可以指定迭代器 value 的返回值。 如果迭代能够继续生产在序列中的下一个值，则值为 false。 这相当与不指定 done 属性的值。
+  >   - **value：**迭代器返回的任何 JavaScript 值。当 done 是 true 的时候可以省略。
+  >
+  > **示例：**
+  >
+  > 下面的例子展示了一个简单的生成器并使用 throw方法向该生成器抛出一个异常，该异常通常可以通过 try...catch 块进行捕获
+  >
+  > ```js
+  > function* gen() {
+  >   while(true) {
+  >     try { yield 42; } 
+  >     catch(e) { console.log("Error caught!"); }
+  >   }
+  > }
+  > 
+  > var g = gen();
+  > g.next(); // { value: 42, done: false }
+  > g.throw(new Error("Something went wrong")); // "Error caught!"
+  > // g.next() { value: undefined, done: true} 这行代码是我自己添加测试的，发现 throw调用后，done 就直接变成 true 了
+  > ```
+  >
+  > 摘自：[MDN - Generator.prototype.throw()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator/throw)
+
+摘自：[MDN - Generator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator)
+
 #### GeneratorFunction
 
 GeneratorFunction构造器<font color=FF0000>生成新的生成器函数对象</font>。在JavaScript中，<font color=FF0000>生成器函数实际上都是GeneratorFunction的实例对象</font>。
@@ -2770,7 +2891,7 @@ Object.getPrototypeOf(function*(){}).constructor
 
 #### yield
 
-yield 关键字用来<font color=FF0000>暂停和恢复一个生成器函数（(function* 或遗留的生成器函数）</font>。
+yield 关键字用来<font color=FF0000>暂停和恢复一个生成器函数（ function* 或遗留的生成器函数 ）</font>。
 
 **语法**
 
@@ -2781,67 +2902,88 @@ yield 关键字用来<font color=FF0000>暂停和恢复一个生成器函数（(
 - **expression：**定义通过迭代器协议从生成器函数返回的值。如果省略，则返回undefined。
 - **rv：**返回传递给生成器的next()方法的可选值，以恢复其执行。
 
-yield和迭代器iterator很类似，不过yield是构造一个generator，每有一个yield停下来，等待再次调用，从停下来的地方继续执行。而iterator是通过next() 继续执行。另外，因为generator内部自己实现了next()方法，所以，可以用generator来实现iterator
+**描述**
+<font color=FF0000>yield 关键字使生成器函数执行暂停</font>，yield 关键字 <font color=FF0000>**后面的表达式的值返回给生成器的调用者**</font>。<font color=FF0000>**它可以被认为是一个基于生成器的版本的return 关键字**</font>。
 
+<font color=FF0000>yield关键字实际返回一个 **IteratorResult** 对象</font>，它有两个属性，value 和 done。value 属性是对 yield 表达式求值的结果，而 done 是 false，表示生成器函数尚未完全完成。
 
+一旦遇到 yield 表达式，生成器的代码将被暂停运行，直到生成器的 next() 方法被调用。每次调用生成器的 next() 方法时，生成器都会恢复执行，直到达到以下某个值：
 
-#### Generator.prototype.next()
+- **yield：**导致生成器再次暂停并返回生成器的新值。 下一次调用 next() 时，在 yield 之后紧接着的语句继续执行。
+- **throw：**用于从生成器中抛出异常。这让生成器完全停止执行，并在调用者中继续执行，正如通常情况下抛出异常一样。
+- **到达生成器函数的结尾：**在这种情况下，生成器的执行结束，并且 IteratorResult 给调用者返回 undefined 并且 done 为  true。
+- **到达return 语句：**在这种情况下，生成器的执行结束，并将 IteratorResult 返回给调用者，其值是由 return 语句指定的，并且 done 为 true。
 
-next() 方法返回一个包含属性 done 和 value 的对象。该方法也可以通过接受一个参数用以向生成器传值。
+<font color=FF0000>**如果将参数传递给生成器的 next() 方法，则该值将成为生成器当前yield操作返回的值。**</font>
 
-- **语法**
+在生成器的代码路径中的 yield 运算符，以及通过将其传递给 Generator.prototype.next() 指定新的起始值的能力之间，生成器提供了强大的控制力。
+
+摘自：[MDN - yield](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/yield)
+
+**补充：**yield 和迭代器 iterator 很类似，不过 yield 是构造一个 generator，每有一个 yield 停下来，等待再次调用，从停下来的地方继续执行。而 iterator是通过 next() 继续执行。另外，因为 generator 内部自己实现了 next() 方法，所以，可以用 generator 来实现 iterator
+
+#### yield*
+
+ yield* 表达式<font color=FF0000>用于委托给另一个generator 或可迭代对象</font>。
+
+**语法**
+
+```js
+ yield* [[expression]];
+```
+
+expression：返回一个可迭代对象的表达式。
+
+**描述：**yield* 表达式迭代操作数，并产生它返回的每个值。yield* 表达式本身的值是当迭代器关闭时返回的值（即done为true时）。
+
+**示例：**
+
+- **委托给其他生成器：**以下代码中，<font color=FF0000>g1() yield 出去的每个值都会在 g2() 的 next() 方法中返回</font>，就像那些 yield 语句是写在 g2() 里一样
 
   ```js
-  gen.next(value)
-  ```
-
-- **参数**
-  **value：**向生成器传递的值.
-
-- **返回值：**返回的对象包含两个属性
-
-  - **done (布尔类型)：**如果迭代器超过迭代序列的末尾，则值为 true。 在这种情况下，value可选地指定迭代器的返回值。
-    如果迭代器能够生成序列中的下一个值，则值为false。 这相当于没有完全指定done属性。
-  - **value：**迭代器返回的任意的Javascript值。当 done 的值为 true 时可以忽略该值。
-
-- **示例**
-  使用 next()方法；下面的例子展示了一个简单的生成器, 以及调用 next 后方法的返回值:
-
-  ```js
-  function* gen() {
-    yield 1;
-    yield 2;
-    yield 3;
-  }
+  function* g1() { yield 2; yield 3; yield 4; }
+  function* g2() { yield 1; yield* g1(); yield 5; } // 注意这里的 yield* g1()
   
-  var g = gen(); // "Generator { }"
-  g.next();      // "Object { value: 1, done: false }"
-  g.next();      // "Object { value: 2, done: false }"
-  g.next();      // "Object { value: 3, done: false }"
-  g.next();      // "Object { value: undefined, done: true }"
+  var iterator = g2();
+  console.log(iterator.next()); // { value: 1, done: false }
+  console.log(iterator.next()); // { value: 2, done: false }
+  console.log(iterator.next()); // { value: 3, done: false }
+  console.log(iterator.next()); // { value: 4, done: false }
+  console.log(iterator.next()); // { value: 5, done: false } 注意，执行完g1后，g2继续执行
+  console.log(iterator.next()); // { value: undefined, done: true }
   ```
 
-  **向生成器传值**
-
-  在此示例中，使用值调用next。 <font color=FF0000>请注意，第一次调用没有记录任何内容，因为生成器最初没有产生任何结果</font>。
+- **委托给其他可迭代对象：**除了生成器对象这一种可迭代对象，<font color=FF0000 size=4>yield* 还可以 yield 其它任意的**可迭代对象**</font>，比如说 <font color=FF0000 size=4>**数组、字符串、arguments 对象**等等</font>。
 
   ```js
-  function* gen() {
-    while(true) {
-      var value = yield null;
-      console.log(value);
-    }
-  }
+  function* g3() { yield* [1, 2]; yield* "34"; yield* arguments; } 
   
-  var g = gen();
-  g.next(1);
-  // "{ value: null, done: false }"
-  g.next(2);
-  // 2
-  // "{ value: null, done: false }"
+  var iterator = g3(5, 6);
+  console.log(iterator.next()); // { value: 1, done: false }
+  console.log(iterator.next()); // { value: 2, done: false }
+  console.log(iterator.next()); // { value: "3", done: false }
+  console.log(iterator.next()); // { value: "4", done: false }
+  console.log(iterator.next()); // { value: 5, done: false }
+  console.log(iterator.next()); // { value: 6, done: false }
+  console.log(iterator.next()); // { value: undefined, done: true }
   ```
 
-摘自：[MDN - Generator.prototype.next()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator/next)
+- **yield* 表达式的值：**<font color=FF0000>**yield* 是一个表达式，不是语句，所以它会有自己的值**</font>。
+
+  ```js
+  function* g4() { yield* [1, 2, 3]; return "foo"; }
+  var result;
+  function* g5() { result = yield* g4(); }
+  
+  var iterator = g5();
+  console.log(iterator.next()); // { value: 1, done: false }
+  console.log(iterator.next()); // { value: 2, done: false }
+  console.log(iterator.next()); // { value: 3, done: false }
+  console.log(iterator.next()); // { value: undefined, done: true } 此时 g4()返回了 { value: "foo", done: true }
+  console.log(result);          // "foo"
+  ```
+
+摘自：[MDN - yield*](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/yield*)
 
 
 
@@ -4952,14 +5094,16 @@ console.log(a); // 10
 - window.open() ：打开新窗口
 - window.close() ：关闭当前窗口
 - window.moveTo() ：移动当前窗口
-- window.resizeTo() ：调整当前窗口的尺寸
+- window.resizeTo() ：调整当前窗口的尺寸，设置绝对尺寸
+- window.resizeBy()：调整当前窗口的尺寸，改变相对尺寸
 
 <font size=4>**补充：**</font>屏幕 / 窗口 / 元素  的  高度 / 宽度
 
 - **<font color=FF0000>整个屏幕</font> 逻辑分辨率上的 宽高度**
+  
   - **window.screen.height：**屏幕高度 （整个屏幕 逻辑分辨率上的 高度）
   - **window.screen.width：**屏幕宽度（整个屏幕 逻辑分辨率上的 宽度）
-
+  
 - **获取屏幕<font color=FF0000>可工作区域的</font>高度和宽度（<font color=FF0000>去掉状态栏</font>）**
 
   ​	<font color=FF0000>**只去除了上面的状态栏，打开控制台不受影响**</font>。<font color=FF0000>**是一个固定值，不受浏览器窗口大小而改变**</font>
@@ -5066,6 +5210,32 @@ console.log(a); // 10
 
 摘自：[现代JS教程 - 坐标 - 元素坐标：getBoundingClientRect](https://zh.javascript.info/coordinates#yuan-su-zuo-biao-getboundingclientrect)
 
+#### Window.resizeBy()
+
+**概述：**调整窗口大小。
+
+**语法：**
+
+```js
+window.resizeBy(xDelta, yDelta)
+```
+
+**参数：**
+
+- xDelta：为窗口水平方向变化的像素值。
+- yDelta：为窗口垂直方向变化的像素值 。
+
+**示例：**
+
+```js
+// 缩小窗口
+window.resizeBy(-200, -200);
+```
+
+**备注：**该方法相对于窗口当前大小来调整该窗口的大小。要以绝对大小方式调整窗口的大小，可使用 [window.resizeTo](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/resizeTo)。
+
+摘自：[MDN - window.resizeBy](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/resizeBy)
+
 
 
 #### JavaScript Window Location
@@ -5122,6 +5292,15 @@ window.navigator 对象<font color=FF0000>包含有关访问者浏览器的信�
 - <font color=FF0000>navigator 数据可被浏览器使用者更改</font>
 - <mark>一些浏览器对测试站点会识别错误</mark>
 - <mark>浏览器无法报告晚于浏览器发布的新操作系统</mark>
+
+**补充：**
+<font color=FF0000>Navigator <font size=4>**接口**</font>表示 **用户代理的状态和标识**</font>。 它允许脚本查询它和注册自己进行一些活动。可以使用只读的 window.navigator 属性检索navigator对象。
+
+链接处还有一些属性和方法，这里略。
+
+另外，也可以通过 在 浏览器 devtools terminal 上输入 navigator（ node环境没有 navigator ），查看属性和方法。
+
+摘自：[MDN - Navigator](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator)
 
 
 
@@ -6331,7 +6510,7 @@ IntersectionObserver 接口（<mark>从属于 Intersection Observer API</mark>�
 
 #### ResizeObserver 🧪
 
-ResizeObserver 接口 <font color=FF0000>可以监听到 Element 的 <font size=4>**内容区域**</font>（注：Mutation observer 是监听 DOM树 的改变）</font> **或** <font color=0000FF>SVGElement的边界框</font> <font size=4>**改变**</font>。<font color=FF0000>内容区域则需要减去内边距 padding</font>。（有关内容区域、内边距资料见盒子模型 ）
+ResizeObserver 接口 <font color=FF0000>可以监听到 Element 的 <font size=4>**内容区域**</font>（注：Mutation observer 是监听 DOM树 的改变）</font> **或** <font color=0000FF>SVGElement的边界框</font> <font size=4>**改变**</font>。<font color=FF0000>内容区域则需要减去内边距 padding</font>。（有关内容区域、内边距资料见 [盒子模型](https://developer.mozilla.org/docs/Learn/CSS/Introduction_to_CSS/Box_model)）
 
 <font color=FF0000>ResizeObserver **避免了在自身回调中调整大小，从而触发的无限回调和循环依赖**</font>。它 <font color=FF0000>仅通过在后续帧中处理DOM中更深层次的元素来实现这一点</font>。<mark>如果（浏览器）遵循规范，**只会在 绘制前或布局后触发调用**</mark>。
 
@@ -6444,6 +6623,53 @@ PerformanceObserver <font color=FF0000>用于监测性能度量事件</font>，<
 
 
 
+#### Blob
+
+<font color=FF0000>**Blob 对象表示一个不可变、原始数据的类文件对象**</font>。<font color=FF0000>它的数据可以按 **文本** 或 **二进制** 的格式进行 **读取**，也可以转换成 **ReadableStream** 来用于数据 **操作**</font>。 
+
+Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000>**File 接口基于Blob**，继承了 blob 的功能并将其扩展使其支持用户系统上的文件</font>。
+
+要从其他非blob对象和数据构造一个 Blob，请使用 Blob() 构造函数。要创建一个 blob 数据的子集 blob，请使用 slice() 方法（**注：**类似于切片）。要获取用户文件系统上的文件对应的 Blob 对象，请参阅 File 文档。
+
+- **构造函数**
+
+  **Blob(blobParts[, options])**：返回一个新创建的 Blob 对象，其内容由参数中给定的数组串联组成。
+
+  > **参数**
+  >
+  > - **array**（即上面的 blobParts） <font color=FF0000>是一个由 **ArrayBuffer、ArrayBufferView、Blob、DOMString** 等对象构成的 Array</font> ，<font color=FF0000>或者其他类似对象的混合体</font>，它将会被放进 Blob。<font color=FF0000>**DOMStrings 会被编码为 UTF-8**</font>。
+  > - **options** 是一个 <font color=FF0000>**可选的 BlobPropertyBag 字典**</font>，它可能会指定如下两个属性：
+  >   - **type：**<font color=FF0000>**默认值为 ""**</font>，它代表了将会被放入到 blob 中的<font color=FF0000>**数组内容**</font>（注：即对应了上面的Array） 的 <font color=FF0000 size=4>**MIME 类型**</font>。
+  >   - **endings：👎 ** <font color=FF0000>默认值为 "transparent"，用于指定包含行结束符\n的字符串如何被写入</font>。 它是以下两个值中的一个："native"，代表行结束符会被更改为适合宿主操作系统文件系统的换行符，或者 "transparent"，代表会保持blob中保存的结束符不变
+  >
+  > 摘自：[MDN - Blob()](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob/Blob)
+
+- **属性：**
+
+  - **Blob.size：**<font color=FF0000>只读</font>，Blob 对象中所包含数据的大小（字节）。
+  - **Blob.type：**<font color=FF0000>只读</font>，一个字符串，<font color=FF0000>表明该 Blob 对象所包含数据的 MIME 类型</font>。如果类型未知，则该值为空字符串。
+
+- **方法：**
+
+  - **Blob.slice([start[, end[, contentType]]])**：返回一个新的 Blob 对象，包含了源 Blob 对象中指定范围内的数据。
+
+    > **参数**
+    >
+    > - **start：**可选，这个参数代表 Blob 里的下标，表示第一个会被会被拷贝进新的 Blob 的字节的起始位置。如果你传入的是一个负数，那么这个偏移量将会从数据的末尾从后到前开始计算。举例来说，-10 将会是  Blob 的倒数第十个字节。它的<font color=FF0000>**默认值是0**</font>， <mark>如果你传入的start的长度大于源 Blob 的长度，那么返回的将会是一个长度为 0 并且不包含任何数据的一个 Blob 对象</mark>
+    > - **end：**可选，这个参数代表的是 Blob 的一个下标，这个下标 -1 的对应的字节将会是被拷贝进新的Blob 的最后一个字节。如果你传入了一个负数，那么这个偏移量将会从数据的末尾从后到前开始计算。举例来说， -10 将会是 Blob 的倒数第十个字节。它的<font color=FF0000>默认值就是它的原始长度 ( size )</font>
+    > - **contentType：**可选，<font color=FF0000>**给新的 Blob 赋予一个新的文档类型**</font>。这将会把它的 type 属性设为被传入的值。它的<font color=FF0000>默认值是一个空的字符串</font>。
+    >
+    > 摘自：[MDN - Blob.slice](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob/slice)
+
+  - **Blob.stream()**：<font color=FF0000>返回一个能读取 blob 内容的 **ReadableStream**</font>。
+
+  - **Blob.text()**：<font color=FF0000>返回一个 **Promise**</font> 且<font color=FF0000>包含 blob 所有内容的 **UTF-8 格式**的 USVString</font>。
+  - **Blob.arrayBuffer()**：<font color=FF0000>返回一个 **Promise**</font> 且<font color=FF0000>包含 blob 所有内容的**二进制格式**的 ArrayBuffer</font>
+
+摘自：[MDN - Blob](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob) 
+
+
+
 #### FileReader
 
 <font color=FF0000>FileReader 对象</font>允许Web应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，<font color=FF0000>使用 File 或 Blob 对象指定要读取的文件或数据</font>。
@@ -6524,41 +6750,44 @@ PerformanceObserver <font color=FF0000>用于监测性能度量事件</font>，<
   
   - **createObjectURL()：**返回一个 DOMString ，包含一个唯一的 blob 链接（该链接协议为以 `blob:`，后跟唯一标识浏览器中的对象的掩码）。
   
-    <font size=4>**补充：**</font>
+    > URL.createObjectURL() 静态方法 <font color=FF0000>会创建一个 DOMString</font>，<font color=FF0000>其中包含一个表示参数中给出的对象的 URL</font>。**这个 URL 的<font color=FF0000>生命周期和创建它的窗口中的 document 绑定</font>**。这个新的 URL 对象表示指定的 File 对象或 Blob 对象。
+    >
+    > **注意：**此特性<font color=FF0000>在 Web Worker 中可用</font>。<font color=FF0000>在 Service Worker 中**不可用**</font>，因为它有可能导致内存泄漏。
+    >
+    > **语法：**
+    >
+    > ```js
+    > objectURL = URL.createObjectURL(object);
+    > ```
+    >
+    > - **参数：**
+    >
+    >   **object：**<font color=FF0000>用于创建 URL 的 File 对象、Blob 对象或者 MediaSource 对象</font>。
+    >
+    > - **返回值：**一个 DOMString 包含了一个对象 URL，该 URL 可用于指定源 object 的内容。
+    >
+    > **附注**
+    >
+    > - **内存管理：**在每次调用 createObjectURL() 方法时，都会创建一个新的 URL 对象，即使你已经用相同的对象作为参数创建过。<font color=FF0000>当不再需要这些 URL 对象时，每个对象必须通过调用 URL.revokeObjectURL() 方法来释放</font>。<font color=FF0000>浏览器在 document 卸载的时候，会自动释放它们</font>；**但为了获得最佳性能和内存使用状况，你应该在安全的时机主动释放掉它们**
+    > - 使用相对URLs作为媒体流：在旧版本的媒体资源规范中，添加流作为 \<video> 元素需要创建一个关于 MediaStream的对象URL。<mark>现已没必要这样做了，浏览器已经移除了该操作的支持</mark>。
+    >
+    > 补充内容摘自：[MDN - URL.createObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/createObjectURL)
   
-    URL.createObjectURL() 静态方法 会创建一个 DOMString，其中包含一个表示参数中给出的对象的 URL。这个 URL 的生命周期和创建它的窗口中的 document 绑定。这个新的 URL 对象表示指定的 File 对象或 Blob 对象。
+    **revokeObjectURL()：**销毁之前使用 URL.createObjectURL() 方法创建的URL实例。
   
-    **语法：**
-  
-    ```js
-    objectURL = URL.createObjectURL(object);
-    ```
-  
-    - **参数：**
-  
-      **object：**用于创建 URL 的 File 对象、Blob 对象或者 MediaSource 对象。
-  
-    - **返回值：**一个 DOMString 包含了一个对象 URL，该 URL 可用于指定源 object 的内容。
-  
-    补充内容摘自：[MDN - URL.createObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/createObjectURL)
-  
-  - **revokeObjectURL()：**销毁之前使用 URL.createObjectURL() 方法创建的URL实例。
-  
-    <font size=4>**补充：**</font>
-  
-    URL.revokeObjectURL() 静态方法用来<font color=FF0000>释放一个之前已经存在的、通过调用 URL.createObjectURL() 创建的 URL 对象</font>。当你结束使用某个 URL 对象之后，应该通过调用这个方法来让浏览器知道不用在内存中继续保留对这个文件的引用了。
-  
-    **语法：**
-  
-    ```js
-    window.URL.revokeObjectURL(objectURL);
-    ```
-  
-    - **参数：**
-      **objectURL：**一个 DOMString，表示通过调用 URL.createObjectURL() 方法产生的 URL 对象。
-    - **返回值：**undefined
-  
-    补充内容摘自：[MDN - URL.revokeObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/revokeObjectURL)
+    > URL.revokeObjectURL() 静态方法用来<font color=FF0000>释放一个之前已经存在的、通过调用 URL.createObjectURL() 创建的 URL 对象</font>。当你结束使用某个 URL 对象之后，应该通过调用这个方法来让浏览器知道不用在内存中继续保留对这个文件的引用了。
+    >
+    > **语法：**
+    >
+    > ```js
+    > window.URL.revokeObjectURL(objectURL);
+    > ```
+    >
+    > - **参数：**
+    >   **objectURL：**一个 DOMString，表示通过调用 URL.createObjectURL() 方法产生的 URL 对象。
+    > - **返回值：**undefined
+    >
+    > 内容摘自：[MDN - URL.revokeObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/revokeObjectURL)
 
 摘自：[MDN - URL](https://developer.mozilla.org/zh-CN/docs/Web/API/URL)
 
@@ -8920,20 +9149,23 @@ weakset不可遍历
 
 #### DocumentFragment 文档片段 / 文档碎片
 
-DocumentFragment，文档片段接口，一个没有父对象的最小文档对象。它被作为一个轻量版的 Document 使用，就像标准的document一样，存储由节点（nodes）组成的文档结构。<font color=FF0000>与document相比，最大的区别是DocumentFragment 不是真实 DOM 树的一部分，它的变化不会触发 DOM 树的重新渲染，且不会导致性能等问题。</font>
+DocumentFragment，<font color=FF0000>文档片段 **接口**</font>，一个<font color=FF0000>没有父对象的最小文档对象</font>。它被作为一个轻量版的 Document 使用，就像标准的document 一样，存储由节点（nodes）组成的文档结构。<font color=FF0000>与 document 相比，最大的区别是DocumentFragment **不是真实 DOM 树的一部分，它的变化不会触发 DOM 树的重新渲染，且不会导致性能等问题**。</font>
 
 最常用的方法是使用文档片段作为参数（例如，任何 Node 接口类似 Node.appendChild 和 Node.insertBefore 的方法），这种情况下被添加（append）或被插入（inserted）的是片段的所有子节点, 而非片段本身。<font color=FF0000>因为所有的节点会被一次插入到文档中，而这个操作仅发生一个重渲染的操作，而不是每个节点分别被插入到文档中，因为后者会发生多次重渲染的操作。</font>
 
+该接口在 Web 组件（Web components）中也非常有用：\<template> 元素在其 HTMLTemplateElement.content 属性中包含了一个 DocumentFragment。
+
 <font color=FF0000>可以使用document.createDocumentFragment 方法或者构造函数来创建一个空的 DocumentFragment。</font>
 
-**方法：**该接口继承 Node 的全部方法，并实现了 ParentNode 接口中的方法。
+**属性：**该接口没有特殊的属性，其<font color=FF0000 size=4>**属性都继承自 Node**</font>。并补充了 Node 接口中的属性。原文这里下面列举了几个属性，这里略。
 
-- **DocumentFragment.querySelector()**
-  返回在DocumentFragment中以文档顺序排列的第一个符合指定选择器的Element节点。
-- **DocumentFragment.querySelectorAll()**
-  返回在DocumentFragment中所有的符合指定选择器的Element节点组成的NodeList数组。
-- **DocumentFragment.getElementById()**
-  返回在DocumentFragment中以文档顺序排列的第一个符合指定ID选择器的Element节点。与Document.getElementById()作用相同。
+**构造函数：DocumentFragment()** 返回一个空的 DocumentFragment 对象。
+
+**方法：**<font color=FF0000>该接口继承 Node 的全部方法</font>，并实现了 ParentNode 接口中的方法。
+
+- **DocumentFragment.querySelector()**：返回在DocumentFragment中以文档顺序排列的第一个符合指定选择器的Element节点。
+- **DocumentFragment.querySelectorAll()**：返回在DocumentFragment中所有的符合指定选择器的Element节点组成的NodeList数组。
+- **DocumentFragment.getElementById()**：返回在DocumentFragment中以文档顺序排列的第一个符合指定ID选择器的Element节点。与Document.getElementById()作用相同。
 
 **示例如下：**
 
@@ -9205,6 +9437,22 @@ history.replaceState(stateObj, title[, url]);
 
   摘自：[MDN - mouseleave](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/mouseleave_event)
 
+- <font size=4>**dragstart：**</font><font color=FF0000>当用户开始拖动一个元素或者一个选择文本的时候 dragstart 事件就会触发</font>。
+
+  可以冒泡，可以取消。事件目标对象：Document、Element。事件接口：DragEvent
+
+  另外，该事件有一些属性；由于有不少，这里略。
+  
+  摘自：[MDN - dragstart](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/dragstart_event)
+
+- <font size=4>**dragsend：**<font color=FF0000>拖放事件在拖放操作结束时触发</font>（通过<font color=FF0000>释放鼠标按钮或单击escape键</font>）
+
+  可以冒泡，不可以取消。事件目标对象：Document、Element。事件接口：DragEvent
+
+  另外，该事件有一些属性；由于有不少，这里略。
+
+  摘自：[MDN - dragstart](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/dragstart_event)
+
 - <font size=4>**rejectionhandled：**</font><font color=FF0000>当 Promise 被 rejected 且 **有rejection处理器** 时，会在 <font size=4>**全局触发**</font> rejectionhandled 事件</font>（通常是发生在window下，但是也可能发生在Worker中）。应用于调试一般应用回退。当Promise 被 rejected 且没有 rejection 处理器处理时会触发unhandledrejection 事件。这两个事件协同工作
 
   不可以冒泡，不可以取消
@@ -9254,6 +9502,17 @@ history.replaceState(stateObj, title[, url]);
   事件处理器属性：oncontextmenu
 
   摘自：[MDN - Element: contextmenu event](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/contextmenu_event)
+
+- <font size=4>**input：**</font>当一个 \<input>, \<select>, 或 \<textarea> 元素的 value 被修改时，会触发 input 事件。
+
+  可以冒泡，不可以取消。
+
+  接口：InputEvent；事件处理器属性：GlobalEventHandlers.oninput
+
+  <font color=FF0000 size=4>**input 事件也适用于启用了 contenteditable 的元素，以及开启了 designMode 的任意元素**</font>。<font color=FF0000>在contenteditable 和 designMode 的情况下，事件的 target 为当前正在编辑的宿主</font>。<font color=FF0000>如果这些属性应用于多个元素上，当前正在编辑的宿主为最近的父节点不可编辑的祖先元素</font>。
+  <mark>对于 type=checkbox 或 type=radio 的 input 元素，每当用户切换控件（通过触摸、鼠标或键盘）时（HTML5规范），input 事件都应该触发。然而，历史事实并非如此。请检查兼容性，或使用 change 事件代替这些类型的元素</mark>。
+
+  摘自：[MDN - input](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/input_event)
 
 - <font size=4>**copy：**</font>当用户通过浏览器的用户界面启动复制操作时，将触发 copy 事件。
 
@@ -9346,7 +9605,7 @@ history.replaceState(stateObj, title[, url]);
   可以冒泡，不可以取消
 
   摘自：[MDN - Window: hashchange event](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/hashchange_event)
-  
+
   **注：**这个事件是 vue-router hash模式的原理
 
 <font size=4>**补充：**</font>
@@ -10332,6 +10591,14 @@ ArrayBuffer 对象用来表示<font color=FF0000>通用的、固定长度</font>
 
 
 
+#### import
+
+// TODO
+
+摘自：[MDN - import](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/import)
+
+
+
 #### import.meta
 
 import.meta是一个<font color=FF0000>给JavaScript模块暴露特定上下文的元数据属性的对象</font>。<font color=FF0000>它包含了这个模块的信息，比如说这个模块的URL</font>。
@@ -10398,25 +10665,23 @@ Node --|> EventTarget : Inheritance
 
 
 
-
-
 #### Element.closest()
 
 Element.closest() 方法用来获取：<font color=FF0000>匹配特定选择器且离当前元素最近的祖先元素（也可以是当前元素本身）。如果匹配不到，则返回 null</font>
 
-- **语法**
+**语法**
 
-  ```js
-  var closestElement = targetElement.closest(selectors);
-  ```
+```js
+var closestElement = targetElement.closest(selectors);
+```
 
 - **参数**
   selectors 是指定的选择器，比如 "p:hover, .toto + q"。
-
 - **返回值**
   elt 是查询到的祖先元素，也可能是 null。
-
 - **异常：**如果传入的选择器不合法，则抛出 SyntaxError 异常。
+
+示例见下面链接
 
 摘自：[MDN - Element.closest()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/closest)
 
