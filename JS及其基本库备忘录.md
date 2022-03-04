@@ -726,7 +726,6 @@ console.log(found); // expected output: 12
 摘自：[MDN - Array.prototype.find()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
 
 
-
 #### Array.prototype.reduce()
 
 **reduce()** 方法<font color=FF0000>对数组中的每个元素<mark>**执行一个自定义的reducer函数（升序执行）**</mark>，将其结果汇总为单个返回值</font>。示例如下：
@@ -9865,6 +9864,32 @@ MouseEvent.button是只读属性，它返回一个值，代表用户按下并触
 这个属性将基于文档的边缘，考虑任何页面的水平方向上的滚动。举个例子，如果页面向右滚动 200px 并出现了滚动条，这部分在窗口之外，然后鼠标点击距离窗口左边 100px 的位置，pageX 所返回的值将是 300。
 
  起初这个属性被定义为长整型。 CSSOM 视图模块将它重新定位为双浮点数类型。请参阅浏览器兼容性部分了解详情。
+
+
+
+#### ClipboardEvent 🧪
+
+ClipboardEvent <font color=FF0000>接口描述了**与修改剪切板相关信息**的事件</font>，这些<font color=FF0000>事件包括 剪切cut，复制copy 和 粘贴paste 事件</font>。
+
+**构造函数 ClipboardEvent()：**用给定的参数创建了一个 ClipboardEvent 事件。
+
+**属性：**同样是从其父类  Event 继承的属性。
+
+**ClipboardEvent.clipboardData：**只读，<font color=FF0000>是一个 DataTransfer 对象</font>，它<font color=FF0000>**包含了由用户发起的 cut  、 copy 和 paste 操作影响的数据**</font>， <font color=FF0000>以及它的 **MIME 类型**</font>。MDN 链接：[MDN - ClipboardEvent.clipboardData](https://developer.mozilla.org/zh-CN/docs/Web/API/ClipboardEvent/clipboardData)
+
+摘自：[ClipboardEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/ClipboardEvent)
+
+#### DataTransfer
+
+DataTransfer 对象用于保存拖动并放下（drag and drop，**注：**html 拖放相关见下面）过程中的数据。它可以保存一项或多项数据，这些数据项可以是一种或者多种数据类型。这个对象可以从所有拖动事件 drag events 的 dataTransfer 属性上获取。
+
+// TODO
+
+摘自：[MDN - DataTransfer](https://developer.mozilla.org/zh-CN/docs/Web/API/DataTransfer)
+
+#### HTML 拖放
+
+参考视频：[使用原生 JS Drag&Drop API 实现可视化拖拽和文件拖放操作](https://www.bilibili.com/video/BV1i5411E7hk)
 
 
 

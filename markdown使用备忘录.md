@@ -104,7 +104,7 @@
 #### markdown中使标题居中
 
 ```html
-<div align='center' ><font size='40'>实习总结报告</font></div>
+<div align='center'><font size='40'>实习总结报告</font></div>
 ```
 
 效果如下：
@@ -454,7 +454,7 @@ PAD    	| ￥2000
 ![在这里插入图片描述](https://i.loli.net/2021/02/20/PGfz154gnr2cVSH.png)
 
 ```
-​```javascript
+```javascript
 　	//代码高亮显示例子
 　	var aa= 'this';
 　	var bb= 'that';
@@ -559,7 +559,7 @@ gantt
  一个常见的Mermaid流程图例子如下：
 
 ```code
-​```mermaid
+```mermaid
 	graph LR
 	A[长方形] -- 链接 --> B((圆))
 	A --> C(圆角长方形)
@@ -584,7 +584,7 @@ graph LR
  一个常见的Flowchart流程图例子如下：
 
 ```code
-​```mermaid
+```mermaid
 	flowchart
 	st=>start: 开始
 	e=>end: 结束
