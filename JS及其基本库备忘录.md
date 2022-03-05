@@ -10615,7 +10615,6 @@ ArrayBuffer 对象用来表示<font color=FF0000>通用的、固定长度</font>
 
 
 
-
 #### import
 
 // TODO
@@ -10836,8 +10835,41 @@ let hostElem = shadow.host;
 
 摘自：[js固化对象](https://zhhlwd.gitee.io/posts/js%E5%9B%BA%E5%8C%96%E5%AF%B9%E8%B1%A1.html)
 
+#### web worker
 
 
+
+#### service worker
+
+Service workers <font color=FF0000>本质上充当 Web 应用程序、浏览器与网络（可用时）之间的代理服务器</font>（<mark> **注：** 即 Proxy，感觉也可以理解为拦截层？ </mark>）。<font color=FF0000>这个 API 旨在创建有效的离线体验</font>（**注：** 读到这里想到了 PWA，查了下便搜到了这篇文章：[通过 Service workers 让 PWA 离线工作](https://developer.mozilla.org/zh-CN/docs/Web/Progressive_web_apps/Offline_Service_workers) 另外，自己的笔记 [[webpack学习笔记#PWA打包]] 部分也有提及：server work 是 pwa 实现的原理。另外，下面也有对这篇文章做摘抄：[[JS及其基本库备忘录#service work补充]] ），<font color=FF0000>它**会拦截网络请求并根据网络是否可用来采取适当的动作、更新来自服务器的的资源**</font>。它还提供入口以推送通知和访问后台同步 API。
+
+<font size=4>**Service worker 的概念和用法**</font>
+
+Service worker 是一个<font color=FF0000>注册在 **指定源和路径下** 的事件驱动worker</font>。它<font color=FF0000>采用 JavaScript 控制关联的页面或者网站，<font size=4> **拦截并修改访问和资源请求，细粒度地缓存资源** </font> </font>。你<font color=FF0000>可以完全控制应用在特定情形（最常见的情形是网络不可用）下的表现</font>（ **注：** <mark>根据语义，service worker 可以控制“在线和离线”两种情况下的“网络请求和资源获取”</mark>）。
+
+<font color=FF0000>Service worker 运行在worker上下文，因此它<font size=4> 不能访问DOM</font></font>。相对于驱动应用的 主JavaScript线程，它运行在其他线程中，所以不会造成阻塞。<font color=FF0000> **它设计为完全异步** ，同步API（如 XHR 和localStorage ）不能在service worker中使用</font>（注：xhr 存在同步模式，虽然默认是异步；但是这样说没有错...）。
+
+出于安全考量，Service workers只能由HTTPS承载，毕竟修改网络请求的能力暴露给中间人攻击会非常危险
+
+**注意：**
+- Service workers 之所以优于以前同类尝试（如AppCache），是因为它们（ **注：** 即 AppCache 之类的同类尝试 ）无法支持当操作出错时终止操作（ **注：** 即 Service worker 可以）。<font color=FF0000>Service workers可以更细致地控制每一件事情</font>。
+- <font color=FF0000> **Service workers 大量使用Promise** </font>，因为通常它们会等待响应后继续，并根据响应返回一个成功或者失败的操作。Promise非常适合这种场景。
+
+下面还有 service worker 使用过相关的内容，如：注册、下载、安装和激活 还有相关接口，由于暂时用不到，这里略
+摘自：[MDN - Service Worker API](https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API)
+
+##### service work补充
+
+<font color=FF0000>Service Worker 是浏览器和网络之间的虚拟代理</font>。 它们终于解决了前端开发人员多年来一直在努力解决的一些问题，其中最值得关注的是，<font color=FF0000>解决了如何正确缓存网站资源并使其在离线时可用的问题</font>。
+
+<mark>Service Worker 运行在 一个与页面 JavaScript 主线程独立的 线程上（ **注：** 即与 js主线程 无关），并且无权访问 DOM 结构</mark>。这引入了一种与传统 Web 编程不同的方式：它的 API 是非阻塞的，并且可以在不同的上下文之间发送和接收信息。<font color=FF0000>您可分配给 Service Worker 一些任务，并通过 <font size=4>基于 Promise 的方法</font> 在任务完成时收到结果</font>。
+
+它<font color=FF0000>不仅仅提供离线功能，还可以做包括处理通知、在单独的线程上执行繁重的计算等事务</font>。Service workers 非常强大，因为他们可以控制网络请求、修改网络请求、返回缓存的自定义响应，或者合成响应。
+
+**离线优先**
+“离线优先”或“缓存优先”模式是向用户提供内容的最流行策略。如果资源已缓存且可脱机使用，就在尝试从服务器下载资源之前先将其返回；如果它已经不在缓存中，就下载并缓存以备将来使用。
+
+补充内容摘自：[MDN - 通过 Service workers 让 PWA 离线工作](https://developer.mozilla.org/zh-CN/docs/Web/Progressive_web_apps/Offline_Service_workers)
 ***
 
 
