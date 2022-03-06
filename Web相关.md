@@ -2273,7 +2273,7 @@ Apple 官网喜欢用用户滚动页面 实现 播放视频（动画）效果，
 
 <font size=4>**JSBridge 的双向通信原理**</font>
 
-- **JS 调用 Native：**JS 调用 Native 的实现方式较多，主要有拦截 URL Scheme 、重写 prompt 、注入 API 等方法
+- **JS 调用 Native：**<font color=FF0000>JS 调用 Native 的**实现方式**较多</font>，主要有拦截 URL Scheme 、重写 prompt 、注入 API 等方法
   - **拦截 URL Scheme：**Android 和 iOS 都可以通过拦截 URL Scheme 并解析 scheme 来决定是否进行对应的 Native 代码逻辑处理
   - **重写 prompt 等原生 JS 方法**
     - Android 4.2 之前注入对象的接口是 addJavascriptInterface ，但是由于安全原因慢慢不被使用。一般会通过修改浏览器的部分 Window 对象的方法来完成操作。<mark>主要是拦截 alert、confirm、prompt、console.log 四个方法，分别被 Webview 的 onJsAlert、onJsConfirm、onConsoleMessage、onJsPrompt 监听</mark>。
