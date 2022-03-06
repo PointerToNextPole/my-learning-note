@@ -2773,7 +2773,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >   
+  >       
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -2792,7 +2792,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >   
+  >       
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -10068,6 +10068,17 @@ window.requestIdleCallback() 方法<font color=FF0000>插入一个函数</font>�
 
 摘自：[MDN - requestIdleCallback](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)
 
+##### 垃圾回收的补充
+
+#### FinalizationRegistry
+
+FinalizationRegistry 对象<font color=FF0000>可以让你在对象被垃圾回收时请求一个回调</font>。
+
+**描述**
+FinalizationRegistry 提供了这样的一种方法：<font color=FF0000>当一个在 **注册表中注册的对象被回收时**，请求在某个时间点上调用一个清理回调</font>。（清理回调有时被称为 finalizer ）。
+
+摘自：[MDN - FinalizationRegistry](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry)
+
 
 
 #### Window.scrollY
@@ -10835,9 +10846,71 @@ let hostElem = shadow.host;
 
 摘自：[js固化对象](https://zhhlwd.gitee.io/posts/js%E5%9B%BA%E5%8C%96%E5%AF%B9%E8%B1%A1.html)
 
+
+
+#### 一些 worker 的总概
+
+除了专用 worker 之外，还有一些其他种类的 worker ：
+
+- **Shared Workers** 可被不同的窗体的多个脚本运行，例如 IFrames 等，只要这些 workers 处于同一主域。共享worker 比专用 worker 稍微复杂一点 — 脚本必须通过活动端口进行通讯。
+- **Service Workers** 一般作为web应用程序、浏览器和网络（如果可用）之间的代理服务。他们旨在（除开其他方面）创建有效的离线体验，拦截网络请求，以及根据网络是否可用采取合适的行动，更新驻留在服务器上的资源。他们还将允许访问推送通知和后台同步API。
+- **Chrome Workers** 是一种仅适用于firefox的worker。如果您正在开发附加组件，希望在扩展程序中使用worker且可以访问 js-ctypes，那么可以使用Chrome Workers。
+- **音频 Workers** 可以在网络worker上下文中直接完成脚本化音频处理
+
+摘自：[MDN - Web Workers API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API)
+
 #### web worker
 
+Worker 接口是 Web Workers API 的一部分，指的是一种可由脚本创建的后台任务，任务执行中可以向其创建者收发信息。<font color=FF0000>要创建一个 Worker ，只须调用 Worker( URL ) 构造函数，函数参数 URL 为指定的脚本</font>。
 
+<font color=FF0000>Worker 也可以创建新的 Worker，当然，所有 Worker 必须与其创建者<font size=4>**同源**</font></font>。
+
+需要注意的是，<font color=FF0000>不是所有函数和构造函数（或者说…类）都可以在 Worker 中使用</font>。具体参考页面 [Worker 所支持的函数和类](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API/Functions_and_classes_available_to_workers)。Worker 可以使用 XMLHttpRequest 发送请求，但是请求的 responseXML 与 channel 两个属性值始终返回 null （fetch 仍可正常使用，没有类似的限制）。 
+
+- **构造函数**
+  Worker()：创建一个专用Web worker，它只执行URL指定的脚本。<font color=FF0000> Blob URL 作为参数亦可</font>。
+
+  > 如果 此URL有一个无效的语句，或者违反同源策略，一个 SECURITY_ERR 类型的DOMException被抛出。
+  >
+  > **语法**
+  >
+  > ```js
+  > const myWorker = new Worker(aURL[, options]);
+  > ```
+  >
+  > **参数**
+  >
+  > - **aURL：**是一个DOMString 表示worker 将执行的脚本的URL。它必须遵守同源策略。
+  > - **options：** 可选，包含可在创建对象实例时设置的选项属性的对象。可用属性如下:
+  >   - **type：**用以指定 worker 类型的  DOMString 值. 该值可以是 classic 或 module. 如果未指定，将使用默认值 classic.
+  >   - **credentials：**用以指定 worker 凭证的 DOMString 值.该值可以是 omit, same-origin，或 include.。如果未指定，或者 type 是 classic，将使用默认值 omit (不要求凭证)。
+  >   - **name：**在 DedicatedWorkerGlobalScope 的情况下，用来表示 worker 的 scope 的一个 DOMString 值，主要用于调试目的。
+  >
+  > **异常**
+  >
+  > - 当 document 不被允许启动 worker 的时候，将抛出一个 SecurityError 异常。例如：如果提供的 aURL 有语法错误，或者与同源策略相冲突（跨域访问）。
+  > - 如果 worker 的 MIME 类型不正确，将抛出一个 NetworkError 异常。<font color=FF0000>worker 的 MIME 类型必须是 text/javascript</font>。
+  > - 如果 aURL 无法被解析（格式错误），将抛出一个 SyntaxError 异常。
+  >
+  > 摘自：[MDN - Worker()](https://developer.mozilla.org/zh-CN/docs/Web/API/Worker/Worker)
+
+- **属性：**<font color=FF0000>继承父对象EventTarget 的属性，以及实现对象 AbstractWorker 的属性</font>。
+
+- **事件句柄：**
+  - **AbstractWorker.onerror：**当 ErrorEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用。它继承于 AbstractWorker
+  - **Worker.onmessage：**当 MessageEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用.  例如，一个消息通过 DedicatedWorkerGlobalScope.postMessage，从执行者发送到父页面对象，消息保存在事件对象的 data 属性中.
+  - **Worker.onmessageerror：**当messageerror 类型的事件发生时，对应的 event handler 代码被调用。
+- **方法：**<font color=FF0000>继承父对象EventTarget 的方法，以及实现对象 AbstractWorker 的方法</font>。
+  - **Worker.postMessage()：**<font color=FF0000>发送一条消息到最近的外层对象</font>，消息可由任何 JavaScript 对象组成。
+  - **Worker.terminate()：**<font color=FF0000>立即终止 worker</font>。<mark>该方法不会给 worker 留下任何完成操作的机会；就是简单的立即停止</mark>。Service Woker 不支持这个方法。
+
+摘自：[MDN - Worker](https://developer.mozilla.org/zh-CN/docs/Web/API/Worker)
+
+##### worker上下文对象 补充
+
+在专用workers的情况下，DedicatedWorkerGlobalScope 对象代表了worker的上下文（专用workers是指标准worker仅在单一脚本中被使用；共享worker的上下文是 SharedWorkerGlobalScope对象）。一个专用worker仅仅能被首次生成它的脚本使用，而共享worker可以同时被多个脚本使用。
+
+摘自：[MDN - 使用 Web Workers](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API/Using_web_workers) 由于该文章内容很多，且还有很多细节的东西暂时用不到，所以这里略。
 
 #### service worker
 
@@ -10847,7 +10920,7 @@ Service workers <font color=FF0000>本质上充当 Web 应用程序、浏览器�
 
 Service worker 是一个<font color=FF0000>注册在 **指定源和路径下** 的事件驱动worker</font>。它<font color=FF0000>采用 JavaScript 控制关联的页面或者网站，<font size=4> **拦截并修改访问和资源请求，细粒度地缓存资源** </font> </font>。你<font color=FF0000>可以完全控制应用在特定情形（最常见的情形是网络不可用）下的表现</font>（ **注：** <mark>根据语义，service worker 可以控制“在线和离线”两种情况下的“网络请求和资源获取”</mark>）。
 
-<font color=FF0000>Service worker 运行在worker上下文，因此它<font size=4> 不能访问DOM</font></font>。相对于驱动应用的 主JavaScript线程，它运行在其他线程中，所以不会造成阻塞。<font color=FF0000> **它设计为完全异步** ，同步API（如 XHR 和localStorage ）不能在service worker中使用</font>（注：xhr 存在同步模式，虽然默认是异步；但是这样说没有错...）。
+<font color=FF0000>Service worker 运行在worker上下文，因此它<font size=4> 不能访问DOM</font></font>。相对于驱动应用的 主JavaScript线程，它运行在其他线程中，所以不会造成阻塞。<font color=FF0000> **它设计为完全异步** ，同步API（如 XHR 和localStorage ）不能在service worker中使用</font>（**注：**xhr 存在同步模式，虽然默认是异步；但是这样说没有错...）。
 
 出于安全考量，Service workers只能由HTTPS承载，毕竟修改网络请求的能力暴露给中间人攻击会非常危险
 
