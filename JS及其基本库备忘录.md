@@ -2773,7 +2773,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >       
+  >           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -2792,7 +2792,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >       
+  >           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -11768,7 +11768,7 @@ ProgressEvent --|> Event : Inheritance
 
 - **ProgressEvent.lengthComputable：**只读，是一个 Boolean标志，<mark>表示底层流程将需要完成的总工作量和已经完成的工作量是否可以计算</mark>。换句话说，<font color=FF0000>它告诉我们进度是否可以被测量</font>。
 - **ProgressEvent.loaded：**只读，是一个 <font color=FF0000>unsigned long long 类型数据</font>，<font color=FF0000>表示底层流程已经执行的工作总量</font>。<mark>可以用这个属性和 ProgressEvent.total 计算工作完成比例</mark>。当使用 HTTP 下载资源，它只表示内容本身的部分，不包括首部和其它开销。
-- **ProgressEvent.total：**只读，是一个 <font color=FF0000>unsigned long long 类型数据</font>，<font color=FF0000>表示正在执行的底层流程的工作总量</font>。当使用 HTTP 下载资源，它只表示内容本身的部分，不包括首部和其它开销。
+- **ProgressEvent.total：**只读，是一个 <font color=FF0000>unsigned long long 类型数据</font>，<font color=FF0000>表示正在执行的底层流程的工作总量</font>。当使用 HTTP 下载资源，它只表示内容本身的部分，a不包括首部和其它开销。
 
 **方法**
 同时继承它的父元素 Event 的方法。
@@ -11776,6 +11776,26 @@ ProgressEvent --|> Event : Inheritance
 - **ProgressEvent.initProgressEvent()：**🗑👎使用被弃用的 Document.createEvent("ProgressEvent") 方法，来初始化一个已经创建好的 ProgressEvent。
 
 摘自：[MDN - ProgressEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/ProgressEvent)
+
+#### AbortController
+AbortController 接口表示一个控制器对象，<font color=FF0000>允许你根据需要 **中止一个或多个 Web 请求**</font>。
+
+你可以使用 AbortController.AbortController() 构造函数创建一个新的 AbortController。使用 AbortSignal 对象可以完成与 DOM 请求的通信。
+
+- **构造函数**
+   
+   AbortController.AbortController()：创建一个新的 AbortController 对象实例。
+   
+- **属性**
+   
+   AbortController.signal <font color=FF0000>只读</font>，返回一个 AbortSignal 对象实例，它可以用来 with/abort 一个 Web(网络)请求。
+   
+- **方法**
+   
+   AbortController.abort()：中止一个尚未完成的 Web（网络）请求。这<font color=FF0000>能够中止 fetch 请求及任何响应体的消费和流</font>。
+
+摘自：[MDN - AbortController](https://developer.mozilla.org/zh-CN/docs/Web/API/AbortController)，AbortController 的相关作用 在 [[web开发工具#请求已经发出去了，如何取消掉这个已经发出去的请求]] 中有详细说明。
+
 
 
 

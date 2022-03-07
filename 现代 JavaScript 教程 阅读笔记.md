@@ -13,7 +13,7 @@ NaN 是粘性的。任何对 NaN 的进一步操作都会返回 NaN。
 
 #### 基础运算符，数学
 
-一元运算符 +，可以用作“数字转化”。它的效果和 Number(...) 相同，但是更加简短。
+一元运算符 +，可以用作“数字转化”。它的效果和 Number() 相同，但是更加简短。
 
 
 
@@ -245,7 +245,7 @@ reader.onload = function() {
   - Access-Control-Allow-Origin 值与 Origin 的相同
   - Access-Control-Allow-Credentials 为 true
 
-此外，要授予 JavaScript 访问除 Cache-Control，Content-Language，Content-Type，Expires，Last-Modified 或 Pragma 外的任何 response header 的权限，服务器应该在 header Access-Control-Expose-Headers 中列出允许的那些 header。
+此外，<font color=FF0000>要授予 JavaScript 访问 除 Cache-Control，Content-Language，Content-Type，Expires，Last-Modified 或 Pragma 外的任何 response header 的权限，服务器应该在 header Access-Control-Expose-Headers 中列出允许的那些 header</font>（**注：**在文章[Vuejs之axios获取Http响应头](https://segmentfault.com/a/1190000009125333) 中有类似说法 ）
 
 **对于非简单请求，会在请求之前发出初步“预检”请求：**
 

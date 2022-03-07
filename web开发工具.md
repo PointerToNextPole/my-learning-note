@@ -46,14 +46,20 @@ Axios是一个 **异步请求** 技术，即：基于XMLHttpRequest对象发起�
 
 #### Axios Post
 
-注意：Axios在发送post方式的<font color=FF0000>**请求时传递的参数如果为对象类型**，axios会自动将对象转为json格式的字符串使用 application/json 的请求头向后端服务接口传递参数</font>。而这时后端无法正常获取到前端传递来的参数。
+**注意：**Axios在发送post方式的<font color=FF0000>**请求时传递的参数如果为对象类型**，<font size=4>**axios会自动将对象转为json格式的字符串使用 application/json 的请求头向后端服务接口传递参数**</font></font>。而这时后端无法正常获取到前端传递来的参数。
 
-<mark>如果想让后端接收到参数header的格式必须是：application/www-x-form-urlencoded 才可以，如果是application/json不行。</mark>
+> <font color=FF0000>默认情况下，<font size=4>axios 将 JavaScript 对象序列化为 `JSON` </font></font>
+> 摘自官方文档：[axios - 请求体编码](https://axios-http.com/zh/docs/urlencoded)
+
+
+<mark><font size=4>如果想让后端接收到参数header的格式必须是 application/www-x-form-urlencoded 才可以，如果是application/json不行</font>。</mark>
 
 <font color=FF0000>**Axios的post请求传递参数的两种方式**</font>
 
-- 使用字符串直接传递（即键值对的拼接），示例："fooKey=fooVal&barKey=barVal"
+- 使用字符串直接传递（即键值对的拼接），示例："fooKey=fooVal&barKey=barVal"。使用 URLSearchParams / qs.stringify()
 - 后端接口直接使用@RequestBody注解形式接收参数（Spring）。这时候就需要前端必须传递json格式的字符串且header必须是application/json格式
+
+这里可以参考官方文档：[axios - 请求体编码](https://axios-http.com/zh/docs/urlencoded)
 
 
 
@@ -442,7 +448,7 @@ instance.interceptors.response.use(
 
 export default instance
 ```
-
+下面为什么要将 Content-Type 修改为 “application/x-www-form-urlencoded” 的原因，参见：[[web开发工具#Axios Post]]，这里有详细说明
 ```js
 // request.js
 import axiosIns from './instance'
