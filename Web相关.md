@@ -2290,7 +2290,7 @@ Apple 官网喜欢用用户滚动页面 实现 播放视频（动画）效果，
 
 摘自：[小白必看，JSBridge 初探](https://www.zoo.team/article/jsbridge)
 
-// TODO 阅读文章
+// TODO 阅读文章 [JSBridge的原理](https://juejin.cn/post/6844903585268891662)
 
 
 

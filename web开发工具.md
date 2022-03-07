@@ -8,7 +8,7 @@
 
 #### Axios是什么
 
-<font color=FF0000> Axios 是一个 <font size=4>**基于 promise**</font> 网络请求库，作用于node.js 和浏览器中。 它是 isomorphic 的（即同一套代码可以运行在浏览器和node.js中）。<font color=FF0000> **在服务端它使用原生 node.js http 模块, 而在客户端 (浏览端) 则使用 XMLHttpRequests**</font>。
+<font color=FF0000> Axios 是一个 <font size=4>**基于 promise**</font> 网络请求库，作用于node.js 和浏览器中</font>。 它是 isomorphic 的（即同一套代码可以运行在浏览器和node.js中）。<font color=FF0000> **在服务端它使用原生 node.js http 模块, 而在客户端 (浏览端) 则使用 XMLHttpRequests**</font>。
 
 **特性**
 
@@ -413,11 +413,91 @@ instance.interceptors.request.use(function () {/*...*/});
 
 
 
+#### 自己写的 axios 实例封装
+
+```js
+// instance.js
+import axios from 'axios'
+import qs from 'qs'
+
+const instance = axios.create({
+  baseURL: 'http://app.mylink-pro.com/',
+  timeout: 10000
+})
+
+instance.interceptors.request.use(
+  config => {
+    if (config.method === 'post') {
+      config.data = qs.stringify(config.data)
+    }
+    return config
+  },
+  err => { return Promise.reject(err) }
+)
+
+instance.interceptors.response.use(
+  response => { return response },
+  err => { return Promise.reject(err) }
+)
+
+export default instance
+```
+
+```js
+// request.js
+import axiosIns from './instance'
+
+export function postReq (url, data) {
+  return axiosIns({
+    url,
+    method: 'post',
+    data,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  })
+}
+
+export function getReq (url, data) {
+  return axiosIns({
+    url,
+    method: 'get',
+    data
+  })
+}
+```
+
+
+
 #### 注意事项
 
 **Promises**
 
 axios 依赖原生的ES6 Promise实现而被支持。 如果你的环境不支持 ES6 Promise，你可以使用polyfill（ES6-promise）。
+
+
+
+## 一些网络请求的补充
+
+#### 请求已经发出去了，如何取消掉这个已经发出去的请求
+
+> <font size=4>**前置知识：**</font>
+>
+> AbortController 接口表示一个控制器对象，可以根据需要终止一个或多个Web请求。
+>
+> - **AbortController()**： AbortController() 构造函数创建一个新的 AbortController 对象实例
+> - **signal**：signal 属性返回一个 AbortSignal 对象实例，它可以用来 with/about 一个Web(网络)请求
+> - **abort()**：终止一个尚未完成的Web(网络)请求，它能够终止 fetch 请求，任何响应Body的消费者和流
+
+- **xhr 取消请求：** 使用 xhr.abort() 方法
+- **fetch 取消请求：** 使用 abortController.abort() 方法。示例参见链接
+- **axios 取消请求：** 在V0.22.0版本之前（不包含V0.22.0），使用 cancelToken （详见官方文档，这里略；在V0.22.0版本 cancelToken depercated，详见官方文档：[axios - 取消请求](https://axios-http.com/zh/docs/cancellation)）。<font color=FF0000>在 V0.22.0 版本及之后，<font size=4>**推荐使用 abortController**</font></font>
+
+- **umi-request 中断请求：**略，详见链接
+
+**使用场景：**取消登录（比如QQ登录）、取消上传
+
+**cancelToken 取消的原理：**当用户调用内部对外暴露的 cancel 方法后，axios 内部会执行 resolvePromise，改变 promise（CancelToken 实例的 promise）的状态，触发 promise 的 then 回调，然后执行 onCanceled方法，<font color=FF0000>在 onCanceled 中则调用XMLHttpRequest 的 abort 方法取消请求，同时调用 reject 让外层的 promise 失败</font>。详见：[axios解析之cancelToken取消请求原理](https://juejin.cn/post/7044532592640524324)
+
+以上摘自：[面试官：如何中断已发出去的请求？](https://juejin.cn/post/7033906910583586829)
 
 
 

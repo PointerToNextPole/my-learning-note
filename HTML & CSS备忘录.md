@@ -1170,7 +1170,7 @@ HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独
   
   摘自：[input输入框事件](https://www.jianshu.com/p/4517117abd8e)
 
-- <mark>修改输入框光标的颜色：可以使用caret-color属性</mark>
+- <mark> 修改输入框光标的颜色：可以使用 caret-color 属性</mark>
 
 - ##### **\<input type="hidden">**
   
