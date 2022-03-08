@@ -466,7 +466,7 @@ export function getReq (url, data) {
   return axiosIns({
     url,
     method: 'get',
-    data
+    params: data // 注意，这里get 请求的参数配置就是 params，而不是其他。详见官方文档：axios-http.com/zh/docs/example
   })
 }
 ```

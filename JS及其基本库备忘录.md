@@ -2773,7 +2773,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >           
+  >                   
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -2792,7 +2792,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >           
+  >                   
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -3067,7 +3067,7 @@ fetch('http://example.com/movies.json')
 
 <font color=FF0000>也可以传一个可选的第二个参数 init</font>
 
-**fetch语法如下：**
+**fetch 语法如下：**
 
 **语法**
 
@@ -3085,16 +3085,49 @@ Promise<Response> fetch(input[, init]);
 
   一个配置项对象，包括所有对请求的设置。可选的参数有：
 
-  - **method:** 请求使用的方法，如 GET、POST。
-  - **headers:** 请求的头信息，形式为 Headers 的对象或包含 ByteString 值的对象字面量。
-  - **body:** 请求的 body 信息：可能是一个 Blob、BufferSource、FormData、URLSearchParams 或者 USVString 对象。注意 GET 或 HEAD 方法的请求不能包含 body 信息。
-  - **mode:** 请求的模式，如 cors、 no-cors 或者 same-origin。
-  - **credentials:** 请求的 credentials，如 omit、same-origin 或者 include。为了在当前域名内自动发送 cookie ， 必须提供这个选项， 从 Chrome 50 开始， 这个属性也可以接受 FederatedCredential 实例或是一个 PasswordCredential 实例。
-  - **cache:**  请求的 cache 模式: default、 no-store、 reload 、 no-cache、 force-cache或者 only-if-cached 。
-  - **redirect:** 可用的 redirect 模式: follow (自动重定向), error (如果产生重定向将自动终止并且抛出一个错误）, 或者 manual (手动处理重定向). 在Chrome中默认使用follow（Chrome 47之前的默认值是manual）。
-  - **referrer:** 一个 USVString 可以是 no-referrer、client或一个 URL。默认是 client。
-  - **referrerPolicy:** 指定了HTTP头部referer字段的值。可能为以下值之一： no-referrer、 no-referrer-when-downgrade、 origin、 origin-when-cross-origin、 unsafe-url 。
-  - **integrity:** 包括请求的  subresource integrity 值 （ 例如： sha256-BpfBw7ivV8q2jLiT13fxDYAe2tJllusRSZ273h2nFSE=）。
+  - **method：** 请求使用的方法，如 GET、POST。
+  
+  - **headers：** <font color=FF0000>请求的头信息</font>，形式为 Headers 的对象或包含 ByteString 值的对象字面量。
+  
+  - **body：**<font color=FF0000>**请求的 body 信息**，可能是 一个 Blob、BufferSource、FormData、URLSearchParams 或者 USVString 对象</font>。注意 GET 或 HEAD 方法的请求不能包含 body 信息。
+  
+  - **mode：** 请求的模式，如 cors、 no-cors 或者 same-origin。
+  
+    > mode 选项是一种安全措施，可以防止偶发的跨源请求：
+    >
+    > - **"cors"：**默认值，允许跨源请求，如 [Fetch：跨源请求](https://zh.javascript.info/fetch-crossorigin) 一章所述，
+    > - **"same-origin"：**禁止跨源请求，
+    > - **"no-cors" ：**只允许简单的跨源请求。
+    >
+    > 当 fetch 的 URL 来自于第三方，并且我们想要一个“断电开关”来限制跨源能力时，此选项可能很有用。
+    >
+    > 摘自：[现代JS教程 - Fetch API - mode](https://zh.javascript.info/fetch-api#mode)
+  
+  - **credentials：** 请求的 credentials，如 omit、same-origin 或者 include。为了在当前域名内自动发送 cookie ， 必须提供这个选项， 从 Chrome 50 开始， 这个属性也可以接受 FederatedCredential 实例或是一个 PasswordCredential 实例。
+  
+    > credentials 选项<font color=FF0000>指定 fetch 是否应该 **随请求发送 cookie** 和 HTTP-Authorization header</font>。
+    >
+    > - **"same-origin"**：<font color=FF0000>默认值</font>，<font color=FF0000>对于跨源请求不发送</font>，
+    > - **"include"：**<font color=FF0000>总是发送</font>，需要来自跨源服务器的 Accept-Control-Allow-Credentials，才能使 JavaScript 能够访问响应，详细内容在 [Fetch：跨源请求](https://zh.javascript.info/fetch-crossorigin) 一章有详细介绍
+    > - **"omit"**：<font color=FF0000>不发送</font>，即使对于同源请求。
+    >
+    > 摘自：[现代JS教程 - Fetch API - credentials](https://zh.javascript.info/fetch-api#credentials)
+  
+  - **cache：**  请求的 cache 模式: default、 no-store、 reload 、 no-cache、 force-cache或者 only-if-cached 。
+  
+    > 默认情况下，fetch 请求使用标准的 HTTP 缓存。就是说，它遵从 Expires，Cache-Control header，发送 If-Modified-Since，等。就像常规的 HTTP 请求那样。
+    >
+    > 下面还有具体选项的含义，详见链接
+    >
+    > 摘自：[现代JS教程 - Fetch API - cache](https://zh.javascript.info/fetch-api#cache)
+  
+  - **redirect：** 可用的 redirect 模式： follow （自动重定向），error （如果产生重定向将自动终止并且抛出一个错误）, 或者 manual （手动处理重定向）。 在Chrome中默认使用follow（Chrome 47之前的默认值是manual）。
+  
+  - **referrer：** 一个 USVString 可以是 no-referrer、client或一个 URL。默认是 client。
+  
+  - **referrerPolicy：** 指定了 HTTP 头部 referer 字段的值。可能为以下值之一： no-referrer、 no-referrer-when-downgrade、 origin、 origin-when-cross-origin、 unsafe-url 。
+  
+  - **integrity：** 包括请求的  subresource integrity 值 （ 例如： sha256-BpfBw7ivV8q2jLiT13fxDYAe2tJllusRSZ273h2nFSE=）。
 
 **返回值**
 
@@ -3102,12 +3135,93 @@ Promise<Response> fetch(input[, init]);
 
 摘自：[MDN - Fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API)  [MDN - 使用 Fetch](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch#%E6%94%AF%E6%8C%81%E7%9A%84%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0)  [WorkerOrGlobalScope.fetch()](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/fetch)
 
+##### Fetch 的补充：
+
+**请注意，fetch 规范与 jQuery.ajax() 主要有以下的不同：**
+
+- <font color=FF0000>**当接收到一个代表错误的 HTTP 状态码时，从 fetch() 返回的 Promise 不会被标记为 reject**</font> ，<font color=FF0000>即使响应的 HTTP 状态码是 404 或 500 。相反，它会将 Promise 状态标记为 resolve</font>（如果响应的 HTTP 状态码不在 200 - 299 的范围内，则设置 resolve 返回值的 ok 属性为 false ），<font color=FF0000 size=4>**仅当网络故障时或请求被阻止时，才会标记为 reject**</font>。
+- <font color=FF0000>**fetch 不会发送跨域 cookies，除非你使用了 credentials 的初始化选项**</font>。（自2018 年 8 月以后，默认的 credentials 政策变更为 same-origin ）
+
+**自定义请求对象**
+
+除了传给 `fetch()` 一个资源的地址，你还可以通过使用 [`Request()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Request/Request "Request()") 构造函数来创建一个 request 对象，然后再作为参数传给 `fetch()`。示例如下：
+
+```js
+const myHeaders = new Headers();
+
+const myRequest = new Request('flowers.jpg', {
+  method: 'GET',
+  headers: myHeaders,
+  mode: 'cors',
+  cache: 'default',
+});
+
+fetch(myRequest)
+  .then(response => response.blob())
+  .then(myBlob => { myImage.src = URL.createObjectURL(myBlob); });
+```
+
+<font color=FF0000>`Request()` 和 `fetch()` 接受同样的参数</font>。你甚至可以传入一个已存在的 request 对象来创造一个拷贝：
+
+```js
+const anotherRequest = new Request(myRequest, myInit);
+```
+
+**使用 Headers 接口**
+
+使用 [`Headers`](https://developer.mozilla.org/zh-CN/docs/Web/API/Headers) 的接口，你可以通过 [`Headers()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Headers/Headers "Headers()") 构造函数来创建一个你自己的 headers 对象。一个 headers 对象是一个简单的多键值对：
+
+```js
+const content = 'Hello World';
+const myHeaders = new Headers();
+myHeaders.append('Content-Type', 'text/plain');
+myHeaders.append('Content-Length', content.length.toString());
+myHeaders.append('X-Custom-Header', 'ProcessThisImmediately');
+```
+
+也可以传入一个多维数组或者对象字面量：
+
+```js
+const myHeaders = new Headers({
+  'Content-Type': 'text/plain',
+  'Content-Length': content.length.toString(),
+  'X-Custom-Header': 'ProcessThisImmediately'
+});
+```
+
+它的内容可以被获取：
+
+```js
+console.log(myHeaders.has('Content-Type')); // true
+console.log(myHeaders.has('Set-Cookie')); // false
+myHeaders.set('Content-Type', 'text/html');
+myHeaders.append('X-Custom-Header', 'AnotherValue');
+
+console.log(myHeaders.get('Content-Length')); // 11
+console.log(myHeaders.get('X-Custom-Header')); // ['ProcessThisImmediately', 'AnotherValue']
+
+myHeaders.delete('X-Custom-Header');
+console.log(myHeaders.get('X-Custom-Header')); // null
+```
+
+虽然一些操作只能在 ServiceWorkers 中使用，但是它提供了更方便的操作 Headers 的 API。
+
+**Response 对象**
+
+如上所述，Response 实例是在 fetch() 处理完 promise 之后返回的。
+
+**会用到的最常见的 response 属性有：**
+- **Response.status：**整数（默认值为 200）为response的状态码。
+- **Response.statusText：**字符串（默认值为 ""），该值与 HTTP 状态码消息对应。 注意：HTTP/2 不支持状态消息
+- **Response.ok：**该属性是来检查 response 的状态是否在 200 - 299（包括200 和 299）这个范围内。该属性返回一个布尔值。
+
+摘自：[MDN - 使用 Fetch](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch) 
+
 
 
 #### 宏任务和微任务
 
 **宏任务有哪些**
-
 - \<script>标签中的运行代码（注：<font color=FF0000 size=4>**整个script标签是个宏任务**</font>）
 - 事件触发的回调函数，例如DOM Events、I/O、requestAnimationFrame
 - setTimeout、setInterval的回调函数
@@ -3121,7 +3235,7 @@ Promise<Response> fetch(input[, init]);
 
 摘自：[执行机制 - 宏任务和微任务分别有哪些 #34](https://github.com/logan70/Blog/issues/34)
 
-**注：**这里不全，可以看隔壁文档《前端面试总结》的「宏任务和微任务」部分
+**注：**这里不全，可以参考 [[前端面试点总结#宏任务和微任务]]
 
 
 
@@ -11281,7 +11395,7 @@ var obj = eval ("(" + txt + ")");
 
 #### JSONP 教程
 
-<font color=FF0000>JSONP (JSON with Padding)</font> 是 <font color=FF0000>json 的一种"使用模式"</font>，<font color=FF0000>可以让网页从**别的域名**（网站）那获取资料，即跨域读取数据。</font>
+<font color=FF0000>JSONP ( JSON with Padding )</font> 是 <font color=FF0000>json 的一种"使用模式"</font>，<font color=FF0000>可以让网页从**别的域名**（网站）那获取资料，即跨域读取数据。</font>
 
 为什么我们从不同的域（网站）访问数据需要一个特殊的技术( JSONP )呢？这是因为同源策略。
 
@@ -11291,6 +11405,7 @@ var obj = eval ("(" + txt + ")");
 
 <font color=FF0000 size=4>**jsonp是一种借助于\<script>标签发送跨域请求的方式**</font>
 
+关于 jsonp 使用的示例，可以参考 [[HTML & CSS备忘录#关于 JSONP 的补充]]
 
 
 #### JSX
@@ -11783,16 +11898,20 @@ AbortController 接口表示一个控制器对象，<font color=FF0000>允许你
 你可以使用 AbortController.AbortController() 构造函数创建一个新的 AbortController。使用 AbortSignal 对象可以完成与 DOM 请求的通信。
 
 - **构造函数**
-   
+  
    AbortController.AbortController()：创建一个新的 AbortController 对象实例。
    
 - **属性**
-   
+  
    AbortController.signal <font color=FF0000>只读</font>，返回一个 AbortSignal 对象实例，它可以用来 with/abort 一个 Web(网络)请求。
    
 - **方法**
-   
+  
    AbortController.abort()：中止一个尚未完成的 Web（网络）请求。这<font color=FF0000>能够中止 fetch 请求及任何响应体的消费和流</font>。
+   
+   > 当一个请求被终止，它的  readyState 将被置为 XMLHttpRequest.UNSENT (0)，并且请求的 status 置为 0。
+   >
+   > 摘自：[MDN - XMLHttpRequest.abort()](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/abort)
 
 摘自：[MDN - AbortController](https://developer.mozilla.org/zh-CN/docs/Web/API/AbortController)，AbortController 的相关作用 在 [[web开发工具#请求已经发出去了，如何取消掉这个已经发出去的请求]] 中有详细说明。
 

@@ -1695,7 +1695,7 @@ BOM层次结构的顶层是窗口对象, 它包含有关显示文档的窗口的
 
 CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource sharing）。
 
-<font color=FF0000>它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。</font>
+<font color=FF0000>它允许浏览器向跨源服务器，发出 XMLHttpRequest 请求，从而克服了 AJAX 只能同源使用的限制。</font>
 
 **补充：**
 
@@ -1740,11 +1740,6 @@ CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource s
     - text/plain
     - multipart/form-data
     - application/x-www-form-urlencoded
-  - DPR
-  - Downlink
-  - Save-Data
-  - Viewport-Width
-  - Width
 - 请求中的任意XMLHttpRequestUpload 对象均没有注册任何事件监听器；XMLHttpRequestUpload 对象可以使用 XMLHttpRequest.upload 属性访问。
 - 请求中没有使用 ReadableStream 对象。
 
@@ -1764,7 +1759,7 @@ CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource s
 
   浏览器先询问服务器，当前网页所在的域名是否在服务器的许可名单之中，以及可以使用哪些HTTP动词和头信息字段。只有得到肯定答复，浏览器才会发出正式的XMLHttpRequest请求，否则就报错
 
-  一旦服务器通过了"预检"请求，以后每次浏览器正常的CORS请求，就都跟简单请求一样，会有一个Origin头信息字段。服务器的回应，也都会有一个Access-Control-Allow-Origin头信息字段。
+  <font color=FF0000>一旦服务器通过了"预检"请求，以后每次浏览器正常的CORS请求，就都跟简单请求一样</font>，会有一个Origin头信息字段。服务器的回应，也都会有一个Access-Control-Allow-Origin头信息字段。
   **补充：**
 
   规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），<mark>浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），从而获知服务端是否允许该跨源请求。服务器确认允许之后，才发起实际的 HTTP 请求</mark>。在预检请求的返回中，服务器端也可以通知客户端，是否需要携带身份凭证（包括 Cookies 和 HTTP 认证相关数据）。

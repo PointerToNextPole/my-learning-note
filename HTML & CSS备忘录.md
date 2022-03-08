@@ -1419,7 +1419,9 @@ HTML \<script> 元素用于<font color=FF0000> 嵌入或引用可执行脚本</f
 
 摘自：[MDN - \<script>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script)
 
-<font color=FF0000 size=4>**补充：**</font>在使用 \<script src="url"> 时，在最后加上 ?callback=cbFn（如果原链接有 ?foo=bar，则在最后加上&callback=cbFn；另外，这里的callback是定死的，不能替换），将会执行 cbFn方法（前提是cbFn已定义好），示例如下：
+##### 关于 JSONP 的补充
+
+在使用 \<script src="url"> 时，在最后加上 ?callback=cbFn（如果原链接有 ?foo=bar，则在最后加上&callback=cbFn；另外，这里的callback是定死的，不能替换），将会执行 cbFn方法（前提是cbFn已定义好），示例如下：
 
 ```html
 <script>
@@ -1459,6 +1461,8 @@ callback: {
 ```
 
 最后将会打印出 {foo: 'bar'}
+
+另外，在 [现代JS教程](https://zh.javascript.info/fetch-crossorigin#shi-yong-script) 中也有类似示例。
 
 
 

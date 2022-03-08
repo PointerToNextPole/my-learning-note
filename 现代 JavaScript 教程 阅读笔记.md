@@ -234,35 +234,145 @@ reader.onload = function() {
 
 简单请求和其他请求的本质区别在于，自古以来使用 \<form> 或 \<script> 标签进行简单请求就是可行的，而长期以来浏览器都不能进行非简单请求。
 
-实际区别在于，简单请求会使用 Origin header 并立即发送，而对于其他请求，浏览器会发出初步的“预检”请求，以请求许可
+实际区别在于，<font color=FF0000>**简单请求会使用 Origin header 并立即发送**</font>，而对于<font color=FF0000>**其他请求，浏览器会发出初步的“预检”请求，以请求许可**</font>。并且，<font color=FF0000 size=4>除非服务器明确通过 header 进行确认，否则非简单请求不会被发送</font>。
 
-**对于简单请求：**
+
+
+##### 对于简单请求
 
 - → 浏览器发送带有源的 Origin header。
+
 - ← 对于没有凭据的请求（默认不发送），服务器应该设置：
   - Access-Control-Allow-Origin 为 * 或与 Origin 的值相同
+  
+    > 服务器可以检查 `Origin`，<font color=FF0000>如果同意接受这样的请求，就会在响应中添加一个特殊的 header `Access-Control-Allow-Origin`</font>。该 header ( Access-Control-Allow-Origin ) 包含了允许的源（在我们的示例中是 `https://javascript.info`），或者一个星号 `*`。然后响应成功，否则报错。
+    >
+    > <font color=FF0000>**浏览器在这里扮演受被信任的中间人的角色**</font>：
+    >
+    > 1. 它确保发送的跨源请求带有正确的 `Origin`。
+    > 2. 它检查响应中的许可 `Access-Control-Allow-Origin`，如果存在，则允许 JavaScript 访问响应，否则将失败并报错。
+    >
+    > ![](https://zh.javascript.info/article/fetch-crossorigin/xhr-another-domain.svg)
+    >
+    > 摘自：[现代JS教程 - Fetch：跨源请求 - 用于简单请求的 CORS](https://zh.javascript.info/fetch-crossorigin#yong-yu-jian-dan-qing-qiu-de-cors) 
+  
 - ← 对于具有凭据的请求，服务器应该设置：
   - Access-Control-Allow-Origin 值与 Origin 的相同
   - Access-Control-Allow-Credentials 为 true
 
-此外，<font color=FF0000>要授予 JavaScript 访问 除 Cache-Control，Content-Language，Content-Type，Expires，Last-Modified 或 Pragma 外的任何 response header 的权限，服务器应该在 header Access-Control-Expose-Headers 中列出允许的那些 header</font>（**注：**在文章[Vuejs之axios获取Http响应头](https://segmentfault.com/a/1190000009125333) 中有类似说法 ）
+此外，<font color=FF0000>要授予 JavaScript 访问 除 Cache-Control，Content-Language，Content-Type，Expires，Last-Modified 或 Pragma 外的任何 response header 的权限</font>（注：即，这些响应头（Cache-Control 等）是默认可以被 用户代理 读取的），<font color=FF0000>服务器应该在 header `Access-Control-Expose-Headers` 中列出允许的哪些 header</font>，通过逗号分隔（**注：**在文章 [Vuejs之axios获取Http响应头](https://segmentfault.com/a/1190000009125333) 中有类似说法 ）
 
-**对于非简单请求，会在请求之前发出初步“预检”请求：**
+
+
+##### 对于 <font color=FF0000>非简单请求，会 <font size=4>在请求之前发出初步“预检”请求</font></font>
 
 - → 浏览器将具有以下 header 的 OPTIONS 请求发送到相同的 URL：
   - Access-Control-Request-Method 有请求方法。
   - Access-Control-Request-Headers 以逗号分隔的“非简单” header 列表。
+
+  **注：感觉有点过于概括，非总结的言语如下：**
+
+  > <font color=FF0000>**预检请求使用 OPTIONS 方法**</font>，它<font color=FF0000>**没有 body**</font>，但是<font color=FF0000>**有两个 header**</font>：
+  >
+  > - **Access-Control-Request-Method** header <font color=FF0000>带有非简单请求的方法</font>。
+  > - **Access-Control-Request-Headers** header <font color=FF0000>提供一个以逗号分隔的 **非简单 HTTP-header 列表**</font>。
+  >
+  > 摘自：[现代JS教程 - Fetch：跨源请求 - “非简单”请求](https://zh.javascript.info/fetch-crossorigin#fei-jian-dan-qing-qiu)
+
 - ← 服务器应该响应状态码为 200 和 header：
   - Access-Control-Allow-Methods 带有允许的方法的列表，
   - Access-Control-Allow-Headers 带有允许的 header 的列表，
   - Access-Control-Max-Age 带有指定缓存权限的秒数。
+
+  **注：感觉有点过于概括，非总结的言语如下：**
+
+  > <font color=FF0000>如果服务器同意处理请求，那么它会进行响应</font>，此响应的状态码应该为 200，<font color=FF0000>没有 body，具有 header</font>：
+  >
+  > - Access-Control-Allow-Origin 必须为 `*` <font color=FF0000>或</font> 进行请求的源（ 例如 `https://javascript.info` ）才能允许此请求。
+  > - Access-Control-Allow-Methods <font color=FF0000>必须具有允许的方法</font>。
+  > - Access-Control-Allow-Headers <font color=FF0000>必须具有一个允许的 header 列表</font>。
+  > - 另外，header <font color=FF0000>**Access-Control-Max-Age** 可以指定缓存此权限的秒数</font>（**注：**这里即表达：在Access-Control-Max-Age 之内的时间内，不必在进行预检 ）。因此，浏览器不是必须为满足给定权限的后续请求发送预检。
+  >
+  > ![](https://zh.javascript.info/article/fetch-crossorigin/xhr-preflight.svg)
+  >
+  > 摘自：[现代JS教程 - Fetch：跨源请求 - “非简单”请求](https://zh.javascript.info/fetch-crossorigin#fei-jian-dan-qing-qiu)
+
 - 然后，发出实际请求，应用先前的“简单”方案。
 
 
 
-#### “非简单”请求过程图示
+#### 非简单请求过程示例
 
-<img src="https://i.loli.net/2021/08/15/8QEeP1NpRqZkM5v.png" alt="image-20210815164500659" style="zoom:50%;" />
+- **Step 1 预检请求（preflight request）**
+
+  在发送我们的请求前，浏览器会自己发送如下所示的预检请求：
+
+  ```http
+  OPTIONS /service.json
+  Host: site.com
+  Origin: https://javascript.info
+  Access-Control-Request-Method: PATCH
+  Access-Control-Request-Headers: Content-Type,API-Key
+  ```
+
+  - **方法：**OPTIONS。
+
+  - **路径：**与主请求完全相同：`/service.json`。
+
+  - **特殊跨源头：**
+    - **Origin：**来源。
+    - **Access-Control-Request-Method：**请求方法。
+    - **Access-Control-Request-Headers：**以逗号分隔的“非简单” header 列表
+
+- **Step 2 预检响应（preflight response）**
+
+  服务应响应状态 200 和 header：
+
+  - `Access-Control-Allow-Origin: https://javascript.info`
+  - `Access-Control-Allow-Methods: PATCH`
+  - `Access-Control-Allow-Headers: Content-Type,API-Key`。
+
+  这将允许后续通信，否则会触发错误。
+
+  如果服务器将来期望其他方法和 header，则可以通过将这些方法和 header 添加到列表中来预先允许它们。
+
+  例如，此响应还允许 `PUT`、`DELETE` 以及其他 header：
+
+  ```http
+  200 OK
+  Access-Control-Allow-Origin: https://javascript.info
+  Access-Control-Allow-Methods: PUT,PATCH,DELETE
+  Access-Control-Allow-Headers: API-Key,Content-Type,If-Modified-Since,Cache-Control
+  Access-Control-Max-Age: 86400
+  ```
+
+  现在，浏览器可以看到 `PATCH` 在 `Access-Control-Allow-Methods` 中，`Content-Type,API-Key` 在列表 `Access-Control-Allow-Headers` 中，因此它将发送主请求。
+
+  如果 `Access-Control-Max-Age` 带有一个表示秒的数字，则在给定的时间内，预检权限会被缓存。<font color=FF0000>上面的响应将被缓存 86400 秒，也就是一天。在此时间范围内，后续请求将不会触发预检。假设它们符合缓存的配额，则将直接发送它们</font>。
+
+- **Step 3 实际请求（actual request）**
+
+  预检成功后，浏览器现在发出主请求。这里的算法与简单请求的算法相同。
+
+  主请求具有 `Origin` header（因为它是跨源的）：
+
+  ```http
+  PATCH /service.json
+  Host: site.com
+  Content-Type: application/json
+  API-Key: secret
+  Origin: https://javascript.info
+  ```
+
+- **Step 4 实际响应（actual response）**
+
+  服务器不应该忘记在主响应中添加 Access-Control-Allow-Origin。成功的预检并不能免除此要求：
+
+  ```http
+  Access-Control-Allow-Origin: https://javascript.info
+  ```
+
+然后，JavaScript 可以读取主服务器响应了。
 
 
 

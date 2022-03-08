@@ -593,7 +593,7 @@ module.exports = {
 
 
 
-#### 使用plugins插件
+#### 使用 plugins 插件
 
 **plugin的作用：**plugin可以在<font color=FF0000> webpack运行到某个时刻的时候 </font>，自动地帮你做一些事情
 
@@ -720,7 +720,15 @@ sourceMap 是一个<font color=FF0000>映射关系</font>。它知道 <font colo
 - 在<font color=FF0000>开发环境</font>中，建议使用 **cheap-module-eval-source-map** ，这样提示出的错误是比较全的，同时打包速度也很快
 - 在生产环境中，一般是没有必要使用devtool的。但是如果还是想要查看错误，建议使用 **cheap-module-source-map**，这样提示效果会更好一些
 
-  
+##### 浏览器中使用 source map 的补充
+
+需要启用 Enable JavaScript source maps 和 Enable CSS source maps
+
+<img src="/Users/yan/Library/Application Support/typora-user-images/image-20220309012608227.png" alt="image-20220309012608227" style="zoom:47%;" />
+
+学习自：[深入浅出之 Source Map](https://juejin.cn/post/7023537118454480904)
+
+
 
 #### webpack-dev-server
 
@@ -1640,7 +1648,7 @@ TS 会对不规范的代码进行报错，但是不会对 第三方的库（比�
 
 
 
-####  webpackDevServer请求转发
+####  webpackDevServer 请求转发
 
 如果要对请求转发进行配置，要对 devServer 的 proxy 进行处理。示例如下：
 
@@ -1689,7 +1697,7 @@ devServer: {
 }
 ```
 
-devServer使用了 [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)，可以去详细了解
+devServer使用了 [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)，可详细了解
 
 关于使用devServer解决跨域的问题，还可以参考：[webpack开发配置API代理解决跨域问题-devServer](https://segmentfault.com/a/1190000016199721)
 
@@ -2441,9 +2449,7 @@ module.exports 中的 bail 配置的作用是，一旦打包出现错误，则�
 
 ## Webpack 插件介绍
 
-**webpack-bundle-analyzer：**
-
-GitHub：https://github.com/webpack-contrib/webpack-bundle-analyzer
+##### [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer)
 
 生成webpack打包后，包的组成的可视化页面
 
@@ -2453,13 +2459,13 @@ GitHub：https://github.com/webpack-contrib/webpack-bundle-analyzer
 
 
 
-**webpack-chain**
+##### [webpack-chain](https://github.com/neutrinojs/webpack-chain)
 
 可以使用链式编程，在webpack.config.js中进行链式配置
 
 
 
-**mini-css-extract-plugin**
+##### [mini-css-extract-plugin](https://github.com/webpack-contrib/mini-css-extract-plugin)
 
 > This plugin extracts CSS into separate files. It creates a CSS file per JS file which contains CSS. It supports On-Demand-Loading of CSS and SourceMaps.
 >
@@ -2469,6 +2475,45 @@ CSS代码分割，在打包时，将css代码分为多个文件；并给出生�
 
 
 
+##### [compression-webpack-plugin](https://github.com/webpack-contrib/compression-webpack-plugin)
+
+> Prepare compressed versions of assets to serve them with Content-Encoding
+>
+> https://github.com/webpack-contrib/compression-webpack-plugin - READEME
+
+该插件可以被用来将包进行压缩，默认使用 gzip 格式。
+
+
+
+##### [terser-webpack-plugin](https://github.com/webpack-contrib/terser-webpack-plugin)
+
+用来最小化 js 代码，减小生产包的大小。
+
+类似的 还有 [uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)，不过已经废弃。
+
+它们都是基于[ UglifyJS](https://github.com/mishoo/UglifyJS)
+
+
+
+
+
 ## Webpack 使用函数（用于写脚本等）
 
 require.context()
+
+
+
+## webpack 相关问题
+
+
+
+#### webpack 的构建流程是什么
+
+- **初始化参数：**解析webpack配置参数，合并shell传入和webpack.config.js文件配 置的参数,形成最后的配置结果；
+- **开始编译：**上一步得到的参数初始化compiler对象，注册所有配置的插件，插件 监听webpack构建生命周期的事件节点，做出相应的反应，执行对象的run方法开始执行编译；
+- **确定入口：**从配置的entry入口，开始解析文件构建AST语法树，找出依赖，递归下去；
+- **编译模块：**递归中根据文件类型和loader配置，调用所有配置的loader对文件进行转换，再找出该模块依赖的模块，再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理；
+- **完成模块编译并输出：**递归完事后，得到每个文件结果，包含每个模块以及他们之间的依赖关系，根据entry或分包配置生成代码块chunk;
+- **输出完成：**输出所有的chunk到文件系统
+
+摘自：[webpack 十连问你能接住几题(附详解)](https://mp.weixin.qq.com/s/_QzAVr92WFQmHWJnwxDymQ)
