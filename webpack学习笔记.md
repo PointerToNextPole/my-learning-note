@@ -701,19 +701,35 @@ sourceMap 是一个<font color=FF0000>映射关系</font>。它知道 <font colo
 
 如何启用sourceMap？只需要使用**devtool: source-map**即可。同时，启用sourceMap后，在dist文件夹下会出现一个 main.js.map 的映射对应关系文件，这个文件实际上是一个<mark>VLQ的编码集合</mark>
 
-**devtool的选项中包含各种修饰符，比如inline、cheap、module**，说明如下：
+**devtool的选项中包含各种修饰符，比如 inline、cheap、module**，说明如下：
 
-- **devtool: 'inline-source-map'**：main.js.map文件将不会存在在dist文件夹中，main.js.map的内容实际上会被包含在打包输出的js文件中
+- **devtool: 'inline-source-map'**：main.js.map文件将不会存在在dist文件夹中，main.js.map的内容实际上会被包含在打包输出的js文件中。
 
-- **devtool: cheap-source-map**：如果不加cheap，将会精确到源码的<font color=FF0000>某一行某一列（即精确到字符）</font>，而使用cheap，将会精确到代码的某一行，不会精确到某个字符，这样大大提高了打包效率。
+  > map文件不会出现在打包之后的文件夹中，<font color=FF0000>这实际上是 inline 起到的作用</font>。另外，该映射关系（即 map 文件中的内容）会以 base64 的格式 存放在打包后的 js 文件中。
+  >
+  > 学习自：[配置SourceMap【Webpack】](https://www.bilibili.com/video/BV1h5411G7tm)
 
-  同时，cheap还有一个功能：如果添加了cheap，那么打包时只会管业务代码的映射，对于其他的代码（比如loader、第三方模块）将不会关心。（和下面的 module 形成了对照）
+- **devtool: cheap-source-map**：如果不加 cheap，将会精确到源码的<font color=FF0000>某一行某一列（即精确到字符）</font>，而使用cheap，将会精确到代码的某一行，不会精确到某个字符，这样大大提高了打包效率。
 
-- **devtool: cheap-module-source-map**： 如果想要对于上面所说的<font color=FF0000> 其他的非业务代码（比如loader、第三方模块）也会做映射</font>，监控其中的错误，可以加上 **module**
+  同时，cheap还有一个功能：<font color=FF0000>**如果添加了cheap，那么打包时只会管业务代码的映射**</font>，<font color=FF0000>对于其他的代码（比如 loader、第三方模块）将不会关心</font>。（和下面的 module 形成了对照）
 
-- **detvool: 'eval'**：<font color=FF0000>是打包执行效率最快的</font>，使用 eval() 函数来生成。虽然它同样可以定位错误的源代码；不过，不是记录对应关系；而是将错误直接记录在打包输出的js文件中，不过对于复杂的项目，使用eval可能提示错误并不全面。
+- **devtool: cheap-module-source-map**： 如果想要对于上面所说的<font color=FF0000> 其他的非业务代码（比如loader、第三方模块）也会做映射</font>，监控其中的错误，<font color=FF0000>可以加上 **module**</font>
+
+- **detvool: 'eval'**：<font color=FF0000>是打包执行效率最快的</font>（除了为 'none' 外），使用 eval() 函数来生成。虽然它同样可以定位错误的源代码；不过，不是记录对应关系；而是将错误直接记录在打包输出的js文件中，不过对于复杂的项目，使用 eval 可能提示错误并不全面 / 不准确。
 
 - **devtool: 'none'** ：表示省略 devtool 选项 - 不生成 sourceMap。
+
+**总结：**
+
+| 关键字     | 含义                                            |
+| ---------- | ----------------------------------------------- |
+| eval       | 使用 eval 包裹代码                              |
+| source-map | 生成.map文件                                    |
+| cheap      | 不包含列信息，也不包括loader的sourcemap         |
+| module     | <font color=FF0000>包括loader的sourcemap</font> |
+| inline     | 将 .map 作为 DataURL 嵌入，不单独生成 .map文件  |
+
+摘自：[webpack——devtool配置及sourceMap的选择](https://blog.csdn.net/zwkkkk1/article/details/88758726)
 
 ##### <font color=FF0000>**最佳实践：**</font>
 
@@ -727,6 +743,117 @@ sourceMap 是一个<font color=FF0000>映射关系</font>。它知道 <font colo
 <img src="/Users/yan/Library/Application Support/typora-user-images/image-20220309012608227.png" alt="image-20220309012608227" style="zoom:47%;" />
 
 学习自：[深入浅出之 Source Map](https://juejin.cn/post/7023537118454480904)
+
+##### 关于 js 中 source map 原理的补充
+
+<font size=4>**背景 以及 source map 是什么**</font>
+
+> <mark>在生产环境中，代码一般是以编译、压缩后的形态存在，对生产友好，但是调试时候定位的错误只能定位到编译压缩后的代码位置，此时的代码对人类的阅读很不友好，可能变量名被缩短失去语义，甚至是经过编译的，生产代码与开发代码已经没法一一对应</mark>。
+>
+> 为了解决代码之间对应关系，人们设计了 source map 这种数据格式来。source map 就像一个索引表，将生产代码和开发代码联系起来，这样开发调试时就可以清晰的定位到开发代码中了。
+>
+> **前端的编译处理过程包括但不限于**
+>
+> - 转译器 / Transpilers ( Babel )
+> - 编译器 / Compilers ( TypeScript，CoffeeScript，Webassembly )
+> - 压缩 / Minifiers  ( UglifyJS )
+>
+> 这些都是可生成 source map 的操作。有了 source map，使得我们调试线上产品时，能直接看到开发环境的代码
+>
+> 
+
+<font size=4>**Source map 的格式**</font>
+
+打开Source map文件，它大概是这个样子：
+
+```js
+{
+  version : 3,
+  file: "out.js",
+  sourceRoot : "",
+  sources: ["foo.js", "bar.js"],
+  names: ["src", "maps", "are", "fun"],
+  mappings: "AAgBC,SAAQ,CAAEA"
+}
+```
+
+整个文件就是一个JavaScript对象，可以被解释器读取。它主要有以下几个属性：
+
+- version：Source map的版本，目前为3。
+- file：转换后的文件名。
+- sourceRoot：转换前的文件所在的目录。如果与转换前的文件在同一目录，该项为空。
+- **sources：**<font color=FF0000>**转换前** 的文件</font>。该项是一个数组，表示<font color=FF0000>可能存在多个文件合并</font>。
+- names：<font color=FF0000>**转换前** 的所有变量名和属性名</font>。
+- **mappings：**<font color=FF0000>记录位置信息的字符串</font>
+
+<font color=FF0000 size=4>**mappings 属性**</font>
+
+记录两个文件的各个位置是如何一一对应的，关键就是map文件的mappings属性。这是一个很长的字符串，它分成三层（**注：**这里阮一峰说的很不清楚。<mark>这里的“三层分类”的“层次”是粒度越来越细的，先将 mappings 分为“行”，再将“行”分为“位置”，最后“位置”是用 VLQ 描述的</mark>）
+
+- 第一层是<font color=FF0000>**行对应**</font>，以分号`;` 表示，<font color=FF0000>**每个分号对应转换后源码的一行**</font>。所以，第一个分号前的内容，就对应源码的第一行，以此类推
+- 第二层是<font color=FF0000>**位置对应**</font>，以逗号`,` 表示，<font color=FF0000>**每个逗号对应转换后源码的一个位置**</font>。所以，第一个逗号前的内容，就对应该行源码的第一个位置，以此类推。
+- 第三层是<font color=FF0000>**位置转换**</font>，<font color=FF0000>以VLQ编码表示，代表该位置对应的转换前的源码位置</font>。
+
+举例来说，假定mappings属性的内容如下：
+
+```js
+mappings:"AAAAA,BBBBB;CCCCC"
+```
+
+就表示：<font color=FF0000>转换后的源码分成两行，第一行有两个位置，第二行有一个位置</font>。**注：**因为分号将mapping 分成了两段，所以两行；分号前面的内容被逗号分开，所以第一行有两个位置
+
+<font color=FF0000 size=4>**位置对应的原理**</font>
+
+<font color=FF0000>每个位置使用五位  ，表示五个字段</font>（**注：**根据上面，位置通过逗号分隔；同样上面的示例也是AAAAA BBBBB 有五位）。从左边算起：
+
+　　- 第一位：表示这个位置在（<font color=FF0000>**转换后**的代码的）的第几列</font>
+　　- 第二位：表示这个位置属于 sources属性中的哪一个文件（**注：**根据上面所说，source 是 **转换前** 的文件）
+　　- 第三位：<mark style="background: aqua">表示<font color=FF0000>这个位置属于 **转换前** 代码的**第几行**</font></mark>
+　　- 第四位：<mark style="background: aqua">表示<font color=FF0000>这个位置属于 **转换前** 代码的**第几列**</font></mark>（**注：**行和列。所以，第三第四位可以连起来看）
+　　- 第五位：表示这个位置属于 names 属性中的哪一个变量（**注：**根据上面所说，names 是 **转换前** 的文件名）
+
+**注：**<mark>辅助记忆：第一二两位是转换后的位置信息，三四五位是转换前的位置信息</mark>
+
+有几点需要说明。首先，<font color=FF0000>**所有的值都是以 0 作为基数的**</font>。其次，<font color=FF0000>第五位不是必需的</font>，<mark>如果该位置没有对应names属性中的变量，可以省略第五位</mark>。再次，<font color=FF0000>每一位都采用VLQ编码表示；**由于VLQ编码是变长的，所以每一位可以由多个字符构成**</font>。
+
+如果某个位置是AAAAA，由于A在VLQ编码中表示0，因此这个位置的五个位实际上都是0。它的意思是，该位置在转换后代码的第0列，对应sources属性中第0个文件，属于转换前代码的第0行第0列，对应names属性中的第0个变量。
+
+**VLQ 编码表示数值**
+
+这种编码最早用于 MIDI 文件，后来被多种格式采用。它的特点就是可以非常精简地表示很大的数值。
+
+<font color=FF0000>**VLQ编码是变长的：**如果（整）数值在 -15到 +15之间（含两个端点），用一个字符表示；超出这个范围，就需要用多个字符表示</font>。它规定，每个字符使用6个两进制位，正好可以借用 Base64 编码的字符表。
+
+![img](https://s2.loli.net/2022/03/09/ucvlDPgopVZkted.png)
+
+<font color=FF0000>**在这6个位中，左边的第一位（最高位）表示是否“连续”( continuation )**</font>。如果<font color=FF0000>是1</font>，代表<mark>这６个位后面的6个位也属于同一个数</mark>；如果<mark>是0</mark>，表示<mark>该数值到这6个位结束</mark>。**注：**辅助记忆：1 为 truthy，所以表示连续；0 表示 falsy，所以表示不连续。
+
+<font color=FF0000>这6个位中的 **右边最后一位（最低位）** 的含义</font>，<font color=FF0000>取决于这6个位是否是某个数值的VLQ编码的第一个字符</font>。**如果是的，这个位代表"符号"(sign)** ，0为正，1为负（Source map的符号固定为0）；如果不是，这个位没有特殊含义，被算作数值的一部分。**注：**辅助记忆：二进制表示中符号位 0 为正，1为负。
+
+```
+Continuation 是否连续
+|　　　　　Sign 符号位
+|　　　　　|
+V　　　　　V
+１０１０１１
+```
+
+**VLQ编码：实例**
+
+下面看一个例子，如何对数值16进行VLQ编码。
+
+- 第一步，将16改写成二进制形式10000。
+- 第二步，<mark>在最右边补充符号位</mark>。因为16大于0，所以符号位为0，整个数变成100000。
+- 第三步，<font color=FF0000>从右边的最低位开始，将整个数每隔5位，进行分段</font>（**注：**分段的目的是为了加上“连续位”，见第五步），即变成1和00000两段。<font color=FF0000>**如果最高位所在的段不足5位，则前面补0**，因此两段变成00001和00000</font>。
+- 第四步，<font color=FF0000 size=4>**将两段的顺序倒过来，即00000和00001**</font>。
+- 第五步，在每一段的最前面添加一个"连续位"，除了最后一段为0，其他都为1，即变成100000和000001。
+- 第六步，将每一段转成Base 64编码。
+
+查表可知，100000为g，000001为B。因此，数值16的VLQ编码为gB
+
+摘自：[阮一峰 - JavaScript Source Map 详解](http://www.ruanyifeng.com/blog/2013/01/javascript_source_map.html)
+
+另外，本文没有提及 sourcemap 中 .js.map 文件中字段间的关系，和这些字段对记录”转换前“和”转换后“代码变化的作用；还有 .js.map 文件 记录变化的原理，都没有说。这些内容，详见 [D-kylin - note - Base64 VLQ](https://github.com/D-kylin/note/blob/master/VLQ编码.md)
 
 
 
@@ -819,7 +946,7 @@ devServer: {
 }
 ```
 
-<font color=FF0000> 开启HMR功能还需要使用HotModuleReplacementPlugin插件</font>，引入HotModuleReplacementPlugin插件的方法如下：
+<font color=FF0000> 开启HMR功能还需要使用 HotModuleReplacementPlugin 插件</font>，引入HotModuleReplacementPlugin插件的方法如下：
 
 ```js
 plugins: [
@@ -1277,8 +1404,6 @@ optimization: {
   minimizer: [new OptimizeCSSAssetsPlugin({})]
 }
 ```
-
-
 
 webpack 可能会对打包后的结果做出性能警告，既可以解决问题；可以使用
 
@@ -2509,11 +2634,87 @@ require.context()
 
 #### webpack 的构建流程是什么
 
-- **初始化参数：**解析webpack配置参数，合并shell传入和webpack.config.js文件配 置的参数,形成最后的配置结果；
-- **开始编译：**上一步得到的参数初始化compiler对象，注册所有配置的插件，插件 监听webpack构建生命周期的事件节点，做出相应的反应，执行对象的run方法开始执行编译；
-- **确定入口：**从配置的entry入口，开始解析文件构建AST语法树，找出依赖，递归下去；
-- **编译模块：**递归中根据文件类型和loader配置，调用所有配置的loader对文件进行转换，再找出该模块依赖的模块，再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理；
-- **完成模块编译并输出：**递归完事后，得到每个文件结果，包含每个模块以及他们之间的依赖关系，根据entry或分包配置生成代码块chunk;
+- **初始化参数：**<font color=FF0000>解析 webpack 配置参数</font>，合并 命令行（参数）传入和 webpack.config.js 文件配置的参数，形成最后的配置结果
+- **开始编译：**上一步得到的<font color=FF0000>参数初始化 compiler 对象</font>，注册所有配置的插件，插件 监听 webpack 构建生命周期的事件节点，做出相应的反应，执行对象的 run 方法开始执行编译；
+- **确定入口：**<font color=FF0000>从配置的entry入口，开始解析文件构建AST语法树，找出依赖，递归下去</font>；
+- **编译模块：**<font color=FF0000>递归中根据文件类型和 loader 配置</font>，调用所有配置的 loader 对文件进行转换，再找出该模块依赖的模块，再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理
+- **完成模块编译并输出：**<font color=FF0000>递归结束后，得到每个文件结果</font>，包含每个模块以及他们之间的依赖关系，根据 entry 或 分包 配置生成代码块chunk
 - **输出完成：**输出所有的chunk到文件系统
+
+#### webpack 的热更新原理
+
+其实是自己开启了 express 应用，<font color=FF0000>添加了对 webpack 编译的监听，添加了和浏览器的 **websocket 长连接**</font>，<font color=FF0000>当文件变化触发 webpack 进行编译并完成后，会通过 sokcet 消息告诉浏览器准备刷新</font>。而为了减少刷新的代价，就是不用刷新网页，而是刷新某个模块，webpack-dev-server 可以支持热更新，<font color=FF0000>通过生成 文件的 hash 值来比对需要更新的模块</font>，浏览器再进行热替换。
+
+#### webpack 打包的 hash码是如何生成的
+
+- **webpack生态中存在多种计算hash的方式**
+
+  - **hash：**<font color=FF0000>**每次 webpack 编译中生成的 hash值**</font>，所有使用这种方式的文件hash都相同。<font color=FF0000>每次构建都会使 webpack 计算新的 hash</font>
+
+  - **chunkhash：**<font color=FF0000>**基于 入口文件 及其 关联的 chunk 形成**</font>，某个文件的改动只会影响与它有关联的 chunk 的 hash值，不会影响其他文件 contenthash 根据文件内容创建
+
+  - **contenthash：**<font color=FF0000>**当文件内容发生变化时，contenthash发生变化**</font>
+
+- **避免相同随机值：**webpack 在计算 hash 后分割 chunk。产生相同随机值可能是因为这些文件属于同一个 chunk，可以将某个文件提到独立的 chunk（如放入entry）
+
+#### Webpack 如何用localStorage 离线缓存静态资源
+
+- 在配置 webpack 时，我们可使用 html-webpack-plugin 来注入一段脚本到 html， 来实现第三方或者公用资源的静态化存储。
+
+  **做法：**在 html 中注入一段标识，例如 <% HtmlWebpackPlugin.options.loading.html %>，在 html-webpack-plugin 中即可通过配置 html 属性，将 script 注入进去。
+
+- 通过配置 webpack-mainfest-plugin，生成 mainfest.json 文件用来对比 js 资源的差异，做到是否替换；当然，也要写缓存 script。
+
+- 在我们做 Cl / CD的时候，也可以通过编辑文件流来实现静态化脚本的注入，来降低服务器的压力，提高性能
+
+- 可以通过自定义 plugin 或者 html-webpack-plugin 等周期函数，动态注入前端静态化存储 script
+
+#### webpack 常见的plugin有哪些?
+
+- ProvidePlugin：自动加载模块，代替require和import
+
+- <font color=FF0000>**html-webpack-plugin**</font>：可以根据模板自动生成html代码，并自动引用 css 和 js 文件
+
+- ~~extract-text-webpack-plugin~~ 将js文件中引用的样式单独抽离成css文件。
+
+  **注：**<font color=FF0000>该 plugin 已经 deprecated，推荐使用 **mini-css-extract-plugin**</font>
+
+- DefinePlugin 编译时配置全局变量，这对开发模式和发布模式的构建允许不同的行为非常有用。
+
+- <font color=FF0000>**HotModuleReplacementPlugin**</font>：热更新必备
+
+- <font color=FF0000>optimize-css-assets-webpack-plugin</font>：不同组件中重复的css可以快速去重。
+
+  **注：**在webpack@5中，推荐使用 css-minimizer-webpack-plugin
+
+- <font color=FF0000>webpack-bundle-analyzer</font>：一个webpack的bundle文件分析工具，将bundle文件以可交互缩放的treemap的形式展示。
+
+- <font color=FF0000>**compression-webpack-plugin**</font>：生产环境可采用 gzip 压缩JS和CSS
+
+- happypack：通过多进程模型，来加速代码构建
+
+- <font color=FF0000>**clean-webpack-plugin**</font>：清理每次打包下没有使用的文件
+
+- speed-measure-webpack-plugin：可以看到每个Loader和Plugin执行耗时（整个打包耗时、每个 Plugin和 Loader 耗时）
+
+#### webpack 插件如何实现
+
+- webpack 本质是一个事件流机制，核心模块：tapable(Sync + Async)Hooks 构造出 === Compiler(编译) + Compiletion(创建bundles)
+- compiler对象代表了完整的webpack环境配置。这个对象在启动webpack时被一次性建立，并配置好所有可操作的设置，包括options、loader和plugin。当在webpack环境中应用一插件时，插件将收到此compiler对象的引用。可以使用它来访问webpack的主环境
+- compilation对象代表了一次资源版本构建。当运行webpack开发环境中间件时，每当检测到一个文件变化，就会创建一个新的compilation,从而生成一个新的编译资源。一个compilation对象表现了当前的模块资源、编译生成资源、变化的文件、以及被跟踪依赖的状态的信息。compilation对象也提供了很多关键时机的回调，以供插件做自定义处理时选择使用
+- 创建一个插件函数，在其prototype上定义apply方法，指定一个webpack自身的事件钩子
+- 函数内部处理webpack内部实例的特定数据
+- 处理完成后，调用webpack提供的回调函数
+
+#### webpack有哪些常⻅的Loader
+
+- file-loader：把⽂件输出到⼀个⽂件夹中，在代码中通过相对 URL 去引⽤输出的⽂件
+- url-loader：和 file-loader 类似，但是能在⽂件很⼩的情况下以 base64 的⽅式把⽂件内容注⼊到代码中去
+- source-map-loader：加载额外的 Source Map ⽂件，以⽅便断点调试
+- image-loader：加载并且压缩图⽚⽂件
+- babel-loader：把 ES6 转换成 ES5
+- css-loader：加载 CSS，⽀持模块化、压缩、⽂件导⼊等特性
+- style-loader：把 CSS 代码注⼊到 JavaScript 中，通过 DOM 操作去加载 CSS。
+- eslint-loader：通过 ESLint 检查 JavaScript 代码
 
 摘自：[webpack 十连问你能接住几题(附详解)](https://mp.weixin.qq.com/s/_QzAVr92WFQmHWJnwxDymQ)

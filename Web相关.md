@@ -2087,6 +2087,7 @@ Comet是一种用于 <font color=FF0000> web的推送技术，能使服务器实
 许多现代操作系统为WebDAV提供了内置的客户端支持。
 
 <font size=4>**实现**</font>
+
 WebDAV扩展了request方法所允许的标准HTTP谓词和HTTP头。增加的谓词包括：
 
 - COPY：将资源从一个URI复制到另一个URI
