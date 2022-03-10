@@ -2285,13 +2285,13 @@ Promise.all([func1(), func2(), func3()])
     // "rejected"
     ```
 
-- <font size=4>**Promise.any(iterable)：**</font>接收一个Promise对象的集合，<font color=FF0000>当其中的一个 promise **成功**，**就返回那个成功的promise的值**</font>。（注：注意和 Promise.race 的区别）
+- <font size=4>**Promise.any(iterable)：**</font>接收一个Promise对象的集合，<font color=FF0000>当其中的一个 promise **成功**，**就返回那个成功的promise的值**</font>。（**注：**注意和 Promise.race 的区别。另外，有点类似于 Array.prototype.some() ）
 
 - <font size=4>**Promise.race(iterable)：**</font>当 iterable参数 里的 <font color=FF0000>任意一个子promise被**成功或失败**后</font>，父promise 马上也会用 子promise 的成功返回值 或 失败详情作为参数调用 父promise绑定的相应句柄，并返回该promise对象<mark>（注：这里说的让人困惑，看下面的详解）</mark>。
 
   **补充：**摘自 [MDN - Promise.race()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/race)
 
-  Promise.race(iterable) 方法返回一个 promise，<font color=FF0000 size=4>**一旦迭代器中的 某个promise解决或拒绝，返回的 promise就会解决或拒绝**</font>。（注：可以理解为 任意一个promise settled了，直接返回这个promise的状态（ fulfilled / rejected ））
+  Promise.race(iterable) 方法返回一个 promise，<font color=FF0000 size=4>**一旦迭代器中的 某个promise解决或拒绝，返回的 promise就会解决或拒绝**</font>。（**注：**可以理解为：任意一个promise settled了，直接返回这个promise的状态( fulfilled / rejected )作为整个 iterable 的结果）
 
   - **语法：**
 
@@ -2773,7 +2773,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                   
+  >                     
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -2792,7 +2792,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                   
+  >                     
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -3214,6 +3214,27 @@ console.log(myHeaders.get('X-Custom-Header')); // null
 - **Response.status：**整数（默认值为 200）为response的状态码。
 - **Response.statusText：**字符串（默认值为 ""），该值与 HTTP 状态码消息对应。 注意：HTTP/2 不支持状态消息
 - **Response.ok：**该属性是来检查 response 的状态是否在 200 - 299（包括200 和 299）这个范围内。该属性返回一个布尔值。
+
+##### Body
+
+不管是请求还是响应都能够包含 body 对象。body 也可以是以下任意类型的实例。
+
+- ArrayBuffer
+- ArrayBufferView (Uint8Array等)
+- Blob/File
+- string
+- URLSearchParams
+- FormData
+
+<font color=FF0000>**Body 类定义了以下方法（这些方法都被 Request 和 Response所实现）以获取 body 内容**</font>。这些方法都会返回一个被解析后的 Promise 对象和数据。
+
+- Request.arrayBuffer() / Response.arrayBuffer()
+- Request.blob()  / Response.blob()
+- Request.formData()  / Response.formData()
+- Request.json()  / Response.json()
+- Request.text()  / Response.text()
+
+相比于XHR，这些方法让非文本化数据的使用更加简单。
 
 摘自：[MDN - 使用 Fetch](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch) 
 
@@ -5444,7 +5465,7 @@ window.navigator 对象<font color=FF0000>包含有关访问者浏览器的信�
   
   WindowOrWorkerGlobalScope 的 setInterval() 方法重复调用一个函数或执行一个代码段，在每次调用之间具有固定的时间延迟。
   
-  在窗口和工作接口上提供的setInterval()方法重复调用函数或执行代码片段，每次调用之间有固定的时间延迟。<font color=FF0000>它**返回一个时间间隔ID**，**该ID唯一地标识时间间隔**，因此您可以稍后通过调用clearInterval()来删除它</font>。这个方法是由WindowOrWorkerGlobalScope mixin定义的。
+  在窗口和工作接口上提供的setInterval()方法重复调用函数或执行代码片段，每次调用之间有固定的时间延迟。<font color=FF0000>它**返回一个时间间隔ID**，**该ID唯一地标识时间间隔**，因此您可以稍后通过调用 clearInterval() 来删除它</font>。这个方法是由 WindowOrWorkerGlobalScope mixin 定义的。
   
   - **语法**
   

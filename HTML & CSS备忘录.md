@@ -2305,6 +2305,12 @@ float: right;
   ```
   
   另外，需要注意的是：对于行内块级元素（display:inline-block），想要用`margin: auto;`实现居中对齐，需要加上`display: block`。比如：\<button>
+  
+  **注：**这里剧中对齐是 `margin: auto;` 相当于 `margin: auto auto auto auto;` 但是为什么 垂直方向没有居中？同时，使用 flex box / gridbox 也就可以了，为什么？
+  
+  对于这个问题： margin[-(left, right)]: auto 的 居中 或居左居右，《css权威指南》中有说。但是，没提到垂直方向的。在看了 [为什么「margin:auto」可以让块级元素水平居中？ - 杜瑶的回答 - 知乎](https://www.zhihu.com/question/21644198/answer/18895538)（如下图）感觉有点理解了。我的理解是：html 默认的渲染方向（writing-mode）是水平的，无法参考垂直的。而是用来 flexbox / gridbox 就不得不参考垂直的了。
+  
+  <img src="https://s2.loli.net/2022/03/10/bFS82LQwWOip7Po.png" alt="image-20220310235610739" style="zoom: 42%;" />
 
 
 
