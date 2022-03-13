@@ -2773,7 +2773,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                     
+  >                       
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -2792,7 +2792,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                     
+  >                       
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -6011,52 +6011,78 @@ Console 对象可以从任何全局对象中访问到，如 Window，WorkerGloba
 **方法**
 
 - **Console.assert()：**判断第一个参数是否为真，false 的话抛出异常并且在控制台输出相应信息。
-
 - **Console.clear()：**清空控制台，并输出 Console was cleared。
-
 - **Console.count()：**以参数为标识记录调用的次数，调用时在控制台打印标识以及调用次数。
-
 - **Console.countReset()：**重置指定标签的计数器值。
-
 - **Console.debug()：**在控制台打印一条 "debug" 级别的消息。
-
 - **Console.dir()：**显示一个由特定的 Javascript 对象列表组成的可交互列表。这个列表可以使用三角形隐藏和显示来审查子对象的内容。
-
 - **Console.dirxml()：**打印 XML/HTML 元素表示的指定对象，否则显示 JavaScript 对象视图。
-
 - **Console.error()：**<font color=FF0000>**常用**</font>，打印一条错误信息，使用方法可以参考 string substitution。
-
 - **Console.exception()：** error() 方法的别称。
-
 - **Console.group()：**创建一个新的内联 group, 后续所有打印内容将会以子层级的形式展示。调用 groupEnd()来闭合组。
-
 - **Console.groupCollapsed()：**创建一个新的内联 group。使用方法和 group() 相同，不同的是，groupCollapsed() 方法打印出来的内容默认是折叠的。调用groupEnd()来闭合组。
-
 - **Console.groupEnd()：**闭合当前内联 group。
-
 - **Console.info()：**<font color=FF0000>**常用**</font>，打印资讯类说明信息，使用方法可以参考 string substitution。
-
 - **Console.log()：**<font color=FF0000>**常用**</font>，打印内容的通用方法，使用方法可以参考 string substitution。
-
 - **Console.profile() ：**er's built-in profiler (for example, the Firefox performance tool). You can specify an optional name for the profile.
-
 - **Console.profileEnd() ：**Stops the profiler. You can see the resulting profile in the browser's performance tool (for example, the Firefox performance tool).
-
 - **Console.table()：**将列表型的数据打印成表格。
-
 - **Console.time()：**启动一个以入参作为特定名称的计时器，在显示页面中可同时运行的计时器上限为10,000.
-
 - **Console.timeEnd()：**结束特定的 计时器 并以豪秒打印其从开始到结束所用的时间。
-
 - **Console.timeLog()：**打印特定 计时器 所运行的时间。
-
 - **Console.timeStamp() ：**添加一个标记到浏览器的 Timeline 或 Waterfall 工具。
-
 - **Console.trace()：**输出一个 stack trace。
-
 - **Console.warn()：**常用，打印一个警告信息，可以使用 string substitution 和额外的参数。
 
+##### **使用字符串替换** （注：这里感觉用“格式化输出“表述，似乎更好些）
+
+可以在传递给 console 的方法的时候使用下面的字符以期进行参数的替换。
+
+| Substitution string | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| %o or %O            | 打印 JavaScript 对象。在审阅器点击对象名字可展开更多对象的信息。 |
+| %d or %i            | 打印整数。支持数字格式化。例如, console.log("Foo %.2d", 1.1) 会输出有先导 0 的两位有效数字: Foo 01。 |
+| %s                  | 打印字符串。                                                 |
+| %f                  | 打印浮点数。支持格式化，比如 console.log("Foo %.2f", 1.1) 会输出两位小数: Foo 1.10 |
+
+##### 为控制台定义样式
+
+可以使用 <font color=FF0000 size=4>**%c**</font> 为打印内容定义样式：
+
+```js
+console.log("This is %cMy stylish message", "color: yellow; font-style: italic; background-color: blue;padding: 2px"); // 另外，注意 %c 的位置
+```
+
+指令前的文本不会受到影响，但指令后的文本将会使用参数中声明的 CSS 样式。
+
+![img](https://mdn.mozillademos.org/files/12527/CSS-styling.png)
+
+%c 语法可用的属性如下 (至少在 Firefox 中是这样，别的浏览器会有诸多不同)：
+
+- background 与其全写版本。
+- border 与其全写版本。
+- border-radius
+- box-decoration-break
+- box-shadow
+- clear 和 float
+- color
+- cursor
+- display
+- font 与其全写版本。
+- line-height
+- margin
+- outline 与其全写版本。
+- padding
+- text-transform 这类 text-* 属性 
+- white-space
+- word-spacing 和 word-break
+- writing-mode
+
+注意：控制台信息的默认行为与行内元素相似。为了应用 padding, margin 这类效果，你应当这样设置display: inline-block.。
+
 摘自：[MDN web docs - Console](https://developer.mozilla.org/zh-CN/docs/Web/API/Console)
+
+
 
 
 

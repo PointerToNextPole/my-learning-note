@@ -612,3 +612,17 @@ flowchart
 
 更多Flowchart流程图用法参考：[参考文档](http://flowchart.js.org/)
 
+#### markdown 显示与隐藏
+
+由于 markdown 可以解析 html 代码，所以可以用 html 中的 \<details> 标签 实现：
+```markdown
+<details>
+<summary>点击查看详细内容</summary>
+展开的内容
+</details>
+```
+ 效果如下：
+ <details>
+<summary>点击查看详细内容</summary>
+展开的内容
+</details>
