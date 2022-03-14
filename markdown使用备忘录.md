@@ -558,16 +558,16 @@ gantt
 
  一个常见的Mermaid流程图例子如下：
 
-```code
+````code
 ```mermaid
 	graph LR
 	A[长方形] -- 链接 --> B((圆))
 	A --> C(圆角长方形)
 	B --> D{菱形}
 	C --> D
-​```
-#Mermaid流程图代码例子
 ```
+#Mermaid流程图代码例子
+````
 
 ```mermaid
 graph LR
@@ -583,7 +583,7 @@ graph LR
 
  一个常见的Flowchart流程图例子如下：
 
-```code
+````code
 ```mermaid
 	flowchart
 	st=>start: 开始
@@ -594,9 +594,9 @@ graph LR
 	st->op->cond
 	cond(yes)->e
 	cond(no)->op
-​```
-#Flowchart流程图代码例子
 ```
+#Flowchart流程图代码例子
+````
 
 ```mermaid
 flowchart

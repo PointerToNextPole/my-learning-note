@@ -2773,7 +2773,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                       
+  >                         
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -2792,7 +2792,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                       
+  >                         
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -3571,9 +3571,15 @@ fn(1, 2, 3, 4)
 **属性**
 
 - **arguments.callee：**指向参数所属的当前执行的函数。
+
+  > **注：**在严格模式下，第5版 ECMAScript (ES5) 禁止使用 arguments.callee()
+  >
+  > 详见：[MDN - arguments.callee](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/arguments/callee)
+
 - **arguments.caller：**🗑 指向调用当前函数的函数。
 
 - **arguments.length：**传递给函数的参数数量。
+
 - **arguments[@@iterator]：**返回一个新的Array 迭代器 对象，该对象包含参数中每个索引的值。
 
 摘自：[MDN - Arguments 对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/arguments)
