@@ -1876,13 +1876,9 @@ Javascript 的保留关键字不可以用作变量、标签或者函数名。有
 - 在**对象方法**中，this 表示**该方法所属的对象**。
 - 如果**单独使用**，this 表示**全局对象**（在严格模式下也是这样）。
 - 在**函数**中，this 表示**全局对象**。
-- 在**函数**中，在**严格模式**下，**this 是未定义的**(undefined)。
+- 在**函数**中，在**严格模式**下，**this 是未定义的 **(undefined)。
 - 在**事件**中，this 表示**接收事件的元素**。
 - 类似 call() 和 apply() 方法可以将 this 引用到任何对象。
-
-**补充：**
-
-在js中有三种改变this指向的方法：call() / apply() / bind()
 
 
 
@@ -2773,7 +2769,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                         
+  >                           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -2792,7 +2788,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                         
+  >                           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -3912,11 +3908,11 @@ new 运算符创建一个用户定义的对象类型的实例或具有构造函�
   - **constructor：**一个指定对象实例的类型的类或函数。
   - **arguments：**一个用于被 constructor 调用的参数列表。
 
-- **描述：**
+- **描述：** 
 
   **new 关键字会进行如下的操作：**
 
-  1. <font color=FF0000>创建一个空的简单JavaScript对象（即{}）</font>
+  1. <font color=FF0000>创建一个空的简单JavaScript对象（即{} ）</font>
   2. 为步骤1 <font color=FF0000 size=4>**新创建的对象添加属性 \__proto__，将该属性链接至构造函数的原型对象** ⭐️⭐️⭐️</font>
   3. 将步骤1 <font color=FF0000 size=4>**新创建的对象作为this的上下文**</font>
   4. 如果该函数没有返回对象，则返回this

@@ -9,9 +9,7 @@
   参数相当于函数内部的变量（详见 第一题）。<br>
   给参数赋默认值时，是有顺序的，同时也是有类型死区的。（详见 第二题）
 </details>
-
-
-##### 第一题
+##### 1.
 
 ```js
 let a = 1
@@ -35,7 +33,7 @@ console.log(a)
   首先基本类型数据是按值传递的，所以执行b函数时，b的参数a接收的值为1，<font color=FF0000 size=4>参数</font>a<font color=FF0000 size=4>相当于函数内部的变量</font>，当本作用域有和上层作用域同名的变量时，无法访问到上层变量，所以函数内无论怎么修改a，都不影响上层，所以函数内部打印的a是2，外面打印的仍是1。
 </details>
 
-##### 第二题
+##### 2.
 
 ```js
 function a (b = c, c = 1) {
@@ -55,7 +53,7 @@ a()
   <font color=FF0000>给函数多个参数<font size=4>设置默认值实际上跟按顺序定义变量一样</font>，所以<font size=4> 会存在暂时性死区</font></font>的问题，即<mark>前面定义的变量不能引用后面还未定义的变量，而后面的可以访问前面的</mark>。
 </details>
 
-##### 
+
 
 
 
@@ -107,6 +105,10 @@ console.log(b.x)
 </details>
 
 
+### 函数
+
+##### 1.
+
 
 ```js
 var arr = [0, 1, 2]
@@ -129,6 +131,10 @@ console.log(arr.filter(function (x) {
 </details>
 
 
+### 变量 / 函数提升
+
+##### 1.
+
 
 ```js
 var name = 'World'
@@ -148,12 +154,71 @@ var name = 'World'
   <summary>点击查看答案</summary>
   这道题考察的是变量提升的问题，var声明变量时会把变量自动提升到当前作用域顶部，所以函数内的name虽然是在if分支里声明的，但是也会提升到外层，因为和全局的变量name重名，所以访问不到外层的name，最后因为已声明未赋值的变量的值都为undefined，导致if的第一个分支满足条件。
 </details>
+##### 2.
+
+```js
+console.log(a)
+var a = 1
+var getNum = function() { a = 2 }
+function getNum() { a = 3 }
+console.log(a)
+getNum()
+console.log(a)
+```
+
+这一题，第三个输出错了。其他没什么问题，只有第三个输出，涉及到的原理是知识盲区。
+
+<details>
+  <summary>点击查看答案</summary>
+  undefined、1、2
+</details>
+
+<details>
+  <summary>点击查看解析</summary>
+  首先因为 var 声明的变量提升作用，所以 a 变量被提升到顶部，未赋值，所以第一个打印出来的是 undefined。<br>
+  接下来 <font color=FF0000>是函数声明和函数表达式</font><mark>（注：var getNum = function() {} 是函数表达式 ）</mark><font color=FF0000>的区别</font>，<font color=FF0000 size=4>函数声明会有提升作用，在代码执行前就把函数提升到顶部，在执行上下文上中生成函数定义，所以第二个getNum会被最先提升到顶部</font><mark>（注：这里是变量和声明都提升到顶部）</mark>，然后是 var 声明 getNum 的提升，但是因为 getNum 函数已经被声明了，所以就不需要再声明一个同名变量，接下来开始执行代码，执行到 var getNum = fun... 时，虽然声明被提前了，但是赋值操作还是留在这里，所以 getNum 被赋值为了一个函数，下面的函数声明直接跳过，最后，getNum 函数执行前 a 打印出来还是 1，执行后，a 被修改成了 2，所以最后打印出来的2。<br>
+  运行时代码：function getNum() { a = 3 }; var a = undefined; var getNum = undefined; console.log(a); a = 1; getNum = function() { a = 2 }; console.log(a); getNum(); console.log(a);
+</details>
+
+##### 3.
+
+```js
+var a = 1
+function a(){}
+console.log(a)
+/////////////////////
+var b
+function b(){}
+console.log(b)
+////////////////////
+function b(){}
+var b
+console.log(b)
+```
+
+这题，第一个对了，下面两个错了。
+
+<details>
+  <summary>点击查看答案</summary>
+  1、b函数本身、b函数本身
+</details>
+
+<details>
+  <summary>点击查看解析</summary>
+  这三小题都涉及到函数声明和var声明，这两者都会发生提升，但是函数会优先提升，所以如果变量和函数同名的话，变量的提升就忽略了。<br>
+  1.提升完后，执行到赋值代码，a被赋值成了1，函数因为已经声明提升了，所以跳过，最后打印a就是1。对应代码：function a() {}; var a = undefined; a = 1; console.log(a);<br>
+  2.和第一题类似，只是b没有赋值操作，那么执行到这两行相当于都没有操作，b当然是函数。<br>
+  3.和第二题类似，只是先后顺序换了一下，但是并不影响两者的提升顺序，仍是函数优先，同名的var声明提升忽略，所以打印出b还是函数。<br>
+</details>
+
+# TODO
+
 
 
 
 ### （隐式）类型转换
 
-##### 第一题
+##### 1.
 
 ```js
 console.log(1 + null)
@@ -205,7 +270,7 @@ console.log(a[b])
 
 ### this 的 指向
 
-##### 第一题
+##### 1.
 
 ```js
 var out = 25
@@ -226,11 +291,56 @@ console.log((inner.func = inner.func)())
 
 # // TODO
 
+##### 2.
 
+```js
+var obj = {
+  name: 'abc',
+  fn: () => {
+    console.log(this.name)
+  }
+};
+obj.name = 'bcd'
+obj.fn()
+```
+
+这题不记得是对还是错了，但是记得当时很懵...当然，这题很简单，不应该懵
+
+<details>
+  <summary>点击查看答案</summary>
+  undefined
+</details>
+
+<details>
+  <summary>点击查看解析</summary>
+  这道题考察的是this的指向问题，<font color=FF0000>箭头函数执行的时候上下文是不会绑定 this 的，所以它里面的 this 取决于外层的 this，这里函数执行的时候外层是全局作用域</font>，所以 this 指向 window，window 对象下没有 name 属性，所以是 undefined。
+</details>
+
+##### 3.
+
+```js
+function fn (){ 
+  console.log(this) 
+}
+var arr = [fn]
+arr[0]()
+```
+
+这题对了，但是很模糊。
+
+<details>
+  <summary>点击查看答案</summary>
+  arr本身
+</details>
+
+<details>
+  <summary>点击查看解析</summary>
+  <font color=FF0000 size=4><strong>函数作为某个对象的方法调用，this 指向该对象</strong></font>，数组显然也是对象，只不过我们都习惯了对象引用属性的方法：obj.fn，但是实际上obj['fn']引用也是可以的。
+</details>
 
 ### 赋值问题
 
-##### 第一题
+##### 1.
 
 ```js
 let {a,b,c} = { c: 3, b: 2, a: 1 }
@@ -249,7 +359,7 @@ console.log(a, b, c)
   这题考察的是变量解构赋值的问题，<font color=FF0000>数组解构赋值是按位置对应的，而对象只要变量与属性同名，顺序随意</font>。
 </details>
 
-##### 第二题
+##### 2.
 
 ```js
 console.log( Object.assign([1, 2, 3], [4, 5]) )
@@ -266,6 +376,30 @@ console.log( Object.assign([1, 2, 3], [4, 5]) )
   <summary>点击查看解析</summary>
   是不是从来没有用assign方法合并过数组？<font color=FF0000>assign方法可以用于处理数组，不过会把数组视为对象</font>，比如<font color=FF0000 size=4>这里会把目标数组视为是属性为0、1、2的对象</font>，<font color=FF0000>所以源数组的0、1属性的值覆盖了目标对象的值</font>。
 </details>
+##### 3.
+
+```js
+const obj = {
+  a: { a: 1 }
+};
+const obj1 = {
+  a: { b: 1 }
+};
+console.log(Object.assign(obj, obj1))
+```
+
+这题不清楚有没有做对，反正当时很不确定。这题只要知道 assign 的属性之后，很清楚。
+
+<details>
+  <summary>点击查看答案</summary>
+  {a: { b: 1 } }
+</details>
+
+<details>
+  <summary>点击查看解析</summary>
+  这道题很简单，因为 <font color=FF0000>assign 方法执行的是 浅拷贝</font>，所以源对象的a属性会直接覆盖目标对象的 a 属性。
+</details>
+
 
 
 
@@ -315,4 +449,106 @@ console.log(typeof function () {} == typeof class {})
   1.首先不要把 NULL 看成是null，<font color=FF0000>js 的关键字是区分大小写的</font>，所以这就是一个普通的变量，而且没有声明，typeof 对没有声明的变量使用是不会报错的，返回 'undefined'，typeof对 undefined 使用也是 'undefined'，所以两者相等
   2.<font color=FF0000>typeof对函数使用返回'function'，<font size=4>class只是es6新增的语法糖，本质上还是函数</font>，所以两者相等</font>
 </details>
+
+
+### 继承
+
+##### 1. 
+
+```js
+const person = {
+	address: {
+		country:"china",
+		city:"hangzhou"
+	},
+	say: function () { console.log(`it's ${this.name}, from ${this.address.country}`) },
+	setCountry:function (country) { this.address.country = country }
+}
+
+const p1 = Object.create(person)
+const p2 = Object.create(person)
+
+p1.name = "Matthew"
+p1.setCountry("American")
+
+p2.name = "Bob"
+p2.setCountry("England")
+
+p1.say()
+p2.say()
+```
+
+# // TODO
+
+
+
+
+
+### 作用域 和 闭包
+
+##### 第一题
+
+```js
+var i = 1
+function b() {
+  console.log(i)
+}
+function a() {
+  var i = 2
+  b()
+}
+a()
+```
+
+错了。这题是很经典的闭包题目了，不该错。
+
+<details>
+  <summary>点击查看答案</summary>
+  1
+</details>
+
+<details>
+  <summary>点击查看解析</summary>
+  这道题考察的是作用域的问题，<font color=FF0000>作用域其实就是一套变量的查找规则</font>，<font color=FF0000 size=4><strong>每个函数在执行时都会创建一个执行上下文，其中会关联一个变量对象，也就是它的作用域，上面保存着该函数能访问的所有变量</strong></font><mark>（<strong>注：</strong>这里的作用域链很重要，在笔记的其他地方也有提及）</mark>，另外，<font color=FF0000 size=4><strong>上下文中的代码在执行时还会创建一个作用域链，如果某个标识符在当前作用域中没有找到，会沿着外层作用域继续查找，直到最顶端的全局作用域</strong></font>，因为 <font color=FF0000 size=4><strong>js 是词法作用域，（标识符）在写代码阶段作用域就已经确定了，换句话说，是在函数定义的时候确定的，而不是执行的时候</strong></font>，所以a函数是在全局作用域中定义的，虽然在 b 函数内调用，但是它只能访问到全局的作用域而不能访问到 b 函数的作用域。
+</details>
+
+
+
+### 事件队列
+
+<details>
+  <summary>一些重点</summary>
+  process.nextTick 的优先级要高于微任务
+</details>
+
+##### 1.
+
+```js
+setTimeout(function() {
+  console.log(1)
+}, 0)
+new Promise(function(resolve) {
+  console.log(2)
+  for( var i=0 ; i<10000 ; i++ ) {
+    i == 9999 && resolve()
+  }
+  console.log(3)
+}).then(function() {
+  console.log(4)
+})
+console.log(5)
+```
+
+这题做对了，但是 对于 3要不要打印，不清楚。也就是 resolve() 后 是不是直接返回不确定。
+
+<details>
+  <summary>点击查看答案</summary>
+  2 3 5 4 1
+</details>
+
+<details>
+  <summary>点击查看解析</summary>
+</details>
+
+# // TODO
 
