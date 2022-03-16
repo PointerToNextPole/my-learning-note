@@ -512,7 +512,7 @@ for (const [index, val] of arr.entries()) {
 
 
 
-#### **for ... of 和 for ... in 的区别：**
+#### **for ... of 和 for ... in 的区别**
 
 无论是for...in还是for...of语句都是迭代一些东西。它们之间的主要区别在于它们的迭代方式。
 
@@ -2769,7 +2769,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                           
+  >                             
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -2788,7 +2788,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                           
+  >                             
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2

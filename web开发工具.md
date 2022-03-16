@@ -798,7 +798,7 @@ WebSocket 解决的第一个问题是，通过第一个 HTTP request 建立了 T
 
 在Web应用程序中使用服务器发送事件很简单。<mark>在服务器端，只需要按照一定的格式返回事件流，在客户端中，只需要为一些事件类型绑定监听函数，和处理其他普通的事件没多大区别</mark>。
 
-**从服务器接受事件**
+##### 从服务器接收到事件
 
 <font color=FF0000>服务器发送事件API也就是 **EventSource接口**</font>，在你创建一个新的EventSource对象的同时，你可以指定一个接受事件的URI。例如：
 
@@ -826,9 +826,13 @@ evtSource.onmessage = function(event) {
 
 上面的代码监听了那些从服务器发送来的所有没有指定事件类型的消息(没有event字段的消息)，然后把消息内容显示在页面文档中。
 
-你<mark>也可以使用addEventListener()方法来监听其他类型的事件</mark>（代码略，详见网页）
+你<mark>也可以使用addEventListener()方法来监听其他类型的事件</mark>（示例代码略，详见网页）
 
-**错误处理**
+##### 服务器端如何发送事件流
+
+服务器端发送的响应内容应该使用值为 text/event-stream 的 MIME 类型。每个通知以文本块形式发送，并以一对换行符结尾。有关事件流的格式的详细信息，请参见 [Event stream format](https://developer.mozilla.org/zh-CN/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format)。（示例代码略，详见网页）
+
+##### 错误处理
 
 当发生错误(例如请求超时或与HTTP访问控制（CORS）有关的问题), 会生成一个错误事件. 您可以通过在EventSource对象上使用onerror回调来对此采取措施：
 
@@ -838,7 +842,7 @@ evtSource.onerror = function(err) {
 };
 ```
 
-**关闭事件流**
+##### 关闭事件流
 
 默认情况下，如果客户端和服务器之间的连接关闭，则连接将重新启动。可以使用.close()方法终止连接。
 
