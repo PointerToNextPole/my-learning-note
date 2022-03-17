@@ -1349,7 +1349,7 @@ devServer: {
 
   - **object类型的值：**可以配置rewrites属性；可以配置from来匹配路径，决定要跳转到哪一个页面；
 
-  devServer中实现historyApiFallback功能是通过connect-history-api-fallback库的
+  devServer中实现historyApiFallback功能是通过 [connect-history-api-fallback](https://github.com/bripkens/connect-history-api-fallback) 库的
 
 
 
@@ -3456,11 +3456,11 @@ createApp -> app.mount -> rerender 的 render 函数 -> patch（会判断类型�
 
 前端路由是通过监听URL的改变，做到URL和内容进行映射。
 
-- **URL的 hash：**URL的hash也就是锚点(#)，<font color=FF0000>本质上是改变window.location的href属性； 可以通过直接赋值 location.hash 来改变href，但保证页面不发生刷新</font>
+- **URL的 hash：**URL 的 hash也就是锚点(#)，<font color=FF0000>本质上是改变window.location的href属性； 可以通过直接赋值 location.hash 来改变href，但保证页面不发生刷新</font>
 
   hash的优势就是兼容性更好，在老版IE中都可以运行，但是缺陷是有一个#，显得不像一个真实的路径；另外SEO 不友好
 
-- **HTML5 History：**history接口是HTML5新增的, 它有六种模式改变URL而不刷新页面：
+- **HTML5 History：**history接口是HTML5新增的，它有六种模式改变URL而不刷新页面：
 
   - **replaceState：**替换原来的路径
   - **pushState：**使用新的路径

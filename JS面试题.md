@@ -55,31 +55,6 @@ a()
 
 
 
-
-
-```js
-let a = b = 10
-;(function(){ 
-  let a = b = 20 
-})()
-console.log(a)
-console.log(b)
-```
-
-这题做的时候，<font color=FF0000>错了</font>。看答案发现了知识盲区，<font color=FF0000>非常重要</font> ⭐️⭐️
-
-<details>
-  <summary>点击查看答案</summary>
-  10, 20
-</details>
-
-<details>
-  <summary>点击查看解析</summary>
-  <font color=FF0000>连等操作是从右向左执行的</font> <mark>（注：联等？不是赋值操作么？应该是连续赋值吧？另外，”从右到左运行“有前提：优先级相等，以及结合性一致，才是从右到左。参考：juejin.cn/post/6844903928073568264 ）</mark>，<font color=FF0000 size=4>相当于b = 10、let a = b</font>，很明显b没有声明就直接赋值了，所以会隐式创建为一个全局变量，函数内的也是一样，并没有声明b，直接就对b赋值了，因为作用域链，会一层一层向上查找，找了到全局的b，所以全局的b就被修改为20了，而函数内的a因为重新声明了，所以只是局部变量，不影响全局的a，所以a还是10。
-</details>
-
-
-
 ```js
 var a = {n:1}
 var b = a
@@ -94,7 +69,6 @@ console.log(b.x)
   <summary>点击查看答案</summary>
   undefined, {n: 2}
 </details>
-
 <details>
   <summary>点击查看解析</summary>
   按照网上大部分的解释是：<font color=FF0000 size=4>因为.运算符优先级最高，所以会先执行a.x</font> <mark>（注：这里 成员运算符的优先级最高，先于赋值运算符执行 ）</mark>，<font color=FF0000 size=4>此时a、b共同指向的 { n: 1 } 变成了 { n: 1, x: undefined }</font>，然后按照连等操作从右到左执行代码，a = { n: 2 }，显然，a现在指向了一个新对象，然后 a.x = a，因为 a.x 最开始就执行过了，所以这里其实等价于：({ n: 1, x: undefined }).x = b.x = a = { n: 2 }。<br>
@@ -102,7 +76,9 @@ console.log(b.x)
   <code> let a = { n: 1}; let b = a; a = { n: 2 }; console.log(a, b) </code>
   <mark>结果为：a = { n: 2 }, b = { n: 1 } ）</mark>。这个时候，最前面的 a.x（该地址所对应的值是 { n: 1, x: undefined }，这时候只有b在指向它。 ）以及不会对a产生影响（对a.x赋值）了(因为找不到对a的引用了)，只会对b.x赋值；所以 b.x = {n: 2} 也就 b.x 指向 “此时的 a” (a 即 {n: 2} )。具体如下图：
   <img src="https://s2.loli.net/2022/03/14/SjJ6XUxovNcPF7W.png" />
+  另外，这题也有相关的博文进行解答：https://cloud.tencent.com/developer/article/1093667
 </details>
+
 
 
 ### 函数
@@ -399,7 +375,28 @@ console.log(Object.assign(obj, obj1))
   <summary>点击查看解析</summary>
   这道题很简单，因为 <font color=FF0000>assign 方法执行的是 浅拷贝</font>，所以源对象的a属性会直接覆盖目标对象的 a 属性。
 </details>
+##### 4.
 
+```js
+let a = b = 10
+;(function(){ 
+  let a = b = 20 
+})()
+console.log(a)
+console.log(b)
+```
+
+这题做的时候，<font color=FF0000>错了</font>。看答案发现了知识盲区，<font color=FF0000>非常重要</font> ⭐️⭐️
+
+<details>
+  <summary>点击查看答案</summary>
+  10, 20
+</details>
+
+<details>
+  <summary>点击查看解析</summary>
+  <font color=FF0000>连等操作是从右向左执行的</font> <mark>（注：联等？不是赋值操作么？应该是连续赋值吧？另外，”从右到左运行“有前提：优先级相等，以及结合性一致，才是从右到左。参考：juejin.cn/post/6844903928073568264 ）</mark>，<font color=FF0000 size=4>相当于b = 10、let a = b</font>，很明显b没有声明就直接赋值了，所以会隐式创建为一个全局变量，函数内的也是一样，并没有声明b，直接就对b赋值了，因为作用域链，会一层一层向上查找，找了到全局的b，所以全局的b就被修改为20了，而函数内的a因为重新声明了，所以只是局部变量，不影响全局的a，所以a还是10。
+</details>
 
 
 
