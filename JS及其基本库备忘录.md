@@ -8592,27 +8592,153 @@ console.log(Reflect.ownKeys(arr)) // [ '0', 'length' ]
 
 #### Symbol
 
-symbol 是一种基本数据类型 （primitive data type）。Symbol() 函数会返回 symbol 类型的值，该类型具有静态属性和静态方法。它的静态属性会暴露几个内建的成员对象；它的静态方法会暴露全局的 symbol 注册，且类似于内建对象类，但作为构造函数来说它并不完整，因为它不支持语法："new Symbol()"。
+<font color=FF0000>**symbol 是一种基本数据类型**</font> （primitive data type）。<font color=FF0000>Symbol() 函数会返回 symbol 类型的值，该类型具有静态属性和静态方法</font>。它的静态属性会暴露几个内建的成员对象；它的静态方法会暴露全局的 symbol 注册，且类似于内建对象类，但<font color=FF0000>作为构造函数来说它并不完整，因为它不支持语法："new Symbol()"</font>（注：下面有示例代码）。
 
-每个从Symbol()返回的symbol值都是唯一的。一个symbol值能作为对象属性的标识符；这是该数据类型仅有的目的。
+每个从 Symbol() 返回的 symbol值都是唯一的。<font color=FF0000>**一个 symbol值能作为对象属性的标识符**</font>（**注：**示例如下）；这是该数据类型仅有的目的
 
-##### 关于标识符的补充
+> ```js
+> var obj = {};
+> var a = Symbol("a");
+> var b = Symbol.for("b");
+> 
+> obj[a] = "localSymbol";
+> obj[b] = "globalSymbol";
+> ```
+>
+> 摘自：[MDN - Object.getOwnPropertySymbols()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols)
+
+上面是在初始化之后赋值，也可以<font color=FF0000>使用“计算属性”在初始化时赋值</font>：
+
+> 当一个 Symbol 包装器对象作为一个属性的键时，这个对象将被强制转换为它包装过的 symbol 值：
+>
+> ```js
+> var sym = Symbol("foo");
+> var obj = {[sym]: 1};
+> obj[sym];            // 1
+> obj[Object(sym)];    // still 1
+> ```
+>
+> 摘自：[MDN - Symbol - Symbol 包装器对象作为属性的键](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol#symbol_包装器对象作为属性的键)
+
+**语法**
+
+```js
+Symbol([description])
+```
+
+**参数**
+
+- **description：**可选，字符串类型。对 symbol 的描述，可用于调试但不是访问 symbol 本身。
+
+**描述**
+
+直接使用 Symbol() 创建新的 symbol 类型，并<font color=FF0000>用一个可选的字符串作为其描述</font>。
+
+```js
+var sym1 = Symbol();
+var sym2 = Symbol('foo');
+var sym3 = Symbol('foo');
+```
+
+上面的代码创建了三个新的symbol类型。 注意，Symbol("foo") 不会强制将字符串 “foo” 转换成symbol类型。它每次都会创建一个新的 symbol类型：
+
+```js
+Symbol("foo") === Symbol("foo"); // false
+```
+
+**下面带有 new 运算符的语法将抛出 TypeError 错误：**
+
+```js
+var sym = new Symbol(); // TypeError
+```
+
+这会阻止创建一个显式的 Symbol 包装器对象而不是一个 Symbol 值。<font color=FF0000>**围绕原始数据类型创建一个显式包装器对象从 ECMAScript 6 开始不再被支持**</font>。 然而，<mark>现有的原始包装器对象，如 `new Boolean`、`new String` 以及 `new Number`，因为遗留原因仍可被创建</mark>。
+
+##### 全局共享的 Symbol
+
+上面<mark>使用 Symbol() 函数的语法，<font color=FF0000 size=4>**不会**</font>在你的整个代码库中创建一个可用的全局的 symbol 类型</mark>。 <font color=FF0000>要创建跨文件可用的 symbol，甚至跨域（每个都有它自己的全局作用域），**使用 Symbol.for() 方法和  Symbol.keyFor() 方法从全局的 symbol注册表设置和取得 symbol**</font>。
+
+##### 在对象中查找 Symbol 属性
+
+Object.getOwnPropertySymbols() 方法让你在查找一个给定对象的符号属性时返回一个 symbol 类型的数组。注意，每个初始化的对象都是没有自己的 symbol 属性的，因此这个数组可能为空，除非你已经在对象上设置了 symbol 属性。
+
+**属性**
+
+- **Symbol.length：**长度属性，值为0。
+- **Symbol.prototype：**symbol 构造函数的原型。
+
+**方法**
+
+- **Symbol.for(key)：**<font color=FF0000>使用给定的 key 搜索现有的 symbol</font>，如果<mark>找到则返回该 symbol；否则将使用给定的 key 在全局 symbol注册表中创建一个新的 symbol</mark>。
+- **Symbol.keyFor(sym)：**<font color=FF0000>从全局 symbol注册表中，为给定的 symbol检索一个共享的 symbol key</font>。
+
+<font size=4>**Symbol 原型：**</font>所有 Symbols 继承自 Symbol.prototype
+
+**实例属性**
+
+- **Symbol.prototype.description：**一个只读的字符串，意为对该 Symbol 对象的描述
+
+**实例方法**
+
+- **Symbol.prototype.toSource：**返回该 Symbol 对象的源代码。该方法重写了 Object.prototype.toSource 方法
+- **Symbol.prototype.toString：**返回一个包含着该 Symbol 对象描述的字符串。该方法重写了 Object.prototype.toString 方法
+- **Symbol.prototype.valueOf：**返回该 Symbol 对象。该方法重写了 Symbol.prototype.valueOf 方法
+- **Symbol.prototype[@@toPrimitive]：**返回该 Symbol 对象。
+
+##### **其他细节**
+
+- ```js
+  typeof Symbol.iterator === 'symbol'
+  ```
+
+- **Symbols 与 JSON.stringify()**
+
+  当<font color=FF0000 size=4>**使用 JSON.stringify() 时，以 symbol 值作为键的属性会被完全忽略**</font>：
+
+  ```js
+  JSON.stringify({[Symbol("foo")]: "foo"}); // '{}'
+  ```
+
+摘自：[MDN - Symbol](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
+
+#### 关于标识符的补充
 
  JS 对象的标识符可以是 string、number、symbol 这三种类型的。
 
-> <mark>一个对象的属性名可以是任何有效的 JavaScript 字符串，<font color=FF0000 size=4>**或者可以被转换为字符串的任何类型，包括空字符串**</font></mark>。然而，一个属性的名称如果不是一个有效的 JavaScript 标识符（例如，一个由空格或连字符，或者以数字开头的属性名），就只能通过方括号标记访问。这个标记法在属性名称是动态判定（属性名只有到运行时才能判定）时非常有用。
+> <mark>一个对象的属性名可以是任何有效的 JavaScript 字符串，<font color=FF0000>或者可以被转换为字符串的任何类型，包括空字符串</font></mark>。然而，<font color=FF0000>一个属性的名称如果不是一个有效的 JavaScript 标识符</font> ( JavaScript identifier )（例如，一个由空格或连字符，或者以数字开头的属性名），<font color=FF0000>就只能通过方括号标记访问</font>。<font color=FF0000>**这个标记法在属性名称是动态判定（属性名只有到运行时才能判定）时非常有用**</font>（**注：**这里和 JS 的计算属性值非常类似，甚至感觉就是一个东西）。
+>
+> ```js
+> // 同时创建四个变量，用逗号分隔
+> var myObj = new Object(),
+>     str = "myString",
+>     rand = Math.random(),
+>     obj = new Object();
+> 
+> myObj.type              = "Dot syntax";
+> myObj["date created"]   = "String with space";
+> myObj[str]              = "String value";
+> myObj[rand]             = "Random Number";
+> myObj[obj]              = "Object";
+> myObj[""]               = "Even an empty string";
+> 
+> console.log(myObj); // { type: 'Dot syntax', 'date created': 'String with space', myString: 'String value', '0.38817180392201656': 'Random Number', '[object Object]': 'Object', '': 'Even an empty string' }
+> ```
+>
+> 请注意，方括号中的所有键都将转换为字符串类型，因为 JavaScript 中的对象只能使用 String 类型作为键类型。 例如，在上面的代码中，当将键obj添加到myObj时，JavaScript将调用obj.toString()方法，并将此结果字符串用作新键。
+>
+> 摘自：[MDN - 使用对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Working_with_Objects)
 
 学习自：[几个一看就会的 TypeScript 小技巧](https://juejin.cn/post/7077536309804859428)
 
+#### symbol 的 11个 内置值
 
-
-除了定义自己使用的 Symbol 值以外，ES6 还提供了 11 个内置的 Symbol 值，指向语言内部使用的方法。
-
-摘自：[阮一峰 ECMAScript 6 (ES6) 标准入门教程 第三版 - Symbol - 8. 内置的 Symbol 值](https://es6.ruanyifeng.com/#docs/symbol#内置的-Symbol-值)
-
-这些内置的Symbol值被称为well-known symbols（常用内置符号）。另外，`Symbol.` 可以简写为 `@@`
-
-摘自：[Detailed Overview of Well-known Symbols](https://dmitripavlutin.com/detailed-overview-of-well-known-symbols/)
+>  除了定义自己使用的 Symbol 值以外，ES6 还提供了 11 个内置的 Symbol 值，指向语言内部使用的方法。
+>
+> 摘自：[阮一峰 ECMAScript 6 (ES6) 标准入门教程 第三版 - Symbol - 8. 内置的 Symbol 值](https://es6.ruanyifeng.com/#docs/symbol#内置的-Symbol-值)
+>
+> 这些内置的Symbol值被称为well-known symbols（常用内置符号）。另外，<font color=FF0000 size=4>**`Symbol.` 可以简写为 `@@`**</font>
+>
+> 摘自：[Detailed Overview of Well-known Symbols](https://dmitripavlutin.com/detailed-overview-of-well-known-symbols/)
 
 在 说明 Symbol 各值之前，说一些共性：Symbol 值的对象属性描述符 (writable、enumerable、configurable) 均为 false：
 
