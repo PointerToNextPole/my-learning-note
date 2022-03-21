@@ -139,7 +139,7 @@ let user = {
 
 
 
-#### 深拷贝函数 Object.assign()
+#### 拷贝函数 Object.assign()
 
 **语法：**
 

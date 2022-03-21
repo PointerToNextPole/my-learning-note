@@ -5170,6 +5170,8 @@ function printMsg(msg?: string) {
 }
 ```
 
+补充：关于断言 可以看下：[TypeScript 断言总结](https://juejin.cn/post/6981112029100802085)
+
 
 
 **可选链**

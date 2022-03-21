@@ -87,7 +87,7 @@ Undefined 这个值表示变量不含有值。
 
 `var foo = 10` 只是定义了一个变量，可以通过window.foo访问；但它无法被delete删除掉（因为它不是window的属性，能打印出来似乎是js设计的问题）。
 
-不加上var / let /const的 `bar = 20`，则是在window对象下加了一个bar属性（可以打印出window.bar），且可以被delete删除掉（delete bar返回true）
+不加上var / let / const的 `bar = 20`，则是在window对象下加了一个bar属性（可以打印出window.bar），且可以被delete删除掉（delete bar返回true）
 
 学习自：[再学JavaScript ES(6-11)全版本语法大全](https://coding.imooc.com/class/444.html)
 
@@ -2769,7 +2769,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                             
+  >                                   
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -2788,7 +2788,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                             
+  >                                   
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7798,9 +7798,14 @@ Object.assign() 方法用于<font color=FF0000>将所有可枚举属性的值</f
   console.log(obj); // { "0": "a", "1": "b", "2": "c" }
   ```
 
-  
 
 摘自：[MDN - Object.assign()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
+
+补充：如果要实现深拷贝，除了自己手写实现外；还可以使用：
+
+- lodash 的 deepClone
+- JSON.parse(JSON.toString())
+- structuredClone()
 
 
 
@@ -8585,8 +8590,21 @@ console.log(Reflect.ownKeys(arr)) // [ '0', 'length' ]
 
 
 
-
 #### Symbol
+
+symbol 是一种基本数据类型 （primitive data type）。Symbol() 函数会返回 symbol 类型的值，该类型具有静态属性和静态方法。它的静态属性会暴露几个内建的成员对象；它的静态方法会暴露全局的 symbol 注册，且类似于内建对象类，但作为构造函数来说它并不完整，因为它不支持语法："new Symbol()"。
+
+每个从Symbol()返回的symbol值都是唯一的。一个symbol值能作为对象属性的标识符；这是该数据类型仅有的目的。
+
+##### 关于标识符的补充
+
+ JS 对象的标识符可以是 string、number、symbol 这三种类型的。
+
+> <mark>一个对象的属性名可以是任何有效的 JavaScript 字符串，<font color=FF0000 size=4>**或者可以被转换为字符串的任何类型，包括空字符串**</font></mark>。然而，一个属性的名称如果不是一个有效的 JavaScript 标识符（例如，一个由空格或连字符，或者以数字开头的属性名），就只能通过方括号标记访问。这个标记法在属性名称是动态判定（属性名只有到运行时才能判定）时非常有用。
+
+学习自：[几个一看就会的 TypeScript 小技巧](https://juejin.cn/post/7077536309804859428)
+
+
 
 除了定义自己使用的 Symbol 值以外，ES6 还提供了 11 个内置的 Symbol 值，指向语言内部使用的方法。
 
