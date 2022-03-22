@@ -1942,6 +1942,15 @@ MIME是对传统电子邮件的一个扩展，现在已经成为电子邮件实�
 
 
 
+#### HTML 和 XML 的关系
+
+<font color=FF0000>当初 HTML 是 SGML 的一个应用</font>（ 意思是 SGML 可以有许多应用，比如 docbook 最初也是 SGML 的一个应用），而 <font color=FF0000>XML 是简化了的 SGML 并用来取代 SGML 的</font>。而 <font color=FF0000>XHTML 就是 HTML 从 SGML 转用 XML 语法的结果</font>。所以它们是有关系，但不是同个层面的东西。
+
+注意，<mark>今天的 HTML 已经不是当初意义上的 HTML 了</mark>（包含了当初的 html / xhtml / dom 等许多标准和api，而不是单单一个语言词汇集的定义），所以关系又弱了一层。
+
+摘自：[xml跟html有关系吗？ - 贺师俊的回答 - 知乎](https://www.zhihu.com/question/28317309/answer/40400863)
+
+
 #### Base64
 
 **Base64索引表**

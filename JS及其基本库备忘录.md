@@ -379,6 +379,208 @@ String.prototype.trimRight.name === "trimEnd";
 
 摘自：[MDN - String.prototype.trimEnd()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/trimEnd)
 
+#### String.prototype.localeCompare()
+
+localeCompare() 方法 <font color=FF0000>返回一个数字</font> 来 <font color=FF0000>指示一个**参考字符串是否在排序顺序前面或之后或与给定字符串相同**</font>。
+新的 locales 和 options 参数能让应用程序定制函数的行为，即指定用来排序的语言。 locales 和 options 参数完全取决于实现，在旧的实现中忽略这两个参数。
+
+**语法**
+
+```js
+referenceStr.localeCompare(compareString[, locales[, options]])
+```
+
+参数等内容由于过于庞杂，这里略；详见链接
+
+摘自：[MDN - String.prototype.localeCompare()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare)
+
+
+
+#### Unicode 相关的 字符串
+
+> <font color=FF0000>**在 ECMAScript 6 出现以前， JavaScript 字符串 一直基于 16 位字符编码 ( UTF-16 ) 进行构建**</font>（<mark>**注：**由此可知：UTF-16 和“代理对”不完全等价</mark>。详细可以参见：[[#Surrogate Pair 是 UTF-16 中用于扩展字符而使用的编码方式，是一种采用四个字节（两个 UTF-16 编码）来表示一个字符，称作 代理对]]）。<mark style="background: aqua">每 16 位的序列是一个**编码单元（code unit )**，代表一个 字符。 length、charAt() 等字符串属性和方法都是基于这种编码单元构造的</mark>。 当然， 在过去 16位足以包含任何字符， 直到 Unicode 引入扩展字符集， 编码规则才不得不进行变更 。
+>
+> <font size=4>**UTF-16 码位**</font>
+>
+> Unicode 的目标是为全世界每一个字符提供全球唯一的标识符。 如果我们把字符长度限制在 16位 ， 码位数量将不足以表示如此多的字符。 <mark>这里说的“全球唯一的标识符”， 又被称作 <font color=FF0000 size=4>**码位 ( code point )**</font>， 是从 0 开始的数值</mark>（**注：**这里的 code point 和下面的各种兼容 unicode 的方法的*方法名* 相关）。 而表示字符的这些数值或码位， 我们称之为字符编码 ( character encode )。字符编码必须将码位编码为内部一致的编码单元。对于 UTF-16 来说 ， 码位可由多种编码单 元表示。
+>
+> <font color=FF0000>在 UTF-16 中，**前 2^16^ 个码位**均 以 16 位的编码单元表示，**这个范围被称作 *基本多文种平面*** ( BMP, Basic Multilingual Plane )</font> 。<font color=FF0000>超出这个范围的码位则要归属于某个***辅助平面*** ( supplementary plane )</font> ， 其中 的码位仅用 16 位就无法表示了。<font color=FF0000 size=4>为此，**UTF-16 引入了代理对 ( surrogate pair )**，其**规定用两个 16 位编码单元表示一个码位**</font>。 这也就是说， <mark>字符串里的字符有两种， 一种是由一个编码单元 16 位表示的 BMP 字符， 另一种是由两个编码单元 32 位表示的辅助平面字符</mark>。 在 ECMAScript 5 中 ， 所有字符串 的操作都基于 16 位编码单元。 如果采用同样的方式处理包含代理对的 UTF-16 编码字符 ，得到的结果可能与预期不符。
+>
+> 摘自：深入理解ES6 - 字符串和正则表达式 P14 - P15
+
+#### String.prototype.codePointAt()
+
+codePointAt() 方法<font color=FF0000>返回 一个 **Unicode 编码点值的非负整数**</font>。
+
+**语法**
+
+```js
+str.codePointAt(pos)
+```
+
+**参数**
+
+- **pos：**这个字符串中需要转码的元素的位置。
+
+**返回值：**返回值是在字符串中的给定索引的编码单元体现的数字，<font color=FF0000>如果在索引处没找到元素则返回 undefined</font> 。
+
+**描述：**
+
+如果在指定的位置没有元素则返回 undefined 。<font color=FF0000>如果在索引处开始没有 UTF-16 代理对，将直接返回在那个索引处的编码单元</font>。
+
+##### Surrogate Pair 是 UTF-16 中用于扩展字符而使用的编码方式，是一种采用四个字节（两个 UTF-16 编码）来表示一个字符，称作*代理对*
+
+> 代理对也就是 UTF-16 （的）<font color=FF0000>扩展字符</font>
+>
+> 摘自：[现代JS教程 - Iterable object（可迭代对象）- 字符串是可迭代的](https://zh.javascript.info/iterable#zi-fu-chuan-shi-ke-die-dai-de)
+
+**示例：**
+
+```js
+'ABC'.codePointAt(1);          // 66
+'\uD800\uDC00'.codePointAt(0); // 65536
+'XYZ'.codePointAt(42);         // undefined
+```
+
+摘自：[MDN - String.prototype.codePointAt()]()
+
+> <font color=FF0000>对于 BMP 字符集中的字符， codePointAt() 方法的返回值与 charCodeAt() 方法的相同</font>（**注：**这里不是 charAt()，注意不要混淆）， 而对于非 BMP 字符集来说返回值则不同
+>
+> 摘自：深入理解ES6 - 字符串和正则表达式 P16
+
+#### String.fromCodePoint()
+
+String.fromCodePoint() **静态方法** <font color=FF0000>返回 使用指定的代码点序列创建的字符串</font>。
+
+**语法**
+
+```js
+String.fromCodePoint(num1[, ...[, numN]])
+```
+
+**参数**
+
+- **num1, ... , num*N* ：**一串 Unicode 编码位置，即“代码点”。
+
+**返回值：**使用指定的 Unicode 编码位置创建的字符串。
+
+**异常**
+
+- **RangeError：**如果传入无效的 Unicode 编码，将会抛出一个RangeError（例如："RangeError: NaN is not a valid code point"）。
+
+**说明：**该方法返回一个字符串，而不是一个 String 对象。因为 fromCodePoint() 是 String 的一个静态方法，所以只能通过 String.fromCodePoint() 这样的方式来使用，不能在你创建的 String 对象实例上直接调用。
+
+摘自：[MDN - String.fromCodePoint()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint)
+
+> ECMAScript 通常会面向同一个操作提供正反两种方法。你可以使用 codePointAt() 方法在字符串中检索一个字符的码位，也可以使用 String.fromCodePoint() 方法根据指定的码位生成一个字符（串）（<mark>**注：**即 **codePointAt() 和 fromCodePoint() 是一对相反的方法**。另外，类似的还有 Object.entries() 和 Object.fromEntries()</mark> ）。举个例子：
+>
+> ```js
+> console.log( String.fromCodePoint(134071) ) // 𠮷
+> ```
+>
+> 可以将 String.fromCodePoint() 看成是更完 整版的 String.fromCharCode() 。 同样，对于 BMP 中的所有字符，这两个方法的执行结果相同。 只有传递非 BMP 的码位作为参数时， 二者执行结果才有可能 不同。
+>
+> 摘自：深入理解ES6 - 字符串和正则表达式 P17
+
+#### String.prototype.normalize()
+
+normalize() 方法会按照指定的一种 Unicode 正规形式将当前字符串正规化。（如果该值不是字符串，则首先将其转换为一个字符串）。
+
+**语法**
+
+```js
+str.normalize( [form] )
+```
+
+**参数**
+
+- **form：**<font color=FF0000>可选</font>。四种 Unicode 正规形式 ( Unicode Normalization Form ) "NFC"、"NFD"、"NFKC"，或 "NFKD" 其中的一个，默认值为 "NFC"。
+
+> - **"NFC"：**默认选项，以标准等价方式分解,然后以标准等价方式重组。
+> - **"NFD"：**以标准等价方式分解
+> - **"NFKC"：**以兼容等价方式分解
+> - **"NFKD"：**以兼容等价方式分解,然后以标准等价方式重组
+>
+> 摘自：深入理解ES6 - 字符串和正则表达式 P17
+
+**返回值：**含有给定字符串的 Unicode 规范化形式的字符串。
+
+**可能出现的异常**
+
+- **RangeError：**如果给 form 传入了上述四个字符串以外的参数，则会抛出 RangeError 异常。
+
+摘自：[MDN - String.prototype.normalize()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/normalize)
+
+##### String.prototype.normalize() 的补充：normalize 的使用场景
+
+> 在许多语言中，都有一些由基本字符组成的符号，在其上方/下方有一个标记。
+>
+> 例如，字母 `a` 可以是 `àáâäãåā` 的基本字符。最常见的“复合”字符在 UTF-16 表中都有自己的代码。但不是全部，因为可能的组合太多。为了支持任意组合，UTF-16 允许我们使用多个 Unicode 字符：基本字符紧跟“装饰”它的一个或多个“标记”字符。
+>
+> 例如，如果我们 `S` 后跟有特殊的 “dot above” 字符（代码 `\u0307`），则显示 Ṡ。
+>
+> ```js
+> console.log( 'S\u0307' ); // Ṡ
+> ```
+>
+> 如果我们需要在字母上方（或下方）添加额外的标记 —— 没问题，只需要添加必要的标记字符即可。
+>
+> 例如，如果我们追加一个字符 “dot below”（代码 `\u0323` ），那么我们将得到“S 上面和下面都有点”的字符：`Ṩ`。例如：
+>
+> ```javascript
+> console.log( 'S\u0307\u0323' ); // Ṩ
+> ```
+>
+> 这在提供良好灵活性的同时，也<font color=FF0000>存在一个有趣的问题：**两个视觉上看起来相同的字符，可以用不同的 Unicode 组合表示**</font>。例如
+>
+> ```js
+> let s1 = 'S\u0307\u0323'; // Ṩ，S + 上点 + 下点
+> let s2 = 'S\u0323\u0307'; // Ṩ，S + 下点 + 上点
+> 
+> console.log( `s1: ${s1}, s2: ${s2}` );
+> console.log( s1 == s2 ); // false，尽管字符看起来相同（?!）
+> ```
+>
+> 为了解决这个问题，有一个 “Unicode 规范化”算法，它将每个字符串都转化成单个“通用”格式。它由 str.normalize() 实现。
+>
+> ```js
+> console.log( "S\u0307\u0323".normalize() == "S\u0323\u0307".normalize() ); // true
+> ```
+>
+> 摘自：[现代JS教程 - 字符串 - 变音符号与规范化](https://zh.javascript.info/string#bian-yin-fu-hao-yu-gui-fan-hua)
+
+##### 其他关于 unicode（UTF-16代理对）字符串的补充：<font color=FF0000 size=4>**字符串迭代器能够识别代理对**</font>
+
+> - **for...of：**
+>
+>   数组和字符串是使用最广泛的内建可迭代对象。对于一个字符串，`for..of` 遍历它的每个字符；<font color=FF0000>对于代理对 ( surrogate pairs )，它也能正常工作</font>！
+>
+>   ```js
+>   let str = '𝒳😂';
+>   for (let char of str) {
+>       console.log( char ); // 𝒳，然后是 😂
+>   }
+>   ```
+>
+> - **Array.from()**
+>
+>   全局方法 Array.from 可以接受一个可迭代或类数组的值，并从中获取一个“真正的”数组。然后我们就可以对其调用数组方法了。<font color=FF0000>**Array.from() 对于代理对也是支持的**</font>：
+>
+>   ```js
+>   let str = '𝒳😂';
+>   let chars = Array.from(str); // 将 str 拆分为字符数组
+>   
+>   console.log(chars[0]); // 𝒳
+>   console.log(chars[1]); // 😂
+>   console.log(chars.length); // 2
+>   ```
+>
+>   与 str.split 方法不同，它依赖于字符串的可迭代特性（注：这是 ES6 的 Symbol.iterator 的特性）。因此，就像 for..of 一样，可以正确地处理代理对。
+>
+> **注：**个人感觉，ES6 中新增的字符串相关的方法，都是支持代理对的；感觉这也是在情理之中的。
+>
+> 摘自：[现代JS教程 - Iterable object（可迭代对象）](https://zh.javascript.info/iterable)
+
 
 
 #### JavaScript 比较 和 逻辑运算
@@ -884,7 +1086,7 @@ slice() 方法<font color=FF0000>**返回一个新的数组对象**</font>，这
 - **参数**
   
   - **begin** <font color=FF0000>可选</font>，提取起始处的索引（从 0 开始），从该索引开始提取原数组元素。
-    - <font color=FF0000>如果该参数为负数，则表示从原数组中的倒数第几个元素开始提取</font>，slice(-2) 表示提取原数组中的倒数第二个元素到最后一个元素（包含最后一个元素）。
+    - <font color=FF0000>如果该参数为负数，则表示从原数组中的倒数第几个元素开始提取</font>（**注：**注意和 substring() 的区别），slice(-2) 表示提取原数组中的倒数第二个元素到最后一个元素（包含最后一个元素）。
     - <font color=FF0000>如果省略 begin，则 slice 从索引 0 开始。</font>
     - <font color=FF0000>如果 begin 超出原数组的索引范围，则会返回空数组。</font>
   - **end** <font color=FF0000>可选</font>
@@ -906,6 +1108,77 @@ slice() 方法<font color=FF0000>**返回一个新的数组对象**</font>，这
 如果向两个数组任一中添加了新元素，则另一个不会受到影响。
 
 摘自：[MDN - Array.prototype.slice()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)
+
+#### String.prototype.substring()
+
+substring() 方法<font color=FF0000>返回一个字符串在开始索引到结束索引之间的一个子集</font>，<font color=FF0000>**或** 从开始索引直到字符串的末尾的一个子集</font>。
+
+**语法**
+
+```js
+str.substring(indexStart[, indexEnd])
+```
+
+**参数**
+
+- **indexStart：**需要截取的第一个字符的索引，该索引位置的字符作为返回的字符串的首字母。
+- **indexEnd：**<font color=FF0000>**可选**</font>。一个 0 到字符串长度之间的整数，以该数字为索引的字符不包含在截取的字符串内。
+
+**返回值：**包含给定字符串的指定部分的新字符串。
+
+**描述**
+substring 提取从 indexStart 到 indexEnd（不包括）之间的字符。特别地：
+
+- <font color=FF0000>如果 indexStart 等于 indexEnd，substring 返回一个空字符串</font>。
+- 如果省略 indexEnd，substring 提取字符一直到字符串末尾。
+- <font color=FF0000>**如果任一参数小于 0 或为 NaN，则被当作 0**</font>。
+- <font color=FF0000>如果任一参数大于 stringName.length，则被当作 stringName.length</font>。
+- <font color=FF0000>**如果 indexStart 大于 indexEnd，则 substring 的执行效果就像两个参数调换了一样**</font>。
+
+下面还有关于关于“描述”更详细的示例，这里略
+
+摘自：[MDN - String.prototype.substring()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/substring)
+
+#### String.prototype.substr()
+
+⚠️<font color=FF0000 size=4>**警告：**</font>尽管 String.prototype.substr(…) 没有严格被废弃 (as in "removed from the Web standards")，但<font color=FF0000>它被认作是遗留的函数并且可以的话应该避免使用</font> 。<font color=FF0000>**它并非 JavaScript核心语言的一部分，未来将可能会被移除掉**。如果可以的话，使用 substring() 替代它</font>。
+
+**substr()** 方法返回一个字符串中从指定位置开始到指定字符数的字符。
+
+**语法**
+
+```js
+str.substr(start[, length])
+```
+
+**参数**
+
+- **start：**开始提取字符的位置。<font color=FF0000>如果为负值，则被看作 strLength + start</font>，其中 strLength 为字符串的长度（例如，如果 start 为 -3，则被看作 strLength + (-3) ）。
+- **length：**<font color=FF0000>**可选**</font>。<font color=FF0000>提取的字符数</font>。
+
+**描述**
+
+start 是一个字符的索引。substr 从 start 位置开始提取字符，提取 length 个字符（或直到字符串的末尾）。
+
+- 如果 <font color=FF0000>start 为正值，且大于或等于字符串的长度</font>，则 substr 返回一个空字符串。
+
+- 如果 <font color=FF0000>start 为负值</font>，则 substr 把它作为从字符串末尾开始的一个字符索引（**注：**即从 start + length 开始提取 ）。
+
+  如果 start 为负值且 abs(start) 大于字符串的长度，则 substr 使用 0 作为开始提取的索引。注意负的 start 参数不被 MS JScript 支持
+
+- 如果 <font color=FF0000>**length 为 0 或负值**</font>，则 substr 返回一个空字符串。如果忽略 length，则 substr 提取字符，直到字符串末尾。
+
+摘自：[MDN - String.prototype.substr()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/substr)
+
+##### 三种方法的总结
+
+| 方法                  | 选择方式……                                    | 负值参数          |
+| :-------------------- | :-------------------------------------------- | :---------------- |
+| slice(start, end)     | 从 start 到 end（不含 end）                   | 允许              |
+| substring(start, end) | start 与 end 之间（包括 start，但不包括 end） | 负值代表 0        |
+| substr(start, length) | 从 start 开始获取长为 length 的字符串         | 允许 start 为负数 |
+
+摘自：[现代JS教程 - 字符串 - 获取子字符串](https://zh.javascript.info/string#huo-qu-zi-zi-fu-chuan)
 
 
 
@@ -2769,7 +3042,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                   
+  >                                       
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -2788,7 +3061,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                   
+  >                                       
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
