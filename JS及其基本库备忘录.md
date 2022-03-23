@@ -549,7 +549,7 @@ str.normalize( [form] )
 >
 > 摘自：[现代JS教程 - 字符串 - 变音符号与规范化](https://zh.javascript.info/string#bian-yin-fu-hao-yu-gui-fan-hua)
 
-##### 其他关于 unicode（UTF-16代理对）字符串的补充：<font color=FF0000 size=4>**字符串迭代器能够识别代理对**</font>
+##### 其他关于 UTF-16代理对字符串的补充：<font color=FF0000 size=4>**字符串迭代器能够识别代理对**</font>
 
 > - **for...of：**
 >
@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->   
+>     
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -2553,6 +2553,25 @@ Promise.all([func1(), func2(), func3()])
     // "fulfilled"
     // "rejected"
     ```
+    
+  - **群友写的简单实现：**
+
+    ```js
+    const promiseAllSettled = (arr) => {
+      const res = []
+      let count = 0
+      return new Promise((resolve, reject) => {
+        arr.forEach((item, index) => {
+          item().then(r => Promise.resolve(r))
+          .catch(e => Promise.resolve(e))
+          .then(r => {
+            res[index] = r
+            if(++count === arr.length) { resolve(res) }
+          })
+        })
+      })
+    }
+    ```
 
 - <font size=4>**Promise.any(iterable)：**</font>接收一个Promise对象的集合，<font color=FF0000>当其中的一个 promise **成功**，**就返回那个成功的promise的值**</font>。（**注：**注意和 Promise.race 的区别。另外，有点类似于 Array.prototype.some() ）
 
@@ -2915,6 +2934,15 @@ Promise.resolve().then(f)
 
 摘自：[ECMAScript 6 入门 - Promise 对象](https://es6.ruanyifeng.com/#docs/promise)
 
+##### 关于如何从 Promise 中取值的补充
+
+打印一个 promise 对象，发现有三个内部属性 \[[Prototype]]、\[[PromiseState]]、\[[PromiseResult]]。其中 \[[PromiseState]] 表示Promise的状态 pending / fulfilled / rejected。\[[PromiseResult]] 表示promise中包含的数据。而js无法访问内部属性，但是可以通过 then 的回掉函数获得：
+```js
+const promise = Promise.resolve(1)
+promise.then(console.log)          // 1
+promise.then(_ => console.log(_))  // 1
+```
+
 
 
 #### **异步函数**
@@ -2966,6 +2994,28 @@ asyncFunc();
   当 await 关键字与异步函数一起使用时，它的真正优势就变得明显了 —— 事实上， <font color=FF0000>await 只在异步函数里面才起作用</font>。它可以放在任何异步的，基于 promise 的函数之前。<font color=FF0000>它会暂停代码在该行上，直到 promise 完成，然后返回结果值</font>。在暂停的同时，其他正在等待执行的代码就有机会执行了。
 
 摘自：[async和await:让异步编程更简单](https://developer.mozilla.org/zh-CN/docs/learn/JavaScript/%E5%BC%82%E6%AD%A5/Async_await)
+
+> 在函数前面的 “async” 这个单词表达了一个简单的事情：即这个函数总是返回一个 promise。其他值将自动被包装在一个 resolved 的 promise 中。
+>
+> 关键字 await 让 JavaScript 引擎等待直到 promise 完成（settle）并返回结果。
+>
+> 注：经过实验表明：await 似乎只有在 返回一个 settled 状态的 Promise，才会生效（等其完成）
+>
+> ```js
+> async function wait() {
+>   await new Promise(resolve => setTimeout(resolve, 1000));
+>   console.log('await work')
+> }
+> wait() // await 生效了
+> 
+> async function noWait() {
+>   await setTimeout(() => console.log(1), 1000)
+>   console.log(2)
+> }
+> noWait() // 未生效
+> ```
+>
+> 摘自：[现代JS教程 - Async/await](https://zh.javascript.info/async-await)
 
 
 
@@ -3042,7 +3092,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                       
+  >                                         
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3061,7 +3111,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                       
+  >                                         
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -8261,7 +8311,7 @@ toString() 方法返回一个表示该对象的字符串
 
   摘自：[MDN - Object.prototype.toString()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)
 
-**补充：**
+##### 关于 typeof 判断类型的不足 & 解决方法的补充
 
 **注，上面没有说痛点是什么，这里补充下：**<font color=FF0000>在 JavaScript 里使用 typeof 判断数据类型，只能区分基本类型</font>，即：number、string、undefined、boolean、object。<font color=FF0000>对于null、array、function、object 来说，使用 typeof 都会统一返回 object 字符串。要想区分对象、数组、函数、单纯使用 typeof 是不行的</font>。
 
@@ -8290,9 +8340,11 @@ const reg = /abc/
 console.log(Object.getPrototypeOf(reg).constructor.name) // 'RegExp'
 ```
 
-另外，上面说了 JS 的数据类型，不知道具体有哪些，可以参考：[MDN - JavaScript 标准内置对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects)，有时间做一下笔记。
+上面说了 JS 的数据类型，不知道具体有哪些，可以参考：[MDN - JavaScript 标准内置对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects)，有时间做一下笔记。
 
-**补充：Object.prototype.toString 执行步骤**
+另外，还可以使用 instanceof 来解决问题，具体参见 [[前端面试点总结#typeof 和 instanceof 的实现原理]] 中的内容
+
+##### Object.prototype.toString 执行步骤的补充
 
 <font color=FF0000 size=4>**在 ECMAScript 5 中，Object.prototype.toString() 被调用时，会进行如下步骤：**</font>
 

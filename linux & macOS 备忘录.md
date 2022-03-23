@@ -392,6 +392,9 @@ rm -f fileName  # -f表示强行删除
 rm -rf folderName # -r表示递归，-f表示强行删除
 ```
 
+#### file 命令
+使用 `fiel -I fileName.ext` 命令，可以查看文件的 MIME 格式 和 编码格式。示例如下：
+![](https://s2.loli.net/2022/03/24/eKQnYp4H2c3PGqd.png)
 
 
 #### 管道与`|`
