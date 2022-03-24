@@ -515,3 +515,9 @@ function reverse(x: number | string): number | string | void {
     }
 }
 ```
+
+
+
+可以参考的教程：
+
+- [神光 - 几个一看就会的 TypeScript 小技巧](https://juejin.cn/post/7077536309804859428)，当然他的TS小册中应该包含了其中内容，就没必要看了
