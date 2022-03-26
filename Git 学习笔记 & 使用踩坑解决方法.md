@@ -625,7 +625,7 @@ normal 模式键入 `:wq!`，显示如下：
 
 - **git stash list：**查看当前stash中的内容
 
-- **git stash drop stashName：**从堆栈中移除某个指定的stash，stashName 即：类似 stash@{1}
+- **git stash drop [stashName]：**从堆栈中移除某个指定的stash，stashName 即：类似 stash@{1}；如果不加上 stashName，则默认为：最近的一次stash
 
 - **git stash clear：**清除堆栈中的所有内容
 
@@ -1204,7 +1204,7 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
   |  mixed   |        修改         |          修改          |     不修改     |
   |   hard   |        修改         |          修改          |      修改      |
 
-  **注，**一些自己的总结：HEAD 无论什么模式，都会被修改；soft 模式，只有 HEAD 会被修改；hard 模式，三者都会被修改
+  **注，**一些自己的总结：无论什么模式，HEAD 都会被修改；soft 模式，只有 HEAD 会被修改；hard 模式，三者都会被修改
 
   **git reset 主要使用的场合：**
 
@@ -1214,7 +1214,7 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
 
   具体示例参见：《玩转 Git 三剑客 》2.8、2.11；另外，[猴子都能懂的GIT入门 - 教程3 改写提交！- 3. reset](https://backlog.com/git-tutorial/cn/stepup/stepup7_3.html) 中也有类似的示例，由于和 《玩转 Git 三剑客 》2.8、2.11 很类似，这里略。
 
-  <font size=4>**补充：**</font>
+  ##### 《工作流一目了然，看小姐姐用动图展示10大Git命令》中关于 reset命令的补充
 
   - **软重置：**
 
@@ -1235,6 +1235,22 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
     Git 丢弃了 9e78i 和 035cc 引入的修改，并将状态重置到了 ec5be 的状态。
 
   补充内容摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
+
+  ##### 《Git不要只会pull和push，试试这5条提高效率的命令》中关于 git reset 的补充
+
+  > **git reset --soft 的<mark style="background: aqua">使用场景</mark>：**
+  >
+  > - 有时候手滑不小心把不该提交的内容 commit 了，这时想改回来，只能再 commit 一次，又多一条“黑历史”。
+  >
+  > - 规范些的团队，一般对于 commit 的内容要求职责明确，颗粒度要细，便于后续出现问题排查。本来属于两块不同功能的修改，一起 commit 上去，这种就属于不规范。这次恰好又手滑了，一次性 commit 上去。
+  >
+  > reset --soft 相当于后悔药，给你重新改过的机会 。<mark style="background: aqua">对于上面的场景</mark>，就可以再次修改重新提交，保持干净的 commit 记录（<font color=FF0000 size=4>**之前修改的内容，会被放入暂存区**</font>）。
+  >
+  > <mark>以上说的是还未 push 的 commit</mark>。<font color=FF0000>对于已经 push 的 commit，也可以使用该命令，不过，**再次 push 时，由于远程分支和本地分支有差异，<font size=4>需要强制推送 git push -f 来覆盖被 reset 的 commit</font>**</font>。
+  >
+  > 还有一点需要注意⚠️：<font color=FF0000>在 reset --soft 指定 commit 号时，会将该 commit 到最近一次 commit 的所有修改内容全部恢复</font>，而不是只针对该 commit。
+  >
+  > 摘自：[Git不要只会pull和push，试试这5条提高效率的命令](https://juejin.cn/post/7071780876501123085)
 
 - <font size=4>**git restore**</font>
 
@@ -1539,6 +1555,45 @@ git pull 有 `--no-ff` 选项，表示：抓取远程仓库所有分支更新并
 现在 master 分支包含 76d12 引入的修改了。
 
 补充内容摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
+
+##### 《Git不要只会pull和push，试试这5条提高效率的命令》中关于 cherry-pick 的补充
+
+> **应用场景**
+>
+> - 有时候版本的一些优化需求开发到一半，可能其中某一个开发完的需求要临时上，或者某些原因导致待开发的需求卡住了已开发完成的需求上线。这时候就需要把 commit 抽出来，单独处理。
+>
+> - 有时候开发分支中的代码记录被污染了，导致开发分支合到线上分支有问题，这时就需要拉一条干净的开发分支，再从旧的开发分支中，把 commit 复制到新分支。
+>
+> **相关命令选项**
+>
+> - 一次转移多个提交：
+>   ```sh
+>   git cherry-pick commit1 commit2
+>   ```
+>
+> - 多个连续的commit，也可区间复制
+>
+>   ```sh
+>   git cherry-pick commit1^..commit2
+>   ```
+>
+> - **cherry-pick 代码冲突**
+>
+>   在 cherry-pick 多个commit时，<font color=FF0000>可能会遇到代码冲突，这时 cherry-pick 会停下来，让用户决定如何继续操作</font>。这时候可以：解决代码冲突，重新提交到暂存区。然后使用 `cherry-pick --continue` 让 cherry-pick 继续进行下去。
+>
+> - **放弃 cherry-pick：**<font color=FF0000>回到操作前的样子，就像什么都没发生过</font>。
+>
+>   ```sh
+>   gits cherry-pick --abort
+>   ```
+>
+> - **退出 cherry-pick：**<font color=FF0000>不回到操作前的样子</font>。即<font color=FF0000>保留已经 cherry-pick 成功的 commit，并退出 cherry-pick 流程</font>。
+>
+>   ```sh
+>   git cherry-pick --quit
+>   ```
+>
+> 摘自：[Git不要只会pull和push，试试这5条提高效率的命令](https://juejin.cn/post/7071780876501123085)
 
 
 

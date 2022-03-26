@@ -43,3 +43,5 @@ Function.prototype.myBind = function() {
 [测试一下前端基本功--简单的源码重写？](https://www.bilibili.com/video/BV1dS4y1X7pn) 
 
 [前端面试出场率奇高的18个手写代码，原来代码还可以这么写？！！ - 爱前端不爱恋爱的文章 - 知乎](https://zhuanlan.zhihu.com/p/256195603)
+
+[56 个 JavaScript 实用工具函数助你提升开发效率！](https://mp.weixin.qq.com/s/oK--hjpAscsvyT1U4rZHKw) 虽然其中多数是没什么用的，但是深拷贝、正则判断、浏览器操作，还是值得借鉴的；有时间了，摘抄下

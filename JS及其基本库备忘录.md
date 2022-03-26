@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->     
+>       
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3092,7 +3092,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                         
+  >                                           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3111,7 +3111,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                         
+  >                                           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7122,7 +7122,7 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 
   > **参数**
   >
-  > - **array**（即上面的 blobParts） <font color=FF0000>是一个由 **ArrayBuffer、ArrayBufferView、Blob、DOMString** 等对象构成的 Array</font> ，<font color=FF0000>或者其他类似对象的混合体</font>，它将会被放进 Blob。<font color=FF0000>**DOMStrings 会被编码为 UTF-8**</font>。
+  > - **array**（即上面的 blobParts，这里的 blobParts 必须是数组） <font color=FF0000>是一个由 **ArrayBuffer、ArrayBufferView、Blob、DOMString** 等对象构成的 Array</font> ，<font color=FF0000>或者其他类似对象的混合体</font>，它将会被放进 Blob。<font color=FF0000>**DOMStrings 会被编码为 UTF-8**</font>。
   > - **options** 是一个 <font color=FF0000>**可选的 BlobPropertyBag 字典**</font>，它可能会指定如下两个属性：
   >   - **type：**<font color=FF0000>**默认值为 ""**</font>，它代表了将会被放入到 blob 中的<font color=FF0000>**数组内容**</font>（注：即对应了上面的Array） 的 <font color=FF0000 size=4>**MIME 类型**</font>。
   >   - **endings：👎 ** <font color=FF0000>默认值为 "transparent"，用于指定包含行结束符\n的字符串如何被写入</font>。 它是以下两个值中的一个："native"，代表行结束符会被更改为适合宿主操作系统文件系统的换行符，或者 "transparent"，代表会保持blob中保存的结束符不变
@@ -7152,6 +7152,14 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
   - **Blob.arrayBuffer()**：<font color=FF0000>返回一个 **Promise**</font> 且<font color=FF0000>包含 blob 所有内容的**二进制格式**的 ArrayBuffer</font>
 
 摘自：[MDN - Blob](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob) 
+
+##### Blob 在《现代JS教程》的补充
+
+> Blob 由一个可选的字符串 type（通常是 MIME 类型）和 blobParts 组成 —— 一系列其他 Blob 对象，字符串和 BufferSource。
+>
+> ![](https://zh.javascript.info/article/blob/blob.svg)
+>
+> 摘自：[现代JS教程 - Blob](https://zh.javascript.info/blob)
 
 
 
@@ -7237,7 +7245,7 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
   
     > URL.createObjectURL() 静态方法 <font color=FF0000>会创建一个 DOMString</font>，<font color=FF0000>其中包含一个表示参数中给出的对象的 URL</font>。**这个 URL 的<font color=FF0000>生命周期和创建它的窗口中的 document 绑定</font>**。这个新的 URL 对象表示指定的 File 对象或 Blob 对象。
     >
-    > **注意：**此特性<font color=FF0000>在 Web Worker 中可用</font>。<font color=FF0000>在 Service Worker 中**不可用**</font>，因为它有可能导致内存泄漏。
+    > **注意⚠️：**此特性<font color=FF0000>在 Web Worker 中可用</font>。<font color=FF0000>在 Service Worker 中**不可用**</font>，因为它有可能导致内存泄漏。
     >
     > **语法：**
     >
@@ -7254,7 +7262,7 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
     > **附注**
     >
     > - **内存管理：**在每次调用 createObjectURL() 方法时，都会创建一个新的 URL 对象，即使你已经用相同的对象作为参数创建过。<font color=FF0000>当不再需要这些 URL 对象时，每个对象必须通过调用 URL.revokeObjectURL() 方法来释放</font>。<font color=FF0000>浏览器在 document 卸载的时候，会自动释放它们</font>；**但为了获得最佳性能和内存使用状况，你应该在安全的时机主动释放掉它们**
-    > - 使用相对URLs作为媒体流：在旧版本的媒体资源规范中，添加流作为 \<video> 元素需要创建一个关于 MediaStream的对象URL。<mark>现已没必要这样做了，浏览器已经移除了该操作的支持</mark>。
+    > - 使用相对URLs 作为媒体流：在旧版本的媒体资源规范中，添加流作为 \<video> 元素需要创建一个关于 MediaStream的对象URL。<mark>现已没必要这样做了，浏览器已经移除了该操作的支持</mark>。
     >
     > 补充内容摘自：[MDN - URL.createObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/createObjectURL)
   
