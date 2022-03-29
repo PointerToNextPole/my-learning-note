@@ -928,7 +928,7 @@ new CopyWebpackPlugin({
 
 在webpack.config.js 中配置不同的mode，会有不同效果。比如：指定mode为"development"，将不会进行代码压缩；而指定为"production"，将会进行代码压缩。
 
-Mode配置选项，可以告知webpack使用响应模式的内置优化：
+Mode 配置选项，可以告知webpack使用响应模式的内置优化：
 
 - 默认值是production（什么都不设置的情况下）；
 

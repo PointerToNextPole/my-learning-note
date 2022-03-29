@@ -4238,7 +4238,7 @@ console.log(process.env.npm_package_name); // foo
 console.log(process.env.npm_package_version); // 1.2.5
 ```
 
-上面代码中，我们通过环境变量process.env 对象，拿到package.json 的字段值。如果是 Bash 脚本，可以用 \$npm_package_name和\$npm_package_version 取到这两个值。
+上面代码中，我们通过环境变量 process.env 对象，拿到 package.json 的字段值。如果是 Bash 脚本，可以用 \$npm_package_name和\$npm_package_version 取到这两个值。
 
 `npm_package_` 前缀也支持嵌套的 package.json 字段。
 
