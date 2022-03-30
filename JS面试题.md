@@ -265,7 +265,21 @@ console.log((inner.func = inner.func)())
 
 这题属于不会。同时，这题建议在浏览器 devtools 中运行，不要在 node 中运行。因为，如果 this 指向 undefined，浏览器会将其指向 window，而 node 不会。
 
-# // TODO
+<details>
+  <summary>点击查看答案</summary>
+  25、20、20、25
+</details>
+
+<details>
+  <summary>点击查看解析</summary>
+  这道题考察的是this指向问题：<br>
+  1. 逗号操作符会返回表达式中的最后一个值，这里为 inner.func 对应的函数，注意是函数本身，然后执行该函数，该函数并不是通过对象的方法调用，而是在全局环境下调用，所以 this 指向 window，打印出来的当然是 window 下的 out<br>
+  2. 这个显然是以对象的方法调用，那么 this 指向该对象<br>
+  3. 加了个括号，看起来有点迷惑人，但实际上 (inner.func) 和 inner.func 是完全相等的，所以还是作为对象的方法调用<br>
+  4. 赋值表达式和逗号表达式相似，都是返回的值本身，所以也相对于在全局环境下调用函数<br>
+</details>
+
+**注：**这条在复习了 coderwhy 和 冴羽 的 this 文章后，重新做了遍，对了。
 
 ##### 2.
 
@@ -313,6 +327,8 @@ arr[0]()
   <summary>点击查看解析</summary>
   <font color=FF0000 size=4><strong>函数作为某个对象的方法调用，this 指向该对象</strong></font>，数组显然也是对象，只不过我们都习惯了对象引用属性的方法：obj.fn，但是实际上obj['fn']引用也是可以的。
 </details>
+
+另外， coderwhy 的文章[前端面试之彻底搞懂this指向](https://mp.weixin.qq.com/s/hYm0JgBI25grNG_2sCRlTA) 中也有不错的面试题，在 [[前端面试点总结#this 相关面试题]] 中有做题目，并解释答案。
 
 ### 赋值问题
 
@@ -546,6 +562,48 @@ console.log(5)
 <details>
   <summary>点击查看解析</summary>
 </details>
+##### 2.
 
-# // TODO
+```js
+console.log('1');
+
+setTimeout(function() {
+  console.log('2');
+  process.nextTick(function() {
+    console.log('3');
+  });
+  new Promise(function(resolve) {
+    console.log('4');
+    resolve();
+  }).then(function() {
+    console.log('5');
+  });
+}); 
+
+process.nextTick(function() {
+  console.log('6');
+});
+
+new Promise(function(resolve) {
+  console.log('7');
+  resolve();
+}).then(function() {
+  console.log('8');
+});
+
+setTimeout(function() {
+  console.log('9');
+  process.nextTick(function() {
+    console.log('10');
+  }) 
+  new Promise(function(resolve) {
+    console.log('11');
+    resolve();
+  }).then(function() {
+    console.log('12')
+  });
+})
+```
+
+注：这题文章的答案 和 实际运行的结果有出入；应该按实际运行结果为准。这里就不放答案了，自行运行即可。
 
