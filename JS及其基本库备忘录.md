@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->       
+>           
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -1048,6 +1048,63 @@ filter 遍历的元素范围在第一次调用 callback 之前就已经确定了
 
 
 
+#### Array.prototype.map()
+
+**map()** 方法创建一个新数组，其结果是该数组中的每个元素是调用一次提供的函数后的返回值。
+
+```js
+const array1 = [1, 4, 9, 16];
+
+// pass a function to map
+const map1 = array1.map(x => x * 2);
+```
+
+**Array.prototype.map()可以起到和forEach类似的作用**
+
+**参数**
+
+- callback：生成新数组元素的函数，使用三个参数：
+  - currentValue：callback 数组中正在处理的当前元素。
+  - index可选：callback 数组中正在处理的当前元素的索引。
+  - array可选：map 方法调用的数组。
+  - thisArg可选：执行 callback 函数时值被用作this。
+- 返回值：一个由原数组每个元素执行回调函数的结果组成的新数组。
+
+即，如上代码可以这样写：
+
+```js
+const map1 = array1.map((x, index, arr) => {
+  console.log(index); // 0, 1, 2, 3
+  console.log(arr); //[1, 4, 9, 16]
+  return x * 2
+});
+```
+
+**其他：**
+
+- 因为 map 生成一个新数组，当你不打算使用返回的新数组却使用 map 是违背设计初衷的，请用forEach或者for-of替代。你不该使用map: (A) 你不打算使用返回的新数组，或 (B) 你没有从回调函数中返回值。
+
+- map() 中可以直接写函数，示例如下：
+
+  ```js
+  var numbers = [1, 4, 9];
+  var roots = numbers.map(Math.sqrt); // roots的值为[1, 2, 3], numbers的值仍为[1, 4, 9]
+  ```
+
+摘自：[MDN - Array.prototype.map()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
+
+##### 关于上面的三个函数式编程的补充
+
+> map 是<font color=FF0000>**映射**</font>、reduce 是<font color=FF0000>聚合</font>，filter 是筛选。
+>
+> 摘自：[python如何理解map，reduce，filter？ - 朱卫军的回答 - 知乎](https://www.zhihu.com/question/265648060/answer/2196619912)
+>
+> 函数式编程，<font color=FF0000>把算子和数据都交给这几个函数来进行批量执行</font>。
+>
+> 摘自：[python如何理解map，reduce，filter？ - gashero的回答 - 知乎](https://www.zhihu.com/question/265648060/answer/2418365397)
+
+
+
 #### Array.prototype.sort()
 
 sort() 方法用原地算法对数组的元素进行排序，并返回数组。<font color=FF0000>**默认排序顺序是在将元素转换为字符串**，然后**比较它们的UTF-16代码单元值序列**（字典序？？）时构建的</font>
@@ -1204,53 +1261,6 @@ splice() 方法<font color=FF0000>通过**删除或替换现有元素**或者**�
 - **描述：**如果添加进数组的元素个数不等于被删除的元素个数，数组的长度会发生相应的改变。
 
 摘自：[MDN - Array.prototype.splice()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)
-
-
-
-#### Array.prototype.map()
-
-**map()** 方法创建一个新数组，其结果是该数组中的每个元素是调用一次提供的函数后的返回值。
-
-```js
-const array1 = [1, 4, 9, 16];
-
-// pass a function to map
-const map1 = array1.map(x => x * 2);
-```
-
-**Array.prototype.map()可以起到和forEach类似的作用**
-
-**参数**
-
-- callback：生成新数组元素的函数，使用三个参数：
-  - currentValue：callback 数组中正在处理的当前元素。
-  - index可选：callback 数组中正在处理的当前元素的索引。
-  - array可选：map 方法调用的数组。
-  - thisArg可选：执行 callback 函数时值被用作this。
-- 返回值：一个由原数组每个元素执行回调函数的结果组成的新数组。
-
-即，如上代码可以这样写：
-
-```js
-const map1 = array1.map((x, index, arr) => {
-  console.log(index); // 0, 1, 2, 3
-  console.log(arr); //[1, 4, 9, 16]
-  return x * 2
-});
-```
-
-**其他：**
-
-- 因为 map 生成一个新数组，当你不打算使用返回的新数组却使用 map 是违背设计初衷的，请用forEach或者for-of替代。你不该使用map: (A) 你不打算使用返回的新数组，或 (B) 你没有从回调函数中返回值。
-
-- map() 中可以直接写函数，示例如下：
-
-  ```js
-  var numbers = [1, 4, 9];
-  var roots = numbers.map(Math.sqrt); // roots的值为[1, 2, 3], numbers的值仍为[1, 4, 9]
-  ```
-
-摘自：[MDN - Array.prototype.map()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
 
 
 
@@ -3092,7 +3102,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                           
+  >                                               
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3111,7 +3121,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                           
+  >                                               
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -3685,7 +3695,7 @@ var x = myFunction(4, 3);
 
 摘自：[如何理解在 JavaScript 中 "函数是第一等公民" 这句话? - justjavac的回答 - 知乎](https://www.zhihu.com/question/67652709/answer/255460149)
 
-**函数提升（Hoisting）**
+##### 函数提升（Hoisting）
 
 提升（Hoisting）是 JavaScript 默认<font color=FF0000>将当前作用域提升到前面去的的行为</font>。
 
@@ -3698,6 +3708,12 @@ function myFunction(y) {
     return y * y;
 }
 ```
+
+##### 关于函数提升的补充
+
+> 这种行为（注：函数提升）仅适用于函数声明，而不适用于我们将函数分配给变量的函数表达式，例如 let say = function(name)...
+>
+> 摘自：[现代JS教程 - 变量作用域，闭包](https://zh.javascript.info/closure)
 
 **自调用函数**
 
