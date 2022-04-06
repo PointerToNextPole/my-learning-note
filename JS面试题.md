@@ -9,7 +9,7 @@
   参数相当于函数内部的变量（详见 第一题）。<br>
   给参数赋默认值时，是有顺序的，同时也是有类型死区的。（详见 第二题）
 </details>
-##### 1.
+##### 函数参数第1题
 
 ```js
 let a = 1
@@ -33,7 +33,7 @@ console.log(a)
   首先基本类型数据是按值传递的，所以执行b函数时，b的参数a接收的值为1，<font color=FF0000 size=4>参数</font>a<font color=FF0000 size=4>相当于函数内部的变量</font>，当本作用域有和上层作用域同名的变量时，无法访问到上层变量，所以函数内无论怎么修改a，都不影响上层，所以函数内部打印的a是2，外面打印的仍是1。
 </details>
 
-##### 2.
+##### 函数参数第2题
 
 ```js
 function a (b = c, c = 1) {
@@ -83,7 +83,7 @@ console.log(b.x)
 
 ### 函数
 
-##### 1.
+##### 函数第1题
 
 
 ```js
@@ -107,9 +107,10 @@ console.log(arr.filter(function (x) {
 </details>
 
 
+
 ### 变量 / 函数提升
 
-##### 1.
+##### 提升第1题
 
 
 ```js
@@ -130,7 +131,7 @@ var name = 'World'
   <summary>点击查看答案</summary>
   这道题考察的是变量提升的问题，var声明变量时会把变量自动提升到当前作用域顶部，所以函数内的name虽然是在if分支里声明的，但是也会提升到外层，因为和全局的变量name重名，所以访问不到外层的name，最后因为已声明未赋值的变量的值都为undefined，导致if的第一个分支满足条件。
 </details>
-##### 2.
+##### 提升第2题
 
 ```js
 console.log(a)
@@ -148,15 +149,14 @@ console.log(a)
   <summary>点击查看答案</summary>
   undefined、1、2
 </details>
-
 <details>
   <summary>点击查看解析</summary>
   首先因为 var 声明的变量提升作用，所以 a 变量被提升到顶部，未赋值，所以第一个打印出来的是 undefined。<br>
   接下来 <font color=FF0000>是函数声明和函数表达式</font><mark>（注：var getNum = function() {} 是函数表达式 ）</mark><font color=FF0000>的区别</font>，<font color=FF0000 size=4>函数声明会有提升作用，在代码执行前就把函数提升到顶部，在执行上下文上中生成函数定义，所以第二个getNum会被最先提升到顶部</font><mark>（注：这里是变量和声明都提升到顶部）</mark>，然后是 var 声明 getNum 的提升，但是因为 getNum 函数已经被声明了，所以就不需要再声明一个同名变量，接下来开始执行代码，执行到 var getNum = fun... 时，虽然声明被提前了，但是赋值操作还是留在这里，所以 getNum 被赋值为了一个函数，下面的函数声明直接跳过，最后，getNum 函数执行前 a 打印出来还是 1，执行后，a 被修改成了 2，所以最后打印出来的2。<br>
-  运行时代码：function getNum() { a = 3 }; var a = undefined; var getNum = undefined; console.log(a); a = 1; getNum = function() { a = 2 }; console.log(a); getNum(); console.log(a);
+  运行时代码：function getNum() { a = 3 }; var a = undefined; var getNum = undefined; console.log(a); a = 1; getNum = function() { a = 2 }; console.log(a); getNum(); console.log(a);<br>
+  另外：根据 《现代JS教程 - 变量作用域，闭包》的说法：<mark>这种行为（函数提升）仅适用于函数声明，而不适用于我们将函数分配给变量的函数表达式，例如 let say = function(name)...</mark>
 </details>
-
-##### 3.
+##### 提升第3题
 
 ```js
 var a = 1
@@ -172,29 +172,38 @@ var b
 console.log(b)
 ```
 
-这题，第一个对了，下面两个错了。
+这题，第一个对了，下面两个错了。另外，这题可以参考下 [[JS 机制与实现原理#变量对象的思考题 第二题]] 
 
 <details>
   <summary>点击查看答案</summary>
   1、b函数本身、b函数本身
 </details>
-
 <details>
   <summary>点击查看解析</summary>
-  这三小题都涉及到函数声明和var声明，这两者都会发生提升，但是函数会优先提升，所以如果变量和函数同名的话，变量的提升就忽略了。<br>
-  1.提升完后，执行到赋值代码，a被赋值成了1，函数因为已经声明提升了，所以跳过，最后打印a就是1。对应代码：function a() {}; var a = undefined; a = 1; console.log(a);<br>
-  2.和第一题类似，只是b没有赋值操作，那么执行到这两行相当于都没有操作，b当然是函数。<br>
-  3.和第二题类似，只是先后顺序换了一下，但是并不影响两者的提升顺序，仍是函数优先，同名的var声明提升忽略，所以打印出b还是函数。<br>
+  这三小题都涉及到函数声明和var声明，这两者都会发生提升，但是函数会优先提升，所以<font color=FF0000 size=4>如果变量和函数同名的话，<strong>变量的提升就忽略了</strong></font>。<strong>注：</strong>可以理解为：同名的函数和变量，变量将不会提升<br>
+  1. 提升完后，执行到赋值代码，a被赋值成了1，函数因为已经声明提升了，所以跳过，最后打印a就是1。对应代码：function a() {}; var a = undefined; a = 1; console.log(a);<br>
+  2. 和第一题类似，只是b没有赋值操作，那么执行到这两行相当于都没有操作，b当然是函数。<br>
+  3. 和第二题类似，只是先后顺序换了一下，但是并不影响两者的提升顺序，仍是函数优先，同名的var声明提升忽略，所以打印出b还是函数。<br>
 </details>
 
-# TODO
+**补充：** [[JS 机制与实现原理#变量对象的思考题 第二题]]  中有这样的问题：
+
+```js
+console.log(foo);
+function foo(){
+  console.log("foo");
+}
+var foo = 1;
+```
+
+和第一种情况同样的道理，变量提升被忽略。
 
 
 
 
 ### （隐式）类型转换
 
-##### 1.
+##### 类型转换第1题
 
 ```js
 console.log(1 + null)
@@ -219,7 +228,7 @@ console.log([] + {})
   注：这里要注意顺序。
 </details>
 
-##### 第二题
+##### 类型转换第2题
 
 ```js
 var a={},
@@ -246,7 +255,7 @@ console.log(a[b])
 
 ### this 的 指向
 
-##### 1.
+##### this 指向第1题
 
 ```js
 var out = 25
@@ -281,7 +290,7 @@ console.log((inner.func = inner.func)())
 
 **注：**这条在复习了 coderwhy 和 冴羽 的 this 文章后，重新做了遍，对了。
 
-##### 2.
+##### this 指向第2题
 
 ```js
 var obj = {
@@ -306,7 +315,7 @@ obj.fn()
   这道题考察的是this的指向问题，<font color=FF0000>箭头函数执行的时候上下文是不会绑定 this 的，所以它里面的 this 取决于外层的 this，这里函数执行的时候外层是全局作用域</font>，所以 this 指向 window，window 对象下没有 name 属性，所以是 undefined。
 </details>
 
-##### 3.
+##### this 指向第3题
 
 ```js
 function fn (){ 
@@ -327,12 +336,13 @@ arr[0]()
   <summary>点击查看解析</summary>
   <font color=FF0000 size=4><strong>函数作为某个对象的方法调用，this 指向该对象</strong></font>，数组显然也是对象，只不过我们都习惯了对象引用属性的方法：obj.fn，但是实际上obj['fn']引用也是可以的。
 </details>
-
 另外， coderwhy 的文章[前端面试之彻底搞懂this指向](https://mp.weixin.qq.com/s/hYm0JgBI25grNG_2sCRlTA) 中也有不错的面试题，在 [[前端面试点总结#this 相关面试题]] 中有做题目，并解释答案。
+
+
 
 ### 赋值问题
 
-##### 1.
+##### 赋值第1题
 
 ```js
 let {a,b,c} = { c: 3, b: 2, a: 1 }
@@ -351,7 +361,7 @@ console.log(a, b, c)
   这题考察的是变量解构赋值的问题，<font color=FF0000>数组解构赋值是按位置对应的，而对象只要变量与属性同名，顺序随意</font>。
 </details>
 
-##### 2.
+##### 赋值第2题
 
 ```js
 console.log( Object.assign([1, 2, 3], [4, 5]) )
@@ -368,7 +378,7 @@ console.log( Object.assign([1, 2, 3], [4, 5]) )
   <summary>点击查看解析</summary>
   是不是从来没有用assign方法合并过数组？<font color=FF0000>assign方法可以用于处理数组，不过会把数组视为对象</font>，比如<font color=FF0000 size=4>这里会把目标数组视为是属性为0、1、2的对象</font>，<font color=FF0000>所以源数组的0、1属性的值覆盖了目标对象的值</font>。
 </details>
-##### 3.
+##### 赋值第3题
 
 ```js
 const obj = {
@@ -391,7 +401,7 @@ console.log(Object.assign(obj, obj1))
   <summary>点击查看解析</summary>
   这道题很简单，因为 <font color=FF0000>assign 方法执行的是 浅拷贝</font>，所以源对象的a属性会直接覆盖目标对象的 a 属性。
 </details>
-##### 4.
+##### 赋值第4题
 
 ```js
 let a = b = 10
@@ -415,8 +425,9 @@ console.log(b)
 </details>
 
 
-
 ### 运算问题
+
+##### 运算第1题
 
 ```js
 var x=1
@@ -466,7 +477,7 @@ console.log(typeof function () {} == typeof class {})
 
 ### 继承
 
-##### 1. 
+##### 继承第1题
 
 ```js
 const person = {
@@ -499,7 +510,7 @@ p2.say()
 
 ### 作用域 和 闭包
 
-##### 第一题
+##### 闭包第1题
 
 ```js
 var i = 1
@@ -524,6 +535,22 @@ a()
   <summary>点击查看解析</summary>
   这道题考察的是作用域的问题，<font color=FF0000>作用域其实就是一套变量的查找规则</font>，<font color=FF0000 size=4><strong>每个函数在执行时都会创建一个执行上下文，其中会关联一个变量对象，也就是它的作用域，上面保存着该函数能访问的所有变量</strong></font><mark>（<strong>注：</strong>这里的作用域链很重要，在笔记的其他地方也有提及）</mark>，另外，<font color=FF0000 size=4><strong>上下文中的代码在执行时还会创建一个作用域链，如果某个标识符在当前作用域中没有找到，会沿着外层作用域继续查找，直到最顶端的全局作用域</strong></font>，因为 <font color=FF0000 size=4><strong>js 是词法作用域，（标识符）在写代码阶段作用域就已经确定了，换句话说，是在函数定义的时候确定的，而不是执行的时候</strong></font>，所以a函数是在全局作用域中定义的，虽然在 b 函数内调用，但是它只能访问到全局的作用域而不能访问到 b 函数的作用域。
 </details>
+##### 闭包第2题
+
+```js
+function test(fn) {
+  const a = 1
+  fn()
+}
+
+const a = 2
+function fn() { console.log('a', a)}
+
+test(fn)
+```
+
+这题来自：[快速掌握 JS 面试题之『作用域和闭包』- 闭包](https://www.bilibili.com/video/BV1Kv411778c?p=2)。这里要注意的是，哪里形成了闭包。另外，这题不应该错！
+
 
 
 
@@ -534,7 +561,7 @@ a()
   process.nextTick 的优先级要高于微任务
 </details>
 
-##### 1.
+##### 事件队列第1题
 
 ```js
 setTimeout(function() {
@@ -562,7 +589,7 @@ console.log(5)
 <details>
   <summary>点击查看解析</summary>
 </details>
-##### 2.
+##### 事件队列第2题
 
 ```js
 console.log('1');
@@ -605,5 +632,5 @@ setTimeout(function() {
 })
 ```
 
-注：这题文章的答案 和 实际运行的结果有出入；应该按实际运行结果为准。这里就不放答案了，自行运行即可。
+**注：**这题文章的答案 和 实际运行的结果有出入；应该按实际运行结果为准。这里就不放答案了，自行运行即可。
 

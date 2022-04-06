@@ -329,7 +329,6 @@ exit
 
 #### Linux命令缩写由来
 
-```
 - ls: list
 - rm: remove 
 - mkdir: make directory
@@ -349,8 +348,6 @@ exit
 - ifconfig: interface configuration
 - sync: synchronize
 - tty: teletypewriter
-
-```
 
 //todo
 
@@ -394,7 +391,7 @@ rm -rf folderName # -r表示递归，-f表示强行删除
 
 #### file 命令
 使用 `fiel -I fileName.ext` 命令，可以查看文件的 MIME 格式 和 编码格式。示例如下：
-![](https://s2.loli.net/2022/03/24/eKQnYp4H2c3PGqd.png)
+<img src="https://s2.loli.net/2022/03/24/eKQnYp4H2c3PGqd.png" style="zoom:70%;" />
 
 
 #### 管道与`|`
@@ -403,7 +400,7 @@ rm -rf folderName # -r表示递归，-f表示强行删除
 
 `|`**的用法：**这个特殊的`|`字符告诉命令行解释器（Shell）**<font color=FF0000>将前一个命令的输出通过“管道”导入到接下来的一行命令作为输入</font>**。
 
-摘自：[维基百科 - 管道 (Unix)]([https://zh.wikipedia.org/wiki/%E7%AE%A1%E9%81%93_(Unix)](https://zh.wikipedia.org/wiki/管道_(Unix))
+摘自：[wiki - 管道 (Unix)]([https://zh.wikipedia.org/wiki/%E7%AE%A1%E9%81%93_(Unix)](https://zh.wikipedia.org/wiki/管道_(Unix))
 
 
 

@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->           
+>             
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3102,7 +3102,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                               
+  >                                                 
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3121,7 +3121,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                               
+  >                                                 
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -5257,9 +5257,9 @@ typeof(y) // 返回 Object
 
 <font size=4>**补充：**</font>
 
-isNaN()方法是ES5的方法，实际上是window.isNaN()的简写；而在ES6中添加了Number.isNaN()，之所以添加是为了避免window下挂载的方法过多，而Number.isNaN()是一种更优 / 更合适的设计 / 模块化设计
+isNaN() 方法是 ES5 的方法，实际上是 window.isNaN() 的简写；而在 ES6中添加了 Number.isNaN()，之所以添加，是为了避免 window 下挂载的方法过多，而 Number.isNaN()是一种更优 / 更合适的设计 / 模块化设计
 
-同样的还有Number.parseInt() / Number.parseFloat() / Number.isFinite()
+同样的还有 Number.parseInt() / Number.parseFloat() / Number.isFinite()
 
 
 
