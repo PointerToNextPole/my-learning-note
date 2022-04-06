@@ -941,11 +941,55 @@ VariableEnvironment: {
 
 > <font color=FF0000>那（注：即 变量对象）是 ES3 里面的概念</font>了，<mark>基本上 **变量对象 VO** 相当于这里的 **全局词法环境 + 全局变量环境**</mark>，<font color=FF0000>推出「词法作用域」和「变量作用域」应该是为了更好得区分 var 与 let / const的区别</font>
 
+#### 内部属性 和 词法环境
+
+##### \[\[environment]] 相关
+
+在《现代JS教程》中有说：
+
+> 所有的函数在“诞生”时都会记住创建它们的词法环境。从技术上讲，这里没有什么魔法：<font color=FF0000>**<font size=4>所有函数</font> 都有名为 `[[Environment]]` 的隐藏属性**</font>，<font color=FF0000>**该属性 <font size=4>保存了对创建该函数的「词法环境」的 引用</font>**</font>。
+
+在 《JS 忍者秘籍》（第二版）5.4.2 中：
+
+> 无论何时创建函数，都会创建一个与之相关联的词法环境，并存储在名为 [[Environment]] 的内部属性上（也就是说无法直接访问或操作）。
+>
+> 无论何时调用函数，都会创建一个新的执行环境，被推入执行上下文栈。此外，还会创建一个与之相关联的词法环境。现在来看最重要的部分：<font color=FF0000>外部环境与新建的词法环境，**JavaScript 引擎 将调用函数的内置 [[Environment]] 属性与创建函数时的环境进行关联**</font>。
+>
+> 摘自：JavaScript忍者秘籍（第2版）5.4.2
+
+博文 [温故而知新 - 重新认识JavaScript的Closure](https://segmentfault.com/a/1190000039786991) 中有说：
+
+> 规范中关于[FunctionInitialize](https://link.segmentfault.com/?enc=k%2BighkKqljzLwV4Op6%2BqTQ%3D%3D.6dLKKfSD%2F8VuWQYB5UoCPFqpN4auFrWXlVP0Z8WdYkENynL%2FSnenyXgcSbWLOCgLX%2F49E2zETX5JvYltZ5TLfw%3D%3D)，可以看到 “4.Set F.[[Environment]] to Scope.“ ，看下规范关于 \[\[Environment]] 的说明
+>
+> > | Type                | Description                                                  |
+> > | ------------------- | ------------------------------------------------------------ |
+> > | Lexical Environment | The Lexical Environment that the function was closed over. Used as the outer environment when evaluating the code of the function. |
+
+再者：在 stackoverflow 的问题：[What is the Javascript [[Environment\]] Property?](https://stackoverflow.com/questions/51748127/what-is-the-javascript-environment-property) 中有解答如下：
+
+> Looks like [[Scope]] is an old name for [[Environment]]; [here](http://ecma-international.org/ecma-262/#sec-functioninitialize)
+>
+> ```js
+> Set F.[[Environment]] to Scope.
+> ```
+>
+> While ES5 docs call it [[Scope]]; [here](https://www.ecma-international.org/ecma-262/5.1/#sec-13.2)
+>
+> ```js
+> Set the [[Scope]] internal property of F to the value of Scope.
+> ```
+>
+> **自我补充：**还是这个链接 https://262.ecma-international.org/5.1/#sec-13.2 中有：
+>
+> | Internal Property | **Value Type Domain**                                        | **Value Type Domain**                                        |
+> | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+> | [[Scope]]         | [Lexical Environment](https://262.ecma-international.org/5.1/#sec-10.2) | A [lexical environment](https://262.ecma-international.org/5.1/#sec-10.2) that defines the environment in which a Function object is executed. Of the standard built-in ECMAScript objects, only Function objects implement [[Scope]]. |
+
 
 
 ### JS 变量对象 （词法环境）
 
-**注：**在 ES5 中称为「变量对象」，而在 ES6 中称为 「词法环境」。这里文章是讲述 ES5 的，所以是「变量对象」，下面会做「词法环境」的笔记。
+**注：**在 ES3 中称为「变量对象」，而在 ES6 中称为 「词法环境」。这里文章是讲述 ES3 的，所以是「变量对象」，下面会做「词法环境」的笔记。
 
 **对于每个执行上下文，都有三个重要属性**
 
