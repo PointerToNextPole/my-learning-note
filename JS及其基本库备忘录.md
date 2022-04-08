@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->             
+>                 
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -1060,6 +1060,12 @@ const map1 = array1.map(x => x * 2);
 ```
 
 **Array.prototype.map()可以起到和forEach类似的作用**
+
+**语法**
+
+```js
+var new_array = arr.map(callback(currentValue[, index[, array]])[, thisArg])
+```
 
 **参数**
 
@@ -1921,7 +1927,67 @@ str.match(regexp)
 
 #### throw
 
-throw出去的异常将会被catch会捕捉到，放（拼接）在catch的参数中。
+throw 出去的异常将会被 catch 捕捉到，放（拼接）在 catch 的参数中。
+
+#### Error
+
+通过 Error 的构造器可以创建一个错误对象。当运行时错误产生时，Error 的实例对象会被抛出。Error 对象也可用于用户自定义的异常的基础对象。
+
+##### 语法
+
+```js
+new Error([message[, fileName[,lineNumber]]])
+```
+
+**参数**
+
+- **message：**可选。人类可阅读的错误描述信息。
+- **fileName：**⚠️可选。被创建的Error对象的fileName属性值。默认是调用Error构造器代码所在的文件 的名字。
+- **lineNumber：**⚠️可选。被创建的Error对象的lineNumber属性值。默认是调用Error构造器代码所在的文件的行号。
+
+##### 作为函数使用
+
+当像函数一样使用 Error 时：如果没有 new，它将返回一个 Error 对象。所以，<font color=FF0000>仅仅调用 Error 产生的结果与通过 new 关键字构造 Error 对象生成的结果相同</font>。 
+
+```js
+// this:
+const x = Error('I was created using a function call!');
+// has the same functionality as this:
+const y = new Error('I was constructed via the "new" keyword!');
+```
+
+##### Error 类型
+
+除了通用的 Error 构造函数外，<font color=FF0000>JavaScript 还有 6 个其他类型的错误构造函数</font>。
+
+- **EvalError：**创建一个 error 实例，表示错误的原因：与 eval()  有关。
+- **InternalError⚠️：**创建一个代表 Javascript 引擎内部错误的异常抛出的实例。 如: "递归太多".
+- **RangeError：**创建一个 error 实例，表示错误的原因：数值变量或参数超出其有效范围。
+- **ReferenceError：**创建一个 error 实例，表示错误的原因：无效引用。
+- **SyntaxError：**创建一个 error 实例，表示错误的原因：eval() 在解析代码的过程中发生的语法错误。
+- **TypeError：**创建一个error 实例，表示错误的原因：变量或参数不属于有效类型。
+- **URIError：**创建一个error 实例，表示错误的原因：给 encodeURI() 或  decodeURI() 传递的参数无效。
+
+另外，稳重还提到了 **AggregateError**：
+
+> **AggregateError** 当多个错误需要包装在一个错误中时，该对象表示一个错误。
+>
+> ##### 语法
+>
+> ```js
+> new AggregateError(errors[, message])
+> ```
+>
+> **参数**
+>
+> - **errors：**错误的描述，默认为空。
+> - **message：**可选，AggregateError 错误的提示信息。
+>
+> 摘自：[MDN - AggregateError](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
+
+摘自：[MDN - Error](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Error)
+
+
 
 #### JavaScript 变量提升
 
@@ -3102,7 +3168,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                 
+  >                                                     
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3121,7 +3187,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                 
+  >                                                     
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
