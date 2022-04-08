@@ -930,7 +930,11 @@ console.log(found); // expected output: 12
 
 #### Array.prototype.reduce()
 
-**reduce()** 方法<font color=FF0000>对数组中的每个元素<mark>**执行一个自定义的reducer函数（升序执行）**</mark>，将其结果汇总为单个返回值</font>。示例如下：
+**reduce()** 方法 <font color=FF0000>对数组中的每个元素 **执行一个自定义的 reducer 函数（升序执行）**</font>，<font color=FF0000>每一次运行 **reducer** 会将先前元素的计算结果</font>（**注：**说成“上一次的计算结果”，感觉更容易理解些）<font color=FF0000>作为参数传入</font>，<font color=FF0000>**最后将其结果汇总为单个返回值**（**注：**非常重要！**上一次的计算结果必须要返回**）</font>，真是因为要返回，如果写了没有 {}包裹、也没有 return 的箭头函数时，不要用 push，使用 concat。
+
+第一次执行回调函数时，不存在 “上一次的计算结果”。如果需要回调函数从数组索引为 0 的元素开始执行，则需要传递初始值。<mark>否则，数组索引为 0 的元素将被作为初始值 *initialValue*</mark>，<font color=FF0000>**迭代器将从第二个元素开始执行（索引为 1 而不是 0）**</font>。
+
+示例如下：
 
 ```js
 const array1 = [1, 2, 3, 4];
@@ -943,36 +947,46 @@ console.log(array1.reduce(reducer));  // expected output: 10
 console.log(array1.reduce(reducer, 5));  // expected output: 15
 ```
 
+**reducer** 逐个遍历数组元素，每一步都将当前元素的值与上一步的计算结果相加（上一步的计算结果是当前元素之前 所有元素的总和）——直到没有更多的元素被相加。
+
 **reducer 函数接收4个参数：**
 
-1. Accumulator (acc) ：累计器（累加器）
-2. Current Value (cur) ：当前值
-3. Current Index (idx) ：当前索引
-4. Source Array (src) ：源数组
+1. Accumulator ( acc ) ：累计器（累加器）。**注：**2022 / 4 / 8 MDN 文档改变了，这个参数被称为 previousValue；不过，毕竟 reduce 不仅仅有 “累加的” 功能。
 
-**reducer** 函数的返回值分配给**累计器（累加器，<font color=FF0000>不过也可以作为迭代器的存在？</font>）**，该返回值在数组的每个迭代中被记住，并最后成为最终的单个结果值。
+   要看之前的版本可以看：https://web.archive.org/web/20220314073057/https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce，可以发现 2022 / 3 / 14 这里还没改动...
 
-**语法**
+2. Current Value ( cur ) ：当前值
+
+3. Current Index ( idx ) ：当前索引
+
+4. Source Array ( src ) ：源数组
+
+##### 语法
 
 ```js
-arr.reduce( callback( accumulator, currentValue [, index [, array]]) [, initialValue] )
+array.reduce( callback( accumulator, currentValue [, index [, array]]) [, initialValue] )
 ```
 
 **参数**
 
-- **callback：**执行数组中每个值（如果没有提供 initialValue则第一个值除外）的函数，包含四个参数：
+- **callback：**执行数组中每个值（如果没有提供 initialValue，则第一个值除外）的函数，包含四个参数：
+  - **accumulator：**累计器累计回调的返回值；它是上一次调用回调时返回的累积值，或 initialValue（见于下方）。
   
-  - **accumulator：**累计器累计回调的返回值; 它是上一次调用回调时返回的累积值，或initialValue（见于下方）。
-  
-  - **currentValue：**数组中正在处理的元素。
+  - **currentValue：**数组中正在处理的元素。在第一次调用时，若指定了初始值 `initialValue`，其值则为数组索引为 0 的元素 array[0]，否则为 array[1]。
   
   - **index：** <font color=FF0000>可选</font>，数组中正在处理的当前元素的索引。 如果提供了initialValue，则起始索引号为0，否则从索引1起始。
   
   - **array：**<font color=FF0000>可选</font>，调用reduce()的数组
-
+  
 - **initialValue：**<font color=FF0000>可选</font>，作为第一次调用 callback函数时的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。
 
 **返回值：**函数累计处理的结果
+
+##### 异常
+
+**TypeError：**数组为空且初始值 initialValue 未提供。
+
+
 
 摘自：[MDN - Array.prototype.reduce()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
 
