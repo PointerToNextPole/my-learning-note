@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                 
+>                   
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -1073,7 +1073,7 @@ const array1 = [1, 4, 9, 16];
 const map1 = array1.map(x => x * 2);
 ```
 
-**Array.prototype.map()可以起到和forEach类似的作用**
+**Array.prototype.map() 可以起到和 forEach类似的作用**。注：map方法 在编程中一个常用的场景是：“挑出对象数组中的部分属性形成一个新的数组，甚至是对跳出的属性进行属性名修改”；不过，在编程中发现：map 这种形成新数组的方法，对其中引用类型的属性只是拷贝了引用，不是深拷贝。
 
 **语法**
 
@@ -3182,7 +3182,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                     
+  >                                                       
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3201,7 +3201,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                     
+  >                                                       
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -10756,25 +10756,25 @@ event loop 实现了 task 和 急事处理机制 microtask，而且每次 loop �
 
 #### window.requestAnimationFrame
 
-window.requestAnimationFrame() 告诉浏览器：你<font color=FF0000>希望执行一个动画，并且**要求浏览器在下次重绘之前调用指定的回调函数更新动画**</font>。该方法<font color=FF0000>需要传入一个回调函数作为参数，该回调函数会在浏览器下一次重绘之前执行</font>
+window.requestAnimationFrame() <font color=FF0000>告诉浏览器</font>：你<font color=FF0000>希望执行一个动画，并且**要求浏览器在下次重绘之前调用指定的回调函数更新动画**</font>。该方法<font color=FF0000>需要传入一个 <font size=4>**回调函数**</font> 作为参数，该 <font size=4>**回调函数会在浏览器下一次重绘之前执行**</font></font>
 
 > 注意：<font color=FF0000>若你想在浏览器下次重绘之前继续更新下一帧动画，那么 **回调函数自身必须再次调用 window.requestAnimationFrame()**</font>
 
-当你准备更新动画时你应该调用此方法。这将使浏览器在下一次重绘之前调用你传入给该方法的动画函数（即你的回调函数）。回调函数执行次数通常是 每秒60次，但在大多数遵循 W3C 建议的浏览器中，回调函数执行次数通常与浏览器屏幕刷新次数相匹配。为了提高性能和电池寿命，因此在大多数浏览器里，当 requestAnimationFrame() 运行在后台标签页或者隐藏的 \<iframe> 里时，requestAnimationFrame() 会被暂停调用以提升性能和电池寿命。
+当你准备更新动画时你应该调用此方法。这将使浏览器在下一次重绘之前 调用你传入给该方法的动画函数（即你的回调函数）。<font color=FF0000>回调函数执行次数通常是 每秒 60 次</font>，但<font color=FF0000>在大多数遵循 W3C 建议的浏览器中，回调函数执行次数通常与浏览器屏幕刷新次数相匹配</font>。<mark>为了提高性能和电池寿命，因此在大多数浏览器里，当 requestAnimationFrame() 运行在后台标签页 或者 隐藏的 \<iframe> 里时，requestAnimationFrame() 会被暂停调用以提升性能和电池寿命</mark>。
 
-回调函数会被传入 DOMHighResTimeStamp 参数，DOMHighResTimeStamp 指示当前被 requestAnimationFrame() 排序的回调函数被触发的时间。在同一个帧中的多个回调函数，它们每一个都会接受到一个相同的时间戳，即使在计算上一个回调函数的工作负载期间已经消耗了一些时间。该时间戳是一个十进制数，单位毫秒，最小精度为1ms。
+回调函数会被传入 DOMHighResTimeStamp 参数，DOMHighResTimeStamp 指示当前被 requestAnimationFrame() 排序的回调函数被触发的时间。在同一个帧中的多个回调函数，它们每一个都会接受到一个相同的时间戳，即使在计算上一个回调函数的工作负载期间已经消耗了一些时间。该时间戳是一个十进制数，单位毫秒，最小精度为 1ms。
 
-- **语法**
+**语法**
 
-  ```js
-  window.requestAnimationFrame(callback);
-  ```
+```js
+window.requestAnimationFrame(callback);
+```
 
-- **参数**
+##### 参数
 
-  **callback：**下一次重绘之前更新动画帧所调用的函数(即上面所说的回调函数)。该回调函数会被传入 DOMHighResTimeStamp 参数，该参数与 performance.now() 的返回值相同，它表示 requestAnimationFrame() 开始去执行回调函数的时刻。
+- **callback：**下一次重绘之前更新动画帧所调用的函数（即上面所说的回调函数）。该回调函数会被传入 DOMHighResTimeStamp 参数，该参数与 performance.now() 的返回值相同，它表示 requestAnimationFrame() 开始去执行回调函数的时刻。
 
-- **返回值：**一个 long 整数，请求 ID ，是回调列表中唯一的标识。是个非零值，没别的意义。你可以传这个值给 window.cancelAnimationFrame() 以取消回调函数。
+**返回值：**<font color=FF0000>一个 long 整数，请求 ID ，是回调列表中唯一的标识</font>。是个非零值，没别的意义。你<font color=FF0000>可以传这个值给 window.cancelAnimationFrame() 以取消回调函数</font>。
 
 摘自：[MDN - window.requestAnimationFrame](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestAnimationFrame)
 
@@ -10786,21 +10786,21 @@ window.requestIdleCallback() 方法<font color=FF0000>插入一个函数</font>�
 
 你可以在空闲回调函数中调用 requestIdleCallback()，以便在下一次通过事件循环之前调度另一个回调。
 
-> 强烈建议使用timeout选项进行必要的工作，否则可能会在触发回调之前经过几秒钟。
+> 强烈建议使用 timeout 选项进行必要的工作，否则可能会在触发回调之前经过几秒钟。
 
-- **语法**
+##### 语法
 
-  ```js
-  var handle = window.requestIdleCallback(callback[, options])
-  ```
+```js
+var handle = window.requestIdleCallback(callback[, options])
+```
 
-- **返回值**
-  一个ID，可以把它传入 Window.cancelIdleCallback() 方法来结束回调。
+**返回值**：一个ID，可以把它传入 Window.cancelIdleCallback() 方法来结束回调。
 
-- **参数**
-  - **callback：**<font color=FF0000>一个在事件循环空闲时即将被调用的函数的引用</font>。<font color=FF0000>函数会接收到一个名为 IdleDeadline 的参数</font>，<mark>这个参数可以获取当前空闲时间以及回调是否在超时时间前已经执行的状态</mark>
-  - **options：**可选，包括可选的配置参数。具有如下属性：
-    - **timeout：**<font color=FF0000>如果指定了timeout，并且有一个正值，而回调在timeout毫秒过后还没有被调用，那么回调任务将放入事件循环中排队</font>（注：可以理解为 强制执行），即使这样做有可能对性能产生负面影响
+**参数**
+
+- **callback：**<font color=FF0000>一个在事件循环空闲时即将被调用的函数的引用</font>。<font color=FF0000>函数会接收到一个名为 IdleDeadline 的参数</font>，<mark>这个参数可以获取当前空闲时间以及回调是否在超时时间前已经执行的状态</mark>
+- **options：**可选，包括可选的配置参数。具有如下属性：
+  - **timeout：**<font color=FF0000>如果指定了timeout，并且有一个正值，而回调在timeout毫秒过后还没有被调用，那么回调任务将放入事件循环中排队</font>（注：可以理解为 强制执行），即使这样做有可能对性能产生负面影响
 
 摘自：[MDN - requestIdleCallback](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)
 
