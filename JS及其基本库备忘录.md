@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                   
+>                     
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3182,7 +3182,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                       
+  >                                                         
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3201,7 +3201,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                       
+  >                                                         
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -3794,6 +3794,40 @@ function myFunction(y) {
 > 这种行为（注：函数提升）仅适用于函数声明，而不适用于我们将函数分配给变量的函数表达式，例如 let say = function(name)...
 >
 > 摘自：[现代JS教程 - 变量作用域，闭包](https://zh.javascript.info/closure)
+
+#### Function.length
+
+length 属性<font color=FF0000>指明函数的形参个数</font>。示例如下：
+
+```js
+function func1() {}
+console.log(func1.length); // expected output: 0
+
+function func2(a, b) {}
+console.log(func2.length); // expected output: 2
+
+const arrownFn = (a, b, c) => {}
+console.log(arrowFn.length) // 3
+
+function argFn = function(...args) {}
+console.log(argFn.length) // 0
+```
+
+| Function.length 属性的属性特性： |       |
+| :------------------------------- | ----- |
+| writable                         | false |
+| enumerable                       | false |
+| configurable                     | true  |
+
+**描述**
+
+length 是函数对象的一个属性值，指该函数期望传入的参数数量，即形参的个数。<font color=FF0000>形参的数量不包括剩余参数个数</font>，仅包括第一个具有默认值之前的参数个数。与之对比的是，arguments.length 是函数被调用时实际传参的个数（**注：**即 Function.length 和 arguments。length 对应）。
+
+**Function 构造器的属性：**<font color=FF0000>Function 构造器本身也是个 Function。他的 length 属性值为 1</font> 。该属性 Writable: false, Enumerable: false, Configurable: true
+
+**Function.prototype 对象的属性：** <mark>Function.prototype 对象的 length 属性值为 0 </mark>。
+
+摘自：[MDN - Function.length](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/length)
 
 **自调用函数**
 
@@ -5337,7 +5371,7 @@ typeof(y) // 返回 Object
 
 <font size=4>**补充：**</font>
 
-isNaN() 方法是 ES5 的方法，实际上是 window.isNaN() 的简写；而在 ES6中添加了 Number.isNaN()，之所以添加，是为了避免 window 下挂载的方法过多，而 Number.isNaN()是一种更优 / 更合适的设计 / 模块化设计
+isNaN() 方法是 ES5 的方法，实际上是 window.isNaN() 的简写；而在 ES6中添加了 Number.isNaN()，之所以添加，是为了避免 window 下挂载的方法过多，而 Number.isNaN() 是一种更优 / 更合适的设计 / 模块化设计
 
 同样的还有 Number.parseInt() / Number.parseFloat() / Number.isFinite()
 
@@ -5353,8 +5387,8 @@ isNaN() 方法是 ES5 的方法，实际上是 window.isNaN() 的简写；而在
 | Number.NEGATIVE_INFINITY | 负无穷，在溢出时返回                                         |
 | Number.POSITIVE_INFINITY | 正无穷，在溢出时返回                                         |
 | Number.EPSILON           | 表示 1 和比最接近 1 且大于 1 的最小 Number 之间的差别        |
-| Number.MIN_SAFE_INTEGER  | 最小安全整数。 -(2^53^ - 1)<br />属性同下                    |
-| Number.MAX_SAFE_INTEGER  | 最大安全整数。 2^53^ - 1<br />属性描述符：writable: false, enumerable: false, configurable: false<br />Number.MAX_SAFE_INTEGER + 1 === Number.MAX_SAFE_INTEGER + 2 将得到 true的结果，而这在数学上是错误的<br />由于 MAX_SAFE_INTEGER 是Number的一个静态属性 |
+| Number.MIN_SAFE_INTEGER  | 最小安全整数。 -(2^53^ - 1)<br>属性同下                      |
+| Number.MAX_SAFE_INTEGER  | 最大安全整数。 2^53^ - 1<br>属性描述符：writable: false, enumerable: false, configurable: false<br>Number.MAX_SAFE_INTEGER + 1 === Number.MAX_SAFE_INTEGER + 2 将得到 true的结果，而这在数学上是错误的<br>由于 MAX_SAFE_INTEGER 是Number的一个静态属性 |
 
 **数字方法**
 
@@ -5365,7 +5399,7 @@ isNaN() 方法是 ES5 的方法，实际上是 window.isNaN() 的简写；而在
 | Number.isFinite()      | 判断传递的参数是否为有限数字。                               |
 | Number.isInteger()     | 判断传递的参数是否为整数。                                   |
 | Number.isNaN()         | 判断传递的参数是否为 isNaN()。                               |
-| Number.isSafeInteger() | 判断传递的参数是否为安全整数。<br />安全整数范围为 -(2^53^ - 1)到 2^53^ - 1之间的整数，包含 -(2^53^ - 1)和 2^53^ - 1。 |
+| Number.isSafeInteger() | 判断传递的参数是否为安全整数。<br>安全整数范围为 -(2^53^ - 1)到 2^53^ - 1之间的整数，包含 -(2^53^ - 1)和 2^53^ - 1。 |
 
 **数字类型原型上的一些方法**
 
@@ -8437,7 +8471,7 @@ console.log(argToString()) // [object Arguments]
 
 摘自：[浅谈 Object.prototype.toString.call() 方法](https://www.jianshu.com/p/585926ae62cc)
 
-使用  ***.constructor.name** 可以实现类似的功能（注：当然泛用性没有 toString 好，比如 null、undefined 不可用，arguments 的结果还是 Object。另外，这里的原理是： constructor 是一个函数，Function 有 name 这个属性 ），示例如下：
+使用  ***.constructor.name** 可以实现类似的功能（**注：**当然泛用性没有 toString 好，比如 null、undefined 不可用，arguments 的结果还是 Object。另外，这里的原理是： constructor 是一个函数，Function 有 name 这个属性 ），示例如下：
 
 ```js
 const reg = /abc/
@@ -8789,7 +8823,7 @@ Object.getOwnPropertyDescriptors() 方法用来获取一个对象的所有自身
 
 #### Object.getOwnPropertyNames()
 
-Object.getOwnPropertyNames() 方法返回一个由指定对象的所有自身属性的属性名（<font color=FF0000>包括不可枚举属性 但<font size=4>**不包括Symbol值作为名称的属性**</font></font>）组成的数组。
+Object.getOwnPropertyNames() 方法返回一个由指定对象的所有自身属性的属性名（<font color=FF0000>包括不可枚举属性，但 <font size=4>**不包括Symbol值作为名称的属性**</font></font>）组成的数组。
 
 - **语法：**
 
@@ -8860,7 +8894,7 @@ Object.getOwnPropertySymbols() 方法<font color=FF0000>返回一个给定对象
 
 #### new.target
 
-new.target 属性允许你<font color=FF0000> **检测函数或构造方法是否是通过new运算符被调用的**</font>。<font color=FF0000> 在通过new运算符被初始化的函数或构造方法中，**new.target返回一个指向构造方法或函数的引用**</font>。<mark>在普通的函数调用中，new.target 的值是<font color=FF0000> undefined</font></mark>。
+new.target 属性允许你<font color=FF0000> **检测函数或构造方法是否是通过 new 运算符被调用的**</font>。<font color=FF0000> 在通过 new 运算符被初始化的函数或构造方法中，**new.target 返回一个指向构造方法或函数的引用**</font>。<mark>在普通的函数调用中，new.target 的值是<font color=FF0000> undefined</font></mark>。
 
 **语法：**
 
