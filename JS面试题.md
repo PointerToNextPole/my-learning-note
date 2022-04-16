@@ -52,6 +52,70 @@ a()
   <summary>点击查看解析</summary>
   <font color=FF0000>给函数多个参数<font size=4>设置默认值实际上跟按顺序定义变量一样</font>，所以<font size=4> 会存在暂时性死区</font></font>的问题，即<mark>前面定义的变量不能引用后面还未定义的变量，而后面的可以访问前面的</mark>。
 </details>
+##### 函数参数第3题
+
+```js
+console.log(['1','2','3'].map(parseInt));
+```
+
+<details>
+  <summary>点击查看答案</summary>
+  [1, NaN, NaN]
+</details>
+
+##### 解析
+
+Array.prototype.map() 的 语法如下：
+
+> ```js
+> var new_array = arr.map(function callback(currentValue[, index[, array]]) {
+>  // Return element for new_array 
+> }[, thisArg])
+> ```
+
+可知，map 中的 callback，除了必传的 currentValue 外，还有选传的 index 和 array。
+
+而 parseInt 的语法如下：
+
+> ```js
+> parseInt(string, radix);
+> ```
+>
+> **参数：**
+>
+> - **string：**要被解析的值。<font color=FF0000>如果参数不是一个字符串，则将其转换为字符串（使用  ToString 抽象操作）</font>。<font color=FF0000>字符串开头的空白符将会被忽略</font>。
+> - **radix：**可选，<font color=FF0000>从 2 到 36</font>；表示字符串的基数。例如指定 16 表示被解析值是十六进制数。请注意，10 不是默认值！<mark>文章后面的“描述” 解释了当参数 radix 不传时该函数的具体行为</mark>。另外，根据 [高频网红面试题['1','2','3'].map(parseInt) 原理解析](https://juejin.cn/post/6844903781369380872)  评论区的说法：之所以 radix 最大是 36，是因为 10个数字 + 26个字母。
+>
+> **返回值：**
+>
+> 从给定的字符串中解析出的一个整数，或者 NaN。<font color=FF0000>当 radix 小于 2 或大于 36 ，或第一个非空格字符不能转换为数字，为NaN</font>。注：radix 的范围，不仅仅是 2 - 36；根据下面的 “描述”，还有 0、undefined 或 未指定 radix，也是可行的（见下面）。
+>
+> **描述：**
+>
+> <font color=FF0000>如果 parseInt 遇到的字符不是指定 radix 参数中的数字</font>，它 <font color=FF0000>将忽略该字符以及所有后续字符，并返回 **到该点为止已解析的整数值**</font>
+>
+> <font color=FF0000>**parseInt 可以理解两个符号**</font>。+ 表示正数，- 表示负数（从ECMAScript 1开始）。它是在去掉空格后作为解析的初始步骤进行的。如果没有找到符号，算法将进入下一步；否则，它将删除符号，并对字符串的其余部分进行数字解析。
+>
+> ##### <font color=FF0000>如果 radix 是 undefined、0或未指定的，JavaScript会假定以下情况</font>：
+>
+> 1. 如果输入的 string以 "0x"或 "0x"（一个0，后面是小写或大写的X）开头，那么radix被假定为16，字符串的其余部分被当做十六进制数去解析。
+> 2. 如果输入的 string以 "0"（0）开头， radix被假定为 8（八进制）或10（十进制）。具体选择哪一个radix取决于实现。ECMAScript 5 澄清了应该使用 10 (十进制)，但不是所有的浏览器都支持。因此，在使用 parseInt 时，一定要指定一个 radix。
+> 3. 如果输入的 string 以任何其他值开头， radix 是 10 (十进制)。
+
+由于这里 是 map 直接调用 parseInt，而不是 map 调用 包裹 parseInt 的函数（间接调用 parseInt ）；所以，这里对于 parseInt 的调用第二个参数 index，使用 数组 ['1', '2', '3'] 中元素的索引。所以，代码相当于：
+
+```js
+parseInt('1', 0, ['1', '2', '3']) // '1'为currentValue，0 为 index，['1', '2', '3'] 为 thisArg。下同
+parseInt('2', 1, ['1', '2', '3'])
+parseInt('3', 2, ['1', '2', '3'])
+```
+
+第一种情况：radix 为 0，参考上面 “如果 radix 是 undefined、0或未指定的” 的情况，所以 radix 为 10，没问题；结果为 1
+第二种情况：radix 为 1，由于不为 0，也不在 2 - 36 之间，所以 为 NaN
+第三种情况：radix 为 2，由于 string 为 “3” 不在 二进制的可用数字范围内，所以也为 NaN
+
+本题摘自：[高频网红面试题['1','2','3'].map(parseInt) 原理解析](https://juejin.cn/post/6844903781369380872) 其中也有解析。
+
 
 
 

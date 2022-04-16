@@ -491,7 +491,7 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
 网页请求从 HTML 文件请求开始。服务器返回 HTML -- 响应头和数据。然后浏览器开始解析 HTML，转换收到的数据为 DOM 树。<font color=FF0000> 浏览器<font size=4>**每次发现外部资源就初始化请求**</font>，无论是样式、脚本或者嵌入的图片引用。<font size=4>**有时请求会阻塞，这意味着解析剩下的 HTML 会被终止直到重要的资源被处理**</font></font>。浏览器接着解析 HTML，发请求和构造 DOM 直到文件结尾 ，这时开始构造 CSS对象模型。等到 DOM 和 CSSOM 完成之后，浏览器构造渲染树，计算所有可见内容的样式。一旦渲染树完成布局开始，定义所有渲染树元素的位置和大小。完成之后，页面被渲染完成，或者说是绘制到屏幕上。
 
 - **文本对象模型 (DOM)**
-  <font color=FF0000> DOM构建是增量的</font>。 <font color=FF0000 size=4>**HTML响应变成令牌（token，补充：这里的token似乎和鉴权的Token没有关系，似乎是编译原理中的概念），令牌变成节点**</font>，而节点又变成DOM树。<font color=FF0000>  单个DOM节点以 <font size=4>**startTag令牌开始，以endTag令牌结束**</font>。 <font size=4>**节点包含有关HTML元素的所有相关信息。 该信息是使用令牌描述的**</font></font>。 节点根据令牌层次结构连接到DOM树中。 如果另一组 startTag 和 endTag 令牌位于一组 startTag 和 endTag 之间，则您在节点内有一个节点，这就是我们定义DOM树层次结构的方式。
+  <font color=FF0000> DOM构建是增量的</font>。 <font color=FF0000 size=4>**HTML响应变成令牌 (token)**（注：这里的token和鉴权的Token没有关系，应该是编译原理中的分词，毕竟“分词”的英文为 Tokenization），**令牌变成节点**</font>，而节点又变成DOM树。<font color=FF0000>  单个DOM节点以 <font size=4>**startTag令牌开始，以endTag令牌结束**</font>。 <font size=4>**节点包含有关HTML元素的所有相关信息。 该信息是使用令牌描述的**</font></font>。 节点根据令牌层次结构连接到DOM树中。 如果另一组 startTag 和 endTag 令牌位于一组 startTag 和 endTag 之间，则您在节点内有一个节点，这就是我们定义DOM树层次结构的方式。
 
   节点数量越多，关键渲染路径中的后续事件将花费的时间就越长。 测一下吧！ 几个额外的节点不会有什么区别，但“DIV癖”（divitis）可能会导致问题。
 

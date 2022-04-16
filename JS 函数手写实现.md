@@ -208,6 +208,19 @@ const is = (x, y) => {
 }
 ```
 
+#### isNaN() 的实现
+
+根据上面的实现，可以知道 isNaN() 的实现方法。另外，[MDN - isNaN()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/isNaN) 也有说实现方法。还有，isNaN('NaN') === true
+
+下面就摘抄的 MDN 的实现方法：
+
+```js
+const isNaN(value) {
+  cosnt n = Number(value) // isNaN('NaN') === true
+  return n !== n
+}
+```
+
 
 
 
@@ -240,6 +253,7 @@ const debounce = (fn, time) => {
 const throttle = (fn, time) => {
   let flag = true
   return function() {
+    // 注：定时器没有执行，flag 始终都是 false；始终 return 掉。一旦定时器执行，flag 变成 true，就执行下一次，不会 return
     if (!flag) return
     flag = false
     setTimeout(() => {
@@ -509,6 +523,8 @@ Array.prototype.reduce = function(cb, initialValue) {
 
 
 #### flat 实现
+
+注：可以参考下 [JavaScript专题之数组扁平化](https://github.com/mqyqingfeng/Blog/issues/36)
 
 ##### 使用 reduce() 实现
 

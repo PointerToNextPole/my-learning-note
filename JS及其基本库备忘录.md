@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                     
+>                       
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3182,7 +3182,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                         
+  >                                                           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3201,7 +3201,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                         
+  >                                                           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -4141,7 +4141,7 @@ call() 方法<font color=FF0000>使用一个指定的 this 值</font>和<font co
 
 apply() 方法<font color=FF0000>调用一个具有给定this值的函数</font>，以及<font color=FF0000>以一个数组（或类数组对象）的形式提供的参数</font>。
 
-**注意：**call()方法的作用和 apply() 方法类似，区别就是call()方法接受的是参数列表，而apply()方法接受的是一个参数数组。
+**注意：**call() 方法的作用和 apply() 方法类似，区别就是 call() 方法接受的是参数列表，而 apply() 方法接受的是一个参数数组。
 
 - **语法**
 
@@ -4152,7 +4152,7 @@ apply() 方法<font color=FF0000>调用一个具有给定this值的函数</font>
 - **参数**
 
   - **thisArg：**<font color=FF0000>必选</font>。在 func 函数运行时使用的 this 值。请注意，this可能不是该方法看到的实际值：如果这个函数处于非严格模式下，则<font color=FF0000>指定为 null 或 undefined 时会自动替换为指向全局对象，原始值会被包装</font>。
-  - **argsArray：**<font color=FF0000>可选</font>。<font color=FF0000>一个数组或者类数组对象</font>，其中的数组元素将作为单独的参数传给 func 函数。如果该参数的值为 null 或  undefined，则表示不需要传入任何参数。从ECMAScript 5 开始可以使用类数组对象。
+  - **argsArray：**<font color=FF0000>可选</font>。<font color=FF0000>一个数组或者类数组对象</font>，其中的数组元素将作为单独的参数传给 func 函数。如果该参数的值为 null 或 undefined，则表示不需要传入任何参数。从 ECMAScript 5 开始可以使用类数组对象。
 
 - **返回值：**调用有指定this值和参数的函数的结果。
 
@@ -4164,14 +4164,26 @@ apply() 方法<font color=FF0000>调用一个具有给定this值的函数</font>
 
 - **示例：** 声明apply的功能可以通过 Function.prototype.call() 加上解构赋值来实现，当然这是ES6的写法。这里的示例都是ES5的
 
-  - **用 apply 将数组各项添加到另一个数组**
+  **用 apply 将数组各项添加到另一个数组**
 
-    ```js
-    var array = ['a', 'b'];
-    var elements = [0, 1, 2];
-    array.push.apply(array, elements);
-    console.info(array); // ["a", "b", 0, 1, 2]
-    ```
+  ```js
+  var array = ['a', 'b'];
+  var elements = [0, 1, 2];
+  array.push.apply(array, elements);
+  console.info(array); // ["a", "b", 0, 1, 2]
+  ```
+  
+  **注：**需要注意的是，由上例发现：在 apply 函数内传入的 argsArray，在处理时，不是以一个整个数组传入，而是会被展开一个一个元素传入函数，如下示例：
+  
+  ```js
+  // 示例1
+  function test(argArr) { console.log(argArr) }
+  test.apply({}, [1, 2, 3]) // 1。结果只打印了 1
+  
+  // 示例2
+  functionn test2() { console.log(arguments) }
+  test2.apply({}, [1, 2, 3]) // { '0': 1, '1': 2, '2': 3 }。如果传入的整个数组，则应该打印 { '0': [1, 2, 3] }
+  ```
 
   - **使用apply和内置函数**，用Math.max/Math.min求得数组中的最大/小值。注意下面的
 
