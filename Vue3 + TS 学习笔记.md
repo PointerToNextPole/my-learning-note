@@ -379,13 +379,13 @@ Vue中对于列表的更新究竟是如何操作的？Vue<font color=FF0000>会�
 
 
 
-**计算方法可以写成函数，也可以写成对象。=**
+**计算方法可以写成函数，也可以写成对象**
 
 - 如果写成函数，则默认是getter方法（可以说：这种方法是下面写成对象方式的语法躺）
 - 如果写成对象，则既可以在里面写getter方法，也可以在里面写setter方法
 
 ```js
-computed() {
+computed: {
   fullName() {
     return firstName + ' ' + lastName
   }
