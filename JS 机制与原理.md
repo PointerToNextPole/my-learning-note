@@ -4215,18 +4215,120 @@ console.log(fibonacci(5)) // 1 1 2 3 5
 function f(x){
     return g(x);
 }
-```
 
-然而
-
-```js
 // 非尾调用
 function f(x){
     return g(x) + 1;
 }
 ```
 
-并不是尾调用，因为 g(x) 的返回值还需要跟 1 进行计算后，f(x) 才会返回值。
+第二个函数不是尾调用，因为 g(x) 的返回值还需要跟 1 进行计算后，f(x) 才会返回值。**注：**这和尾递归一样。
+
+<font color=FF0000>**两者又有什么区别呢**</font>？答案就是 <font color=FF0000 size=4>**执行上下文栈的变化不一样**</font>。
+
+为了模拟执行上下文栈的行为，让我们定义执行上下文栈是一个数组：
+
+```
+ECStack = [];
+```
+
+我们模拟下 <font color=FF0000>**第一个尾调用函数** 执行时的执行上下文栈变化</font>：
+
+```js
+// 伪代码
+ECStack.push(<f> functionContext);
+ECStack.pop();
+
+ECStack.push(<g> functionContext);
+ECStack.pop();
+```
+
+我们再来模拟一下 <font color=FF0000>**第二个非尾调用函数** 执行时的执行上下文栈变化</font>：
+
+```js
+ECStack.push(<f> functionContext);
+ECStack.push(<g> functionContext);
+
+ECStack.pop();
+ECStack.pop();
+```
+
+也就说 <font color=FF0000>**尾调用函数执行**</font> 时，虽然也调用了一个函数，但是因为<font color=FF0000>**原来的的函数执行完毕，执行上下文会被弹出**</font>，<font color=FF0000>执行上下文栈中相当于只多压入了一个执行上下文</font>。然而 <font color=FF0000>**非尾调用函数**</font>，就<font color=FF0000>会创建多个执行上下文压入执行上下文栈</font>。
+
+函数调用自身，称为递归。<font color=FF0000 size=4>**如果尾调用自身，就称为尾递归**</font>。
+
+所以我们只用把阶乘函数改造成一个尾递归形式，就可以避免创建那么多的执行上下文。但是我们该怎么做呢？
+
+#### 阶乘函数优化
+
+我们需要做的就是把所有用到的内部变量改写成函数的参数，以阶乘函数为例：
+
+```js
+function factorial(n, res) {
+    if (n == 1) return res;
+    return factorial(n - 1, n * res)
+}
+console.log(factorial(4, 1)) // 24
+```
+
+然而这个很奇怪呐……我们计算 4 的阶乘，结果函数要传入 4 和 1，我就不能只传入一个 4 吗？
+
+这个时候就要用到我们在[《JavaScript专题之偏函数》](https://github.com/mqyqingfeng/Blog/issues/43)中编写的 partial 函数了：
+
+```js
+var newFactorial = partial(factorial, _, 1)
+newFactorial(4) // 24
+```
+
+摘自：[JavaScript专题之递归](https://github.com/mqyqingfeng/Blog/issues/49)
+
+#### 阮一峰文章的尾调用
+
+尾调用不一定出现在函数尾部，只要是最后一步操作即可。
+
+```js
+function f(x) {
+  if (x > 0) { return m(x) }
+  return n(x);
+}
+```
+
+上面代码中，函数m和n都属于尾调用，因为它们都是函数f的最后一步操作。
+
+##### 尾递归
+
+递归非常耗费内存，因为需要同时保存成千上百个调用记录，很容易发生"栈溢出"错误 ( stack overflow )。但对于尾递归来说，由于只存在一个调用记录，所以永远不会发生"栈溢出"错误。
+
+```js
+function factorial(n) {
+  if (n === 1) return 1;
+  return n * factorial(n - 1);
+}
+factorial(5) // 120
+```
+
+上面代码是一个阶乘函数，计算 n 的阶乘，最多需要保存 n 个调用记录，（**注：**空间？）复杂度 O(n) 。<font color=FF0000>如果改写成尾递归，只保留一个调用记录，复杂度 O(1) </font>。
+
+总结一下，递归本质上是一种循环操作。<font color=FF0000>纯粹的函数式编程语言没有循环操作命令，所有的循环都用递归实现，这就是为什么尾递归对这些语言极其重要</font>。对于其他支持 “尾调用优化” 的语言（比如 Lua，ES6 ），只需要知道循环可以用递归代替，而一旦使用递归，就最好使用尾递归。
+
+##### 严格模式
+
+<font color=FF0000 size=4>**ES6 的 尾调用优化只在 “严格模式” 下开启**</font>，正常模式是无效的。这是因为在正常模式下，函数内部有（如下）两个变量，可以跟踪函数的调用栈。
+
+- **arguments：**返回调用时函数的参数。
+- **func.caller：**返回调用当前函数的那个函数。
+
+<font color=FF0000>尾调用优化发生时，函数的调用栈会改写，因此上面两个变量就会失真</font>。严格模式禁用这两个变量，所以尾调用模式仅在严格模式下生效。
+
+摘自：[尾调用优化](https://www.ruanyifeng.com/blog/2015/04/tail-call.html)
+
+#### 维基百科中的尾调用
+
+在计算机学里，「尾调用」是指一个函数里的最后一个动作是返回一个函数的调用结果的情形，即最后一步新调用的返回值直接被当前函数的返回结果。此时，该尾部调用位置被称为尾位置。<font color=FF0000 size=4>**尾调用中有一种重要而特殊的情形叫做 尾递归 **</font>。经过适当处理，尾递归形式的函数的运行效率可以被极大地优化。<font color=FF0000>尾调用原则上都可以通过简化函数调用栈的结构而获得性能优化（称为“尾调用消除”），但是 <font size=4>优化尾调用是否方便可行 **取决于运行环境对此类优化的支持程度如何**</font></font>。
+
+摘自：[维基百科 - 尾调用](https://zh.wikipedia.org/wiki/%E5%B0%BE%E8%B0%83%E7%94%A8)
+
+另外，关于 “尾递归” 更多可以参见：[浅谈尾递归](https://site.douban.com/196781/widget/notes/12161495/note/262014367/) 以及《数据结构与算法分析：C描述》§3.3.3 P61
 
 
 
