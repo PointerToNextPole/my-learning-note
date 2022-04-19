@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                       
+>                         
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3182,7 +3182,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                           
+  >                                                             
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3201,7 +3201,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                           
+  >                                                             
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -3992,11 +3992,13 @@ arguments 是一个对应于传递给函数的参数的<font color=FF0000>类数
 
 <font color=FF0000>arguments对象是所有（<font size=4>非箭头</font>）函数中都可用的局部变量</font>。你<font color=FF0000>可以使用arguments对象在函数中引用函数的参数</font> ( 比如：arguments[0] )。此对象包含传递给函数的每个参数，第一个参数在索引0处。
 
-ar<font color=FF0000 size=4>**guments对象不是一个 Array 。它类似于Array，但除了length属性和索引元素之外没有任何Array属性**</font>。例如，它没有 pop 方法。但是它可以被转换为一个真正的Array：
+<font color=FF0000 size=4>**arguments 对象不是一个 Array 。它类似于Array，但除了 length 属性和索引元素之外没有任何 Array 属性**</font>。例如，它没有 pop / push 方法。但是它可以被转换为一个真正的Array：
 
 ```js
 var args = Array.prototype.slice.call(arguments);
 var args = [].slice.call(arguments);
+var args = [].splice.call(arguments, 0)
+var args = [].concat.apply([], arguments)
 
 // ES2015
 const args = Array.from(arguments);

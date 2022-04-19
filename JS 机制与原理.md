@@ -146,6 +146,211 @@ JavaScript 中主要的内存管理概念是 **可达性**。简而言之，“�
 
 摘自：[现代js教程 - 垃圾回收](https://zh.javascript.info/garbage-collection)
 
+### WeakMap
+
+#### WeakMap 的特性
+
+##### 1. WeakMap 只接受对象作为键名
+
+```js
+const map = new WeakMap();
+map.set(1, 2); // TypeError: Invalid value used as weak map key
+map.set(null, 2); // TypeError: Invalid value used as weak map key
+```
+
+##### 2. WeakMap 的键名所引用的对象是弱引用
+
+这句话其实让我非常费解，我个人觉得这句话真正想表达的意思应该是：
+
+> WeakMaps hold "weak" references to key objects
+
+翻译过来应该是 <font color=FF0000>WeakMaps 保持了 **对键名所引用的对象的弱引用**</font>。
+
+我们先聊聊弱引用：
+
+> <mark>在计算机程序设计中，**弱引用与强引用相对**</mark>，是指 <font color=FF0000>**不能确保** 其引用的对象 **不会被垃圾回收器回收** 的引用</font>。 <font color=FF0000>一个对象若只被弱引用所引用，**则被认为是 不可访问**（或弱可访问）的，并 **因此可能在任何时刻被回收**</font>。
+
+在 JavaScript 中，<font color=FF0000>一般我们创建一个对象，**都是建立一个强引用**</font>：
+
+```js
+var obj = new Object();
+```
+
+<font color=FF0000>只有当我们手动设置 `obj = null` 的时候，**才有可能回收 obj 所引用的对象**</font>。
+
+而如果我们能创建一个弱引用的对象：
+
+```js
+// 假设可以这样创建一个
+var obj = new WeakObject();
+```
+
+我们<font color=FF0000>什么都不用做，只用静静的等待垃圾回收机制执行，obj 所引用的对象就会被回收</font>。
+
+我们再来看看这句：
+
+> WeakMaps 保持了对键名所引用的对象的弱引用
+
+正常情况下，我们举个例子：
+
+```js
+const key = new Array(5 * 1024 * 1024);
+const arr = [ [key, 1] ];
+```
+
+使用这种方式，我们<mark>其实建立了 arr 对 key 所引用的对象</mark>（我们假设这个真正的对象叫 Obj ）<mark>的 **强引用**</mark>。
+
+所以<font color=FF0000>**当你设置 `key = null` 时，只是去掉了 key 对 Obj 的强引用**</font>，<font color=FF0000>并 **没有去除 arr 对 Obj 的强引用，所以 Obj 还是不会被回收掉**</font>。
+
+**Map 类型也是类似：**
+
+```js
+let map = new Map();
+let key = new Array(5 * 1024 * 1024);
+
+map.set(key, 1); // 建立了 map 对 key 所引用对象的强引用
+key = null;      // key = null 不会导致 key 的原引用对象被回收
+```
+
+我们依然通过 Node 证明一下：
+
+```js
+// 注：假设文件名为 node-gc.js
+global.gc();
+process.memoryUsage(); // heapUsed: 4638376 ≈ 4.4M
+
+let map = new Map();
+let key = new Array(5 * 1024 * 1024);
+map.set(key, 1);
+global.gc();
+process.memoryUsage(); // heapUsed: 46727816 ≈ 44.6M
+
+map.delete(key);
+global.gc();
+process.memoryUsage(); // heapUsed: 46748352 ≈ 44.6M
+
+key = null;
+global.gc();
+process.memoryUsage(); // heapUsed: 4808064 ≈ 4.6M
+```
+
+```sh
+node --expose-gc node-gc.js # 注：注意 --expose-gc 必需放在 js 文件名前
+```
+
+**注：**要查看运行结果可以在 `process.memoryUsage();` 外面包裹一层 `console.log()`。打印结果为：
+
+```js
+{ rss: 27213824, heapTotal: 6070272, heapUsed: 3503776, external: 447189, arrayBuffers: 10430 }
+{ rss: 69857280, heapTotal: 48553984, heapUsed: 45782136, external: 457993, arrayBuffers: 10430 }
+{ rss: 69955584, heapTotal: 50651136, heapUsed: 45788184, external: 457993, arrayBuffers: 10430 }
+{ rss: 70057984, heapTotal: 50651136, heapUsed: 45788296, external: 457993, arrayBuffers: 10430 }
+```
+
+如果你想要让 Obj 被回收掉，你需要先 `delete(key)` 然后再 `key = null`:
+
+```js
+let map = new Map();
+let key = new Array(5 * 1024 * 1024);
+map.set(key, 1);
+map.delete(key);
+key = null;
+```
+
+我们依然通过 Node 证明一下（**注：**代码略，见原文）
+
+这个时候就要说到 WeakMap 了：
+
+```js
+const wm = new WeakMap();
+let key = new Array(5 * 1024 * 1024);
+wm.set(key, 1);
+key = null;
+```
+
+当我们 <font color=FF0000>设置 `wm.set(key, 1)` 时，其实建立了 wm 对 key 所引用的对象的弱引用</font>，<mark>但因为 `let key = new Array(5 * 1024 * 1024)` **建立了 key 对所引用对象的强引用**，被引用的对象并不会被回收</mark>，但是<font color=FF0000>**当我们设置 `key = null` 的时候，就只有 wm 对所引用对象的弱引用**，下次垃圾回收机制执行的时候，该引用对象就会被回收掉</font>。
+
+我们用 Node 证明一下：
+
+```js
+global.gc();
+process.memoryUsage(); // heapUsed: 4638992 ≈ 4.4M
+
+const wm = new WeakMap();
+let key = new Array(5 * 1024 * 1024);
+wm.set(key, 1);
+global.gc();
+process.memoryUsage(); // heapUsed: 46776176 ≈ 44.6M
+
+key = null;
+global.gc();
+process.memoryUsage(); // heapUsed: 4800792 ≈ 4.6M
+```
+
+所以 <font color=FF0000>WeakMap 可以帮你省掉手动删除对象关联数据的步骤</font>，所以当你不能或不想控制关联数据的生命周期时就可以考虑使用 WeakMap
+
+总结这个弱引用的特性，就是 WeakMaps 保持了对键名所引用的对象的弱引用，即垃圾回收机制不将该引用考虑在内。<font color=FF0000>只要所引用的对象的其他引用都被清除，垃圾回收机制就会释放该对象所占用的内存</font>。也就是说，一旦不再需要，WeakMap 里面的键名对象和所对应的键值对会自动消失，不用手动删除引用。
+
+也正是因为这样的特性，WeakMap 内部有多少个成员，取决于垃圾回收机制有没有运行，运行前后很可能成员个数是不一样的，而 <font color=FF0000 size=4>**垃圾回收机制何时运行是不可预测的**，**因此 ES6 规定 WeakMap 不可遍历**</font>。
+
+所以 <font color=FF0000>WeakMap 不像 Map，一是没有遍历操作（即没有 keys()、values() 和 entries() 方法），也没有 size 属性，也不支持 clear 方法</font>；所以 <font color=FF0000>**WeakMap只有四个方法可用**：get()、set()、has()、delete()</font>。
+
+#### 应用
+
+##### 1. 在 DOM 对象上保存相关数据
+
+传统使用 jQuery 的时候，我们会<font color=FF0000>通过 \$.data() 方法在 DOM 对象上储存相关信息</font>（就比如在删除按钮元素上储存帖子的 ID 信息），jQuery 内部会使用一个对象管理 DOM 和对应的数据，当你将 DOM 元素删除，DOM 对象置为空的时候，相关联的数据并不会被删除，你必须手动执行 \$.removeData() 方法才能删除掉相关联的数据。<font color=FF0000>**WeakMap 就可以简化这一操作**</font>：
+
+```js
+let wm = new WeakMap(), element = document.querySelector(".element");
+wm.set(element, "data");
+
+let value = wm.get(elemet);
+console.log(value); // data
+
+element.parentNode.removeChild(element);
+element = null;
+```
+
+##### 2. 数据缓存
+
+从上一个例子，我们也可以看出，当我们需要关联对象和数据，比如在不修改原有对象的情况下储存某些属性或者根据对象储存一些计算的值等，而又不想管理这些数据的死活时非常适合考虑使用 WeakMap。数据缓存就是一个非常好的例子：
+
+```js
+const cache = new WeakMap();
+function countOwnKeys(obj) {
+    if (cache.has(obj)) {
+        console.log('Cached');
+        return cache.get(obj);
+    } else {
+        console.log('Computed');
+        const count = Object.keys(obj).length;
+        cache.set(obj, count);
+        return count;
+    }
+}
+```
+
+##### 3. 私有属性
+
+<font color=FF0000>WeakMap 也可以被用于实现私有变量</font>，不过在 ES6 中实现私有变量的方式有很多种，这只是其中一种：
+
+```js
+const privateData = new WeakMap();
+
+class Person {
+    constructor(name, age) { 
+      privateData.set(this, { name: name, age: age }); 
+    }
+    getName() { return privateData.get(this).name; }
+    getAge() { return privateData.get(this).age; }
+}
+
+export default Person;
+```
+
+摘自：[ES6 系列之 WeakMap](https://github.com/mqyqingfeng/Blog/issues/92)
+
 
 
 ### JS 中变量的存储
@@ -2335,7 +2540,7 @@ console.log(Object.prototype.toString.call(JSON)); // [object JSON]
 
 所以我们可以识别至少 14 种类型，当然我们也可以算出来，[[class]] 属性至少有 12 个。
 
-**注：**还有上面提及的 Symbol 和 BigInt。另外，还有 Set、Map、weakSet、weakMap、location、history、window（只在浏览器下生效，结果为 '[object Window]' ）、 globalThis（ globalThis 在不同宿主环境的值不同，浏览器下的值为 '[object Window]'，在 Node 中为 '[object global]' ）
+**注：**还有上面提及的 Symbol 和 BigInt。另外，还有 Promise、Set、Map、weakSet、weakMap、location、history、window（只在浏览器下生效，结果为 '[object Window]' ）、 globalThis（ globalThis 在不同宿主环境的值不同，浏览器下的值为 '[object Window]'，在 Node 中为 '[object global]' ）
 
 #### 实现 type 方法：
 
@@ -2547,6 +2752,160 @@ isElement = function(obj) {
 
 
 
+### 类数组对象
+
+所谓的类数组对象：拥有一个 length 属性和若干索引属性的对象。
+
+举个例子：
+
+```js
+var array = ['name', 'age', 'sex'];
+
+var arrayLike = {
+    0: 'name',
+    1: 'age',
+    2: 'sex',
+    length: 3
+}
+```
+
+即便如此，为什么叫做类数组对象呢？那让我们从读写、获取长度、遍历三个方面看看这两个对象。
+
+##### 读写
+
+```js
+console.log(array[0]); // name
+console.log(arrayLike[0]); // name
+
+array[0] = 'new name';
+arrayLike[0] = 'new name';
+```
+
+##### 长度
+
+```js
+console.log(array.length); // 3
+console.log(arrayLike.length); // 3
+```
+
+##### 遍历
+
+```js
+for(var i = 0, len = array.length; i < len; i++) { …… }
+for(var i = 0, len = arrayLike.length; i < len; i++) { …… }
+```
+
+是不是很像？
+
+那类数组对象可以使用数组的方法吗？比如：`arrayLike.push('4');` 然而上述代码会报错：arrayLike.push is not a function。
+
+#### 调用数组方法
+
+如果类数组就是任性的想用数组的方法怎么办呢？
+
+既然无法直接调用，我们可以用 Function.call 间接调用。
+
+```js
+var arrayLike = {0: 'name', 1: 'age', 2: 'sex', length: 3 }
+
+Array.prototype.join.call(arrayLike, '&'); // name&age&sex
+
+Array.prototype.slice.call(arrayLike, 0); // ["name", "age", "sex"] // slice可以做到类数组转数组
+
+Array.prototype.map.call(arrayLike, function(item){
+  return item.toUpperCase();
+});  // ["NAME", "AGE", "SEX"]
+```
+
+#### 类数组转数组
+
+在上面的例子中已经提到了一种类数组转数组的方法，再补充三个：
+
+```js
+var arrayLike = {0: 'name', 1: 'age', 2: 'sex', length: 3 }
+// 1. slice
+Array.prototype.slice.call(arrayLike); // ["name", "age", "sex"] 
+// 2. splice
+Array.prototype.splice.call(arrayLike, 0); // ["name", "age", "sex"] 
+// 3. ES6 Array.from
+Array.from(arrayLike); // ["name", "age", "sex"] 
+// 4. apply
+Array.prototype.concat.apply([], arrayLike)
+```
+
+#### Arguments 对象
+
+Arguments 对象只定义在函数体中，包括了函数的参数和其他属性。在函数体中，arguments 指代该函数的 Arguments 对象。
+
+举个例子：
+
+```js
+function foo(name, age, sex) { console.log(arguments); }
+foo('name', 'age', 'sex')
+```
+
+<img src="https://camo.githubusercontent.com/993a101381ec9e9badf6591d841fd7deb53a7a8dde01bf17980cc2aefacc65d4/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f6d717971696e6766656e672f426c6f672f496d616765732f617267756d656e74732e706e67" alt="https://camo.githubusercontent.com/993a101381ec9e9badf6591d841fd7deb53a7a8dde01bf17980cc2aefacc65d4/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f6d717971696e6766656e672f426c6f672f496d616765732f617267756d656e74732e706e67" style="zoom: 67%;" />
+
+我们可以看到除了类数组的 索引属性 和 length 属性之外，还有一个 callee 属性。
+
+#### callee 属性
+
+Arguments 对象的 callee 属性，通过它可以调用函数自身。讲个闭包经典面试题使用 callee 的解决方法：
+
+```js
+var data = [];
+for (var i = 0; i < 3; i++) {
+    (data[i] = function () {
+       console.log(arguments.callee.i) 
+    }).i = i;
+}
+
+data[0](); // 0
+data[1](); // 1
+data[2](); // 2
+```
+
+#### arguments 和对应参数的绑定
+
+```js
+function foo(name, age, sex, hobbit) {
+    console.log(name, arguments[0]); // name name
+
+    // 改变形参
+    name = 'new name';
+    console.log(name, arguments[0]); // new name new name
+
+    // 改变arguments
+    arguments[1] = 'new age';
+    console.log(age, arguments[1]); // new age new age
+
+    // 测试未传入的是否会绑定
+    console.log(sex); // undefined
+    sex = 'new sex';
+    console.log(sex, arguments[2]); // new sex undefined
+
+    arguments[3] = 'new hobbit';
+    console.log(hobbit, arguments[3]); // undefined new hobbit
+}
+
+foo('name', 'age')
+```
+
+传入的参数，实参和 arguments 的值会共享，当没有传入时，实参与 arguments 值不会共享。除此之外，以上是在非严格模式下，如果是在严格模式下，实参和 arguments 是不会共享的。
+
+#### arguments 应用
+
+包括：
+
+1. 参数不定长
+2. 函数柯里化
+3. 递归调用
+4. 函数重载
+
+摘自：[JavaScript深入之类数组对象与arguments](https://github.com/mqyqingfeng/Blog/issues/14)
+
+
+
 ### Promise
 
 #### 面试题：红绿灯问题
@@ -2655,6 +3014,745 @@ Promise.all([Promise.resolve(1), Promise.resolve(2)])
 <font color=FF0000>**当处于 pending 状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）**</font>。
 
 摘自：[ES6 系列之我们来聊聊 Promise](https://github.com/mqyqingfeng/Blog/issues/98)
+
+### Generator 的自动执行
+
+#### 单个异步任务
+
+```js
+var fetch = require('node-fetch');
+
+function* gen(){
+    var url = 'https://api.github.com/users/github';
+    var result = yield fetch(url);
+    console.log(result.bio);
+}
+```
+
+为了获得最终的执行结果，你需要这样做：
+
+```js
+var g = gen();         // 注：执行 generator 函数
+var result = g.next(); // 注：g.next() 执行到 fetch(url)
+
+// 注：由于返回值 result 为 { value: Promise { <pending> }, done: false }。另外，fetch 返回一个 Promise；所以 result.value 是一个 Promise。于是，再进行 next()
+result.value.then(function(data) { return data.json(); })
+            .then(function(data) { g.next(data); }
+);
+```
+
+首先，执行 Generator 函数，获取遍历器对象。然后使用 next 方法，执行异步任务的第一阶段，即 `fetch(url)`。
+
+注意，由于 `fetch(url)` 会返回一个 Promise 对象，所以 result 的值为：
+
+```js
+{ value: Promise { <pending> }, done: false }
+```
+
+最后我们为这个 Promise 对象添加一个 then 方法，先将其返回的数据格式化 `data.json()`；<font color=FF0000>再调用 g.next，将获得的数据传进去，由此可以执行异步任务的第二阶段，代码执行完毕</font>。
+
+#### 多个异步任务
+
+上节我们只调用了一个接口，那如果我们调用了多个接口，使用了多个 yield，我们岂不是要在 then 函数中不断的嵌套下去……
+
+所以我们来看看执行多个异步任务的情况：
+
+```js
+var fetch = require('node-fetch');
+
+function* gen() {
+    var r1 = yield fetch('https://api.github.com/users/github');
+    var r2 = yield fetch('https://api.github.com/users/github/followers');
+    var r3 = yield fetch('https://api.github.com/users/github/repos');
+
+    console.log([r1.bio, r2[0].login, r3[0].full_name].join('\n'));
+}
+```
+
+为了获得最终的执行结果，你可能要写成：
+
+```js
+var g = gen();
+var result1 = g.next();
+
+result1.value.then(function(data){ return data.json(); })
+             .then(function(data){ return g.next(data).value; }) // 注：第一个 yield 完成，返回值放入 r1
+             .then(function(data){ return data.json(); })
+             .then(function(data){ return g.next(data).value })  // 注：第二个 yield 完成，返回值放入 r2
+             .then(function(data){ return data.json(); })
+             .then(function(data){ g.next(data) });              // 注：第三个 yield 完成，返回值放入 r3
+```
+
+但我知道你肯定不想写成这样……
+
+其实，利用递归，我们可以这样写：
+
+```js
+function run(gen) {
+    var g = gen();
+
+    function next(data) {
+        var result = g.next(data);
+        if (result.done) return; // 注：递归 退出条件
+        result.value.then(function(data) { return data.json(); })
+                    .then(function(data) { next(data); });
+    }
+    next();
+}
+
+run(gen);
+```
+
+其中的关键就是 yield 的时候返回一个 Promise 对象，给这个 Promise 对象添加 then 方法，当异步操作成功时执行 then 中的 onFullfilled 函数，onFullfilled 函数中又去执行 g.next，从而让 Generator 继续执行，然后再返回一个 Promise，再在成功时执行 g.next，然后再返回……
+
+#### 启动器函数
+
+<font color=FF0000>在 **run 这个启动器函数** 中</font>，我们在 then 函数中将数据格式化 `data.json()`；但在更广泛的情况下，比如 yield 直接跟一个 Promise，而非一个 fetch 函数返回的 Promise，因为没有 json 方法，代码就会报错。所以为了更具备通用性，连同这个例子和启动器，我们修改为：
+
+```js
+var fetch = require('node-fetch');
+
+function* gen() {
+    var r1 = yield fetch('https://api.github.com/users/github');
+    // 注：response.json() 返回一个 Promise，详见下面的“注”
+    var json1 = yield r1.json();
+    var r2 = yield fetch('https://api.github.com/users/github/followers');
+    var json2 = yield r2.json();
+    var r3 = yield fetch('https://api.github.com/users/github/repos');
+    var json3 = yield r3.json();
+
+    console.log([json1.bio, json2[0].login, json3[0].full_name].join('\n'));
+}
+
+function run(gen) {
+    var g = gen();
+
+    function next(data) {
+        var result = g.next(data);
+        if (result.done) return;
+        result.value.then(function(data) { next(data); });
+    }
+    next();
+}
+
+run(gen);
+```
+
+只要 yield 后跟着一个 Promise 对象，我们就可以利用这个 run 函数将 Generator 函数自动执行。**注：**
+
+> Response  mixin 的 json() 方法接收一个 Response 流，并将其读取完成。它 <font color=FF0000>**返回一个 Promise**</font>，Promise 的解析 resolve 结果是将文本体解析为 JSON。
+>
+> 摘自：[MDN - Response.json()](https://developer.mozilla.org/zh-CN/docs/Web/API/Response/json)
+
+#### 回调函数
+
+yield 后一定要跟着一个 Promise 对象才能保证 Generator 的自动执行吗？如果只是一个回调函数呢？我们来看个例子：
+
+首先我们来模拟一个普通的异步请求：
+
+```js
+function fetchData(url, cb) {
+    setTimeout(function(){
+        cb({ status: 200, data: url })
+    }, 1000)
+}
+```
+
+我们将这种函数改造成：
+
+```js
+function fetchData(url) {
+    return function(cb){
+        setTimeout(function(){
+            cb({ status: 200, data: url })
+        }, 1000)
+    }
+}
+```
+
+对于这样的 Generator 函数：
+
+```js
+function* gen() {
+    var r1 = yield fetchData('https://api.github.com/users/github');
+    var r2 = yield fetchData('https://api.github.com/users/github/followers');
+
+    console.log([ r1.data, r2.data ].join('\n'));
+}
+```
+
+如果要获得最终的结果：
+
+```js
+var g = gen();
+var r1 = g.next();
+
+r1.value(function(data) {
+    var r2 = g.next(data);
+    r2.value(function(data) { g.next(data); });
+});
+```
+
+如果写成这样的话，我们会面临跟第一节同样的问题，那就是当使用多个 yield 时，代码会循环嵌套起来……
+
+同样利用递归，所以我们可以将其改造为：
+
+```js
+function run(gen) {
+    var g = gen();
+
+    function next(data) {
+        var result = g.next(data);
+        if (result.done) return;
+        result.value(next);
+    }
+    next();
+}
+
+run(gen);
+```
+
+#### run
+
+由此可以看到 <font color=FF0000>Generator 函数的自动执行需要一种机制，即当异步操作有了结果，能够自动交回执行权</font>。而两种方法可以做到这一点。
+
+1. <font color=FF0000>**回调函数**</font>。将异步操作进行包装，暴露出回调函数，<font color=FF0000 size=4>**在回调函数里面交回执行权**</font>。
+2. <font color=FF0000>**Promise 对象**</font>。将异步操作包装成 Promise 对象，<font color=FF0000 size=4>**用 then 方法交回执行权**</font>。
+
+在两种方法中，我们各写了一个 run 启动器函数，那我们能不能将这两种方式结合在一些，写一个通用的 run 函数呢？我们尝试一下：
+
+```js
+// 第一版
+function run(gen) {
+    var gen = gen();
+
+    function next(data) {
+        var result = gen.next(data);
+        if (result.done) return;
+        if (isPromise(result.value)) { // 注：判断 result.value 是否是 Promise
+            result.value.then(function(data) { next(data); });
+        } else { result.value(next) }
+    }
+    next()
+}
+
+function isPromise(obj) {
+    return 'function' == typeof obj.then;
+}
+
+module.exports = run;
+```
+
+其实实现的很简单，判断 result.value 是否是 Promise，是就添加 then 函数，不是就直接执行。
+
+#### return Promise
+
+我们<font color=FF0000>已经写了一个不错的启动器函数，**支持 yield 后跟回调函数或者 Promise 对象**</font>。
+
+现在有一个问题需要思考，就是我们 <font color=FF0000>如何获得 Generator 函数的返回值</font>呢？又<font color=FF0000>如果 Generator 函数中出现了错误</font>，就比如 fetch 了一个不存在的接口，这个<font color=FF0000>错误该如何捕获</font>呢？
+
+这很容易让人想到 Promise，如果这个启动器函数返回一个 Promise，我们就可以给这个 Promise 对象添加 then 函数，当所有的异步操作执行成功后，我们执行 onFullfilled 函数，如果有任何失败，就执行 onRejected 函数。
+
+```js
+// 第二版
+function run(gen) {
+    var gen = gen();
+
+    return new Promise(function(resolve, reject) {
+        function next(data) {
+            try { var result = gen.next(data); }
+            catch (e) { return reject(e); }
+
+            if (result.done) { return resolve(result.value) };
+            var value = toPromise(result.value);
+            value.then(function(data) { next(data); }, 
+                       function(e) { reject(e) });
+        }
+        next()
+    })
+}
+
+function isPromise(obj) {
+    return 'function' == typeof obj.then;
+}
+
+function toPromise(obj) {
+    if (isPromise(obj)) return obj;  // 注：判断是否是 Promise，是则 直接返回
+    if ('function' == typeof obj) return thunkToPromise(obj); // 注；不是 Promise，是（回调）函数；则用 Promise 包装
+    return obj;
+}
+
+function thunkToPromise(fn) {
+    return new Promise(function(resolve, reject) {
+        fn(function(err, res) {
+            if (err) return reject(err);
+            resolve(res);
+        });
+    });
+}
+
+module.exports = run;
+```
+
+与第一版有很大的不同：
+
+- 首先，我们返回了一个 Promise，当 `result.done` 为 true 的时候，我们将该值 `resolve(result.value)`；如果执行的过程中出现错误，被 catch 住，我们会将原因 `reject(e)`。
+
+- 其次，我们会<font color=FF0000>使用 `thunkToPromise` 将回调函数包装成一个 Promise</font>，然后统一的添加 then 函数。在这里值得注意的是，在 `thunkToPromise` 函数中，我们遵循了 error first 的原则，这意味着当我们处理回调函数的情况时：
+
+```js
+// 模拟数据请求
+function fetchData(url) {
+    return function(cb) {
+        setTimeout(function() {
+            cb(null, { status: 200, data: url })
+        }, 1000)
+    }
+}
+```
+
+#### co
+
+<font color=FF0000>如果我们再将这个启动器函数写的完善一些，我们就**相当于写了一个 [co](https://github.com/tj/co)**</font>（注：根据 [[#async await]] 中的说法，co 是 “自动执行器”）。实际上，上面的代码确实是来自于 co。而 co 是什么？ co 是大神 TJ Holowaychuk 于 2013 年 6 月发布的一个小模块，用于 Generator 函数的自动执行。
+
+如果直接使用 co 模块，这两种不同的例子可以简写为：
+
+```js
+var fetch = require('node-fetch');
+var co = require('co');
+
+function* gen() {
+    var r1 = yield fetch('https://api.github.com/users/github');
+    var json1 = yield r1.json();
+    var r2 = yield fetch('https://api.github.com/users/github/followers');
+    var json2 = yield r2.json();
+    var r3 = yield fetch('https://api.github.com/users/github/repos');
+    var json3 = yield r3.json();
+
+    console.log([json1.bio, json2[0].login, json3[0].full_name].join('\n'));
+}
+
+co(gen);
+```
+
+```js
+// yield 后是一个回调函数
+var co = require('co');
+
+function fetchData(url) {
+    return function(cb) {
+        setTimeout(function() {
+            cb(null, { status: 200, data: url })
+        }, 1000)
+    }
+}
+
+function* gen() {
+    var r1 = yield fetchData('https://api.github.com/users/github');
+    var r2 = yield fetchData('https://api.github.com/users/github/followers');
+
+    console.log([r1.data, r2.data].join('\n'));
+}
+
+co(gen);
+```
+
+摘自：[ES6 系列之 Generator 的自动执行](https://github.com/mqyqingfeng/Blog/issues/99)
+
+### async await
+
+ES2017 标准引入了 async 函数，使得异步操作变得更加方便。在异步处理上，async 函数就是 Generator 函数的语法糖。
+
+```js
+// 使用 generator
+var fetch = require('node-fetch');
+var co = require('co');
+
+function* gen() {
+    var r1 = yield fetch('https://api.github.com/users/github');
+    var json1 = yield r1.json();
+    console.log(json1.bio);
+}
+co(gen);
+```
+
+当你使用 async 时：
+
+```js
+// 使用 async
+var fetch = require('node-fetch');
+
+var fetchData = async function () {
+    var r1 = await fetch('https://api.github.com/users/github');
+    var json1 = await r1.json();
+    console.log(json1.bio);
+};
+fetchData();
+```
+
+其实 <font color=FF0000>**async 函数的实现原理：就是将 Generator 函数 和 自动执行器，包装在一个函数里**</font>。
+
+```js
+async function fn(args) { ... }
+
+// 等同于
+function fn(args) {
+  return spawn(function* () { ... });
+}
+```
+
+<font color=FF0000>spawn 函数指的是 <font size=4>**自动执行器**</font>，就比如说 <font size=4>**co**</font></font>。再加上 <font color=FF0000 size=4>**async 函数返回一个 Promise 对象**</font>，你也可以理解为 async 函数是基于 Promise 和 Generator 的一层封装。
+
+#### async 与 Promise
+
+严谨的说：<font color=FF0000>async 是一种语法，Promise 是一个内置对象，两者并不具备可比性</font>；更何况 async 函数也返回一个 Promise 对象……
+
+这里主要是展示一些场景，使用 async 会比使用 Promise 更优雅的处理异步流程。
+
+##### 1. 代码更加简洁（注：下面的每个示例都是原先写法 和 使用 async 的写法比较）
+
+```js
+/* 示例一 */
+function fetch() {
+  return ( fetchData().then( () => { return "done" } ); )
+}
+
+async function fetch() {
+  await fetchData()
+  return "done"
+};
+```
+
+```js
+/* 示例二 */
+function fetch() {
+  return fetchData().then(data => {
+    if (data.moreData) {
+        return fetchAnotherData(data).then( moreData => { return moreData } )
+    } else { return data }
+  });
+}
+
+async function fetch() {
+  const data = await fetchData()
+  if (data.moreData) {
+    const moreData = await fetchAnotherData(data);
+    return moreData
+  } else { return data }
+};
+```
+
+```js
+/* 示例三 */
+function fetch() {
+  return (
+    fetchData().then(value1 => { return fetchMoreData(value1) })
+    					 .then(value2 => { return fetchMoreData2(value2) })
+  )
+}
+
+async function fetch() {
+  const value1 = await fetchData()
+  const value2 = await fetchMoreData(value1)
+  return fetchMoreData2(value2)
+};
+```
+
+##### 2. 错误处理
+
+```js
+function fetch() {
+  try {
+    fetchData()
+      .then(result => { const data = JSON.parse(result) })
+      .catch((err) => { console.log(err) })
+  } catch (err) { console.log(err) }
+}
+```
+
+在这段代码中，try / catch 能捕获 fetchData() 中的一些 Promise 构造错误，但是不能捕获 JSON.parse 抛出的异常，如果要处理 JSON.parse 抛出的异常，需要添加 catch 函数重复一遍异常处理的逻辑。在实际项目中，错误处理逻辑可能会很复杂，这会导致冗余的代码。
+
+```js
+async function fetch() {
+  try { const data = JSON.parse(await fetchData()) }
+  catch (err) { console.log(err) }
+};
+```
+
+async / await 的出现使得 try/catch 就可以捕获同步和异步的错误。**注：**关于 async / await 可以使用 [await-to-js](https://github.com/scopsy/await-to-js) 更优雅地捕获异常
+
+##### 3. 调试
+
+```js
+const fetchData = () => new Promise((resolve) => setTimeout(resolve, 1000, 1))
+const fetchMoreData = (value) => new Promise((resolve) => setTimeout(resolve, 1000, value + 1))
+const fetchMoreData2 = (value) => new Promise((resolve) => setTimeout(resolve, 1000, value + 2))
+
+function fetch() {
+  return (
+    fetchData()
+    .then((value1) => { console.log(value1) return fetchMoreData(value1) })
+    .then(value2 => { return fetchMoreData2(value2) })
+  )
+}
+const res = fetch();
+console.log(res);
+```
+
+![https://camo.githubusercontent.com/38c17c920b970173d0b8ba41f26edf9e41cefdf9db6d4c7466333b6b137e1eef/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f6d717971696e6766656e672f426c6f672f496d616765732f4553362f6173796e632f70726f6d6973652e676966](https://s2.loli.net/2022/04/19/MQWNvKT1n9Ryawh.gif)
+
+因为 then 中的代码是异步执行，所以当你打断点的时候，代码不会顺序执行，尤其当你使用 step over 的时候，then 函数会直接进入下一个 then 函数。
+
+```js
+const fetchData = () => new Promise((resolve) => setTimeout(resolve, 1000, 1))
+const fetchMoreData = () => new Promise((resolve) => setTimeout(resolve, 1000, 2))
+const fetchMoreData2 = () => new Promise((resolve) => setTimeout(resolve, 1000, 3))
+
+async function fetch() {
+  const value1 = await fetchData()
+  const value2 = await fetchMoreData(value1)
+  return fetchMoreData2(value2)
+};
+const res = fetch();
+console.log(res);
+```
+
+![https://camo.githubusercontent.com/8348dc27d42ca5eff110cbe13a86979871721da5cca45fe99793acf4cd23450a/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f6d717971696e6766656e672f426c6f672f496d616765732f4553362f6173796e632f6173796e632e676966](https://s2.loli.net/2022/04/19/zsL9Ud483SjKkPr.gif)
+
+而使用 async 的时候，则可以像调试同步代码一样调试。
+
+#### async 地狱
+
+async 地狱主要是<mark>指开发者贪图语法上的简洁而让原本可以并行执行的内容变成了顺序执行，从而影响了性能</mark>，但用地狱形容有点夸张了
+
+##### 例子一
+
+举个例子：
+
+```js
+(async () => {
+  const getList = await getList();
+  const getAnotherList = await getAnotherList();
+})();
+```
+
+`getList()` 和 `getAnotherList()` 其实并没有依赖关系，但是现在的这种写法，虽然简洁，却导致了 `getAnotherList()` 只能在 `getList()` 返回后才会执行，从而导致了多一倍的请求时间。为了解决这个问题，我们可以改成这样：
+
+```js
+(async () => {
+  const listPromise = getList();
+  const anotherListPromise = getAnotherList();
+  await listPromise;
+  await anotherListPromise;
+})();
+```
+
+也可以使用 Promise.all()：
+
+```js
+(async () => {
+  Promise.all([getList(), getAnotherList()]).then(...);
+})();
+```
+
+##### 例子二
+
+当然上面这个例子比较简单，我们再来扩充一下：
+
+```js
+(async () => {
+  const listPromise = await getList();
+  const anotherListPromise = await getAnotherList();
+
+  // do something
+
+  await submit(listData);
+  await submit(anotherListData);
+})();
+```
+
+因为 await 的特性，整个例子有明显的先后顺序，然而 `getList()` 和 `getAnotherList()` 其实并无依赖，`submit(listData)` 和 `submit(anotherListData)` 也没有依赖关系，那么对于这种例子，我们该怎么改写呢？
+
+**基本分为三个步骤：**
+
+1. **找出依赖关系：**在这里，submit(listData) 需要在 getList() 之后，submit(anotherListData) 需要在 anotherListPromise() 之后。
+
+2. **将互相依赖的语句包裹在 async 函数中**
+
+   ```js
+   async function handleList() {
+     const listPromise = await getList();
+     // ...
+     await submit(listData);
+   }
+   
+   async function handleAnotherList() {
+     const anotherListPromise = await getAnotherList()
+     // ...
+     await submit(anotherListData)
+   }
+   ```
+
+3. **并发执行 async 函数**
+
+   ```js
+   async function handleList() {
+     const listPromise = await getList();
+     // ...
+     await submit(listData);
+   }
+   
+   async function handleAnotherList() {
+     const anotherListPromise = await getAnotherList()
+     // ...
+     await submit(anotherListData)
+   }
+   
+   // 方法一
+   (async () => {
+     const handleListPromise = handleList()
+     const handleAnotherListPromise = handleAnotherList()
+     await handleListPromise
+     await handleAnotherListPromise
+   })()
+   
+   // 方法二
+   (async () => {
+     Promise.all([handleList(), handleAnotherList()]).then()
+   })()
+   ```
+
+#### 继发与并发
+
+##### 问题：给定一个 URL 数组，如何实现接口的 继发 和 并发 ？
+
+**async 继发实现：**
+
+```js
+// 继发一
+async function loadData() {
+  var res1 = await fetch(url1);
+  var res2 = await fetch(url2);
+  var res3 = await fetch(url3);
+  return "whew all done";
+}
+// 继发二
+async function loadData(urls) {
+  for (const url of urls) {
+    const response = await fetch(url);
+    console.log(await response.text());
+  }
+}
+```
+
+**async 并发实现：**
+
+```js
+// 并发一
+async function loadData() {
+  var res = await Promise.all([fetch(url1), fetch(url2), fetch(url3)]);
+  return "whew all done";
+}
+// 并发二
+async function loadData(urls) {
+  // 并发读取 url
+  const textPromises = urls.map(async url => {
+    const response = await fetch(url);
+    return response.text();
+  });
+  // 按次序输出
+  for (const textPromise of textPromises) {
+    console.log(await textPromise);
+  }
+}
+```
+
+#### async 错误捕获
+
+尽管我们可以使用 try catch 捕获错误，但是当我们需要捕获多个错误并做不同的处理时，很快 try catch 就会导致代码杂乱，就比如：
+
+```js
+async function asyncTask(cb) {
+    try {
+       const user = await UserModel.findById(1);
+       if(!user) return cb('No user found');
+    } catch(e) {
+        return cb('Unexpected error occurred');
+    }
+
+    try {
+       const savedTask = await TaskModel({userId: user.id, name: 'Demo Task'});
+    } catch(e) {
+        return cb('Error occurred while saving task');
+    }
+
+    if(user.notificationsEnabled) {
+        try {
+            await NotificationService.sendNotification(user.id, 'Task Created');
+        } catch(e) {
+            return cb('Error while sending notification');
+        }
+    }
+
+    if(savedTask.assignedUser.id !== user.id) {
+        try {
+            await NotificationService.sendNotification(savedTask.assignedUser.id, 'Task was created for you');
+        } catch(e) {
+            return cb('Error while sending notification');
+        }
+    }
+
+    cb(null, savedTask);
+}
+```
+
+为了简化这种错误的捕获，我们可以给 await 后的 promise 对象添加 catch 函数，为此我们需要写一个 helper：
+
+```js
+// to.js
+export default function to(promise) {
+   return promise.then(data => {
+      return [null, data];
+   })
+   .catch(err => [err]);
+}
+```
+
+整个错误捕获的代码可以简化为：
+
+```js
+import to from './to.js';
+
+async function asyncTask() {
+     let err, user, savedTask;
+
+     [err, user] = await to(UserModel.findById(1));
+     if(!user) throw new CustomerError('No user found');
+
+     [err, savedTask] = await to(TaskModel({userId: user.id, name: 'Demo Task'}));
+     if(err) throw new CustomError('Error occurred while saving task');
+
+    if(user.notificationsEnabled) {
+       const [err] = await to(NotificationService.sendNotification(user.id, 'Task Created'));
+       if (err) console.error('Just log the error and continue flow');
+    }
+}
+```
+
+#### async 的一些讨论
+
+##### async 会取代 Generator 吗？
+
+Generator 本来是用作生成器，使用 Generator 处理异步请求只是一个比较 hack 的用法。在异步方面，async 可以取代 Generator，但是 <font color=FF0000>async 和 Generator 两个语法本身是用来解决不同的问题的</font>。
+
+##### async 会取代 Promise 吗？
+
+1. async 函数返回一个 Promise 对象
+2. 面对复杂的异步流程，Promise 提供的 all 和 race 会更加好用
+3. Promise 本身是一个对象，所以可以在代码中任意传递
+4. async 的支持率还很低，即使有 Babel，编译后也要增加 1000 行左右。
+
+摘自：[ES6 系列之我们来聊聊 Async](https://github.com/mqyqingfeng/Blog/issues/100)
 
 
 
@@ -2927,6 +4025,208 @@ var addEvent = (function(){
 当我们每次都需要进行条件判断，其实 <font color=FF0000>**只需要判断一次，接下来的使用方式都不会发生改变的时候，想想是否可以考虑使用惰性函数**</font>。
 
 摘自：[JavaScript专题之惰性函数](https://github.com/mqyqingfeng/Blog/issues/44)
+
+
+
+### 函数记忆 ( Memoization )
+
+#### 定义
+
+函数记忆是指<font color=FF0000>将上次的计算结果缓存起来，当下次调用时，如果遇到相同的参数，就直接返回缓存中的数据</font>。举个例子：
+
+```js
+function add(a, b) { return a + b; }
+
+// 假设 memoize 可以实现函数记忆
+var memoizedAdd = memoize(add);
+
+memoizedAdd(1, 2) // 3
+memoizedAdd(1, 2) // 相同的参数，第二次调用时，从缓存中取出数据，而非重新计算一次
+```
+
+#### 原理
+
+实现这样一个 memoize 函数很简单，<font color=FF0000>原理上只用 **把 参数 和 对应的结果 数据存到一个对象中**</font>。调用时，判断参数对应的数据是否存在，存在就返回对应的结果数据。
+
+#### 第一版
+
+我们来写一版：
+
+```js
+// 第一版 (来自《JavaScript权威指南》) 注：《JS权威指南》第七版 §8.4.4 找到了类似代码，不过不完全一样；比如 cache 用 Map 存放 
+function memoize(f) {
+    var cache = {};
+    return function(){
+        var key = arguments.length + Array.prototype.join.call(arguments, ",");
+        if (key in cache) {
+            return cache[key]
+        }
+        else {
+            return cache[key] = f.apply(this, arguments)
+        }
+    }
+}
+```
+
+我们来测试一下：
+
+```js
+var add = function(a, b, c) { return a + b + c }
+
+var memoizedAdd = memoize(add)
+
+console.time('use memoize')
+for(var i = 0; i < 100000; i++) { memoizedAdd(1, 2, 3) }
+console.timeEnd('use memoize')
+
+console.time('not use memoize')
+for(var i = 0; i < 100000; i++) { add(1, 2, 3) }
+console.timeEnd('not use memoize')
+```
+
+在 Chrome 中，使用 memoize 大约耗时 60ms，如果我们不使用函数记忆，大约耗时 1.3 ms 左右。
+
+#### 注意
+
+什么，我们使用了看似高大上的函数记忆，结果却更加耗时，这个例子近乎有 60 倍呢！所以，函数记忆也并不是万能的，你看这个简单的场景，其实并不适合用函数记忆。
+
+需要注意的是，<font color=FF0000>函数记忆只是一种编程技巧，本质上是 **牺牲算法的空间复杂度** 以 **换取更优的时间复杂度**</font>，在客户端 JavaScript 中代码的执行时间复杂度往往成为瓶颈，因此在大多数场景下，这种牺牲空间换取时间的做法以提升程序执行效率的做法是非常可取的。
+
+#### 第二版
+
+因为 <font color=FF0000>第一版使用了 join 方法</font>，我们很容易想到<font color=FF0000>当参数是对象的时候，就会自动调用 toString 方法转换成 `[Object object]`，再拼接字符串作为 key 值</font>。我们写个 demo 验证一下这个问题：
+
+```js
+var propValue = function(obj){ return obj.value }
+
+var memoizedAdd = memoize(propValue)
+
+console.log(memoizedAdd({value: 1})) // 1
+console.log(memoizedAdd({value: 2})) // 1
+```
+
+两者都返回了 1，显然是有问题的，所以我们看看 underscore 的 memoize 函数是如何实现的：
+
+```js
+// 第二版 (来自 underscore 的实现)
+var memoize = function(func, hasher) {
+    var memoize = function(key) { // 注：因为作用域，所以函数内还可以定义哥 memoize
+        var cache = memoize.cache; // 注：memoize 在下面定义
+        var address = '' + (hasher ? hasher.apply(this, arguments) : key); // 注：因为没有传 hasher，这里是有问题的；形参 key 对应的是第一个实参；在下面两次运行中都是 1。正因为此，导致了下面(1, 2, 3) 和 (1, 2, 4) 结果都是 6
+        if (!cache[address]) {
+            cache[address] = func.apply(this, arguments);
+        }
+        return cache[address];
+    };
+    memoize.cache = {};
+    return memoize;
+};
+```
+
+从这个实现可以看出，underscore 默认使用 function 的第一个参数作为 key，所以如果直接使用
+
+```js
+var add = function(a, b, c) { return a + b + c }
+
+var memoizedAdd = memoize(add) // 注：在这里的调用中，hasher 为 undefined
+
+memoizedAdd(1, 2, 3) // 6
+memoizedAdd(1, 2, 4) // 6
+```
+
+肯定是有问题的，如果要支持多参数，我们就需要传入 hasher 函数，自定义存储的 key 值。所以我们考虑使用 JSON.stringify：
+
+```js
+var memoizedAdd = memoize(add, function(){
+    var args = Array.prototype.slice.call(arguments)
+    return JSON.stringify(args)
+})
+
+console.log(memoizedAdd(1, 2, 3)) // 6
+console.log(memoizedAdd(1, 2, 4)) // 7
+```
+
+如果使用 JSON.stringify，参数是对象的问题也可以得到解决，因为存储的是对象序列化后的字符串。
+
+#### 适用场景
+
+这里以 “斐波那契数列” 为例，由于这部分内容在 “记忆化搜索” 和 ”动态规划“ 中是经典示例，被大量提及；所以这部分略。
+
+摘自：[JavaScript专题之函数记忆](https://github.com/mqyqingfeng/Blog/issues/46)
+
+
+
+### 递归
+
+**定义：**程序调用自身的编程技巧称为递归 ( recursion )。
+
+##### 阶乘
+
+以阶乘为例：
+
+```js
+function factorial(n) {
+    if (n == 1) return n;
+    return n * factorial(n - 1)
+}
+console.log(factorial(5)) // 5 * 4 * 3 * 2 * 1 = 120
+```
+
+示意图（ 图片来自 www.penjee.com ）
+
+![https://camo.githubusercontent.com/e7f3e971eebd1f8c6e0bd15be013506e516443ed7caeb27dc29c983bf5b1a2e9/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f6d717971696e6766656e672f426c6f672f496d616765732f726563757273696f6e2f666163746f7269616c2e676966](https://camo.githubusercontent.com/e7f3e971eebd1f8c6e0bd15be013506e516443ed7caeb27dc29c983bf5b1a2e9/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f6d717971696e6766656e672f426c6f672f496d616765732f726563757273696f6e2f666163746f7269616c2e676966)
+
+##### 斐波那契数列
+
+在[《JavaScript专题之函数记忆》](https://github.com/mqyqingfeng/Blog/issues/46)中讲到过的斐波那契数列也使用了递归：
+
+```js
+function fibonacci(n){
+    return n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2);
+}
+console.log(fibonacci(5)) // 1 1 2 3 5
+```
+
+#### 递归条件
+
+从这两个例子中，我们可以看出：构成递归 需具备 <font color=FF0000>边界条件</font>、<font color=FF0000>递归前进段 </font>和 <font color=FF0000>递归返回段</font>。<mark>当边界条件不满足时，递归前进；当边界条件满足时，递归返回</mark>。阶乘中的 `n == 1` 和 斐波那契数列中的 `n < 2` 都是边界条件。
+
+##### 总结一下递归的特点
+
+1. 子问题须与原始问题为同样的事，且更为简单；
+2. 不能无限制地调用本身，须有个出口，化简为非递归状况处理。
+
+了解这些特点可以帮助我们更好的编写递归函数。
+
+#### 执行上下文栈
+
+在[《JavaScript深入之执行上下文栈》](https://github.com/mqyqingfeng/Blog/issues/4)中，我们知道：当执行一个函数的时候，就会创建一个执行上下文，并且压入执行上下文栈，当函数执行完毕的时候，就会将函数的执行上下文从栈中弹出。
+
+试着对阶乘函数分析执行的过程，我们会发现，JavaScript 会不停的创建执行上下文压入执行上下文栈，对于内存而言，维护这么多的执行上下文也是一笔不小的开销呐！那么，我们该如何优化呢？<font color=FF0000>答案就是 <font size=4>**尾调用**</font></font>。
+
+#### 尾调用
+
+尾调用，是指函数内部的最后一个动作是函数调用。该调用的返回值，直接返回给函数。
+
+举个例子：
+
+```js
+// 尾调用
+function f(x){
+    return g(x);
+}
+```
+
+然而
+
+```js
+// 非尾调用
+function f(x){
+    return g(x) + 1;
+}
+```
+
+并不是尾调用，因为 g(x) 的返回值还需要跟 1 进行计算后，f(x) 才会返回值。
 
 
 
