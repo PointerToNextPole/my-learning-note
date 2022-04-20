@@ -2464,6 +2464,12 @@ Function.prototype.bind2 = function (context) {
 
 
 
+### 在数组中查找指定元素
+
+## // TODO
+
+
+
 ### JS 类型判断
 
 #### typeof
@@ -4328,7 +4334,144 @@ factorial(5) // 120
 
 摘自：[维基百科 - 尾调用](https://zh.wikipedia.org/wiki/%E5%B0%BE%E8%B0%83%E7%94%A8)
 
-另外，关于 “尾递归” 更多可以参见：[浅谈尾递归](https://site.douban.com/196781/widget/notes/12161495/note/262014367/) 以及《数据结构与算法分析：C描述》§3.3.3 P61
+#### 《深入理解 ES6》中的尾调用
+
+ECMAScript 6 关于函数最有趣的变化可能是 <font color=FF0000>**尾调用系统的引擎优化**</font>。
+
+<font color=FF0000>在 **ECMAScript 5 的引擎** 中， 尾调用的实现与其他函数调用的实现类似：**创建一个新的栈帧 ( stack frame )**， 将其推入调用栈来表示函数调用</font>。也就是说，在循环调用中，每一个未用完的栈帧都会被保存在内存中， 当调用栈变得过大时会造成程序问题 。
+
+##### ECMAScript 6 中的尾调用优化
+
+<font color=FF0000>ECMAScript 6 缩减了 **严格模式** 下尾调用栈的大小（非严格模式下不受影响）</font>；<font color=FF0000 size=4>**如果满足以下条件，尾调用不再创建新的栈帧， 而是清除井重用当前栈帧**</font>：
+
+- <font color=FF0000>尾调用不访问当前栈帧的变量 （也就是说 <font size=4>**函数不是一个闭包**</font>）</font>
+- 在函数内部， 尾调用是最后一条语句（**注：**感觉这句话不严谨）
+- 尾调用的结果作为 <font color=FF0000>函数值返回</font>
+
+以下这段示例代码满足上述的三个条件， 可以被 JavaScript 引擎自动优化 ：
+
+```js
+"use strict";
+
+function doSomething() { // 优化
+  return doSomethingElse();
+}
+```
+
+##### 不满足尾调用的情况
+
+如果你定义了一个函数，<font color=FF0000>**在尾调用返回后执行其他操作**，则函数也无法得到优化</font>：
+
+```js
+"use strict";
+
+function doSomething() { // 未优化 - 在函数执行并返回之前有额外的操作
+  return 1 + doSomethingElse();
+}
+```
+
+如果把函数调用的结果存储在 再返回这个变量，则可能导致引擎无法优化，就像这样 ：
+
+```js
+"use strict";
+
+function doSomething() { // 未优化 - 函数调用未发生在尾部
+  var result = doSomethingElse();
+  return result;
+}
+```
+
+由于没有立即返回 doSomethingElse() 函数的值，因此此例中的代码无法被优化。
+
+<font color=FF0000>可能最难避免的情况是 **闭包的使用**，它可以访问作用域中所有变量，因而导致尾调用优化失效</font>。举个例子：
+
+```js
+"use strict";
+
+function doSomething() {
+  var num = 1,
+      func = () => num;
+
+  // 未优化 - 存在闭包
+  return func();
+}
+```
+
+摘自：《深入理解 ES6》- 尾递归优化 P67
+
+#### 《 JavaScript 高级程序设计》第四版中的尾递归
+
+ECMAScript 6 规范新增了一项内存管理优化机制，让 JavaScript 引擎在满足条件时可以重用栈帧。 具体来说，这项优化非常适合“尾调用”，即外部函数的返回值是一个内部函数的返回值
+
+##### 尾调用优化的条件
+
+尾调用优化的条件就是确定外部栈帧真的没有必要存在了。涉及的条件如下：
+
+- 代码在<font color=FF0000>严格模式</font>下执行
+- 外部函数的<font color=FF0000>返回值是对尾调用函数的调用</font>
+- 尾调用函数<font color=FF0000>返回后不需要执行额外的逻辑</font>
+- 尾调用函数<font color=FF0000>不是引用外部函数作用域中自由变量的 **闭包**</font>
+
+下面展示了几个违反上述条件的函数，因此都不符号尾调用优化的要求：
+
+```js
+"use strict";
+
+// 无优化：尾调用没有返回
+function outerFunction() {
+  innerFunction();
+}
+
+// 无优化：尾调用没有直接返回
+function outerFunction() {
+  let innerFunctionResult = innerFunction();
+  return innerFunctionResult; 
+}
+
+// 无优化：尾调用返回后必须转型为字符串
+function outerFunction() {
+	return innerFunction().toString();
+}
+
+// 无优化：尾调用是一个闭包
+function outerFunction() {
+	let foo = 'bar';
+	function innerFunction() { return foo; }
+	return innerFunction();
+}
+```
+
+下面是几个符合尾调用优化条件的例子：
+
+```js
+"use strict";
+
+// 有优化：栈帧销毁前执行参数计算
+function outerFunction(a, b) {
+	return innerFunction(a + b);
+}
+
+// 有优化：初始返回值不涉及栈帧
+function outerFunction(a, b) {
+  if (a < b) { return a; }
+  return innerFunction(a + b);
+}
+
+// 有优化：两个内部函数都在尾部
+function outerFunction(condition) {
+  return condition ? innerFunctionA() : innerFunctionB();
+}
+```
+
+摘自：《 JavaScript 高级程序设计》第四版 §10.13 P307
+
+#### 一些补充
+
+ES6 尾调用优化 是 ecma 的规范，但是根据 Hax贺师俊 和 死月 的说法：浏览器厂商（包括 Node ），只有 Safari 支持了，其他厂商都没有支持。详见：[尾调用函数是闭包的时候，为什么无法实现优化？ - 知乎](https://www.zhihu.com/question/471431054) &  [DC 的新书《JavaScript 悟道》里面讲了很多尾递归优化，可 TC39 不是已经判其死刑了吗？ - 知乎](https://www.zhihu.com/question/473997712)
+
+尾调用 和 JS 调用栈 可以参见：[JS 调用栈机制与 ES6 尾调用优化介绍](https://juejin.cn/post/6844903847693910029) 以及其中 justjavac 大佬的评论
+
+关于 “尾递归” 更多可以参见：[浅谈尾递归](https://site.douban.com/196781/widget/notes/12161495/note/262014367/) 以及《数据结构与算法分析：C描述》§3.3.3 P61。
 
 
 
