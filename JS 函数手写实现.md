@@ -476,7 +476,7 @@ Array.prototype.filter = function(cb, thisArg) {
 
 #### Array.prototype.reduce() 实现
 
-语法：
+`语法：
 
 ```js
 reduce(callback(previousValue, currentValue[, currentIndex, array])[, initialValue])
