@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                         
+>                                 
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3182,7 +3182,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                             
+  >                                                                     
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3201,7 +3201,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                             
+  >                                                                     
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7708,11 +7708,44 @@ Event 接口的只读属性 currentTarget 表示的，<font color=FF0000 size=4>
 
 摘自：[MDN - event.currentTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/currentTarget)
 
+#### 两者对比示例
+##### Event.target 示例
+```html
+<div id="cntr">
+  <div id="wrapper">
+    <button id="btn">点击</button>
+  </div>
+</div>
+
+<script>
+  cntr.addEventListener('click', (evt) => { console.log(evt.target) }) // <button id="btn">点击</button>
+  wrapper.addEventListener('click', (evt) => { console.log(evt.target) }) // <button id="btn">点击</button>
+  btn.addEventListener('click', (evt) => { console.log(evt.target) }) // <button id="btn">点击</button>
+</script>
+```
+
+##### Event.currentTarget 示例
+```html
+<div id="cntr">
+  <div id="wrapper">
+    <button id="btn">点击</button>
+  </div>
+</div>
+
+<script>
+  cntr.addEventListener('click', (evt) => { console.log(evt.currentTarget) })
+  // <div id="cntr"><div id="wrapper"><button id="btn">点击</button></div></div>
+  wrapper.addEventListener('click', (evt) => { console.log(evt.currentTarget) }) 
+  // <div id="wrapper"><button id="btn">点击</button></div>
+  btn.addEventListener('click', (evt) => { console.log(evt.currentTarget) }) // <button id="btn">点击</button>
+</script>
+```
+
 
 
 #### JS获取div高度
 
-对于一个元素而言，<font color=FF0000>默认的style对象是没有高度的（style.height=""）。可以说style是它的外部属性，但一个对象应该有一个高度（自身属性）</font>。补充：style属性只能获取元素标签style属性里的值
+对于一个元素而言，<font color=FF0000>默认的style对象是没有高度的（style.height=""）。可以说style是它的外部属性，但一个对象应该有一个高度（自身属性）</font>。补充：style属性只能获取元素标签 style 属性里的值
 
 如果这时想要获取该元素的高度，可以使用如下方法
 
@@ -7722,19 +7755,19 @@ Event 接口的只读属性 currentTarget 表示的，<font color=FF0000 size=4>
 
 - getComputedStyle
 
-**offsetHeight 和 clientHeight 的区别：**
+**offsetHeight 和 clientHeight 的区别：**
 
-<font color=FF0000>offsetHeight的值包括元素内容+内边距+边框</font>，而<font color=FF0000>clientHeight的值等于元素内容+内边距</font>。区别就在于有没有边框~
+<font color=FF0000>offsetHeight的值包括 元素内容 + 内边距 + 边框</font>，而 <font color=FF0000>clientHeight 的值等于 元素内容 + 内边距</font>。区别就在于有没有边框~
 
 **getComputedStyle**
 
-<font color=FF0000>getComputedStyle方法获取的是最终应用在元素上的所有CSS属性对象（即使没有CSS代码，也会把默认的祖宗八代都显示出来）</font>；这和<font color=FF0000>`style`属性只能获取**内联样式**的行为形成了鲜明的对比</font>。除此之外，<font color=FF0000>**getComputedStyle 是只读的**</font>，但是style能文能武，可读可写，我们也可以利用它动态设置元素的高度。示例如下：
+<font color=FF0000>getComputedStyle 方法获取的是最终应用在元素上的所有 CSS 属性对象（即使没有 CSS 代码，也会把默认的祖宗八代都显示出来）</font>；这和<font color=FF0000> `style` 属性只能获取**内联样式**的行为形成了鲜明的对比</font>。除此之外，<font color=FF0000>**getComputedStyle 是只读的**</font>，但是 style 能文能武，可读可写，我们也可以利用它动态设置元素的高度。示例如下：
 
 ```js
 window.getComputedStyle(div);
 ```
 
-如果想要高度，可以使用getPropertyValue方法来帮忙getPropertyValue方法可以获取CSS样式申明对象上的属性值。示例如下：
+如果想要高度，可以使用 getPropertyValue 方法来帮忙 getPropertyValue 方法可以获取 CSS 样式申明对象上的属性值。示例如下：
 
 ```js
 console.log(window.getComputedStyle(div).getPropertyValue('height')); // 200px
@@ -7744,7 +7777,7 @@ console.log(window.getComputedStyle(div).getPropertyValue('height')); // 200px
 
 **补充：Window.getComputedStyle() **
 
-Window.getComputedStyle() 方法<font color=FF0000>返回一个对象</font>，<font color=FF0000>该对象在应用活动样式表并解析这些值可能包含的任何基本计算后报告元素的所有CSS属性的值</font>。 私有的CSS属性值可erty以通过对象提供的API或通过简单地使用CSS属性名称进行索引来访问。
+Window.getComputedStyle() 方法<font color=FF0000>返回一个对象</font>，<font color=FF0000>该对象在应用活动样式表并解析这些值可能包含的任何基本计算后报告元素的所有 CSS 属性的值</font>。 私有的 CSS 属性值可以通过对象提供的 API 或通过简单地使用 CSS 属性名称进行索引来访问。
 
 **语法**
 
@@ -7753,11 +7786,11 @@ let style = window.getComputedStyle(element, [pseudoElt]);
 ```
 
 - **element：**用于获取计算样式的Element。
-- **pseudoElt：** 可选，指定一个要匹配的伪元素的字符串。必须对普通元素省略（或null）。
+- **pseudoElt：** 可选，指定一个要匹配的伪元素的字符串。必须对普通元素省略（或 null）。
 
-返回的style是一个实时的 CSSStyleDeclaration 对象，当元素的样式更改时，它会自动更新本身。
+返回的 style 是一个实时的 CSSStyleDeclaration 对象，当元素的样式更改时，它会自动更新本身。
 
-从getComputedStyle返回的对象是只读的，可以用于检查元素的样式
+从 getComputedStyle 返回的对象是只读的，可以用于检查元素的样式
 
 摘自：[MDN - Window.getComputedStyle()](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/getComputedStyle)
 
@@ -7765,7 +7798,7 @@ let style = window.getComputedStyle(element, [pseudoElt]);
 
 #### Object.create()
 
-Object.create()方法创建一个新对象，使用现有的对象来提供新创建的对象的 \__proto__（请打开浏览器控制台以查看运行结果）
+Object.create() 方法<font color=FF0000>创建一个新对象</font>，<font color=FF0000>**使用现有的对象来提供新创建的对象的 \__proto__**</font>
 
 **示例如下：**
 
@@ -7853,9 +7886,9 @@ MyClass.prototype.constructor = MyClass; // 这里的构造函数还是上面使
 MyClass.prototype.myMethod = function() { // do a thing };
 ```
 
-<font color=FF0000 size=4>**Object.assign 会把  OtherSuperClass原型上的函数拷贝到 MyClass原型上**</font>，使 MyClass 的所有实例都可用 OtherSuperClass 的方法。Object.assign 是在 ES2015 引入的，且可用 polyfilled。要支持旧浏览器的话，可用使用 jQuery.extend() 或者 \_.assign()。
+<font color=FF0000 size=4>**Object.assign 会把  OtherSuperClass 原型上的函数拷贝到 MyClass原型上**</font>，使 MyClass 的所有实例都可用 OtherSuperClass 的方法。Object.assign 是在 ES2015 引入的，且可用 polyfilled。要支持旧浏览器的话，可用使用 jQuery.extend() 或者 \_.assign()。
 
-**使用 Object.create 的 propertyObject参数（这里只摘录了一部分）**
+**使用 Object.create 的 propertyObject 参数（这里只摘录了一部分）**
 
 ```js
 var o；
@@ -8910,44 +8943,41 @@ Object.getOwnPropertySymbols() 方法<font color=FF0000>返回一个给定对象
 
 new.target 属性允许你<font color=FF0000> **检测函数或构造方法是否是通过 new 运算符被调用的**</font>。<font color=FF0000> 在通过 new 运算符被初始化的函数或构造方法中，**new.target 返回一个指向构造方法或函数的引用**</font>。<mark>在普通的函数调用中，new.target 的值是<font color=FF0000> undefined</font></mark>。
 
-**语法：**
+##### 语法
 
 ```js
 new.target
 ```
 
-**描述：**
-new.target 语法由一个关键字"new"，一个点，和一个属性名"target"组成。<font color=FF0000> 通常"new."的作用是提供属性访问的上下文，但这里"new."其实不是一个真正的对象</font>。不过在构造方法调用中，new.target 指向被 new 调用的构造函数，所以"new."成为了一个虚拟上下文。
+##### 描述 
 
-new.target 属性适用于所有函数访问的元属性。在箭头函数中，new.target 指向最近的外层函数的 new.target
+new.target 语法由一个关键字 "new"，一个点，和一个属性名 "target" 组成。<font color=FF0000> 通常 "new." 的作用是提供属性访问的上下文，但 **这里 "new." 其实不是一个真正的对象**</font>。不过在构造方法调用中，new.target 指向被 new 调用的构造函数，所以 "new." 成为了一个虚拟上下文。
 
-**示例：**
+new.target 属性适用于所有函数访问的元属性。<font color=FF0000>在箭头函数中，new.target 指向最近的外层函数的 new.target</font>
+
+##### 示例
 
 - **函数调用中的 new.target**
-  在普通的函数调用中（和作为构造函数来调用相对），new.target的值是undefined。这使得你可以检测一个函数是否是作为构造函数通过new被调用的。
+  在普通的函数调用中（和作为构造函数来调用相对），new.target 的值是 undefined。这使得你可以检测一个函数是否是作为构造函数通过 new 被调用的。
 
   ```js
   function Foo() {
-    if (!new.target) 
-      throw "Foo() must be called with new";
+    if (!new.target) throw "Foo() must be called with new";
     console.log("Foo instantiated with new");
   }
   
   Foo(); // throws "Foo() must be called with new"
   new Foo(); // logs "Foo instantiated with new"
   ```
-
+  
 - **构造方法中的 new.target**
 
   在类的构造方法中，new.target 指向直接被 new 执行的构造函数。并且当一个父类构造方法在子类构造方法中被调用时，情况与之相同。
 
   ```js
   class A {
-    constructor() {
-      console.log(new.target.name);
-    }
+    constructor() { console.log(new.target.name); }
   }
-  
   class B extends A { constructor() { super(); } }
   
   var a = new A(); // logs "A"
@@ -8959,12 +8989,49 @@ new.target 属性适用于所有函数访问的元属性。在箭头函数中，
   var c = new C(); // logs class C{constructor(){console.log(new.target);}}
   var d = new D(); // logs class D extends C{constructor(){super();}}
   ```
-
+  
   从上面类 C 和 D 的例子可以看出来，new.target 指向的是初始化类的类定义。比如当 D 通过 new 初始化的时候，打印出了 D 的类定义，C 的例子与之类似，打印出的是 C 的类定义。
 
 摘自：[MDN - new.target](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/new.target)
 
-另外，也可参考：[【全网首发:更新完】ES6中的难点--new.target是什么鬼东西？](https://www.bilibili.com/video/BV1CT4y1o7qL)
+##### 视频《ES6中的难点--new.target是什么鬼东西？》的补充
+
+new.target 是 ES6 新增的
+
+class 定义的类( `class ClassName { ...  }` )，是无法通过 “非 new” 的方式调用的。必须要 `new ClassName()`，否则会报错。那么 如何让 `function ClassName() {}` 定义的类，也必须要通过 new 调用（否则报错）？可以通过判断 new.target。
+
+有点类似于 Event.target （而不是 Event.currentTarget ），在继承中，哪怕父类中有 new.target，new.target 指向的也会是 当前 new 的对象，如下示例：
+
+```js
+class Parent {
+  constructor(name) {
+    console.log(new.target)   // super() 调用的
+    this.name = name
+  }
+}
+
+class Child extends Parent {
+  constructor() {
+    super()                  // class Child extends Parent {...}
+    console.log(new.target)  // class Child extends Parent {...}
+  }
+}
+
+new Child()
+```
+
+类似的，new.target 可以用来实现（不可实例化的）抽象类
+```js
+class AbstractClass {
+  constructor() {
+    if(new.target === AbstractClass) {
+      throw(new Error('抽象类不能示例化'))
+    }
+  }
+}
+```
+
+学习自：[【全网首发:更新完】ES6中的难点--new.target是什么鬼东西？](https://www.bilibili.com/video/BV1CT4y1o7qL)
 
 
 
@@ -9247,15 +9314,15 @@ Symbol.asyncIterator 符号指定了一个对象的默认异步迭代器。<font
 
 <font size=4>**Symbol.species**</font>
 
-Symbol.species 是个 函数值属性，其被构造函数用以创建派生对象。
+Symbol.species 是个 “函数值属性” ，其被构造函数用以创建派生对象。
 
-**描述：**species 访问器属性 <font color=FF0000 size=4>**允许子类覆盖对象的默认构造函数**</font>。注：具体使用参见 下面补充的 get Array[@@species]
+**描述：**species 访问器属性 <font color=FF0000 size=4>**允许 子类覆盖对象的默认构造函数**</font>。**注：**具体使用参见 下面补充的 get Array[@@species]
 
 摘自：[MDN - Symbol.species](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species)
 
-**补充：get Array[@@species]** 
+##### 补充：get Array[@@species] 
 
-<font color=FF0000>**Array[@@species]访问器属性**</font> <font color=FF0000>返回 Array 的 **构造函数**</font>。
+<font color=FF0000>**Array[@@species] 访问器属性**</font> <font color=FF0000>返回 Array 的 **构造函数**</font>。
 
 - **语法**
 
@@ -9267,13 +9334,13 @@ Symbol.species 是个 函数值属性，其被构造函数用以创建派生对�
 
 - **描述：**species 访问器属性返回 Array 对象的默认构造函数。<font color=FF0000>子类的构造函数可能会覆盖并改变构造函数的赋值</font>。
 
-- **示例：**species 属性返回默认构造函数, 它用于 Array 对象的构造函数 Array:
+- **示例：**species 属性返回默认构造函数，它用于 Array 对象的构造函数 Array：
 
   ```js
   Array[Symbol.species]; // function Array()
   ```
 
-  在继承类的对象中（例如你自定义的数组 MyArray），MyArray 的 species 属性返回的是 MyArray 这个构造函数. 然而你可能想要覆盖它，以便在你继承的对象 MyArray 中返回父类的构造函数 Array :
+  在继承类的对象中（例如你自定义的数组 MyArray ），MyArray 的 species 属性返回的是 MyArray 这个构造函数. 然而你可能想要覆盖它，以便在你继承的对象 MyArray 中返回父类的构造函数 Array :
 
   ```js
   class MyArray extends Array {
@@ -9282,7 +9349,7 @@ Symbol.species 是个 函数值属性，其被构造函数用以创建派生对�
   }
   ```
 
-  注：这里的示例使用场景，可以参看 [现代JS教程 - 扩展内建类](https://zh.javascript.info/extend-natives)
+  **注：**这里的示例使用场景，参看 [现代JS教程 - 扩展内建类](https://zh.javascript.info/extend-natives)
 
 摘自：[MDN - get Array[@@species]](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/@@species)
 

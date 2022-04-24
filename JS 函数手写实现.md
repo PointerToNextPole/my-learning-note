@@ -150,9 +150,9 @@ Object.defineProperty(Object, 'assign', {
 
 ```js
 const cloneDeep = (target, hash = new WeakMap()) => {
-  // 对实参进行处理
+  // 对如果是基本类型，且不是 null
   if (typeof target !== 'object' || target === null) return target
-  // 哈希表中存在的，直接返回。避免循环引用
+  // hash 中存在的，直接返回。避免循环引用
   if (hash.has(target)) return hash.get(target)
   
   // 对数组类型进行处理

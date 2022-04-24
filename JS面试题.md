@@ -566,9 +566,16 @@ p1.say()
 p2.say()
 ```
 
-# // TODO
+<details>
+  <summary>点击查看答案</summary>
+  it's Matthew, from England<br>
+  it's Bob, from England
+</details>
 
-
+<details>
+  <summary>点击查看解析</summary>
+  原型式继承 和 原型链继承 一样，引用类型的属性被所有实例共享。所以，这里「引用类型」的数据 address 会被共享。而 name 不是引用类型的数据，所以不会共享。
+</details>
 
 
 

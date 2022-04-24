@@ -1572,7 +1572,7 @@ var foo = 1;
 
 ### JS 作用域链
 
-在[《JavaScript深入之执行上下文栈》](https://github.com/mqyqingfeng/Blog/issues/4)中讲到，<font color=FF0000>当 JavaScript 代码执行一段可执行代码 (executable code) 时，**会创建对应的执行上下文( execution context )**</font>。
+在[《JavaScript深入之执行上下文栈》](https://github.com/mqyqingfeng/Blog/issues/4)中讲到，<font color=FF0000>当 JavaScript 代码执行一段可执行代码 ( executable code ) 时，**会创建对应的执行上下文 ( execution context )**</font>。
 
 **对于每个执行上下文，都有三个重要属性：**
 
@@ -2418,7 +2418,7 @@ Function.prototype.bind2 = function (context) {
 
 #### JSON.parse( JSON.stringify() ) 实现深拷贝的问题
 
-- JSON.parse( JSON.stringify() ) 无法拷贝函数。
+- JSON.parse( JSON.stringify() ) <font color=FF0000>无法拷贝函数</font>。
 
 - 另外，根据 issue 评论区 naihe138 的评论，了解到《你不知道的 JavaScript 中卷》 中有关于 JSON.stringify 有如下说法：
 
@@ -2456,11 +2456,163 @@ Function.prototype.bind2 = function (context) {
   **注：**以上总结：对于“不安全的 JSON 值”，包含：undefined、function、symbol 和 包含循环引用的对象，在 stringify 时，如果在对象中会被忽略；在数组中，则返回 null。
 
 - 文章 [JSON.stringify深拷贝的缺点](https://www.jianshu.com/p/52db1d0c1780) 中 还有其他上面没有说到的：
-  - 如果深拷贝的对象 / 数组 里有 <font color=FF0000>**时间对象**</font>，则 JSON.stringify 后再 JSON.parse 的结果，将只是<font color=FF0000>字符串</font>的形式，而不是对象的形式
+  - 如果深拷贝的对象 / 数组 里有 <font color=FF0000>**时间对象**</font>，则 JSON.stringify( JSON.parse ) 的结果，将只是<font color=FF0000>字符串</font>的形式，而不是对象的形式
   - 如果深拷贝的对象 / 数组 里有 <font color=FF0000>**正则表达式、Error 对象**</font>，则序列化的结果将只得到 <font color=FF0000>空对象 {}</font>。
   - 如果深拷贝的对象 / 数组 里有 <font color=FF0000>**NaN、Infinity 和 -Infinity**</font>，则序列化的结果会变成 <font color=FF0000>null</font>
 
 摘自：[JavaScript专题之深浅拷贝](https://github.com/mqyqingfeng/Blog/issues/32)
+
+##### jQuery extend 方法中 处理循环引用
+
+为了避免这个问题，我们需要判断要复制的对象属性是否等于 target，如果等于，我们就跳过：
+
+```js
+...
+src = target[name];
+copy = options[name];
+
+if (target === copy) {
+    continue;
+}
+...
+```
+
+摘自：[JavaScript专题之从零实现jQuery的extend ](https://github.com/mqyqingfeng/Blog/issues/33)
+
+#### 文章《你最少用几行代码实现深拷贝？》中的深拷贝
+
+深度克隆就是为了解决引用数据类型不能被通过赋值的方式复制的问题。不妨来罗列一下引用数据类型都有哪些：
+
+- ES6之前： Object, Array, Date, RegExp, Error
+- ES6之后： Map, Set, WeakMap, WeakSet
+
+所以，我们要深度克隆，就需要对数据进行遍历并根据类型采取相应的克隆方式。当然因为数据会存在多层嵌套的情况，采用「递归」
+
+##### 简单粗暴的方法
+
+```js
+function deepClone(obj) {
+    let res = {};
+  
+    // 类型判断的通用方法
+    function getType(obj) {
+        return Object.prototype.toString.call(obj).replaceAll(new RegExp(/\[|\]|object /g), "");
+    }
+    const type = getType(obj);
+  
+    const reference = ["Set", "WeakSet", "Map", "WeakMap", "RegExp", "Date", "Error"];
+  
+    if (type === "Object") {
+        for (const key in obj) {
+            if (Object.hasOwnProperty.call(obj, key)) {
+                res[key] = deepClone(obj[key]);
+            }
+        }
+    } else if (type === "Array") {
+        obj.forEach((e, i) => { res[i] = deepClone(e); });
+    }
+    else if (type === "Date") { res = new Date(obj); }
+    else if (type === "RegExp") { res = new RegExp(obj); }
+    else if (type === "Map") { res = new Map(obj); }
+    else if (type === "Set") { res = new Set(obj); }
+    else if (type === "WeakMap") { res = new WeakMap(obj); }
+    else if (type === "WeakSet") { res = new WeakSet(obj); }
+    else if (type === "Error") { res = new Error(obj); }
+    else { res = obj; }
+    return res;
+}
+```
+
+其中 `else if (type === 'typeVal')` 中存在冗余代码，可以合并。如下第二版：
+
+```js
+function deepClone(obj) {
+    let res = null
+    
+    // 类型判断的通用方法
+    function getType(obj) {
+        return Object.prototype.toString.call(obj).replaceAll(new RegExp(/\[|\]|object /g), "");
+    }
+    const type = getType(obj);
+  
+    const reference = ["Set", "WeakSet", "Map", "WeakMap", "RegExp", "Date", "Error"];
+    if (type === "Object") {
+        res = {};
+        for (const key in obj) {
+            if (Object.hasOwnProperty.call(obj, key)) {
+                res[key] = deepClone(obj[key]);
+            }
+        }
+    } else if (type === "Array") {
+        res = [];
+        obj.forEach((e, i) => { res[i] = deepClone(e); });
+    }
+    else if (reference.includes(type)) { res = new obj.constructor(obj); }
+    else { res = obj; }
+    return res;
+}
+```
+
+##### 优化
+
+```js
+// 判断类型的方法移到外部，避免递归过程中多次执行
+const judgeType = origin => {
+    return Object.prototype.toString.call(origin).replaceAll(new RegExp(/\[|\]|object /g), "");
+};
+const reference = ["Set", "WeakSet", "Map", "WeakMap", "RegExp", "Date", "Error"];
+
+function deepClone(obj) {
+    // 定义新的对象，最后返回，通过 obj 的原型创建对象
+    const newObj = Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
+
+    // 遍历对象，克隆属性
+    for (let key of Reflect.ownKeys(obj)) {
+        const val = obj[key];
+        const type = judgeType(val);
+        if (reference.includes(type)) {
+            newObj[key] = new val.constructor(val);
+        } else if (typeof val === "object" && val !== null) {
+            newObj[key] = deepClone(val); // 递归克隆
+        } else {
+            newObj[key] = val; // 基本数据类型和 function
+        }
+    }
+    return newObj;
+}
+```
+
+##### 进一步优化，以及避免循环引用
+
+```js
+function deepClone(obj, hash = new WeakMap()) {
+    if (hash.has(obj)) { return obj; } // 注：hash 中存在的，则直接返回
+    let res = null;
+  
+    const reference = [Date, RegExp, Set, WeakSet, Map, WeakMap, Error];
+    if (reference.includes(obj?.constructor)) { // 注：属于 reference 的，都返回构造的对象
+        res = new obj.constructor(obj);
+    } else if (Array.isArray(obj)) { // 注：数组处理
+        res = [];
+        obj.forEach((e, i) => {
+            res[i] = deepClone(e);
+        });
+    } else if (typeof obj === "object" && obj !== null) { // 注：object 处理
+        hash.set(obj);
+        res = {};
+        for (const key in obj) {
+            if (Object.hasOwnProperty.call(obj, key)) {
+                res[key] = deepClone(obj[key], hash);
+            }
+        }
+    } else { res = obj; } // 注：其他情况
+    return res;
+}
+```
+
+摘自：[你最少用几行代码实现深拷贝？](https://juejin.cn/post/7075351322014253064)
+
+另外，可以参见 [[JS 函数手写实现#深拷贝实现]] 中的代码
 
 
 
@@ -2478,7 +2630,16 @@ typeof 除了是一个函数外，也是一个<font color=FF0000>运算符</font
 
 尽管不能一一对应，但是 typeof 却能检测出 函数类型 function。
 
-所以 <font color=FF0000>typeof 能检测出六种类型的值</font>（**注：**下面的 [[#typeof 新的可识别类型的补充]] 有补充：Symbol 和 BigInt 两种情况也可以识别其类型），但是，除此之外 Object 下还有很多细分的类型，如 Array、Function、Date、RegExp、Error 等。而对这些类型使用 typeof 操作符，返回的都是 object；无法良好的区分它们。这时候可以使用 Object.prototype.toString.call()
+所以 <font color=FF0000>typeof 能检测出六种类型的值</font>（**注：**下面的 [[#typeof 新的可识别类型的补充]] 有补充：Symbol 和 BigInt 两种情况也可以识别其类型），但是，除此之外 Object 下还有很多细分的类型，如 Array、Function、Date、RegExp、Error 等。而对这些类型使用 typeof 操作符，返回的都是 object；无法良好的区分它们。这时候可以使用 Object.prototype.toString.call() 获取 '\[object RefObjectType]'；另外，可以通过正则表达式获取 refObjectType（获取类型代码，学习自：[你最少用几行代码实现深拷贝？](https://juejin.cn/post/7075351322014253064) ）：
+
+```js
+function getType(obj) {
+    return Object.prototype.toString.call(obj).replaceAll(new RegExp(/\[|\]|object /g), "");
+}
+
+// 使用
+getType(Promise.resolve('foo')) // Promise
+```
 
 ##### typeof 新的可识别类型的补充
 

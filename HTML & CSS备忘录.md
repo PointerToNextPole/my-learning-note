@@ -5120,7 +5120,7 @@ list-style CSS 属性是一个简写对属性集合，包括list-style-type, lis
 
 #### :target 伪类
 
-:target CSS 伪类 代表一个唯一的页面元素(目标元素)，其id 与当前<font color=FF0000>URL片段</font>（section，也可以被称为锚点？）匹配 
+:target CSS 伪类 代表一个唯一的页面元素（目标元素），其 id 与当前 <font color=FF0000>URL片段</font>（section，也可以被称为锚点？）匹配 
 
 **解释起来比较麻烦，直接看如下示例，做下实验：**
 
