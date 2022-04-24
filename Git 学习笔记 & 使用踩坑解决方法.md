@@ -1453,7 +1453,7 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
 
 如下图，当在 feature 分支中执行 rebase master 时，Git 会以 master 分支对应的 commit 节点为起点，新增两个**全新**的 commit 代替 feature分支中的commit节点。其原因是新的commit指向的parent变了，所以对应的SHA1值也会改变，所以没办法复用原feature分支中的commit。（这句话的理解需要[这篇文章](https://www.lzane.com/tech/git-internal/)的基础知识）
 
-![title](https://s2.loli.net/2022/02/25/tOn9hli6L2aQH7S.png)
+![image-20220424230558912](https://s2.loli.net/2022/04/24/4ldTCBLZgaxKSzp.png)
 
 补充内容摘自：[这才是真正的GIT——分支合并](https://www.lzane.com/tech/git-merge/)
 
@@ -1661,7 +1661,7 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 
 - <font size=4>**找回丢失的commit节点或分支**</font>：使用 `git reflog` 获取 commitHash，再使用 `git reset --hard commitHash`，示例如下
 
-  <img src="https://s2.loli.net/2022/02/25/9WDyShMasfiRQ1e.gif" alt="https://www.lzane.com/tech/git-tips/git_reflog.gif" style="zoom:80%;" />
+  <img src="https://www.lzane.com/tech/git-tips/git_reflog.gif" alt="https://www.lzane.com/tech/git-tips/git_reflog.gif" style="zoom:80%;" />
 
   主要思路为：**找到要返回的commit object的哈希值，然后执行`git reset`恢复**。
 
