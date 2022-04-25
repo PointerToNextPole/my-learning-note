@@ -1051,7 +1051,7 @@ options: {
 
 #### Tree Shaking
 
-对于ES Module引入时候，默认会将业务代码中所有ES6代码打包引入，而不管这个代码块是否被调用。这样就没有做到<font color=FF0000>按需引入 / 按需打包 </font>，而这时可以使用<font color=FF0000>**Tree Shaking**，实现想要的效果</font>。Tree Shaking<font color=FF0000>只支持</font> ES Module 代码的引入（即import module，不支持 commonJS）。代码使用如下：
+对于 ES Module 引入时候，默认会将业务代码中所有ES6代码打包引入（不管这个代码块是否被调用），这样就没有做到<font color=FF0000>按需引入 / 按需打包 </font>。对于这个痛点，可以使用 <font color=FF0000>**Tree Shaking** 解决</font>。Tree Shaking <font color=FF0000>只支持</font> ES Module 代码的引入（即 import module，是 ES6 的特性；不支持 commonJS ）。代码使用如下：
 
 ```js
 //webpack.config.js
@@ -1078,8 +1078,14 @@ module.exports = {
 
 另外：即使不使用的那些代码，在<font color=FF0000>开发环境</font>的打包中，那些不用的代码将不会被删掉，而是告知你只使用了哪些代码，便于你开发。而在生产环境的打包中，将会直接删掉那些不用的代码。
 
-<font size=4>**补充：**</font>在生产环境的打包中，Tree Shaking是自动生效的，即：你不需要写 optimization: { usedExports: true }配置项，不过sideEffects还是要写的。
+<font size=4>**补充：**</font>在生产环境的打包中，Tree Shaking 是自动生效的，即：你不需要写 optimization: { usedExports: true } 配置项，不过sideEffects 还是要写的。
 
+##### 《现代 JS 教程》中的关于 tree-shaking 的内容
+> 删除未使用的导出 ( “tree-shaking” )
+>
+> 摘自：[现代 JS 教程 - 模块 (Module) 简介 - 构建工具](https://zh.javascript.info/modules-intro#gou-jian-gong-ju)
+
+《现代 JS 教程》中关于 tree-shaking 的定义，相当直接易懂。
 
 
 #### Development模式和Production模式的区分打包
@@ -1331,16 +1337,16 @@ webpack --profile --json > stats.json
 
 <font size=4>**代码利用率**</font>
 
-在Chrome下的控制台中，按下**⇧ + ⌘ + P**，会出现命令菜单(Command Menu)，此时输入 coverage，可以查看代码的利用率，越高越好。开启效果图如下：
+在 Chrome 的控制台中，按下**⇧ + ⌘ + P**，会出现命令菜单 ( Command Menu )，此时输入 coverage，可以查看代码的利用率，越高越好。开启效果图如下：
 
 ![image-20210916164550767](https://i.loli.net/2021/09/16/GaP61kAXmCSpqIf.png)
 
 <font size=4>**preloading 和 prefetching**</font>
 
-懒加载（lazy loading，即使用 ES6 的 import，要使用了才去获取）会出现一个问题，用了再去获取、加载，响应速度可能会很慢。这时候就要用到 preloading 和 prefetching。同样preloading 和 prefetching 可以通过 magic comment 设置。/* webpackPreload: true */ /* webpackPrefetch: true */
+懒加载（ lazy loading，即使用 ES6 的 import，要使用了才去获取）会出现一个问题，用了再去获取、加载，响应速度可能会很慢。这时候就要用到 preloading 和 prefetching。同样preloading 和 prefetching 可以通过 magic comments 设置（注：更多 magic comments 设置可以参见：[webpack - Module Methods](https://webpack.js.org/api/module-methods/) ）。/* webpackPreload: true */ /* webpackPrefetch: true */
 
-- **prefetch**(预获取)：将来某些导航下可能需要的资源
-- **preload**(预加载)：当前导航下可能需要资源
+- **prefetch**（预获取）：将来某些导航下可能需要的资源
+- **preload**（预加载）：当前导航下可能需要资源
 
 **与 prefetch 指令相比，preload 指令有许多不同之处：**
 

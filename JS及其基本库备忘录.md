@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                                 
+>                                       
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -711,6 +711,15 @@ for (const [index, val] of arr.entries()) {
   - 首先遍历所有数值键，按照数值升序排列
   - 其次遍历所有字符串键，按照加入时间升序排列
   - 最后遍历所有 Symbol 键，按照加入时间升序排列
+
+##### 《现代 JS 教程》中的相关内容
+
+> -   Object.getOwnPropertyNames(obj) 返回非 Symbol 键。
+> -   Object.getOwnPropertySymbols(obj) 返回 Symbol 键。
+> -   Object.keys/values() 返回带有 enumerable 标志的非 Symbol 键/值
+> -   for..in 循环遍历所有带有 enumerable 标志的非 Symbol 键，以及原型对象的键。
+>
+> 摘自：[现代 JS 教程 - Proxy 和 Reflect](https://zh.javascript.info/proxy)
 
 
 
@@ -3182,7 +3191,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                     
+  >                                                                           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3201,7 +3210,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                     
+  >                                                                           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -5904,6 +5913,63 @@ window.navigator 对象<font color=FF0000>包含有关访问者浏览器的信�
 另外，也可以通过 在 浏览器 devtools terminal 上输入 navigator（ node环境没有 navigator ），查看属性和方法。
 
 摘自：[MDN - Navigator](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator)
+
+#### Navigator.sendBeacon()
+
+navigator.sendBeacon() 方法可用于通过 HTTP POST 将少量数据异步传输到 Web 服务器。它主要用于将统计数据发送到 Web 服务器，同时避免了用传统技术（如：XMLHttpRequest）发送分析数据的一些问题。
+
+##### 语法
+
+```js
+navigator.sendBeacon(url[, data]);
+```
+
+##### 参数
+
+- **url：**url 参数表明 data 将要被发送到的网络地址。
+- **data：**可选，data 参数是将要发送的 ArrayBuffer、ArrayBufferView、Blob、DOMString、FormData 或 URLSearchParams 类型的数据。
+
+##### 描述
+
+这个方法 <font color=FF0000>**主要用于满足统计和诊断代码的需要，这些代码通常尝试在卸载 ( unload ) 文档之前向 web 服务器发送数据**</font>。<font color=FF0000>过早的发送数据可能导致错过收集数据的机会</font>。然而，<mark>对于开发者来说保证在文档卸载期间发送数据一直是一个困难</mark>。<mark>因为用户代理通常会忽略在 unload 事件处理器中产生的异步 XMLHttpRequest </mark>。
+
+过去，为了解决这个问题， 统计和诊断代码通常要在： 1) 发起一个同步 XMLHttpRequest 来发送数据。2) 创建一个 \<img> 元素并设置 src，大部分用户代理会延迟卸载（unload）文档以加载图像。3) 创建一个几秒的 no-op 循环。
+
+上述的所有方法都会迫使用户代理延迟卸载文档，并使得下一个导航出现的更晚。下一个页面对于这种较差的载入表现无能为力。
+
+<mark>**这就是 sendBeacon() 方法存在的意义**</mark>。<font color=FF0000>使用 sendBeacon() 方法会使用户代理在有机会时异步地向服务器发送数据，同时，**不会延迟页面的卸载或影响下一导航的载入性能**</font>，这意味着：
+
+- 数据发送是可靠的
+- 数据异步传输
+- 不影响下一导航的载入
+
+##### 在会话结束时发送统计数据
+
+网站通常 <font color=FF0000>在用户完成页面浏览后向服务器发送分析或诊断数据</font>，**<font color=FF0000>最可靠的方法是在</font> [visibilitychange](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilitychange_event) <font color=FF0000>事件发生时发送数据</font>**：
+
+```js
+document.addEventListener('visibilitychange', function logData() {
+  if (document.visibilityState === 'hidden') {
+    navigator.sendBeacon('/log', analyticsData);
+  }
+});
+```
+
+##### 避免使用 unload 和 beforeunload
+
+<mark><font size=4>**过去**</font>，许多网站使用 unload 或 beforeunload 事件以在会话结束时发送统计数据</mark>。然而<font color=FF0000>**这是不可靠的**</font>，<font color=FF0000>**在许多情况下（尤其是移动设备）浏览器不会产生 unload、beforeunload 或 pagehide 事件**</font>。下面列出了一种不触发上述事件的情况：
+
+1. 用户加载了网页并与其交互。
+2. 完成浏览后，用户切换到了其它应用程序，而不是关闭选项卡。
+3. 随后，用户通过手机的应用管理器关闭了浏览器应用。
+
+此外，`unload` 事件与现代浏览器实现的往返缓存（[bfcache](https://web.dev/bfcache/)）不兼容。
+
+##### 使用 pagehide 作为回退
+
+可使用 pagehide 事件来代替部分浏览器未实现的 visibilitychange 事件。和 beforeunload 与 unload 事件类似，这一事件不会被可靠地触发（特别是在移动设备上），但它与 bfcache 兼容。
+
+摘自：[MDN - Navigator.sendBeacon()](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/sendBeacon)
 
 
 
@@ -10410,10 +10476,15 @@ history.replaceState(stateObj, title[, url]);
 
 - <font size=4>**DOMContentLoaded：**</font>当纯HTML被完全加载以及<font color=FF0000>**（开始）**</font>解析时，DOMContentLoaded 事件会被触发，而<font color=FF0000>不必等待样式表，图片或者子框架完成加载</font>。
 
-  JavaScript的同步模式（非async）会导致DOM解析暂停。如果你想在用户请求页面时，首先尽可能先解析DOM，此时你可以使用JavaScript异步模式（async），并且优化样式表的加载。在通常模式的加载过程中，样式表的加载会与DOM解析并行，从而迟缓主要HTML文档的加载。
+  JavaScript 的同步模式（非 async ）会导致 DOM 解析暂停。如果你想在用户请求页面时，首先尽可能先解析 DOM，此时你可以使用 JavaScript 异步模式 ( async )，并且优化样式表的加载。在通常模式的加载过程中，样式表的加载会与 DOM 解析并行，从而迟缓主要 HTML 文档的加载。
 
   摘自：[MDN - Document: DOMContentLoaded 事件](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/DOMContentLoaded_event)
 
+  **注：**感觉 MDN 的解释并不易懂，摘抄 《现代 JS 教程》中的内容：
+  > - DOMContentLoaded：浏览器已完全加载 HTML，并构建了 DOM 树，但像 \<img> 和样式表之类的外部资源可能尚未加载完成。
+  > - load：浏览器不仅加载完成了 HTML，还加载完成了所有外部资源：图片，样式等。
+  >
+  > 摘自：[现代 JS 教程 - 页面生命周期：DOMContentLoaded，load，beforeunload，unload](https://zh.javascript.info/onload-ondomcontentloaded)
 - <font size=4>**readystatechange：**</font>当文档的 readyState 属性发生改变时，会触发 readystatechange 事件。
 
   不可以冒泡，不可以取消
@@ -11487,33 +11558,35 @@ ArrayBuffer 对象用来表示<font color=FF0000>通用的、固定长度</font>
 
 #### import.meta
 
-import.meta是一个<font color=FF0000>给JavaScript模块暴露特定上下文的元数据属性的对象</font>。<font color=FF0000>它包含了这个模块的信息，比如说这个模块的URL</font>。
+import.meta是一个<font color=FF0000>给 JavaScript  模块暴露特定上下文的元数据属性的对象</font>。<font color=FF0000>它包含了这个模块的信息，比如说这个模块的 URL</font>。
 
-- **语法**
+##### 语法
 
-  ```js
-  import.meta
-  ```
+```js
+import.meta
+```
 
-- **描述：**
-  import.meta对象由一个关键字"import",一个点符号和一个meta属性名组成。通常情况下"import."是作为一个属性访问的上下文，但是在这里"import"不是一个真正的对象。
+##### 描述
 
-  import.meta对象是由ECMAScript实现的，它带有一个null的原型对象。这个对象可以扩展，并且它的属性都是可写，可配置和可枚举的。
+import.meta 对象由一个关键字 "import"，一个点符号和一个 meta 属性名组成。通常情况下 "import." 是作为一个属性访问的上下文，但是在这里 "import" 不是一个真正的对象。（**注：** 这里的说法，有点类似于 [[#new.target]] ）
 
-- **示例**
-  这里有一个 my-module.mjs模块
+import.meta 对象是由 ECMAScript 实现的，它带有一个 null 的原型对象。这个对象可以扩展，并且它的属性都是 “可写”，“可配置” 和 “可枚举” 的。
 
-  ```html
-  <script type="module" src="my-module.mjs"></script>
-  ```
+##### 示例
 
-  你可以通过 import.meta 对象获取这个模块的元数据信息。
+这里有一个 my-module.mjs 模块
 
-  ```js
-  console.log(import.meta); // { url: "file:///home/user/my-module.mjs" }
-  ```
+```html
+<script type="module" src="my-module.mjs"></script>
+```
 
-  它返回一个带有url属性的对象，指明模块的基本URL。也可以是外部脚本的URL，还可以是内联脚本所属文档的URL。
+你可以通过 import.meta 对象获取这个模块的元数据信息。
+
+```js
+console.log(import.meta); // { url: "file:///home/user/my-module.mjs" }
+```
+
+它返回一个带有 url 属性的对象，指明模块的基本 URL。也可以是外部脚本的 URL，还可以是内联脚本所属文档的 URL 。
 
 摘自：[MDN - import.meta](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/import.meta)
 
