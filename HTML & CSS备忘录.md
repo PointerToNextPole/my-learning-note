@@ -8,7 +8,7 @@
 
 #### Lorem Ipsum
 
-Lorem ipsum，简称为Lipsum，是指一篇常用于排版设计领域的拉丁文文章，主要的目的为测试文章或文字在不同字型、版型下看起来的效果。中文的类似用法则称为乱数假文、随机假文。
+Lorem ipsum，简称为 Lipsum，是指一篇常用于排版设计领域的拉丁文文章，主要的目的为测试文章或文字在不同字型、版型下看起来的效果。中文的类似用法则称为乱数假文、随机假文。
 
 摘自：[wiki -  Lorem Ipsum](https://zh.wikipedia.org/wiki/Lorem_ipsum)
 
@@ -829,6 +829,44 @@ HTML \<source> 元素为 \<picture>, \<audio> 或者 \<video> 元素指定多个
 
 
 
+#### CORS 设置属性
+
+在 HTML5 中，一些 HTML 元素提供了对 CORS 的支持， <font color=FF0000>例如 \<audio>、\<img>、\<link>、\<script> 和 \<video> 均有一个跨域属性 ( crossOrigin property )，它允许你配置元素获取数据的 CORS 请求</font>。 在 “媒体元素” 上被使用的 <font color=FF0000>crossorigin 内容属性是一个 CORS 设置属性</font>。
+
+这些属性是枚举的，并具有以下可能的值：
+
+| 关键字          | 描述                                                         |
+| --------------- | ------------------------------------------------------------ |
+| anonymous       | 对此元素的 CORS 请求将不设置凭据标志。                       |
+| use-credentials | 对此元素的 CORS 请求将设置凭证标志；这意味着请求将提供凭据。 |
+| ""              | 设置一个空的值，如 crossorigin 或 crossorigin=""，和设置 anonymous 的效果一样。 |
+
+默认情况下（即未指定 crossOrigin 属性时），CORS 根本不会使用。如 [Terminology section of the CORS specification](https://www.w3.org/TR/cors/#user-credentials) 中的描述，在非同源情况下，设置 "anonymous" 关键字将不会通过 cookies，客户端 SSL 证书或 HTTP 认证交换用户凭据。
+
+即使是无效的关键字和空字符串也会被当作 `anonymous` 关键字使用。
+
+##### 示例
+
+- **使用 crossorigin 的 script 元素**
+
+  你可以使用下面的 \<script> 元素告诉浏览器执行来自 https://example.com/example-framework.js 的脚本且不发送用户凭据。
+
+  ```html
+  <script src="https://example.com/example-framework.js" crossorigin="anonymous"></script>
+  ```
+
+- **Webmanifest with credentials**
+
+  在获取需要用户凭据的 manifest 时，属性值必须设置为 use-credentials。即使是同源的情况。
+
+  ```html
+  <link rel="manifest" href="/app.webmanifest" crossorigin="use-credentials">
+  ```
+
+摘自：[MDN - CORS settings attributes](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Attributes/crossorigin)
+
+
+
 #### HTML语义化
 
 **HTML语义化是什么？**
@@ -1257,7 +1295,7 @@ HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独
 | value                                   | 所有                             | 表单控件的值。以名字/值对的形式随表单一起提交                |
 | width                                   | image                            | 与 \<img> 的width 属性一样                                   |
 
-#### \<textarea\>完全去除边框：
+##### \<textarea\>完全去除边框：
 
 ```css
 textarea{
@@ -1349,6 +1387,98 @@ tabindex 全局属性 指示其元素是否可以聚焦，以及它是否/在何
 根据键盘序列导航的顺序，值为 0 、非法值、或者没有 tabindex 值的元素应该放置在 tabindex 值为正值的元素后面。
 
 摘自：[MDN - tabindex](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/tabindex)
+
+
+
+#### \<link>
+
+HTML 外部资源链接元素 ( \<link> ) 规定了当前文档与外部资源的关系。<font color=FF0000>该元素 **最常用于链接样式表**，此外 **也可以被用来创建站点图标**（ 比如 PC 端的 “favicon” 图标和移动设备上用以显示在主屏幕的图标 ）</font>
+
+要链接一个外部的样式表，你需要像这样在你的 \<head> 中包含一个 \<link> 元素：
+
+```html
+<link href="main.css" rel="stylesheet">
+```
+
+<font color=FF0000>在这个简单的例子中，使用了 **href 属性设置外部资源的路径**，并设置 rel 属性的值为 “stylesheet”（样式表）</font>。<font color=FF0000>**rel 表示 “关系 ( relationship ) ”**</font>，它可能是 \<link> 元素其中一个关键的特性——属性值表示 \<link> 项的链接方式与包含它的文档之间的关系。可以在 [链接类型](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Link_types) 中看到很多不同类型的关系。
+
+这里有一些你经常遇到的其它类型。例如，这里是一个<font color=FF0000>网站图标的链接</font>：
+
+```html
+<link rel="icon" href="favicon.ico">
+```
+
+<font color=FF0000>还有一些其它的与图标相关的 rel 值</font>，主要用于表示不同移动平台上特殊的图标类型，例如：
+
+```html
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-icon-114.png" type="image/png">
+```
+
+<mark>sizes 属性表示图标大小，type 属性包含了链接资源的 MIME 类型</mark>。<font color=FF0000>这些属性为浏览器选择最合适的图标提供了有用的提示</font>。
+
+你<font color=FF0000>**也可以提供一个媒体类型，或者在 `media` 属性内部进行查询**；这种资源将只在满足媒体条件的情况下才被加载进来</font>。例如：
+
+```html
+<link href="print.css" rel="stylesheet" media="print">
+<link href="mobile.css" rel="stylesheet" media="screen and (max-width: 600px)">
+```
+
+\<link> 也加入了一些新的有意思的性能和安全特性。举例如下：
+
+```html
+<link rel="preload" href="myFont.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+```
+
+<font color=FF0000>**将 `rel` 设定为 `preload` ，表示浏览器应该预加载该资源**</font>。<font color=FF0000>`as` 属性表示获取特定的内容类</font>。`crossorigin` 属性表示该资源是否应该使用一个CORS请求来获取（**注：**crossorigin 相关内容可参考 [[#CORS 设置属性]] ）。
+
+##### 属性
+
+这个元素可以使用「全局属性」
+
+- **as：**<font color=FF0000>该属性 **仅在 \<link> 元素设置了 rel="preload" 或者 rel="prefetch" 时才能使用**</font>。它规定了 \<link> 元素加载的内容的类型，<mark>对于内容的优先级、请求匹配、正确的内容安全策略的选择以及正确的 Accept请求头的设置，**这个属性是必需的**</mark>。
+
+  **可选值有：**audio、document、embed、fetch、font、image、object、script、style、track、video、worker （**注：**这里原本是一个表格，这里略；详见原文）
+
+- **crossorigin：**此 <font color=FF0000>**枚举属性** 指定在加载相关资源时是否必须使用 CORS</font>。启用 CORS 的图片 可以在 \<canvas> 元素中重复使用，并避免其被污染（**注：**crossorigin 相关内容可参考 [[#CORS 设置属性]] ）。
+
+  当不设置此属性时，资源将会不使用 CORS 加载 (即不发送 Origin: HTTP 头)，这将阻止其在 \<canvas> 元素中进行使用。若设置了非法的值，则视为使用 anonymous。前往 CORS settings attributes 获取更多信息。
+
+- **disabled：**仅对于 rel="stylesheet" ，disabled 的 Boolean 属性指示是否应加载所描述的样式表并将其应用于文档。
+
+- **href：**此属性<font color=FF0000>指定被链接资源的 URL</font>。 URL 可以是绝对的，也可以是相对的。
+
+- **hreflang：**此属性指明了被链接资源的语言。其意义仅供参考。
+
+- **important🧪：**指示资源的相对重要性。优先级提示使用以下值委托：auto、high、low。
+
+  <mark style="background: aqua">只有存在 **rel=“preload”** 或 **rel=“prefetch”** 时，importance 属性才能用于 \<link> 元素</mark>。
+
+- **integrity🧪：**包含行内元数据，它是一个你用浏览器获取的资源文件的哈希值，以 base64 编码的方式的加密，这样<font color=FF0000>用户能用它来验证一个获取到的资源，在传送时未被非法篡改</font>
+
+- **media：**这个属性<font color=FF0000>规定了外部资源适用的媒体类型</font>。它的值必须是"媒体查询"。这个属性使得用户代理能选择最适合设备运行的媒体类型。
+
+- **referrerpolicy🧪：**一个字符串，<font color=FF0000>指示在获取资源时使用哪个引荐来源网址</font>
+
+- **rel：**<font color=FF0000>此属性命名链接文档与当前文档的关系</font>。 该属性必须是链接类型值的用空格分隔的列表。
+
+- **sizes：**这个属性<font color=FF0000>定义了包含相应资源的可视化媒体中的 icons 的大小</font>。它只有在 rel 包含 icon 的 link 类型值。
+
+- **title：**属性在 \<link> 元素上有特殊的语义。当用于 \<link rel="stylesheet"> 时，它定义了一个首选样式表或备用样式表。
+
+- **type：**这个属性被<font color=FF0000>**用于定义链接的内容的类型**</font>。这个<mark>属性的值应该是像 text/html，text/css 等 MIME 类型</mark>。这个属性常用的用法是定义链接的样式表，最常用的值是表明了 CSS 的 text/css。
+
+- <font size=4>**非标准属性 ⚠️**</font>
+
+  - **methods：**此属性的值提供有关可能在对象上执行的功能的信息
+  - **prefetch：**此属性标识下一个导航可能需要的资源，用户代理应检索该资源。这允许用户代理在将来请求资源时更快地做出响应
+  - **target：**定义具有已定义链接关系或将显示任何链接资源的呈现的框架或窗口名称。
+
+- <font size=4>**已淘汰的属性 🗑**</font>
+
+  - **charset：**此属性定义链接资源的字符编码。
+  - **rev：**此属性的值显示了 href 属性所定义的当前文档与链接文档的关系
+
+摘自：[MDN - \<link>：外部资源链接元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/link#attr-as)
 
 
 
@@ -1537,7 +1667,7 @@ align、frameborder、longdesc 、marginheight 、marginwidth 、scrolling
 
 
 
-#### manifest（<font color=FF0000>注意已从标准中 移除</font>）
+#### manifest（<font color=FF0000>注意⚠️ 已从标准中移除</font>）
 
 manifest 属性是 HTML5 中的新属性。
 
@@ -1606,7 +1736,7 @@ user agent stylesheet 是 UA（一般理解为 浏览器）内置的 基本元�
 
 **Chrome 开启 show user agent shadow DOM 方法：**
 
-<img src="https://s2.loli.net/2022/02/12/OaGd6fB15TqovE2.png" alt="image-20220212162137972" style="zoom: 48%;" />xue
+<img src="https://s2.loli.net/2022/02/12/OaGd6fB15TqovE2.png" alt="image-20220212162137972" style="zoom: 48%;" />
 
 学习自：[stack overflow - How to show CSS Styles of Shadow Dom in Chrome DevTools](https://stackoverflow.com/questions/19316610/how-to-show-css-styles-of-shadow-dom-in-chrome-devtools)
 
