@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                                       
+>                                         
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3191,7 +3191,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                           
+  >                                                                             
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3210,7 +3210,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                           
+  >                                                                             
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -6490,6 +6490,24 @@ Window.close() 方法用于：关闭当前窗口或某个指定的窗口。
 
 
 
+#### window.frames
+
+<font color=FF0000>返回当前窗口，一个类数组对象，列出了当前窗口的所有直接子窗口</font>
+
+##### 语法
+
+```js
+frameList = window.frames;
+```
+
+- frameList 是一个 frame 对象的集合，它<font color=FF0000>类似一个数组，有 length 属性且可以使用索引 ( [i] ) 来访问</font>
+- <font color=FF0000>**`frameList === window` 计算结果为 true**</font>
+- 在 <font color=FF0000>window.frames 类数组中的 **每一项都代表了窗口对应给定对象的 \<frame> 或 \<iframe>的内容**</font>，而不是 (i)frame DOM元素（即window.frames[0] 与 document.getElementsByTagName("iframe")[0].contentWindow 是相同的）。
+
+摘自：[MDN - Window.frames](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/frames)
+
+
+
 #### window.location.reload()
 
 - **语法：**
@@ -7193,9 +7211,9 @@ IntersectionObserver 接口（<mark>从属于 Intersection Observer API</mark>�
 
 以下内容摘自  [MutationObserver 和 IntersectionObserver](https://juejin.cn/post/6999950594207121444)。另外，这篇文章还有更详细的介绍（也比 MDN 中的容易理解），推荐阅读。由于只是简单了解，同时 当前的工作中完全找不到使用场景，所以，这里略。
 
-**痛点：**<mark>以往我们实现图片懒加载往往是通过监听存放图片的滚动容器的滚动事件或者整个页面的滚动事件，在滚动事件触发的时候调用图片元素的 getBoundingClientRect() 函数来进行可见性比对</mark>。<font color=FF0000>这种方式是在事件触发的时候同步进行，如果运算量过大极有可能会导致主线程阻塞，从而页面卡顿</font>。延伸开来，我们急迫地需要一个高性能的元素可见性变化解决方案，所以 IntersectionObserver 诞生了。
+**痛点：**<mark>以往我们 **实现图片懒加载** 往往是通过监听存放图片的滚动容器的滚动事件（ 即：scroll 事件）或者 整个页面的滚动事件，在滚动事件触发的时候调用图片元素的 getBoundingClientRect() 函数来进行可见性比对</mark>。<font color=FF0000>这种方式是在事件触发的时候同步进行，如果运算量过大极有可能会导致主线程阻塞，从而页面卡顿</font>。延伸开来，我们急迫地需要一个高性能的元素可见性变化解决方案，所以 IntersectionObserver 诞生了。（**注：**也就是说，<font color=FF0000>**IntersectionObserver 可用来实现图片懒加载**</font>）
 
-**概述：**<font color=FF0000>这个 API 可以 <font size=4>**观察目标元素与视口或指定根元素产生的交叉区的变化**</font>，所以这个 API 也叫做“交叉观察器”</font>。<mark>它和 MutationObserver 一样都是 <font color=FF0000>**异步的**</font>，不随着目标元素的滚动 同步触发</mark>。<font color=FF0000>发明者规定，IntersectionObserver 的实现，应该采用 requestIdleCallback() 的方式，即只有线程空闲下来，才会执行观察器</font>。这意味着，<mark>这个观察器的优先级非常低，只在其他任务执行完，浏览器有了空闲才会执行</mark>。注：异步 + 低优先级 所以高性能（似乎也可以称为：不会影响性能...）
+**概述：**<font color=FF0000>这个 API 可以 <font size=4>**观察目标元素与视口或指定根元素产生的交叉区的变化**</font>，所以这个 API 也叫做“交叉观察器”</font>。<mark>它和 MutationObserver 一样都是 <font color=FF0000>**异步的**</font>，不随着目标元素的滚动 同步触发</mark>。<font color=FF0000>发明者规定，IntersectionObserver 的实现，应该采用 requestIdleCallback() 的方式，即只有线程空闲下来，才会执行观察器</font>。这意味着，<mark>这个观察器的优先级非常低，只在其他任务执行完，浏览器有了空闲才会执行</mark>。**注：**异步 + 低优先级 所以高性能（似乎也可以称为：不会影响性能...）
 
 文章中还有 root、rootmargin、threshold 的 介绍，内容比 MDN 清楚、具体很多，这里略。
 
@@ -9103,9 +9121,62 @@ class AbstractClass {
 
 #### Reflect
 
-**Reflect** 是一个<font color=FF0000>**内置的对象**，它提供拦截 JavaScript 操作的方法</font>。<font color=FF0000>Reflect不是一个函数对象，因此它是不可构造的</font>。
+**Reflect** 是一个<font color=FF0000>**内置的对象**，它提供拦截 JavaScript 操作的方法</font>。<font color=FF0000>Reflect 不是一个函数对象，因此它是不可构造的</font>。
 
-与大多数全局对象不同，Reflect并非一个构造函数，所以<font color=FF0000>不能通过new运算符对其进行调用</font>，或者将Reflect对象作为一个函数来调用。<font color=FF0000>Reflect的所有属性和方法都是静态的</font>（<font color=FF0000>就像Math对象</font>）。
+与大多数全局对象不同，Reflect 并非一个构造函数，所以<font color=FF0000>不能通过 new 运算符对其进行调用</font>，或者将Reflect对象作为一个函数来调用。<font color=FF0000>Reflect的所有属性和方法都是静态的</font>（<font color=FF0000>就像Math对象</font>）。
+
+##### 《现代 JS 教程》中的 Reflect
+
+由于 MDN 中 没有说清楚 Reflect 的作用，所以摘抄《现代 JS 教程》中的内容：
+
+> Reflect 是一个内建对象，可简化 Proxy 的创建。
+>
+> <font color=FF0000>Proxy 中定义的内部方法</font>（注：即那些「内部属性」，详见原文中的表格），<font color=FF0000>例如 \[[Get]] 和 \[[Set]] 等，都只是规范性的，不能直接调用</font>。
+>
+> <font color=FF0000>Reflect 对象（**注：**的存在？）使调用这些内部方法成为了可能</font>。<font color=FF0000>它的方法</font>（**注：**即 Reflect 调用这些 “内部方法” 的方法）<font color=FF0000>是内部方法的 **最小包装**</font>。
+>
+> <font color=FF0000>**对于每个可被 Proxy 捕获的内部方法，在 Reflect 中都有一个对应的方法，其名称和参数与 Proxy 捕捉器相同**</font>。所以，我们可以使用 Reflect 来将操作转发给原始对象。
+>
+> **以下是执行相同操作和 Reflect 调用的示例：**
+>
+> | 操作              | Reflect 调用                      | 内部方法       |
+> | :---------------- | :-------------------------------- | :------------- |
+> | obj[prop]         | Reflect.get(obj, prop)            | \[[Get]]       |
+> | obj[prop] = value | Reflect.set(obj, prop, value)     | \[[Set]]       |
+> | delete obj[prop]  | Reflect.deleteProperty(obj, prop) | \[[Delete]]    |
+> | new F(value)      | Reflect.construct(F, value)       | \[[Construct]] |
+> | …                 | …                                 | …              |
+>
+> **代码示例：**
+>
+> ```js
+> let user = {};
+> Reflect.set(user, 'name', 'John');
+> 
+> alert(user.name); // John
+> ```
+>
+> 在下面这个示例中，捕捉器 get 和 set 均透明地（好像它们都不存在一样）将读取/写入操作转发到对象，并显示一条消息：
+>
+> ```js
+> let user = { name: "John", };
+> 
+> user = new Proxy(user, {
+>   get(target, prop, receiver) {
+>     alert(`GET ${prop}`);
+>     return Reflect.get(target, prop, receiver); // (1)
+>   },
+>   set(target, prop, val, receiver) {
+>     alert(`SET ${prop}=${val}`);
+>     return Reflect.set(target, prop, val, receiver); // (2)
+>   }
+> });
+> 
+> let name = user.name; // 显示 "GET name"
+> user.name = "Pete"; // 显示 "SET name=Pete"
+> ```
+>
+> 摘自：[现代 JS 教程 - Proxy 和 Reflect - Reflect](https://zh.javascript.info/proxy#reflect)
 
 **静态方法**
 
@@ -9141,25 +9212,27 @@ class AbstractClass {
 
 摘自：[MDN - Reflect](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect) 另外，可以补充阅读：[JS的Reflect学习和应用](https://zhuanlan.zhihu.com/p/92700557)，该文章对上面的静态方法，做了示例。
 
-<font size=4>**补充：**</font>
+##### 使用 Reflect 的好处
 
-**使用Reflect的好处**
+- **将 Object 属于语言内部的方法转移到 Reflect 上**
 
-- **将Object属于语言内部的方法转移到Reflect上**
-
-  如上面ES6中：将 window.isNaN() 转移到Number下，成为Number.isNaN()，使之设计更合理。在ES5设计初期，将一些方法放到 Object 下，这样的设计并不合理。而在ES6中，将其放到Reflect下（比如 Object.defineProperty() 变成 Reflect.defineProperty() ），这样设计会更加规范
+  如上面 ES6 中：将 window.isNaN() 转移到 Number 下，成为 Number.isNaN() ，使之设计更合理。<font color=FF0000>在 ES5 设计初期，将一些方法放到 Object 下，这样的设计并不合理。而在 ES6 中，将其放到 Reflect 下（ 比如 Object.defineProperty() 变成 Reflect.defineProperty() ），这样设计会更加规范</font>
 
 - **修改某些Object方法的返回结果，让其变得更合理**
 
   还是以 Object.defineProperty() 为例，如果当前有些属性无法定义，则会抛出异常，需要使用try...catch。而在 Reflect.defineProperty()中，会返回一个boolean值，如果出现异常则会返回一个false
 
-- **让Object操作变成函数行为**
+- **让 Object 操作变成函数行为**
 
-  Object的一些操作都是命令式的，如判断Object中是否含有assign这一方法，使用： ` assign in Object `，返回boolean值；而在Reflect中是函数式的：`Reflect.has(Object, 'assign')` 返回boolean值，这样更加合理
+  Object 的一些操作都是命令式的，如判断 Object 中是否含有 assign 这一方法，使用： ` assign in Object ` ，返回 boolean 值；而在 Reflect 中是函数式的：`Reflect.has(Object, 'assign')` 返回 boolean 值，这样更加合理
 
-- **Reflect对象的方法与Proxy对象的方法一对应**
+- <font color=FF0000>**Reflect 对象的方法与 Proxy 对象的方法一对应**</font>
 
-  在Proxy下，使用Object的方法，可以使用Reflect替代，并且使用的样子和Proxy一样。（有些说不清楚，详见：[再学JavaScript ES(6-11)全版本语法大全](https://coding.imooc.com/class/444.html) 的 3-16）
+  在 Proxy 下，使用 Object 的方法，可以使用 Reflect 替代，并且使用方法和 Proxy 一样。
+
+##### CodingStartup 群群友关于 Proxy 和 Reflect 的补充
+
+> proxy 是代理行为，reflect 是注入行为
 
 #### Reflect.ownKeys()
 
@@ -11867,8 +11940,12 @@ Service worker 是一个<font color=FF0000>注册在 **指定源和路径下** �
 “离线优先”或“缓存优先”模式是向用户提供内容的最流行策略。如果资源已缓存且可脱机使用，就在尝试从服务器下载资源之前先将其返回；如果它已经不在缓存中，就下载并缓存以备将来使用。
 
 补充内容摘自：[MDN - 通过 Service workers 让 PWA 离线工作](https://developer.mozilla.org/zh-CN/docs/Web/Progressive_web_apps/Offline_Service_workers)
-***
 
+#####  [科普] Service Worker 入门指南 中的补充
+
+// TODO 文章简要介绍了 Service Worker 的特点，以及生命周期、运行流程、代码逻辑（ 包含：register  install activate  fetch skipWaiting ），以及一些 API，和 应用场景。有时间做一下笔记。
+
+***
 
 
 ## JS场景实践案例

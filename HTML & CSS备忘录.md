@@ -325,7 +325,7 @@ HTML \<dialog> 元素<font color=FF0000>表示一个对话框或其他交互式�
 **使用备注**
 
 - <font color=FF0000>\<form>元素可在此对话框中使用，但需要指定属性 method="dialog"</font>。当提交表单时，对话框的 returnValue 属性将会等于表单中被使用的提交按钮的 value 。
-- ::backdrop CSS 伪元素可用于更改 \<dialog> 背景元素样式，例如在对话框被打开激活时，调暗背景中不可访问的内容。仅当使用  HTMLDialogElement.showModal() (en-US)  显示对话框时才会绘制 backdrop 背景。
+- ::backdrop CSS 伪元素可用于更改 \<dialog> 背景元素样式，例如在对话框被打开激活时，调暗背景中不可访问的内容。仅当使用  HTMLDialogElement.showModal()  显示对话框时才会绘制 backdrop 背景。
 
 摘自：[MDN - \<dialog>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/dialog)
 
@@ -611,14 +611,14 @@ format-detection翻译成中文的意思是“格式检测”，是用来检测h
 
 #### 表单属性
 
-- **maxlength / minlength：**用于\<input>和\<textarea>，作用是限制输入最多的和最少的字符数量
-- **autocomplete：**可用于以文本或数字值作为输入的 \<input> 元素 ， \<textarea> 元素, \<select> 元素, 和\<form> 元素。 autocomplete 允许web开发人员指定，如果有任何权限 user agent 必须提供填写表单字段值的自动帮助，并为浏览器提供关于字段中所期望的信息类型的指导。<mark>建议值的来源通常取决于浏览器。 通常，值来自用户输入的过去值，但它们也可能来自预先配置的值。 </mark>
+- **maxlength / minlength：**用于 \<input> 和 \<textarea>，作用是限制输入最多的和最少的字符数量
+- **autocomplete：**可用于以文本或数字值作为输入的 \<input> 元素 ， \<textarea> 元素, \<select> 元素, 和 \<form> 元素。 autocomplete 允许web开发人员指定，如果有任何权限 user agent 必须提供填写表单字段值的自动帮助，并为浏览器提供关于字段中所期望的信息类型的指导。<mark>建议值的来源通常取决于浏览器。 通常，值来自用户输入的过去值，但它们也可能来自预先配置的值。 </mark>
 
 #### data-*（数据属性）
 
 HTML5是具有扩展性的设计，它初衷是数据应与特定的元素相关联，但不需要任何定义。<font color=FF0000>data-* 属性允许我们在标准内于HTML元素中存储额外的信息</font>，而不需要使用类似于 classList，标准外属性，DOM额外属性或是 setUserData 之类的技巧。
 
-- **HTML语法：**
+- **HTML语法**
 
   语法非常简单。所有在元素上以data-开头的属性为数据属性。比如说你有一篇文章，而你又想要存储一些不需要显示在浏览器上的额外信息。请使用data属性：
 
@@ -698,11 +698,9 @@ XML 实例：在 CDATA 标记中的信息被解析器原封不动地传给应用
 
 **摘自：**[XML 中的 ﹤!\[CDATA\[]\]>，及其解析](https://blog.csdn.net/qq_33266987/article/details/54288051)
 
-
-
 #### PCDATA
 
-PCDATA 指的是<font color=FF0000>被解析的字符数据</font>（Parsed Character Data）。
+PCDATA 指的是<font color=FF0000>被解析的字符数据</font> ( Parsed Character Data ) 。
 
 XML 解析器通常会解析 XML 文档中所有的文本。
 
@@ -736,50 +734,56 @@ XML 解析器通常会解析 XML 文档中所有的文本。
 **属性**
 
 - src：是必须的，它包含了你想嵌入的图片的文件路径。
+
 - alt： 属性包含一条对图像的文本描述，这<mark>不是强制性的</mark>，<mark style="background: fuchsia">但对可访问性而言，它难以置信地有用——屏幕阅读器会将这些描述读给需要使用阅读器的使用者听，让他们知道图像的含义</mark>。如果由于某种原因无法加载图像，普通浏览器也会在页面上显示alt 属性中的备用文本：例如，网络错误、内容被屏蔽或链接过期时。
 
 - **还有很多其他属性，可以实现各种不同的目的：**
 
-  - Referrer/CORS 控制，保证安全与隐私：详见 crossorigin 属性和 referrerpolicy 属性。
+  Referrer/CORS 控制，保证安全与隐私：详见 crossorigin 属性和 referrerpolicy 属性。
 
-    - **crossorigin：**这个<mark>枚举属性表明是否必须使用 CORS 完成相关图像的抓取</mark>。启用 CORS 的图像 可以在 \<canvas> 元素中重复使用，而不会被污染（tainted）。允许的值有：
+  - **crossorigin：**这个<mark>枚举属性表明是否必须使用 CORS 完成相关图像的抓取</mark>。启用 CORS 的图像 可以在 \<canvas> 元素中重复使用，而不会被污染（tainted）。允许的值有：
 
-      - **anonymous：**执行一个跨域请求（比如，有 Origin HTTP header）。但是<font color=FF0000>**没有发送证书**</font>（比如，没有 cookie，没有 X.509 证书，没有 HTTP 基本授权认证）。如果服务器没有把证书给到源站（没有设置 Access-Control-Allow-Origin HTTP 头），图像会被污染，而且它的使用会被限制。
-      - **use-credentials：**<font color=FF0000>一个有证书的跨域请求</font>（比如，有 Origin HTTP header）被发送 （比如，cookie, 一份证书，或者 HTTP 基本验证信息）。如果服务器没有给源站发送证书（通过 Access-Control-Allow-Credentials HTTP header），图像将会被污染，且它的使用会受限制。
+    - **anonymous：**执行一个跨域请求（比如，有 Origin HTTP header）。但是<font color=FF0000>**没有发送证书**</font>（比如，没有 cookie，没有 X.509 证书，没有 HTTP 基本授权认证）。如果服务器没有把证书给到源站（没有设置 Access-Control-Allow-Origin HTTP 头），图像会被污染，而且它的使用会被限制。
+    - **use-credentials：**<font color=FF0000>一个有证书的跨域请求</font>（比如，有 Origin HTTP header）被发送 （比如，cookie, 一份证书，或者 HTTP 基本验证信息）。如果服务器没有给源站发送证书（通过 Access-Control-Allow-Credentials HTTP header），图像将会被污染，且它的使用会受限制。
 
-      当用户并未显式使用本属性时，默认不使用 CORS 发起请求（例如，不会向服务器发送原有的HTTP 头部信息），可防止其在 \<canvas> 中的使用。如果无效，默认当做 anonymous 关键字生效。
+    当用户并未显式使用本属性时，默认不使用 CORS 发起请求（例如，不会向服务器发送原有的HTTP 头部信息），可防止其在 \<canvas> 中的使用。如果无效，默认当做 anonymous 关键字生效。
 
-    - **referrerpolicy** ：用于表明在获取资源时，使用什么样的referrer请求头
+  - **referrerpolicy**：用于表明在获取资源时，使用什么样的 referrer 请求头
 
-      - no-referrer: The Referer header will not be sent.
-      - no-referrer-when-downgrade: No Referer header is sent when navigating to an origin without HTTPS. This is the default if no policy is otherwise specified.
-      - origin: The Referer header will include the page's origin (scheme, host, and port (en-US)).
-      - origin-when-cross-origin: Navigating to other origins will limit the included referral data to the scheme, host, and port, while navigating from the same origin will include the full path and query string.
-      - unsafe-url: The Referer header will always include the origin, path and query string, but not the fragment, password, or username. This is unsafe because it can leak information from TLS-protected resources to insecure origins.
+    - no-referrer: The Referer header will not be sent.
+    - no-referrer-when-downgrade: No Referer header is sent when navigating to an origin without HTTPS. This is the default if no policy is otherwise specified.
+    - origin: The Referer header will include the page's origin (scheme, host, and port ).
+    - origin-when-cross-origin: Navigating to other origins will limit the included referral data to the scheme, host, and port, while navigating from the same origin will include the full path and query string.
+    - unsafe-url: The Referer header will always include the origin, path and query string, but not the fragment, password, or username. This is unsafe because it can leak information from TLS-protected resources to insecure origins.
 
-  - 使用 width、height 和 intrinsicsize 设置 原始分辨率 (en-US)：这将设置图像应占用的空间，以确保图像被加载之前页面的布局是稳定的。
+  - **使用 width、height 和 intrinsicsize 设置 原始分辨率：**这将设置图像应占用的空间，确保图像被加载之前页面的布局是稳定的
 
     - <font color=FF0000>**width：**图像的宽度</font>，在 HTML5 中单位是 CSS 像素， 在 HTML 4 中可以是像素也可以是百分比。
     - <font color=FF0000>**height：**图像的高度</font>，在 HTML5 中的单位是 CSS 像素，在 HTML 4 中既可以是像素，也可以是百分比。可以只指定 width 和 height 中的一个值，浏览器会根据原始图像进行缩放。
 
-  - 使用 sizes 和 srcset 设置响应式图像
+  - **使用 sizes 和 srcset 设置 <font color=FF0000 size=4>响应式</font> 图像**
 
-    - sizes：表示资源大小的、以逗号隔开的一个或多个字符串。每一个资源大小包括：
+    - **sizes：**表示资源大小的、以逗号隔开的一个或多个字符串。每一个资源大小包括：
 
-      - 一个媒体条件。最后一项一定是被忽略的。
+      - 一个<font color=FF0000>**媒体查询条件**</font>。最后一项一定是被忽略的。
       - 一个资源尺寸的值。
 
-    - srcset
-      以逗号分隔的一个或多个字符串列表表明一系列用户代理使用的可能的图像。每一个字符串由以下组成：
+      语法如下：
+  
+      ```html
+      sizes="[media query] [length], [media query] [length] ... "
+      ```
+  
+    - **srcset：**以逗号分隔的一个或多个字符串列表表明一系列用户代理使用的可能的图像。每一个字符串由以下组成：
 
-      - 指向图像的 URL。
+      - 指向图像的 URL
       - 可选地，再加一个空格之后，附加以下的其一：
         - 一个宽度描述符，这是一个正整数，后面紧跟 'w' 符号。该整数宽度除以sizes属性给出的资源（source）大小来计算得到有效的像素密度，即换算成和x描述符等价的值。
         - 一个像素密度描述符，这是一个正浮点数，后面紧跟 'x' 符号。
-
+  
       如果没有指定源描述符，那它会被指定为默认的 1x。
-
-      在相同的 srcset 属性中混合使用宽度描述符和像素密度描述符时，会导致该值无效。重复的描述符（比如，两个源在相同的 srcset 两个源都是 2x）也是无效的。
+  
+      在相同的 srcset 属性中混合使用宽度描述符和像素密度描述符时，会导致该值无效。重复的描述符（ 比如，两个源在相同的 srcset 两个源都是 2x ）也是无效的。
 
 摘自：[MDN - \<img>：图像嵌入元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/img)
 
@@ -855,7 +859,7 @@ HTML \<source> 元素为 \<picture>, \<audio> 或者 \<video> 元素指定多个
   <script src="https://example.com/example-framework.js" crossorigin="anonymous"></script>
   ```
 
-- **Webmanifest with credentials**
+- **Web manifest with credentials**
 
   在获取需要用户凭据的 manifest 时，属性值必须设置为 use-credentials。即使是同源的情况。
 
@@ -864,6 +868,50 @@ HTML \<source> 元素为 \<picture>, \<audio> 或者 \<video> 元素指定多个
   ```
 
 摘自：[MDN - CORS settings attributes](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Attributes/crossorigin)
+
+
+
+#### AppCache 的相关的离线缓存
+
+**注：**AppCache 已过时，请使用 Service Worker 实现功能
+
+HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制，<font color=FF0000>通过 `.appcache` 文件上的 **解析清单** 离线存储资源</font>，这些资源就会像 cookie 一样被存储了下来。之后当网络在处于离线状态下时，浏览器会通过被离线存储的数据进行页面展示。使用方法如下： 
+
+1. 创建一个和 html 同名的 manifest 文件，然后在页面头部加入 manifest 属性：
+
+   ```html
+   <html lang="en" manifest="index.manifest">
+   ```
+
+2. 在 cache.manifest 文件中编写需要离线存储的资源：
+
+   ```
+   CACHE MANIFEST
+       #v0.11
+       CACHE:
+       js/app.js
+       css/style.css
+       NETWORK:
+       resourse/logo.png
+       FALLBACK:
+       / /offline.html
+   ```
+
+   - **CACHE：** 表示需要离线存储的资源列表，由于包含 manifest 文件的页面将被自动离线存储，所以不需要把页面自身也列出来。
+
+   - **NETWORK：**表示在它下面列出来的资源只有在在线的情况下才能访问，他们不会被离线存储，所以在离线情况下无法使用这些资源。不过，如果在 CACHE 和 NETWORK 中有一个相同的资源，那么这个资源还是会被离线存储，也就是说 CACHE 的优先级更高。
+
+   - **FALLBACK：**表示如果访问第一个资源失败，那么就使用第二个资源来替换他，比如上面这个文件表示的就是如果访问根目录下任何一个资源失败了，那么就去访问 offline.html 。
+
+3. 在离线状态时，操作 `window.applicationCache` 进行离线缓存的操作。
+
+##### 浏览器是如何对 HTML5 的离线储存资源进行管理和加载
+
+- **在线的情况下**，浏览器发现 html 头部有 manifest 属性，它会请求 manifest 文件，如果是第一次访问页面 ，那么浏览器就会根据 manifest 文件的内容下载相应的资源并且进行离线存储。如果已经访问过页面并且资源已经进行离线存储了，那么浏览器就会使用离线的资源加载页面，然后浏览器会对比新的 manifest 文件与旧的 manifest 文件，如果文件没有发生改变，就不做任何操作，如果文件改变了，就会重新下载文件中的资源并进行离线存储。
+
+- **离线的情况下**，浏览器会直接使用离线存储的资源。
+
+摘自：[「2021」高频前端面试题汇总之HTML篇](https://juejin.cn/post/6905294475539513352)
 
 
 
@@ -876,25 +924,25 @@ HTML \<source> 元素为 \<picture>, \<audio> 或者 \<video> 元素指定多个
 **为什么要语义化？**
 
 - 有利于SEO，有助于爬虫抓取更多的有效信息，爬虫是依赖于标签来确定上下文和各个关键字的权重。
-- 语义化的HTML在没有CSS的情况下也能呈现较好的内容结构与代码结构
-- 方便其他设备的解析
-- 便于团队开发和维护
+- 语义化的 HTML 在没有 CSS 的情况下也能呈现较好的内容结构与代码结构
+- 方便其他设备的解析。支持读屏软件，根据文章可以自动生成目录
+- 可读性好，结构更加清晰， 便于团队开发和维护
 
-以上摘自：[HTML语义化](https://segmentfault.com/a/1190000005626375)
+摘自：[HTML语义化](https://segmentfault.com/a/1190000005626375)
 
 
 
-#### HTML5全局属性
+#### HTML5 全局属性
 
-<mark>全局属性是**所有HTML元素共有的属性**; 它们可以用于所有元素，即使属性可能对某些元素不起作用</mark>
+<mark>全局属性是**所有 HTML 元素共有的属性**; 它们可以用于所有元素，即使属性可能对某些元素不起作用</mark>
 
-<font color=FF0000>我们可以在所有的HTML元素上指定全局属性，甚至是在标准里没有指定的元素</font>。<mark>这意味着任何非标准元素仍必须能够应用这些属性，即使使用这些元素意味着文档不再是html5兼容的</mark>。例如，虽然\<foo>不是一个有效的HTML元素，但是html5兼容的浏览器隐藏了标记为\<foo hidden>...\</foo>的内容。
+<font color=FF0000>我们可以在所有的HTML元素上指定全局属性，甚至是在标准里没有指定的元素</font>。<mark>这意味着任何非标准元素仍必须能够应用这些属性，即使使用这些元素意味着文档不再是 html5 兼容的</mark>。例如，虽然 \<foo> 不是一个有效的 HTML 元素，但是 html5 兼容的浏览器隐藏了标记为 \<foo hidden>...\</foo> 的内容。
 
-**除了基本的HTML全局属性之外，还存在以下全局属性:**
+**除了基本的 HTML 全局属性之外，还存在以下全局属性:**
 
-- **xml:lang 和 xml:base** ——<mark>两者都是从XHTML规范继承，但为了兼容性而被保留的</mark>。
-- **多重aria-*属性**，<mark>用于改善可访问性</mark>。
-- **事件处理程序 属性：**on+事件名称。由于过多，这里略；详见原文
+- **xml:lang 和 xml:base** ——<mark>两者都是从 XHTML 规范继承，但为了兼容性而被保留的</mark>。
+- **多重 aria-* 属性**，<mark>用于改善可访问性</mark>。
+- **事件处理程序 属性：**on+事件名称。由于过多，这里略；详见原文。
 
 **全局属性列表**
 
@@ -907,14 +955,14 @@ HTML \<source> 元素为 \<picture>, \<audio> 或者 \<video> 元素指定多个
   - **words**，<font color=FF0000>每个<font size=4>**单词**</font>的第一个字母默认为大写字母；所有其他字母都默认为小写字母</font>。
   - **characters**，<font color=FF0000>所有的字母都应该默认为大写</font>。
 
-- **class：**<font color=FF0000>一个以空格分隔的元素的类名（classes ）<font size=4>**列表**</font></font>，它允许 CSS 和 Javascript 通过类选择器 (class selectors) 或DOM方法( document.getElementsByClassName)来选择和访问特定的元素。
+- **class：**<font color=FF0000>一个以空格分隔的元素的类名 ( classes ) <font size=4>**列表**</font></font>，它允许 CSS 和 Javascript 通过类选择器  ( class selectors ) 或 DOM 方法 ( document.getElementsByClassName ) 来选择和访问特定的元素。
 
-- **contenteditable：**一个<font color=FF0000>枚举属性</font>（enumerated attribute），<font color=FF0000>表示元素是否可被用户编辑</font>。 如果可以，浏览器会调整元素的部件（widget）以允许编辑。
+- **contenteditable：**一个<font color=FF0000>枚举属性</font>（enumerated attribute），<font color=FF0000>表示元素是否可被用户编辑</font>。 如果可以，浏览器会调整元素的部件 ( widget ) 以允许编辑。
 
   - **true 或者空字符串**，表明元素是可被编辑的；
   - **false**，表明元素不能被编辑。
 
-- **contextmenu：**\<menu> 的id ，作为该元素的上下文菜单（<font color=FF0000>已经不被支持，将从所有浏览器中删除</font>）。
+- **contextmenu：**\<menu> 的 id ，作为该元素的上下文菜单（<font color=FF0000>已经不被支持，将从所有浏览器中删除</font>）。
 
 - **data-*：**<font color=FF0000>一类自定义数据属性</font>，<mark>它赋予我们在所有 HTML 元素上嵌入自定义数据属性的能力</mark>，并可以通过脚本(一般指JavaScript) 与 HTML 之间进行专有数据的交换。所有这些自定义数据属性都可以通过所属元素的 HTMLElement 接口来访问。  <font color=FF0000>**HTMLElement.dataset 属性可以访问它们**</font>。
 
@@ -954,7 +1002,7 @@ HTML \<source> 元素为 \<picture>, \<audio> 或者 \<video> 元素指定多个
 
   摘自：[MDN - inputmode](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/inputmode)
 
-- **is：**允许您<font color=FF0000>指定标准HTML元素应该**像已注册的自定义内置元素一样**</font>。<font color=FF0000 size=4>**（便于语义化和SEO）**</font>
+- **is：**允许您<font color=FF0000>指定标准HTML元素应该**像已注册的自定义内置元素一样**</font>。<font color=FF0000 size=4>**（便于语义化和 SEO）**</font>
 
   只有在当前文档中已成功定义( defined )指定的自定义元素名称并且扩展了要应用的元素类型时，才能使用此属性。示例如下：
 

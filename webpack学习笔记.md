@@ -2665,13 +2665,13 @@ require.context()
 
 - **避免相同随机值：**webpack 在计算 hash 后分割 chunk。产生相同随机值可能是因为这些文件属于同一个 chunk，可以将某个文件提到独立的 chunk（如放入entry）
 
-#### Webpack 如何用localStorage 离线缓存静态资源
+#### Webpack 如何用 localStorage 离线缓存静态资源
 
 - 在配置 webpack 时，我们可使用 html-webpack-plugin 来注入一段脚本到 html， 来实现第三方或者公用资源的静态化存储。
 
   **做法：**在 html 中注入一段标识，例如 <% HtmlWebpackPlugin.options.loading.html %>，在 html-webpack-plugin 中即可通过配置 html 属性，将 script 注入进去。
 
-- 通过配置 webpack-mainfest-plugin，生成 mainfest.json 文件用来对比 js 资源的差异，做到是否替换；当然，也要写缓存 script。
+- 通过配置 webpack-manifest-plugin，生成 manifest.json 文件用来对比 js 资源的差异，做到是否替换；当然，也要写缓存 script。
 
 - 在我们做 Cl / CD的时候，也可以通过编辑文件流来实现静态化脚本的注入，来降低服务器的压力，提高性能
 
