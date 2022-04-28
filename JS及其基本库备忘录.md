@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                                         
+>                                             
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3191,7 +3191,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                             
+  >                                                                                 
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3210,7 +3210,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                             
+  >                                                                                 
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -5762,7 +5762,7 @@ console.log(a); // 10
 
     - document.documentElement.clientWidth    //去除滚动条的宽度
 
-- **一般元素**（上面**`document.body.*`**有的，一般元素也会有；而**`window.*`**有的，一般元素没有）
+- **一般元素**（上面 **`document.body.*`** 有的，一般元素也会有；而**`window.*`** 有的，一般元素没有）
 
   - **Element.clientHeight：**<font color=FF0000>只读属性</font>，<font color=FF0000>对于没有定义CSS或者内联布局盒子的元素为0</font>，否则，它是元素内部的高度（单位像素）；<font color=FF0000>Element.clientHeight包含内边距</font>，但不包括水平滚动条、边框和外边距。
 
@@ -5802,9 +5802,9 @@ console.log(a); // 10
 
     **（和scrollTop一样）<font color=FF0000>scrollLeft 可以是任意整数，然而：</font>**
 
-    - 如果元素不能滚动（比如：元素没有溢出），那么scrollLeft 的值是0。
-    - 如果给scrollLeft 设置的值小于0，那么scrollLeft 的值将变为0。
-    - 如果给scrollLeft 设置的值大于元素内容最大宽度，那么scrollLeft 的值将被设为元素最大宽度。
+    - 如果元素不能滚动（比如：元素没有溢出），那么 scrollLeft 的值是 0。
+    - 如果给 scrollLeft 设置的值小于0，那么 scrollLeft 的值将变为 0。
+    - 如果给 scrollLeft 设置的值大于元素内容最大宽度，那么 scrollLeft 的值将被设为元素最大宽度。
 
 摘自：[js获取各种高度](https://juejin.cn/post/6844904112111239176) / [JS 获取屏幕、浏览器、页面的高度宽度](https://segmentfault.com/a/1190000010443608) / [MDN - Element.clientHeight](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/clientHeight) / [MDN - Element.clientWidth](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/clientWidth) / [MDN - HTMLElement.offsetHeight](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetHeight) / 
 
@@ -5816,7 +5816,21 @@ console.log(a); // 10
 
 #### Element.getBoundingClientRect()
 
-<font size=4>**补充**</font>
+Element.getBoundingClientRect() 方法<font color=FF0000>返回元素的 大小 及其 相对于视口 ( viewport ) 的位置</font>（**注：**视口即页面窗口）。
+
+如果是 <font color=FF0000>**标准盒子模型**</font>，<font color=FF0000>元素的尺寸等于 `width/height` + `padding` + `border-width` 的总和</font>。如果 <font color=fuchsia>**`box-sizing: border-box`**</font> ，<font color=fuchsia>元素的的尺寸等于 `width/height` </font>。
+
+##### 语法
+
+```js
+domRect = element.getBoundingClientRect();
+```
+
+返回值是一个 DOMRect 对象，这个对象是由该元素的 getClientRects() 方法返回的一组矩形的集合，就是该元素的 CSS 边框大小。<font color=FF0000>返回的结果是包含完整元素的最小矩形，并且拥有 <font size=4>**left、top、right、bottom、x、y、width，和 height**</font> 这几个以像素为单位的 **只读属性** 用于描述整个边框</font>。**除了 width 和 height 以外的属性是<font color=FF0000>相对于视图窗口的左上角来计算的</font>**。
+
+摘自：[MDN - Element.getBoundingClientRect()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/getBoundingClientRect)
+
+##### Element.getBoundingClientRect() 《现代 JS 教程》中的图示
 
 <img src="https://i.loli.net/2021/08/01/4MFxHdhp67APyz1.png" alt="image-20210801201125660" style="zoom:50%;" />
 
@@ -5970,6 +5984,56 @@ document.addEventListener('visibilitychange', function logData() {
 可使用 pagehide 事件来代替部分浏览器未实现的 visibilitychange 事件。和 beforeunload 与 unload 事件类似，这一事件不会被可靠地触发（特别是在移动设备上），但它与 bfcache 兼容。
 
 摘自：[MDN - Navigator.sendBeacon()](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/sendBeacon)
+
+#### Clipboard & Navigator.clipboard
+
+Clipboard 接口实现了 Clipboard API，如果用户授予了相应的权限，就能提供系统剪贴板的读写访问。在 Web 应用程序中，Clipboard API 可用于实现剪切、复制和粘贴功能。
+
+如果用户没有适时使用 Permissions API 授予相应权限和"clipboard-read" 或 "clipboard-write" 权限，调用 Clipboard 对象的方法不会成功。**注意 ⚠️：**实际上，现在浏览器对于访问剪贴板权限的索取各有不同，在章节 [剪贴板可用性](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard#剪贴板可用性) 查看更多细节。
+
+<font color=FF0000>**系统剪贴板暴露于全局属性 Navigator.clipboard 之中**</font>
+
+<font color=FF0000 size=4>**所有** 剪贴板 API 方法都是 **异步** 的</font>；它们 <font color=FF0000 size=4>**返回一个 Promise 对象**</font>，在剪贴板访问完成后被执行。如果剪贴板访问被拒绝，promise 也会被拒绝。
+
+##### 方法
+
+<font color=FF0000>**Clipboard 继承自 EventTarget 接口**</font>，因此拥有它的方法。
+
+- **read()：**从剪贴板读取数据（比如图片），<font color=FF0000>返回一个 Promise 对象</font>。When the data has been retrieved, the promise is resolved with a DataTransfer object that provides the data。
+- **readText()：**从操作系统读取文本；returns a Promise which is resolved with a DOMString containing the clipboard's text once it's available。
+- **write()：**写入任意数据至操作系统剪贴板。This asynchronous operation signals that it's finished by resolving the returned Promise。
+- **writeText()：**写入文本至操作系统剪贴板。returning a Promise which is resolved once the text is fully copied into the clipboard。
+
+摘自：[MDN - Clipboard](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard)
+
+#### Navigator.permissions 🧪
+
+**permissions** 是 **Navigator** 读属性，返回一个可用于查询或更新某些APIs（由 Permissions API 覆盖）的权限状态的对象。
+
+##### 语法
+
+```js
+permissionsObj = globalObj.navigator.permissions
+```
+
+##### 返回值
+
+一个 Permissions 对象。
+
+##### 示例
+
+```js
+navigator.permissions.query({name:'geolocation'}).then(function(result) {
+  if (result.state === 'granted') {
+    showMap();
+  } else if (result.state === 'prompt') {
+    showButtonToEnableMap();
+  }
+  // 如果被拒绝，请不要做任何操作。
+});
+```
+
+摘自：[MDN - Navigator.permissions](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/permissions)
 
 
 
@@ -7869,8 +7933,8 @@ Window.getComputedStyle() 方法<font color=FF0000>返回一个对象</font>，<
 let style = window.getComputedStyle(element, [pseudoElt]);
 ```
 
-- **element：**用于获取计算样式的Element。
-- **pseudoElt：** 可选，指定一个要匹配的伪元素的字符串。必须对普通元素省略（或 null）。
+- **element：**用于获取计算样式的 Element。
+- **pseudoElt：** 可选，指定一个要匹配的伪元素的字符串。必须对普通元素省略（或 null ）。
 
 返回的 style 是一个实时的 CSSStyleDeclaration 对象，当元素的样式更改时，它会自动更新本身。
 
@@ -11943,12 +12007,47 @@ Service worker 是一个<font color=FF0000>注册在 **指定源和路径下** �
 
 #####  [科普] Service Worker 入门指南 中的补充
 
-// TODO 文章简要介绍了 Service Worker 的特点，以及生命周期、运行流程、代码逻辑（ 包含：register  install activate  fetch skipWaiting ），以及一些 API，和 应用场景。有时间做一下笔记。
+// TODO 
+
+文章简要介绍了 Service Worker 的特点，以及生命周期、运行流程、代码逻辑（ 包含：register  install activate  fetch skipWaiting ），以及一些 API，和 应用场景。有时间做一下笔记。
+
+#### SharedWorker
+
+SharedWorker 接口代表一种特定类型的 worker，可以从几个浏览上下文中访问，例如几个窗口、iframe 或其他 worker。它们实现一个不同于普通 worker 的接口，具有不同的全局作用域, SharedWorkerGlobalScope
+
+**注意 ⚠️：**如果要使 SharedWorker 连接到多个不同的页面，这些页面必须是同源的（相同的协议、host 以及端口）。
+
+##### 构造函数
+
+**SharedWorker()：**创建一个执行指定 url 脚本的共享 web worker。
+
+##### 属性
+
+继承自其父类 EventTarget，并实现 AbstractWorker 中的属性 。
+
+- AbstractWorker.onerror：一个 EventListener，当 ErrorEvent 类型的 error 冒泡到 worker 时触发。
+- SharedWorker.port 只读，返回一个 MessagePort 对象，该对象可以用来进行通信和对共享 worker 进行控制。
+
+##### 方法
+
+继承自其父类 EventTarget，并实现 AbstractWorker 中的方法 。
+
+##### 示例：略
+
+摘自：[MDN - SharedWorker](https://developer.mozilla.org/zh-CN/docs/Web/API/SharedWorker)
+
+#### 政采云文章《Web Worker》中的 web worker
+
+内容：讲述了 一般 worker、shared worker、service worker 的功能和使用，浅显易懂。
+
+#### // TODO
+
+摘自：[Web Worker](https://juejin.cn/post/7091068088975622175)
 
 ***
 
 
-## JS场景实践案例
+## JS 场景实践案例
 
 - 只能输入和粘贴汉字 
   
