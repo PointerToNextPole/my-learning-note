@@ -2240,9 +2240,15 @@ deep linking 强大的地方是<font color=FF0000>**能携带信息**</font>。�
 
 
 
-#### SEO TDK
+#### SEO 
+
+##### TDK
 
 可以参考：[SEO优化中的TDK三大标签是什么？SEO标签讲解](https://www.boxuegu.com/news/367.html)
+
+##### structured data
+
+##### sitemap
 
 
 

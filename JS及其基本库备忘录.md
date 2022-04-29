@@ -9974,7 +9974,7 @@ Symbol 对象可以通过一个可选的描述创建，可用于调试，但不�
 Proxy 对象用于创建一个对象的代理，从而实现基本操作的拦截和自定义（如属性查找、赋值、枚举、函数调用等）。
 **术语**
 
-- <font color=FF0000>**handler：**包含捕捉器（trap）的占位符对象，可译为处理器对象。</font>
+- <font color=FF0000>**handler：**包含捕捉器 ( trap ) 的占位符对象，可译为处理器对象。</font>
 - <font color=FF0000>**traps：**提供属性访问的方法。这类似于操作系统中捕获器的概念。</font>
 - **target：**被 Proxy 代理虚拟化的对象。它常被作为代理的存储后端。根据目标验证关于对象不可扩展性或不可配置属性的不变量（保持不变的语义）。
 
@@ -9991,7 +9991,23 @@ const p = new Proxy(target, handler)
 
 **方法**
 
-- **Proxy.revocable()：**创建一个可撤销的Proxy对象。
+- **Proxy.revocable()：**<font color=FF0000>创建一个可撤销的 Proxy 对象</font>。
+
+  《现代 JS 教程》的补充
+
+  > 一个 **可撤销** 的代理是可以被禁用的代理。
+  >
+  > 假设我们有一个资源，并且想随时关闭对该资源的访问。我们可以做的是将它包装成可一个撤销的代理，没有任何捕捉器。这样的代理会将操作转发给对象，并且我们可以随时将其禁用。
+  >
+  > 语法为：
+  >
+  > ```js
+  > let {proxy, revoke} = Proxy.revocable(target, handler)
+  > ```
+  >
+  > 该调用返回一个带有 proxy 和 revoke 函数的对象以将其禁用。
+  >
+  > 摘自：[现代 JS 教程 - Proxy 和 Reflect - 可撤销 Proxy](https://zh.javascript.info/proxy#ke-che-xiao-proxy)
 
 **handler 对象的方法**
 
@@ -10066,21 +10082,21 @@ handler 对象是一个容纳一批特定属性的占位符对象。它包含有
 
 **补充：**
 
-| 内部方法              | Handler 方法             | 何时触发                                                     |
-| :-------------------- | :----------------------- | :----------------------------------------------------------- |
-| [[Get]]               | get                      | 读取属性                                                     |
-| [[Set]]               | set                      | 写入属性                                                     |
-| [[HasProperty]]       | has                      | in 操作符                                                    |
-| [[Delete]]            | deleteProperty           | delete 操作符                                                |
-| [[Call]]              | apply                    | 函数调用                                                     |
-| [[Construct]]         | construct                | new 操作符                                                   |
-| [[GetPrototypeOf]]    | getPrototypeOf           | Object.getPrototypeOf                                        |
-| [[SetPrototypeOf]]    | setPrototypeOf           | Object.setPrototypeOf                                        |
-| [[IsExtensible]]      | isExtensible             | Object.isExtensible                                          |
-| [[PreventExtensions]] | preventExtensions        | Object.preventExtensions                                     |
-| [[DefineOwnProperty]] | defineProperty           | Object.defineProperty, Object.defineProperties               |
-| [[GetOwnProperty]]    | getOwnPropertyDescriptor | Object.getOwnPropertyDescriptor, for..in, Object.keys/values/entries |
-| [[OwnPropertyKeys]]   | ownKeys                  | Object.getOwnPropertyNames, Object.getOwnPropertySymbols, for..in, Object/keys/values/entries |
+| 内部方法               | Handler 方法             | 何时触发                                                     |
+| :--------------------- | :----------------------- | :----------------------------------------------------------- |
+| \[[Get]]               | get                      | 读取属性                                                     |
+| \[[Set]]               | set                      | 写入属性                                                     |
+| \[[HasProperty]]       | has                      | in 操作符                                                    |
+| \[[Delete]]            | deleteProperty           | delete 操作符                                                |
+| \[[Call]]              | apply                    | 函数调用                                                     |
+| \[[Construct]]         | construct                | new 操作符                                                   |
+| \[[GetPrototypeOf]]    | getPrototypeOf           | Object.getPrototypeOf                                        |
+| \[[SetPrototypeOf]]    | setPrototypeOf           | Object.setPrototypeOf                                        |
+| \[[IsExtensible]]      | isExtensible             | Object.isExtensible                                          |
+| \[[PreventExtensions]] | preventExtensions        | Object.preventExtensions                                     |
+| \[[DefineOwnProperty]] | defineProperty           | Object.defineProperty, Object.defineProperties               |
+| \[[GetOwnProperty]]    | getOwnPropertyDescriptor | Object.getOwnPropertyDescriptor, for..in, Object.keys/values/entries |
+| \[[OwnPropertyKeys]]   | ownKeys                  | Object.getOwnPropertyNames, Object.getOwnPropertySymbols, for..in, Object/keys/values/entries |
 
 摘自：[现代JavaScript教程 - Proxy 和 Reflect](https://zh.javascript.info/proxy)
 
@@ -10088,7 +10104,7 @@ handler 对象是一个容纳一批特定属性的占位符对象。它包含有
 
 #### instanceof
 
-instanceof 运算符用于检测构造函数的 prototype 属性（即： `constructor.prototype `）是否出现在某个实例对象（object）的原型链上。
+instanceof 运算符用于检测构造函数的 prototype 属性（即： `constructor.prototype ` ）是否出现在某个实例对象( object )的原型链上
 
 - **语法**
 
@@ -10107,7 +10123,7 @@ instanceof 运算符用于检测构造函数的 prototype 属性（即： `const
 
 #### extends
 
-extends关键字用于类声明或者类表达式中，以创建一个类，该类是另一个类的子类。
+extends 关键字用于类声明或者类表达式中，以创建一个类，该类是另一个类的子类。
 
 - **语法：**
 
@@ -10115,7 +10131,7 @@ extends关键字用于类声明或者类表达式中，以创建一个类，该�
   class ChildClass extends ParentClass { ... }
   ```
 
-- **描述：**extends关键字用来创建一个普通类或者内建对象的子类。继承的.prototype必须是一个Object 或者 null。
+- **描述：**extends 关键字用来创建一个普通类或者内建对象的子类。继承的 `.prototype` 必须是一个 Object 或者 null 。
 
 摘自：[MDN - extends](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes/extends)
 
@@ -10123,7 +10139,7 @@ extends关键字用于类声明或者类表达式中，以创建一个类，该�
 
 #### super
 
-super关键字<font color=FF0000>用于访问和调用一个对象的父对象上的函数</font>。super.prop和super[expr]表达式在类和对象字面量任何方法定义中都是有效的。
+super 关键字<font color=FF0000>用于访问和调用一个对象的父对象上的函数</font>。super.prop 和 super[expr] 表达式在类和对象字面量任何方法定义中都是有效的。
 
 - **语法**
 
@@ -10133,7 +10149,7 @@ super关键字<font color=FF0000>用于访问和调用一个对象的父对象�
   super.functionOnParent([arguments]);  // 调用 父对象/父类 上的方法
   ```
 
-- **描述：**<font color=FF0000>在构造函数中使用时，super关键字将单独出现，并且必须在使用this关键字之前使用</font>。<font color=FF0000>super关键字也可以用来调用父对象上的函数</font>。
+- **描述：**<font color=FF0000>在构造函数中使用时，super 关键字将单独出现，并且必须在使用 this 关键字之前使用</font>。<font color=FF0000>super 关键字也可以用来调用父对象上的函数</font>。
 
 摘自：[MDN - super](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/super)
 

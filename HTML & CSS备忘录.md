@@ -357,46 +357,46 @@ HTML \<legend> 元素用于表示其父元素 \<fieldset> 的内容标题。
 
 #### \<meta>
 
-HTML \<meta> 元素表示那些不能由其它 HTML 元相关（meta-related）元素（(\<base>、\<link>, \<script>、\<style> 或 \<title>）之一表示的任何元数据信息。
+HTML \<meta> 元素表示那些不能由其它 HTML 元相关 ( meta-related ) 元素（ ( \<base>、\<link>、\<script>、\<style> 或 \<title> ) 之一表示的任何元数据信息。
 
 |                  | 描述                                                         |
 | :--------------- | ------------------------------------------------------------ |
 | 内容分类         | 元数据内容，如果 itemprop 属性存在：流数据，表述内容         |
-| 允许的内容       | 这是一个 空元素                                              |
-| 标签省略         | 因为这是一个void元素，必须有开始标签而闭合标签可以省略       |
-| 允许的父元素     | \<meta charset>, \<meta http-equiv>: \<head> 元素. 如果 http-equiv 不是编码声明, 它也可以放在\<noscript>元素内，它本身在 \<head>元素内部。 |
+| 允许的内容       | 无，这是一个 空元素                                          |
+| 标签省略         | 因为这是一个 void 元素，必须有开始标签而闭合标签可以省略     |
+| 允许的父元素     | \<meta charset>, \<meta http-equiv>: \<head> 元素. 如果 http-equiv 不是编码声明, 它也可以放在 \<noscript> 元素内，它本身在 \<head> 元素内部 |
 | 默认无障碍语义   | 没有相应的语义                                               |
 | 允许的无障碍语义 | 没有允许的语义                                               |
 | DOM 接口         | HTMLMetaElement                                              |
 
 ##### **meta 元素定义的元数据的类型包括以下几种：**
 
-- 如果<font color=FF0000>设置了 name 属性</font>，meta 元素<font color=FF0000>提供的是文档级别（document-level）的元数据</font>，应用于整个页面。
+- 如果<font color=FF0000>设置了 name 属性</font>，meta 元素<font color=FF0000>提供的是文档级别 ( document-level ) 的元数据</font>，应用于整个页面。
 
-- 如果<font color=FF0000>设置了 http-equiv 属性</font>，meta 元素则<font color=FF0000>是编译指令</font>，提供的信息与类似命名的HTTP头部相同。
+- 如果<font color=FF0000 size=4>**设置了 http-equiv 属性**</font>，**meta 元素则<font color=FF0000>是 <font size=4>编译指令</font></font>**，提供的信息与类似命名的 HTTP 头部相同。
 
 - 如果<font color=FF0000>设置了 charset 属性</font>，meta 元素<font color=FF0000>是一个字符集声明</font>，<font color=FF0000>告诉文档使用哪种字符编码</font>。
 
 - 如果<font color=FF0000>设置了 itemprop 属性</font>，meta 元素<font color=FF0000>提供用户定义的元数据</font>。
 
-##### <font size=4>**属性**</font>
+##### 属性
 
-**注意：**全局属性 name 在 \<meta> 元素中具有特殊的语义；另外，<font color=FF0000>  在<font size=4>**同一个 \<meta> 标签中**</font>，name, http-equiv 或者 charset 三者中<font size=4>**任何一个属性存在**</font>时，<font size=4>**itemprop 属性不能被使用** </font></font>。
+**注意：**全局属性 name 在 \<meta> 元素中具有特殊的语义；另外，<font color=FF0000>  在 **同一个 \<meta> 标签中**，name, http-equiv 或者 charset 三者中 **任何一个属性存在** 时，**itemprop 属性不能被使用** </font>。
 
-- **charset：**这个属性<font color=FF0000>声明了文档的字符编码</font>。<mark>如果使用了这个属性</mark>，<font color=FF0000>其值必须是</font>与ASCII大小写无关（ASCII case-insensitive）的<font color=FF0000>"utf-8"</font>。
+- **charset：**这个属性<font color=FF0000>声明了文档的字符编码</font>。<mark>如果使用了这个属性</mark>，<font color=FF0000>其值必须是</font>与 ASCII 大小写无关(ASCII case-insensitive)的<font color=FF0000>"utf-8"</font>
 
 - **content：**此属性包含 http-equiv 或 name 属性的值，具体取决于所使用的值。
 
 - **http-equiv：**
   
-  属性定义了一个编译指示指令。这个属性叫做 **http-equiv**(alent) 是因为<font color=FF0000> 所有允许的值都是特定HTTP头部的名称</font>，如下：
+  属性定义了一个编译指示指令。这个属性叫做 `http-equiv(alent)` 是因为<font color=FF0000> 所有允许的值都是特定 HTTP 头部的名称</font>，如下：
   
   - **content-security-policy：** 它允许页面作者<font color=FF0000> 定义当前页的内容策略</font>。 内容策略<font color=FF0000> 主要指定允许的服务器源和脚本端点，这有助于防止跨站点脚本攻击</font>。
   - **content-type：** <font color=FF0000> 如果使用这个属性，其值必须是"text/html; charset=utf-8"</font>。注意：该属性只能用于 MIME type 为 text/html 的文档，不能用于MIME类型为XML的文档。
   - **default-style：**设置默认 CSS 样式表组的名称。
   - **x-ua-compatible：** <font color=FF0000>如果指定，则 content 属性必须具有值 "IE=edge" </font>。用户代理必须忽略此指示。
   - **refresh：** 这个属性指定：
-    - 如果 <font color=FF0000> content **只包含**一个正整数，则为 **重新载入页面的时间间隔(秒)** </font>；
+    - 如果 <font color=FF0000> content **只包含**一个正整数，则为 **重新载入页面的时间间隔（秒）** </font>；
     - 如果 <font color=FF0000> content 包含一个正整数，并且后面跟着字符串 ';url=' 和一个合法的 URL</font>，则是<font color=FF0000> **重定向到指定链接**的时间间隔(秒)</font>
   
 - **name：**<font color=FF0000> name 和 content 属性可以一起使用，以名-值对的方式给文档提供元数据</font>，其中 name 作为元数据的名称，content 作为元数据的值。
@@ -405,23 +405,39 @@ HTML \<meta> 元素表示那些不能由其它 HTML 元相关（meta-related）�
 
 #### http-equiv
 
-http-equiv顾名思义，相当于http的文件头作用，它可以向浏览器传回一些有用的信息，以帮助正确和精确地显示网页内容，与之对应的属性值为content，content中的内容其实就是各个参数的变量值。
+http-equiv 顾名思义，<font color=FF0000>**相当于 http 的文件头作用**</font>，它可以向浏览器传回一些有用的信息，以帮助正确和精确地显示网页内容，与之对应的属性值为 content，content 中的内容其实就是各个参数的变量值。
 
-meat标签的http-equiv属性语法格式是：＜meta http-equiv="参数" content="参数变量值"＞ ；其中http-equiv属性主要有以下几种参数：
+**注：**<font color=FF0000>http-equiv 的 equiv 是 equivalent （译为：同等物 ）的缩写，所以 http-equiv 即 “ http 同等物”</font>
 
-- **Expires(期限)：**可以用于设定网页的到期时间。一旦网页过期，必须到服务器上重新传输。必须使用GMT的时间格式。用法：
+> quiv does stand for equivalent. <font color=FF0000>It's **equivalent to the HTTP response header**</font>. For example, these two are the same
+>
+> ```html
+> <META http-equiv="content-type" content="text/html; charset=UTF-8">
+> ```
+>
+> ```http
+> Content-Type: text/html; charset=utf-8
+> ```
+>
+> The HTTP header should be used over the `http-equiv` meta tag though.
+>
+> 摘自：[http-equiv - what's equiv stand for?](https://stackoverflow.com/questions/33967395/http-equiv-whats-equiv-stand-for)
+
+meta 标签的 http-equiv 属性语法格式是：\<meta http-equiv="参数" content="参数变量值"> ；其中 http-equiv 属性主要有以下几种参数：
+
+- **Expires（期限）：**可以用于设定网页的到期时间。一旦网页过期，必须到服务器上重新传输。必须使用GMT的时间格式。用法：
 
   ```html
   <meta http-equiv="expires" content="Wed, 20 Jun 2007 22:33:00 GMT">
   ```
 
-- **Pragma(cache模式)：**是用于设定禁止浏览器从本地机的缓存中调阅页面内容，设定后一旦离开网页就无法从Cache中再调出。这样设定，访问者将无法脱机浏览。用法：
+- **Pragma（cache模式）：**是用于设定禁止浏览器从本地机的缓存中调阅页面内容，设定后一旦离开网页就无法从Cache中再调出。这样设定，访问者将无法脱机浏览。用法：
 
   ```html
   <meta http-equiv="Pragma" content="no-cache">
   ```
 
-- **Refresh(刷新)：**自动刷新并指向新页面。用法：
+- **Refresh（刷新）：**自动刷新并指向新页面。用法：
 
   ```html
   <meta http-equiv="Refresh" content="2；URL=http://www.net.cn/">
@@ -429,25 +445,25 @@ meat标签的http-equiv属性语法格式是：＜meta http-equiv="参数" conte
 
   注意：其中的2是指停留2秒钟后自动刷新到URL网址。
 
-- **Set-Cookie(cookie设定)：**如果网页过期，那么存盘的cookie将被删除。 注意：必须使用GMT的时间格式。用法：
+- **Set-Cookie（ cookie 设定）：**如果网页过期，那么存盘的cookie将被删除。 注意：必须使用GMT的时间格式。用法：
 
   ```html
   <meta http-equiv="Set-Cookie" content="cookievalue=xxx;expires=Wednesday, 20-Jun-2007 22:33:00 GMT; path=/">
   ```
 
-- **Window-target(显示窗口的设定)：**强制页面在当前窗口以独立页面显示。注意：用来防止别人在框架里调用自己的页面。用法：
+- **Window-target（显示窗口的设定）：**强制页面在当前窗口以独立页面显示。注意：用来防止别人在框架里调用自己的页面。用法：
 
   ```html
   <meta http-equiv="Window-target" content="_top">
   ```
 
-- **content-Type(显示字符集的设定)：**设定页面使用的字符集。用法：
+- **content-Type（显示字符集的设定）：**设定页面使用的字符集。用法：
 
   ```html
   <meta http-equiv="content-Type" content="text/html; charset=gb2312">
   ```
 
-- **Pics-label(网页等级评定)：**在IE的internet选项中有一项内容设置，可以防止浏览一些受限制的网站，而网站的限制级别就是通过meta属性来设置的。用法：
+- **Pics-label（网页等级评定）：**在IE的internet选项中有一项内容设置，可以防止浏览一些受限制的网站，而网站的限制级别就是通过meta属性来设置的。用法：
 
   ```html
   <meta http-equiv="Pics-label" contect="">  
@@ -467,9 +483,9 @@ meat标签的http-equiv属性语法格式是：＜meta http-equiv="参数" conte
     <meta http-equiv="Page-Exit" contect="revealTrans(duration=1.0,transtion=12)">
     ```
 
-  Duration的值为网页动态过渡的时间，单位为秒。
+  Duration 的值为网页动态过渡的时间，单位为秒。
 
-  Transition是过渡方式，它的值为0到23，分别对应24种过渡方式。如下表：
+  Transition 是过渡方式，它的值为 0 到 23 ，分别对应 24 种过渡方式。如下表：
 
   |                          |                          |                          |                          |
   | ------------------------ | ------------------------ | ------------------------ | ------------------------ |
@@ -510,7 +526,7 @@ meat标签的http-equiv属性语法格式是：＜meta http-equiv="参数" conte
 
 #### format-detection
 
-format-detection翻译成中文的意思是“格式检测”，是用来检测html里的一些格式的，那关于meta的format-detection属性主要是有以下几个设置：
+format-detection （是 meta 标签内的属性）翻译成中文是“格式检测”，是用来检测 html 里的一些格式的，meta 中的 format-detection 属性主要有以下几个设置：
 
 ```html
 <meta name="format-detection" content="telephone=no">
@@ -526,7 +542,7 @@ format-detection翻译成中文的意思是“格式检测”，是用来检测h
 
 **解释：**
 
-- **telephone：**你明明写的一串数字没加链接样式，而iPhone会自动把你这个文字加链接样式、并且点击这个数字还会自动拨号！想去掉这个拨号链接该如何操作呢？这时我们的meta又该大显神通了，代码如下：
+- **telephone：**你明明写的一串数字没加链接样式，而 iPhone 会自动把你这个文字加链接样式、并且点击这个数字还会自动拨号！想去掉这个拨号链接该如何操作呢？这时我们的 meta 又该大显神通了，代码如下：
   - **telephone=no：**就<font color=FF0000> 禁止</font>了把数字转化为拨号链接！
   - **telephone=yes：**就<font color=FF0000> 开启</font>了把数字转化为拨号链接，要开启转化功能，这个meta就不用写了,在默认是情况下就是开启！
   
@@ -4309,7 +4325,7 @@ CSS3 的多媒体查询继承了 CSS2 多媒体类型的所有思想： 取代�
 
 - viewport(视窗) 的宽度与高度
 - 设备的宽度与高度
-- 朝向 (智能手机横屏，竖屏) 。
+- 朝向 (智能手机横屏，竖屏) 
 - 分辨率
 
 **多媒体查询语法**
@@ -4350,6 +4366,37 @@ CSS3 的多媒体查询继承了 CSS2 多媒体类型的所有思想： 取代�
 | speech | 用于屏幕阅读器          |
 
 更多相关媒体类型 / 媒体功能参见：[Runoob - CSS3 @media 查询](https://www.runoob.com/cssref/css3-pr-mediaquery.html)
+
+##### 关于的像素密度补充
+
+CSS 中有关于“像素密度”的媒体查询，如下示例：
+
+```css
+@media only screen and (min-device-pixel-ratio: 1.5) {
+  #my-image { background: (high.png); }
+}
+```
+
+即上面的 min-device-pixel-ratio 即是 一种条件。
+
+摘自：[「2021」高频前端面试题汇总之CSS篇](https://juejin.cn/post/6905539198107942919)
+
+另外，关于 device-pixel-ratio 搜了一下 MDN，只搜到 [-webkit-device-pixel-ratio](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media/-webkit-device-pixel-ratio) ，其中还提到： device-pixel-ratio 和 [resolution](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/resolution) 是等价的（写法不同）。
+
+> **`-webkit-device-pixel-ratio`** is a range value meaning the prefixed **`-webkit-min-device-pixel-ratio`** and **`-webkit-max-device-pixel-ratio`** are also available.
+>
+> ```css
+> @media (-webkit-min-device-pixel-ratio: 2) { ... }
+> /* is equivalent to */
+> @media (min-resolution: 2dppx) { ... }
+> 
+> /* And likewise */
+> @media (-webkit-max-device-pixel-ratio: 2) { ... }
+> /* is equivalent to */
+> @media (max-resolution: 2dppx) { ... }
+> ```
+
+在搜素的过程中，顺便还搜到了媒体查询条件 [image-resolution](https://developer.mozilla.org/en-US/docs/Web/CSS/image-resolution) ，这里略。
 
 
 
@@ -4457,8 +4504,6 @@ orientation：portrait | landscape
 引入媒体查询的点就叫做**断点**。
 
 以上部分内容摘自：[MDN - 使用媒体查询](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Media_queries)
-
-**补充：**
 
 #### prefers-color-scheme
 
