@@ -1,8 +1,10 @@
-# TypeScript学习笔记
+# TypeScript 学习笔记
 
 
 
-> 学习教程为[《TypeScript入门教程》](https://ts.xcatliu.com)
+### 《TypeScript入门教程》学习笔记
+
+链接🔗：[《TypeScript入门教程》](https://ts.xcatliu.com)
 
 #### TypeScript是静态语言
 
@@ -518,6 +520,162 @@ function reverse(x: number | string): number | string | void {
 
 
 
-可以参考的教程：
+### 《深入理解 TypeScript 》学习笔记
 
-- [神光 - 几个一看就会的 TypeScript 小技巧](https://juejin.cn/post/7077536309804859428)，当然他的TS小册中应该包含了其中内容，就没必要看了
+链接🔗：[深入理解 TypeScript](https://jkchao.github.io/typescript-book-chinese/)
+
+#### infer
+
+
+
+
+
+
+
+### 神说要有光《 TypeScript 类型体操通关秘籍》笔记
+
+链接🔗：[TypeScript 类型体操通关秘籍](https://juejin.cn/book/7047524421182947366/section)
+
+
+
+#### 类型是什么
+
+类型具体点来说就是指 <font color=FF0000>number、boolean、string 等**基础类型**</font> 和 <font color=FF0000>Object、Function 等**复合类型**</font>，它们<font color=FF0000>是编程语言提供的对不同内容的抽象</font>：
+
+- <font size=4>**不同类型变量占据的 <font color=FF0000>内存大小不同</font>**</font>：boolean 类型的变量只会分配 1 个字节的内存，而 <font color=FF0000>**number 类型的变量则会分配 8 个字节的内存**</font>（**注：**因为 JS / TS 中数字类型，不区分 int、float、double 等，所以 number 被分配了 8 个字节 ），<mark>给变量声明了不同的类型就代表了会占据不同的内存空间</mark>。
+- <font size=4>**不同类型变量 <font color=FF0000>可做的操作不同</font>**</font>：number 类型可以做加减乘除等运算，boolean 就不可以；<mark>复合类型中不同类型的对象可用的方法不同</mark>，比如 Date 和 RegExp，变量的类型不同代表可以对该变量做的操作就不同。
+
+我们  <font color=FF0000>知道了什么是类型，那自然可以想到类型和所做的操作要匹配才行，<font size=4>**这就是为什么要做类型检查**</font></font>。
+
+
+
+#### 类型检查
+
+<font color=FF0000>**如果能保证对某种类型只做该类型允许的操作，这就叫做 「类型安全」**</font>。比如你对 boolean 做加减乘除，这就是类型不安全，你对 Date 对象调用 exec 方法，这就是类型不安全。反之，就是类型安全。所以，<font color=FF0000>**类型检查是为了保证类型安全的**</font>。
+
+<img src="https://s2.loli.net/2022/04/30/VkhC3MlB8J2Uxpo.png" alt="img" style="zoom:55%;" />
+
+##### 动态类型检查 & 静态类型检查
+
+<mark>类型检查可以 **在运行时** 做</mark>，也<mark style="background: aqua">可以 **运行之前的编译期** 做</mark>。这是两种不同的类型，<mark>前者叫做 **动态类型检查**</mark>，<mark style="background: aqua">后者叫做 **静态类型检查**</mark>。两种类型检查各有优缺点。
+
+- **动态类型检查：**<font color=FF0000>**在源码中不保留类型信息**，对某个变量赋什么值、做什么操作都是允许的，写代码很灵活</font>。但这也埋下了类型不安全的隐患，比如对 string 做了乘除，对 Date 对象调用了 exec 方法，这些都是运行时才能检查出来的错误。
+
+  其中，最常见的错误应该是 `null is not an object` 、`undefined is not a function` 之类的了，写代码时没发现类型不匹配，到了运行的时候才发现，就会有很多这种报错。
+
+  <mark>所以，动态类型虽然代码写起来简单，但代码中很容易藏着一些类型不匹配的隐患</mark>。
+
+  <img src="https://s2.loli.net/2022/04/30/nfgwztehkpbEX7C.png" alt="img" style="zoom:55%;" />
+
+- **静态类型检查：**<font color=FF0000>**在源码中保留类型信息**，声明变量要指定类型，对变量做的操作要和类型匹配，有专门的编译器在编译期间做检查</font>。
+
+  静态类型给写代码增加了一些难度，因为你 **除了要考虑代码要表达的逻辑之外**，<font color=FF0000>还要考虑 **类型逻辑**：变量是什么类型的、是不是匹配、要不要做类型转换等</font>。
+
+  不过，静态类型也消除了类型不安全的隐患，因为在编译期间就做了类型检查，就不会出现对 string 做了乘除，调用了 Date 的 exec 方法这类问题。
+
+  <mark style="background: aqua">所以，静态类型虽然代码写起来要考虑的问题多一些，会复杂一些，但是却消除了代码中潜藏类型不安全问题的可能</mark>。
+
+  <img src="https://s2.loli.net/2022/04/30/XVKUm1fPwirLMnh.png" alt="img" style="zoom:55%;" />
+
+
+
+#### TS 给 JS 添加的「静态类型系统」
+
+<font color=FF0000>**TypeScript 给 JavaScript 添加了一套「静态类型系统」**，从动态类型语言变成了静态类型语言</font>，可以在编译期间做类型检查，提前发现一些类型安全问题。
+
+<img src="https://s2.loli.net/2022/04/30/gL815ZfivRCYjut.png" alt="img" style="zoom:55%;" />
+
+而且，因为代码中添加了静态类型，也就可以配合编辑器来实现更好的提示、重构等，这是额外的好处。
+
+![img](https://s2.loli.net/2022/04/30/KnUlzd6SZ2OsHp5.png)
+
+
+
+#### 类型体操 & 支持类型编程的类型系统
+
+<font color=FF0000 size=4>**类型系统**</font> 不止 TypeScript 有，别的语言 Java、C++ 等都有，<font color=FF0000>为什么 TypeScript 的类型编程被叫做「类型体操」，而其他语言没有呢？</font>
+
+<font color=FF0000>TypeScript 给 JavaScript 增加了一套静态类型系统，**通过 TS Compiler 编译为 JS**</font> （**注：**即 TSC ），<font color=FF0000 size=4>**编译的过程做类型检查**</font>。它并没有改变 JavaScript 的语法，只是在 JS 的基础上添加了类型语法，所以被叫做 JavaScript 的超集。
+
+##### 类型系统的分类
+
+静态类型编程语言都有自己的类型系统，从简单到复杂可以分为 3 类：
+
+- **简单类型系统**：变量、函数、类等都可以声明类型，编译器会基于声明的类型做类型检查，类型不匹配时会报错。这是最基础的类型系统，能保证类型安全，但有些死板。
+
+  比如一个 add 函数既可以做整数加法、又可以做浮点数加法，却需要声明两个函数（**注：**下文原文中代码块标注的语言是 C，而直到 C11，C 都没有支持「函数重载」；所以应该是 cpp ）：
+
+  ```cpp
+  int add(int a, int b) {
+      return a + b;
+  }
+  
+  double add(double a, double b) {
+      return a + b;
+  }
+  ```
+
+  这个问题的解决思路很容易想到：<font color=FF0000>如果 **类型能传参数** 就好了，传入 int 就是整数加法，传入 double 就是浮点数加法</font>。所以，就有了第二种类型系统。
+
+- **<font color=FF0000>支持泛型</font>的类型系统**：泛型的英文是 Generic Type，通用的类型；它可以代表任何一种类型，也叫做「类型参数」。
+
+  它给类型系统增加了一些灵活性，在整体比较固定，部分变量的类型有变化的情况下，可以减少很多重复代码。比如上面的 add 函数，有了泛型之后就可以这样写：
+
+  ```cpp
+  T add<T>(T a, T b) {
+      return a + b;
+  }
+  
+  add(1,2);
+  add(1.111, 2.2222);
+  ```
+
+  Java 就是这种类型系统。如果你看过 Java 代码，你会发现泛型用的特别多，这确实是一个很好的增加类型系统灵活性的特性。
+
+  但是，<font color=FF0000 size=4>这种类型系统的灵活性对于 JavaScript 来说还不够，**因为 JavaScript 太过灵活了**</font>。比如，<font color=FF0000>在 Java 里，对象都是由类 new 出来的，你不能凭空创建对象</font>；但是 <font color=FF0000>**JavaScript 却可以，它支持对象字面量**</font>。
+
+  那如果是一个 **返回对象某个属性值** 的函数，类型该怎么写呢？
+
+  ```typescript
+  function getPropValue<T>(obj: T, key): key对应的属性值类型 {
+      return obj[key];
+  }
+  ```
+
+  <font color=FF0000>好像拿到了 T，也不能拿到它的属性和属性值，如果能对类型参数 T 做一些逻辑处理就好了</font>。所以，就有了第三种类型系统。
+
+- **<font color=FF0000>支持类型编程</font>的类型系统**
+
+  <mark>在 Java 里面，**拿到了对象的类型就能找到它的类，进一步拿到各种信息**，所以类型系统支持泛型就足够了</mark>。但 <font color=FF0000>在 JavaScript 里面，对象可以字面量的方式创建，还可以灵活的增删属性，**拿到对象并不能确定什么，所以要支持对传入的类型参数做进一步的处理**</font>。
+
+  <font color=FF0000 size=4>**对传入的类型参数（泛型）做各种逻辑运算，产生新的类型，这就是类型编程。**</font>
+
+  比如上面那个 getProps 的函数，类型可以这样写：
+
+  ```ts
+  function getPropValue<
+      T extends object, // 注：类型参数 T 必须是对象。
+      Key extends keyof T // 注：类型参数 Key 必须是 T 的成员
+  >(obj: T, key: Key): T[Key] {
+      return obj[key];
+  }
+  ```
+
+  这里的 `keyof T`、`T[Key]` 就是对 “ 类型参数 T ” 的类型运算。
+
+  <mark style="background: aqua">TypeScript 的类型系统就是第三种，支持对类型参数做各种逻辑处理，可以写很复杂的类型逻辑</mark>。
+
+##### TS 的类型系统
+
+<font color=FF0000>**TypeScript 的类型系统是<font size=4>「图灵完备」的</font>，也就是能描述各种可计算逻辑**</font>。<mark>简单点来理解就是 循环、条件 等各种 JS 里面有的语法它都有，JS 能写的逻辑它都能写</mark>。
+
+“对类型参数的编程” 是 TypeScript 类型系统最强大的部分，可以实现各种复杂的类型计算逻辑，是它的优点。但同时也被认为是它的缺点，因为除了业务逻辑外还要写很多类型逻辑。不过，我倒是觉得这种复杂度是不可避免的，因为 JS 本身足够灵活，要准确定义类型那类型系统必然也要设计的足够灵活。
+
+<font color=FF0000>是不是感觉 TypeScript 类型系统挺复杂的？确实，不然大家也不会把 TS 的类型编程戏称为「**类型体操**」了</font>。
+
+
+
+
+
+在 Java 里面，拿到了对象的类型就能找到它的类，进一步拿到各种信息，所以类型系统支持泛型就足够了。但在 JavaScript 里面，对象可以字面量的方式创建，还可以灵活的增删属性，拿到对象并不能确定什么，所以要支持对传入的类型参数做进一步的处理。
+
