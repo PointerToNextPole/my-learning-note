@@ -675,7 +675,271 @@ function reverse(x: number | string): number | string | void {
 
 
 
+#### TS 类型系统中的类型
+
+静态类型系统的目的是把类型检查从运行时提前到编译时，那 TS 类型系统中肯定要把 JS 的运行时类型拿过来，也就是 number、boolean、string、object、bigint、symbol、undefined、null 这些类型，还有就是它们的包装类型 Number、Boolean、String、Object、Symbol。
+
+这些很容易理解，给 JS 添加静态类型，总没有必要重新造一套基础类型吧，直接复用 JS 的基础类型就行。
+
+复合类型方面，JS 有 class、Array，这些 TypeScript 类型系统也都支持，但是又多加了三种类型：元组 ( Tuple )、接口 ( Interface )、枚举 (Enum ) 。
+
+##### 元组
+
+元组 ( Tuple ) 就是 <font color=FF0000>元素个数 和 类型 **固定的** **数组类型**</font>：
+
+```typescript
+type Tuple = [number, string];
+```
+
+**注：**初次接触「元组」这个名词是在 Py，而 TS 中「元组」概念和 Py 不一样。另外，TS 的元组的写法和 JS 中的数组一样；而 TS 对数组的定义是：数组合并了相同类型的对象（ 这个说法来自：[TypeScript 入门教程 - 元组](https://ts.xcatliu.com/advanced/tuple.html) ）
+
+##### 接口
+
+接口 ( Interface ) 可以描述函数、对象、<font color=FF0000 size=4>**构造器**</font> 的结构
+
+- **对象：**
+
+  ```typescript
+  interface IPerson {
+      name: string;
+      age: number;
+  }
+  
+  class Person implements IPerson {
+      name: string;
+      age: number;
+  }
+  
+  const obj: IPerson = {
+      name: 'guang',
+      age: 18
+  }
+  ```
+
+- **函数：**
+
+  ```typescript
+  interface SayHello {
+      (name: string): string;
+  }
+  
+  const func: SayHello = (name: string) => {
+      return 'hello,' + name
+  }
+  ```
+
+- **<font color=FF0000>构造器</font>**（**注：**这个没见过）：
+
+  ```typescript
+  interface PersonConstructor {
+    new (name: string, age: number): IPerson;
+  }
+  
+  function createPerson(ctor: PersonConstructor): IPerson {
+    return new ctor('guang', 18)
+  }
+  ```
+
+<font color=FF0000 size=4>**对象类型、class 类型**</font>（**注：**如下面 “总之” 所说，「数组类型」也是） <font color=FF0000 size=4>**在 TypeScript 里也叫做索引类型**</font>，<font color=FF0000>**也就是索引了多个元素的类型的意思**</font>（**注：**这个概念下面会有进一步讲解）。对象可以动态添加属性，如果不知道会有什么属性，可以用 <font color=FF0000 size=4>**可索引签名**</font>（**注：**不要和前面的「索引类型」混淆。另外下面这个类似 JS「计算属性」的就是）
+
+```typescript
+interface IPerson {
+    [prop: string]: string | number;
+}
+const obj: IPerson = {};
+obj.name = 'guang';
+obj.age = 18;
+```
+
+总之，<font color=FF0000 size=4>**接口可以用来描述函数、构造器、索引类型（对象、class、数组）等复合类型**</font>。
+
+##### 枚举
+
+枚举 ( Enum) 是一系列值的复合：
+
+```typescript
+enum Transpiler {
+    Babel = 'babel',
+    Postcss = 'postcss',
+    Terser = 'terser',
+    Prettier = 'prettier',
+    TypeScriptCompiler = 'tsc'
+}
+
+const transpiler = Transpiler.TypeScriptCompiler;
+```
+
+##### 字面量类型
+
+此外，TypeScript 还支持字面量类型，也就是<font color=FF0000>类似</font> `1111`、`'aaaa'`、`{ a: 1 }` <font color=FF0000>这种值也可以作为类型</font>
+
+其中，<font color=FF0000>**字符串的字面量类型有两种**</font>：一种是普通的字符串字面量，比如 `'aaa'`；<font color=FF0000>**另一种是模版字面量**，比如</font> `aaa${string}` ，<font color=FF0000>它的意思是以 “aaa” 开头，后面是任意 string 的字符串字面量类型</font>。
+
+所以想要约束以某个字符串开头的字符串字面量类型时可以这样写：
+
+<img src="https://s2.loli.net/2022/05/01/2ajXHbDgC13WLik.png" alt="image-20220501181210720" style="zoom:50%;" />
+
+##### 四种特殊类型
+
+还有<font color=FF0000>**四种特殊的类型：void、never、any、unknown**</font>：
+
+- **void** 代表空，可以是 null 或者 undefined，<font color=FF0000>一般是用于函数返回值</font>。
+- **any** 是任意类型，任何类型都可以赋值给它，它也<font color=FF0000>可以赋值给任何类型（ <font size=4>**除了 never**</font> ）</font>。
+- **unknown** 是<font color=FF0000>**未知类型**，**任何类型都可以赋值给它**，但是它 <font size=4>**不可以赋值给别的类型**</font></font>。
+- **never** <font color=FF0000>**代表不可达，比如函数抛异常的时候，返回值就是 never**</font> （**注：**“异常” 的相关示例 [[#交叉：&]] 。另外，根据下面（[[#推导：infer]]）的代码可知，在类型编程时，使用 `infer ? :` 不符合条件的，也可用 never 作为类型）。
+
+**这些就是 TypeScript 类型系统中的全部类型了**，<mark>大部分是从 JS 中迁移过来的</mark>，比如基础类型、Array、class 等；<mark>也添加了一些类型</mark>，比如 枚举 ( enum ) 、接口 ( interface ) 、元组等，<mark>还支持了字面量类型和 void、never、any、unknown 的特殊类型</mark>。
+
+#### 
+
+#### TS 类型的装饰
+
+除了描述类型的结构外，TypeScript 的类型系统还支持描述类型的属性  ，比如是否可选 ( `?` )，是否只读 ( `readonly` ) 等：
+
+```typescript
+interface IPerson {
+    readonly name: string;
+    age?: number;
+}
+
+type tuple = [string, number?];
+```
 
 
-在 Java 里面，拿到了对象的类型就能找到它的类，进一步拿到各种信息，所以类型系统支持泛型就足够了。但在 JavaScript 里面，对象可以字面量的方式创建，还可以灵活的增删属性，拿到对象并不能确定什么，所以要支持对传入的类型参数做进一步的处理。
+
+#### TypeScript 类型系统中的类型运算
+
+我们知道了 TypeScript 类型系统里有哪些类型，那么 <font color=FF0000>可以对这些类型做什么类型运算呢？</font>
+
+##### 条件：extends ? :
+
+TypeScript 里的条件判断是 `extends ? :`  ，叫做条件类型 ( Conditional Type ) 。比如：
+
+```typescript
+type res = 1 extends 2 ? true : false;
+```
+
+<img src="/Users/yan/Library/Application Support/typora-user-images/image-20220501183041897.png" alt="image-20220501183041897" style="zoom:50%;" />
+
+这就是 TypeScript 类型系统里的 if else。
+
+>  **注：**这里的 `extends ? :` 可以表示为 “是否是子集”（学习自：[白话typescript中的【extends】和【infer】](https://juejin.cn/post/6844904146877808653)），而不是 “是否继承自” ，如下示例：
+>
+> ```typescript
+> type Union = 1 | 2 | 3
+> type IsUnion = (1 | 2) extends Union ? true: false // type IsUnion = true
+> type ISUnion2 = 4 extends Union ? true: false // type ISUnion2 = false
+> ```
+
+但是，上面这样的逻辑没啥意义，静态的值自己就能算出结果来，为什么要用代码去判断呢？所以，类型运算逻辑都是用来做一些动态的类型的运算的，也就是对类型参数的运算
+
+```typescript
+type isTwo<T> = T extends 2 ? true : false
+
+type res = isTwo<1>
+type res2 = isTwo<2>
+```
+
+<img src="https://s2.loli.net/2022/05/01/M4vaIWP7Hzp3VRN.png" alt="image-20220501204824969" style="zoom:55%;" />
+
+<img src="https://s2.loli.net/2022/05/01/JRTgaqY59E8ju6F.png" alt="image-20220501204852937" style="zoom:55%;" />
+
+<font color=FF0000>这种类型也叫做「高级类型」。**高级类型的特点是 传入类型参数，经过一系列类型运算逻辑后，返回新的类型**</font>（**注：**感觉和 “高阶函数” 有点类似 ）。
+
+##### 推导：infer
+
+<font color=FF0000 size=4>**如何提取类型的一部分呢？答案是 infer**</font>
+
+比如提取元组类型的第一个元素：
+
+```typescript
+type First<Tuple extends unknown[]> = Tuple extends [infer T,...infer R] ? T : never;
+// 注：这里的 Tuple 是范型的“类型变量”，可以起其他名字。另外，经过实验发现：类型编程中似乎没有 tuple 这个类型。
+// 注：这里有语句 infer T 和 infer R，infer varible 相当于 声明了一个变量，这个变量可以在后面使用（比如 ? 后面返回的 T ）。学习自：https://juejin.cn/post/6844904146877808653
+
+type res = First<[1,2,3]>;
+```
+
+<img src="https://s2.loli.net/2022/05/01/dTDby751tEAlzXS.png" alt="image-20220501210250796" style="zoom:50%;" />
+
+注意，第一个 extends ( ` Tuple extends unknown` ) 不是条件，条件类型是 `extends ? :` ；<font color=FF0000>这里的 extends 是约束的意思</font>，也就是约束类型参数只能是数组类型。另外，因为不知道数组元素的具体类型，所以用 unkown 。 
+
+##### 联合：｜
+
+联合类型 ( Union ) 类似 js 里的或运算符 `|`，但是作用于类型，代表类型可以是几个类型之一。
+
+```typescript
+type Union = 1 | 2 | 3;
+```
+
+**注：** 上面有自己的关于 `extends ? :` 使用 Union 的示例。
+
+##### 交叉：&
+
+交叉类型（Intersection）类似 js 中的与运算符 &，但是作用于类型，代表对类型做合并。
+
+```typescript
+type ObjType = {a: number} & {c: string}
+type res = { a: number, c: boolean} extends ObjType ? true : false
+```
+
+<img src="https://s2.loli.net/2022/05/01/jcnv1fU6FzDZmb8.png" alt="image-20220501211038464" style="zoom:55%;" />
+
+注意，同一类型可以合并，不同的类型没法合并，会被舍弃  ：
+
+<img src="https://s2.loli.net/2022/05/01/h5KndlIRLG9Xzp2.png" alt="image-20220501211209605" style="zoom:55%;" />
+
+##### 映射类型 ⭐️
+
+对象、class 在 TypeScript 对应的类型是 「索引类型」 ( Index Type ) ，那么如何对索引类型作修改呢？答案是「映射类型」 。
+
+```typescript
+type MapType<T> = {
+  [Key in keyof T]?: T[Key] // 注：这里的 ? 表示可选
+}
+type MapTypeRes = MapType<{a: 1, b: 2}>
+```
+
+<img src="https://s2.loli.net/2022/05/01/E9Rny15MuiXbjNC.png" alt="image-20220501212209184" style="zoom:55%;" />
+
+`keyof T` 是查询索引类型中所有的索引，叫做「索引查询」。
+
+`T[Key]` 是取索引类型某个索引的值，叫做「索引访问」。
+
+`in` 是用于遍历联合类型的运算符（**注：**类似于 for...in ）。
+
+比如我们把一个索引类型的值变成 3 个元素的数组：
+
+```typescript
+type MapType<T> = {
+    [Key in keyof T]: [T[Key], T[Key], T[Key]]
+}
+
+type MapTypeRes = MapType<{a: 1, b: 2}>;
+```
+
+<img src="https://s2.loli.net/2022/05/01/thRPmzXavor5ny2.png" alt="image-20220501212611967" style="zoom:55%;" />
+
+**映射类型就相当于把一个集合映射到另一个集合，这是它名字的由来**。
+
+<img src="https://s2.loli.net/2022/05/01/fdso7akByRzTD8m.png" alt="img" style="zoom:70%;" />
+
+<font color=FF0000 size=4>**除了值可以变化，索引也可以做变化**</font>；用 `as` 运算符，叫做「重映射」。
+
+```typescript
+type MapType<T> = {
+    [
+       Key in keyof T
+           as `${Key & string}${Key & string}${Key & string}`
+    ]: [T[Key], T[Key], T[Key]]
+}
+```
+
+<img src="https://s2.loli.net/2022/05/01/a6jQCHfwO41G2vi.png" alt="image-20220501213009300" style="zoom:50%;" />
+
+<font size=4>**这里为什么 Key 后面跟着 `& string`：**</font>因为 <font color=FF0000>**索引类型（对象、class 等）可以用 string、number 和 symbol 作为 key** ，这里 `keyof T` 取出的索引就是 `string | number | symbol` 的联合类型，**和 string 取交叉，结果就只剩下 string 了**</font>。就像前面所说，交叉类型会把同一类型做合并，不同类型舍弃。
+
+
+
+### 模式匹配做提取
 
