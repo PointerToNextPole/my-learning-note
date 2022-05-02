@@ -788,6 +788,8 @@ const transpiler = Transpiler.TypeScriptCompiler;
 - **unknown** 是<font color=FF0000>**未知类型**，**任何类型都可以赋值给它**，但是它 <font size=4>**不可以赋值给别的类型**</font></font>。
 - **never** <font color=FF0000>**代表不可达，比如函数抛异常的时候，返回值就是 never**</font> （**注：**“异常” 的相关示例 [[#交叉：&]] 。另外，根据下面（[[#推导：infer]]）的代码可知，在类型编程时，使用 `infer ? :` 不符合条件的，也可用 never 作为类型）。
 
+**注：**下面有说 any 和 unknown 的区别： [[#数组类型#First]] ，简单来说就是：unknown 不可给别的类型赋值，而 any （除了 never ）可以。
+
 **这些就是 TypeScript 类型系统中的全部类型了**，<mark>大部分是从 JS 中迁移过来的</mark>，比如基础类型、Array、class 等；<mark>也添加了一些类型</mark>，比如 枚举 ( enum ) 、接口 ( interface ) 、元组等，<mark>还支持了字面量类型和 void、never、any、unknown 的特殊类型</mark>。
 
 #### 
@@ -943,3 +945,45 @@ type MapType<T> = {
 
 ### 模式匹配做提取
 
+我们知道，字符串可以和正则做模式匹配，找到匹配的部分，提取子组，之后可以用 1, 2 等引用匹配的子组。
+
+```typescript
+const res = 'abc'.replace(/a(b)c/, '$1,$1,$1') // 'b,b,b'
+```
+
+<font color=FF0000>TypeScript 的类型也同样可以做 **模式匹配**</font>。比如这样一个 Promise 类型：
+
+```typescript
+type P = Promise<'guang'>
+```
+
+我们 <font color=FF0000>想提取 value 的类型，可以这样做</font>：
+
+```typescript
+type GetValueType<P> = P extends Promise<infer Value> ? Value : never;
+```
+
+通过 extends 对传入的类型参数 P 做模式匹配，其中值的类型是需要提取的。<font color=FF0000>通过 infer 声明一个局部变量 Value 来保存：如果匹配，就返回匹配到的 Value；否则就返回 never 代表没匹配到</font>。
+
+<img src="https://s2.loli.net/2022/05/02/e86qSsLR4BY7KWI.png" alt="image-20220502233642842" style="zoom:55%;" />
+
+这就是 Typescript 类型的模式匹配：**Typescript 类型的模式匹配是 通过 extends 对类型参数做匹配，结果保存到 “通过 infer 声明的局部类型变量里”，如果匹配就能从该局部变量里拿到提取出的类型。**
+
+这个模式匹配的套路有多有用呢？我们来看下在数组、字符串、函数、构造器等类型里的应用。
+
+#### 数组类型
+
+##### First
+
+数组类型想提取第一个元素的类型怎么做呢？用它来匹配一个模式类型，<font color=FF0000>提取第一个元素的类型到通过 infer 声明的局部变量里返回</font>。
+
+```typescript
+type arr = [1, 2, 3]
+
+type GetFirst<Arr extends unknown[]> = 
+    Arr extends [infer First, ...unknown[]] ? First : never;
+```
+
+类型参数 Arr 通过 extends 约束为只能是数组类型，数组元素是 unkown 也就是可以是任何值。
+
+> **any 和 unknown 的区别**： any 和 unknown 都代表任意类型，但是 unknown 只能接收任意类型的值，而 any 除了可以接收任意类型的值，也可以赋值给任意类型（除了 never ）。类型体操中经常用 unknown 接受和匹配任何类型，而很少把任何类型赋值给某个类型变量。
