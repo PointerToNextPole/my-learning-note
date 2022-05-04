@@ -857,7 +857,7 @@ type res2 = isTwo<2>
 ```typescript
 type First<Tuple extends unknown[]> = Tuple extends [infer T,...infer R] ? T : never;
 // 注：这里的 Tuple 是范型的“类型变量”，可以起其他名字。另外，经过实验发现：类型编程中似乎没有 tuple 这个类型。
-// 注：这里有语句 infer T 和 infer R，infer varible 相当于 声明了一个变量，这个变量可以在后面使用（比如 ? 后面返回的 T ）。学习自：https://juejin.cn/post/6844904146877808653
+// 注：这里有语句 infer T 和 infer R，infer variable 相当于 声明了一个变量，这个变量可以在后面使用（比如 ? 后面返回的 T ）。学习自：https://juejin.cn/post/6844904146877808653
 
 type res = First<[1,2,3]>;
 ```
@@ -1660,7 +1660,7 @@ type IsEqual<A, B> = (A extends B ? true : false) & (B extends A ? true : false)
 
 每次提取一个元素到 infer 声明的局部变量 First 中，剩余的放到局部变量 Rest。判断 First 是否是要查找的元素，也就是和 FindItem 相等，是的话就返回 true，否则继续递归判断下一个元素。直到结束条件也就是提取不出下一个元素，这时返回 false。
 
-相等的判断就是 A 是 B 的子类型并且 B 也是 A 的子类型。
+相等的判断就是 A 是 B 的子类型并且 B 也是 A 的子类型。另外，这个 IsEqual 是不完善的（<font color=FF0000>没有处理 其中有 any 的情况</font>）具体可见 [[#特殊特性要记清#IsEqual]]
 
 这样就完成了不确定长度的数组中的元素查找，用递归实现了循环。
 
@@ -1678,7 +1678,7 @@ type RemoveItem<
 > = Arr extends [infer First, ...infer Rest]
         ? IsEqual<First, Item> extends true
             ? RemoveItem<Rest, Item, Result>
-            : RemoveItem<Rest, Item, [...Result, First]> // 注：这里 First 在 Result 中的顺序没搞懂，为什么这样写
+            : RemoveItem<Rest, Item, [...Result, First]>
         : Result;
         
 type IsEqual<A, B> = (A extends B ? true : false) & (B extends A ? true : false);
@@ -1686,7 +1686,7 @@ type IsEqual<A, B> = (A extends B ? true : false) & (B extends A ? true : false)
 
 类型参数 Arr 是待处理的数组，元素类型任意，也就是 `unknown[]` 。类型参数 Item 为待查找的元素类型。类型参数 Result 是构造出的新数组，默认值是 []。
 
-通过「模式匹配」提取数组中的一个元素的类型，如果是 Item 类型的话就删除，也就是不放入构造的新数组，直接返回之前的 Result ；否则放入构造的新数组，也就是再构造一个新的数组 `[...Result, First]` 。直到模式匹配不再满足，也就是处理完了所有的元素，返回这时候的 Result。
+通过「模式匹配」提取数组中的一个元素的类型，如果是 Item 类型的话就删除，也就是不放入构造的新数组，直接返回之前的 Result ；否则放入构造的新数组，也就是再构造一个新的数组 `[...Result, First]` 。直到模式匹配不再满足，也就是处理完了所有的元素，返回这时候的 Result 。**注：**这里 `[...Result, First]` 为什么 First 放在后面，是因为 First 是 “当前“ 递归 的 Item ，所以相当于 将当前的 Item 放在 Result 后面。另外，下面有类似的例子 [[#字符串类型的递归#ReverseStr]]，也有讲解。
 
 这样我们就完成了不确定元素个数的数组的某个元素的删除：
 
@@ -1775,13 +1775,13 @@ type ReverseStr<
     Str extends string, 
     Result extends string = ''
 > = Str extends `${infer First}${infer Rest}`
-    ? ReverseStr<Rest, `${First}${Result}`> // 注：和上面一样，还是没有搞懂为什么 First Result 的顺序和预期是反的
+    ? ReverseStr<Rest, `${First}${Result}`>
     : Result;
 ```
 
-类型参数 Str 为待处理的字符串。类型参数 Result 为构造出的字符，默认值是空串。
+类型参数 Str 为待处理的字符串。类型参数 Result 为构造出的字符，<font color=FF0000>默认值是空串</font>（注：注意这种写法）。
 
-通过模式匹配提取第一个字符到 infer 声明的局部变量 First，其余字符放到 Rest。用 First 和之前的 Result 构造成新的字符串，把 First 放到前面，因为递归是从左到右处理，那么不断往前插就是把右边的放到了左边，完成了反转的效果。直到模式匹配不满足，就处理完了所有的字符。
+通过模式匹配提取第一个字符到 infer 声明的局部变量 First，其余字符放到 Rest 。用 First 和之前的 Result 构造成新的字符串，<font color=FF0000>**把 First 放到前面，因为 <font size=4>递归是从左到右处理，那么不断往前插就是把右边的放到了左边</font>，完成了反转的效果**</font>。直到模式匹配不满足，就处理完了所有的字符。
 
 这样就完成了字符串的反转：
 
@@ -1794,3 +1794,677 @@ type ReverseStr<
 >      : ''
 > ```
 
+#### 对象类型的递归
+
+##### DeepReadonly
+
+对象类型的递归，也可以叫做索引类型的递归。
+
+我们之前实现了索引类型的映射，给索引加上了 readonly 的修饰；如果这个索引类型层数不确定呢？比如下面
+
+```ts
+type obj = {
+    a: {
+        b: {
+            c: {
+                f: () => 'dong',
+                d: {
+                    e: {
+                        guang: string
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+> **注：**⚠️ 需要注意的是： <font size=4>**`Function extends object ? true : false` 结果为 <font color=FF0000>true</font> **</font> ， <font size=4>**`string extends object ? true : false` 结果为 <font color=FF0000>false</font>**</font>  
+
+另外，一开始写的时候，写的代码和原文错误代码差不多；不过没考虑到 `Function extends object ? true : false` 为 true 的情况。加上这种情况后，代码（也是原文中代码）如下：
+
+```ts
+type DeepReadonly<Obj extends Record<string, any>> = {
+     readonly [Key in keyof Obj]: 
+        Obj[Key] extends object
+           ? Obj extends Function
+              ? Obj[Key]
+              : DeepReadonly<Obj[Key]>
+           : Obj[Key]
+}
+```
+
+不过结果，还是不行的；到第二层就没有计算了：
+
+<img src="https://s2.loli.net/2022/05/04/q2Oo38rIP4cZCav.png" alt="image-20220504003513846" style="zoom:50%;" />
+
+原因是： <font color=FF0000 size=4>**TS 只有类型被用到的时候才会做类型计算**</font>。
+
+所以，<font size=4><font color=FF0000>可以在前面加上一段</font> `Obj extends never ? never` <font color=FF0000>或者</font> `Obj extends any` ，<font color=FF0000>让它触发计算</font></font>；另外，<font size=4>写 `Obj extends any` 还有额外的好处，就是<font color=FF0000>能 **处理联合类型**</font></font>，（注：形成 “分布式条件类型” ）相关讲解见 [[#联合分散可简化]] 
+
+最终代码如下：
+
+```ts
+type DeepReadonly<Obj extends Record<string, any>> =
+    Obj extends any
+        ? {
+            readonly [Key in keyof Obj]:
+                Obj[Key] extends object
+                    ? Obj[Key] extends Function
+                        ? Obj[Key] 
+                        : DeepReadonly<Obj[Key]>
+                    : Obj[Key]
+        }
+        : never;
+```
+
+<img src="https://s2.loli.net/2022/05/04/DVr1IZNuspa29zc.png" alt="image-20220504003852914" style="zoom:50%;" />
+
+
+
+### 数组长度做计数
+
+TS 类型系统 <font color=FF0000>**可以实现**</font> “数值相关的逻辑”
+
+#### 数组长度做计数
+
+TypeScript 类型系统没有加减乘除运算符，怎么做数值运算呢？
+
+不知道大家有没有注意到 <font color=FF0000>**数组类型取 length 就是数值**</font>。如下示例：
+
+<img src="https://s2.loli.net/2022/05/04/3OfnzTmt8H5pGRS.png" alt="image-20220504005055617" style="zoom:50%;" />
+
+<font color=FF0000>**TypeScript 类型系统中 <font size=4>没有加减乘除运算符</font>，但是 <font size=4>可以通过构造不同的数组然后取 length 的方式来完成数值计算</font>，<font size=4>把数值的加减乘除转化为对数组的提取和构造</font>。**</font>（严格来说构造的是元组，大家知道数组和元组的区别就行）
+
+这点可以说是类型体操中最麻烦的一个点，需要思维做一些转换，绕过这个弯来。
+
+#### 数组长度实现加减乘除
+
+##### Add
+
+我们知道了数值计算要转换为对数组类型的操作，那么加法的实现很容易想到：构造两个数组，然后合并成一个，取 length。比如 3 + 2，就是构造一个长度为 3 的数组类型，再构造一个长度为 2 的数组类型，然后合并成一个数组，取 length。
+
+构造多长的数组是不确定的，需要递归构造，这个我们实现过：
+
+```ts
+type BuildArray<
+    Length extends number, 
+    Ele = unknown, 
+    Arr extends unknown[] = []
+> = Arr['length'] extends Length 
+        ? Arr 
+        : BuildArray<Length, Ele, [...Arr, Ele]>;
+```
+
+**注：**这里的讲解代码略，略。
+
+构造数组实现了，那么基于它就能实现加法：
+
+```typescript
+type Add<Num1 extends number, Num2 extends number> = 
+    [...BuildArray<Num1>,...BuildArray<Num2>]['length'];
+```
+
+<img src="https://s2.loli.net/2022/05/04/qU3keIVWlCs7ona.png" alt="image-20220504005852851" style="zoom:50%;" />
+
+##### Subtract
+
+加法是构造数组，那减法怎么做呢？减法是从数值中去掉一部分，很容易想到可以 <font color=FF0000>通过数组类型的提取来做</font>。比如 3 是 `[unknown, unknown, unknown]` 的数组类型，提取出 2 个元素之后，剩下的数组再取 length 就是 1。
+
+所以减法的实现是这样的：
+
+```ts
+type Subtract<Num1 extends number, Num2 extends number> = 
+    BuildArray<Num1> extends [...arr1: BuildArray<Num2>, ...arr2: infer Rest]
+        ? Rest['length']
+        : never;
+```
+
+> **注：**这里的关键是 Arr 和 Arr2 除非一模一样（元素顺序也一样），才会 `Arr extends Arr2 ? true : false` 为 true；所以，Rest 才会是提取的结果。
+>
+> 另外，这里 Num1 必须 不小于 Num2，否则结果会是 never。
+
+类型参数 Num1、Num2 分别是被减数和减数，通过 extends 约束为 number。
+
+构造 Num1 长度的数组，<font color=FF0000>通过模式匹配提取出 Num2 长度个元素，**剩下的放到 infer 声明的局部变量 Rest 里**</font>。取 Rest 的长度返回，就是减法的结果。
+
+<img src="https://s2.loli.net/2022/05/04/5dbXhNnOpYs6jBV.png" alt="image-20220504010518304" style="zoom:50%;" />
+
+##### Multiply
+
+我们把加法转换为了数组构造，把减法转换为了数组提取。那乘法怎么做呢？<font color=FF0000>**乘法就是多个加法结果的累加**</font>。
+
+那么我们在减法的基础上，多加一个参数来传递中间结果的数组，算完之后再取一次 length 就能实现乘法：
+
+```ts
+type Mutiply<
+    Num1 extends number,
+    Num2 extends number,
+    ResultArr extends unknown[] = []
+> = Num2 extends 0 ? ResultArr['length']
+        : Mutiply<Num1, Subtract<Num2, 1>, [...BuildArray<Num1>, ...ResultArr]>;
+```
+
+类型参数 Num1 和 Num2 分别是被加数和加数。
+
+因为乘法是多个加法结果的累加，我们加了一个类型参数 ResultArr 来保存中间结果，默认值是 []，相当于从 0 开始加。每加一次就把 Num2 减一，直到 Num2 为 0，就代表加完了。加的过程就是往 ResultArr 数组中放 Num1 个元素。这样递归的进行累加，也就是递归的往 ResultArr 中放元素。
+
+最后取 ResultArr 的 length 就是乘法的结果。
+
+<img src="https://s2.loli.net/2022/05/04/fOsdUMyD6gvEPSV.png" alt="image-20220504012228977" style="zoom:50%;" />
+
+##### Divide
+
+乘法是递归的累加，那除法不就是递归的累减么？<font color=FF0000>**除法的实现就是被减数不断减去减数，直到减为 0，记录减了几次就是结果**</font>。
+
+```ts
+type Divide<
+    Num1 extends number,
+    Num2 extends number,
+    CountArr extends unknown[] = []
+> = Num1 extends 0 ? CountArr['length']
+        : Divide<Subtract<Num1, Num2>, Num2, [unknown, ...CountArr]>;
+```
+
+类型参数 Num1 和 Num2 分别是被减数和减数。类型参数 CountArr 是用来记录减了几次的累加数组。
+
+如果 Num1 减到了 0 ，那么这时候减了几次就是除法结果，也就是 `CountArr['length']` ；否则继续递归的减，让 Num1 减去 Num2，并且 CountArr 多加一个元素代表又减了一次。
+
+> **注：**有点神奇的是，Divide 的 “代码逻辑” 上没有找到处理 无法整除的情况；但是 `Divide<10, 3>` 结果会是 never 。有点没搞懂 TODO
+
+<img src="https://s2.loli.net/2022/05/04/PKnTMeWisY7lVyr.png" alt="image-20220504012916479" style="zoom:50%;" />
+
+#### 数组长度实现计数
+
+##### StrLen
+
+数组长度可以取 length 来得到，但是<font color=FF0000>**字符串类型不能取 length**</font> （见下面“注” ），所以我们来<font color=FF0000>实现一个求字符串长度的高级类型</font>。
+
+字符串长度不确定，明显要用递归。每次取一个并计数，直到取完，就是字符串长度。
+
+```ts
+type StrLen<Str extends string, CountArr extends unknown[] = []> = 
+     Str extends `${infer First}${infer Rest}`
+         ? StrLen<Rest, [...CountArr, First]> // 注：自己实现的时候，展开运算符漏了；其他没什么问题
+         : CountArr["length"]
+```
+
+**注：**TS 中字符串没有 "length" 属性，所以才需要将其转换成 数组，再获取数组的长度。另外，这里实现没什么问题，讲解略。
+
+##### GreaterThan
+
+能够做计数了，那也就能做两个数值的比较。
+
+我们往一个数组类型中不断放入元素取长度，<font color=FF0000>如果（中间数组的长度）先到了 A，那就是 B 大；否则是 A 大</font>：
+
+```ts
+type GreaterThan<
+    Num1 extends number,
+    Num2 extends number,
+    CountArr extends unknown[] = []
+> = Num1 extends Num2
+    ? false
+    : CountArr['length'] extends Num2
+        ? true
+        : CountArr['length'] extends Num1
+            ? false
+            : GreaterThan<Num1, Num2, [...CountArr, unknown]>
+```
+
+类型参数 Num1 和 Num2 是待比较的两个数。类型参数 CountArr 是计数用的，会不断累加，默认值是 [] 代表从 0 开始。
+
+如果 `Num1 extends Num2` 成立，代表相等，直接返回 false 。否则，判断计数数组的长度，如果先到了 Num2，那么就是 Num1 大，返回 true。反之，如果先到了 Num1，那么就是 Num2 大，返回 false。如果都没到就往计数数组 CountArr 中放入一个元素，继续递归。
+
+这样就实现了数值比较。
+
+<img src="https://s2.loli.net/2022/05/04/DNp9nfeUbqRiPES.png" alt="image-20220504021805506" style="zoom:50%;" />
+
+##### Fibonacci
+
+谈到了数值运算，就不得不提起经典的 Fibonacci 数列的计算。*F*(0) = 1，*F*(1) = 1, *F*(n) = *F*(n - 1) + *F*(n - 2)  (*n* ≥ 2，*n* ∈ N*)
+
+也就是递归的加法，在 TypeScript 类型编程里用构造数组来实现这种加法：
+
+```ts
+type FibonacciLoop<
+    PrevArr extends unknown[], 
+    CurrentArr extends unknown[], 
+    IndexArr extends unknown[] = [], 
+    Num extends number = 1
+> = IndexArr['length'] extends Num
+    ? CurrentArr['length']
+    : FibonacciLoop<CurrentArr, [...PrevArr, ...CurrentArr], [...IndexArr, unknown], Num> 
+
+type Fibonacci<Num extends number> = FibonacciLoop<[1], [], [], Num>;
+```
+
+类型参数 PrevArr 是代表之前的累加值的数组。类型参数 CurrentArr 是代表当前数值的数组。类型参数 IndexArr 用于记录 index，每次递归加一，默认值是 []，代表从 0 开始。类型参数 Num 代表求数列的第几个数。
+
+判断当前 index 也就是 `IndexArr['length']` 是否到了 Num，到了就返回当前的数值 `CurrentArr['length']` ；否则求出当前 index 对应的数值，用之前的数加上当前的数 `[...PrevArr, ... CurrentArr]`。然后继续递归，index + 1，也就是 `[...IndexArr, unknown]` 。
+
+这就是递归计算 Fibinacci 数列的数的过程。
+
+<img src="https://s2.loli.net/2022/05/04/BTbFrpmSZARzePO.png" alt="image-20220504022131600" style="zoom:50%;" />
+
+
+
+### 联合分散可简化
+
+联合类型在类型编程中是比较特殊的，TypeScript 对它做了专门的处理，写法上可以简化，但也增加了一些认知成本。
+
+#### 分布式条件类型 ( Distributive conditional types )
+
+**当 <font color=FF0000>类型参数为联合类型</font>，并且在 <font color=FF0000 size=4>条件类型</font> （注：即 `extends ? :` 。另外，这个很重要，下面 [[#IsUnion]] 中会用到这个特性 ）左边直接引用该类型参数的时候：<font color=FF0000>TypeScript 会把 <font size=4>每一个元素单独传入来做类型运算，最后再合并成联合类型</font></font>，这种语法叫做「分布式条件类型」。**
+
+比如这样一个联合类型：
+
+```typescript
+type Union = 'a' | 'b' | 'c';
+```
+
+我们想把其中的 a 大写，就可以这样写：
+
+```typescript
+type UppercaseA<Item extends string> = 
+    Item extends 'a' ?  Uppercase<Item> : Item; // 注：类似于索引类型的 [Key in keyof Obj]: T[Key]，不过是不同的
+```
+
+<img src="https://s2.loli.net/2022/05/04/WpOK3MyP6rn2XNQ.png" alt="image-20220504135043088" style="zoom:50%;" />
+
+可以看到，我们类型参数 Item 约束为 string，条件类型的判断中也是判断是否是 a，但传入的是联合类型。
+
+这就是 TypeScript 对联合类型在条件类型中使用时的特殊处理：会把联合类型的每一个元素单独传入做类型计算，最后合并。
+
+<font color=FF0000>**这和联合类型遇到字符串时的处理一样：**</font>
+
+<img src="https://s2.loli.net/2022/05/04/VvMn5UEaYLQDOWj.png" alt="image-20220504135905352" style="zoom:50%;" />
+
+这样确实是简化了类型编程逻辑，不需要递归提取每个元素再处理。
+
+TypeScript 之所以这样处理联合类型也很容易理解，因为：联合类型的每个元素都是互不相关的，不像数组、索引、字符串那样元素之间是有关系的。所以设计成了每一个单独处理，最后合并。
+
+##### CamelcaseUnion
+
+Camelcase 我们实现过，就是提取字符串中的字符，首字母大写以后重新构造一个新的。
+
+```ts
+type Camelcase<Str extends string> = 
+    Str extends `${infer Left}_${infer Right}${infer Rest}`
+        ? `${Left}${Uppercase<Right>}${Camelcase<Rest>}`
+        : Str; // 注：第一遍写没写出来，题目看错了（是由 snake_case 变成 camelCase ）；第二遍写，这里 Str 写成 Rest 了
+```
+
+提取 \_ 左右的字符，把右边字符大写之后构造成新的字符串，余下的字符串递归处理。
+
+<img src="https://s2.loli.net/2022/05/04/DOWzqgQj8xhulNY.png" alt="image-20220504142306146" style="zoom:50%;" />
+
+另外，由于上面讲的特性，这里 `Camelcase` 中类型参数可以放入一个联合类型值，效果一样；这里只放一下截图。另外，下面也会讲。
+
+<img src="https://s2.loli.net/2022/05/04/tS5a1cAPTGDYKxR.png" alt="image-20220504142525257" style="zoom:50%;" />
+
+如果是对字符串数组做 Camelcase，那就要递归处理每一个元素：
+
+```ts
+type CamelcaseArr<
+  Arr extends unknown[] // 注：这里 写 string[] 下面写 CamelcaseArr<RestArr, string[]> 会报错，不知道为什么 TODO
+> = Arr extends [infer Item, ...infer RestArr]
+        ? [Camelcase<Item & string>, ...CamelcaseArr<RestArr>] //注：这里 & string 要注意，没想到这样写。
+        : [];
+```
+
+类型参数 Arr 为待处理数组。递归提取每一个元素做 Camelcase，<font color=FF0000>因为 Camelcase 要求传入 string ，这里要 `& string` 来变成 string 类型</font>。
+
+<img src="https://s2.loli.net/2022/05/04/3QRwO5lZfN79gbq.png" alt="image-20220504162214676" style="zoom:50%;" />
+
+**那如果是联合类型呢？**
+
+联合类型不需要递归提取每个元素，TypeScript 内部会把每一个元素传入单独做计算，之后把每个元素的计算结果合并成联合类型。
+
+```ts
+type CamelcaseUnion<Item extends string> = 
+  Item extends `${infer Left}_${infer Right}${infer Rest}` 
+    ? `${Left}${Uppercase<Right>}${CamelcaseUnion<Rest>}` 
+    : Item;
+```
+
+这不和单个字符串的处理没区别么？没错，对联合类型的处理和对单个类型的处理没什么区别，TypeScript 会把每个单独的类型拆开传入。不需要像数组类型那样需要递归提取每个元素做处理。
+
+确实简化了很多，好像都是优点？也不全是，其实这样处理也增加了一些认知成本。
+
+##### IsUnion
+
+判断联合类型我们会这样写：
+
+```ts
+type IsUnion<A, B = A> =
+    A extends A
+        ? [B] extends [A] // 注：注意这里的 [B] 和 [A]，A 和 B 都使用 [] 包裹，原因见下面。
+            ? false
+            : true
+        : never
+```
+
+这段逻辑有点奇怪（见上面 “注” ），这就是分布式条件类型带来的认知成本。
+
+我们先来看这样一个类型：
+
+```ts
+type TestUnion<A, B = A> = 
+     A extends A
+        ? { a : A, b : B }
+        : never;
+
+type TestUnionResult = TestUnion<'a' | 'b' | 'c'>;
+```
+
+传入联合类型 'a' | 'b' | 'c' 的时候，结果是这样的：
+
+<img src="https://s2.loli.net/2022/05/04/n384fWeyRqhNkms.png" alt="image-20220504162905687" style="zoom:50%;" />
+
+A 和 B 都是同一个联合类型，为啥值还不一样呢？
+
+因为：<font color=FF0000>**条件类型中如果左边的类型是联合类型，会把每个元素单独传入做计算，而 <font size=4>右边不会</font>**</font>。所以 A 是 'a' 的时候，B 是 'a' | 'b' | 'c'， A 是 'b' 的时候，B 还是 'a' | 'b' | 'c' 。所以，<font color=FF0000>**可以利用这个特点就可以实现 Union 类型的判断**</font>
+
+```ts
+type IsUnion<A, B = A> =
+    A extends A
+        ? [B] extends [A]
+            ? false
+            : true
+        : never
+```
+
+类型参数 A、B 是待判断的联合类型，B 默认值为 A，也就是同一个类型。
+
+`A extends A` 这段看似没啥意义，主要是为了触发「分布式条件类型」，让 A 的每个类型单独传入。`[B] extends [A]` 这样<font color=FF0000 size=4>**不直接写 B 就可以避免触发「分布式条件类型」**</font>（**注：**这里的避免的原理见 [[#分布式条件类型]] 开头的定义 ），<font color=FF0000>那么 B 就是 整个联合类型</font>。B 是联合类型整体，而 A 是单个类型，自然不成立，而其它类型没有这种特殊处理，A 和 B 都是同一个，怎么判断都成立。
+
+> 注：上面最后一句没看懂。不过，经过实验：`'a' extends ['a' | 'b' | 'c'] ? true : false`  结果为 false，而 `['a'] extends ['a' | 'b' | 'c'] ? true : false` 结果为 true。
+
+利用这个特点就可以判断出是否是联合类型。
+
+<font size=4>**其中有两个点比较困惑，我们重点记一下**</font>
+
+**当 A 是联合类型时：**
+
+- **`A extends A` 这种写法是<font color=FF0000>为了触发分布式条件类型</font>，让每个类型单独传入处理的，<font color=FF0000>没别的意义</font>。**
+- **`A extends A` 和 `[A] extends [A]` 是不同的处理，<font color=FF0000>前者是单个类型和整个类型做判断</font>，<font color=FF0000>后者两边都是整个联合类型</font>，因为<font color=FF0000>只有 extends 左边直接是类型参数才会触发分布式条件类型</font>。**
+
+#### 练习
+
+##### BEM
+
+bem 是 css 命名规范，用 block__element--modifier 的形式来描述某个区块下面的某个元素的某个状态的样式。
+
+那么我们可以写这样一个高级类型，传入 block、element、modifier，返回构造出的 class 名；这样使用：
+
+```ts
+type bemResult = BEM<'guang', ['aaa', 'bbb'], ['warning', 'success']>;
+```
+
+它的实现就是 三部分的合并，但传入的是数组，要递归遍历取出每一个元素来和其他部分组合，<font color=FF0000>这样太麻烦了</font>。
+
+而<font color=FF0000>**如果是联合类型就不用递归遍历了**</font>，因为联合类型遇到字符串也是会单独每个元素单独传入做处理。
+
+<font color=FF0000 size=4>**数组转联合类型可以这样写：**</font>
+
+```ts
+type union = ['foo', 'bar'][number]
+```
+
+<img src="/Users/yan/Library/Application Support/typora-user-images/image-20220504183301073.png" alt="image-20220504183301073" style="zoom:50%;" />
+
+那么 BEM 就可以这样实现：
+
+```ts
+type BEM<
+    Block extends string,
+    Element extends string[],
+    Modifiers extends string[]
+> = `${Block}__${Element[number]}--${Modifiers[number]}`; // 注：注意这里的 [number]，就是上面的用法
+```
+
+类型参数 Block、Element、Modifiers 分别是 bem 规范的三部分，其中 Element 和 Modifiers 都可能多个，约束为 `string[]` 。
+
+<font color=FF0000>构造一个字符串类型，其中 Element 和 Modifiers 通过索引 ( `[number]` ) 访问来变为联合类型</font>。
+
+<font color=FF0000 size=4>**字符串类型中遇到联合类型的时候，会每个元素单独传入计算**</font>；也就是这样的效果：
+
+<img src="https://s2.loli.net/2022/05/04/gqpcXQFdVCv8Elr.png" alt="image-20220504191243167" style="zoom:50%;" />
+
+##### AllCombinations
+
+我们再来实现一个全组合的高级类型，也是联合类型相关的：<font color=FF0000>希望传入 'A' | 'B' 的时候，能够返回所有的组合： 'A' | 'B' | 'BA' | 'AB'</font> 。
+
+这种全组合问题的实现思路就是两两组合，组合出的字符串再和其他字符串两两组和：比如 'A' | 'B' | 'c'，就是 A 和 B、C 组合，B 和 A、C 组合，C 和 A、B 组合。然后组合出来的字符串再和其他字符串组合。任何两个类型的组合有四种：A、B、AB、BA 。
+
+```ts
+type Combination<A extends string, B extends string> =
+    | A
+    | B
+    | `${A}${B}`
+    | `${B}${A}`;
+```
+
+然后构造出来的字符串再和其他字符串组合。
+
+所以全组合的高级类型就是这样：
+
+```ts
+type AllCombinations<A extends string, B extends string = A> = 
+    A extends A
+        ? Combination<A, AllCombinations<Exclude<B, A>>>
+        : never;
+```
+
+类型参数 A、B 是待组合的两个联合类型，B 默认是 A 也就是同一个。
+
+`A extends A` 的意义就是让联合类型每个类型单独传入做处理，上面 ( [[#IsUnion]] ) 我们刚学会。
+
+A 的处理就是 A 和 “B 中去掉 A 以后” 的所有类型组合，也就是 `Combination<A, B 去掉 A 以后的所有组合>` 。
+
+而 B 去掉 A 以后的所有组合就是 `AllCombinations<Exclude<B, A>>` ，所以全组合就是 `Combination<A, AllCombinations<Exclude<B, A>>>` 。
+
+<img src="https://s2.loli.net/2022/05/04/6tuD98l3LUcmH41.png" alt="image-20220504200800250" style="zoom:50%;" />
+
+这里利用到了分布式条件类型的特性，通过 A extends A 来取出联合类型中的单个类型。
+
+
+
+### 特殊特性要记清
+
+##### 特殊类型的特性
+
+TypeScript 类型系统中有些类型比较特殊：比如 any、never、联合类型；比如 class 有 public、protected、private 的属性；比如「索引类型」有具体的索引和可索引签名，索引还有可选和非可选。
+
+如果给我们一种类型让我们判断是什么类型，应该怎么做呢？
+
+**类型的判断要根据它的特性来，比如判断联合类型就要根据它的 distributive （注：即“分布式条件类型” ） 的特性。**
+
+我们分别看一下这些特性：
+
+##### IsAny
+
+如何判断一个类型是 any 类型呢？要根据它的特性来：**<font color=FF0000>any 类型与任何类型的交叉都是 any</font> ，也就是 `1 & any` 结果是 any**（**注：**有点“粘性” ( sticky ) 的意味？）。所以，可以这样写：
+
+```typescript
+type IsAny<T> = 'foo' extends ('bar' & T) ? true : false
+```
+
+这里的 'foo' 和 'bar' 可以换成任意类型（**注：**这里 'foo' 和 'bar' 都代表一种类型，所以可以换成 'string' 和 'number' ）
+
+<img src="https://s2.loli.net/2022/05/04/IjWPzOXD1SAcqkN.png" alt="image-20220504202335587" style="zoom:50%;" />
+
+**注：**另外，下面 [[#IsNever]] 还提及了为什么 any 不能直接使用 `extends ? :` 去判断（简单来说，会返回 `extends ? :` 设定的 trueVal 和 falseVal 的联合 ( Union) ）
+
+##### IsEqual
+
+之前我们实现 IsEqual 是这样写的：
+
+```typescript
+type IsEqual<A, B> = (A extends B ? true : false) & (B extends A ? true : false);
+```
+
+问题也出在 any 的判断上：
+
+<img src="https://s2.loli.net/2022/05/04/q5r3I1gl6ZNo24L.png" alt="image-20220504212729339" style="zoom:50%;" />
+
+<font color=FF0000>因为 any 可以是任何类型，任何类型也都是 any，所以当这样写判断不出 any 类型来</font>。
+
+所以，我们会这样写：
+
+```ts
+type IsEqual<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2)
+    ? true : false;
+```
+
+<img src="https://s2.loli.net/2022/05/04/P3rGUbHFZ5xJKiq.png" alt="image-20220504213554129" style="zoom:50%;" />
+
+这是因为 TS 对这种形式的类型做了特殊处理，是一种 hack 的写法，它的解释要从 TypeScript 源码找答案了，放到原理篇我们一起读下 TypeScript 源码。这里暂时就这样写吧。 TODO
+
+**注：**下面 [[#IsTuple]] 有实现一个 NonEqual ，有说实现原理，可以参考下。
+
+##### IsUnion
+
+还记得怎么判断 union 类型么？要根据它遇到条件类型时会分散成单个传入做计算的特性：
+
+```typescript
+type IsUnion<A, B = A> =
+    A extends A
+        ? [B] extends [A]
+            ? false
+            : true
+        : never
+```
+
+这里的 A 是单个类型，B 是整个联合类型，所以根据 [B] extends [A] 是否成立来判断是否是联合类型。具体可见 [[#联合分散可简化#IsUnion]]
+
+##### IsNever
+
+never 在条件类型中也比较特殊：<font color=FF0000>如果条件类型左边是类型参数，并且传入的是 never，那么**直接返回 never **</font>。如下示例：
+
+```typescript
+type TestNever<T> = T extends number ? 1 : 2 // never
+```
+
+<img src="https://s2.loli.net/2022/05/04/5RXMdAesBKrVatl.png" alt="image-20220504214213956" style="zoom:50%;" />
+
+所以：要判断 never 类型，就不能直接 `T extends number` ，可以用数组包装；如下：
+
+```typescript
+type IsNever<T> = [T] extends [never] ? true : false
+```
+
+<img src="https://s2.loli.net/2022/05/04/Q9uWDqnaITFrJOL.png" alt="image-20220504214504633" style="zoom:50%;" />
+
+除了上述 never 以外，any 在「条件类型」中也比较特殊：如果类型参数为 any，会直接返回 trueType（下例中的 1 ） 和 falseType （下例中的 2 ）的 联合 ( Union ) ：
+
+```ts
+type TestAny<T> = T extends number ? 1 : 2;
+```
+
+<img src="https://s2.loli.net/2022/05/04/EGy3OoDaPwuBk7Z.png" alt="image-20220504214930961" style="zoom:50%;" />
+
+联合类型、never、any 在作为条件类型的类型参数时的这些特殊情况，也会在后面的原理篇来解释原因。
+
+##### IsTuple
+
+元组类型怎么判断呢？它和数组有什么区别呢？**元组类型也是数组类型，但 <font color=FF0000 size=4>每个元素都是只读的</font>；并且 <font color=FF0000 size=4>元组的 length 是数字字面量</font>，而 <font color=FF0000 size=4>数组的 length 是 number </font>。**
+
+如图，元组和数组的 length 属性值是有区别的：
+
+<img src="https://s2.loli.net/2022/05/04/nwJHC3ABDh1SITM.png" alt="image-20220504215632945" style="zoom:50%;" />
+
+<img src="https://s2.loli.net/2022/05/04/1OaXxn25DKpvsHt.png" alt="image-20220504215702395" style="zoom:50%;" />
+
+那我们就可以根据这两个特性（ readonly 和 length 是数字字面量 ）来判断元组类型：
+
+```ts
+type IsTuple<T> = 
+    // 注：第一：readonly 的性质没想到，第二：没想到可以 readonly 这样判断。另外，`params:` 可加可不加
+    T extends readonly [...params: infer Eles]
+        ? NotEqual<Eles['length'], number> // 注：由上图可知，number 没有引号
+        : false
+```
+
+类型参数 T 是要判断的类型。
+
+首先判断 T 是否是数组类型，如果不是则返回 false。如果是，继续判断 length 属性是否是 number；如果是数组并且 length 不是 number 类型，那就代表 T 是元组。
+
+**NotEqual 的实现：**
+
+```ts
+type NotEqual<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2)
+    ? false : true;
+```
+
+A 是 B 类型，并且 B 也是 A 类型，那么就是同一个类型，返回 false，否则返回 true。
+
+**传入元组时：**
+
+<img src="https://s2.loli.net/2022/05/04/5TdDJwM4WXPVjC7.png" alt="image-20220504222653620" style="zoom:50%;" />
+
+**传入数组时：**
+
+<img src="/Users/yan/Library/Application Support/typora-user-images/image-20220504223131230.png" alt="image-20220504223131230" style="zoom:50%;" />
+
+##### UnionToIntersection
+
+<font color=FF0000>**类型之间是有父子关系的，更具体的那个是子类型**；比如 A 和 B 的交叉类型 `A & B` 就是联合类型 `A | B` 的子类型，因为更具体</font>。
+
+<font color=FF0000>**如果允许父类型赋值给子类型，就叫做<font size=4>「逆变」</font>。如果允许子类型赋值给父类型，就叫做<font size=4>「协变」</font>**</font>。详细概念见原理篇 TODO
+
+在 TypeScript 中 <font color=FF0000>有「函数参数」是有逆变的性质的，也就是：如果参数可能是多个类型，参数类型会变成它们的交叉类型</font>。
+
+所以联合转交叉可以这样实现 ：
+
+```typescript
+type UnionToIntersection<U> = 
+    (U extends U ? (x: U) => unknown : never) extends (x: infer R) => unknown
+        ? R
+        : never
+```
+
+类型参数 U 是要转换的联合类型。
+
+`U extends U` 是为了触发 “联合类型” 的 distributive（即：“分布式条件类型” ） 的性质，让每个类型单独传入做计算，最后合并。利用 U 做为参数构造个函数，通过模式匹配取参数的类型。结果就是交叉类型：
+
+<img src="https://s2.loli.net/2022/05/04/CSxsB6PjJDNRTlv.png" alt="image-20220504230627100" style="zoom:50%;" />
+
+##### GetOptional
+
+如何提取索引类型中的可选索引呢？
+
+这也要利用可选索引的特性：**可选索引的值为 undefined 和 值类型 的联合类型**。
+
+<img src="https://s2.loli.net/2022/05/04/uxlX6D7yPq2fWAY.png" alt="img" style="zoom:65%;" />
+
+**注：**在当前 VS Code & typescript@4.5.4 中，不知道为什么只能显示出 `age?: number` ，而不能显示出 `age?: number | undefined` 
+
+```ts
+type GetOptional<Obj extends Record<string, any>> = {
+    [
+        Key in keyof Obj 
+            as {} extends Pick<Obj, Key> ? Key : never // 注：这里将 Pick<Obj, Key> 换成 Obj[Key] 没法得到预期的结果
+    ] : Obj[Key];
+}
+```
+
+类型参数 Obj 为待处理的索引类型，类型约束为索引为 string、值为任意类型的索引类型 `Record<string, any>` 。
+
+用映射类型的语法重新构造索引类型，索引是之前的索引也就是 `Key in keyof Obj` ，但要做一些过滤，也就是 as 之后的部分。过滤的方式就是单独取出该索引之后，<font color=FF0000>判断空对象是否是其子类型</font>（**注：**原理见上面 ）。
+
+这里的 <font color=FF0000>**Pick 是 TS 提供的内置高级类型，就是取出某个 Key 构造新的索引类型**</font>：
+
+```typescript
+type Pick<T, K extends keyof T> = { [P in K]: T[P] }
+```
+
+比如单独取出 age 构造的新的索引类型是这样的：
+
+<img src="https://s2.loli.net/2022/05/04/TOiut6sRFq94xLv.png" alt="img" style="zoom:75%;" />
+
+<font color=FF0000 size=4>**因为 age 可能为 undefined，也就是索引类型可能是 {}** </font>；所以 `{} extends Pick<Obj, Key>` 就能过滤出可选索引。（<font color=FF0000>可选的意思就是有或者没有，<font size=4>**没有的时候就是空的索引类型**</font></font>）。值的类型依然是之前的，也就是 Obj[Key]。
+
+这样，就能过滤出所有可选索引，构造成新的索引类型：
+
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8c0cdb56dfe343229a5f9136f52980c6~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.image?" alt="img" style="zoom:65%;" />
