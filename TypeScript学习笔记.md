@@ -19,7 +19,7 @@
 
 #### TypeScript 是弱类型
 
-类型系统按照「是否允许隐式类型转换」来分类，可以分为强类型和弱类型
+<font color=FF0000>类型系统按照「是否允许隐式类型转换」来分类</font>，可以分为强类型和弱类型
 
 TypeScript 是完全兼容 JavaScript 的，它不会修改 JavaScript 运行时的特性，所以它们都是弱类型。
 
@@ -904,7 +904,7 @@ type MapTypeRes = MapType<{a: 1, b: 2}>
 
 <img src="https://s2.loli.net/2022/05/01/E9Rny15MuiXbjNC.png" alt="image-20220501212209184" style="zoom:55%;" />
 
-`keyof T` 是查询索引类型中所有的索引，叫做「索引查询」。
+`keyof T` 是查询索引类型中所有的索引，叫做「索引查询」（**注：**根据后面的内容 [[#TS 内置的高级类型#Record]] ，可知： `keyof T` 返回的是一个联合类型 ）。
 
 `T[Key]` 是取索引类型某个索引的值，叫做「索引访问」。
 
@@ -2405,15 +2405,15 @@ A 是 B 类型，并且 B 也是 A 类型，那么就是同一个类型，返回
 
 **传入数组时：**
 
-<img src="/Users/yan/Library/Application Support/typora-user-images/image-20220504223131230.png" alt="image-20220504223131230" style="zoom:50%;" />
+<img src="https://s2.loli.net/2022/05/06/iDYgGmUjy2qzeLO.png" alt="image-20220504223131230" style="zoom:50%;" />
 
 ##### UnionToIntersection
 
 <font color=FF0000>**类型之间是有父子关系的，更具体的那个是子类型**；比如 A 和 B 的交叉类型 `A & B` 就是联合类型 `A | B` 的子类型，因为更具体</font>。
 
-<font color=FF0000>**如果允许父类型赋值给子类型，就叫做<font size=4>「逆变」</font>。如果允许子类型赋值给父类型，就叫做<font size=4>「协变」</font>**</font>。详细概念见原理篇 TODO
+<font color=FF0000>**如果允许父类型赋值给子类型，就叫做<font size=4>「逆变」</font>。如果允许子类型赋值给父类型，就叫做<font size=4>「协变」</font>**</font>。详细概念见  [[#逆变、协变、双向协变、不变]]
 
-在 TypeScript 中 <font color=FF0000>有「函数参数」是有逆变的性质的，也就是：如果参数可能是多个类型，参数类型会变成它们的交叉类型</font>。
+在 TypeScript 中 <font color=FF0000><font size=4>**「函数参数」是有「逆变」的性质**</font> 的，也就是：如果参数可能是多个类型，参数类型会变成它们的交叉类型</font>。注：这部分内容下面有讲到 [[#逆变 ( contravariant )]]
 
 所以联合转交叉可以这样实现 ：
 
@@ -2426,7 +2426,7 @@ type UnionToIntersection<U> =
 
 类型参数 U 是要转换的联合类型。
 
-`U extends U` 是为了触发 “联合类型” 的 distributive（即：“分布式条件类型” ） 的性质，让每个类型单独传入做计算，最后合并。利用 U 做为参数构造个函数，通过模式匹配取参数的类型。结果就是交叉类型：
+`U extends U` 是为了触发 “联合类型” 的 distributive（即：“分布式条件类型” ） 的性质，让每个类型单独传入做计算，最后合并。利用 U 做为参数构造个函数，通过模式匹配取参数的类型（**注：**这里的原理是「协变」。另外，这里实现原理可见 [[#逆变性质有什么用]]）。结果就是交叉类型：
 
 <img src="https://s2.loli.net/2022/05/04/CSxsB6PjJDNRTlv.png" alt="image-20220504230627100" style="zoom:50%;" />
 
@@ -2467,4 +2467,1330 @@ type Pick<T, K extends keyof T> = { [P in K]: T[P] }
 
 这样，就能过滤出所有可选索引，构造成新的索引类型：
 
-<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8c0cdb56dfe343229a5f9136f52980c6~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.image?" alt="img" style="zoom:65%;" />
+<img src="https://s2.loli.net/2022/05/04/CQY1K42Zq7gVaj9.png" alt="img" style="zoom:65%;" />
+
+##### RemoveIndexSignature
+
+索引类型可能有索引，也可能有可索引签名。
+
+比如：
+
+```typescript
+type Dong = {
+  [key: string]: any;
+  sleep(): void;
+}
+```
+
+这里的 sleep 是具体的索引，`[key: string]: any` 就是可索引签名，代表<font color=FF0000>可以添加 **任意个** string 类型的索引</font>（**注：**“可索引签名” 和 接口的“任意属性” 有点类似；“任意属性” 可见 [[#对象的类型——接口]] 中的 “任意属性” ）。
+
+**如果想删除索引类型中的可索引签名呢？**
+
+同样根据它的性质：<font color=FF0000>**索引签名不能构造成字符串字面量类型，因为它没有名字；而其他索引可以**</font>。所以，就可以这样过滤：
+
+```typescript
+type RemoveIndexSignature<Obj extends Record<string, any>> = {
+  [
+      Key in keyof Obj 
+          as Key extends `${infer Str}` ? Str : never // 注：注意这里 `${infer Str}` 的写法，trick
+  ]: Obj[Key]
+}
+```
+
+类型参数 Obj 是待处理的索引类型，约束为 `Record<string, any>` 。
+
+通过映射类型语法构造新的索引类型，索引是之前的索引 `Key in keyof Obj` ；但要做一些过滤，也就是 as 之后的部分：<font color=FF0000>如果索引是字符串字面量类型，那么就保留，否则返回 never，代表过滤掉。值保持不变，也就是 `Obj[Key]`</font> 。这样就可以过滤掉可索引签名：
+
+<img src="https://s2.loli.net/2022/05/05/4ZKsiVW6rXD8bLw.png" alt="image-20220505001613812" style="zoom:50%;" />
+
+##### ClassPublicProps
+
+如何过滤出 class 的 public 的属性呢？
+
+也同样是根据它的特性：<font color=FF0000 size=4>**keyof 只能拿到 class 的 public 索引，private 和 protected 的索引会被忽略**</font>。
+
+比如这样一个 class：
+
+```typescript
+class Dong {
+  public name: string;
+  protected age: number;
+  private hobbies: string[];
+
+  constructor() {
+    this.name = 'dong';
+    this.age = 20;
+    this.hobbies = ['sleep', 'eat'];
+  }
+}
+```
+
+keyof 拿到的只有 name：
+
+<img src="https://s2.loli.net/2022/05/05/YZGK1RBz6v9T2fC.png" alt="image-20220505002343657" style="zoom:50%;" />
+
+所以，我们就可以根据这个特性实现 public 索引的过滤（**注：**而不需要添加其他判断）：
+
+```typescript
+type ClassPublicProps<Obj extends Record<string, any>> = {
+  // 注：在尝试的时候，还用 as 添加了判断 ( as Key extends keyof Obj ? Key : never )；虽然结果没问题；但这是没有必要的
+  [Key in keyof Obj]: Obj[Key]
+}
+```
+
+类型参数 Obj 为带处理的索引类型，类和对象都是索引类型，约束为 `Record<string, any>` 。
+
+构造新的索引类型，索引是 `keyof Obj` 过滤出的索引，也就是 public 的索引。值保持不变，依然是 `Obj[Key]` 。这样就能过滤出 public 的属性：
+
+<img src="https://s2.loli.net/2022/05/05/gbxDwvYT6e5ynO4.png" alt="image-20220505005120760" style="zoom:50%;" />
+
+#### 总结
+
+学完前面 5 个套路，我们已经能够实现各种类型编程逻辑了，但一些类型的特性还是要记一下。在判断或者过滤类型的时候会用到：
+
+- any 类型与任何类型的交叉都是 any，也就是 `1 & any` 结果是 any，可以用这个特性判断 any 类型。
+- 联合类型作为类型参数出现在条件类型左侧时，会分散成单个类型传入，最后合并。
+- never 作为类型参数出现在条件类型左侧时，会直接返回 never。
+- any 作为类型参数出现在条件类型左侧时，会直接返回 trueType 和 falseType 的联合类型。
+- 元组类型也是数组类型，但每个元素都是只读的，并且 length 是数字字面量，而数组的 length 是 number。可以用来判断元组类型
+- 函数参数处会发生逆变，可以用来实现联合类型转交叉类型。
+- 可选索引的值为 undefined 和值类型的联合类型。可以用来过滤可选索引，反过来也可以过滤非可选索引。
+- 索引类型的索引为字符串字面量类型，而可索引签名不是，可以用这个特性过滤掉可索引签名。
+- keyof 只能拿到 class 的 public 的索引，可以用来过滤出 public 的属性。
+
+这些类型的特性要专门记一下，其实过两遍就记住了。
+
+熟悉了这些特殊的特性，配合提取、构造、递归、数组长度计数、联合分散这五种套路，就可以实现各种类型体操。
+
+
+
+### 类型体操顺口溜
+
+**注：**下面的内容是对前面六章的总结概括，虽然有重复；但是，再复习一遍、部分代码再写一遍，也很好。
+
+<font size=4>**类型体操顺口溜**</font>
+
+**模式匹配做提取，重新构造做变换。**
+
+**递归复用做循环，数组长度做计数。**
+
+**联合分散可简化，特殊特性要记清。**
+
+**基础扎实套路熟，类型体操可通关。**
+
+#### 模式匹配做提取
+
+就像字符串可以通过正则提取子串一样，<font color=FF0000>TypeScript 的类型也可以通过 匹配一个模式类型来提取部分类型到 infer 声明的局部变量中返回</font>。比如提取函数类型的返回值类型：
+
+```ts
+type GetReturnType<Func extends Function> = 
+    Func extends (...args: unknown[]) => infer ReturnType 
+        ? ReturnType : never;
+```
+
+#### 重新构造做变换
+
+<font color=FF0000>TypeScript 类型系统 **可以通过 type 声明类型变量，通过 infer 声明局部变量，类型参数在类型编程中也相当于局部变量**，但是 <font size=4>**它们都不能做修改，想要对类型做变换只能构造一个新的类型，在构造的过程中做过滤和转换**</font></font>。
+
+在 字符串、数组、函数、索引等类型都有很多应用，特别是索引类型。
+
+比如把索引变为大写：
+
+```ts
+type UppercaseKey<Obj extends Record<string, any>> = { 
+    [Key in keyof Obj as Uppercase<Key & string>]: Obj[Key] // 注：这里 & string 漏掉了
+}
+```
+
+#### 递归复用做循环
+
+在 TypeScript 类型编程中，<font color=FF0000>遇到数量不确定问题时，就要条件反射的想到递归</font>；每次只处理一个类型，剩下的放到下次递归，直到满足结束条件，就处理完了所有的类型。
+
+比如把长度不确定的字符串转为联合类型：
+
+```ts
+type StringToUnion<Str extends string> = 
+    Str extends `${infer First}${infer Rest}`
+        ? First | StringToUnion<Rest>
+        : never; // 注：这里再写的时候，写成了 Str，这会导致结果的联合类型中多一个 `""``
+```
+
+#### 数组长度做计数
+
+<font color=FF0000>TypeScript 类型系统没有加减乘除运算符</font>，但是<font color=FF0000>可以构造不同的数组再取 length 来得到相应的结果</font>。这样就把数值运算转为了数组类型的构造和提取。
+
+比如实现减法：
+
+```ts
+type BuildArray<
+    Length extends number, 
+    Ele = unknown, 
+    Arr extends unknown[] = []
+> = Arr['length'] extends Length // 注：再次写的时候，没想到 Arr['length']
+        ? Arr 
+        : BuildArray<Length, Ele, [...Arr, Ele]>;
+
+type Subtract<Num1 extends number, Num2 extends number> = 
+    // 注：再次写的时候，没想到这种匹配方法，卡住了；点破了之后，其他没什么
+    BuildArray<Num1> extends [...arr1: BuildArray<Num2>, ...arr2: infer Rest] 
+        ? Rest['length']
+        : never;
+```
+
+#### 联合分散可简化
+
+TypeScript 对联合类型做了特殊处理，当遇到字符串类型或者作为类型参数出现在条件类型左边的时候，会分散成单个的类型传入做计算，最后把计算结果合并为联合类型。这样虽然简化了类型编程，但也带来了一些认知负担。
+
+比如联合类型的判断是这样的：
+
+```ts
+type IsUnion<A, B = A> =
+    A extends A
+        ? [B] extends [A]
+            ? false
+            : true
+        : never
+```
+
+联合类型做为类型参数直接出现在条件类型左边的时候就会触发 “分布式条件类型”特性，而不是直接出现在左边的时候不会。
+
+所以， A 是单个类型、B 是整个联合类型。通过比较 A 和 B 来判断联合类型。
+
+#### 特殊特性要记清
+
+会了提取、构造、递归、数组长度计数、联合类型分散这 5 个套路以后，各种类型体操都能写，但是有一些特殊类型的判断需要根据它的特性来，所以要重点记一下这些特性。
+
+比如 any 和任何类型的交叉都为 any，可以用来判断 any 类型：
+
+```ts
+type IsAny<T> = 'foo' extends ('bar' & T) ? true : false
+```
+
+比如索引一般是 string，而可索引签名不是，可以根据这个来过滤掉可索引签名：
+
+```typescript
+type RemoveIndexSignature<Obj extends Record<string, any>> = {
+  [
+      Key in keyof Obj 
+          as Key extends `${infer Str}`? Str : never
+  ]: Obj[Key]
+}
+```
+
+#### 基础扎实套路熟，类型体操可通关
+
+基础指的是 TypeScript 类型系统中的各种类型，以及可以对它们做的各种类型运算逻辑，这是类型编程的原材料。
+
+但是只是会了基础不懂一些套路也很难做好类型编程，所以要熟悉上面 6 种套路。
+
+基础扎实、套路也熟了之后，各种类型编程问题都可以搞定，也就是“通关”。
+
+#### 练习 ParseQueryString
+
+##### 实现效果
+
+<img src="https://s2.loli.net/2022/05/05/6gOqkDzpQuoMEXt.png" alt="image-20220505170419705" style="zoom:50%;" />
+
+##### 思路
+
+`a=1&b=2&c=3&d=4` ，这样的字符串明显是 query param 个数不确定的，遇到数量不确定的问题，条件反射的就要想到递归。
+
+递归解析出每一个 query params，也就是 & 分隔的每个字符串，每个字符串单独去解析，构造成索引类型，最后把这些所有的单个索引类型合并就行。也就是这样的：
+
+<img src="https://s2.loli.net/2022/05/05/qiksEwhyre4P9WM.png" alt="img" style="zoom:75%;" />
+
+第一步并不知道有多少个 a=1、b=2 这种 query param，要递归的做模式匹配来提取。然后每一个 query param 再通过模式匹配取出 key 和 value，构造成索引类型。再把每个索引类型合并成一个大的索引类型就可以了。
+
+##### 递归的提取 & 分隔的 query param
+
+<img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1a124009479848e28d6befeb2be79a2b~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.image?" alt="img" style="zoom:92%;" />
+
+```ts
+type ParseQueryString<Str extends string> = 
+    Str extends `${infer Param}&${infer Rest}`
+        ? MergeParams<ParseParam<Param>, ParseQueryString<Rest>>
+        : ParseParam<Str>;
+```
+
+类型参数 Str 为待处理的 query 字符串，通过 extends 约束为 string 类型。
+
+提取 “被 & 分隔” 的字符串到 infer 声明的局部变量 Param 里，后面的字符串放到 Rest 里。
+
+通过 ParseParam 来处理单个的 query param（**注：**也就是上面分隔的变量 Param），剩下 query 字符串也是一样的递归处理，然后把这些处理结果合并到一起，也就是 MergeParams。当提取不出 & 分割的字符串时递归结束，把剩下的字符串也用 ParseParam 来处理。
+
+##### ParseParam 的实现就是提取和构造
+
+![img](https://s2.loli.net/2022/05/05/lCWYBpJANcEjzyF.png)
+
+```ts
+type ParseParam<Param extends string> = 
+    Param extends `${infer Key}=${infer Value}`
+        ? {
+            [K in Key]: Value 
+        } : {};
+```
+
+类型参数 Param 类单个的 query param，比如 a=1 这种。通过模式匹配提取 key 和 value 到 infer 声明的局部变量 Key、Value 里。
+
+通过映射类型语法构造成索引类型返回：
+
+<img src="https://s2.loli.net/2022/05/05/4CgALoEzbQ3DGqj.png" alt="img" style="zoom:65%;" />
+
+##### 每个 query param 处理完了，最后把这一系列构造出的索引类型合并成一个就行了
+
+**注：**这一步实现的时候卡住了，上面的逻辑处理，实现没什么问题。另外，这里还是有点没看懂；比如  TODO
+
+<img src="https://s2.loli.net/2022/05/05/anyLw6pI3SiNXWU.png" alt="img" style="zoom:75%;" />
+
+这也是构造索引类型：
+
+```typescript
+type MergeParams<
+    OneParam extends Record<string, any>,
+    OtherParam extends Record<string, any>
+> = {
+  [Key in keyof OneParam | keyof OtherParam]: // 注：这里 OneParam 和 OtherParam 的 key 做和联合
+    Key extends keyof OneParam // 注：如果 Key 在 OneParam 中存在？
+        ? Key extends keyof OtherParam // 注：Key 也在 OtherParam 中存在？
+            ? MergeValues<OneParam[Key], OtherParam[Key]> // 注：同时存在，则合并
+            : OneParam[Key]
+        : Key extends keyof OtherParam 
+            ? OtherParam[Key] 
+            : never
+}
+```
+
+类型参数 OneParam、OtherParam 是要合并的 query param，约束为索引类型（索引为 string，索引值为任意类型）。
+
+构造一个新的索引类型返回，索引来自两个的合并，也就是 `Key in keyof OneParam | keyof OtherParam` 。
+
+**值也要做合并：**
+
+如果两个索引类型中都有，那就合并成一个；也就是 `MergeValues<OneParam[Key], OtherParam[Key]>` 。否则，如果是 OneParam 中的，就取 `OneParam[Key]` ，如果是 OtherParam 中的，就取 `OtherParam[Key]` 。
+
+<font color=FF0000>MegeValues 的合并逻辑就是 **如果两个值是同一个就返回一个，否则构造一个数组类型来合并**</font>：
+
+```ts
+type MergeValues<One, Other> = 
+    One extends Other 
+        ? One
+        : Other extends unknown[]
+            ? [One, ...Other]
+            : [One, Other];
+```
+
+类型参数 One、Other 是要合并的两个值。
+
+如果两者是同一个类型，也就是 One extends Other，就返回任意一个。否则，如果是数组就做数组合并，否则构造一个数组把两个类型放进去。
+
+
+
+### TS 内置的高级类型
+
+学完了 6 个类型体操的套路之后，各种类型编程逻辑我们都能写出来；但其实一些常见的类型不用自己写， TypeScript 内置了很多（**注：**官方文档对应位置 [Utility Types](https://www.typescriptlang.org/docs/handbook/utility-types.html) ）：
+
+#### Parameters
+
+Parameters 用于<font color=FF0000>**提取函数类型的参数类型**</font>（**注：**类似于 Object.keys() ，不过返回的数组中的元素有数据类型 ）。源码是这样的：
+
+```typescript
+type Parameters<T extends (...args: any) => any> 
+    = T extends (...args: infer P) => any 
+        ? P 
+        : never;
+```
+
+类型参数 T 为待处理的类型，通过 extends 约束为函数，参数和返回值任意。
+
+通过 extends 匹配一个模式类型，提取参数的类型到 infer 声明的局部变量 P 中返回。这样就实现了函数参数类型的提取：
+
+<img src="https://s2.loli.net/2022/05/05/bPwJ7zdRAUs5qZa.png" alt="image-20220505005619407" style="zoom:50%;" />
+
+这就是个简单的模式匹配，学完套路一轻轻松松就写出来了。
+
+#### ReturnType
+
+ReturnType 用于<font color=FF0000>提取函数类型的返回值类型</font>。源码是这样的：
+
+```ts
+type ReturnType<T extends (...args: any) => any> 
+    = T extends (...args: any) => infer R 
+        ? R 
+        : any;
+```
+
+类型参数 T 为待处理的类型，通过 extends 约束为函数类型，参数和返回值任意。
+
+用 T 匹配一个模式类型，提取返回值的类型到 infer 声明的局部变量 R 里返回。这样就实现了函数返回值类型的提取：
+
+<img src="https://s2.loli.net/2022/05/05/VSuQArdvk7B49oP.png" alt="image-20220505010230432" style="zoom:50%;" />
+
+**注：**这个自己写出来了，不复杂
+
+#### ConstructorParameters
+
+构造器类型和函数类型的区别就是可以被 new 。
+
+Parameters 用于提取函数参数的类型，而 ConstructorParameters 用于<font color=FF0000>**提取构造器参数的类型**</font>。源码是这样的：
+
+```ts
+type ConstructorParameters<
+    T extends abstract new (...args: any) => any
+> = T extends abstract new (...args: infer P) => any 
+    ? P 
+    : never;
+```
+
+类型参数 T 是待处理的类型，通过 extends 约束为构造器类型；<font color=FF0000>加个 abstract 代表不能直接被实例化（其实不加也行）</font>。
+
+用 T 匹配一个模式类型，提取参数的部分到 infer 声明的局部变量 P 里，返回 P。这样就实现了构造器参数类型的提取：
+
+<img src="https://s2.loli.net/2022/05/05/AG7DMTZ45V3K8aY.png" alt="image-20220505011243327" style="zoom:50%;" />
+
+**注：**这个也不复杂，自己实现的没有加上 abstract
+
+#### InstanceType
+
+提取了构造器参数的类型，自然也可以<font color=FF0000>提取构造器返回值的类型，就是 InstanceType</font> 。源码是这样的：
+
+```ts
+type InstanceType<
+    T extends abstract new (...args: any) => any
+> = T extends abstract new (...args: any) => infer R 
+    ? R 
+    : any;
+```
+
+**注：**讲解略
+
+#### ThisParameterType
+
+函数里可以调用 this，这个 this 的类型也可以约束：
+
+<img src="https://s2.loli.net/2022/05/05/Oqld5XUeWKjZL2H.png" alt="img" style="zoom:70%;" />
+
+同样：<font color=FF0000>this 的类型也可以提取出来，通过 ThisParameterType 这个内置的高级类型</font>：
+
+<img src="https://s2.loli.net/2022/05/05/Bo4q1DWOhxagNzU.png" alt="img" style="zoom:75%;" />
+
+它的源码是这样的：
+
+```ts
+type ThisParameterType<T> = 
+    T extends (this: infer U, ...args: any[]) => any 
+        ? U 
+        : unknown;
+```
+
+类型参数 T 为待处理的类型。
+
+用 T 匹配一个模式类型，提取 this 的类型到 infer 声明的局部变量 U 里返回。这样就实现了 this 类型的提取。
+
+**注：**这个借鉴了 [[#模式匹配做提取#函数#GetThisParameterType]] 写出来了，原因时 `infer U` 没有 加上 `this:` 。另外，在调用时，添加 typeof ，如： `ThisParameterType<typeof Fn>` 。
+
+#### OmitThisParameter
+
+提取出 this 的类型之后，自然可以构造一个新的；比如<font color=FF0000>删除 this 的类型，可以用 OmitThisParameter </font>（**注：**如下截图，`say(this: Person, age: number` 被 OmitThisParameter 处理后， this 参数被去掉 ）。它的源码是这样的：
+
+```ts
+type OmitThisParameter<T> = 
+    unknown extends ThisParameterType<T> // 注：如果 this 不存在，直接返回函数，不做任何处理
+        ? T 
+        : T extends (...args: infer A) => infer R 
+            ? (...args: A) => R 
+            : T;
+```
+
+类型参数 T 为待处理的类型。
+
+用 ThisParameterType 提取 T 的 this 类型，如果提取出来的类型是 unknown 或者 any，那么 `unknown extends ThisParameterType ` 就成立，也就是没有指定 this 的类型，所以直接返回 T 。否则，就通过模式匹配提取参数和返回值的类型到 infer 声明的局部变量 A 和 R 中，用它们构造新的函数类型返回（**注：**没搞懂，this 的参数去哪了？TODO ）。
+
+这样，就实现了去掉 this 类型的目的：
+
+<img src="https://s2.loli.net/2022/05/05/pP8G3A916fjiFah.png" alt="image-20220505014934563" style="zoom:50%;" />
+
+#### Partial
+
+索引类型可以通过映射类型的语法做修改，比如<font color=FF0000>把索引变为可选</font>。
+
+```ts
+type Partial<T> = {
+    [P in keyof T]?: T[P];
+};
+```
+
+讲解略。
+
+#### Required
+
+可以把索引变为可选，也同样可以<font color=FF0000>去掉可选</font>，也就是 Required 类型：
+
+```ts
+type Required<T> = {
+    [P in keyof T]-?: T[P];
+};
+```
+
+> **注：**写出来了，不过这个 `-` 教程中还没讲过，是在其他地方了解的。
+
+类型参数 T 为待处理的类型。
+
+通过映射类型的语法构造一个新的索引类型，索引取自之前的索引，也就是 `P in keyof T` ，但是要去掉可选，也就是 `-?` ，值的类型也是之前的，就是 `T[P]` 。这样就实现了去掉可选修饰的目的
+
+#### Readonly
+
+同样的方式，也可以添加 readonly 的修饰（**注：**Readonly 的 `o` 不大写）：
+
+```ts
+type Readonly<T> = {
+    readonly [P in keyof T] : T[P];
+};
+```
+
+讲解略。
+
+#### Pick
+
+映射类型的语法<font color=FF0000>用于构造新的索引类型</font>，在构造的过程中可以对索引和值做一些修改或过滤（**注：**如下面的图，Pick 的第二个类型参数可以是一个「联合类型」 ）。比如可以用 Pick 实现过滤：
+
+```typescript
+type Pick<T, K extends keyof T> = { // 注：注意这里的约束，extends keyof T
+    [P in K]: T[P]; // 注：这里 [ P in K ] 同样要注意，没见过
+};
+```
+
+类型参数 T 为待处理的类型，类型参数 K 为要过滤出的索引，通过 extends 约束为只能是 T 的索引的子集。
+
+<font color=FF0000 size=4>构造新的索引类型返回，索引取自 K，也就是 `P in K`</font> ；值则是它对应的原来的值，也就是 `T[P]` 。这样就实现了过滤的目的：
+
+<img src="https://s2.loli.net/2022/05/05/vCXZPjyl8UiEGIs.png" alt="image-20220505114610442" style="zoom:50%;" />
+
+#### Record
+
+Record 用于创建索引类型，传入 key 和值的类型：
+
+```typescript
+type Record<K extends keyof any, T> = {
+    [P in K] : T; // 注：如下示例的截图，参数 K 可能是个 “联合类型”，所以，这里用了 [P in K]
+};
+```
+
+这里很巧妙的用到了 `keyof any` ，它的结果是 string | number | symbol：
+
+<img src="https://s2.loli.net/2022/05/05/SuHeYaRypEUBr62.png" alt="image-20220505115217239" style="zoom:50%;" />
+
+不过，<font color=FF0000>如果开启了 keyOfStringsOnly 的编译选项，它就只是 stirng 了</font>：
+
+```json
+// tsconfig.json
+"compilerOptions": {
+  // ...
+  "keyofStringsOnly": true
+}
+```
+
+<img src="https://s2.loli.net/2022/05/05/eMpx3nf79SdEkoa.png" alt="image-20220505115451984" style="zoom:50%;" />
+
+<font color=FF0000>**用 `keyof any`是动态获取的，比直接写死 string | number | symbol 更好**</font>。
+
+继续讲 Record 这个类型，它用映射类型的语法创建了新的索引类型，索引来自 K，也就是 `P in K` ；值是传入的 T。这样就用 K 和 T 构造出了对应的索引类型。
+
+<img src="https://s2.loli.net/2022/05/05/lZTDVJS3ovPyQqm.png" alt="image-20220505115822627" style="zoom:50%;" />
+
+#### Exclude
+
+当想从一个联合类型中去掉一部分类型时，可以用 Exclude 类型。实现如下：
+
+```ts
+type Exclude<T, U> = T extends U ? never : T;
+```
+
+<font color=FF0000>联合类型当作为类型参数出现在条件类型左边时，会被分散成单个类型传入</font>，这叫做 <font color=FF0000>**分布式条件类型**</font>。所以写法上可以简化， `T extends U` 就是对每个类型的判断。过滤掉 U 类型，剩下的类型组成联合类型。也就是取差集。
+
+<img src="https://s2.loli.net/2022/05/05/RhjwJsCWodtrq6z.png" alt="image-20220505120911598" style="zoom:50%;" />
+
+#### Extract
+
+可以过滤掉，自然也可以保留，Exclude 反过来就是 Extract，也就是取交集。代码实现和 Excludes 几乎一模一样：
+
+```ts
+type Extract<T, U> = T extends U ? T : never;
+```
+
+<img src="https://s2.loli.net/2022/05/05/B2vKzlXytE3Yfhb.png" alt="image-20220505121201252" style="zoom:50%;" />
+
+#### Omit
+
+我们知道了 Pick 可以取出索引类型的一部分索引构造成新的索引类型，那<font color=FF0000>反过来就是去掉这部分索引构造成新的索引类型</font>。可以结合 Exclude 来轻松实现：
+
+```ts
+type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
+```
+
+类型参数 T 为待处理的类型，类型参数 K 为索引允许的类型（ string | number | symbol 或者 string ）。
+
+<font color=FF0000>通过 Pick 取出一部分索引构造成新的索引类型，这里 **用 Exclude 把 K 对应的索引去掉**，把剩下的索引保留</font>。这样就实现了删除一部分索引的目的：
+
+<img src="https://s2.loli.net/2022/05/05/WgpeuAk7KtaL1DS.png" alt="image-20220505130809114" style="zoom:50%;" />
+
+Omit 的第二个类型参数可以是联合类型，如下示例：
+
+<img src="https://s2.loli.net/2022/05/05/FNSiXRyBbxosKMq.png" alt="image-20220505130731750" style="zoom:50%;" />
+
+#### Awaited
+
+在递归那节我们写过<font color=FF0000>提取 Promise 的 ValuType 的高级类型，这个比较常用，TS 也给内置了，就是 Awaited </font>。它的实现比我们当时写的（ [[#DeepPromiseValueType]] ）完善一些：
+
+```ts
+type Awaited<T> =
+    T extends null | undefined
+        ? T 
+        : T extends object & { then(onfulfilled: infer F): any }
+            ? F extends ((value: infer V, ...args: any) => any)
+                ? Awaited<V>
+                : never 
+            : T;
+```
+
+类型参数 T 是待处理的类型。
+
+如果 T 是 null 或者 undefined，就返回 T。如果 <font color=FF0000>T 是对象 **并且** 有 then 方法，那就提取 then 的参数，也就是 onfulfilled 函数的类型到 infer 声明的局部变量 F</font> 。继续提取 onfullfilled 函数类型的第一个参数的类型，也就是 Promise 返回的值的类型到 infer 声明的局部变量 V。递归的处理提取出来的 V，直到不再满足上面的条件。
+
+这样就实现了取出嵌套 Promise 的值的类型的目的：
+
+<img src="https://s2.loli.net/2022/05/05/BPkdynYVHX6WuzF.png" alt="image-20220505125830350" style="zoom:50%;" />
+
+为什么要提取 then 方法的第一个参数的返回值类型看下 Promise 的结构就明白了：
+
+```typescript
+new Promise(() => {
+    // xxx
+}).then((value) => { ... });
+```
+
+<font color=FF0000>then 第一个参数是 onfullfilled 的回调，从它的第一个参数就能拿到返回的值的类型</font>。
+
+对比下我们之前的实现：
+
+```typescript
+type DeepPromiseValueType2<T> = 
+    T extends Promise<infer ValueType> 
+        ? DeepPromiseValueType2<ValueType>
+        : T;
+```
+
+<font color=FF0000>内置的高级类型不再限制必须是 Promise，而是只要对象且有 then 方法就可以</font>；这样更通用了一些。
+
+#### NonNullable
+
+NonNullable 就是用于 <font color=FF0000>判断是否为非空类型</font>，也就 <font color=FF0000>是不是 null 或者 undefined 的类型的</font>。实现比较简单：
+
+```ts
+type NonNullable<T> = T extends null | undefined ? never : T;
+```
+
+<img src="https://s2.loli.net/2022/05/05/Liw5M4dAvoabKTP.png" alt="image-20220505132716463" style="zoom:50%;" />
+
+<img src="https://s2.loli.net/2022/05/05/oSrMkcaI5VjZhYP.png" alt="image-20220505132750515" style="zoom:50%;" />
+
+#### Uppercase、Lowercase、Capitalize、Uncapitalize
+
+这四个类型是分别实现 大写、小写、首字母大写、去掉首字母大写的。它们的源码时这样的：
+
+```typescript
+type Uppercase<S extends string> = intrinsic;
+
+type Lowercase<S extends string> = intrinsic;
+
+type Capitalize<S extends string> = intrinsic;
+
+type Uncapitalize<S extends string> = intrinsic;
+```
+
+<font color=FF0000><font size=4>**intrinsic 是固有的意思**</font>，就像 js 里面的有的方法打印会显示 `[native code]` 一样。<font size=4>**这部分类型不是在 ts 里实现的，而是编译过程中由 js 实现的**</font></font>。
+
+可以在源码里找到对应的处理代码：
+
+<img src="https://s2.loli.net/2022/05/05/K7IpADbw9xr5Ovc.png" alt="img" style="zoom:95%;" />
+
+其实就是 TS 编译器处理到这几个类型时就直接用 js 给算出来了。
+
+**为啥要这样做呢？**<font color=FF0000>**因为快啊，解析类型是要处理 AST 的，性能比较差，用 js 直接给算出来那多快呀**</font>。
+
+#### 总结
+
+- 用模式匹配可以实现：Parameters、ReturnType、ConstructorParameters、InstanceType、ThisParameterType。
+
+- 用模式匹配 + 重新构造可以实现：OmitThisParameter
+
+- 用重新构造可以实现：Partial、Required、Readonly、Pick、Record
+
+- 用模式匹配 + 递归可以实现： Awaited
+
+- 用联合类型在分布式条件类型的特性可以实现： Exclude
+
+- 还有 NonNullable 和四个编译器内部实现的类型：Uppercase、Lowercase、Capitalize、Uncapitalize。
+
+这些类型也不咋需要记，就算忘记了自己也能很快的实现。重点还是放在 6 个类型编程的套路上。
+
+
+
+### 类型编程的意义
+
+类型编程是对类型参数做一系列运算之后产生新的类型。那 <font color=FF0000>**类型和类型之间有关系 的场景必然会用到类型编程**，比如：**返回值的类型** 和 **参数的类型** **有一定的关系**，需要经过计算才能得到</font>。
+
+有的情况下不用类型编程也行，比如：返回值可以是一个字符串类型 string ，但<font color=FF0000>用了类型编程的话，可能 **能更精确的提示出是什么 string**，也就是具体的字符串字面量类型，那 **类型提示的精准度自然就提高了一个级别**，体验也会更好</font>。
+
+<mark>这就是类型编程的意义</mark>：**类型和类型之间有关系的场景，必然要用类型编程做一些运算。有的场景下可以不用类型编程，但是 用了能够有更精准的类型提示和检查。**
+
+#### 以 ParseQueryString 为例
+
+前面我们实现了一个复杂的高级类型 ParseQueryString [[#类型体操顺口溜#练习 ParseQueryString]] ，用到了提取、构造、递归的套路。<mark>这么复杂的高级类型能用在哪里呢？有什么意义呢？</mark>
+
+首先，我们写一个 JS 函数，实现对 query string 的 parse，如果有同名的参数就合并，大概实现是这样的：
+
+```javascript
+function parseQueryString(queryStr) {
+    if (!queryStr || !queryStr.length) {
+        return {};
+    }
+    const queryObj = {};
+    const items = queryStr.split('&');
+    items.forEach(item => {
+        const [key, value] = item.split('=');
+        if (queryObj[key]) {
+            if(Array.isArray(queryObj[key])) {
+                queryObj[key].push(value);
+            } else {
+                queryObj[key] = [queryObj[key], value]
+            }
+        } else {
+            queryObj[key] = value;
+        }
+    });
+    return queryObj;
+}
+```
+
+<img src="https://s2.loli.net/2022/05/06/aLFUkeBcitSTp5f.png" alt="image-20220506163224018" style="zoom:60%;" />
+
+如果要给这个函数加上类型，大家会怎么加呢？大部分人会这么加：
+
+```ts
+function parseQueryString(queryStr: string): object { ... }
+```
+
+参数是 string 类型，返回值是 parse 之后的对象类型 object 。这样是可以的，而且 object 还可以写成 `Record<string, any>` ，因为对象是索引类型（索引类型就是聚合多个元素的类型，比如对象、class、数组都是）
+
+```ts
+function parseQueryString(queryStr: string): Record<string, any> { ... }
+```
+
+但是不管是返回值类型为 object 还是 Record<string, any> 都存在一个问题：返回的对象不能提示出有哪些属性。
+
+<img src="https://s2.loli.net/2022/05/06/yMUBelARPWCx53i.png" alt="image-20220506163712131" style="zoom:50%;" />
+
+对于习惯了 ts 的提示的同学来说，没有提示太不爽了。怎么能让这个函数的返回的类型有提示呢？
+
+这就要用到类型编程了，我们把函数的类型定义改成这样：
+
+```ts
+function parseQueryString<Str extends string>(queryStr: Str): ParseQueryString<Str> { ... }
+```
+
+声明一个类型参数 Str，约束为 string 类型，函数参数的类型指定是这个 Str ；<font color=FF0000>返回值的类型通过对 Str 做类型运算得到，也就是 `ParseQueryString<Str>`</font> 。<font color=FF0000>**这个 ParseQueryString 的类型做的事情就是把传入的 Str 通过各种类型运算产生对应的索引类型**</font>。
+
+<img src="https://s2.loli.net/2022/05/06/cB4iLMJUWXC68Gm.png" alt="image-20220506164214600" style="zoom:45%;" />
+
+另外，这里的实现和之前那个还是有一些区别的，主要是这里：
+
+<img src="https://s2.loli.net/2022/05/06/ktVd15QUpyxhjPI.png" alt="image-20220506175024745" style="zoom:60%;" />
+
+当提取 a=1 中的 key 和 value，构造成索引类型的时候，如果提取不出来，之前返回的是空对象；现在改成了 `Record<string, any>` 。因为 ParseQueryString 是针对字符串字面量类型做运算的，<font color=FF0000>如果传入的不是字面量类型，而是 string ；那就会走到这里，如果返回空对象，那取它的任何属性都会报错</font>。
+
+<img src="https://s2.loli.net/2022/05/06/uPvKShC8jgO32za.png" alt="image-20220506174636722" style="zoom:55%;" />
+
+所以要把不满足条件时返回的类型改为 `Record<string, any>` ：
+
+<img src="https://s2.loli.net/2022/05/06/eN6JhpZz8WYKMyl.png" alt="image-20220506174743809" style="zoom:55%;" />
+
+有同学可能会发现我们<font color=FF0000>**用 `as any` 来对返回值类型做了断言**</font> （见上面截图中的代码），这是因为 `ParseQueryString<Str>` 要传入类型参数 Str 才能知道具体的类型，而具体传入什么在类型检查时是不知道的，所以这里要 `as any` 才能通过类型检查。
+
+#### Promise.all
+
+前面提到过：当类型和类型之间有关系的时候，必然会用到类型编程。我们来看个例子。
+
+Promise 的 all 和 race 方法的类型声明是这样的：
+
+```typescript
+interface PromiseConstructor {
+    all<T extends readonly unknown[] | []>
+        (values: T): Promise<{
+            -readonly [P in keyof T]: Awaited<T[P]>
+        }>;
+
+    race<T extends readonly unknown[] | []>
+        (values: T): Promise<Awaited<T[number]>>;
+}
+```
+
+因为 Promise.all 是等所有 promise 执行完一起返回，Promise.race 是有一个执行完就返回；返回的类型都需要用到参数 Promise 的 value 类型：
+
+<img src="https://s2.loli.net/2022/05/06/a6e75wEogrDkxV4.png" alt="image-20220506181202383" style="zoom:50%;" />
+
+<img src="https://s2.loli.net/2022/05/06/g4Ir9OklXmq1DFM.png" alt="image-20220506181247283" style="zoom:50%;" />
+
+所以自然要用类型编程来提取出 Promise 的 value 的类型，构造成新的 Promise 类型。
+
+**具体来看下这两个类型定义：**
+
+```ts
+interface PromiseConstructor {
+    // all 方法的签名
+    all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]> }>;
+}
+```
+
+类型参数 T 是待处理的 Promise 数组，约束为 `unknown[]` 或者空数组 [] 。这个类型参数 T 就是传入的函数参数的类型。
+
+<font color=FF0000>返回一个新的数组类型</font>，也可以用映射类型的语法构造个新的索引类型（ class、对象、数组等聚合多个元素的类型都是索引类型）。
+
+新的索引类型的索引来自之前的数组 T ，也就是 `P in keyof T` ，值的类型是之前的值的类型，但要做下 Promise 的 value 类型提取，用内置的高级类型 Awaited ，也就是 `Awaited<T[P]>` 。同时要把 readonly 的修饰去掉，也就是 `-readonly` 。
+
+这就是 Promise.all 的类型定义。因为返回值的类型和参数的类型是有关联的，所以必然会用到类型编程。
+
+```ts
+interface PromiseConstructor {
+    // race 方法的签名
+    race<T extends readonly unknown[] | []>(values: T): Promise<Awaited<T[number]>>;
+}
+```
+
+类型参数 T 是待处理的参数的类型，约束为 `unknown[]` 或者空数组 []。
+
+返回值的类型可能是传入的任何一个 Promise 的 value 类型，那就先取出所有的 Promise 的 value 类型，也就是 `T[number]` 。因为数组类型也是索引类型，所以可以用索引类型的各种语法：对数组取索引，会返回数组元素的联合；如下图
+
+<img src="https://s2.loli.net/2022/05/06/WCaUTsPeokZpv9D.png" alt="image-20220506182357184" style="zoom:50%;" />
+
+用 Awaited 取出这个联合类型中的每一个类型的 value 类型，也就是 `Awaited<T[number]>` ，这就是 race 方法的返回值的类型。
+
+同样，<font color=FF0000>因为 返回值的类型 是由参数的类型做一些类型运算得到的，也离不开类型编程</font>。
+
+#### currying
+
+做了一个参数类型和返回值类型有关系的案例，再来看一个更复杂点的：
+
+有这样一个 curring 函数，接受一个函数，返回柯里化后的函数。也就是当传入的函数为：
+
+```ts
+const func = (a: string, b: number, c: boolean) => {};
+```
+
+返回的函数应该为：
+
+```javascript
+(a: string) => (b: number) => (c: boolean) => void
+```
+
+JS 怎么实现不用关注，我们只关注这个 curring 函数的类型怎么定义：
+
+```ts
+declare function currying(fn: xxx): xxx;
+```
+
+明显，这里返回值类型和参数类型是有关系的，所以要用类型编程。
+
+传入的是函数类型，可以用模式匹配提取参数和返回值的类型来，构造成新的函数类型返回。
+
+每有一个参数就返回一层函数，具体层数是不确定的，所以要用递归。那么，这个类型的定义就是这样的：
+
+```ts
+type CurriedFunc<Params, Return> = 
+    Params extends [infer Arg, ...infer Rest]
+        ? (arg: Arg) => CurriedFunc<Rest, Return>
+        : never;
+
+declare function currying<Func>(fn: Func): 
+    Func extends (...args: infer Params) => infer Result
+         ? CurriedFunc<Params, Result>
+         : never;
+```
+
+curring 函数有一个类型参数 Func ，由函数参数的类型指定。
+
+返回值的类型要对 Func 做一些类型运算，通过模式匹配提取参数和返回值的类型，传入 CurriedFunc 来构造新的函数类型。
+
+构造的函数的层数不确定，所以要用递归，每次提取一个参数到 infer 声明的局部变量 Arg，其余参数到 infer 声明的局部变量 Rest。用 Arg 作为构造的新的函数函数的参数，返回值的类型继续递归构造。
+
+这样就递归提取出了 Params 中的所有的元素，递归构造出了柯里化后的函数类型。
+
+<img src="https://s2.loli.net/2022/05/06/TMcEk4YI6wV2um7.png" alt="image-20220506184418755" style="zoom:50%;" />
+
+
+
+
+
+### 类型编程综合练习
+
+#### KebabCaseToCamelCase
+
+常用的变量命名规范有两种，一种是 KebabCase，也就是 aaa-bbb-ccc 这种中划线分割的风格；另一种是 CamelCase， 也就是 aaaBbbCcc 这种除第一个单词外首字母大写的风格。
+
+如果想实现 KebabCase 到 CamelCase 的转换，该怎么做呢？比如从 guang-and-dong 转换成 guangAndDong。
+
+```ts
+type KebabCaseToCamelCase<Str extends string> = 
+    Str extends `${infer Item}-${infer Rest}` // 注：这里判断的设计，有点没想到
+        ? `${Item}${KebabCaseToCamelCase<Capitalize<Rest>>}`
+        : Str;
+```
+
+类型参数 Str 是待处理的字符串类型，约束为 string。
+
+通过模式匹配提取 Str 中 ` -` 分隔的两部分，前面的部分放到 infer 声明的局部变量 Item 里，后面的放到 infer 声明的局部变量 Rest 里。提取的第一个单词不大写，后面的字符串首字母大写，然后递归的这样处理，然后也就是 \`\${Item}${KebabCaseToCamelCase\<Capitalize>\` ；如果模式匹配不满足，就返回 Str。这样就完成了 KebabCase 到 CamelCase 的转换。
+
+#### CamelCaseToKebabCase
+
+同样是对字符串字面量类型的提取和构造，也需要递归处理，但是 CamelCase 没有 `-` 这种分割符，那怎么分割呢？可以判断字母的大小写，用大写字母分割。
+
+```ts
+type CamelCaseToKebabCase<Str extends string> = 
+    Str extends `${infer First}${infer Rest}`
+        ? First extends Lowercase<First> 
+            ? `${First}${CamelCaseToKebabCase<Rest>}`
+            : `-${Lowercase<First>}${CamelCaseToKebabCase<Rest>}`
+        : Str;
+```
+
+类型参数 Str 为待处理的字符串类型。
+
+通过模式匹配提取首个字符到 infer 声明的局部变量 First，剩下的放到 Rest。判断下当前字符是否是小写，如果是的话就不需要转换，递归处理后续字符，也就是 \`\${First}\${CamelCaseToKebabCase}\` 。如果是大写，那就找到了要分割的地方，转为 ` -` 分割的形式，然后把 First 小写，后面的字符串递归的处理，也就是 \`-\${Lowercase}\${CamelCaseToKebabCase}\` 。如果模式匹配不满足，就返回 Str。这样就完成了 CamelCase 到 KebabCase 的转换。
+
+#### Chunk
+
+> **注：**这题有点棒，反正一点思路都没有...
+
+希望实现这样一个类型：对数组做分组，比如 [1, 2, 3, 4, 5] 的数组，每两个为 1 组，那就可以分为 [1, 2] 和 [3, 4] 以及 [5] 这三个 Chunk 
+
+这明显是对数组类型的提取和构造，元素数量不确定，需要递归的处理；并且还需要通过构造出的数组的 length 来作为 chunk 拆分的标志。
+
+```ts
+type Chunk<
+    Arr extends unknown[], 
+    ItemLen extends number, 
+    CurItem extends unknown[] = [], 
+    Res extends unknown[] = []
+> = Arr extends [infer First, ...infer Rest] 
+        ? CurItem['length'] extends ItemLen // 注：Arr['length'] 这个属性又忘记了
+          ? Chunk<Rest, ItemLen, [First], [...Res, CurItem]>
+          : Chunk<Rest, ItemLen, [...CurItem, First], Res> 
+        : [...Res, CurItem]
+```
+
+类型参数 Arr 为待处理的数组类型，约束为 unknown。类型参数 ItemLen 是每个分组的长度。后两个类型参数是用于保存中间结果的：类型参数 CurItem 是当前的分组，默认值 [] ，类型参数 Res 是结果数组，默认值 [] 。
+
+通过模式匹配提取 Arr 中的首个元素到 infer 声明的局部变量 First 里，剩下的放到 Rest 里。
+
+<font color=FF0000>**通过 `CurItem['length']` 判断是否到了每个分组要求的长度 ItemLen**</font> ：如果到了，就把 CurItem 加到当前结果 Res 里，也就是 `[...Res, CurItem]` ，然后开启一个新分组，也就是 `[First]` 。如果没到，那就继续构造当前分组，也就是 `[...CurItem, First]` ，当前结果不变，也就是 Res 。这样递归的处理，直到不满足模式匹配，那就把当前 CurItem 也放到结果里返回，也就是 `[...Res, CurItem]` 。
+
+这样就完成了根据长度对数组分组的功能。
+
+#### TupleToNestedObject
+
+>  **注：**这题有卡住的地方，解决了之后，虽然结果看起来没什么问题；不过，对于异常的数据（数组中存在非字符类型）依然有问题
+
+我们希望实现这样一个功能：根据数组类型，比如 ['a', 'b', 'c'] 的元组类型，再加上值的类型 'xxx'，构造出这样的索引类型：
+
+```json
+{
+    a: {
+        b: {
+            c: 'xxx'
+        }
+    }
+}
+```
+
+这个依然是提取、构造、递归，只不过是对数组类型做提取，构造索引类型，然后递归的这样一层层处理。
+
+```ts
+type TupleToNestedObject<Tuple extends unknown[], Value> = 
+    Tuple extends [infer First, ...infer Rest]
+      ? {
+          [Key in First as Key extends keyof any ? Key : never]: 
+              Rest extends unknown[]
+                  ? TupleToNestedObject<Rest, Value>
+                  : Value
+      }
+      : Value;
+```
+
+类型参数 Tuple 为待处理的元组类型，元素类型任意，约束为 `unknown[]` 。类型参数 Value 为值的类型。
+
+通过模式匹配提取首个元素到 infer 声明的局部变量 First，剩下的放到 infer 声明的局部变量 Rest。用提取出来的 First 作为 Key 构造新的索引类型，也就是 `Key in First` ，值的类型为 Value，如果 Rest 还有元素的话就递归的构造下一层。
+
+为什么后面还有个 `as Key extends keyof any ? Key : never` 的重映射呢？因为比如 <font color=FF0000>**null、undefined 等类型是不能作为索引类型的 key 的，就需要做下过滤**；如果是这些类型，就返回 never，否则返回当前 Key </font>。
+
+这里的 `keyof any` 在内置的高级类型那节也有讲到，就是取当前支持索引支持 string | number | symbol 类型的。
+
+如果提取不出元素，那就构造结束了，返回 Value。
+
+#### PartialObjectPropByKeys
+
+我们想实现这样一个功能：把一个索引类型的某些 Key 转为 可选的，其余的 Key 不变。比如
+
+```typescript
+interface Dong {
+    name: string
+    age: number
+    address: string
+}
+```
+
+把 name 和 age 变为可选之后就是这样的：
+
+```ts
+interface Dong2 {
+    name?: string
+    age?: number
+    address: string 
+}
+```
+
+这样的类型逻辑<font color=FF0000>**很容易想到是用映射类型的语法构造一个新的类型**</font>，但是<font color=FF0000>这里要求只用内置的高级类型来实现</font>。
+
+```ts
+type PartialObjectPropByKeys<
+    Obj extends Record<string, any>,
+    Key extends keyof any
+> = Partial<Pick<Obj, Extract<keyof Obj, Key>>> & Omit<Obj,Key>;
+```
+
+# TODO
+
+
+
+### 逆变、协变、双向协变、不变
+
+#### 类型安全和型变
+
+<mark style="background: aqua">**TypeScript 给 JavaScript 添加了一套静态类型系统，是为了保证类型安全的**</mark>；也就是：<font color=FF0000>**保证变量只能赋同类型的值，对象只能访问它有的属性、方法**</font>。比如：<mark>number 类型的值不能赋值给 boolean 类型的变量，Date 类型的对象就不能调用 exec 方法</mark>。
+
+这是类型检查做的事情，<font color=FF0000>遇到类型安全问题会在编译时报错</font>。但是<font color=FF0000>**这种类型安全的限制也不能太死板，有的时候需要一些变通**，比如子类型是可以赋值给父类型的变量的，可以完全当成父类型来使用，也就是 “型变 ( variant ) ”（类型改变）</font>。
+
+**这种 “型变” 分为两种：**<font color=FF0000>一种是 **子类型可以赋值给父类型**，叫做 **协变** ( covariant )</font> ；<font color=FF0000>一种是 **父类型可以赋值给子类型** ，叫做 **逆变** ( contravariant ) </font>。
+
+> 型变有四种方式：协变、逆变、双变、不变
+>
+> 摘自：《TypeScript 编程》6.1.2 型变 P143
+
+#### 协变 ( covariant )
+
+其中协变是很好理解的，比如我们有两个 interface ：
+
+```typescript
+interface Person {
+    name: string;
+    age: number;
+} 
+
+interface Guang {
+    name: string;
+    age: number;
+    hobbies: string[]
+}
+```
+
+这里 <font color=FF0000>Guang 是 Person 的子类型</font>（<font color=FF0000>**注：**`ChildType extends ParentType ? true : false` 结果为 true</font> ），更具体，那么 Guang 类型的变量就可以赋值给 Person 类型：
+
+```ts
+let person: Person = {
+  name: '',
+  age: 20
+};
+
+let guang: Guang = {
+  name: 'guang',
+  age: 20,
+  hobbies: ['play game', 'writing']
+};
+
+person = guang
+```
+
+这并不会报错，虽然这俩类型不一样，但是依然是类型安全的。这种 <font color=FF0000>子类型可以赋值给父类型的情况就叫做**「协变」**</font>。
+
+**为什么要支持协变很容易理解：**类型系统支持了父子类型，那如果子类型还不能赋值给父类型，还叫父子类型么（**注：**OOP 的多态？）？所以型变是实现类型父子关系必须的，它在保证类型安全的基础上，增加了类型系统的灵活性。
+
+#### 逆变 ( contravariant )
+
+我们有这样两个函数：
+
+```typescript
+let printHobbies: (guang: Guang) => void;
+
+printHobbies = (guang) => {
+    console.log(guang.hobbies);
+}
+
+let printName: (person: Person) => void;
+
+printName = (person) => {
+    console.log(person.name);
+}
+```
+
+<mark>printHobbies 的参数 Guang 是 printName 参数 Person 的子类型</mark>。那么问题来了：<font color=FF0000>printName 能赋值给 printHobbies 么？printHobbies 能赋值给 printName 么？</font>测试一下发现是这样的：
+
+<img src="https://s2.loli.net/2022/05/06/xzCZB25DoOHPvAF.png" alt="image-20220506151111699" style="zoom:48%;" />
+
+> **注：**这张图上的报错，是在 tsconfig.json 中 "strictFunctionTypes" 属性被设置为 true 时的报错；而默认情况（ tsconfig.json 中不设置 "strictFunctionTypes" ）下，值为 false ，是不会报错的。另外，下面也会说到 「双向协变」。
+
+<font color=FF0000>printName 的参数 Person 不是 printHobbies 的参数 Guang 的 **父类型** 么，**为啥能赋值给子类型**？</font>
+
+<font color=FF0000>因为这个函数 ( printHobbies ) 调用的时候是按照 Guang 来约束的类型，但实际上函数只用到了父类型 Person 的属性和方法</font>；当然不会有问题，依然是类型安全的。
+
+<font size=4>**这就是<font color=FF0000>「逆变」</font>，函数的参数有逆变的性质（ 而返回值是协变的，也就是子类型可以赋值给父类型 ）**</font>
+
+<font color=FF0000>**那反过来呢，如果 printHobbies 赋值给 printName 会发生什么？**</font>
+
+因为函数 ( printName ) 声明的时候是按照 Person 来约束类型，但是<font color=FF0000>**调用的时候是按照 Guang 的类型来访问的属性和方法**</font>，那自然类型不安全了，所以就会报错。
+
+但是，<font color=FF0000>**在 ts2.x 之前** 支持这种赋值，也就是父类型可以赋值给子类型，子类型可以赋值给父类型，**既逆变又协变，叫做「双向协变」**</font>。
+
+但是<font color=FF0000>**这明显是有问题的，不能保证类型安全**</font>；所以之后 ts 加了一个编译选项 "strictFunctionTypes" ，设置为 true 就只支持函数参数的逆变，设置为 false 则是双向协变。
+
+<img src="https://s2.loli.net/2022/05/06/Td1s2iyHBvKeCac.png" alt="image-20220506152355755" style="zoom:50%;" />
+
+**注：**上面的截图是 [TS Playground](https://www.typescriptlang.org/play) 中的设置。
+
+我们把 strictFunctionTypes 关掉之后，就会发现两种赋值都可以了：
+
+<img src="https://s2.loli.net/2022/05/06/r1uc8yL62ZBoqWt.png" alt="image-20220506151142094" style="zoom:48%;" />
+
+这样 ( "strictFunctionTypes" 为 false ) 就支持函数参数的双向协变，类型检查不会报错，但不能严格保证类型安全。开启（"strictFunctionTypes" 为 true ）之后，函数参数就只支持逆变，子类型赋值给父类型就会报错（如上，报错的图）
+
+#### 逆变性质有什么用
+
+还记得之前 “联合转交叉” 的实现么 [[#UnionToIntersection]] ？
+
+```typescript
+type UnionToIntersection<U> = 
+    (U extends U ? (x: U) => unknown : never) extends (x: infer R) => unknown
+        ? R
+        : never
+```
+
+类型参数 U 是要转换的联合类型。`U extends U` 是为了触发联合类型的「分布式条件类型」的性质，让每个类型单独传入做计算，最后合并。<font color=FF0000>**利用 U 作为参数构造个函数，通过模式匹配取参数的类型**</font>。结果就是交叉类型：
+
+<img src="https://s2.loli.net/2022/05/04/CSxsB6PjJDNRTlv.png" alt="image-20220504230627100" style="zoom:50%;" />
+
+我们通过构造了多个函数类型，然后模式提取参数类型的方式，来实现了联合转交叉；<font color=FF0000>这里就是因为函数参数是逆变的，会返回联合类型的几个类型的子类型，也就是更具体的交叉类型</font>。
+
+<font color=FF0000>**逆变和协变** 都是型变（类型变化），**是针对父子类型而言**的</font>；<font color=FF0000>非父子类型自然就不会型变</font>，也就是<font color=FF0000>「不变」</font>。
+
+#### 不变 ( invariant )
+
+非父子类型之间不会发生型变，只要类型不一样就会报错：
+
+<img src="https://s2.loli.net/2022/05/06/ATrHucOyZe824xF.png" alt="image-20220506155358011" style="zoom:50%;" />
+
+<font color=FF0000>那**类型之间的父子关系是怎么确定** 的呢，好像也**没有看到 extends 的继承**？</font>
+
+#### 类型父子关系的判断
+
+像 Java 里面的类型都是通过 extends 继承的，如果 `A extends B` ，那 A 就是 B 的子类型。这种叫做<font color=FF0000 size=4>**名义类型系统**</font> ( nominal type ) 。
+
+而 <font color=FF0000>**TS 里不看这个**</font>：<font color=FF0000 size=4>**只要结构上是一致的，那么就可以确定父子关系**</font>，这种叫做 <font color=FF0000 size=4>**结构类型系统**</font> ( structual type ) 。
+
+如上面的示例：
+
+```ts
+interface Person {
+  name: string;
+  age: number;
+} 
+
+interface Guang {
+  name: string;
+  age: number;
+  hobbies: string[]
+}
+
+let person: Person = {
+  name: '',
+  age: 20
+};
+
+let guang: Guang = {
+  name: 'guang',
+  age: 20,
+  hobbies: ['play game', 'writing']
+};
+```
+
+Guang 和 Person 有 extends 的关系么？没有呀。
+
+那是怎么确定父子关系的？<font color=FF0000>**通过结构**</font>，<font color=FF0000>**更具体的那个是子类型**</font>。<font color=FF0000>这里的 Guang 有 Person 的所有属性，并且还多了一些属性，所以 Guang 是 Person 的子类型</font>。<font color=FF0000>注意，**这里用的是更具体，而不是更多**</font>。
+
+判断联合类型父子关系的时候， 'a' | 'b' 和 'a' | 'b' | 'c' 哪个更具体？ 'a' | 'b' 更具体，所以 'a' | 'b' 是 'a' | 'b' | 'c' 的子类型。
+
+<img src="https://s2.loli.net/2022/05/06/mIF48AVt7LcwkTg.png" alt="image-20220506160308699" style="zoom:50%;" />
+
+
+
+### TSC 和 Babel
+
+#### TSC 的编译流程
+
+typescript compiler 的编译流程是这样的：
+
+<img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/85851ebe6f2d41a28ca3885d91beb969~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp?" alt="img" style="zoom:75%;" />
+
+源码要<font color=FF0000>先用 **Scanner** 进行 <font size=4>**词法分析**</font></font>，<font color=FF0000>拆分成一个个不能细分的单词</font>，叫做 <font color=FF0000>Token</font> 。
+
+<font color=FF0000>然后用 **Parser** 进行 <font size=4>**语法分析**</font>，组装成 **抽象语法树**</font> ( Abstract Syntax Tree ) AST。
+
+<font color=FF0000>之后做 <font size=4>**语义分析**</font>，包括用 **Binder** 进行 **作用域分析**，和 **Checker** 做 **类型检查**</font>。如果有类型的错误，就是在 Checker 这个阶段报的。
+
+**如果有 <font color=FF0000>Transformer 插件</font>**（ TSC 支持 custom transform ），会<font color=FF0000>**在 Checker 之后调用**</font>，<font color=FF0000>**可以对 AST 做各种增删改**</font>。
+
+<font color=FF0000>类型检查通过后，就会用 **Emmiter** 把 AST 打印成目标代码，**生成类型声明文件 d.ts** ，还有 **sourcemap**</font>。
+
+> sourcemap 的作用是<mark>映射源码和目标代码的代码位置</mark>，这样调试的时候打断点可以定位到相应的源码，线上报错的时候也能根据 sourcemap 定位到源码报错的位置。
+
+tsc 生成的 AST 可以用 [astexplorer.net](https://link.juejin.cn/?target=https%3A%2F%2Fastexplorer.net%2F) 可视化的查看
+
+生成的目标代码和 d.ts 和报错信息也可以用 [ts playground](https://link.juejin.cn/?target=https%3A%2F%2Fwww.typescriptlang.org%2Fplay%3Fts%3D4.5.0-beta%23code%2FDYUwLgBA9gRgVgLggJRAYygJwCYB4DOYmAlgHYDmANBAIakCeAfANwBQrscEAvBAN6sIQiKRoBbEEgDk5AK51yU1gF8gA) 来直接查看
+
+#### Babel 编译流程
+
+babel 的编译流程是这样的：
+
+<img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0b515ccf55fe4706a128ad38b50b1c24~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp?" alt="img" style="zoom: 55%;" />
+
+<font color=FF0000>源码经过 Parser 做 **词法分析** 和 **语法分析**，生成 Token 和 AST</font> 。<font color=FF0000>AST 会做 **语义分析** **生成作用域信息**</font>，然后会调用 Transformer 进行 AST 的转换。<font color=FF0000>最后会用 **Generator** 把 AST 打印成 **目标代码** 并 **生成 sourcemap**</font> 。
+
+Babel 的 AST 和 token 也可以用 [astexplorer.net](https://link.juejin.cn/?target=https%3A%2F%2Fastexplorer.net%2F) 可视化的查看，如果想看到 Tokens，需要点开设置，开启 Tokens 。
+
+而且 Babel 也有 [playground](https://link.juejin.cn/?target=https%3A%2F%2Fwww.babeljs.cn%2Frepl)（ Babel 的叫 REPL ）可以直接看编译之后生成的代码。
+
+##### 其实对比下 tsc 的编译流程，区别并不大：
+
+<font color=FF0000>Parser 对应 TSC 的 Scanner 和 Parser</font> ，<font color=FF0000>都是做 **词法分析** 和 **语法分析**</font>，只<font color=FF0000>不过 babel 没有细分</font>。
+
+Transform 阶段做语义分析和代码转换，对应 TSC 的 Binder 和 Transformer。**只不过 <font color=FF0000>babel 不会做 类型检查，没有 Checker</font>。**
+
+Generator 做目标代码和 SourceMap 的生成，对应 TSC 的 Emitter。**只不过因为没有类型信息，不会生成 d.ts。**
+
+对比两者的编译流程，会发现： <font color=FF0000>**babel 除了不会做 类型检查 和 生成类型声明文件 外，tsc 能做的事情，babel 都能做**</font>。
+
+**看起来好像是这样的，但是 Babel 和 TSC 实现这些功能是有区别的**
+
+#### Babel 和 TSC 的区别
+
+抛开 **类型检查** 和 **生成 d.ts** 这两个 Babel 不支持的功能不谈，我们看下其他功能的对比。分别对比下 **语法支持** 和 **代码生成** 两方面：
+
+##### 语法支持
+
+TSC 默认支持最新的 ES 规范的语法和一些还在草案阶段的语法（比如 decorators ），想支持新语法就要升级 TSC 的版本。
+
+<font color=FF0000>Babel 是 **通过 @babel/preset-env 按照目标环境 targets 的配置自动引入需要用到的插件来支持标准语法**，对于还在草案阶段的语法需要单独引入 @babel/proposal-xx 的插件来支持</font>。
+
+所以<font color=FF0000>**如果你只用标准语法，那用 TSC 或者 Babel 都行**</font>；但是<font color=FF0000>如果你**想用一些草案阶段的语法**，**TSC 可能很多都不支持**，而 **Babel 却可以通过引入 @babel/poposal-xx 的插件来支持**</font>。从支持的语法特性上来说，Babel 更多一些。
+
+##### 代码生成
+
+<font color=FF0000>**TSC 生成的代码没有做 polyfill 的处理**，想做兼容处理就需要在入口处引入 core-js</font> <font color=FF0000>（ polyfill 的实现 ）</font>[GitHub - core-js](https://github.com/zloirock/core-js)。**注：**入口处的意思是 “at the top of your entry point” ，摘抄自 [GitHub - core-js](https://github.com/zloirock/core-js) 的 README.md
+
+```typescript
+import "core-js";
+
+Promise.resolve;
+```
+
+babel 的 @babel/preset-env 可以根据 targets 的配置来自动引入需要的插件，引入需要用到的 core-js 模块。
+
+引入方式可以通过 useBuiltIns 参数 来配置：
+
+- **entry** 是在入口引入根据 targets 过滤出的所有需要用的 core-js。
+
+- **usage** 则是每个模块按照使用到了哪些来按需引入。
+
+```js
+// babel.config.js
+module.exports = {
+    presets: [
+        [
+            '@babel/preset-typescript',
+            '@babel/preset-env',
+            {
+                targets: '目标环境',
+                useBuiltIns: 'entry' // ‘usage’
+            }
+        ]
+    ]
+}
+```
+
+此外，babel 会注入一些 helper 代码，可以通过 @babel/plugin-transform-runtime 插件抽离出来，从 @babel/runtime 包引入。（ transform runtime 顾名思义就是 transform to runtime，转换成从 runtime 包引入 helper 代码的方式）。
+
+所以一般babel 都会这么配：
+
+```js
+module.exports = {
+    presets: [
+        [
+            '@babel/preset-typescript',
+            '@babel/preset-env',
+            {
+                targets: '目标环境',
+                useBuiltIns: 'usage' // ‘entry’
+            }
+        ]
+    ],
+    plugins: [ '@babel/plugin-transform-runtime']
+}
+```
+
+**总结：**Babel 和 TSC 生成代码的区别
+
+**TSC 生成的代码没有做 polyfill 的处理，<font color=FF0000>需要全量引入 core-js</font> ；而 <font color=FF0000>Babel 则可以用 @babel/preset-env 根据 targets 的配置来 <font size=4>按需引入</font> core-js 的部分模块</font>，所以<font color=FF0000>生成的代码体积更小</font>。**
+
+看起来用 Babel 编译 TS 代码全是优点？也不全是：<font color=FF0000 size=4>**Babel 有一些 TS 语法并不支持**</font>
+
+#### Babel 不支持的 TS 语法
+
+> **注：**这里有大量截图和代码，不适合笔记，所以做了省略。
+
+<font color=FF0000>**Babel 是每个文件单独编译的**</font>，而 <font color=FF0000>**TSC 不是**</font>；<font color=FF0000>**TSC 是整个项目一起编译**：会处理类型声明文件，会做跨文件的类型声明合并，**比如 namespace 和 interface 就可以跨文件合并**</font>。所以 Babel 编译 TS 代码有一些特性是没法支持的：
+
+##### const enum 不支持
+
+TS 中 const enum 编译之后是直接替换用到 enum 的地方为对应的值。<font color=FF0000>const enum 是在编译期间把 enum 的引用替换成具体的值，需要解析类型信息</font>；而 <font color=FF0000>**Babel 并不会解析**，所以**它会把 const enum 转成 enum 来处理**</font>：
+
+##### namespace 部分支持：不支持 namespace 的合并，不支持导出非 const 的值
+
+<font color=FF0000>**Babel 对每个 namespace 都是单独处理**</font> 
+
+##### Babel 不支持 namespace  导出非 const 的值
+
+TS 的 namespace 是可以导出非 const 的值的，后面可以修改；但是 babel 并不支持
+
+##### 部分语法不支持
+
+像 `export = import =` 这种过时的模块语法并不支持
+
+**开启了 jsx 编译之后，不能用 `<type> variable`  的方式做类型断言**。ts 是可以做类型断言来修改某个类型到某个类型的：用 `variable as type`  或者 `<type> variable` 的方式；但是如果开启了 jsx 编译之后， 的形式会和 jsx 的语法冲突，所以就不支持 做类型断言了。TSC 都不支持，Babel 当然也是一样
+
+> **注：**这里有点乱，不过下面有总结
+
+#### babel 还是 tsc？
+
+babel 不支持 `const enum`（会作为 enum 处理），不支持 namespace 的跨文件合并，导出非 const 的值，不支持过时的 `export = import =` 的模块语法。
+
+这些其实影响并不大，<font color=FF0000>只要代码里没用到这些语法，完全可以用 babel 来编译 ts</font>。
+
+<font color=FF0000>babel 编译 ts 代码的优点是 **可以通过插件支持更多的语言特性**</font>，而且<font color=FF0000>**生成的代码是按照 targets 的配置按需引入 core-js 的**</font>；而 <font color=FF0000>tsc 没做这方面的处理，只能全量引入</font>。而且 <font color=FF0000>tsc 因为要做类型检查所以是比较慢的</font>，而 <font color=FF0000>**babel 不做类型检查，编译会快很多**</font>。
+
+那用 babel 编译，就不做类型检查了么？<font color=FF0000>**可以用 `tsc --noEmit` 来做类型检查，加上 noEmit 选项就不会生成代码了**</font>。如果你要生成 d.ts，也要单独跑下 tsc 编译。
