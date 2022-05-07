@@ -520,6 +520,35 @@ function reverse(x: number | string): number | string | void {
 
 
 
+### 《TypeScript 编程》学习笔记
+
+#### TS 类型的结构关系图
+
+<img src="https://s2.loli.net/2022/05/07/AQ2daqsipyXJcYL.png" alt="图片来自 Programming TypeScript Making Your JavaScript Applications Scale (Boris Cherny) (z-lib.org)，第 38 页" style="zoom:43%;" />
+
+摘自：P27 页
+
+
+
+#### 协变 & 逆变
+
+在 TypeScript 中，每个复杂类型的成员都会进行协变，包括 对象、类、数组 和 <font color=FF0000>函数的返回类型</font>。不过有个例外：<font color=FF0000>**函数的参数类型进行逆变**</font>。
+
+如果 函数A的 参数数量 小于或等于 函数B的参数数量，而且**满足下述条件**，那么 <font color=FF0000>**函数A 是 函数B 的子类型**</font>：
+
+1. 函数A 的 <font color=FF0000>this 类型</font>未指定，或者 >: 函数B 的 this 类型
+
+2. 函数A 的 <font color=FF0000>各个参数的类型</font> >: 函数B 的相应参数。
+
+3. 函数A 的 <font color=FF0000>返回类型</font> <: 函数B 的返回类型。
+
+其中：
+
+- A <: B 指 “A类型 是 B类型的 子类型，或者为 同种类型 ”
+- A >: B 指 “ A类型 是 B类型的 超类型，或者为 同种类型 ”。
+
+
+
 ### 《深入理解 TypeScript 》学习笔记
 
 链接🔗：[深入理解 TypeScript](https://jkchao.github.io/typescript-book-chinese/)
@@ -587,7 +616,7 @@ function reverse(x: number | string): number | string | void {
 
 而且，因为代码中添加了静态类型，也就可以配合编辑器来实现更好的提示、重构等，这是额外的好处。
 
-![img](https://s2.loli.net/2022/04/30/KnUlzd6SZ2OsHp5.png)
+<img src="https://s2.loli.net/2022/05/07/NY4Hiws8VWA362L.png" alt="image-20220507011037158" style="zoom:50%;" />
 
 
 
@@ -663,6 +692,10 @@ function reverse(x: number | string): number | string | void {
 
   这里的 `keyof T`、`T[Key]` 就是对 “ 类型参数 T ” 的类型运算。
 
+  > **注：**这里 keyof 操作符 会 <font color=FF0000>**提取出 “对象类型” 里的所有 key** 然后 <font size=4>**得到一个「联合类型」**</font></font>。
+  >
+  > 学习自：[TypeScript 类型编程](https://segmentfault.com/a/1190000040247980)
+  
   <mark style="background: aqua">TypeScript 的类型系统就是第三种，支持对类型参数做各种逻辑处理，可以写很复杂的类型逻辑</mark>。
 
 ##### TS 的类型系统
@@ -825,7 +858,7 @@ type res = 1 extends 2 ? true : false;
 
 这就是 TypeScript 类型系统里的 if else。
 
->  **注：**这里的 `extends ? :` 可以表示为 “是否是子集”（学习自：[白话typescript中的【extends】和【infer】](https://juejin.cn/post/6844904146877808653)），而不是 “是否继承自” ，如下示例：
+>  **注：**当前场景对 `extends ? :` 表示为 “是否是子类型”（学习自：[白话typescript中的【extends】和【infer】](https://juejin.cn/post/6844904146877808653)），而不是 “是否继承自” （虽然，在其他场景中也可以用来判断是否是继承关系。另外， TS 是 **结构类型系统 **），如下示例：
 >
 > ```typescript
 > type Union = 1 | 2 | 3
@@ -842,15 +875,17 @@ type res = isTwo<1>
 type res2 = isTwo<2>
 ```
 
-<img src="https://s2.loli.net/2022/05/01/M4vaIWP7Hzp3VRN.png" alt="image-20220501204824969" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/01/M4vaIWP7Hzp3VRN.png" alt="image-20220501204824969" style="zoom:50%;" />
 
-<img src="https://s2.loli.net/2022/05/01/JRTgaqY59E8ju6F.png" alt="image-20220501204852937" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/01/JRTgaqY59E8ju6F.png" alt="image-20220501204852937" style="zoom:50%;" />
 
 <font color=FF0000>这种类型也叫做「高级类型」。**高级类型的特点是 传入类型参数，经过一系列类型运算逻辑后，返回新的类型**</font>（**注：**感觉和 “高阶函数” 有点类似 ）。
 
 ##### 推导：infer
 
 <font color=FF0000 size=4>**如何提取类型的一部分呢？答案是 infer**</font>
+
+> **注：**infer 关键字，可以<font color=FF0000>推断一个类型变量</font>，<font color=FF0000>高效地**对类型进行「模式匹配」**</font> 。但是，这个（模式匹配出的）<font color=FF0000>**类型变量只能在 true 的分支中使用**</font>。（学习自：[白话typescript中的【extends】和【infer】](https://juejin.cn/post/6844904146877808653)）
 
 比如提取元组类型的第一个元素：
 
@@ -878,31 +913,35 @@ type Union = 1 | 2 | 3;
 
 ##### 交叉：&
 
-交叉类型（Intersection）类似 js 中的与运算符 &，但是作用于类型，代表对类型做合并。
+交叉类型（Intersection）类似 js 中的与运算符 &，但是<font color=FF0000>**作用于类型**</font>，<font color=FF0000>**代表对类型做合并**</font>。
 
 ```typescript
 type ObjType = {a: number} & {c: string}
 type res = { a: number, c: boolean} extends ObjType ? true : false
 ```
 
-<img src="https://s2.loli.net/2022/05/01/jcnv1fU6FzDZmb8.png" alt="image-20220501211038464" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/01/jcnv1fU6FzDZmb8.png" alt="image-20220501211038464" style="zoom:50%;" />
 
 注意，同一类型可以合并，不同的类型没法合并，会被舍弃  ：
 
-<img src="https://s2.loli.net/2022/05/01/h5KndlIRLG9Xzp2.png" alt="image-20220501211209605" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/01/h5KndlIRLG9Xzp2.png" alt="image-20220501211209605" style="zoom:50%;" />
 
 ##### 映射类型
 
 对象、class 在 TypeScript 对应的类型是 「索引类型」 ( Index Type ) ，那么如何对索引类型作修改呢？答案是「映射类型」 。
 
+> **注：**映射类型是通过 in 操作符遍历类型的 key 得到的新的类型（也就是： `[Key in keyof IndexType]` ）
+>
+> 学习自：[TypeScript 类型编程](https://segmentfault.com/a/1190000040247980)
+
 ```typescript
-type MapType<T> = { // 注：注意这里有一对 {}
+type MapType<T> = { // 注：注意这里用大括号包裹 {}，
   [Key in keyof T]?: T[Key] // 注：这里的 ? 表示可选
 }
 type MapTypeRes = MapType<{a: 1, b: 2}>
 ```
 
-<img src="https://s2.loli.net/2022/05/01/E9Rny15MuiXbjNC.png" alt="image-20220501212209184" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/01/E9Rny15MuiXbjNC.png" alt="image-20220501212209184" style="zoom:50%;" />
 
 `keyof T` 是查询索引类型中所有的索引，叫做「索引查询」（**注：**根据后面的内容 [[#TS 内置的高级类型#Record]] ，可知： `keyof T` 返回的是一个联合类型 ）。
 
@@ -920,7 +959,7 @@ type MapType<T> = {
 type MapTypeRes = MapType<{a: 1, b: 2}>;
 ```
 
-<img src="https://s2.loli.net/2022/05/01/thRPmzXavor5ny2.png" alt="image-20220501212611967" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/01/thRPmzXavor5ny2.png" alt="image-20220501212611967" style="zoom:50%;" />
 
 **映射类型就相当于把一个集合映射到另一个集合，这是它名字的由来**。
 
@@ -965,7 +1004,7 @@ type GetValueType<P> = P extends Promise<infer Value> ? Value : never;
 
 通过 extends 对传入的类型参数 P 做模式匹配，其中值的类型是需要提取的。<font color=FF0000>通过 infer 声明一个局部变量 Value 来保存：如果匹配，就返回匹配到的 Value；否则就返回 never 代表没匹配到</font>。
 
-<img src="https://s2.loli.net/2022/05/02/e86qSsLR4BY7KWI.png" alt="image-20220502233642842" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/02/e86qSsLR4BY7KWI.png" alt="image-20220502233642842" style="zoom:50%;" />
 
 这就是 Typescript 类型的模式匹配：**Typescript 类型的模式匹配是 通过 extends 对类型参数做匹配，结果保存到 “通过 infer 声明的局部类型变量里”，如果匹配就能从该局部变量里拿到提取出的类型。**
 
@@ -992,11 +1031,11 @@ type GetFirst<Arr extends unknown[]> =
 
 当类型参数 Arr 为 `[1, 2, 3]` 时：
 
-<img src="https://s2.loli.net/2022/05/02/ckwxlXWBHE4CNpz.png" alt="image-20220502235103556" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/02/ckwxlXWBHE4CNpz.png" alt="image-20220502235103556" style="zoom:50%;" />
 
 当类型参数 Arr 为 `[]` 时：
 
-<img src="https://s2.loli.net/2022/05/03/GNSFKJ9aOh4MHg3.png" alt="image-20220502235223149" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/GNSFKJ9aOh4MHg3.png" alt="image-20220502235223149" style="zoom:50%;" />
 
 ##### Last
 
@@ -1007,7 +1046,7 @@ type arr = [1, 2, 3]
 type GetLast<Arr extends unknown[]> = Arr extends [...unknown[], infer Last] ? Last : never
 ```
 
-<img src="https://s2.loli.net/2022/05/02/DRLslNntuM9qvxK.png" alt="image-20220502235408475" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/02/DRLslNntuM9qvxK.png" alt="image-20220502235408475" style="zoom:50%;" />
 
 ##### PopArr
 
@@ -1021,7 +1060,7 @@ type PopArr<Arr extends unknown[]> =
 
 如果是空数组，就直接返回，否则匹配剩余的元素，放到 infer 声明的局部变量 Rest 里，返回 Rest。
 
-<img src="https://s2.loli.net/2022/05/02/i5j8hX9MEUWeNS2.png" alt="image-20220502235934682" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/02/i5j8hX9MEUWeNS2.png" alt="image-20220502235934682" style="zoom:50%;" />
 
 ##### ShiftArr
 
@@ -1033,7 +1072,7 @@ type ShiftArr<Arr extends unknown[]> =
          Arr extends [unknown, ...infer Rest] ? Rest : never
 ```
 
-<img src="https://s2.loli.net/2022/05/03/JRC8purXPK7F9b1.png" alt="image-20220503001221372" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/JRC8purXPK7F9b1.png" alt="image-20220503001221372" style="zoom:50%;" />
 
 #### 字符串类型
 
@@ -1052,7 +1091,7 @@ type StartWith<Str extends string, Prefix extends string> =
 
 用 Str 去匹配一个模式类型，模式类型的前缀是 Prefix；<font color=FF0000>**后面是任意的 string**</font>，如果匹配返回 true，否则返回 false。
 
-<img src="https://s2.loli.net/2022/05/03/5ztyfvGQ9RsIcHn.png" alt="image-20220503002057792" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/5ztyfvGQ9RsIcHn.png" alt="image-20220503002057792" style="zoom:50%;" />
 
 ##### Replace
 
@@ -1089,7 +1128,7 @@ type TrimRight<Str extends string> =
 
 类型参数 Str 是要 Trim 的字符串。如果 Str 匹配字符串 + 空白字符（ 空格、换行、制表符 ），那就把字符串放到 infer 声明的局部变量 Rest 里。把 Rest 作为类型参数递归 TrimRight，直到不匹配，这时的类型参数 Str 就是处理结果。
 
-<img src="https://s2.loli.net/2022/05/03/YWsSMpciHq3L8uG.png" alt="image-20220503011523443" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/YWsSMpciHq3L8uG.png" alt="image-20220503011523443" style="zoom:50%;" />
 
 同理可得 TrimLeft：
 
@@ -1120,7 +1159,7 @@ type GetParameters<Func extends Function> =
 
 类型参数 Func 是要匹配的函数类型，通过 extends 约束为 Function。Func 和模式类型做匹配，参数类型放到用 infer 声明的局部变量 Args 里，返回值可以是任何类型，用 unknown。返回提取到的参数类型 Args。
 
-<img src="https://s2.loli.net/2022/05/03/tVeHcRKb8izXpWd.png" alt="image-20220503012245739" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/tVeHcRKb8izXpWd.png" alt="image-20220503012245739" style="zoom:50%;" />
 
 ##### GetReturnType
 
@@ -1137,7 +1176,7 @@ Func 和模式类型做匹配，提取返回值到通过 infer 声明的局部�
 
 参数类型可以是任意类型，也就是 any[]（<font color=FF0000>**注意，这里不能用 unknown，因为参数类型是要赋值给别的类型的，而 unknown 只能用来接收类型，所以用 any**</font> ）。**注：**这里在写的时候，使用 unknown 了
 
-<img src="https://s2.loli.net/2022/05/03/Ts86t1wmAFi3Vgd.png" alt="image-20220503013038807" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/Ts86t1wmAFi3Vgd.png" alt="image-20220503013038807" style="zoom:50%;" />
 
 ##### GetThisParameterType
 
@@ -1191,7 +1230,7 @@ type GetThisParameterType<T>
 
 <font color=FF0000>类型参数 T 是待处理的类型</font>。<font color=FF0000>**用 T 匹配一个 模式类型，提取 this 的类型到 infer 声明的局部变量 ThisType 中**</font>（ **注：**这里有点没看懂 TODO ），其余的参数是任意类型，也就是 any，返回值也是任意类型。返回提取到的 ThisType，这样就能提取出 this 的类型：
 
-<img src="https://s2.loli.net/2022/05/03/U8fGXHzVY9Dvx4u.png" alt="image-20220503015143577" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/U8fGXHzVY9Dvx4u.png" alt="image-20220503015143577" style="zoom:50%;" />
 
 
 
@@ -1229,7 +1268,7 @@ type GetInstanceType<
 
 用 ConstructorType 匹配一个模式类型，提取返回的实例类型到 infer 声明的局部变量 InstanceType 里，返回 InstanceType。这样就能取出构造器对应的实例类型：
 
-<img src="https://s2.loli.net/2022/05/03/Uyjbk4OPWv1Rst2.png" alt="image-20220503021238662" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/Uyjbk4OPWv1Rst2.png" alt="image-20220503021238662" style="zoom:50%;" />
 
 ##### GetConstructorParameters
 
@@ -1247,13 +1286,13 @@ type GetConstructorParameters<
 
 用 ConstructorType 匹配一个模式类型，提取参数的部分到 infer 声明的局部变量 ParametersType 里，返回 ParametersType。这样就能提取出构造器对应的参数类型：
 
-<img src="https://s2.loli.net/2022/05/03/qFPGlZMKv69m3uk.png" alt="image-20220503021900246" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/qFPGlZMKv69m3uk.png" alt="image-20220503021900246" style="zoom:50%;" />
 
 #### 索引类型
 
 <font color=FF0000>索引类型也同样可以用模式匹配提取某个索引的值的类型</font>，这个用的也挺多的。比如 React 的 index.d.ts 里的 PropsWithRef 的高级类型，就是通过模式匹配提取了 ref 的值的类型：
 
-![img](https://s2.loli.net/2022/05/03/m6bs8RoiGjEUOJZ.png)
+<img src="https://s2.loli.net/2022/05/03/m6bs8RoiGjEUOJZ.png" alt="img" style="zoom: 67%;" />
 
 我们简化一下那个高级类型，提取 Props 里 ref 的类型：
 
@@ -1278,7 +1317,7 @@ type GetRefProps<Props> =
 
 在 ts3.0 里面如果没有对应的索引，Obj[Key] 返回的是 {} 而不是 never，所以这样做向下兼容处理。如果有 ref 这个索引的话，就通过 infer 提取 Value 的类型返回，否则返回 never。
 
-<img src="https://s2.loli.net/2022/05/03/jV81pD4QqSUIs7n.png" alt="image-20220503023006564" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/jV81pD4QqSUIs7n.png" alt="image-20220503023006564" style="zoom:50%;" />
 
 
 
@@ -1310,7 +1349,7 @@ type Push<Arr extends  unknown[], Ele> = [...Arr, Ele];
 
 类型参数 Arr 是要修改的 数组 / 元组类型，元素的类型任意，也就是 unknown ；类型参数 Ele 是添加的元素的类型。返回的是用 Arr 已有的元素加上 Ele 构造的新的元组类型。
 
-<img src="https://s2.loli.net/2022/05/03/nioRQDWIr5B3jXx.png" alt="image-20220503023957842" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/nioRQDWIr5B3jXx.png" alt="image-20220503023957842" style="zoom:50%;" />
 
 这就是 数组 / 元组 的重新构造
 
@@ -1355,7 +1394,7 @@ type Zip<One extends [unknown, unknown], Other extends [unknown, unknown]> =
 
 用提取的元素构造成新的元组返回即可：
 
-<img src="https://s2.loli.net/2022/05/03/C2Tm4inx5q6XUHa.png" alt="image-20220503141940873" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/C2Tm4inx5q6XUHa.png" alt="image-20220503141940873" style="zoom:50%;" />
 
 但是这样只能合并两个元素的元组，如果是任意个呢？那就得用递归了：
 
@@ -1373,7 +1412,7 @@ type Zip<One extends unknown[], Other extends unknown[]> =
 
 每次提取 One 和 Other 的第一个元素 OneFirst、OtherFirst，剩余的放到 OneRest、OtherRest 里。用 OneFirst、OtherFirst 构造成新的元组的一个元素，剩余元素继续递归处理 OneRest、OtherRest。这样，就能处理任意个数元组的合并：
 
-<img src="https://s2.loli.net/2022/05/03/utcTYmVFoRKynib.png" alt="image-20220503143011106" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/utcTYmVFoRKynib.png" alt="image-20220503143011106" style="zoom:50%;" />
 
 #### 字符串类型的重新构造
 
@@ -1390,7 +1429,7 @@ type CapitalizeStr<Str extends string> = Str extends `${infer First}${infer Rest
 
 通过 infer 提取出首个字符到局部变量 First，<font color=FF0000>**提取后面的字符到局部变量 Rest**</font>。然后 <font color=FF0000 size=4>**使用 TypeScript 提供的内置高级类型 Uppercase 把首字母转为大写**</font>（**注：**这个没接触过），加上 Rest，构造成新的字符串类型返回。
 
-<img src="https://s2.loli.net/2022/05/03/wvi3oPrcjmteg1O.png" alt="image-20220503145046293" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/wvi3oPrcjmteg1O.png" alt="image-20220503145046293" style="zoom:50%;" />
 
 #### CamelCase
 
@@ -1415,7 +1454,7 @@ type CamelCase<Str extends string> =
 
 提取 `_` 之前和之后的两个字符到 infer 声明的局部变量 Left 和 Right，剩下的字符放到 Rest 里。然后把右边的字符 Right 大写，和 Left 构造成新的字符串，剩余的字符 Rest 要继续递归的处理。这样就完成了从下划线到驼峰形式的转换：
 
-<img src="https://s2.loli.net/2022/05/03/ghlzYSIbU3wstDv.png" alt="image-20220503150004887" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/ghlzYSIbU3wstDv.png" alt="image-20220503150004887" style="zoom:50%;" />
 
 ##### DropSubStr
 
@@ -1439,7 +1478,7 @@ type DropSubStr<Str extends string, SubStr extends string> =
 
 通过模式匹配提取 SubStr 之前和之后的字符串到 infer 声明的局部变量 Prefix、Suffix 中。如果不匹配就直接返回 Str。如果匹配，那就用 Prefix、Suffix 构造成新的字符串，然后继续递归删除 SubStr。直到不再匹配，也就是没有 SubStr 了。
 
-<img src="https://s2.loli.net/2022/05/03/ku7L49hHy3snDwx.png" alt="image-20220503150708754" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/ku7L49hHy3snDwx.png" alt="image-20220503150708754" style="zoom:50%;" />
 
 #### 函数类型的重新构造
 
@@ -1459,7 +1498,7 @@ type AppendArgument<Func extends Function, Arg> =
 
 通过模式匹配提取参数到 infer 声明的局部变量 Args 中，提取返回值到局部变量 ReturnType 中。<font color=FF0000>用 Args 数组添加 Arg 构造成新的参数类型</font>，结合 ReturnType 构造成新的函数类型返回。这样就完成了函数类型的修改：
 
-<img src="https://s2.loli.net/2022/05/03/JGdQ7Cvi6hT2r1g.png" alt="image-20220503175404536" style="zoom:55%;" />
+<img src="https://s2.loli.net/2022/05/03/JGdQ7Cvi6hT2r1g.png" alt="image-20220503175404536" style="zoom:50%;" />
 
 #### 索引类型的重新构造
 
@@ -1533,7 +1572,7 @@ type ToMutable<T> = {
 
 给索引类型 T 的每个索引去掉 readonly 的修饰，其余保持不变。
 
-<img src="/Users/yan/Library/Application Support/typora-user-images/image-20220503191406123.png" alt="image-20220503191406123" style="zoom:50%;" />
+<img src="https://s2.loli.net/2022/05/07/soAim2uHJBtMXaO.png" alt="image-20220503191406123" style="zoom:50%;" />
 
 ##### ToRequired
 
@@ -1547,7 +1586,7 @@ type ToRequired<T> = {
 
 给索引类型 T 的索引去掉 ? 的修饰 ，其余保持不变。
 
-<img src="/Users/yan/Library/Application Support/typora-user-images/image-20220503191609690.png" alt="image-20220503191609690" style="zoom:50%;" />
+<img src="https://s2.loli.net/2022/05/07/F3tBNygZ5JLUEqV.png" alt="image-20220503191609690" style="zoom:50%;" />
 
 ##### FilterByValueType
 
@@ -2211,7 +2250,7 @@ type bemResult = BEM<'guang', ['aaa', 'bbb'], ['warning', 'success']>;
 type union = ['foo', 'bar'][number]
 ```
 
-<img src="/Users/yan/Library/Application Support/typora-user-images/image-20220504183301073.png" alt="image-20220504183301073" style="zoom:50%;" />
+<img src="https://s2.loli.net/2022/05/07/mozrZSqcPNkYMDh.png" alt="image-20220504183301073" style="zoom:50%;" />
 
 那么 BEM 就可以这样实现：
 
@@ -2426,9 +2465,9 @@ type UnionToIntersection<U> =
 
 类型参数 U 是要转换的联合类型。
 
-`U extends U` 是为了触发 “联合类型” 的 distributive（即：“分布式条件类型” ） 的性质，让每个类型单独传入做计算，最后合并。利用 U 做为参数构造个函数，通过模式匹配取参数的类型（**注：**这里的原理是「协变」。另外，这里实现原理可见 [[#逆变性质有什么用]]）。结果就是交叉类型：
+`U extends U` 是为了触发 “联合类型” 的 distributive（即：“分布式条件类型” ） 的性质，让每个类型单独传入做计算，最后（TS自动做）合并（交叉操作）。利用 U 做为参数构造一个函数类型，<font color=FF0000>通过模式匹配取参数的类型</font>，利用函数参数的逆变的性质，就能实现联合转交叉。（**注：**这里实现原理可见 [[#逆变性质有什么用]]）。结果就是交叉类型：
 
-<img src="https://s2.loli.net/2022/05/04/CSxsB6PjJDNRTlv.png" alt="image-20220504230627100" style="zoom:50%;" />
+<img src="https://s2.loli.net/2022/05/07/ORaw4WoSYd78MQk.png" alt="image-20220507123618479" style="zoom:50%;" />
 
 ##### GetOptional
 
@@ -2553,7 +2592,7 @@ type ClassPublicProps<Obj extends Record<string, any>> = {
 - never 作为类型参数出现在条件类型左侧时，会直接返回 never。
 - any 作为类型参数出现在条件类型左侧时，会直接返回 trueType 和 falseType 的联合类型。
 - 元组类型也是数组类型，但每个元素都是只读的，并且 length 是数字字面量，而数组的 length 是 number。可以用来判断元组类型
-- 函数参数处会发生逆变，可以用来实现联合类型转交叉类型。
+- <font color=FF0000>函数参数处会发生逆变，可以用来实现联合类型转交叉类型</font>。
 - 可选索引的值为 undefined 和值类型的联合类型。可以用来过滤可选索引，反过来也可以过滤非可选索引。
 - 索引类型的索引为字符串字面量类型，而可索引签名不是，可以用这个特性过滤掉可索引签名。
 - keyof 只能拿到 class 的 public 的索引，可以用来过滤出 public 的属性。
@@ -2738,7 +2777,7 @@ type ParseParam<Param extends string> =
 
 ##### 每个 query param 处理完了，最后把这一系列构造出的索引类型合并成一个就行了
 
-**注：**这一步实现的时候卡住了，上面的逻辑处理，实现没什么问题。另外，这里还是有点没看懂；比如  TODO
+**注：**这一步实现的时候卡住了，上面的逻辑处理，实现没什么问题。另外，这里还是有点没看懂 TODO
 
 <img src="https://s2.loli.net/2022/05/05/anyLw6pI3SiNXWU.png" alt="img" style="zoom:75%;" />
 
@@ -2886,7 +2925,17 @@ type ThisParameterType<T> =
 
 用 T 匹配一个模式类型，提取 this 的类型到 infer 声明的局部变量 U 里返回。这样就实现了 this 类型的提取。
 
-**注：**这个借鉴了 [[#模式匹配做提取#函数#GetThisParameterType]] 写出来了，原因时 `infer U` 没有 加上 `this:` 。另外，在调用时，添加 typeof ，如： `ThisParameterType<typeof Fn>` 。
+> **注：**这个借鉴了 [[#模式匹配做提取#函数#GetThisParameterType]] 写出来了，原因时 `infer U` 没有 加上 `this:` 。另外，在调用时，添加 typeof ，如： `ThisParameterType<typeof Fn>` 。关于这里 typeof 的使用，可以参考如下代码：
+>
+> ```ts
+> const foo = () => 'foo';
+> 
+> type Foo = typeof foo; // () => string
+> 
+> type FooReturn = ReturnType<typeof foo>; // string
+> ```
+>
+> `ReturnType<typeof foo>` 返回 string，<font color=FF0000 size=4>说明 `type foo` 是一个函数</font>。
 
 #### OmitThisParameter
 
@@ -2979,7 +3028,7 @@ type Record<K extends keyof any, T> = {
 
 <img src="https://s2.loli.net/2022/05/05/SuHeYaRypEUBr62.png" alt="image-20220505115217239" style="zoom:50%;" />
 
-不过，<font color=FF0000>如果开启了 keyOfStringsOnly 的编译选项，它就只是 stirng 了</font>：
+不过，<font color=FF0000 size=4>**如果开启了 keyOfStringsOnly 的编译选项，它就只是 stirng 了**</font>：
 
 ```json
 // tsconfig.json
@@ -3011,7 +3060,7 @@ type Exclude<T, U> = T extends U ? never : T;
 
 #### Extract
 
-可以过滤掉，自然也可以保留，Exclude 反过来就是 Extract，也就是取交集。代码实现和 Excludes 几乎一模一样：
+可以过滤 ( Exclude ) 掉，自然也可以保留；<font color=FF0000>Exclude 反过来就是 Extract，也就是**取交集**</font>。代码实现和 Excludes 几乎一模一样：
 
 ```ts
 type Extract<T, U> = T extends U ? T : never;
@@ -3463,10 +3512,131 @@ interface Dong2 {
 type PartialObjectPropByKeys<
     Obj extends Record<string, any>,
     Key extends keyof any
-> = Partial<Pick<Obj, Extract<keyof Obj, Key>>> & Omit<Obj,Key>;
+> = Partial<
+      Pick<Obj, Extract<keyof Obj, Key>>
+    > & Omit<Obj, Key>;
+// 先将Obj中符合“联合类型”Key的键以“联合类型”形式提取(Extract)出来，并挑选(Pick)Extract的结果，组成一个缩阴类型，对其做可选操作(Partial)，最后和“不在‘联合类型’Key组成的索引类型”合并（用 & 合并）。
 ```
 
-# TODO
+交叉类型 ( `&` ) 会把同类型做合并，不同类型舍弃（**注：**这里发现对交叉类型有点遗忘， [[#交叉：&]] 做了笔记）。
+
+不过，上面的代码运行结果有点问题：
+
+<img src="https://s2.loli.net/2022/05/07/t1npLX8acObEAfZ.png" alt="image-20220507004823236" style="zoom:50%;" />
+
+为啥这里没计算出最终的类型呢？
+
+因为 <font color=FF0000 size=4>**TS 只有在需要计算的时候才会去计算**</font>，这里并不会去做计算。<font color=FF0000>可以再做一层映射，当构造新的索引类型的时候，就会做计算了</font>
+
+```ts
+type Copy<Obj extends Record<string, any>> = {
+    [Key in keyof Obj]:Obj[Key]
+}
+
+type PartialObjectPropByKeys<
+    Obj extends Record<string, any>,
+    Key extends keyof any = keyof Obj
+> = Copy<Partial<Pick<Obj,Extract<keyof Obj, Key>>> & Omit<Obj,Key>>;
+```
+
+这里的 Copy 就是通过映射类型的语法构造新的索引类型，key 和 value 都不变（**注：**Copy 没有其他作用，只是为了让上面的结果运行）。这样就会计算出最终的索引类型：
+
+<img src="https://s2.loli.net/2022/05/07/NVSef923auCWnMd.png" alt="image-20220507005050965" style="zoom:50%;" />
+
+#### 函数重载的三种写法
+
+TS 支持函数重载，也就是同名的函数可以有多种类型定义。
+
+##### 重载的写法一共有三种
+
+```ts
+declare function func(name: string): string;
+declare function func(name: number): number;
+```
+
+这种大家比较常用，声明两个同名函数，就能达到重载的目的：
+
+<img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/baa435154188455fb18f045fcc7fb5bd~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp?" alt="img" style="zoom:70%;" />
+
+函数可以用 interface 的方式声明，同样，也可以用 interface 的方式声明函数重载：
+
+```ts
+interface Func {
+  (name: string): string;
+  (name: number): number;
+}
+```
+
+<img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6fc6af466fda4757894caa1ae9a85716~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp?" alt="img" style="zoom:70%;" />
+
+函数类型可以取交叉类型，也就是多种类型都可以，其实也是函数重载的意思：
+
+```ts
+type Func = (
+  ((name: string) => string) & ((name: number) => number);
+)
+```
+
+<img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/db167ed7cbee4bc8a9facc31bae34d08~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp?" alt="img" style="zoom:70%;" />
+
+#### UnionToTuple
+
+要求把 “联合类型” 转成 “元组类型”，也就是 'a' | 'b' | 'c' 转成 ['a', 'b', 'c'] 。
+
+没思路很正常，因为这里用到了一些特殊的特性。我们先来过一下用到的特性：
+
+我们知道 <mark>ReturnType 是 TS 内置的一个高级类型，它可以取到函数返回值的类型</mark>。但<font color=FF0000>如果这个函数有多个重载呢？</font>
+
+##### 第一种重载方式
+
+```ts
+declare function func(name: string): string;
+declare function func(name: number): number;
+
+type res = ReturnType<typeof func>;
+```
+
+<img src="https://s2.loli.net/2022/05/07/Xls1mI2xBk79LWP.png" alt="image-20220507015726837" style="zoom:50%;" />
+
+##### 第二种重载方式
+
+```ts
+interface Func {
+  (name: string): string;
+  (name: number): number;
+}
+
+type res = ReturnType<Func>
+```
+
+<img src="https://s2.loli.net/2022/05/07/Yb4fwLx6IP8UNOd.png" alt="image-20220507120738599" style="zoom:50%;" />
+
+##### 第三种重载方式
+
+<img src="https://s2.loli.net/2022/05/07/pGBrdYSMl6WNQEj.png" alt="image-20220507120921480" style="zoom:50%;" />
+
+根据上面的试验可得到：**取 <font color=FF0000>重载函数的 ReturnType 返回的是最后一个重载的返回值类型</font>。**
+
+但这与联合类型有什么关系呢？重载函数不是能通过函数 “交叉” 的方式实现么，而我们又能实现 “联合转交叉” ( UnionToIntersection ) 。所以就能拿到联合类型的最后一个类型：
+
+```ts
+type UnionToIntersection<U> = 
+    (U extends U ? (x: U) => unknown : never) extends (x: infer R) => unknown
+        ? R
+        : never
+
+type UnionToFuncIntersection<T> = UnionToIntersection<T extends any ? () => T : never>;
+```
+
+UnionToIntersection 的实现在 [[#特殊特性要记清#UnionToIntersection]] 里讲了。这里简单讲一下：`U extends U` 是触发 分布式条件类型，<font color=FF0000>构造一个函数类型</font>；<font color=FF0000>**通过「模式匹配」提取参数的类型，利用函数参数的「逆变」的性质**，就能实现 “联合转交叉”</font>。因为函数参数的类型要能接收多个类型，那肯定要定义成这些类型的交集，所以会发生逆变，转成交叉类型。
+
+**然后是 UnionToFuncIntersection 的类型：**
+
+我们对联合类型 T 做下处理，用 `T extneds any` 触发「分布式条件类型」的特性，它会把联合类型的每个类型单独传入做计算，最后把计算结果合并成联合类型。把每个类型构造成一个函数类型传入。
+
+这样，返回的交叉类型也就达到了函数重载的目的：
+
+#### // TODO 这里有点看不下去了，等等再看
 
 
 
@@ -3550,7 +3720,7 @@ printName = (person) => {
 
 <font color=FF0000>因为这个函数 ( printHobbies ) 调用的时候是按照 Guang 来约束的类型，但实际上函数只用到了父类型 Person 的属性和方法</font>；当然不会有问题，依然是类型安全的。
 
-<font size=4>**这就是<font color=FF0000>「逆变」</font>，函数的参数有逆变的性质（ 而返回值是协变的，也就是子类型可以赋值给父类型 ）**</font>
+<font size=4>**这就是<font color=FF0000>「逆变」</font>，<font color=FF0000>函数的参数有逆变的性质</font>（ 而<font color=FF0000>返回值是协变的</font>，也就是子类型可以赋值给父类型 ）**</font>
 
 <font color=FF0000>**那反过来呢，如果 printHobbies 赋值给 printName 会发生什么？**</font>
 
@@ -3794,3 +3964,4 @@ babel 不支持 `const enum`（会作为 enum 处理），不支持 namespace �
 <font color=FF0000>babel 编译 ts 代码的优点是 **可以通过插件支持更多的语言特性**</font>，而且<font color=FF0000>**生成的代码是按照 targets 的配置按需引入 core-js 的**</font>；而 <font color=FF0000>tsc 没做这方面的处理，只能全量引入</font>。而且 <font color=FF0000>tsc 因为要做类型检查所以是比较慢的</font>，而 <font color=FF0000>**babel 不做类型检查，编译会快很多**</font>。
 
 那用 babel 编译，就不做类型检查了么？<font color=FF0000>**可以用 `tsc --noEmit` 来做类型检查，加上 noEmit 选项就不会生成代码了**</font>。如果你要生成 d.ts，也要单独跑下 tsc 编译。
+
