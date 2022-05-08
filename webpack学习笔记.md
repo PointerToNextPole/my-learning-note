@@ -740,7 +740,7 @@ sourceMap 是一个<font color=FF0000>映射关系</font>。它知道 <font colo
 
 需要启用 Enable JavaScript source maps 和 Enable CSS source maps
 
-<img src="/Users/yan/Library/Application Support/typora-user-images/image-20220309012608227.png" alt="image-20220309012608227" style="zoom:47%;" />
+<img src="https://s2.loli.net/2022/05/08/2BEgKHUd1RLZzIe.png" alt="image-20220309012608227" style="zoom:47%;" />
 
 学习自：[深入浅出之 Source Map](https://juejin.cn/post/7023537118454480904)
 

@@ -132,7 +132,7 @@ JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在「栈」中�
 
 ##### 现代JS教程关于 GC 的补充
 
-JavaScript 中主要的内存管理概念是 **可达性**。简而言之，“可达”值是那些以某种方式可访问或可用的值。它们一定是存储在内存中的。另外：对外引用不重要，只有传入引用才可以使对象可达。
+JavaScript 中主要的内存管理概念是 **可达性**。简而言之，“可达”值 是那些以某种方式可访问或可用的值。它们一定是存储在内存中的。另外：对外引用不重要，只有传入引用才可以使对象可达。
 
 **内部算法：**垃圾回收的基本算法被称为 “mark-and-sweep”（**注：**即上面所说的「标记」法）
 
@@ -293,7 +293,7 @@ process.memoryUsage(); // heapUsed: 4800792 ≈ 4.6M
 
 也正是因为这样的特性，WeakMap 内部有多少个成员，取决于垃圾回收机制有没有运行，运行前后很可能成员个数是不一样的，而 <font color=FF0000 size=4>**垃圾回收机制何时运行是不可预测的**，**因此 ES6 规定 WeakMap 不可遍历**</font>。
 
-所以 <font color=FF0000>WeakMap 不像 Map，一是没有遍历操作（即没有 keys()、values() 和 entries() 方法），也没有 size 属性，也不支持 clear 方法</font>；所以 <font color=FF0000>**WeakMap只有四个方法可用**：get()、set()、has()、delete()</font>。
+所以 <font color=FF0000>WeakMap 不像 Map，一是没有遍历操作（即没有 keys()、values() 和 entries() 方法），也没有 size 属性，也不支持 clear 方法</font>；所以 <font color=FF0000>**WeakMap 只有四个方法可用**：get()、set()、has()、delete()</font>。
 
 #### 应用
 
@@ -375,7 +375,7 @@ export default Person;
 
 **注：**这里补充一张 NJU《计算机系统基础》课程的 PPT 截图：可以看到「栈」和「堆」在内存中的位置，以及他们两者的“数据存储方向”。另外，关于「栈」：「栈」又被称为栈帧 ( stack frame ) 结构，ESP ( Extended Stack Pointer ) 是栈顶指针寄存器（亦即，栈指针），EBP ( Extended Base Pointer ) 是栈底指针寄存器（亦即，帧指针）。
 
-<img src="https://s2.loli.net/2022/04/01/1ESFxit6IGcrKmv.png" alt="image-20220401182634913" style="zoom: 33%;" />
+<img src="https://s2.loli.net/2022/04/01/1ESFxit6IGcrKmv.png" alt="image-20220401182634913" style="zoom: 30%;" />
 
 **问题：**既然栈中数据在函数执行结束后就会被销毁，那么 JavaScript 中函数闭包该如何实现？先简单来个闭包：
 
@@ -534,6 +534,34 @@ console.dir(test2())
 红框内仅有变量 a，而变量 b 已经消失不见了。**注：**这里 “变量a” 不是局部变量，存在「堆」中；“变量b” 是局部变量，存在「栈」中。
 
 摘自：[JS 变量存储？栈 & 堆？NONONO!](https://juejin.cn/post/6844903997615128583)
+
+#### 《「2021」高频前端面试题汇总之JavaScript篇》中的补充：
+
+**简单数据类型** 直接存储在栈 ( stack ) 中的简单数据段，占据空间小、大小固定，属于被频繁使用数据，所以放入栈中存储。
+
+**引用数据类型** 存储在堆 ( heap ) 中的对象，占据空间大、大小不固定。如果存储在栈中，将会影响程序运行的性能；<font color=FF0000 size=4>**引用数据类型在栈中存储了指针，该指针指向堆中该实体的起始地址**</font>。<font color=FF0000>当解释器寻找引用值时，会首先检索其在栈中的地址，取得地址后从堆中获得实体</font>。
+
+<font color=FF0000 size=4>**栈区内存由编译器自动分配释放**</font>，存放函数的参数值，局部变量的值等。其操作方式类似于数据结构中的栈。
+
+<font color=FF0000><font size=4>**堆区内存一般由开发着分配释放**</font>，若开发者不释放，程序结束时可能由垃圾回收机制回收</font>
+
+##### IEEE 754 标准在 JS 数字存储 中的使用
+
+先说背景：为什么 `0.1 + 0.2 !== 0.3` 且 `console.log(0.1 + 0.2)` 的结果为 `0.30000000000000004` ？
+
+0.1 的二进制是 `0.0001100110011001100...`（ 1100 循环），0.2 的二进制是 `0.00110011001100...`（ 1100 循环）；所以加起来的结果是 `0.30000000000000004` 。如何解决：
+
+一个直接的解决方法就是设置一个误差范围，通常称为 “机器精度”。对 JavaScript 来说，这个值通常为 2^-52^ ，在 ES6 中，提供了`Number.EPSILON` 属性，而它的值就是 2^-52^，只要判断 `0.1+0.2-0.3` 是否小于 `Number.EPSILON` ，如果小于，就可以判断为 0.1+0.2 ===0。
+
+```js
+function numberepsilon(arg1,arg2){                   
+  return Math.abs(arg1 - arg2) < Number.EPSILON;        
+}        
+
+console.log(numberepsilon(0.1 + 0.2, 0.3)); // true
+```
+
+摘自：[「2021」高频前端面试题汇总之JavaScript篇（上）](https://juejin.cn/post/6940945178899251230)
 
 
 
@@ -2737,6 +2765,19 @@ function type(obj) {
    ```js
    const reg = /abc/
    console.log(Object.getPrototypeOf(reg).constructor.name) // 'RegExp'
+   ```
+
+   另外，在看 [「2021」高频前端面试题汇总之CSS篇](https://juejin.cn/post/6905539198107942919) 时，发现这样一个之前没见过的写法（虽然没什么）：
+
+   ```js
+   console.log((2).constructor === Number); // true
+   ```
+
+   其他的基础类型也可以用，这就等价于：
+
+   ```js
+   const testNum = 2
+   console.log(testNum.constructor === Number); // true
    ```
 
 3. **instanceof**

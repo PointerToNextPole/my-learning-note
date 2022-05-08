@@ -1,4 +1,4 @@
-# CS常见英文
+# CS 常见英文
 
 - **curly brackets：**花括号
 - **synchronous：** 同步

@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                                             
+>                                               
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3191,7 +3191,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                 
+  >                                                                                   
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3210,7 +3210,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                 
+  >                                                                                   
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -5339,7 +5339,7 @@ Bar.prototype.constuctor = Foo
 
 JavaScript 不是类型语言。与许多其他编程语言不同，<mark>JavaScript 不定义不同类型的数字，比如整数、短、长、浮点等等</mark>。
 
-在JavaScript中，<mark>数字不分为整数类型和浮点型类型，<font color=FF0000>**所有的数字都是由 浮点型类型**</font></mark>。JavaScript 采用 IEEE754 标准定义的 64 位浮点格式表示数字，它能表示最大值为 ±1.7976931348623157e+308，最小值为 ±5e-324。
+在JavaScript中，<mark>数字不分为整数类型和浮点型类型，<font color=FF0000>**所有的数字都是由 浮点型类型**</font></mark>。JavaScript 采用 IEEE 754 标准定义的 64 位浮点格式表示数字，它能表示最大值为 ±1.7976931348623157e+308，最小值为 ±5e-324。
 
 | 值 (aka Fraction/Mantissa) | 指数                | Sign       |
 |:-------------------------:|:-----------------:|:----------:|
@@ -5362,7 +5362,7 @@ JavaScript 不是类型语言。与许多其他编程语言不同，<mark>JavaSc
 示例：
 
 ```js
-var myNumber=128;
+var myNumber = 128;
 myNumber.toString(16);  // 返回 80
 myNumber.toString(8);  // 返回 200
 myNumber.toString(2);  // 返回 10000000
@@ -11055,7 +11055,7 @@ DataTransfer 对象用于保存拖动并放下（drag and drop，**注：**html 
 
 <img src="https://s2.loli.net/2022/01/10/TtEvVNhMSod7pxZ.png" alt="https://mmbiz.qpic.cn/mmbiz_png/zPh0erYjkib1W6VwQ03NU6clT1alBexqeIjfMdbbdArgJU4z4DRxqjxJ7zrs1FekxRqZ1HTSzcaYiacibej19JW9w/640.png" style="zoom:75%;" />
 
-任务还是每次取一个执行，执行完检查下要不要渲染，处理下 worker 消息，但是<font color=FF0000>也给高优先级的“急事”加入了插队机制，会在执行完任务之后，把所有的急事（micro task）全部处理完</font>。这样，event loop 貌似就挺完美的了，每次都会检查是否要渲染，也能更快的处理 JS 的“急事”。
+任务还是每次取一个执行，执行完检查下要不要渲染，处理下 worker 消息，但是<font color=FF0000>也给高优先级的“急事”加入了插队机制，会在执行完任务之后，把所有的急事 ( micro task ) 全部处理完</font>。这样，event loop 貌似就挺完美的了，每次都会检查是否要渲染，也能更快的处理 JS 的“急事”。
 
 <font size=4>**requestAnimationFrame**</font>
 
@@ -11116,6 +11116,20 @@ window.requestAnimationFrame(callback);
 **返回值：**<font color=FF0000>一个 long 整数，请求 ID ，是回调列表中唯一的标识</font>。是个非零值，没别的意义。你<font color=FF0000>可以传这个值给 window.cancelAnimationFrame() 以取消回调函数</font>。
 
 摘自：[MDN - window.requestAnimationFrame](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestAnimationFrame)
+
+> **使用 requesAnimationFrame 比 setTimeout / setInterval 好在哪里？**
+>
+> - **CPU 节能：**
+>
+>   使用 setInterval 实现的动画，当页面被隐藏或最小化时，setInterval 仍然在后台执行动画任务，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费CPU资源。
+>
+>   而 RequestAnimationFrame 则完全不同，当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，因此跟着系统走的 RequestAnimationFrame 也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了 CPU 开销。
+>
+> - **函数<font color=FF0000>节流</font>**：在高频率事件（ resize, scroll 等）中，为了防止在一个刷新间隔内发生多次函数执行，<font color=FF0000>RequestAnimationFrame 可保证每个刷新间隔内，函数只被执行一次</font>。
+>
+> - **减少 DOM 操作**：<font color=FF0000>requestAnimationFrame **会把每一帧中的所有 DOM 操作集中起来**，**在一次重绘或回流中完成**</font>；并且重绘或回流的时间间隔会紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+>
+> 摘自：[「2021」高频前端面试题汇总之CSS篇](https://juejin.cn/post/6905539198107942919)
 
 #### window.requestIdleCallback 🧪
 

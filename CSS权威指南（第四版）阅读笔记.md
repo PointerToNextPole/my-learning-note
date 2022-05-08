@@ -7,21 +7,21 @@
 **在CSS 中，<font color=FF0000>元素通常有两种形式：置换元素和⾮置换元素</font>。**
 
 - **置换元素**
-  	<font color=FF0000>置换元素（replaced element）指用来置换元素内容的部分不由文档内容直接表示</font>。
+  <font color=FF0000>置换元素（replaced element）指用来置换元素内容的部分不由文档内容直接表示</font>。
 
-  ​	在HTML中，最常见的置换元素要数`img`，它的内容由文档之外的图像文件替换。其实，通过下面这个简单的例子可以看出，img元素没有内容：
+  在 HTML 中，最常见的置换元素要数 `img` ，它的内容由文档之外的图像文件替换。其实，通过下面这个简单的例子可以看出，img 元素没有内容：
 
   ```html
   <img src=＂howdy.gif＂>
   ```
 
-  ​	这段标记只包含一个元素名和一个属性。如不指向外部内容（这里通过src属性指定一个图像），这个元素什么也表示不了。如果指向的图像文件存在，文档会把那个图像显示出来；否则，浏览器什么也不显示，或者显示“图像损坏”占位图。
-   	`input`元素类似，根据类型的不同，会替换成单选按钮、复选框或文本输入框。
+  这段标记只包含一个元素名和一个属性。如不指向外部内容（这里通过 src 属性指定一个图像），这个元素什么也表示不了。如果指向的图像文件存在，文档会把那个图像显示出来；否则，浏览器什么也不显示，或者显示“图像损坏”占位图。
+  `input` 元素类似，根据类型的不同，会替换成单选按钮、复选框或文本输入框。
 
-- 非置换元素
-  HTML元素大部分是非置换元素（nonreplaced element），即元素的内容由用户代理（通常是浏览器）在元素自身生成的框中显示。
+- **非置换元素**
+  HTML 元素大部分是非置换元素 ( nonreplaced element )，即元素的内容由用户代理（通常是浏览器）在元素自身生成的框中显示。
 
-  例如，`<span>hi there<span>`是非置换元素，用户代理会显示“hi there”文本。
+  例如，`<span>hi there<span> ` 是非置换元素，用户代理会显示 “hi there” 文本。
 
   <font color=FF0000>段落（p）、标题（h1～h5）、单元格（table中的th和td）、列表（list）</font>，以及HTML中<font color=FF0000>其他几乎所有元素</font>都是非置换元素。
 
@@ -29,9 +29,9 @@
 
 #### **P12 - P13**：摘抄
 
-<img src="https://i.loli.net/2021/02/09/OnIoZDwK4CEyzBi.png" style="zoom: 40%;" />
+<img src="https://i.loli.net/2021/02/09/OnIoZDwK4CEyzBi.png" style="zoom: 37%;" />
 
-<img src="https://i.loli.net/2021/02/09/HsR7vZkoJEyWqNr.png" style="zoom:40%;" />
+<img src="https://i.loli.net/2021/02/09/HsR7vZkoJEyWqNr.png" style="zoom:37%;" />
 
 
 
