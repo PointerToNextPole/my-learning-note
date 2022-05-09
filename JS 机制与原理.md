@@ -886,7 +886,7 @@ checkscope();
 
 #### 执行上下文是如何被创建的
 
-执行上下文分两个阶段创建：**1）创建阶段；** **2）执行阶段**
+<font color=FF0000>执行上下文分两个阶段创建：**1）创建阶段；** **2）执行阶段**</font>
 
 #### 创建阶段
 
@@ -3218,6 +3218,14 @@ Promise.all([Promise.resolve(1), Promise.resolve(2)])
 摘自：[ES6 系列之我们来聊聊 Promise](https://github.com/mqyqingfeng/Blog/issues/98)
 
 ### Generator 的自动执行
+
+##### 关于 generator 实现异步原理的总结
+
+> generator 可以：在函数的执行过程中，将函数的执行权转移出去，在函数外部还可以将执行权转移回来；所以可以：<font color=FF0000 size=4>**当遇到异步函数执行的时候，将函数执行权转移出去；当异步函数执行完毕时再将执行权给转移回来**</font>。
+>
+> 因此在 generator 内部对于异步操作的方式，可以以同步的顺序来书写。使用这种方式需要考虑的问题是何时将函数的控制权转移回来，因此需要有一个自动执行 generator 的机制，比如说 co 模块等方式来实现 generator 的自动执行。
+>
+> 摘自：[「2021」高频前端面试题汇总之JavaScript篇（下）](https://juejin.cn/post/6941194115392634888)
 
 #### 单个异步任务
 

@@ -705,3 +705,23 @@ setTimeout(function() {
 
 **注：**这题文章的答案 和 实际运行的结果有出入；应该按实际运行结果为准。这里就不放答案了，自行运行即可。
 
+另外，2022/5/9 又做了一遍，对了。
+
+##### 事件队列第3题
+
+```js
+console.log('script start')
+let promise1 = new Promise(function (resolve) {
+    console.log('promise1')
+    resolve()
+    console.log('promise1 end')
+}).then(function () {
+    console.log('promise2')
+})
+setTimeout(function(){
+    console.log('settimeout')
+})
+console.log('script end')
+```
+
+**注：**这题错了，有点意外；但是说明还是存在知识盲点：promise 中 resolve() 之后的函数是会执行的，也是同步的；reject 之后的函数就不会执行了

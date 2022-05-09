@@ -840,9 +840,9 @@ output: {
 
 - **<font color=0000FF>asset/inline</font>：**导出一个资源的data URI。之前通过使用 <font color=0000FF>**url-loader**</font> 实现
 
-- **asset/source：**导出资源的<font color=FF0000>源代码</font>。之前通过使用raw-loader 实现（一般用于字体文件）
+- **asset/source：**导出资源的<font color=FF0000>源代码</font>。之前通过使用 raw-loader 实现（一般用于字体文件）
 
-- **asset：**<font color=FF0000>在导出一个data URI 和发送一个单独的文件之间自动选择</font>。之前<font color=FF0000>通过使用url-loader，并且配置资源体积限制实现</font>
+- **asset：**<font color=FF0000>在导出一个data URI 和发送一个单独的文件之间自动选择</font>。之前<font color=FF0000>通过使用 url-loader，并且配置资源体积限制实现</font>
 
   ```js
   {

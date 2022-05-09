@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                                               
+>                                                 
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -725,7 +725,7 @@ for (const [index, val] of arr.entries()) {
 
 #### **for ... of 和 for ... in 的区别**
 
-无论是for...in还是for...of语句都是迭代一些东西。它们之间的主要区别在于它们的迭代方式。
+无论是 for...in 还是 for...of 语句都是迭代一些东西。它们之间的主要区别在于它们的迭代方式。
 
 - for...in 语句以任意顺序迭代对象的可枚举属性。
 - for...of 语句遍历可迭代对象定义要迭代的数据。
@@ -734,11 +734,11 @@ for (const [index, val] of arr.entries()) {
 
 **更多：**
 
-- 推荐<font color=FF0000>在循环对象属性的时候，使用for...in</font>，<font color=0000FF>在遍历数组的时候的时候使用for...of</font>。
-- **<font color=FF0000>for...in循环出的是key</font>，<font color=0000FF>for...of循环出的是value</font>（<font color=FF0000>for in是遍历键名</font>，<font color=0000FF>for of是遍历键值</font>）**
-- 注意，<font color=0000FF>for...of是ES6新引入的特性</font>。修复了ES5引入的for...in的不足
-- <font color=FF0000>for...of不能循环普通的对象，需要通过和Object.keys()搭配使用</font>
-- for...of兼容性还不够，移动端安卓微信浏览器貌似不支持，苹果的可以；web端IE支持也不够，chrome可以。
+- 推荐<font color=FF0000>在循环对象属性的时候，使用 for...in </font>，<font color=0000FF>在遍历数组的时候的时候使用 for...of</font>。
+- **<font color=FF0000>for...in 循环出的是 key</font>，<font color=0000FF>for...of 循环出的是value</font>（ <font color=FF0000>for in是遍历键名</font>，<font color=0000FF>for of是遍历键值</font>）**
+- 注意，<font color=0000FF>for...of 是 ES6 新引入的特性</font>。修复了 ES5 引入的for...in的不足
+- <font color=FF0000>for...of 不能循环普通的对象，需要通过和 Object.keys() 搭配使用</font>
+- for...of 兼容性还不够，移动端安卓微信浏览器貌似不支持，苹果的可以；web端 IE 支持也不够，chrome 可以。
 
 摘自：[javascript总for of和for in的区别？](https://segmentfault.com/q/1010000006658882)
 
@@ -746,11 +746,21 @@ for (const [index, val] of arr.entries()) {
 
 - for of <font color=FF0000 size=4>**遍历的是拥有 iterator 属性（注：即 Symbol.iterator ）的对象**</font>，出来的是属性值；
 
-- for in 遍历对象的属性，出来的是属性名，<font color=FF0000 size=4>**包括继承的属性**</font>，<font color=FF0000>不包括 enumerable 为 false 的属性，不包括 symbol</font>
+- for in 遍历对象的属性，出来的是属性名，<font color=FF0000 size=4>**包括继承的属性**</font>，<font color=FF0000>**可枚举的属性**</font>（ enumerable 为 true 的属性），<font color=FF0000>**不包括 symbol**</font>
 
-  注：如果不想要 for in 打印出 父类的属性，可以用 hasOwnProperty 方法，判断是否为本对象的属性。
+  **注：**如果不想要 for in 打印出 父类的属性，可以用 hasOwnProperty 方法，判断是否为本对象的属性。
 
 摘自：[峰华前端工程师动态 的 评论区 -PILOT- 的评论](https://t.bilibili.com/524677482676016409)
+
+#### forEach 和 map 方法有什么区别
+
+这方法都是用来遍历数组的，两者区别如下：
+
+- **forEach()：**会针对每一个元素执行提供的函数，对数据的操作<font color=FF0000>**会改变原数组**，该方法**没有返回值**</font>
+- **map()：**<font color=FF0000>**不会改变原数组的值**，**返回一个新数组**</font>，新数组中的值为原数组调用函数处理之后的值
+
+
+摘自：[「2021」高频前端面试题汇总之JavaScript篇（上）](https://juejin.cn/post/6940945178899251230)
 
 
 
@@ -3046,7 +3056,7 @@ promise.then(_ => console.log(_))  // 1
 
 #### **异步函数**
 
-异步函数 ( async function ) 是 <font color=FF0000>ECMAScript 2017</font> (ECMA-262) 标准的规范，几乎被所有浏览器所支持，除了 Internet Explorer。<mark>它们是基于promises的语法糖，使异步代码更易于编写和阅读</mark>（<font color=FF0000>**同时，<font size=4>async/await 也是 generator 的语法糖</font>**</font>）
+异步函数 ( async function ) 是 <font color=FF0000>ECMAScript 2017</font> ( ECMA-262 ) 标准的规范，几乎被所有浏览器所支持，除了 Internet Explorer。<mark>它们是基于promises的语法糖，使异步代码更易于编写和阅读</mark>；<font color=FF0000>**同时，<font size=4>async/await 也是 generator 的语法糖</font>**</font>，关于 generator 实现异步同步执行，可以参考 [[JS 机制与原理#Generator 的自动执行#关于 generator 实现异步原理的总结]]
 
 **示例：**
 
@@ -3191,7 +3201,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                   
+  >                                                                                     
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3210,7 +3220,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                   
+  >                                                                                     
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -8904,6 +8914,12 @@ obj.hasOwnProperty(prop)
 **备注：**即使属性的值是 null 或 undefined，只要属性存在，hasOwnProperty 依旧会返回 true。
 
 摘自：[MDN - Object.prototype.hasOwnProperty()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty)
+
+##### 《红宝书》中的关于 hasOwnProperty 的补充
+
+hasOwnProperty() 方法（可以）<font color=FF0000>用于 **确定** 某个属性是在实例上，还是在原型对象上</font>。这个方法是继承自 Object 的，会<font color=FF0000>在（该）属性存在于 **调用它的对象实例上时**，**返回 true**</font>
+
+**摘自：**《JS 高程 第四版》P229
 
 
 
