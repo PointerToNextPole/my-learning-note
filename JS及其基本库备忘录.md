@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                                                 
+>                                                   
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3201,7 +3201,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                     
+  >                                                                                       
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3220,7 +3220,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                     
+  >                                                                                       
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -9258,6 +9258,12 @@ class AbstractClass {
 >
 > 摘自：[现代 JS 教程 - Proxy 和 Reflect - Reflect](https://zh.javascript.info/proxy#reflect)
 
+##### Vue3 官方文档中的补充
+
+> 使用 Proxy 的一个难点是 this 绑定。我们希望任何方法都绑定到这个 Proxy，而不是目标对象，这样我们也可以拦截它们。值得庆幸的是，ES6 引入了另一个名为 Reflect 的新特性，它允许我们以最小的代价消除了这个问题。
+>
+> 摘自：[Vue3 官方文档 - 深入响应性原理](https://v3.cn.vuejs.org/guide/reactivity.html)
+
 **静态方法**
 
 - **Reflect.<font color=FF0000>apply</font>(target, thisArgument, argumentsList)：**<font color=FF0000>对一个函数进行调用操作，同时可以传入一个数组作为调用参数</font>。和 Function.prototype.apply() 功能类似。
@@ -9282,9 +9288,9 @@ class AbstractClass {
 
 - **Reflect.isExtensible(target)：**类似于 Object.isExtensible().
 
-- **Reflect.<font color=FF0000>ownKeys</font>(target)：**<font color=FF0000>返回一个包含所有自身属性（不包含继承属性）的数组</font>。(<mark>类似于 Object.keys(), 但不会受enumerable影响</mark>).
+- **Reflect.<font color=FF0000>ownKeys</font>(target)：**<font color=FF0000>返回一个包含所有自身属性（不包含继承属性）的数组</font>。(<mark>类似于 Object.keys() ，但不会受enumerable影响</mark>).
 
-- **Reflect.preventExtensions(target)：**类似于 Object.preventExtensions()。返回一个Boolean。
+- **Reflect.preventExtenions(target)：**类似于 Object.preventExtensions()。返回一个Boolean。
 
 - **Reflect.<font color=FF0000>set</font>(target, propertyKey, value[, receiver])：**<font color=FF0000>将值分配给属性的函数（即：为这个对象添加一个新的属性）</font>。返回一个Boolean，如果更新成功，则返回true。
 
@@ -9988,24 +9994,25 @@ Symbol 对象可以通过一个可选的描述创建，可用于调试，但不�
 #### Proxy
 
 Proxy 对象用于创建一个对象的代理，从而实现基本操作的拦截和自定义（如属性查找、赋值、枚举、函数调用等）。
-**术语**
+
+##### 术语
 
 - <font color=FF0000>**handler：**包含捕捉器 ( trap ) 的占位符对象，可译为处理器对象。</font>
 - <font color=FF0000>**traps：**提供属性访问的方法。这类似于操作系统中捕获器的概念。</font>
 - **target：**被 Proxy 代理虚拟化的对象。它常被作为代理的存储后端。根据目标验证关于对象不可扩展性或不可配置属性的不变量（保持不变的语义）。
 
-**语法**
+##### 语法
 
 ```js
 const p = new Proxy(target, handler)
 ```
 
-**参数**
+##### 参数
 
 - **target：**<font color=FF0000>要使用 Proxy 包装的目标对象</font>（<mark>可以是任何类型的对象，包括原生数组，函数，甚至另一个代理</mark>）。
 - **handler：**一个通常以函数作为属性的对象，各属性中的函数分别定义了在执行各种操作时代理 p 的行为。
 
-**方法**
+##### 方法
 
 - **Proxy.revocable()：**<font color=FF0000>创建一个可撤销的 Proxy 对象</font>。
 
@@ -10025,7 +10032,7 @@ const p = new Proxy(target, handler)
   >
   > 摘自：[现代 JS 教程 - Proxy 和 Reflect - 可撤销 Proxy](https://zh.javascript.info/proxy#ke-che-xiao-proxy)
 
-**handler 对象的方法**
+##### handler 对象的方法
 
 handler 对象是一个容纳一批特定属性的占位符对象。它包含有 Proxy 的各个捕获器（trap）。所有的捕捉器是可选的。如果没有定义某个捕捉器，那么就会保留源对象的默认行为。
 
