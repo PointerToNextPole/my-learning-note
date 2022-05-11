@@ -8470,8 +8470,8 @@ Object.assign() 方法用于<font color=FF0000>将所有可枚举属性的值</f
 补充：如果要实现深拷贝，除了自己手写实现外；还可以使用：
 
 - lodash 的 deepClone
-- JSON.parse(JSON.toString())
-- structuredClone()
+- JSON.parse( JSON.toString() )
+- structuredClone() ，**注：**这是一个新特性
 
 
 
