@@ -6,7 +6,9 @@
 
 
 
-**Vue3带来的变化（源码）**
+#### Vue3带来的变化
+
+##### 源码
 
 - **源码通过monorepo的形式来管理源代码：**
 
@@ -17,9 +19,7 @@
   - 在Vue2.x的时候, Vue使用Flow来进行类型检测;
   - 在Vue3.x的时候, Vue的源码全部使用TypeScript来进行重构,并且Vue本身对TypeScript支持也更好了;
 
-
-
-**Vue3带来的变化（性能）**
+##### 性能
 
 - **用Proxy进行数据劫持：**
   - 在Vue2.x的时候，Vue2是使用 Object.defineProperty 来劫持数据的 getter和 setter方法的
@@ -32,9 +32,7 @@
 - **包括编译方面的优化：**
   - 生成Block Tree、Slot编译优化、diff算法优化
 
-
-
-**Vue3带来的变化（新的API）**
+##### 新的API
 
 - **由Options API到Composition API：**
 
@@ -69,7 +67,7 @@ data() {
 
 
 
-**template 属性**
+#### **template 属性**
 
 **template属性：表示的是Vue需要帮助我们渲染的模板信息**
 
@@ -125,7 +123,7 @@ data() {
 
   
 
-**阅读Vue3 源码**
+#### **阅读 Vue3 源码**
 
 如果想要学习Vue的源码，比如看createApp的实现过程，应该怎么办？步骤如下：
 
@@ -155,7 +153,7 @@ data() {
 
 
 
-**v-pre 和 v-cloak**
+#### **v-pre 和 v-cloak**
 
 - **v-pre：**跳过元素和它的子元素的编译过程，显示原始的Mustache标签。
 
@@ -177,9 +175,12 @@ data() {
 
   即：在渲染时可能会出现，差值表达式没有来得及转换成“真值”，这时候就会显示 {{foo}}；添加这个属性，可让差值表达式所在的元素，在转换成“真值”前不显示，直到转换成功再显示。
 
-  
 
-**Vue中v-bind绑定class**
+
+
+#### v-bind
+
+##### Vue中v-bind绑定class
 
 数组中是可以添加三元运算符，当然更好的方法是 数组中嵌套对象。
 
@@ -189,7 +190,7 @@ data() {
 <div :class="['foo', 'bar', {baz: isBaz, qux: isQuz}]"></div>
 ```
 
-**Vue中v-bind绑定style**
+##### Vue中v-bind绑定style
 
 style中可以写驼峰也可以写短横线分隔 (kebab-case)，但是短横线分隔必须要加上引号：
 
@@ -200,9 +201,7 @@ style中可以写驼峰也可以写短横线分隔 (kebab-case)，但是短横�
 
 另外，style 对象中的键值对，值是引用类型或者是一个字符串。如果写如下代码且data中没有定义，将会报错：`:style="color: red"`，因为 `red` 是一个变量，且没有定义。应该写成：`:style="color: 'red'"`
 
-
-
-**V-bind 直接绑定对象**
+##### **V-bind 直接绑定对象**
 
 ```html
 <div v-bind="foo">foo</div>
@@ -227,9 +226,7 @@ style中可以写驼峰也可以写短横线分隔 (kebab-case)，但是短横�
 
 一般用于高级组件开发中传递配置，或者是父组件向子组件中传递多个值，而用对象直接封装（见下面的 "**父子组件通信方式**" ）。
 
-
-
-#### 关于 v-bind 的个人补充：
+##### 关于 v-bind 的个人补充
 
 v-bind() 可以用于 \<style> 标签，如下示例摘自：[Vue3 成为默认版本后新文档 - SFC CSS Features - v-bind() in CSS](https://vuejs.org/api/sfc-css-features.html#v-bind-in-css)
 
@@ -257,7 +254,9 @@ export default {
 
 
 
-**v-on修饰符**
+#### v-on
+
+##### v-on修饰符
 
 - .stop - 调用event.stopPropagation()。
 - .prevent - 调用event.preventDefault()。
@@ -270,8 +269,6 @@ export default {
 - .middle - 只当点击鼠标中键时触发。
 - .passive - { passive: true } 模式添加侦听器
 
-
-
 **v-on 绑定对象用于绑定多个事件**
 
 ```html
@@ -279,8 +276,6 @@ export default {
 ```
 
 这里的 v-on 也可以使用简写
-
-
 
 **v-on传递参数，尤其是事件对象**
 
@@ -309,7 +304,9 @@ export default {
 
 
 
-**v-if 的渲染原理：**
+#### v-if & v-show
+
+##### v-if 的渲染原理
 
 v-if是惰性的
 
@@ -317,9 +314,7 @@ v-if是惰性的
 
 - 当条件为true时，才会真正渲染条件块中的内容
 
-
-
-**v-show和v-if的区别**
+##### v-show和v-if的区别
 
 - **首先，在用法上的区别：**v-show是不支持template
 
@@ -335,7 +330,9 @@ v-if是惰性的
 
 
 
-**key的作用**
+#### key && diff
+
+##### key 的作用
 
 - key属性主要用在Vue的虚拟DOM算法，在新旧nodes对比时辨识VNodes；
 
@@ -343,7 +340,7 @@ v-if是惰性的
 
 - 而使用key时，它会基于key的变化重新排列元素顺序，并且会移除 / 销毁 key 不存在的元素
 
-**diff算法**
+##### diff 算法
 
 Vue中对于列表的更新究竟是如何操作的？Vue<font color=FF0000>会对于有key和没有key会调用两个不同的方法；</font>
 
@@ -379,6 +376,8 @@ Vue中对于列表的更新究竟是如何操作的？Vue<font color=FF0000>会�
 
 
 
+#### computed
+
 **计算方法可以写成函数，也可以写成对象**
 
 - 如果写成函数，则默认是getter方法（可以说：这种方法是下面写成对象方式的语法躺）
@@ -401,9 +400,13 @@ computed: {
 }
 ```
 
+Vue3不支持过滤器，不过：推荐两种做法：使用计算属性，或者 使用全局的方法
+
+全局方法是指：在 app.config.globalProperties 对象中定义的方法
 
 
-**侦听器 watch**
+
+#### 侦听器 watch
 
 用法：
 
@@ -485,7 +488,6 @@ computed: {
   )
   ```
   
-  
 
 关于watch，更多的可以参考官方文档中的：https://v3.cn.vuejs.org/api/options-data.html#watch，这里有更多示例
 
@@ -558,14 +560,6 @@ vm.a = 3 // => new: 3, old: 1
 
 
 
-
-
-Vue3不支持过滤器，不过：推荐两种做法：使用计算属性，或者 使用全局的方法
-
-全局方法是指：在 app.config.globalProperties 对象中定义的方法
-
-
-
 **v-model实际上是一个语法糖。v-model的原理其实是背后有两个操作：**
 
 - v-bind 绑定value属性的值
@@ -580,7 +574,7 @@ Vue3不支持过滤器，不过：推荐两种做法：使用计算属性，或�
 
 
 
-**lazy修饰符的作用：**
+##### lazy 修饰符的作用
 
 - **默认情况下**：<font color=FF0000>v-model在进行双向绑定时，绑定的是input事件</font>，那么会在每次内容输入后就将最新的值和绑定的属性进行同步
 
@@ -592,9 +586,9 @@ Vue3中，之所以 \<template> 标签下，可以添加多个标签，而不再
 
 
 
-**webpack**
+#### webpack
 
-webpack是一个静态的模块化打包工具，为现代的JavaScript应用程序：
+webpack 是一个静态的模块化打包工具，为现代的 JavaScript 应用程序：
 
 - **打包bundler：**webpack可以将帮助我们进行打包，所以它是一个打包工具
 - **静态的static：**这样表述的原因是我们最终可以将代码打包成最终的静态资源（部署到静态服务器）
@@ -603,7 +597,7 @@ webpack是一个静态的模块化打包工具，为现代的JavaScript应用程
 
 webpack-cli 的作用是：在命令行中使用webpack，比如 `webpack --entry ./src/index.js` 需要对命令进行读取，所以需要webpack-cli。
 
-**webpack、webpack-cli之间的关系：**
+##### webpack、webpack-cli之间的关系
 
 - 执行webpack命令，会执行node_modules下的.bin目录下的webpack
 
@@ -613,9 +607,7 @@ webpack-cli 的作用是：在命令行中使用webpack，比如 `webpack --entr
 
 - 所以在安装webpack时，我们需要同时安装webpack-cli（第三方的脚手架事实上是没有使用webpack-cli的，而是类似于自己的vue-service-cli的东西）
 
-
-
-**webpack.config.js**
+##### webpack.config.js
 
 webpack.config.js 中的 output 下 path 对应的值必须是绝对路径，所以需要使用 path.resolve() 做拼接，来获取绝对路径
 
@@ -627,13 +619,9 @@ webpack.config.js 是webpack打包时默认读取的名字，如果修改了这�
 }
 ```
 
-
-
 npm scripts 中的命令，比如`"serve": "webpack serve"` ，webpack会到node_modules 下面的 .bin文件下去找 webpack（和npx 一样），而后执行。
 
-
-
-**webpack是如何对项目进行打包的？**
+##### webpack是如何对项目进行打包的
 
 - 事实上webpack在处理应用程序时，它会根据命令或者配置文件找到入口文件
 
@@ -641,13 +629,9 @@ npm scripts 中的命令，比如`"serve": "webpack serve"` ，webpack会到node
 
 - 然后遍历图结构，打包一个个模块（根据文件的不同使用不同的loader来解析）
 
-
-
 webpack 默认（没有配置webpack.config.js 的情况下），只能对js代码进行解析（新的ES，似乎哈是要借助 babel），对于css不能进行解析（会报错）。所以，需要使用 css-loader 对 css 模块进行解析。
 
 但是，<font color=FF0000 size=4>**仅仅使用 css-loader 对css 文件进行加载是不足以让css样式 显示到页面上的，因为css-loader 只是做了解析，不会将解析之后的页面插入到页面中，如果希望将css 插入到 style中，还需要 style-loader**</font>
-
-
 
 **如何使用loader来加载文件呢？有三种方式（这里不一定是css文件，也可以是其他格式文件）：**
 
@@ -667,9 +651,7 @@ webpack 默认（没有配置webpack.config.js 的情况下），只能对js代�
 
 - **配置方式：**最常用。
 
-
-
-**loader 配置方式**
+##### loader 配置方式
 
 配置方式表示的意思是在 webpack.config.js 文件中写明配置信息：
 
@@ -677,7 +659,7 @@ webpack 默认（没有配置webpack.config.js 的情况下），只能对js代�
 
 - 这种方式可以更好的表示loader的配置，也方便后期的维护，同时也让你对各个Loader有一个全局的概览
 
-**module的 rules的配置如下：**
+##### module的 rules的配置
 
 rules属性对应的值是一个数组：[Rule]。数组中存放的是一个个的Rule，Rule是一个对象，对象中可以设置多个属性：
 
@@ -696,9 +678,7 @@ rules属性对应的值是一个数组：[Rule]。数组中存放的是一个个
 
 - **loader属性：**Rule.use: [ { loader } ] 的简写
 
-
-
-**认识PostCSS工具**
+##### PostCSS 工具
 
 - **什么是PostCSS？**
 
@@ -756,9 +736,7 @@ rules属性对应的值是一个数组：[Rule]。数组中存放的是一个个
 
 postcss-preset-env也是一个postcss的插件，它可以帮助我们将一些现代的CSS特性，转成大多数浏览器认识的CSS，并且会根据目标浏览器或者运行时环境添加所需的polyfill；也包括会自动帮助我们添加autoprefixer（所以相当于已经内置了autoprefixer）；
 
-
-
-**file-loader**
+##### file-loader
 
 file-loader的作用就是：<font color=FF0000>帮助我们处理 import() / require()方式引入的一个文件资源，并且会将它放到我们输出的文件夹中</font>。
 
@@ -780,9 +758,7 @@ imgEl.src = fooImage
 document.body.appendChild(imgEl)
 ```
 
-
-
-**file-loader 打包后的文件命名**
+##### file-loader 打包后的文件命名
 
 可以使用PlaceHolders来完成，webpack给我们提供了大量的PlaceHolders来显示不同的内容：
 
@@ -826,9 +802,7 @@ output: {
 }
 ```
 
-
-
-**webpack@5 asset module type 资源模块类型**
+##### webpack@5 asset module type 资源模块类型
 
 在webpack5之前，加载这些资源我们需要使用一些loader，比如raw-loader 、url-loader、file-loader
 
@@ -859,9 +833,7 @@ output: {
   }
   ```
 
-
-
-**webpack plugins**
+##### webpack plugins
 
 Loader是用于特定的模块类型进行转换；
 
@@ -899,9 +871,7 @@ plugins: [
 ]
 ```
 
-
-
-**CopyWebpackPlugin**
+##### CopyWebpackPlugin
 
 在vue的打包过程中，如果我们将一些文件放到public的目录下，那么这个目录会被复制到dist文件夹中。这个复制的功能（的实现机制 / 原理），我们可以使用CopyWebpackPlugin来完成。
 
@@ -922,9 +892,7 @@ new CopyWebpackPlugin({
 })
 ```
 
-
-
-**mode**
+##### mode
 
 在webpack.config.js 中配置不同的mode，会有不同效果。比如：指定mode为"development"，将不会进行代码压缩；而指定为"production"，将会进行代码压缩。
 
@@ -944,9 +912,7 @@ mode配置包含着更多透明的配置，如果加上配置，则会暴露出�
 
 ![image-20211113112923700](https://i.loli.net/2021/11/13/akU7jLHszw6YgdD.png)
 
-
-
-**babel**
+##### babel
 
 babel是将一种语言，转换成另一种语言，所以就是一个编译器。
 
@@ -1042,9 +1008,7 @@ npx babel src --out-dir dist --presets=@babel/preset-env
 }
 ```
 
-
-
-**jsx 的babel配置**
+##### jsx 的 babel 配置
 
 **如果希望在项目中使用jsx，那么需要添加对jsx的支持：**jsx通常会通过Babel来进行转换（React编写的jsx就是通过babel转换的）；对于Vue来说，我们只需要在Babel中配置对应的插件即可。
 
@@ -1081,11 +1045,8 @@ npx babel src --out-dir dist --presets=@babel/preset-env
   </script>
   ```
 
-  
 
-
-
-**Vue打包后不同版本解析，其中包含：**
+##### Vue打包后不同版本解析，其中包含
 
 - **runtime + compiler：**如果在js文件中的Vue实例有template选项（vue createApp实例中有template），则必须用runtime + compiler
 - **runtime only：**默认使用
@@ -1102,8 +1063,6 @@ npx babel src --out-dir dist --presets=@babel/preset-env
 
 - **vue.cjs(.prod).js：**服务器端渲染使用，通过require()在Node.js中使用。
 
-
-
 **在Vue的开发过程中我们有三种方式来编写DOM元素：**
 
 - 方式一：template模板的方式（之前经常使用的方式）
@@ -1112,7 +1071,7 @@ npx babel src --out-dir dist --presets=@babel/preset-env
 
 - 方式三：通过.vue文件中的template来编写模板
 
-**它们的模板分别是如何处理的呢？**
+##### 它们的模板分别是如何处理的
 
 - 方式二中的h函数可以直接返回一个虚拟节点，也就是Vnode节点；
 
@@ -1128,9 +1087,7 @@ npx babel src --out-dir dist --presets=@babel/preset-env
 
 - 仅运行时没有包含对template版本的编译代码，相对更小一些；
 
-
-
-**SFC 相关的loader**
+##### SFC 相关的 loader
 
 要解析 sfc文件，需要使用 vue-loader，`npm install vue-loader@next`
 
@@ -1165,9 +1122,7 @@ plugins: [
 ]
 ```
 
-
-
-**搭建本地服务器**
+##### 搭建本地服务器
 
 在开发中，当文件发生变化时，希望可以自动的完成编译和展示。
 
@@ -1179,9 +1134,7 @@ plugins: [
 
 - webpack-dev-middleware
 
-
-
-**webpack watch**
+##### webpack watch
 
 **webpack给我们提供了watch模式：**在该模式下，webpack依赖图中的所有文件，只要有一个发生了更新，那么代码将被重新编译；我们不需要手动去运行npm run build指令了；
 
@@ -1205,8 +1158,6 @@ plugins: [
   ```
 
   添加 --watch后，会被webpack-cli 处理，变成一个配置，即 watch: true
-
-
 
 **webpack-dev-server**
 
@@ -1407,9 +1358,7 @@ resolve: {
 }
 ```
 
-
-
-**webpack代码分包**
+##### webpack代码分包
 
 **默认的打包过程：**默认情况下，在构建整个组件树的过程中，因为组件和组件之间是通过模块化直接依赖的，那么webpack在打包时就会将组 件模块打包到一起（比如一个app.js文件中）；这个时候随着项目的不断庞大，app.js文件的内容过大，会造成首屏的渲染速度变慢
 
@@ -1417,9 +1366,7 @@ resolve: {
 
 另外，代码分包，可以用在异步组件上
 
-
-
-**Vue CLI**  
+##### Vue CLI
 
 **Vue CLI 步骤原理：**
 
@@ -1427,9 +1374,7 @@ resolve: {
 
 建议配合视频观看L10 30min之后？
 
-
-
-**Vite2**
+#### Vite2
 
 vite的官方定位：下一代前端开发与构建工具。
 
@@ -1437,9 +1382,7 @@ vite的官方定位：下一代前端开发与构建工具。
 
 我们编写代码往往是不能被浏览器直接识别的，比如ES6、TypeScript、Vue文件等；所以我们必须通过构建工具来对代码进行转换、编译，类似的工具有webpack、rollup、parcel；但是随着项目越来越大，需要处理的JavaScript呈指数级增长，模块越来越多。构建工具需要很长的时间才能开启服务器，HMR也需要几秒钟才能在浏览器反应出来。所以也有这样的说法：天下苦webpack久矣。
 
-
-
-**Vite的构造：**
+##### Vite的构造
 
 Vite主要由两部分组成：
 
@@ -1448,9 +1391,7 @@ Vite主要由两部分组成：
 
 Vite2 使用的服务器框架是 Connect，替换了Vite1中用的 koa。之所以使用 connect，因为connect非常容易做请求转发。
 
-
-
-**Vite的技术思路**
+##### Vite的技术思路
 
 浏览器原生支持模块化的，我们可以通过浏览器做一些简单的js项目编写。但是如果我们不借助于其他工具，直接使用ES Module来开发有什么问题呢？
 
@@ -1459,9 +1400,7 @@ Vite2 使用的服务器框架是 Connect，替换了Vite1中用的 koa。之所
 
 vite就帮助我们解决了上面的所有问题。
 
-
-
-**Vite的安装和使用**
+##### Vite的安装和使用
 
 Vite 依赖Node，要求Node版本大于12。
 
@@ -1471,9 +1410,7 @@ Vite 依赖Node，要求Node版本大于12。
 npx vite
 ```
 
-
-
-**Vite对于样式文件（包含css，以及预处理器） 的支持**
+Vite对于样式文件（包含css，以及预处理器） 的支持
 
 - vite可以直接支持css的处理，直接导入css即可
 
@@ -1489,9 +1426,7 @@ npx vite
   npm install postcss postcss-preset-env -D
   ```
 
-
-
-**Vite对TypeScript的支持**
+##### Vite对TypeScript的支持
 
 vite对TypeScript是原生支持的，它会直接使用ESBuild来完成编译；只需要直接导入即可。
 
@@ -1502,9 +1437,7 @@ vite对TypeScript是原生支持的，它会直接使用ESBuild来完成编译�
 
 Vite2 使用的服务器框架是 Connect，替换了Vite1中用的 koa。之所以使用 connect，因为connect非常容易做请求转发。
 
-
-
-**Vite对vue的支持**
+##### Vite对vue的支持
 
 - **vite对vue提供第一优先级支持：**
 
@@ -1532,9 +1465,8 @@ Vite2 使用的服务器框架是 Connect，替换了Vite1中用的 koa。之所
   }
   ```
 
-  
 
-**使用 vite打包项目**
+##### 使用 vite打包项目
 
 - **可以直接通过vite build来完成对当前项目的打包工具：**
 
@@ -1548,9 +1480,7 @@ Vite2 使用的服务器框架是 Connect，替换了Vite1中用的 koa。之所
   npx vite preview
   ```
 
-
-
-**Vite的脚手架工具**
+##### Vite的脚手架工具
 
 <mark>在开发中，我们不可能所有的项目都使用vite从零去搭建，比如一个react项目、Vue项目； 这个时候vite还给我们提供了对应的脚手架工具</mark>
 
@@ -1573,7 +1503,7 @@ npm install @vitejs/create-app -g
 create-app
 ```
 
-
+##### Vite 快速的原因
 
 **Vite之所以快，是因为使用了ESBuild**。ESBuild的特点：
 
@@ -1595,7 +1525,7 @@ create-app
 
 
 
-**父子组件通信方式**
+#### 父子组件通信方式
 
 ![图片来自 11_Vue3组件化开发（一），第 5 页](https://i.loli.net/2021/11/14/Wvn4zDPp36wBmVH.png)
 
@@ -1636,7 +1566,7 @@ create-app
 
     
 
-    **Prop 的大小写命名(camelCase vs kebab-case)**
+    #### Prop 的大小写命名(camelCase vs kebab-case)
 
     <font color=FF0000>HTML 中的 attribute 名是大小写不敏感的，所以浏览器会把所有大写字符解释为小写字符</font>。这意味着当你使用 DOM 中的模板时，<font color=FF0000>**camelCase (驼峰命名法) 的 prop 名需要使用其等价的 kebab-case (短横线分隔命名) 命名**</font>
 
@@ -1787,7 +1717,7 @@ create-app
 
 
 
-**插槽**
+#### 插槽
 
 **插槽的默认内容：**如果希望在使用插槽时，如果没有插入对应的内容，需要显示一个默认的内容。这个默认的内容只会在没有提供插入的内容时，才会显示。
 
@@ -1857,6 +1787,8 @@ create-app
 
 
 
+#### 动态组件
+
 **动态组件：**动态组件是使用 component 组件（component是一个内置组件），通过一个特殊的attribute is 来实现。官方示例如下：
 
 ```html
@@ -1889,7 +1821,7 @@ create-app
 />
 ```
 
-**keep-alive**
+#### keep-alive
 
 使用之前的异步组件，切换组件再回来，组件中的状态会消失（重置），无法保持；因为在切换组件后，组件会被销毁，切换回来时，会重新创建组件。这时候可以使用vue内置组件keep-alive 以使切换组件时，组件不会销毁。
 
@@ -1924,7 +1856,7 @@ create-app
 
 
 
-**Vue中实现异步组件**
+#### Vue中实现异步组件
 
 如果项目过大，对于某些组件我们希望通过异步的方式来进行加载（目的是可以对其进行分包处理），那么Vue中给我们提供了一个函数：defineAsyncComponent
 
@@ -1981,7 +1913,9 @@ create-app
 
 
 
-**$refs**
+#### Vue 实例
+
+##### $refs
 
 **某些情况下，我们在组件中想要直接获取到元素对象或者子组件实例：**<font color=FF0000>在Vue开发中是不推荐进行DOM操作的，我们可以给元素或者组件绑定一个 ref 的 attribute 属性</font>
 
@@ -1998,7 +1932,7 @@ visitElement() {
 }
 ```
 
-**\$parent和 \$root**
+##### \$parent 和 \$root
 
 可以通过$parent来访问父元素，通过\$root访问根元素
 
@@ -2008,7 +1942,7 @@ visitElement() {
 
 
 
-**生命周期函数**
+#### 生命周期函数
 
 <font color=FF0000>每个组件都可能会经历从创建( create )、挂载 ( mount )、更新( update )、卸载 ( unmount )等一系列的过程</font>。生命周期函数是一些钩子函数，在某个时间会被Vue源码内部进行回调
 
@@ -2016,7 +1950,7 @@ visitElement() {
 
 
 
-**组件的v-model**
+#### 组件的v-model
 
 在\<input> 中可以使用 v-model 来完成双向绑定，这往往非常方便，因为 <font color=FF0000>v-model 默认帮助我们完成了两件事</font>：v-bind:value 的数据绑定和 @input的事件监听。即：
 
@@ -2100,9 +2034,7 @@ methods: {
 }
 ```
 
-
-
-**v-model绑定多个数据**
+##### v-model绑定多个数据
 
 v-model绑定多个数据，即在一个组件上使用多个v-model。
 
@@ -2143,7 +2075,7 @@ v-model绑定多个数据，即在一个组件上使用多个v-model。
 
 
 
-**Vue中的动画**
+#### Vue中的动画
 
 在开发中，给一个组件的显示和消失（比如v-if / v-show）添加某种过渡动画，可以很好的增加用户体验。
 
@@ -2153,7 +2085,7 @@ v-model绑定多个数据，即在一个组件上使用多个v-model。
 
 直接调用 v-if / v-show，而不使用动画，元素的消失和出现会变得非常生硬。如果希望给单元素或者组件实现过渡动画，可以使用 \<transition> 内置组件来完成动画
 
-**transition动画**
+##### transition动画
 
 Vue 提供了 transition 的封装组件，在下列情形中，可以给任何元素和组件添加进入/离开过渡：
 
@@ -2170,7 +2102,7 @@ Vue 提供了 transition 的封装组件，在下列情形中，可以给任何�
 </style>
 ```
 
-**Transition组件的原理**
+##### Transition组件的原理
 
 当插入或删除 <font color=FF0000>包含在 transition 组件中的元素时</font>，Vue 将会做以下处理：
 
@@ -2188,7 +2120,7 @@ Vue 提供了 transition 的封装组件，在下列情形中，可以给任何�
 - **v-leave-active：**<font color=FF0000>定义离开过渡生效时的状态</font>。在整个离开过渡的阶段中应用，在离开过渡被触发时立刻生效，在过渡/动画完成之后移除。这个类可以被用来定义离开过渡的过程时间，延迟和曲线函数。
 - **v-leave-to：**<font color=FF0000>离开过渡的结束状态</font>。在离开过渡被触发之后下一帧生效（与此同时 v-leave-from 被删除），在过渡 / 动画完成之后移除。
 
-**class添加的时机和命名规则**
+##### class添加的时机和命名规则
 
 ![Transition Diagram](https://v3.cn.vuejs.org/images/transitions.svg)
 
@@ -2213,8 +2145,6 @@ Vue 提供了 transition 的封装组件，在下列情形中，可以给任何�
   }
 </style>
 ```
-
-
 
 **同时使用过渡( transition )和动画( animation )：**<font color=FF0000>Vue为了知道过渡的完成，内部是在监听 transitionend 或 animationend，到底使用哪一个取决于元素应用的 CSS规则</font>： <mark>如果只是使用了其中的一个，那么Vue能自动识别类型并设置监听</mark>；但是如果同时使用了过渡和动画，并且在这个情况下可能某一个动画执行结束时，另外一个动画还没有结束。这种情况下，我们可以设置 type 属性为 animation 或者 transition 来明确的告知Vue监听的类型（使用type 以指定）
 
@@ -2309,9 +2239,8 @@ Vue 提供了 transition 的封装组件，在下列情形中，可以给任何�
      </transition>
      ```
 
-     
 
-**可以通过以下 attribute 来自定义过渡类名：**
+##### 可以通过以下 attribute 来自定义过渡类名
 
 - enter-from-class 
 - enter-active-class
@@ -2322,7 +2251,7 @@ Vue 提供了 transition 的封装组件，在下列情形中，可以给任何�
 
 <font color=FF0000>他们的优先级高于普通的类名</font>，这对于 Vue 的过渡系统和其他第三方 CSS 动画库，如 Animate.css. 结合使用十 分有用。
 
-**JavaScript钩子**
+##### JavaScript钩子
 
 transition组件给我们提供的JavaScript钩子，这些钩子可以帮助我们监听动画执行到 什么阶段
 
@@ -2358,9 +2287,7 @@ transition组件给我们提供的JavaScript钩子，这些钩子可以帮助我
 
 添加 `:css="false"`，会让 Vue 会跳过 CSS 的检测，除了性能略高之外，这可以避免过渡过程中 CSS 规则的影响
 
-
-
-**GSAP**
+##### GSAP
 
 某些情况下我们希望通过 JavaScript（更加灵活，方便修改变量）来实现一些动画的效果，这个时候我们可以选择使用gsap库来完成
 
@@ -2424,7 +2351,7 @@ watch: {
 }
 ```
 
-**列表的过渡**
+##### 列表的过渡
 
 目前，过渡动画我们只要是针对单个元素或者组件的： 要么是单个节点，要么是同一时间渲染多个节点中的一个。
 
@@ -2442,7 +2369,7 @@ watch: {
 
 
 
-**Mixin**
+#### Mixin
 
 组件和组件之间有时候会存在相同的代码逻辑，可以对相同的代码逻辑进行抽取。
 
@@ -2464,9 +2391,9 @@ watch: {
 
 
 
-**extends**
+#### extends
 
-extends属性类似于mixin，允许声明扩展另外一个组件。
+extends属性类似于 mixin，允许声明扩展另外一个组件。
 
 ```html
 <!-- BasePage.vue -->
@@ -2491,7 +2418,7 @@ export default {
 
 
 
-**Composition API**
+#### Composition API
 
 在Vue组件中，使用 Composition API 的地方就是setup函数。
 
@@ -2522,17 +2449,13 @@ export default {
 - 更好的运行时性能 (其模板会被编译成与其同一作用域的渲染函数，没有任何的中间代理)。
 - 更好的 IDE 类型推断性能 (减少语言服务器从代码中抽离类型的工作)。
 
-
-
-**Reactive API**
+##### Reactive API
 
 想为<font color=FF0000>在setup中定义的数据提供响应式的特性</font>，那么我们可以使用 reactive 的函数。
 
 **原理：**<font color=FF0000>当使用reactive函数处理数据（被proxy进行劫持）后，数据再次被使用时就会进行依赖收集</font>；当数据发生改变时，所有收集到的依赖都是进行对应的响应式操作（比如更新界面）；另外，写Options API的data选项，也是在内部交给了reactive函数将其编程响应式对象的
 
-
-
-**Ref API**
+##### Ref API
 
 Reactive API对传入的类型是有限制的，<font color=FF0000>要求必须传入的是一个对象或者数组类型</font>；如果传入一个基本数据类型( String、Number、Boolean )会报一个警告。这时可以使用 Ref API
 
@@ -2549,9 +2472,7 @@ ref 会返回一个可变的响应式对象，该对象作为一个“响应式�
 - **模板中的Ref自动解包是浅层的解包：**在ref值外面用一个对象包装，不会自动解包
 - **如果将 ref 放到一个reactive的属性当中**，那么在模板中使用时，它 <font size=4>**会自动解包**</font>
 
-
-
-**readonly**
+##### readonly
 
 通过reactive或者 ref 可以获取到一个响应式的对象，<font color=FF0000>在某些情况下，我们传入给其他地方（组件）的这个 响应式对象希望在另外一个地方（组件）被使用，但是不能被修改</font>，如何实现？
 
@@ -2589,9 +2510,7 @@ Vue3 提供了readonly的方法，<font color=FF0000>readonly会返回原生对�
 
 - **shallowReadonly：**创建一个 proxy，使其自身的 property 为只读，但不执行嵌套对象的深度只读转换（深层还是可读、可写的），和shallowReactive类似
 
-
-
-**toRefs**
+##### toRefs
 
 如果使用ES6的 解构语法，对reactive返回的对象进行解构获取值，那么之后无论是修改结构后的变量，还是修改reactive 返回的state对象，数据都不再是响应式的。示例如下：
 
@@ -2617,9 +2536,7 @@ const { name, age } = toRefs(state)
 const name = toRef(state, 'name')
 ```
 
-
-
-**ref的其他API**
+##### ref的其他API
 
 - **unref：**<font color=FF0000>想要获取一个ref引用中的value，可以通过 unref方法</font>
 
@@ -2631,23 +2548,19 @@ const name = toRef(state, 'name')
 
 - **triggerRef：**手动触发和 shallowRef 相关联的副作用，让深层的ref 响应式级别的更新
 
-
-
-**Composition API中的computed**
+##### Composition API中的computed
 
 **使用computed有两种方法：**
 
 - 接收一个getter函数，并为 getter 函数返回的值，返回一个不变的 ref 对象
 - 接收一个具有 get 和 set 的对象，返回一个可变的（可读写）ref 对象
 
-
-
-**watchEffect 和 watch**
+##### watchEffect 和 watch
 
 - **watchEffect：**用于<font color=FF0000 size=4>**自动收集 响应式**</font>数据的依赖
 - **watch：**需要<font color=FF0000 size=4>**手动指定侦听**</font>的数据源
 
-**watchEffect**
+##### watchEffect
 
 当侦听到某些响应式数据变化时，我们希望执行某些操作，这个时候可以使用 watchEffect。
 
@@ -2659,9 +2572,7 @@ const name = toRef(state, 'name')
 
 **watchEffect结束侦听：**获取watchEffect的返回值函数，调用该函数即可
 
-
-
-**使用watchEffect清除副作用**
+##### 使用watchEffect清除副作用
 
 **什么是清除副作用？**比如在<mark>开发中需要在侦听函数中执行网络请求</mark>，但是<font color=FF0000>**在网络请求还没有达到的时候，停止了侦听器、或者侦听器侦听函数被再次执行了：那么上一次的网络请求应该被取消掉**（因为请求失去意义了），这时就可以清除上一次的副作用</font>
 
@@ -3294,20 +3205,20 @@ teleport翻译过来是心灵传输、远距离运输的意思。**teleport有�
 
 
 
-**阅读源码**
+#### 阅读源码
 
 <font color=FF0000>听起来还是有些不理解，建议参考原视频 L20、L21 阅读</font>
 
 
 
-**虚拟DOM的优势**
+#### 虚拟DOM的优势
 
-目前框架（包含前端三大框架React Vue Angular）都会引入虚拟DOM来对真实的DOM进行抽象，这样做有很多的好处：
+目前框架（包含前端三大框架 React Vue Angular ）都会引入虚拟 DOM 来对真实的 DOM 进行抽象，这样做有很多的好处：
 
-- 可以对真实的元素节点进行抽象，抽象成VNode（虚拟节点），这样方便后续对其进行各种操作
-  - 直接操作DOM来说是有很多的限制的，比如diff、clone等等，但是使用JavaScript编程语言来操作这 些，就变得非常的简单
-  - 可以使用JavaScript来表达非常多的逻辑，而对于DOM本身来说是非常不方便的
-  - **自己补充** 还有一种说法是：浏览器的回流等等，对dom操作效率没有JS高
+- 可以对真实的元素节点进行抽象，抽象成 VNode（虚拟节点），这样方便后续对其进行各种操作
+  - 直接操作DOM来说是有很多的限制的，比如 diff 、clone 等等，但是使用 JavaScript 编程语言来操作这 些，就变得非常的简单
+  - 可以使用 JavaScript 来表达非常多的逻辑，而对于 DOM 本身来说是非常不方便的
+  - **自己补充** 还有一种说法是：浏览器的重绘回流等操作，对 dom 操作效率没有 JS 高
 - 方便实现跨平台，包括你可以将VNode节点渲染成任意你想要的节点（作为中间层，便于转化）
   - 如渲染在canvas、WebGL、SSR、Native（iOS、Android）上
   - 并且Vue允许你开发属于自己的渲染器（renderer），在其他的平台上渲染
