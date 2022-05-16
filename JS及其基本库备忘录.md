@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                                                   
+>                                                     
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3201,7 +3201,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                       
+  >                                                                                         
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3220,7 +3220,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                       
+  >                                                                                         
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -12028,7 +12028,7 @@ Worker 接口是 Web Workers API 的一部分，指的是一种可由脚本创�
 
 #### service worker
 
-Service workers <font color=FF0000>本质上充当 Web 应用程序、浏览器与网络（可用时）之间的代理服务器</font>（<mark> **注：** 即 Proxy，感觉也可以理解为拦截层？ </mark>）。<font color=FF0000>这个 API 旨在创建有效的离线体验</font>（**注：** 读到这里想到了 PWA，查了下便搜到了这篇文章：[通过 Service workers 让 PWA 离线工作](https://developer.mozilla.org/zh-CN/docs/Web/Progressive_web_apps/Offline_Service_workers) 另外，自己的笔记 [[webpack学习笔记#PWA打包]] 部分也有提及：server work 是 pwa 实现的原理。另外，下面也有对这篇文章做摘抄：[[JS及其基本库备忘录#service work补充]] ），<font color=FF0000>它**会拦截网络请求并根据网络是否可用来采取适当的动作、更新来自服务器的的资源**</font>。它还提供入口以推送通知和访问后台同步 API。
+Service workers <font color=FF0000>本质上充当 Web 应用程序、浏览器与网络（可用时）之间的代理服务器</font>（<mark> **注：** 即 Proxy，感觉也可以理解为拦截层？ </mark>）。<font color=FF0000>这个 API 旨在创建有效的离线体验</font>（**注：** 读到这里想到了 PWA，查了下便搜到了这篇文章：[通过 Service workers 让 PWA 离线工作](https://developer.mozilla.org/zh-CN/docs/Web/Progressive_web_apps/Offline_Service_workers) 另外，自己的笔记 [[webpack学习笔记#PWA打包]] 部分也有提及：server work 是 pwa 实现的原理。另外，下面也有对这篇文章做摘抄：[[#service worker 补充]] ），<font color=FF0000>它**会拦截网络请求并根据网络是否可用来采取适当的动作、更新来自服务器的的资源**</font>。它还提供入口以推送通知和访问后台同步 API。
 
 <font size=4>**Service worker 的概念和用法**</font>
 
@@ -12036,16 +12036,17 @@ Service worker 是一个<font color=FF0000>注册在 **指定源和路径下** �
 
 <font color=FF0000>Service worker 运行在worker上下文，因此它<font size=4> 不能访问DOM</font></font>。相对于驱动应用的 主JavaScript线程，它运行在其他线程中，所以不会造成阻塞。<font color=FF0000> **它设计为完全异步** ，同步API（如 XHR 和localStorage ）不能在service worker中使用</font>（**注：**xhr 存在同步模式，虽然默认是异步；但是这样说没有错...）。
 
-出于安全考量，Service workers只能由HTTPS承载，毕竟修改网络请求的能力暴露给中间人攻击会非常危险
+<font color=FF0000>**出于安全考量，Service workers 只能由 HTTPS 承载**</font>，毕竟修改网络请求的能力暴露给中间人攻击会非常危险
 
 **注意：**
-- Service workers 之所以优于以前同类尝试（如AppCache），是因为它们（ **注：** 即 AppCache 之类的同类尝试 ）无法支持当操作出错时终止操作（ **注：** 即 Service worker 可以）。<font color=FF0000>Service workers可以更细致地控制每一件事情</font>。
-- <font color=FF0000> **Service workers 大量使用Promise** </font>，因为通常它们会等待响应后继续，并根据响应返回一个成功或者失败的操作。Promise非常适合这种场景。
+
+- Service workers 之所以优于以前同类尝试（如 AppCache ），是因为它们（ **注：** 即 AppCache 之类的同类尝试 ）无法支持当操作出错时终止操作（ **注：** 即 Service worker 可以）。<font color=FF0000>Service workers可以更细致地控制每一件事情</font>。
+- <font color=FF0000> **Service workers 大量使用 Promise** </font>，因为通常它们会等待响应后继续，并根据响应返回一个成功或者失败的操作。Promise 非常适合这种场景。
 
 下面还有 service worker 使用过相关的内容，如：注册、下载、安装和激活 还有相关接口，由于暂时用不到，这里略
 摘自：[MDN - Service Worker API](https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API)
 
-##### service work补充
+##### service worker 补充
 
 <font color=FF0000>Service Worker 是浏览器和网络之间的虚拟代理</font>。 它们终于解决了前端开发人员多年来一直在努力解决的一些问题，其中最值得关注的是，<font color=FF0000>解决了如何正确缓存网站资源并使其在离线时可用的问题</font>。
 
