@@ -130,7 +130,7 @@ JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在「栈」中�
 
 摘自：[科普文：常见垃圾回收算法与 JS GC 原理](https://mp.weixin.qq.com/s/KZsgQxlrsfYMvJejbZqGHw)
 
-##### 现代JS教程关于 GC 的补充
+##### 《现代JS教程》中关于 GC 的补充
 
 JavaScript 中主要的内存管理概念是 **可达性**。简而言之，“可达”值 是那些以某种方式可访问或可用的值。它们一定是存储在内存中的。另外：对外引用不重要，只有传入引用才可以使对象可达。
 

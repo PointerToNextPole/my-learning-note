@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                                                     
+>                                                       
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3201,7 +3201,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                         
+  >                                                                                           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3220,7 +3220,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                         
+  >                                                                                           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -12014,8 +12014,12 @@ Worker 接口是 Web Workers API 的一部分，指的是一种可由脚本创�
   - **AbstractWorker.onerror：**当 ErrorEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用。它继承于 AbstractWorker
   - **Worker.onmessage：**当 MessageEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用.  例如，一个消息通过 DedicatedWorkerGlobalScope.postMessage，从执行者发送到父页面对象，消息保存在事件对象的 data 属性中.
   - **Worker.onmessageerror：**当messageerror 类型的事件发生时，对应的 event handler 代码被调用。
+  
 - **方法：**<font color=FF0000>继承父对象EventTarget 的方法，以及实现对象 AbstractWorker 的方法</font>。
   - **Worker.postMessage()：**<font color=FF0000>发送一条消息到最近的外层对象</font>，消息可由任何 JavaScript 对象组成。
+  
+    > **注：**需要指出的是，要将 Worker.postMessage 和 window.postMessage 区分开；同时，在 Worker 中使用 postMessage，应该都是 Worker.postMessage。
+  
   - **Worker.terminate()：**<font color=FF0000>立即终止 worker</font>。<mark>该方法不会给 worker 留下任何完成操作的机会；就是简单的立即停止</mark>。Service Woker 不支持这个方法。
 
 摘自：[MDN - Worker](https://developer.mozilla.org/zh-CN/docs/Web/API/Worker)
