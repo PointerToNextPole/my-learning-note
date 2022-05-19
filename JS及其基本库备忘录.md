@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                                                       
+>                                                         
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3201,7 +3201,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                           
+  >                                                                                             
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3220,7 +3220,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                           
+  >                                                                                             
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -5836,7 +5836,11 @@ Element.getBoundingClientRect() 方法<font color=FF0000>返回元素的 大小 
 domRect = element.getBoundingClientRect();
 ```
 
-返回值是一个 DOMRect 对象，这个对象是由该元素的 getClientRects() 方法返回的一组矩形的集合，就是该元素的 CSS 边框大小。<font color=FF0000>返回的结果是包含完整元素的最小矩形，并且拥有 <font size=4>**left、top、right、bottom、x、y、width，和 height**</font> 这几个以像素为单位的 **只读属性** 用于描述整个边框</font>。**除了 width 和 height 以外的属性是<font color=FF0000>相对于视图窗口的左上角来计算的</font>**。
+返回值是一个 DOMRect 对象，这个对象是由该元素的 getClientRects() 方法返回的一组矩形的集合，就是该元素的 CSS 边框大小。<font color=FF0000>返回的结果是包含完整元素的最小矩形，并且拥有 <font size=4>**left、top、right、bottom、x、y、width 和 height**</font> 这几个以像素为单位的 **只读属性** 用于描述整个边框</font>。**除了 width 和 height 以外的属性是<font color=FF0000>相对于视图窗口的左上角来计算的</font>**。
+
+> **注：**需要注意的是，这里<font color=FF0000>计算 top 和 bottom 值的 ***上界*** 是 ***整个页面（文档）*** 的最上面，而不是 ***当前可视区域*** 的最上面。所以，y 和 height 的值是可以大于 100vh 的</font>。
+>
+> 上面说的都是 ***竖向滚动*** 的情况，类似的，如果是 <font color=FF0000>***横向滚动*** 的话，x 和 width 的值也是可以大于 100vw 的</font>（TODO，竖向滚动的情况经过了代码测试，但横向滚动的情况没有经过代码测试；不知道为什么 onscroll 和 addEventListener('scroll', ...) 都不能监听到 横向滚动的事件；应该是我代码写的有问题？）
 
 摘自：[MDN - Element.getBoundingClientRect()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/getBoundingClientRect)
 
@@ -6509,20 +6513,25 @@ let windowObjectReference = window.open(strUrl, strWindowName, [strWindowFeature
 
 #### window.postMessage
 
-<font color=FF0000>**window.postMessage() 方法可以安全地实现跨源通信**</font>。<mark>通常，对于两个不同页面的脚本，只有当执行它们的页面位于具有相同的协议（通常为https），端口号（443为https的默认值），以及主机  (两个页面的模数 Document.domain设置为相同的值) 时，这两个脚本才能相互通信</mark>。<font color=FF0000>**window.postMessage() 方法提供了一种受控机制来规避此限制，只要正确的使用，这种方法就很安全**</font>。
+<font color=FF0000>**window.postMessage() 方法可以安全地实现跨源通信**</font>。通常，<mark>对于两个不同页面的脚本，只有当执行它们的页面位于具有相同的协议（通常为 https ），端口号（ 443 为 https 的默认值 ），以及主机（两个页面的模数 Document.domain 设置为相同的值）时，这两个脚本才能相互通信</mark><font color=FF0000>**（同源限制）**</font>。window.postMessage() 方法提供了一种受控机制来规避此限制，只要正确使用，这种方法就很安全
 
-<font color=FF0000>从广义上讲，一个窗口可以获得对另一个窗口的引用</font>（比如 targetWindow = window.opener），<font color=FF0000>然后在窗口上调用 targetWindow.postMessage() 方法分发一个  MessageEvent 消息</font>。<font color=FF0000>接收消息的窗口可以根据需要自由处理此事件</font>。<font color=FF0000>传递给 window.postMessage() 的参数（比如 message ）将通过消息事件对象暴露给接收消息的窗口</font>。
+从广义上讲，<font color=FF0000>一个窗口可以获得对另一个窗口的引用</font>（比如 <font color=FF0000>**targetWindow = window.opener**</font> ），<font color=FF0000>然后在窗口上调用 targetWindow.postMessage() 方法分发一个  MessageEvent 消息</font>。接收消息的窗口可以根据需要自由处理此事件。<font color=FF0000>传递给 window.postMessage() 的参数（比如 message ）将通过消息事件对象暴露给接收消息的窗口</font>。
 
-**语法**
+##### 语法
 
 ```js
 otherWindow.postMessage(message, targetOrigin, [transfer]);
 ```
 
-- **otherWindow：**<font color=FF0000>其他窗口的一个引用</font>，<mark>比如iframe的contentWindow属性、执行window.open返回的窗口对象、或者是命名过或数值索引的window.frames</mark>。
-- **message：**<font color=FF0000>将要发送到其他 window的数据</font>。<font color=FF0000>它将会被结构化克隆算法序列化</font>。<mark>这意味着你可以不受什么限制的将数据对象安全的传送给目标窗口而无需自己序列化。</mark>
-- **targetOrigin：**<font color=FF0000>**通过窗口的origin属性来指定哪些窗口能接收到消息事件**</font>，<font color=FF0000>其值可以是字符串"\*"（表示无限制）或者一个URI</font>。<mark style=background-color:hotpink>在发送消息的时候，如果目标窗口的协议、主机地址或端口这三者的**任意一项不匹配targetOrigin提供的值，那么消息就不会被发送**</mark>；<mark style=background-color:hotpink><font size=4>**只有三者完全匹配，消息才会被发送**</font></mark>。这个机制用来控制消息可以发送到哪些窗口；例如，当用postMessage传送密码时，这个参数就显得尤为重要，必须保证它的值与这条包含密码的信息的预期接受者的origin属性完全一致，来防止密码被恶意的第三方截获。如果你明确的知道消息应该发送到哪个窗口，那么请始终提供一个有确切值的targetOrigin，而不是\*。不提供确切的目标将导致数据泄露到任何对数据感兴趣的恶意站点。
-- **transfer：** **可选**，是一串和message 同时传递的 Transferable 对象. 这些对象的所有权将被转移给消息的接收方，而发送一方将不再保有所有权。
+- **otherWindow：**<font color=FF0000>其他窗口的一个引用</font>，比如 iframe 的 contentWindow 属性、执行 window.open 返回的窗口对象、或者是命名过或数值索引的 window.frames 。
+
+- **message：**<font color=FF0000>将要发送到其他 window的数据</font>。<font color=FF0000>它将会被 结构化克隆算法 ( structedClone ) 序列化</font>。这意味着你可以不受什么限制的将数据对象安全的传送给目标窗口而无需自己序列化
+
+- **targetOrigin：**<font color=FF0000>**通过窗口的origin属性来指定哪些窗口能接收到消息事件**</font>，<font color=FF0000>其值可以是字符串 "\*"（表示无限制）或者一个 URI</font>。在发送消息的时候，如果目标窗口的协议、主机地址或端口这三者的 任意一项不匹配 targetOrigin 提供的值，那么消息就不会被发送；只有三者完全匹配，消息才会被发送（同源限制）。
+
+  这个机制用来控制消息可以发送到哪些窗口。例如，当用 postMessage 传送密码时，这个参数就显得尤为重要，必须保证它的值与这条包含密码的信息的预期接受者的 origin 属性完全一致，来防止密码被恶意的第三方截获。如果你明确的知道消息应该发送到哪个窗口，那么请始终提供一个有确切值的 targetOrigin，而不是 \*。不提供确切的目标将导致数据泄露到任何对数据感兴趣的恶意站点
+
+- **transfer：** **可选**，是一串和 message 同时传递的 Transferable 对象. 这些对象的所有权将被转移给消息的接收方，而发送一方将不再保有所有权。
 
 **执行如下代码, 其他window可以监听分发的message:**
 
@@ -6542,11 +6551,11 @@ window.addEventListener("message", (event) => {
 
 **安全问题**
 
-<font color=FF0000>如果您不希望从其他网站接收message，请不要为message事件添加任何事件侦听器。 这是一个完全万无一失的方式来避免安全问题</font>。
+<font color=FF0000>如果您不希望从其他网站接收 message，请不要为 message 事件添加任何事件侦听器。这是一个完全万无一失的方式来避免安全问题</font>。
 
-<font color=FF0000>如果您确实希望从其他网站接收message，请始终使用origin和source属性验证发件人的身份</font>。 任何窗口（包括例如http://evil.example.com）都可以向任何其他窗口发送消息，并且您不能保证未知发件人不会发送恶意消息。 但是，验证身份后，您仍然应该始终验证接收到的消息的语法。 否则，您信任只发送受信任邮件的网站中的安全漏洞可能会在您的网站中打开跨网站脚本漏洞。
+<font color=FF0000>如果您确实希望从其他网站接收 message，请始终使用 origin 和 source 属性验证发件人的身份</font>。 任何窗口（包括例如http://evil.example.com）都可以向任何其他窗口发送消息，并且您不能保证未知发件人不会发送恶意消息。 但是，验证身份后，您仍然应该始终验证接收到的消息的语法。 否则，您信任只发送受信任邮件的网站中的安全漏洞可能会在您的网站中打开跨网站脚本漏洞。
 
-<font color=FF0000>当您使用postMessage将数据发送到其他窗口时，始终指定精确的目标origin，而不是\*</font>。 恶意网站可以在您不知情的情况下更改窗口的位置，因此它可以拦截使用postMessage发送的数据。
+<font color=FF0000>当您使用postMessage将数据发送到其他窗口时，始终指定精确的目标 origin，而不是\*</font>。 恶意网站可以在您不知情的情况下更改窗口的位置，因此它可以拦截使用postMessage发送的数据。
 
 摘自：[MDN - window.postMessage](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/postMessage)
 
