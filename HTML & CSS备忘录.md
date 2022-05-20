@@ -2420,7 +2420,7 @@ position 属性的五个值：
   
   absolute表示，相对于上级元素（一般是父元素）进行偏移，即定位基点是父元素。
   
-  <font color=FF0000>它有一个重要的限制条件：定位基点（一般是父元素）不能是static定位，否则定位基点就会变成整个网页的根元素html</font>。另外，<mark>absolute定位也必须搭配top、bottom、left、right这四个属性一起使用</mark>。
+  <font color=FF0000>它有一个重要的限制条件：定位基点（一般是父元素）不能是static定位，否则定位基点就会变成整个网页的根元素html</font>。另外，<mark>absolute定位也必须搭配 top、bottom、left、right 这四个属性一起使用</mark>。
 
 - **sticky**：sticky 英文字面意思是粘，粘贴，所以可以把它称之为粘性定位。<font color=FF0000>**position: sticky;** 基于用户的滚动位置来定位。粘性定位的元素是依赖于用户的滚动，在 **position:relative** 与 **position:fixed** 定位之间切换</font>。
   

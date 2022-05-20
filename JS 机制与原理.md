@@ -2483,7 +2483,7 @@ Function.prototype.bind2 = function (context) {
 
   **注：**以上总结：对于“不安全的 JSON 值”，包含：undefined、function、symbol 和 包含循环引用的对象，在 stringify 时，如果在对象中会被忽略；在数组中，则返回 null。
 
-  2022/5/19 补充： 在 [MDN - JSON.stringify()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) 中也有类似的讲解。
+  2022/5/19 补充： 在 [MDN - JSON.stringify()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) 中也有类似的讲解，在 [[JS及其基本库备忘录#JSON.stringify()#JSON.stringify() 将值转换为相应的 JSON 格式]] 中有做笔记。
 
 - 文章 [JSON.stringify深拷贝的缺点](https://www.jianshu.com/p/52db1d0c1780) 中 还有其他上面没有说到的：
   - 如果深拷贝的对象 / 数组 里有 <font color=FF0000>**时间对象**</font>，则 JSON.stringify( JSON.parse ) 的结果，将只是<font color=FF0000>字符串</font>的形式，而不是对象的形式

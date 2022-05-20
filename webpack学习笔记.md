@@ -2,7 +2,7 @@
 
 
 
-#### webpack存在的必要：
+#### webpack存在的必要
 
 webpack是一种构建工具工具。那，为什么需要构建或者说编译呢？因为像es6、less及sass、模板语法、vue指令及jsx在浏览器中是无法直接执行的，必须经过构建这一个操作才能保证项目运行，所以前端构建打包很重要。除了这些，前端构建还能解决一些web应用性能问题，比如：依赖打包、资源嵌入、文件压缩及hash指纹等。具体的我不再展开，总之前端构建工程化已经是趋势。
 
@@ -12,7 +12,7 @@ webpack是一种构建工具工具。那，为什么需要构建或者说编译�
 
   需要掌握一个新的概念：loaders，所谓loaders就是说把原本webpack不支持加载的文件或者文件内容通过loaders进行加载解析，实现应用的目的。<mark>这里讲解es6解析，原生支持js解析，但是不能解析es6，需要babel-loader ，而babel-loader 又依赖babel</mark>。
 
-- **webpack加载css、less等样式文件**
+- **webpack加载 css、less 等样式文件**
 
   css-loader用于加载css文件并生成commonjs对象，style-loader用于将样式通过style标签插入到head中
 
@@ -519,9 +519,9 @@ use: [
 
   使用此配置，所有 html 文件都将被发送到输出目录中的 static 目录中。
 
-- **asset/inline：**导出一个资源的 data URI。<font color=FF0000> 之前通过使用 url-loader 实现</font>。
+- **asset/inline：**导出一个资源的 data URL。<font color=FF0000> 之前通过使用 url-loader 实现</font>。
 
-  webpack 输出的 data URI，默认是呈现为使用 Base64 算法编码的文件内容。如果想要自定义 编码算法，示例如下：
+  webpack 输出的 data URL，默认是呈现为使用 Base64 算法编码的文件内容。如果想要自定义 编码算法，示例如下：
 
   ```js
   rules: [

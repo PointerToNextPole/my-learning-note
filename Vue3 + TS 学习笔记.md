@@ -804,15 +804,15 @@ output: {
 
 ##### webpack@5 asset module type 资源模块类型
 
-在webpack5之前，加载这些资源我们需要使用一些loader，比如raw-loader 、url-loader、file-loader
+在webpack5之前，加载这些资源我们需要使用一些loader，比如 raw-loader 、url-loader、file-loader
 
-在webpack5开始，我们可以直接使用<font color=FF0000>**资源模块类型 (asset module type )**</font>来替代上面的这些loader（<font color=FF0000>因为是内置的，所以，甚至不需要再下载 loader了</font>）
+在webpack5开始，我们可以直接使用<font color=FF0000>**资源模块类型 ( asset module type )**</font>来替代上面的这些loader（<font color=FF0000>因为是内置的，所以，甚至不需要再下载 loader 了</font>）
 
-**资源模块类型(asset module type)，通过添加4 种新的模块类型，来替换所有这些loader：**
+**资源模块类型 ( asset module type )，通过添加 4 种新的模块类型，来替换所有这些 loader：**
 
 - **<font color=FF0000>passet/resource</font>：**发送一个单独的文件并导出URL。之前通过使用 <font color=FF0000>**file-loader**</font> 实现
 
-- **<font color=0000FF>asset/inline</font>：**导出一个资源的data URI。之前通过使用 <font color=0000FF>**url-loader**</font> 实现
+- **<font color=0000FF>asset/inline</font>：**导出一个资源的data URL 。之前通过使用 <font color=0000FF>**url-loader**</font> 实现
 
 - **asset/source：**导出资源的<font color=FF0000>源代码</font>。之前通过使用 raw-loader 实现（一般用于字体文件）
 
