@@ -5232,7 +5232,13 @@ clamp() 函数接收三个用逗号分隔的表达式作为参数，按最小值
 
 ![](https://www.w3cplus.com/sites/default/files/blogs/2020/2005/css-function-5.svg)
 
-**url()**
+##### env()
+
+// TODO
+
+摘自：[MDN - env()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/env())
+
+##### url()
 
 url()不再局限于 background-image 属性中，还可以用于：
 
@@ -5254,19 +5260,53 @@ mask-image: url("masks.svg#mask1");
 
 简单地说，在CSS中可以使用url()函数来引用相应的资源，有点类似于HTML中的src，href属性。
 
-**attr()**
+##### attr()
 
 原则上说，attr()能运用于所有的CSS属性，但目前仅能服务于CSS的伪元素::before和::after的content属性。
 
-
-
 原文: https://www.w3cplus.com/css/css-functions-guide.html 
 
-#### env()
 
-// TODO
 
-摘自：[MDN - env()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/env())
+
+
+#### mask-image
+
+mask-image CSS属性用于设置元素上遮罩层的图像。是一个实验性的属性。
+
+##### 可选值
+
+- none：默认值，透明的黑色图像层，也就是<font color=FF0000>没有遮罩层</font>。
+- \<mask-source>：\<mask> 或 CSS 图像的 url
+- \<image>：图片作为遮罩层
+
+##### 示例
+
+```css
+/* Keyword value */
+mask-image: none;
+
+/* <mask-source> value */
+mask-image: url(masks.svg#mask1);
+
+/* <image> values */
+mask-image: linear-gradient(rgba(0, 0, 0, 1.0), transparent);
+mask-image: image( url(mask.png), skyblue );
+
+/* Multiple values */
+mask-image: image(url(mask.png), skyblue), linear-gradient(rgba(0, 0, 0, 1.0), transparent);
+
+/* Global values */
+mask-image: inherit;
+mask-image: initial;
+mask-image: unset;
+```
+
+> 注：之所以想要了解这个 CSS 属性，是因为在看 [MDN - Performance](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance) 看到了如下内容（如下图）；但是复制到笔记时，笔记上并没有出现 “⚠️” 标志，有的只是 “Non-Standard” ，这让我感到好奇。
+>
+> <img src="https://s2.loli.net/2022/05/22/Zy8OuP1RLIEVFJB.png" alt="image-20220522235008322" style="zoom:50%;" />
+
+摘自：[MDN - mask-image](https://developer.mozilla.org/zh-CN/docs/Web/CSS/mask-image)
 
 
 

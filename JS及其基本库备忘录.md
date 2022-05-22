@@ -2,7 +2,7 @@
 
 #### JavaScript基础
 
-DOM (**D**ocument **O**bject **M**odel)（文档对象模型）是用于访问 HTML 元素的正式 W3C 标准。
+DOM ( **D**ocument **O**bject **M**odel )（文档对象模型）是用于访问 HTML 元素的正式 W3C 标准。
 
 - 直接写入 HTML 输出流
 
@@ -39,21 +39,21 @@ DOM (**D**ocument **O**bject **M**odel)（文档对象模型）是用于访问 H
 
 #### **补充：**
 
-除了innerHTML外，还有outerHTML： element  DOM接口的outerHTML属性获取描述元素（包括其后代）的序列化HTML片段。它也可以设置为用从给定字符串解析的节点替换元素。
+除了 innerHTML 外，还有 outerHTML： element  DOM 接口的 outerHTML 属性获取描述元素（包括其后代）的序列化 HTML 片段。它也可以设置为用从给定字符串解析的节点替换元素。
 
 **语法**
 
-- ```js
-  let content = element.outerHTML;
-  ```
-  
-  返回时，内容包含描述元素及其后代的序列化HTML片段。
+```js
+let content = element.outerHTML;
+```
 
-- ```js
-  element.outerHTML = content;
-  ```
-  
-  将元素替换为通过使用元素的父作为片段解析算法的上下文节点解析字符串内容生成的节点。
+返回时，内容包含描述元素及其后代的序列化 HTML 片段
+
+```js
+element.outerHTML = content;
+```
+
+将元素替换为通过使用元素的父作为片段解析算法的上下文节点解析字符串内容生成的节点
 
 摘自：[MDN - element.outerHTML](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/outerHTML)
 
@@ -61,17 +61,17 @@ DOM (**D**ocument **O**bject **M**odel)（文档对象模型）是用于访问 H
 
 #### JavaScript 变量
 
-**js命名规则**
+**JS 命名规则**
 
 - 变量<font color=FF0000>必须以字母开头</font>
 - 变量也能以 $ 和 _ 符号开头（不过我们不推荐这么做）
-- 变量名称<font color=FF0000>对大小写敏感</font>（y 和 Y 是不同的变量）
+- 变量名称<font color=FF0000>对大小写敏感</font>（ y 和 Y 是不同的变量）
 
 #### JavaScript 数据类型
 
-- **<font color=FF0000>值类型(基本类型)</font>**：字符串（String）、数字(Number)、布尔(Boolean)、对空（Null）、未定义（Undefined）、Symbol（Symbol 是 ES6 引入了一种新的原始数据类型，表示独一无二的值。）
+- **<font color=FF0000>值类型(基本类型)</font>**：字符串 ( String )、数字(Number)、布尔(Boolean)、对空(Null)、未定义 ( Undefined )、Symbol ( Symbol 是 ES6 引入了一种新的原始数据类型，表示独一无二的值）
 
-- **<font color=FF0000>引用数据类型</font>**：对象(Object)、数组(Array)、函数(Function)。
+- **<font color=FF0000>引用数据类型</font>**：对象 ( Object )、数组 ( Array )、函数 ( Function ) 
 
 - 对象数据类型：Object、Date、Array
 
@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                                                         
+>                                                           
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3246,7 +3246,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                             
+  >                                                                                               
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3265,7 +3265,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                             
+  >                                                                                               
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7417,15 +7417,58 @@ PerformanceObserver <font color=FF0000>用于监测性能度量事件</font>，<
 
 
 
-#### JS表达式
+#### Performance
 
-如果一个“字符串”可以被赋值给一个变量（类似于“右值”），便可以称为JS表达式
+Performance 接口<font color=FF0000>**可以获取到当前页面中与性能相关的信息**</font>。它<font color=FF0000>是 High Resolution Time API 的一部分</font>，同时也融合了 Performance Timeline API、Navigation Timing API、 User Timing API 和 Resource Timing API。
+
+<font color=FF0000>该类型的对象可以通过调用只读属性 Window.performance 来获得</font>。
+
+> **注意 ⚠️：**除了以下指出的情况外，<font color=FF0000>该接口及其成员在 Web Worker 中可用</font>。此外，还需注意：performance 的创建和衡量都是同一环境下的。即，<mark>如果你在主线程（或者其他 worker ）中创建了一个 performance ，那么它在另外的 worker 线程中是不可用的；反之亦然</mark>。
+
+##### 属性
+
+**Performance 接口没有继承任何属性**
+
+- **Performance.navigation：**🗑 已废弃， 只读。PerformanceNavigation 对象提供了在指定的时间段里发生的操作相关信息，包括页面是加载还是刷新、发生了多少次重定向等等。<font color=FF0000>workers 中不可用</font>
+- **Performance.timing**：🗑 已废弃，只读。PerformanceTiming 对象<font color=FF0000>**包含延迟相关的性能信息**</font>。<font color=FF0000>workers 中不可用</font>
+- **performance.memory**：⚠️ 非标准。是 Chrome 添加的一个非标准扩展，这个属性<font color=FF0000>提供了一个可以获取到基本内存使用情况的对象</font>。**不应该**使用这个非标准的 API 。
+- **Performance.timeOrigin**：⚠️ 非标准，只读。返回性能测量开始时的时间的高精度时间戳。
+
+##### 事件处理程序
+
+- **Performance.onresourcetimingbufferfull**：一个回调的 EventTarget ，当触发 resourcetimingbufferfull 事件的时候会被调用
+
+##### 方法
+
+**Performance 接口没有继承任何方法**
+
+- **Performance.clearMarks()**：将给定的 mark 从浏览器的性能输入缓冲区中移除。
+- **Performance.clearMeasures()**：将给定的 measure 从浏览器的性能输入缓冲区中移除。
+- **Performance.clearResourceTimings()**：从浏览器的性能数据缓冲区中移除所有 entryType 是 "resource" 的 performance entries
+- **Performance.getEntries()**：基于给定的 filter 返回一个 PerformanceEntry 对象的列表。
+- **Performance.getEntriesByName()**：基于给定的 name 和 entry type 返回一个 PerformanceEntry 对象的列表。
+- **Performance.getEntriesByType()**：基于给定的 entry type 返回一个 PerformanceEntry 对象的列表
+- **Performance.mark()**：根据给出 name 值，在浏览器的性能输入缓冲区中创建一个相关的 timestamp
+- **Performance.measure()**：在浏览器的指定 start mark 和 end mark 间的性能输入缓冲区中创建一个指定的 timestamp
+- **Performance.now()**：<font color=FF0000>返回一个表示从性能测量时刻开始经过的毫秒数 DOMHighResTimeStamp</font>
+- **Performance.setResourceTimingBufferSize()**：将浏览器的资源 timing 缓冲区的大小设置为 "resource" type performance entry 对象的指定数量
+- **Performance.toJSON()**：其是一个 JSON 格式转化器，返回 Performance 对象的 JSON 对象
+
+摘自：[MDN - Performance](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance)
+
+
+
+#### JS 表达式
+
+如果一个“字符串”可以被赋值给一个变量（类似于“右值”），便可以称为 ***JS 表达式***
 
 
 
 #### 栈内存和堆内存
 
-对于JS中的基本数据类型，如String,Number,Boolean,Undefined,Null是存在于栈内存中的，在栈内存中储存变量名及相应的值。而Object,Array,Function存在于堆内存中，在堆内存中储存变量名及引用位置。
+对于JS中的基本数据类型，如 String、Number、Boolean、Undefined、Null 是存在于栈内存中的，在栈内存中储存变量名及相应的值。而Object、Array、Function 存在于堆内存中，在堆内存中储存变量名及引用位置。
+
+> **注：**这部分的内容可以参考 [[JS 机制与原理#JS 中变量的存储]] 以及 [[JS 机制与原理#常见垃圾回收算法与 JavaScript 中垃圾回收原理#JavaScript 垃圾回收]] 中的相关内容。
 
 
 
