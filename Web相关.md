@@ -2,7 +2,7 @@
 
 
 
-#### unicode相关
+#### unicode 相关
 
 <font color=FF0000>Unicode 是一种字符集标准，用于对来自世界上不同语言、文字系统和符号进行编号和字符定义</font>。<mark>通过给每个字符分配一个编号，程序员可以创建字符编码，让计算机在同一个文件或程序中存储、处理和传输任何语言组合</mark>。
 
@@ -14,95 +14,95 @@
 
 <font color=FF0000 size=4>**阅读前注意：**</font>下面这篇文章，写于2014年，部分内容或已过时
 
-1. <font size=4>**Unicode是什么？**</font>
+##### Unicode 是什么
 
-   Unicode源于一个很简单的想法：将全世界所有的字符包含在一个集合里，计算机只要支持这一个字符集，就能显示所有的字符，再也不会有乱码了。
+Unicode源于一个很简单的想法：将全世界所有的字符包含在一个集合里，计算机只要支持这一个字符集，就能显示所有的字符，再也不会有乱码了。
 
-   <mark>它从0开始，为每个符号指定一个编号</mark>，<font color=FF0000>这叫做"码点"（code point）</font>。比如，码点0的符号就是null（表示所有二进制位都是0）。
+<mark>它从0开始，为每个符号指定一个编号</mark>，<font color=FF0000>这叫做"码点"（code point）</font>。比如，码点0的符号就是null（表示所有二进制位都是0）。
 
-   ```
-   U+0000 = null
-   ```
+```
+U+0000 = null
+```
 
-   上式中，U+表示 <font color=FF0000>**紧跟在后面的十六进制数是Unicode的码点**</font>。
+上式中，U+表示 <font color=FF0000>**紧跟在后面的十六进制数是Unicode的码点**</font>。
 
-   <mark>目前（2014年），Unicode的最新版本是7.0版，一共收入了109449个符号，其中的中日韩文字为74500个</mark>。可以近似认为，全世界现有的符号当中，三分之二以上来自东亚文字。比如，中文"好"的码点是十六进制的597D。
+<mark>目前（2014年），Unicode的最新版本是7.0版，一共收入了109449个符号，其中的中日韩文字为74500个</mark>。可以近似认为，全世界现有的符号当中，三分之二以上来自东亚文字。比如，中文"好"的码点是十六进制的597D。
 
-   <font color=FF0000>这么多符号，Unicode不是一次性定义的，而是<font size=4>**分区定义**</font></font>。<font color=FF0000>每个区可以存放65536个（216）字符，称为一个平面（plane）</font>。<font color=FF0000>目前，一共有17个（2^5^）平面，也就是说，整个Unicode字符集的大小现在是2^21^</font>。
+<font color=FF0000>这么多符号，Unicode不是一次性定义的，而是<font size=4>**分区定义**</font></font>。<font color=FF0000>每个区可以存放65536个（216）字符，称为一个平面（plane）</font>。<font color=FF0000>目前，一共有17个（2^5^）平面，也就是说，整个Unicode字符集的大小现在是2^21^</font>。
 
-   <font color=FF0000><font size=4>**最前面的65536个字符位**</font>，称为<font size=4>**基本平面（Basic Multilingual Plane，缩写BMP）**</font></font>，<font color=FF0000>它的码点范围是从0一直到2^16^-1，写成16进制就是从U+0000到U+FFFF</font>。<mark>**所有最常见的字符都放在这个平面**，这是Unicode最先定义和公布的一个平面</mark>。
+<font color=FF0000><font size=4>**最前面的65536个字符位**</font>，称为<font size=4>**基本平面（Basic Multilingual Plane，缩写BMP）**</font></font>，<font color=FF0000>它的码点范围是从0一直到2^16^-1，写成16进制就是从U+0000到U+FFFF</font>。<mark>**所有最常见的字符都放在这个平面**，这是Unicode最先定义和公布的一个平面</mark>。
 
-   <font color=FF0000><font size=4>**剩下的字符**</font>都放在<font size=4>**辅助平面（Supplementary Multilingual Plane 缩写SMP）**</font></font>，<mark>码点范围从U+010000一直到U+10FFFF</mark>。
+<font color=FF0000><font size=4>**剩下的字符**</font>都放在<font size=4>**辅助平面（Supplementary Multilingual Plane 缩写SMP）**</font></font>，<mark>码点范围从U+010000一直到U+10FFFF</mark>。
 
-2. <font size=4>**UTF-32与UTF-8**</font>
+##### UTF-32 与 UTF-8
 
-   Unicode只规定了每个字符的码点，到底用什么样的字节序表示这个码点，就涉及到<font color=FF0000 size=4>**编码方法**</font>。
+Unicode只规定了每个字符的码点，到底用什么样的字节序表示这个码点，就涉及到<font color=FF0000 size=4>**编码方法**</font>。
 
-   <font color=FF0000>最直观</font>的编码方法是，<font color=FF0000>每个码点使用四个字节表示</font>，字节内容一一对应码点。<font color=FF0000>这种编码方法就叫做UTF-32</font>。比如，码点0就用四个字节的0表示，码点597D就在前面加两个字节的0。
+<font color=FF0000>最直观</font>的编码方法是，<font color=FF0000>每个码点使用四个字节表示</font>，字节内容一一对应码点。<font color=FF0000>这种编码方法就叫做UTF-32</font>。比如，码点0就用四个字节的0表示，码点597D就在前面加两个字节的0。
 
-   ```
-   U+0000 = 0x0000 0000
-   U+597D = 0x0000 597D
-   ```
+```
+U+0000 = 0x0000 0000
+U+597D = 0x0000 597D
+```
 
-   UTF-32的<font color=0000FF>优点</font>在于，<font color=0000FF>转换规则简单直观，查找效率高</font>。<font color=FF0000>缺点</font>在于<font color=FF0000>浪费空间</font>，同样内容的英语文本，它会比ASCII编码大四倍。<mark>这个缺点很致命，导致实际上没有人使用这种编码方法</mark>，<font color=FF0000>HTML 5标准就明文规定，网页不得编码成UTF-32</font>。
+UTF-32的<font color=0000FF>优点</font>在于，<font color=0000FF>转换规则简单直观，查找效率高</font>。<font color=FF0000>缺点</font>在于<font color=FF0000>浪费空间</font>，同样内容的英语文本，它会比ASCII编码大四倍。<mark>这个缺点很致命，导致实际上没有人使用这种编码方法</mark>，<font color=FF0000>HTML 5标准就明文规定，网页不得编码成UTF-32</font>。
 
-   人们真正需要的是一种节省空间的编码方法，这导致了UTF-8的诞生。**UTF-8是一种<font size=4>变长的编码方法，字符长度从1个字节到4个字节不等</font>。**<font color=FF0000>越是常用的字符，字节越短，最前面的128个字符，只使用1个字节表示，与ASCII码完全相同</font>。
+人们真正需要的是一种节省空间的编码方法，这导致了UTF-8的诞生。**UTF-8是一种<font size=4>变长的编码方法，字符长度从1个字节到4个字节不等</font>。**<font color=FF0000>越是常用的字符，字节越短，最前面的128个字符，只使用1个字节表示，与ASCII码完全相同</font>。
 
-   | 编号范围            | 字节 |
-   | ------------------- | ---- |
-   | 0x0000 - 0x007F     | 1    |
-   | 0x0080 - 0x07FF     | 2    |
-   | 0x0800 - 0xFFFF     | 3    |
-   | 0x010000 - 0x10FFFF | 4    |
+| 编号范围            | 字节 |
+| ------------------- | ---- |
+| 0x0000 - 0x007F     | 1    |
+| 0x0080 - 0x07FF     | 2    |
+| 0x0800 - 0xFFFF     | 3    |
+| 0x010000 - 0x10FFFF | 4    |
 
-   由于UTF-8这种节省空间的特性，导致它成为互联网上最常见的网页编码。
+由于UTF-8这种节省空间的特性，导致它成为互联网上最常见的网页编码。
 
-3. <font size=4>**UTF-16简介**</font>
+##### UTF-16 简介
 
-   UTF-16编码<mark>介于UTF-32与UTF-8之间</mark>，<font color=FF0000>**同时结合了定长和变长两种编码方法的特点**</font>。
+UTF-16编码<mark>介于UTF-32与UTF-8之间</mark>，<font color=FF0000>**同时结合了定长和变长两种编码方法的特点**</font>。
 
-   它的编码规则很简单：<font color=FF0000>基本平面的字符占用2个字节，辅助平面的字符占用4个字节</font>。<mark>**也就是说，UTF-16的编码长度要么是2个字节（U+0000到U+FFFF），要么是4个字节（U+010000到U+10FFFF）。**</mark>
+它的编码规则很简单：<font color=FF0000>基本平面的字符占用2个字节，辅助平面的字符占用4个字节</font>。<mark>**也就是说，UTF-16的编码长度要么是2个字节（U+0000到U+FFFF），要么是4个字节（U+010000到U+10FFFF）。**</mark>
 
-   <mark style=background-color:aqua>于是就有一个问题，当我们遇到两个字节，怎么看出它本身是一个字符，还是需要跟其他两个字节放在一起解读？</mark>
+<mark style=background-color:aqua>于是就有一个问题，当我们遇到两个字节，怎么看出它本身是一个字符，还是需要跟其他两个字节放在一起解读？</mark>
 
-   说来很巧妙，我也不知道是不是故意的设计，<font color=FF0000 size=4>**在基本平面内，从U+D800到U+DFFF是一个空段**（共2^12^个），即这些码点不对应任何字符。因此，这个空段可以用来映射辅助平面的字符</font>。
+说来很巧妙，我也不知道是不是故意的设计，<font color=FF0000 size=4>**在基本平面内，从U+D800到U+DFFF是一个空段**（共2^12^个），即这些码点不对应任何字符。因此，这个空段可以用来映射辅助平面的字符</font>。
 
-   具体来说，<font color=FF0000>辅助平面的字符位共有2^20^个，也就是说，对应这些字符至少需要20个二进制位</font>。<font color=FF0000>UTF-16将这20位拆成两半</font>，<font color=FF0000 size=4>**前10位映射在U+D800到U+DBFF（空间大小2^10^），称为高位（H），后10位映射在U+DC00到U+DFFF（空间大小2^10^），称为低位（L）**</font>。这意味着，一个辅助平面的字符，被拆成两个基本平面的字符表示。
+具体来说，<font color=FF0000>辅助平面的字符位共有2^20^个，也就是说，对应这些字符至少需要20个二进制位</font>。<font color=FF0000>UTF-16将这20位拆成两半</font>，<font color=FF0000 size=4>**前10位映射在U+D800到U+DBFF（空间大小2^10^），称为高位（H），后10位映射在U+DC00到U+DFFF（空间大小2^10^），称为低位（L）**</font>。这意味着，一个辅助平面的字符，被拆成两个基本平面的字符表示。
 
-   **所以，当我们遇到两个字节，发现它的码点在U+D800到U+DBFF之间，就可以断定，紧跟在后面的两个字节的码点，应该在U+DC00到U+DFFF之间，这四个字节必须放在一起解读。**
+**所以，当我们遇到两个字节，发现它的码点在U+D800到U+DBFF之间，就可以断定，紧跟在后面的两个字节的码点，应该在U+DC00到U+DFFF之间，这四个字节必须放在一起解读。**
 
-4. <font size=4>**UTF-16的转码公式**</font>
+##### UTF-16的转码公式
 
-   Unicode码点转成UTF-16的时候，首先区分这是基本平面字符，还是辅助平面字符。如果是前者，直接将码点转为对应的十六进制形式，长度为两字节。
+Unicode码点转成UTF-16的时候，首先区分这是基本平面字符，还是辅助平面字符。如果是前者，直接将码点转为对应的十六进制形式，长度为两字节。
 
-   ```
-   U+597D = 0x597D
-   ```
+```
+U+597D = 0x597D
+```
 
-   如果是辅助平面字符，Unicode 3.0版给出了转码公式。
+如果是辅助平面字符，Unicode 3.0版给出了转码公式。
 
-   ```js
-   H = Math.floor((c - 0x10000) / 0x400) + 0xD800
-   L = (c - 0x10000) % 0x400 + 0xDC00
-   ```
+```js
+H = Math.floor((c - 0x10000) / 0x400) + 0xD800
+L = (c - 0x10000) % 0x400 + 0xDC00
+```
 
-   以字符![img](https://i.loli.net/2021/08/23/S9ch8BUR1Q3iWVz.png)为例，它是一个辅助平面字符，码点为U+1D306，将其转为UTF-16的计算过程如下。
+以字符![img](https://i.loli.net/2021/08/23/S9ch8BUR1Q3iWVz.png)为例，它是一个辅助平面字符，码点为U+1D306，将其转为UTF-16的计算过程如下。
 
-   ```js
-   H = Math.floor((0x1D306-0x10000)/0x400)+0xD800 = 0xD834
-   L = (0x1D306-0x10000) % 0x400+0xDC00 = 0xDF06
-   ```
+```js
+H = Math.floor((0x1D306-0x10000)/0x400)+0xD800 = 0xD834
+L = (0x1D306-0x10000) % 0x400+0xDC00 = 0xDF06
+```
 
-   所以，字符![img](https://i.loli.net/2021/08/23/S9ch8BUR1Q3iWVz.png)的UTF-16编码就是0xD834 DF06，长度为四个字节。
+所以，字符![img](https://i.loli.net/2021/08/23/S9ch8BUR1Q3iWVz.png)的UTF-16编码就是0xD834 DF06，长度为四个字节。
 
-5. <font size=4>**JavaScript使用哪一种编码？**</font>
+##### JavaScript 使用哪一种编码
 
-   JavaScript语言采用Unicode字符集，但是只支持一种编码方法。这种编码既不是UTF-16，也不是UTF-8，更不是UTF-32。上面那些编码方法，JavaScript都不用。<font color=FF0000 size=4>**JavaScript用的是UCS-2！**</font>
+JavaScript语言采用Unicode字符集，但是只支持一种编码方法。这种编码既不是UTF-16，也不是UTF-8，更不是UTF-32。上面那些编码方法，JavaScript都不用。<font color=FF0000 size=4>**JavaScript用的是UCS-2！**</font>
 
 摘自：[阮一峰 - Unicode与JavaScript详解](http://www.ruanyifeng.com/blog/2014/12/unicode.html) 另外，可以参考文章：[淦，为什么 "𠮷𠮷𠮷".length !== 3](https://juejin.cn/post/7025400771982131236)
 
-<font size=4>**补充：**</font>
+##### 补充
 
 **UTF-8**
 
@@ -157,7 +157,7 @@ HTML 为了解决上面这些问题，<font color=FF0000> **允许使用 Unicode
 <p>&#x68;&#x65;&#x6c;&#x6c;&#x6f;</p>
 ```
 
-注：这里 &# 是用来表示 unicode 的
+**注：**这里 &# 是用来表示 unicode 的
 
 > 使用 HTML，可以直接通过 Unicode 展示字符实体，形式是在 &#x 后面加上对应 CodePoint 的十六进制。或者 &#后面加 CodePoint 的十进制数字。
 >
@@ -165,7 +165,7 @@ HTML 为了解决上面这些问题，<font color=FF0000> **允许使用 Unicode
 
 注意，<font color=FF0000> HTML 标签本身不能使用码点表示，否则浏览器会认为这是所要显示的文本内容，而不是标签</font>。比如，\<p>一旦写成<\&#112;>或者 `&#60;&#112;&#62;`，浏览器就不再认为这是标签了，而会当作文本内容将其显示为\<p>。
 
-**字符的实体表示法**
+##### 字符的实体表示法
 
 <mark>数字表示法的不方便之处，在于必须知道每个字符的码点，很难记忆。为了能够快速输入，HTML 为一些特殊字符，规定了容易记忆的名字，允许通过名字来表示它们，这称为<font color=FF0000> **实体表示法**</font>（entity）</mark>。
 
@@ -322,7 +322,7 @@ HTML 为了解决上面这些问题，<font color=FF0000> **允许使用 Unicode
 
 百分号编码（英语：Percent-encoding），<font color=FF0000> 又称：URL编码（URL encoding）是特定上下文的统一资源定位符 （URL）的编码机制</font>，实际上也适用于统一资源标志符（URI）的编码。<mark>也用于为 application/x-www-form-urlencoded（的）MIME准备数据</mark>，因为它用于通过HTTP的请求操作（request）提交HTML表单数据。
 
-**URI的字符类型**
+##### URI的字符类型
 
 URI所允许的字符分作 **保留** 与 **未保留** 。<font color=FF0000> **保留**字符 是 **那些具有特殊含义的字符**</font>，例如：斜线字符用于URL（或URI）不同部分的分界符；<font color=FF0000> **未保留**字符 没有这些特殊含义</font>。<font color=FF0000> 百分号编码 把保留字符表示为特殊字符序列</font>。上述情形随URI与URI的不同版本规格会有轻微的变化。
 
@@ -340,7 +340,7 @@ RFC 3986 section 2.3 未保留字符 (2005年1月)，如下：
 
 <font color=FF0000> URI中的其它字符（比如汉字）必须用百分号编码</font>。
 
-**对保留字符的百分号编码**
+##### 对保留字符的百分号编码
 
 如果一个 保留字符 在特定上下文中具有特殊含义（称作 "reserved purpose"），且 URI 中必须使用该字符用于其它目的，那么该字符必须百分号编码。百分号编码一个保留字符，首先需要把该字符的 ASCII 的值表示为两个16进制的数字，然后在其前面放置转义字符 ("%")，置入 URI 中的相应位置。(对于 非ASCII 字符, 需要转换为UTF-8字节序，然后每个字节按照上述方式表示。)
 
@@ -372,12 +372,13 @@ RFC 3986 section 2.3 未保留字符 (2005年1月)，如下：
 
 摘自：[阮一峰 - 关于URL编码](https://www.ruanyifeng.com/blog/2010/02/url_encoding.html)
 
-百分号编码又叫做URL编码，<mark>是一种编码机制</mark>，<font color=FF0000>只要用于URI（包含 URL 和 URN）编码中</font>。
+百分号编码又叫做URL编码，<mark>是一种编码机制</mark>，<font color=FF0000>只要用于URI（包含 URL 和 URN ）编码中</font>。
 
-一、URL是什么？
- URL（Uniform Resource Locator），统一资源定位符，<font color=FF0000>是地址的别名</font>。<font color=FF0000>包含了关于文件储存位置和浏览器应该如何处理他的信息</font>。互联网上的每一个文件都有唯一的URL。
+##### URL是什么
 
-**URL分为三个部分：**
+ URL ( Uniform Resource Locator ) ，统一资源定位符，<font color=FF0000>是地址的别名</font>。<font color=FF0000>包含了关于文件储存位置和浏览器应该如何处理他的信息</font>。互联网上的每一个文件都有唯一的 URL
+
+##### URL分为三个部分
 
 - 第一部分模式；
 
@@ -387,27 +388,27 @@ RFC 3986 section 2.3 未保留字符 (2005年1月)，如下：
 
 一般来说，URL只能使用英文字母、阿拉伯数字和某些标点符号，不能使用其他的文字和符号
 
-URL只能使用ASCII 字符集来通过网络进行发送。由于URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的ASCII 码的格式。
+URL只能使用 ASCII 字符集来通过网络进行发送。由于URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的ASCII 码的格式
 
 <mark>URL编码通常会使用 % 后面跟随两个十六进制数字来替换 非ASCII 字符</mark>；
 
 <font color=FF0000>URL不能包含空格。所以进行编码时经常使用 + 来替换空格</font>；
 
-**为什么会需要编码？**
+##### 为什么会需要编码
 
 那是因为这样东西不适合传输。<font color=FF0000>原因可能有很多种：大小过大，包含隐私数据</font>。<font color=FF0000>对于URL而言，之所以进行编码是因为URL中有一些字符会引起歧义</font>。
 
-**例如：**URL参数字符串中使用键值对这样的形式来传参，键值对之间使用了 & 符号分隔。
+**例如：**URL 参数字符串中使用键值对这样的形式来传参，键值对之间使用了 & 符号分隔。
 
 如果 value字符串中包含了 @ 或 & 等字符，那么一定会造成接收URL的服务器解析错误，因此就需要对造成歧义的 @ 和 & 进行转义，对其进行编码。
 
 还有，如果URL的字符集使用的ASCII 码，不是 Unicode，这就意味着不可以在 URL 中包含任何的非 ASCII 码，例如：中文，否则客户端浏览器和服务器设定的字符集不同的情况下，输入的中文就会出现乱码。
 
-百分号编码（URL编码）会对URL不允许出现的字符或者其他特殊情况的允许的字符进行编码，对于被编码的字符，最终会转为百分号 % 开头，后面跟这昂个十六进制数字的形式。例如：空格（SP）是不允许的字符，在ACSII码中对应的的二进制值是 00100000 ，最终转换为 %20。
+百分号编码（ URL 编码）会对 URL 不允许出现的字符或者其他特殊情况的允许的字符进行编码，对于被编码的字符，最终会转为百分号 % 开头，后面跟这昂个十六进制数字的形式。例如：空格 ( SP) 是不允许的字符，在 ACSII 码中对应的的二进制值是 00100000 ，最终转换为 %20
 
 <font color=FF0000>URL编码的原则就是**使用安全的字符**（没有特殊用途或者特殊意义的可打印字符）**去掉那些不安全的字符**，**以保证内容的正常显示**</font>。
 
-**需要编码的字符**
+##### 需要编码的字符
 
 RFC3986文档中规定，URL中只需要包含英文字母（a\~zA\~Z）、数字（0~9）、（- \_ . ~）四个特殊字符以及所有保留字符。
 
@@ -419,7 +420,7 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
 
 #### 浏览器访问网站的工作流程
 
-- 输入URL之后，浏览器会进行DNS查找，找到URL所在服务器的域名（补充：在进行DNS解析之前，浏览器会先判断是否需要重定向和缓存检查）
+- 输入URL之后，浏览器会进行DNS查找，找到URL所在服务器的域名（补充：在进行DNS解析之前，浏览器会先判断是否需要重定向和缓存检查，缓存涉及到强缓存和协商缓存 ）
 
 - 找到服务器之后，浏览器会通过TCP握手与服务器建立连接。如果是基于HTTPS的连接，会多一步<font color=FF0000 size=4> **TLS握手**</font>，建立加密的隧道，保证数据不被监听和篡改。
 
@@ -434,7 +435,7 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
     - 浏览器解析 HTML、构建DOM 树是顺序执行的（从上到下），并且只有一个主线程负责解析
     - 如果在解析的过程中遇到 \<script> 标签，浏览器会加载 JS 文件，并执行里面的代码；这时候主线程会暂停解析HTML，直到JS代码执行完毕，才会继续
     - 对于图片、CSS文件、rel属性设置为defer async 的 \<script> 标签，将不会影响主线程；而是会异步的加载
-    - 浏览器有一个预扫描线程 (Pre Scanner / Preload Scanner ？) ，会扫描HTML 代码，预先下载 CSS文件、字体、JS代码
+    - 浏览器有一个 <font color=FF0000>**预扫描线程**</font> (Pre Scanner / Preload Scanner ？) ，会扫描HTML 代码，预先下载 CSS文件、字体、JS代码
 
     <img src="https://i.loli.net/2021/10/19/k1zobO8ZBEnAVcx.png" alt="image-20211019182116485" style="zoom:40%;" />
 
@@ -465,18 +466,22 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
   - **绘制 Paint**
 
     在第一次布局完成之后，浏览器会真正将节点和节点的样式绘制到屏幕上。这个过程要求十分快速，否则会影响动画和交互的性能。如果之前发生了回流，浏览器还会发生<font color=FF0000> **重绘**</font>，将变化的布局重新绘制到屏幕上。在绘制期间，也有可能会有 <font color=FF0000> 组合</font>发生。在渲染节点时，可能会产生新的图层，比如：\<video />、opacity、will-change、transform 等属性的节点，浏览器需要将这些图层组合起来，按正确的堆叠顺序渲染。同样，回流和重绘操作也会引发重新组合操作
+    
+  - **合成 Composite**
 
-- 上面五步完成之后，设置 rel为 refer / async的 \<script> 标签中的 JS 文件，开始加载并执行。完成之后，整个网页便加载完成了
+    <font color=FF0000>**由于页面的各部分可能被绘制到多层，由此它们需要按正确顺序绘制到屏幕上，以便正确渲染页面**</font>。这一步往往不会被提及。
+
+- 上面 5 步（加上 composite 是 6 步）完成之后，设置 rel为 refer / async 的 \<script> 标签中的 JS 文件，开始加载并执行。完成之后，整个网页便加载完成了
 
 摘自：[浏览器的工作原理是什么?](https://www.bilibili.com/video/BV1Dh411J71c)
 
 
 
-#### 关键渲染路径 (Critical Rendering Path / CRP)
+### 关键渲染路径 (Critical Rendering Path / CRP)
 
 关键渲染路径<font color=FF0000> 是浏览器将 HTML，CSS 和 JavaScript 转换为屏幕上的像素所经历的**步骤序列**</font>。优化关键渲染路径可提高渲染性能。<font color=FF0000>关键渲染路径 **包含了 文档对象模型 (DOM)，CSS 对象模型 (CSSOM)，渲染树和布局**</font>。
 
-**<font color=FF0000> 概述</font>如下：**
+#####  概述如下
 
 - 在解析 HTML 时会创建文档对象模型 (DOM)。HTML 可以请求 JavaScript，而 JavaScript  反过来，又可以更改 DOM。
 
@@ -485,45 +490,56 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
 - 布局确定页面上所有内容的大小和位置。
 - 确定布局后，将像素绘制到屏幕上。
 
-<font size=4>**理解 CRP**</font>
-<mark>Web 性能包含了服务器请求和响应、加载、执行脚本、渲染、布局和绘制每个像素到屏幕上</mark>。
+##### 理解 CRP
+
+Web 性能包含了服务器请求和响应、加载、执行脚本、渲染、布局和绘制每个像素到屏幕上。
 
 网页请求从 HTML 文件请求开始。服务器返回 HTML -- 响应头和数据。然后浏览器开始解析 HTML，转换收到的数据为 DOM 树。<font color=FF0000> 浏览器<font size=4>**每次发现外部资源就初始化请求**</font>，无论是样式、脚本或者嵌入的图片引用。<font size=4>**有时请求会阻塞，这意味着解析剩下的 HTML 会被终止直到重要的资源被处理**</font></font>。浏览器接着解析 HTML，发请求和构造 DOM 直到文件结尾 ，这时开始构造 CSS对象模型。等到 DOM 和 CSSOM 完成之后，浏览器构造渲染树，计算所有可见内容的样式。一旦渲染树完成布局开始，定义所有渲染树元素的位置和大小。完成之后，页面被渲染完成，或者说是绘制到屏幕上。
 
-- **文本对象模型 (DOM)**
-  <font color=FF0000> DOM构建是增量的</font>。 <font color=FF0000 size=4>**HTML响应变成令牌 (token)**（注：这里的token和鉴权的Token没有关系，应该是编译原理中的分词，毕竟“分词”的英文为 Tokenization），**令牌变成节点**</font>，而节点又变成DOM树。<font color=FF0000>  单个DOM节点以 <font size=4>**startTag令牌开始，以endTag令牌结束**</font>。 <font size=4>**节点包含有关HTML元素的所有相关信息。 该信息是使用令牌描述的**</font></font>。 节点根据令牌层次结构连接到DOM树中。 如果另一组 startTag 和 endTag 令牌位于一组 startTag 和 endTag 之间，则您在节点内有一个节点，这就是我们定义DOM树层次结构的方式。
+##### 文本对象模型 ( DOM )
 
-  节点数量越多，关键渲染路径中的后续事件将花费的时间就越长。 测一下吧！ 几个额外的节点不会有什么区别，但“DIV癖”（divitis）可能会导致问题。
+<font color=FF0000> DOM构建是增量的</font>。 <font color=FF0000 size=4>**HTML响应变成令牌 (token)**（注：这里的token和鉴权的Token没有关系，应该是编译原理中的分词，毕竟“分词”的英文为 Tokenization），**令牌变成节点**</font>，而节点又变成DOM树。<font color=FF0000>  单个DOM节点以 <font size=4>**startTag令牌开始，以endTag令牌结束**</font>。 <font size=4>**节点包含有关HTML元素的所有相关信息。 该信息是使用令牌描述的**</font></font>。 节点根据令牌层次结构连接到DOM树中。 如果另一组 startTag 和 endTag 令牌位于一组 startTag 和 endTag 之间，则您在节点内有一个节点，这就是我们定义DOM树层次结构的方式。
 
-- **CSS 对象模型 (CSSOM)**
-  <font color=FF0000> DOM 包含页面所有的内容</font>。CSSOM 包含了页面所有的样式，也就是如何展示 DOM 的信息。<font color=FF0000> CSSOM 跟 DOM 很像，但是不同</font>。<font color=FF0000> DOM 构造是增量的，CSSOM 却不是</font>。<font color=FF0000 size=4> **CSS 是渲染阻塞的：浏览器会阻塞页面渲染直到它接收和执行了所有的 CSS。CSS 是渲染阻塞是因为规则可以被覆盖，所以内容不能被渲染直到 CSSOM 的完成**</font>。
+节点数量越多，关键渲染路径中的后续事件将花费的时间就越长。 测一下吧！ 几个额外的节点不会有什么区别，但“DIV癖”（divitis）可能会导致问题。
 
-  CSS 有其自身的规则集合用来定义标识。注意 CSS 中的 C 代表的是“层叠”。CSS 规则是级联的。随着解析器转换标识为节点，节点的后代继承了样式。像处理 HTML 那样的增量处理功能没有被应用到 CSS 上，因为后续规则可能被之前的所覆盖。CSS 对象模型随着 CSS 的解析而被构建，但是直到完成都不能被用来构建渲染树，因为样式将会被之后的解析所覆盖而不应该被渲染到屏幕上。
+##### CSS 对象模型 ( CSSOM )
 
-  <mark>从选择器性能的角度，更少的特定选择器是比更多的要快</mark>。例如，.foo {} 是比 .bar .foo {} 更快的因为当浏览器发现  .foo ，接下来必须沿着 DOM 向上走来检查 .foo 是不是有一个祖先 .bar。越是具体的标签浏览器就需要更多的工作，但这样的弊端未必值得优化。
+ DOM 包含页面所有的内容。CSSOM 包含了页面所有的样式，也就是如何展示 DOM 的信息。 CSSOM 跟 DOM 很像，但是不同。 DOM 构造是增量的，CSSOM 却不是。 CSS 是渲染阻塞的：浏览器会阻塞页面渲染直到它接收和执行了所有的 CSS。CSS 是渲染阻塞是因为规则可以被覆盖，所以内容不能被渲染直到 CSSOM 的完成。
 
-  如果你测量过解析 CSS 的时间，你将会被浏览器实在地快所震惊。更具体的规则更昂贵因为它必须遍历更多的 DOM 树节点，但这所带来的额外的消耗通常很小。先测量一下。然后按需优化。特定化或许不是你的低垂的果实。在 CSS 中选择器的性能优化，提升仅仅是毫秒级的。有其他一些方式来优化 CSS，例如压缩和使用媒体查询来异步处理 CSS 为非阻塞的请求。
+CSS 有其自身的规则集合用来定义标识。注意 CSS 中的 C 代表的是“层叠”。CSS 规则是级联的。随着解析器转换标识为节点，节点的后代继承了样式。像处理 HTML 那样的增量处理功能没有被应用到 CSS 上，因为后续规则可能被之前的所覆盖。CSS 对象模型随着 CSS 的解析而被构建，但是直到完成都不能被用来构建渲染树，因为样式将会被之后的解析所覆盖而不应该被渲染到屏幕上。
 
-- **渲染树**
-  <mark>渲染树包括了内容和样式：DOM 和 CSSOM 树结合为渲染树</mark>。<font color=FF0000> 为了构造渲染树，浏览器检查每个节点，**从 DOM 树的根节点开始，并且决定哪些 CSS 规则被添加**</font>。
+<mark>从选择器性能的角度，更少的特定选择器是比更多的要快</mark>。例如，.foo {} 是比 .bar .foo {} 更快的因为当浏览器发现  .foo ，接下来必须沿着 DOM 向上走来检查 .foo 是不是有一个祖先 .bar。越是具体的标签浏览器就需要更多的工作，但这样的弊端未必值得优化。
 
-  <font color=FF0000> 渲染树只包含了可见内容。头部（通常）不包含任何可见信息，因此不会被包含在渲染树种</font>。如果有元素上有 `display: none;`，它本身和其后代都不会出现在渲染树中。
+如果你测量过解析 CSS 的时间，你将会被浏览器实在地快所震惊。更具体的规则更昂贵因为它必须遍历更多的 DOM 树节点，但这所带来的额外的消耗通常很小。先测量一下。然后按需优化。特定化或许不是你的低垂的果实。在 CSS 中选择器的性能优化，提升仅仅是毫秒级的。有其他一些方式来优化 CSS，例如压缩和使用媒体查询来异步处理 CSS 为非阻塞的请求。
 
-- **布局**
-  一旦渲染树被构建，布局变成了可能。<mark>布局取决于屏幕的尺寸。布局这个步骤决定了在哪里和如何在页面上放置元素，决定了每个元素的宽和高，以及他们之间的相关性</mark>。
+##### 渲染树
 
-  什么是一个元素的宽？块级元素，根据定义，默认有父级宽度的 100%。一个宽度 50% 的元素，将占据父级宽度的一半。除非另外定义，body 有 100% 的宽，意味着它占据视窗的 100%。设备的宽度影响布局。 
+<mark>渲染树包括了内容和样式：DOM 和 CSSOM 树结合为渲染树</mark>。<font color=FF0000> 为了构造渲染树，浏览器检查每个节点，**从 DOM 树的根节点开始，并且决定哪些 CSS 规则被添加**</font>。
 
-  视窗的元标签定义了布局视窗的宽度，从而影响布局。没有的话，浏览器使用视窗的默认宽度，默认全屏浏览器通常是 960px。在默认情况下像你的手机浏览器的全屏浏览器，通过设置 \<meta name="viewport" content="width=device-width">，宽度将会是设备的宽度而不是默认的视窗宽度。设备宽度当用户在横向和纵向模式旋转他们的手机时将会改变。布局发生在每次设备旋转或浏览器缩放时。
+<font color=FF0000> 渲染树只包含了可见内容。头部（通常）不包含任何可见信息，因此不会被包含在渲染树种</font>。如果有元素上有 `display: none;`，它本身和其后代都不会出现在渲染树中。
 
-  布局性能受 DOM 影响 -- 节点数越多，布局就需要更长的时间。布局将会变成瓶颈，如果期间需要滚动或者其他动画将会导致迟滞。20ms 的延迟在加载或者方向改变时或许还可以接受，但在动画或滚动时就会迟滞。任何渲染树改变的时候，像添加节点、改变内容或者在一个节点更新盒模型样式的时候布局就会发生。
+##### 布局
 
-  为了减小布局事件的频率和时长，批量更新或者避免改动盒模型属性。
+一旦渲染树被构建，布局变成了可能。<mark>布局取决于屏幕的尺寸。布局这个步骤决定了在哪里和如何在页面上放置元素，决定了每个元素的宽和高，以及他们之间的相关性</mark>。
 
-- **绘制**
-  最后一步是将像素绘制在屏幕上。<font color=FF0000> 一旦渲染树创建并且布局完成，像素就可以被绘制在屏幕上</font>。加载时，整个屏幕被绘制出来。之后，<font color=FF0000> **只有受影响的屏幕区域会被重绘，浏览器被优化为只重绘需要绘制的最小区域**</font>。绘制时间取决于何种类型的更新被附加在渲染树上。绘制是一个非常快的过程，所以聚焦在提升性能时这大概不是最有效的部分，重点要记住的是当测量一个动画帧需要的时间需要考虑到布局和重绘时间。添加到节点的样式会增加渲染时间，但是移除样式增加的 0.001ms 或许不能让你的优化物有所值。记住先测量。然后你可决定它的优化优先级。
+什么是一个元素的宽？块级元素，根据定义，默认有父级宽度的 100%。一个宽度 50% 的元素，将占据父级宽度的一半。除非另外定义，body 有 100% 的宽，意味着它占据视窗的 100%。设备的宽度影响布局。 
 
-<font size=4>**优化 CRP**</font>
+视窗的元标签定义了布局视窗的宽度，从而影响布局。没有的话，浏览器使用视窗的默认宽度，默认全屏浏览器通常是 960px。在默认情况下像你的手机浏览器的全屏浏览器，通过设置 \<meta name="viewport" content="width=device-width">，宽度将会是设备的宽度而不是默认的视窗宽度。设备宽度当用户在横向和纵向模式旋转他们的手机时将会改变。布局发生在每次设备旋转或浏览器缩放时。
+
+布局性能受 DOM 影响 -- 节点数越多，布局就需要更长的时间。布局将会变成瓶颈，如果期间需要滚动或者其他动画将会导致迟滞。20ms 的延迟在加载或者方向改变时或许还可以接受，但在动画或滚动时就会迟滞。任何渲染树改变的时候，像添加节点、改变内容或者在一个节点更新盒模型样式的时候布局就会发生。
+
+为了减小布局事件的频率和时长，批量更新或者避免改动盒模型属性。
+
+##### 绘制
+
+最后一步是将像素绘制在屏幕上。 一旦渲染树创建并且布局完成，像素就可以被绘制在屏幕上。加载时，整个屏幕被绘制出来。之后， 只有受影响的屏幕区域会被重绘，浏览器被优化为只重绘需要绘制的最小区域。绘制时间取决于何种类型的更新被附加在渲染树上。绘制是一个非常快的过程，所以聚焦在提升性能时这大概不是最有效的部分，重点要记住的是当测量一个动画帧需要的时间需要考虑到布局和重绘时间。添加到节点的样式会增加渲染时间，但是移除样式增加的 0.001ms 或许不能让你的优化物有所值。记住先测量。然后你可决定它的优化优先级。
+
+##### 合成 Composite
+
+略。详见上面。
+
+##### 优化 CRP
+
 <font color=FF0000> 提升页面加载速度需要通过**被加载资源的优先级**、**控制它们加载的顺序**和**减小这些资源的体积**</font>。性能提示包含：
 
 - 通过异步重要资源的下载来减小请求数量
@@ -532,9 +548,9 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
 
 摘自：[MDN - 关键渲染路径](https://developer.mozilla.org/zh-CN/docs/Web/Performance/Critical_rendering_path)
 
-<font size=4>**补充**</font>
+#### 补充
 
-**关键渲染路径中的令牌：**
+**关键渲染路径中的令牌 ( Token )**
 
 HTML中 尖括号 里的文本，具有特殊含义，属于标记。<font color=FF0000> **每当遇到一个标记，浏览器会发出一个令牌**</font>。**这些令牌包括**：
 
@@ -551,63 +567,77 @@ HTML中 尖括号 里的文本，具有特殊含义，属于标记。<font color
 
 摘自：[笔记](https://www.jianshu.com/p/219a9462ff90)
 
-**將 HTML 轉換成 DOM 樹**
+当我们请求某个 URL 以后，浏览器获得响应的数据并将所有的标记转换到我们在屏幕上所看到的 HTML，这中间发生了什么？
 
-當我們請求某個 URL 以後，瀏覽器獲得響應的數據並將所有的標記轉換到我們在屏幕上所看到的 `HTML`，有沒有想過這中間發生了什麼？
-
-**瀏覽器會遵循定義好的完善步驟，從處理 HTML 和構建 DOM 開始:**
-
-- 瀏覽器從磁盤或網絡中讀取 HTML 原始字節，並根據文件的指定編碼將它們轉成字符。
-- 當遇到 HTML **標記**時，瀏覽器會發出一個令牌，生成諸如 `StartTag: HTML` `StartTag:head` `Tag: meta` `EndTag: head` 這樣的令牌 ，整個瀏覽由令牌生成器來完成。
-- 在令牌生成的同時，另一個流程會同時消耗這些令牌並轉換成 `HTML` `head` 這些節點對象，起始和結束令牌表明了節點之間的關係。
-- 當所有的令牌消耗完以後就轉換成了DOM（文檔對象模型）。
+- 浏览器从磁盘或网络中读取 HTML 原始字节，并根据文件的指定编码将它们转成字符。
+- 当遇到 HTML **标记**时，浏览器会发出一个令牌，生成诸如 StartTag: HTML StartTag:head Tag: meta EndTag: head 这样的令牌 ( Token ) ，整个浏览由令牌生成器来完成。
+- 在令牌生成的同时，另一个流程会同时消耗这些令牌并转换成 HTML head 这些节点对象，起始和结束令牌表明了节点之间的关系
+- 当所有的令牌消耗完以后就转换成了DOM（文档对象模型）
 
 ![](https://codertw.com/wp-content/uploads/img/95mZC7G291.jpg)
 
-摘自：[詳解CRP：如何最大化提升首屏渲染速度](https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/677333/)
+摘自：[详解 CRP：如何最大化提升首屏渲染速度](https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/677333/)
 
-**渲染树的其他补充：**
+#### 渲染树的其他补充
 
-尽管不同的渲染引擎渲染流程不同，但是都需要解析 HTML 和 CSS 用于生成渲染树。前端开发接触最多的渲染引擎是 WebKit（以及在其基础上派生的 Blink)，接下来本文会以 Webkit 为基础介绍渲染树。
+尽管不同的渲染引擎渲染流程不同，但是都需要解析 HTML 和 CSS 用于生成渲染树。前端开发接触最多的渲染引擎是 WebKit（以及在其基础上派生的 Blink ），接下来本文会以 Webkit 为基础介绍渲染树。
 
 ![The Compositing Forest](https://s2.loli.net/2022/02/08/oQWuJlNCZEjtheA.jpg)
 
 图片来自 [GPU Accelerated Compositing in Chrome](https://link.segmentfault.com/?enc=GCJMy40VlEdNxgjk5%2BzJzg%3D%3D.zS4%2Fsck9kvYrD0zGIFLXw9uvAG18cpxAl3wOPia0lOhfMzcq1J3gRUb54jDmKMeBPPa2rKSSkUYsuSm3kf8TvCSlrTx4rRID8%2BZjYX1qnEZaADlewiFFPDpz2of2XF4c)
 
-上图中，除了我们熟悉的 DOM 树外，还有 RenderObject 树，RenderLayer 树，GraphicsLayer 树，它们共同构成了 "渲染森林"。
+上图中，除了我们熟悉的 DOM 树外，还有 RenderObject 树，RenderLayer 树，GraphicsLayer 树，它们共同构成了 “***渲染森林***”。
 
-- **RenderObject**
+##### RenderObject 渲染对象
 
-  RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对应，RenderObject 也构成了一颗树。但是RenderObject 的树与 DOM 节点并不是一一对应关系。《Webkit 技术内幕》指出，如果满足下列条件，则会创建一个 RenderObject：
+RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对应，RenderObject 也构成了一颗树。但是RenderObject 的树与 DOM 节点并不是一一对应关系（**注：**比如 `display: none` 的节点，不会生成渲染对象）。《Webkit 技术内幕》指出，如果满足下列条件，则会创建一个 RenderObject ：
 
-  - DOM 树中的 document 节点；
-  - DOM 树中的可见节点（webkit 不会为非可视节点创建 RenderObject 节点）；
-  - 为了处理需要，Webkit 建立匿名的 RenderObject 节点，如表示块元素的 RenderBlock（RenderObject 的子类）节点。
+- DOM 树中的 document 节点
+- DOM 树中的可见节点（webkit 不会为非可视节点创建 RenderObject 节点）
+- 为了处理需要，Webkit 建立匿名的 RenderObject 节点，如表示块元素的 RenderBlock（ RenderObject 的子类）节点
 
-  将 DOM 节点绘制在页面上，除了要知道渲染节点的信息外，还需要各渲染节点的层级。浏览器提供了 RenderLayer 来定义渲染层级。
+<font color=FF0000>将 DOM 节点绘制在页面上，除了要知道渲染节点的信息外，**还需要各渲染节点的层级**</font>（**注：**可参考 composite ）。浏览器提供了 RenderLayer 来定义渲染层级
 
-- **RenderLayer**
+##### RenderLayer 渲染层级
 
-  RenderLayer 是浏览器基于 RenderObject 创建的。RenderLayer 最初是用来生成层叠上下文 (stacking context)，以保证页面元素按照正确的层级展示。同样的， RenderObject 和 RenderLayer 也不是一一对应的，RenderObject 如果满足以下条件，则会创建对应的 RenderLayer （ [GPU Accelerated Compositing in Chrome](https://link.segmentfault.com/?enc=cQ6Sn%2B1ylo7UKQ1kTT3zFQ%3D%3D.VaozdfL6Johksdd3rWFa0RhGqY82D0QQgYeiRAoSJImCa%2F6%2BXsAbdp1ddIO7s5m5kONAq%2BrewIvHztpgVBzKBiGCIwFB1uwr%2FfwXpWlhgv%2Fw%2FUf4FTfE1xrJVivrGJhg)）：
+<font color=FF0000>RenderLayer 是浏览器基于 RenderObject 创建的</font>。RenderLayer 最初是用来生成层叠上下文 ( stacking context )，以<font color=FF0000>**保证页面元素按照正确的层级展示**</font>。同样的， RenderObject 和 RenderLayer 也不是一一对应的；<font color=FF0000>**RenderObject 如果满足以下条件，则会创建对应的 RenderLayer**</font> （ [GPU Accelerated Compositing in Chrome](https://link.segmentfault.com/?enc=cQ6Sn%2B1ylo7UKQ1kTT3zFQ%3D%3D.VaozdfL6Johksdd3rWFa0RhGqY82D0QQgYeiRAoSJImCa%2F6%2BXsAbdp1ddIO7s5m5kONAq%2BrewIvHztpgVBzKBiGCIwFB1uwr%2FfwXpWlhgv%2Fw%2FUf4FTfE1xrJVivrGJhg)）：
 
-  - 文档的根节点；
-  - 具有明确 CSS 定位信息的节点（如 relative，absolute 或者 transform）
-  - 透明节点；
-  - 有 overflow，mask 或者 reflection 属性的节点；
-  - 有 filter 属性的节点；
-  - 有 3D Context 或者加速的 2D Context 的 Canvas 节点；
-  - 对应 Video 元素的节点。
+- 文档的根节点
+- 具有明确 CSS 定位信息的节点（如 relative，absolute 或者 transform ）
+- 透明节点
+- 有 overflow，mask 或者 reflection 属性的节点
+- 有 filter 属性的节点
+- 有 3D Context 或者加速的 2D Context 的 Canvas 节点
+- 对应 Video 元素的节点。
 
-  我们可以将每一个 RenderLayer 想象成一个图层。渲染就是在每个 RenderLayer 图层上，将 RenderObject 绘制出来。这个过程可以使用 CPU 绘制，这就是软件绘图。但是软件绘图是无法处理 3D 的绘图上下文，每一层的 RenderObject 中都不能包含使用 3D 绘图的节点，例如有 3D Contex 的 Canvas 节点，也不能支持 CSS 3D 变化属性。此外，页面动画中，每次元素尺寸或者位置变动，都要重新去构造 RenderLayer 树，触发 Layout 及其后续的渲染流水线。这样会导致页面帧率的下降，造成视觉上的卡顿。所以现代浏览器引入了由 GPU 完成的硬件加速绘图。
+<font color=FF0000>**可以将每一个 RenderLayer 想象成一个图层**。渲染就是在每个 RenderLayer 图层上，将 RenderObject 绘制出来</font>。这个过程可以使用 CPU 绘制，这就是软件绘图。但是软件绘图是无法处理 3D 的绘图上下文，每一层的 RenderObject 中都不能包含使用 3D 绘图的节点，例如有 3D Contex 的 Canvas 节点，也不能支持 CSS 3D 变化属性。此外，<font color=FF0000>页面动画中，每次元素尺寸或者位置变动，都要重新去构造 RenderLayer 树，**触发 Layout 及其后续的渲染流水线。这样会导致页面帧率的下降，造成视觉上的卡顿**。**所以现代浏览器引入了由 GPU 完成的硬件加速绘图**</font>。
 
-  在获得了每一层的信息后，需要将其合并到同一个图像上，这个过程就是合成（Compositing），使用了合成技术的称之为合成化渲染。
+<font color=FF0000>在获得了每一层的信息后，需要将其合并到同一个图像上，这个过程就是合成 ( Compositing ) </font>，使用了合成技术的称之为合成化渲染。
 
-  在软件渲染中，实际上是不需要合成的，因为软件渲染是按照从前到后的顺序在同一个内存空间完成每一层的绘制。在现代浏览器尤其是移动端设备中，使用 GPU 完成的硬件加速绘图更为常见。由 GPU 完成的硬件加速绘图需要合成，而合成都是使用 GPU 完成的，这整个过程称之为硬件加速的合成化渲染。
-  现代浏览器中，并不是所有的绘图都需要使用 GPU 来完成，《Webkit 技术内幕》中指出：
+在软件渲染中，实际上是不需要合成的，因为软件渲染是按照从前到后的顺序在同一个内存空间完成每一层的绘制。在现代浏览器尤其是移动端设备中，使用 GPU 完成的硬件加速绘图更为常见。由 GPU 完成的硬件加速绘图需要合成，而合成都是使用 GPU 完成的，这整个过程称之为硬件加速的合成化渲染。
+现代浏览器中，并不是所有的绘图都需要使用 GPU 来完成，《Webkit 技术内幕》中指出：
 
-  > 对于常见的 2D 绘图操作，使用 GPU 来绘图不一定比使用 CPU 绘图在性能上有优势，例如绘制文字、点、线等，原因是 CPU 的使用缓存机制有效减少了重复绘制的开销而不需要 GPU 并行性。
+> 对于常见的 2D 绘图操作，使用 GPU 来绘图不一定比使用 CPU 绘图在性能上有优势，例如绘制文字、点、线等，原因是 CPU 的使用缓存机制有效减少了重复绘制的开销而不需要 GPU 并行性。
 
-// TODO
+##### GraphicsLayer
+
+<font color=FF0000>为了节省 GPU 的内存资源，Webkit 并不会为每个 RenderLayer 分配一个对应的后端存储。而是**按照一定的规则，将一些 RenderLayer 组合在一起，形成一个有后端存储的新层，用于之后的合成，称之为 *合成层***</font>。<font color=FF0000>**合成层中，存储空间使用 GraphicsLayer 表示**</font>。对于一个 RenderLayer 对象，如果没有单独提升为合成层，则使用其父对象的合成层。如果一个 RenderLayer 具有以下几个特征之一 （ [GPU Accelerated Compositing in Chrome](https://link.segmentfault.com/?enc=DrtF9JVqy8L8BM0uplw41A%3D%3D.xB4yJ7%2FuERE7HSlqsZVe1zy2kA6HtEXgEiJ5vsUy7yGbfaSqCjxdMcZfWO7ZXvSs3ABPTIoYP1tiNt8cUX9WbqSnT1NWRya%2BXEF0bnt%2F9B%2FTV3WqCKgTh9qUlIdx%2BpZx)），则其具有自己的合成层：
+
+- 有 3D 或者透视变换的 CSS 属性
+- 包含使用硬件加速的视频加码技术的 Video 元素
+- 有 3D Contex 或者加速的 2D Context 的 Canvas 元素（**注：**普通的 2D Context 不会提升为合成层）
+- 有 opacity、transform 改变的动画
+- 使用了硬件加速的 CSS filter 技术
+- 后代包含一个合成层
+- Overlap 重叠：有一个 Z 坐标比自己小的兄弟节点，且该节点是一个合成层
+
+对于 Overlap 重叠造成的合成层提升，[Compositing in Blink / WebCore: From WebCore::RenderLayer to cc:Layer](https://link.segmentfault.com/?enc=DmoQX5XNJBFyikrv3DZfYw%3D%3D.wrdOKeLCkNcnpdtv8mLYMRtDWJixxbDmPvBWEiCwYBVrIl9hrnZLHAqNNuR37zyv8riLcXGQxXceX2M%2FuY0F54fv51m%2FXG71jyNJu49dZJGXDsuxG2p%2Br1XVLBSckFTniSFrkOEzC2tp0GyHuBt75b7cYcsWywm8WEZJDGM0jW6O%2FFD1sMrpjOy4zWdXgwn3GrAKUZ%2F8wJvXF0dAyLtvbg%3D%3D) 给出了三幅图片：
+
+![img](https://s2.loli.net/2022/05/23/vy7NAo3ijdCwMzY.jpg)
+
+图 1 中，顶部的绿色矩形和底部的蓝色矩形是兄弟节点，蓝色矩形因为某种原因被提升为合成层。如果绿色矩形不进行合成层提升的话，它将和父节点共用一个合成层。这就导致在渲染时，绿色矩形位于蓝色矩形的底部，出现渲染出错（图 2)。所以如果发生重叠，绿色矩形也需要被提升为合成层。
+
+对于合成层的提升条件，[无线性能优化：Composite](https://link.segmentfault.com/?enc=1zd%2BgWrMaTcoWvLs76WP0g%3D%3D.iL0GQzfyFX1z4BZMXtKmjyWVH7w80YymmkDT46%2B04Z9nhzwBAFU18oEatnwrRG0WGo%2Ft0WQWfUqi7KVWxKyl0hccjQ8Nm7FniAyIFUZTxKQ%3D) 中有更详细的介绍。结合 RenderLayer 和 GraphicsLayer 的创建条件，可以看出动画（尺寸、位置、样式等改变）元素更容易创建 RenderLayer ，进而提升为合成层（这里要注意，并不是所有的 CSS 动画元素都会被提升为合成层，这个会在后续的渲染流水线中介绍）。这种设计使浏览器可以更好使用 GPU 的能力，给用户带来流畅的动画体验。
 
 摘自：[从浏览器渲染原理谈动画性能优化](https://segmentfault.com/a/1190000041295744)
 

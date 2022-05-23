@@ -39,7 +39,7 @@ DOM ( **D**ocument **O**bject **M**odel )（文档对象模型）是用于访问
 
 #### **补充：**
 
-除了 innerHTML 外，还有 outerHTML： element  DOM 接口的 outerHTML 属性获取描述元素（包括其后代）的序列化 HTML 片段。它也可以设置为用从给定字符串解析的节点替换元素。
+除了 innerHTML 外，还有 outerHTML ：element  DOM 接口的 outerHTML 属性获取描述元素（包括其后代）的序列化 HTML 片段。它也可以设置为用从给定字符串解析的节点替换元素。
 
 **语法**
 
@@ -97,18 +97,18 @@ Undefined 这个值表示变量不含有值。
 
 一些常见的HTML事件的列表:
 
-| 事件          | 描述               |
-|:----------- |:---------------- |
-| onchange    | HTML 元素改变        |
-| onclick     | 用户点击 HTML 元素     |
-| onmouseover | 用户在一个HTML元素上移动鼠标 |
-| onmouseout  | 用户从一个HTML元素上移开鼠标 |
-| onkeydown   | 用户按下键盘按键         |
-| onload      | 浏览器已完成页面的加载      |
+| 事件        | 描述                           |
+| :---------- | :----------------------------- |
+| onchange    | HTML 元素改变                  |
+| onclick     | 用户点击 HTML 元素             |
+| onmouseover | 用户在一个 HTML 元素上移动鼠标 |
+| onmouseout  | 用户从一个 HTML 元素上移开鼠标 |
+| onkeydown   | 用户按下键盘按键               |
+| onload      | 浏览器已完成页面的加载         |
 
-更多事件列表: [JavaScript 参考手册 - HTML DOM 事件](https://www.runoob.com/jsref/dom-obj-event.html)。
+更多事件列表：[JavaScript 参考手册 - HTML DOM 事件](https://www.runoob.com/jsref/dom-obj-event.html)。
 
-补充：input输入事件：onfocus（focus） -> 键盘输入 -> onkeydown（keydown） -> onkeypress（keypress） -> onkeyup（keyup） -> oninput（input） -> 失去焦点 -> onchange（change） -> onblur（blur)
+补充：input输入事件：onfocus ( focus ) -> 键盘输入 -> onkeydown ( keydown )  -> onkeypress ( keypress )  -> onkeyup ( keyup )  -> oninput ( input )  -> 失去焦点 -> onchange ( change ) -> onblur ( blur )
 
 摘自：[input输入框事件](https://www.jianshu.com/p/4517117abd8e)
 
@@ -569,7 +569,7 @@ str.normalize( [form] )
 >   ```js
 >   let str = '𝒳😂';
 >   let chars = Array.from(str); // 将 str 拆分为字符数组
->                                                           
+>                                                             
 >   console.log(chars[0]); // 𝒳
 >   console.log(chars[1]); // 😂
 >   console.log(chars.length); // 2
@@ -3246,7 +3246,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                               
+  >                                                                                                 
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3265,7 +3265,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                               
+  >                                                                                                 
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7402,7 +7402,7 @@ PerformanceObserver <font color=FF0000>用于监测性能度量事件</font>，<
      // 处理 "measure" 事件
   }
   var observer2 = new PerformanceObserver(perf_observer);
-  observer2.observe({entryTypes: ["measure"]});
+  observer2.observe( {entryTypes: ["measure"]} )
   ```
 
 摘自：[MDN - 性能监测对象](https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceObserver)
@@ -11215,7 +11215,7 @@ event loop 实现了 task 和 急事处理机制 microtask，而且每次 loop �
 
 #### window.requestAnimationFrame
 
-window.requestAnimationFrame() <font color=FF0000>告诉浏览器</font>：你<font color=FF0000>希望执行一个动画，并且**要求浏览器在下次重绘之前调用指定的回调函数更新动画**</font>。该方法<font color=FF0000>需要传入一个 <font size=4>**回调函数**</font> 作为参数，该 <font size=4>**回调函数会在浏览器下一次重绘之前执行**</font></font>
+window.requestAnimationFrame() <font color=FF0000>告诉浏览器</font>：你<font color=FF0000>希望执行一个动画，并且**要求浏览器在下次 <font size=4>*重绘*</font> 之前，调用指定的回调函数更新动画**</font>。该方法<font color=FF0000>需要传入一个 <font size=4>**回调函数**</font> 作为参数，该 <font size=4>**回调函数会在浏览器下一次重绘之前执行**</font></font>
 
 > 注意：<font color=FF0000>若你想在浏览器下次重绘之前继续更新下一帧动画，那么 **回调函数自身必须再次调用 window.requestAnimationFrame()**</font>
 

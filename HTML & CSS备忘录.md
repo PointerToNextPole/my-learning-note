@@ -24,7 +24,7 @@ Lorem ipsum，简称为 Lipsum，是指一篇常用于排版设计领域的拉�
 
 HTML \<label> 元素（标签）表示用户界面中某个元素的说明。
 
-**将一个 \<label> 和一个 \<input> 元素相关联主要有这些优点：**
+##### 将一个 \<label> 和一个 \<input> 元素相关联主要有这些优点
 
 - 标签文本不仅与其相应的文本输入元素在视觉上相关联，程序中也是如此。 这意味着，当用户聚焦到这个表单输入元素时，屏幕阅读器可以:读出标签，让使用辅助技术的用户更容易理解应输入什么数据。
 - 你可以点击关联的标签来聚焦或者激活这个输入元素，就像直接点击输入元素一样。这扩大了元素的可点击区域，让包括使用触屏设备在内的用户更容易激活这个元素。
@@ -39,13 +39,14 @@ HTML \<label> 元素（标签）表示用户界面中某个元素的说明。
 </label>
 ```
 
-**其他使用事项：**
+##### 其他使用事项
 
 - 关联标签的表单控件称为这个标签的已关联标签的控件。<font color=FF0000>一个 input 可以与多个标签相关联</font>。
 
 - 点击或者轻触 ( tap ) 与表单控件相关联的 \<label> 也可以触发关联控件的 click 事件。
 
-**属性**
+##### 属性
+
 该元素包含 全局属性。
 
 - <font color=FF0000>**for：**即和 \<label> 元素在同一文档中的 可关联标签的元素 的 id</font>。 <mark>文档中第一个 id 值与 \<label> 元素 for 属性值相同的元素，如果可关联标签（labelable），则为已关联标签的控件，其标签就是这个 \<label> 元素</mark>。如果这个元素不可关联标签，则 for 属性没有效果。如果文档中还有其他元素的 id 值也和 for 属性相同，for 属性对这些元素也没有影响。
@@ -60,7 +61,7 @@ HTML \<label> 元素（标签）表示用户界面中某个元素的说明。
 
 HTML \<button> 元素表示一个可点击的按钮，可以用在表单或文档其它需要使用简单标准按钮的地方。 <mark>默认情况下，HTML按钮的显示样式接近于 user agent 所在的宿主系统平台（用户操作系统）的按钮</mark>， 但你可以使用 CSS 来改变按钮的样貌。
 
-**属性**
+##### 属性
 
 - **autofocus：**<mark style=background-color:hotpink>HTML5</mark>，一个布尔属性，用于<font color=FF0000>指定当页面加载时按钮必须有输入焦点</font>，除非用户重写，例如通过不同控件键入。只有一个表单关联元素可以指定该属性。
 
@@ -113,12 +114,13 @@ HTML \<button> 元素表示一个可点击的按钮，可以用在表单或文�
 
 #### \<a>
 
-<font color=FF0000>**a是anchor的缩写。**</font>
+<font color=FF0000>**a 是 anchor的缩写。**</font>
 
 HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向其他网页、文件、同一页面内的位置、电子邮件地址或任何其他 URL 的超链接。\<a> 中的内容应该应该指明链接的意图。<mark>如果存在 href 属性，当 \<a> 元素聚焦时按下回车键就会激活它</mark>。
 
-**属性**
-**该元素的属性包含全局属性**
+##### 属性
+
+该元素的属性包含全局属性
 
 - **download：**<mark>HTML5</mark>，<font color=FF0000>此属性指示**浏览器下载 URL** 而不是导航到它</font>，因此将提示用户将其保存为本地文件。<font color=FF0000>如果属性有一个值，那么此值将在下载保存过程中作为预填充的文件名</font>（<mark>如果用户需要，仍然可以更改文件名</mark>）。此属性对允许的值没有限制，但是 / 和 \ 会被转换为下划线。大多数文件系统限制了文件名中的标点符号，故此，浏览器将相应地调整建议的文件名。
 
@@ -127,10 +129,10 @@ HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向�
   - 此属性<font color=FF0000>**仅适用于同源 URL**</font>。
   - <mark>尽管 HTTP URL 需要位于同一源中</mark>，<font color=FF0000>但是**可以使用 blob: URL 和 data: URL** ，以方便用户下载使用 JavaScript 生成的内容</font>（例如使用在线绘图 Web 应用程序创建的照片）。
   - 如果 HTTP 头中的 Content-Disposition 属性赋予了一个不同于此属性的文件名，HTTP 头属性优先于此属性。
-  - 如果 HTTP 头属性 Content-Disposition 被设置为inline（即 Content-Disposition='inline'），那么 Firefox 优先考虑 HTTP 头 Content-Dispositiondownload 属性。
+  - 如果 HTTP 头属性 Content-Disposition 被设置为 inline（即 Content-Disposition='inline' ），那么 Firefox 优先考虑 HTTP 头 Content-Dispositiondownload 属性。
 
 - **href：**包含超链接指向的 URL 或 URL 片段。
-  <font color=FF0000>URL 片段是哈希标记（#）前面的名称</font>，哈希标记（即：锚点链接）指定当前文档中的内部目标位置（HTML 元素的 ID）。<font color=FF0000>URL 不限于基于 Web（HTTP）的文档，也可以使用浏览器支持的任何协议</font>。<mark>例如，在大多数浏览器中正常工作的file:、ftp:和mailto：</mark>。
+  <font color=FF0000>URL 片段是哈希标记（#）前面的名称</font>，哈希标记（即：锚点链接）指定当前文档中的内部目标位置（ HTML 元素的 ID ）。<font color=FF0000>URL 不限于基于 Web ( HTTP ) 的文档，也可以使用浏览器支持的任何协议</font>。<mark>例如，在大多数浏览器中正常工作的 file: 、ftp: 和 mailto:</mark>
 
   **注意：**<mark>可以使用 href="#top" 或者 href="#" 链接返回到页面顶部</mark>。<font color=FF0000>这种行为是 HTML5 的特性</font>。
 
@@ -143,7 +145,7 @@ HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向�
   - **no-referrer：**<font color=FF0000>表示 Referer: 头将不会被发送</font>。
   - **no-referrer-when-downgrade：**<font color=FF0000>表示当从使用HTTPS的页面导航到不使用 TLS(HTTPS)的来源 时不会发送 Referer: 头</font>。<font color=FF0000>**如果没有指定策略，这将是用户代理的<font size=4>默认行为</font>**</font>。
   - **origin：**<font color=FF0000>表示 referrer将会是页面的来源</font>，大致为这样的组合：主机和端口（不包含具体的路径和参数的信息）。
-  - **origin-when-cross-origin：**表示导航到其它源将会限制为这种组合：主机 + 端口，而导航到相同的源将会只包含 referrer的路径。
+  - **origin-when-cross-origin：**表示导航到其它源将会限制为这种组合：主机 + 端口，而导航到相同的源将会只包含 referrer 的路径
   - **strict-origin-when-cross-origin**
   - **unsafe-url：**表示 referrer将会包含源和路径（domain + path）（但是不包含密码或用户名的片段）。这种情况是不安全的，因为它可能会将安全的URLs数据泄露给不安全的源。
 
@@ -160,15 +162,15 @@ HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向�
 
 - **type：**该属性指定在一个 MIME type 链接目标的形式的媒体类型。其仅提供建议，并没有内置的功能。
 
-**已废除的属性**
+##### 已废除的属性
 
-- **charset**（HTML5已废除）
-- **coords**（HTML4有效，HTML5已废除）
-- **name**（HTML4有效，HTML5已废除）
-- **rev**（HTML4有效，HTML5已废除）
-- **sharp**（HTML4有效，HTML5已废除）
+- **charset**（ HTML5 已废除）
+- **coords**（ HTML4 有效，HTML5 已废除）
+- **name**（ HTML4 有效，HTML5 已废除）
+- **rev**（ HTML4 有效，HTML5 已废除）
+- **sharp**（ HTML4 有效，HTML5 已废除）
 
-**\<a> 的作用**
+##### \<a> 的作用
 
 - **链接到外部地址**
 
@@ -218,7 +220,7 @@ HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向�
 
 #### \<pre>
 
-HTML \<pre> 元素表示预定义格式文本。<font color=FF0000>在该元素中的文本通常按照原文件中的编排，以等宽字体的形式展现出来，文本中的空白符（比如空格和换行符）都会显示出来</font>。(<mark>紧跟在 \<pre> 开始标签后的换行符也会被省略</mark>)
+HTML \<pre> 元素表示预定义格式文本。<font color=FF0000>在该元素中的文本通常按照原文件中的编排，以等宽字体的形式展现出来，文本中的空白符（比如空格和换行符）都会显示出来</font>。（<mark>紧跟在 \<pre> 开始标签后的换行符也会被省略</mark>）
 
 摘自：[MDN - \<pre>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/pre)
 
@@ -230,7 +232,8 @@ HTML \<form> 元素表示文档中的一个区域，此区域包含交互控件�
 
 <font color=FF0000>可以用 **:valid** 和 **:invalid** CSS 伪类来设置 \<form> 元素的样式，此时样式的表现取决于表单中的 elements 是否有效</font>。
 
-**属性**
+##### 属性
+
 此元素拥有 全局属性。
 
 - **accept：**<font color=FF0000>**（已废弃）**</font>一个逗号分隔的列表，包括服务器能接受的内容类型。
@@ -242,7 +245,7 @@ HTML \<form> 元素表示文档中的一个区域，此区域包含交互控件�
   - **off：**<font color=FF0000>浏览器可能不会自动补全条目</font>（在疑似登录表单中，浏览器倾向于忽略该值，而提供密码自动填充功能，参见 自动填充属性和登录）
   - **on：**<font color=FF0000>浏览器可自动补全条目</font>
 - **name：**<font color=FF0000>表单的名称</font>。<mark>HTML 4中不推荐（应使用 id）</mark>。<font color=FF0000>**在 HTML 5 中，该值必须是所有表单中独一无二的，而且不能是空字符串**</font>。
-- **rel：**根据 value 创建一个超链接或Creates a hyperlink or annotation depending on the value
+- **rel：**根据 value 创建一个超链接或 Creates a hyperlink or annotation depending on the value
 
 **关于提交表单的属性**
 
@@ -279,26 +282,22 @@ HTML \<form> 元素表示文档中的一个区域，此区域包含交互控件�
 
 摘自：[MDN - form](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/form)
 
-#### 表单相关伪类
+##### 表单相关伪类
 
-- **:valid**
-
-  :valid CSS 伪类 <font color=FF0000>表示内容验证正确的 \<input> 或其他 \<form> 元素</font>。这<font color=FF0000>能简单地将校验字段展示为一种能让用户辨别出其输入数据的正确性的样式</font>。
+- **:valid**：`:valid` CSS 伪类 <font color=FF0000>表示内容验证正确的 \<input> 或其他 \<form> 元素</font>。这<font color=FF0000>能简单地将校验字段展示为一种能让用户辨别出其输入数据的正确性的样式</font>。
 
   ```css
-  /* Selects any valid <input> */
+/* Selects any valid <input> */
    input:valid {
      background-color: powderblue;
   }
   ```
-
+  
   该伪类对于高亮正确字段是很有用的。
 
   摘自：[MDN - :valid](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:valid)
 
-- **:invalid**
-
-  :invalid CSS 伪类 <font color=FF0000>表示任意内容未通过验证的 \<input> 或其他 \<form> 元素 </font>
+- **:invalid**：`:invalid` CSS 伪类 <font color=FF0000>表示任意内容未通过验证的 \<input> 或其他 \<form> 元素 </font>
 
   ```css
   /* 可选定任意无效的<input> */
@@ -306,7 +305,7 @@ HTML \<form> 元素表示文档中的一个区域，此区域包含交互控件�
     background-color: pink;
   }
   ```
-
+  
   这个伪类对于突出显示用户的字段错误非常有用。
 
   摘自：[MDN - :invalid](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:invalid)
@@ -317,12 +316,13 @@ HTML \<form> 元素表示文档中的一个区域，此区域包含交互控件�
 
 HTML \<dialog> 元素<font color=FF0000>表示一个对话框或其他交互式组件</font>，例如一个检查器或者窗口。
 
-**属性**
+##### 属性
+
 这个元素包含了全局属性。但是 tabindex 特性不能被使用在 \<dialog> 元素上。
 
 - **open：**<font color=FF0000>指示这个对话框是激活的和能互动的</font>。<mark>当这个 open 特性没有被设置，对话框不应该显示给用户</mark>。
 
-**使用备注**
+##### 使用备注
 
 - <font color=FF0000>\<form>元素可在此对话框中使用，但需要指定属性 method="dialog"</font>。当提交表单时，对话框的 returnValue 属性将会等于表单中被使用的提交按钮的 value 。
 - ::backdrop CSS 伪元素可用于更改 \<dialog> 背景元素样式，例如在对话框被打开激活时，调暗背景中不可访问的内容。仅当使用  HTMLDialogElement.showModal()  显示对话框时才会绘制 backdrop 背景。
@@ -339,9 +339,9 @@ HTML \<fieldset> 元素用于对表单中的控制元素<font color=FF0000>进�
 
 **属性：**<font color=FF0000>这个元素包含所有全局属性</font>。
 
-- **disabled：**如果设置了这个 bool 值属性, \<fieldset> 的所有子代表单控件也会继承这个属性。<font color=FF0000>这意味着它们不可编辑，也不会随着 \<form> 一起提交</font>。它们也不会接收到任何浏览器事件，如鼠标点击或与聚焦相关的事件。默认情况下，浏览器会将这样的控件展示为灰色。注意，\<legend> 中的表单元素不会被禁用。
+- **disabled：**如果设置了这个 bool 值属性，\<fieldset> 的所有子代表单控件也会继承这个属性。<font color=FF0000>这意味着它们不可编辑，也不会随着 \<form> 一起提交</font>。它们也不会接收到任何浏览器事件，如鼠标点击或与聚焦相关的事件。默认情况下，浏览器会将这样的控件展示为灰色。注意，\<legend> 中的表单元素不会被禁用。
 - **form：**将该值<font color=FF0000>设为一个 \<form> 元素的 id 属性值以将 \<fieldset> 设置成这个 \<form> 的一部分</font>。      
-- **name：**元素分组（fieldset）的名称
+- **name：**元素分组 ( fieldset ) 的名称
 
 注意：fieldset 的标题由第一个 \<legend> 子元素确定。
 
@@ -392,18 +392,48 @@ HTML \<meta> 元素表示那些不能由其它 HTML 元相关 ( meta-related ) �
   属性定义了一个编译指示指令。这个属性叫做 `http-equiv(alent)` 是因为<font color=FF0000> 所有允许的值都是特定 HTTP 头部的名称</font>，如下：
   
   - **content-security-policy：** 它允许页面作者<font color=FF0000> 定义当前页的内容策略</font>。 内容策略<font color=FF0000> 主要指定允许的服务器源和脚本端点，这有助于防止跨站点脚本攻击</font>。
+  
   - **content-type：** <font color=FF0000> 如果使用这个属性，其值必须是"text/html; charset=utf-8"</font>。注意：该属性只能用于 MIME type 为 text/html 的文档，不能用于MIME类型为XML的文档。
+  
   - **default-style：**设置默认 CSS 样式表组的名称。
+  
   - **x-ua-compatible：** <font color=FF0000>如果指定，则 content 属性必须具有值 "IE=edge" </font>。用户代理必须忽略此指示。
+  
+    > x-ua-compatible 一般是用来做 IE 适配的。
+    >
+    > 另外，还可以是 "IE=edge,chrome=1"
+    >
+    > IE=edge 告诉浏览器，以当前浏览器支持的最新版本来渲染，IE9 就以 IE9 版本来渲染。
+    > chrome=1 告诉浏览器，如果当前IE浏览器安装了Google Chrome Frame 插件，就以 chrome 内核来渲染页面。
+    > 像上图这种两者都存在的情况：如果有 chrome 插件，就以 chrome 内核渲染，如果没有，就以当前浏览器支持的最高版本渲染。
+    > 另外，这个属性支持的范围是IE8 ～ IE11
+    >
+    > 你可能注意到了，如果在我们的 http 头部中也设置了这个属性，并且和 meta 中设置的有冲突，那么哪一个优先呢？ 答案是：开发者偏好（ meta 元素）优先于Web服务器设置（ HTTP 头）。
+    >
+    > 摘自：[作为前端，你必须要知道的meta标签知识](https://juejin.cn/post/7089271039842058253)
+  
   - **refresh：** 这个属性指定：
+    
     - 如果 <font color=FF0000> content **只包含**一个正整数，则为 **重新载入页面的时间间隔（秒）** </font>；
-    - 如果 <font color=FF0000> content 包含一个正整数，并且后面跟着字符串 ';url=' 和一个合法的 URL</font>，则是<font color=FF0000> **重定向到指定链接**的时间间隔(秒)</font>
+    - 如果 <font color=FF0000> content 包含一个正整数，并且后面跟着字符串 ';url=' 和一个合法的 URL</font>，则是<font color=FF0000> **重定向到指定链接**的时间间隔（秒）</font>
+    
+  - **x-dns-prefetch-control**：
+  
+    > 一般来说，HTML页面中的a标签会自动启用DNS提前解析来提升网站性能，但是在使用https协议的网站中失效了，我们可以设置：
+    >
+    > ```html
+    > <meta http-equiv="x-dns-prefetch-control" content="on">
+    > ```
+    >
+    > 来打开 dns 对 a 标签的提前解析
+    >
+    > 摘自：[作为前端，你必须要知道的meta标签知识](https://juejin.cn/post/7089271039842058253)
   
 - **name：**<font color=FF0000> name 和 content 属性可以一起使用，以名-值对的方式给文档提供元数据</font>，其中 name 作为元数据的名称，content 作为元数据的值。
 
 摘自：[MDN - \<meta>：文档级元数据元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/meta)
 
-#### http-equiv
+##### http-equiv
 
 http-equiv 顾名思义，<font color=FF0000>**相当于 http 的文件头作用**</font>，它可以向浏览器传回一些有用的信息，以帮助正确和精确地显示网页内容，与之对应的属性值为 content，content 中的内容其实就是各个参数的变量值。
 
@@ -451,7 +481,7 @@ meta 标签的 http-equiv 属性语法格式是：\<meta http-equiv="参数" con
   <meta http-equiv="Set-Cookie" content="cookievalue=xxx;expires=Wednesday, 20-Jun-2007 22:33:00 GMT; path=/">
   ```
 
-- **Window-target（显示窗口的设定）：**强制页面在当前窗口以独立页面显示。注意：用来防止别人在框架里调用自己的页面。用法：
+- **Window-target（显示窗口的设定）：**强制页面在当前窗口以独立页面显示。注意：用来防止别人在框架里调用自己的页面。用法
 
   ```html
   <meta http-equiv="Window-target" content="_top">
@@ -496,7 +526,7 @@ meta 标签的 http-equiv 属性语法格式是：\<meta http-equiv="参数" con
   | 16：从中间向上下两端展开 | 17：从右上角向左下角展开 | 18：从右下角向左上角展开 | 19：从左上角向右下角展开 |
   | 20：从左下角向右上角展开 | 21：水平线状展开         | 22：垂直线状展开         | 23：随机产生一种过渡方式 |
 
--  **cache-control（清除缓存）：**再访问这个网站要重新下载！
+-  **cache-control（清除缓存）：**再访问这个网站要重新下载
 
   ```html
   <meta http-equiv="cache-control" content="no-cache">
@@ -508,7 +538,7 @@ meta 标签的 http-equiv 属性语法格式是：\<meta http-equiv="参数" con
   <meta http-equiv="expires" content="0">
   ```
 
-- **keywords：**关键字,给搜索引擎用的
+- **keywords：**关键字，给搜索引擎用的
 
   ```html
   <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
@@ -522,9 +552,7 @@ meta 标签的 http-equiv 属性语法格式是：\<meta http-equiv="参数" con
 
 摘自：[Meta Http-equiv属性详解](https://cnbin.github.io/blog/2016/02/03/http-equivshu-xing-xiang-jie/)
 
-
-
-#### format-detection
+##### format-detection
 
 format-detection （是 meta 标签内的属性）翻译成中文是“格式检测”，是用来检测 html 里的一些格式的，meta 中的 format-detection 属性主要有以下几个设置：
 
@@ -543,8 +571,8 @@ format-detection （是 meta 标签内的属性）翻译成中文是“格式检
 **解释：**
 
 - **telephone：**你明明写的一串数字没加链接样式，而 iPhone 会自动把你这个文字加链接样式、并且点击这个数字还会自动拨号！想去掉这个拨号链接该如何操作呢？这时我们的 meta 又该大显神通了，代码如下：
-  - **telephone=no：**就<font color=FF0000> 禁止</font>了把数字转化为拨号链接！
-  - **telephone=yes：**就<font color=FF0000> 开启</font>了把数字转化为拨号链接，要开启转化功能，这个meta就不用写了,在默认是情况下就是开启！
+  - **telephone=no：**就<font color=FF0000> 禁止</font>了把数字转化为拨号链接
+  - **telephone=yes：**就<font color=FF0000> 开启</font>了把数字转化为拨号链接，要开启转化功能，这个meta就不用写了，在默认是情况下就是开启
   
 - **email：**告诉设备不识别邮箱，点击之后不自动发送
 
@@ -558,6 +586,30 @@ format-detection （是 meta 标签内的属性）翻译成中文是“格式检
   - adress=yes：就开启了点击地址直接跳转至地图的功能,在默认是情况下就是开启！
 
 摘自：[meta的format-detection属性](https://www.jianshu.com/p/82a85a53d5b4)
+
+##### \<meta> name-content 键值对的补充
+
+**robots**：表示爬虫对此页面的处理行为，或者说，应当遵守的规则，是用来做搜索引擎抓取的。
+
+**它的 content 可以为：**
+
+- all：搜索引擎将索引此网页，并继续通过此网页的链接索引文件将被检索
+- none：搜索引擎讲忽略此网页
+- index：搜索引擎索引此网页
+- follow：搜索引擎继续通过此网页的链接索引搜索其它的网页
+
+**renderer**：用来指定双核浏览器的渲染方式。比如 360浏览器，我们可以通过这个设置来指定 360浏览器的渲染方式
+
+```html
+<!-- 默认 webkit 内核 -->
+<meta name="renderer" content="webkit">
+<!-- 默认 IE 兼容模式 -->
+<meta name="renderer" content="ie-comp">
+<!-- 默认 IE 标准模式 -->
+<meta name="renderer" content="ie-stand">
+```
+
+摘自：[作为前端，你必须要知道的meta标签知识](https://juejin.cn/post/7089271039842058253)
 
 
 
@@ -632,59 +684,60 @@ format-detection （是 meta 标签内的属性）翻译成中文是“格式检
 
 #### data-*（数据属性）
 
-HTML5是具有扩展性的设计，它初衷是数据应与特定的元素相关联，但不需要任何定义。<font color=FF0000>data-* 属性允许我们在标准内于HTML元素中存储额外的信息</font>，而不需要使用类似于 classList，标准外属性，DOM额外属性或是 setUserData 之类的技巧。
+HTML5 是具有扩展性的设计，它初衷是数据应与特定的元素相关联，但不需要任何定义。<font color=FF0000>data-* 属性允许我们在标准内于HTML元素中存储额外的信息</font>，而不需要使用类似于 classList，标准外属性，DOM额外属性或是 setUserData 之类的技巧。
 
-- **HTML语法**
+##### HTML语法
 
-  语法非常简单。所有在元素上以data-开头的属性为数据属性。比如说你有一篇文章，而你又想要存储一些不需要显示在浏览器上的额外信息。请使用data属性：
+语法非常简单。所有在元素上以 data- 开头的属性为数据属性。比如说你有一篇文章，而你又想要存储一些不需要显示在浏览器上的额外信息。请使用data属性：
 
-  ```html
-  <article
-    id="electriccars"
-    data-columns="3"
-    data-index-number="12314"
-    data-parent="cars">
-  	...
-  </article>
-  ```
+```html
+<article
+  id="electriccars"
+  data-columns="3"
+  data-index-number="12314"
+  data-parent="cars">
+	...
+</article>
+```
 
-- **JavaScript 访问**
+##### JavaScript 访问
 
-  在外部使用JavaScript去访问这些属性的值同样非常简单。你<font color=FF0000>可以使用 getAttribute() 配合它们完整的HTML名称去读取它们</font>，<font color=FF0000>但**标准定义了一个更简单的方法：DOMStringMap你可以使用dataset读取到数据**</font>。
+在外部使用JavaScript去访问这些属性的值同样非常简单。你<font color=FF0000>可以使用 getAttribute() 配合它们完整的HTML名称去读取它们</font>，<font color=FF0000>但**标准定义了一个更简单的方法：DOMStringMap你可以使用dataset读取到数据**</font>。
 
-  为了使用dataset对象去获取到数据属性，需要获取属性名中 **`data-`** 之后的部分(要注意的是：<font color=FF0000>破折号连接的名称需要改写为骆驼拼写法</font>(如"index-number"转换为"indexNumber"))。
+为了使用dataset对象去获取到数据属性，需要获取属性名中 **`data-`** 之后的部分(要注意的是：<font color=FF0000>破折号连接的名称需要改写为骆驼拼写法</font>(如"index-number"转换为"indexNumber"))。
 
-  ```js
-  var article = document.querySelector('#electriccars');
-  
-  article.dataset.columns // "3"
-  article.dataset.indexNumber // "12314"
-  article.dataset.parent // "cars"
-  ```
+```js
+var article = document.querySelector('#electriccars');
 
-- **CSS 访问**
-  注意：data设定为HTML属性，他们同样能被CSS访问。比如你可以通过generated content使用函数attr()来显示data-parent的内容：
+article.dataset.columns // "3"
+article.dataset.indexNumber // "12314"
+article.dataset.parent // "cars"
+```
 
-  ```css
-  article::before {
-    content: attr(data-parent);
-  }
-  ```
+##### CSS 访问
 
-  你也同样可以在CSS中使用属性选择器根据data来改变样式：
+注意：data设定为HTML属性，他们同样能被CSS访问。比如你可以通过generated content使用函数attr()来显示data-parent的内容：
 
-  ```css
-  article[data-columns='3'] {
-    width: 400px;
-  }
-  article[data-columns='4'] {
-    width: 600px;
-  }
-  ```
+```css
+article::before {
+  content: attr(data-parent);
+}
+```
+
+你也同样可以在CSS中使用属性选择器根据data来改变样式：
+
+```css
+article[data-columns='3'] {
+  width: 400px;
+}
+article[data-columns='4'] {
+  width: 600px;
+}
+```
 
 摘自：[MDN - 使用数据属性](https://developer.mozilla.org/zh-CN/docs/Learn/HTML/Howto/Use_data_attributes)
 
-**补充：**
+##### 补充
 
 - data-* 属性用于存储页面或应用程序的<font color=FF0000>私有自定义数据</font>。
 
@@ -931,15 +984,15 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
 
 
 
-#### HTML语义化
+#### HTML 语义化
 
-**HTML语义化是什么？**
+**HTML 语义化是什么？**
 
 语义化是指<font color=FF0000>根据内容的结构化（内容语义化），选择合适的标签（代码语义化）</font>，<mark>便于开发者阅读和写出更优雅的代码的同时，让浏览器的爬虫和机器很好的解析</mark>。
 
 **为什么要语义化？**
 
-- 有利于SEO，有助于爬虫抓取更多的有效信息，爬虫是依赖于标签来确定上下文和各个关键字的权重。
+- 有利于 SEO，有助于爬虫抓取更多的有效信息，爬虫是依赖于标签来确定上下文和各个关键字的权重。
 - 语义化的 HTML 在没有 CSS 的情况下也能呈现较好的内容结构与代码结构
 - 方便其他设备的解析。支持读屏软件，根据文章可以自动生成目录
 - 可读性好，结构更加清晰， 便于团队开发和维护
@@ -980,7 +1033,7 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
 
 - **contextmenu：**\<menu> 的 id ，作为该元素的上下文菜单（<font color=FF0000>已经不被支持，将从所有浏览器中删除</font>）。
 
-- **data-*：**<font color=FF0000>一类自定义数据属性</font>，<mark>它赋予我们在所有 HTML 元素上嵌入自定义数据属性的能力</mark>，并可以通过脚本(一般指JavaScript) 与 HTML 之间进行专有数据的交换。所有这些自定义数据属性都可以通过所属元素的 HTMLElement 接口来访问。  <font color=FF0000>**HTMLElement.dataset 属性可以访问它们**</font>。
+- **data-*：**<font color=FF0000>一类自定义数据属性</font>，<mark>它赋予我们在所有 HTML 元素上嵌入自定义数据属性的能力</mark>，并可以通过脚本（一般指 JavaScript ） 与 HTML 之间进行专有数据的交换。所有这些自定义数据属性都可以通过所属元素的 HTMLElement 接口来访问。  <font color=FF0000>**HTMLElement.dataset 属性可以访问它们**</font>。
 
 - **dir：**<font color=FF0000>一个指示元素中**文本方向**的枚举属性</font>。它的取值如下：
 
@@ -1005,22 +1058,22 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
 
 - **id：**定义唯一标识符（ID），<font color=FF0000>该标识符在整个文档中必须是唯一的</font>。 其目的是在链接（使用片段标识符），脚本或样式（使用CSS）时标识元素。
 
-- **inputmode：**<font color=FF0000>向浏览器提供有关在编辑此元素或其内容时<font size=4>**要使用的虚拟键盘配置类型**</font>的提示</font>。主要用于 \<input>元素，但在contenteditable模式下可用于任何元素。它可以是以下值：
+- **inputmode：**<font color=FF0000>向浏览器提供有关在编辑此元素或其内容时<font size=4>**要使用的虚拟键盘配置类型**</font>的提示</font>。主要用于 \<input> 元素，但在contenteditable 模式下可用于任何元素。它可以是以下值：
 
   - **none：**无虚拟键盘。在应用程序或者站点需要实现自己的键盘输入控件时很有用。
   - **text：**使用用户本地区域设置的标准文本输入键盘。（<font color=FF0000>**默认值**</font>）
   - **decimal：**小数输入键盘，包含数字和分隔符（通常是“ . ”或者“ , ”），设备可能也可能不显示减号键。
-  - **numeric：**数字输入键盘，所需要的就是0到9的数字，设备可能也可能不显示减号键。
-  - **tel：**电话输入键盘，包含0到9的数字、星号（*）和井号（#）键。表单输入里面的电话输入通常应该使用 \<input type="tel"> 
+  - **numeric：**数字输入键盘，所需要的就是 0 到 9 的数字，设备可能也可能不显示减号键。
+  - **tel：**电话输入键盘，包含 0 到 9 的数字、星号 ( * ) 和井号 ( # ) 键。表单输入里面的电话输入通常应该使用 \<input type="tel"> 
   - **search：**为搜索输入优化的虚拟键盘，比如，返回键可能被重新标记为“搜索”，也可能还有其他的优化。
   - **email：**为邮件地址输入优化的虚拟键盘，通常包含"@"符号和其他优化。表单里面的邮件地址输入应该使用 \<input type="email"> 。
-  - **url：**为网址输入优化的虚拟键盘，比如，“/”键会更加明显、历史记录访问等。表单里面的网址输入通常应该使用 \<input type="url"> 。
+  - **url：**为网址输入优化的虚拟键盘，比如，“/” 键会更加明显、历史记录访问等。表单里面的网址输入通常应该使用 \<input type="url">
 
   摘自：[MDN - inputmode](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/inputmode)
 
-- **is：**允许您<font color=FF0000>指定标准HTML元素应该**像已注册的自定义内置元素一样**</font>。<font color=FF0000 size=4>**（便于语义化和 SEO）**</font>
+- **is：**<font color=FF0000>允许您指定标准 HTML 元素</font>（**注：**即，自定义组件）<font color=FF0000>应该**像已注册的自定义内置元素一样**<font size=4>**（便于语义化和 SEO）**</font></font>
 
-  只有在当前文档中已成功定义( defined )指定的自定义元素名称并且扩展了要应用的元素类型时，才能使用此属性。示例如下：
+  只有在当前文档中已成功定义 ( defined ) 指定的自定义元素名称并且扩展了要应用的元素类型时，才能使用此属性。示例如下：
 
   ```js
   // Create a class for the element
@@ -1042,28 +1095,30 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
   <p is="word-count"></p>
   ```
 
-- **itemid：**<font color=FF0000><font size=4>**项**</font>的唯一全局标识符</font>。
+- **itemid：**<font color=FF0000><font size=4>**项**</font> 的唯一全局标识符</font>。
 
-- **itemprop：**<font color=FF0000>用于向项添加属性</font>。 每个HTML元素都可以指定一个itemprop属性，其中一个itemprop由一个名称和值对组成。
+- **itemprop：**<font color=FF0000>用于向项添加属性</font>。 每个 HTML 元素都可以指定一个 itemprop 属性，其中一个 itemprop 由一个名称和值对组成。
 
-- **itemref：**只有不是具有itemscope属性的元素的后代，它的属性才可以与使用itemref项目相关联。它提供了元素ID列表（而不是itemids）以及文档中其他位置的其他属性。
+  > **注：**itemprop 可以用于 meta 标签，参见 [[#\<meta>]]
 
-- **itemscope：**itemscope（通常）与itemtype一起使用，以指定包含在关于特定项目代码块中的HTML。 itemscope创建Item并定义与之关联的itemtype的范围。 itemtype是描述项及其属性上下文的词汇表（例如schema.org）的有效URL。
+- **itemref：**只有不是具有 itemscope 属性的元素的后代，它的属性才可以与使用 itemref 项目相关联。它提供了元素 ID 列表（而不是 itemids ）以及文档中其他位置的其他属性。
 
-- **itemtype：**指定将用于在数据结构中定义itemprops（项属性）的词汇表的URL。 itemscope用于设置数据结构中按itemtype设置的词汇表的生效范围。
+- **itemscope：**itemscope（通常）与 itemtype 一起使用，以指定包含在关于特定项目代码块中的 HTML 。 itemscope 创建 Item 并定义与之关联的 itemtype 的范围。 itemtype 是描述项及其属性上下文的词汇表（例如 schema.org ）的有效 URL 。
+
+- **itemtype：**指定将用于在数据结构中定义 itemprops（项属性）的词汇表的 URL。 itemscope 用于设置数据结构中按 itemtype 设置的词汇表的生效范围。
 
 - **lang：**<font color=FF0000>帮助定义元素的语言：不可编辑元素所在的语言，或者应该由用户编写的可编辑元素的语言</font>。该属性包含一个“语言标记”(由用连字符分隔的“语言子标记”组成)，格式在 Tags for Identifying Languages (BCP47) 中定义。xml:lang 优先于它。
 
-- **part：**<font color=FF0000>实验性质</font>。元素的部件名称的空格分隔列表。Part名称允许CSS通过 ::part() 伪元素选择和设置阴影关联树中的特定元素。
+- **part：**<font color=FF0000>实验性质</font>。元素的部件名称的空格分隔列表。part 名称允许 CSS 通过 ::part() 伪元素选择和设置阴影关联树中的特定元素。
 
-- **slot：**<font color=FF0000>**将 shadow DOM 阴影关联树中的一个沟槽分配给一个元素**</font>：具有slot属性的元素被分配给由\<slot>元素创建的沟槽，其name属性的值与slot属性的值匹配。
+- **slot：**<font color=FF0000>**将 shadow DOM 阴影关联树中的一个沟槽分配给一个元素**</font>：具有 slot 属性的元素被分配给由 \<slot> 元素创建的插槽，其 name 属性的值与 slot 属性的值匹配。
 
 - **spellcheck：**<font color=FF0000>实验性质</font>。枚举属性，<font color=FF0000>定义**是否可以检查元素是否存在拼写错误**</font>。它可能具有以下值：
 
   - **true：**<font color=FF0000>表示如果可能，应检查元素是否存在拼写错误</font>；
   - **false：**表示<font color=FF0000>不应检查元素的拼写错误</font>。
 
-- **style：**<font color=FF0000>含要应用于元素的CSS样式声明</font>。 请注意，建议在单独的文件中定义样式。 该属性和\<style>元素主要用于快速样式化，例如用于测试目的。
+- **style：**<font color=FF0000>含要应用于元素的CSS样式声明</font>。 请注意，建议在单独的文件中定义样式。 该属性和 \<style>元素主要用于快速样式化，例如用于测试目的。
 
 - **tabindex：**整数属性，<font color=FF0000>指示元素是否可以获取输入焦点（可聚焦），是否应该参与顺序键盘导航</font>，如果是，则表示哪个位置。它可能需要几个值：
 
@@ -1084,7 +1139,7 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
 
 #### HTML5语义化元素（标签）
 
-**HTML5语义化标签**
+##### HTML5语义化标签
 
 | 标签                                    | 描述                                                       |
 | --------------------------------------- | ---------------------------------------------------------- |
@@ -1110,79 +1165,111 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
 | \<time>                                 | 日期或时间。                                               |
 | \<wbr>                                  | 规定在文本中的何处适合添加换行符。                         |
 
-**语义化标签的使用**
+##### 语义化标签的使用
 
 - **\<title>\</title>** 页面主要内容
-  - \<title> 标签的特点是简短、描述性、唯一，用于提升搜索引擎排名。
 
-  - 搜索引擎会把 title 作为判断页面主要内容的指标，有效的 title 应该包含几个与页面内容密切相关的关键字，建议将 title 的核心内容写在前 60 个字符。
+  \<title> 标签的特点是简短、描述性、唯一，用于提升搜索引擎排名。
+
+  搜索引擎会把 title 作为判断页面主要内容的指标，有效的 title 应该包含几个与页面内容密切相关的关键字，建议将 title 的核心内容写在前 60 个字符。
 
 - **\<header>\</header>** 页眉
-  - HTML5 规范描述为“一组解释性或导航型性的条目”，通常有网站标志、主导航、全站链接以及搜索框。
+
+  HTML5 规范描述为“一组解释性或导航型性的条目”，通常有网站标志、主导航、全站链接以及搜索框。
 
 - **\<nav>\</nav>** 导航
+
 - 页面的导航链接区域，用于定义页面的主要导航部分。
-  - 导航通常使用 \<ul> 无序列表。若是面包屑链接，则使用 \<ol> 有序列表。
-  
+
+  导航通常使用 \<ul> 无序列表。若是面包屑链接，则使用 \<ol> 有序列表。
+
 - HTML5 规范不推荐对辅助页脚链接使用 nav，除非页脚再次显示顶级全局导航、或者是招聘信息等重要链接。
-  
+
 - <font color=FF0000>**\<main>\</main>** 主要内容</font>
-  - 网站页面的主要内容，并且<font color=FF0000>一个页面只能使用一次 \<main> 标签</font>。
-  - 若是 web 应用，则包含其主要功能。
+
+  网站页面的主要内容，并且<font color=FF0000>一个页面只能使用一次 \<main> 标签</font>。
+
+  若是 web 应用，则包含其主要功能。
 
 - **\<article>\</article>** 文章标记
-  - 表示的是一个文档、页面、应用或是网站中的一个独立的容器。
-  - HTML5 规范声明 \<article> 标签适用于自包含的窗口小部件:股票行情，计算器，钟表，天气窗口小部件等。
-  - \<article>这个标签可以嵌套使用，但是他们必须是部分与整体的关系。
+
+  表示的是一个文档、页面、应用或是网站中的一个独立的容器。
+
+  HTML5 规范声明 \<article> 标签适用于自包含的窗口小部件:股票行情，计算器，钟表，天气窗口小部件等。
+
+  \<article>这个标签可以嵌套使用，但是他们必须是部分与整体的关系。
 
 - **\<section>\</section>** 区块
-  - 一组相似主题的内容，一般会有一个标题。
-  - 实现比如文章的章节，标签式对话框中的各种标签页等功能。
+
+  一组相似主题的内容，一般会有一个标题。
+
+  实现比如文章的章节，标签式对话框中的各种标签页等功能。
 
 - **\<aside>\</aside>** 侧边栏
-  - 表示一部分内容与页面的主体并没有较大的关系，并且可以独立存在。
-  - 实现比如升式引用、侧边栏、相关文章的链接、广告、友情链接等功能。
+
+  表示一部分内容与页面的主体并没有较大的关系，并且可以独立存在。
+
+  实现比如升式引用、侧边栏、相关文章的链接、广告、友情链接等功能。
 
 - **\<footer>\</footer>** 页脚
-  - 和 \<header> 标签对应，可以实现比如附录、索引、版权页、许可协议等功能。
+
+  和 \<header> 标签对应，可以实现比如附录、索引、版权页、许可协议等功能。
 
 - **\<cite>\</cite>** 引用
-  - 表示它所包含的文本对某个参考文献的引用，比如书籍或者杂志的标题。
-  - 按照惯例，引用的文本将以斜体显示。
-  - 用 \<cite> 标签把指向其他文档的引用分离出来，尤其是分离那些传统媒体中的文档，如书籍、杂志、期刊，等等。
+
+  表示它所包含的文本对某个参考文献的引用，比如书籍或者杂志的标题。
+
+  按照惯例，引用的文本将以斜体显示。
+
+  用 \<cite> 标签把指向其他文档的引用分离出来，尤其是分离那些传统媒体中的文档，如书籍、杂志、期刊，等等。
 
 - <font color=FF0000>**\<blockquote>\</blockquote>** 块引用</font>
-  - \<blockquote> 与 \</blockquote> 之间的所有文本都会从常规文本中分离出来，经常会在左、右两边进行缩进（增加外边距），而且有时会使用斜体。也就是说，块引用拥有它们自己的空间。
+
+  \<blockquote> 与 \</blockquote> 之间的所有文本都会从常规文本中分离出来，经常会在左、右两边进行缩进（增加外边距），而且有时会使用斜体。也就是说，块引用拥有它们自己的空间。
 
 - <font color=FF0000>**\<q>\</q>** 短的引用</font>
-  - 浏览器经常在引用的内容周围添加引号。
-  - 根据 HTML 4.01 规范，q 元素应当使用分界引号来呈现，就是说，q 元素包含的文本必须以引号来开始和结束。
+
+  浏览器经常在引用的内容周围添加引号。
+
+  根据 HTML 4.01 规范，q 元素应当使用分界引号来呈现，就是说，q 元素包含的文本必须以引号来开始和结束。
 
 - **\<time>\</time>** 日期或时间
-  - 如果未定义 datetime 属性，则必须在元素的内容中规定日期或时间。
+
+  如果未定义 datetime 属性，则必须在元素的内容中规定日期或时间。
 
 - **\<abbr>\</abbr>** 简称或缩写
-  - 通过对缩写进行标记，您能够为浏览器、拼写检查和搜索引擎提供有用的信息。
-  - 可以在 \<abbr> 标签中使用全局的 title 属性，这样就能够在鼠标指针移动到 \<abbr> 元素上时显示出简称/缩写的完整版本。
+
+  通过对缩写进行标记，您能够为浏览器、拼写检查和搜索引擎提供有用的信息。
+
+  可以在 \<abbr> 标签中使用全局的 title 属性，这样就能够在鼠标指针移动到 \<abbr> 元素上时显示出简称/缩写的完整版本。
 
 - **\<dfn>\</dfn>** 特殊术语或短语的定义
-  - 现在流行的浏览器通常用斜体来显示 \<dfn> 中的文本。
-  - 与其他许多基于内容的样式和物理样式标签一样，\<dfn> 标签尽量少用为妙。
+
+  现在流行的浏览器通常用斜体来显示 \<dfn> 中的文本。
+
+  与其他许多基于内容的样式和物理样式标签一样，\<dfn> 标签尽量少用为妙。
 
 - **\<del>\</del>** 删除的文本
-  - 和 \<ins> 标签配合使用，来描述文档中的更新和修正。
+
+  和 \<ins> 标签配合使用，来描述文档中的更新和修正。
 
 - **\<ins>\</ins>** 插入文本
+
 - **\<code>\</code>** 源代码
-  - 用于表示计算机源代码或者其他机器可以阅读的文本内容。
+
+  用于表示计算机源代码或者其他机器可以阅读的文本内容。
 
 - **\<pre>\</pre>** 预格式化的文本
-  - 被包围在 pre 元素中的文本通常会保留空格和换行符。而文本也会呈现为等宽字体。
-  - 若使用 \<pre> 标签来定义计算机源代码，比如 HTML 源代码，则使用符号实体来表示特殊字符，比如 "<" 代表 "<"，">" 代表 ">"，"&" 代表 "&"。
-  - 可以导致段落断开的标签（例如标题、\<p> 和 \<address> 标签）绝不能包含在 \<pre> 所定义的块里。尽管有些浏览器会把段落结束标签解释为简单地换行，但是这种行为在所有浏览器上并不都是一样的。
-  - pre 元素中允许的文本可以包括物理样式和基于内容的样式变化，还有链接、图像和水平分隔线。
 
-**补充**
+  被包围在 pre 元素中的文本通常会保留空格和换行符。而文本也会呈现为等宽字体。
+
+  若使用 \<pre> 标签来定义计算机源代码，比如 HTML 源代码，则使用符号实体来表示特殊字符，比如 "<" 代表 "<"，">" 代表 ">"，"&" 代表 "&"。
+
+  可以导致段落断开的标签（例如标题、\<p> 和 \<address> 标签）绝不能包含在 \<pre> 所定义的块里。尽管有些浏览器会把段落结束标签解释为简单地换行，但是这种行为在所有浏览器上并不都是一样的。
+
+  pre 元素中允许的文本可以包括物理样式和基于内容的样式变化，还有链接、图像和水平分隔线。
+
+##### 补充
 
 <img src="https://i.loli.net/2021/02/23/Y6qnmiPTJdOjz1Q.jpg" alt="img" style="zoom:70%;" />
 
@@ -1192,22 +1279,22 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
 
 #### \<article>
 
-**HTML `<article>`**元素表示文档、页面、应用或网站中的独立结构，其意在成为可独立分配的或可复用的结构，如在发布中，它可能是论坛帖子、杂志或新闻文章、博客、用户提交的评论、交互式组件，或者其他独立的内容项目。
+HTML \<article>元素表示文档、页面、应用或网站中的独立结构，其意在成为可独立分配的或可复用的结构，如在发布中，它可能是论坛帖子、杂志或新闻文章、博客、用户提交的评论、交互式组件，或者其他独立的内容项目。
 
 **使用说明**
 
-- 每个\<article>，通常包括标题（\<h1> - \<h6>元素）作为\<article>元素的子元素。
-- 当\<article>元素嵌套使用时，则该元素代表与外层元素有关的文章。例如，代表博客评论的\<article>元素可嵌套在代表博客文章的\<article>元素中。
+- 每个 \<article>，通常包括标题（ \<h1> - \<h6> 元素）作为 \<article> 元素的子元素。
+- 当 \<article> 元素嵌套使用时，则该元素代表与外层元素有关的文章。例如，代表博客评论的 \<article> 元素可嵌套在代表博客文章的  \<article> 元素中。
 
-- \<article>元素的作者信息可通过\<address>元素提供，但是不适用于嵌套的\<article>元素。
-- \<article>元素的发布日期和时间可通过\<time>元素的pubdate属性表示。
-- 可以使用\<time> 元素的datetime属性来描述\<article>元素的发布日期和时间。请注意\<time>的pubdate 属性不再是W3C HTML5标准。
+- \<article> 元素的作者信息可通过 \<address> 元素提供，但是不适用于嵌套的 \<article> 元素。
+- \<article> 元素的发布日期和时间可通过 \<time>元素的pubdate属性表示。
+- 可以使用 \<time> 元素的 datetime 属性来描述 \<article> 元素的发布日期和时间。请注意 \<time> 的 pubdate 属性不再是 W3C HTML5标准。
 
 
 
 #### \<figure>
 
-**HTML `<figure>` 元素**代表一段独立的内容，<font color=FF0000>经常与说明（caption）\<figcaption>配合使用，并且作为一个独立的引用单元</font>。当它属于主内容流（main flow）时，它的位置独立于主体。这个标签经常是在主文中引用的图片，插图，表格，代码段等等，当这部分转移到附录中或者其他页面时不会影响到主体。
+HTML \<figure> 元素代表一段独立的内容，<font color=FF0000>经常与说明（caption）\<figcaption> 配合使用，并且作为一个独立的引用单元</font>。当它属于主内容流 ( main flow ) 时，它的位置独立于主体。这个标签经常是在主文中引用的图片，插图，表格，代码段等等，当这部分转移到附录中或者其他页面时不会影响到主体。
 
 **效果：**
 
@@ -1215,9 +1302,9 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
 
 ##### **使用说明**
 
-- 通常，\<figure>是图像，插图，图表，代码片段等，在文档的主流程中引用，但可以移动到文档的另一部分或附录而不影响主流程。
-- 作为sectioning root，\<figure>元素的内容轮廓将从文档的主要轮廓中排除。
-- 通过在其中插入\<figcaption>（作为第一个或最后一个子元素），可以将标题与\<figure>元素相关联。图中找到的第一个\<figcaption>元素显示为图的标题。
+- 通常，\<figure> 是图像，插图，图表，代码片段等，在文档的主流程中引用，但可以移动到文档的另一部分或附录而不影响主流程。
+- 作为 sectioning root，\<figure> 元素的内容轮廓将从文档的主要轮廓中排除。
+- 通过在其中插入\<figcaption>（作为第一个或最后一个子元素），可以将标题与 \<figure> 元素相关联。图中找到的第一个\<figcaption> 元素显示为图的标题。
 
 摘自：[MDN - \<figure>：可附标题内容元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/figure)
 
@@ -1225,7 +1312,7 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
 
 #### \<section>
 
-HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独立部分</font>，它没有更具体的语义元素来表示，一般来说会有包含一个标题。
+HTML \<section> 元素<font color=FF0000>表示一个包含在 HTML 文档中的独立部分</font>，它没有更具体的语义元素来表示，一般来说会有包含一个标题。
 
 ##### **使用说明**
 
@@ -1239,7 +1326,7 @@ HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独
 
 #### \<progress>：进度指示元素
 
-**HTML**中的**`<progress>`**元素<font color=FF0000>用来显示一项任务的完成进度</font>。<mark>虽然规范中没有规定该元素具体如何显示，浏览器开发商可以自己决定，但通常情况下，该元素都显示为一个进度条形式</mark>。如下示例：
+HTML 中的 \<progress> 元素<font color=FF0000>用来显示一项任务的完成进度</font>。<mark>虽然规范中没有规定该元素具体如何显示，浏览器开发商可以自己决定，但通常情况下，该元素都显示为一个进度条形式</mark>。如下示例：
 
 <img src="https://i.loli.net/2021/02/23/6a4NvX5LlUoCQId.png" alt="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/progress" style="zoom:40%;" />
 
@@ -1254,7 +1341,7 @@ HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独
 
 #### \<address>
 
-**HTML `<address>` 元素** 表示其中的 HTML <font color=FF0000>提供了某个人或某个组织（等等）的联系信息</font>。
+HTML \<address> 元素 表示其中的 HTML <font color=FF0000>提供了某个人或某个组织（等等）的联系信息</font>。
 
 **用法说明**
 
@@ -1276,24 +1363,21 @@ HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独
 
 - ##### **\<input type="hidden">**
   
-  <font color=FF0000>`"hidden"` 类型的 `<input>` 元素允许 Web 开发者存放一些用户不可见、不可改的数据，在用户提交表单时，这些数据会一并发送出</font>。比如，正被请求或编辑的内容的 ID，或是一个唯一的安全令牌。这些隐藏的 `<input>`元素在渲染完成的页面中完全不可见，而且没有方法可以使它重新变为可见。
+  <font color=FF0000>"hidden" 类型的 \<input> 元素允许 Web 开发者存放一些用户不可见、不可改的数据，在用户提交表单时，这些数据会一并发送出</font>。比如，正被请求或编辑的内容的 ID，或是一个唯一的安全令牌。这些隐藏的  \<input> 元素在渲染完成的页面中完全不可见，而且没有方法可以使它重新变为可见。
   
-  **使用场景：**隐藏的 `<input>` 可以用于任何有需要提交给服务器的、用户无法查看或编辑的数据的地方。让我们看一些说明其用法的例子吧。
+  **使用场景：**隐藏的 \<input> 可以用于任何有需要提交给服务器的、用户无法查看或编辑的数据的地方。让我们看一些说明其用法的例子吧。
   
-  - 跟踪被编辑的内容：
+  - 跟踪被编辑的内容：隐藏输入的最常见用途之一是当被编辑的表单提交时，保持跟踪数据库数据的更新。
     
-    隐藏输入的最常见用途之一是当被编辑的表单提交时，保持跟踪数据库数据的更新。
-  
-  - 改善网站安全性：
-    隐藏输入表单还用于存储和提交安全令牌或机密信息，以提高网站的安全性。基本思路是，如果用户填写敏感表格，例如在其银行网站上将某笔款项转入另一个帐户的表格，他们将被提供的密钥和证明他们就是他们所说的真实身份，并且他们使用正确的表单来提交转移请求。
+  - 改善网站安全性：隐藏输入表单还用于存储和提交安全令牌或机密信息，以提高网站的安全性。基本思路是，如果用户填写敏感表格，例如在其银行网站上将某笔款项转入另一个帐户的表格，他们将被提供的密钥和证明他们就是他们所说的真实身份，并且他们使用正确的表单来提交转移请求。
   
   摘自：[MDN - \<input type="hidden">](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input/hidden)
   
   **补充：**
   
-  隐藏域在页面中对于用户是不可见的，在表单中插入隐藏域的目的在于收集或发送信息，以利于被处理表单的程序所使用 （隐藏只是在网页页面上面不显示输入框，但是虽然隐藏了，还是具有form传值功能。一般用来传值，而不必让用户看到。）
+  隐藏域在页面中对于用户是不可见的，在表单中插入隐藏域的目的在于收集或发送信息，以利于被处理表单的程序所使用 （隐藏只是在网页页面上面不显示输入框，但是虽然隐藏了，还是具有 form 传值功能。一般用来传值，而不必让用户看到。）
 
-##### 
+
 
 | Type                                   | 描述                                                         | Spec  |
 | :------------------------------------- | :----------------------------------------------------------- | :---- |
@@ -1303,14 +1387,14 @@ HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独
 | date                                   | 输入日期的控件（年、月、日，不包括时间）。在支持的浏览器激活时打开日期选择器或年月日的数字滚轮。 | HTML5 |
 | datetime-local                         | 输入日期和时间的控件，不包括时区。在支持的浏览器激活时打开日期选择器或年月日的数字滚轮。 | HTML5 |
 | email                                  | 编辑邮箱地址的区域。类似 text 输入，但在支持的浏览器和带有动态键盘的设备上会有确认参数和相应的键盘。 |       |
-| file                                   | 让用户选择文件的控件。使用accept属性规定控件能选择的文件类型。 |       |
-| hidden                                 | 不显示的控件，其值仍会提交到服务器。举个例子，右边就是一个隐形的控件。 |       |
+| file                                   | 让用户选择文件的控件。使用 accept 属性规定控件能选择的文件类型。 |       |
+| <font color=FF0000>**hidden**</font>   | 不显示的控件，其值仍会提交到服务器。举个例子，右边就是一个隐形的控件。 |       |
 | image                                  | 带图像的 submit 按钮。显示的图像由 src 属性规定。如果 src 缺失，alt 属性就会显示。 |       |
 | month                                  | 输入年和月的控件，没有时区。                                 | HTML5 |
 | <font color=FF0000>**number**</font>   | 用于输入数字的控件。如果支持的话，会显示滚动按钮并提供缺省验证（即只能输入数字）。拥有动态键盘的设备上会显示数字键盘。 |       |
 | password                               | 单行的文本区域，<mark>其值会被遮盖</mark>。如果站点不安全，会警告用户。 |       |
 | radio                                  | 单选按钮，允许在多个拥有相同 name 值的选项中选中其中一个。   |       |
-| range                                  | 此控件用于输入不需要精确的数字。控件是一个范围组件，默认值为正中间的值。同时使用htmlattrdefmin  和 htmlattrdefmax来规定值的范围。 | HTML5 |
+| range                                  | 此控件用于输入不需要精确的数字。控件是一个范围组件，默认值为正中间的值。同时使用 htmlattrdefmin  和 htmlattrdefmax 来规定值的范围。 | HTML5 |
 | reset                                  | 此按钮将表单的所有内容重置为默认值。不推荐。                 |       |
 | search                                 | 用于搜索字符串的单行文字区域。输入文本中的换行会被自动去除。在支持的浏览器中可能有一个删除按钮，用于清除整个区域。拥有动态键盘的设备上的回车图标会变成搜索图标。 | HTML5 |
 | submit                                 | 用于提交表单的按钮。                                         |       |
@@ -1320,27 +1404,27 @@ HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独
 | url                                    | 用于输入 URL 的控件。类似 text 输入，但有验证参数，在支持动态键盘的设备上有相应的键盘。 | HTML5 |
 | week                                   | 用于输入以年和周数组成的日期，不带时区。                     |       |
 | <font color=FF0000>**废弃的值**</font> |                                                              |       |
-| datetime                               | 用于输入基于UTC时区的日期和时间（时、分、秒及秒的小数部分）。 |       |
+| datetime                               | 用于输入基于 UTC 时区的日期和时间（时、分、秒及秒的小数部分）。 |       |
 
 ##### \<input> 元素的属性包括 全局 HTML 属性 和 以下属性
 
 | 属性                                    | 相关的 type                      | 描述                                                         |
 | :-------------------------------------- | :------------------------------- | :----------------------------------------------------------- |
 | accept                                  | file                             | 用于规定文件上传控件中期望的文件类型                         |
-| alt                                     | image                            | image type的alt属性，是可访问性的要求。                      |
+| alt                                     | image                            | image type 的 alt 属性，是可访问性的要求。                   |
 | autocomplete                            | 所有                             | 用于表单的自动填充功能                                       |
 | autofocus                               | 所有                             | 页面加载时自动聚焦到此表单控件                               |
 | capture                                 | file                             | 文件上传控件中媒体拍摄的方式                                 |
 | checked                                 | radio, checkbox                  | 用于控制控件是否被选中                                       |
 | dirname                                 | text, search                     | 表单区域的一个名字，用于在提交表单时发送元素的方向性         |
 | disabled                                | 所有                             | 表单控件是否被禁用                                           |
-| form                                    | 所有                             | 将控件和一个form元素联系在一起                               |
-| formaction                              | image, submit                    | 用于提交表单的URL                                            |
+| form                                    | 所有                             | 将控件和一个 form 元素联系在一起                             |
+| formaction                              | image, submit                    | 用于提交表单的 URL                                           |
 | formenctype                             | image, submit                    | 表单数据集的编码方式，用于表单提交                           |
-| formmethod                              | image, submit                    | 用于表单提交的HTTP方法                                       |
+| formmethod                              | image, submit                    | 用于表单提交的 HTTP 方法                                     |
 | formnovalidate                          | image, submit                    | 提交表单时绕过对表单控件的验证                               |
 | formtarget                              | image, submit                    | 表单提交的浏览上下文                                         |
-| height                                  | image                            | 和 \<img> 的height属性相同；垂直方向                         |
+| height                                  | image                            | 和 \<img> 的 height 属性相同；垂直方向                       |
 | list                                    | 绝大部分                         | 自动填充选项的 \<datalist> 的id值                            |
 | max                                     | 数字 type                        | 最大值                                                       |
 | maxlength                               | password, search, tel, text, url | value 的最大长度（最多字符数目）                             |
@@ -1348,18 +1432,18 @@ HTML \<section>元素<font color=FF0000>表示一个包含在HTML文档中的独
 | minlength                               | password, search, tel, text, url | value 的最小长度（最少字符数目）                             |
 | multiple                                | email, file                      | 布尔值。 是否允许多个值                                      |
 | name                                    | 所有                             | input表单控件的名字。以名字/值对的形式随表单一起提交         |
-| pattern                                 | password, text, tel              | 匹配有效 value 的模式（pattern）                             |
+| pattern                                 | password, text, tel              | 匹配有效 value 的模式 ( pattern )                            |
 | placeholder                             | password, search, tel, text, url | 当表单控件为空时，控件中显示的内容                           |
 | readonly                                | 绝大部分                         | 布尔值。存在时表示控件的值不可编辑                           |
 | <font color=FF0000> **required**</font> | 绝大部分                         | 布尔值。<font color=FF0000> **表示此值为必填项或者提交表单前必须先检查该值**</font> |
 | size                                    | email, password, tel, text       | 控件的大小                                                   |
-| src                                     | image                            | 和 \<img> 的src 属性一样；图像资源的地址                     |
+| src                                     | image                            | 和 \<img> 的 src 属性一样；图像资源的地址                    |
 | step                                    | 数字type                         | 有效的递增值                                                 |
-| type                                    | 所有                             | input表单控件的type                                          |
+| type                                    | 所有                             | input 表单控件的 type                                        |
 | value                                   | 所有                             | 表单控件的值。以名字/值对的形式随表单一起提交                |
-| width                                   | image                            | 与 \<img> 的width 属性一样                                   |
+| width                                   | image                            | 与 \<img> 的 width 属性一样                                  |
 
-##### \<textarea\>完全去除边框：
+##### \<textarea\> 完全去除边框
 
 ```css
 textarea{
@@ -2341,11 +2425,11 @@ text-indent 属性能定义一个块元素首行文本内容之前的缩进量�
 
 #### display:none & visibility:hidden
 
-隐藏一个元素可以通过把display属性设置为"none"，或把visibility属性设置为"hidden"。这两种方法会产生不同的结果。
+隐藏一个元素可以通过把display属性设置为"none"，或把visibility属性设置为 "hidden" 。这两种方法会产生不同的结果。
 
-- visibility:hidden可以隐藏某个元素，但<mark>隐藏的元素仍需占用与未隐藏之前一样的空间</mark>。也就是说，该元素虽然被隐藏了，但<mark>仍然会影响布局</mark>。
+- visibility:hidden 可以隐藏某个元素，但<mark>隐藏的元素仍需占用与未隐藏之前一样的空间</mark>。也就是说，该元素虽然被隐藏了，但<mark>仍然会影响布局</mark>。
 
-- display:none可以隐藏某个元素，<mark>且隐藏的元素不会占用任何空间</mark>。也就是说，该元素不但被隐藏了，而且<font color=FF0000>该元素原本占用的空间也会从页面布局中消失</font>。
+- display:none 可以隐藏某个元素，<mark>且隐藏的元素不会占用任何空间</mark>。也就是说，该元素不但被隐藏了，而且<font color=FF0000>该元素原本占用的空间也会从页面布局中消失</font>。
 
 
 
@@ -2373,22 +2457,22 @@ text-indent 属性能定义一个块元素首行文本内容之前的缩进量�
 
 **使得元素变成块元素和内联元素**
 
-- `li {display:inline;}`：把列表项显示为内联元素
-- `span {display:block;}`：把span元素作为块元素
+- `li { display: inline }`：把列表项显示为内联元素
+- `span { display: block }`：把span元素作为块元素
 
-#### **补充：inline-block**
+##### 补充：inline-block
 
-**简单来说：**就是<mark>将<font color=FF0000>**对象**呈现为 **inline** 对象</font>，但是<font color=FF0000>**对象的内容**作为 **block** 对象</font>呈现</mark>。之后的内联对象会被排列在同一行内。比如我们可以给一个 link（a 元素）inline-block 属性值，使其既具有 block 的宽度高度特性又具有 inline 的同行特性。
+**简单来说：**就是<mark>将<font color=FF0000>**对象**呈现为 **inline** 对象</font>，但是<font color=FF0000>**对象的内容**作为 **block** 对象</font>呈现</mark>。之后的内联对象会被排列在同一行内。比如我们可以给一个 link（ a 元素）inline-block 属性值，使其既具有 block 的宽度高度特性又具有 inline 的同行特性。
 
-内联块状元素（inline-block）就是同时具备内联元素、块状元素的特点。
+内联块状元素 ( inline-block ) 就是同时具备内联元素、块状元素的特点。
 
-inline-block 元素特点：
+**inline-block 元素特点**
 
-1、和其他元素都在一行上；
+1、和其他元素都在一行上
 
 2、<font color=FF0000>元素的高度、宽度、行高以及顶和底边距都可设置</font>。
 
-**另外：**IE（低版本 IE）本来是不支持 inline-block 的，所以在 IE 中对内联元素使用 display:inline-block，理论上 IE 是不识别的，但使用 display:inline-block 在 IE 下会触发 layout，从而使内联元素拥有了 display:inline-block 属性的表象。
+**另外：**IE（低版本 IE ）本来是不支持 inline-block 的，所以在 IE 中对内联元素使用 display: inline-block，理论上 IE 是不识别的，但使用 display: inline-block 在 IE 下会触发 layout，从而使内联元素拥有了 display: inline-block 属性的表象。
 
 摘自：[block，inline和inline-block概念和区别](https://www.cnblogs.com/KeithWang/p/3139517.html)  [CSS： inline、block和inline-block的区别](https://www.cnblogs.com/adongyo/p/11290826.html)
 
@@ -2396,43 +2480,44 @@ inline-block 元素特点：
 
 #### CSS Position
 
-元素可以使用的顶部，底部，左侧和右侧属性定位。然而，这些属性无法工作，除非是先设定position属性。他们也有不同的工作方式，这取决于定位方法。
+元素可以使用的顶部，底部，左侧和右侧属性定位。然而，这些属性无法工作，除非是先设定 position 属性。他们也有不同的工作方式，这取决于定位方法。
 
-position 属性的五个值：
+##### position 属性的五个值
 
 - **static**：HTML 元素的<font color=FF0000>默认值</font>，即没有定位，遵循正常的文档流对象。
   
-  浏览器会按照源码的顺序，决定每个元素的位置，这称为“正常的页面流”（normal flow）。每个块级元素占据自己的区块（block），元素与元素之间不产生重叠，这个位置就是元素的默认位置。
+  浏览器会按照源码的顺序，决定每个元素的位置，这称为“正常的页面流” ( normal flow ) 。每个块级元素占据自己的区块 ( block )，元素与元素之间不产生重叠，这个位置就是元素的默认位置。
   
-  <mark>注意，static定位所导致的元素位置，是浏览器自主决定的，所以这时top、bottom、left、right这四个属性无效。</mark>
+  <mark>注意，static 定位所导致的元素位置，是浏览器自主决定的；所以这时 top、bottom、left、right 这四个属性无效。</mark>
 
 - **relative**：相对定位元素的定位是相对其正常位置。<font color=FF0000>**（相对于自身定位）**</font>
   
-  relative表示，相对于默认位置（即static时的位置）进行偏移，即定位基点是元素的默认位置。
+  relative 表示：相对于默认位置（即 static 时的位置）进行偏移，即定位基点是元素的默认位置。
   
-  它<mark>必须搭配top、bottom、left、right这四个属性一起使用，用来指定偏移的方向和距离</mark>。
+  它<mark>必须搭配 top、bottom、left、right 这四个属性一起使用，用来指定偏移的方向和距离</mark>。
 
 - **fixed**：<mark>元素的位置相对于浏览器窗口是固定位置</mark>。
   
-  它如果搭配`top`、`bottom`、`left`、`right`这四个属性一起使用，表示元素的初始位置是基于视口计算的，否则初始位置就是元素的默认位置。
+  它如果搭配 top、bottom、left、right 这四个属性一起使用，表示元素的初始位置是基于视口计算的，否则初始位置就是元素的默认位置。
 
-- **absolute**：<font color=FF0000>**绝对定位的元素的位置相对于最近的<mark>已定位的</mark>父元素（即：父元素带有position属性（一般是relative）。如果没有，absolute将相对于body移动）**</font>，如果元素没有已定位的父元素，那么它的位置相对于\<html>
+- **absolute**：<font color=FF0000>**绝对定位的元素的位置相对于最近的<mark>已定位的</mark>父元素（即：父元素带有position属性（一般是relative）。如果没有，absolute将相对于 body 移动）**</font>，如果元素没有已定位的父元素，那么它的位置相对于\<html>
   
-  absolute表示，相对于上级元素（一般是父元素）进行偏移，即定位基点是父元素。
+  absolute 表示：相对于上级元素（一般是父元素）进行偏移，即定位基点是父元素。
   
-  <font color=FF0000>它有一个重要的限制条件：定位基点（一般是父元素）不能是static定位，否则定位基点就会变成整个网页的根元素html</font>。另外，<mark>absolute定位也必须搭配 top、bottom、left、right 这四个属性一起使用</mark>。
+  <font color=FF0000>它有一个重要的限制条件：定位基点（一般是父元素）不能是 static 定位，否则定位基点就会变成整个网页的根元素html</font>。另外，<mark>absolute定位也必须搭配 top、bottom、left、right 这四个属性一起使用</mark>。
 
-- **sticky**：sticky 英文字面意思是粘，粘贴，所以可以把它称之为粘性定位。<font color=FF0000>**position: sticky;** 基于用户的滚动位置来定位。粘性定位的元素是依赖于用户的滚动，在 **position:relative** 与 **position:fixed** 定位之间切换</font>。
+- **sticky**：sticky 英文字面意思是粘，粘贴，所以可以把它称之为粘性定位。<font color=FF0000>**position: sticky** 基于用户的滚动位置来定位。粘性定位的元素是依赖于用户的滚动，在 **position: relative** 与 **position: fixed** 定位之间切换</font>。
   
-  **使用场景**：<font color=FF0000>网页的搜索工具栏，初始加载时在自己的默认位置（relative定位），页面向下滚动时，工具栏变成固定位置，始终停留在页面头部（fixed定位）</font>。
+  **使用场景**：<font color=FF0000>网页的搜索工具栏，初始加载时在自己的默认位置（ relative 定位），页面向下滚动时，工具栏变成固定位置，始终停留在页面头部（ fixed 定位）</font>。
   
-  <mark>sticky<font color=FF0000>**生效的前提**</font>是，<font color=FF0000>必须搭配top、bottom、left、right这四个属性一起使用，不能省略</font>，否则等同于relative定位，不产生"动态固定"的效果</mark>。原因是这四个属性用来定义"偏移距离"，浏览器把它当作sticky的生效门槛。
+  <mark>sticky<font color=FF0000>**生效的前提**</font>是，<font color=FF0000>必须搭配 top、bottom、left、right 这四个属性一起使用，不能省略</font>，否则等同于 relative 定位，不产生 “动态固定” 的效果</mark>。原因是这四个属性用来定义"偏移距离"，浏览器把它当作 sticky 的生效门槛。
   
-  它的<font color=FF0000>**具体规则**</font>是，<font color=FF0000>当页面滚动，父元素开始脱离视口时（即部分不可见），只要与sticky元素的距离达到生效门槛，relative定位自动切换为fixed定位</font>；<font color=FF0000>等到父元素完全脱离视口时（即完全不可见），fixed定位自动切换回relative定位。</font>
+  它的<font color=FF0000>**具体规则**</font>是，<font color=FF0000>当页面滚动，父元素开始脱离视口时（即部分不可见），只要与 sticky 元素的距离达到生效门槛，relative定位自动切换为 fixed 定位</font>；<font color=FF0000>等到父元素完全脱离视口时（即完全不可见），fixed 定位自动切换回 relative 定位。</font>
   
-  注意，除了已被淘汰的 IE 以外，其他浏览器目前都支持`sticky`。但是，Safari 浏览器需要加上浏览器前缀`-webkit-`。
+  注意，除了已被淘汰的 IE 以外，其他浏览器目前都支持 sticky。但是，Safari 浏览器需要加上浏览器前缀 `-webkit-`
   
-  部分摘自：[阮一峰的网络日志 - CSS 定位详解](https://www.ruanyifeng.com/blog/2019/11/css-position.html)
+
+部分摘自：[阮一峰的网络日志 - CSS 定位详解](https://www.ruanyifeng.com/blog/2019/11/css-position.html)
 
 
 
@@ -2470,15 +2555,15 @@ CSS 的 Float（浮动），会使元素向左或向右移动，其周围的元�
 float: right;
 ```
 
-**清除浮动 - 使用 clear**
+##### 清除浮动 - 使用 clear
 
-元素浮动之后，周围的元素会重新排列，为了避免这种情况，使用 clear 属性。
+元素浮动之后，周围的元素会重新排列；为了避免这种情况，使用 clear 属性
 
-示例：
+**示例：**
 
 ```css
 .text_line {
-    clear:both;
+    clear: both;
 }
 ```
 
@@ -2486,27 +2571,30 @@ float: right;
 
 #### 水平 & 垂直对齐
 
-- 文本居中对齐
-  
-  ```css
-  text-align: center;
-  ```
+##### 文本居中对齐
 
-- 居中对齐
-  
-  ```css
-  margin: auto;
-  ```
-  
-  另外，需要注意的是：对于行内块级元素（display:inline-block），想要用`margin: auto;`实现居中对齐，需要加上`display: block`。比如：\<button>
-  
-  **注：**这里剧中对齐是 `margin: auto;` 相当于 `margin: auto auto auto auto;` 但是为什么 垂直方向没有居中？同时，使用 flex box / gridbox 也就可以了，为什么？
-  
-  对于这个问题： margin[-(left, right)]: auto 的 居中 或居左居右，《css权威指南》中有说。但是，没提到垂直方向的。在看了 [为什么「margin:auto」可以让块级元素水平居中？ - 杜瑶的回答 - 知乎](https://www.zhihu.com/question/21644198/answer/18895538)（如下图）感觉有点理解了。我的理解是：html 默认的渲染方向（writing-mode）是水平的，无法参考垂直的。而是用来 flexbox / gridbox 就不得不参考垂直的了。
-  
-  <img src="https://s2.loli.net/2022/03/10/bFS82LQwWOip7Po.png" alt="image-20220310235610739" style="zoom: 42%;" />
+```css
+text-align: center;
+```
 
+##### 居中对齐
 
+```css
+margin: auto;
+```
+
+另外，需要注意的是：对于行内块级元素（display:inline-block），想要用`margin: auto;`实现居中对齐，需要加上`display: block`。比如：\<button>
+
+**注：**这里居中对齐是 `margin: auto` 相当于 `margin: auto auto auto auto` ，但是为什么 垂直方向没有居中？同时，使用 flex box / gridbox 也就可以了，为什么？
+
+对于这个问题： margin[-(left, right)]: auto 的 居中 或 居左 居右，《css权威指南》中有说。但是，没提到垂直方向的。在看了 [为什么「margin:auto」可以让块级元素水平居中？ - 杜瑶的回答 - 知乎](https://www.zhihu.com/question/21644198/answer/18895538)（如下图）感觉有点理解了。我的理解是：html 默认的渲染方向 ( writing-mode ) 是水平的，无法参考垂直的。而是用来 flexbox / gridbox 就不得不参考垂直的了。
+
+<img src="https://s2.loli.net/2022/03/10/bFS82LQwWOip7Po.png" alt="image-20220310235610739" style="zoom: 42%;" />
+
+##### 文本垂直居中
+
+- 对于一行文本，可以使用 line-height === height，来实现 文本垂直居中。
+- 对于多行文本，可以通过使用 `vertical-align: middle; display: table-cell` 实现。
 
 #### CSS 组合选择符
 
@@ -5262,11 +5350,9 @@ mask-image: url("masks.svg#mask1");
 
 ##### attr()
 
-原则上说，attr()能运用于所有的CSS属性，但目前仅能服务于CSS的伪元素::before和::after的content属性。
+原则上说，attr() 能运用于所有的 CSS 属性；但目前仅能服务于 CSS 的伪元素 ::before 和 ::after 的 content 属性。
 
-原文: https://www.w3cplus.com/css/css-functions-guide.html 
-
-
+摘自：[图解CSS: CSS中的函数](https://www.w3cplus.com/css/css-functions-guide.html)
 
 
 
