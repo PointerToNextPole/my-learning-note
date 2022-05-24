@@ -600,7 +600,7 @@ RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对
 
 ##### RenderLayer 渲染层级
 
-<font color=FF0000>RenderLayer 是浏览器基于 RenderObject 创建的</font>。RenderLayer 最初是用来生成层叠上下文 ( stacking context )，以<font color=FF0000>**保证页面元素按照正确的层级展示**</font>。同样的， RenderObject 和 RenderLayer 也不是一一对应的；<font color=FF0000>**RenderObject 如果满足以下条件，则会创建对应的 RenderLayer**</font> （ [GPU Accelerated Compositing in Chrome](https://link.segmentfault.com/?enc=cQ6Sn%2B1ylo7UKQ1kTT3zFQ%3D%3D.VaozdfL6Johksdd3rWFa0RhGqY82D0QQgYeiRAoSJImCa%2F6%2BXsAbdp1ddIO7s5m5kONAq%2BrewIvHztpgVBzKBiGCIwFB1uwr%2FfwXpWlhgv%2Fw%2FUf4FTfE1xrJVivrGJhg)）：
+<font color=FF0000>RenderLayer 是浏览器基于 RenderObject 创建的</font>。RenderLayer 最初是用来生成层叠上下文 ( stacking context )，以<font color=FF0000>**保证页面元素按照正确的层级展示**</font>。同样的， RenderObject 和 RenderLayer 也不是一一对应的；<font color=FF0000>**RenderObject 如果满足以下条件，则会创建对应的 RenderLayer**</font> （ [GPU Accelerated Compositing in Chrome](https://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome/)）：
 
 - 文档的根节点
 - 具有明确 CSS 定位信息的节点（如 relative，absolute 或者 transform ）
@@ -621,7 +621,9 @@ RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对
 
 ##### GraphicsLayer
 
-<font color=FF0000>为了节省 GPU 的内存资源，Webkit 并不会为每个 RenderLayer 分配一个对应的后端存储。而是**按照一定的规则，将一些 RenderLayer 组合在一起，形成一个有后端存储的新层，用于之后的合成，称之为 *合成层***</font>。<font color=FF0000>**合成层中，存储空间使用 GraphicsLayer 表示**</font>。对于一个 RenderLayer 对象，如果没有单独提升为合成层，则使用其父对象的合成层。如果一个 RenderLayer 具有以下几个特征之一 （ [GPU Accelerated Compositing in Chrome](https://link.segmentfault.com/?enc=DrtF9JVqy8L8BM0uplw41A%3D%3D.xB4yJ7%2FuERE7HSlqsZVe1zy2kA6HtEXgEiJ5vsUy7yGbfaSqCjxdMcZfWO7ZXvSs3ABPTIoYP1tiNt8cUX9WbqSnT1NWRya%2BXEF0bnt%2F9B%2FTV3WqCKgTh9qUlIdx%2BpZx)），则其具有自己的合成层：
+<font color=FF0000>为了节省 GPU 的内存资源，Webkit 并不会为每个 RenderLayer 分配一个对应的后端存储。而是，**按照一定的规则，将一些 RenderLayer 组合在一起，形成一个有后端存储的新层，用于之后的合成，称之为 *合成层***</font>。
+
+<font color=FF0000>**合成层中，存储空间使用 GraphicsLayer 表示**</font>。对于<font color=FF0000>一个 RenderLayer 对象，**如果没有单独提升为合成层，则使用其父对象的合成层**</font>。如果一个 <font color=FF0000>RenderLayer 具有以下几个特征之一</font> （ [GPU Accelerated Compositing in Chrome](https://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome/)），<font color=FF0000>则其 **具有自己的合成层**</font>：
 
 - 有 3D 或者透视变换的 CSS 属性
 - 包含使用硬件加速的视频加码技术的 Video 元素
@@ -631,13 +633,15 @@ RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对
 - 后代包含一个合成层
 - Overlap 重叠：有一个 Z 坐标比自己小的兄弟节点，且该节点是一个合成层
 
-对于 Overlap 重叠造成的合成层提升，[Compositing in Blink / WebCore: From WebCore::RenderLayer to cc:Layer](https://link.segmentfault.com/?enc=DmoQX5XNJBFyikrv3DZfYw%3D%3D.wrdOKeLCkNcnpdtv8mLYMRtDWJixxbDmPvBWEiCwYBVrIl9hrnZLHAqNNuR37zyv8riLcXGQxXceX2M%2FuY0F54fv51m%2FXG71jyNJu49dZJGXDsuxG2p%2Br1XVLBSckFTniSFrkOEzC2tp0GyHuBt75b7cYcsWywm8WEZJDGM0jW6O%2FFD1sMrpjOy4zWdXgwn3GrAKUZ%2F8wJvXF0dAyLtvbg%3D%3D) 给出了三幅图片：
+对于 Overlap 重叠造成的合成层提升，[Compositing in Blink / WebCore: From WebCore::RenderLayer to cc:Layer](https://docs.google.com/presentation/d/1dDE5u76ZBIKmsqkWi2apx3BqV8HOcNf4xxBdyNywZR8/edit#slide=id.p) 给出了三幅图片：
 
 ![img](https://s2.loli.net/2022/05/23/vy7NAo3ijdCwMzY.jpg)
 
 图 1 中，顶部的绿色矩形和底部的蓝色矩形是兄弟节点，蓝色矩形因为某种原因被提升为合成层。如果绿色矩形不进行合成层提升的话，它将和父节点共用一个合成层。这就导致在渲染时，绿色矩形位于蓝色矩形的底部，出现渲染出错（图 2)。所以如果发生重叠，绿色矩形也需要被提升为合成层。
 
-对于合成层的提升条件，[无线性能优化：Composite](https://link.segmentfault.com/?enc=1zd%2BgWrMaTcoWvLs76WP0g%3D%3D.iL0GQzfyFX1z4BZMXtKmjyWVH7w80YymmkDT46%2B04Z9nhzwBAFU18oEatnwrRG0WGo%2Ft0WQWfUqi7KVWxKyl0hccjQ8Nm7FniAyIFUZTxKQ%3D) 中有更详细的介绍。结合 RenderLayer 和 GraphicsLayer 的创建条件，可以看出动画（尺寸、位置、样式等改变）元素更容易创建 RenderLayer ，进而提升为合成层（这里要注意，并不是所有的 CSS 动画元素都会被提升为合成层，这个会在后续的渲染流水线中介绍）。这种设计使浏览器可以更好使用 GPU 的能力，给用户带来流畅的动画体验。
+对于合成层的提升条件，[无线性能优化：Composite](https://fed.taobao.org/blog/taofed/do71ct/performance-composite/) 中有更详细的介绍。结合 RenderLayer 和 GraphicsLayer 的创建条件，可以看出动画（尺寸、位置、样式等改变）元素更容易创建 RenderLayer ，进而提升为合成层（这里要注意，并不是所有的 CSS 动画元素都会被提升为合成层，这个会在后续的渲染流水线中介绍）。这种设计使浏览器可以更好使用 GPU 的能力，给用户带来流畅的动画体验。
+
+// TODO
 
 摘自：[从浏览器渲染原理谈动画性能优化](https://segmentfault.com/a/1190000041295744)
 
@@ -1486,33 +1490,33 @@ public void setIntHeader(String header, int headerValue)
 
 
 
-#### <font color=FF0000>Session和Cookie</font>
+#### <font color=FF0000>Session 和 Cookie</font>
 
-会话（Session）：指用户登录网站后的一系列动作，比如浏览商品添加到购物车并购买。会话跟踪是 Web 程序中常用的技术，用来**跟踪用户的整个会话**。
+会话 ( Session ) ：指用户登录网站后的一系列动作，比如浏览商品添加到购物车并购买。会话跟踪是 Web 程序中常用的技术，用来**跟踪用户的整个会话**。
 
-由于HTTP协议是<font color=FF0000>无状态的协议</font>，所以服务端需要记录用户的状态时，就需要用某种机制来识具体的用户。由于HTTP协议无状态，所以并不知道是哪个用户操作的，所以服务端要为特定的用户创建了特定的Session，用用于标识这个用户。
+由于 HTTP 协议是<font color=FF0000>无状态的协议</font>，所以服务端需要记录用户的状态时，就需要用某种机制来识具体的用户。由于 HTTP 协议无状态，并不知道是哪个用户操作的，所以服务端要为特定的用户创建了特定的 Session，用用于标识这个用户。
 
-**只使用session的痛点**：<font color=FF0000>Session 的致命弱点是不容易在多台服务器之间共享</font>，所以这也限制了 Session 的使用。这就需要用cookie
+**只使用 Session 的痛点**：<font color=FF0000>Session 的致命弱点是不容易在多台服务器之间共享</font>，所以这也限制了 Session 的使用。这就需要用 Cookie
 
-#### <mark>**<font color=FF0000>Cookie</font> 通过<font color=FF0000>在客户端记录</font>信息<font color=FF0000>确定用户身份</font>**，**<font color=FF0000>Session</font> 通过<font color=FF0000>在服务器端记录</font>信息<font color=FF0000>确定用户身份</font>**。</mark>
+**<font color=FF0000>Cookie</font> 通过<font color=FF0000>在客户端记录</font>信息<font color=FF0000>确定用户身份</font>**，**<font color=FF0000>Session</font> 通过<font color=FF0000>在服务器端记录</font>信息<font color=FF0000>确定用户身份</font>**。
 
-#### **<mark>session 的运行依赖 session id，而 <font color=FF0000>session id 是存在 cookie 中的</font>，也就是说，<font color=FF0000>如果浏览器禁用了 cookie ，同时 session 也会失效</font></mark>**（但是可以通过其它方式实现，比如在 url 中传递 session_id）所以说：**session 是基于 cookie 实现的，session 存储在服务器端，sessionId 会被存储到客户端的cookie 中**
+**session 的运行依赖 session id，而 <font color=FF0000>session id 是存在 cookie 中的</font>，也就是说，<font color=FF0000>如果浏览器禁用了 cookie ，同时 session 也会失效</font>**（但是可以通过其它方式实现，比如在 url 中传递 session_id）所以说：**session 是基于 cookie 实现的，session 存储在服务器端，sessionId 会被存储到客户端的cookie 中**
 
-**<mark style=background-color:aqua><font color=FF0000>如果客户端的浏览器禁用了 Cookie 怎么办？</font></mark>**一般这种情况下，会使用一种叫做<font color=FF0000>URL重写</font>的技术来<font color=FF0000>进行会话跟踪</font>，即每次HTTP交互，<font color=FF0000>URL后面都会被附加上一个诸如 sid=xxxxx 这样的参数，服务端据此来识别用户</font>。
+**<font color=FF0000>如果客户端的浏览器禁用了 Cookie 怎么办？</font>**一般这种情况下，会使用一种叫做<font color=FF0000>URL重写</font>的技术来<font color=FF0000>进行会话跟踪</font>，即每次HTTP交互，<font color=FF0000>URL后面都会被附加上一个诸如 sid=xxxxx 这样的参数，服务端据此来识别用户</font>。
 
 ##### **补充：cookie的重要属性**
 
 | 属性       | 说明                                                         |
 | ---------- | ------------------------------------------------------------ |
 | name=value | 键值对，设置Cookie的名称及相对应的值，都必须是字符串类型<br/>如果值为Unicode字符，需要为字符编码。<br/>如果值为1 -进制数据，则需要使用BASE64编码。 |
-| domain     | 指定cookie所属域名,默认是当前域名                            |
+| domain     | 指定cookie所属域名，默认是当前域名                           |
 | path       | 指定cookie在哪个路径(路由)下生效， 默认是''/'。<br/>如果设置为/abc ，则只有/abc 下的路由可以访问到该cookie,如: /abc/read |
 | maxAge     | cookie失效的时间，单位秒。如果为整数，则该cookie在maxAge秒后失效。如果为负数，该cookie为临时cookie，关闭浏览器即失效，浏览器也不会以任何形式保存该cookie。如果为0,表示删除该cookie。 默认为-1。另外，这个方法比expires好用。 |
 | expires    | 过期时间，在设置的某个时间点后该cookie就会失效。<br/>一般浏览器的cookie都是默认储存的，当关闭浏览器结束这个会话的时候，这个cookie也就会被删除 |
 | secure     | 该cookie是否仅被使用安全协议传输。安全协议有HTTPS, SSL等，在网络上传输数据之前先将数据加密。默认为false。<br/>当secure值为true时，cookie 在HTTP中是无效，在HTTPS中才有效。 |
 | httpOnly   | 如果给某个cookie设置了httpOnly属性,则无法通过JS脚本读取到该cookie的信息，但还是能通过Application中手动修改cookie,所以只是在-定程度上可以防止XSS攻击，不是绝对的安全 |
 
-##### session 认证流程
+##### Session 认证流程
 
 - 用户<font color=FF0000>**第一次请求服务器**</font>的时候，服务器根据用户提交的相关信息，创建对应的 Session
 - 请求返回时将此 Session 的唯一标识信息 SessionID 返回给浏览器
@@ -1526,7 +1530,7 @@ public void setIntHeader(String header, int headerValue)
 - **安全性：** Session 比 Cookie 安全，Session 是存储在服务器端的，Cookie 是存储在客户端的。
 - **存取值的类型不同**：<mark>Cookie 只支持存字符串数据，想要设置其他类型的数据，需要将其转换成字符串，Session 可以存任意数据类型</mark>
 - **有效期不同：** Cookie 可设置为长时间保持，比如我们经常使用的默认登录功能，<font color=FF0000>Session 一般失效时间较短，客户端关闭（默认情况下）或者 Session 超时都会失效</font>。
-- **存储大小不同：** 单个 Cookie 保存的数据不能超过 4K，Session 可存储数据远高于 Cookie，但是当访问量过多，会占用过多的服务器资源。
+- **存储大小不同：** <font color=FF0000>单个 Cookie 保存的数据不能超过 4K</font>，<font color=FF0000>**Session 可存储数据远高于 Cookie**</font>，但是当访问量过多，会占用过多的服务器资源。
 
 
 部分摘自：[傻傻分不清之 Cookie、Session、Token、JWT](https://juejin.im/post/6844904034181070861)，<font color=FF0000>后面还有Token和JWT的内容，建议阅读</font>

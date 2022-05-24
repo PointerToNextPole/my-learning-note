@@ -1,6 +1,6 @@
-# Vue.js学习笔记
+# Vue2 学习笔记
 
-### Vue.js是什么
+### Vue.js 是什么
 
 Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<font color=FF0000>**渐进式框架**</font>。与其它大型框架不同的是，<mark>Vue 被设计为可以自底向上逐层应用</mark>。<mark>Vue 的核心库只关注视图层</mark>，不仅易于上手，还便于与第三方库或既有项目整合。另一方面，当与[现代化的工具链](https://cn.vuejs.org/v2/guide/single-file-components.html)以及各种[支持类库](https://github.com/vuejs/awesome-vue#libraries--plugins)结合使用时，Vue 也完全能够为复杂的单页应用提供驱动。
 
@@ -4394,7 +4394,7 @@ methods: {
 
 #### 深度作用选择器
 
-如果你希望 `scoped` 样式中的一个选择器能够作用得“更深”，例如影响子组件，你可以使用 `>>>` 操作符：
+如果你希望 scoped 样式中的一个选择器能够作用得“更深”，例如影响子组件，你可以使用 >>> 操作符：
 
 ```html
 <style scoped>
@@ -4412,9 +4412,9 @@ methods: {
 
 摘自：[vue loader官方文档](https://vue-loader-v14.vuejs.org/zh-cn/features/scoped-css.html)
 
-另外，`深度作用选择器`可以用作**样式穿透**
+另外，***深度作用选择器*** 可以用作 ***样式穿透***
 
-使用**`>>>`**提高自定义class / id的优先级
+使用 >>> 提高自定义class / id的优先级
 
 详见：[想要改变插件里组件的样式？使用样式穿透！【Vue】](https://www.bilibili.com/video/BV1Jv41117QN)
 
