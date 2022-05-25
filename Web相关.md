@@ -477,7 +477,7 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
 
 
 
-### 关键渲染路径 (Critical Rendering Path / CRP)
+#### 关键渲染路径 (Critical Rendering Path / CRP)
 
 关键渲染路径<font color=FF0000> 是浏览器将 HTML，CSS 和 JavaScript 转换为屏幕上的像素所经历的**步骤序列**</font>。优化关键渲染路径可提高渲染性能。<font color=FF0000>关键渲染路径 **包含了 文档对象模型 (DOM)，CSS 对象模型 (CSSOM)，渲染树和布局**</font>。
 
@@ -548,7 +548,7 @@ CSS 有其自身的规则集合用来定义标识。注意 CSS 中的 C 代表�
 
 摘自：[MDN - 关键渲染路径](https://developer.mozilla.org/zh-CN/docs/Web/Performance/Critical_rendering_path)
 
-#### 补充
+#### 渲染树的补充
 
 **关键渲染路径中的令牌 ( Token )**
 
@@ -671,8 +671,6 @@ RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对
 
 SOAP：简单对象访问协议（Simple Object Access Protocol）是一种<mark>基于 XML 的协议</mark>，可以和现存的许多因特网协议和格式结合使用，包括超文本传输协议（HTTP），简单邮件传输协议（SMTP），多用途网际邮件扩充协议（MIME），基于“通用”传输协议是 SOAP的一个优点。它还支持从消息系统到远程过程调用（Remote Procedure Call，RPC）等大量的应用程序。SOAP提供了一系列的标准，如WSRM（WS-Reliable Messaging）形式化契约确保可靠性与安全性，确保异步处理与调用；WS-Security、WS-Transactions和WS-Coordination等标准提供了上下文信息与对话状态管理
 
-***
-
 ##### Rest
 
 **REST（Representational State Transfer）表现层状态转化**，如果一个架构符合REST原则，就称它为RESTful架构。
@@ -736,7 +734,7 @@ SOAP：简单对象访问协议（Simple Object Access Protocol）是一种<mark
 
 摘自：[阮一峰：理解RESTful架构](http://www.ruanyifeng.com/blog/2011/09/restful.html)
 
-**RESTful的<font color=FF0000>五个约束</font>**<mark>（如果一个系统满足了下面所列出的五条约束，那么该系统就被称为是RESTful的）</mark>
+**RESTful 的<font color=FF0000>五个约束</font>**<mark>（如果一个系统满足了下面所列出的五条约束，那么该系统就被称为是RESTful的）</mark>
 
 - **使用客户/服务器模型（C/S）**：客户和服务器之间通过一个统一的接口来互相通讯。
 - **层次化的系统**：在一个REST系统中，客户端并不会固定地与一个服务器打交道。
@@ -765,7 +763,7 @@ SOAP：简单对象访问协议（Simple Object Access Protocol）是一种<mark
 
 摘自：[视图和视图解析器](https://www.cnblogs.com/xuweiweiwoaini/p/11852405.html)
 
-***
+
 
 #### REST和SOAP区别
 
@@ -814,9 +812,115 @@ POJO类的作用是方便程序员使用数据库中的数据表，对于程序�
 
 
 
+#### SSO 单点登录
+
+##### 定义
+
+SSO（ Single Sign On 单点登录 ），它的定义是：<font color=FF0000>在多个应用系统中，用户只需要登录一次，就可以访问所有相互信任的应用系统</font>。比如：在 pan.baidu.com 登录，可以在 map.baidu.com 中也登录了。
+
+在不同域名的情况下（详见下面 [[#不同域名下实现单点登录]] 认证中心实现），SSO 一般都需要一个独立的认证中心 ( passport )，子系统的登录均得通过 passport，子系统本身将不参与登录操作。
+
+<font color=FF0000>当一个系统成功登录以后，passport 将会颁发一个令牌给各个子系统，子系统可以拿着令牌会获取各自的受保护资源</font>。**为了减少频繁认证，各个子系统在被 passport 授权以后，<font color=FF0000>会建立一个局部会话，在一定时间内可以无需再次向 passport 发起认证</font>**
+
+##### 同域名下实现单点登录
+
+> Domain、Path、Name 三者决定一个 Cookie
+
+Cookie 的 Domin 属性设置为当前域的父域，并且父域的 Cookie 会被子域所共享。Path 属性默认为 web 应用的上下文路径。
+
+利用 Cookie 的这个特点，只需要<font color=FF0000>将 Cookie 的 Domain 属性设置为父域的域名（主域名），同时将 Cookie 的 Path 属性设置为根路径，将 Session ID（ 或 Token ）保存到父域中；这样所有的子域应用就都可以访问到这个 Cookie</font>
+
+不过**这要求应用系统的域名需建立在一个共同的主域名之下**，如 pan.baidu.com 和 map.baidu.com，它们都建立在 baidu.com 这个主域名之下，那么它们就可以通过这种方式来实现单点登录。
+
+##### 不同域名下实现单点登录
+
+- ***认证中心* ( CAS ) 实现**
+
+  <font color=FF0000>在不同域的情况下，Cookie 是不共享的，**可以部署一个 *认证中心* ，用于专门处理登录请求的独立的 Web 服务**</font>
+
+  用户统一在认证中心进行登录，登录成功后，<font color=FF0000>认证中心记录用户的登录状态，并将 Token 写入 Cookie</font>（注意 ⚠️：这个 Cookie 是认证中心的，应用系统是访问不到的）
+
+  应用系统检查当前请求有没有 Token，如果没有，说明用户在当前系统中尚未登录，那么就将页面跳转至认证中心。
+
+  由于这个操作会将认证中心的 Cookie 自动带过去，因此，认证中心能够根据 Cookie 知道用户是否已经登录过了。如果认证中心发现用户尚未登录，则返回登录页面，等待用户登录。如果发现用户已经登录过了，就不会让用户再次登录了；<font color=FF0000>会跳转回目标 URL ，并**在跳转前生成一个 Token，拼接在目标 URL 的后面**，回传给目标应用系统</font>。
+
+  <font color=FF0000>应用系统拿到 Token 之后，还需要向认证中心确认下 Token 的合法性，防止用户伪造</font>。确认无误后，应用系统记录用户的登录状态，并将 Token 写入 Cookie，然后给本次访问放行。（注意这个 Cookie 是当前应用系统的）当用户再次访问当前应用系统时，就会自动带上这个 Token，应用系统验证 Token 发现用户已登录，于是就不会有认证中心什么事了。
+
+  <font color=FF0000>此种实现方式相对复杂，**支持跨域，扩展性好，是单点登录的标准做法**</font>
+
+- ***前端控制* 实现**
+
+  可以选择<font color=FF0000>将 Session ID （或 Token ）保存到浏览器的 LocalStorage 中</font>，让<font color=FF0000>前端在每次向后端发送请求时，主动将 LocalStorage 的数据 ( **注：**Session ID? ) 传递给服务端</font>。
+
+  这些都是由前端来控制的，后端需要做的仅仅是在用户登录成功后，将 Session ID （或 Token ）放在响应体中传递给前端
+
+  单点登录完全可以在前端实现。前端拿到 Session ID （或 Token ）后，除了将它写入自己的 LocalStorage 中之外，还可以通过特殊手段将它写入多个其他域下的 LocalStorage 中。
+
+  **关键代码如下：**
+
+  ```javascript
+  // 获取 token
+  var token = result.data.token;
+   
+  // 动态创建一个不可见的 iframe，在 iframe 中加载一个跨域 HTML
+  var iframe = document.createElement("iframe");
+  iframe.src = "http://app1.com/localstorage.html";
+  document.body.append(iframe);
+  
+  // 使用 postMessage() 方法将 token 传递给 iframe
+  setTimeout(function () {
+      iframe.contentWindow.postMessage(token, "http://app1.com");
+  }, 4000);
+  setTimeout(function () {
+      iframe.remove();
+  }, 6000);
+   
+  // 在这个iframe所加载的HTML中绑定一个事件监听器，当事件被触发时，把接收到的token数据写入localStorage
+  window.addEventListener('message', function (event) {
+      localStorage.setItem('token', event.data)
+  }, false);
+  ```
+  
+  前端通过 iframe + postMessage() 方式，将同一份 Token 写入到了多个域下的 LocalStorage 中，前端每次在向后端发送请求之前，都会主动从 LocalStorage 中读取 Token 并在请求中携带，这样就实现了同一份 Token 被多个域所共享
+  
+  <font color=FF0000>此种实现方式完全由前端控制，几乎不需要后端参与，同样支持跨域</font>
+
+##### 认证中心实现流程图
+
+![img](https://s2.loli.net/2022/05/25/Fx8IVRk3nC2bezN.png)
+
+- 用户访问 系统1 的受保护资源，系统1 发现用户未登录，跳转至 SSO 认证中心，并将自己的地址作为参数
+- SSO 认证中心发现用户未登录，将用户引导至登录页面
+- 用户输入用户名密码提交登录申请
+- <font color=FF0000>SSO 认证中心校验用户信息，创建用户与 SSO 认证中心之间的会话，称为 <font size=4>***全局会话***</font>，同时创建授权令牌</font>
+- <font color=FF0000>**SSO 认证中心带着令牌跳转会最初的请求地址（系统1）**</font>
+- <font color=FF0000>系统1 拿到令牌，去 SSO 认证中心校验令牌是否有效</font>
+- SSO 认证中心校验令牌，返回有效，注册 系统1
+- <font color=FF0000>系统1 使用该令牌创建与用户的会话，称为 <font size=4>***局部会话***</font>，返回受保护资源</font>
+- 用户访问 系统2 的受保护资源
+- 系统2 发现用户未登录，跳转至 SSO 认证中心，并将自己的地址作为参数
+- <font color=FF0000>SSO 认证中心发现用户已登录，跳转回 系统2 的地址，并附上令牌</font>
+- 系统2 拿到令牌，去 SSO 认证中心校验令牌是否有效
+- SSO 认证中心校验令牌，返回有效，注册 系统2
+- 系统2 使用该令牌创建与用户的局部会话，返回受保护资源
+
+用户登录成功之后，会与 SSO  认证中心及各个子系统建立会话，用户与 SSO  认证中心建立的会话称为全局会话
+
+用户与各个子系统建立的会话称为局部会话，局部会话建立之后，用户访问子系统受保护资源将不再通过 SSO  认证中心
+
+**全局会话与局部会话有如下约束关系：**
+
+- 局部会话存在，全局会话一定存在
+- 全局会话存在，局部会话不一定存在
+- 全局会话销毁，局部会话必须销毁
+
+摘自：[面试官：说说什么是单点登录？如何实现?](https://segmentfault.com/a/1190000039712911)
+
+
+
 #### <font color=FF0000>JSP</font>
 
-**JSP的本质其实就是Servlet**。只是JSP当初设计的目的是为了简化Servlet输出HTML代码。
+**JSP的本质其实就是 Servlet**。只是 JSP 当初设计的目的是为了简化 Servlet 输出 HTML 代码。
 
 **JSP已经很少用了，被下面两种技术替代**
 

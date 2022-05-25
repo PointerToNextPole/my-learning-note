@@ -4,40 +4,40 @@
 
 DOM ( **D**ocument **O**bject **M**odel )（文档对象模型）是用于访问 HTML 元素的正式 W3C 标准。
 
-- 直接写入 HTML 输出流
+##### 直接写入 HTML 输出流
 
-  ```js
-  document.write("<h1>这是一个标题</h1>");
-  ```
+```js
+document.write("<h1>这是一个标题</h1>");
+```
 
-- 改变 HTML 内容
+##### 改变 HTML 内容
 
-  ```js
-  x=document.getElementById("demo");  //查找元素
-  x.innerHTML="Hello JavaScript";    //改变内容
-  ```
+```js
+x = document.getElementById("demo");  //查找元素
+x.innerHTML = "Hello JavaScript";    //改变内容
+```
 
-- 改变 HTML 图像
+##### 改变 HTML 图像
 
-  ```js
-  element=document.getElementById('myimage');
-  element.src="/images/pic_bulboff.gif";
-  ```
+```js
+element = document.getElementById('myimage');
+element.src = "/images/pic_bulboff.gif";
+```
 
-- 改变 HTML 样式
+##### 改变 HTML 样式
 
-  ```js
-  x=document.getElementById("demo")  //找到元素 
-  x.style.color="#ff0000";           //改变样式
-  ```
+```js
+x=document.getElementById("demo")  //找到元素 
+x.style.color = "#ff0000";           //改变样式
+```
 
-- **<font color=FF0000>设置</font>** HTML 样式，语法如下：
+##### 设置 HTML 样式
 
-  ```js
-  element.setAttribute(attributeName, attributeValue);
-  ```
+```js
+element.setAttribute(attributeName, attributeValue);
+```
 
-#### **补充：**
+##### outerHTML 的补充
 
 除了 innerHTML 外，还有 outerHTML ：element  DOM 接口的 outerHTML 属性获取描述元素（包括其后代）的序列化 HTML 片段。它也可以设置为用从给定字符串解析的节点替换元素。
 
@@ -61,7 +61,7 @@ element.outerHTML = content;
 
 #### JavaScript 变量
 
-**JS 命名规则**
+##### JS 命名规则
 
 - 变量<font color=FF0000>必须以字母开头</font>
 - 变量也能以 $ 和 _ 符号开头（不过我们不推荐这么做）
@@ -77,17 +77,17 @@ element.outerHTML = content;
 
 - 2 个不包含任何值的数据类型：null、undefined
 
-**Undefined 和 Null**
+##### Undefined 和 Null
 
 Undefined 这个值表示变量不含有值。
 
 可以通过将变量的值设置为 null 来清空变量。
 
-**补充：**
+##### 补充
 
-`var foo = 10` 只是定义了一个变量，可以通过window.foo访问；但它无法被delete删除掉（因为它不是window的属性，能打印出来似乎是js设计的问题）。
+`var foo = 10` 只是定义了一个变量，可以通过 window.foo 访问；但它无法被 delete 删除掉（因为它不是 window 的属性，能打印出来似乎是 JS 设计的问题）
 
-不加上var / let / const的 `bar = 20`，则是在window对象下加了一个bar属性（可以打印出window.bar），且可以被delete删除掉（delete bar返回true）
+不加上 var / let / const 的 `bar = 20`，则是在 window 对象下加了一个bar属性（可以打印出 window.bar ），且可以被 delete 删除掉（ `delete bar` 返回 true ）
 
 学习自：[再学JavaScript ES(6-11)全版本语法大全](https://coding.imooc.com/class/444.html)
 
@@ -95,7 +95,7 @@ Undefined 这个值表示变量不含有值。
 
 #### JavaScript 事件
 
-一些常见的HTML事件的列表:
+##### 一些常见的HTML事件的列表
 
 | 事件        | 描述                           |
 | :---------- | :----------------------------- |
@@ -108,7 +108,9 @@ Undefined 这个值表示变量不含有值。
 
 更多事件列表：[JavaScript 参考手册 - HTML DOM 事件](https://www.runoob.com/jsref/dom-obj-event.html)。
 
-补充：input输入事件：onfocus ( focus ) -> 键盘输入 -> onkeydown ( keydown )  -> onkeypress ( keypress )  -> onkeyup ( keyup )  -> oninput ( input )  -> 失去焦点 -> onchange ( change ) -> onblur ( blur )
+##### input 输入事件
+
+onfocus ( focus ) -> 键盘输入 -> onkeydown ( keydown )  -> onkeypress ( keypress )  -> onkeyup ( keyup )  -> oninput ( input )  -> 失去焦点 -> onchange ( change ) -> onblur ( blur )
 
 摘自：[input输入框事件](https://www.jianshu.com/p/4517117abd8e)
 
@@ -167,7 +169,7 @@ Undefined 这个值表示变量不含有值。
 
 #### 模版字符串
 
-**标签函数**
+##### 标签函数
 
 标签函数的语法是函数名后面直接带一个模板字符串，并从模板字符串中的插值表达式中获取参数，举个例子。
 
@@ -215,7 +217,7 @@ String.raw(callSite, ...substitutions)
 String.raw`templateString`
 ```
 
-**参数**
+##### 参数
 
 - **callSite：**一个模板字符串的“调用点对象”。类似{ raw: ['foo', 'bar', 'baz'] }。
 - **...substitutions：**任意个可选的参数，表示任意个内插表达式对应的值。
@@ -229,19 +231,22 @@ String.raw`templateString`
 
 #### String.prototype.repeat()
 
-- **语法**
+##### 语法
 
-  ```js
-  str.repeat(count)
-  ```
+```js
+str.repeat(count)
+```
 
-- **参数**
-  count：介于 0 和 +Infinity 之间的整数。表示在新构造的字符串中重复了多少遍原字符串。
-- **返回值：**包含指定字符串的指定数量副本的新字符串。
+##### 参数
 
-- **异常：**
-  - RangeError: 重复次数不能为负数。
-  - RangeError: 重复次数必须小于 infinity，且长度不会大于最长的字符串。
+count：介于 0 和 +Infinity 之间的整数。表示在新构造的字符串中重复了多少遍原字符串。
+
+**返回值：**包含指定字符串的指定数量副本的新字符串。
+
+##### 异常
+
+- RangeError: 重复次数不能为负数。
+- RangeError: 重复次数必须小于 infinity，且长度不会大于最长的字符串。
 
 摘自：[MDN - String.prototype.repeat()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/repeat)
 
@@ -251,22 +256,24 @@ String.raw`templateString`
 
 startsWith() 方法用来判断当前字符串是否以另外一个给定的子字符串开头，并根据判断结果返回 true 或 false。
 
-- **语法**
+##### 语法
 
-  ```js
-  str.startsWith(searchString[, position])
-  ```
+```js
+str.startsWith(searchString[, position])
+```
 
-- **参数**
-  - **searchString：**要搜索的子字符串。
-  - **position：**<font color=FF0000>可选</font>，在 str 中搜索 searchString 的开始位置，<font color=FF0000>默认值为 0</font>。
-- **返回值：**如果在字符串的开头找到了给定的字符则返回true；否则返回false。
+##### 参数
 
-- **描述：**这个方法能够让你确定一个字符串是否以另一个字符串开头。<font color=FF0000>这个方法区分大小写</font>。
+- **searchString：**要搜索的子字符串。
+- **position：**<font color=FF0000>可选</font>，在 str 中搜索 searchString 的开始位置，<font color=FF0000>默认值为 0</font>。
+
+**返回值：**如果在字符串的开头找到了给定的字符则返回true；否则返回false。
+
+**描述：**这个方法能够让你确定一个字符串是否以另一个字符串开头。<font color=FF0000>这个方法区分大小写</font>。
 
 摘自：[MDN - tring.prototype.startsWith()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)
 
-<font size=4>**补充：**</font>
+##### 补充
 
 和正则中的 `^` 符号一致
 
@@ -274,22 +281,24 @@ startsWith() 方法用来判断当前字符串是否以另外一个给定的子�
 
 endsWith() 方法用来判断当前字符串是否是以另外一个给定的子字符串“结尾”的，根据判断结果返回 true 或 false。
 
-- **语法**
+##### 语法
 
-  ```js
-  str.endsWith(searchString[, length])
-  ```
+```js
+str.endsWith(searchString[, length])
+```
 
-- **参数**
-  - **searchString：**要搜索的子字符串。
-  - **length：**<font color=FF0000>可选</font>，作为 str 的长度。<font color=FF0000>默认值为 str.length</font>。
-- **返回值：**如果传入的子字符串在搜索字符串的末尾则返回true；否则将返回 false。
+##### 参数
 
-- **描述：**这个方法帮助你确定一个字符串是否在另一个字符串的末尾。<font color=FF0000>这个方法是大小写敏感的</font>。
+- **searchString：**要搜索的子字符串。
+- **length：**<font color=FF0000>可选</font>，作为 str 的长度。<font color=FF0000>默认值为 str.length</font>。
+
+**返回值：**如果传入的子字符串在搜索字符串的末尾则返回true；否则将返回 false。
+
+**描述：**这个方法帮助你确定一个字符串是否在另一个字符串的末尾。<font color=FF0000>这个方法是大小写敏感的</font>。
 
 摘自：[MDN - String.prototype.endsWith()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith)
 
-<font size=4>**补充：**</font>
+##### 补充
 
 和正则中的 `$` 符号一致
 
@@ -299,16 +308,18 @@ endsWith() 方法用来判断当前字符串是否是以另外一个给定的子
 
 padStart() 方法用另一个字符串填充当前字符串(如果需要的话，会重复多次)，以便产生的字符串达到给定的长度。从当前字符串的左侧开始填充。
 
-- **语法**
+##### 语法
 
-  ```js
-  str.padStart(targetLength [, padString])
-  ```
+```js
+str.padStart(targetLength [, padString])
+```
 
-- **参数**
-  - **targetLength：**当前字符串需要填充到的目标长度。<font color=FF0000>如果这个数值小于当前字符串的长度，则返回当前字符串本身</font>。
-  - **padString：**<font color=FF0000>可选</font>，填充字符串。<font color=FF0000>如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留（padString的）最左侧的部分，其他部分会被截断</font>。<font color=FF0000>**此参数的默认值为 " "**</font>（U+0020）。
-- **返回值：**在原字符串开头填充指定的填充字符串直到目标长度所形成的新字符串。
+##### 参数
+
+- **targetLength：**当前字符串需要填充到的目标长度。<font color=FF0000>如果这个数值小于当前字符串的长度，则返回当前字符串本身</font>。
+- **padString：**<font color=FF0000>可选</font>，填充字符串。<font color=FF0000>如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留（padString的）最左侧的部分，其他部分会被截断</font>。<font color=FF0000>**此参数的默认值为 " "**</font>（U+0020）。
+
+**返回值：**在原字符串开头填充指定的填充字符串直到目标长度所形成的新字符串。
 
 摘自：[MDN - String.prototype.padStart()]()
 
@@ -316,18 +327,18 @@ padStart() 方法用另一个字符串填充当前字符串(如果需要的话�
 
 padEnd()  方法会用一个字符串填充当前字符串（如果需要的话则重复填充），返回填充后达到指定长度的字符串。从当前字符串的末尾（右侧）开始填充。
 
-- **语法**
+**语法**
 
-  ```js
-  str.padEnd(targetLength [, padString])
-  ```
+```js
+str.padEnd(targetLength [, padString])
+```
 
-- **参数**
+##### 参数
 
-  - **targetLength：**当前字符串需要填充到的目标长度。<font color=FF0000>如果这个数值小于当前字符串的长度，则返回当前字符串本身</font>。
-  - **padString：**<font color=FF0000>可选</font>，填充字符串。<font color=FF0000>如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留（padString的）最左侧的部分，其他部分会被截断。**此参数的缺省值为 " "（U+0020）**</font>。
+- **targetLength：**当前字符串需要填充到的目标长度。<font color=FF0000>如果这个数值小于当前字符串的长度，则返回当前字符串本身</font>。
+- **padString：**<font color=FF0000>可选</font>，填充字符串。<font color=FF0000>如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留（padString的）最左侧的部分，其他部分会被截断。**此参数的缺省值为 " "（U+0020）**</font>。
 
-- **返回值：**在原字符串末尾填充指定的填充字符串直到目标长度所形成的新字符串。
+**返回值：**在原字符串末尾填充指定的填充字符串直到目标长度所形成的新字符串。
 
 摘自：[MDN - String.prototype.padEnd()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/padEnd)
 
@@ -337,17 +348,19 @@ padEnd()  方法会用一个字符串填充当前字符串（如果需要的话�
 
 trimStart() 方法从字符串的开头删除空格。<font color=FF0000>trimLeft() 是此方法的别名</font>。
 
-**语法**
+##### 语法
 
 ```js
 str.trimStart();
 str.trimLeft();
 ```
 
-**描述**
-trimStart() / trimLeft()方法移除原字符串右端的连续空白符并返回，<font color=FF0000>trimStart() / trimLeft()方法并不会直接修改原字符串本身</font>。
+##### 描述
 
-**别名**
+trimStart() / trimLeft()方法移除原字符串右端的连续空白符并返回，trimStart() / trimLeft()方法并不会直接修改原字符串本身。
+
+##### 别名
+
 <mark>为了与 String.prototype.padStart 等函数保持一致，标准方法名称为trimStart。 但是，出于 Web 兼容性原因，trimLeft 仍然是 trimStart 的别名</mark>。在某些引擎中，这意味着：
 
 ```js
@@ -360,18 +373,20 @@ String.prototype.trimLeft.name === "trimStart";
 
 trimEnd() 方法从一个字符串的末端移除空白字符。<font color=FF0000>trimRight() 是这个方法的别名。</font>
 
-**语法**
+##### 语法
 
 ```js
 str.trimEnd();
 str.trimRight();
 ```
 
-**描述**
+##### 描述
+
 trimEnd() / trimRight()方法移除原字符串右端的连续空白符并返回，<font color=FF0000>trimEnd() / trimRight()方法并不会直接修改原字符串本身</font>。
 
-**别名**
-为了与 String.prototype.padEnd 等函数保持一致，标准方法名称为trimEnd。 但是，出于Web兼容性原因，trimRight仍然是trimEnd的别名。 在某些引擎中，这意味着：
+##### 别名
+
+为了与 String.prototype.padEnd 等函数保持一致，标准方法名称为 trimEnd。 但是，出于 Web 兼容性原因，trimRight 仍然是 trimEnd 的别名。 在某些引擎中，这意味着：
 
 ```js
 String.prototype.trimRight.name === "trimEnd";
@@ -384,7 +399,7 @@ String.prototype.trimRight.name === "trimEnd";
 localeCompare() 方法 <font color=FF0000>返回一个数字</font> 来 <font color=FF0000>指示一个**参考字符串是否在排序顺序前面或之后或与给定字符串相同**</font>。
 新的 locales 和 options 参数能让应用程序定制函数的行为，即指定用来排序的语言。 locales 和 options 参数完全取决于实现，在旧的实现中忽略这两个参数。
 
-**语法**
+##### 语法
 
 ```js
 referenceStr.localeCompare(compareString[, locales[, options]])
@@ -398,33 +413,33 @@ referenceStr.localeCompare(compareString[, locales[, options]])
 
 #### Unicode 相关的 字符串
 
-> <font color=FF0000>**在 ECMAScript 6 出现以前， JavaScript 字符串 一直基于 16 位字符编码 ( UTF-16 ) 进行构建**</font>（<mark>**注：**由此可知：UTF-16 和“代理对”不完全等价</mark>。详细可以参见：[[#Surrogate Pair 是 UTF-16 中用于扩展字符而使用的编码方式，是一种采用四个字节（两个 UTF-16 编码）来表示一个字符，称作 代理对]]）。<mark style="background: aqua">每 16 位的序列是一个**编码单元（code unit )**，代表一个 字符。 length、charAt() 等字符串属性和方法都是基于这种编码单元构造的</mark>。 当然， 在过去 16位足以包含任何字符， 直到 Unicode 引入扩展字符集， 编码规则才不得不进行变更 。
->
-> <font size=4>**UTF-16 码位**</font>
->
-> Unicode 的目标是为全世界每一个字符提供全球唯一的标识符。 如果我们把字符长度限制在 16位 ， 码位数量将不足以表示如此多的字符。 <mark>这里说的“全球唯一的标识符”， 又被称作 <font color=FF0000 size=4>**码位 ( code point )**</font>， 是从 0 开始的数值</mark>（**注：**这里的 code point 和下面的各种兼容 unicode 的方法的*方法名* 相关）。 而表示字符的这些数值或码位， 我们称之为字符编码 ( character encode )。字符编码必须将码位编码为内部一致的编码单元。对于 UTF-16 来说 ， 码位可由多种编码单 元表示。
->
-> <font color=FF0000>在 UTF-16 中，**前 2^16^ 个码位**均 以 16 位的编码单元表示，**这个范围被称作 *基本多文种平面*** ( BMP, Basic Multilingual Plane )</font> 。<font color=FF0000>超出这个范围的码位则要归属于某个***辅助平面*** ( supplementary plane )</font> ， 其中 的码位仅用 16 位就无法表示了。<font color=FF0000 size=4>为此，**UTF-16 引入了代理对 ( surrogate pair )**，其**规定用两个 16 位编码单元表示一个码位**</font>。 这也就是说， <mark>字符串里的字符有两种， 一种是由一个编码单元 16 位表示的 BMP 字符， 另一种是由两个编码单元 32 位表示的辅助平面字符</mark>。 在 ECMAScript 5 中 ， 所有字符串 的操作都基于 16 位编码单元。 如果采用同样的方式处理包含代理对的 UTF-16 编码字符 ，得到的结果可能与预期不符。
->
-> 摘自：深入理解ES6 - 字符串和正则表达式 P14 - P15
+<font color=FF0000>**在 ECMAScript 6 出现以前， JavaScript 字符串 一直基于 16 位字符编码 ( UTF-16 ) 进行构建**</font>（<mark>**注：**由此可知：UTF-16 和“代理对”不完全等价</mark>。详细可以参见：[[#Surrogate Pair 是 UTF-16 中用于扩展字符而使用的编码方式，是一种采用四个字节（两个 UTF-16 编码）来表示一个字符，称作 代理对]]）。<mark style="background: aqua">每 16 位的序列是一个**编码单元（code unit )**，代表一个 字符。 length、charAt() 等字符串属性和方法都是基于这种编码单元构造的</mark>。 当然， 在过去 16位足以包含任何字符， 直到 Unicode 引入扩展字符集， 编码规则才不得不进行变更 。
+
+##### UTF-16 码位
+
+Unicode 的目标是为全世界每一个字符提供全球唯一的标识符。 如果我们把字符长度限制在 16位 ， 码位数量将不足以表示如此多的字符。 <mark>这里说的“全球唯一的标识符”， 又被称作 <font color=FF0000 size=4>**码位 ( code point )**</font>， 是从 0 开始的数值</mark>（**注：**这里的 code point 和下面的各种兼容 unicode 的方法的*方法名* 相关）。 而表示字符的这些数值或码位， 我们称之为字符编码 ( character encode )。字符编码必须将码位编码为内部一致的编码单元。对于 UTF-16 来说 ， 码位可由多种编码单 元表示。
+
+<font color=FF0000>在 UTF-16 中，**前 2^16^ 个码位**均 以 16 位的编码单元表示，**这个范围被称作 *基本多文种平面*** ( BMP, Basic Multilingual Plane )</font> 。<font color=FF0000>超出这个范围的码位则要归属于某个***辅助平面*** ( supplementary plane )</font> ， 其中 的码位仅用 16 位就无法表示了。<font color=FF0000 size=4>为此，**UTF-16 引入了代理对 ( surrogate pair )**，其**规定用两个 16 位编码单元表示一个码位**</font>。 这也就是说， <mark>字符串里的字符有两种， 一种是由一个编码单元 16 位表示的 BMP 字符， 另一种是由两个编码单元 32 位表示的辅助平面字符</mark>。 在 ECMAScript 5 中 ， 所有字符串 的操作都基于 16 位编码单元。 如果采用同样的方式处理包含代理对的 UTF-16 编码字符 ，得到的结果可能与预期不符。
+
+摘自：深入理解ES6 - 字符串和正则表达式 P14 - P15
 
 #### String.prototype.codePointAt()
 
 codePointAt() 方法<font color=FF0000>返回 一个 **Unicode 编码点值的非负整数**</font>。
 
-**语法**
+##### 语法
 
 ```js
 str.codePointAt(pos)
 ```
 
-**参数**
+##### 参数
 
 - **pos：**这个字符串中需要转码的元素的位置。
 
 **返回值：**返回值是在字符串中的给定索引的编码单元体现的数字，<font color=FF0000>如果在索引处没找到元素则返回 undefined</font> 。
 
-**描述：**
+##### 描述
 
 如果在指定的位置没有元素则返回 undefined 。<font color=FF0000>如果在索引处开始没有 UTF-16 代理对，将直接返回在那个索引处的编码单元</font>。
 
@@ -434,7 +449,7 @@ str.codePointAt(pos)
 >
 > 摘自：[现代JS教程 - Iterable object（可迭代对象）- 字符串是可迭代的](https://zh.javascript.info/iterable#zi-fu-chuan-shi-ke-die-dai-de)
 
-**示例：**
+##### 示例
 
 ```js
 'ABC'.codePointAt(1);          // 66
@@ -452,19 +467,19 @@ str.codePointAt(pos)
 
 String.fromCodePoint() **静态方法** <font color=FF0000>返回 使用指定的代码点序列创建的字符串</font>。
 
-**语法**
+##### 语法
 
 ```js
 String.fromCodePoint(num1[, ...[, numN]])
 ```
 
-**参数**
+##### 参数
 
 - **num1, ... , num*N* ：**一串 Unicode 编码位置，即“代码点”。
 
 **返回值：**使用指定的 Unicode 编码位置创建的字符串。
 
-**异常**
+##### 异常
 
 - **RangeError：**如果传入无效的 Unicode 编码，将会抛出一个RangeError（例如："RangeError: NaN is not a valid code point"）。
 
@@ -486,26 +501,26 @@ String.fromCodePoint(num1[, ...[, numN]])
 
 normalize() 方法会按照指定的一种 Unicode 正规形式将当前字符串正规化。（如果该值不是字符串，则首先将其转换为一个字符串）。
 
-**语法**
+##### 语法
 
 ```js
 str.normalize( [form] )
 ```
 
-**参数**
+##### 参数
 
 - **form：**<font color=FF0000>可选</font>。四种 Unicode 正规形式 ( Unicode Normalization Form ) "NFC"、"NFD"、"NFKC"，或 "NFKD" 其中的一个，默认值为 "NFC"。
 
-> - **"NFC"：**默认选项，以标准等价方式分解,然后以标准等价方式重组。
-> - **"NFD"：**以标准等价方式分解
-> - **"NFKC"：**以兼容等价方式分解
-> - **"NFKD"：**以兼容等价方式分解,然后以标准等价方式重组
->
-> 摘自：深入理解ES6 - 字符串和正则表达式 P17
+  > - **"NFC"：**默认选项，以标准等价方式分解,然后以标准等价方式重组。
+  > - **"NFD"：**以标准等价方式分解
+  > - **"NFKC"：**以兼容等价方式分解
+  > - **"NFKD"：**以兼容等价方式分解,然后以标准等价方式重组
+  >
+  > 摘自：深入理解ES6 - 字符串和正则表达式 P17
 
 **返回值：**含有给定字符串的 Unicode 规范化形式的字符串。
 
-**可能出现的异常**
+##### 可能出现的异常
 
 - **RangeError：**如果给 form 传入了上述四个字符串以外的参数，则会抛出 RangeError 异常。
 
@@ -549,33 +564,35 @@ str.normalize( [form] )
 >
 > 摘自：[现代JS教程 - 字符串 - 变音符号与规范化](https://zh.javascript.info/string#bian-yin-fu-hao-yu-gui-fan-hua)
 
-##### 其他关于 UTF-16代理对字符串的补充：<font color=FF0000 size=4>**字符串迭代器能够识别代理对**</font>
+##### 其他关于 UTF-16代理对字符串的补充
 
-> - **for...of：**
+<font color=FF0000 size=4>**字符串迭代器能够识别代理对**</font>
+
+> ##### for...of
 >
->   数组和字符串是使用最广泛的内建可迭代对象。对于一个字符串，`for..of` 遍历它的每个字符；<font color=FF0000>对于代理对 ( surrogate pairs )，它也能正常工作</font>！
+> 数组和字符串是使用最广泛的内建可迭代对象。对于一个字符串，`for..of` 遍历它的每个字符；<font color=FF0000>对于代理对 ( surrogate pairs )，它也能正常工作</font>！
 >
->   ```js
->   let str = '𝒳😂';
->   for (let char of str) {
->       console.log( char ); // 𝒳，然后是 😂
->   }
->   ```
+> ```js
+> let str = '𝒳😂';
+> for (let char of str) {
+>     console.log( char ); // 𝒳，然后是 😂
+> }
+> ```
 >
-> - **Array.from()**
+> ##### Array.from()
 >
->   全局方法 Array.from 可以接受一个可迭代或类数组的值，并从中获取一个“真正的”数组。然后我们就可以对其调用数组方法了。<font color=FF0000>**Array.from() 对于代理对也是支持的**</font>：
+> 全局方法 Array.from 可以接受一个可迭代或类数组的值，并从中获取一个“真正的”数组。然后我们就可以对其调用数组方法了。<font color=FF0000>**Array.from() 对于代理对也是支持的**</font>：
 >
->   ```js
->   let str = '𝒳😂';
->   let chars = Array.from(str); // 将 str 拆分为字符数组
->                                                             
->   console.log(chars[0]); // 𝒳
->   console.log(chars[1]); // 😂
->   console.log(chars.length); // 2
->   ```
+> ```js
+> let str = '𝒳😂';
+> let chars = Array.from(str); // 将 str 拆分为字符数组
+>                                                               
+> console.log(chars[0]); // 𝒳
+> console.log(chars[1]); // 😂
+> console.log(chars.length); // 2
+> ```
 >
->   与 str.split 方法不同，它依赖于字符串的可迭代特性（注：这是 ES6 的 Symbol.iterator 的特性）。因此，就像 for..of 一样，可以正确地处理代理对。
+> 与 str.split 方法不同，它依赖于字符串的可迭代特性（注：这是 ES6 的 Symbol.iterator 的特性）。因此，就像 for..of 一样，可以正确地处理代理对。
 >
 > **注：**个人感觉，ES6 中新增的字符串相关的方法，都是支持代理对的；感觉这也是在情理之中的。
 >
@@ -591,61 +608,55 @@ str.normalize( [form] )
 
 #### For 循环
 
-- 一般for循环
+for-in 循环，<font color=FF0000>for-in 循环实际是为循环 ”enumerable“ 对象而设计的</font>（**注：**for in 是用来遍历，对象中 enumerable 数据属性为 true 的属性）。示例：
 
-- for-in循环，for-in 循环实际是为循环”enumerable“对象而设计的。示例：
-  
-  ```js
-  for(elem in elems){
-    //code
-  }
-  ```
-  
-  <font color=FF0000>不推荐用 for-in 来循环一个**数组**，因为，不像对象，数组的`index`跟普通的对象属性不一样，是重要的数值序列指标</font>。
+```js
+for ( elem in elems ){ // code}
+```
 
-- forEach循环（ JavaScript5 引入）
-  
-  forEach() 方法用于调用<font color=FF0000>数组</font>的每个元素，并将元素传递给回调函数。
-  
-  **语法：**
-  
-  ```js
-  array.forEach(function(currentValue, index, arr), thisValue)
-  ```
-  
-  **参数：**
-  
-  - **function(currentValue, index, arr)**：<font color=FF0000>必需</font>。 数组中每个元素需要调用的函数。
-    - **currentValue**    必需。当前元素
-    - **index**    可选。当前元素的索引值。
-    - **arr**    可选。当前元素所属的数组对象。
-  - **thisValue**：<font color=FF0000>可选</font>。传递给函数的值一般用 "this" 值。
-  
-  **示例：**
-  
-  ```js
-  myArray.forEach(function (value) {
-    console.log(value);
-  });
-  ```
-  
-  写法简单了许多，但<mark>也有短处：你不能中断循环(使用`break`语句或使用`continue`语句。</mark>（但是支持return）
+<font color=FF0000>不推荐用 for-in 来循环一个**数组**，因为，不像对象，数组的`index`跟普通的对象属性不一样，是重要的数值序列指标</font>。
+
+##### forEach 循环（ JavaScript5 引入）
+
+forEach() 方法用于调用<font color=FF0000>数组</font>的每个元素，并将元素传递给回调函数。
+
+**语法：**
+
+```js
+array.forEach(function(currentValue, index, arr), thisValue)
+```
+
+**参数：**
+
+- **function(currentValue, index, arr)**：<font color=FF0000>必需</font>。 数组中每个元素需要调用的函数。
+  - **currentValue**    必需。当前元素
+  - **index**    可选。当前元素的索引值。
+  - **arr**    可选。当前元素所属的数组对象。
+- **thisValue**：<font color=FF0000>可选</font>。传递给函数的值一般用 "this" 值。
+
+**示例：**
+
+```js
+myArray.forEach(function (value) {
+  console.log(value);
+});
+```
+
+写法简单了许多，但<mark>也有短处：你不能中断循环(使用`break`语句或使用`continue`语句。</mark>（但是支持return）
 
 - for-of循环
-  
+
   ```js
   for (var value of myArray) {
     console.log(value);
   }
   ```
-  
+
   它既比传统的 for 循环简洁，同时弥补了 forEach 和 for-in 循环的短板。
-  
+
   //todo  for-of的具体使用参考下面的文章。
 
 摘自：[JavaScript里的循环方法：forEach，for-in，for-of](https://www.webhek.com/post/javascript-loop-foreach-for-in-for-of.html)
-
-**补充：**
 
 #### for ... of
 
@@ -3246,7 +3257,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                 
+  >                                                                                                     
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3265,7 +3276,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                 
+  >                                                                                                     
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7384,26 +7395,26 @@ ResizeObserver 接口 <font color=FF0000>可以监听到 Element 的 <font size=
 #### PerformanceObserver 性能监测对象
 
 PerformanceObserver <font color=FF0000>用于监测性能度量事件</font>，<mark>在浏览器的性能时间轴记录下一个新的 performance entries  的时候将会被通知</mark> 。
-注：<mark>此特性在 <font color=FF0000>**Web Worker**</font> 中可用</mark>。
+注意：<mark>此特性在 <font color=FF0000>**Web Worker**</font> 中可用</mark>。**注：**performance entries 是 Performance API 中的内容。
 
-- **构造函数：**
+##### 构造函数
 
-  **PerformanceObserver()：**<font color=FF0000>创建并返回一个新的 PerformanceObserver 对象</font>。
+**PerformanceObserver()：**<font color=FF0000>创建并返回一个新的 PerformanceObserver 对象</font>。
 
-- **方法：**
+##### 方法
 
-  - **PerformanceObserver.observe()：**指定监测的 entry types 的集合。 当 performance entry 被记录并且是指定的 entryTypes 之一的时候，性能观察者对象的回调函数会被调用。
-  - **PerformanceObserver.disconnect()：**性能监测回调 <font color=FF0000>停止接收 性能条目</font>。
+- **PerformanceObserver.observe()：**指定监测的 entry types 的集合。 当 performance entry 被记录并且是指定的 entryTypes 之一的时候，性能观察者对象的回调函数会被调用。
+- **PerformanceObserver.disconnect()：**性能监测回调 <font color=FF0000>停止接收 性能条目</font>。
 
-- **示例：**
+##### 示例
 
-  ```js
-  function perf_observer(list, observer) {
-     // 处理 "measure" 事件
-  }
-  var observer2 = new PerformanceObserver(perf_observer);
-  observer2.observe( {entryTypes: ["measure"]} )
-  ```
+```js
+function perf_observer(list, observer) {
+   // 处理 "measure" 事件
+}
+var observer2 = new PerformanceObserver(perf_observer);
+observer2.observe( {entryTypes: ["measure"]} )
+```
 
 摘自：[MDN - 性能监测对象](https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceObserver)
 
@@ -7417,9 +7428,57 @@ PerformanceObserver <font color=FF0000>用于监测性能度量事件</font>，<
 
 
 
+#### Performance API
+
+High Resolution Time 标准定义了 Performance 接口，该接口支持应用程序中客户端的延时测量。<font color=FF0000>Performance 接口被认为是高采样率的</font>，因为其<font color=FF0000>精确度可达千分之一毫秒</font>（受硬件或软件限制）。这些接口支持许多使用情形，包括计算帧速率（在动画中可能很重要）和基准测试（例如加载资源的时间）。
+
+由于平台的系统时钟会受到各种时滞（例如 NTP 调整）的影响，该接口支持单调时钟，即一直增加的时钟。 鉴于这个原因， <font color=FF0000>**Performance API 定义了 DOMHighResTimeStamp 类型**</font>，而不是使用 Date.now() 接口。
+
+> Date.now() 方法只适用于日期时间相关操作，而且是不要求计时精度的操作
+>
+> 摘自：《 JS 高级程序设计》第四版 P644 ：20.10 计时 API
+
+##### DOMHighResTimeStamp
+
+DOMHighResTimeStamp 类型，顾名思义，表示高采样率的时间戳。 此类型是 double ，由性能接口使用。 该值可以是离散时间戳，也可以是两个离散时间戳之间的时间间隔。
+
+DOMHighResTimeStamp 的单位是毫秒，应精确到 5 µs（微秒）（**注：**单位是毫秒，但是有小数）。 但是，如果浏览器无法提供精确到 5 微秒的时间数值（例如由于硬件或软件限制），则浏览器可以将该值表示为精确到毫秒的时间（以毫秒为单位）。
+
+##### 方法
+
+**Performance 接口具有两个方法**（**注：**感觉有点不对，毕竟下面 [[#Performance#方法]] 有很多方法...）
+
+- **now() 方法**：返回一个 DOMHighResTimeStamp，其值取决于 navigation start 和 作用域。如果作用域是 window ，则值是创建 ***浏览器上下文*** 的时间；如果作用域是 worker，则值是创建 worker 的时间。
+
+  > **注：**在 Chrome 和 Safari 中测试，now 方法返回的均是当前标签页 ( Tab ) 打开的时间（单位是毫秒）。所以，这里 ***浏览器上下文***  <mark>**感觉应该**</mark> 和 ***标签页*** 一一对应，即：打开一个 ***标签页***，生成一个 ***浏览器上下文***
+
+- **toJSON() 方法**：返回 Performance 对象的序列化结果，包含可以被序列化的属性。
+
+##### 属性
+
+**Performance 接口具有两个属性**（**注：**还是感觉有点不对，毕竟下面 [[#Performance#属性]] 有很多属性...）
+
+- **timing 属性**：返回一个 PerformanceTiming 对象，其中包含与延时相关的性能信息，例如导航开始的时间，重定向的开始时间和结束时间，响应的开始时间和结束时间等。
+
+- **navigation 属性**：返回一个 PerformanceNavigation 对象，该对象表示在给定浏览上下文中发生的导航类型，例如从历史记录导航到的页面，通过跟随链接导航到的页面等。
+
+摘自：[MDN - Performance API](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance_API)
+
 #### Performance
 
 Performance 接口<font color=FF0000>**可以获取到当前页面中与性能相关的信息**</font>。它<font color=FF0000>是 High Resolution Time API 的一部分</font>，同时也融合了 Performance Timeline API、Navigation Timing API、 User Timing API 和 Resource Timing API。
+
+> ##### Performance 接口由多个 API 构成
+>
+> - High Resolution Time API
+>
+> - Performance Timeline API
+> - Navigation Timing API
+> - User Timing API
+> - Resource Timing API
+> - Paint Timing API
+>
+> 摘自：《 JS 高级程序设计》第四版 P644 ：20.10 计时 API
 
 <font color=FF0000>该类型的对象可以通过调用只读属性 Window.performance 来获得</font>。
 
@@ -7429,10 +7488,19 @@ Performance 接口<font color=FF0000>**可以获取到当前页面中与性能�
 
 **Performance 接口没有继承任何属性**
 
-- **Performance.navigation：**🗑 已废弃， 只读。PerformanceNavigation 对象提供了在指定的时间段里发生的操作相关信息，包括页面是加载还是刷新、发生了多少次重定向等等。<font color=FF0000>workers 中不可用</font>
-- **Performance.timing**：🗑 已废弃，只读。PerformanceTiming 对象<font color=FF0000>**包含延迟相关的性能信息**</font>。<font color=FF0000>workers 中不可用</font>
+- **Performance.navigation：**🗑 已废弃， 只读。PerformanceNavigation 对象<font color=FF0000>提供了在指定的时间段里发生的操作相关信息</font>。包括页面是加载还是刷新、发生了多少次重定向等等。<font color=FF0000>**workers 中不可用**</font>
+
+- **Performance.timing**：🗑 已废弃，只读。PerformanceTiming 对象<font color=FF0000>**包含延迟相关的性能信息**</font>。<font color=FF0000>**workers 中不可用**</font>。
+
+  > 在 Navigation Timing Level 2 specification 中已经被废弃，请<font color=FF0000>使用 Performance.timeOrigin 替代</font>。
+  >
+  > 摘自：[MDN - Performance.timing](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/timing)
+
 - **performance.memory**：⚠️ 非标准。是 Chrome 添加的一个非标准扩展，这个属性<font color=FF0000>提供了一个可以获取到基本内存使用情况的对象</font>。**不应该**使用这个非标准的 API 。
-- **Performance.timeOrigin**：⚠️ 非标准，只读。返回性能测量开始时的时间的高精度时间戳。
+
+- **Performance.timeOrigin**：⚠️ 非标准，只读。返回性能测量开始时的时间的<font color=FF0000>高精度时间戳</font>。
+
+  > **注：**经测试，返回的 *时间戳* 精确到毫秒，和 Date.now() 同一个层级。另外，既然是 *时间戳*，所以必然是绝对时间，而不是相对时间。
 
 ##### 事件处理程序
 
@@ -7443,18 +7511,53 @@ Performance 接口<font color=FF0000>**可以获取到当前页面中与性能�
 **Performance 接口没有继承任何方法**
 
 - **Performance.clearMarks()**：将给定的 mark 从浏览器的性能输入缓冲区中移除。
+
 - **Performance.clearMeasures()**：将给定的 measure 从浏览器的性能输入缓冲区中移除。
-- **Performance.clearResourceTimings()**：从浏览器的性能数据缓冲区中移除所有 entryType 是 "resource" 的 performance entries
-- **Performance.getEntries()**：基于给定的 filter 返回一个 PerformanceEntry 对象的列表。
-- **Performance.getEntriesByName()**：基于给定的 name 和 entry type 返回一个 PerformanceEntry 对象的列表。
-- **Performance.getEntriesByType()**：基于给定的 entry type 返回一个 PerformanceEntry 对象的列表
-- **Performance.mark()**：根据给出 name 值，在浏览器的性能输入缓冲区中创建一个相关的 timestamp
+
+- **Performance.clearResourceTimings()**：从浏览器的 *性能数据缓冲区* 中移除所有 entryType 是 "resource" 的 performance entries
+
+- <font color=FF0000>**Performance.getEntries()**</font>：基于给定的 filter 返回一个 PerformanceEntry 对象的列表。
+
+  > **注：**filter 是 getEntries 方法传入的参数，语法如下。另外，相对后面的 getEntriesByName 和 getEntriesByType 方法，getEntries 方法传入 filter 要更灵活，泛用性更强些。
+  >
+  > ```js
+  > // 取全部
+  > entries = window.performance.getEntries();
+  > entries = window.performance.getEntries(PerformanceEntryFilterOptions);
+  > 
+  > // 取特定
+  > entries = performance.getEntries({name: "entry_name", entryType: "mark"});
+  > ```
+  >
+  > 摘自：[MDN - Performance.getEntries()](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/getEntries)
+
+- <font color=FF0000>**Performance.getEntriesByName()**</font>：基于给定的 name 和 entry type 返回一个 PerformanceEntry 对象的列表。
+
+- <font color=FF0000>**Performance.getEntriesByType()**</font>：基于给定的 entry type 返回一个 PerformanceEntry 对象的列表
+
+- <font color=FF0000>**Performance.mark()**</font>：根据给出 name 值，<font color=FF0000>在 ***浏览器的性能输入缓冲区*** 中创建一个相关的 timestamp</font>
+
+  > **注：** name 是 mark 方法中指定的参数
+  >
+  > ```js
+  > performance.mark(name);
+  > ```
+  >
+  > 其中 name 是 一个表示标记名称的 DOMString
+  >
+  > 摘自：[MDN - Performance.mark()](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/mark)
+
 - **Performance.measure()**：在浏览器的指定 start mark 和 end mark 间的性能输入缓冲区中创建一个指定的 timestamp
-- **Performance.now()**：<font color=FF0000>返回一个表示从性能测量时刻开始经过的毫秒数 DOMHighResTimeStamp</font>
+
+- <font color=FF0000>**Performance.now()**</font>：<font color=FF0000>返回一个表示 **从性能测量时刻开始经过的毫秒数** DOMHighResTimeStamp</font>
+
 - **Performance.setResourceTimingBufferSize()**：将浏览器的资源 timing 缓冲区的大小设置为 "resource" type performance entry 对象的指定数量
+
 - **Performance.toJSON()**：其是一个 JSON 格式转化器，返回 Performance 对象的 JSON 对象
 
 摘自：[MDN - Performance](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance)
+
+
 
 
 
