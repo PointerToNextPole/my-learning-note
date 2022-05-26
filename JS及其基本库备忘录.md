@@ -3257,7 +3257,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                     
+  >                                                                                                       
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3276,7 +3276,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                     
+  >                                                                                                       
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7395,7 +7395,7 @@ ResizeObserver 接口 <font color=FF0000>可以监听到 Element 的 <font size=
 #### PerformanceObserver 性能监测对象
 
 PerformanceObserver <font color=FF0000>用于监测性能度量事件</font>，<mark>在浏览器的性能时间轴记录下一个新的 performance entries  的时候将会被通知</mark> 。
-注意：<mark>此特性在 <font color=FF0000>**Web Worker**</font> 中可用</mark>。**注：**performance entries 是 Performance API 中的内容。
+注意：<mark>此特性在 <font color=FF0000>**Web Worker**</font> 中可用</mark>。**注：**performance entries 是 Performance API 中的内容，详见下面 [[#Performance API]]
 
 ##### 构造函数
 
@@ -7403,7 +7403,12 @@ PerformanceObserver <font color=FF0000>用于监测性能度量事件</font>，<
 
 ##### 方法
 
-- **PerformanceObserver.observe()：**指定监测的 entry types 的集合。 当 performance entry 被记录并且是指定的 entryTypes 之一的时候，性能观察者对象的回调函数会被调用。
+- **PerformanceObserver.observe()：**指定监测的 entry types 的集合（**注：**即，数组）。 当 performance entry 被记录并且是指定的 entryTypes 之一的时候，性能观察者对象的回调函数会被调用。
+
+  > entry types 即：PerformanceEntry.entryType。包含 frame/navigation、resource、mark、measure、paint。
+  >
+  > 参考自：[MDN - PerformanceEntry.entryType](https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceEntry/entryType)
+
 - **PerformanceObserver.disconnect()：**性能监测回调 <font color=FF0000>停止接收 性能条目</font>。
 
 ##### 示例
@@ -7413,7 +7418,7 @@ function perf_observer(list, observer) {
    // 处理 "measure" 事件
 }
 var observer2 = new PerformanceObserver(perf_observer);
-observer2.observe( {entryTypes: ["measure"]} )
+observer2.observe( { entryTypes: ["measure"] } )
 ```
 
 摘自：[MDN - 性能监测对象](https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceObserver)
@@ -7428,7 +7433,11 @@ observer2.observe( {entryTypes: ["measure"]} )
 
 
 
+
+
 #### Performance API
+
+> **注：**当时注意到 Performance API，是因为“首屏渲染优化”，就按习惯搜起了 MDN ...看到后面发现， 自己不应该在不了解背景的情况下，一上来就看 API，这样很容易看懵，而且看了没怎么用也就忘了；所以，如果之后想要复习这部分的内容，可以先看看后面的 [[#Performance Timeline 介绍]] 了解下背景。
 
 High Resolution Time 标准定义了 Performance 接口，该接口支持应用程序中客户端的延时测量。<font color=FF0000>Performance 接口被认为是高采样率的</font>，因为其<font color=FF0000>精确度可达千分之一毫秒</font>（受硬件或软件限制）。这些接口支持许多使用情形，包括计算帧速率（在动画中可能很重要）和基准测试（例如加载资源的时间）。
 
@@ -7450,7 +7459,7 @@ DOMHighResTimeStamp 的单位是毫秒，应精确到 5 µs（微秒）（**注�
 
 - **now() 方法**：返回一个 DOMHighResTimeStamp，其值取决于 navigation start 和 作用域。如果作用域是 window ，则值是创建 ***浏览器上下文*** 的时间；如果作用域是 worker，则值是创建 worker 的时间。
 
-  > **注：**在 Chrome 和 Safari 中测试，now 方法返回的均是当前标签页 ( Tab ) 打开的时间（单位是毫秒）。所以，这里 ***浏览器上下文***  <mark>**感觉应该**</mark> 和 ***标签页*** 一一对应，即：打开一个 ***标签页***，生成一个 ***浏览器上下文***
+  > **注：**在 Chrome 和 Safari 中测试，now 方法返回的均是当前标签页 ( Tab ) 打开的时间（单位是毫秒）。所以，这里所说的 ***浏览器上下文***  <mark>**感觉应该**</mark> 和 ***标签页*** 一一对应，即：打开一个 ***标签页***，生成一个 ***浏览器上下文***
 
 - **toJSON() 方法**：返回 Performance 对象的序列化结果，包含可以被序列化的属性。
 
@@ -7460,7 +7469,45 @@ DOMHighResTimeStamp 的单位是毫秒，应精确到 5 µs（微秒）（**注�
 
 - **timing 属性**：返回一个 PerformanceTiming 对象，其中包含与延时相关的性能信息，例如导航开始的时间，重定向的开始时间和结束时间，响应的开始时间和结束时间等。
 
-- **navigation 属性**：返回一个 PerformanceNavigation 对象，该对象表示在给定浏览上下文中发生的导航类型，例如从历史记录导航到的页面，通过跟随链接导航到的页面等。
+- **navigation 属性**：返回一个 PerformanceNavigation 对象，该对象表示在给定浏览上下文中发生的导航类型，例如从历史记录导航到的页面，通过跟随链接导航到的页面等
+
+##### 接口
+
+- **Performance**：提供方法和属性，包含给定页面与计时相关的性能信息
+
+- **PerformanceEntry**：提供方法和属性，将单个性能指标封装为性能时间轴的一部分
+
+- **PerformanceFrameTiming**：提供方法和属性，包含有关<font color=FF0000>浏览器事件循环的 帧计时数据</font>
+
+- **PerformanceMark**：条目类型为 "mark" 的 PerformanceEntry 抽象接口，该类型的条目通过调用 mark() 将命名的DOMHighResTimeStamp mark 添加到浏览器的性能时间轴来创建
+
+  > **注：**这里的 mark() ，即：Performance.mark()
+
+- **PerformanceMeasure**：条目类型为 "measure" 的 PerformanceEntry 抽象接口，该类型的条目通过调用 measure() 在浏览器的性能时间轴的两个标记之间添加一个命名的 DOMHighResTimeStamp measure 来创建
+
+  > **注：**这里的 measure() ，即：Performance.measure()
+
+- **PerformanceNavigationTiming**：提供方法和属性，用于 <font color=FF0000>存储和检索</font> 有关 <font color=FF0000>浏览器文档导航事件 的高采样率时间戳或其他指标</font>。
+
+  > **注：**即 Navigation Timing API
+  >
+  > 另外，PerformanceResourceTiming 继承自 PerformanceEntry
+  >
+  > ```mermaid
+  > classDiagram
+  > direction LR
+  > PerformanceEntry <|-- PerformanceResourceTiming : Inheritance
+  > ```
+  >
+  > 摘自：[MDN - PerformanceResourceTiming](https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceResourceTiming)
+
+- **PerformanceObserver**：提供方法和属性，用于观察性能测量事件，并在浏览器的性能时间轴中记录新的 PerformanceEntry 时进行通知
+
+  > **注：**可以参考上面的 [[#PerformanceObserver 性能监测对象]]
+
+- **PerformanceResourceTiming**：提供方法和属性，用于<font color=FF0000>检索和分析</font> 有关 <font color=FF0000>应用程序 **资源加载** 的详细网络计时数据</font>
+
+  > **注：**即 Resource Timing API
 
 摘自：[MDN - Performance API](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance_API)
 
@@ -7556,6 +7603,180 @@ Performance 接口<font color=FF0000>**可以获取到当前页面中与性能�
 - **Performance.toJSON()**：其是一个 JSON 格式转化器，返回 Performance 对象的 JSON 对象
 
 摘自：[MDN - Performance](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance)
+
+#### PerformanceTiming
+
+PerformanceTiming 接口是 <font color=FF0000>**为保持向后兼容性而保留的传统接口**</font>（**注：**即 PerformanceTiming 接口 已经被废弃，现在因为兼容而保存），并且<font color=FF0000>提供 **在加载和使用当前页面期间发生的各种事件的性能计时信息**</font>。可以通过 **只读属性** window.performance.timing 获得实现该接口的一个对象。
+
+##### 属性
+
+PerformanceTiming 接口不包含任何继承属性
+
+- **PerformanceTiming.navigationStart**：只读，是一个无符号 long long 型的毫秒数。表征了<font color=FF0000>从 **同一个浏览器上下文** 的上一个文档卸载 ( unload ) 结束时的 UNIX 时间戳</font>。<mark>如果没有上一个文档，这个值会和 PerformanceTiming.fetchStart 相同</mark>。
+- **PerformanceTiming.unloadEventStart**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>unload 事件抛出时的 UNIX 时间戳</font>。如果没有上一个文档，或者 之前的文档或所需的重定向之一不是同一来源，这个值会返回 0
+- **PerformanceTiming.unloadEventEnd**：只读，是一个无符号long long 型的毫秒数。表征了 <font color=FF0000>unload 事件处理完成时的 UNIX 时间戳</font>。如果没有上一个文档，或者 之前的文档或所需的重定向之一不是同一来源，这个值会返回 0
+- **PerformanceTiming.redirectStart**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**第一个 HTTP 重定向开始时** 的 UNIX 时间戳</font>。如果没有重定向，或者重定向中的一个不同源，这个值会返回 0
+- **PerformanceTiming.redirectEnd**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**最后一个 HTTP 重定向完成时**（也就是说是 HTTP 响应的最后一个比特直接被收到的时间）的 UNIX 时间戳</font>。如果没有重定向，或者重定向中的一个不同源，这个值会返回 0
+- **PerformanceTiming.fetchStart**：只读，是一个无符号 long long 型的毫秒数。表征了浏览器准备好使用 HTTP 请求来获取 ( fetch ) 文档的 UNIX 时间戳。这个时间点会在检查任何应用缓存之前。
+- **PerformanceTiming.domainLookupStart**：只读，是一个无符号 long long 型的毫秒数。表征了域名查询开始的 UNIX 时间戳。如果使用了持续连接 ( persistent connection )，或者这个信息存储到了缓存或者本地资源上，这个值将和 PerformanceTiming.fetchStart 一致
+- **PerformanceTiming.domainLookupEnd**：只读，是一个无符号 long long 型的毫秒数。表征了域名查询结束的 UNIX 时间戳。如果使用了持续连接 ( persistent connection )，或者这个信息存储到了缓存或者本地资源上，这个值将和 PerformanceTiming.fetchStart 一致
+- **PerformanceTiming.connectStart**：只读，是一个无符号 long long 型的毫秒数。返回HTTP请求开始向服务器发送时的Unix毫秒时间戳。如果使用持久连接 ( persistent connection )，则返回值等同于 fetchStart 属性的值
+- **PerformanceTiming.connectEnd**：只读，是一个无符号 long long 型的毫秒数。返回浏览器与服务器之间的连接建立时的 Unix 毫秒时间戳。如果建立的是持久连接，则返回值等同于 fetchStart 属性的值。连接建立指的是所有握手和认证过程全部结束
+- **PerformanceTiming.secureConnectionStart**：只读，是一个无符号 long long 型的毫秒数。返回浏览器与服务器开始安全链接的握手时的 Unix 毫秒时间戳。如果当前网页不要求安全连接，则返回 0
+- **PerformanceTiming.requestStart**：只读，是一个无符号 long long 型的毫秒数。返回浏览器向服务器发出 HTTP 请求时（或开始读取本地缓存时）的 Unix 毫秒时间戳
+- **PerformanceTiming.responseStart**：只读，是一个无符号 long long 型的毫秒数。返回浏览器从服务器收到（或从本地缓存读取）第一个字节时的 Unix 毫秒时间戳。如果传输层在开始请求之后失败并且连接被重开，该属性将会被数制成新的请求的相对应的发起时间。
+- **PerformanceTiming.responseEnd**：只读，是一个无符号 long long 型的毫秒数。返回浏览器从服务器收到（或从本地缓存读取，或从本地资源读取）最后一个字节时（如果在此之前 HTTP 连接已经关闭，则返回关闭时）的 Unix 毫秒时间戳
+- **PerformanceTiming.domLoading**：只读，是一个无符号long long 型的毫秒数。返回当前网页 DOM 结构开始解析时（即Document.readyState 属性变为 “loading”、相应的 readystatechange 事件触发时）的 Unix 毫秒时间戳
+- **PerformanceTiming.domInteractive**：只读，是一个无符号 long long 型的毫秒数。返回当前网页 DOM 结构结束解析、开始加载内嵌资源时（即 Document.readyState 属性变为 “interactive”、相应的 readystatechange 事件触发时）的 Unix 毫秒时间戳
+- **PerformanceTiming.domContentLoadedEventStart**：只读，是一个无符号 long long 型的毫秒数。返回当解析器发送DOMContentLoaded 事件，即所有需要被执行的脚本已经被解析时的 Unix 毫秒时间戳
+- **PerformanceTiming.domContentLoadedEventEnd**：只读，是一个无符号 long long 型的毫秒数。返回当所有需要立即执行的脚本已经被执行（不论执行顺序）时的 Unix 毫秒时间戳
+- **PerformanceTiming.domComplete**：只读，是一个无符号 long long 型的毫秒数。返回当前文档解析完成，即Document.readyState 变为 'complete' 且相对应的 readystatechange 被触发时的 Unix 毫秒时间戳
+- **PerformanceTiming.loadEventStart**：只读，是一个无符号 long long 型的毫秒数。返回该文档下，load 事件被发送时的 Unix 毫秒时间戳。如果这个事件还未被发送，它的值将会是 0
+- **PerformanceTiming.loadEventEnd**：只读，是一个无符号 long long 型的毫秒数。返回当 load 事件结束，即加载事件完成时的 Unix 毫秒时间戳。如果这个事件还未被发送，或者尚未完成，它的值将会是 0
+
+摘自：[MDN - PerformanceTiming](https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceTiming)
+
+#### User Timing API
+
+User Timing 接口允许开发者在浏览器性能时间线中创建针对特定应用的 ***时间戳*** 。<font color=FF0000>有两种自定义时间测量事件类型：mark 事件类型 和 measure 事件类型</font>。
+
+mark 事件可以指定任意的名字并且可以在放在应用的任何位置。<font color=FF0000>measure 事件也可以指定为任意的名字，但是需要放在两个 mark 之间，所以它实际上是两个 mark 的中间点</font>。
+
+摘自：[MDN - 自定义时间测量API](https://developer.mozilla.org/zh-CN/docs/Web/API/User_Timing_API)
+
+#### performanceEntry
+
+PerformanceEntry 对象代表了 performance 时间列表中的单个 metric 数据。每一个 performance entry 都可以在应用运行过程中通过手动构建 mark 或者 measure （ 例如调用 mark() 方法 ） 生成。此外，Performance Entries 在资源加载的时候，也会被动生成（ 例如：图片、script、CSS 等资源加载）
+
+> **注：**一点总结
+>
+> performanceEntry 通过 getEntries( filter )、getEntriesByName( name, entryType )、getEntriesByType( enterType ) 检索，通过 mark( name ) 创建，clearMarks( name ) 移除。
+
+##### 属性
+
+- **PerformanceEntry.name**：只读，DOMString 该 performance entry 的名字
+- **PerformanceEntry.entryType**：只读，DOMString 代表所上报的 performance metric 的 entryType 类型，例如 "mark"。可通过 [entryType](https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceEntry/entryType) 查阅完整的 entryType type 类型
+- **PerformanceEntry.startTime**：只读，DOMHighResTimeStamp  此为 metric 上报时的时间
+- **PerformanceEntry.duration**：只读，DOMHighResTimeStamp 该事件的耗时
+
+摘自：[MDN - PerformanceEntry](https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceEntry)
+
+#### Performance.measure()
+
+ measure() 方法在浏览器性能记录缓存中创建了 DOMHighResTimeStamp 来记录两个特殊标志位（通常称为 ***开始标志*** 和 ***结束标志*** ）。 被命名的 DOMHighResTimeStamp 称为一次测量 ( measure )
+
+##### 语法
+
+```js
+measure(measureName)
+measure(measureName, MeasureOptions)
+measure(measureName, startMark)
+measure(measureName, startMark, endMark)
+```
+
+参数：略，详见：[MDN - performance.measure() - en-US](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 。不过，值得说一下的是：startMark 和 endMark 也是可以 performance.timing 中的值，详见： [[[#PerformanceTiming]]]
+
+摘自：[MDN - performance.measure()](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 不过，中文版的内容和美版不一样，少了很多内容，建议看：[MDN - performance.measure() - en-US](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 
+
+
+
+#### Performance Timeline 介绍
+
+**Performance Timeline** ，在 w3c 中有两个版本的规范，这里基于 **第二版本** 介绍。
+
+**在一个 web 页面的生命周期之内**，基于 Performance Timeline 可以得到哪些性能指标，主要分为以下三大类：
+
+- **navigation-timing**：navigation of the document
+- **resource-timing**：页面资源
+- **user-timing**：开发者自定义的一些监控，主要是 mark 和 measure
+
+如下示例：
+
+```html
+<img id="image0" src="https://www.w3.org/Icons/w3c_main.png" />
+
+<script>
+function init() {
+  performance.mark("startWork");
+  setTimeout(() => {
+    performance.mark("endWork");
+    measurePerf();
+  }, 2000);
+}
+function measurePerf() {
+  performance
+    .getEntries()
+    .map(entry => JSON.stringify(entry, null, 2))
+    .forEach(json => console.log(json));
+}
+</script>
+```
+
+引入了一张 外部图片，mark 可以理解为标记了一个时间点，getEntries 得到所有的性能数据，最后输出：
+
+```json
+{ "name": "", "entryType": "navigation", "startTime": 0, "duration": 50.07500003557652 }
+{ "name": "https://www.w3.org/Icons/w3c_main.png", "entryType": "resource" }
+{ "name": "startWork", "entryType": "mark", "startTime": 49.990000028628856, "duration": 0 }
+{ "name": "first-paint", "entryType": "paint", "startTime": 94.83499999623746, "duration": 0 }
+{ "name": "first-contentful-paint", "entryType": "paint", "startTime": 94.83499999623746, "duration": 0 }
+{ "name": "endWork", "entryType": "mark", "startTime": 2050.5150000099093, "duration": 0 }
+```
+
+> **注：**上面的打印经过了压缩，实际打印结果自行运行）
+
+注意其中，entryType 有  navigation、resource、mark、paint（其中可见：name 有 first-paint ( FP ) 和 first-contentful-paint ( FCP ) ）。另外，FP 表示：<font color=FF0000>页面上 **第一个像素落点** 的时候</font>；FCP 表示：<font color=FF0000>页面上 **开始有内容绘制** 的时候</font>
+
+另外，这里的打印只是 “当时得到的性能指标”。如果想要 **持续的** 获得 “性能指标”，可以通过 *定时器* 进行 “轮询”，不过太低效；好的解决方式是：<font color=FF0000>**使用 PerformanceObserver**</font>。它是浏览器内部对 Performance 实现的 观察者模式，<font color=FF0000>当有性能数据产生时，会主动通知</font>
+
+##### PerformanceObserver 监听 first-paint、first-contentful-paint 示例
+
+```js
+const observer = new PerformanceObserver(list => {
+    list.getEntries().forEach(entry => {
+        console.log('entry对象', entry);
+    });
+});
+
+// 观察的类型
+observer.observe({ entryTypes: ['paint'] });
+```
+
+关于 entryTypes，可以取如下值：
+
+- frame：event-loop 时的每一帧
+- navigation：导航
+- resource：资源
+- mark：打点，得到一个时间戳
+- measure：在两个 mark 产生的点之间的测量
+- paint：绘制
+- longtask：（好像只有 chrome 支持）任何在浏览器中执行超过 50 ms 的任务，都是 long task
+
+##### navigation entry 对象里能拿到相关的数据
+
+![img](https://s2.loli.net/2022/05/26/gNJI6i1hBrdA2Y3.png)
+
+> 原图片来自：https://www.w3.org/TR/navigation-timing-2/#processing-model
+
+上图完整地描述了一个 ***页面*** 呈现的完整流程。 拿到每个时间点可以进行分析每个区间的时间耗费。
+
+```js
+let t = entry
+
+console.log('DNS 查询耗时 ：' + ( t.domainLookupEnd - t.domainLookupStart).toFixed(0) )
+console.log('TCP 链接耗时 ：' + ( t.connectEnd - t.connectStart).toFixed(0) )
+console.log('request 请求耗时 ：' + ( t.responseEnd - t.responseStart).toFixed(0) )
+console.log('解析 dom 树耗时 ：' + ( t.domComplete - t.domInteractive).toFixed(0) )
+console.log('白屏时间 ：' + ( t.responseStart - t.navigationStart).toFixed(0) )
+console.log('domready 时间 ：' + ( t.domContentLoadedEventEnd - t.navigationStart).toFixed(0) )
+console.log('onload 时间 ：' + ( t.loadEventEnd - t.navigationStart).toFixed(0) )
+```
+
+##### resource entry 对象里能拿到相关的数据
+
+<img src="https://s2.loli.net/2022/05/26/v2ehLcIqB6z8VKQ.png" alt="img" style="zoom:55%;" />
+
+摘自：[你的页面为什么慢，Performance Timeline 简介](https://juejin.cn/post/6844904020109164552)
 
 
 
