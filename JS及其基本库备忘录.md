@@ -3257,7 +3257,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                       
+  >                                                                                                         
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3276,7 +3276,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                       
+  >                                                                                                         
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7433,8 +7433,6 @@ observer2.observe( { entryTypes: ["measure"] } )
 
 
 
-
-
 #### Performance API
 
 > **注：**当时注意到 Performance API，是因为“首屏渲染优化”，就按习惯搜起了 MDN ...看到后面发现， 自己不应该在不了解背景的情况下，一上来就看 API，这样很容易看懵，而且看了没怎么用也就忘了；所以，如果之后想要复习这部分的内容，可以先看看后面的 [[#Performance Timeline 介绍]] 了解下背景。
@@ -7481,11 +7479,11 @@ DOMHighResTimeStamp 的单位是毫秒，应精确到 5 µs（微秒）（**注�
 
 - **PerformanceMark**：条目类型为 "mark" 的 PerformanceEntry 抽象接口，该类型的条目通过调用 mark() 将命名的DOMHighResTimeStamp mark 添加到浏览器的性能时间轴来创建
 
-  > **注：**这里的 mark() ，即：Performance.mark()
+  > **注：**这里的 mark() ，即 Performance.mark()
 
 - **PerformanceMeasure**：条目类型为 "measure" 的 PerformanceEntry 抽象接口，该类型的条目通过调用 measure() 在浏览器的性能时间轴的两个标记之间添加一个命名的 DOMHighResTimeStamp measure 来创建
 
-  > **注：**这里的 measure() ，即：Performance.measure()
+  > **注：**这里的 measure() ，即 Performance.measure()
 
 - **PerformanceNavigationTiming**：提供方法和属性，用于 <font color=FF0000>存储和检索</font> 有关 <font color=FF0000>浏览器文档导航事件 的高采样率时间戳或其他指标</font>。
 
@@ -7613,26 +7611,58 @@ PerformanceTiming 接口是 <font color=FF0000>**为保持向后兼容性而保�
 PerformanceTiming 接口不包含任何继承属性
 
 - **PerformanceTiming.navigationStart**：只读，是一个无符号 long long 型的毫秒数。表征了<font color=FF0000>从 **同一个浏览器上下文** 的上一个文档卸载 ( unload ) 结束时的 UNIX 时间戳</font>。<mark>如果没有上一个文档，这个值会和 PerformanceTiming.fetchStart 相同</mark>。
+
 - **PerformanceTiming.unloadEventStart**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>unload 事件抛出时的 UNIX 时间戳</font>。如果没有上一个文档，或者 之前的文档或所需的重定向之一不是同一来源，这个值会返回 0
+
 - **PerformanceTiming.unloadEventEnd**：只读，是一个无符号long long 型的毫秒数。表征了 <font color=FF0000>unload 事件处理完成时的 UNIX 时间戳</font>。如果没有上一个文档，或者 之前的文档或所需的重定向之一不是同一来源，这个值会返回 0
-- **PerformanceTiming.redirectStart**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**第一个 HTTP 重定向开始时** 的 UNIX 时间戳</font>。如果没有重定向，或者重定向中的一个不同源，这个值会返回 0
-- **PerformanceTiming.redirectEnd**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**最后一个 HTTP 重定向完成时**（也就是说是 HTTP 响应的最后一个比特直接被收到的时间）的 UNIX 时间戳</font>。如果没有重定向，或者重定向中的一个不同源，这个值会返回 0
-- **PerformanceTiming.fetchStart**：只读，是一个无符号 long long 型的毫秒数。表征了浏览器准备好使用 HTTP 请求来获取 ( fetch ) 文档的 UNIX 时间戳。这个时间点会在检查任何应用缓存之前。
-- **PerformanceTiming.domainLookupStart**：只读，是一个无符号 long long 型的毫秒数。表征了域名查询开始的 UNIX 时间戳。如果使用了持续连接 ( persistent connection )，或者这个信息存储到了缓存或者本地资源上，这个值将和 PerformanceTiming.fetchStart 一致
-- **PerformanceTiming.domainLookupEnd**：只读，是一个无符号 long long 型的毫秒数。表征了域名查询结束的 UNIX 时间戳。如果使用了持续连接 ( persistent connection )，或者这个信息存储到了缓存或者本地资源上，这个值将和 PerformanceTiming.fetchStart 一致
+
+- **PerformanceTiming.redirectStart**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**第一个 HTTP *重定向开始* 时** 的 UNIX 时间戳</font>。如果没有重定向，或者重定向中的一个不同源，这个值会返回 0
+
+- **PerformanceTiming.redirectEnd**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**最后一个 HTTP *重定向完成* 时**（也就是说是 HTTP 响应的最后一个比特直接被收到的时间）的 UNIX 时间戳</font>。如果没有重定向，或者重定向中的一个不同源，这个值会返回 0
+
+- **PerformanceTiming.fetchStart**：只读，是一个无符号 long long 型的毫秒数。表征了 浏览器 <font color=FF0000>**准备好 使用 HTTP 请求** 来获取 ( fetch ) 文档的 UNIX 时间戳</font>。这个时间点会在检查任何应用缓存之前。
+
+- **PerformanceTiming.domainLookupStart**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**域名查询开始的 UNIX 时间戳**</font>。如果使用了持续连接 ( persistent connection，**注：**感觉可以理解为 “长连接” Connection: Keep-Alive )，或者这个信息存储到了缓存或者本地资源上，这个值将和 PerformanceTiming.fetchStart 一致
+
+- **PerformanceTiming.domainLookupEnd**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**域名查询结束的 UNIX 时间戳**</font>。如果使用了持续连接 ( persistent connection )，或者这个信息存储到了缓存或者本地资源上，这个值将和 PerformanceTiming.fetchStart 一致
+
 - **PerformanceTiming.connectStart**：只读，是一个无符号 long long 型的毫秒数。返回HTTP请求开始向服务器发送时的Unix毫秒时间戳。如果使用持久连接 ( persistent connection )，则返回值等同于 fetchStart 属性的值
+
 - **PerformanceTiming.connectEnd**：只读，是一个无符号 long long 型的毫秒数。返回浏览器与服务器之间的连接建立时的 Unix 毫秒时间戳。如果建立的是持久连接，则返回值等同于 fetchStart 属性的值。连接建立指的是所有握手和认证过程全部结束
-- **PerformanceTiming.secureConnectionStart**：只读，是一个无符号 long long 型的毫秒数。返回浏览器与服务器开始安全链接的握手时的 Unix 毫秒时间戳。如果当前网页不要求安全连接，则返回 0
+
+  - **PerformanceTiming.secureConnectionStart**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>浏览器与服务器开始 **安全链接**（**注：**即 https ） 的握手时的 Unix 毫秒时间戳</font>。如果当前网页不要求安全连接，则返回 0
+
+  关于 https 的说法来自：
+
+  > ##### secureConnectionStart
+  >
+  > <font color=FF0000>This attribute is **optional**</font>. User agents that don't have this attribute available must set it as undefined. <font color=FF0000>When this attribute is available, if the scheme [URL] of the current page is "**https**"</font>, this attribute must return the time immediately before the user agent starts the handshake process to secure the current connection. If this attribute is available but HTTPS is not used, this attribute must return zero.
+  >
+  > 摘自：[w3.org - Navigation Timing Level 2 - 8. Obsolete - 8.1 The PerformanceTiming interface - secureConnectionStart](https://www.w3.org/TR/navigation-timing-2/#dom-performancetiming-secureconnectionstart)
+
 - **PerformanceTiming.requestStart**：只读，是一个无符号 long long 型的毫秒数。返回浏览器向服务器发出 HTTP 请求时（或开始读取本地缓存时）的 Unix 毫秒时间戳
+
 - **PerformanceTiming.responseStart**：只读，是一个无符号 long long 型的毫秒数。返回浏览器从服务器收到（或从本地缓存读取）第一个字节时的 Unix 毫秒时间戳。如果传输层在开始请求之后失败并且连接被重开，该属性将会被数制成新的请求的相对应的发起时间。
+
 - **PerformanceTiming.responseEnd**：只读，是一个无符号 long long 型的毫秒数。返回浏览器从服务器收到（或从本地缓存读取，或从本地资源读取）最后一个字节时（如果在此之前 HTTP 连接已经关闭，则返回关闭时）的 Unix 毫秒时间戳
-- **PerformanceTiming.domLoading**：只读，是一个无符号long long 型的毫秒数。返回当前网页 DOM 结构开始解析时（即Document.readyState 属性变为 “loading”、相应的 readystatechange 事件触发时）的 Unix 毫秒时间戳
-- **PerformanceTiming.domInteractive**：只读，是一个无符号 long long 型的毫秒数。返回当前网页 DOM 结构结束解析、开始加载内嵌资源时（即 Document.readyState 属性变为 “interactive”、相应的 readystatechange 事件触发时）的 Unix 毫秒时间戳
-- **PerformanceTiming.domContentLoadedEventStart**：只读，是一个无符号 long long 型的毫秒数。返回当解析器发送DOMContentLoaded 事件，即所有需要被执行的脚本已经被解析时的 Unix 毫秒时间戳
-- **PerformanceTiming.domContentLoadedEventEnd**：只读，是一个无符号 long long 型的毫秒数。返回当所有需要立即执行的脚本已经被执行（不论执行顺序）时的 Unix 毫秒时间戳
-- **PerformanceTiming.domComplete**：只读，是一个无符号 long long 型的毫秒数。返回当前文档解析完成，即Document.readyState 变为 'complete' 且相对应的 readystatechange 被触发时的 Unix 毫秒时间戳
-- **PerformanceTiming.loadEventStart**：只读，是一个无符号 long long 型的毫秒数。返回该文档下，load 事件被发送时的 Unix 毫秒时间戳。如果这个事件还未被发送，它的值将会是 0
-- **PerformanceTiming.loadEventEnd**：只读，是一个无符号 long long 型的毫秒数。返回当 load 事件结束，即加载事件完成时的 Unix 毫秒时间戳。如果这个事件还未被发送，或者尚未完成，它的值将会是 0
+
+- **PerformanceTiming.domLoading**：只读，是一个无符号long long 型的毫秒数。返回 <font color=FF0000>当前网页 DOM 结构开始解析</font>时（即 <mark style="background: aqua"><font size=4>**Document.readyState 属性变为 “loading”**</font></mark>、相应的 readystatechange 事件触发时）的 Unix 毫秒时间戳
+
+- **PerformanceTiming.domInteractive**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>**当前网页 DOM 结构结束解析、开始加载内嵌资源时**</font>（即 ]<mark style="background: aqua"><font  size=4>**Document.readyState 属性变为 “interactive”**</font></mark>、相应的 readystatechange 事件触发时）的 Unix 毫秒时间戳
+
+- **PerformanceTiming.domContentLoadedEventStart**：只读，是一个无符号 long long 型的毫秒数。返回当解析器发送 DOMContentLoaded 事件，即所有需要被执行的脚本已经被解析时的 Unix 毫秒时间戳
+
+- **PerformanceTiming.domContentLoadedEventEnd**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>当所有需要立即执行的脚本已经被执行</font>（不论执行顺序。**注：**即， 非 async 的脚本 ）时的 Unix 毫秒时间戳
+
+- **PerformanceTiming.domComplete**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>**当前文档解析完成**</font>，即 <mark style="background: aqua"><font size=4>**Document.readyState 变为 ”complete“**</font></mark> ，且相对应的 readystatechange 被触发时的 Unix 毫秒时间戳
+
+- **PerformanceTiming.loadEventStart**：只读，是一个无符号 long long 型的毫秒数。返回该文档下，<font color=FF0000>load 事件 **被发送** 时的 Unix 毫秒时间戳</font>。如果这个事件还未被发送，它的值将会是 0
+
+- **PerformanceTiming.loadEventEnd**：只读，是一个无符号 long long 型的毫秒数。返回当 load 事件结束，即 <font color=FF0000>**加载事件完成时** 的 Unix 毫秒时间戳</font>。如果这个事件还未被发送，或者尚未完成，它的值将会是 0
+
+##### 辅助记忆图
+
+![img](https://s2.loli.net/2022/05/26/gNJI6i1hBrdA2Y3.png)
 
 摘自：[MDN - PerformanceTiming](https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceTiming)
 
@@ -13379,6 +13409,47 @@ AbortController 接口表示一个控制器对象，<font color=FF0000>允许你
    > 摘自：[MDN - XMLHttpRequest.abort()](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/abort)
 
 摘自：[MDN - AbortController](https://developer.mozilla.org/zh-CN/docs/Web/API/AbortController)，AbortController 的相关作用 在 [[web开发工具#请求已经发出去了，如何取消掉这个已经发出去的请求]] 中有详细说明。
+
+
+
+#### CanvasRenderingContext2D.fillText()
+
+CanvasRenderingContext2D.fillText() 是 <font color=FF0000>Canvas 2D API 在 (x, y) 位置填充文本的方法</font>。如果选项的第四个参数提供了最大宽度，文本会进行缩放以适应最大宽度。
+
+##### 语法
+
+```js
+void ctx.fillText( text, x, y, [maxWidth] )
+```
+
+##### 参数
+
+- **text：**使用当前的 font, textAlign, textBaseline 和 direction 值对文本进行渲染。
+- **x：**文本起点的 x 轴坐标。
+- **y：**文本起点的 y 轴坐标。
+- **maxWidth：**可选，<font color=FF0000>绘制的最大宽度</font>。如果指定了值，并且经过计算字符串的值比最大宽度还要宽；字体为了适应会水平缩放（如果通过水平缩放当前字体，可以进行有效的或者合理可读的处理）或者使用小号的字体。
+
+##### 示例
+
+```html
+<canvas id="canvas"></canvas>
+```
+
+```js
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+
+ctx.font = "48px serif";
+ctx.fillText("Hello world", 50, 100);
+```
+
+摘自：[MDN - CanvasRenderingContext2D.fillText()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/fillText)
+
+#### CanvasRenderingContext2D.strokeText()
+
+CanvasRenderingContext2D.strokeText() 是 Canvas 2D API 在给定的 (x, y) 位置绘制文本的方法
+
+**注：**该方法详细内容略。因为无论 ***参数*** 还是 ***效果*** 都和 CanvasRenderingContext2D.fillText() 没大的区别。唯一的区别是 <font color=FF0000>**fillText() 是填充文本**</font>（和一般见到的文本的一样，详见 [MDN - CanvasRenderingContext2D.fillText()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/fillText) 中的示例），而 <font color=FF0000>**strokeText() 是 描边文本**</font>；效果见 [MDN - CanvasRenderingContext2D.strokeText()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/strokeText)
 
 
 
