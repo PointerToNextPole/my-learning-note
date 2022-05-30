@@ -3257,7 +3257,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                         
+  >                                                                                                           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3276,7 +3276,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                         
+  >                                                                                                           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -13412,9 +13412,138 @@ AbortController 接口表示一个控制器对象，<font color=FF0000>允许你
 
 
 
+#### CanvasRenderingContext2D
+
+##### 绘制矩形
+
+- **CanvasRenderingContext2D.clearRect()**：设置指定矩形区域内（以 ***点 ( x, y )*** 为起点，范围是 ( width, height ) ）<font color=FF0000>所有像素变成透明，并擦除之前绘制的所有内容</font>。
+- **CanvasRenderingContext2D.fillRect()：**绘制填充矩形，矩形的起点在 (x, y) 位置，矩形的尺寸是 width 和 height。<font color=FF0000>填充样式由当前的 fillStyle 决定</font>
+- **CanvasRenderingContext2D.strokeRect()**：在 canvas 中，<font color=FF0000>**使用当前的笔触样式**，描绘一个起点在 (x, y) 、宽度为 w 、高度为 h 的矩形</font>
+
+##### 绘制文本
+
+- **CanvasRenderingContext2D.fillText()**：<font color=FF0000>在 ( x, y ) 位置绘制 ***填充文本***</font>。详见 [[#CanvasRenderingContext2D.fillText()]]
+- **CanvasRenderingContext2D.strokeText()**：<font color=FF0000>在 ( x, y ) 位置绘制 ***描边文本***</font>。详见 [[#CanvasRenderingContext2D.strokeText()]]
+- **CanvasRenderingContext2D.measureText()**：返回 TextMetrics 对象。
+
+##### 线型
+
+ ***方法*** 和 ***属性*** 控制如何绘制线
+
+- **CanvasRenderingContext2D.lineWidth**：<font color=FF0000>线的 **宽度**</font>。默认 1.0
+- **CanvasRenderingContext2D.lineCap**：<font color=FF0000>***线末端*** 的类型</font>。 允许的值： butt（默认），round，square.
+- **CanvasRenderingContext2D.lineJoin**：定义<font color=FF0000>两线相交 ***拐点*** 的类型</font>。允许的值：round，bevel，miter（默认）
+- **CanvasRenderingContext2D.miterLimit**：斜接面限制比例。默认 10。**注：**有点没看懂，详见：[MDN - CanvasRenderingContext2D.miterLimit](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/miterLimit)
+- **CanvasRenderingContext2D.getLineDash()**：<font color=FF0000>返回当前线段样式的数组</font>，数组包含一组数量为偶数的非负数数字
+- **CanvasRenderingContext2D.setLineDash()**：<font color=FF0000>设置当前的线段样式</font>
+- **CanvasRenderingContext2D.lineDashOffset**：<font color=FF0000>描述在哪里开始绘制线段</font>
+
+##### 文本样式
+
+属性控制如何设计文本
+
+- **CanvasRenderingContext2D.font**：字体设置。 默认值 10px sans-serif。
+- **CanvasRenderingContext2D.textAlign**：<font color=FF0000>***文本对齐*** 设置</font>。 允许的值： start（默认），end，left，right 或 center
+- **CanvasRenderingContext2D.textBaseline**：<font color=FF0000>***基线对齐*** 设置</font>。 允许的值： top，hanging，middle，alphabetic（默认），ideographic，bottom
+- **CanvasRenderingContext2D.direction**：<font color=FF0000>文本的 ***方向***</font>。 允许的值： ltr， rtl，inherit（默认）
+
+##### 填充和描边样式
+
+填充设计用于图形内部的颜色和样式，描边设计用于图形的边线。
+
+- **CanvasRenderingContext2D.fillStyle**：<font color=FF0000>图形 **内部**</font> 的颜色和样式。 默认 `#000` （黑色）
+- **CanvasRenderingContext2D.strokeStyle**：<font color=FF0000>图形 **边线**</font> 的颜色和样式。 默认 `#000`（黑色）
+
+##### 渐变和图案
+
+- **CanvasRenderingContext2D.createLinearGradient()**：创建一个沿着参数坐标指定的线的 ***线性渐变***。
+- **CanvasRenderingContext2D.createRadialGradient()**：创建一个沿着参数坐标指定的线的 ***放射性性渐变***。
+- **CanvasRenderingContext2D.createPattern()**：使用指定的图片 ( CanvasImageSource ) 创建图案。通过 repetition 变量指定的方向上重复源图片。此方法返回 CanvasPattern对象。
+
+##### 阴影
+
+- **CanvasRenderingContext2D.shadowBlur**：描述模糊效果。 默认 0
+- **CanvasRenderingContext2D.shadowColor**：阴影的颜色。 默认 fully-transparent black
+- **CanvasRenderingContext2D.shadowOffsetX**：阴影水平方向的偏移量。 默认 0
+- **CanvasRenderingContext2D.shadowOffsetY**：阴影垂直方向的偏移量。 默认 0
+
+##### 路径
+
+用来操作对象的路径
+
+- **CanvasRenderingContext2D.beginPath()**：<font color=FF0000>清空子路径列表开始一个新的路径</font>。当你想创建一个新的路径时，调用此方法。
+- **CanvasRenderingContext2D.closePath()**：使笔点返回到当前子路径的起始点。它尝试从当前点到起始点绘制一条直线。如果图形已经是封闭的或者只有一个点，那么此方法不会做任何操作。
+- **CanvasRenderingContext2D.moveTo()**：<font color=FF0000>将一个新的子路径的起始点移动到 (x，y) 坐标</font>
+- **CanvasRenderingContext2D.lineTo()**：<font color=FF0000>使用直线连接子路径的最后的点到 ( x, y ) 坐标</font>
+- **CanvasRenderingContext2D.bezierCurveTo()**：添加一个3次贝赛尔曲线路径。该方法需要三个点。 第一、第二个点是控制点，第三个点是结束点。起始点是当前路径的最后一个点，绘制贝赛尔曲线前，可以通过调用 moveTo() 进行修改。
+- **CanvasRenderingContext2D.quadraticCurveTo()**：添加一个2次贝赛尔曲线路径。
+- **CanvasRenderingContext2D.arc()**：绘制一段圆弧路径， 圆弧路径的圆心在 (x, y) 位置，半径为 r ，根据anticlockwise （默认为顺时针）指定的方向从 startAngle 开始绘制，到 endAngle 结束。
+- **CanvasRenderingContext2D.arcTo()**：根据控制点和半径绘制圆弧路径，使用当前的描点(前一个moveTo或lineTo等函数的止点)。根据当前描点与给定的控制点1连接的直线，和控制点1与控制点2连接的直线，作为使用指定半径的圆的切线，画出两条切线之间的弧线路径。
+- **CanvasRenderingContext2D.ellipse()**：🧪实验性，添加一个椭圆路径，椭圆的圆心在 ( x, y ) 位置，半径分别是 radiusX 和 radiusY ，按照 anticlockwise （默认顺时针）指定的方向，从 startAngle  开始绘制，到 endAngle 结束。
+- **CanvasRenderingContext2D.rect()**：创建一个矩形路径，矩形的起点位置是 ( x, y ) ，尺寸为 width 和 height。
+
+##### 绘制路径
+
+- CanvasRenderingContext2D.fill()：使用当前的样式填充子路径。
+- CanvasRenderingContext2D.stroke()：使用当前的样式描边子路径。
+- CanvasRenderingContext2D.drawFocusIfNeeded()：如果给定的元素获取了焦点，那么此方法会在当前的路径绘制一个焦点。
+- CanvasRenderingContext2D.scrollPathIntoView()：将当前或给定的路径滚动到窗口。
+- CanvasRenderingContext2D.clip()：从当前路径创建一个剪切路径。在  clip() 调用之后，绘制的所有信息只会出现在剪切路径内部。例如： 参见 Canvas教程中的 剪切路径 。
+- CanvasRenderingContext2D.isPointInPath()：判断当前路径是否包含检测点。
+- CanvasRenderingContext2D.isPointInStroke()：判断检测点是否在路径的描边线上。
+
+##### 变换
+
+在 CanvasRenderingContext2D 渲染背景中的对象会有一个当前的变换矩阵，一些方法可以对其进行控制。当创建当前的默认路径，绘制文本、图形和Path2D对象的时候，会应用此变换矩阵。下面列出的方法保持历史和兼容性的原因，是为了SVGMatrix对象现在能够应用于大部分 API ，将来会被替换。
+
+- **CanvasRenderingContext2D.currentTransform**：<font color=FF0000>当前的变换矩阵</font> ( SVGMatrix 对象)
+- **CanvasRenderingContext2D.rotate()**：在变换矩阵中增加 <font color=FF0000>***旋转***</font>，角度变量表示一个顺时针旋转角度并且用弧度表示。
+- **CanvasRenderingContext2D.scale()**：根据 x 水平方向和 y 垂直方向，为canvas 单位添加 <font color=FF0000>***缩放***</font> 变换。
+- **CanvasRenderingContext2D.translate()**：通过在网格中移动 canvas 和 canvas 原点 x 水平方向、原点 y 垂直方向，添加 <font color=FF0000>***平移***</font> 变换
+- **CanvasRenderingContext2D.transform()**：使用方法参数描述的矩阵多次叠加当前的变换矩阵。
+- **CanvasRenderingContext2D.setTransform()**：重新设置当前的变换为单位矩阵，并使用同样的变量调用 transform() 方法。
+- **CanvasRenderingContext2D.resetTransform()**：🧪实验性，使用单位矩阵重新设置当前的变换。
+
+##### 合成
+
+- CanvasRenderingContext2D.globalAlpha：在合成到 canvas 之前，设置图形和图像透明度的值。默认 1.0 (不透明)。
+- CanvasRenderingContext2D.globalCompositeOperation：通过 globalAlpha 应用，设置如何在已经存在的位图上绘制图形和图像
+
+##### 绘制图像
+
+- **CanvasRenderingContext2D.drawImage()**：<font color=FF0000>绘制指定的图片</font>。该方法有多种格式，提供了很大的使用灵活性。详见 [[#CanvasRenderingContext2D.drawImage()]]
+
+##### 像素控制
+
+参见 ImageData 对象
+
+- **CanvasRenderingContext2D.createImageData()**：<font color=FF0000>使用指定的尺寸，创建一个新的、空白的 ImageData 对象</font>。所有的像素在新对象中都是透明的。
+- **CanvasRenderingContext2D.getImageData()**：<font color=FF0000>返回一个 ImageData 对象</font>，用来描述 canvas 区域隐含的像素数据，这个区域通过矩形表示，起始点为 ( sx, sy) 、宽为 sw、高为 sh
+- **CanvasRenderingContext2D.putImageData()**：<font color=FF0000>将数据从已有的 ImageData 绘制到位图上</font>。 如果提供了脏矩形，只能绘制矩形的像素
+
+##### 图像平滑
+
+- CanvasRenderingContext2D.imageSmoothingEnabled：🧪实验性，图像平滑的方式；如果禁用，缩放时，图像不会被平滑处理
+
+##### canvas 状态
+
+CanvasRenderingContext2D渲染环境包含了多种绘图的样式状态（属性有线的样式、填充样式、阴影样式、文本样式）。下面的方法会帮助你使用这些状态：
+
+- CanvasRenderingContext2D.save()：使用栈保存当前的绘画样式状态，你可以使用 restore() 恢复任何改变。
+- CanvasRenderingContext2D.restore()：恢复到最近的绘制样式状态，此状态是通过 save() 保存到”状态栈“中最新的元素。
+- CanvasRenderingContext2D.canvas：对 HTMLCanvasElement 只读的反向引用。如果和 \<canvas> 元素没有联系，可能为null。
+
+##### 点击区域
+
+- CanvasRenderingContext2D.addHitRegion()：🧪实验性，给 canvas 添加点击区域。
+- CanvasRenderingContext2D.removeHitRegion()：🧪实验性，从 canvas 中删除指定 id  的点击区域。
+- CanvasRenderingContext2D.clearHitRegions()：🧪实验性，从 canvas 中删除所有的点击区域。
+
+摘自：[MDN - CanvasRenderingContext2D](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D)
+
 #### CanvasRenderingContext2D.fillText()
 
-CanvasRenderingContext2D.fillText() 是 <font color=FF0000>Canvas 2D API 在 (x, y) 位置填充文本的方法</font>。如果选项的第四个参数提供了最大宽度，文本会进行缩放以适应最大宽度。
+CanvasRenderingContext2D.fillText() 是 <font color=FF0000>Canvas 2D API 在 (x, y) 位置填充文本的方法</font>。如果选项的第四个参数提供了最大宽度，文本会进行缩放以适应最大宽度
 
 ##### 语法
 
@@ -13450,6 +13579,41 @@ ctx.fillText("Hello world", 50, 100);
 CanvasRenderingContext2D.strokeText() 是 Canvas 2D API 在给定的 (x, y) 位置绘制文本的方法
 
 **注：**该方法详细内容略。因为无论 ***参数*** 还是 ***效果*** 都和 CanvasRenderingContext2D.fillText() 没大的区别。唯一的区别是 <font color=FF0000>**fillText() 是填充文本**</font>（和一般见到的文本的一样，详见 [MDN - CanvasRenderingContext2D.fillText()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/fillText) 中的示例），而 <font color=FF0000>**strokeText() 是 描边文本**</font>；效果见 [MDN - CanvasRenderingContext2D.strokeText()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/strokeText)
+
+#### CanvasRenderingContext2D.drawImage()
+
+Canvas 2D API 中的 CanvasRenderingContext2D.drawImage() 方法提供了多种方式在Canvas上绘制图像。
+
+##### 语法
+
+```js
+void ctx.drawImage(image, dx, dy);
+void ctx.drawImage(image, dx, dy, dWidth, dHeight);
+void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+```
+
+##### 参数
+
+![](https://s2.loli.net/2022/05/30/Yy71La3VtzRehrN.jpg)
+
+- **image**：<font color=FF0000>绘制到上下文的元素</font>。允许任何的 canvas 图像源 ( CanvasImageSource )，例如：CSSImageValue，HTMLImageElement，SVGImageElement，HTMLVideoElement，HTMLCanvasElement，ImageBitmap 或者 OffscreenCanvas
+- **sx**：( source ) 可选，需要绘制到目标上下文中的，image 的矩形（裁剪）选择框的左上角 X 轴坐标。
+- **sy**：( source ) 可选，需要绘制到目标上下文中的，image 的矩形（裁剪）选择框的左上角 Y 轴坐标。
+- **sWidth**：可选，需要绘制到目标上下文中的，image 的矩形（裁剪）选择框的宽度。如果不说明，整个矩形（裁剪）从坐标的 sx 和 sy 开始，到 image 的右下角结束。
+- **sHeight**：可选，需要绘制到目标上下文中的，image 的矩形（裁剪）选择框的高度。
+- **dx**：( destination ) image 的左上角在目标 canvas上 X 轴坐标。
+- **dy**：( destination ) image 的左上角在目标 canvas上 Y 轴坐标。
+- **dWidth**：可选，image 在目标 canvas 上绘制的宽度。 允许对绘制的 image 进行缩放。如果不说明， 在绘制时，image 宽度不会缩放
+- **dHeight**：可选，image 在目标 canvas 上绘制的高度。 允许对绘制的 image 进行缩放。 如果不说明， 在绘制时，image 高度不会缩放
+
+##### 抛出异常
+
+- INDEX_SIZE_ERR：如果 canvas 或者图像矩形区域的宽度或高度为0
+- INVALID_STATE_ERR：图像没有数据。
+- TYPE_MISMATCH_ERR：提供的原始元素不支持。
+- NS_ERROR_NOT_AVAILABLE：图像尚未加载。使用 .complete === true 和 .onload确定何时准备就绪
+
+摘自：[MDN - CanvasRenderingContext2D.drawImage()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/drawImage)
 
 
 
