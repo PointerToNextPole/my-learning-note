@@ -1587,7 +1587,7 @@ HTML 外部资源链接元素 ( \<link> ) 规定了当前文档与外部资源�
 
   **可选值有：**audio、document、embed、fetch、font、image、object、script、style、track、video、worker （**注：**这里原本是一个表格，这里略；详见原文。另外，可以参考下面的 [[#preload 补充#What types of content can be preloaded?]]）
 
-- **crossorigin：**此 <font color=FF0000>**枚举属性** 指定在加载相关资源时是否必须使用 CORS</font>。启用 CORS 的图片 可以在 \<canvas> 元素中重复使用，并避免其被污染（**注：**crossorigin 相关内容可参考 [[#CORS 设置属性]] ）。
+- **crossorigin：**此 <font color=FF0000>**枚举属性** 指定在加载相关资源时是否必须使用 CORS</font> 。启用 CORS 的图片 可以在 \<canvas> 元素中重复使用，并避免其被污染（**注：**crossorigin 相关内容可参考 [[#CORS 设置属性]] ）。
 
   当不设置此属性时，资源将会不使用 CORS 加载 (即不发送 Origin: HTTP 头)，这将阻止其在 \<canvas> 元素中进行使用。若设置了非法的值，则视为使用 anonymous。前往 CORS settings attributes 获取更多信息。
 
@@ -1649,7 +1649,7 @@ Here however, we will use a `rel` value of `preload`, which turns \<link> into a
   Using `as` to <mark>specify the type of content to be preloaded allows the browser to</mark>:
 
   - Prioritize resource loading more accurately.
-  - <font color=FF0000>**Store in the cache for future requests**, reusing the resource if appropriate</font>.
+  - <font color=FF0000>**Store in the cache for future requests**, reusing the resource if appropriate</font>. 注：这里的内容，可以参考 [[#prefetch 补充#资源正在被预载时点击了某个链接会发生什么？]]
   - <font color=FF0000>Apply the correct ***content security policy*** ( CSP ) to the resource</font>.
   - <font color=FF0000>Set the correct ***`Accept` request headers*** for it</font>. 即：设置对的 Accept 请求头
 
@@ -1677,17 +1677,133 @@ Here however, we will use a `rel` value of `preload`, which turns \<link> into a
 - worker: A JavaScript web worker or shared worker
 - video: Video file, as typically used in \<video>
 
+##### prefetch 简介 与 对比
 
+\<link rel="prefetch"> has been supported in browsers for a long time, but it is <mark>intended for prefetching resources that will be used in the next navigation/page load</mark> (e.g. when you go to the next page). This is fine, but isn't useful for the current page! In addition, <font color=FF0000>browsers will give prefetch resources a lower priority than preload ones</font> — <mark>the current page is more important than the next</mark>.
+
+摘自：[MDN - Link types: preload](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preload#scripting_and_preloads)
+
+#### prefetch 补充
+
+关键字 `prefetch` 作为元素 \<link>  的属性 `rel` 的值，是为了提示浏览器：用户未来的浏览 有可能需要加载目标资源，所以浏览器有可能通过事先获取和缓存对应资源，优化用户体验。
+
+摘自：[MDN - 链接类型：prefetch](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/prefetch)
+
+##### prefetching hints
+
+<font color=FF0000>浏览器会 <font size=4>**查找 *关系类型* ( relation type 即：`rel` ) 为 `next` 或 `prefetch`**</font> 的 HTML \<link>  或 HTTP `Link:` header</font>。
+
+下面是一个使用 \<link> 标签的例子：
+
+```js
+<link rel="prefetch" href="/images/big.jpeg">
+```
+
+同样效果，使用 HTTP `Link:` header 的例子：
+
+```http
+Link: </images/big.jpeg>; rel=prefetch
+```
+
+Link: header 也可以通过使用 HTML meta 标签定义在 HTML 文档中：
+
+```html
+<meta http-equiv="Link" content="</images/big.jpeg>; rel=prefetch">
+```
+
+##### 资源正在被预载时点击了某个链接会发生什么？
+
+<mark>当用户点击一个连接，或 开始任何形式的页面加载时</mark>，<font color=FF0000>**预取操作将被停止且任何预取提示将被丢弃**</font>。<font color=FF0000>**如果一个预取文档只下载了一部分，那么 <font size=4>这部分文档将被保存在缓存中</font>，供服务端发送一个 "Accept-Ranges: bytes" 的返回头**</font>。这个返回头通常是由网络服务器在返回静态内容时生成的。当用户真正访问这个已经（部分）预载过的文档时，该文档的剩余部分将被通过一个 HTTP byte-range 的请求获取
+
+摘自：[MDN - Link prefetching FAQ](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Link_prefetching_FAQ)
+
+##### DNS Prefetching
+
+<mark>Domain lookups can be slow, especially with network latency on mobile phones</mark>. They are most relevant when there are a plethora of links to external websites that may be clicked on, like search engine results, <font color=FF0000>**DNS prefetching resolves domain names in advance** thereby **speeding up load times by reducing the time associated with domain lookup at request time**</font>.
+
+```html
+<link rel="dns-prefetch" href="https://example.com/">
+```
+
+注：这部分的内容，可以参考后面的 [[#dns-prefetch]] ，有更详细的中文说明。
+
+##### Link prefetching
+
+Link prefetching is a **performance optimization** technique that works by assuming which links the user is likely to click, then downloading the content of those links. <mark>If the user decides to click on one of the links, then the page will be rendered instantly as the content has already been downloaded</mark>.
+
+The prefetch hints are sent in HTTP headers:
+
+```http
+Link: ; rel=dns-prefetch,
+      ; as=script; rel=preload,
+      ; rel=prerender,
+      ; as=style; rel=preload
+```
+
+摘自：[MDN US - Prefetch](https://developer.mozilla.org/en-US/docs/Glossary/Prefetch)
 
 #### preconnect 补充
 
-<font color=FF0000>The `preconnect` keyword for the ***rel* attribute of the \<link> element**</font> is <font color=FF0000>**a hint to browsers** that the **user is likely to need resources from the target resource's origin**</font>, and therefore the **browser can likely improve the user experience** by <font color=FF0000>**preemptively （先发制人地）initiating a <font size=4>*connection*</font> to that origin**</font>. **注：**这里的 connection 也就说明了 preconnect 的作用
+<font color=FF0000>The `preconnect` keyword for the **`rel` attribute of the \<link> element**</font> is <font color=FF0000>**a hint to browsers** that the **user is likely to need resources from the target resource's origin**</font>, and therefore the **browser can likely improve the user experience** by <font color=FF0000>**preemptively （先发制人地）initiating a <font size=4>*connection*</font> to that origin**</font>. **注：**这里的 connection 也就说明了 preconnect 的作用
 
 ```html
 <link rel="preconnect" href="https://example.com">
 ```
 
 摘自：[MDN US - Link types: preconnect](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preconnect)
+
+**注：**建议在 “没有很多第三方域连接” 时，dns-prefetch 与 preconnect（预连接）提示配对；原因见： [[#dns-prefetch 补充#最佳实践]] 第三点。
+
+#### prerender 补充
+
+The `prerender` keyword for the `rel` attribute of the \<link> element is a <font color=FF0000>hint to browsers that the user might need the target resource for the next navigation</font>, and <font color=FF0000>therefore the browser can likely improve the user experience by **preemptively**</font>（预先） <font color=FF0000>**fetching and processing the resource**</font> — for example, by <mark>fetching its subresources or **performing some rendering in the background offscreen**</mark>.
+
+摘自：[MDN US - Link types: prerender](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/prerender)
+
+<mark>With prerendering</mark>, <font color=FF0000>**the content is prefetched** and **<font size=4>then</font> rendered in the background**</font> by the browser as if the **content had been rendered into an invisible separate tab**. <mark>When the user **navigates to the prerendered content**</mark>, the <font color=FF0000>**current content is replaced by the prerendered content instantly**</font>.
+
+```html
+<link rel="prerender" href="https://example.com/content/to/prerender">
+```
+
+摘自：[MDN US - Prerender](https://developer.mozilla.org/en-US/docs/Glossary/prerender)
+
+##### subresource 已经废弃
+
+#### dns-prefetch 补充
+
+DNS-prefetch（ DNS 预获取 ）是尝试 **在请求资源之前解析域名**。这可能是后面要加载的文件，也可能是用户尝试打开的链接目标
+
+##### 为什么要使用 dns-prefetch?
+
+<mark>当浏览器从（第三方）服务器请求资源时，必须先将该跨域域名解析为 IP 地址，然后浏览器才能发出请求；此过程称为 DNS 解析</mark>。<font color=FF0000>DNS 缓存可以帮助减少此延迟，而 DNS 解析可以导致请求增加明显的延迟</font>。对于打开了与许多第三方的连接的网站，此延迟可能会大大降低加载性能。
+
+dns-prefetch 可帮助开发人员掩盖 DNS 解析延迟。 HTML \<link>元素 通过 `dns-prefetch` 的 `rel` 属性值 提供此功能。然后在 `href` 属性中指要跨域的域名：
+
+```html
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/"> 
+```
+
+##### 最佳实践
+
+请记住以下三点：
+
+**首先**：**dns-prefetch <font color=FF0000 size=4>仅对 *跨域* 域上的 DNS 查找有效</font>**，<font color=FF0000 size=4>因此请避免使用它来指向您的站点或域</font>。<mark>这是因为，到浏览器看到提示时，您站点域背后的 IP 已经被解析</mark>。
+
+**其次**：可以通过使用 HTTP 链接字段将 dns-prefetch（以及其他资源提示）指定为 HTTP 标头：
+
+```http
+Link: <https://fonts.gstatic.com/>; rel=dns-prefetch
+```
+
+**第三**：<font color=FF0000 size=4>**考虑将 dns-prefetch 与 preconnect（预连接）提示配对**</font>。尽管 dns-prefetch 仅执行 DNS 查找，但 preconnect 会建立与服务器的连接。如果站点是通过 HTTPS 服务的，则此过程包括 DNS 解析，建立 TCP 连接以及执行 TLS 握手。<font color=FF0000>**将两者结合起来可提供进一步减少跨域请求的感知延迟的机会**</font>。您可以安全地将它们一起使用，如下所示：
+
+```html
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<link rel="dns-prefetch" href="https://fonts.gstatic.com/">
+```
+
+不过需要注意⚠️：<font color=FF0000>如果页面需要建立与许多第三方域的连接，则将它们 ***预先连接*** 会适得其反</font>。<font size=4>**`preconnect` 提示最好仅用于最关键的连接**</font>。对于其他的，只需使用 `<link rel="dns-prefetch">` 即可节省 ***第一步的时间** ~ **DNS 查找***
 
 
 
