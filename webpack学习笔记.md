@@ -1343,7 +1343,17 @@ webpack --profile --json > stats.json
 
 <font size=4>**preloading 和 prefetching**</font>
 
-懒加载（ lazy loading，即使用 ES6 的 import，要使用了才去获取）会出现一个问题，用了再去获取、加载，响应速度可能会很慢。这时候就要用到 preloading 和 prefetching。同样preloading 和 prefetching 可以通过 magic comments 设置（注：更多 magic comments 设置可以参见：[webpack - Module Methods](https://webpack.js.org/api/module-methods/) ）。/* webpackPreload: true */ /* webpackPrefetch: true */
+懒加载（ lazy loading，即：使用 ES6 的 import，要使用了才去获取）会出现一个问题，用了再去获取、加载，响应速度可能会很慢。这时候就要用到 preloading 和 prefetching。同样 preloading 和 prefetching 可以通过 magic comments 设置（**注：**更多 magic comments 设置参见：[webpack - Module Methods](https://webpack.js.org/api/module-methods/) ）。
+
+```js
+// 摘自：https://webpack.js.org/api/module-methods/#magic-comments
+import(
+  /* ... 注：还有设置被省略，没有摘抄 */
+  /* webpackPrefetch: true */
+  /* webpackPreload: true */
+  `./locale/${language}`
+);
+```
 
 - **prefetch**（预获取）：将来某些导航下可能需要的资源
 - **preload**（预加载）：当前导航下可能需要资源
@@ -1353,7 +1363,7 @@ webpack --profile --json > stats.json
 - preload chunk 会在父 chunk 加载时，以并行方式开始加载。prefetch chunk 会在父 chunk 加载结束后开始加载。
 - preload chunk 具有中等优先级，并立即下载。prefetch chunk 在浏览器闲置时下载。
 - preload chunk 会在父 chunk 中立即请求，用于当下时刻。prefetch chunk 会用于未来的某个时刻。
-- 浏览器支持程度不同。
+- 浏览器支持程度不同
 
 
 

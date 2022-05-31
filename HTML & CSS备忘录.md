@@ -49,7 +49,7 @@ HTML \<label> 元素（标签）表示用户界面中某个元素的说明。
 
 该元素包含 全局属性。
 
-- <font color=FF0000>**for：**即和 \<label> 元素在同一文档中的 可关联标签的元素 的 id</font>。 <mark>文档中第一个 id 值与 \<label> 元素 for 属性值相同的元素，如果可关联标签（labelable），则为已关联标签的控件，其标签就是这个 \<label> 元素</mark>。如果这个元素不可关联标签，则 for 属性没有效果。如果文档中还有其他元素的 id 值也和 for 属性相同，for 属性对这些元素也没有影响。
+- <font color=FF0000>**for：**即和 \<label> 元素在同一文档中的 可关联标签的元素 的 id</font>。 <mark>文档中第一个 id 值与 \<label> 元素 for 属性值相同的元素，如果可关联标签 ( labelable ) ，则为已关联标签的控件，其标签就是这个 \<label> 元素</mark>。如果这个元素不可关联标签，则 for 属性没有效果。如果文档中还有其他元素的 id 值也和 for 属性相同，for 属性对这些元素也没有影响。
   **注意：**\<label> 元素可同时有一个 for 属性和一个子代控件元素，只是 for 属性需要指向这个控件元素。
 - **form：**<font color=FF0000>表示与 label 元素关联的 \<form> 元素（即它的表单拥有者）</font>。**如果声明了该属性，其值应是同一文档中 \<form> 元素的 id。因此你可以将 label 元素放在文档的任何位置，而不仅作为 \<form> 元素的后代**。
 
@@ -1583,9 +1583,9 @@ HTML 外部资源链接元素 ( \<link> ) 规定了当前文档与外部资源�
 
 这个元素可以使用「全局属性」
 
-- **as：**<font color=FF0000>该属性 **仅在 \<link> 元素设置了 rel="preload" 或者 rel="prefetch" 时才能使用**</font>。它规定了 \<link> 元素加载的内容的类型，<mark>对于内容的优先级、请求匹配、正确的内容安全策略的选择以及正确的 Accept请求头的设置，**这个属性是必需的**</mark>。
+- **as：**<font color=FF0000>该属性 **仅在 \<link> 元素设置了 rel="preload" 或者 rel="prefetch" 时才能使用**</font>。它规定了 \<link> 元素加载的内容的类型，<mark>对于内容的优先级、请求匹配、正确的 ***内容安全策略 ( CSP )*** 的选择以及正确的 Accept请求头的设置，**这个属性是必需的**</mark>。
 
-  **可选值有：**audio、document、embed、fetch、font、image、object、script、style、track、video、worker （**注：**这里原本是一个表格，这里略；详见原文）
+  **可选值有：**audio、document、embed、fetch、font、image、object、script、style、track、video、worker （**注：**这里原本是一个表格，这里略；详见原文。另外，可以参考下面的 [[#preload 补充#What types of content can be preloaded?]]）
 
 - **crossorigin：**此 <font color=FF0000>**枚举属性** 指定在加载相关资源时是否必须使用 CORS</font>。启用 CORS 的图片 可以在 \<canvas> 元素中重复使用，并避免其被污染（**注：**crossorigin 相关内容可参考 [[#CORS 设置属性]] ）。
 
@@ -1597,13 +1597,13 @@ HTML 外部资源链接元素 ( \<link> ) 规定了当前文档与外部资源�
 
 - **hreflang：**此属性指明了被链接资源的语言。其意义仅供参考。
 
-- **important🧪：**指示资源的相对重要性。优先级提示使用以下值委托：auto、high、low。
+- **important🧪：**<mark>指示资源的相对重要性</mark>。优先级提示使用以下值委托：auto、high、low。
 
   <mark style="background: aqua">只有存在 **rel=“preload”** 或 **rel=“prefetch”** 时，importance 属性才能用于 \<link> 元素</mark>。
 
 - **integrity🧪：**包含行内元数据，它是一个你用浏览器获取的资源文件的哈希值，以 base64 编码的方式的加密，这样<font color=FF0000>用户能用它来验证一个获取到的资源，在传送时未被非法篡改</font>
 
-- **media：**这个属性<font color=FF0000>规定了外部资源适用的媒体类型</font>。它的值必须是"媒体查询"。这个属性使得用户代理能选择最适合设备运行的媒体类型。
+- **media：**这个属性<font color=FF0000>规定了外部资源适用的媒体类型</font>。它的值必须是"媒体查询"。这个属性使得用户代理能选择最适合设备运行的媒体类型
 
 - **referrerpolicy🧪：**一个字符串，<font color=FF0000>指示在获取资源时使用哪个引荐来源网址</font>
 
@@ -1613,12 +1613,12 @@ HTML 外部资源链接元素 ( \<link> ) 规定了当前文档与外部资源�
 
 - **title：**属性在 \<link> 元素上有特殊的语义。当用于 \<link rel="stylesheet"> 时，它定义了一个首选样式表或备用样式表。
 
-- **type：**这个属性被<font color=FF0000>**用于定义链接的内容的类型**</font>。这个<mark>属性的值应该是像 text/html，text/css 等 MIME 类型</mark>。这个属性常用的用法是定义链接的样式表，最常用的值是表明了 CSS 的 text/css。
+- **type：**这个属性被<font color=FF0000>**用于定义链接的内容的类型**</font>。这个<mark>属性的值应该是像 text/html，text/css 等 MIME 类型</mark>。这个属性常用的用法是定义链接的样式表，最常用的值是表明了 CSS 的 text/css
 
 - <font size=4>**非标准属性 ⚠️**</font>
 
   - **methods：**此属性的值提供有关可能在对象上执行的功能的信息
-  - **prefetch：**此属性标识下一个导航可能需要的资源，用户代理应检索该资源。这允许用户代理在将来请求资源时更快地做出响应
+  - **prefetch：**此属性<font color=FF0000>标识下一个导航可能需要的资源，用户代理应检索该资源</font>。这允许用户代理在将来请求资源时更快地做出响应
   - **target：**定义具有已定义链接关系或将显示任何链接资源的呈现的框架或窗口名称。
 
 - <font size=4>**已淘汰的属性 🗑**</font>
@@ -1627,6 +1627,67 @@ HTML 外部资源链接元素 ( \<link> ) 规定了当前文档与外部资源�
   - **rev：**此属性的值显示了 href 属性所定义的当前文档与链接文档的关系
 
 摘自：[MDN - \<link>：外部资源链接元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/link#attr-as)
+
+#### preload 补充
+
+<font color=FF0000>The `preload` value of the \<link> element's ***rel*** attribute lets you **declare fetch requests in the HTML's \<head>**</font>, <font color=FF0000>specifying</font>（指定） <font color=FF0000>**resources** that **your page will need very soon**</font>, which <font color=FF0000>you want to **start loading early** in the page lifecycle, <font size=4>**before browsers' main rendering machinery kicks in**</font></font>（在浏览器的主要渲染机制启动之前）. This <font color=FF0000>**ensures they are available earlier** and are <font size=4>**less likely to block the page's render**</font></font>, improving performance.
+
+##### The basics
+
+You <mark>most commonly use \<link> to load a CSS file</mark> to style your page with:
+
+```css
+<link rel="stylesheet" href="styles/main.css">
+```
+
+Here however, we will use a `rel` value of `preload`, which turns \<link> into a preloader for any resource we want. You will <font color=FF0000>**also need to specify**</font>:
+
+- The path to the resource in the `href` attribute.
+
+- The <font color=FF0000>type of resource in the `as` attribute</font>.
+
+  Using `as` to <mark>specify the type of content to be preloaded allows the browser to</mark>:
+
+  - Prioritize resource loading more accurately.
+  - <font color=FF0000>**Store in the cache for future requests**, reusing the resource if appropriate</font>.
+  - <font color=FF0000>Apply the correct ***content security policy*** ( CSP ) to the resource</font>.
+  - <font color=FF0000>Set the correct ***`Accept` request headers*** for it</font>. 即：设置对的 Accept 请求头
+
+  **注：**这些 在上面的 [[#\<link>#属性]] 的 as 中有提及。
+
+```html
+<link rel="preload" href="style.css" as="style">
+<link rel="preload" href="main.js" as="script">
+```
+
+##### What types of content can be preloaded?
+
+<mark>Many different content types can be preloaded. The possible as attribute values are</mark>:
+
+- audio: Audio file, as typically used in \<audio>
+- document: An HTML document intended to be embedded by a \<frame> or \<iframe>
+- embed: A resource to be embedded inside an \<embed> element
+- fetch: Resource to be accessed by a fetch or XHR request, such as an ArrayBuffer or JSON file
+- font: Font file
+- image: Image file
+- object: A resource to be embedded inside an \<object> element
+- script: JavaScript file
+- style: CSS stylesheet
+- track: WebVTT file
+- worker: A JavaScript web worker or shared worker
+- video: Video file, as typically used in \<video>
+
+
+
+#### preconnect 补充
+
+<font color=FF0000>The `preconnect` keyword for the ***rel* attribute of the \<link> element**</font> is <font color=FF0000>**a hint to browsers** that the **user is likely to need resources from the target resource's origin**</font>, and therefore the **browser can likely improve the user experience** by <font color=FF0000>**preemptively （先发制人地）initiating a <font size=4>*connection*</font> to that origin**</font>. **注：**这里的 connection 也就说明了 preconnect 的作用
+
+```html
+<link rel="preconnect" href="https://example.com">
+```
+
+摘自：[MDN US - Link types: preconnect](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preconnect)
 
 
 
@@ -6384,6 +6445,8 @@ ARIA 是一组特殊的易用性属性，可以添加到任意标签上，尤其
 - 用好z-index，position
 
 摘自：[我们应该如何写好HTML&CSS](https://juejin.cn/post/6854573211548549127)
+
+**注：**关于 *回流* 和 *重绘* 在 [[前端面试点总结#回流与重绘的原理]] 以及后面的部分 有详细的说明。
 
 
 

@@ -2242,7 +2242,7 @@ input 元素的 **validity 属性**包含一系列关于 validity 数据属性:
 
 #### JavaScript关键字
 
-## JavaScript 保留关键字
+##### JavaScript 保留关键字
 
 Javascript 的保留关键字不可以用作变量、标签或者函数名。有些保留关键字是作为 Javascript 以后扩展使用。
 
@@ -2262,7 +2262,7 @@ Javascript 的保留关键字不可以用作变量、标签或者函数名。有
 | try      | typeof    | var        | void      | volatile     |
 | while    | with      | yield      |           |              |
 
-#### JavaScript this关键字
+##### JavaScript this关键字
 
 <font color=FF0000>JavaScript 中 this 不是固定不变的，它会随着执行环境的改变而改变</font>。
 
@@ -3257,7 +3257,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                           
+  >                                                                                                             
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3276,7 +3276,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                           
+  >                                                                                                             
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -12396,6 +12396,29 @@ let hostElem = shadow.host;
 ```
 
 摘自：[MDN - ShadowRoot.host](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/host)
+
+
+
+#### Intl
+
+**Intl 对象** 是 ECMAScript <font color=FF0000>**国际化 API 的一个命名空间**</font>，它<font color=FF0000>**提供了精确的字符串对比、数字格式化，和日期时间格式化**</font>。Collator、NumberFormat 和 DateTimeFormat 对象的 **构造函数** 是 Intl 对象的属性。
+
+##### 属性
+
+- **Intl.Collator**：collators 的 <font color=FF0000>构造函数</font>，用于启用对语言敏感的字符串比较的对象。
+- **Intl.DateTimeFormat**：用于启用语言敏感的日期和时间格式的对象的构造函数。
+- **Intl.ListFormat**：Constructor for objects that enable language-sensitive list formatting.
+- **Intl.NumberFormat**：用于启用语言敏感数字格式的对象的构造函数。
+- **Intl.PluralRules**：用于启用多种敏感格式和多种语言语言规则的对象的构造函数。
+- **Intl.RelativeTimeFormat**：Constructor for objects that enable language-sensitive relative time formatting
+
+##### 方法
+
+- **Intl.getCanonicalLocales()**：返回规范区域名称 ( canonical locale name )
+
+// TODO 后面还有更多内容，没有细究。
+
+摘自：[MDN - Intl](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Intl)
 
 ****
 

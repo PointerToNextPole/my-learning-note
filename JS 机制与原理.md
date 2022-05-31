@@ -5685,7 +5685,7 @@ _.reverse('hello'); // 'olleh'
 
 之所以写这一句，是因为我们要<font color=FF0000>通过 this 获得全局对象</font>，然后 <font color=FF0000>将 `_` 对象 挂载上去</font>。
 
-然而<font color=FF0000>在严格模式下，this 返回 undefined，而不是指向 Window</font>，幸运的是 underscore 并没有采用严格模式，可是即便如此，也不能避免：因为在 <font color=FF0000 size=4>**ES6 中模块脚本自动采用严格模式，不管有没有声明 `use strict`**</font>。
+然而<font color=FF0000>在严格模式下，this 返回 undefined，而不是指向 Window</font>，幸运的是 underscore 并没有采用严格模式，可是即便如此，也不能避免：因为在 <font color=FF0000 size=4>**ES6 中模块脚本自动采用严格模式，不管有没有声明 `use strict`**</font>。**注：**即 ES6 Module 中顶层 this 指向为 undefined，相关内容可以参考：[[前端面试点总结#CommonJS 和 ES6 Module 区别#其他区别]] 的开始
 
 如果 this 返回 undefined，代码就会报错，所以我们的思路是<font color=FF0000>对环境进行检测，然后挂载到正确的对象上</font>。我们修改一下代码：
 
@@ -6078,3 +6078,253 @@ console.log(addOne.num) // 3
 ```
 
 摘自：[underscore 系列之如何写自己的 underscore](https://github.com/mqyqingfeng/Blog/issues/56)
+
+
+
+### CommonJS
+
+在 ES6 之前，ECMAScript 并没有提供代码组织的方式，那时候通常是基于 IIFE 来实现“模块化”
+
+// TODO [CommonJS 和 ES6 Module 究竟有什么区别？](https://juejin.cn/post/6844904080955932680) 还有：[前端科普系列-CommonJS：不是前端却革命了前端 - 无名之辈的文章 - 知乎](https://zhuanlan.zhihu.com/p/113009496) 从背景（痛点）介绍到解决方案，再到技术实现；同时加上 “lin clark” 式的漫画，感觉不错。
+
+### CommonJS 和 ES6 Module 区别
+
+#### 为什么在浏览器上不用 CommonJS
+
+<font color=FF0000 size=4>**CommonJS 的 require 语法是同步的**：当我们 **使用 require 加载一个模块的时候，必须要等这个模块加载完后，才会执行后面的代码**</font>。如果知道这个事实，那我们的问题也就很容易回答了：Node 是服务端，使用 require 语法加载模块，一般是一个文件，只需要从本地硬盘中读取文件，它的速度是比较快的。但在<font color=FF0000>浏览器端就不一样了，文件一般存放在服务器或者 CDN 上，如果使用同步的方式加载一个模块还需要由网络来决定快慢，可能时间会很长，这样浏览器很容易进入“假死状态”</font>。所以<font color=FF0000>才有了后面的 AMD 和 CMD 模块化方案，<font size=4>它们都是 **异步加载** 的</font>，比较适合在浏览器端使用</font>
+
+> **注：**关于这一点，可以总结为：
+>
+> CommonJS 模块的 require() 是同步加载模块，<font color=FF0000>ES6 模块的 import 命令是异步加载</font>，有一个独立的模块依赖的解析阶段
+>
+> 摘自：[ES6 入门 - Module 的加载实现 - ES6 模块与 CommonJS 模块的差异](https://es6.ruanyifeng.com/#docs/module-loader#ES6-模块与-CommonJS-模块的差异)
+>
+> 另外：
+>
+> In CommonJS, require() is synchronous; <font color=FF0000>it doesn't return a promise or call a callback</font>.
+>
+> In ESM, the module loader runs in asynchronous phases. <font color=FF0000>In the first phase, it parses the script to detect calls to import and export without running the imported script</font>. <font color=FF0000>In the parsing phase, the **ESM loader can immediately detect a typo in named imports and throw an exception without ever actually running the dependency code**</font>.
+>
+> <font color=FF0000>The ESM module loader then asynchronously downloads and parses any scripts that you imported, and then scripts that your scripts imported, **building out a “module graph” of dependencies**, **until eventually it finds a script that doesn’t import anything**</font>. Finally, that script is allowed to execute, and then scripts that depend on that are allowed to run, and so on.
+>
+> 摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1)
+
+#### CJS 和 ESM 最大的两个大的区别
+
+- CommonJS <font color=FF0000>输出的是 **<font size=4>单个</font> 值的拷贝**</font>，ES6 Module 输出的是<font color=FF0000>**（多个）值的引用**</font>
+- CommonJS 是 <font color=FF0000 size=4>**运行时加载**</font>，ES6 Module 是 <font color=FF0000 size=4>**编译时输出接口**</font>
+
+**第一点差异：**CJS 输出的是值的拷贝。换句话说：一旦输出了某个值，如果模块内部后续的变化，影响不了外部对这个值的使用。
+
+示例如下：
+
+```js
+// lib.js
+var counter = 3;
+function incCounter() { counter++ }
+
+module.exports = {
+  counter: counter,
+  incCounter: incCounter,
+};
+```
+
+然后我们在其它文件中使用这个模块：
+
+```js
+// main.js
+var mod = require('./lib');
+console.log(mod.counter);  // 3
+
+mod.incCounter();
+console.log(mod.counter); // 3
+```
+
+上面的例子说明：<mark>如果对外输出了 counter 变量，就算后续调用模块内部的 incCounter 方法去修改它的值，它的值依旧没有变化</mark>
+
+**ES6 Module 运行机制完全不一样：**<font color=FF0000>**JS 引擎 对脚本静态分析的时候，遇到模块加载命令 import，就会生成一个只读引用**；等到脚本真正执行的时候，再根据这个只读引用，到被加载的那个模块里去取值</font>。
+
+```js
+// lib.js
+export let counter = 3
+export function incCounter() {
+  counter++;
+}
+```
+
+```js
+// main.js
+import { counter, incCounter } from './lib'
+
+console.log(counter) // 3
+
+incCounter()
+console.log(counter) // 4
+```
+
+上面代码说明：ES6 Module import 的变量 counter 是可变的，完全反应其所在模块 lib.js 内部的变化
+
+**第二个差异：**也是为什么 ES6 Module 这么受人欢迎的最大原因之一。<font color=FF0000>CommonJS 其实加载的是一个对象，这个对象只有在脚本运行时才会生成，而且只会生成一次</font>（注：这里可以参考下后面的 [[#CJS 和 ESM 的 循环依赖]]，这里有说明 生成对象的细节）。但是 <font color=FF0000>**ES6 Module 不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成**；这样就可以使用各种工具对 JS 模块进行依赖分析，优化代码</font>。webpack 中的 tree shaking 和 scope hoisting 实际上就是依赖 ES6 Module。
+
+#### CJS 和 ESM 的 循环依赖
+
+##### CJS 的 循环依赖
+
+CJS 的一个模块，一般就是一个文件；使用 reqiure 第一次加载一个模块时，就会在内存中生成一个对象。大概长这个样子：
+
+```js
+{
+  id: '...',
+  exports: { ... },
+  loaded: true,
+  ...
+}
+```
+
+> 注：可以打印 module 对象以查看（如下），另外，可以参考 [[Node学习笔记#Module 中的内容]] 中的内容
+>
+> <img src="https://s2.loli.net/2022/05/31/qhbVEg12LkxZote.png" alt="image-20220531004437463" style="zoom:55%;" />
+
+上面的例子我们只列出了关键的几个属性：<font color=FF0000>id 就是 ***模块名***，exports 是 ***模块输出的各个接口***，loaded 表示 ***模块是否执行完毕*** </font>。<font color=FF0000>**以后再用到这个模块的时候，会直接从这个对象的 exports 属性里面取值**</font>。<mark>**即使多次执行一个模块的 require 命令，它都只会在第一次加载时运行一次**，后面都会从缓存中读取，除非手动清除缓存</mark>。（ 清除缓存和 require.cache 相关，可以参考：[stack overflow - Clearing require cache](https://stackoverflow.com/questions/23685930/clearing-require-cache)）
+
+CommonJS 模块的特性就是：<font color=FF0000 size=4>**加载时执行，当脚本被 reqiure 的时候，就会全部执行**</font>。<font color=FF0000>**一旦出现某个模块被 “循环加载” ，就只输出已经执行的部分，还未执行的部分不会输出**</font>。我们看一个官方的例子，首先定义 a.js 如下：
+
+```js
+// a.js
+exports.done = false; // 导出 done
+var b = require('./b.js');
+
+console.log('在 a.js 之中，b.done = %j', b.done);
+exports.done = true;
+console.log('a.js 执行完毕');
+```
+
+上面的代码，首先导出一个 done 变量，然后开始加载 b.js 。注意，<font color=FF0000>此时 **a.js 就会停在这里**</font>（**注：**这代表了 “同步” 的特性），<font color=FF0000>**等待 b.js 执行完，才会继续执行后面的代码**</font>。再定义 b.js 代码：
+
+```js
+// b.js
+exports.done = false; // 导出 done
+var a = require('./a.js');
+
+console.log('在 b.js 之中，a.done = %j', a.done);
+exports.done = true;
+console.log('b.js 执行完毕');
+```
+
+与 a.js 类似：<font color=FF0000>b.js 导出一个变量后，在第二行就开始加载 a.js ，发生了循环依赖</font>。然后，系统就会去内存对象的 exports 中取 done 变量的值，可<font color=FF0000>因为 a.js 没有执行完，所以只取到刚开始输出的值 false</font> 。接着，<font color=FF0000>**b.js 继续执行后面的代码，执行完毕后，再把执行权交还给 a.js**</font> ，执行完后面剩下的代码。为了验证这个过程，新建一个 main.js ：
+
+```js
+// main.js
+var a = require('./a.js');
+var b = require('./b.js');
+
+console.log('在 main.js 之中, a.done=%j, b.done=%j', a.done, b.done);
+```
+
+最后执行 main.js 结果为：
+
+<img src="https://s2.loli.net/2022/05/30/mXpu5L6i9lEDMTJ.png" alt="image-20220530201251076" style="zoom:55%;" />
+
+由于 CommonJS 模块遇到循环加载时，输出的是当前已经执行那部分的值，而不是代码全部执行后的值，两者可能会有差异。所以，输入变量的时候，必须非常小心。
+
+##### ESM 的 循环依赖
+
+ES6 Module 是动态引用。<font color=FF0000>如果使用 import 加载一个变量，变量不会被缓存，真正取值的时候就能取到最终的值</font>。如下示例：
+
+```js
+// even.js
+import { odd } from './odd'
+
+export var counter = 0;
+export function even(n) {
+  counter++;
+  return n === 0 || odd(n - 1);
+}
+```
+
+```js
+// odd.js
+import { even } from './even';
+
+export function odd(n) {
+  return n !== 0 && even(n - 1);
+}
+```
+
+上面代码中，even.js 里面的函数 even 有一个参数 n，只要不等于 0，就会减去 1，传入加载的 odd() 。odd.js 也会做类似操作
+
+运行上面这段代码，结果如下：
+
+```sh
+> import * as m from './even.js';
+> m.even(10);
+true
+> m.counter
+6
+```
+
+上面代码中，参数 n 从 10 变为 0 的过程中，even() 一共会执行 6 次，所以变量 counter 等于 6。在这个例子中，我们可以看到，<font color=FF0000>even.js 中输出的 counter 变量值会随着模块内部的变化而变化</font>（**注：**即不是拷贝式的）。
+
+因为两个模块化方案的加载方式的不同，导致它们对待循环加载的不同处理。
+
+#### 其他区别
+
+首先，就是 this 关键词：<font color=FF0000>**在 ES6 Module 顶层，this 指向 undefined**</font> （因为 ESM 中默认采用 "use strict" ）；而 <font color=FF0000>**CommonJS 模块的顶层的 this 指向当前模块**</font>。
+
+其次，<font color=FF0000>ES6 Module 中 **可以直接加载 CommonJS 模块**，但是 **只能整体加载，不能加载单一的输出项**</font> 。
+
+```js
+// 正确
+import packageMain from 'commonjs-package';
+
+// 报错
+import { method } from 'commonjs-package';
+```
+
+> ##### 补充参考
+>
+> ESM scripts *can* `import` CJS scripts, but only by using the “default import” syntax `import _ from 'lodash'` , not the “named import” syntax `import {shuffle} from 'lodash'` , which is a hassle if the CJS script uses named exports.
+>
+> <font color=FF0000>ESM scripts *can* `require()` CJS scripts</font>, even with named exports, but it’s typically not worth the trouble, because it requires even more boilerplate, and, <font color=FF0000>worst of all, bundlers like Webpack and Rollup don’t/won’t know how to work with ESM scripts that use `require()`</font> .
+>
+> 摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1)
+
+<font color=FF0000>Node 对 ES6 Module 的处理比较麻烦，因为它有自己的 CommonJS 模块规范，**与 ES6 Module 格式不兼容**</font>。目前两个模块方案是分开处理的，<font color=FF0000>从 v13.2 版本开始，Node 已经默认打开了 ES6 Module 支持：**Node 要求 ES6 Module 使用 .mjs 后缀文件名，只要 Node 遇到 .mjs 结尾的文件，就认定是 ES6 Module**</font>。除了修改文件后缀，也<font color=FF0000>可以在项目的 package.json 文件中，指定 type 字段为 module</font> ：
+
+```js
+// package.json
+{
+  // ...
+  "type": "module"
+}
+```
+
+尽管如此，<font color=FF0000>require 命令不能加载 .mjs 文件，会报错</font>；<font color=FF0000>**只有 import 命令才可以加载 .mjs 文件**</font>。反过来，<font color=FF0000>**.mjs 文件里面也不能使用require 命令，必须使用 import**</font> ；所以在平时开发当中，<font color=FF0000>ES6 Module 与 CommonJS 模块尽量不要混用</font>。
+
+> ##### 为什么 CJS 不能加载 ESM
+>
+> The simplest reason that <font color=FF0000>CJS can’t require() ESM is that ESM can do top-level await, but CJS scripts can't</font>.
+>
+> <font color=FF0000 size=4>**[Top-level](https://v8.dev/features/top-level-await) `await` lets us use the `await` keyword outside of an `async` [function](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await) , at the “top level.”**</font>
+>
+> ... 关于 top-level await 的内容，略。详见原文，以及 V8 团队博客 [Top-level `await`](https://v8.dev/features/top-level-await)
+>
+>  If you dive in, you’ll find that top-level await isn’t even the only problematic case… <font color=FF0000>what do you think happens if you synchronously require ESM which can asynchronously import some CJS which can synchronously require some ESM</font>? What you get is a sync/async zebra stripe of death, that’s what! <mark>Top-level await is just the last nail in the coffin, and the easiest to explain</mark>.)
+>
+> 摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1)
+
+#### CJS 和 ESM 区别总结
+
+- CJS 的 require 语法是同步的，所以 CJS 只适合用在服务端；ESM 语法是异步的，无论是在浏览器端还是服务端都是可以使用，但在服务端中，ESM 还需要遵循一些特殊的规则才能使用
+
+- CJS 模块输出的是<font color=FF0000>单个值的拷贝</font>，而 ESM 输出的是<font color=FF0000>（多个）值的引用</font>
+
+- CJS 模块是 运行时加载，而 ESM 是 编译时输出接口，使得对JS的模块进行静态分析成为了可能；
+- 因为两个模块加载机制的不同，所以在对待循环加载的时候，它们会有不同的表现。CJS 遇到循环引用时，只会输出已经执行的部分，后续的输出或者变化，是不会影响已经输出的变量。而 ESM 相反，使用 import 加载一个变量，变量不会被缓存，真正取值的时候就能取到最终的值
+
+- 关于模块顶层的 this 指向：在 CJS 顶层，this 指向当前模块；ESM 中，this 指向 undefined
+
+- 关于两个模块互相引用的问题，在 ESM 中，是支持加载 CJS 模块的。但反过来，CJS 并不能 require ES6 Module ，在 Node 中，两种模块方案是分开处理的
+
+摘自：[CommonJS和ES6模块的区别](https://juejin.cn/post/6844904067651600391)，另外，不少补充内容摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1) 本文看了$3/4$ 左右，有点看不懂了；没看完，有空可以继续看。
+

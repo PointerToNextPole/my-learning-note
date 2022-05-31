@@ -363,7 +363,7 @@ Node中实现CJS的本质是 <font color=FF0000>引用赋值</font>（详见下�
 
 
 
-**require的细节**
+#### require 的细节
 
 ```js
 require(X)
@@ -400,7 +400,7 @@ require(X)
 
 
 
-**Module 中的内容**
+#### Module 中的内容
 
 ![image-20211031163719703](https://i.loli.net/2021/10/31/xhSQNr7dWs6ty9Z.png)
 
