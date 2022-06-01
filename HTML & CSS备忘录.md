@@ -5441,7 +5441,23 @@ document.addEventListener('mousemove', (e) => {
 
 ##### 实战中的补充
 
-<font color=FF0000 size=4>**CSS 变量具有继承性**</font>，即：在 ***父节点*** 定义的 CSS 变量，在***子节点*** 中依然可以使用。另外，在使用 node.style.setProperty 等方法时，node 不必是 CSS 变量定义的所在的节点，也可以是需要修改样式的（子）节点。
+<font color=FF0000 size=4>**CSS 变量具有继承性**</font>，即：在 ***父节点*** 定义的 CSS 变量，在***子节点*** 中依然可以使用。另外，在使用 node.style.setProperty 等方法时，node 不必是 CSS 变量定义的所在的节点，也可以是需要修改样式的（子）节点；如下示例：
+
+```html
+<div id="wrap">
+  <div id="child" onclick="handleClick"/>
+</div>
+
+<style>
+  #wrap { --width: 100px; --bg-color: lightblue; }
+  #child { width: var(--width); height: var(--width); background: var(--bg-color); }
+</style>
+
+<script>
+  // node 是 child，不是 wrap，虽然 --width 在 wrap 定义
+  handleClick() { child.style.setProperty('--width', '200px') }
+</script>
+```
 
 
 
