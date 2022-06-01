@@ -5182,9 +5182,9 @@ body {
 }
 ```
 
-上面代码中，body 选择器里面声明了两个变量：--foo 和 --bar。
+上面代码中，body 选择器里面声明了两个变量：`--foo` 和 `--bar` 。
 
-它们与color、font-size 等正式属性没有什么不同，只是没有默认含义。所以 CSS 变量（CSS variable）又叫做"CSS 自定义属性"（CSS custom properties）。因为变量与自定义的 CSS 属性其实是一回事。
+<mark>它们与 color、font-size 等正式属性没有什么不同，只是 **没有默认含义**</mark>。所以 <font color=FF0000>CSS 变量 ( CSS variable ) 也叫做 “ CSS 自定义属性” ( CSS custom properties )</font> 。因为变量与自定义的 CSS 属性其实是一回事。
 
 你可能会问，<mark>为什么选择两根连词线（--）表示变量？因为 \$foo 被 Sass 用掉了，@foo 被 Less 用掉了。为了不产生冲突，官方的 CSS 变量就改用两根连词线了</mark>。
 
@@ -5206,9 +5206,9 @@ body {
 }
 ```
 
-变量名大小写敏感，--header-color和--Header-Color是两个不同变量。
+<font color=FF0000>**变量名大小写敏感**</font>，`--header-color` 和 `--Header-Color`是两个不同变量。
 
-**var() 函数用于读取变量。**
+##### var() 函数用于读取变量
 
 ```css
 a {
@@ -5217,7 +5217,7 @@ a {
 }
 ```
 
-var() 函数<font color=FF0000>还可以使用第二个参数，表示变量的默认值。如果该变量不存在，就会使用这个默认值</font>。
+var() 函数 <font color=FF0000>**还可以使用第二个参数，表示变量的默认值**。如果该变量不存在，就会使用这个默认值</font>。
 
 ```css
 color: var(--foo, #7F583F);
@@ -5239,6 +5239,8 @@ var(--pad, 10px 15px 20px);
 }
 ```
 
+> 注：上面的等价于 `:root { --logo-text: red }` 
+
 <font color=FF0000>**注意，变量值只能用作属性值，不能用作属性名**</font>。
 
 ```css
@@ -5249,11 +5251,11 @@ var(--pad, 10px 15px 20px);
 }
 ```
 
-上面代码中，变量 --side 用作属性名，这是无效的。
+上面代码中，变量 `--side` 用作属性名，这是无效的。
 
-**变量值的类型**
+##### 变量值的类型
 
-<font color=FF0000>如果变量值是一个字符串，**可以与其他字符串拼接**</font>。
+<font color=FF0000>如果变量值是一个字符串，**可以与其他字符串拼接**</font>。**注：**注意⚠️，是直接拼接，不需要加上其他连接符号
 
 ```css
 --bar: 'hello';
@@ -5269,7 +5271,7 @@ body::after {
 }
 ```
 
-<font color=FF0000>如果变量值是数值，不能与数值单位直接连用</font>。
+<font color=FF0000 size=4>**如果变量值是数值，不能与数值单位直接连用**</font>。
 
 ```css
 .foo {
@@ -5279,7 +5281,7 @@ body::after {
 }
 ```
 
-<font color=FF0000>**上面代码中，数值与单位直接写在一起，这是无效的。必须使用 calc() 函数，将它们连接**</font>。
+<font color=FF0000>**上面代码中，数值与单位直接写在一起，这是无效的。必须使用 calc() 函数，将它们连接**</font>
 
 ```css
 .foo {
@@ -5288,12 +5290,12 @@ body::after {
 }
 ```
 
-<font color=FF0000>**如果变量值带有单位，就不能写成字符串**</font>。
+<font color=FF0000>**如果变量值带有单位，就不能写成字符串**</font>
 
 ```css
 /* 无效 */
 .foo {
-  --foo: '20px';
+  --foo: '20px'; /* 如下，不需要加上引号 */
   font-size: var(--foo);
 }
 
@@ -5304,11 +5306,9 @@ body::after {
 }
 ```
 
-**作用域**
+##### 作用域
 
-同一个 CSS 变量，可以在多个选择器内声明。读取的时候，优先级最高的声明生效。这与 CSS 的"层叠"（cascade）规则是一致的。
-
-下面是一个[例子](http://jsbin.com/buwahixoqo/edit?html,css,output)。
+同一个 CSS 变量，可以在多个选择器内声明。读取的时候，优先级最高的声明生效（**注：**即，特指度）。这与 CSS 的 “层叠” ( cascade ) 规则是一致的。下面是一个[例子](http://jsbin.com/buwahixoqo/edit?html,css,output)。
 
 ```html
 <style>
@@ -5323,35 +5323,24 @@ body::after {
 <div id="alert">红色</div>
 ```
 
-上面代码中，三个选择器都声明了 --color 变量。不同元素读取这个变量的时候，会采用优先级最高的规则，因此三段文字的颜色是不一样的。
-
-这就是说，变量的作用域就是它所在的选择器的有效范围。
+上面代码中，三个选择器都声明了 `--color` 变量。不同元素读取这个变量的时候，会采用优先级最高的规则，因此三段文字的颜色是不一样的。这就是说，变量的作用域就是它所在的选择器的有效范围。
 
 ```css
-body {
-  --foo: #7F583F;
-}
-
-.content {
-  --bar: #F7EFD2;
-}
+body { --foo: #7F583F; }
+.content { --bar: #F7EFD2; }
 ```
 
-上面代码中，变量 --foo 的作用域是 body 选择器的生效范围，--bar 的作用域是 .content 选择器的生效范围。
+上面代码中，变量 `--foo` 的作用域是 body 选择器的生效范围，`--bar` 的作用域是 `.content` 选择器的生效范围。
 
-由于这个原因，全局的变量通常放在根元素 :root 里面，确保任何选择器都可以读取它们。
+由于这个原因，全局的变量通常放在根元素 `:root` 里面，确保任何选择器都可以读取它们。
 
 ```css
-:root {
-  --main-color: #06c;
-}
+:root { --main-color: #06c; }
 ```
 
-**响应式布局**
+##### 响应式布局
 
-CSS 是动态的，页面的任何变化，都会导致采用的规则变化。
-
-<font color=FF0000>利用这个特点，可以在响应式布局的 media 命令里面声明变量，使得不同的屏幕宽度有不同的变量值</font>。
+CSS 是动态的，页面的任何变化，都会导致采用的规则变化。<font color=FF0000>利用这个特点，可以在响应式布局的 `media` 命令里面声明变量，使得不同的屏幕宽度有不同的变量值</font>。
 
 ```css
 body {
@@ -5386,16 +5375,15 @@ a {
 <font color=FF0000>**也可以使用 @support 命令进行检测**</font>。
 
 ```css
-@supports ( (--a: 0)) {
+@supports ( (--a: 0)) { 
   /* supported */
 }
-
 @supports ( not (--a: 0)) {
   /* not supported */
 }
 ```
 
-**JavaScript 操作**
+##### JavaScript 操作
 
 <font color=FF0000>**JavaScript 也可以检测浏览器是否支持 CSS 变量**</font>。（注意下面的用法）
 
@@ -5415,7 +5403,7 @@ if (isSupported) {
 <font color=FF0000 size=4>**JavaScript 操作 CSS 变量的写法如下：**</font>
 
 ```js
-// 设置变量
+// **设置变量**
 document.body.style.setProperty('--primary', '#7F583F');
 
 // 读取变量
@@ -5425,6 +5413,8 @@ document.body.style.getPropertyValue('--primary').trim();
 // 删除变量
 document.body.style.removeProperty('--primary');
 ```
+
+> 注：示例可参考 https://www.zhangxinxu.com/study/201811/js-set-css-var.php
 
 这意味着，JavaScript 可以将任意值存入样式表。下面是一个监听事件的例子，事件信息被存入 CSS 变量。
 
@@ -5448,6 +5438,10 @@ document.addEventListener('mousemove', (e) => {
 所以，CSS 变量提供了 JavaScript 与 CSS 通信的一种途径。
 
 摘自：[阮一峰 - CSS 变量教程](https://www.ruanyifeng.com/blog/2017/05/css-variables.html)
+
+##### 实战中的补充
+
+<font color=FF0000 size=4>**CSS 变量具有继承性**</font>，即：在 ***父节点*** 定义的 CSS 变量，在***子节点*** 中依然可以使用。另外，在使用 node.style.setProperty 等方法时，node 不必是 CSS 变量定义的所在的节点，也可以是需要修改样式的（子）节点。
 
 
 
