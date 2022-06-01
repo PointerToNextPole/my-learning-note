@@ -3257,7 +3257,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                             
+  >                                                                                                               
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3276,7 +3276,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                             
+  >                                                                                                               
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -10988,7 +10988,7 @@ history.replaceState(stateObj, title[, url]);
   
   摘自：[MDN - dragstart](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/dragstart_event)
 
-- <font size=4>**dragsend：**<font color=FF0000>拖放事件在拖放操作结束时触发</font>（通过<font color=FF0000>释放鼠标按钮或单击escape键</font>）
+- <font size=4>**dragsend：**</font><font color=FF0000>拖放事件在拖放操作结束时触发</font>（通过<font color=FF0000>释放鼠标按钮或单击escape键</font>）
 
   可以冒泡，不可以取消。事件目标对象：Document、Element。事件接口：DragEvent
 
@@ -10996,7 +10996,7 @@ history.replaceState(stateObj, title[, url]);
 
   摘自：[MDN - dragstart](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/dragstart_event)
 
-- <font size=4>**rejectionhandled：**</font><font color=FF0000>当 Promise 被 rejected 且 **有rejection处理器** 时，会在 <font size=4>**全局触发**</font> rejectionhandled 事件</font>（通常是发生在window下，但是也可能发生在Worker中）。应用于调试一般应用回退。当Promise 被 rejected 且没有 rejection 处理器处理时会触发unhandledrejection 事件。这两个事件协同工作
+- <font size=4>**rejectionhandled：**</font><font color=FF0000>当 Promise 被 rejected 且 **有rejection处理器** 时，会在 <font size=4>**全局触发**</font> rejectionhandled 事件</font>（通常是发生在window 下，但是也可能发生在 Worker 中）。应用于调试一般应用回退。当 Promise 被 rejected 且没有 rejection 处理器处理时会触发 unhandledrejection 事件。这两个事件协同工作
 
   不可以冒泡，不可以取消
 
@@ -11128,9 +11128,9 @@ history.replaceState(stateObj, title[, url]);
 
   摘自：[MDN - Element: focusin event](https://developer.mozilla.org/en-US/docs/Web/API/Element/focusin_event)
 
-- <font size=4>**focusout：**</font>当一个元素将要失焦时，focusout事件会被触发。blur事件和focusout事件的主要区别在于：focusout会冒泡，而blur不会。
+- <font size=4>**focusout：**</font>当一个元素将要失焦时，focusout 事件会被触发。blur 事件和 focusout 事件的主要区别在于：focusout 会冒泡，而blur不会。
 
-  focusout的反事件是focusin
+  focusout 的反事件是 focusin
 
   可以冒泡，不可以取消
 
