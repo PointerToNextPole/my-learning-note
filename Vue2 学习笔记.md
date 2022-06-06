@@ -126,10 +126,6 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 
 在 Vue 里，一个组件本质上是一个拥有预定义选项的一个 Vue 实例。
 
-### //todo，这里没有完全看懂...不过可能要等到看完“组件基础”之后才会好些
-
-https://cn.vuejs.org/v2/guide/index.html#%E4%B8%8E%E8%87%AA%E5%AE%9A%E4%B9%89%E5%85%83%E7%B4%A0%E7%9A%84%E5%85%B3%E7%B3%BB
-
 ### Vue实例
 
 每个 Vue 应用都是通过用 `Vue` 函数创建一个新的 **Vue 实例**开始的：
@@ -4964,24 +4960,24 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
 
 #### \<el-form>
 
-- \<el-form>中的\<el-form-item>中自带了label属性，用以为某一输入框之类的form作为标识，而由于并不方便对这个label的样式进行设置，所以可以使用slot对其进行自定义：
-  
-  ```html
+\<el-form> 中的 \<el-form-item> 中自带了 label 属性，用以为某一输入框之类的form作为标识，而由于并不方便对这个label的样式进行设置，所以可以使用slot对其进行自定义：
+
+```html
+<span slot="label">foo</span>
+```
+
+示例：
+
+```html
+<el-form-item>
   <span slot="label">foo</span>
-  ```
-  
-  示例：
-  
-  ```html
-  <el-form-item>
-    <span slot="label">foo</span>
-    <template>
-        <el-select v-model="newRecord.deliveryVehicle" placeholder="请选择" class="select"></el-select>
-    </template>
-  </el-form-item>
-  ```
-  
-  同样的：可以使用slot的还有error和default
+  <template>
+      <el-select v-model="newRecord.deliveryVehicle" placeholder="请选择" class="select"></el-select>
+  </template>
+</el-form-item>
+```
+
+同样的：可以使用slot的还有error和default
 
 如果想要让多个表单在一行（默认每个表单一行），可以在el-form中配置inline / :inline="true"
 
@@ -5076,42 +5072,42 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
   }
   ```
 
-**补充：**
+##### 补充
 
-- 动态添加验证条件
-  
-  ```js
-  addRule() {
-      const userValidator = (rule, value, callback) => {
-        if (value.length > 3) {
-          this.inputError = ''
-          this.inputValidateStatus = ''
-          callback()
-        } else {
-          callback(new Error('用户名长度必须大于3'))
-        }
+动态添加验证条件
+
+```js
+addRule() {
+    const userValidator = (rule, value, callback) => {
+      if (value.length > 3) {
+        this.inputError = ''
+        this.inputValidateStatus = ''
+        callback()
+      } else {
+        callback(new Error('用户名长度必须大于3'))
       }
-      const newRule = [
-        ...this.rules.user,
-        { validator: userValidator, trigger: 'change' }
-      ]
-      this.rules = Object.assign({}, this.rules, { user: newRule })
-  }
-  ```
+    }
+    const newRule = [
+      ...this.rules.user,
+      { validator: userValidator, trigger: 'change' }
+    ]
+    this.rules = Object.assign({}, this.rules, { user: newRule })
+}
+```
 
 - **手动控制校验状态**
-  
+
   - validate-status：验证状态，枚举值，共四种：
     
     - success：验证成功
     - error：验证失败
     - validating：验证中
     - (空)：未验证
-  
+
   - error：自定义错误提示
-  
+
   示例：
-  
+
   - 设置 el-form-item 属性
     
     ```html
@@ -5124,7 +5120,7 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
     <!-- ... -->
     </el-form-item>
     ```
-  
+
   - 自定义 status 和 error
     
     ```js
@@ -5141,6 +5137,44 @@ el-date-picker如果想要选择一个日期范围，可以使用`picker-options
       this.error = ''
     }
     ```
+
+##### 动态表单的 prop 问题
+
+在出现 两级甚至三级的 “动态表单验证”时候，使用 `:prop="'arrElement.' + index + '.elementKey'"` 之类的方法时，非常容易出现 invalid prop 的报错；在多次尝试，一筹莫展时，发现如下解决方案；示例如下：
+
+```vue
+<el-form-item
+  ...
+  prop="yourRules"
+  :rules="yourRules(yourFormVModel)"
+>
+  <el-input v-model="yourFormVModel" />
+</el-form-item>
+
+<script>
+  data() {
+    return {
+      yourRules: (data) => {
+        return [
+          {
+            validator: (rule, value, callback) => {
+              if(yourValidateCondition) {
+                callback(new Error('your error hint'))
+              }
+              callback()
+            },
+            trigger: 'yourWanttedTriggerEvent' // etc: blur
+          }
+        ]
+      }
+    }
+	}
+</script>
+```
+
+另外，return 的数组中 似乎是不能放入 一般的类似： `{ required: true, message: 'yourMsg', trigger: 'blur' }` 的对象的，这似乎无法生效，还会导致 validator 无法生效。
+
+学习自：[vue element嵌套表单验证](https://segmentfault.com/a/1190000039886801)
 
 
 
