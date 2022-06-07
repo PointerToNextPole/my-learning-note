@@ -6324,13 +6324,13 @@ export default defineComponent({
 - 全局引用样式（像之前做的那样）；
 - 局部引用样式（通过babel的插件）；
 
-1.安装babel的插件：
+1. 安装babel的插件：
 
-```shell
+```sh
 npm install babel-plugin-import -D
 ```
 
-2.配置babel.config.js
+2. 配置babel.config.js
 
 ```js
 module.exports = {

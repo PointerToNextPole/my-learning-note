@@ -14,7 +14,7 @@ webpack是一种构建工具工具。那，为什么需要构建或者说编译�
 
 - **webpack加载 css、less 等样式文件**
 
-  css-loader用于加载css文件并生成commonjs对象，style-loader用于将样式通过style标签插入到head中
+  css-loader 用于加载 css 文件并生成 commonjs 对象，style-loader 用于将样式通过 style 标签插入到 \<head> 中
 
 - **webpack加载图片**
 
@@ -159,7 +159,7 @@ module.exports = {
   }
   // mode 指定打包的模式。这里指定的值是production，此时打包出的文件将会被压缩（变成min格式）
   // 除了production外，还可以选择development选项，此时代码不会被压缩
-  // 另外，如果不指定 mode，mode的默认值是produation。但是不指定，webpack会警告。
+  // 另外，如果不指定 mode，mode的默认值是production。但是不指定，webpack会警告。
   mode: 'production',
 }
 ```
@@ -622,13 +622,33 @@ module.exports = {
 };
 ```
 
-**htmlWebpackPlugin的作用：** htmlWebpackPlugin会在打包结束后，<font color=FF0000> 自动生成一个html文件</font>， 并<font color=FF0000>把打包生成的js自动引入到这个html文件中</font>。该插件在打包后执行。
+**htmlWebpackPlugin 的作用：** htmlWebpackPlugin 会在打包结束后，<font color=FF0000> 自动生成一个 html 文件</font>， 并<font color=FF0000>把打包生成的 js 自动引入到这个 html 文件中</font>。该插件在打包后执行。
 
-<font size=4>**补充：**</font>html-webpack-plugin的GitHub地址：https://github.com/jantimon/html-webpack-plugin，由于webpack官方问答中介绍的比较少，更多的介绍与配置可以看这个。
+<font size=4>**补充：**</font>html-webpack-plugin 的 GitHub 地址：https://github.com/jantimon/html-webpack-plugin，由于 webpack 官方问答中介绍的比较少，更多的介绍与配置可以看这个。
 
+> HtmlWebpackPlugin 插件除了可以帮助我们简化 HTML 文件的创建，也可以压缩 HTML 文件。
+>
+> ```js
+> // webpack.config.js
+> const HtmlWebpackPlugin = require("html-webpack-plugin");
+> 
+> module.exports = {
+>   plugins: [new HtmlWebpackPlugin()],
+> };
+> ```
+>
+> 如果不添加任何配置的话（如上，就是一个 `new HtmlWebpackPlugin()` ），会生成一个默认 index.html 文件，并自动注入所有的 chunk 和压缩。也可以通过自定义配置参数，以下几个是常见的参数：
+>
+> - **template**：模板的路径，默认会去寻找 `src/index.ejs` 是否存在
+> - **filename**：输出文件的名称，默认为 index.html
+> - **inject**：是否将资源注入到模版中，默认为 true
+> - **minify**：压缩参数。在生产模式下 ( production ) ，默认为 true ；否则，默认为 false
+>
+> <font color=FF0000>**如果 minify 为 true**</font>，生成的 HTML 将使用 [html-minifier-terser](https://github.com/terser/html-minifier-terser) 和以下选项进行压缩
+>
+> 链接：https://juejin.cn/post/7031115698633965582
 
-
-**clean-webpack-plugin插件**
+##### clean-webpack-plugin 插件
 
 在打包之后生成了打包后输出的js文件，如果这时<font color=FF0000> 修改了配置文件</font>（webpack.config.js）<font color=FF0000> 中的打包输出js的文件名称</font>，再进行打包，这时会发现目标文件夹中有两个打包输出的js文件（分别是配置修改前生成的js文件，和配置修改后生成的js文件）。可以<font color=FF0000> 使用 clean-webpack-plugin 在生成新的js文件时，清除掉旧的js文件</font>。代码示例如下：
 
@@ -989,7 +1009,7 @@ https://webpack.js.org/plugins/hot-module-replacement-plugin/
 
 
 
-#### 使用Babel处理ES6语法的代码
+#### 使用 Babel 处理 ES6 语法的代码
 
 在webpack中使用babel需要安装 babel-loader（babel和webpack之间通信的桥梁） 、 @babel-core（核心模块）还有@babel/preset-env（作为语法转换）。另外对于Promise这种新的方法，还要安装 @babel/polyfill
 
@@ -1024,11 +1044,15 @@ module: {
 
 另外，在babelrc 文件下，使用 useBuiltIns 且他的值为 'usage'，不需要手动引入 polyfill（比如 babel-polyfill），会自动引入 这些 polyfill
 
+##### babel-plugin-import
+
+[babel-plugin-import](https://github.com/umijs/babel-plugin-import) 可以被用来实现按需引入，比如 element-ui（element-plus 是官方推荐的是 antfu 的 [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components) 和 [unplugin-auto-import](https://github.com/antfu/unplugin-auto-import) ）、antd、antd-mobile、lodash、material-ui
+
 
 
 #### webpack对React项目的打包
 
-webpack打包React需要安装、使用babel/preset-react
+webpack 打包 React 需要安装、使用 @babel/preset-react
 
 ```js
 options: {
@@ -1369,7 +1393,13 @@ import(
 
 #### CSS 代码分割
 
-CSS在打包时默认被添加到JS文件中，可以使用 MiniCssExtractPlugin 对 CSS 进行代码分割，让它成为一个单独的文件。这个插件适合在线上环境的配置文件上使用。另外，这个插件需要 npm install 安装。
+CSS在打包时默认被添加到JS文件中，可以使用 MiniCssExtractPlugin 对 CSS 进行 <font color=FF0000>代码分割，**让它成为一个单独的文件**</font>。这个插件适合在线上环境的配置文件上使用。另外，这个插件需要 npm install 安装。
+
+> <font color=FF0000>**代码分割，只是把 CSS 代码提取出来，不是压缩 CSS 代码**</font>；压缩 CSS 代码还是需要使用 [optimize-css-assets-webpack-plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin)。另外，根据下面文章的说法：使用 optimize-css-assets-webpack-plugin 会导致压缩 JS 失效，所以需要额外引入一个压缩 JS 的插件，比如：uglifyjs-webpack-plugin
+>
+> **注：**再次强调 ⚠️ ，optimize-css-assets-webpack-plugin 是 webpack@4 压缩 CSS 代码的方案，webpack@5 中推荐使用 [css-minimizer-webpack-plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin) ，这也是 optimize-css-assets-webpack-plugin GitHub readme 中的说法
+>
+> 学习自：[重构之路：webpack打包体积优化（超详细）](https://juejin.cn/post/6844903781377785863)
 
 ```js
 // webpack.prod.conf.js
@@ -1498,7 +1528,7 @@ module.exports = {
 _join: ['lodash', 'join']
 ```
 
-这时：\_join() 将会等价于 lodash.join() 。
+这时：`_join()` 将会等价于 lodash.join() 。
 
 **Shim 垫片甚至可以实现如下功能：**在Module 中，this 始终指向模块自身，而使用imports-loader，可以将this指向变成window。配置如下：
 
@@ -2035,7 +2065,7 @@ resolve: {
 
 在 webpack <font color=FF0000> 每次</font>打包时，<font color=FF0000> 都会</font>对第三方模块进行代码分析；而第三方模块是不会变的，所以没有必要每次都对第三方模块进行代码分析。这时我们希望：第三方模块只在第一次打包时，做代码分析，之后直接用第一次分析好的结果即可。
 
-这时，可以在build 文件夹（webpack.config.js 所在文件夹）下，创建一个 webpack.dll.js
+这时，可以在 build 文件夹（webpack.config.js 所在文件夹）下，创建一个 webpack.dll.js
 
 ```js
 // webpack.dll.js
@@ -2632,7 +2662,7 @@ CSS代码分割，在打包时，将css代码分为多个文件；并给出生�
 
 用来最小化 js 代码，减小生产包的大小。
 
-类似的 还有 [uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)，不过已经废弃。
+类似的 还有 [uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)，它是默认集成在 webpack@4 的生产环境中的，不过已经废弃。
 
 它们都是基于[ UglifyJS](https://github.com/mishoo/UglifyJS)
 
@@ -2703,7 +2733,7 @@ require.context()
 
 - <font color=FF0000>optimize-css-assets-webpack-plugin</font>：不同组件中重复的css可以快速去重。
 
-  **注：**在webpack@5中，推荐使用 css-minimizer-webpack-plugin
+  **注：**在 webpack@5 中，推荐使用 css-minimizer-webpack-plugin
 
 - <font color=FF0000>webpack-bundle-analyzer</font>：一个webpack的bundle文件分析工具，将bundle文件以可交互缩放的treemap的形式展示。
 
