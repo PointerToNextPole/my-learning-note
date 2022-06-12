@@ -13,8 +13,8 @@ document.write("<h1>这是一个标题</h1>");
 ##### 改变 HTML 内容
 
 ```js
-x = document.getElementById("demo");  //查找元素
-x.innerHTML = "Hello JavaScript";    //改变内容
+x = document.getElementById("demo"); // 查找元素
+x.innerHTML = "Hello JavaScript";    // 改变内容
 ```
 
 ##### 改变 HTML 图像
@@ -3257,7 +3257,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                               
+  >                                                                                                                     
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3276,7 +3276,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                               
+  >                                                                                                                     
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -5894,7 +5894,7 @@ domRect = element.getBoundingClientRect();
 
 返回值是一个 DOMRect 对象，这个对象是由该元素的 getClientRects() 方法返回的一组矩形的集合，就是该元素的 CSS 边框大小。<font color=FF0000>返回的结果是包含完整元素的最小矩形，并且拥有 <font size=4>**left、top、right、bottom、x、y、width 和 height**</font> 这几个以像素为单位的 **只读属性** 用于描述整个边框</font>。**除了 width 和 height 以外的属性是<font color=FF0000>相对于视图窗口的左上角来计算的</font>**。
 
-> **注：**需要注意的是，这里<font color=FF0000>计算 top 和 bottom 值的 ***上界*** 是 ***整个页面（文档）*** 的最上面，而不是 ***当前可视区域*** 的最上面。所以，y 和 height 的值是可以大于 100vh 的</font>。
+> **注：**需要注意的是 ⚠️：经过实验发现，这里<font color=FF0000>计算 top 和 bottom 值的 ***上界*** 是 ***整个页面（文档）*** 的最上面，而不是 ***当前可视区域*** 的最上面。所以，y 和 height 的值是可以大于 100vh 的</font>。
 >
 > 上面说的都是 ***竖向滚动*** 的情况，类似的，如果是 <font color=FF0000>***横向滚动*** 的话，x 和 width 的值也是可以大于 100vw 的</font>（TODO，竖向滚动的情况经过了代码测试，但横向滚动的情况没有经过代码测试；不知道为什么 onscroll 和 addEventListener('scroll', ...) 都不能监听到 横向滚动的事件；应该是我代码写的有问题？）
 
@@ -6873,13 +6873,13 @@ var text = document.createTextNode(data);
 
 getAttribute() 返回元素上一个指定的属性值。如果指定的属性不存在，则返回  null 或 "" （空字符串）。
 
-- 语法
+##### 语法
 
-  ```js
-  let attribute = element.getAttribute(attributeName);
-  ```
-  - attribute 是一个包含 attributeName 属性值的字符串。
-  - attributeName 是你想要获取的属性值的属性名称。
+```js
+let attribute = element.getAttribute(attributeName);
+```
+- attribute 是一个包含 attributeName 属性值的字符串。
+- attributeName 是你想要获取的属性值的属性名称。
 
 摘自：[MDN - Element.getAttribute()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/getAttribute)
 
@@ -6889,7 +6889,7 @@ getAttribute() 返回元素上一个指定的属性值。如果指定的属性�
 
 要获取某个属性当前的值，可使用 getAttribute()；要删除某个属性，可使用 removeAttribute()。
 
-**语法**
+##### 语法
 
 ```js
 element.setAttribute(name, value);
@@ -6898,7 +6898,7 @@ element.setAttribute(name, value);
 **参数**
 
 - name：表示属性名称的字符串。A DOMString specifying the name of the attribute whose value is to be set. The attribute name is automatically converted to all lower-case when setAttribute() is called on an HTML element in an HTML document.
-- value：属性的值/新值。A DOMString 包含了分配给这个属性的值. 任何非字符串的值都会被自动转换为字符串.
+- value：属性的值/新值。A DOMString 包含了分配给这个属性的值. 任何非字符串的值都会被自动转换为字符串
 
 摘自：[MDN - Element.setAttribute()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/setAttribute)
 
@@ -6906,7 +6906,7 @@ element.setAttribute(name, value);
 
 元素方法 removeAttribute() 从指定的元素中删除一个属性。
 
-**语法**
+##### 语法
 
 ```js
 element.removeAttribute(attrName);
@@ -7117,51 +7117,63 @@ HTMLElement 接口表示所有的 HTML 元素。一些HTML元素直接实现了H
 
 
 
+#### Observer 综述
+
+##### 什么是浏览器的观察器
+
+<font color=FF0000>**针对一些不是由用户直接触发的事件**</font>：比如，DOM 元素从不可见到可见、DOM大小、属性的改变和子节点个数的修改等；<font color=FF0000>浏览器提供特定的 API 去监控这些变化，这些 API 就是浏览器的观察器</font>。
+
+##### 浏览器的观察器有哪些
+
+<font color=FF0000>**浏览器的观察器共有 5 种**</font> ：IntersectionObserver（交叉观察器）、MutationObserver（变化观察器）、ResizeObserver（大小观察器）、PerformanceObserver（性能观察器）、ReportingObserver（报告观察器） 
+
+摘自：[一起认识下浏览器的5种观察器](https://mp.weixin.qq.com/s/0Kj0cUYrQtx7Bh2VuZ-pGQ)
+
 #### MutationObserver
 
-<font color=FF0000>**MutationObserver接口提供了监视对DOM树所做更改的能力**</font>。它被设计为旧的Mutation Events功能的替代品，**该功能是DOM3 Events规范的一部分**。
+<font color=FF0000>**MutationObserver 接口提供了监视对 *DOM 树* 所做更改的能力**</font>。它被设计为旧的Mutation Events功能的替代品，**该功能是DOM3 Events规范的一部分**。
 
-- **构造函数**
+##### 构造函数
 
-  - **MutationObserver()：**<font color=FF0000>创建并返回</font>一个新的 MutationObserver 它会在指定的DOM发生变化时被调用。
+- **MutationObserver()：**<font color=FF0000>创建并返回</font>一个新的 MutationObserver 它会在指定的DOM发生变化时被调用。
 
-- **方法**
+##### 方法
 
-  - **disconnect()：**<font color=FF0000>阻止 MutationObserver 实例继续接收的通知，直到再次调用其observe()方法</font>，该观察者对象包含的回调函数都不会再被调用。
-  - **observe()：**<font color=FF0000>配置MutationObserver在DOM更改匹配给定选项时</font>，通过其回调函数开始接收通知。
-  - **takeRecords()：**<font color=FF0000>从MutationObserver的通知队列中删除所有待处理的通知</font>，并将它们返回到MutationRecord对象的新Array中。
+- **disconnect()：**<font color=FF0000>阻止 MutationObserver 实例继续接收的通知，直到再次调用其observe()方法</font>，该观察者对象包含的回调函数都不会再被调用。
+- **observe()：**<font color=FF0000>配置MutationObserver在DOM更改匹配给定选项时</font>，通过其回调函数开始接收通知。
+- **takeRecords()：**<font color=FF0000>从MutationObserver的通知队列中删除所有待处理的通知</font>，并将它们返回到MutationRecord对象的新Array中。
 
-- **使用示例**
+##### 使用示例
 
-  ```js
-  // 选择需要观察变动的节点
-  const targetNode = document.getElementById('some-id');
-  
-  // 观察器的配置（需要观察什么变动）
-  const config = { attributes: true, childList: true, subtree: true };
-  
-  // 当观察到变动时执行的回调函数
-  const callback = function(mutationsList, observer) {
-      // Use traditional 'for loops' for IE 11
-      for(let mutation of mutationsList) {
-          if (mutation.type === 'childList') {
-              console.log('A child node has been added or removed.');
-          }
-          else if (mutation.type === 'attributes') {
-              console.log('The ' + mutation.attributeName + ' attribute was modified.');
-          }
-      }
-  };
-  
-  // 创建一个观察器实例并传入回调函数
-  const observer = new MutationObserver(callback);
-  
-  // 以上述配置开始观察目标节点
-  observer.observe(targetNode, config);
-  
-  // 之后，可停止观察
-  observer.disconnect();
-  ```
+```js
+// 选择需要观察变动的节点
+const targetNode = document.getElementById('some-id');
+
+// 观察器的配置（需要观察什么变动）
+const config = { attributes: true, childList: true, subtree: true };
+
+// 当观察到变动时执行的回调函数
+const callback = function(mutationsList, observer) {
+    // Use traditional 'for loops' for IE 11
+    for(let mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+            console.log('A child node has been added or removed.');
+        }
+        else if (mutation.type === 'attributes') {
+            console.log('The ' + mutation.attributeName + ' attribute was modified.');
+        }
+    }
+};
+
+// 创建一个观察器实例并传入回调函数
+const observer = new MutationObserver(callback);
+
+// 以上述配置开始观察目标节点
+observer.observe(targetNode, config);
+
+// 之后，可停止观察
+observer.disconnect();
+```
 
 摘自：[MDN - MutationObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver)
 
@@ -7308,9 +7320,9 @@ MutationObserver 可以用来监听 DOM 的任何变化，比如子元素、属�
 
 #### Intersection Observer 
 
-> 注：intersection 译为 交叉、相交，可用于辅助记忆。
+> **注：**intersection 译为 交叉、相交，这可用于辅助记忆。
 
-IntersectionObserver 接口（<mark>从属于 Intersection Observer API</mark>）<font color=FF0000>提供了一种 <font size=4>**异步观察 目标元素 与 其祖先元素 或 顶级文档视窗 ( viewport ) 交叉状态 的方法**</font></font>。<mark>祖先元素与视窗 ( viewport ) 被称为根 ( root ) </mark> 注：这里 root 使用 下面有提及；另外，这里的 root 是一个相对概念，只表示祖先节点，不是绝对的根节点。
+IntersectionObserver 接口（<mark>从属于 Intersection Observer API</mark>）<font color=FF0000>提供了一种 <font size=4>**异步 观察 目标元素 与 其祖先元素 或 顶级文档视窗 ( viewport ) 交叉状态 的方法**</font></font>。<mark>祖先元素与视窗 ( viewport ) 被称为根 ( root ) </mark> **注：**这里 root 使用 下面有提及；另外，这里的 root 是一个相对概念，只表示祖先节点，不是绝对的根节点。
 
 <font color=FF0000>当一个 IntersectionObserver 对象被创建时，其被配置为监听根中一段给定比例的可见区域</font>。<font color=FF0000>**一旦 IntersectionObserver 被创建，则无法更改其配置**</font>，所以 **一个给定的观察者对象** 只能用来监听可见区域的  **特定变化值**；然而，你 <font color=FF0000>可以在同一个观察者对象中配置监听多个目标元素</font>。
 

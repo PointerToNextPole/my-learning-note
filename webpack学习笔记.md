@@ -10,7 +10,7 @@ webpack是一种构建工具工具。那，为什么需要构建或者说编译�
 
 - **webpack解析ES6**
 
-  需要掌握一个新的概念：loaders，所谓loaders就是说把原本webpack不支持加载的文件或者文件内容通过loaders进行加载解析，实现应用的目的。<mark>这里讲解es6解析，原生支持js解析，但是不能解析es6，需要babel-loader ，而babel-loader 又依赖babel</mark>。
+  需要掌握一个新的概念，loaders：所谓 loaders ，就是说把原本 webpack 不支持加载的文件或者文件内容通过 loaders 进行加载解析，实现应用的目的。<mark>这里讲解 ES6 解析，原生支持 JS 解析，但是不能解析 ES6，需要 babel-loader ，而 babel-loader 又依赖 babel</mark>
 
 - **webpack加载 css、less 等样式文件**
 
@@ -650,7 +650,7 @@ module.exports = {
 
 ##### clean-webpack-plugin 插件
 
-在打包之后生成了打包后输出的js文件，如果这时<font color=FF0000> 修改了配置文件</font>（webpack.config.js）<font color=FF0000> 中的打包输出js的文件名称</font>，再进行打包，这时会发现目标文件夹中有两个打包输出的js文件（分别是配置修改前生成的js文件，和配置修改后生成的js文件）。可以<font color=FF0000> 使用 clean-webpack-plugin 在生成新的js文件时，清除掉旧的js文件</font>。代码示例如下：
+在打包之后生成了打包后输出的 JS 文件，如果这时<font color=FF0000> 修改了配置文件</font>（webpack.config.js）<font color=FF0000> 中的打包输出js的文件名称</font>，再进行打包，这时会发现目标文件夹中有两个打包输出的js文件（分别是配置修改前生成的js文件，和配置修改后生成的 js 文件）。可以<font color=FF0000> 使用 clean-webpack-plugin 在生成新的js文件时，清除掉旧的js文件</font>。代码示例如下：
 
 ```js
 plugins: [
@@ -665,17 +665,17 @@ plugins: [
 
 
 
-#### entry和output的配置
+#### entry 和 output 的配置
 
-entry和output的文件名，默认都是main.js。在entry中配置，可以写成字符串 'entryFileName'、也可以写成对象，对象的键，可以作为输入文件的文件名。示例如下
+entry 和 output 的文件名，默认都是 main.js。在 entry 中配置，可以写成字符串 'entryFileName' 、也可以写成对象，对象的键，可以作为输入文件的文件名。示例如下：
 
 如果想要对一个文件打包两次，可以进行如下配置
 
 ```js
 module.exports = {
   entry: {
-   main: './src/index.js',
-   sub: './src/index.js',
+    main: './src/index.js',
+    sub: './src/index.js',
   },
   output: {
     // 这里如果只设置一个文件名的话会报错（比如设置为bundle.js），所以可以使用这种方式 
@@ -1028,7 +1028,7 @@ module: {
         targets: {
           chrome: "67", // 只针对chrome 67以上的浏览器做适配
         }
-        // 打包只添加自己使用的polyfill，以减小打包后的文件体积
+        // 打包只添加自己使用的 polyfill，以减小打包后的文件体积；即：**按需加载**，使用 useBuiltIns
         useBuiltIns: "usage"
       }]]
     }
@@ -1036,13 +1036,13 @@ module: {
 }
 ```
 
-**babel/polyfill：**用于对于一些<font color=FF0000>更低版本</font>的浏览器，提供ES6支持。在 **import "@babel/polyfill"** 时默认将所有的适配内容都放入输出的js文件中，这样会导致js文件臃肿，所以可以使用 **useBuiltIns: "usage"** （见上面）以设置放入输出js文件的，只有业务代码中被使用的那部分（<font color=FF0000>**按需打包**</font>）。
+**babel/polyfill：**用于对于一些<font color=FF0000>更低版本</font>的浏览器，提供ES6支持。在 **import "@babel/polyfill"** 时默认将所有的适配内容都放入输出的js文件中，这样会导致js文件臃肿，所以可以使用 **useBuiltIns: "usage"** （见上面）以设置放入输出 js 文件的，只有业务代码中被使用的那部分（<font color=FF0000>**按需打包**</font>）。
 
 不过，babel/polyfill会通过全局变量注入方法，会污染全局环境；所以只推荐在业务代码中使用。如果写的是框架 / 库文件，则建议使用 **@babel/plugin-transform-runtime**，建议参考：https://babeljs.io/docs/en/babel-plugin-transform-runtime
 
 如果 webpack.config.js 中babel的配置项过长，可以将babel配置项的内容放到 babel的配置文件 **.babelrc** 中。同时这些配置会自动生效，不用手动导入 webpack.config.js 中
 
-另外，在babelrc 文件下，使用 useBuiltIns 且他的值为 'usage'，不需要手动引入 polyfill（比如 babel-polyfill），会自动引入 这些 polyfill
+另外，在 .babelrc 文件下，使用 useBuiltIns 且他的值为 'usage'，不需要手动引入 polyfill（比如 babel-polyfill），会自动引入 这些 polyfill
 
 ##### babel-plugin-import
 
@@ -1605,43 +1605,43 @@ module.exports = (env) => {
 
 #### 对于代码库 Library 的打包
 
-**在使用 代码库 时有多种引入方式：**
+##### 在使用 代码库 时有多种引入方式
 
-- **ES Module：**
+**ES Module：**
 
-  ```js
-  import library from 'library'
-  ```
+```js
+import library from 'library'
+```
 
-- **commonJS：**
+**commonJS：**
 
-  ```js
-  const library = require('library')
-  ```
+```js
+const library = require('library')
+```
 
-- **AMD：**
+**AMD：**
 
-  ```js
-  require(['library'], function() { ... })
-  ```
+```js
+require(['library'], function() { ... })
+```
 
-- **\<scriprt /\>：**
+**\<scriprt /\>：**
 
-  ```html
-  <script src='library.js'></script>
-  ```
+```html
+<script src='library.js'></script>
+```
 
-同时希望，引入library之后，可以使用 library.member
+同时希望：引入 library 之后，可以使用 library.member
 
-**配置如下：**
+##### 配置如下
 
 ```js
 output: {
   path: path.reslove(__dirname, 'dist'),
   filename: 'library.js,
-  // 用于适配 <script> ，让library 挂载到 library 的全局变量上，即在全局变量上添加一个library 变量，在页面上可以访问library变量；亦即，打包好的库通过 'library' 的名字暴露出去。
+  // 用于适配 <script> ，让library 挂载到 library 的全局变量上，即在全局变量上添加一个 library 变量，在页面上可以访问 library 变量；亦即，打包好的库通过 'library' 的名字暴露出去。
   libray: 'library',
-  // umd 表示无论使用那种引入方式（ESM CommonJS AMD）都可以（但是<script> 不行），u表示universal
+  // umd 表示无论使用那种引入方式（ESM CommonJS AMD）都可以（但是 <script> 不行），u表示universal
   libraryTarget: 'umd'
 }
 ```
@@ -1657,9 +1657,7 @@ output: {
 }
 ```
 
-
-
-当我们的library中使用了第三方的库文件（比如 lodash），可能会出现：用户已经在自己的项目中使用（打包）了lodash，而我们的library时又引入（打包）了一次 lodash。用户的代码中会出现两份 lodash的代码。可以做如下配置：
+当我们的 library 中使用了第三方的库文件（比如 lodash ），可能会出现：用户已经在自己的项目中使用（打包）了 lodash，而我们的library 时又引入（打包）了一次 lodash。用户的代码中会出现两份 lodash的代码。可以做如下配置：
 
 ```js
 // webpack.config.js
@@ -2063,9 +2061,9 @@ resolve: {
 
 #### 使用 DllPlugin 提高打包速度
 
-在 webpack <font color=FF0000> 每次</font>打包时，<font color=FF0000> 都会</font>对第三方模块进行代码分析；而第三方模块是不会变的，所以没有必要每次都对第三方模块进行代码分析。这时我们希望：第三方模块只在第一次打包时，做代码分析，之后直接用第一次分析好的结果即可。
+在 webpack <font color=FF0000> 每次</font>打包时，<font color=FF0000> 都会</font>对第三方模块进行代码分析；而第三方模块是不会变的，所以没有必要每次都对第三方模块进行代码分析。这时我们希望：<font color=FF0000>**第三方模块只在第一次打包时，做代码分析，之后直接用第一次分析好的结果即可**</font>。
 
-这时，可以在 build 文件夹（webpack.config.js 所在文件夹）下，创建一个 webpack.dll.js
+这时，可以在 build 文件夹（ webpack.config.js 所在文件夹）下，创建一个 webpack.dll.js
 
 ```js
 // webpack.dll.js
@@ -2079,7 +2077,7 @@ module.exports = {
     vendors: ['react', 'react-dom', 'lodash']
   },
   output: {
-    // 再次提醒，这里的name 对应的 entry 中的 vendors
+    // 再次提醒：这里的 name 对应的 entry 中的 vendors
     filename: '[name].dll.js',
     // 配置第三方模块打包的目标路径
     path: path.resolve(__dirname, '../dll'),
@@ -2098,7 +2096,7 @@ module.exports = {
 }
 ```
 
-将打包的dll文件，对其生成一个全局变量（比如上面 library: [name] 生成的 vendors），并且在 index.html 上引入（ \<script src="vendors.dll.js" \>），需要使用插件：add-asset-html-webpack-plugin
+将打包的 dll 文件，对其生成一个全局变量（比如上面 library: [name] 生成的 vendors ），并且在 index.html 上引入（ \<script src="vendors.dll.js" \>），需要使用插件：add-asset-html-webpack-plugin
 
 ```js
 // webpack.common.conf.js
