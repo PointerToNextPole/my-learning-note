@@ -3257,7 +3257,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                     
+  >                                                                                                                           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3276,7 +3276,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                     
+  >                                                                                                                           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7322,43 +7322,52 @@ MutationObserver 可以用来监听 DOM 的任何变化，比如子元素、属�
 
 > **注：**intersection 译为 交叉、相交，这可用于辅助记忆。
 
-IntersectionObserver 接口（<mark>从属于 Intersection Observer API</mark>）<font color=FF0000>提供了一种 <font size=4>**异步 观察 目标元素 与 其祖先元素 或 顶级文档视窗 ( viewport ) 交叉状态 的方法**</font></font>。<mark>祖先元素与视窗 ( viewport ) 被称为根 ( root ) </mark> **注：**这里 root 使用 下面有提及；另外，这里的 root 是一个相对概念，只表示祖先节点，不是绝对的根节点。
+IntersectionObserver 接口（<mark>从属于 Intersection Observer API </mark>）<font color=FF0000>提供了一种 <font size=4>**异步 观察 目标元素 与 其祖先元素 或 顶级文档视窗 ( viewport ) 交叉状态 的方法**</font></font>。<mark>祖先元素与视窗 ( viewport ) 被称为根 ( root ) </mark> **注：**这里 root 使用 下面有提及；另外，这里的 root 是一个相对概念，只表示祖先节点，不是绝对的根节点。
 
-<font color=FF0000>当一个 IntersectionObserver 对象被创建时，其被配置为监听根中一段给定比例的可见区域</font>。<font color=FF0000>**一旦 IntersectionObserver 被创建，则无法更改其配置**</font>，所以 **一个给定的观察者对象** 只能用来监听可见区域的  **特定变化值**；然而，你 <font color=FF0000>可以在同一个观察者对象中配置监听多个目标元素</font>。
+<font color=FF0000>当一个 IntersectionObserver 对象被创建时，其被配置为监听根中一段给定比例的可见区域</font>。<font color=FF0000 size=4>**一旦 IntersectionObserver 被创建，则无法更改其配置**</font>，所以 **一个给定的观察者对象** 只能用来监听可见区域的  **特定变化值**；然而，你 <font color=FF0000>可以在同一个观察者对象中配置监听多个目标元素</font>。
 
-- **构造器：**
-  **IntersectionObserver.IntersectionObserver()：**创建一个新的IntersectionObserver对象，<font color=FF0000>当其监听到 **目标元素的可见部分穿过了一个或多个阈** ( thresholds ) 时，**会执行指定的回调函数**</font>。注：这里的阈值，下面 thresholds属性会提到。
+##### 构造器
 
-- **属性：**
+**IntersectionObserver.IntersectionObserver()：**创建一个新的 IntersectionObserver 对象，<font color=FF0000>当其监听到 **目标元素的可见部分穿过了一个或多个阈** ( thresholds ) 时，**会执行指定的回调函数**</font>。**注：**这里的阈值，下面 thresholds 属性会提到
 
-  - **IntersectionObserver.root：**<font color=FF0000>只读</font>，<font color=FF0000>所 **监听对象的具体祖先元素** ( element )</font>。<font color=FF0000>如果未传入值或值为 null，则默认使用顶级文档的视窗</font>。
-  - **IntersectionObserver.rootMargin：**<font color=FF0000>只读</font>，计算交叉时 添加到根 ( root ) 边界盒 bounding box 的 矩形<font color=FF0000>偏移量</font>（<mark>注：根据上下文的意思，这里的意思 **似乎是**：手动添加偏移量，以提高准确性</mark>）， <font color=FF0000>可以有效的缩小 或 扩大根的判定范围从而满足计算需要</font>。此属性返回的值可能与调用构造函数时指定的值不同，因此可能需要更改该值，以匹配内部要求。所有的偏移量均可用像素 ( pixel / px ) 或百分比 ( percentage / % ) 来表达，<mark>默认值为 "0px 0px 0px 0px"</mark>。
-  - **IntersectionObserver.thresholds：**<font color=FF0000>只读</font>，<font color=FF0000>一个包含阈值的列表，按升序排列，**列表中的每个阈值都是监听对象的交叉区域与边界区域的比率**</font>。<font color=FF0000 size=4>**当监听对象的任何阈值被越过时，都会生成一个通知 ( Notification )**</font>。<mark>如果构造器未传入值, 则默认值为 0</mark>。
+> 
 
-- **方法：**
+##### 属性
 
-  - **IntersectionObserver.disconnect()：**使IntersectionObserver对象 <font color=FF0000>停止监听</font>工作。
-  - **IntersectionObserver.observe()：**使IntersectionObserver <font color=FF0000>开始监听</font>一个目标元素。
-  - **IntersectionObserver.takeRecords()：**<font color=FF0000>返回所有观察目标的 IntersectionObserverEntry对象数组</font>。
-  - **IntersectionObserver.unobserve()：**使IntersectionObserver <font color=FF0000>停止监听特定目标元素</font>。
+- **IntersectionObserver.root：**<font color=FF0000>只读</font>，<font color=FF0000>所 **监听对象的具体祖先元素** ( element )</font>。<font color=FF0000>如果 **未传入值 或 值为 null**，则 **默认使用顶级文档的视窗**</font>
+- **IntersectionObserver.rootMargin：**<font color=FF0000>只读</font>，计算交叉时 添加到根 ( root ) 边界盒 bounding box 的 矩形<font color=FF0000>偏移量</font>（<mark>注：根据上下文的意思，这里的意思 **似乎是**：手动添加偏移量，以提高准确性</mark>）， <font color=FF0000>可以有效的缩小 或 扩大根的判定范围从而满足计算需要</font>。此属性返回的值可能与调用构造函数时指定的值不同，因此可能需要更改该值，以匹配内部要求。所有的偏移量均可用像素 ( pixel / px ) 或百分比 ( percentage / % ) 来表达，<mark>默认值为 "0px 0px 0px 0px"</mark>。
+- **IntersectionObserver.thresholds：**<font color=FF0000>只读</font>，<font color=FF0000>一个包含阈值的列表，按升序排列，**列表中的每个阈值都是监听对象的交叉区域与边界区域的比率**</font>。<font color=FF0000 size=4>**当监听对象的任何阈值被越过时，都会生成一个通知 ( Notification )**</font>。<mark>如果构造器未传入值, 则默认值为 0</mark>。
 
-- **示例：**
+##### 方法
 
-  ```js
-  var intersectionObserver = new IntersectionObserver(function(entries) {
-    // If intersectionRatio is 0, the target is out of view and we do not need to do anything.
-    if (entries[0].intersectionRatio <= 0) return;
-  
-    loadItems(10);
-    console.log('Loaded new items');
-  });
-  // start observing
-  intersectionObserver.observe(document.querySelector('.scrollerFooter'));
-  ```
+- **IntersectionObserver.disconnect()：**使 IntersectionObserver 对象 <font color=FF0000>停止监听</font>工作。
+- **IntersectionObserver.observe()：**使 IntersectionObserver <font color=FF0000>开始监听</font>一个目标元素。
+- **IntersectionObserver.takeRecords()：**<font color=FF0000>返回所有观察目标的 IntersectionObserverEntry 对象数组</font>。
+- **IntersectionObserver.unobserve()：**使 IntersectionObserver <font color=FF0000>停止监听特定目标元素</font>。
+
+##### 示例
+
+```js
+var intersectionObserver = new IntersectionObserver(function(entries) {
+  // If intersectionRatio is 0, the target is out of view and we do not need to do anything.
+  if (entries[0].intersectionRatio <= 0) return;
+
+  loadItems(10);
+  console.log('Loaded new items');
+});
+// start observing
+intersectionObserver.observe(document.querySelector('.scrollerFooter'));
+```
+
+**注：**上面代码提到了 IntersectionObserverEntry.intersectionRatio
+
+> The `IntersectionObserverEntry` interface's <font color=FF0000>read-only</font> **`intersectionRatio`** property <font color=FF0000>tells you **how much of the target element is currently visible within the root's intersection ratio**, **as a value between 0.0 and 1.0**</font>
+>
+> 摘自：[MDN - IntersectionObserverEntry.intersectionRatio](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserverEntry/intersectionRatio)
 
 摘自：[MDN - Intersection Observer](https://developer.mozilla.org/zh-CN/docs/Web/API/IntersectionObserver)
 
-<font size=4>**补充：**</font>
+##### 补充
 
 以下内容摘自  [MutationObserver 和 IntersectionObserver](https://juejin.cn/post/6999950594207121444)。另外，这篇文章还有更详细的介绍（也比 MDN 中的容易理解），推荐阅读。由于只是简单了解，同时 当前的工作中完全找不到使用场景，所以，这里略。
 
@@ -7368,7 +7377,35 @@ IntersectionObserver 接口（<mark>从属于 Intersection Observer API</mark>�
 
 文章中还有 root、rootmargin、threshold 的 介绍，内容比 MDN 清楚、具体很多，这里略。
 
-另外，在 CodingStartup 的教程：[【CSS】动态划线效果｜使用IntersectionObserver](https://www.bilibili.com/video/BV1xa4y1a7J9) 有关于 IntersectionObserver 的使用，可以参考
+在 CodingStartup 的教程 [【CSS】动态划线效果｜使用IntersectionObserver](https://www.bilibili.com/video/BV1xa4y1a7J9) 有关于 IntersectionObserver 的使用；相关代码如下：
+
+```js
+let observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    // 如果 监听的目标元素 和 root 相交，则...
+    if(entry.isIntersecting) {
+      entry.target.classList.add('animation')
+      observer.unobserve(entry.target)
+    }
+  })
+})
+
+// 设置监听的目标元素
+document.querySelectorAll('mark').forEach(mark => { observer.observe(mark) })
+```
+
+##### 关于 IntersectionObserverEntry.isIntersecting
+
+> The `IntersectionObserverEntry` interface's <font color=FF0000>read-only</font> **`isIntersecting`** property is a <font color=FF0000>Boolean value</font> which is <font color=FF0000>`true` if the target element intersects with the intersection observer's root</font>. If this is `true`, then, the `IntersectionObserverEntry` describes a transition into a state of intersection; if it's `false`, then you know the transition is from intersecting to not-intersecting.
+>
+> 摘自：[MDN - IntersectionObserverEntry.isIntersecting](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserverEntry/isIntersecting)
+
+##### 图示
+
+| <img src="https://s2.loli.net/2022/06/13/5ENmXiyIGuxBrt8.gif" alt="图片" style="zoom:50%;" /> | <img src="https://s2.loli.net/2022/06/13/kPItm6xRZFfSvGr.gif" alt="图片" style="zoom:50%;" /> |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+
+摘自：[一起认识下浏览器的5种观察器](https://mp.weixin.qq.com/s/0Kj0cUYrQtx7Bh2VuZ-pGQ)
 
 
 
