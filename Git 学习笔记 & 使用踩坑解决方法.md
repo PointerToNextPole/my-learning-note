@@ -241,7 +241,7 @@ commit、tree、blob 三者（注：这三者都是 git 中的对象(object) ）
 
 <img src="https://s2.loli.net/2022/02/24/sTJUXl4vY3NQ2dt.png" alt="image-20220224232018021" style="zoom: 25%;" />
 
-## Git是怎么储存信息的
+##### Git 是怎么储存信息的
 
 这里会用一个简单的例子让大家直观感受一下git是怎么储存信息的。
 
@@ -289,7 +289,7 @@ $ git cat-file -p 58c9
 
 也就是说，我们此时的Git仓库是这样子的：
 
-<img src="https://s2.loli.net/2022/02/25/XmEILVnUKR6jOiu.png" alt="https://www.lzane.com/tech/git-internal/p1s1.png" style="zoom:80%;" />
+<img src="https://www.lzane.com/tech/git-internal/p1s1.png" alt="https://www.lzane.com/tech/git-internal/p1s1.png" style="zoom:80%;" />
 
 我们继续探索，我们创建一个commit。
 
@@ -304,7 +304,7 @@ $ tree .git/objects
 ...
 ```
 
-我们会发现当我们commit完成之后，Git仓库里面多出来两个object。同样使用`cat-file`命令，我们看看它们分别是什么类型以及具体的内容是什么。
+我们会发现当我们 commit 完成之后，Git 仓库里面多出来两个object。同样使用`cat-file`命令，我们看看它们分别是什么类型以及具体的内容是什么。
 
 ```sh
 $ git cat-file -t 4caaa1
@@ -1028,6 +1028,41 @@ git push -u origin master
 删除远程分支以及追踪分支的命令： `git push origin --delete <branch>`
 
 摘自：[删除分支 git branch -d与git branch -D的区别](https://blog.csdn.net/qq_33592641/article/details/103871482)
+
+
+
+#### git diff
+
+git diff 命令比较文件的不同，即<font color=FF0000>比较文件在暂存区和工作区的差异</font>。git diff 命令显示已写入暂存区和已经被修改但尚未写入暂存区文件的区别。
+
+**git diff 的应用场景：**
+
+- 尚未缓存的改动：**git diff**
+- 查看已缓存的改动： **git diff --cached**
+- 查看已缓存的与未缓存的所有改动：**git diff HEAD**
+- 显示摘要而非整个 diff：**git diff --stat**
+
+显示暂存区和工作区的差异：
+
+```sh
+git diff [file]
+```
+
+显示暂存区和上一次提交 ( commit ) 的差异：
+
+```sh
+git diff --cached [file]
+# 或者
+git diff --staged [file]
+```
+
+显示两次提交之间的差异：
+
+```sh
+git diff [first-branch]...[second-branch]
+```
+
+摘自：[runoob - git diff 命令](https://www.runoob.com/git/git-diff.html)
 
 
 
