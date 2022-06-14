@@ -3257,7 +3257,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                           
+  >                                                                                                                               
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3276,7 +3276,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                           
+  >                                                                                                                               
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7308,7 +7308,7 @@ MutationObserver 的 takeRecords() 方法<font color=FF0000>**返回已检测到
 
 MutationObserver 可以用来监听 DOM 的任何变化，比如子元素、属性和文本内容的变化。
 
-<mark>概念上，它很接近事件，可以理解为 DOM 发生变动就会触发 Mutation Observer 事件</mark>。但是，<font color=FF0000>它与事件有一个本质不同</font>：<font color=FF0000>**事件是同步触发**</font>，也就是说，<font color=FF0000>**DOM 的变动立刻会触发相应的事件**</font>；而 <font color=FF0000>Mutation Observer 则是异步触发</font>，<font color=FF0000>DOM 发生变化并不会马上触发</font>，而是<font color=FF0000 size=4>**要等到当前所有 DOM 操作都结束才触发**</font>，执行时机有点类似于宏任务。
+<mark>概念上，它很接近事件，可以理解为 DOM 发生变动就会触发 Mutation Observer 事件</mark>。但是，<font color=FF0000>它与事件有一个本质不同</font>：<font color=FF0000>**事件是同步触发**</font>，也就是说，<font color=FF0000>**DOM 的变动立刻会触发相应的事件**</font>；而 <font color=FF0000>Mutation Observer 则是 <font size=4>**异步触发**</font></font>，<font color=FF0000>DOM 发生变化并不会马上触发</font>，而是<font color=FF0000 size=4>**要等到当前所有 DOM 操作都结束才触发**</font>，执行时机有点类似于宏任务。
 
 <mark>这样设计是为了应对 DOM 变动频繁的特点</mark>。<mark>如果不这么做，当文档中连续插入 1000 个 \<p> 元素，就会连续触发 1000 个插入事件并执行每个事件的回调函数，这很可能造成浏览器的卡顿</mark>。而 Mutation Observer 完全不同，只在 1000 个段落都插入结束后才会触发，而且只触发一次。
 
@@ -7328,15 +7328,44 @@ IntersectionObserver 接口（<mark>从属于 Intersection Observer API </mark>
 
 ##### 构造器
 
-**IntersectionObserver.IntersectionObserver()：**创建一个新的 IntersectionObserver 对象，<font color=FF0000>当其监听到 **目标元素的可见部分穿过了一个或多个阈** ( thresholds ) 时，**会执行指定的回调函数**</font>。**注：**这里的阈值，下面 thresholds 属性会提到
+**IntersectionObserver.IntersectionObserver()：**创建一个新的 IntersectionObserver 对象，<font color=FF0000>当其监听到 **目标元素的可见部分穿过了一个或多个阈** ( thresholds ) 时，**会执行指定的回调函数**</font>。
 
-> 
+> #### IntersectionObserver.IntersectionObserver()
+>
+> IntersectionObserver() 构造器创建并返回一个 IntersectionObserver 对象。 如果指定 rootMargin 则会检查其是否符合语法规定，检查阈值以确保全部在 0.0 到 1.0 之间，并且阈值列表会按升序排列。如果阈值列表为空，则默认为一个 [0.0] 的数组。
+>
+> ##### 语法
+>
+> ```js
+> var observer = new IntersectionObserver(callback[, options]);
+> ```
+>
+> ##### 参数
+>
+> - **callback**：<font color=FF0000>当元素可见比例超过指定阈值后，会调用一个回调函数</font>，此回调函数接受两个参数：
+>   - **entries**：<font color=FF0000>一个 IntersectionObserverEntry 对象的 **数组**</font>，每个被触发的阈值，都或多或少与指定阈值有偏差。
+>   - **observer**：被调用的 IntersectionObserver 实例
+> - **options**：可选，一个可以用来配置 observer 实例的对象。如果 options 未指定，observer 实例默认使用文档视口作为 root，并且没有 margin，阈值为 0%（意味着即使一像素的改变都会触发回调函数）。你可以指定以下配置：
+>   - **root**：<font color=FF0000>监听元素的祖先元素 Element 对象，其边界盒将被视作视口</font>。目标在根的可见区域的的任何不可见部分都会被视为不可见
+>   - **rootMargin**：一个<font color=FF0000>在计算交叉值时添加至根的边界盒 ( [bounding_box](https://developer.mozilla.org/en-US/docs/Glossary/bounding_box) ) 中的一组偏移量</font>，类型为字符串 ( string ) ，可以有效的缩小或扩大根的判定范围从而满足计算需要。语法大致和 CSS 中的 margin 属性等同。默认值是 "0px 0px 0px 0px"
+>   - **threshold**：<font color=FF0000>规定了一个监听目标与边界盒交叉区域的比例值，可以是 **一个具体的数值** 或是 **一组 0.0 到 1.0 之间的数组**</font>。若指定值为 0.0，则意味着监听元素即使与根有 1 像素交叉，此元素也会被视为可见。若指定值为 1.0，则意味着整个元素都在可见范围内时才算可见。阈值的默认值为 0.0
+>
+> ##### 返回值
+>
+> 一个可以使用规定阈值监听目标元素可见部分与 root 交叉状况的新的 IntersectionObserver 实例。调用自身的 observe() 方法开始使用规定的阈值监听指定目标。
+>
+> ##### 异常
+>
+> - **SyntaxError**：指定的 rootMargin 不存在。
+> - **RangeError**：一个或多个阈值超出了 0.0 到 1.0 的范围。
+>
+> 摘自：[MDN - IntersectionObserver.IntersectionObserver()](https://developer.mozilla.org/zh-CN/docs/Web/API/IntersectionObserver/IntersectionObserver)
 
 ##### 属性
 
 - **IntersectionObserver.root：**<font color=FF0000>只读</font>，<font color=FF0000>所 **监听对象的具体祖先元素** ( element )</font>。<font color=FF0000>如果 **未传入值 或 值为 null**，则 **默认使用顶级文档的视窗**</font>
-- **IntersectionObserver.rootMargin：**<font color=FF0000>只读</font>，计算交叉时 添加到根 ( root ) 边界盒 bounding box 的 矩形<font color=FF0000>偏移量</font>（<mark>注：根据上下文的意思，这里的意思 **似乎是**：手动添加偏移量，以提高准确性</mark>）， <font color=FF0000>可以有效的缩小 或 扩大根的判定范围从而满足计算需要</font>。此属性返回的值可能与调用构造函数时指定的值不同，因此可能需要更改该值，以匹配内部要求。所有的偏移量均可用像素 ( pixel / px ) 或百分比 ( percentage / % ) 来表达，<mark>默认值为 "0px 0px 0px 0px"</mark>。
-- **IntersectionObserver.thresholds：**<font color=FF0000>只读</font>，<font color=FF0000>一个包含阈值的列表，按升序排列，**列表中的每个阈值都是监听对象的交叉区域与边界区域的比率**</font>。<font color=FF0000 size=4>**当监听对象的任何阈值被越过时，都会生成一个通知 ( Notification )**</font>。<mark>如果构造器未传入值, 则默认值为 0</mark>。
+- **IntersectionObserver.rootMargin：**<font color=FF0000>只读</font>，计算交叉时 添加到根 ( root ) 边界盒 bounding box 的 矩形<font color=FF0000>偏移量</font>， <font color=FF0000>可以有效的缩小 或 扩大根的判定范围从而满足计算需要</font>。此属性返回的值可能与调用构造函数时指定的值不同，因此可能需要更改该值，以匹配内部要求。<font color=FF0000>所有的偏移量均可用像素 ( pixel / px ) 或百分比 ( percentage / % ) 来表达</font>，<mark>默认值为 "0px 0px 0px 0px"</mark>。
+- **IntersectionObserver.thresholds：**<font color=FF0000>只读</font>，<font color=FF0000>一个包含阈值的列表，按升序排列，**列表中的每个阈值都是监听对象的交叉区域与边界区域的比率**</font>。<font color=FF0000 size=4>**当监听对象的任何阈值被越过时，*都* 会生成一个通知 ( Notification )**</font>。<mark>如果构造器未传入值, 则默认值为 0</mark>。
 
 ##### 方法
 
@@ -7375,7 +7404,7 @@ intersectionObserver.observe(document.querySelector('.scrollerFooter'));
 
 **概述：**<font color=FF0000>这个 API 可以 <font size=4>**观察目标元素与视口或指定根元素产生的交叉区的变化**</font>，所以这个 API 也叫做“交叉观察器”</font>。<mark>它和 MutationObserver 一样都是 <font color=FF0000>**异步的**</font>，不随着目标元素的滚动 同步触发</mark>。<font color=FF0000>发明者规定，IntersectionObserver 的实现，应该采用 requestIdleCallback() 的方式，即只有线程空闲下来，才会执行观察器</font>。这意味着，<mark>这个观察器的优先级非常低，只在其他任务执行完，浏览器有了空闲才会执行</mark>。**注：**异步 + 低优先级 所以高性能（似乎也可以称为：不会影响性能...）
 
-文章中还有 root、rootmargin、threshold 的 介绍，内容比 MDN 清楚、具体很多，这里略。
+摘自：[MutationObserver 和 IntersectionObserver](https://juejin.cn/post/6999950594207121444) 。文章中还有 root、rootmargin、threshold 的 介绍，内容比 MDN 清楚、具体很多，这里略。
 
 在 CodingStartup 的教程 [【CSS】动态划线效果｜使用IntersectionObserver](https://www.bilibili.com/video/BV1xa4y1a7J9) 有关于 IntersectionObserver 的使用；相关代码如下：
 
@@ -7407,39 +7436,97 @@ document.querySelectorAll('mark').forEach(mark => { observer.observe(mark) })
 
 摘自：[一起认识下浏览器的5种观察器](https://mp.weixin.qq.com/s/0Kj0cUYrQtx7Bh2VuZ-pGQ)
 
+##### Intersection Observer 的使用场景
+
+- **图片的懒加载**
+
+  **注：**应该也包含上面 codingstartup 的 示例：当动画可见（在 视口 viewport 中）时，才会触发。对于定时触发的动画也可以通过 intersection observer 可见时运行，不可见时停止。
+
+- 无限滚动
+
+- <font color=FF0000>**网页广告的曝光量统计**</font>
+
+  > 很多时候，广告图片不一定需要全部展示才算被用户看到，有时候图片只展示了 60% 时，主要信息已经被用户看到，这种情况其实是可以算作一次曝光量的统计。为了实现这种广告的曝光量的精确统计，我们可以创建交叉管理器，观察到广告目标元素的交叉比例 intersectionRatio 达到 0.6 时，判定广告的 曝光量 +1
+  >
+  > 摘自：[一起认识下浏览器的5种观察器](https://mp.weixin.qq.com/s/0Kj0cUYrQtx7Bh2VuZ-pGQ)
+
 
 
 #### ResizeObserver 🧪
 
-ResizeObserver 接口 <font color=FF0000>可以监听到 Element 的 <font size=4>**内容区域**</font>（注：Mutation observer 是监听 DOM树 的改变）</font> **或** <font color=0000FF>SVGElement的边界框</font> <font size=4>**改变**</font>。<font color=FF0000>内容区域则需要减去内边距 padding</font>。（有关内容区域、内边距资料见 [盒子模型](https://developer.mozilla.org/docs/Learn/CSS/Introduction_to_CSS/Box_model)）
+> ##### Resize Observer API
+>
+> Resize Observer API 提供了一种 <font color=FF0000>**高性能的机制**</font>，通过该机制，<font color=FF0000>代码可以监视元素的大小更改，并且 **每次大小更改** 时都会向观察者传递通知</font>
+>
+> ##### 背景 / 痛点
+>
+> 存在大量的<font color=FF0000>响应式设计</font>（以及其他相关）技术，它们<font color=FF0000>可以响应元素大小的变化</font>；但是以前，它们的实现常常很笨拙或者说生硬。
+>
+> 举个例子：当视口更改大小时， 媒介查询 / window.matchMedia 非常适合在特定点更新布局，但是如果要响应于特定元素的大小更改而更改布局，该元素又不是外部容器时，该怎么办？
+>
+> 为此，<mark>一种 **有限的解决方案** 是监听对适当事件的更改，该事件会提示您对更改大小感兴趣的元素</mark>（例如 window resize event ），<mark>然后找出该元素之后新的尺寸或其他功能</mark>；例如，使用 Element.getBoundingClientRect 或者 Window.getComputedStyle 来调整大小。 <font color=FF0000>**这样的解决方案仅适用于有限的场景，对性能不利**（不断调用上述方法会导致性能严重下降），并且在不更改浏览器窗口大小的情况下通常不起作用</font>。
+>
+> <font color=FF0000>Resize Observer API 提供了一种解决此类问题的解决方案，此外，它还**使您能够轻松观察和响应元素内容或边框的大小变化**，并 **以高效的方式做出响应**</font>。 它为 Web 平台中经常讨论的缺少 element queries 提供了 JavaScript 解决方案。
+>
+> 用法很简单，并且与其他观察者（例如 Performance Observer 或者 Intersection Observer ）几乎相同，您可以使用 ResizeObserver() 构造函数创建一个新的 ResizeObserver ，然后使用 ResizeObserver.observe() 使其寻找特定元素大小的更改。 <font color=FF0000>**每次更改大小时，构造函数中设置的回调函数便会运行**，从而提供对新维度的访问权限，并允许您根据需要执行任何操作</font>。
+>
+> 摘自：[MDN - Resize Observer API](https://developer.mozilla.org/zh-CN/docs/Web/API/Resize_Observer_API)
+
+ResizeObserver 接口 <font color=FF0000>可以监听到 Element 的 <font size=4>**内容区域**</font>（**注：**Mutation observer 是监听 DOM树 的改变）</font> **或** <font color=0000FF>SVGElement的边界框</font> <font size=4>**改变**</font>。<font color=FF0000>内容区域则需要减去内边距 padding</font>。（有关内容区域、内边距资料见 [盒子模型](https://developer.mozilla.org/docs/Learn/CSS/Introduction_to_CSS/Box_model)）
 
 <font color=FF0000>ResizeObserver **避免了在自身回调中调整大小，从而触发的无限回调和循环依赖**</font>。它 <font color=FF0000>仅通过在后续帧中处理DOM中更深层次的元素来实现这一点</font>。<mark>如果（浏览器）遵循规范，**只会在 绘制前或布局后触发调用**</mark>。
 
-- **构造器**
-  **ResizeObserver()：**创建并返回一个ResizeObserver对象。
+##### 构造器
 
-- **属性：**无。
+**ResizeObserver()：**创建并返回一个 ResizeObserver 对象。
 
-- **事件处理器：**无。
+##### 方法
 
-- **方法：**
+- **ResizeObserver.disconnect()：**<font color=FF0000>取消和结束 目标**对象上所有 **对 Element 或 SVGElement 观察</font>
+- **ResizeObserver.observe()：**<font color=FF0000>开始观察</font>指定的 Element 或 SVGElement
+- **ResizeObserver.unobserve()：**<font color=FF0000>结束观察</font>指定的 Element 或 SVGElement
 
-  - **ResizeObserver.disconnect()：**<font color=FF0000>取消和结束 目标**对象上所有 **对 Element或 SVGElement 观察</font>。
-  - **ResizeObserver.observe()：**<font color=FF0000>开始观察</font>指定的 Element或 SVGElement。
-  - **ResizeObserver.unobserve()：**<font color=FF0000>结束观察</font>指定的Element或 SVGElement。
+##### 示例
 
-- **示例：**以下示例通过观察box的宽度变化从而改变其边框圆角半径。
+以下示例通过观察 box 的宽度变化从而改变其边框圆角半径。**注：**相关使用和 上面的 intersectionObserver 相当类似
 
-  ```js
-  const resizeObserver = new ResizeObserver(entries => {
-    for (let entry of entries) {
-      entry.target.style.borderRadius = Math.max(0, 250 - entry.contentRect.width) + 'px';
-    }
-  });
-  resizeObserver.observe(document.querySelector('.box:nth-child(2)'));
-  ```
+```js
+const resizeObserver = new ResizeObserver(entries => {
+  for (let entry of entries) {
+    entry.target.style.borderRadius = Math.max(0, 250 - entry.contentRect.width) + 'px';
+  }
+});
+
+resizeObserver.observe(document.querySelector('.box:nth-child(2)'));
+```
 
 摘自：[MDN - ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver)
+
+#### ResizeObserverEntry
+
+The `ResizeObserverEntry` interface represents the object passed to the `ResizeObserver()` constructor's callback function, which <font color=FF0000>allows you to access the new dimensions （尺寸） of the `Element` or `SVGElement` being observed</font>.
+
+##### Properties
+
+- **ResizeObserverEntry.borderBoxSize**: <mark>Read only</mark>, An object containing the  <font color=FF0000>new **border box** size</font> of the observed element when the callback is run. **注：**注意 和 contentBoxSize 的区别
+
+- **ResizeObserverEntry.contentBoxSize**: <mark>Read only</mark>, An object containing the <font color=FF0000>new **content box** size</font> of the observed element when the callback is run.
+
+- **ResizeObserverEntry.devicePixelContentBoxSize**: <mark>Read only</mark>, An object containing the <font color=FF0000>new content box size in device pixels</font> of the observed element when the callback is run.
+
+- **ResizeObserverEntry.contentRect**: <mark>Read only</mark>, <font color=FF0000>**A `DOMRectReadOnly` object**</font> （**注：** `getBoundingClientRect` 返回值是一个 `DOMRect` ，而 `DOMRectReadOnly` 继承自 `DOMRect` ）<font color=FF0000>**containing the new size of the observed element**</font> when the callback is run. 
+
+  Note that <mark>this is better supported than the above two properties</mark>, but it is left over from an earlier implementation of the Resize Observer API, is still included in the spec for web compat reasons, and may be deprecated in future versions.
+
+- **ResizeObserverEntry.target**: <mark>Read only</mark>, <font color=FF0000>A reference to the `Element` or `SVGElement` being observed</font>.
+
+##### Methods
+
+None.
+
+摘自：[MDN US - ResizeObserverEntry](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserverEntry)
+
+
 
 #### PerformanceObserver 性能监测对象
 
