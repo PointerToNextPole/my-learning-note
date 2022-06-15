@@ -1921,7 +1921,7 @@ let regexpObj2 = new RegExp(/ab+c/, 'i'); // 首个参数为常规字面量的�
   - **RegExp.prototype\[@@match]()：**对给定字符串执行匹配并返回匹配结果。
   - **RegExp.prototype\[@@matchAll]()：**对给定字符串执行匹配，返回所有匹配结果。
   - **RegExp.prototype\[@@replace]()：**给定新的子串，替换所有匹配结果。
-  - **RegExp.prototype\[@@search]()：**在给定字符串中搜索匹配项，并返回在字符串中找到字符索引。
+  - **RegExp.prototype\[@@arch]()：**在给定字符串中搜索匹配项，并返回在字符串中找到字符索引。
   - **RegExp.prototype\[@@split]()：**通过<font color=FF0000> 将给定字符串拆分为子字符串</font>，<font color=FF0000> 并返回字符串形成的数组</font>。
   - **RegExp.prototype.toString()：**返回表示指定对象的字符串。<font color=FF0000> **重写Object.prototype.toString()方法**</font>。
 
@@ -3257,7 +3257,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                               
+  >                                                                                                                                 
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3276,7 +3276,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                               
+  >                                                                                                                                 
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -4717,9 +4717,9 @@ add(); // counter = 3
     - 参数列表
     
       - **token：**标记列表中你想探查并切换的 DOMString .
-      - **force：**可选，一个Boolean值, 设置后会将方法变成单向操作. 如设置为false, 则会删除标记列表中匹配的给定标记，且不会再度添加. 如设置为 true, 则将在标记列表中添加给定标记，且不会再度删除。
+      - **force：**可选，一个 Boolean 值, 设置后会将方法变成单向操作. 如设置为false, 则会删除标记列表中匹配的给定标记，且不会再度添加. 如设置为 true, 则将在标记列表中添加给定标记，且不会再度删除。
     
-    - **返回值：**该方法返回一个Boolean (en-US)值 — 如给定标记不存在于列表中返回false , 标记存在则返回true 。
+    - **返回值：**该方法返回一个Boolean 值 — 如给定标记不存在于列表中返回false , 标记存在则返回true 。
     
     摘自：[MDN - DOMTokenList.toggle()](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMTokenList/toggle)
     
@@ -5906,6 +5906,67 @@ domRect = element.getBoundingClientRect();
 
 摘自：[现代JS教程 - 坐标 - 元素坐标：getBoundingClientRect](https://zh.javascript.info/coordinates#yuan-su-zuo-biao-getboundingclientrect)
 
+关于上面的 DOMRect 的补充
+
+#### DOMRect
+
+<font color=FF0000>**一个 DOMRect 代表一个矩形**</font>。DOMRect 表示的盒子的类型由返回它的方法或属性指定。例如，WebVR API 的 VREyeParameters.renderRect 指定了头戴式显示器的一只眼睛应该呈现的影像所在的 canvas 的视口。
+
+**DOMRect 继承自它的父类 DOMRectReadOnly：**
+
+```mermaid
+classDiagram
+direction LR
+DOMRectReadOnly <|-- DOMRect : Inheritance
+```
+
+##### 构造函数
+
+**DOMRect()**：创建一个新的 DOMRect 对象。
+
+##### 属性
+
+DOMRect 从其父类 DOMRectReadOnly 继承属性。<font color=FF0000>**不同之处在于它们不再是只读的**</font>。
+
+- **DOMRectReadOnly.x**：DOMRect 原点的 x 坐标。
+- **DOMRectReadOnly.y**：DOMRect 原点的 y 坐标。
+- **DOMRectReadOnly.width**：DOMRect 的宽度。
+- **DOMRectReadOnly.height**：DOMRect 的高度。
+- **DOMRectReadOnly.top**：返回 DOMRect 的顶坐标值（与 y 具有相同的值，如果 height 为负值，则为 y + height 的值）。
+- **DOMRectReadOnly.right**：返回 DOMRect 的右坐标值（与 x + width 具有相同的值，如果width 为负值，则为 x 的值）。
+- **DOMRectReadOnly.bottom**：返回 DOMRect 的底坐标值（与 y + height 具有相同的值，如果 height 为负值，则为 y 的值）。
+- **DOMRectReadOnly.left**：返回 DOMRect 的左坐标值（与 x 具有相同的值，如果 width 为负值，则为 x + width 的值）。
+
+##### 方法
+
+DOMRect 从它的父类 DOMRectReadOnly 继承方法
+
+##### 静态方法
+
+**DOMRectReadOnly.fromRect()**：<font color=FF0000>**创建一个具有指定位置和尺寸的新 DOMRect 对象**</font>
+
+摘自：[MDN - DOMRect](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMRect)
+
+#### DOMRectReadOnly
+
+DOMRectReadOnly 接口 <font color=FF0000>**通过详细列出 DOMRect 所使用的标准属性** 来定义一个属性不可变的矩形</font>。
+
+##### 构造函数
+
+**DOMRectReadOnly()**：用来创建新的 DOMRectReadOnly 对象，但请注意，<font color=FF0000>该构造函数不能由第三方 JavaScript 调用</font>：这样做将返回 “Illegal constructor” 类型错误。
+
+##### 属性
+
+和 DOMRect 一样，见上面 [[#DOMRect#属性]]
+
+##### 静态方法
+
+和 DOMRect 一样，见上面 [[#DOMRect#静态方法]]
+
+摘自：[MDN - DOMRectReadOnly](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMRectReadOnly)
+
+
+
 #### Window.resizeBy()
 
 **概述：**调整窗口大小。
@@ -6823,7 +6884,7 @@ var element = document.createElement(tagName[, options]);
 - **options：**可选，一个可选的参数 ElementCreationOptions 是包含一个属性名为 is 的对象，该对象的值是用 customElements.define() 方法定义过的一个自定义元素的标签名。为了向前兼容较老版本的 Custom Elements specification, 有一些浏览器会允许你传一个值为自定义元素的标签名的字符串作为该参数的值。可以参考本页下方的 Web component example Google 的 Extending native HTML elements 文档仔细了解如何使用该参数。
 
 **Web component 示例**
-以下示例片段取自我们的 expanding-list-web-component 示例(实时查看)。 在这个案例中， 我们的自定义元素继承了以 \<ul> 元素为代表的 HTMLUListElement (en-US).
+以下示例片段取自我们的 expanding-list-web-component 示例(实时查看)。 在这个案例中， 我们的自定义元素继承了以 \<ul> 元素为代表的 HTMLUListElement.
 
 ```js
 // 为新元素创建一个类
@@ -6960,7 +7021,7 @@ var type = node.nodeType;
 | Node.ELEMENT_NODE                | 1    | 一个 元素 节点，例如 \<p> 和 \<div>。                        |
 | Node.TEXT_NODE                   | 3    | Element 或者 Attr 中实际的 文字                              |
 | Node.CDATA_SECTION_NODE          | 4    | 一个 CDATASection，例如 <!CDATA[[ … ]]>。                    |
-| Node.PROCESSING_INSTRUCTION_NODE | 7    | 一个用于XML文档的 ProcessingInstruction (en-US) ，例如 \<?xml-stylesheet ... ?> 声明。 |
+| Node.PROCESSING_INSTRUCTION_NODE | 7    | 一个用于XML文档的 ProcessingInstruction ，例如 \<?xml-stylesheet ... ?> 声明。 |
 | Node.COMMENT_NODE                | 8    | 一个 Comment 节点。                                          |
 | Node.DOCUMENT_NODE               | 9    | 一个 Document 节点。                                         |
 | Node.DOCUMENT_TYPE_NODE          | 10   | 描述文档类型的 DocumentType 节点。例如 \<!DOCTYPE html> 就是用于 HTML5 的。 |
@@ -7073,7 +7134,7 @@ Node 是一个接口，各种类型的 DOM API 对象会从这个接口继承。
 
 以下接口都从 Node 继承其方法和属性：
 
-Document, Element, Attr, CharacterData (which Text, Comment, and CDATASection inherit), ProcessingInstruction (en-US), DocumentFragment, DocumentType, Notation, Entity, EntityReference
+Document, Element, Attr, CharacterData (which Text, Comment, and CDATASection inherit), ProcessingInstruction, DocumentFragment, DocumentType, Notation, Entity, EntityReference
 在方法和属性不相关的特定情况下，这些接口可能返回 null。它们可能会抛出异常 - 例如，当将子节点添加到不允许子节点存在的节点时。
 
 Node从其父类型 EventTarget继承属性。
@@ -7508,21 +7569,21 @@ The `ResizeObserverEntry` interface represents the object passed to the `ResizeO
 
 ##### Properties
 
-- **ResizeObserverEntry.borderBoxSize**: <mark>Read only</mark>, An object containing the  <font color=FF0000>new **border box** size</font> of the observed element when the callback is run. **注：**注意 和 contentBoxSize 的区别
+- **ResizeObserverEntry.borderBoxSize**: <mark>只读</mark>, An object containing the  <font color=FF0000>new **border box** size</font> of the observed element when the callback is run. **注：**注意 和 contentBoxSize 的区别
 
-- **ResizeObserverEntry.contentBoxSize**: <mark>Read only</mark>, An object containing the <font color=FF0000>new **content box** size</font> of the observed element when the callback is run.
+- **ResizeObserverEntry.contentBoxSize**: <mark>只读</mark>, An object containing the <font color=FF0000>new **content box** size</font> of the observed element when the callback is run.
 
-- **ResizeObserverEntry.devicePixelContentBoxSize**: <mark>Read only</mark>, An object containing the <font color=FF0000>new content box size in device pixels</font> of the observed element when the callback is run.
+- **ResizeObserverEntry.devicePixelContentBoxSize**: <mark>只读</mark>, An object containing the <font color=FF0000>new content box size in device pixels</font> of the observed element when the callback is run.
 
-- **ResizeObserverEntry.contentRect**: <mark>Read only</mark>, <font color=FF0000>**A `DOMRectReadOnly` object**</font> （**注：** `getBoundingClientRect` 返回值是一个 `DOMRect` ，而 `DOMRectReadOnly` 继承自 `DOMRect` ）<font color=FF0000>**containing the new size of the observed element**</font> when the callback is run. 
+- **ResizeObserverEntry.contentRect**: <mark>只读</mark>, <font color=FF0000>**A `DOMRectReadOnly` object**</font> （**注：** `getBoundingClientRect` 返回值就是一个 `DOMRect` ，而 `DOMRect` 继承自 `DOMRectReadOnly` ，上面有做笔记 [[#DOMRect]] / [[#DOMRectReadOnly]]）<font color=FF0000>**containing the new size of the observed element**</font> when the callback is run. 
 
   Note that <mark>this is better supported than the above two properties</mark>, but it is left over from an earlier implementation of the Resize Observer API, is still included in the spec for web compat reasons, and may be deprecated in future versions.
 
-- **ResizeObserverEntry.target**: <mark>Read only</mark>, <font color=FF0000>A reference to the `Element` or `SVGElement` being observed</font>.
+- **ResizeObserverEntry.target**: <mark>只读</mark>, <font color=FF0000>A reference to the `Element` or `SVGElement` being observed</font>.
 
 ##### Methods
 
-None.
+无
 
 摘自：[MDN US - ResizeObserverEntry](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserverEntry)
 
@@ -7945,6 +8006,58 @@ console.log('onload 时间 ：' + ( t.loadEventEnd - t.navigationStart).toFixed(
 摘自：[你的页面为什么慢，Performance Timeline 简介](https://juejin.cn/post/6844904020109164552)
 
 
+
+#### ReportingObserver
+
+The ReportingObserver interface of the Reporting API <font color=FF0000>allows you to collect and access reports</font>.
+
+##### 构造函数
+
+**ReportingObserver()**: Creates a new ReportingObserver object instance, which can be used to collect and access reports.
+
+> ##### ReportingObserver()
+>
+> The `ReportingObserver()` constructor of the Reporting API <font color=FF0000>creates a new `ReportingObserver` object instance</font>, which can be used to collect and access reports.
+>
+> ##### 语法
+>
+> ```js
+> new ReportingObserver(callback)
+> new ReportingObserver(callback, options)
+> ```
+>
+> ##### 参数
+>
+> - **callback**: A callback function that runs when the observer starts to collect reports (i.e. via `ReportingObserver.observe()` ). The callback function is given two parameters:
+>
+>   - **reports**: A sequence of `Report` objects representing the reports collected in the observer's report queue. This is probably the most common way to retrieve the reports.
+>   - **observer**: A reference to the same `ReportingObserver` object, allowing for recursive report collection, etc.
+>
+> - **options**: 可选，An `ReportingObserverOptions` object <font color=FF0000>allowing you to set the options for creating the object</font>. The available options are:
+>
+>   - **types**: An array of strings representing the types of report to be collected by this observer. Available types include `deprecation`, `intervention`, and `crash` (although this last type usually isn't retrievable via a `ReportingObserver`).
+>
+>   - **buffered**: a boolean that defines whether the reports that were generated before the observer was able to be created should be observable ( `true` ) or not ( `false` ).
+>
+> 摘自：[MDN US - ReportingObserver()](https://developer.mozilla.org/en-US/docs/Web/API/ReportingObserver/ReportingObserver)
+
+##### 属性
+
+无
+
+##### 方法
+
+- **ReportingObserver.disconnect()**: 实验性，Stops a reporting observer that had previously started observing from collecting reports.
+
+- **ReportingObserver.observe()**: 实验性，Instructs a reporting observer to start collecting reports in its report queue.
+
+- **ReportingObserver.takeRecords()**: 实验性，<font color=FF0000>Returns the current list of reports contained in the observer's report queue, and empties the queue</font>.
+
+##### 事件
+
+无
+
+摘自：[MDN en-US - ReportingObserver](https://developer.mozilla.org/en-US/docs/Web/API/ReportingObserver)
 
 
 
@@ -8839,7 +8952,7 @@ Object.preventExtensions()方法让一个对象变的不可扩展，也就是永
 - **返回值：**已经不可扩展的对象。
 
 - **描述**
-  <font color=FF0000>如果一个对象可以添加新的属性，则这个对象是可扩展的</font>。<font color=FF0000>Object.preventExtensions()将对象标记为不再可扩展</font>，这样它将永远不会具有它被标记为不可扩展时持有的属性之外的属性。注意，<font color=FF0000>一般来说，不可扩展对象的属性可能仍然可被删除</font>。<font color=FF0000>**尝试将新属性添加到不可扩展对象将静默失败或抛出TypeError**</font>（最常见的情况是strict mode (en-US)中，但不排除其他情况）。
+  <font color=FF0000>如果一个对象可以添加新的属性，则这个对象是可扩展的</font>。<font color=FF0000>Object.preventExtensions()将对象标记为不再可扩展</font>，这样它将永远不会具有它被标记为不可扩展时持有的属性之外的属性。注意，<font color=FF0000>一般来说，不可扩展对象的属性可能仍然可被删除</font>。<font color=FF0000>**尝试将新属性添加到不可扩展对象将静默失败或抛出TypeError**</font>（最常见的情况是strict mode中，但不排除其他情况）。
 
   Object.preventExtensions()仅阻止添加自身的属性。但其对象类型的原型依然可以添加新的属性。
   该方法使得目标对象的 [[prototype]]  不可变；任何重新赋值 [[prototype]] 操作都会抛出 TypeError 。这种行为只针对内部的 [[prototype]] 属性， 目标对象的其它属性将保持可变。
@@ -11356,7 +11469,7 @@ Event 接口表示在 DOM 中出现的事件。
 
 - **Event.createEvent()：**🗑创建一个新事件，如果使用此方法创建事件，则必须调用其自身的 initEvent() 方法，对其进行初始化。
 - **Event.composedPath()：**<font color=FF0000>返回事件的路径（将在该对象上调用监听器）</font>。<mark style=background-color:hotpink>如果阴影根节点 (shadow root) 创建时 ShadowRoot.mode 值为 closed，那么路径不会包括该根节点下阴影树 (shadow tree) 的节点</mark>。
-- **event.initEvent：**🗑为通过 Event.createEvent() (en-US) 创建的事件初始化。<font color=FF0000>**该方法对已经被派发的事件无效**</font>。
+- **event.initEvent：**🗑为通过 Event.createEvent() 创建的事件初始化。<font color=FF0000>**该方法对已经被派发的事件无效**</font>。
 - **event.preventDefault：**<font color=FF0000>取消事件（**如果该事件可取消**）</font>。
 - **event.stopImmediatePropagation：**<font color=FF0000>对这个特定的事件而言，没有其他监听器被调用。这个事件既不会添加到相同的元素上，也不会添加到以后将要遍历的元素上</font>（例如在捕获阶段）。
 - **event.stopPropagation：**<font color=FF0000>停止冒泡，阻止事件在 DOM 中继续冒泡</font>。
@@ -12532,6 +12645,141 @@ let hostElem = shadow.host;
 ```
 
 摘自：[MDN - ShadowRoot.host](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/host)
+
+
+
+#### Notifications API
+
+Notifications API <font color=FF0000>允许网页控制 向最终用户显示系统通知，**这些（通知）在顶级浏览上下文视口之外**</font>；因此：<font color=FF0000>**即使用户已经切换标签页或移动到不同的应用程序，也可以显示**</font>。<font color=FF0000>该 API 被设计成与 **不同平台** 上的现有通知系统兼容</font>（**注：**感觉可以理解为方便 ***跨端*** 开发）。
+
+> **注：**上面说的有点不明白，这里摘抄下 [MDN - 使用 Web Notifications](https://developer.mozilla.org/zh-CN/docs/Web/API/Notifications_API/Using_the_Notifications_API) 中的内容：
+>
+> 通常，系统通知是指操作系统的标准通知机制。
+>
+> <mark>系统通知系统当然会因平台和浏览器而异，但无需担心，Notification API 被编写为通用的，足以与大多数系统通知系统兼容</mark>。
+>
+> <font color=FF0000>Web Notifications API 使页面可以发出通知，通知将被显示在页面之外的系统层面上</font>（通常使用操作系统的标准通知机制，但是在不同的平台和浏览器上的表现会有差异）。这个功能使 web 应用可以向用户发送信息，即使应用处于空闲状态。最明显的用例之一是一个网页版电子邮件应用程序，每当用户收到了一封新的电子邮件都需要通知用户，即使用户正在使用另一个应用程序。
+>
+> 摘自： [MDN - 使用 Web Notifications](https://developer.mozilla.org/zh-CN/docs/Web/API/Notifications_API/Using_the_Notifications_API)
+
+##### 概念和用法
+
+在支持该接口的平台上，<font color=FF0000>**显示一个系统通知通常涉及两件事**</font>。
+
+**首先**，<font color=FF0000>用户需要授予当前源的权限以显示系统通知</font>；这通常<font color=FF0000>在应用或站点初始化时，使用 `Notification.requestPermission()` 方法来完成</font>。
+
+```js
+btn.addEventListener('click', function() {
+  let promise = Notification.requestPermission();
+  // wait for permission
+})
+```
+
+这将产生一个请求对话框：
+
+![img](https://s2.loli.net/2022/06/15/7tbAPkRKY54iJel.png)
+
+从这里，用户可以选择允许来自此来源的通知，阻止来自此来源的通知，或不选择此点。一旦做出选择，该设置通常将持续用于当前会话。
+
+> #### 一些额外的补充
+>
+> 你可以通过检查只读属性 `Notification.permission` 的值来查看你是否已经有权限。该属性的值将会是下列三个之一：
+>
+> - default：用户还未被询问是否授权，所以通知不会被显示。参看 [获得权限](https://developer.mozilla.org/zh-CN/docs/Web/API/Notifications_API/Using_the_Notifications_API#获得权限) 以了解如何请求显示通知的权限。
+> - granted：表示之前已经询问过用户，并且用户已经授予了显示通知的权限。
+> - denied：用户已经明确的拒绝了显示通知的权限。
+>
+> ##### 获得权限
+>
+> 如果权限尚未被授予，那么应用不得不通过 `Notification.requestPermission()` 方法让用户进行选择。这个方法接受一个回调函数，一旦用户回应了显示通知的请求，将会调用这个函数。通常你应在你的应用首次初始化的时候请求显示通知的权限：
+>
+> ```js
+> window.addEventListener('load', function () {
+>   Notification.requestPermission(function (status) {
+>     // 这将使我们能在 Chrome/Safari 中使用 Notification.permission
+>     if (Notification.permission !== status) { Notification.permission = status; }
+>   });
+> });
+> ```
+>
+> 摘自： [MDN - 使用 Web Notifications](https://developer.mozilla.org/zh-CN/docs/Web/API/Notifications_API/Using_the_Notifications_API)
+
+接下来，使用 Notification() 构造函数创建一个新通知。这个方法可以传入两个参数。
+
+```js
+let myNotification = new Notification(title, [options]);
+```
+
+title 参数必填，option 参数可选，option 对象包含： 文本方向，正文，显示图标，通知声音播放，等等。详见 [MDN - Notification.Notification()](https://developer.mozilla.org/zh-CN/docs/Web/API/notification/Notification)
+
+> 创建通知很简单，只需要用 Notification 构造方法。这个构造函数需要一个用来显示在通知内的标题以及一些用来增强通知的选项，例如 icon 或文本 body 。
+>
+> 一旦通知被创建出来，它会立即被显示出来。<font color=FF0000>为了跟踪通知当前的状态，在 Notification 实例层面上会有 4 个事件被触发</font>：
+>
+> - show：当通知被显示给用户时触发。
+> - click：当用户点击通知时触发。
+> - close：当通知被关闭时触发。
+> - error：当通知发生错误的时候触发。这通常是因为通知由于某些原因而无法显示。
+>
+> 这些事件可以通过事件处理跟踪 onshow、onclick、onclose 和 onerror。因为 Notification 同样继承自 EventTarget，因此可以对它调用 addEventListener() 方法。
+>
+> 摘自： [MDN - 使用 Web Notifications](https://developer.mozilla.org/zh-CN/docs/Web/API/Notifications_API/Using_the_Notifications_API)
+
+<font color=FF0000>**此特性在 Web Worker 中可用**</font>，Notifications API 规范对  ServiceWorker API指定了多个添加，以允许 service workers 发送通知。
+
+##### 接口 ( Notifications interfaces )
+
+Notification：定义的通知对象
+
+##### 附加参数 ( Service worker additions )
+
+- **ServiceWorkerRegistration**：该对象包含 ServiceWorkerRegistration.showNotification() 和ServiceWorkerRegistration.getNotifications() 方法，用于控制通知的显示。
+- **ServiceWorkerGlobalScope**：该对象包含 ServiceWorkerGlobalScope.onnotificationclick 事件处理函数，用于通知被点击的时候触发绑定的事件处理函数。
+- **NotificationEvent**：该对象是功能明确的事件对象，表示一个通知事件被触发了，继承自 ExtendableEvent。
+
+摘自：[MDN - Notifications API](https://developer.mozilla.org/zh-CN/docs/Web/API/Notifications_API)
+
+
+
+#### Push API
+
+<font color=FF0000>Push API 给予了 Web 应用程序 <font size=4>**接收从服务器发出的推送消息的能力**</font></font>，<font color=FF0000>无论 Web 应用程序是否在用户设备前台 ( foreground ) ，甚至刚加载完成</font>。这样，<font color=FF0000>开发人员就可以向用户投放 **异步** 通知和更新，从而让用户能更及时地获取新内容</font>。
+
+##### Push 的概念及用法
+
+<font color=FF0000>对于一个应用来说，**要想要接收到推送消息，需要有一个被激活的 service worker**</font>（注：感觉可以理解为 Push API 依赖于 Service  Worker。另外，在 [web下的 Notification 、Push 和 service worker 的区别？ - 知乎](https://www.zhihu.com/question/39258380) 中也有类似说法）。当 <font color=FF0000>service worker 处于激活状态时，可以 **使用 PushManager.subscribe() 来订阅推送通知**</font>。
+
+PushSubscription 的结果包含了应用需要发送的推送消息的所有信息：端点及发送数据需要的加密密钥。
+
+Service worker 会在必要的时候启动并接收接下来的推送消息，传递给 ServiceWorkerGlobalScope.onpush 事件句柄。该方法允许将接收到的推送消息使用在应用上，例如通过显示一条通知（使用 ServiceWorkerRegistration.showNotification() ）
+
+每一个订阅对 service worker 来说都是唯一的。同时订阅的端点也是一个唯一的 功能性 URL：端点的信息是给应用发送信息的全部必要条件。所以端点地址需要保证隐私，否则其他应用也可以向你的应用发送消息。
+
+摘自：[MDN - Push API](https://developer.mozilla.org/zh-CN/docs/Web/API/Push_API)
+
+##### 一些补充
+
+> A push service **receives a network request**, validates it, and delivers a push message to the appropriate browser. If the browser is offline, the message is queued until the browser comes online. Each browser can use any push service they want, it's something developers have no control over.
+>
+> 摘自：[quora - Push Notification vs Web Notification APIs, Can we push notifications to desktop browsers?](https://www.quora.com/Push-Notification-vs-Web-Notification-APIs-Can-we-push-notifications-to-desktop-browsers)
+
+
+
+#### Permissions API
+
+The **Permissions API** provides a <font color=FF0000><font size=4>**consistent**</font> programmatic way</font> （一致的编程方式） to query the status of API permissions attributed to the current context. <font color=FF0000>For example, the Permissions API can **be used to determine if permission to access a particular API** has been granted or denied</font>.
+
+> **Permissions API** 提供了一种一致的编程方式来查询归因于当前上下文的API权限的状态。例如，权限API可用于确定访问特定API的权限是否已授予或拒绝。
+
+<font color=FF0000 size=4>**Historically different APIs handle their own permissions inconsistently**</font> — for example the [Notifications API](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API) allows for explicit checking of permission status and requesting permission, whereas the [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation) doesn't (which causes problems if the user denied the initial permission request). The Permissions API provides the tools to allow developers to implement a better user experience as far as permissions are concerned.
+
+> 历史上，不同的API处理自己的权限不一致。例如，Notifications API允许显式检查权限状态和请求权限，而地理位置API不允许（如果用户拒绝初始权限请求，则会导致问题）。Permission API 提供了工具，允许开发人员在权限方面实现更好的用户体验。
+
+The `permissions` property has been made available on the [`Navigator`](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator) object, both in the standard browsing context and the worker context ([`WorkerNavigator`](https://developer.mozilla.org/en-US/docs/Web/API/WorkerNavigator) — so permission checks are available inside workers), and returns a [`Permissions`](https://developer.mozilla.org/zh-CN/docs/Web/API/Permissions) object that provides access to the Permissions API functionality.
+
+> permissions 属性已在 Navigator 对象上提供，无论是在标准浏览上下文还是在 WorkerNavigator 中（因此权限检查在 worker 内部可用），并返回一个 Permissions 对象，该对象提供对 Permission API 功能的访问
+
+摘自：[MDN - Permissions API](https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API)
 
 
 
