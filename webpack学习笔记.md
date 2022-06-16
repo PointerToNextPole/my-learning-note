@@ -1,43 +1,46 @@
-# webpack学习笔记
+# webpack 学习笔记
 
 
 
-#### webpack存在的必要
+#### webpack 存在的必要
 
 webpack是一种构建工具工具。那，为什么需要构建或者说编译呢？因为像es6、less及sass、模板语法、vue指令及jsx在浏览器中是无法直接执行的，必须经过构建这一个操作才能保证项目运行，所以前端构建打包很重要。除了这些，前端构建还能解决一些web应用性能问题，比如：依赖打包、资源嵌入、文件压缩及hash指纹等。具体的我不再展开，总之前端构建工程化已经是趋势。
 
 
 
-- **webpack解析ES6**
+##### webpack 解析 ES6
 
-  需要掌握一个新的概念，loaders：所谓 loaders ，就是说把原本 webpack 不支持加载的文件或者文件内容通过 loaders 进行加载解析，实现应用的目的。<mark>这里讲解 ES6 解析，原生支持 JS 解析，但是不能解析 ES6，需要 babel-loader ，而 babel-loader 又依赖 babel</mark>
+需要掌握一个新的概念，loaders：所谓 loaders ，就是说把原本 webpack 不支持加载的文件或者文件内容通过 loaders 进行加载解析，实现应用的目的。<mark>这里讲解 ES6 解析，原生支持 JS 解析，但是不能解析 ES6，需要 babel-loader ，而 babel-loader 又依赖 babel</mark>
 
-- **webpack加载 css、less 等样式文件**
+##### webpack 加载 css、less 等样式文件
 
-  css-loader 用于加载 css 文件并生成 commonjs 对象，style-loader 用于将样式通过 style 标签插入到 \<head> 中
+css-loader 用于加载 css 文件并生成 commonjs 对象，style-loader 用于将样式通过 style 标签插入到 \<head> 中
 
-- **webpack加载图片**
+##### webpack 加载图片
 
-  图片在webpack中的打包使用file-loader或url-loader
+图片在 webpack 中的打包使用 file-loader 或 url-loader
 
 摘自：[一小时的时间，上手 Webpack](https://zhuanlan.zhihu.com/p/114286243)
 
 
 
-**开发环境与生产环境的区别**
+#### 开发环境与生产环境的区别
 
-- **开发环境**
-  - NODE_ENV 为 development
-  - 启用模块热更新（hot module replacement）
-  - 额外的 webpack-dev-server 配置项，API Proxy 配置项
-  - 输出 Sourcemap
-- **生产环境**
-  - NODE_ENV 为 production
-  - 将 React、jQuery 等常用库设置为 external，直接采用 CDN 线上的版本
-  - 样式源文件（如 css、less、scss 等）需要通过 ExtractTextPlugin 独立抽取成 css 文件
-  - 启用 post-css
-  - 启用 optimize-minimize（如 uglify 等）
-  - 中大型的商业网站生产环境下，是绝对不能有 console.log() 的，所以要为 babel 配置 Remove console transform
+##### 开发环境
+
+- NODE_ENV 为 development
+- 启用模块热更新 ( hot module replacement )
+- 额外的 webpack-dev-server 配置项，API Proxy 配置项
+- 输出 SourceMap
+
+##### 生产环境
+
+- NODE_ENV 为 production
+- 将 React、jQuery 等常用库设置为 external，直接采用 CDN 线上的版本
+- 样式源文件（如 css、less、scss 等）需要通过 ExtractTextPlugin 独立抽取成 css 文件
+- 启用 post-css
+- 启用 optimize-minimize（如 uglify 等）
+- 中大型的商业网站生产环境下，是绝对不能有 console.log() 的，所以要为 babel 配置 Remove console transform
 
 > 这里需要说明的是因为开发环境下启用了 hot module replacement，为了让样式源文件的修改也同样能被热替换，不能使用 ExtractTextPlugin，而转为随 JS Bundle 一起输出。
 
@@ -45,13 +48,137 @@ webpack是一种构建工具工具。那，为什么需要构建或者说编译�
 
 
 
-> ### 学习慕课网课程《从基础到实战 手把手带你掌握新版Webpack4.0》做的笔记
+### webpack 基础概念
 
-**npx webpack entryFile** 命令的作用是：使用webpack工具去解析（似乎只是替换文件引入的语法（import / require），将模块合并打包，webpack本身不懂ES6 -> ES5的转换）一个项目，这时候项目的文件夹下会产生一个 dist 目录，在该目录下会产生一个 main.js 的文件（main.js 是 webpack 默认配置定义的打包名称，关于webpack配置见下面）。
+#### webpack 文档 concept 的介绍
+
+##### 总述
+
+At its core, **webpack** is a *static module bundler* for modern JavaScript applications. When webpack processes your application, <font color=FF0000>**it internally <font size=4>builds a [dependency graph](https://webpack.js.org/concepts/dependency-graph/)</font> from one or more *entry points***</font> and **then** <font color=FF0000>**combines every module your project needs into one or more *bundles***</font>, which are static assets to serve your content from.
+
+<mark>Since version 4.0.0, **webpack does not require a configuration file** to bundle your project</mark>. <font size=4>**Nevertheless**</font>, <font color=FF0000>**it is [incredibly configurable](https://webpack.js.org/configuration) to better fit your needs**</font>.
+
+##### Entry
+
+An **entry point** indicates <font color=FF0000>**which module webpack should use to begin building out its internal [dependency graph](https://webpack.js.org/concepts/dependency-graph/)**</font>. Webpack will <font color=FF0000>figure out which other modules and libraries that **entry point depends on** (directly and indirectly)</font>.
+
+<font color=FF0000>**By default its value is `./src/index.js`**</font> , but you can <font color=FF0000>specify a different (or multiple entry points) by setting an `entry` property</font> in the webpack configuration. For example:
+
+```js
+// webpack.config.js
+
+module.exports = {
+  entry: './path/to/my/entry/file.js',
+};
+```
+
+##### Output
+
+The **output** property **tells webpack where to emit the *bundles* it creates** and **how to name these files**. <font color=FF0000>**It defaults to `./dist/main.js` for the main output file**</font> and <font color=FF0000>**to the `./dist` folder for any other generated file**</font>.
+
+You can configure this part of the process by specifying an `output` field in your configuration:
+
+```js
+// webpack.config.js
+
+const path = require('path');
+
+module.exports = {
+  entry: './path/to/my/entry/file.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'my-first-webpack.bundle.js',
+  },
+};
+```
+
+In the example above, we use the <font color=FF0000>`output.filename`</font> and the <font color=fuchsia>`output.path` </font> properties to tell webpack <font color=FF0000>**the name of our bundle**</font> and <font color=fuchsia>**where we want it to be emitted to**</font>. 
+
+##### Loaders
+
+<mark style="background: aqua">**Out of the box**</mark>, <font color=FF0000 size=4>webpack **only understands JavaScript and JSON** files</font>（译文：webpack 只能理解 JavaScript 和 JSON 文件，<mark style="background: aqua">**这是 webpack 开箱可用的自带能力**</mark>）. <font color=FF0000 size=4>**Loaders** allow webpack to **process other types of files** and **convert them into valid [modules](https://webpack.js.org/concepts/modules)** that **can be consumed by your application** and **added to the dependency graph**</font>.
+
+At a high level, **loaders** have two properties in your webpack configuration:
+
+1. The **`test` property** <font color=FF0000>identifies which file or files should be transformed</font>.
+2. The **`use` property** <font color=FF0000>indicates which loader should be used to do the transforming</font>.
+
+```js
+// webpack.config.js
+
+const path = require('path');
+
+module.exports = {
+  output: {
+    filename: 'my-first-webpack.bundle.js',
+  },
+  module: {
+    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+  },
+};
+```
+
+The configuration above has defined a `rules` property for a single module with two required properties: `test` and `use`. This tells webpack's compiler the following:
+
+> *"Hey webpack compiler, when you come across a path that resolves to a '.txt' file inside of a* `require()`*/*`import` *statement,* **use** *the* `raw-loader` *to transform it before you add it to the bundle."*
+
+##### Plugins
+
+While loaders are used to transform certain types of modules, <font color=FF0000>plugins can **be leveraged to perform a wider range of tasks** like bundle optimization, asset management and injection of environment variables</font>.
+
+<font color=FF0000>In order to use a plugin, **you need to `require()` it and add it to the `plugins` array**</font>. Most plugins are customizable through options. Since you can use a plugin multiple times in a configuration for different purposes, <font color=FF0000>**you need to create an instance of it by calling it with the `new` operator**</font>.
+
+```js
+// webpack.config.js
+
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack'); //to access built-in plugins
+
+module.exports = {
+  module: {
+    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+  },
+  plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
+};
+```
+
+In the example above, <font color=FF0000>the `html-webpack-plugin` **generates an HTML file for your application** and **automatically injects all your generated bundles into this file**</font>.
+
+> **Tip**: There are many plugins that webpack provides out of the box! Check out the [list of plugins](https://webpack.js.org/plugins).
+
+##### Mode
+
+By setting the <font color=FF0000>`mode` parameter to either `development`, `production` or `none`</font>, you can <font color=FF0000 size=4>enable **webpack's built-in optimizations**</font> that correspond to each environment. <font color=FF0000>**The default value is `production`**</font>.
+
+```javascript
+module.exports = {
+  mode: 'production',
+};
+```
+
+##### Browser Compatibility
+
+Webpack supports all browsers that are [ES5-compliant](https://kangax.github.io/compat-table/es5/) (<font color=FF0000>**IE8 and below are not supported**</font>). Webpack needs `Promise` for `import()` and `require.ensure()`. <mark>If you want to support older browsers, you will need to **load a polyfill before using these expressions**</mark>.
+
+摘自：[webpack 文档 - Concepts](https://webpack.js.org/concepts)
+
+#### 关于 webpack.config.js
+
+webpack 默认使用 webpack.config.js 作为配置文件。可以使用 `--config` 选项，以 `--config youWantConfigFile` 的形式选择想要的配置文件。如上内容，总结自下面的话：
+
+> <font color=FF0000>If a `webpack.config.js` is present, the `webpack` command picks it up **by default**</font>. We <font color=FF0000>use the **`--config` option** here only to show that you can pass a configuration of any name</font>. This will be useful for more complex configurations that need to be split into multiple files.
+>
+> 摘自：[webpack 文档 - Guides - Getting Started - Using a Configuration](https://webpack.js.org/guides/getting-started/#using-a-configuration)
 
 
 
-webpack本质上是一个模块打包工具，同时支持ES Module / CommonJS / CMD / ADM的导入方式
+### 慕课网课程《从基础到实战 手把手带你掌握新版 Webpack4.0 》笔记
+
+**`npx webpack entryFile`** 命令的作用是：使用 webpack 工具去解析（似乎只是替换文件引入的语法 ( import / require ) ，将模块合并打包，webpack 本身不懂 ES6 -> ES5 的转换）一个项目，这时候项目的文件夹下会产生一个 dist 目录，在该目录下会产生一个 main.js 的文件（ main.js 是 webpack 默认配置定义的打包名称，关于 webpack 配置见下面）。
+
+
+
+webpack 本质上是一个模块打包工具，同时支持 ES Module / CommonJS / CMD / ADM 的导入方式
 
 **官方文档如下：**
 
@@ -77,7 +204,7 @@ webpack本质上是一个模块打包工具，同时支持ES Module / CommonJS /
 
 
 
-<font color=FF0000>**CommonJS是Node的模块引入规范**</font>，其中引入和导出的语法如下
+<font color=FF0000>**CommonJS 是 Node 的模块引入规范**</font>，其中引入和导出的语法如下
 
 ```js
 //引入
@@ -89,25 +216,25 @@ module.exports = module
 
 
 
-使用webpack的同时，必须要安装 webpack-cli 。webpack-cli 的作用是让你可以在命令行中使用 webpack 命令，如果你不安装，将无法使用 webpack 或 npx webpack 命令。
+使用 webpack 的同时，必须要安装 webpack-cli 。webpack-cli 的作用是让你可以在命令行中使用 webpack 命令，如果你不安装，将无法使用 `webpack` 或 `npx webpack` 命令。
 
 
 
-webpack是基于Node开发的模块打包工具，所以本质上是由Node实现的。同时，由于更高版本的webpack，会使用高版本Node的一些特性；可以大大提高webpack打包的速率。
+webpack 是基于 Node 开发的模块打包工具，所以本质上是由 Node 实现的。同时，由于更高版本的 webpack，会使用高版本 Node 的一些特性；可以大大提高 webpack 打包的速率。
 
-通常不建议使用全局安装包（npm install -g package），比如webpack；因为这样对于依赖不同版本包的不同项目，会造成依赖冲突，所以推荐使用在项目中通过 -D 形式安装。
+通常不建议使用全局安装包 ( `npm install -g package` ) ，比如 webpack ；因为这样对于依赖不同版本包的不同项目，会造成依赖冲突，所以推荐使用在项目中通过 `-D` 形式安装。
 
-以webpack为例，如果没有全局安装webpack，这时使用 **webpack -v** 命令是没有结果的，这时可以使用 **npx webpack -v**，<font color=FF0000> 将会运行运行在当前目录下的webpack安装包</font>。同样，不仅仅可以使用 -v 命令，还有其他命令。
+以webpack为例，如果没有全局安装 webpack，这时使用 **webpack -v** 命令是没有结果的，这时可以使用 **`npx webpack -v`**，<font color=FF0000> 将会运行运行在当前目录下的 webpack 安装包</font>。同样，不仅仅可以使用 `-v` 命令，还有其他命令。
 
-<font size=4>**补充：**</font> 使用全局安装的webpack，打包命令如下：**webpack entryFileName**。所以，后面才会出现项目本地安装时打包的命令： npx webpack entryFileName
+<font size=4>**补充：**</font> 使用全局安装的 webpack，打包命令如下：**`webpack entryFileName`**。所以，后面才会出现项目本地安装时打包的命令： npx webpack entryFileName
 
 
 
-npm init 命令，帮助我们以Node规范的形式创建一个项目，或者创建一个Node的包文件。此时会生成一个package.json的文件。
+`npm init` 命令，帮助我们以 Node 规范的形式创建一个项目，或者创建一个 Node 的包文件。此时会生成一个 package.json 的文件。
 
-可以在命令的后面添加 -y，让所有选项均为默认。
+可以在命令的后面添加 `-y` ，让所有选项均为默认。
 
-当前的package.json文件内容如下：
+当前的 package.json 文件内容如下：
 
 ```json
 {
@@ -124,19 +251,19 @@ npm init 命令，帮助我们以Node规范的形式创建一个项目，或者�
 }
 ```
 
-这时，可以在package.json中加上 "private": true 表示代码是私有的，不会被发布到npm的线上仓库中。
+这时，可以在 package.json 中加上 `"private": true` 表示代码是私有的，不会被发布到 npm 的线上仓库中。
 
 另外，main 的作用是：指定 便于外部项目使用的、向外暴露的文件
 
 
 
-webpack的（默认）配置文件的名称为：webpack.config.js。即：即使用户不自定义配置文件，webpack也会使用默认的配置文件
+webpack 的（默认）配置文件的名称为 webpack.config.js。即：即使用户不自定义配置文件，webpack 也会使用默认的配置文件
 
 
 
-#### webpack.config.js配置文件的格式
+#### webpack.config.js 配置文件的格式
 
-webpack.config.js使用CommonJS的语法，语法格式如下：
+webpack.config.js 使用 CommonJS 的语法，语法格式如下：
 
 ```js
 // 这是引入node的一个核心模块path，与下面的path一起使用。
@@ -144,7 +271,7 @@ webpack.config.js使用CommonJS的语法，语法格式如下：
 const path = require('path')
 
 module.exports = {
-  // 项目打包，开始打包的文件入口，实际上相当于entry: {main: './src/index.js'},的简写
+  // 项目打包，开始打包的文件入口，实际上相当于entry: {main: './src/index.js'}, 的简写
   // 如果不配置该项，命令 `npx webpack [entryFileName]` 是必须要加上文件名（入口文件名）的；
   // 配置了这项，则不需要了，可以直接使用 `npx webpack`了
   entry: './src/index.js',
@@ -164,30 +291,298 @@ module.exports = {
 }
 ```
 
-<font size=4>**补充：**</font>dist是distribution的缩写
+**注：**dist 是 distribution 的缩写
+
+#### Entry 补充
+
+##### 总述
+
+Entry 有两种写法 ：
+
+- **“Single Entry (Shorthand) Syntax”  译为 “单个入口（简写）语法”**：`entry: string | [string]`
+- **“Object Syntax” 译为 “对象语法”** ： `entry: { <entryChunkName> string | [string] } | {}`
+
+ 前者是后者的简写。另外， `[string]` 是 *字符串数组* 。
+
+##### 单个入口（简写）语法
+
+**用法：**`entry: string | [string]` 。
+
+`entry: './path/to/my/entry/file.js'` 是 “单个入口（简写）语法”，是一种简写；它的完整的写法（“对象语法”）是：
+
+```javascript
+entry: {
+  main: './path/to/my/entry/file.js',
+},
+```
+
+另外，这里 main 是 entryChunkName，下面有说明
+
+**除了 指定 字符串 作为入口路径外，还可以使用 字符串数组：** 
+
+> We can also <font color=FF0000>pass an array of file paths to the `entry` property which creates what is known as a **"multi-main entry"**</font>. This is <font color=FF0000>useful when you would like to **inject multiple dependent files together** and **graph their dependencies into one "chunk"**</font>.
+>
+> ```js
+> // webpack.config.js
+> 
+> module.exports = {
+>     entry: ['./src/file_1.js', './src/file_2.js'],
+>     output: {
+>       filename: 'bundle.js',
+>     },
+> };
+> ```
+>
+> Single Entry Syntax is a great choice when you are looking to <font color=FF0000>quickly set up a webpack configuration for an application or tool<font color=FF0000> with one entry point (i.e. a library). However, <font color=FF0000>there is **not much flexibility** in **extending or scaling your configuration with this syntax**</font>.
+
+##### 对象语法
+
+> ```js
+> // webpack.config.js
+> 
+> module.exports = {
+>   entry: {
+>    app: './src/app.js',
+>    adminApp: './src/adminApp.js',
+>   },
+> };
+> ```
+>
+> The object syntax is more verbose（啰嗦）. However, this is <font color=FF0000>the **most scalable way**</font> （可伸缩 / 可扩展性）<font color=FF0000>of defining entry / entries in your application</font>.
+>
+> > **"Scalable webpack configurations"** are ones that can be reused and combined with other partial configurations. This is a popular technique used to separate concerns（分离关注点） by environment, build target, and runtime. They are then merged using specialized tools like [webpack-merge](https://github.com/survivejs/webpack-merge).
+> >
+> > 译文：**“webpack 配置的可扩展”** 是指，这些配置可以重复使用，并且可以与其他配置组合使用。这是一种流行的技术，用于将关注点从环境 (environment)、构建目标(build target)、运行时(runtime)中分离。然后使用专门的工具（如 [webpack-merge](https://github.com/survivejs/webpack-merge)）将它们合并起来。
+>
+> ##### EntryDescription object （入口描述对象）
+>
+> An object of entry point description. You can <font color=FF0000>specify the following properties</font>:
+>
+> - **dependOn**: The entry points that <font color=FF0000>**the current entry point depends on**</font>. They <font color=FF0000>**must be loaded before this entry point is loaded**</font>.   
+>
+>   当前入口所依赖的入口。它们必须在该入口被加载前被加载。
+>
+> - **filename**: Specifies the name of each output file on disk.  
+>
+>   <font color=FF0000>指定要 <font size=4>**输出**</font> 的文件名称</font>。
+>
+> - **import:** Module(s) that are loaded upon startup（启动）.
+>
+>   <font color=FF0000>启动时需加载的模块</font>。
+>
+> - **library**: Specify [library options](https://webpack.js.org/configuration/output/#outputlibrary) to bundle a library from current entry. 
+>
+>   <font color=FF0000>**指定 library 选项，为当前 entry 构建一个 library**</font>
+>
+> - **runtime**: <font color=FF0000>**The name of the runtime chunk**</font>. <font color=FF0000>When set, a new runtime chunk will be created</font>. It can be set to `false` to avoid a new runtime chunk since webpack 5.43.0.  
+>
+>   （指定）<font color=FF0000>**运行时 chunk 的名字**</font>（这也解释了下面为什么说：runtime 不能指向 “已存在的入口名称”）。<font color=FF0000>如果设置了，就会创建一个新的运行时 chunk</font>。在 webpack 5.43.0 之后可将其设为 `false` 以避免一个新的运行时 chunk。
+>
+> - **publicPath**: Specify a public URL address for the output files of this entry when they are referenced in a browser. Also, see [output.publicPath](https://webpack.js.org/configuration/output/#outputpublicpath).  
+>
+>   当该入口的输出文件在浏览器中被引用时，为它们指定一个公共 URL 地址。同样，可见 output.publicPath
+>
+> ##### 示例
+>
+> ```js
+> module.exports = {
+>   entry: {
+>     a2: 'dependingfile.js',
+>     b2: {
+>       dependOn: 'a2',
+>       import: './src/app.js',
+>     },
+>   },
+> };
+> ```
+>
+> ##### 注意点
+>
+> - <font color=FF0000>**`runtime` and `dependOn`** should not be used together on **a single entry**</font>, so the <mark>following config is invalid and would **throw an error**</mark>:
+>
+>   ```js
+>   module.exports = {
+>     entry: {
+>       a2: './a',
+>       b2: {
+>         runtime: 'x2',
+>         dependOn: 'a2',
+>         import: './b',
+>       },
+>     },
+>   };
+>   ```
+>
+> - <font color=FF0000>**`runtime`** must not point to an **existing entry point name**</font>, for example the <mark>below config would **throw an error**</mark>:
+>
+>   ```js
+>   module.exports = {
+>     entry: {
+>       a1: './a',
+>       b1: {
+>         runtime: 'a1', // a1 在上面已定义
+>         import: './b',
+>       },
+>     },
+>   };
+>   ```
+>
+> - <font color=FF0000>**`dependOn`** must not be circular</font>（dependOn 不能循环引用）, the following example again would throw an error:
+>
+>   ```js
+>   module.exports = {
+>     entry: {
+>       a3: {
+>         import: './a',
+>         dependOn: 'b3',
+>       },
+>       b3: {
+>         import: './b',
+>         dependOn: 'a3',
+>       },
+>     },
+>   };
+>   ```
+
+##### 常见场景：分离 app（ 应用程序 ） 和 vendor （第三方库） 入口
+
+这也是 “多入口打包”。如下示例配置：
+
+```js
+// wepback.config.js
+module.exports = {
+  entry: {
+    main: './src/app.js',
+    vendor: './src/vendor.js',
+  },
+};
+```
+
+```js
+// webpack.prod.js
+module.exports = {
+  output: {
+    filename: '[name].[contenthash].bundle.js',
+  },
+};
+```
+
+```js
+// webpack.dev.js
+module.exports = {
+  output: {
+    filename: '[name].bundle.js',
+  },
+};
+```
+
+这样做的原因是： <font color=FF0000>**可以在 `vendor.js` 中存入 未做修改的 必要 “库”( library ) 或文件**</font>（例如 Bootstrap， jQuery， 图片等），然后<font color=FF0000>**将它们打包在一起成为单独的 chunk**</font>。内容哈希保持不变，这使浏览器可以独立地缓存它们，从而减少了加载时间。
+
+> ##### 注意
+>
+> 在 webpack < 4 的版本中，<mark>通常将 **vendor 作为一个单独的入口起点** 添加到 entry 选项中</mark>，以将其编译为一个单独的文件（与 `CommonsChunkPlugin` 结合使用）。
+>
+> 而<font color=FF0000>在 webpack 4 中不鼓励这样做</font>。而是<font color=FF0000>使用 `optimization.splitChunks` 选项，将 vendor 和 app （应用程序） 模块分开，并为其创建一个单独的文件</font>。不要 为 vendor 或其他不是执行起点创建 entry。
+
+##### 常见场景：多页面应用程序 (MPA)
+
+```js
+// webpack.config.js
+module.exports = {
+  entry: {
+    pageOne: './src/pageOne/index.js',
+    pageTwo: './src/pageTwo/index.js',
+    pageThree: './src/pageThree/index.js',
+  },
+};
+```
+
+这是在告诉 webpack，我们需要三个分离的依赖图 ( dependency graphs )。
+
+这样做的原因是： 在多页面应用程序中，<font color=FF0000>server 会拉取一个新的 HTML 文档给你的客户端。页面重新加载此新文档，并且资源被重新下载</font>。然而，<font color=FF0000>**这给了我们特殊的机会去做很多事**</font>，例如使用 `optimization.splitChunks` 为页面间共享的应用程序代码创建 bundle。由于入口起点数量的增多，多页应用能够复用多个入口起点之间的大量代码/模块，从而可以极大地从这些技术中受益。
+
+总结与摘抄自：[webpack 文档 - concept - Entry Points](https://webpack.js.org/concepts/entry-points/)
+
+#### Output 补充
+
+output 配置选项 是告诉 webpack： 如何向硬盘写入编译文件。注意 ⚠️：<font color=FF0000>即使可以存在多个 `entry` 起点，但 <font size=4>**只能指定一个 `output` 配置**</font></font>（注意⚠️：是只能指定一个配置，而不是文件）。
+
+<font color=FF0000>使用 output 配置选项 **至少** 要传入 一个 包含 `output.filename` 的对象</font>：
+
+```js
+// webpack.config.js
+module.exports = {
+  output: {
+    filename: 'bundle.js',
+  },
+};
+```
+
+此配置将一个单独的 `bundle.js` 文件输出到 `dist` 目录中。
+
+##### 多打包入口
+
+如果配置中创建出多于一个 "chunk"（例如，使用 **多个入口起点** 或 使用像 CommonsChunkPlugin 这样的插件），则应该使用 [占位符(substitutions)](https://webpack.docschina.org/configuration/output#output-filename) 来确保每个文件具有唯一的名称：
+
+```js
+module.exports = {
+  entry: {
+    app: './src/app.js',
+    search: './src/search.js',
+  },
+  output: {
+    filename: '[name].js', // [name] 即是一种“占位符”
+    path: __dirname + '/dist',
+  },
+};
+
+// 写入到硬盘：./dist/app.js, ./dist/search.js
+```
+
+##### output 中的 publicPath
+
+以下是对资源使用 CDN 和 hash 的复杂示例：
+
+```js
+module.exports = {
+  output: {
+    path: '/home/proj/cdn/assets/[fullhash]',
+    publicPath: 'https://cdn.example.com/assets/[fullhash]/',
+  },
+};
+```
+
+如果在编译时，不知道最终输出文件的 `publicPath` 是什么地址，则可以将其留空，并且在运行时通过入口起点文件中的 `__webpack_public_path__` 动态设置。
+
+```js
+// 应用程序入口的其余部分
+__webpack_public_path__ = myRuntimePublicPath;
+```
+
+摘自：[webpack 文档 - output](https://webpack.js.org/concepts/output/)
 
 
 
-npx webpack [entryFileName] 命令默认使用配置文件是 webpack.config.js 。如果项目中没有 webpack.config.js 同时运行 npx webpack [entryFileName] 将会报错，解决方法是：**npx webpack [entryFileName] --config myConfig.js**，从而指定一个webpack的配置文件
+`npx webpack [entryFileName]` 命令默认使用配置文件是 webpack.config.js 。如果项目中没有 webpack.config.js 同时运行 `npx webpack [entryFileName]` 将会报错，解决方法是：**`npx webpack [entryFileName] --config myConfig.js`**，从而指定一个 webpack 的配置文件
 
 
 
-如果习惯于Vue或React的npm run命令，可以在package.json下的scripts项设置
+如果习惯于 Vue 或 React 的 `npm run` 命令，可以在 package.json 下的 scripts 项设置
 
 ```json
-//package.json文件夹下
+// package.json 文件下
 "scripts": {
   "bundle": "webpack"
 }
 ```
 
-它的意思是：当你执行 bundle（自定义的，即也可以换成start）命令，它实际执行的是webpack打包。这时输入 **npm run bundle** 一样可以起到 **npm webpack** 打包的效果。这里涉及到的是：**npm scripts**。定义了npm scripts，使用其他定义的命令只需要用 **npm run yourScripts**即可。npm scripts的作用是，为了避免总是在CLI中输入大量的配置，而对命令做出的快捷方式。
+它的意思是：当你执行 bundle（自定义的，即也可以换成 start ）命令，它实际执行的是 webpack 打包。这时输入 **`npm run bundle`** 一样可以起到 **`npm webpack`** 打包的效果。这里涉及到的是：**npm scripts**。定义了npm scripts ，使用其他定义的命令只需要用 **`npm run yourScripts`**即可。npm scripts 的作用是，为了避免总是在 CLI 中输入大量的配置，而对命令做出的快捷方式。
 
 > Given it's not particularly fun to run a local copy of webpack from the CLI, we can set up a little shortcut.
 >
 > 摘自：https://webpack.js.org/guides/getting-started/#npm-scripts
 
-同时，这里使用了 npm webpack，而不是npx webpack；这是因为如果配置了npm scripts ，npm会首先到node_modules 文件夹下查找是否安装了 webpack，如果找到则直接使用。
+同时，这里使用了 npm webpack，而不是 npx webpack；这是因为如果配置了 npm scripts ，npm 会首先到 node_modules 文件夹下查找是否安装了 webpack，如果找到则直接使用。
 
 推荐阅读：https://webpack.js.org/guides/getting-started/
 
@@ -195,9 +590,9 @@ npx webpack [entryFileName] 命令默认使用配置文件是 webpack.config.js 
 
 #### Loader
 
-webpack默认只会对js文件打包，如果想要对其他类型的文件打包，需要在 webpack.config.js 文件中进行设置：
+webpack 默认只会对 js 文件打包，如果想要对其他类型的文件打包，需要在 webpack.config.js 文件中进行设置：
 
-以打包jpg图片为例：
+以打包 jpg 图片为例：
 
 ```js
 module.exports = {
@@ -220,13 +615,13 @@ module.exports = {
 }
 ```
 
-<font size=4>**补充：**</font><font color=FF0000 size=4>**在 webpack V5中，file-loader、raw-loader、url-loader 被 资源模块（asset module）所取缔**</font>。
+<font color=FF0000>**在 webpack 5中，file-loader、raw-loader、url-loader 被 资源模块（asset module）所取缔**</font>。
 
 
 
-<mark>同样，如果需要打包vue格式的文件，使用loader就需要使用vue-loader</mark>，关于 vue-loader可以去 [官网](https://vue-loader.vuejs.org/zh/)  进一步学习
+<mark>同样，如果需要打包 vue 格式的文件，使用 loader 就需要使用 vue-loader </mark>，关于 vue-loader 可以去 [官网](https://vue-loader.vuejs.org/zh/)  进一步学习
 
-**设置打包后图片的名字，**在webpack.config.js文件中设置：
+**设置打包后图片的名字，**在 webpack.config.js 文件中设置：
 
 ```js
 module: {
@@ -254,25 +649,25 @@ module: {
 
 **url-loader**
 
-也可以使用**url-loader**，它可以实现 file-loader 一样的功能，<font color=FF0000> 同时配置项也非常相似</font>；不过，并不会将图片打包到dist文件夹下；<font color=FF0000> **url-loader 会把图片转变成Base64（或其他）的Data URI，写入到打包出的js文件中**</font> <mark>（类似于C++中的内联）</mark>。不过这样会带来问题：如果图片很大，该js文件将会因此很大，请求js文件的时间将会很长，于是页面将会很长时间内没有反应。于是需要进行一个新的设置 **limit**：
+也可以使用 **url-loader**，它可以实现 file-loader 一样的功能，<font color=FF0000> 同时配置项也非常相似</font>；不过，并不会将图片打包到dist文件夹下；<font color=FF0000> **url-loader 会把图片转变成 Base64（或其他）的Data URI，写入到打包出的 js 文件中**</font> <mark>（类似于C++中的内联）</mark>。不过这样会带来问题：如果图片很大，该 js 文件将会因此很大，请求 js 文件的时间将会很长，于是页面将会很长时间内没有反应。于是需要进行一个新的设置 **limit**：
 
 ```js
-    use: {
-  		loader: 'url-loader',
-      options: {
-      	name: '[name].[ext]', 
-      	outputPath: 'images/',
-        // 这里的单位是字节，如果文件超过2048字节，那么该文件将不会内联到js文件中
-        limit: 2048,
-    	}
-  	}
+use: {
+	loader: 'url-loader',
+  options: {
+  	name: '[name].[ext]', 
+  	outputPath: 'images/',
+    // 这里的单位是字节，如果文件超过2048字节，那么该文件将不会内联到js文件中
+    limit: 2048,
+	}
+}
 ```
 
 **补充：**
 
-如果不想使用默认的base64的格式，可以通过encoding参数进行配置；可选参数包含： "utf8", "utf16le", "latin1", "base64", "hex", "ascii", "binary", "ucs2"
+如果不想使用默认的 base64 的格式，可以通过 encoding 参数进行配置；可选参数包含： "utf8", "utf16le", "latin1", "base64", "hex", "ascii", "binary", "ucs2"
 
-另外，如果文件超过 limit 的限制，默认处理的 loader 是 file-loader，但是也可以通过 fallback参数进行 自定义。示例如下：
+另外，如果文件超过 limit 的限制，默认处理的 loader 是 file-loader，但是也可以通过 fallback 参数进行 自定义。示例如下：
 
 ```js
 options: {
@@ -286,7 +681,7 @@ options: {
 
 | loader      | 介绍                                                         |
 | ----------- | ------------------------------------------------------------ |
-| raw-loader  | 加载文件原始内容（utf-8）。直接返回JSON.stringify后的内容。<br>官方文档中的描述是：A loader for webpack that allows importing files as a String |
+| raw-loader  | 加载文件原始内容 ( utf-8 ) 。直接返回 JSON.stringify 后的内容。<br>官方文档中的描述是：A loader for webpack that allows importing files as a String |
 | val-loader  | 将代码作为模块执行，并将 exports 转为 JS 代码。字符串形式定义的代码作为模块执行，返回对应的模块 |
 | file-loader | 将文件发送到输出文件夹，并返回（相对）URL                    |
 | url-loader  | 像 file loader 一样工作，但如果文件小于限制，可以返回 data URL |
@@ -295,7 +690,7 @@ options: {
 
 
 
-#### 对于样式文件（CSS）的打包
+#### 对于样式文件 ( CSS ) 的打包
 
 ```js
 module: {
@@ -306,18 +701,18 @@ module: {
 }
 ```
 
-- **css-loader：**<font color=FF0000> 会分析所有CSS文件的关系，最后将这些CSS文件合并为一个CSS文件</font>
-  - **sass-loader：**如果需要打包到文件中包含scss / sass，则需要使用sass-loader，于是use变成了 ['style-loader', 'css-loader', 'sass-loader']。同时，想要使用 sass-loader，还需要安装 node-sass
-- **style-loader：**<font color=FF0000> 在得到css-loader输出的内容后，会把生成的css文件挂载到页面的header部分；挂载的方法是：生成一个\<style>...\</style> 并插入</font>
+- **css-loader：**<font color=FF0000> 会分析所有 CSS 文件的关系，最后将这些CSS文件合并为一个CSS文件</font>
+- **sass-loader：**如果需要打包到文件中包含 scss / sass，则需要使用 sass-loader，于是use变成了 `['style-loader', 'css-loader', 'sass-loader']`。同时，想要使用 sass-loader，还需要安装 node-sass。注：node-sass 非常容易出问题，推荐使用 dart-sass
+- **style-loader：**<font color=FF0000> 在得到 css-loader 输出的内容后，会把生成的 css 文件挂载到页面的 header 部分；即：生成一个 `<style>...</style>` 并插入</font>
 - **postcss-loader：**见下面。
 
-##### <font color=FF0000>**在webpack中，loader的使用是<font size=4>有先后顺序</font>的，分别是：<font size=4>从下到上，从右到左</font>。**</font> 所以，上面关于sass的讲解，是sass-loader先解析sass，交给css-loader分析所有css关系，并整合成一个文件；最后，style-loader挂载到header上
+##### <font color=FF0000>**在webpack中，loader的使用是<font size=4>有先后顺序</font>的，分别是：<font size=4>从下到上，从右到左</font>。**</font> 所以，上面关于 sass 的讲解，是 sass-loader 先解析 sass，交给 css-loader 分析所有 css 关系，并整合成一个文件；最后，style-loader 挂载到 header 上
 
 
 
-如果想要针对不同的浏览器进行适配（需要写前缀，如 webkit- ），<font color=FF0000> **这时需要使用 postcss-loader**</font>，
+如果想要针对不同的浏览器进行适配（需要写前缀，如 `webkit-` ），<font color=FF0000> **这时需要使用 postcss-loader**</font>，
 
-想要对postcss-loader进行配置，需要添加并配置postcss.config.js配置文件，可以使用autoprefixer插件
+想要对 postcss-loader 进行配置，需要添加并配置 postcss.config.js 配置文件，可以使用 autoprefixer 插件
 
 ```js
 // 当前文件是：postcss.config.js
@@ -339,11 +734,11 @@ module.exports = {
 ] 
 ```
 
-更多配置项见GitHub：https://github.com/browserslist/browserslist
+更多配置项见 GitHub：https://github.com/browserslist/browserslist
 
 
 
-如果想要对 css-loader （或者某一个loader）增加配置项，则需要将字符串配对象的形式，将其改成对象形式：
+如果想要对 css-loader （或者某一个 loader ）增加配置项，则需要将字符串配对象的形式，将其改成对象形式：
 
 ```js
 // 当前文件webpack.config.js。
@@ -367,39 +762,37 @@ use: [
 ]
 ```
 
-如果使用模块化CSS，那么在文件中导入CSS模块时，需要将 import 'cssPath'，改为 import style from 'cssPath'。如果想要使用模块CSS中的样式，要使用 style.className。
+如果使用模块化 CSS，那么在文件中导入 CSS 模块时，需要将 `import 'cssPath'`，改为 `import style from 'cssPath'` 。如果想要使用 模块 CSS 中的样式，要使用 style.className。
 
-同时，如果没有模块化的css，会导致引入的图片样式变成全局作用的，这很不利于样式的控制；所以我们需要模块化的css。在webpack中启用模块化css，只需要在options中添加 modules: true 即可（如上的代码）
+同时，如果没有模块化的 CSS，会导致引入的图片样式变成全局作用的，这很不利于样式的控制；所以我们需要模块化的 CSS 。在webpack 中启用模块化 CSS，只需要在 options 中添加 `modules: true` 即可（如上的代码）
 
 
 
-<font size=4>**补充：**</font>
+##### style-loader 的 options
 
-- **style-loader的options：**
+| 名称              | 类型               | 默认值    | 描述                                             |
+| :---------------- | :----------------- | :-------- | :----------------------------------------------- |
+| injectType        | {String}           | styleTag  | 配置把 styles 插入到 DOM 中的方式                |
+| attributes        | {Object}           | {}        | 添加自定义属性到插入的标签中                     |
+| insert            | {String\|Function} | head      | 在指定的位置插入标签                             |
+| styleTagTransform | {String\|Function} | undefined | 当将 'style' 标签插入到 DOM 中时，转换标签和 css |
+| base              | {Number}           | true      | 基于 (DLLPlugin) 设置 module ID                  |
+| esModule          | {Boolean}          | false     | 使用 ES modules 语法                             |
 
-  | 名称              | 类型               | 默认值    | 描述                                             |
-  | :---------------- | :----------------- | :-------- | :----------------------------------------------- |
-  | injectType        | {String}           | styleTag  | 配置把 styles 插入到 DOM 中的方式                |
-  | attributes        | {Object}           | {}        | 添加自定义属性到插入的标签中                     |
-  | insert            | {String\|Function} | head      | 在指定的位置插入标签                             |
-  | styleTagTransform | {String\|Function} | undefined | 当将 'style' 标签插入到 DOM 中时，转换标签和 css |
-  | base              | {Number}           | true      | 基于 (DLLPlugin) 设置 module ID                  |
-  | esModule          | {Boolean}          | false     | 使用 ES modules 语法                             |
+摘自：[webpack官方文档 - style-loader - options](https://webpack.docschina.org/loaders/style-loader/#options)
 
-  摘自：[webpack官方文档 - style-loader - options](https://webpack.docschina.org/loaders/style-loader/#options)
+##### css-loader 的 options
 
-- **css-loader的options：**
+| 名称          | 类型                      | 默认值           | 描述                                                |
+| :------------ | :------------------------ | :--------------- | :-------------------------------------------------- |
+| url           | {Boolean\|Function}       | true             | 启用/禁用 url() / image-set() 函数处理              |
+| import        | {Boolean\|Function}       | true             | 启用/禁用 @import 规则进行处理                      |
+| modules       | {Boolean\|String\|Object} | {auto: true}     | 启用/禁用 CSS 模块及其配置                          |
+| sourceMap     | {Boolean}                 | compiler.devtool | 启用/禁用生成 SourceMap                             |
+| importLoaders | {Number}                  | 0                | 启用/禁用或者设置在 css-loader 前应用的 loader 数量 |
+| esModule      | {Boolean}                 | true             | 使用 ES 模块语法                                    |
 
-  | 名称          | 类型                      | 默认值           | 描述                                                |
-  | :------------ | :------------------------ | :--------------- | :-------------------------------------------------- |
-  | url           | {Boolean\|Function}       | true             | 启用/禁用 url() / image-set() 函数处理              |
-  | import        | {Boolean\|Function}       | true             | 启用/禁用 @import 规则进行处理                      |
-  | modules       | {Boolean\|String\|Object} | {auto: true}     | 启用/禁用 CSS 模块及其配置                          |
-  | sourceMap     | {Boolean}                 | compiler.devtool | 启用/禁用生成 SourceMap                             |
-  | importLoaders | {Number}                  | 0                | 启用/禁用或者设置在 css-loader 前应用的 loader 数量 |
-  | esModule      | {Boolean}                 | true             | 使用 ES 模块语法                                    |
-
-  摘自：[webpack官方文档 - css-loader - options](https://webpack.docschina.org/loaders/css-loader/#options)
+摘自：[webpack官方文档 - css-loader - options](https://webpack.docschina.org/loaders/css-loader/#options)
 
 
 
@@ -416,7 +809,7 @@ use: [
 
 
 
-<font size=4>**补充：**</font>自定义 JSON 模块 parser
+##### 补充：自定义 JSON 模块 parser
 
 通过使用 自定义 parser 替代特定的 webpack loader，可以将任何 toml、yaml 或 json5 文件作为 JSON 模块导入。
 
@@ -464,7 +857,7 @@ use: [
 
   
 
-#### 补充：Asset Modules
+#### Asset Modules
 
 资源模块(asset module)是一种模块类型，它允许使用资源文件（字体，图标等）而无需配置额外 loader。
 
@@ -564,7 +957,7 @@ use: [
 
 
 
-**想要在Webpack V5中继续使用 被废弃的 assets loader：**
+##### 想要在Webpack V5中继续使用 被废弃的 assets loader
 
 当在 webpack 5 中使用旧的 assets loader（如 file-loader/url-loader/raw-loader 等）和 asset 模块时，你可能想停止当前 asset 模块的处理，并再次启动处理，这可能会导致 asset 重复，你可以通过将 asset 模块的类型设置为 'javascript/auto' 来解决。示例如下：
 
@@ -593,13 +986,45 @@ module.exports = {
 
 
 
+#### Loader 补充
+
+在你的应用程序中，有两种使用 loader 的方式
+
+- 配置方式（推荐）：在 **webpack.config.js** 文件中指定 loader。即：使用 module.rules 配置。另外，loader 按照 从右到左（或从下到上）地取值 ( evaluate ) / 执行 ( execute )
+
+- 内联方式：在每个 `import` 语句中显式指定 loader
+
+  > 使用 `!` 前缀，将禁用所有已配置的 normal loader（普通 loader）
+  >
+  > ```js
+  > import Styles from '!style-loader!css-loader?modules!./styles.css';
+  > ```
+  >
+  > 使用 `!!` 前缀，将禁用所有已配置的 loader（preLoader, loader, postLoader）
+  >
+  > ```js
+  > import Styles from '!!style-loader!css-loader?modules!./styles.css';
+  > ```
+  >
+  > 使用 `-!` 前缀，将禁用所有已配置的 preLoader 和 loader，但是不禁用 postLoaders
+  >
+  > ```js
+  > import Styles from '-!style-loader!css-loader?modules!./styles.css';
+  > ```
+
+注意在 webpack v4 版本可以通过 CLI 使用 loader，但是在 webpack v5 中被弃用。
+
+摘自：[webpack 文档 - Loaders](https://webpack.js.org/concepts/loaders/#example) 
+
+
+
 #### 使用 plugins 插件
 
-**plugin的作用：**plugin可以在<font color=FF0000> webpack运行到某个时刻的时候 </font>，自动地帮你做一些事情
+**plugin 的作用：**plugin 可以在<font color=FF0000> webpack 运行到某个时刻的时候 </font>，自动地帮你做一些事情
 
+##### htmlWebpackPlugin
 
-
-每次打包项目时，入口的html文件（index.html）都要<font color=FF0000>手动构建</font>，很麻烦；这时就需要 **htmlWebpackPlugin** 。代码示例如下：
+每次打包项目时，入口的 html 文件 ( index.html ) 都要<font color=FF0000>手动构建</font>，很麻烦；这时就需要 **htmlWebpackPlugin** 。代码示例如下：
 
 ```js
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -624,7 +1049,7 @@ module.exports = {
 
 **htmlWebpackPlugin 的作用：** htmlWebpackPlugin 会在打包结束后，<font color=FF0000> 自动生成一个 html 文件</font>， 并<font color=FF0000>把打包生成的 js 自动引入到这个 html 文件中</font>。该插件在打包后执行。
 
-<font size=4>**补充：**</font>html-webpack-plugin 的 GitHub 地址：https://github.com/jantimon/html-webpack-plugin，由于 webpack 官方问答中介绍的比较少，更多的介绍与配置可以看这个。
+<font size=4>**补充：**</font>html-webpack-plugin 的 GitHub 地址：https://github.com/jantimon/html-webpack-plugin，由于 webpack 官方问答中介绍的比较少，更多的介绍与配置可以看这个：
 
 > HtmlWebpackPlugin 插件除了可以帮助我们简化 HTML 文件的创建，也可以压缩 HTML 文件。
 >
@@ -650,7 +1075,7 @@ module.exports = {
 
 ##### clean-webpack-plugin 插件
 
-在打包之后生成了打包后输出的 JS 文件，如果这时<font color=FF0000> 修改了配置文件</font>（webpack.config.js）<font color=FF0000> 中的打包输出js的文件名称</font>，再进行打包，这时会发现目标文件夹中有两个打包输出的js文件（分别是配置修改前生成的js文件，和配置修改后生成的 js 文件）。可以<font color=FF0000> 使用 clean-webpack-plugin 在生成新的js文件时，清除掉旧的js文件</font>。代码示例如下：
+在打包之后生成了打包后输出的 JS 文件，如果这时<font color=FF0000> 修改了配置文件</font> ( webpack.config.js ) <font color=FF0000> 中的打包输出js的文件名称</font>，再进行打包，这时会发现目标文件夹中有两个打包输出的js文件（分别是配置修改前生成的 JS 文件，和配置修改后生成的 JS 文件）。可以<font color=FF0000> 使用 clean-webpack-plugin 在生成新的 JS 文件时，清除掉旧的 JS 文件</font>。代码示例如下：
 
 ```js
 plugins: [
@@ -661,15 +1086,15 @@ plugins: [
 
 该插件在打包前执行
 
-<font size=4>**补充：**</font>webpack V5中添加了clean的配置项，用boolean值控制；可以用来替代clean-webpack-plugin
+<font size=4>**补充：**</font>webpack V5中添加了 clean 的配置项，用 boolean 值 控制；可以用来替代 clean-webpack-plugin
 
 
 
 #### entry 和 output 的配置
 
-entry 和 output 的文件名，默认都是 main.js。在 entry 中配置，可以写成字符串 'entryFileName' 、也可以写成对象，对象的键，可以作为输入文件的文件名。示例如下：
+entry 和 output 的文件名，默认都是 main.js 。在 entry 配置项中配置 **输入文件的文件名**，可以写成字符串 'entryFileName' ，也可以写成对象，对象的键。示例如下：
 
-如果想要对一个文件打包两次，可以进行如下配置
+另外，<font color=FF0000>**如果想要对一个文件打包两次（即获得两个打包结果），可以进行如下配置**</font>：
 
 ```js
 module.exports = {
@@ -678,15 +1103,19 @@ module.exports = {
     sub: './src/index.js',
   },
   output: {
-    // 这里如果只设置一个文件名的话会报错（比如设置为bundle.js），所以可以使用这种方式 
-    // 这里的name，对应着entry的键，在这里是'main'和'sub'，打包生成的文件名也就是main.js和sub.js
+    // 上面是打包两次，所以如果这里只设置一个文件名的话会报错（比如设置为 bundle.js ），所以下面使用这种方式 
+    // **这里的 name ，对应着entry的键**；在这里是'main'和'sub'，打包生成的文件名也就是main.js和sub.js
     filename: '[name].js',
     path: path.resolve(__dirname, 'bundle') 
   }
 }
 ```
 
-如果想要在打包输出文件前添加一个前缀（比如一个网址路径），可以在output中加上publicPath
+如果想要在打包输出文件前添加一个前缀（比如一个网址路径），可以在 output 中加上 publicPath。关于 publicPath，在 Vue CLI 的配置中也有 publicPath，且作用相同（毕竟 Vue CLI 是 webpack 的 简易化封装）
+
+> 默认情况下，Vue CLI 会假设你的应用是被部署在一个域名的根路径上（**注：**默认值为 `'/'` ），例如： `https://www.my-app.com/` 。如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 `https://www.my-app.com/my-app/` ，则设置 `publicPath` 为 `/my-app/`
+>
+> 摘自：[Vue CLI 官方文档  - vue.config.js - publicPath](https://cli.vuejs.org/zh/config/#publicpath) 。
 
 ```js
 output: {
@@ -697,7 +1126,7 @@ output: {
 }
 ```
 
-这时在所有的输出文件会变成：**`http://cdn.com.cn/bundle.js`**
+这时，所有的输出文件会变成：**`http://cdn.com.cn/bundle/*.js`**
 
 
 
@@ -715,11 +1144,11 @@ https://github.com/jantimon/html-webpack-plugin
 
 
 
-#### SourceMap配置
+#### SourceMap 配置
 
 sourceMap 是一个<font color=FF0000>映射关系</font>。它知道 <font color=FF0000> 打包输出的文件的代码行</font> 与对应的 <font color=FF0000> 被打包的源代码中代码行</font> 的映射关系；**便于在打包代码出现错误时候，可以指向源代码的<font color=FF0000>某一行某一列（即精确到字符）</font>出现的问题**。<font color=FF0000>使用sourceMap打包速度会变慢（尤其是大型项目）</font>。
 
-如何启用sourceMap？只需要使用**devtool: source-map**即可。同时，启用sourceMap后，在dist文件夹下会出现一个 main.js.map 的映射对应关系文件，这个文件实际上是一个<mark>VLQ的编码集合</mark>
+如何启用sourceMap？只需要使用 **`devtool: source-map`** 即可。同时，启用sourceMap后，在dist文件夹下会出现一个 main.js.map 的映射对应关系文件，这个文件实际上是一个<mark>VLQ的编码集合</mark>
 
 **devtool的选项中包含各种修饰符，比如 inline、cheap、module**，说明如下：
 
@@ -2253,7 +2682,7 @@ module.exports = {
 
 #### 多页面打包配置
 
-截止现在，我们都是在对单页面（即dist 文件见下只有一个 html ，Vue和React 都是 SPA）进行打包。但是在一些特殊场景下，比如：兼容 jquery、zepto 的老的项目，要对多页面进行打包。所以下面是多页面的打包配置：
+截止现在，我们都是在对单页面（即dist 文件见下只有一个 html ，Vue 和 React 都是 SPA）进行打包。但是在一些特殊场景下，比如：兼容 jquery、zepto 的老的项目，要对多页面进行打包。所以下面是多页面的打包配置：
 
 ```js
 // webpack.config.js
@@ -2618,7 +3047,7 @@ module.exports 中的 bail 配置的作用是，一旦打包出现错误，则�
 
 ---
 
-## Webpack 插件介绍
+### Webpack 插件介绍
 
 ##### [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer)
 
@@ -2668,13 +3097,13 @@ CSS代码分割，在打包时，将css代码分为多个文件；并给出生�
 
 
 
-## Webpack 使用函数（用于写脚本等）
+### Webpack 使用函数（用于写脚本等）
 
 require.context()
 
 
 
-## webpack 相关问题
+### webpack 相关问题
 
 
 
@@ -2691,7 +3120,7 @@ require.context()
 
 其实是自己开启了 express 应用，<font color=FF0000>添加了对 webpack 编译的监听，添加了和浏览器的 **websocket 长连接**</font>，<font color=FF0000>当文件变化触发 webpack 进行编译并完成后，会通过 sokcet 消息告诉浏览器准备刷新</font>。而为了减少刷新的代价，就是不用刷新网页，而是刷新某个模块，webpack-dev-server 可以支持热更新，<font color=FF0000>通过生成 文件的 hash 值来比对需要更新的模块</font>，浏览器再进行热替换。
 
-#### webpack 打包的 hash码是如何生成的
+#### webpack 打包的 hash 码是如何生成的
 
 - **webpack生态中存在多种计算hash的方式**
 
