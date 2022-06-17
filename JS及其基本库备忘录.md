@@ -3257,7 +3257,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                 
+  >                                                                                                                                   
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3276,7 +3276,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                 
+  >                                                                                                                                   
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -11425,9 +11425,11 @@ history.replaceState(stateObj, title[, url]);
 
 摘自：[pageshow 和 pagehide](https://blog.csdn.net/yihanzhi/article/details/88244913)
 
-<font size=4>**补充：**</font>
+更多JS事件可以参考MDN的 [事件参考](https://developer.mozilla.org/zh-CN/docs/Web/Events)，里面列出的事件比较全面。另外，还可以使用如下方法查看浏览器支持的所有事件。
 
-更多JS事件可以参考MDN的 [事件参考](https://developer.mozilla.org/zh-CN/docs/Web/Events)，里面列出的事件比较全面。
+```js
+const onEvt = Object.key(window).fileter(_ => _.match(/^on/))
+```
 
 
 
