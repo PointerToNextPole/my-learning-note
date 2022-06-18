@@ -11417,7 +11417,7 @@ history.replaceState(stateObj, title[, url]);
   
 - **pageshide和unload区别：**
   
-  <font color=FF0000>pagehide 事件类似于 unload 事件，在用户离开网页时触发（如点击一个链接、刷新页面、提交表单、关闭浏览器、前进、后退等）</font>。
+  <font color=FF0000>pagehide 事件类似于 unload 事件，在用户离开网页时触发（如点击一个链接、刷新页面、提交表单、关闭浏览器、前进、后退等）</font>
   
   页面缓存：pagehide触发可以缓存页面，但unload 事件触发后无法缓存。
   

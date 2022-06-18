@@ -990,29 +990,49 @@ module.exports = {
 
 在你的应用程序中，有两种使用 loader 的方式
 
-- 配置方式（推荐）：在 **webpack.config.js** 文件中指定 loader。即：使用 module.rules 配置。另外，loader 按照 从右到左（或从下到上）地取值 ( evaluate ) / 执行 ( execute )
+- **配置方式**（推荐）：在 **webpack.config.js** 文件中指定 loader。即：使用 module.rules 配置。
 
-- 内联方式：在每个 `import` 语句中显式指定 loader
+  loader 按照 从右到左（或从下到上）地取值 ( evaluate ) / 执行 ( execute )
 
-  > 使用 `!` 前缀，将禁用所有已配置的 normal loader（普通 loader）
-  >
-  > ```js
-  > import Styles from '!style-loader!css-loader?modules!./styles.css';
-  > ```
-  >
-  > 使用 `!!` 前缀，将禁用所有已配置的 loader（preLoader, loader, postLoader）
-  >
-  > ```js
-  > import Styles from '!!style-loader!css-loader?modules!./styles.css';
-  > ```
-  >
-  > 使用 `-!` 前缀，将禁用所有已配置的 preLoader 和 loader，但是不禁用 postLoaders
-  >
-  > ```js
-  > import Styles from '-!style-loader!css-loader?modules!./styles.css';
-  > ```
+- **内联方式**：在每个 `import` 语句中显式指定 loader
 
-注意在 webpack v4 版本可以通过 CLI 使用 loader，但是在 webpack v5 中被弃用。
+  可以在 `import` 语句 或 任何与 *"import" 方法同等的引用方式* 中指定 loader。<font color=FF0000>使用 `!` 将资源中的 loader 分开</font>。每个部分都会相对于当前目录解析。
+
+  通过为内联 `import` 语句添加前缀，可以覆盖 (overload) 配置 中的所有 loader, preLoader 和 postLoader：
+
+  - 使用 `!` 前缀，将禁用所有已配置的 normal loader（普通 loader）
+
+    ```js
+    import Styles from '!style-loader!css-loader?modules!./styles.css';
+    ```
+
+  - 使用 `!!` 前缀，将禁用所有已配置的 loader（preLoader, loader, postLoader）
+
+    ```js
+    import Styles from '!!style-loader!css-loader?modules!./styles.css';
+    ```
+
+  - 使用 `-!` 前缀，将禁用所有已配置的 preLoader 和 loader，但是不禁用 postLoaders
+
+    ```js
+    import Styles from '-!style-loader!css-loader?modules!./styles.css';
+    ```
+  
+  选项可以传递查询参数，例如 `?key=value&foo=bar`，或者一个 JSON 对象，例如 `?{"key":"value","foo":"bar"}`。
+
+注意 ⚠️：在 webpack v4 版本可以通过 CLI 使用 loader，但是在 webpack v5 中被弃用。
+
+##### loader 特性
+
+- <font color=FF0000>**loader 支持链式调用**</font>。链中的每个 loader 会将转换应用在已处理过的资源上。一组链式的 loader 将按照相反的顺序执行。链中的第一个 loader 将其结果（也就是应用过转换后的资源）传递给下一个 loader，依此类推。最后，链中的最后一个 loader，返回 webpack 所期望的 JavaScript。
+- <font color=FF0000>loader 可以是同步的，也可以是异步的</font>。
+- loader 运行在 Node.js 中，并且能够执行任何操作。
+- <font color=FF0000>loader 可以通过 `options` 对象配置</font>（仍然支持使用 `query` 参数来设置选项，但是这种方式已被废弃）。
+- 除了<font color=FF0000>**常见的通过 `package.json` 的 `main` 来将一个 npm 模块导出为 loader**</font>，还可以在 module.rules 中使用 `loader` 字段直接引用一个模块。
+- <font color=FF0000>插件(plugin)可以为 loader 带来更多特性</font>。
+- loader 能够产生额外的任意文件。
+
+通过 loader 的预处理函数，可以自定义输出。用户现在可以更加灵活地引入细粒度逻辑，例如：压缩、打包、语言转译（或编译）和 [更多其他特性](https://webpack.js.org/loaders)。
 
 摘自：[webpack 文档 - Loaders](https://webpack.js.org/concepts/loaders/#example) 
 
@@ -1086,7 +1106,76 @@ plugins: [
 
 该插件在打包前执行
 
-<font size=4>**补充：**</font>webpack V5中添加了 clean 的配置项，用 boolean 值 控制；可以用来替代 clean-webpack-plugin
+**补充：** webpack V5中添加了 clean 的配置项，用 boolean 值 控制；可以用来替代 clean-webpack-plugin
+
+
+
+#### plugin 补充
+
+##### 总述
+
+<font color=FF0000 size=4>**Plugins** are the [backbone](https://github.com/webpack/tapable) </font>（支柱、骨干）<font color=FF0000 size=4>of webpack</font>. <font color=FF0000>Webpack itself is built on the **same plugin system** that you use in your webpack configuration</font>!
+
+They also <font color=FF0000>serve the purpose of doing **anything else** that a loader cannot do</font>. Webpack provides many such plugins out of the box （开箱即用插件，可理解为：webpack 内置了一些 plugins）.
+
+##### 原理
+
+A webpack plugin is a JavaScript object that has an `apply` method. This `apply` method is <font color=FF0000 size=4>**called by the webpack compiler**, giving access to the **entire** compilation lifecycle</font>. 感觉设计上类似于 Vue plugins 的 install 方法。示例如下：
+
+```js
+// ConsoleLogOnBuildWebpackPlugin.js
+const pluginName = 'ConsoleLogOnBuildWebpackPlugin';
+
+class ConsoleLogOnBuildWebpackPlugin {
+  apply(compiler) {
+    compiler.hooks.run.tap(pluginName, (compilation) => {
+      console.log('The webpack build process is starting!');
+    });
+  }
+}
+
+module.exports = ConsoleLogOnBuildWebpackPlugin;
+```
+
+The first parameter of the `tap` method of the compiler hook should be **a camelized version of the plugin name**. It is advisable to use a constant for this so it can be reused in all hooks.
+
+##### 用法
+
+Since **plugins** can take arguments / options, you must pass a `new` instance to the `plugins` property in your webpack configuration.
+
+```js
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack'); //to access built-in plugins
+
+module.exports = {
+  // ...
+   plugins: [
+    new webpack.ProgressPlugin(),
+    new HtmlWebpackPlugin({ template: './src/index.html' }),
+  ],
+}
+```
+
+##### Node API 方式
+
+在使用 Node API 时，还可以通过配置中的 `plugins` 属性传入插件。
+
+```js
+// some-node-script.js
+
+const webpack = require('webpack'); // 访问 webpack 运行时(runtime)
+const configuration = require('./webpack.config.js');
+
+let compiler = webpack(configuration); // 注：注意这里的写法，以及下面 compiler 的使用
+
+new webpack.ProgressPlugin().apply(compiler);
+
+compiler.run(function (err, stats) {
+  // ...
+});
+```
+
+摘自：[webpack 文档 - Plugins](https://webpack.js.org/concepts/plugins/)
 
 
 
@@ -2431,7 +2520,7 @@ devServer: {
 
 #### resolve 参数合理配置
 
-有的时候，在使用 ES Module 的引用（import）文件时，我们不想写扩展名，比如：
+有的时候，在使用 ES Module 的引用 ( import ) 文件时，我们不想写扩展名，比如：
 
 ```js
 import foo from './foo'
@@ -2446,13 +2535,13 @@ resolve: {
 }
 ```
 
-webpack 将会一次以 extensions 中的扩展名，去分别匹配 / 寻找 这些文件（'foo.js'、'foo.jsx'、'foo.json' ），找到之后，便成功引入。
+webpack 将会一次以 extensions 中的扩展名，去分别匹配 / 寻找 这些文件 ( 'foo.js'、'foo.jsx'、'foo.json' )，找到之后，便成功引入。
 
-<font color=FF0000 size=4>**但是，**</font>虽然方便，但是不建议滥用；比如将 css、jpg 之类扩展名放进 extensions 数组中，webpack 在进行查找时会调用 Node 中的文件查找模块，还是比较耗费性能的，如果过多使用，性能消耗还是很大的。所以，建议：只有逻辑代码（'js'、'jsx'、'ts'、'tsx', 'vue'）之类的扩展名，放入 extensions 数组中。
+<font color=FF0000 size=4>**但是，**</font>虽然方便，但是不建议滥用；比如将 css、jpg 之类扩展名放进 extensions 数组中，webpack 在进行查找时会调用 Node 中的文件查找模块，还是比较耗费性能的，如果过多使用，性能消耗还是很大的。所以，建议：只有逻辑代码 ( 'js'、'jsx'、'ts'、'tsx', 'vue' ) 之类的扩展名，放入 extensions 数组中。
 
 
 
-还是在ESM中，有的时候，由于引入的文件（foo.js）所在的文件夹（fooFolder）下只有这一个文件，此时我们甚至不想写文件名。
+还是在 ESM 中，有的时候，由于引入的文件 ( foo.js ) 所在的文件夹 ( fooFolder ) 下只有这一个文件，此时我们甚至不想写文件名。
 
 ```js
 import 'foo' from './fooFolder/'
@@ -2473,7 +2562,7 @@ resolve: {
 
 
 
-还是在ESM中，引入的文件可以使用别名（比如 foobar），但是通过 resolve.alias 依然可以让 webpack 找到别名所指向的文件（foo）：
+还是在ESM中，引入的文件可以使用别名（比如 foobar），但是通过 resolve.alias 依然可以让 webpack 找到别名所指向的文件 ( foo )：
 
 ```js
 // webpack.config.js
@@ -2484,7 +2573,56 @@ resolve: {
 }
 ```
 
-这项配置在 webpack 中使用还是很常见的。比如在Vue 中，@表示 src 文件夹 
+这项配置在 webpack 中使用还是很常见的。比如在 Vue 中，@ 表示 src 文件夹 
+
+
+
+#### resolve 选项 和 模块解析 补充
+
+##### 总述
+
+**A resolver is a library** which <font color=FF0000>helps in locating a module by its absolute path</font>. A module can be required as a dependency from another module
+
+```js
+import foo from 'path/to/module';
+// or
+require('path/to/module');
+```
+
+The dependency module can be from the application code or a third-party library. The <font color=FF0000>resolver helps webpack find the module code that needs to be included in the bundle for every such `require` / `import` statement</font>. webpack uses [enhanced-resolve](https://github.com/webpack/enhanced-resolve) to resolve file paths while bundling modules.
+
+##### webpack 中解析规则
+
+使用 enchanced-resolved ，webpack 能解析三种文件路径：
+
+- **绝对路径**
+
+  ```js
+  import '/home/me/file';
+  import 'C:\\Users\\me\\file';
+  ```
+
+- **相对路径**
+
+  ```js
+  import '../src/file1';
+  import './file2';
+  ```
+
+- **模块路径**
+
+  ```js
+  import 'module';
+  import 'module/lib/file';
+  ```
+  
+  
+
+摘自：[webpack 文档 - Guide - Module Resoluation](https://webpack.js.org/concepts/module-resolution/)
+
+
+
+
 
 
 
