@@ -6397,7 +6397,6 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>
   export default component
 }
-
 ```
 
 
@@ -6434,21 +6433,23 @@ vuex中保存的数据是放置在内容中的，一旦刷新页面，那么就�
 
 
 
-如果在webpack / vue-cli 设置了路径别名，如：src -> @，则可以很方便地使用。但是如何在 template中如何使用？可以在别名前面加上 ～ 即可；vue-loader 会自动解析的。示例如下：
+##### 在 webpack / vue loader 项目中 `~` 的使用
+
+如果在 webpack / vue-cli 设置了路径别名，如：`src`  -> `@`，则可以很方便地使用。但是如何在 template 中如何使用？在别名前面加上 `~` 即可；vue-loader 会自动解析的。示例如下：
 
 ```html
 <img src="~@/assets/img/logo.svg" />
 ```
 
-对应的文件是：src/assets/img/logo.svg
+对应的文件是：`src/assets/img/logo.svg`
 
-这个用法，在vue-loader 官方文档中有介绍：
+这个用法，在 [vue-loader 文档](https://vue-loader.vuejs.org/zh/guide/asset-url.html#转换规则) 中有介绍（ [Vue CLI 文档](https://cli.vuejs.org/zh/guide/html-and-static-assets.html#%E4%BB%8E%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84%E5%AF%BC%E5%85%A5:~:text=URL%20%E8%BD%AC%E6%8D%A2%E8%A7%84%E5%88%99-,%23,-%E5%A6%82%E6%9E%9C%20URL%20%E6%98%AF) 中也有介绍）：
 
 > 如果路径以 `~` 开头，其后的部分将会被看作模块依赖
 
 
 
->## 摘自：antfu的Vue conf 2021 演讲
+## antfu Vue conf 2021 演讲
 
 在同时可以使用ref 和 reactive，更推荐使用ref：
 

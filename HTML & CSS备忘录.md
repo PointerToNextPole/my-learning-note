@@ -2904,6 +2904,12 @@ selector::pseudo-element {
 
 以上部分摘自：[MDN - 伪元素](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Pseudo-elements)
 
+##### ::target-text
+
+配合 `#:~:text=content` 使用，用于分享 带有 *锚点* 的 url 时，设置 content 内容的样式，从让阅读者轻松定位 content 部分。
+
+详见：[基于文字的URL锚点定位与::target-text样式设置](https://www.zhangxinxu.com/wordpress/2022/06/url-anchor-target-text/)
+
 
 
 #### CSS 图像透明度
