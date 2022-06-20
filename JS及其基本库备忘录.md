@@ -27,7 +27,7 @@ element.src = "/images/pic_bulboff.gif";
 ##### 改变 HTML 样式
 
 ```js
-x=document.getElementById("demo")  //找到元素 
+x = document.getElementById("demo")  //找到元素 
 x.style.color = "#ff0000";           //改变样式
 ```
 
@@ -3257,7 +3257,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                     
+  >                                                                                                                                       
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3276,7 +3276,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                     
+  >                                                                                                                                       
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -11439,7 +11439,7 @@ history.replaceState(stateObj, title[, url]);
 
 <font size=4>**补充：**</font>
 
-- **pageshow和load区别：**
+- **pageshow 和 load 区别：**
   
   pageshow 事件类似于 load 事件，<font color=FF0000>**load 事件在页面第一次加载时触发， pageshow 事件在每次加载页面时触发**，即 load 事件在页面从浏览器缓存中读取时不触发</font>。
   
@@ -11447,20 +11447,20 @@ history.replaceState(stateObj, title[, url]);
   
   <mark style="background: aqua">**触发时间：**load先触发，pageshow后触发。</mark>
   
-- **pageshide和unload区别：**
+- **pageshide 和 unload 区别：**
   
   <font color=FF0000>pagehide 事件类似于 unload 事件，在用户离开网页时触发（如点击一个链接、刷新页面、提交表单、关闭浏览器、前进、后退等）</font>
   
   页面缓存：pagehide触发可以缓存页面，但unload 事件触发后无法缓存。
   
-  <mark style="background: aqua">**触发时间：**pagehide先触发，unload后触发。</mark>
+  <mark style="background: aqua">**触发时间：**pagehide 先触发，unload 后触发。</mark>
 
 摘自：[pageshow 和 pagehide](https://blog.csdn.net/yihanzhi/article/details/88244913)
 
-更多JS事件可以参考MDN的 [事件参考](https://developer.mozilla.org/zh-CN/docs/Web/Events)，里面列出的事件比较全面。另外，还可以使用如下方法查看浏览器支持的所有事件。
+更多 浏览器事件可以参考 MDN 的 [事件参考](https://developer.mozilla.org/zh-CN/docs/Web/Events)，里面列出的事件比较全面。另外，还可以使用如下方法查看浏览器支持的所有事件。
 
 ```js
-const onEvt = Object.key(window).fileter(_ => _.match(/^on/))
+const onEvt = Object.keys(window).fileter(_ => _.match(/^on/))
 ```
 
 

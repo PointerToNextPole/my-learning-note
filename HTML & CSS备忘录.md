@@ -2904,12 +2904,6 @@ selector::pseudo-element {
 
 以上部分摘自：[MDN - 伪元素](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Pseudo-elements)
 
-##### ::target-text
-
-配合 `#:~:text=content` 使用，用于分享 带有 *锚点* 的 url 时，设置 content 内容的样式，从让阅读者轻松定位 content 部分。
-
-详见：[基于文字的URL锚点定位与::target-text样式设置](https://www.zhangxinxu.com/wordpress/2022/06/url-anchor-target-text/)
-
 
 
 #### CSS 图像透明度
@@ -5714,60 +5708,106 @@ p:target i {
 
 摘自：[MDN - :target](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:target) ，同样的示例也可以参考：[简书 - target伪类](https://www.jianshu.com/p/487a6f38036d)
 
+#### ::target-text
+
+配合 `#:~:text=content` 使用，用于分享 <font color=FF0000>带有 *锚点* 的 url</font> ，设置 content 内容的样式，从让阅读者轻松定位 content 部分。
+
+详见：[基于文字的URL锚点定位与::target-text样式设置](https://www.zhangxinxu.com/wordpress/2022/06/url-anchor-target-text/)
+
 #### :is() 伪类选择器 🧪
 
 > 注意：**这是一个实验中的功能**
 
-:is() CSS 伪类 函数将选择器列表作为参数，并选择该列表中任意一个选择器可以选择的元素。这对于以更紧凑的形式编写大型选择器非常有用。
+`:is()` CSS <font color=FF0000>**伪类函数** 将选择器列表作为参数</font>，并选择该列表中任意一个选择器可以选择的元素。这对于以更紧凑的形式编写大型选择器非常有用。
 
-注意，<mark>许多浏览器通过一个更旧的、带前缀的伪类:any()来支持这个功能，包括旧版本的Chrome、Firefox和Safari</mark>。这与:is()的工作方式完全相同，只是它需要厂商前缀，不支持复杂的选择器。
+注意，<mark>许多浏览器通过一个 **更旧的**、**带前缀** 的伪类</mark> `:any()` <mark>来支持这个功能，包括旧版本的 Chrome、Firefox 和 Safari</mark>。这与 `:is()` 的工作方式完全相同，只是它需要厂商前缀，不支持复杂的选择器。
 
 摘自：[MDN - :is() (:matches(), :any())](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:is)
 
-**示例如下：**
+##### 示例如下
 
-不用 :is伪类的写法：
+不用 `:is` 伪类的写法：
 
 ```css
-li a, artcile a, section a { color: #000000; }
-h1 a, h2 a, h3 a { color: blue; }
+li a, artcile a, section a {
+  color: #000000;
+}
+h1 a, h2 a, h3 a {
+  color: blue;
+}
 ```
 
-使用 :is伪类的写法：
+使用 `:is` 伪类的写法：
 
 ```css
-:is(li, article, p) a { color: #999999; }
-:is(h1, h2, h3) a { color: green; }
+:is(li, article, p) a {
+  color: #999999;
+}
+:is(h1, h2, h3) a {
+  color: green;
+}
 ```
 
 <font color=FF0000>:is() 也可以用于各种选择器的组合中，例如子节点选择器、邻居节点选择器等</font>，下边的代码展示了选择子节点的方式：
 
 ```css
-:is(article, p) :is(h2, li) a { color: #ff3344; }
+:is(article, p) :is(h2, li) a {
+  color: #ff3344;
+}
 ```
 
 展开就等于：
 
 ```css
-article h2 a, article li a, p h2 a, p li a { color: #ff3344; }
+article h2 a, article li a, p h2 a, p li a {
+  color: #ff3344;
+}
 ```
 
 **与其它伪类选择器结合**
 
-假设有一个需求，当一个文章所有的 h1-h6 标题，hover 的时候，在后面加上一个 "#"，如果使用传统的方式，我们会写成：
+假设有一个需求，当一个文章所有的 h1 - h6 标题，hover 的时候，在后面加上一个 "#"，如果使用传统的方式，我们会写成：
 
 ```css
-h1:hover::after, h2:hover::after, h3:hover::after, 
-h4:hover::after, h5:hover::after, h6:hover::after { content: "#"; }
+h1:hover::after, h2:hover::after, h3:hover::after,
+h4:hover::after, h5:hover::after, h6:hover::after {
+  content: "#";
+}
 ```
 
-如果使用 :is() 伪类选择器，则可以写成：
+如果使用 `:is()` 伪类选择器，则可以写成：
 
 ```css
-:is(h1, h2, h3, h4, h5, h6):hover::after { content: "#";}
+:is(h1, h2, h3, h4, h5, h6):hover::after {
+  content: "#";
+}
 ```
 
 摘自：[CSS :is() 伪类选择器使用指南](https://zxuqian.cn/css-is-pseudo-class-selector/)
+
+#### :where()
+
+`:where()` <font color=FF0000>**CSS 伪类函数** 接收 ***选择器列表*** 作为它的参数</font>，将会 选择 所有能被 该选择器列表 中任何一条规则选中的元素。
+
+```css
+/* Selects any paragraph inside a header, main or footer element that is being hovered */
+:where(header, main, footer) p:hover {
+  color: red;
+  cursor: pointer;
+}
+
+/* The above is equivalent to the following */
+header p:hover,
+main p:hover,
+footer p:hover {
+  color: red;
+  cursor: pointer;
+}
+```
+
+**`:where()` 和 `:is()` 的不同之处在于：**<font color=FF0000>`:where()` 的优先级总是为 0</font> ，但是 <font color=FF0000>`:is()` 的优先级是 **由它的选择器列表中优先级最高的选择器决定的**</font>
+
+摘自：[MDN - :where()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:where) 、[MDN US - :where()](https://developer.mozilla.org/en-US/docs/Web/CSS/:where)
 
 #### :indeterminate
 
