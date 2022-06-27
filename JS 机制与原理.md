@@ -946,6 +946,21 @@ lexicalEnvironment = {
 
 「环境记录」是「词法环境」中存储变量和函数定义的地方
 
+##### 总述
+
+> ##### Environment 继承关系结构
+>
+> ```
+> Environment Record（抽象接口）
+>   ├── Declarative Environment Record
+>   │     ├── Function Environment Record
+>   │     ├── Module Environment Record
+>   ├── Object Environment Record
+>   ├── Global Environment Record
+> ```
+>
+> 学习自：[鉴定一下网络热门面试题：如何理解闭包的概念？10m8s](https://www.bilibili.com/video/BV1b3411w7rX?t=10m8s)
+
 **环境记录同样有两种类型：**
 
 - **声明性环境记录 Declarative environment record：**正如它的名字所表明的，它是用来存储 变量 和 函数声明的；一个函数的词法环境包含一个「声明性环境记录」
@@ -1599,6 +1614,10 @@ var foo = 1;
 
 
 ### JS 作用域链
+
+> **注意** ⚠️：现在标准已经发生变化，*作用域链* ( scope chain ) 现在在标准中已经变成了 *环境记录* ( Enviornment Record )
+>
+> 学习自：[鉴定一下网络热门面试题：如何理解闭包的概念？](https://www.bilibili.com/video/BV1b3411w7rX?t=8m56s)
 
 在[《JavaScript深入之执行上下文栈》](https://github.com/mqyqingfeng/Blog/issues/4)中讲到，<font color=FF0000>当 JavaScript 代码执行一段可执行代码 ( executable code ) 时，**会创建对应的执行上下文 ( execution context )**</font>。
 
