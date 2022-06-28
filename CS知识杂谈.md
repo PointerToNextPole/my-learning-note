@@ -1,11 +1,11 @@
-# 编程知识杂谈
+# CS 知识杂谈
 
 
 
 ## <mark><font size=3 color=FF0000>**由于水平不够没有时间仔细研究或只是一时好奇，这里很多只是摘取了概念，也只是挖坑；如需深入理解，还需进一步查资料与添加笔记**</font></mark>
 
 ### **元编程**
-> <font size=3>元编程一言以蔽之，就是用<font color=FF0000>代码生成（操纵）代码</font>。</br>
+<font size=3>元编程一言以蔽之，就是用<font color=FF0000>代码生成（操纵）代码</font>。</br>
 <font color=FF0000>常见的开发语言均能做到元编程</font>，Lisp这货就不用多说了，C的Marco，<font color=FF0000>C++的Template，Java的Annotation</font>，C#的Attribute、Reflection、CodeDom和IL Emitter，各种脚本语言（如js、python）的eval，甚至连Unix/Linux的shell脚本也能。</br>
 元编程常见的<font color=FF0000>**应用场景**</font>很多，扩展（重构）语法、开发DSL、生成代码、根据特定场景自动选择代码优化、解决一些正交的架构设计问题、AOP等等。</br>
 摘自：[什么是元编程以及元语言？ - 猫杀的回答 - 知乎](https://www.zhihu.com/question/22572900/answer/21828721)
@@ -15,9 +15,10 @@
 
 ### 图灵机
 
-> 图灵机（Turing Machine）是图灵在1936年发表的 "On Computable Numbers, with an Application to the Entscheidungsproblem"（《论可计算数及其在判定性问题上的应用》）中提出的数学模型。既然是数学模型，它就并非一个实体概念，而是架空的一个想法。在文章中图灵描述了它是什么，并且证明了：<mark>只要图灵机可以被实现，就可以用来解决任何可计算问题。</mark></br>
-> 
-> **图灵机的结构包括以下几个部分：**
+图灵机（Turing Machine）是图灵在1936年发表的 "On Computable Numbers, with an Application to the Entscheidungsproblem"（《论可计算数及其在判定性问题上的应用》）中提出的数学模型。既然是数学模型，它就并非一个实体概念，而是架空的一个想法。在文章中图灵描述了它是什么，并且证明了：<mark>只要图灵机可以被实现，就可以用来解决任何可计算问题。</mark></br>
+
+**图灵机的结构包括以下几个部分：**
+
 > - 一条无限长的<font color=FF0000>纸带</font>（tape），纸带被分成一个个相邻的格子（square），每个格子都可以写上至多一个字符（symbol）。
 > - 一个<font color=FF0000>字符表</font>（alphabet），<mark>即字符的集合，它包含纸带上可能出现的所有字符。</mark>其中包含一个特殊的空白字符（blank），意思是此格子没有任何字符。
 > - 一个读写头（head），可理解为指向其中一个格子的指针。它可以读取/擦除/写入当前格子的内容，此外也可以每次向左/右移动一个格子。
@@ -28,20 +29,20 @@
 > 在计算开始前，纸带可以是完全空白，也可以在某些格子里预先就有写上部分字符作为输入。运算开始时，读写头从某一位置开始，严格按照此刻的配置（configuration），即：
 > - 当前所处位置
 > - 当前格子内容</br>
->
+> 
 > 来一步步的对照着指令集去进行操作，直到状态变为停止，运算结束。而后纸带上留下的信息，即字符的序列（比如类似“...011001...”）便作为输出，由人来解码为自然语言。</br>
 > 
 >要重申一下，以上只是图灵机模型的内容，而非具体的实现。所谓的纸带和读写头都只是图灵提出的抽象概念。为便于理解打一个比方。算盘虽然不是图灵机（因为它没有无限长的纸带，即无限的存储空间），但它的行为与图灵机一致。每一串算珠都是纸带上的一格，一串算珠上展示的数字便记录着当前格中的字符（可以是空白，可以是 12345 ）。人类的手即是读写头，可以更改每串算珠的状态。算盘的运行遵循人脑中的算法，当算法结束，算盘停机。</br>
-摘自：[什么是图灵完备？ - Ran C的回答 - 知乎](https://www.zhihu.com/question/20115374/answer/288346717)
+> 摘自：[什么是图灵完备？ - Ran C的回答 - 知乎](https://www.zhihu.com/question/20115374/answer/288346717)
 
 
 
 ### 图灵完备
 
-> <font size=3>在可计算性理论里，如果一系列操作数据的规则（如指令集、编程语言、细胞自动机）<font color=FF0000>可以用来模拟单带图灵机</font>，那么它是图灵完备的。</br>
+<font size=3>在可计算性理论里，如果一系列操作数据的规则（如指令集、编程语言、细胞自动机）<font color=FF0000>可以用来模拟单带图灵机</font>，那么它是图灵完备的。</br>
 摘自：[图灵完备-百度百科](https://baike.baidu.com/item/%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87/4634934?fr=aladdin)</br></font>
 
-> <font size=3>图灵完备（Turing Completeness）是指<mark>机器执行任何其他可编程计算机能够执行计算的能力</mark>。</br>
+<font size=3>图灵完备（Turing Completeness）是指<mark>机器执行任何其他可编程计算机能够执行计算的能力</mark>。</br>
 图灵完备也意味着你的语言可以做到能够用图灵机能做到的所有事情，可以解决所有的可计算问题。</br>
 摘自：[图灵完备是什么？](https://www.jianshu.com/p/b8b492ea547d)</font>
 
@@ -49,45 +50,46 @@
 
 ### 编程范式
 
-> <font size=3>编程范型、编程范式或程序设计法（Programming paradigm），（范即模范、典范之意，范式即模式、方法），是一类典型的编程风格，是指从事软件工程的一类典型的风格（可以对照方法学）。</br>
-> 摘自：[编程范型-百度百科](https://baike.baidu.com/item/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%9E%8B/1475451?fromtitle=%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F&fromid=23696164&fr=aladdin)</font></br>
+<font size=3>编程范型、编程范式或程序设计法（Programming paradigm），（范即模范、典范之意，范式即模式、方法），是一类典型的编程风格，是指从事软件工程的一类典型的风格（可以对照方法学）。</br>
+摘自：[编程范型-百度百科](https://baike.baidu.com/item/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%9E%8B/1475451?fromtitle=%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F&fromid=23696164&fr=aladdin)</font></br>
 
 
 
 ### 行为树
 
-> <font size=3>行为树是一种形式化的图形建模语言，主要用于系统和软件工程。 行为树采用明确定义的符号来明确表示数百甚至数千种自然语言需求，这些需求通常用于表达大规模软件集成系统的利益相关者需求。</br>
+<font size=3>行为树是一种形式化的图形建模语言，主要用于系统和软件工程。 行为树采用明确定义的符号来明确表示数百甚至数千种自然语言需求，这些需求通常用于表达大规模软件集成系统的利益相关者需求。</br>
 摘自：[行为树-百度百科](https://baike.baidu.com/item/%E8%A1%8C%E4%B8%BA%E6%A0%91/22735785?fr=aladdin)</font>
 
 
 
 ### UUID
 
->  <font size=3>**UUID** 是指Universally Unique Identifier，翻译为中文是**通用唯一识别码**，<mark>UUID 的目的是让分布式系统中的所有元素都能有唯一的识别信息</mark>。如此一来，每个人都可以创建不与其它人冲突的 UUID，就不需考虑数据库创建时的名称重复问题。
->
->  **定义**
->
->  UUID 是<mark>由一组32位数的16进制数字所构成</mark>，是故 UUID 理论上的总数为1632=2128，约等于3.4 x 10123。
->
->  **格式**
->
->  UUID 的十六个八位字节被表示为 32个十六进制数字，<mark>以连字号分隔的五组来显示，形式为 8-4-4-4-12</mark>，总共有 36个字符（即三十二个英数字母和四个连字号）。例如：
->
+<font size=3>**UUID** 是指Universally Unique Identifier，翻译为中文是**通用唯一识别码**，<mark>UUID 的目的是让分布式系统中的所有元素都能有唯一的识别信息</mark>。如此一来，每个人都可以创建不与其它人冲突的 UUID，就不需考虑数据库创建时的名称重复问题。
+
+**定义**
+
+UUID 是<mark>由一组32位数的16进制数字所构成</mark>，是故 UUID 理论上的总数为1632=2128，约等于3.4 x 10123。
+
+**格式**
+
+UUID 的十六个八位字节被表示为 32个十六进制数字，<mark>以连字号分隔的五组来显示，形式为 8-4-4-4-12</mark>，总共有 36个字符（即三十二个英数字母和四个连字号）。例如：
+
 >  ```
->  123e4567-e89b-12d3-a456-426655440000
+>123e4567-e89b-12d3-a456-426655440000
 >  xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx
->  ```
->
->  数字 `M`的四位表示 UUID 版本，当前规范有5个版本，M可选值为`1, 2, 3, 4, 5` ；
->
->  数字 `N`的一至四个最高有效位表示 UUID 变体( variant )，有固定的两位`10xx`因此只可能取值`8, 9, a, b`
->
+>```
+>  
+
+数字 `M`的四位表示 UUID 版本，当前规范有5个版本，M可选值为`1, 2, 3, 4, 5` ；
+
+数字 `N`的一至四个最高有效位表示 UUID 变体( variant )，有固定的两位`10xx`因此只可能取值`8, 9, a, b`
+
 >  UUID版本通过M表示，当前规范有5个版本，M可选值为`1, 2, 3, 4, 5`。这5个版本使用不同算法，利用不同的信息来产生UUID，各版本有各自优势，适用于不同情景。具体使用的信息
 >
 >  - version 1, date-time & MAC address
->  - version 2, date-time & group/user id
+>- version 2, date-time & group/user id
 >  - version 3, MD5 hash & namespace
->  - version 4, pseudo-random number
+>- version 4, pseudo-random number
 >  - version 5, SHA-1 hash & namespace
 
 > 使用较多的是版本1和版本4，其中版本1使用当前时间戳和MAC地址信息。版本4使用(伪)随机数信息，128bit中，除去版本确定的4bit和variant确定的2bit，其它122bit全部由(伪)随机数信息确定。
@@ -337,3 +339,12 @@ console.log(lowerCaseChar_z) // z
 
 
 
+#### Bootstrap 
+
+// TODO https://zh.wikipedia.org/wiki/%E5%95%9F%E5%8B%95%E7%A8%8B%E5%BC%8F
+
+
+
+#### nonce
+
+number once // TODO https://en.wikipedia.org/wiki/Cryptographic_nonce
