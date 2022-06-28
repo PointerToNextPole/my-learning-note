@@ -144,7 +144,7 @@ module.exports = {
 
 In the example above, <font color=FF0000>the `html-webpack-plugin` **generates an HTML file for your application** and **automatically injects all your generated bundles into this file**</font>.
 
-> **Tip**: There are many plugins that webpack provides out of the box! Check out the [list of plugins](https://webpack.js.org/plugins).
+> **Tip 💡**: There are many plugins that webpack provides out of the box! Check out the [list of plugins](https://webpack.js.org/plugins).
 
 ##### Mode
 
@@ -162,6 +162,18 @@ Webpack supports all browsers that are [ES5-compliant](https://kangax.github.io/
 
 摘自：[webpack 文档 - Concepts](https://webpack.js.org/concepts)
 
+#### webpack 文档 Guide 的笔记
+
+##### webpack 与插件
+
+You might be wondering <font color=FF0000>**how webpack and its plugins seem to "know" what files are being generated**</font>（在这之前讲了）. **The answer is** <font color=FF0000>in the manifest that webpack keeps to track how all the **modules map** to the output bundles</font>. If you're interested in managing webpack's [`output`](https://webpack.js.org/configuration/output) in other ways, the manifest would be a good place to start.
+
+The manifest data can be extracted into a json file for consumption using the [`WebpackManifestPlugin`](https://github.com/shellscape/webpack-manifest-plugin).
+
+摘自：[webpack 文档 - Guide - Output Management - The Manifest](https://webpack.js.org/guides/output-management/#the-manifest)
+
+
+
 #### 关于 webpack.config.js
 
 webpack 默认使用 webpack.config.js 作为配置文件。可以使用 `--config` 选项，以 `--config youWantConfigFile` 的形式选择想要的配置文件。如上内容，总结自下面的话：
@@ -169,6 +181,18 @@ webpack 默认使用 webpack.config.js 作为配置文件。可以使用 `--conf
 > <font color=FF0000>If a `webpack.config.js` is present, the `webpack` command picks it up **by default**</font>. We <font color=FF0000>use the **`--config` option** here only to show that you can pass a configuration of any name</font>. This will be useful for more complex configurations that need to be split into multiple files.
 >
 > 摘自：[webpack 文档 - Guides - Getting Started - Using a Configuration](https://webpack.js.org/guides/getting-started/#using-a-configuration)
+
+
+
+### webpack 文档 深层概念
+
+#### \__webpack_require__
+
+知道 `__webpack_require__` 是看 webpack 文档的 [Concept - The Manifest - Manifest](https://webpack.js.org/concepts/manifest/#manifest) 部分
+
+> **No matter which module syntax you have chosen**, those <font color=FF0000>import or require statements have now become `__webpack_require__` methods</font> that <font color=FF0000>point to module identifiers</font>
+
+感觉有点重要
 
 
 
@@ -293,7 +317,7 @@ module.exports = {
 
 **注：**dist 是 distribution 的缩写
 
-#### Entry 补充
+#### Entry 文档补充
 
 ##### 总述
 
@@ -372,7 +396,7 @@ entry: {
 >
 > - **library**: Specify [library options](https://webpack.js.org/configuration/output/#outputlibrary) to bundle a library from current entry. 
 >
->   <font color=FF0000>**指定 library 选项，为当前 entry 构建一个 library**</font>
+>   <font color=FF0000>**指定 library 选项，为当前 entry 构建一个 library**</font>。更多相关可见 [[#创建 library ( Authoring Libraries )#Expose the Library]]
 >
 > - **runtime**: <font color=FF0000>**The name of the runtime chunk**</font>. <font color=FF0000>When set, a new runtime chunk will be created</font>. It can be set to `false` to avoid a new runtime chunk since webpack 5.43.0.  
 >
@@ -503,9 +527,9 @@ module.exports = {
 
 总结与摘抄自：[webpack 文档 - concept - Entry Points](https://webpack.js.org/concepts/entry-points/)
 
-#### Output 补充
+#### Output 文档补充
 
-output 配置选项 是告诉 webpack： 如何向硬盘写入编译文件。注意 ⚠️：<font color=FF0000>即使可以存在多个 `entry` 起点，但 <font size=4>**只能指定一个 `output` 配置**</font></font>（注意⚠️：是只能指定一个配置，而不是文件）。
+output 配置选项 是告诉 webpack： 如何向硬盘写入编译文件。注意 ⚠️：<font color=FF0000>即使可以存在多个 `entry` 起点，但 <font size=4>**只能指定一个 `output` 配置**</font></font>（**注意** ⚠️：是只能指定一个配置，而不是文件）。另外，下面的 [[#targets#Multiple Targets]] 中 想要根据不同的 target mode（比如 'node' 和 'web' ）打两个包，有两个不同的 output，可以写两个同形的配置对象，详见下面
 
 <font color=FF0000>使用 output 配置选项 **至少** 要传入 一个 包含 `output.filename` 的对象</font>：
 
@@ -560,6 +584,67 @@ __webpack_public_path__ = myRuntimePublicPath;
 ```
 
 摘自：[webpack 文档 - output](https://webpack.js.org/concepts/output/)
+
+##### output 中的 initial chunk 和 non-initial chunk
+
+在 [webpack 文档 - concept - Under The Hood - Output](https://webpack.js.org/concepts/under-the-hood/#Output) 中还有 `inital` chunk files （与 output.filename 相关）以及 `non-initial` chunk files （与 output.chunkFilename 相关 ）的 内容，值得注意
+
+
+
+#### Targets
+
+##### 总述
+
+Because <font color=FF0000>JavaScript can be written for both server and browser</font>, **webpack offers multiple deployment *targets* that you can set in your webpack [configuration](https://webpack.js.org/configuration)**.
+
+##### 用法
+
+To set the `target` property, you set the target value in your webpack config:
+
+```javascript
+// webpack.config.js
+module.exports = {
+  target: 'node',
+};
+```
+
+In the example above, **using `node` webpack will compile for usage in a Node.js-like environment** (<font color=FF0000>uses Node.js `require` to load chunks and not touch any built in modules like `fs` or `path` )</font>.
+
+Each *target* has a variety of deployment/environment specific additions, support to fit its needs. See what [targets are available](https://webpack.js.org/configuration/target/).
+
+**注：**更多 target 的可选值，可见：[webpack 文档 - configuration - Target](https://webpack.js.org/configuration/target) ，其中包含了很多可选值
+
+##### Multiple Targets
+
+Although <font color=FF0000>webpack does **not** support multiple strings being passed into the `target` property</font>, you can create an isomorphic（同形的）library by bundling two separate configurations（即：构造两个配置对象）:
+
+```javascript
+// webpack.config.js
+const path = require('path');
+const serverConfig = {
+  target: 'node',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'lib.node.js',
+  },
+  //…
+};
+
+const clientConfig = {
+  target: 'web', // <=== can be omitted as default is 'web'
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'lib.js',
+  },
+  //…
+};
+
+module.exports = [serverConfig, clientConfig];
+```
+
+The example above will create a `lib.js` and `lib.node.js` file in your `dist` folder.
+
+摘自：[webpack 文档 - Guides - Targets](https://webpack.js.org/concepts/targets/)
 
 
 
@@ -765,6 +850,26 @@ use: [
 如果使用模块化 CSS，那么在文件中导入 CSS 模块时，需要将 `import 'cssPath'`，改为 `import style from 'cssPath'` 。如果想要使用 模块 CSS 中的样式，要使用 style.className。
 
 同时，如果没有模块化的 CSS，会导致引入的图片样式变成全局作用的，这很不利于样式的控制；所以我们需要模块化的 CSS 。在webpack 中启用模块化 CSS，只需要在 options 中添加 `modules: true` 即可（如上的代码）
+
+##### css-loader 知识补充
+
+> css-loader 默认的哈希算法是 `[hash:base64]` ，这会将 （CSS 类）`.title` 编译成 `._3zyde4l1yATCOkgn-DBWEL` 这样的字符串
+>
+> 摘自：[阮一峰 - CSS Modules 用法教程](http://www.ruanyifeng.com/blog/2016/06/css_modules.html)
+
+类似的说法，也可以在 css-loader 的 GitHub readme 中找到：
+
+> ##### `localIdentName`
+>
+> Type:
+>
+> ```
+> type localIdentName = string;
+> ```
+>
+> Default: `'[hash:base64]'`
+>
+> 摘自：[GitHub - css-loader - readme - localIdentName](https://github.com/webpack-contrib/css-loader#localidentname)
 
 
 
@@ -986,7 +1091,7 @@ module.exports = {
 
 
 
-#### Loader 补充
+#### Loader 文档补充
 
 在你的应用程序中，有两种使用 loader 的方式
 
@@ -1029,7 +1134,7 @@ module.exports = {
 - loader 运行在 Node.js 中，并且能够执行任何操作。
 - <font color=FF0000>loader 可以通过 `options` 对象配置</font>（仍然支持使用 `query` 参数来设置选项，但是这种方式已被废弃）。
 - 除了<font color=FF0000>**常见的通过 `package.json` 的 `main` 来将一个 npm 模块导出为 loader**</font>，还可以在 module.rules 中使用 `loader` 字段直接引用一个模块。
-- <font color=FF0000>插件(plugin)可以为 loader 带来更多特性</font>。
+- <font color=FF0000>插件 ( plugin ) 可以为 loader 带来更多特性</font>。
 - loader 能够产生额外的任意文件。
 
 通过 loader 的预处理函数，可以自定义输出。用户现在可以更加灵活地引入细粒度逻辑，例如：压缩、打包、语言转译（或编译）和 [更多其他特性](https://webpack.js.org/loaders)。
@@ -1071,14 +1176,14 @@ module.exports = {
 
 <font size=4>**补充：**</font>html-webpack-plugin 的 GitHub 地址：https://github.com/jantimon/html-webpack-plugin，由于 webpack 官方问答中介绍的比较少，更多的介绍与配置可以看这个：
 
-> HtmlWebpackPlugin 插件除了可以帮助我们简化 HTML 文件的创建，也可以压缩 HTML 文件。
+> <font color=FF0000>HtmlWebpackPlugin</font> 插件除了可以帮助我们简化 HTML 文件的创建，<font color=FF0000>**也可以压缩 HTML 文件**</font>。
 >
 > ```js
 > // webpack.config.js
 > const HtmlWebpackPlugin = require("html-webpack-plugin");
 > 
 > module.exports = {
->   plugins: [new HtmlWebpackPlugin()],
+> 	plugins: [new HtmlWebpackPlugin()],
 > };
 > ```
 >
@@ -1089,9 +1194,21 @@ module.exports = {
 > - **inject**：是否将资源注入到模版中，默认为 true
 > - **minify**：压缩参数。在生产模式下 ( production ) ，默认为 true ；否则，默认为 false
 >
-> <font color=FF0000>**如果 minify 为 true**</font>，生成的 HTML 将使用 [html-minifier-terser](https://github.com/terser/html-minifier-terser) 和以下选项进行压缩
+> <font color=FF0000>**如果 minify 为 true**</font>，生成的 HTML 将使用 [html-minifier-terser](https://github.com/terser/html-minifier-terser) 和以下选项进行压缩：
 >
-> 链接：https://juejin.cn/post/7031115698633965582
+> ```js
+> {
+>   collapseWhitespace: true,
+>   keepClosingSlash: true,
+>   removeComments: true,
+>   removeRedundantAttributes: true,
+>   removeScriptTypeAttributes: true,
+>   removeStyleLinkTypeAttributes: true,
+>   useShortDoctype: true
+> }
+> ```
+>
+> 摘自：[webpack 完全指南：代码压缩](https://juejin.cn/post/7031115698633965582)
 
 ##### clean-webpack-plugin 插件
 
@@ -1106,11 +1223,28 @@ plugins: [
 
 该插件在打包前执行
 
-**补充：** webpack V5中添加了 clean 的配置项，用 boolean 值 控制；可以用来替代 clean-webpack-plugin
+**补充：** webpack V5 中添加了 output.clean 选项，用 boolean 值 控制；可用来替代 clean-webpack-plugin
+
+> As you might have noticed over the past guides and code example, our `/dist` folder has become quite cluttered （烂七八糟的）. Webpack will generate the files and put them in the `/dist` folder for you, but it doesn't keep track of which files are actually in use by your project.
+>
+> <font color=FF0000>In general it's good practice to clean the `/dist` folder before each build</font>, so that only used files will be generated. Let's take care of that with **[`output.clean`](https://webpack.js.org/configuration/output/#outputclean)** option.
+>
+> ```diff
+> // webpack.config.js
+> module.exports = {
+>   output: {
+>     filename: '[name].bundle.js',
+>     path: path.resolve(__dirname, 'dist'),
+> +   clean: true
+>   }
+> }
+> ```
+>
+> 摘自：[webpack - Guide - Output Management - Cleaning up the /dist folder](https://webpack.js.org/guides/output-management/#cleaning-up-the-dist-folder)
 
 
 
-#### plugin 补充
+#### Plugin 文档补充
 
 ##### 总述
 
@@ -1179,7 +1313,7 @@ compiler.run(function (err, stats) {
 
 
 
-#### entry 和 output 的配置
+#### Entry 和 Output 的配置
 
 entry 和 output 的文件名，默认都是 main.js 。在 entry 配置项中配置 **输入文件的文件名**，可以写成字符串 'entryFileName' ，也可以写成对象，对象的键。示例如下：
 
@@ -1269,10 +1403,10 @@ sourceMap 是一个<font color=FF0000>映射关系</font>。它知道 <font colo
 
 摘自：[webpack——devtool配置及sourceMap的选择](https://blog.csdn.net/zwkkkk1/article/details/88758726)
 
-##### <font color=FF0000>**最佳实践：**</font>
+##### 最佳实践
 
 - 在<font color=FF0000>开发环境</font>中，建议使用 **cheap-module-eval-source-map** ，这样提示出的错误是比较全的，同时打包速度也很快
-- 在生产环境中，一般是没有必要使用devtool的。但是如果还是想要查看错误，建议使用 **cheap-module-source-map**，这样提示效果会更好一些
+- 在<font color=FF0000>生产环境</font>中，一般是没有必要使用devtool的。但是如果还是想要查看错误，建议使用 **cheap-module-source-map**，这样提示效果会更好一些
 
 ##### 浏览器中使用 source map 的补充
 
@@ -1284,7 +1418,7 @@ sourceMap 是一个<font color=FF0000>映射关系</font>。它知道 <font colo
 
 ##### 关于 js 中 source map 原理的补充
 
-<font size=4>**背景 以及 source map 是什么**</font>
+背景 以及 source map 是什么
 
 > <mark>在生产环境中，代码一般是以编译、压缩后的形态存在，对生产友好，但是调试时候定位的错误只能定位到编译压缩后的代码位置，此时的代码对人类的阅读很不友好，可能变量名被缩短失去语义，甚至是经过编译的，生产代码与开发代码已经没法一一对应</mark>。
 >
@@ -1298,7 +1432,6 @@ sourceMap 是一个<font color=FF0000>映射关系</font>。它知道 <font colo
 >
 > 这些都是可生成 source map 的操作。有了 source map，使得我们调试线上产品时，能直接看到开发环境的代码
 >
-> 
 
 <font size=4>**Source map 的格式**</font>
 
@@ -1326,11 +1459,11 @@ sourceMap 是一个<font color=FF0000>映射关系</font>。它知道 <font colo
 
 <font color=FF0000 size=4>**mappings 属性**</font>
 
-记录两个文件的各个位置是如何一一对应的，关键就是map文件的mappings属性。这是一个很长的字符串，它分成三层（**注：**这里阮一峰说的很不清楚。<mark>这里的“三层分类”的“层次”是粒度越来越细的，先将 mappings 分为“行”，再将“行”分为“位置”，最后“位置”是用 VLQ 描述的</mark>）
+记录两个文件的各个位置是如何一一对应的，关键就是 map 文件的 mappings 属性。这是一个很长的字符串，它分成三层（**注：**这里阮一峰说的很不清楚。<mark>这里的“三层分类”的“层次”是粒度越来越细的，先将 mappings 分为“行”，再将“行”分为“位置”，最后“位置”是用 VLQ 描述的</mark>）
 
 - 第一层是<font color=FF0000>**行对应**</font>，以分号`;` 表示，<font color=FF0000>**每个分号对应转换后源码的一行**</font>。所以，第一个分号前的内容，就对应源码的第一行，以此类推
 - 第二层是<font color=FF0000>**位置对应**</font>，以逗号`,` 表示，<font color=FF0000>**每个逗号对应转换后源码的一个位置**</font>。所以，第一个逗号前的内容，就对应该行源码的第一个位置，以此类推。
-- 第三层是<font color=FF0000>**位置转换**</font>，<font color=FF0000>以VLQ编码表示，代表该位置对应的转换前的源码位置</font>。
+- 第三层是<font color=FF0000>**位置转换**</font>，<font color=FF0000>以 VLQ 编码表示，代表该位置对应的转换前的源码位置</font>。
 
 举例来说，假定mappings属性的内容如下：
 
@@ -1338,14 +1471,14 @@ sourceMap 是一个<font color=FF0000>映射关系</font>。它知道 <font colo
 mappings:"AAAAA,BBBBB;CCCCC"
 ```
 
-就表示：<font color=FF0000>转换后的源码分成两行，第一行有两个位置，第二行有一个位置</font>。**注：**因为分号将mapping 分成了两段，所以两行；分号前面的内容被逗号分开，所以第一行有两个位置
+就表示：<font color=FF0000>转换后的源码分成两行，第一行有两个位置，第二行有一个位置</font>。**注：**因为分号将 mapping 分成了两段，所以两行；分号前面的内容被逗号分开，所以第一行有两个位置
 
 <font color=FF0000 size=4>**位置对应的原理**</font>
 
-<font color=FF0000>每个位置使用五位  ，表示五个字段</font>（**注：**根据上面，位置通过逗号分隔；同样上面的示例也是AAAAA BBBBB 有五位）。从左边算起：
+<font color=FF0000>每个位置使用五位  ，表示五个字段</font>（**注：**根据上面，位置通过逗号分隔；同样上面的示例也是 AAAAA BBBBB 有五位）。从左边算起：
 
 　　- 第一位：表示这个位置在（<font color=FF0000>**转换后**的代码的）的第几列</font>
-　　- 第二位：表示这个位置属于 sources属性中的哪一个文件（**注：**根据上面所说，source 是 **转换前** 的文件）
+　　- 第二位：表示这个位置属于 sources 属性中的哪一个文件（**注：**根据上面所说，source 是 **转换前** 的文件）
 　　- 第三位：<mark style="background: aqua">表示<font color=FF0000>这个位置属于 **转换前** 代码的**第几行**</font></mark>
 　　- 第四位：<mark style="background: aqua">表示<font color=FF0000>这个位置属于 **转换前** 代码的**第几列**</font></mark>（**注：**行和列。所以，第三第四位可以连起来看）
 　　- 第五位：表示这个位置属于 names 属性中的哪一个变量（**注：**根据上面所说，names 是 **转换前** 的文件名）
@@ -1399,7 +1532,9 @@ V　　　　　V
 
 #### webpack-dev-server
 
-webpack-dev-server可以用来实现<font color=FF0000>热部署</font>，即修改源代码，不需要在输入npm run * 或者 npx webpack * 命令，即可自动完成打包。
+##### 介绍 webpack-dev-server
+
+webpack-dev-server可以用来实现<font color=FF0000>热部署</font>，即修改源代码，不需要在输入 `npm run yourScript` 或者 `npx webpack *` 命令，即可自动完成打包。
 
 **方法有三种：**
 
@@ -1413,7 +1548,7 @@ webpack-dev-server可以用来实现<font color=FF0000>热部署</font>，即修
 
   然后输入 npm run watch 以使用。
 
-- **使用webpack-dev-server（<font color=FF0000>最推荐</font>）**
+- **使用 webpack-dev-server（<font color=FF0000>最推荐</font>）**
 
   上面的已经简单实现了，不过这还不够好，希望可以实现自动打包、自动打开浏览器、在代码改变后自动刷新浏览器、还可以模拟服务器上的特性。示例如下：
 
@@ -1446,13 +1581,87 @@ webpack-dev-server可以用来实现<font color=FF0000>热部署</font>，即修
 
   在React / Vue的脚手架配置 中都会有 Proxy 这项配置，这是在做跨域的接口模拟时的接口代理。之所以都有Proxy，是因为React / Vue的底层都使用了 webpack的devServer
 
-- 自己手动实现webpack-dev-server，在package.json配置文件中的scripts（如下示例）。然后自己使用node编写server.js代码（非常复杂，不推荐）
+- 自己手动实现 webpack-dev-server，在 package.json 配置文件中的scripts（如下示例）。然后自己使用node编写server.js代码（非常复杂，不推荐）
 
   ```json
   "scripts": {
     "server": "node server.js"
   }
   ```
+
+#### 开发环境 文档补充
+
+> ##### 痛点与需求
+>
+> It quickly becomes a hassle（麻烦） to manually run `npm run build` <mark>every time you want to compile your code</mark>.
+>
+> ##### 解决方法
+>
+> There are a couple of different options available in webpack that help you automatically compile your code whenever it changes:
+>
+> 1. webpack's [**Watch Mode**](https://webpack.js.org/configuration/watch/#watch)
+>
+>    > You can <font color=FF0000>instruct webpack to **"watch" all files within your dependency graph for changes**</font>. <font color=FF0000>**If one of these files is updated, the code will be recompiled**</font> so you don't have to run the full build manually.
+>    >
+>    > ```json
+>    > // package.json
+>    > {
+>    >   "scripts": {
+>    >     "watch": "webpack --watch"
+>    >   }
+>    > }
+>    > ```
+>    >
+>    > Now run `npm run watch` from the command line and see how webpack compiles your code. You can see that it doesn't exit the command line because the script is currently watching your files.
+>    >
+>    > **The only downside（缺点）** is that <font color=FF0000>**you have to refresh your browser in order to see the changes**</font>（即：不支持 HMR ）. It would be much nicer if that would happen automatically as well
+>    >
+>    > 摘自：[webpack 文档 - Guide - Development - Using Watch Mode](https://webpack.js.org/guides/development/#using-watch-mode)
+>
+> 2. [**webpack-dev-server**](https://github.com/webpack/webpack-dev-server)
+>
+>    > The webpack-dev-server <font color=FF0000>provides you with a **rudimentary （基本的） web server**</font> and <font color=FF0000>the **ability to use live reloading**</font>
+>    >
+>    > ```js
+>    > module.exports = {
+>    >   devServer: {
+>    >     static: './dist'
+>    >   },
+>    >   optimization: {
+>    >     runtimeChunk: 'single'
+>    >   }
+>    > }
+>    > ```
+>    >
+>    > This tells `webpack-dev-server` to serve the files from the `dist` directory on `localhost:8080` （默认端口）.
+>    >
+>    > The <font color=FF0000>**`optimization.runtimeChunk: 'single'` was added**</font> because <font color=FF0000>in this example we have more than one entrypoint on a single HTML page</font>. Without this, we could get into trouble described [here](https://bundlers.tooling.report/code-splitting/multi-entry/). Read the [Code Splitting](https://webpack.js.org/guides/code-splitting/) chapter for more details.
+>    >
+>    > `webpack-dev-server` serves bundled files from the directory defined in [`output.path`](https://webpack.js.org/configuration/output/#outputpath), i.e., files will be available under `http://[devServer.host]:[devServer.port]/[output.publicPath]/[output.filename]`.
+>    >
+>    > ##### 添加相关 npm script
+>    >
+>    > ```json
+>    > "scripts": {
+>    >   "start": "webpack serve --open"
+>    > }
+>    > ```
+>    >
+>    > Now we can run `npm start` from the command line and we will see <font color=FF0000>our browser automatically loading up our page</font>. If you now change any of the source files and save them, the web server will automatically reload after the code has been compiled.
+>    >
+>    > 摘自：[webpack 文档 - Guide - Development - Using webpack-dev-middleware](https://webpack.js.org/guides/development/#using-webpack-dev-middleware)
+>
+> 3. [**webpack-dev-middleware**](https://github.com/webpack/webpack-dev-middleware)
+>
+>    > <font color=FF0000>`webpack-dev-middleware` is a wrapper</font> that will <font color=FF0000>emit files processed by webpack to a server</font>. <font color=FF0000>**This is used in `webpack-dev-server` internally**</font>, however <font color=FF0000>it's available as a separate package to allow more custom setups if desired</font>. We'll take a look at <mark>an example that combines</mark> `webpack-dev-middleware` <mark>with an express server</mark>.
+>    >
+>    > 摘自：[webpack 文档 - Guide - Development - Using webpack-dev-middleware](https://webpack.js.org/guides/development/#using-webpack-dev-middleware)
+>
+> <font color=FF0000>In most cases, you probably would want to use `webpack-dev-server`</font> , but let's explore all of the above options.
+>
+> 摘自：[webpack 文档 - Guide - Development - Choosing a Development Tool](https://webpack.js.org/guides/development/#choosing-a-development-tool)
+
+另外，相关介绍也在 [[Vue3 + TS 学习笔记#搭建本地服务器]] 以及后面的部分，中有说明
 
 
 
@@ -1513,13 +1722,52 @@ plugins: [
   }
   ```
 
-  
+
+#### HMR 原理
+
+##### 在应用程序中
+
+The **following steps** allow modules to be swapped in and out （置换） of an application :
+
+- The <mark style="background: aqua">**application**</mark> <font color=FF0000>asks the HMR</font> <mark style="background: fuchsia">**runtime**</mark> <font color=FF0000>to check for updates</font>.
+- The <mark style="background: fuchsia">**runtime**</mark> <font color=FF0000>**asynchronously**</font>（异步） <font color=FF0000>downloads the updates</font> and **notifies the <mark style="background: aqua">application</mark>**.
+- The <mark style="background: aqua">**application**</mark> then <font color=FF0000>asks the <mark style="background: fuchsia">**runtime**</mark> to apply the updates</font>.
+- The <mark style="background: fuchsia">**runtime**</mark> <font color=FF0000>**synchronously**</font>（注意：是同步） <font color=FF0000>applies the updates</font>.
+
+You can set up HMR so that <font color=FF0000>**this process happens automatically**</font>, or you can choose to require user interaction for updates to occur.
+
+##### 在编译器中
+
+In addition to normal assets, <font color=FF0000>the **compiler** needs to **emit an "update"** to allow updating from the previous version to the new version</font>. The **"update" consists of two parts**:
+
+1. The updated manifest ( JSON )
+2. One or more updated chunks ( JavaScript )
+
+The **manifest contains** the <font color=FF0000>new compilation hash</font> and <font color=FF0000>a list of all updated chunks</font>. **Each of these chunks contains the new code for all updated modules** ( <font color=FF0000>**or**</font> **a flag indicating that the module was removed**).
+
+The compiler ensures that module IDs and chunk IDs are consistent between these builds（没搞懂是什么意思，感觉是：多次打包 ids 相同，即：幂等性？）. It typically stores these IDs in memory (e.g. with [webpack-dev-server](https://webpack.js.org/configuration/dev-server/) ), but it's also possible to store them in a JSON file.
+
+##### 在模块中
+
+HMR is an <font color=FF0000>**opt-in**</font> （可选的） <font color=FF0000>**feature**</font> that <font color=FF0000>only affects modules containing HMR code</font>. One example would be <font color=FF0000>patching styling through the style-loader In order for patching to work</font>, the <font color=FF0000 size=4>**style-loader implements the HMR interface**</font>; when <font color=FF0000>it receives an update through HMR</font>, it replaces the old styles with the new ones.
+
+Similarly, <mark>**when implementing the HMR interface in a module, you can describe what should happen when the module is updated**</mark>. However, in most cases, it's not mandatory to write HMR code in every module. <font color=FF0000 size=4>**If a module has no HMR handlers, the update bubbles up**</font>. This means that <font color=FF0000>a <font size=4>**single handler**</font> can update a <font size=4>**complete module tree**</font></font>. <font color=FF0000 size=4>**If a single module from the tree is updated, the entire set of dependencies is reloaded**</font>.
+
+##### 在运行时环境中
+
+For the module system runtime, additional code is emitted to track （追踪） module `parents` and `children`. On the management side, <font color=FF0000>the runtime supports two methods:</font> <font color=fuchsia>**`check`**</font> and <font color=DeepSkyBlue>**`apply`**</font>.
+
+A <font color=fuchsia size=4>**`check`**</font> <font color=FF0000>makes an HTTP request to the update manifest</font>. If this request fails, there is no update available. <font color=FF0000>If it succeeds, **the list of updated chunks is compared to the list of currently loaded chunks**</font>. For each loaded chunk, the corresponding update chunk is downloaded. <font color=FF0000>All module updates are stored in the <font size=4>**runtime**</font></font>. <mark>When all update chunks have been **downloaded** and are **ready to be applied**</mark>, the <font color=FF0000>**runtime switches into the `ready` state**</font>.
+
+The <font color=DeepSkyBlue size=4>**`apply`**</font> method <font color=FF0000>**flags all updated modules as invalid**</font>. <font color=FF0000>**For each invalid module**, there **needs** to be an update handler in the module or in its parent(s)</font> （对于每个 invalid module ，都需要在模块中有一个 update handler，或者在此模块的父级模块中有 update handler）. **Otherwise**, the <font color=FF0000>invalid flag bubbles up and invalidates parent(s) as well</font> （否则，会进行无效标记冒泡，并且父级也会被标记为无效）. <font color=FF0000>Each bubble continues until the app's **entry point** or **a module with an update handler is reached** (whichever comes first)</font>. <font color=FF0000 size=4>**If it bubbles up from an entry point, the process fails**</font>. 
+
+Afterwards, all invalid modules are disposed （处理） (via the dispose handler) and unloaded. The current hash is then updated and all `accept` handlers are called. The runtime switches back to the `idle` state and everything continues as normal.
+
+摘自：[webpack 文档 - Concept - Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/)
 
 //TODO 阅读：
 
-https://webpack.js.org/guides/hot-module-replacement/ 
-
-https://webpack.js.org/api/hot-module-replacement/（HMR除了accept方法外还有什么方法）
+https://webpack.js.org/api/hot-module-replacement/（ HMR 除了accept 方法外还有什么方法）
 
 https://webpack.js.org/concepts/hot-module-replacement/
 
@@ -1529,7 +1777,7 @@ https://webpack.js.org/plugins/hot-module-replacement-plugin/
 
 #### 使用 Babel 处理 ES6 语法的代码
 
-在webpack中使用babel需要安装 babel-loader（babel和webpack之间通信的桥梁） 、 @babel-core（核心模块）还有@babel/preset-env（作为语法转换）。另外对于Promise这种新的方法，还要安装 @babel/polyfill
+在 webpack 中使用 babel 需要安装 babel-loader（ babel 和 webpack 之间通信的桥梁） 、 @babel-core（核心模块）还有@babel/preset-env（作为语法转换）。另外对于 Promise 这种新的方法，还要安装 @babel/polyfill
 
 ```js
 //webpack.config.js文件下
@@ -1620,7 +1868,7 @@ module.exports = {
 
 另外：即使不使用的那些代码，在<font color=FF0000>开发环境</font>的打包中，那些不用的代码将不会被删掉，而是告知你只使用了哪些代码，便于你开发。而在生产环境的打包中，将会直接删掉那些不用的代码。
 
-<font size=4>**补充：**</font>在生产环境的打包中，Tree Shaking 是自动生效的，即：你不需要写 optimization: { usedExports: true } 配置项，不过sideEffects 还是要写的。
+<font size=4>**补充：**</font>在生产环境的打包中，Tree Shaking 是自动生效的，即：你不需要写 `optimization: { usedExports: true }` 配置项，不过sideEffects 还是要写的。
 
 ##### 《现代 JS 教程》中的关于 tree-shaking 的内容
 > 删除未使用的导出 ( “tree-shaking” )
@@ -1630,9 +1878,9 @@ module.exports = {
 《现代 JS 教程》中关于 tree-shaking 的定义，相当直接易懂。
 
 
-#### Development模式和Production模式的区分打包
+#### Development 模式 和 Production 模式的区分打包
 
-**development模式和production模式的部分区别：**
+**development 模式 和 production 模式的部分区别：**
 
 - 在development模式下，sourceMap是非常全的，可以快速定位代码的问题；而production模式下，sourceMap会简洁很多（没有development环境下那么重要了）。
 - 开发环境下，代码不需要做压缩；而生产环境中，代码需要被压缩
@@ -1683,13 +1931,13 @@ const devConfig = {
 module.exports = merge(commonConfig, devConfig)
 ```
 
-由于：配置文件被放到build文件夹下，所以：输出文件（output）的路径 也要进行改动；同时，如果使用了 CleanWebpackPlugin，路径同样要修改，不过，由于CleanWebpackPlugin 默认当前文件（webpack.dev.config.js）的所在的文件夹是根目录，所以不能直接修改路径，如下：
+由于：配置文件被放到 build 文件夹下，所以：输出文件 ( output ) 的路径 也要进行改动；同时，如果使用了 CleanWebpackPlugin ，路径同样要修改，不过，由于 CleanWebpackPlugin 默认当前文件 ( webpack.dev.config.js ) 的所在的文件夹是根目录，所以不能直接修改路径，如下：
 
 ```js
 new CleanWebpackPlugin(['../dist'])
 ```
 
-这会让webpack到根路径下去找。所以需要另外配置：
+这会让 webpack 到根路径下去找。所以需要另外配置：
 
 ```js
 plugins: [
@@ -1699,8 +1947,6 @@ plugins: [
   })
 ]
 ```
-
-
 
 
 
@@ -1731,7 +1977,7 @@ plugins: [
 
 - <font color=FF0000> 打包的代码分为依赖代码（代码库）和业务代码</font>，我们开发几乎只需要动业务代码。而且<font color=FF0000> 浏览器是有缓存的</font>，当页面上业务代码的逻辑上发生变化时，只需要加载改动的业务逻辑代码即可。
 
-代码分割的功能在webpack出现之前就已经存在，但是webpack的代码分割功能让其智能化，只需要配置即可。
+代码分割的功能在 webpack 出现之前就已经存在，但是 webpack 的代码分割功能让其智能化，只需要配置即可。
 
 配置代码分割的 代码如下：
 
@@ -1745,15 +1991,15 @@ optimization: {
 }
 ```
 
-webpack对于同步性质代码的打包时：会对代码进行分析，把该提取出来的文件（比如某个库）提取出来，进行单独的存放，自动进行分割。对于异步加载的代码（比如使用ajax获取的代码），会单独拿出来，同样进行分割。
+webpack对于同步性质代码的打包时：会对代码进行分析，把该提取出来的文件（比如某个库）提取出来，进行单独的存放，自动进行分割。对于异步加载的代码（比如使用 Ajax 获取的代码），会单独拿出来，同样进行分割。
 
-对于异步加载的代码，在打包时 webpack 会根据代码分割产生的 id 的值，来作为异步加载模块打包后的文件名。这时候可以使用 magic comment 魔法注释，在 `import( asyncCode )` 的 import 中使用 /\*webpackChunkName: "you_ordered_name"\*/，即：
+对于异步加载的代码，在打包时 webpack 会根据代码分割产生的 id 的值，来作为异步加载模块打包后的文件名。这时候可以使用 magic comment 魔法注释，在 `import( asyncCode )` 的 import 中使用 `/* webpackChunkName: "you_ordered_name" */`，即：
 
 ```js
 import( /*webpackChunkName:"you_ordered_name"*/ asyncCode)
 ```
 
-此时，名字会变成 <font color=FF0000> vendors~</font>you_ordered_name，如果想要去掉 vendors~，可以添加配置cacheGroups，如下：
+此时，名字会变成 <font color=FF0000> vendors~</font>you_ordered_name，如果想要去掉 vendors~，可以添加配置 cacheGroups ，如下：
 
 ```js
 // webpack.common.conf.js下
@@ -1767,6 +2013,27 @@ optimization: {
   }
 }
 ```
+
+##### webpackChunkName 的补充
+
+> ##### Chunks
+>
+> Chunks come in two forms:
+>
+> - <font color=fuchsia>**`initial`**</font> is the <font color=FF0000>main chunk for the entry point</font>. This chunk contains all the modules and their dependencies that you specify for an entry point.
+> - <font color=fuchsia>**`non-initial`**</font> is a chunk that <font color=FF0000>**may be lazy-loaded**</font>. It may appear when [dynamic import](https://webpack.js.org/guides/code-splitting/#dynamic-imports) or [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/) is being used.
+>
+> <font color=FF0000>**By default**</font>, <font color=FF0000>**there is no name for `non-initial` chunks** so that a unique ID is used instead of a name</font>（根据原文下面 output 部分的内容：这里的 ID 应该就是 `[id]` 占位符？ ）. When using dynamic import we <font color=FF0000>may specify a chunk name explicitly by using a **"magic" comment**</font>
+>
+> ```react
+> import(/* webpackChunkName: "app" */ './app.jsx').then(
+>   (App) => { ReactDOM.render(<App />, root); }
+> );
+> ```
+>
+> 摘自：[webpack 文档 - concept - Under The Hood - Chunks](https://webpack.js.org/concepts/under-the-hood/#chunks)
+
+##### splitchunks 的配置项
 
 splitChunks有很多配置项，默认的配置项（即 即使splitChunk对象为空，也会生效），如下：
 
@@ -1862,6 +2129,186 @@ output: {
   chunkFileName: '[name].chunk.js'
 }
 ```
+
+#### Code Splitting 补充
+
+##### 总述
+
+<mark>Code splitting is **one of the most compelling** （引人入胜的）**features** of webpack</mark>. <font color=FF0000>This feature **allows you to split your code into various bundles** which can then **be loaded on demand or in parallel**</font> （按需加载 和 并行加载）. It can be used to achieve smaller bundles and <font color=FF0000>**control resource load prioritization**</font>（控制资源加载优先级）which, <mark>if used correctly, can have a major impact on load time</mark>.
+
+**There are <font color=FF0000>three general approaches</font> to code splitting <font color=FF0000>available</font>:**
+
+- **Entry Points**: Manually split code using [`entry`](https://webpack.js.org/configuration/entry-context) configuration. 
+- **Prevent Duplication**: Use [Entry dependencies](https://webpack.js.org/configuration/entry-context/#dependencies) or [`SplitChunksPlugin`](https://webpack.js.org/plugins/split-chunks-plugin/) to dedupe （去重） and split chunks.
+- **Dynamic Imports**: Split code via inline function calls within modules.
+
+##### Entry Points
+
+This is <font color=FF0000>by far the easiest and most intuitive way to split code</font>. However, it is more manual and has some pitfalls（陷阱） we will go over.
+
+```js
+const path = require('path');
+
+module.exports = {
+  mode: 'development',
+  entry: {
+    index: './src/index.js',
+    another: './src/another-module.js',
+  },
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+};
+```
+
+**As mentioned there are some pitfalls to this approach:**
+
+- If there are any <font color=FF0000>duplicated modules between entry chunks</font>, they <font color=FF0000>will be included in both bundles</font>.
+
+  如上示例中 （代码略，详见原链接）：index.js 和 another-module.js 中都引入了 `lodash` ，那么，lodash 会引入两次；这显然是不应该的。解决办法见下面，即：使用 dependOn，写成：`dependOn: youDefinedSharedChunk`
+
+- It isn't as flexible and <font color=FF0000>can't be used to dynamically split code **with the core application logic**</font>（不能动态地将核心应用程序逻辑中的代码拆分出来）.
+
+##### Prevent Duplication
+
+- **Entry dependencies**
+
+  The [`dependOn` option](https://webpack.js.org/configuration/entry-context/#dependencies) allows to share the modules between the chunks:
+
+  ```js
+  const path = require('path');
+  
+  module.exports = {
+    mode: 'development',
+    entry: {
+      index: {
+        import: './src/index.js',
+        dependOn: 'shared', // dependOn 指向了下面定义的 shared: 'lodash'
+      },
+      another: {
+        import: './src/another-module.js',
+        dependOn: 'shared', // dependOn 指向了下面定义的 shared: 'lodash'
+      },
+      shared: 'lodash', // **注意这里**，定义 shared: 'lodash' 处
+    },
+    output: {
+      filename: '[name].bundle.js',
+      path: path.resolve(__dirname, 'dist'),
+    },
+    optimization: {
+      runtimeChunk: 'single', // 多入口打包引入当个 html 页面
+    },
+  };
+  ```
+
+  如上配置，打包之后的结果：除了 index.bundle.js、another.bundle.js 和 <font color=FF0000>**shared.bundle.js**</font> ，<font color=FF0000>**还会有 runtime.bundle.js**</font>
+
+  As you can see there's another `runtime.bundle.js` file generated besides `shared.bundle.js`, `index.bundle.js` and `another.bundle.js`.
+
+  <mark>Although using multiple entry points per page is allowed in webpack</mark>, it <font color=FF0000>should **be avoided** when possible in favor of an **entry point with multiple imports**</font>: `entry: { page: ['./analytics', './app'] }`. This <font color=FF0000>**results in** a better optimization and consistent execution order when using `async` script tags</font>.
+
+- **SplitChunksPlugin**
+
+  The [**`SplitChunksPlugin`**](https://webpack.js.org/plugins/split-chunks-plugin/) <font color=FF0000>allows us to extract common dependencies into an existing entry chunk </font>（已有的入口 chunk ）<font color=FF0000>or an entirely new chunk</font>. Let's use this to de-duplicate the `lodash` dependency from the previous example:
+
+  ```diff
+    const path = require('path');
+  
+    module.exports = {
+      mode: 'development',
+      entry: {
+        index: './src/index.js',
+        another: './src/another-module.js',
+      },
+      output: {
+        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+      },
+  +   optimization: {
+  +     splitChunks: {
+  +       chunks: 'all',
+  +     },
+  +   },
+    };
+  ```
+
+  With the [`optimization.splitChunks`](https://webpack.js.org/plugins/split-chunks-plugin/#optimizationsplitchunks) configuration option in place, we should <font color=FF0000>now see **the duplicate dependency removed from our `index.bundle.js` and `another.bundle.js`**</font> （ **译：**`index.bundle.js` 和 `another.bundle.js` 中 <font color=FF0000>**已经移除了重复的依赖模块**</font>）. The plugin should notice that we've separated `lodash` out to a separate chunk and remove the dead weight from our main bundle（**译：** 需要注意的是，插件将 `lodash` 分离到单独的 chunk，并且将其从 main bundle 中移除，减轻了大小）.
+
+另外，还可以使用 [`mini-css-extract-plugin`](https://webpack.js.org/plugins/mini-css-extract-plugin)，Useful for <font color=FF0000>splitting CSS out from the main application</font>.
+
+##### Dynamic Imports
+
+<mark>**Two similar techniques** are supported by webpack when it comes to dynamic code splitting</mark>. **The first and recommended approach** is to <font color=FF0000>use the `import()` syntax</font> that conforms（符合） to the [ECMAScript proposal](https://github.com/tc39/proposal-dynamic-import) for dynamic imports. The legacy, webpack-specific approach is to use [`require.ensure`](https://webpack.js.org/api/module-methods/#requireensure) （**译：**第二种，则是 webpack 的遗留功能，使用 webpack 特定的 require.ensure）. 
+
+>  **Warning** ⚠️：<font color=FF0000>**`import()` calls use [promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) internally**</font>. If you use `import()` with older browsers (e.g., IE 11), remember to shim `Promise` using a polyfill such as [es6-promise](https://github.com/stefanpenner/es6-promise) or [promise-polyfill](https://github.com/taylorhakes/promise-polyfill).
+
+##### Prefetching / Preloading modules
+
+<mark style="background: aqua">Webpack 4.6.0+ adds support for **prefetching** and **preloading**.</mark>
+
+Using these inline directives while declaring your imports allows webpack to output（输出） “Resource Hint” which tells the browser that for:
+
+- **prefetch**: resource is probably needed for some <font color=FF0000>navigation **in the future**</font>
+- **preload**: resource will also be needed <font color=FF0000>during the **current** navigation</font>
+
+An example of this is having a `HomePage` component, which renders a `LoginButton` component which then <font color=FF0000>on demand loads a `LoginModal` component after being clicked</font>.
+
+```js
+/* LoginButton.js */
+
+//...
+import(/* webpackPrefetch: true */ './path/to/LoginModal.js');
+```
+
+This <font color=FF0000>will **result in `<link rel="prefetch" href="login-modal-chunk.js">` being appended in the head of the page**</font>, which will <font color=FF0000>instruct the browser to prefetch in idle time the `login-modal-chunk.js` file</font>.
+
+> **Tip 💡**: webpack will <font color=FF0000>add the prefetch hint **once the parent chunk has been loaded**</font>.
+
+<mark>**Preload** directive has **a bunch of differences** compared to **prefetch**:</mark>
+
+- A <font color=FF0000>**preloaded chunk starts loading in <font size=4>parallel</font> to the parent chunk**</font>. A prefetched chunk starts after the parent chunk finishes loading.
+- A preloaded chunk has medium priority and is <font color=FF0000>instantly downloaded</font>. A prefetched chunk is <font color=FF0000>downloaded while the browser is idle</font>.
+- A preloaded chunk should be <font color=FF0000>instantly requested by the parent chunk</font>. A prefetched chunk <font color=FF0000>can be used anytime in the future</font>.
+- <font color=FF0000>Browser support is different</font>.
+
+> **Tip 💡**: <font color=FF0000>Using `webpackPreload` incorrectly can actually hurt performance</font>, so be careful when using it.
+
+<mark>Sometimes you need to have your own control over preload</mark>. For example, <font color=FF0000>preload of any dynamic import **can be done via async script**</font>. This can be useful in case of streaming server side rendering （即 SSR ）.
+
+```js
+const lazyComp = () =>
+  import('DynamicComponent').catch((error) => {
+    // Do something with the error.
+    // For example, we can retry the request in case of any net error
+  });
+```
+
+If the script loading will fail before webpack starts loading of that script by itself (webpack just creates a script tag to load its code, if that script is not on a page), that catch handler won't start till [chunkLoadTimeout](https://webpack.js.org/configuration/output/#outputchunkloadtimeout) is not passed. This behavior can be unexpected. But it's explainable — webpack can not throw any error, cause webpack doesn't know, that script failed. Webpack will add onerror handler to the script right after the error has happen.
+
+**<font color=FF0000>To prevent such problem</font> you can add your own onerror handler**, which removes the script in case of any error:
+
+```html
+<script
+  src="https://example.com/dist/dynamicComponent.js"
+  async
+  onerror="this.remove()"
+></script>
+```
+
+<font color=FF0000>In that case, errored script will be removed</font>. Webpack will create its own script and any error will be processed without any timeouts.
+
+##### Bundle Analysis
+
+<font color=FF0000>**Once you start splitting your code**, it can be useful to analyze the output to check where modules have ended up</font>. The [official analyze tool](https://github.com/webpack/analyse) is a good place to start. There are some other community-supported options out there as well:
+
+- [webpack-chart](https://alexkuz.github.io/webpack-chart/): <font color=FF0000>Interactive pie chart</font> for webpack stats.
+- [webpack-visualizer](https://chrisbateman.github.io/webpack-visualizer/): Visualize and analyze your bundles to <font color=FF0000>see which modules are taking up space and which might be duplicates</font>.
+- [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer): A plugin and CLI utility that <font color=FF0000>represents bundle content as a convenient **interactive zoomable treemap**</font>.
+- [webpack bundle optimize helper](https://webpack.jakoblind.no/optimize): This tool will analyze your bundle and <font color=FF0000>**give you actionable suggestions** on what to improve to reduce your bundle size</font>.
+- [bundle-stats](https://github.com/bundle-stats/bundle-stats): <font color=FF0000>Generate a bundle report</font> (bundle size, assets, modules) and compare the results between different builds.
+
+摘自：[webpack 文档 - Guide - Code Splitting](https://webpack.js.org/guides/code-splitting/)
 
 
 
@@ -2015,6 +2462,156 @@ optimization: {
 这时候问题解决了，但是打包出的文件中会多一个 runtime.[contenthash].js  的文件。之所以contenthash会不同，这是由于 业务逻辑 和 代码库 之间是有关联的，在webpack中将这些（描述）关联的代码，叫做 manifest，manifest 存在于 业务代码打包的结果、也存在于 代码库的打包结果的；在旧版的webpack中，每次打包时 manifest 会有变化；所以即使没有改动代码，由于manifest的变化，业务代码打包的结果、代码库的打包结果可能就变了；这就导致 contenthash 的不同。而使用 runtimeChunk 的配置将这些 manifest 抽离出来，放到了 runtime.[contenthash].js 的文件中；则不会再对 业务逻辑 和 代码库的代码产生影响。
 
 而新版本的webpack不会有类似的问题。
+
+#### Cache 文档补充
+
+##### 总述
+
+So we're using webpack to bundle our modular application which yields（生成） a deployable `/dist` directory. Once the contents of `/dist` have been deployed to a server, clients ( typically browsers ) will hit that server to grab the site and its assets. <mark>The last step can be time consuming, which is why browsers use a technique called [caching](https://en.wikipedia.org/wiki/Cache_(computing))</mark>. <font color=FF0000>This allows sites to load faster with less unnecessary network traffic</font>. However, it can also cause headaches when you need new code to be picked up.
+
+##### 提取引导模板(extracting boilerplate)
+
+<mark>As we learned in [code splitting](https://webpack.js.org/guides/code-splitting), the [`SplitChunksPlugin`](https://webpack.js.org/plugins/split-chunks-plugin/) can be used to split modules out into separate bundles</mark>. <font color=FF0000>Webpack provides an optimization feature to split runtime code into a separate chunk using the [`optimization.runtimeChunk`](https://webpack.js.org/configuration/optimization/#optimizationruntimechunk) option</font>. Set it to `single` to create a single runtime bundle for all chunks:
+
+```js
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  entry: './src/index.js',
+  plugins: [
+    new HtmlWebpackPlugin({
+    title: 'Caching',
+    }),
+  ],
+  output: {
+    filename: '[name].[contenthash].js', // 这里 [contenthash] 原文上面有讲，由于之前的笔记也有说过，这里略
+    path: path.resolve(__dirname, 'dist'),
+    clean: true,
+  },
+  optimization: {
+    runtimeChunk: 'single',
+  },
+};
+```
+
+It's also good practice to <font color=FF0000>extract third-party libraries, such as `lodash` or `react`, to a <font size=4>**separate `vendor` chunk**</font> as they are less likely to change than our local source code</font>（ 将第三方库 ( library )（例如 `lodash` 或 `react` ）**提取到单独的 `vendor` chunk 文件中**，是比较推荐的做法，这是因为，它们很少像本地的源代码那样频繁修改 ）. This step will allow clients to request even less from the server to stay up to date. <font color=FF0000>This can be done by using the [`cacheGroups`](https://webpack.js.org/plugins/split-chunks-plugin/#splitchunkscachegroups) option of the [`SplitChunksPlugin`](https://webpack.js.org/plugins/split-chunks-plugin/)</font> demonstrated in [Example 2 of SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/#split-chunks-example-2). Lets <font color=FF0000>**add `optimization.splitChunks` with `cacheGroups`**</font> with next params and build:
+
+```js
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  entry: './src/index.js',
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Caching',
+    }),
+  ],
+  output: {
+    filename: '[name].[contenthash].js',
+    path: path.resolve(__dirname, 'dist'),
+    clean: true,
+  },
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
+  },
+};
+```
+
+Let's run another build to see our new `vendor` bundle:
+
+```bash
+...
+                          Asset       Size  Chunks             Chunk Names
+runtime.cc17ae2a94ec771e9221.js   1.42 KiB       0  [emitted]  runtime
+vendors.a42c3ca0d742766d7a28.js   69.4 KiB       1  [emitted]  vendors
+   main.abf44fedb7d11d4312d7.js  240 bytes       2  [emitted]  main
+                     index.html  353 bytes          [emitted]
+...
+```
+
+**注：**注意这里的打包结果，会和下面 [[#模块标识符 Module Identifiers]] 的打包结果比对
+
+We can now see that our <font color=FF0000>`main` bundle does not contain `vendor` code from `node_modules` directory</font> and is down in size to `240 bytes`（ `main` 不再含有来自 `node_modules` 目录的 `vendor` 代码，并且体积减少到 240 bytes）!
+
+##### 模块标识符 Module Identifiers
+
+（原文中添加了新的文件，将其引入打包入口 index.js 中，再次打包）Running another build, we <font color=FF0000>would expect only our `main` bundle's hash to change</font>, however...
+
+```bash
+...
+                           Asset       Size  Chunks                    Chunk Names
+  runtime.1400d5af64fc1b7b3a45.js    5.85 kB      0  [emitted]         runtime
+  vendor.a7561fb0e9a071baadb9.js     541 kB       1  [emitted]  [big]  vendor
+    main.b746e3eb72875af2caa9.js    1.22 kB       2  [emitted]         main
+                      index.html  352 bytes          [emitted]
+...
+```
+
+... we can see that all three have （发现三个输出结果的 contenthash 都改变了 ）. <font color=FF0000>This is because **each [`module.id`](https://webpack.js.org/api/module-variables/#moduleid-commonjs) is incremented based on resolving order by default**</font>（每个 module.id 会默认地基于解析顺序 ( resolve order ) 进行增量）. Meaning <font color=FF0000>when the order of resolving is changed, the IDs will be changed as well</font>. <mark style="background: aqua">To recap（简要概括）</mark>:
+
+- The `main` bundle changed because of its new content
+- <font color=FF0000>The `vendor` bundle changed because its `module.id` was changed</font>.
+- And, <font color=FF0000>the `runtime` bundle changed because it now contains a reference to a new module</font>.
+
+The first and last are expected, it's the `vendor` hash we want to fix. Let's use [`optimization.moduleIds`](https://webpack.js.org/configuration/optimization/#optimizationmoduleids) with `'deterministic'` option:
+
+```diff
+  const path = require('path');
+  const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+  module.exports = {
+    entry: './src/index.js',
+    plugins: [
+      new HtmlWebpackPlugin({
+        title: 'Caching',
+      }),
+    ],
+    output: {
+      filename: '[name].[contenthash].js',
+      path: path.resolve(__dirname, 'dist'),
+      clean: true,
+    },
+    optimization: {
++     moduleIds: 'deterministic',
+      runtimeChunk: 'single',
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+        },
+      },
+    },
+  };
+```
+
+Now, despite any new local dependencies, <font color=FF0000>our `vendor` hash should stay consistent between builds</font>（幂等）:
+
+```bash
+...
+                          Asset       Size  Chunks             Chunk Names
+   main.216e852f60c8829c2289.js  340 bytes       0  [emitted]  main
+vendors.55e79e5927a639d21a1b.js   69.5 KiB       1  [emitted]  vendors
+runtime.725a1a51ede5ae0cfde0.js   1.42 KiB       2  [emitted]  runtime
+                     index.html  353 bytes          [emitted]
+Entrypoint main = runtime.725a1a51ede5ae0cfde0.js vendors.55e79e5927a639d21a1b.js main.216e852f60c8829c2289.js
+...
+```
+
+摘自：[webpack 文档 - Guide - Caching](https://webpack.js.org/guides/caching)
 
 
 
@@ -2201,9 +2798,11 @@ module.exports = {
 }
 ```
 
+**注：**上面相关 外置化 第三方库，下面有 webpack 文档 的补充 [[#Externalize Lodash]]
 
 
-想要把代码给别人使用，需要配置package.json
+
+想要把代码给别人使用，需要配置 package.json
 
 ```json
 // package.json
@@ -2212,7 +2811,7 @@ module.exports = {
 }
 ```
 
-如果想要发布自己写的 library 到 npm 上，可以先去 [npm 官网](npmjs.com) 注册
+如果想要发布自己写的 library 到 npm 上，可以先去 [npm 官网](https://npmjs.com) 注册
 
 注册好后，可以在命令行，输入
 
@@ -2235,7 +2834,146 @@ npm publish [<tarball>|<folder>] [--tag <tag>] [--access <public|restricted>] [-
 
 
 
-#### PWA打包
+#### 创建 library ( Authoring Libraries )
+
+##### 总述
+
+Aside from applications, <font color=FF0000>webpack can also be used to bundle JavaScript libraries</font>.
+
+##### Expose the Library
+
+So far everything should be the same as bundling an application, and here comes the different part – <font color=FF0000>we need to **expose exports** from the entry point through [`output.library`](https://webpack.js.org/configuration/output/#outputlibrary) option</font>.
+
+```diff
+  const path = require('path');
+
+  module.exports = {
+    entry: './src/index.js',
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'webpack-numbers.js',
++     library: "webpackNumbers",
+    },
+  };
+```
+
+However <font color=FF0000>it only works when it's referenced through script tag</font>（比如 CDN 引入）, it <font color=FF0000>**<font size=4>can't</font> be used in other environments like CommonJS, AMD, Node.js, etc**</font>.
+
+Let's update the `output.library` option with its `type` set to [`'umd'`](https://webpack.js.org/configuration/output/#type-umd) :
+
+```diff
+ const path = require('path');
+
+ module.exports = {
+   entry: './src/index.js',
+   output: {
+     path: path.resolve(__dirname, 'dist'),
+     filename: 'webpack-numbers.js',
+-    library: 'webpackNumbers',
++    library: {
++      name: 'webpackNumbers',
++      type: 'umd',
++    },
+   },
+ };
+```
+
+**注：**UMD ( Universal Module Definition ) : UMD patterns for JavaScript modules that work everywhere.
+
+##### Externalize Lodash
+
+**注：**实际上不仅仅是 lodash，而是所有的第三库。
+
+Now, if you run `npx webpack` , you will find that a largish（相当大的） bundle is created. <mark>If you inspect the file, you'll see that lodash has been bundled along with your code</mark>. <font color=FF0000>In this case, we'd prefer to treat `lodash` as a ***peer dependency*** </font>. Meaning that <font color=FF0000>**the consumer should already have `lodash` installed**</font> （**注：**感觉这里可以理解为：用户（库的使用者，自身也是程序员）在自己的项目中也引入了 lodash，可能会造成多次安装 ）. <font color=FF0000>Hence you would want to **give up control of this external library to the consumer of your library**</font>.
+
+This can be done using the [`externals`](https://webpack.js.org/configuration/externals/) configuration:
+
+```diff
+  const path = require('path');
+
+  module.exports = {
+    entry: './src/index.js',
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'webpack-numbers.js',
+      library: {
+        name: "webpackNumbers",
+        type: "umd"
+      },
+    },
++   externals: {
++     lodash: {
++       commonjs: 'lodash',
++       commonjs2: 'lodash',
++       amd: 'lodash',
++       root: '_',
++     },
++   },
+  };
+```
+
+This means that <font color=FF0000>your library expects a dependency named `lodash` to **be available in the consumer's environment**</font>.
+
+##### External Limitations
+
+For libraries that use several files from a dependency（从一个依赖中调用多个文件）:
+
+```js
+import A from 'library/one';
+import B from 'library/two';
+
+// ...
+```
+
+You won't be able to exclude them from the bundle by specifying `library` in the externals. You'll either need to exclude them one by one or by using a regular expression.
+
+```js
+module.exports = {
+  //...
+  externals: [
+    'library/one',
+    'library/two',
+    // Everything that starts with "library/"
+    /^library\/.+$/,
+  ],
+};
+```
+
+##### Final Steps（发布）
+
+Optimize your output for production by following the steps mentioned in the [production guide](https://webpack.js.org/guides/production). Let's also add the path to your generated bundle as the package's `main` field in with the `package.json`
+
+```json
+// package.json
+{
+  "main": "dist/webpack-numbers.js",
+}
+```
+
+Or, to add it <font color=FF0000>**as a standard module**</font> as per [this guide](https://github.com/dherman/defense-of-dot-js/blob/master/proposal.md#typical-usage):
+
+```json
+// package.json
+{
+  "module": "src/index.js",
+}
+```
+
+<font color=FF0000>**The key `main` refers to the [standard from `package.json`](https://docs.npmjs.com/files/package.json#main) **</font>, and `module` to [a](https://github.com/dherman/defense-of-dot-js/blob/master/proposal.md) [proposal](https://github.com/rollup/rollup/wiki/pkg.module) to allow the JavaScript ecosystem upgrade to use ES2015 modules without breaking backwards compatibility （ `module` 是参照 一个提案，此提案允许 JavaScript 生态系统升级使用 ES2015 模块，而不会破坏向后兼容性）.
+
+> **Warning ⚠️ :** The `module` property should point to a script that utilizes ES2015 module syntax <font color=FF0000>but no other syntax features that aren't yet supported by browsers or node</font>. This enables webpack to parse the module syntax itself, allowing for lighter bundles via [tree shaking](https://webpack.js.org/guides/tree-shaking/) if users are only consuming certain parts of the library.
+>
+> **译文：**`module` 属性应指向一个使用 ES2015 模块语法的脚本，但不包括浏览器或 Node.js 尚不支持的其他语法特性。这使得 webpack 本身就可以解析模块语法，如果用户只用到 library 的某些部分，则允许通过 tree shaking 打包更轻量的包。
+
+**注：**看了下 Vue.js GitHub 的 [package.json](https://github.com/vuejs/vue/blob/main/package.json)，发现它 同时包含 main 和 module 的配置
+
+**Now you can [publish it as an npm package](https://docs.npmjs.com/getting-started/publishing-npm-packages)** and find it at [unpkg.com](https://unpkg.com/#/) to distribute it to your users.
+
+> **Tip💡** : To expose stylesheets associated with your library （感觉是 样式库？）, **the [`MiniCssExtractPlugin`](https://webpack.js.org/plugins/mini-css-extract-plugin) should be used**. Users can then consume and load these as they would any other stylesheet.
+
+
+
+#### PWA 打包
 
 使用 workbox-webpack-plugin 插件可以提供 PWA 的打包。同时，只有需要上线的代码需要考虑是否断网的问题，所以 PWA 插件只用在 production 环境下。
 
@@ -2516,6 +3254,44 @@ devServer: {
   - 比如在 开发环境下，没有必要使用对代码进行压缩；因为不需要考虑用户的加载速度问题，所以没必要做代码压缩，同时可以减少打包时间。
   - 另外，尽可能使用 webpack 官方网站上推荐的插件，这些插件的性能往往经过了官方网站的测试，是比较快的。而使用自己写的，或者不知名的第三方插件时，往往性能得不到保证，会造成打包速度变慢。
 
+#### 打包性能优化 文档补充
+
+##### 通用（ dev 和 prod 皆可 ）的最佳实践
+
+###### Stay Up to Date 保持更新
+
+<font color=FF0000>Use the latest webpack version</font>. We are always making performance improvements.  
+
+<font color=FF0000>Staying up-to-date with **Node.js** can also help with performance</font>. On top of this, <font color=FF0000>keeping your package manager ( e.g. `npm` or `yarn` ) up-to-date can also help</font>. Newer versions create more efficient module trees and increase resolving speed.
+
+###### Loaders
+
+Apply loaders to the minimal number of modules necessary（ loader 中使用 includes、exclude ） .
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: path.resolve(__dirname, 'src'),
+        loader: 'babel-loader',
+      },
+    ],
+  },
+};
+```
+
+###### Bootstrap 启动程序
+
+**注：**Bootstrap 即：引导程序、启动程序
+
+Each additional loader/plugin has a bootup time. Try to use as few tools as possible.
+
+
+
+
+
 
 
 #### resolve 参数合理配置
@@ -2616,13 +3392,28 @@ The dependency module can be from the application code or a third-party library.
   import 'module/lib/file';
   ```
   
+  <font color=FF0000>**Modules are searched for inside all directories specified in [`resolve.modules`](https://webpack.js.org/configuration/resolve/#resolvemodules)**</font>（注意 ⚠️：这个 resolve.modules 和 “配置解析文件的 loader” 的 module 选项 不是一个东西）. You can replace the original module path by an alternate path by creating an alias for it using the [`resolve.alias`](https://webpack.js.org/configuration/resolve/#resolvealias) configuration option.（比如 vue 项目中常见的 @ -> src ）
   
+  - If the package contains a `package.json` file, then fields specified in [`resolve.exportsFields`](https://webpack.js.org/configuration/resolve/#resolveexportsfields) configuration options are looked up in order, and the first such field in `package.json` determines the available exports from the package according to the [package exports guideline](https://webpack.js.org/guides/package-exports/).
+  
+    译文：如果 package 中包含 `package.json` 文件，那么在 [`resolve.exportsFields`](https://webpack.docschina.org/configuration/resolve/#resolveexportsfields) 配置选项中指定的字段会被依次查找，`package.json` 中的第一个字段会根据 [package 导出指南](https://webpack.docschina.org/guides/package-exports/) 确定 package 中可用的 export。
+  
+  Once the path is resolved based on the above rule（感觉可以理解为：如果 目标文件 在上述规则中，即可被成功解析）, <font color=FF0000>**the resolver checks to see if the path points to a file or a directory**</font>. <mark style="background: aqua">If the path points to a file</mark>:
+  
+  - <font color=FF0000>If the path has a file extension</font>, then the file is bundled straightaway.
+  - **Otherwise**, <font color=FF0000>the file extension is resolved using the [`resolve.extensions`](https://webpack.js.org/configuration/resolve/#resolveextensions) option</font>, which tells the resolver which extensions are acceptable for resolution e.g. `.js`, `.jsx`.
+  
+  <mark style="background: aqua">If the path points to a folder</mark>, then the following steps are taken to find the right file with the right extension:
+  
+  - If <font color=FF0000>**the** folder contains a `package.json` file</font>, then fields specified in [`resolve.mainFields`](https://webpack.js.org/configuration/resolve/#resolvemainfields) configuration option are looked up in order, and <font color=FF0000>the first such field in `package.json` determines the file path</font>.
+  - If there is <font color=FF0000>no `package.json`</font> <font size=4>**or**</font> if the <font color=FF0000>[`resolve.mainFields`](https://webpack.js.org/configuration/resolve/#resolvemainfields) do not return a valid path</font>, <font color=FF0000>**file names specified in the [`resolve.mainFiles`](https://webpack.js.org/configuration/resolve/#resolvemainfiles) configuration option are looked for in order**</font>, to see if a matching filename exists in the imported/required directory.
+  - The file extension is then resolved in a similar way using the [`resolve.extensions`](https://webpack.js.org/configuration/resolve/#resolveextensions) option.
+  
+  Webpack provides reasonable [defaults](https://webpack.js.org/configuration/resolve) for these options depending on your build target.
 
-摘自：[webpack 文档 - Guide - Module Resoluation](https://webpack.js.org/concepts/module-resolution/)
+resolveLoader 拥有类似的规则，不过适用于 解析 loader
 
-
-
-
+摘自：[webpack 文档 - Concept - Module Resoluation](https://webpack.js.org/concepts/module-resolution/)
 
 
 
@@ -3046,7 +3837,7 @@ this.callback(
 module.exports = {
   resolveLoader: {
     // './loaders' 表示自己代码中编写的 loaders
-    // 这个配置的意思是：当使用 loader时，会先去 node_modules 目录下去寻找，如果没有回去 loaders 目录下寻找
+    // 这个配置的意思是：当使用 loader 时，会先去 node_modules 目录下去寻找，如果没有会去 loaders 目录下寻找
     modules: ['node_modules', './loaders']
   },
   module: {
@@ -3185,7 +3976,15 @@ module.exports 中的 bail 配置的作用是，一旦打包出现错误，则�
 
 ---
 
-### Webpack 插件介绍
+### webpack 5 特性
+
+#### 模块联邦
+
+
+
+***
+
+### webpack 插件介绍
 
 ##### [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer)
 
