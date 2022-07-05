@@ -983,7 +983,7 @@ console.log(array1.reduce(reducer, 5));  // expected output: 15
 
 1. Accumulator ( acc ) ：累计器（累加器）。**注：**2022 / 4 / 8 MDN 文档改变了，这个参数被称为 previousValue；不过，毕竟 reduce 不仅仅有 “累加的” 功能。
 
-   要看之前的版本可以看：https://web.archive.org/web/20220314073057/https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce，可以发现 2022 / 3 / 14 这里还没改动...
+   要看之前的版本可以看：https://web.archive.org/web/20220314073057/https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce ，可以发现 2022 / 3 / 14 这里还没改动...
 
 2. Current Value ( cur ) ：当前值
 
@@ -1002,13 +1002,13 @@ array.reduce( callback( accumulator, currentValue [, index [, array]]) [, initia
 - **callback：**执行数组中每个值（如果没有提供 initialValue，则第一个值除外）的函数，包含四个参数：
   - **accumulator：**累计器累计回调的返回值；它是上一次调用回调时返回的累积值，或 initialValue（见于下方）。
   
-  - **currentValue：**数组中正在处理的元素。在第一次调用时，若指定了初始值 `initialValue`，其值则为数组索引为 0 的元素 array[0]，否则为 array[1]。
+  - **currentValue：**数组中正在处理的元素。在第一次调用时，若指定了初始值 `initialValue`，其值则为数组索引为 0 的元素 `array[0]` ，否则为 `array[1]` 。
   
-  - **index：** <font color=FF0000>可选</font>，数组中正在处理的当前元素的索引。 如果提供了initialValue，则起始索引号为0，否则从索引1起始。
+  - **index：** <font color=FF0000>可选</font>，数组中正在处理的当前元素的索引。 如果提供了 initialValue，则起始索引号为0，否则从索引1起始。
   
-  - **array：**<font color=FF0000>可选</font>，调用reduce()的数组
+  - **array：**<font color=FF0000>可选</font>，调用 `reduce()` 的数组
   
-- **initialValue：**<font color=FF0000>可选</font>，作为第一次调用 callback函数时的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。
+- **initialValue：**<font color=FF0000>可选</font>，作为第一次调用 callback 函数时的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。
 
 **返回值：**函数累计处理的结果
 
@@ -1016,9 +1016,15 @@ array.reduce( callback( accumulator, currentValue [, index [, array]]) [, initia
 
 **TypeError：**数组为空且初始值 initialValue 未提供。
 
-
-
 摘自：[MDN - Array.prototype.reduce()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
+
+##### 实践中使用 reduce 踩坑总结
+
+reduce 中的 reducer 函数，return 的值是作为下一次操作的 accelerator；所以无论如何都要返回 accelerator，哪怕本次操作没有对其进行任何操作。
+
+以 [[JS 函数手写实现#数组去重#使用 reduce]] 为例：开始时没有对 `acc.includes(cur) === true` 的情况进行返回 ( acc )，这是会报错的；因为没有返回的话，默认返回 undefined，而 undefined 没有 includes 方法，所以会报错。
+
+上面的内容对 下面的 reduceRight 同样适用。
 
 #### Array.prototype.reduceRight()
 
@@ -3257,7 +3263,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                       
+  >                                                                                                                                             
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3276,7 +3282,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                       
+  >                                                                                                                                             
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -12087,11 +12093,25 @@ FormData() // 创建一个新的 FormData 对象。
 - **FormData.get()：**<font color=FF0000>返回在 FormData 对象中与给定键关联的第一个值</font>。
 - **FormData.getAll()：**返回一个包含 FormData 对象中与给定键关联的所有值的数组。
 - **FormData.has()：**返回一个布尔值表明 FormData 对象是否包含某些键。
-- **FormData.keys()：**返回一个包含所有键的iterator对象。
+- **FormData.keys()：**返回一个包含所有键的 iterator 对象。
 - **FormData.set()：**给 FormData 设置属性值，如果FormData 对应的属性值存在则覆盖原值，否则新增一项属性值。
-- **FormData.values()：**返回一个包含所有值的iterator对象。
+- **FormData.values()：**返回一个包含所有值的 iterator 对象。
 
 摘自：[MDN - FormData](https://developer.mozilla.org/zh-CN/docs/Web/API/FormData)
+
+##### 在 FormData 中添加数组，并传到后端
+
+因为，直接在 FormData 中添加数组，会发现传递的数组变成 “没有 `[]` 包裹的字符串“，显然不是我们想要的；经过阅读博客，并测试发现：可以通过 对数组进行遍历，进行 append；并在 key 最后加上 `[]` （如下面的 `arrayKey[]` ）
+
+```js
+const data = FormData()
+// ...
+const targetArr = [ ... ]
+                   
+targetArr.forEach(_ => data.append('arrayKey[]', _))
+```
+
+学习自：[【JS】FormData的使用以及提交数组的方法](https://blog.csdn.net/NAMECZ/article/details/84585709)
 
 
 
@@ -12585,7 +12605,7 @@ element.insertAdjacentHTML(position, text);
   - **afterbegin：**插入元素<font color=FF0000>内部</font>的<font color=FF0000>第一个子节点之前</font>。
   - **beforeend：**插入元素<font color=FF0000>内部</font>的<font color=FF0000>最后一个子节点之后</font>。
   - **afterend：**<font color=FF0000>元素自身的后面</font>。
-- **text：**是<font color=FF0000>**要被解析为HTML或XML元素**</font>，并插入到DOM树中的 DOMString。
+- **text：**是<font color=FF0000>**要被解析为 HTML 或 XML 元素**</font>，并插入到DOM树中的 DOMString。
 
 摘自：[MDN - element.insertAdjacentHTML](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/insertAdjacentHTML)
 

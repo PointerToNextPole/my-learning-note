@@ -520,8 +520,6 @@ Array.prototype.reduce = function(cb, initialValue) {
 
 
 
-
-
 #### flat 实现
 
 注：可以参考下 [JavaScript专题之数组扁平化](https://github.com/mqyqingfeng/Blog/issues/36)
@@ -533,7 +531,7 @@ const flat = arr => arr.reduce(
   (pre, cur) => pre.concat(Array.isArray(cur) ? flat(cur) : cur), [])
 ```
 
-**注：** 这里用到了递归。另外，兼容性方面，Array.prototype.reduce() 是 ES5 甚至更早 的方法，Array.isArray() 是 ES5 的方法
+**注：** 这里用到了递归。另外，兼容性方面，Array.prototype.reduce() 是 ES5 甚至更早 的方法（兼容 IE9），Array.isArray() 是 ES5 的方法
 
 ##### 使用递归
 
@@ -571,7 +569,13 @@ const unique = arr => arr.map(e => !uniqueArr.includes(e) && uniqueArr.push(e))
 const unique = arr => arr.filter((e, index) => arr.indexOf(e) === index)
 ```
 
+##### 使用 reduce
 
+```js
+const unique = arr => arr.reduce((acc, cur) => acc.includes(cur) ? acc : acc.concat(cur), [])
+```
+
+注意：开始时没有对 `acc.includes(cur) === true` 的情况进行返回 ( acc )，这是会报错的；因为没有返回 acc 的话，默认返回 undefined，而 undefined 没有 includes 方法，将会报错。所以，无论如何都要返回 acc，哪怕本次操作没有对其进行任何操作。
 
 #### 类数组转为数组
 

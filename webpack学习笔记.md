@@ -285,6 +285,42 @@ webpack 的（默认）配置文件的名称为 webpack.config.js。即：即使
 
 
 
+#### webpack 安装 文档补充
+
+##### Prerequisites 前提条件
+
+Before we begin, make sure you have a fresh version （新版本）of [Node.js](https://nodejs.org/en/) installed. The current Long Term Support (LTS) release is an ideal starting point. You <font color=FF0000>may run into a variety of issues with the older versions as **they may be missing functionality webpack and/or its related packages require**</font>.
+
+##### Local Installation 局部安装
+
+If you're <font color=FF0000>using webpack v4 or later</font> and <font color=FF0000>want to call `webpack` from the command line</font>, you'll also need to install the [CLI](https://webpack.js.org/api/cli/).
+
+Installing locally is what we recommend for most projects. This makes it easier to upgrade projects individually when breaking changes are introduced.
+
+> **Tip** 💡 : To run the local installation of webpack you can access its binary version as `node_modules/.bin/webpack`. Alternatively, <font color=FF0000>if you are using npm v5.2.0 or greater, you can run `npx webpack` to do it</font>.
+
+##### Global Installation 全局安装
+
+> **Warning** ⚠️ : Note that <font color=FF0000>this is **not a recommended practice**</font>. Installing globally locks you down to a specific version of webpack and could fail in projects that use a different version.
+
+##### Bleeding Edge 最新体验版本
+
+If you are enthusiastic about using the latest that webpack has to offer, <font color=FF0000>you can install beta versions or even **directly from the webpack repository** using the following commands</font>:
+
+```bash
+npm install --save-dev webpack@next
+# or a specific tag/branch
+npm install --save-dev webpack/webpack#<tagname/branchname>
+```
+
+**注：**只见过 `libName@libVersion` ，没见过 `libName#<tagName>` 以及 `libname#<branchName>` ，值得注意。
+
+摘自：[webpack doc - Guide - Installation](https://webpack.js.org/guides/installation)
+
+
+
+
+
 #### webpack.config.js 配置文件的格式
 
 webpack.config.js 使用 CommonJS 的语法，语法格式如下：
@@ -3286,11 +3322,179 @@ module.exports = {
 
 **注：**Bootstrap 即：引导程序、启动程序
 
-Each additional loader/plugin has a bootup time. Try to use as few tools as possible.
+**Each additional loader/plugin has a bootup time**. <font color=FF0000>Try to use **as few tools as possible**</font>.
 
+###### Resolving
 
+**The following steps can increase resolving speed:**
 
+- Minimize the number of items in `resolve.modules` , `resolve.extensions` , `resolve.mainFiles` , `resolve.descriptionFiles`
 
+  , <font color=FF0000>as they increase the number of filesystem calls</font>.
+
+- Set `resolve.symlinks: false` if you don't use symlinks (e.g. `npm link` or `yarn link` ). **注：**symlink 即 “软连接”
+
+- Set `resolve.cacheWithContext: false` if you use custom resolving plugins , that are not context specific.
+
+###### Dlls
+
+Use the `DllPlugin` to move code that is changed less often into a separate compilation（ 可参考 [[#使用 DllPlugin 提高打包速度]]，即对第三方库进行单独编译，动态链接）. This will improve the application's compilation speed , <mark>although it does increase complexity of the build process</mark>.
+
+###### Smaller = Faster
+
+<font color=FF0000>Decrease the total size of the compilation to increase build performance</font>. Try to keep chunks small.
+
+- Use fewer/smaller libraries.
+- Use the `SplitChunksPlugin` in Multi-Page Applications.
+- Use the `SplitChunksPlugin` in `async` mode in Multi-Page Applications.
+- Remove unused code. **注：**Code Spliting ？
+- Only compile the part of the code you are currently developing on.
+
+###### Worker Pool
+
+The `thread-loader` can be used to offload expensive loaders to a worker pool（译文：`thread-loader` 可以将非常消耗资源的 loader 分流给一个 worker pool）.
+
+> **Warning ⚠️** : <font color=FF0000>Don't use too many workers</font> , as there is a boot overhead（启动开销） for the Node.js runtime and the loader. Minimize the module transfers between worker and main process. IPC is expensive.
+
+###### Persistent cache
+
+Use [`cache`](https://webpack.js.org/configuration/cache) option in webpack configuration. Clear cache directory on `"postinstall"` in `package.json`. **注：**没搞懂
+
+###### Progress plugin
+
+It is possible to <font color=FF0000>shorten build times by removing `ProgressPlugin`</font> from webpack's configuration. Keep in mind, `ProgressPlugin` might not provide as much value for fast builds as well , so make sure you are leveraging the benefits of using it.
+
+##### 开发环境
+
+###### Incremental Builds 增量编译
+
+Use webpack's watch mode. Don't use other tools to watch your files and invoke webpack. The built-in watch mode will keep track of timestamps and passes this information to the compilation for cache invalidation.
+
+In some setups, watching falls back to polling mode. With many watched files , this can cause a lot of CPU load. In these cases, you can increase the polling interval with `watchOptions.poll` .
+
+###### Compile in Memory
+
+<font color=FF0000>The following utilities **improve performance by compiling and serving assets in memory**</font> rather than writing to disk:
+
+- webpack-dev-server
+- webpack-hot-middleware
+- webpack-dev-middleware
+
+###### stats.toJson speed
+
+<mark>Webpack 4 outputs a large amount of data with its `stats.toJson()` by default</mark>（ **注：**stats 是 statistics 的简写 ）. Avoid retrieving portions of the `stats` object unless necessary in the incremental step. `webpack-dev-server` after v3.1.3 contained a substantial performance fix to minimize the amount of data retrieved from the `stats` object per incremental build step.
+
+###### Devtool
+
+Be aware of the performance differences between the different `devtool` settings.
+
+- <font color=FF0000>`"eval"` has the best performance</font>, but <font color=FF0000>doesn't assist you for transpiled code</font>.
+- The `cheap-source-map` variants are more performant if you can live with the slightly worse mapping quality.
+- Use a `eval-source-map` variant for incremental builds.
+
+> **Tip** 💡: <font color=FF0000>**In most cases , `eval-cheap-module-source-map` is the best option**</font>.
+
+###### Avoid Production Specific Tooling
+
+<font color=FF0000>Certain utilities, plugins, and loaders **only make sense** when building **for production**</font>. For example, it usually <font color=FF0000>doesn't make sense to minify and mangle</font>（压碎） <font color=FF0000>your code with the `TerserPlugin` while in development</font>. These tools should typically be excluded in development :
+
+- TerserPlugin
+- `[fullhash]` / `[chunkhash]` / `[contenthash]`
+- AggressiveSplittingPlugin
+- AggressiveMergingPlugin
+- ModuleConcatenationPlugin
+
+###### Minimal Entry Chunk
+
+Webpack only emits updated chunks to the filesystem. For some configuration options, ( HMR , `[name]` / `[chunkhash]` / `[contenthash]` in `output.chunkFilename` , `[fullhash]` ) the entry chunk is invalidated in addition to the changed chunks.
+
+Make sure the entry chunk is cheap to emit by keeping it small. The following configuration creates an additional chunk for the runtime code, so it's cheap to generate:
+
+```js
+module.exports = {
+  // ...
+  optimization: {
+    runtimeChunk: true,
+  },
+};
+```
+
+###### Avoid Extra Optimization Steps
+
+Webpack does extra algorithmic work to optimize the output for size and load performance. These optimizations are performant for smaller codebases, but can be costly in larger ones:
+
+```js
+module.exports = {
+  // ...
+  optimization: {
+    removeAvailableModules: false,
+    removeEmptyChunks: false,
+    splitChunks: false,
+  },
+};
+```
+
+###### Output Without Path Info
+
+<mark>Webpack has the ability to generate path info in the output bundle</mark>. However, this puts garbage collection pressure（造成垃圾回收的压力） on projects that bundle thousands of modules. Turn this off in the `options.output.pathinfo` setting :
+
+```js
+module.exports = {
+  // ...
+  output: {
+    pathinfo: false,
+  },
+};
+```
+
+###### Node.js Versions 8.9.10-9.11.1
+
+<font color=FF0000>There was a [performance regression](https://github.com/nodejs/node/issues/19769) in Node.js versions 8.9.10 - 9.11.1 in the ES2015 `Map` and `Set` implementations</font>. <font color=FF0000>Webpack uses those data structures</font> （即 Map 和 Set ）<font color=FF0000>liberally</font>（大量地）, so this regression affects compile times.
+
+Earlier and later Node.js versions are not affected.
+
+###### TypeScript Loader
+
+To improve the build time when using `ts-loader` , use the `transpileOnly` loader option . On its own, this option turns off type checking . To gain type checking again, use the [`ForkTsCheckerWebpackPlugin`](https://www.npmjs.com/package/fork-ts-checker-webpack-plugin). This speeds up TypeScript type checking and ESLint linting by moving each to a separate process.
+
+```js
+module.exports = {
+  // ...
+  test: /\.tsx?$/,
+  use: [
+    {
+      loader: 'ts-loader',
+      options: {
+        transpileOnly: true,
+      },
+    },
+  ],
+};
+```
+
+##### 生产环境
+
+> **Warning** ⚠️ : **Don't sacrifice the quality of your application for small performance gains!** Keep in mind that optimization quality is, in most cases, more important than build performance.
+
+##### Specific Tooling Issues 工具相关问题
+
+The following tools have certain problems that can degrade build performance（降低构建性能） :
+
+###### Babel
+
+Minimize the number of preset/plugins
+
+###### TypeScript
+
+- Use the `fork-ts-checker-webpack-plugin` for typechecking <font color=FF0000>**in a separate process**</font>.
+- <font color=FF0000>Configure loaders to skip typechecking</font>.
+- Use the `ts-loader` in `happyPackMode: true` / `transpileOnly: true`.
+
+###### Sass
+
+<font color=FF0000>**`node-sass` has a bug**</font> which blocks threads from the Node.js thread pool. <font color=FF0000>When using it with the `thread-loader` set `workerParallelJobs: 2` </font>.
+
+摘自：[webpack 文档 - Guide - Build Performance](https://webpack.js.org/guides/build-performance)
 
 
 
@@ -3594,7 +3798,7 @@ module.exports = {
 
 
 
-#### webpack 打包优化的其他点：
+#### webpack 打包优化的其他点
 
 - 控制包的大小
   - 对于引用但没有使用的第三方模块，使用 Tree-Shaking；设置直接不去引用它。这样便可以控制打包的大小，从而提高打包速度
@@ -3711,6 +3915,55 @@ configs.plugins = makePlugins(configs)
            
 module.exports = configs
 ```
+
+
+
+#### webpack 中的 CSP
+
+<font color=FF0000>Webpack is capable of adding a `nonce` to all scripts that it loads</font> （**译文：**Webpack 能够为其加载的所有脚本添加 `nonce` 。nonce 即 number once，是加密通信只能使用一次的（随机）数字 ）. <font color=FF0000>To activate this feature, **set a `__webpack_nonce__` variable and include it in your entry script**</font> . <font color=fuchsia>A unique hash-based `nonce` will then be generated and provided for each unique page view</font> ( this is why `__webpack_nonce__` is specified in the entry file and not in the configuration). Please note that <font color=FF0000>the `__webpack_nonce__` **should always be a base64-encoded string**</font>.
+
+##### Examples
+
+In the entry file:
+
+```js
+// ...
+__webpack_nonce__ = 'c29tZSBjb29sIHN0cmluZyB3aWxsIHBvcCB1cCAxMjM=';
+// ...
+```
+
+##### Enabling CSP
+
+Please note that <font color=FF0000>**CSPs are not enabled by default**</font>. A corresponding header `Content-Security-Policy` or meta tag `<meta http-equiv="Content-Security-Policy" ...>` needs to be sent with the document to instruct the browser to enable the CSP. Here's <mark>an example of what a CSP header including a CDN white-listed URL might look like</mark>:
+
+```http
+Content-Security-Policy: default-src 'self'; script-src 'self'
+https://trusted.cdn.com;
+```
+
+##### Trusted Types
+
+Webpack is also capable of using Trusted Types to load dynamically constructed scripts, to adhere to CSP [`require-trusted-types-for`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/require-trusted-types-for) directive restrictions. See [`output.trustedTypes`](https://webpack.js.org/configuration/output/#outputtrustedtypes) configuration option. （**译文：**webpack 还能够使用 Trusted Types 来加载动态构建的脚本，遵守 CSP require-trusted-types-for 指令的限制。可查看 output.trustedTypes 配置项 ）**注：**没怎么看懂
+
+注：[webpack 文档 - Guide - Content Security Policies](https://webpack.js.org/guides/csp/)
+
+
+
+#### 开发 使用 Vagrant
+
+##### 总述
+
+If you <font color=FF0000>have a more advanced project</font> and <font color=FF0000>use [Vagrant](https://www.vagrantup.com/) to run your development environment in a Virtual Machine</font>（译文：使用 Vagrant 来实现在虚拟机 ( Virtual Machine ) 上运行你的开发环境）, you'll often want to also <font color=FF0000>**run webpack in the VM**</font>.
+
+**注：**Vagrant 是一个开发的虚拟环境，类似于 docker。由于目前没有使用到，所以一扫而过，暂时略。不过，下面说了 webpack-dev-server 的部分原理：
+
+`webpack-dev-server` will <font color=FF0000>**include a script**</font> in your bundle that <font color=FF0000 size=4>**connects to a WebSocket** to **reload when a change in any of your files occurs**</font>
+
+摘自：[webpack doc - Guides - Development Vagrant](https://webpack.js.org/guides/development-vagrant/)
+
+
+
+
 
 
 
