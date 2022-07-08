@@ -18,36 +18,36 @@
 
 Unicode源于一个很简单的想法：将全世界所有的字符包含在一个集合里，计算机只要支持这一个字符集，就能显示所有的字符，再也不会有乱码了。
 
-<mark>它从0开始，为每个符号指定一个编号</mark>，<font color=FF0000>这叫做"码点"（code point）</font>。比如，码点0的符号就是null（表示所有二进制位都是0）。
+<mark>它从 0 开始，为每个符号指定一个编号</mark>，<font color=FF0000>这叫做"码点" ( code point ) </font>。比如，码点0 的符号就是 null（表示所有二进制位都是 0 ）。
 
 ```
 U+0000 = null
 ```
 
-上式中，U+表示 <font color=FF0000>**紧跟在后面的十六进制数是Unicode的码点**</font>。
+上式中，U+ 表示 <font color=FF0000>**紧跟在后面的十六进制数是 Unicode 的码点**</font>。
 
-<mark>目前（2014年），Unicode的最新版本是7.0版，一共收入了109449个符号，其中的中日韩文字为74500个</mark>。可以近似认为，全世界现有的符号当中，三分之二以上来自东亚文字。比如，中文"好"的码点是十六进制的597D。
+<mark>目前（2014年），Unicode 的最新版本是 7.0版，一共收入了 109449 个符号，其中的中日韩文字为 74500 个</mark>。可以近似认为，全世界现有的符号当中，三分之二以上来自东亚文字。比如，中文"好"的码点是十六进制的 597D。
 
-<font color=FF0000>这么多符号，Unicode不是一次性定义的，而是<font size=4>**分区定义**</font></font>。<font color=FF0000>每个区可以存放65536个（216）字符，称为一个平面（plane）</font>。<font color=FF0000>目前，一共有17个（2^5^）平面，也就是说，整个Unicode字符集的大小现在是2^21^</font>。
+<font color=FF0000>这么多符号，Unicode 不是一次性定义的，而是 <font size=4>**分区定义**</font></font>。<font color=FF0000>每个区可以存放 65536 个 ( 216 ) 字符，称为一个平面 ( plane ) </font>。<font color=FF0000>目前，一共有 17 个（2^5^）平面，也就是说，整个 Unicode 字符集的大小现在是 2^21^</font>。
 
-<font color=FF0000><font size=4>**最前面的65536个字符位**</font>，称为<font size=4>**基本平面（Basic Multilingual Plane，缩写BMP）**</font></font>，<font color=FF0000>它的码点范围是从0一直到2^16^-1，写成16进制就是从U+0000到U+FFFF</font>。<mark>**所有最常见的字符都放在这个平面**，这是Unicode最先定义和公布的一个平面</mark>。
+<font color=FF0000><font size=4>**最前面的 65536 个字符位**</font>，称为<font size=4>**基本平面（Basic Multilingual Plane，缩写 BMP ）**</font></font>，<font color=FF0000>它的码点范围是从 0 一直到 2^16^-1 ，写成16进制就是从 U+0000 到 U+FFFF </font>。<mark>**所有最常见的字符都放在这个平面**，这是 Unicode 最先定义和公布的一个平面</mark>。
 
-<font color=FF0000><font size=4>**剩下的字符**</font>都放在<font size=4>**辅助平面（Supplementary Multilingual Plane 缩写SMP）**</font></font>，<mark>码点范围从U+010000一直到U+10FFFF</mark>。
+<font color=FF0000><font size=4>**剩下的字符**</font>都放在 <font size=4>**辅助平面 ( Supplementary Multilingual Plane, SMP ) **</font></font>，<mark>码点范围从 U+010000 一直到 U+10FFFF</mark> 。
 
 ##### UTF-32 与 UTF-8
 
-Unicode只规定了每个字符的码点，到底用什么样的字节序表示这个码点，就涉及到<font color=FF0000 size=4>**编码方法**</font>。
+Unicode 只规定了每个字符的码点，到底用什么样的字节序表示这个码点，就涉及到<font color=FF0000 size=4>**编码方法**</font>。
 
-<font color=FF0000>最直观</font>的编码方法是，<font color=FF0000>每个码点使用四个字节表示</font>，字节内容一一对应码点。<font color=FF0000>这种编码方法就叫做UTF-32</font>。比如，码点0就用四个字节的0表示，码点597D就在前面加两个字节的0。
+<font color=FF0000>最直观</font>的编码方法是，<font color=FF0000>每个码点使用四个字节表示</font>，字节内容一一对应码点。<font color=FF0000>这种编码方法就叫做 UTF-32</font>。比如，码点0 就用四个字节的 0 表示，码点 597D 就在前面加两个字节的0。
 
 ```
 U+0000 = 0x0000 0000
 U+597D = 0x0000 597D
 ```
 
-UTF-32的<font color=0000FF>优点</font>在于，<font color=0000FF>转换规则简单直观，查找效率高</font>。<font color=FF0000>缺点</font>在于<font color=FF0000>浪费空间</font>，同样内容的英语文本，它会比ASCII编码大四倍。<mark>这个缺点很致命，导致实际上没有人使用这种编码方法</mark>，<font color=FF0000>HTML 5标准就明文规定，网页不得编码成UTF-32</font>。
+UTF-32 的<font color=0000FF>优点</font>在于，<font color=0000FF>转换规则简单直观，查找效率高</font>。<font color=FF0000>缺点</font>在于<font color=FF0000>浪费空间</font>，同样内容的英语文本，它会比 ASCII 编码大四倍。<mark>这个缺点很致命，导致实际上没有人使用这种编码方法</mark>，<font color=FF0000>HTML5 标准就明文规定，网页不得编码成 UTF-32</font>。
 
-人们真正需要的是一种节省空间的编码方法，这导致了UTF-8的诞生。**UTF-8是一种<font size=4>变长的编码方法，字符长度从1个字节到4个字节不等</font>。**<font color=FF0000>越是常用的字符，字节越短，最前面的128个字符，只使用1个字节表示，与ASCII码完全相同</font>。
+人们真正需要的是一种节省空间的编码方法，这导致了 UTF-8 的诞生。**UTF-8 是一种 <font size=4>变长的编码方法，字符长度从 1 个字节到 4 个字节不等</font>。**<font color=FF0000>越是常用的字符，字节越短，最前面的 128 个字符，只使用 1 个字节表示，与 ASCII 码完全相同</font>。
 
 | 编号范围            | 字节 |
 | ------------------- | ---- |
@@ -62,32 +62,32 @@ UTF-32的<font color=0000FF>优点</font>在于，<font color=0000FF>转换规�
 
 UTF-16编码<mark>介于UTF-32与UTF-8之间</mark>，<font color=FF0000>**同时结合了定长和变长两种编码方法的特点**</font>。
 
-它的编码规则很简单：<font color=FF0000>基本平面的字符占用2个字节，辅助平面的字符占用4个字节</font>。<mark>**也就是说，UTF-16的编码长度要么是2个字节（U+0000到U+FFFF），要么是4个字节（U+010000到U+10FFFF）。**</mark>
+它的编码规则很简单：<font color=FF0000>基本平面的字符占用2个字节，辅助平面的字符占用4个字节</font>。<mark>**也就是说，UTF-16 的编码长度要么是 2 个字节 ( U+0000 ~ U+FFFF )，要么是4个字节 ( U+010000 ~ U+10FFFF )。**</mark>
 
 <mark style=background-color:aqua>于是就有一个问题，当我们遇到两个字节，怎么看出它本身是一个字符，还是需要跟其他两个字节放在一起解读？</mark>
 
-说来很巧妙，我也不知道是不是故意的设计，<font color=FF0000 size=4>**在基本平面内，从U+D800到U+DFFF是一个空段**（共2^12^个），即这些码点不对应任何字符。因此，这个空段可以用来映射辅助平面的字符</font>。
+说来很巧妙，我也不知道是不是故意的设计，<font color=FF0000 size=4>**在基本平面内，从 U+D800 到 U+DFFF 是一个空段**（共2^12^个），即这些码点不对应任何字符。因此，这个空段可以用来映射辅助平面的字符</font>。
 
-具体来说，<font color=FF0000>辅助平面的字符位共有2^20^个，也就是说，对应这些字符至少需要20个二进制位</font>。<font color=FF0000>UTF-16将这20位拆成两半</font>，<font color=FF0000 size=4>**前10位映射在U+D800到U+DBFF（空间大小2^10^），称为高位（H），后10位映射在U+DC00到U+DFFF（空间大小2^10^），称为低位（L）**</font>。这意味着，一个辅助平面的字符，被拆成两个基本平面的字符表示。
+具体来说，<font color=FF0000>辅助平面的字符位共有 2^20^ 个，也就是说，对应这些字符至少需要 20 个二进制位</font>。<font color=FF0000>UTF-16 将这 20 位拆成两半</font>，<font color=FF0000 size=4>**前10位映射在 U+D800 到 U+DBFF （空间大小 2^10^），称为高位 ( H )，后 10 位映射在 U+DC00 到 U+DFFF（空间大小 2^10^），称为低位 ( L )**</font>。这意味着，一个辅助平面的字符，被拆成两个基本平面的字符表示。
 
-**所以，当我们遇到两个字节，发现它的码点在U+D800到U+DBFF之间，就可以断定，紧跟在后面的两个字节的码点，应该在U+DC00到U+DFFF之间，这四个字节必须放在一起解读。**
+**所以，当我们遇到两个字节，发现它的码点在 U+D800 到 U+DBFF 之间，就可以断定，紧跟在后面的两个字节的码点，应该在 U+DC00 到 U+DFFF 之间，这四个字节必须放在一起解读。**
 
-##### UTF-16的转码公式
+##### UTF-16 的转码公式
 
-Unicode码点转成UTF-16的时候，首先区分这是基本平面字符，还是辅助平面字符。如果是前者，直接将码点转为对应的十六进制形式，长度为两字节。
+Unicode 码点转成 UTF-16 的时候，首先区分这是基本平面字符，还是辅助平面字符。如果是前者，直接将码点转为对应的十六进制形式，长度为两字节。
 
 ```
 U+597D = 0x597D
 ```
 
-如果是辅助平面字符，Unicode 3.0版给出了转码公式。
+如果是辅助平面字符，Unicode 3.0 版给出了转码公式。
 
 ```js
 H = Math.floor((c - 0x10000) / 0x400) + 0xD800
 L = (c - 0x10000) % 0x400 + 0xDC00
 ```
 
-以字符![img](https://i.loli.net/2021/08/23/S9ch8BUR1Q3iWVz.png)为例，它是一个辅助平面字符，码点为U+1D306，将其转为UTF-16的计算过程如下。
+以字符![img](https://i.loli.net/2021/08/23/S9ch8BUR1Q3iWVz.png)为例，它是一个辅助平面字符，码点为 U+1D306 ，将其转为UTF-16的计算过程如下。
 
 ```js
 H = Math.floor((0x1D306-0x10000)/0x400)+0xD800 = 0xD834
@@ -98,7 +98,7 @@ L = (0x1D306-0x10000) % 0x400+0xDC00 = 0xDF06
 
 ##### JavaScript 使用哪一种编码
 
-JavaScript语言采用Unicode字符集，但是只支持一种编码方法。这种编码既不是UTF-16，也不是UTF-8，更不是UTF-32。上面那些编码方法，JavaScript都不用。<font color=FF0000 size=4>**JavaScript用的是UCS-2！**</font>
+JavaScript 语言采用 Unicode 字符集，但是只支持一种编码方法。这种编码既不是 UTF-16，也不是 UTF-8，更不是 UTF-32。上面那些编码方法，JavaScript都不用。<font color=FF0000 size=4>**JavaScript 用的是 UCS-2！**</font>
 
 摘自：[阮一峰 - Unicode与JavaScript详解](http://www.ruanyifeng.com/blog/2014/12/unicode.html) 另外，可以参考文章：[淦，为什么 "𠮷𠮷𠮷".length !== 3](https://juejin.cn/post/7025400771982131236)
 
@@ -434,8 +434,8 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
 
     - 浏览器解析 HTML、构建DOM 树是顺序执行的（从上到下），并且只有一个主线程负责解析
     - 如果在解析的过程中遇到 \<script> 标签，浏览器会加载 JS 文件，并执行里面的代码；这时候主线程会暂停解析HTML，直到JS代码执行完毕，才会继续
-    - 对于图片、CSS文件、rel属性设置为defer async 的 \<script> 标签，将不会影响主线程；而是会异步的加载
-    - 浏览器有一个 <font color=FF0000>**预扫描线程**</font> (Pre Scanner / Preload Scanner ？) ，会扫描HTML 代码，预先下载 CSS文件、字体、JS代码
+    - 对于图片、CSS文件、rel 属性设置为 defer async 的 \<script> 标签，将不会影响主线程；而是会异步的加载
+    - 浏览器有一个 <font color=FF0000>**预扫描线程**</font> (Pre Scanner / Preload Scanner ？) ，会扫描 HTML 代码，预先下载 CSS文件、字体、JS代码
 
     <img src="https://i.loli.net/2021/10/19/k1zobO8ZBEnAVcx.png" alt="image-20211019182116485" style="zoom:40%;" />
 
@@ -443,7 +443,7 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
 
     <img src="https://i.loli.net/2021/10/19/Lzy9VXM2JuYEeIF.png" alt="image-20211019180750859" style="zoom: 40%;" />
 
-    CSSOM 树是 CSS在浏览器中的对象表示，也是树状结构
+    CSSOM树 是 CSS 在浏览器中的对象表示，也是树状结构
 
   - **合并 DOM 树 和 CSSOM 树（形成渲染树）**
 
@@ -498,7 +498,7 @@ Web 性能包含了服务器请求和响应、加载、执行脚本、渲染、�
 
 ##### 文本对象模型 ( DOM )
 
-<font color=FF0000> DOM构建是增量的</font>。 <font color=FF0000 size=4>**HTML响应变成令牌 (token)**（注：这里的token和鉴权的Token没有关系，应该是编译原理中的分词，毕竟“分词”的英文为 Tokenization），**令牌变成节点**</font>，而节点又变成DOM树。<font color=FF0000>  单个DOM节点以 <font size=4>**startTag令牌开始，以endTag令牌结束**</font>。 <font size=4>**节点包含有关HTML元素的所有相关信息。 该信息是使用令牌描述的**</font></font>。 节点根据令牌层次结构连接到DOM树中。 如果另一组 startTag 和 endTag 令牌位于一组 startTag 和 endTag 之间，则您在节点内有一个节点，这就是我们定义DOM树层次结构的方式。
+<font color=FF0000> DOM构建是增量的</font>。 <font color=FF0000 size=4>**HTML响应变成令牌 ( token )**（注：这里的token和鉴权的Token没有关系，应该是编译原理中的分词，毕竟“分词”的英文为 Tokenization），**令牌变成节点**</font>，而节点又变成DOM树。<font color=FF0000>  单个DOM节点以 <font size=4>**startTag令牌开始，以 endTag 令牌结束**</font>。 <font size=4>**节点包含有关HTML元素的所有相关信息。 该信息是使用令牌描述的**</font></font>。 节点根据令牌层次结构连接到DOM树中。 如果另一组 startTag 和 endTag 令牌位于一组 startTag 和 endTag 之间，则您在节点内有一个节点，这就是我们定义DOM树层次结构的方式。
 
 节点数量越多，关键渲染路径中的后续事件将花费的时间就越长。 测一下吧！ 几个额外的节点不会有什么区别，但“DIV癖”（divitis）可能会导致问题。
 
@@ -1845,7 +1845,7 @@ BOM 层次结构的顶层是窗口对象, 它包含有关显示文档的窗口�
 
 - **后端路由: **对于普通的网站，<font color=FF0000>所有的超链接都是URL地址</font>，<font color=FF0000>所有的URL地址都对应服务器上对应的资源</font>
 - **前端路由: **对于<font color=FF0000>单页面应用程序</font>来说，主要<font color=FF0000>通过URL中的hash（#号）来实现不同页面之间的切换（与锚点相似）</font>。同时，hash有一个特点: <font color=FF0000>HTTP请求中不会包含hash相关的内容</font>；所以，单页面程序中的页面跳转主要用hash实现
-- 在单页面应用程序中，'<font color=FF0000>**这种通过hash改变来切换页面的方式，称作前端路由**</font>（ 区别于后端路由）
+- 在单页面应用程序中，<font color=FF0000>**这种通过 hash 改变来切换页面的方式，称作前端路由**</font>（ 区别于后端路由）
 
 
 

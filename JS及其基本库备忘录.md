@@ -3263,7 +3263,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                             
+  >                                                                                                                                               
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3282,7 +3282,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                             
+  >                                                                                                                                               
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7104,9 +7104,9 @@ Node.contains()返回的是一个布尔值，来表示传入的节点是否为�
 node.contains( otherNode )
 ```
 
-- node 是否包含otherNode节点.
+- node 是否包含 otherNode 节点.
 
-- otherNode 是否是node的后代节点.
+- otherNode 是否是 node 的后代节点.
 
 如果 otherNode 是 node 的后代节点或是 node 节点本身.则返回true , 否则返回 false.
 
@@ -7116,31 +7116,36 @@ node.contains( otherNode )
 
 #### Node.textContent
 
-Node 接口的 **textContent** 属性表示一个节点及其后代的文本内容。用法：
+Node 接口的 **textContent** 属性<font color=FF0000>表示 一个节点 **及其后代** 的文本内容</font>。
+
+##### 语法
 
 ```js
 let text = someNode.textContent;
 someOtherNode.textContent = string;
 ```
 
-**textContent 的值取决于具体情况：**
+##### textContent 的值取决于具体情况
 
-- 如果<font color=FF0000>节点是一个 document</font>，<font color=FF0000>或者一个 DOCTYPE</font> ，则 textContent 返回 null。
-- 如果节点是个 CDATA section、注释、processing instruction 或者 text node，textContent 返回节点内部的文本内容，例如 Node.nodeValue。
-- 对于其他节点类型，textContent 将所有子节点的 textContent 合并后返回，除了注释和processing instructions。（如果该节点没有子节点的话，返回一个空字符串。）
+- 如果<font color=FF0000>节点是一个 document</font>，<font color=FF0000>或者一个 DOCTYPE</font> ，则 textContent 返回 null
+- 如果 <font color=FF0000>节点是个 CDATA section、**注释**、processing instruction 或者 text node</font>，textContent 返回节点内部的文本内容，例如 Node.nodeValue
+- 对于其他节点类型，textContent 将所有子节点的 textContent 合并后返回，除了 注释 和 processing instructions（如果该节点没有子节点的话，返回一个空字符串）
 
-**与 innerText 的区别：**
+##### 与 innerText 的区别
 
 不要被 Node.textContent 和 HTMLElement.innerText 的区别搞混了。虽然名字看起来很相似，但有重要的不同之处：
 
-- <font color=FF0000>textContent 会获取所有元素的内容，包括 \<script> 和 \<style> 元素</font>，然而<font color=0000FF> innerText 只展示给人看的元素</font>。
-- <font color=FF0000>textContent会返回节点中的每一个元素</font>。相反，<font color=0000FF>innerText受 CSS 样式的影响，并且不会返回隐藏元素的文本</font>。
-  - 此外，<font color=0000FF>由于 innerText 受 CSS 样式的影响，它会触发回流（ reflow ）去确保是最新的计算样式</font>。（回流在计算上可能会非常昂贵，因此应尽可能避免。）
-- 与 textContent 不同的是, 在 Internet Explorer (小于和等于 11 的版本) 中对 innerText 进行修改， 不仅会移除当前元素的子节点，而且还会永久性地破坏所有后代文本节点。在之后不可能再次将节点再次插入到任何其他元素或同一元素中。
+- <font color=FF0000>**textContent 会获取所有元素的内容，包括 \<script> 和 \<style> 元素**</font>，然而 <font color=0000FF>**innerText 只展示给人看的元素**</font>。
 
-**与 innerHTML 的区别：**
+- <font color=FF0000>textContent 会返回节点中的每一个元素</font>。相反，<font color=0000FF>innerText 受 CSS 样式的影响，并且不会返回隐藏元素的文本</font>。
 
-正如其名称，<font style="color: fuchsia">Element.innerHTML 返回 HTML</font>。通常，为了在元素中检索或写入文本，人们使用 innerHTML。但是，textContent 通常具有更好的性能，因为文本不会被解析为HTML。
+  此外，<font color=0000FF>由于 **innerText 受 CSS 样式的影响，它会触发回流**（ reflow ）去确保是最新的计算样式</font>（回流在计算上可能会非常昂贵，因此应尽可能避免）
+
+- 与 textContent 不同的是， 在 Internet Explorer (小于和等于 11 的版本) 中对 innerText 进行修改， 不仅会移除当前元素的子节点，而且还会永久性地破坏所有后代文本节点。在之后不可能再次将节点再次插入到任何其他元素或同一元素中。
+
+##### 与 innerHTML 的区别
+
+正如其名称，<font style="color: fuchsia">Element.innerHTML 返回 HTML</font> 。通常，为了在元素中检索或写入文本，人们使用 innerHTML。但是，textContent 通常具有更好的性能，因为文本不会被解析为 HTML。
 
 **此外，使用 textContent 可以防止 XSS 攻击。**
 
