@@ -2,14 +2,17 @@
 
 
 
-## <mark><font size=3 color=FF0000>**由于水平不够没有时间仔细研究或只是一时好奇，这里很多只是摘取了概念，也只是挖坑；如需深入理解，还需进一步查资料与添加笔记**</font></mark>
+> ⚠️ **由于水平不够没有时间仔细研究或只是一时好奇，这里很多只是摘取了概念，也只是挖坑；如需深入理解，还需进一步查资料与添加笔记**
+
+
 
 #### **元编程**
-<font size=3>元编程一言以蔽之，就是用<font color=FF0000>代码生成（操纵）代码</font>。</br>
-<font color=FF0000>常见的开发语言均能做到元编程</font>，Lisp这货就不用多说了，C的Marco，<font color=FF0000>C++的Template，Java的Annotation</font>，C#的Attribute、Reflection、CodeDom和IL Emitter，各种脚本语言（如js、python）的eval，甚至连Unix/Linux的shell脚本也能。</br>
-元编程常见的<font color=FF0000>**应用场景**</font>很多，扩展（重构）语法、开发DSL、生成代码、根据特定场景自动选择代码优化、解决一些正交的架构设计问题、AOP等等。</br>
+元编程一言以蔽之，就是用<font color=FF0000>代码生成（操纵）代码</font>。
+
+<font color=FF0000>常见的开发语言均能做到元编程</font>，Lisp 这货就不用多说了，C 的 Marco，<font color=FF0000>C++ 的 Template，Java的Annotation</font>，C# 的 Attribute、Reflection、CodeDom和 IL Emitter，各种脚本语言（如 js、python）的eval，甚至连 Unix/Linux 的 shell 脚本也能。
+
+元编程常见的<font color=FF0000>**应用场景**</font>很多，扩展（重构）语法、开发DSL、生成代码、根据特定场景自动选择代码优化、解决一些正交的架构设计问题、AOP等等。
 摘自：[什么是元编程以及元语言？ - 猫杀的回答 - 知乎](https://www.zhihu.com/question/22572900/answer/21828721)
-</font>
 
 
 
