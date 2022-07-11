@@ -54,7 +54,7 @@
 
 
 
-### 编程范式
+#### 编程范式
 
 编程范型、编程范式或程序设计法（Programming paradigm），（范即模范、典范之意，范式即模式、方法），是一类典型的编程风格，是指从事软件工程的一类典型的风格（可以对照方法学）。
 
@@ -62,7 +62,7 @@
 
 
 
-### 行为树
+#### 行为树
 
 行为树是一种形式化的图形建模语言，主要用于系统和软件工程。 行为树采用明确定义的符号来明确表示数百甚至数千种自然语言需求，这些需求通常用于表达大规模软件集成系统的利益相关者需求。
 
@@ -134,6 +134,10 @@ foo & bar 是类似于”哑变元“，<mark>我们可以把 foo 理解成张�
 Mixin 实质上是利用语言特性（比如 Ruby 的 include 语法、Python 的多重继承）来更简洁地实现组合模式。
 
 摘自：[wikipedia - Mixin](https://zh.wikipedia.org/wiki/Mixin)	[知乎 - Mixin是什么概念?](https://www.zhihu.com/question/20778853)
+
+
+
+
 
 
 
@@ -425,6 +429,16 @@ const upperCaseChar_Z = 'Z'
 const lowerCaseChar_z = String.fromCharCode(upperCaseChar_Z.charCodeAt()^XOR_NUM)
 console.log(lowerCaseChar_z) // z
 ```
+
+
+
+#### 银行家舍入
+
+银行家舍入法 是由 IEEE 754 标准规定的浮点数取整算法，大部分的编程软件都使用的是这种方法。 所谓银行家舍入法，其实质是一种<font color=FF0000>四舍六入五取偶</font>（又称 四舍六入五留双）<font color=FF0000>法</font>。
+
+“四舍六入五成双”，也即“4舍 6入 5凑偶”，这里 “四”是指 ≤4 时舍去，"六"是指 ≥6 时进上。<mark style="background: lightskyblue">“五”指的是 根据 5 后面的数字来定</mark>：当 <font color=FF0000>5 后有数时，舍 5 入 1</font>；<mark style="background: lightskyblue">当 5 后无有效数字时，需要分两种情况来讲</mark>：<font color=fuchsia>**5 前为奇数，舍 5 入 1**</font> ；<font color=fuchsia>**5 前为偶数，舍 5 不进（ 0 是偶数）**</font>。
+
+摘自：[百度百科 - 银行家舍入](https://baike.baidu.com/item/%E9%93%B6%E8%A1%8C%E5%AE%B6%E8%88%8D%E5%85%A5/4781630)
 
 
 

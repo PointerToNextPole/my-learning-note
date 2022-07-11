@@ -420,15 +420,21 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
 
 #### 浏览器访问网站的工作流程
 
-- 输入URL之后，浏览器会进行DNS查找，找到URL所在服务器的域名（补充：在进行DNS解析之前，浏览器会先判断是否需要重定向和缓存检查，缓存涉及到强缓存和协商缓存 ）
+- 输入 URL 之后，浏览器会进行 DNS查找，找到 URL 所在服务器的域名（补充：在进行 DNS解析 之前，浏览器会先判断是否需要重定向和缓存检查，缓存涉及到强缓存和协商缓存 ）
 
-- 找到服务器之后，浏览器会通过TCP握手与服务器建立连接。如果是基于HTTPS的连接，会多一步<font color=FF0000 size=4> **TLS握手**</font>，建立加密的隧道，保证数据不被监听和篡改。
+- 找到服务器之后，浏览器会通过 TCP 握手与服务器建立连接。如果是基于 HTTPS 的连接，会多一步<font color=FF0000 size=4> **TLS握手**</font>，建立加密的隧道，保证数据不被监听和篡改。
 
 - 在建立连接之后，浏览器会发送 HTTP / HTTPS 请求，一般服务器的响应就是 html 的网页代码。
 
-  - 浏览器在接收服务器响应时，由于 TCP的慢启动（slow start）的机制，浏览器会先收到前 14kb 的数据；后面才会慢慢增加传输速度（ 这里的 14kb 衍生出了“首屏优化，首屏的资源要小于14kb”的限制 ）
+  - 浏览器在接收服务器响应时，由于 TCP 的慢启动 ( slow start ) 的机制，浏览器会先收到前 14kb 的数据；后面才会慢慢增加传输速度（ 这里的 14kb 衍生出了“首屏优化，首屏的资源要小于 14kb ”的限制 ）
 
-- 在收到html 文件之后，浏览器开始渲染网页，共有五个步骤，被称为：<font color=FF0000 size=4> **关键渲染路径**</font>
+    **注 👀：**关于 14kb 相关的内容，在 Google Chrome 的网站 web.dev 中有 [文章](https://web.dev/i18n/zh/extract-critical-css/) 提及，也说明了 “为什么是 14KB ”：
+
+    > 新的 [TCP](https://hpbn.co/building-blocks-of-tcp/) 连接无法立即利用客户端和服务器之间的全部可用带宽，这些连接会经过[慢启动](https://hpbn.co/building-blocks-of-tcp/#slow-start)以避免数据量超过连接的承载能力。在这个过程中，服务器会先开始传输少量数据，如果数据以完美的状态到达客户端，那么下一次往返中数据量会加倍。<font color=FF0000>对于大多数服务器，第一次往返最多可以传输 10 个数据包或大约 14 KB</font>。
+    >
+    > 摘自：[提取关键 CSS (Critical CSS)](https://web.dev/i18n/zh/extract-critical-css/)e
+
+- 在收到 html 文件之后，浏览器开始渲染网页，共有五个步骤，被称为：<font color=FF0000 size=4> **关键渲染路径**</font>
 
   - **构建 DOM (Document Object Model) 树**
 
@@ -647,7 +653,7 @@ RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对
 
 
 
-#### <font color=FF0000>编写web程序时出现的问题</font>
+#### 编写web程序时出现的问题
 
 - 出现如下情况：
 
@@ -657,7 +663,7 @@ RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对
 
 
 
-#### <font color=FF0000>80端口和8080端口</font>
+#### 80端口和8080端口
 
 <font color=FF0000>80是**http协议的默认端口**</font>，是在输入网站的时候其实浏览器（非IE）已经帮你输入协议了，所以你输入http://baidu.com，其实是访问http://baidu.com:80，而<font color=FF0000>8080，一般用于webcahe</font>，<font color=FF0000>一般是用来连接代理的</font>。完全不一样的两个，比如linux服务器里apache默认跑80端口，而apache-tomcat默认跑8080端口，其实端口没有实际意义只是一个接口，主要是看服务的监听端口，如果baidu的服务器监听的81端口，那么你直接输入就不行了就要输入http://baidu.com:81这样才能正常访问
 
@@ -665,7 +671,7 @@ RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对
 
 
 
-#### <font color=FF0000>SOAP & REST</font>
+#### SOAP & REST
 
 ##### SOAP
 
@@ -774,7 +780,7 @@ SOAP：简单对象访问协议（Simple Object Access Protocol）是一种<mark
 
 
 
-#### <font color=FF0000>POJO</font>
+#### POJO
 
 POJO（Plain Ordinary Java Object）即普通Java类，具有一部分getter/setter方法的那种类就可以称作POJO。
 
@@ -802,7 +808,7 @@ POJO类的作用是方便程序员使用数据库中的数据表，对于程序�
 
 
 
-#### <font color=FF0000>OAuth</font>
+#### OAuth
 
 **OAuth（Open Authorization）**。OAuth协议为用户资源的授权提供了一个安全的、开放而又简易的标准。与以往的授权方式不同之处是OAuth的授权不会使第三方触及到用户的帐号信息（如用户名与密码），即<mark>第三方无需使用用户的用户名与密码就可以申请获得该用户资源的授权</mark>，因此OAuth是安全的。
 
@@ -918,7 +924,7 @@ Cookie 的 Domin 属性设置为当前域的父域，并且父域的 Cookie 会�
 
 
 
-#### <font color=FF0000>JSP</font>
+#### JSP
 
 **JSP的本质其实就是 Servlet**。只是 JSP 当初设计的目的是为了简化 Servlet 输出 HTML 代码。
 
@@ -1081,9 +1087,9 @@ Cookie 的 Domin 属性设置为当前域的父域，并且父域的 Cookie 会�
 
 
 
-#### <font color=FF0000>Tomcat</font>
+#### Tomcat
 
-**启动tomcat**
+##### 启动tomcat
 
 在 Windows 上，可以通过执行下面的命令来启动 Tomcat：
 
@@ -1109,7 +1115,7 @@ $CATALINA_HOME/bin/startup.sh
 /usr/local/apache-tomcat-5.5.29/bin/startup.sh
 ```
 
-**关闭tomcat**
+**关闭 tomcat**
 
 在 Windows 上，可以通过执行下面的命令来停止 Tomcat：
 
@@ -1125,7 +1131,7 @@ C:\apache-tomcat-5.5.29\bin\shutdown
 
 
 
-#### <font color=FF0000>Servlet的生命周期</font>
+#### Servlet 的生命周期
 
 Servlet 生命周期可被定义为从创建直到毁灭的整个过程。以下是 Servlet 遵循的过程：
 
@@ -1202,29 +1208,35 @@ Servlet 生命周期可被定义为从创建直到毁灭的整个过程。以下
 
 - 最后，Servlet 是由<font color=FF0000> JVM 的垃圾回收器进行垃圾回收的</font>。
 
-#### <font color=FF0000>实现Servlet</font>
+
+
+#### 实现Servlet
 
 Servlet 是服务 HTTP 请求并实现 javax.servlet.Servlet 接口的 Java 类。<mark>Web 应用程序开发人员通常编写 Servlet 来扩展 javax.servlet.http.HttpServlet，并<font color=FF0000>实现 Servlet 接口的抽象类</font>专门用来处理 HTTP 请求</mark>。
 
-#### <font color=FF0000>Get和Post方法</font>
 
-- **GET 方法**
 
-  GET 方法向页面请求发送已编码的用户信息。<font color=FF0000>页面和已编码的信息中间用 ? 字符分隔</font>，如下所示：
+#### Get和Post方法
 
-  ```
-  http://www.test.com/hello?key1=value1&key2=value2
-  ```
+##### GET 方法
 
-  GET 方法是<font color=FF0000>默认的从浏览器向 Web 服务器传递信息的方法</font>，它会产生一个很长的字符串，出现在浏览器的地址栏中。如果您要向服务器传递的是密码或其他的敏感信息，请不要使用 GET 方法。<mark>GET 方法有大小限制：请求字符串中最多只能有 1024 个字符</mark>。
+GET 方法向页面请求发送已编码的用户信息。<font color=FF0000>页面和已编码的信息中间用 ? 字符分隔</font>，如下所示：
 
-  这些信息使用 QUERY_STRING 头传递，并可以通过 QUERY_STRING 环境变量访问，Servlet 使用 **doGet()** 方法处理这种类型的请求。
+```
+http://www.test.com/hello?key1=value1&key2=value2
+```
 
-- **POST 方法**
+GET 方法是<font color=FF0000>默认的从浏览器向 Web 服务器传递信息的方法</font>，它会产生一个很长的字符串，出现在浏览器的地址栏中。如果您要向服务器传递的是密码或其他的敏感信息，请不要使用 GET 方法。<mark>GET 方法有大小限制：请求字符串中最多只能有 1024 个字符</mark>。
 
-  另一个向后台程序传递信息的比较可靠的方法是 POST 方法。POST 方法打包信息的方式与 GET 方法基本相同，但是 <font color=FF0000>POST 方法不是把信息作为 URL 中 ? 字符后的文本字符串进行发送，而是把这些信息作为一个单独的消息。消息以标准输出的形式传到后台程序，您可以解析和使用这些标准输出</font>。Servlet 使用 doPost() 方法处理这种类型的请求。
+这些信息使用 QUERY_STRING 头传递，并可以通过 QUERY_STRING 环境变量访问，Servlet 使用 **doGet()** 方法处理这种类型的请求。
 
-#### <font color=FF0000>使用 Servlet 读取表单数据</font>
+##### POST 方法
+
+另一个向后台程序传递信息的比较可靠的方法是 POST 方法。POST 方法打包信息的方式与 GET 方法基本相同，但是 <font color=FF0000>POST 方法不是把信息作为 URL 中 ? 字符后的文本字符串进行发送，而是把这些信息作为一个单独的消息。消息以标准输出的形式传到后台程序，您可以解析和使用这些标准输出</font>。Servlet 使用 doPost() 方法处理这种类型的请求。
+
+
+
+#### 使用 Servlet 读取表单数据
 
 Servlet 处理表单数据，这些数据会根据不同的情况使用不同的方法自动解析：
 
@@ -1232,11 +1244,13 @@ Servlet 处理表单数据，这些数据会根据不同的情况使用不同的
 - **getParameterValues()：**如果<font color=FF0000>参数出现一次以上，则调用该方法，并返回多个值</font>，例如复选框。
 - **getParameterNames()：**如果您想要<font color=FF0000>得到当前请求中的所有参数的完整列表</font>，则调用该方法。
 
-#### <font color=FF0000>Servlet的Http请求</font>
+
+
+#### Servlet 的 Http 请求
 
 当浏览器请求网页时，它会向 Web 服务器发送特定信息，这些信息不能被直接读取，因为<font color=FF0000>这些信息是作为 HTTP **请求的头**的一部分进行传输的</font>。
 
-**浏览器端的重要头信息**
+##### 浏览器端的重要头信息
 
 | 头信息              | 描述                                                         |
 | :------------------ | :----------------------------------------------------------- |
@@ -1254,7 +1268,7 @@ Servlet 处理表单数据，这些数据会根据不同的情况使用不同的
 | Referer             | 这个头信息指示所指向的 Web 页的 URL。例如，如果您在网页 1，点击一个链接到网页 2，当浏览器请求网页 2 时，网页 1 的 URL 就会包含在 Referer 头信息中。 |
 | User-Agent          | 这个头信息识别发出请求的浏览器或其他客户端，并可以向不同类型的浏览器返回不同的内容。 |
 
-**读取 HTTP 头的方法**
+##### 读取 HTTP 头的方法
 
 下面的方法可用在 Servlet 程序中读取 HTTP 头。这些方法通过<font color=FF0000> HttpServletRequest</font> 对象可用。
 
@@ -1292,7 +1306,7 @@ Servlet 处理表单数据，这些数据会根据不同的情况使用不同的
 | 30   | **int getServerPort()**<br> 返回接收到这个请求的端口号。         |
 | 31   | **int getParameterMap()**<br> 将参数封装成 Map 类型。            |
 
-#### <font color=FF0000>Servlet的Http响应</font>
+#### Servlet 的 Http 响应
 
 当一个 Web 服务器响应一个 HTTP 请求时，响应通常包括一个状态行、一些响应报头、一个空行和文档。
 
@@ -1345,9 +1359,9 @@ Servlet 处理表单数据，这些数据会根据不同的情况使用不同的
 | 20   | **void setHeader(String name, String value)**<br> 设置一个带有给定的名称和值的响应报头。 |
 | 21   | **void setIntHeader(String name, int value)**<br> 设置一个带有给定的名称和整数值的响应报头。 |
 | 22   | **void setLocale(Locale loc)**<br> 如果响应还未被提交，设置响应的区域。 |
-| 23   | **void setStatus(int sc)**<br> 为该响应设置状态码。              |
+| 23   | **void setStatus(int sc)**<br> 为该响应设置状态码。          |
 
-#### <font color=FF0000>Servlet http状态码</font>
+#### Servlet http状态码
 
 HTTP 请求和 HTTP 响应消息的格式是类似的，结构如下：
 
@@ -1384,7 +1398,7 @@ HeaderN: ...
 | 2    | **public void sendRedirect(String url)**<br> 该方法生成一个 302 响应，连同一个带有新文档 URL 的 *Location* 头。 |
 | 3    | **public void sendError(int code, String message)**<br> 该方法发送一个状态码（通常为 404），连同一个在 HTML 文档内部自动格式化并发送到客户端的短消息。 |
 
-#### <font color=FF0000>Servlet 过滤器</font>
+#### Servlet 过滤器
 
 Servlet 过滤器是可用于 Servlet 编程的 Java 类，可以实现以下<font color=FF0000>目的</font>：
 
@@ -1423,7 +1437,7 @@ Filter的执行顺序与在web.xml配置文件中的配置顺序一致，一般�
 
 后面还有示例，由于繁琐且使用较少，这里不再赘述：[Servlet 编写过滤器](https://www.runoob.com/servlet/servlet-writing-filters.html)
 
-#### <font color=FF0000>Servlet Cookie 处理</font>
+#### Servlet Cookie 处理
 
 Cookie 是存储在客户端计算机上的文本文件，并保留了各种跟踪信息。Java Servlet 显然支持 HTTP Cookie。
 
@@ -1466,7 +1480,7 @@ Content-Type: text/html
 | 11   | **public void setComment(String purpose)**<br> 设置cookie的注释。该注释在浏览器向用户呈现 cookie 时非常有用。 |
 | 12   | **public String getComment()**<br> 获取 cookie 的注释，如果 cookie 没有注释则返回 null。 |
 
-#### <font color=FF0000>Servlet Session 跟踪</font>
+#### Servlet Session 跟踪
 
 HTTP 是一种<font color=FF0000>**"无状态"**</font>协议，<mark>这意味着每次客户端检索网页时，客户端打开一个单独的连接到 Web 服务器，服务器会自动不保留之前客户端请求的任何记录</mark>。
 
@@ -1526,7 +1540,7 @@ HttpSession session = request.getSession();
 | 10   | **public void setAttribute(String name, Object value)**<br> 该方法使用指定的名称绑定一个对象到该 session 会话。 |
 | 11   | **public void setMaxInactiveInterval(int interval)**<br> 该方法在 Servlet 容器指示该 session 会话无效之前，指定客户端请求之间的时间，以秒为单位。 |
 
-#### <font color=FF0000>Servlet 网页重定向</font>
+#### Servlet 网页重定向
 
 重定向请求到另一个网页的最简单的方式是使用 response 对象的 sendRedirect() 方法。下面是该方法的定义：
 
@@ -1542,7 +1556,7 @@ response.setStatus(response.SC_MOVED_TEMPORARILY);
 response.setHeader("Location", site); 
 ```
 
-#### <font color=FF0000>Servlet 自动刷新页面</font>
+#### Servlet 自动刷新页面
 
 Java Servlet 提供了一个机制，使得网页会在给定的时间间隔自动刷新。
 
@@ -1558,7 +1572,7 @@ public void setIntHeader(String header, int headerValue)
 
 
 
-#### <font color=FF0000>Web容器的作用域</font>
+#### Web 容器的作用域
 
 几乎所有web应用容器都提供了四种类似Map的结构：**application / session / request / page**，Jsp或者Servlet通过向着这四个对象放入数据，从而实现Jsp和Servlet之间数据的共享。
 
@@ -1594,7 +1608,7 @@ public void setIntHeader(String header, int headerValue)
 
 
 
-#### <font color=FF0000>Session 和 Cookie</font>
+#### Session 和 Cookie
 
 会话 ( Session ) ：指用户登录网站后的一系列动作，比如浏览商品添加到购物车并购买。会话跟踪是 Web 程序中常用的技术，用来**跟踪用户的整个会话**。
 
@@ -1640,7 +1654,8 @@ public void setIntHeader(String header, int headerValue)
 部分摘自：[傻傻分不清之 Cookie、Session、Token、JWT](https://juejin.im/post/6844904034181070861)，<font color=FF0000>后面还有Token和JWT的内容，建议阅读</font>
 
 
-#### <font color=FF0000>redirect & forward</font>
+
+#### redirect & forward
 
 **Forward**：直接转发方式。客户端和浏览器只发出一次请求，Servlet、HTML、JSP或其它信息资源，由第二个信息资源响应该请求，在请求对象request中，保存的对象对于每个信息资源是共享的。
 
@@ -1707,7 +1722,7 @@ public void setIntHeader(String header, int headerValue)
 
 
 
-#### <font color=FF0000>HTTP</font>
+#### HTTP
 
 **用户单击鼠标后所发生的事件按顺序如下（以访问清华大学的网站为例）:**
 
@@ -1745,15 +1760,15 @@ public void setIntHeader(String header, int headerValue)
 
 
 
-#### <font color=FF0000>双向绑定</font>
+#### 双向绑定
 
-<font color=FF0000>单向绑定</font>就是把Model绑定到View，当我们用JavaScript代码更新Model时，View就会自动更新。
+<font color=FF0000>**单向绑定**</font>：就是把 Model 绑定到 View，当我们用 JavaScript 代码更新 Model 时，View 就会自动更新。
 
-<font color=FF0000>双向绑定</font>就是如果用户更新了View，Model的数据也自动被更新了，这种情况就是双向绑定。
+<font color=FF0000>**双向绑定**</font>：就是如果用户更新了 View，Model 的数据也自动被更新了，这种情况就是双向绑定。
 
 
 
-#### <font color=FF0000>面包屑导航</font>
+#### 面包屑导航
 
 页面路径（英语：Breadcrumb或Breadcrumb Trail/Navigation），又称面包屑导航，是在用户界面中的一种导航辅助。<mark>它是用户一个在程序或文件中确定和转移他们位置的一种方法</mark>。面包屑这个词来自糖果屋这个童话故事；故事中，汉赛尔与葛丽特企图依靠洒下的面包屑找到回家的路。
 
@@ -1763,15 +1778,15 @@ public void setIntHeader(String header, int headerValue)
 
 **一共有三种类型的网站面包屑导航。**
 
-1. 路径型(Path)：路径型面包屑是一个动态显示用户到达页面经过的途径。
-2. 位置型(Location)：位置型面包屑是固定的，显示了页面在网站结构中的位置。
-3. 属性型(Attribute)：属性型面包屑给出的当前页面的分类信息。
+1. 路径型 ( Path )：路径型面包屑是一个动态显示用户到达页面经过的途径。
+2. 位置型 ( Location )：位置型面包屑是固定的，显示了页面在网站结构中的位置。
+3. 属性型 ( Attribute )：属性型面包屑给出的当前页面的分类信息。
 
 摘自：[维基百科 - 面包屑导航]([https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%8C%85%E5%B1%91%E5%AF%BC%E8%88%AA](https://zh.wikipedia.org/wiki/面包屑导航))
 
 
 
-#### <font color=FF0000>浏览器对象模型（BOM）</font>
+#### 浏览器对象模型 ( BOM )
 
 浏览器对象模型 ( BOM ) 指的是<font color=FF0000>由 Web 浏览器暴露的所有对象组成的表示模型</font>。<font color=FF0000>BOM </font>与 DOM 不同，其<font color=FF0000>既没有标准的实现</font>，<font color=FF0000>也没有严格的定义, 所以浏览器厂商可以自由地实现 BOM</font>。
 
@@ -1783,7 +1798,7 @@ BOM 层次结构的顶层是窗口对象, 它包含有关显示文档的窗口�
 
 
 
-#### <font color=FF0000>单页富应用程序（SPA）</font>
+#### 单页富应用程序（SPA）
 
 单页应用 ( single-page application: SPA ) 是<font color=FF0000>一种网络应用程序或网站的**模型**</font>，<font color=FF0000>它通过**动态重写当前页面**来与用户交互</font>，<font color=FF0000>而非传统的从服务器重新加载整个新页面</font>。<mark>这种方法避免了页面之间切换打断用户体验，使应用程序更像一个桌面应用程序</mark>。在单页应用中，所有必要的代码（HTML、CSS 和 JavaScript ）都通过单个页面的加载而检索，或者根据需要（通常是为响应用户操作）动态装载适当的资源并添加到页面。尽管可以<font color=FF0000>用 hash 或HTML5 history API 来提供应用程序中单独逻辑页面的感知和导航能力，但 **页面在过程中的任何时间点都不会重新加载，也不会将控制转移到其他页面**</font>。与单页应用的交互通常涉及到与网页服务器后端的动态通信。
 
@@ -1795,19 +1810,82 @@ BOM 层次结构的顶层是窗口对象, 它包含有关显示文档的窗口�
 
 
 
-#### <font color=FF0000>**服务端渲染 ( SSR ) 和 客户端渲染 ( CSR )**</font>
+#### Static Generated Sites Vs. SSR
 
-##### SSR 服务端渲染概念
+##### 前言 & 背景
 
-解释一：服务端在返回 html 之前，在特定的区域，符号里用数据填充，再给客户端，客户端只负责解析 HTML 。
+<mark>JavaScript currently enables you to **build three types of applications**</mark>: single-page applications ( SPAs ), <font size=4><font color=FF0000>**pre-rendered**</font> **or** <font color=FF0000>static-generated sites</font></font>, and server-side-rendered applications. <mark style="background: LightSkyBlue ">SPAs come with many [challenges](https://en.wikipedia.org/wiki/Single-page_application#Challenges_with_the_SPA_model), one of which is search engine optimization (SEO)</mark>. <font color=FF0000>**Possible solutions** are to make use of</font> a [**static-site generator**](https://www.smashingmagazine.com/2020/07/differences-static-generated-sites-server-side-rendered-apps/#static-site-generator) or [**server-side rendering**](https://www.smashingmagazine.com/2020/07/differences-static-generated-sites-server-side-rendered-apps/#server-side-rendering) (SSR).
 
-解释二：服务端渲染的模式下，<font color=FF0000>当用户第一次请求页面时，由服务器把需要的组件或页面渲染成 HTML 字符串，然后把它返回给客户端</font>。<mark>客户端拿到手的，是可以直接渲染然后呈现给用户的 HTML 内容</mark>，不需要为了生成 DOM 内容自己再去跑一遍 JS 代码。使用服务端渲染的网站，可以说是 “所见即所得”，页面上呈现的内容，我们在 html 源文件里也能找到。
+We’ll look at what static generation is, as well as static generation is, as well as <font color=FF0000>**frameworks** that help us create static-generated sites, such as **Gatsby** and **VuePress**</font>. We’ll learn what a server-side-rendered application is, as well as learn about <font color=FF0000>**frameworks** for creating one, such as **Next.js** and **Nuxt.js**</font>. 
 
-**利弊**
+##### SSG ( Static-Site Generator ) 是什么
 
-- **好处:**  首屏渲染快、利于 SEO、可以生成缓存片段，生成静态化文件、节能（对比客户端渲染的耗电）
+<font color=FF0000>A **static-site generator (SSG) is a <font size=4>software application</font>**</font> that <font color=FF0000>creates HTML pages from templates or components and a given content source</font>. <font color=fuchsia>**Give it some text files and content, and the generator will give you back a complete website**</font>（👀 **注**：这句话是重点：只需提供静态内容，比如 markdown 文件及图片，就可以生成一个网站）; this <font color=FF0000>completed website is referred to as a static-generated site</font>. This means that <font color=FF0000>the website’s pages are generated **at build time**</font>, and <font color=FF0000>their contents do not change unless you add new content or components and then **rebuild**</font> — you have to rebuild the website if you want it to be updated with the new content.
 
-- **坏处:**  用户体验较差、不容易维护，通常前端改了部分 html 或者 css，后端也需要修改。
+下图：*How static-site generation works*
+
+<img src="https://s2.loli.net/2022/07/11/VzSuanfv2YNjegB.png" alt="img" style="zoom:50%;" />
+
+<mark>This approach is good for building applications whose content does not change often</mark>. So, you wouldn’t necessarily use it for a website that has to be modified according to the user or one that has a lot of user-generated content. However, <font color=FF0000>a blog or personal website would be an ideal use</font>. Let’s look at some advantages of static-generated sites.
+
+##### SSG 优点
+
+- **Speed**：Because all of your website’s pages and content will be generated at build time, you <font color=FF0000>**do not have to worry about API calls to a server for content**, which will make your website very fast</font>.
+- **Deployment**：Once your static site has been generated, you will be left with static files. Hence, it <font color=FF0000>can be easily deployed to a platform</font> such as [Netlify](https://www.netlify.com/).
+- **Security**：A static-generated site solely comprises（译：包含） static files, with no database for an attacker to exploit by injecting malicious（译：怀有恶意的） code. So, vulnerability to a cyber attack is minimal.
+- **Version control**：You can use version control software ( such as Git ) to manage and track changes to your content. This comes in handy（译：派上用场） when you want to roll back changes made to the content.
+
+##### SSG 缺点
+
+- **If the content changes too quickly, it can be hard to keep up**.
+- <font color=FF0000>To update content, you have to rebuild the website</font>.
+- <font color=FF0000>**The build time increases according to the size of the application**</font>（👀 **注**：这一点没有想到，毕竟 这是正常现象吧... 难道 SSR 可以解决？ ）.
+
+##### 常见的 SSG 应用 Gatsby & VuePress
+
+文中介绍了 [Gatsby](https://github.com/gatsbyjs/gatsby) 和 [VuePress](https://github.com/vuejs/vuepress) 简单的创建项目和使用，这些内容不是重点，略。同时，这些内容，在其 GitHub 主页中 Get Started 中都有介绍... 另外，在阅读这部分的内容时，我还顺带体验了下新出的 [VitePress](https://github.com/vuejs/vitepress) ；另外，VuePress 使用 Vite 开发 [第二版](https://github.com/vuepress/vuepress-next) 了
+
+##### 什么是 SSR
+
+Server-side rendering ( SSR ) is <font color=FF0000>the process of rendering web pages on a server and passing them to the browser ( client-side )</font> , instead of rendering them in the browser. <font color=FF0000>**SSR sends a fully rendered page to the client**</font> ; the client’s JavaScript bundle takes over and enables the SPA framework to operate.
+
+This means that if your application is server-side rendered, the content is fetched from the server and passed to the browser to be displayed to the user. <mark>**Client-side rendering is different**</mark>: The <font color=FF0000>user would have to **navigate to the page before the browser fetches data from the server**</font>, meaning that the <font color=FF0000>**user would have to wait for some seconds** to pass before the browser is served with the content for that page</font>. Applications that have SSR enabled are called server-side-rendered applications.
+
+下图：*How server-side rendering works*
+
+<img src="https://s2.loli.net/2022/07/11/CMYwdWahyHAxecV.png" alt="image-20220711110546200" style="zoom: 40%;" />
+
+<font color=FF0000>This approach **is good if you’re building a complex application that requires user interaction**</font>（👀 **注**：这应该是相较于 SSG）, that relies on a database, or whose content changes often. If the content changes often, then users would need to see the updates right away. <mark style="background: LightSkyBlue ">**The approach is also good for applications**</mark> that tailor content（译：定制内容） according to who is viewing it and that store user data such as email addresses and user preferences, while also attending to SEO. An example would be a large e-commerce or social media platform. Let’s look at some of the advantages of SSR for your applications.
+
+##### SSR 优点
+
+- The <font color=FF0000>content is up to date because it is fetched on the go</font>（**译**：随时随地。👀 注：毕竟资源都在本地？）.
+- The <font color=FF0000>website loads quickly</font> because the browser fetches content from the server before rendering it for the user.
+- Because the JavaScript is rendered server-side, <font color=FF0000>the user’s device has little bearing</font>（译：没什么影响） <font color=FF0000>on the loading time of the page, making for better performance</font>.
+
+##### SSR 缺点
+
+- More API calls to the server are made, because they’re made per request.
+- The website cannot be deployed to a static content delivery network (CDN). 👀 注：这个可以通过 ESR 解决，ESR 相关见 [[#ESR 边缘渲染]]
+
+##### 常见的 SSR 框架 Next.js & Nuxt.js
+
+文中介绍了 [Next.js](https://github.com/vercel/next.js) 和 [Nuxt.js](https://github.com/nuxt/framework) （👀 **注**：文档中介绍的还是 Nuxt2，这里了链接是 Nuxt3 ） 简单的创建项目和使用，这些内容不是重点，略。同时，这些内容，在其 GitHub 主页中 Get Started 中都有介绍...
+
+##### SSG 和 SSR 的不同之处
+
+| Static-Site Generation                                       | Server-Side Rendering                                        |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| Can easily be deployed to a static CDN                       | Cannot be deployed to a static CDN（👀 **注**：可通过 ESR 改进） |
+| Content and pages are generated at build time                | <font color=FF0000>Content and pages are generated per request</font> |
+| <font color=FF0000>**Content can get stale**</font>（**译：**不新鲜） <font color=FF0000>**quickly**</font> （👀 **注**：需打包更新） | <font color=FF0000>Content is always up to date</font>       |
+| <font color=FF0000>Fewer API calls</font>, because it only makes them at build time | <font color=FF0000>**Makes API calls each time a new page is visited**</font> |
+
+摘自：[Differences Between Static Generated Sites And Server-Side Rendered Apps](https://www.smashingmagazine.com/2020/07/differences-static-generated-sites-server-side-rendered-apps/)
+
+
+
+#### 服务端渲染 ( SSR ) 和 客户端渲染 ( CSR )
 
 ##### CSR 客户端渲染概念
 
@@ -1821,16 +1899,48 @@ BOM 层次结构的顶层是窗口对象, 它包含有关显示文档的窗口�
 
 - **好处：** 网络传输数据量小、减少了服务器压力、前后端分离、局部刷新，无需每次请求完整页面、交互好可实现各种效果
 
-- **坏处：**不利于 SEO、爬虫看不到完整的程序源码、首屏渲染慢（渲染前需要下载一堆 js 和 css 等）
+- **坏处：**<font color=FF0000>**不利于 SEO**</font>。<font color=FF0000>爬虫看不到完整的程序源码、首屏渲染慢</font>（渲染前需要下载一堆 js 和 css 等）
+
+##### SSR 服务端渲染概念
+
+解释一：服务端在返回 html 之前，在特定的区域，符号里用数据填充，再给客户端，客户端只负责解析 HTML 。
+
+解释二：服务端渲染的模式下，<font color=FF0000>当用户第一次请求页面时，由服务器把需要的组件或页面渲染成 HTML 字符串，然后把它返回给客户端</font>。<mark>客户端拿到手的，是可以直接渲染然后呈现给用户的 HTML 内容</mark>，不需要为了生成 DOM 内容自己再去跑一遍 JS 代码。使用服务端渲染的网站，可以说是 “所见即所得”，页面上呈现的内容，我们在 html 源文件里也能找到。
+
+**利弊**
+
+- **好处:**  <font color=FF0000 size=4>**首屏渲染快**</font>（ FCP 优化）、<font color=FF0000>**利于 SEO**</font>、可以生成缓存片段，生成静态化文件、节能（对比客户端渲染的耗电）
+
+- **坏处:**  用户体验较差、不容易维护，通常前端改了部分 html 或者 css，后端也需要修改。
 
 摘自：[服务端渲染（SSR)](https://juejin.im/post/6844903731075481608)
 
-##### 服务端渲染的优点总结
+##### 发展历程介绍
+
+模版引擎 SSR 时代，略 ...
+
+**CSR ( Client Side Rendering ) 时代**
+
+有了 Ajax 技术后，再加上通过 CDN 缓存静态资源之后，前端 SPA + CSR 渲染有了飞跃式的发展，这种模式前端处理所有逻辑、内容填充和路由，数据加载部分通过 Ajax 从后端获取，因此很好的解决了前后端分工开发的问题。其具体请求时间线可参见下图：
+
+<img src="https://s2.loli.net/2022/07/10/12onN9Yj6WirCyM.png" alt="img" style="zoom: 60%;" />
+
+**SSR 时代 ( Node )**
+
+随着 Node 引领的全栈技术的发展，前端又回到了当初的 SSR 路上，只不过这次的回归是一次螺旋式的上升。首先是 <font color=FF0000>前后端全是 JS 语法，大部分代码都是可复用的</font> ；其次是 SEO 场景友好，服务端渲染好后直接返回最终的 HTML ，<font color=FF0000>减少了白屏等待时间，过多异步请求的导致的性能问题也可下放到服务端解决</font>；也能有效避免多次的数据获取、内容填充，浏览器只绑定相关的 JS 逻辑、事件即可。其具体请求时间线：
+
+<img src="https://s2.loli.net/2022/07/10/c13tChWzjb6xRIS.png" alt="img" style="zoom:60%;" />
+
+ESR ( Edge Side Rendering ) 时代，略。见下面 [[#ESR 边缘渲染]]
+
+摘自：[边缘渲染提速](https://zhuanlan.zhihu.com/p/406527954)
+
+##### 服务端渲染的 优点 总结
 
 - **更好的 SEO：** 因为 SPA 页面的内容是通过 Ajax 获取，而搜索引擎爬取工具并不会等待 Ajax 异步完成后再抓取页面内容，所以在 SPA 中是抓取不到页面通过 Ajax 获取到的内容；而 SSR 是直接由服务端返回已经渲染好的页面（数据已经包含在页面中），所以搜索引擎爬取工具可以抓取渲染好的页面；
 - **更快的内容到达时间（首屏加载更快）：**<font color=FF0000>**SPA 会等待所有 Vue 编译后的 js 文件都下载完成后，才开始进行页面的渲染**；文件下载等需要一定的时间等，所以首屏渲染需要一定的时间；**SSR 直接由服务端渲染好页面直接返回显示**</font>，无需等待下载 js 文件及再去渲染等，所以 SSR 有更快的内容到达时间；
 
-##### 服务端渲染的缺点总结
+##### 服务端渲染的 缺点 总结
 
 - **更多的开发条件限制：**例如，<font color=FF0000>服务端渲染 <font size=4>**只支持 beforCreate 和 created 两个钩子函数**</font></font>，这会导致一些外部扩展库需要特殊处理，才能在服务端渲染应用程序中运行。并且与可以部署在任何静态文件服务器上的完全静态单页面应用程序 SPA 不同，<font color=FF0000>**服务端渲染应用程序，<font size=4>需要处于 Node.js server 运行环境</font>**</font>
 - **更多的服务器负载：**<font color=FF0000>在 Node.js 中渲染完整的应用程序，显然会比仅仅提供静态文件的  server 更加大量占用 CPU 资源</font>（ CPU-intensive - CPU 密集)，因此如果你预料在高流量环境 ( high traffic ) 下使用，请准备相应的服务器负载，并明智地采用缓存策略。
@@ -1839,19 +1949,143 @@ BOM 层次结构的顶层是窗口对象, 它包含有关显示文档的窗口�
 
 
 
+#### ESR 边缘渲染
+
+随着边缘计算的发展，<font color=FF0000>由于 CDN 节点距离用户更近，有更短网络延时的优势</font>；我们 <font color=FF0000>可以将页面进行 <font size=4>**动静拆分**</font>，将 **静态内容** 缓存在 CDN 先快速返回给用户</font>，然后 <font color=FF0000 size=4>**在 CDN 节点上发起** **动态内容** 的请求</font>（👀 注：是 CDN 发起对静态内容的请求，不是客户端 ），之后 <font color=FF0000 size=4>将 **动态内容** 与 **静态部分** **以流的形式进行拼接**</font>，从而<font color=FF0000>进一步提高了用户的首屏加载时间</font>，尤其在边缘地区或者弱网环境也有能拥有很好的用户体验，此外还<font color=FF0000>减少原先 SSR 服务器压力</font>。
+
+<img src="https://img-blog.csdnimg.cn/b4c2d46ba41944afa183e9d02b8d43ea.png" alt="img" style="zoom:60%;" />
+
+##### 原理和优势
+
+上面也提到：ESR 就是借助边缘计算能力，将返回的内容进行静态、动态部分拆分，并以流的形式返回。静态部分依托 CDN 的缓存能力，优先返回给用户，随后在 CDN 节点上继续发起动态数据请求，并 拼接在静态部分之后，继续流式返回。因此，优势也是显而易见：
+
+- **TTFB ( Time To First Byte ) 很短**：因为静态内容在 CDN 缓存住了，会很快的返回给用户。
+
+- **FP ( First Paint ) 很短**：因为在静态内容返回后，已经可以开始 HTML 的解析，以及  JS、CSS 的下载和执行。
+
+- **FMP ( First Meaningful Paint ) 很短**：<font color=FF0000>因为动态内容的请求是在 CDN 发起，相比于客户端与服务端直连，请求减少了 **TCP连接** 和 **网络传输** 开销</font>；而且由于动态部分是以 chunked 形式流式返回，FMP 就会很短，比如搜索网站的第一个搜索结果就会首先绘制出来
+
+##### 应用场景举例
+
+**场景一：将 SSR服务 直接部署在边缘节点，中心服务提供数据接口**
+
+<img src="https://s2.loli.net/2022/07/10/Cm4kdXfWZcat5ET.png" alt="img" style="zoom:60%;" />
+
+**场景二：边缘服务读取缓存的 静态部分HTML ，中心服务提供 动态HTML**
+
+SSR服务 部署在中心，边缘流式返回 HTML内容（利用 HTTP `Transfer-Encoding: chunked` 分块传输机制），需要分离静态与动态部分，具体流程如下图。
+
+- **边缘服务**：请求 静态HTML 并返回，同时请求中心 SSR服务，获取动态内容并返回
+- **SSR服务**：去除 静态HTML，把动态部分返回给边缘服务
+
+![img](https://s2.loli.net/2022/07/10/Gd26bf1l9WYLeAV.png)
+
+摘自：[边缘渲染提速 - 青墨书晚风的文章 - 知乎](https://zhuanlan.zhihu.com/p/406527954)
 
 
-#### <font color=FF0000>前端路由和后端路由</font>
 
-- **后端路由: **对于普通的网站，<font color=FF0000>所有的超链接都是URL地址</font>，<font color=FF0000>所有的URL地址都对应服务器上对应的资源</font>
-- **前端路由: **对于<font color=FF0000>单页面应用程序</font>来说，主要<font color=FF0000>通过URL中的hash（#号）来实现不同页面之间的切换（与锚点相似）</font>。同时，hash有一个特点: <font color=FF0000>HTTP请求中不会包含hash相关的内容</font>；所以，单页面程序中的页面跳转主要用hash实现
+#### OSS
+
+**对象存储**（ Object storage ) 是一种 [计算机数据存储](https://zh.wikipedia.org/wiki/電腦數據存貯器) 架构，它<font color=FF0000>**将数据作为对象进行管理**</font>，与其他存储架构不同（如[文件系统](https://zh.wikipedia.org/wiki/文件系统)将数据作为文件层次结构进行管理，而[块存储](https://zh.wikipedia.org/wiki/块_(数据存储))则将数据作为扇区和轨道内的块进行管理）。**每个对象 通常包括：数据本身、数量不等的 元数据 和 一个 [全局唯一的标识符](https://zh.wikipedia.org/wiki/通用唯一识别码)** 。对象存储可以在多个层面实现，包括设备层面（对象存储设备）、系统层面和接口层面。在每一种情况下，对象存储都试图实现其他存储架构所不具备的能力，如可由应用程序直接编程的接口，可跨越多个物理硬件实例的命名空间，以及数据管理功能，如[数据复制](https://zh.wikipedia.org/w/index.php?title=数据复制&action=edit&redlink=1)和对象级粒度的数据分发。
+
+<font color=FF0000>对象存储系统允许保留大量的 **非结构化数据**</font>。对象存储的用途包括：在 Facebook 上存储照片，在Spotify上存储歌曲，或在在线协作服务（如Dropbox）中存储文件。
+
+摘自：[wikipedia - 对象存储](https://zh.wikipedia.org/zh-cn/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8)
+
+##### 阿里云文档的补充
+
+阿里云 对象存储OSS ( Object Storage Service ) 是一款<font color=FF0000>海量、安全、低成本、高可靠 的 云存储服务</font>，可提供 99.9999999999%（12个9）的<font color=FF0000>数据持久性</font>，99.995% 的<font color=FF0000>数据可用性</font>。<font color=FF0000>多种存储类型供选择</font>，全面优化存储成本。
+
+数据存储到 阿里云OSS 以后，您<font color=FF0000>可以选择 *标准存储 ( Standard )* 作为移动应用、大型网站、图片分享 或 热点音视频的主要存储方式</font>；也可以选择成本更低、存储期限更长的 低频访问存储 ( Infrequent Access) 、归档存储 ( Archive )、冷归档存储 ( Cold Archive ) 作为不经常访问数据的存储方式。
+
+<font size=4>**OSS 相关概念**</font>
+
+- **存储类型 ( Storage Class )**：<font color=FF0000>OSS 提供标准、低频访问、归档、冷归档四种存储类型</font>，全面覆盖从热到冷的各种数据存储场景。其中<mark>**标准存储类型**</mark> 提供高持久、高可用、高性能的对象存储服务，能够支持频繁的数据访问；**低频访问存储类型** 适合长期保存不经常访问的数据（平均每月访问频率 1 到 2 次），存储单价低于标准类型；**归档存储类型** 适合需要长期保存（建议半年以上）的归档数据；**冷归档存储** 适合需要超长时间存放的极冷数据。更多信息，请参见[存储类型介绍](https://help.aliyun.com/document_detail/51374.htm#concept-fcn-3xt-tdb)。
+- <font color=FF0000>**存储空间 ( Bucket )**</font>：存储空间是您 <font color=FF0000>**用于存储对象 ( Object ) 的容器**</font>，<font color=FF0000>所有的对象都必须隶属于某个存储空间</font>。存储空间具有各种配置属性，包括：地域、访问权限、存储类型等。您可以根据实际需求，创建不同类型的存储空间来存储不同的数据。
+- **对象 ( Object )**：<font color=FF0000>**对象是 OSS 存储数据的 基本单元**，也被称为 OSS 的文件</font>。对象 <font color=FF0000>由 元信息 ( Object Meta )、用户数据 ( Data ) 和 文件名 ( Key ) 组成</font>。对象由存储空间内部唯一的 Key 来标识。对象元信息 是一组键值对，表示了对象的一些属性，例如最后修改时间、大小等信息，同时您也可以在元信息中存储一些自定义的信息。
+- **地域 ( Region )**：<font color=FF0000>**地域表示 OSS 的数据中心所在物理位置**</font>。您可以根据费用、请求来源等选择合适的地域创建 Bucket。
+- **访问域名 ( Endpoint )**：Endpoint <font color=FF0000>**表示 OSS 对外服务的访问域名**</font>。OSS 以 HTTP RESTful API 的形式对外提供服务，当访问不同地域的时候，需要不同的域名。通过内网和外网访问同一个地域所需要的域名也是不同的。更多信息，请参见[各个Region对应的Endpoint](https://help.aliyun.com/document_detail/31837.htm#concept-zt4-cvy-5db)。
+- <font color=FF0000>**访问密钥 ( AccessKey )**</font>：AccessKey <font color=FF0000>**简称 AK**</font> ，指的<font color=FF0000>是 **访问身份验证中用到的 AccessKey ID 和 AccessKey Secret**</font> 。<font color=FF0000>OSS 通过使用 AccessKey ID 和 AccessKey Secret 对称加密的方法来 **验证某个请求的发送者身份**</font>。<font color=fuchsia>**AccessKey ID 用于标识用户**</font>；<font color=fuchsia>**AccessKey Secret 是用户用于 加密签名字符串 和 OSS 用来验证签名字符串的密钥，必须保密**</font>。关于获取 AccessKey 的方法，请参见 [获取AccessKey](https://help.aliyun.com/document_detail/53045.htm#task968)。
+
+<font size=4>**OSS 常见操作**</font>
+
+- **创建 Bucket**：<font color=FF0000>在上传文件 ( Object ) 到 OSS 之前，您需要创建一个用于存储文件的 Bucket</font>。<font color=FF0000>Bucket 具有各种配置属性，包括地域、访问权限以及其他元数据</font>。创建 Bucket 的具体操作，请参见 [创建存储空间](https://help.aliyun.com/document_detail/31842.htm#concept-ntj-wx1-5db)。
+- **上传文件**：Bucket 创建完成后，您可以通过多种方式上传不同大小的文件。有关上传文件的具体操作，请参见[上传文件](https://help.aliyun.com/document_detail/31886.htm#concept-zx1-4p4-tdb)。
+- **下载文件**：文件上传完成后，您可以将文件下载至浏览器默认路径或本地指定路径。有关下载文件的具体操作，请参见[下载文件](https://help.aliyun.com/document_detail/31887.htm#task-2038465)。
+- **列举文件**：当您的 Bucket 内存储了大量的文件后，您可以选择列举 Bucket 内的全部或部分文件。有关列举文件的具体操作，请参见[列举文件](https://help.aliyun.com/document_detail/31860.htm#concept-uzd-syy-5db)。
+- **删除文件**：当您不再需要保留上传的文件时，您可以手动删除单个或多个文件，也可以通过配置生命周期规则自动删除单个或多个文件。有关删除文件的具体操作，请参见[删除文件](https://help.aliyun.com/document_detail/31862.htm#concept-g42-bhd-5db)。
+
+<font size=4>**OSS 重要特性**</font>
+
+- **版本控制**：版本控制是 <font color=FF0000>针对存储空间 ( Bucket ) 级别的数据保护功能</font>。开启版本控制后，<font color=FF0000>针对数据的覆盖和删除操作将会以历史版本的形式保存下来</font>。您在错误覆盖或者删除文件 ( Object ) 后，<font color=FF0000>能够将 Bucket 中存储的 Object 恢复至任意时刻的历史版本</font>。有关版本控制的更多信息，请参见[版本控制介绍](https://help.aliyun.com/document_detail/109695.htm#concept-jdg-4rx-bgb)。
+
+- **Bucket Policy**：<font color=FF0000>Bucket 拥有者可 **通过 Bucket Policy 授权不同用户以何种权限访问指定的 OSS 资源**</font>。例如您需要进行跨账号或对匿名用户授权访问或管理整个 Bucket 或 Bucket 内的部分资源，或者需要对同账号下的不同 RAM 用户授予访问或管理 Bucket 资源的不同权限，例如只读、读写或完全控制的权限等。有关配置 Bucket Policy 的操作步骤，请参见[通过Bucket Policy授权用户访问指定资源](https://help.aliyun.com/document_detail/85111.htm#concept-ahc-tx4-j2b)。
+
+- **跨区域复制**：跨区域复制 ( Cross-Region Replication ) 是跨不同 OSS 数据中心（地域）的 Bucket 自动、异步（近实时）复制Object，它会将 Object 的创建、更新和删除等操作从源存储空间复制到不同区域的目标存储空间。跨区域复制功能满足 Bucket 跨区域容灾或用户数据复制的需求。有关跨区域复制的更多信息，请参见[跨区域复制](https://help.aliyun.com/document_detail/31864.htm#concept-zjp-31z-5db)。
+
+- **数据加密**
+
+  - **服务器端加密**：<font color=FF0000>**上传文件** 时，OSS 对收到的文件进行加密，再将得到的加密文件持久化保存</font>；<font color=fuchsia>**下载文件** 时，OSS 自动将加密文件解密后返回给用户，并在返回的 HTTP 请求 Header 中，声明该文件进行了服务器端加密</font>。有关服务器端加密的更多信息，请参见 [服务器端加密](https://help.aliyun.com/document_detail/31871.htm#concept-lqm-fkd-5db)。
+
+  - **客户端加密**：<font color=FF0000>将文件上传到 OSS 之前在本地进行加密</font>。有关客户端加密的更多信息，请参见 [客户端加密](https://help.aliyun.com/document_detail/73332.htm#concept-2323737)。
+
+<font size=4>**OSS 使用方式**</font>
+
+**OSS 提供多种灵活的上传、下载和管理方式：**
+
+- **通过<font color=FF0000>控制台管理</font> OSS**：OSS 提供了 Web 服务页面，您可以登录[OSS控制台](https://oss.console.aliyun.com/overview)管理您的 OSS 资源。更多信息，请参见 [控制台用户指南](https://help.aliyun.com/document_detail/31893.htm#task-zx1-4p4-tdb)
+- **通过 <font color=FF0000>API 或 SDK 管理</font> OSS**：OSS 提供 RESTful API 和各种语言的 SDK 开发包，方便您快速进行二次开发。更多信息，请参见[OSS API参考](https://help.aliyun.com/document_detail/31948.htm#reference-wrz-l2q-tdb)和[OSS SDK参考](https://help.aliyun.com/document_detail/52834.htm#concept-dcn-tp1-kfb)。
+- **通过<font color=FF0000>工具管理</font> OSS**：OSS 提供图形化管理工具 ossbrowser、命令行管理工具 ossutil、FTP 管理工具 ossftp 等各种类型的管理工具。更多信息，请参见 [OSS常用工具](https://help.aliyun.com/document_detail/44075.htm#concept-owg-knn-vdb)。
+- **通过<font color=FF0000>云存储网关管理</font> OSS**：OSS 的存储空间内部是扁平的，没有文件系统的目录等概念，所有的对象都直接隶属于其对应的存储空间。如果您想要像使用本地文件夹和磁盘那样来使用 OSS 存储服务，可以通过配置云存储网关来实现。更多信息，请参见[云存储网关产品详情页面](https://www.alibabacloud.com/product/cloud-storage-gateway)。
+
+摘自：[什么是对象存储OSS](https://help.aliyun.com/document_detail/31817.html)
+
+
+
+#### CDN 加速 VS OSS 传输加速 
+
+阿里云 对象存储 OSS 以 <font color=FF0000>海量、安全、低成本、高可靠 等特点</font> 已经 <font color=FF0000>成为**用户存储 静态资源** 和 **文件** 的首要选择</font>，实际使用中 <mark>面向全球 各地用户访问 OSS 资源时，**访问速度会受到 客户端网络、OSS 的下行带宽、Bucket 地域、访问链路长 等限制出现访问慢的情况</mark>。<mark style="background: lightskyblue">以下主要介绍 CDN 加速 OSS 和 OSS 传输加速的加速方式</mark>：
+
+##### 实现原理
+
+**具体实现加速的原理如下：**
+
+- **CDN 加速 OSS** ：是建立并覆盖在承载网之上，由 <mark>遍布全球的边缘节点服务器群组成的分布式网络</mark>。阿里云 CDN 能分担源站压力，<mark>避免网络拥塞，确保在不同区域、不同场景下加速网站内容的分发，提高资源访问速度</mark>。由 CDN 全球广泛分布的边缘节点缓存 OSS 存储的静态数据，从而实现客户端从边缘节点直接获取数据的方式来实现访问的加速。
+- **OSS 传输加速**：<mark>利用全球分布的云机房，将全球各地用户对您存储空间 ( Bucket ) 的访问</mark>，<font color=FF0000>**经过 智能路由 解析至就近的接入点，使用 优化后的网络及协议，为云存储互联网的上传、下载提供端到端的加速方案**</font>。
+
+##### 资源加速场景介绍
+
+OSS传输加速 是 针对 OSS 的链路加速，使用 OSS 传输加速后支持 OSS 提供的任意特性。CDN 通过全球边缘节点缓存 OSS 资源，加速同时可降低带宽成本。<font color=FF0000>**OSS传输加速 和 CDN加速 完全是两个不同的产品**</font>，且应对的场景不同，详情请参见 [CDN应用场景](https://help.aliyun.com/document_detail/109895.htm) 和 [传输加速场景](https://help.aliyun.com/document_detail/131312.htm)。
+
+- 如果您的业务是 <font color=FF0000>第三方数据源加速</font>，推荐您 <font color=fuchsia>使用 CDN 加速</font>。
+- 如果您的 <font color=FF0000>OSS 资源需要进行 **多次下载** 的操作</font>，并且 <font color=FF0000>**不要求数据强一致性**</font>，推荐您 <font color=fuchsia>**使用 CDN 加速**</font>。
+- 如果您的 <font color=FF0000>OSS 资源需要 **加速下载**</font>，并且 <font color=FF0000>**访问量少**</font>，推荐您 <font color=FF0000>**使用 OSS 传输加速**</font>。
+- 如果您的<font color=FF0000> OSS 资源需要 **进行多次下载的操作**</font>，并且 <font color=FF0000>**要求数据强一致性**</font>，推荐您 <font color=FF0000>**使用 OSS 传输加速**</font>。
+- 如果您的 <font color=FF0000>业务存储的是 **动态资源**</font>，且 <font color=FF0000>**数据更新频繁**</font>，推荐您 <font color=FF0000>**使用 OSS 传输加速**</font>。
+- 如果您的 <font color=FF0000>业务存储的是 **静态资源**</font>，且 <font color=FF0000>**更新少**</font>，推荐您 <font color=fuchsia>**使用 CDN 加速**</font>。
+
+##### CDN加速 和 OSS传输加速 的对比
+
+| **加速方式** | **实现方法**                                                 | **应用场景**                                                 | **优点**                                                     | **缺点**                                                     |
+| ------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| CDN加速OSS   | 通过全球分布的边缘节点缓存数据来实现加速。                   | 网站或应用中小文件大文件的下载视音频点播                     | CDN 边缘节点全球分布，数量多。CDN 节点提供的服务带宽量大。   | <font color=FF0000>对于访问量大的资源，命中率高，访问量小的资源命中率低，节点未缓存的情况下，还是需要回源访问</font>，回源依赖实时的公网回源链路。CDN 静态资源的访问，对于上传、删除等动态请求加速效果不明显。 |
+| OSS传输加速  | 实现的是：<font color=FF0000>**客户端到 OSS 服务端之间链路优化来实现的加速功能**</font>，实际每次资源的请求还是从 OSS 来进行获取。 | 远距离数据传输加速 GB、TB 级大文件上传和下载非静态、非热点数据下载加速 | OSS 存储节点全球主要区域分布。远距离以及大文件的上传和下载加速。 | <font color=FF0000>**所有的访问都是回源到 OSS 访问**</font>，占用 OSS 的服务带宽。同一区域大量用户集中访问资源的情况下，效果没有 CDN 加速效果好。<font color=FF0000>只能使用 HTTPS 方式访问</font>。 |
+
+摘自：[CDN加速和OSS传输加速的区别](https://help.aliyun.com/document_detail/305994.html)
+
+
+
+#### 前端路由 VS 后端路由
+
+- **后端路由: **对于普通的网站，<font color=FF0000>所有的超链接都是 URL 地址</font>，<font color=FF0000>所有的URL地址都对应服务器上对应的资源</font>
+- **前端路由: **对于<font color=FF0000>单页面应用程序</font>来说，主要<font color=FF0000>通过 URL 中的 hash ( # ) 来实现不同页面之间的切换（与锚点相似）</font>。同时，hash 有一个特点: <font color=FF0000>HTTP 请求中不会包含 hash 相关的内容</font>；所以，单页面程序中的页面跳转主要用 hash 实现
 - 在单页面应用程序中，<font color=FF0000>**这种通过 hash 改变来切换页面的方式，称作前端路由**</font>（ 区别于后端路由）
 
 
 
 #### CORS
 
-CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource sharing）。
+CORS 是一个 W3C 标准，全称是 “跨域资源共享” ( Cross-origin resource sharing ) 。
 
 <font color=FF0000>它允许浏览器向跨源服务器，发出 XMLHttpRequest 请求，从而克服了 AJAX 只能同源使用的限制。</font>
 
