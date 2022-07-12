@@ -2956,7 +2956,7 @@ filter: unset;
 
 由于MDN 中说的并不是很清楚，所以又去阅读了：[CSS filter 有哪些神奇用途](https://segmentfault.com/a/1190000040058430)
 
-### 基本概念
+##### 基本概念
 
 CSS filter 属性将模糊或颜色偏移等图形效果应用于元素形成滤镜，<font color=FF0000>滤镜通常用于调整图像，背景和边框的渲染</font>。它的<font color=FF0000>值可以为 **filter 函数** \<filter-function>（注：如下面的代码 第一行） 或 **使用 url 添加的svg滤镜**（注：如下面的代码 第二行）</font>。
 

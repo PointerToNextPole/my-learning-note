@@ -18,7 +18,7 @@
 
 #### 图灵机
 
-图灵机（Turing Machine）是图灵在1936年发表的 "On Computable Numbers, with an Application to the Entscheidungsproblem"（《论可计算数及其在判定性问题上的应用》）中提出的数学模型。既然是数学模型，它就并非一个实体概念，而是架空的一个想法。在文章中图灵描述了它是什么，并且证明了：<mark>只要图灵机可以被实现，就可以用来解决任何可计算问题。</mark></br>
+图灵机（Turing Machine）是图灵在1936年发表的 "On Computable Numbers, with an Application to the Entscheidungsproblem"（《论可计算数及其在判定性问题上的应用》）中提出的数学模型。既然是数学模型，它就并非一个实体概念，而是架空的一个想法。在文章中图灵描述了它是什么，并且证明了：<mark>只要图灵机可以被实现，就可以用来解决任何可计算问题。</mark>
 
 **图灵机的结构包括以下几个部分：**
 
@@ -27,15 +27,17 @@
 > - 一个读写头（head），可理解为指向其中一个格子的指针。它可以读取/擦除/写入当前格子的内容，此外也可以每次向左/右移动一个格子。
 > - 一个状态寄存器（state register），它追踪着每一步运算过程中，整个机器所处的状态（运行/终止）。当这个状态从运行变为终止，则运算结束，机器停机并交回控制权。如果你了解有限状态机，它便对应着有限状态机里的状态。
 > - 一个有限的指令集（instructions table），它记录着读写头在特定情况下应该执行的行为。可以想象读写头随身有一本操作指南，里面记录着很多条类似于“当你身处编号53的格子并看到其内容为0时，擦除，改写为1，并向右移一格。此外，令下一状态为运行。”这样的命令。其实某种意义上，这个指令集就对应着程序员所写下的程序了。
-> ![图灵机结构](https://pic1.zhimg.com/80/v2-6d57f9001041416d43e886f14fd43f84_1440w.jpg "图灵机结构")</br>
-> 
+>
+> ![图灵机结构](https://pic1.zhimg.com/80/v2-6d57f9001041416d43e886f14fd43f84_1440w.jpg "图灵机结构")
+>
 > 在计算开始前，纸带可以是完全空白，也可以在某些格子里预先就有写上部分字符作为输入。运算开始时，读写头从某一位置开始，严格按照此刻的配置（configuration），即：
 > - 当前所处位置
-> - 当前格子内容</br>
-> 
-> 来一步步的对照着指令集去进行操作，直到状态变为停止，运算结束。而后纸带上留下的信息，即字符的序列（比如类似“...011001...”）便作为输出，由人来解码为自然语言。</br>
-> 
->要重申一下，以上只是图灵机模型的内容，而非具体的实现。所谓的纸带和读写头都只是图灵提出的抽象概念。为便于理解打一个比方。算盘虽然不是图灵机（因为它没有无限长的纸带，即无限的存储空间），但它的行为与图灵机一致。每一串算珠都是纸带上的一格，一串算珠上展示的数字便记录着当前格中的字符（可以是空白，可以是 12345 ）。人类的手即是读写头，可以更改每串算珠的状态。算盘的运行遵循人脑中的算法，当算法结束，算盘停机。</br>
+> - 当前格子内容
+>
+> 来一步步的对照着指令集去进行操作，直到状态变为停止，运算结束。而后纸带上留下的信息，即字符的序列（比如类似“...011001...”）便作为输出，由人来解码为自然语言。
+>
+> 要重申一下，以上只是图灵机模型的内容，而非具体的实现。所谓的纸带和读写头都只是图灵提出的抽象概念。为便于理解打一个比方。算盘虽然不是图灵机（因为它没有无限长的纸带，即无限的存储空间），但它的行为与图灵机一致。每一串算珠都是纸带上的一格，一串算珠上展示的数字便记录着当前格中的字符（可以是空白，可以是 12345 ）。人类的手即是读写头，可以更改每串算珠的状态。算盘的运行遵循人脑中的算法，当算法结束，算盘停机。
+>
 > 摘自：[什么是图灵完备？ - Ran C的回答 - 知乎](https://www.zhihu.com/question/20115374/answer/288346717)
 
 
@@ -187,7 +189,7 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 
 那么我<font color=FF0000>把输入输出的空间准备好</font>，然后<font color=FF0000>直接调用别的语言生成的二进制</font>去跑不就行了吗？这就是 FFI，<font color=FF0000>**FFI 能更好的管理二进制资源的生命周期**</font>。
 
-管生命周期的那个作为宿主语言，所以 FFI 中一般高级语言做主导，低级语言被调用，而且还能封装成二进制库，比如 lib、dll、so 之类的给不同语言用（注：比如 ffmpeg ？）。
+管生命周期的那个作为宿主语言，所以 FFI 中一般高级语言做主导，低级语言被调用，而且还能封装成二进制库，比如 lib、dll、so 之类的给不同语言用（👀 **注**：比如 ffmpeg ？）。
 
 **缺点**：二进制毕竟太底层了，没有大家一致认可的调用约定也是不可能互通的，要遵守一些基本准则。调用约定、类型表示 和 名称修饰这三者，构成了二进制接口 ( Application Binary Interface )。
 
@@ -195,7 +197,7 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 
 ##### RPC ( Remote Procedure Call )
 
-那我不管别人怎么规定了，我就按自己的规定来，你们都给我转成这个格式交互（**注：**适配器模式，中间层？）。
+那我不管别人怎么规定了，我就按自己的规定来，你们都给我转成这个格式交互（👀 **注：**适配器模式，中间层？）。
 
 比如我用 javascript，那你们和我交互都发 json，岂不美哉？
 
@@ -203,7 +205,7 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 
 虽然名义上是远程调用，但是也常常开两个端口本地往本地发。比如 LSP 就基于 JSON-RPC ，本地往本地发（**注：**LSP 即，语言服务协议，这也是 VS Code 可以支持编写多语言的技术原理）。
 
-当然 json 的 serde（**注：**进行 “序列化” 和“反序列化”操作的程序，似乎是 [GitHub - serde-rs/json](https://github.com/serde-rs/json) ） 太慢了，计算机就该用二进制说话，所以 <font color=FF0000>谷歌的 **grpc** 使用 Protocol Buffers 这种二进制格式作为交换格式</font>。
+当然 json 的 serde（👀 **注：**进行 “序列化” 和“反序列化”操作的程序，似乎是 [GitHub - serde-rs/json](https://github.com/serde-rs/json) ） 太慢了，计算机就该用二进制说话，所以 <font color=FF0000>谷歌的 **grpc** 使用 **Protocol Buffers** 这种二进制格式作为交换格式</font>。👀 **注**：ProtoBuf 是一种 IDL ( Interactive Data Language ) 接口描述语言。
 
 一般的应用远远达不到要优化掉 serde 开销这个地步，所以现在就慢慢演变到传 json 搞定一切了。
 
@@ -213,6 +215,8 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 
 #### RPC
 
+##### Wikipedia 中的解释
+
 分布式计算中，远端程序呼叫 ( Remote Procedure Call, RPC ) 是一个计算机通信协议。该协议 <font color=FF0000>允许 运行于一台计算机的程序 调用 另一个地址空间</font>（通常为一个开放网络的一台计算机）<font color=FF0000>的子程序</font>，而 <font color=FF0000>程序员就像调用本地程序一样，无需额外地为这个交互作用编程（无需关注细节）</font>。RPC 是一种 服务器-客户端 ( Client/Server ) 模式，经典实现是一个通过 **发送请求-接受回应** 进行信息交互的系统。
 
 如果涉及的软件采用面向对象编程，那么远程过程调用亦可称作远端呼叫或远端方法呼叫，例：Java RMI 。
@@ -220,6 +224,111 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 <font color=FF0000>RPC 是一种 **进程间通信** 的模式，程序分布在不同的地址空间里</font>。如果<mark style="background: aqua">在同一主机里</mark>，RPC 可以通过不同的虚拟地址空间（即便使用相同的物理地址）进行通讯；而<mark>在不同的主机间</mark>，则通过不同的物理地址进行交互。许多技术（通常是不兼容）都是基于这种概念而实现的。
 
 摘自：[wikipedia - 远程过程调用](https://zh.wikipedia.org/zh-cn/%E9%81%A0%E7%A8%8B%E9%81%8E%E7%A8%8B%E8%AA%BF%E7%94%A8)
+
+##### 知乎问题 “谁能用通俗的语言解释一下什么是 RPC 框架？”中的讨论
+
+RPC 是指远程过程调用，也就是说两台服务器 A 和 B，一个应用部署在 A服务器 上，想要调用 B服务器 上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。
+
+**需要解决如下问题：**
+
+- 首先，<font color=FF0000>**要解决通讯的问题**</font>。主要是通过在客户端和服务器之间建立 TCP 连接，远程过程调用的所有交换的数据都在这个连接里传输。连接可以是按需连接，调用结束后就断掉，也可以是长连接，多个远程过程调用共享同一个连接。
+- 第二，要解决寻址的问题。也就是说，<font color=FF0000>**A服务器上的应用怎么告诉底层的 RPC 框架，如何连接到 B服务器（如主机 或 IP地址）以及特定的端口，<font size=4>方法的名称名称是什么</font>**，这样才能完成调用</font>。比如基于 Web 服务协议栈的 RPC，就要提供一个 endpoint URI ，或者是从 UDDI 服务上查找。如果是 RMI 调用的话，还需要一个 RMI Registry 来注册服务的地址。
+- 第三，<font color=FF0000>**当 A服务器 上的应用发起远程过程调用时，方法的参数需要通过底层的网络协议如 TCP 传递到 B服务器**</font>，由于网络协议是基于二进制的，内存中的参数的值要序列化成二进制的形式，也就是<font color=FF0000>**序列化 ( Serialize ) 或编组 ( marshal )**</font> ，通过寻址和传输将序列化的二进制发送给 B服务器。
+- 第四，B服务器收到请求后，需要对参数进行反序列化（序列化的逆操作），<font color=FF0000>**恢复为内存中的表达方式**</font>，然后<font color=FF0000>**找到对应的方法**（寻址的一部分）进行本地调用</font>，然后得到返回值。
+- 第五，<font color=FF0000>**返回值还要发送回 A服务器 上的应用**</font>（👀 **注**：这点差点忘了... 类似函数调用，往往有返回值；这里自然要发送），也<font color=FF0000>要经过序列化的方式发送</font>；A服务器 接到后，再反序列化，恢复为内存中的表达方式，交给 A服务器 上的应用
+
+<img src="https://s2.loli.net/2022/07/12/VqJ8LAHpDnUjxyG.png" alt="img" style="zoom:50%;" />
+
+摘自：[谁能用通俗的语言解释一下什么是 RPC 框架？ - 用心阁的回答 - 知乎](https://www.zhihu.com/question/25536695/answer/36197244)
+
+RPC 就是要像调用本地的函数一样去调远程函数。在研究 RPC 前，我们先看看本地调用是怎么调的。假设我们要调用函数 Multiply 来计算 `lvalue * rvalue` 的结果:
+
+```cpp
+1 int Multiply(int l, int r) {
+2    int y = l * r;
+3    return y;
+4 }
+5 
+6 int lvalue = 10;
+7 int rvalue = 20;
+8 int l_times_r = Multiply(lvalue, rvalue);
+```
+
+那么在第8行时，我们实际上执行了以下操作：
+
+1. 将 lvalue 和 rvalue 的值压栈
+2. 进入Multiply函数，取出栈中的值10 和 20，将其赋予 l 和 r
+3. 执行第2行代码，计算 l * r ，并将结果存在 y
+4. 将 y 的值压栈，然后从Multiply返回
+5. 第8行，从栈中取出返回值 200 ，并赋值给 l_times_r
+
+以上 5步就是执行本地调用的过程（作者注：以上步骤只是为了说明原理。事实上编译器经常会做优化，对于参数和返回值少的情况会直接将其存放在寄存器，而不需要压栈弹栈的过程，甚至都不需要调用 call，而直接做 inline操作。仅就原理来说，这5步是没有问题的）
+
+<font size=4>**远程过程调用带来的新问题**</font>
+
+在远程调用时，我们需要执行的函数体是在远程的机器上的，也就是说，Multiply 是在另一个进程中执行的。这就带来了几个新问题：
+
+1. **Call ID 映射**：我们<font color=fuchsia>**怎么告诉远程机器我们要调用 Multiply，而不是 Add 或者 FooBar 呢**</font>？在 <font color=FF0000>**本地调用**中，函数体是直接通过函数指针来指定的，我们调用 Multiply，编译器就自动帮我们调用它相应的函数指针</font>。但是<font color=fuchsia>**在远程调用中，函数指针是不行的，因为两个进程的地址空间是完全不一样的**</font>。所以，<font color=fuchsia size=4>**在 RPC 中，所有的函数都必须有自己的一个 ID** ；**这个 ID 在所有进程中都是唯一确定的**</font>。<font color=fuchsia size=4>**客户端在做远程过程调用时，必须附上这个ID**</font>。然后，我们 <font color=fuchsia size=4>**还需要在客户端和服务端分别维护一个 `{ 函数 <--> Call ID }` 的对应表**</font>。两者的表不一定需要完全相同，但相同的函数对应的 Call ID 必须相同。当客户端需要进行远程调用时，它就查一下这个表，找出相应的 Call ID，然后把它传给服务端，服务端也通过查表，来确定客户端需要调用的函数，然后执行相应函数的代码。
+2. **序列化和反序列化**：客户端怎么把参数值传给远程的函数呢？在本地调用中，我们只需要把参数压到栈里，然后让函数自己去栈里读就行。但是在远程过程调用时，客户端跟服务端是不同的进程，不能通过内存来传递参数。甚至有时候客户端和服务端使用的都不是同一种语言（比如服务端用 C++，客户端用 Java 或者 Python）。这时候就需要客户端把参数先转成一个字节流，传给服务端后，再把字节流转成自己能读取的格式。这个过程叫 序列化和反序列化。同理，从服务端返回的值也需要序列化反序列化的过程。
+3. **网络传输**：远程调用往往用在网络上，客户端和服务端是通过网络连接的。所有的数据都需要通过网络传输，因此就需要有一个网络传输层。网络传输层需要把 Call ID 和序列化后的参数字节流传给服务端，然后再把序列化后的调用结果传回客户端。只要能完成这两者的，都可以作为传输层使用。因此，它所使用的协议其实是不限的，能完成传输就行。<font color=FF0000>尽管大部分 RPC 框架都使用 TCP 协议，但其实 UDP 也可以，而 <font size=4>**gRPC**</font> 干脆就 <font size=4>**用了 HTTP2**</font></font> 。Java 的 Netty 也属于这层的东西。
+
+有了这三个机制，就能实现 RPC 了；具体过程如下：
+
+```cpp
+// Client端 
+// int l_times_r = Call(ServerAddr, Multiply, lvalue, rvalue)
+1. 将这个调用映射为Call ID。这里假设用最简单的字符串当Call ID的方法
+2. 将Call ID，lvalue和rvalue序列化。可以直接将它们的值以二进制形式打包
+3. 把2中得到的数据包发送给ServerAddr，这需要使用网络传输层
+4. 等待服务器返回结果
+5. 如果服务器调用成功，那么就将结果反序列化，并赋给l_times_r
+
+// Server端
+1. 在本地维护一个Call ID到函数指针的映射call_id_map，可以用std::map<std::string, std::function<>>
+2. 等待请求
+3. 得到一个请求后，将其数据包反序列化，得到Call ID
+4. 通过在call_id_map中查找，得到相应的函数指针
+5. 将lvalue和rvalue反序列化后，在本地调用Multiply函数，得到结果
+6. 将结果序列化后通过网络返回给Client
+```
+
+所以要实现一个 RPC 框架，其实只需要按以上流程实现就基本完成了。
+
+其中：
+
+- Call ID 映射可以直接使用函数字符串，也可以使用整数ID。<font color=FF0000>映射表一般就是一个哈希表</font>。
+- 序列化反序列化可以自己写，也可以使用 Protobuf 或者 FlatBuffers 之类的。
+- 网络传输库可以自己写 socket，或者用asio，ZeroMQ，Netty 之类。
+
+摘自：[谁能用通俗的语言解释一下什么是 RPC 框架？ - 洪春涛的回答 - 知乎](https://www.zhihu.com/question/25536695/answer/221638079)
+
+##### RPC 和 HTTP 的关系
+
+RPC 只是对底层协议的封装，其实对具体的通信协议是啥并没有太多要求。
+
+实际上 application layer 是可以有不止一层的，比如说 <font color=FF0000>RPC 可以直接建立在 TCP 之上</font>（👀 **注**：比如 Socket ），<font color=FF0000>也可以建立在 HTTP 协议之上；对于 RPC 来说，这都是一样的，只要把通讯的内容塞进不同的报文理好了</font>。
+
+其实 <font color=FF0000>HTTP 是最常用的承载 RPC 的通信协议之一</font>。而且我们可以在 HTTP 上传输 XML 和 JSON 这样的文本协议，也可以是 protobuf 和 thrift 这样的二进制协议，这都不是问题。
+
+摘自：[既然有 HTTP 请求，为什么还要用 RPC 调用？ - 詹姆斯.通的回答 - 知乎](https://www.zhihu.com/question/41609070/answer/496122169)
+
+**HTTP 和 RPC 不是对等的概念**：<font color=FF0000>RPC 是一个完整的 远程调用 <font size=4>**方案**</font></font> ，它 <font color=fuchsia size=4>包括了：**接口规范 + 序列化反序列化规范 + 通信协议** 等</font>。而 <font color=FF0000>**HTTP 只是一个通信协议**</font>，工作在 OSI 的第七层，**不是一个完整的远程调用方案**。
+
+所以，应该拉平为一个对等的概念。例如，HTTP + Restful规范 + 序列化与反序列化，构成一个完整的远程调用方案，再和 RPC 进行比较。而单纯的 HTTP，只是一个通信协议，自然无法和 RPC 比较（👀 注： HTTP 要加上 接口规范、序列化反序列化等 的远程调用方案  才能和 采用 RPC 的远程调用方案  对等比较 / 有比较的意义）。
+
+这就像是牛 ( HTTP ) 不能和马车 ( RPC ) 比较。要想比较，就应该将牛补齐为牛车，然后和马车比较。
+
+👀 **注**：后面是  **HTTP 加上接口规范、序列化反序列化等 的远程调用方案** （比如 HTTP + Restful + JSON）和 **采用 RPC 的远程调用方案** 进行比较的内容，由于暂时用不到，略。
+
+摘自：[既然有 HTTP 请求，为什么还要用 RPC 调用？ - 易哥的回答 - 知乎](https://www.zhihu.com/question/41609070/answer/1030913797)
+
+<font color=FF0000>RPC 在1984 年就被人用来做 **分布式系统的通信**</font> ，Java 在 1.1版本提供了 Java 版本的 RPC 框架 ( RMI ) ，而 <font color=FF0000>HTTP 协议在 1990 年才开始作为主流协议出现，而且 HTTP 发明的场景是用于 web 架构，而不是分布式系统间通信</font>；这导致了在很长一段时间内，HTTP 都是浏览器程序和后端 web 系统通信用的东西，上面的文档格式都是 HTML（非常啰嗦），没有人会把 HTTP 作为分布式系统通信的协议。
+
+在很长一段时间内，RPC 才是正统。随着前端技术的发展，AJAX 技术 和 JSON文档 在前端界逐渐成为主流，HTTP调用 才摆脱 HTML，开始使用 JSON 这一相对简洁的文档格式，为后面用于系统间调用定下基础。最后随着 RESTFUL 思潮的兴起，越来越多系统考虑用 HTTP 来提供服务，但这时候，RPC 已经是各种大型分布式调用的标配了。
+
+摘自：[既然有 HTTP 请求，为什么还要用 RPC 调用？ - 周迪超的回答 - 知乎](https://www.zhihu.com/question/41609070/answer/1040163258)
+
+
 
 
 
@@ -297,6 +406,18 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 **总结：方法就是面向对象版的函数**
 
 摘自：[方法和函数的区别](https://blog.csdn.net/notsaltedfish/article/details/75174556)
+
+
+
+#### class: Helper VS Utility
+
+There are many naming styles to use. I would suggest <font color=FF0000>**Utils** just because its **more common**</font>.
+
+A <font size=4>**Utility**</font> class is understood to <font color=FF0000>**only have static methods and be stateless**</font>. You <font color=FF0000>would not create an instance of such a class</font>.
+
+A <font size=4>**Helper**</font> <font color=FF0000>can be a **utility** class</font> or <font color=FF0000>it can be **stateful** or **require an instance be created**</font>. I would avoid this if possible.
+
+摘自：[What are the differences between Helper and Utility classes?](https://stackoverflow.com/questions/12192050/what-are-the-differences-between-helper-and-utility-classes)
 
 
 

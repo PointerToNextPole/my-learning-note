@@ -1984,11 +1984,53 @@ SSR服务 部署在中心，边缘流式返回 HTML内容（利用 HTTP `Transfe
 
 
 
+#### 无头CMS ( Headless content management system )
+
+##### CMS 是什么
+
+> A content management system ( CMS ) is <font color=FF0000>**computer software** used to **manage** the creation and modification of digital content</font> (content management). A CMS is typically used for <font color=0000FF>enterprise content management</font> ( ECM ) and <font color=fuchsia>web content management</font> ( WCM ).
+>
+> <font color=0000FF>ECM</font> typically supports multiple users in a collaborative environment by integrating document management, digital asset management, and record retention.
+>
+> Alternatively, <font color=fuchsia>WCM</font> is the collaborative authoring for websites and <mark>may include text and embed graphics, photos, video, audio, maps, and program code</mark> that display content and interact with the user. <mark>ECM typically includes a WCM function</mark>. CMS is a web template to create your own website
+>
+> ##### Structure
+>
+> <mark style="background: lightskyblue">A CMS typically has **two major components**</mark> : a <font color=FF0000>**content management application**</font> ( CMA ) , <font color=FF0000>as the front-end user interface</font> that allows a user, even with limited expertise（**译**：即使用户专业知识有限（即：不是程序员））, to add, modify, and remove content from a website without the intervention（**译**：干预） of a [webmaster](https://en.wikipedia.org/wiki/Webmaster) ; and a <font color=FF0000>**content delivery application**</font> ( CDA ) , that compiles the content and updates the website.
+>
+> ##### Installation type
+>
+> <mark style="background: lightskyblue">There are **two types of CMS installation**</mark> : <font color=FF0000>**on-premises**</font>（译：现场）and <font color=fuchsia>**cloud-based**</font>. On-premises installation means that the <font color=FF0000>CMS software can be installed on the server</font>. This approach is usually taken by businesses that want flexibility in their setup. Notable **CMSs which can be installed on-premises are [Wordpress.org](https://en.wikipedia.org/wiki/WordPress), [Drupal](https://en.wikipedia.org/wiki/Drupal), [Joomla](https://en.wikipedia.org/wiki/Joomla), [ModX](https://en.wikipedia.org/wiki/Modxcms) and others**.
+>
+> The <font color=fuchsia>**cloud-based**</font> CMS is hosted on the vendor environment（译：供应商环境）. With <font color=fuchsia>this approach the CMS software cannot be modified for the customer</font>. Examples of notable **cloud-based CMSs are [SquareSpace](https://en.wikipedia.org/wiki/Squarespace), [Wordpress.com](https://en.wikipedia.org/wiki/WordPress.com), [Webflow](https://en.wikipedia.org/wiki/Webflow) and [WIX](https://en.wikipedia.org/wiki/Wix.com)** .
+>
+> 摘自：[wikipedia - Content management system](https://en.wikipedia.org/wiki/Content_management_system)
+
+##### 无头CMS 是什么
+
+**总述**
+
+A **headless Content Management System**, or **headless CMS**, is a <font color=FF0000>**back-end-only** content management system</font> that <font color=FF0000>acts primarily **as a content repository**</font>. A headless CMS <font color=fuchsia>makes content accessible <font size=4>**via an API**</font> for display on any device <font size=4>**without a built-in , front-end or presentation layer**</font></font>. <font color=FF0000>The term **“headless” comes from the concept** of chopping the **“head” ( the front end )** off the “body” ( the back end )</font> .
+
+**详细介绍**
+
+Whereas a <mark>traditional CMS typically **combines the content and presentation layers**</mark> of a website, a headless CMS comprises（译：包含） just the content component and focuses entirely on the administrative interface for content creators, the <font color=FF0000>facilitation</font>（译：促进） <font color=FF0000>of content workflows and collaboration</font>, and the organization of content into taxonomies（译：分类法，这里是复数）. As such, a headless CMS must be combined with a separate presentation layer to handle design, site structure and templates. That combination generally relies on stateless or loosely coupled APIs.
+
+One <mark style="background: lightskyblue">**advantage**</mark> of this decoupled（译：解耦的） approach is that <font color=fuchsia>content can be sent via APIs to multiple display types</font>, like mobile and Internet of Things (IoT) devices, alongside a website. A <mark style="background: aqua">**disadvantage**</mark>, however, is the <font color=FF0000>requirement to **maintain two separate systems for a single site**, which can **require more resources**</font>.
+
+**Cloud-first headless CMSes** are those that were also built with a multitenant（译：多租户） cloud model at their core and whose vendors promote **software as a service** ( **SaaS** ) , <font color=FF0000>promising high availability, scalability, and full management of security, upgrades, and hotfixes on behalf of clients</font>. Similar to how headless CMSes focus on creating content in the backend to be displayed on frontends via APIs, headless commerce（译：贸易） uses the same setup to separate backend product management and navigation from the frontend of a website or other display types, like IoT.
+
+Headless CMS is similar to but distinct from the use of widgets or plugins on a site, like adding an Uber Eats menu or online ordering plugin to a restaurant website.
+
+摘自：[wikipedia - Headless content management system](https://en.wikipedia.org/wiki/Headless_content_management_system)
+
+
+
 #### OSS
 
-**对象存储**（ Object storage ) 是一种 [计算机数据存储](https://zh.wikipedia.org/wiki/電腦數據存貯器) 架构，它<font color=FF0000>**将数据作为对象进行管理**</font>，与其他存储架构不同（如[文件系统](https://zh.wikipedia.org/wiki/文件系统)将数据作为文件层次结构进行管理，而[块存储](https://zh.wikipedia.org/wiki/块_(数据存储))则将数据作为扇区和轨道内的块进行管理）。**每个对象 通常包括：数据本身、数量不等的 元数据 和 一个 [全局唯一的标识符](https://zh.wikipedia.org/wiki/通用唯一识别码)** 。对象存储可以在多个层面实现，包括设备层面（对象存储设备）、系统层面和接口层面。在每一种情况下，对象存储都试图实现其他存储架构所不具备的能力，如可由应用程序直接编程的接口，可跨越多个物理硬件实例的命名空间，以及数据管理功能，如[数据复制](https://zh.wikipedia.org/w/index.php?title=数据复制&action=edit&redlink=1)和对象级粒度的数据分发。
+**对象存储**（ Object storage ) 是一种 计算机数据存储 架构，它<font color=FF0000>**将数据作为对象进行管理**</font>，与其他存储架构不同（如 文件系统 将数据作为文件层次结构进行管理，而[块存储](https://zh.wikipedia.org/wiki/块_(数据存储))则将数据作为扇区和轨道内的块进行管理）。**每个对象 通常包括：数据本身、数量不等的 元数据 和 一个 [全局唯一的标识符](https://zh.wikipedia.org/wiki/通用唯一识别码)** 。对象存储可以在多个层面实现，包括设备层面（对象存储设备）、系统层面和接口层面。在每一种情况下，对象存储都试图实现其他存储架构所不具备的能力，如可由应用程序直接编程的接口，可跨越多个物理硬件实例的命名空间，以及数据管理功能，如[数据复制](https://zh.wikipedia.org/w/index.php?title=数据复制&action=edit&redlink=1)和对象级粒度的数据分发。
 
-<font color=FF0000>对象存储系统允许保留大量的 **非结构化数据**</font>。对象存储的用途包括：在 Facebook 上存储照片，在Spotify上存储歌曲，或在在线协作服务（如Dropbox）中存储文件。
+<font color=FF0000>对象存储系统允许保留大量的 **非结构化数据**</font>。对象存储的用途包括：在 Facebook 上存储照片，在 Spotify 上存储歌曲，或在在线协作服务（如Dropbox）中存储文件。
 
 摘自：[wikipedia - 对象存储](https://zh.wikipedia.org/zh-cn/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8)
 
