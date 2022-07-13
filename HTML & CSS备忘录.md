@@ -2918,11 +2918,11 @@ opacity:0.4;
 
 #### filter
 
-**filter** CSS属性<font color=FF0000>将模糊或颜色偏移等图形效果应用于元素</font>。<font color=FF0000>滤镜通常用于调整图像，背景和边框的渲染。</font>
+**filter** CSS 属性<font color=FF0000>将模糊或颜色偏移等图形效果应用于元素</font>。<font color=FF0000>滤镜通常用于调整图像，背景和边框的渲染。</font>
 
 <mark>CSS 标准里包含了一些已实现预定义效果的函数</mark>。你也可以参考一个 SVG 滤镜，通过一个 URL 链接到 SVG 滤镜元素(SVG filter element)
 
-示例：
+##### 示例
 
 ```css
 /* URL to SVG filter */
@@ -2958,14 +2958,21 @@ filter: unset;
 
 ##### 基本概念
 
-CSS filter 属性将模糊或颜色偏移等图形效果应用于元素形成滤镜，<font color=FF0000>滤镜通常用于调整图像，背景和边框的渲染</font>。它的<font color=FF0000>值可以为 **filter 函数** \<filter-function>（注：如下面的代码 第一行） 或 **使用 url 添加的svg滤镜**（注：如下面的代码 第二行）</font>。
+CSS filter 属性将模糊或颜色偏移等图形效果应用于元素形成滤镜，<font color=FF0000>滤镜通常用于调整图像，背景和边框的渲染</font>。它的<font color=FF0000>值可以为 **filter 函数** \<filter-function></font>（👀 **注**：如下面的代码 第一行）<font color=FF0000> 或 **使用 url 添加的 svg 滤镜**</font>（👀 **注**：如下面的代码 第二行）。
 
 ```css
 filter: <filter-function> [<filter-function>]* | none
 filter: url(file.svg#filter-element-id)
 ```
 
-\<filter-function> 可以用于 filter 和 backdrop-filter 属性。它的数据类型由下列过滤器函数之一指定。每个函数需要一个参数，如果参数无效，则滤镜不会生效。以下是对滤镜函数含义的解释：
+👀 **注**：无论是摘抄的文章，还是 [MDN - filter](https://developer.mozilla.org/zh-CN/docs/Web/CSS/filter) 中都没有 [MDN - backdrop-filter](https://developer.mozilla.org/zh-CN/docs/Web/CSS/backdrop-filter) 说的清楚（下面有引用，也可见 [[#backdrop-filter#语法]]）。这两者 filter 是作用于前面的区域，backdrop-filter 作用于后面区域。
+
+> **可选值**
+>
+> - **none**：没有应用于背景的滤镜。
+> - **\<filter-function-list>**：一个以空格分隔的滤镜函数 ( \<filter-function> ) 或是要应用到背景上的 SVG 滤镜。
+
+\<filter-function> 可以用于 filter 和 backdrop-filter（👀 **注**：详见下面 [[#backdrop-filter]]） 属性。它的数据类型由下列过滤器函数之一指定。每个函数需要一个参数，如果参数无效，则滤镜不会生效。以下是对滤镜函数含义的解释：
 
 - **blur()：**<font color=FF0000>模糊</font>图像
 - **brightness() ：**让图像<font color=FF0000>更明亮或更暗淡</font>
@@ -2979,6 +2986,28 @@ filter: url(file.svg#filter-element-id)
 - **sepia()：**将图像<font color=FF0000>转为棕褐色</font>
 
 摘自：[CSS filter 有哪些神奇用途](https://segmentfault.com/a/1190000040058430) 另外，该博客中还有相关使用示例的介绍，这里由于篇幅省略；可以看看，讲得很清楚。
+
+####  backdrop-filter
+
+backdrop-filter CSS 属性可以让你 <font color=FF0000>为一个 元素 <font size=4>**后面区域**</font> 添加图形效果</font>（如模糊或颜色偏移）。因为它适用于元素背后的所有元素，为了看到效果，必须使元素或其背景至少部分透明。
+
+##### 语法
+
+可选值
+
+- **none**：没有应用于背景的滤镜。
+- **\<filter-function-list>**：一个以空格分隔的滤镜函数 ( \<filter-function> ) 或是要应用到背景上的 SVG 滤镜。
+
+##### 形式化定义
+
+| 初始值         | `none`                                                       |
+| :------------- | ------------------------------------------------------------ |
+| 适用元素       | all elements; In SVG, it applies to container elements excluding the [`defs`](https://developer.mozilla.org/zh-CN/docs/Web/SVG/Element/defs) element and all graphics elements |
+| 是否是继承属性 | 否                                                           |
+| 计算值         | as specified                                                 |
+| Animation type | a [filter function list](https://developer.mozilla.org/en-US/docs/Web/CSS/filter#interpolation) |
+
+摘自：[MDN - backdrop-filter](https://developer.mozilla.org/zh-CN/docs/Web/CSS/backdrop-filter)
 
 
 

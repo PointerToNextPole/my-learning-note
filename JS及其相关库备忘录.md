@@ -1,6 +1,10 @@
+# JS 及其相关库备忘录
+
+
+
 ## JavaScript
 
-#### JavaScript基础
+#### JavaScript 基础
 
 DOM ( **D**ocument **O**bject **M**odel )（文档对象模型）是用于访问 HTML 元素的正式 W3C 标准。
 
@@ -3263,7 +3267,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                               
+  >                                                                                                                                                     
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3282,7 +3286,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                               
+  >                                                                                                                                                     
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -11736,6 +11740,16 @@ DataTransfer 对象用于保存拖动并放下（drag and drop，**注：**html 
 
 
 
+#### JS 异步执行的运行机制
+
+1. 所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
+2. 主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
+3. 一旦"执行栈"中的所有同步任务执行完毕（同步任务执行完毕），系统就会读取"任务队列"，看看里面有哪些事件（看看哪些异步事件执行完毕，是否产生什么结果）。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
+
+主线程不断重复上面的第三步
+
+
+
 #### Event Loop 和 JS 引擎、渲染引擎的关系
 
 <font color=FF0000 size=4>**js引擎**</font>
@@ -11865,7 +11879,7 @@ event loop 实现了 task 和 急事处理机制 microtask，而且每次 loop �
 
 window.requestAnimationFrame() <font color=FF0000>告诉浏览器</font>：你<font color=FF0000>希望执行一个动画，并且**要求浏览器在下次 <font size=4>*重绘*</font> 之前，调用指定的回调函数更新动画**</font>。该方法<font color=FF0000>需要传入一个 <font size=4>**回调函数**</font> 作为参数，该 <font size=4>**回调函数会在浏览器下一次重绘之前执行**</font></font>
 
-> 注意：<font color=FF0000>若你想在浏览器下次重绘之前继续更新下一帧动画，那么 **回调函数自身必须再次调用 window.requestAnimationFrame()**</font>
+> ⚠️ 注意：<font color=FF0000>若你想在浏览器下次重绘之前继续更新下一帧动画，那么 **回调函数自身必须再次调用 window.requestAnimationFrame()**</font>
 
 当你准备更新动画时你应该调用此方法。这将使浏览器在下一次重绘之前 调用你传入给该方法的动画函数（即你的回调函数）。<font color=FF0000>回调函数执行次数通常是 每秒 60 次</font>，但<font color=FF0000>在大多数遵循 W3C 建议的浏览器中，回调函数执行次数通常与浏览器屏幕刷新次数相匹配</font>。<mark>为了提高性能和电池寿命，因此在大多数浏览器里，当 requestAnimationFrame() 运行在后台标签页 或者 隐藏的 \<iframe> 里时，requestAnimationFrame() 会被暂停调用以提升性能和电池寿命</mark>。
 
@@ -11901,7 +11915,7 @@ window.requestAnimationFrame(callback);
 
 #### window.requestIdleCallback 🧪
 
-> 注意：这是一个实验中的功能
+> ⚠️ 注意：这是一个实验中的功能
 
 window.requestIdleCallback() 方法<font color=FF0000>插入一个函数</font>，<font color=FF0000>这个函数将在浏览器空闲时期被调用</font>。这<font color=FF0000>使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件</font>，如动画和输入响应。函数一般会按先进先调用的顺序执行，然而，如果回调函数指定了执行超时时间timeout，则有可能为了在超时前执行函数而打乱执行顺序。
 
@@ -12863,239 +12877,9 @@ The `permissions` property has been made available on the [`Navigator`](https://
 
 摘自：[MDN - Intl](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Intl)
 
-****
 
-## 工程设计
 
-#### 对象固化
-
-在框架封装，继承的时候，如果你做好了一个对象给别人使用，为了不让使用者拿过来后任意涂改，比如他把你的对象的一个方法改成了指向另一个函数，或者干脆删除了这个方法，我们需要把这个对象固化。
-
-<mark>在 JavaScript里我们可以在三个层级上固化一个对象</mark>。<font color=FF0000> 从宽到严它们依次是：防止扩展、密封、冻结</font>。
-
-![VnF0SS](https://i.loli.net/2021/08/30/84v2l1ZkMCXO6eg.png)
-
-摘自：[js固化对象](https://zhhlwd.gitee.io/posts/js%E5%9B%BA%E5%8C%96%E5%AF%B9%E8%B1%A1.html)
-
-
-
-#### 一些 worker 的总概
-
-除了专用 worker 之外，还有一些其他种类的 worker ：
-
-- **Shared Workers** 可被不同的窗体的多个脚本运行，例如 IFrames 等，只要这些 workers 处于同一主域。共享worker 比专用 worker 稍微复杂一点 — 脚本必须通过活动端口进行通讯。
-- **Service Workers** 一般作为web应用程序、浏览器和网络（如果可用）之间的代理服务。他们旨在（除开其他方面）创建有效的离线体验，拦截网络请求，以及根据网络是否可用采取合适的行动，更新驻留在服务器上的资源。他们还将允许访问推送通知和后台同步API。
-- **Chrome Workers** 是一种仅适用于firefox的worker。如果您正在开发附加组件，希望在扩展程序中使用worker且可以访问 js-ctypes，那么可以使用Chrome Workers。
-- **音频 Workers** 可以在网络worker上下文中直接完成脚本化音频处理
-
-摘自：[MDN - Web Workers API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API)
-
-#### web worker
-
-Worker 接口是 Web Workers API 的一部分，指的是一种可由脚本创建的后台任务，任务执行中可以向其创建者收发信息。<font color=FF0000>要创建一个 Worker ，只须调用 Worker( URL ) 构造函数，函数参数 URL 为指定的脚本</font>。
-
-<font color=FF0000>Worker 也可以创建新的 Worker，当然，所有 Worker 必须与其创建者<font size=4>**同源**</font></font>。
-
-需要注意的是，<font color=FF0000>不是所有函数和构造函数（或者说…类）都可以在 Worker 中使用</font>。具体参考页面 [Worker 所支持的函数和类](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API/Functions_and_classes_available_to_workers)。Worker 可以使用 XMLHttpRequest 发送请求，但是请求的 responseXML 与 channel 两个属性值始终返回 null （fetch 仍可正常使用，没有类似的限制）。 
-
-- **构造函数**
-  Worker()：创建一个专用Web worker，它只执行URL指定的脚本。<font color=FF0000> Blob URL 作为参数亦可</font>。
-
-  > 如果 此URL有一个无效的语句，或者违反同源策略，一个 SECURITY_ERR 类型的DOMException被抛出。
-  >
-  > **语法**
-  >
-  > ```js
-  > const myWorker = new Worker(aURL[, options]);
-  > ```
-  >
-  > **参数**
-  >
-  > - **aURL：**是一个DOMString 表示worker 将执行的脚本的URL。它必须遵守同源策略。
-  > - **options：** 可选，包含可在创建对象实例时设置的选项属性的对象。可用属性如下:
-  >   - **type：**用以指定 worker 类型的  DOMString 值. 该值可以是 classic 或 module. 如果未指定，将使用默认值 classic.
-  >   - **credentials：**用以指定 worker 凭证的 DOMString 值.该值可以是 omit, same-origin，或 include.。如果未指定，或者 type 是 classic，将使用默认值 omit (不要求凭证)。
-  >   - **name：**在 DedicatedWorkerGlobalScope 的情况下，用来表示 worker 的 scope 的一个 DOMString 值，主要用于调试目的。
-  >
-  > **异常**
-  >
-  > - 当 document 不被允许启动 worker 的时候，将抛出一个 SecurityError 异常。例如：如果提供的 aURL 有语法错误，或者与同源策略相冲突（跨域访问）。
-  > - 如果 worker 的 MIME 类型不正确，将抛出一个 NetworkError 异常。<font color=FF0000>worker 的 MIME 类型必须是 text/javascript</font>。
-  > - 如果 aURL 无法被解析（格式错误），将抛出一个 SyntaxError 异常。
-  >
-  > 摘自：[MDN - Worker()](https://developer.mozilla.org/zh-CN/docs/Web/API/Worker/Worker)
-
-- **属性：**<font color=FF0000>继承父对象EventTarget 的属性，以及实现对象 AbstractWorker 的属性</font>。
-
-- **事件句柄：**
-  - **AbstractWorker.onerror：**当 ErrorEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用。它继承于 AbstractWorker
-  - **Worker.onmessage：**当 MessageEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用.  例如，一个消息通过 DedicatedWorkerGlobalScope.postMessage，从执行者发送到父页面对象，消息保存在事件对象的 data 属性中.
-  - **Worker.onmessageerror：**当messageerror 类型的事件发生时，对应的 event handler 代码被调用。
-  
-- **方法：**<font color=FF0000>继承父对象EventTarget 的方法，以及实现对象 AbstractWorker 的方法</font>。
-  - **Worker.postMessage()：**<font color=FF0000>发送一条消息到最近的外层对象</font>，消息可由任何 JavaScript 对象组成。
-  
-    > **注：**需要指出的是，要将 Worker.postMessage 和 window.postMessage 区分开；同时，在 Worker 中使用 postMessage，应该都是 Worker.postMessage。
-  
-  - **Worker.terminate()：**<font color=FF0000>立即终止 worker</font>。<mark>该方法不会给 worker 留下任何完成操作的机会；就是简单的立即停止</mark>。Service Woker 不支持这个方法。
-
-摘自：[MDN - Worker](https://developer.mozilla.org/zh-CN/docs/Web/API/Worker)
-
-##### worker上下文对象 补充
-
-在专用workers的情况下，DedicatedWorkerGlobalScope 对象代表了worker的上下文（专用workers是指标准worker仅在单一脚本中被使用；共享worker的上下文是 SharedWorkerGlobalScope对象）。一个专用worker仅仅能被首次生成它的脚本使用，而共享worker可以同时被多个脚本使用。
-
-摘自：[MDN - 使用 Web Workers](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API/Using_web_workers) 由于该文章内容很多，且还有很多细节的东西暂时用不到，所以这里略。
-
-#### service worker
-
-Service workers <font color=FF0000>本质上充当 Web 应用程序、浏览器与网络（可用时）之间的代理服务器</font>（<mark> **注：** 即 Proxy，感觉也可以理解为拦截层？ </mark>）。<font color=FF0000>这个 API 旨在创建有效的离线体验</font>（**注：** 读到这里想到了 PWA，查了下便搜到了这篇文章：[通过 Service workers 让 PWA 离线工作](https://developer.mozilla.org/zh-CN/docs/Web/Progressive_web_apps/Offline_Service_workers) 另外，自己的笔记 [[webpack学习笔记#PWA打包]] 部分也有提及：server work 是 pwa 实现的原理。另外，下面也有对这篇文章做摘抄：[[#service worker 补充]] ），<font color=FF0000>它**会拦截网络请求并根据网络是否可用来采取适当的动作、更新来自服务器的的资源**</font>。它还提供入口以推送通知和访问后台同步 API。
-
-<font size=4>**Service worker 的概念和用法**</font>
-
-Service worker 是一个<font color=FF0000>注册在 **指定源和路径下** 的事件驱动worker</font>。它<font color=FF0000>采用 JavaScript 控制关联的页面或者网站，<font size=4> **拦截并修改访问和资源请求，细粒度地缓存资源** </font> </font>。你<font color=FF0000>可以完全控制应用在特定情形（最常见的情形是网络不可用）下的表现</font>（ **注：** <mark>根据语义，service worker 可以控制“在线和离线”两种情况下的“网络请求和资源获取”</mark>）。
-
-<font color=FF0000>Service worker 运行在worker上下文，因此它<font size=4> 不能访问DOM</font></font>。相对于驱动应用的 主JavaScript线程，它运行在其他线程中，所以不会造成阻塞。<font color=FF0000> **它设计为完全异步** ，同步API（如 XHR 和localStorage ）不能在service worker中使用</font>（**注：**xhr 存在同步模式，虽然默认是异步；但是这样说没有错...）。
-
-<font color=FF0000>**出于安全考量，Service workers 只能由 HTTPS 承载**</font>，毕竟修改网络请求的能力暴露给中间人攻击会非常危险
-
-**注意：**
-
-- Service workers 之所以优于以前同类尝试（如 AppCache ），是因为它们（ **注：** 即 AppCache 之类的同类尝试 ）无法支持当操作出错时终止操作（ **注：** 即 Service worker 可以）。<font color=FF0000>Service workers可以更细致地控制每一件事情</font>。
-- <font color=FF0000> **Service workers 大量使用 Promise** </font>，因为通常它们会等待响应后继续，并根据响应返回一个成功或者失败的操作。Promise 非常适合这种场景。
-
-下面还有 service worker 使用过相关的内容，如：注册、下载、安装和激活 还有相关接口，由于暂时用不到，这里略
-摘自：[MDN - Service Worker API](https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API)
-
-##### service worker 补充
-
-<font color=FF0000>Service Worker 是浏览器和网络之间的虚拟代理</font>。 它们终于解决了前端开发人员多年来一直在努力解决的一些问题，其中最值得关注的是，<font color=FF0000>解决了如何正确缓存网站资源并使其在离线时可用的问题</font>。
-
-<mark>Service Worker 运行在 一个与页面 JavaScript 主线程独立的 线程上（ **注：** 即与 js主线程 无关），并且无权访问 DOM 结构</mark>。这引入了一种与传统 Web 编程不同的方式：它的 API 是非阻塞的，并且可以在不同的上下文之间发送和接收信息。<font color=FF0000>您可分配给 Service Worker 一些任务，并通过 <font size=4>基于 Promise 的方法</font> 在任务完成时收到结果</font>。
-
-它<font color=FF0000>不仅仅提供离线功能，还可以做包括处理通知、在单独的线程上执行繁重的计算等事务</font>。Service workers 非常强大，因为他们可以控制网络请求、修改网络请求、返回缓存的自定义响应，或者合成响应。
-
-**离线优先**
-“离线优先”或“缓存优先”模式是向用户提供内容的最流行策略。如果资源已缓存且可脱机使用，就在尝试从服务器下载资源之前先将其返回；如果它已经不在缓存中，就下载并缓存以备将来使用。
-
-补充内容摘自：[MDN - 通过 Service workers 让 PWA 离线工作](https://developer.mozilla.org/zh-CN/docs/Web/Progressive_web_apps/Offline_Service_workers)
-
-#####  [科普] Service Worker 入门指南 中的补充
-
-// TODO 
-
-文章简要介绍了 Service Worker 的特点，以及生命周期、运行流程、代码逻辑（ 包含：register  install activate  fetch skipWaiting ），以及一些 API，和 应用场景。有时间做一下笔记。
-
-#### SharedWorker
-
-SharedWorker 接口代表一种特定类型的 worker，可以从几个浏览上下文中访问，例如几个窗口、iframe 或其他 worker。它们实现一个不同于普通 worker 的接口，具有不同的全局作用域, SharedWorkerGlobalScope
-
-**注意 ⚠️：**如果要使 SharedWorker 连接到多个不同的页面，这些页面必须是同源的（相同的协议、host 以及端口）。
-
-##### 构造函数
-
-**SharedWorker()：**创建一个执行指定 url 脚本的共享 web worker。
-
-##### 属性
-
-继承自其父类 EventTarget，并实现 AbstractWorker 中的属性 。
-
-- AbstractWorker.onerror：一个 EventListener，当 ErrorEvent 类型的 error 冒泡到 worker 时触发。
-- SharedWorker.port 只读，返回一个 MessagePort 对象，该对象可以用来进行通信和对共享 worker 进行控制。
-
-##### 方法
-
-继承自其父类 EventTarget，并实现 AbstractWorker 中的方法 。
-
-##### 示例：略
-
-摘自：[MDN - SharedWorker](https://developer.mozilla.org/zh-CN/docs/Web/API/SharedWorker)
-
-#### 政采云文章《Web Worker》中的 web worker
-
-内容：讲述了 一般 worker、shared worker、service worker 的功能和使用，浅显易懂。
-
-#### // TODO
-
-摘自：[Web Worker](https://juejin.cn/post/7091068088975622175)
-
-***
-
-
-## JS 场景实践案例
-
-- 只能输入和粘贴汉字 
-  
-  ```html
-  <input onkeyup="value=value.replace(/[^\u4E00-\u9FA5]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5]/g,''))" /> 
-  ```
-
-- 只能输入和粘贴数字 
-  
-  ```html
-  <input onkeyup="this.value=this.value.replace(/\D/g,'')" 	onafterpaste="this.value=this.value.replace(/\D/g,'')" />
-  ```
-
-- 数字脚本 
-  
-  ```html
-  <input onkeyup="if(/\D/.test(this.value)){alert('只能输入数字');this.value='';}" />
-  ```
-
-- 只能输入数字和英文 
-  
-  ```html
-  <input onkeyup="value=value.replace(/[\W]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))">
-  ```
-
-- 简易禁止输入汉字：输入法不转换，但可粘贴上
-  
-  ```html
-  <input style="ime-mode:disabled">
-  ```
-
-- 输入数字和小数点 
-  
-  ```html
-  <input onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
-  ```
-
-- 只能数字和"-",例如在输入时间的时候可以用到 
-  
-  ```html
-  <input onkeyup="value=value.replace(/[^\w&=]|_/ig,'')" onblur="value=value.replace(/[^\w&-]|_/ig,'')" /> 
-  ```
-
-摘自：[限制input输入类型(多种方法实现)](https://www.cnblogs.com/eaysun/p/5490603.html)
-
-**补充：**
-
-- 限制输入框输入的只能是金额（非负，小数点后最多两位，自动纠错）
-
-  ```js
-  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/\.{2,}/g,'.').replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')"
-  ```
-
-  使用示例如下：
-
-  ```js
-  <el-input       onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/\.{2,}/g,'.').replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')" 
-  />
-  ```
-
-  **注意：**该表达式似乎无法限制最后一个字符的输入，需要将结果使用parseFloat处理
-
-- 限制输入框输入的只能是数量（非负整数）
-
-  ```js
-  onkeyup="value=value.replace(/[^\d]/g,'')"
-  ```
-
-
-
-***
-
-## JSON
+### JSON
 
 JSON: **J**ava**S**cript **O**bject **N**otation(JavaScript 对象表示法)
 
@@ -13166,23 +12950,23 @@ JSON 值可以是：
 **访问对象值**
 
 - 你可以使用点号<font color=FF0000 size=5>**`.`**</font>来访问对象的值：
-  
+
   ```js
   var myObj = { "name":"runoob", "alexa":10000, "site":null };
   var x = myObj.name;
   ```
 
 - 你也可以使用中括号<font color=FF0000 size=5>**`[]`**</font>来访问对象的值：
-  
+
   ```js
   var myObj = { "name":"runoob", "alexa":10000, "site":null };
   var x = myObj["name"];
   ```
 
 - 你可以使用 for-in 来循环对象的属性：
-  
+
   **实例**
-  
+
   ```js
   var myObj = { "name":"runoob", "alexa":10000, "site":null }; 
   for (x in myObj) {
@@ -13191,9 +12975,9 @@ JSON 值可以是：
   ```
 
 - 循环对象
-  
+
   - 可以使用 for-in 来循环对象的属性
-    
+
     ```js
     var myObj = { "name":"runoob", "alexa":10000, "site":null };
     for (x in myObj) {
@@ -13201,9 +12985,9 @@ JSON 值可以是：
     }
     //name alexa site
     ```
-  
+
   - 在 for-in 循环对象的属性时，使用中括号（[]）来访问属性的值：
-    
+
     ```js
     var myObj = { "name":"runoob", "alexa":10000, "site":null };
     for (x in myObj) {
@@ -13240,13 +13024,13 @@ x = myObj.sites["site1"];
 **修改值**
 
 - 你可以使用点号<font color=FF0000 size=5>**`.`**</font>来修改 JSON 对象的值
-  
+
   ```js
   myObj.sites.site1 = "www.google.com";
   ```
 
 - 你可以使用中括号<font color=FF0000 size=5>**`[]`**</font>来修改 JSON 对象的值：
-  
+
   ```js
   myObj.sites["site1"] = "www.google.com";
   ```
@@ -13255,14 +13039,14 @@ x = myObj.sites["site1"];
 
 我们可以使用 **delete** 关键字来删除 JSON 对象的属性
 
-- 使用点号<font color=FF0000 size=5>**`.`**</font>
-  
+- 使用点号<font color=FF0000 size=4>**`.`**</font>
+
   ```js
   delete myObj.sites.site1;
   ```
 
-- 使用中括号<font color=FF0000 size=5>**`[]`**</font>
-  
+- 使用中括号<font color=FF0000 size=4>**`[]`**</font>
+
   ```js
   delete myObj.sites["site1"]
   ```
@@ -13315,9 +13099,9 @@ JSON.stringify(value[, replacer[, space]])
 - **value：**<font color=FF0000>必需</font>， 要转换的 JavaScript 值（<font color=FF0000>通常为对象或数组</font>）。
 
 - **replacer：**<font color=FF0000>可选</font>。用于转换结果的函数或数组。
-  
+
   如果 replacer 为<font color=FF0000>函数</font>，则 JSON.stringify 将调用该函数，并传入每个成员的键和值。使用返回值而不是原始值。如果此函数返回 undefined，则排除成员。根对象的键是一个空字符串：""。
-  
+
   如果 replacer 是一个<font color=FF0000>数组</font>，则仅转换该数组中具有键值的成员。成员的转换顺序与键在数组中的顺序一样。当 value 参数也为数组时，将忽略 replacer 数组。
 
 - **space：**<font color=FF0000>可选</font>，文本添加缩进、空格和换行符，如果 space 是一个数字，则返回值文本在每个级别缩进指定数目的空格，如果 space 大于 10，则文本缩进 10 个空格。space 也可以使用非数字，如：\t。
@@ -13352,8 +13136,6 @@ eval() 函数使用的是 JavaScript 编译器，可解析 JSON 文本，然后�
 var obj = eval ("(" + txt + ")");
 ```
 
-
-
 #### JSONP 教程
 
 <font color=FF0000>JSONP ( JSON with Padding )</font> 是 <font color=FF0000>json 的一种"使用模式"</font>，<font color=FF0000>可以让网页从**别的域名**（网站）那获取资料，即跨域读取数据。</font>
@@ -13369,25 +13151,8 @@ var obj = eval ("(" + txt + ")");
 关于 jsonp 使用的示例，可以参考 [[HTML & CSS备忘录#关于 JSONP 的补充]]
 
 
-#### JSX
 
-JSX是Javascript和XML结合的一种格式。React发明了JSX，利用HTML语法来创建虚拟DOM。<mark>当遇到\<，JSX就当HTML解析，遇到{就当JavaScript解析。</mark>
-
-#### JS异步执行的运行机制
-
-1. 所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
-
-2. 主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
-
-3. 一旦"执行栈"中的所有同步任务执行完毕（同步任务执行完毕），系统就会读取"任务队列"，看看里面有哪些事件（看看哪些异步事件执行完毕，是否产生什么结果）。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
-
-4. 主线程不断重复上面的第三步。
-
-***
-
-
-
-## AJAX
+### AJAX
 
 AJAX（Asynchronous JavaScript and XML <font color=FF0000>异步的 JavaScript 和 XML</font>）是一种使用现有标准的新方法，用于创建快速动态网页的技术。
 
@@ -13518,17 +13283,17 @@ xmlhttp.send();
 如<font color=FF0000>需获得来自服务器的响应</font>，<font color=FF0000>请使用 XMLHttpRequest 对象的 responseText 或 responseXML 属性</font>。
 
 - **response<font color=FF0000>Text</font>**：获得<font color=FF0000>字符串</font>形式的响应数据。
-  
+
   如果来自服务器的响应<font color=FF0000>并非 XML</font>，请<font color=FF0000>使用 responseText </font>属性。
-  
+
   responseText 属性返回字符串形式的响应，示例：
-  
+
   ```js
   document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
   ```
 
 - **response<font color=FF0000>XML</font>**：获得 <font color=FF0000>XML</font> 形式的响应数据。
-  
+
   如果来自服务器的响应是 XML，而且需要作为 XML 对象进行解析，请使用 responseXML 属性
 
 #### AJAX - onreadystatechange 事件
@@ -13576,7 +13341,7 @@ XMLHttpRequestEventTarget --|> EventTarget : Inheritance
 
   * <font color=FF0000>只支持文本数据的传送，无法用来读取和上传二进制文件</font>。
   * <font color=FF0000>传送和接收数据时，没有进度信息，只能提示有没有完成。</font>
-　　* <font color=FF0000>受到"同域限制"（Same Origin Policy），只能向同一域名的服务器请求数据</font>。
+  * <font color=FF0000>受到"同域限制"（Same Origin Policy），只能向同一域名的服务器请求数据</font>。
 
 **新版本（Level 2）的XMLHttpRequest对象，针对老版本的缺点，做出了大幅改进。**
 
@@ -13606,7 +13371,7 @@ XMLHttpRequestEventTarget --|> EventTarget : Inheritance
 
     新版XMLHttpRequest对象，不仅可以发送文本信息，还可以上传文件。
 
-　　* <font color=FF0000>**可以请求不同域名下的数据（跨域请求）**</font>
+  * <font color=FF0000>**可以请求不同域名下的数据（跨域请求）**</font>
 
   * <font color=FF0000>**可以获取服务器端的二进制数据**</font>
 
@@ -13678,13 +13443,13 @@ XMLHttpRequestEventTarget --|> EventTarget : Inheritance
       　　}
       }
       ```
-      
+
       **补充：**
-      
+
       XMLHttpRequest 属性 responseType <font color=FF0000>是一个枚举字符串值</font>，<font color=FF0000>用于**指定响应中包含的数据类型**</font>。它还<font color=FF0000>允许更改响应类型</font>。如果<mark>将 responseType 的值设置为空字符串</mark>，则<font color=FF0000>会使用 text 作为默认值</font>。
-      
+
       **可选值**
-      
+
       - **""：**空的 responseType 字符串 <font color=FF0000 size=4>与默认类型 "text" 相同</font>。
       - **"arraybuffer"：**response 是一个包含二进制数据的 JavaScript ArrayBuffer。
       - **"blob"：**response 是一个包含二进制数据的 Blob 对象。
@@ -13692,7 +13457,7 @@ XMLHttpRequestEventTarget --|> EventTarget : Inheritance
       - **"json"：**response 是通过将接收到的数据内容解析为 JSON 而创建的 JavaScript 对象。
       - **"text"：**response 是 <font color=FF0000>DOMString 对象中的文本</font>。
       - **"ms-stream"：**👎 略
-      
+
       以上内容摘自：[MDN - XMLHttpRequest.responseType](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/responseType)
 
   * **可以获得数据传输的进度信息**
@@ -13854,29 +13619,178 @@ ProgressEvent --|> Event : Inheritance
 摘自：[MDN - ProgressEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/ProgressEvent)
 
 #### AbortController
+
 AbortController 接口表示一个控制器对象，<font color=FF0000>允许你根据需要 **中止一个或多个 Web 请求**</font>。
 
 你可以使用 AbortController.AbortController() 构造函数创建一个新的 AbortController。使用 AbortSignal 对象可以完成与 DOM 请求的通信。
 
 - **构造函数**
-  
-   AbortController.AbortController()：创建一个新的 AbortController 对象实例。
-   
+
+  AbortController.AbortController()：创建一个新的 AbortController 对象实例。
+
 - **属性**
-  
-   AbortController.signal <font color=FF0000>只读</font>，返回一个 AbortSignal 对象实例，它可以用来 with/abort 一个 Web(网络)请求。
-   
+
+  AbortController.signal <font color=FF0000>只读</font>，返回一个 AbortSignal 对象实例，它可以用来 with/abort 一个 Web(网络)请求。
+
 - **方法**
-  
-   AbortController.abort()：中止一个尚未完成的 Web（网络）请求。这<font color=FF0000>能够中止 fetch 请求及任何响应体的消费和流</font>。
-   
-   > 当一个请求被终止，它的  readyState 将被置为 XMLHttpRequest.UNSENT (0)，并且请求的 status 置为 0。
-   >
-   > 摘自：[MDN - XMLHttpRequest.abort()](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/abort)
+
+  AbortController.abort()：中止一个尚未完成的 Web（网络）请求。这<font color=FF0000>能够中止 fetch 请求及任何响应体的消费和流</font>。
+
+  > 当一个请求被终止，它的  readyState 将被置为 XMLHttpRequest.UNSENT (0)，并且请求的 status 置为 0。
+  >
+  > 摘自：[MDN - XMLHttpRequest.abort()](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/abort)
 
 摘自：[MDN - AbortController](https://developer.mozilla.org/zh-CN/docs/Web/API/AbortController)，AbortController 的相关作用 在 [[web开发工具#请求已经发出去了，如何取消掉这个已经发出去的请求]] 中有详细说明。
 
 
+
+
+### Worker
+
+#### worker 总述
+
+除了专用 worker 之外，还有一些其他种类的 worker ：
+
+- **Shared Workers** 可被不同的窗体的多个脚本运行，例如 IFrames 等，只要这些 workers 处于同一主域。共享worker 比专用 worker 稍微复杂一点 — 脚本必须通过活动端口进行通讯。
+- **Service Workers** 一般作为web应用程序、浏览器和网络（如果可用）之间的代理服务。他们旨在（除开其他方面）创建有效的离线体验，拦截网络请求，以及根据网络是否可用采取合适的行动，更新驻留在服务器上的资源。他们还将允许访问推送通知和后台同步API。
+- **Chrome Workers** 是一种仅适用于firefox的worker。如果您正在开发附加组件，希望在扩展程序中使用worker且可以访问 js-ctypes，那么可以使用Chrome Workers。
+- **音频 Workers** 可以在网络worker上下文中直接完成脚本化音频处理
+
+摘自：[MDN - Web Workers API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API)
+
+#### web worker
+
+Worker 接口是 Web Workers API 的一部分，指的是一种可由脚本创建的后台任务，任务执行中可以向其创建者收发信息。<font color=FF0000>要创建一个 Worker ，只须调用 Worker( URL ) 构造函数，函数参数 URL 为指定的脚本</font>。
+
+<font color=FF0000>Worker 也可以创建新的 Worker，当然，所有 Worker 必须与其创建者<font size=4>**同源**</font></font>。
+
+需要注意的是，<font color=FF0000>不是所有函数和构造函数（或者说…类）都可以在 Worker 中使用</font>。具体参考页面 [Worker 所支持的函数和类](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API/Functions_and_classes_available_to_workers)。Worker 可以使用 XMLHttpRequest 发送请求，但是请求的 responseXML 与 channel 两个属性值始终返回 null （fetch 仍可正常使用，没有类似的限制）。 
+
+- **构造函数**
+  Worker()：创建一个专用Web worker，它只执行URL指定的脚本。<font color=FF0000> Blob URL 作为参数亦可</font>。
+
+  > 如果 此URL有一个无效的语句，或者违反同源策略，一个 SECURITY_ERR 类型的DOMException被抛出。
+  >
+  > **语法**
+  >
+  > ```js
+  > const myWorker = new Worker(aURL[, options]);
+  > ```
+  >
+  > **参数**
+  >
+  > - **aURL：**是一个DOMString 表示worker 将执行的脚本的URL。它必须遵守同源策略。
+  > - **options：** 可选，包含可在创建对象实例时设置的选项属性的对象。可用属性如下:
+  >   - **type：**用以指定 worker 类型的  DOMString 值. 该值可以是 classic 或 module. 如果未指定，将使用默认值 classic.
+  >   - **credentials：**用以指定 worker 凭证的 DOMString 值.该值可以是 omit, same-origin，或 include.。如果未指定，或者 type 是 classic，将使用默认值 omit (不要求凭证)。
+  >   - **name：**在 DedicatedWorkerGlobalScope 的情况下，用来表示 worker 的 scope 的一个 DOMString 值，主要用于调试目的。
+  >
+  > **异常**
+  >
+  > - 当 document 不被允许启动 worker 的时候，将抛出一个 SecurityError 异常。例如：如果提供的 aURL 有语法错误，或者与同源策略相冲突（跨域访问）。
+  > - 如果 worker 的 MIME 类型不正确，将抛出一个 NetworkError 异常。<font color=FF0000>worker 的 MIME 类型必须是 text/javascript</font>。
+  > - 如果 aURL 无法被解析（格式错误），将抛出一个 SyntaxError 异常。
+  >
+  > 摘自：[MDN - Worker()](https://developer.mozilla.org/zh-CN/docs/Web/API/Worker/Worker)
+
+- **属性：**<font color=FF0000>继承父对象EventTarget 的属性，以及实现对象 AbstractWorker 的属性</font>。
+
+- **事件句柄：**
+  - **AbstractWorker.onerror：**当 ErrorEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用。它继承于 AbstractWorker
+  - **Worker.onmessage：**当 MessageEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用.  例如，一个消息通过 DedicatedWorkerGlobalScope.postMessage，从执行者发送到父页面对象，消息保存在事件对象的 data 属性中.
+  - **Worker.onmessageerror：**当messageerror 类型的事件发生时，对应的 event handler 代码被调用。
+  
+- **方法：**<font color=FF0000>继承父对象EventTarget 的方法，以及实现对象 AbstractWorker 的方法</font>。
+  - **Worker.postMessage()：**<font color=FF0000>发送一条消息到最近的外层对象</font>，消息可由任何 JavaScript 对象组成。
+  
+    > **注：**需要指出的是，要将 Worker.postMessage 和 window.postMessage 区分开；同时，在 Worker 中使用 postMessage，应该都是 Worker.postMessage。
+  
+  - **Worker.terminate()：**<font color=FF0000>立即终止 worker</font>。<mark>该方法不会给 worker 留下任何完成操作的机会；就是简单的立即停止</mark>。Service Woker 不支持这个方法。
+
+摘自：[MDN - Worker](https://developer.mozilla.org/zh-CN/docs/Web/API/Worker)
+
+##### worker上下文对象 补充
+
+在专用workers的情况下，DedicatedWorkerGlobalScope 对象代表了worker的上下文（专用workers是指标准worker仅在单一脚本中被使用；共享worker的上下文是 SharedWorkerGlobalScope对象）。一个专用worker仅仅能被首次生成它的脚本使用，而共享worker可以同时被多个脚本使用。
+
+摘自：[MDN - 使用 Web Workers](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API/Using_web_workers) 由于该文章内容很多，且还有很多细节的东西暂时用不到，所以这里略。
+
+#### service worker
+
+Service workers <font color=FF0000>本质上充当 Web 应用程序、浏览器与网络（可用时）之间的代理服务器</font>（<mark> **注：** 即 Proxy，感觉也可以理解为拦截层？ </mark>）。<font color=FF0000>这个 API 旨在创建有效的离线体验</font>（**注：** 读到这里想到了 PWA，查了下便搜到了这篇文章：[通过 Service workers 让 PWA 离线工作](https://developer.mozilla.org/zh-CN/docs/Web/Progressive_web_apps/Offline_Service_workers) 另外，自己的笔记 [[webpack学习笔记#PWA打包]] 部分也有提及：server work 是 pwa 实现的原理。另外，下面也有对这篇文章做摘抄：[[#service worker 补充]] ），<font color=FF0000>它**会拦截网络请求并根据网络是否可用来采取适当的动作、更新来自服务器的的资源**</font>。它还提供入口以推送通知和访问后台同步 API。
+
+<font size=4>**Service worker 的概念和用法**</font>
+
+Service worker 是一个<font color=FF0000>注册在 **指定源和路径下** 的事件驱动worker</font>。它<font color=FF0000>采用 JavaScript 控制关联的页面或者网站，<font size=4> **拦截并修改访问和资源请求，细粒度地缓存资源** </font> </font>。你<font color=FF0000>可以完全控制应用在特定情形（最常见的情形是网络不可用）下的表现</font>（ **注：** <mark>根据语义，service worker 可以控制“在线和离线”两种情况下的“网络请求和资源获取”</mark>）。
+
+<font color=FF0000>Service worker 运行在worker上下文，因此它<font size=4> 不能访问DOM</font></font>。相对于驱动应用的 主JavaScript线程，它运行在其他线程中，所以不会造成阻塞。<font color=FF0000> **它设计为完全异步** ，同步API（如 XHR 和localStorage ）不能在service worker中使用</font>（**注：**xhr 存在同步模式，虽然默认是异步；但是这样说没有错...）。
+
+<font color=FF0000>**出于安全考量，Service workers 只能由 HTTPS 承载**</font>，毕竟修改网络请求的能力暴露给中间人攻击会非常危险
+
+**注意：**
+
+- Service workers 之所以优于以前同类尝试（如 AppCache ），是因为它们（ **注：** 即 AppCache 之类的同类尝试 ）无法支持当操作出错时终止操作（ **注：** 即 Service worker 可以）。<font color=FF0000>Service workers可以更细致地控制每一件事情</font>。
+- <font color=FF0000> **Service workers 大量使用 Promise** </font>，因为通常它们会等待响应后继续，并根据响应返回一个成功或者失败的操作。Promise 非常适合这种场景。
+
+下面还有 service worker 使用过相关的内容，如：注册、下载、安装和激活 还有相关接口，由于暂时用不到，这里略
+摘自：[MDN - Service Worker API](https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API)
+
+##### service worker 补充
+
+<font color=FF0000>Service Worker 是浏览器和网络之间的虚拟代理</font>。 它们终于解决了前端开发人员多年来一直在努力解决的一些问题，其中最值得关注的是，<font color=FF0000>解决了如何正确缓存网站资源并使其在离线时可用的问题</font>。
+
+<mark>Service Worker 运行在 一个与页面 JavaScript 主线程独立的 线程上（ **注：** 即与 js主线程 无关），并且无权访问 DOM 结构</mark>。这引入了一种与传统 Web 编程不同的方式：它的 API 是非阻塞的，并且可以在不同的上下文之间发送和接收信息。<font color=FF0000>您可分配给 Service Worker 一些任务，并通过 <font size=4>基于 Promise 的方法</font> 在任务完成时收到结果</font>。
+
+它<font color=FF0000>不仅仅提供离线功能，还可以做包括处理通知、在单独的线程上执行繁重的计算等事务</font>。Service workers 非常强大，因为他们可以控制网络请求、修改网络请求、返回缓存的自定义响应，或者合成响应。
+
+**离线优先**
+“离线优先”或“缓存优先”模式是向用户提供内容的最流行策略。如果资源已缓存且可脱机使用，就在尝试从服务器下载资源之前先将其返回；如果它已经不在缓存中，就下载并缓存以备将来使用。
+
+补充内容摘自：[MDN - 通过 Service workers 让 PWA 离线工作](https://developer.mozilla.org/zh-CN/docs/Web/Progressive_web_apps/Offline_Service_workers)
+
+#####  [科普] Service Worker 入门指南 中的补充
+
+// TODO 
+
+文章简要介绍了 Service Worker 的特点，以及生命周期、运行流程、代码逻辑（ 包含：register  install activate  fetch skipWaiting ），以及一些 API，和 应用场景。有时间做一下笔记。
+
+#### SharedWorker
+
+SharedWorker 接口代表一种特定类型的 worker，可以从几个浏览上下文中访问，例如几个窗口、iframe 或其他 worker。它们实现一个不同于普通 worker 的接口，具有不同的全局作用域, SharedWorkerGlobalScope
+
+**注意 ⚠️：**如果要使 SharedWorker 连接到多个不同的页面，这些页面必须是同源的（相同的协议、host 以及端口）。
+
+##### 构造函数
+
+**SharedWorker()：**创建一个执行指定 url 脚本的共享 web worker。
+
+##### 属性
+
+继承自其父类 EventTarget，并实现 AbstractWorker 中的属性 。
+
+- AbstractWorker.onerror：一个 EventListener，当 ErrorEvent 类型的 error 冒泡到 worker 时触发。
+- SharedWorker.port 只读，返回一个 MessagePort 对象，该对象可以用来进行通信和对共享 worker 进行控制。
+
+##### 方法
+
+继承自其父类 EventTarget，并实现 AbstractWorker 中的方法 。
+
+##### 示例：略
+
+摘自：[MDN - SharedWorker](https://developer.mozilla.org/zh-CN/docs/Web/API/SharedWorker)
+
+#### 政采云文章《Web Worker》中的 web worker
+
+内容：讲述了 一般 worker、shared worker、service worker 的功能和使用，浅显易懂。
+
+#### // TODO
+
+摘自：[Web Worker](https://juejin.cn/post/7091068088975622175)
+
+
+
+
+### Canvas
 
 #### CanvasRenderingContext2D
 
@@ -14080,6 +13994,119 @@ void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 - NS_ERROR_NOT_AVAILABLE：图像尚未加载。使用 .complete === true 和 .onload确定何时准备就绪
 
 摘自：[MDN - CanvasRenderingContext2D.drawImage()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/drawImage)
+
+
+
+### 其他补充
+
+#### JSX
+
+JSX 是 Javascript 和 XML 结合的一种格式。React 发明了 JSX ，利用 HTML 语法来创建 虚拟DOM 。<mark>当遇到 `<` ，JSX 就当 HTML 解析，遇到 `{` 就当 JavaScript 解析</mark>。
+
+
+
+#### EMCA TC39
+
+看了下 TC39 的 [GitHub 主页](https://github.com/tc39) ，发现 除了 [ecma262](https://github.com/tc39/ecma262) 之外，还有其他 [ecma402](https://github.com/tc39/ecma402) 之类的项目；便好奇：除了 ecma262，TC39 其他的 ecma项目 在做什么。便搜到了如下内容：
+
+> - **ECMA-262**: 定义了ECMAScript支持的一套关键字，这些关键字标识了ECMAScript语句的开头和结尾，根据规定，关键字是保留的，不能用作变量名或函数名。
+>
+> - **ECMA 402**： 制定一些基于 ECMAScript 5 或者之后版本的一些国际化 API 标准。
+>
+> - **ECMA 404**：JSON 规范。
+>
+> - **ECMA 414**：规定了哪些规范是和 ECMAScript 有关的。目前内部就包含了 262，402和404。
+>
+> 摘自：[ECMAScript（ES）版本介绍](https://www.jianshu.com/p/7dda47907512)
+
+
+
+## 工程设计
+
+#### 对象固化
+
+在框架封装，继承的时候，如果你做好了一个对象给别人使用，为了不让使用者拿过来后任意涂改，比如他把你的对象的一个方法改成了指向另一个函数，或者干脆删除了这个方法，我们需要把这个对象固化。
+
+<mark>在 JavaScript里我们可以在三个层级上固化一个对象</mark>。<font color=FF0000> 从宽到严它们依次是：防止扩展、密封、冻结</font>。
+
+![VnF0SS](https://i.loli.net/2021/08/30/84v2l1ZkMCXO6eg.png)
+
+摘自：[js固化对象](https://zhhlwd.gitee.io/posts/js%E5%9B%BA%E5%8C%96%E5%AF%B9%E8%B1%A1.html)
+
+
+
+
+***
+
+
+## JS 场景实践案例
+
+#### 正则在输入场景的使用
+
+##### 只能输入和粘贴汉字
+
+```html
+<input onkeyup="value=value.replace(/[^\u4E00-\u9FA5]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\u4E00-\u9FA5]/g,''))" /> 
+```
+
+##### 只能输入和粘贴数字
+
+```html
+<input onkeyup="this.value=this.value.replace(/\D/g,'')" 	onafterpaste="this.value=this.value.replace(/\D/g,'')" />
+```
+
+##### 数字脚本
+
+```html
+<input onkeyup="if(/\D/.test(this.value)){alert('只能输入数字');this.value='';}" />
+```
+
+##### 只能输入数字和英文
+
+```html
+<input onkeyup="value=value.replace(/[\W]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))">
+```
+
+##### 简易禁止输入汉字：输入法不转换，但可粘贴上
+
+```html
+<input style="ime-mode:disabled">
+```
+
+##### 输入数字和小数点
+
+```html
+<input onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
+```
+
+##### 只有数字和"-"，例如在输入时间的时候可以用到 
+
+```html
+<input onkeyup="value=value.replace(/[^\w&=]|_/ig,'')" onblur="value=value.replace(/[^\w&-]|_/ig,'')" /> 
+```
+
+摘自：[限制input输入类型(多种方法实现)](https://www.cnblogs.com/eaysun/p/5490603.html)
+
+##### 限制输入框输入的只能是金额（非负，小数点后最多两位，自动纠错）
+
+```js
+onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/\.{2,}/g,'.').replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')"
+```
+
+使用示例如下：
+
+```js
+<el-input       onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.').replace(/\.{2,}/g,'.').replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')" 
+/>
+```
+
+**注意：**该表达式似乎无法限制最后一个字符的输入，需要将结果使用parseFloat处理
+
+##### 限制输入框输入的只能是数量（非负整数）
+
+```js
+onkeyup="value=value.replace(/[^\d]/g,'')"
+```
 
 
 
@@ -14910,7 +14937,3 @@ $.ajax({name:value, name:value, ... })
 `.toggleClass()`
 
 `.data()`
-
-#### Collapse：折叠插件
-
-# //todo
