@@ -3111,7 +3111,7 @@ Promise.resolve().then(f)
 
 ##### 关于如何从 Promise 中取值的补充
 
-打印一个 promise 对象，发现有三个内部属性 \[[Prototype]]、\[[PromiseState]]、\[[PromiseResult]]。其中 \[[PromiseState]] 表示Promise的状态 pending / fulfilled / rejected。\[[PromiseResult]] 表示promise中包含的数据。而js无法访问内部属性，但是可以通过 then 的回掉函数获得：
+打印一个 promise 对象，发现有三个内部属性 \[[Prototype]]、\[[PromiseState]]、\[[PromiseResult]]。其中 \[[PromiseState]] 表示Promise的状态 pending / fulfilled / rejected。\[[PromiseResult]] 表示 promise 中包含的数据。而js无法访问内部属性，但是可以通过 then 的回调函数获得：
 ```js
 const promise = Promise.resolve(1)
 promise.then(console.log)          // 1
@@ -4343,12 +4343,12 @@ bind() 方法<font color=FF0000>创建一个新的函数</font>，<mark>在 bind
 
   **绑定函数具有以下内部属性：**
 
-  - **[[BoundTargetFunction]]：**<font color=FF0000>包装的函数对象</font>
-  - **[[BoundThis]]：**<font color=FF0000>在调用包装函数时始终作为 this 值传递的值</font>
-  - **[[BoundArguments]]：**<font color=FF0000>列表</font>，在对包装函数做任何调用都会优先用列表元素填充参数列表。
-  - **[[Call]]：**<font color=FF0000>执行与此对象关联的代码</font>。通过函数调用表达式调用。内部方法的参数是一个this值和一个包含通过调用表达式传递给函数的参数的列表。
+  - **\[[BoundTargetFunction]]：**<font color=FF0000>包装的函数对象</font>
+  - **\[[BoundThis]]：**<font color=FF0000>在调用包装函数时始终作为 this 值传递的值</font>
+  - **\[[BoundArguments]]：**<font color=FF0000>列表</font>，在对包装函数做任何调用都会优先用列表元素填充参数列表。
+  - **\[[Call]]：**<font color=FF0000>执行与此对象关联的代码</font>。通过函数调用表达式调用。内部方法的参数是一个this值和一个包含通过调用表达式传递给函数的参数的列表。
 
-  <font color=FF0000>当调用绑定函数时，它调用 [[BoundTargetFunction]] 上的内部方法 [[Call]]</font>，就像这样 <font color=FF0000>Call(boundThis, args)</font>。其中，<font color=FF0000>boundThis 是 [[BoundThis]]</font>，<font color=FF0000>args 是 [[BoundArguments]] 加上通过函数调用传入的参数列表</font>。
+  <font color=FF0000>当调用绑定函数时，它调用 \[[BoundTargetFunction]] 上的内部方法 \[[Call]]</font>，就像这样 <font color=FF0000>Call(boundThis, args) </font>。其中，<font color=FF0000>boundThis 是 \[[BoundThis]]</font>，<font color=FF0000>args 是 \[[BoundArguments]] 加上通过函数调用传入的参数列表</font>。
 
   绑定函数也可以使用 new 运算符构造，它会表现为目标函数已经被构建完毕了似的。提供的 this 值会被忽略，但前置参数仍会提供给模拟函数。
 
@@ -4568,7 +4568,7 @@ new 运算符创建一个用户定义的对象类型的实例或具有构造函�
 
 - **参数**
 
-  - **arg1, arg2, ... argN：**被函数使用的参数的名称必须是合法命名的。参数名称是一个有效的JavaScript标识符的字符串，或者一个用逗号分隔的有效字符串的列表;例如“×”，“theValue”，或“a,b”。
+  - **arg1, arg2, ... argN：**被函数使用的参数的名称必须是合法命名的。参数名称是一个有效的JavaScript标识符的字符串，或者一个用逗号分隔的有效字符串的列表；例如 “×”，“theValue”，或 “a,b”。
   - **functionBody：**一个含有包括函数定义的 JavaScript 语句的字符串。
 
 - **描述：**
@@ -4597,9 +4597,9 @@ new Function('a , b', 'return a + b'); // 逗号和空格分隔
 
 #### 内部属性 ( internal property )
 
-ECMA-262定义了内部才用的特性是为了实现JavaScript引擎用的，因此在JS中不能直接访问它们。内部属性的特征是 通过[[]]包裹。
+ECMA-262 定义了内部才用的特性是为了实现 JavaScript 引擎用的，因此在 JS 中不能直接访问它们。内部属性的特征是 通过 \[[]] 包裹。
 
-描述符对象就是一种内部属性，包含数据描述符 和 存取描述符：[[Configurable]] [[Enumerable]] [[writable]] [[value]] [[Get]] [[Set]]
+描述符对象就是一种内部属性，包含数据描述符 和 存取描述符： \[[Configurable]]、\[[Enumerable]]、\[[writable]]、\[[value]]、\[[Get]]、\[[Set]]
 
 摘自：[JS属性-------内部属性（数据属性和访问器属性）](https://blog.csdn.net/baidu_36065997/article/details/79110331)
 
@@ -4607,7 +4607,7 @@ ECMA-262定义了内部才用的特性是为了实现JavaScript引擎用的，�
 
 摘自：[不为人知的javascript的内部属性](https://segmentfault.com/a/1190000012842459)
 
-**内部属性还有：**[[ConstructorKind]] 用于构造器中，[[HomeObject]] 只用于super（方法在内部的 [[HomeObject]] 属性中记住了它们的类/对象。这就是 super 如何解析父方法的）
+**内部属性还有：**\[[ConstructorKind]] 用于构造器中，\[[HomeObject]] 只用于 super（方法在内部的 \[[HomeObject]] 属性中记住了它们的类/对象。这就是 super 如何解析父方法的）
 
 
 
@@ -4651,7 +4651,7 @@ add(); // counter = 3
 
 网页被加载时，浏览器会创建页面的文档对象模型（DOM / Document Object Model）。
 
-**查找 HTML 元素有三种方法**
+##### 查找 HTML 元素有三种方法
 
 - 通过 id 找到 HTML 元素
   
@@ -4678,69 +4678,70 @@ add(); // counter = 3
 <font color=FF0000>Element.classList 是一个只读属性，返回一个元素的类属性的实时 DOMTokenList 集合</font>。
 相比将 element.className 作为以空格分隔的字符串来使用，classList 是一种更方便的访问元素的类列表的方法。
 
-- **语法**
+##### 语法
+
+```js
+const elementClasses = elementNodeReference.classList;
+```
+
+##### 返回值
+
+elementClasses 是一个 DOMTokenList 表示  elementNodeReference 的类属性 。如果类属性未设置或为空，那么 elementClasses.length 返回 0。element.classList 本身是只读的，但是你可以使用 add(className) 和 remove(className) 方法修改它。
+
+- **add(className) /  remove(className)：**甚至其中的add() / remove()可以放多组类值，甚至可以通过使用展开语法添加或移除多个类值。示例如下：
   
   ```js
-  const elementClasses = elementNodeReference.classList;
+  // 添加或移除多个类值
+  div.classList.add("foo", "bar", "baz");
+  div.classList.remove("foo", "bar", "baz");
+  
+  // 使用展开语法添加或移除多个类值
+  const cls = ["foo", "bar"];
+  div.classList.add(...cls);
+  div.classList.remove(...cls);
   ```
 
-- **返回值**
-  elementClasses 是一个 DOMTokenList 表示  elementNodeReference 的类属性 。如果类属性未设置或为空，那么 elementClasses.length 返回 0。<font color=FF0000>element.classList 本身是只读的，但是你可以使用 add(className) 和 remove(className) 方法修改它</font>。
+- **item(index)：**返回元素中索引值对应的类名。索引值从 0 开始。如果索引值在区间范围外则返回 null
+
+- **toggle(className)：**如果该类值已存在，则移除它（并返回 true），否则添加它（并返回 false ）。另外，该函数还可添加触发条件：`toggle(className, conditionExpression)` 若条件满足则添加/ 移除该类值。
   
-  - **add(className) /  remove(className)：**甚至其中的add() / remove()可以放多组类值，甚至可以通过使用展开语法添加或移除多个类值。示例如下：
-    
+  ```js
+  // 如果 visible 类值已存在，则移除它，否则添加它
+  div.classList.toggle("visible");
+  
+  // add/remove visible, depending on test conditional, i less than 10
+  div.classList.toggle("visible", i < 10 );
+  ```
+
+  <font size=4>**补充：**</font>
+  
+  **DOMTokenList.toggle()**
+  
+  DOMTokenList 接口的 toggle() 方法从列表中删除一个给定的标记 并返回 false 。 如果标记 不存在，则添加并且函数返回 true。
+  
+  - **语法**
+  
     ```js
-    // 添加或移除多个类值
-    div.classList.add("foo", "bar", "baz");
-    div.classList.remove("foo", "bar", "baz");
-    
-    // 使用展开语法添加或移除多个类值
-    const cls = ["foo", "bar"];
-    div.classList.add(...cls);
-    div.classList.remove(...cls);
+    tokenList.toggle(token, force);
     ```
   
-  - **item(index)：**返回元素中索引值对应的类名。索引值从 0 开始。如果索引值在区间范围外则返回 null
+  - 参数列表
   
-  - **toggle(className)：**如果该类值已存在，则移除它（并返回true），否则添加它（并返回false）。另外，该函数还可添加触发条件：`toggle(className, conditionExpression)`若条件满足则添加/ 移除该类值。
-    
-    ```js
-    // 如果 visible 类值已存在，则移除它，否则添加它
-    div.classList.toggle("visible");
-    
-    // add/remove visible, depending on test conditional, i less than 10
-    div.classList.toggle("visible", i < 10 );
-    ```
+    - **token：**标记列表中你想探查并切换的 DOMString .
+    - **force：**可选，一个 Boolean 值, 设置后会将方法变成单向操作. 如设置为false, 则会删除标记列表中匹配的给定标记，且不会再度添加. 如设置为 true, 则将在标记列表中添加给定标记，且不会再度删除。
   
-    <font size=4>**补充：**</font>
-    
-    **DOMTokenList.toggle()**
-    
-    DOMTokenList 接口的 toggle() 方法从列表中删除一个给定的标记 并返回 false 。 如果标记 不存在，则添加并且函数返回 true。
-    
-    - **语法**
-    
-      ```js
-      tokenList.toggle(token, force);
-      ```
-    
-    - 参数列表
-    
-      - **token：**标记列表中你想探查并切换的 DOMString .
-      - **force：**可选，一个 Boolean 值, 设置后会将方法变成单向操作. 如设置为false, 则会删除标记列表中匹配的给定标记，且不会再度添加. 如设置为 true, 则将在标记列表中添加给定标记，且不会再度删除。
-    
-    - **返回值：**该方法返回一个Boolean 值 — 如给定标记不存在于列表中返回false , 标记存在则返回true 。
-    
-    摘自：[MDN - DOMTokenList.toggle()](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMTokenList/toggle)
-    
-  - **contains(className)：**判断是否存在该类值
+  - **返回值：**该方法返回一个Boolean 值 — 如给定标记不存在于列表中返回false , 标记存在则返回true 。
   
-  - **replace(replacedClassName, replacingClassName)：**将replacedClassName替换为replacingClassName。
-    
-    ```js
-    // 将类值 "foo" 替换成 "bar"
-    div.classList.replace("foo", "bar");
-    ```
+  摘自：[MDN - DOMTokenList.toggle()](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMTokenList/toggle)
+  
+- **contains(className)：**判断是否存在该类值
+
+- **replace(replacedClassName, replacingClassName)：**将replacedClassName替换为replacingClassName。
+  
+  ```js
+  // 将类值 "foo" 替换成 "bar"
+  div.classList.replace("foo", "bar");
+  ```
 
 摘自：[MDN - Element.classList](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/classList)
 
@@ -4773,9 +4774,7 @@ HTML DOM 允许我们通过触发事件来执行代码。比如以下事件：
 
 ```html
 <!-- 注意：这里onclick中的js代码被引号""包含 -->
-<button type="button" 
-        onclick="document.getElementById('id1').style.color='red'">
-  点我!</button>
+<button type="button" onclick="document.getElementById('id1').style.color='red'">点我!</button>
 ```
 
 与上面代码类似的：引号中的js代码可以被封装成一个函数，而在引号中只调用函数即可。
@@ -4800,25 +4799,28 @@ HTML DOM 允许我们通过触发事件来执行代码。比如以下事件：
 
 CSSStyleDeclaration.getPropertyValue() 接口返回一个 DOMString ，其中包含请求的 CSS 属性的值。
 
-- **语法**
+##### 语法
 
-  ```js
-  var value = style.getPropertyValue(property);
-  ```
+```js
+var value = style.getPropertyValue(property);
+```
 
-- **参数**
-  property 是一个 DOMString，是需要查询的CSS 属性名称。
+##### 参数
 
-- **返回值**
-  value 是 DOMString ，包含查找属性的值。若对应属性没有设置，则返回空字符串。
+property 是一个 DOMString，是需要查询的CSS 属性名称。
 
-- **示例**
-  下述示例使用一个CSS选择器规则查询对应的margin 属性的值：
+##### 返回值
 
-  ```js
-  var declaration = document.styleSheets[0].cssRules[0].style;
-  var value = declaration.getPropertyValue('margin'); // "1px 2px"
-  ```
+value 是 DOMString ，包含查找属性的值。若对应属性没有设置，则返回空字符串。
+
+##### 示例
+
+下述示例使用一个CSS选择器规则查询对应的margin 属性的值：
+
+```js
+var declaration = document.styleSheets[0].cssRules[0].style;
+var value = declaration.getPropertyValue('margin'); // "1px 2px"
+```
 
 摘自：[MDN - CSSStyleDeclaration.getPropertyValue()](https://developer.mozilla.org/zh-CN/docs/Web/API/CSSStyleDeclaration/getPropertyValue)
 
@@ -4828,8 +4830,9 @@ CSSConditionRule 对象表示单个条件 CSS 规则, 由条件和语句块组�
 
 <font color=FF0000>从它派生的两个对象 : CSSMediaRule and CSSSupportsRule</font>.
 
-**语法**
-该语法使用所描述的WebIDL 格式：
+##### 语法
+
+该语法使用所描述的 WebIDL 格式：
 
 ```web-idl
 interface CSSConditionRule : CSSGroupingRule {
@@ -4843,7 +4846,8 @@ interface CSSConditionRule : CSSGroupingRule {
 
 该 CSSSupportsRule <font color=FF0000>**接口**</font> <font color=FF0000>描述了代表一个 CSS 对象 @supports at-rule。它实现了 CSSConditionRule 接口</font>，因此 CSSRule指定规则 和CSSGroupingRule 用一个类型值接口 12 (CSSRule.SUPPORTS\_RULE)。
 
-**语法**
+##### 语法
+
 该语法使用所描述的WebIDL 格式：
 
 ```web-idl
@@ -4856,7 +4860,7 @@ interface CSSSupportsRule : CSSConditionRule {}
 
 CSSMediaRule 是一个<font color=FF0000>表示单个CSS @media 规则的接口。它实现了 CSSConditionRule 接口</font>，因此也是 CSSGroupingRule，也相当于CSSRule中类型值为 4 的规则类型（即CSSRule.MEDIA_RULE）。
 
-**语法**
+##### 语法
 
 下列语法是使用 WebIDL 格式描述的。
 
@@ -4872,40 +4876,43 @@ interface CSSMediaRule : CSSConditionRule {
 
 Window 的 matchMedia() 方法 <font color=FF0000>返回一个新的 MediaQueryList 对象</font>，<font color=FF0000>表示指定的媒体查询字符串解析后的结果</font>。返回的 MediaQueryList 可被用于判定 Document 是否匹配媒体查询，或者监控一个 document 来判定它匹配了或者停止匹配了此媒体查询。
 
-- **语法：**
+##### 语法
 
-  ```js
-  mqList = window.matchMedia(mediaQueryString)
-  ```
+```js
+mqList = window.matchMedia(mediaQueryString)
+```
 
-  - **参数：**
+##### 参数
 
-     **mediaQueryString：**一个被用于媒体查询解析的字符串。
+**mediaQueryString：**一个被用于媒体查询解析的字符串。
 
-  - **返回值：**一个用来媒体查询的新的 MediaQueryList 对象
+##### 返回值
 
-- **使用说明：**
-  您可以使用返回的媒体查询来执行即时检查和事件驱动检查，以查看文档是否与媒体查询匹配。
+一个用来媒体查询的新的 MediaQueryList 对象
 
-  要执行一次瞬时检查以查看文档是否与媒体查询匹配，请查看 matches 属性（注：这里的 matches 属性 应该是 mql 中的。具体参见下面的示例）的值，当 document 满足媒体查询条件的时候将会返回 true。
+##### 使用说明
 
-- **示例：**
+您可以使用返回的媒体查询来执行即时检查和事件驱动检查，以查看文档是否与媒体查询匹配。
 
-  此示例运行媒体查询 (max-width: 600px) 并在 \<span> 中显示 MediaQueryList 的 matches 属性值。如果视口的宽度小于或等于 600像素，则输出将为 true，而如果窗口的宽度大于此宽度，则将输出 false。
+要执行一次瞬时检查以查看文档是否与媒体查询匹配，请查看 matches 属性（注：这里的 matches 属性 应该是 mql 中的。具体参见下面的示例）的值，当 document 满足媒体查询条件的时候将会返回 true。
 
-  JavaScript 代码只需将要匹配的媒体查询字符串传递到 matchMedia() 进行编译，然后设置 \<span> 的 innerText为matches 属性结果的值，以便它表明此 document 在此刻页面加载完成时是否与媒体查询所匹配。
+##### 示例
 
-  ```html
-  <span class="mq-value"></span>
-  <script>
-  	let mql = window.matchMedia('(max-width: 600px)');
-  	document.querySelector(".mq-value").innerText = mql.matches;
-  </script>
-  ```
+此示例运行媒体查询 (max-width: 600px) 并在 \<span> 中显示 MediaQueryList 的 matches 属性值。如果视口的宽度小于或等于 600像素，则输出将为 true，而如果窗口的宽度大于此宽度，则将输出 false。
 
-  **注：**对mql 进行打印，结果如下；可以看出 MediaQueryList 的结构：
+JavaScript 代码只需将要匹配的媒体查询字符串传递到 matchMedia() 进行编译，然后设置 \<span> 的 innerText为matches 属性结果的值，以便它表明此 document 在此刻页面加载完成时是否与媒体查询所匹配。
 
-  ![image-20220212150611427](https://s2.loli.net/2022/02/12/p19cOE83JwjZKnt.png)
+```html
+<span class="mq-value"></span>
+<script>
+	let mql = window.matchMedia('(max-width: 600px)');
+	document.querySelector(".mq-value").innerText = mql.matches;
+</script>
+```
+
+👀 **注：**对 mql 进行打印，结果如下；可以看出 MediaQueryList 的结构：
+
+![image-20220212150611427](https://s2.loli.net/2022/02/12/p19cOE83JwjZKnt.png)
 
 摘自：[MDN - Window.matchMedia()](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/matchMedia)
 
@@ -4928,16 +4935,16 @@ Window 的 matchMedia() 方法 <font color=FF0000>返回一个新的 MediaQueryL
 
 EventTarget.addEventListener() 方法<font color=FF0000>将指定的监听器 <font size=4>**注册到 EventTarget 上**</font></font>，<mark>当该对象触发指定的事件时，指定的回调函数就会被执行</mark>。 <mark>**事件目标可以是一个文档上的元素 Element, Document和Window或者任何其他支持事件的对象 (比如 XMLHttpRequest)**</mark>。
 
-addEventListener()的 <font color=FF0000>**工作原理**是将实现EventListener的函数或对象添加到调用它的EventTarget上的指定事件类型的事件侦听器列表中</font>。
+addEventListener()的 <font color=FF0000>**工作原理**是将实现EventListener的函数或对象添加到调用它的EventTarget上的指定事件类型的事件侦听器列表中</font>
 
-**语法：**
+##### 语法
 
 ```js
 target.addEventListener(type, listener, options);
 target.addEventListener(type, listener, useCapture);
 ```
 
-**参数：**
+##### 参数
 
 - **type：**表示<font color=FF0000>监听事件类型</font>的字符串。
 
@@ -4951,8 +4958,8 @@ target.addEventListener(type, listener, useCapture);
 
 - **useCapture： <font color=FF0000>可选</font>**，Boolean，<font color=FF0000>在DOM树中，**注册了listener的元素， 是否要先于它下面的EventTarget，调用该listener**</font>。 <font color=FF0000 size=4>**当useCapture（设为true）时，沿着DOM树向上冒泡的事件，不会触发listener**</font>。当一个元素嵌套了另一个元素，并且两个元素都对同一事件注册了一个处理函数时，所发生的事件冒泡和事件捕获是两种不同的事件传播方式。事件传播模式决定了元素以哪个顺序接收事件。 **如果没有指定， <font color=FF0000>useCapture 默认为 false</font> **。 
 
+##### 备注
 
-**备注：**
 为什么要使用 addEventListener? addEventListener() 是 W3C DOM 规范中提供的注册事件监听器的方法。它的优点包括：
 
 - 它<font color=FF0000>允许给一个事件注册多个监听器</font>。 特别是在使用AJAX库，JavaScript模块，或其他需要第三方库/插件的代码。
@@ -4963,18 +4970,18 @@ target.addEventListener(type, listener, useCapture);
 
 
 
-**removeEventListener()方法**
+#### removeEventListener()方法
 
 <font color=FF0000>删除使用 EventTarget.addEventListener() 方法添加的事件</font>。使用事件类型，事件侦听器函数本身，以及可能影响匹配过程的各种可选择的选项的组合来标识要删除的事件侦听器。
 
-**语法：**
+##### 语法
 
 ```js
 target.removeEventListener(type, listener[, options]);
 target.removeEventListener(type, listener[, useCapture]);
 ```
 
-**参数**
+##### 参数
 
 - **type：**一个字符串，表示需要移除的事件类型，如 "click"。
 
@@ -4988,13 +4995,13 @@ target.removeEventListener(type, listener[, useCapture]);
 
   如果同一个监听事件分别为“事件捕获”和“事件冒泡”注册了一次，这两次事件需要分别移除。两者不会互相干扰。移除捕获监听器不会影响非捕获版本的相同监听器，反之亦然。
 
-**返回值：**undefined
+##### 返回值：undefined
 
 摘自：[MDN - EventTarget.removeEventListener](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/removeEventListener)
 
+补充：
 
-
-**补充：事件传递有两种方式：冒泡与捕获**
+#### 事件传递有两种方式：冒泡与捕获
 
 事件冒泡和事件捕获分别由微软和网景公司提出，这两个概念都是为了解决页面中事件流（事件发生顺序）的问题。
 
@@ -5013,9 +5020,9 @@ target.removeEventListener(type, listener[, useCapture]);
   
   因此在事件冒泡的概念下在p元素上发生click事件的顺序应该是**`p -> div -> body -> html -> document`**
   
-- **事件捕获：**网景提出另一种事件流名为 事件捕获(event capturing)。与事件冒泡相反，事件会从最外层开始发生，直到最具体的元素。
+- **事件捕获：**网景提出另一种事件流名为 事件捕获 ( event capturing ) 。与事件冒泡相反，事件会从最外层开始发生，直到最具体的元素。
   
-  因此在事件捕获的概念下在p元素上发生click事件的顺序应该是**`document -> html -> body -> div -> p`**
+  因此在事件捕获的概念下在p元素上发生click事件的顺序应该是 **`document -> html -> body -> div -> p`**
 
 摘自：[JS中事件冒泡与捕获](https://segmentfault.com/a/1190000005654451) 具体更多可以参考：[Javascript info -- 冒泡和捕获](https://zh.javascript.info/bubbling-and-capturing)
 
@@ -5059,46 +5066,57 @@ bool = event.defaultPrevented
 
 
 
-####  HTML DOM 元素 (节点)
+####  HTML DOM 元素（节点）
 
-- **appendChild(node)：**创建新的 HTML 元素 (节点)，用于<font color=FF0000>添加新元素到尾部</font>
-  
-  ```js
-  element.appendChild(aChild)
-  ```
-  
-  **参数**
-  
-  - **aChild：**要追加给父节点（通常为一个元素）的节点。
-  - **返回值：**<font color=FF0000>返回追加后的子节点 （aChild）</font>，<mark>除非 aChild 是一个文档片段（DocumentFragment），这种情况下将返回空文档片段（DocumentFragment）</mark>。
-  
-  要创建新的 HTML 元素 (节点)需要先创建一个元素`，然后在已存在的元素中添加它。
-  
-  示例：
-  
-  ```js
-  //创建<p> 元素
-  var para = document.createElement("p");
-  //<p> 元素创建一个新的文本节点
-  var node = document.createTextNode("这是一个新的段落。");
-  //将文本节点添加到 <p> 元素中：
-  para.appendChild(node);
-  
-  var element = document.getElementById("div1");
-  element.appendChild(para);
-  ```
-  
-  **补充：**
-  
-  <mark>如果将被插入的节点已经存在于当前文档的文档树中，那么 appendChild() 只会将它从原先的位置移动到新的位置（不需要事先移除要移动的节点）</mark>。 这意味着，一个节点不可能同时出现在文档的不同位置。所以，如果某个节点已经拥有父节点，在被传递给此方法后，它首先会被移除，再被插入到新的位置。<mark style="background: aqua">若要保留已在文档中的节点，可以先使用  Node.cloneNode() 方法来为它创建一个副本，再将副本附加到目标父节点下。请注意，用 cloneNode 制作的副本不会自动保持同步</mark>。
-  
-  部分摘自：[MDN - Node.appendChild](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/appendChild)
-  
-- **insertBefore(node)：**将新元素添加到开始位置
+##### appendChild(node)
 
-- **removeChild(node)：**移除一个元素
+创建新的 HTML 元素 (节点)，用于<font color=FF0000>添加新元素到尾部</font>
 
-- **replaceChild(node)：**替换一个元素
+```js
+element.appendChild(aChild)
+```
+
+###### 参数
+
+- **aChild：**要追加给父节点（通常为一个元素）的节点。
+
+###### 返回值
+
+<font color=FF0000>返回追加后的子节点  ( aChild )</font>，<mark>除非 aChild 是一个文档片段 ( DocumentFragment ) ，这种情况下将返回空文档片段 ( DocumentFragment )</mark>。
+
+要创建新的 HTML 元素 (节点)需要先创建一个元素，然后在已存在的元素中添加它。
+
+###### 示例
+
+```js
+//创建<p> 元素
+var para = document.createElement("p");
+//<p> 元素创建一个新的文本节点
+var node = document.createTextNode("这是一个新的段落。");
+//将文本节点添加到 <p> 元素中：
+para.appendChild(node);
+
+var element = document.getElementById("div1");
+element.appendChild(para);
+```
+
+###### 补充
+
+<mark>如果将被插入的节点已经存在于当前文档的文档树中，那么 appendChild() 只会将它从原先的位置移动到新的位置（不需要事先移除要移动的节点）</mark>。 这意味着，一个节点不可能同时出现在文档的不同位置。所以，如果某个节点已经拥有父节点，在被传递给此方法后，它首先会被移除，再被插入到新的位置。<mark style="background: aqua">若要保留已在文档中的节点，可以先使用  Node.cloneNode() 方法来为它创建一个副本，再将副本附加到目标父节点下。请注意，用 cloneNode 制作的副本不会自动保持同步</mark>。
+
+部分摘自：[MDN - Node.appendChild](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/appendChild)
+
+##### insertBefore(node)
+
+将新元素添加到开始位置
+
+##### removeChild(node)
+
+移除一个元素
+
+##### replaceChild(node)
+
+替换一个元素
 
 
 
@@ -5126,20 +5144,22 @@ HTMLCollection 看起来可能是一个数组，但其实不是。
 Document的方法 getElementById()返回一个匹配特定 ID的元素。由于<font color=FF0000>元素的 ID 在大部分情况下要求是独一无二的</font>，这个方法自然而然地成为了一个高效查找特定元素的方法。
 <font color=FF0000>如果需要查找到那些没有ID 的元素，你可以考虑通过CSS选择器使用 querySelector()（见下面）。</font>
 
-- **语法**
-  
-  ```js
-  var element = document.getElementById(id);
-  ```
+##### 语法
 
-- **参数**
-  
-  - element是一个 Element 对象。如果当前文档中拥有特定ID的元素不存在则返回null.
-  - <font color=FF0000>id是大小写敏感的字符串</font>，代表了所要查找的元素的唯一ID.
+```js
+var element = document.getElementById(id);
+```
 
-- **返回值**
-  
-  - 返回一个匹配到 ID 的 DOM Element 对象。<font color=FF0000>若在当前 Document 下没有找到，则返回 null</font>。
+##### 参数
+
+- element是一个 Element 对象。如果当前文档中拥有特定ID的元素不存在则返回null.
+- <font color=FF0000>id是大小写敏感的字符串</font>，代表了所要查找的元素的唯一ID.
+
+##### 返回值
+
+返回一个匹配到 ID 的 DOM Element 对象。<font color=FF0000>若在当前 Document 下没有找到，则返回 null</font>。
+
+摘自：[MDN - document.getElementById](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/getElementById)
 
 #### document.getElementsByClassName()
 
@@ -5212,18 +5232,21 @@ var elements = rootElement.getElementsByClassName(names);
   - NodeList 与 HTMLCollection 都与数组对象有点类似，可以使用索引 (0, 1, 2, 3, 4, ...) 来获取元素。
   - NodeList 与 HTMLCollection 都有 length 属性。
 
-#### **补充**：document.querySelector() 和document.querySelectorAll()
+**补充**：
+
+#### document.querySelector() & document.querySelectorAll()
 
 **document.querySelector()**：文档对象模型Document引用的querySelector()方法<font color=FF0000>返回文档中与指定选择器或选择器组匹配的**第一个 HTMLElement对象**</font>。 <font color=FF0000>如果找不到匹配项，则返回null</font>。( 匹配是使用<font color=FF0000>**深度优先先序遍历**</font>，从文档标记中的第一个元素开始，并按子节点的顺序依次遍历。)
 
-**语法：**
+##### 语法
 
 ```js
 element = document.querySelector(selectors);
 ```
 
-**参数：**selectors
-包含一个或多个要匹配的选择器的 DOM字符串DOMString。 <font color=FF0000>该字符串必须是有效的CSS选择器字符串</font>；如果不是，则引发SYNTAX_ERR异常。
+##### 参数
+
+selectors：包含一个或多个要匹配的选择器的 DOM字符串DOMString。 <font color=FF0000>该字符串必须是有效的CSS选择器字符串</font>；如果不是，则引发SYNTAX_ERR 异常。
 
 如果您需要与指定选择器匹配的所有元素的列表，则应该使用querySelectorAll() 。
 
@@ -5262,8 +5285,7 @@ element = document.querySelector(selectors);
   示例：
   
   ```js
-  function person(firstname,lastname,age,eyecolor)
-  {
+  function person(firstname,lastname,age,eyecolor) {
       this.firstname=firstname;
       this.lastname=lastname;
       this.age=age;
@@ -5364,7 +5386,7 @@ Person.prototype.name = function() {
 
 <font size=4>**补充：**</font>
 
-<font color=FF0000>**在ES<font size=5>5</font>**</font>中，类的定义如下：
+<font color=FF0000>**在 ES<font size=5>5</font>**</font> 中，类的定义如下：
 
 ```js
 function Foo(member1, ...) {
@@ -5512,21 +5534,22 @@ isNaN() 方法是 ES5 的方法，实际上是 window.isNaN() 的简写；而在
 
 toString() 方法返回指定 Number 对象的字符串表示形式。
 
-**语法**
+##### 语法
 
 ```js
 numObj.toString([radix])
 ```
 
-**参数**
+##### 参数
 
 - **radix：**<font color=FF0000>指定要用于数字到字符串的转换的基数（从2到36）</font>。如果未指定 radix 参数，则默认值为 10。
 
-**异常信息**
+##### 异常信息
 
 - **RangeError：**<font color=FF0000>如果 toString() 的 radix 参数不在 2 到 36 之间，将会抛出一个 RangeError</font>。
 
-**描述**
+##### 描述
+
 <font color=FF0000>Number 对象覆盖了 Object 对象上的 toString() 方法，它不是继承的 Object.prototype.toString()</font>。对于 Number 对象，toString() 方法以指定的基数返回该对象的字符串表示。
 
 如果转换的基数大于10，则会使用字母来表示大于9的数字，比如基数为16的情况，则使用a到f的字母来表示10到15。
@@ -5674,7 +5697,8 @@ myDate.setDate(myDate.getDate()+5);
 
   第一、第二种：会精确到毫秒；第三种：只能精确到秒，毫秒将用0来代替。比如上面代码输出的结果(一眼就能看出区别)：
 
-  摘自：[js时间戳与日期格式之间的互转](https://segmentfault.com/a/1190000000481753)
+
+摘自：[js时间戳与日期格式之间的互转](https://segmentfault.com/a/1190000000481753)
 
 
 
@@ -5981,18 +6005,18 @@ DOMRectReadOnly 接口 <font color=FF0000>**通过详细列出 DOMRect 所使用
 
 **概述：**调整窗口大小。
 
-**语法：**
+##### 语法
 
 ```js
 window.resizeBy(xDelta, yDelta)
 ```
 
-**参数：**
+##### 参数
 
 - xDelta：为窗口水平方向变化的像素值。
 - yDelta：为窗口垂直方向变化的像素值 。
 
-**示例：**
+##### 示例
 
 ```js
 // 缩小窗口
@@ -6009,7 +6033,7 @@ window.resizeBy(-200, -200);
 
 window.location 对象用于<font color=FF0000>获得当前页面的地址 (URL)</font>，<font color=FF0000>并把浏览器重定向到新的页面</font>。<font color=FF0000>在编写时**可不使用 window 这个前缀**</font>。
 
-**相关属性**
+##### 相关属性
 
 - **location.hostname**     返回 web 主机的域名
 - **location.pathname**    返回当前页面的路径和文件名
@@ -6026,13 +6050,13 @@ window.location 对象用于<font color=FF0000>获得当前页面的地址 (URL)
 
 为了保护用户隐私，对 JavaScript 访问该对象的方法做出了限制。
 
-**相关方法：**
+##### 相关方法
 
 - **history.back()：** 与在浏览器点击后退按钮相同
 - **history.forward()：** 与在浏览器中点击向前按钮相同
 - **history.go()**：载入到会话历史中的某一特定页面， 通过与当前页面相对位置来标志 (当前页面的相对位置标志为0)。
 
-**补充：**
+##### 补充
 
 **HTML5** 引入了 <font color=FF0000>history.pushState()</font> 和 <font color=0000FF>history.replaceState()</font> 方法，它们分别可以<font color=FF0000>添加</font>和<font color=0000FF>修改</font>**历史记录条目**。这些方法通常与window.onpopstate 配合使用。
 
@@ -6071,7 +6095,7 @@ window.navigator 对象<font color=FF0000>包含有关访问者浏览器的信�
 
 #### Navigator.sendBeacon()
 
-navigator.sendBeacon() 方法可用于通过 HTTP POST 将少量数据异步传输到 Web 服务器。它主要用于将统计数据发送到 Web 服务器，同时避免了用传统技术（如：XMLHttpRequest）发送分析数据的一些问题。
+navigator.sendBeacon() 方法<font color=FF0000>可用于通过 HTTP POST 将少量数据异步传输到 Web 服务器</font>。它<font color=FF0000>**主要用于将统计数据发送到 Web 服务器，同时避免了用传统技术**</font>（如：XMLHttpRequest）发送分析数据的一些问题。
 
 ##### 语法
 
@@ -6084,15 +6108,19 @@ navigator.sendBeacon(url[, data]);
 - **url：**url 参数表明 data 将要被发送到的网络地址。
 - **data：**可选，data 参数是将要发送的 ArrayBuffer、ArrayBufferView、Blob、DOMString、FormData 或 URLSearchParams 类型的数据。
 
+##### 返回值
+
+当用户代理成功把数据加入传输队列时，sendBeacon() 方法将会返回 true，否则返回 false
+
 ##### 描述
 
-这个方法 <font color=FF0000>**主要用于满足统计和诊断代码的需要，这些代码通常尝试在卸载 ( unload ) 文档之前向 web 服务器发送数据**</font>。<font color=FF0000>过早的发送数据可能导致错过收集数据的机会</font>。然而，<mark>对于开发者来说保证在文档卸载期间发送数据一直是一个困难</mark>。<mark>因为用户代理通常会忽略在 unload 事件处理器中产生的异步 XMLHttpRequest </mark>。
+这个方法 <font color=FF0000>**主要用于满足 统计 和 诊断代码 的需要，这些代码通常尝试在卸载 ( unload ) 文档之前向 web 服务器发送数据**</font>。<font color=FF0000>过早的发送数据可能导致错过收集数据的机会</font>。然而，<mark>对于开发者来说保证在文档卸载期间发送数据一直是一个困难</mark>。<mark>因为用户代理通常会忽略在 unload 事件处理器中产生的异步 XMLHttpRequest </mark>。
 
 过去，为了解决这个问题， 统计和诊断代码通常要在： 1) 发起一个同步 XMLHttpRequest 来发送数据。2) 创建一个 \<img> 元素并设置 src，大部分用户代理会延迟卸载（unload）文档以加载图像。3) 创建一个几秒的 no-op 循环。
 
-上述的所有方法都会迫使用户代理延迟卸载文档，并使得下一个导航出现的更晚。下一个页面对于这种较差的载入表现无能为力。
+<font color=fuchsia>**上述的所有方法都会迫使用户代理延迟卸载文档，并使得下一个导航出现的更晚**</font>。下一个页面对于这种较差的载入表现无能为力。
 
-<mark>**这就是 sendBeacon() 方法存在的意义**</mark>。<font color=FF0000>使用 sendBeacon() 方法会使用户代理在有机会时异步地向服务器发送数据，同时，**不会延迟页面的卸载或影响下一导航的载入性能**</font>，这意味着：
+<mark style="background: lightskyblue">**这就是 sendBeacon() 方法存在的意义**</mark>。<font color=FF0000>使用 sendBeacon() 方法会使用户代理在有机会时异步地向服务器发送数据，同时，**不会延迟页面的卸载或影响下一导航的载入性能**</font>，这意味着：
 
 - 数据发送是可靠的
 - 数据异步传输
@@ -6100,7 +6128,7 @@ navigator.sendBeacon(url[, data]);
 
 ##### 在会话结束时发送统计数据
 
-网站通常 <font color=FF0000>在用户完成页面浏览后向服务器发送分析或诊断数据</font>，**<font color=FF0000>最可靠的方法是在</font> [visibilitychange](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilitychange_event) <font color=FF0000>事件发生时发送数据</font>**：
+网站通常 <font color=FF0000>在用户完成页面浏览后向服务器发送分析或诊断数据</font>，**<font color=fuchsia>最可靠的方法是在</font> [visibilitychange](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilitychange_event) <font color=fuchsia>事件发生时发送数据</font>**：
 
 ```js
 document.addEventListener('visibilitychange', function logData() {
@@ -6322,104 +6350,106 @@ JavaScript 可以使用<font color=FF0000> **document.cookie** 属性来创建 �
 
 获取并设置与当前文档相关联的 cookie。可以把它当成一个 getter and setter。
 
-- **语法**
+##### 语法
 
-  读取所有可从此位置访问的Cookie
+读取所有可从此位置访问的Cookie
+
+```js
+allCookies = document.cookie;
+```
+
+在上面的代码中，allCookies被赋值为一个字符串，该字符串包含所有的Cookie，<mark>每条cookie以"分号和空格(; )"分隔(即, key=value 键值对)</mark>。
+
+写一个新 cookie
+
+```js
+document.cookie = newCookie;
+```
+
+newCookie是一个键值对形式的字符串。需要注意的是，<font color=FF0000>用这个方法一次只能对一个cookie进行设置或更新</font>。
+
+##### 以下可选的cookie属性值可以跟在键值对后，用来具体化对cookie的设定/更新，使用分号以作分隔：
+
+- **;path=path** (例如 '/', '/mydir') <font color=FF0000>如果没有定义，默认为当前文档位置的路径</font>。
+- **;domain=domain** (例如 'example.com'， 'subdomain.example.com') <font color=FF0000>如果没有定义，默认为当前文档位置的路径的域名部分</font>。与早期规范相反的是，在域名前面加 . 符将会被忽视，因为浏览器也许会拒绝设置这样的cookie。如果指定了一个域，那么子域也包含在内。
+- **;max-age=max-age-in-seconds** (例如一年为60\*60\*24\*365)
+- **;expires=date-in-GMTString-format** <font color=FF0000>如果没有定义，cookie会在对话结束时过期</font>
+- **;secure**<font color=FF0000>** (cookie只通过https协议传输)**</font>
+
+- **cookie的值字符串可以用encodeURIComponent()来保证它不包含任何逗号、分号或空格(cookie值中禁止使用这些值)**
+
+##### Cookie的其他方法
+
+- **写入cookie**
+
+  **语法：**
 
   ```js
-  allCookies = document.cookie;
+  docCookies.setItem(name, value[, end[, path[, domain[, secure]]]])
   ```
 
-  在上面的代码中，allCookies被赋值为一个字符串，该字符串包含所有的Cookie，<mark>每条cookie以"分号和空格(; )"分隔(即, key=value 键值对)</mark>。
+  **描述：**创建或覆盖一个cookie
 
-  写一个新 cookie
+  **参数**
+
+  - **name** (<mark>必要</mark>)：要<font color=FF0000>创建或覆盖的cookie的名字 (string)</font>。
+  - **value** (<mark>必要</mark>)：<font color=FF0000>cookie的值 (string)</font>。
+  - **end** (可选)：最大生命的秒数max-age-in-seconds (一年为31536e3， <font color=FF0000>永不过期的cookie为Infinity</font>) ，或者过期时间的GMTString格式或Date对象; 如果没有定义则会在会话结束时过期 (number – 有限的或 Infinity – string, Date object or null)。
+  - **path** (可选)：例如 '/', '/mydir'。 如果没有定义，默认为当前文档位置的路径。(string or null)。路径必须为绝对路径（参见 RFC 2965）。关于如何在这个参数使用相对路径的方法请参见这段。
+  - **domain** (可选)：例如 'example.com'， '.example.com' (包括所有子域名), 'subdomain.example.com'。如果没有定义，默认为当前文档位置的路径的域名部分 (string或null)。
+  - <font color=FF0000>**secure**</font> (可选)：<font color=FF0000>cookie只会被https传输 (boolean或null)</font>。
+
+- **获得cookie**
+
+  **语法**
 
   ```js
-  document.cookie = newCookie;
+  docCookies.getItem(name)
   ```
 
-  newCookie是一个键值对形式的字符串。需要注意的是，<font color=FF0000>用这个方法一次只能对一个cookie进行设置或更新</font>。
+  **描述：**读取一个cookie。<font color=FF0000>如果cookie不存在返回null</font>。
 
-  - **以下可选的cookie属性值可以跟在键值对后，用来具体化对cookie的设定/更新，使用分号以作分隔**：
-    - **;path=path** (例如 '/', '/mydir') <font color=FF0000>如果没有定义，默认为当前文档位置的路径</font>。
-    - **;domain=domain** (例如 'example.com'， 'subdomain.example.com') <font color=FF0000>如果没有定义，默认为当前文档位置的路径的域名部分</font>。与早期规范相反的是，在域名前面加 . 符将会被忽视，因为浏览器也许会拒绝设置这样的cookie。如果指定了一个域，那么子域也包含在内。
-    - **;max-age=max-age-in-seconds** (例如一年为60\*60\*24\*365)
-    - **;expires=date-in-GMTString-format** <font color=FF0000>如果没有定义，cookie会在对话结束时过期</font>
-    - **;secure**<font color=FF0000>** (cookie只通过https协议传输)**</font>
-  - **cookie的值字符串可以用encodeURIComponent()来保证它不包含任何逗号、分号或空格(cookie值中禁止使用这些值)**
+  **参数**
 
-- **Cookie的其他方法**
+  - name：读取的cookie名 (string).
 
-  - **写入cookie**
+- **移除cookie**
 
-    **语法：**
+  **语法：**
 
-    ```js
-    docCookies.setItem(name, value[, end[, path[, domain[, secure]]]])
-    ```
+  ```js
+  docCookies.removeItem(name[, path],domain)
+  ```
 
-    **描述：**创建或覆盖一个cookie
+  **描述：**删除一个cookie。
 
-    **参数**
+  **参数**
 
-    - **name** (<mark>必要</mark>)：要<font color=FF0000>创建或覆盖的cookie的名字 (string)</font>。
-    - **value** (<mark>必要</mark>)：<font color=FF0000>cookie的值 (string)</font>。
-    - **end** (可选)：最大生命的秒数max-age-in-seconds (一年为31536e3， <font color=FF0000>永不过期的cookie为Infinity</font>) ，或者过期时间的GMTString格式或Date对象; 如果没有定义则会在会话结束时过期 (number – 有限的或 Infinity – string, Date object or null)。
-    - **path** (可选)：例如 '/', '/mydir'。 如果没有定义，默认为当前文档位置的路径。(string or null)。路径必须为绝对路径（参见 RFC 2965）。关于如何在这个参数使用相对路径的方法请参见这段。
-    - **domain** (可选)：例如 'example.com'， '.example.com' (包括所有子域名), 'subdomain.example.com'。如果没有定义，默认为当前文档位置的路径的域名部分 (string或null)。
-    - <font color=FF0000>**secure**</font> (可选)：<font color=FF0000>cookie只会被https传输 (boolean或null)</font>。
+  - **name：**要移除的cookie名(string).
+  - **path** (可选)：例如 '/', '/mydir'。 <mark>如果没有定义，默认为当前文档位置的路径</mark>。(string or null)。路径必须为绝对路径（参见 RFC 2965）。关于如何在这个参数使用相对路径的方法请参见这段。
+  - domain (可选)：例如 'example.com'， '.example.com' (包括所有子域名), 'subdomain.example.com'。<mark>如果没有定义，默认为当前文档位置的路径的域名部分</mark> (string或null)。
 
-  - **获得cookie**
+- **检测cookie**
+  **语法**
 
-    **语法**
+  ```js
+  docCookies.hasItem(name)
+  ```
 
-    ```js
-    docCookies.getItem(name)
-    ```
+  **描述：**检查一个cookie是否存在
 
-    **描述：**读取一个cookie。<font color=FF0000>如果cookie不存在返回null</font>。
+  **参数**
 
-    **参数**
+  - **name：**要检查的cookie名 (string).
 
-    - name：读取的cookie名 (string).
+- **获得所有cookie的列表**
+  **语法**
 
-  - **移除cookie**
+  ```js
+  docCookies.keys()
+  ```
 
-    **语法：**
-
-    ```js
-    docCookies.removeItem(name[, path],domain)
-    ```
-
-    **描述：**删除一个cookie。
-
-    **参数**
-
-    - **name：**要移除的cookie名(string).
-    - **path** (可选)：例如 '/', '/mydir'。 <mark>如果没有定义，默认为当前文档位置的路径</mark>。(string or null)。路径必须为绝对路径（参见 RFC 2965）。关于如何在这个参数使用相对路径的方法请参见这段。
-    - domain (可选)：例如 'example.com'， '.example.com' (包括所有子域名), 'subdomain.example.com'。<mark>如果没有定义，默认为当前文档位置的路径的域名部分</mark> (string或null)。
-
-  - **检测cookie**
-    **语法**
-
-    ```js
-    docCookies.hasItem(name)
-    ```
-
-    **描述：**检查一个cookie是否存在
-
-    **参数**
-
-    - **name：**要检查的cookie名 (string).
-
-  - **获得所有cookie的列表**
-    **语法**
-
-    ```js
-    docCookies.keys()
-    ```
-
-    **描述：**<font color=FF0000>返回一个这个路径所有可读的cookie的数组</font>。
+  **描述：**<font color=FF0000>返回一个这个路径所有可读的cookie的数组</font>。
 
 摘自：[MDN - Document.cookie](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/cookie)
 
@@ -6589,15 +6619,15 @@ JavaScript 在需要用到布尔类型值的上下文中使用强制类型转换
 
 **在 JavaScript 中只有 8 个 falsy 值。**
 
-| false      | false 关键字                                                                                                                                                                  |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0          | 数值 zero                                                                                                                                                                    |
-| -0         | 数值 负 zero                                                                                                                                                                  |
-| 0n         | 当 BigInt作为布尔值使用时, 遵从其作为数值的规则. 0n 是 falsy 值                                                                                                                            |
-| "", '', `` |这是一个空字符串 (字符串的长度为零)。 JavaScript 中的字符串可用双引号 "", 单引号 '', 或 模板字面量``定义。|
-| null       | null - 缺少值                                                                                                                                                                 |
-| undefined  | undefined - 原始值                                                                                                                                                            |
-| NaN        | NaN - 非数值                                                                                                                                                                  |
+| false      | false 关键字                                                 |
+| ---------- | ------------------------------------------------------------ |
+| 0          | 数值 zero                                                    |
+| -0         | 数值 负 zero                                                 |
+| 0n         | 当 BigInt作为布尔值使用时, 遵从其作为数值的规则. 0n 是 falsy 值 |
+| "", '', `` | 这是一个空字符串 (字符串的长度为零)。 JavaScript 中的字符串可用双引号 "", 单引号 '', 或 模板字面量``定义。 |
+| null       | null - 缺少值                                                |
+| undefined  | undefined - 原始值                                           |
+| NaN        | NaN - 非数值                                                 |
 
 摘自：[MDN官方文档 - Falsy](https://developer.mozilla.org/zh-CN/docs/Glossary/Falsy)
 
@@ -6626,13 +6656,15 @@ let windowObjectReference = window.open(strUrl, strWindowName, [strWindowFeature
 
 返回打开当前窗口的那个窗口的引用，例如：在window A中打开了window B，B.opener 返回 A.
 
-- **语法**
+##### 语法
 
-  ```js
-  var objRef = window.opener;
-  ```
+```js
+var objRef = window.opener;
+```
 
-- **备注：**<mark>如果当前窗口是由另一个窗口打开的，window.opener保留了那个窗口的引用</mark>。<font color=FF0000>如果当前窗口不是由其他窗口打开的, 则该属性返回 null.</font>
+##### 备注
+
+<mark>如果当前窗口是由另一个窗口打开的，window.opener保留了那个窗口的引用</mark>。<font color=FF0000>如果当前窗口不是由其他窗口打开的, 则该属性返回 null.</font>
 
 摘自：[MDN - window.opener](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/opener)
 
@@ -6720,14 +6752,15 @@ frameList = window.frames;
 
 #### window.location.reload()
 
-- **语法：**
-  
-  ```javascript
-  object.reload(forcedReload);
-  ```
+##### 语法
 
-- **参数：**
-  forcedReload 可选，该参数要求为 布尔 类型，当取值为 true 时，将强制浏览器从服务器重新获取当前页面资源，而不是从浏览器的缓存中读取，如果取值为 false 或不传该参数时，浏览器则可能会从缓存中读取当前页面。
+```javascript
+object.reload(forcedReload);
+```
+
+##### 参数：
+
+forcedReload 可选，该参数要求为 布尔 类型，当取值为 true 时，将强制浏览器从服务器重新获取当前页面资源，而不是从浏览器的缓存中读取，如果取值为 false 或不传该参数时，浏览器则可能会从缓存中读取当前页面。
 
 摘自：[MDN web docs - Location.reload()](https://developer.mozilla.org/zh-CN/docs/Web/API/Location/reload)
 
@@ -6747,18 +6780,16 @@ frameList = window.frames;
 
   <img src="https://s1.ax1x.com/2020/07/29/aZhJQf.png" style="zoom:50%;" />
 
-  **补充：**
-
   语法：
 
   ```js
   result = window.prompt(text, value);
   ```
-
+  
   - **result：** 用来<font color=FF0000>存储用户输入文字的字符串</font>，或者是 null。
   - **text：** 用来<font color=FF0000>提示用户输入文字的字符串</font>，如果没有任何提示内容，该参数<font color=FF0000>可以省略不写</font>。
   - **value：** 文本输入框中的<font color=FF0000>默认值</font>，该参数也<font color=FF0000>可以省略不写</font>。不过在 Internet Explorer 7 和 8 中，省略该参数会导致输入框中显示默认值"undefined"。
-
+  
   摘自：[MDN - window.prompt](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/prompt)
 
 摘自：[**JS alert()、confirm()、prompt()的区别**](https://www.imooc.com/article/6751)
@@ -6818,7 +6849,7 @@ console.log("This is %cMy stylish message", "color: yellow; font-style: italic; 
 
 指令前的文本不会受到影响，但指令后的文本将会使用参数中声明的 CSS 样式。
 
-![img](https://mdn.mozillademos.org/files/12527/CSS-styling.png)
+![img](https://s2.loli.net/2022/07/14/fJ1diR4SgjnavhD.png)
 
 %c 语法可用的属性如下 (至少在 Firefox 中是这样，别的浏览器会有诸多不同)：
 
@@ -6855,14 +6886,17 @@ console.log("This is %cMy stylish message", "color: yellow; font-style: italic; 
 
 如果你想要操作一个域名的会话存储，可以使用 Window.sessionStorage；如果想要操作一个域名的本地存储，可以使用 Window.localStorage。
 
-- 属性
-  - **Storage.length：** 只读，返回一个整数，表示存储在 Storage 对象中的数据项数量。
-- **方法**
-  - **Storage.key()：**该方法接受一个数值 n 作为参数，并返回存储中的第 n 个键名。
-  - **Storage.getItem()：**该方法接受一个键名作为参数，返回键名对应的值。
-  - **Storage.setItem()：**该方法接受一个键名和值作为参数，将会把键值对添加到存储中，如果键名存在，则更新其对应的值。
-  - **Storage.removeItem()：**该方法接受一个键名作为参数，并把该键名从存储中删除。
-  - **Storage.clear()：**<font color=FF0000>调用该方法会清空存储中的所有键名</font>。
+##### 属性
+
+- **Storage.length：** 只读，返回一个整数，表示存储在 Storage 对象中的数据项数量。
+
+##### 方法
+
+- **Storage.key()：**该方法接受一个数值 n 作为参数，并返回存储中的第 n 个键名。
+- **Storage.getItem()：**该方法接受一个键名作为参数，返回键名对应的值。
+- **Storage.setItem()：**该方法接受一个键名和值作为参数，将会把键值对添加到存储中，如果键名存在，则更新其对应的值。
+- **Storage.removeItem()：**该方法接受一个键名作为参数，并把该键名从存储中删除。
+- **Storage.clear()：**<font color=FF0000>调用该方法会清空存储中的所有键名</font>。
 
 摘自：[MDN web docs - Storage](https://developer.mozilla.org/zh-CN/docs/Web/API/Storage)
 
@@ -7000,8 +7034,8 @@ element.setAttribute(name, value);
 
 **参数**
 
-- name：表示属性名称的字符串。A DOMString specifying the name of the attribute whose value is to be set. The attribute name is automatically converted to all lower-case when setAttribute() is called on an HTML element in an HTML document.
-- value：属性的值/新值。A DOMString 包含了分配给这个属性的值. 任何非字符串的值都会被自动转换为字符串
+- **name**：表示属性名称的字符串。A DOMString specifying the name of the attribute whose value is to be set. The attribute name is automatically converted to all lower-case when setAttribute() is called on an HTML element in an HTML document.
+- **value**：属性的值/新值。A DOMString 包含了分配给这个属性的值. 任何非字符串的值都会被自动转换为字符串
 
 摘自：[MDN - Element.setAttribute()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/setAttribute)
 
@@ -7017,10 +7051,23 @@ element.removeAttribute(attrName);
 
 **参数**
 
-- **属性名：**DOMString指定要从元素中移除的属性的名称。如果指定的属性不存在，则removeAttribute()返回，但不会生成错误。
-- **返回值：**IE 返回boolean类型值，其他返回undefined
+- **属性名：**DOMString 指定要从元素中移除的属性的名称。如果指定的属性不存在，则 removeAttribute() 返回，但不会生成错误
+
+**返回值：**IE 返回 boolean 类型值，其他返回 undefined
 
 摘自：[MDN - Element.removeAttribute()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/removeAttribute)
+
+#### Element.attributes
+
+Element.attributes 属性返回该元素所有属性节点的一个实时集合。该集合是一个 **NamedNodeMap 对象**，不是一个数组，所以它没有 数组 的方法，其包含的 属性 节点的索引顺序随浏览器不同而不同。更确切地说，attributes 是字符串形式的键值对，每一对键值对对应一个属性节点。
+
+##### 语法
+
+```
+var attr = element.attributes;
+```
+
+摘自：[MDN - Element.attributes](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/attributes)
 
 
 
@@ -7028,7 +7075,7 @@ element.removeAttribute(attrName);
 
 返回当前节点的父元素节点，如果该元素没有父节点，或者父节点不是一个 DOM 元素，则返回 null。
 
-语法
+##### 语法
 
 ```js
 parentElement = node.parentElement
@@ -7159,15 +7206,17 @@ someOtherNode.textContent = string;
 
 #### EventTarget / Node / Element 
 
-**EventTarget**
+##### EventTarget
 
 EventTarget 是一个 DOM 接口，由可以接收事件、并且可以创建侦听器的对象实现。
 
 Element，document 和 window 是最常见的 event targets ，但是其他对象也可以作为 event targets，比如 XMLHttpRequest，AudioNode，AudioContext  等等。
 
-**构造函数**
+##### 构造函数
+
 **EventTarget()：**创建一个新的 EventTarget 对象实例。
-**方法**
+
+##### 方法
 
 - **EventTarget.addEventListener()：**在EventTarget上注册特定事件类型的事件处理程序。
 - **EventTarget.removeEventListener()：**EventTarget中删除事件侦听器。
@@ -7222,6 +7271,96 @@ HTMLElement 接口表示所有的 HTML 元素。一些HTML元素直接实现了H
 - ……最后，它继承自 Object，因为像 hasOwnProperty 这样的“普通对象”方法也是可用的。
 
 摘自：[现代JavaScript教程 - 节点属性：type，tag 和 content](https://zh.javascript.info/basic-dom-node-properties)
+
+
+
+
+
+#### HTMLInputElement.setSelectionRange()
+
+HTMLInputElement.setSelectionRange 方法<font color=FF0000>用于设定 \<input> 或 \<textarea> 元素中当前选中文本的起始和结束位置</font>。
+
+<mark style="background: lightskyblue">**在较新的浏览器中**</mark>，你<font color=FF0000>可以通过一个可选的 selectionDirection 来指定文本选中的方向</font>。比如通过点击和拖动从结束位置往起始位置选中一个字符串。
+
+每次调用这个这个方法都会更新 HTMLInputElement 的 <font size=4>**selectionStart**</font>，<font size=4>**selectionEnd**</font> 和 selectionDirection 属性。
+
+要注意的是，在 [WHATWG forms spec](https://html.spec.whatwg.org/multipage/forms.html#concept-input-apply) 中，`selectionStart` , `selectionEnd` 属性和 `setSelectionRange` 方法只能应用于类型为文本、搜索、链接、电话号码和密码的输入。Chrome 从版本 33 开始会在访问其余类型的这些属性和方法时抛出异常。例如，输入类型为数字时会抛出：“不能从'HTMLInputElement'中读取'selectionStart'属性：输入元素的类型('number')不支持选择（Failed to read the 'selectionStart' property from 'HTMLInputElement': The input element's type ('number') does not support selection）”。
+
+如果你希望**全选**输入元素中的文本，你可以使用 [HTMLInputElement.select()](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLInputElement/select) 方法。
+
+##### 语法
+
+```js
+element.setSelectionRange(selectionStart, selectionEnd [, selectionDirection]);
+```
+
+##### 参数
+
+如果 selectionEnd 小于 selectionStart，则二者都会被看作 selectionEnd。
+
+- **selectionStart**：被选中的第一个字符的位置索引，从0开始。如果这个值比元素的 `value` 长度还大，则会被看作 `value` 最后一个位置的索引。
+
+- **selectionEnd**：被选中的最后一个字符的 *下一个* 位置索引。如果这个值比元素的value长度还大，则会被看作value最后一个位置的索引。
+
+- **selectionDirection**：可选，一个表示选择方向的字符串，可能的值有：
+
+  - "forward"
+
+  - "backward"
+
+  - "none"。默认值，表示方向未知或不相关。
+
+##### 示例
+
+在这个示例中，按下按钮以选择文本框中第三、四、五个字符（即“Mozilla”中的“zil”）。
+
+```html
+<input type="text" id="text-box" size="20" value="Mozilla">
+<button onclick="selectText()">Select text</button>
+
+<script>
+function selectText() {
+  const input = document.getElementById('text-box');
+  input.focus(); // 👀 注：没有这个，不生效
+  input.setSelectionRange(2, 5);
+}
+</script>
+```
+
+摘自：[MDN - HTMLInputElement.setSelectionRange()](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLInputElement/setSelectionRange)
+
+#### 表单控件中的选择
+
+诸如 input 和 textarea 等表单元素提供了 [专用的选择 API](https://html.spec.whatwg.org/#textFieldSelection)，没有 Selection 或 Range 对象。由于输入值是纯文本而不是 HTML，因此不需要此类对象，一切都变得更加简单。
+
+##### 属性
+
+- **input.selectionStart**：选择的起始位置（可写）
+- **input.selectionEnd**：选择的结束位置（可写）
+- **input.selectionDirection**：选择方向，其中之一：“forward”，“backward” 或 “none”（例如使用鼠标双击进行的选择）
+
+##### 事件
+
+- **input.onselect**：当某个东西被选择时触发。
+
+##### 方法
+
+- **input.select()** ：选择文本控件中的所有内容（可以是 textarea 而不是 input），
+
+- **input.setSelectionRange(start, end, [direction])** ：在给定方向上（可选），从 start 一直选择到 end。
+
+- **input.setRangeText(replacement, [start], [end], [selectionMode])** ：用新文本替换范围中的文本。
+
+  可选参数 start 和 end，如果提供的话，则设置范围的起点和终点，否则使用用户的选择。
+
+  最后一个参数 selectionMode 决定替换文本后如何设置选择。可能的值为：
+
+  - **"select"**：将选择新插入的文本。
+  - **"start"** ：选择范围将在插入的文本之前折叠（光标将在其之前）。
+  - **"end"** ：选择范围将在插入的文本之后折叠（光标将紧随其后）。
+  - **"preserve"** ：尝试保留选择。这是默认值
+
+摘自：[《现代JS教程》- 选择（Selection）和范围（Range）- 表单控件中的选择](https://zh.javascript.info/selection-range#biao-dan-kong-jian-zhong-de-xuan-ze)
 
 
 
@@ -7289,19 +7428,19 @@ observer.disconnect();
 
 <font color=FF0000>DOM 规范中的 MutationObserver() 构造函数</font>——是 MutationObserver 接口内容的一部分——<font color=FF0000>**创建并返回一个新的观察器**</font>，它会在触发指定 DOM 事件时，调用指定的回调函数。<mark>MutationObserver 对 DOM 的观察不会立即启动；而必须先调用 observe() 方法来确定，要监听哪一部分的 DOM 以及要响应哪些更改</mark>。
 
-- **语法**
+##### 语法
 
-  ```js
-  var observer = new MutationObserver(callback);
-  ```
+```js
+var observer = new MutationObserver(callback);
+```
 
-- **参数**
+##### 参数
 
-  - **callback：**一个回调函数，<font color=FF0000>每当被指定的节点或子树以及配置项有Dom变动时会被调用</font>。<font color=FF0000>**回调函数拥有两个参数**</font>：一个是<font color=FF0000>**描述所有被触发改动的 MutationRecord 对象数组**</font>，另一个是<font color=FF0000>**调用该函数的MutationObserver 对象**</font>。
+**callback：**一个回调函数，<font color=FF0000>每当被指定的节点或子树以及配置项有Dom变动时会被调用</font>。<font color=FF0000>**回调函数拥有两个参数**</font>：一个是<font color=FF0000>**描述所有被触发改动的 MutationRecord 对象数组**</font>，另一个是<font color=FF0000>**调用该函数的MutationObserver 对象**</font>。
 
-- **返回值：**一个新的、包含监听 DOM 变化回调函数的 MutationObserver 对象。
+**返回值：**一个新的、包含监听 DOM 变化回调函数的 MutationObserver 对象。
 
-MutationObserver()的具体示例：可以看上面的MutationObserver中的使用示例
+MutationObserver() 的具体示例：可以看上面的MutationObserver中的使用示例
 
 摘自：[MDN - MutationObserver.MutationObserver()](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver/MutationObserver)
 
@@ -7309,25 +7448,26 @@ MutationObserver()的具体示例：可以看上面的MutationObserver中的使�
 
 MutationObserver的 observe() 方法<font color=FF0000>**配置**</font>了 MutationObserver 对象的回调方法以开始接收与给定选项匹配的DOM变化的通知。根据配置，观察者会观察 DOM 树中的单个 Node，也可能会观察被指定节点的部分或者所有的子孙节点。
 
-- **语法**
+##### 语法
 
-  ```js
-  mutationObserver.observe(target[, options])
-  ```
+```js
+mutationObserver.observe(target[, options])
+```
 
-- **参数**
+##### 参数
 
-  - **target：**<font color=FF0000>DOM树中的一个要观察变化的DOM Node</font> (可能是一个Element) , 或者是被观察的子节点树的根节点。
-  - **options：**<font color=FF0000>**可选**</font>，<font color=FF0000>一个可选的**MutationObserverInit** 对象</font>（<font size=4>**详见下面**</font>），此对象的配置项描述了DOM的哪些变化应该提供给当前观察者的callback。
+- **target：**<font color=FF0000>DOM树中的一个要观察变化的DOM Node</font> (可能是一个Element) , 或者是被观察的子节点树的根节点。
+- **options：**<font color=FF0000>**可选**</font>，<font color=FF0000>一个可选的**MutationObserverInit** 对象</font>（<font size=4>**详见下面**</font>），此对象的配置项描述了DOM的哪些变化应该提供给当前观察者的callback。
 
-- **返回值：**undefined。
+**返回值：**undefined。
 
-- **异常**
+##### 异常
 
-  - **TypeError：**以下任一情况都会抛出异常:
-    - **配置选项使得实际上不会监视任何内容**（例如，如果 MutationObserverInit.childList，MutationObserverInit.attributes 和 MutationObserverInit.characterData 都为 false）。
-    - attributes 选项为 false（表示不监视属性更改）但是attributeOldValue 为 true 并且/或者 attributeFilter 配置存在。
-    - characterDataOldValue 选项为 true 但是 MutationObserverInit.characterData 为 false（表示不跟踪字符更改）。
+**TypeError：**以下任一情况都会抛出异常:
+
+- **配置选项使得实际上不会监视任何内容**（例如，如果 MutationObserverInit.childList，MutationObserverInit.attributes 和 MutationObserverInit.characterData 都为 false）。
+- attributes 选项为 false（表示不监视属性更改）但是attributeOldValue 为 true 并且/或者 attributeFilter 配置存在。
+- characterDataOldValue 选项为 true 但是 MutationObserverInit.characterData 为 false（表示不跟踪字符更改）。
 
 摘自：[MDN - MutationObserver.observe()](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver/observe)
 
@@ -7335,7 +7475,9 @@ MutationObserver的 observe() 方法<font color=FF0000>**配置**</font>了 Muta
 
 MutationObserverInit 字典描述了 MutationObserver 的配置。因此，它主要被用作 MutationObserver.observe() 方法的参数类型。
 
-**属性**：当调用 observe() 方法时，**<font color=FF0000 size=4>childList，attributes 或者 characterData 三个属性之中，至少有一个必须为 true</font>，否则会抛出 TypeError 异常**。
+##### 属性
+
+当调用 observe() 方法时，**<font color=FF0000 size=4>childList，attributes 或者 characterData 三个属性之中，至少有一个必须为 true</font>，否则会抛出 TypeError 异常**。
 
 - **attributeFilter：可选**，<font color=FF0000>要监视的特定属性名称的数组</font>。<mark>如果未包含此属性，则对所有属性的更改都会触发变动通知</mark>。<font color=FF0000>无默认值</font>。
 
@@ -8118,7 +8260,7 @@ The ReportingObserver interface of the Reporting API <font color=FF0000>allows y
 
 对于JS中的基本数据类型，如 String、Number、Boolean、Undefined、Null 是存在于栈内存中的，在栈内存中储存变量名及相应的值。而Object、Array、Function 存在于堆内存中，在堆内存中储存变量名及引用位置。
 
-> **注：**这部分的内容可以参考 [[JS 机制与原理#JS 中变量的存储]] 以及 [[JS 机制与原理#常见垃圾回收算法与 JavaScript 中垃圾回收原理#JavaScript 垃圾回收]] 中的相关内容。
+> 👀 **注：**这部分的内容可以参考 [[JS 机制与原理#JS 中变量的存储]] 以及 [[JS 机制与原理#常见垃圾回收算法与 JavaScript 中垃圾回收原理#JavaScript 垃圾回收]] 中的相关内容。
 
 
 
@@ -8266,70 +8408,73 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 
 <font color=FF0000>**如果浏览器尚不支持URL()构造函数**</font>，则可以使用Window中的<font color=FF0000>Window.URL</font>属性。 确保检查您的任何目标浏览器是否要求对此添加前缀。
 
-- **构造器**
-  **new URL()：**创建并返回一个URL对象，该URL对象引用使用绝对URL字符串，相对URL字符串和基本URL字符串指定的URL。
-  
-- **属性**
-  - **hash：**<font color=FF0000>包含'#'的USVString</font>，后跟URL的片段标识符。
-  - **host：**一个USVString，其中包含域（即主机名），后跟（如果指定了端口）“：”和URL的端口。
-  - **hostname：**包含 URL 域名的 USVString。
-  - **href：**包含完整 URL 的 USVString。
-  - **origin：**只读，<mark>返回一个包含协议名、域名和端口号</mark>的 USVString。
-  - **password：**包含在域名前面指定的密码的  USVString 。
-  - **pathname：**以 '/' 起头紧跟着 URL 文件路径的 DOMString。
-  - **port：**<mark>包含 URL 端口号的 USVString</mark>。
-  - **protocol：**包含 URL 协议名的 USVString，<font color=FF0000>末尾带 ':'</font>。
-  - **search：**一个USVString ，指示URL的参数字符串； 如果提供了任何参数，则<font color=FF0000>此字符串包括所有参数，并**以开头的“？”开头 字符**</font>
-  - <font color=FF0000>**searchParams：**</font>只读，
-    - <font color=FF0000>**URLSearchParams：**</font>对象，可用于访问search中找到的各个查询参数。
-  - **username：**包含在域名前面指定的用户名的 USVString。
-  
-- **方法**
-  - **toString()：**返回包含整个 URL 的 USVString。 它是 URL.href 的同义词，尽管它不能用于修改值。
-  - **toJSON()：**返回包含整个 URL 的 USVString。 它返回与 href 属性相同的字符串。
-  
-- **静态方法**
-  
-  - **createObjectURL()：**返回一个 DOMString ，包含一个唯一的 blob 链接（该链接协议为以 `blob:`，后跟唯一标识浏览器中的对象的掩码）。
-  
-    > URL.createObjectURL() 静态方法 <font color=FF0000>会创建一个 DOMString</font>，<font color=FF0000>其中包含一个表示参数中给出的对象的 URL</font>。**这个 URL 的<font color=FF0000>生命周期和创建它的窗口中的 document 绑定</font>**。这个新的 URL 对象表示指定的 File 对象或 Blob 对象。
-    >
-    > **注意⚠️：**此特性<font color=FF0000>在 Web Worker 中可用</font>。<font color=FF0000>在 Service Worker 中**不可用**</font>，因为它有可能导致内存泄漏。
-    >
-    > **语法：**
-    >
-    > ```js
-    > objectURL = URL.createObjectURL(object);
-    > ```
-    >
-    > - **参数：**
-    >
-    >   **object：**<font color=FF0000>用于创建 URL 的 File 对象、Blob 对象或者 MediaSource 对象</font>。
-    >
-    > - **返回值：**一个 DOMString 包含了一个对象 URL，该 URL 可用于指定源 object 的内容。
-    >
-    > **附注**
-    >
-    > - **内存管理：**在每次调用 createObjectURL() 方法时，都会创建一个新的 URL 对象，即使你已经用相同的对象作为参数创建过。<font color=FF0000>当不再需要这些 URL 对象时，每个对象必须通过调用 URL.revokeObjectURL() 方法来释放</font>。<font color=FF0000>浏览器在 document 卸载的时候，会自动释放它们</font>；**但为了获得最佳性能和内存使用状况，你应该在安全的时机主动释放掉它们**
-    > - 使用相对URLs 作为媒体流：在旧版本的媒体资源规范中，添加流作为 \<video> 元素需要创建一个关于 MediaStream的对象URL。<mark>现已没必要这样做了，浏览器已经移除了该操作的支持</mark>。
-    >
-    > 补充内容摘自：[MDN - URL.createObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/createObjectURL)
-  
-    **revokeObjectURL()：**销毁之前使用 URL.createObjectURL() 方法创建的URL实例。
-  
-    > URL.revokeObjectURL() 静态方法用来<font color=FF0000>释放一个之前已经存在的、通过调用 URL.createObjectURL() 创建的 URL 对象</font>。当你结束使用某个 URL 对象之后，应该通过调用这个方法来让浏览器知道不用在内存中继续保留对这个文件的引用了。
-    >
-    > **语法：**
-    >
-    > ```js
-    > window.URL.revokeObjectURL(objectURL);
-    > ```
-    >
-    > - **参数：**
-    >   **objectURL：**一个 DOMString，表示通过调用 URL.createObjectURL() 方法产生的 URL 对象。
-    > - **返回值：**undefined
-    >
-    > 内容摘自：[MDN - URL.revokeObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/revokeObjectURL)
+##### 构造器
+
+**new URL()：**创建并返回一个URL对象，该URL对象引用使用绝对URL字符串，相对URL字符串和基本URL字符串指定的URL。
+
+##### 属性
+
+- **hash：**<font color=FF0000>包含'#'的USVString</font>，后跟URL的片段标识符。
+- **host：**一个USVString，其中包含域（即主机名），后跟（如果指定了端口）“：”和URL的端口。
+- **hostname：**包含 URL 域名的 USVString。
+- **href：**包含完整 URL 的 USVString。
+- **origin：**只读，<mark>返回一个包含协议名、域名和端口号</mark>的 USVString。
+- **password：**包含在域名前面指定的密码的  USVString 。
+- **pathname：**以 '/' 起头紧跟着 URL 文件路径的 DOMString。
+- **port：**<mark>包含 URL 端口号的 USVString</mark>。
+- **protocol：**包含 URL 协议名的 USVString，<font color=FF0000>末尾带 ':'</font>。
+- **search：**一个USVString ，指示URL的参数字符串； 如果提供了任何参数，则<font color=FF0000>此字符串包括所有参数，并**以开头的“？”开头 字符**</font>
+- <font color=FF0000>**searchParams：**</font>只读，
+  - <font color=FF0000>**URLSearchParams：**</font>对象，可用于访问search中找到的各个查询参数。
+- **username：**包含在域名前面指定的用户名的 USVString。
+
+##### 方法
+
+- **toString()：**返回包含整个 URL 的 USVString。 它是 URL.href 的同义词，尽管它不能用于修改值。
+- **toJSON()：**返回包含整个 URL 的 USVString。 它返回与 href 属性相同的字符串。
+
+##### 静态方法
+
+- **createObjectURL()：**返回一个 DOMString ，包含一个唯一的 blob 链接（该链接协议为以 `blob:`，后跟唯一标识浏览器中的对象的掩码）。
+
+  > URL.createObjectURL() 静态方法 <font color=FF0000>会创建一个 DOMString</font>，<font color=FF0000>其中包含一个表示参数中给出的对象的 URL</font>。**这个 URL 的<font color=FF0000>生命周期和创建它的窗口中的 document 绑定</font>**。这个新的 URL 对象表示指定的 File 对象或 Blob 对象。
+  >
+  > **注意⚠️：**此特性<font color=FF0000>在 Web Worker 中可用</font>。<font color=FF0000>在 Service Worker 中**不可用**</font>，因为它有可能导致内存泄漏。
+  >
+  > **语法：**
+  >
+  > ```js
+  > objectURL = URL.createObjectURL(object);
+  > ```
+  >
+  > - **参数：**
+  >
+  >   **object：**<font color=FF0000>用于创建 URL 的 File 对象、Blob 对象或者 MediaSource 对象</font>。
+  >
+  > - **返回值：**一个 DOMString 包含了一个对象 URL，该 URL 可用于指定源 object 的内容。
+  >
+  > **附注**
+  >
+  > - **内存管理：**在每次调用 createObjectURL() 方法时，都会创建一个新的 URL 对象，即使你已经用相同的对象作为参数创建过。<font color=FF0000>当不再需要这些 URL 对象时，每个对象必须通过调用 URL.revokeObjectURL() 方法来释放</font>。<font color=FF0000>浏览器在 document 卸载的时候，会自动释放它们</font>；**但为了获得最佳性能和内存使用状况，你应该在安全的时机主动释放掉它们**
+  > - 使用相对URLs 作为媒体流：在旧版本的媒体资源规范中，添加流作为 \<video> 元素需要创建一个关于 MediaStream的对象URL。<mark>现已没必要这样做了，浏览器已经移除了该操作的支持</mark>。
+  >
+  > 补充内容摘自：[MDN - URL.createObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/createObjectURL)
+
+  **revokeObjectURL()：**销毁之前使用 URL.createObjectURL() 方法创建的URL实例。
+
+  > URL.revokeObjectURL() 静态方法用来<font color=FF0000>释放一个之前已经存在的、通过调用 URL.createObjectURL() 创建的 URL 对象</font>。当你结束使用某个 URL 对象之后，应该通过调用这个方法来让浏览器知道不用在内存中继续保留对这个文件的引用了。
+  >
+  > **语法：**
+  >
+  > ```js
+  > window.URL.revokeObjectURL(objectURL);
+  > ```
+  >
+  > - **参数：**
+  >   **objectURL：**一个 DOMString，表示通过调用 URL.createObjectURL() 方法产生的 URL 对象。
+  > - **返回值：**undefined
+  >
+  > 内容摘自：[MDN - URL.revokeObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/revokeObjectURL)
 
 摘自：[MDN - URL](https://developer.mozilla.org/zh-CN/docs/Web/API/URL)
 
@@ -8346,24 +8491,25 @@ for (const [key, value] of mySearchParams.entries()) {}
 
 注意：此特性在 Web Worker 中可用
 
-- **构造函数**
+##### 构造函数
 
-  **URLSearchParams()：**返回一个 URLSearchParams 对象。
+**URLSearchParams()：**返回一个 URLSearchParams 对象。
 
-- **方法**
-  该接口不继承任何属性。
+##### 方法
 
-  - **URLSearchParams.append()：**插入一个指定的键/值对作为新的搜索参数。
-  - **URLSearchParams.delete()：**从搜索参数列表里删除指定的搜索参数及其对应的值。
-  - **URLSearchParams.entries()：**返回一个iterator可以遍历所有键/值对的对象。
-  - **URLSearchParams.get()：**获取指定搜索参数的第一个值。
-  - **URLSearchParams.getAll()：**获取指定搜索参数的所有值，返回是一个数组。
-  - **URLSearchParams.has()：**返回 Boolean 判断是否存在此搜索参数。
-  - **URLSearchParams.keys()：**返回iterator 此对象包含了键/值对的所有键名。
-  - **URLSearchParams.set()：**设置一个搜索参数的新值，假如原来有多个值将删除其他所有的值。
-  - **URLSearchParams.sort()：**按键名排序。
-  - **URLSearchParams.toString()：**返回搜索参数组成的字符串，可直接使用在URL上。
-  - **URLSearchParams.values()：**返回iterator 此对象包含了键/值对的所有值。
+该接口不继承任何属性。
+
+- **URLSearchParams.append()：**插入一个指定的键/值对作为新的搜索参数。
+- **URLSearchParams.delete()：**从搜索参数列表里删除指定的搜索参数及其对应的值。
+- **URLSearchParams.entries()：**返回一个iterator可以遍历所有键/值对的对象。
+- **URLSearchParams.get()：**获取指定搜索参数的第一个值。
+- **URLSearchParams.getAll()：**获取指定搜索参数的所有值，返回是一个数组。
+- **URLSearchParams.has()：**返回 Boolean 判断是否存在此搜索参数。
+- **URLSearchParams.keys()：**返回iterator 此对象包含了键/值对的所有键名。
+- **URLSearchParams.set()：**设置一个搜索参数的新值，假如原来有多个值将删除其他所有的值。
+- **URLSearchParams.sort()：**按键名排序。
+- **URLSearchParams.toString()：**返回搜索参数组成的字符串，可直接使用在URL上。
+- **URLSearchParams.values()：**返回iterator 此对象包含了键/值对的所有值。
 
 摘自：[MDN - URLSearchParams](https://developer.mozilla.org/zh-CN/docs/Web/API/URLSearchParams)
 
@@ -8371,22 +8517,23 @@ for (const [key, value] of mySearchParams.entries()) {}
 
 URL 接口的 searchParams 属性<font color=FF0000>返回一个 URLSearchParams 对象</font>，<font color=FF0000>这个对象包含当前 URL 中解码后的 GET 查询参数</font>。
 
-- **语法**
+##### 语法
 
-  ```js
-  const urlSearchParams = url.searchParams
-  ```
+```js
+const urlSearchParams = url.searchParams
+```
 
-- **属性值：**一个 URLSearchParams 对象。
+**属性值：**一个 URLSearchParams 对象。
 
-- 例子
-  如果你的 URL 是 `https://example.com/?name=Jonathan&age=18` ，你可以这样解析 URL，然后得到 name 和 age 的值。
+##### 示例
 
-  ```js
-  let params = (new URL(document.location)).searchParams;
-  let name = params.get('name'); // is the string "Jonathan Smith".
-  let age = parseInt(params.get('age')); // is the number 18
-  ```
+如果你的 URL 是 `https://example.com/?name=Jonathan&age=18` ，你可以这样解析 URL，然后得到 name 和 age 的值。
+
+```js
+let params = (new URL(document.location)).searchParams;
+let name = params.get('name'); // is the string "Jonathan Smith".
+let age = parseInt(params.get('age')); // is the number 18
+```
 
 摘自：[MDN - URL.searchParams](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/searchParams)
 
@@ -8394,55 +8541,56 @@ URL 接口的 searchParams 属性<font color=FF0000>返回一个 URLSearchParams
 
 encodeURI()  函数通过将特定字符的每个实例替换为一个、两个、三或四转义序列来对统一资源标识符 (URI) 进行编码 (该字符的 UTF-8 编码仅为四转义序列)由两个 "代理" 字符组成)。
 
-- **语法**
+**语法**
 
-  ```js
-  encodeURI(URI)
-  ```
+```js
+encodeURI(URI)
+```
 
-- **参数**
+**参数**
 
-  - **URI：**一个完整的URI.
+- **URI：**一个完整的URI.
 
-- **返回值：** 一个新字符串, 表示提供的字符串编码为统一资源标识符 (URI)。
+**返回值：** 一个新字符串, 表示提供的字符串编码为统一资源标识符 (URI)。
 
-- **描述**
-  假定一个URI是完整的URI，那么无需对那些保留的并且在URI中有特殊意思的字符进行编码。
+##### **描述**
 
-  ```
-  http://username:password@www.example.com:80/path/to/file.php?foo=316&bar=this+has+spaces#anchor
-  ```
+假定一个URI 是完整的 URI，那么无需对那些保留的并且在 URI 中有特殊意思的字符进行编码。
 
-  <font color=FF0000>encodeURI 会替换所有的字符</font>，<font color=FF0000>但不包括以下字符</font>，即使它们具有适当的UTF-8转义序列：
+```
+http://username:password@www.example.com:80/path/to/file.php?foo=316&bar=this+has+spaces#anchor
+```
 
-  | 类型         | 包含                                          |
-  | ------------ | --------------------------------------------- |
-  | 保留字符     | `;` `,` `/` `?` `:` `@` `&` `=` `+` `$`       |
-  | 非转义的字符 | 字母 数字 `-` `_` `.` `!` `~` `*` `'` `(` `)` |
-  | 数字符号     | `#`                                           |
+<font color=FF0000>encodeURI 会替换所有的字符</font>，<font color=FF0000>但不包括以下字符</font>，即使它们具有适当的UTF-8转义序列：
 
-  请注意，<font color=FF0000>encodeURI 自身无法产生能适用于HTTP GET 或 POST 请求的URI</font>，例如对于 XMLHTTPRequests，<font color=FF0000>因为 "&", "+", 和 "=" 不会被编码，然而在 GET 和 POST 请求中它们是特殊字符</font>。然而<font color=FF0000>encodeURIComponent这个方法会对这些字符编码</font>。
+| 类型         | 包含                                          |
+| ------------ | --------------------------------------------- |
+| 保留字符     | `;` `,` `/` `?` `:` `@` `&` `=` `+` `$`       |
+| 非转义的字符 | 字母 数字 `-` `_` `.` `!` `~` `*` `'` `(` `)` |
+| 数字符号     | `#`                                           |
 
-  另外，<font color=FF0000>**如果试图编码一个非高-低位完整的代理字符，将会抛出一个 URIError 错误**</font>，例如：
+请注意，<font color=FF0000>encodeURI 自身无法产生能适用于HTTP GET 或 POST 请求的URI</font>，例如对于 XMLHTTPRequests，<font color=FF0000>因为 "&", "+", 和 "=" 不会被编码，然而在 GET 和 POST 请求中它们是特殊字符</font>。然而<font color=FF0000>encodeURIComponent这个方法会对这些字符编码</font>。
 
-  ```js
-  // 编码高-低位完整字符 ok
-  console.log(encodeURI('\uD800\uDFFF'));
-  
-  // 编码单独的高位字符抛出 "Uncaught URIError: URI malformed"
-  console.log(encodeURI('\uD800'));
-  
-  // 编码单独的低位字符抛出 "Uncaught URIError: URI malformed"
-  console.log(encodeURI('\uDFFF'));
-  ```
+另外，<font color=FF0000>**如果试图编码一个非高-低位完整的代理字符，将会抛出一个 URIError 错误**</font>，例如：
 
-  并且需要注意，如果URL需要遵循较新的RFC3986标准，那么方括号是被保留的(给IPv6)，因此对于那些没有被编码的URL部分(例如主机)，可以使用下面的代码：
+```js
+// 编码高-低位完整字符 ok
+console.log(encodeURI('\uD800\uDFFF'));
 
-  ```js
-  function fixedEncodeURI (str) {
-      return encodeURI(str).replace(/%5B/g, '[').replace(/%5D/g, ']');
-  }
-  ```
+// 编码单独的高位字符抛出 "Uncaught URIError: URI malformed"
+console.log(encodeURI('\uD800'));
+
+// 编码单独的低位字符抛出 "Uncaught URIError: URI malformed"
+console.log(encodeURI('\uDFFF'));
+```
+
+并且需要注意，如果URL需要遵循较新的RFC3986标准，那么方括号是被保留的(给IPv6)，因此对于那些没有被编码的URL部分(例如主机)，可以使用下面的代码：
+
+```js
+function fixedEncodeURI (str) {
+    return encodeURI(str).replace(/%5B/g, '[').replace(/%5D/g, ']');
+}
+```
 
 摘自：[MDN - encodeURI()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/encodeURI)
 
@@ -8450,20 +8598,21 @@ encodeURI()  函数通过将特定字符的每个实例替换为一个、两个�
 
 encodeURIComponent()函数通过将一个，两个，三个或四个表示字符的UTF-8编码的转义序列替换某些字符的每个实例来编码 URI （对于由两个“代理”字符组成的字符而言，将仅是四个转义序列） 。
 
-- **语法**
+##### 语法
 
-  ```js
-  encodeURIComponent(str);
-  ```
+```js
+encodeURIComponent(str);
+```
 
-- **参数**
+##### 参数
 
-  - str：String. URI 的组成部分。
+- str：String. URI 的组成部分。
 
-- **返回值：**原字串作为URI组成部分被被编码后的新字符串。
+**返回值：**原字串作为URI组成部分被被编码后的新字符串。
 
-- **描述**
-  <font color=FF0000>encodeURIComponent 转义除了如下所示外的所有字符</font>：A-Z a-z 0-9 - _ . ! ~ * ' ( )
+##### 描述
+
+<font color=FF0000>encodeURIComponent 转义除了如下所示外的所有字符</font>：A-Z a-z 0-9 - _ . ! ~ * ' ( )
 
 摘自：[MDN - encodeURIComponent()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)
 
@@ -8471,21 +8620,21 @@ encodeURIComponent()函数通过将一个，两个，三个或四个表示字符
 
 decodeURI() 函数能解码由encodeURI 创建或其它流程得到的统一资源标识符（URI）。
 
-- **语法**
+##### 语法
 
-  ```js
-  decodeURI(encodedURI)
-  ```
+```js
+decodeURI(encodedURI)
+```
 
-- **参数**
+##### 参数
 
-  - **encodedURI：**一个完整的编码过的 URI
+- **encodedURI：**一个完整的编码过的 URI
 
-- **返回值：**返回一个给定编码统一资源标识符(URI)的未编码版本的新字符串。
+**返回值：**返回一个给定编码统一资源标识符(URI)的未编码版本的新字符串。
 
-- **异常：**当encodedURI 包含无效字符序列时，引发URIError（“格式错误的URI序列”）异常。
+**异常：**当encodedURI 包含无效字符序列时，引发URIError（“格式错误的URI序列”）异常。
 
-- **描述：**将已编码 URI 中所有能识别的转义序列转换成原字符，但不能解码那些不会被 encodeURI 编码的内容（例如 "#"）。
+**描述：**将已编码 URI 中所有能识别的转义序列转换成原字符，但不能解码那些不会被 encodeURI 编码的内容（例如 "#"）。
 
 摘自：[MDN - decodeURI()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/decodeURI)
 
@@ -8493,43 +8642,43 @@ decodeURI() 函数能解码由encodeURI 创建或其它流程得到的统一资�
 
 decodeURIComponent() 方法<font color=FF0000>用于解码由 encodeURIComponent 方法 或者 其它类似方法编码的部分统一资源标识符（URI）</font>。
 
-- **语法**
+##### 语法
+
+```js
+decodeURIComponent(encodedURI)
+```
+
+##### 参数
+
+- encodedURI：编码后的部分 URI
+
+**返回值：**<font color=FF0000>一个解码后的统一资源标识符（URI）字符串</font>，处理前的URI经过了给定格式的编码。
+
+**异常：**<font color=FF0000>当该方法使用不当时，将会抛出一个URIError（“格式错误的URI序列”）异常</font>。
+
+**描述：**<font color=FF0000>**将已编码 URI 中所有能识别的<font size=4>转义序列转换成原字符</font>**</font>。
+
+##### 示例
+
+- 解码一个西里尔字母的URL
 
   ```js
-  decodeURIComponent(encodedURI)
+  decodeURIComponent("JavaScript_%D1%88%D0%B5%D0%BB%D0%BB%D1%8B");
+  // "JavaScript_шеллы"
   ```
 
-- **参数**
+- 捕捉异常
 
-  - encodedURI：编码后的部分 URI
+  ```js
+  try {
+    var a = decodeURIComponent('%E0%A4%A');
+  } catch(e) {
+    console.error(e);
+  }
+  // URIError: malformed URI sequence
+  ```
 
-- **返回值：**<font color=FF0000>一个解码后的统一资源标识符（URI）字符串</font>，处理前的URI经过了给定格式的编码。
-
-- **异常：**<font color=FF0000>当该方法使用不当时，将会抛出一个URIError（“格式错误的URI序列”）异常</font>。
-
-- **描述：**<font color=FF0000>**将已编码 URI 中所有能识别的<font size=4>转义序列转换成原字符</font>**</font>。
-
-- **示例**
-
-  - 解码一个西里尔字母的URL
-
-    ```js
-    decodeURIComponent("JavaScript_%D1%88%D0%B5%D0%BB%D0%BB%D1%8B");
-    // "JavaScript_шеллы"
-    ```
-
-  - 捕捉异常
-
-    ```js
-    try {
-      var a = decodeURIComponent('%E0%A4%A');
-    } catch(e) {
-      console.error(e);
-    }
-    // URIError: malformed URI sequence
-    ```
-
-  摘自：[MDN - decodeURIComponent()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent)
+摘自：[MDN - decodeURIComponent()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent)
 
 #### TextDecoder
 
@@ -8539,7 +8688,7 @@ decodeURIComponent() 方法<font color=FF0000>用于解码由 encodeURIComponent
 
 TextEncoder <font color=FF0000>接受代码点流作为输入</font>，<font color=FF0000>并提供 UTF-8 字节流作为输出</font>。
 
-**例子**
+##### 示例
 
 ```js
 const encoder = new TextEncoder()
@@ -8547,20 +8696,22 @@ const view = encoder.encode('€')
 console.log(view); // Uint8Array(3) [226, 130, 172]
 ```
 
-- **构造器**
+##### 构造器
 
-  - **TextEncoder()：**返回一个新构造的 TextEncoder，<font color=FF0000>它默认使用 UTF-8 编码将代码点流转换成字节<流</font>。
+**TextEncoder()：**返回一个新构造的 TextEncoder，<font color=FF0000>它默认使用 UTF-8 编码将代码点流转换成字节<流</font>。
 
-- **属性**
+##### 属性
 
-  TextEncoder 接口不继承任何属性。
+TextEncoder 接口不继承任何属性。
 
-  - **TextEncoder.encoding：**<font color=FF0000>**只读**</font>，<font color=FF0000>**总是**返回 "utf-8"</font>。
+**TextEncoder.encoding：**<font color=FF0000>**只读**</font>，<font color=FF0000>**总是**返回 "utf-8"</font>。
 
-- **方法**
-  TextEncoder 接口不继承任何方法。
-  - **TextEncoder.encode()：**接受一个 USVString 作为输入，<font color=FF0000>返回一个包含文本的 **Uint8Array**，其中的文本使用 UTF-8 编码</font>。
-  - **TextEncoder.prototype.encodeInto()：**接受一个 USVString 作为输入、一个Uint8Array 作为输出目标，<font color=FF0000>**返回一个指示编码进度的目录（dictionary）对象**</font>。此方法的性能可能会比更早出现的 encode() 方法好一些。
+##### 方法
+
+TextEncoder 接口不继承任何方法。
+
+- **TextEncoder.encode()：**接受一个 USVString 作为输入，<font color=FF0000>返回一个包含文本的 **Uint8Array**，其中的文本使用 UTF-8 编码</font>。
+- **TextEncoder.prototype.encodeInto()：**接受一个 USVString 作为输入、一个Uint8Array 作为输出目标，<font color=FF0000>**返回一个指示编码进度的目录（dictionary）对象**</font>。此方法的性能可能会比更早出现的 encode() 方法好一些。
 
 摘自：[MDN - TextEncoder](https://developer.mozilla.org/zh-CN/docs/Web/API/TextEncoder)
 
@@ -8570,21 +8721,21 @@ TextDecoder 接口<font color=FF0000>表示一个文本解码器</font>，<font 
 
 **构造函数**
 
-- **TextDecoder()：**返回一个新构造的 TextDecoder，它使用参数中指定的解码方法生成代码点流。
+**TextDecoder()：**返回一个新构造的 TextDecoder，它使用参数中指定的解码方法生成代码点流。
 
-  **语法：**
+##### 语法
 
-  ```js
-  decoder = new TextDecoder(utfLabel, options);
-  ```
+```js
+decoder = new TextDecoder(utfLabel, options);
+```
 
-  **参数：**
+##### 参数
 
-  - utfLabel：选填，是一个DOMString包含编码名称，默认为utf-8；可以是任意合法的编码名称
-  - options：选填，是带有属性的TextDecoderOptions字典
-    - fatal：一个布尔标志，表明 TextDecoder.decode() 方法在发现编码错误时是否必须抛出带有“EncodingError”值的 DOMException。 默认为false。
+- utfLabel：选填，是一个DOMString包含编码名称，默认为utf-8；可以是任意合法的编码名称
+- options：选填，是带有属性的TextDecoderOptions字典
+  - fatal：一个布尔标志，表明 TextDecoder.decode() 方法在发现编码错误时是否必须抛出带有“EncodingError”值的 DOMException。 默认为false。
 
-  摘自：[MDN - TextDecoder()](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/TextDecoder)
+摘自：[MDN - TextDecoder()](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/TextDecoder)
 
 **属性**
 
@@ -8847,23 +8998,25 @@ fooCp.__proto__ === Object.getPrototypeOf(fooCp) === Foo.prototype
 
 （这是一个静态方法）应当直接在 Object 构造器对象上调用此方法，而不是在任意一个 Object 类型的实例上调用
 
-- **语法：**
+##### 语法
 
-  ```js
-  Object.defineProperty(obj, prop, descriptor)
-  ```
+```js
+Object.defineProperty(obj, prop, descriptor)
+```
 
-- **参数：**
+##### 参数
 
-  - obj：要定义属性的对象。
-  - prop：<font color=FF0000>要定义或修改的属性的名称或 Symbol </font>。
-  - <font color=FF0000>descriptor：要定义或修改的属性描述符（writable / enumerable / configurable）</font>。
+- obj：要定义属性的对象。
+- prop：<font color=FF0000>要定义或修改的属性的名称或 Symbol </font>。
+- <font color=FF0000>descriptor：要定义或修改的属性描述符（writable / enumerable / configurable）</font>。
 
-- **返回值：**被传递给函数的对象。
+##### 返回值
 
-**注意：**在ES6中，由于 Symbol类型的特殊性，用Symbol类型的值来做对象的key与常规的定义或修改不同，而Object.defineProperty 是定义key为Symbol的属性的方法之一。
+被传递给函数的对象。
 
-默认情况下，<font color=FF0000>**使用 Object.defineProperty() 添加的属性值是不可修改（immutable）的（默认writable是false）**</font>。（同时也是在打印中不显示的，因为enumerable 默认为 false）
+⚠️ **注意：**在 ES6 中，由于 Symbol 类型的特殊性，用 Symbol 类型的值来做对象的 key 与常规的定义或修改不同，而Object.defineProperty 是定义 key 为 Symbol 的属性的方法之一。
+
+默认情况下，<font color=FF0000>**使用 Object.defineProperty() 添加的属性值是不可修改 ( immutable ) 的（writable 默认是 false）**</font>。（同时也是在打印中不显示的，因为enumerable 默认为 false）
 
 **使用示例：**
 
@@ -8907,7 +9060,7 @@ Object.defineProperty(o, "a", {
 }); // 因为这里的都是默认值均为 false
 ```
 
-**属性描述符**
+##### 属性描述符
 
 对象里目前存在的属性描述符**有两种主要形式**：<mark>**数据描述符**</mark> 和 <mark style="background:aqua">**存取描述符**</mark>。<mark>数据描述符</mark>是一个具有值的属性，该值可以是可写的，也可以是不可写的。<mark style="background:aqua">存取描述符</mark>是由 getter 函数和 setter 函数所描述的属性。<font color=FF0000>一个描述符只能是这两者其中之一；不能同时是两者。</font>
 这两种描述符都是对象。它们共享以下可选键值（默认值是指在使用 Object.defineProperty() 定义属性时的默认值）
@@ -8918,7 +9071,7 @@ Object.defineProperty(o, "a", {
 - **value：**该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。<font color=FF0000 size=4>**默认为 undefined**</font>。
 - **writable：**<font color=FF0000>当且仅当该属性的 writable 键值为 true 时，**属性的值**，也就是上面的 value，**才能被赋值运算符改变**</font>。<font color=FF0000 size=4>**默认为 false**</font>。
 
-<mark style="background:aqua">存取描述符</mark>还具有以下可选键值：
+<mark style="background:aqua">存取描述符</mark>还具有以下可选键值
 
 - **get：**属性的 getter 函数，如果没有 getter，则为 undefined。<font color=FF0000>**当访问该属性时，会调用此函数**</font>。<mark style="background:fuchsia">执行时不传入任何参数，但是会传入 this 对象（由于继承关系，这里的this并不一定是定义该属性的对象）</mark>。该函数的返回值会被用作属性的值。<font color=FF0000>默认为 undefined</font>。
 - **set：**属性的 setter 函数，如果没有 setter，则为 undefined。<font color=FF0000>**当属性值被修改时，会调用此函数**</font>。<mark style="background:fuchsia">该方法接受一个参数（也就是被赋予的新值），会传入赋值时的 this 对象</mark>。<font color=FF0000>默认为 undefined</font>。
@@ -8932,7 +9085,7 @@ Object.defineProperty(o, "a", {
 
 <font color=FF0000>**以上内容总结：**因为 get set 和 value writable 功能是类似的（重复的，甚至可以说是：冲突的），所以不能同时存在。</font>
 
-**继承属性**
+##### 继承属性
 
 如果访问者的属性是被继承的，它的 get 和 set 方法会在子对象的属性被访问或者修改时被调用。如果这些方法用一个变量存值，该值会被所有对象共享。示例如下：
 
@@ -8959,24 +9112,25 @@ console.log(b.x); // 1
 
 **Object.defineProperties()** 方法直接在一个对象上定义新的属性或修改现有属性，并返回该对象。
 
-- **语法**
+##### 语法
 
-  ```js
-  Object.defineProperties(obj, props)
-  ```
+```js
+Object.defineProperties(obj, props)
+```
 
-- **参数**
+##### 参数
 
-  - **obj：**在其上定义或修改属性的对象。
-  - **props：**要定义其可枚举属性或修改的属性描述符的对象。对象中存在的属性描述符主要有两种：数据描述符和访问器描述符（更多详情，请参阅Object.defineProperty()）。描述符具有以下键：
-    - **configurable：**true 只有该属性描述符的类型可以被改变并且该属性可以从对应对象中删除。默认为 false
-    - **enumerable：**true 只有在枚举相应对象上的属性时该属性显现。默认为 false
-    - **value：**与属性关联的值。可以是任何有效的JavaScript值（数字，对象，函数等）。默认为 undefined.
-    - **writable：**true只有与该属性相关联的值被assignment operator改变时。默认为 false
-    - **get：**作为该属性的 getter 函数，如果没有 getter 则为undefined。函数返回值将被用作属性的值。默认为 undefined
-    - **set：**作为属性的 setter 函数，如果没有 setter 则为undefined。函数将仅接受参数赋值给该属性的新值。默认为 
-    - **undefined**
-  - **返回值：**传递给函数的对象。
+- **obj：**在其上定义或修改属性的对象。
+- **props：**要定义其可枚举属性或修改的属性描述符的对象。对象中存在的属性描述符主要有两种：数据描述符和访问器描述符（更多详情，请参阅Object.defineProperty()）。描述符具有以下键：
+  - **configurable：**true 只有该属性描述符的类型可以被改变并且该属性可以从对应对象中删除。默认为 false
+  - **enumerable：**true 只有在枚举相应对象上的属性时该属性显现。默认为 false
+  - **value：**与属性关联的值。可以是任何有效的JavaScript值（数字，对象，函数等）。默认为 undefined.
+  - **writable：**true只有与该属性相关联的值被assignment operator改变时。默认为 false
+  - **get：**作为该属性的 getter 函数，如果没有 getter 则为undefined。函数返回值将被用作属性的值。默认为 undefined
+  - **set：**作为属性的 setter 函数，如果没有 setter 则为undefined。函数将仅接受参数赋值给该属性的新值。默认为 
+  - **undefined**
+
+**返回值：**传递给函数的对象。
 
 摘自：[MDN - Object.defineProperties()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties)
 
@@ -8986,23 +9140,24 @@ console.log(b.x); // 1
 
 Object.preventExtensions()方法让一个对象变的不可扩展，也就是永远不能再添加新的属性。
 
-- **语法**
+##### 语法
 
-  ```js
-  Object.preventExtensions(obj)
-  ```
+```js
+Object.preventExtensions(obj)
+```
 
-- 参数
+##### 参数
 
-  obj：将要变得不可扩展的对象。
+obj：将要变得不可扩展的对象。
 
-- **返回值：**已经不可扩展的对象。
+**返回值：**已经不可扩展的对象。
 
-- **描述**
-  <font color=FF0000>如果一个对象可以添加新的属性，则这个对象是可扩展的</font>。<font color=FF0000>Object.preventExtensions()将对象标记为不再可扩展</font>，这样它将永远不会具有它被标记为不可扩展时持有的属性之外的属性。注意，<font color=FF0000>一般来说，不可扩展对象的属性可能仍然可被删除</font>。<font color=FF0000>**尝试将新属性添加到不可扩展对象将静默失败或抛出TypeError**</font>（最常见的情况是strict mode中，但不排除其他情况）。
+##### 描述
 
-  Object.preventExtensions()仅阻止添加自身的属性。但其对象类型的原型依然可以添加新的属性。
-  该方法使得目标对象的 [[prototype]]  不可变；任何重新赋值 [[prototype]] 操作都会抛出 TypeError 。这种行为只针对内部的 [[prototype]] 属性， 目标对象的其它属性将保持可变。
+<font color=FF0000>如果一个对象可以添加新的属性，则这个对象是可扩展的</font>。<font color=FF0000>Object.preventExtensions() 将对象标记为不再可扩展</font>，这样它将永远不会具有它被标记为不可扩展时持有的属性之外的属性。注意，<font color=FF0000>一般来说，不可扩展对象的属性可能仍然可被删除</font>。<font color=FF0000>**尝试将新属性添加到不可扩展对象将静默失败或抛出 TypeError**</font>（最常见的情况是 strict mode 中，但不排除其他情况）。 
+
+Object.preventExtensions()仅阻止添加自身的属性。但其对象类型的原型依然可以添加新的属性。
+该方法使得目标对象的 \[[prototype]]  不可变；任何重新赋值 \[[prototype]] 操作都会抛出 TypeError 。这种行为只针对内部的 \[[prototype]] 属性， 目标对象的其它属性将保持可变。
 
 摘自：[MDN - Object.preventExtensions(obj)](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/preventExtensions)
 
@@ -9010,21 +9165,33 @@ Object.preventExtensions()方法让一个对象变的不可扩展，也就是永
 
 Object.isExtensible() 方法判断一个对象是否是可扩展的（是否可以在它上面添加新的属性）。
 
-- **语法**
+##### **语法**
 
-  ```js
-  Object.isExtensible(obj)
-  ```
+```js
+Object.isExtensible(obj)
+```
 
-- **参数**
-  obj：需要检测的对象
+##### 参数
 
-- **返回值：**表示给定对象是否可扩展的一个Boolean 。
+obj：需要检测的对象
 
-- **描述**
-  默认情况下，对象是可扩展的：即可以为他们添加新的属性。以及它们的 __proto__ 属性可以被更改。<font color=FF0000>Object.preventExtensions，Object.seal 或 Object.freeze 方法都可以标记一个对象为不可扩展（non-extensible）</font>。
+**返回值：**表示给定对象是否可扩展的一个Boolean 。
+
+##### 描述
+
+默认情况下，对象是可扩展的：即可以为他们添加新的属性。以及它们的 \__proto__ 属性可以被更改。<font color=FF0000>Object.preventExtensions，Object.seal() 或 Object.freeze() 方法都可以标记一个对象为不可扩展 ( non-extensible )</font>。
 
 摘自：[MDN - Object.isExtensible()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/isExtensible)
+
+#### 对象固化
+
+在框架封装，继承的时候，如果你做好了一个对象给别人使用，为了不让使用者拿过来后任意涂改，比如他把你的对象的一个方法改成了指向另一个函数，或者干脆删除了这个方法，我们需要把这个对象固化。
+
+在 JavaScript 里我们可以在三个层级上固化一个对象。 从宽到严它们依次是：防止扩展、密封、冻结。
+
+![](https://i.loli.net/2021/08/30/84v2l1ZkMCXO6eg.png)
+
+摘自：[js固化对象](https://zhhlwd.gitee.io/posts/js%E5%9B%BA%E5%8C%96%E5%AF%B9%E8%B1%A1.html)
 
 
 
@@ -9032,7 +9199,7 @@ Object.isExtensible() 方法判断一个对象是否是可扩展的（是否可�
 
 Object.keys() 方法会<font color=FF0000>**返回一个由一个给定对象的自身可枚举属性组成的数组**</font>，<mark>数组中属性名的排列顺序和正常循环遍历该对象时返回的顺序一致 </mark>。
 
-**需要注意的示例：**
+##### 需要注意的示例
 
 ```js
 var arr = ['a', 'b', 'c'];
@@ -9056,7 +9223,9 @@ Object.keys("foo"); // ["0", "1", "2"] (ES2015 code)
 
 Object.values()方法<font color=FF0000>返回一个给定对象自身的所有可枚举属性值的数组</font>，值的顺序与使用for...in循环的顺序相同 ( 区别在于 for-in 循环枚举原型链中的属性 )。
 
-**描述：**Object.values()返回一个数组，其元素是在对象上找到的可枚举属性值。属性的顺序与通过手动循环对象的属性值所给出的顺序相同。
+##### 描述
+
+Object.values()返回一个数组，其元素是在对象上找到的可枚举属性值。属性的顺序与通过手动循环对象的属性值所给出的顺序相同。
 
 **需要注意的示例：**
 
@@ -9079,7 +9248,7 @@ Object.values()方法<font color=FF0000>返回一个给定对象自身的所有�
 
 Object.entries() 方法<font color=FF0000>返回一个给定对象自身<font size=4>**可枚举属性**</font>的<font size=4> **键值对数组** </font></font>，其排列与使用 for...in 循环遍历该对象时返回的顺序一致（区别在于 <font color=FF0000 size=4>**for-in 循环还会枚举原型链中的属性**</font>）。
 
-**需要注意示例如下：**
+##### 需要注意示例如下
 
 - ```js
   const obj = { foo: 'bar', baz: 42 };
@@ -9097,7 +9266,7 @@ Object.entries() 方法<font color=FF0000>返回一个给定对象自身<font si
   console.log(Object.entries('foo')); // [ ['0', 'f'], ['1', 'o'], ['2', 'o'] ]
   ```
 
-**将Object转换为Map**
+##### 将 Object 转换为 Map
 
 new Map() 构造函数接受<font color=FF0000>一个可迭代的entries</font>。借助Object.entries方法你可以很容易的将Object转换为Map:
 
@@ -9113,34 +9282,35 @@ console.log(map); // Map { foo: "bar", baz: 42 }
 
  Object.fromEntries() 方法<font color=FF0000>把键值对列表转换为一个对象</font>。
 
-- **参数**
+##### 参数
 
-  <font color=FF0000>**iterable**</font>：<font color=FF0000>类似 Array 、 Map 或者其它**实现了可迭代协议的可迭代对象**</font>。
+<font color=FF0000>**iterable**</font>：<font color=FF0000>类似 Array 、 Map 或者其它**实现了可迭代协议的可迭代对象**</font>。
 
-- **返回值**
-  一个由该迭代对象条目提供对应属性的新对象。
-- **描述**
-  Object.fromEntries() 方法接收一个键值对的列表参数，并返回一个带有这些键值对的新对象。<mark>这个迭代参数应该<font color=FF0000>是一个能够实现@@iterator方法的的对象</font>，返回一个迭代器对象。它生成一个具有两个元素的类数组的对象，第一个元素是将用作属性键的值，第二个元素是与该属性键关联的值。</mark>
+**返回值**：一个由该迭代对象条目提供对应属性的新对象。
+
+##### 描述
+
+Object.fromEntries() 方法接收一个键值对的列表参数，并返回一个带有这些键值对的新对象。<mark>这个迭代参数应该<font color=FF0000>是一个能够实现@@iterator方法的的对象</font>，返回一个迭代器对象。它生成一个具有两个元素的类数组的对象，第一个元素是将用作属性键的值，第二个元素是与该属性键关联的值。</mark>
 
 <font color=FF0000>Object.fromEntries() 执行与 Object.entries 互逆的操作。</font>
 
-**示例：**
+##### 示例
 
--  Map 转化为 Object
+Map 转化为 Object
 
-  ```js
-  const map = new Map([ ['foo', 'bar'], ['baz', 42] ]);
-  const obj = Object.fromEntries(map);
-  console.log(obj); // { foo: "bar", baz: 42 }
-  ```
+```js
+const map = new Map([ ['foo', 'bar'], ['baz', 42] ]);
+const obj = Object.fromEntries(map);
+console.log(obj); // { foo: "bar", baz: 42 }
+```
 
-- Array 转化为 Object
+Array 转化为 Object
 
-  ```js
-  const arr = [ ['0', 'a'], ['1', 'b'], ['2', 'c'] ];
-  const obj = Object.fromEntries(arr);
-  console.log(obj); // { 0: "a", 1: "b", 2: "c" }
-  ```
+```js
+const arr = [ ['0', 'a'], ['1', 'b'], ['2', 'c'] ];
+const obj = Object.fromEntries(arr);
+console.log(obj); // { 0: "a", 1: "b", 2: "c" }
+```
 
 摘自：[MDN - Object.fromEntries()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries)
 
@@ -9150,36 +9320,35 @@ console.log(map); // Map { foo: "bar", baz: 42 }
 
 Object.assign() 方法用于<font color=FF0000>将所有可枚举属性的值</font>从一个**或多个源对象**分配到目标对象。它将返回目标对象。
 
-- **语法**
+##### 语法
 
-  ```js
-  Object.assign(target, ...sources)
-  ```
+```js
+Object.assign(target, ...sources)
+```
 
-  <font color=FF0000>自我补充：</font>之所以sources前面加了展开运算符，是因为可能有多个源对象
+<font color=FF0000>自我补充：</font>之所以sources前面加了展开运算符，是因为可能有多个源对象
 
-- **参数**
-  
-  - **target：**目标对象。
-  - **sources：**源对象。
-  
-- **返回值：**目标对象。
+**参数**
 
-- **描述**
-  <font color=FF0000 size=4>如果目标对象中的属性具有相同的键，则属性将被源对象中的属性 **覆盖**</font>。后面的源对象的属性将类似地覆盖前面的源对象的属性。
+- **target：**目标对象。
+- **sources：**源对象。
 
-  <font color=FF0000 size=4>**Object.assign 方法只会拷贝源对象自身的并且可枚举的属性到目标对象**</font>。该方法使用源对象的 [[Get]] 和目标对象的 [[Set]]，所以它会调用相关 getter 和 setter。<font color=FF0000>因此，它分配属性，而不仅仅是复制或定义新的属性</font>。<font color=FF0000>如果合并源包含getter，这可能使其不适合将新属性合并到原型中</font>。为了将属性定义（包括其可枚举性）复制到原型，应使用Object.getOwnPropertyDescriptor()和Object.defineProperty() 。
+**返回值：**目标对象。
 
-  <font color=FF0000>String类型和 **Symbol 类型**的属性都会被拷贝。</font>
+##### 描述
 
-  <font color=FF0000>在出现错误的情况下，例如，**如果属性不可写，会引发TypeError**</font>，如果在引发错误之前添加了任何属性，则可以更改target对象。
+<font color=FF0000 size=4>如果目标对象中的属性具有相同的键，则属性将被源对象中的属性 **覆盖**</font>。后面的源对象的属性将类似地覆盖前面的源对象的属性
 
-  <font color=FF0000>注意，Object.assign **不会** 在那些source对象值为 null 或 undefined 的时候抛出错误</font>。
-  
-- **深拷贝问题：**
+<font color=FF0000 size=4>**Object.assign 方法只会拷贝源对象自身的并且可枚举的属性到目标对象**</font>。该方法使用源对象的 [[Get]] 和目标对象的 [[Set]]，所以它会调用相关 getter 和 setter。<font color=FF0000>因此，它分配属性，而不仅仅是复制或定义新的属性</font>。<font color=FF0000>如果合并源包含getter，这可能使其不适合将新属性合并到原型中</font>。为了将属性定义（包括其可枚举性）复制到原型，应使用Object.getOwnPropertyDescriptor()和Object.defineProperty() 。
 
-  针对深拷贝，需要使用其他办法，因为 Object.assign()拷贝的是（可枚举）属性值。假如源值是一个对象的引用，它仅仅会复制其引用值。
-  
+<font color=FF0000>String类型和 **Symbol 类型**的属性都会被拷贝。</font>
+
+<font color=FF0000>在出现错误的情况下，例如，**如果属性不可写，会引发TypeError**</font>，如果在引发错误之前添加了任何属性，则可以更改target对象。
+
+<font color=FF0000>注意，Object.assign **不会** 在那些source对象值为 null 或 undefined 的时候抛出错误</font>。
+
+- **深拷贝问题：**针对深拷贝，需要使用其他办法，因为 Object.assign()拷贝的是（可枚举）属性值。假如源值是一个对象的引用，它仅仅会复制其引用值。
+
 - <font color=FF0000>**继承属性和不可枚举属性是不能拷贝的**</font>
 
   ```js
@@ -9226,36 +9395,37 @@ Object.assign() 方法用于<font color=FF0000>将所有可枚举属性的值</f
 
 Object.is() 方法判断两个值是否为同一个值。
 
-- **语法**
+##### 语法
 
-  ```js
-  Object.is(value1, value2);
-  ```
+```js
+Object.is(value1, value2);
+```
 
-  - **参数**
-    - value1：被比较的第一个值。
-    - value2：被比较的第二个值。
+##### 参数
 
-  - **返回值：**一个 Boolean 类型标示两个参数是否是同一个值。
+- value1：被比较的第一个值。
+- value2：被比较的第二个值。
 
-- **描述**
+**返回值：**一个 Boolean 类型标示两个参数是否是同一个值。
 
-  Object.is() 方法判断两个值是否为同一个值。<font color=FF0000>如果满足以下条件则两个值相等</font>：
+**描述**
 
-  - 都是 undefined<font color=FF0000>（undefined === undefined 本身就成立）</font>
-  - 都是 null <font color=FF0000>（null === null 本身就成立）</font>
-  - 都是 true 或 false
-  - 都是相同长度的字符串且相同字符按相同顺序排列
-  - 都是相同对象（意味着每个对象有同一个引用），<font color=FF0000>注：这里两个本来也全等( === )</font>
-  - 都是数字且
-    - 都是 +0
-    - 都是 -0
-    - <font color=FF0000>都是 NaN（注：NaN != NaN，但是Object.is(NaN, NaN) == true ）</font>
-    - 或都是非零而且非 NaN 且为同一个值
+Object.is() 方法判断两个值是否为同一个值。<font color=FF0000>如果满足以下条件则两个值相等</font>：
 
-  与== 运算不同。  <font color=FF0000>== 运算符在判断相等前对两边的变量（如果它们不是同一类型）进行强制转换（这种行为的结果会将 "" == false 判断为 true）</font>， <font color=FF0000>而 **Object.is不会强制转换两边的值**</font>。
+- 都是 undefined<font color=FF0000>（undefined === undefined 本身就成立）</font>
+- 都是 null <font color=FF0000>（null === null 本身就成立）</font>
+- 都是 true 或 false
+- 都是相同长度的字符串且相同字符按相同顺序排列
+- 都是相同对象（意味着每个对象有同一个引用），<font color=FF0000>注：这里两个本来也全等( === )</font>
+- 都是数字且
+  - 都是 +0
+  - 都是 -0
+  - <font color=FF0000>都是 NaN（注：NaN != NaN，但是Object.is(NaN, NaN) == true ）</font>
+  - 或都是非零而且非 NaN 且为同一个值
 
-  与\=== 运算也不相同， <font color=FF0000>\=== 运算符 (也包括 == 运算符) 将数字 -0 和 +0 视为相等（ **注：根据上面的判断规则，Object.is(+0, =0) 是 false** ），而将Number.NaN 与NaN视为不相等</font>
+与== 运算不同。  <font color=FF0000>== 运算符在判断相等前对两边的变量（如果它们不是同一类型）进行强制转换（这种行为的结果会将 "" == false 判断为 true）</font>， <font color=FF0000>而 **Object.is不会强制转换两边的值**</font>。
+
+与\=== 运算也不相同， <font color=FF0000>\=== 运算符 (也包括 == 运算符) 将数字 -0 和 +0 视为相等（ **注：根据上面的判断规则，Object.is(+0, =0) 是 false** ），而将Number.NaN 与NaN视为不相等</font>
 
 摘自：[MDN - Object.is()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is)
 
@@ -9265,100 +9435,101 @@ Object.is() 方法判断两个值是否为同一个值。
 
 valueOf() 方法返回指定对象的原始值。
 
-- **语法：**
+##### 语法
 
-  ```js
-  object.valueOf()
-  ```
+```js
+object.valueOf()
+```
 
-- **返回值：**返回值为该对象的原始值。
+**返回值：**返回值为该对象的原始值。
 
-- **描述：**
-  <font color=FF0000>JavaScript 调用 valueOf 方法将对象转换为原始值</font>。你<mark>很少需要自己调用 valueOf 方法</mark>：当遇到要预期的原始值的对象时，<font color=FF0000 size=4>**JavaScript 会自动调用它**</font>。
+##### 描述
 
-  默认情况下，valueOf 方法由 Object 后面的每个对象继承（注：这里的说法有点问题，应该是 <font color=FF0000>继承Object 的对象，会继承 valueOf 方法</font>。原文：the valueOf method is inherited by every object descended from Object.）。 <font color=FF0000>每个内置的核心对象都会覆盖此方法以返回适当的值</font>。如果对象没有原始值，则 valueOf 将返回对象本身。
+JavaScript 调用 valueOf 方法将对象转换为原始值。你很少需要自己调用 valueOf 方法：当遇到要预期的原始值的对象时，JavaScript 会自动调用它。
 
-  <font color=FF0000>JavaScript 的许多内置对象都重写了该函数，以实现更适合自身的功能需要</font>。因此，不同类型对象的 valueOf() 方法的返回值和返回值类型均可能不同。
+默认情况下，valueOf 方法由 Object 后面的每个对象继承（注：这里的说法有点问题，应该是 <font color=FF0000>继承Object 的对象，会继承 valueOf 方法</font>。原文：the valueOf method is inherited by every object descended from Object.）。 <font color=FF0000>每个内置的核心对象都会覆盖此方法以返回适当的值</font>。如果对象没有原始值，则 valueOf 将返回对象本身。
 
-  **不同类型对象的valueOf()方法的返回值**
+<font color=FF0000>JavaScript 的许多内置对象都重写了该函数，以实现更适合自身的功能需要</font>。因此，不同类型对象的 valueOf() 方法的返回值和返回值类型均可能不同。
 
-  | **对象** | **返回值**                                                   |
-  | :------- | :----------------------------------------------------------- |
-  | Array    | 返回数组对象本身                                             |
-  | Boolean  | 布尔值                                                       |
-  | Date     | 存储的时间是 <font color=FF0000>从 1970 年 1 月 1 日午夜开始计的毫秒数 UTC</font>。注：即时间戳 |
-  | Function | <mark>函数本身</mark>                                        |
-  | Number   | 数字值。                                                     |
-  | Object   | 对象本身。这是 <font color=FF0000>默认情况</font>            |
-  | String   | 字符串值                                                     |
-  |          | Math 和 Error 对象没有 valueOf 方法                          |
+##### 不同类型对象的 valueOf() 方法的返回值
 
-  你可以在自己的代码中使用 valueOf 将内置对象转换为原始值。<font color=FF0000>**创建自定义对象时，可以覆盖Object.prototype.valueOf() 来调用自定义方法（注：这里可以理解为 override ），而不是默认 Object 方法**</font>。
+| **对象** | **返回值**                                                   |
+| :------- | :----------------------------------------------------------- |
+| Array    | 返回数组对象本身                                             |
+| Boolean  | 布尔值                                                       |
+| Date     | 存储的时间是 <font color=FF0000>从 1970 年 1 月 1 日午夜开始计的毫秒数 UTC</font>。注：即时间戳 |
+| Function | <mark>函数本身</mark>                                        |
+| Number   | 数字值。                                                     |
+| Object   | 对象本身。这是 <font color=FF0000>默认情况</font>            |
+| String   | 字符串值                                                     |
+|          | Math 和 Error 对象没有 valueOf 方法                          |
 
-- **覆盖自定义对象的 valueOf方法**
+你可以在自己的代码中使用 valueOf 将内置对象转换为原始值。<font color=FF0000>**创建自定义对象时，可以覆盖Object.prototype.valueOf() 来调用自定义方法（注：这里可以理解为 override ），而不是默认 Object 方法**</font>。
 
-  你可以创建一个取代 valueOf 方法的函数，你的 <font color=FF0000>方法必须不能传入参数</font>。
+##### 覆盖自定义对象的 valueOf方法
 
-  假设你有个对象叫 MyNumberType，而你想为它创建一个 valueOf 方法。下面的代码为 valueOf 方法赋予了一个自定义函数：
+你可以创建一个取代 valueOf 方法的函数，你的 <font color=FF0000>方法必须不能传入参数</font>。
 
-  ```js
-  MyNumberType.prototype.valueOf = function() { return customPrimitiveValue; };
-  ```
+假设你有个对象叫 MyNumberType，而你想为它创建一个 valueOf 方法。下面的代码为 valueOf 方法赋予了一个自定义函数：
 
-  <mark>有了这样的一个方法，下一次每当 MyNumberType 要被转换为原始类型值时，JavaScript 在此之前会自动调用自定义的 valueOf 方法</mark>。
+```js
+MyNumberType.prototype.valueOf = function() { return customPrimitiveValue; };
+```
 
-  <mark>valueOf 方法一般都会被 JavaScript 自动调用，但你也可以像下面代码那样自己调用</mark>：
+<mark>有了这样的一个方法，下一次每当 MyNumberType 要被转换为原始类型值时，JavaScript 在此之前会自动调用自定义的 valueOf 方法</mark>。
 
-  ```js
-  myNumberType.valueOf()
-  ```
+<mark>valueOf 方法一般都会被 JavaScript 自动调用，但你也可以像下面代码那样自己调用</mark>：
 
-- **示例：**
+```js
+myNumberType.valueOf()
+```
 
-  ```js
-  // Array：返回数组对象本身
-  var array = ["ABC", true, 12, -5];
-  console.log(array.valueOf() === array);   // true
-  
-  // Date：当前时间距1970年1月1日午夜的毫秒数
-  var date = new Date(2013, 7, 18, 23, 11, 59, 230);
-  console.log(date.valueOf());   // 1376838719230
-  
-  // Number：返回数字值
-  var num =  15.26540;
-  console.log(num.valueOf());   // 15.2654
-  
-  // boolean：返回布尔值 true 或 false
-  var bool = true;
-  console.log(bool.valueOf() === bool);   // true
-  
-  // new 一个 Boolean对象
-  var newBool = new Boolean(true);
-  // valueOf()返回的是true，两者的值相等
-  console.log(newBool.valueOf() == newBool);   // true
-  // 但是不全等，两者类型不相等，前者是boolean类型，后者是object类型
-  console.log(newBool.valueOf() === newBool);   // false
-  
-  // Function：返回函数本身
-  function foo(){}
-  console.log( foo.valueOf() === foo );   // true
-  var foo2 =  new Function("x", "y", "return x + y;");
-  console.log( foo2.valueOf() );
-  /* ƒ anonymous(x,y) { return x + y;} */
-  
-  // Object：返回对象本身
-  var obj = {name: "张三", age: 18};
-  console.log( obj.valueOf() === obj );   // true
-  
-  // String：返回字符串值
-  var str = "http://www.xyz.com";
-  console.log( str.valueOf() === str );   // true
-  
-  // new一个字符串对象
-  var str2 = new String("http://www.xyz.com");
-  // 两者的值相等，但不全等，因为类型不同，前者为string类型，后者为object类型
-  console.log( str2.valueOf() === str2 );   // false
-  ```
+##### 示例
+
+```js
+// Array：返回数组对象本身
+var array = ["ABC", true, 12, -5];
+console.log(array.valueOf() === array);   // true
+
+// Date：当前时间距1970年1月1日午夜的毫秒数
+var date = new Date(2013, 7, 18, 23, 11, 59, 230);
+console.log(date.valueOf());   // 1376838719230
+
+// Number：返回数字值
+var num =  15.26540;
+console.log(num.valueOf());   // 15.2654
+
+// boolean：返回布尔值 true 或 false
+var bool = true;
+console.log(bool.valueOf() === bool);   // true
+
+// new 一个 Boolean对象
+var newBool = new Boolean(true);
+// valueOf()返回的是true，两者的值相等
+console.log(newBool.valueOf() == newBool);   // true
+// 但是不全等，两者类型不相等，前者是boolean类型，后者是object类型
+console.log(newBool.valueOf() === newBool);   // false
+
+// Function：返回函数本身
+function foo(){}
+console.log( foo.valueOf() === foo );   // true
+var foo2 =  new Function("x", "y", "return x + y;");
+console.log( foo2.valueOf() );
+/* ƒ anonymous(x,y) { return x + y;} */
+
+// Object：返回对象本身
+var obj = {name: "张三", age: 18};
+console.log( obj.valueOf() === obj );   // true
+
+// String：返回字符串值
+var str = "http://www.xyz.com";
+console.log( str.valueOf() === str );   // true
+
+// new一个字符串对象
+var str2 = new String("http://www.xyz.com");
+// 两者的值相等，但不全等，因为类型不同，前者为string类型，后者为object类型
+console.log( str2.valueOf() === str2 );   // false
+```
 
 摘自：[MDN - Object.prototype.valueOf()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/valueOf)
 
@@ -9366,20 +9537,22 @@ valueOf() 方法返回指定对象的原始值。
 
 toString() 方法返回一个表示该对象的字符串
 
-- **语法：**
+##### 语法
 
-  ```js
-  obj.toString()
-  ```
+```js
+obj.toString()
+```
 
-- **返回值：**一个表示该对象的字符串。
+**返回值：**一个表示该对象的字符串。
 
-- **描述：**<font color=FF0000>**每个对象都有一个 toString() 方法，当该对象被表示为一个文本值时，或者一个对象以预期的字符串方式引用时自动调用**</font>。<font color=FF0000>默认情况下，toString() 方法被每个 Object 对象继承</font>。如果此方法在自定义对象中未被覆盖，toString() 返回 "[object type]"，其中 type 是对象的类型。以下代码说明了这一点：
+##### 描述
 
-  ```js
-  var o = new Object();
-  o.toString(); // 返回 [object Object]
-  ```
+<font color=FF0000>**每个对象都有一个 toString() 方法，当该对象被表示为一个文本值时，或者一个对象以预期的字符串方式引用时自动调用**</font>。<font color=FF0000>默认情况下，toString() 方法被每个 Object 对象继承</font>。如果此方法在自定义对象中未被覆盖，toString() 返回 "[object type]"，其中 type 是对象的类型。以下代码说明了这一点：
+
+```js
+var o = new Object();
+o.toString(); // 返回 [object Object]
+```
 
 - **覆盖默认的 toString 方法：**可以自定义一个方法，来取代默认的 toString() 方法。该 toString() 方法不能传入参数，并且必须返回一个字符串。自定义的 toString() 方法可以是任何我们需要的值，但如果它附带有关对象的信息，它将变得非常有用。
 
@@ -9399,11 +9572,12 @@ toString() 方法返回一个表示该对象的字符串
   toString.call(null); // [object Null]
   ```
 
-  摘自：[MDN - Object.prototype.toString()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)
+
+摘自：[MDN - Object.prototype.toString()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)
 
 ##### 关于 typeof 判断类型的不足 & 解决方法的补充
 
-**注，上面没有说痛点是什么，这里补充下：**<font color=FF0000>在 JavaScript 里使用 typeof 判断数据类型，只能区分基本类型</font>，即：number、string、undefined、boolean、object。<font color=FF0000>对于null、array、function、object 来说，使用 typeof 都会统一返回 object 字符串。要想区分对象、数组、函数、单纯使用 typeof 是不行的</font>。
+👀 **注，上面没有说痛点是什么，这里补充下：**<font color=FF0000>在 JavaScript 里使用 typeof 判断数据类型，只能区分基本类型</font>，即：number、string、undefined、boolean、object。<font color=FF0000>对于null、array、function、object 来说，使用 typeof 都会统一返回 object 字符串。要想区分对象、数组、函数、单纯使用 typeof 是不行的</font>。
 
 在 JS 中，可以通过 Object.prototype.toString() 方法，判断某个对象之属于哪种内置类型（注：这也是判断内置类型 <font color=FF0000>最靠谱的方法</font>）。分为 null、string、boolean、number、undefined、array、function、object、date、math。（注：error 也可以）
 
@@ -9629,7 +9803,7 @@ alert(obj + 2); // 22（"2" + 2）被转换为原始值字符串 => 级联
 
 #### JS判断对象是否为空
 
-判断 Object.keys(obj).length 是否等于 0
+判断 `Object.keys(obj).length` 是否等于 0
 
 #### JS判断对象是否包含某个key
 
@@ -9650,11 +9824,13 @@ hasOwnProperty() 方法会返回一个布尔值，指示对象自身属性中是
 obj.hasOwnProperty(prop)
 ```
 
-- **参数** 
+##### 参数
 
-  prop：要检测的属性的 String 字符串形式表示的名称，或者 Symbol。
+prop：要检测的属性的 String 字符串形式表示的名称，或者 Symbol。
 
-- 返回值：用来判断某个对象是否含有指定的属性的布尔值 Boolean。
+##### 返回值
+
+用来判断某个对象是否含有指定的属性的布尔值 Boolean。
 
 所有继承了 Object 的对象都会继承到 hasOwnProperty 方法。这个方法可以用来检测一个对象是否含有特定的自身属性；<font color=FF0000>和 in 运算符不同，该方法**会忽略**掉那些从原型链上继承到的属性</font>。
 
@@ -9676,21 +9852,23 @@ hasOwnProperty() 方法（可以）<font color=FF0000>用于 **确定** 某个�
 
 <font color=FF0000>isPrototypeOf() 与 instanceof 运算符不同</font>。<mark>在表达式 "object instanceof AFunction"中，object 的原型链是针对 AFunction.prototype 进行检查的，而不是针对 AFunction 本身</mark>。
 
-- **语法**
+##### 语法
 
-  ```js
-  prototypeObj.isPrototypeOf(object)
-  ```
+```js
+prototypeObj.isPrototypeOf(object)
+```
 
-- **参数**
-  object：在该对象的原型链上搜寻
+##### 参数
 
-- 返回值
+object：在该对象的原型链上搜寻
 
-  Boolean：表示调用对象是否在另一个对象的原型链上。
+##### 返回值
 
-- **报错**
-  TypeError：如果 prototypeObj 为 undefined 或 null，会抛出 TypeError。
+Boolean：表示调用对象是否在另一个对象的原型链上。
+
+##### 报错
+
+TypeError：如果 prototypeObj 为 undefined 或 null，会抛出 TypeError。
 
 摘自：[MDN - Object.prototype.isPrototypeOf()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/isPrototypeOf)
 
@@ -9698,16 +9876,19 @@ hasOwnProperty() 方法（可以）<font color=FF0000>用于 **确定** 某个�
 
 <font color=FF0000>Object.getPrototypeOf() 方法返回指定对象的原型（**内部[[Prototype]]属性的值**）</font>。
 
-- **语法**
+##### 语法
 
-  ```js
-  Object.getPrototypeOf(object)
-  ```
+```js
+Object.getPrototypeOf(object)
+```
 
-- **参数**
-  obj：要返回其原型的对象。
+##### 参数
 
-- **返回值：**给定对象的原型。如果没有继承属性，则返回 null 。
+obj：要返回其原型的对象。
+
+##### 返回值
+
+给定对象的原型。如果没有继承属性，则返回 null 。
 
 摘自：[MDN - Object.getPrototypeOf()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf)
 
@@ -9717,24 +9898,24 @@ hasOwnProperty() 方法（可以）<font color=FF0000>用于 **确定** 某个�
 
 <font size=4 color=FF0000>**警告:** </font>由于现代 JavaScript 引擎优化属性访问所带来的特性的关系，<font color=FF0000>更改对象的 [[Prototype]]在各个浏览器和 JavaScript 引擎上都是一个很慢的操作。其在更改继承的性能上的影响是微妙而又广泛的，这不仅仅限于 obj.\__proto__ = ... 语句上的时间花费，而且可能会延伸到任何代码，那些可以访问任何[[Prototype]]已被更改的对象的代码</font>。<mark>如果你关心性能，你应该避免设置一个对象的 [[Prototype]]。相反，你应该使用 Object.create()来创建带有你想要的[[Prototype]]的新对象</mark>。
 
-- **语法**
+##### 语法
 
-  ```js
-  Object.setPrototypeOf(obj, prototype)
-  ```
+```js
+Object.setPrototypeOf(obj, prototype)
+```
 
-- **参数**
+##### 参数
 
-  - **obj：**要设置其原型的对象。.
-  - **prototype：**该对象的新原型(一个对象 或 null).
+- **obj：**要设置其原型的对象。.
+- **prototype：**该对象的新原型(一个对象 或 null).
 
-- **描述：**
+##### 描述
 
-  - 如果对象的[[Prototype]]被修改成不可扩展(通过 Object.isExtensible()查看)，就会抛出 TypeError异常。
-  - 如果prototype参数不是一个对象或者null(例如，数字，字符串，boolean，或者 undefined)，则什么都不做。
-  - 否则，该方法将obj的[[Prototype]]修改为新的值。
+- 如果对象的[[Prototype]]被修改成不可扩展(通过 Object.isExtensible()查看)，就会抛出 TypeError异常。
+- 如果prototype参数不是一个对象或者null(例如，数字，字符串，boolean，或者 undefined)，则什么都不做。
+- 否则，该方法将obj的[[Prototype]]修改为新的值。
 
-  Object.setPrototypeOf() 是ECMAScript 6最新草案中的方法，相对于 Object.prototype.\__proto__  ，它被认为是修改对象原型更合适的方法
+Object.setPrototypeOf() 是ECMAScript 6 最新草案中的方法，相对于 Object.prototype.\__proto__  ，它被认为是修改对象原型更合适的方法
 
 摘自：[MDN - Object.setPrototypeOf()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf)
 
@@ -9744,18 +9925,20 @@ hasOwnProperty() 方法（可以）<font color=FF0000>用于 **确定** 某个�
 
 Object.getOwnPropertyDescriptor() 方法 <font color=FF0000>返回指定对象上一个 **自有属性** 对应的属性描述符</font>。（自有属性指的是<font color=FF0000>直接赋予该对象的属性，不需要从原型链上进行查找的属性</font>）
 
-- **语法：**
+##### 语法
 
-  ```js
-  Object.getOwnPropertyDescriptor(obj, prop)
-  ```
+```js
+Object.getOwnPropertyDescriptor(obj, prop)
+```
 
-- **参数：**
+##### 参数
 
-  - **obj：**需要查找的目标对象
-  - **prop：**目标对象内属性名称。**注：**prop需要 引号包裹
+- **obj：**需要查找的目标对象
+- **prop：**目标对象内属性名称。**注：**prop需要 引号包裹
 
-- **返回值：**<mark>如果指定的属性存在于对象上，则返回其属性描述符对象（property descriptor），否则返回 undefined</mark>。
+##### 返回值
+
+<mark>如果指定的属性存在于对象上，则返回其属性描述符对象（property descriptor），否则返回 undefined</mark>。
 
 摘自：[MDN - Object.getOwnPropertyDescriptor()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor)
 
@@ -9763,17 +9946,19 @@ Object.getOwnPropertyDescriptor() 方法 <font color=FF0000>返回指定对象�
 
 Object.getOwnPropertyDescriptors() 方法用来获取一个对象的所有自身属性的描述符。
 
-- **语法**
+##### 语法
 
-  ```js
-  Object.getOwnPropertyDescriptors(obj)
-  ```
+```js
+Object.getOwnPropertyDescriptors(obj)
+```
 
-- **参数**
+##### 参数
 
-  obj：任意对象
+obj：任意对象
 
-- **返回值：**所指定对象的所有自身属性的描述符，如果没有任何自身属性，则返回空对象。
+##### 返回值
+
+所指定对象的所有自身属性的描述符，如果没有任何自身属性，则返回空对象。
 
 摘自：[MDN - Object.getOwnPropertyDescriptors()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors)
 
@@ -9783,27 +9968,32 @@ Object.getOwnPropertyDescriptors() 方法用来获取一个对象的所有自身
 
 Object.getOwnPropertyNames() 方法返回一个由指定对象的所有自身属性的属性名（<font color=FF0000>包括不可枚举属性，但 <font size=4>**不包括Symbol值作为名称的属性**</font></font>）组成的数组。
 
-- **语法：**
+##### 语法
 
-  ```js
-  Object.getOwnPropertyNames(obj)
-  ```
+```js
+Object.getOwnPropertyNames(obj)
+```
 
-- **参数**
-  **obj：**一个对象，其自身的可枚举和不可枚举属性的名称被返回。
+##### 参数
 
-- **返回值：**在给定对象上找到的自身属性对应的字符串数组。
+obj：一个对象，其自身的可枚举和不可枚举属性的名称被返回。
 
-- **描述：**Object.getOwnPropertyNames() 返回一个数组，该数组对元素是 obj自身拥有的枚举或不可枚举属性名称字符串。 数组中枚举属性的顺序与通过 for...in 循环（或 Object.keys）迭代该对象属性时一致。数组中不可枚举属性的顺序未定义。
+##### 返回值
 
-- **特殊示例：**
+在给定对象上找到的自身属性对应的字符串数组。
 
-  ```js
-  const arr = [1, 2, 3]
-  console.log(Object.getOwnPropertyNames(arr)) // [ '0', '1', '2', 'length' ]
-  ```
+##### 描述
 
-  注意：离这里是会打印出 length的，用Reflect.ownKeys() 也是，但是用 Object.keys() 不会
+Object.getOwnPropertyNames() 返回一个数组，该数组对元素是 obj自身拥有的枚举或不可枚举属性名称字符串。 数组中枚举属性的顺序与通过 for...in 循环（或 Object.keys ）迭代该对象属性时一致。数组中不可枚举属性的顺序未定义。
+
+##### 特殊示例
+
+```js
+const arr = [1, 2, 3]
+console.log(Object.getOwnPropertyNames(arr)) // [ '0', '1', '2', 'length' ]
+```
+
+注意：离这里是会打印出 length 的，用Reflect.ownKeys() 也是，但是用 Object.keys() 不会
 
 摘自：[MDN - Object.getOwnPropertyNames()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames)
 
@@ -9813,38 +10003,42 @@ Object.getOwnPropertyNames() 方法返回一个由指定对象的所有自身属
 
 Object.getOwnPropertySymbols() 方法<font color=FF0000>返回一个给定对象自身的所有 Symbol 属性的数组</font>。
 
-- **语法**
+##### 语法
 
-  ```js
-  Object.getOwnPropertySymbols(obj)
-  ```
+```js
+Object.getOwnPropertySymbols(obj)
+```
 
-- **参数**
-  obj：要返回 Symbol 属性的对象。
+##### 参数
 
-- **返回值：**在给定对象自身上找到的所有 Symbol 属性的数组。
+obj：要返回 Symbol 属性的对象。
 
-- **描述**
-  与Object.getOwnPropertyNames()类似，您可以将给定对象的所有符号属性作为 Symbol 数组获取。 请注意，Object.getOwnPropertyNames()本身不包含对象的 Symbol 属性，只包含字符串属性。
+##### 返回值
 
-  因为所有的对象在初始化的时候不会包含任何的 Symbol，除非你在对象上赋值了 Symbol 否则Object.getOwnPropertySymbols()只会返回一个空的数组。
+在给定对象自身上找到的所有 Symbol 属性的数组。
 
-- 示例：
+##### 描述
 
-  ```js
-  var obj = {};
-  var a = Symbol("a");
-  var b = Symbol.for("b");
-  
-  obj[a] = "localSymbol";
-  obj[b] = "globalSymbol";
-  
-  var objectSymbols = Object.getOwnPropertySymbols(obj);
-  
-  console.log(objectSymbols.length); // 2
-  console.log(objectSymbols)         // [Symbol(a), Symbol(b)]
-  console.log(objectSymbols[0])      // Symbol(a)
-  ```
+与Object.getOwnPropertyNames() 类似，您可以将给定对象的所有符号属性作为 Symbol 数组获取。 请注意，Object.getOwnPropertyNames() 本身不包含对象的 Symbol 属性，只包含字符串属性。
+
+因为所有的对象在初始化的时候不会包含任何的 Symbol，除非你在对象上赋值了 Symbol 否则 Object.getOwnPropertySymbols() 只会返回一个空的数组。
+
+##### 示例
+
+```js
+var obj = {};
+var a = Symbol("a");
+var b = Symbol.for("b");
+
+obj[a] = "localSymbol";
+obj[b] = "globalSymbol";
+
+var objectSymbols = Object.getOwnPropertySymbols(obj);
+
+console.log(objectSymbols.length); // 2
+console.log(objectSymbols)         // [Symbol(a), Symbol(b)]
+console.log(objectSymbols[0])      // Symbol(a)
+```
 
 摘自：[MDN - Object.getOwnPropertySymbols()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols)
 
@@ -9958,9 +10152,9 @@ class AbstractClass {
 
 > Reflect 是一个内建对象，可简化 Proxy 的创建。
 >
-> <font color=FF0000>Proxy 中定义的内部方法</font>（注：即那些「内部属性」，详见原文中的表格），<font color=FF0000>例如 \[[Get]] 和 \[[Set]] 等，都只是规范性的，不能直接调用</font>。
+> <font color=FF0000>Proxy 中定义的内部方法</font>（👀 **注**：即那些「内部属性」，详见原文中的表格），<font color=FF0000>例如 \[[Get]] 和 \[[Set]] 等，都只是规范性的，不能直接调用</font>。
 >
-> <font color=FF0000>Reflect 对象（**注：**的存在？）使调用这些内部方法成为了可能</font>。<font color=FF0000>它的方法</font>（**注：**即 Reflect 调用这些 “内部方法” 的方法）<font color=FF0000>是内部方法的 **最小包装**</font>。
+> <font color=FF0000>Reflect 对象（👀 **注：**的存在？）使调用这些内部方法成为了可能</font>。<font color=FF0000>它的方法</font>（👀 **注：**即 Reflect 调用这些 “内部方法” 的方法）<font color=FF0000>是内部方法的 **最小包装**</font>。
 >
 > <font color=FF0000>**对于每个可被 Proxy 捕获的内部方法，在 Reflect 中都有一个对应的方法，其名称和参数与 Proxy 捕捉器相同**</font>。所以，我们可以使用 Reflect 来将操作转发给原始对象。
 >
@@ -9989,14 +10183,14 @@ class AbstractClass {
 > let user = { name: "John", };
 > 
 > user = new Proxy(user, {
->   get(target, prop, receiver) {
->     alert(`GET ${prop}`);
->     return Reflect.get(target, prop, receiver); // (1)
->   },
->   set(target, prop, val, receiver) {
->     alert(`SET ${prop}=${val}`);
->     return Reflect.set(target, prop, val, receiver); // (2)
->   }
+>     get(target, prop, receiver) {
+>       alert(`GET ${prop}`);
+>       return Reflect.get(target, prop, receiver); // (1)
+>     },
+>     set(target, prop, val, receiver) {
+>       alert(`SET ${prop}=${val}`);
+>       return Reflect.set(target, prop, val, receiver); // (2)
+>     }
 > });
 > 
 > let name = user.name; // 显示 "GET name"
@@ -10246,13 +10440,15 @@ Object.getOwnPropertySymbols() 方法让你在查找一个给定对象的符号�
 
 学习自：[几个一看就会的 TypeScript 小技巧](https://juejin.cn/post/7077536309804859428)
 
+
+
 #### symbol 的 11个 内置值
 
 >  除了定义自己使用的 Symbol 值以外，ES6 还提供了 11 个内置的 Symbol 值，指向语言内部使用的方法。
 >
 > 摘自：[阮一峰 ECMAScript 6 (ES6) 标准入门教程 第三版 - Symbol - 8. 内置的 Symbol 值](https://es6.ruanyifeng.com/#docs/symbol#内置的-Symbol-值)
 >
-> 这些内置的Symbol值被称为well-known symbols（常用内置符号）。另外，<font color=FF0000 size=4>**`Symbol.` 可以简写为 `@@`**</font>
+> 这些内置的 Symbol 值被称为 well-known symbols（常用内置符号）。另外，<font color=FF0000 size=4>**`Symbol.` 可以简写为 `@@`**</font>
 >
 > 摘自：[Detailed Overview of Well-known Symbols](https://dmitripavlutin.com/detailed-overview-of-well-known-symbols/)
 
@@ -10264,7 +10460,7 @@ Object.getOwnPropertySymbols() 方法让你在查找一个给定对象的符号�
 | enumerable           | false |
 | configurable         | false |
 
-<font size=4>**Symbol.iterator**</font>
+#### Symbol.iterator
 
 Symbol.iterator 为每一个对象定义了默认的迭代器。该迭代器可以被 for...of 循环使用。
 
@@ -10274,60 +10470,72 @@ Symbol.iterator 为每一个对象定义了默认的迭代器。该迭代器可�
 
 摘自：[MDN - Symbol.iterator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/iterator)
 
-<font size=4>**Symbol.asyncIterator**</font>
+#### Symbol.asyncIterator
 
 Symbol.asyncIterator 符号指定了一个对象的默认异步迭代器。<font color=FF0000>如果一个对象设置了这个属性，它就是异步可迭代对象，可用于 for await...of 循环</font>。
 
-**描述：**Symbol.asyncIterator 是一个用于访问对象的 @@asyncIterator 方法的 <font color=FF0000>内建符号</font>。<font color=FF0000>一个异步可迭代对象 <font size=4>**必须**</font> 要有Symbol.asyncIterator属性</font>。
+##### 描述
+
+Symbol.asyncIterator 是一个用于访问对象的 @@asyncIterator 方法的 <font color=FF0000>内建符号</font>。<font color=FF0000>一个异步可迭代对象 <font size=4>**必须**</font> 要有Symbol.asyncIterator属性</font>。
 
 **内建异步可迭代对象：**<font color=FF0000>目前没有默认设定了 [Symbol.asyncIterator] 属性的JavaScript内建的对象</font>。不过，<mark>WHATWG（网页超文本应用技术工作小组）Streams会被设定为第一批异步可迭代对象，[Symbol.asyncIterator] 最近已在设计规范中落地</mark>。
 
 摘自：[MDN - Symbol.asyncIterator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/asyncIterator)
 
-<font size=4>**Symbol.species**</font>
+#### Symbol.species
 
 Symbol.species 是个 “函数值属性” ，其被构造函数用以创建派生对象。
 
-**描述：**species 访问器属性 <font color=FF0000 size=4>**允许 子类覆盖对象的默认构造函数**</font>。**注：**具体使用参见 下面补充的 get Array[@@species]
+##### 描述
+
+species 访问器属性 <font color=FF0000 size=4>**允许 子类覆盖对象的默认构造函数**</font>。**注：**具体使用参见 下面补充的 get Array[@@species]
 
 摘自：[MDN - Symbol.species](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species)
 
-##### 补充：get Array[@@species] 
+**补充**
+
+#### get Array[@@species]
 
 <font color=FF0000>**Array[@@species] 访问器属性**</font> <font color=FF0000>返回 Array 的 **构造函数**</font>。
 
-- **语法**
+**语法**
 
-  ```js
-  Array[Symbol.species]
-  ```
+```js
+Array[Symbol.species]
+```
 
-- **返回值：**<font color=FF0000>Array 的构造函数</font>。
+##### 返回值
 
-- **描述：**species 访问器属性返回 Array 对象的默认构造函数。<font color=FF0000>子类的构造函数可能会覆盖并改变构造函数的赋值</font>。
+<font color=FF0000>Array 的构造函数</font>。
 
-- **示例：**species 属性返回默认构造函数，它用于 Array 对象的构造函数 Array：
+##### 描述
 
-  ```js
-  Array[Symbol.species]; // function Array()
-  ```
+species 访问器属性返回 Array 对象的默认构造函数。<font color=FF0000>子类的构造函数可能会覆盖并改变构造函数的赋值</font>。
 
-  在继承类的对象中（例如你自定义的数组 MyArray ），MyArray 的 species 属性返回的是 MyArray 这个构造函数. 然而你可能想要覆盖它，以便在你继承的对象 MyArray 中返回父类的构造函数 Array :
+##### 示例
 
-  ```js
-  class MyArray extends Array {
-    // 重写 MyArray 的 species 属性到父类 Array 的构造函数
-    static get [Symbol.species]() { return Array; }
-  }
-  ```
+species 属性返回默认构造函数，它用于 Array 对象的构造函数 Array：
 
-  **注：**这里的示例使用场景，参看 [现代JS教程 - 扩展内建类](https://zh.javascript.info/extend-natives)
+```js
+Array[Symbol.species]; // function Array()
+```
+
+在继承类的对象中（例如你自定义的数组 MyArray ），MyArray 的 species 属性返回的是 MyArray 这个构造函数. 然而你可能想要覆盖它，以便在你继承的对象 MyArray 中返回父类的构造函数 Array :
+
+```js
+class MyArray extends Array {
+  // 重写 MyArray 的 species 属性到父类 Array 的构造函数
+  static get [Symbol.species]() { return Array; }
+}
+```
+
+👀 **注：**这里的示例使用场景，参看 [现代JS教程 - 扩展内建类](https://zh.javascript.info/extend-natives)
 
 摘自：[MDN - get Array[@@species]](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/@@species)
 
 **类似的还有：**get Map[@@species]、get Set[@@species]、get TypedArray[@@species]、get ArrayBuffer[@@species]、get RegExp[@@species]
 
-<font size=4>**Symbol.match**</font>
+#### Symbol.match
 
 Symbol.match <font color=FF0000>指定了 匹配的是 正则表达式 而不是 字符串</font>。<font color=FF0000>**String.prototype.match() 方法会调用此函数**</font>。示例如下：
 
@@ -10344,11 +10552,13 @@ console.log('/foo/'.startsWith(regexp1)); // expected output: true
 console.log('/baz/'.endsWith(regexp1)); // expected output: false
 ```
 
-**描述：**此函数还用于标识对象是否具有正则表达式的行为。<font color=FF0000>比如， String.prototype.startsWith()，String.prototype.endsWith() 和 String.prototype.includes() **这些方法会检查其第一个参数是否是正则表达式，是正则表达式就抛出一个TypeError**</font>。现在，<font color=FF0000>如果 match symbol 设置为 false（ <font size=4>**或者一个 假值 falsy**</font> ）</font>，就表示该对象不打算用作正则表达式对象。
+##### 描述
+
+此函数还用于标识对象是否具有正则表达式的行为。<font color=FF0000>比如， String.prototype.startsWith()，String.prototype.endsWith() 和 String.prototype.includes() **这些方法会检查其第一个参数是否是正则表达式，是正则表达式就抛出一个TypeError**</font>。现在，<font color=FF0000>如果 match symbol 设置为 false（ <font size=4>**或者一个 假值 falsy**</font> ）</font>，就表示该对象不打算用作正则表达式对象。
 
 摘自：[MDN - Symbol.match](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/match)
 
-<font size=4>**Symbol.replace**</font>
+#### Symbol.replace
 
 Symbol.replace 这个属性 <font color=FF0000>指定了当一个字符串替换所匹配字符串时所调用的方法</font>。String.prototype.replace() 方法会调用此方法。示例如下：
 
@@ -10365,7 +10575,7 @@ console.log('foo'.replace(new Replace1('bar'))); // expected output: "s/foo/bar/
 
 摘自：[MDN - Symbol.replace](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/replace)
 
-<font size=4>**Symbol.split**</font>
+#### Symbol.split
 
 Symbol.split <font color=FF0000>指向 一个 <font size=4>**正则表达式的索引处**</font> 分割字符串的方法</font>。 这个方法<font color=FF0000>通过 String.prototype.split() 调用</font>。<mark>注：这里表达有点问题，感觉应该是 String.prototype.split() 会调用 Symbol.split</mark>
 
@@ -10385,9 +10595,9 @@ console.log('foobar'.split(new Split1('foo'))); // expected output: "foo/bar"
 
 摘自：[MDN - Symbol.split](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/split)
 
-<font size=4>**Symbol.toStringTag**</font>
+#### Symbol.toStringTag
 
-Symbol.toStringTag 是一个内置 symbol，它 <font color=FF0000>通常作为对象的属性键使用</font>，<font color=FF0000>对应的属性值应该为字符串类型</font>，<font color=FF0000>这个字符串用来表示该对象的自定义类型标签</font>，通常只有内置的 Object.prototype.toString() 方法会去读取这个标签并把它包含在自己的返回值里。(<mark>注，这里说成：使用 Object.prototype.toString() 方法时，会自动调用 Symbol.toStringTag，似乎更好；否则太让人费解了... </mark>)
+Symbol.toStringTag 是一个内置 symbol，它 <font color=FF0000>通常作为对象的属性键使用</font>，<font color=FF0000>对应的属性值应该为字符串类型</font>，<font color=FF0000>这个字符串用来表示该对象的自定义类型标签</font>，通常只有内置的 Object.prototype.toString() 方法会去读取这个标签并把它包含在自己的返回值里。(👀  <mark>注，这里说成：使用 Object.prototype.toString() 方法时，会自动调用 Symbol.toStringTag，似乎更好；否则太让人费解了... </mark>)
 
 **描述：**<font color=FF0000 size=4>**许多内置的 JavaScript 对象类型即便没有 toStringTag 属性，也能被 toString() 方法识别并返回特定的类型标签**</font>，比如，另外，注意下面的用法，使用 call 确实很巧妙
 
@@ -10410,7 +10620,7 @@ Object.prototype.toString.call(Promise.resolve()); // "[object Promise]"
 // ... and more
 ```
 
-但你自己创建的类（注：不是内建类）不会有这份特殊待遇，toString() 找不到 toStringTag 属性时只好返回默认的 Object 标签：
+但你自己创建的类（👀  **注**：不是内建类）不会有这份特殊待遇，toString() 找不到 toStringTag 属性时只好返回默认的 Object 标签：
 
 ```js
 class ValidatorClass {}
@@ -10430,7 +10640,7 @@ Object.prototype.toString.call(new ValidatorClass()); // "[object Validator]"
 
 摘自：[MDN - Symbol.toStringTag](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag)
 
-注：这里说的不太清楚，可以参见 [阮一峰的 ECMAScript 6 入门 - Symbol - Symbol.toStringTag](https://es6.ruanyifeng.com/#docs/symbol#Symbol-toStringTag)
+👀  **注**：这里说的不太清楚，可以参见 [阮一峰的 ECMAScript 6 入门 - Symbol - Symbol.toStringTag](https://es6.ruanyifeng.com/#docs/symbol#Symbol-toStringTag)
 
 对象的 Symbol.toStringTag 属性，指向一个方法。在该对象上面调用 Object.prototype.toString 方法时，如果这个属性存在，它的返回值会出现在 toString 方法返回的字符串之中，表示对象的类型。也就是说，这个属性可以用来定制 [object Object] 或 [object Array] 中 object 后面的那个字符串。
 
@@ -10465,7 +10675,7 @@ ES6 新增内置对象的 Symbol.toStringTag 属性值如下。
 - **Symbol.prototype[Symbol.toStringTag]：**'Symbol'
 - **Generator.prototype[Symbol.toStringTag]：**'Generator'
 - **GeneratorFunction.prototype[Symbol.toStringTag]：**'GeneratorFunction'
-- 注，上面类似的还有：
+- 👀 注，上面类似的还有：
   -  **globalThis[Symbol.toStringTag] /  window[Symbol.toStringTag]：**'global' / 'window'
   - **XMLHttpRequest.prototype[Symbol.toStringTag]：**'XMLHttpRequest'
 
@@ -10485,7 +10695,7 @@ toString 就类似于“磕了药似的 typeof”，不仅能检查原始数据�
 
 摘自：[现代JS教程 - 类检查："instanceof"](https://zh.javascript.info/instanceof)
 
-<font size=4>**Symbol.toPrimitive**</font>
+#### Symbol.toPrimitive
 
 Symbol.toPrimitive 是一个内置的 Symbol 值，它 是作为对象的函数值属性存在的，<font color=FF0000 size=4>**当一个对象转换为对应的原始值时，会调用此函数**</font>。示例如下：
 
@@ -10530,7 +10740,7 @@ console.log(obj2 + ""); // "true"  -- hint 参数值是 "default"
 
 摘自：[MDN - Symbol.toPrimitive](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toPrimitive) 另外，关于对象的初始值转换可以参看：[现代JS教程 - 对象 — 原始值转换](https://zh.javascript.info/object-toprimitive)，另外，其中也有关于 hint 的三种类型（number、string、default）使用更易懂的解释
 
-<font size=4>**Symbol.isConcatSpreadable**</font>
+#### Symbol.isConcatSpreadable
 
 内置的 Symbol.isConcatSpreadable 符号<font color=FF0000>用于配置某对象作为 Array.prototype.concat() 方法的参数时是否展开其数组元素</font>。示例如下，注意下面numeric的 Symbol.isConcatSpreadable 属性值 被设置为 false 后，再使用 concat 的效果。
 
@@ -10567,7 +10777,7 @@ console.log(alphaNumeric); // expected output: Array ["a", "b", "c", Array [1, 2
 
 摘自：[MDN - Symbol.isConcatSpreadable](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/isConcatSpreadable)
 
-<font size=4>**Symbol.hasInstance**</font>
+#### Symbol.hasInstance
 
 Symbol.hasInstance <font color=FF0000>用于判断某对象是否为某构造器的实例</font>。因此你可以用它自定义 instanceof 操作符在某个类上的行为。
 
@@ -10579,7 +10789,7 @@ Symbol.hasInstance <font color=FF0000>用于判断某对象是否为某构造器
 
 摘自：[JavaScript ES6 Symbol.hasInstance的理解](https://www.cnblogs.com/waitforyou/p/7080591.html)
 
-<font size=4>**Symbol.unscopables**</font>
+#### Symbol.unscopables
 
 Symbol.unscopables 指 <font color=FF0000>用于指定对象值，其对象自身和继承的从关联对象的 with 环境绑定中排除的属性名称</font>。示例如下：
 
@@ -10593,12 +10803,15 @@ with (object1) {
 }
 ```
 
-**描述**
-可以在任何对象上定义 @@unscopables symbol ( Symbol.unscopables )，<font color=FF0000>用于排除属性名称并与 with 环境绑定在一起作为词法变量公开</font>。 <mark>请注意，如果使用 Strict mode，语句将不可用，并且可能也不需要 symbol</mark>。
+##### 描述
+
+可以在任何对象上定义 @@unscopables symbol ( Symbol.unscopables )，用于排除属性名称并与 with 环境绑定在一起作为词法变量公开。 请注意，如果使用 Strict mode，语句将不可用，并且可能也不需要 symbol。
 
 在 unscopables 对象上设置属性为 true（<mark>注：根据 Symbol.match 中的特性，如果值为 falsy，则表示该对象不打算用作正则表达式对象。类似的，也经过测试，发现这里属性值为 truthy，则... </mark>），将使其 unscopable 并且因此该属性也将不会在词法环境变量中出现。 如果设置属性为 false ，则将使其可 scopable 并且该属性会出现在词法环境变量中。
 
-**示例：**下列的代码可兼容 ES5 及以下版本。然而，在 ES6 或其后续版本中，Array.prototype.keys() 方法才会出现。意味着内部 with 环境“关键字” 存在该方法，但变量中不会存在。 也就是说，当 unscopables symbol 被展示时，内置的unscopables设置是由 Array.prototype[@@unscopables\] 展示并实现的， 一些 Array 的方法 将作为 scoped 放入 with语句中。
+##### 示例
+
+下列的代码可兼容 ES5 及以下版本。然而，在 ES6 或其后续版本中，Array.prototype.keys() 方法才会出现。意味着内部 with 环境“关键字” 存在该方法，但变量中不会存在。 也就是说，当 unscopables symbol 被展示时，内置的unscopables设置是由 Array.prototype[@@unscopables\] 展示并实现的， 一些 Array 的方法 将作为 scoped 放入 with语句中。
 
 ```js
 var keys = [];
@@ -10608,7 +10821,7 @@ Object.keys(Array.prototype[Symbol.unscopables]);
 // ['copyWithin', 'entries', 'fill', 'find', 'findIndex', 'flat', 'flatMap', 'includes', 'keys', 'values', 'at']
 ```
 
-注：可以尝试下打印 `Array.prototype[Symbol.unscopables]` 的结果：
+👀  **注**：可以尝试下打印 `Array.prototype[Symbol.unscopables]` 的结果：
 
 ```js
 [Object: null prototype] {
@@ -10648,48 +10861,52 @@ with(obj) {
 
 Symbol.for(key) 方法会根据给定的键 key，来从运行时的 symbol 注册表中找到对应的 symbol，<font color=FF0000>如果找到了，则返回它</font>，<font color=FF0000>否则，新建一个与该键关联的 symbol，并放入全局 symbol 注册表中</font>。
 
-- **语法**
+##### 语法
 
-  ```js
-  Symbol.for(key);
-  ```
+```js
+Symbol.for(key);
+```
 
-- **参数**
-  **key：**一个字符串，<font color=FF0000>作为 symbol 注册表中与某 symbol 关联的键（同时也会作为该 symbol 的描述）</font>。
-- **返回值：**<font color=FF0000>返回由给定的 key 找到的 symbol，否则就是返回新创建的 symbol</font>。
+##### 参数
 
-- **描述：**
+**key：**一个字符串，<font color=FF0000>作为 symbol 注册表中与某 symbol 关联的键（同时也会作为该 symbol 的描述）</font>。
 
-  和 <font color=FF0000>Symbol() 不同的是，（ Symbol() ）用 Symbol.for() 方法创建的的 symbol 会被放入一个全局 symbol 注册表中</font>。<mark>Symbol.for() 并不是每次都会创建一个新的 symbol，它会首先检查给定的 key 是否已经在注册表中了。假如是，则会直接返回上次存储的那个。否则，它会再新建一个</mark>。
+##### 返回值
 
-  **全局 symbol 注册表**
+<font color=FF0000>返回由给定的 key 找到的 symbol，否则就是返回新创建的 symbol</font>。
 
-  symbol 注册表中的记录结构：
+##### 描述
 
-  | 字段名     | 字段值                          |
-  | :--------- | :------------------------------ |
-  | [[key]]    | 一个字符串，用来标识每个 symbol |
-  | [[symbol]] | 存储的 symbol 值                |
+和 <font color=FF0000>Symbol() 不同的是，（ Symbol() ）用 Symbol.for() 方法创建的的 symbol 会被放入一个全局 symbol 注册表中</font>。<mark>Symbol.for() 并不是每次都会创建一个新的 symbol，它会首先检查给定的 key 是否已经在注册表中了。假如是，则会直接返回上次存储的那个。否则，它会再新建一个</mark>。
 
-- **示例：**
+##### 全局 symbol 注册表
 
-  ```js
-  Symbol.for("foo"); // 创建一个 symbol 并放入 symbol 注册表中，键为 "foo"
-  Symbol.for("foo"); // 从 symbol 注册表中读取键为"foo"的 symbol
-  
-  Symbol.for("bar") === Symbol.for("bar"); // true，证明了上面说的
-  Symbol("bar") === Symbol("bar"); // false，Symbol() 函数每次都会返回新的一个 symbol
-  
-  var sym = Symbol.for("mario");
-  sym.toString(); // "Symbol(mario)"，mario 既是该 symbol 在 symbol 注册表中的键名，又是该 symbol 自身的描述字符串
-  ```
+symbol 注册表中的记录结构：
 
-  为了防止冲突，最好给你要放入 symbol 注册表中的 symbol 带上键前缀。
+| 字段名      | 字段值                          |
+| :---------- | :------------------------------ |
+| \[[key]]    | 一个字符串，用来标识每个 symbol |
+| \[[symbol]] | 存储的 symbol 值                |
 
-  ```js
-  Symbol.for("mdn.foo");
-  Symbol.for("mdn.bar");
-  ```
+##### 示例
+
+```js
+Symbol.for("foo"); // 创建一个 symbol 并放入 symbol 注册表中，键为 "foo"
+Symbol.for("foo"); // 从 symbol 注册表中读取键为"foo"的 symbol
+
+Symbol.for("bar") === Symbol.for("bar"); // true，证明了上面说的
+Symbol("bar") === Symbol("bar"); // false，Symbol() 函数每次都会返回新的一个 symbol
+
+var sym = Symbol.for("mario");
+sym.toString(); // "Symbol(mario)"，mario 既是该 symbol 在 symbol 注册表中的键名，又是该 symbol 自身的描述字符串
+```
+
+为了防止冲突，最好给你要放入 symbol 注册表中的 symbol 带上键前缀。
+
+```js
+Symbol.for("mdn.foo");
+Symbol.for("mdn.bar");
+```
 
 摘自：[MDN - Symbol.for()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/for)
 
@@ -10697,15 +10914,19 @@ Symbol.for(key) 方法会根据给定的键 key，来从运行时的 symbol 注�
 
 Symbol.keyFor(sym) 方法用来获取全局symbol 注册表中与某个 symbol 关联的键。
 
-- **语法**
+##### 语法
 
-  ```js
-  Symbol.keyFor(sym);
-  ```
+```js
+Symbol.keyFor(sym);
+```
 
-- **参数**
-  sym：必选参数，需要查找键值的某个 Symbol 。
-- **返回值：**<mark>如果全局注册表中查找到该symbol，则返回该symbol的key值，返回值为字符串类型。否则返回undefined</mark>
+##### 参数
+
+sym：必选参数，需要查找键值的某个 Symbol 。
+
+##### 返回值
+
+<mark>如果全局注册表中查找到该 symbol，则返回该 symbol 的 key 值，返回值为字符串类型。否则返回 undefined</mark>
 
 摘自：[MDN - Symbol.keyFor()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/keyFor)
 
@@ -10713,7 +10934,7 @@ Symbol.keyFor(sym) 方法用来获取全局symbol 注册表中与某个 symbol �
 
 description 是一个<font color=FF0000>只读属性</font>，它会返回 Symbol 对象的可选描述的字符串。
 
-**示例：**
+##### 示例
 
 ```js
 console.log(Symbol('desc').description); // expected output: "desc"
@@ -10723,7 +10944,7 @@ console.log(Symbol.iterator.description); // expected output: "Symbol.iterator"
 console.log(Symbol.for('foo').description); // expected output: "foo"
 ```
 
-**语法**
+##### 语法
 
 ```js
 Symbol('myDescription').description;
@@ -10731,8 +10952,9 @@ Symbol.iterator.description;
 Symbol.for('foo').description;
 ```
 
-**描述**
-Symbol 对象可以通过一个可选的描述创建，可用于调试，但不能用于访问 symbol 本身。Symbol.prototype.description 属性可以用于读取该描述。<mark>与 Symbol.prototype.toString() 不同的是它不会包含 "Symbol()" 的字符串</mark>。
+##### 描述
+
+Symbol 对象可以通过一个可选的描述创建，可用于调试，但不能用于访问 symbol 本身。Symbol.prototype.description 属性可以用于读取该描述。与 Symbol.prototype.toString() 不同的是它不会包含 "Symbol()" 的字符串。
 
 摘自：[MDN - Symbol.prototype.description](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/description)
 
@@ -11130,11 +11352,29 @@ history.replaceState(stateObj, title[, url]);
 
   摘自：[MDN - Window: 页面隐藏事件(pagehide event)](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/pagehide_event)
 
-- <font size=4>**pageshow：**</font>当一条<font color=FF0000>会话历史记录被执行的时候将会触发页面显示(pageshow)事件</font>。<font color=FF0000>这包括了后退/前进按钮操作，同时也会在onload 事件触发后初始化页面时触发</font>
+- <font size=4>**pageshow：**</font>当一条<font color=FF0000>会话历史记录被执行的时候将会触发页面显示 ( pageshow ) 事件</font>。<font color=FF0000>这包括了后退/前进按钮操作，同时也会在onload 事件触发后初始化页面时触发</font>
 
   事件处理程序属性：onpageshow
 
-  摘自：[MDN - pageshow]()
+  摘自：[MDN - pageshow](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/pageshow_event)
+
+- <font size=4>**visibilitychange：**</font>当其选项卡 ( Tab ) 的内容变得可见或被隐藏时，会在文档上触发 visibilitychange（能见度更改） 事件。该事件无法被取消。
+
+  **语法**
+
+  Use the event name in methods like addEventListener(), or set an event handler property.
+
+  ```js
+  addEventListener('visibilitychange', event => { });
+  
+  onvisibilitychange = event => { };
+  ```
+
+  **用法**
+
+  <font color=FF0000>The event doesn't include the document's updated visibility status</font>, but <font color=FF0000>**you can get that information from the document's [`visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState) property**</font>.
+
+  This event fires with a `visibilityState` of `hidden` when a user navigates to a new page, switches tabs, closes the tab, minimizes or closes the browser, or, on mobile, switches from the browser to a different app. Transitioning to `hidden` is the last event that's reliably observable by the page, so developers should treat it as the likely end of the user's session (for example, for [sending analytics data](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon) （👀 **注**：即使用 sendBeacon() ）).
 
 - <font size=4>**popstate：**</font>浏览器在被点击“后退”或者“前进"按钮后触发
 
@@ -11248,26 +11488,26 @@ history.replaceState(stateObj, title[, url]);
 
   类似 mouseover，它们两者之间的差别是 mouseenter 不会冒泡（bubble），也就是说当指针从它的子层物理空间移到它的物理空间上时不会触发
 
-  | ![](https://developer.mozilla.org/@api/deki/files/5908/=mouseenter.png) |    ![](https://i.loli.net/2021/07/19/tivKCq5axQ3mBfH.png)    |
-  | :----------------------------------------------------------: | :----------------------------------------------------------: |
+  | ![img](https://s2.loli.net/2022/07/14/F5YUf47eCEwvrcb.png)   | ![](https://i.loli.net/2021/07/19/tivKCq5axQ3mBfH.png)       |
+  | :----------------------------------------------------------- | :----------------------------------------------------------- |
   | (mouseenter事件)触发时，会向层次结构的每个元素发送一个mouseenter事件。当指针到达文本时，此处将4个事件发送到层次结构的四个元素。 | 一个单独的mouseover事件被发送到DOM树的最深层元素，然后它将层次结构向上冒泡，直到它被处理程序取消或到达根目录。 |
 
   对于深层次结构，发送的mouseenter事件数量可能非常大并且会导致严重的性能问题。在这种情况下，最好是监听鼠标悬停事件。（可使用chrome开发者工具选项卡中的Performance进行性能测试）
 
   结合其对称事件, mouseleave, mouseenter DOM事件的行为方式与CSS  :hover 伪类非常相似。
 
-  <font color=FF0000>**不可以**冒泡，也**不可以**取消（preventDefault</font>
+  <font color=FF0000>**不可以**冒泡，也**不可以**取消 ( preventDefault )</font>
 
   事件处理程序属性：onmousenter
 
   摘自：[MDN - mouseenter](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/mouseenter_event)
 
-- <font size=4>**mouseleave：**</font>指点设备（通常是鼠标）的指针移出某个元素时，会触发mouseleave事件。
+- <font size=4>**mouseleave：**</font>指点设备（通常是鼠标）的指针移出某个元素时，会触发 mouseleave事件。
 
-  <font color=FF0000>mouseleave  和 mouseout 是相似的，但是两者的不同在于**mouseleave 不会冒泡而mouseout 会冒泡**。</font><mark>这意味着当指针离开元素及其所有后代时，会触发mouseleave，而当指针离开元素或离开元素的后代（即使指针仍在元素内）时，会触发mouseout。</mark>
+  <font color=FF0000>mouseleave  和 mouseout 是相似的，但是两者的不同在于**mouseleave 不会冒泡而 mouseout 会冒泡**。</font><mark>这意味着当指针离开元素及其所有后代时，会触发 mouseleave，而当指针离开元素或离开元素的后代（即使指针仍在元素内）时，会触发 mouseout。</mark>
 
-  | ![mouseenter.png](https://developer.mozilla.org/@api/deki/files/5910/=mouseleave.png) | ![mouseover.png](https://developer.mozilla.org/@api/deki/files/5911/=mouseout.png) |
-  | :----------------------------------------------------------: | :----------------------------------------------------------: |
+  | ![img](https://s2.loli.net/2022/07/14/F5YUf47eCEwvrcb.png)   | ![img](https://s2.loli.net/2022/07/14/QSkcI7hagzZ9bVA.png)   |
+  | :----------------------------------------------------------- | :----------------------------------------------------------- |
   | 当离开它们时，一个mouseleave事件被发送到层次结构的每个元素。当指针从文本移动到这里表示的最外面的div之外的区域时，这里4个事件会发送到层次结构的四个元素。 | 一个单一的鼠标事件mouseout被发送到DOM树最深的元素，然后它冒泡层次，直到它被处理程序取消或到达根。 |
 
   <font color=FF0000>**不可以**冒泡，也**不可以**取消（preventDefault）</font>
@@ -11292,15 +11532,15 @@ history.replaceState(stateObj, title[, url]);
 
   摘自：[MDN - dragstart](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/dragstart_event)
 
-- <font size=4>**rejectionhandled：**</font><font color=FF0000>当 Promise 被 rejected 且 **有rejection处理器** 时，会在 <font size=4>**全局触发**</font> rejectionhandled 事件</font>（通常是发生在window 下，但是也可能发生在 Worker 中）。应用于调试一般应用回退。当 Promise 被 rejected 且没有 rejection 处理器处理时会触发 unhandledrejection 事件。这两个事件协同工作
+- <font size=4>**rejectionhandled：**</font><font color=FF0000>当 <font size=4>**Promise**</font> 被 rejected 且 **有rejection处理器** 时，会在 <font size=4>**全局触发**</font> rejectionhandled 事件</font>（通常是发生在window 下，但是也可能发生在 Worker 中）。应用于调试一般应用回退。当 Promise 被 rejected 且没有 rejection 处理器处理时会触发 unhandledrejection 事件。这两个事件协同工作
 
   不可以冒泡，不可以取消
 
   摘自：[MDN - Window: rejectionhandled event](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/rejectionhandled_event)
 
-- <font size=4>**unhandledrejection：**</font><font color=FF0000>当Promise 被 reject 且 **没有 reject 处理器** 的时候，会触发 unhandledrejection 事件（注：和rejectionhandled 一样，在全局作用域触发 ）</font>；这可能发生在 window 下，但也可能发生在 Worker 中。 这对于调试回退错误处理非常有用。
+- <font size=4>**unhandledrejection：**</font><font color=FF0000>当 <font size=4>**Promise**</font> 被 reject 且 **没有 reject 处理器** 的时候，会触发 unhandledrejection 事件（注：和rejectionhandled 一样，在全局作用域触发 ）</font>；这可能发生在 window 下，但也可能发生在 Worker 中。 这对于调试回退错误处理非常有用。
 
-  不可以冒泡，可以取消（preventDefault）
+  不可以冒泡，可以取消 ( preventDefault )
 
   事件处理程序属性：WindowEventHandlers.onunhandledrejection
 
@@ -11408,6 +11648,7 @@ history.replaceState(stateObj, title[, url]);
   > - load：浏览器不仅加载完成了 HTML，还加载完成了所有外部资源：图片，样式等。
   >
   > 摘自：[现代 JS 教程 - 页面生命周期：DOMContentLoaded，load，beforeunload，unload](https://zh.javascript.info/onload-ondomcontentloaded)
+  
 - <font size=4>**readystatechange：**</font>当文档的 readyState 属性发生改变时，会触发 readystatechange 事件。
 
   不可以冒泡，不可以取消
@@ -11531,19 +11772,19 @@ Event 接口表示在 DOM 中出现的事件。
 
 Event() 构造函数, 创建一个新的事件对象 Event。
 
-- **语法**
+##### 语法
 
-  ```js
-  event = new Event(typeArg, eventInit);
-  ```
+```js
+event = new Event(typeArg, eventInit);
+```
 
-- **参数**
-  
-  - **typeArg：**是DOMString 类型，<font color=FF0000>表示所创建事件的名称</font>。
-  - **eventInit：**可选，是 EventInit 类型的字典，接受以下字段:
-    - <font color=FF0000>**bubbles：**</font>可选，Boolean类型，<font color=FF0000>默认值为 false</font>，<font color=FF0000>表示该事件是否冒泡</font>。
-    - <font color=FF0000>**cancelable：**</font>可选，Boolean类型，<font color=FF0000>默认值为 false</font>， <font color=FF0000>表示该事件能否被取消</font>。
-    - **composed：**可选，Boolean类型，<font color=FF0000>默认值为 false</font>，<font color=FF0000>指示事件是否会在影子DOM根节点之外触发侦听器</font>。
+##### 参数
+
+- **typeArg：**是DOMString 类型，<font color=FF0000>表示所创建事件的名称</font>。
+- **eventInit：**可选，是 EventInit 类型的字典，接受以下字段:
+  - <font color=FF0000>**bubbles：**</font>可选，Boolean类型，<font color=FF0000>默认值为 false</font>，<font color=FF0000>表示该事件是否冒泡</font>。
+  - <font color=FF0000>**cancelable：**</font>可选，Boolean类型，<font color=FF0000>默认值为 false</font>， <font color=FF0000>表示该事件能否被取消</font>。
+  - **composed：**可选，Boolean类型，<font color=FF0000>默认值为 false</font>，<font color=FF0000>指示事件是否会在影子DOM根节点之外触发侦听器</font>。
 
 摘自：[MDN - Event()](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/Event)
 
@@ -11551,25 +11792,28 @@ Event() 构造函数, 创建一个新的事件对象 Event。
 
 <font color=FF0000>向一个指定的事件目标**<font size=4> 派发 </font>一个事件**,  并 <font size=4>以合适的顺序**同步调用**</font> 目标元素相关的事件处理函数</font>。标准事件处理规则（包括事件捕获和可选的冒泡过程）同样适用于通过手动的使用dispatchEvent()方法派发的事件。
 
-- **语法**
+##### 语法
 
-  ```js
-  cancelled = !target.dispatchEvent(event)
-  ```
+```js
+cancelled = !target.dispatchEvent(event)
+```
 
-- **参数**
+##### 参数
 
-  - **event：**是要被派发的**事件对象**。
-  - **target：**<font color=FF0000>被用来初始化 事件 和 决定将会触发 目标</font>
+- **event：**是要被派发的**事件对象**。
+- **target：**<font color=FF0000>被用来初始化 事件 和 决定将会触发 目标</font>
 
-- **返回值：**当该事件是可取消的（cancelable为true），并且至少一个该事件的 事件处理方法 调用了Event.preventDefault()，则返回值为false；否则返回true。
+##### 返回值
+
+当该事件是可取消的（cancelable为true），并且至少一个该事件的 事件处理方法 调用了Event.preventDefault()，则返回值为false；否则返回true。
 
 <mark>如果该被派发的事件的事件类型( event's type )在方法调用之前没有被经过初始化被指定</mark>，<mark>就会抛出一个 UNSPECIFIED_EVENT_TYPE_ERR 异常</mark>，<mark style=background-color:aqua>或者如果事件类型是null或一个空字符串. event handler 就会抛出未捕获的异常</mark>； 这些 event handlers 运行在一个嵌套的调用栈中： 他们会阻塞调用直到他们处理完毕，但是异常不会冒泡。
 
-**注意**
+##### 注意
+
 与浏览器原生事件不同，<mark>原生事件是由DOM派发的，并通过event loop异步调用事件处理程序，而 <font color=FF0000>**dispatchEvent() 则是同步调用事件处理程序**</font></mark>。在调用dispatchEvent()后，所有监听该事件的事件处理程序将在代码继续前执行并返回。
 
-dispatchEvent()是create-init-dispatch过程的最后一步，用于将事件调度到实现的事件模型中。可以使用Event构造函数来创建事件。
+dispatchEvent() 是 create-init-dispatch 过程的最后一步，用于将事件调度到实现的事件模型中。可以使用Event构造函数来创建事件。
 
 摘自：[MDN - EventTarget.dispatchEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/dispatchEvent)
 
@@ -11577,13 +11821,17 @@ dispatchEvent()是create-init-dispatch过程的最后一步，用于将事件调
 
 CustomEvent 事件是<font color=FF0000>由程序创建的</font>，<font color=FF0000>**可以有任意自定义功能的事件**</font>。
 
-- **构造函数**
-  - **CustomEvent()：**<font color=FF0000>创建一个自定义事件</font>。
+##### 构造函数
 
-- **属性**
-  - **CustomEvent.detail：**只读，任何时间初始化时传入的数据
-- **方法**
-  - **CustomEvent.initCustomEvent() ：**<font color=FF0000 size=4>**已废弃**</font>。初始化一个 CustomEvent 对象。如果事件已经被触发，这个方法将不会起任何作用。
+**CustomEvent()：**<font color=FF0000>创建一个自定义事件</font>。
+
+##### 属性
+
+**CustomEvent.detail：**只读，任何时间初始化时传入的数据
+
+##### 方法
+
+**CustomEvent.initCustomEvent() ：**<font color=FF0000 size=4>**已废弃**</font>。初始化一个 CustomEvent 对象。如果事件已经被触发，这个方法将不会起任何作用。
 
 摘自：[MDN - CustomEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/CustomEvent)
 
@@ -11593,7 +11841,7 @@ CustomEvent 事件是<font color=FF0000>由程序创建的</font>，<font color=
 
 表示事件流当前处于哪一个阶段。
 
-**语法**
+##### 语法
 
 ```js
 var phase = event.eventPhase;
@@ -11601,7 +11849,7 @@ var phase = event.eventPhase;
 
 返回一个代表当前执行阶段的 整数值
 
-**常量：**事件阶段常量
+##### 常量：事件阶段常量
 下面这些值表示了事件流当前执行的阶段。
 
 | 常量                                            | 值   | 描述                                                         |
@@ -11640,13 +11888,15 @@ Event 接口的 isTrusted 属性是一个只读属性，它是一个布尔值（
 
 如果事件没有次要目标，relatedTarget 将返回 null.
 
-- **语法**
+##### 语法
 
-  ```js
-  var target = instanceOfMouseEvent.relatedTarget
-  ```
+```js
+var target = instanceOfMouseEvent.relatedTarget
+```
 
-- **返回值：** EventTarget 对象或者 null.
+##### 返回值
+
+EventTarget 对象或者 null.
 
 摘自：[MDN - MouseEvent.relatedTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/MouseEvent/relatedTarget)
 
@@ -11660,45 +11910,51 @@ MouseEvent.button是只读属性，它返回一个值，代表用户按下并触
 
 用户可能会改变鼠标按键的配置，<font color=FF0000>因此当一个事件的MouseEvent.button值为0时，它可能不是由物理上设备最左边的按键触发的。但是对于一个标准按键布局的鼠标来说就会是左键</font>。
 
-- **语法**
+##### 语法
 
-  ```js
-  var buttonPressed = instanceOfMouseEvent.button
-  ```
+```js
+var buttonPressed = instanceOfMouseEvent.button
+```
 
-- **返回值**
-  一个数值，代表按下的鼠标按键：
-  - **0：**<font color=FF0000>主按键</font>，通常指鼠标左键或默认值（译者注：如document.getElementById('a').click()这样触发就会是默认值）
-  - **1：**辅助按键，通常指鼠标滚轮中键
-  - **2：**<font color=FF0000>次按键</font>，通常指鼠标右键
-  - **3：**第四个按钮，通常指浏览器后退按钮
-  - **4：**第五个按钮，通常指浏览器的前进按钮
+##### 返回值
 
-  对于配置为左手使用的鼠标，按键操作将正好相反。此种情况下，从右至左读取值。
+一个数值，代表按下的鼠标按键：
+
+- **0：**<font color=FF0000>主按键</font>，通常指鼠标左键或默认值（译者注：如document.getElementById('a').click()这样触发就会是默认值）
+- **1：**辅助按键，通常指鼠标滚轮中键
+- **2：**<font color=FF0000>次按键</font>，通常指鼠标右键
+- **3：**第四个按钮，通常指浏览器后退按钮
+- **4：**第五个按钮，通常指浏览器的前进按钮
+
+对于配置为左手使用的鼠标，按键操作将正好相反。此种情况下，从右至左读取值。
 
 摘自：[MDN - MouseEvent.button](https://developer.mozilla.org/zh-CN/docs/Web/API/MouseEvent/button)
 
-#### MouseEvent.buttons（注意与MouseEvent.button的区别）
+#### MouseEvent.buttons
+
+⚠️ 注意与 MouseEvent.button 的区别
 
 只读属性MouseEvent.buttons指示事件触发时哪些鼠标按键被按下。
 每一个按键都用一个给定的数（见下文）表示。<font color=FF0000>如果同时多个按键被按下，buttons 的值为各键对应值做与计算（+）后的值</font>。<mark>例如，如果右键（2）和滚轮键（4）被同时按下，buttons 的值为 2 + 4 = 6</mark>。
 
 **注意：**属性 MouseEvent.button 和 MouseEvent.buttons 是不同的。<font color=FF0000>MouseEvent.buttons 可指示任意鼠标事件中鼠标的按键情况，而 MouseEvent.button 只能保证在由按下和释放一个或多个按键时触发的事件中获得正确的值</font>。
 
-- **语法**
+##### 语法
 
-  ```js
-  var buttonPressed = instanceOfMouseEvent.buttons
-  ```
+```js
+var buttonPressed = instanceOfMouseEvent.buttons
+```
 
-- **返回值**
-  <font color=FF0000>一个数字，用来标识鼠标按下的一个或者多个按键。如果按下的键为多个，则值等于所有按键对应数值进行或(|)运算的结果。</font>
-  - 0  : 没有按键或者是没有初始化
-  - 1  : 鼠标左键
-  - 2  : 鼠标右键
-  - 4  : 鼠标滚轮或者是中键
-  - 8  : 第四按键 (通常是“浏览器后退”按键)
-  - 16 : 第五按键 (通常是“浏览器前进”)
+##### 返回值
+
+一个数字，用来标识鼠标按下的一个或者多个按键。如果按下的键为多个，则值等于所有按键对应数值进行或(|)运算的结果。
+
+- 0  : 没有按键或者是没有初始化
+- 1  : 鼠标左键
+- 2  : 鼠标右键
+- 4  : 鼠标滚轮或者是中键
+- 8  : 第四按键 (通常是“浏览器后退”按键)
+- 16 : 第五按键 (通常是“浏览器前进”)
 
 摘自：[MDN - MouseEvent.buttons](https://developer.mozilla.org/zh-CN/docs/Web/api/MouseEvent/buttons)
 
@@ -12058,17 +12314,19 @@ Document.readyState 属性描述了document 的加载状态。
 
 当该属性值发生变化时，会在 document 对象上触发 readystatechange  事件。
 
-- **语法**
+**语法**
 
-  ```js
-  var string = document.readyState;
-  ```
+```js
+var string = document.readyState;
+```
 
-- **值：**一个文档的 readyState 可以是以下之一
+##### 值
 
-  - **loading（正在加载）：**document 仍在加载。
-  - **interactive（可交互）：**文档已被解析，"正在加载"状态结束（DOMElementLoaded），但是诸如图像，样式表和框架之类的子资源仍在加载。
-  - **complete（完成）：**文档和所有子资源已完成加载。表示 load 状态的事件即将被触发。
+一个文档的 readyState 可以是以下之一
+
+- **loading（正在加载）：**document 仍在加载。
+- **interactive（可交互）：**文档已被解析，"正在加载"状态结束（DOMElementLoaded），但是诸如图像，样式表和框架之类的子资源仍在加载。
+- **complete（完成）：**文档和所有子资源已完成加载。表示 load 状态的事件即将被触发。
 
 摘自：[MDN - document.readyState](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/readyState)
 
@@ -12147,17 +12405,19 @@ x = (2, 3);
 console.log(x); // expected output: 3
 ```
 
-- **语法**
+##### 语法
 
-  ```js
-  expr1, expr2, expr3...
-  ```
+```js
+expr1, expr2, expr3...
+```
 
-- **参数**
+##### 参数
 
-  - **expr1, expr2, expr3...：**任一表达式
+**expr1, expr2, expr3...：**任一表达式
 
-- **描述：**当你想要在<mark>期望一个表达式的位置包含多个表达式时，可以使用逗号操作符</mark>。<font color=FF0000>这个操作符最常用的一种情况是：for 循环中提供多个参数</font>。
+##### 描述
+
+当你想要在<mark>期望一个表达式的位置包含多个表达式时，可以使用逗号操作符</mark>。<font color=FF0000>这个操作符最常用的一种情况是：for 循环中提供多个参数</font>
 
 摘自：[MDN - 逗号操作符](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Comma_Operator)
 
@@ -12251,16 +12511,16 @@ mixed.sort(); // ↪ [-12n, 0, 0n, 10, 4n, 4, 6]
 
 - **BigInt.asIntN()：**将 BigInt 值转换为一个 -2^width-1^ 与 2^width-1^-1 之间的有符号整数。
 
-  - **语法**
+  **语法**
 
-    ```js
-    BigInt.asIntN(width, bigint);
-    ```
+  ```js
+  BigInt.asIntN(width, bigint);
+  ```
 
-  - **参数**
+  **参数**
 
-    - width：可存储整数的位数。
-    - bigint：要存储在指定位数上的整数。
+  - width：可存储整数的位数。
+  - bigint：要存储在指定位数上的整数。
 
   - **返回值：**bigint 模(modulo) 2^width^ 作为有符号整数的值。
 
@@ -12268,20 +12528,20 @@ mixed.sort(); // ↪ [-12n, 0, 0n, 10, 4n, 4, 6]
 
 - **BigInt.asUintN()：**将一个 BigInt 值转换为 0 与 2^width^-1 之间的无符号整数。
 
-  - **语法**
+  **语法**
 
-    ```js
-    BigInt.asUintN(width, bigint);
-    ```
+  ```js
+  BigInt.asUintN(width, bigint);
+  ```
 
-  - **参数**
+  **参数**
 
-    - width：可存储整数的位数。
-    - bigint： 要存储在指定位数上的整数。
+  - width：可存储整数的位数。
+  - bigint： 要存储在指定位数上的整数。
 
-  - **返回值：**bigint 模(modulo) 2^width^ 作为无符号整数的值。
+  **返回值：**bigint 模(modulo) 2^width^ 作为无符号整数的值。
 
-  摘自：[MDN - BigInt.asUintN()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt/asUintN)
+摘自：[MDN - BigInt.asUintN()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt/asUintN)
 
 **实例方法**
 
@@ -14020,23 +14280,6 @@ JSX 是 Javascript 和 XML 结合的一种格式。React 发明了 JSX ，利用
 > 摘自：[ECMAScript（ES）版本介绍](https://www.jianshu.com/p/7dda47907512)
 
 
-
-## 工程设计
-
-#### 对象固化
-
-在框架封装，继承的时候，如果你做好了一个对象给别人使用，为了不让使用者拿过来后任意涂改，比如他把你的对象的一个方法改成了指向另一个函数，或者干脆删除了这个方法，我们需要把这个对象固化。
-
-<mark>在 JavaScript里我们可以在三个层级上固化一个对象</mark>。<font color=FF0000> 从宽到严它们依次是：防止扩展、密封、冻结</font>。
-
-![VnF0SS](https://i.loli.net/2021/08/30/84v2l1ZkMCXO6eg.png)
-
-摘自：[js固化对象](https://zhhlwd.gitee.io/posts/js%E5%9B%BA%E5%8C%96%E5%AF%B9%E8%B1%A1.html)
-
-
-
-
-***
 
 
 ## JS 场景实践案例
