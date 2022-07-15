@@ -3267,7 +3267,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                     
+  >                                                                                                                                                       
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3286,7 +3286,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                     
+  >                                                                                                                                                       
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -11358,9 +11358,9 @@ history.replaceState(stateObj, title[, url]);
 
   摘自：[MDN - pageshow](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/pageshow_event)
 
-- <font size=4>**visibilitychange：**</font>当其选项卡 ( Tab ) 的内容变得可见或被隐藏时，会在文档上触发 visibilitychange（能见度更改） 事件。该事件无法被取消。
+- <font size=4>**visibilitychange：**</font><font color=FF0000>**当其选项卡 ( Tab ) 的内容变得可见或被隐藏时**，会在文档上触发 visibilitychange（能见度更改） 事件</font>。该事件无法被取消。
 
-  **语法**
+  ##### 语法
 
   Use the event name in methods like addEventListener(), or set an event handler property.
 
@@ -11374,7 +11374,59 @@ history.replaceState(stateObj, title[, url]);
 
   <font color=FF0000>The event doesn't include the document's updated visibility status</font>, but <font color=FF0000>**you can get that information from the document's [`visibilityState`](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilityState) property**</font>.
 
-  This event fires with a `visibilityState` of `hidden` when a user navigates to a new page, switches tabs, closes the tab, minimizes or closes the browser, or, on mobile, switches from the browser to a different app. Transitioning to `hidden` is the last event that's reliably observable by the page, so developers should treat it as the likely end of the user's session (for example, for [sending analytics data](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon) （👀 **注**：即使用 sendBeacon() ）).
+  This event fires with a <font color=FF0000>**`visibilityState` of `hidden`**</font> <font color=fuchsia>**when a user navigates to a new page, switches tabs, closes the tab, minimizes or closes the browser, or, on mobile, switches from the browser to a different app**</font>. （👀 **注**：这里应该是 visibilityState ）<font size=4>**Transitioning to `hidden` is the last event that's reliably observable by the page**</font>, so developers should treat it as the likely end of the user's session (for example, for [sending analytics data](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon) （👀 **注**：即 sendBeacon() ）).
+
+  The transition to `hidden` is also **a good point at** which pages can stop making UI updates and stop any tasks that the <font color=FF0000>user doesn't want to have running in the background</font>.
+
+  ##### 示例
+
+  **Pausing music on transitioning to hidden**
+
+  This example begins playing a music track when the document becomes visible, and pauses the music when the document is no longer visible.
+
+  ```js
+  document.addEventListener("visibilitychange", function() {
+    if (document.visibilityState === 'visible') {
+      backgroundMusic.play();
+    } else {
+      backgroundMusic.pause();
+    }
+  });
+  ```
+
+  **Sending end-of-session analytics on transitioning to hidden**
+
+  This example treats the transition to hidden as the end of the user's session, and sends the appropriate analytics using the Navigator.sendBeacon() （👀 **注**：见 [[#Navigator.sendBeacon() ]] ）API:
+
+  ```js
+  document.onvisibilitychange = function() {
+    if (document.visibilityState === 'hidden') {
+      navigator.sendBeacon('/log', analyticsData);
+    }
+  };
+  ```
+
+  摘自：[MDN - Document: visibilitychange event](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilitychange_event)
+
+  ##### 补充：Document.visibilityState
+
+  > #### Document.visibilityState
+  >
+  > The **`Document.visibilityState`** <font color=FF0000>read-only property</font> <font color=FF0000>**returns the visibility of the document**</font>, that is in which context this element is now visible. <font color=FF0000>It is useful to know if the document is in the background or an invisible tab, or only loaded for pre-rendering</font>.
+  >
+  > **Possible values are:**
+  >
+  > - **visible** : The page content may be at least partially visible. In practice this means that the page is the foreground tab of a non-minimized window.
+  >
+  > - **hidden** : The page content is not visible to the user. In practice this means that the document is either a background tab or part of a minimized window, or the OS screen lock is active.
+  >
+  > - **prerender** 🗑 : The page content is being prerendered and is not visible to the user (considered hidden for purposes of [`document.hidden`](https://developer.mozilla.org/en-US/docs/Web/API/Document/hidden)). The document may start in this state, but will never transition to it from another value. ⚠️ <font color=FF0000>Note: This was removed from the standard</font>. Check compatibility table for details.
+  >
+  > <font color=FF0000>When the value of this property changes, the `visibilitychange` event is sent to the `Document `</font>.
+  >
+  > <font color=FF0000>**Typical use of this**</font> can be to prevent the download of some assets when the document is solely prerendered, or stop some activities when the document is in the background or minimized.
+  >
+  > 摘自：[MDN - Document.visibilityState]()
 
 - <font size=4>**popstate：**</font>浏览器在被点击“后退”或者“前进"按钮后触发
 
@@ -11384,7 +11436,7 @@ history.replaceState(stateObj, title[, url]);
 
   <font color=FF0000>当活动历史记录条目更改时，将触发 popstate 事件</font>。如果被激活的历史记录条目是通过对 history.pushState() 的调用创建的，或者受到对 history.replaceState() 的调用的影响，popstate事件的state属性包含历史条目的状态对象的副本。
 
-  <font color=FF0000>需要注意的是<font size=4>**调用 history.pushState() 或 history.replaceState() 不会触发popstate事件**</font></font>。<font color=FF0000>只有在做出浏览器动作时，才会触发该事件</font>，如用户点击浏览器的回退按钮（或者在Javascript代码中调用history.back() 或者 history.forward() 方法）
+  <font color=FF0000>需要注意的是 <font size=4>**调用 history.pushState() 或 history.replaceState() 不会触发 popstate 事件**</font></font>。<font color=FF0000>只有在做出浏览器动作时，才会触发该事件</font>，如用户点击浏览器的回退按钮（或者在 Javascript 代码中调用 history.back() 或者 history.forward() 方法）
 
   摘自：[MDN - popstate](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/popstate_event)
 
