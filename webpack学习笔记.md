@@ -4233,7 +4233,144 @@ module.exports 中的 bail 配置的作用是，一旦打包出现错误，则�
 
 #### 模块联邦
 
+##### 《模块联邦浅析》 摘抄
 
+###### 业务场景
+
+假设公司有个业务集群，<font color=FF0000>**公共业务组件库升级了，希望能够尽可能少得影响业务线，仅仅在基础组件库版本升级即可全业务线升级**</font>，那么<font color=FF0000>**可以考虑使用模块联邦来实现**</font>。
+
+**模块联邦 和 利用 npm 发包来实现的方案的区别在于**：<font color=FF0000>npm 发布的组件库从 1.0.1 升级到 1.0.2 的时候，必须要把业务线项目重新构建，打包，发布才能使用到最新的特性</font>；而<font color=fuchsia>**模块联邦可以实现实时动态更新而无需打包业务线项目**</font>。
+
+###### 效果
+
+大致的原型图如下：
+
+<img src="https://s2.loli.net/2022/07/16/8evp1dVaJNBTow3.png" alt="img" style="zoom: 90%;" />
+
+我们看到：project1 的 home 页的 specialItem，project2 的 about 页的 searchItem 组件被用于 project2 的 home 中， project2 的 about 直接用的 project1 的 about 页。
+
+[项目](https://github.com/AshesOfHistory/vue3-cli-module-federation-demo) 运行示意效果图如下
+
+![img](https://s2.loli.net/2022/07/16/iIejHmBqwfWcL7N.jpg)
+
+###### 配置
+
+**app-exposes 的 vue.config.js 配置：**
+
+<img src="https://s2.loli.net/2022/07/16/DocwUb2igXVIlqf.png" alt="img" style="zoom: 33%;" />
+
+**app-general 的 vue.config.js 配置：**
+
+<img src="https://s2.loli.net/2022/07/16/A892pwVxSbYDXTL.png" alt="img" style="zoom:33%;" />
+
+可以看到，总体上我们用到了 webpack 原生的插件 ModuleFederationPlugin 来实现模块联邦的效果的。
+
+在首页中，我们异步引用的 app-exposes 提供的 SearchItem 以及 SpecialItem 组件。
+
+<img src="https://s2.loli.net/2022/07/16/GwlRXTObmUK13BV.png" alt="img" style="zoom:33%;" />
+
+在 about 页面的路由配置中，我们直接引入的远程连接的 AboutView 页面。
+
+<img src="https://s2.loli.net/2022/07/16/TRE3X9OsJ2NSIPj.png" alt="img" style="zoom:33%;" />
+
+###### 联邦模块的原理分析
+
+<font color=FF0000>联邦模块有两个主要概念：**Host**（消费其他 Remote）和 **Remote**（被 Host 消费）</font>。 <font color=FF0000>**每个项目可以是 Host 也可以是 Remote，也可以两个都是**</font>。可以通过 webpack 配置来区分，可以参考[例子](https://github.com/module-federation/module-federation-examples/tree/master/bi-directional)。
+
+- 作为 Host 需要配置 remote 列表和 shared 模块
+- 作为 Remote 需要配置项目名 ( name ) ，打包方式 ( library )，打包后的文件名 ( filename )，提供的模块 ( exposes )，和 Host 共享的模块 ( shared )。
+
+###### ModuleFederationPlugin 的原理
+
+源码中 ModuleFederationPlugin 主流程 主要做了三件事：
+
+- 通过参数是否配置 shared 来判断是否使用共享依赖 SharePlugin 模块。
+- 通过参数是否配置 exposes 来判断是否使用公开 ContainerPlugin 模块。
+- 通过参数是否配置 remotes 来判断是否使用 ContainerReferencePlugin 引用模块。
+
+###### **webpack5 模块联邦对异步模块加载的处理**
+
+- 下载并执行 remoteEntry.js，挂载入口点对象到 window.app-exposes，他有两个函数属性，init 和 get。init 方法用于初始化作用域对象 initScope，get 方法用于下载 moduleMap 中导出的远程模块。
+- 加载 app-exposes 到本地模块。
+- 创建 app-exposes.init 的执行环境，收集依赖到共享作用域对象 shareScope。
+- 执行 app-exposes.init，初始化 initScope。
+- 用户 import 远程模块时调用 app-exposes.get(moduleName) 通过 Jsonp 懒加载远程模块，然后缓存在全局对象 window['webpackChunk' + appName]。
+- 通过 webpack_require 读取缓存中的模块，执行用户回调。
+
+###### 使用场景
+
+目前模块联邦已经在微前端领域发挥了巨大的作用，也起到 webpack 能够越来越强大。
+
+利用模块联邦强大的跨应用级模块共享能力，我们<font color=FF0000>可以搭建一个非业务的中台搭建系统，实现 app 级别的低代码搭建平台</font>，这与市场上常见页面级低代码搭建不同，<font color=FF0000>能够实现系统级能力复用的同时降低维护成本</font>。后续比如说 sso 单点登录，页面跳转，埋点，异常捕获等都可以考虑抽象封装成系统内置的方法到里面。
+
+摘自：[模块联邦浅析](https://www.zoo.team/article/webpack-modular)
+
+##### 《精读《Webpack5 新特性 - 模块联邦》》摘抄
+
+**Webpack5 模块联邦让 Webpack 达到了线上 Runtime 的效果**，<font color=FF0000>**让代码直接在项目间利用 CDN 直接共享**</font>，不再需要本地安装 Npm 包、构建再发布了（ 👀 **注**：可以理解为修改公共组件之后，让使用组件的项目 不需要重新打包？）！
+
+我们知道 <font color=FF0000>Webpack 可以通过 DLL</font> （👀 **注**：参考 [[#Dlls]]）<font color=FF0000>或者 Externals</font>（👀 **注**：参考 [[#Externalize Lodash]]） <font color=FF0000>做代码共享时 Common Chunk</font>（👀 **注**：即一个 lib 在项目中（抽离出来）只保留一份，不论它被项目直接依赖，还是作为依赖的依赖... ），但不同应用和项目间这个任务就变得困难了，我们几乎无法在项目之间做到按需热插拔。
+
+模块联邦是 Webpack5 新内置的一个重要功能，可以让跨应用间真正做到模块共享。
+
+###### ModuleFederationPlugin 的参数
+
+<font color=FF0000>模块联邦本身是一个普通的 Webpack 插件 `ModuleFederationPlugin`</font> ，插件有几个重要参数：
+
+- **name**： 当前应用名称，需要全局唯一。
+
+- **remotes**： 可以将其他项目的 `name` 映射到当前项目中。
+
+- **exposes**： 表示导出的模块，只有在此申明的模块才可以作为远程依赖被使用。
+
+- **shared**：是非常重要的参数，制定了这个参数，可以让远程加载的模块对应依赖改为使用本地项目的 React 或 ReactDOM
+
+###### 总结
+
+模块联邦为更大型的前端应用提供了开箱解决方案，并已经作为 Webpack5 官方模块内置，可以说是继 Externals 后最终的运行时代码复用解决方案。
+
+摘自：[精读《Webpack5 新特性 - 模块联邦》](https://zhuanlan.zhihu.com/p/115403616)
+
+##### 官方文档摘抄
+
+###### 背景：微前端概念（与不足）
+
+Multiple separate builds should form a single application（**译**：多个独立的构建（子程序）可以组成一个（作为整体的）应用程序）. <font color=FF0000>These separate builds should not have dependencies between each other</font>, so <font color=FF0000>they can be developed and deployed individually</font>.
+
+<font color=FF0000>This is often known as <font size=4>**Micro-Frontends**</font>, **but is not limited to that**</font>. 👀 **注**：照这么说有点后端“微服务”的意思了
+
+###### 模块联邦底层概念
+
+We distinguish between <font color=FF0000>**local**</font>（**译**：本地模块） <font color=FF0000>**and remote modules**</font>. Local modules are normal modules which are part of the current build. <font color=FF0000>Remote modules are modules that are</font> <font color=fuchsia>**not part of the current build**</font> and <font color=fuchsia>**loaded from a so-called <font size=4>*container*</font> at the runtime**</font>.
+
+<font color=FF0000>**Loading remote modules** is considered an **asynchronous operation**</font>. When using a remote module these asynchronous operations will <font color=FF0000>be placed in the next chunk loading operation(s) that is between the remote module and the entrypoint</font>（**译**：当使用远程模块时，这些异步操作将被放置在远程模块和入口之间的下一个 chunk 的加载操作中）. It's not possible to use a remote module without a chunk loading operation（**译**：如果没有 chunk 加载操作，就不能使用远程模块）.
+
+A chunk loading operation is usually an `import()` call, but older constructs like `require.ensure` or `require([...])` are supported as well. <font color=FF0000>A container is created through a container entry, which exposes asynchronous access to the specific modules</font>. <mark style="background: lightskyblue">**The exposed access is separated into two steps**</mark>:
+
+1. loading the module ( asynchronous )
+2. evaluating the module ( synchronous )
+
+Step 1 will be done during the chunk loading. Step 2 will be done during the module evaluation interleaved（**译**：交错地） with other ( local and remote ) modules. This way, <font color=FF0000>evaluation order is unaffected by converting a module from local to remote or the other way around</font>（**译**：执行顺序不受模块从本地转换为远程或从远程转为本地的影响。👀 **注**：即，当前“构建”既可能有“本地模块”，也有可能有“远端模块”）.
+
+It is possible to nest a container. Containers can use modules from other containers. Circular dependencies between containers are also possible.
+
+###### 模块联邦高级概念
+
+<font color=fuchsia>**Each build acts as a container**</font> and <font color=fuchsia>also **consumes other builds as containers**</font>（**译**：每个构建都充当一个容器，也可将其他构建作为容器）. This way each build is able to access any other exposed module by loading it from its container.
+
+**Shared modules** are modules that are both overridable（**译**：可重写的） and provided as overrides to nested container. They usually point to the same module in each build, e.g. the same library.
+
+The `packageName` option allows setting a package name to look for a `requiredVersion`（**译**：packageName 选项允许通过设置包名来查找所需的版本）. <font color=fuchsia>It is automatically inferred for the module requests by default</font> , <font color=FF0000>**set `requiredVersion` to `false` when automatic infer should be disabled**</font>.
+
+###### 构建块 ( Building blocks )
+
+- **ContainerPlugin** (<font color=FF0000>low level</font>) : This plugin <font color=fuchsia>**creates an additional container entry** with the specified exposed modules</font>.
+
+- **ContainerReferencePlugin** (<font color=FF0000>low level</font>) : This plugin <font color=fuchsia>**adds specific references to containers as externals**</font>（**译**：将特定的引用添加到作为外部资源的容器中） and <font color=fuchsia>allows to import remote modules from these containers</font>. It also calls the `override` API of these containers to provide overrides to them. Local overrides (via `__webpack_override__` or `override` API when build is also a container) and specified overrides are provided to all referenced containers.
+
+- <font color=fuchsia size=4>**ModuleFederationPlugin**</font> (high level) : [`ModuleFederationPlugin`](https://webpack.js.org/plugins/module-federation-plugin) <font color=FF0000>combines `ContainerPlugin` and `ContainerReferencePlugin`</font> .
+
+摘自：[webpack 文档 - Concepts - Module Federation](https://webpack.js.org/concepts/module-federation) 以及 中文版 [印记中国 webpack 文档 - 概念 - Module Federation](https://webpack.docschina.org/concepts/module-federation/) 👀 **注**：后面还有内容，但看不下去了... 感觉官方文档写得太唐突了，深入但不浅出... 或许因为它被放在 Concepts 中了吧...
 
 ***
 
