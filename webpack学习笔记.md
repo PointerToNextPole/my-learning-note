@@ -184,11 +184,186 @@ webpack 默认使用 webpack.config.js 作为配置文件。可以使用 `--conf
 
 
 
+#### 依赖管理 Dependency Management
+
+<font color=fuchsia>**A context is created if your request contains expressions**</font>（👀 **注**：request 含义见下面引用）, so the **exact** module is not known on compile time（**译**：因为在编译时(compile time)并不清楚 **具体** 导入哪个模块。👀 **注**：所以在运行时确定）.
+
+> **Request**: 指在 require/import 语句中的表达式，如在 *require("./template/" + name + ".ejs")* 中的请求是 *"./template/" + name + ".ejs"* 。
+>
+> 摘自：[webpack - 术语表](https://webpack.docschina.org/glossary/#r)
+
+<mark style="background: lightskyblue">Example</mark>, given we have the following folder structure including `.ejs` files:
+
+```bash
+example_directory
+│
+└───template
+│   │   table.ejs
+│   │   table-row.ejs
+│   │
+│   └───directory
+│       │   another.ejs
+```
+
+When following `require()` call is evaluated :
+
+```javascript
+require('./template/' + name + '.ejs');
+```
+
+<font color=fuchsia>Webpack parses the `require()` call and **extracts some information**</font>:
+
+```js
+Directory: ./template
+Regular expression: /^.*\.ejs$/ // 这里是用正则表示，以供后面匹配。
+```
+
+<font color=FF0000>**A context module is generated**</font>. It contains references to **all modules in that directory** that can be required with a request matching the <font color=FF0000>regular expression</font>（**译**：它包含 **目录下的所有模块** 的引用，如果一个 request 符合正则表达式，就能 require 进来）. <font color=FF0000>The context module contains a map which translates requests to module ids</font>.
+
+示例 map：
+
+```json
+{
+  "./table.ejs": 42,
+  "./table-row.ejs": 43,
+  "./directory/another.ejs": 44
+}
+```
+
+The <font color=FF0000>context module also contains some runtime logic to access the map</font>.
+
+This means dynamic requires are supported but will cause all matching modules to be included in the bundle.
+
+##### require.context()
+
+You <font color=FF0000>can **create your own context with the `require.context()` function**</font>.
+
+It allows you to pass in <mark>a directory to search</mark> , <mark style="background: aqua">a flag indicating whether subdirectories should be searched too</mark>, and <mark style="background: lightpink">a regular expression to match files against</mark>.
+
+Webpack parses for `require.context()` in the code while building（👀 **注**：即 compile time）.
+
+<mark style="background: lightskyblue">**The syntax is as follows:**</mark>
+
+```js
+require.context(
+  directory,                  // 目标文件夹
+  (useSubdirectories = true), // 是否深度查找，默认是 true
+  (regExp = /^\.\/.*$/),      // 查找模式（正则）
+  (mode = 'sync')             // 同步异步，默认是同步
+);
+```
+
+<mark style="background: lightskyblue">**Examples:**</mark>
+
+```javascript
+require.context('./test', false, /\.test\.js$/);
+// a context with files from the "test" directory that can be required with a request ending with `.test.js`.
+```
+
+```js
+require.context('../', true, /\.stories\.js$/);
+// a context with all files in the parent folder and descending folders ending with `.stories.js`.
+```
+
+##### context module API
+
+A **context module** <font color=FF0000>**exports a ( require ) function** that **takes one argument : the request**</font>.
+
+<font color=dodgerBlue>**The exported function has 3 properties : `resolve` , `keys` , `id`**</font> .（👀 **注**：这里有点费解，不过想到 函数（ JS 中函数是一个对象）有 name、length 等属性，也就理解了...）
+
+- `resolve` is a **function** and <font color=FF0000>returns the **module id** of the parsed request</font>（**译**：返回 request 被解析后得到的模块 id ）.
+
+- `keys` is a **function** that <font color=FF0000>returns **an array of all possible requests** that the context module can handle</font>（**译**：所有可能被此 context module 处理的请求的数组）.
+
+  This can <font color=FF0000>be useful if you want to require all files in a directory or matching a pattern</font> , Example :
+
+  ```js
+  function importAll(r) {
+    r.keys().forEach(r);
+  }
+  
+  importAll(require.context('../components/', true, /\.js$/));
+  ```
+
+  ```javascript
+  const cache = {};
+  
+  function importAll(r) {
+    r.keys().forEach((key) => (cache[key] = r(key)));
+  }
+  
+  importAll(require.context('../components/', true, /\.js$/));
+  // At build-time cache will be populated with all required modules.
+  ```
+
+- `id` is the **module id of the context module**. This <font color=FF0000>may be useful for `module.hot.accept`</font> .
+
+摘自：[webpack 文档 - Guides - Dependency Management](https://webpack.js.org/guides/dependency-management/)
+
+##### require.context() 在实际项目中的使用
+
+###### 用来在组件内引入多个组件
+
+```js
+// 从 @/components/home 目录下加载所有 .vue 后缀的组件
+const files = require.context('@/components/home', false, /\.vue$/);
+const components = {};
+ 
+// 遍历 files 对象，构建 components 键值
+files.keys().forEach(key => {
+    components[key.replace(/(\.\/|\.vue)/g, '')] = files(key).default
+});
+
+export default {
+    // ...
+    components,
+}
+```
+
+###### 在 main.js 中引入大量公共组件
+
+```js
+import Vue from 'vue'
+
+const requireComponents = require.context('../views/components', true, /\.vue/)
+// 遍历出每个组件的路径
+requireComponents.keys().forEach(fileName => {
+  // 组件实例
+  const reqCom = requireComponents(fileName)
+  // 截取路径作为组件名
+  const reqComName =reqCom.name|| fileName.replace(/\.\/(.*)\.vue/,'$1')
+  // 组件挂载
+  Vue.component(reqComName, reqCom.default || reqCom)
+})
+```
+
+##### 用在 vuex 中加载 module 或加载多个 api 接口
+
+```js
+/**
+ * The file enables `@/store/index.js` to import all vuex modules
+ * in a one-shot manner. There should not be any reason to edit this file.
+ */
+const files = require.context('.', false, /\.js$/)
+const modules = {}
+ 
+files.keys().forEach(key => {
+  if (key === './index.js') return
+  modules[key.replace(/(\.\/|\.js)/g, '')] = files(key).default
+})
+ 
+export default modules
+```
+
+摘自：[require.context()的用法详解](https://blog.csdn.net/pinbolei/article/details/115620728)
+
+
+
 ### webpack 文档 深层概念
 
 #### \__webpack_require__
 
-知道 `__webpack_require__` 是看 webpack 文档的 [Concept - The Manifest - Manifest](https://webpack.js.org/concepts/manifest/#manifest) 部分
+知道 `__webpack_require__` 是在 webpack 文档的 [Concept - The Manifest - Manifest](https://webpack.js.org/concepts/manifest/#manifest) 部分
 
 > **No matter which module syntax you have chosen**, those <font color=FF0000>import or require statements have now become `__webpack_require__` methods</font> that <font color=FF0000>point to module identifiers</font>
 
@@ -289,19 +464,19 @@ webpack 的（默认）配置文件的名称为 webpack.config.js。即：即使
 
 ##### Prerequisites 前提条件
 
-Before we begin, make sure you have a fresh version （新版本）of [Node.js](https://nodejs.org/en/) installed. The current Long Term Support (LTS) release is an ideal starting point. You <font color=FF0000>may run into a variety of issues with the older versions as **they may be missing functionality webpack and/or its related packages require**</font>.
+Before we begin, make sure you have a fresh version （译：新版本）of [Node.js](https://nodejs.org/en/) installed. The current Long Term Support (LTS) release is an ideal starting point. You <font color=FF0000>may run into a variety of issues with the older versions as **they may be missing functionality webpack and/or its related packages require**</font>.
 
-##### Local Installation 局部安装
+##### Local Installation 项目层级安装
 
 If you're <font color=FF0000>using webpack v4 or later</font> and <font color=FF0000>want to call `webpack` from the command line</font>, you'll also need to install the [CLI](https://webpack.js.org/api/cli/).
 
-Installing locally is what we recommend for most projects. This makes it easier to upgrade projects individually when breaking changes are introduced.
+<font color=fuchsia>Installing locally is what we recommend for most projects</font>. This makes it easier to upgrade projects individually **when breaking changes are introduced**.
 
-> **Tip** 💡 : To run the local installation of webpack you can access its binary version as `node_modules/.bin/webpack`. Alternatively, <font color=FF0000>if you are using npm v5.2.0 or greater, you can run `npx webpack` to do it</font>.
+> 💡 **Tip**  : <font color=fuchsia>To run the local installation of webpack you can **access its binary version as `node_modules/.bin/webpack`**</font> . Alternatively, <font color=FF0000>if you are using npm v5.2.0 or greater, you can **run `npx webpack` to do it**</font>.
 
 ##### Global Installation 全局安装
 
-> **Warning** ⚠️ : Note that <font color=FF0000>this is **not a recommended practice**</font>. Installing globally locks you down to a specific version of webpack and could fail in projects that use a different version.
+> ⚠️ **Warning** : Note that <font color=FF0000>this is **not a recommended practice**</font>. Installing globally <font color=FF0000>locks you down to a specific version of webpack</font> and could fail in projects that use a different version.
 
 ##### Bleeding Edge 最新体验版本
 
@@ -313,11 +488,9 @@ npm install --save-dev webpack@next
 npm install --save-dev webpack/webpack#<tagname/branchname>
 ```
 
-**注：**只见过 `libName@libVersion` ，没见过 `libName#<tagName>` 以及 `libname#<branchName>` ，值得注意。
+👀 **注：**只见过 `libName@libVersion` ，没见过 `libName#<tagName>` 以及 `libname#<branchName>` ，值得注意。
 
 摘自：[webpack doc - Guide - Installation](https://webpack.js.org/guides/installation)
-
-
 
 
 
@@ -1574,7 +1747,7 @@ webpack-dev-server可以用来实现<font color=FF0000>热部署</font>，即修
 
 **方法有三种：**
 
-- 在package.json的npm scripts中进行如下设置：
+- 在 package.json 的 npm scripts 中进行如下设置：
 
   ```js
   "scripts": {
@@ -1582,7 +1755,7 @@ webpack-dev-server可以用来实现<font color=FF0000>热部署</font>，即修
   }
   ```
 
-  然后输入 npm run watch 以使用。
+  然后输入 `npm run watch` 以使用。
 
 - **使用 webpack-dev-server（<font color=FF0000>最推荐</font>）**
 
@@ -1611,13 +1784,13 @@ webpack-dev-server可以用来实现<font color=FF0000>热部署</font>，即修
 
   这时启动项目只需要输入 npm run start 即可
 
-  另外：如其名，webpack-dev-server只在development环境中需要被使用（配置），production环境不需要使用（配置）
+  另外：如其名，webpack-dev-server 只在 development 环境中需要被使用（配置），production 环境不需要使用（配置）
 
-  <font color=FF0000>**使用webpack-dev-server以启用模拟服务器的原因：在服务器上启动项目，可以使用http协议，而在本地手动打开项目，虽然项目也能运行，但是当前只在file协议下，file协议无法使用ajax等web服务**</font>
+  <font color=FF0000>**使用 webpack-dev-server 以启用模拟服务器的原因：在服务器上启动项目，可以使用http协议，而在本地手动打开项目，虽然项目也能运行，但是当前只在 file 协议下，file 协议无法使用 ajax 等 web 服务**</font>
 
-  在React / Vue的脚手架配置 中都会有 Proxy 这项配置，这是在做跨域的接口模拟时的接口代理。之所以都有Proxy，是因为React / Vue的底层都使用了 webpack的devServer
+  在 React / Vue 的脚手架配置 中都会有 Proxy 这项配置，这是在做跨域的接口模拟时的接口代理。之所以都有 Proxy，是因为 React / Vue 的底层都使用了 webpack 的 devServer
 
-- 自己手动实现 webpack-dev-server，在 package.json 配置文件中的scripts（如下示例）。然后自己使用node编写server.js代码（非常复杂，不推荐）
+- 自己手动实现 webpack-dev-server，在 package.json 配置文件中的 scripts（如下示例）。然后自己使用 node 编写 server.js 代码（非常复杂，不推荐）
 
   ```json
   "scripts": {
@@ -1660,12 +1833,12 @@ webpack-dev-server可以用来实现<font color=FF0000>热部署</font>，即修
 >    >
 >    > ```js
 >    > module.exports = {
->    >   devServer: {
->    >     static: './dist'
->    >   },
->    >   optimization: {
->    >     runtimeChunk: 'single'
->    >   }
+>    >     devServer: {
+>    >       static: './dist'
+>    >     },
+>    >     optimization: {
+>    >       runtimeChunk: 'single'
+>    >     }
 >    > }
 >    > ```
 >    >
@@ -1679,7 +1852,7 @@ webpack-dev-server可以用来实现<font color=FF0000>热部署</font>，即修
 >    >
 >    > ```json
 >    > "scripts": {
->    >   "start": "webpack serve --open"
+>    >     "start": "webpack serve --open"
 >    > }
 >    > ```
 >    >
@@ -1715,14 +1888,14 @@ https://webpack.js.org/configuration/dev-server/
 
 
 
-#### Hot Module ReplaceMent（HMR） 热模块更新 
+#### Hot Module ReplaceMent  ( HMR ) 热模块更新 
 
-使用webpack-dev-server之后将不会生成dist目录，原因是：webpack-dev-server虽然也会对项目进行打包，但是<font color=FF0000>打包的结果会放在内存中</font>。这是webpack-dev-server隐藏的特性。
+使用 webpack-dev-server 之后将不会生成 dist 目录，原因是：webpack-dev-server 虽然也会对项目进行打包，但是<font color=FF0000>打包的结果会放在内存中</font>。这是 webpack-dev-server 隐藏的特性。
 
 热模块更新的含义是：修改代码后，重新打包，但是不会刷新页面（刷新页面会让 在代码被修改之前 在页面上操作的数据 / 样式还原）
 
 ```js
-//webpack.config.js 文件下
+// webpack.config.js 文件下
 devServer: {
   // 开启Hot Module ReplaceMent（HMR） 热模块更新 功能
   hot: true,
@@ -1731,7 +1904,7 @@ devServer: {
 }
 ```
 
-<font color=FF0000> 开启HMR功能还需要使用 HotModuleReplacementPlugin 插件</font>，引入HotModuleReplacementPlugin插件的方法如下：
+<font color=FF0000> 开启 HMR 功能还需要使用 HotModuleReplacementPlugin 插件</font>，引入 HotModuleReplacementPlugin 插件的方法如下：
 
 ```js
 plugins: [
@@ -1741,14 +1914,14 @@ plugins: [
 
 **热模块更新的作用：**
 
-- 方便调试CSS代码
+- 方便调试 CSS 代码
 
 - 开启<font color=FF0000> 局部刷新</font>，即修改某一部分的代码，项目会自动刷新，但是只会刷新修改的部分，其他部分不会刷新。
 
   - CSS-Loader是内部就已经实现了局部刷新功能，所以不需要开发者做任何处理（自动）
-  - React / Vue-Loader也是内部就已经实现局部刷新功能
+  - React / Vue-Loader 也是内部就已经实现局部刷新功能
 
-  **JS开启局部刷新的方法：**
+  **JS 开启局部刷新的方法：**
 
   ```js
   if(module.hot) {
@@ -1758,17 +1931,59 @@ plugins: [
   }
   ```
 
+#### HMR Guides 笔记
 
-#### HMR 原理
+It（👀 **注**：即 HMR ） allows all kinds of modules to be updated at runtime without the need for a full refresh（不需要全量刷新）.
+
+Since **`webpack-dev-server` v4.0.0** , <font color=FF0000>Hot Module Replacement is enabled by default</font> .  👀 **注**：这应该指的是 “只使用 `devServer.hot: true` 使得 HMR 生效 ”，另外，下面有手动设置： [[#manual entry points for HMR]]
+
+> 💡 **Tip** : If you took the route of <font color=FF0000>using `webpack-dev-middleware` instead of `webpack-dev-server`</font> , please <font color=fuchsia>use the **`webpack-hot-middleware`** package to **enable HMR** on **your custom server or application**</font> .
+
+##### manual entry points for HMR
+
+👀 注：由于 Guides 是一个 从零到一 一步一步搭建 webpack 配置的教程，所以 Guides 的配置是有上下文的，这里也不例外；但放在摘抄中会显得很奇怪，所以这里做了一些省略。
+
+```js
+// webpack.config.js
+module.exports = {
+  entry: {
+    app: './src/index.js',
+    // Runtime code for hot module replacement
+		hot: 'webpack/hot/dev-server.js',
+		// Dev server client for web socket transport, hot and live reload logic
+		client: 'webpack-dev-server/client/index.js?hot=true&live-reload=true',
+  },
+  devServer: {
+    // ...
+    // Dev server client for web socket transport, hot and live reload logic
+		hot: false,
+		client: false,
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Hot Module Replacement',
+    }),
+    // Plugin for hot module replacement
+    new webpack.HotModuleReplacementPlugin(),
+  ],
+  // ...
+}
+```
+
+
+
+
+
+#### HMR Concepts
 
 ##### 在应用程序中
 
-The **following steps** allow modules to be swapped in and out （置换） of an application :
+The **following steps** allow modules to **be swapped in and out** （置换） of an application :
 
-- The <mark style="background: aqua">**application**</mark> <font color=FF0000>asks the HMR</font> <mark style="background: fuchsia">**runtime**</mark> <font color=FF0000>to check for updates</font>.
-- The <mark style="background: fuchsia">**runtime**</mark> <font color=FF0000>**asynchronously**</font>（异步） <font color=FF0000>downloads the updates</font> and **notifies the <mark style="background: aqua">application</mark>**.
-- The <mark style="background: aqua">**application**</mark> then <font color=FF0000>asks the <mark style="background: fuchsia">**runtime**</mark> to apply the updates</font>.
-- The <mark style="background: fuchsia">**runtime**</mark> <font color=FF0000>**synchronously**</font>（注意：是同步） <font color=FF0000>applies the updates</font>.
+- The <mark style="background: aqua">**application**</mark> <font color=FF0000>asks the HMR</font> <mark style="background: lightpink">**runtime**</mark> <font color=FF0000>to check for updates</font>.
+- The <mark style="background: lightpink">**runtime**</mark> <font color=FF0000>**asynchronously**</font>（异步） <font color=FF0000>downloads the updates</font> and **notifies the <mark style="background: aqua">application</mark>**.
+- The <mark style="background: aqua">**application**</mark> then <font color=FF0000>asks the <mark style="background: lightpink">**runtime**</mark> to apply the updates</font>.
+- The <mark style="background: lightpink">**runtime**</mark> <font color=FF0000>**synchronously**</font>（注意：是同步） <font color=FF0000>applies the updates</font>.
 
 You can set up HMR so that <font color=FF0000>**this process happens automatically**</font>, or you can choose to require user interaction for updates to occur.
 
@@ -1804,8 +2019,6 @@ Afterwards, all invalid modules are disposed （处理） (via the dispose handl
 //TODO 阅读：
 
 https://webpack.js.org/api/hot-module-replacement/（ HMR 除了accept 方法外还有什么方法）
-
-https://webpack.js.org/concepts/hot-module-replacement/
 
 https://webpack.js.org/plugins/hot-module-replacement-plugin/
 
@@ -4419,14 +4632,6 @@ CSS代码分割，在打包时，将css代码分为多个文件；并给出生�
 类似的 还有 [uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)，它是默认集成在 webpack@4 的生产环境中的，不过已经废弃。
 
 它们都是基于[ UglifyJS](https://github.com/mishoo/UglifyJS)
-
-
-
-
-
-### Webpack 使用函数（用于写脚本等）
-
-require.context()
 
 
 
