@@ -1302,37 +1302,41 @@ module.exports = {
 
 #### Loader 文档补充
 
-在你的应用程序中，有两种使用 loader 的方式
+在你的应用程序中，有两种使用 loader 的方式：配置方式 和 内联方式
 
-- **配置方式**（推荐）：在 **webpack.config.js** 文件中指定 loader。即：使用 module.rules 配置。
+##### 配置方式（推荐）
 
-  loader 按照 从右到左（或从下到上）地取值 ( evaluate ) / 执行 ( execute )
+**配置方式 ** 在 **webpack.config.js** 文件中指定 loader。即：使用 module.rules 配置。
 
-- **内联方式**：在每个 `import` 语句中显式指定 loader
+loader 按照 从右到左（或从下到上）地取值 ( evaluate ) / 执行 ( execute )
 
-  可以在 `import` 语句 或 任何与 *"import" 方法同等的引用方式* 中指定 loader。<font color=FF0000>使用 `!` 将资源中的 loader 分开</font>。每个部分都会相对于当前目录解析。
+##### 内联方式
 
-  通过为内联 `import` 语句添加前缀，可以覆盖 (overload) 配置 中的所有 loader, preLoader 和 postLoader：
+内联方式 在每个 `import` 语句中显式指定 loader
 
-  - 使用 `!` 前缀，将禁用所有已配置的 normal loader（普通 loader）
+可以在 `import` 语句 或 任何与 *"import" 方法同等的引用方式* 中指定 loader。<font color=FF0000>使用 `!` 将资源中的 loader 分开</font>。每个部分都会相对于当前目录解析。
 
-    ```js
-    import Styles from '!style-loader!css-loader?modules!./styles.css';
-    ```
+通过为内联 `import` 语句添加前缀，可以覆盖 (overload) 配置 中的所有 loader, preLoader 和 postLoader：
 
-  - 使用 `!!` 前缀，将禁用所有已配置的 loader（preLoader, loader, postLoader）
+- 使用 `!` 前缀，将禁用所有已配置的 normal loader（普通 loader）
 
-    ```js
-    import Styles from '!!style-loader!css-loader?modules!./styles.css';
-    ```
+  ```js
+  import Styles from '!style-loader!css-loader?modules!./styles.css';
+  ```
 
-  - 使用 `-!` 前缀，将禁用所有已配置的 preLoader 和 loader，但是不禁用 postLoaders
+- 使用 `!!` 前缀，将禁用所有已配置的 loader（preLoader, loader, postLoader）
 
-    ```js
-    import Styles from '-!style-loader!css-loader?modules!./styles.css';
-    ```
-  
-  选项可以传递查询参数，例如 `?key=value&foo=bar`，或者一个 JSON 对象，例如 `?{"key":"value","foo":"bar"}`。
+  ```js
+  import Styles from '!!style-loader!css-loader?modules!./styles.css';
+  ```
+
+- 使用 `-!` 前缀，将禁用所有已配置的 preLoader 和 loader，但是不禁用 postLoaders
+
+  ```js
+  import Styles from '-!style-loader!css-loader?modules!./styles.css';
+  ```
+
+选项可以传递查询参数，例如 `?key=value&foo=bar`，或者一个 JSON 对象，例如 `?{"key":"value","foo":"bar"}`。
 
 注意 ⚠️：在 webpack v4 版本可以通过 CLI 使用 loader，但是在 webpack v5 中被弃用。
 
@@ -1816,8 +1820,8 @@ webpack-dev-server可以用来实现<font color=FF0000>热部署</font>，即修
 >    > // package.json
 >    > {
 >    >   "scripts": {
->    >     "watch": "webpack --watch"
->    >   }
+>    >       "watch": "webpack --watch"
+>    >    }
 >    > }
 >    > ```
 >    >
@@ -1879,8 +1883,6 @@ webpack-dev-server可以用来实现<font color=FF0000>热部署</font>，即修
 https://webpack.js.org/api/cli/  
 
 https://webpack.js.org/api/node/ 
-
-https://webpack.js.org/guides/development/  
 
 https://webpack.js.org/configuration/devtool/  
 
@@ -1970,7 +1972,132 @@ module.exports = {
 }
 ```
 
+```diff
+// index.js
++ if (module.hot) {
++   module.hot.accept('./print.js', function() {
++     console.log('Accepting the updated printMe module!');
++     printMe();
++   })
++ }
+```
 
+> 👀 **注**：上面 `client: 'webpack-dev-server/client/index.js?hot=true&live-reload=true'` 的用法，可以参考 [[#Loader 文档补充#内联方式]] 中内联方式的方法。
+>
+> 另外，上面 `module.hot.accept` 的用途，参见 [[Vue3 + TS 学习笔记#如何使用 HMR？]]
+
+##### 通过 Node.js API 而不使用 devServer 选项
+
+> 👀 **注**：应该可以理解为 自己写一个 server ？
+
+When <font color=red>using Webpack Dev Server **with the Node.js API**</font> , don't put the <font color=dodgerBlue>**dev server options**</font> on the webpack configuration object. Instead , <font color=FF0000>**pass them as a second parameter upon creation**</font>（**译**：在创建时， 将其 ( dev server option ) 作为第二个参数传递）. For example:
+
+```js
+new WebpackDevServer(options, compiler)
+```
+
+To enable HMR , you also <font color=dodgerBlue>**need to modify your webpack configuration object to include the HMR entry points**</font>. Here's a small example of how that might look:
+
+```js
+// dev-server.js 注意文件名
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const webpackDevServer = require('webpack-dev-server');
+
+const config = {
+  mode: 'development',
+  entry: [
+    // Runtime code for hot module replacement
+    'webpack/hot/dev-server.js',
+    // Dev server client for web socket transport, hot and live reload logic
+    'webpack-dev-server/client/index.js?hot=true&live-reload=true',
+    // Your entry
+    './src/index.js',
+  ],
+  devtool: 'inline-source-map',
+  plugins: [
+    // Plugin for hot module replacement
+    new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'Hot Module Replacement',
+    }),
+  ],
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    clean: true,
+  },
+};
+const compiler = webpack(config); // 通过 webpack(config) 生成了一个 compiler 实例
+
+// `hot` and `client` options are disabled because we added them manually
+const server = new webpackDevServer({ hot: false, client: false }, compiler);
+
+(async () => {
+  await server.start();
+  console.log('dev server is running');
+})();
+```
+
+> 👀 **注**：上面 `'webpack-dev-server/client/index.js?hot=true&live-reload=true'` 的用法，可以参考 [[#Loader 文档补充#内联方式]] 中内联方式的方法
+
+See the [full documentation of `webpack-dev-server` Node.js API](https://webpack.js.org/api/webpack-dev-server/).
+
+> 💡 **Tip** : If you're [using `webpack-dev-middleware`](https://webpack.js.org/guides/development/#using-webpack-dev-middleware) , **check out the [`webpack-hot-middleware`](https://github.com/webpack-contrib/webpack-hot-middleware) package to enable HMR** on your custom dev server.
+
+##### 问题 ( Gotchas )
+
+<font color=dodgerBlue>Hot Module Replacement can be **tricky**</font>（困难的，棘手的）. To show this , let's go back to our working example. If you go ahead and click the button on the example page , you will realize <font color=FF0000>the console is printing the old `printMe` function</font>.
+
+This is happening because <font color=FF0000>the button's `onclick` event handler is **still bound to the original `printMe` function**</font>.
+
+<font color=fuchsia>To make this work with HMR we need to update that **binding to the new `printMe` function using `module.hot.accept`**</font>
+
+```diff
+// index.js
+
+if (module.hot) {
+    module.hot.accept('./print.js', function() {
+    console.log('Accepting the updated printMe module!');
++   document.body.removeChild(element);
++   element = component(); // Re-render the "component" to update the click handler
++   document.body.appendChild(element);
+  })
+}
+```
+
+This is only one example, but <font color=FF0000>**there are many others that can easily trip people up**</font>（绊倒）. Luckily, <font color=fuchsia>there are a lot of loaders out there (some of which are mentioned below) that will make hot module replacement much easier</font>.
+
+> 👀 注：这部分看得有点懵，可以参考 [[Vue3 + TS 学习笔记#如何使用 HMR？]]
+
+##### HMR with Stylesheets
+
+Hot Module Replacement with CSS is actually fairly straightforward（👀 注：“极其简单”更好理解） <font color=FF0000>with the **help** of the `style-loader`</font> . <font color=fuchsia>This loader **uses `module.hot.accept` behind the scenes to patch `<style>` tags when CSS dependencies are updated**</font>.
+
+> 👀 注：下面是实践的代码，安装 style-loader 和 css-loader；并在 webpack.config.js 的 `module.rules` 中配置 style-loader、css-loader，略；详见原文。
+
+Change the style on `body` to `background: red;` and you <font color=FF0000>should immediately see the page's background color change without a full refresh</font>.
+
+```diff
+  // styles.css
+  body {
+-   background: blue;
++   background: red;
+  }
+```
+
+##### Other Code and Frameworks
+
+There are many other loaders and examples out in the community to make HMR interact smoothly with a variety of frameworks and libraries...
+
+- [React Hot Loader](https://github.com/gaearon/react-hot-loader) : Tweak react components **in real time**.
+- [Vue Loader](https://github.com/vuejs/vue-loader) : <font color=FF0000>This **loader** supports HMR for vue components</font> **out of the box** .
+- [Elm Hot webpack Loader](https://github.com/klazuka/elm-hot-webpack-loader) : Supports HMR for the Elm programming language.
+- [Angular HMR](https://github.com/gdi2290/angular-hmr) : <font color=FF0000>No loader necessary!</font> A small change to your main NgModule file is all that's required to have full control over the HMR APIs.
+- [Svelte Loader](https://github.com/sveltejs/svelte-loader) : This loader supports HMR for Svelte components out of the box.
+
+摘自：[webpack 文档 - Guides - Hot Module Replacement](https://webpack.js.org/guides/hot-module-replacement)
 
 
 
@@ -2117,7 +2244,7 @@ module.exports = {
 
 另外：即使不使用的那些代码，在<font color=FF0000>开发环境</font>的打包中，那些不用的代码将不会被删掉，而是告知你只使用了哪些代码，便于你开发。而在生产环境的打包中，将会直接删掉那些不用的代码。
 
-<font size=4>**补充：**</font>在生产环境的打包中，Tree Shaking 是自动生效的，即：你不需要写 `optimization: { usedExports: true }` 配置项，不过sideEffects 还是要写的。
+<font size=4>**补充：**</font>在生产环境的打包中，Tree Shaking 是自动生效的，即：你不需要写 `optimization.usedExports: true ` 配置项，不过 `package.json` 中的 sideEffects 还是要写的。
 
 ##### 《现代 JS 教程》中的关于 tree-shaking 的内容
 > 删除未使用的导出 ( “tree-shaking” )
@@ -2126,10 +2253,109 @@ module.exports = {
 
 《现代 JS 教程》中关于 tree-shaking 的定义，相当直接易懂。
 
+#### Tree Shaking 文档补充
+
+*Tree shaking* is a term commonly used in the JavaScript context for dead-code elimination（消除）. <font color=FF0000>**It relies on the [static structure](http://exploringjs.com/es6/ch_modules.html#static-module-structure) of ES2015 module syntax , i.e. `import` and `export`**</font> . The name and concept have <font color=FF0000>**been popularized by the ES2015 module bundler [rollup](https://github.com/rollup/rollup)**</font> .
+
+The **webpack 2** release came with built-in support for ES2015 modules (alias *harmony modules*) as well as <font color=FF0000>unused module export detection</font> . The new **webpack 4** release expands on this capability with <font color=fuchsia>a way to **provide hints to the compiler via the `"sideEffects"` `package.json` property** to denote</font>（表示） which files in your project are "pure" and therefore safe to prune（剪枝） if unused.
+
+##### Tree Shaking 下 webpack.config.js 中的配置
+
+```diff
+  // webpack.config.js
+
+  module.exports = {
+    // ...
++   mode: 'development',
++   optimization: {
++     usedExports: true,
++   },
+  }
+```
+
+但是仅仅加上这些还是不够的，没有使用的代码在打包时候，依然会被加入；所以，还要加上 sideEffects
+
+##### 将文件标记为 side-effect-free (无副作用)
+
+In a 100% ESM module world, identifying side effects is straightforward. However, <font color=FF0000>we aren't there quite yet</font> , so in the mean time <font color=fuchsia>it's necessary to provide hints to webpack's compiler on the "pureness" of your code</font>.
+
+> **译**：在一个纯粹的 ESM 模块世界中，很容易识别出哪些文件有副作用。然而，我们的项目无法达到这种纯度（无法 100% 用 ESM ），所以，此时有必要提示 webpack compiler 哪些代码是“纯粹部分”。
+
+The way this is accomplished is the `"sideEffects"` package.json property（**译**：通过 package.json 的 `"sideEffects"` 属性，来实现这种方式）.
+
+```json
+// package.json
+{
+  "name": "your-project",
+  "sideEffects": false
+}
+```
+
+All the code noted above does not contain **side effects** , so <font color=FF0000>we can **mark the property as `false`**</font> <font color=fuchsia>**to inform webpack that it can safely prune unused exports**</font> .
+
+> **译**：如果所有代码都不包含副作用，我们就可以简单地将该属性标记为 `false` ，来告知 webpack 它可以安全地删除未用到的 export。
+
+<font color=FF0000>If your code did have some side effects</font> though , an array can be provided instead :
+
+```json
+{
+  "name": "your-project",
+  "sideEffects": ["./src/some-side-effectful-file.js"]
+}
+```
+
+The array accepts simple glob patterns（简单的全局模式） to the relevant files . <font color=FF0000>It uses [glob-to-regexp](https://github.com/fitzgen/glob-to-regexp) under the hood</font>（**译**：在引擎盖下，即：在内部实现中...） <font color=fuchsia>**( Supports : `*` , `**` , `{a,b}` , `[a-z]` )**</font> . <font color=FF0000>Patterns like `*.css` , which do not include a `/` , will be treated like `**/*.css`</font> . 
+
+> 👀 **注**：`*` 和 `**` 都是 *nix 下通用的 通配符，其中 `**` 可以简单理解为 “深度搜索”。具体看下面的摘抄：
+>
+> > It's almost the same as the single asterisk but may consist of *multiple* directory levels.
+> >
+> > In other words, while `/x/*/y` will match entries like:
+> >
+> > ```none
+> > /x/a/y
+> > /x/b/y
+> > ```
+> >
+> > and so on (with only one directory level in the wildcard section), the double asterisk `/x/**/y` will *also* match things like:
+> >
+> > ```none
+> > /x/any/number/of/levels/y
+> > ```
+> >
+> > with the concept of "any number of levels" also including zero (in other words, `/x/**/y` will match `/x/y` as one of its choices).
+> >
+> > 摘自：https://stackoverflow.com/a/32604736/13496313
+>
+> 这种设计不仅仅是 webpack 所独有的，grunt、gulp 中也有（参考 https://stackoverflow.com/a/32604753/13496313 ）。这种设计就是来自于 *nix，参考 [What do double-asterisk (**) wildcards mean?](https://stackoverflow.com/questions/28176590/what-do-double-asterisk-wildcards-mean)  比如：在命令行中 想要搜索 “当前目录（嵌套）下所有的 `.jpg` 文件”，可以通过 `find **/*.jpg` 命令进行查找。
+
+> 💡 **Tip** : Note that <font color=FF0000>any imported file is subject to tree shaking</font> . This means <font color=fuchsia>if you use something like `css-loader` in your project and import a CSS file, **it needs to be added to the side effect list**</font> so it will not be unintentionally dropped in production mode（**译**：以免在生产模式中无意中将它删除 ） :
+
+```json
+{
+  "name": "your-project",
+  "sideEffects": ["./src/some-side-effectful-file.js", "*.css"]
+}
+```
+
+Finally , `"sideEffects"` can also be set from the [`module.rules` configuration option](https://webpack.js.org/configuration/module/#modulerules).
+
+#####  `usedExports` ( Tree Shaking ) 和 `sideEffects` 的区别
+
+The <font color=dodgerBlue>**`sideEffects` and `usedExports`**</font> ( more known as tree shaking ) <font color=dodgerBlue>**optimizations are two different things**</font> .
+
+<font color=fuchsia>**`sideEffects` is much more effective**</font> since <font color=FF0000>it allows to skip whole modules / files and the complete subtree</font> . 👀 **注**：感觉因为`sideEffects`是开发者配置的，所以只要匹配开发者的配置，则直接跳过；而 `usedExports` 是由 webpack 运行决定。
+
+<font color=fuchsia>**`usedExports` relies on [terser](https://github.com/terser-js/terser)**</font>（一种 JS Parser ） <font color=fuchsia>**to detect side effects in statements**</font> . It is a <font color=FF0000>difficult task in JavaScript</font> and <font color=FF0000>**not as effective as straightforward `sideEffects` flag**</font> . It also can't skip subtree/dependencies since the spec says that side effects need to be evaluated. While exporting function works fine , React's Higher Order Components ( HOC ) are problematic in this regard.
+
+// TODO
+
+
+
 
 #### Development 模式 和 Production 模式的区分打包
 
-**development 模式 和 production 模式的部分区别：**
+##### development 模式 和 production 模式的部分区别
 
 - 在development模式下，sourceMap是非常全的，可以快速定位代码的问题；而production模式下，sourceMap会简洁很多（没有development环境下那么重要了）。
 - 开发环境下，代码不需要做压缩；而生产环境中，代码需要被压缩
@@ -3605,7 +3831,7 @@ Be aware of the performance differences between the different `devtool` settings
 - The `cheap-source-map` variants are more performant if you can live with the slightly worse mapping quality.
 - Use a `eval-source-map` variant for incremental builds.
 
-> **Tip** 💡: <font color=FF0000>**In most cases , `eval-cheap-module-source-map` is the best option**</font>.
+> 💡 **Tip** : <font color=FF0000>**In most cases , `eval-cheap-module-source-map` is the best option**</font>.
 
 ###### Avoid Production Specific Tooling
 
@@ -3668,7 +3894,7 @@ Earlier and later Node.js versions are not affected.
 
 ###### TypeScript Loader
 
-To improve the build time when using `ts-loader` , use the `transpileOnly` loader option . On its own, this option turns off type checking . To gain type checking again, use the [`ForkTsCheckerWebpackPlugin`](https://www.npmjs.com/package/fork-ts-checker-webpack-plugin). This speeds up TypeScript type checking and ESLint linting by moving each to a separate process.
+To improve the build time when using `ts-loader` , use the `transpileOnly` loader option . On its own, this option turns off type checking . To gain type checking again , use the [`ForkTsCheckerWebpackPlugin`](https://www.npmjs.com/package/fork-ts-checker-webpack-plugin). This speeds up TypeScript type checking and ESLint linting by moving each to a separate process.
 
 ```js
 module.exports = {
@@ -3687,7 +3913,7 @@ module.exports = {
 
 ##### 生产环境
 
-> **Warning** ⚠️ : **Don't sacrifice the quality of your application for small performance gains!** Keep in mind that optimization quality is, in most cases, more important than build performance.
+> ⚠️ **Warning** : **Don't sacrifice the quality of your application for small performance gains!** Keep in mind that optimization quality is, in most cases, more important than build performance.
 
 ##### Specific Tooling Issues 工具相关问题
 
@@ -4627,7 +4853,7 @@ CSS代码分割，在打包时，将css代码分为多个文件；并给出生�
 
 ##### [terser-webpack-plugin](https://github.com/webpack-contrib/terser-webpack-plugin)
 
-用来最小化 js 代码，减小生产包的大小。
+基于 terser（一种 JS parser ）用来最小化 js 代码，减小生产包的大小。
 
 类似的 还有 [uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)，它是默认集成在 webpack@4 的生产环境中的，不过已经废弃。
 

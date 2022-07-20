@@ -1031,7 +1031,7 @@ npx babel src --out-dir dist --presets=@babel/preset-env
   }
   ```
 
-- 使用jsx（这部分可以结合下面的h()函数，参考阅读）
+- 使用 jsx（这部分可以结合下面的h()函数，参考阅读）
 
   ```html
   <script>
@@ -1048,7 +1048,7 @@ npx babel src --out-dir dist --presets=@babel/preset-env
 
 ##### Vue打包后不同版本解析，其中包含
 
-- **runtime + compiler：**如果在js文件中的Vue实例有template选项（vue createApp实例中有template），则必须用runtime + compiler
+- **runtime + compiler：**如果在js文件中的 Vue 实例有 template 选项（ vue createApp 实例中有 template ），则必须用runtime + compiler
 - **runtime only：**默认使用
 
 **更详细的版本：**
@@ -1157,9 +1157,9 @@ plugins: [
   }
   ```
 
-  添加 --watch后，会被webpack-cli 处理，变成一个配置，即 watch: true
+  添加 --watch 后，会被 webpack-cli 处理，变成一个配置，即 watch: true
 
-**webpack-dev-server**
+##### webpack-dev-server
 
 <font color=FF0000>使用 webpack watch 是没有自动刷新浏览器的功能的</font>。<mark>虽然可以在VSCode中使用live-server来完成这样的功能</mark>。但是，我们希望在不适用live-server的情况下，可以具备live reloading（实时重新加载）的功能。可以使用 webpack-dev-server。
 
@@ -1182,7 +1182,7 @@ devServer: {
 
 由于上面，所说的 copyWebpackPlugin在开发阶段是比较费事的，因为静态文件中，可能包含大的文件，复制会导致webpack-dev-server 性能变差，所以，可以在开发阶段使用 不使用 CopyWebpackPlugin，而将webpack-dev-server的静态文件读取指向contentBase；而在生产环境中，使用 CopyWebpackPlugin
 
-**webpack-dev-server设置HMR（热模块更新）**
+##### webpack-dev-server 设置 HMR（热模块更新）
 
 模块热替换是指：在应用程序运行过程中，替换、添加、删除模块，而无需重新刷新整个页面。
 
@@ -1196,7 +1196,7 @@ devServer: {
 
 - 修改了css、js源代码，会立即在浏览器更新，相当于直接在浏览器的devtools中直接修改样式
 
-**如何使用HMR？**
+##### 如何使用 HMR？
 
 - 默认情况下，webpack-dev-server已经支持HMR，我们只需要开启即可
 
@@ -1211,7 +1211,7 @@ devServer: {
   }
   ```
 
-  另外，仅仅配置 hot: true 还是不足以使模块局部刷新（就是HMR），还需要在main.js 中添加如下代码。
+  另外，仅仅配置 `devServer.hot: true` 还是不足以使模块局部刷新（就是HMR），还需要在 main.js 中添加如下代码。
 
   ```js
   if(module.hot) {
@@ -1226,7 +1226,7 @@ devServer: {
 
 - 在不开启HMR的情况下，当我们修改了源代码之后，整个页面会自动刷新，使用的是live reloading
 
-另外，在使用HMR时，浏览器控制台会出现如下打印（见下），其中 WDS就是webpack-dev-server。可以用其来知道webpack-dev-server开启了HMR
+另外，在使用HMR时，浏览器控制台会出现如下打印（见下），其中  WDS 就是 webpack-dev-server。可以用其来知道 webpack-dev-server开启了HMR
 
 ```markdown
 [HMR] Waiting for update signal from WDS...
@@ -1234,7 +1234,7 @@ devServer: {
 
 
 
-**HMR的原理，如何可以做到只更新一个模块中的内容呢？**
+##### HMR的原理，如何可以做到只更新一个模块中的内容呢？
 
 <font color=FF0000>webpack-dev-server会创建两个服务：提供静态资源的服务 ( express ) 和 Socket服务( net.Socket )</font>
 
