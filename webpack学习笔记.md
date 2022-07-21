@@ -2299,6 +2299,8 @@ All the code noted above does not contain **side effects** , so <font color=FF00
 
 > **译**：如果所有代码都不包含副作用，我们就可以简单地将该属性标记为 `false` ，告知 webpack 它可以安全地删除未用到的 export
 
+> 💡 **Tip** : A "side effect" is defined as code that performs a special behavior when imported, other than exposing one or more exports. An example of this are polyfills, which affect the global scope and usually do not provide an export.
+
 <font color=FF0000>If your code did have some side effects</font> though , an array can be provided instead :
 
 ```json
@@ -2368,7 +2370,48 @@ var Button$1 = /*#__PURE__*/ withAppProvider()(Button);
 
 It's <font color=FF0000>**similar to `/*#__PURE__*/`**</font> but on a module level instead of a statement level（**译**：作用于模块的层面，而不是代码语句的层面（这是在说 `/*#__PURE__*/` 这种））. <font color=dodgerBlue>**It says ( `"sideEffects"` property )**</font> : "<mark>If no direct export from a module flagged with no-sideEffects is used</mark>（**译**：如果被标记为无副作用的模块没有被直接导出使用）, <mark>the bundler can **skip evaluating the module for side effects**</mark>." .
 
+##### Mark a function call as side-effect-free
 
+It is possible to tell webpack that a function call is side-effect-free ( pure ) by using the `/*#__PURE__*/` annotation. <font color=FF0000>It **can be put in front of**</font> <font color=fuchsia size=4>**function calls**</font>（👀 注：这里是**函数调用**，下面的示例也是这样用的） <font color=FF0000>to mark them as side-effect-free</font>. Arguments passed to the function are not being marked by the annotation and may need to be marked individually. <font color=FF0000>When the initial value in a variable declaration of an unused variable is considered as side-effect-free ( pure ) , it is getting marked as dead code, not executed and dropped by the minimizer</font>. <font color=fuchsia>**This behavior is enabled when [`optimization.innerGraph`](https://webpack.js.org/configuration/optimization/#optimizationinnergraph) is set to `true`**</font> .
+
+```js
+// file.js
+/*#__PURE__*/ double(55);
+```
+
+##### Minify the Output
+
+So we've cued up our "dead code" to be dropped by using the `import` and `export` syntax, <font color=FF0000>but we **still need to drop it from the bundle**</font>. To do that , set the `mode` configuration option to `production`.
+
+```js
+// webpack.config.js
+module.exports = {
+  mode: 'production'
+}
+```
+
+> 💡 **Tip** : Note that the `--optimize-minimize` flag（命令行 `--optimize-minimize` 标记） can be used to enable `TerserPlugin` as well.
+>
+> 💡 **Tip** : <font color=fuchsia size=4>**`ModuleConcatenationPlugin` is needed for the tree shaking to work**</font>. It is added by `mode: 'production'` （👀 注：在生产模式下，ModuleConcatenationPlugin 默认被引入 ）. <font color=FF0000>If you are not using it</font> （👀 注：没有用生产模式）, <font color=FF0000>**remember to add the [`ModuleConcatenationPlugin`](https://webpack.js.org/plugins/module-concatenation-plugin/) manually**</font> .
+
+##### 总结
+
+What we've learned is that in order to take advantage of *tree shaking* , <font color=dodgerBlue>you must</font>...
+
+- <font color=FF0000>Use ES2015 module syntax</font> ( i.e. `import` and `export` ).
+- <font color=FF0000>**Ensure no compilers transform your ES2015 module syntax into CommonJS modules**</font> (this is the default behavior of the popular Babel preset @babel/preset-env - see the [documentation](https://babeljs.io/docs/en/babel-preset-env#modules) for more details).
+- <font color=FF0000>Add a `"sideEffects"` property</font> to your project's `package.json` file.
+- <font color=fuchsia>**Use the `production` `mode`**</font> configuration option to enable [various optimizations](https://webpack.js.org/configuration/mode/#usage) including minification and tree shaking.
+
+摘自：[webpack 文档 - Guide - Tree Shaking](https://webpack.js.org/guides/tree-shaking/)
+
+##### 文章《 Webpack 中的 sideEffects 到底该怎么用？》中的补充
+
+其实 webpack 里的 `sideEffects: false` 的意思并不是我这个模块真的没有副作用，而只是为了在摇树时告诉 webpack：**我这个包在设计的时候就是期望没有副作用的，即使他打完包后是有副作用的，webpack 同学你摇树时放心的当成无副作用包摇就好啦！**
+
+也就是说，<font color=fuchsia>**只要你的包不是用来做 polyfill 或 shim 之类的事情，就尽管放心的给他加上 `sideEffects: false` 吧！**</font>
+
+摘自：[Webpack 中的 sideEffects 到底该怎么用？ - kuitos的文章 - 知乎](https://zhuanlan.zhihu.com/p/40052192)
 
 
 
