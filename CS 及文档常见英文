@@ -20,13 +20,15 @@
 - **i.e.** : *i.e.* is an abbreviation for the phrase ***id est***, which means **"that is"** .
 - **retrieve**：检索
 - **decoupled**：解耦的
-- **critical**：关键的。一般见：关键渲染路径  Critical Rendering Path。虽然更常见的翻译是 “批评性的”
+- **critical**：关键的。一般见：关键渲染路径 ( Critical Rendering Path ) 。虽然更常见的翻译是 “批评性的”
 - **gotcha** ：在计算机编程领域中是指在系统或程序、程序设计语言中，合法有效，但是会误解意思的构造，程式容易造成错误，或是一些易于使用但其结果不如期望的构造。字面上是 got you 的简写，常用于口语，**直译为： “逮着你了”、“捉弄到你了 ”、“你中计了” 、“骗到你了”**。
 - **tricky**：困难的，棘手的
 - **prune**：剪枝。一般用于 机器学习 以及 树形数据结构，也是前端构建 Tree Shaking 的概念。
 - **utilize**：利用
 - **under the hood**：在引擎盖下（指内部实现）
 - **wildcard**：通配符
+- **spec**：规格，细则。abbr of specification
+- **tackle**：解决
 
 #### 特殊字符
 

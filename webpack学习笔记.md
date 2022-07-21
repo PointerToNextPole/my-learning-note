@@ -2255,6 +2255,10 @@ module.exports = {
 
 #### Tree Shaking 文档补充
 
+> 👀 注：下面的摘抄中会出现不少的 pure，有一部分的原因是： “ *v4 beta 版时叫 `pure module` , 后来改成了 `sideEffects`* ”
+>
+> 学习自：[Webpack 中的 sideEffects 到底该怎么用？ - kuitos的文章 - 知乎](https://zhuanlan.zhihu.com/p/40052192)
+
 *Tree shaking* is a term commonly used in the JavaScript context for dead-code elimination（消除）. <font color=FF0000>**It relies on the [static structure](http://exploringjs.com/es6/ch_modules.html#static-module-structure) of ES2015 module syntax , i.e. `import` and `export`**</font> . The name and concept have <font color=FF0000>**been popularized by the ES2015 module bundler [rollup](https://github.com/rollup/rollup)**</font> .
 
 The **webpack 2** release came with built-in support for ES2015 modules (alias *harmony modules*) as well as <font color=FF0000>unused module export detection</font> . The new **webpack 4** release expands on this capability with <font color=fuchsia>a way to **provide hints to the compiler via the `"sideEffects"` `package.json` property** to denote</font>（表示） which files in your project are "pure" and therefore safe to prune（剪枝） if unused.
@@ -2293,7 +2297,7 @@ The way this is accomplished is the `"sideEffects"` package.json property（**�
 
 All the code noted above does not contain **side effects** , so <font color=FF0000>we can **mark the property as `false`**</font> <font color=fuchsia>**to inform webpack that it can safely prune unused exports**</font> .
 
-> **译**：如果所有代码都不包含副作用，我们就可以简单地将该属性标记为 `false` ，来告知 webpack 它可以安全地删除未用到的 export。
+> **译**：如果所有代码都不包含副作用，我们就可以简单地将该属性标记为 `false` ，告知 webpack 它可以安全地删除未用到的 export
 
 <font color=FF0000>If your code did have some side effects</font> though , an array can be provided instead :
 
@@ -2317,7 +2321,7 @@ The array accepts simple glob patterns（简单的全局模式） to the relevan
 > > /x/b/y
 > > ```
 > >
-> > and so on (with only one directory level in the wildcard section), the double asterisk `/x/**/y` will *also* match things like:
+> > and so on ( with only one directory level in the wildcard section ) , the double asterisk `/x/**/y` will *also* match things like:
 > >
 > > ```none
 > > /x/any/number/of/levels/y
@@ -2329,7 +2333,7 @@ The array accepts simple glob patterns（简单的全局模式） to the relevan
 >
 > 这种设计不仅仅是 webpack 所独有的，grunt、gulp 中也有（参考 https://stackoverflow.com/a/32604753/13496313 ）。这种设计就是来自于 *nix，参考 [What do double-asterisk (**) wildcards mean?](https://stackoverflow.com/questions/28176590/what-do-double-asterisk-wildcards-mean)  比如：在命令行中 想要搜索 “当前目录（嵌套）下所有的 `.jpg` 文件”，可以通过 `find **/*.jpg` 命令进行查找。
 
-> 💡 **Tip** : Note that <font color=FF0000>any imported file is subject to tree shaking</font> . This means <font color=fuchsia>if you use something like `css-loader` in your project and import a CSS file, **it needs to be added to the side effect list**</font> so it will not be unintentionally dropped in production mode（**译**：以免在生产模式中无意中将它删除 ） :
+> 💡 **Tip** : Note that <font color=FF0000>any imported file is subject to tree shaking</font> . This means <font color=fuchsia>if you use something like `css-loader` in your project and import a CSS file , **it needs to be added to the side effect list**</font> so it will not be unintentionally dropped in production mode（**译**：以免在生产模式中无意中将它删除 ） :
 
 ```json
 {
@@ -2338,17 +2342,33 @@ The array accepts simple glob patterns（简单的全局模式） to the relevan
 }
 ```
 
-Finally , `"sideEffects"` can also be set from the [`module.rules` configuration option](https://webpack.js.org/configuration/module/#modulerules).
+Finally , `"sideEffects"` can <font color=FF0000>**also** be set</font> from the [`module.rules` configuration option](https://webpack.js.org/configuration/module/#modulerules).
 
 #####  `usedExports` ( Tree Shaking ) 和 `sideEffects` 的区别
 
 The <font color=dodgerBlue>**`sideEffects` and `usedExports`**</font> ( more known as tree shaking ) <font color=dodgerBlue>**optimizations are two different things**</font> .
 
-<font color=fuchsia>**`sideEffects` is much more effective**</font> since <font color=FF0000>it allows to skip whole modules / files and the complete subtree</font> . 👀 **注**：感觉因为`sideEffects`是开发者配置的，所以只要匹配开发者的配置，则直接跳过；而 `usedExports` 是由 webpack 运行决定。
+<font color=fuchsia>**`sideEffects` is much more effective**</font> since <font color=FF0000>it allows to skip whole modules/files and the complete subtree</font> . 👀 **注**：感觉因为 `sideEffects` 是开发者配置的，所以只要匹配开发者的配置，则直接跳过；而 `usedExports` 是由 webpack 运行决定。
 
-<font color=fuchsia>**`usedExports` relies on [terser](https://github.com/terser-js/terser)**</font>（一种 JS Parser ） <font color=fuchsia>**to detect side effects in statements**</font> . It is a <font color=FF0000>difficult task in JavaScript</font> and <font color=FF0000>**not as effective as straightforward `sideEffects` flag**</font> . It also can't skip subtree/dependencies since the spec says that side effects need to be evaluated. While exporting function works fine , React's Higher Order Components ( HOC ) are problematic in this regard.
+<font color=fuchsia>**`usedExports` relies on [terser](https://github.com/terser-js/terser)**</font>（一种 JS Parser ） <font color=fuchsia>**to detect side effects in statements**</font> . It is a <font color=FF0000>difficult task in JavaScript</font> and <font color=FF0000>**not as effective as straightforward `sideEffects` flag**</font> . <font color=fuchsia>It also **can't skip subtree/<font size=4>dependencies</font>**</font> since the spec（规范） says that side effects need to be evaluated. While exporting function works fine , React's Higher Order Components ( HOC ) are problematic in this regard（**译**：尽管导出函数能运作如常，但 React 框架的高阶组件在这种情况下是会出问题的）.
 
-// TODO
+> 👀 注：这里接下来举了个 React 的例子，挺长，且和概念没有太强的关联；再加上当前我对 React 不太了解... 这里略；详见原文。
+
+Terser actually tries to figure it（ it 是例子中的问题）out, but it doesn't know for sure in many cases. This doesn't mean that terser is not doing its job well because it can't figure it out. <font color=fuchsia>It's too difficult to determine it reliably in a dynamic language like JavaScript</font>.
+
+But <font color=dodgerBlue>**we can help terser by using the <font size=4>`/*#__PURE__*/`</font> annotation**</font>. <font color=fuchsia>**It flags a statement as side-effect-free**</font>. So a small change would make it possible to tree-shake the code :
+
+```javascript
+var Button$1 = /*#__PURE__*/ withAppProvider()(Button);
+```
+
+<font color=FF0000>This would allow to remove this piece of code</font> . But there are still questions with the imports which need to be included/evaluated because they could contain side effects（**译**：但仍然会有一些引入的问题，需要对其进行评估，因为它们产生了副作用）.
+
+<font color=dodgerBlue>**To tackle（解决） this , we use the [`"sideEffects"`](https://webpack.js.org/guides/tree-shaking/#mark-the-file-as-side-effect-free) property in `package.json`**</font> .
+
+It's <font color=FF0000>**similar to `/*#__PURE__*/`**</font> but on a module level instead of a statement level（**译**：作用于模块的层面，而不是代码语句的层面（这是在说 `/*#__PURE__*/` 这种））. <font color=dodgerBlue>**It says ( `"sideEffects"` property )**</font> : "<mark>If no direct export from a module flagged with no-sideEffects is used</mark>（**译**：如果被标记为无副作用的模块没有被直接导出使用）, <mark>the bundler can **skip evaluating the module for side effects**</mark>." .
+
+
 
 
 
