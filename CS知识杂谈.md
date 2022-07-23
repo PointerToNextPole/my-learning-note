@@ -155,11 +155,11 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 
 ##### routine 例程
 
-> 什么是“子程序 ( routine ) ” ？子程序 是为实现一个特定的目的而编写的一个可被调用的 方法 ( method ) 或 过程 ( procedure )。例如C++ 中的函数 ( function )， Java 中的方法 ( method )，或 Microsoft Visual Basic 中的函数过程 ( function procedure ) 或 子过程 ( sub procedure )。对于某些使用方式，C 和 C++ 中的 宏 ( macro ) 也可认为是子程序。
+> 什么是“子程序 ( routine ) ” ？子程序 是为实现一个特定的目的而编写的一个可被调用的 方法 ( method ) 或 过程 ( procedure )。例如 C++ 中的函数 ( function )， Java 中的方法 ( method )，或 Microsoft Visual Basic 中的函数过程 ( function procedure ) 或 子过程 ( sub procedure )。对于某些使用方式，C 和 C++ 中的 宏 ( macro ) 也可认为是子程序。
 >
 > 摘自：《代码大全（第二版）》chapter 7 - P162
 
-如果细分起来：function 是有返回值的 routine，procedure（过程）是没有返回值的 routine，method 是作为 class 的成员的 routine，甚至 C++ 中重载了的运算符也算是 routine。
+如果细分起来：function 是有返回值的 routine，procedure（过程）是没有返回值的 routine，method 是作为 class 的成员的 routine，甚至 C++ 中重载了的运算符也算是 routine。👀 注：这部分也可以参考 [[#Side Effect 副作用]] 中的内容
 
 摘自：[CC2e 术语：把 routine 译为“子程序”的理由](https://blog.csdn.net/techcrunch/article/details/1961970)
 
@@ -618,6 +618,89 @@ A <font color=FF0000>**wrapper**</font> instead is something that <font color=FF
 <font color=FF0000 size=4>**// TODO 下面的链接包含大量的知识（不仅仅是 js 中的闭包，凡是实现 FP 的语言应该都有闭包），建议阅读与记录。**</font>
 
 摘自：[设计闭包（Closure）的初衷是为了解决什么问题？ - 知乎](https://www.zhihu.com/question/51402215)
+
+
+
+#### Side Effect 副作用
+
+##### 什么是副作用
+
+<font color=dodgerBlue>**副作用 ( side-effect ) 是指让一个函数变得不再纯净 ( pure ) 的东西**</font>。
+
+<font color=fuchsia size=4>**一个纯净的函数，无论何时何地 ( any time any wherer ) 执行，都会得到稳定的结果**</font>（👀注： 即，是“幂等”的），这对保障程序的稳定性和性能都有极大的帮助。<font color=FF0000>反过来：如果一个函数不能 any time any wherer 得到稳定的结果，那这个函数就不是纯净的，就是有副作用了</font>。
+
+<font color=dodgerBlue>**常见副作用包括**</font>：<mark style="background: lightpink">对外部可变数据或变量的修改</mark>，<mark>外部接口的调用尤其是IO</mark>，<mark style="background: Aquamarine">异常的抛出</mark>。因为<font color=FF0000>它们都会让函数的执行不再稳定，要么会导致函数输出变化，要么导致函数报错</font>。 <font color=dodgerBlue>**举一些例子**</font>：
+
+- <mark style="background: lightpink">对外部可变数据或变量的修改</mark>：全局变量 / 闭包变量 / dom对象 / bom对象 的读写操作
+- <mark>外部接口的调用尤其是 IO</mark> ：dom对象 / bom对象的方法调用，xhr / fetch这样的网络IO，console / LocalStorage这样的 磁盘IO
+- <mark style="background: Aquamarine">异常的抛出</mark>：函数中的某些代码可能会抛出异常或者执行出错
+
+通俗的来讲就是：不能相信除了自己以外的任何人。
+
+> 💡 <font color=FF0000>实际上，在 FP中 function 指的是纯净的函数，对于有副作用的函数称之为 procedure</font>。👀 注：关于 function 和 producer 参见 [[#routine 例程]]
+
+##### 副作用是有害的
+
+副作用让我们的程序变得不稳定，举个例子：
+
+```js
+window.a = 0
+function doWork() {
+	return window.a + 1
+}
+```
+
+这个 `doWork` 就是一个副作用函数的代表，它依赖了外部的可变数据变得不再稳定；因为谁也不知道什么时候会在另外的地方对 `window.a` 做了修改。
+
+在我们的业务代码中有很多这样的“稳定”的函数，我们总是“愿意相信”它们不会出问题，然而这样的函数事实上就是不稳定的；因为它依赖了外部的可变数据。其实一些 lib 比如 webpack 要比我们理性的多，它们会不带任何主观因素的把这样的函数视为带有副作用的函数
+
+<font color=dodgerBlue>我们经常有一个误解是：**我们总认为我们以为的稳定的函数是纯净的**，实际上并非如此</font>（👀 注：下面的组合可以总结为：“纯洁” 和 “函数稳定” 是充分不必要的）：
+
+- 纯 -> 稳定 ✅
+- 不纯 -> 不稳定 ✅
+- 稳定 -> 纯 ❌
+- 不稳定 -> 不纯 ✅
+
+<font color=dodgerBlue>稳定不一定是纯的，但是不纯一定是不稳定的</font>。<font color=red>因此，判定我们的前端程序是否真的稳定，它的依据不是表面上是否稳定，而是内在是否纯净</font>。<font color=fuchsia>**根据 FP 的定义，纯净的函数只适合用来做计算**</font>；<font color=red>但是计算密集型工作正好不是前端程序擅长的工作</font>。相反，<font color=fuchsia><font size=4>**前端程序几乎都是不纯净的**</font>，因为像 IO、DOM、BOM等我们极度依赖的平台接口，全部都是具有副作用的</font>。
+
+所以，前端程序或者说任何具有实际应用价值的程序几乎都是不稳定的，我们一定要认识到这一点，只有这样我们才能理解 RxJS / Redux-saga / Redux-thunk 这些东西存在的意义。
+
+##### 副作用是必须的
+
+<font color=fuchsia>只有完全孤立的系统才不会有副作用，但是试想一下如果系统是完全孤立的，我们又如何去使用它呢？如果一个系统跟外界没有交互，那它的存在又有什么意义呢？</font>因此，<font color=dodgerBlue>副作用对任何有实际应用意义的系统而言都是必须的</font>。
+
+副作用就像燃气一样，如果我们对其放任不顾它就会变成散布于我们空间中的毒气，但是一旦给予它合适的管制，它就能成为推动我们空间前进的燃料。
+
+##### 实际上这是两件事
+
+前面分别讲述了：
+
+- 副作用是有害的，我们要 **限制副作用**
+- 副作用是必须的，我们要 **处理副作用**
+
+实际上这是两件不相关的事，前者关注的是副作用产生之前，而后者关注的是副作用产生之后。
+
+也因此分别对应了不同的表现形态：
+
+- 对于限制副作用，它催生了 FP 层面的 Monad / AlgebraicEffect 和 库层面 的 Rx / Elm / Flux / Redux / Saga 这些东西，它们主要是用来限制副作用产生的
+- 对于处理副作用，则体现在了不同前端框架对已经产生的副作用的处理策略上
+
+所以，当在再看到一些关于FP或者关于副作用的言论出现的时候，我们就要分清楚了：
+
+- 如果是基础库作者发表的，那么他们一般是在说如何限制副作用
+- 如果是前端视图库作者发表的，那么他们一般是在说如何处理副作用
+
+摘自：[再谈副作用](https://juejin.cn/post/6905234297360220174)
+
+##### wikipedia 中的定义 补充
+
+In computer science, <font color=fuchsia>**an operation, function or expression**</font> is said to <font color=dodgerBlue>have a **side effect** if it modifies some state variable value(s) outside its local environment</font>, which is to say if it has any observable effect other than its primary effect of returning a value to the invoker of the operation. Example <font color=fuchsia>side effects include **modifying a non-local variable**, **modifying a static local variable**, **modifying a mutable argument passed by reference**, **performing I/O** or **calling other functions with side-effects**</font>. In the presence of side effects, a program's behaviour may depend on history; that is, the order of evaluation matters. Understanding and debugging a function with side effects requires knowledge about the context and its possible histories.
+
+Side effects play an important role in the design and analysis of programming languages. The degree to which side effects are used depends on the programming paradigm. For example, imperative programming（命令式编程） is commonly used to produce side effects, to update a system's state. By contrast, declarative programming is commonly used to report on the state of system, without side effects.
+
+<font color=dodgerBlue>**Functional programming aims to minimize or eliminate side effects**</font>. <font color=fuchsia>The lack of side effects makes it easier to do formal verification of a program</font>. The functional language *Haskell* eliminates side effects such as I/O and other stateful computations by replacing them with [monadic](https://en.wikipedia.org/wiki/Monad_(functional_programming)) actions. <mark>Functional languages such as *Standard ML*, *Scheme* and *Scala* do not restrict side effects, but it is customary for programmers to avoid them</mark>.
+
+摘自：[wikipedia - Side effect (computer science)](https://en.wikipedia.org/wiki/Side_effect_(computer_science))
 
 
 
