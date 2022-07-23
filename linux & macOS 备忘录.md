@@ -2,75 +2,81 @@
 
 
 
-## <font color=FF0000>macOS快捷键</font>
+## macOS快捷键
 
-#### <font color=FF0000>基础键</font>
+#### 基础键
 
-**⌘ : Command** <font color=FF0000>**Option键在键盘映射中相当于windows中的win键 / meta键**</font>
-**⇧ : Shift**
-**⌥ : Option** <font color=FF0000>**Option键在键盘映射中相当于windows中的Alt键**</font>
-**⌃ : Control** <font color=FF0000>**Control键在键盘映射中相当于windows中的Ctrl键**</font>
-**↩︎ / ⌅ : Return / Enter**
-**⇪ : caps lock**
-**⎋ : Escape (Esc)**
-**␣ : Space**
-**⌫ : Delete**
-**⌦ : 向前删除键（Fn+Delete）**
-**↑ : 上箭头**
-**↓ : 下箭头**
-**← : 左箭头**
-**→ : 右箭头**
-**⇞ : Page Up（Fn+↑）**
-**⇟ :  Page Down（Fn+↓）**
-**↖ / Home : ( Fn + ←)**
-**↘ / End : (Fn + →)**
-**⇥ : 右制表符（Tab键）**
-**⇤ : 左制表符（Shift+Tab）**
-**⏏︎ : eject 介质推出键**
+- **⌘ : Command** <font color=FF0000>**Option键在键盘映射中相当于windows中的win键 / meta键**</font>
+- **⇧ : Shift**
+- **⌥ : Option** <font color=FF0000>**Option键在键盘映射中相当于windows中的Alt键**</font>
+- **⌃ : Control** <font color=FF0000>**Control键在键盘映射中相当于windows中的Ctrl键**</font>
+- **⏎ / ⌅ : Return / Enter**
+- **⇪ : caps lock**
+- **⎋ : Escape (Esc)**
+- **␣ : Space**
+- **⌫ : Delete**
+- **⌦ : 向前删除键（Fn+Delete）**
+- **↑ : 上箭头**
+- **↓ : 下箭头**
+- **← : 左箭头**
+- **→ : 右箭头**
+- **⇞ : Page Up（Fn+↑）**
+- **⇟ :  Page Down（Fn+↓）**
+- **↖ / Home : ( Fn + ←)**
+- **↘ / End : (Fn + →)**
+- **⇥ : 右制表符（Tab键）**
+- **⇤ : 左制表符（Shift+Tab）**
+- **⏏︎ : eject 介质推出键**
 
-#### <font color=FF0000>快捷键</font>
+#### 快捷键
 
-**⌘ + Z 撤销**
-**⇧ + ⌘ + Z 反撤销**
+- **⌘ + Z 撤销**
+- **⇧ + ⌘ + Z 反撤销**
 
-**␣ 向下翻页**
-**⇧ + ␣ 向上翻页**
+- **␣ 向下翻页**
 
-**⌘ + ← 移动到光标所在行首**
-**⌘ + → 移动到光标所在行尾**
-**⌘ + ⌫: 删除至行首**
+- **⇧ + ␣ 向上翻页**
 
-**⌥ + ← 移动到光标所在前一个单词**
-**⌥ + → 移动到光标所在后一个单词**
-**⌥ + ⌫  删除一个单词**
+- **⌘ + ← 移动到光标所在行首**
+- **⌘ + → 移动到光标所在行尾**
+- **⌘ + ⌫: 删除至行首**
 
-**⌥ + F3 显示dock**
-**⌘ + ` 同一应用间切换界面**
+- **⌥ + ← 移动到光标所在前一个单词**
+- **⌥ + → 移动到光标所在后一个单词**
+- **⌥ + ⌫  删除一个单词**
 
-**⇧ + ⌘ + G (Finder中使用)前往路径**
+- **⌥ + F3 显示dock**
+- **⌘ + ` 同一应用间切换界面**
 
-**⌃ + ⌘ + F 最大化应用/ 取消**
+- **⇧ + ⌘ + G (Finder中使用)前往路径**
 
-**⌃ + ⌘ + ␣  打开“字符检视器”**
+- **⌃ + ⌘ + F 最大化应用/ 取消**
 
-**⇧ + ⌘ + ␣ + 4 截取特定窗口**
+- **⌃ + ⌘ + ␣  打开“字符检视器”**
 
-⇧ + ⌘ + ⌃ + 4 **截取的图片直接放到剪切板中**
+- **⇧ + ⌘ + ␣ + 4 截取特定窗口**
 
-**输入法相关**
-**⌃ + ⇧ + ⌘ + C 简体转换为繁体（似乎无效…）**
-**⌃ + ⌥ + ⇧ + ⌘ + C 繁体转换为简体**
-**⌃ + ⌥ + ␣ 切换输入法**
+- **⇧ + ⌘ + ⌃ + 4 截取的图片直接放到剪切板中**
 
-**特殊字符**
-**· ⇧ + ⌥ + 9 / 英文输入法下⎋下面的一个键    打出欧美姓名中的圆点 ·**
-**· ⇧ + ⌥ + K 打出**
+##### 输入法相关
 
-#### **在浏览器之类的app选中文本：**
+- **⌃ + ⇧ + ⌘ + C 简体转换为繁体（似乎无效…）**
 
-**1. 三指选中当前词语**
-**2. ⇧ + ⌥ + ← / →  ：向前向后以词为单位选中文本**
-    **⇧ + ⌥ + ↑ / ↓ ：向上向下以行为单位选中文本**
+- **⌃ + ⌥ + ⇧ + ⌘ + C 繁体转换为简体**
+
+- **⌃ + ⌥ + ␣ 切换输入法**
+
+##### 特殊字符
+
+- **⇧ + ⌥ + 9 / 英文输入法下⎋下面的一个键    打出欧美姓名中的圆点 ·**
+- **⇧ + ⌥ + K 打出**
+
+##### 在浏览器之类的app选中文本
+
+- **三指选中当前词语**
+- **⇧ + ⌥ + ← / →  ：向前向后以词为单位选中文本**    
+
+- **⇧ + ⌥ + ↑ / ↓ ：向上向下以行为单位选中文本**
 
 
 
@@ -117,15 +123,13 @@
 
 
 
-
-
 **更多快捷键，请参看设置中的键盘选项：**
 
 <img src="https://s1.ax1x.com/2020/09/02/wpQmKP.png" style="zoom:45%;" />
 
 
 
-### <font color=FF0000>Mac命令行使用</font>
+### Mac 使用
 
 **修改终端用户名：**
 
@@ -133,7 +137,7 @@
 sudo scutil --set HostName yourTargetName
 ```
 
-##### `cd`命令，在命令行中进入查找输出的地址，如：
+##### `cd` 命令，在命令行中进入查找输出的地址，如：
 
 ```bash
 #方法一
@@ -150,7 +154,7 @@ mkdir folder-name && cd $_
 
 这里的 `&&` 和 `$_`下面都有解释。
 
-**类似的：`open`命令**
+**类似的：`open `命令**
 
 ```bash
 open `brew --prefix go`    #打开软件
@@ -160,62 +164,62 @@ open folder/fileName.filetype     #打开默认的打开方式打开文件（如
 
 
 
-#### <font color=FF0000>open命令</font>
+#### open 命令
 
-- 使用默认应用打开<font color=FF0000>指定</font>文件
+##### 使用默认应用打开<font color=FF0000>指定</font>文件
 
-  ```sh
-  open fileName
-  ```
+```sh
+open fileName
+```
 
-- 使用默认应用打开<font color=FF0000>一批（对应规则的）</font>文件
+##### 使用默认应用打开<font color=FF0000>一批（对应规则的）</font>文件
 
-  ```sh
-  open *.fileType
-  ```
+```sh
+open *.fileType
+```
 
-- 用<font color=FF0000>指定的应用程序</font>来打开<font color=FF0000>指定</font>的文件
+##### 用<font color=FF0000>指定的应用程序</font>来打开<font color=FF0000>指定</font>的文件
 
-  ```sh
-  open -a appName fileName
-  ```
+```sh
+open -a appName fileName
+```
 
-- 用系统<font color=FF0000>默认的文本编辑器</font>来打开指定的<font color=FF0000>文本文件</font>
+##### 用系统<font color=FF0000>默认的文本编辑器</font>来打开指定的<font color=FF0000>文本文件</font>
 
-  ```sh
-  open -e txtFileName
-  ```
+```sh
+open -e txtFileName
+```
 
-  - 使用<font color=FF0000>默认对应的文本编辑器</font>打开文件
+##### 使用<font color=FF0000>默认对应的文本编辑器</font>打开文件
 
-    ```sh
-    open -t fileName
-    ```
+```sh
+open -t fileName
+```
 
-- 打开文件， 如果是macOS则使用Finder打开文件夹
+##### 打开文件， 如果是macOS则使用Finder打开文件夹
 
-  ```sh
-  open foldName
-  open .
-  ```
+```sh
+open foldName
+open .
+```
 
-- 打开<font color=FF0000>文件所在文件夹</font>
+##### 打开<font color=FF0000>文件所在文件夹</font>
 
-  ```sh
-  open -R fileName
-  ```
+```sh
+open -R fileName
+```
 
-- 打开某个url，注意：要加上`http://` 或 `https://`
+##### 打开某个url，注意：要加上`http://` 或 `https://`
 
-  ```sh
-  open https://url
-  ```
+```sh
+open https://url
+```
 
 摘自：[用open命令实现从终端到可视化界面的切换](https://www.jianshu.com/p/10395015ebc8)
 
 
 
-#### <font color=FF0000>Homebrew使用</font>
+#### Homebrew 使用
 
 - Homebrew是使用ruby开发的Mac的软件包管理器
 - Homebrew 安装软件时将会<font color=FF0000>自动下载各种依赖</font>，这一点非常方便。
@@ -241,51 +245,51 @@ open folder/fileName.filetype     #打开默认的打开方式打开文件（如
 | 查看Homebrew安装位置 | `brew --prefix` |
 | 查看软件包在Homebrew中安装的位置 | `brew --prefix wget` |
 
-#### **补充：** 
+补充： 
 
-- ##### 关于taps(third-party-repositories)，相关命令：`brew tap`
+##### 关于taps(third-party-repositories)，相关命令：`brew tap`
 
-  brew tap可以为brew的软件的 跟踪, 更新, 安装添加更多的的`tap formulae
+brew tap可以为brew的软件的 跟踪, 更新, 安装添加更多的的`tap formulae
 
-  如果你在核心仓库没有找到你需要的软件,那么你就需要安装第三方的仓库去安装你需要的软件
+如果你在核心仓库没有找到你需要的软件,那么你就需要安装第三方的仓库去安装你需要的软件
 
-  tap命令的仓库源默认来至于Github，但是这个命令也不限制于这一个地方
+tap命令的仓库源默认来至于Github，但是这个命令也不限制于这一个地方
 
-  - **brew tap** 
+- **brew tap** 
 
-    没有参数会自动更新已经存在的`tap`并列出当前已经`tapped`的仓库
+  没有参数会自动更新已经存在的`tap`并列出当前已经`tapped`的仓库
 
-  - **brew tap \<user>/\<repo>** 
+- **brew tap \<user>/\<repo>** 
 
-    在本地对这个 `https://github.com/user/repo` 仓库上做了一个浅度的克隆，完成之后 `brew`就可以在这个仓库包含的`formulae`上工作,好比就在`Homebrew`规范的仓库,你可使用`brew install` 或者`brew uninstall `安装或者卸载这个仓库上的软件。当你执行`brew update`这个命令时，`tap` 和 `formulae` 就会自定更新
+  在本地对这个 `https://github.com/user/repo` 仓库上做了一个浅度的克隆，完成之后 `brew`就可以在这个仓库包含的`formulae`上工作,好比就在`Homebrew`规范的仓库,你可使用`brew install` 或者`brew uninstall `安装或者卸载这个仓库上的软件。当你执行`brew update`这个命令时，`tap` 和 `formulae` 就会自定更新
 
-  - **brew tap \<user>/\<repo> URL** 
+- **brew tap \<user>/\<repo> URL** 
 
-    在本地对这个 `URL` 仓库上做了一个浅度的克隆,和上面一个参数命令是不一样的,`URL`没有默认关联到`Github`,这个`URL`没有要求必须是`HTTP`协议，任何位置和任何协议而且**Git**也是能很好的处理的
+  在本地对这个 `URL` 仓库上做了一个浅度的克隆,和上面一个参数命令是不一样的,`URL`没有默认关联到`Github`,这个`URL`没有要求必须是`HTTP`协议，任何位置和任何协议而且**Git**也是能很好的处理的
 
-  - **brew untap \<user>/\<repo> [\<user>/\<repo> \<user>/\<repo> ...]**
+- **brew untap \<user>/\<repo> [\<user>/\<repo> \<user>/\<repo> ...]**
 
-    移除已经安装的`tap`.这个仓库被删除,`brew`就不在可用在这个仓库的`formulae`.可以同时删除几个仓库
+  移除已经安装的`tap`.这个仓库被删除,`brew`就不在可用在这个仓库的`formulae`.可以同时删除几个仓库
 
-  **仓库命名的规范**
+**仓库命名的规范**
 
-  - 在 `Github`上,你的仓库名称必须是`homebrew-something`,为了使用一个参数的`brew tap`命令,`homebrew-`这个前缀不是可选的,是必须的。
-    对于两个参数的`brew tap`命令没有这个限制,但是必须给出明确的全部的`URL`地址
-  - 当你在命令行使用`brew tap`时，你可以省略`homebrew-`这个前缀的
+- 在 `Github`上,你的仓库名称必须是`homebrew-something`,为了使用一个参数的`brew tap`命令,`homebrew-`这个前缀不是可选的,是必须的。
+  对于两个参数的`brew tap`命令没有这个限制,但是必须给出明确的全部的`URL`地址
+- 当你在命令行使用`brew tap`时，你可以省略`homebrew-`这个前缀的
 
-  也就是说:`brew tap username/foobar`是作为长版本`brew tap username/homebrew-foobar`使用的一个简写.**`brew`可以自己添加`homebrew-`前缀的在需要的时候**
-  
-  摘自： [homebrew的tap功能详解](https://segmentfault.com/a/1190000012826983)
-  
-- ##### brew link
+也就是说:`brew tap username/foobar`是作为长版本`brew tap username/homebrew-foobar`使用的一个简写.**`brew`可以自己添加`homebrew-`前缀的在需要的时候**
 
-  对于homebrew管理的应用上来说，在安装后可能表现为：不能识别该命令；这些问题实际上是很fatal的，会导致一系列的后续错误。
+摘自： [homebrew的tap功能详解](https://segmentfault.com/a/1190000012826983)
 
-  摘自：[深入理解brew link命令](https://blog.csdn.net/weixin_33730836/article/details/86400319)
+##### brew link
 
-  `brew link` creates symlinks to installations you performed manually in `Cellar`. This allows you to have the flexibility to install things on your own but still have those participate as dependencies in `homebrew` formulas.
+对于homebrew管理的应用上来说，在安装后可能表现为：不能识别该命令；这些问题实际上是很fatal的，会导致一系列的后续错误。
 
-  摘自：[stack overflow - What does “brew link” do?](https://stackoverflow.com/questions/33268389/what-does-brew-link-do)
+摘自：[深入理解brew link命令](https://blog.csdn.net/weixin_33730836/article/details/86400319)
+
+`brew link` creates symlinks to installations you performed manually in `Cellar`. This allows you to have the flexibility to install things on your own but still have those participate as dependencies in `homebrew` formulas.
+
+摘自：[stack overflow - What does “brew link” do?](https://stackoverflow.com/questions/33268389/what-does-brew-link-do)
 
 
 
@@ -300,7 +304,7 @@ defaults write com.apple.screencapture disable-shadow -bool FALSE
 
 
 
-#### macOS清理DNS缓存
+#### macOS 清理 DNS 缓存
 
 ```sh
 sudo killall -HUP mDNSResponder
@@ -308,24 +312,17 @@ sudo killall -HUP mDNSResponder
 
 
 
-#### 切换到root用户模式
+#### macOS 重启音频服务
 
-```bash
-sudo su
-sudo -i  #进入root目录
-su root #存疑
+有的时候（间隔半年左右），Mac 会出现 没有声音的情况，这时候运行如下命令即可：
 
-# 退出管理员模式
-exit
+```sh
+sudo killall coreaudiod
 ```
 
 
 
-#### 打开外接存储设备
-
-进入根目录，进入Volume文件夹，这里存放所有外接存储设备
-
-
+### Linux 相关
 
 #### Linux命令缩写由来
 
@@ -355,6 +352,52 @@ https://www.zhihu.com/question/49073893/
 
 
 
+#### Linux 命令行 flags、switches、options 区别
+
+👀 注：由于在中文网中没有搜索到解答，甚至感觉完全混为一谈；英文网中没找到找到权威的解答，且解答与解答间相互矛盾...所以，<font color=fuchsia>**当前的笔记，<font size=4>只供参考</font>**</font>
+
+##### 关于 flags & switches
+
+先说总结（从下面引用得来）的结论：switches （开关）更多表示一种状态：表示 启用什么或关闭什么，后面不跟参数 ( arguments )；而 flag 后面跟参数，flag 表示 键值对的“键”，后面的参数即 键值对的“值”。
+
+> According to [Build Awesome Command-Line Applications in Ruby 2](https://rads.stackoverflow.com/amzn/click/com/1934356913) the main distinction is : <font color=dodgerBlue>**a `switch` doesn't take arguments, while a `flag` does**</font>. Quoting directly from the book (page 15):
+>
+> <img src="https://s2.loli.net/2022/07/23/ibSmXh1Ua6FtYkQ.png" alt="enter image description here" style="zoom: 43%;" />
+>
+> Typically, if a switch is in the long-form (for example `--foo` ) , which turns “on” some behavior, there is also another switch preceded with `no-` (for example `--no-foo`) that turns “off” the behavior.
+>
+> Finally, long-form flags take their argument via an equal sign, whereas in the short form of a flag, an equal sign is typically not used.For example, the `curl` command, which makes HTTP requests, provides both short-form and long-form flags to specify an HTTP request method: `-X` and `--request`, respectively. The following example invocations show how to properly pass arguments to those flags:
+>
+> ```sh
+> curl -X POST http://www.google.com
+> curl --request=POST http://www.google.com
+> ```
+>
+> 摘自：[Is there a difference between a command line flag and a command line option?](https://superuser.com/questions/1070059/is-there-a-difference-between-a-command-line-flag-and-a-command-line-option)
+
+另外，options 是 flag 的总称？参考：https://developpaper.com/question/how-to-distinguish-arguments-flags-options-from-the-command-line/
+
+
+
+#### 切换到 root 用户模式
+
+```bash
+sudo su
+sudo -i  # 进入root目录
+su root # 存疑
+
+# 退出管理员模式
+exit
+```
+
+
+
+#### 打开外接存储设备
+
+进入根目录，进入Volume文件夹，这里存放所有外接存储设备
+
+
+
 #### bc命令（Basic Calculator）
 
 开启一个CLI下的计算器，同时：按下quit以退出。如下示图：
@@ -363,7 +406,7 @@ https://www.zhihu.com/question/49073893/
 
 
 
-#### echo命令
+#### echo 命令
 
 ```bash
 # >> 表示在文件末尾追加命令
@@ -375,91 +418,98 @@ echo 'add content'>filename
 
 
 
-#### 删除文件与文件夹
+#### rm 命令
 
-- 删除文件
+##### 删除文件
 
 ```bash
 rm -f fileName  # -f表示强行删除
 ```
 
-- 删除文件夹
+##### 删除文件夹
 
 ```bash
 rm -rf folderName # -r表示递归，-f表示强行删除
 ```
 
+
+
 #### file 命令
+
 使用 `fiel -I fileName.ext` 命令，可以查看文件的 MIME 格式 和 编码格式。示例如下：
-<img src="https://s2.loli.net/2022/03/24/eKQnYp4H2c3PGqd.png" style="zoom:70%;" />
+
+<img src="https://s2.loli.net/2022/03/24/eKQnYp4H2c3PGqd.png" style="zoom:65%;" />
 
 
-#### 管道与`|`
 
-**管道定义：**在类Unix操作系统（以及一些其他借用了这个设计的操作系统，如Windows）中，管道（英语：Pipeline）是<mark>一系列将标准输入输出<font color=FF0000>**链接**</font>起来的进程</mark>，**<mark>其中每一个<font color=FF0000>进程的输出被直接作为下一个进程的输入</font></mark>**。 <font color=FF0000>每一个链接都由匿名管道实现</font>[来源请求]。管道中的组成元素也被称作过滤程序。
+#### 管道与 `|`
 
-`|`**的用法：**这个特殊的`|`字符告诉命令行解释器（Shell）**<font color=FF0000>将前一个命令的输出通过“管道”导入到接下来的一行命令作为输入</font>**。
+**管道定义：**在类Unix操作系统（以及一些其他借用了这个设计的操作系统，如 Windows）中，管道（英语：Pipeline）是<mark>一系列将标准输入输出<font color=FF0000>**链接**</font>起来的进程</mark>，**<mark>其中每一个<font color=FF0000>进程的输出被直接作为下一个进程的输入</font></mark>**。 <font color=FF0000>每一个链接都由匿名管道实现</font>[来源请求]。管道中的组成元素也被称作过滤程序。
+
+`|` **的用法：**这个特殊的 `|` 字符告诉命令行解释器 ( Shell )**<font color=FF0000>将前一个命令的输出通过“管道”导入到接下来的一行命令作为输入</font>**。
 
 摘自：[wiki - 管道 (Unix)]([https://zh.wikipedia.org/wiki/%E7%AE%A1%E9%81%93_(Unix)](https://zh.wikipedia.org/wiki/管道_(Unix))
 
 
 
-#### `&`, `;`, `&&` ,  `||`, `()`, `{}`
+#### `&` , `;` , `&&` ,  `||` , `()` , `{}`
 
-- **&** 命令<font color=FF0000>**同时**执行</font>（并发）
+<font size=4>**`&`**</font> 命令<font color=FF0000>**同时**执行</font>（并发）
 
-  ```sh
-  command1 & command2 & command3   
-  ```
+```sh
+command1 & command2 & command3   
+```
 
--  **;**   <font color=FF0000>**不管**前面命令执行成功没有，后面的命令**继续执行**</font>
+<font size=4>**`;`**</font> <font color=FF0000>**不管**前面命令执行成功没有，后面的命令**继续执行**</font>
 
-   ```sh
-   command1; command2; command3
-   ```
+```sh
+command1; command2; command3
+```
 
--  **&&** <font color=FF0000>**只有**前面命令执行成功，后面命令**才继续执行**</font>（继发）
+<font size=4>**`&&`**</font> <font color=FF0000>**只有**前面命令执行成功，后面命令**才继续执行**</font>（继发）
 
-   ```sh
-   command1 && command2 [&& command3 ...]
-   ```
+```sh
+command1 && command2 [&& command3 ...]
+```
 
-   - 命令之间使用 && 连接，实现逻辑与的功能。
+- 命令之间使用 && 连接，实现逻辑与的功能。
 
-   - 只有在 && 左边的命令返回真（命令返回值 $? == 0），&& 右边的命令才会被执行。
+- 只有在 && 左边的命令返回真（命令返回值 $? == 0），&& 右边的命令才会被执行。
 
-   - 只要有一个命令返回假（命令返回值 $? == 1），后面的命令就不会被执行。
+- 只要有一个命令返回假（命令返回值 $? == 1），后面的命令就不会被执行。
 
-- **||**  如果<font color=FF0000>前面的命令**没有执行成功**</font>，<font color=FF0000>后面的命令**就开始执行**</font>
+<font size=4>**`||`**</font> 如果<font color=FF0000>前面的命令**没有执行成功**</font>，<font color=FF0000>后面的命令**就开始执行**</font>
 
-  ```sh
-  command1 || command2 [|| command3 ...]
-  ```
+```sh
+command1 || command2 [|| command3 ...]
+```
 
-  - 命令之间使用 || 连接，实现逻辑或的功能。
+- 命令之间使用 || 连接，实现逻辑或的功能。
 
-  - 只有在 || 左边的命令返回假（命令返回值 $? == 1），|| 右边的命令才会被执行。这和 c 语言中的逻辑或语法功能相同，即实现短路逻辑或操作。
+- 只有在 || 左边的命令返回假（命令返回值 $? == 1），|| 右边的命令才会被执行。这和 c 语言中的逻辑或语法功能相同，即实现短路逻辑或操作。
 
-  - 只要有一个命令返回真（命令返回值 $? == 0），后面的命令就不会被执行。
+- 只要有一个命令返回真（命令返回值 $? == 0），后面的命令就不会被执行。
 
-- **()**  为了在当前shell中执行一组命令，可以用命令分隔符(即",")隔开每一个命令，并把所有的命令用圆括号()括起来。
+<font size=4>**`()`**</font>  为了在当前shell中执行一组命令，可以用命令分隔符(即",")隔开每一个命令，并把所有的命令用圆括号()括起来。
 
-  ```sh
-  (command1; command2; command3 [; ...] )
-  ```
+```sh
+(command1; command2; command3 [; ...] )
+```
 
-  - 一条命令需要独占一个物理行，如果需要将多条命令放在同一行，命令之间使用命令分隔符`;`分隔。执行的效果等同于多个独立的命令单独执行的效果。
+- 一条命令需要独占一个物理行，如果需要将多条命令放在同一行，命令之间使用命令分隔符`;`分隔。执行的效果等同于多个独立的命令单独执行的效果。
+
 - <font color=FF0000>`()` 表示在当前 shell 中**将多个命令作为一个整体执行**</font>。<mark>需要注意的是，使用 `()` 括起来的命令在执行前面都不会切换当前工作目录，也就是说命令组合都是在当前工作目录下被执行的，尽管命令中有切换目录的命令</mark>。
-  
+
 - 命令组合常和命令执行控制结合起来使用
-  
-- **{}**  如果使用`{}`来代替`()`，那么相应的命令将在子shell而不是当前shell中作为一个整体被执行，只有在{}中所有命令的输出作为一个整体被重定向时，其中的命令才被放到子shell中执行，否则在当前shell执行。
 
-  ```bash
-  { command1; command2; command3 [; ...] }
-  ```
 
-  <font color=FF0000>**注意：**在使用{}时，{}与命令之间必须使用一个空格</font>
+<font size=4>**`{}`**</font> 如果使用`{}`来代替`()`，那么相应的命令将在子shell而不是当前shell中作为一个整体被执行，只有在{}中所有命令的输出作为一个整体被重定向时，其中的命令才被放到子shell中执行，否则在当前shell执行。
+
+```bash
+{ command1; command2; command3 [; ...] }
+```
+
+<font color=FF0000>**注意：**在使用{}时，{}与命令之间必须使用一个空格</font>
 
 摘自：[Linux 命令行 &&与||](https://www.jianshu.com/p/25b0d6c9dc9f)
 
@@ -477,7 +527,7 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
 
 
 
-#### Shell 特殊变量： \$0, \$#, \$*, \$@, \$?, \$\$, \$!, \$_和命令行参数 \$n
+#### Shell 特殊变量： `$0` , `$#` , `$*` , `$@` , `$?` , `$$` , `$!` , `$_` 和命令行参数 `$n`
 
 变量名只能包含数字、字母和下划线，因为<font color=FF0000>某些包含其他字符的变量有特殊含义，这样的变量被称为**特殊变量**</font>。
 
@@ -529,7 +579,7 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
 
 
 
-#### tree命令
+#### tree 命令
 
 **最常用的两个规则：**
 
@@ -563,7 +613,7 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
 
 
 
-#### grep命令
+#### grep 命令
 
 **grep**（**<font color=FF0000>global</font>** search **<font color=FF0000>regular expression(RE)</font>** and **<font color=FF0000>print</font>** out the line，全面搜索正则表达式并把行打印出来）是一种强大的<font color=FF0000>文本搜索工具</font>，它<font color=FF0000>能使用正则表达式搜索文本，并把匹配的行打印出来</font>。
 
@@ -605,7 +655,7 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
 
 
 
-#### ps命令
+#### ps 命令
 
 ps 命令是 Process Status 的缩写，用来<font color=FF0000>列出系统中当前运行的那些进程</font>。ps命令列出的是当前那些进程的快照，就是执行ps命令的那个时刻的那些进程。ps 为我们提供了进程的<font color=FF0000>一次性</font>的查看，它所提供的查看结果并不动态连续的；如果<font color=FF0000>想要动态的显示进程信息</font>，就可以使用top命令。
 
@@ -761,9 +811,9 @@ tail [ -f ] [ -c Number | -n Number | -m Number| -b Number | -k Number ] [ File 
 
 
 
-#### more命令
+#### more 命令
 
-more命令，<mark>功能类似 cat</mark> ，cat命令是整个文件的内容从上到下显示在屏幕上。 <mark>more会以<font color=FF0000>一页一页的显示</font>方便使用者逐页阅读，而最基本的指令就是<font color=FF0000>按空白键（space）就往下一页显示</font></mark>，<font color=FF0000>按 b 键就会往回（back）一页显示</font>，而且还有搜寻字串的功能 。more命令从前向后读取文件，因此在启动时就加载整个文件。
+more 命令，<mark>功能类似 cat</mark> ，cat 命令是整个文件的内容从上到下显示在屏幕上。 <mark>more会以<font color=FF0000>一页一页的显示</font>方便使用者逐页阅读，而最基本的指令就是<font color=FF0000>按空白键（space）就往下一页显示</font></mark>，<font color=FF0000>按 b 键就会往回（back）一页显示</font>，而且还有搜寻字串的功能 。more命令从前向后读取文件，因此在启动时就加载整个文件。
 
 #### <font color=FF0000>另外，值得注意的是：space显示下一页，b显示上一页是在linux中一个较为常见的用法，比如man命令也是这样</font>
 
@@ -831,8 +881,6 @@ curl由于可自定义各种请求参数所以在模拟web请求方面更擅长�
 cat命令<font color=FF0000>连接文件并打印到标准输出设备上</font>，cat经常用来显示文件的内容，类似于下的type命令。
 
 注意：当文件较大时，文本在屏幕上迅速闪过（滚屏），用户往往看不清所显示的内容。因此，一般用more等命令分屏显示。为了控制滚屏，可以按Ctrl+S键，停止滚屏；按Ctrl+Q键可以恢复滚屏。按Ctrl+C（中断）键可以终止该命令的执行，并且返回Shell提示符状态。
-
-
 
 
 
