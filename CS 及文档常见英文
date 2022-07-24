@@ -10,7 +10,6 @@
 - **on the fly**：即时。参考：[如何优雅的翻译 on the fly ？ - 知乎](https://www.zhihu.com/question/21136587)
 - **pros and cons**：利弊
 - **overhead**：开销（和性能相关）
-
 - **from scratch**：从零开始
 - **preflight**：预检。一般情况下的含义：预检请求 ( preflight request )。不过，在 antfu 的 UnoCSS 相关博客 [Reimagine Atomic CSS](https://antfu.me/posts/reimagine-atomic-css#scoping) 中 [scoping](https://antfu.me/posts/reimagine-atomic-css#scoping) 部分 发现了有 “样式预检” 的含义，翻译在 [重新构想原子化 CSS - CSS 作用域](https://antfu.me/posts/reimagine-atomic-css-zh#css-%E4%BD%9C%E7%94%A8%E5%9F%9F) 中
 - **semver**：( Semantic version ) 语义化版本控制规范
@@ -38,6 +37,15 @@
 - **summation**：总和。sum 的完整形式？
 - **interchangable**：可交换的
 - **precedent**：先例
+- **walkthrough**：演练
+- **casting function**：转型函数。关于翻译，在 [[JS及其相关库备忘录#包装类#JS 中的“原始值包装类型” ( Primitive wrapper types )]] 中有过说明
+- **DRY**：即：Don't Repeat Yourself 。不重复（原则）
+- **verbose**：冗长的、啰嗦的
+- **shorthand**：速记
+- **practice**：实践，比如 Best practice。感觉可以理解为“做法”，不过字典上没“做法”这种意思
+- **unite**：使联合
+- **wellspring**：源泉，来源
+- **tweak**：调整
 
 #### 特殊字符
 
@@ -58,8 +66,4 @@
   - en dash：表示范围
   - em dash：表示预期转折
 - **连字符 `-`**：hyphen。用于连接单词，将不同单词连接变成一个单词。
-
-
-
-### 前端相关
 

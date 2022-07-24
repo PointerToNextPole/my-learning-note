@@ -96,7 +96,7 @@ In the example above, we use the <font color=FF0000>`output.filename`</font> and
 
 ##### Loaders
 
-<mark style="background: aqua">**Out of the box**</mark>, <font color=FF0000 size=4>webpack **only understands JavaScript and JSON** files</font>（译文：webpack 只能理解 JavaScript 和 JSON 文件，<mark style="background: aqua">**这是 webpack 开箱可用的自带能力**</mark>）. <font color=FF0000 size=4>**Loaders** allow webpack to **process other types of files** and **convert them into valid [modules](https://webpack.js.org/concepts/modules)** that **can be consumed by your application** and **added to the dependency graph**</font>.
+<mark style="background: lightpink">**Out of the box**</mark> , <font color=FF0000 size=4>webpack **only understands JavaScript and JSON** files</font>（译文：webpack 只能理解 JavaScript 和 JSON 文件，<mark style="background: lightpink">**这是 webpack 开箱可用的自带能力**</mark>）. <font color=FF0000 size=4>**Loaders** allow webpack to **process other types of files** and **convert them into valid [modules](https://webpack.js.org/concepts/modules)** that **can be consumed by your application** and **added to the dependency graph**</font>.
 
 At a high level, **loaders** have two properties in your webpack configuration:
 
@@ -105,7 +105,6 @@ At a high level, **loaders** have two properties in your webpack configuration:
 
 ```js
 // webpack.config.js
-
 const path = require('path');
 
 module.exports = {
@@ -158,7 +157,7 @@ module.exports = {
 
 ##### Browser Compatibility
 
-Webpack supports all browsers that are [ES5-compliant](https://kangax.github.io/compat-table/es5/) (<font color=FF0000>**IE8 and below are not supported**</font>). Webpack needs `Promise` for `import()` and `require.ensure()`. <mark>If you want to support older browsers, you will need to **load a polyfill before using these expressions**</mark>.
+Webpack supports all browsers that are [ES5-compliant](https://kangax.github.io/compat-table/es5/) (<font color=FF0000>**IE8 and below are not supported**</font>). Webpack needs `Promise` for `import()` and `require.ensure()` . <mark>If you want to support older browsers, you will need to **load a polyfill before using these expressions**</mark> .
 
 摘自：[webpack 文档 - Concepts](https://webpack.js.org/concepts)
 
@@ -574,10 +573,10 @@ entry: {
 > // webpack.config.js
 > 
 > module.exports = {
->   entry: {
->    app: './src/app.js',
->    adminApp: './src/adminApp.js',
->   },
+>     entry: {
+>        app: './src/app.js',
+>        adminApp: './src/adminApp.js',
+>     },
 > };
 > ```
 >
@@ -1000,7 +999,7 @@ module: {
 - **style-loader：**<font color=FF0000> 在得到 css-loader 输出的内容后，会把生成的 css 文件挂载到页面的 header 部分；即：生成一个 `<style>...</style>` 并插入</font>
 - **postcss-loader：**见下面。
 
-##### <font color=FF0000>**在webpack中，loader的使用是<font size=4>有先后顺序</font>的，分别是：<font size=4>从下到上，从右到左</font>。**</font> 所以，上面关于 sass 的讲解，是 sass-loader 先解析 sass，交给 css-loader 分析所有 css 关系，并整合成一个文件；最后，style-loader 挂载到 header 上
+<font color=FF0000>**在webpack中，loader的使用是<font size=4>有先后顺序</font>的，分别是：<font size=4>从下到上，从右到左</font>。**</font> 所以，上面关于 sass 的讲解，是 sass-loader 先解析 sass，交给 css-loader 分析所有 css 关系，并整合成一个文件；最后，style-loader 挂载到 header 上
 
 
 
@@ -1569,8 +1568,6 @@ output: {
 // TODO 
 
 阅读output相关：https://webpack.js.org/configuration/output/  
-
-https://webpack.js.org/guides/output-management/  
 
 尽量读完Entry相关：https://webpack.js.org/configuration/entry-context/
 
@@ -2352,7 +2349,9 @@ The <font color=dodgerBlue>**`sideEffects` and `usedExports`**</font> ( more kno
 
 <font color=fuchsia>**`sideEffects` is much more effective**</font> since <font color=FF0000>it allows to skip whole modules/files and the complete subtree</font> . 👀 **注**：感觉因为 `sideEffects` 是开发者配置的，所以只要匹配开发者的配置，则直接跳过；而 `usedExports` 是由 webpack 运行决定。
 
-<font color=fuchsia>**`usedExports` relies on [terser](https://github.com/terser-js/terser)**</font>（一种 JS Parser ） <font color=fuchsia>**to detect side effects in statements**</font> . It is a <font color=FF0000>difficult task in JavaScript</font> and <font color=FF0000>**not as effective as straightforward `sideEffects` flag**</font> . <font color=fuchsia>It also **can't skip subtree/<font size=4>dependencies</font>**</font> since the spec（规范） says that side effects need to be evaluated. While exporting function works fine , React's Higher Order Components ( HOC ) are problematic in this regard（**译**：尽管导出函数能运作如常，但 React 框架的高阶组件在这种情况下是会出问题的）.
+<font color=fuchsia>**`usedExports` relies on [terser](https://github.com/terser-js/terser)**</font>（👀 见下面的“注”） <font color=fuchsia>**to detect side effects in statements**</font> . It is a <font color=FF0000>difficult task in JavaScript</font> and <font color=FF0000>**not as effective as straightforward `sideEffects` flag**</font> . <font color=fuchsia>It also **can't skip subtree/<font size=4>dependencies</font>**</font> since the spec（规范） says that side effects need to be evaluated. While exporting function works fine , React's Higher Order Components ( HOC ) are problematic in this regard（**译**：尽管导出函数能运作如常，但 React 框架的高阶组件在这种情况下是会出问题的）.
+
+> 👀 注：terser 是一种 JS Parser。另外，terser 以及基于它的 terser-webpack-plugin 已经集成到 webpack 中，分别可以在  webpack@5 的 package.json `devDependencies` 和 `dependencies` 中找到
 
 > 👀 注：这里接下来举了个 React 的例子，挺长，且和概念没有太强的关联；再加上当前我对 React 不太了解... 这里略；详见原文。
 
@@ -2392,7 +2391,7 @@ module.exports = {
 
 > 💡 **Tip** : Note that the `--optimize-minimize` flag（命令行 `--optimize-minimize` 标记） can be used to enable `TerserPlugin` as well.
 >
-> 💡 **Tip** : <font color=fuchsia size=4>**`ModuleConcatenationPlugin` is needed for the tree shaking to work**</font>. It is added by `mode: 'production'` （👀 注：在生产模式下，ModuleConcatenationPlugin 默认被引入 ）. <font color=FF0000>If you are not using it</font> （👀 注：没有用生产模式）, <font color=FF0000>**remember to add the [`ModuleConcatenationPlugin`](https://webpack.js.org/plugins/module-concatenation-plugin/) manually**</font> .
+> 💡 **Tip** : <font color=fuchsia size=4>**`ModuleConcatenationPlugin` is needed for the tree shaking to work**</font>. It is added by `mode: 'production'` （👀 注：在生产模式下，ModuleConcatenationPlugin 默认自动被引入 ）. <font color=FF0000>If you are not using it</font> （👀 注：没有用生产模式）, <font color=FF0000>**remember to add the [`ModuleConcatenationPlugin`](https://webpack.js.org/plugins/module-concatenation-plugin/) manually**</font> .
 
 ##### 总结
 
@@ -2412,6 +2411,28 @@ What we've learned is that in order to take advantage of *tree shaking* , <font 
 也就是说，<font color=fuchsia>**只要你的包不是用来做 polyfill 或 shim 之类的事情，就尽管放心的给他加上 `sideEffects: false` 吧！**</font>
 
 摘自：[Webpack 中的 sideEffects 到底该怎么用？ - kuitos的文章 - 知乎](https://zhuanlan.zhihu.com/p/40052192)
+
+上面提到了 ModuleConcatenationPlugin，便也看了下文档。
+
+##### ModuleConcatenationPlugin
+
+In the past, one of webpack’s trade-offs when bundling was that <font color=dodgerBlue>**each module in your bundle would be wrapped in individual function closures**</font>. <font color=red>These wrapper functions made it slower for your JavaScript to execute in the browser</font>. In comparison , <font color=dodgerBlue>tools like Closure Compiler and RollupJS **‘hoist’ or concatenate the scope of all your modules into one closure**</font> and <font color=red>**allow for your code to have a faster execution time in the browser**</font> .
+
+<font color=dodgerBlue>This plugin will enable the same concatenation behavior in webpack</font>. <font color=fuchsia>By default this plugin is already enabled in production `mode` and disabled otherwise</font>. If you need to override the production `mode` optimization, set the [`optimization.concatenateModules` option](https://webpack.js.org/configuration/optimization/#optimizationconcatenatemodules) to `false`. <mark>To enable concatenation behavior in other modes</mark> , you can add `ModuleConcatenationPlugin` manually or use the `optimization.concatenateModules` option :
+
+```js
+new webpack.optimize.ModuleConcatenationPlugin();
+```
+
+> 💡 <font color=fuchsia>This concatenation behavior is called **“scope hoisting”** .</font>
+>
+> Scope hoisting is specifically a feature made possible by ECMAScript Module syntax. Because of this webpack may fallback to normal bundling based on what kind of modules you are using, and other conditions.
+
+> ⚠️ **Warning** : Keep in mind that this plugin will only be applied to [ES6 modules](https://webpack.js.org/api/module-methods/#es6-recommended) processed directly by webpack. When using a transpiler, you'll need to disable module processing (e.g. the [`modules`](https://babeljs.io/docs/en/babel-preset-env#modules) option in Babel).
+
+👀 注：文档下面还有一些内容，没怎么看懂...略。
+
+摘自：[webpack doc - Plugins - ModuleConcatenationPlugin](https://webpack.js.org/plugins/module-concatenation-plugin/)
 
 
 
@@ -2486,8 +2507,6 @@ plugins: [
 ]
 ```
 
-
-
 另外，<font color=FF0000> 可以**新建一个build文件夹**</font>，<mark>将 webpack.dev.conf.js 、webpack.prod.conf.js 以及 webpack.common.conf.js 三个配置文件放入其中</mark>。不过这时 package.json 需要修改对应的配置文件的路径
 
 ```json
@@ -2499,9 +2518,145 @@ plugins: [
 
 
 
+#### Production 文档补充
+
+<font color=dodgerBlue>The **goals** of *development* and *production* builds **differ greatly**</font>. **In *development***, we <font color=red>want strong source mapping and a localhost server with live reloading or hot module replacement</font>. **In *production***, <font color=fuchsia>our goals shift to a focus on minified bundles, lighter weight source maps, and optimized assets to improve load time</font>. With this logical separation at hand, we typically <font color=dodgerBlue>recommend writing **separate webpack configurations** for each environment</font>.
+
+While we will separate the *production* and *development* specific bits out , note that <font color=red>we'll still maintain a "common"</font> （公共的）<font color=red>configuration to keep things DRY</font>（Don't Repeat Yourself，即：不重复（原则）） . In order to merge these configurations together, we'll use a utility called [`webpack-merge`](https://github.com/survivejs/webpack-merge) . With the "common" configuration in place, we won't have to duplicate code within the environment-specific configurations.
+
+Let's start by installing `webpack-merge` and splitting out the bits we've already worked on in previous guides:
+
+```bash
+npm install --save-dev webpack-merge
+```
+
+##### 文件以及配置更改
+
+```diff
+- |- webpack.config.js
++ |- webpack.common.js
++ |- webpack.dev.js
++ |- webpack.prod.js
+```
+
+```js
+// webpack.common.js
+module.exports = {
+  entry: { app: './src/index.js', },
+  plugins: [
+    new HtmlWebpackPlugin({ title: 'Production', }),
+  ],
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    clean: true,
+  },
+};
+```
+
+```js
+// webpack.dev.js
+const { merge } = require('webpack-merge');
+const common = require('./webpack.common.js');
+
+module.exports = merge(common, {
+  mode: 'development',
+  devtool: 'inline-source-map',
+  devServer: {
+    static: './dist',
+  },
+});
+```
+
+```js
+// webpack.prod.js
+const { merge } = require('webpack-merge');
+const common = require('./webpack.common.js');
+
+module.exports = merge(common, {
+  mode: 'production',
+});
+```
+
+In `webpack.common.js` , we now have setup our `entry` and `output` configuration and we've included any plugins that are required for both environments. In `webpack.dev.js` , we've set `mode` to `development`. Also, we've added the recommended `devtool` for that environment (strong source mapping) , as well as our `devServer` configuration. Finally, <font color=fuchsia>in `webpack.prod.js` , `mode` is set to `production` which loads `TerserPlugin`</font> （👀 注：就是 terser-webpack-plugin ）, <font color=fuchsia>which was first introduced by the [tree shaking](https://webpack.js.org/guides/tree-shaking/) guide</font> .
+
+##### 对应的 NPM Scripts 修改
+
+Now, let's modify our npm scripts to use the new configuration files. For the `start` script, which runs `webpack-dev-server`, we will use `webpack.dev.js`, and for the `build` script, which runs `webpack` to create a production build, we will use `webpack.prod.js` :
+
+```diff
+// package.json
+  {
+    "scripts": {
+-     "start": "webpack serve --open",
++     "start": "webpack serve --open --config webpack.dev.js",
+-     "build": "webpack"
++     "build": "webpack --config webpack.prod.js"
+    },
+  }
+```
+
+##### 指定 Mode
+
+<font color=dodgerblue>Many libraries will key off</font>（👀 注：这里的意思是 “关联”） <font color=dodgerblue>the **`process.env.NODE_ENV`** variable to **determine what should be included in the library**</font> . For example, <font color=red>when `process.env.NODE_ENV` **is not set to `'production'`** some libraries may **add additional logging** and testing to make debugging easier</font>. However, with <font color=fuchsia>`process.env.NODE_ENV` set to `'production'` they might drop or add significant portions of code to optimize how things run for your actual users</font>. **Since webpack v4, specifying `mode`**（通过下面指定 mode 的方式） **automatically configures [`DefinePlugin`](https://webpack.js.org/plugins/define-plugin) for you**：
+
+```js
+// webpack.prod.js
+module.exports = merge(common, {
+   mode: 'production',
+ });
+```
+
+> 💡 **Tip** : Technically , <font color=red>`NODE_ENV` is a system environment variable that Node.js exposes into running scripts</font>. It is used by convention to determine dev-vs-prod behavior by server tools , build scripts, and client-side libraries. <font color=fuchsia>Contrary to expectations , `process.env.NODE_ENV` is not set to `'production'` **within** the build script `webpack.config.js`</font> , see [#2537](https://github.com/webpack/webpack/issues/2537) . Thus, conditionals like `process.env.NODE_ENV === 'production' ? '[name].[contenthash].bundle.js' : '[name].bundle.js'`  within webpack configurations do not work as expected.
+
+If you're using a library like `react` , <font color=red>you should actually see a significant drop in bundle size after adding `DefinePlugin`</font> . Also, note that any of our local `/src` code can key off（关联） of this as well, so the following check would be valid :
+
+```diff
+// src/index.js
+
++ if (process.env.NODE_ENV !== 'production') {
++   console.log('Looks like we are in development mode!');
++ }
+```
+
+##### 压缩 ( Minification )
+
+Webpack v4+ will minify your code by default in production mode.
+
+Note that <font color=dodgerBlue>**while**</font> the `TerserPlugin` is a great place to start for minification and being used by default, <font color=fuchsia>there are other options out there</font> : [`ClosureWebpackPlugin`](https://github.com/webpack-contrib/closure-webpack-plugin)
+
+<font color=dodgerBlue>If you decide to try another minification plugin</font>, make sure your new choice also drops dead code as described in the [tree shaking](https://webpack.js.org/guides/tree-shaking) guide and provide it as the `optimization.minimizer`.
+
+##### 源码映射 ( Source Mapping )
+
+<font color=red>We encourage you to have source maps enabled in production</font>, as <font color=fuchsia>they are useful for debugging as well as running benchmark tests</font>. That said, you should choose one with a fairly quick build speed that's recommended for production use ( see [`devtool`](https://webpack.js.org/configuration/devtool) ). For this guide, we'll use the `source-map` option in the *production* as opposed to the `inline-source-map` we used in the *development* :
+
+```diff
+  module.exports = merge(common, {
+    mode: 'production',
++   devtool: 'source-map',
+  });
+```
+
+> 💡 **Tip**：<font color=red>Avoid `inline-***` and `eval-***` use in production</font> as they can <font color=red>increase bundle size</font> and <font color=red>reduce the overall performance</font> .
+
+##### 压缩 CSS ( Minimize CSS )
+
+It is crucial to minimize your CSS for production. Please see the [Minimizing for Production](https://webpack.js.org/plugins/mini-css-extract-plugin/#minimizing-for-production) section.
+
+##### 命令行选项 ( CLI Alternatives )
+
+<font color=dodgerBlue>Many of the options described above can be set as command line arguments</font>. For example , <font color=red>`optimization.minimize` can be set with `--optimization-minimize`</font> , and <font color=fuchsia>`mode` can be set with `--mode`</font> . Run <font color=red>`npx webpack --help=verbose` **for a full list of CLI arguments**</font>.  👀 **注**：运行该命令需要安装 webpack 和 webpack-cli 作为依赖。另外，https://webpack.js.org/api/cli/ 也有一样的内容
+
+<font color=dodgerBlue>**While**</font> these shorthand（速记） methods are useful , <font color=fuchsia>we recommend setting these options in a webpack configuration file for **more configurability**</font>.
+
+摘自：[webpack doc - Guides - Production](https://webpack.js.org/guides/production/)
+
+
+
 #### Code Splitting 代码分割
 
-为了看见打包生成的内容，我们不能使用webpack-dev-server了，这时我们可以使用一个新的npm scripts：
+为了看见打包生成的内容，我们不能使用 webpack-dev-server 了，这时我们可以使用一个新的 npm scripts：
 
 ```json
 "scripts": {
@@ -2779,7 +2934,7 @@ module.exports = {
 
 <mark>**Two similar techniques** are supported by webpack when it comes to dynamic code splitting</mark>. **The first and recommended approach** is to <font color=FF0000>use the `import()` syntax</font> that conforms（符合） to the [ECMAScript proposal](https://github.com/tc39/proposal-dynamic-import) for dynamic imports. The legacy, webpack-specific approach is to use [`require.ensure`](https://webpack.js.org/api/module-methods/#requireensure) （**译：**第二种，则是 webpack 的遗留功能，使用 webpack 特定的 require.ensure）. 
 
->  **Warning** ⚠️：<font color=FF0000>**`import()` calls use [promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) internally**</font>. If you use `import()` with older browsers (e.g., IE 11), remember to shim `Promise` using a polyfill such as [es6-promise](https://github.com/stefanpenner/es6-promise) or [promise-polyfill](https://github.com/taylorhakes/promise-polyfill).
+>  ⚠️ **Warning**：<font color=FF0000>**`import()` calls use [promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) internally**</font>. If you use `import()` with older browsers (e.g., IE 11), remember to shim `Promise` using a polyfill such as [es6-promise](https://github.com/stefanpenner/es6-promise) or [promise-polyfill](https://github.com/taylorhakes/promise-polyfill).
 
 ##### Prefetching / Preloading modules
 
@@ -2801,7 +2956,7 @@ import(/* webpackPrefetch: true */ './path/to/LoginModal.js');
 
 This <font color=FF0000>will **result in `<link rel="prefetch" href="login-modal-chunk.js">` being appended in the head of the page**</font>, which will <font color=FF0000>instruct the browser to prefetch in idle time the `login-modal-chunk.js` file</font>.
 
-> **Tip 💡**: webpack will <font color=FF0000>add the prefetch hint **once the parent chunk has been loaded**</font>.
+> 💡 **Tip**: webpack will <font color=FF0000>add the prefetch hint **once the parent chunk has been loaded**</font>.
 
 <mark>**Preload** directive has **a bunch of differences** compared to **prefetch**:</mark>
 
@@ -2810,7 +2965,7 @@ This <font color=FF0000>will **result in `<link rel="prefetch" href="login-modal
 - A preloaded chunk should be <font color=FF0000>instantly requested by the parent chunk</font>. A prefetched chunk <font color=FF0000>can be used anytime in the future</font>.
 - <font color=FF0000>Browser support is different</font>.
 
-> **Tip 💡**: <font color=FF0000>Using `webpackPreload` incorrectly can actually hurt performance</font>, so be careful when using it.
+> 💡 **Tip**: <font color=FF0000>Using `webpackPreload` incorrectly can actually hurt performance</font>, so be careful when using it.
 
 <mark>Sometimes you need to have your own control over preload</mark>. For example, <font color=FF0000>preload of any dynamic import **can be done via async script**</font>. This can be useful in case of streaming server side rendering （即 SSR ）.
 
@@ -2850,6 +3005,56 @@ If the script loading will fail before webpack starts loading of that script by 
 
 
 
+#### 懒加载 ( Lazy Loading ) 文档
+
+##### 总述
+
+Lazy, or "on demand", loading is a great way to optimize your site or application. <font color=dodgerBlue>This practice</font>（译为 “实践” 比较好，同样的 “best practice ”） <font color=dodgerBlue>essentially involves splitting your code at logical breakpoints, and then loading it once the user has done something that requires, or will require, a new block of code</font>. <font color=fuchsia>This **speeds up the initial load of the application** and **lightens its overall weight as some blocks may never even be loaded**</font>.
+
+##### 代码实践
+
+```diff
+// src/index.js
+
++ import _ from 'lodash';
++
+- async function getComponent() {
++ function component() {
+    const element = document.createElement('div');
+-   const _ = await import(/* webpackChunkName: "lodash" */ 'lodash');
++   const button = document.createElement('button');
++   const br = document.createElement('br');
+
++   button.innerHTML = 'Click me and look at the console!';
+    element.innerHTML = _.join(['Hello', 'webpack'], ' ');
++   element.appendChild(br);
++   element.appendChild(button);
++
++   // Note that because a network request is involved, some indication
++   // of loading would need to be shown in a production-level site/app.
++   button.onclick = e => import(/* webpackChunkName: "print" */ './print').then(module => {
++     const print = module.default; // 👀 default 见这里
++
++     print();
++   });
+
+    return element;
+  }
+
+- getComponent().then(component => {
+-   document.body.appendChild(component);
+- });
++ document.body.appendChild(component());
+```
+
+> ⚠️ **Warning** : Note that <font color=fuchsia>when using `import()` on ES6 modules you **must reference the `.default` property**</font> （注：`.default` 见上面的代码 ）**as** <font color=fuchsia>**it's the actual `module` object** that will be returned when the promise is resolved</font>.
+>
+> 译：注意当调用 ES6 模块的 `import()` 方法（引入模块）时，必须指向模块的 `.default` 值，因为它才是 promise 被处理后返回的实际的 `module` 对象。
+
+摘自：[webpack doc - Guides - Lazy Loading](https://webpack.js.org/guides/lazy-loading/)
+
+
+
 #### 打包分析
 
 [webpack/analyse](https://github.com/webpack/analyse) 是 webpack分析工具。使用命令如下：
@@ -2862,13 +3067,13 @@ webpack --profile --json > stats.json
 
 另外，命令中的配置项（ --profile ）也可以添加到 其他 npm scripts 中
 
-<font size=4>**代码利用率**</font>
+##### 代码利用率
 
 在 Chrome 的控制台中，按下**⇧ + ⌘ + P**，会出现命令菜单 ( Command Menu )，此时输入 coverage，可以查看代码的利用率，越高越好。开启效果图如下：
 
 ![image-20210916164550767](https://i.loli.net/2021/09/16/GaP61kAXmCSpqIf.png)
 
-<font size=4>**preloading 和 prefetching**</font>
+##### preloading 和 prefetching
 
 懒加载（ lazy loading，即：使用 ES6 的 import，要使用了才去获取）会出现一个问题，用了再去获取、加载，响应速度可能会很慢。这时候就要用到 preloading 和 prefetching。同样 preloading 和 prefetching 可以通过 magic comments 设置（**注：**更多 magic comments 设置参见：[webpack - Module Methods](https://webpack.js.org/api/module-methods/) ）。
 
@@ -3150,6 +3355,40 @@ Entrypoint main = runtime.725a1a51ede5ae0cfde0.js vendors.55e79e5927a639d21a1b.j
 ```
 
 摘自：[webpack 文档 - Guide - Caching](https://webpack.js.org/guides/caching)
+
+
+
+#### ES Module 文档摘抄
+
+##### Flagging modules as ESM
+
+**By default** webpack will automatically detect whether a file is an ESM or a different module system.
+
+<font color=dodgerBlue>Node.js established a way of explicitly setting the module type of files by using a property in the `package.json`</font> . <font color=fuchsia>Setting `"type": "module"` in a package.json does **force** all files below this package.json to be ECMAScript Modules</font>. Setting `"type": "commonjs"` will instead force them to be CommonJS Modules.
+
+```json
+{
+  "type": "module"
+}
+```
+
+<font color=fuchsia>In addition to that , files can set the module type by **using `.mjs` or `.cjs` extension**</font>. <font color=red>`.mjs` will force them to be ESM , `.cjs` force them to be CommonJs</font>.
+
+<font color=red>In DataURIs using the `text/javascript` or `application/javascript` mime type will **also force** module type to **ESM**</font> .
+
+In addition to the module format , <font color=fuchsia>flagging modules as ESM also affect the resolving logic , interop logic and the available symbols in modules</font>.
+
+<font color=dodgerBlue>Imports in ESM are **resolved more strictly**</font>. Relative requests must include a filename and file extension ( e.g. `*.js` or `*.mjs` ) unless you have the behaviour disabled with [`fullySpecified=false`](https://webpack.js.org/configuration/module/#resolvefullyspecified) .
+
+> 💡 **Tip** : Requests to packages e.g. `import "lodash"` are still supported. （👀 注：这点之前没什么印象...）
+
+Only the "default" export can be imported from non-ESM. Named exports are not available.
+
+（👀 注：应该加上 “在 ESM” 中）<font color=dodgerBlue>CommonJs Syntax is not available</font> : `require` , `module` , `exports` , `__filename` , `__dirname `.
+
+> 💡 **Tip** : <font color=fuchsia>HMR can be used with [`import.meta.webpackHot`](https://webpack.js.org/api/module-variables/#importmetawebpackhot) instead of [`module.hot`](https://webpack.js.org/api/module-variables/#modulehot-webpack-specific)</font> .
+
+摘自：[webpack doc - Guides - ECMAScript Modules](https://webpack.js.org/guides/ecma-script-modules/)
 
 
 
@@ -3898,7 +4137,7 @@ Be aware of the performance differences between the different `devtool` settings
 
 ###### Avoid Production Specific Tooling
 
-<font color=FF0000>Certain utilities, plugins, and loaders **only make sense** when building **for production**</font>. For example, it usually <font color=FF0000>doesn't make sense to minify and mangle</font>（压碎） <font color=FF0000>your code with the `TerserPlugin` while in development</font>. These tools should typically be excluded in development :
+<font color=FF0000>Certain utilities, plugins, and loaders **only make sense** when building **for production**</font>. For example, it usually <font color=FF0000>doesn't make sense to minify and mangle</font>（压碎） <font color=FF0000>your code with the `TerserPlugin`</font> （就是 Terser-webpack-plugin ）<font color=red>while in development</font>. These tools should typically be excluded in development :
 
 - TerserPlugin
 - `[fullhash]` / `[chunkhash]` / `[contenthash]`
@@ -4878,7 +5117,9 @@ The `packageName` option allows setting a package name to look for a `requiredVe
 
 ### webpack 插件介绍
 
-##### [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer)
+##### webpack-bundle-analyzer
+
+🔗 : https://github.com/webpack-contrib/webpack-bundle-analyzer
 
 生成webpack打包后，包的组成的可视化页面
 
@@ -4888,13 +5129,17 @@ The `packageName` option allows setting a package name to look for a `requiredVe
 
 
 
-##### [webpack-chain](https://github.com/neutrinojs/webpack-chain)
+##### webpack-chain
+
+🔗 : https://github.com/neutrinojs/webpack-chain
 
 可以使用链式编程，在webpack.config.js中进行链式配置
 
 
 
-##### [mini-css-extract-plugin](https://github.com/webpack-contrib/mini-css-extract-plugin)
+##### mini-css-extract-plugin
+
+🔗 : https://github.com/webpack-contrib/mini-css-extract-plugin
 
 > This plugin extracts CSS into separate files. It creates a CSS file per JS file which contains CSS. It supports On-Demand-Loading of CSS and SourceMaps.
 >
@@ -4904,7 +5149,9 @@ CSS代码分割，在打包时，将css代码分为多个文件；并给出生�
 
 
 
-##### [compression-webpack-plugin](https://github.com/webpack-contrib/compression-webpack-plugin)
+##### compression-webpack-plugin
+
+🔗 : https://github.com/webpack-contrib/compression-webpack-plugin
 
 > Prepare compressed versions of assets to serve them with Content-Encoding
 >
@@ -4914,9 +5161,15 @@ CSS代码分割，在打包时，将css代码分为多个文件；并给出生�
 
 
 
-##### [terser-webpack-plugin](https://github.com/webpack-contrib/terser-webpack-plugin)
+##### terser-webpack-plugin
 
-基于 terser（一种 JS parser ）用来最小化 js 代码，减小生产包的大小。
+🔗 : https://github.com/webpack-contrib/terser-webpack-plugin
+
+也被称为 terserPlugin ，尤其在 webpack.config.js 之类的配置中，以 terserPlugin 的名字引入 ( `const terserPlugin = require('terser-webpack-plugin')` ) 。
+
+基于 terser（一种 JS parser ）用来最小化 js 代码 ( Tree-shaking ) ，减小生产包的大小。
+
+👀 补充：在 webpack@5 项目中 terser-webpack-plugin 被默认集成（可以在 [webpack](https://github.com/webpack/webpack) package.json 的 `dependencies` 中找到它），因为webpack 是通过它实现了 Tree-shaking，且 Tree-shaking 功能在 Production 模式下默认开启。
 
 类似的 还有 [uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)，它是默认集成在 webpack@4 的生产环境中的，不过已经废弃。
 
