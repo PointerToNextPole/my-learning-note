@@ -3267,7 +3267,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                       
+  >                                                                                                                                                           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3286,7 +3286,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                       
+  >                                                                                                                                                           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -5264,7 +5264,7 @@ selectors：包含一个或多个要匹配的选择器的 DOM字符串DOMString�
   Object 构造函数，会根据给定的参数创建对象，具体有以下情况：
   
   - 如果给定值是 null 或 undefined，将会创建并返回一个空对象。
-  - 如果传进去的是一个基本类型的值，则会构造其包装类型的对象。
+  - <font color=fuchsia>如果传进去的是一个基本类型的值，则 **会构造其包装（类）类型的对象**</font> 
   - 如果传进去的是引用类型的值，仍然会返回这个值，经他们复制的变量保有和源对象相同的引用地址。
   - 当以非构造函数形式被调用时，Object 的行为等同于 new Object()。
 
@@ -5300,7 +5300,7 @@ selectors：包含一个或多个要匹配的选择器的 DOM字符串DOMString�
   var myMother=new person("Sally","Rally",48,"green");
   ```
 
-**JavaScript for...in 循环**
+##### JavaScript for...in 循环
 
 JavaScript for...in 语句循环遍历对象的属性。 for...in 循环中的代码块<font color=FF0000>将针对每个属性执行一次</font>。
 
@@ -5318,11 +5318,11 @@ for (variable in object){
 var person={fname:"John",lname:"Doe",age:25}; 
 
 for (x in person){
-    txt=txt + person[x];
+    txt = txt + person[x]
 }
 ```
 
-**JavaScript 的对象是可变的**
+##### JavaScript 的对象是可变的
 
 对象是可变的，它们是通过<font color=FF0000>引用</font>来传递的。
 
@@ -5334,12 +5334,92 @@ var x = person;  // 不会创建 person 的副本，是引用
 
 <font color=FF0000>如果修改来 x ，person 的属性也会改变</font>，注意这里是引用，是浅拷贝
 
-实例
+示例：
 
 ```js
 //x.age 和 person.age 都会改变
-var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"}  var x = person; x.age = 10;           
+var person = {
+  firstName: "John",
+  lastName: "Doe",
+  age: 50,
+  eyeColor: "blue"
+}
+var x = person; x.age = 10;           
 ```
+
+
+
+#### 包装类
+
+一般语言中（比如 Java ），包装类就是将基本的数据类型以及一些辅助方法包装到类中。
+
+> Java 中的数据类型 int、double 等不是对象，无法通过向上转型获取到 Object 提供的方法，而像 String 却可以，只因为 String 是一个对象而不是一个类型。基本数据类型由于这样的特性，导致无法参与转型，泛型，反射等过程。为了弥补这个缺陷，java 提供了包装类。
+>
+> 摘自：[Java 包装类是什么](https://blog.csdn.net/weixin_40739833/article/details/80093527)
+
+##### JS 中的“原始值包装类型” ( Primitive wrapper types )
+
+<font color=dodgerBlue>为了方便操作原始值，ECMAScript 提供了 3 种特殊的引用类型：**Boolean、Number 和 String**</font> 。 <font color=red>这些类型具有引用类型一样的特点，但**也具有与各自原始类型对应的特殊行为**</font>。<font color=fuchsia>**每当用到某个原始值的方法或属性时，后台都会创建一个相应原始包装类型的对象**，从而暴露出操作原始值的各种方法</font>。来看下面的例子：
+
+```js
+let s1 = "some text";
+let s2 = s1.substring(2);
+```
+
+在这里，s1 是一个包含字符串的变量，它是一个原始值。<mark>第二行紧接着在 s1 上调用了 substring() 方法，并把结果保存在 s2 中。我们知道，**原始值本身不是对象，因此逻辑上不应该有方法**；而实际上这个例子又确实按照预期运行了</mark>。这是因为后台进行了很多处理，从而实现了上述操作。具体来说，当 第二行访问 s1 时，是以读模式访问的，也就是要从内存中读取变量保存的值。在以读模式访问字符串值的任何时候，后台都会执行以下 3 步：
+
+1. 创建一个 String 类型的实例
+2. 调用实例上的特定方法
+3. 销毁实例。
+
+可以把这 3 步想象成执行了如下 3 行 ECMAScript 代码：
+```js
+let s1 = new String("some text");
+let s2 = s1.substring(2);
+s1 = null;
+```
+
+这种行为可以让原始值拥有对象的行为。对布尔值和数值而言，以上 3 步也会在后台发生，不过使用的是 Boolean 和 Number 包装类型
+
+<font color=dodgerBlue>**引用类型** 与 **原始值包装类型** 的主要区别在于对象的 **生命周期**</font>：<font color=red>在通过 new 实例化引用类型后，得到的实例会**在离开作用域时被销毁**</font>；而<font color=fuchsia>自动创建的原始值包装对象则 **只存在于访问它的那行代码执行期间**，这意味着不能在运行时给原始值添加属性和方法</font>。比如下面的例子：
+
+```js
+let s1 = "some text";
+s1.color = "red";
+console.log(s1.color);  // undefined
+```
+
+<mark>这里的第二行代码尝试给字符串 s1 添加了一个 color 属性。可是，第三行代码访问 color 属性时， 它却不见了</mark>。原因就是第二行代码运行时会临时创建一个 String 对象，而<font color=red>当第三行代码执行时，**这个对象已经被销毁了**</font>。实际上，<font color=fuchsia>**第三行代码在这里创建了自己的 String 对象，但这个对象没有 color 属性**</font>。
+
+可以显式地使用 Boolean、Number 和 String 构造函数创建原始值包装对象，不过应该在确实必要时再这么做，否则容易让开发者疑惑，分不清它们到底是原始值还是引用值。在原始值包装类型的实例上调用 typeof 会返回 "object"，所有原始值包装对象都会转换为布尔值 true 。
+
+另外，<font color=dodgerBlue>**Object 构造函数作为一个工厂方法 ( factory method )，能够根据传入值的类型返回相应原始值包装类型的实例**</font>。比如：
+
+```js
+let obj = new Object("some text");
+console.log(obj instanceof String);  // true
+```
+
+<mark>如果传给 Object 的是字符串，则会创建一个 String 的实例。如果是数值，则会创建 Number 的实例。布尔值则会得到 Boolean 的实例</mark>
+
+注意，<font color=fuchsia>**使用 new 调用原始值包装类型的构造函数，与调用同名的转型函数**</font>（👀 注：见下面自己添加的“注”）<font color=fuchsia>**并不一样**</font>。例如：
+
+```js
+let value = "25";
+let number = Number(value);    // 转型函数
+console.log(typeof number);    // "number"
+
+let obj = new Number(value);   // 构造函数
+console.log(typeof obj);       // "object"
+```
+
+> 👀 注：原文中 “casting function” 这里译为 “转型函数”。搜了下 “casting function” ，Google 搜索排名第一的页面 [C – Type Casting functions](https://fresh2refresh.com/c-programming/c-type-casting/) 就是在讲 “强制类型转换” 的内容，所以这样翻译确实没问题。同时，`Number(value)` 这种写法在 JS 中也确实是用于类型转换的。
+
+在这个例子中，变量 number 中保存的是一个值为 25 的原始数值，而变量 obj 中保存的是一个 Number 的实例。
+
+<font color=dodgerBlue>虽然不推荐显式创建原始值包装类型的实例，但它们对于操作原始值的功能是很重要的</font>。每个原始值包装类型都有相应的一套方法来方便数据操作。👀 注：后面依次展开讲解 Number、Boolean、String 包装类（就是类）的用法，和 “包装类”的定义没有太大关系，略。
+
+摘自：《JS 高级程序设计 - 第四版》- 5.3 原始值包装类型
 
 
 
@@ -11149,23 +11229,26 @@ super 关键字<font color=FF0000>用于访问和调用一个对象的父对象�
 
 #### with
 
-> <mark style=background-color:aqua>**不建议使用`with`语句，因为它可能是混淆错误和兼容性问题的根源**</mark>
+> ⚠️ **警告：**不建议使用 `with` 语句，因为它可能是混淆错误和兼容性问题的根源
 
-with语句 扩展一个语句的作用域链。
+with 语句扩展一个语句的作用域链。
 
-- **语法：**
+##### 语法
 
-  ```js
-  with (expression) {
-      statement
-  }
-  ```
+```js
+with (expression) {
+    statement
+}
+```
 
-  - **expression：**将给定的表达式添加到在评估语句时使用的作用域链上。表达式周围的括号是必需的。
-  - **statement：**任何语句。要执行多个语句，请使用一个块语句 ({ ... })对这些语句进行分组。
+- **expression：**将给定的表达式添加到在评估语句时使用的作用域链上。表达式周围的括号是必需的。
+- **statement：**任何语句。要执行多个语句，请使用一个块语句 ({ ... })对这些语句进行分组。
 
-- 描述
-  JavaScript查找某个未使用命名空间的变量时，会通过作用域链来查找，作用域链是跟执行代码的context或者包含这个变量的函数有关。'with'语句将某个对象添加到作用域链的顶部，如果在statement中有某个未使用命名空间的变量，跟作用域链中的某个属性同名，则这个变量将指向这个属性值。如果沒有同名的属性，则将拋出ReferenceError异常。
+##### 描述
+
+JavaScript 查找某个未使用命名空间的变量时，会通过作用域链来查找，作用域链是跟执行代码的 context 或者包含这个变量的函数有关。'with' 语句将某个对象添加到作用域链的顶部，如果在 statement 中有某个未使用命名空间的变量，跟作用域链中的某个属性同名，则这个变量将指向这个属性值。如果沒有同名的属性，则将拋出 ReferenceError 异常。
+
+摘自：[MDN - with](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/with)
 
 
 
@@ -13170,7 +13253,7 @@ The `permissions` property has been made available on the [`Navigator`](https://
 
 #### Intl
 
-**Intl 对象** 是 ECMAScript <font color=FF0000>**国际化 API 的一个命名空间**</font>，它<font color=FF0000>**提供了精确的字符串对比、数字格式化，和日期时间格式化**</font>。Collator、NumberFormat 和 DateTimeFormat 对象的 **构造函数** 是 Intl 对象的属性。
+**Intl 对象** 是 ECMAScript <font color=FF0000>**国际化 API 的一个 <font size=4>命名空间</font>**</font>（👀 注：这里命名空间的说法，值得注意），它<font color=FF0000>**提供了精确的字符串对比、数字格式化，和日期时间格式化**</font>。Collator、NumberFormat 和 DateTimeFormat 对象的 **构造函数** 是 Intl 对象的属性。
 
 ##### 属性
 
