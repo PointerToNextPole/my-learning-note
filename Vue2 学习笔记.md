@@ -4536,7 +4536,7 @@ template: `
 
 ***
 
-## Element.UI备忘录
+## Element-UI 备忘录
 
 #### \<el-table>
 
@@ -4872,6 +4872,34 @@ template: `
 摘自：[element-ui自定义表格头部的两种方法](https://www.cnblogs.com/wenxinsj/p/10613764.html)   [自定义element-ui的table字体颜色，及背景色](https://blog.csdn.net/qq_32610671/article/details/90731672)  [Element-UI中关于table表格的那些骚操作](https://www.jianshu.com/p/2251cda42425)
 
 [Element table 获取所有选择的行](https://blog.csdn.net/qq_36537108/article/details/89261394)
+
+##### el-table-column 中的按钮等组件下面出现下划线
+
+样式示例如下：
+
+<img src="https://s2.loli.net/2022/07/28/b267v5BDKmS9yWH.png" alt="image-20220728231457438" style="zoom:55%;" />
+
+解决方法如下：
+
+```css
+.el-table__fixed{
+    height: 100% !important;
+}
+.el-table__fixed-left{
+    height: 100% !important;
+}
+.el-table__fixed-right{
+    height: 100% !important;
+}
+```
+
+另外，<font color=fuchsia size=4>**似乎**</font> 使用 `this.$refs.tableRef.doLayout()` 可以解决；原理是：el-table-column 宽高是算的，如果有元素进行切换，可能会引起列宽列高布局紊乱。
+
+> 👀 注：doLayout 可以在 el-table 文档中搜到：
+>
+> > 对 Table 进行重新布局。当 Table 或其祖先元素由隐藏切换为显示时，可能需要调用此方法
+> >
+> > 摘自：[Element - Table 表格 - Table Methods](https://element.eleme.cn/#/zh-CN/component/table#table-methods)
 
 
 
@@ -6418,7 +6446,7 @@ Webpack 处理的静态资源放在 `/src` 目录中和其它源文件放一起�
 
 **一级目录：**
 
-```markdown
+```
 ├── .babelrc           babel（语法解析器）配置
 ├── .editorconfig      编辑器语法的配置（比如Tab等于两个空格）
 ├── .eslintignore             eslint忽略文文件路径的配置
