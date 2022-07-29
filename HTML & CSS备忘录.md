@@ -7177,90 +7177,94 @@ $primary-border: 1px solid $primary-color;
 
 #### 嵌套时调用父选择器
 
-使用`&`，将会引用父选择器。示例：
+使用 `&` ，将会引用父选择器。示例：
 
-- scss代码
-  
-  ```scss
-   &:hover{
-       background-color: #0d2f7e;
-       color: #fff;
-   }
-  ```
-  
-    编译css，结果：
-  
-  ```css
-  .nav ul a:hover {
-    background-color: #0d2f7e;
-      color: #fff;
-  }
-  ```
+##### 示例一
 
-- scss代码
-  
-  ```scss
-    & &-text{
-      font-size: 15px;
-    }
-  ```
-  
-    编译css，结果：
-  
-  ```css
-  .nav .nav-test {
-    font-size: 15px;
-  }
-  ```
+scss 代码：
+
+```scss
+ &:hover{
+     background-color: #0d2f7e;
+     color: #fff;
+ }
+```
+
+ 编译css，结果：
+
+```css
+.nav ul a:hover {
+  background-color: #0d2f7e;
+    color: #fff;
+}
+```
+
+##### 示例二
+
+scss 代码：
+
+```scss
+& &-text{
+  font-size: 15px;
+}
+```
+
+ 编译css，结果：
+
+```css
+.nav .nav-test {
+  font-size: 15px;
+}
+```
 
 #### 属性嵌套
 
 示例：
 
-- 原本：
-  
-  ```scss
-  body{
-    body-family: Helvetica, Arial, sans-serif;
-    body-size: 15px;
-    body-weight: normal;
-  }
-  ```
+##### 原本
 
-- 经过属性嵌套后：
-  
-  ```scss
-  body{
-    font: {
-        family: Helvetica, Arial, sans-serif;
-        size: 15px;
-        weight: normal;
+```scss
+body{
+  body-family: Helvetica, Arial, sans-serif;
+  body-size: 15px;
+  body-weight: normal;
+}
+```
+
+##### 经过属性嵌套后
+
+```scss
+body{
+  font: {
+      family: Helvetica, Arial, sans-serif;
+      size: 15px;
+      weight: normal;
+  }
+}
+```
+
+##### 甚至
+
+原本
+
+```scss
+.nav{
+  border: 1px solid #000;
+  border-left: 0;
+  border-right: 0;
+}
+```
+
+经过属性嵌套后
+
+```scss
+.nav{
+  border: 1px solid #000 {
+    left: 0;
+    right: 0;
     }
-  }
-  ```
-
-**甚至：**
-
-- 原本：
-  
-  ```scss
-  .nav{
-    border: 1px solid #000;
-    border-left: 0;
-    border-right: 0;
-  }
-  ```
-
-- 经过属性嵌套后：
-  
-  ```scss
-  .nav{
-    border: 1px solid #000 {
-      left: 0;
-      right: 0;
-      }
-  }
-  ```
+}
+```
 
 #### mixin
 
@@ -7491,46 +7495,46 @@ hello * world                     将会报错：Error: Undefined operation "hel
 
 #### Map
 
-- 定义：
+定义：
+
+```scss
+$map: (key1: value1, key2: value2[, key3: value3])
+```
+
+取值：
+
+- 由key获取一个value
   
   ```scss
-  $map: (key1: value1, key2: value2[, key3: value3])
+  map-get($map-name, map-key)
   ```
 
-- 取值：
+- 获取全部的value
   
-  - 由key获取一个value
-    
-    ```scss
-    map-get($map-name, map-key)
-    ```
-  
-  - 获取全部的value
-    
-    ```scss
-    map-values($map-name)
-    ```
+  ```scss
+  map-values($map-name)
+  ```
 
 - 获取map的全部key，返回一个列表
-  
+
   ```scss
   map-keys($map-name)
   ```
 
 - 判断map中是否含有指定的key，返回true / false
-  
+
   ```scss
   map-has-key($map-name, key-name)
   ```
 
 - 合并map
-  
+
   ```scss
   map-merge($map1, $map2)
   ```
 
 - map移除一个键值对
-  
+
   ```scss
   map-remove($map-name, key1[, key2])
   ```
@@ -7549,19 +7553,19 @@ hello * world                     将会报错：Error: Undefined operation "hel
 
 **使用场景，示例：**
 
-- ```scss
-  $version: "0.0.1";
-  /*当前版本号是：#{$version}*/
-  ```
+```scss
+$version: "0.0.1";
+/*当前版本号是：#{$version}*/
+```
 
-- ```scss
-  $name: "info";
-  $attr: "border";
-  
-  .alert-#{$name}{
-    #{$attr}-color: #ccc;
-  }
-  ```
+```scss
+$name: "info";
+$attr: "border";
+
+.alert-#{$name}{
+  #{$attr}-color: #ccc;
+}
+```
 
 #### @if
 
@@ -7625,11 +7629,238 @@ hello * world                     将会报错：Error: Undefined operation "hel
 @warn "warning info";
 ```
 
-## bootstrap
+
+
+## Emmet 使用
+
+#### 语法
+
+##### Climb-up : ^
+
+表示 `^` 后面的元素是上一层级的。同时， `^` 可以连用（比如 `^^` ），表示上几个层级（下面有示例）
+
+`div+div>p>span+em^bq` 按下 Tab 后生成：
 
 ```html
-<!--悬浮向左-->
-<span class="push-left"></span>
-<!--悬浮向右-->
-<span class=“push-right”></span>
+<div></div>
+<div>
+    <p><span></span><em></em></p>
+    <blockquote></blockquote>
+</div>
 ```
+
+`div+div>p>span+em^bq` 和 `div+div>(p>span+em)+bq` 是等价的；毕竟 `div+div>p>span+em^bq` 等价于 `div+div>p>(span+em)^bq` ，括号再往上一层。
+
+`div+div>p>span+em^^bq`  再往上一层，按下 Tab 生成：
+
+```html
+<div></div>
+<div>
+    <p><span></span><em></em></p>
+</div>
+<blockquote></blockquote>
+```
+
+##### Item numbering: $
+
+`h$[title=item$]{Header $}*3` 按下 Tab：
+
+```html
+<h1 title="item1">Header 1</h1>
+<h2 title="item2">Header 2</h2>
+<h3 title="item3">Header 3</h3>
+```
+
+`ul>li.item$$$*5` 按下 Tab：
+
+```html
+<ul>
+    <li class="item001"></li>
+    <li class="item002"></li>
+    <li class="item003"></li>
+    <li class="item004"></li>
+    <li class="item005"></li>
+</ul>
+```
+
+其中 `$$$` 表示三位数，
+
+`ul>li.item$@-*5` 按下 Tab：
+
+```html
+<ul>
+    <li class="item5"></li>
+    <li class="item4"></li>
+    <li class="item3"></li>
+    <li class="item2"></li>
+    <li class="item1"></li>
+</ul>
+```
+
+其中 `-` 表示倒序
+
+`ul>li.item$@3*5` 按下 Tab：
+
+```html
+<ul>
+    <li class="item3"></li>
+    <li class="item4"></li>
+    <li class="item5"></li>
+    <li class="item6"></li>
+    <li class="item7"></li>
+</ul>
+```
+
+其中 `@` 表示 数字开始处
+
+##### ID and CLASS attributes
+
+`p.class1.class2.class3` 按下 Tab：
+
+```html
+<p class="class1 class2 class3"></p>
+```
+
+##### Text: {}
+
+`p>{Click }+a{here}+{ to continue}` 按下 Tab：
+
+```html
+<p>Click <a href="">here</a> to continue</p>
+```
+
+##### Implicit tag names
+
+有一些 标签 内的子标签是固定的，不是什么标签都可以作为子标签的。另外，emmet 默认标签是 \<div>，而在前面所说的标签内，不指定标签，生成的子标签将不会是 div，而是固定的那些子标签
+
+`em>.class` 按下 Tab：
+
+```html
+<em><span class="class"></span></em>
+```
+
+`ul>.class` 按下 Tab：
+
+```html
+<ul>
+  <li class="class"></li>
+</ul>
+```
+
+`table>.row>.col` 按下 Tab：
+
+```html
+<table>
+    <tr class="row">
+        <td class="col"></td>
+    </tr>
+</table>
+```
+
+另外，可以使用 `implicitTag+` 可以生成完整的代码，比如上面 的 `table>.row>.col`  可用 `table+` 实现同样效果，详见下面 [[#HTML#table+]]
+
+#### HTML
+
+##### a:link
+
+```html
+<a href="http://"></a>
+```
+
+##### a:mail
+
+```html
+<a href="mailto:"></a>
+```
+
+##### link:css
+
+```html
+<link rel="stylesheet" href="style.css" />
+```
+
+##### form
+
+```html
+<form action=""></form>
+```
+
+##### form:get
+
+```html
+<form action="" method="get"></form>
+```
+
+类似的有 `form:post` 
+
+##### input / inp
+
+```html
+<input type="text" />
+```
+
+##### input:text, input:t
+
+```html
+<input type="text" name="" id="" />
+```
+
+类似的 `input:email`、`input:time`、`input:tel` ...
+
+##### html:xml
+
+```html
+<html xmlns="http://www.w3.org/1999/xhtml"></html>
+```
+
+##### button:submit, button:s, btn:s
+
+```html
+<button type="submit"></button>
+```
+
+类似的还有 `button:reset, button:r, btn:r` 
+
+##### button:disabled, button:d, btn:d
+
+```html
+<button disabled="disabled"></button>
+```
+
+##### dlg
+
+```html
+<dialog></dialog>
+```
+
+##### table+
+
+Alias of `table>tr>td`
+
+```html
+<table>
+    <tr>
+        <td></td>
+    </tr>
+</table>
+```
+
+类似的还有：`ol+` 、`ul+`、`dl+`、`map+`、 `colgroup+, colg+` 、`tr+`、`select+`、`optgroup+, optg+`、`pic+`
+
+#### CSS
+
+##### Color
+
+`c` : `color:#000;`
+
+`c:r` :  `color: rgb(0, 0, 0);`
+
+`c:ra` : `color: rgba(0, 0, 0, .5);`
+
+`op` : `opacity: ;`
+
+##### 太多了，遇到了再去查，再来记录
+
+#### XSL
+
+暂时用不到，略。
