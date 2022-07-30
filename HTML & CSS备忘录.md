@@ -1585,7 +1585,7 @@ HTML 外部资源链接元素 ( \<link> ) 规定了当前文档与外部资源�
 
 - **as：**<font color=FF0000>该属性 **仅在 \<link> 元素设置了 rel="preload" 或者 rel="prefetch" 时才能使用**</font>。它规定了 \<link> 元素加载的内容的类型，<mark>对于内容的优先级、请求匹配、正确的 ***内容安全策略 ( CSP )*** 的选择以及正确的 Accept请求头的设置，**这个属性是必需的**</mark>。
 
-  **可选值有：**audio、document、embed、fetch、font、image、object、script、style、track、video、worker （**注：**这里原本是一个表格，这里略；详见原文。另外，可以参考下面的 [[#preload 补充#What types of content can be preloaded?]]）
+  **可选值有：**audio、document、embed、fetch、font、image、object、script、style、track、video、worker （👀 注：这里原本是一个表格，这里略；详见原文。另外，可以参考下面的 [[#preload 补充#What types of content can be preloaded?]]）
 
 - **crossorigin：**此 <font color=FF0000>**枚举属性** 指定在加载相关资源时是否必须使用 CORS</font> 。启用 CORS 的图片 可以在 \<canvas> 元素中重复使用，并避免其被污染（**注：**crossorigin 相关内容可参考 [[#CORS 设置属性]] ）。
 
@@ -1992,7 +1992,65 @@ align、frameborder、longdesc 、marginheight 、marginwidth 、scrolling
 
 
 
-#### manifest（<font color=FF0000>注意⚠️ 已从标准中移除</font>）
+#### \<embed>
+
+**HTML `<embed>` 元素**将外部内容嵌入文档中的指定位置。此内容由外部应用程序或其他交互式内容源（如浏览器插件）提供。
+
+##### 示例
+
+<img src="https://s2.loli.net/2022/07/30/rNOGSQIn4FelLKR.png" alt="image-20220730160829752" style="zoom:50%;" />
+
+> ⚠️ **备注：**这篇文档仅定义该元素在 HTML5 中定义的部分，不包含该元素之前的声明内容和非标准的实现。
+
+请记住，大多数现代浏览器已经弃用并取消了对浏览器插件的支持，所以如果您希望您的网站可以在普通用户的浏览器上运行，那么依靠 `<embed>` 通常是不明智的。
+
+| [Content categories](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Content_categories) | [Flow content](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Content_categories#flow_content), [phrasing content](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Content_categories#phrasing_content), embedded content, interactive content, palpable content. |
+| :----------------------------------------------------------- | ------------------------------------------------------------ |
+| Permitted content                                            | None, it is an [empty element](https://developer.mozilla.org/zh-CN/docs/Glossary/Empty_element). |
+| Tag omission                                                 | Must have a start tag, and must not have an end tag.         |
+| Permitted parents                                            | Any element that accepts embedded content.                   |
+| Permitted ARIA roles                                         | `application`, `document`, `img`, `presentation`             |
+| DOM interface                                                | `HTMLEmbedElement`                                           |
+
+##### 属性
+
+这个元素的属性包括 [全局属性](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes)。
+
+- height：资源显示的高度，<font color=fuchsia>**in [CSS pixels](https://drafts.csswg.org/css-values/#px). -- (Absolute values only. [NO percentages](https://html.spec.whatwg.org/multipage/embedded-content.html#dimension-attributes))**</font>
+- src：被嵌套的资源的 URL。
+- type：用于选择插件实例化的 MIME 类型。
+- width：资源显示的宽度，<font color=fuchsia>**in [CSS pixels](https://drafts.csswg.org/css-values/#px). -- (Absolute values only. [NO percentages](https://html.spec.whatwg.org/multipage/embedded-content.html#dimension-attributes))**</font>
+
+摘自：[MDN - \<embed>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/embed)
+
+##### 自己写的示例
+
+```html
+<embed
+  class="pdf-preview"
+  src="./Downloads/cheatsheet-a5.pdf"
+  type="application/pdf"
+/>
+
+<style>
+  .pdf-preview {
+      width: 100vw;
+      height: 100vh;
+  }
+</style>
+```
+
+在 Chrome 效果如下：
+
+<img src="https://s2.loli.net/2022/07/30/yPLYexQdWmMknST.png" alt="image-20220730154912282" style="zoom:30%;" />
+
+这个 pdf 预览组件 是 Chrome 自带的，Edge 和 Safari 都有自己的实现；这里就不截图了。
+
+另外，需要注意的的是：虽然 embed 标签提供了 width 和 height 两个属性，但是，只接收数字，且单位职能是 px；这样就导致很不灵活，建议还是使用 css 设置，如上面的代码。
+
+
+
+#### manifest（⚠️<font color=FF0000>注意 已从标准中移除</font>）
 
 manifest 属性是 HTML5 中的新属性。
 
