@@ -1,4 +1,4 @@
-# CS 及 文档 常见英文
+# CS 及 文档书籍 常见英文
 
 ### 通用
 
@@ -7,6 +7,7 @@
 - **compatibility**：兼容性
 - **shortcut**：快捷方式，近道
 - **out of the box**：开箱即用
+- **built-in**：内置
 - **on the fly**：即时。参考：[如何优雅的翻译 on the fly ？ - 知乎](https://www.zhihu.com/question/21136587)
 - **pros and cons**：利弊
 - **overhead**：开销（和性能相关）
@@ -46,6 +47,19 @@
 - **unite**：使联合
 - **wellspring**：源泉，来源
 - **tweak**：调整
+- **terse**：简短的
+- **polymorphism**：多态性
+- **bandaid**：绷带，创口贴
+- **big word**：大词，又长又艰深的词汇，表达严肃或重要概念的字眼
+- **modular**：模块化的
+- **patch**：修复( verb )，补丁( noun )
+- **hierarchy**：层级
+- **Let's say**：比如说... ，一般用于开头开始话题
+- **incur**：招致
+- **prioritize ( ... over ... )**：优先考虑
+- **setup**：设置 ( noun )
+- **set up**：设置 ( verb )
+- **granular**：颗粒状的。more granular：更细粒度的。granul：颗粒
 
 #### 特殊字符
 
@@ -67,3 +81,4 @@
   - em dash：表示预期转折
 - **连字符 `-`**：hyphen。用于连接单词，将不同单词连接变成一个单词。
 
+- **分号 `;`** ：semicolon
