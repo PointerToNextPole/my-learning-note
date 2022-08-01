@@ -14,7 +14,7 @@
 - **from scratch**：从零开始
 - **preflight**：预检。一般情况下的含义：预检请求 ( preflight request )。不过，在 antfu 的 UnoCSS 相关博客 [Reimagine Atomic CSS](https://antfu.me/posts/reimagine-atomic-css#scoping) 中 [scoping](https://antfu.me/posts/reimagine-atomic-css#scoping) 部分 发现了有 “样式预检” 的含义，翻译在 [重新构想原子化 CSS - CSS 作用域](https://antfu.me/posts/reimagine-atomic-css-zh#css-%E4%BD%9C%E7%94%A8%E5%9F%9F) 中
 - **semver**：( Semantic version ) 语义化版本控制规范
-- **instantiate**：实例化 verb
+- **instantiate**：实例化 ( verb )
 - **nest**：嵌套，一般用形容词 nested ，嵌套的
 - **recursion**：递归
 - **i.e.** : *i.e.* is an abbreviation for the phrase ***id est***, which means **"that is"** .
@@ -60,6 +60,8 @@
 - **setup**：设置 ( noun )
 - **set up**：设置 ( verb )
 - **granular**：颗粒状的。more granular：更细粒度的。granul：颗粒
+- **scenario**：场景（来自：” The `publicPath` configuration option can be quite useful in a variety of scenarios ”），虽然更普遍的意思是：脚本，假想
+- **neat**：整洁的。引申为：**简单的**。来自：“ There are a few use cases in real applications where this feature becomes especially neat ”
 
 #### 特殊字符
 

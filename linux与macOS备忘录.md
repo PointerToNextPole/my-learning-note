@@ -998,7 +998,7 @@ chown [-cfhvR] [--help] [--version] user[:group] file...
 
 
 
-#### which命令
+#### which 命令
 
 which指令会在环境变量$PATH设置的目录里查找符合条件的文件
 
@@ -1011,7 +1011,7 @@ which指令会在环境变量$PATH设置的目录里查找符合条件的文件
 
 
 
-#### lsof命令
+#### lsof 命令
 
 lsof（list open files）是一个查看当前系统文件的工具。在linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。如传输控制协议 (TCP) 和用户数据报协议 (UDP) 套接字等，系统在后台都为该应用程序分配了一个文件描述符，该文件描述符提供了大量关于这个应用程序本身的信息。
 
@@ -1148,7 +1148,9 @@ lsof（list open files）是一个查看当前系统文件的工具。在linux�
 
 摘自：[wiki - Unix信号](https://zh.wikipedia.org/wiki/Unix信号)
 
-***
+
+
+#### crontab
 
 
 
@@ -1291,7 +1293,7 @@ lengthn=${#array_name[n]}
 
 
 
-### <font color=FF0000>iTerm2使用</font>
+### iTerm2使用
 
 #### **快捷键**
 
@@ -1378,3 +1380,9 @@ lengthn=${#array_name[n]}
   ⌘+⌥+e,并且可以搜索
 
 以上摘自：[iTerm 2 常用快捷键](https://www.cnblogs.com/ckmiao/p/6279195.html)
+
+#### 主题设置
+
+可以通过 修改 `$HOME/.zshrc` 的 `ZSH_THEME` 以设置 theme，较为常见的是 `agnoster`。另外，可以在 `$HOME/.oh-my-zsh/themes` 下面设置目标主题的设置，比如 `agnoster.zsh-theme`。
+
+另外，可以参考视频：[2022年打造程序员完美的终端环境，颜值爆表，效率 X 10倍 The Ultimate Guide to Your Terminal for Better Productivity](https://www.youtube.com/watch?v=AWtc3SQQPpI) 以及对应的文档 [打造程序员完美的终端环境，颜值爆表，效率 X 10倍](https://vikingz.me/best-terminal-setup/)

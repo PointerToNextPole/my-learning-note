@@ -3267,7 +3267,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                           
+  >                                                                                                                                                             
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3286,7 +3286,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                           
+  >                                                                                                                                                             
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -12916,7 +12916,7 @@ ArrayBuffer 对象用来表示<font color=FF0000>通用的、固定长度</font>
 
 #### import.meta
 
-import.meta是一个<font color=FF0000>给 JavaScript  模块暴露特定上下文的元数据属性的对象</font>。<font color=FF0000>它包含了这个模块的信息，比如说这个模块的 URL</font>。
+import.meta是一个<font color=fuchsia>给 JavaScript  模块暴露特定上下文的元数据属性的对象</font>。<font color=FF0000>它包含了这个模块的信息，比如说这个模块的 URL</font>
 
 ##### 语法
 
@@ -12926,7 +12926,7 @@ import.meta
 
 ##### 描述
 
-import.meta 对象由一个关键字 "import"，一个点符号和一个 meta 属性名组成。通常情况下 "import." 是作为一个属性访问的上下文，但是在这里 "import" 不是一个真正的对象。（**注：** 这里的说法，有点类似于 [[#new.target]] ）
+`import.meta` 对象由一个关键字 `import`，一个点符号和一个 `meta` 属性名组成。<font color=dodgerBlue>通常情况下 `import.` 是作为一个属性访问的上下文</font>，但是<font color=fuchsia>在这里 "import" 不是一个真正的对象</font>。（**注：** 这里的说法，有点类似于 [[#new.target]] ）
 
 import.meta 对象是由 ECMAScript 实现的，它带有一个 null 的原型对象。这个对象可以扩展，并且它的属性都是 “可写”，“可配置” 和 “可枚举” 的。
 
