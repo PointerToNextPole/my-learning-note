@@ -60,8 +60,13 @@
 - **setup**：设置 ( noun )
 - **set up**：设置 ( verb )
 - **granular**：颗粒状的。more granular：更细粒度的。granul：颗粒
-- **scenario**：场景（来自：” The `publicPath` configuration option can be quite useful in a variety of scenarios ”），虽然更普遍的意思是：脚本，假想
+- **scenario**：场景。来自：” The `publicPath` configuration option can be quite useful in a variety of scenarios ” 。更普遍的意思是：脚本，假想
 - **neat**：整洁的。引申为：**简单的**。来自：“ There are a few use cases in real applications where this feature becomes especially neat ”
+- **dedicated**：专门的（来自：“ In such cases, you'll have to move the public path assignment to its own dedicated module and then import it on top of your entry.js ” )。更普遍的意思是：投入的
+- **misconception**：误解 ( noun )，错误观念。
+- **overlap**：重叠
+- **workaround**：解决方法，变通方法
+- **concurrency**：并发，并发数
 
 #### 特殊字符
 

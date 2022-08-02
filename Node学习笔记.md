@@ -3927,7 +3927,7 @@ npm 创建了一个 package-lock.json，这个文件就是用来**锁定全部�
 
 
 
-#### 查看全局安装（-g）的位置
+#### 查看全局安装 的位置
 
 ```sh
 npm root -g
@@ -4329,7 +4329,7 @@ $ npm config set foo:port 80
 
 摘自：[阮一峰 - npx 使用教程](https://www.ruanyifeng.com/blog/2019/02/npx.html)
 
-npm 从5.2版开始，增加了 npx 命令。
+npm 从 @5.2 开始，增加了 npx 命令。
 
 **解决的问题**
 
@@ -4382,11 +4382,11 @@ Github地址：https://github.com/nodejs/node-gyp
 
 **node-gyp的作用：**
 
-> node下的gyp 
+> node下的 gyp 
 >
-> Google 使用过很多处理平台无关（即跨平台）的项目构建系统，比如Scons，CMake。<font color=FF0000> 在实际使用中这些并不能满足需求。开发复杂的应用程序时，在Mac上Xcode更加适合，而Windows上Visual Studio更是无二之选</font>。
+> Google 使用过很多处理平台无关（即跨平台）的项目构建系统，比如Scons，CMake。<font color=FF0000> 在实际使用中这些并不能满足需求。开发复杂的应用程序时，在Mac上Xcode更加适合，而 Windows上 Visual Studio 更是无二之选</font>。👀 注：CMake 是 更高级（层级、抽象程度）的 make，同时也支持跨平台（ make 不支持跨平台）。
 >
-> <font color=FF0000>gyp 是为Chromium项目创建的项目生成工具，可以从平台无关的配置生成平台相关的Visual Studio、Xcode、Makefile的项目文件。这样一来我们就不需要花额外的时间处理每个平台不同的项目配置以及项目之间的依赖关系</font>。
+> <font color=FF0000>gyp 是为 Chromium 项目创建的项目生成工具，可以从平台无关的配置生成平台相关的 Visual Studio、Xcode、Makefile 的项目文件。这样一来我们就不需要花额外的时间处理每个平台不同的项目配置以及项目之间的依赖关系</font>。
 >
 > 摘自：[node-gyp的作用是什么? - FreezeSoul的回答 - 知乎](https://www.zhihu.com/question/36291768/answer/109978115)
 
@@ -4395,7 +4395,7 @@ Github地址：https://github.com/nodejs/node-gyp
 >
 > 摘自：[node-gyp的作用是什么? - Belleve的回答 - 知乎](https://www.zhihu.com/question/36291768/answer/70682907)
 
-GYP工具，即“Generate Your Projects”短句的缩写。它的好处在于，可以帮助你生成各个平台下的项目文件，比如Windows下的VisualStudio 解决方案文件（.sln）、Mac下的XCode项目配置文件以及Scons工具。在这个基础上，再动用各自平台下的编译器编译项目。这大大减少了跨平台模块在项目组织上的精力投入。
+GYP工具，即 “Generate Your Projects” 短句的缩写。它的好处在于，可以帮助你生成各个平台下的项目文件，比如Windows下的VisualStudio 解决方案文件（.sln）、Mac下的XCode项目配置文件以及Scons工具。在这个基础上，再动用各自平台下的编译器编译项目。这大大减少了跨平台模块在项目组织上的精力投入。
 
 摘自：《深入浅出Node.js》P28
 

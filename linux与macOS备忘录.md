@@ -750,13 +750,23 @@ killall [参数] [进程名]
 
 #### ./configure、make、make install
 
-- `./configure` 是用来<font color=FF0000>检测你的安装平台的目标特征</font>的。比如它会检测你是不是有CC或GCC，并不是需要CC或GCC，它是个shell脚本。另外，这一步<font color=FF0000>一般用来生成 Makefile，为下一步的编译做准备</font>
+##### ./configure
 
-- `make` 是用来<font color=FF0000>编译</font>的，它<font color=FF0000>从Makefile中读取指令</font>，<font color=FF0000>然后编译</font>。
+`./configure` 是用来<font color=FF0000>检测你的安装平台的目标特征</font>的。比如它会检测你是不是有CC或GCC，并不是需要CC或GCC，它是个shell脚本。另外，这一步<font color=FF0000>一般用来生成 Makefile，为下一步的编译做准备</font>
 
-- `make install`是用来安装的，它也<font color=FF0000>从Makefile中读取指令</font>，<font color=FF0000>安装到指定的位置</font>
+##### make
+
+`make` 是用来<font color=FF0000>编译</font>的，它<font color=FF0000>从Makefile中读取指令</font>，<font color=FF0000>然后编译</font>。
+
+> 👀 注：<font color=red>**感觉**</font>（不确定...） makefile 之于 make，类似于 webpack.config.js 之于 webpack。
+
+##### make install
+
+`make install`是用来安装的，它也<font color=FF0000>从Makefile中读取指令</font>，<font color=FF0000>安装到指定的位置</font>
 
 摘自：[Linux 命令详解（三）./configure、make、make install 命令](https://www.cnblogs.com/tinywan/p/7230039.html)
+
+👀 注：关于 make、makefile、cmake 等的区别，可以参考：[make makefile cmake qmake都是什么，有什么区别？ - 知乎](https://www.zhihu.com/question/27455963) 这里暂时不做笔记。
 
 
 
