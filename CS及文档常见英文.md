@@ -23,7 +23,7 @@
 - **critical**：关键的。一般见：关键渲染路径 ( Critical Rendering Path ) 。虽然更常见的翻译是 “批评性的”
 - **gotcha** ：在计算机编程领域中是指在系统或程序、程序设计语言中，合法有效，但是会误解意思的构造，程式容易造成错误，或是一些易于使用但其结果不如期望的构造。字面上是 got you 的简写，常用于口语，**直译为： “逮着你了”、“捉弄到你了 ”、“你中计了” 、“骗到你了”**。
 - **tricky**：困难的，棘手的
-- **prune**：剪枝。一般用于 机器学习 以及 树形数据结构，也是前端构建 Tree Shaking 的概念。
+- **prune**：剪枝。一般用于 机器学习，数据库 以及  树形数据结构，也是前端构建 Tree Shaking 的概念。补充：git 有 prune 指令，用于清除 “不可达” 或 “孤儿 ( orphaned ) ” 的对象（详见：https://www.atlassian.com/git/tutorials/git-prune ）
 - **utilize**：利用
 - **under the hood**：在引擎盖下（指内部实现）
 - **wildcard**：通配符
@@ -60,13 +60,19 @@
 - **setup**：设置 ( noun )
 - **set up**：设置 ( verb )
 - **granular**：颗粒状的。more granular：更细粒度的。granul：颗粒
-- **scenario**：场景。来自：” The `publicPath` configuration option can be quite useful in a variety of scenarios ” 。更普遍的意思是：脚本，假想
-- **neat**：整洁的。引申为：**简单的**。来自：“ There are a few use cases in real applications where this feature becomes especially neat ”
-- **dedicated**：专门的（来自：“ In such cases, you'll have to move the public path assignment to its own dedicated module and then import it on top of your entry.js ” )。更普遍的意思是：投入的
+- **scenario**：场景。来自：” The `publicPath` configuration option can be quite useful in a variety of **scenarios** ” 。更普遍的意思是：脚本，假想
+- **neat**：整洁的。引申为：**简单的**。来自：“ There are a few use cases in real applications where this feature becomes especially **neat** ”
+- **dedicated**：专门的（来自：“ In such cases, you'll have to move the public path assignment to its own **dedicated** module and then import it on top of your entry.js ” )。更普遍的意思是：投入的
 - **misconception**：误解 ( noun )，错误观念。
 - **overlap**：重叠
 - **workaround**：解决方法，变通方法
 - **concurrency**：并发，并发数
+- **compatible**：和睦相处的
+- **schema**：设计，架构，概要
+- **fallback**：后退，注意和 rollback（回滚）的区别
+- **recipient**：收件人（在 网络 http 场景中出现），来自：https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.7
+- **interface** <font size=4>*vs*</font> **port**：interface 接口，比如 后端接口；port 端口，80 端口
+- **ship**：提供 ( verb ) 。“ This is an example for a package that has optimizations for production and development usage with runtime detection for `process.env` and also **ships** a CommonJs and ESM version ”
 
 #### 特殊字符
 

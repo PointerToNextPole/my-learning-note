@@ -4,13 +4,13 @@
 
 #### 一些资料
 
-- git官方文档：https://git-scm.com/docs 
+- Git 官方文档：https://git-scm.com/docs 
 - 官方中文书籍：https://git-scm.com/book/zh/v2。
-- [atlassian 公司出的 git 教程](https://www.atlassian.com/git/tutorials) 要比git 官方文档易读很多
+- [atlassian 公司出的 git 教程](https://www.atlassian.com/git/tutorials) 要比 Git 官方文档易读很多
 - [猴子都能懂的GIT入门](https://backlog.com/git-tutorial/cn/) 适合入门，及建立知识框架
 - [工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100) 画了一些动图，便于理解
 - [图解Git](https://marklodato.github.io/visual-git-guide/index-zh-cn.html) 一些图解，说了一些上一篇文章没说的东西
-- [这才是真正的GIT——GIT内部原理](https://www.lzane.com/tech/git-internal) 一共有三篇，这是第一篇。说明了一些 git 原理性的东西，配合动图，清晰易懂
+- [这才是真正的GIT——GIT内部原理](https://www.lzane.com/tech/git-internal) 一共有三篇，这是第一篇。说明了一些 Git 原理性的东西，配合动图，清晰易懂
 - [给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960) 一些补充的命令
 
 

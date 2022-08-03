@@ -942,7 +942,7 @@ module: {
 
 **url-loader**
 
-也可以使用 **url-loader**，它可以实现 file-loader 一样的功能，<font color=FF0000> 同时配置项也非常相似</font>；不过，并不会将图片打包到dist文件夹下；<font color=FF0000> **url-loader 会把图片转变成 Base64（或其他）的Data URI，写入到打包出的 js 文件中**</font> <mark>（类似于C++中的内联）</mark>。不过这样会带来问题：如果图片很大，该 js 文件将会因此很大，请求 js 文件的时间将会很长，于是页面将会很长时间内没有反应。于是需要进行一个新的设置 **limit**：
+也可以使用 **url-loader**，它可以实现 file-loader 一样的功能，<font color=FF0000> 同时配置项也非常相似</font>；不过，并不会将图片打包到dist文件夹下；<font color=FF0000> **url-loader 会把图片转变成 Base64（或其他）的 <font size=4>Data URI</font>，写入到打包出的 js 文件中**</font> <mark>（类似于 C++ 中的内联）</mark>。不过这样会带来问题：如果图片很大，该 js 文件将会因此很大，请求 js 文件的时间将会很长，于是页面将会很长时间内没有反应。于是需要进行一个新的设置 **limit**：
 
 ```js
 use: {
@@ -958,7 +958,7 @@ use: {
 
 **补充：**
 
-如果不想使用默认的 base64 的格式，可以通过 encoding 参数进行配置；可选参数包含： "utf8", "utf16le", "latin1", "base64", "hex", "ascii", "binary", "ucs2"
+如果不想使用默认的 base64 的格式，可以通过 encoding 参数进行配置；可选参数包含： "utf8", "utf16le", "latin1", "base64", "hex", "ascii" , "binary" , "ucs2"
 
 另外，如果文件超过 limit 的限制，默认处理的 loader 是 file-loader，但是也可以通过 fallback 参数进行 自定义。示例如下：
 
@@ -2177,6 +2177,8 @@ module: {
 
 **babel/polyfill：**用于对于一些<font color=FF0000>更低版本</font>的浏览器，提供ES6支持。在 **import "@babel/polyfill"** 时默认将所有的适配内容都放入输出的js文件中，这样会导致js文件臃肿，所以可以使用 **useBuiltIns: "usage"** （见上面）以设置放入输出 js 文件的，只有业务代码中被使用的那部分（<font color=FF0000>**按需打包**</font>）。
 
+> 👀 注：这里的 useBuiltIns 参考 [webpack doc - guides - shimming](https://webpack.js.org/guides/shimming) 中的 [Node Built-Ins](https://webpack.js.org/guides/shimming/#further-optimizations) ，意思是 “使用内置” ( use-built-in(s) )，其中 s 表示复数
+
 不过，babel/polyfill会通过全局变量注入方法，会污染全局环境；所以只推荐在业务代码中使用。如果写的是框架 / 库文件，则建议使用 **@babel/plugin-transform-runtime**，建议参考：https://babeljs.io/docs/en/babel-plugin-transform-runtime
 
 如果 webpack.config.js 中babel的配置项过长，可以将babel配置项的内容放到 babel的配置文件 **.babelrc** 中。同时这些配置会自动生效，不用手动导入 webpack.config.js 中
@@ -2195,17 +2197,17 @@ webpack 打包 React 需要安装、使用 @babel/preset-react
 
 ```js
 options: {
-      "presets": [
-        ["@babel/preset-env", {
-        	targets: {
-          	chrome: "67", //只针对chrome 67以下的浏览器
-        	}
-        	useBuiltIns: "usage"
-      		}
-        ],
-        "@babel/preset-react"
-      ]
-    }
+  "presets": [
+    ["@babel/preset-env", {
+    	targets: {
+      	chrome: "67", //只针对chrome 67以下的浏览器
+    	}
+    	useBuiltIns: "usage"
+  		}
+    ],
+    "@babel/preset-react"
+  ]
+}
 ```
 
 同样presets调用的顺序也是从下到上，从右到左
@@ -3210,7 +3212,7 @@ optimization: {
 
 ##### 总述
 
-So we're using webpack to bundle our modular application which yields（生成） a deployable `/dist` directory. Once the contents of `/dist` have been deployed to a server, clients ( typically browsers ) will hit that server to grab the site and its assets. <mark>The last step can be time consuming, which is why browsers use a technique called [caching](https://en.wikipedia.org/wiki/Cache_(computing))</mark>. <font color=FF0000>This allows sites to load faster with less unnecessary network traffic</font>. However, it can also cause headaches when you need new code to be picked up.
+So we're using webpack to bundle our modular（模块化的） application which yields（生成） a deployable `/dist` directory. Once the contents of `/dist` have been deployed to a server, clients ( typically browsers ) will hit that server to grab the site and its assets. <mark>The last step can be time consuming, which is why browsers use a technique called [caching](https://en.wikipedia.org/wiki/Cache_(computing))</mark>. <font color=FF0000>This allows sites to load faster with less unnecessary network traffic</font>. However, it can also cause headaches when you need new code to be picked up.
 
 ##### 提取引导模板(extracting boilerplate)
 
@@ -3437,7 +3439,153 @@ rules: [{
 }]
 ```
 
-// TODO webpack guide shimming 之前的部分
+
+
+#### Shimming 文档补充
+
+##### 总述
+
+The `webpack` compiler can understand modules written as ES2015 modules, CommonJS or AMD . However, <font color=dodgerBlue>some third party libraries may expect global dependencies ( e.g. `$` for `jQuery` )</font> . <font color=dodgerBlue>The libraries might also create **globals**</font>（全局变量） <font color=dodgerBlue>which need to be exported</font>. These **"broken modules"**（不符合规范的模块） are <mark style="background: lightpink">**one instance where *shimming* comes into play**</mark> .
+
+> ⚠️ **Warning** : <font color=fuchsia>**We don't recommend using globals!**</font> The whole concept behind webpack is to allow more modular（模块化的） front-end development. This means <font color=red>writing isolated modules that are **well contained**</font>（良好的封闭性） and <font color=red>do not rely on hidden dependencies</font> (e.g. globals). Please use these features only when necessary.
+
+<mark style="background: lightpink">**Another instance where *shimming***</mark> can be useful is <font color=fuchsia>when you want to **polyfill browser** functionality to support more users</font>. In this case, you may only want to deliver those polyfills to <font color=red>the browsers that need **patching**</font>（修补） ( i.e. load them on demand ).
+
+##### 全局引入
+
+we wanted to instead <font color=red>provide this</font>（前面有省略，根据上下文 this 是指 lodash ） <font color=red>**as a global** throughout our application</font> . **To do this , we can use [`ProvidePlugin`](https://webpack.js.org/plugins/provide-plugin)** .
+
+<font color=dodgerblue>The `ProvidePlugin` **makes a package available as a variable in every module** compiled through webpack</font>. <font color=fuchsia>If webpack sees that variable used , it will **include the given package in the final bundle**</font>. Let's go ahead by removing the `import` statement for `lodash` and instead provide it via the plugin:
+
+```diff
+// src/index.js
+-import _ from 'lodash';
+-
+ function component() {
+   const element = document.createElement('div');
+
+-  // Lodash, now imported by this script
+   element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+   return element;
+ }
+
+ document.body.appendChild(component());
+```
+
+```diff
+ const path = require('path');
++const webpack = require('webpack');
+
+ module.exports = {
+   entry: './src/index.js',
+   output: {
+     filename: 'main.js',
+     path: path.resolve(__dirname, 'dist'),
+   },
++  plugins: [
++    new webpack.ProvidePlugin({
++      _: 'lodash',
++    }),
++  ],
+ };
+```
+
+What we've essentially done here is tell webpack...
+
+> <font color=red>If you **encounter at least one instance** of the variable `_`</font> , include the `lodash` package and provide it to the modules that need it.
+
+<font color=dodgerBlue>We can also use the `ProvidePlugin` to **expose a single export of a module**</font>（暴露某个模块中单个导出值，示例见下面）<font color=dodgerBlue>by **configuring it with an "array path"**</font> ( <font color=fuchsia>**e.g. `[module, child, ...children?]`**</font> ) . So let's imagine we <font color=dodgerblue>**only** wanted to provide the `join` method from `lodash`</font> wherever it's invoked:
+
+```diff
+ // src/index.js
+ function component() {
+   const element = document.createElement('div');
+
+-  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
++  element.innerHTML = join(['Hello', 'webpack'], ' ');
+
+   return element;
+ }
+
+ document.body.appendChild(component());
+```
+
+```diff
+ const path = require('path');
+ const webpack = require('webpack');
+
+ module.exports = {
+   entry: './src/index.js',
+   output: {
+     filename: 'main.js',
+     path: path.resolve(__dirname, 'dist'),
+   },
+   plugins: [
+     new webpack.ProvidePlugin({
+-      _: 'lodash',
++      join: ['lodash', 'join'],
+     }),
+   ],
+ };
+```
+
+This would <font color=fuchsia>go nicely with Tree Shaking</font> as <font color=fuchsia>**the rest of the `lodash` library should get dropped**</font>.
+
+##### 细粒度 shimming
+
+<font color=dodgerBlue>Some legacy modules rely on `this` being the `window` object</font>（一些传统的模块依赖的 `this` <font color=red>指向的是</font> `window` 对象） . <font color=red>This becomes a problem when the module is executed **in a CommonJS context where `this` is equal to `module.exports`**</font> . In this case <font color=fuchsia>**you can override `this` using the [`imports-loader`](https://webpack.js.org/loaders/imports-loader/)**</font> :
+
+```js
+// webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: require.resolve('./src/index.js'), // 匹配上 require.resolve 返回的路径，则使用 loader
+        use: 'imports-loader?wrapper=window',
+      },
+    ],
+  },
+  // ...
+}
+```
+
+> 👀 注：上面的 require.resolve 方法是 Node module 的方法：
+>
+> > ```js
+> > require.resolve(request[, options])
+> > ```
+> >
+> > - **request** : `<string>` , The module path to resolve.
+> > - **options** :  `<Object>`
+> >   - **paths** : `<string[]>` , <font color=red>Paths to resolve module location from</font>. If present, <font color=fuchsia>these paths are used **instead of the default resolution paths**</font> , with the exception of `GLOBAL_FOLDERS` like `$HOME/.node_modules` , which are always included. Each of these paths is used as a starting point for the module resolution algorithm, meaning that the `node_modules` hierarchy（层级） is checked from this location.
+> > - **Returns** : `string`
+> >
+> > Use the internal `require()` machinery to look up the location of a module, but <mark>rather than loading the module, just return the resolved filename</mark>.
+> >
+> > <font color=fuchsia>If the module can not be found, **a `MODULE_NOT_FOUND` error is thrown**</font>.
+> >
+> > 摘自：[Node doc - modules - require.resolve(request[, options])](https://nodejs.org/api/modules.html#requireresolverequest-options)
+>
+> 另外，require.resolve 的用法，还有返回值，都和 path.resolve 相当类似；这里说一下区别：
+>
+> 根据 [require.resolve和path.resolve](https://blog.csdn.net/wu_xianqiang/article/details/121783008) 中的说法：在“相对路径” 下这两者基本没什么区别。
+>
+> >  👀 注：自己实践时发现三点区别：
+> >
+> > 1. 如果 `require.resolve` 中的 `request` 参数是一个文件夹，比如 `./` ，则会搜索当前文件夹下的 index.js 等文件，找到则返回结果，找不到则报错；而 path.resolve 只会返回文件夹路径字符串
+> > 2. path.resolve 找不到不会报错，而是把路径（哪怕是不存在的）返回
+> > 3. path.resolve 的语法是：``path.resolve([...paths])`` ，和 require.resolve 不一样
+>
+> 而在非相对路径下，两者查找路径是不同的：`require.resolve` 默认从 当前项目下( local )的 node_module 文件夹下开始搜索，不会搜索 global（自己测试过）；比如 `require.resolve('webpack')`。而 `path.resolve` 是 从当前目录出发找模块。
+>
+> 学习与启发自：[require.resolve和path.resolve](https://blog.csdn.net/wu_xianqiang/article/details/121783008) 
+
+##### Global Exports
+
+
+
+摘自：[webpack doc - Guides - Shimming](https://webpack.js.org/guides/shimming/)
 
 
 
@@ -3774,7 +3922,7 @@ module.exports = {
 
 打包之后，在dist 文件夹下会出现 service-worker.js 和 precache-manifest.contenthash.js 两个文件，这两个文件使得 service worker 正常生效，使项目支持 PWA。service-worker 可以理解为另类的缓存，让页面即使在 断网 或者 服务器崩溃的 情况下，也能正常显示内容。
 
-只有 service-worker.js 和 precache-manifest.contenthash.js 两个文件还不够，还要在业务代码内添加代码
+只有 service-worker.js 和 precache-manifest.[contenthash].js 两个文件还不够，还要在业务代码内添加代码
 
 ```js
 // 业务代码
@@ -3797,11 +3945,13 @@ service worker 会在在浏览器中注册与保留，在开发其他项目时�
 
 <img src="https://i.loli.net/2021/09/17/DgULye3h7IxnJ1M.png" alt="image-20210917175053748" style="zoom: 80%;" />
 
+另外，Chrome Developer 的 workbox-webpack-plugin 的文档见 https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin/
 
 
-#### TypeScript的webpack相关
 
-在使用 TS 之前，要先安装 ts 和 ts-loader（npm install）
+#### TypeScript 的 webpack 相关
+
+在使用 TS 之前，要先安装 ts 和 ts-loader
 
 webpack配置如下：
 
@@ -3849,6 +3999,10 @@ module.exports = {
 TS 会对不规范的代码进行报错，但是不会对 第三方的库（比如 lodash）的函数的错误使用，进行报错。（以 lodash 为例）这时可以使用 @type/lodash 模块，这是一个类型文件。这时 TS 会正确识别 lodash 中的函数，使用哪些参数，一旦使用错误，将会报错，与错误信息。
 
 想要知道哪些工具（代码库）有这种 类型文件，可以去 www.typescriptlang.org/dt/search 去搜索。
+
+#### TS 文档补充
+
+
 
 
 
