@@ -3,75 +3,147 @@
 ### 通用
 
 - **synchronous**： 同步
+
 - **asynchronous**：异步
+
 - **compatibility**：兼容性
+
 - **shortcut**：快捷方式，近道
+
 - **out of the box**：开箱即用
+
 - **built-in**：内置
+
 - **on the fly**：即时。参考：[如何优雅的翻译 on the fly ？ - 知乎](https://www.zhihu.com/question/21136587)
+
 - **pros and cons**：利弊
+
 - **overhead**：开销（和性能相关）
+
 - **from scratch**：从零开始
+
 - **preflight**：预检。一般情况下的含义：预检请求 ( preflight request )。不过，在 antfu 的 UnoCSS 相关博客 [Reimagine Atomic CSS](https://antfu.me/posts/reimagine-atomic-css#scoping) 中 [scoping](https://antfu.me/posts/reimagine-atomic-css#scoping) 部分 发现了有 “样式预检” 的含义，翻译在 [重新构想原子化 CSS - CSS 作用域](https://antfu.me/posts/reimagine-atomic-css-zh#css-%E4%BD%9C%E7%94%A8%E5%9F%9F) 中
+
 - **semver**：( Semantic version ) 语义化版本控制规范
+
 - **instantiate**：实例化 ( verb )
+
 - **nest**：嵌套，一般用形容词 nested ，嵌套的
+
 - **recursion**：递归
+
 - **i.e.** : *i.e.* is an abbreviation for the phrase ***id est***, which means **"that is"** .
+
 - **retrieve**：检索
+
 - **decoupled**：解耦的
+
 - **critical**：关键的。一般见：关键渲染路径 ( Critical Rendering Path ) 。虽然更常见的翻译是 “批评性的”
+
 - **gotcha** ：在计算机编程领域中是指在系统或程序、程序设计语言中，合法有效，但是会误解意思的构造，程式容易造成错误，或是一些易于使用但其结果不如期望的构造。字面上是 got you 的简写，常用于口语，**直译为： “逮着你了”、“捉弄到你了 ”、“你中计了” 、“骗到你了”**。
+
 - **tricky**：困难的，棘手的
-- **prune**：剪枝。一般用于 机器学习，数据库 以及  树形数据结构，也是前端构建 Tree Shaking 的概念。补充：git 有 prune 指令，用于清除 “不可达” 或 “孤儿 ( orphaned ) ” 的对象（详见：https://www.atlassian.com/git/tutorials/git-prune ）
+
+- **prune**：剪枝。这是一个一般性概念，可以用于 机器学习，数据库 以及  树形数据结构，也是前端构建 Tree Shaking 的概念。
+
+  补充：git 有 prune 命令，用于清除 “不可达” 或 “孤儿 ( orphaned ) ” 的对象；详见：https://www.atlassian.com/git/tutorials/git-prune ；这里略。npm 也有 prune 命令：`npm prune [[<@scope>/]<pkg>...]` ，详见 [npm docs - npm-prune](https://docs.npmjs.com/cli/v8/commands/npm-prune)。同时 docker 也有，详见 [docker docs - Prune unused Docker objects](https://docs.docker.com/config/pruning/)
+
 - **utilize**：利用
+
 - **under the hood**：在引擎盖下（指内部实现）
+
 - **wildcard**：通配符
+
 - **spec**：规格，细则。abbr of specification
+
 - **tackle**：解决
+
 - **yield**：产出
+
 - **mutation**：变异
+
 - **Imperative programming**：命令式编程
+
 - **arithmetic**：算术
+
 - **in lieu in**：替代
+
 - **omit**：删除、省略
+
 - **summation**：总和。sum 的完整形式？
+
 - **interchangable**：可交换的
+
 - **precedent**：先例
+
 - **walkthrough**：演练
+
 - **casting function**：转型函数。关于翻译，在 [[JS及其相关库备忘录#包装类#JS 中的“原始值包装类型” ( Primitive wrapper types )]] 中有过说明
+
 - **DRY**：即：Don't Repeat Yourself 。不重复（原则）
+
 - **verbose**：冗长的、啰嗦的
+
 - **shorthand**：速记
+
 - **practice**：实践，比如 Best practice。感觉可以理解为“做法”，不过字典上没“做法”这种意思
+
 - **unite**：使联合
+
 - **wellspring**：源泉，来源
+
 - **tweak**：调整
+
 - **terse**：简短的
+
 - **polymorphism**：多态性
+
 - **bandaid**：绷带，创口贴
+
 - **big word**：大词，又长又艰深的词汇，表达严肃或重要概念的字眼
+
 - **modular**：模块化的
+
 - **patch**：修复( verb )，补丁( noun )
+
 - **hierarchy**：层级
+
 - **Let's say**：比如说... ，一般用于开头开始话题
+
 - **incur**：招致
+
 - **prioritize ( ... over ... )**：优先考虑
+
 - **setup**：设置 ( noun )
+
 - **set up**：设置 ( verb )
+
 - **granular**：颗粒状的。more granular：更细粒度的。granul：颗粒
+
 - **scenario**：场景。来自：” The `publicPath` configuration option can be quite useful in a variety of **scenarios** ” 。更普遍的意思是：脚本，假想
+
 - **neat**：整洁的。引申为：**简单的**。来自：“ There are a few use cases in real applications where this feature becomes especially **neat** ”
+
 - **dedicated**：专门的（来自：“ In such cases, you'll have to move the public path assignment to its own **dedicated** module and then import it on top of your entry.js ” )。更普遍的意思是：投入的
+
 - **misconception**：误解 ( noun )，错误观念。
+
 - **overlap**：重叠
+
 - **workaround**：解决方法，变通方法
+
 - **concurrency**：并发，并发数
+
 - **compatible**：和睦相处的
+
 - **schema**：设计，架构，概要
+
 - **fallback**：后退，注意和 rollback（回滚）的区别
+
 - **recipient**：收件人（在 网络 http 场景中出现），来自：https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.7
+
 - **interface** <font size=4>*vs*</font> **port**：interface 接口，比如 后端接口；port 端口，80 端口
+
 - **ship**：提供 ( verb ) 。“ This is an example for a package that has optimizations for production and development usage with runtime detection for `process.env` and also **ships** a CommonJs and ESM version ”
 
 #### 特殊字符

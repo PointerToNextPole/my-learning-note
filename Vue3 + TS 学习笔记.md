@@ -850,7 +850,7 @@ plugins: [
 
 在使用 HtmlWebpackPlugin时，如果没有index.html 作为模板，也能在打包后的文件夹中生成一个index.html； 实现原理是：包含ejs，是通过ejs模板 生成 index.html 文件。
 
-写入下面的配置，并进行打包，将会报错，因为：模块中BASE_URL 的常量没有定义。因为在编译模板时，有一个BASE_URL：`<link rel="icon" href="<%= BASE_URL %>favicon.ico">`，这是网页图标的地址；但是目前没有该常量值。这是要使用 webpack 自带的插件 DefinePlugin：
+写入下面的配置，并进行打包，将会报错，因为：模块中BASE_URL 的常量没有定义。因为在编译模板时，有一个BASE_URL：`<link rel="icon" href="<%= BASE_URL %>favicon.ico">` ，这是网页图标的地址；但是目前没有该常量值。这是要使用 webpack 自带的插件 DefinePlugin：
 
 ```js
 plugins: [
@@ -860,7 +860,7 @@ plugins: [
 ]
 ```
 
-另外，模板的 title 也是可以设置的。它是通过 htmlWebpackPlugins.options.title设置的 `<title><%= htmlWebpackPlugins.options.title %></title>`，这时候可以通过 htmlWebpackPlugin 的 title 参数进行设置：
+另外，模板的 title 也是可以设置的。它是通过 `htmlWebpackPlugins.options.title` 设置的 `<title><%= htmlWebpackPlugins.options.title %></title> `，这时可以通过 htmlWebpackPlugin 的 title 参数进行设置：
 
 ```js
 plugins: [

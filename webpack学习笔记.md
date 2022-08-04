@@ -791,11 +791,17 @@ module.exports = {
 __webpack_public_path__ = myRuntimePublicPath;
 ```
 
-摘自：[webpack 文档 - output](https://webpack.js.org/concepts/output/)
+摘自：[webpack 文档 - output](https://webpack.js.org/concepts/output/) 注：下面还有 文档 Guides 部分的 Public Path，见 [[#文档 Guides 中的 public path]]
 
 ##### output 中的 initial chunk 和 non-initial chunk
 
 在 [webpack 文档 - concept - Under The Hood - Output](https://webpack.js.org/concepts/under-the-hood/#Output) 中还有 `inital` chunk files （与 output.filename 相关）以及 `non-initial` chunk files （与 output.chunkFilename 相关 ）的 内容，值得注意
+
+
+
+#### 文档 Guides 的 public path
+
+// TODO DefinePlugin：https://webpack.js.org/plugins/define-plugin/
 
 
 
@@ -3587,6 +3593,10 @@ module.exports = {
 
 摘自：[webpack doc - Guides - Shimming](https://webpack.js.org/guides/shimming/)
 
+// TODO [ProvidePlugin](https://webpack.js.org/plugins/provide-plugin/) 笔记
+
+
+
 
 
 #### 环境变量
@@ -5372,9 +5382,9 @@ CSS代码分割，在打包时，将css代码分为多个文件；并给出生�
 
 - 可以通过自定义 plugin 或者 html-webpack-plugin 等周期函数，动态注入前端静态化存储 script
 
-#### webpack 常见的plugin有哪些?
+#### webpack 常见的plugin有哪些？
 
-- ProvidePlugin：自动加载模块，代替require和import
+- ProvidePlugin：自动加载模块（相当于定义一个全局变量），使用时不需要 require 和 import
 
 - <font color=FF0000>**html-webpack-plugin**</font>：可以根据模板自动生成html代码，并自动引用 css 和 js 文件
 

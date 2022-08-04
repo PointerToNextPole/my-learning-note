@@ -1080,6 +1080,20 @@ git 内置了对命令非常详细的解释，可以供我们快速查阅
 
 
 
+#### git prune
+
+The `git prune` command is an internal housekeeping（家务） utility that <font color=fuchsia>**cleans up unreachable or "orphaned"**</font> （孤儿的）<font color=fuchsia>**Git objects**</font>. Unreachable objects are those that are inaccessible by any refs. Any commit that cannot be accessed through a branch or tag is considered unreachable. <font color=red>`git prune` is generally not executed directly</font>. <font color=fuchsia>Prune is considered a **garbage collection** command and is a **child command of the `git gc` command**</font>.
+
+摘自：[Atlassian git tutorials - git prune](https://www.atlassian.com/git/tutorials/git-prune)
+
+
+
+#### git gc
+
+// TODO
+
+
+
 #### 获取某些文件，某些分支，某次提交等 git 信息
 
 - **git log --stat：**显示commit历史，以及每次commit发生变更的文件
