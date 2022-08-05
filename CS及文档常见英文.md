@@ -132,7 +132,9 @@
 
 - **workaround**：解决方法，变通方法
 
-- **concurrency**：并发，并发数
+- **concurrency**：并发，并发数。**concurrent**：并发的
+
+- **simultaneous**：同时（发生）的
 
 - **compatible**：和睦相处的
 
@@ -144,7 +146,17 @@
 
 - **interface** <font size=4>*vs*</font> **port**：interface 接口，比如 后端接口；port 端口，80 端口
 
-- **ship**：提供 ( verb ) 。“ This is an example for a package that has optimizations for production and development usage with runtime detection for `process.env` and also **ships** a CommonJs and ESM version ”
+- **ship**：提供 ( verb ) 。来自：“ This is an example for a package that has optimizations for production and development usage with runtime detection for `process.env` and also **ships** a CommonJs and ESM version ”
+
+- **address**：关联 ( verb )，来自 “Each module available addresses a specific aspect of service worker development.” ，查阅谷歌翻译和百度翻译 都找不到相关的意思，应该是当前语境的引申义。另外，说一下快遗忘的含义：尝试解决
+
+- **accommodate**：为 ... 提供住宿，这也是高中学习时普遍的含义。这里要强调的是：也可以翻译为：顾及、适应、兼容；如下： “ Workbox aims to make using service workers as easy as possible, while allowing the flexibility to accommodate complex application requirements where needed.”
+
+- **house**：收容 ( verb )。来自：“ This repo houses two bundling libraries: a *modern Vite plugin* and a *legacy Rollup plugin* . ” ，这里翻译成“包含”更妥帖些。
+
+- **anonymous**：匿名的。anonymity：匿名 ( noun )。deanonymize：匿名化
+
+- **boilerplate**：样板
 
 #### 特殊字符
 

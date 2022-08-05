@@ -2,7 +2,13 @@
 
 
 
-### 《TypeScript入门教程》学习笔记
+#### 一些资料
+
+中文文档 / 手册：www.tslang.cn ，https://typescript.bootcss.com
+
+
+
+## 《TypeScript入门教程》学习笔记
 
 链接🔗：[《TypeScript入门教程》](https://ts.xcatliu.com)
 
@@ -520,7 +526,7 @@ function reverse(x: number | string): number | string | void {
 
 
 
-### 《TypeScript 编程》学习笔记
+## 《TypeScript 编程》学习笔记
 
 #### TS 类型的结构关系图
 
@@ -549,7 +555,7 @@ function reverse(x: number | string): number | string | void {
 
 
 
-### 《深入理解 TypeScript 》学习笔记
+## 《深入理解 TypeScript 》学习笔记
 
 链接🔗：[深入理解 TypeScript](https://jkchao.github.io/typescript-book-chinese/)
 
@@ -3965,3 +3971,46 @@ babel 不支持 `const enum`（会作为 enum 处理），不支持 namespace �
 
 那用 babel 编译，就不做类型检查了么？<font color=FF0000>**可以用 `tsc --noEmit` 来做类型检查，加上 noEmit 选项就不会生成代码了**</font>。如果你要生成 d.ts，也要单独跑下 tsc 编译。
 
+
+
+
+
+## 其他笔记
+
+#### // @ts-ignore
+
+<font color=dodgerBlue>**TypeScript 2.6**</font> support <font color=fuchsia>suppressing</font>（镇压，翻译成 隐藏/忽略） <font color=fuchsia>errors</font> in .js files using `// @ts-ignore` comments <font color=fuchsia>placed above the offending</font>（惹麻烦的） <font color=fuchsia>lines</font>.
+
+示例：
+
+```ts
+if (false) {
+  // @ts-ignore: Unreachable code error
+  console.log("hello");
+}
+```
+
+> 👀 注：这里上面注释中的 “Unreachable code error” 很重要，同时也容易忽略，即：`@ts-ignore` 仅会对不会执行的错误代码进行忽略。如果会执行，也会报错。比如如下代码（ log 写错），一定会报错
+>
+> ```ts
+> // @ts-ignore
+> console.logg('hello')
+> ```
+
+A `// @ts-ignore` comment <font color=fuchsia>suppresses **all errors**</font> that originate on the <font color=fuchsia>**following line**</font>（ 👀 注：接下来的**一行**，即无法作用于代码块）. It is <font color=red>recommended practice to **have the remainder of the comment following `@ts-ignore` explain which error is being suppressed**</font> （译：建议实践中在 `@ts-ignore `之后添加相关提示，解释忽略了什么错误。👀 注：如上示例代码）.
+
+Please note that this comment <font color=red>only suppresses the error reporting</font>（译：仅会隐藏报错）, and we <font color=red>recommend you use this comments *very sparingly*</font>.
+
+摘自：[TS doc -  handbook - TS 2.6 - Suppress errors in .ts files using ’// @ts-ignore’ comments](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html#suppress-errors-in-ts-files-using--ts-ignore-comments)
+
+#### // @ts-nocheck
+
+<font color=dodgerBlue>**TypeScript 3.7**</font> allows us to <font color=red>add `// @ts-nocheck` comments to the **top of TypeScript files** to <font size=4>**disable semantic checks**</font></font>. <font color=dodgerBlue>**Historically**</font> this comment was only respected in **JavaScript source files** in the presence of [`checkJs`](https://www.typescriptlang.org/tsconfig#checkJs), but we’ve <font color=red>expanded support to TypeScript files to make migrations easier for all users</font>.
+
+摘自：[TS doc - handbook - TS 3.7 - // @ts-nocheck in TypeScript Files](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
+
+TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类型检查并提示错误的模式。
+
+你可以通过添加 `// @ts-nocheck` 注释来忽略类型检查；相反你可以通过去掉 `--checkJs` 设置并添加 `// @ts-check` 注释来选则检查某些 `.js` 文件。 你还可以使用 `// @ts-ignore` 来忽略本行的错误。
+
+摘自：[TypeScript 中文手册 - JavaScript文件里的类型检查](https://typescript.bootcss.com/type-checking-javascript-files.html)

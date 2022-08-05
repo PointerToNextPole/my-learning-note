@@ -801,7 +801,9 @@ __webpack_public_path__ = myRuntimePublicPath;
 
 #### 文档 Guides 的 public path
 
-// TODO DefinePlugin：https://webpack.js.org/plugins/define-plugin/
+// TODO
+
+DefinePlugin：https://webpack.js.org/plugins/define-plugin/ ，还有 https://segmentfault.com/a/1190000017217915 也看下
 
 
 
@@ -1882,10 +1884,6 @@ webpack-dev-server可以用来实现<font color=FF0000>热部署</font>，即修
 
 
 //TODO 阅读：
-
-https://webpack.js.org/api/cli/  
-
-https://webpack.js.org/api/node/ 
 
 https://webpack.js.org/configuration/devtool/  
 
@@ -3956,6 +3954,12 @@ service worker 会在在浏览器中注册与保留，在开发其他项目时�
 <img src="https://i.loli.net/2021/09/17/DgULye3h7IxnJ1M.png" alt="image-20210917175053748" style="zoom: 80%;" />
 
 另外，Chrome Developer 的 workbox-webpack-plugin 的文档见 https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin/
+
+#### 文档 Guides 的补充
+
+// TODO https://developer.chrome.com/docs/workbox/what-is-workbox/
+
+
 
 
 
