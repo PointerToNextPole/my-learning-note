@@ -2795,3 +2795,23 @@ Apple 官网喜欢用用户滚动页面 实现 播放视频（动画）效果，
 #### JNI
 
 可以参考文章：[Android JNI(一)——NDK与JNI基础](https://www.jianshu.com/p/87ce6f565d37) 感觉介绍得不错
+
+由于，暂时用不到，这里暂时不精读&做笔记
+
+
+
+#### PWA
+
+在看 webpack 中 PWA 的内容，由于 webpack 作为 bundler 下的 PWA 是通过 workbox 作为支持的。就在知乎上搜了 workbox，发现了如下问题与回答，引发了我的思考...
+
+> ***弱网环境下前端如何优化？***
+>
+> 没有什么骚操作，Google推广的PWA就是为你准备的。
+>
+> 你有三个选项：HTTP Cache，Service Worker 和 Cache Storage API，Workbox。
+>
+> 如果你的网站支持HTTPS，推荐用Workbox。如果用的是前端三大框架之一，都有现成的方案。
+>
+> 摘自：[弱网环境下前端如何优化？ - 陈龙的回答 - 知乎](https://www.zhihu.com/question/306385245/answer/560086505)
+
+另外，大量关于 PWA 的内容被记录在 [[webpack]] 那边，这里暂时不做记录。

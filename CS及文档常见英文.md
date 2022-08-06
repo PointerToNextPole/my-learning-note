@@ -110,7 +110,7 @@
 
 - **Let's say**：比如说... ，一般用于开头开始话题
 
-- **incur**：招致
+- **incur**：招致，发生
 
 - **prioritize ( ... over ... )**：优先考虑
 
@@ -118,7 +118,9 @@
 
 - **set up**：设置 ( verb )
 
-- **granular**：颗粒状的。more granular：更细粒度的。granul：颗粒
+- **granular**：颗粒状的。more granular：更细粒度的。granul：颗粒。
+
+- **fine-grained**：细粒度的
 
 - **scenario**：场景。来自：” The `publicPath` configuration option can be quite useful in a variety of **scenarios** ” 。更普遍的意思是：脚本，假想
 
@@ -150,13 +152,36 @@
 
 - **address**：关联 ( verb )，来自 “Each module available addresses a specific aspect of service worker development.” ，查阅谷歌翻译和百度翻译 都找不到相关的意思，应该是当前语境的引申义。另外，说一下快遗忘的含义：尝试解决
 
-- **accommodate**：为 ... 提供住宿，这也是高中学习时普遍的含义。这里要强调的是：也可以翻译为：顾及、适应、兼容；如下： “ Workbox aims to make using service workers as easy as possible, while allowing the flexibility to accommodate complex application requirements where needed.”
+- **accommodate**：为 ... 提供住宿，这也是高中学习时普遍的含义。这里要强调的是，也可以翻译为：**顾及、适应、兼容**；如下： “ Workbox aims to make using service workers as easy as possible, while allowing the flexibility to **accommodate** complex application requirements where needed.”
 
-- **house**：收容 ( verb )。来自：“ This repo houses two bundling libraries: a *modern Vite plugin* and a *legacy Rollup plugin* . ” ，这里翻译成“包含”更妥帖些。
+- **house**：收容 ( verb )。来自：“ This repo **houses** two bundling libraries: a *modern Vite plugin* and a *legacy Rollup plugin* . ” ，这里翻译成“包含”更妥帖些。
 
 - **anonymous**：匿名的。anonymity：匿名 ( noun )。deanonymize：匿名化
 
 - **boilerplate**：样板
+
+- **directive**：指令，命令
+
+- **stale**：陈旧的，不过这里要说的“不新鲜的”，用于 HTTP 的 Cache-Control 中，比如 max-stale 选项
+
+- **latency**：延时。high-latency 高延时。
+
+- **underpin**：支撑，构成 … 的基础。来自： “ Because promises also **underpin** async and await , ... ”
+
+- **as-is**：照原样
+
+- **at the cost of**：以什么为代价。
+
+- **fine tune**：微调
+
+- **[prefix]-agnostic**：... 无关的。比如 framework-agnostic 译为 “框架无关的”。
+
+- **profile**：剖析 ( verb )。来自 “ It is especially useful in the case of early prototyping and **profiling**.  ”
+
+- **scaffold**：脚手架
+
+- **negate**：否定。**negated**：否定的。参考记忆，可以根据 negative
+
 
 #### 特殊字符
 

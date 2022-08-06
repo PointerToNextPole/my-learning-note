@@ -23,6 +23,20 @@
 
 
 
+##### “粘性滚动” 设置
+
+```json
+"editor.experimental.stickyScroll.enabled": true
+```
+
+样式如下：
+
+<img src="https://s2.loli.net/2022/08/06/XwtKEZvqNJOUIpP.png" alt="image-20220806194800985" style="zoom:45%;" />
+
+
+
+
+
 #### 快捷键
 
 - **⇧ + ⌥ + F**：代码格式化。不过，如果代码被检测出错误，将不会执行

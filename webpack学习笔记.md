@@ -121,6 +121,12 @@ The configuration above has defined a `rules` property for a single module with 
 
 > *"Hey webpack compiler, when you come across a path that resolves to a '.txt' file inside of a* `require()`*/*`import` *statement,* **use** *the* `raw-loader` *to transform it before you add it to the bundle."*
 
+###### 文档 API 部分的补充
+
+Loaders are transformations that are applied to the source code of a module. <font color=fuchsia>**They are written as functions** that **accept source code as a parameter** and **return a new version of that code with transformations applied**</font>.
+
+摘自：[webpack doc - API - Introduction - Loaders](https://webpack.js.org/api/#loaders)
+
 ##### Plugins
 
 While loaders are used to transform certain types of modules, <font color=FF0000>plugins can **be leveraged to perform a wider range of tasks** like bundle optimization, asset management and injection of environment variables</font>.
@@ -144,6 +150,16 @@ module.exports = {
 In the example above, <font color=FF0000>the `html-webpack-plugin` **generates an HTML file for your application** and **automatically injects all your generated bundles into this file**</font>.
 
 > **Tip 💡**: There are many plugins that webpack provides out of the box! Check out the [list of plugins](https://webpack.js.org/plugins).
+
+###### 文档 API 部分的补充
+
+<font color=red>The plugin <font size=4>**interface**</font> **allows users to tap directly into the compilation process**</font>. <font color=fuchsia>Plugins can <font size=4>**register handlers on lifecycle hooks**</font> that <font size=4>**run at different points throughout a compilation**</font></font>. <font color=red>**When <font size=4>each hook</font> is executed, the plugin will <font size=4>have full access to the current state of the compilation</font>**</font>.
+
+> 👀 注：上面这段话很重要，虽然不难懂；但为了强调，这里摘抄下中文文档中的 [翻译](https://www.webpackjs.com/api/#plugin)：
+>
+> 插件接口可以帮助用户直接触及到编译过程 ( compilation process )。 插件可以将处理函数 ( handler ) 注册到编译过程中的不同事件点上运行的生命周期钩子函数上。 当执行每个钩子时， 插件能够完全访问到编译 ( compilation ) 的当前状态。
+
+摘自：[webpack doc - API - Introduction - Plugins](https://webpack.js.org/api/#plugins)
 
 ##### Mode
 
@@ -3587,6 +3603,92 @@ module.exports = {
 
 ##### Global Exports
 
+Let's say <mark>a library creates a global variable</mark> that <mark>it expects its consumers to use</mark>. （👀 注：这里省略一些内容，包括下面的前半句）
+
+you may encounter a dated library you'd like to use that contains similar code to what's shown above（ 👀 注：“above” 的内容被省略，见原文）. In this case, <mark>we can use</mark> [`exports-loader`](https://webpack.js.org/loaders/exports-loader/) , <mark>to export that global variable as a normal module export</mark>. For instance, in order to export `file` as `file` and `helpers.parse` as `parse` :
+
+```diff
+ module.exports = {
+   entry: './src/index.js',
+   module: {
+     rules: [
+       {
+         test: require.resolve('./src/index.js'),
+         use: 'imports-loader?wrapper=window',
+       },
++      {
++        test: require.resolve('./src/globals.js'),
++        use: 'exports-loader?type=commonjs&exports=file,multiple|helpers.parse|parse',
++      },
+     ],
+   },
+ };
+```
+
+> 👀 注：上面的写法应该是 resourceQuery，相关的内容可以参考 [webpack doc - cfg - module # Rule.resourceQuery](https://webpack.js.org/configuration/module/#ruleresourcequery) ；另外，[webpack doc - guides - asset modules # Replacing Inline Loader Syntax](https://webpack.js.org/guides/asset-modules/#replacing-inline-loader-syntax) 中也有提及（也更详细点）
+
+Now from within our entry script (i.e. `src/index.js` ) , <font color=red>**we could use `const { file, parse } = require('./globals.js');` and all should work smoothly**</font>.
+
+##### Loading Polyfills
+
+<font color=red>**There's a lot of ways to load polyfills**</font>. For example, to include the [`babel-polyfill`](https://babeljs.io/docs/en/babel-polyfill/) we might: `npm install --save babel-polyfill` and <font color=red>`import` it so as to include it in our main bundle</font>:
+
+```js
+// src/index.js 这也是入口文件
+import 'babel-import'
+
+// ...
+```
+
+> 💡 Tip : Note that <font color=red>we aren't binding the `import` to a variable</font>. This is because <font color=fuchsia>polyfills simply run on their own, prior to the rest of the code base</font>, allowing us to then assume certain native functionality exists.
+>
+> 译：注意，我们没有将 `import` 绑定到某个变量。这是因为 polyfill 直接基于自身执行，并且是在基础代码执行之前，这样通过这些预置，我们就可以假定已经具有某些原生功能。
+
+Note that <font color=fuchsia>this approach **prioritizes correctness over bundle size**</font>（👀 注：即 bundle 体积很大）. <font color=fuchsia size=4>**To be safe and robust**, polyfills/shims must run **before all other code**</font>, and <font color=red>thus either need to load synchronously</font>（ 👀 注：同步是为了保证先执行？）, **or**, <font color=red>all app code needs to load after all polyfills/shims load</font>. <font color=dodgerBlue>There are many **misconceptions** in the community</font>, as well, <mark>that modern browsers "don't need" polyfills, or that polyfills/shims merely serve to add missing features</mark>（👀 注：为保证之后阅读断章取义，前面高亮的内容是错的） - in fact, <font color=fuchsia>they often *repair broken implementations*, **even in the most modern of browsers**</font>. <mark style="background: lightpink">The **best practice** thus remains to unconditionally and synchronously load all polyfills/shims, despite the bundle size cost this incurs</mark>（👀 注：这是总结）.
+
+If you feel that you have mitigated（减轻，这里理解为“打消”） these concerns（顾虑） and wish to incur the risk of brokenness（希望承受损坏的风险）, <font color=dodgerBlue>here's one way you might do it</font> : Let's move our `import` to a new file and add the [`whatwg-fetch`](https://github.com/github/fetch) polyfill: `npm install --save whatwg-fetch` :
+
+```diff
+// src/index.js
+-import 'babel-polyfill';
+
+// ...
+```
+
+```diff
+ // project
+ webpack-demo
+  |- package.json
+  |- package-lock.json
+  |- webpack.config.js
+  |- /dist
+  |- /src
+    |- index.js
+    |- globals.js
++   |- polyfills.js
+  |- /node_modules
+```
+
+```js
+// src/polyfill.js
+import 'babel-polyfill';
+import 'whatwg-fetch';
+```
+
+```js
+// webpack.config.js
+module.exports = {
+  entry: {
+    polyfills: './src/polyfills',
+    index: './src/index.js',
+  },
+  output: {
+    filename: '[name].bundle.js', // 因为多入口了
+    path: path.resolve(__dirname, 'dist'),
+  },
+}
+```
+
 
 
 摘自：[webpack doc - Guides - Shimming](https://webpack.js.org/guides/shimming/)
@@ -3960,6 +4062,8 @@ service worker 会在在浏览器中注册与保留，在开发其他项目时�
 // TODO https://developer.chrome.com/docs/workbox/what-is-workbox/
 
 
+
+在 wepback 中 使用的插件是 [workbox-webpack-plugin](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-webpack-plugin) ，基于 webpack 的 vue-cli 也是；而在 基于 Vite 作为 bundler 的开发环境中，PWA插件 [vite-plugin-pwa](https://github.com/antfu/vite-plugin-pwa)，使用的是 更底层的 [workbox-build](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-build) ( workbox-webpack-plugin 依赖 workbox-build ) 和 [workbox-window](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-window) ；详见 [vite-plugin-pwa - package.json](https://github.com/antfu/vite-plugin-pwa/blob/main/package.json)
 
 
 
