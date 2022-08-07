@@ -4014,3 +4014,11 @@ TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类
 你可以通过添加 `// @ts-nocheck` 注释来忽略类型检查；相反你可以通过去掉 `--checkJs` 设置并添加 `// @ts-check` 注释来选则检查某些 `.js` 文件。 你还可以使用 `// @ts-ignore` 来忽略本行的错误。
 
 摘自：[TypeScript 中文手册 - JavaScript文件里的类型检查](https://typescript.bootcss.com/type-checking-javascript-files.html)
+
+
+
+#### Tripe-slash Directives
+
+//TODO https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html
+
+//TODO 《Programming Typescript》Appendix E. Triple-Slash Directives

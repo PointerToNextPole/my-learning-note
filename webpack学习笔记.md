@@ -813,11 +813,23 @@ __webpack_public_path__ = myRuntimePublicPath;
 
 在 [webpack 文档 - concept - Under The Hood - Output](https://webpack.js.org/concepts/under-the-hood/#Output) 中还有 `inital` chunk files （与 output.filename 相关）以及 `non-initial` chunk files （与 output.chunkFilename 相关 ）的 内容，值得注意
 
-
-
 #### 文档 Guides 的 public path
 
-// TODO
+The `publicPath` configuration option can be quite useful in a variety of scenarios（场景）. <font color=red>It allows you to specify the base path for all the assets within your application</font>.
+
+##### 用例
+
+There are a few use cases in real applications where this feature becomes especially neat. Essentially, every file emitted to your `output.path` directory will be referenced from the `output.publicPath` location. This includes child chunks (created via [code splitting](https://webpack.js.org/guides/code-splitting/)) and any other assets (e.g. images, fonts, etc.) that are a part of your dependency graph.
+
+###### Environment Based
+
+In development for example, we might have an `assets/` folder that lives on the same level of our index page. This is fine, but what if we wanted to host all these static assets on a CDN in production?
+
+To approach this problem you can easily use a good old environment variable. Let's say we have a variable `ASSET_PATH` :
+
+摘自：[webpack doc - Guides - Public Path](https://webpack.js.org/guides/public-path/)
+
+
 
 DefinePlugin：https://webpack.js.org/plugins/define-plugin/ ，还有 https://segmentfault.com/a/1190000017217915 也看下
 
@@ -2331,7 +2343,9 @@ All the code noted above does not contain **side effects** , so <font color=FF00
 
 The array accepts simple glob patterns（简单的全局模式） to the relevant files . <font color=FF0000>It uses [glob-to-regexp](https://github.com/fitzgen/glob-to-regexp) under the hood</font>（**译**：在引擎盖下，即：在内部实现中...） <font color=fuchsia>**( Supports : `*` , `**` , `{a,b}` , `[a-z]` )**</font> . <font color=FF0000>Patterns like `*.css` , which do not include a `/` , will be treated like `**/*.css`</font> . 
 
-> 👀 **注**：`*` 和 `**` 都是 *nix 下通用的 通配符，其中 `**` 可以简单理解为 “深度搜索”。具体看下面的摘抄：
+##### 自我补充：`*` 和 `**` 通配符
+
+> `*` 和 `**` 都是 *nix 下通用的 通配符，其中 `**` 可以简单理解为 “深度搜索”。具体看下面的摘抄：
 >
 > > It's almost the same as the single asterisk but may consist of *multiple* directory levels.
 > >
@@ -3473,7 +3487,7 @@ The `webpack` compiler can understand modules written as ES2015 modules, CommonJ
 
 ##### 全局引入
 
-we wanted to instead <font color=red>provide this</font>（前面有省略，根据上下文 this 是指 lodash ） <font color=red>**as a global** throughout our application</font> . **To do this , we can use [`ProvidePlugin`](https://webpack.js.org/plugins/provide-plugin)** .
+we wanted to instead <font color=red>provide this</font>（前面有省略，根据上下文 this 是指 lodash ） <font color=red>**as a global** throughout our application</font> . **To do this , we can use [`ProvidePlugin`](https://webpack.js.org/plugins/provide-plugin)** . 👀 注：ProvidePlugin 相关的内容参考 [[#ProvidePlugin 文档笔记]]
 
 <font color=dodgerblue>The `ProvidePlugin` **makes a package available as a variable in every module** compiled through webpack</font>. <font color=fuchsia>If webpack sees that variable used , it will **include the given package in the final bundle**</font>. Let's go ahead by removing the `import` statement for `lodash` and instead provide it via the plugin:
 
@@ -3683,19 +3697,166 @@ module.exports = {
     index: './src/index.js',
   },
   output: {
-    filename: '[name].bundle.js', // 因为多入口了
+    filename: '[name].bundle.js', // 因为多入口打包了
     path: path.resolve(__dirname, 'dist'),
   },
 }
 ```
 
+With that in place, <font color=red>we can add the logic to conditionally load our new `polyfills.bundle.js` file</font>. How you make this decision depends on the technologies and browsers you need to support. We'll do some testing to determine whether our polyfills are needed:
 
+```html
+<!-- dist/index.html -->
+<head>
+  <script>
+    const modernBrowser = 'fetch' in window && 'assign' in Object;
+  
+    if (!modernBrowser) {
+      const scriptElement = document.createElement('script');
+  
+      scriptElement.async = false;
+      scriptElement.src = '/polyfills.bundle.js';
+      document.head.appendChild(scriptElement);
+    }
+    </script>
+</head>
+
+<body>
+  <script src="index.bundle.js"></script>
+</body>
+```
+
+> 👀 注：上面代码之所以这样放置，是因为 polyfill 相关代码必须要要 其他代码之前执行。
+
+Now we can `fetch` some data within our entry script:
+
+```js
+// src/index.js
+
+// ...
+fetch('https://jsonplaceholder.typicode.com/users')
+  .then((response) => response.json())
+  .then((json) => {
+    console.log("We retrieved some data! AND we're confident it will work on a variety of browser distributions.");
+    console.log(json);
+  })
+  .catch((error) =>
+    console.error('Something went wrong when fetching this data: ', error)
+  );
+```
+
+If we run our build, another `polyfills.bundle.js` file will be emitted and everything should still run smoothly in the browser. Note that this set up could likely be improved upon but it should give you a good idea of how you can provide polyfills only to the users that actually need them.
+
+##### Further Optimizations 进一步优化
+
+The <font color=fuchsia>`babel-preset-env` package **uses [browserslist](https://github.com/browserslist/browserslist)** to transpile only what is not supported in your browsers matrix</font>. <font color=red>This preset comes with the **[`useBuiltIns`](https://babeljs.io/docs/en/babel-preset-env#usebuiltins) option**, `false` by default</font>, which converts your global `babel-polyfill` import to a more granular（更细粒度的） feature by feature `import` pattern:
+
+```js
+import 'core-js/modules/es7.string.pad-start';
+import 'core-js/modules/es7.string.pad-end';
+import 'core-js/modules/web.timers';
+import 'core-js/modules/web.immediate';
+import 'core-js/modules/web.dom.iterable';
+```
+
+See [the babel-preset-env documentation](https://babeljs.io/docs/en/babel-preset-env) for more information.
+
+##### Node Built-Ins
+
+<font color=red>Node built-ins, like `process`, **can be polyfilled right directly** from your configuration file **without the use of any special loaders or plugins**</font>. See the [node configuration page](https://webpack.js.org/configuration/node) for more information and examples.
+
+##### Other Utilities
+
+There are a few other tools that can help when dealing with legacy modules.
+
+<font color=dodgerBlue>When</font>（假如） <font color=dodgerBlue>there is **no AMD/CommonJS version of the module** and you **want to include the `dist`**</font> , you can flag this module in [`noParse`](https://webpack.js.org/configuration/module/#modulenoparse) （可以使用 `noParse` 来标识出这个模块）. This will cause webpack to include the module without parsing it or resolving `require()` and `import` statements. This practice is also used to improve the build performance.
+
+> ⚠️ **Warning** : Any feature requiring the AST, like the `ProvidePlugin` , will not work.
+
+Lastly, there are some modules that support multiple [module styles](https://webpack.js.org/concepts/modules) ; e.g. a combination of AMD , CommonJS , and legacy. <font color=red>In most of these cases, they **first check for `define`**</font> and then use some quirky code to export properties. In these cases , it could help to force the CommonJS path by setting `additionalCode=var%20define%20=%20false;` via the [`imports-loader`](https://webpack.js.org/loaders/imports-loader/) .
 
 摘自：[webpack doc - Guides - Shimming](https://webpack.js.org/guides/shimming/)
 
-// TODO [ProvidePlugin](https://webpack.js.org/plugins/provide-plugin/) 笔记
+##### ProvidePlugin 文档笔记
 
+###### 简要介绍
 
+<font color=fuchsia>Automatically load modules</font> **instead of** <font color=red>having to `import` or `require` them everywhere</font>.
+
+>  👀 注：类似于全局定义一个 “标识”，不过机制不同；在编译过程中只要检测出某个模块使用了，则自动引入( import / require )，并替换“标识”为定义。
+
+```js
+new webpack.ProvidePlugin({
+  identifier: 'module1',
+  // ...
+})
+```
+
+```js
+new webpack.ProvidePlugin({
+  identifier: ['module1', 'property'],
+  // ...
+})
+```
+
+> 👀 注：上面是细粒度的引入，引入的属性为 module1.property ；下面 [[#Lodash Map 中的用法]] 有使用
+
+<font color=dodgerBlue>By default</font>, <font color=fuchsia>module resolution path is current folder (`./**)` and `node_modules`</font> . 👀 注：关于 `**` 的内容参见 [[#自我补充：`*` 和 `**` 通配符]]
+
+It is also possible to <font color=dodgerBlue>specify full path</font>:
+
+```js
+const path = require('path');
+
+new webpack.ProvidePlugin({
+  identifier: path.resolve(path.join(__dirname, 'src/module1')),
+  // ...
+});
+```
+
+Whenever the `identifier` is encountered as free variable in a module, <font color=fuchsia>the `module` is loaded automatically</font> and the <font color=fuchsia>`identifier` is filled with the exports of the loaded `module`</font> (or `property` in order to support named exports).
+
+> 译：每当在模块中将标识符作为自由变量遇到时，模块会自动加载，并且标识符会填充加载模块的导出（或属性以支持命名导出）。
+
+For importing the default export of an **ES2015 module** （即：`export default` ）, you have to specify the default property of module.
+
+###### JQuery 中的用法
+
+To automatically load `jquery` we can point both variables it exposes to the corresponding node module:
+
+```js
+new webpack.ProvidePlugin({
+  $: 'jquery',
+  jQuery: 'jquery',
+});
+```
+
+Then in any of our source code:
+
+```javascript
+// in a module
+$('#item'); // <= works
+jQuery('#item'); // <= also works
+// $ is automatically set to the exports of module "jquery"
+```
+
+###### Lodash Map 中的用法
+
+```js
+new webpack.ProvidePlugin({
+  _map: ['lodash', 'map'],
+});
+```
+
+###### Vue.js 中的用法
+
+```js
+new webpack.ProvidePlugin({
+  Vue: ['vue/dist/vue.esm.js', 'default'],
+});
+```
+
+摘自：[webpack doc - plugins - ProvidePlugin](https://webpack.js.org/plugins/provide-plugin/)
 
 
 
@@ -4008,6 +4169,52 @@ Or, to add it <font color=FF0000>**as a standard module**</font> as per [this gu
 
 
 
+#### Web Workers
+
+<font color=fuchsia>As of</font>（从...开始） <font color=fuchsia>webpack 5, you can use Web Workers without `worker-loader`</font> .
+
+##### 语法
+
+```js
+new Worker(new URL('./worker.js', import.meta.url));
+```
+
+##### 示例
+
+```js
+// src/index.js
+const worker = new Worker(new URL('./deep-thought.js', import.meta.url));
+worker.postMessage({
+  question: 'The Answer to the Ultimate Question of Life, The Universe, and Everything.',
+});
+worker.onmessage = ({ data: { answer } }) => {
+  console.log(answer);
+};
+
+// src/deep-thought.js
+self.onmessage = ({ data: { question } }) => {
+  self.postMessage({
+    answer: 42,
+  });
+};
+```
+
+##### Node.js
+
+<font color=dodgerBlue>Similar syntax is supported in **Node.js** ( **>= 12.17.0** )</font>:
+
+```js
+import { Worker } from 'worker_threads';
+
+new Worker(new URL('./worker.js', import.meta.url));
+```
+
+Note that <font color=red>this is **only available in ESM**</font>. <font color=fuchsia>**`Worker` in CommonJS syntax is not supported** by either webpack or Node.js</font>.
+
+摘自：[webpack doc - Guides - Web Workers](https://webpack.js.org/guides/web-workers/)
+
+
+
 #### PWA 打包
 
 使用 workbox-webpack-plugin 插件可以提供 PWA 的打包。同时，只有需要上线的代码需要考虑是否断网的问题，所以 PWA 插件只用在 production 环境下。
@@ -4055,13 +4262,212 @@ service worker 会在在浏览器中注册与保留，在开发其他项目时�
 
 <img src="https://i.loli.net/2021/09/17/DgULye3h7IxnJ1M.png" alt="image-20210917175053748" style="zoom: 80%;" />
 
-另外，Chrome Developer 的 workbox-webpack-plugin 的文档见 https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin/
+#### Chrome Dev 关于 workbox-webpack-plugin 笔记
 
-#### 文档 Guides 的补充
+<font color=dodgerBlue>**Workbox provides two webpack plugins**</font> : one（即 **GenerateSW** ） that <font color=red>**generates a complete service worker for you**</font> **and** one （即 **InjectManifest** ）that <font color=fuchsia>**generates a list of assets to precache** that is **injected into a service worker file**</font> （👀 注：即 InjectManifest 不生成 Service Worker，根据下面 [[#InjectManifest Plugin]] 的说法，会生成 manifest。另外，感觉这里没有 [[#InjectManifest Plugin]] 说的清楚... ）.
 
-// TODO https://developer.chrome.com/docs/workbox/what-is-workbox/
+<font color=red>The plugins are **implemented as two classes in the `workbox-webpack-plugin` module**</font> , named `GenerateSW` and `InjectManifest` . The answers to the following questions can help you choose the right plugin and configuration to use.
+
+#####  Which Plugin to Use
+
+###### GenerateSW
+
+The <font color=red>GenerateSW plugin will **create a service worker file for you** and <font size=4>**add it to the webpack asset pipeline**</font></font>.
+
+**When to use GenerateSW**
+
+- You want to precache files.
+- You <font color=red>have simple runtime caching needs</font>.
+
+**When NOT to use GenerateSW**
+
+- You <font color=fuchsia>want to **use other Service Worker features**</font> ( i.e. [Web Push](https://developer.mozilla.org/docs/Web/API/Push_API) ) .
+- You <font color=red>want to import additional scripts</font>, **or** <font color=fuchsia>**add additional logic for custom caching strategies**</font>.
+
+###### InjectManifest
+
+The <font color=fuchsia>InjectManifest plugin will **generate a list of URLs to precache** and **add that precache manifest to an existing service worker file**</font>. It will otherwise leave the file as-is（照原样）.
+
+**When to use InjectManifest**
+
+- You <font color=red>want more control over your service worker</font>.
+- You <font color=red>want to precache files</font>.
+- You <font color=fuchsia>need to customize routing and strategies</font>.
+- You <font color=fuchsia>would like to use your service worker with other platform features</font> ( e.g. [Web Push](https://developer.mozilla.org/docs/Web/API/Push_API) ).
+
+**When <font color=red>NOT</font> to use InjectManifest**
+
+- You want the easiest path to adding a service worker to your site.
+
+##### GenerateSW Plugin
+
+You can add the `GenerateSW` plugin to your webpack config like so:
+
+```js
+// Inside of webpack.config.js:
+const {GenerateSW} = require('workbox-webpack-plugin');
+
+module.exports = {
+  // Other webpack config...
+  plugins: [
+    // Other plugins...
+    new GenerateSW({
+      // These are some common options, and not all are required. Consult the docs for more info.
+      // 👀 注：这里配置略，详见原文
+    })
+  ]
+}
+```
+
+This will **generate a service worker** <font color=red>with precaching setup for all of the webpack assets picked up by your configuration</font>, <font color=fuchsia>**and the runtime caching rules provided**</font> .
+
+> 👀 注：关于 runtime caching [Chrome Dev - Workbox - Service worker overview](https://developer.chrome.com/docs/workbox/service-worker-overview) 中有更多介绍，暂时不做更多补充。
+
+A full set of configuration options can be found [in the reference documentation](https://developer.chrome.com/docs/workbox/reference/workbox-build/#type-WebpackGenerateSWOptions).
+
+##### InjectManifest Plugin
+
+You can add the InjectManifest plugin to your webpack config like so:
+
+```js
+module.exports = {
+  // Other webpack config...
+  plugins: [
+    // Other plugins...
+    new InjectManifest({
+      // These are some common options, and not all are required.
+      // Consult the docs for more info.
+      exclude: [/.../, '...'],
+      maximumFileSizeToCacheInBytes: ...,
+      swSrc: '...',
+    }),
+  ],
+};
+```
+
+This will <font color=fuchsia><font size=4>**create a precache manifest**</font> based on the webpack assets **picked up by your configuration**</font> and <font color=fuchsia size=4>**inject it into your bundled and compiled service worker file**</font>.
+
+A full set of configuration options can be found [in the reference documentation](https://developer.chrome.com/docs/workbox/reference/workbox-build/#type-WebpackInjectManifestOptions).
+
+摘自：[Chrome Dev - workbox - workbox-webpack-plugin](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin/)
 
 
+
+#### PWA 文档 Guides 补充
+
+Progressive Web Applications (or PWAs) are web apps that <font color=red>deliver an experience **similar to native applications**</font>. <font color=dodgerBlue>There are many things that can contribute to that</font>. Of these, <font color=red>the most significant is the ability for an app to be able to function when **offline**</font>. This is achieved through the use of a web technology called [Service Workers](https://developers.google.com/web/fundamentals/primers/service-workers/).
+
+<font color=dodgerBlue>**This section will focus on adding an offline experience to our app**</font>. We'll achieve this using a Google project called <font size=4>**[Workbox](https://github.com/GoogleChrome/workbox)**</font> which <font color=red>provides tools that help make offline support for web apps easier to setup</font>.
+
+##### We Don't Work Offline Now （现在，我们并没有运行在离线环境下）
+
+So far, we've been viewing the output by going directly to the local file system. Typically though, a real user accesses a web app over a network; <font color=red>their browser talking to a **server** which will serve up the required assets (e.g. `.html` , `.js` , and `.css` files)</font> .
+
+So let's test what the current experience is like using a server with more basic features. Let's use the [http-server](https://www.npmjs.com/package/http-server) package: `npm install http-server --save-dev` . We'll also amend the `scripts` section of our `package.json` to add in a `start` script:
+
+```json
+{
+  ...
+  "scripts": {
+    "build": "webpack",
+    "start": "http-server dist"
+  },
+  ...
+}
+```
+
+Note: <font color=dodgerBlue>**[webpack DevServer](https://webpack.js.org/configuration/dev-server/) writes in-memory by default**</font>. <font color=red>We'll **need to** enable [`devserverdevmiddleware.writeToDisk`](https://webpack.js.org/configuration/dev-server/#devserverdevmiddleware) option in order for **http-server to be able to serve files from `./dist` directory**</font>.
+
+If you haven't previously done so, run the command `npm run build` to build your project. Then run the command `npm start` .（👀 注：下面有与概念无关的内容省略） 
+
+This is what we aim to change. <font color=dodgerblue>Once we reach the end of this module</font> we <font color=red>should be able to **stop the server**</font>, <font color=fuchsia>**hit refresh and still see our application**</font>.
+
+##### Adding Workbox
+
+Let's add the Workbox webpack plugin and adjust the `webpack.config.js` file:
+
+```js
+const WorkboxPlugin = require('workbox-webpack-plugin');
+
+module.exports = {
+  // ...
+  plugins: [
+    new WorkboxPlugin.GenerateSW({
+      // these options encourage the ServiceWorkers to get in there fast
+      // and not allow any straggling "old" SWs to hang around
+      clientsClaim: true,
+      skipWaiting: true,
+    }),
+  ],
+  // ...
+}
+```
+
+With that in place, let's see what happens when we do an `npm run build `:
+
+```sh
+...
+                  Asset       Size  Chunks                    Chunk Names
+          app.bundle.js     545 kB    0, 1  [emitted]  [big]  app
+        print.bundle.js    2.74 kB       1  [emitted]         print
+             index.html  254 bytes          [emitted]
+precache-manifest.b5ca1c555e832d6fbf9462efd29d27eb.js  268 bytes          [emitted]
+      service-worker.js       1 kB          [emitted]
+...
+```
+
+<font color=dodgerBlue>As you can see, we now **have 2 extra files being generated**</font> ; `service-worker.js` and the more verbose <font color=fuchsia>`precache-manifest.b5ca1c555e832d6fbf9462efd29d27eb.js`</font> . `service-worker.js` is the Service Worker file and <font color=fuchsia>`precache-manifest.b5ca1c555e832d6fbf9462efd29d27eb.js` is a file that **`service-worker.js` requires so it can run**</font>. Your own generated files will likely be different ; but you should have a `service-worker.js` file there.
+
+##### Registering Our Service Worker
+
+Let's <font color=red>allow our Service Worker to come out and **play by registering it**</font>. We'll do that by adding the registration code below :
+
+```js
+// index.js
+
+// ...
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').then(registration => {
+      console.log('SW registered: ', registration);
+    }).catch(registrationError => {
+      console.log('SW registration failed: ', registrationError);
+    });
+  });
+}
+```
+
+Once more `npm run build` to build a version of the app including the registration code. Then serve it with `npm start` . Navigate to `http://localhost:8080` and take a look at the console. Somewhere in there you should see:
+
+```bash
+SW registered
+```
+
+Now to test it. Stop your server and refresh your page. If your browser supports Service Workers then you should still be looking at your application. However, it has been served up by your Service Worker and **not** by the server.
+
+摘自：[webpack doc - Guides - Progressive Web Application](https://webpack.js.org/guides/progressive-web-application/)
+
+#### Chrome Dev 关于 workbox 笔记
+
+At this point, <font color=red>service workers may seem tricky</font>（困难的，棘手的）. <font color=dodgerBlue>There's lots of complex interactions that are hard to get right</font>. <font color=fuchsia>**Network requests! Caching strategies! Cache management! Precaching!**</font> It's a lot to remember. This doesn't make service worker an ill-designed technology ; it works as intended, and solves hard problems.
+
+<mark style="background: lightpink">Good abstractions make complex APIs easier to use</mark>. That's where Workbox comes in. <font color=fuchsia>**Workbox is a set of modules that simplify common service worker routing and caching**</font>. Each module available addresses（关联） a specific aspect of service worker development. <font color=fuchsia>**Workbox aims to make using service workers as easy as possible**, while **allowing the flexibility to accommodate complex application requirements where needed**</font>.
+
+In the simplest cases, [`workbox-build`](https://developer.chrome.com/docs/workbox/reference/workbox-build/) offers a couple of methods that can generate a service worker that precaches specified assets. The [`generateSW`](https://developer.chrome.com/docs/workbox/reference/workbox-build/#method-generateSW) method does most of the work out of the box, while the [`injectManifest`](https://developer.chrome.com/docs/workbox/reference/workbox-build/#method-injectManifest) method offers more control when necessary.
+
+<font color=dodgerBlue>For more advanced use cases, other modules can help. A few such modules are:</font>
+
+- [`workbox-routing`](https://developer.chrome.com/docs/workbox/modules/workbox-routing/) for request matching.
+- [`workbox-strategies`](https://developer.chrome.com/docs/workbox/modules/workbox-strategies/) for caching strategies.
+- [`workbox-precaching`](https://developer.chrome.com/docs/workbox/modules/workbox-precaching/) for precaching.
+- [`workbox-expiration`](https://developer.chrome.com/docs/workbox/modules/workbox-expiration/) for managing caches.
+- [`workbox-window`](https://developer.chrome.com/docs/workbox/modules/workbox-window/) for registering a service worker and handling updates in the [`window context`](https://developer.mozilla.org/docs/Web/API/Window).
+
+ These and [other modules](https://developer.chrome.com/docs/workbox/modules/) help compose service worker code in a declarative fashion that's easier to read and maintain than using service worker APIs directly. This documentation will explain how to use them in an applied fashion.
+
+摘自：[Chrome Dev - workbox - What is Workbox?](https://developer.chrome.com/docs/workbox/what-is-workbox/)
+
+##### workbox 在框架中的使用
 
 在 wepback 中 使用的插件是 [workbox-webpack-plugin](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-webpack-plugin) ，基于 webpack 的 vue-cli 也是；而在 基于 Vite 作为 bundler 的开发环境中，PWA插件 [vite-plugin-pwa](https://github.com/antfu/vite-plugin-pwa)，使用的是 更底层的 [workbox-build](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-build) ( workbox-webpack-plugin 依赖 workbox-build ) 和 [workbox-window](https://github.com/GoogleChrome/workbox/tree/v6/packages/workbox-window) ；详见 [vite-plugin-pwa - package.json](https://github.com/antfu/vite-plugin-pwa/blob/main/package.json)
 
@@ -4120,7 +4526,142 @@ TS 会对不规范的代码进行报错，但是不会对 第三方的库（比�
 
 #### TS 文档补充
 
+##### Basic Setup
 
+First install the TypeScript compiler and loader by running:
+
+```bash
+npm install --save-dev typescript ts-loader
+```
+
+Now we'll modify the directory structure & the configuration files: 项目根目录下添加 `tsconfig.json`
+
+Let's <font color=dodgerBlue>set up a configuration to support JSX and compile TypeScript down to ES5</font> ...
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node"
+  }
+}
+```
+
+See [TypeScript's documentation](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) to learn more about `tsconfig.json` configuration options.
+
+To learn more about webpack configuration, see the [configuration concepts](https://webpack.js.org/concepts/configuration/).
+
+Now let's configure webpack to handle TypeScript:
+
+```js
+// webpack.config.js
+module.exports = {
+  // ...
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
+  // ...
+}
+```
+
+This will direct webpack to *enter* through `./index.ts` , *load* all `.ts` and `.tsx` files through the `ts-loader`, and *output* a `bundle.js` file in our current directory.
+
+Now lets change the import of `lodash` in our `./index.ts`due to the fact that there is no default export present in `lodash` definitions.
+
+```diff
+// .index.ts
+- import _ from 'lodash';
++ import * as _ from 'lodash';
+// ...
+```
+
+> 💡 **Tip** : <font color=red>To make imports do this by default and keep `import _ from 'lodash';` syntax in TypeScript</font> , <font color=fuchsia>set `"allowSyntheticDefaultImports" : true` and `"esModuleInterop" : true` in your **tsconfig.json** file</font>. This is related to TypeScript configuration and mentioned in our guide only for your information.
+
+##### ts-loader
+
+We use `ts-loader` as <font color=red>it makes enabling additional webpack features</font>, such as <font color=red>importing other web assets, a bit easier</font>.
+
+> ⚠️ **Warning** : `ts-loader ` uses ` tsc` , the TypeScript compiler, and relies on your `tsconfig.json` configuration. <font color=fuchsia size=4>Make sure to avoid setting [`module`](https://www.typescriptlang.org/tsconfig#module) to "CommonJS", or webpack won't be able to tree-shake your code</font> .
+
+Note that <font color=dodgerBlue>if you're already using `babel-loader` to transpile your code</font>, <font color=fuchsia>you can use [`@babel/preset-typescript`](https://babeljs.io/docs/en/babel-preset-typescript) and let Babel handle both your JavaScript and TypeScript files</font> instead of using an additional loader. <font color=dodgerBlue>**Keep in mind that**</font>, contrary to `ts-loader` , <font color=fuchisa>the underlying [`@babel/plugin-transform-typescript`](https://babeljs.io/docs/en/babel-plugin-transform-typescript) plugin **does not perform any type checking**</font> .
+
+##### Source Maps
+
+<font color=dodgerBlue>To enable source maps</font> , we <font color=fuchsia>must **configure TypeScript to output inline source maps to our compiled JavaScript files**</font>（译：配置 TS ，将内联的 source map 输出到编译后的 JS 文件中）. The following line must be added to our TypeScript configuration:
+
+```diff
+ // tsconfig.json
+ {
+     // ...
++    "sourceMap": true,
+     // ...
+ }
+```
+
+Now we need to tell webpack to extract these source maps and include in our final bundle:
+
+```diff
+ // webpack.config.js
+ module.exports = {
+    // ...
++   devtool: 'inline-source-map',
+    // ...
+ }
+```
+
+##### Client types
+
+<font color=red>**It's possible to use webpack specific features in your TypeScript code**</font> , such as [`import.meta.webpack`](https://webpack.js.org/api/module-variables/#importmetawebpack) . And <font color=red>webpack provides types for them as well</font>, just add a TypeScript [`reference`](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html#-reference-types-) directive to declare it:
+
+```ts
+/// <reference types="webpack/module" />
+console.log(import.meta.webpack); // without reference declared above, TypeScript will throw an error
+```
+
+> 👀 注：上面 `/// <reference types="webpack/module" />` 的写法有点类似于 JS 中 [with](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/with) 关键字的用法；另外，上面语法的名称为 “[Tripe-slash Directives](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html)”。关于 Tripe-slash Directives 的内容，在 [[TypeScript学习笔记#Tripe-slash Directives]] 中做了笔记
+
+##### 使用第三方的库
+
+When installing third party libraries from npm, it is important to remember to <font color=red>install the **typing definition** for that library</font>. These definitions can be found at [TypeSearch](https://microsoft.github.io/TypeSearch/) .
+
+For example if we want to install lodash we can run the following command to get the typings for it:
+
+```bash
+npm install --save-dev @types/lodash
+```
+
+For more information see [this blog post](https://blogs.msdn.microsoft.com/typescript/2016/06/15/the-future-of-declaration-files/) .
+
+##### Importing Other Assets
+
+<font color=dodgerBlue>To use non-code assets with TypeScript</font>, <font color=red>we **need to defer the type for these imports**</font>. This <font color=red>requires a `custom.d.ts` file which **signifies custom definitions for TypeScript**</font> in our project. Let's set up a declaration for `.svg` files:
+
+```ts
+// custom.d.ts
+declare module '*.svg' {
+  const content: any;
+  export default content;
+}
+```
+
+Here we <font color=red>**declare a new module for SVGs** by specifying any import that ends in `.svg`</font> and <font color=fuchsia>defining the module's `content` as `any`</font> . We could be more explicit about it being a url by defining the type as string. <font color=dodgerBlue>The same concept applies to other assets including CSS, SCSS, JSON and more</font>.
+
+摘自：[webpack doc - guides - TypeScript](https://webpack.js.org/guides/typescript/)
 
 
 

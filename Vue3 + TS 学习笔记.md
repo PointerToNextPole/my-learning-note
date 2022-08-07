@@ -682,13 +682,13 @@ rules属性对应的值是一个数组：[Rule]。数组中存放的是一个个
 
 - **什么是PostCSS？**
 
-  PostCSS是一个通过JavaScript来转换样式的工具。<font color=FF0000>这个工具可以帮助我们进行一些CSS的转换和适配，比如自动添加浏览器前缀、css样式的重置；但是<font size=4>**实现这些功能，我们需要借助于PostCSS对应的插件**</font>。</font>
+  PostCSS是一个通过 JavaScript 来转换样式的工具。<font color=FF0000>这个工具可以帮助我们进行一些CSS的转换和适配，比如自动添加浏览器前缀、css样式的重置；但是<font size=4>**实现这些功能，我们需要借助于PostCSS对应的插件**</font>。</font>
 
 - **如何使用PostCSS？主要就是两个步骤：**
 
-  1. 查找PostCSS在构建工具中的扩展，比如webpack中的postcss-loader；
+  1. 查找PostCSS在构建工具中的扩展，比如 webpack 中的 postcss-loader
 
-  2. 选择可以添加你需要的PostCSS相关的插件；
+  2. 选择可以添加你需要的 PostCSS 相关的插件
 
 **也可以在 终端中 使用 PostCSS：**需要独立安装 工具：postcss-cli。
 
@@ -732,9 +732,13 @@ rules属性对应的值是一个数组：[Rule]。数组中存放的是一个个
 
   这时候，webpack.config.js 中只需要像 css-loader 一样 ( `"css-loader"` )，写成 `"postcss-loader"` 即可。
 
-**事实上，在配置postcss-loader时，我们配置插件并不需要使用autoprefixer，我们可以使用另外一个插件：postcss-preset-env。**
+**事实上，在配置 postcss-loader 时，我们配置插件并不需要使用autoprefixer，我们可以使用另外一个插件：postcss-preset-env。**
 
-postcss-preset-env也是一个postcss的插件，它可以帮助我们将一些现代的CSS特性，转成大多数浏览器认识的CSS，并且会根据目标浏览器或者运行时环境添加所需的polyfill；也包括会自动帮助我们添加autoprefixer（所以相当于已经内置了autoprefixer）；
+postcss-preset-env 也是一个 postcss 的插件，它可以帮助我们将一些现代的CSS特性，转成大多数浏览器认识的CSS，并且会根据目标浏览器或者运行时环境添加所需的polyfill；也包括会自动帮助我们添加autoprefixer（所以相当于已经内置了autoprefixer）；
+
+> 👀 注：PostCSS 相关内容，峰华前端做了一个视频，很好的介绍了 PostCSS：[13 分钟掌握 PostCSS](https://www.bilibili.com/video/BV1Pd4y1S7Mp) 。另外，值得注意的是：除了 [postcss-preset-env](https://github.com/csstools/postcss-preset-env) （原库已经 archived，并入了 [postcss-plugins](https://github.com/csstools/postcss-plugins) ），该视频中讲解了两个 没听过的插件， lint 工具 [stylelint](https://github.com/stylelint/stylelint) 和  [px2rem-postcss](https://github.com/songsiqi/px2rem-postcss)
+
+
 
 ##### file-loader
 
