@@ -4,7 +4,7 @@
 
 #### webpack 存在的必要
 
-webpack是一种构建工具工具。那，为什么需要构建或者说编译呢？因为像es6、less及sass、模板语法、vue指令及jsx在浏览器中是无法直接执行的，必须经过构建这一个操作才能保证项目运行，所以前端构建打包很重要。除了这些，前端构建还能解决一些web应用性能问题，比如：依赖打包、资源嵌入、文件压缩及hash指纹等。具体的我不再展开，总之前端构建工程化已经是趋势。
+webpack 是一种构建工具工具。那，为什么需要构建或者说编译呢？因为像 ES6、less 及 sass、模板语法、vue 指令及 jsx 在浏览器中是无法直接执行的，必须经过构建这一个操作才能保证项目运行，所以前端构建打包很重要。除了这些，前端构建还能解决一些 web 应用性能问题，比如：依赖打包、资源嵌入、文件压缩及 hash 指纹等。具体的我不再展开，总之前端构建工程化已经是趋势。
 
 
 
@@ -48,9 +48,11 @@ css-loader 用于加载 css 文件并生成 commonjs 对象，style-loader 用�
 
 
 
-### webpack 基础概念
 
-#### webpack 文档 concept 的介绍
+
+### webpack 文档 concept 笔记
+
+#### Concept 概念 
 
 ##### 总述
 
@@ -177,9 +179,21 @@ Webpack supports all browsers that are [ES5-compliant](https://kangax.github.io/
 
 摘自：[webpack 文档 - Concepts](https://webpack.js.org/concepts)
 
-#### webpack 文档 Guide 的笔记
 
-##### webpack 与插件
+
+#### \__webpack_require__
+
+知道 `__webpack_require__` 是在 webpack 文档的 [Concept - The Manifest #Manifest](https://webpack.js.org/concepts/manifest/#manifest) 部分，感觉有点重要
+
+> **No matter which module syntax you have chosen**, those <font color=FF0000>import or require statements have now become `__webpack_require__` methods</font> that <font color=FF0000>point to module identifiers</font>
+>
+> 摘自：[webpack Doc - Concept - The Manifest #Manifest](https://webpack.js.org/concepts/manifest/#manifest)
+
+
+
+### webpack 文档 Guide 笔记
+
+#### webpack 与插件
 
 You might be wondering <font color=FF0000>**how webpack and its plugins seem to "know" what files are being generated**</font>（在这之前讲了）. **The answer is** <font color=FF0000>in the manifest that webpack keeps to track how all the **modules map** to the output bundles</font>. If you're interested in managing webpack's [`output`](https://webpack.js.org/configuration/output) in other ways, the manifest would be a good place to start.
 
@@ -374,15 +388,85 @@ export default modules
 
 
 
-### webpack 文档 深层概念
+#### Integrations
 
-#### \__webpack_require__
+Let's start by <font color=dodgerBlue>clearing up a common **misconception**</font>（错误观念）. <font color=red>Webpack is a **module bundler** like *Browserify* or *Brunch*</font>. <font color=fuchsia>It is <font size=4>***not a task runner***</font> like ***Make***, ***Grunt***, or ***Gulp***</font>. Task runners handle automation of common development tasks such as linting, building, or testing your project. <font color=red>Compared to bundlers, **task runners** have a **higher level focus**</font>. You can still benefit from their higher level tooling while leaving the problem of bundling to webpack.
 
-知道 `__webpack_require__` 是在 webpack 文档的 [Concept - The Manifest - Manifest](https://webpack.js.org/concepts/manifest/#manifest) 部分
+<mark style="background: lightpink">Bundlers help you get your JavaScript and stylesheets ready for deployment, transforming them into a format that's suitable for the browser</mark>. For example, <font size=4>**JavaScript can be [minified](https://webpack.js.org/plugins/terser-webpack-plugin/) or [split into chunks](https://webpack.js.org/guides/code-splitting) and [lazy-loaded](https://webpack.js.org/guides/lazy-loading) to improve performance**</font>. Bundling is one of the most important challenges in web development, and solving it well can remove a lot of pain from the process.
 
-> **No matter which module syntax you have chosen**, those <font color=FF0000>import or require statements have now become `__webpack_require__` methods</font> that <font color=FF0000>point to module identifiers</font>
+The good news is that, while there is some overlap（重叠）, <font color=dodgerBlue>**task runners and bundlers can play well together** if approached in the right way</font>. This guide provides a high-level overview of <font color=dodgerBlue>**how webpack can be integrated into some of the more popular task runners**</font> .
 
-感觉有点重要
+##### NPM Scripts
+
+<font color=fuchsia>**Often webpack users use npm [`scripts`](https://docs.npmjs.com/misc/scripts) as their task runner**</font>. This is a good starting point. <font color=red>Cross-platform support can become a problem, but there are several workarounds</font>（变通方法） <font color=red>for that</font>. Many, if not most users, get by with npm `scripts` and various levels of webpack configuration and tooling.
+
+So while webpack's core focus is bundling, there are a variety of extensions that can enable you to use it for jobs typical of a task runner. Integrating a separate tool adds complexity, so be sure to weigh the pros and cons before going forward.
+
+##### Grunt
+
+<font color=dodgerBlue>**For those using Grunt, we recommend the [`grunt-webpack`](https://www.npmjs.com/package/grunt-webpack) package**</font>. <font color=red>**With `grunt-webpack` you can run webpack or `webpack-dev-server` as a task** , get access to **stats within [*template tags*](https://gruntjs.com/api/grunt.template)** , ***split development*** and ***production configurations*** and more</font> . Start by installing `grunt-webpack` as well as `webpack` itself if you haven't already :
+
+```bash
+npm install --save-dev grunt-webpack webpack
+```
+
+Then register a configuration and load the task :
+
+```js
+// Gruntfile.js
+const webpackConfig = require('./webpack.config.js');
+
+module.exports = function (grunt) {
+  grunt.initConfig({
+    webpack: {
+      options: {
+        stats: !process.env.NODE_ENV || process.env.NODE_ENV === 'development',
+      },
+      prod: webpackConfig,
+      dev: Object.assign({ watch: true }, webpackConfig),
+    },
+  });
+  
+  grunt.loadNpmTasks('grunt-webpack');
+};
+```
+
+For more information, please visit the [repository](https://github.com/webpack-contrib/grunt-webpack) .
+
+##### Gulp
+
+Gulp is also a fairly straightforward integration with the help of the [`webpack-stream`](https://github.com/shama/webpack-stream) package ( a.k.a. `gulp-webpack` ). In this case, it is unnecessary to install `webpack` separately as it is a direct dependency of `webpack-stream` :
+
+```bash
+npm install --save-dev webpack-stream
+```
+
+You can `require('webpack-stream')` instead of `webpack` and optionally pass it an configuration :
+
+```js
+// gulpfile.js
+const gulp = require('gulp');
+const webpack = require('webpack-stream');
+
+gulp.task('default', function () {
+  return gulp
+    .src('src/entry.js')
+    .pipe(
+      webpack({
+        // Any configuration options...
+      })
+    )
+    .pipe(gulp.dest('dist/'));
+});
+```
+
+For more information, please visit the [repository](https://github.com/shama/webpack-stream) .
+
+##### Mocha & Karma
+
+略。详见原文
+
+摘自：[webpack doc - Guides - Integrations](https://webpack.js.org/guides/integrations/)
 
 
 
@@ -815,23 +899,197 @@ __webpack_public_path__ = myRuntimePublicPath;
 
 #### 文档 Guides 的 public path
 
-The `publicPath` configuration option can be quite useful in a variety of scenarios（场景）. <font color=red>It allows you to specify the base path for all the assets within your application</font>.
+The `publicPath` configuration option can be quite useful in a variety of scenarios（场景）. <font color=red>It allows you to **specify the base path** for all the assets within your application</font>.
 
 ##### 用例
 
-There are a few use cases in real applications where this feature becomes especially neat. Essentially, every file emitted to your `output.path` directory will be referenced from the `output.publicPath` location. This includes child chunks (created via [code splitting](https://webpack.js.org/guides/code-splitting/)) and any other assets (e.g. images, fonts, etc.) that are a part of your dependency graph.
+There are a few use cases in real applications where this feature becomes especially neat. Essentially, <font color=red>every file emitted to your `output.path` directory will be referenced from the `output.publicPath` location</font>. This <font color=fuchsia>includes child chunks ( created via code splitting ) and any other assets</font> ( e.g. images, fonts, etc. ) that are a part of your dependency graph.
 
-###### Environment Based
+###### 基于环境的设置
 
-In development for example, we might have an `assets/` folder that lives on the same level of our index page. This is fine, but what if we wanted to host all these static assets on a CDN in production?
+In development for example, we might have an `assets/` folder that lives on the same level of our index page. This is fine, but <font color=red>what if we wanted to **host all these static assets on a CDN in production**</font>?
 
 To approach this problem you can easily use a good old environment variable. Let's say we have a variable `ASSET_PATH` :
 
+```js
+import webpack from 'webpack';
+
+// Try the environment variable, otherwise use root
+const ASSET_PATH = process.env.ASSET_PATH || '/';
+
+export default {
+  output: {
+    publicPath: ASSET_PATH,
+  },
+  plugins: [
+    // This makes it possible for us to safely use env vars on our code。
+    new webpack.DefinePlugin({
+      'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH),
+    }),
+  ],
+};
+```
+
+> 👀 注：⚠️ 注意区分 DefinePlugin 和 ProvidePlugin：DefinePlugin 是在编译阶段，自动替换变量的，ProvidePlugin 是自动导入 module 的
+
+###### 在运行时设置
+
+Another possible <font color=red>use case is to set the `publicPath` on the fly</font>（在运行时）. <font color=fuchsia>Webpack exposes a global variable called **`__webpack_public_path__`**</font> that allows you to do that. In your application's entry point, you can do this:
+
+```js
+__webpack_public_path__ = process.env.ASSET_PATH;
+```
+
+That's all you need. <font color=red>Since we're already using the `DefinePlugin` on our configuration</font> , <font color=red>`process.env.ASSET_PATH`</font>（该变量是 DefinePlugin 定义出来的，不是自带的） <font color=red>will always be defined so we can safely do that</font>.
+
+> ⚠️ **Warning** : Be aware that <font color=red>if you use ES6 module imports in your entry file</font> the <font color=fuchsia>`__webpack_public_path__` assignment will be done after the imports</font>. In such cases , you'll have to move the public path assignment to its own dedicated（专门的） module and then import it on top of your entry.js（译：在这种情况下，你必须将 public path 赋值移至一个专用模块中，然后将它的 import 语句放置到 entry.js 最上面）:
+
+```js
+// entry.js
+import './public-path';
+import './app';
+```
+
+###### 自动设置 publicPath
+
+There are <font color=dodgerBlue>chances that **you don't know what the publicPath will be in advance**</font>, and <font color=fuchsia>webpack can handle it automatically for you **by determining the public path from variables**</font> like [`import.meta.url`](https://webpack.js.org/api/module-variables/#importmetaurl) , [`document.currentScript`](https://developer.mozilla.org/en-US/docs/Web/API/Document/currentScript) , `script.src` or `self.location` . <font color=fuchsia>**What you need is to set `output.publicPath` to `'auto'`**</font> :
+
+```js
+// webpack.config.js
+module.exports = {
+  output: {
+    publicPath: 'auto',
+  },
+};
+```
+
+Note that in cases where `document.currentScript` is not supported, e.g., IE browser, you will have to include a polyfill like [`currentScript Polyfill`](https://github.com/amiller-gh/currentScript-polyfill) .
+
 摘自：[webpack doc - Guides - Public Path](https://webpack.js.org/guides/public-path/)
 
+##### DefinePlugin 文档笔记
 
+The <font color=fuchsia>`DefinePlugin` **replaces variables in your code with other values or expressions** at <font size=4>**compile**</font> time</font>. This can <font color=red>be useful for allowing **different behavior** between **development** builds and **production** builds</font>（👀 注：比如上面的 [[#基于环境的设置]] ）. If you perform logging in your development build but not in the production build <font color=dodgerBlue>you might **use a global constant to determine** whether logging takes place</font>. That's where `DefinePlugin` shines, set it and forget it rules for development and production builds.
 
-DefinePlugin：https://webpack.js.org/plugins/define-plugin/ ，还有 https://segmentfault.com/a/1190000017217915 也看下
+```js
+new webpack.DefinePlugin({
+  // Definitions ...
+});
+```
+
+##### Usage
+
+<font color=fuchsia>Each key passed into `DefinePlugin` is an identifier or **multiple identifiers joined with `.`**</font> （ 译：DefinePlugin 中的每个键，是一个标识符或者通过 `.` 作为多个标识符 来传递 ）.
+
+- If the value is a **string** it will <font color=red>be used as a code fragment</font>.
+- If the value **isn't a string** , it will <font color=fuchsia>be stringified ( including functions )</font>.
+- If the **value is an object all keys** are <font color=red>defined the same way</font>（即递归处理）.
+- <font color=fuchsia>If you **prefix `typeof` to the key**</font> , <font color=fuchsia>it's only defined for typeof calls</font>.
+
+The values will be inlined into the code allowing a minification pass to remove the redundant（冗余的） conditional.
+
+```js
+new webpack.DefinePlugin({
+  PRODUCTION: JSON.stringify(true),
+  VERSION: JSON.stringify('5fa3b9'),
+  BROWSER_SUPPORTS_HTML5: true,
+  TWO: '1+1',
+  'typeof window': JSON.stringify('object'), // 👀
+  'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+});
+```
+
+```js
+console.log('Running App version ' + VERSION);
+if (!BROWSER_SUPPORTS_HTML5) require('html5shiv');
+```
+
+> ⚠️ **Warning** : When <font color=dodgerBlue>defining values for `process`</font> <font color=red>**prefer** `'process.env.NODE_ENV': JSON.stringify('production')` **over** `process: { env: { NODE_ENV: JSON.stringify('production') } }`</font> . <font color=fuchsia>Using the **latter** will **overwrite the `process` object**</font> which can break compatibility with <font color=fuchsia>some modules that expect other values on the process object to be defined</font>.
+>
+> 译：在为 `process` 定义值时，`'process.env.NODE_ENV': JSON.stringify('production')` 会比 `process: { env: { NODE_ENV: JSON.stringify('production') } }` 更好，后者会覆盖 `process` 对象，这可能会破坏与某些模块的兼容性，因为这些模块会在 process 对象上定义其他值。
+
+> 💡 **Tip** : Note that because <font color=red>the plugin does a **direct text replacement**</font>（译：直接执行文本替换） , the value given to it must include **actual quotes** inside of the string itself（译：提供的值必须在字符串本身中再包含一个 **实际的引号** ）. Typically, this is done either with alternate quotes, such as `'"production"'` （👀 注：注意它的写法 ）, or by using `JSON.stringify('production')  ` .
+
+```js
+if (!PRODUCTION) {
+  console.log('Debug info');
+}
+if (PRODUCTION) {
+  console.log('Production log');
+}
+```
+
+After passing through webpack **with no minification** results in（ 👀 注：这里是直接替换的效果 PRODUCTION -> true ）:
+
+```javascript
+if (!true) {
+  console.log('Debug info');
+}
+if (true) {
+  console.log('Production log');
+}
+```
+
+and then after a minification pass results in:
+
+```javascript
+console.log('Production log');
+```
+
+##### Feature Flags
+
+Enable / disable features in production / development build using [feature flags](https://en.wikipedia.org/wiki/Feature_toggle)（👀 注：没听过，有空了解一下）. 
+
+```js
+new webpack.DefinePlugin({
+  NICE_FEATURE: JSON.stringify(true),
+  EXPERIMENTAL_FEATURE: JSON.stringify(false),
+});
+```
+
+##### Service URLs
+
+Use a different service URL in production/development builds:
+
+```javascript
+new webpack.DefinePlugin({
+  SERVICE_URL: JSON.stringify('https://dev.example.com'),
+});
+```
+
+##### Runtime values via `runtimeValue`
+
+> 👀 注：这部分的内容没看懂，不过看下面的 `webpack.DefinePlugin.runtimeValue` 似乎懂了点...
+
+```js
+function (getterFunction, [string] | true | object) => getterFunction()
+```
+
+It is <font color=red>possible to **define variables with values** that rely on files</font> and <font color=fuchsia>will be **re-evaluated when such files change in the file system**</font>. This means webpack will rebuild when such watched files change.
+
+<font color=dodgerBlue>There're two arguments for `webpack.DefinePlugin.runtimeValue` function:</font>
+
+- The <mark>first argument</mark> is a `function(module, key, version)` that <font color=red>should return the value to be assigned to the definition</font>.
+- The <mark style="background: lightpink">second argument</mark> could <font color=red>either be an array of file paths to watch for or a `true` to flag the module as uncacheable</font>. **Since 5.26.0**, <font color=red>it can also **take an object argument** with the following properties</font>:
+  - `fileDependencies?: string[]` A list of files the function depends on.
+  - `contextDependencies?: string[]` A list of directories the function depends on.
+  - `missingDependencies?: string[]` A list of not existing files the function depends on.
+  - `buildDependencies?: string[]` A list of build dependencies the function depends on.
+  - `version?: string | () => string` A version of the function.
+
+```javascript
+const fileDep = path.resolve(__dirname, 'sample.txt');
+
+new webpack.DefinePlugin({
+  BUILT_AT: webpack.DefinePlugin.runtimeValue(Date.now, {
+    fileDependencies: [fileDep],
+  }),
+});
+```
+
+The value of `BUILT_AT` would be the time at which the `'sample.txt'` was last updated in the file system, e.g. `1597953013291` .
+
+摘自：[webpack doc - plugins - DefinePlugin](https://webpack.js.org/plugins/define-plugin/) 
 
 
 
@@ -1208,101 +1466,158 @@ use: [
 
 #### Asset Modules
 
-资源模块(asset module)是一种模块类型，它允许使用资源文件（字体，图标等）而无需配置额外 loader。
+资源模块 ( asset module ) 是一种模块类型，它允许使用资源文件（字体，图标等）而无需配置额外 loader。
 
 在 webpack 5 之前，通常使用：
 
-- **raw-loader** 将文件导入为字符串
-- **url-loader** 将文件作为 data URI 内联到 bundle 中
-- **file-loader** 将文件发送到输出目录
+- **raw-loader** 将文件<font color=red>导入为字符串</font>
+- **url-loader** 将文件作为 <font color=red>data URI 内联到 bundle 中</font>
+- **file-loader** 将文件<font color=red>发送到输出目录</font>
 
-资源模块类型(asset module type)，通过添加 4 种新的模块类型，来替换所有这些 loader：
+<font color=dodgerBlue>资源模块类型 ( asset module type )，通过添加 4 种新的模块类型，来替换所有这些 loader</font>（在下面）
 
-- **asset/resource：**发送一个单独的文件并导出 URL。<font color=FF0000> 之前通过使用 file-loader 实现</font>。
+当在 webpack 5 中使用旧的 assets loader（如 `file-loader` / `url-loader` / `raw-loader` 等）和 asset 模块时，你可能想停止当前 asset 模块的处理，并再次启动处理，这可能会导致 asset 重复，你可以通过将 asset 模块的类型设置为 `'javascript/auto'` 来解决。
 
-  ```js
+```diff
+// webpack.config.js
+module.exports = {
+  module: {
+   rules: [
+      {
+        test: /\.(png|jpg|gif)$/i,
+        use: [ { loader: 'url-loader', options: { limit: 8192, } }, ],
++       type: 'javascript/auto'
+      },
+   ]
+  },
+}
+```
+
+如需从 asset loader 中排除来自新 URL 处理的 asset ，请添加 `dependency: { not: ['url'] }` 到 loader 配置中。
+
+```diff
+// webpack.config.js
+module.exports = {
   module: {
     rules: [
       {
-        test: /\.png/,
-        type: 'asset/resource'
-      }
-    ]
-  },
-  ```
+        test: /\.(png|jpg|gif)$/i,
++       dependency: { not: ['url'] },
+        use: [ { loader: 'url-loader', options: { limit: 8192, }, }, ],
+      },
+    ],
+  }
+}
+```
 
-  默认情况下，asset/resource 模块以 \[hash]\[ext][query] 文件名发送到输出目录。可以通过在 webpack 配置中设置 output.assetModuleFilename 来修改此模板字符串。示例如下：
+##### asset/resource
 
-  ```js
-  output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
-    assetModuleFilename: 'images/[hash][ext][query]'
-  },
-  ```
+发送一个单独的文件并导出 URL。<font color=FF0000> 之前通过使用 file-loader 实现</font>。
 
-  但是，这是针对所有文件的配置，可以自定义输出文件名的方式，将某些资源发送到指定目录。这里使用 rules.generator.filename
-
-  ```js
+```js
+module: {
   rules: [
     {
       test: /\.png/,
       type: 'asset/resource'
-    },
-    {
-      test: /\.html/,
-      type: 'asset/resource',
-      generator: {
-        filename: 'static/[hash][ext][query]'
-      }
     }
   ]
-  ```
+},
+```
 
-  使用此配置，所有 html 文件都将被发送到输出目录中的 static 目录中。
+示例如下：
 
-- **asset/inline：**导出一个资源的 data URL。<font color=FF0000> 之前通过使用 url-loader 实现</font>。
+```js
+// src/index.js
+import mainImage from './images/main.png';
 
-  webpack 输出的 data URL，默认是呈现为使用 Base64 算法编码的文件内容。如果想要自定义 编码算法，示例如下：
+img.src = mainImage; // '/dist/151cfcfa1bd74779aadb.png'
+```
 
-  ```js
-  rules: [
-    {
-      test: /\.svg/,
-      type: 'asset/inline',
-      generator: {
-        dataUrl: content => {
-          content = content.toString();
-          return svgToMiniDataURI(content);
-        }
+所有 `.png` 文件都将被发送到输出目录，并且其路径将被注入到 bundle 中，除此之外，你可以为它们自定义 [`outputPath`](https://webpack.docschina.org/configuration/module/#rulegeneratoroutputpath) 和 [`publicPath`](https://webpack.docschina.org/configuration/module/#rulegeneratorpublicpath) 属性。
+
+###### 自定义输出文件名
+
+<font color=fuchsia>**默认情况**下，**asset/resource 模块以 `[hash][ext][query]` 文件名发送到输出目录**</font>。可以<font color=red>通过在 webpack 配置中设置 `output.assetModuleFilename` 来修改此模板字符串</font>。示例如下：
+
+```js
+output: {
+  filename: 'main.js',
+  path: path.resolve(__dirname, 'dist'),
+  assetModuleFilename: 'images/[hash][ext][query]'
+},
+```
+
+但是，这是针对所有文件的配置，<font color=red>**可以自定义输出文件名的方式，将某些资源发送到指定目录**</font>。这里使用 `Rules.generator.filename`
+
+```js
+rules: [
+  {
+    test: /\.png/,
+    type: 'asset/resource'
+  },
+  {
+    test: /\.html/,
+    type: 'asset/resource',
+    generator: {
+      filename: 'static/[hash][ext][query]'
+    }
+  }
+]
+```
+
+使用此配置，所有 html 文件都将被发送到输出目录中的 static 目录中。
+
+`Rule.generator.filename` 与 [`output.assetModuleFilename`](https://webpack.js.org/configuration/output/#outputassetmodulefilename) 相同，并且仅适用于 `asset` 和 `asset/resource` 模块类型
+
+##### asset/inline
+
+导出一个资源的 data URL。<font color=FF0000> 之前通过使用 url-loader 实现</font>。
+
+webpack 输出的 data URL，默认是呈现为使用 Base64 算法编码的文件内容。如果想要自定义 编码算法，示例如下：
+
+```js
+rules: [
+  {
+    test: /\.svg/,
+    type: 'asset/inline',
+    generator: {
+      dataUrl: content => {
+        content = content.toString();
+        return svgToMiniDataURI(content);
       }
     }
-  ]
-  ```
+  }
+]
+```
 
-  现在，所有 .svg 文件都将通过 mini-svg-data-uri 包进行编码。
+现在，所有 .svg 文件都将通过 mini-svg-data-uri 包进行编码。
 
-- **asset/source：**导出资源的源代码。<font color=FF0000> 之前通过使用 raw-loader 实现</font>。
+##### asset/source
 
-- **asset：**在导出一个 data URI 和发送一个单独的文件之间自动选择。<font color=FF0000> 之前通过使用 url-loader，并且配置资源体积限制实现</font>。
+导出资源的源代码。<font color=FF0000> 之前通过使用 raw-loader 实现</font>。
 
-  webpack 按照默认条件，自动地在 resource 和 inline 之间进行选择：小于 8kb 的文件，将会视为 inline 模块类型，否则会被视为 resource 模块类型。可以通过在 webpack 配置的 module rule 层级中，设置 Rule.parser.dataUrlCondition.maxSize 选项来修改此条件
+##### asset
 
-  ```js
-  rules: [
-    {
-      test: /\.txt/,
-      type: 'asset',
-      parser: {
-        dataUrlCondition: {
-          maxSize: 4 * 1024 // 4kb
-        }
+在导出一个 data URI 和发送一个单独的文件之间自动选择。<font color=FF0000> 之前通过使用 url-loader，并且配置资源体积限制实现</font>。
+
+webpack 按照默认条件，自动地在 resource 和 inline 之间进行选择：小于 8kb 的文件，将会视为 inline 模块类型，否则会被视为 resource 模块类型。可以通过在 webpack 配置的 module rule 层级中，设置 `Rule.parser.dataUrlCondition.maxSize` 选项来修改此条件
+
+```js
+rules: [
+  {
+    test: /\.txt/,
+    type: 'asset',
+    parser: {
+      dataUrlCondition: {
+        maxSize: 4 * 1024 // 4kb
       }
     }
-  ]
-  ```
+  }
+]
+```
 
-  还可以 指定一个函数（详见：https://webpack.js.org/guides/asset-modules/#:~:text=Also%20you%20can-,specify%20a%20function,-to%20decide%20to） 来决定是否 inline 模块
+还可以 指定一个函数（详见：https://webpack.js.org/guides/asset-modules/#:~:text=Also%20you%20can-,specify%20a%20function,-to%20decide%20to） 来决定是否 inline 模块
 
 
 

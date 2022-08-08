@@ -3267,7 +3267,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                             
+  >                                                                                                                                                               
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3286,7 +3286,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                             
+  >                                                                                                                                                               
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -12698,7 +12698,8 @@ mixed.sort(); // ↪ [-12n, 0, 0n, 10, 4n, 4, 6]
 - **enumerable：**false
 - **configurable：**true
 
-**描述**
+##### 描述
+
 **在以前，从不同的 JavaScript 环境中获取全局对象需要不同的语句**。<font color=FF0000>在 Web 中，可以通过 window、self 或者 frames 取到全局对象，但是在 Web Workers 中，只有 self 可以。在 Node.js 中，它们都无法获取，必须使用 global</font>。
 
 <font color=FF0000>globalThis 提供了一个标准的方式**来获取不同环境下的全局 this  对象（也就是全局对象自身）**</font>。不像 window 或者 self 这些属性，它确保可以在有无窗口的各种环境下正常工作。所以，<font color=FF0000>你可以安心的使用 globalThis，不必担心它的运行环境</font>。为便于记忆，你只需要记住，全局作用域中的 this 就是 globalThis。
@@ -12707,7 +12708,7 @@ mixed.sort(); // ↪ [-12n, 0, 0n, 10, 4n, 4, 6]
 
 
 
-#### 可选链操作符（ES2020）
+#### 可选链操作符 ( ES2020 )
 
 可选链操作符( ?. )允许读取位于连接对象链深处的属性的值，而不必明确验证链中的每个引用是否有效。
 
@@ -12751,44 +12752,45 @@ true || undefined ?? "foo"; // 抛出 SyntaxError
 
 逻辑或赋值（x ||= y）运算仅在 x 为虚值（即：falsy ）时赋值。
 
-- 示例：
+##### 示例
 
-  ```js
-  const a = { duration: 50, title: '' };
-  
-  a.duration ||= 10; // 这里的 a.duration 为 50
-  console.log(a.duration); // expected output: 50
-  
-  a.title ||= 'title is empty.'; // 这里的 a.title 为 ''
-  console.log(a.title); // expected output: "title is empty"
-  ```
+```js
+const a = { duration: 50, title: '' };
 
-- **语法**
+a.duration ||= 10; // 这里的 a.duration 为 50
+console.log(a.duration); // expected output: 50
 
-  ```js
-  expr1 ||= expr2
-  ```
+a.title ||= 'title is empty.'; // 这里的 a.title 为 ''
+console.log(a.title); // expected output: "title is empty"
+```
 
-- **描述：**短路运算
-  <font color=FF0000>**逻辑或**</font> 的运算方法如下所示：
+##### 语法
 
-  ```js
-  x || y; // 当 x 为真值时，返回 x；当 y 为真值时，返回 y
-  ```
+```js
+expr1 ||= expr2
+```
 
-  <font color=FF0000>**逻辑或运算**</font> 的短路逻辑：<font color=FF0000>**当且仅当**第一个操作数尚未确定结果（不是真值）时，才会评估第二个操作数</font>。逻辑或赋值运算有 <font color=FF0000>**短路逻辑**</font>，这意味着，它仅在左侧为虚值时执行赋值。换句话说，x ||= y 等同于：
+##### 描述：短路运算
 
-  ```js
-  x || (x = y);
-  ```
+<font color=FF0000>**逻辑或**</font> 的运算方法如下所示：
 
-  但不等同于以下总是执行赋值的语句：
+```js
+x || y; // 当 x 为真值时，返回 x；当 y 为真值时，返回 y
+```
 
-  ```js
-  x = x || y;
-  ```
+<font color=FF0000>**逻辑或运算**</font> 的短路逻辑：<font color=FF0000>**当且仅当**第一个操作数尚未确定结果（不是真值）时，才会评估第二个操作数</font>。逻辑或赋值运算有 <font color=FF0000>**短路逻辑**</font>，这意味着，它仅在左侧为虚值时执行赋值。换句话说，x ||= y 等同于：
 
-  请注意，这与数学逻辑和按位赋值运算不同。
+```js
+x || (x = y);
+```
+
+但不等同于以下总是执行赋值的语句：
+
+```js
+x = x || y;
+```
+
+请注意，这与数学逻辑和按位赋值运算不同。
 
 摘自：[MDN - Logical OR assignment (||=)](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Logical_OR_assignment)
 
@@ -12796,24 +12798,24 @@ true || undefined ?? "foo"; // 抛出 SyntaxError
 
 逻辑与赋值  (x &&= y) 操作符 只在 x 为 truthy 时赋值
 
-- 示例：
+##### 示例
 
-  ```js
-  let a = 1;
-  let b = 0;
-  
-  a &&= 2;
-  console.log(a); // expected output: 2
-  
-  b &&= 2;
-  console.log(b); // expected output: 0
-  ```
+```js
+let a = 1;
+let b = 0;
 
-- 语法
+a &&= 2;
+console.log(a); // expected output: 2
 
-  ```js
-  expr1 &&= expr2
-  ```
+b &&= 2;
+console.log(b); // expected output: 0
+```
+
+##### 语法
+
+```js
+expr1 &&= expr2
+```
 
 摘自：[MDN - Logical AND assignment (&&=)](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Logical_AND_assignment)
 
@@ -12825,27 +12827,31 @@ ArrayBuffer 对象用来表示<font color=FF0000>通用的、固定长度</font>
 
 你<font color=FF0000>**不能直接操作 ArrayBuffer 的内容，而是要通过类型数组对象或 DataView 对象来操作**</font>，它们会将缓冲区中的数据表示为特定的格式，并通过这些格式来读写缓冲区的内容。
 
-- **语法**
+##### 语法
 
-  ```js
-  new ArrayBuffer(length)
-  ```
+```js
+new ArrayBuffer(length)
+```
 
-- **参数**
-  length：要创建的 ArrayBuffer 的大小，单位为字节。
+##### 参数
 
-- **返回值：**一个指定大小的 ArrayBuffer 对象，其内容被初始化为 0。
+length：要创建的 ArrayBuffer 的大小，单位为字节。
 
-- **异常：**如果 length 大于 Number.MAX_SAFE_INTEGER（>= 2 ** 53）或为负数，则抛出一个  RangeError  异常。
+**返回值：**一个指定大小的 ArrayBuffer 对象，其内容被初始化为 0。
 
-- **属性**
-  - **ArrayBuffer.length：**ArrayBuffer 构造函数的 length 属性，其值为1。
-  - **ArrayBuffer.prototype.byteLength：**只读属性，表示 ArrayBuffer 的byte的大小，在ArrayBuffer构造完成时生成，不可改变。
-  - **get ArrayBuffer[@@species]：**返回 ArrayBuffer 的构造函数。
-  - **ArrayBuffer.prototype：**通过 ArrayBuffer 的原型对象可以为所有 ArrayBuffer 对象添加属性。
-- **方法**
-  - **ArrayBuffer.isView(arg)：**如果参数是 ArrayBuffer 的视图实例则返回 true，例如 类型数组对象 或 DataView 对象；否则返回 false。
-  - **ArrayBuffer.transfer(oldBuffer [, newByteLength]) ：**返回一个新的 ArrayBuffer 对象，其内容取自 oldBuffer 中的数据，并且根据 newByteLength 的大小对数据进行截取或补 0。
+**异常：**如果 length 大于 Number.MAX_SAFE_INTEGER（>= 2 ** 53）或为负数，则抛出一个  RangeError  异常。
+
+##### 属性
+
+- **ArrayBuffer.length：**ArrayBuffer 构造函数的 length 属性，其值为1。
+- **ArrayBuffer.prototype.byteLength：**只读属性，表示 ArrayBuffer 的byte的大小，在ArrayBuffer构造完成时生成，不可改变。
+- **get ArrayBuffer[@@species]：**返回 ArrayBuffer 的构造函数。
+- **ArrayBuffer.prototype：**通过 ArrayBuffer 的原型对象可以为所有 ArrayBuffer 对象添加属性。
+
+##### 方法
+
+- **ArrayBuffer.isView(arg)：**如果参数是 ArrayBuffer 的视图实例则返回 true，例如 类型数组对象 或 DataView 对象；否则返回 false。
+- **ArrayBuffer.transfer(oldBuffer [, newByteLength]) ：**返回一个新的 ArrayBuffer 对象，其内容取自 oldBuffer 中的数据，并且根据 newByteLength 的大小对数据进行截取或补 0。
 
 摘自：[MDN - ArrayBuffer](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
@@ -12857,35 +12863,35 @@ ArrayBuffer 对象用来表示<font color=FF0000>通用的、固定长度</font>
 
 事实上，没有名为 TypedArray 的全局属性，也没有一个名为 TypedArray 的构造函数。相反，有许多不同的全局属性，它们的值是特定元素类型的类型化数组构造函数
 
-- **语法：**
+##### 语法
 
-  ```js
-  // 下面代码是语法格式，不能直接运行，
-  // TypedArray 关键字需要替换为底部列出的构造函数。
-  new TypedArray(); // ES2017中新增
-  new TypedArray(length);
-  new TypedArray(typedArray);
-  new TypedArray(object);
-  new TypedArray(buffer [, byteOffset [, length]]);
-  
-  // TypedArray 指的是以下的其中之一：
-  Int8Array();
-  Uint8Array();
-  Uint8ClampedArray();
-  Int16Array();
-  Uint16Array();
-  Int32Array();
-  Uint32Array();
-  Float32Array();
-  Float64Array();
-  ```
+```js
+// 下面代码是语法格式，不能直接运行，
+// TypedArray 关键字需要替换为底部列出的构造函数。
+new TypedArray(); // ES2017中新增
+new TypedArray(length);
+new TypedArray(typedArray);
+new TypedArray(object);
+new TypedArray(buffer [, byteOffset [, length]]);
 
-- **参数**
+// TypedArray 指的是以下的其中之一：
+Int8Array();
+Uint8Array();
+Uint8ClampedArray();
+Int16Array();
+Uint16Array();
+Int32Array();
+Uint32Array();
+Float32Array();
+Float64Array();
+```
 
-  - **length：**当传入 length 参数时，一个内部的数组缓冲区会被创建在内存中，该缓存区的大小（类型化数组中 byteLength 属性的值）是传入的 length 乘以数组中每个元素的字节数（BYTES_PER_ELEMENT），每个元素的值都为0。(译者注：每个元素的字节数是由具体的构造函数决定的，比如 Int16Array() 的每个元素的字节数为 2，Int32Array() 的每个元素的字节数为 4)
-  - **typedArray：**当传入一个任意类型化数组对象作为 typedArray 参数时（比如 Int32Array），typedArray 会被复制到一个新的类型数组中。typedArray 中的每个值在被复制到新的数组之前，会被转化为相应类型的构造函数。新的生成的类型化数组对象将会有跟传入的数组相同的长度（译者注：比如原来的类型化数组的 length==2，那么新生成的数组的 length 也是 2，只是数组中的每一项进行了转化）。
-  - **object：**当传入一个 object 作为参数时，就像通过 TypedArray.from() 方法创建一个新的类型化数组一样。
-  - **buffer, byteOffset, length：**当传入一个 buffer 参数，或者再另外加上可选参数 byteOffset 和 length 时，一个新的类型化数组视图将会被创建，并可用于呈现传入的 ArrayBuffer 实例。byteOffset 和length 参数指定了类型化数组视图将要暴露的内存范围。如果两者都未传入，那么整个buffer 都会被呈现；如果仅仅忽略 length，那么 buffer 中偏移了 byteOffset 后剩下的 buffer 将会被呈现。
+##### 参数
+
+- **length：**当传入 length 参数时，一个内部的数组缓冲区会被创建在内存中，该缓存区的大小（类型化数组中 byteLength 属性的值）是传入的 length 乘以数组中每个元素的字节数（BYTES_PER_ELEMENT），每个元素的值都为0。(译者注：每个元素的字节数是由具体的构造函数决定的，比如 Int16Array() 的每个元素的字节数为 2，Int32Array() 的每个元素的字节数为 4)
+- **typedArray：**当传入一个任意类型化数组对象作为 typedArray 参数时（比如 Int32Array），typedArray 会被复制到一个新的类型数组中。typedArray 中的每个值在被复制到新的数组之前，会被转化为相应类型的构造函数。新的生成的类型化数组对象将会有跟传入的数组相同的长度（译者注：比如原来的类型化数组的 length==2，那么新生成的数组的 length 也是 2，只是数组中的每一项进行了转化）。
+- **object：**当传入一个 object 作为参数时，就像通过 TypedArray.from() 方法创建一个新的类型化数组一样。
+- **buffer, byteOffset, length：**当传入一个 buffer 参数，或者再另外加上可选参数 byteOffset 和 length 时，一个新的类型化数组视图将会被创建，并可用于呈现传入的 ArrayBuffer 实例。byteOffset 和length 参数指定了类型化数组视图将要暴露的内存范围。如果两者都未传入，那么整个buffer 都会被呈现；如果仅仅忽略 length，那么 buffer 中偏移了 byteOffset 后剩下的 buffer 将会被呈现
 
 
 
@@ -12947,6 +12953,34 @@ console.log(import.meta); // { url: "file:///home/user/my-module.mjs" }
 它返回一个带有 url 属性的对象，指明模块的基本 URL。也可以是外部脚本的 URL，还可以是内联脚本所属文档的 URL 。
 
 摘自：[MDN - import.meta](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/import.meta)
+
+
+
+#### document.currentScript
+
+**`Document.currentScript`** 属性<font color=fuchsia>返回当前正在运行的脚本所属的 `<script>` 元素</font>。调用此属性的脚本 [不能是 JavaScript 模块](https://github.com/whatwg/html/issues/997) ，<font color=red>模块应当使用 `import.meta` 对象</font>。
+
+值得注意的是，<font color=fuchsia>如果当前正在执行的代码是被其他代码作为回调函数或者事件处理函数调用的</font>，那么 <font color=fuchsia>`currentScript` 属性不会指向任何 `<script>` 元素，而是会返回 `null`</font> 。这个属性只在脚本被解析后首次运行时有效。
+
+##### 语法
+
+```js
+var curScriptElement = document.currentScript;
+```
+
+##### 示例
+
+<font color=dodgerBlue>下例演示了如何检测当前正在执行脚本的 `<script>` 元素是否是以异步模式执行的</font>。
+
+```js
+if (document.currentScript.async) { // 👀 注：这要注意，async
+  console.log("Executing asynchronously");
+} else {
+  console.log("Executing synchronously");
+}
+```
+
+摘自：[MDN - document.currentScript](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/currentScript)
 
 
 

@@ -6,7 +6,7 @@
 
 - **asynchronous**：异步
 
-- **compatibility**：兼容性
+- **compatibility**：兼容性。compat：兼容 ( verb )
 
 - **shortcut**：快捷方式，近道
 
@@ -14,7 +14,7 @@
 
 - **built-in**：内置
 
-- **on the fly**：即时。参考：[如何优雅的翻译 on the fly ？ - 知乎](https://www.zhihu.com/question/21136587)
+- **on the fly**：即时，在运行时（热更新）。参考：[如何优雅的翻译 on the fly ？ - 知乎](https://www.zhihu.com/question/21136587)
 
 - **pros and cons**：利弊
 
@@ -83,6 +83,8 @@
 - **DRY**：即：Don't Repeat Yourself 。不重复（原则）
 
 - **verbose**：冗长的、啰嗦的
+
+- **redundant**：冗余的
 
 - **shorthand**：速记
 
