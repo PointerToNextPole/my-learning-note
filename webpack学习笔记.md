@@ -48,8 +48,6 @@ css-loader 用于加载 css 文件并生成 commonjs 对象，style-loader 用�
 
 
 
-
-
 ### webpack 文档 concept 笔记
 
 #### Concept 概念 
@@ -269,9 +267,9 @@ You <font color=FF0000>can **create your own context with the `require.context()
 
 It allows you to pass in <mark>a directory to search</mark> , <mark style="background: aqua">a flag indicating whether subdirectories should be searched too</mark>, and <mark style="background: lightpink">a regular expression to match files against</mark>.
 
-Webpack parses for `require.context()` in the code while building（👀 **注**：即 compile time）.
+Webpack parses for `require.context()` in the code while building（👀 注：即 compile time）.
 
-<mark style="background: lightskyblue">**The syntax is as follows:**</mark>
+<font color=dodgerBlue>**The syntax is as follows:**</font>
 
 ```js
 require.context(
@@ -282,7 +280,7 @@ require.context(
 );
 ```
 
-<mark style="background: lightskyblue">**Examples:**</mark>
+<font color=dodgerBlue>**Examples:**</font>
 
 ```javascript
 require.context('./test', false, /\.test\.js$/);
@@ -392,7 +390,7 @@ export default modules
 
 Let's start by <font color=dodgerBlue>clearing up a common **misconception**</font>（错误观念）. <font color=red>Webpack is a **module bundler** like *Browserify* or *Brunch*</font>. <font color=fuchsia>It is <font size=4>***not a task runner***</font> like ***Make***, ***Grunt***, or ***Gulp***</font>. Task runners handle automation of common development tasks such as linting, building, or testing your project. <font color=red>Compared to bundlers, **task runners** have a **higher level focus**</font>. You can still benefit from their higher level tooling while leaving the problem of bundling to webpack.
 
-<mark style="background: lightpink">Bundlers help you get your JavaScript and stylesheets ready for deployment, transforming them into a format that's suitable for the browser</mark>. For example, <font size=4>**JavaScript can be [minified](https://webpack.js.org/plugins/terser-webpack-plugin/) or [split into chunks](https://webpack.js.org/guides/code-splitting) and [lazy-loaded](https://webpack.js.org/guides/lazy-loading) to improve performance**</font>. Bundling is one of the most important challenges in web development, and solving it well can remove a lot of pain from the process.
+<mark style="background: lightpink">Bundlers help you get your JavaScript and stylesheets ready for deployment, transforming them into a format that's suitable for the browser</mark> . For example, <font size=4>**JavaScript can be [minified](https://webpack.js.org/plugins/terser-webpack-plugin/) or [split into chunks](https://webpack.js.org/guides/code-splitting) and [lazy-loaded](https://webpack.js.org/guides/lazy-loading) to improve performance**</font>. Bundling is one of the most important challenges in web development, and solving it well can remove a lot of pain from the process.
 
 The good news is that, while there is some overlap（重叠）, <font color=dodgerBlue>**task runners and bundlers can play well together** if approached in the right way</font>. This guide provides a high-level overview of <font color=dodgerBlue>**how webpack can be integrated into some of the more popular task runners**</font> .
 
@@ -467,6 +465,178 @@ For more information, please visit the [repository](https://github.com/shama/web
 略。详见原文
 
 摘自：[webpack doc - Guides - Integrations](https://webpack.js.org/guides/integrations/)
+
+
+
+#### Advanced entry
+
+##### Multiple file types per entry
+
+It is possible to <font color=red>provide different types of files when **using an array of values for [entry](https://webpack.js.org/configuration/entry-context/#entry)** to **achieve separate bundles for CSS and JavaScript (and other) files** in applications</font> that are not using `import` for styles in JavaScript ( pre Single Page Applications or different reasons ). 
+
+> 译：在不使用 import 样式文件的应用程序中（预单页应用程序或其他原因），使用一个值数组结构的 entry，并且在其中传入不同类型的文件，可以实现将 CSS 和 JavaScript（和其他）文件分离在不同的 bundle。
+
+> 👀 注：中间省略部分与概念无关的内容
+
+We will <font color=red>**use [MiniCssExtractPlugin](https://webpack.js.org/plugins/mini-css-extract-plugin/) in production mode for css as a best practice**</font>.
+
+```js
+module.exports = {
+  mode: process.env.NODE_ENV,
+  entry: {                              // 👀 注：多入口
+    home: ['./home.js', './home.scss'],
+    account: ['./account.js', './account.scss'],
+  },
+  output: {
+    filename: '[name].js',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          // fallback to style-loader in development
+          process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
+      },
+    ],
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+    }),
+  ],
+}
+```
+
+摘自：[webpack doc - Guides - Advanced entry](https://webpack.js.org/guides/entry-advanced/)
+
+
+
+#### Package exports
+
+> 👀 注：本章节讲的是 <font size=4>**`package.json`**</font> 中的 `exports` 属性，以及其他属性。另外，由于这部分完全没有接触过，没找到中文翻译；同时也是库开发相关的内容，不太容易用到，所以这里会省略大量内容。
+
+<font color=dodgerBlue>The `exports` field in the `package.json` of a package</font> allows to <font color=fuchsia>**declare which module should be used** when using module requests like `import "package"` or `import "package/sub/path"`</font> . <font color=red>It replaces the default implementation that returns `main` field resp</font>. `index.js` files for `"package"` and the file system lookup for `"package/sub/path"` .
+
+<font color=fuchsia>When the `exports` field is specified, <font size=4>**only these module requests are available**</font></font>. <font color=red>**Any other requests** will **lead to a ModuleNotFound Error**</font>.
+
+##### 通用语法
+
+<font color=red>In general **the `exports` field should contain an object** where <font size=4>**each properties specifies a sub path of the module request**</font></font> . <font color=dodgerBlue>For the examples above the following properties could be used</font> :
+**`"."` for `import "package"` and `"./sub/path"` for `import "package/sub/path"`** . <font color=dodgerBlue>**Properties ending with a `/`**</font> will forward a request with this prefix to the old file system lookup algorithm. For <font color=dodgerBlue>**properties ending with `*`**</font>  , `*` may take any value and any `*` in the property value is replaced with the taken value （👀 注：即 `*` 通配符）.
+
+An example:
+
+```json
+{
+  "exports": {
+    ".": "./main.js",
+    "./sub/path": "./secondary.js",
+    "./prefix/": "./directory/",
+    "./prefix/deep/": "./other-directory/",
+    "./other-prefix/*": "./yet-another/*/*.js"
+  }
+}
+```
+
+| Module request                      | Result                                           |
+| :---------------------------------- | :----------------------------------------------- |
+| `package`                           | `.../package/main.js`                            |
+| `package/sub/path`                  | `.../package/secondary.js`                       |
+| `package/prefix/some/file.js`       | `.../package/directory/some/file.js`             |
+| `package/prefix/deep/file.js`       | `.../package/other-directory/file.js`            |
+| `package/other-prefix/deep/file.js` | `.../package/yet-another/deep/file/deep/file.js` |
+| `package/main.js`                   | Error                                            |
+
+##### Alternatives
+
+<font color=dodgerBlue>Instead of providing a single result , **the package author may provide a list of results**</font>. In such a scenario <font color=red>this list is tried in order</font>（按顺序） and <font color=red>**the first valid result will be used**</font>. Note: <font color=red>**Only the first valid result will be used**</font> , not all valid results.
+
+Example:
+
+```json
+{
+  "exports": {
+    "./things/": ["./good-things/", "./bad-things/"]
+  }
+}
+```
+
+Here `package/things/apple` might be found in `.../package/good-things/apple` or in `.../package/bad-things/apple `.
+
+##### 条件语法 Conditional syntax
+
+<font color=dodgerBlue>Instead of providing results **directly** in the `exports` field</font> , the <font color=red>package author may **let the module system choose one** based on conditions about the environment</font>.
+
+In this case an object mapping conditions to results should be used. <font color=red>Conditions are tried **in object order**</font>. Conditions that contain invalid results are skipped . <font color=fuchsia>Conditions might be **nested** to **create a logical AND**</font>. <font color=red>The last condition in the object might be the special **`"default"` condition** , which is **always matched**</font>（👀 注：类似于 switch case 的 default ）.
+
+```json
+{
+  "exports": {
+    ".": {
+      "red": "./stop.js",
+      "yellow": "./stop.js",
+      "green": {
+        "free": "./drive.js",
+        "default": "./wait.js"
+      },
+      "default": "./drive-carefully.js"
+    }
+  }
+}
+```
+
+This translates to something like:
+
+```ts
+if (red && valid('./stop.js')) return './stop.js';
+if (yellow && valid('./stop.js')) return './stop.js';
+if (green) {
+  if (free && valid('./drive.js')) return './drive.js';
+  if (valid('./wait.js')) return './wait.js';
+}
+if (valid('./drive-carefully.js')) return './drive-carefully.js';
+throw new ModuleNotFoundError();
+```
+
+The available conditions vary depending on the module system and tool used.
+
+##### Abbreviation 缩写
+
+<font color=fuchsia>When **only a single entry ( `"."` ) into the package** should be supported the `{ "." : ... }` **object nesting** can be **omitted**</font>（省略）：
+
+> 👀 注：类似于“通配符” ？
+
+```json
+{
+  "exports": "./index.mjs"
+}
+{
+  "exports": {
+    "red": "./stop.js",
+    "green": "./drive.js"
+  }
+}
+```
+
+##### Notes about ordering 
+
+<font color=red>In an object where **each key is a condition**</font> , <font color=fuchsia>**order of properties is significant**</font>. Conditions are handled in the order they are specified.
+
+Example:  <font color=red>**`{ "red": "./stop.js", "green": "./drive.js" }` != `{ "green": "./drive.js", "red": "./stop.js" }`**</font> (when both `red` and `green` conditions are set, first property will be used)。👀 注：因为有序的，命中了之后，就不再匹配了
+
+<font color=red>In an object where **each key is a subpath**</font> , <font color=fuchsia>**order of properties (subpaths) is not significant**</font>. <font color=fuchsia>**More specific paths are preferred over less specific ones**</font> . 👀 注：即 精准匹配的优先级更高
+
+Example: `{ "./a/": "./x/", "./a/b/": "./y/", "./a/b/c": "./z" }` == `{ "./a/b/c": "./z", "./a/b/": "./y/", "./a/": "./x/" }` (order will always be: `./a/b/c` > `./a/b/` > `./a/ `)
+
+<font color=fuchsia>`exports` field is **preferred over** other package entry fields like `main` , `module` , `browser` or custom ones</font>. 👀 注：即 `exports` 字段优先级更高
+
+> 👀 注：下面内容暂时用不到，略。
+
+摘自：[webpack doc - Guides - Package exports](https://webpack.js.org/guides/package-exports/)
 
 
 
@@ -555,7 +725,7 @@ webpack 是基于 Node 开发的模块打包工具，所以本质上是由 Node 
 
 
 
-webpack 的（默认）配置文件的名称为 webpack.config.js。即：即使用户不自定义配置文件，webpack 也会使用默认的配置文件
+webpack 的（默认）配置文件的名称为 webpack.config.js 。即：即使用户不自定义配置文件，webpack 也会使用默认的配置文件
 
 
 
@@ -623,9 +793,9 @@ module.exports = {
 }
 ```
 
-**注：**dist 是 distribution 的缩写
+👀 注：dist 是 distribution 的缩写
 
-#### Entry 文档补充
+#### Entry Concept 笔记
 
 ##### 总述
 
@@ -1474,41 +1644,7 @@ use: [
 - **url-loader** 将文件作为 <font color=red>data URI 内联到 bundle 中</font>
 - **file-loader** 将文件<font color=red>发送到输出目录</font>
 
-<font color=dodgerBlue>资源模块类型 ( asset module type )，通过添加 4 种新的模块类型，来替换所有这些 loader</font>（在下面）
-
-当在 webpack 5 中使用旧的 assets loader（如 `file-loader` / `url-loader` / `raw-loader` 等）和 asset 模块时，你可能想停止当前 asset 模块的处理，并再次启动处理，这可能会导致 asset 重复，你可以通过将 asset 模块的类型设置为 `'javascript/auto'` 来解决。
-
-```diff
-// webpack.config.js
-module.exports = {
-  module: {
-   rules: [
-      {
-        test: /\.(png|jpg|gif)$/i,
-        use: [ { loader: 'url-loader', options: { limit: 8192, } }, ],
-+       type: 'javascript/auto'
-      },
-   ]
-  },
-}
-```
-
-如需从 asset loader 中排除来自新 URL 处理的 asset ，请添加 `dependency: { not: ['url'] }` 到 loader 配置中。
-
-```diff
-// webpack.config.js
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.(png|jpg|gif)$/i,
-+       dependency: { not: ['url'] },
-        use: [ { loader: 'url-loader', options: { limit: 8192, }, }, ],
-      },
-    ],
-  }
-}
-```
+<font color=dodgerBlue>资源模块类型 ( asset module type )，通过添加 4 种新的模块类型，来替换所有这些 loader</font>
 
 ##### asset/resource
 
@@ -1574,7 +1710,29 @@ rules: [
 
 导出一个资源的 data URL。<font color=FF0000> 之前通过使用 url-loader 实现</font>。
 
-webpack 输出的 data URL，默认是呈现为使用 Base64 算法编码的文件内容。如果想要自定义 编码算法，示例如下：
+```js
+rules: [
+  {
+    test: /\.svg/,
+    type: 'asset/inline'
+  }
+]
+```
+
+示例如下：
+
+```js
+// src/index.js
+import metroMap from './images/metro.svg';
+block.style.background = `url(${metroMap})`;
+// url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDo...vc3ZnPgo=)
+```
+
+所有 `.svg` 文件都将作为 data URI 注入到 bundle 中。
+
+###### 自定义 data URI 生成器
+
+webpack 输出的 data URL，<font color=red>默认是呈现为使用 Base64 算法编码的文件内容</font>。如果想要自定义 编码算法，示例如下：
 
 ```js
 rules: [
@@ -1596,12 +1754,82 @@ rules: [
 ##### asset/source
 
 导出资源的源代码。<font color=FF0000> 之前通过使用 raw-loader 实现</font>。
+```js
+rules: [
+  {
+    test: /\.txt/,
+    type: 'asset/source',
+  }
+]
+```
 
-##### asset
+```txt
+// src/example.txt
+Hello world
+```
 
-在导出一个 data URI 和发送一个单独的文件之间自动选择。<font color=FF0000> 之前通过使用 url-loader，并且配置资源体积限制实现</font>。
+```js
+// src/index.js
+import exampleText from './example.txt';
 
-webpack 按照默认条件，自动地在 resource 和 inline 之间进行选择：小于 8kb 的文件，将会视为 inline 模块类型，否则会被视为 resource 模块类型。可以通过在 webpack 配置的 module rule 层级中，设置 `Rule.parser.dataUrlCondition.maxSize` 选项来修改此条件
+block.textContent = exampleText; // 'Hello world'
+```
+
+所有 `.txt` 文件将原样注入到 bundle 中。
+
+##### URL 资源
+
+当使用 `new URL('./path/to/asset', import.meta.url)` ，webpack 也会创建资源模块。
+
+```js
+// src/index.js
+const logo = new URL('./logo.svg', import.meta.url);
+```
+
+根据你配置中 [`target`](https://webpack.js.org/configuration/target/) 的不同，webpack 会将上述代码编译成不同结果：
+
+```js
+// target: web
+new URL(
+  __webpack_public_path__ + 'logo.svg',
+  document.baseURI || self.location.href
+);
+
+// target: webworker
+new URL(__webpack_public_path__ + 'logo.svg', self.location);
+
+// target: node, node-webkit, nwjs, electron-main, electron-renderer, electron-preload, async-node
+new URL(
+  __webpack_public_path__ + 'logo.svg',
+  require('url').pathToFileUrl(__filename)
+);
+```
+
+自 webpack 5.38.0 起，Data URLs 也支持在 `new URL()` 中使用了：
+
+```js
+// src/index.js
+
+const url = new URL('data:,', import.meta.url);
+console.log(url.href === 'data:,');
+console.log(url.protocol === 'data:');
+console.log(url.pathname === ',');
+```
+
+##### asset 通用资源类型
+
+在导出一个 data URL 和发送一个单独的文件之间自动选择。<font color=FF0000> 之前通过使用 url-loader，并且配置资源体积限制实现</font>。
+
+```js
+rules: [
+  {
+    test: /\.txt/,
+    type: 'asset',
+  }
+]
+```
+
+<font color=fuchsia>webpack 按照**默认条件**，**自动地在 resource 和 inline 之间进行选择**：小于 8kb 的文件，将会视为 inline 模块类型，否则会被视为 resource 模块类型</font>。可以通过在 webpack 配置的 module rule 层级中，设置 [`Rule.parser.dataUrlCondition.maxSize`](https://webpack.docschina.org/configuration/module/#ruleparserdataurlcondition) 选项来修改此条件
 
 ```js
 rules: [
@@ -1617,29 +1845,21 @@ rules: [
 ]
 ```
 
-还可以 指定一个函数（详见：https://webpack.js.org/guides/asset-modules/#:~:text=Also%20you%20can-,specify%20a%20function,-to%20decide%20to） 来决定是否 inline 模块
+还可以 指定一个 [函数](https://webpack.js.org/configuration/module/#ruleparserdataurlcondition) 来决定是否 inline 模块
 
+##### 想要在Webpack 5 中继续使用 被废弃的 assets loader
 
+当在 webpack 5 中使用旧的 assets loader（如 `file-loader` / `url-loader` / `raw-loader` 等）和 asset 模块时，你可能想停止当前 asset 模块的处理，并再次启动处理，这可能会导致 asset 重复，你可以通过将 asset 模块的类型设置为 `'javascript/auto'` 来解决。
 
-##### 想要在Webpack V5中继续使用 被废弃的 assets loader
-
-当在 webpack 5 中使用旧的 assets loader（如 file-loader/url-loader/raw-loader 等）和 asset 模块时，你可能想停止当前 asset 模块的处理，并再次启动处理，这可能会导致 asset 重复，你可以通过将 asset 模块的类型设置为 'javascript/auto' 来解决。示例如下：
-
-```js
+```diff
+// webpack.config.js
 module.exports = {
   module: {
    rules: [
       {
         test: /\.(png|jpg|gif)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-            }
-          },
-        ],
-        type: 'javascript/auto'
+        use: [ { loader: 'url-loader', options: { limit: 8192, } }, ],
++       type: 'javascript/auto'
       },
    ]
   },
@@ -1647,6 +1867,81 @@ module.exports = {
 ```
 
 如需从 asset loader 中排除来自新 URL 处理的 asset，请添加 `dependency: { not: ['url'] }` 到 loader 配置中。
+
+```diff
+// webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpg|gif)$/i,
++       dependency: { not: ['url'] },
+        use: [ { loader: 'url-loader', options: { limit: 8192, }, }, ],
+      },
+    ],
+  }
+}
+```
+
+##### 变更内联 loader 的语法
+
+在 asset 模块和 webpack 5 之前，可以使用 “内联语法”（参见：[[#内联方式]]） 与上述传统的 loader 结合使用。<font color=red>现在建议去掉所有的内联 loader 的语法</font>，<font color=fuchsia>**使用资源查询条件 ( <font size=4>resourceQuery condition</font> ) 来模仿内联语法的功能**</font>。
+
+示例，将 `raw-loader` 替换为 `asset/source` 类型：
+
+```diff
+- import myModule from 'raw-loader!my-module';
++ import myModule from 'my-module?raw';
+```
+
+webpack 相关配置：
+
+```js
+module: {
+  rules: [
+    // ...
+    {
+      resourceQuery: /raw/,
+      type: 'asset/source',
+    }
+  ]
+},
+```
+
+如果你想把原始资源排除在其他 loader 的处理范围以外，请使用使用取反的正则：
+
+```js
+module: {
+  rules: [
+    // ...
+    {
+      test: /\.m?js$/,
+      resourceQuery: { not: [/raw/] },
+      use: [ ... ]
+    },
+  ]
+}
+```
+
+或者使用 `oneOf` 的规则列表。此处只应用第一个匹配规则：
+
+```js
+module: {
+  rules: [
+    // ...
+    { oneOf: [
+      {
+        resourceQuery: /raw/,
+        type: 'asset/source',
+      },
+      {
+        test: /\.m?js$/,
+        use: [ ... ]
+      },
+    ] }
+  ]
+},
+```
 
 
 
