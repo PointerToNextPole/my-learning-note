@@ -2815,3 +2815,83 @@ Apple 官网喜欢用用户滚动页面 实现 播放视频（动画）效果，
 > 摘自：[弱网环境下前端如何优化？ - 陈龙的回答 - 知乎](https://www.zhihu.com/question/306385245/answer/560086505)
 
 另外，大量关于 PWA 的内容被记录在 [[webpack]] 那边，这里暂时不做记录。
+
+
+
+#### Chrome 使用
+
+在 [[linux与macOS备忘录#Chrome相关]] 中有一些 Chrome 快捷键
+
+`chrome://chrome-urls/` 中列出了 Chrome 相关的所有“内置页”，下面列出重要的（虽然不全...）：
+
+- `chrome://inspect/`：调试相关，这也是 Node 程序调试，一个非常方便的方法
+
+  > 现在 Node 调试简单多了，不需要安装任何额外的包，直接 `node --inspect yourScript.js`，然后打开 `chrome://inspects`即可。
+  >
+  > 摘自：[Node 调试指南 —— Inspector 协议](https://zhuanlan.zhihu.com/p/30264842) 另外，该文章说明了 Node 在浏览器中调试的方法；另外，也可参考官方文档： [Node Doc - Guides - Debugging Guide](https://nodejs.org/en/docs/guides/debugging-getting-started/)
+
+- `chrome://flags/`：实验功能配置
+
+- `chrome://downloads/`：下载列表
+
+- `chrome://extensions/`：扩展插件配置
+
+- `chrome://settings/`：设置
+
+- `chrome://version/`：当前版本信息
+
+- `chrome://user-actions/`：侦听用户行为
+
+- `chrome://whats-new/`：新特性
+
+- `chrome://network-errors/`：网络错误列表
+
+- `chrome://omnibox/`：地址栏设置
+
+- `chrome://system/`：系统信息
+
+- `chrome://bookmarks/`：书签
+
+- `chrome://device-log/`：设备日志（USB 之类）
+
+- `chrome://components/`：组件信息与更新
+
+- `chrome://tracing/`：追踪 Chrome 各个任务运行。另外，trace 工具是一个 计算机术语，用于监控程序运行
+
+- `chrome://newtab/`：新标签页
+
+- `chrome://print/`：调用打印组件
+
+- `chrome://predictors/`：浏览器的地址栏( Omnibox ) 的预测器，可以根据用户输入提前做 pre-fetch、pre-render、preload；该链接显示相关预测的信息。相关内容可参考 [Mac 平台的 Chrome 比 Safari 性能更好吗？为什么用的人那么多？ - 李熠的回答 - 知乎](https://www.zhihu.com/question/24541628/answer/28168760)
+
+- `chrome://crashes/`：浏览器崩溃历史
+
+- `chrome://net-internals/`：可以在其中找到有关代理，DNS，缓存，HTTP限制等信息的页面。
+
+  > 你们想看看自己Chrome里有关网络的一切？请在地址栏里输入：`chrome://net-internals` 。什么DNS、Cache、Prerender（上面说的预先加载的页面）、目前可用的 Socket 都一览无遗。
+  >
+  > 摘自： [Mac 平台的 Chrome 比 Safari 性能更好吗？为什么用的人那么多？ - 李熠的回答 - 知乎](https://www.zhihu.com/question/24541628/answer/28168760)
+
+- `chrome://safe-browsing/`：浏览器安全设置？
+
+- `chrome://serviceworker-internals/`：浏览器内注册的所有 service worker，以及配置
+
+- `chrome://gcm-internals/`：消息推送服务
+
+- `chrome://indexeddb-internals/`：html5 内部存储
+
+- `chrome://sync-internals/`：同步记录
+
+- `chrome://quota-internals/`：显示磁盘详细可用空间以及各个网站的使用配额
+
+- `chrome://translate-internals/`：内部翻译器
+
+- `chrome://memory-internals/`：内存记录
+
+- `chrome://signin-internals/`：The “chrome://signin-internals” webpage is a special URL in chromium that displays a summary of all signin and authentication related information in Google Chrome. It is useful in the triage and pinpointing of errors that could potentially be authentication related.
+
+  摘自：[The Chromium Projects - about-signin-internals](https://www.chromium.org/developers/about-signin-internals/)
+
+部分参考自：[我所了解的chrome ](https://www.cnblogs.com/liyunhua/p/4531964.html) 、[你可能不知道的chrome隐藏技巧 - 伯衡君的文章 - 知乎](https://zhuanlan.zhihu.com/p/99527398)
+
+另外，[The Chromium Projects](https://www.chromium.org/chromium-projects/) 中有不少相关内容，可参考。

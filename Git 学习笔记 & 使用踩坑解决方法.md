@@ -12,6 +12,7 @@
 - [图解Git](https://marklodato.github.io/visual-git-guide/index-zh-cn.html) 一些图解，说了一些上一篇文章没说的东西
 - [这才是真正的GIT——GIT内部原理](https://www.lzane.com/tech/git-internal) 一共有三篇，这是第一篇。说明了一些 Git 原理性的东西，配合动图，清晰易懂
 - [给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960) 一些补充的命令
+- [GitHub - Docs](https://docs.github.com/cn) GitHub 官方文档（中文）
 
 
 

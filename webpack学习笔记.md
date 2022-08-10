@@ -640,6 +640,12 @@ Example: `{ "./a/": "./x/", "./a/b/": "./y/", "./a/b/c": "./z" }` == `{ "./a/b/c
 
 
 
+### webpack 文档 API 笔记
+
+
+
+
+
 ### 慕课网课程《从基础到实战 手把手带你掌握新版 Webpack4.0 》笔记
 
 **`npx webpack entryFile`** 命令的作用是：使用 webpack 工具去解析（似乎只是替换文件引入的语法 ( import / require ) ，将模块合并打包，webpack 本身不懂 ES6 -> ES5 的转换）一个项目，这时候项目的文件夹下会产生一个 dist 目录，在该目录下会产生一个 main.js 的文件（ main.js 是 webpack 默认配置定义的打包名称，关于 webpack 配置见下面）。

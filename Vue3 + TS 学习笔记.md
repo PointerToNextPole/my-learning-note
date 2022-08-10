@@ -680,17 +680,17 @@ rules属性对应的值是一个数组：[Rule]。数组中存放的是一个个
 
 ##### PostCSS 工具
 
-- **什么是PostCSS？**
+###### 什么是 PostCSS？
 
-  PostCSS是一个通过 JavaScript 来转换样式的工具。<font color=FF0000>这个工具可以帮助我们进行一些CSS的转换和适配，比如自动添加浏览器前缀、css样式的重置；但是<font size=4>**实现这些功能，我们需要借助于PostCSS对应的插件**</font>。</font>
+PostCSS是一个通过 JavaScript 来转换样式的工具。<font color=FF0000>这个工具可以帮助我们进行一些CSS的转换和适配，比如自动添加浏览器前缀、css样式的重置；但是<font size=4>**实现这些功能，我们需要借助于PostCSS对应的插件**</font>。</font>
 
-- **如何使用PostCSS？主要就是两个步骤：**
+###### 如何使用 PostCSS ？主要就是两个步骤：
 
-  1. 查找PostCSS在构建工具中的扩展，比如 webpack 中的 postcss-loader
+1. 查找PostCSS在构建工具中的扩展，比如 webpack 中的 postcss-loader
 
-  2. 选择可以添加你需要的 PostCSS 相关的插件
+2. 选择可以添加你需要的 PostCSS 相关的插件
 
-**也可以在 终端中 使用 PostCSS：**需要独立安装 工具：postcss-cli。
+**也可以在 终端中 使用 PostCSS：**需要 安装工具：[postcss-cli](https://github.com/postcss/postcss-cli)。
 
 如果要使用 PostCSS 的 autoprefixer 插件，需要使用有两种方法：
 
@@ -736,7 +736,15 @@ rules属性对应的值是一个数组：[Rule]。数组中存放的是一个个
 
 postcss-preset-env 也是一个 postcss 的插件，它可以帮助我们将一些现代的CSS特性，转成大多数浏览器认识的CSS，并且会根据目标浏览器或者运行时环境添加所需的polyfill；也包括会自动帮助我们添加autoprefixer（所以相当于已经内置了autoprefixer）；
 
+##### 补充：峰华前端的《13 分钟掌握 PostCSS》笔记
+
+PostCSS 是专门用于处理 CSS 的工具，通过一系列的插件来修改最终样式：可以让开发者使用最新的 CSS 特性（哪怕提案处于 stage 0）提高开发效率（通过使用 [PostCSS-Preset-env](https://github.com/csstools/postcss-preset-env) ）；也可以转译 CSS，兼容大多数浏览器（类似于 Babel ）；PostCSS 通过插件，支持 Sass 之类 CSS 预处理工具。
+
 > 👀 注：PostCSS 相关内容，峰华前端做了一个视频，很好的介绍了 PostCSS：[13 分钟掌握 PostCSS](https://www.bilibili.com/video/BV1Pd4y1S7Mp) 。另外，值得注意的是：除了 [postcss-preset-env](https://github.com/csstools/postcss-preset-env) （原库已经 archived，并入了 [postcss-plugins](https://github.com/csstools/postcss-plugins) ），该视频中讲解了两个 没听过的插件， lint 工具 [stylelint](https://github.com/stylelint/stylelint) 和  [px2rem-postcss](https://github.com/songsiqi/px2rem-postcss)
+
+
+
+
 
 
 

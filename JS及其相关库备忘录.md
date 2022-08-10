@@ -2505,6 +2505,61 @@ JSON.stringify(value[, replacer [, space]])
 
 摘自：[MDN - JSON.stringify()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)
 
+#### JSON.parse()
+
+`JSON.parse()` 方法用来解析 JSON 字符串，构造由字符串描述的 JavaScript 值或对象。提供可选的 **reviver** 函数用以在返回之前对所得到的对象执行变换 （操作）。
+
+##### 语法
+
+```js
+JSON.parse(text[, reviver])
+```
+
+##### 参数
+
+- **text**：要被解析成 JavaScript 值的字符串，关于 JSON 的语法格式，请参考：[`JSON`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON)。
+- **reviver**：可选，转换器，如果传入该参数 (函数)，可以用来修改解析生成的原始值，调用时机在 parse 函数返回之前。
+
+##### 返回值
+
+`Object` 类型，对应给定 JSON 文本的对象/值。
+
+##### 异常
+
+若传入的字符串不符合 JSON 规范，则会抛出 `SyntaxError` 异常。比如下面的 [[#JSON.parse() 不允许用逗号作为结尾]]
+
+##### 使用 reviver 函数
+
+如果指定了 `reviver` 函数，则解析出的 JavaScript 值（解析值）会经过一次转换后才将被最终返回（返回值）。更具体点讲就是：解析值本身以及它所包含的所有属性，会按照一定的顺序（从最最里层的属性开始，一级级往外，最终到达顶层，也就是解析值本身）分别的去调用 `reviver` 函数，在调用过程中，当前属性所属的对象会作为 `this` 值，当前属性名和属性值会分别作为第一个和第二个参数传入 `reviver` 中。如果 `reviver` 返回 `undefined`，则当前属性会从所属对象中删除，如果返回了其他值，则返回的值会成为当前属性新的属性值。
+
+当遍历到最顶层的值（解析值）时，传入 `reviver` 函数的参数会是空字符串 `""`（因为此时已经没有真正的属性）和当前的解析值（有可能已经被修改过了），当前的 `this` 值会是 `{"": 修改过的解析值}`，在编写 `reviver` 函数时，要注意到这个特例。（这个函数的遍历顺序依照：从最内层开始，按照层级顺序，依次向外遍历）
+
+```js
+JSON.parse('{"p": 5}', function (k, v) {
+    if(k === '') return v;     // 如果到了最顶层，则直接返回属性值，
+    return v * 2;              // 否则将属性值变为原来的 2 倍。
+});                            // { p: 10 }
+
+JSON.parse('{"1": 1, "2": 2,"3": {"4": 4, "5": {"6": 6}}}', function (k, v) {
+    console.log(k); // 输出当前的属性名，从而得知遍历顺序是从内向外的，
+                    // 最后一个属性名会是个空字符串。
+    return v;       // 返回原始属性值，相当于没有传递 reviver 参数。
+});
+// 1 2 4 6 5 3 "
+```
+
+##### JSON.parse() 不允许用逗号作为结尾
+
+⚠️ 注意
+
+```
+// both will throw a SyntaxError
+JSON.parse("[1, 2, 3, 4, ]");
+JSON.parse('{"foo" : 1, }');
+```
+
+摘自：[MDN - JSON.parse()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse)
+
 
 
 #### javascript:void(0) 含义
@@ -3267,7 +3322,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                               
+  >                                                                                                                                                                 
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3286,7 +3341,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                               
+  >                                                                                                                                                                 
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -13480,6 +13535,8 @@ x = myObj.sites["site1"];
   delete myObj.sites["site1"]
   ```
 
+
+
 #### JSON.parse()
 
 JSON 通常用于与服务端交换数据。在接收服务器数据时一般是字符串。
@@ -13492,7 +13549,7 @@ JSON 通常用于与服务端交换数据。在接收服务器数据时一般是
 JSON.parse(text[, reviver])
 ```
 
-**参数说明：**
+##### 参数说明
 
 - **text：**<font color=FF0000>必需</font>， 一个有效的<font color=FF0000> JSON</font> 字符串。
 - **reviver：** <font color=FF0000>可选</font>，一个<font color=FF0000>转换结果的函数</font>， <font color=FF0000>将为对象的每个成员调用此函数</font>。
@@ -13510,6 +13567,10 @@ obj.alexa = eval("(" + obj.alexa + ")");
 
 document.getElementById("demo").innerHTML = obj.name + " Alexa 排名：" + obj.alexa();
 ```
+
+
+
+
 
 #### JSON.stringify()
 
@@ -13551,6 +13612,8 @@ var myJSON = JSON.stringify(obj);
 document.getElementById("demo").innerHTML = myJSON;
 ```
 
+
+
 #### JSON 使用
 
 **把 JSON 文本转换为 JavaScript 对象**
@@ -13564,6 +13627,8 @@ eval() 函数使用的是 JavaScript 编译器，可解析 JSON 文本，然后�
 ```js
 var obj = eval ("(" + txt + ")");
 ```
+
+
 
 #### JSONP 教程
 

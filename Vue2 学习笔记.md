@@ -5926,7 +5926,7 @@ scrollBehavior (to, from, savedPosition) {
 
 
 
-#### 补充：
+#### 补充内容
 
 **CDN方式引入Vue-Router**
 
@@ -5948,8 +5948,6 @@ scrollBehavior (to, from, savedPosition) {
 
 
 
-***
-
 ## Vue CLI
 
 Vue CLI是一种脚手架，是一个基于 Vue.js 进行快速开发的<font color=FF0000>完整系统</font>
@@ -5962,7 +5960,7 @@ Vue CLI是一种脚手架，是一个基于 Vue.js 进行快速开发的<font co
 
 - 一个运行时依赖 (@vue/cli-service)，该依赖：
   
-  - 可升级；
+  - 可升级
   - 基于 webpack 构建，并带有合理的默认配置；
   - 可以通过项目内的配置文件进行配置；
   - 可以通过插件进行扩展。
@@ -5980,17 +5978,19 @@ vue -V
 
 ##### 项目启动命令
 
-- 在vue-cli3中启动项目的命令是：
-  
-  ```sh
-  npm run serve
-  ```
+在vue-cli3中启动项目的命令是：
 
-- 而在vue-cli2中启动项目的命令是：
-  
-  ```sh
-  npm run dev
-  ```
+```sh
+npm run serve
+```
+
+而在vue-cli2中启动项目的命令是：
+
+```sh
+npm run dev
+```
+
+
 
 #### preset 和 ~/.vuerc
 
@@ -6018,7 +6018,9 @@ vue -V
 }
 ```
 
-#### vue add命令
+
+
+#### vue add 命令
 
 如果你<font color=FF0000>想在一个已经被创建好的项目中安装一个插件，可以使用 vue add 命令</font>，示例如下：
 
@@ -6159,6 +6161,79 @@ npm install -D stylus-loader stylus
 vue-cli-service build --mode development
 ```
 
+Vue CLI 是对 webpack 的封装，可以通过 `vue inspect` 命令，输出对应的 webpack 配置文件，如 `vue inspect > target-conf.js` 即可生成。
+
+
+
+#### 在 vue.config.js 中实现 resolve.alias
+
+在 vue cli 中默认是实现了 @ 是 `/src` 的别名，如果想要自己定义别名，配置如下：
+
+```js
+module.exports = defineConfig({
+  chainWebpack: (config) => {
+    config.resolve.alias.set('myAlias', path.join(__dirname,  'yourTargetPath'))
+  }
+})
+```
+
+同时，默认情况下，点击使用别名无法像使用 `@` 的路径一样，跳转到 定义处；这时，可以在 jsconfig.json（详见 [[#@vue/cli 5 的新特性#jsconfig.json]]） 中配置如下：
+
+```diff
+// jsconfig.jon
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "baseUrl": "./",
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": [ "src/*" ],
++     "myAlias/*": [ "yourTargetPath/*" ] 
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  }
+}
+```
+
+即可生效
+
+
+
+#### @vue/cli 5 的新特性
+
+##### jsconfig.json
+
+使用 @vue/cli 5 创建项目，会发现 多了一个 jsconfig.json 的文件（注意不是 tsconfig.json ）
+
+> ##### What is jsconfig.json?
+>
+> The presence of `jsconfig.json` file in a directory indicates that the directory is the root of a JavaScript Project. The `jsconfig.json` file <font color=red>specifies the root files and the options for the features provided by the [JavaScript language service](https://github.com/microsoft/TypeScript/wiki/JavaScript-Language-Service-in-Visual-Studio)</font> .
+>
+> > **Tip:** If you are not using JavaScript , you do not need to worry about `jsconfig.json`.
+>
+> > **Tip:** <font color=fuchsia>`jsconfig.json` is a descendant of `tsconfig.json`</font> , which is a configuration file for TypeScript. <font color=fuchsia>`jsconfig.json` is `tsconfig.json` with `"allowJs"` attribute set to `true`</font> .
+>
+> ##### Why do I need a jsconfig.json file?
+>
+> Visual Studio Code's JavaScript support can run in two different modes:
+>
+> - **File Scope - <mark style="background: Aquamarine">no jsconfig.json</mark>**: <font color=fuchsia>In this mode, JavaScript files opened in Visual Studio Code are **treated as independent units**</font>. <font color=red>As long as a file `a.js` doesn't reference a file `b.ts` explicitly</font> (either using `import` or **CommonJS** [modules](http://www.commonjs.org/specs/modules/1.0) ), <font color=fuchsia>there is **no common project context**</font>（共同的项目上下文） <font color=fuchsia>**between the two files**</font>.
+> - **Explicit Project - <mark style="background: lightpink">with jsconfig.json</mark>**: <font color=fuchsia size=4>**A JavaScript project is defined via a `jsconfig.json` file**</font>. The presence of such a file in a directory indicates that the directory is the root of a JavaScript project. <font color=fuchsia>The file itself can optionally **list the files belonging to the project**, **the files to be excluded from the project**, as well as compiler options</font> (see below).
+>
+> The JavaScript experience is improved when you have a `jsconfig.json` file in your workspace that defines the project context. For this reason, we offer a hint to create a `jsconfig.json` file when you open a JavaScript file in a fresh workspace.
+>
+> 后面还有内容，略。
+>
+> 摘自：[VSC doc - jsconfig.json](https://code.visualstudio.com/docs/languages/jsconfig)
+
+
+
 ## Vuex
 
 #### 介绍
@@ -6262,7 +6337,7 @@ const Counter = {
 
 然而，这种模式导致组件依赖全局状态单例。<font color=FF0000>在模块化的构建系统中，在每个需要使用 state 的组件中需要频繁地导入，并且在测试组件时需要模拟状态</font>。（这便造成麻烦）
 
-#### <font color=FF0000>**改进：**</font>
+##### 改进
 
 Vuex 通过 store 选项，提供了一种机制将状态从根组件<font color=FF0000>“注入”到每一个子组件中</font>（需调用 Vue.use(Vuex)）：
 
@@ -6293,7 +6368,7 @@ const Counter = {
 }
 ```
 
-#### mapstate辅助函数
+#### mapstate 辅助函数
 
 当一个组件需要获取多个状态的时候，将这些状态都声明为计算属性会有些重复和冗余。为了解决这个问题，我们可以使用 `mapState` 辅助函数帮助我们生成计算属性。示例如下：
 
@@ -6405,6 +6480,8 @@ context是什么？context是和store对象具有相同方法和属性的对象�
 
 局部状态通过 context.state 暴露出来，根节点状态则为 context.rootState
 
+
+
 ## Vue项目杂项
 
 #### assets与static的区别
@@ -6419,9 +6496,7 @@ context是什么？context是和store对象具有相同方法和属性的对象�
 
 摘自：[assets与static的区别](https://blog.csdn.net/qq_41115965/article/details/80796211)
 
-#### **补充：**
-
-摘自：[segmentfault - assets 和static的区别](https://segmentfault.com/q/1010000009842688)（翻译的http://vuejs-templates.github.io/webpack/static.html中的内容）
+##### 补充
 
 **Webpacked Assets**
 
@@ -6440,9 +6515,11 @@ Webpack 处理的静态资源放在 `/src` 目录中和其它源文件放一起�
 
 任何放在 `static/` 中文件需要以绝对路径的形式引用：`/static/[filename]`。如果更改 `assetSubDirectory` 的值为 `assets`，那么路径需改为 `/assets/[filename]`。
 
-#### Vue项目文件结构
+摘自：[segmentfault - assets 和static的区别](https://segmentfault.com/q/1010000009842688)（翻译的http://vuejs-templates.github.io/webpack/static.html中的内容）
 
-**（使用`vue create proj_name` 或 `vue init webpack proj_name`生成）**
+#### Vue 项目文件结构
+
+**（使用 `vue create proj_name` 或 `vue init webpack proj_name`生成）**
 
 **一级目录：**
 
@@ -6484,6 +6561,4 @@ Webpack 处理的静态资源放在 `/src` 目录中和其它源文件放一起�
 ```
 
 
-
-## Vue打包踩坑记录
 

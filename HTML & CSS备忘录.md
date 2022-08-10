@@ -6076,10 +6076,20 @@ touch-action: unset;
 
 要禁用的表单自动填充，你可以将 autocomplete 的属性设置为 "off"：**autocomplete = "off"**
 
-设置 **autocomplete="off"** 会有两种效果：
+##### 设置 autocomplete="off" 会有两种效果：
 
 - 这会告诉浏览器，不要为了以后在类似表单上自动填充而保存用户输入的数据。但浏览器不一定遵守。
 - 这会阻止浏览器缓存会话历史记录中的数据。若表单数据缓存于会话历史记录，用户提交表单后，再点击返回按钮返回之前的表单页面，则会显示用户之前输入的数据。
+
+##### 使用 autocomplete="new-password" 阻止自动填充
+
+如果你定义了一个用户管理页面，其中用户可以为其他人指定新的密码，因此你<font color=fuchsia>想阻止密码字段的自动填充，你可以使用 `autocomplete="new-password"` </font>。
+
+<font color=red>这只是一个提示，浏览器不一定要遵守</font>。但现代浏览器都已停止在设置了 `autocomplete="new-password"` 的 `<input>` 元素上使用自动填充。👀 注：这个没有试过，即没有验证过，只是在帮助同时解决问题时查到。
+
+> **`new-password`**：新密码。 创建新帐户或更改密码时，应将其用于“输入新密码”或“确认新密码”字段，而不是通常出现的“输入当前密码”字段。 浏览器可以使用它来避免意外填写现有密码，并在创建安全密码时提供帮助
+>
+> 摘自：[MDN - HTML attribute: autocomplete](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Attributes/autocomplete)
 
 摘自：[MDN - 如何关闭表单自动填充](https://developer.mozilla.org/zh-CN/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion)
 

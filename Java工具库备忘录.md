@@ -1,8 +1,8 @@
-# Java 相关类 & Dev-tool备忘录
+# Java 工具库备忘录
 
 
 
-### apache.commons
+#### apache.commons
 
 Apache Commons 是对 JDK 的拓展，包含了很多开源的工具，用于解决平时编程经常会遇到的问题，减少重复劳动。
 
@@ -58,9 +58,9 @@ Apache Commons 是对 JDK 的拓展，包含了很多开源的工具，用于解
 
 这里只是简介：更多内容可以看：[Apache Commons 系列简介 之 BeanUtils](http://www.blogways.net/blog/2014/01/15/apache-commons-beanutils.html)以及后面三篇文章
 
-***
 
-### log4j
+
+#### log4j
 
 ##### **Logging 级别**
 
@@ -85,9 +85,9 @@ Apache Commons 是对 JDK 的拓展，包含了很多开源的工具，用于解
 
 
 
-### Flyway (Maven plugin)
+#### Flyway (Maven plugin)
 
-#### Goals
+##### Goals
 
 |                           **Name**                           |                       **Description**                        |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
