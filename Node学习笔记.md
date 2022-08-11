@@ -1197,8 +1197,8 @@ npm run webpackVersion 时，会优先查找局部安装的 webpack，并调用�
   console.log('why')
   ```
 
-  **第一行的代码表示：**<font size=4>**#!**</font> <font color=FF0000>是一个固定写法，也是一个指令，被叫做 hashbang / shebang；可以在 hashbang 后面配置一个环境，以执行当前的文件</font>；后面的是让系统去/user/bin/env文件中，去找node去执行。
-  另外，上面也可以写绝对路径找到node，但是为了跨系统间兼容，还是写上面的代码比较好。
+  **第一行的代码表示：**<font size=4>**#!**</font> <font color=FF0000>是一个固定写法，也是一个指令，被叫做 hashbang / shebang；可以在 hashbang 后面配置一个环境，以执行当前的文件</font>；后面的是让系统去 /user/bin/env 文件中，去找node去执行。
+  另外，上面也可以写绝对路径找到 node，但是为了跨系统间兼容，还是写上面的代码比较好。
 
 - 在package.json 中加上 bin，以给指令命名，并指定 指令对应的执行文件。
 
@@ -1208,11 +1208,11 @@ npm run webpackVersion 时，会优先查找局部安装的 webpack，并调用�
   }
   ```
 
-- 键入命令：`npm link`，将package.json 中的 bin 和 系统的环境变量做一个链接，将why 作为终端命令配置到环境变量中
+- 键入命令：`npm link`，将package.json 中的 bin 和 系统的环境变量 生成一个 “**软链接**”，将 `why` 作为终端命令配置到环境变量中
 
 这时，可以输入命令 why，即可打印出 ‘why’。<font color=FF0000>**另外，这个字定义的指令，是全局可以调用的；尤其是在当前项目的外层**</font>。
 
-除了可以键入命令 why，打印出 'why' 之外，一般而言还应该可以传递其他参数（命令选项），比如 why --version。这时，需要（可以）使用 [commander](https://github.com/tj/commander.js) 这个工具库。
+除了可以键入命令 why，打印出 'why' 之外，一般而言还应该可以传递其他参数（命令选项），比如 `why --version` 。这时，需要（可以）使用 [commander](https://github.com/tj/commander.js) 这个工具库。
 
 npm install commander 之后，在 入口文件 index.js 写入：
 
@@ -4367,20 +4367,20 @@ $ npx ls
 
 #### node-gyp
 
-**GitHub README.md 介绍：**
+##### GitHub README.md 介绍
 
-node-gyp is a cross-platform command-line tool written in Node.js <font color=FF0000>for **compiling native addon**（插件） modules for Node.js</font>. It contains a vendored copy of the gyp-next project that was previously used by the Chromium team, extended to support the development of Node.js native addons.
+node-gyp is a cross-platform command-line tool written in Node.js <font color=FF0000>for **compiling native addon**</font>（插件） <font color=red>modules for Node.js</font>. It contains a vendored copy of the gyp-next project that was previously used by the Chromium team, extended to support the development of Node.js native addons.
 
 Note that node-gyp is not used to build Node.js itself.
 
-**特性：**
+##### 特性
 
 - The same build commands work on any of the supported platforms
 - Supports the targeting of different versions of Node.js
 
 Github地址：https://github.com/nodejs/node-gyp
 
-**node-gyp的作用：**
+##### node-gyp 的作用 
 
 > node下的 gyp 
 >
@@ -4395,9 +4395,9 @@ Github地址：https://github.com/nodejs/node-gyp
 >
 > 摘自：[node-gyp的作用是什么? - Belleve的回答 - 知乎](https://www.zhihu.com/question/36291768/answer/70682907)
 
-GYP工具，即 “Generate Your Projects” 短句的缩写。它的好处在于，可以帮助你生成各个平台下的项目文件，比如Windows下的VisualStudio 解决方案文件（.sln）、Mac下的XCode项目配置文件以及Scons工具。在这个基础上，再动用各自平台下的编译器编译项目。这大大减少了跨平台模块在项目组织上的精力投入。
-
-摘自：《深入浅出Node.js》P28
+> GYP工具，即 “Generate Your Projects” 短句的缩写。它的好处在于，可以帮助你生成各个平台下的项目文件，比如Windows下的VisualStudio 解决方案文件（.sln）、Mac下的XCode项目配置文件以及Scons工具。在这个基础上，再动用各自平台下的编译器编译项目。这大大减少了跨平台模块在项目组织上的精力投入。
+>
+> 摘自：《深入浅出Node.js》P28
 
 
 

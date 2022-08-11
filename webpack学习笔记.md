@@ -642,7 +642,459 @@ Example: `{ "./a/": "./x/", "./a/b/": "./y/", "./a/b/c": "./z" }` == `{ "./a/b/c
 
 ### webpack 文档 API 笔记
 
+#### Introduction
 
+<font color=red>A variety of interfaces are available to **customize the compilation process**</font>. <font color=dodgerBlue>Some features overlap between interfaces</font> , e.g. <mark>a configuration option **may** be available via a CLI flag , while **others exist only through a single interface**</mark> . The following high-level information should get you started.
+
+##### CLI
+
+The Command Line Interface ( CLI ) to <font color=red>configure and interact with your build</font>. It is especially useful in the case of early prototyping and profiling. For the most part , the CLI is used to kick off the process using a configuration file and a few flags ( e.g. `--env` ).
+
+##### Module
+
+When processing modules with webpack, <mark style="background: lightpink">it is important to understand the different module syntaxes</mark> – specifically the [methods](https://webpack.js.org/api/module-methods) and [variables](https://webpack.js.org/api/module-variables) – that are supported.
+
+##### Node
+
+While most users can get away with using the CLI along with a configuration file, <mark style="background: lightpink">more fine-grained</mark>（更细粒度的）<mark style="background: lightpink">control of the compilation can be achieved via the Node interface</mark>. This <font color=red>includes passing multiple configurations, programmatically running or watching, and collecting stats</font>.
+
+##### Loaders
+
+<mark style="background: lightpink">Loaders are transformations that are applied to the source code of a module</mark>. <font color=fuchsia>They are written as functions</font> that **accept source code as a parameter** and **return a new version of that code with transformations applied**.
+
+##### Plugins
+
+<mark style="background: lightpink">The plugin interface **allows users to tap directly into the compilation process**</mark>. <font color=fuchsia size=4>Plugins can **register handlers on lifecycle hooks** that **run at different points throughout a compilation**</font>. <font color=red>When **each hook is executed** , the **plugin will have full access to the current state of the compilation**</font>.
+
+摘自：[webpack doc - API - Introduction](https://webpack.js.org/api/)
+
+
+
+#### Command Line Interface
+
+For proper usage and easier distribution of this configuration , webpack can be configured with `webpack.config.js` . <font color=red>Any parameters sent to the CLI will **map to a corresponding parameter in the configuration file**</font>.
+
+> ⚠️ Warning : If you want to run webpack using `npx` please <font color=red>make sure you have `webpack-cli` installed</font>.
+
+##### Commands
+
+webpack-cli offers a variety of commands to make working with webpack easier. By default webpack ships with
+
+| Command        | Usage                                             | Description                                                  |
+| :------------- | :------------------------------------------------ | :----------------------------------------------------------- |
+| `build`        | `build|bundle|b [entries...] [options]`           | <font color=red>Run webpack</font> ( default command, can be omitted ). |
+| `configtest`   | `configtest|t [config-path]`                      | <font color=red>Validate a webpack configuration</font>（验证 webpack.config.js） |
+| `help`         | `help|h [command] [option]`                       | Display help for commands and options.                       |
+| `info`         | `info|i [options]`                                | <mark>Outputs information about your system</mark>.          |
+| `init`         | `init|create|c|new|n [generation-path] [options]` | Initialize a new webpack project.                            |
+| `loader      ` | `loader|l [output-path] [options]`                | <font color=red>Scaffold a loader</font> .                   |
+| `plugin      ` | `plugin|p [output-path] [options]`                | <font color=red>Scaffold a plugin</font> .                   |
+| `serve      `  | `serve|server|s [options]`                        | <font color=red>**Run the `webpack-dev-server   `**</font> . |
+| `version`      | `version|v [commands...]`                         | Output the version number of `webpack` , `webpack-cli` and `webpack-dev-server` . |
+| `watch`        | `watch|w [entries...] [options]`                  | <font color=fuchsia>Run webpack and watch for files changes</font> . |
+
+##### Build
+
+Run webpack ( default command, can be omitted ).
+
+```bash
+npx webpack build [options]
+```
+
+example
+
+```bash
+npx webpack build --config ./webpack.config.js --stats verbose
+```
+
+##### Init
+
+Used to initialize a new webpack project.
+
+```bash
+npx webpack init [generation-path] [options]
+```
+
+example
+
+```bash
+npx webpack init ./my-app --force --template=default
+```
+
+###### Generation Path
+
+Location of where to generate the configuration. Defaults to `process.cwd()` .
+
+###### Options
+
+- **`-t` , `--template`** : `string = 'default'` , Name of template to generate.
+
+- **`-f` , `--force`** : `boolean` , To generate a project without questions. When enabled, the default answer for each question will be used. 👀 注：另外  `-y` 的选项，不知道为什么文档中没有...
+
+> 💡 **Tip** : See the [full documentation of `webpack init` command](https://github.com/webpack/webpack-cli/blob/master/packages/generators/INIT.md).
+
+##### Loader
+
+Scaffold（脚手架） a loader. 👀 注：即为你写一个 loader，创建一个脚手架，做 loader 项目的初始化。
+
+```bash
+npx webpack loader [output-path] [options]
+```
+
+example
+
+```bash
+npx webpack loader ./my-loader --template=default
+```
+
+###### Output Path
+
+Path to the output directory, e.g. `./loader-name` .
+
+###### Options
+
+- **`-t` , `--template`** : `string = 'default'` , Type of template.
+
+##### Plugin
+
+Scaffold a plugin. 👀 注：即为你写一个 plugin，创建一个脚手架，做 plugin 项目的初始化。
+
+```bash
+npx webpack plugin [output-path] [options]
+```
+
+example
+
+```bash
+npx webpack plugin ./my-plugin --template=default
+```
+
+###### Output Path
+
+Path to the output directory, e.g. `./plugin-name`.
+
+###### Options
+
+- **`-t` , `--template`** : `string = 'default'` , Type of template.
+
+##### Info
+
+Outputs information about your system.
+
+```bash
+npx webpack info [options]
+```
+
+example
+
+```bash
+npx webpack info --output json --addition-package postcss
+```
+
+###### Options for info
+
+- **`-a` , `--additional-package`** : `string` , Adds additional packages to the output. example:
+
+  ```bash
+  npx webpack info --additional-package postcss
+  ```
+
+- **`-o`, `--output`** : `string : 'json' | 'markdown'` , To get the output in a specified format . example:
+
+  ```bash
+  npx webpack info --output markdown
+  ```
+
+##### Configtest
+
+Validate a webpack configuration.
+
+```bash
+npx webpack configtest [config-path]
+```
+
+example
+
+```bash
+npx webpack configtest ./webpack.config.js
+```
+
+###### Config Path
+
+Path to your webpack configuration file. Defaults to `./webpack.config.js` .
+
+##### Serve
+
+Run the webpack dev server.
+
+```bash
+npx webpack serve [options]
+```
+
+example
+
+```bash
+npx webpack serve --static --open
+```
+
+> 💡 **Tip** : See the [full list of options for `webpack serve` command](https://github.com/webpack/webpack-cli/blob/master/SERVE-OPTIONS-v4.md) and [related documentation for webpack-dev-server](https://webpack.js.org/configuration/dev-server).
+
+##### Watch
+
+Run webpack and watch for files changes.
+
+```bash
+npx webpack watch [options]
+```
+
+example
+
+```bash
+npx webpack watch --mode development
+```
+
+#### Flags
+
+<font color=fuchsia>**By default** webpack ships with the following flags</font> :
+
+| Flag / Alias                                                 | Type            | Description                                                  |
+| :----------------------------------------------------------- | :-------------- | :----------------------------------------------------------- |
+| [`--entry      `](https://webpack.js.org/api/cli/#entry)     | string[]        | The <font color=red>entry point(s) of your application</font> e.g. `./src/main.js`. |
+| [`--config, -c`](https://webpack.js.org/api/cli/#config)     | string[]        | Provide <font color=red>path to a webpack configuration file</font> e.g. `./webpack.config.js` |
+| [`--config-name`](https://webpack.js.org/api/cli/#config-name) | string[]        | Name of the configuration to use. 👀 注：这里不清楚，详见 [[#config-name]] |
+| `--name`                                                     | string          | Name of the configuration. <mark>Used when loading multiple configurations</mark> |
+| `--color`                                                    | boolean         | <mark>Enable colors on console</mark>                        |
+| [`--merge, -m      `](https://webpack.js.org/api/cli/#merge) | boolean         | <font color=red>Merge two or more configurations **using `webpack-merge   `**</font> |
+| [`--env`](https://webpack.js.org/api/cli/#env)               | string[]        | Environment passed to the configuration when it is a function |
+| [`--node-env`](https://webpack.js.org/api/cli/#node-env)     | string          | <font color=fuchsia>Set `process.env.NODE_ENV` to the specified value</font> |
+| [`--progress      `](https://webpack.js.org/api/cli/#progress) | boolean, string | <font color=red>Print compilation progress during build</font> |
+| [`--help`](https://webpack.js.org/api/cli/#help)             | boolean         | Outputs list of supported flags and commands                 |
+| [`--output-path, -o`](https://webpack.js.org/api/cli/#output-path) | string          | Output location of the file generated by webpack e.g. `./dist` |
+| `--target, -t`                                               | string[]        | <font color=fuchsia>**Sets the build target**</font>         |
+| `--watch, -w`                                                | boolean         | <font color=fuchsia>**Watch for file changes**</font>        |
+| `--watch-options-stdin`                                      | boolean         | Stop watching when stdin stream has ended                    |
+| `--hot, -h`                                                  | boolean         | <font color=red>Enables Hot Module Replacement</font>        |
+| `--devtool, -d`                                              | string          | <font color=fuchsia>Controls</font> if and how <font color=fuchsia>source maps are generated</font>. |
+| `--prefetch`                                                 | string          | Prefetch this request                                        |
+| [`--json, -j`](https://webpack.js.org/api/cli/#json)         | boolean, string | Prints result as JSON or store it in a file                  |
+| `--mode   `                                                  | string          | <font color=fuchsia>Defines the **mode** to pass to webpack</font> |
+| [`--version, -v`](https://webpack.js.org/api/cli/#version)   | boolean         | <mark>Get current version</mark>                             |
+| `--stats`                                                    | boolean, string | It instructs webpack on how to treat the stats               |
+| [`--analyze`](https://webpack.js.org/api/cli/#analyzing-bundle) | boolean         | It <font color=red>invokes `webpack-bundle-analyzer` plugin to get bundle information</font> |
+
+##### Negated Flags
+
+| Flag                       | Description                                                  |
+| :------------------------- | :----------------------------------------------------------- |
+| `--no-color`               | Disables any color on the console                            |
+| `--no-hot`                 | Disables hot reloading if you have it enabled via your config |
+| `--no-stats`               | Disables any compilation stats emitted by webpack            |
+| `--no-watch`               | Do not watch for file changes                                |
+| `--no-devtool`             | Do not generate source maps                                  |
+| `--no-watch-options-stdin` | Do not stop watching when stdin stream has ended             |
+
+#####  Core Flags
+
+<font color=dodgerBlue>Starting **CLI v4** and **webpack v5**</font>（👀 注：不要看错，是 CLI 4 和 webpack 5 ） , CLI imports the entire configuration schema from webpack core to <font color=red>allow tuning</font>（调整） <font color=red>almost every configuration option from the command line</font>.
+
+**Here's the list of all the core flags supported by webpack v5 with CLI v4 - [link](https://github.com/webpack/webpack-cli/blob/master/OPTIONS.md)**
+
+For example if you want to enable performance hints in your project you'd use [this](https://webpack.js.org/configuration/performance/#performancehints) option in configuration, with core flags you can do -
+
+```bash
+npx webpack --performance-hints warning
+```
+
+##### Usage
+
+###### With configuration file
+
+```bash
+npx webpack [--config webpack.config.js]
+```
+
+See [configuration](https://webpack.js.org/configuration) for the options in the configuration file.
+
+###### Without configuration file
+
+```bash
+npx webpack --entry <entry> --output-path <output-path>
+```
+
+example
+
+```bash
+npx webpack --entry ./first.js --entry ./second.js --output-path /build # 注意，这里是多入口
+```
+
+**entry**
+
+<font color=red>A filename or **a set of named filenames**</font> which act as the entry point to build your project. You can pass multiple entries (every entry is loaded on startup). Following are the multiple ways of specifying entry file(s) via CLI -
+
+```bash
+npx webpack ./first-entry.js
+npx webpack --entry ./first-entry.js
+npx webpack ./first-entry.js ./other-entry.js
+npx webpack --entry ./first-entry.js ./other-entry.js
+```
+
+> 💡 **Tip** : Use `webpack [command] [entries...] [option]` syntax because some options can accept multiple values so `webpack --target node ./entry.js` means `target: ['node', './entry.js']`
+
+**output-path**
+
+A path for the bundled file to be saved in. It will be mapped to the configuration options `output.path` .
+
+##### Default Configurations
+
+<font color=red>CLI will look for some default configurations in the path of your project</font> , here are the config files picked up by CLI.
+
+This is the **lookup priority** <font color=fuchsia>**in increasing order**</font>
+
+> *example - <font color=red>config file lookup will be in order of</font> **.webpack/webpackfile** > **.webpack/webpack.config.js** > **webpack.config.js***
+
+```txt
+'webpack.config',
+'.webpack/webpack.config',
+'.webpack/webpackfile',
+```
+
+##### Common Options
+
+> ⚠️ **Warning** : Note that <font color=red>**Command Line Interface has a higher precedence**</font>（优先级） <font color=red>for the arguments you use it with than your configuration file</font>. For instance, if you pass [`--mode="production"`](https://webpack.js.org/configuration/mode/#usage) to webpack CLI and your configuration file uses `development` , <font color=red>`production` will be used</font>.
+
+###### help
+
+<font color=dodgerBlue>List **basic commands**</font> （注意与下面 `--help=verbose` 对比）<font color=dodgerBlue>and flags available on the cli</font>
+
+Both `webpack help [command] [option]` and `webpack [command] --help` are valid to get help :
+
+```bash
+npx webpack --help
+# or
+npx webpack help
+```
+
+List **all supported commands** and flags by cli
+
+```bash
+npx webpack --help=verbose
+```
+
+See help for a specific command or option
+
+```bash
+npx webpack help --mode
+```
+
+###### verion
+
+Show version of installed packages and sub-packages
+
+To inspect the version of `webpack` and `webpack-cli` you are using, run the command:
+
+```bash
+npx webpack --version
+# or
+npx webpack version
+```
+
+This will output the following result:
+
+```bash
+webpack 5.31.2
+webpack-cli 4.6.0
+```
+
+It will output the version of `webpack-dev-server` as well if you have it installed （👀 注：只会展示这三者（以及相关的））:
+
+```bash
+webpack 5.31.2
+webpack-cli 4.6.0
+webpack-dev-server 3.11.2
+```
+
+<font color=red>To inspect the version of any `webpack-cli` sub-package</font> ( like `@webpack-cli/info` ) , run command similar to the following :
+
+```bash
+npx webpack info --version # info 是上面的命令，类似的还有 init
+```
+
+This will output the following result :
+
+```bash
+@webpack-cli/info 1.2.3
+webpack 5.31.2
+webpack-cli 4.6.0
+webpack-dev-server 3.11.2
+```
+
+###### config-name
+
+In case <font color=dodgerBlue>your configuration file exports multiple configurations</font>, you can <font color=red>use `--config-name` to specify which configuration to run</font> （如下）. Consider the following `webpack.config.js` :
+
+```js
+module.exports = [
+  {
+    output: { filename: './dist-first.js', },
+    name: 'first', // 👀
+    entry: './src/first.js',
+    mode: 'development',
+  },
+  {
+    output: { filename: './dist-second.js', },
+    name: 'second', // 👀
+    entry: './src/second.js',
+    mode: 'development',
+  },
+  {
+    output: { filename: './dist-third.js', },
+    name: 'third', // 👀
+    entry: './src/third.js',
+    mode: 'none',
+    stats: 'verbose',
+  },
+];
+```
+
+To run only the `second` configuration :
+
+```bash
+npx webpack --config-name second    
+```
+
+You <font color=red>can also pass multiple values</font> :
+
+```bash
+npx webpack --config-name first --config-name second
+```
+
+###### merge
+
+You can merge two or more different webpack configurations with the help of `--merge` :
+
+```bash
+npx webpack --config ./first.js --config ./second.js --merge
+```
+
+###### json
+
+Print result of webpack as JSON
+
+```bash
+npx webpack --json
+```
+
+If you want to <mark>store stats as json instead of printing it</mark>（类似于管道运算符） , you can use
+
+```bash
+npx webpack --json stats.json
+```
+
+In **every other case** , webpack prints out a set of stats showing bundle, chunk and timing details. <font color=red>Using this option, the output can be a JSON object</font>. <mark>This response is accepted by webpack's [analyse tool](https://webpack.github.io/analyse/) , or chrisbateman's [webpack-visualizer](https://chrisbateman.github.io/webpack-visualizer/) , or th0r's [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer)</mark> . The analyse tool will take in the JSON and provide all the details of the build in graphical form.
+
+> 💡 Tip : See the [stats data api](https://webpack.js.org/api/stats) to read more about the stats generated here.
+
+摘自：[webpack doc - API - Command Line Interface](https://webpack.js.org/api/cli/)
 
 
 

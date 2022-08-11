@@ -14,6 +14,8 @@
 
 - **built-in**：内置
 
+- **addon**：插件。来自 “node-gyp is a cross-platform command-line tool written in Node.js for compiling native addon modules for Node.js”
+
 - **on the fly**：即时，在运行时（热更新）。参考：[如何优雅的翻译 on the fly ？ - 知乎](https://www.zhihu.com/question/21136587)
 
 - **pros and cons**：利弊

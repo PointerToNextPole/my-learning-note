@@ -2,7 +2,7 @@
 
 
 
-> ## Coderwhy Vue3 + TS
+## Coderwhy Vue3 + TS
 
 
 
@@ -22,39 +22,39 @@
 ##### 性能
 
 - **用Proxy进行数据劫持：**
-  - 在Vue2.x的时候，Vue2是使用 Object.defineProperty 来劫持数据的 getter和 setter方法的
+  - 在Vue2.x 的时候，Vue2 是使用 Object.defineProperty 来劫持数据的 getter和 setter 方法的
   - 这种方式一致存在一个缺陷就是当给对象添加或者删除属性时，是无法劫持和监听的
-  - 所以在Vue2.x的时候，不得不提供一些特殊的API，比如 \$set或 $delete，事实上都是一些hack方法，也增加了开发者学习新的API 的成本
-  - 而在Vue3.x开始，Vue使用Proxy来实现数据的劫持，这个API的用法和相关的原理我也会在后续讲到;
+  - 所以在 Vue2.x 的时候，不得不提供一些特殊的 API，比如 \$set 或 $delete，事实上都是一些 hack 方法，也增加了开发者学习新的 API 的成本
+  - 而在 Vue3.x 开始，Vue 使用 Proxy 来实现数据的劫持，这个 API 的用法和相关的原理我也会在后续讲到;
 - **删除了一些不必要的API：**
-  - 移除了实例上的\$on, \$off和 \$once
+  - 移除了实例上的 \$on、\$off 和 \$once
   - 移除了一些特性：如filter、内联模板等
 - **包括编译方面的优化：**
-  - 生成Block Tree、Slot编译优化、diff算法优化
+  - 生成 Block Tree、Slot 编译优化、diff 算法优化
 
 ##### 新的API
 
 - **由Options API到Composition API：**
 
-  - 在Vue2.x的时候,我们会通过Options API来描述组件对象;
+  - 在 Vue2.x 的时候,我们会通过 Options API 来描述组件对象;
 
-  - Options API包括data, props, methods, computed、生命周期等等这些选项;
+  - Options API 包括 data、props、methods、computed、生命周期等等这些选项;
 
   - 存在比较大的问题是多个逻辑可能是在不同的地方:
-    - 比如created中会使用某一个method来修改data的数据,代码的内聚性非常差
+    - 比如created中会使用某一个 method 来修改 data 的数据,代码的内聚性非常差
 
-  - Composition API可以将相关联的代码放到同一处进行处理,而不需要在多个Options之间寻找
+  - Composition API 可以将相关联的代码放到同一处进行处理,而不需要在多个Options之间寻找
 
 - **Hooks函数增加代码的复用性：**
 
-  - 在Vue2.x的时候，我们通常通过 mixins 在多个组件之间共享逻辑
+  - 在 Vue2.x 的时候，我们通常通过 mixins 在多个组件之间共享逻辑
   - 但是有一个很大的缺陷就是 mixins 也是由一大堆的Options组成的，并且多个 mixins 会存在命名冲突的问题
-  - 在Vue3.x中，我们可以通过Hook函数，来将一部分独立的逻辑抽取出去，并且它们还可以做到是响应式的
+  - 在 Vue3.x 中，我们可以通过 Hook 函数，来将一部分独立的逻辑抽取出去，并且它们还可以做到是响应式的
   - 具体的好处,会在后续的课程中演练和讲解（包括原理）
 
 
 
-**Vue3 的 data和 Vue2 的data 是不同的：**
+##### Vue3 的 data和 Vue2 的 data 是不同的
 
 Vue3 的data属性必须是一个函数，<font color=FF0000>**否则会报错**</font>。而在Vue2 中不是这样。
 
@@ -69,14 +69,14 @@ data() {
 
 #### **template 属性**
 
-**template属性：表示的是Vue需要帮助我们渲染的模板信息**
+##### template属性：表示的是Vue需要帮助我们渲染的模板信息
 
 - 目前我们看到它里面有很多的HTML标签，这些标签会替换掉我们挂载到的元素（比如id为app的div）的 innerHTML
 - 模板中有一些奇怪的语法：比如 {{}}、比如@click，这些都是模板特有的语法,我们会在后面讲到;
 
 但是这个模板的写法有点过于别扭了,并且IDE很有可能没有任何提示,阻碍我们编程的效率.
 
-**Vue提供了两种方式：**
+##### Vue提供了两种方式
 
 - **使用script标签，并且标记它的类型为 x-template，并设置id**
 
@@ -125,11 +125,11 @@ data() {
 
 #### **阅读 Vue3 源码**
 
-如果想要学习Vue的源码，比如看createApp的实现过程，应该怎么办？步骤如下：
+如果想要学习 Vue 的源码，比如看createApp的实现过程，应该怎么办？步骤如下：
 
-1. 在GitHub上搜索 vue-next，下载源代码。这里推荐通过 git clone 的方式下载
+1. 在 GitHub 上搜索 vue core，下载源代码。这里推荐通过 git clone 的方式下载
 
-2. 安装Vue源码项目相关的依赖。执行 yarn install
+2. 安装 Vue 源码项目相关的依赖。执行 `yarn install`
 
 3. 对项目执行打包操作。执行 `yarn dev`。
 
@@ -147,33 +147,37 @@ data() {
 
 
 
-在Vue的 methods中，函数定义不可以使用 箭头函数 `foo: () => { ... }`，如果使用，那么其中的this 就是 window 对象。
+<font color=fuchsia>**在 Vue 的 methods 中，函数定义不可以使用 箭头函数 `foo: () => { ... }`，如果使用，那么其中的 this 就是 window 对象**</font>。
 
-这里涉及到箭头函数使用this的查找规则：箭头函数中是不绑定 this的，如果使用this，它会在自己的上层作用域中来查找this；其上层的 methods的大括号，以及再上层的 Vue.create() 中的大括号，都是写的对象，不构成作用域。所以，<font color=FF0000>最终刚好找到的是script作用域中的this，所以就是window</font>。
+这里涉及到箭头函数使用 this 的查找规则：箭头函数中是不绑定 this 的，如果使用 this，它会在自己的上层作用域中来查找this；其上层的 methods的大括号，以及再上层的 Vue.create() 中的大括号，都是写的对象，不构成作用域。所以，<font color=FF0000>最终刚好找到的是 script 作用域中的 this，所以就是 window</font>。
 
 
 
 #### **v-pre 和 v-cloak**
 
-- **v-pre：**跳过元素和它的子元素的编译过程，显示原始的Mustache标签。
+##### v-pre
 
-  即：让当前元素中的差值表达式失效，即：`<p>{{foo}}</p>` 显示都内容还是 `{{foo}}`
+跳过元素和它的子元素的编译过程，显示原始的 Mustache 标签。
 
-  **注：**看了下MDN 的 [ \<pre>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/pre) 文档，感觉 v-pre 应该就是借鉴的 \<pre> 标签；感觉可以辅助记忆。
+即：让当前元素中的差值表达式失效，即：`<p>{{foo}}</p>` 显示都内容还是 `{{foo}}`
 
-- **v-cloak：**这个指令保持在元素上直到关联组件实例结束编译。和 CSS 规则如 `[v-cloak] { display: none }` 一起用时，这个指令可以隐藏未编译的 Mustache 标签直到组件实例准备完毕。
+👀 注：看了下MDN 的 [ \<pre>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/pre) 文档，感觉 v-pre 应该就是借鉴的 \<pre> 标签；感觉可以辅助记忆。
 
-  ```html
-  <div v-cloak>{{ message }}</div>
-  
-  <style>
-  [v-cloak] {
-    display: none;
-  }
-  </style>
-  ```
+##### v-cloak
 
-  即：在渲染时可能会出现，差值表达式没有来得及转换成“真值”，这时候就会显示 {{foo}}；添加这个属性，可让差值表达式所在的元素，在转换成“真值”前不显示，直到转换成功再显示。
+这个指令保持在元素上直到关联组件实例结束编译。和 CSS 规则如 `[v-cloak] { display: none }` 一起用时，这个指令可以隐藏未编译的 Mustache 标签直到组件实例准备完毕。
+
+```html
+<div v-cloak>{{ message }}</div>
+
+<style>
+[v-cloak] {
+  display: none;
+}
+</style>
+```
+
+即：在渲染时可能会出现，差值表达式没有来得及转换成“真值”，这时候就会显示 {{foo}}；添加这个属性，可让差值表达式所在的元素，在转换成“真值”前不显示，直到转换成功再显示。
 
 
 
@@ -190,7 +194,7 @@ data() {
 <div :class="['foo', 'bar', {baz: isBaz, qux: isQuz}]"></div>
 ```
 
-##### Vue中v-bind绑定style
+##### Vue中 v-bind 绑定 style
 
 style中可以写驼峰也可以写短横线分隔 (kebab-case)，但是短横线分隔必须要加上引号：
 
@@ -199,7 +203,7 @@ style中可以写驼峰也可以写短横线分隔 (kebab-case)，但是短横�
 <div :style="{color: myColor, 'font-size': '30px'}">aaa</div>
 ```
 
-另外，style 对象中的键值对，值是引用类型或者是一个字符串。如果写如下代码且data中没有定义，将会报错：`:style="color: red"`，因为 `red` 是一个变量，且没有定义。应该写成：`:style="color: 'red'"`
+另外，style 对象中的键值对，值是引用类型或者是一个字符串。如果写如下代码且data中没有定义，将会报错：`:style="color: red"`，因为 `red` 是一个变量，且没有定义。应该写成 `:style="color: 'red'"`
 
 ##### **V-bind 直接绑定对象**
 
@@ -736,19 +740,70 @@ PostCSS是一个通过 JavaScript 来转换样式的工具。<font color=FF0000>
 
 postcss-preset-env 也是一个 postcss 的插件，它可以帮助我们将一些现代的CSS特性，转成大多数浏览器认识的CSS，并且会根据目标浏览器或者运行时环境添加所需的polyfill；也包括会自动帮助我们添加autoprefixer（所以相当于已经内置了autoprefixer）；
 
-##### 补充：峰华前端的《13 分钟掌握 PostCSS》笔记
+##### 峰华前端的《13 分钟掌握 PostCSS》笔记
 
-PostCSS 是专门用于处理 CSS 的工具，通过一系列的插件来修改最终样式：可以让开发者使用最新的 CSS 特性（哪怕提案处于 stage 0）提高开发效率（通过使用 [PostCSS-Preset-env](https://github.com/csstools/postcss-preset-env) ）；也可以转译 CSS，兼容大多数浏览器（类似于 Babel ）；PostCSS 通过插件，支持 Sass 之类 CSS 预处理工具。
+PostCSS 是专门用于处理 CSS 的工具，通过一系列的插件来修改最终样式：可以让开发者使用最新的 CSS 特性（哪怕提案处于 stage 0，配置示例下面有）提高开发效率（通过使用 [PostCSS-Preset-env](https://github.com/csstools/postcss-preset-env) 。不过原库已经 archived，并入了 [postcss-plugins](https://github.com/csstools/postcss-plugins) ）；也可以转译 CSS，兼容大多数浏览器（类似于 Babel ）；PostCSS 通过插件，支持 Sass 之类 CSS 预处理工具。
 
-> 👀 注：PostCSS 相关内容，峰华前端做了一个视频，很好的介绍了 PostCSS：[13 分钟掌握 PostCSS](https://www.bilibili.com/video/BV1Pd4y1S7Mp) 。另外，值得注意的是：除了 [postcss-preset-env](https://github.com/csstools/postcss-preset-env) （原库已经 archived，并入了 [postcss-plugins](https://github.com/csstools/postcss-plugins) ），该视频中讲解了两个 没听过的插件， lint 工具 [stylelint](https://github.com/stylelint/stylelint) 和  [px2rem-postcss](https://github.com/songsiqi/px2rem-postcss)
+使用 autoprefixer 可以查看哪些 CSS 属性、值、选择器、@rules 是需要加上浏览器前缀的，使用 `npx autoprefixer --info` 即可输出内容，输出内容略。
+
+使用 PostCSS 命令行工具 PostCSS-Cli 可以通过命令行的方式运行 PostCSS：
+
+```sh
+npx postcss input.css -o output.css -u yourPostCssPlugin
+```
+
+通用的语法见 [PostCSS CLI - README](https://github.com/postcss/postcss-cli) 。不过这样过于麻烦，可以通过 配置文件（配置 postcss.config.js 文件） 的方法，设置 `yourPostCssPlugin` ；使得即使在不使用 webpack 之类工具的情况下，至少不需要输入 `-u yourPostCssPlugin` 。使用 npm script 甚至可以省去前面（固定）的代码
+
+```js
+// postcss.config.js
+const postcssPresetEnv = require('postcss-preset-env')
+
+module.exports = {
+  plugins: [
+    require('stylelint'),
+    require('autoprefixer'),
+    postcssPresetEnv({
+      stage: 0 // 可以使用提案在 stage 0 的新特性
+    }),
+    require('postcss-pxtorem')
+  ]
+}
+```
+
+CSS 也有自己的 lint 工具  [stylelint](https://github.com/stylelint/stylelint) 以及 它基本的规则 [stylelint-config-standard](https://github.com/stylelint/stylelint-config-standard) ；使用 stylelint 创建 `.stylelintrc.json` 配置文件，并在 postcss.config.js 配置文件中注册（注册见上面）：
+
+```json
+// .stylelintrc.json
+{
+  "extends": "stylelint-config-standard"
+}
+```
+
+在开发时需要将 px 转换为 rem，这时候可以使用插件 [postcss-pxtorem](https://github.com/cuth/postcss-pxtorem) 类似的有 [px2rem](https://github.com/songsiqi/px2rem)，不过前者 Star 更多
+
+学习自：[13 分钟掌握 PostCSS](bilibili.com/video/BV1Pd4y1S7Mp)
+
+##### Tecvan《零基础理解 PostCSS 的主流程》笔记
+
+官网说：“PostCSS，一个使用 JavaScript 来处理CSS的框架” ( A tool for transforming CSS with JavaScript )。这句话高度概括了 PostCSS 的作用，但是太抽象了。按我理解，PostCSS 主要做了三件事：
+
+1. **parse**：<font color=red>把 CSS 文件的字符串解析成抽象语法树 ( Abstract Syntax Tree ) 的框架</font>，<font color=fuchsia>解析过程中会检查 CSS 语法是否正确，不正确会给出错误提示</font>。
+2. **runPlugin**：<font color=fuchsia>**执行插件函数**</font>。<font color=fuchsia>**PostCSS 本身不处理任何具体任务**，它提供了以特定属性或者规则命名的事件</font>。有特定功能的插件（如 autoprefixer、CSS Modules ）会注册事件监听器。PostCSS 会在这个阶段，重新扫描 AST，执行注册的监听器函数。
+3. **generate**：<font color=fuchsia>插件对 AST 处理后，PostCSS 把处理过的 AST 对象转成 CSS string</font>。
+
+![图片](https://s2.loli.net/2022/08/11/RDNvjWZ72KdySeh.png)
+
+<font color=red>**「如果没有插件」**，那么初始传入的 CSS string 和 generate 生成的 CSS string 是一样的</font>。由此可见，<mark>PostCSS 本身并不处理任何具体的任务，只有当我们为其附加各种插件之后，它才具有实用性</mark>。
 
 
 
+摘自：[零基础理解 PostCSS 的主流程](https://mp.weixin.qq.com/s/Bkss0lzPT-TI6GyGxMyn3Q)
+
+另外：[postcss Github - docs - PostCSS plugins](https://github.com/postcss/postcss/blob/main/docs/plugins.md) 列出了大量的 postcss plugin，就相当于 postcss awesome
 
 
 
-
-##### file-loader
+#### file-loader
 
 file-loader的作用就是：<font color=FF0000>帮助我们处理 import() / require()方式引入的一个文件资源，并且会将它放到我们输出的文件夹中</font>。
 
@@ -845,7 +900,9 @@ output: {
   }
   ```
 
-##### webpack plugins
+
+
+#### webpack plugins
 
 Loader是用于特定的模块类型进行转换；
 
@@ -924,7 +981,9 @@ mode配置包含着更多透明的配置，如果加上配置，则会暴露出�
 
 ![image-20211113112923700](https://i.loli.net/2021/11/13/akU7jLHszw6YgdD.png)
 
-##### babel
+
+
+#### babel
 
 babel是将一种语言，转换成另一种语言，所以就是一个编译器。
 
