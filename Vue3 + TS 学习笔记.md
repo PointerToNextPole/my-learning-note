@@ -740,66 +740,7 @@ PostCSS是一个通过 JavaScript 来转换样式的工具。<font color=FF0000>
 
 postcss-preset-env 也是一个 postcss 的插件，它可以帮助我们将一些现代的CSS特性，转成大多数浏览器认识的CSS，并且会根据目标浏览器或者运行时环境添加所需的polyfill；也包括会自动帮助我们添加autoprefixer（所以相当于已经内置了autoprefixer）；
 
-##### 峰华前端的《13 分钟掌握 PostCSS》笔记
-
-PostCSS 是专门用于处理 CSS 的工具，通过一系列的插件来修改最终样式：可以让开发者使用最新的 CSS 特性（哪怕提案处于 stage 0，配置示例下面有）提高开发效率（通过使用 [PostCSS-Preset-env](https://github.com/csstools/postcss-preset-env) 。不过原库已经 archived，并入了 [postcss-plugins](https://github.com/csstools/postcss-plugins) ）；也可以转译 CSS，兼容大多数浏览器（类似于 Babel ）；PostCSS 通过插件，支持 Sass 之类 CSS 预处理工具。
-
-使用 autoprefixer 可以查看哪些 CSS 属性、值、选择器、@rules 是需要加上浏览器前缀的，使用 `npx autoprefixer --info` 即可输出内容，输出内容略。
-
-使用 PostCSS 命令行工具 PostCSS-Cli 可以通过命令行的方式运行 PostCSS：
-
-```sh
-npx postcss input.css -o output.css -u yourPostCssPlugin
-```
-
-通用的语法见 [PostCSS CLI - README](https://github.com/postcss/postcss-cli) 。不过这样过于麻烦，可以通过 配置文件（配置 postcss.config.js 文件） 的方法，设置 `yourPostCssPlugin` ；使得即使在不使用 webpack 之类工具的情况下，至少不需要输入 `-u yourPostCssPlugin` 。使用 npm script 甚至可以省去前面（固定）的代码
-
-```js
-// postcss.config.js
-const postcssPresetEnv = require('postcss-preset-env')
-
-module.exports = {
-  plugins: [
-    require('stylelint'),
-    require('autoprefixer'),
-    postcssPresetEnv({
-      stage: 0 // 可以使用提案在 stage 0 的新特性
-    }),
-    require('postcss-pxtorem')
-  ]
-}
-```
-
-CSS 也有自己的 lint 工具  [stylelint](https://github.com/stylelint/stylelint) 以及 它基本的规则 [stylelint-config-standard](https://github.com/stylelint/stylelint-config-standard) ；使用 stylelint 创建 `.stylelintrc.json` 配置文件，并在 postcss.config.js 配置文件中注册（注册见上面）：
-
-```json
-// .stylelintrc.json
-{
-  "extends": "stylelint-config-standard"
-}
-```
-
-在开发时需要将 px 转换为 rem，这时候可以使用插件 [postcss-pxtorem](https://github.com/cuth/postcss-pxtorem) 类似的有 [px2rem](https://github.com/songsiqi/px2rem)，不过前者 Star 更多
-
-学习自：[13 分钟掌握 PostCSS](bilibili.com/video/BV1Pd4y1S7Mp)
-
-##### Tecvan《零基础理解 PostCSS 的主流程》笔记
-
-官网说：“PostCSS，一个使用 JavaScript 来处理CSS的框架” ( A tool for transforming CSS with JavaScript )。这句话高度概括了 PostCSS 的作用，但是太抽象了。按我理解，PostCSS 主要做了三件事：
-
-1. **parse**：<font color=red>把 CSS 文件的字符串解析成抽象语法树 ( Abstract Syntax Tree ) 的框架</font>，<font color=fuchsia>解析过程中会检查 CSS 语法是否正确，不正确会给出错误提示</font>。
-2. **runPlugin**：<font color=fuchsia>**执行插件函数**</font>。<font color=fuchsia>**PostCSS 本身不处理任何具体任务**，它提供了以特定属性或者规则命名的事件</font>。有特定功能的插件（如 autoprefixer、CSS Modules ）会注册事件监听器。PostCSS 会在这个阶段，重新扫描 AST，执行注册的监听器函数。
-3. **generate**：<font color=fuchsia>插件对 AST 处理后，PostCSS 把处理过的 AST 对象转成 CSS string</font>。
-
-![图片](https://s2.loli.net/2022/08/11/RDNvjWZ72KdySeh.png)
-
-<font color=red>**「如果没有插件」**，那么初始传入的 CSS string 和 generate 生成的 CSS string 是一样的</font>。由此可见，<mark>PostCSS 本身并不处理任何具体的任务，只有当我们为其附加各种插件之后，它才具有实用性</mark>。
-
-
-
-摘自：[零基础理解 PostCSS 的主流程](https://mp.weixin.qq.com/s/Bkss0lzPT-TI6GyGxMyn3Q)
-
-另外：[postcss Github - docs - PostCSS plugins](https://github.com/postcss/postcss/blob/main/docs/plugins.md) 列出了大量的 postcss plugin，就相当于 postcss awesome
+👀 注：在 [[前端工程化笔记#PostCSS]] 中，也有一些笔记。
 
 
 

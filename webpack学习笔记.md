@@ -1070,7 +1070,7 @@ npx webpack --config-name first --config-name second
 
 ###### merge
 
-You can merge two or more different webpack configurations with the help of `--merge` :
+You can <font color=red>merge two or more different webpack configurations with the help of `--merge`</font> :
 
 ```bash
 npx webpack --config ./first.js --config ./second.js --merge
@@ -1094,7 +1094,181 @@ In **every other case** , webpack prints out a set of stats showing bundle, chun
 
 > 💡 Tip : See the [stats data api](https://webpack.js.org/api/stats) to read more about the stats generated here.
 
+##### Environment Options
+
+<font color=dodgerBlue>When the webpack configuration [exports a function](https://webpack.js.org/configuration/configuration-types/#exporting-a-function)</font> , <font color=red>an "environment" may be passed to it</font>.
+
+###### env
+
+```bash
+npx webpack --env production # env.production = true
+```
+
+The `--env` argument accepts multiple values :
+
+| Invocation                                                   | Resulting environment                          |
+| :----------------------------------------------------------- | :--------------------------------------------- |
+| `npx webpack --env prod`                                     | `{ prod: true }`                               |
+| `npx webpack --env prod --env min   `                        | `{ prod: true, min: true }`                    |
+| `npx webpack --env platform=app --env production`            | `{ platform: "app", production: true }`        |
+| `npx webpack --env foo=bar=app`                              | `{ foo: "bar=app"}`                            |
+| `npx webpack --env app.platform="staging" --env app.name="test"` | `{ app: { platform: "staging", name: "test" }` |
+
+> 💡 **Tip** : <font color=dodgerBlue>If you want to explicitly set a variable to empty string ( `""` )</font> , you may <font color=red>need to **escape characters on terminal** like `npx webpack --env foo=\"\"`</font>
+>
+> 💡 **Tip** : See the [environment variables](https://webpack.js.org/guides/environment-variables/) guide for more information on its usage.
+
+In addition to the customized `env` showed above , <font color=red>there are some built-in ones under `env` to be used inside your webpack configuration</font> :
+
+| Environment Variable | Description                                    |
+| :------------------- | :--------------------------------------------- |
+| `WEBPACK_SERVE`      | `true` if `serve | server | s` is being used.  |
+| `WEBPACK_BUILD`      | `true` if `build | bundle | b` is being used.  |
+| `WEBPACK_WATCH`      | `true` if `--watch | watch | w` is being used. |
+
+Note that you <font color=red>**can not access** those built-in environment variables **inside the bundled code**</font> .
+
+```javascript
+module.exports = (env, argv) => {
+  return {
+    mode: env.WEBPACK_SERVE ? 'development' : 'production',
+  };
+};
+```
+
+###### node-env
+
+You can use `--node-env` option to set `process.env.NODE_ENV` :
+
+```bash
+npx webpack --node-env production   # process.env.NODE_ENV = 'production'
+```
+
+> 💡 **Tip** : <font color=red>**The `mode` option would respect the `--node-env` option if you don't set it explicitly**</font> , i.e. <font color=red>`--node-env production` would set both `process.env.NODE_ENV` and `mode` to `'production'`</font>
+
+##### Configuration Options
+
+| Parameter       | Explanation                                                  | Input type | Default                                                      |
+| :-------------- | :----------------------------------------------------------- | :--------- | :----------------------------------------------------------- |
+| `--config   `   | Path to the configuration file                               | string[]   | [Default Configs](https://webpack.js.org/api/cli/#default-configurations) |
+| `--config-name` | Name of the configuration to use                             | string[]   | -                                                            |
+| `--env`         | Environment passed to the configuration, when it is a function | string[]   | -                                                            |
+
+##### Analyzing Bundle
+
+You can also use `webpack-bundle-analyzer` to analyze your output bundles emitted by webpack. You <font color=red>can use **`--analyze` flag** to invoke it via CLI</font>.
+
+```bash
+npx webpack --analyze      
+```
+
+> ⚠️ Warning : Make sure you have `webpack-bundle-analyzer` installed in your project <mark>else CLI will prompt you to install it</mark>.
+
+##### Progress
+
+To <font color=dodgerBlue>check</font>（查看） <font color=dodgerBlue>the progress of any webpack compilation</font> you can use the `--progress` flag.
+
+```bash
+npx webpack --progress
+```
+
+To <font color=dodgerblue>collect profile data for progress steps</font> you can pass `profile` as value to `--progress` flag.
+
+```bash
+npx webpack --progress=profile
+```
+
+##### Pass CLI arguments to Node.js
+
+<font color=dodgerBlue>**To pass arguments directly to Node.js process, you can use the `NODE_OPTIONS` option**</font>.
+
+For example, to <font color=red>increase the memory limit of Node.js process to 4 GB</font>
+
+```bash
+NODE_OPTIONS="--max-old-space-size=4096" webpack
+```
+
+Also, you <font color=dodgerBlue>can pass multiple options to Node.js process</font>
+
+```bash
+NODE_OPTIONS="--max-old-space-size=4096 -r /path/to/preload/file.js" webpack
+```
+
+##### Exit codes and their meanings
+
+| Exit Code | Description                                                  |
+| :-------- | :----------------------------------------------------------- |
+| `0`       | Success                                                      |
+| `1`       | Errors from webpack                                          |
+| `2`       | <font color=red>Configuration/options problem or an internal error</font> |
+
+##### CLI Environment Variables
+
+> 👀 注：虽然应该会很少用到，但还是有必要关注下。
+
+| Environment Variable                                         | Description                                                  |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| `WEBPACK_CLI_SKIP_IMPORT_LOCAL`                              | when `true` it will skip using the local instance of `webpack-cli   `. |
+| `WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG`                          | when `true` it will force load the ESM config.               |
+| [`WEBPACK_PACKAGE`](https://webpack.js.org/api/cli/#webpack_package) | <font color=red>Use a custom webpack version in CLI</font>.  |
+| `WEBPACK_DEV_SERVER_PACKAGE`                                 | <font color=red>Use a custom webpack-dev-server version in CLI</font>. |
+| `WEBPACK_CLI_HELP_WIDTH`                                     | Use a custom width for help output.（译：用于帮助输出的自定义宽度。👀命令行中） |
+
+```bash
+WEBPACK_CLI_FORCE_LOAD_ESM_CONFIG=true npx webpack --config ./webpack.config.esm
+```
+
+###### WEBPACK_PACKAGE
+
+Use a custom webpack version in CLI . Considering the following content in your `package.json` :
+
+```json
+{
+  "webpack": "^4.0.0",
+  "webpack-5": "npm:webpack@^5.32.0",
+  "webpack-cli": "^4.5.0"
+}
+```
+
+To use `webpack v4.0.0` :
+
+```bash
+npx webpack
+```
+
+<font color=dodgerBlue>To use `webpack v5.32.0`</font> :
+
+```bash
+WEBPACK_PACKAGE=webpack-5 npx webpack
+```
+
+##### Troubleshooting
+
+***TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension ".ts" for ./webpack.config.ts***
+
+You might <font color=red>encounter this error in the case of using native ESM in **TypeScript**</font> ( i.e. `type: "module"` in `package.json` ).
+
+<font color=red>**`webpack-cli` supports configuration in both `CommonJS` and `ESM` format**</font> , <font color=fuchsia>**at first** it tries to load a configuration using `require()`</font> , <font color=fuchsia>once it fails with an error code of `'ERR_REQUIRE_ESM'`</font> ( a special code for this case ) <font color=fuchsia>it would try to load the configuration using `import()`</font> . However, the `import()` method won't work with `ts-node` without [loader hooks](https://nodejs.org/api/esm.html#esm_experimental_loaders) enabled (described at [`TypeStrong/ts-node#1007`](https://github.com/TypeStrong/ts-node/issues/1007) ) .
+
+<font color=dodgerBlue>**To fix the error above use the following command**</font>:
+
+```bash
+NODE_OPTIONS="--loader ts-node/esm" npx webpack --entry ./src/index.js --mode production
+```
+
+For more information, see our documentation on [writing a webpack configuration in `TypeScript`](https://webpack.js.org/configuration/configuration-languages/#typescript).
+
 摘自：[webpack doc - API - Command Line Interface](https://webpack.js.org/api/cli/)
+
+
+
+#### Node Interface
+
+Webpack provides a Node.js API which can be used directly in Node.js runtime.
+
+The Node.js API is useful in scenarios in which you need to customize the build or development process since all the reporting and error handling must be done manually and webpack only does the compiling part. For this reason the [`stats`](https://webpack.js.org/configuration/stats) configuration options will not have any effect in the `webpack()` call.
+
+摘自：[webpack doc - API - Node Interface](https://webpack.js.org/api/node/)
 
 
 
@@ -6004,7 +6178,7 @@ In some setups, watching falls back to polling mode. With many watched files , t
 
 ###### stats.toJson speed
 
-<mark>Webpack 4 outputs a large amount of data with its `stats.toJson()` by default</mark>（ **注：**stats 是 statistics 的简写 ）. Avoid retrieving portions of the `stats` object unless necessary in the incremental step. `webpack-dev-server` after v3.1.3 contained a substantial performance fix to minimize the amount of data retrieved from the `stats` object per incremental build step.
+<mark>Webpack 4 outputs a large amount of data with its `stats.toJson()` by default</mark>（ 👀 注：stats 是 statistics 的简写 ）. Avoid retrieving portions of the `stats` object unless necessary in the incremental step. `webpack-dev-server` after v3.1.3 contained a substantial performance fix to minimize the amount of data retrieved from the `stats` object per incremental build step.
 
 ###### Devtool
 
