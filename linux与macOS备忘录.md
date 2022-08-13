@@ -293,7 +293,9 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 
 
 
-#### Mac 自带截图，如何去除影印
+#### Mac 用命令行进行设置
+
+##### Mac 自带截图，如何去除影印
 
 ```sh
 # 去阴影
@@ -301,6 +303,10 @@ defaults write com.apple.screencapture disable-shadow -bool TRUE
 # 有阴影
 defaults write com.apple.screencapture disable-shadow -bool FALSE
 ```
+
+##### 更多的设置
+
+更多的设置，参见：https://github.com/mathiasbynens/dotfiles/blob/main/.macos
 
 
 

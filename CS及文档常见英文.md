@@ -191,6 +191,7 @@
 
 - **histogram**：直方图
 - **omnibox**：地址栏
+- **ultimate**：一般的含义是 “最终的”。不过这里要注意的是，还有 “**最后的**” 的意思。来自：“The `Compiler` is **ultimately** a function which performs bare minimum functionality to keep a lifecycle running.”
 
 
 #### 特殊字符
