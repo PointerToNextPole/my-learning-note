@@ -3,21 +3,13 @@
 ### 通用
 
 - **synchronous**： 同步
-
 - **asynchronous**：异步
-
 - **compatibility**：兼容性。compat：兼容 ( verb )
-
 - **shortcut**：快捷方式，近道
-
 - **out of the box**：开箱即用
-
 - **built-in**：内置
-
 - **addon**：插件。来自 “node-gyp is a cross-platform command-line tool written in Node.js for compiling native addon modules for Node.js”
-
 - **on the fly**：即时，在运行时（热更新）。参考：[如何优雅的翻译 on the fly ？ - 知乎](https://www.zhihu.com/question/21136587)
-
 - **pros and cons**：利弊
 
 - **overhead**：开销（和性能相关）
@@ -68,7 +60,7 @@
 
 - **arithmetic**：算术
 
-- **in lieu in**：替代
+- **in lieu of**：替代
 
 - **omit**：删除、省略
 
@@ -183,15 +175,16 @@
 - **profile**：剖析 ( verb )。来自 “ It is especially useful in the case of early prototyping and **profiling**.  ”
 
 - **scaffold**：脚手架
-
 - **negate**：否定。**negated**：否定的。参考记忆，可以根据 negative
-
 - **as of**：截止，从 ... 开始
-
-
 - **histogram**：直方图
 - **omnibox**：地址栏
-- **ultimate**：一般的含义是 “最终的”。不过这里要注意的是，还有 “**最后的**” 的意思。来自：“The `Compiler` is **ultimately** a function which performs bare minimum functionality to keep a lifecycle running.”
+- **ultimate**：一般的含义是 “最终的，最后的”。不过这里要注意的是，还有 “基本的” 的意思。来自：“The `Compiler` is **ultimately** a function which performs bare minimum functionality to keep a lifecycle running.”
+- **kickstart**：启动
+- **consumable**：易于使用的
+- **dispose**：处置
+- **reversible**：可逆转的。**irreversible**：不可逆转的
+- **idle**：空闲的，闲置的
 
 
 #### 特殊字符

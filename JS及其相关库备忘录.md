@@ -3322,7 +3322,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                 
+  >                                                                                                                                                                   
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3341,7 +3341,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                 
+  >                                                                                                                                                                   
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -8225,7 +8225,7 @@ measure(measureName, startMark)
 measure(measureName, startMark, endMark)
 ```
 
-参数：略，详见：[MDN - performance.measure() - en-US](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 。不过，值得说一下的是：startMark 和 endMark 也是可以 performance.timing 中的值，详见： [[[#PerformanceTiming]]]
+参数：略，详见：[MDN - performance.measure() - en-US](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 。不过，值得说一下的是：startMark 和 endMark 也是可以 performance.timing 中的值，详见： [[#PerformanceTiming]]
 
 摘自：[MDN - performance.measure()](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 不过，中文版的内容和美版不一样，少了很多内容，建议看：[MDN - performance.measure() - en-US](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 
 

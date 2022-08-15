@@ -853,7 +853,7 @@ example
 npx webpack watch --mode development
 ```
 
-#### Flags
+##### Flags
 
 <font color=fuchsia>**By default** webpack ships with the following flags</font> :
 
@@ -1264,11 +1264,628 @@ For more information, see our documentation on [writing a webpack configuration 
 
 #### Node Interface
 
-Webpack provides a Node.js API which can be used directly in Node.js runtime.
+<font color=dodgerblue>Webpack **provides a Node.js API** which **can be used directly in Node.js runtime**</font>.
 
-The Node.js API is useful in scenarios in which you need to customize the build or development process since all the reporting and error handling must be done manually and webpack only does the compiling part. For this reason the [`stats`](https://webpack.js.org/configuration/stats) configuration options will not have any effect in the `webpack()` call.
+The Node.js API is useful in scenarios in which <font color=dodgerBlue>you need to customize the build or development process</font> since <font color=fuchsia>all the reporting and error handling **must be done manually**</font> and <font color=fuchsia>webpack <font size=4>**only**</font> does the compiling part</font>. For this reason the [`stats`](https://webpack.js.org/configuration/stats) configuration options will not have any effect in the `webpack()` call.
+
+##### webpack()
+
+The imported <font color=fuchsia>`webpack` function is fed</font>（传递） <font color=fuchsia>a webpack [Configuration Object](https://webpack.js.org/configuration/)</font> and <font color=fuchsia>runs the webpack compiler **if a callback function is provided**</font>（👀 下面也会有 没传递 callback 的情况，见 [[#Compiler Instance]]）:
+
+```js
+const webpack = require('webpack');
+
+// 👀 注：一共两个参数，一个参数是配置，另一个是 callback
+webpack({
+  // [Configuration Object](/configuration/)
+}, (err, stats) => { // [Stats Object](#stats-object)
+  if (err || stats.hasErrors()) {
+    // [Handle errors here](#error-handling)
+  }
+  // Done processing // 👀 注：在确保 config 没有错误后（错误被处理后），继续操作
+});
+```
+
+> 💡 **Tip** : The `err` object **will not** include compilation errors. Those <font color=red>must be handled separately using `stats.hasErrors()`</font> , which will be covered in detail in the [Error Handling](https://webpack.js.org/api/node/#error-handling) section of this guide. The `err` object will only contain webpack-related issues, such as misconfiguration, etc.
+
+> 💡 **Tip** : <font color=fuchsia>You can provide the `webpack` function **with an array of configurations**</font>. See the [MultiCompiler](https://webpack.js.org/api/node/#multicompiler) section below for more information. 👀 注：在 [[#MultiCompiler]] 有笔记
+
+##### Compiler Instance
+
+If you <font color=dodgerBlue>don’t pass the **`webpack` runner function**</font>（即 `webpack()` ）<font color=dodgerBlue> a callback</font> , <font color=fuchsia>it will **return a webpack `Compiler` instance**</font>. **This instance can be used to <font color=fuchsia>manually trigger the webpack runner</font>** or <font color=red>have it build and watch for changes</font>（为它的构建时添加一个监听器） , much like the [CLI](https://webpack.js.org/api/cli/). <font color=dodgerBlue>The `Compiler` instance provides the following methods</font>:
+
+- `.run(callback)` 👀 注：详见 [[#Run]]
+- `.watch(watchOptions, handler)` 👀 注：详见 [[]]
+
+Typically , <font color=red>only one master `Compiler` instance is created</font> , although child compilers can be created in order to delegate specific tasks. The `Compiler` is ultimately a function which <font color=red>performs bare minimum functionality to keep a lifecycle running</font>（译： 编译器基本上只是执行最低限度的功能，以维持生命周期运行的功能）. It delegates all the loading , bundling , and writing work（写入工作） to registered plugins.
+
+<font color=dodgerBlue>The **`hooks` property** on a `Compiler` instance is used to</font> <font color=red>**register a plugin** to any hook event in the `Compiler` 's lifecycle</font>. The <font color=red>[`WebpackOptionsDefaulter`](https://github.com/webpack/webpack/blob/master/lib/WebpackOptionsDefaulter.js) and [`WebpackOptionsApply`](https://github.com/webpack/webpack/blob/master/lib/WebpackOptionsApply.js) utilities are used by webpack to **configure its `Compiler` instance with all the built-in plugins**</font>.
+
+<font color=dodgerBlue>The **`run` method**</font> is <font color=fuchsia>**then** used to kickstart</font>（启动） <font color=fuchsia>all compilation work</font>. Upon completion（👀 注：run 方法完成后）, the given `callback` function is executed. The final logging of stats and errors should be done in this `callback` function.
+
+> ⚠️ **Warning** : <font color=red>The API only supports a single concurrent compilation at a time</font>（这个 API 一次只支持一个并发的编译）. <font color=fuchsia>When using `run` or `watch` , **call `close` and wait for it to finish before calling `run` or `watch` again**</font>（👀 注：在 运行 run 或 watch 之后，需要及时 close，再调用下一个 run 或 watch；也可见 [[#Run]] 和 [[#Watching#Close `Watching`]]中的 “Warning” ）. <font color=red>Concurrent compilations will corrupt the output files</font>.
+
+##### Run
+
+Calling the `run` method on the `Compiler` instance is much like the quick run method mentioned above:
+
+```js
+const webpack = require('webpack');
+
+const compiler = webpack({
+  // [Configuration Object](/configuration/)
+}); // 👀 注：没有 callback
+
+compiler.run((err, stats) => { // [Stats Object](#stats-object)
+  // ...
+  compiler.close((closeErr) => { // 👀 注：这个是要调用的
+    // ...
+  });
+});
+```
+
+> ⚠️ **Warning** : <font color=fuchsia size=4>**Don't forget to close the compiler**</font>, so that low-priority work ( like persistent caching ) have the opportunity to complete.
+
+##### Watching
+
+Calling the `watch` method triggers the webpack runner, but <font color=red>then watches for changes</font> (<font color=red>**much like CLI: `webpack --watch`**</font> ) , as soon as webpack detects a change, runs again. <font color=red>Returns an instance of `Watching`</font> .
+
+```js
+watch(watchOptions, callback);
+```
+
+```js
+const webpack = require('webpack');
+
+const compiler = webpack({
+  // [Configuration Object](/configuration/)
+});
+
+const watching = compiler.watch({
+  // Example [watchOptions](/configuration/watch/#watchoptions)
+  aggregateTimeout: 300,
+  poll: undefined
+}, (err, stats) => { // [Stats Object](#stats-object)
+  // Print watch/build result here...
+  console.log(stats);
+});
+```
+
+`Watching` options are covered in detail [here](https://webpack.js.org/configuration/watch/#watchoptions) .
+
+> ⚠️ **Warning** : Filesystem inaccuracies（不正确） may <font color=red>**trigger multiple builds for a single change**</font>. In the example above, <font color=red>the `console.log` statement may fire multiple times for a single modification</font>. Users should expect this behavior and may check `stats.hash` to see if the file hash has actually changed.
+
+###### Close `Watching`
+
+The `watch` method <font color=red>returns a `Watching` instance that exposes `.close(callback)` method</font>. Calling this method will end watching :
+
+```js
+watching.close((closeErr) => {
+  console.log('Watching Ended.');
+});
+```
+
+> ⚠️ **Warning** : <font color=fuchsia>It’s **not allowed to watch or run again before the existing watcher has been closed or invalidated**</font>（ 👀 注：invalidate 见下面 [[#Invalidate `Watching`]] ）.
+
+###### Invalidate `Watching`
+
+Using `watching.invalidate` , you can <font color=red>**manually invalidate** the current compiling round</font>（编译循环）, <font color=red>without stopping the watch process</font>:
+
+```js
+watching.invalidate();
+```
+
+##### Stats Object
+
+<font color=dodgerBlue>The `stats` object that is passed as a **second argument** of the [`webpack()`](https://webpack.js.org/api/node/#webpack) callback</font>（即：`(err, stats) => {}` 中的 stats ）, is a good source of information about the code compilation process. It includes:
+
+- Errors and Warnings (if any)
+- Timings
+- Module and Chunk information
+
+The [webpack CLI](https://webpack.js.org/api/cli) <font color=red>uses this information to display nicely formatted output in your console</font>.
+
+> 👀 Tip : <font color=red>When using the [`MultiCompiler`](https://webpack.js.org/api/node/#multicompiler) , a `MultiStats` instance is returned that fulfills the same interface as `stats`</font> , i.e. the methods described below.
+
+<font color=dodgerBlue>This `stats` object exposes the following methods:</font>
+
+- **stats.hasErrors()** : Can be used to **check if there were errors** while compiling. Returns `true` or `false`.
+
+- **stats.hasWarnings()** : Can be used to **check if there were warnings** while compiling. Returns `true` or `false`.
+
+- **stats.toJson(options)** : <font color=red>Returns compilation information as a **JSON** object</font>. `options` can be either a string (a preset) or an object <font color=red>for more granular control</font>:
+
+  ```js
+  stats.toJson('minimal'); // [more options: 'verbose', etc](/configuration/stats).
+  stats.toJson({
+    assets: false,
+    hash: true,
+  });
+  ```
+
+  **All available options and presets** are described in the stats [documentation](https://webpack.js.org/configuration/stats) .
+
+- **stats.toString(options)** : <font color=red>Returns a formatted **string** of the compilation information</font> (similar to [CLI](https://webpack.js.org/api/cli) output).
+
+  Options are the same as [`stats.toJson(options)`](https://webpack.js.org/api/node/#statstojsonoptions) with one addition:
+
+  ```js
+  stats.toString({
+    // Add console colors
+    colors: true,
+  });
+  ```
+
+  Here’s an example of `stats.toString()` usage:
+
+  ```js
+  const webpack = require('webpack');
+  
+  webpack({
+    // [Configuration Object](/configuration/)
+  }, (err, stats) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+  
+    console.log(stats.toString({
+      chunks: false,  // Makes the build much quieter
+      colors: true    // Shows colors in the console
+    }));
+  });
+  ```
+
+##### MultiCompiler
+
+<font color=dodgerBlue>The `MultiCompiler` module allows webpack to **run multiple configurations in separate compilers**</font>. If the <font color=red>`options` parameter</font> in the webpack's NodeJS api <font color=red>**is an array of options**</font>, <font color=fuchsia>webpack **applies separate compilers**</font> and <font color=fuchsia>calls the `callback` **after all compilers have been executed**</font>.
+
+```js
+var webpack = require('webpack');
+
+webpack([
+  { entry: './index1.js', output: { filename: 'bundle1.js' } },
+  { entry: './index2.js', output: { filename: 'bundle2.js' } }
+], (err, stats) => { // [Stats Object](#stats-object)
+  process.stdout.write(stats.toString() + '\n');
+})
+```
+
+> ⚠️ **Warning** : <font color=fuchsia>Multiple configurations will <font size=4>**not be run in parallel**</font></font>. <font color=red>Each configuration is **only processed after the previous one has finished processing**</font> .
+
+##### Error Handling
+
+<font color=dodgerBlue>For good error handling , you need to account for</font>（考虑） <font color=dodgerBlue>these three types of errors</font>:
+
+- Fatal webpack errors (wrong configuration, etc)
+- Compilation errors (missing modules, syntax errors, etc)
+- Compilation warnings
+
+Here’s an example that does all that :
+
+```js
+const webpack = require('webpack');
+
+webpack({
+  // [Configuration Object](/configuration/)
+}, (err, stats) => {
+  if (err) {
+    console.error(err.stack || err);
+    if (err.details) { console.error(err.details); }
+    return;
+  }
+
+  const info = stats.toJson();
+  if (stats.hasErrors()) { console.error(info.errors); } // 👀 hasError
+  if (stats.hasWarnings()) { console.warn(info.warnings); } // 👀 hasWarning
+  // Log result...
+});
+```
+
+##### Custom File Systems
+
+<font color=red>**By default** , webpack reads files and writes files to disk **using a normal file system**</font>. However, <font color=dodgerBlue>it is possible to change the input or output behavior using a different kind of file system ( memory , webDAV , etc )</font>. <font color=red>To accomplish this, one can change the `inputFileSystem` or `outputFileSystem`</font> . For example, you can replace the default `outputFileSystem` with [`memfs`](https://github.com/streamich/memfs) to write files to memory instead of to disk:
+
+```js
+const { createFsFromVolume, Volume } = require('memfs');
+const webpack = require('webpack');
+
+const fs = createFsFromVolume(new Volume()); // 👀
+const compiler = webpack({ /* options */ });
+
+compiler.outputFileSystem = fs;
+compiler.run((err, stats) => {
+  // Read the output later:
+  const content = fs.readFileSync('...');
+  compiler.close((closeErr) => { /* ... */ });
+});
+```
+
+Note that <font color=red>this is what [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware) , used by [webpack-dev-server](https://github.com/webpack/webpack-dev-server) and many other packages, uses to mysteriously hide your files but continue serving them up to the browser</font>! 
+
+> 🌏 译：被 [webpack-dev-server](https://github.com/webpack/webpack-dev-server) 及众多其他包依赖的 [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware) 就是通过这种方式， 将你的文件神秘地隐藏起来，但却仍然可以用它们为浏览器提供服务！
+
+> 💡 **Tip** : The output file system you provide needs to be compatible with Node’s own [`fs`](https://nodejs.org/api/fs.html) interface , which requires the `mkdirp` and `join` helper methods.
 
 摘自：[webpack doc - API - Node Interface](https://webpack.js.org/api/node/)
+
+
+
+#### Stats Data
+
+<font color=dodgerBlue>When **compiling source code with webpack** , users can **generate a JSON file containing statistics about modules**</font>. These <font color=red>statistics can be used to **analyze an application's dependency graph** as well as to **optimize compilation speed**</font>. The file is typically generated with the following CLI command:
+
+```bash
+npx webpack --profile --json=compilation-stats.json
+```
+
+The **`--json=compilation-stats.json` flag** indicates to webpack that it <font color=red>should emit the `compilation-stats.json`</font> **containing the dependency graph and various other build information**. Typically, the `--profile` flag is also added so that a `profile` section is added to each [`modules` object](https://webpack.js.org/api/stats/#module-objects) containing module-specific compilation stats（ 🌏 译：`--profile` 标志也会被添加，这样的话每个 `module` objects 都会增加一个 `profile` 部分，它包含了特定模块的统计信息）.
+
+> 👀 注：下面还有更多内容，不过都是配置的说明，暂时用不到，用到了在来查阅；这里略。
+
+摘自：[webpack doc - API - Stats Data](https://webpack.js.org/api/stats/)
+
+
+
+#### webpack-dev-server API
+
+`webpack-dev-server` <font color=red>provides a Node.js API which **can be used directly in Node.js runtime**</font> .
+
+> 👀 注：下面说的都是 webpack-dev-server 下面的 API，即 WebpackDevServer 实例的方法
+
+##### start
+
+It instructs（指派） `webpack-dev-server` instance to <font color=red>**start the server**</font>.
+
+```js
+// server.js
+const Webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
+const webpackConfig = require('./webpack.config.js'); // 👀 webpack.config.js 导出的对象
+
+const compiler = Webpack(webpackConfig); // 👀 webpack 方法，前面 Node Interface 讲过
+const devServerOptions = { ...webpackConfig.devServer, open: true }; // 👀 webpack.config.js 中的 devServer
+const server = new WebpackDevServer(devServerOptions, compiler); // 
+
+const runServer = async () => {
+  console.log('Starting server...');
+  await server.start();
+};
+
+runServer();
+```
+
+And then run the server with the following command:
+
+```bash
+node server.js
+```
+
+##### startCallback(callback)
+
+It instructs `webpack-dev-server` instance to <font color=red>**start the server** and **then run the callback function**</font>.
+
+```js
+// server.js
+// 到 const server = ... 都和 start 一样，略。
+
+server.startCallback(() => {
+  console.log('Successfully started server on http://localhost:8080');
+});
+```
+
+And then run the server with the following command:
+
+```bash
+node server.js
+```
+
+##### stop
+
+It instructs `webpack-dev-server` instance to <font color=red>stop the server</font>.
+
+```js
+// server.js
+// 到 const server = ... 都和 start 一样，略。
+
+const runServer = async () => {
+  console.log('Starting server...');
+  await server.start();
+};
+
+const stopServer = async () => {
+  console.log('Stopping server...');
+  await server.stop();
+};
+
+runServer();
+setTimeout(stopServer, 5000);
+```
+
+And then run the server with the following command:
+
+```bash
+node server.js
+```
+
+##### stopCallback(callback)
+
+It instructs `webpack-dev-server` instance to <font color=red>**stop the server** and **then run the callback function**</font>.
+
+```js
+// server.js
+// 到 const server = ... 都和 start 一样，略。
+
+server.startCallback(() => { 
+  console.log('Successfully started server on http://localhost:8080'); 
+});
+const stopServer = () => server.stopCallback(
+  () => { console.log('Server stopped.'); }
+);
+
+setTimeout(stopServer, 5000);
+```
+
+And then run the server with the following command:
+
+```bash
+node server.js
+```
+
+##### internalIP(family: "v4" | "v6")
+
+Returns the internal `IPv4` / `IPv6` address <font color=fuchsia>**asynchronously**</font> .
+
+````js
+// server.js
+const WebpackDevServer = require('webpack-dev-server');
+
+const logInternalIPs = async () => {
+  const localIPv4 = await WebpackDevServer.internalIP('v4');
+  const localIPv6 = await WebpackDevServer.internalIP('v6');
+  
+  console.log('Local IPv4 address:', localIPv4);
+  console.log('Local IPv6 address:', localIPv6);
+};
+
+logInternalIPs();
+````
+
+##### internalIPSync(family: "v4" | "v6")
+
+Returns the internal `IPv4` / `IPv6` address <font color=red>**synchronously**</font> .
+
+```js
+// server.js
+const WebpackDevServer = require('webpack-dev-server');
+
+const localIPv4 = WebpackDevServer.internalIPSync('v4');
+const localIPv6 = WebpackDevServer.internalIPSync('v6');
+
+console.log('Local IPv4 address:', localIPv4);
+console.log('Local IPv6 address:', localIPv6);
+```
+
+摘自：[webpack doc - API - webpack-dev-server API](https://webpack.js.org/api/webpack-dev-server/)
+
+
+
+#### Hot Module Replacement
+
+> 👀 注：这部分内容有点难以理解，比如状态、bubble 之类，可以参考 [[#HMR Concepts 笔记]]
+
+<font color=dodgerBlue>If Hot Module Replacement has been enabled via the `HotModuleReplacementPlugin`</font> , <font color=red>**its interface will be exposed under the** [`module.hot`](https://webpack.js.org/api/module-variables/#modulehot-webpack-specific) property as well as [`import.meta.webpackHot`](https://webpack.js.org/api/module-variables/#importmetawebpackhot) property</font>. ⚠️ Note that <font color=red>only `import.meta.webpackHot` can be used in [strict ESM](https://webpack.js.org/guides/ecma-script-modules/#flagging-modules-as-esm)</font> .
+
+Typically , users will check to see if the interface is accessible, then begin working with it. As an example, <font color=red>here's how you might `accept` an updated module</font>:
+
+```js
+if (module.hot) {
+  module.hot.accept('./library.js', function () {
+    // Do something with the updated library module ...
+  });
+}
+
+// or
+if (import.meta.webpackHot) {
+  import.meta.webpackHot.accept('./library.js', function () {
+    // Do something with the updated library module ...
+  });
+}
+```
+
+The following methods are supported...
+
+##### Module API
+
+###### accept
+
+> 👀 注：`module.hot.accept` 是一个比较常用的方法，值得关注。在 [[Vue3 + TS 学习笔记#如何使用 HMR？]] 中也有相关内容。另外，与之 `module.hot.accept` 相反的是 `module.hot.decline` ，表示 “拒绝给相关依赖进行 **HMR** 更新”；参见 [[#Module API#decline]]，以及它最后的 “full-re”
+
+<font color=red>Accept **updates** for the given `dependencies`</font> and <font color=red>fire a `callback` to react</font>（反应，响应） <font color=red>to those updates</font> , in addition, you can <font color=red>attach an **optional** error handler</font>（即 `errorHandler` ）:
+
+```js
+module.hot.accept(
+  dependencies, // Either **a string** or **an array of strings**
+  callback, // Function to fire when the dependencies are updated
+  errorHandler // (err, {moduleId, dependencyId}) => {}
+);
+
+// or
+import.meta.webpackHot.accept(
+  dependencies, // Either a string or an array of strings
+  callback, // Function to fire when the dependencies are updated
+  errorHandler // (err, {moduleId, dependencyId}) => {}
+);
+```
+
+<font color=dodgerBlue>When using ESM `import`</font> <font color=red>all **imported symbols** from `dependencies` are **automatically updated**</font>. Note: The dependency string must **match exactly** with the `from` string in the `import`. <font color=LightSeaGreen>In some cases `callback` can even be **omitted**</font>. <font color=red>Using `require()` in the `callback` doesn't make sense here</font>（👀 注：here 指的是 ESM 的情况下）.
+
+When using CommonJS you need to update dependencies manually by using `require()` in the `callback`. <font color=LightSeaGreen>Omitting the `callback` **doesn't make sense** here</font>.
+
+**errorHandler for accept**
+
+```js
+( err, {moduleId, dependencyId} ) => {}
+```
+
+- **err** : the error thrown by <font color=red>the callback **in second argument** or **during dependency execution when using ESM dependencies**</font>.
+- **moduleId** : the current module id.
+- **dependencyId** : <font color=red>the module id of the ( first ) changed dependency</font>.
+
+###### accept (self)
+
+Accept updates for itself（👀 注：即不会向上（父级）传递，下面的 `decline(self)` 同理 ）.
+
+```js
+module.hot.accept(
+  errorHandler // Function to handle errors **when evaluating the new version**
+);
+
+// or
+import.meta.webpackHot.accept(
+  errorHandler // Function to handle errors when evaluating the new version
+);
+```
+
+<font color=dodgerBlue>When **this** module or dependencies are updated</font>, <font color=red>**this** module can be disposed</font>（处置） <font color=red>and re-evaluated **without informing parents**</font>. <font color=fuchsia>This makes sense **if this module has no exports**</font> ( or exports are updated in another way ) .
+
+The `errorHandler` is <font color=red>fired when the **evaluation of this module** ( or dependencies ) **has thrown an exception**</font>.
+
+**errorHandler for self accept**
+
+```js
+( err, { moduleId, module } ) => {}
+```
+
+- **err** : the error when evaluating the new version （🌏 译：计算新版本时的错误 ）.
+- **moduleId** : the current module id.
+- **module** : the current module instance.
+  - **module.hot** : allow to use the HMR API of the errored module instance（🌏 译：允许访问出错模块实例的 HMR API ）. A common scenario is to <font color=red>self accept it again</font>（再次自我接收）. It also makes sense to add a dispose handler to pass data along. ⚠️ Note that <font color=red>the errored module **might be already partially executed**</font>, so make sure to **not get into a inconsistent**（不一致）**state**. <font color=red>You can use `module.hot.data` to store partial state</font>.
+  - **module.exports** : can be overridden, but <font color=red>**be careful**</font> since <font color=red>property names might be mangled</font>（破坏）<font color=red>in production mode</font>.
+
+###### decline
+
+<font color=red>**Reject updates** for the given `dependencies` **forcing the update to fail** with a `'decline'` code</font> （🌏 译：拒绝给定 “依赖模块” 的 HMR 更新，使用 `'decline'` 方法强制更新失败）.
+
+```js
+module.hot.decline(
+  dependencies // Either a string or an array of strings
+);
+
+// or
+import.meta.webpackHot.decline(
+  dependencies // Either a string or an array of strings
+);
+```
+
+<font color=red>Flag a dependency as not-update-able</font>. This <font color=LightSeaGreen>**makes sense when** changing exports of this dependency can't be handled or handling is not implemented yet</font>. Depending on your HMR management code, <font color=fuchsia>an update to these dependencies</font> ( or unaccepted dependencies of it ) <font color=fuchsia>**usually causes a <font size=4>full-reload of the page</font>**</font> .
+
+###### decline (self)
+
+Reject updates for itself.
+
+```js
+module.hot.decline();
+
+// or
+import.meta.webpackHot.decline();
+```
+
+Flag this module as not-update-able. This **makes sense when** <font color=fuchsia>this module has irreversible</font>（不可逆转的） <font color=fuchsia>side-effects</font>, <font color=fuchsia>or HMR handling is not implemented for this module yet</font>. Depending on your HMR management code, an update to this module (or unaccepted dependencies) usually <font color=fuchsia>**causes a full-reload of the page**</font>.
+
+###### dispose (or addDisposeHandler)
+
+<font color=red>Add a handler which is **executed when the current module code is replaced**</font>. This（该方法） should <font color=red>be used to remove any persistent resource you have claimed or created</font>. If you want to transfer state to the updated module , <font color=LightSeaGreen>add it to the given `data` parameter</font>. <font color=red>This object will be available at `module.hot.data` after the update</font>.
+
+```js
+module.hot.dispose((data) => {
+  // Clean up and pass data to the updated module...
+});
+
+// or
+import.meta.webpackHot.dispose((data) => {
+  // Clean up and pass data to the updated module...
+});
+```
+
+###### invalidate
+
+<font color=red>Calling this method will **invalidate the current module** , which **disposes and recreates it when the HMR update is applied**</font>. This bubbles like a normal update of this module（👀 注：这里的 bubble 和一般理解相同，更新会向上（父级）传递）. <font color=LightSeaGreen>`invalidate` can't be self-accepted by this module</font>.
+
+When called during the <font color=dodgerBlue size=4>**`idle`**</font>（空闲的）state , <font color=fuchsia>**a new HMR update** will **be created containing this module**</font>. <font color=red>**HMR will enter the <font size=4>`ready`</font> state**</font>.
+
+When called during the <font color=dodgerBlue size=4>**`ready`**</font> or <font color=dodgerBlue size=4>**`prepare`**</font> state , this <font color=fuchsia>**module will be added to the current HMR update**</font>.
+
+When called during the <font color=dodgerBlue size=4>**`check`**</font> state , this <font color=fuchsia>module will be added to the update **when an update is available**</font>. <font color=red>If no update is available</font> <font color=fuchsia>it **will create a new update**</font>. <font color=fuchsia>HMR will enter the <font size=4>**`ready`**</font> state</font>.
+
+When called during the <font color=dodgerBlue size=4>**`dispose`**</font> or <font color=dodgerBlue size=4>**`apply`**</font> state , HMR will pick it up after getting out of those states（🌏 译：HMR 将在退出这些状态后将其拾取。👀 注：没搞懂什么意思...）.
+
+###### Use Cases
+
+**Conditional Accepting** ：有条件的“接受”
+
+A module can accept a dependency , but <font color=red>can call `invalidate` **when the change of the dependency is not handleable**</font>:
+
+```js
+import { x, y } from './dep';
+import { processX, processY } from 'anotherDep';
+
+const oldY = y;
+
+processX(x);
+export default processY(y);
+
+module.hot.accept('./dep', () => {
+  if (y !== oldY) {
+    // This can't be handled, bubble to parent
+    module.hot.invalidate();
+    return;
+  }
+  // This can be handled
+  processX(x);
+});
+```
+
+**Conditional self accept**：有条件的“自我接受”
+
+A module can self-accept itself, but <font color=red>can **invalidate itself** when the change is not handleable</font>:
+
+```javascript
+const VALUE = 'constant';
+
+export default VALUE;
+
+if (
+  module.hot.data &&
+  module.hot.data.value &&
+  module.hot.data.value !== VALUE
+) {
+  module.hot.invalidate();
+} else {
+  module.hot.dispose((data) => {
+    data.value = VALUE;
+  });
+  module.hot.accept();
+}
+```
+
+**Triggering custom HMR updates**：触发自定义的 HMR 更新
+
+```javascript
+const moduleId = chooseAModule();
+const code = __webpack_modules__[moduleId].toString(); // 👀 TODO 在 Module Variables 中有介绍
+__webpack_modules__[moduleId] = eval(`(${makeChanges(code)})`);
+if (require.cache[moduleId]) {
+  require.cache[moduleId].hot.invalidate();
+  module.hot.apply();
+}
+```
+
+> 💡 **Tip** : <font color=dodgerBlue>When `invalidate` is called</font> , <font color=fuchsia>the `dispose` handler will be eventually called</font> and fill（填充） `module.hot.data` （ 👀 注：`module.hot.dispose((data) => {})` ）. <font color=dodgerBlue>If `dispose` handler is not registered</font> , an empty object will be supplied to `module.hot.data` .
+
+> ⚠️ **Warning** : Do not <font color=red>get caught</font>（陷入）<font color=red>in an `invalidate` loop</font> , <font color=red>by calling `invalidate` again and again</font>. This will result in stack overflow and HMR entering the `fail` state.
+
+摘自：[webpack doc - API - Hot Module Replacement](https://webpack.js.org/api/hot-module-replacement/)
 
 
 
@@ -3372,7 +3989,7 @@ There are many other loaders and examples out in the community to make HMR inter
 
 
 
-#### HMR Concepts
+#### HMR Concepts 笔记
 
 ##### 在应用程序中
 
@@ -3414,11 +4031,7 @@ Afterwards, all invalid modules are disposed （处理） (via the dispose handl
 
 摘自：[webpack 文档 - Concept - Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/)
 
-//TODO 阅读：
-
-https://webpack.js.org/api/hot-module-replacement/（ HMR 除了accept 方法外还有什么方法）
-
-https://webpack.js.org/plugins/hot-module-replacement-plugin/
+//TODO 阅读：https://webpack.js.org/plugins/hot-module-replacement-plugin/
 
 
 
@@ -4664,7 +5277,7 @@ Only the "default" export can be imported from non-ESM. Named exports are not av
 
 （👀 注：应该加上 “在 ESM” 中）<font color=dodgerBlue>CommonJs Syntax is not available</font> : `require` , `module` , `exports` , `__filename` , `__dirname `.
 
-> 💡 **Tip** : <font color=fuchsia>HMR can be used with [`import.meta.webpackHot`](https://webpack.js.org/api/module-variables/#importmetawebpackhot) instead of [`module.hot`](https://webpack.js.org/api/module-variables/#modulehot-webpack-specific)</font> .
+> 💡 **Tip** : <font color=fuchsia>HMR can be used with [`import.meta.webpackHot`](https://webpack.js.org/api/module-variables/#importmetawebpackhot) instead of [`module.hot`](https://webpack.js.org/api/module-variables/#modulehot-webpack-specific)</font> . 👀 注：关于 `import.meta.webpackHot` 的内容参见 [[#webpack 文档 API 笔记#Hot Module Replacement]]
 
 摘自：[webpack doc - Guides - ECMAScript Modules](https://webpack.js.org/guides/ecma-script-modules/)
 

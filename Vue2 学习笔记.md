@@ -1,6 +1,6 @@
 # Vue2 学习笔记
 
-### Vue.js 是什么
+#### Vue.js 是什么
 
 Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<font color=FF0000>**渐进式框架**</font>。与其它大型框架不同的是，<mark>Vue 被设计为可以自底向上逐层应用</mark>。<mark>Vue 的核心库只关注视图层</mark>，不仅易于上手，还便于与第三方库或既有项目整合。另一方面，当与[现代化的工具链](https://cn.vuejs.org/v2/guide/single-file-components.html)以及各种[支持类库](https://github.com/vuejs/awesome-vue#libraries--plugins)结合使用时，Vue 也完全能够为复杂的单页应用提供驱动。
 
@@ -24,7 +24,7 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 
 **另外，这里的vue是一个全局变量**
 
-### 绑定attribute的另一种方法（第一种是上面的示例）
+#### 绑定attribute的另一种方法（第一种是上面的示例）
 
 示例：
 
@@ -46,7 +46,7 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 
 你看到的 `v-bind` attribute 被称为**指令**。指令带有前缀 `v-`，以表示<font color=FF0000>它们是 Vue 提供的特殊 attribute</font>。可能你已经猜到了，它们会在渲染的 DOM 上应用特殊的响应式行为。在这里，该指令的意思是：“将这个元素节点的 `title` attribute 和 Vue 实例的 `message` property 保持一致”。
 
-### 条件（v-if）
+#### 条件（v-if）
 
 示例：
 
@@ -64,7 +64,7 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 </script>
 ```
 
-### 循环
+#### 循环
 
 示例：
 
@@ -90,7 +90,7 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 </script>
 ```
 
-### 处理用户输入
+#### 处理用户输入
 
 为了让用户和你的应用进行交互，我们<font color=FF0000>可以用 **`v-on`** 指令添加一个事件监听器</font>，通过它调用在 Vue 实例中定义的方法。
 
@@ -118,7 +118,7 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 
 ##### <mark>Vue 还提供了<font color=FF0000> `v-model` </font>指令，它能轻松<font color=FF0000>实现**表单输入**和**应用状态**之间的**双向绑定**</font>。</mark>
 
-### 组件化应用构建
+#### 组件化应用构建
 
 组件系统是 Vue 的另一个重要概念，因为它是一种抽象，允许我们使用小型、独立和通常可复用的组件构建大型应用。仔细想想，几乎任意类型的应用界面都可以抽象为一个组件树：
 
@@ -126,7 +126,7 @@ Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<f
 
 在 Vue 里，一个组件本质上是一个拥有预定义选项的一个 Vue 实例。
 
-### Vue实例
+#### Vue实例
 
 每个 Vue 应用都是通过用 `Vue` 函数创建一个新的 **Vue 实例**开始的：
 
@@ -140,7 +140,7 @@ var vm = new Vue({  //这里的vm表示viewModel，这个命名很常见（参�
 
 一个 Vue 应用由一个通过 `new Vue` 创建的<font color=FF0000>**根 Vue 实例**</font>，以及可选的嵌套的、可复用的组件树组成。
 
-### 数据与方法
+#### 数据与方法
 
 当一个<font color=FF0000> Vue 实例被创建</font>时，<font color=FF0000>它将 `data` 对象中的所有的 property 加入到 Vue 的**响应式系统**中</font>。当这些 property 的值发生改变时，视图将会产生“响应”，即匹配更新为新的值。
 
@@ -211,7 +211,7 @@ watch: {
   },
 ```
 
-### 实例生命周期钩子
+#### 实例生命周期钩子
 
 每个 Vue 实例在被创建时都要经过一系列的初始化过程——例如，需要设置数据监听、编译模板、将实例挂载到 DOM 并在数据变化时更新 DOM 等。<mark>同时在这个过程中也会运行一些叫做**生命周期钩子**的函数，这给了用户在不同阶段添加自己的代码的机会</mark>。（类似于AOP）
 
@@ -236,7 +236,7 @@ new Vue({
 
 <img src="https://s1.ax1x.com/2020/08/31/dOZOqP.png" style="zoom:40%;" />
 
-### 模板语法
+#### 模板语法
 
 Vue.js 使用了基于 HTML 的模板语法，<font color=FF0000>允许开发者声明式地将 DOM 绑定至底层 Vue 实例的数据</font>。<mark>所有 Vue.js 的模板都是合法的 HTML，所以能被遵循规范的浏览器和 HTML 解析器解析</mark>。
 
@@ -389,7 +389,7 @@ Mustache 标签将会被替代为对应数据对象上 `msg` property 的值。�
 <form v-on:submit.prevent="onSubmit">...</form>
 ```
 
-### 缩写
+#### 缩写
 
 <font color=FF0000>**v- 前缀**</font>作为一种视觉提示，用来识别模板中 Vue 特定的 attribute。<mark>当你在使用 Vue.js 为现有标签添加动态行为 (dynamic behavior) 时，v- 前缀很有帮助</mark>，<font color=FF0000>然而</font>，<mark>对于一些频繁用到的指令来说，就会感到使用繁琐</mark>。同时，在构建由 Vue 管理所有模板的单页面应用程序 (SPA - single page application) 时，v- 前缀也变得没那么重要了。因此，Vue 为 v-bind 和 v-on 这两个最常用的指令，提供了特定简写：
 
@@ -421,7 +421,7 @@ Mustache 标签将会被替代为对应数据对象上 `msg` property 的值。�
   
   它们看起来可能与普通的 HTML 略有不同，但 <font color=FF0000>`:` 与 `@` 对于 attribute 名来说都是合法字符</font>，<mark>在所有支持 Vue 的浏览器都能被正确地解析</mark>。而且，<font color=FF0000>它们不会出现在最终渲染的标记中</font>。缩写语法是完全可选的，但随着你更深入地了解它们的作用，你会庆幸拥有它们。
 
-### 计算属性
+#### 计算属性
 
 **计算属性**
 模板内的表达式非常便利，但是设计它们的初衷是用于简单运算的。<mark>在模板中放入太多的逻辑会让模板过重且难以维护</mark>。对于任何复杂逻辑，你都应当使用<font color=FF0000>**计算属性**</font>。示例如下：
@@ -483,7 +483,7 @@ computed: {
 }
 ```
 
-### 侦听器watch
+#### 侦听器watch
 
 虽然<mark>计算属性在大多数情况下更合适</mark>，但有时<mark>也需要一个自定义的侦听器</mark>。这就是为什么 Vue 通过 `watch` 选项提供了一个更通用的方法，来响应数据的变化。<font color=FF0000>当需要在数据变化时执行异步或开销较大的操作时，这个方式是最有用的</font>。
 
@@ -503,7 +503,7 @@ var watchExampleVM = new Vue({
 }
 ```
 
-### Class 与 Style 绑定
+#### Class 与 Style 绑定
 
 操作元素的 class 列表和内联样式是数据绑定的一个常见需求。因为它们都是 attribute，所以我们可以用 `v-bind` 处理它们：只需要通过表达式计算出字符串结果即可。不过，字符串拼接麻烦且易错。因此，在将 `v-bind` 用于 `class` 和 `style` 时，Vue.js 做了专门的增强。<font color=FF0000>表达式结果的类型除了字符串之外，还可以是对象或数组</font>。
 
@@ -674,7 +674,7 @@ var watchExampleVM = new Vue({
   
   这样写只会渲染数组中最后一个被浏览器支持的值。在本例中，如果浏览器支持不带浏览器前缀的 flexbox，那么就只会渲染 `display: flex`。
 
-### 条件渲染
+#### 条件渲染
 
 - **v-if**
   
@@ -759,7 +759,7 @@ var watchExampleVM = new Vue({
 **v-if 与 v-for 一起使用**
 <font color=FF0000>不推荐**（在同一个元素上）**同时使用 v-if 和 v-for</font>，当 `v-if` 与 `v-for` 一起使用时，`v-for` 具有比 `v-if` 更高的优先级。请查阅[列表渲染指南](https://cn.vuejs.org/v2/guide/list.html#v-for-with-v-if)以获取详细信息。
 
-### 列表渲染
+#### 列表渲染
 
 我们可以用 `v-for` 指令<font color=FF0000>基于一个数组</font>来渲染一个列表。`v-for` 指令需要使用 `item in items` 形式的特殊语法，其中 `items` 是源数据数组，而 `item` 则是被迭代的数组元素的**别名**。
 
@@ -957,7 +957,7 @@ new Vue({
 
 不自动将 `item` 注入到组件里的原因是，这会使得组件与 `v-for` 的运作紧密耦合。明确组件数据的来源能够使组件在其他场合重复使用。
 
-### 事件处理
+#### 事件处理
 
 可以用 `v-on` 指令监听 DOM 事件，并在触发时运行一些 JavaScript 代码。
 
@@ -1033,7 +1033,7 @@ new Vue({
   </script>
   ```
 
-- <font color=FF0000>有时也需要在内联语句处理器中访问原始的 DOM 事件。可以用特殊变量 `$event` 把它传入方法</font>：
+- <font color=FF0000>有时也需要在内联语句处理器中访问原始的 DOM 事件。可以用特殊变量 `$event` 把它传入方法</font>；另外 `$event` 可以放在任意的一个参数的位置，事件处理函数内均可以接收到：
   
   ```html
   <button v-on:click="warn('Form cannot be submitted yet.', $event)">
@@ -1205,7 +1205,7 @@ Vue.config.keyCodes.f1 = 112
 
 这些修饰符会限制处理函数仅响应特定的鼠标按钮。
 
-### 表单输入绑定
+#### 表单输入绑定
 
 你<font color=FF0000>可以用 `v-model` 指令</font>在表单 `<input>`、`<textarea>` 及 `<select>` 元素上<font color=FF0000>创建双向数据绑定</font>。<font color=FF0000>它会根据控件类型自动选取正确的方法来更新元素</font>。尽管有些神奇，但<mark> `v-model` 本质上不过是语法糖</mark>。它负责监听用户的输入事件以更新数据，并对一些极端场景进行一些特殊处理。
 
@@ -1261,7 +1261,7 @@ Vue.config.keyCodes.f1 = 112
   <input v-model.trim="msg">
   ```
 
-### 组件基础
+#### 组件基础
 
 示例：
 
@@ -1378,8 +1378,6 @@ Vue.component('blog-post', {
 **监听子组件事件**
 
 在我们开发 \<blog-post> 组件时，它的一些功能<font color=FF0000>可能要求我们和父级组件进行沟通</font>。 <mark>Vue 实例提供了一个自定义事件的系统来解决这个问题</mark>。<font color=FF0000>父级组件可以像处理 native DOM 事件一样通过 v-on 监听子组件实例的任意事件。同时子组件可以通过调用内建的 `$emit` 方法并传入事件名称来触发一个事件</font>
-
-**//todo 这里没有完全看懂...**
 
 **使用事件抛出一个值**
 
@@ -1547,7 +1545,7 @@ Vue.component('alert-box', {
 - 单文件组件 (.vue)
 - \<script type="text/x-template">
 
-### 组件注册
+#### 组件注册
 
 **组件名**
 
@@ -1620,7 +1618,7 @@ var ComponentB = {
 }
 ```
 
-### prop
+#### prop
 
 **Prop 的大小写 (camelCase vs kebab-case)**
 
@@ -1999,8 +1997,6 @@ Vue.component('base-checkbox', {
 ```
 
 这里的 `lovingVue` 的值将会传入这个名为 `checked` 的 prop。同时当 `<base-checkbox>` 触发一个 `change` 事件并附带一个新的值的时候，这个 `lovingVue` 的 property 将会被更新。
-
-**//todo 这里没有完全看懂...**
 
 **将原生事件绑定到组件**
 
@@ -2509,7 +2505,7 @@ function (slotProps) {
 </todo-list>
 ```
 
-### 动态组件 & 异步组件
+#### 动态组件 & 异步组件
 
 **在动态组件上使用 keep-alive**
 
@@ -2550,7 +2546,7 @@ function (slotProps) {
 
 **异步组件**
 
-在大型应用中，我们<mark>可能需要将应用分割成小一些的代码块，并且只在需要的时候才从服务器加载一个模块</mark>。为了简化，<font color=FF0000>Vue 允许你以一个<font size=5>工厂函数</font>的方式定义你的组件</font>，<font color=FF0000>这个工厂函数会<font size=5>**异步解析你的组件定义**</font></font>。<font color=FF0000>Vue **只有在这个组件需要被渲染的时候才会触发该工厂函数**，<font size=5>**且会把结果缓存起来供未来重渲染**</font></font>。例如：
+在大型应用中，我们<mark>可能需要将应用分割成小一些的代码块，并且只在需要的时候才从服务器加载一个模块</mark>。为了简化，<font color=FF0000>Vue 允许你以一个<font size=4>工厂函数</font>的方式定义你的组件</font>，<font color=FF0000>这个工厂函数会<font size=4>**异步解析你的组件定义**</font></font>。<font color=FF0000>Vue **只有在这个组件需要被渲染的时候才会触发该工厂函数**，<font size=4>**且会把结果缓存起来供未来重渲染**</font></font>。例如：
 
 ```js
 Vue.component('async-example', function (resolve, reject) {
@@ -2616,7 +2612,7 @@ const AsyncComponent = () => ({
 
 **//todo 这里什么是工厂函数？**
 
-### 处理边界情况
+#### 处理边界情况
 
 **访问元素 & 组件**
 
@@ -2976,7 +2972,7 @@ methods: {
   })
   ```
 
-### 进入/离开 & 列表过渡
+#### 进入/离开 & 列表过渡
 
 **概述**
 
@@ -3033,7 +3029,7 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 2. 如果过渡组件提供了 JavaScript 钩子函数，这些钩子函数将在恰当的时机被调用。
 3. 如果没有找到 JavaScript 钩子并且也没有检测到 CSS 过渡/动画，DOM 操作 (插入/删除) 在下一帧中立即执行。(注意：此指浏览器逐帧动画机制，和 Vue 的 `nextTick` 概念不同)
 
-#### **过渡的类名**
+##### 过渡的类名
 
 <font color=FF0000>在进入/离开的过渡中，会有 <font size=5>6</font> 个 class 切换</font>。
 
@@ -3136,7 +3132,7 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 </style>
 ```
 
-#### **自定义过渡的类名**
+##### **自定义过渡的类名**
 
 我们<font color=FF0000>可以通过以下 attribute 来自定义过渡类名</font>：
 
@@ -3177,13 +3173,13 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 </script>
 ```
 
-#### **同时使用过渡和动画**
+##### **同时使用过渡和动画**
 
-<font color=FF0000>Vue 为了知道过渡的完成，**必须设置相应的事件监听器**</font>。<font color=FF0000>它可以是 <font size=5>`transitionend` </font>或<font size=5> `animationend`</font></font>，这取决于给元素应用的 CSS 规则。如果你使用其中任何一种，Vue 能自动识别类型并设置监听。
+<font color=FF0000>Vue 为了知道过渡的完成，**必须设置相应的事件监听器**</font>。<font color=FF0000>它可以是 <font size=4>`transitionend` </font>或<font size=4> `animationend`</font></font>，这取决于给元素应用的 CSS 规则。如果你使用其中任何一种，Vue 能自动识别类型并设置监听。
 
 但是，在一些场景中，你<font color=FF0000>需要给同一个元素同时设置两种过渡动效</font>，比如<mark> `animation` 很快的被触发并完成了，而 `transition` 效果还没结束</mark>。在这种情况中，你就<font color=FF0000>需要使用 `type` attribute 并设置 `animation` 或 `transition` 来明确声明你需要 Vue 监听的类型</font>。
 
-#### **显性的过渡持续时间**（2.2.0 新增）
+##### **显性的过渡持续时间**（2.2.0 新增）
 
 在很多情况下，Vue 可以自动得出过渡效果的完成时机。默认情况下，Vue 会等待其在过渡效果的根元素的第一个 `transitionend` 或 `animationend` 事件。然而也可以不这样设定——比如，我们可以拥有一个精心编排的一系列过渡效果，其中一些嵌套的内部元素相比于过渡效果的根元素有延迟的或更长的过渡效果。
 
@@ -3199,7 +3195,7 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 <transition :duration="{ enter: 500, leave: 800 }">...</transition>
 ```
 
-#### 初始渲染的过渡
+##### 初始渲染的过渡
 
 可以通过 `appear` attribute <font color=FF0000>设置节点在**初始渲染**的过渡</font>
 
@@ -3222,7 +3218,7 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 </transition>
 ```
 
-#### **多个元素的过渡**
+##### 多个元素的过渡
 
 我们之后讨论多个组件的过渡，对于原生标签可以使用 v-if / v-else。最常见的多标签过渡是一个列表和描述这个列表为空消息的元素：
 
@@ -3252,7 +3248,7 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 </transition>
 ```
 
-#### 多个组件的过渡
+##### 多个组件的过渡
 
 多个组件的过渡简单很多 - 我们不需要使用 key attribute。相反，我们只需要<font color=FF0000>使用动态组件</font>：
 
@@ -3289,7 +3285,7 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 </style>
 ```
 
-#### 列表过渡
+##### 列表过渡
 
 目前为止，关于过渡我们已经讲到：
 
@@ -3309,11 +3305,11 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 
 `v-move` 对于设置过渡的切换时机和过渡曲线非常有用
 
-#### 可复用的过渡
+##### 可复用的过渡
 
 过渡可以通过 Vue 的组件系统<font color=FF0000>实现复用</font>。要创建一个可复用过渡组件，你<font color=FF0000>需要做的就是将 `<transition>` 或者 `<transition-group>` 作为根组件，然后将任何子组件放置在其中就可以了</font>。
 
-#### 动态过渡
+##### 动态过渡
 
 在 Vue 中即使是过渡也是数据驱动的！动态过渡最基本的例子是通过 `name` attribute 来绑定动态值。
 
@@ -3327,7 +3323,7 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 
 所有过渡 attribute 都可以动态绑定，但我们不仅仅只有 attribute 可以利用，还可以通过事件钩子获取上下文中的所有数据，因为事件钩子都是方法。这意味着，根据组件的状态不同，你的 JavaScript 过渡会有不同的表现
 
-### 状态过渡
+##### 状态过渡
 
 Vue 的过渡系统提供了非常多简单的方法设置进入、离开和列表的动效。那么<font color=FF0000>对于数据元素本身的动效</font>呢，比如：
 
@@ -3342,7 +3338,7 @@ Vue 的过渡系统提供了非常多简单的方法设置进入、离开和列�
 
 管理太多的状态过渡会很快的增加 Vue 实例或者组件的复杂性，幸好很多的动画可以提取到专用的子组件。
 
-### 混入
+#### 混入
 
 混入 (mixin) 提供了一种非常灵活的方式，来<font color=FF0000>分发 Vue 组件中的可复用功能</font>。<font color=FF0000>一个混入对象可以包含**任意组件选项**</font>。当<font color=FF0FFF>组件</font> <font color=FF0000>使用</font> <font color=0000FF>混入对象</font>时，**所有**<font color=FF0000>混入对象</font>的<font color=0000FF>**选项**</font>将被“混合”进入该组件本身的选项。
 
@@ -3492,7 +3488,7 @@ var strategies = Vue.config.optionMergeStrategies
 strategies.myOption = strategies.methods
 ```
 
-### 自定义指令（使用directive）
+#### 自定义指令（使用directive）
 
 除了核心功能默认内置的指令 (`v-model` 和 `v-show`)，<font color=FF0000>Vue 也允许注册自定义指令</font>。注意，在 Vue2.0 中，代码复用和抽象的主要形式是组件。然而，<mark>有的情况下，你仍然需要对普通 DOM 元素进行底层操作，这时候就会用到自定义指令</mark>。
 
@@ -3618,7 +3614,7 @@ Vue.directive('color-swatch', function (el, binding) {
 
 补充：可以看看如下视频，[v-for？v-if？如何在Vue中自己写一个指令？](https://www.bilibili.com/video/BV1dK4y1h7Xj)
 
-### 渲染函数 & JSX
+#### 渲染函数 & JSX
 
 **基础**
 
@@ -3876,7 +3872,7 @@ v-text：将数据解析为纯文本
 
 #### vue import路径中的@
 
-以根目录的方式定义相对路径，一般为src文件（vue在<font color=FF0000>webpack.base.conf.js</font>文件中配置，示例如下：）
+以根目录的方式定义相对路径，一般为src文件（ 在 <font color=FF0000>webpack.base.conf.js</font> 文件中配置，示例如下：）
 
 ```js
 module.exports = {
@@ -3959,18 +3955,18 @@ Vue.component('ve-line', VeLine)
 
 #### Vue.directive函数
 
-- **语法：**
-  
-  ```js
-  Vue.directive( id, definition] )
-  ```
+##### 语法
 
-- **参数**：
-  
-  - `{string} id`
-  - `{Function | Object} [definition]`
+```js
+Vue.directive( id, definition] )
+```
 
-- **用法**：注册或获取全局指令。
+##### 参数
+
+- `{string} id`
+- `{Function | Object} [definition]`
+
+**用法**：注册或获取全局指令。
 
 可以参考vue官方文档的[自定义指令](https://cn.vuejs.org/v2/guide/custom-directive.html) 做进一步补充
 
@@ -4128,36 +4124,38 @@ var Child = {
 vm.$mount( elementOrSelector] )
 ```
 
-- **参数**：
-  
-  - {Element | string} [elementOrSelector]
-  - {boolean} [hydrating]
+##### **参数**
 
-- <font color=FF0000>**返回值：**vm - 实例自身</font>
+- {Element | string} [elementOrSelector]
+- {boolean} [hydrating]
 
-- **用法：**<font color=FF0000>如果 Vue 实例在实例化时没有收到 el 选项，则它处于“未挂载”状态，没有关联的 DOM 元素。可以使用 vm.$mount() 手动地挂载一个未挂载的实例。</font>
-  
-  如果没有提供 elementOrSelector 参数，模板将被渲染为文档之外的的元素，并且你必须使用原生 DOM API 把它插入文档中。
-  
-  这个方法返回实例自身，因而可以链式调用其它实例方法。
+<font color=FF0000>**返回值：**vm - 实例自身</font>
 
-- **示例：**
-  
-  ```js
-  var MyComponent = Vue.extend({
-    template: '<div>Hello!</div>'
-  })
-  
-  // 创建并挂载到 #app (会替换 #app)
-  new MyComponent().$mount('#app')
-  
-  // 同上
-  new MyComponent({ el: '#app' })
-  
-  // 或者，在文档之外渲染并且随后挂载
-  var component = new MyComponent().$mount()
-  document.getElementById('app').appendChild(component.$el)
-  ```
+##### 用法
+
+<font color=FF0000>如果 Vue 实例在实例化时没有收到 el 选项，则它处于“未挂载”状态，没有关联的 DOM 元素。可以使用 vm.$mount() 手动地挂载一个未挂载的实例。</font>
+
+如果没有提供 elementOrSelector 参数，模板将被渲染为文档之外的的元素，并且你必须使用原生 DOM API 把它插入文档中。
+
+这个方法返回实例自身，因而可以链式调用其它实例方法。
+
+##### 示例
+
+```js
+var MyComponent = Vue.extend({
+  template: '<div>Hello!</div>'
+})
+
+// 创建并挂载到 #app (会替换 #app)
+new MyComponent().$mount('#app')
+
+// 同上
+new MyComponent({ el: '#app' })
+
+// 或者，在文档之外渲染并且随后挂载
+var component = new MyComponent().$mount()
+document.getElementById('app').appendChild(component.$el)
+```
 
 #### render
 
@@ -5473,9 +5471,30 @@ console.log(loadingInstance1 === loadingInstance2); // true
 
 此时调用它们中任意一个的 close 方法都能关闭这个全屏 Loading。
 
-如果完整引入了 Element，那么 Vue.prototype 上会有一个全局方法 $loading，它的调用方式为：this.$loading(options)，同样会返回一个 Loading 实例。
+如果完整引入了 Element，那么 Vue.prototype 上会有一个全局方法 `$loading`，它的调用方式为：`this.$loading(options)` ，同样会返回一个 Loading 实例。
 
 摘自：[element-ui -- Loading 加载](https://element.eleme.cn/#/zh-CN/component/loading#zheng-ye-jia-zai)
+
+
+
+## Vant UI
+
+#### van-list
+
+在 vant-ui 中，使用可以通过 van-list 组件来先实现下拉获取（添加）数据。同时，是在 van-list 组件中绑定 v-model ( loading ) 、finished 属性、load 事件来进行控制。另外，onload 的方法，只需要定义和绑定，控制调用 onload 是通过修改 loading 和 finished 实现的。
+
+⚠️ 这里要注意的是：想要在同一个页面里面切换 van-list，也是通过 `loading = false; finished = false;` 重新获取以切换的。不过有一个问题，在 `loading === false && finished === false` 的情况下（也就是上一个 van-list 还没有全部加载），赋值操作 `loading = false; finished = false;` 是没有用的（可能是 van-list 内部做了防抖？）；我的解决方法是：
+
+```js
+listReset() {
+  this.finished = true
+  // other logic ...
+  this.$nextTick(() => {
+    this.loading = false
+    this.finished = false
+  })
+}
+```
 
 
 
@@ -5485,9 +5504,9 @@ console.log(loadingInstance1 === loadingInstance2); // true
 
 #### **路由的两种显示模式：**
 
-- hash模式（<font color=FF0000>vue-router默认使用</font>）：地址栏包含`#`符号，`#`以后的内容不会被后台获取。可以减少到后台访问的次数；但需要参数传递时，将无法满足需求。出现404时，后台不会报错。<font color=FF0000>**另外，`#`是特殊字符，在很多场合不被满足；所以使用较少**</font>
+- hash模式（<font color=FF0000>vue-router 默认使用</font>）：地址栏包含`#`符号，`#`以后的内容不会被后台获取。可以减少到后台访问的次数；但需要参数传递时，将无法满足需求。出现404时，后台不会报错。<font color=FF0000>**另外，`#` 是特殊字符，在很多场合不被满足；所以使用较少**</font>
 
-- history模式（更加普遍）：具有对url历史记录进行修改的功能。出现404时，后台会报错
+- history模式（更加普遍）：具有对 url 历史记录进行修改的功能。出现404时，后台会报错
   
   修改方式：
   
@@ -6215,9 +6234,9 @@ module.exports = defineConfig({
 >
 > The presence of `jsconfig.json` file in a directory indicates that the directory is the root of a JavaScript Project. The `jsconfig.json` file <font color=red>specifies the root files and the options for the features provided by the [JavaScript language service](https://github.com/microsoft/TypeScript/wiki/JavaScript-Language-Service-in-Visual-Studio)</font> .
 >
-> > **Tip:** If you are not using JavaScript , you do not need to worry about `jsconfig.json`.
+> > 💡 **Tip:** If you are not using JavaScript , you do not need to worry about `jsconfig.json`.
 >
-> > **Tip:** <font color=fuchsia>`jsconfig.json` is a descendant of `tsconfig.json`</font> , which is a configuration file for TypeScript. <font color=fuchsia>`jsconfig.json` is `tsconfig.json` with `"allowJs"` attribute set to `true`</font> .
+> > 💡 **Tip:** <font color=fuchsia>`jsconfig.json` is a descendant of `tsconfig.json`</font> , which is a configuration file for TypeScript. <font color=fuchsia>`jsconfig.json` is `tsconfig.json` with `"allowJs"` attribute set to `true`</font> .
 >
 > ##### Why do I need a jsconfig.json file?
 >
@@ -6415,8 +6434,6 @@ computed: {
   })
 }
 ```
-
-### 
 
 #### Mutation
 
