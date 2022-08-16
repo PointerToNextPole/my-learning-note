@@ -1672,7 +1672,7 @@ console.log('Local IPv6 address:', localIPv6);
 
 #### Hot Module Replacement
 
-> 👀 注：这部分内容有点难以理解，比如状态、bubble 之类，可以参考 [[#HMR Concepts 笔记]]
+> 👀 注：这部分内容有点难以理解，比如状态（详见 [[#Management API#status]]）、bubble 之类，可以参考 [[#HMR Concepts 笔记]]
 
 <font color=dodgerBlue>If Hot Module Replacement has been enabled via the `HotModuleReplacementPlugin`</font> , <font color=red>**its interface will be exposed under the** [`module.hot`](https://webpack.js.org/api/module-variables/#modulehot-webpack-specific) property as well as [`import.meta.webpackHot`](https://webpack.js.org/api/module-variables/#importmetawebpackhot) property</font>. ⚠️ Note that <font color=red>only `import.meta.webpackHot` can be used in [strict ESM](https://webpack.js.org/guides/ecma-script-modules/#flagging-modules-as-esm)</font> .
 
@@ -1798,14 +1798,10 @@ Flag this module as not-update-able. This **makes sense when** <font color=fuchs
 <font color=red>Add a handler which is **executed when the current module code is replaced**</font>. This（该方法） should <font color=red>be used to remove any persistent resource you have claimed or created</font>. If you want to transfer state to the updated module , <font color=LightSeaGreen>add it to the given `data` parameter</font>. <font color=red>This object will be available at `module.hot.data` after the update</font>.
 
 ```js
-module.hot.dispose((data) => {
-  // Clean up and pass data to the updated module...
-});
+module.hot.dispose((data) => { /* Clean up and pass data to the updated module... */ });
 
 // or
-import.meta.webpackHot.dispose((data) => {
-  // Clean up and pass data to the updated module...
-});
+import.meta.webpackHot.dispose((data) => { /* Clean up and pass data to the updated module... */ });
 ```
 
 ###### invalidate
@@ -1819,6 +1815,8 @@ When called during the <font color=dodgerBlue size=4>**`ready`**</font> or <font
 When called during the <font color=dodgerBlue size=4>**`check`**</font> state , this <font color=fuchsia>module will be added to the update **when an update is available**</font>. <font color=red>If no update is available</font> <font color=fuchsia>it **will create a new update**</font>. <font color=fuchsia>HMR will enter the <font size=4>**`ready`**</font> state</font>.
 
 When called during the <font color=dodgerBlue size=4>**`dispose`**</font> or <font color=dodgerBlue size=4>**`apply`**</font> state , HMR will pick it up after getting out of those states（🌏 译：HMR 将在退出这些状态后将其拾取。👀 注：没搞懂什么意思...）.
+
+> 👀 注：关于上面的各种状态，详见 [[#Management API#status]]
 
 ###### Use Cases
 
@@ -1885,7 +1883,688 @@ if (require.cache[moduleId]) {
 
 > ⚠️ **Warning** : Do not <font color=red>get caught</font>（陷入）<font color=red>in an `invalidate` loop</font> , <font color=red>by calling `invalidate` again and again</font>. This will result in stack overflow and HMR entering the `fail` state.
 
+###### removeDisposeHandler
+
+<font color=red>**Remove the handler** added via `dispose` or `addDisposeHandler`</font> （👀 注：[[#dispose (or addDisposeHandler)]] ）.
+
+```js
+module.hot.removeDisposeHandler(callback);
+
+// or
+import.meta.webpackHot.removeDisposeHandler(callback);
+```
+
+##### Management API
+
+###### status
+
+<font color=red>Retrieve</font>（获取） <font color=red>the **current status** of the hot module replacement process</font>.
+
+```js
+module.hot.status(); // Will return one of the following strings...
+
+// or
+import.meta.webpackHot.status();
+```
+
+| Status  | Description                                                  |
+| :------ | :----------------------------------------------------------- |
+| idle    | The process is <font color=fuchsia>**waiting** for a call to `check`</font> |
+| check   | The process is <font color=red>**checking** for updates</font> |
+| prepare | The process is getting <font color=red>**ready** for the update</font> (e.g. <font color=red>downloading the updated module</font> ) |
+| ready   | The update is <font color=red>prepared and available</font>  |
+| dispose | The process is <font color=red>calling the `dispose` handlers on the modules that will be replaced</font> |
+| apply   | The process is <font color=red>calling the `accept` handlers</font> and <font color=red>re-executing self-accepted modules</font> |
+| abort   | <font color=fuchsia>An update was aborted</font>, but the system is still in its previous state |
+| fail    | <font color=fuchsia>An update has thrown an exception</font> and the system's state has been compromised |
+
+###### check
+
+Test all loaded modules for updates and , <font color=red>if updates exist , `apply` them</font> .
+
+```js
+module.hot
+  .check(autoApply)
+  .then((outdatedModules) => { /* outdated modules... */ })
+  .catch((error) => { /* catch errors */ });
+
+// or
+import.meta.webpackHot
+  .check(autoApply)
+  .then((outdatedModules) => { /* outdated modules... */ })
+  .catch((error) => { /* catch errors */ });
+```
+
+The <font color=red>`autoApply` parameter can either be a boolean or `options`</font> to pass to the `apply` method when called.
+
+###### apply
+
+**Continue the update process** ( <font color=red>as long as `module.hot.status() === 'ready'`</font> ).
+
+```js
+module.hot
+  .apply(options)
+  .then((outdatedModules) => { /* outdated modules... */ })
+  .catch((error) => { /* catch errors */ });
+
+// or
+import.meta.webpackHot
+  .apply(options)
+  .then((outdatedModules) => { /* outdated modules... */ })
+  .catch((error) => { /* catch errors */ });
+```
+
+<font color=dodgerBlue>The optional `options` object can include the following properties:</font>
+
+- `ignoreUnaccepted` (boolean): Ignore changes made to unaccepted modules.
+- `ignoreDeclined` (boolean): Ignore changes made to declined modules.
+- `ignoreErrored` (boolean): Ignore errors thrown in accept handlers, error handlers and while reevaluating module.
+- `onDeclined` (function(info)): Notifier for declined modules
+- `onUnaccepted` (function(info)): Notifier for unaccepted modules
+- `onAccepted` (function(info)): Notifier for accepted modules
+- `onDisposed` (function(info)): Notifier for disposed modules
+- `onErrored` (function(info)): Notifier for errors
+
+<font color=dodgerblue>The `info` parameter will be an object containing some of the following values:</font>
+
+```ts
+{
+  type: 'self-declined' | 'declined' | 'unaccepted' | 'accepted' | 'disposed' | 
+        'accept-errored' | 'self-accept-errored' | 'self-accept-error-handler-errored',
+  moduleId: 4, // The module in question.
+  dependencyId: 3, // For errors: the module id owning the accept handler.
+  chain: [1, 2, 3, 4], // For declined/accepted/unaccepted: the chain from where the update was propagated.
+  parentId: 5, // For declined: the module id of the declining parent
+  outdatedModules: [1, 2, 3, 4], // For accepted: the modules that are outdated and will be disposed
+  outdatedDependencies: { // For accepted: The location of accept handlers that will handle the update
+    5: [4]
+  },
+  error: new Error(...), // For errors: the thrown error
+  originalError: new Error(...) // For self-accept-error-handler-errored:
+                                // the error thrown by the module before the error handler tried to handle it.
+}
+```
+
+###### addStatusHandler
+
+<font color=red>Register a function to listen for changes in `status`</font> . 👀 注：和 [[#removeStatusHandler]] 相对应
+
+```js
+module.hot.addStatusHandler((status) => { /* React to the current status... */ });
+
+// or
+import.meta.webpackHot.addStatusHandler((status) => { /* React to the current status... */ });
+```
+
+Bear in mind（牢记） that <font color=red>when the status handler returns a `Promise`</font> , the <font color=red>**HMR system will wait for the `Promise` to resolve before continuing**</font>.
+
+###### removeStatusHandler
+
+<font color=red>Remove a registered status handler</font>. 👀 注：和 [[#addStatusHandler]] 相对应
+
+```js
+module.hot.removeStatusHandler(callback);
+
+// or
+import.meta.webpackHot.removeStatusHandler(callback);
+```
+
 摘自：[webpack doc - API - Hot Module Replacement](https://webpack.js.org/api/hot-module-replacement/)
+
+
+
+#### Loader Interface
+
+<font color=fuchsia>A loader is <font size=4>**a JavaScript module that exports a function**</font></font>（🌏 译：loader 本质上是**导出为函数的 JavaScript 模块**）. The [loader runner](https://github.com/webpack/loader-runner) <font color=red>calls **this function**</font>（👀 即 loader function ） and <font color=red>passes the **result of the previous loader** or the resource file into it</font>. The <font color=fuchsia>**`this` context of the function** is filled-in by webpack</font> and the <font color=red>`loader runner` with some useful methods that **allow the loader**</font> (among other things) <font color=red>to change its **invocation style**</font>（调用方式） to <font color=LightSeaGreen>async</font> , or <font color=LightSeaGreen>get query parameters</font>（👀 即 loader 的内联调用，详见 [[#Loader 文档补充#内联方式]]）.
+
+<font color=dodgerBlue>The **first loader** is passed one argument</font> : the content of the resource file. <font color=red>The compiler expects a **result** from the last loader</font>. <font color=fuchsia>The result should be a `String` or a `Buffer`</font> ( which is converted to a string ) , representing the JavaScript source code of the module（👀 即：第一个参数 `content` ）. An <font color=fuchsia>**optional** SourceMap result (as a JSON object) may also be passed</font>（👀 即：第二个参数 `map` ）. 
+
+> 👀 注：关于参数的更多内容，参见下面包含 JSDoc 的 `webpackLoader` 函数定义
+
+<font color=dodgerBlue>A single result can be returned in **`sync mode`**</font> . <font color=red>For multiple results the **`this.callback()` must be called**</font>. <font color=dodgerBlue>In **`async mode`**</font> （ 👀 注：异步模式由 `this.async` 开启；详见 [[#The Loader Context#this.async]]）<font color=fuchsia>**`this.async()` must be called** to indicate that the **`loader runner` should wait for an asynchronous result**</font>. It returns `this.callback()` . Then <font color=fuchsia>the loader **must return `undefined`** and **call that callback**</font>（👀 注：参见 [[#Examples#Synchronous Loaders]] 中 `this.callback()` 的代码）.
+
+```js
+/**
+ * @param {string|Buffer} content Content of the resource file
+ * @param {object} [map] SourceMap data consumable by https://github.com/mozilla/source-map
+ * @param {any} [meta] Meta data, could be anything
+ */
+function webpackLoader(content, map, meta) {
+  // code of your webpack loader
+}
+```
+
+##### Examples
+
+The following sections provide some basic examples of the different types of loaders. Note that <font color=LightSeaGreen>the `map` and `meta` parameters are optional</font>, see `this.callback` ( [[#The Loader Context#this.callback]] ) below.
+
+###### Synchronous Loaders
+
+Either `return` or `this.callback` can be used to return the transformed `content` synchronously:
+
+```js
+// sync-loader.js
+module.exports = function (content, map, meta) {
+  return someSyncOperation(content);
+};
+```
+
+The <font color=red>`this.callback` method is more flexible</font> as <font color=red>it allows multiple arguments to be passed</font> as opposed to only the `content` .
+
+```js
+// sync-loader-with-multiple-results.js
+module.exports = function (content, map, meta) {
+  this.callback(null, someSyncOperation(content), map, meta);
+  return; // always return undefined when calling callback() // 👀
+};
+```
+
+###### Asynchronous Loaders
+
+For asynchronous loaders , <font color=fuchsia>`this.async` is used to **retrieve the `callback` function**</font>:
+
+```js
+// async-loader.js
+module.exports = function (content, map, meta) {
+  var callback = this.async(); // 👀 this.async 被用于 获取 callback 函数
+  someAsyncOperation(content, function (err, result) {
+    if (err) return callback(err);
+    callback(null, result, map, meta);
+  });
+};
+```
+
+```js
+// async-loader-with-multiple-results.js
+module.exports = function (content, map, meta) {
+  var callback = this.async();
+  someAsyncOperation(content, function (err, result, sourceMaps, meta) {
+    if (err) return callback(err);
+    callback(null, result, sourceMaps, meta);
+  });
+};
+```
+
+> 💡 **Tip** : <font color=red>Loaders were originally designed to work in synchronous loader pipelines</font>, like Node.js ( using [enhanced-require](https://github.com/webpack/enhanced-require) ) , <font color=red>*and* asynchronous pipelines</font>, like in webpack. However, <font color=dodgerBlue>since **expensive synchronous computations** are a **bad idea in a single-threaded environment like Node.js**</font>, we <font color=fuchsia>advise **making your loader asynchronous if possible**</font>（👀 这里有点重要）. <font color=LightSeaGreen>Synchronous loaders are ok **if the amount of computation is trivial**</font>.
+
+###### "Raw" Loader
+
+<font color=red>**By default** , the resource file is **converted to a UTF-8 string** and **passed to the loader**</font>. <font color=dodgerBlue>By setting the `raw` flag to `true`</font>（ 👀 注：如下代码，设置 `module.exports.raw` 为 `true` 即可） , the <font color=red>loader will **receive the raw `Buffer`**</font> . Every loader is allowed to deliver its result as a `String` or as a `Buffer` . The compiler converts them between loaders.
+
+```javascript
+// raw-loader.js
+module.exports = function (content) {
+  assert(content instanceof Buffer);
+  return someSyncOperation(content);
+  // return value can be a `Buffer` too
+  // This is also allowed if loader is not "raw"
+};
+module.exports.raw = true;
+```
+
+###### Pitching Loader
+
+<font color=red>Loaders are **always** called from right to left</font>. There are some instances where the loader <font color=LightSeaGreen>only cares about the **metadata** behind a request and can ignore the results of the previous loader</font>. <font color=fuchsia>The `pitch` method on loaders is called from <font size=4>**left to right**</font></font>（👀 这个要注意）<font color=fuchsia>**before the loaders are actually executed**</font>（ 👀 参考下面 “树状结构” 表现的调用顺序 ） <font color=red>( from right to left )</font>.
+
+> 💡 **Tip** : <font color=red>Loaders may be added inline in requests and disabled via inline prefixes</font> , which <font color=red>will impact the order in which they are "pitched" and executed</font>. See [`Rule.enforce`](https://webpack.js.org/configuration/module/#ruleenforce) for more details.
+>
+>  🌏 译：loader 可以通过 request 添加或者禁用内联前缀，这将影响到 pitch 和执行的顺序。
+
+For the following configuration of [`use`](https://webpack.js.org/configuration/module/#ruleuse) :
+
+```javascript
+module.exports = {
+  //...
+  module: {
+    rules: [
+      {
+        // ...
+        use: ['a-loader', 'b-loader', 'c-loader'],
+      },
+    ],
+  },
+};
+```
+
+<font color=dodgerBlue>**These steps would occur :**</font>
+
+```
+|- a-loader `pitch`
+  |- b-loader `pitch`
+    |- c-loader `pitch`
+      |- requested module is picked up as a dependency
+    |- c-loader normal execution
+  |- b-loader normal execution
+|- a-loader normal execution
+```
+
+<font color=dodgerBlue>**So why might a loader take advantage of the "pitching" phase?**</font>
+
+<font color=dodgerBlue>**First**</font> , <font color=red>the `data`</font> （👀 比如下面代码 pitch 中的 `data.value`）<font color=red>passed to the `pitch` method **is exposed in the execution phase** as well under `this.data`</font> and could be <font color=red>useful for capturing and sharing information from earlier in the cycle</font>.
+
+> 🌏 译：传递给 `pitch` 方法的 `data`，在执行阶段也会暴露在 `this.data` 之下，并且可以用于在循环时，捕获并共享前面的信息
+
+```javascript
+module.exports = function (content) {
+  return someSyncOperation(content, this.data.value); // 👀 使用 data
+};
+
+module.exports.pitch = function (remainingRequest, precedingRequest, data) {
+  data.value = 42; // 👀 传递 data
+};
+```
+
+<font color=dodgerBlue>**Second**</font> , if a loader delivers（给出） a result in the `pitch` method（ 👀 即 return 了结果） , the process turns around（转过身来） and <font color=fuchsia>**skips the remaining loaders**</font>. <font color=dodgerBlue>In our example above</font>（ 👀 上面的是 `use: ['a-loader', 'b-loader', 'c-loader']` ）, <font color=dodgerBlue>if the `b-loader`'s `pitch` method returned something</font>:
+
+```javascript
+module.exports = function (content) {
+  return someSyncOperation(content);
+};
+
+module.exports.pitch = function (remainingRequest, precedingRequest, data) {
+  if (someCondition()) {
+    return (       // 👀 返回内容，另外，根据返回的字符串，发现：这里返回的是 “内联方式” 调用 loader（使用了 -! 前缀）。
+      'module.exports = require(' +
+      JSON.stringify('-!' + remainingRequest) +
+      ');'
+    );
+  }
+};
+```
+
+The steps above would be shortened to（ 👀 和 上面的执行顺序相比， “c-loader” 没有执行）:
+
+```
+|- a-loader `pitch`
+  |- b-loader `pitch` returns a module
+|- a-loader normal execution
+```
+
+##### The Loader Context
+
+The loader context represents the <font color=red>properties that are available inside of a loader assigned to the `this` property</font>.
+
+> 🌏 译：loader context 表示在 loader 内使用 this 可以访问的一些方法或属性。
+
+###### Example for the loader context
+
+Given the following example, this require call is used:
+
+In `/abc/file.js` :
+
+```javascript
+require('./loader1?xyz!loader2!./resource?rrr');
+```
+
+###### this.addContextDependency
+
+```typescript
+addContextDependency(directory: string)
+```
+
+<font color=red>Add a ***directory***</font>（👀 注意是文件夹。另外，可参考 [[#this.context]]）<font color=red>**as dependency of the loader result**</font>.
+
+###### this.addDependency
+
+```typescript
+addDependency(file: string)
+dependency(file: string) // shortcut
+```
+
+<font color=red>Add an ***existing file*** as a dependency of the loader result **in order to make them watchable**</font>. For example, <font color=fuchsia>`sass-loader` , `less-loader` **uses this to recompile whenever any imported `css` file changes**</font>.
+
+###### this.addMissingDependency
+
+```typescript
+addMissingDependency(file: string)
+```
+
+<font color=red>Add a ***non-existing*** file as a dependency of the loader result in order to make them watchable</font>. Similar to `addDependency` , but <font color=red>handles the creation of files during compilation</font> before watchers are attached correctly.
+
+###### this.async
+
+<font color=fuchsia>Tells the `loader-runner` that the ***loader intends to call back asynchronously***</font>. <font color=fuchsia>**Returns `this.callback`**</font> .
+
+###### this.cacheable
+
+A function that <font color=red>sets the cacheable flag</font> :
+
+```typescript
+cacheable(flag = true: boolean)
+```
+
+<font color=red>**By default** , loader results are flagged as cacheable</font>. <font color=LightSeaGreen>Call **this method** passing `false` to make the loader's result **not cacheable**</font>.
+
+<font color=red>A cacheable loader must have a deterministic</font>（确定性的）<font color=red>result when inputs and dependencies haven't changed</font>. This means the loader shouldn't have dependencies other than those specified with `this.addDependency` .
+
+###### this.callback
+
+A function that can be called synchronously or asynchronously <font color=red>in order to return multiple results</font>. The expected arguments are:
+
+```ts
+this.callback(
+  err: Error | null,
+  content: string | Buffer,
+  sourceMap?: SourceMap,
+  meta?: any
+);
+```
+
+1. <font color=fuchsia>The first argument must be an `Error` or `null`</font>
+2. The second argument is a `string` or a `Buffer` .
+3. **Optional** : The third argument must be a source map that is parsable by [this module](https://github.com/mozilla/source-map) .
+4. **Optional** : The fourth option , ignored by webpack, can be anything (e.g. some metadata).
+
+> 💡 **Tip** : It can be useful to pass an abstract syntax tree ( AST ) , like [`ESTree`](https://github.com/estree/estree) , <font color=red>as the fourth argument ( `meta` ) to **speed up the build time** ***if you want to share common ASTs between loaders***</font>.
+
+In case this function is called, you should return undefined to avoid ambiguous loader results.
+
+###### this.clearDependencies
+
+```typescript
+clearDependencies();
+```
+
+<font color=red>**Remove all dependencies of the loader result**</font> , even initial dependencies and those of other loaders. Consider using `pitch`.
+
+###### this.context
+
+<font color=red>**The directory of the module**</font>（🌏 译：模块所在的目录）. Can be used as a context for resolving other stuff.
+
+In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context) ( [[#Example for the loader context]] ): `/abc`（当前的 `this.context` 属性是 `/abc `）because `resource.js` is in this directory
+
+###### this.data
+
+<font color=red>A data object **shared between the pitch and the normal phase**</font>.
+
+###### this.emitError
+
+```typescript
+emitError(error: Error)
+```
+
+<font color=red>Emit an error that also **can be displayed in the output**</font>. 👀 注：示例如下：
+
+```bash
+ERROR in ./src/lib.js (./src/loader.js!./src/lib.js)
+Module Error (from ./src/loader.js):
+Here is an Error!
+ @ ./src/index.js 1:0-25
+```
+
+> 💡 **Tip** : Unlike throwing an Error directly, <font color=red>it **will NOT interrupt the compilation process** of the current module</font>.
+
+###### this.emitFile
+
+```typescript
+emitFile(name: string, content: Buffer|string, sourceMap: {...})
+```
+
+<font color=red>Emit a file</font>. This is webpack-specific.
+
+###### this.emitWarning
+
+```typescript
+emitWarning(warning: Error)
+```
+
+<font color=red>Emit a warning</font> that <font color=LightSeaGreen>will be displayed in the output like the following</font>:
+
+```bash
+WARNING in ./src/lib.js (./src/loader.js!./src/lib.js)
+Module Warning (from ./src/loader.js):
+Here is a Warning!
+ @ ./src/index.js 1:0-25
+```
+
+> 💡 **Tip** : Note that <font color=red>the warnings will not be displayed if `stats.warnings` is set to `false`</font> , or some <font color=LightSeaGreen>other omit setting is used to `stats` such as `none` or `errors-only`</font> . See the [stats presets configuration](https://webpack.js.org/configuration/stats/#stats-presets).
+
+###### this.fs
+
+Access to the `compilation`'s `inputFileSystem` property.
+
+###### this.getOptions(schema)
+
+<font color=red>Extracts given loader options</font>. **Optionally** , accepts JSON schema as an argument.
+
+> 💡 **Tip** : <font color=dodgerBlue>Since webpack 5</font>, <font color=red>`this.getOptions` is available in loader context</font>. It substitutes `getOptions` method from [loader-utils](https://github.com/webpack/loader-utils#getoptions)
+
+###### this.getResolve
+
+```typescript
+getResolve(options: ResolveOptions): resolve
+
+resolve(context: string, request: string, callback: function(err, result: string))
+resolve(context: string, request: string): Promise<string>
+```
+
+Creates a resolve function similar to `this.resolve` ( [[#this.resolve]] ).
+
+<font color=red>**Any options under webpack [`resolve` options](https://webpack.js.org/configuration/resolve/#resolve) are possible**</font>. <font color=red>They are merged with the configured `resolve` options</font>. Note that `"..."` can be used in arrays to extend（扩展） the value from `resolve` options , e.g. `{ extensions: [".sass", "..."] }` .
+
+<font color=red>`options.dependencyType` is an additional option</font>. It allows us to specify the type of dependency, which is used to resolve `byDependency` from the `resolve` options.
+
+All dependencies of the resolving operation are automatically added as dependencies to the current module.
+
+###### this.hot
+
+Information about HMR for loaders. 
+
+> 👀 根据下面代码中的注释：如果 HMR 启动了，则 `this.hot` 为 true
+
+```javascript
+module.exports = function (source) {
+  console.log(this.hot); // true if HMR is enabled via --hot flag or webpack configuration // 👀
+  return source;
+};
+```
+
+###### this.importModule
+
+> 5.32.0+
+
+```ts
+this.importModule(request, options, [callback]): Promise
+```
+
+An alternative lightweight solution for the child compiler to compile and execute a request at build time.
+
+- **request** : the request string to load the module from
+- **options** :
+  - **layer** : specify a layer in which this module is placed/compiled
+  - **publicPath** : the public path used for the built modules
+- **callback** : an optional Node.js style callback returning the exports of the module or a namespace object for ESM. `importModule` will return a Promise if no callback is provided.
+
+```js
+// webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /stylesheet\.js$/i,
+        use: ['./a-pitching-loader.js'],
+        type: 'asset/source', // we set type to 'asset/source' as the loader will return a string
+      },
+    ],
+  },
+};
+```
+
+```js
+// a-pitching-loader.js
+exports.pitch = async function (remaining) {
+  const result = await this.importModule(
+    this.resourcePath + '.webpack[javascript/auto]' + '!=!' + remaining
+  );
+  return result.default || result;
+};
+```
+
+```js
+// src/stylesheet.js
+mport { green, red } from './colors.js';
+export default `body { background: ${red}; color: ${green}; }`;
+```
+
+```js
+// src/colors.js
+export const red = '#f00';
+export const green = '#0f0';
+```
+
+```js
+// src/index.js
+import stylesheet from './stylesheet.js';
+// stylesheet will be a string `body { background: #f00; color: #0f0; }` at build time
+```
+
+You might notice something in the above example:
+
+1. We have a [pitching loader](https://webpack.js.org/api/loaders/#pitching-loader),
+2. We use `!=!` syntax in that pitching loader to set [matchResource](https://webpack.js.org/api/loaders/#inline-matchresource) for the request, i.e., we'll use `this.resourcePath + '.webpack[javascript/auto]'` to match with the [`module.rules`](https://webpack.js.org/configuration/module/#modulerules) instead of the original resource,
+3. `.webpack[javascript/auto]` is a pseudo extension of the `.webpack[type]` pattern, we use it to specify a default [module type](https://webpack.js.org/configuration/module/#ruletype) when no other module type is specified. It's typically used in conjunction with `!=!` syntax.
+
+Note that the above example is a simplified one, you can check [the full example on webpack repository](https://github.com/webpack/webpack/tree/master/test/configCases/loader-import-module/css).
+
+###### this.loaderIndex
+
+The index in the loaders array of the current loader.
+
+In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context): in loader1: `0`, in loader2: `1`
+
+###### this.loadModule
+
+```typescript
+loadModule(request: string, callback: function(err, source, sourceMap, module))
+```
+
+Resolves the given request to a module, applies all configured loaders and calls back with the generated source, the sourceMap and the module instance (usually an instance of [`NormalModule`](https://github.com/webpack/webpack/blob/master/lib/NormalModule.js) ). Use this function if you need to know the source code of another module to generate the result.
+
+`this.loadModule` in a loader context uses CommonJS resolve rules by default. Use `this.getResolve` with an appropriate `dependencyType` , e.g. `'esm'` , `'commonjs'` or a custom one before using a different semantic.
+
+###### this.loaders
+
+An array of all the loaders. It is writable in the pitch phase.
+
+```ts
+loaders = [{request: string, path: string, query: string, module: function}]
+```
+
+In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context):
+
+```javascript
+[
+  {
+    request: '/abc/loader1.js?xyz',
+    path: '/abc/loader1.js',
+    query: '?xyz',
+    module: [Function],
+  },
+  {
+    request: '/abc/node_modules/loader2/index.js',
+    path: '/abc/node_modules/loader2/index.js',
+    query: '',
+    module: [Function],
+  },
+];
+```
+
+###### this.mode
+
+Read in which [`mode`](https://webpack.js.org/configuration/mode/) webpack is running.
+
+Possible values: `'production'`, `'development'`, `'none'`
+
+###### this.query
+
+1. If the loader was configured with an [`options`](https://webpack.js.org/configuration/module/#useentry) object, this will point to that object.
+2. If the loader has no `options`, but was invoked with a query string, this will be a string starting with `?`.
+
+###### this.request
+
+The resolved request string.
+
+In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context): `'/abc/loader1.js?xyz!/abc/node_modules/loader2/index.js!/abc/resource.js?rrr'`
+
+###### this.resolve
+
+```typescript
+resolve(context: string, request: string, callback: function(err, result: string))
+```
+
+Resolve a request like a require expression.
+
+- **context** : must be an absolute path to a directory. This directory is used as the starting location for the resolving.
+- **request** : is the request to be resolved. Usually either relative requests like `./relative` or module requests like `module/path` are used, but absolute paths like `/some/path` are also possible as requests.
+- **callback** : is a normal Node.js-style callback function giving the resolved path.
+
+All dependencies of the resolving operation are automatically added as dependencies to the current module.
+
+###### this.resource
+
+The resource part of the request, including query.
+
+In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context)  ( [[#Example for the loader context]] ) : `'/abc/resource.js?rrr'`
+
+###### this.resourcePath
+
+The resource file. 
+
+In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context) ( [[#Example for the loader context]] ) : `'/abc/resource.js'`
+
+###### this.resourceQuery
+
+The query of the resource. 
+
+In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context) ( [[#Example for the loader context]] ) : `'?rrr'`
+
+###### this.rootContext
+
+Since webpack 4, the formerly `this.options.context` is provided as `this.rootContext`.
+
+###### this.sourceMap
+
+Tells if source map should be generated. Since generating source maps can be an expensive task, you should check if source maps are actually requested.
+
+###### this.target
+
+Target of compilation. Passed from configuration options.
+
+Example values: `'web'` , `'node'`
+
+###### this.utils
+
+> 5.27.0+
+
+Access to `contextify` and `absolutify` utilities.
+
+- **contextify** : Return a new request string avoiding absolute paths when possible.
+- **absolutify** : Return a new request string using absolute paths when possible.
+
+```js
+// my-sync-loader.js
+module.exports = function (content) {
+  this.utils.contextify(
+    this.context,
+    this.utils.absolutify(this.context, './index.js')
+  );
+  this.utils.absolutify(this.context, this.resourcePath);
+  // …
+  return content;
+};
+```
+
+###### this.version
+
+**Loader API version.** Currently `2`. This is useful for providing backwards compatibility. Using the version you can specify custom logic or fallbacks for breaking changes.
+
+###### this.webpack
+
+This boolean is set to true when this is compiled by webpack.
+
+> 💡 **Tip** : Loaders were originally designed to also work as Babel transforms. Therefore, if you write a loader that works for both, you can use this property to know if there is access to additional loaderContext and webpack features.
+
+摘自：[webpack doc - API - Loader Interface](https://webpack.js.org/api/loaders/)
 
 
 

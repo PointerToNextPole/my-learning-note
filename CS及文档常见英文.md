@@ -28,7 +28,7 @@
 
 - **i.e.** : *i.e.* is an abbreviation for the phrase ***id est***, which means **"that is"** .
 
-- **retrieve**：检索
+- **retrieve**：检索，获取
 
 - **decoupled**：解耦的
 
@@ -185,6 +185,9 @@
 - **dispose**：处置
 - **reversible**：可逆转的。**irreversible**：不可逆转的
 - **idle**：空闲的，闲置的
+- **invocate**：调用 ( verb) -> **invocation** ( noun )
+- **trivial**：不重要的
+- **deterministic**：确定性的
 
 
 #### 特殊字符
