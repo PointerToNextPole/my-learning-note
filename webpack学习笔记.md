@@ -2104,6 +2104,8 @@ module.exports.raw = true;
 
 ###### Pitching Loader
 
+> 👀 注：关于 pitch（即 `exports.pitch` ）的调用可以参考 [[#this.importModule]] 中 “webpack.config.js” 的写法；即，在 `module.rules` 包含的对象中 使用 `use` 。
+
 <font color=red>Loaders are **always** called from right to left</font>. There are some instances where the loader <font color=LightSeaGreen>only cares about the **metadata** behind a request and can ignore the results of the previous loader</font>. <font color=fuchsia>The `pitch` method on loaders is called from <font size=4>**left to right**</font></font>（👀 这个要注意）<font color=fuchsia>**before the loaders are actually executed**</font>（ 👀 参考下面 “树状结构” 表现的调用顺序 ） <font color=red>( from right to left )</font>.
 
 > 💡 **Tip** : <font color=red>Loaders may be added inline in requests and disabled via inline prefixes</font> , which <font color=red>will impact the order in which they are "pitched" and executed</font>. See [`Rule.enforce`](https://webpack.js.org/configuration/module/#ruleenforce) for more details.
@@ -2354,7 +2356,7 @@ Information about HMR for loaders.
 
 ```javascript
 module.exports = function (source) {
-  console.log(this.hot); // true if HMR is enabled via --hot flag or webpack configuration // 👀
+  console.log(this.hot); // **true if HMR is enabled via** --hot flag or webpack configuration // 👀
   return source;
 };
 ```
@@ -2373,7 +2375,7 @@ An alternative lightweight solution for the child compiler to compile and execut
 - **options** :
   - **layer** : specify a layer in which this module is placed/compiled
   - **publicPath** : the public path used for the built modules
-- **callback** : an optional Node.js style callback returning the exports of the module or a namespace object for ESM. `importModule` will return a Promise if no callback is provided.
+- **callback** : an **optional** Node.js style callback returning the exports of the module or a namespace object for ESM. `importModule` will return a Promise if no callback is provided.
 
 ```js
 // webpack.config.js
@@ -2382,7 +2384,7 @@ module.exports = {
     rules: [
       {
         test: /stylesheet\.js$/i,
-        use: ['./a-pitching-loader.js'],
+        use: ['./a-pitching-loader.js'], // 👀 这就是 pitch 的调用方式，pitch 的定义在下面
         type: 'asset/source', // we set type to 'asset/source' as the loader will return a string
       },
     ],
@@ -2393,8 +2395,8 @@ module.exports = {
 ```js
 // a-pitching-loader.js
 exports.pitch = async function (remaining) {
-  const result = await this.importModule(
-    this.resourcePath + '.webpack[javascript/auto]' + '!=!' + remaining
+  const result = await this.importModule( // 👀 使用 importModule
+    this.resourcePath + '.webpack[javascript/auto]' + '!=!' + remaining // 👀 '!=!' 是 Inline matchResource 语法
   );
   return result.default || result;
 };
@@ -2420,17 +2422,17 @@ import stylesheet from './stylesheet.js';
 
 You might notice something in the above example:
 
-1. We have a [pitching loader](https://webpack.js.org/api/loaders/#pitching-loader),
-2. We use `!=!` syntax in that pitching loader to set [matchResource](https://webpack.js.org/api/loaders/#inline-matchresource) for the request, i.e., we'll use `this.resourcePath + '.webpack[javascript/auto]'` to match with the [`module.rules`](https://webpack.js.org/configuration/module/#modulerules) instead of the original resource,
-3. `.webpack[javascript/auto]` is a pseudo extension of the `.webpack[type]` pattern, we use it to specify a default [module type](https://webpack.js.org/configuration/module/#ruletype) when no other module type is specified. It's typically used in conjunction with `!=!` syntax.
+1. We have a pitching loader ( [[#Pitching Loader]] ) ,
+2. We <font color=fuchsia>use `!=!` syntax in that pitching loader to <font size=4>**set matchResource**</font></font> ( [[#Inline matchResource]] ) <font color=red>for the request</font> , i.e. , <font color=fuchsia>we'll use</font> `this.resourcePath + '.webpack[javascript/auto]'` <font color=fuchsia>to match with the `module.rules` **instead of the original resource**</font>.
+3. <font color=red>`.webpack[javascript/auto]` is a **pseudo extension** of the `.webpack[type]` pattern</font> , <font color=red>we use it to specify a default [module type](https://webpack.js.org/configuration/module/#ruletype)</font> **when no other module type is specified**. <font color=fuchsia>**It's typically used in conjunction**</font>（结合）<font color=fuchsia>**with <font size=4>`!=!`</font> syntax**</font>.
 
-Note that the above example is a simplified one, you can check [the full example on webpack repository](https://github.com/webpack/webpack/tree/master/test/configCases/loader-import-module/css).
+Note that <font color=dodgerBlue>the above example is a simplified one, you can check</font> [the full example on webpack repository](https://github.com/webpack/webpack/tree/master/test/configCases/loader-import-module/css).
 
 ###### this.loaderIndex
 
-The index in the loaders array of the current loader.
+<font color=red>The index in the loaders array of the current loader</font>.
 
-In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context): in loader1: `0`, in loader2: `1`
+In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context)  ( [[#Example for the loader context]] ) : in loader1: `0` , in loader2: `1`
 
 ###### this.loadModule
 
@@ -2438,19 +2440,21 @@ In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-cont
 loadModule(request: string, callback: function(err, source, sourceMap, module))
 ```
 
-Resolves the given request to a module, applies all configured loaders and calls back with the generated source, the sourceMap and the module instance (usually an instance of [`NormalModule`](https://github.com/webpack/webpack/blob/master/lib/NormalModule.js) ). Use this function if you need to know the source code of another module to generate the result.
+Resolves the given request to a module, applies all configured loaders and calls back with the generated source, the sourceMap and the module instance (usually an instance of [`NormalModule`](https://github.com/webpack/webpack/blob/master/lib/NormalModule.js) ). <font color=LightSeaGreen>Use this function if you need to **know the source code of another module to generate the result**</font>.
+
+> 🌏 译：解析给定的 request 到模块，应用所有配置的 loader，并且在回调函数中传入生成的 source、sourceMap 和模块实例（通常是 NormalModule 的一个实例）。
 
 `this.loadModule` in a loader context uses CommonJS resolve rules by default. Use `this.getResolve` with an appropriate `dependencyType` , e.g. `'esm'` , `'commonjs'` or a custom one before using a different semantic.
 
 ###### this.loaders
 
-An array of all the loaders. It is writable in the pitch phase.
+An <font color=red>array of all the loaders</font>. <font color=fuchsia>It is <font size=4>**writable in the pitch phase**</font></font>.
 
 ```ts
 loaders = [{request: string, path: string, query: string, module: function}]
 ```
 
-In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context):
+In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context) ( [[#Example for the loader context]] ):
 
 ```javascript
 [
@@ -2471,20 +2475,20 @@ In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-cont
 
 ###### this.mode
 
-Read in which [`mode`](https://webpack.js.org/configuration/mode/) webpack is running.
+Read in <font color=red>which `mode` webpack is running</font>.
 
-Possible values: `'production'`, `'development'`, `'none'`
+Possible values: `'production'` , `'development'` , <font color=red>**`'none'`**</font>
 
 ###### this.query
 
-1. If the loader was configured with an [`options`](https://webpack.js.org/configuration/module/#useentry) object, this will point to that object.
-2. If the loader has no `options`, but was invoked with a query string, this will be a string starting with `?`.
+1. If the <font color=red>loader was configured with an [`options`](https://webpack.js.org/configuration/module/#useentry) object</font>, this will <font color=red>point to that object</font>.
+2. If the loader <font color=red>has no `options`</font> , but was <font color=red>invoked with a query string</font> , this will be a <font color=red>string starting with `?`</font> .
 
 ###### this.request
 
-The resolved request string.
+<font color=red>The resolved request string</font>.
 
-In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context): `'/abc/loader1.js?xyz!/abc/node_modules/loader2/index.js!/abc/resource.js?rrr'`
+In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context) ( [[#Example for the loader context]] ) : <font color=fuchsia>**`'/abc/loader1.js?xyz!/abc/node_modules/loader2/index.js!/abc/resource.js?rrr'`**</font>
 
 ###### this.resolve
 
@@ -2492,31 +2496,29 @@ In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-cont
 resolve(context: string, request: string, callback: function(err, result: string))
 ```
 
-Resolve a request like a require expression.
+<font color=red>Resolve a request like a require expression</font>.
 
-- **context** : must be an absolute path to a directory. This directory is used as the starting location for the resolving.
-- **request** : is the request to be resolved. Usually either relative requests like `./relative` or module requests like `module/path` are used, but absolute paths like `/some/path` are also possible as requests.
+- **context** : <font color=red>***must*** be an **absolute path to a <font size=4>directory</font>**</font>. <font color=red>This **directory** is **used as the starting location** for the resolving</font>.
+- **request** : is the <font color=red>request to be resolved</font>. Usually <font color=red>either **relative requests**</font> like `./relative` <font color=red>or **module requests**</font> like `module/path` are used , but <font color=red>**absolute paths**</font> like `/some/path` are<font color=red> also possible as requests</font>.
 - **callback** : is a normal Node.js-style callback function giving the resolved path.
 
 All dependencies of the resolving operation are automatically added as dependencies to the current module.
 
 ###### this.resource
 
-The resource part of the request, including query.
+The resource part of the request , <font color=red>**including query**</font> .
 
-In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context)  ( [[#Example for the loader context]] ) : `'/abc/resource.js?rrr'`
+In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context)  ( [[#Example for the loader context]] ) : <font color=fuchsia>**`'/abc/resource.js?rrr'`**</font>
 
 ###### this.resourcePath
 
 The resource file. 
 
-In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context) ( [[#Example for the loader context]] ) : `'/abc/resource.js'`
+In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context) ( [[#Example for the loader context]] ) : <font color=fuchsia>**`'/abc/resource.js'`**</font>
 
 ###### this.resourceQuery
 
-The query of the resource. 
-
-In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context) ( [[#Example for the loader context]] ) : `'?rrr'`
+<font color=fuchsia size=4>The query of the resource</font>. In [the example](https://webpack.js.org/api/loaders/#example-for-the-loader-context) ( [[#Example for the loader context]] ) : <font color=fuchsia>**`'?rrr'`**</font>
 
 ###### this.rootContext
 
@@ -2524,11 +2526,11 @@ Since webpack 4, the formerly `this.options.context` is provided as `this.rootCo
 
 ###### this.sourceMap
 
-Tells if source map should be generated. Since generating source maps can be an expensive task, you should check if source maps are actually requested.
+<font color=red>Tells **if** source map should be generated</font>（ 👀 鉴于是 “if”，所以返回值是 boolean ）. Since <font color=LightSeaGreen>generating source maps can be an **expensive task**</font>, you should check if source maps are actually requested.
 
 ###### this.target
 
-Target of compilation. Passed from configuration options.
+<font color=red>Target of compilation</font>. Passed from configuration options.
 
 Example values: `'web'` , `'node'`
 
@@ -2536,10 +2538,10 @@ Example values: `'web'` , `'node'`
 
 > 5.27.0+
 
-Access to `contextify` and `absolutify` utilities.
+<font color=red>Access to `contextify` and `absolutify` utilities</font>.
 
-- **contextify** : Return a new request string avoiding absolute paths when possible.
-- **absolutify** : Return a new request string using absolute paths when possible.
+- **contextify** : <font color=red>**Return a new request string**</font> <font color=fuchsia>**avoiding absolute paths**</font> when possible. 👀 注意和下面的区别
+- **absolutify** : <font color=red>**Return a new request string**</font> <font color=fuchsia>**using absolute paths**</font> when possible.
 
 ```js
 // my-sync-loader.js
@@ -2556,15 +2558,258 @@ module.exports = function (content) {
 
 ###### this.version
 
-**Loader API version.** Currently `2`. This is useful for providing backwards compatibility. Using the version you can specify custom logic or fallbacks for breaking changes.
+<font color=red>**Loader API version**</font>. Currently `2` （目前是 `2` ）. This is <font color=LightSeaGreen>useful for providing **backwards compatibility**</font>（向后兼容性）. Using the version you can <font color=LightSeaGreen>specify custom logic or fallbacks for breaking changes</font>.
 
 ###### this.webpack
 
-This boolean is set to true when this is compiled by webpack.
+This <font color=fuchsia>**boolean**</font> is <font color=red>set to true</font> when this is <font color=red>compiled by webpack</font>.
 
-> 💡 **Tip** : Loaders were originally designed to also work as Babel transforms. Therefore, if you write a loader that works for both, you can use this property to know if there is access to additional loaderContext and webpack features.
+> 💡 **Tip** : <font color=red>Loaders were originally designed to also **work as Babel transforms**</font>（🌏 译：loader 最初被设计为：也可以当 Babel transforms 用） . Therefore, <font color=dodgerBlue>if you write a loader that works for both</font>, you can use this property to <font color=red>know if there is access to additional loaderContext and webpack features</font>.
+
+##### Webpack specific properties
+
+The loader interface **provides all module relate information**. However <font color=dodgerBlue>in rare cases you might **need access to the compiler api** itself</font>.
+
+> ⚠️ **Warning** : Please note that <font color=red>using these webpack specific properties **will have a negative impact on your loaders compatibility**</font>.
+
+Therefore you should <font color=red>only use them as a last resort</font>（求助）. Using them will reduce the portability of your loader.
+
+###### this._compilation
+
+Access to the <font color=red>**current Compilation object** of webpack</font>. 👀 注意是 compilation object，和下面 compiler 要区分开
+
+###### this._compiler
+
+Access to the <font color=red>**current Compiler object** of webpack</font>.
+
+##### Deprecated context properties
+
+> 👀 文档中说“强烈不建议使用”，这里略。
+
+##### Error Reporting
+
+<font color=dodgerBlue>You can report errors from inside a loader by</font> :
+
+- Using `this.emitError` . Will <font color=red>report the errors **without interrupting module's compilation**</font>.
+- Using `throw` ( or other uncaught exception ). Throwing an error while a loader is running will cause current module compilation failure.
+- Using `callback` ( in async mode ). <font color=red>**Pass an error to the callback**</font> will also <font color=red>**cause module compilation failure**</font>. 👀 下面有示例
+
+For example:
+
+```js
+// ./src/index.js
+require('./loader!./lib');
+```
+
+Throwing an error from loader :
+
+```js
+// ./src/loader.js
+module.exports = function (source) {
+  throw new Error('This is a Fatal Error!');
+};
+```
+
+Or pass an error to the callback in async mode:
+
+```js
+// ./src/loader.js
+module.exports = function (source) {
+  const callback = this.async();
+  //...
+  callback(new Error('This is a Fatal Error!'), source);
+};
+```
+
+<font color=dodgerBlue>The module will get bundled like this:</font>
+
+```
+/***/ "./src/loader.js!./src/lib.js":
+/*!************************************!*\
+  !*** ./src/loader.js!./src/lib.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+throw new Error("Module build failed (from ./src/loader.js):\nError: This is a Fatal Error!\n    at Object.module.exports (/workspace/src/loader.js:3:9)");
+
+/***/ })
+```
+
+Then the build output will also display the error ( Similar to `this.emitError` ):
+
+```bash
+ERROR in ./src/lib.js (./src/loader.js!./src/lib.js)
+Module build failed (from ./src/loader.js):
+Error: This is a Fatal Error!
+    at Object.module.exports (/workspace/src/loader.js:2:9)
+ @ ./src/index.js 1:0-25
+```
+
+As you can see below, <font color=red>not only error message, **but also details about which loader and module are involved**</font>:
+
+- the module path : `ERROR in ./src/lib.js`
+- the request string : `(./src/loader.js!./src/lib.js)`
+- the loader path : `(from ./src/loader.js)`
+- the caller path : `@ ./src/index.js 1:0-25`
+
+> ⚠️ **Warning** : The loader path in the error is displayed since webpack 4.12
+
+> 💡 **Tip** : <font color=red>All the errors and warnings will be recorded into `stats`</font> . Please see [Stats Data](https://webpack.js.org/api/stats/#errors-and-warnings) .
+
+##### Inline matchResource
+
+<font color=dodgerblue>A **new inline request syntax** was introduced in webpack v4</font>. <font size=4><font color=fuchsia>**Prefixing `<match-resource>!=!` to a request**</font> <font color=red>**will set the `matchResource` for this request**</font></font>.
+
+> ⚠️ **Warning** : It is <font color=red>**not recommended** to use this syntax in application code</font>. <font color=fuchsia>Inline request syntax is intended to **only be used by loader generated code**</font>（🌏 译：内联请求语法仅用于 loader 生成的代码 ）. Not following this recommendation（建议） will make your code webpack-specific and non-standard.
+
+> 💡 **Tip** : A relative `matchResource` will resolve relative to the current context of the containing module（🌏 译：相对的 matchResource 将相对包含模块的当前上下文进行解析）.
+
+<font color=red>When a `matchResource` is set, it will be used to match with the `module.rules` instead of the original resource</font>. <mark>This can be useful if further loaders should be applied to the resource, or if the module type needs to be changed</mark>. It's also displayed in the stats and used for matching `Rule.issuer` and `test` in `splitChunks` .
+
+Example:
+
+```js
+// file.js
+/* STYLE: body { background: red; } */
+console.log('yep');
+```
+
+A loader could transform the file into the following file and <font color=fuchsia>**use the `matchResource`** to **apply the user-specified CSS processing**</font> （处理）<font color=fuchsia>**rules**</font> :
+
+```js
+// file.js ( transformed by loader )
+import './file.js.css!=!extract-style-loader/getStyles!./file.js';
+console.log('yep');
+```
+
+<font color=red>This will add a dependency to `extract-style-loader/getStyles!./file.js`</font> and <font color=red>treat the result as `file.js.css`</font> . Because `module.rules` has a rule matching `/\.css$/` and it will apply to this dependency.
+
+<font color=dodgerBlue>The loader could look like this:</font>
+
+```js
+// extract-style-loader/index.js
+const getStylesLoader = require.resolve('./getStyle');
+
+module.exports = function (source) {
+  if (STYLES_REGEXP.test(source)) {
+    source = source.replace(STYLES_REGEXP, '');
+    return `import ${JSON.stringify(
+      this.utils.contextify(this.context || this.rootContext, `${this.resource}.css!=!${getStylesLoader}!${this.remainingRequest}`)
+    )};${source}`;
+  }
+  return source;
+};
+```
+
+```js
+// extract-style-loader/getStyles.js
+module.exports = function (source) {
+  const match = STYLES_REGEXP.match(source);
+  return match[0];
+};
+```
+
+##### Logging
+
+Logging API is available since the release of webpack 4.37. When `logging` is enabled in [`stats configuration`](https://webpack.js.org/configuration/stats/#statslogging) and/or when [`infrastructure logging`](https://webpack.js.org/configuration/other-options/#infrastructurelogging) is enabled, loaders may log messages which will be printed out in the respective logger format (stats, infrastructure).
+
+- Loaders should prefer to use `this.getLogger()` for logging which is a shortcut to `compilation.getLogger()` with loader path and processed file. This kind of logging is stored to the Stats and formatted accordingly. It can be filtered and exported by the webpack user.
+- Loaders may use `this.getLogger('name')` to get an independent logger with a child name. Loader path and processed file is still added.
+- Loaders may use special fallback logic for detecting logging support `this.getLogger() ? this.getLogger() : console` to provide a fallback when an older webpack version is used which does not support `getLogger` method.
 
 摘自：[webpack doc - API - Loader Interface](https://webpack.js.org/api/loaders/)
+
+
+
+#### Logger Interface
+
+Logging output is an additional way to display messages to the end users.
+
+Webpack logger is available to [loaders](https://webpack.js.org/loaders/) and [plugins](https://webpack.js.org/api/plugins/#logging). Emitting as part of the [Stats](https://webpack.js.org/api/stats/) and configured by the user in [webpack configuration](https://webpack.js.org/configuration/).
+
+<font color=dodgerBlue>**Benefits of custom logging API in webpack :**</font>
+
+- Common place to [configure the logging](https://webpack.js.org/configuration/stats/#statslogging) display level
+- Logging output exportable as part of the `stats.json`
+- Stats presets affect logging output
+- Plugins can affect logging capturing and display level
+- When using multiple plugins and loaders they use a common logging solution
+- CLI, UI tools for webpack may choose different ways to display logging
+- webpack core can emit logging output, e.g. timing data
+
+By introducing webpack logging API we hope to unify the way webpack plugins and loaders emit logs and allow better ways to inspect build problems. Integrated logging solution supports plugins and loaders developers by improving their development experience. Paves the way for non-CLI webpack solutions like dashboards or other UIs.
+
+> ⚠️ **Warning** : **Avoid noise in the log !** Keep in mind that multiple plugins and loaders are used together. Loaders are usually processing multiple files and are invoked for every file. Choose a logging level as low as possible to keep the log output informative.
+
+##### Examples of how to get and use webpack logger in loaders and plugins
+
+###### my-webpack-plugin.js
+
+```js
+const PLUGIN_NAME = 'my-webpack-plugin';
+export class MyWebpackPlugin {
+  apply(compiler) {
+    // you can access Logger from compiler
+    const logger = compiler.getInfrastructureLogger(PLUGIN_NAME);
+    logger.log('log from compiler');
+
+    compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation) => {
+      // you can also access Logger from compilation
+      const logger = compilation.getLogger(PLUGIN_NAME);
+      logger.info('log from compilation');
+    });
+  }
+}
+```
+
+###### my-webpack-loader.js
+
+```js
+module.exports = function (source) {
+  // you can get Logger with `this.getLogger` in your webpack loaders
+  const logger = this.getLogger('my-webpack-loader');
+  logger.info('hello Logger');
+  return source;
+};
+```
+
+##### Logger methods
+
+- **logger.error( ... )** : for error messages
+- **logger.warn( ... )** : for warnings
+- **logger.info( ... )** : for **important** information messages. These messages are displayed by default. Only use this for messages that the user really needs to see
+- **logger.log( ... )** : for **unimportant** information messages. These messages are displayed only when user had opted-in to see them
+- **logger.debug( ... )** : for debugging information. These messages are displayed only when user had opted-in to see debug logging for specific modules
+- **logger.trace()** : to display a stack trace. Displayed like `logger.debug`
+- **logger.group( ... )** : to group messages. Displayed collapsed like `logger.log`
+- **logger.groupEnd()** : to end a logging group
+- **logger.groupCollapsed( ... )** : to group messages together. Displayed collapsed like `logger.log`. Displayed expanded when logging level is set to `'verbose'` or `'debug'`.
+- **logger.status** : writes a temporary message, setting a new status, overrides the previous one
+- **logger.clear()** : to print a horizontal line. Displayed like `logger.log`
+- **logger.profile( ... )** , **logger.profileEnd( ... )** : to capture a profile. Delegated to `console.profile` when supported
+
+##### Runtime Logger API
+
+Runtime logger API is only intended to be used as a development tool, it is not intended to be included in [production mode](https://webpack.js.org/configuration/mode/#mode-production).
+
+- **const logging = require('webpack/lib/logging/runtime')** : to use the logger in runtime, require it directly from webpack
+
+- **logging.getLogger('name')** : to get individual logger by name
+
+- **logging.configureDefaultLogger( ... )** : to override the default logger.
+
+  ```js
+  const logging = require('webpack/lib/logging/runtime');
+  logging.configureDefaultLogger({
+    level: 'log',
+    debug: /something/,
+  });
+  ```
+
+- **logging.hooks.log** : to apply Plugins to the runtime logger
+
+摘自：[webpack doc - API - Logger Interface](https://webpack.js.org/api/logging/)
 
 
 
@@ -2596,11 +2841,11 @@ webpack 本质上是一个模块打包工具，同时支持 ES Module / CommonJS
 > - Assets
 > - WebAssembly modules
 >
-> 摘自：https://webpack.js.org/concepts/modules/#supported-module-types
+> 摘自：[webpack doc - concept - modules #supported-module-types](https://webpack.js.org/concepts/modules/#supported-module-types)
 
 
 
-<font color=FF0000>**CommonJS 是 Node 的模块引入规范**</font>，其中引入和导出的语法如下
+**CommonJS 是 Node 的模块引入规范**，其中引入和导出的语法如下
 
 ```js
 //引入

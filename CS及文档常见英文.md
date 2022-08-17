@@ -4,7 +4,7 @@
 
 - **synchronous**： 同步
 - **asynchronous**：异步
-- **compatibility**：兼容性。compat：兼容 ( verb )
+- **compatibility**：兼容性。compat：兼容 ( verb )。**forwards compatibility**：向后兼容性
 - **shortcut**：快捷方式，近道
 - **out of the box**：开箱即用
 - **built-in**：内置
@@ -186,8 +186,12 @@
 - **reversible**：可逆转的。**irreversible**：不可逆转的
 - **idle**：空闲的，闲置的
 - **invocate**：调用 ( verb) -> **invocation** ( noun )
+- **conjunct**：结合 ( verb ) -> **conjunction** ( noun )
 - **trivial**：不重要的
 - **deterministic**：确定性的
+- **pseudo**：伪的
+- **resort**：求助
+- **process**：一般理解为“过程”( noun )，这里强调的是“**处理**“ ( verb ) 的意思
 
 
 #### 特殊字符
