@@ -86,6 +86,8 @@
 
 - **unite**：使联合
 
+- **unify**：统一
+
 - **wellspring**：源泉，来源
 
 - **tweak**：调整
@@ -192,6 +194,12 @@
 - **pseudo**：伪的
 - **resort**：求助
 - **process**：一般理解为“过程”( noun )，这里强调的是“**处理**“ ( verb ) 的意思
+- **pave**：铺路
+- **invoke**：援引，提及，**调用**
+- **enforce**：**执行**，强迫实施
+- **opt out**：选择退出，选择排除
+- **subsequent**：随后的，后面的
+- **interfere**：干涉
 
 
 #### 特殊字符
@@ -217,5 +225,8 @@
 - **分号 `;`** ：semicolon
 
 - **斜杠**
-  - forward slash: `/`
-  - backslash :  `\`
+  - 正斜杠  `/`：forward slash
+  - 反斜杠  `\ ` ：backslash 
+
+- **引号**
+  - 反引号 ``	`：backquote

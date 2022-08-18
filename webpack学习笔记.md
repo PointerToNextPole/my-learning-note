@@ -2683,7 +2683,7 @@ import './file.js.css!=!extract-style-loader/getStyles!./file.js';
 console.log('yep');
 ```
 
-<font color=red>This will add a dependency to `extract-style-loader/getStyles!./file.js`</font> and <font color=red>treat the result as `file.js.css`</font> . Because `module.rules` has a rule matching `/\.css$/` and it will apply to this dependency.
+<font color=red>This will add a dependency to `extract-style-loader/getStyles!./file.js`</font> and <font color=red>**treat the result as** `file.js.css`</font> . Because `module.rules` has a rule matching `/\.css$/` and <font color=LightSeaGreen>it will apply to this dependency</font>.
 
 <font color=dodgerBlue>The loader could look like this:</font>
 
@@ -2712,11 +2712,11 @@ module.exports = function (source) {
 
 ##### Logging
 
-Logging API is available since the release of webpack 4.37. When `logging` is enabled in [`stats configuration`](https://webpack.js.org/configuration/stats/#statslogging) and/or when [`infrastructure logging`](https://webpack.js.org/configuration/other-options/#infrastructurelogging) is enabled, loaders may log messages which will be printed out in the respective logger format (stats, infrastructure).
+<font color=dodgerBlue>Logging API is available since the release of webpack 4.37</font>. <font color=red>When `logging` is enabled in [`stats configuration`](https://webpack.js.org/configuration/stats/#statslogging) and/or when [`infrastructure logging`](https://webpack.js.org/configuration/other-options/#infrastructurelogging) is enabled</font>, <font color=red>loaders may log messages</font> which will be printed out in the respective（各自的） logger format ( stats , infrastructure ) （ 👀 即上面的两种 enable 的模式）.
 
-- Loaders should prefer to use `this.getLogger()` for logging which is a shortcut to `compilation.getLogger()` with loader path and processed file. This kind of logging is stored to the Stats and formatted accordingly. It can be filtered and exported by the webpack user.
-- Loaders may use `this.getLogger('name')` to get an independent logger with a child name. Loader path and processed file is still added.
-- Loaders may use special fallback logic for detecting logging support `this.getLogger() ? this.getLogger() : console` to provide a fallback when an older webpack version is used which does not support `getLogger` method.
+- <font color=red>**Loaders should prefer to use `this.getLogger()` for logging**</font> which <font color=red>is a shortcut to `compilation.getLogger()` with loader path and processed file</font>. This kind of logging is stored to the Stats and formatted accordingly. It can be filtered and exported by the webpack user.
+- Loaders may <font color=red>use `this.getLogger('name')` to get an independent logger with a child name</font>. Loader path and processed file is still added.
+- Loaders may <font color=red>use special fallback logic for detecting logging support `this.getLogger() ? this.getLogger() : console`</font> to provide a fallback when an older webpack version is used which does not support `getLogger` method.
 
 摘自：[webpack doc - API - Loader Interface](https://webpack.js.org/api/loaders/)
 
@@ -2724,9 +2724,9 @@ Logging API is available since the release of webpack 4.37. When `logging` is en
 
 #### Logger Interface
 
-Logging output is an additional way to display messages to the end users.
+<font color=dodgerBlue>Logging output is an **additional way** to display messages to the end users</font>.
 
-Webpack logger is available to [loaders](https://webpack.js.org/loaders/) and [plugins](https://webpack.js.org/api/plugins/#logging). Emitting as part of the [Stats](https://webpack.js.org/api/stats/) and configured by the user in [webpack configuration](https://webpack.js.org/configuration/).
+<font color=red>Webpack logger is available to `loaders` and `plugins`</font> . Emitting as part of the [Stats](https://webpack.js.org/api/stats/) and configured by the user in `webpack configuration`.
 
 <font color=dodgerBlue>**Benefits of custom logging API in webpack :**</font>
 
@@ -2738,9 +2738,9 @@ Webpack logger is available to [loaders](https://webpack.js.org/loaders/) and [p
 - CLI, UI tools for webpack may choose different ways to display logging
 - webpack core can emit logging output, e.g. timing data
 
-By introducing webpack logging API we hope to unify the way webpack plugins and loaders emit logs and allow better ways to inspect build problems. Integrated logging solution supports plugins and loaders developers by improving their development experience. Paves the way for non-CLI webpack solutions like dashboards or other UIs.
+By introducing webpack logging API <font color=red>we hope to unify</font>（统一） <font color=red>the way webpack plugins and loaders emit logs</font> and allow better ways to inspect build problems. Integrated logging solution supports plugins and loaders developers by improving their development experience. Paves（铺路） the way for non-CLI webpack solutions like dashboards or other UIs.
 
-> ⚠️ **Warning** : **Avoid noise in the log !** Keep in mind that multiple plugins and loaders are used together. Loaders are usually processing multiple files and are invoked for every file. Choose a logging level as low as possible to keep the log output informative.
+> ⚠️ **Warning** : **Avoid noise in the log !** <font color=red>Keep in mind that multiple plugins and loaders are used together</font>. <font color=red>Loaders are usually processing multiple files and are **invoked**</font>（调用，这里是“被调用”）<font color=red>**for every file**</font> . Choose a logging level as low as possible to keep the log output informative.
 
 ##### Examples of how to get and use webpack logger in loaders and plugins
 
@@ -2776,28 +2776,30 @@ module.exports = function (source) {
 
 ##### Logger methods
 
+> 👀 注：用法类似于 JS 的 console 家族，见：[[JS及其相关库备忘录#Console]]
+
 - **logger.error( ... )** : for error messages
 - **logger.warn( ... )** : for warnings
-- **logger.info( ... )** : for **important** information messages. These messages are displayed by default. Only use this for messages that the user really needs to see
-- **logger.log( ... )** : for **unimportant** information messages. These messages are displayed only when user had opted-in to see them
-- **logger.debug( ... )** : for debugging information. These messages are displayed only when user had opted-in to see debug logging for specific modules
-- **logger.trace()** : to display a stack trace. Displayed like `logger.debug`
+- **logger.info( ... )** : <font color=red>for **important** information messages</font>. These messages are displayed by default. <font color=LightSeaGreen>Only use this for messages that the user really needs to see</font>
+- **logger.log( ... )** : <font color=red>for **unimportant** information messages</font>. These messages are displayed only when user had opted-in to see them
+- **logger.debug( ... )** : <font color=red>for debugging information</font>. <font color=LightSeaGreen>These messages are displayed only when user had opted-in to see debug logging for specific modules</font>
+- **logger.trace()** : to display a stack trace. <font color=LightSeaGreen>Displayed like `logger.debug`</font>
 - **logger.group( ... )** : to group messages. Displayed collapsed like `logger.log`
 - **logger.groupEnd()** : to end a logging group
-- **logger.groupCollapsed( ... )** : to group messages together. Displayed collapsed like `logger.log`. Displayed expanded when logging level is set to `'verbose'` or `'debug'`.
+- **logger.groupCollapsed( ... )** : to group messages together. Displayed collapsed like `logger.log`. Displayed expanded when logging level is set to `'verbose'` or `'debug'` .
 - **logger.status** : writes a temporary message, setting a new status, overrides the previous one
-- **logger.clear()** : to print a horizontal line. Displayed like `logger.log`
+- **logger.clear()** : to <font color=red>print a horizontal line</font>. Displayed like `logger.log`
 - **logger.profile( ... )** , **logger.profileEnd( ... )** : to capture a profile. Delegated to `console.profile` when supported
 
 ##### Runtime Logger API
 
-Runtime logger API is only intended to be used as a development tool, it is not intended to be included in [production mode](https://webpack.js.org/configuration/mode/#mode-production).
+<font color=dodgerBlue>Runtime logger API is **only intended to be used as a development tool**</font>, it is <font color=red>not intended to be included in “production mode”</font>.
 
-- **const logging = require('webpack/lib/logging/runtime')** : to use the logger in runtime, require it directly from webpack
+- **const logging = require('webpack/lib/logging/runtime')** : to <font color=red>use the logger in runtime</font>, require it directly from webpack
 
-- **logging.getLogger('name')** : to get individual logger by name
+- **logging.getLogger('name')** : to <font color=red>**get** individual logger by name</font>
 
-- **logging.configureDefaultLogger( ... )** : to override the default logger.
+- **logging.configureDefaultLogger( ... )** : to <font color=red>**override** the default logger</font>.
 
   ```js
   const logging = require('webpack/lib/logging/runtime');
@@ -2807,9 +2809,259 @@ Runtime logger API is only intended to be used as a development tool, it is not 
   });
   ```
 
-- **logging.hooks.log** : to apply Plugins to the runtime logger
+- **logging.hooks.log** : to <font color=red>**apply Plugins** to the runtime logger</font>
 
 摘自：[webpack doc - API - Logger Interface](https://webpack.js.org/api/logging/)
+
+
+
+#### Module Methods
+
+<font color=dodgerBlue>This section **covers all methods available in code compiled with webpack**</font>. When using webpack to bundle your application, <font color=red>you can **pick from a variety of module syntax styles** including ES6 , CommonJS , and AMD</font>.
+
+While <font color=LightSeaGreen>webpack supports multiple module syntaxes</font>, <font color=red>we **recommend following a single syntax** for consistency and to avoid odd behaviors / bugs</font>. Actually <font color=fuchsia>webpack would enforce</font>（执行）<font color=fuchsia>the recommendation for `.mjs` files , `.cjs` files or `.js` files **when their nearest parent `package.json` file contains a `"type"` field with a value of either `"module"` or `"commonjs"`**</font> . Please pay attention to these enforcements before you read on:
+
+- <font color=dodgerBlue>`.mjs` or `.js` with **`"type": "module"`** in `package.json`</font>
+  - <font color=red>No CommonJS allowed</font>, for example, you can't use `require `, `module.exports` or `exports`
+  - <font color=fuchsia>File extensions are required when importing</font> , e.g, you should use `import './src/App.mjs'` instead of `import './src/App'` ( you can disable this enforcement with `Rule.resolve.fullySpecified` )
+- <font color=dodgerBlue>`.cjs` or `.js` with **`"type": "commonjs"`** in `package.json`</font>
+  - <font color=red>Neither `import` nor `export` is available</font> 👀 即：禁止使用 ESM 
+- `.wasm` with `"type": "module"` in `package.json`
+  - File extensions are required when importing wasm file
+
+##### ES6 (Recommended)
+
+> 👀 推荐使用 ESM 方式
+
+<font color=red>Version 2 of webpack supports ES6 module syntax natively</font>, meaning you can <font color=red>use `import` and `export` without a tool like babel to handle this for you</font>. Keep in mind that you will still probably need babel for other ES6+ features. The following methods are supported by webpack:
+
+###### import
+
+<font color=fuchsia>**Statically**</font> `import` the `export`s（👀 这里表示导出的内容可能有多个）of another module.
+
+```javascript
+import MyModule from './my-module.js';
+import { NamedExport } from './other-module.js';
+```
+
+> ⚠️ **Warning** : <font color=red>The keyword here is **statically**</font>. <font color=fuchsia>A **normal `import` statement** cannot be used **dynamically within other logic or contain variables**</font>. See the [spec](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) for more information and `import()`（👀 静态是 `import` ，动态是 `import()` ） below for dynamic usage.
+
+You <font color=dodgerBlue>can also `import` Data URI</font> :
+
+```javascript
+import 'data:text/javascript;charset=utf-8;base64,Y29uc29sZS5sb2coJ2lubGluZSAxJyk7';
+import {
+  number,
+  fn,
+} from 'data:text/javascript;charset=utf-8;base64,ZXhwb3J0IGNvbnN0IG51bWJlciA9IDQyOwpleHBvcnQgY29uc3QgZm4gPSAoKSA
+```
+
+###### export
+
+Export anything as a `default` or named export.
+
+```javascript
+// Named exports
+export var Count = 5;
+export function Multiply(a, b) { return a * b; }
+
+// Default export
+export default { /* Some data... */ };
+```
+
+###### import()
+
+```js
+function(string path): Promise
+```
+
+<font color=red>**Dynamically** load modules</font>. Calls to `import()` are treated as split points, meaning the requested module and its children are split out into a separate chunk.
+
+> 💡 **Tip** : The [ES2015 Loader spec](https://whatwg.github.io/loader/) defines `import()` as method to <font color=red>**load ES2015 modules dynamically on runtime**</font>.
+
+```javascript
+if (module.hot) {
+  import('lodash').then((_) => {
+    // Do something with lodash (a.k.a '_')...
+  });
+}
+```
+
+> ⚠️ **Warning** : <font color=red>This feature **relies on `Promise` internally**</font>. If you use `import()` with older browsers, remember to shim `Promise` using a polyfill such as [es6-promise](https://github.com/stefanpenner/es6-promise) or [promise-polyfill](https://github.com/taylorhakes/promise-polyfill).
+
+###### Dynamic expressions in import()
+
+<font color=dodgerBlue>It is not possible to use a fully dynamic import statement, such as `import(foo)`</font> . Because <font color=red>`foo` could potentially be any path to any file in your system or project</font>.
+
+The `import()` must contain at least some information about where the module is located. Bundling can be limited to a specific directory or set of files so that when you are using a dynamic expression - every module that could potentially be requested on an `import()` call is included. For example, <font color=LightSeaGreen>``import(`./locale/${language}.json`)``</font> will cause every `.json` file in the `./locale` directory to be bundled into the new chunk. <font color=red>**At run time**, when the variable `language` has been computed</font>, any file like `english.json` or `german.json` will be available for consumption.
+
+```javascript
+// imagine we had a method to get language from cookies or other storage
+const language = detectVisitorLanguage();
+import(`./locale/${language}.json`).then((module) => {
+  // do something with the translations
+});
+```
+
+> 💡 **Tip** : Using the `webpackInclude` and `webpackExclude` options（见下面 [[#Magic Comments]] ） allows you to add regex patterns that reduce the number of files that webpack will bundle for this import.
+
+###### Magic Comments
+
+<font color=dodgerblue>**Inline comments**</font>（内联注释，行内注释） <font color=dodgerblue>to make features work</font>. <font color=red>By adding comments to the import , we can do things such as</font> <font color=fuchsia>**name our chunk** or **select different modes**</font>（ 👀 即 `webpackMode` ）. For a <font color=dodgerBlue>**full list of these magic comments** see the code below</font> followed by an explanation of what these comments do.
+
+```js
+// Single target
+import(
+  /* webpackChunkName: "my-chunk-name" */
+  /* webpackMode: "lazy" */
+  /* webpackExports: ["default", "named"] */
+  'module'
+);
+
+// Multiple possible targets 👀 即内部代码是动态的
+import(
+  /* webpackInclude: /\.json$/ */
+  /* webpackExclude: /\.noimport\.json$/ */
+  /* webpackChunkName: "my-chunk-name" */
+  /* webpackMode: "lazy" */
+  /* webpackPrefetch: true */
+  /* webpackPreload: true */
+  `./locale/${language}`
+);
+```
+
+```js
+import(/* webpackIgnore: true */ 'ignored-module.js');
+```
+
+**webpackIgnore** : <font color=fuchsia>**Disables dynamic import parsing** when set to `true`</font> .
+
+> ⚠️ **Warning** : Note that setting `webpackIgnore` to `true` <font color=fuchsia>**opts out**</font>（选择退出，即不进行代码分割）<font color=fuchsia>of code splitting</font>.
+
+**webpackChunkName** : <font color=fuchsia>A **name for the new chunk**</font>. Since webpack 2.6.0, the <font color=red>placeholders `[index]` and `[request]` are supported within the **given string to an incremented number** or the **actual resolved filename** respectively</font>. <font color=fuchsia>Adding this comment will **cause our separate chunk to be named** `[my-chunk-name].js` instead of `[id].js `</font> .
+
+**webpackMode** : <font color=dodgerBlue>Since webpack 2.6.0</font>, <font color=red>**different modes for resolving dynamic imports** can be specified</font>. The <font color=dodgerBlue>following options are supported</font>:
+
+- **'lazy'** ( **default** ) : <font color=fuchsia>**Generates a lazy-loadable chunk *for each `import()`ed module***</font>.
+
+- **'lazy-once'** : <font color=fuchsia>**Generates a single lazy-loadable chunk** that can ***satisfy all calls to `import()`***</font> . <font color=red>The chunk will **be fetched on the first call to `import()`**</font> , and <font color=fuchsia>subsequent</font>（随后的） <font color=fuchsia>calls to `import()` will **use the same** network response</font>. Note that <font color=fuchsia>this **only makes sense** in the case of a **partially dynamic statement**</font> , e.g. ``import(`./locales/${language}.json`)`` , where multiple module paths that can potentially be requested.
+
+  > 👀 我的理解是：lazy 是 为每一个 import 都生成一个 chunk，而 lazy-once 是对所有的 import 都只生成一个 chunk
+
+- **'eager'** : <font color=fuchsia>Generates no extra chunk</font>. All modules are included in the current chunk and no additional network requests are made. A `Promise` is still returned but is already resolved. <font color=red>In contrast to a static import, the module isn't executed until the call to `import()` is made</font>.
+
+- **'weak'** : <font color=fuchsia>Tries to load the module if the module function has already been loaded in some other way</font> ( e.g. another chunk imported it or a script containing the module was loaded ). A `Promise` is still returned , but only successfully resolves if the chunks are already on the client. <font color=red>If the module is not available, the `Promise` is rejected</font>. A network request will never be performed. <font color=red>This is useful for **universal rendering**</font>（👀 即 SSR ） when required chunks are always manually served in initial requests (embedded within the page), but not in cases where app navigation will trigger an import not initially served.
+
+  > 👀 上面 eager 和 weak 两种选项，没看懂...
+
+**webpackPrefetch** : Tells the browser that the resource is probably needed for some navigation <font color=red>in the future</font>. Check out the guide for more information on [how webpackPrefetch works](https://webpack.js.org/guides/code-splitting/#prefetchingpreloading-modules).
+
+**webpackPreload** : Tells the browser that the resource might be needed <font color=red>during the **current navigation**</font>. Check out the guide for more information on [how webpackPreload works](https://webpack.js.org/guides/code-splitting/#prefetchingpreloading-modules) .
+
+> 💡 **Tip** : Note that <font color=red>all options can be combined like so `/* webpackMode: "lazy-once", webpackChunkName: "all-i18n-data" */`</font> （ 👀 即 不需要每写一个 magic comment 选项都要用一个“块级注释”包裹，多种选项用一个“块级注释”包裹即可 ）. This is wrapped in a JavaScript object and executed using [node VM](https://nodejs.org/dist/latest-v8.x/docs/api/vm.html). You do not need to add **curly brackets**（花括号）.
+
+**webpackInclude** : A <font color=red>**regular expression**</font> that will be matched against during import resolution. Only modules that match **will be bundled**.
+
+**webpackExclude** : A <font color=red>**regular expression**</font> that will be matched against during import resolution. Any module that matches **will not be bundled**.
+
+> 💡 **Tip** : Note that `webpackInclude` and `webpackExclude` options do not interfere（干涉） with the prefix. e.g. : `./locale `.
+
+**webpackExports** : <font color=red>tells webpack to only bundle the **specified exports** of a dynamically `import()`ed module</font>（🌏 译：只构建指定出口的动态 import() 模块）. It <font color=red>can decrease the output size of a chunk</font>. Available since [webpack 5.0.0-beta.18](https://github.com/webpack/webpack/releases/tag/v5.0.0-beta.18) .
+
+##### CommonJS
+
+The goal of CommonJS is to specify an ecosystem for JavaScript outside the browser. The following CommonJS methods are supported by webpack:
+
+###### require
+
+```typescript
+require(dependency: String);
+```
+
+Synchronously retrieve the exports from another module. The compiler will ensure that the dependency is available in the output bundle.
+
+```javascript
+var $ = require('jquery');
+var myModule = require('my-module');
+```
+
+It's possible to enable magic comments for `require` as well, see [`module.parser.javascript.commonjsMagicComments`](https://webpack.js.org/configuration/module/#moduleparserjavascriptcommonjsmagiccomments) for more.
+
+> ⚠️ **Warning** : Using it asynchronously may not have the expected effect.
+
+###### require.resolve
+
+```typescript
+require.resolve(dependency: String);
+```
+
+Synchronously retrieve a module's ID. The compiler will ensure that the dependency is available in the output bundle. It is recommended to treat it as an opaque value which can only be used with `require.cache[id]` or `__webpack_require__(id)` (best to avoid such usage).
+
+> ⚠️ **Warning** : Module ID's type can be a `number` or a `string` depending on the [`optimization.moduleIds`](https://webpack.js.org/configuration/optimization/#optimizationmoduleids) configuration.
+
+See [`module.id`](https://webpack.js.org/api/module-variables/#moduleid-commonjs) for more information.
+
+###### require.cache
+
+Multiple requires of the same module result in only one module execution and only one export. Therefore a cache in the runtime exists. Removing values from this cache causes new module execution and a new export.
+
+> ⚠️ **Warning** : This is only needed in rare cases for compatibility!
+
+```javascript
+var d1 = require('dependency');
+require('dependency') === d1;
+delete require.cache[require.resolve('dependency')];
+require('dependency') !== d1;
+```
+
+```js
+// in file.js
+require.cache[module.id] === module;
+require('./file.js') === module.exports;
+delete require.cache[module.id];
+require.cache[module.id] === undefined;
+require('./file.js') !== module.exports; // in theory; in praxis this causes a stack overflow
+require.cache[module.id] !== module;
+```
+
+###### require.ensure
+
+> ⚠️ **Warning** : `require.ensure()` is specific to webpack and superseded by `import() `.
+
+```ts
+require.ensure(
+  dependencies: String[],
+  callback: function(require),
+  errorCallback: function(error),
+  chunkName: String
+)
+```
+
+Split out the given `dependencies` to a separate bundle that will be loaded asynchronously. When using CommonJS module syntax, this is the only way to dynamically load dependencies. Meaning, this code can be run within execution, only loading the `dependencies` if certain conditions are met.
+
+> ⚠️ **Warning** : This feature relies on [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) internally. If you use `require.ensure` with older browsers, remember to shim `Promise` using a polyfill such as [es6-promise](https://github.com/stefanpenner/es6-promise) or [promise-polyfill](https://github.com/taylorhakes/promise-polyfill).
+
+```javascript
+var a = require('normal-dep');
+
+if (module.hot) {
+  require.ensure(['b'], function (require) {
+    var c = require('c');
+    // Do something special...
+  });
+}
+```
+
+The following parameters are supported in the order specified above:
+
+- `dependencies`: An array of strings declaring all modules required for the code in the `callback` to execute.
+- `callback`: A function that webpack will execute once the dependencies are loaded. An implementation of the `require` function is sent as a parameter to this function. The function body can use this to further `require()` modules it needs for execution.
+- `errorCallback`: A function that is executed when webpack fails to load the dependencies.
+- `chunkName`: A name given to the chunk created by this particular `require.ensure()`. By passing the same `chunkName` to various `require.ensure()` calls, we can combine their code into a single chunk, resulting in only one bundle that the browser must load.
+
+> ⚠️ **Warning** : Although the implementation of `require` is passed as an argument to the `callback` function, using an arbitrary name e.g. `require.ensure([], function(request) { request('someModule'); })` isn't handled by webpack's static parser. Use `require` instead , e.g. `require.ensure([], function(require) { require('someModule'); })` .
+
+摘自：[webpack doc - API - Module Methods](https://webpack.js.org/api/module-methods/)
 
 
 
