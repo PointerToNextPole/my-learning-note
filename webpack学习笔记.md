@@ -292,6 +292,8 @@ require.context('../', true, /\.stories\.js$/);
 // a context with all files in the parent folder and descending folders ending with `.stories.js`.
 ```
 
+> 👀 注：require.context 在 [[#Module Methods#webpack#require.context]] 中也有详细介绍
+
 ##### context module API
 
 A **context module** <font color=FF0000>**exports a ( require ) function** that **takes one argument : the request**</font>.
@@ -1871,7 +1873,7 @@ if (
 
 ```javascript
 const moduleId = chooseAModule();
-const code = __webpack_modules__[moduleId].toString(); // 👀 TODO 在 Module Variables 中有介绍
+const code = __webpack_modules__[moduleId].toString(); // 👀 在 Module Variables 中有介绍
 __webpack_modules__[moduleId] = eval(`(${makeChanges(code)})`);
 if (require.cache[moduleId]) {
   require.cache[moduleId].hot.invalidate();
@@ -2978,16 +2980,16 @@ The goal of CommonJS is to specify an ecosystem for JavaScript outside the brows
 require(dependency: String);
 ```
 
-Synchronously retrieve the exports from another module. The compiler will ensure that the dependency is available in the output bundle.
+Synchronously retrieve（检索） the exports from another module. The compiler will ensure that the dependency is available in the output bundle.
 
 ```javascript
 var $ = require('jquery');
 var myModule = require('my-module');
 ```
 
-It's possible to enable magic comments for `require` as well, see [`module.parser.javascript.commonjsMagicComments`](https://webpack.js.org/configuration/module/#moduleparserjavascriptcommonjsmagiccomments) for more.
+<font color=red>It's possible to **enable magic comments for `require`** as well</font>, see [`module.parser.javascript.commonjsMagicComments`](https://webpack.js.org/configuration/module/#moduleparserjavascriptcommonjsmagiccomments) for more.
 
-> ⚠️ **Warning** : Using it asynchronously may not have the expected effect.
+> ⚠️ **Warning** : Using it asynchronously may not have the expected effect（🌏 译：异步方式使用 require，可能不会达到预期效果）.
 
 ###### require.resolve
 
@@ -2995,22 +2997,22 @@ It's possible to enable magic comments for `require` as well, see [`module.parse
 require.resolve(dependency: String);
 ```
 
-Synchronously retrieve a module's ID. The compiler will ensure that the dependency is available in the output bundle. It is recommended to treat it as an opaque value which can only be used with `require.cache[id]` or `__webpack_require__(id)` (best to avoid such usage).
+<font color=red>**Synchronously retrieve a module's ID**</font>. The compiler will <font color=red>ensure that the dependency is available in the output bundle</font>（👀 找不到回报错）. It is recommended to treat it as an opaque（不透明的） value which can only be used with `require.cache[id]` or `__webpack_require__(id)` ( ⚠️ <font color=red>best to avoid such usage</font> ).
 
-> ⚠️ **Warning** : Module ID's type can be a `number` or a `string` depending on the [`optimization.moduleIds`](https://webpack.js.org/configuration/optimization/#optimizationmoduleids) configuration.
+> ⚠️ **Warning** : <font color=red>Module ID's type can be a `number` or a `string` depending on the [`optimization.moduleIds`](https://webpack.js.org/configuration/optimization/#optimizationmoduleids) configuration</font>.
 
 See [`module.id`](https://webpack.js.org/api/module-variables/#moduleid-commonjs) for more information.
 
 ###### require.cache
 
-Multiple requires of the same module result in only one module execution and only one export. Therefore a cache in the runtime exists. Removing values from this cache causes new module execution and a new export.
+<font color=red>Multiple requires of the same module **result in only one module execution and only one export**</font>. Therefore <font color=fuchsia>a cache in the runtime exists</font>. <font color=fuchsia>**Removing values**</font>（👀 如下，通过 `delete require.cache(require.resolve(dip))` 删除）<font color=fuchsia>**from this cache <font size=4>causes new module execution and a new export</font>**</font>.
 
 > ⚠️ **Warning** : This is only needed in rare cases for compatibility!
 
 ```javascript
 var d1 = require('dependency');
 require('dependency') === d1;
-delete require.cache[require.resolve('dependency')];
+delete require.cache[require.resolve('dependency')]; // 👀 删除 require 示例
 require('dependency') !== d1;
 ```
 
@@ -3020,13 +3022,13 @@ require.cache[module.id] === module;
 require('./file.js') === module.exports;
 delete require.cache[module.id];
 require.cache[module.id] === undefined;
-require('./file.js') !== module.exports; // in theory; in praxis this causes a stack overflow
+require('./file.js') !== module.exports; // in theory; in praxis（实践） this causes a stack overflow
 require.cache[module.id] !== module;
 ```
 
 ###### require.ensure
 
-> ⚠️ **Warning** : `require.ensure()` is specific to webpack and superseded by `import() `.
+> ⚠️ **Warning** : `require.ensure()` is <font color=red>specific</font>（特有的） <font color=red>to webpack</font> and <font color=red>superseded</font>（取代） <font color=red>by `import() `</font> .
 
 ```ts
 require.ensure(
@@ -3037,31 +3039,470 @@ require.ensure(
 )
 ```
 
-Split out the given `dependencies` to a separate bundle that will be loaded asynchronously. When using CommonJS module syntax, this is the only way to dynamically load dependencies. Meaning, this code can be run within execution, only loading the `dependencies` if certain conditions are met.
+<font color=red>**Split out** the given `dependencies` to a separate bundle</font> that <font color=red>**will be loaded asynchronously**</font>. <font color=fuchsia>When using CommonJS module syntax, **this is the only way to dynamically load dependencies**</font>（👀 类似于 ESM 中的 `import()`；这一点，上面的注意也说到了）. Meaning , <font color=red>this code can be run within execution</font>（执行过程）, only loading the `dependencies` if certain conditions are met.
 
-> ⚠️ **Warning** : This feature relies on [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) internally. If you use `require.ensure` with older browsers, remember to shim `Promise` using a polyfill such as [es6-promise](https://github.com/stefanpenner/es6-promise) or [promise-polyfill](https://github.com/taylorhakes/promise-polyfill).
+> ⚠️ **Warning** : This feature relies on `Promise` internally. If you use `require.ensure` with older browsers, remember to shim `Promise` using a polyfill such as [es6-promise](https://github.com/stefanpenner/es6-promise) or [promise-polyfill](https://github.com/taylorhakes/promise-polyfill).
 
 ```javascript
 var a = require('normal-dep');
 
 if (module.hot) {
-  require.ensure(['b'], function (require) {
+  require.ensure(['b'], function (require) { // require.ensures 的用法
     var c = require('c');
     // Do something special...
   });
 }
 ```
 
-The following parameters are supported in the order specified above:
+<font color=dodgerBlue>The following parameters are supported in the order specified above:</font>
 
-- `dependencies`: An array of strings declaring all modules required for the code in the `callback` to execute.
-- `callback`: A function that webpack will execute once the dependencies are loaded. An implementation of the `require` function is sent as a parameter to this function. The function body can use this to further `require()` modules it needs for execution.
-- `errorCallback`: A function that is executed when webpack fails to load the dependencies.
-- `chunkName`: A name given to the chunk created by this particular `require.ensure()`. By passing the same `chunkName` to various `require.ensure()` calls, we can combine their code into a single chunk, resulting in only one bundle that the browser must load.
+- **dependencies** : <font color=red>An array of strings declaring all modules required for the code in the `callback` to execute</font>（🌏 译：声明 callback 中所需要的所有模块）.
+- **callback** : <font color=red>A function that webpack will execute once the dependencies are loaded</font>. An implementation of the `require` function is sent as a parameter to this function. The function body can use this to further `require()` modules it needs for execution.
+- **errorCallback** : A function that is <font color=red>executed when **webpack fails** to load the dependencies</font>.
+- **chunkName** : <font color=red>A name given to the chunk created by this particular `require.ensure()`</font>（👀 类似于 `import()` 中的 `webpackChunkName` magic comments 选项） . By passing the same `chunkName` to various `require.ensure()` calls , we can combine their code into a single chunk , <font color=red>resulting in only one bundle that the browser must load</font> （🌏 译：通过将相同 chunkName 传递给不同的 require.ensure 调用，我们可以将其代码合并到一个单独的 chunk 中，从而只产生一个浏览器必须加载的 bundle）.
 
-> ⚠️ **Warning** : Although the implementation of `require` is passed as an argument to the `callback` function, using an arbitrary name e.g. `require.ensure([], function(request) { request('someModule'); })` isn't handled by webpack's static parser. Use `require` instead , e.g. `require.ensure([], function(require) { require('someModule'); })` .
+> ⚠️ **Warning** : Although the implementation of `require` is passed as an argument to the `callback` function , using an arbitrary（任意的） name e.g. `require.ensure([], function(request) { request('someModule'); })` <font color=red>isn't handled by webpack's static parser</font>. <font color=red>**Use `require` instead**</font> , e.g. `require.ensure([], function(require) { require('someModule'); })`
+
+##### AMD
+
+> 👀 暂时用不到，略
+
+##### Labeled Modules
+
+The <font color=dodgerBlue>**internal `LabeledModulesPlugin`**</font> <font color=red>enables you to **use** the following **methods** for **exporting and requiring within your modules**</font>:
+
+###### export label
+
+Export the given `value` . <font color=red>The label can occur</font>（出现）<font color=red>before a function declaration or a variable declaration</font>. The function name or variable name is the identifier under which the value is exported.
+
+```ts
+export: var answer = 42;
+export: function method(value) {
+  // Do something...
+};
+```
+
+> ⚠️ **Warning** : <font color=red>Using it in an async function may not have the expected effect</font>.
+
+###### require label
+
+Make all exports from the dependency available in the current scope. <font color=red>The `require` label can occur before a string</font>. The <font color=red>dependency must export values with the `export` label</font>. <font color=fuchsia>**CommonJS or AMD modules cannot be consumed**</font>.
+
+some-dependency.js
+
+```ts
+export: var answer = 42;
+export: function method(value) {
+  // Do something...
+};
+```
+
+```ts
+require: 'some-dependency';
+console.log(answer);
+method(...);
+```
+
+##### Webpack
+
+<font color=dodgerBlue>Aside from the **module syntaxes** described above</font>, <font color=red>webpack also allows a few custom, **webpack-specific methods**</font>:
+
+###### require.context
+
+```ts
+require.context(
+  (directory: String),
+  (includeSubdirs: Boolean) /* optional, default true */,
+  (filter: RegExp) /* optional, default /^\.\/.*$/, any file */,                                  //  👀 可选
+  (mode: String) /* optional, 'sync' | 'eager' | 'weak' | 'lazy' | 'lazy-once', default 'sync' */ //  👀 可选
+);
+```
+
+<font color=red>Specify a whole group of dependencies using a path to the `directory`</font> （👀 因为是 文件夹路径，所以会有多个依赖）, an option to `includeSubdirs ` , <font color=red>a `filter` for more fine grained control of the modules included</font>, and a <font color=red>`mode` to define the way how loading will work</font>. Underlying modules can then be easily resolved later on（🌏 译：随后，可以轻松解析底层模块）:
+
+```javascript
+var context = require.context('components', true, /\.html$/);
+var componentA = context.resolve('componentA');
+```
+
+<font color=fuchsia>If `mode` is set to `'lazy'` , the **underlying modules will be loaded asynchronously**</font>:
+
+```javascript
+var context = require.context('locales', true, /\.json$/, 'lazy');
+context('localeA').then((locale) => {
+  // do something with locale
+});
+```
+
+<font color=dodgerBlue>The full list of available modes and their behavior is described in [`import()`](https://webpack.js.org/api/module-methods/#import-1) documentation</font>.
+
+###### require.include
+
+```ts
+require.include((dependency: String));
+```
+
+<font color=red>**Include a `dependency` without executing it**</font>. This <font color=fuchsia>can be used for **optimizing the position of a module in the output chunks**</font>.
+
+```javascript
+require.include('a');
+require.ensure(['a', 'b'], function (require) {
+  /* ... */
+});
+require.ensure(['a', 'c'], function (require) {
+  /* ... */
+});
+```
+
+<font color=dodgerBlue>This will result in the following output:</font>
+
+- entry chunk : `file.js` and `a`
+- anonymous chunk : `b`
+- anonymous chunk : `c`
+
+<font color=fuchsia>Without `require.include('a')` **it would be duplicated in both anonymous chunks**</font>.
+
+###### require.resolveWeak
+
+Similar to `require.resolve` , but <font color=red>this **won't pull**</font>（引入）<font color=red>**the `module` into the bundle**</font>. <font color=red>It's what is considered a "weak" dependency</font>.
+
+```javascript
+if (__webpack_modules__[require.resolveWeak('module')]) {
+  // Do something when module is available...
+}
+if (require.cache[require.resolveWeak('module')]) {
+  // Do something when module was loaded before...
+}
+
+// You can perform dynamic resolves ("context")
+// similarly to other require/import methods.
+const page = 'Foo';
+__webpack_modules__[require.resolveWeak(`./page/${page}`)];
+```
+
+> 💡 **Tip** : <font color=fuchsia>`require.resolveWeak` is the foundation of *universal rendering* (SSR + Code Splitting)</font>, <font color=LightSeaGreen>as used in packages such as [react-universal-component](https://github.com/faceyspacey/react-universal-component)</font> . It allows code to render synchronously on both the server and initial page-loads on the client. It requires that chunks are manually served or somehow available. It's able to require modules without indicating they should be bundled into a chunk. It's used in conjunction with `import()` which takes over when user navigation triggers additional imports.
+
+###### warning
+
+If the module source contains a require that cannot be statically analyzed, critical dependencies warning is emitted.
+
+Example code:
+
+```javascript
+someFn(require);
+require.bind(null);
+require(variable);
+```
 
 摘自：[webpack doc - API - Module Methods](https://webpack.js.org/api/module-methods/)
+
+
+
+#### Module Variables
+
+<font color=dodgerBlue>This section covers all **variables** available **in code compiled with webpack**</font> . Modules will have access to certain data from the compilation process through `module` and other variables.
+
+##### module.loaded (NodeJS)
+
+This is `false` if the module is currently executing, and `true` if the sync execution has finished.
+
+##### module.hot (webpack-specific)
+
+Indicates whether or not `Hot Module Replacement` is enabled and provides an interface to the process. See the [HMR API page](https://webpack.js.org/api/hot-module-replacement) for details.
+
+##### module.id (CommonJS)
+
+The ID of the current module.
+
+```javascript
+module.id === require.resolve('./file.js');
+```
+
+##### module.exports (CommonJS)
+
+Defines the value that will be returned when a consumer makes a `require` call to the module (defaults to a new object).
+
+```javascript
+module.exports = function doSomething() {
+  // Do something...
+};
+```
+
+> ⚠️ **Warning** : This CANNOT be used in an asynchronous function.
+
+##### exports (CommonJS)
+
+This variable is equal to the default value of `module.exports` ( i.e. an object ). If `module.exports` gets overwritten, `exports` will no longer be exported.
+
+```javascript
+exports.someValue = 42;
+exports.anObject = {
+  x: 123,
+};
+exports.aFunction = function doSomething() {
+  // Do something
+};
+```
+
+##### global (NodeJS)
+
+See [node.js global](https://nodejs.org/api/globals.html#globals_global).
+
+For compatibility reasons webpack polyfills the `global` variable by default.
+
+##### __dirname (NodeJS)
+
+Depending on the configuration option `node.__dirname` :
+
+- **false** : Not defined
+- **mock** : equal to `'/'`
+- **true** : [node.js ` __dirname`](https://nodejs.org/api/globals.html#globals_dirname)
+
+If used inside an expression that is parsed by the Parser, the configuration option is treated as `true`.
+
+##### import.meta.url
+
+Returns the absolute `file:` URL of the module.
+
+```javascript
+// src/index.js
+console.log(import.meta.url); // output something like `file:///path/to/your/project/src/index.js`
+```
+
+##### import.meta.webpack
+
+Returns the webpack version.
+
+```javascript
+// src/index.js
+console.log(import.meta.webpack); // output `5` for webpack 5
+```
+
+##### import.meta.webpackHot
+
+Webpack specific. An alias for [`module.hot`](https://webpack.js.org/api/module-variables/#modulehot-webpack-specific) , however `import.meta.webpackHot` can be used in [strict ESM](https://webpack.js.org/guides/ecma-script-modules/#flagging-modules-as-esm) while `module.hot` can't.
+
+##### import.meta.webpackContext
+
+Returns the same value as `require.context` but only for `javascript/auto` and `javascript/esm`.
+
+###### Type
+
+```ts
+(
+  request: string,
+  options?: {
+    recursive?: boolean;
+    regExp?: RegExp;
+    include?: RegExp;
+    exclude?: RegExp;
+    preload?: boolean | number;
+    prefetch?: boolean | number;
+    chunkName?: string;
+    exports?: string | string[][];
+    mode?: 'sync' | 'eager' | 'weak' | 'lazy' | 'lazy-once';
+  }
+) => webpack.Context;
+```
+
+> Available: 5.70.0+
+
+Example:
+
+```js
+const contextRequire = import.meta.webpackContext('.', {
+  recursive: false,
+  regExp: /two/,
+  mode: 'weak',
+  exclude: /three/,
+});
+```
+
+##### __filename (NodeJS)
+
+Depending on the configuration option `node.__filename` :
+
+- **false** : Not defined
+- **mock** : equal to `'/index.js'`
+- **true** : [node.js `__filename`](https://nodejs.org/api/globals.html#globals_filename)
+
+If used inside an expression that is parsed by the Parser, the configuration option is treated as `true`.
+
+##### __resourceQuery (webpack-specific)
+
+The resource query of the current module. If the following `require` call was made, then the query string would be available in `file.js`.
+
+```javascript
+require('file.js?test');
+```
+
+```javascript
+// file.js
+__resourceQuery === '?test';
+```
+
+##### \__webpack_public_path__ (webpack-specific)
+
+Equals the configuration option's `output.publicPath`.
+
+##### \__webpack_require__ (webpack-specific)
+
+The raw require function. This expression isn't parsed by the Parser for dependencies.
+
+##### \__webpack_chunk_load__ (webpack-specific)
+
+The internal chunk loading function. Takes one argument:
+
+- `chunkId` The id for the chunk to load.
+
+Example to load chunks from alternate public path when one failed:
+
+```js
+const originalLoad = __webpack_chunk_load__;
+const publicPaths = ['a', 'b', 'c'];
+__webpack_chunk_load__ = async (id) => {
+  let error;
+  for (const path of publicPaths) {
+    __webpack_public_path__ = path;
+    try { return await originalLoad(id); } 
+    catch (e) { error = e; }
+  }
+  throw error;
+};
+import('./module-a').then((moduleA) => {
+  // now webpack will use the custom __webpack_chunk_load__ to load chunk
+});
+```
+
+##### \__webpack_module__ (webpack-specific)
+
+> 5.68.0+
+
+It provides access to the the current `module` . `module` is not available in strict ESM.
+
+##### \__webpack_module__.id (webpack-specific)
+
+> 5.68.0+
+
+It provides access to the ID of current `module` ( `module.id` ) . `module` is not available in strict ESM.
+
+##### \__webpack_modules__ (webpack-specific)
+
+Access to the internal object of all modules.
+
+##### \__webpack_hash__ (webpack-specific)
+
+It provides access to the hash of the compilation.
+
+##### \__webpack_get_script_filename__ (webpack-specific)
+
+```
+function (chunkId)
+```
+
+It provides filename of the chunk by its id.
+
+It is assignable, which allows changing the filename used by the runtime. For example, it can be used to determine the final path when loading chunks.
+
+```js
+const oldFn = __webpack_get_script_filename__;
+
+__webpack_get_script_filename__ = (chunkId) => {
+  const filename = oldFn(chunkId);
+  return filename + '.changed';
+};
+```
+
+##### \__non_webpack_require__ (webpack-specific)
+
+Generates a `require` function that is not parsed by webpack. Can be used to do cool stuff with a global require function if available.
+
+##### \__webpack_exports_info__ (webpack-specific)
+
+In modules , `__webpack_exports_info__` is available to allow exports introspection:
+
+- `__webpack_exports_info__` is always `true`
+- `__webpack_exports_info__.<exportName>.used` is `false` when the export is known to be unused, `true` otherwise
+- `__webpack_exports_info__.<exportName>.useInfo` is
+  - `false` when the export is known to be unused
+  - `true` when the export is known to be used
+  - `null` when the export usage could depend on runtime conditions
+  - `undefined` when no info is available
+- `__webpack_exports_info__.<exportName>.provideInfo` is
+  - `false` when the export is known to be not provided
+  - `true` when the export is known to be provided
+  - `null` when the export provision could depend on runtime conditions
+  - `undefined` when no info is available
+- Accessing the info from nested exports is possible: i. e. `__webpack_exports_info__.<exportName>.<exportName>.<exportName>.used`
+- Check whether exports can be mangled with `__webpack_exports_info__.<name>.canMangle`
+
+##### \__webpack_is_included__ (webpack-specific)
+
+> 5.16.0+
+
+Test whether or not the given module is bundled by webpack.
+
+```js
+if (__webpack_is_included__('./module-a.js')) {
+  // do something
+}
+```
+
+##### \__webpack_base_uri__ (webpack-specific)
+
+Change base URI at runtime.
+
+- Type : `string`
+
+> Available: 5.21.0+
+
+Example:
+
+```js
+__webpack_base_uri__ = 'https://example.com';
+```
+
+##### \__webpack_runtime_id__
+
+Access the [runtime](https://webpack.js.org/blog/2020-10-10-webpack-5-release/#entry-point-runtime) id of current entry.
+
+This is a webpack specific feature and it's available since webpack 5.25.0.
+
+```js
+// src/index.js
+console.log(__webpack_runtime_id__ === 'main');
+```
+
+##### DEBUG (webpack-specific)
+
+Equals the configuration option `debug` .
+
+摘自：[webpack doc - API - Module Variables](https://webpack.js.org/api/module-variables/)
+
+
+
+#### Compilation Object
+
+The Compilation object has many methods and hooks available. On this page, we will list the available methods and properties.
+
+##### compilation object methods
+
+###### getStats
+
+function , Returns Stats object for the current compilation.
+
+###### addModule
+
+`function (module, cacheGroup)` , Adds a module to the current compilation.
+
+<font color=dodgerBlue>Parameters:</font>
+
+- **module** : module to be added
+- **cacheGroup** : `cacheGroup` of the module
+
+
+
+摘自：[webpack doc - API - Compilation Object](https://webpack.js.org/api/compilation-object/)
 
 
 

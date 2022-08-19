@@ -200,6 +200,10 @@
 - **opt out**：选择退出，选择排除
 - **subsequent**：随后的，后面的
 - **interfere**：干涉
+- **opaque**：不透明的
+- **praxis**：实践
+- **supersede**：取代
+- **arbitrary**：**任意的**，武断的
 
 
 #### 特殊字符
