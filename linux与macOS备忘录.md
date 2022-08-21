@@ -209,7 +209,7 @@ open .
 open -R fileName
 ```
 
-##### 打开某个url，注意：要加上`http://` 或 `https://`
+##### 打开某个url，注意：要加上 `http://` 或 `https://`
 
 ```sh
 open https://url
@@ -219,14 +219,42 @@ open https://url
 
 
 
+#### mdfind 命令
+
+mdfind 命令是 Spotlight 的终端界面，所以如果 Spotlight 被禁用的话，mdfind 命令也会无法使用。
+
+mdfind 命令查找文件比 Spotlight 还要快，其基本用法如下：
+
+```bash
+mdfind -name queryFileName
+```
+
+如果要查找包含某些文本的文件，则可以输入如下命令；这样就会查找所有包含 John 的文件。
+
+```text
+mdfind "John"
+```
+
+mdfind 命令还可以通过 `-onlyin` 参数搜索特定文件夹的内容，比如
+
+```bash
+mdfind -onlyin ~/Library queryTxt
+```
+
+摘自：[Mac中用mdfind命令快速查找文件 - 东东来了的文章 - 知乎](https://zhuanlan.zhihu.com/p/86138761)
+
+
+
 #### Homebrew 使用
 
-- Homebrew是使用ruby开发的Mac的软件包管理器
-- Homebrew 安装软件时将会<font color=FF0000>自动下载各种依赖</font>，这一点非常方便。
-- 命令列表：
+Homebrew是使用ruby开发的Mac的软件包管理器
+
+Homebrew 安装软件时将会<font color=FF0000>自动下载各种依赖</font>，这一点非常方便。
+
+##### 命令列表
 
 |     操作     | 命令 |
-| :----------: | :--: |
+| :----------- | :--- |
 | <font color=FF0000>更新Homebrew</font> |  `brew update`  |
 | 查看Homebrew版本，及brew/cask状况 | `brew -v` |
 |   <font color=FF0000>更新**所有**安装过的</font>软件包   | `brew upgrade` |
@@ -244,12 +272,23 @@ open https://url
 | 清除n天前的缓存（默认n=14） | `brew cleanup --prune n` |
 | 查看Homebrew安装位置 | `brew --prefix` |
 | 查看软件包在Homebrew中安装的位置 | `brew --prefix wget` |
+| 查看 brew 配置 | `brew config` |
 
-补充： 
+##### brew list 命令补充
+
+上面表格中提到了 `brew list` 作用是 “列出已安装的软件包”，不过 `brew list` 后面也是可以添加参数的，比如 brew 安装的应用名称，通过该命令 可以确定应用的安装位置。如下：
+
+<img src="https://s2.loli.net/2022/08/21/XCA9ptgIS4Wq6vK.png" alt="image-20220821190046643" style="zoom:50%;" />
+
+另外，通过通过 `brew info appName` 也可以得到 安装路径
+
+<img src="https://s2.loli.net/2022/08/21/dMJSzWKNnparyFw.png" alt="image-20220821193622196" style="zoom:50%;" />
+
+学习自：[Mac下获取Homebrew安装的软件路径](https://juejin.cn/post/6844903561705291789)
 
 ##### 关于taps(third-party-repositories)，相关命令：`brew tap`
 
-brew tap可以为brew的软件的 跟踪, 更新, 安装添加更多的的`tap formulae
+brew tap可以为brew的软件的 跟踪, 更新, 安装添加更多的的`tap formulae`
 
 如果你在核心仓库没有找到你需要的软件,那么你就需要安装第三方的仓库去安装你需要的软件
 
@@ -275,9 +314,9 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 
 - 在 `Github`上,你的仓库名称必须是`homebrew-something`,为了使用一个参数的`brew tap`命令,`homebrew-`这个前缀不是可选的,是必须的。
   对于两个参数的`brew tap`命令没有这个限制,但是必须给出明确的全部的`URL`地址
-- 当你在命令行使用`brew tap`时，你可以省略`homebrew-`这个前缀的
+- 当你在命令行使用`brew tap`时，你可以省略 `homebrew-` 这个前缀的
 
-也就是说:`brew tap username/foobar`是作为长版本`brew tap username/homebrew-foobar`使用的一个简写.**`brew`可以自己添加`homebrew-`前缀的在需要的时候**
+也就是说:`brew tap username/foobar `是作为长版本 `brew tap username/homebrew-foobar` 使用的一个简写。**`brew` 可以自己添加 `homebrew-` 前缀的在需要的时候**
 
 摘自： [homebrew的tap功能详解](https://segmentfault.com/a/1190000012826983)
 
@@ -565,7 +604,7 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
   - **127** ：未找到要运行的命令
   - **128** ：命令被系统强制结束
 
-- **\$n ：** <font color=FF0000>传递给脚本或函数的参数</font>。<mark>n 是一个数字，表示第几个参数。例如，第一个参数是$1，第二个参数是$2</mark>。
+- **\$n ：** <font color=FF0000>传递给脚本或函数的参数</font>。<mark>n 是一个数字，表示第几个参数。例如，第一个参数是 \$1，第二个参数是 \$2</mark>。
 
 **其中：\$* 和 \$@ 的区别**
 

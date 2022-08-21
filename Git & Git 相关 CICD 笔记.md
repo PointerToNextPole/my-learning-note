@@ -1,4 +1,8 @@
-# Git 学习笔记 & 使用踩坑解决方法
+# Git & Git 相关 CI/CD 笔记
+
+
+
+## Git 学习笔记 & 使用踩坑解决方法
 
 
 
@@ -1953,3 +1957,23 @@ Git会有很多合并策略，其中常见的是 Fast-forward、Recursive 、Our
   <font color=FF0000>通过SHA1哈希算法和哈系树来保证</font>。<mark>假设你偷偷修改了历史变更记录上一个文件的内容，那么这个问卷的blob object的SHA1哈希值就变了，与之相关的tree object的SHA1也需要改变，commit的SHA1也要变，这个commit之后的所有commit SHA1值也要跟着改变</mark>。又<font color=FF0000>由于Git是分布式系统，即所有人都有一份完整历史的Git仓库，所以所有人都能很轻松的发现存在问题</font>。
 
 摘自：[这才是真正的GIT——GIT内部原理](https://www.lzane.com/tech/git-internal/)
+
+
+
+#### `@commitlint/config-conventional` type 说明
+
+| type     | 含义                                   |
+| -------- | -------------------------------------- |
+| feat     | 新功能                                 |
+| fix      | 修复 bug                               |
+| docs     | 修改文档                               |
+| style    | 代码格式修改                           |
+| refactor | 重构（即不是新增功能，也不是修复 bug） |
+| perf     | 更改代码以提高性能                     |
+| test     | 增加测试                               |
+| build    | 构建过程或辅助工具的变动               |
+| ci       | 修改项目持续集成流程                   |
+| chore    | 其他类型的提交                         |
+| revert   | 恢复上一次提交                         |
+
+摘自：[git 奇淫巧技](https://www.yuque.com/docs/share/946f5537-0539-451a-aa50-1a41c2c0f12f)

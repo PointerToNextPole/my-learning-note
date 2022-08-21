@@ -204,6 +204,8 @@
 - **praxis**：实践
 - **supersede**：取代
 - **arbitrary**：**任意的**，武断的
+- **assign**：**分配**，指派
+- **introspect**：内省，**自我检查**
 
 
 #### 特殊字符
@@ -220,17 +222,14 @@
 参考自：[wikipedia - Bracket](https://en.wikipedia.org/wiki/Bracket)
 
 - **星号 `*`**：asterisk。在非正式的交流中也会被称为 “star” （比如 [stack overflow - Meaning of a double star (**) in a file path](https://stackoverflow.com/questions/46547540/meaning-of-a-double-star-in-a-file-path) ），不过，在 Google 搜索中 还是要使用 asterisk，star 没有用
-
 - **连接号**：dash，是一种统称。详见：[wikipedia - 连接号](https://zh.wikipedia.org/wiki/%E8%BF%9E%E6%8E%A5%E5%8F%B7)
   - en dash：表示范围
   - em dash：表示预期转折
 - **连字符 `-`**：hyphen。用于连接单词，将不同单词连接变成一个单词。
-
 - **分号 `;`** ：semicolon
-
 - **斜杠**
   - 正斜杠  `/`：forward slash
   - 反斜杠  `\ ` ：backslash 
-
 - **引号**
   - 反引号 ``	`：backquote
+- **下划线 `_`** ：underline

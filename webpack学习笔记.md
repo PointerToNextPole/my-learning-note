@@ -179,16 +179,6 @@ Webpack supports all browsers that are [ES5-compliant](https://kangax.github.io/
 
 
 
-#### \__webpack_require__
-
-知道 `__webpack_require__` 是在 webpack 文档的 [Concept - The Manifest #Manifest](https://webpack.js.org/concepts/manifest/#manifest) 部分，感觉有点重要
-
-> **No matter which module syntax you have chosen**, those <font color=FF0000>import or require statements have now become `__webpack_require__` methods</font> that <font color=FF0000>point to module identifiers</font>
->
-> 摘自：[webpack Doc - Concept - The Manifest #Manifest](https://webpack.js.org/concepts/manifest/#manifest)
-
-
-
 ### webpack 文档 Guide 笔记
 
 #### webpack 与插件
@@ -2997,11 +2987,11 @@ var myModule = require('my-module');
 require.resolve(dependency: String);
 ```
 
-<font color=red>**Synchronously retrieve a module's ID**</font>. The compiler will <font color=red>ensure that the dependency is available in the output bundle</font>（👀 找不到回报错）. It is recommended to treat it as an opaque（不透明的） value which can only be used with `require.cache[id]` or `__webpack_require__(id)` ( ⚠️ <font color=red>best to avoid such usage</font> ).
+<font color=red>**Synchronously retrieve a module's ID**</font>. The compiler will <font color=red>ensure that the dependency is available in the output bundle</font>（👀 找不到回报错）. It is recommended to treat it as an opaque（不透明的） value which can only be used with `require.cache[id]` or `__webpack_require__(id)` ( ⚠️ <font color=red>best to avoid such usage</font> ).（ 👀 关于 `__webpack_require__` 参见 [[#\__webpack_require__ (webpack-specific)]]）
 
 > ⚠️ **Warning** : <font color=red>Module ID's type can be a `number` or a `string` depending on the [`optimization.moduleIds`](https://webpack.js.org/configuration/optimization/#optimizationmoduleids) configuration</font>.
 
-See [`module.id`](https://webpack.js.org/api/module-variables/#moduleid-commonjs) for more information.
+See `module.id` ( [[#Module Variables#module.id (CommonJS)]] ) for more information.
 
 ###### require.cache
 
@@ -3200,19 +3190,19 @@ require(variable);
 
 #### Module Variables
 
-<font color=dodgerBlue>This section covers all **variables** available **in code compiled with webpack**</font> . Modules will have access to certain data from the compilation process through `module` and other variables.
+<font color=dodgerBlue>This section covers all **variables** available **in code compiled with webpack**</font> . <font color=red>Modules will have access to certain **data from the compilation process**</font> <font color=fuchsia>through `module` and other variables</font>.
 
 ##### module.loaded (NodeJS)
 
-This is `false` if the module is currently executing, and `true` if the sync execution has finished.
+This is <font color=red>`false` if the module is currently executing</font> , and <font color=red>`true` if the sync execution has finished</font> .
 
 ##### module.hot (webpack-specific)
 
-Indicates whether or not `Hot Module Replacement` is enabled and provides an interface to the process. See the [HMR API page](https://webpack.js.org/api/hot-module-replacement) for details.
+<font color=red>Indicates whether or not `Hot Module Replacement` is enabled</font> and <font color=fuchsia>provides an interface to the process</font>（👀 包含 `module.hot.accept` 和 `module.hot.decline` 等。关于这两者可见 [[#Hot Module Replacement#Module API]] ）. See the [HMR API page](https://webpack.js.org/api/hot-module-replacement) for details.
 
 ##### module.id (CommonJS)
 
-The ID of the current module.
+<font color=red>The ID of the current module</font>.
 
 ```javascript
 module.id === require.resolve('./file.js');
@@ -3220,7 +3210,7 @@ module.id === require.resolve('./file.js');
 
 ##### module.exports (CommonJS)
 
-Defines the value that will be returned when a consumer makes a `require` call to the module (defaults to a new object).
+<font color=red>Defines the value that will be returned</font> when a <font color=LightSeaGreen>consumer makes a `require` call to **the** module</font> (defaults to a new object).
 
 ```javascript
 module.exports = function doSomething() {
@@ -3228,11 +3218,11 @@ module.exports = function doSomething() {
 };
 ```
 
-> ⚠️ **Warning** : This CANNOT be used in an asynchronous function.
+> ⚠️ **Warning** : <font color=red>This **CANNOT be used** in an **asynchronous** function</font>.
 
 ##### exports (CommonJS)
 
-This variable is equal to the default value of `module.exports` ( i.e. an object ). If `module.exports` gets overwritten, `exports` will no longer be exported.
+<font color=red>**This variable is equal to the default value of `module.exports` **( i.e. an object )</font> . <font color=fuchsia>**If `module.exports` gets overwritten, `exports` will no longer be exported**</font>.
 
 ```javascript
 exports.someValue = 42;
@@ -3246,9 +3236,9 @@ exports.aFunction = function doSomething() {
 
 ##### global (NodeJS)
 
-See [node.js global](https://nodejs.org/api/globals.html#globals_global).
+See [node.js global](https://nodejs.org/api/globals.html#globals_global) .
 
-For compatibility reasons webpack polyfills the `global` variable by default.
+<font color=dodgerBlue>For compatibility reasons</font> <font color=red>webpack polyfills the `global` variable by default</font>.
 
 ##### __dirname (NodeJS)
 
@@ -3256,13 +3246,15 @@ Depending on the configuration option `node.__dirname` :
 
 - **false** : Not defined
 - **mock** : equal to `'/'`
-- **true** : [node.js ` __dirname`](https://nodejs.org/api/globals.html#globals_dirname)
+- **true** : [node.js ` __dirname`](https://nodejs.org/api/globals.html#globals_dirname) （👀 在 “非 REPL” 环境下可用，输出当前所在的路径）
 
 If used inside an expression that is parsed by the Parser, the configuration option is treated as `true`.
 
 ##### import.meta.url
 
-Returns the absolute `file:` URL of the module.
+<font color=fuchsia>Returns the **absolute `file:` URL of the**</font>（👀 当前的）<font color=fuchsia>**module**</font>.  
+
+> 👀 该变量一般和 `new URL` 配合使用，如 `const logo = new URL('./logo.svg', import.meta.url);`
 
 ```javascript
 // src/index.js
@@ -3280,11 +3272,11 @@ console.log(import.meta.webpack); // output `5` for webpack 5
 
 ##### import.meta.webpackHot
 
-Webpack specific. An alias for [`module.hot`](https://webpack.js.org/api/module-variables/#modulehot-webpack-specific) , however `import.meta.webpackHot` can be used in [strict ESM](https://webpack.js.org/guides/ecma-script-modules/#flagging-modules-as-esm) while `module.hot` can't.
+<font color=dodgerblue>Webpack specific</font>. <font color=red>**An alias for `module.hot`**</font> , however <font color=red>`import.meta.webpackHot` can be used in [strict ESM](https://webpack.js.org/guides/ecma-script-modules/#flagging-modules-as-esm) while `module.hot` can't</font>.
 
 ##### import.meta.webpackContext
 
-Returns the same value as `require.context` but only for `javascript/auto` and `javascript/esm`.
+<font color=red>**Returns the same value as `require.context`**</font> ( [[#依赖管理 Dependency Management#require.context()]] ) <font color=red>but **only for `javascript/auto` and `javascript/esm`**</font> .
 
 ###### Type
 
@@ -3330,7 +3322,7 @@ If used inside an expression that is parsed by the Parser, the configuration opt
 
 ##### __resourceQuery (webpack-specific)
 
-The resource query of the current module. If the following `require` call was made, then the query string would be available in `file.js`.
+<font color=fuchsia>The **resource query of the current module**</font>. If the following `require` call was made, then <font color=fuchsia>the query string would be available **in `file.js`**</font> .
 
 ```javascript
 require('file.js?test');
@@ -3343,19 +3335,19 @@ __resourceQuery === '?test';
 
 ##### \__webpack_public_path__ (webpack-specific)
 
-Equals the configuration option's `output.publicPath`.
+<font color=red>Equals the configuration option's `output.publicPath`</font> .
 
 ##### \__webpack_require__ (webpack-specific)
 
-The raw require function. This expression isn't parsed by the Parser for dependencies.
+The <font color=red>raw require **function**</font>（ ⚠️ 注意这是一个函数，使用示例见 [[#Module Methods#require.resolve]]）. This expression isn't parsed by the Parser for dependencies.
 
 ##### \__webpack_chunk_load__ (webpack-specific)
 
-The internal chunk loading function. Takes one argument:
+The <font color=red>internal chunk loading function</font>. Takes one argument:
 
-- `chunkId` The id for the chunk to load.
+- `chunkId` : <font color=red>The **id for the chunk** to load</font>.
 
-Example to load chunks from alternate public path when one failed:
+<font color=dodgerBlue>Example to load chunks from alternate public path when one failed:</font>
 
 ```js
 const originalLoad = __webpack_chunk_load__;
@@ -3378,69 +3370,65 @@ import('./module-a').then((moduleA) => {
 
 > 5.68.0+
 
-It provides access to the the current `module` . `module` is not available in strict ESM.
+It <font color=red>**provides access to the the current `module`**</font> . <font color=red>`module` is not available in strict ESM</font> .
 
 ##### \__webpack_module__.id (webpack-specific)
 
 > 5.68.0+
 
-It provides access to the ID of current `module` ( `module.id` ) . `module` is not available in strict ESM.
+It <font color=red>provides access to the ID of current `module`</font> ( `module.id` ) . `module` is not available in strict ESM.
 
 ##### \__webpack_modules__ (webpack-specific)
 
-Access to the internal object of all modules.
+<font color=red>Access to the internal object of all modules</font>.
 
 ##### \__webpack_hash__ (webpack-specific)
 
-It provides access to the hash of the compilation.
+It <font color=red>provides access to the hash of the compilation</font>.
 
 ##### \__webpack_get_script_filename__ (webpack-specific)
 
-```
-function (chunkId)
-```
+`function (chunkId)` : It <font color=red>provides filename of the chunk by its id</font>.
 
-It provides filename of the chunk by its id.
-
-It is assignable, which allows changing the filename used by the runtime. For example, it can be used to determine the final path when loading chunks.
+It is assignable（可分配的） , which <font color=red>**allows changing the filename used**  ***by the runtime***</font>. For example, it <font color=red>can be used to determine the final path when loading chunks</font>.
 
 ```js
 const oldFn = __webpack_get_script_filename__;
 
 __webpack_get_script_filename__ = (chunkId) => {
-  const filename = oldFn(chunkId);
+  const filename = oldFn(chunkId); // 👀
   return filename + '.changed';
 };
 ```
 
 ##### \__non_webpack_require__ (webpack-specific)
 
-Generates a `require` function that is not parsed by webpack. Can be used to do cool stuff with a global require function if available.
+<font color=red>Generates a `require` function that **is not parsed by webpack**</font> . Can be used to do cool stuff with a global require function if available.
 
 ##### \__webpack_exports_info__ (webpack-specific)
 
-In modules , `__webpack_exports_info__` is available to allow exports introspection:
+In modules , <font color=dodgerBlue>`__webpack_exports_info__` is available to **allow exports introspection**</font>（自我检查，内省）:
 
 - `__webpack_exports_info__` is always `true`
-- `__webpack_exports_info__.<exportName>.used` is `false` when the export is known to be unused, `true` otherwise
+- <font color=dodgerBlue>`__webpack_exports_info__.<exportName>.used` is `false`</font> <font color=red>when the **export is known to be unused**</font> , <font color=red>`true` otherwise</font>
 - `__webpack_exports_info__.<exportName>.useInfo` is
   - `false` when the export is known to be unused
   - `true` when the export is known to be used
-  - `null` when the export usage could depend on runtime conditions
+  - <font color=red>`null` when the export usage could depend on runtime conditions</font>
   - `undefined` when no info is available
 - `__webpack_exports_info__.<exportName>.provideInfo` is
-  - `false` when the export is known to be not provided
-  - `true` when the export is known to be provided
-  - `null` when the export provision could depend on runtime conditions
+  - `false` when <font color=red>the export is known to be **not provided**</font>
+  - `true` when <font color=red>the export is known to **be provided**</font>
+  - `null` when the export provision could <font color=red>depend on runtime conditions</font>
   - `undefined` when no info is available
-- Accessing the info from nested exports is possible: i. e. `__webpack_exports_info__.<exportName>.<exportName>.<exportName>.used`
-- Check whether exports can be mangled with `__webpack_exports_info__.<name>.canMangle`
+- <font color=red>Accessing the info from **nested exports is possible**</font> : <font color=dodgerBlue>i. e. `__webpack_exports_info__.<exportName>.<exportName>.<exportName>.used`</font>（ 👀 注意：这里是三个 `<exportName>` 嵌套 ）
+- <font color=red>Check whether exports can be mangled</font> with `__webpack_exports_info__.<name>.canMangle`
 
 ##### \__webpack_is_included__ (webpack-specific)
 
 > 5.16.0+
 
-Test whether or not the given module is bundled by webpack.
+<font color=red>Test **whether** or not the **given module is bundled by webpack**</font>.
 
 ```js
 if (__webpack_is_included__('./module-a.js')) {
@@ -3450,7 +3438,7 @@ if (__webpack_is_included__('./module-a.js')) {
 
 ##### \__webpack_base_uri__ (webpack-specific)
 
-Change base URI at runtime.
+<font color=red>**Change base URI *at runtime***</font>.
 
 - Type : `string`
 
@@ -3464,9 +3452,9 @@ __webpack_base_uri__ = 'https://example.com';
 
 ##### \__webpack_runtime_id__
 
-Access the [runtime](https://webpack.js.org/blog/2020-10-10-webpack-5-release/#entry-point-runtime) id of current entry.
+<font color=red>Access the **[runtime](https://webpack.js.org/blog/2020-10-10-webpack-5-release/#entry-point-runtime) id of current *entry***</font>.
 
-This is a webpack specific feature and it's available since webpack 5.25.0.
+This is a **webpack specific** feature and it's **available since webpack 5.25.0**.
 
 ```js
 // src/index.js
@@ -3475,7 +3463,7 @@ console.log(__webpack_runtime_id__ === 'main');
 
 ##### DEBUG (webpack-specific)
 
-Equals the configuration option `debug` .
+<font color=red>Equals the configuration option `debug`</font> .
 
 摘自：[webpack doc - API - Module Variables](https://webpack.js.org/api/module-variables/)
 
@@ -3920,7 +3908,7 @@ module.exports = {
 };
 ```
 
-如果在编译时，不知道最终输出文件的 `publicPath` 是什么地址，则可以将其留空，并且在运行时通过入口起点文件中的 `__webpack_public_path__` 动态设置。
+如果在编译时，不知道最终输出文件的 `publicPath` 是什么地址，则可以将其留空，并且在运行时通过入口起点文件中的 `__webpack_public_path__`（👀 等价于 `webpack.config.js` 中的 `output.publicPath`，参见 [[#Module Variables#\__webpack_public_path__ (webpack-specific) ]]）动态设置。
 
 ```js
 // 应用程序入口的其余部分
