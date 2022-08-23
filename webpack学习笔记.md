@@ -3471,26 +3471,2190 @@ console.log(__webpack_runtime_id__ === 'main');
 
 #### Compilation Object
 
-The Compilation object has many methods and hooks available. On this page, we will list the available methods and properties.
+<font color=dodgerBlue>The **Compilation object** has many methods and hooks available</font>. On this page, we will list the available methods and properties.
 
-##### compilation object methods
+> 👀 注：<font color=red>下面的内容都是 compilation object **methods**</font>。所以，下面方法的父标题 “compilation object methods” 省略
 
-###### getStats
+##### getStats
 
-function , Returns Stats object for the current compilation.
+`function` . <font color=red>**Returns Stats object** for the **current compilation**</font>.
 
-###### addModule
+##### addModule
 
-`function (module, cacheGroup)` , Adds a module to the current compilation.
+```js
+function (module, cacheGroup)
+```
 
-<font color=dodgerBlue>Parameters:</font>
+<font color=red>**Adds a module** to the current compilation</font>.
+
+###### Parameters
 
 - **module** : module to be added
 - **cacheGroup** : `cacheGroup` of the module
 
+##### getModule
 
+```js
+function (module)
+```
+
+<font color=red>**Fetches a module** from a compilation **by its identifier**</font>.
+
+###### Parameters
+
+- **module** : module to be fetched. The <font color=red>identifier is extracted from the module by the compilation **using `module.identifier()` method**</font>.
+
+##### findModule
+
+```js
+function (module)
+```
+
+Attempts to search for a module by its identifier.
+
+###### Parameters
+
+- **module** : module to be searched for. The identifier is extracted from the module by the compilation using `module.identifier()` method.
+
+##### buildModule
+
+```js
+function (module, optional, origin, dependencies)
+```
+
+<font color=red>Builds the given module</font>.
+
+###### Parameters
+
+- **module** : the module to be built.
+- **optional** : optional flag.
+- **origin** : <font color=red>origin module from which this module build was requested</font>.
+- **dependencies** : <font color=red>***optional*  dependencies of the module** to be built</font>.
+
+##### processModuleDependencies
+
+```js
+function (module, callback) 
+```
+
+Process the given module dependencies.
+
+###### Parameters
+
+- **module** : <font color=red>module to be processed for the dependencies</font>.
+- **callback** : <font color=red>**function to be invoked** when **dependencies of the module had been processed**</font>.
+
+##### addEntry
+
+```js
+function (context, entry, name, callback)
+```
+
+<font color=red>Adds an **entry** to the compilation</font>.
+
+###### Parameters
+
+- **context** : <font color=red>context path for entry</font>.
+- **entry** : entry dependency.
+- **name** : the name of entry.
+- **callback** : <font color=red>function to be invoked when addEntry finishes</font>.
+
+##### rebuildModule
+
+```js
+function (module, thisCallback)
+```
+
+Triggers a re-build of the module.
+
+###### Parameters
+
+- **module** : module to be rebuilt.
+- **thisCallback** : function to be invoked when the module finishes rebuilding.
+
+##### finish
+
+```js
+function (callback)
+```
+
+<font color=red>Finishes compilation and invokes the given callback</font>.
+
+###### Parameters
+
+- **callback** : function to be invoked when the compilation has been finished.
+
+##### seal
+
+```js
+function (callback)
+```
+
+Seals（封闭） the compilation. 
+
+> 👀 注：没搞懂 “封闭” 是什么意思，便搜了下，了解了。在本文档的后面部分 [webpack doc - API - Compilation Hooks](https://webpack.js.org/api/compilation-hooks/) 即 [[#Compilation Hooks]] 中有提到编译的步骤：
+>
+> > <font color=dodgerBlue>During the compilation phase</font>, <font color=fuchsia>modules are loaded , **sealed** , optimized, chunked, hashed and restored</font>.
+>
+> 同时，在同一部分的 [[#Compilation Hooks#seal]] 中有提到：
+>
+> > compilation <font color=fuchsia>stops accepting new modules</font>.
+>
+> 所以，seal 表示 “stops accepting new modules”。
+>
+> BTW，官方文档确实有问题：一个新概念抛出来，而它的详细解释在它后面几章，甚至不在同一部分；看来还是要多用浏览器 `site:` 指令...
+
+###### Parameters
+
+- **callback** : function to be invoked when the compilation has been sealed.
+
+##### unseal
+
+`function` . Unseals the compilation.
+
+###### Parameters
+
+- **callback** : function to be invoked when the compilation has been unsealed.
+
+##### reportDependencyErrorsAndWarnings
+
+```js
+function (module, blocks)
+```
+
+Adds errors and warnings of the given module to the compilation errors and warnings.
+
+###### Parameters
+
+- **module** : the module whose **errors and warnings are to be reported**.
+- **blocks** : <font color=red>a set of dependency blocks to report from</font>.
+
+##### addChunkInGroup
+
+```js
+function (groupOptions, module, loc, request)
+```
+
+<font color=red>Adds module to an existing chunk group or creates a new one</font>（👀 new one 表示新的 chunk group ）. <font color=red>**Returns a `chunkGroup`**</font> .
+
+###### Parameters
+
+- **groupOptions** : options for the chunk group.
+- **module** : a module that references the chunk group.
+- **loc** : the location from which the chunk group is referenced ( inside of the module ).
+- **request** : the request from which the chunk group is referenced.
+
+##### addChunk
+
+```js
+function (name)
+```
+
+<font color=red>**Creates and adds** a new chunk to the `compilation.chunks`</font> . Returns that `chunk` .
+
+###### Parameters
+
+- **name** : the name of the chunk.
+
+##### assignDepth
+
+```js
+function (module)
+```
+
+<font color=red>Assigns `depth` to</font> the <font color=dodgerblue>given module and its dependency blocks recursively</font>.
+
+###### Parameters
+
+- **module** : the module to assign depth to.
+
+##### getDependencyReference
+
+```js
+function (module, dependency)
+```
+
+<font color=red>Returns the reference to the dependency</font> from a given module.
+
+###### Parameters
+
+- **module** : the module at question.
+- **dependency** : <font color=red>the dependency to get reference to</font>.
+
+##### processDependenciesBlocksForChunkGroups
+
+```js
+function (inputChunkGroups)
+```
+
+<font color=fuchsia>**Creates the `Chunk` graph from the `Module` graph**</font>. <font color=dodgerBlue>**The process is done in two phases**</font>. <font color=dodgerBlue>Phase one</font> : <font color=red>**traverse the module graph** and build a **basic chunks graph** in `chunkDependencies`</font> . <font color=dodgerBlue>Phase two</font> : <font color=red>**traverse every possible way through the basic chunk graph** and track the available modules</font>. 
+
+<font color=dodgerBlue>While traversing</font> , `processDependenciesBlocksForChunkGroups` <font color=red>connects chunks with each other and `Blocks` with `Chunks`</font> . It <font color=dodgerBlue>stops traversing when</font> all modules for a chunk are already available and it doesn't connect unneeded chunks.
+
+###### Parameters
+
+- **inputChunkGroups** : chunk groups that are processed.
+
+##### removeReasonsOfDependencyBlock
+
+```js
+function (module, block)
+```
+
+Removes relation of the module to the dependency block.
+
+###### Parameters
+
+- **module** : a module relationship to be removed.
+- **block** : dependency block.
+
+##### patchChunksAfterReasonRemoval
+
+```js
+function (module, chunk)
+```
+
+<font color=red>Patches ties</font>（修补联系）<font color=red>of module and chunk</font> after removing dependency reasons（依赖性原因）. <font color=LightSeaGreen>Called automatically by `removeReasonsOfDependencyBlock`</font> .
+
+###### Parameters
+
+- **module** : a module to patch tie.
+- **chunk** : a chunk to patch tie.
+
+##### removeChunkFromDependencies
+
+```js
+function (block, chunk)
+```
+
+<font color=red>Removes given chunk from a dependencies block module and chunks</font> after removing dependency reasons. Called automatically by `removeReasonsOfDependencyBlock` .
+
+###### Parameters
+
+- **block** : block tie for `Chunk`.
+- **chunk** : a chunk to remove from dependencies.
+
+##### sortItemsWithChunkIds
+
+`function`
+
+##### summarizeDependencies
+
+`function`
+
+##### createHash
+
+`function`
+
+##### createModuleAssets
+
+`function`
+
+##### createChunkAssets
+
+`function`
+
+##### getPath
+
+```js
+function (filename, data)
+```
+
+Returns the interpolated（插值） path.
+
+###### Parameters
+
+- **filename** : <font color=red>used to get asset path with hash</font>.
+- **data** : data object.
+
+##### getPathWithInfo
+
+```js
+function (filename, data)
+```
+
+Returns interpolated path and asset information.
+
+###### Parameters
+
+- **filename** : used to get asset path with hash.
+- **data** : data object.
+
+##### createChildCompiler
+
+```js
+function (name, outputOptions, plugins)
+```
+
+<font color=fuchsia>Allows **running another instance of webpack** inside of webpack</font>. However, as a child with different settings and configurations applied. <font color=red>It copies all hooks and plugins from the parent (or top-level compiler)</font> and creates a child `Compiler` instance. <font color=red>Returns the created `Compiler`</font> .
+
+###### Parameters
+
+- **name** : <font color=red>name for the child `Compiler`</font> .
+- **outputOptions** : output options object.
+- **plugins** : <font color=red>webpack plugins that will be applied</font>.
+
+##### checkConstraints
+
+`function`
+
+##### emitAsset
+
+```js
+function (file, source, assetInfo = {})
+```
+
+###### Parameters
+
+- **file** : <font color=red>file name of the asset</font>
+- **source** : the <font color=red>source of the asset</font>
+- **assetInfo** : additional asset information
+
+##### updateAsset
+
+```js
+function (file, newSourceOrFunction, assetInfoUpdateOrFunction)
+```
+
+###### Parameters
+
+- **file** : file name of the asset
+- **newSourceOrFunction** : new asset source or function converting old to new
+- **assetInfoUpdateOrFunction** : new asset info or function converting old to new
+
+##### deleteAsset
+
+```js
+function (file)
+```
+
+###### Parameters
+
+- **file** - file name of the asset
+
+##### getAssets
+
+`function` . <font color=red>Returns **array of all assets** under the current compilation</font>.
+
+##### getAsset
+
+```js
+function (name)
+```
+
+###### Parameters
+
+- **name** : the name of the asset to return
 
 摘自：[webpack doc - API - Compilation Object](https://webpack.js.org/api/compilation-object/)
+
+
+
+#### Compiler Hooks
+
+<font color=red>The `Compiler` module is the main engine</font> that <font color=red>**creates a compilation instance**</font> with all the <font color=red>options passed through the `CLI` or `Node API`</font> . <font color=fuchsia>**It extends the `Tapable` class in order to register and call plugins**</font>. Most user-facing plugins are first（首先）registered on the `Compiler` .
+
+When developing a plugin for webpack, you might want to know <font color=red>where each hook is called</font>. To learn this , <font color=red>**search for `hooks.<hook name>.call` across the webpack source**</font>
+
+##### Watching
+
+The `Compiler` supports `watching` ( [[#Node Interface#Watching]] ) which monitors the file system and recompiles as files change. <font color=fuchsia>When in watch mode, the compiler will **emit the additional events** such as `watchRun` , `watchClose` , and `invalid`</font> . <font color=red>This is typically used in `development` , usually under the hood of tools like `webpack-dev-server`</font> , so that the developer doesn't need to re-compile manually every time. Watch mode can also be entered via the [CLI](https://webpack.js.org/api/cli/#watch-options).
+
+##### Hooks
+
+The following <font color=red>lifecycle hooks are exposed by the `compiler`</font> and can be accessed as such:
+
+```js
+compiler.hooks.someHook.tap('MyPlugin', (params) => {
+  /* ... */
+});
+```
+
+Depending on the hook type, `tapAsync` and `tapPromise` may also be available.
+
+For the description of hook types, see [the Tapable docs](https://github.com/webpack/tapable#tapable). 👀 
+
+###### environment
+
+`SyncHook`
+
+<font color=red>Called while **preparing the compiler environment**</font> , <font color=fuchsia>***right* after initializing the plugins** in the configuration file</font>.
+
+###### afterEnvironment
+
+`SyncHook`
+
+<font color=fuchsia>Called **right after the `environment` hook**</font> , when the <font color=red>**compiler environment setup is complete**</font>.
+
+###### entryOption
+
+`SyncHook`
+
+<font color=red>Called **after** the **`entry` configuration** from webpack options **has been processed**</font>.
+
+- Callback Parameters: [`context`](https://webpack.js.org/configuration/entry-context/#context) , [`entry`](https://webpack.js.org/configuration/entry-context/#entry)
+
+```js
+compiler.hooks.entryOption.tap('MyPlugin', (context, entry) => {
+  /* ... */
+});
+```
+
+###### afterPlugins
+
+`SyncHook`
+
+<font color=red>Called after setting up *initial set of internal plugins*</font>（🌏 初始化内部插件集合）.
+
+- Callback Parameters : `compiler`
+
+###### afterResolvers
+
+`SyncHook`
+
+Triggered after resolver setup is complete.
+
+- Callback Parameters: `compiler`
+
+###### initialize
+
+`SyncHook`
+
+<font color=fuchsia>Called when a **compiler object is initialized**</font>.
+
+###### beforeRun
+
+`AsyncSeriesHook`
+
+<font color=fuchsia>Adds a hook **right before running the compiler**</font>.
+
+- Callback Parameters : `compiler`
+
+###### run
+
+`AsyncSeriesHook`
+
+Hook into the compiler <font color=red>before it begins reading [`records`](https://webpack.js.org/configuration/other-options/#recordspath)</font> .
+
+- Callback Parameters : `compiler`
+
+###### watchRun
+
+`AsyncSeriesHook`
+
+Executes a plugin during watch mode after a new compilation is triggered but before the compilation is actually started（👀 在触发之后，在执行之前）.
+
+> 🌏 译：在监听模式下，一个新的 compilation 触发之后，但在 compilation 实际开始之前执行
+
+- Callback Parameters: `compiler`
+
+###### normalModuleFactory
+
+`SyncHook`
+
+<font color=red>Called **after** a `NormalModuleFactory`</font> ( [[#NormalModuleFactory Hooks]] ) <font color=red>is created</font>. 
+
+- Callback Parameters : `normalModuleFactory`
+
+###### contextModuleFactory
+
+`SyncHook`
+
+<font color=red>**Runs a plugin** ***after*** a `ContextModuleFactory`</font> ( [[#ContextModuleFactory Hooks]] ) <font color=red>is created</font>.
+
+- Callback Parameters : `contextModuleFactory`
+
+###### beforeCompile
+
+`AsyncSeriesHook`
+
+<font color=red>**Executes a plugin** after compilation parameters are created</font>.
+
+- Callback Parameters : `compilationParams`
+
+<font color=dodgerBlue>The `compilationParams` variable is initialized as follows:</font>
+
+```js
+compilationParams = {
+  normalModuleFactory,
+  contextModuleFactory,
+};
+```
+
+This hook can be used to add / modify the compilation parameters:
+
+```js
+compiler.hooks.beforeCompile.tapAsync('MyPlugin', (params, callback) => {
+  params['MyPlugin - data'] = 'important stuff my plugin will use later';
+  callback();
+});
+```
+
+###### compile
+
+`SyncHook`
+
+<font color=red>Called **right after `beforeCompile`** , **before a new compilation is created**</font>. <font color=fuchsia>This hook is *not* copied to child compilers</font>（👀 这里说的应该和 [[#Compilation Object#createChildCompiler]] 相关：“子编译器实例”会复制所有的“父编译器实例”的 hooks 和 plugins）.
+
+- Callback Parameters: `compilationParams`
+
+###### thisCompilation
+
+`SyncHook`
+
+<font color=red>Executed **while initializing the compilation** , **right before emitting the `compilation` event**</font>. <font color=fuchsia>This hook is *not* copied to child compilers</font>.
+
+- Callback Parameters: `compilation` , `compilationParams`
+
+###### compilation
+
+`SyncHook`
+
+<font color=red>Runs a plugin after a compilation has been created</font>.
+
+- Callback Parameters : `compilation` , `compilationParams`
+
+###### make
+
+`AsyncParallelHook`
+
+<font color=red>Executed before finishing the compilation</font>. <font color=fuchsia>This hook is *not* copied to child compilers</font>.
+
+- Callback Parameters : `compilation`
+
+###### afterCompile
+
+`AsyncSeriesHook`
+
+<font color=red>Called after finishing and sealing the compilation</font>.
+
+- Callback Parameters : `compilation`
+
+###### shouldEmit
+
+`SyncBailHook`
+
+<font color=red>Called before emitting assets</font>. Should return a boolean telling whether to emit.
+
+- Callback Parameters: `compilation`
+
+```js
+compiler.hooks.shouldEmit.tap('MyPlugin', (compilation) => {
+  // return true to emit the output, otherwise false
+  return true;
+});
+```
+
+###### emit
+
+`AsyncSeriesHook`
+
+<font color=red>Executed **right** before **emitting assets to output dir**</font> . <font color=fuchsia>This hook is *not* copied to child compilers</font>.
+
+- Callback Parameters : `compilation`
+
+###### afterEmit
+
+`AsyncSeriesHook`
+
+<font color=red>Called after **emitting assets to output directory**</font>. <font color=fuchsia>This hook is *not* copied to child compilers</font>.
+
+- Callback Parameters : `compilation`
+
+###### assetEmitted
+
+`AsyncSeriesHook`
+
+<font color=red>Executed when **an asset has been emitted**</font>. <font color=fuchsia>Provides access to information about the emitted asset</font>, such as its output path and byte content.
+
+- Callback Parameters : `file` , `info` （👀 关于 `info` 对象的组成，见下面示例）
+
+For example, <font color=dodgerblue>you may **access the asset's content buffer via `info.content`**</font> :
+
+```js
+compiler.hooks.assetEmitted.tap(
+  'MyPlugin',
+  (file, { content, source, outputPath, compilation, targetPath }) => {
+    console.log(content); // <Buffer 66 6f 6f 62 61 72>
+  }
+);
+```
+
+###### done
+
+`AsyncSeriesHook`
+
+<font color=red>Executed **when the compilation has completed**</font>. <font color=fuchsia>This hook is *not* copied to child compilers</font>.
+
+- Callback Parameters : `stats`
+
+###### additionalPass
+
+`AsyncSeriesHook`
+
+This hook <font color=red>allows you to do a one more additional pass of the build</font>.
+
+###### failed
+
+`SyncHook`
+
+Called if the compilation fails.
+
+- Callback Parameters : `error`
+
+###### invalid
+
+`SyncHook`
+
+<font color=red>Executed when a watching compilation has been invalidated</font>. <font color=fuchsia>This hook is *not* copied to child compilers</font>.
+
+- Callback Parameters: `fileName` , `changeTime`
+
+###### watchClose
+
+`SyncHook`
+
+Called when a **watching compilation has stopped**.
+
+###### shutdown
+
+`AsyncSeriesHook`
+
+<font color=fuchsia>Called when the **compiler is closing**</font>.
+
+###### infrastructureLog
+
+`SyncBailHook`
+
+Allows to use *infrastructure logging* when enabled in the configuration via [`infrastructureLogging` option](https://webpack.js.org/configuration/other-options/#infrastructurelogging).
+
+- Callback Parameters: `name` , `type` , `args`
+
+###### log
+
+`SyncBailHook`
+
+Allows to log into `stats` when enabled, see [`stats.logging` , `stats.loggingDebug` and `stats.loggingTrace` options](https://webpack.js.org/configuration/stats/#stats-options).
+
+- Callback Parameters: `origin` , `logEntry`
+
+摘自：[webpack doc - API - Compiler Hooks](https://webpack.js.org/api/compiler-hooks/)
+
+
+
+#### Compilation Hooks
+
+<font color=red>The **`Compilation` module** is **used by the `Compiler`** to create new compilations (or builds)</font>. <font color=fuchsia>A `compilation` instance has access to all modules and their dependencies</font> ( <font color=red>most of which are circular references</font> ). It is the literal compilation of all the modules in the dependency graph of an application. <font color=fuchsia size=4>During the compilation phase, modules are **loaded, sealed, optimized, chunked, hashed** and **restored**</font>.
+
+The <font color=fuchsia>**`Compilation` class also extends `Tapable`**</font> and <font color=dodgerBlue>**provides the following lifecycle hooks**</font>. They can be tapped the same way as compiler hooks:
+
+```js
+compilation.hooks.someHook.tap(/* ... */);
+```
+
+As with（如同）the `compiler` , <font color=red>`tapAsync` and `tapPromise` may also be available depending on the type of hook</font>.
+
+> 👀 在 [[#Compiler Hooks#Hooks]] 中有提及 “Depending on the hook type, `tapAsync` and `tapPromise` may also be available.”
+
+##### buildModule
+
+`SyncHook`
+
+<font color=red>Triggered **before a module build has started**</font> , can <font color=red>be used to modify the module</font>.
+
+- Callback Parameters : `module`
+
+```js
+compilation.hooks.buildModule.tap(
+  'SourceMapDevToolModuleOptionsPlugin',
+  (module) => { module.useSourceMap = true; }
+);
+```
+
+##### rebuildModule
+
+`SyncHook`
+
+Fired before rebuilding a module.
+
+- Callback Parameters : `module`
+
+##### failedModule
+
+`SyncHook`
+
+Run when a module build has failed.
+
+- Callback Parameters : `module` , `error`
+
+##### succeedModule
+
+`SyncHook`
+
+<font color=red>Executed when a module has been built successfully</font>.
+
+- Callback Parameters : `module`
+
+##### finishModules
+
+`AsyncSeriesHook`
+
+Called when all modules have been built without errors.
+
+- Callback Parameters : `modules`
+
+##### finishRebuildingModule
+
+`SyncHook`
+
+Executed when a module has been rebuilt, in case of both success or with errors.
+
+- Callback Parameters : `module`
+
+##### seal
+
+`SyncHook`
+
+Fired when the <font color=fuchsia>compilation stops accepting new modules</font>.
+
+##### unseal
+
+`SyncHook`
+
+Fired when a <font color=fuchsia>compilation begins accepting new modules</font>.
+
+##### optimizeDependencies
+
+`SyncBailHook`
+
+<font color=red>Fired **at the beginning** of ***dependency*** optimization</font>.
+
+- Callback Parameters : `modules`
+
+##### afterOptimizeDependencies
+
+`SyncHook`
+
+Fired after the dependency optimization.
+
+- Callback Parameters : `modules`
+
+##### optimize
+
+`SyncHook`
+
+Triggered at the beginning of the optimization phase.
+
+##### optimizeModules
+
+`SyncBailHook`
+
+<font color=red>Called **at the beginning of** the **module** optimization phase</font>. A plugin can tap into（利用） this hook to perform optimizations on modules.
+
+- Callback Parameters : `modules`
+
+##### afterOptimizeModules
+
+`SyncHook`
+
+Called after modules optimization has completed.
+
+- Callback Parameters : `modules`
+
+##### optimizeChunks
+
+`SyncBailHook`
+
+<font color=red>Called at the beginning of the **chunk optimization** phase</font>. A plugin can tap into this hook to perform optimizations on chunks.
+
+- Callback Parameters : `chunks`
+
+##### afterOptimizeChunks
+
+`SyncHook`
+
+Fired after chunk optimization has completed.
+
+- Callback Parameters : `chunks`
+
+##### optimizeTree
+
+`AsyncSeriesHook`
+
+<font color=red>Called before **optimizing the dependency tree**</font>. A plugin can tap into this hook to perform a dependency tree optimization.
+
+- Callback Parameters : `chunks` `modules`
+
+##### afterOptimizeTree
+
+`SyncHook`
+
+Called after the dependency tree optimization has completed with success.
+
+- Callback Parameters : `chunks` `modules`
+
+##### optimizeChunkModules
+
+`SyncBailHook`
+
+<font color=red>Called after the **tree optimization**</font> , <font color=fuchsia>at the beginning of the **chunk modules optimization**</font>. A plugin can tap into this hook to perform optimizations of chunk modules.
+
+- Callback Parameters : `chunks` `modules`
+
+##### afterOptimizeChunkModules
+
+`SyncHook`
+
+Called after the chunk modules optimization has completed successfully.
+
+- Callback Parameters : `chunks` `modules`
+
+##### shouldRecord
+
+`SyncBailHook`
+
+<font color=red>Called to **determine whether or not to store records**</font>. <font color=fuchsia>**Returning**</font> anything `!== false` will prevent every other "record" hook from being executed ( [`record`](https://webpack.js.org/api/compilation-hooks/#record) , [`recordModules`](https://webpack.js.org/api/compilation-hooks/#recordmodules) , [`recordChunks`](https://webpack.js.org/api/compilation-hooks/#recordchunks) and [`recordHash`](https://webpack.js.org/api/compilation-hooks/#recordhash) ).
+
+> 👀 注：上面提到了 return，说的很模糊；参考下面 [[#recordModules]] 以及 [[#recordChunks]] 的说法，“This is triggered if `shouldRecord` returns a truthy value.”，说明 `shouldRecord` 是返回内容的
+
+##### reviveModules
+
+`SyncHook` （ 🌏 revive：使复活，使重新使用。另外，根据下面 “restore” 是否可以引申为 “使复原”？ ）
+
+Restore module information from records.
+
+- Callback Parameters : `modules` `records`
+
+##### beforeModuleIds
+
+`SyncHook`
+
+<font color=red>Executed **before assigning an `id` to *each module***</font>（👀 注意是 each module，即在所有 module 分配 id 之前）.
+
+- Callback Parameters : `modules`
+
+##### moduleIds
+
+`SyncHook`
+
+Called to assign an `id` to each module.
+
+- Callback Parameters : `modules`
+
+##### optimizeModuleIds
+
+`SyncHook`
+
+<font color=red>Called ***at the beginning of*  the modules `id`**</font>（👀 “the module id“ 是下面传了 modules 参数）<font color=red>optimization</font>.
+
+- Callback Parameters : `modules`
+
+##### afterOptimizeModuleIds
+
+`SyncHook`
+
+Called when the modules `id` optimization phase has completed.
+
+- Callback Parameters : `modules`
+
+##### reviveChunks
+
+`SyncHook`
+
+Restore chunk information from records.
+
+- Callback Parameters : `chunks` `records`
+
+##### beforeChunkIds
+
+`SyncHook`
+
+Executed before assigning an `id` to each chunk.
+
+- Callback Parameters : `chunks`
+
+##### chunkIds
+
+`SyncHook`
+
+<font color=red>Called to **assign an `id` to each chunk**</font>.
+
+- Callback Parameters : `chunks`
+
+##### optimizeChunkIds
+
+`SyncHook`
+
+Called at the beginning of the chunks `id` optimization phase.
+
+- Callback Parameters : `chunks`
+
+##### afterOptimizeChunkIds
+
+`SyncHook`
+
+Triggered after chunk `id` optimization has finished.
+
+- Callback Parameters : `chunks`
+
+##### recordModules
+
+`SyncHook`
+
+<font color=red>Store module info to the records</font>. This is <font color=red>triggered if `shouldRecord`</font> ( [[#shouldRecord]] )  <font color=red>returns a truthy value</font>.
+
+- Callback Parameters : `modules` `records`
+
+##### recordChunks
+
+`SyncHook`
+
+Store chunk info to the records. This is <font color=red>only triggered if `shouldRecord`</font>  ( [[#shouldRecord]] )  <font color=red>returns a truthy value</font>.
+
+- Callback Parameters : `chunks` `records`
+
+##### beforeModuleHash
+
+`SyncHook`
+
+Called before modules are hashed.
+
+##### afterModuleHash
+
+`syncHook`
+
+Called after modules are hashed.
+
+##### beforeHash
+
+`SyncHook`
+
+<font color=red>Called **before the compilation is hashed**</font>（👀 没有听过 compilation 有哈希化 ... 值得注意）.
+
+##### afterHash
+
+`SyncHook`
+
+Called after the compilation is hashed.
+
+##### recordHash
+
+`SyncHook`
+
+<font color=red>Store **information about record hash** to the `records`</font> . This is <font color=red>only triggered if `shouldRecord`</font> ( [[#shouldRecord]] ) <font color=red>returns a truthy value</font>.
+
+- Callback Parameters : `records`
+
+##### record
+
+`SyncHook`
+
+Store information about the `compilation` to the `records`. This is <font color=red>only triggered if `shouldRecord`</font> ( [[#shouldRecord]] )  <font color=red>returns a truthy value</font>.
+
+- Callback Parameters : `compilation` `records`
+
+##### beforeModuleAssets
+
+`SyncHook`
+
+<font color=red>Executed before module assets creation</font>.
+
+##### additionalChunkAssets
+
+`SyncHook`
+
+> ⚠️ **Warning** : <font color=red>**`additionalChunkAssets` is deprecated**</font> (use the `Compilation.hook.processAssets` ( [[#optimizeAssets]] ) instead and use one of the `Compilation.PROCESS_ASSETS_STAGE_*` ( [[#List of asset processing stages]] ) as a stage option) 
+
+Create additional assets for the chunks.
+
+- Callback Parameters : `chunks`
+
+##### shouldGenerateChunkAssets
+
+`SyncBailHook`
+
+Called to determine whether or not generate chunks assets. <font color=fuchsia>**Returning** anything `!== false` will allow chunk assets generation</font>.
+
+> 👀 注：和 [[#shouldRecord]] 一样，是返回内容的。
+
+##### beforeChunkAssets
+
+`SyncHook`
+
+Executed before creating the chunks assets.
+
+##### additionalAssets
+
+`AsyncSeriesHook`
+
+<font color=red>Create additional assets for the compilation</font>. <font color=dodgerblue>This hook **can be used to download an image**</font>, for example:
+
+```js
+compilation.hooks.additionalAssets.tapAsync('MyPlugin', (callback) => {
+  download('https://img.shields.io/npm/v/webpack.svg', function (resp) {
+    if (resp.status === 200) {
+      compilation.assets['webpack-version.svg'] = toAsset(resp);
+      callback();
+    } else {
+      callback(
+        new Error('[webpack-example-plugin] Unable to download the image')
+      );
+    }
+  });
+});
+```
+
+##### optimizeChunkAssets
+
+`AsyncSeriesHook`
+
+> ⚠️ **Warning** : <font color=red>**`optimizeChunkAssets` is deprecated**</font> ( use the `Compilation.hook.processAssets` ( [[#optimizeAssets]] ) instead and use one of the `Compilation.PROCESS_ASSETS_STAGE_*` ( [[#List of asset processing stages]] ) as a stage option ) 
+
+Optimize any chunk assets. The assets are stored in `compilation.assets` . A `Chunk` has a property `files` which points to all files created by a chunk. Any additional chunk assets are stored in `compilation.additionalChunkAssets`.
+
+- Callback Parameters : `chunks`
+
+Here's an example that adds a banner to each chunk.
+
+```js
+compilation.hooks.optimizeChunkAssets.tapAsync(
+  'MyPlugin',
+  (chunks, callback) => {
+    chunks.forEach((chunk) => {
+      chunk.files.forEach((file) => {
+        compilation.assets[file] = new ConcatSource(
+          '/**Sweet Banner**/',
+          '\n',
+          compilation.assets[file]
+        );
+      });
+    });
+
+    callback();
+  }
+);
+```
+
+##### afterOptimizeChunkAssets
+
+`SyncHook`
+
+> ⚠️ **Warning** : <font color=red>**`afterOptimizeChunkAssets` is deprecated**</font> (use the `Compilation.hook.processAssets` ( [[#optimizeAssets]] ) instead and use one of the `Compilation.PROCESS_ASSETS_STAGE_*` ( [[#List of asset processing stages]] )  as a stage option)
+
+The chunk assets have been optimized.
+
+- Callback Parameters : `chunks`
+
+Here's an example plugin from [@boopathi](https://github.com/boopathi) that outputs exactly what went into each chunk.
+
+```js
+compilation.hooks.afterOptimizeChunkAssets.tap('MyPlugin', (chunks) => {
+  chunks.forEach((chunk) => {
+    console.log({
+      id: chunk.id,
+      name: chunk.name,
+      includes: chunk.getModules().map((module) => module.request),
+    });
+  });
+});
+```
+
+##### optimizeAssets
+
+`AsyncSeriesHook`
+
+<font color=red>Optimize all assets stored in `compilation.assets`</font> .
+
+- Callback Parameters : `assets`
+
+##### afterOptimizeAssets
+
+`SyncHook`
+
+The assets have been optimized.
+
+- Callback Parameters : `assets`
+
+##### processAssets
+
+> 👀 这个方法取代了 已经 deprecated 的 [[#additionalChunkAssets]] 、[[#optimizeChunkAssets]] 和 [[#afterOptimizeChunkAssets]] ，值得注意 ⚠️
+
+`AsyncSeriesHook`
+
+<font color=fuchsia>**Asset processing**</font> .
+
+**Hook parameters**
+
+- `name: string` : <font color=red>a name of the plugin</font>
+- `stage: Stage` : <font color=red>a stage to tap into</font> ( see the “list of supported stages” ( [[#List of asset processing stages]] ) below )
+- `additionalAssets?: true | (assets, [callback]) => (void | Promise<void>)` : <font color=fuchsia>a callback for additional assets</font> ( see below [[#Additional assets]] )
+
+**Callback parameters**
+
+- `assets: { [pathname: string]: Source }` : a plain object（👀 概念有点遗忘了，见 [[JS 机制与原理#plainObject]] ）, where key is the asset's pathname, and the <font color=red>value is data of the asset</font> represented by the [`Source`](https://github.com/webpack/webpack-sources#source) .
+
+  > 👀 注：这里 assets 的 定义中 是用了 “任意属性”（详见 [[TypeScript学习笔记#对象的类型——接口#任意属性]] ）。只要符合“键是 string 类型，值是 Source 类型”，无论包含多少个键值对均可；所以 assets的实例中可包含多个键值对。亦可见下面示例
+
+**Example**
+
+```js
+compilation.hooks.processAssets.tap(
+  {
+    name: 'MyPlugin',
+    stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONS, // see below for more stages
+  },
+  (assets) => {
+    console.log('List of assets and their sizes:');
+    Object.entries(assets).forEach(([pathname, source]) => { // 👀
+      console.log(`— ${pathname}: ${source.size()} bytes`);
+    });
+  }
+);
+```
+
+###### Additional assets
+
+In addition to `name` and `stage` , <font color=red>you can pass an `additionalAssets`</font> ( <mark style="background: lightskyblue">5.8.0+</mark> ) <font color=red>option</font> <font color=dodgerBlue>which accepts either a value of `true` or a callback function that **receives `assets` as a first argument**</font> :
+
+1. `true` : <font color=red>run the provided callback **again**</font>（👀 在下一行有说：回调函数会调用多次） <font color=red>for assets **added later by plugins**</font> .
+
+   <font color=dodgerBlue>**In this mode**</font>, <font color=red>the callback will be called **multiple times**</font>: once for assets added <font color=red>prior to the specified stage</font>, and additional times for assets <font color=fuchsia>added by plugins</font>（👀 根据 “added by plugins”，说明是由 `additionalAssets` 引起的）<font color=red>**later**</font> ( <font color=red>on this or next stages</font> ).
+
+   ```js
+   compilation.hooks.processAssets.tap(
+     {
+       name: 'MyPlugin',
+       stage: Compilation.PROCESS_ASSETS_STAGE_DEV_TOOLING,
+       additionalAssets: true, // 👀
+     },
+     (assets) => {
+       // this function will be called multiple times with **each** bulk of assets
+       // 👀 该函数会调用**多次**，注意和下面一种情况对比
+     }
+   );
+   ```
+
+2. `(assets, [callback]) => (void | Promise<void>)` : <font color=red>run the specified callback against assets added by plugins later ( on this or next stages )</font>. <font color=fuchsia>The callback must respect</font>（遵守） <font color=fuchsia>the **type of the tap method used**</font> ( e.g. when used with `tapPromise()` , it should return a promise ).
+
+   ```js
+   compilation.hooks.processAssets.tap(
+     {
+       name: 'MyPlugin',
+       stage: Compilation.PROCESS_ASSETS_STAGE_DEV_TOOLING,
+       additionalAssets: (assets) => { // 👀
+         // this function potentially could be called multiple times for assets added on later stages
+       },
+     },
+     (assets) => {
+       // this function will be called once with assets added by plugins on prior stages
+       // 👀 该函数只会调用**一次**，注意和上面一种情况对比
+     }
+   );
+   ```
+
+###### List of asset processing stages
+
+<font color=dodgerBlue>Here's a list of supported stages ( **in the order of processing** ):</font>
+
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>ADDITIONAL</font> : <font color=red>add **additional** assets</font> to the compilation.
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>PRE_PROCESS</font> : <font color=red>basic **preprocessing**</font> of the assets.
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>DERIVED</font> : <font color=red>**derive**</font>（获得）<font color=red>new assets from the existing assets</font>.
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>ADDITIONS</font> : add additional sections to the existing assets, e.g. banner or initialization code.
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>OPTIMIZE</font> : optimize existing assets in a general way.
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>OPTIMIZE_COUNT</font> : <font color=red>optimize the count of existing assets</font>, e.g. by merging them.
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>OPTIMIZE_COMPATIBILITY</font> : optimize the compatibility of existing assets, e.g. add polyfills or vendor prefixes.
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>OPTIMIZE_SIZE</font> : optimize the size of existing assets, e.g. by minimizing or omitting whitespace.
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>DEV_TOOLING</font> : add development tooling to the assets, e.g. by extracting a source map.
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>OPTIMIZE_INLINE</font> : <mark style="background: lightskyblue">5.8.0+</mark> , optimize the numbers of existing assets, e.g. by inlining assets into other assets.
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>SUMMARIZE</font> : summarize the list of existing assets.
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>OPTIMIZE_HASH</font> : optimize the hashes of the assets, e.g. by generating real hashes of the asset content.
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>OPTIMIZE_TRANSFER</font> : optimize the transfer of existing assets, e.g. by preparing a compressed (gzip) file as separate asset.
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>ANALYSE</font> : analyze the existing assets.
+- PROCESS_ASSETS_STAGE_<font color=dodgerblue>REPORT</font> : creating assets for the reporting purposes.
+
+###### Assets info
+
+The <font color=dodgerblue>"asset info" metadata **is not automatically provided** for this hook</font>. <font color=dodgerBlue>If needed</font>, you will <font color=red>have to resolve this metadata **manually** using the compilation instance</font> and <font color=red>the provided asset pathname</font>. This will be improved in a future version of the webpack.
+
+**Example**
+
+```js
+compilation.hooks.processAssets.tap(
+  {
+    /** … */
+  },
+  (assets) => {
+    Object.entries(assets).forEach(([pathname, source]) => {
+      const assetInfo = compilation.assetsInfo.get(pathname); // 👀 获得 assests info
+      // @todo: do something with "pathname", "source" and "assetInfo"
+    });
+  }
+);
+```
+
+##### afterProcessAssets
+
+`SyncHook`
+
+<font color=red>Called **after the `processAssets`**</font> ( [[#processAssets]] ) <font color=red>hook had **finished without error**</font> .
+
+##### needAdditionalSeal
+
+`SyncBailHook`
+
+Called to <font color=red>**determine if the compilation needs to be unsealed** to include other files</font> .
+
+##### afterSeal
+
+`AsyncSeriesHook`
+
+Executed right after `needAdditionalSeal` .
+
+##### chunkHash
+
+`SyncHook`
+
+Triggered to emit the hash for each chunk.
+
+- Callback Parameters : `chunk` `chunkHash`
+
+##### moduleAsset
+
+`SyncHook`
+
+Called when an asset from a module was added to the compilation.
+
+- Callback Parameters : `module` `filename`
+
+##### chunkAsset
+
+`SyncHook`
+
+<font color=red>Triggered **when an asset from a chunk was added to the compilation**</font>.
+
+- Callback Parameters : `chunk` `filename`
+
+##### assetPath
+
+`SyncWaterfallHook`
+
+Called to <font color=red>determine the path of an asset</font>.
+
+- Callback Parameters : `path` `options`
+
+##### needAdditionalPass
+
+`SyncBailHook`
+
+Called to <font color=red>determine **if an asset needs to be processed further after being emitted**</font>.
+
+##### childCompiler
+
+`SyncHook`
+
+<font color=red>Executed **after setting up a child compiler**</font> .
+
+- Callback Parameters : `childCompiler` `compilerName` `compilerIndex`
+
+##### normalModuleLoader
+
+<font color=dodgerBlue>Since webpack v5 `normalModuleLoader` hook was **removed**</font>. Now to access the loader use `NormalModule.getCompilationHooks(compilation).loader` instead.
+
+摘自：[webpack doc - API - Compilation Hooks](https://webpack.js.org/api/compilation-hooks)
+
+
+
+#### ContextModuleFactory Hooks
+
+<font color=red>The `ContextModuleFactory` module is **used by the `Compiler`**</font> to <font color=fuchsia>**generate dependencies from webpack specific `require.context`**</font> ( [[#Module Methods#require.context]] ) API. <font color=fuchsia>It resolves the requested directory, **generates requests for each file** and **filters against passed regExp**</font>. Matching（👀 被 RE 过滤后匹配的） dependencies then passes through NormalModuleFactory ( [[#NormalModuleFactory Hooks]] ).
+
+The <font color=red>`ContextModuleFactory` class extends `Tapable`</font> and <font color=lightSeaGreen>provides the following lifecycle hooks</font>. They can be tapped the same way as compiler hooks:
+
+```js
+ContextModuleFactory.hooks.someHook.tap(/* ... */);
+```
+
+As with（和...一样） the `compiler ` , <font color=LightSeaGreen>`tapAsync` and `tapPromise` may also be available depending on the type of hook</font>.
+
+##### beforeResolve
+
+`AsyncSeriesWaterfallHook`
+
+<font color=red>Called **before resolving the requested directory**</font>. The request can be ignored by returning `false` .
+
+- Callback Parameters : `data`
+
+##### afterResolve
+
+`AsyncSeriesWaterfallHook`
+
+Called after the requested directory resolved.
+
+- Callback Parameters : `data`
+
+##### contextModuleFiles
+
+`SyncWaterfallHook`
+
+<font color=red>Called **after directory contents are read**</font> . On recursive mode, calls for each sub-directory as well. <font color=red>Callback **parameter** is **an array** of **all file and folder names in each directory**</font>.
+
+- Callback Parameters : `fileNames`
+
+##### alternativeRequests
+
+`AsyncSeriesWaterfallHook`
+
+<font color=red>**Called for each file** after the **request is created** but **before filtering against regExp**</font>.
+
+- Callback Parameters: `request` `options`
+
+摘自：[webpack doc - API - ContextModuleFactory Hooks](https://webpack.js.org/api/contextmodulefactory-hooks/)
+
+
+
+#### JavascriptParser Hooks
+
+> 👀 注：读完本章节写下小结（这章也是读的这几章里面比较轻松易懂的一章）。本章主要介绍了 JS 解析器的 生命周期 中的可能遇到的 Expression 和 Statement 种类（根据 ECMAScript Spec ），还有一些其他的情况
+
+<font color=dodgerBlue>The `parser` instance, found in the `compiler`</font> , <font color=red>**is used to parse each module being processed by webpack**</font>. The `parser` is yet another webpack class that <font color=red>extends `tapable`</font> and <font color=dodgerblue>provides a variety of `tapable` hooks</font> that can <font color=dodgerBlue>be used by plugin authors</font> to <font color=red>**customize the parsing process**</font>.
+
+<font color=red>The `parser` is found within `NormalModuleFactory`</font> ( [[#NormalModuleFactory Hooks]] ) and <font color=red>therefore takes little more work to access</font>:
+
+```js
+compiler.hooks.normalModuleFactory.tap('MyPlugin', (factory) => {
+  factory.hooks.parser
+    .for('javascript/auto')
+    .tap('MyPlugin', (parser, options) => {
+      parser.hooks.someHook.tap(/* ... */);
+    });
+});
+```
+
+As with the `compiler` , <font color=red>`tapAsync` and `tapPromise` may also be available depending on the type of hook</font>.
+
+> 👀 注：下面的内容都是 “hooks”，所以，下面方法的父标题 “hooks” 省略
+
+<font color=dodgerBlue>The following **lifecycle hooks** are **exposed by the `parser`** and can be accessed as such:</font>
+
+##### evaluateTypeof
+
+`SyncBailHook`
+
+Triggered when <font color=red>evaluating an expression consisting in a `typeof` of a **free variable**</font>（👀 是否触发见下面示例 ）
+
+> 👀 发现自己对 free variables 自由变量 的概念已经忘了，可以看下 [[前端面试点总结#闭包]] 的开头，有解释“什么是自由变量” 
+
+- Hook Parameters : `identifier`
+- Callback Parameters : `expression`
+
+```js
+parser.hooks.evaluateTypeof
+  .for('myIdentifier')
+  .tap('MyPlugin', (expression) => {
+    /* ... */
+    return expressionResult;
+  });
+```
+
+<font color=red>This will trigger the `evaluateTypeof` hook :</font>
+
+```js
+const a = typeof myIdentifier;
+```
+
+<font color=fuchsia>This won't trigger:</font>
+
+```js
+const myIdentifier = 0;
+const b = typeof myIdentifier;
+```
+
+##### evaluate
+
+`SyncBailHook`
+
+Called when <font color=red>evaluating an expression</font>. 
+
+> ⚠️ 值得注意的是：这里是 expression，不是 statement；注意区分两者
+
+-  Hook parameters : `expressionType`
+- Callback parameters : `expression`
+
+For example:
+
+```js
+// index.js
+const a = new String();
+```
+
+```js
+// MyPlugin.js
+parser.hooks.evaluate.for('NewExpression').tap('MyPlugin', (expression) => {
+  /* ... */
+  return expressionResult;
+});
+```
+
+<font color=dodgerBlue>**Where the expressions types are:**</font>
+
+- 'ArrowFunctionExpression'
+- 'AssignmentExpression'
+- 'AwaitExpression'
+- 'BinaryExpression'
+- 'CallExpression' 👀 调用表达式，在运行时需要对一个具体的函数进行函数调用操作。学习自：[ECMAScript 规范文本阅读导引 Part 2 - legendecas的文章 - 知乎](https://zhuanlan.zhihu.com/p/118140237)
+- 'ClassExpression'
+- 'ConditionalExpression'
+- 'FunctionExpression'
+- 'Identifier'
+- 'LogicalExpression'
+- 'MemberExpression'
+- 'NewExpression'
+- 'ObjectExpression'
+- 'SequenceExpression' 👀 序列表达式，就是 “逗号表达式”。参见：[JavaScript: Sequence Expression - The Comma Operator (,)](https://www.webatoms.in/blog/developer-guide/JavaScript-Sequence-Expression-The-Comma-Operator-M) 其中说了些 ECMAScript 规范内容 [Comma expression (Sequence expression) incorrectly allowed as JSXAttributeValue](https://github.com/babel/babel/issues/8604) 看标题即可
+- 'SpreadElement' 👀 展开（运算符）表达式
+- 'TaggedTemplateExpression' 👀 参见 [JavaScript 有趣的冷知識：tagged template literals](https://medium.com/onedegree-tech-blog/javascript-%E6%9C%89%E8%B6%A3%E7%9A%84%E5%86%B7%E7%9F%A5%E8%AD%98-tagged-template-literals-5ca9db71f066) 也可见 [MDN - enUS - Tagged templates](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates)
+- 'TemplateLiteral' 👀 模版字符串表达式
+- 'ThisExpression'
+- 'UnaryExpression' 👀 一元运算表达式
+- 'UpdateExpression' 👀 更新表达式？看了下：[ECMA Spec - updateExpression ](https://tc39.es/ecma262/#prod-UpdateExpression) 这似乎和 `++` 和 `--` 运算符相关
+
+##### evaluateIdentifier
+
+`SyncBailHook`
+
+Called when <font color=red>evaluating an identifier that is a free variable</font>.
+
+- Hook Parameters : `identifier`
+- Callback Parameters : `expression`
+
+##### evaluateDefinedIdentifier
+
+`SyncBailHook`
+
+Called when <font color=red>evaluating an identifier that is a defined variable</font>（👀 并非专有词汇，至少没有搜到... 意思应该就是“已定义的变量”）.
+
+- Hook Parameters : `identifier`
+- Callback Parameters : `expression`
+
+##### evaluateCallExpressionMember
+
+`SyncBailHook`
+
+Called when <font color=red>evaluating a call to a **member function** of a **successfully evaluated expression**</font>（👀 注：这里 “successfully evaluated expression” 根据下面的 `expression.myFunc()` 的示例，说明：`expression` 中是包含计算的，且是正常运行的）.
+
+- Hook Parameters : `identifier`
+- Callback Parameters : `expression` `param`
+
+<font color=dodgerBlue>This expression will trigger the hook:</font>
+
+```js
+// index.js
+const a = expression.myFunc();
+```
+
+```js
+// MyPlugin.js
+parser.hooks.evaluateCallExpressionMember
+  .for('myFunc')
+  .tap('MyPlugin', (expression, param) => {
+    /* ... */
+    return expressionResult;
+  });
+```
+
+##### statement
+
+`SyncBailHook`
+
+<font color=red>**General purpose**</font>（通用）<font color=red>**hook**</font> that is <font color=fuchsia>**called for every parsed statement** in a code fragment</font>.
+
+> 👀 注：这条命令是 statement 通用的 hook，也就是无论是哪种 statement 都会触发；而下面是更具体的 statement hook
+
+> ⚠️ 值得注意的是：这里是 statement，不是 expression；注意区分两者
+
+- Callback Parameters : `statement`
+
+```js
+parser.hooks.statement.tap('MyPlugin', (statement) => {
+  /* ... */
+});
+```
+
+<font color=dodgerBlue>**Where the `statement.type` could be:**</font>
+
+- 'BlockStatement'
+- 'VariableDeclaration'
+- 'FunctionDeclaration'
+- 'ReturnStatement'
+- 'ClassDeclaration'
+- 'ExpressionStatement'
+- 'ImportDeclaration'
+- 'ExportAllDeclaration'
+- 'ExportDefaultDeclaration'
+- 'ExportNamedDeclaration'
+- 'IfStatement'
+- 'SwitchStatement'
+- 'ForInStatement'
+- 'ForOfStatement'
+- 'ForStatement'
+- 'WhileStatement'
+- 'DoWhileStatement'
+- 'ThrowStatement'
+- 'TryStatement'
+- 'LabeledStatement' 👀 类似于 GOTO 语句中的 label 标记，不过 JS 中没有 GOTO，只有 break 和 continue。学习自：[MDN - label](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/label)
+- 'WithStatement'
+
+##### statementIf
+
+`SyncBailHook`
+
+<font color=red>Called when **parsing an if statement**</font>. <font color=red>Same as the `statement` hook</font>, but <font color=red>triggered only when `statement.type == 'IfStatement'`</font>.
+
+- Callback Parameters : `statement`
+
+##### label
+
+`SyncBailHook`
+
+Called when parsing statements with a [label](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/label). Those statements have `statement.type === 'LabeledStatement'`.
+
+- Hook Parameters : `labelName`
+- Callback Parameters : `statement`
+
+##### import
+
+`SyncBailHook`
+
+Called for <font color=red>**every** import statement</font> in a code fragment. <font color=red>The `source` parameter contains the name of the imported file</font>.
+
+- Callback Parameters : `statement` <font color=red>`source`</font>
+
+The following import statement will trigger the hook once:
+
+```js
+// index.js
+import _ from 'lodash';
+```
+
+```js
+// MyPlugin.js
+parser.hooks.import.tap('MyPlugin', (statement, source) => {
+  // source == 'lodash'
+});
+```
+
+##### importSpecifier
+
+`SyncBailHook`
+
+Called for <font color=red>every specifier</font>（说明符） <font color=red>of every `import` statement</font>.
+
+- Callback Parameters : `statement` `source` `exportName` `identifierName` 👀 参数内容见下面示例
+
+<font color=red>The following import statement will **trigger the hook twice**</font>（ `_` 和 `{ has }` ）:
+
+```js
+// index.js
+import _, { has } from 'lodash';
+```
+
+```js
+// MyPlugin.js
+parser.hooks.importSpecifier.tap(
+  'MyPlugin',
+  (statement, source, exportName, identifierName) => {
+    /* First call
+    source == 'lodash'
+    exportName == 'default'
+    identifierName == '_'
+    */
+    /* Second call
+    source == 'lodash'
+    exportName == 'has'
+    identifierName == 'has'
+    */
+  }
+);
+```
+
+##### export
+
+`SyncBailHook`
+
+Called for every `export` statement in a code fragment.
+
+- Callback Parameters : `statement`
+
+##### exportImport
+
+`SyncBailHook`
+
+Called for <font color=red>every **`export`-import** statement</font>. e.g. <font color=fuchsia>`export * from 'otherModule';`</font> .
+
+- Callback Parameters : `statement` `source`
+
+##### exportDeclaration
+
+`SyncBailHook`
+
+Called for every <font color=red>`export` statement exporting a declaration</font>.
+
+- Callback Parameters : `statement` `declaration`
+
+<font color=dodgerBlue>Those exports will trigger this hook:</font>
+
+```js
+export const myVar = 'hello'; // also var, let
+export function FunctionName() {}
+export class ClassName {}
+```
+
+##### exportExpression
+
+`SyncBailHook`
+
+Called for every `export` statement exporting an expression. e.g. `export default expression;`.
+
+- Callback Parameters: `statement` `declaration`
+
+##### exportSpecifier
+
+`SyncBailHook`
+
+Called for every specifier（说明符） of every `export` statement.
+
+- Callback Parameters: `statement` `identifierName` `exportName` `index`
+
+##### exportImportSpecifier
+
+`SyncBailHook`
+
+Called for every specifier of every `export`-import statement.
+
+- Callback Parameters: `statement` `source` `identifierName` `exportName` `index`
+
+##### varDeclaration
+
+`SyncBailHook`
+
+> 👀 注：参考下面的 [[#varDeclarationLet]]、 [[#varDeclarationConst]]、 [[#varDeclarationVar]] 等，这是一个通用的 “变量声明 statement”
+
+Called when <font color=red>parsing a variable declaration</font>.
+
+- Callback Parameters: `declaration`
+
+##### varDeclarationLet
+
+`SyncBailHook`
+
+Called when <font color=red>parsing a variable declaration defined **using `let`**</font>
+
+- Callback Parameters: `declaration`
+
+##### varDeclarationConst
+
+`SyncBailHook`
+
+Called when parsing a variable declaration defined <font color=red>**using `const`**</font>
+
+- Callback Parameters: `declaration`
+
+##### varDeclarationVar
+
+`SyncBailHook`
+
+Called when parsing a variable declaration defined <font color=red>**using `var`**</font>
+
+- Callback Parameters: `declaration`
+
+##### canRename
+
+`SyncBailHook`
+
+<font color=red>Triggered **before renaming an identifier**</font>（👀 写法见下面示例 `var a = b`） to <font color=fuchsia>determine if the renaming is allowed</font>（👀 根据示例，将会返回一个 boolean；允许则返回 true，否则 false ）. This is <font color=red>usually used together with the `rename` hook</font>.
+
+- Hook Parameters: `identifier`
+- Callback Parameters: `expression`
+
+```js
+var a = b; // 👀
+
+parser.hooks.canRename.for('b').tap('MyPlugin', (expression) => {
+  // returning true allows renaming
+  return true; // 👀
+});
+```
+
+##### rename
+
+`SyncBailHook`
+
+<font color=red>Triggered **when renaming to get the new identifier**</font>. This hook will be called <font color=fuchsia>**only if `canRename` returns `true`**</font>.
+
+- Hook Parameters : `identifier`
+- Callback Parameters : `expression`
+
+```js
+var a = b; // 👀
+
+parser.hooks.rename.for('b').tap('MyPlugin', (expression) => {});
+```
+
+##### assigned
+
+`SyncBailHook`
+
+Called <font color=red>when parsing an `AssignmentExpression` **before parsing the assigned expression**</font>.
+
+- Hook Parameters : `identifier`
+- Callback Parameters : `expression`
+
+```js
+a += b; // 👀
+
+parser.hooks.assigned.for('a').tap('MyPlugin', (expression) => {
+  // this is called before parsing b
+});
+```
+
+##### assign
+
+`SyncBailHook`
+
+Called when parsing an `AssignmentExpression` <font color=red>before parsing the assign expression</font>.
+
+- Hook Parameters: `identifier`
+- Callback Parameters: `expression`
+
+```js
+a += b; // 👀
+
+parser.hooks.assigned.for('a').tap('MyPlugin', (expression) => {
+  // this is called before parsing a
+});
+```
+
+##### typeof
+
+`SyncBailHook`
+
+Triggered when parsing the `typeof` of an identifier
+
+- Hook Parameters: `identifier`
+- Callback Parameters: `expression`
+
+##### call
+
+`SyncBailHook`
+
+Called when <font color=red>parsing a function call</font>.
+
+- Hook Parameters: `identifier`
+- Callback Parameters: `expression`
+
+```js
+eval(/* something */);
+
+parser.hooks.call.for('eval').tap('MyPlugin', (expression) => {}); // 👀
+```
+
+##### callMemberChain
+
+`SyncBailHook`
+
+Triggered when <font color=red>parsing a **call to a member function of an object**</font>.
+
+- Hook Parameters : <font color=red>`objectIdentifier`</font>
+- Callback Parameters : `expression, properties`
+
+```js
+myObj.anyFunc();
+
+parser.hooks.callMemberChain
+  .for('myObj')
+  .tap('MyPlugin', (expression, properties) => {});
+```
+
+##### new
+
+`SyncBailHook`
+
+Invoked when <font color=red>parsing a `new` expression</font>.
+
+- Hook Parameters: `identifier`
+- Callback Parameters: `expression`
+
+```js
+new MyClass(); // 👀
+
+parser.hooks.new.for('MyClass').tap('MyPlugin', (expression) => {});
+```
+
+##### expression
+
+`SyncBailHook`
+
+Called when parsing an expression.
+
+- Hook Parameters: `identifier`
+- Callback Parameters: `expression`
+
+```js
+const a = this; // 👀
+
+parser.hooks.expression.for('this').tap('MyPlugin', (expression) => {});
+```
+
+##### expressionConditionalOperator
+
+`SyncBailHook`
+
+Called when <font color=red>parsing a `ConditionalExpression`</font> . <font color=LightSeaGreen>e.g. `condition ? a : b`</font>
+
+- Callback Parameters : `expression`
+
+##### program
+
+`SyncBailHook`
+
+<font color=red>Get access to the abstract syntax tree (AST) of a code fragment</font>
+
+- Parameters: `ast` `comments`
+
+摘自：[webpack doc - API - JavascriptParser Hooks](https://webpack.js.org/api/parser/)
+
+
+
+#### NormalModuleFactory Hooks
+
+The <font color=red>`NormalModuleFactory` module is used by the `Compiler` to generate modules</font>. Starting with entry points, it resolves each request, parses the content to find further requests, and keeps crawling through files by resolving all and parsing any new files. At last stage, each dependency becomes a Module instance.
+
+The `NormalModuleFactory` class extends `Tapable` and provides the following lifecycle hooks. They can be tapped the same way as compiler hooks:
+
+```js
+NormalModuleFactory.hooks.someHook.tap(/* ... */);
+```
+
+NormaleModuleFactory creates `Parser` and `Generator` instances which can be accessed by HookMaps. Identifier must be passed to tap into these:
+
+```js
+NormalModuleFactory.hooks.someHook.for('identifier').tap(/* ... */);
+```
+
+As with the `compiler` , `tapAsync` and `tapPromise` may also be available depending on the type of hook.
+
+##### beforeResolve
+
+`AsyncSeriesBailHook`
+
+Called when a new dependency request is encountered. A dependency can be ignored by returning `false`. Otherwise, it should return `undefined` to proceed.
+
+- Callback Parameters: `resolveData`
+
+##### factorize
+
+`AsyncSeriesBailHook`
+
+Called before initiating resolve. It should return `undefined` to proceed.
+
+- Callback Parameters: `resolveData`
+
+##### resolve
+
+`AsyncSeriesBailHook`
+
+Called before the request is resolved. A dependency can be ignored by returning `false`. Returning a Module instance would finalize the process. Otherwise, it should return `undefined` to proceed.
+
+- Callback Parameters: `resolveData`
+
+##### resolveForScheme
+
+`AsyncSeriesBailHook`
+
+Called before a request with scheme (URI) is resolved.
+
+- Callback Parameters: `resolveData`
+
+##### afterResolve
+
+`AsyncSeriesBailHook`
+
+Called after the request is resolved.
+
+- Callback Parameters: `resolveData`
+
+##### createModule
+
+`AsyncSeriesBailHook`
+
+Called before a `NormalModule` instance is created.
+
+- Callback Parameters: `createData` `resolveData`
+
+##### module
+
+`SyncWaterfallHook`
+
+Called after a `NormalModule` instance is created.
+
+- Callback Parameters: `module` `createData` `resolveData`
+
+##### createParser
+
+`HookMap<SyncBailHook>`
+
+Called before a `Parser` instance is created. `parserOptions` is options in [module.parser](https://webpack.js.org/configuration/module/#moduleparser) for the corresponding identifier or an empty object.
+
+- Hook Parameters: `identifier`
+- Callback Parameters: `parserOptions`
+
+##### parser
+
+`HookMap<SyncHook>`
+
+Fired after a `Parser` instance is created.
+
+- Hook Parameters: `identifier`
+- Callback Parameters: `parser` `parserOptions`
+
+Possible default identifiers:
+
+1. `javascript/auto`
+2. `javascript/dynamic`
+3. `javascript/esm`
+4. `json`
+5. `webassembly/sync`
+6. `webassembly/async`
+7. `asset`
+
+##### createGenerator
+
+`HookMap<SyncBailHook>`
+
+Called before a `Generator` instance is created. `generatorOptions` is options in [module.parser](https://webpack.js.org/configuration/module/#modulegenerator) for the corresponding identifier or an empty object.
+
+- Hook Parameters: `identifier`
+- Callback Parameters: `generatorOptions`
+
+##### generator
+
+`HookMap<SyncHook>`
+
+Called after a `Generator` instance is created.
+
+- Hook Parameters: `identifier`
+- Callback Parameters: `generator` `generatorOptions`
+
+Possible default identifiers:
+
+1. `json`
+2. `webassembly/sync`
+3. `webassembly/async`
+4. `asset`
+5. `asset/source`
+6. `asset/resource`
+7. `asset/inline`
+
+摘自：[webpack doc - API - NormalModuleFactory Hooks](https://webpack.js.org/api/normalmodulefactory-hooks/)
+
+
+
+#### Plugin API
+
+Plugins are a key piece of the webpack ecosystem and provide the community with a powerful way to tap into webpack's compilation process. A plugin is able to [hook](https://webpack.js.org/api/compiler-hooks/#hooks) into key events that are fired throughout each compilation. Every step of the way, the plugin will have full access to the `compiler` and, when applicable, the current `compilation` .
+
+> 💡 **Tip** : For a high-level introduction to writing plugins, start with [writing a plugin](https://webpack.js.org/contribute/writing-a-plugin) .
+
+Let's start by going over `tapable` utility, which provides the backbone of webpack's plugin interface.
+
+##### Tapable
+
+This small library is a core utility in webpack but can also be used elsewhere to provide a similar plugin interface. Many objects in webpack extend the `Tapable` class. The class exposes `tap` , `tapAsync` , and `tapPromise` methods which plugins can use to inject custom build steps that will be fired throughout a compilation.
+
+Please see the [documentation](https://github.com/webpack/tapable) to learn more. An understanding of the three `tap` methods, as well as the hooks that provide them, is crucial. The objects that extend `Tapable` (e.g. the compiler), the hooks they provide, and each hook's type (e.g. the `SyncHook`) will be noted.
+
+##### Plugin Types
+
+Depending on the hooks used and `tap` methods applied, plugins can function in a different number of ways. The way this works is closely related to the [hooks](https://github.com/webpack/tapable#tapable) provided by `Tapable`. The [compiler hooks](https://webpack.js.org/api/compiler-hooks/#hooks) each note the underlying `Tapable` hook indicating which `tap` methods are available.
+
+So depending on which event you `tap` into, the plugin may run differently. For example, when hooking into the `compile` stage, only the synchronous `tap` method can be used:
+
+```js
+compiler.hooks.compile.tap('MyPlugin', (params) => {
+  console.log('Synchronously tapping the compile hook.');
+});
+```
+
+However, for `run` which utilizes the `AsyncHook` , we can utilize `tapAsync` or `tapPromise` (as well as `tap` ):
+
+```js
+compiler.hooks.run.tapAsync(
+  'MyPlugin',
+  (source, target, routesList, callback) => {
+    console.log('Asynchronously tapping the run hook.');
+    callback();
+  }
+);
+
+compiler.hooks.run.tapPromise('MyPlugin', (source, target, routesList) => {
+  return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+    console.log('Asynchronously tapping the run hook with a delay.');
+  });
+});
+
+compiler.hooks.run.tapPromise(
+  'MyPlugin',
+  async (source, target, routesList) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log('Asynchronously tapping the run hook with a delay.');
+  }
+);
+```
+
+The moral of the story is that there are a variety of ways to `hook` into the `compiler`, each one allowing your plugin to run as it sees fit.
+
+##### Custom Hooks
+
+In order to offer a custom hook to the compilation for other plugins to `tap` into, you need to do the following:
+
+1. Create a module-scope `WeakMap` for compilation hooks:
+
+   ```ts
+   const compilationHooks = new WeakMap<Compilation, MyHooks>();
+   
+   interface MyHooks {
+     custom: SyncHook<[number, string]>;
+   }
+   ```
+
+2. Create a static method on your plugin:
+
+   ```ts
+   static getCompilationHooks(compilation: Compilation) : MyHooks {
+     let hooks = compilationHooks.get(compilation);
+     if(hooks === undefined) {
+       compilationHooks.set(compilation, hooks = {
+         custom: new SyncHook()
+       });
+     }
+     return hooks;
+   }
+   ```
+
+3. Call hooks like below in your plugin:
+
+   ```ts
+   const hooks = MyPlugin.getCompilationHooks(compilation);
+   
+   hooks.custom.call(1, 'hello');
+   ```
+
+4. Other plugins can access your custom hooks too:
+
+   ```ts
+   import MyPlugin from 'my-plugin';
+   
+   const hooks = MyPlugin.getCompilationHooks(compilation);
+   
+   hooks.custom.tap('OtherPlugin', (n, s) => {
+     // magic
+   });
+   ```
+
+Again, see the [documentation](https://github.com/webpack/tapable) for `tapable` to learn more about the different hook classes and how they work.
+
+##### Reporting Progress
+
+Plugins can report progress via [`ProgressPlugin`](https://webpack.js.org/plugins/progress-plugin/), which prints progress messages to stderr by default. In order to enable progress reporting, pass a `--progress` argument when running the [webpack CLI](https://webpack.js.org/api/cli/).
+
+It is possible to customize the printed output by passing different arguments to the `reportProgress` function of [`ProgressPlugin`](https://webpack.js.org/plugins/progress-plugin/).
+
+To report progress, a plugin must `tap` into a hook using the `context: true` option:
+
+```js
+compiler.hooks.emit.tapAsync(
+  {
+    name: 'MyPlugin',
+    context: true,
+  },
+  (context, compiler, callback) => {
+    const reportProgress = context && context.reportProgress;
+    if (reportProgress) reportProgress(0.95, 'Starting work');
+    setTimeout(() => {
+      if (reportProgress) reportProgress(0.95, 'Done work');
+      callback();
+    }, 1000);
+  }
+);
+```
+
+The `reportProgress` function may be called with these arguments:
+
+```js
+reportProgress(percentage, ...args);
+```
+
+- `percentage`: This argument is unused; instead, [`ProgressPlugin`](https://webpack.js.org/plugins/progress-plugin/) will calculate a percentage based on the current hook.
+- `...args`: Any number of strings, which will be passed to the `ProgressPlugin` handler to be reported to the user.
+
+Note that only a subset of compiler and compilation hooks support the `reportProgress` function. See [`ProgressPlugin`](https://webpack.js.org/plugins/progress-plugin/#supported-hooks) for a full list.
+
+##### Logging
+
+Logging API is available since the release of webpack 4.37. When `logging` is enabled in [`stats configuration`](https://webpack.js.org/configuration/stats/#statslogging) and/or when [`infrastructure logging`](https://webpack.js.org/configuration/other-options/#infrastructurelogging) is enabled, plugins may log messages which will be printed out in the respective logger format (stats, infrastructure).
+
+- Plugins should prefer to use `compilation.getLogger('PluginName')` for logging. This kind of logging is stored in the Stats and formatted accordingly. It can be filtered and exported by the user.
+- Plugins may use the `compiler.getInfrastructureLogger('PluginName')` for logging. Using `infrastructure` logging is not stored in the Stats and therefore not formatted. It's usually logged to the console/dashboard/GUI directly. It can be filtered by the user.
+- Plugins may use special fallback logic for detecting logging support `compilation.getLogger ? compilation.getLogger('PluginName') : console` to provide a fallback for cases when an older webpack version is used which does not support `getLogger` method on `compilation` object.
+
+##### Next Steps
+
+See the [compiler hooks](https://webpack.js.org/api/compiler-hooks/) section for a detailed listing of all the available `compiler` hooks and the parameters they make available.
+
+摘自：[webpack doc - API - Plugin API](https://webpack.js.org/api/plugins/)
+
+
+
+#### Resolvers
+
+Resolvers are created using the `enhanced-resolve` package. The `Resolver` class extends the `tapable` class and uses `tapable` to provide a few hooks. The `enhanced-resolve` package can be used directly to create new resolvers, however any [`compiler` instance](https://webpack.js.org/api/node/#compiler-instance) has a few resolver instances that can be tapped into.
+
+Before reading on, make sure to have a look at the [`enhanced-resolve`](https://github.com/webpack/enhanced-resolve) and [`tapable`](https://webpack.js.org/api/plugins/#tapable) documentation.
+
+##### Types
+
+There are three types of built-in resolvers available on the `compiler` class:
+
+- `normal`: Resolves a module via an absolute or relative path.
+- `context`: Resolves a module within a given context.
+- `loader`: Resolves a webpack [loader](https://webpack.js.org/loaders).
+
+Depending on need, any one of these built-in resolvers, that are used by the `compiler`, can be customized via plugins:
+
+```js
+compiler.resolverFactory.hooks.resolver
+  .for('[type]')
+  .tap('name', (resolver) => {
+    // you can tap into resolver.hooks now
+    resolver.hooks.result.tap('MyPlugin', (result) => {
+      return result;
+    });
+  });
+```
+
+Where `[type]` is one of the three resolvers mentioned above.
+
+See the [`enhanced-resolve` documentation](https://github.com/webpack/enhanced-resolve) for a full list of hooks and their description.
+
+##### Configuration Options
+
+The resolvers mentioned above can also be customized via a configuration file with the [`resolve`](https://webpack.js.org/configuration/resolve/) or [`resolveLoader`](https://webpack.js.org/configuration/resolve/#resolveloader) options. These options allow users to change the resolving behavior through a variety of options including through resolve `plugins`.
+
+The resolver plugins, e.g. [`DirectoryNamedPlugin`](https://github.com/shaketbaby/directory-named-webpack-plugin), can be included directly in `resolve.plugins` rather than using directly in [`plugins` configuration option](https://webpack.js.org/configuration/plugins/#plugins).
+
+> 💡 **Tip** : Note that the `resolve` configuration affects the `normal` and `context` resolvers while `resolveLoader` is used to modify the `loader` resolver.
+
+摘自：[webpack doc - API - Resolvers](https://webpack.js.org/api/resolvers/)
 
 
 
@@ -3546,9 +5710,9 @@ webpack 是基于 Node 开发的模块打包工具，所以本质上是由 Node 
 
 通常不建议使用全局安装包 ( `npm install -g package` ) ，比如 webpack ；因为这样对于依赖不同版本包的不同项目，会造成依赖冲突，所以推荐使用在项目中通过 `-D` 形式安装。
 
-以webpack为例，如果没有全局安装 webpack，这时使用 **webpack -v** 命令是没有结果的，这时可以使用 **`npx webpack -v`**，<font color=FF0000> 将会运行运行在当前目录下的 webpack 安装包</font>。同样，不仅仅可以使用 `-v` 命令，还有其他命令。
+以webpack为例，如果没有全局安装 webpack，这时使用 `webpack -v` 命令是没有结果的，这时可以使用 `npx webpack -v` ，<font color=FF0000> 将会运行运行在当前目录下的 webpack 安装包</font>。同样，不仅仅可以使用 `-v` 命令，还有其他命令。
 
-<font size=4>**补充：**</font> 使用全局安装的 webpack，打包命令如下：**`webpack entryFileName`**。所以，后面才会出现项目本地安装时打包的命令： npx webpack entryFileName
+<font size=4>**补充：**</font> 使用全局安装的 webpack，打包命令如下：`webpack entryFileName`。所以，后面才会出现项目本地安装时打包的命令： `npx webpack entryFileName`
 
 
 

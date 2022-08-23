@@ -3,13 +3,21 @@
 ### 通用
 
 - **synchronous**： 同步
+
 - **asynchronous**：异步
+
 - **compatibility**：兼容性。compat：兼容 ( verb )。**forwards compatibility**：向后兼容性
+
 - **shortcut**：快捷方式，近道
+
 - **out of the box**：开箱即用
+
 - **built-in**：内置
+
 - **addon**：插件。来自 “node-gyp is a cross-platform command-line tool written in Node.js for compiling native addon modules for Node.js”
+
 - **on the fly**：即时，在运行时（热更新）。参考：[如何优雅的翻译 on the fly ？ - 知乎](https://www.zhihu.com/question/21136587)
+
 - **pros and cons**：利弊
 
 - **overhead**：开销（和性能相关）
@@ -24,7 +32,7 @@
 
 - **nest**：嵌套，一般用形容词 nested ，嵌套的
 
-- **recursion**：递归
+- **recursion**：递归。**recursive**：递归的
 
 - **i.e.** : *i.e.* is an abbreviation for the phrase ***id est***, which means **"that is"** .
 
@@ -112,9 +120,7 @@
 
 - **prioritize ( ... over ... )**：优先考虑
 
-- **setup**：设置 ( noun )
-
-- **set up**：设置 ( verb )
+- **setup**：设置 ( noun ) 。**set up**：设置 ( verb )
 
 - **granular**：颗粒状的。more granular：更细粒度的。granul：颗粒。
 
@@ -177,35 +183,86 @@
 - **profile**：剖析 ( verb )。来自 “ It is especially useful in the case of early prototyping and **profiling**.  ”
 
 - **scaffold**：脚手架
+
 - **negate**：否定。**negated**：否定的。参考记忆，可以根据 negative
+
 - **as of**：截止，从 ... 开始
+
 - **histogram**：直方图
+
 - **omnibox**：地址栏
+
 - **ultimate**：一般的含义是 “最终的，最后的”。不过这里要注意的是，还有 “基本的” 的意思。来自：“The `Compiler` is **ultimately** a function which performs bare minimum functionality to keep a lifecycle running.”
+
 - **kickstart**：启动
+
 - **consumable**：易于使用的
+
 - **dispose**：处置
+
 - **reversible**：可逆转的。**irreversible**：不可逆转的
+
 - **idle**：空闲的，闲置的
+
 - **invocate**：调用 ( verb) -> **invocation** ( noun )
+
 - **conjunct**：结合 ( verb ) -> **conjunction** ( noun )
+
 - **trivial**：不重要的
+
 - **deterministic**：确定性的
+
 - **pseudo**：伪的
+
 - **resort**：求助
+
 - **process**：一般理解为“过程”( noun )，这里强调的是“**处理**“ ( verb ) 的意思
+
 - **pave**：铺路
+
 - **invoke**：援引，提及，**调用**
+
 - **enforce**：**执行**，强迫实施
+
 - **opt out**：选择退出，选择排除
+
 - **subsequent**：随后的，后面的
+
 - **interfere**：干涉
+
 - **opaque**：不透明的
+
 - **praxis**：实践
+
 - **supersede**：取代
+
 - **arbitrary**：**任意的**，武断的
+
 - **assign**：**分配**，指派
+
 - **introspect**：内省，**自我检查**
+
+- **seal**：封闭。含义可以参考 `Object.seal()` 方法
+
+- **patch**：修补，修改（比如 HTTP 的 `PATCH` 方法，用于对资源进行部分修改 ）
+
+- **tie**：连接，联系
+
+- **interpolate**：插话，**插值**。
+
+- **constraint**：约束，限制。常见的有 SQL 中的 `constraint` 关键字
+
+- **revive**：使复苏，使重新使用
+
+- **respect**：**遵守**。了解自 “The callback must **respect** the type of the tap method used.”
+
+- **as with**：如同，和 ... 一样
+
+- **spread**：展开。比如 [spread syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) 展开语法
+
+- **unray**：一元的（一元运算）
+
+- **general purpose**：通用
 
 
 #### 特殊字符

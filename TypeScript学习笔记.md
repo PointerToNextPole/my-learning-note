@@ -4,7 +4,7 @@
 
 #### 一些资料
 
-中文文档 / 手册：www.tslang.cn ，https://typescript.bootcss.com
+中文文档 / 手册：www.tslang.cn ，https://typescript.bootcss.com ，[冴羽的 TS 教程](https://yayujs.com/) 
 
 
 
@@ -12,7 +12,9 @@
 
 链接🔗：[《TypeScript入门教程》](https://ts.xcatliu.com)
 
-#### TypeScript是静态语言
+#### TS 介绍
+
+##### TypeScript是静态语言
 
 类型系统<font color=FF0000> 按照「类型检查的时机」来分类，可以分为动态类型和静态类型</font>。
 
@@ -21,9 +23,9 @@
 
 <mark>JavaScript 是一门解释型语言，没有编译阶段，所以它是动态类型。</mark>
 
-<mark style=background-color:hotpink>TypeScript 在运行前需要先编译为 JavaScript，而在编译阶段就会进行类型检查，所以 TypeScript 是静态类型</mark>
+<font color=fuchsia>**TypeScript 在运行前需要先编译为 JavaScript，而在编译阶段就会进行类型检查，所以 TypeScript 是静态类型**</font>
 
-#### TypeScript 是弱类型
+##### TypeScript 是弱类型
 
 <font color=FF0000>类型系统按照「是否允许隐式类型转换」来分类</font>，可以分为强类型和弱类型
 
@@ -33,11 +35,9 @@ TypeScript 是完全兼容 JavaScript 的，它不会修改 JavaScript 运行时
 
 ![20191031230816827](https://i.loli.net/2021/08/31/mvDCBdjIHUfTO8V.png)
 
+##### TS的类型和编译
 
-
-#### TS的类型和编译
-
-在 TypeScript 中，我们使用 : 指定变量的类型，: 的前后有没有空格都可以。
+在 TypeScript 中，我们使用 `:` 指定变量的类型，`:` 的前后有没有空格都可以。
 
 **TypeScript 只会在编译时对类型进行静态检查，如果发现有错误，编译的时候就会报错**。
 
@@ -47,9 +47,11 @@ TypeScript 编译的时候即使报错了，还是会生成编译结果，我们
 
 
 
-#### 空值
+#### 特殊类型
 
-JavaScript 没有空值（Void）的概念，在 TypeScript 中，可以用 void 表示没有任何返回值的函数：
+##### 空值
+
+JavaScript 没有空值 Void 的概念，在 TypeScript 中，可以用 void 表示没有任何返回值的函数：
 
 ```ts
 function alertName(): void {
@@ -57,15 +59,13 @@ function alertName(): void {
 }
 ```
 
-声明一个 void 类型的变量没有什么用，因为你只能将它赋值为 undefined 和 null（只在 --strictNullChecks 未指定时）：
+声明一个 void 类型的变量没有什么用，因为你只能将它赋值为 undefined 和 null（只在 tsconfig中 `--strictNullChecks` 未指定时）：
 
 ```ts
 let unusable: void = undefined;
 ```
 
-
-
-#### Null 和 Undefined
+##### Null 和 Undefined
 
 在 TypeScript 中，可以使用 null 和 undefined 来定义这两个原始数据类型：
 
@@ -92,9 +92,7 @@ let num: number = u;
 // Type 'void' is not assignable to type 'number'.
 ```
 
-
-
-#### 任意值
+##### 任意值
 
 **任意值（Any）用来<font color=FF0000> 表示允许赋值为任意类型</font>。**
 
@@ -164,9 +162,9 @@ myFavoriteNumber = 7;
 
 #### 联合类型
 
-联合类型（Union Types）表示<font color=FF0000> 取值可以为多种类型中的一种</font>。
+联合类型 ( Union Types ) 表示<font color=FF0000> 取值可以为多种类型中的一种</font>。
 
-**示例：**
+##### 示例
 
 ```ts
 let myFavoriteNumber: string | number;
@@ -182,9 +180,9 @@ myFavoriteNumber = true;
 //   Type 'boolean' is not assignable to type 'number'.
 ```
 
-联合类型使用 | 分隔每个类型。
+联合类型使用 `|` 分隔每个类型。
 
-这里的` let myFavoriteNumber: string | number `的含义是，<font color=FF0000> 允许 myFavoriteNumber 的类型是 string 或者 number，但是不能是其他类型</font>。
+这里 ` let myFavoriteNumber: string | number ` 的含义是，<font color=FF0000> 允许 `myFavoriteNumber` 的类型是 `string` 或者 `number` ，但是不能是其他类型</font>。
 
 当 TypeScript 不确定一个联合类型的变量到底是哪个类型的时候，<font color=FF0000> 我们只能访问此联合类型的所有类型里共有的属性或方法</font>。
 
@@ -205,15 +203,15 @@ function getLength(something: string | number): number {
 
 在 TypeScript 中，我们使用<font color=FF0000> 接口（Interfaces）来定义对象的类型</font>。
 
-**什么是接口**
+##### 什么是接口
 
-在面向对象语言中，接口（Interfaces）是一个很重要的概念，它是对行为的抽象，而具体如何行动需要由类（classes）去实现（implement）。
+在面向对象语言中，接口 ( Interfaces ) 是一个很重要的概念，它是对行为的抽象，而具体如何行动需要由类 ( classes ) 去实现 ( implement )。
 
-TypeScript 中的接口是一个非常灵活的概念，除了可用于对类的一部分行为进行抽象以外，也常用于对「对象的形状（Shape）」进行描述。
+TypeScript 中的接口是一个非常灵活的概念，除了可用于对类的一部分行为进行抽象以外，也常用于对「对象的形状 ( Shape )」进行描述。
 
-接口一般首字母大写。
+<font color=red>**接口一般首字母大写**</font>
 
-**示例：**
+##### 示例
 
 ```ts
 interface Person {
@@ -227,9 +225,9 @@ let tom: Person = {
 };
 ```
 
-上面的例子中，我们定义了一个接口 Person，接着定义了一个变量 tom，它的类型是 Person。<font color=FF0000> 这样，我们就约束了 tom 的<font size=4>**形状必须和接口 Person 一致**</font></font>。定义的变量比接口少了一些属性是不允许的，多一些属性也是不允许的。
+上面的例子中，我们定义了一个接口 `Person` ，接着定义了一个变量 tom，它的类型是 `Person` 。<font color=FF0000>这样，我们就约束了 tom 的 **形状必须和接口 `Person` 一致**</font>。定义的变量比接口少了一些属性是不允许的，多一些属性也是不允许的。
 
-**可选属性**
+##### 可选属性
 
 有时我们希望不要完全匹配一个形状，那么可以用可选属性：
 
@@ -246,9 +244,11 @@ let tom: Person = {
 
 可选属性的含义是该属性可以不存在。这时**仍然不允许添加未定义的属性**
 
-**任意属性**
+##### 任意属性
 
-有时候我们<font color=FF0000><font size=4> **希望一个接口允许有任意的属性，可以使用如下方式**</font></font>：
+> 👀 注：更专业的名称叫作 “索引签名” ( [Index Signatures](https://www.typescriptlang.org/docs/handbook/2/objects.html#index-signatures) )，也可参考 [[#TS 类型系统中的类型#接口]] 中的 “可索引签名”
+
+有时候我们<font color=dodgerblue> **希望一个接口允许有任意的属性，可以使用如下方式**</font>：
 
 ```ts
 interface Person {
@@ -263,9 +263,9 @@ let tom: Person = {
 };
 ```
 
-<font color=FF0000> 使用 [propName: string] 定义了任意属性取 string 类型的值</font>。
+<font color=fuchsia> 使用 `[propName: string]` 定义了任意属性取 string 类型的值</font>。
 
-需要注意的是，<font color=FF0000 size=4> **一旦定义了任意属性，那么确定属性和可选属性的类型都必须是它的类型的子集**：</font>
+需要注意的是，<font color=red> **一旦定义了任意属性，那么确定属性和可选属性的类型都必须是它的类型的子集**：</font>
 
 ```ts
 interface Person {
@@ -288,7 +288,7 @@ let tom: Person = {
 
 上例中，任意属性的值允许是 string，但是可选属性 age 的值却是 number，number 不是 string 的子属性，所以报错了。
 
-另外，在报错信息中可以看出，此时 `{ name: 'Tom', age: 25, gender: 'male' }` 的类型被推断成了 `{ [x: string]: string | number; name: string; age: number; gender: string; }`，这是联合类型和接口的结合。
+另外，在报错信息中可以看出，此时 `{ name: 'Tom', age: 25, gender: 'male' }` 的类型被推断成了 `{ [x: string]: string | number; name: string; age: number; gender: string; }` ，这是联合类型和接口的结合。
 
 一个接口中只能定义一个任意属性。<font color=FF0000> 如果接口中有多个类型的属性，则可以在任意属性中使用联合类型</font>：
 
@@ -306,9 +306,13 @@ let tom: Person = {
 };
 ```
 
-<font color=FF0000> **自我补充：**</font>类似的属性在对象中可以定义多个。不是一个接口中的可选属性，在对象中只能定义一次；而是可以定义成多个
+<font color=dodgerblue> **补充：**</font>类似的属性在对象中可以定义多个。不是一个接口中的可选属性，在对象中只能定义一次；而是可以定义成多个
 
-**只读属性**
+> 👀 官方文档补充
+>
+> > An index signature property type must be either ‘string’ or ‘number’. （注：也就是说不能是 `symbol` 类型？）
+
+##### 只读属性
 
 有时候我们希望对象中的一些字段只能在创建的时候被赋值，那么可以用 readonly 定义只读属性
 
@@ -327,7 +331,7 @@ interface Person {
 
 在 TypeScript 中，数组类型有多种定义方式，比较灵活。
 
-**「类型 + 方括号」表示法**
+##### 「类型 + 方括号」表示法
 
 <font color=FF0000> 最简单的方法是使用「类型 + 方括号」来表示数组</font>：
 
@@ -342,7 +346,7 @@ let fibonacci: number[] = [1, '1', 2, 3, 5];
 // Type 'string' is not assignable to type 'number'.
 ```
 
-**数组泛型**
+##### 数组泛型
 
 我们也<font color=FF0000> 可以使用数组泛型（Array Generic） Array\<elemType> 来表示数组</font>
 
@@ -350,7 +354,7 @@ let fibonacci: number[] = [1, '1', 2, 3, 5];
 let fibonacci: Array<number> = [1, 1, 2, 3, 5];
 ```
 
-**用接口表示数组**
+##### 用接口表示数组
 
 <font color=FF0000> 接口也可以用来描述数组</font>：
 
@@ -361,11 +365,11 @@ interface NumberArray {
 let fibonacci: NumberArray = [1, 1, 2, 3, 5];
 ```
 
-**类数组**
+##### 类数组
 
 类数组（Array-like Object）不是数组类型
 
-**any 在数组中的应用**
+##### any 在数组中的应用
 
 一个比较常见的做法是，用 any 表示数组中允许出现任意类型：
 
@@ -377,7 +381,7 @@ let list: any[] = ['xcatliu', 25, { website: 'http://xcatliu.com' }];
 
 #### 函数的类型
 
-**函数声明**
+##### 函数声明
 
 在 JavaScript 中，<font color=FF0000> 有两种常见的定义函数的方式——函数声明（Function Declaration）和函数表达式（Function Expression）</font>：
 
@@ -403,7 +407,7 @@ function sum(x: number, y: number): number {
 
 注意，**输入多余的（或者少于要求的）参数，是不被允许的**
 
-**函数表达式**
+##### 函数表达式
 
 如果要我们现在写一个对<font color=FF0000> 函数表达式（Function Expression）</font>的定义，可能会写成这样：
 
@@ -427,7 +431,7 @@ let mySum: (x: number, y: number) => number = function (x: number, y: number): n
 
 在 ES6 中，=> 叫做箭头函数，应用十分广泛，可以参考 [ES6 中的箭头函数](http://es6.ruanyifeng.com/#docs/function#箭头函数)
 
-**用接口定义函数的形状**
+##### 用接口定义函数的形状
 
 我们也可以使用接口的方式来定义一个函数需要符合的形状：
 
@@ -444,9 +448,9 @@ mySearch = function(source: string, subString: string) {
 
 采用函数表达式|接口定义函数的方式时，对等号左侧进行类型限制，可以保证以后对函数名赋值时保证参数个数、参数类型、返回值类型不变。
 
-**可选参数**
+##### 可选参数
 
-<font color=FF0000> 用 ? 表示可选的参数，需要注意的是，可选参数必须接在必需参数后面。换句话说，**可选参数后面不允许再出现必需参数了**</font>
+<font color=FF0000> 用 `?` 表示可选的参数，需要注意的是，可选参数必须接在必需参数后面。换句话说，**可选参数后面不允许再出现必需参数了**</font>
 
 ```ts
 function buildName(firstName: string, lastName?: string) {
@@ -460,7 +464,7 @@ let tomcat = buildName('Tom', 'Cat');
 let tom = buildName('Tom');
 ```
 
-**参数默认值**
+##### 参数默认值
 
 在 ES6 中，我们允许给函数的参数添加默认值，<font color=FF0000> TypeScript 会将添加了**默认值的参数识别为可选参数** </font>：
 
@@ -476,7 +480,7 @@ let tom = buildName('Tom');
 
 **剩余参数**
 
-ES6 中，<font color=FF0000> 可以使用 ...rest 的方式获取函数中的剩余参数（rest 参数）</font>。items 是一个数组。所以我们可以用数组的类型来定义它：
+ES6 中，<font color=FF0000> 可以使用 `...rest` 的方式获取函数中的剩余参数（rest 参数）</font>。items 是一个数组。所以我们可以用数组的类型来定义它：
 
 ```ts
 function push(array: any[], ...items: any[]) {
@@ -488,9 +492,9 @@ let a = [];
 push(a, 1, 2, 3);
 ```
 
-<font color=FF0000> 注意，rest 参数只能是最后一个参数</font>
+<font color=FF0000> 注意，`rest` 参数只能是最后一个参数</font>
 
-**重载**
+##### 重载
 
 **重载允许一个函数接受不同数量或类型的参数时，作出不同的处理**
 
@@ -561,7 +565,7 @@ function reverse(x: number | string): number | string | void {
 
 #### infer
 
-
+// todo
 
 
 
@@ -779,7 +783,7 @@ type Tuple = [number, string];
   }
   ```
 
-<font color=FF0000 size=4>**对象类型、class 类型**</font>（**注：**如下面 “总之” 所说，「数组类型」也是） <font color=FF0000 size=4>**在 TypeScript 里也叫做索引类型**</font>，<font color=FF0000>**也就是索引了多个元素的类型的意思**</font>（**注：**这个概念下面会有进一步讲解）。对象可以动态添加属性，如果不知道会有什么属性，可以用 <font color=FF0000 size=4>**可索引签名**</font>（**注：**不要和前面的「索引类型」混淆。另外下面这个类似 JS「计算属性」的就是）
+<font color=FF0000 size=4>**对象类型、class 类型**</font>（**注：**如下面 “总之” 所说，「数组类型」也是） <font color=FF0000 size=4>**在 TypeScript 里也叫做索引类型**</font>，<font color=FF0000>**也就是索引了多个元素的类型的意思**</font>（**注：**这个概念下面会有进一步讲解）。对象可以动态添加属性，如果不知道会有什么属性，可以用 <font color=FF0000 size=4>**可索引签名**</font>（**注：**不要和前面的「索引类型」混淆。另外，下面这个 “索引签名” 和  JS「计算属性名」设计思路是一样的）
 
 ```typescript
 interface IPerson {
@@ -831,7 +835,7 @@ const transpiler = Transpiler.TypeScriptCompiler;
 
 **这些就是 TypeScript 类型系统中的全部类型了**，<mark>大部分是从 JS 中迁移过来的</mark>，比如基础类型、Array、class 等；<mark>也添加了一些类型</mark>，比如 枚举 ( enum ) 、接口 ( interface ) 、元组等，<mark>还支持了字面量类型和 void、never、any、unknown 的特殊类型</mark>。
 
-#### 
+
 
 #### TS 类型的装饰
 

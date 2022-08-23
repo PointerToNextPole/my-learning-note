@@ -171,9 +171,11 @@ onfocus ( focus ) -> 键盘输入 -> onkeydown ( keydown )  -> onkeypress ( keyp
 
 
 
-#### 模版字符串
+#### 模板字符串
 
 ##### 标签函数
+
+> 👀 **2022/8/23** **注**：当时读 “模板字符串” 中文版 MDN，没有找到“标签函数”相关内容。今天正好碰见 “TaggedTemplateExpression” 这个 ECMAScript Spec 的概念，搜索其含义时，才发现英文版 MDN 是有这部分内容的：见 [MDN - Template literals (Template strings) # Tagged templates](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates)
 
 标签函数的语法是函数名后面直接带一个模板字符串，并从模板字符串中的插值表达式中获取参数，举个例子。
 
@@ -3322,7 +3324,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                   
+  >                                                                                                                                                                       
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3341,7 +3343,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                   
+  >                                                                                                                                                                       
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7956,7 +7958,7 @@ observer2.observe( { entryTypes: ["measure"] } )
 
 #### Performance API
 
-> **注：**当时注意到 Performance API，是因为“首屏渲染优化”，就按习惯搜起了 MDN ...看到后面发现， 自己不应该在不了解背景的情况下，一上来就看 API，这样很容易看懵，而且看了没怎么用也就忘了；所以，如果之后想要复习这部分的内容，可以先看看后面的 [[#Performance Timeline 介绍]] 了解下背景。
+> 👀 注：当时注意到 Performance API，是因为“首屏渲染优化”，就按习惯搜起了 MDN ...看到后面发现， 自己不应该在不了解背景的情况下，一上来就看 API，这样很容易看懵，而且看了没怎么用也就忘了；所以，如果之后想要复习这部分的内容，可以先看看后面的 [[#Performance Timeline 介绍]] 了解下背景。
 
 High Resolution Time 标准定义了 Performance 接口，该接口支持应用程序中客户端的延时测量。<font color=FF0000>Performance 接口被认为是高采样率的</font>，因为其<font color=FF0000>精确度可达千分之一毫秒</font>（受硬件或软件限制）。这些接口支持许多使用情形，包括计算帧速率（在动画中可能很重要）和基准测试（例如加载资源的时间）。
 
@@ -7965,6 +7967,8 @@ High Resolution Time 标准定义了 Performance 接口，该接口支持应用�
 > Date.now() 方法只适用于日期时间相关操作，而且是不要求计时精度的操作
 >
 > 摘自：《 JS 高级程序设计》第四版 P644 ：20.10 计时 API
+
+> 👀 注：在 codingstartup 微信群群友出现了 “他的开发环境不支持 performance” 的情况。事后，我看到了这样的文章 [SharedArrayBuffer与幽灵漏洞（Spectre） - 李银城的文章 - 知乎](https://zhuanlan.zhihu.com/p/556051833) 其中有提及 “利用 SharedArrayBuffer 可以获取高精度时间”（详见原文。有空也有必要看下文章，学习下 sharedArrayBuffer // TODO ），也算是在 “不支持 Performance 的环境“ 下获取高精度时间 的一种补救方法了
 
 ##### DOMHighResTimeStamp
 

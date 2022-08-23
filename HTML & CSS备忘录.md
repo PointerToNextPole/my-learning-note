@@ -5607,7 +5607,7 @@ clamp() 函数接收三个用逗号分隔的表达式作为参数，按最小值
 
 ##### env()
 
-// TODO
+// TODO 。另外，注意下其中的 `safe-area-inset-*` ，`env(safe-area-insert-*)` 用来表示屏幕四角是弧形的高度，这在 iOS 环境下较为常用。
 
 摘自：[MDN - env()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/env())
 
@@ -5631,7 +5631,7 @@ mask-image: url("masks.svg#mask1");
 }
 ```
 
-简单地说，在CSS中可以使用url()函数来引用相应的资源，有点类似于HTML中的src，href属性。
+简单地说，在CSS中可以使用url()函数来引用相应的资源，有点类似于HTML中的 src，href 属性。
 
 ##### attr()
 
@@ -5673,7 +5673,7 @@ mask-image: initial;
 mask-image: unset;
 ```
 
-> 注：之所以想要了解这个 CSS 属性，是因为在看 [MDN - Performance](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance) 看到了如下内容（如下图）；但是复制到笔记时，笔记上并没有出现 “⚠️” 标志，有的只是 “Non-Standard” ，这让我感到好奇。
+> 👀 注：之所以想要了解这个 CSS 属性，是因为在看 [MDN - Performance](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance) 看到了如下图的内容；但是复制到笔记时，笔记上并没有出现 “⚠️” 标志，有的只是 “Non-Standard” ，这让我感到好奇。
 >
 > <img src="https://s2.loli.net/2022/05/22/Zy8OuP1RLIEVFJB.png" alt="image-20220522235008322" style="zoom:50%;" />
 
@@ -5795,11 +5795,15 @@ p:target i {
 
 摘自：[MDN - :target](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:target) ，同样的示例也可以参考：[简书 - target伪类](https://www.jianshu.com/p/487a6f38036d)
 
+
+
 #### ::target-text
 
 配合 `#:~:text=content` 使用，用于分享 <font color=FF0000>带有 *锚点* 的 url</font> ，设置 content 内容的样式，从让阅读者轻松定位 content 部分。
 
 详见：[基于文字的URL锚点定位与::target-text样式设置](https://www.zhangxinxu.com/wordpress/2022/06/url-anchor-target-text/)
+
+
 
 #### :is() 伪类选择器 🧪
 
