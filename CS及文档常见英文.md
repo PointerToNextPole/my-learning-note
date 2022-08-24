@@ -54,6 +54,8 @@
 
 - **under the hood**：在引擎盖下（指内部实现）
 
+- **underlying**：内在的
+
 - **wildcard**：通配符
 
 - **spec**：规格，细则。abbr of specification
@@ -218,6 +220,8 @@
 
 - **process**：一般理解为“过程”( noun )，这里强调的是“**处理**“ ( verb ) 的意思
 
+- **proceed**：继续
+
 - **pave**：铺路
 
 - **invoke**：援引，提及，**调用**
@@ -263,6 +267,14 @@
 - **unray**：一元的（一元运算）
 
 - **general purpose**：通用
+
+- **factorize**：分解
+
+- **correspond**：相一致，相当于，通信。**corresponding**：**相应的**，对应的，符合的
+
+- **function**：**运转**，运行 ( verb )
+
+- **story**：**需求**。了解自 “The moral of the **story** is that there are a variety of ways to `hook` into the `compiler`, each one allowing your plugin to run as it sees fit.” 。扩展阅读：[敏捷模式中“故事”和“需求”的关系是什么？ - 知乎](https://www.zhihu.com/question/26996772)
 
 
 #### 特殊字符

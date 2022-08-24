@@ -5060,7 +5060,7 @@ function printId(id: ID) { console.log(id) }
 
 有时TypeScript无法获取具体的类型信息，这时就需要使用类型断言 (Type Assertions)
 
-比如通过 document.getElementById()，TypeScript只知道该函数会返回 HTMLElement ，但并不知道它 具体的类型。
+比如通过 `document.getElementById()`，TypeScript只知道该函数会返回 HTMLElement ，但并不知道它 具体的类型。
 
 ```ts
 const myEl = document.getElementById('my-img') as HTMLImageElement
@@ -5088,7 +5088,7 @@ printMsg('hello')
 
 ```ts
 function printMsg(msg?: string) {
-  // 这里加上了 `!`
+  // 👀 这里加上了 `!`
   console.log(msg!.toUpperCase())
 }
 ```
@@ -5568,11 +5568,11 @@ const obj: newType = {
 
 
 
-**interface和type的区别**
+##### interface 和 type 的区别
 
 <font color=FF0000>interface和type都可以用来定义对象类型</font>，在开发中定义对象类型时，选择哪一个？
 
-- 如果<font color=FF0000>定义的是非对象类型</font>，通常推荐使用type，比如上面示例的Direction、Alignment、一些Function
+- 如果<font color=FF0000>定义的是非对象类型</font>，通常<font color=fuchsia>推荐使用 type</font>，比如上面示例的 Direction、Alignment、一些 Function
 
 - 如果是定义对象类型，它们是有区别的： 
 
@@ -5604,7 +5604,7 @@ const obj: newType = {
 
     
 
-**字面量赋值**
+##### 字面量赋值
 
 代码示例如下：
 
@@ -5645,7 +5645,7 @@ const p: IPerson = obj
 
 
 
-**模块化开发**
+##### 模块化开发
 
 **TypeScript支持<font color=FF0000>两种方式</font>来控制我们的作用域：**
 
@@ -5867,11 +5867,9 @@ tsconfig.json是用于配置TypeScript编译时的配置选项：https://www.typ
 
 
 
-
-
 #### 前端工程
 
-**前端项目规范**
+##### 前端项目规范
 
 - **EditorConfig（配置文件名为 .editorconfig ）：**有助于为不同 IDE 编辑器上处理同一项目的多个开发人员维护一致的编码风格：比如回车键所对应的ASCII，一个Tab对应几个空格。
 
@@ -5947,7 +5945,7 @@ tsconfig.json是用于配置TypeScript编译时的配置选项：https://www.typ
      /public/*
      ```
 
-  4. **如果在VSC中，需要使用插件 Prettier - Code formatter**
+  4. **如果在 VSC 中，需要使用插件 Prettier - Code formatter**
 
   5. 如果嫌 “保存后prettier生效” 麻烦（毕竟需要一个一个文件去保存），可以写一个npm scripts。
 

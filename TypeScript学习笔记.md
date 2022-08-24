@@ -3553,6 +3553,8 @@ type PartialObjectPropByKeys<
 
 <img src="https://s2.loli.net/2022/05/07/NVSef923auCWnMd.png" alt="image-20220507005050965" style="zoom:50%;" />
 
+
+
 #### 函数重载的三种写法
 
 TS 支持函数重载，也就是同名的函数可以有多种类型定义。
@@ -3579,7 +3581,7 @@ interface Func {
 
 <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6fc6af466fda4757894caa1ae9a85716~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp?" alt="img" style="zoom:70%;" />
 
-函数类型可以取交叉类型，也就是多种类型都可以，其实也是函数重载的意思：
+<font color=fuchsia>**函数类型** 可以取交叉类型 ( `&` )，也就是多种类型都可以，其实也是函数重载的意思</font>：
 
 ```ts
 type Func = (
@@ -3591,7 +3593,7 @@ type Func = (
 
 #### UnionToTuple
 
-要求把 “联合类型” 转成 “元组类型”，也就是 'a' | 'b' | 'c' 转成 ['a', 'b', 'c'] 。
+要求把 “联合类型” 转成 “元组类型”，也就是 `'a' | 'b' | 'c'` 转成 `['a', 'b', 'c']` 。
 
 没思路很正常，因为这里用到了一些特殊的特性。我们先来过一下用到的特性：
 

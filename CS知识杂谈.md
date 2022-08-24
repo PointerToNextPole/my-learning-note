@@ -439,30 +439,21 @@ RPC 指的是远程调用，也就是说，调用的函数不在同一内存空�
 
 
 
-//TODO
-
 #### DSL ( Domain-Specific Language )
 
+//TODO
 
 
-#### argument 和 parament 的区别
-
-- argument：实参
-- parament：形参
-
-
-
-//todo
 
 #### 方法链
 
-
-
 //todo
+
+
 
 #### 回调函数
 
-
+// todo
 
 
 
@@ -488,7 +479,14 @@ RPC 指的是远程调用，也就是说，调用的函数不在同一内存空�
 
 
 
-#### 函数和方法的区别
+#### 计算机名词的区别
+
+##### argument 和 parament 的区别
+
+- argument：实参
+- parament：形参
+
+##### 函数和方法的区别
 
 - 函数（function）是指一段可以直接被其名称调用的代码块，它可以传入一些参数进行处理并返回一些数据，所有传入函数的数据都是被明确定义。
 - 方法指的是一段<font color=FF0000>被它关联的对象</font>通过它的名字调用的代码块。
@@ -497,9 +495,7 @@ RPC 指的是远程调用，也就是说，调用的函数不在同一内存空�
 
 摘自：[方法和函数的区别](https://blog.csdn.net/notsaltedfish/article/details/75174556)
 
-
-
-#### class: Helper VS Utility
+##### class: Helper VS Utility
 
 There are many naming styles to use. I would suggest <font color=FF0000>**Utils** just because its **more common**</font>.
 
@@ -508,6 +504,12 @@ A <font size=4>**Utility**</font> class is understood to <font color=FF0000>**on
 A <font size=4>**Helper**</font> <font color=FF0000>can be a **utility** class</font> or <font color=FF0000>it can be **stateful** or **require an instance be created**</font>. I would avoid this if possible.
 
 摘自：[What are the differences between Helper and Utility classes?](https://stackoverflow.com/questions/12192050/what-are-the-differences-between-helper-and-utility-classes)
+
+
+
+##### expression VS statement
+
+// TODO 虽然这比较明显，不过还是建议做下笔记 https://stackoverflow.com/questions/4728073/what-is-the-difference-between-an-expression-and-a-statement-in-python
 
 
 
@@ -521,15 +523,15 @@ A <font size=4>**Helper**</font> <font color=FF0000>can be a **utility** class</
 
 摘自：[wiki - 鸭子类型](https://zh.wikipedia.org/wiki/%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B)
 
+// TODO: TS 的 类型比较使用的是就是 “鸭子类型”，建议结合 TS 再看下。
 
+
+
+#### 计算机名词简易解释
 
 **TICK（滴答）**：是计算机的计时器的单位
 
-
-
-**脚手架：**脚手架就是别人用构建工具帮你搭好了原始项目，你可以在不懂构建工具的情况下进行前端开发。不过这就是初级前端的基本工作，给我一个环境，让我安心的写业务代码。
-
-摘自：[一小时的时间，上手 Webpack](https://zhuanlan.zhihu.com/p/114286243)
+**脚手架：**脚手架就是别人用构建工具帮你搭好了原始项目，你可以在不懂构建工具的情况下进行前端开发。不过这就是初级前端的基本工作，给我一个环境，让我安心的写业务代码。学习自：[一小时的时间，上手 Webpack](https://zhuanlan.zhihu.com/p/114286243)
 
 
 

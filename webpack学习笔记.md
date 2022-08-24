@@ -3852,7 +3852,11 @@ function (name)
 
 #### Compiler Hooks
 
-<font color=red>The `Compiler` module is the main engine</font> that <font color=red>**creates a compilation instance**</font> with all the <font color=red>options passed through the `CLI` or `Node API`</font> . <font color=fuchsia>**It extends the `Tapable` class in order to register and call plugins**</font>. Most user-facing plugins are first（首先）registered on the `Compiler` .
+> ⚠️ 阅读到 [[#Plugin API#Next Steps]] 发现 [[#Plugin API]] 一章是 当前章节的前置内容
+
+> 👀 注：在阅读这里前，建议先看下 [[#Plugin API]] ，其中有大量前置的知识，包括 tapable、hook's type 等，阅读完后再读这里，会容易理解很多
+
+<font color=red>The **`Compiler` module** is the main engine</font> that <font color=fuchsia>**creates a compilation instance**</font> with all the <font color=red>options passed through the `CLI` or `Node API`</font> . <font color=fuchsia>**It extends the `Tapable` class in order to register and call plugins**</font>. Most user-facing plugins are first（首先）registered on the `Compiler` .
 
 When developing a plugin for webpack, you might want to know <font color=red>where each hook is called</font>. To learn this , <font color=red>**search for `hooks.<hook name>.call` across the webpack source**</font>
 
@@ -4144,7 +4148,11 @@ Allows to log into `stats` when enabled, see [`stats.logging` , `stats.loggingDe
 
 #### Compilation Hooks
 
+> 👀 注：在阅读这里前，建议先看下 [[#Plugin API]] ，其中有大量前置的知识，包括 tapable、hook's type 等，阅读完后再读这里，会容易理解很多
+
 <font color=red>The **`Compilation` module** is **used by the `Compiler`** to create new compilations (or builds)</font>. <font color=fuchsia>A `compilation` instance has access to all modules and their dependencies</font> ( <font color=red>most of which are circular references</font> ). It is the literal compilation of all the modules in the dependency graph of an application. <font color=fuchsia size=4>During the compilation phase, modules are **loaded, sealed, optimized, chunked, hashed** and **restored**</font>.
+
+> 👀 **注**：上面第一句话的翻译：`Compilation` 模块会被 `Compiler` 用来创建新的 <font color=fuchsia>compilation 对象</font>（或新的 <font color=fuchsia>build 对象</font>）。“对象” 一词 是光看英文没有发现的... 值得注意 ⚠️
 
 The <font color=fuchsia>**`Compilation` class also extends `Tapable`**</font> and <font color=dodgerBlue>**provides the following lifecycle hooks**</font>. They can be tapped the same way as compiler hooks:
 
@@ -4766,6 +4774,8 @@ Called to <font color=red>determine **if an asset needs to be processed further 
 
 #### ContextModuleFactory Hooks
 
+> 👀 注：在阅读这里前，建议先看下 [[#Plugin API]] ，其中有大量前置的知识，包括 tapable、hook's type 等，阅读完后再读这里，会容易理解很多
+
 <font color=red>The `ContextModuleFactory` module is **used by the `Compiler`**</font> to <font color=fuchsia>**generate dependencies from webpack specific `require.context`**</font> ( [[#Module Methods#require.context]] ) API. <font color=fuchsia>It resolves the requested directory, **generates requests for each file** and **filters against passed regExp**</font>. Matching（👀 被 RE 过滤后匹配的） dependencies then passes through NormalModuleFactory ( [[#NormalModuleFactory Hooks]] ).
 
 The <font color=red>`ContextModuleFactory` class extends `Tapable`</font> and <font color=lightSeaGreen>provides the following lifecycle hooks</font>. They can be tapped the same way as compiler hooks:
@@ -4813,6 +4823,8 @@ Called after the requested directory resolved.
 
 
 #### JavascriptParser Hooks
+
+> 👀 注：在阅读这里前，建议先看下 [[#Plugin API]] ，其中有大量前置的知识，包括 tapable、hook's type 等，阅读完后再读这里，会容易理解很多
 
 > 👀 注：读完本章节写下小结（这章也是读的这几章里面比较轻松易懂的一章）。本章主要介绍了 JS 解析器的 生命周期 中的可能遇到的 Expression 和 Statement 种类（根据 ECMAScript Spec ），还有一些其他的情况
 
@@ -5327,59 +5339,65 @@ Called when <font color=red>parsing a `ConditionalExpression`</font> . <font col
 
 #### NormalModuleFactory Hooks
 
-The <font color=red>`NormalModuleFactory` module is used by the `Compiler` to generate modules</font>. Starting with entry points, it resolves each request, parses the content to find further requests, and keeps crawling through files by resolving all and parsing any new files. At last stage, each dependency becomes a Module instance.
+> 👀 注：在阅读这里前，建议先看下 [[#Plugin API]] ，其中有大量前置的知识，包括 tapable、hook's type 等，阅读完后再读这里，会容易理解很多
 
-The `NormalModuleFactory` class extends `Tapable` and provides the following lifecycle hooks. They can be tapped the same way as compiler hooks:
+The <font color=red>`NormalModuleFactory` module is used by the `Compiler` to</font> <font color=fuchsia>**generate modules**</font> . <font color=fuchsia>Starting with entry points</font>, it <font color=fuchsia>resolves each request</font> , <font color=fuchsia>parses the content to find further requests</font>, and <font color=fuchsia>keeps crawling through files by resolving all and parsing any new files</font>（有点类似于 收集依赖图）. <font color=red>At last stage, **each dependency becomes a Module instance**</font>.
+
+The <font color=red>`NormalModuleFactory` class extends `Tapable`</font> and <font color=dodgerBlue>provides the following lifecycle hooks</font>. They can be tapped the same way as compiler hooks:
 
 ```js
 NormalModuleFactory.hooks.someHook.tap(/* ... */);
 ```
 
-NormaleModuleFactory creates `Parser` and `Generator` instances which can be accessed by HookMaps. Identifier must be passed to tap into these:
+<font color=fuchsia>**NormaleModuleFactory creates `Parser` and `Generator` instances** which can be accessed by HookMaps</font>. <font color=fuchsia>Identifier must be passed to tap into these</font> :
+
+> 🌏 NormalModuleFactory 创建了可由 HookMaps 访问的 Parser 和 Generator 实例。同时必须传入 identifier 才能使用以下代码
 
 ```js
 NormalModuleFactory.hooks.someHook.for('identifier').tap(/* ... */);
 ```
 
-As with the `compiler` , `tapAsync` and `tapPromise` may also be available depending on the type of hook.
+As with the `compiler` , <font color=red>`tapAsync` and `tapPromise` may also be available depending on the type of hook</font>.
 
 ##### beforeResolve
 
 `AsyncSeriesBailHook`
 
-Called when a new dependency request is encountered. A dependency can be ignored by returning `false`. Otherwise, it should return `undefined` to proceed.
+Called <font color=fuchsia>when a new dependency request is encountered</font>. <font color=red>A dependency can **be ignored** by **returning `false`**</font>. <font color=dodgerBlue>Otherwise</font>, it should <font color=red>return `undefined` to proceed</font>（继续）.
 
-- Callback Parameters: `resolveData`
+- Callback Parameters : `resolveData`
 
 ##### factorize
 
+> 🌏 factorize: 分解
+
 `AsyncSeriesBailHook`
 
-Called before initiating resolve. It should return `undefined` to proceed.
+Called <font color=red>before initiating **resolve**</font>. It <font color=red>should return `undefined` to proceed</font>.
 
-- Callback Parameters: `resolveData`
+- Callback Parameters : `resolveData`
 
 ##### resolve
 
 `AsyncSeriesBailHook`
 
-Called before the request is resolved. A dependency can be ignored by returning `false`. Returning a Module instance would finalize the process. Otherwise, it should return `undefined` to proceed.
+Called <font color=red>**before** the request is **resolved**</font>. <font color=fuchsia>A dependency can be ignored by returning `false`</font>（👀 这表明：是有返回值的，false 或 undefined；undefined 见后面一句话） . <font color=fuchsia>Returning a Module instance would finalize the process</font>. Otherwise, it should return `undefined` to proceed.
 
-- Callback Parameters: `resolveData`
+- Callback Parameters : `resolveData`
 
 ##### resolveForScheme
 
 `AsyncSeriesBailHook`
 
-Called before a request with scheme (URI) is resolved.
+Called <font color=fuchsia>**before** a request with scheme ( URI ) is **resolved**</font>.
 
-- Callback Parameters: `resolveData`
+- Callback Parameters : `resolveData`
 
 ##### afterResolve
 
 `AsyncSeriesBailHook`
 
-Called after the request is resolved.
+Called <font color=red>**after** the request is resolved</font>.
 
 - Callback Parameters: `resolveData`
 
@@ -5387,7 +5405,7 @@ Called after the request is resolved.
 
 `AsyncSeriesBailHook`
 
-Called before a `NormalModule` instance is created.
+Called <font color=fuchsia>**before** a **`NormalModule` instance is created**</font>.
 
 - Callback Parameters: `createData` `resolveData`
 
@@ -5395,7 +5413,7 @@ Called before a `NormalModule` instance is created.
 
 `SyncWaterfallHook`
 
-Called after a `NormalModule` instance is created.
+Called <font color=fuchsia>after a `NormalModule` instance is created</font>.
 
 - Callback Parameters: `module` `createData` `resolveData`
 
@@ -5403,21 +5421,21 @@ Called after a `NormalModule` instance is created.
 
 `HookMap<SyncBailHook>`
 
-Called before a `Parser` instance is created. `parserOptions` is options in [module.parser](https://webpack.js.org/configuration/module/#moduleparser) for the corresponding identifier or an empty object.
+Called <font color=fuchsia>before a `Parser` instance is created</font>. <font color=red>`parserOptions` is options in [module.parser](https://webpack.js.org/configuration/module/#moduleparser) for the corresponding identifier</font>（🌏 对应的标识符。👀 另外，这里的 “identifier” 应该就是指下面的 “Possible default identifiers”） <font color=red>or an empty object</font> .
 
-- Hook Parameters: `identifier`
-- Callback Parameters: `parserOptions`
+- Hook Parameters : `identifier`
+- Callback Parameters : <font color=red>`parserOptions`</font>
 
 ##### parser
 
 `HookMap<SyncHook>`
 
-Fired after a `Parser` instance is created.
+Fired <font color=fuchsia>after a `Parser` instance is created</font>.
 
-- Hook Parameters: `identifier`
-- Callback Parameters: `parser` `parserOptions`
+- Hook Parameters : `identifier`
+- Callback Parameters : `parser` <font color=red>`parserOptions`</font>
 
-Possible default identifiers:
+<font color=dodgerBlue>**Possible default identifiers:**</font> 👀 这里 identifiers 应该是 `createParser` 和 `parser` 两个钩子的
 
 1. `javascript/auto`
 2. `javascript/dynamic`
@@ -5431,21 +5449,21 @@ Possible default identifiers:
 
 `HookMap<SyncBailHook>`
 
-Called before a `Generator` instance is created. `generatorOptions` is options in [module.parser](https://webpack.js.org/configuration/module/#modulegenerator) for the corresponding identifier or an empty object.
+Called <font color=fuchsia>before a `Generator` instance is created</font>. <font color=red>`generatorOptions` is options in [module.parser](https://webpack.js.org/configuration/module/#modulegenerator) for the **corresponding identifier** or **an empty object**</font>.
 
 - Hook Parameters: `identifier`
-- Callback Parameters: `generatorOptions`
+- Callback Parameters : <font color=red>`generatorOptions`</font>
 
 ##### generator
 
 `HookMap<SyncHook>`
 
-Called after a `Generator` instance is created.
+<font color=fuchsia>Called after a `Generator` instance is created</font>.
 
 - Hook Parameters: `identifier`
-- Callback Parameters: `generator` `generatorOptions`
+- Callback Parameters: `generator` <font color=red>`generatorOptions`</font>
 
-Possible default identifiers:
+<font color=dodgerBlue>**Possible default identifiers:**</font> 👀 这里 identifiers 应该是 `createGenerator` 和 `generator` 两个钩子的
 
 1. `json`
 2. `webassembly/sync`
@@ -5461,23 +5479,23 @@ Possible default identifiers:
 
 #### Plugin API
 
-Plugins are a key piece of the webpack ecosystem and provide the community with a powerful way to tap into webpack's compilation process. A plugin is able to [hook](https://webpack.js.org/api/compiler-hooks/#hooks) into key events that are fired throughout each compilation. Every step of the way, the plugin will have full access to the `compiler` and, when applicable, the current `compilation` .
+<font color=fuchsia>Plugins are **a key piece of the webpack ecosystem**</font> and <font color=red>provide the community with a powerful way to tap into webpack's compilation process</font>. <font color=fuchsia>A plugin is able to [hook](https://webpack.js.org/api/compiler-hooks/#hooks) **into key events** that are **fired throughout each compilation**</font>. <font color=fuchsia>**Every step** of the way, the plugin will **have full access to the `compiler`** and, when applicable, the current `compilation` </font>（👀 compilation 对象）.
 
 > 💡 **Tip** : For a high-level introduction to writing plugins, start with [writing a plugin](https://webpack.js.org/contribute/writing-a-plugin) .
 
-Let's start by going over `tapable` utility, which provides the backbone of webpack's plugin interface.
+<font color=dodgerBlue>Let's start by going over **`tapable` utility**</font>（👀 `tapable` 也是上面的各种模块继承的类）, which <font color=fuchsia>provides the **backbone of webpack's plugin interface**</font>（👀 各个模块都是继承自它，这样说也是很正常了）.
 
 ##### Tapable
 
-This small library is a core utility in webpack but can also be used elsewhere to provide a similar plugin interface. Many objects in webpack extend the `Tapable` class. The class exposes `tap` , `tapAsync` , and `tapPromise` methods which plugins can use to inject custom build steps that will be fired throughout a compilation.
+<font color=red>This small library is a **core utility in webpack**</font> but can <font color=dodgerblue>also be used elsewhere to provide a similar plugin interface</font>. <font color=lightSeaGreen>Many objects in webpack extend the `Tapable` class</font>. <font color=red>The class **exposes `tap` , `tapAsync` , and `tapPromise` methods** which plugins can use to inject custom build steps</font> that will <font color=red>be fired throughout a compilation</font>.
 
-Please see the [documentation](https://github.com/webpack/tapable) to learn more. An understanding of the three `tap` methods, as well as the hooks that provide them, is crucial. The objects that extend `Tapable` (e.g. the compiler), the hooks they provide, and each hook's type (e.g. the `SyncHook`) will be noted.
+Please see the [documentation](https://github.com/webpack/tapable) to learn more. An understanding of the three `tap` methods, as well as the hooks that provide them, is crucial. The objects that extend `Tapable` ( e.g. the compiler ) , the <font color=red>hooks they provide</font> , and <font color=fuchsia>each **hook's type**</font> (e.g. the `SyncHook` ) <font color=red>will be noted</font>（关注）.
 
 ##### Plugin Types
 
-Depending on the hooks used and `tap` methods applied, plugins can function in a different number of ways. The way this works is closely related to the [hooks](https://github.com/webpack/tapable#tapable) provided by `Tapable`. The [compiler hooks](https://webpack.js.org/api/compiler-hooks/#hooks) each note the underlying `Tapable` hook indicating which `tap` methods are available.
+<font color=red>Depending on the hooks used and `tap` methods applied</font>, <font color=fuchsia>plugins can function</font>（运行）<font color=fuchsia>in a different number of ways</font>. The way this works is closely related to the `hooks` provided by `Tapable` . The `compiler hooks` ( [[#Compiler Hooks#Hooks]] ) each note the underlying（内在的）`Tapable` hook indicating which `tap` methods are available.
 
-So depending on which event you `tap` into, the plugin may run differently. For example, when hooking into the `compile` stage, only the synchronous `tap` method can be used:
+<font color=dodgerBlue>So depending on which event you `tap` into, the **plugin may run differently**</font>. For example, <font color=red>when hooking into the `compile` stage, only the synchronous `tap` method can be used</font>:
 
 ```js
 compiler.hooks.compile.tap('MyPlugin', (params) => {
@@ -5485,7 +5503,7 @@ compiler.hooks.compile.tap('MyPlugin', (params) => {
 });
 ```
 
-However, for `run` which utilizes the `AsyncHook` , we can utilize `tapAsync` or `tapPromise` (as well as `tap` ):
+However, <font color=red>for `run` which utilizes the `AsyncHook`</font> , we can <font color=red>utilize `tapAsync` or `tapPromise`</font> ( as well as `tap` ):
 
 ```js
 compiler.hooks.run.tapAsync(
@@ -5504,18 +5522,18 @@ compiler.hooks.run.tapPromise('MyPlugin', (source, target, routesList) => {
 
 compiler.hooks.run.tapPromise(
   'MyPlugin',
-  async (source, target, routesList) => {
+  async (source, target, routesList) => { // 👀 是用了 async await
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log('Asynchronously tapping the run hook with a delay.');
   }
 );
 ```
 
-The moral of the story is that there are a variety of ways to `hook` into the `compiler`, each one allowing your plugin to run as it sees fit.
+<font color=dodgerBlue>The moral of the story</font>（🌏 这些需求的含义在于） is that there are a variety of ways to `hook` into the `compiler` , each one allowing your plugin to run as it sees fit.
 
 ##### Custom Hooks
 
-In order to offer a custom hook to the compilation for other plugins to `tap` into, you need to do the following:
+<font color=red>In order to offer a custom hook to the compilation **for other plugins** to `tap` into</font>（为了便于其他插件的编译过程中可以 `tap` 到，需要创建一个新的 hook） , <font color=dodgerBlue>you need to do the following</font>:
 
 1. Create a module-scope `WeakMap` for compilation hooks:
 
@@ -5523,11 +5541,11 @@ In order to offer a custom hook to the compilation for other plugins to `tap` in
    const compilationHooks = new WeakMap<Compilation, MyHooks>();
    
    interface MyHooks {
-     custom: SyncHook<[number, string]>;
+     custom: SyncHook<[number, string]>; // 👀 TS 元组类型
    }
    ```
 
-2. Create a static method on your plugin:
+2. <font color=red>Create a static method on your plugin:</font>
 
    ```ts
    static getCompilationHooks(compilation: Compilation) : MyHooks {
@@ -5541,7 +5559,7 @@ In order to offer a custom hook to the compilation for other plugins to `tap` in
    }
    ```
 
-3. Call hooks like below in your plugin:
+3. <font color=red>Call hooks like below in your plugin:</font>
 
    ```ts
    const hooks = MyPlugin.getCompilationHooks(compilation);
@@ -5549,14 +5567,14 @@ In order to offer a custom hook to the compilation for other plugins to `tap` in
    hooks.custom.call(1, 'hello');
    ```
 
-4. Other plugins can access your custom hooks too:
+4. <font color=fuchsia>Other plugins can access your custom hooks too:</font>
 
    ```ts
    import MyPlugin from 'my-plugin';
    
-   const hooks = MyPlugin.getCompilationHooks(compilation);
+   const hooks = MyPlugin.getCompilationHooks(compilation); // 👀 获取 hooks
    
-   hooks.custom.tap('OtherPlugin', (n, s) => {
+   hooks.custom.tap('OtherPlugin', (n, s) => { // 👀 使用 hooks
      // magic
    });
    ```
@@ -5565,17 +5583,17 @@ Again, see the [documentation](https://github.com/webpack/tapable) for `tapable`
 
 ##### Reporting Progress
 
-Plugins can report progress via [`ProgressPlugin`](https://webpack.js.org/plugins/progress-plugin/), which prints progress messages to stderr by default. In order to enable progress reporting, pass a `--progress` argument when running the [webpack CLI](https://webpack.js.org/api/cli/).
+<font color=dodgerBlue>Plugins can report progress via [`ProgressPlugin`](https://webpack.js.org/plugins/progress-plugin/)</font> , which <font color=red>prints progress messages to stderr by default</font>. In order to enable progress reporting , pass a `--progress` argument when running the [webpack CLI](https://webpack.js.org/api/cli/).
 
-It is possible to customize the printed output by passing different arguments to the `reportProgress` function of [`ProgressPlugin`](https://webpack.js.org/plugins/progress-plugin/).
+It is possible to <font color=red>customize the printed output by passing different arguments< to the `reportProgress` function of [`ProgressPlugin`](https://webpack.js.org/plugins/progress-plugin/)</font> .
 
-To report progress, a plugin must `tap` into a hook using the `context: true` option:
+<font color=dodgerblue>**To report progress**</font>, <font color=red>a plugin must `tap` into a hook using the `context: true` option:</font>
 
 ```js
 compiler.hooks.emit.tapAsync(
   {
     name: 'MyPlugin',
-    context: true,
+    context: true, // 👀
   },
   (context, compiler, callback) => {
     const reportProgress = context && context.reportProgress;
@@ -5588,28 +5606,24 @@ compiler.hooks.emit.tapAsync(
 );
 ```
 
-The `reportProgress` function may be called with these arguments:
+<font color=dodgerBlue>The `reportProgress` function may be called with these arguments:</font>
 
 ```js
 reportProgress(percentage, ...args);
 ```
 
-- `percentage`: This argument is unused; instead, [`ProgressPlugin`](https://webpack.js.org/plugins/progress-plugin/) will calculate a percentage based on the current hook.
-- `...args`: Any number of strings, which will be passed to the `ProgressPlugin` handler to be reported to the user.
+- `percentage` : This argument is unused; instead, [`ProgressPlugin`](https://webpack.js.org/plugins/progress-plugin/) will calculate a percentage based on the current hook.
+- `...args` : <font color=red>Any number of strings</font> , which will be <font color=red>passed to the `ProgressPlugin` handler to be reported to the user</font>.
 
-Note that only a subset of compiler and compilation hooks support the `reportProgress` function. See [`ProgressPlugin`](https://webpack.js.org/plugins/progress-plugin/#supported-hooks) for a full list.
+Note that <font color=red>only a subset of compiler and compilation hooks support the `reportProgress` function</font>. See [`ProgressPlugin`](https://webpack.js.org/plugins/progress-plugin/#supported-hooks) for a full list.
 
 ##### Logging
 
-Logging API is available since the release of webpack 4.37. When `logging` is enabled in [`stats configuration`](https://webpack.js.org/configuration/stats/#statslogging) and/or when [`infrastructure logging`](https://webpack.js.org/configuration/other-options/#infrastructurelogging) is enabled, plugins may log messages which will be printed out in the respective logger format (stats, infrastructure).
-
-- Plugins should prefer to use `compilation.getLogger('PluginName')` for logging. This kind of logging is stored in the Stats and formatted accordingly. It can be filtered and exported by the user.
-- Plugins may use the `compiler.getInfrastructureLogger('PluginName')` for logging. Using `infrastructure` logging is not stored in the Stats and therefore not formatted. It's usually logged to the console/dashboard/GUI directly. It can be filtered by the user.
-- Plugins may use special fallback logic for detecting logging support `compilation.getLogger ? compilation.getLogger('PluginName') : console` to provide a fallback for cases when an older webpack version is used which does not support `getLogger` method on `compilation` object.
+> 👀 注：这部分的内容和 [[#Loader Interface#Logging]] 部分的内容是一模一样的，略。
 
 ##### Next Steps
 
-See the [compiler hooks](https://webpack.js.org/api/compiler-hooks/) section for a detailed listing of all the available `compiler` hooks and the parameters they make available.
+See the [compiler hooks](https://webpack.js.org/api/compiler-hooks/) section（👀 ？？？API 的文档顺序是按字典序排的序，没有按知识的前置后置顺序排序... 读到这里才发现本章节是 [[#Compiler Hooks]] 的前置章节 ... ） for a detailed listing of all the available `compiler` hooks and the parameters they make available.
 
 摘自：[webpack doc - API - Plugin API](https://webpack.js.org/api/plugins/)
 
@@ -5617,23 +5631,23 @@ See the [compiler hooks](https://webpack.js.org/api/compiler-hooks/) section for
 
 #### Resolvers
 
-Resolvers are created using the `enhanced-resolve` package. The `Resolver` class extends the `tapable` class and uses `tapable` to provide a few hooks. The `enhanced-resolve` package can be used directly to create new resolvers, however any [`compiler` instance](https://webpack.js.org/api/node/#compiler-instance) has a few resolver instances that can be tapped into.
+<font color=red>Resolvers</font>（解析器）<font color=red>are created using the `enhanced-resolve` package</font>. The `Resolver` class <font color=red>extends the `tapable` class</font> and uses `tapable` to provide a few hooks. The <font color=fuchsia>`enhanced-resolve` package can be used directly to **create new resolvers**</font> , however any `compiler` instance ([[#Node Interface#Compiler Instance]]) has a few resolver instances that can be tapped into.
 
-Before reading on, make sure to have a look at the [`enhanced-resolve`](https://github.com/webpack/enhanced-resolve) and [`tapable`](https://webpack.js.org/api/plugins/#tapable) documentation.
+Before reading on , make sure to have a look at the [`enhanced-resolve`](https://github.com/webpack/enhanced-resolve) and `tapable` documentation.
 
 ##### Types
 
-There are three types of built-in resolvers available on the `compiler` class:
+<font color=dodgerBlue>There are three types of **built-in resolvers** available on the `compiler` class:</font>
 
-- `normal`: Resolves a module via an absolute or relative path.
-- `context`: Resolves a module within a given context.
-- `loader`: Resolves a webpack [loader](https://webpack.js.org/loaders).
+- **normal** : Resolves a module <font color=red>via an absolute or relative path</font>.
+- **context** : Resolves a module <font color=red>within a given context</font>.
+- **loader** : <font color=red>Resolves a webpack loader</font>.
 
-Depending on need, any one of these built-in resolvers, that are used by the `compiler`, can be customized via plugins:
+Depending on need, any one of these built-in resolvers, that are used by the `compiler` , can be customized via plugins:
 
 ```js
 compiler.resolverFactory.hooks.resolver
-  .for('[type]')
+  .for('[type]') // 👀 见代码下一行
   .tap('name', (resolver) => {
     // you can tap into resolver.hooks now
     resolver.hooks.result.tap('MyPlugin', (result) => {
@@ -5642,17 +5656,17 @@ compiler.resolverFactory.hooks.resolver
   });
 ```
 
-Where `[type]` is one of the three resolvers mentioned above.
+<font color=red>Where `[type]` is one of the three resolvers mentioned above.</font>
 
-See the [`enhanced-resolve` documentation](https://github.com/webpack/enhanced-resolve) for a full list of hooks and their description.
+See the [`enhanced-resolve`](https://github.com/webpack/enhanced-resolve) documentation for a full list of hooks and their description.
 
 ##### Configuration Options
 
-The resolvers mentioned above can also be customized via a configuration file with the [`resolve`](https://webpack.js.org/configuration/resolve/) or [`resolveLoader`](https://webpack.js.org/configuration/resolve/#resolveloader) options. These options allow users to change the resolving behavior through a variety of options including through resolve `plugins`.
+The <font color=red>resolvers</font> mentioned above <font color=red>can also be customized via a configuration file with the [`resolve`](https://webpack.js.org/configuration/resolve/) or [`resolveLoader`](https://webpack.js.org/configuration/resolve/#resolveloader) options</font>. <font color=fuchsia>These options **allow users to change the resolving behavior** through a variety of options including through resolve `plugins`</font> .
 
-The resolver plugins, e.g. [`DirectoryNamedPlugin`](https://github.com/shaketbaby/directory-named-webpack-plugin), can be included directly in `resolve.plugins` rather than using directly in [`plugins` configuration option](https://webpack.js.org/configuration/plugins/#plugins).
+The <font color=red>resolver plugins</font> , e.g. [`DirectoryNamedPlugin`](https://github.com/shaketbaby/directory-named-webpack-plugin) , <font color=red>can be included directly in `resolve.plugins`</font> rather than using directly in [`plugins` configuration option](https://webpack.js.org/configuration/plugins/#plugins).
 
-> 💡 **Tip** : Note that the `resolve` configuration affects the `normal` and `context` resolvers while `resolveLoader` is used to modify the `loader` resolver.
+> 💡 **Tip** : Note that the <font color=red>**`resolve` configuration** affects the `normal` and `context` resolvers</font> while <font color=fuchsia>**`resolveLoader` is used to modify the `loader` resolver**</font>.
 
 摘自：[webpack doc - API - Resolvers](https://webpack.js.org/api/resolvers/)
 
@@ -10338,9 +10352,9 @@ devServer: {
 }
 ```
 
-devServer使用了 [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)，可详细了解
+devServer 使用了 [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)，可详细了解。另外，Vite 中使用的是 [http-proxy](https://github.com/http-party/node-http-proxy) ，设置在 https://github.com/vitejs/vite/blob/main/package.json 中
 
-关于使用devServer解决跨域的问题，还可以参考：[webpack开发配置API代理解决跨域问题-devServer](https://segmentfault.com/a/1190000016199721)
+关于使用 devServer 解决跨域的问题，还可以参考：[webpack开发配置API代理解决跨域问题-devServer](https://segmentfault.com/a/1190000016199721)
 
 
 
@@ -10536,7 +10550,7 @@ The `thread-loader` can be used to offload expensive loaders to a worker pool（
 
 ###### Persistent cache
 
-Use [`cache`](https://webpack.js.org/configuration/cache) option in webpack configuration. Clear cache directory on `"postinstall"` in `package.json`. **注：**没搞懂
+Use [`cache`](https://webpack.js.org/configuration/cache) option in webpack configuration. Clear cache directory on `"postinstall"` in `package.json `. 👀 注：没搞懂
 
 ###### Progress plugin
 
@@ -10560,7 +10574,7 @@ In some setups, watching falls back to polling mode. With many watched files , t
 
 ###### stats.toJson speed
 
-<mark>Webpack 4 outputs a large amount of data with its `stats.toJson()` by default</mark>（ 👀 注：stats 是 statistics 的简写 ）. Avoid retrieving portions of the `stats` object unless necessary in the incremental step. `webpack-dev-server` after v3.1.3 contained a substantial performance fix to minimize the amount of data retrieved from the `stats` object per incremental build step.
+<font color=LightSeaGreen>Webpack 4 outputs a large amount of data with its `stats.toJson()` by default</font>（ 👀 注：stats 是 statistics 的简写 ）. Avoid retrieving portions of the `stats` object unless necessary in the incremental step. `webpack-dev-server` after v3.1.3 contained a substantial performance fix to minimize the amount of data retrieved from the `stats` object per incremental build step.
 
 ###### Devtool
 
