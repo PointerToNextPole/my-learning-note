@@ -3324,7 +3324,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                       
+  >                                                                                                                                                                         
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3343,7 +3343,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                       
+  >                                                                                                                                                                         
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -4746,7 +4746,7 @@ const elementClasses = elementNodeReference.classList;
 elementClasses 是一个 DOMTokenList 表示  elementNodeReference 的类属性 。如果类属性未设置或为空，那么 elementClasses.length 返回 0。element.classList 本身是只读的，但是你可以使用 add(className) 和 remove(className) 方法修改它。
 
 - **add(className) /  remove(className)：**甚至其中的add() / remove()可以放多组类值，甚至可以通过使用展开语法添加或移除多个类值。示例如下：
-  
+
   ```js
   // 添加或移除多个类值
   div.classList.add("foo", "bar", "baz");
@@ -4761,7 +4761,7 @@ elementClasses 是一个 DOMTokenList 表示  elementNodeReference 的类属性 
 - **item(index)：**返回元素中索引值对应的类名。索引值从 0 开始。如果索引值在区间范围外则返回 null
 
 - **toggle(className)：**如果该类值已存在，则移除它（并返回 true），否则添加它（并返回 false ）。另外，该函数还可添加触发条件：`toggle(className, conditionExpression)` 若条件满足则添加/ 移除该类值。
-  
+
   ```js
   // 如果 visible 类值已存在，则移除它，否则添加它
   div.classList.toggle("visible");
@@ -4770,37 +4770,39 @@ elementClasses 是一个 DOMTokenList 表示  elementNodeReference 的类属性 
   div.classList.toggle("visible", i < 10 );
   ```
 
-  <font size=4>**补充：**</font>
-  
-  **DOMTokenList.toggle()**
-  
-  DOMTokenList 接口的 toggle() 方法从列表中删除一个给定的标记 并返回 false 。 如果标记 不存在，则添加并且函数返回 true。
-  
-  - **语法**
-  
-    ```js
-    tokenList.toggle(token, force);
-    ```
-  
-  - 参数列表
-  
-    - **token：**标记列表中你想探查并切换的 DOMString .
-    - **force：**可选，一个 Boolean 值, 设置后会将方法变成单向操作. 如设置为false, 则会删除标记列表中匹配的给定标记，且不会再度添加. 如设置为 true, 则将在标记列表中添加给定标记，且不会再度删除。
-  
-  - **返回值：**该方法返回一个Boolean 值 — 如给定标记不存在于列表中返回false , 标记存在则返回true 。
-  
-  摘自：[MDN - DOMTokenList.toggle()](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMTokenList/toggle)
-  
+  > ##### DOMTokenList.toggle()
+  >
+  > DOMTokenList 接口的 toggle()  方法<font color=red>从列表中删除一个给定的标记 并返回 false 。如果标记 不存在，则添加并且函数返回 true</font>
+  >
+  > ###### 语法
+  >
+  > ```js
+  > tokenList.toggle(token, force);
+  > ```
+  >
+  > ###### 参数列表
+  >
+  > - **token：**标记列表中你想探查并切换的 DOMString
+  > - **force：**可选，一个 Boolean 值, 设置后会将方法变成单向操作. 如设置为false, 则会删除标记列表中匹配的给定标记，且不会再度添加. 如设置为 true, 则将在标记列表中添加给定标记，且不会再度删除。
+  >
+  > **返回值：**该方法返回一个Boolean 值 — 如给定标记不存在于列表中返回 false , 标记存在则返回 true
+  >
+  > 摘自：[MDN - DOMTokenList.toggle()](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMTokenList/toggle)
+
 - **contains(className)：**判断是否存在该类值
 
 - **replace(replacedClassName, replacingClassName)：**将replacedClassName替换为replacingClassName。
-  
+
   ```js
   // 将类值 "foo" 替换成 "bar"
   div.classList.replace("foo", "bar");
   ```
 
 摘自：[MDN - Element.classList](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/classList)
+
+
+
+
 
 #### JavaScript HTML DOM - 改变 HTML
 
@@ -11590,51 +11592,85 @@ history.replaceState(stateObj, title[, url]);
 
   摘自：[MDN - Window: error event](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/error_event)
 
-  **补充：GlobalEventHandlers.onerror**
+  ##### 补充：MDN - GlobalEventHandlers.onerror
 
   混合事件 GlobalEventHandlers 的 onerror 属性是用于处理 error 的事件
 
-  Error事件的事件处理程序，在各种目标对象的不同类型错误被触发：
+  Error 事件的事件处理程序，在各种目标对象的不同类型错误被触发：
 
   - <font color=FF0000>当JavaScript运行时错误（包括语法错误）发生时</font>，window会触发一个ErrorEvent接口的error事件，并执行window.onerror()。
-  - <font color=FF0000>当一项资源（如\<img>或\<script>）加载失败，加载资源的元素会触发一个Event接口的error事件</font>，并执行该元素上的onerror()处理函数。这些error事件不会向上冒泡到window，不过（至少在Firefox中）能被单一的window.addEventListener捕获。
+  - <font color=FF0000>当一项资源（如 `<img>` 或 `<script>` ）加载失败，加载资源的元素会触发一个Event接口的error事件</font>，并执行该元素上的`onerror()` 处理函数。这些error事件不会向上冒泡到window，不过（至少在Firefox中）能被单一的window.addEventListener捕获。
 
-  加载一个全局的error事件处理函数可用于自动收集错误报告。
+  加载一个全局的 error 事件处理函数可用于自动收集错误报告。
 
   **语法**
 
-  <font color=FF0000>由于历史原因，window.onerror和element.onerror接受不同的参数</font>。
+  <font color=FF0000>由于历史原因，`window.onerror` 和 `element.onerror` 接受不同的参数</font>。
 
-  - **window.onerror**
+  ###### window.onerror
 
-    ```js
-    window.onerror = function(message, source, lineno, colno, error) { ... }
-    ```
-    函数参数：
+  ```js
+  window.onerror = function(message, source, lineno, colno, error) { ... }
+  ```
+  函数参数：
 
-    - message：错误信息（字符串）。可用于HTML onerror=""处理程序中的event。
-    - source：发生错误的脚本URL（字符串）
-    - lineno：发生错误的行号（数字）
-    - colno：发生错误的列号（数字）
-    - error：Error对象（对象）
+  - message：错误信息（字符串）。可用于HTML onerror=""处理程序中的event。
+  - source：发生错误的脚本URL（字符串）
+  - lineno：发生错误的行号（数字）
+  - colno：发生错误的列号（数字）
+  - error：Error对象（对象）
 
-    若该函数返回true，则阻止执行默认事件处理函数。
+  若该函数返回 true，则阻止执行默认事件处理函数。
 
-  - **window.addEventListener('error')**
+  ###### window.addEventListener('error')
 
-    ```js
-    window.addEventListener('error', function(event) { ... })
-    ```
+  ```js
+  window.addEventListener('error', function(event) { ... })
+  ```
 
-    ErrorEvent 类型的event包含有关事件和错误的所有信息。
+  ErrorEvent 类型的 event 包含有关事件和错误的所有信息。
 
-  - **element.onerror**
+  ###### element.onerror
 
-    ```js
-    element.onerror = function(event) { ... }
-    ```
+  ```js
+  element.onerror = function(event) { ... }
+  ```
 
-    element.onerror使用单一Event参数的函数作为其处理函数。
+  element.onerror 使用单一 Event 参数的函数作为其处理函数。
+
+  摘自：[WayBack Machine - MDN - GlobalEventHandlers.onerror](https://web.archive.org/web/20220405193010/https://developer.mozilla.org/zh-CN/docs/Web/API/GlobalEventHandlers/onerror) MDN 原文的链接已经找不到了...
+
+  ##### 补充：实践中 “image 加载失败事件” 的发现
+
+  ```html
+  <img src="unavailableImgUrl" alt="" onerror="console.log('fetch img failed')" />
+  ```
+
+  如上 html 中，如果 `unavailableImgUrl` 是一个错误的 图片链接，则 图片将无法正常展示，而这会导致 error 事件的触发；以及 `onerror` 事件处理函数的调用。所以 “fetch img failed” 将会被打印出。
+
+  如果图片加载失败时，需要添加上默认图片；可以利用 `onerror` 事件处理函数，给 src 赋值上想要的默认图片地址 
+
+  ```html
+  <img src="unavailableImgUrl" alt="" onerror="this.src='defaultImgUrl'" />
+  ```
+
+  同时根据 [49 个在工作中常用且容易遗忘的 CSS 样式清单整理 - 爱前端不爱恋爱的文章 - 知乎](https://zhuanlan.zhihu.com/p/405394824) 中第13条的说法：
+
+  > 使用onerror 异常处理时，<font color=red>若 `onerror` 的图片也出现问题，则图片显示会陷入死循环</font>，所以<font color=fuchsia>要在赋值异常图片之后，将地址置空</font>
+  >
+  > ```html
+  > <img onerror="this.src='url; this.onerror=null'" />
+  > ```
+  >
+  > 👀 注：这里的 “死循环” 是指 “defaultImgUrl 失败，却依然请求 defaultImgUrl；无限循环下去（ 浏览器 dev Tools 也会报错），无法退出”
+
+  所以上面代码可以改成：
+
+  ```html
+  <img src="unavailableImgUrl" alt="" onerror="this.src='defaultImgUrl'; this.onerror=null" />
+  ```
+
+  无论 defaultImgUrl 是否成功，只会请求（被赋值）一次；然后 `onerror` 就被清除了；即使 defaultImgUrl 图片加载成功，`onerror` 的清除，也不会影响 defaultImgUrl 的图片。
 
 - <font size=4>**resize：**</font>文档视图调整大小时会触发 **resize** 事件。
 
@@ -11715,7 +11751,7 @@ history.replaceState(stateObj, title[, url]);
   可以冒泡，可以取消。事件目标对象：Document、Element。事件接口：DragEvent
 
   另外，该事件有一些属性；由于有不少，这里略。
-  
+
   摘自：[MDN - dragstart](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/dragstart_event)
 
 - <font size=4>**dragsend：**</font><font color=FF0000>拖放事件在拖放操作结束时触发</font>（通过<font color=FF0000>释放鼠标按钮或单击escape键</font>）
@@ -11842,7 +11878,7 @@ history.replaceState(stateObj, title[, url]);
   > - load：浏览器不仅加载完成了 HTML，还加载完成了所有外部资源：图片，样式等。
   >
   > 摘自：[现代 JS 教程 - 页面生命周期：DOMContentLoaded，load，beforeunload，unload](https://zh.javascript.info/onload-ondomcontentloaded)
-  
+
 - <font size=4>**readystatechange：**</font>当文档的 readyState 属性发生改变时，会触发 readystatechange 事件。
 
   不可以冒泡，不可以取消

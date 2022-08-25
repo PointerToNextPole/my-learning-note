@@ -10,7 +10,7 @@
 
 ## 《TypeScript入门教程》学习笔记
 
-链接🔗：[《TypeScript入门教程》](https://ts.xcatliu.com)
+链接 🔗：[《TypeScript入门教程》](https://ts.xcatliu.com)
 
 #### TS 介绍
 
@@ -726,6 +726,26 @@ function reverse(x: number | string): number | string | void {
 
 复合类型方面，JS 有 class、Array，这些 TypeScript 类型系统也都支持，但是又多加了三种类型：元组 ( Tuple )、接口 ( Interface )、枚举 ( Enum ) 。
 
+##### boolean
+
+> 👀 本来没有记录小册中关于 boolean 的内容，直到看到了神光的另一篇文章：[这几个 TypeScript 类型，90% 的人说不出原因](https://juejin.cn/post/7066745410194243597)
+
+传入的类型参数为 boolean，问 res 是啥
+
+```typescript
+type Test<T> = T extends true ? 1 : 2;
+
+type res = Test<boolean>;
+```
+
+res 也是 1 | 2
+
+<img src="https://s2.loli.net/2022/08/25/XY2bCcQxElep1i7.png" alt="image-20220825234451679" style="zoom:45%;" />
+
+<font color=fuchsia>**boolean 其实也是联合类型**，所以会把 true 和 false 分别传入求值，最后结果合并成联合类型</font>；所以是 1 | 2。
+
+摘自：[这几个 TypeScript 类型，90% 的人说不出原因](https://juejin.cn/post/7066745410194243597)
+
 ##### 元组
 
 元组 ( Tuple ) 就是 <font color=FF0000>元素个数 和 类型 **固定的** **数组类型**</font>：
@@ -1328,6 +1348,86 @@ type GetRefProps<Props> =
 在 ts3.0 里面如果没有对应的索引，Obj[Key] 返回的是 {} 而不是 never，所以这样做向下兼容处理。如果有 ref 这个索引的话，就通过 infer 提取 Value 的类型返回，否则返回 never。
 
 <img src="https://s2.loli.net/2022/05/03/jV81pD4QqSUIs7n.png" alt="image-20220503023006564" style="zoom:50%;" />
+
+##### 4.7 新特性 infer extends
+
+> 👀 这不是小册中的内容，算是小册的补充
+
+infer 有一个问题，比如这样：
+
+<img src="https://s2.loli.net/2022/08/25/NxdYXznTvOZDgHV.png" alt="image-20220825224259838" style="zoom:40%;" />
+
+从 string 数组中提取的元素，默认会推导为 unknown 类型，这就导致了不能直接把它当 string 用：
+
+<img src="/Users/yan/Library/Application Support/typora-user-images/image-20220825224420465.png" alt="image-20220825224420465" style="zoom:50%;" />
+
+之前的处理方式是这样的（如下），加一层判断，这样 Last 就推导为 string 类型了。
+
+<img src="https://s2.loli.net/2022/08/25/gCq26Pho53usRQY.png" alt="image-20220825224622889" style="zoom:40%;" />
+
+或者也可以和 string 取交叉类型（如下），这样也可以作为 string 来用。
+
+<img src="https://s2.loli.net/2022/08/25/4VCvgh59TAuLoHe.png" alt="image-20220825224815358" style="zoom:40%;" />
+
+但是我们明明知道这里就是 string，却还需要 `& string` 或者 `Last extends string` 来转换一次，这也太麻烦了。
+
+TS 也知道有这个问题，所以在 4.7 就引入了新语法：`infer extends` 。现在我们可以这样写：
+
+<img src="https://s2.loli.net/2022/08/25/JupnOmHyLh7Cjtf.png" alt="image-20220825225058608" style="zoom:40%;" />
+
+<font color=fuchsia>**infer 的时候加上 extends 来约束推导的类型，这样推导出的就不再是 unknown 了，而是约束的类型**。</font>
+
+这个语法是 TS 4.7 引入的，<font color=dodgerBlue>在 4.8 又完善了一下</font>。<font color=dodgerBlue>比如这样一个类型：</font>
+
+```typescript
+type NumInfer<Str> = 
+    Str extends `${infer Num extends number}`
+        ? Num
+        : never;
+```
+
+在 4.7 的时候推导结果是这样：
+
+<img src="https://s2.loli.net/2022/08/25/a1jRs9xtPwkbeWK.png" alt="image-20220825225732763" style="zoom:40%;" />
+
+而 4.8 就是这样了：
+
+<img src="https://s2.loli.net/2022/08/25/hTFOarVp2i1cUdj.png" alt="image-20220825225629741" style="zoom:40%;" />
+
+也就是说 4.7 的时候推导出的就是 extends 约束的类型，但是 <font color=fuchsia>4.8 的时候，如果是基础类型，会推导出字面量类型</font>。
+
+有了这个语法之后，除了能简化类型编程的逻辑之外，也能实现一些之前实现不了的功能。
+
+比如提取枚举的值的类型：
+
+```ts
+enum Code { a = 111,  b = 222, c = "abc" }
+```
+
+<img src="https://s2.loli.net/2022/08/25/ZtvmCD3w2udxrYi.png" alt="image-20220825231925434" style="zoom:40%;" />
+
+但是有的值明明是数字，却被作为了字符串，所以要再处理一下，转换成数字类型，这时候就可以用 `infer extends` 了：
+
+```ts
+type StrToNum<Str> =
+  Str extends `${infer Num extends number}`
+    ? Num
+    : Str
+```
+
+做完 string 到 number 的转换，就拿到了我们想要的结果：
+
+<img src="https://s2.loli.net/2022/08/25/RK8cSWLEsA53H7h.png" alt="image-20220825232508422" style="zoom:40%;" />
+
+这就是 infer extends 的第二个作用。
+
+除了 string 转 number 之外，也可以转 boolean、null 等类型：
+
+<img src="https://s2.loli.net/2022/08/25/Coipc4qymhxz3DW.png" alt="image-20220825232821018" style="zoom:40%;" />
+
+<img src="https://s2.loli.net/2022/08/25/SkomQsPvcNbZ2pe.png" alt="image-20220825232930608" style="zoom:40%;" />
+
+摘自：[快速掌握 TypeScript 新语法：infer extends](https://juejin.cn/post/7133438765317488677)
 
 
 

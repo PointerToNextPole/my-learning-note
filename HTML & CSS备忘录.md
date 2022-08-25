@@ -2125,7 +2125,7 @@ user agent stylesheet 是 UA（一般理解为 浏览器）内置的 基本元�
 
 
 
-### padding margin border的区别
+#### padding margin border 的区别
 
 **示图：注意下面的名词（marign-top...）**
 
@@ -2149,7 +2149,7 @@ W3C 组织建议把所有网页上的对像都放在一个盒 (box) 中，设计
 
 - content：内容
 
-#### **margin**
+##### margin
 
 包括 margin-top、margin-right、margin-bottom、margin-left，**控制<font color=FF0000>块级元素</font>之间的距离**，它们是透明不可见的。根据上、 右、下、左的**<font color=FF0000>顺时针规则</font>**，可以写为 
 
@@ -2185,11 +2185,11 @@ margin: 40px;
 }
 ```
 
-#### **Padding**
+##### Padding
 
 包括 padding-top、padding-right、padding-bottom、padding-left，**控制块级元素内部**，content 与 border 之间的距离。代码和margin类似。
 
-#### 补充
+##### 补充
 
 当你想让两个元素的 content 在垂直方向 (vertically) 分隔时，既可以选择 padding-top/bottom，也可以选择 margin-top/bottom，在此建议你尽量使用 padding-top / bottom 来达到你的目的，这是因为 css 中存在 Collapsing margins(折叠的 margins) 的现象。
 
@@ -2211,27 +2211,29 @@ body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别
 
 摘自：[CSS padding margin border属性详解](https://www.cnblogs.com/linjiqin/p/3556497.html)
 
-**补充：**
+**cheatsheet：**
 
 ![](https://i.loli.net/2020/10/06/rKV25lxOgMSGjmL.png)
 
-#### **补充：**
+
+
+#### 盒子模型相关
 
 - **边距塌陷：**给两个盒子同时设置外边距，他们最终的距离可能不是两者外边距之和。
-  
+
   这种现象会发生在相邻盒子间或父子盒子间，当他们都设置了边距时。
-  
+
   - 如果都是正数，则取最大值。
   - 如果相同，则取其任一。
   - 如果正负都有，取最大正数与最小负数之和。
   - 如果都是负数，则取两者中最小的
-  
+
   另外，<font color=FF0000>设置元素为BFC可以解决边距塌陷的问题。</font>
 
 - **块格式化上下文**（Block Formatting Context，BFC） 是Web页面的可视CSS渲染的一部分，是块盒子的布局过程发生的区域，也是浮动元素与其他元素交互的区域。
-  
+
   下列方式会创建块格式化上下文：
-  
+
   - 根元素（\<html>）
   - <font color=FF0000>浮动元素（元素的 float 不是 none）</font>
   - <font color=FF0000>绝对定位元素（元素的 position 为 absolute 或 fixed）</font>
@@ -2246,28 +2248,25 @@ body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别
   - 网格元素（display 为 grid 或 inline-grid 元素的直接子元素）
   - 多列容器（元素的 column-count 或 column-width 不为 auto，包括 column-count 为 1）
   - column-span 为 all 的元素始终会创建一个新的BFC，即使该元素没有包裹在一个多列容器中（标准变更，Chrome bug）。
-  
+
   摘自：[MDN - 块格式化上下文](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
-  
-  **补充：**
-  
-  **格式化上下文( formatting contexts )**
-  
-  格式化上下文有几种类型，包括：
-  
-  - <font color=FF0000>**块**</font>格式化上下文 block formatting contexts，即BFC
-  - <font color=FF0000>**内联**</font>格式化上下文 inline formatting contexts，即 <font color=FF0000 size=4>**IFC**</font>
-  - <font color=FF0000>**灵活**</font>格式化上下文 flex formatting contexts。
-  
-  <font color=FF0000>页面上的所有内容都是格式化上下文 formatting context 的一部分</font>，<font color=FF0000>或者是一个以特定方式显示的区域</font>。块格式上下文（BFC）将根据块布局规则布局子元素，<font color=FF0000>**灵活格式上下文 flex formatting context 将其子元素布局为灵活项flex items等**</font>。每个格式上下文在其上下文中都有特定的布局规则
-  
-  <font color=FF0000>文档最外层元素使用块布局规则或称为初始块格式上下文</font>。<mark>这意味着 \<html> 元素块中的每个元素都是按照正常流程遵循块和内联布局规则进行布局的</mark>。\<html> 元素不是唯一能够创建块格式上下文的元素。默认为块布局的任何元素也会为其后代元素创建块格式上下文。此外，还有一些CSS属性可以使元素创建一个BFC（这里略，详见其他地方）
-  
-  摘自：[MDN - Introduction to formatting contexts 格式化上下文简介](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts)
 
-**补充：**
 
-#### 行内格式化上下文 <font color=FF0000>IFC</font>（Inline formatting context）
+##### 格式化上下文( formatting contexts )
+
+格式化上下文有几种类型，包括：
+
+- <font color=FF0000>**块**</font>格式化上下文 block formatting contexts，即BFC
+- <font color=FF0000>**内联**</font>格式化上下文 inline formatting contexts，即 <font color=FF0000 size=4>**IFC**</font>
+- <font color=FF0000>**灵活**</font>格式化上下文 flex formatting contexts。
+
+<font color=FF0000>页面上的所有内容都是格式化上下文 formatting context 的一部分</font>，<font color=FF0000>或者是一个以特定方式显示的区域</font>。块格式上下文（BFC）将根据块布局规则布局子元素，<font color=FF0000>**灵活格式上下文 flex formatting context 将其子元素布局为灵活项flex items等**</font>。每个格式上下文在其上下文中都有特定的布局规则
+
+<font color=FF0000>文档最外层元素使用块布局规则或称为初始块格式上下文</font>。<mark>这意味着 \<html> 元素块中的每个元素都是按照正常流程遵循块和内联布局规则进行布局的</mark>。\<html> 元素不是唯一能够创建块格式上下文的元素。默认为块布局的任何元素也会为其后代元素创建块格式上下文。此外，还有一些CSS属性可以使元素创建一个BFC（这里略，详见其他地方）
+
+摘自：[MDN - Introduction to formatting contexts 格式化上下文简介](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts)
+
+##### 行内格式化上下文 IFC（Inline formatting context）
 
 行内格式化上下文是一个网页的渲染结果的一部分。其中，<font color=FF0000>**各行内框 ( inline boxes ) 一个接一个地排列**</font>，其排列顺序根据书写模式（writing-mode）的设置来决定：
 
@@ -2316,45 +2315,49 @@ box model 不完全适用于参与内联格式上下文。在水平书写模式�
 
 摘自：[CSS 布局的本质是什么](https://zhuanlan.zhihu.com/p/395050907)
 
+
+
 #### id & class
 
-- **id选择器**
-  
-  - id 选择器可以<mark>为标有特定 id 的 HTML 元素指定特定的样式</mark>。
-  
-  - HTML元素以id属性来设置id选择器，**<font color=FF0000>CSS 中 id 选择器以 "#" 来定义</font>**。
-  
-  - <mark>ID属性不要以数字开头</mark>，数字开头的ID在 Mozilla/Firefox 浏览器中不起作用。
-    
-    示例如下：
-    
-    ```html
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <meta charset="utf-8"> 
-    <title>菜鸟教程(runoob.com)</title> 
-    <style>
-    #para1
-    {
-        text-align:center;
-        color:red;
-    } 
-    </style>
-    </head>
-    
-    <body>
-    <p id="para1">Hello World!</p>
-    <p>这个段落不受该样式的影响。</p>
-    </body>
-    </html>
-    ```
+##### id选择器
 
-- **class 选择器**
+- id 选择器可以<mark>为标有特定 id 的 HTML 元素指定特定的样式</mark>。
+
+- HTML元素以id属性来设置id选择器，**<font color=FF0000>CSS 中 id 选择器以 "#" 来定义</font>**。
+
+- <mark>ID属性不要以数字开头</mark>，数字开头的ID在 Mozilla/Firefox 浏览器中不起作用。
   
-  - class 选择器用于描述一组元素的样式，<font color=FF0000>class 选择器有别于id选择器，**class可以在多个元素中使用**</font>。
+  示例如下：
   
-  - class 选择器在HTML中以class属性表示，在 CSS 中，<font color=FF0000>**类选择器以一个点"."号显示**</font>
+  ```html
+  <!DOCTYPE html>
+  <html>
+  <head>
+  <meta charset="utf-8"> 
+  <title>菜鸟教程(runoob.com)</title> 
+  <style>
+  #para1
+  {
+      text-align:center;
+      color:red;
+  } 
+  </style>
+  </head>
+  
+  <body>
+  <p id="para1">Hello World!</p>
+  <p>这个段落不受该样式的影响。</p>
+  </body>
+  </html>
+  ```
+
+##### class 选择器
+
+- class 选择器用于描述一组元素的样式，<font color=FF0000>class 选择器有别于id选择器，**class可以在多个元素中使用**</font>。
+
+- class 选择器在HTML中以class属性表示，在 CSS 中，<font color=FF0000>**类选择器以一个点"."号显示**</font>
+
+
 
 #### 多重样式（继承）优先级
 
@@ -2370,9 +2373,9 @@ float CSS属性指定一个元素应沿其容器的左侧或右侧放置，允�
 
 - **left：**表明元素必须浮动在其所在的块容器左侧的关键字。
 - **right：**表明元素必须浮动在其所在的块容器右侧的关键字。
-- **none：**<mark>表明元素不进行浮动的关键字</mark>。
-- **inline-start：**<mark style="background: fuchsia">关键字，表明元素必须浮动在其所在块容器的开始一侧，在ltr脚本中是左侧，在rtl脚本中是右侧</mark>。
-- **inline-end：**<mark style="background: fuchsia">关键字，表明元素必须浮动在其所在块容器的结束一侧，在ltr脚本中是右侧，在rtl脚本中是左侧</mark>。
+- **none：**<font color=red>表明元素不进行浮动的关键字</font>。
+- **inline-start：**<font color="fuchsia">关键字，表明元素必须浮动在其所在块容器的开始一侧，在ltr脚本中是左侧，在rtl脚本中是右侧</font>。
+- **inline-end：**<font color=fuchsia>关键字，表明元素必须浮动在其所在块容器的结束一侧，在ltr脚本中是右侧，在rtl脚本中是左侧</font>。
 
 **由于float意味着使用块布局，它在某些情况下修改display 值的计算值：**
 
@@ -2395,11 +2398,13 @@ float CSS属性指定一个元素应沿其容器的左侧或右侧放置，允�
 
 摘自：[MDN - float](https://developer.mozilla.org/zh-CN/docs/Web/CSS/float)
 
-**个人项目体会补充：**
+##### 个人项目体会补充
 
 float 和 `margin-left: auto` & `margin-right: auto`的关系：在flexbox中，float是失效的；这时如果想实现float的效果，该怎么处理？
 
 可以使用 `margin-left: auto` 替代 `float: right` ， `margin-right: auto` 替代 `float: left`（这里使用绝对定位似乎也可以实现）。跟进一步：如果flexbox使用了`flex-wrap: wrap` 且 右侧没有空间了，那只能换行，且放到下一行的右侧。这种情况下，是用绝对定位也不行了（无法放到下一行，只能放到该行末尾，会出现覆盖的情况）；这时使用`margin-right: auto`依然是有效的。原理是：使用auto<font color=FF0000>会将所有剩余空间都占满</font>；类似的可参考《CSS权威指南》
+
+
 
 #### clear
 
@@ -2415,36 +2420,36 @@ float 和 `margin-left: auto` & `margin-right: auto`的关系：在flexbox中，
 }
 ```
 
-- 语法
+##### 语法
 
-  ```css
-  /* Keyword values */
-  clear: none;
-  clear: left;
-  clear: right;
-  clear: both;
-  clear: inline-start;
-  clear: inline-end;
-  
-  /* Global values */
-  clear: inherit;
-  clear: initial;
-  clear: unset;
-  ```
+```css
+/* Keyword values */
+clear: none;
+clear: left;
+clear: right;
+clear: both;
+clear: inline-start;
+clear: inline-end;
 
-- 值
+/* Global values */
+clear: inherit;
+clear: initial;
+clear: unset;
+```
 
-  - **none：**元素*不会*向下移动清除之前的浮动。
+##### 值
 
-  - **left：**元素被向下移动用于清除之前的左浮动。
+- **none：**元素*不会*向下移动清除之前的浮动。
 
-  - **right：**元素被向下移动用于清除之前的右浮动。
+- **left：**元素被向下移动用于清除之前的左浮动。
 
-  - **both：**元素被向下移动用于清除之前的左右浮动。
+- **right：**元素被向下移动用于清除之前的右浮动。
 
-  - **inline-start：**该关键字表示该元素向下移动以清除其包含块的起始侧上的浮动。即在某个区域的左侧浮动或右侧浮动。
+- **both：**元素被向下移动用于清除之前的左右浮动。
 
-  - **inline-end：**该关键字表示该元素向下移动以清除其包含块的末端的浮点，即在某个区域的右侧浮动或左侧浮动。
+- **inline-start：**该关键字表示该元素向下移动以清除其包含块的起始侧上的浮动。即在某个区域的左侧浮动或右侧浮动。
+
+- **inline-end：**该关键字表示该元素向下移动以清除其包含块的末端的浮点，即在某个区域的右侧浮动或左侧浮动。
 
 摘自：[MDN - clear](https://developer.mozilla.org/zh-CN/docs/Web/CSS/clear)
 
@@ -2481,129 +2486,132 @@ float 和 `margin-left: auto` & `margin-right: auto`的关系：在flexbox中，
 
 
 
-### CSS背景
+#### CSS 背景
 
-- **background-color**
-  
-  定义了元素的背景颜色。CSS中，颜色值通常以以下方式定义:
-  
-  - 十六进制 - 如："#ff0000"
-  - RGB - 如："rgb(255,0,0)"
-  - 颜色名称 - 如："red"
+##### background-color
+
+定义了元素的背景颜色。CSS中，颜色值通常以以下方式定义:
+
+- 十六进制 - 如："#ff0000"
+- RGB - 如："rgb(255,0,0)"
+- 颜色名称 - 如："red"
 
 - **background-image**
-  
+
   描述了元素的背景图像。示例：
-  
+
   ```css
   body {
       background-image: url('paper.gif');
   }
   ```
 
-- **background-repeat**
-  
-  属性定义背景图像的重复方式。背景图像<mark>可以沿着水平轴，垂直轴，两个轴重复，或者根本不重复</mark>。
-  
-  | **单值**  | **等价于双值（XY两个方向）** |
-  | :-------: | :--------------------------: |
-  | repeat-x  |       repeat no-repeat       |
-  | repeat-y  |       no-repeat repeat       |
-  |  repeat   |        repeat repeat         |
-  |   space   |         space space          |
-  |   round   |         round round          |
-  | no-repeat |     no-repeat no-repeat      |
-  
-  在双值语法中, 第一个值表示<mark>水平重复行为</mark>, 第二个值表示<mark>垂直重复行为</mark>. 下面是关于每一个值是怎么工作的具体说明：
-  
-  | 值        | 说明                                                         |
-  | :-------- | :----------------------------------------------------------- |
-  | repeat    | 图像会按需重复来覆盖整个背景图片所在的区域. 最后一个图像会被裁剪, 如果它的大小不合适的话. |
-  | space     | 图像会尽可能得重复, 但是不会裁剪. 第一个和最后一个图像会被固定在元素(element)的相应的边上, 同时空白会均匀地分布在图像之间. background-position属性会被忽视, 除非只有一个图像能被无裁剪地显示. 只在一种情况下裁剪会发生, 那就是图像太大了以至于没有足够的空间来完整显示一个图像. |
-  | round     | 随着允许的空间在尺寸上的增长, 被重复的图像将会伸展(没有空隙), 直到有足够的空间来添加一个图像. 当下一个图像被添加后, 所有的当前的图像会被压缩来腾出空间. 例如, 一个图像原始大小是260px, 重复三次之后, 可能会被伸展到300px, 直到另一个图像被加进来. 这样他们就可能被压缩到225px.译者注: 关键是浏览器怎么计算什么时候应该添加一个图像进来, 而不是继续伸展. |
-  | no-repeat | 图像不会被重复(因为背景图像所在的区域将可能没有完全被覆盖). 那个没有被重复的背景图像的位置是由background-position属性来决定. |
-  
-  以上关于background-repeat摘自：[MDN - background-repeat](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-repeat)
-  
-- **background-attachment**
-  
-  决定背景图像的位置是在视口内固定，或者随着包含它的区块滚动。
-  
-  - fixed：此关键属性值表示背景相对于视口固定。即使一个元素拥有滚动机制，背景也不会随着元素的内容滚动。
-  - local：此关键属性值表示背景相对于元素的内容固定。如果一个元素拥有滚动机制，背景将会随着元素的内容滚动， 并且背景的绘制区域和定位区域是相对于可滚动的区域而不是包含他们的边框。
-  
-  - scroll：此关键属性值表示背景相对于元素本身固定， 而不是随着它的内容滚动（对元素边框是有效的）。
-  
-  以上关于background-attachment的内容摘自：[MDN - background-attachment](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-attachment)
-  
-- **background-position**
-  
-  background-position 为每一个背景图片设置初始位置。 这个位置是相对于由 background-origin 定义的位置图层的。
-  
-  示例：
-  
-  ```css
-  /* Keyword values */
-  background-position: top;
-  background-position: bottom;
-  background-position: left;
-  background-position: right;
-  background-position: center;
-  
-  /* <percentage> values */
-  background-position: 25% 75%;
-  
-  /* <length> values */
-  background-position: 0 0;
-  background-position: 1cm 2cm;
-  background-position: 10ch 8em;
-  
-  /* Multiple images */
-  background-position: 0 0, center;
-  
-  /* Edge offsets values */
-  background-position: bottom 10px right 20px;
-  background-position: right 3em bottom 10px;
-  background-position: bottom 10px right;
-  background-position: top right 10px;
-  
-  /* Global values */
-  background-position: inherit;
-  background-position: initial;
-  background-position: unset; 
-  ```
-  
-  以上关于background-position的内容摘自：[MDN - background-position](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-position)
-  
-- **background-origin**
 
-  background-origin <font color=FF0000>规定了指定背景图片background-image 属性的**原点位置的背景相对区域**</font>
-  
-  注意：当使用 background-attachment 为fixed时，该属性将被忽略不起作用。
-  
-  **属性值**
-  
-  - **border-box：**背景图片的摆放以border区域为参考
-  - **padding-box：**背景图片的摆放以padding区域为参考
-  - **content-box：**背景图片的摆放以content区域为参考
-  
-  摘自：[MDN - background-origin](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-origin)
+##### background-repeat
+
+属性定义背景图像的重复方式。背景图像<mark>可以沿着水平轴，垂直轴，两个轴重复，或者根本不重复</mark>。
+
+| **单值**  | **等价于双值（XY两个方向）** |
+| :-------: | :--------------------------: |
+| repeat-x  |       repeat no-repeat       |
+| repeat-y  |       no-repeat repeat       |
+|  repeat   |        repeat repeat         |
+|   space   |         space space          |
+|   round   |         round round          |
+| no-repeat |     no-repeat no-repeat      |
+
+在双值语法中, 第一个值表示<mark>水平重复行为</mark>, 第二个值表示<mark>垂直重复行为</mark>. 下面是关于每一个值是怎么工作的具体说明：
+
+| 值        | 说明                                                         |
+| :-------- | :----------------------------------------------------------- |
+| repeat    | 图像会按需重复来覆盖整个背景图片所在的区域. 最后一个图像会被裁剪, 如果它的大小不合适的话. |
+| space     | 图像会尽可能得重复, 但是不会裁剪. 第一个和最后一个图像会被固定在元素(element)的相应的边上, 同时空白会均匀地分布在图像之间. background-position属性会被忽视, 除非只有一个图像能被无裁剪地显示. 只在一种情况下裁剪会发生, 那就是图像太大了以至于没有足够的空间来完整显示一个图像. |
+| round     | 随着允许的空间在尺寸上的增长, 被重复的图像将会伸展(没有空隙), 直到有足够的空间来添加一个图像. 当下一个图像被添加后, 所有的当前的图像会被压缩来腾出空间. 例如, 一个图像原始大小是260px, 重复三次之后, 可能会被伸展到300px, 直到另一个图像被加进来. 这样他们就可能被压缩到225px.译者注: 关键是浏览器怎么计算什么时候应该添加一个图像进来, 而不是继续伸展. |
+| no-repeat | 图像不会被重复(因为背景图像所在的区域将可能没有完全被覆盖). 那个没有被重复的背景图像的位置是由background-position属性来决定. |
+
+以上关于background-repeat摘自：[MDN - background-repeat](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-repeat)
+
+##### background-attachment
+
+决定背景图像的位置是在视口内固定，或者随着包含它的区块滚动。
+
+- fixed：此关键属性值表示背景相对于视口固定。即使一个元素拥有滚动机制，背景也不会随着元素的内容滚动。
+- local：此关键属性值表示背景相对于元素的内容固定。如果一个元素拥有滚动机制，背景将会随着元素的内容滚动， 并且背景的绘制区域和定位区域是相对于可滚动的区域而不是包含他们的边框。
+
+- scroll：此关键属性值表示背景相对于元素本身固定， 而不是随着它的内容滚动（对元素边框是有效的）。
+
+以上关于background-attachment的内容摘自：[MDN - background-attachment](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-attachment)
+
+##### background-position
+
+background-position 为每一个背景图片设置初始位置。 这个位置是相对于由 background-origin 定义的位置图层的。
+
+示例：
+
+```css
+/* Keyword values */
+background-position: top;
+background-position: bottom;
+background-position: left;
+background-position: right;
+background-position: center;
+
+/* <percentage> values */
+background-position: 25% 75%;
+
+/* <length> values */
+background-position: 0 0;
+background-position: 1cm 2cm;
+background-position: 10ch 8em;
+
+/* Multiple images */
+background-position: 0 0, center;
+
+/* Edge offsets values */
+background-position: bottom 10px right 20px;
+background-position: right 3em bottom 10px;
+background-position: bottom 10px right;
+background-position: top right 10px;
+
+/* Global values */
+background-position: inherit;
+background-position: initial;
+background-position: unset; 
+```
+
+以上关于background-position的内容摘自：[MDN - background-position](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-position)
+
+##### background-origin
+
+background-origin <font color=FF0000>规定了指定背景图片background-image 属性的**原点位置的背景相对区域**</font>
+
+注意：当使用 background-attachment 为fixed时，该属性将被忽略不起作用。
+
+**属性值**
+
+- **border-box：**背景图片的摆放以border区域为参考
+- **padding-box：**背景图片的摆放以padding区域为参考
+- **content-box：**背景图片的摆放以content区域为参考
+
+摘自：[MDN - background-origin](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-origin)
 
 
 
-#### CSS字体
+#### CSS 字体
 
 font 属性可以用来作为 font-style, font-variant, font-weight, font-size, line-height 和 font-family 属性的简写，或将元素的字体设置为系统字体。
 
-**补充：**
+##### 补充
 
-- <mark><font color=FF0000>**line-height CSS 属性**</font>用于设置多行元素的空间量，如多行文本的间距</mark>。<font color=FF0000>**对于块级元素，它指定元素行盒（line boxes）的最小高度。对于非替代的 inline 元素，它用于计算行盒（line box）的高度**</font>。
+- <font color=FF0000>**line-height CSS 属性**</font>用于设置多行元素的空间量，如多行文本的间距。<font color=FF0000>**对于块级元素，它指定元素行盒（line boxes）的最小高度。对于非替代的 inline 元素，它用于计算行盒（line box）的高度**</font>。
 
 - **letter-spacing：**用于设置文本字符的间距表现。
 
-**用em来设置字体大小**
+##### 用 em 来设置字体大小
 
 为了避免Internet Explorer 中无法调整文本的问题，许多开发者使用 em 单位代替像素。em的尺寸单位由W3C建议。1em和当前字体大小相等。在浏览器中默认的文字大小是16px。因此，1em的默认大小是16px。可以通过下面这个公式将像素转换为em：px/16=em
+
+
 
 #### text-indent
 
@@ -2624,7 +2632,7 @@ text-indent 属性能定义一个块元素首行文本内容之前的缩进量�
 
 当设置为若干链路状态的样式，也有一些顺序规则：
 
-- a:hover 必须跟在 a:link 和 a:visited后面
+- a:hover 必须跟在 a:link 和 a:visited 后面
 - a:active 必须跟在 a:hover后面
 
 
@@ -2641,22 +2649,22 @@ text-indent 属性能定义一个块元素首行文本内容之前的缩进量�
 
 #### 分组选择器 & 嵌套选择器
 
-- **分组选择器**
-  
-  为了尽量减少代码，你可以使用分组选择器。
-  
-  每个选择器用逗号分隔。
+##### 分组选择器
 
-- **嵌套选择器**
-  
-  在下面的例子设置了三个样式：
-  
-  - **p{ }**: 为所有 **p** 元素指定一个样式。
-  - **.marked{ }**: 为所有 **class="marked"** 的元素指定一个样式。
-  - <mark>**.marked p{ }**: 为所有 **class="marked"** 元素内的 **p** 元素指定一个样式</mark>。
-  - <mark>**p.marked{ }**: 为所有 **class="marked"** 的 **p** 元素指定一个样式</mark>。
-  
-  
+为了尽量减少代码，你可以使用分组选择器。
+
+每个选择器用逗号分隔。
+
+##### 嵌套选择器
+
+在下面的例子设置了三个样式：
+
+- **p{ }**: 为所有 **p** 元素指定一个样式。
+- **.marked{ }**: 为所有 **class="marked"** 的元素指定一个样式。
+- <mark>**.marked p{ }**: 为所有 **class="marked"** 元素内的 **p** 元素指定一个样式</mark>。
+- <mark>**p.marked{ }**: 为所有 **class="marked"** 的 **p** 元素指定一个样式</mark>。
+
+
 
 #### display:none & visibility:hidden
 
@@ -2784,7 +2792,7 @@ overflow属性有以下值：
 
 CSS 的 Float（浮动），会使元素向左或向右移动，其周围的元素也会重新排列。
 
-<mark>Float（浮动），**往往是用于图像**</mark>，但它在布局时一样非常有用。
+<font color=red>Float（浮动），**往往是用于图像**</font>，但它在布局时一样非常有用。
 
 ```css
 float: right;
@@ -2822,7 +2830,7 @@ margin: auto;
 
 **注：**这里居中对齐是 `margin: auto` 相当于 `margin: auto auto auto auto` ，但是为什么 垂直方向没有居中？同时，使用 flex box / gridbox 也就可以了，为什么？
 
-对于这个问题： margin[-(left, right)]: auto 的 居中 或 居左 居右，《css权威指南》中有说。但是，没提到垂直方向的。在看了 [为什么「margin:auto」可以让块级元素水平居中？ - 杜瑶的回答 - 知乎](https://www.zhihu.com/question/21644198/answer/18895538)（如下图）感觉有点理解了。我的理解是：html 默认的渲染方向 ( writing-mode ) 是水平的，无法参考垂直的。而是用来 flexbox / gridbox 就不得不参考垂直的了。
+对于这个问题： `margin[-(left, right)]: auto` 的 居中 或 居左 居右，《css权威指南》中有说。但是，没提到垂直方向的。在看了 [为什么「margin:auto」可以让块级元素水平居中？ - 杜瑶的回答 - 知乎](https://www.zhihu.com/question/21644198/answer/18895538)（如下图）感觉有点理解了。我的理解是：html 默认的渲染方向 ( writing-mode ) 是水平的，无法参考垂直的。而是用来 flexbox / gridbox 就不得不参考垂直的了。
 
 <img src="https://s2.loli.net/2022/03/10/bFS82LQwWOip7Po.png" alt="image-20220310235610739" style="zoom: 42%;" />
 
@@ -2885,7 +2893,7 @@ margin: auto;
 
 
 
-#### CSS 伪类(Pseudo-classes)
+#### CSS 伪类 ( Pseudo-classes )
 
 添加到选择器的关键字，<mark>指定要选择的元素的特殊状态</mark>。
 
@@ -2900,7 +2908,7 @@ button:hover {
 
 伪类连同伪元素一起，他们允许你不仅仅是根据文档 DOM 树中的内容对元素应用样式，而且还允许你根据诸如像导航历史这样的外部因素来应用样式（例如 `:visited`），同样的，可以根据内容的状态（例如在一些表单元素上的 `:checked`），或者鼠标的位置（例如 `:hover` 让你知道是否鼠标在一个元素上悬浮）来应用样式。
 
-**语法：**
+##### 语法
 
 - 伪类的语法：
   
@@ -3073,7 +3081,8 @@ backdrop-filter CSS 属性可以让你 <font color=FF0000>为一个 元素 <font
 
 **媒介类型(Media Types)允许你定义以何种媒介来提交文档。文档可以被显示在显示器、纸媒介或者听觉浏览器等等。**
 
-**@media规则**
+##### @media规则
+
 @media 规则使你有能力在相同的样式表中，使用不同的样式规则来针对不同的媒介。
 
 | 媒体类型       | 描述                          |
@@ -3093,7 +3102,7 @@ backdrop-filter CSS 属性可以让你 <font color=FF0000>为一个 元素 <font
 
 #### 属性选择器
 
-CSS **属性选择器**<mark>通过已经存在的属性名或属性值匹配元素</mark>。
+CSS **属性选择器**<font color=red>通过已经存在的属性名或属性值匹配元素</font>。
 
 示例：
 
@@ -3250,68 +3259,100 @@ CSS计数器对创建有序列表特别有用，因为在子元素中会自动�
 
 
 
-#### CSS边框
+#### CSS 边框
 
-- **border-radius**：圆角
+##### border-radius
 
-  示例：
+```css
+border-radius: 25px;
+```
 
-  ```css
-  border-radius:25px;
-  ```
+##### box-shadow
 
-- **box-shadow**：盒阴影
+盒阴影。可以在同一个元素上设置多个阴影效果，并用逗号将他们分隔开。该属性 <font color=FF0000>可设置的值包括阴影的 **X轴偏移量**、**Y轴偏移量**、**模糊半径**、**扩散半径** 和 **颜色**</font>。
 
-  可以在同一个元素上设置多个阴影效果，并用逗号将他们分隔开。该属性 <font color=FF0000>可设置的值包括阴影的 **X轴偏移量**、**Y轴偏移量**、**模糊半径**、**扩散半径** 和 **颜色**</font>。
+**向元素添加单个 box-shadow 效果时使用以下规则：**
 
-  **向元素添加单个 box-shadow 效果时使用以下规则：**
+- 当给出两个、三个或四个 \<length> 值时
+  - 如果只给出两个值, 那么这两个值将会被当作 \<offset-x> \<offset-y> 来解释。
+  - 如果给出了第三个值, 那么第三个值将会被当作 \<blur-radius>解释。
+  - 如果给出了第四个值, 那么第四个值将会被当作 \<spread-radius>来解释。
+- 可选，inset关键字。
+- 可选，\<color>值。
 
-  - 当给出两个、三个或四个 \<length>值时
-    - 如果只给出两个值, 那么这两个值将会被当作 \<offset-x> \<offset-y> 来解释。
-    - 如果给出了第三个值, 那么第三个值将会被当作 \<blur-radius>解释。
-    - 如果给出了第四个值, 那么第四个值将会被当作 \<spread-radius>来解释。
-  - 可选，inset关键字。
-  - 可选，\<color>值。
+若要对同一个元素添加多个阴影效果，请使用逗号将每个阴影规则分隔开。
 
-  若要对同一个元素添加多个阴影效果，请使用逗号将每个阴影规则分隔开。
+###### 取值
 
-  **取值**
+- **inset**
+  
+  <font color=FF0000>如果没有指定inset，默认阴影在边框外，即阴影向外扩散</font>。 <font color=FF0000>使用 inset 关键字会使得阴影落在盒子内部，这样看起来就像是内容被压低了</font>。 此时阴影会在边框之内 (即使是透明边框）、背景之上、内容之下。
 
-  - **inset**
-    
-    <font color=FF0000>如果没有指定inset，默认阴影在边框外，即阴影向外扩散</font>。 <font color=FF0000>使用 inset 关键字会使得阴影落在盒子内部，这样看起来就像是内容被压低了</font>。 此时阴影会在边框之内 (即使是透明边框）、背景之上、内容之下。
+- **\<offset-x>** **\<offset-y>**
+  
+  这是头两个 \<length> 值，用来设置阴影偏移量。x, y 是按照数学二维坐标系来计算的，只不过y垂直方向向下。 \<offset-x> 设置水平偏移量，<mark>正值阴影则位于元素右边，负值阴影则位于元素左边</mark>。 \<offset-y> 设置垂直偏移量，<mark>正值阴影则位于元素下方，负值阴影则位于元素上方</mark>。可用单位请查看 \<length> 。
+  
+  如果两者都是0，那么阴影位于元素后面。这时如果设置了\<blur-radius> 或\<spread-radius> 则有模糊效果。需要考虑 inset 
 
-  - **\<offset-x>** **\<offset-y>**
-    
-    这是头两个 \<length> 值，用来设置阴影偏移量。x, y 是按照数学二维坐标系来计算的，只不过y垂直方向向下。 \<offset-x> 设置水平偏移量，<mark>正值阴影则位于元素右边，负值阴影则位于元素左边</mark>。 \<offset-y> 设置垂直偏移量，<mark>正值阴影则位于元素下方，负值阴影则位于元素上方</mark>。可用单位请查看 \<length> 。
-    
-    如果两者都是0，那么阴影位于元素后面。这时如果设置了\<blur-radius> 或\<spread-radius> 则有模糊效果。需要考虑 inset 
-
-  - **\<blur-radius> ** **阴影模糊半径** 
-    
-    这是第三个 \<length> 值。值越大，模糊面积越大，阴影就越大越淡。 不能为负值。默认为0，此时阴影边缘锐利。本规范不包括如何计算模糊半径的精确算法，但是，它详细说明如下：
-
+- **\<blur-radius> ** **阴影模糊半径** 
+  
+  这是第三个 \<length> 值。值越大，模糊面积越大，阴影就越大越淡。 不能为负值。默认为0，此时阴影边缘锐利。本规范不包括如何计算模糊半径的精确算法，但是，它详细说明如下：
+  
   > 对于长而直的阴影边缘，它会创建一个过渡颜色用于模糊 以阴影边缘为中心、模糊半径为半径的局域，过渡颜色的范围在完整的阴影颜色到它最外面的终点的透明之间。 （译者注：对此有兴趣的可以了解下数字图像处理的模糊算法。）
 
-  - **\<spread-radius>** **阴影扩散半径**
-    
-    这是第四个 \<length> 值。取正值时，阴影扩大；取负值时，阴影收缩。默认为0，此时阴影与元素同样大。需要考虑 inset 
+- **\<spread-radius>** **阴影扩散半径**
+  
+  这是第四个 \<length> 值。取正值时，阴影扩大；取负值时，阴影收缩。默认为0，此时阴影与元素同样大。需要考虑 inset 
 
-  - **\<color>** **阴影颜色**
-    
-    相关事项查看 \<length> 。如果没有指定，则由浏览器决定——通常是color的值，不过目前Safari取透明。
+- **\<color>** **阴影颜色**
+  
+  相关事项查看 \<length> 。如果没有指定，则由浏览器决定——通常是color的值，不过目前Safari取透明。
 
-  相关摘自：[MDN - box-shadow](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-shadow)
+相关摘自：[MDN - box-shadow](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-shadow)
 
-  ##### <mark>**补充：**text-shadow用法和box-shadow一样，是用来对于文字进行设置阴影</mark>
+> 👀 **补充**：text-shadow 用法和 box-shadow 一样，是用来对于文字进行设置阴影
 
-- **border-image**：边界图片
+##### border-image
+
+边界图片
+
+> 👀 下面是一点补充
+
+#### border-collapse
+
+`border-collapse` CSS 属性是用来决定表格的边框是分开的还是合并的。在分隔模式下，相邻的单元格都拥有独立的边框。在合并模式下，相邻单元格共享边框。
+
+- 合并 ( *collapsed*  ) 模式下，表格中相邻单元格共享边框。在这种模式下，CSS 属性 `border-style` 的值 inset 表现为槽，值 outset 表现为脊。
+
+- 分隔 ( *separated* ) 模式是 HTML 表格的传统模式。相邻单元格都拥有不同的边框。边框之间的距离是通过 CSS 属性 `border-spacing` 来确定的。
+
+##### 语法
+
+```css
+/* Keyword values */
+border-collapse: collapse;
+border-collapse: separate;
+
+/* Global values */
+border-collapse: inherit;
+border-collapse: initial;
+border-collapse: unset;
+```
+
+`border-collapse` 的属性值被定义为一个单独的关键词，可为下面两个值中的一个。
+
+##### 值
+
+- `collapse`：相邻的单元格共用同一条边框（采用 collapsed-border 表格渲染模型）。
+- `separate`：默认值。每个单元格拥有独立的边框（采用 separated-border 表格渲染模型）。
+
+摘自：[MDN - border-collapse](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-collapse)
 
 
 
 #### CSS3 背景
 
-**背景属性：**
+##### 背景属性
 
 - **background-image**
 
@@ -3337,7 +3378,10 @@ CSS计数器对创建有序列表特别有用，因为在子元素中会自动�
 
 - **background-clip**
 
-**补充：background-blend-mode**
+
+> 👀 下面是一点补充：
+
+##### background-blend-mode
 
 **（MDN）**background-blend-mode CSS属性<font color=FF0000>定义该元素的背景图片，以及背景色如何混合</font>。
 
@@ -3345,34 +3389,36 @@ CSS计数器对创建有序列表特别有用，因为在子元素中会自动�
 
 **（RUNOOB）**background-blend-mode 属性<font color=FF0000>定义了背景层的混合模式（图片与颜色）</font>。
 
-|     值      |             描述             |
-| :---------: | :--------------------------: |
-|   normal    | 默认值。设置正常的混合模式。 |
-|  multiply   |        正片叠底模式。        |
-|   screen    |          滤色模式。          |
-|   overlay   |          叠加模式。          |
-|   darken    |          变暗模式。          |
-|   lighten   |          变亮模式。          |
-| color-dodge |        颜色减淡模式。        |
-| saturation  |         饱和度模式。         |
-|    color    |          颜色模式。          |
-| luminosity  |          亮度模式。          |
+| 值          | 描述                         |
+| :---------- | :--------------------------- |
+| normal      | 默认值。设置正常的混合模式。 |
+| multiply    | 正片叠底模式。               |
+| screen      | 滤色模式。                   |
+| overlay     | 叠加模式。                   |
+| darken      | 变暗模式。                   |
+| lighten     | 变亮模式。                   |
+| color-dodge | 颜色减淡模式。               |
+| saturation  | 饱和度模式。                 |
+| color       | 颜色模式。                   |
+| luminosity  | 亮度模式。                   |
 
 摘自：[MDN - background-blend-mode](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-blend-mode)、 [RUNOOB - CSS background-blend-mode 属性](https://www.runoob.com/cssref/pr-background-blend-mode.html)
 
-注：上面的属性值对应的效果，参见 [MDN - \<blend-mode>](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
+> 👀 注：上面的属性值对应的效果，参见 [MDN - \<blend-mode>](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
 
-**补充：**
+
 
 #### \<blend-mode>
 
-\<blend-mode> <font color=FF0000 size=4>**是一种 CSS 数据类型**</font>（<mark>注：\<blend-mode> 不是一种标签，而是一个数据类型，类似于 \<length></mark>，具体介绍详见：[MDN - CSS 基本数据类型](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Types) ），<font color=FF0000>用于描述当元素重叠时，颜色应当如何呈现</font>。它<font color=FF0000>被用于 background-blend-mode 和 mix-blend-mode 属性</font>。
+`<blend-mode>` <font color=FF0000 size=4>**是一种 CSS 数据类型**</font>（ 👀 注：`<blend-mode>` 不是一种标签，而是一个数据类型，类似于 `<length>`，具体介绍见：[MDN - CSS 基本数据类型](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Types) ），<font color=FF0000>用于描述当元素重叠时，颜色应当如何呈现</font>。它<font color=FF0000>被用于 background-blend-mode 和 mix-blend-mode 属性</font>。
 
 当层重叠时，混合模式是计算像素最终颜色值的方法，每种混合模式采用前景和背景的颜色值，执行其计算并返回最终的颜色值。最终的可见层是对混合层中的每个重叠像素执行混合模式计算的结果。
 
 下面还有 包含的属性值，由于上面（background-blend-mode）已经包含了，所以这里略。不过，MDN 的文档中还包含属性值对应的效果图，可以参考下。
 
 摘自：[MDN - \<blend-mode>](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
+
+
 
 #### CSS 基本数据类型
 
@@ -3408,13 +3454,11 @@ CSS计数器对创建有序列表特别有用，因为在子元素中会自动�
 
 
 
-
-
 #### clip-path
 
 clip-path CSS 属性<font color=FF0000>使用裁剪方式创建元素的可显示区域</font>。区域内的部分显示，区域外的隐藏。
 
-**取值**
+##### 取值
 
 - **\<clip-source>：**用 \<url> 表示剪切元素的路径
 
@@ -3505,17 +3549,17 @@ CSS3 渐变（gradients）可以让你在两个或多个指定的颜色之间显
 CSS3 定义了两种类型的渐变（gradients）：
 
 - **线性渐变（Linear Gradients）**- 向下/向上/向左/向右/对角方向
-  
-  - **语法**
-    
-    ```css
-    background-image: linear-gradient(direction, color-stop1, color-stop2, ...);
-    ```
-  
-  - 可以使用<mark>预定义方向</mark>（to bottom、to top、to right、to left、to bottom right，等等）
-    
+
+  语法
+
+  ```css
+  background-image: linear-gradient(direction, color-stop1, color-stop2, ...);
+  ```
+
+  - **可以使用预定义方向**（to bottom、to top、to right、to left、to bottom right，等等）
+
     **示例：**
-    
+
     ```css
     /*演示了从左上角开始（到右下角）的线性渐变。起点是红色，慢慢过渡到黄色：*/
     #grad {
@@ -3523,34 +3567,34 @@ CSS3 定义了两种类型的渐变（gradients）：
       background-image: linear-gradient(to bottom right, red, yellow);
     }
     ```
-  
+
   - **使用角度**
-    
+
     如果你想要在渐变的方向上做更多的控制，你可以定义一个角度，而不用预定义方向（to bottom、to top、to right、to left、to bottom right，等等）。
-    
+
     **语法**
-    
+
     ```css
     background-image: linear-gradient(angle, color-stop1, color-stop2);
     ```
-    
-    角度是指水平线和渐变线之间的角度，逆时针方向计算。换句话说，<mark>0deg</mark> 将创建一个<mark>从下到上的渐变</mark>，<mark>90deg</mark> 将创建一个<mark>从左到右的渐变</mark>。
-    
+
+    角度是指水平线和渐变线之间的角度，逆时针方向计算。换句话说，0deg 将创建一个从下到上的渐变，90deg 将创建一个从左到右的渐变。
+
     <img src="https://i.loli.net/2020/08/25/GB2mqyRKZiTP8zS.jpg" style="zoom:50%;" />
-  
+
   - **使用多个颜色节点**，示例：
-    
+
     ```css
     /*带有多个颜色节点的从上到下的线性渐变*/
     #grad {
       background-image: linear-gradient(red, yellow, green);
     }
     ```
-  
+
   - **使用透明度**（transparent）
-    
+
     rgba() 函数中的最后一个参数可以是从 0 到 1 的值，它定义了颜色的透明度：0 表示完全透明，1 表示完全不透明。
-    
+
     ```css
     #grad {
       background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1));
@@ -3558,9 +3602,9 @@ CSS3 定义了两种类型的渐变（gradients）：
     ```
 
 - **径向渐变（Radial Gradients）**- 由它们的中心定义
-  
+
   径向渐变由它的中心定义。
-  
+
   为了创建一个径向渐变，你也必须至少定义两种颜色节点。颜色节点即你想要呈现平稳过渡的颜色。同时，你也可以指定渐变的中心、形状（圆形或椭圆形）、大小。默认情况下，渐变的中心是 center（表示在中心点），渐变的形状是 ellipse（表示椭圆形），渐变的大小是 farthest-corner（表示到最远的角落）。
 
 
@@ -3603,9 +3647,9 @@ CSS 属性 overflow-wrap 是用来说明当一个不能被分开的字符串太�
 - **normal：**行只能在正常的单词断点处中断。（例如两个单词之间的空格）。
 - **break-word：**表示如果行内没有多余的地方容纳该单词到结尾，则那些正常的不能被分割的单词会被强制分割换行。
 
-<font color=FF0000 size=4>**与word-break相比，overflow-wrap仅在无法将整个单词放在自己的行而不会溢出的情况下才会产生中断**</font>。
+<font color=fuchsia>**与 word-break 相比，overflow-wrap 仅在无法将整个单词放在自己的行，而不会溢出的情况下才会产生中断**</font>。
 
-注：<font color=FF0000>word-wrap 属性原本属于微软的一个私有属性，在 CSS3 现在的文本规范草案中已经被重名为 overflow-wrap</font> 。 word-wrap 现在被当作 overflow-wrap 的 “别名”。 稳定的谷歌 Chrome 和 Opera 浏览器版本支持这种新语法。
+> 💡 备注：<font color=FF0000>`word-wrap` 属性原本属于微软的一个私有属性，在 CSS3 现在的文本规范草案中已经被重名为 `overflow-wrap`</font> 。 `word-wrap` 现在被当作 `overflow-wrap` 的 “别名”。 稳定的谷歌 Chrome 和 Opera 浏览器版本支持这种新语法。
 
 摘自：[MDN - overflow-wrap](https://developer.mozilla.org/zh-CN/docs/Web/CSS/overflow-wrap)
 
@@ -3642,17 +3686,19 @@ CSS 属性 overflow-wrap 是用来说明当一个不能被分开的字符串太�
 
 text-orientation CSS 属性<font color=FF0000>设定行中字符的方向</font>。但<font color=FF0000>它仅影响纵向模式（当 writing-mode 的值不是horizontal-tb）下的文本</font>。此属性在控制使用竖排文字的语言的显示上很有作用，也可以用来构建垂直的表格头。
 
-- **关键值**
-  - **mixed：**<font color=FF0000>默认值</font>。<font color=FF0000>顺时针旋转水平书写的字符90°</font>，将垂直书写的文字自然布局。
-  - **upright：**<font color=FF0000>将水平书写的字符自然布局（直排）</font>，包括垂直书写的文字（as well as the glyphs for vertical scripts）。注意这个关键字会导致所有字符被视为从左到右，也就是 direction 被强制设为 ltr。
-  - **sideways：**<font color=FF0000>所有字符被布局为与水平方式一样，但是整行文本被顺时针旋转90°</font>。
-  - **sideways-right：**处于兼容目的，sideways 的别名。
-  - **use-glyph-orientation：**对于SVG元素，这个关键字导致使用已弃用的SVG属性glyph-orientation-vertical 和 glyph-orientation-horizontal。
+##### 关键值
 
-- **全局值**
-  - inherit
-  - initial
-  - unset
+- **mixed：**<font color=FF0000>默认值</font>。<font color=FF0000>顺时针旋转水平书写的字符90°</font>，将垂直书写的文字自然布局。
+- **upright：**<font color=FF0000>将水平书写的字符自然布局（直排）</font>，包括垂直书写的文字（as well as the glyphs for vertical scripts）。注意这个关键字会导致所有字符被视为从左到右，也就是 direction 被强制设为 ltr。
+- **sideways：**<font color=FF0000>所有字符被布局为与水平方式一样，但是整行文本被顺时针旋转90°</font>。
+- **sideways-right：**处于兼容目的，sideways 的别名。
+- **use-glyph-orientation：**对于SVG元素，这个关键字导致使用已弃用的SVG属性glyph-orientation-vertical 和 glyph-orientation-horizontal。
+
+##### 全局值
+
+- inherit
+- initial
+- unset
 
 摘自：[MDN - text-orientation](https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-orientation)
 
@@ -3661,22 +3707,23 @@ text-orientation CSS 属性<font color=FF0000>设定行中字符的方向</font>
 <font color=FF0000>writing-mode 属性定义了文本水平或垂直排布以及在块级元素中文本的行进方向</font>。为整个文档设置时，应在根元素上设置它（对于 HTML 文档应该在 html 元素上设置）
 <font color=FF0000>此属性指定块流动方向，即块级容器堆叠的方向，以及行内内容在块级容器中的流动方向</font>。因此，它也确定块级内容的顺序。
 
-- **关键值**
-  - **horizontal-tb：**  对于左对齐(ltr)脚本，内容从左到右水平流动。对于右对齐(rtr)脚本，内容从右到左水平流动。下一水平行位于上一行下方。
-  - **vertical-rl：** 对于左对齐(ltr)脚本，内容从上到下垂直流动，下一垂直行位于上一行左侧。对于右对齐(rtr)脚本，内容从下到上垂直流动，下一垂直行位于上一行右侧。
-  - **vertical-lr：** 对于左对齐(ltr)脚本，内容从上到下垂直流动，下一垂直行位于上一行右侧。对于右对齐(rtr)脚本，内容从下到上垂直流动，下一垂直行位于上一行左侧。
-  - **sideways-rl：**（实验属性）对于左对齐(ltr)脚本，内容从下到上垂直流动。对于右对齐(rtr)脚本，内容从上到下垂直流动。所有字形（即使是垂直脚本中的字形）都朝向右侧。
-  - **sideways-lr：**（实验属性）对于左对齐(ltr)脚本，内容从上到下垂直流动。对于右对齐(rtr)脚本，内容从下到上垂直流动。所有字形（即使是垂直脚本中的字形）都朝向左侧。
-- **全局值**
-  - inherit
-  - initial
-  - unset
+##### 关键值
+
+- **horizontal-tb：**  对于左对齐(ltr)脚本，内容从左到右水平流动。对于右对齐(rtr)脚本，内容从右到左水平流动。下一水平行位于上一行下方。
+- **vertical-rl：** 对于左对齐(ltr)脚本，内容从上到下垂直流动，下一垂直行位于上一行左侧。对于右对齐(rtr)脚本，内容从下到上垂直流动，下一垂直行位于上一行右侧。
+- **vertical-lr：** 对于左对齐(ltr)脚本，内容从上到下垂直流动，下一垂直行位于上一行右侧。对于右对齐(rtr)脚本，内容从下到上垂直流动，下一垂直行位于上一行左侧。
+- **sideways-rl：**（实验属性）对于左对齐(ltr)脚本，内容从下到上垂直流动。对于右对齐(rtr)脚本，内容从上到下垂直流动。所有字形（即使是垂直脚本中的字形）都朝向右侧。
+- **sideways-lr：**（实验属性）对于左对齐(ltr)脚本，内容从上到下垂直流动。对于右对齐(rtr)脚本，内容从下到上垂直流动。所有字形（即使是垂直脚本中的字形）都朝向左侧。
+
+##### 全局值
+
+- inherit
+- initial
+- unset
 
 摘自：[MDN - writing-mode](https://developer.mozilla.org/zh-CN/docs/Web/CSS/writing-mode)
 
-**补充：**
-
-注：text-orientation 一般与 writing-mode 配合使用，同时一般使用 writing-mode 大概率（不绝对）要使用 text-orientation。如下示例：
+👀 注：text-orientation 一般与 writing-mode 配合使用，同时一般使用 writing-mode 大概率要使用 text-orientation。如下示例：
 
 ```html
 <p class="text">foo 123 你好</p>
@@ -3761,9 +3808,9 @@ Chrome 和 Safari 要求前缀 -webkit- 版本.
   }
   ```
 
-  <font color=FF0000 size=4>**补充：**使用 scale 可突破 chrome 字体 12px 的限制</font>
+  > 👀 补充：<font color=dodgerBlue size=4>**使用 scale 可突破 chrome 字体 12px 的限制**</font>
   
-  思路：先将 font-size 设置为 targetFontSize 的 1 / scaleVal 倍；比如 想要font-size 设置为 10px，即：targetFontSize 为 10px，可将 scaleVal 设置为 0.5（即：transform: scale(0.5) ），然后 此时 font-size 便可先设置为 20px。示例如下：
+  思路：先将 font-size 设置为 targetFontSize 的 1 / scaleVal 倍；比如 想要 font-size 设置为 10px，即：targetFontSize 为 10px，可将 scaleVal 设置为 0.5（即：`transform: scale(0.5)` ），此时 font-size 便可先设置为 20px。示例如下：
   
   ```html
   <div class="container">
@@ -3783,7 +3830,7 @@ Chrome 和 Safari 要求前缀 -webkit- 版本.
   </style>
   ```
   
-  注意：<font color=FF0000 size=4>使用 scale 之后，字体会出现位移；所以，需要使用 translate(-50%, -50%) 来抵消位移</font>
+  > ⚠️ 注意：<font color=fuchsia>使用 scale 之后，字体会出现位移；所以，需要使用 `translate(-50%, -50%)` 来抵消位移</font>
   
 - **skew()**
   
@@ -3835,18 +3882,17 @@ Chrome 和 Safari 要求前缀 -webkit- 版本.
 | skewX(*angle*)                            | 定义 2D 倾斜转换，沿着 X 轴。                             |
 | skewY(*angle*)                            | 定义 2D 倾斜转换，沿着 Y 轴。                             |
 
-<font size=4>**补充：**</font>
+##### transform
 
-**transform**
 CSS transform 属性<font color=FF0000>允许你旋转，缩放，倾斜或平移给定元素</font>。这是通过修改CSS视觉格式化模型的坐标空间来实现的。
 
 摘自：[MDN - transform](https://developer.mozilla.org/zh-CN/docs/Web/CSS/transform)
 
-**transform-origin**
+##### transform-origin
 
 transform-origin CSS属性让你<font color=FF0000>更改一个元素变形的原点</font>。<font color=FF0000>默认的转换原点是 center</font>
 
-transform-origin<font color=FF0000>属性可以使用一个，两个或三个值来指定</font>，其中<font color=FF0000>**每个值都表示一个偏移量**</font>。 <mark>没有明确定义的偏移将重置为其对应的初始值</mark>。
+transform-origin<font color=FF0000>属性可以使用一个，两个或三个值来指定</font>，其中<font color=FF0000>**每个值都表示一个偏移量**</font>。 <mark>没有明确定义的偏移将重置为其对应的初始值</mark>
 
 如果定义了两个或更多值并且没有值的关键字，或者唯一使用的关键字是center，则第一个值表示水平偏移量，第二个值表示垂直偏移量。
 
@@ -3864,7 +3910,7 @@ transform-origin<font color=FF0000>属性可以使用一个，两个或三个值
   - 前两个值和只有两个值时的用法相同。
   - <font color=FF0000>**第三个值必须是\<length>**</font>。<font color=FF0000>它始终代表Z轴偏移量</font>。
 
-**值**
+###### 值
 
 - **x-offset：**定义变形中心距离盒模型的左侧的\<length>或\<percentage>偏移值。
 - **offset-keyword：**left，right，top，bottom或center中之一，定义相对应的变形中心偏移。
@@ -3933,6 +3979,64 @@ transform-origin<font color=FF0000>属性可以使用一个，两个或三个值
 | rotateY(*angle*)                                                                          | 定义沿 Y 轴的 3D 旋转。            |
 | rotateZ(*angle*)                                                                          | 定义沿 Z 轴的 3D 旋转。            |
 | perspective(*n*)                                                                          | 定义 3D 转换元素的透视视图。           |
+
+#### translateZ()
+
+The `translateZ()` [CSS function](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Functions) <font color=red>repositions</font>（重新定位）<font color=red>an element along the z-axis in 3D space</font>, i.e., <font color=red>closer to or farther away from the viewer</font>. Its result is a `<transform-function>` data type.
+
+This transformation is defined by a `<length>` which <font color=red>specifies how far inward or outward the element or elements move</font>.
+
+In the above interactive examples, `perspective: 550px;` (to create a 3D space) and [`transform-style: preserve-3d`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/transform-style) ; (so the children, the 6 sides of the cube, are also positioned in the 3D space), have been set on the cube.
+
+> ⚠️ **Note:** <font color=red>`translateZ(tz)` is equivalent to `translate3d(0, 0, tz)`</font> .
+
+##### Syntax
+
+```css
+translateZ(tz)
+```
+
+##### Values
+
+- `tz` : A `<length>` representing the z-component of the translating vector. A positive value moves the element towards the viewer, and a negative value farther away.
+
+| Cartesian coordinates on ℝ^2                                 | Homogeneous coordinates on ℝℙ^2                              | Cartesian coordinates on ℝ^3 | Homogeneous coordinates on ℝℙ^3 |
+| :----------------------------------------------------------- | :----------------------------------------------------------- | :--------------------------- | :------------------------------ |
+| This transformation applies to the 3D space and can't be represented on the plane. | A translation is not a linear transformation in ℝ^3 and can't be represented using a Cartesian-coordinate matrix. | ( 10000100001t0001 )         |                                 |
+
+摘自：[MDN US - translateZ()](https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/translateZ)
+
+
+
+#### transform-style
+
+> 🧪 ：这是一个实验中的功能
+
+CSS 属性 `transform-style` 设置元素的子元素是位于 3D 空间中还是平面中。
+
+如果选择平面( flat ) ，元素的子元素将不会有 3D 的遮挡关系。
+
+由于这个属性不会被继承，因此必须为元素的所有非叶子子元素设置它。
+
+##### 语法
+
+```css
+/* Keyword values */
+transform-style: flat;
+transform-style: preserve-3d;
+
+/* Global values */
+transform-style: inherit;
+transform-style: initial;
+transform-style: unset;
+```
+
+##### 值
+
+- `flat` ：默认值，设置元素的子元素位于该元素的平面中。
+- `preserve-3d` ：指示元素的子元素应位于 3D 空间中。
+
+摘自：[MDN - transform-style](https://developer.mozilla.org/zh-CN/docs/Web/CSS/transform-style)
 
 
 
@@ -4164,7 +4268,7 @@ div {
 
 在 CSS 盒子模型的默认定义里，你对一个元素所设置的 width 与 height 只会应用到这个元素的内容区。如果这个元素有任何的 border 或 padding ，绘制到屏幕上时的盒子宽度和高度会加上设置的边框和内边距值。这意味着当你调整一个元素的宽度和高度时需要时刻注意到这个元素的边框和内边距。当我们实现响应式布局时，这个特点尤其烦人。
 
-box-sizing 属性可以被用来调整这些表现:
+<font color=dodgerBlue>box-sizing 属性可以被用来调整这些表现：</font>
 
 - **content-box：**是默认值。如果你设置一个元素的宽为100px，那么这个元素的内容区会有100px 宽，并且任何边框和内边距的宽度都会被增加到最后绘制出来的元素宽度中。
 - **border-box：**告诉浏览器：你想要设置的边框和内边距的值是包含在width内的。也就是说，如果你将一个元素的width设为100px，那么这100px会包含它的border和padding，内容区的实际宽度是width减去(border + padding)的值。大多数情况下，这使得我们更容易地设定一个元素的宽高。
@@ -4270,7 +4374,8 @@ CSS3 box-sizing 属性在一个元素的 width 和 height 中包含 padding（�
 
 #### @charset
 
-概述
+##### 概述
+
  @charset CSS @规则  <font color=FF0000>指定样式表中使用的字符编码</font>。它<font color=FF0000 size=4>**必须是样式表中的第一个元素**</font>，<font color=FF0000>而 <font size=4>**前面不得有任何字符**</font></font>。因为它不是一个嵌套语句，所以不能在 @规则条件组 中使用。<font color=FF0000>**如果有多个 @charset @规则被声明，只有第一个会被使用**</font>，而且<font color=FF0000>不能在HTML元素或HTML页面的字符集相关 \<style> 元素内的样式属性内使用</font>。
 
 此 @规则 在某些 CSS 属性中使用非 ASCII 字符时非常有用，例如 content。
@@ -4283,7 +4388,7 @@ CSS3 box-sizing 属性在一个元素的 width 和 height 中包含 padding（�
 4. 使用参考文档定义的字符编码： \<link> 元素的 charset 属性。 该方法在 HTML5 标准中已废除，无法使用。
 5. 假设文档是 UTF-8。
 
-语法
+##### 语法
 
 ```css
 @charset "UTF-8";
@@ -4292,7 +4397,7 @@ CSS3 box-sizing 属性在一个元素的 width 和 height 中包含 padding（�
 
 - **charset：**它是一个 \<string> 表示字符编码被使用。<font color=FF0000>它必须是在被 IANA-registry 声明过的 web-safe 字符编码中的一个</font>，<font color=FF0000 size=4>**还必须被双引号包围, 遵循一个空格字符 (U+0020)，并且立即以分号结束**</font>。 如果有多个相关的编码名字，只有被标记为 preferred  的那个才会被使用。
 
-例子
+##### 例子
 
 ```css
 @charset "UTF-8";
@@ -4359,15 +4464,17 @@ CSS3 box-sizing 属性在一个元素的 width 和 height 中包含 padding（�
   ```
 
 - **函数语法**
+  
   第二种基本支持条件是支持函数，几乎所有浏览器都支持这种语法，但函数本身仍在标准化进程中。
-
+  
 - **selector()** 🧪
+  
   测试浏览器是否支持经过测试的选择器语法。如果浏览器支持子组合器，则以下示例返回true：
-
+  
   ```css
   @supports selector(A > B) {}
   ```
-
+  
 - **not 操作符**
 
   将 <font color=FF0000>not 操作符放在任何表达式之前就能否定一条表达式</font>。<mark>如果 transform-origin 的实现语法认为 10em 10em 10em 是无效的，则下面的表达式会返回 true</mark>。
@@ -4454,7 +4561,7 @@ div{
 
 
 
-### CSS3 盒子模型
+#### CSS3 盒子模型
 
 <mark>弹性盒子</mark>是 CSS3 的<mark>一种新的布局模式</mark>。
 
@@ -4470,7 +4577,7 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
 
 <font color=FF0000 size=4>**注意，设为 Flex 布局以后，子元素的float、clear和vertical-align属性将失效。**</font>
 
-#### Flex容器（父容器）
+##### Flex容器（父容器）
 
 - **flex-direction**
   
@@ -4554,7 +4661,7 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
   - **space-between** -各行在弹性盒容器中<font color=FF0000>平均分布</font>。
   - **space-around** - 各行在弹性盒容器中<font color=FF0000>平均分布</font>，<font color=FF0000>两端保留子元素与子元素之间间距大小的一半</font>。
 
-#### Flex项目（子项目）
+##### Flex项目（子项目）
 
 以下6个属性设置在项目上
 
@@ -4635,7 +4742,7 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
 
 具体实例：[阮一峰的网络日志  - Flex 布局教程：实例篇](http://www.ruanyifeng.com/blog/2015/07/flex-examples.html)
 
-**补充：**
+##### 补充
 
 - flex: 1; === flex: 1 1 (0 / 任意数字+任意长度单位); <font color=FF0000>（就是代表均匀分配元素）</font>
   
@@ -4765,7 +4872,7 @@ CSS 中有关于“像素密度”的媒体查询，如下示例：
 
 #### 响应式 Web 设计 - Viewport
 
-**Viewport** 
+##### Viewport
 
 Viewport 是<font color=FF0000>用户网页的可视区域</font>，翻译为中文可以叫做"<font color=FF0000>视区</font>"。
 
@@ -4903,13 +5010,13 @@ prefers-color-scheme CSS <font color=FF0000 size=4>**媒体特性 **</font> 用
 
 #### 响应式 Web 设计 - 图片
 
-**图片**
+##### 图片
 
 - **width：**如果 width 属性设置为 100%，图片会根据上下范围实现响应式功能。但是在大屏幕下，图片会比它的原始图片大
 
 - **max-width**：如果 max-width 属性设置为 100%, 图片永远不会大于其原始大小：
 
-**背景图片**
+##### 背景图片
 
 背景图片可以响应调整大小或缩放。以下是三个不同的方法：
 
@@ -4919,7 +5026,7 @@ prefers-color-scheme CSS <font color=FF0000 size=4>**媒体特性 **</font> 用
 
 - 如果 background-size 属性设置为 <font color=FF0000>"cover"</font>，则会把背景图像扩展至足够大，以使<font color=FF0000>背景图像完全覆盖背景区域</font>。注意该属性保持了图片的比例因此<font color=FF0000>背景图像的某些部分无法显示在背景定位区域中</font>。
 
-**HTML5 \<picture> 元素**
+##### HTML5 \<picture> 元素
 
 HTML5 的 \<picture> 元素<font color=FF0000>可以设置多张图片</font>。
 
@@ -4934,43 +5041,6 @@ HTML5 的 \<picture> 元素<font color=FF0000>可以设置多张图片</font>。
 ```
 
 srcset 属性的必须的，定义了图片资源。
-
-
-
-#### calc()方法
-
-alac() 此 CSS 函数允许在声明 CSS 属性值时执行一些计算。它可以用在如下场合：\<length>、\<frequency>, \<angle>、\<time>、\<percentage>、\<number>、 \<integer>。
-
-**语法：**
-
-```css
-property: calc(expression)
-```
-
-**示例：**
-
-```css
-width: calc(100% - 80px);
-```
-
-此 calc()函数用一个表达式作为它的参数，用这个表达式的结果作为值。<font color=FF0000>这个表达式可以是任何如下操作符的组合</font>，采用标准操作符处理法则的简单表达式。
-
-- **+**：加法。
-- **-** ：减法。
-- *****：乘法，乘数中至少有一个是\<number>
-- **/**：除法，除数（/右面的数）必须是\<number>
-
-表达式中的运算对象可以使用任意 \<length> 值。如果你愿意，你<font color=FF0000>可以在一个表达式中混用这类值的不同单位</font>。在需要时，你<font color=FF0000>还可以使用小括号来建立计算顺序</font>。
-
-**备注**
-
-- <font color=FF0000>**+ 和 - 运算符的两边必须要有空白字符**</font>。比如，`calc(50% -8px)` 会被解析成为一个无效的表达式，解析结果是：一个百分比 后跟一个负数长度值。而加有空白字符的、有效的表达式 `calc(8px + -50%)` 会被解析成为：一个长度 后跟一个加号 再跟一个负百分比。
-- <mark>***** 和 **/** 这两个运算符前后不需要空白字符，但如果考虑到统一性，仍然推荐加上空白符</mark>。
-- 用 0 作除数会使 HTML 解析器抛出异常。
-- 涉及自动布局和固定布局的表格中的表列、表列组、表行、表行组和表单元格的宽度和高度百分比的数学表达式，`auto` 可视为已指定。
-- `calc()` 函数支持嵌套，但支持的方式是：把被嵌套的 `calc()` 函数全当成普通的括号。（译者注：所以，函数内直接用括号就好了。）
-
-摘自：[MDN - calc()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/calc)
 
 
 
@@ -5029,9 +5099,9 @@ width: calc(100% - 80px);
 
 摘自：[2021年你可能不知道的 CSS 特性](https://zhuanlan.zhihu.com/p/376238191)
 
-**补充：**
+##### 补充
 
-关于nth-of-type：CSS 伪类是<font color=FF0000>针对具有一组兄弟节点的标签, 用 n 来筛选出在一组兄弟节点的位置</font>。示例如下。<font color=FF0000>n从1开始</font>
+关于 `nth-of-type` ：CSS 伪类是<font color=FF0000>针对具有一组兄弟节点的标签, 用 n 来筛选出在一组兄弟节点的位置</font>。示例如下。<font color=FF0000>n从1开始</font>
 
 ```css
 /* 在每组兄弟元素中选择第四个 <p> 元素 */
@@ -5068,13 +5138,13 @@ a 和 b 都必须为整数，并且元素的第一个子元素的下标为 1。�
 
 
 
-#### 给placeholoder加上颜色
+#### placeholoder 加上颜色
 
-- 方法一：用`::placeholder`（<font color=FF0000>比较简洁，但这是一个实验功能，兼容性比较差</font>）
+- 方法一：用 `::placeholder`（<font color=FF0000>比较简洁，但这是一个实验功能，兼容性比较差</font>）
 
   伪元素 ::placeholder可以选择一个表单元素的占位文本，它允许开发者和设计师自定义占位文本的样式。
 
-  示例：
+  ##### 示例
 
   ```css
   ::placeholder {
@@ -5134,11 +5204,9 @@ a 和 b 都必须为整数，并且元素的第一个子元素的下标为 1。�
 
 摘自：[MDN - ::placeholder](https://developer.mozilla.org/zh-CN/docs/Web/CSS/::placeholder)  [如何修改placeholder样式](https://juejin.cn/post/6844903697135173645)
 
-**补充：**
+#### :placeholder-shown
 
-#### :placeholder-shown 🧪
-
-> 注：这是一个实验性质的功能
+> 🧪 ：这是一个实验性质的功能
 
 :placeholder-shown CSS 伪类 在 \<input> 或 \<textarea> 元素显示 placeholder text 时生效。示例如下：
 
@@ -5198,23 +5266,59 @@ a 和 b 都必须为整数，并且元素的第一个子元素的下标为 1。�
 - **返回值**：一个 Boolean ，如果是 false 则表示操作不被支持或未被启用。
 
 - **参数**
+  
   - **aCommandName：**一个 DOMString ，命令的名称。可用命令列表请参阅 [命令](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand#%E5%91%BD%E4%BB%A4) 。
   - **aShowDefaultUI：**一个 Boolean， 是否展示用户界面，一般为 false。Mozilla 没有实现。
   - **aValueArgument：**一些命令（例如insertImage）需要额外的参数（insertImage需要提供插入image的url），默认为null。
-
+  
 - **命令**
 
   由于过长：略。地址： [命令](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand#%E5%91%BD%E4%BB%A4) 
 
 摘自：[MDN - document.execCommand](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand)
 
-**补充：** contenteditable 有一个类似功能的 js 属性为：Document.designMode
+**补充：** contenteditable 有一个类似功能的 js 属性为：`Document.designMode`
 
 > document.designMode 控制整个文档是否可编辑。有效值为 "on" 和 "off" 。
 >
 > 摘自：[MDN - Document.designMode](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/designMode)
 
 
+
+#### calc()
+
+alac() 此 CSS 函数允许在声明 CSS 属性值时执行一些计算。它可以用在如下场合：\<length>、\<frequency>, \<angle>、\<time>、\<percentage>、\<number>、 \<integer>。
+
+##### 语法
+
+```css
+property: calc(expression)
+```
+
+##### 示例
+
+```css
+width: calc(100% - 80px);
+```
+
+此 `calc()` 函数用一个表达式作为它的参数，用这个表达式的结果作为值。<font color=FF0000>这个表达式可以是任何如下操作符的组合</font>，采用标准操作符处理法则的简单表达式。
+
+- **+**：加法。
+- **-** ：减法。
+- *****：乘法，乘数中至少有一个是\<number>
+- **/**：除法，除数（/右面的数）必须是\<number>
+
+表达式中的运算对象可以使用任意 `<length>` 值。如果你愿意，你<font color=FF0000>可以在一个表达式中混用这类值的不同单位</font>。在需要时，你<font color=FF0000>还可以使用小括号来建立计算顺序</font>。
+
+##### 备注
+
+- <font color=FF0000>**+ 和 - 运算符的两边必须要有空白字符**</font>。比如，`calc(50% -8px)` 会被解析成为一个无效的表达式，解析结果是：一个百分比 后跟一个负数长度值。而加有空白字符的、有效的表达式 `calc(8px + -50%)` 会被解析成为：一个长度 后跟一个加号 再跟一个负百分比。
+- <mark>***** 和 **/** 这两个运算符前后不需要空白字符，但如果考虑到统一性，仍然推荐加上空白符</mark>。
+- 用 0 作除数会使 HTML 解析器抛出异常。
+- 涉及自动布局和固定布局的表格中的表列、表列组、表行、表行组和表单元格的宽度和高度百分比的数学表达式，`auto` 可视为已指定。
+- `calc()` 函数支持嵌套，但支持的方式是：把被嵌套的 `calc()` 函数全当成普通的括号（译者注：所以，函数内直接用括号就好了）
+
+摘自：[MDN - calc()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/calc)
 
 #### attr()
 
@@ -5248,11 +5352,9 @@ var( <custom-property-name> , <declaration-value>? )
 
 摘自：[MDN - var()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/var())
 
-<font size=4>**补充：**</font>
+#### CSS自定义属性
 
-**CSS自定义属性**
-
-自定义属性（有时候也被称作CSS变量或者级联变量）是由CSS作者定义的，它包含的值可以在整个文档中重复使用。由自定义属性标记设定值（比如： --main-color: black;），<font color=FF0000>**由var() 函数来获取值**</font>（比如： color: var(--main-color);）
+自定义属性（有时候也被称作CSS变量或者级联变量）是由CSS作者定义的，它包含的值可以在整个文档中重复使用。由自定义属性标记设定值（比如： `--main-color: black;`），<font color=FF0000>**由var() 函数来获取值**</font>（比如： color: var(--main-color);）
 
 注意：自定义属性名是大小写敏感的，--my-color 和 --My-color 会被认为是两个不同的自定义属性。
 
@@ -5528,7 +5630,7 @@ document.addEventListener('mousemove', (e) => {
 
 ##### 实战中的补充
 
-<font color=FF0000 size=4>**CSS 变量具有继承性**</font>，即：在 ***父节点*** 定义的 CSS 变量，在***子节点*** 中依然可以使用。另外，在使用 node.style.setProperty 等方法时，node 不必是 CSS 变量定义的所在的节点，也可以是需要修改样式的（子）节点；如下示例：
+<font color=FF0000 size=4>**CSS 变量具有继承性**</font>，即：在 ***父节点*** 定义的 CSS 变量，在***子节点*** 中依然可以使用。另外，在使用 `node.style.setProperty` 等方法时，node 不必是 CSS 变量定义的所在的节点，也可以是需要修改样式的（子）节点；如下示例：
 
 ```html
 <div id="wrap">
@@ -5566,7 +5668,8 @@ clamp() 函数的作用是<font color=FF0000>把一个值限制在一个上限�
 
 <mark>clamp(MIN, VAL, MAX) 其实就是表示 max(MIN, min(VAL, MAX))</mark>
 
-**语法**
+##### 语法
+
 clamp() 函数接收三个用逗号分隔的表达式作为参数，按最小值、首选值、最大值的顺序排列。
 
 - <font color=FF0000>当首选值比最小值要小时，则使用最小值</font>。
@@ -5577,9 +5680,9 @@ clamp() 函数接收三个用逗号分隔的表达式作为参数，按最小值
 
 
 
-#### **补充：CSS函数**
+#### CSS 函数
 
-根据w3cplus中可以划分为以下几类：
+根据 w3cplus 中可以划分为以下几类：
 
 - 属性函数：attr()；
 
@@ -5601,9 +5704,11 @@ clamp() 函数接收三个用逗号分隔的表达式作为参数，按最小值
 
 摘自：[css函数竟然有86个！！！css函数大全](https://blog.csdn.net/MFWSCQ/article/details/89530967)
 
-**或者：**
+##### 鱼骨图
 
 ![](https://www.w3cplus.com/sites/default/files/blogs/2020/2005/css-function-5.svg)
+
+MDN 也有 总结：[MDN - CSS Functional Notation](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Functions) // TODO 有必要看下
 
 ##### env()
 
@@ -5635,7 +5740,7 @@ mask-image: url("masks.svg#mask1");
 
 ##### attr()
 
-原则上说，attr() 能运用于所有的 CSS 属性；但目前仅能服务于 CSS 的伪元素 ::before 和 ::after 的 content 属性。
+原则上说，attr() 能运用于所有的 CSS 属性；但<font color=red>目前仅能服务于 CSS 的伪元素 `::before` 和 `::after` 的 content 属性</font>
 
 摘自：[图解CSS: CSS中的函数](https://www.w3cplus.com/css/css-functions-guide.html)
 
@@ -5805,17 +5910,17 @@ p:target i {
 
 
 
-#### :is() 伪类选择器 🧪
+#### :is() 伪类选择器
 
-> 注意：**这是一个实验中的功能**
+> 🧪 ：这是一个实验中的功能
 
 `:is()` CSS <font color=FF0000>**伪类函数** 将选择器列表作为参数</font>，并选择该列表中任意一个选择器可以选择的元素。这对于以更紧凑的形式编写大型选择器非常有用。
 
-注意，<mark>许多浏览器通过一个 **更旧的**、**带前缀** 的伪类</mark> `:any()` <mark>来支持这个功能，包括旧版本的 Chrome、Firefox 和 Safari</mark>。这与 `:is()` 的工作方式完全相同，只是它需要厂商前缀，不支持复杂的选择器。
+注意，<font color=red>许多浏览器通过一个 **更旧的**、**带前缀** 的伪类 `:any()` 来支持这个功能，包括旧版本的 Chrome、Firefox 和 Safari</font>。这与 `:is()` 的工作方式完全相同，只是它需要厂商前缀，不支持复杂的选择器。
 
 摘自：[MDN - :is() (:matches(), :any())](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:is)
 
-##### 示例如下
+##### 示例
 
 不用 `:is` 伪类的写法：
 
@@ -5839,7 +5944,7 @@ h1 a, h2 a, h3 a {
 }
 ```
 
-<font color=FF0000>:is() 也可以用于各种选择器的组合中，例如子节点选择器、邻居节点选择器等</font>，下边的代码展示了选择子节点的方式：
+<font color=dodgerblue>`:is()` 也可以用于各种选择器的组合中，例如子节点选择器、邻居节点选择器等</font>，下边的代码展示了选择子节点的方式：
 
 ```css
 :is(article, p) :is(h2, li) a {
@@ -5902,17 +6007,17 @@ footer p:hover {
 
 #### :indeterminate
 
-**:indeterminate** <font color=FF0000>CSS 伪类</font> 表示状态不确定的表单元素
+`:indeterminate` <font color=FF0000>CSS 伪类</font> 表示状态不确定的表单元素
 
-表单选择框元素（checkbox）状态样式如下：
+表单选择框元素 ( checkbox ) 状态样式如下：
 
 <img src="https://i.loli.net/2021/02/23/gOs3ADKmN6GWerE.png" alt="https://i2.wp.com/css-tricks.com/wp-content/uploads/2016/12/indeterminate-checkboxes.png?w=1430&ssl=1" style="zoom: 50%;" />
 
-:indeterminate 可作用的对象有：
+`:indeterminate` 可作用的对象有：
 
-- \<input type="checkbox"> 元素，其 indeterminate 属性被 JavaScript设置为 true 。
-- \<input type="radio"> 元素, 表单中拥有相同 name值的所有单选按钮都未被选中时。
-- 处于不确定状态的 \<progress> 元素
+- `<input type="checkbox">` 元素，其 indeterminate 属性被 JavaScript设置为 true 。
+- `<input type="radio">` 元素, 表单中拥有相同 name值的所有单选按钮都未被选中时。
+- 处于不确定状态的 `<progress>` 元素
 
 摘自：[MDN - :indeterminate](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:indeterminate) / [css-tricks - :indeterminate](https://css-tricks.com/almanac/selectors/i/indeterminate/)
 
@@ -5980,7 +6085,7 @@ CSS 伪类函数 :host() <font color=FF0000>选择包含使用这段 CSS 的 Sha
 
 #### outline
 
-<mark>CSS 的 outline 属性是在一条声明中设置多个轮廓属性的简写属性</mark> ， 例如 outline-style, outline-width 和 outline-color。 
+<font color=red>CSS 的 outline 属性是在一条声明中设置多个轮廓属性的简写属性</font> ， 例如 outline-style, outline-width 和 outline-color。 
 
 **border 和 outline：**border 和 outline 很类似，但有如下区别：
 
@@ -5997,21 +6102,27 @@ CSS 伪类函数 :host() <font color=FF0000>选择包含使用这段 CSS 的 Sha
 
 CSS 属性 user-select <font color=FF0000>控制用户能否选中文本</font>。除了文本框内，它对被载入为 chrome 的内容没有影响。
 
-- **形式化语法**
-  auto | text | none | contain | all
-- **语法**
-  - **none：**<font color=FF0000>元素及其子元素的文本不可选中</font>。 请注意这个Selection 对象可以包含这些元素。 从Firefox 21开始， none 表现的像 -moz-none，因此可以使用 -moz-user-select: text 在子元素上重新启用选择。
-  - **auto：**<font color=FF0000>auto 的具体取值取决于一系列条件</font>，具体如下：
-    - 在 ::before 和 ::after 伪元素上，采用的属性值是 none
-    - 如果元素是可编辑元素，则采用的属性值是 contain
-    - 否则，如果此元素的父元素的 user-select 采用的属性值为 all，则该元素采用的属性值也为 all
-    - 否则，如果此元素的父元素的 user-select 采用的属性值为 none，则该元素采用的属性值也为 none
-    - 否则，采用的属性值为 text
-  - **text：**<mark>用户可以选择文本</mark>
-  - **all：**在一个HTML编辑器中，当双击子元素或者上下文时，那么包含该子元素的最顶层元素也会被选中。
-  - **contain：**允许在元素内选择；但是，选区将被限制在该元素的边界之内。
-  - **element**（IE 专有别名）：与 contain 相同，但仅在 Internet Explorer 中受支持。
-    注意： CSS UI 4 已将 user-select 的 element 属性值重命名为 contain。
+##### 形式化语法
+
+```css
+user-select: auto | text | none | contain | all
+```
+
+##### 语法
+
+- **none：**<font color=FF0000>元素及其子元素的文本不可选中</font>。 请注意这个Selection 对象可以包含这些元素。 从Firefox 21开始， none 表现的像 -moz-none，因此可以使用 -moz-user-select: text 在子元素上重新启用选择。
+- **auto：**<font color=FF0000>auto 的具体取值取决于一系列条件</font>，具体如下：
+  - 在 ::before 和 ::after 伪元素上，采用的属性值是 none
+  - 如果元素是可编辑元素，则采用的属性值是 contain
+  - 否则，如果此元素的父元素的 user-select 采用的属性值为 all，则该元素采用的属性值也为 all
+  - 否则，如果此元素的父元素的 user-select 采用的属性值为 none，则该元素采用的属性值也为 none
+  - 否则，采用的属性值为 text
+- **text：**<mark>用户可以选择文本</mark>
+- **all：**在一个HTML编辑器中，当双击子元素或者上下文时，那么包含该子元素的最顶层元素也会被选中。
+- **contain：**允许在元素内选择；但是，选区将被限制在该元素的边界之内。
+- **element**（IE 专有别名）：与 contain 相同，但仅在 Internet Explorer 中受支持。
+
+> ⚠️ ：CSS UI 4 已将 user-select 的 element 属性值重命名为 contain。
 
 摘自：[MDN - user-select](https://developer.mozilla.org/zh-CN/docs/Web/CSS/user-select)
 
@@ -6019,7 +6130,7 @@ CSS 属性 user-select <font color=FF0000>控制用户能否选中文本</font>�
 
 #### touch-action
 
-CSS属性 **touch-action** 用于 <font color=FF0000>设置触摸屏用户如何操纵元素的区域</font>（<font color=FF0000>例如，浏览器内置的缩放功能</font>）。
+CSS属性 `touch-action` 用于 <font color=FF0000>设置触摸屏用户如何操纵元素的区域</font>（<font color=FF0000>例如，浏览器内置的缩放功能</font>）。
 
 ```css
 /* Keyword values */
@@ -6040,33 +6151,33 @@ touch-action: initial;
 touch-action: unset;
 ```
 
-<font color=FF0000>默认情况下，平移（滚动）和缩放手势 **由浏览器专门处理**</font>。 <mark>使用 pointer_events 的应用程序将<font color=FF0000>在浏览器开始处理触摸手势时收到一个 pointercancel 事件</font></mark>。 通过明确指定浏览器应该处理哪些手势，应用程序可以在 pointermove 和 pointerup 监听器中为其余的手势提供自己的行为。 使用 Touch_events 的应用程序通过调用 preventDefault() 禁用浏览器处理手势，但也应使用触摸操作确保浏览器在调用任何事件侦听器之前，了解应用程序的意图。
+<font color=FF0000>默认情况下，平移（滚动）和缩放手势 **由浏览器专门处理**</font>。 <font color=fuchsia>使用 `pointer_events` 的应用程序将 在浏览器开始处理触摸手势时收到一个 `pointercancel` 事件</font>。 通过明确指定浏览器应该处理哪些手势，应用程序可以在 pointermove 和 pointerup 监听器中为其余的手势提供自己的行为。 使用 Touch_events 的应用程序通过调用 preventDefault() 禁用浏览器处理手势，但也应使用触摸操作确保浏览器在调用任何事件侦听器之前，了解应用程序的意图。
 
 当手势开始时，浏览器与触摸的元素及其所有祖先的触摸动作值相交直到一个实现手势（换句话说，第一个包含滚动元素）的触摸动作值。 这意味着在实践中，触摸动作通常仅适用于具有某些自定义行为的单个元素，而无需在该元素的任何后代上明确指定触摸动作。 手势开始之后，触摸动作值的更改将不会对当前手势的行为产生任何影响。
 
-- **语法：**
+##### 语法
 
-  **touch-action 属性可以被指定为：**
+**touch-action 属性可以被指定为：**
 
-  - 任何一个关键字 auto、none、manipulation，或
+- 任何一个关键字 auto、none、manipulation，或
 
-  - 零或任何一个关键字 pan-x、pan-left、pan-right，加零或任何一个关键字 pan-y、pan-up、pan-down，加可选关键字 pinch-zoom.
+- 零或任何一个关键字 pan-x、pan-left、pan-right，加零或任何一个关键字 pan-y、pan-up、pan-down，加可选关键字 pinch-zoom.
 
-- **值：**
+##### 值
 
-  - **auto：**<font color=FF0000>当触控事件发生在元素上时，由浏览器来决定进行哪些操作</font>，比如对viewport进行平滑、缩放等。
+- **auto：**<font color=FF0000>当触控事件发生在元素上时，由浏览器来决定进行哪些操作</font>，比如对viewport进行平滑、缩放等。
 
-  - **none：**<font color=FF0000>当触控事件发生在元素上时，不进行任何操作</font>
+- **none：**<font color=FF0000>当触控事件发生在元素上时，不进行任何操作</font>
 
-  - **pan-x：**<font color=FF0000>启用单指水平平移手势</font>。<mark>可以与 **pan-y 、pan-up、pan-down** 和／或 **pinch-zoom** 组合使用</mark>。
+- **pan-x：**<font color=FF0000>启用单指水平平移手势</font>。<mark>可以与 **pan-y 、pan-up、pan-down** 和／或 **pinch-zoom** 组合使用</mark>。
 
-  - **pan-y：**<font color=FF0000>启用单指垂直平移手势</font>。<mark>可以与 **pan-x 、pan-left 、pan-right** 和／或 **pinch-zoom** 组合使用</mark>。
+- **pan-y：**<font color=FF0000>启用单指垂直平移手势</font>。<mark>可以与 **pan-x 、pan-left 、pan-right** 和／或 **pinch-zoom** 组合使用</mark>。
 
-  - **manipulation：**<font color=FF0000>浏览器只允许进行滚动和持续缩放操作</font>。任何其它被auto值支持的行为不被支持。启用平移和缩小缩放手势，但禁用其他非标准手势，例如双击以进行缩放。 禁用双击可缩放功能可减少浏览器在用户点击屏幕时延迟生成点击事件的需要。 这是“**pan-x pan-y pinch-zoom**”（为了兼容性本身仍然有效）的别名。
+- **manipulation：**<font color=FF0000>浏览器只允许进行滚动和持续缩放操作</font>。任何其它被auto值支持的行为不被支持。启用平移和缩小缩放手势，但禁用其他非标准手势，例如双击以进行缩放。 禁用双击可缩放功能可减少浏览器在用户点击屏幕时延迟生成点击事件的需要。 这是“**pan-x pan-y pinch-zoom**”（为了兼容性本身仍然有效）的别名。
 
-  - **pan-left, pan-right, pan-up, pan-down：🧪** <font color=FF0000>启用以指定方向滚动开始的单指手势</font>。 一旦滚动开始，方向可能仍然相反。 请注意，滚动“向上”（**pan-up**）意味着用户正在将其手指向下拖动到屏幕表面上，同样 **pan-left** 表示用户将其手指向右拖动。 多个方向可以组合，除非有更简单的表示（例如，“**pan-left pan-right**”无效，因为“**pan-x**”更简单，而“**pan-left pan-down**”有效）。
+- **pan-left, pan-right, pan-up, pan-down：🧪** <font color=FF0000>启用以指定方向滚动开始的单指手势</font>。 一旦滚动开始，方向可能仍然相反。 请注意，滚动“向上”（**pan-up**）意味着用户正在将其手指向下拖动到屏幕表面上，同样 **pan-left** 表示用户将其手指向右拖动。 多个方向可以组合，除非有更简单的表示（例如，“**pan-left pan-right**”无效，因为“**pan-x**”更简单，而“**pan-left pan-down**”有效）。
 
-  - **pinch-zoom：**<font color=FF0000>启用多手指平移和缩放页面</font>。 这可以与任何平移值组合。
+- **pinch-zoom：**<font color=FF0000>启用多手指平移和缩放页面</font>。 这可以与任何平移值组合。
 
 摘自：[MDN - touch-action](https://developer.mozilla.org/zh-CN/docs/Web/CSS/touch-action)
 
@@ -6198,14 +6309,14 @@ width 属性用于设置元素的宽度。width 默认设置内容区域的宽�
 **语法**
 \<length> 数据类型由一个 \<number> 和一个长度单位构成。 与所有 CSS 维度一样，单位的字面值与数字之间没有空格。 数字为 0 时，长度单位是可选的。
 
-> 注：由于这里单位较多，这里略；只摘录有必要的，其他见 下面的链接
+> 👀 注：由于这里单位较多，这里略；只摘录有必要的，其他见 下面的链接
 
 - vmin：视口高度 vw 和宽度 vh 两者之间的最小值。
 - vmax：视口高度 vw 和宽度 vh 两者之间的最大值。
 
 摘自：[MDN - \<length>](https://developer.mozilla.org/zh-CN/docs/Web/CSS/length)
 
-补充：知乎上有这样一个问题：[css样式的百分比都相对于谁？ - 知乎](https://www.zhihu.com/question/36079531) 感觉很有意义，推荐阅读
+> 👀 补充：知乎上有这样一个问题：[css样式的百分比都相对于谁？ - 知乎](https://www.zhihu.com/question/36079531) 感觉很有价值，推荐阅读
 
 
 
@@ -6315,6 +6426,93 @@ text-decoration 这个 CSS 属性是用于设置文本的修饰线外观的（�
 - **text-decoration-thickness：**文本修饰线的粗细
 
 摘自：[MDN - text-decoration](https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-decoration)
+
+
+
+#### text-transform
+
+The **`text-transform`** CSS property <font color=red>specifies how to capitalize an element's text</font>. It can be <font color=LightSeaGreen>used to make text appear in all-uppercase or all-lowercase</font>, or <font color=LightSeaGreen>with each word capitalized</font>. It also can help improve legibility for ruby.
+
+> 👀 注：这里省略掉了一些 “考虑特定于语言的案例映射规则” 和 “在其他一些其他特定的情况下，映射规则不被任何浏览器考虑在内”，因为暂时用不到；这里略。详见原链接。
+
+| 值             | 属性                                                         |
+| :------------- | ------------------------------------------------------------ |
+| 初始值         | `none`                                                       |
+| 适用元素       | all elements. It also applies to `::first-letter` and `::first-line`. |
+| 是否是继承属性 | yes                                                          |
+| 计算值         | as specified                                                 |
+| Animation type | discrete                                                     |
+
+##### 语法
+
+```css
+/* Keyword values */
+text-transform: capitalize;
+text-transform: uppercase;
+text-transform: lowercase;
+text-transform: none;
+text-transform: full-width;
+
+/* Global values */
+text-transform: inherit;
+text-transform: initial;
+text-transform: unset;
+```
+
+##### 值
+
+- `capitalize`：这个关键字<font color=red>强制每个单词的首字母转换为大写</font>。其他的字符保留不变（它们写在元素里的文本保留原始大小写）。字母是 Unicode 字符集或者数字里定义的字符 🧪；因此单词开头的任何标点符号或者特殊符号将会被忽略。
+
+  > Authors should not expect `capitalize` to follow language-specific titlecasing conventions (such as skipping articles in English).
+
+- `uppercase`：这个关键字<font color=red>强制所有字符被转换为大写</font>。
+
+- `lowercase`：这个关键字<font color=red>强制所有字符被转换为小写</font>。
+
+- `none`：这个关键字<font color=red>阻止所有字符的大小写被转换</font>。
+
+- `full-width` ：🧪 这个关键字强制字符 — 主要是表意字符和拉丁文字 — 书写进一个方形里，并允许它们按照一般的东亚文字（比如中文或日文）对齐。
+
+摘自：[MDN US - text-transform](https://developer.mozilla.org/en-US/docs/Web/CSS/text-transform)、[MDN - text-transform](https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-transform)
+
+
+
+#### -webkit-text-stroke
+
+>  👀 注：一般用来实现文字描边。参见 [49 个在工作中常用且容易遗忘的 CSS 样式清单整理 ](https://www.cnblogs.com/CIBud/p/15004924.html) 第41条
+
+##### 摘要
+
+**`-webkit-text-stroke`** CSS属性为文本字符指定了宽 和 颜色 . 它是 [`-webkit-text-stroke-width`](https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-text-stroke-width) 和 [`-webkit-text-stroke-color`](https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-text-stroke-color) 属性的缩写。
+
+##### 语法
+
+```css
+/* 宽度和颜色属性 */
+-webkit-text-stroke: 4px navy;
+
+/* 全局属性 */
+-webkit-text-stroke: inherit;
+-webkit-text-stroke: initial;
+-webkit-text-stroke: unset;
+```
+
+##### 值
+
+- `<length>` ：文本宽。
+- `<color>` ：文本颜色。
+
+##### 常规用法
+
+```css
+/* 设置宽度和颜色 */
+-webkit-text-stroke: <length> <color>;
+
+/* 默认设置 */
+-webkit-text-stroke: inherit/initial/unset;
+```
+
+摘自：[MDN - -webkit-text-stroke](https://developer.mozilla.org/zh-CN/docs/Web/CSS/-webkit-text-stroke)
 
 
 
@@ -6449,7 +6647,7 @@ CSS 的属性 vertical-align <font color=FF0000>用来指定 <font size=4>**行�
 
 **一般可选值（被一般浏览器实现的）**
 
-- **clip：**此为默认值。这个关键字的意思是"在内容区域的极限处截断文本"，因此在字符的中间可能会发生截断。<mark>如果你的目标浏览器支持</mark> `text-overflow: ''`，<mark>为了能在两个字符过渡处截断，你可以使用一个空字符串值</mark> (`''`) <mark>作为 text-overflow 属性的值。</mark>
+- **clip：**此为默认值。这个关键字的意思是"在内容区域的极限处截断文本"，因此在字符的中间可能会发生截断。<mark>如果你的目标浏览器支持</mark>  `text-overflow: ''`，<mark>为了能在两个字符过渡处截断，你可以使用一个空字符串值</mark> (`''`) <mark>作为 text-overflow 属性的值。</mark>
 - **ellipsis：**这个关键字的意思是“用一个省略号 (`'…'`, U+2026 HORIZONTAL ELLIPSIS)来表示被截断的文本”。这个省略号被添加在内容区域中，因此会减少显示的文本。<font color=FF0000>如果空间太小到连省略号都容纳不下，那么这个省略号也会被截断</font>。
 - **\<string>：**\<string>用来表示被截断的文本。字符串内容将被添加在内容区域中，所以会减少显示出的文本。如果空间太小到连省略号都容纳不下，那么这个字符串也会被截断。
 
@@ -6457,9 +6655,31 @@ CSS 的属性 vertical-align <font color=FF0000>用来指定 <font size=4>**行�
 
 
 
-#### scroll-snap-type 🧪
+#### -webkit-overflow-scrolling
 
-> 这是一个实验中的功能
+> ⚠️ **非标准:** 该特性是非标准的，请尽量不要在生产环境中使用它！
+
+##### 概述
+
+**`-webkit-overflow-scrolling`** 属性<font color=red>控制元素在移动设备上是否使用滚动回弹效果</font>
+
+##### 值
+
+- **auto**：使用普通滚动，当手指从触摸屏上移开，滚动会立即停止。
+
+- **touch**：<font color=red>使用具有回弹效果的滚动，当手指从触摸屏上移开，内容会继续保持一段时间的滚动效果</font>。继续滚动的速度和持续的时间和滚动手势的强烈程度成正比。<font color=fuchsia>同时也会创建一个新的堆栈上下文</font>。
+
+##### 规范
+
+尚未有相关规范。另在 Apple 提供的 [Safari CSS 参考文档](https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariCSSRef/Articles/StandardCSSProperties.html#//apple_ref/css/property/-webkit-overflow-scrolling) 中有所提及。
+
+摘自：[MDN - -webkit-overflow-scrolling](https://developer.mozilla.org/zh-CN/docs/Web/CSS/-webkit-overflow-scrolling)
+
+
+
+#### scroll-snap-type
+
+> 🧪：这是一个实验中的功能
 
 scroll-snap-type CSS 属性定义在滚动容器中的一个临时点（snap point）如何被严格的执行。
 

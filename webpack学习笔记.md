@@ -8025,7 +8025,7 @@ The <font color=dodgerBlue>**`sideEffects` and `usedExports`**</font> ( more kno
 
 <font color=fuchsia>**`usedExports` relies on [terser](https://github.com/terser-js/terser)**</font>（👀 见下面的“注”） <font color=fuchsia>**to detect side effects in statements**</font> . It is a <font color=FF0000>difficult task in JavaScript</font> and <font color=FF0000>**not as effective as straightforward `sideEffects` flag**</font> . <font color=fuchsia>It also **can't skip subtree/<font size=4>dependencies</font>**</font> since the spec（规范） says that side effects need to be evaluated. While exporting function works fine , React's Higher Order Components ( HOC ) are problematic in this regard（**译**：尽管导出函数能运作如常，但 React 框架的高阶组件在这种情况下是会出问题的）.
 
-> 👀 注：terser 是一种 JS Parser。另外，terser 以及基于它的 terser-webpack-plugin 已经集成到 webpack 中，分别可以在  webpack@5 的 package.json `devDependencies` 和 `dependencies` 中找到
+> 👀 注：terser 是一种 JS Parser、mangler、compressor toolkit for ES6+。另外，terser 以及基于它的 terser-webpack-plugin 已经集成到 webpack 中，分别可以在  webpack@5 的 package.json `devDependencies` 和 `dependencies` 中找到
 
 > 👀 注：这里接下来举了个 React 的例子，挺长，且和概念没有太强的关联；再加上当前我对 React 不太了解... 这里略；详见原文。
 

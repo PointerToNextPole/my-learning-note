@@ -276,6 +276,10 @@
 
 - **story**：**需求**。了解自 “The moral of the **story** is that there are a variety of ways to `hook` into the `compiler`, each one allowing your plugin to run as it sees fit.” 。扩展阅读：[敏捷模式中“故事”和“需求”的关系是什么？ - 知乎](https://www.zhihu.com/question/26996772)
 
+- **mangle**：碾碎，撕裂。引申 -> mangler：碾碎器？（代码压缩相关）
+
+- **misc**：杂项
+
 
 #### 特殊字符
 

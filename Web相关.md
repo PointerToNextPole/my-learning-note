@@ -684,7 +684,7 @@ HTML中 尖括号 里的文本，具有特殊含义，属于标记。<font color
 
 ![The Compositing Forest](https://s2.loli.net/2022/02/08/oQWuJlNCZEjtheA.jpg)
 
-图片来自 [GPU Accelerated Compositing in Chrome](https://link.segmentfault.com/?enc=GCJMy40VlEdNxgjk5%2BzJzg%3D%3D.zS4%2Fsck9kvYrD0zGIFLXw9uvAG18cpxAl3wOPia0lOhfMzcq1J3gRUb54jDmKMeBPPa2rKSSkUYsuSm3kf8TvCSlrTx4rRID8%2BZjYX1qnEZaADlewiFFPDpz2of2XF4c)
+图片来自 [GPU Accelerated Compositing in Chrome](https://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome/)
 
 上图中，除了我们熟悉的 DOM 树外，还有 RenderObject 树，RenderLayer 树，GraphicsLayer 树，它们共同构成了 “***渲染森林***”。
 

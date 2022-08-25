@@ -247,7 +247,7 @@ mdfind -onlyin ~/Library queryTxt
 
 #### Homebrew 使用
 
-Homebrew是使用ruby开发的Mac的软件包管理器
+Homebrew 是使用 ruby 开发的 Mac的软件包管理器
 
 Homebrew 安装软件时将会<font color=FF0000>自动下载各种依赖</font>，这一点非常方便。
 
@@ -369,7 +369,15 @@ sudo killall coreaudiod
 
 ### Linux 相关
 
-#### Linux命令缩写由来
+#### 相关资料
+
+[Linux commands chect sheet - pdf](https://phoenixnap.com/kb/wp-content/uploads/2021/11/linux-commands-cheat-sheet-by-pnap.pdf)
+
+[Linux大神都是怎么记住这么多命令的？ - 知乎](https://www.zhihu.com/question/452895041)
+
+
+
+#### Linux 命令缩写由来
 
 - ls: list
 - rm: remove 
@@ -391,9 +399,9 @@ sudo killall coreaudiod
 - sync: synchronize
 - tty: teletypewriter
 
-//todo
+//TODO 还有更多
 
-https://www.zhihu.com/question/49073893/
+https://web.archive.org/web/20160812022408/https://www.zhihu.com/question/49073893/（原链接被删除了...只找到了 archive）
 
 
 
@@ -841,7 +849,7 @@ killall [参数] [进程名]
 
 #### tail 命令
 
-tail 命令<mark>将指定的文件的<font color=FF0000>**最后部分输出（tail）**</font>到标准设备，一般是终端</mark>。即：将把某个文件的最后几行显示到终端上，<mark>如果<font color=FF0000>该文件有更新，tail会自动刷新</font>，确保你看到最新的文件内容</mark>。
+tail 命令将指定的文件的<font color=FF0000>**最后部分输出（tail）**</font>到标准设备，一般是终端。即：将把某个文件的最后几行显示到终端上，如果<font color=FF0000>该文件有更新，tail会自动刷新</font>，确保你看到最新的文件内容。
 
 **命令格式：**
 
@@ -862,7 +870,7 @@ tail [ -f ] [ -c Number | -n Number | -m Number| -b Number | -k Number ] [ File 
 
 摘自：[玩转Linux命令 tail命令详解](https://www.jianshu.com/p/ee44fe0c5bae)
 
-**另外：tailf**命令等同于`tail -f -n 10`（貌似tail -f或-F默认也是打印最后10行，然后追踪文件），<mark>与tail -f不同的是：如果文件不增长，它不会去访问磁盘文件</mark>，所以tailf特别适合那些便携机上跟踪日志文件，因为它减少了磁盘访问，可以省电
+另外：`tailf` 命令等同于 `tail -f -n 10`（貌似 `tail -f` 或 `-F` 默认也是打印最后10行，然后追踪文件），<mark>与tail -f不同的是：如果文件不增长，它不会去访问磁盘文件</mark>，所以tailf特别适合那些便携机上跟踪日志文件，因为它减少了磁盘访问，可以省电
 
 
 
