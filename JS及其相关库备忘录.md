@@ -3324,7 +3324,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                         
+  >                                                                                                                                                                               
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3343,7 +3343,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                         
+  >                                                                                                                                                                               
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -6943,7 +6943,7 @@ Console 对象可以从任何全局对象中访问到，如 Window，WorkerGloba
 
 **方法**
 
-- **Console.assert()：**判断第一个参数是否为真，false 的话抛出异常并且在控制台输出相应信息。
+- **Console.assert()：**如果第一个参数为 `false` ，则将消息和堆栈跟踪记录到控制台。
 - **Console.clear()：**清空控制台，并输出 Console was cleared。
 - **Console.count()：**以参数为标识记录调用的次数，调用时在控制台打印标识以及调用次数。
 - **Console.countReset()：**重置指定标签的计数器值。
@@ -7011,11 +7011,9 @@ console.log("This is %cMy stylish message", "color: yellow; font-style: italic; 
 - word-spacing 和 word-break
 - writing-mode
 
-注意：控制台信息的默认行为与行内元素相似。为了应用 padding, margin 这类效果，你应当这样设置display: inline-block.。
+> ⚠️ 控制台信息的默认行为与行内元素相似。为了应用 padding, margin 这类效果，你应当这样设置display: inline-block.。
 
 摘自：[MDN web docs - Console](https://developer.mozilla.org/zh-CN/docs/Web/API/Console)
-
-
 
 
 
@@ -12650,6 +12648,20 @@ expr1, expr2, expr3...
 当你想要在<mark>期望一个表达式的位置包含多个表达式时，可以使用逗号操作符</mark>。<font color=FF0000>这个操作符最常用的一种情况是：for 循环中提供多个参数</font>
 
 摘自：[MDN - 逗号操作符](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Comma_Operator)
+
+> 👀 注：这个操作符其实有一些小技巧，在一些场景下会很有用（这是在 antfu 的“拖泥带水“微信交流群中学到的）。如下代码
+> ```js
+> const obj = {
+>   foo: (console.log('bar'), 'foo')
+> }
+> ```
+>
+> 将会打印出 “bar” 来，同时 obj 对象还是 `{ foo: 'foo' }` 。
+>
+> 这只是一个简单的示例，正常在项目中使用的情况，比如：要通过数组的 map 返回一个对象数组，在 map 返回对象数组中的“定义对象”中，可能需要打印出某个属性的值或类型；而在对象定义中显然不可能“直接执行”一个函数，所以可以通过 “逗号操作符” 实现，只执行函数，返回值交给 “逗号操作符” 表达式中的最后一个元素。
+>
+> 另外，在 vue template 中的插值表达式内，也可以进行类似的操作。
+
 
 #### 尾后逗号
 

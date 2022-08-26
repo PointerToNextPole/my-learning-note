@@ -2102,7 +2102,9 @@ module.exports.raw = true;
 
 > 💡 **Tip** : <font color=red>Loaders may be added inline in requests and disabled via inline prefixes</font> , which <font color=red>will impact the order in which they are "pitched" and executed</font>. See [`Rule.enforce`](https://webpack.js.org/configuration/module/#ruleenforce) for more details.
 >
->  🌏 译：loader 可以通过 request 添加或者禁用内联前缀，这将影响到 pitch 和执行的顺序。
+> 🌏 译：loader 可以通过 request 添加或者禁用内联前缀，这将影响到 pitch 和执行的顺序。
+
+> 👀 注：在 [关于 webpack 的面试题有哪些？ - Larry的回答 - 知乎](https://www.zhihu.com/question/266788138/answer/2482588858) 中看到这样一句话：“如果我们希望改变loader的执行顺序，可以通过  [`rule.enforce`](https://webpack.js.org/configuration/module/#ruleenforce) 来实现”。这一点之前好像没怎么看见过，便看了下：可选值是 `'pre' | 'post'` ；通过 `rule.enforce` 可以修改  loader 的执行顺序，即 pitch 和 loader 的顺序都会改变。
 
 For the following configuration of [`use`](https://webpack.js.org/configuration/module/#ruleuse) :
 
@@ -6993,7 +6995,7 @@ loader 按照 从右到左（或从下到上）地取值 ( evaluate ) / 执行 (
 
 可以在 `import` 语句 或 任何与 *"import" 方法同等的引用方式* 中指定 loader。<font color=FF0000>使用 `!` 将资源中的 loader 分开</font>。每个部分都会相对于当前目录解析。
 
-通过为内联 `import` 语句添加前缀，可以覆盖 (overload) 配置 中的所有 loader, preLoader 和 postLoader：
+通过为内联 `import` 语句添加前缀，可以覆盖 ( overload ) 配置 中的所有 loader，preLoader（前置 loader） 和 postLoader（后置 loader）：
 
 - 使用 `!` 前缀，将禁用所有已配置的 normal loader（普通 loader）
 
@@ -7015,7 +7017,24 @@ loader 按照 从右到左（或从下到上）地取值 ( evaluate ) / 执行 (
 
 选项可以传递查询参数，例如 `?key=value&foo=bar`，或者一个 JSON 对象，例如 `?{"key":"value","foo":"bar"}`。
 
-注意 ⚠️：在 webpack v4 版本可以通过 CLI 使用 loader，但是在 webpack v5 中被弃用。
+> ⚠️ 注意 ：在 webpack v4 版本可以通过 CLI 使用 loader，但是在 webpack v5 中被弃用。
+
+> 👀 注：这里有点没看懂，下面是 [关于 webpack 的面试题有哪些？ - Larry的回答 - 知乎](https://www.zhihu.com/question/266788138/answer/2482588858) 中摘抄的内容
+>
+> > - 所有普通 loader 可以通过在请求中加上 `!` 前缀来忽略（覆盖）。
+> > - 所有普通和前置 loader 可以通过在请求中加上 `-!` 前缀来忽略（覆盖）。
+> > - 所有普通，后置和前置 loader 可以通过在请求中加上 `!!` 前缀来忽略（覆盖）。
+> >
+> > ```js
+> > // 禁用普通 loaders
+> > import { a } from '!./file1.js';
+> > 
+> > // 禁用前置和普通 loaders
+> > import { b } from  '-!./file2.js';
+> > 
+> > // 禁用所有的 laoders
+> > import { c } from  '!!./file3.js';
+> > ```
 
 ##### loader 特性
 

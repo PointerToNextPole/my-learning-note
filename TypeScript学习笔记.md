@@ -575,6 +575,8 @@ function reverse(x: number | string): number | string | void {
 
 链接🔗：[TypeScript 类型体操通关秘籍](https://juejin.cn/book/7047524421182947366/section)
 
+> 👀 注：除了本小册的内容，神光还写了一些文章比如 [这几个 TypeScript 类型，90% 的人说不出原因](https://juejin.cn/post/7066745410194243597) 、[我读 Typescript 源码的秘诀都在这里了](https://juejin.cn/post/7015567717876908063) 也很不错，且并 **不记得** 小册上包含这些这些内容（也可能是自己还没有读到... ），建议阅读和做笔记。
+
 
 
 #### 类型是什么
@@ -726,26 +728,6 @@ function reverse(x: number | string): number | string | void {
 
 复合类型方面，JS 有 class、Array，这些 TypeScript 类型系统也都支持，但是又多加了三种类型：元组 ( Tuple )、接口 ( Interface )、枚举 ( Enum ) 。
 
-##### boolean
-
-> 👀 本来没有记录小册中关于 boolean 的内容，直到看到了神光的另一篇文章：[这几个 TypeScript 类型，90% 的人说不出原因](https://juejin.cn/post/7066745410194243597)
-
-传入的类型参数为 boolean，问 res 是啥
-
-```typescript
-type Test<T> = T extends true ? 1 : 2;
-
-type res = Test<boolean>;
-```
-
-res 也是 1 | 2
-
-<img src="https://s2.loli.net/2022/08/25/XY2bCcQxElep1i7.png" alt="image-20220825234451679" style="zoom:45%;" />
-
-<font color=fuchsia>**boolean 其实也是联合类型**，所以会把 true 和 false 分别传入求值，最后结果合并成联合类型</font>；所以是 1 | 2。
-
-摘自：[这几个 TypeScript 类型，90% 的人说不出原因](https://juejin.cn/post/7066745410194243597)
-
 ##### 元组
 
 元组 ( Tuple ) 就是 <font color=FF0000>元素个数 和 类型 **固定的** **数组类型**</font>：
@@ -754,7 +736,7 @@ res 也是 1 | 2
 type Tuple = [number, string];
 ```
 
-**注：**初次接触「元组」这个名词是在 Py，而 TS 中「元组」概念和 Py 不一样。另外，TS 的元组的写法和 JS 中的数组一样；而 TS 对数组的定义是：数组类型是指任意多个同一类型的元素构成的（**注：**这个说法下面有说 [[#重新构造做变换#Push]] ）
+> 👀 **注：**初次接触「元组」这个名词是在 Py，而 TS 中「元组」概念和 Py 不一样。另外，TS 的元组的写法和 JS 中的数组一样；而 TS 对数组的定义是：数组类型是指任意多个同一类型的元素构成的（这个说法下面有说 [[#重新构造做变换#Push]] ）
 
 ##### 接口
 
@@ -851,9 +833,59 @@ const transpiler = Transpiler.TypeScriptCompiler;
 - **unknown** 是<font color=FF0000>**未知类型**，**任何类型都可以赋值给它**，但是它 <font size=4>**不可以赋值给别的类型**</font></font>。
 - **never** <font color=FF0000>**代表不可达，比如函数抛异常的时候，返回值就是 never**</font> （**注：**“异常” 的相关示例 [[#交叉：&]] 。另外，根据下面（[[#推导：infer]]）的代码可知，在类型编程时，使用 `infer ? :` 不符合条件的，也可用 never 作为类型）。
 
-**注：**下面有说 any 和 unknown 的区别： [[#数组类型#First]] ，简单来说就是：unknown 不可给别的类型赋值，而 any 可以（除了 never ）。
+> 👀 注：下面有说 any 和 unknown 的区别： [[#数组类型#First]] ，简单来说就是：unknown 不可给别的类型赋值，而 any 可以（除了 never ）。
 
 **这些就是 TypeScript 类型系统中的全部类型了**，<mark>大部分是从 JS 中迁移过来的</mark>，比如基础类型、Array、class 等；<mark>也添加了一些类型</mark>，比如 枚举 ( enum ) 、接口 ( interface ) 、元组等，<mark>还支持了字面量类型和 void、never、any、unknown 的特殊类型</mark>。
+
+> 👀 下面是一点补充
+
+##### 神光《这几个 TypeScript 类型，90% 的人说不出原因》文章的笔记
+
+有如下类型：`Test<T>`
+
+```ts
+type Test<T> = T extends true ? 1 : 2;
+```
+
+<font color=dodgerBlue>传入的类型参数为 boolean，问 res 是？</font>
+
+```typescript
+type res = Test<boolean>;
+```
+
+res 是 `1 | 2`
+
+<img src="https://s2.loli.net/2022/08/25/XY2bCcQxElep1i7.png" alt="image-20220825234451679" style="zoom:45%;" />
+
+<font color=fuchsia>boolean 其实是 <font size=4>**联合类型**</font>，所以会把 true 和 false 分别传入求值，最后结果合并成联合类型</font>；所以是 `1 | 2` 。
+
+<font color=dodgerBlue>**传入的类型参数为 any，问 res 是 ？**</font>
+
+```ts
+type res = Test<any>;
+```
+
+res 是 `1 | 2`
+
+<img src="https://s2.loli.net/2022/08/26/qr9ujCOHslfJmyi.png" alt="image-20220826001048827" style="zoom:45%;" />
+
+<font color=red>any **不是**联合类型</font>，这里是因为，<font color=fuchsia>**条件类型对 any 做了特殊处理：如果左边是 any，那么直接把 trueType 和 falseType 合并成联合类型返回**</font>。
+
+<font color=dodgerBlue>**传入的类型参数为 never ，问 res 是 ？**</font>
+
+```ts
+type res = Test<never>;
+```
+
+res 是 `never` 。
+
+<img src="https://s2.loli.net/2022/08/26/OBaiZm78qrxuySA.png" alt="image-20220826001536786" style="zoom:45%;" />
+
+这里确实也是 TS 的特殊处理，**当条件类型左边是 never 时，直接返回 never**。
+
+> 👀 注：这后面还有内容，因为考虑到是分析源码的内容，且暂时较忙；等等和 [我读 Typescript 源码的秘诀都在这里了](https://juejin.cn/post/7015567717876908063) 一起阅读 // TODO
+
+摘自：[这几个 TypeScript 类型，90% 的人说不出原因](https://juejin.cn/post/7066745410194243597)
 
 
 
