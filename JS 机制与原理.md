@@ -6300,8 +6300,8 @@ import packageMain from 'commonjs-package';
 import { method } from 'commonjs-package';
 ```
 
-> ##### 补充参考
->
+##### 区别的 补充参考
+
 > ESM scripts *can* `import` CJS scripts, but only by using the “default import” syntax `import _ from 'lodash'` , not the “named import” syntax `import {shuffle} from 'lodash'` , which is a hassle if the CJS script uses named exports.
 >
 > <font color=FF0000>ESM scripts *can* `require()` CJS scripts</font>, even with named exports, but it’s typically not worth the trouble, because it requires even more boilerplate, and, <font color=FF0000>worst of all, bundlers like Webpack and Rollup don’t/won’t know how to work with ESM scripts that use `require()`</font> .
@@ -6320,17 +6320,17 @@ import { method } from 'commonjs-package';
 
 尽管如此，<font color=FF0000>require 命令不能加载 .mjs 文件，会报错</font>；<font color=FF0000>**只有 import 命令才可以加载 .mjs 文件**</font>。反过来，<font color=FF0000>**.mjs 文件里面也不能使用require 命令，必须使用 import**</font> ；所以在平时开发当中，<font color=FF0000>ES6 Module 与 CommonJS 模块尽量不要混用</font>。
 
-> ##### 为什么 CJS 不能加载 ESM
->
+##### 补充：为什么 CJS 不能加载 ESM
+
 > The simplest reason that <font color=FF0000>CJS can’t require() ESM is that ESM can do top-level await, but CJS scripts can't</font>.
 >
 > <font color=FF0000 size=4>**[Top-level](https://v8.dev/features/top-level-await) `await` lets us use the `await` keyword outside of an `async` [function](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await) , at the “top level.”**</font>
 >
 > ... 关于 top-level await 的内容，略。详见原文，以及 V8 团队博客 [Top-level `await`](https://v8.dev/features/top-level-await)
 >
->  If you dive in, you’ll find that top-level await isn’t even the only problematic case… <font color=FF0000>what do you think happens if you synchronously require ESM which can asynchronously import some CJS which can synchronously require some ESM</font>? What you get is a sync/async zebra stripe of death, that’s what! <mark>Top-level await is just the last nail in the coffin, and the easiest to explain</mark>.)
+> If you dive in, you’ll find that top-level await isn’t even the only problematic case… <font color=FF0000>what do you think happens if you synchronously require ESM which can asynchronously import some CJS which can synchronously require some ESM</font>? What you get is a sync/async zebra stripe of death, that’s what! <mark>Top-level await is just the last nail in the coffin, and the easiest to explain</mark>.)
 >
-> 摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1)
+>  摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1)
 
 #### CJS 和 ESM 区别总结
 

@@ -4160,3 +4160,23 @@ TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类
 //TODO https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html
 
 //TODO 《Programming Typescript》Appendix E. Triple-Slash Directives
+
+
+
+#### TS 的鸭子类型
+
+> 👀 注：关于鸭子类型的介绍，详见 [[CS知识杂谈#鸭子类型]]
+
+<font color=fuchsia>TypeScript 的类型系统是 “结构类型系统”</font> ( Structural type system )，任两个以相同结构所描述的值的类型都是等价的（👀 这句话没完全看懂）。<font color=dodgerBlue>与之相反的是</font>，<font color=fuchsia>“标明类型系统” Nominative type system：表示类型若要相等，就必须具有相同的“名字”</font>。
+
+`is` 的作用是：断言返回布尔类型
+
+摘自：[TypeScript类型系统（5/5）-类型编程篇 - Ethan Ruan的文章 - 知乎](https://zhuanlan.zhihu.com/p/145679056)
+
+> 👀 注：看了下 [关于 TS ，你必须知道的鸭子?类型](https://jishuin.proginn.com/p/763bfbd6f46f) 其中结合 Py 和 JS 再引入 TS 的鸭子类型，（译我当前的水平）没完全看懂...有空再看下。另外，还提到了 TS 的 `is` 关键字及 类型谓词 ”type predicates“  ，还有“类型保护”；有必要去了解下
+
+
+
+#### is 关键字
+
+// TODO 参见 [TS handbook V2 - narrowing # Using type predicates](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates) 以及 [StackOverflow - What does the `is` keyword do in typescript?](https://stackoverflow.com/questions/40081332/what-does-the-is-keyword-do-in-typescript)

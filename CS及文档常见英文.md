@@ -280,6 +280,8 @@
 
 - **misc**：杂项
 
+- **predicate**：谓词，比如 TS 中的 “type predicates”（ 类型谓词 ）
+
 
 #### 特殊字符
 

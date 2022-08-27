@@ -375,6 +375,8 @@ sudo killall coreaudiod
 
 [Linux大神都是怎么记住这么多命令的？ - 知乎](https://www.zhihu.com/question/452895041)
 
+RUNOOB Linux 命令总结：[Linux 命令大全](https://www.runoob.com/linux/linux-command-manual.html)
+
 
 
 #### Linux 命令缩写由来
@@ -495,7 +497,7 @@ rm -rf folderName # -r表示递归，-f表示强行删除
 
 
 
-#### 管道与 `|`
+#### 管道 与 `|`
 
 **管道定义：**在类Unix操作系统（以及一些其他借用了这个设计的操作系统，如 Windows）中，管道（英语：Pipeline）是<mark>一系列将标准输入输出<font color=FF0000>**链接**</font>起来的进程</mark>，**<mark>其中每一个<font color=FF0000>进程的输出被直接作为下一个进程的输入</font></mark>**。 <font color=FF0000>每一个链接都由匿名管道实现</font>[来源请求]。管道中的组成元素也被称作过滤程序。
 
@@ -580,7 +582,9 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
 
 
 
-#### Shell 特殊变量： `$0` , `$#` , `$*` , `$@` , `$?` , `$$` , `$!` , `$_` 和命令行参数 `$n`
+#### Shell 特殊变量
+
+#####  `$0` , `$#` , `$*` , `$@` , `$?` , `$$` , `$!` , `$_` 和命令行参数 `$n`
 
 变量名只能包含数字、字母和下划线，因为<font color=FF0000>某些包含其他字符的变量有特殊含义，这样的变量被称为**特殊变量**</font>。
 
@@ -612,19 +616,19 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
   - **127** ：未找到要运行的命令
   - **128** ：命令被系统强制结束
 
-- **\$n ：** <font color=FF0000>传递给脚本或函数的参数</font>。<mark>n 是一个数字，表示第几个参数。例如，第一个参数是 \$1，第二个参数是 \$2</mark>。
+- **\$n ：** <font color=FF0000>传递给脚本或函数的参数</font>。n 是一个数字，表示第几个参数。例如，第一个参数是 `$1` ，第二个参数是 `$2` 。
 
-**其中：\$* 和 \$@ 的区别**
+##### `$*` 和 `$@` 的区别
 
-\$* 和 \$@ 都表示传递给函数或脚本的所有参数，不被双引号`" "`包含时，都以"\$1" \"$2" … "\$n" 的形式输出所有参数。
+`$*` 和 `$@` 都表示传递给函数或脚本的所有参数，不被双引号`" "`包含时，都以 `$1` ，`$2` … `$n` 的形式输出所有参数。
 
-但是当它们被双引号" "包含时，<font color=FF0000>**"\$*"** </font>会将<font color=FF0000>所有的参数作为一个整体</font>，以<font color=FF0000>"\$1 \$2 … \$n"的形式输出所有参数</font>；<font color=FF0000>**"\$@"** </font>会将<font color=FF0000>各个参数分开</font>，以<font color=FF0000>"\$1" "\$2" … "\$n" 的形式输出所有参数</font>。
+但是当它们被双引号`" "`包含时，<font color=FF0000>**`$*`** </font>会将<font color=FF0000>所有的参数作为一个整体</font>，以 <font color=FF0000>`$1`，`$2` … `$n` 的形式输出所有参数</font>；<font color=FF0000>**`$@`** </font>会将<font color=FF0000>各个参数分开</font>，以<font color=FF0000> `$1`，`$2` … `$n` 的形式输出所有参数</font>。
 
 摘自：[Shell特殊变量： \$0, \$#, \$*, \$@, \$?, \$$, \$!,\$_和命令行参数\$n](https://blog.csdn.net/w746805370/article/details/51044352)
 
-**补充：!$**
+##### `!$`
 
->  !$ refers to the last argument from the previous bash command.  	
+>  `!$` refers to the last argument from the previous bash command.  	
 >
 > **翻译：!$表示：上一条bash命令的最后一个参数**
 
@@ -634,12 +638,12 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
 
 #### tree 命令
 
-**最常用的两个规则：**
+##### 最常用的两个规则
 
 - **tree -L N**  查看文件夹的树状结构，最多深入N层
 - **-a**               显示所有文件和目录（包括隐藏文件）
 
-**更详细的：**
+##### 更详细的
 
 - <font color=FF0000>**-a**</font>   显示所有文件和目录。
 - **-A**   使用ASNI绘图字符显示树状图而非以ASCII字符组合。
@@ -660,7 +664,7 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
 - <font color=FF0000>**-s**</font>   <font color=FF0000>列出文件或目录大小</font>。
 - **-t**   用文件和目录的更改时间排序。
 - <font color=FF0000>**-u**</font>   <font color=FF0000>列出文件或目录的拥有者名称，没有对应的名称时，则显示用户识别码</font>。
-- **-x**   将范围局限在现行的文件系统中，若指定目录下的某些子目录，其存放于另一个文件系统上，则将该子目录予以排除在寻找范围外。
+- **-x** 将范围局限在现行的文件系统中，若指定目录下的某些子目录，其存放于另一个文件系统上，则将该子目录予以排除在寻找范围外
 
 摘自：[命令行使用之tree命令](https://www.jianshu.com/p/f117be185c6f)
 
@@ -668,7 +672,7 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
 
 #### grep 命令
 
-**grep**（**<font color=FF0000>global</font>** search **<font color=FF0000>regular expression(RE)</font>** and **<font color=FF0000>print</font>** out the line，全面搜索正则表达式并把行打印出来）是一种强大的<font color=FF0000>文本搜索工具</font>，它<font color=FF0000>能使用正则表达式搜索文本，并把匹配的行打印出来</font>。
+**grep**（ **<font color=FF0000>global</font>** search **<font color=FF0000>regular expression(RE)</font>** and **<font color=FF0000>print</font>** out the line，全面搜索正则表达式并把行打印出来）是一种强大的<font color=FF0000>文本搜索工具</font>，它<font color=FF0000>能使用正则表达式搜索文本，并把匹配的行打印出来</font>。
 
 摘自：[linux命令大全 - grep命令](https://man.linuxde.net/grep)
 
@@ -714,57 +718,55 @@ ps 命令是 Process Status 的缩写，用来<font color=FF0000>列出系统中
 
 要对进程进行监测和控制，首先必须要了解当前进程的情况，也就是需要查看当前进程，而 ps 命令就是最基本同时也是非常强大的进程查看命令。<font color=FF0000>使用该命令可以确定：有哪些进程正在运行和运行的状态、进程是否结束、进程有没有僵死、哪些进程占用了过多的资源等等</font>。总之大部分信息都是可以通过执行该命令得到的。
 
-**linux上进程有5种状态:** 
+##### linux 上进程有 5 种状态
 
-|                           状态名称                           |                    状态码                     |
-| :----------------------------------------------------------: | :-------------------------------------------: |
-|               运行(正在运行或在运行队列中等待)               |        R 运行 runnable (on run queue)         |
-|     中断(休眠中, 受阻, 在等待某个条件的形成或接受到信号)     |                S 中断 sleeping                |
+| 状态名称                                                     | 状态码                                        |
+| :----------------------------------------------------------- | :-------------------------------------------- |
+| 运行(正在运行或在运行队列中等待)                             | R 运行 runnable (on run queue)                |
+| 中断(休眠中, 受阻, 在等待某个条件的形成或接受到信号)         | S 中断 sleeping                               |
 | 不可中断(收到信号不唤醒和不可运行, 进程必须等待直到有中断发生) | D 不可中断 uninterruptible sleep (usually IO) |
-| 僵死(进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放) |      Z 僵死 a defunct (”zombie”) process      |
-| 停止(进程收到SIGSTOP, SIGSTP, SIGTIN, SIGTOU信号后停止运行运行) |           T 停止 traced or stopped            |
+| 僵死(进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放) | Z 僵死 a defunct (”zombie”) process           |
+| 停止(进程收到SIGSTOP, SIGSTP, SIGTIN, SIGTOU信号后停止运行运行) | T 停止 traced or stopped                      |
 
-**命令参数：**
+##### 命令参数
 
-```bash
-a             #显示所有进程
--a            #显示同一终端下的所有程序
--A            #显示所有进程
-c             #显示进程的真实名称
--N            #反向选择
--e            #等于“-A”
-e             #显示环境变量
-f             #显示程序间的关系
--H            #显示树状结构
-r             #显示当前终端的进程
-T             #显示当前终端的所有程序
-u             #指定用户的所有进程
--au           #显示较详细的资讯
--aux          #显示所有包含其他使用者的行程 
--C            #<命令> 列出指定命令的状况
---lines       #<行数> 每页显示的行数
---width       #<字符数> 每页显示的字符数
---help        #显示帮助信息
---version     #显示版本显示
-```
+- `a`         ：显示所有进程
+- `-a`        ：显示同一终端下的所有程序
+- `-A`        ：显示所有进程
+- `c`         ：显示进程的真实名称
+- `-N`        ：反向选择
+- `-e`        ：等于“-A”
+- `e`         ：显示环境变量
+- `f`         ：显示程序间的关系
+- `-H`        ：显示树状结构
+- `r`         ：显示当前终端的进程
+- `T`         ：显示当前终端的所有程序
+- `u`         ：指定用户的所有进程
+- `-au`       ：显示较详细的资讯
+- `-aux`      ：显示所有包含其他使用者的行程 
+- `-C`        ：<命令> 列出指定命令的状况
+- `--lines`   ：<行数> 每页显示的行数
+- `--width`   ：<字符数> 每页显示的字符数
+- `--help`    ：显示帮助信息
+- `--version` ：显示版本显示
 
 摘自：[每天一个linux命令（41）：ps命令](https://www.cnblogs.com/peida/archive/2012/12/19/2824418.html)
 
-`ps [options]` 输出示例：
+##### `ps [options]` 输出示例
 
 <img src="https://i.loli.net/2020/10/26/cPDQRw63uYlG4a5.png" alt="ageYqI.png" style="zoom:55%;" />
 
-- USER: 行程拥有者
-- PID: pid
-- %CPU: 占用的 CPU 使用率
-- %MEM: 占用的记忆体使用率
-- VSZ: 占用的虚拟记忆体大小
-- RSS: 占用的记忆体大小
-- TTY: 终端的次要装置号码 (minor device number of tty)
-- STAT: 该行程的状态（上面的 R S D Z T）
-- START: 行程开始时间
-- TIME: 执行的时间
-- COMMAND:所执行的指令
+- `USER` ：行程拥有者
+- `PID` ：pid
+- `%CPU` ：占用的 CPU 使用率
+- `%MEM` ：占用的记忆体使用率
+- `VSZ` ：占用的虚拟记忆体大小
+- `RSS` ：占用的记忆体大小
+- `TTY` ：终端的次要装置号码 (minor device number of tty)
+- `STAT` ：该行程的状态（上面的 R S D Z T）
+- `START` ：行程开始时间
+- `TIME` ：执行的时间
+- `COMMAND` ：执行的指令
 
 摘自：[RUNOOB - Linux ps命令](https://www.runoob.com/linux/linux-comm-ps.html)
 
@@ -772,30 +774,28 @@ u             #指定用户的所有进程
 
 #### killall
 
-Linux系统中的killall命令用于杀死指定名字的进程（kill processes by name）。我们可以使用kill命令杀死指定进程PID的进程，如果要找到我们需要杀死的进程，我们还需要在之前使用ps等命令再配合grep来查找进程，而killall把这两个过程合二为一，是一个很好用的命令。
+Linux 系统中的 killall 命令用于杀死指定名字的进程 ( kill processes by name )。我们可以使用kill命令杀死指定进程 PID 的进程，如果要找到我们需要杀死的进程，我们还需要在之前使用 `ps`等命令再配合 `grep` 来查找进程，而 `killall` 把这两个过程合二为一，是一个很好用的命令。
 
-**命令格式：**
+##### 命令格式
 
 ```sh
 killall [参数] [进程名]
 ```
 
-**命令参数：**
+##### 命令参数
 
-```sh
--Z         只杀死拥有scontext 的进程
--e         要求匹配进程名称
--I         忽略小写
--g         杀死进程组而不是进程
--i         交互模式，杀死进程前先询问用户
--l         列出所有的已知信号名称
--q         不输出警告信息
--s         发送指定的信号
--v         报告信号是否成功发送
--w         等待进程死亡
---help     显示帮助信息
---version  显示版本显示
-```
+- `-Z`        ：只杀死拥有scontext 的进程
+- `-e`        ：要求匹配进程名称
+- `-I`        ：忽略小写
+- `-g`        ：杀死进程组而不是进程
+- `-i`        ：交互模式，杀死进程前先询问用户
+- `-l`        ：列出所有的已知信号名称
+- `-q`        ：不输出警告信息
+- `-s`        ：发送指定的信号
+- `-v`        ：报告信号是否成功发送
+- `-w`        ：等待进程死亡
+- `--help`    ：显示帮助信息
+- `--version` ：显示版本显示
 
 摘自：[每天一个linux命令（43）：killall命令](https://www.cnblogs.com/peida/archive/2012/12/21/2827366.html)
 
@@ -815,11 +815,11 @@ killall [参数] [进程名]
 
 ##### make install
 
-`make install`是用来安装的，它也<font color=FF0000>从Makefile中读取指令</font>，<font color=FF0000>安装到指定的位置</font>
+`make install` 是用来安装的，它也<font color=FF0000>从Makefile中读取指令</font>，<font color=FF0000>安装到指定的位置</font>
 
 摘自：[Linux 命令详解（三）./configure、make、make install 命令](https://www.cnblogs.com/tinywan/p/7230039.html)
 
-👀 注：关于 make、makefile、cmake 等的区别，可以参考：[make makefile cmake qmake都是什么，有什么区别？ - 知乎](https://www.zhihu.com/question/27455963) 这里暂时不做笔记。
+> 👀 注：关于 make、makefile、cmake 等的区别，可以参考：[make makefile cmake qmake都是什么，有什么区别？ - 知乎](https://www.zhihu.com/question/27455963) 这里暂时不做笔记。
 
 
 
@@ -859,18 +859,18 @@ tail [ -f ] [ -c Number | -n Number | -m Number| -b Number | -k Number ] [ File 
 
 **参数说明：**
 
-- -f         等同于`--follow=descriptor`，该参数用于<font color=FF0000>**监视File文件增长（非常重要）**</font>。
-- -F        等同于`--follow=name --retry`，根据文件名进行追踪，并保持重试，即该文件被删除或改名后，如果再次创建相同的文件名，会继续追踪
-- -c        Number 从 Number 字节位置读取指定文件。
-- -n       Number 从 Number 行位置读取指定文件。
-- -m      Number 从 Number 多字节字符位置读取指定文件，比如你的文件如果包含中文字，如果指定-c参数，可能导致截断，但使用-m则会避免该问题。
-- -b       Number 从 Number 表示的512字节块位置读取指定文件。
-- -k       Number 从 Number 表示的1KB块位置读取指定文件。
-- File    指定操作的目标文件名
+- `-f`  ：同于 `--follow=descriptor` ，该参数用于<font color=FF0000>**监视File文件增长（非常重要）**</font>。
+- `-F` ：等同于 `--follow=name --retry` ，根据文件名进行追踪，并保持重试，即该文件被删除或改名后，如果再次创建相同的文件名，会继续追踪
+- `-c` ：Number 从 Number 字节位置读取指定文件。
+- `-n` ：Number 从 Number 行位置读取指定文件。
+- `-m `：Number 从 Number 多字节字符位置读取指定文件，比如你的文件如果包含中文字，如果指定 `-c` 参数，可能导致截断，但使用 `-m` 则会避免该问题。
+- `-b` ：Number 从 Number 表示的 512 字节块位置读取指定文件。
+- `-k` ：Number 从 Number 表示的 1KB 块位置读取指定文件。
+- `File` ：指定操作的目标文件名
 
 摘自：[玩转Linux命令 tail命令详解](https://www.jianshu.com/p/ee44fe0c5bae)
 
-另外：`tailf` 命令等同于 `tail -f -n 10`（貌似 `tail -f` 或 `-F` 默认也是打印最后10行，然后追踪文件），<mark>与tail -f不同的是：如果文件不增长，它不会去访问磁盘文件</mark>，所以tailf特别适合那些便携机上跟踪日志文件，因为它减少了磁盘访问，可以省电
+另外：`tailf` 命令等同于 `tail -f -n 10`（貌似 `tail -f` 或 `-F` 默认也是打印最后10行，然后追踪文件），<font color=red>与 `tail -f` 不同的是：如果文件不增长，它不会去访问磁盘文件</font>，所以tailf特别适合那些便携机上跟踪日志文件，因为它减少了磁盘访问，可以省电
 
 
 
@@ -878,30 +878,28 @@ tail [ -f ] [ -c Number | -n Number | -m Number| -b Number | -k Number ] [ File 
 
 more 命令，<mark>功能类似 cat</mark> ，cat 命令是整个文件的内容从上到下显示在屏幕上。 <mark>more会以<font color=FF0000>一页一页的显示</font>方便使用者逐页阅读，而最基本的指令就是<font color=FF0000>按空白键（space）就往下一页显示</font></mark>，<font color=FF0000>按 b 键就会往回（back）一页显示</font>，而且还有搜寻字串的功能 。more命令从前向后读取文件，因此在启动时就加载整个文件。
 
-#### <font color=FF0000>另外，值得注意的是：space显示下一页，b显示上一页是在linux中一个较为常见的用法，比如man命令也是这样</font>
+<font color=FF0000>另外，值得注意的是：space显示下一页，b显示上一页是在linux中一个较为常见的用法，比如man命令也是这样</font>
 
-**命令格式：**
+##### 命令格式
 
-```bash
+```sh
 more [-dlfpcsu] [-num] [+/pattern] [+linenum] [file...]
 ```
 
-**命令参数：**
+##### 命令参数
 
-```bash
-+num        #从第n行开始显示
--num        #定义屏幕大小为n行
-+/pattern   #在每个档案显示前搜寻该字串（pattern），然后从该字串前两行之后开始显示 
--c          #从顶部清屏，然后显示
--d          #提示“Press space to continue，’q’ to quit（按空格键继续，按q键退出）”，禁用响铃功能
--f 		      #计算行数时，以实际上的行数，而非自动换行过后的行数（有些单行字数太长的会被扩展为两行或两行以上）
--l          #忽略Ctrl+l（换页）字符
--p          #通过清除窗口而不是滚屏来对文件进行换页，与-c选项相似
--s          #把连续的多个空行显示为一行
--u          #把文件内容中的下画线去掉
-```
+- `+num`      ：从第n行开始显示
+- `-num`      ：定义屏幕大小为n行
+- `+/pattern` ：在每个档案显示前搜寻该字串（pattern），然后从该字串前两行之后开始显示 
+- `-c`        ：从顶部清屏，然后显示
+- `-d`        ：提示“Press space to continue，’q’ to quit（按空格键继续，按q键退出）”，禁用响铃功能
+- `-f` 		    ：计算行数时，以实际上的行数，而非自动换行过后的行数（有些单行字数太长的会被扩展为两行或两行以上）
+- `-l`        ：忽略Ctrl+l（换页）字符
+- `-p`        ：通过清除窗口而不是滚屏来对文件进行换页，与-c选项相似
+- `-s`        ：把连续的多个空行显示为一行
+- `-u`        ：把文件内容中的下画线去掉
 
-**常用操作命令：**
+##### 常用操作命令
 
 - Enter      向下n行，需要定义。默认为1行
 - ⌃ + F       向下滚动一屏
@@ -925,7 +923,7 @@ curl由于可自定义各种请求参数所以在模拟web请求方面更擅长�
 
 
 
-#### Linux下不同的文件类型有不同的颜色
+#### Linux 下不同的文件类型有不同的颜色
 
 - <font style=color:blue>蓝色</font>：表示目录;
 - <font style=color:green>绿色</font>：表示可执行文件，可执行的程序;
@@ -941,19 +939,43 @@ curl由于可自定义各种请求参数所以在模拟web请求方面更擅长�
 
 #### cat  (concatenate)
 
-cat命令<font color=FF0000>连接文件并打印到标准输出设备上</font>，cat经常用来显示文件的内容，类似于下的type命令。
+cat 命令<font color=FF0000>连接文件并打印到标准输出设备上</font>，cat 经常用来显示文件的内容，类似于下的 type 命令。
 
-注意：当文件较大时，文本在屏幕上迅速闪过（滚屏），用户往往看不清所显示的内容。因此，一般用more等命令分屏显示。为了控制滚屏，可以按Ctrl+S键，停止滚屏；按Ctrl+Q键可以恢复滚屏。按Ctrl+C（中断）键可以终止该命令的执行，并且返回Shell提示符状态。
+注意：当文件较大时，文本在屏幕上迅速闪过（滚屏），用户往往看不清所显示的内容。因此，一般用 more 等命令分屏显示。为了控制滚屏，可以按 Ctrl+S 键，停止滚屏；按 Ctrl+Q 键可以恢复滚屏。按 Ctrl+C（中断）键可以终止该命令的执行，并且返回 Shell 提示符状态。
 
 
 
-### Linux 权限详解
+#### wc 命令
 
-Linux 下文件的权限类型一般包括<font color=FF0000>读，写，执行</font>。对应字母为<font color=FF0000> r、w、x</font>。
+Linux `wc` 命令用于计算字数。
+
+利用 `wc` 指令我们可以计算文件的 Byte数、字数、或是列数，若不指定文件名称、或是所给予的文件名为"-"，则 `wc` 指令会从标准输入设备读取数据。
+
+##### 语法
+
+```sh
+wc [-clw][--help][--version][文件...]
+```
+
+##### 参数
+
+- `-c` 或 `--bytes` 或 `--chars` 只显示Bytes数
+- `-l` 或 `--lines` 显示行数
+- `-w` 或 `--words` 只显示字数
+- `--help` 在线帮助
+- `--version` 显示版本信息
+
+摘自：[RUNOOB - Linux wc命令](https://www.runoob.com/linux/linux-comm-wc.html)
+
+
+
+#### Linux 权限详解
+
+Linux 下文件的权限类型一般包括 <font color=FF0000>读，写，执行</font>。对应字母为<font color=FF0000> r、w、x</font>。
 
 Linux 下<font color=FF0000>权限的粒度</font>有 <font color=FF0000>拥有者 、群组 、其它组</font> 三种。每个文件都可以针对三个粒度，设置不同的 r/ w/ x (读/ 写/ 执行) 权限。通常情况下，一个文件只能归属于一个用户和组， 如果其它的用户想有这个文件的权限，则可以将该用户加入具备权限的群组，一个用户可以同时归属于多个组。
 
-##### **chmod命令语法**
+##### chmod 命令语法
 
 ```bash
 chmod [可选项] <mode> <file...>  # 更改文件权限
@@ -966,13 +988,13 @@ chmod [可选项] <mode> <file...>  # 更改文件权限
 > **[可选项]**
 >
 > ```bash
->   -c, --changes          like verbose but report only when a change is made (若该档案权限确实已经更改，才显示其更改动作)
+>   -c, --changes       like verbose but report only when a change is made (若该档案权限确实已经更改，才显示其更改动作)
 >   -f, --silent, --quiet  suppress most error messages  （若该档案权限无法被更改也不要显示错误讯息）
 >   -v, --verbose          output a diagnostic for every file processed（显示权限变更的详细资料）
 >   --no-preserve-root  do not treat '/' specially (the default)
 >   --preserve-root    fail to operate recursively on '/'
 >   --reference=RFILE  use RFILE's mode instead of MODE values
->   -R, --recursive        change files and directories recursively （以递归的方式对目前目录下的所有档案与子目录进行相同的权限变更)
+>   -R, --recursive  change files and directories recursively 以递归的方式对目前目录下的所有档案与子目录进行相同的权限变更
 >   --help		显示此帮助信息
 >   --version		显示版本信息
 > ```
@@ -1047,15 +1069,15 @@ chown [-cfhvR] [--help] [--version] user[:group] file...
 
 **参数** :
 
-- user : 新的文件拥有者的使用者 ID
-- group : 新的文件拥有者的使用者组(group)
-- -c : 显示更改的部分的信息
-- -f : 忽略错误信息
-- -h :修复符号链接
-- -v : 显示详细的处理信息
-- -R : 处理指定目录以及其子目录下的所有文件
-- --help : 显示辅助说明
-- --version : 显示版本
+- `user` : 新的文件拥有者的使用者 ID
+- `group` : 新的文件拥有者的使用者组(group)
+- `-c` : 显示更改的部分的信息
+- `-f` : 忽略错误信息
+- `-h` :修复符号链接
+- `-v` : 显示详细的处理信息
+- `-R` : 处理指定目录以及其子目录下的所有文件
+- `--help` : 显示辅助说明
+- `--version` : 显示版本
 
 摘自：[Linux chown 命令](https://www.runoob.com/linux/linux-comm-chown.html)
 
@@ -1063,39 +1085,41 @@ chown [-cfhvR] [--help] [--version] user[:group] file...
 
 #### which 命令
 
-which指令会在环境变量$PATH设置的目录里查找符合条件的文件
+which 指令会在环境变量 `$PATH` 设置的目录里查找符合条件的文件
 
 **参数：**
 
-- n<文件名长度> 　指定文件名长度，指定的长度必须大于或等于所有文件中最长的文件名。
-- -p<文件名长度> 　与-n参数相同，但此处的<文件名长度>包括了文件的路径。
-- -w 　指定输出时栏位的宽度。
-- -V 　显示版本信息。
+- `n<文件名长度>` ：指定文件名长度，指定的长度必须大于或等于所有文件中最长的文件名。
+- `-p<文件名长度>` ：与 `-n` 参数相同，但此处的 `<文件名长度>` 包括了文件的路径。
+- `-w` ：指定输出时栏位的宽度。
+- `-V` ：显示版本信息。
+
+摘自：[RUNOOB - Linux which命令](https://www.runoob.com/linux/linux-comm-which.html)
 
 
 
 #### lsof 命令
 
-lsof（list open files）是一个查看当前系统文件的工具。在linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。如传输控制协议 (TCP) 和用户数据报协议 (UDP) 套接字等，系统在后台都为该应用程序分配了一个文件描述符，该文件描述符提供了大量关于这个应用程序本身的信息。
+lsof ( list open files ) 是一个查看当前系统文件的工具。在 linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。如 传输控制协议 ( TCP ) 和 用户数据报协议 ( UDP ) 套接字等，系统在后台都为该应用程序分配了一个文件描述符，该文件描述符提供了大量关于这个应用程序本身的信息。
 
 **参数**
 
-- -a 列出打开文件存在的进程
-- -c<进程名> 列出指定进程所打开的文件
-- -g 列出GID号进程详情
-- -d<文件号> 列出占用该文件号的进程
-- +d<目录> 列出目录下被打开的文件
-- +D<目录> 递归列出目录下被打开的文件
-- -n<目录> 列出使用NFS的文件
-- -i<条件> 列出符合条件的进程。（4、6、协议、:端口、 @ip ）
-- -p<进程号> 列出指定进程号所打开的文件
-- -u 列出UID号进程详情
-- -h 显示帮助信息
-- -v 显示版本信息
+- `-a` ：列出打开文件存在的进程
+- `-c<进程名>` ：列出指定进程所打开的文件
+- `-g` ：列出GID号进程详情
+- `-d<文件号>` ：列出占用该文件号的进程
+- `+d<目录>` ：列出目录下被打开的文件
+- `+D<目录>` ：递归列出目录下被打开的文件
+- `-n<目录>` ：列出使用NFS的文件
+- `-i<条件>` ：列出符合条件的进程。（4、6、协议、:端口、 @ip ）
+- -p<进程号>` ：列出指定进程号所打开的文件
+- `-u` ：列出UID号进程详情
+- `-h` ：显示帮助信息
+- `-v` ：显示版本信息
 
 
 
-#### Unix信号
+#### Unix 信号
 
 在计算机科学中，<font color=FF0000>信号（英语：Signals）是Unix、类Unix以及其他POSIX兼容的**操作系统中进程间通讯的一种有限制的方式**</font>。它<font color=FF0000>**是一种<font size=4> 异步 </font>的通知机制，用来提醒进程一个事件已经发生**</font>。<font color=FF0000>当一个信号发送给一个进程，操作系统中断了进程正常的控制流程，此时，**任何非原子操作都将被中断**</font>。<font color=FF0000>**如果进程定义了信号的处理函数，那么它将被执行，否则就执行默认的处理函数**</font>。
 
@@ -1220,6 +1244,64 @@ lsof（list open files）是一个查看当前系统文件的工具。在linux�
 #### ifconfig
 
 
+
+#### ln 命令
+
+Linux `ln` ( link files ) 命令是一个非常重要命令，它的功能是<font color=fuchsia>为某一个文件在另外一个位置建立一个同步的链接</font>。
+
+当我们需要在不同的目录，用到相同的文件时，我们不需要在每一个需要的目录下都放一个必须相同的文件，我们只要在某个固定的目录，放上该文件，然后在 其它的目录下用 `ln` 命令链接（link ) 它就可以，不必重复的占用磁盘空间。
+
+##### 语法
+
+```sh
+ln [参数][源文件或目录][目标文件或目录]
+```
+
+###### 参数格式
+
+- 必要参数：[-bdfinsvF] [-S backup-suffix] [-V {numbered,existing,simple}]
+
+- 选择参数：[--help] [--version]
+
+##### 命令功能
+
+Linux 文件系统中，有所谓的<font color=red>链接 ( link )</font>，我们<font color=red>可以将其视为档案的别名</font>；<font color=red>而链接又可分为两种：硬链接( hard link ) 与 软链接( symbolic link )</font>，<font color=fuchsia>硬链接的意思是一个档案可以有多个名称</font>，而软链接的方式则是产生一个特殊的档案，该档案的内容是指向另一个档案的位置。<font color=fuchsia>硬链接是存在同一个文件系统中，而软链接却可以跨越不同的文件系统</font>。
+
+不论是硬链接或软链接都不会将原本的档案复制一份，只会占用非常少量的磁碟空间。
+
+##### 软链接
+
+- 软链接，以路径的形式存在。类似于 Windows 操作系统中的快捷方式
+- 软链接可以 跨文件系统 ，硬链接不可以
+- <font color=fuchsia>软链接可以对一个不存在的文件名进行链接</font>
+- <font color=red>软链接可以对目录进行链接</font>
+
+##### 硬链接
+
+- 硬链接，以文件副本的形式存在。但不占用实际空间。
+- 不允许给目录创建硬链接
+- 硬链接只有在同一个文件系统中才能创建
+
+##### 命令参数
+
+###### 必要参数
+
+- `-b` ：删除，覆盖以前建立的链接
+- `-d` ：允许超级用户制作目录的硬链接
+- `-f` ：强制执行
+- `-i` ：交互模式，文件存在则提示用户是否覆盖
+- `-n` ：把符号链接视为一般目录
+- `-s` ：软链接(符号链接)
+- `-v` ：显示详细的处理过程
+
+###### 选择参数
+
+- `-S` ：`-S<字尾备份字符串>`  或 `--suffix=<字尾备份字符串>`
+- `-V` ：`-V<备份方式>` 或 `--version-control=<备份方式>`
+- `--help` ：显示帮助信息
+- `--version` ：显示版本信息
+
+摘自：[RUNOOB - Linux ln 命令](https://www.runoob.com/linux/linux-comm-ln.html)
 
 
 

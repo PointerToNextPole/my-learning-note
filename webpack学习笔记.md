@@ -339,6 +339,8 @@ export default {
 }
 ```
 
+> 👀 注：类似的，可以参考 [Bilibili - 我是哈默 - 用来在组件内引入多个组件](https://www.bilibili.com/video/BV1TW4y1t7qH) 其中设置了一个场景，更容易理解。
+
 ###### 在 main.js 中引入大量公共组件
 
 ```js

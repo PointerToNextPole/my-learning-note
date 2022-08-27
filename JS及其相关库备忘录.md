@@ -3324,7 +3324,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                               
+  >                                                                                                                                                                                 
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3343,7 +3343,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                               
+  >                                                                                                                                                                                 
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -12966,7 +12966,7 @@ length：要创建的 ArrayBuffer 的大小，单位为字节。
 
 #### TypedArray
 
-一个类型化数组（TypedArray）对象描述了一个底层的二进制数据缓冲区（binary data buffer）的一个类数组视图（view）。
+一个类型化数组 ( TypedArray ) 对象描述了一个底层的二进制数据缓冲区（binary data buffer）的一个类数组视图（view）。
 
 事实上，没有名为 TypedArray 的全局属性，也没有一个名为 TypedArray 的构造函数。相反，有许多不同的全局属性，它们的值是特定元素类型的类型化数组构造函数
 
@@ -13000,7 +13000,11 @@ Float64Array();
 - **object：**当传入一个 object 作为参数时，就像通过 TypedArray.from() 方法创建一个新的类型化数组一样。
 - **buffer, byteOffset, length：**当传入一个 buffer 参数，或者再另外加上可选参数 byteOffset 和 length 时，一个新的类型化数组视图将会被创建，并可用于呈现传入的 ArrayBuffer 实例。byteOffset 和length 参数指定了类型化数组视图将要暴露的内存范围。如果两者都未传入，那么整个buffer 都会被呈现；如果仅仅忽略 length，那么 buffer 中偏移了 byteOffset 后剩下的 buffer 将会被呈现
 
+摘自：[MDN - TypedArray](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) 👀 注：22/8/27 原链接中的内容已经完全修改，原链接的内容见 [archive.org - MDN - TypedArray](https://web.archive.org/web/20220407042514/https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
 
+
+
+#### ES6 工厂函数
 
 
 
@@ -13014,16 +13018,125 @@ Float64Array();
 
 
 
-#### ES6 工厂函数
-
-
-
 
 #### import
 
-// TODO
+<font color=dodgerblue size=4>**静态的 `import`**</font> 语句用于导入由另一个模块导出的绑定。<font color=fuchsia>**无论是否声明了 `strict mode` ，导入的模块都运行在严格模式下**</font>。在<font color=fuchsia>浏览器中，`import` 语句只能在声明了 `type="module"` 的 `script` 的标签中使用</font>。
+
+此外，还有一个类似函数的 <font color=dodgerblue size=4>**动态  `import()`**</font> ，它<font color=fuchsia>不需要依赖 `type="module"` 的 script 标签</font>。
+
+在 script 标签中使用 `nomodule` 属性，可以确保向后兼容。
+
+> 这个布尔属性被设置来标明这个脚本在支持 ES2015 modules 的浏览器中不执行。实际上，这可用于在不支持模块化 JavaScript 的旧浏览器中提供回退脚本。
+>
+> 摘自：[MDN - \<script> # nomodule](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script#attr-nomodule)
+
+在您希望按照一定的条件或者按需加载模块的时候，动态 `import()` 是非常有用的。而 <font color=fuchsia>静态型的 `import` 是初始化加载依赖项的最优选择</font>，<font color=fuchsia>使用静态 import 更容易从代码静态分析工具和 tree shaking 中受益</font>。
+
+##### 语法
+
+```js
+import defaultExport from "module-name";
+import * as name from "module-name";
+import { export } from "module-name";
+import { export as alias } from "module-name";
+import { export1 , export2 } from "module-name";
+import { foo , bar } from "module-name/path/to/specific/un-exported/file";
+import { export1 , export2 as alias2 , [...] } from "module-name";
+import defaultExport, { export [ , [...] ] } from "module-name";
+import defaultExport, * as name from "module-name";
+import "module-name";
+var promise = import("module-name");//这是一个处于第三阶段的提案。
+```
+
+- `defaultExport` ：导入模块的**默认导出** ( `default export` ) 接口的引用名。
+
+- `module-name` ：要导入的模块。通常是包含目标模块的 `.js` 文件的相对或绝对路径名，可以不包括 `.js` 扩展名。某些特定的打包工具可能允许或需要使用扩展或依赖文件，它会检查比对你的运行环境。只允许单引号和双引号的字符串。
+
+- `name` ：导入模块对象整体的<font color=red>别名</font>，<font color=fuchsia>在引用导入模块时，它将作为一个 **命名空间** 来使用</font>。
+
+- `export` , `exportN` ：被导入模块的导出接口的名称。
+
+- `alias` , `aliasN` ： 将引用指定的导入的名称。
+
+##### 描述
+
+`name` 参数是“导入模块对象”的名称，它将用一种名称空间来引用导入模块的接口。export 参数指定单个的命名导出，而 `import * as name` 语法导入所有导出接口，即导入模块整体。
+
+###### 仅为副作用而导入一个模块
+
+<font color=red>整个模块仅为副作用</font>（中性词，无贬义含义）<font color=red>而导入</font>，而<font color=red>不导入模块中的任何内容</font>（接口）。<font color=fuchsia>这 **将运行模块中的全局代码**，但实际上不导入任何值</font>。
+
+```js
+import '/modules/my-module.js';
+```
+
+##### 动态 import
+
+标准用法的 import 导入的模块是静态的，会使所有被导入的模块，在加载时就被编译（无法做到按需编译，降低首页加载速度）。有些场景中，你可能希望根据条件导入模块或者按需导入模块，这时可以使用动态导入代替静态导入。<font color=dodgerBlue>下面的是可能会需要动态导入的场景</font>：
+
+- 当静态导入的模块很明显的降低了代码的加载速度且被使用的可能性很低，或者并不需要马上使用它。
+- <font color=LightSeaGreen>当静态导入的模块很明显的占用了大量系统内存且被使用的可能性很低</font>
+- <font color=red>当被导入的模块，在加载时并不存在，需要异步获取</font>
+- <font color=red>当导入模块的说明符，需要动态构建</font>。（静态导入只能使用静态说明符）
+- 当被导入的模块有副作用（这里说的副作用，可以理解为模块中会直接运行的代码），这些副作用只有在触发了某些条件才被需要时。（原则上来说，模块不能有副作用，但是很多时候，你无法控制你所依赖的模块的内容）
+
+请不要滥用动态导入（只有在必要情况下采用）。静态框架能更好的初始化依赖，而且更有利于静态分析工具和 tree shaking 发挥作用。
+
+> 👀 注：[MDN US - import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) 还提到了 “顶层 await” ( top-level await )，中文版没有提到。另外， [[JS 机制与原理#补充：为什么 CJS 不能加载 ESM]] 也提到了 top-level await
 
 摘自：[MDN - import](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/import)
+
+
+
+#### export
+
+在创建 JavaScript 模块时，**`export`** 语句用于从模块中导出实时绑定的函数、对象或原始值，以便其他程序可以通过 `import` 语句使用它们。被导出的绑定值依然可以在本地进行修改。在使用 `import` 进行导入时，这些绑定值只能被导入模块所读取，但在 `export` 导出模块中对这些绑定值进行修改，所修改的值也会实时地更新。
+
+无论您是否声明，导出的模块都处于 “严格模式” 。 export 语句不能用在嵌入式脚本中。
+
+##### 语法
+
+存在两种 exports 导出方式：
+
+1. 命名导出（每个模块包含任意数量）
+2. 默认导出（每个模块包含一个）
+
+```js
+// 导出单个特性
+export let name1, name2, …, nameN; // also var, const
+export let name1 = …, name2 = …, …, nameN; // also var, const
+export function FunctionName(){...}
+export class ClassName {...}
+
+// 导出列表
+export { name1, name2, …, nameN };
+
+// 重命名导出
+export { variable1 as name1, variable2 as name2, …, nameN };
+
+// 解构导出并重命名
+export const { name1, name2: bar } = o;
+
+// 默认导出
+export default expression;
+export default function (…) { … } // also class, function*
+export default function name1(…) { … } // also class, function*
+export { name1 as default, … };
+
+// 导出模块合集
+export * from …; // does not set the default export
+export * as name1 from …; // Draft ECMAScript® 2O21
+export { name1, name2, …, nameN } from …;
+export { import1 as name1, import2 as name2, …, nameN } from …;
+export { default } from …;
+```
+
+- `nameN` ：要导出的标识符（以便其他脚本通过 `import` 语句进行导入）
+
+
+
+摘自：[MDN - export](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/export)
 
 
 
