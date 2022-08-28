@@ -3381,7 +3381,43 @@ border-collapse: unset;
 
 > 👀 下面是一点补充：
 
-##### background-blend-mode
+#### background-clip
+
+> 👀 注：感觉 background-clip 属性有点类似于 box-sizing 的作用。不过，text 属性不一样，需要注意下，在某些场景下很有用。
+
+`background-clip` 设置元素的背景（背景图片或颜色）是否延伸到边框、内边距盒子、内容盒子下面。
+
+> 👀 注：原文有各属性的效果展示，由于没法搬过来；详见 原文。
+
+如果没有设置背景图片( `background-image` ) 或背景颜色 ( `background-color` )，那么这个属性只有在边框 ( `border` ) 被设置为非固实 ( soild )、透明或半透明时才能看到视觉效果（与 `border-style` 或 `border-image` 有关），否则，本属性产生的样式变化会被边框覆盖。
+
+##### 语法
+
+```css
+/* Keyword values */
+background-clip: border-box;
+background-clip: padding-box;
+background-clip: content-box;
+background-clip: text;
+
+/* Global values */
+background-clip: inherit;
+background-clip: initial;
+background-clip: unset;
+```
+
+##### 值
+
+- `border-box` ：背景延伸至边框外沿（但是在边框下层）。
+- `padding-box` ：背景延伸至内边距（`padding`）外沿。不会绘制到边框处。
+- `content-box` ：背景被裁剪至内容区 ( content box ) 外沿。
+- `text` ：🧪 背景被裁剪成文字的前景色。👀 这个要注意下 ⚠️
+
+摘自：[MDN - background-clip](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-clip)
+
+
+
+#### background-blend-mode
 
 **（MDN）**background-blend-mode CSS属性<font color=FF0000>定义该元素的背景图片，以及背景色如何混合</font>。
 

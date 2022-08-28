@@ -618,36 +618,36 @@ normal 模式键入 `:wq!`，显示如下：
 
 在处理完任务后，可以使用 `git stash pop` 或者 `git stash apply` 命令进行恢复 stash（注，补充：暂存的内容可以恢复到其他任意指定的分支上）。相关命令如下：
 
-- **git stash apply：**环境将会恢复，stash 中的数据，将不会被清除。
+- **git stash apply** ：环境将会恢复，stash 中的数据，将不会被清除。
 
   可以使用 `git stash apply <stashName>`（如stash@{1}）指定恢复哪个stash到当前的工作目录
 
-- **git stash pop：**将当前stash中的内容弹出，并应用到当前分支对应的工作目录上。环境会恢复，stash 中的数据将会被清理。
+- **git stash pop** ：将当前stash中的内容弹出，并应用到当前分支对应的工作目录上。环境会恢复，stash 中的数据将会被清理。
 
   如果从stash中恢复的内容和当前目录中的内容发生了冲突，也就是说，恢复的内容和当前目录修改了同一行的数据，那么会提示报错，需要解决冲突，可以通过创建新的分支来解决冲突。
 
-- **git stash save \<msg> ：**作用等同于git stash，区别是可以加一些注释
+- **git stash save \<msg>** ：作用等同于git stash，区别是可以加一些注释
 
-- **git stash list：**查看当前stash中的内容
+- **git stash list** ：查看当前stash中的内容
 
-- **git stash drop [stashName]：**从堆栈中移除某个指定的stash，stashName 即：类似 stash@{1}；如果不加上 stashName，则默认为：最近的一次stash
+- **git stash drop [stashName]** ：从堆栈中移除某个指定的 stash，stashName 即：类似 stash@{1}；如果不加上 stashName，则默认为：最近的一次stash
 
-- **git stash clear：**清除堆栈中的所有内容
+- **git stash clear** ：清除堆栈中的所有内容
 
-- **git stash show：**查看堆栈中最新保存的stash和当前目录的差异
+- **git stash show** ：查看堆栈中最新保存的stash和当前目录的差异
 
   可以通过 `git stash show <stashName>` 的方式，指定某一个 stash 与当前目录的差异
 
   通过 `git stash show [<stashName>] -p` 查看详细的不同
 
-- **git stash branch：**从最新的stash创建分支。
+- **git stash branch** ：从最新的stash创建分支。
 
-  应用场景：当储藏了部分工作，暂时不去理会，继续在当前分支进行开发，后续想将stash中的内容恢复到当前工作目录时，如果是针对同一个文件的修改（即便不是同行数据），那么可能会发生冲突，恢复失败，这里通过创建新的分支来解决。可以用于解决stash中的内容和当前目录的内容发生冲突的情景。
+  **应用场景**：当储藏了部分工作，暂时不去理会，继续在当前分支进行开发，后续想将stash中的内容恢复到当前工作目录时，如果是针对同一个文件的修改（即便不是同行数据），那么可能会发生冲突，恢复失败，这里通过创建新的分支来解决。可以用于解决stash中的内容和当前目录的内容发生冲突的情景。
   发生冲突时，需手动解决冲突。
   
   「命令相关内容」摘自：[git stash详解](https://blog.csdn.net/stone_yw/article/details/80795669)
   
-- **git stash push：**在看[[中文] 这才是真正的 Git——Git 内部原理揭秘！（freeCodeConf 2019 深圳站）](https://www.bilibili.com/video/av77252063) 时候，发现这样一条命令：git stash push [-u | --include-untracked]，可以让你获得一个干净的工作区间。
+- **git stash push** ：在看[[中文] 这才是真正的 Git——Git 内部原理揭秘！（freeCodeConf 2019 深圳站）](https://www.bilibili.com/video/av77252063) 时候，发现这样一条命令：git stash push [-u | --include-untracked]，可以让你获得一个干净的工作区间。
 
 
 
@@ -716,7 +716,7 @@ normal 模式键入 `:wq!`，显示如下：
 
 
 
-#### <font color=FF0000>使用https url clone项目</font>
+#### 使用 https url clone 项目
 
 很多朋友在用github管理项目的时候，都是直接使用https url克隆到本地，当然也有有些人使用 SSH url 克隆到本地。然而，为什么绝大多数人会使用https url克隆呢？
 
@@ -724,22 +724,28 @@ normal 模式键入 `:wq!`，显示如下：
 
 因此，如果你想要使用 SSH url 克隆的话，你必须是这个项目的拥有者。否则你是无法添加 SSH key 的。
 
-#### <font color=FF0000>https 和 SSH clone的区别</font>
+
+
+#### https 和 SSH clone的区别
 
 https可以随意克隆github上的项目，而不管是谁的；而SSH是你必须是你要克隆的项目的拥有者或管理员，且需要先添加 SSH key ，否则无法克隆。
 
 摘自：[github设置添加SSH](https://www.cnblogs.com/ayseeing/p/3572582.html)
 
-#### <font color=FF0000>Github 上的账户的SSH keys与仓库的Deploy keys的区别</font>
 
-- **Github账户的SSH keys**，相当于这个账号的最高级key，只要是这个账号有的权限（任何项目），都能进行操作。
-- **仓库的Deploy keys**，顾名思义就是这个仓库的专有key，用这个key，只能操作这个项目，其他项目都没有权限。
 
-说白了就相当于你有一所大别墅，<mark>SSH key能开别墅中的任何一个房间。而Deploy key只能开进别墅中的一个单间。</mark>
+#### Github 上的账户的 SSH keys 与仓库的 Deploy keys 的区别
+
+- **Github 账户的 SSH keys**，相当于这个账号的最高级key，只要是这个账号有的权限（任何项目），都能进行操作。
+- **仓库的 Deploy keys** ，顾名思义就是这个仓库的专有key，用这个key，只能操作这个项目，其他项目都没有权限。
+
+说白了就相当于你有一所大别墅，<font color=red>SSH key 能开别墅中的任何一个房间。而 Deploy key 只能开进别墅中的一个单间</font>。
 
 摘自：[github 上的账户的SSH keys与仓库的Deploy keys有何区别](https://segmentfault.com/q/1010000007356879)
 
-**使用命令查看本地git安装地址**
+
+
+#### 使用命令查看本地 git 安装地址
 
 ```bash
 where git # 注：类似的，可以通过 type git 起到类似的效果
@@ -749,7 +755,7 @@ where git # 注：类似的，可以通过 type git 起到类似的效果
 
 
 
-#### <font color=FF0000>问题汇总，出现如下问题：</font>
+#### 问题汇总 & 解决方案
 
 - **键入命令：**
 
@@ -813,21 +819,21 @@ where git # 注：类似的，可以通过 type git 起到类似的效果
         git remote set-url origin https://<your-token>@github.com/<GitHub-user-name>/<repo-name>.git
         ```
 
-      - **原本没有仓库：**git clone 添加token
+      - **原本没有仓库：**`git clone` 添加 token
 
         ```sh
         git clone https://<your-token>@github.com/<GitHub-user-name>/<repo-name>.git
         ```
 
       「在命令行中使用 Token」这部分摘自：[GitHub改为token验证后,如何提交代码?](https://python.iitter.com/other/39385.html)
-
-
+      
+      > 👀 注：上面的命令，\<your-token> 可以通过 `git remote -v` 命令查看。
 
 ***
 
 #### 用户名和邮箱
 
-**<font color=FF0000>查看</font>用户名和邮箱地址：**
+##### <font color=FF0000>查看</font>用户名和邮箱地址
 
 ```bash
 # 设置用户名
@@ -836,7 +842,7 @@ git config user.name
 git config user.email
 ```
 
-**<font color=FF0000>修改</font>用户名和邮箱地址：**
+##### <font color=FF0000>修改</font>用户名和邮箱地址
 
 ```bash
 git config --global user.name  "xxxx"
@@ -862,7 +868,7 @@ git config --global --replace-all user.name "输入你的用户名"
 
 #### 一些其他 git config 配置
 
-- 如下命令能让Git以彩色显示：
+- 如下命令能让 Git 以彩色显示：
 
   ```sh
   git config --global color.ui auto
@@ -902,18 +908,18 @@ git config --global --replace-all user.name "输入你的用户名"
 
 摘自：[RUNOOB - Git 工作区、暂存区和版本库](https://www.runoob.com/git/git-workspace-index-repo.html)
 
-- **git log：**会按时间先后顺序列出所有的提交，最近的更新排在最上面。这个命令会列出每个提交的 SHA-1 校验和、作者的名字和电子邮件地址、提交时间以及提交说明。
+- **git log** ：会按时间先后顺序列出所有的提交，最近的更新排在最上面。这个命令会列出每个提交的 SHA-1 校验和、作者的名字和电子邮件地址、提交时间以及提交说明。
   - 其中一个比较有用的选项是 `-p` 或 `--patch` ，它会显示每次提交所引入的差异（按 **补丁** 的格式输出）。
   - 你也可以限制显示的日志条目数量，例如使用 `-2` 选项来只显示最近的两次提交
   - 你也可以为 `git log` 附带一系列的总结性选项。 比如你想看到每次提交的简略统计信息，可以使用 `--stat` 选项
   
-- **git show：**此命令可以用于显示各种类型对象的相关信息
+- **git show** ：此命令可以用于显示各种类型对象的相关信息
 
 
 
 #### Git 设置添加一个新的远程 Git 仓库
 
-语法：
+##### 语法
 
 ```sh
 # 在目录中创建新的 Git 仓库
@@ -922,19 +928,19 @@ git init
 git remote add <shortname> <repo-url>
 ```
 
-示例：
+##### 示例
 
 ```sh
 git remote add origin git@github.com:userName/projName.git
 ```
 
-在提交（push）代码之后，如果发现提交的代码存在问题，这时可以输入如下命令，以修改提交。
+在提交 ( push ) 代码之后，如果发现提交的代码存在问题，这时可以输入如下命令，以修改提交。
 
 ```shell
 git commit --amend --no-edit
 ```
 
-在提交（push）代码之后，若发现提交代码的注释（-m message）存在问题，这时可以输入如下命令：
+在提交 ( push ) 代码之后，若发现提交代码的注释 ( `-m message` ) 存在问题，这时可以输入如下命令：
 
 ```shell
 git commit --amend
@@ -944,53 +950,61 @@ git commit --amend
 
 <img src="https://s1.ax1x.com/2020/06/26/NrRojI.png" style="zoom: 40%;" />
 
-另外：使用 如下命令，相当于预设了 git push 的参数（比如：远端仓库 和 分支名），之后直接使用 git push 命令即可，无需使用参数( 如：git push \<repo> \<branch>， 比如 git push -u origin master )了（因为已经预设了）。另外，在 GitHub 创建项目的提示中也有这个（不知道为什么现在找不到了...）.
+另外：使用 如下命令，相当于预设了 git push 的参数（比如：远端仓库 和 分支名），之后直接使用 `git push` 命令即可，无需使用参数( 如：`git push <repo> <branch>` ， 比如 `git push -u origin master` )了（因为已经预设了）。另外，在 GitHub 创建项目的提示中也有这个（不知道为什么现在找不到了...）.
 
 ```sh
 # 这里的 origin 就是上面 git remote add 设置的
 git push -u origin master
 ```
 
-以上 git push -u 的内容参考自：
+以上 `git push -u` 的内容参考自：
 
-> 就是你第一次使用 git push -u origin master 之后，第二次【下次，以后】可以直接使用 git pull 拉取代码，就不需要输入完整的命令 git pull origin master 来拉取代码了。即 第二次 使用 git pull 等同于执行 git pull origin master。然后第二次也可以用 git push推送代码而不用git push origin master。即第二次 使用 git push 等同于执行 git push origin master。
+> 就是你第一次使用 `git push -u origin master` 之后，第二次【下次，以后】可以直接使用 git pull 拉取代码，就不需要输入完整的命令 `git pull origin master` 来拉取代码了。即 第二次 使用 `git pull` 等同于执行 `git pull origin master` 。然后第二次也可以用 `git push` 推送代码而不用 `git push origin master` 。即第二次 使用 `git push` 等同于执行 `git push origin master`
 >
 > 摘自：[git push -u 的含义和用法](https://blog.csdn.net/chenzz444/article/details/104408607) 的评论区
 
-**补充：**
-**git push [remote] --all：**推送所有分支到远程仓库
+> 👀 下面是一些补充：
+
+`git push [remote] --all` ：推送所有分支到远程仓库
 
 补充内容摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
-<font size=4>**其他 git remote 命令**</font>
+#### 其他 git remote 命令
 
-- **git remove -v：**显示所有远程仓库
+- **git remove -v** ：显示所有远程仓库
 
-- **git remote show [remote]：**显示某个远程仓库的信息
+- **git remote show [remote]** ：显示某个远程仓库的信息
 
-- **git remote rm repoName：**删除远程仓库
+- **git remote rm repoName** ：删除远程仓库
 
-- **git remote rename oldName newName：**修改仓库名
+- **git remote rename oldName newName** ：修改仓库名
 
   摘自：[RUNOOB - git remote 命令](https://www.runoob.com/git/git-remote.html)
 
-- **git remote add [shortname] [url]**：增加一个新的远程仓库，并命名
+- **git remote add [shortname] [url]** ：增加一个新的远程仓库，并命名
 
-- **git remote set-url repoRename remoteUrl：**设置远程仓库地址（用于修改远程仓库地址）
+- **git remote set-url repoRename remoteUrl** ：设置远程仓库地址（用于修改远程仓库地址）
 
-  摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
+摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
+
+
+#### Git Forks and Upstreams
+
+
 
 
 
 #### git add
 
-- **git add .：**提交所有<font color=FF0000>修改的</font>和<font color=FF0000>新建的</font>数据暂存区
+- **git add .** ：提交所有<font color=FF0000>修改的</font>和<font color=FF0000>新建的</font>数据暂存区
 
-- **git add -u：**u 即 update，提交所有<font color=FF0000>被删除</font>和<font color=FF0000>修改</font>的文件到数据暂存区
+- **git add -u** ：u 即 update，提交所有<font color=FF0000>被删除</font>和<font color=FF0000>修改</font>的文件到数据暂存区
 
   **使用场景：**文件删除后，在用git add -u后，就能看见文件已经被提交到暂存区了。这个就可以以备不时之需，假如文件删错了，还能恢复回来
 
-- **git add -A：**A 即 all，提交所有<font color=FF0000>被删除、被替换、被修改和新增的</font>文件到数据暂存区
+- **git add -A** ：A 即 all，提交所有<font color=FF0000>被删除、被替换、被修改和新增的</font>文件到数据暂存区
 
   **git add -A 与 git add . 和 git add -u 差异的地方：**具有替换的文件的功能，在 git 中，会将 内容相同的文件，视作是同一个文件；如果一个文件被删除，而一个文件被新增，且和被删除文件的内容一样；则会被认为是同一个文件，且是被替换了。在 `git add -A` 后，运行 `git status`，会有如下输出：
 
@@ -1000,11 +1014,11 @@ git push -u origin master
 
   摘抄学习自：[git add -A /git add -u/git add .的用法](https://blog.csdn.net/dayewandou/article/details/78513578)
 
-- **git add [dir]：**添加指定目录到暂存区，包括子目录
+- **git add [dir]** ：添加指定目录到暂存区，包括子目录
 
-- **git add ./*.js：**支持正则表达式
+- **git add ./*.js** ：支持正则表达式
 
-- **git add -p：**添加每个变化前，都会要求确认。对于同一个文件的多处变化，可以实现分次提交
+- **git add -p** ：添加每个变化前，都会要求确认。对于同一个文件的多处变化，可以实现分次提交
 
   摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
@@ -1012,11 +1026,11 @@ git push -u origin master
 
 #### git commit 相关命令
 
-- **git commit [file1] [file2] ... -m msg：**提交暂存区的指定文件到仓库区
-- **git commit -a：**提交工作区自上次commit之后的变化，直接到仓库区
-- **git commit -v：**<font color=FF0000>**提交时显示所有diff信息**</font>
-- **git commit --amend -m msg：**使用一次新的commit，替代上一次提交。如果代码没有任何新变化，则用来改写上一次commit的提交信息
-- **git commit --amend [file1] [file2] ...：**重做上一次commit，并包括指定文件的新变化
+- **git commit [file1] [file2] ... -m msg** ：提交暂存区的指定文件到仓库区
+- **git commit -a** ：提交工作区自上次commit之后的变化，直接到仓库区
+- **git commit -v** ：<font color=FF0000>**提交时显示所有diff信息**</font>
+- **git commit --amend -m msg** ：使用一次新的commit，替代上一次提交。如果代码没有任何新变化，则用来改写上一次commit的提交信息
+- **git commit --amend [file1] [file2] ...** ：重做上一次commit，并包括指定文件的新变化
 
 摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
@@ -1024,7 +1038,7 @@ git push -u origin master
 
 #### git clone
 
-<font size=4>**git clone 做了什么？**</font>
+##### git clone 做了什么？
 
 1. 自动将服务器默认命名为 origin（**注：**相当于 `git push -u origin master`）
 2. 创建远程分支origin / branch（指向master分支的指针）
@@ -1040,7 +1054,7 @@ git push -u origin master
 
 git diff 命令比较文件的不同，即<font color=FF0000>比较文件在暂存区和工作区的差异</font>。git diff 命令显示已写入暂存区和已经被修改但尚未写入暂存区文件的区别。
 
-**git diff 的应用场景：**
+##### git diff 的应用场景
 
 - 尚未缓存的改动：**git diff**
 - 查看已缓存的改动： **git diff --cached**
@@ -1075,11 +1089,11 @@ git diff [first-branch]...[second-branch]
 
 git 内置了对命令非常详细的解释，可以供我们快速查阅
 
-- **git help：**查找可用命令
+- **git help** ：查找可用命令
 
-- **git help -a：**查找所有可用命令
+- **git help -a** ：查找所有可用命令
 
-- **git help \<command>：**在文档当中查找特定的命令
+- **git help \<command>** ：在文档当中查找特定的命令
 
 摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
@@ -1101,34 +1115,34 @@ The `git prune` command is an internal housekeeping（家务） utility that <fo
 
 #### 获取某些文件，某些分支，某次提交等 git 信息
 
-- **git log --stat：**显示commit历史，以及每次commit发生变更的文件
-- **git log -S [keyword]：**搜索提交历史，根据关键词
-- **git log [tag] HEAD --pretty=format:%s：**显示某个commit之后的所有变动，每个commit占据一行
-- **git log [tag] HEAD --grep feature：**显示某个commit之后的所有变动，其"提交说明"必须符合搜索条件
+- **git log --stat** ：显示 commit 历史，以及每次 commit 发生变更的文件
+- **git log -S [keyword]** ：搜索提交历史，根据关键词
+- **git log [tag] HEAD --pretty=format:%s** ：显示某个commit之后的所有变动，每个commit占据一行
+- **git log [tag] HEAD --grep feature** ：显示某个commit之后的所有变动，其"提交说明"必须符合搜索条件
 - **显示某个文件的版本历史，包括文件改名**
   - git log --follow [file]
   - git whatchanged [file]
-- **git log -p [file]：**显示指定文件相关的每一次diff
-- **git log -5 --pretty --oneline：**显示过去5次提交
-- **git shortlog -sn：**显示所有提交过的用户，按提交次数排序
-- **git blame [file]：**<font color=FF0000 size=4>**显示指定文件是什么人在什么时间修改过**</font>
-- **git diff：**<font color=FF0000 size=4>显示暂存区和工作区的差异</font>
-- **git diff --cached [file]：**<font color=FF0000>**显示暂存区和上一个commit的差异**</font>
-- **git diff HEAD：**<font color=FF0000>显示工作区与当前分支最新commit之间的差异</font>
-- **git diff [first-branch]...[second-branch]：**显示两次提交之间的差异
-- **git diff --shortstat "@{0 day ago}"：**显示今天你写了多少行代码
-- **git diff --staged：**<font color=FF0000>**比较暂存区和版本库差异**</font>
-- **git diff --cached：**<font color=FF0000>**比较暂存区和版本库差异**</font>
-- **git diff --stat：**仅仅比较统计信息
-- **git show [commit]：**显示某次提交的元数据和内容变化
-- **git show --name-only [commit]：**显示某次提交发生变化的文件
-- **git show [commit]:[filename]：**显示某次提交时，某个文件的内容
-- **git reflog：**显示当前分支的最近几次提交
-- **git branch -r：**<font color=FF0000>查看远程分支</font>。**注：**-r 等价于 --remotes
-- **git branch <new_branch>：**创建新的分支
-- **git branch -v：**<font color=FF0000>查看各个分支最后提交信息</font>
-- **git branch --merged：**查看已经被合并到当前分支的分支
-- **git branch --no-merged：**查看尚未被合并到当前分支的分支
+- **git log -p [file]** ：显示指定文件相关的每一次diff
+- **git log -5 --pretty --oneline** ：显示过去5次提交
+- **git shortlog -sn** ：显示所有提交过的用户，按提交次数排序
+- **git blame [file]** ：<font color=FF0000 size=4>**显示指定文件是什么人在什么时间修改过**</font>
+- **git diff** ：<font color=FF0000 size=4>显示暂存区和工作区的差异</font>
+- **git diff --cached [file]** ：<font color=FF0000>**显示暂存区和上一个commit的差异**</font>
+- **git diff HEAD** ：<font color=FF0000>显示工作区与当前分支最新commit之间的差异</font>
+- **git diff [first-branch]...[second-branch]** ：显示两次提交之间的差异
+- **git diff --shortstat "@{0 day ago}"** ：显示今天你写了多少行代码
+- **git diff --staged** ：<font color=FF0000>**比较暂存区和版本库差异**</font>
+- **git diff --cached** ：<font color=FF0000>**比较暂存区和版本库差异**</font>
+- **git diff --stat** ：仅仅比较统计信息
+- **git show [commit]** ：显示某次提交的元数据和内容变化
+- **git show --name-only [commit]** ：显示某次提交发生变化的文件
+- **git show [commit]:[filename]** ：显示某次提交时，某个文件的内容
+- **git reflog** ：显示当前分支的最近几次提交
+- **git branch -r** ：<font color=FF0000>查看远程分支</font>。**注：** `-r` 等价于 `--remotes`
+- **git branch <new_branch>** ：创建新的分支
+- **git branch -v** ：<font color=FF0000>查看各个分支最后提交信息</font>
+- **git branch --merged** ：查看已经被合并到当前分支的分支
+- **git branch --no-merged** ：查看尚未被合并到当前分支的分支
 
 ​	摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
@@ -1192,13 +1206,13 @@ The `git prune` command is an internal housekeeping（家务） utility that <fo
 
   - **git revert  + HEAD + ^ / ~**
 
-  - **git revert commitHash**：完整的 commit 或者该 commit 前7位即可
+  - **git revert commitHash** ：完整的 commit 或者该 commit 前7位即可
 
-  - **git revert HEAD [, HEAD + ^/ ~ , ... ]**：回退连续的几个commit
+  - **git revert HEAD [, HEAD + ^/ ~ , ... ] **：回退连续的几个commit
 
     比如回退最新的三个commit：`git revert HEAD,HEAD~1,HEAD~2`
 
-  - **git revert commitX...commitY**：commitX...commitY 代表一个左开右闭区间 (commitX, commitY]，不包括 commitX，包括commitY。其中 commitY 为起点 commit，commitX 为终点 commit 的下一个 commit。
+  - **git revert commitX...commitY** ：commitX...commitY 代表一个左开右闭区间 (commitX, commitY]，不包括 commitX，包括commitY。其中 commitY 为起点 commit，commitX 为终点 commit 的下一个 commit。
 
     **注：**看了下下面的示例，发现 commitX 是 seniorCommit，commitY 是 juniorCommit；不知道是不是规则。
 
@@ -1689,9 +1703,9 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 
 #### 分支命令补充
 
-- **git branch -m oldBranchName newBranchName：**分支重命名
-- **git checkout -：**切换到上一个分支
-- **git branch --set-upstream [branch] [remote-branch]：**建立追踪关系，在现有分支与指定的远程分支之间
+- **git branch -m oldBranchName newBranchName** ：分支重命名
+- **git checkout -** ：切换到上一个分支
+- **git branch --set-upstream [branch] [remote-branch]** ：建立追踪关系，在现有分支与指定的远程分支之间
 - **删除远程分支：**
   - git push origin --delete [branch-name]
   - git branch -dr [remote/branch]
@@ -1977,3 +1991,15 @@ Git会有很多合并策略，其中常见的是 Fast-forward、Recursive 、Our
 | revert   | 恢复上一次提交                         |
 
 摘自：[git 奇淫巧技](https://www.yuque.com/docs/share/946f5537-0539-451a-aa50-1a41c2c0f12f)
+
+
+
+#### GitHub 提交 PR
+
+参见教程 [如何在 GitHub 提交第一个 pull request](https://chinese.freecodecamp.org/news/how-to-make-your-first-pull-request-on-github/) ，没有完全看懂，建议再读一遍。
+
+> 👀 另外，本文中提及了 `git remote add upstream [url]` ，这是
+>
+> > 为了能够拉取原始仓库的变更到你的复刻仓库中，需要将原始仓库添加为 upstream 仓库
+>
+> 之前没有听过，很有必要了解下。

@@ -8,7 +8,7 @@
 
 <font color=FF0000>Unicode 是一种字符集标准，用于对来自世界上不同语言、文字系统和符号进行编号和字符定义</font>。<mark>通过给每个字符分配一个编号，程序员可以创建字符编码，让计算机在同一个文件或程序中存储、处理和传输任何语言组合</mark>。
 
-<mark>在 Unicode 定义之前，在同一数据中混合使用不同的语言是很困难的，而且容易出错</mark>。例如，一个字符集存储的是日文字符，而另一个字符集存储的是阿拉伯字母。如果没有明确标明数据的哪些部分属于哪个字符集，其他程序和计算机就会错误地显示文本，或者在处理过程中损坏文本。如果你曾经见过像 (“”) 被替换为胡言乱语 Ã‚Â£，那么你就已经看到过这个被称为  Mojibake 的问题。
+<mark>在 Unicode 定义之前，在同一数据中混合使用不同的语言是很困难的，而且容易出错</mark>。例如，一个字符集存储的是日文字符，而另一个字符集存储的是阿拉伯字母。如果没有明确标明数据的哪些部分属于哪个字符集，其他程序和计算机就会错误地显示文本，或者在处理过程中损坏文本。如果你曾经见过像  ( `“”` )被替换为胡言乱语 `Ã‚Â£` ，那么你就已经看到过这个被称为  [Mojibake](https://zh.wikipedia.org/wiki/Mojibake) 的问题。
 
 <font color=FF0000 size=4>**网络上最常见的 Unicode 字符编码是 UTF-8**</font>。还存在一些其他编码，如 UTF-16 或过时的 UCS-2，但推荐使用 UTF-8
 
@@ -32,15 +32,15 @@ U+0000 = null
 
 <mark>目前（2014年），Unicode 的最新版本是 7.0版，一共收入了 109449 个符号，其中的中日韩文字为 74500 个</mark>。可以近似认为，全世界现有的符号当中，三分之二以上来自东亚文字。比如，中文"好"的码点是十六进制的 597D。
 
-<font color=FF0000>这么多符号，Unicode 不是一次性定义的，而是 <font size=4>**分区定义**</font></font>。<font color=FF0000>每个区可以存放 65536 个 ( 216 ) 字符，称为一个平面 ( plane ) </font>。<font color=FF0000>目前，一共有 17 个（2^5^）平面，也就是说，整个 Unicode 字符集的大小现在是 2^21^</font>。
+<font color=FF0000>这么多符号，Unicode 不是一次性定义的，而是 <font size=4>**分区定义**</font></font>。<font color=FF0000>每个区可以存放 65536 个 ( 216 ) 字符，称为一个平面 ( plane ) </font>。<font color=FF0000>目前，一共有 17 个 ( 2^5^ ) 平面，也就是说，整个 Unicode 字符集的大小现在是 2^21^</font>。
 
-<font color=FF0000><font size=4>**最前面的 65536 个字符位**</font>，称为<font size=4>**基本平面（Basic Multilingual Plane，缩写 BMP ）**</font></font>，<font color=FF0000>它的码点范围是从 0 一直到 2^16^-1 ，写成16进制就是从 U+0000 到 U+FFFF </font>。<mark>**所有最常见的字符都放在这个平面**，这是 Unicode 最先定义和公布的一个平面</mark>。
+<font color=FF0000><font size=4>**最前面的 65536 个字符位**</font>，称为<font size=4>**基本平面（Basic Multilingual Plane，缩写 BMP ）**</font></font>，<font color=FF0000>它的码点范围是从 0 一直到 2^16^-1 ，写成 16进制就是从 U+0000 到 U+FFFF </font>。<mark>**所有最常见的字符都放在这个平面**，这是 Unicode 最先定义和公布的一个平面</mark>。
 
-<font color=FF0000><font size=4>**剩下的字符**</font>都放在 <font size=4>**辅助平面 ( Supplementary Multilingual Plane, SMP ) **</font></font>，<mark>码点范围从 U+010000 一直到 U+10FFFF</mark> 。
+<font color=FF0000><font size=4>**剩下的字符**</font> 都放在 <font size=4>**辅助平面 ( Supplementary Multilingual Plane, SMP ) **</font></font>，<mark>码点范围从 U+010000 一直到 U+10FFFF</mark> 。
 
 ##### UTF-32 与 UTF-8
 
-Unicode 只规定了每个字符的码点，到底用什么样的字节序表示这个码点，就涉及到<font color=FF0000 size=4>**编码方法**</font>。
+Unicode 只规定了每个字符的码点，到底用什么样的字节序表示这个码点，就涉及到 <font color=FF0000 size=4>**编码方法**</font>。
 
 <font color=FF0000>最直观</font>的编码方法是，<font color=FF0000>每个码点使用四个字节表示</font>，字节内容一一对应码点。<font color=FF0000>这种编码方法就叫做 UTF-32</font>。比如，码点0 就用四个字节的 0 表示，码点 597D 就在前面加两个字节的0。
 
@@ -867,10 +867,10 @@ SOAP：简单对象访问协议（Simple Object Access Protocol）是一种<mark
 
 
 
-#### REST和SOAP区别
+#### REST 和 SOAP 区别
 
-<font color=FF0000>在SOAP模式把HTTP作为一种通信协议，而不是应用协议</font>。<mark>所以http中的表头，错误信息等全部无视。实际上http有 put get post delete等方法</mark>。
-<font color=FF0000>REST 则不然，HTTP method中的 POST GET PUT DELETE 都是与请求方法对应的</font>，rest真正实现了http的五层结构。REST 提交的请求中，代理服务器可以通过请求方式直接判断请求动作是要进行什么操作。
+<font color=FF0000>在 SOAP 模式把 HTTP  作为一种通信协议，而不是应用协议</font>。所以 http 中的表头，错误信息等全部无视。实际上 HTTP 有 put、get、post、delete 等方法。
+<font color=FF0000>REST 则不然，HTTP method 中的 POST GET PUT DELETE 都是与请求方法对应的</font>，rest真正实现了http的五层结构。REST 提交的请求中，代理服务器可以通过请求方式直接判断请求动作是要进行什么操作。
 
 摘自：[REST 和 SOAP 的区别理解](https://blog.csdn.net/carlsunnnn/article/details/80570872)
 
@@ -878,7 +878,7 @@ SOAP：简单对象访问协议（Simple Object Access Protocol）是一种<mark
 
 #### POJO
 
-POJO（Plain Ordinary Java Object）即普通Java类，具有一部分getter/setter方法的那种类就可以称作POJO。
+POJO（Plain Ordinary Java Object）即普通 Java 类，具有一部分 getter / setter 方法的那种类就可以称作 POJO。
 
 实际意义就是普通的JavaBeans（简单的实体类），特点就是<mark>支持业务逻辑的<font color=FF0000>协助类</font></mark>。
 POJO类的作用是方便程序员使用数据库中的数据表，对于程序员来说，可以很方便的将POJO类当作对象来进行使用，也可以方便的调用其get，set方法。<font color=FF0000>但**不允许有业务方法**，也不能携带有connection之类的方法，即**不包含业务逻辑或持久逻辑等**</font>。
@@ -1312,11 +1312,11 @@ Servlet 是服务 HTTP 请求并实现 javax.servlet.Servlet 接口的 Java 类�
 
 
 
-#### Get和Post方法
+#### Get 和 Post 方法
 
 ##### GET 方法
 
-GET 方法向页面请求发送已编码的用户信息。<font color=FF0000>页面和已编码的信息中间用 ? 字符分隔</font>，如下所示：
+GET 方法向页面请求发送已编码的用户信息。<font color=FF0000>页面和已编码的信息中间用 `?` 字符分隔</font>，如下所示：
 
 ```
 http://www.test.com/hello?key1=value1&key2=value2
@@ -1576,11 +1576,13 @@ Content-Type: text/html
 | 11   | **public void setComment(String purpose)**<br> 设置cookie的注释。该注释在浏览器向用户呈现 cookie 时非常有用。 |
 | 12   | **public String getComment()**<br> 获取 cookie 的注释，如果 cookie 没有注释则返回 null。 |
 
+
+
 #### Servlet Session 跟踪
 
 HTTP 是一种<font color=FF0000>**"无状态"**</font>协议，<mark>这意味着每次客户端检索网页时，客户端打开一个单独的连接到 Web 服务器，服务器会自动不保留之前客户端请求的任何记录</mark>。
 
-#### **有以下三种方式来维持 Web 客户端和 Web 服务器之间的 session 会话：**
+##### 有三种方式来维持 Web 客户端和 Web 服务器之间的 session 会话
 
 - **Cookies**
 
@@ -1608,7 +1610,7 @@ HTTP 是一种<font color=FF0000>**"无状态"**</font>协议，<mark>这意味�
 
   <font color=FF0000>URL 重写是一种更好的维持 session 会话的方式，它在浏览器不支持 cookie 时能够很好地工作，但是它的缺点是会动态生成每个 URL 来为页面分配一个 session 会话 ID，即使是在很简单的静态 HTML 页面中也会如此</font>。
 
-**HttpSession 对象**
+##### HttpSession 对象
 
 除了上述的三种方式，Servlet 还提供了 <font color=FF0000>HttpSession 接口</font>，<font color=FF0000>该接口提供了一种跨多个页面请求或访问网站时**识别用户以及存储有关用户信息的方式**</font>。
 
@@ -1636,6 +1638,8 @@ HttpSession session = request.getSession();
 | 10   | **public void setAttribute(String name, Object value)**<br> 该方法使用指定的名称绑定一个对象到该 session 会话。 |
 | 11   | **public void setMaxInactiveInterval(int interval)**<br> 该方法在 Servlet 容器指示该 session 会话无效之前，指定客户端请求之间的时间，以秒为单位。 |
 
+
+
 #### Servlet 网页重定向
 
 重定向请求到另一个网页的最简单的方式是使用 response 对象的 sendRedirect() 方法。下面是该方法的定义：
@@ -1651,6 +1655,8 @@ String site = "http://www.runoob.com" ;
 response.setStatus(response.SC_MOVED_TEMPORARILY);
 response.setHeader("Location", site); 
 ```
+
+
 
 #### Servlet 自动刷新页面
 
@@ -1672,35 +1678,35 @@ public void setIntHeader(String header, int headerValue)
 
 几乎所有web应用容器都提供了四种类似Map的结构：**application / session / request / page**，Jsp或者Servlet通过向着这四个对象放入数据，从而实现Jsp和Servlet之间数据的共享。
 
-- **application：应用**
+##### application：应用
 
-  <font color=FF0000>作用范围在服务器一开始执行服务，到服务器关闭为止</font>。Application 的范围最、停留的时间也最久，所以使用时要特别注意不然可能会造成服务器负载越来越重的情况。只要将数据存入application对象，数据的范围范围 (Scope) 就为Application。
+<font color=FF0000>作用范围在服务器一开始执行服务，到服务器关闭为止</font>。Application 的范围最、停留的时间也最久，所以使用时要特别注意不然可能会造成服务器负载越来越重的情况。只要将数据存入application对象，数据的范围范围 (Scope) 就为Application。
 
-  具有application范围的对象被绑定到<font color=FF0000>javax.servlet.ServletContext</font>中。在Web应用程序运行期间，所有的页面都可以访问在这个范围内的对象。
+具有application范围的对象被绑定到<font color=FF0000>javax.servlet.ServletContext</font>中。在Web应用程序运行期间，所有的页面都可以访问在这个范围内的对象。
 
-- **session：会话**
+##### session：会话
 
-  <font color=FF0000>HTTP会话</font>开始到结束这段时间。Session 的<font color=FF0000>作用范围为一段用户持续和服务器所连接的时间</font>，但与服务器断线，这个属性就无效了。
+<font color=FF0000>HTTP会话</font>开始到结束这段时间。Session 的<font color=FF0000>作用范围为一段用户持续和服务器所连接的时间</font>，但与服务器断线，这个属性就无效了。
 
-  Session 的开始时刻比较容易判断，它从浏览器发出第一个HTTP请求即可认为会话开始。但结束时刻就不好判断了，因为浏览器关闭时并不会通知服务器，所以只能通过如下这种方法判断：如果一定的时间内客户端没有反应，则认为会话结束。Tomcat的默认值为120分钟，但这个值也可以通过HttpSession的setMaxInactiveInterval()方法来设置。
+Session 的开始时刻比较容易判断，它从浏览器发出第一个HTTP请求即可认为会话开始。但结束时刻就不好判断了，因为浏览器关闭时并不会通知服务器，所以只能通过如下这种方法判断：如果一定的时间内客户端没有反应，则认为会话结束。Tomcat的默认值为120分钟，但这个值也可以通过HttpSession的setMaxInactiveInterval()方法来设置。
 
-  具有session范围的对象被绑定到<font color=FF0000>javax.servlet.http.HttpSession</font>对象中。
+具有session范围的对象被绑定到<font color=FF0000>javax.servlet.http.HttpSession</font>对象中。
 
-  另外：<font color=FF0000>Session 的致命弱点是不容易在多台服务器之间共享</font>，所以这也限制了 Session 的使用。这就需要用cookie解决问题
+另外：<font color=FF0000>Session 的致命弱点是不容易在多台服务器之间共享</font>，所以这也限制了 Session 的使用。这就需要用cookie解决问题
 
-- **request：一次请求**
+##### request：一次请求
 
-  HTTP请求开始到结束这段时间。Request 的<font color=FF0000>范围是指在一JSP 网页发出请求到另一个JSP 网页之间</font>，否则这个属性就失效。一个HTTP请求的处理可能需要多个Servlet合作，而这几个Servlet之间可以通过某种方式传递信息，但这个信息在请求结束后就无效了。
-  具有request范围的对象被绑定到<font color=FF0000>javax.servlet.ServletRequest</font>对象中。
+HTTP请求开始到结束这段时间。Request 的<font color=FF0000>范围是指在一JSP 网页发出请求到另一个JSP 网页之间</font>，否则这个属性就失效。一个HTTP请求的处理可能需要多个Servlet合作，而这几个Servlet之间可以通过某种方式传递信息，但这个信息在请求结束后就无效了。
+具有request范围的对象被绑定到<font color=FF0000>javax.servlet.ServletRequest</font>对象中。
 
 
   要注意的是，因为请求对象对于每一个客户请求都是不同的，所以对于每一个新的请求，都要重新创建和删除这个范围内的对象。
 
-- **page：当前页面**
+##### page：当前页面
 
-  作用范围：<font color=FF0000>当前页面从打开到关闭这段时间，它只能在同一个页面中有效</font>。
+作用范围：<font color=FF0000>当前页面从打开到关闭这段时间，它只能在同一个页面中有效</font>。
 
-  具有page范围的对象被绑定到<font color=FF0000>javax.servlet.jsp.PageContext</font>对象中。
+具有page范围的对象被绑定到<font color=FF0000>javax.servlet.jsp.PageContext</font>对象中。
 
 
 
@@ -1802,7 +1808,7 @@ public void setIntHeader(String header, int headerValue)
   2. Servlet1调用forward()方法，在服务器端将请求转发给Servlet2；
   3. 最终由Servlet2做出响应。
 
-**技巧：**
+##### 技巧
 
 其实，通过浏览器就可以观察到服务器端使用了那种请求转发方式，当单击某一个超链接时，浏览器的地址栏会出现当前请求的地址，如果服务器端响应完成以后，<mark>发现地址栏的地址变了，则证明是间接的请求转发</mark>。相反，<mark>如果地址没有发生变化，则代表的是直接请求转发或者没有转发</mark>。
 
@@ -2545,7 +2551,7 @@ Comet是一种用于 <font color=FF0000> web的推送技术，能使服务器实
 
 <font size=4>**实现**</font>
 
-WebDAV扩展了request方法所允许的标准HTTP谓词和HTTP头。增加的谓词包括：
+WebDAV 扩展了 request 方法所允许的标准 HTTP谓词 和 HTTP头。增加的谓词包括：
 
 - COPY：将资源从一个URI复制到另一个URI
 - LOCK：锁定一个资源。WebDAV支持共享锁和互斥锁。
@@ -2563,11 +2569,11 @@ WebDAV扩展了request方法所允许的标准HTTP谓词和HTTP头。增加的�
 
 **混合开发流派：**
 
-- **H5加壳派：**以Ionic和Uni-App为代表，基于WebView（Android下是WebView，iOS下是WKWebView）控件加载H5页面，同时通过框架预先实现的一些能力，实现对设备摄像头、文件系统等设备能力的调用。
+- **H5加壳派：**以 Ionic 和 Uni-App 为代表，基于 WebView（ Android 下是 WebView，iOS 下是 WKWebView ）控件加载H5页面，同时通过框架预先实现的一些能力，实现对设备摄像头、文件系统等设备能力的调用。
 
-- **JS Run原生派：**以RN 和 Weex为代表，使用JS进行编写，在运行时映射成原生控件运行。
+- **JS Run原生派：**以 RN 和 Weex为代表，使用 JS 进行编写，在运行时映射成原生控件运行。
 
-- **自成一派：**以Flutter为代表，这货直接自己弄了个引擎和运行时，自带体系（UI组件和渲染器），除了设备能力外UI方面全权Handle。
+- **自成一派：**以 Flutter 为代表，这货直接自己弄了个引擎和运行时，自带体系（UI组件和渲染器），除了设备能力外UI方面全权Handle。
 
 | 技术类型     | UI渲染          | 性能 | 开发效率 | 代表框架       |
 | ------------ | --------------- | ---- | -------- | -------------- |
@@ -2631,14 +2637,87 @@ WebDAV扩展了request方法所允许的标准HTTP谓词和HTTP头。增加的�
 
 摘自：[浅谈前端埋点&监控](https://www.zoo.team/article/monitor)
 
+##### GIF 埋点 的技术方案
+
+> 👀《为什么大厂前端监控都在用GIF做埋点？》笔记
+
+<font color=dodgerBlue>现在常见的埋点上报方法有三种：手动埋点、可视化埋点、无埋点</font>
+
+###### 手动埋点
+
+手动埋点，<font color=red>也叫代码埋点</font>，即 <font color=fuchsia>纯手动写代码，**调用埋点 SDK 的函数**</font>，<font color=fuchsia>**在 需要埋点的业务逻辑功能位置 调用接口**，上报埋点数据</font>，像 “友盟”、“百度统计” 等第三方数据统计服务商大都采用这种方案。手动埋点<font color=red>让使用者可以方便地设置自定义属性、自定义事件</font>；所以<font color=red>当你需要深入下钻，并精细化自定义分析时，比较适合使用手动埋点</font>。
+
+<font color=dodgerBlue>手动埋点的缺陷</font>就是：<font color=red>项目工程量大，需要埋点的位置太多</font>，而且<font color=red>需要产品开发运营之间相互反复沟通，容易出现手动差错，如果错误，重新埋点的成本也很高</font>。
+
+###### 可视化埋点
+
+<font color=fuchsia>通过 **可视化交互** 的手段，代替上述的代码埋点</font>。<font color=red>将业务代码和埋点代码分离，**提供一个可视化交互的页面**，输入为业务代码</font>，通过这个可视化系统，<font color=red>可以在业务代码中自定义的增加埋点事件等等</font>，<font color=fuchsia>**最后输出的代码耦合了业务代码和埋点代码**</font>。
+
+<font color=dodgerBlue>可视化埋点的缺陷</font> 就是<font color=red>可以埋点的控件有限，不能手动定制</font>。
+
+###### 无埋点
+
+无埋点则是 <font color=fuchsia>前端自动**采集全部事件**，上报埋点数据</font>，由<font color=red>后端来过滤和计算出有用的数据</font>。<font color=dodgerBlue>**优点**</font>是 前端只要一次加载埋点脚本，<font color=dodgerBlue>**缺点**</font>是 <font color=red>流量和采集的数据过于庞大，服务器性能压力山大</font>。
+
+###### 使用GIF上报的原因
+
+向服务器端上报数据，<font color=LightSeaGreen>可以通过请求接口</font>，<font color=fuchsia>**请求**普通文件</font>，或者 <font color=fuchsia>**请求** 图片资源</font>的方式进行。<font color=lightSeaGreen>只要能上报数据，无论是请求 GIF 文件还是请求 js文件 或者是 调用页面接口，服务器端其实并不关心具体的上报方式</font>。那为什么使用了请求 GIF 图片的方式上报数据呢（👀 准确的说是 “借用图片的src属性来发起请求”，至于 src 指向的图片是否存在是无所谓的）？
+
+- **防止跨域**
+
+  <font color=red>一般而言，打点域名都不是当前域名，所以所有的接口请求都会构成跨域</font>。而跨域请求很容易出现由于配置不当被浏览器拦截并报错，这是不能接受的。但<font color=red>图片的 src 属性并不会跨域，并且同样可以发起请求</font>。（排除接口上报）
+
+- **防止阻塞页面加载，影响用户体验**
+
+  <font color=dodgerblue>通常，**创建资源节点后只有将对象注入到浏览器 DOM树 后，浏览器才会实际发送资源请求**</font>。反复操作 DOM 不仅会引发性能问题，而且载入 js/css 资源还会阻塞页面渲染，影响用户体验。
+
+  <font color=dodgerblue>但**图片请求例外**</font>。<font color=fuchsia>构造图片打点不仅不用插入 DOM，只要在 js 中 new Image 对象就能发起请求</font>，<font color=fuchsia>还没有阻塞问题</font>，<font color=fuchsia>**在没有 js 的浏览器环境中也能通过 img 标签正常打点**</font>，这是其他类型的资源请求所做不到的。（排除文件方式）
+
+- **相比 PNG/JPG ，GIF 的体积最小**
+
+  > 👀 以上都只说了 “使用 image” 作为发送数据的载体的原因，下面说为什么使用 GIF：
+
+  最小的 BMP 文件需要74个字节，PNG 需要 67个字节，而合法的 GIF，只需要 43个字节。同样的响应，GIF 可以比 BMP 节约 41% 的流量，比 PNG 节约 35% 的流量。
+
+  **并且大多采用的是1x1像素的透明GIF来上报**
+
+  1x1像素是最小的合法图片。而且，因为是通过图片打点，所以图片最好是透明的，这样一来不会影响页面本身展示效果，二者表示图片透明只要使用一个二进制位标记图片是透明色即可，不用存储色彩空间数据，可以节约体积。
+
+摘自：[为什么大厂前端监控都在用GIF做埋点？](https://juejin.cn/post/7065123244881215518)
+
+> 👀 阅读评论区发现：使用 GIF 作为载体进行埋点，是很老的技术了；也似乎有点过时...
+
+> 👀 在评论区还看见了 《JS高程 第四版》中原理类似的内容，摘录下来作为辅助阅读：
+>
+> > Web 应用程序开发中的一个常见做法是建立中心化的错误日志存储和跟踪系统。数据库和服务器错 误正常写到日志中并按照常用 API 加以分类。对复杂的 Web 应用程序而言，最好也把 JavaScript 错误发 送回服务器记录下来。这样做可以把错误记录到与服务器相同的系统，只要把它们归类到前端错误即可。 使用相同的系统可以进行相同的分析，而不用考虑错误来源。
+> >
+> > 要建立 JavaScript 错误日志系统，首先需要在服务器上有页面或入口可以处理错误数据。该页面只 要从查询字符串中取得错误数据，然后把它们保存到错误日志中即可。比如，该页面可以使用如下代码：
+> >
+> > ```js
+> > function logError(sev, msg) {
+> >   let img = new Image(), 
+> >       encodedSev = encodeURIComponent(sev),
+> >       encodedMsg = encodeURIComponent(msg);
+> >   img.src = 'log.php?sev=${encodedSev}&msg=${encodedMsg}';
+> > }
+> > ```
+> >
+> > `logError()` 函数接收两个参数：严重程度和错误消息。严重程度可以是数值或字符串，具体取决于使用的日志系统。这里使用 Image 对象发送请求主要是从灵活性方面考虑的。
+> >
+> > - 所有浏览器都支持 Image 对象，即使不支持 XMLHttpRequest 对象也一样。
+> > - 不受跨域规则限制。通常，接收错误消息的应该是多个服务器中的一个，而 XMLHttpRequest 此时就比较麻烦。
+> > - 记录错误的过程很少出错。大多数 Ajax 通信借助 JavaScript 库的包装来处理。如果这个库本身 出错，而你又要利用它记录错误，那么显然错误消息永远不会发给服务器。
+> >
+> > 摘自：《JS高程 第四版》- 21.2.7 把错误记录到服务器中 P677
+
 
 
 #### URL Scheme
 
 URL Schemes 有两个单词：
 
-- **URL：**我们都很清楚，http://www.apple.com 就是个 URL，我们也叫它链接或网址；
-- **Schemes：**表示的是一个 URL 中的一个位置——<mark>最初始的位置，即 ://之前的那段字符</mark>。比如 http://www.apple.com 这个网址的 Schemes 是 http。
+- **URL：**我们都很清楚，http://www.apple.com 就是个 URL，我们也叫它链接或网址
+- **Schemes：**表示的是一个 URL 中的一个位置——<mark>最初始的位置，即 ://之前的那段字符</mark>。比如 https://www.apple.com 这个网址的 Schemes 是 https
 
 根据我们上面对 URL Schemes 的使用，我们可以很轻易地理解，在以本地应用为主的 iOS 上，我们可以像定位一个网页一样，用一种特殊的 URL 来定位一个应用甚至应用里某个具体的功能。而定位这个应用的，就应该这个应用的 URL 的 Schemes 部分，也就是开头儿那部分。比如短信，就是 `sms:`
 
@@ -2912,3 +2991,68 @@ Apple 官网喜欢用用户滚动页面 实现 播放视频（动画）效果，
 部分参考自：[我所了解的chrome ](https://www.cnblogs.com/liyunhua/p/4531964.html) 、[你可能不知道的chrome隐藏技巧 - 伯衡君的文章 - 知乎](https://zhuanlan.zhihu.com/p/99527398)
 
 另外，[The Chromium Projects](https://www.chromium.org/chromium-projects/) 中有不少相关内容，可参考。
+
+
+
+#### Atomic CSS
+
+> 👀 如果要了解定义，看下面 **这句话** 就够了
+
+Atomic CSS is the <font color=red>approach to CSS architecture</font> that <font color=fuchsia>favors small, **single-purpose classes with names based on visual function**</font>（ 👀 之所以被称为 function，是因为它接受自定义的选项/参数；见下面 [[#Programmatic]] 的示例代码 ）.
+
+The term “Atomic CSS” was coined（创造（新词汇）） by Thierry Koblenz in his foundational article [“Challenging CSS Best Practices”](https://www.smashingmagazine.com/2013/10/challenging-css-best-practices-atomic-approach/) in October 2013.
+
+Some people started referring to this approach as “Functional CSS” some time later. Though there have been cases in the past where Functional CSS has been used to describe something else , today the terms Functional CSS and Atomic CSS are used interchangeably（可交换的）.
+
+##### Programmatic
+
+The Programmatic approach to Atomic CSS involves using a build tool to automatically generate styles based on what it finds in the HTML.
+
+For example, given this:
+
+```html
+<!-- Programmatic Atomic CSS Example -->
+<div class="Bgc(#0280ae) C(#fff) P(20px)">Lorem ipsum</div>
+```
+
+The following CSS would be generated:
+
+```css
+.Bgc\(#0280ae\) { background-color: #0280ae; }
+.C\(#fff\) { color: #fff; }
+.P\(20px\) { padding: 20px; }
+```
+
+##### Longhand/Shorthand
+
+The longhand style favors more readable class names (see [Expressive CSS](http://johnpolacek.github.io/expressive-css/) and [Solid](http://solid.buzzfeed.com/)), while shorthand favors brevity（简洁）(see [Tachyons](http://tachyons.io/) and [Basscss](http://basscss.com/)).
+
+```css
+/* Shorthand Atomic CSS Examples */
+.bg-blue { background-color: #357edd; } 
+.f1 { font-size: 3rem; }
+.ma0 { margin: 0; }
+
+/* Longhand Atomic CSS Examples */
+.bgr-blue { background-color: #357edd; }
+.background-blue  { background-color: #357edd; }
+.backgroundcolor-blue  { background-color: #357edd; }
+.text-h1 { font-size: 3rem; }
+.text-3rem { font-size: 3rem; }
+.text-huge { font-size: 3rem; }
+.fontsize-1 { font-size: 3rem; }
+.marg-0 { margin: 0; }
+.margin-0 { margin: 0; }
+
+/* Programmatic Shorthand */
+Bgc(#357edd) { background-color: #357edd; }
+
+/* Programmatic Longhand */
+bgrBlue(#357edd) { background-color: #357edd; }
+backgroundBlue(#357edd) { background-color: #357edd; }
+backgroundColorBlue(#357edd) { background-color: #357edd; }
+```
+
+摘自：[John Polacek - Let’s Define Exactly What Atomic CSS is](https://css-tricks.com/lets-define-exactly-atomic-css/)
+
+另外也可以参见 [antfu - Reimagine Atomic CSS](https://antfu.me/posts/reimagine-atomic-css) 中开头的内容

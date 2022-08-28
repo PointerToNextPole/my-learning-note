@@ -3324,7 +3324,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                 
+  >                                                                                                                                                                                   
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3343,7 +3343,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                 
+  >                                                                                                                                                                                   
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -8201,11 +8201,11 @@ mark 事件可以指定任意的名字并且可以在放在应用的任何位置
 
 #### performanceEntry
 
-PerformanceEntry 对象代表了 performance 时间列表中的单个 metric 数据。每一个 performance entry 都可以在应用运行过程中通过手动构建 mark 或者 measure （ 例如调用 mark() 方法 ） 生成。此外，Performance Entries 在资源加载的时候，也会被动生成（ 例如：图片、script、CSS 等资源加载）
+PerformanceEntry 对象代表了 performance 时间列表中的单个 metric 数据。每一个 performance entry 都可以在应用运行过程中通过手动构建 mark 或者 measure （ 例如调用 `mark()` 方法 ） 生成。此外，Performance Entries 在资源加载的时候，也会被动生成（ 例如：图片、script、CSS 等资源加载）
 
-> **注：**一点总结
+> 👀 一点总结：
 >
-> performanceEntry 通过 getEntries( filter )、getEntriesByName( name, entryType )、getEntriesByType( enterType ) 检索，通过 mark( name ) 创建，clearMarks( name ) 移除。
+> performanceEntry 通过 `getEntries( filter )`、`getEntriesByName( name, entryType )`、`getEntriesByType(enterType )` 检索，通过 `mark( name )` 创建，`clearMarks( name )` 移除。
 
 ##### 属性
 
@@ -8218,7 +8218,7 @@ PerformanceEntry 对象代表了 performance 时间列表中的单个 metric 数
 
 #### Performance.measure()
 
- measure() 方法在浏览器性能记录缓存中创建了 DOMHighResTimeStamp 来记录两个特殊标志位（通常称为 ***开始标志*** 和 ***结束标志*** ）。 被命名的 DOMHighResTimeStamp 称为一次测量 ( measure )
+measure() 方法在浏览器性能记录缓存中创建了 DOMHighResTimeStamp 来记录两个特殊标志位（通常称为 ***开始标志*** 和 ***结束标志*** ）。 被命名的 DOMHighResTimeStamp 称为一次测量 ( measure )
 
 ##### 语法
 
@@ -8231,7 +8231,7 @@ measure(measureName, startMark, endMark)
 
 参数：略，详见：[MDN - performance.measure() - en-US](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 。不过，值得说一下的是：startMark 和 endMark 也是可以 performance.timing 中的值，详见： [[#PerformanceTiming]]
 
-摘自：[MDN - performance.measure()](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 不过，中文版的内容和美版不一样，少了很多内容，建议看：[MDN - performance.measure() - en-US](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 
+摘自：[MDN - performance.measure()](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 不过，中文版的内容和美版不一样，少了很多内容，建议看：[MDN US - performance.measure()](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 
 
 
 
@@ -8278,7 +8278,7 @@ function measurePerf() {
 { "name": "endWork", "entryType": "mark", "startTime": 2050.5150000099093, "duration": 0 }
 ```
 
-> **注：**上面的打印经过了压缩，实际打印结果自行运行）
+> **注：**上面的打印经过了压缩，实际打印结果自行运行
 
 注意其中，entryType 有  navigation、resource、mark、paint（其中可见：name 有 first-paint ( FP ) 和 first-contentful-paint ( FCP ) ）。另外，FP 表示：<font color=FF0000>页面上 **第一个像素落点** 的时候</font>；FCP 表示：<font color=FF0000>页面上 **开始有内容绘制** 的时候</font>
 
@@ -8297,7 +8297,7 @@ const observer = new PerformanceObserver(list => {
 observer.observe({ entryTypes: ['paint'] });
 ```
 
-关于 entryTypes，可以取如下值：
+<font color=dodgerBlue>关于 entryTypes，可以取如下值：</font>
 
 - frame：event-loop 时的每一帧
 - navigation：导航
@@ -8305,7 +8305,7 @@ observer.observe({ entryTypes: ['paint'] });
 - mark：打点，得到一个时间戳
 - measure：在两个 mark 产生的点之间的测量
 - paint：绘制
-- longtask：（好像只有 chrome 支持）任何在浏览器中执行超过 50 ms 的任务，都是 long task
+- longtask：（好像只有 Chrome 支持）任何在浏览器中执行超过 50 ms 的任务，都是 long task
 
 ##### navigation entry 对象里能拿到相关的数据
 
@@ -12397,13 +12397,13 @@ window.requestAnimationFrame(callback);
 >
 > 摘自：[「2021」高频前端面试题汇总之CSS篇](https://juejin.cn/post/6905539198107942919)
 
-#### window.requestIdleCallback 🧪
+#### window.requestIdleCallback
 
-> ⚠️ 注意：这是一个实验中的功能
+> 🧪 ：这是一个实验中的功能
 
 window.requestIdleCallback() 方法<font color=FF0000>插入一个函数</font>，<font color=FF0000>这个函数将在浏览器空闲时期被调用</font>。这<font color=FF0000>使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件</font>，如动画和输入响应。函数一般会按先进先调用的顺序执行，然而，如果回调函数指定了执行超时时间timeout，则有可能为了在超时前执行函数而打乱执行顺序。
 
-你可以在空闲回调函数中调用 requestIdleCallback()，以便在下一次通过事件循环之前调度另一个回调。
+你可以在空闲回调函数中调用 `requestIdleCallback()` ，以便在下一次通过事件循环之前调度另一个回调。
 
 > 强烈建议使用 timeout 选项进行必要的工作，否则可能会在触发回调之前经过几秒钟。
 
@@ -12413,23 +12413,24 @@ window.requestIdleCallback() 方法<font color=FF0000>插入一个函数</font>�
 var handle = window.requestIdleCallback(callback[, options])
 ```
 
-**返回值**：一个ID，可以把它传入 Window.cancelIdleCallback() 方法来结束回调。
+**返回值**：一个ID，可以把它传入 `Window.cancelIdleCallback()` 方法来结束回调。
 
 **参数**
 
 - **callback：**<font color=FF0000>一个在事件循环空闲时即将被调用的函数的引用</font>。<font color=FF0000>函数会接收到一个名为 IdleDeadline 的参数</font>，<mark>这个参数可以获取当前空闲时间以及回调是否在超时时间前已经执行的状态</mark>
 - **options：**可选，包括可选的配置参数。具有如下属性：
-  - **timeout：**<font color=FF0000>如果指定了timeout，并且有一个正值，而回调在timeout毫秒过后还没有被调用，那么回调任务将放入事件循环中排队</font>（注：可以理解为 强制执行），即使这样做有可能对性能产生负面影响
+  - **timeout：**<font color=FF0000>如果指定了timeout，并且有一个正值，而回调在 timeout 毫秒过后还没有被调用，那么回调任务将放入事件循环中排队</font>（注：可以理解为 强制执行），即使这样做有可能对性能产生负面影响
 
 摘自：[MDN - requestIdleCallback](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)
 
-##### 垃圾回收的补充
+> 👀 关于垃圾回收的补充
 
 #### FinalizationRegistry
 
 FinalizationRegistry 对象<font color=FF0000>可以让你在对象被垃圾回收时请求一个回调</font>。
 
-**描述**
+##### 描述
+
 FinalizationRegistry 提供了这样的一种方法：<font color=FF0000>当一个在 **注册表中注册的对象被回收时**，请求在某个时间点上调用一个清理回调</font>。（清理回调有时被称为 finalizer ）。
 
 摘自：[MDN - FinalizationRegistry](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry)
@@ -12440,7 +12441,7 @@ FinalizationRegistry 提供了这样的一种方法：<font color=FF0000>当一�
 
 返回文档在垂直方向已滚动的像素值。
 
-语法
+##### 语法
 
 ```js
 var y = window.scrollY;
@@ -12448,7 +12449,7 @@ var y = window.scrollY;
 
 y 是文档从顶部开始滚动过的像素值。
 
-**示例**
+##### 示例
 
 ```js
 // 保证刚好滚动到第二页
@@ -12482,17 +12483,21 @@ WindowOrWorkerGlobalScope.btoa() <font color=FF0000>从 String 对象中创建�
 
 **备注：**由于这个函数将每个字符视为二进制数据的字节，而不管实际组成字符的字节数是多少，<font color=FF0000>所以如果任何字符的码位超出 0x00 ~ 0xFF 这个范围，则会引发 InvalidCharacterError 异常</font>。
 
-- **语法**
+##### 语法
 
-  ```js
-  let encodedData = window.btoa(stringToEncode);
-  ```
+```js
+let encodedData = window.btoa(stringToEncode);
+```
 
-- **参数**
-  - **stringToEncode：**一个字符串，<font color=FF0000>其字符分别表示要编码为 **ASCII 的二进制数据的单个字节**</font>。
-- **返回值：**<font color=FF0000>一个包含 stringToEncode 的 <font size=4>**Base64**</font> 表示的字符串</font>。
+##### 参数
 
-- **备注：**<mark>你可以使用此方法对可能导致通信问题的数据进行编码，传输，然后使用 atob() 方法再次解码数据</mark>。例如，可以编码控制字符，包括 ASCII 值为 0 到 31 的字符。
+- **stringToEncode：**一个字符串，<font color=FF0000>其字符分别表示要编码为 **ASCII 的二进制数据的单个字节**</font>。
+
+**返回值：**<font color=FF0000>一个包含 stringToEncode 的 <font size=4>**Base64**</font> 表示的字符串</font>。
+
+##### 备注
+
+<mark>你可以使用此方法对可能导致通信问题的数据进行编码，传输，然后使用 atob() 方法再次解码数据</mark>。例如，可以编码控制字符，包括 ASCII 值为 0 到 31 的字符。
 
 摘自：[MDN - WindowOrWorkerGlobalScope.btoa()](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/btoa)
 
@@ -12500,13 +12505,15 @@ WindowOrWorkerGlobalScope.btoa() <font color=FF0000>从 String 对象中创建�
 
 WindowOrWorkerGlobalScope.atob() <font color=FF0000>对经过 base-64 编码的字符串进行**解码**</font>。你可以使用 window.btoa() 方法来编码一个可能在传输过程中出现问题的数据，并且在接受数据之后，使用 atob() 方法再将数据解码。例如：你可以编码、传输和解码操作各种字符，比如 0-31 的 ASCII 码值。
 
-- **语法**
+##### 语法
 
-  ```js
-  var decodedData = scope.atob(encodedData);
-  ```
+```js
+var decodedData = scope.atob(encodedData);
+```
 
-- **异常：**<font color=FF0000>如果传入字符串不是有效的 base64 字符串，比如其长度不是 4 的倍数，则抛出DOMException</font>。
+##### 异常
+
+<font color=FF0000>如果传入字符串不是有效的 base64 字符串，比如其长度不是 4 的倍数，则抛出DOMException</font>。
 
 摘自：[MDN - WindowOrWorkerGlobalScope.atob()](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/atob)
 
@@ -12514,7 +12521,7 @@ WindowOrWorkerGlobalScope.atob() <font color=FF0000>对经过 base-64 编码的�
 
 #### Document.forms
 
-[Document.]<font color=FF0000>forms</font>（Document可以省略掉） <font color=FF0000>返回当前文档中的 \<form>元素的一个集合(HTMLCollection)</font>。
+forms <font color=FF0000>返回当前文档中的 \<form> 元素的一个集合 ( HTMLCollection )</font>。
 
 摘自：[MDN - Document.forms](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/forms)
 
@@ -12995,16 +13002,117 @@ Float64Array();
 
 ##### 参数
 
-- **length：**当传入 length 参数时，一个内部的数组缓冲区会被创建在内存中，该缓存区的大小（类型化数组中 byteLength 属性的值）是传入的 length 乘以数组中每个元素的字节数（BYTES_PER_ELEMENT），每个元素的值都为0。(译者注：每个元素的字节数是由具体的构造函数决定的，比如 Int16Array() 的每个元素的字节数为 2，Int32Array() 的每个元素的字节数为 4)
-- **typedArray：**当传入一个任意类型化数组对象作为 typedArray 参数时（比如 Int32Array），typedArray 会被复制到一个新的类型数组中。typedArray 中的每个值在被复制到新的数组之前，会被转化为相应类型的构造函数。新的生成的类型化数组对象将会有跟传入的数组相同的长度（译者注：比如原来的类型化数组的 length==2，那么新生成的数组的 length 也是 2，只是数组中的每一项进行了转化）。
-- **object：**当传入一个 object 作为参数时，就像通过 TypedArray.from() 方法创建一个新的类型化数组一样。
-- **buffer, byteOffset, length：**当传入一个 buffer 参数，或者再另外加上可选参数 byteOffset 和 length 时，一个新的类型化数组视图将会被创建，并可用于呈现传入的 ArrayBuffer 实例。byteOffset 和length 参数指定了类型化数组视图将要暴露的内存范围。如果两者都未传入，那么整个buffer 都会被呈现；如果仅仅忽略 length，那么 buffer 中偏移了 byteOffset 后剩下的 buffer 将会被呈现
+- **length** ：当传入 length 参数时，一个内部的数组缓冲区会被创建在内存中，该缓存区的大小（类型化数组中 byteLength 属性的值）是传入的 length 乘以数组中每个元素的字节数（BYTES_PER_ELEMENT），每个元素的值都为0。(译者注：每个元素的字节数是由具体的构造函数决定的，比如 Int16Array() 的每个元素的字节数为 2，Int32Array() 的每个元素的字节数为 4)
+- **typedArray** ：当传入一个任意类型化数组对象作为 typedArray 参数时（比如 Int32Array ），typedArray 会被复制到一个新的类型数组中。typedArray 中的每个值在被复制到新的数组之前，会被转化为相应类型的构造函数。新的生成的类型化数组对象将会有跟传入的数组相同的长度（译者注：比如原来的类型化数组的 length==2，那么新生成的数组的 length 也是 2，只是数组中的每一项进行了转化）。
+- **object** ：当传入一个 object 作为参数时，就像通过 TypedArray.from() 方法创建一个新的类型化数组一样。
+- **buffer, byteOffset, length** ：当传入一个 buffer 参数，或者再另外加上可选参数 byteOffset 和 length 时，一个新的类型化数组视图将会被创建，并可用于呈现传入的 ArrayBuffer 实例。byteOffset 和length 参数指定了类型化数组视图将要暴露的内存范围。如果两者都未传入，那么整个 buffer 都会被呈现；如果仅仅忽略 length，那么 buffer 中偏移了 byteOffset 后剩下的 buffer 将会被呈现
 
-摘自：[MDN - TypedArray](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) 👀 注：22/8/27 原链接中的内容已经完全修改，原链接的内容见 [archive.org - MDN - TypedArray](https://web.archive.org/web/20220407042514/https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
+摘自：[MDN - TypedArray](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) 👀 注：22/8/27 原链接中的内容已经完全修改，摘抄内容不可见，原链接的内容见 [archive.org - MDN - TypedArray](https://web.archive.org/web/20220407042514/https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
+
+
+
+#### SharedArrayBuffer
+
+`SharedArrayBuffer` 对象用来<font color=red>表示一个通用的、固定长度的原始二进制数据缓冲区</font>，<font color=dodgerBlue>类似于 `ArrayBuffer` 对象</font>，<font color=red>它们都可以用来在共享内存 ( shared memory ) 上创建视图</font>。<font color=fuchsia>与 `ArrayBuffer` 不同的是，`SharedArrayBuffer` 不能被转移</font>（👀 这里说的是 [Transferable Object](https://developer.mozilla.org/en-US/docs/Glossary/Transferable_objects) ）
+
+##### 描述
+
+###### 分配及共享内存
+
+<font color=dodgerBlue>为了将一个 `SharedArrayBuffer` 对象从一个用户代理共享到另一个用户代理</font>（<font color=dodgerBlue>另一个页面的主进程或者当前页面的一个 `worker`</font> ）从而<font color=red>实现共享内存</font>，我们<font color=red>需要运用 `postMessage` 和 结构化克隆算法</font>（👀 即深拷贝）。
+
+<font color=red>“结构化克隆算法” 接收 `SharedArrayBuffers` 对象</font>，<font color=dodgerBlue>**或**</font> <font color=red>被映射到一个新的 `SharedArrayBuffers` 对象上的 `TypedArrays` 对象</font>。在这两种情况下，这个<font color=red>新的 `SharedArrayBuffer` 对象会被传递到目标用户代理的接收函数上</font>，从而<font color=red>在目标用户代理产生一个新的 **私有** `SharedArrayBuffer` 对象</font>（正如 `ArrayBuffer` 一样）。但是，<font color=fuchsia>这两个 `SharedArrayBuffer` 对象 **指向的共享数据块其实是同一个**，所以**某一代理对数据块的修改在另一个代理中可见**</font>。
+
+```js
+var sab = new SharedArrayBuffer(1024);
+worker.postMessage(sab);
+```
+
+###### 通过原子操作更新及同步共享内存
+
+<font color=red>共享内存能被同时创建和更新于 `worker` 线程或主线程</font>。<font color=red>依赖于系统（CPU、操作系统、浏览器），**变化传递给所有上下文环境需要一段时间**</font>。因此<font color=fuchsia>需要通过 **原子 ( Atomics ) 操作** 来进行同步</font>。
+
+> 👀 关于 `Atomics` 对象：
+>
+> > `Atomics` 对象提供了一组静态方法对 `SharedArrayBuffer` 和 `ArrayBuffer` 对象进行原子操作。摘自：[MDN - Atomics](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Atomics)
+
+###### 接受 SharedArrayBuffer 对象的 API
+
+- `WebGLRenderingContext.bufferData()`
+- `WebGLRenderingContext.bufferSubData()`
+- `WebGL2RenderingContext.getBufferSubData()`
+
+###### 安全需求
+
+为应对 “幽灵漏洞” ，所有主流浏览器均默认 [于 2018 年 1 月 5 日禁用 SharedArrayBuffer](https://blog.mozilla.org/security/2018/01/03/mitigations-landing-new-class-timing-attack/)。<font color=red>在 2020 年，一种新的、安全的方法已经标准化，以重新启用 `SharedArrayBuffer`</font> 。通过一些安全措施，`postMessage()` 将不再抛出有关 `SharedArrayBuffer` 对象的异常，跨线程共享内存也变得可用：
+
+作为基准需求，你的文档需处于 [安全上下文](https://developer.mozilla.org/zh-CN/docs/Web/Security/Secure_Contexts) 中。
+
+<font color=dodgerBlue>对于顶级文档，需要设置两个 HTTP 消息头以跨域隔离你的站点：</font>
+
+- [`Cross-Origin-Opener-Policy`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy) 设置为 `same-origin`（保护源站免受攻击）
+- [`Cross-Origin-Embedder-Policy`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy) 设置为 `require-corp`（保护源站免受侵害）
+
+```http
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Embedder-Policy: require-corp
+```
+
+为检查跨域隔离是否生效，你可以检查 [`crossOriginIsolated`](https://developer.mozilla.org/zh-CN/docs/Web/API/crossOriginIsolated) 属性在 `window` 和 `worker` 上下文中是否可用：
+
+```js
+if (crossOriginIsolated) { /* Post SharedArrayBuffer */ } 
+else { /* Do something else */ }
+```
+
+###### 始终使用 new 运算符来构造 SharedArrayBuffer
+
+<font color=fuchsia>`SharedArrayBuffer` 必须使用 `new` 运算符来构造</font>。<font color=red>作为函数来调用 `SharedArrayBuffer()` 构造函数</font>（即不用 `new` 运算符），<font color=red>将会抛出 `TypeError` 异常</font>。
+
+```js
+var sab = SharedArrayBuffer(1024); // ❌
+// TypeError: calling a builtin SharedArrayBuffer constructor without new is forbidden
+
+var sab = new SharedArrayBuffer(1024); // ✅
+```
+
+##### 构造函数
+
+`SharedArrayBuffer()` ：创建一个 `SharedArrayBuffer` 对象。
+
+##### 实例属性
+
+`SharedArrayBuffer.prototype.byteLength` ：数组的大小（以字节为单位）。这是在构造数组时建立的，不能更改（**只读**）。
+
+##### 实例方法
+
+`SharedArrayBuffer.prototype.slice(begin, end)` ：返回一个新的 `SharedArrayBuffer`，其为源数组从 `begin` 字节到 `end` 字节（不含 `end` 字节）的拷贝。若 `begin` 或 `end` 为负数，则表示从数组末尾开始的索引。
+
+摘自：[MDN - SharedArrayBuffer](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer)
+
+#### 《SharedArrayBuffer与幽灵漏洞（Spectre）》笔记补充
+
+SharedArrayBuffer <font color=fuchsia>是一个前端 **跨线程** 共享数据的方案</font>。<font color=fuchsia>它被发现可以用于获取高精度的CPU时间</font>，<font color=dodgerBlue>因此可以结合幽灵 ( spectre ) 漏洞攻击网页，从而 **非法获取到内存中的数据**</font>。<font color=red>幽灵漏洞是一种 **旁路攻击**</font>（👀 即，侧信道攻击）<font color=red>的方式</font> 
+
+> 👀 // TODO 这里暂时看得有点懵，等等再读...
+
+摘自：[SharedArrayBuffer与幽灵漏洞（Spectre） - 李银城的文章 - 知乎](https://zhuanlan.zhihu.com/p/556051833)
 
 
 
 #### ES6 工厂函数
+
+##### 概念
+
+A **factory function** is <font color=fuchsia>any function which **is not a class or constructor**</font> that <font color=fuchsia>**returns a**</font> ( presumably new ) <font color=fuchsia>**object**</font>. In JavaScript, any function can return an object. <font color=red>When it does so without the `new` keyword, it’s a factory function</font>.
+
+摘自：[JavaScript Factory Functions with ES6+](https://medium.com/javascript-scene/javascript-factory-functions-with-es6-4d224591a8b1) ，中文翻译：[【译】ES6的工厂函数](https://www.jianshu.com/p/9ce26a5044e6)
+
+##### 工厂函数 比 构造函数 的优势
+
+构造函数创建的不同对象，都拥有同名的方法；但这两个方法不属于同一个实例，即这里定义的方法，在每一个对象实例中都会创建一遍，这在某些场景下是没有必要，占用了不必要的存储空间。
+
+学习自：[工厂函数和构造函数](https://juejin.cn/post/6992540058150502437)
 
 
 
@@ -13014,7 +13122,7 @@ Float64Array();
 - AMD: 通过require.js实现，异步模块定义
 - UMD：建议作为通用的模块系统，它和AMD和CommonJS都兼容
 - CMD: sea.js
-- export / import：ES6
+- ESM
 
 
 
@@ -13083,39 +13191,54 @@ import '/modules/my-module.js';
 
 请不要滥用动态导入（只有在必要情况下采用）。静态框架能更好的初始化依赖，而且更有利于静态分析工具和 tree shaking 发挥作用。
 
-> 👀 注：[MDN US - import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) 还提到了 “顶层 await” ( top-level await )，中文版没有提到。另外， [[JS 机制与原理#补充：为什么 CJS 不能加载 ESM]] 也提到了 top-level await
-
 摘自：[MDN - import](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/import)
+
+> 👀 注：[MDN US - import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) 还提到了 “顶层 await” ( top-level await )，中文版没有提到。另外， [[JS 机制与原理#补充：为什么 CJS 不能加载 ESM]] 也提到了 top-level await
+>
+> ⚠️ 注：经过实践，使用 import 引入的变量，是 constant 的，是无法修改的。
+>
+> ```js
+> // export.js
+> export let foo = 1
+> 
+> // import.js
+> import { foo } from 'export.js'
+> foo = 2
+> /* ⚠️ 报错
+> foo = 2
+>     ^
+> TypeError: Assignment to constant variable. */
+> ```
 
 
 
 #### export
 
-在创建 JavaScript 模块时，**`export`** 语句用于从模块中导出实时绑定的函数、对象或原始值，以便其他程序可以通过 `import` 语句使用它们。被导出的绑定值依然可以在本地进行修改。在使用 `import` 进行导入时，这些绑定值只能被导入模块所读取，但在 `export` 导出模块中对这些绑定值进行修改，所修改的值也会实时地更新。
+在创建 JavaScript 模块时，<font color=red>`export` 语句用于从模块中导出实时绑定的函数、对象或原始值，以便其他程序可以通过 `import` 语句使用它们</font>。<font color=fuchsia>**被导出的绑定值依然可以在本地进行修改**</font>。在<font color=fuchsia>使用 `import` 进行导入时，这些绑定值只能被导入模块所读取</font>，但<font color=fuchsia>**在 `export` 导出模块中对这些绑定值进行修改，所修改的值也会实时地更新**</font>。
 
 无论您是否声明，导出的模块都处于 “严格模式” 。 export 语句不能用在嵌入式脚本中。
 
 ##### 语法
 
-存在两种 exports 导出方式：
+<font color=dodgerBlue>存在两种 exports 导出方式：</font>
 
-1. 命名导出（每个模块包含任意数量）
-2. 默认导出（每个模块包含一个）
+1. 命名导出（每个模块包含任意数量）👀 见 [[#命名导出]]
+2. 默认导出（每个模块包含一个）👀 见 [[#默认导出]]
 
 ```js
 // 导出单个特性
 export let name1, name2, …, nameN; // also var, const
 export let name1 = …, name2 = …, …, nameN; // also var, const
-export function FunctionName(){...}
-export class ClassName {...}
+export function FunctionName() { ... }
+export class ClassName { ... }
 
 // 导出列表
 export { name1, name2, …, nameN };
 
-// 重命名导出
+// 重命名导出 👀
 export { variable1 as name1, variable2 as name2, …, nameN };
 
-// 解构导出并重命名
+// 解构导出并重命名 👀
 export const { name1, name2: bar } = o;
 
 // 默认导出
@@ -13134,7 +13257,105 @@ export { default } from …;
 
 - `nameN` ：要导出的标识符（以便其他脚本通过 `import` 语句进行导入）
 
+##### 描述
 
+<font color=dodgerBlue>有两种不同的导出方式，命名导出和默认导出</font>。你能够在每一个模块中定义多个命名导出，但是只允许有一个默认导出。每种方式对应于上述的一种语法：
+
+###### 命名导出
+
+```js
+// 导出事先定义的特性
+export { myFunction, myVariable };
+
+// 导出单个特性（可以导出 var, let, const,function, class ）
+export let myVariable = Math.sqrt(2);
+export function myFunction() { ... };
+```
+
+###### 默认导出
+
+```js
+// 导出事先定义的特性作为默认值
+export { myFunction as default };
+
+// 导出单个特性作为默认值
+export default function () { ... }
+export default class { ... }
+
+// 每个导出都覆盖前一个导出
+```
+
+在导出多个值时，命名导出非常有用。<font color=red>在导入期间，**必须使用相应对象的相同名称**</font>。
+
+但是，<font color=fuchsia>可以使用任何名称导入默认导出</font>（👀 见下面的的 `import m from './test'` ），例如：
+
+```js
+// export.js
+let k;
+export default k = 12;
+```
+
+```js
+// import.js
+import m from './test'; // 由于 k 是默认导出，所以可以自由使用 import m 替代 import k
+console.log(m);        // 输出为 12
+```
+
+也<font color=red>可以重命名命名导出以避免命名冲突</font>：
+
+```js
+export { 
+  myFunction as function1,
+  myVariable as variable
+};
+```
+
+> 👀 注：在实践中发现，如下写法是不可以的
+>
+> ```js
+> export default [var | let | const] varName = initVal;
+> ```
+
+###### 重导出 / 聚合
+
+<font color=dodgerBlue>为了使模块导入变得可用</font>，<font color=fuchsia>在一个父模块中“导入/导出”这些不同模块也是可行的</font>。也就是说，你可以创建单个模块，集中多个模块的多个导出。
+
+<font color=fuchsia>这个可以使用 `export from` 语法实现</font>：
+
+```js
+export {
+  default as function1,
+  function2
+} from 'bar.js';
+```
+
+与之形成对比的是<font color=red>联合使用导入和导出</font>：
+
+```js
+import { 
+  default as function1,
+  function2
+} from 'bar.js';
+export { function1, function2 };
+```
+
+<font color=fuchsia>但这里的 `function1` 和 `function2` **在当前模块中变得不可用**</font>。
+
+> ⚠️ **备注：** 尽管与 import 等效，但以下语法在语法上无效：
+
+```js
+import DefaultExport from 'bar.js'; // 有效的
+```
+
+```js
+export DefaultExport from 'bar.js'; // 无效的 👀 这里是 export from
+```
+
+<font color=fuchsia>这里正确的做法是重命名这个导出：</font>
+
+```js
+export { default as DefaultExport } from 'bar.js';
+```
 
 摘自：[MDN - export](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/export)
 

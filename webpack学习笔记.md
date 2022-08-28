@@ -5793,7 +5793,7 @@ npm install --save-dev webpack@next
 npm install --save-dev webpack/webpack#<tagname/branchname>
 ```
 
-👀 **注：**只见过 `libName@libVersion` ，没见过 `libName#<tagName>` 以及 `libname#<branchName>` ，值得注意。
+> 👀 **注：**只见过 `libName@libVersion` ，没见过 `libName#<tagName>` 以及 `libname#<branchName>` ，值得注意。
 
 摘自：[webpack doc - Guide - Installation](https://webpack.js.org/guides/installation)
 

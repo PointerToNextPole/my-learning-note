@@ -95,7 +95,7 @@
 
   <img src="https://s1.ax1x.com/2020/10/28/B3xx7F.png" style="zoom: 45%;" />
 
-- 在spotlight中查词，不过：可能所查单词不在第一个选项中：如下所示。只需要按下**⌘ + L**即可将光标移动到字典选项处
+- 在 spotlight 中查词，不过：可能所查单词不在第一个选项中：如下所示。只需要按下 **⌘ + L** 即可将光标移动到字典选项处
 
   |                          开始                          |                   使用**⌘ + L**选中                    |
   | :----------------------------------------------------: | :----------------------------------------------------: |
@@ -105,7 +105,7 @@
 
 
 
-#### **⌃ + 方向键**
+#### ⌃ + 方向键
 
 - **⌃ + ←：相当于四指滑动的左滑，前往左侧的页面**
 - **⌃ + →：相当于四指滑动的右滑，前往右侧的页面**
@@ -114,7 +114,7 @@
 
 
 
-#### **Chrome相关**
+#### Chrome 相关
 
 - **⌥ + ⌘ + I：打开/ 关闭 Developer Tools**
 - **⌥ + ⌘ + J：打开 / 关闭 Developer Tools 并进入控制台**
@@ -131,13 +131,13 @@
 
 ### Mac 使用
 
-**修改终端用户名：**
+##### 修改终端用户名
 
 ```sh
 sudo scutil --set HostName yourTargetName
 ```
 
-##### `cd` 命令，在命令行中进入查找输出的地址，如：
+##### cd 命令，在命令行中进入查找输出的地址，如：
 
 ```bash
 #方法一
@@ -146,7 +146,7 @@ cd `brew --prefix go`
 cd $(brew --prefix go)
 ```
 
-**创建文件夹并进入该文件夹**
+##### 创建文件夹并进入该文件夹
 
 ```sh
 mkdir folder-name && cd $_
@@ -154,7 +154,7 @@ mkdir folder-name && cd $_
 
 这里的 `&&` 和 `$_`下面都有解释。
 
-**类似的：`open `命令**
+##### 类似的：`open` 命令
 
 ```bash
 open `brew --prefix go`    #打开软件
@@ -1053,7 +1053,7 @@ rx = 4 +1 = 5.           若要同时设置 r-x （可读可运行不可写）�
 
 
 
-### chown
+#### chown
 
 chown（英文全拼：change ownerp）命令用于设置文件所有者和文件关联组的命令。
 
@@ -1061,13 +1061,13 @@ chown（英文全拼：change ownerp）命令用于设置文件所有者和文�
 
 chown 需要超级用户 root 的权限才能执行此命令。只有超级用户和属于组的文件所有者才能变更文件关联组。非超级用户如需要设置关联组可能需要使用 chgrp 命令
 
-语法：
+##### 语法
 
 ```bash
 chown [-cfhvR] [--help] [--version] user[:group] file...
 ```
 
-**参数** :
+##### 参数
 
 - `user` : 新的文件拥有者的使用者 ID
 - `group` : 新的文件拥有者的使用者组(group)
@@ -1098,9 +1098,45 @@ which 指令会在环境变量 `$PATH` 设置的目录里查找符合条件的�
 
 
 
+#### type 命令
+
+The **type** command <font color=fuchsia>is used to describe how its argument would be translated **if used as commands**</font>. It is <font color=red>also used to find out whether it is built-in or external binary file</font>.
+
+##### Syntax
+
+```sh
+type [Options] command-names
+```
+
+##### Options
+
+- **-a :** This option <font color=red>is used to find out whether it is an alias, keyword or a function</font> and it <font color=red>**also displays the path of an executable, if available**</font>.
+
+  <img src="https://s2.loli.net/2022/08/28/1DVvR2otaBlAzbL.png" alt="img" style="zoom:95%;" />
+
+- **-t :** This option will <font color=red>display a single word as an output</font>.
+
+  - `alias` : if command is a shell alias
+  - `keyword` : if command is a shell reserved word
+  - `builtin` : if command is a shell builtin
+  - `function` : if command is a shell function
+  - `file` : if command is a disk file
+
+  ![img](https://s2.loli.net/2022/08/28/9Wm8Tyd34XbZpuI.png)
+
+  > 👀 注：需要注意的是：经过测试，`-t` 选项在 zsh 环境下无法使用，在 bash 环境下是可以的。
+
+- **-p :** This option <font color=red>displays the name of the disk file</font> which would be executed by the shell. <font color=red>It will return nothing if the command is not a disk file</font>.
+
+  ![img](https://s2.loli.net/2022/08/28/Ub17scxIHXZwtTL.png)
+
+摘自：[type command in Linux with Examples](https://www.geeksforgeeks.org/type-command-in-linux-with-examples/)
+
+
+
 #### lsof 命令
 
-lsof ( list open files ) 是一个查看当前系统文件的工具。在 linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。如 传输控制协议 ( TCP ) 和 用户数据报协议 ( UDP ) 套接字等，系统在后台都为该应用程序分配了一个文件描述符，该文件描述符提供了大量关于这个应用程序本身的信息。
+lsof ( list open files ) 是一个查看当前系统文件的工具。在 linux 环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。如 传输控制协议 ( TCP ) 和 用户数据报协议 ( UDP ) 套接字等，系统在后台都为该应用程序分配了一个文件描述符，该文件描述符提供了大量关于这个应用程序本身的信息。
 
 **参数**
 

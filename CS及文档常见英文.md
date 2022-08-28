@@ -282,6 +282,20 @@
 
 - **predicate**：谓词，比如 TS 中的 “type predicates”（ 类型谓词 ）
 
+- **terminology** ：术语
+
+- **coin**：创造（新词语） ( verb )
+
+- **interchangeable**：可交换的
+
+- **variation**：变化 ( noun ) 。**variate**：变量，变数 ( noun )
+
+- **longhand**：手写
+
+- **shorthand**：速记
+
+- **brevity**：简洁 ( noun )
+
 
 #### 特殊字符
 
