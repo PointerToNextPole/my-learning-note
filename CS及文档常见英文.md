@@ -288,7 +288,7 @@
 
 - **interchangeable**：可交换的
 
-- **variation**：变化 ( noun ) 。**variate**：变量，变数 ( noun )
+- **variation**：变化 ( noun ) 。**variate**：变量，变数 ( noun )。**vary**：变化( verb )
 
 - **longhand**：手写
 

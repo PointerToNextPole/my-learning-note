@@ -8,7 +8,7 @@
 
 
 
-## 《TypeScript入门教程》学习笔记
+## 《TypeScript入门教程》笔记
 
 链接 🔗：[《TypeScript入门教程》](https://ts.xcatliu.com)
 
@@ -530,7 +530,7 @@ function reverse(x: number | string): number | string | void {
 
 
 
-## 《TypeScript 编程》学习笔记
+## 《TypeScript 编程》笔记
 
 #### TS 类型的结构关系图
 
@@ -559,9 +559,9 @@ function reverse(x: number | string): number | string | void {
 
 
 
-## 《深入理解 TypeScript 》学习笔记
+## 《深入理解 TypeScript 》笔记
 
-链接🔗：[深入理解 TypeScript](https://jkchao.github.io/typescript-book-chinese/)
+🔗 链接：[深入理解 TypeScript](https://jkchao.github.io/typescript-book-chinese/)
 
 #### infer
 
@@ -569,11 +569,270 @@ function reverse(x: number | string): number | string | void {
 
 
 
+#### 类型断言
+
+TypeScript <font color=red>允许你覆盖它的推断，并且能以你任何你想要的方式分析它</font>，<font color=dodgerBlue>这种机制被称为「类型断言」</font>。TypeScript <font color=fuchsia>类型断言用来告诉编译器你比它更了解这个类型，并且它不应该再发出错误</font>。
+
+类型断言的一个常见用例是当你从 JavaScript 迁移到 TypeScript 时：
+
+```ts
+const foo = {};
+foo.bar = 123;     // Error: 'bar' 属性不存在于 ‘{}’
+foo.bas = 'hello'; // Error: 'bas' 属性不存在于 '{}'
+```
+
+<font color=red>这里的代码发出了错误警告，因为 `foo` 的类型推断为 `{}` ，即没有属性的对象</font>。因此，你不能在它的属性上添加 `bar` 或 `bas`，<font color=dodgerBlue>你可以通过 **类型断言** 来避免此问题</font>：
+
+```ts
+interface Foo {
+  bar: number;
+  bas: string;
+}
+
+const foo = {} as Foo; // 👀
+foo.bar = 123;
+foo.bas = 'hello';
+```
+
+##### `as foo` 与 `<foo>`
+
+最初的断言语法如下所示：
+
+```ts
+let foo: any;
+let bar = <string>foo; // 现在 bar 的类型是 'string'
+```
+
+然而，<font color=red>当你在 JSX 中使用 `<foo>` 的断言语法时，这会与 JSX 的语法存在歧义</font>：
+
+```jsx
+let foo = <string>bar;</string>;
+```
+
+因此，<font color=fuchsia>为了一致性，我们建议你使用 `as foo` 的语法来为类型断言</font>。
+
+##### 类型断言与类型转换
+
+<font color=dodgerBlue>它之所以不被称为「类型转换」</font>，是因为<font color=red>转换通常意味着某种 **运行时** 的支持</font>（👀 这个概念没有听过 ... ）。但是，<font color=fuchsia>类型断言 **纯粹是一个编译时语法**</font>，同时，<font color=red>它也是一种为编译器提供关于如何分析代码的方法</font>。
+
+##### 类型断言被认为是有害的
+
+<font color=red>在很多情景下，断言能让你更容易的从遗留项目中迁移</font>（甚至将其他代码粘贴复制到你的项目中），然而，<font color=dodgerBlue>你应该小心谨慎的使用断言</font>。让我们用最初的代码作为示例，如果你没有按约定添加属性，TypeScript 编译器并不会对此发出错误警告：
+
+```ts
+interface Foo {
+  bar: number;
+  bas: string;
+}
+
+const foo = {} as Foo;
+// ahhh, 忘记了什么？
+```
+
+另外一个常见的想法是使用类型断言来提供代码的提示：
+
+```ts
+interface Foo {
+  bar: number;
+  bas: string;
+}
+
+const foo = <Foo>{
+  // 编译器将会提供关于 Foo 属性的代码提示，但是开发人员也很容易忘记添加所有的属性
+  // 同样，⚠️ **如果 Foo 被重构，这段代码也可能被破坏**（例如，一个新的属性被添加）。
+};
+```
+
+这也会存在一个同样的问题，如果你忘记了某个属性，编译器同样也不会发出错误警告。使用一种更好的方式：
+
+```ts
+interface Foo {
+  bar: number;
+  bas: string;
+}
+
+const foo: Foo = {
+  // 编译器将会提供 Foo 属性的代码提示
+};
+```
+
+在某些情景下，你可能需要创建一个临时的变量，但至少，你不会使用一个承诺（可能是假的），而是依靠类型推断来检查你的代码。
+
+##### 双重断言
+
+<font color=dodgerBlue>类型断言，尽管我们已经证明了它并不是那么安全，但它也还是有用武之地</font>。如下一个非常实用的例子所示，当使用者了解传入参数更具体的类型时，类型断言能按预期工作：
+
+```ts
+function handler(event: Event) {
+  const mouseEvent = event as MouseEvent;
+}
+```
+
+然而，<font color=red>如下例子中的代码将会报错，尽管使用者已经使用了类型断言</font>：
+
+```ts
+function handler(event: Event) {
+  const element = event as HTMLElement; // Error: 'Event' 和 'HTMLElement' 中的任何一个都不能赋值给另外一个
+}
+```
+
+<font color=dodgerBlue>如果你仍然想使用那个类型</font>，你<font color=fuchsia>可以使用双重断言</font>。<font color=fuchsia>首先断言成兼容所有类型的 `any`</font> ，编译器将不会报错：
+
+```ts
+function handler(event: Event) {
+  const element = (event as any) as HTMLElement; // ok
+}
+```
+
+###### TypeScript 是怎么确定单个断言是否足够
+
+<font color=fuchsia>当 `S` 类型是 `T` 类型的子集，或者 `T` 类型是 `S` 类型的子集时，`S` 能被成功断言成 `T`</font> 。这是为了在进行类型断言时提供额外的安全性，完全毫无根据的断言是危险的，如果你想这么做，你可以使用 `any` 。
 
 
-## 神说要有光《 TypeScript 类型体操通关秘籍》笔记
 
-链接🔗：[TypeScript 类型体操通关秘籍](https://juejin.cn/book/7047524421182947366/section)
+#### 类型保护
+
+<font color=fuchsia>类型保护允许你 **使用更小范围下的对象类型**</font>。
+
+##### typeof
+
+TypeScript 熟知 JavaScript 中 `instanceof` 和 `typeof` 运算符的用法。<font color=red>如果你在一个条件块中使用这些，TypeScript 将会推导出在条件块中的的变量类型</font>。如下例所示，TypeScript 将会辨别 `string` 上是否存在特定的函数，以及是否发生了拼写错误：
+
+```ts
+function doSome(x: number | string) {
+  if (typeof x === 'string') {
+    // 在这个块中，TypeScript 知道 `x` 的类型必须是 `string`
+    console.log(x.subtr(1)); // Error: 'subtr' 方法并没有存在于 `string` 上
+    console.log(x.substr(1)); // ok
+  }
+  x.substr(1); // Error: 无法保证 `x` 是 `string` 类型
+}
+```
+
+##### instanceof
+
+<font color=dodgerBlue>这有一个关于 `class` 和 `instanceof` 的例子：</font>
+
+```ts
+class Foo { foo = 123; common = '123'; }
+class Bar { bar = 123; common = '123'; }
+
+function doStuff(arg: Foo | Bar) {
+  if (arg instanceof Foo) { // 👀 使用了 instanceof
+    console.log(arg.foo);   // ok
+    console.log(arg.bar);   // Error
+  }
+  if (arg instanceof Bar) {
+    console.log(arg.foo);   // Error
+    console.log(arg.bar);   // ok
+  }
+}
+
+doStuff(new Foo());
+doStuff(new Bar());
+```
+
+<font color=fuchsia>TypeScript 甚至能够理解 `else`</font> 。当你使用 `if` 来缩小类型时，TypeScript 知道在其他块中的类型并不是 `if` 中的类型：
+
+```ts
+class Foo { foo = 123; }
+class Bar { bar = 123; }
+
+function doStuff(arg: Foo | Bar) {
+  if (arg instanceof Foo) {
+    console.log(arg.foo); // ok
+    console.log(arg.bar); // Error
+  } else {                // 👀 使用 else
+    // 这个块中，一定是 'Bar'
+    console.log(arg.foo); // Error
+    console.log(arg.bar); // ok
+  }
+}
+
+doStuff(new Foo());
+doStuff(new Bar());
+```
+
+##### in
+
+<font color=LightSeaGreen>`in` 操作符可以安全的检查一个对象上是否存在一个属性</font>，<font color=red>它通常也被作为 **类型保护** 使用</font>：
+
+```ts
+interface A { x: number; }
+interface B { y: string; }
+
+function doStuff(q: A | B) {
+  if('x' in q) { // 👀
+    // q: A
+  }
+  else {
+    // q: B
+  }
+}
+```
+
+##### 字面量类型保护
+
+当你在联合类型里使用字面量类型时，你可以检查它们是否有区别：
+
+```ts
+type Foo = {
+  kind: 'foo'; // 字面量类型 👀
+  foo: number;
+};
+type Bar = {
+  kind: 'bar'; // 字面量类型 👀
+  bar: number;
+};
+
+function doStuff(arg: Foo | Bar) {
+  if (arg.kind === 'foo') { // 👀 使用字面量
+    console.log(arg.foo);   // ok
+    console.log(arg.bar);   // Error
+  } else {
+    // 一定是 Bar
+    console.log(arg.foo);   // Error
+    console.log(arg.bar);   // ok
+  }
+}
+```
+
+##### 使用定义的类型保护
+
+JavaScript 并没有内置非常丰富的、运行时的自我检查机制。<font color=LightSeaGreen>当你在使用普通的 JavaScript 对象时</font>（使用结构类型，更有益处），你甚至无法访问 `instanceof` 和 `typeof` 。<font color=fuchsia>在这种情景下，你可以创建 ***用户自定义的类型保护函数***</font>，这仅仅<font color=fuchsia>是一个返回值为类似于`someArgumentName is SomeType` 的函数</font>，如下：
+
+> 👀 注： `is` 有点类似于 Py 中的 `is` 。另外，根据 [TypeScript类型系统（5/5）-类型编程篇 - Ethan Ruan的文章 - 知乎](https://zhuanlan.zhihu.com/p/145679056) 中的说法：`is` 是“断言返回布尔类型”；参考下面的使用，确实是这样。
+
+```ts
+// 仅仅是一个 interface
+interface Foo { foo: number; common: string; }
+interface Bar { bar: number; common: string; }
+
+// 用户自己定义的类型保护！👀
+function isFoo(arg: Foo | Bar): arg is Foo { // 👀 arg is Foo，返回值是布尔类型
+  return (arg as Foo).foo !== undefined;
+}
+
+// 用户自己定义的类型保护使用用例：
+function doStuff(arg: Foo | Bar) {
+  if (isFoo(arg)) {       // 👀 自定义的类型保护返回布尔类型
+    console.log(arg.foo); // ok
+    console.log(arg.bar); // Error
+  } else {
+    console.log(arg.foo); // Error
+    console.log(arg.bar); // ok
+  }
+}
+
+doStuff({ foo: 123, common: '123' });
+doStuff({ bar: 123, common: '123' });
+```
+
+
+
+## 神光《 TypeScript 类型体操通关秘籍》笔记
+
+🔗 链接：[TypeScript 类型体操通关秘籍](https://juejin.cn/book/7047524421182947366/section)
 
 > 👀 注：除了本小册的内容，神光还写了一些文章比如 [这几个 TypeScript 类型，90% 的人说不出原因](https://juejin.cn/post/7066745410194243597) 、[我读 Typescript 源码的秘诀都在这里了](https://juejin.cn/post/7015567717876908063) 也很不错，且并 **不记得** 小册上包含这些这些内容（也可能是自己还没有读到... ），建议阅读和做笔记。
 
@@ -3077,7 +3336,11 @@ type ThisParameterType<T> =
 > type FooReturn = ReturnType<typeof foo>; // string
 > ```
 >
-> `ReturnType<typeof foo>` 返回 string，<font color=FF0000 size=4>说明 `type foo` 是一个函数</font>。
+> `ReturnType<typeof foo>` 返回 string ，<font color=red>说明 `typeof foo` 的值 是一个函数</font>。
+>
+> 这里就说到了 TS 中的 typeof 和 ES 中的 typeof 是有区别的：除了 ES 中的的功能外，TS 的 typeof 还可以在类型编程中”提取类型“，无论是上面的 `typeof foo` 获得 `() => string` 类型，还是 `ReturnType<typeof foo>` 获取到返回值类型 string。另外，因为“类型编程”是在“编译期”完成，所以 TS typeof 的 ”提取类型“ 都是在“编译期”完成的。而 ES 的 typeof 是在“运行时”完成。
+>
+> 关于 TS 的 typeof 可以参考： [TypeScript基础之typeof 类型操作符](https://segmentfault.com/a/1190000042036809)
 
 #### OmitThisParameter
 
@@ -4075,7 +4338,7 @@ module.exports = {
 
 #### Babel 不支持的 TS 语法
 
-> **注：**这里有大量截图和代码，不适合笔记，所以做了省略。
+> 👀 注：这里有大量截图和代码，不适合笔记，所以做了省略。
 
 <font color=FF0000>**Babel 是每个文件单独编译的**</font>，而 <font color=FF0000>**TSC 不是**</font>；<font color=FF0000>**TSC 是整个项目一起编译**：会处理类型声明文件，会做跨文件的类型声明合并，**比如 namespace 和 interface 就可以跨文件合并**</font>。所以 Babel 编译 TS 代码有一些特性是没法支持的：
 
@@ -4099,7 +4362,7 @@ TS 的 namespace 是可以导出非 const 的值的，后面可以修改；但�
 
 > **注：**这里有点乱，不过下面有总结
 
-#### babel 还是 tsc？
+#### babel 还是 tsc ？
 
 babel 不支持 `const enum`（会作为 enum 处理），不支持 namespace 的跨文件合并，导出非 const 的值，不支持过时的 `export = import =` 的模块语法。
 
@@ -4157,9 +4420,9 @@ TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类
 
 #### Tripe-slash Directives
 
-//TODO https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html
+// TODO https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html
 
-//TODO 《Programming Typescript》Appendix E. Triple-Slash Directives
+// TODO 《Programming Typescript》Appendix E. Triple-Slash Directives
 
 
 
@@ -4173,7 +4436,7 @@ TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类
 
 摘自：[TypeScript类型系统（5/5）-类型编程篇 - Ethan Ruan的文章 - 知乎](https://zhuanlan.zhihu.com/p/145679056)
 
-> 👀 注：看了下 [关于 TS ，你必须知道的鸭子?类型](https://jishuin.proginn.com/p/763bfbd6f46f) 其中结合 Py 和 JS 再引入 TS 的鸭子类型，（译我当前的水平）没完全看懂...有空再看下。另外，还提到了 TS 的 `is` 关键字及 类型谓词 ”type predicates“  ，还有“类型保护”；有必要去了解下
+> 👀 注：看了下 [关于 TS ，你必须知道的鸭子?类型](https://jishuin.proginn.com/p/763bfbd6f46f) 其中结合 Py 和 JS 再引入 TS 的鸭子类型，（以我当前的水平）没完全看懂... 有空再看下。另外，还提到了 TS 的 `is` 关键字及 类型谓词 ”type predicates“  ，还有“类型保护”
 
 
 

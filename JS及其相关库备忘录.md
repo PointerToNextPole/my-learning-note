@@ -1785,21 +1785,22 @@ function () {}.constructor         // 返回函数 Function(){ [native code] }
 
 #### JavaScript 正则表达式
 
-正则表达式语法：
+##### 语法
 
 ```js
 /正则表达式主体/修饰符(可选)
 ```
 
-示例：
+##### 示例
 
 ```js
 var patt = /runoob/i
 ```
 
-- **/runoob/i** 是一个正则表达式。
-  - **runoob** 是一个**正则表达式主体** (用于检索)。
-  - **i** 是一个**修饰符** (搜索不区分大小写)。
+`/runoob/i` 是一个正则表达式。
+
+- **runoob** 是一个**正则表达式主体** (用于检索)。
+- **i** 是一个**修饰符** (搜索不区分大小写)。
 
 在 JavaScript 中，正则表达式通常用于两个字符串方法 : **search() 和 replace()**。
 
@@ -1807,7 +1808,7 @@ var patt = /runoob/i
 
 - **replace() 方法** 用于在字符串中用一些字符替换另一些字符，或替换一个与正则表达式匹配的子串。
 
-**正则表达式修饰符**
+##### 正则表达式修饰符
 
 **修饰符** 可以在全局搜索中不区分大小写:
 
@@ -1817,7 +1818,7 @@ var patt = /runoob/i
 |   g    | 执行全局匹配（查找所有匹配而非在找到第一个匹配后停止）。 |
 |   m    |                      执行多行匹配。                      |
 
-**使用 RegExp 对象**
+##### 使用 RegExp 对象
 
 在 JavaScript 中，RegExp 对象是一个预定义了属性和方法的正则表达式对象。
 
@@ -1848,14 +1849,14 @@ var patt = /runoob/i
   
   <font color=FF0000>**该函数返回一个数组**，其中存放匹配的结果</font>。<font color=FF0000>如果未找到匹配，则返回值为 null</font>。
 
-<font size=4>**补充**</font>
+> 👀 以下是一些补充
 
-**以上内容均是ES5的内容，ES6中又进行了补充：**
+##### 以上内容均是 ES5 的内容，ES6中又进行了补充
 
-- **y修饰符（粘连修饰符）：**修饰符g是每次匹配剩余的字符串，而修饰符y是从剩余的<font color=FF0000>第一个字符</font>开始匹配，如果找不到，则继续从头开始找
-- **u修饰符：**用unicode的模式去匹配，使用u修饰符可以突破\u0000-\uffff的范围
+- **y 修饰符（粘连修饰符）：**修饰符g是每次匹配剩余的字符串，而修饰符y是从剩余的<font color=FF0000>第一个字符</font>开始匹配，如果找不到，则继续从头开始找
+- **u 修饰符：**用unicode的模式去匹配，使用u修饰符可以突破\u0000-\uffff的范围
 
-**ES9再次进行了补充：**
+##### ES2018 再次进行了补充
 
 - **dotAll（s修饰符）：**正则表达式中的`.`用于匹配任意单个字符，但是不能用于匹配 多字符的unicode 和 行终结符、行分隔符（\n，\r、\u{2028}、\u{2029}）、段终结符。ES9中加入了dotAll，即s修饰符，`.`加上`s`即可匹配所有的单个字符
 
@@ -1943,17 +1944,17 @@ let regexpObj2 = new RegExp(/ab+c/, 'i'); // 首个参数为常规字面量的�
 
 match() 方法<font color=FF0000> 检索返回一个字符串匹配正则表达式的结果</font>。
 
-**语法**
+##### 语法
 
 ```js
 str.match(regexp)
 ```
 
-**参数**
+##### 参数
 
 - **regexp：**一个正则表达式对象。<font color=FF0000> 如果传入一个**非正则表达式对象**，则会隐式地使用 new RegExp(obj) 将其转换为一个 RegExp</font>。<mark>如果你<font color=FF0000> 没有给出任何参数并直接使用match() 方法</font> ，你将会得到一 个包含空字符串的 Array ：[""] </mark>。
 
-**返回值**
+##### 返回值
 
 - **如果<font color=FF0000> 使用g</font>标志**，则将<font color=FF0000> 返回与完整正则表达式匹配的所有结果</font>，但<font color=FF0000> 不会返回捕获组</font>。
 
@@ -1965,11 +1966,11 @@ str.match(regexp)
   - **index:** <font color=FF0000> 匹配的结果的开始位置</font>
   - **input:** <font color=FF0000> 搜索的字符串</font>.
 
-一个Array，其内容取决于global（g）标志的存在与否，如果未找到匹配则为null。
+一个 Array，其内容取决于 global ( g ) 标志的存在与否，如果未找到匹配则为 null 。
 
-<mark style=background-color:hotpink>**描述：**如果正则表达式不包含 g 标志，str.match() 将返回与 RegExp.exec() 相同的结果</mark>。
+**描述：**如果正则表达式不包含 g 标志，`str.match()` 将返回与 `RegExp.exec()` 相同的结果。
 
-**比较RegExp的方法：**
+##### 比较 RegExp 的方法
 
 - 如果你需要知道<font color=FF0000> 一个字符串是否与一个正则表达式匹配 RegExp</font> ，<font color=FF0000> 可使用 RegExp.test() </font>。
 
@@ -3324,7 +3325,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                   
+  >                                                                                                                                                                                     
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3343,7 +3344,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                   
+  >                                                                                                                                                                                     
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
