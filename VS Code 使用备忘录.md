@@ -41,3 +41,9 @@
 - **⇧ + ⌘ + L** ：批量重命名
 - **⌃ + Space** ：智能建议（只能是短按，长按和 Mac 自带切切换输入法相冲突），光标悬浮也可以产生同样的效果
 
+
+
+#### VS Code 工具
+
+https://github.com/viatsko/awesome-vscode
+

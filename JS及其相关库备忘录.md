@@ -3325,7 +3325,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                     
+  >                                                                                                                                                                                       
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3344,7 +3344,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                     
+  >                                                                                                                                                                                       
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -12237,7 +12237,7 @@ DataTransfer 对象用于保存拖动并放下（drag and drop，**注：**html 
 
 #### Event Loop 和 JS 引擎、渲染引擎的关系
 
-<font color=FF0000 size=4>**js引擎**</font>
+<font color=FF0000 size=4>**js 引擎**</font>
 
 - **组成**
 
@@ -12280,7 +12280,13 @@ DataTransfer 对象用于保存拖动并放下（drag and drop，**注：**html 
 
   **在一个线程做 ui 操作，其他线程做逻辑计算的架构很普遍，会需要一个消息队列来做异步消息处理。** 网页中后来有了 web worker，也是这种架构的实现，但是最开始并不是这样的。
 
-- **单线程：**因为 javascript 最开始只是被设计用来做表单处理，那么就不会有特别大的计算量，就没有采用多线程架构，而是在一个线程内进行 dom 操作和逻辑计算，渲染和 JS 执行相互阻塞。（后来加了 web worker，但不是主流）
+- **单线程：**因为 JavaScript 最开始只是被设计用来做表单处理，那么就不会有特别大的计算量，就没有采用多线程架构，而是在一个线程内进行 dom 操作和逻辑计算，渲染和 JS 执行相互阻塞。（后来加了 web worker，但不是主流）
+
+  > 👀 注：上面关于 “ JS 为什么是单线程？”的解释感觉没有说服力，[阮一峰 - JavaScript 运行机制详解：再谈Event Loop](http://www.ruanyifeng.com/blog/2014/10/event-loop.html) 中的说法是更有说服力的：
+  >
+  > > <font color=dodgerblue>JavaScript 的单线程，与它的用途有关</font>。作为浏览器脚本语言，JavaScript 的主要用途是与用户互动，以及操作 DOM。这决定了<font color=fuchsia>它只能是单线程，否则会带来很复杂的同步问题</font>。比如，<font color=red>假定 JavaScript 同时有两个线程，一个线程在某个DOM节点上添加内容，另一个线程删除了这个节点，这时浏览器应该以哪个线程为准？</font>
+  >
+  > 另外，该文章在 [[前端面试点总结#事件循环 event loop]] 中也做了笔记。
 
   我们知道，<font color=FF0000>JS 引擎只知道执行 JS，渲染引擎只知道渲染，它们两个并不知道彼此，该怎么配合呢？答案就是 event loop</font>
 
@@ -12297,15 +12303,15 @@ DataTransfer 对象用于保存拖动并放下（drag and drop，**注：**html 
     - 浏览器会注入 w3c 标准的 api
 
     - 跨端引擎会注入设备的 api，同时会注入一套操作 ui 的 api（可能是对标 w3c 的 api 也可能不是）
-
+  
   - **event loop 的实现不同**
 
     上文说过，event loop 是宿主环境提供了，不同的宿主环境有不同的需要调度的任务，所以也会有不同的设计：
-
+  
     - 浏览器里面主要是调度渲染和 JS 执行，还有 worker
     - node 里面主要是调度各种 io
     - 跨端引擎也是调度渲染和 JS 执行
-
+  
     **这里我们只关心浏览器里面的 event loop**
 
 <font size=4>**浏览器的event loop**</font>
