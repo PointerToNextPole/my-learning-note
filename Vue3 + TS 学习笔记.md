@@ -1826,10 +1826,11 @@ create-app
 **动态组件可以给它们传值和监听事件么？**可以。只是需要将属性和监听事件放到component上来使用
 
 ```html
-<component name="why"
-           :age="18"
-           @pageClick="pageClick"
-           :is="currentTab"
+<component 
+  name="why"
+  :age="18"
+  :is="currentTab"
+  @pageClick="pageClick"
 />
 ```
 
