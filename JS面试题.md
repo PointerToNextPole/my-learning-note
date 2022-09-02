@@ -629,7 +629,7 @@ test(fn)
 
 <details>
   <summary>一些重点</summary>
-  process.nextTick 的优先级要高于微任务
+  process.nextTick 的优先级要高于微任务。关于为什么，参见 [[前端面试点总结#事件循环 event loop#Node 的 Event Loop]] 中的内容
 </details>
 
 ##### 事件队列第1题

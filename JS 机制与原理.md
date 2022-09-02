@@ -6347,3 +6347,38 @@ import { method } from 'commonjs-package';
 
 摘自：[CommonJS和ES6模块的区别](https://juejin.cn/post/6844904067651600391)，另外，不少补充内容摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1) 本文看了$3/4$ 左右，有点看不懂了；没看完，有空可以继续看。
 
+
+
+### JS 事件处理相关
+
+#### 一些历史
+
+Brendan Eich 发明浏览器事件机制是从苹果当年的低代码开发工具 Hypercard 找的灵感，事件处理器的名称用 on 加上一个事件名称的命名方式是继承了 Hypercard 的脚本语言 Hypertalk。
+
+因为 <font color=fuchsia size=4>**HTML 的标签和属性名是不区分大小写的**</font>（👀 注：之所以这点加上高亮，是因为这句话有点重要，也听过，不过几乎没什么印象了...）。
+
+在当年，从网景的 JS 文档里到人们真实写的 HTML 里，都是用的驼峰写法（Hypertalk 就是用驼峰的），比如 onClick：
+
+<img src="https://s2.loli.net/2022/09/02/yZh3mj2gCdSB5bu.jpg" alt="img" style="zoom: 80%;" />
+
+因为 HTML 的标签和属性名是不区分大小写的，当时的网页代码风格是长这样的：
+
+<img src="https://s2.loli.net/2022/09/02/KjgmynaOzcHR43o.png" alt="img" style="zoom:80%;" />
+
+也就是标签和属性名都用大写，事件处理器属性名用驼峰。直到几年后 HTML 4 规范推荐用小写，人们才把慢慢把标签和属性名才改成小写。当我 2006 年刚接触互联网时，还能看到一些用大写的网页，现在很难找到了。
+
+摘自：[请问onmouseover为啥不是驼峰onMouseOver，是可以节省内存吗？ - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/551319753/answer/2656612030)
+
+
+
+### JS 网络请求
+
+##### 网络请求有哪些
+
+- XHR
+- fetch
+- \<script> 发起的 jsonp
+- 老式的 `new Image()`发起的请求
+- sendBeacon 请求
+
+学习自：[为什么都说根据X-Requested-With判断ajax请求，但原生js发送ajax默认不带这个头？ - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/365435784/answer/968292664)

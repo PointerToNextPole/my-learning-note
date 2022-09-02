@@ -16,6 +16,20 @@ Lorem ipsum，简称为 Lipsum，是指一篇常用于排版设计领域的拉�
 
 
 
+#### HTML5 & CSS3
+
+2017年 看 Head First HTML 与 CSS，其中有说“即使 HTML5 随未来发展有添加新特性，HTML 也只会叫‘新 HTML5’ ”
+
+另外，今天（2022/9/2）在 [http/4会是什么样的？ - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/536812181/answer/2521339835) 看到了类似的概念：
+
+> 多年以来，“HTML5” 这个词更多是一个非规范的叫法，尤其是现在都已经 2022 年了，基本上我只能在国内的招聘 JD 里看到（不够专业）。现在的 HTML 规范早已经没有版本号了，更加不会有 HTML6 [https://weibo.com/1708684567/FxE3idXgy](https://link.zhihu.com/?target=https%3A//weibo.com/1708684567/FxE3idXgy)。
+>
+> CSS 也同样早已没有版本号，CSS3 也是个非规范叫法，基本只能在招聘 JD 里看到，十年前我翻译的文章：[[译\]根本没有"CSS4" - 紫云飞 - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/ziyunfei/archive/2012/12/11/2813263.html)
+
+
+
+#### 缩写与全称
+
 **\<hr\>** 是 horizontal rule 的缩写
 
 

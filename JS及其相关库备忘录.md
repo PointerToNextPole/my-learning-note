@@ -3325,7 +3325,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                       
+  >                                                                                                                                                                                         
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3344,7 +3344,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                       
+  >                                                                                                                                                                                         
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -3794,12 +3794,23 @@ console.log(myHeaders.get('X-Custom-Header')); // null
 
 #### 宏任务和微任务
 
-**宏任务有哪些**
-- \<script>标签中的运行代码（注：<font color=FF0000 size=4>**整个script标签是个宏任务**</font>）
-- 事件触发的回调函数，例如DOM Events、I/O、requestAnimationFrame
-- setTimeout、setInterval的回调函数
+> ⚠️ 值得注意的是：官方的标准中是没有 “宏任务” 这个概念的。宏任务是 Promise/A+ 规范中提出的
+>
+> > task 和 microtask 是 HTML 规范里的
+> >
+> > jobs是 ECMAScript 规范里的
+> >
+> > macrotask 是 Promise/A+ 规范里的
+> >
+> > 摘自：[“JS事件循环/宏任务和微任务”这个提法是正确的吗？ - 思无邪的回答 - 知乎](https://www.zhihu.com/question/302612139/answer/568267566)
 
-**微任务有哪些**
+##### 宏任务有哪些
+
+- \<script> 标签中的运行代码（注：<font color=FF0000 size=4>**整个script标签是个宏任务**</font>）
+- 事件触发的回调函数，例如 DOM Events、I/O、requestAnimationFrame
+- setTimeout、setInterval 的回调函数
+
+##### 微任务有哪些
 
 - **promises：**Promise.then、Promise.catch、Promise.finally
 - **MutationObserver**
@@ -3808,11 +3819,9 @@ console.log(myHeaders.get('X-Custom-Header')); // null
 
 摘自：[执行机制 - 宏任务和微任务分别有哪些 #34](https://github.com/logan70/Blog/issues/34)
 
-**注：**这里不全，可以参考 [[前端面试点总结#宏任务和微任务]]
+> 👀 **注：**这里不全，可以参考 [[前端面试点总结#宏任务和微任务]]
 
-
-
-**补充：**queueMicrotask()
+##### queueMicrotask() 补充
 
 为了允许第三方库、框架、polyfills 能使用微任务，Window 暴露了 queueMicrotask() 方法，而 Worker 接口则通过WindowOrWorkerGlobalScope mixin 提供了同名的 queueMicrotask() 方法。
 
@@ -3820,13 +3829,13 @@ console.log(myHeaders.get('X-Custom-Header')); // null
 
 虽然在过去要使得入列微任务成为可能有可用的技巧（比如创建一个立即 resolve 的 promise），但新加入的 queueMicrotask() 方法增加了一种标准的方式，<font color=FF0000>**可以安全的引入微任务而避免使用额外的技巧**</font>。<mark>通过引入 queueMicrotask()，由晦涩地使用 promise 去创建微任务而带来的风险就可以被避免了</mark>。举例来说，当使用 promise 创建微任务时，由回调抛出的异常被报告为 rejected promises 而不是标准异常。同时，创建和销毁 promise 带来了事件和内存方面的额外开销，这是正确入列微任务的函数应该避免的。
 
-**何时使用微任务：**
+##### 何时使用微任务
 
 <mark>如果可能的话，大部分开发者并不应该过多的使用微任务</mark>。**使用微任务的最主要原因简单归纳为：**<font color=FF0000>确保任务顺序的一致性，即便当结果或数据是同步可用的，也要同时减少操作中用户可感知到的延迟而带来的风险</font>。
 
 摘自：[MDN - 在 JavaScript 中通过 queueMicrotask() 使用微任务](https://developer.mozilla.org/zh-CN/docs/Web/API/HTML_DOM_API/Microtask_guide)
 
-示例如下：
+##### 示例如下
 
 ```js
 const fn = () => console.log('queueMicrotask fn')
@@ -3838,6 +3847,8 @@ async function asyncFn() {
 }
 asyncFn() // 1 比 queueMicrotask fn 先打印
 ```
+
+
 
 
 
@@ -6293,6 +6304,12 @@ document.addEventListener('visibilitychange', function logData() {
 可使用 pagehide 事件来代替部分浏览器未实现的 visibilitychange 事件。和 beforeunload 与 unload 事件类似，这一事件不会被可靠地触发（特别是在移动设备上），但它与 bfcache 兼容。
 
 摘自：[MDN - Navigator.sendBeacon()](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/sendBeacon)
+
+> 👀 注：`Navigator.sendBeacon()` 也是发送请求，这是之前没有注意的... 只能说看 MDN 看的一知半解吧...
+>
+> 学习自：[为什么都说根据X-Requested-With判断ajax请求，但原生js发送ajax默认不带这个头？ - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/365435784/answer/968292664)
+
+
 
 #### Clipboard & Navigator.clipboard
 
@@ -14487,18 +14504,20 @@ classDiagram
 ProgressEvent --|> Event : Inheritance
 ```
 
-**构造方法**
+##### 构造方法
 
 - **ProgressEvent()：**用给定的参数<font color=FF0000>创建一个 ProgressEvent 事件</font>。
 
-**属性**
+##### 属性
+
 **同时继承它的父元素 Event 的属性。**
 
 - **ProgressEvent.lengthComputable：**只读，是一个 Boolean标志，<mark>表示底层流程将需要完成的总工作量和已经完成的工作量是否可以计算</mark>。换句话说，<font color=FF0000>它告诉我们进度是否可以被测量</font>。
 - **ProgressEvent.loaded：**只读，是一个 <font color=FF0000>unsigned long long 类型数据</font>，<font color=FF0000>表示底层流程已经执行的工作总量</font>。<mark>可以用这个属性和 ProgressEvent.total 计算工作完成比例</mark>。当使用 HTTP 下载资源，它只表示内容本身的部分，不包括首部和其它开销。
 - **ProgressEvent.total：**只读，是一个 <font color=FF0000>unsigned long long 类型数据</font>，<font color=FF0000>表示正在执行的底层流程的工作总量</font>。当使用 HTTP 下载资源，它只表示内容本身的部分，a不包括首部和其它开销。
 
-**方法**
+##### 方法
+
 同时继承它的父元素 Event 的方法。
 
 - **ProgressEvent.initProgressEvent()：**🗑👎使用被弃用的 Document.createEvent("ProgressEvent") 方法，来初始化一个已经创建好的 ProgressEvent。
@@ -14511,23 +14530,43 @@ AbortController 接口表示一个控制器对象，<font color=FF0000>允许你
 
 你可以使用 AbortController.AbortController() 构造函数创建一个新的 AbortController。使用 AbortSignal 对象可以完成与 DOM 请求的通信。
 
-- **构造函数**
+##### 构造函数
 
-  AbortController.AbortController()：创建一个新的 AbortController 对象实例。
+AbortController.AbortController()：创建一个新的 AbortController 对象实例。
 
-- **属性**
+##### 属性
 
-  AbortController.signal <font color=FF0000>只读</font>，返回一个 AbortSignal 对象实例，它可以用来 with/abort 一个 Web(网络)请求。
+AbortController.signal <font color=FF0000>只读</font>，返回一个 AbortSignal 对象实例，它可以用来 with/abort 一个 Web(网络)请求。
 
-- **方法**
+##### 方法
 
-  AbortController.abort()：中止一个尚未完成的 Web（网络）请求。这<font color=FF0000>能够中止 fetch 请求及任何响应体的消费和流</font>。
+AbortController.abort()：中止一个尚未完成的 Web（网络）请求。这<font color=FF0000>能够中止 fetch 请求及任何响应体的消费和流</font>。
 
-  > 当一个请求被终止，它的  readyState 将被置为 XMLHttpRequest.UNSENT (0)，并且请求的 status 置为 0。
-  >
-  > 摘自：[MDN - XMLHttpRequest.abort()](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/abort)
+> 当一个请求被终止，它的  readyState 将被置为 XMLHttpRequest.UNSENT (0)，并且请求的 status 置为 0。
+>
+> 摘自：[MDN - XMLHttpRequest.abort()](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/abort)
 
-摘自：[MDN - AbortController](https://developer.mozilla.org/zh-CN/docs/Web/API/AbortController)，AbortController 的相关作用 在 [[web开发工具#请求已经发出去了，如何取消掉这个已经发出去的请求]] 中有详细说明。
+摘自：[MDN - AbortController](https://developer.mozilla.org/zh-CN/docs/Web/API/AbortController)
+
+> 👀 注：AbortController 的相关作用 在 [[web开发工具#请求已经发出去了，如何取消掉这个已经发出去的请求]] 中有详细说明。
+
+> 👀 注：在看 [setTimeout 为什么还没有采用 AbortController 来取消? - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/545379005/answer/2593517694) 时知道：<font color=fuchsia>AbortController 也可以用来取消事件监听了</font>（参见 [Using AbortController as an Alternative for Removing Event Listeners](https://css-tricks.com/using-abortcontroller-as-an-alternative-for-removing-event-listeners/) ），同时 <font color=fuchsia>Node 里新版的 setTimeout 的确可以用 AbortController 取消</font>：
+>
+> ```js
+> const { setTimeout: setTimeoutPromise } = require('node:timers/promises'); // 👀
+> 
+> const ac = new AbortController();
+> const signal = ac.signal;
+> 
+> setTimeoutPromise(1000, 'foobar', { signal })
+>   .then(console.log)
+>   .catch((err) => {
+>     if (err.name === 'AbortError')
+>       console.log('The timeout was aborted');
+>   });
+> 
+> ac.abort();
+> ```
 
 
 
