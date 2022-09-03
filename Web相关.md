@@ -3058,3 +3058,9 @@ backgroundColorBlue(#357edd) { background-color: #357edd; }
 摘自：[John Polacek - Let’s Define Exactly What Atomic CSS is](https://css-tricks.com/lets-define-exactly-atomic-css/)
 
 另外也可以参见 [antfu - Reimagine Atomic CSS](https://antfu.me/posts/reimagine-atomic-css) 中开头的内容
+
+
+
+#### 无障碍辅助功能
+
+“无障碍辅助功能” 被称为 “a11y” ，即 Accessibility 的简化写法。

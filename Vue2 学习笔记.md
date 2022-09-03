@@ -2915,7 +2915,7 @@ methods: {
 
 - **内联模板**
   
-  当 <font size=5>`inline-template`</font> 这个特殊的 attribute 出现在一个子组件上时，<font color=FF0000>这个组件将会使用<font size=5> **其** </font>里面的内容作为模板</font>，而不是将其作为被分发的内容。这使得模板的撰写工作更加灵活。
+  当 <font size=4>`inline-template`</font> 这个特殊的 attribute 出现在一个子组件上时，<font color=FF0000>这个组件将会使用<font size=4> **其** </font>里面的内容作为模板</font>，而不是将其作为被分发的内容。这使得模板的撰写工作更加灵活。
   
   ```html
   <my-component inline-template>

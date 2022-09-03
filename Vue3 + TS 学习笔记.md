@@ -35,16 +35,15 @@
 ##### 新的API
 
 - **由Options API到Composition API：**
-
   - 在 Vue2.x 的时候,我们会通过 Options API 来描述组件对象;
-
+  
   - Options API 包括 data、props、methods、computed、生命周期等等这些选项;
-
+  
   - 存在比较大的问题是多个逻辑可能是在不同的地方:
     - 比如created中会使用某一个 method 来修改 data 的数据,代码的内聚性非常差
-
+  
   - Composition API 可以将相关联的代码放到同一处进行处理,而不需要在多个Options之间寻找
-
+  
 - **Hooks函数增加代码的复用性：**
 
   - 在 Vue2.x 的时候，我们通常通过 mixins 在多个组件之间共享逻辑
@@ -123,7 +122,7 @@ data() {
 
   
 
-#### **阅读 Vue3 源码**
+#### 阅读 Vue3 源码
 
 如果想要学习 Vue 的源码，比如看createApp的实现过程，应该怎么办？步骤如下：
 
@@ -161,7 +160,7 @@ data() {
 
 即：让当前元素中的差值表达式失效，即：`<p>{{foo}}</p>` 显示都内容还是 `{{foo}}`
 
-👀 注：看了下MDN 的 [ \<pre>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/pre) 文档，感觉 v-pre 应该就是借鉴的 \<pre> 标签；感觉可以辅助记忆。
+> 👀 注：看了下MDN 的 [ \<pre>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/pre) 文档，感觉 v-pre 应该就是借鉴的 \<pre> 标签；感觉可以辅助记忆。
 
 ##### v-cloak
 
@@ -184,7 +183,7 @@ data() {
 
 #### v-bind
 
-##### Vue中v-bind绑定class
+##### Vue 中 v-bind 绑定 class
 
 数组中是可以添加三元运算符，当然更好的方法是 数组中嵌套对象。
 
@@ -222,7 +221,7 @@ style中可以写驼峰也可以写短横线分隔 (kebab-case)，但是短横�
 <div bar="bar" baz="baz" qux="qux">foo</div>
 ```
 
-另外，上面的v-bind也是可以省略的：
+另外，上面的 v-bind 也是可以省略的：
 
 ```html
 <div :="foo">foo</div>
@@ -260,7 +259,7 @@ export default {
 
 #### v-on
 
-##### v-on修饰符
+##### v-on 修饰符
 
 - .stop - 调用event.stopPropagation()。
 - .prevent - 调用event.preventDefault()。
@@ -273,7 +272,7 @@ export default {
 - .middle - 只当点击鼠标中键时触发。
 - .passive - { passive: true } 模式添加侦听器
 
-**v-on 绑定对象用于绑定多个事件**
+##### v-on 绑定对象用于绑定多个事件
 
 ```html
 <div v-on="{click: onClick, mousemove: onMouseMove}">div</div>
@@ -281,7 +280,7 @@ export default {
 
 这里的 v-on 也可以使用简写
 
-**v-on传递参数，尤其是事件对象**
+##### v-on传递参数，尤其是事件对象
 
 - 如果没有函数带参数，会默认的、隐式的传递一个 event 对象。
 
@@ -312,29 +311,29 @@ export default {
 
 ##### v-if 的渲染原理
 
-v-if是惰性的
+v-if 是惰性的
 
 - 当条件为false时，其判断的内容完全不会被渲染或者会被销毁掉
 
 - 当条件为true时，才会真正渲染条件块中的内容
 
-##### v-show和v-if的区别
+##### v-show 和 v-if 的区别
 
-- **首先，在用法上的区别：**v-show是不支持template
+- **首先，在用法上的区别：**v-show 是不支持 template
 
 - **其次，本质的区别：**
-  - v-show元素无论是否需要显示到浏览器上，它的DOM实际都是有渲染的，只是通过CSS的display属性来进行切换；
-  - v-if当条件为false时，其对应的原生压根不会被渲染到DOM中；
+  - v-show 元素无论是否需要显示到浏览器上，它的 DOM 实际都是有渲染的，只是通过 CSS 的 display 属性来进行切换；
+  - v-if 当条件为 false 时，其对应的原生压根不会被渲染到 DOM 中；
 
 - **开发中如何进行选择：**
 
-  - 如果我们的原生需要在显示和隐藏之间频繁的切换，那么使用v-show；
+  - 如果我们的原生需要在显示和隐藏之间频繁的切换，那么使用 v-show；
 
-  - 如果不会频繁的发生切换，那么使用v-if
+  - 如果不会频繁的发生切换，那么使用 v-if
 
 
 
-#### key && diff
+#### key & diff
 
 ##### key 的作用
 
@@ -382,7 +381,7 @@ Vue中对于列表的更新究竟是如何操作的？Vue<font color=FF0000>会�
 
 #### computed
 
-**计算方法可以写成函数，也可以写成对象**
+##### 计算方法可以写成函数，也可以写成对象
 
 - 如果写成函数，则默认是getter方法（可以说：这种方法是下面写成对象方式的语法躺）
 - 如果写成对象，则既可以在里面写getter方法，也可以在里面写setter方法
@@ -412,86 +411,85 @@ Vue3不支持过滤器，不过：推荐两种做法：使用计算属性，或�
 
 #### 侦听器 watch
 
-用法：
+##### 用法
 
-- 选项：watch
+选项：watch
 
-- 类型：{ [ key: string ] : string | Function | Object | Array }
+类型：`{ [ key: string ] : string | Function | Object | Array }`
 
-  - **函数式 ( Function ) ：**最常用
-
-    ```js
-    info(newValue, oldValue) {
-      console.log('newValue', newValue, 'oldValue', oldValue)
-    }
-    ```
-
-  - <font color=FF0000>**对象形式（Object）：**</font>如果想要加上deep和immedate配置还是需要使用Object形式。可以说：函数式的watch是对象形式watch的一种语法糖
-
-    ```js
-    info: {
-      handler: function(newValue, oldValue) {
-        console.log('newValue', newValue, 'oldValue', oldValue)
-      },
-      deep: true, // 深度监听
-      immediate: true // 一般监听器初始时，因为数据没有变化，所以不会执行（触发）。这个属性让其，在初始化时立即执行（触发）
-    }
-    ```
-
-    <font color=FF0000>**另外，需要注意：**</font>当变更（ 不是替换 ）对象或数组并使用 deep 选项时，旧值将与新值相同，因为它们的引用指向同一个对象/数组。Vue 不会保留变更之前值的副本。
-
-  - **string 类型：**是：`watchedValue: 'someMethod'` ，其中 watchValue 是被侦听的数据，someMethod 在methods 中被定义。
-
-  - <font color=FF0000>**Array 类型：**</font>一个属性可以被多个函数侦听，这些函数会按照执行顺序，依次执行。
-
-  **另外，如果想要深度侦听对象中的某一个成员，不一定使用 deep配置，也可以使用如下方法：**
+- **函数式 ( Function ) ：**最常用
 
   ```js
-  watch() {
-  	"info.aMember": function(newValue, oldValue) {
-      console.log('newValue', newValue, 'oldValue', oldValue)
-    }
+  info(newValue, oldValue) {
+    console.log('newValue', newValue, 'oldValue', oldValue)
   }
   ```
 
-  Vue 会自动解析 字符串中的内容。
-
-  **还有 \$watch** 
+- <font color=FF0000>**对象形式（Object）：**</font>如果想要加上deep和immedate配置还是需要使用Object形式。可以说：函数式的watch是对象形式watch的一种语法糖
 
   ```js
-  // 还有一个返回值unwatch
-  const unwatch = this.$watch("info", function(newValue, oldValue) {
+  info: {
+    handler: function(newValue, oldValue) {
       console.log('newValue', newValue, 'oldValue', oldValue)
-  }, {
-    deep: true,
-    immediate: true
-  })
-  
-  // 一旦调用unwatch 就会停止监听
-  unwatch()
+    },
+    deep: true, // 深度监听
+    immediate: true // 一般监听器初始时，因为数据没有变化，所以不会执行（触发）。这个属性让其，在初始化时立即执行（触发）
+  }
   ```
 
-  关于 $watch 详见：https://v3.cn.vuejs.org/api/instance-methods.html#watch，其中值得注意的有：
-  
-  ```js
-  // 用于监视单个嵌套property 的函数
-  this.$watch(
-    () => this.c.d,
-    (newVal, oldVal) => {
-      // 做点什么
-    }
-  )
-  
-  // 用于监视复杂表达式的函数
-  this.$watch(
-    // 表达式 `this.a + this.b` 每次得出一个不同的结果时处理函数都会被调用。这就像监听一个未被定义的计算属性
-    () => this.a + this.b,
-    (newVal, oldVal) => {
-      // 做点什么
-    }
-  )
-  ```
-  
+  <font color=FF0000>**另外，需要注意：**</font>当变更（ 不是替换 ）对象或数组并使用 deep 选项时，旧值将与新值相同，因为它们的引用指向同一个对象/数组。Vue 不会保留变更之前值的副本。
+
+- **string 类型：**是：`watchedValue: 'someMethod'` ，其中 watchValue 是被侦听的数据，someMethod 在methods 中被定义。
+
+- <font color=FF0000>**Array 类型：**</font>一个属性可以被多个函数侦听，这些函数会按照执行顺序，依次执行。
+
+**另外，如果想要深度侦听对象中的某一个成员，不一定使用 deep配置，也可以使用如下方法：**
+
+```js
+watch() {
+	"info.aMember": function(newValue, oldValue) {
+    console.log('newValue', newValue, 'oldValue', oldValue)
+  }
+}
+```
+
+Vue 会自动解析 字符串中的内容。
+
+##### \$watch 
+
+```js
+// 还有一个返回值 unwatch
+const unwatch = this.$watch("info", function(newValue, oldValue) {
+    console.log('newValue', newValue, 'oldValue', oldValue)
+}, {
+  deep: true,
+  immediate: true
+})
+
+// 一旦调用unwatch 就会停止监听
+unwatch()
+```
+
+关于 `$watch` 详见：https://v3.cn.vuejs.org/api/instance-methods.html#watch，其中值得注意的有：
+
+```js
+// 用于监视单个嵌套property 的函数
+this.$watch(
+  () => this.c.d,
+  (newVal, oldVal) => {
+    // 做点什么
+  }
+)
+
+// 用于监视复杂表达式的函数
+this.$watch(
+  // 表达式 `this.a + this.b` 每次得出一个不同的结果时处理函数都会被调用。这就像监听一个未被定义的计算属性
+  () => this.a + this.b,
+  (newVal, oldVal) => {
+    // 做点什么
+  }
+)
+```
 
 关于watch，更多的可以参考官方文档中的：https://v3.cn.vuejs.org/api/options-data.html#watch，这里有更多示例
 
@@ -564,9 +562,11 @@ vm.a = 3 // => new: 3, old: 1
 
 
 
-**v-model实际上是一个语法糖。v-model的原理其实是背后有两个操作：**
+#### v-model
 
-- v-bind 绑定value属性的值
+**v-model 实际上是一个语法糖。v-model 的原理其实是背后有两个操作：**
+
+- v-bind 绑定 value属性的值
 
 - v-on 绑定input事件监听到函数中，函数会获取最新的值赋值到绑定的属性中
 
@@ -576,17 +576,17 @@ vm.a = 3 // => new: 3, old: 1
 <input :value="searchText" @input="searchText = $event.target.value" />
 ```
 
-
-
 ##### lazy 修饰符的作用
 
-- **默认情况下**：<font color=FF0000>v-model在进行双向绑定时，绑定的是input事件</font>，那么会在每次内容输入后就将最新的值和绑定的属性进行同步
+- **默认情况下**：<font color=FF0000>v-model 在进行双向绑定时，绑定的是 input 事件</font>，那么会在每次内容输入后就将最新的值和绑定的属性进行同步
 
-- 如果我们<font color=FF0000>在v-model后加上lazy修饰符，那么会将绑定的事件切换为change 事件</font>，<font color=FF0000>只有在提交时（比如回车）才会触发</font>
+- 如果我们<font color=FF0000>在 v-model 后加上 lazy 修饰符，那么会将绑定的事件切换为 change 事件</font>，<font color=FF0000>只有在提交时（比如回车）才会触发</font>
 
 
 
-Vue3中，之所以 \<template> 标签下，可以添加多个标签，而不再需要一个根标签；是因为：Vue把tempate里面的内容，当作代码片段 fragment 来处理；也就是说：Vue会自动加上fragment
+#### SFC 顶层 template 下的顶层标签
+
+Vue3中，之所以 \<template> 标签下，可以添加多个标签，而不再需要一个根标签；是因为：Vue 把 tempate 里面的内容，当作代码片段 fragment 来处理；也就是说：Vue 会自动加上 fragment
 
 
 
@@ -663,7 +663,7 @@ webpack 默认（没有配置webpack.config.js 的情况下），只能对js代�
 
 - 这种方式可以更好的表示loader的配置，也方便后期的维护，同时也让你对各个Loader有一个全局的概览
 
-##### module的 rules的配置
+##### module的 rules 的配置
 
 rules属性对应的值是一个数组：[Rule]。数组中存放的是一个个的Rule，Rule是一个对象，对象中可以设置多个属性：
 
@@ -1030,7 +1030,7 @@ npx babel src --out-dir dist --presets=@babel/preset-env
   npm install @vue/babel-plugin-jsx -D
   ```
 
-- 在babel.config.js配置文件中配置插件：
+- 在 babel.config.js 配置文件中配置插件：
 
   ```js
   module.exports = {
@@ -1632,7 +1632,7 @@ create-app
   ```js
   emits: {
     noneParamFn: null, // add函数没有参数
-    // 
+    // 具有验证函数
     multiParamsFn: (param1, param2, ..., paramN) => {
       // ... 验证内容，返回true / false，表明是否通过验证，如果没有通过，则会在控制台报警告
     }
@@ -1641,7 +1641,7 @@ create-app
   
   
 
-**非父子组件通信**
+#### 非父子组件通信
 
 **非父子组件通信<font color=FF0000>主要</font>有两种方式：**
 
@@ -2866,7 +2866,17 @@ provide('changeInfo', changeInfo)
 
 
 
-**在\<script setup>中 可以使用 defineProp 在composition API 中注册props**
+#### `<script setup>` 中的 `define` 家族
+
+> （👀 在 `<script setup>` 中 ）<font color=red>为了在声明 props 和 emits 选项时获得完整的 **类型推导支持**</font>，我们可以使用 defineProps 和 defineEmits API，它们将自动地在 `<script setup>` 中可用。
+>
+> 摘自：[Vue3 官方文档 - API - 单文件组件 `<script setup>` # `defineProps()` 和 `defineEmits()`](https://cn.vuejs.org/api/sfc-script-setup.html#defineprops-defineemits)
+
+> 👀 注：在使用 TS 开发中， 使用 `<script setup>` 的情况下，defineProps 是对 props 提供 “类型推导支持”；defineEmits 可以根据 `emits` 选项推导暴露在 setup 上下文中的 `emit` 函数的类型。<font color=dodgerBlue>如果没有使用 `<script setup>` ，还想要获得 相关的支持</font>，需要使用 `defineComponent()`，详见 [[#defineComponent 的作用]] 中官方文档的摘抄。
+
+##### defineProps
+
+在 `<script setup>` 中 可以使用 defineProps 在composition API 中注册 props
 
 ```js
 import {defineProps} from 'vue'
@@ -2879,7 +2889,29 @@ const props = defineProps({
 })
 ```
 
-**同样还有 defineEmit 以注册事件**
+##### 关于 withDefaults 的补充
+
+> 针对类型的 <font color=dodgerBlue>`defineProps` 声明的不足之处</font>在于，<font color=red>它没有可以给 props 提供默认值的方式</font>。<font color=red>为了解决这个问题</font>，我们还<font color=red>提供了 `withDefaults` 编译器宏</font>：
+>
+> ```ts
+> export interface Props {
+>   msg?: string
+>   labels?: string[]
+> }
+> 
+> const props = withDefaults(defineProps<Props>(), {
+>   msg: 'hello',
+>   labels: () => ['one', 'two']
+> })
+> ```
+>
+> 上面代码会被编译为等价的运行时 props 的 `default` 选项。此外，`withDefaults` 辅助函数提供了对默认值的类型检查，并确保返回的 `props` 的类型删除了已声明默认值的属性的可选标志。
+>
+> 摘自：[Vue3 官方文档 - API - 单文件组件 `<script setup>` # 使用类型声明时的默认 props 值](https://cn.vuejs.org/api/sfc-script-setup.html#default-props-values-when-using-type-declaration)
+
+##### defineEmit
+
+使用 defineEmit 以注册事件
 
 ```js
 import { defineEmit } from 'vue'
@@ -2888,11 +2920,72 @@ const emit = defineEmit(['incr', 'desc'])
 emit("incr", { params })
 ```
 
-另外，还有defineExpose 以设置需要暴露出去的值（ 类似于setup() 中的 return ）
+**defineExpose**
+
+另外，还有 `defineExpose` 以设置需要暴露出去的值（ 类似于 `setup()` 中的 return ）
+
+> 👀 注：上面说的不容易理解，参考 [Vue3 官方文档 - 模板引用 # 组件上的 ref](https://cn.vuejs.org/guide/essentials/template-refs.html#ref-on-component) 中的内容：
+>
+> > <font color=dodgerBlue>如果一个子组件使用的是 **选项式 API**</font> ，<font color=fuchsia>被引用的组件实例和该子组件的 this 完全一致</font>，<font color=red>这意味着父组件对子组件的每一个属性和方法都有完全的访问权</font>。<font color=lightSeaGreen>这使得在父组件和子组件之间创建紧密耦合的实现细节变得很容易</font>，<font color=fuchsia>当然也因此，应该只在绝对需要时才使用组件引用</font>。大多数情况下，你应该首先使用标准的 props 和 emit 接口来实现父子组件交互。
+> >
+> > 有一个例外的情况，<font color=fuchsia><font size=4>使用了 `<script setup>` 的组件是**默认私有**的</font>：一个父组件无法访问到一个使用了 `<script setup>` 的子组件中的任何东西，除非子组件在其中通过 `defineExpose` 宏显式暴露</font>
+> >
+> > ```vue
+> > <script setup>
+> > import { ref } from 'vue'
+> > 
+> > const a = 1
+> > const b = ref(2)
+> > 
+> > defineExpose({ a, b })
+> > </script>
+> > ```
+> >
+> > <font color=red>当父组件通过模板引用获取到了该组件的实例时，得到的实例类型为 `{ a: number, b: number }`</font> （ ref 都会自动解包，和一般的实例一样）。
 
 
 
-**h函数**
+#### defineComponent 的作用
+
+在使用 TS 编写 SFC 时，`export default { ... }` 应该写成 `export default defineComponent( { ... })` ；这里 defineComponent 函数 相当于做了一个约束，在其定义中给出了各种类型定义，使得其中编写的内容有了类型约束；使得在编写中可以主动约束，并做好类型推导，减少错误。
+
+> 👀 注：上面是当时学习时的总结，并不准确，下面摘抄下 [Vue3 官方文档 - TypeScript 与组合式 API](https://cn.vuejs.org/guide/typescript/composition-api.html#without-script-setup) 中的内容：
+>
+> > <mark style="background: LightSkyBlue">在文档的  “# 为组件的 props 标注类型 # 非 \<script setup>` 场景下” 部分：</mark>
+> >
+> > <font color=dodgerBlue>如果没有使用 `<script setup>`</font> ，那么<font color=red>为了开启 props 的类型推导，必须使用 `defineComponent()`</font> 。传入 `setup()` 的 props 对象类型是从 `props` 选项中推导而来。
+> >
+> > ```ts
+> > import { defineComponent } from 'vue'
+> > 
+> > export default defineComponent({
+> >   props: {
+> >     message: String
+> >   },
+> >   setup(props) {
+> >     props.message // <-- 类型：string
+> >   }
+> > })
+> > ```
+> >
+> > <mark style="background: LightSkyBlue">在文档的 “# 为组件的 emits 标注类型” 部分：</mark>
+> >
+> > 若没有使用 `<script setup>` ，`defineComponent()` 也可以根据 `emits` 选项推导暴露在 setup 上下文中的 `emit` 函数的类型：
+> >
+> > ```ts
+> > import { defineComponent } from 'vue'
+> > 
+> > export default defineComponent({
+> >   emits: ['change'],
+> >   setup(props, { emit }) {
+> >     emit('change') // <-- 类型检查 / 自动补全
+> >   }
+> > })
+> > ```
+
+
+
+#### h函数
 
 Vue推荐在绝大数情况下使用模板来创建HTML，然后一些特殊的场景，真的需要JavaScript的完全编程的能力，这个时候可以使用 渲染函数 ，它比模板更接近编译器。
 
@@ -3053,7 +3146,7 @@ export default {
 
 
 
-**nextTick**
+#### nextTick
 
 将回调推迟到下一个 DOM 更新周期之后执行。在更改了一些数据以等待 DOM 更新后立即使用它
 
@@ -3071,7 +3164,7 @@ export default {
 
 
 
-**自定义指令**
+#### 自定义指令
 
 Vue 也允许我们来自定义自己的指令。 注意：在Vue中，代码的复用和抽象主要还是通过组件；通常在某些情况下，你需要对DOM元素进行底层操作，这个时候就会用到自定义指令。
 
@@ -3141,15 +3234,15 @@ Vue 也允许我们来自定义自己的指令。 注意：在Vue中，代码的
 
 
 
-**Teleport**
+#### Teleport
 
-**需求**
+##### 需求
 
 组件化开发中，封装一个组件A，在另外一个组件B中使用：那么组件A中 template 的元素，会被挂载到组件B中 template 的某个位置；最终我们的应用程序会形成一颗DOM树结构。
 
 但在某些情况下，<mark>希望组件不是挂载在这个组件树上，需要移动到Vue app之外的其他位置：比如移动到body元素上，或者我们有其他的div#app 之外的元素上</mark>；这时就可以通过teleport来完成。
 
-**Teleport是什么** 
+##### Teleport 是什么
 
 它是一个Vue提供的内置组件，类似于react的Portals。
 
@@ -3185,7 +3278,7 @@ teleport翻译过来是心灵传输、远距离运输的意思。**teleport有�
 
 
 
-**Vue插件**
+#### Vue插件
 
 通常向Vue全局添加一些功能时，会采用插件的模式，**插件有两种编写方式**：
 
@@ -6409,12 +6502,6 @@ declare module '*.vue' {
   export default component
 }
 ```
-
-
-
-**defineComponent的作用**
-
-在使用TS编写SFC时，export default { ... } 会变成 export default defineComponent( { ... }) ；这里 defineComponent函数 相当于做了一个约束，在其定义中给出了各种类型定义，使得其中编写的内容有了类型约束；使得在编写中可以主动约束，并做好类型推导，减少错误。
 
 
 

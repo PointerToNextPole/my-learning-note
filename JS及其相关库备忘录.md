@@ -614,11 +614,13 @@ str.normalize( [form] )
 
 #### For 循环
 
-for-in 循环，<font color=FF0000>for-in 循环实际是为循环 ”enumerable“ 对象而设计的</font>（**注：**for in 是用来遍历，对象中 enumerable 数据属性为 true 的属性）。示例：
+for-in 循环，<font color=FF0000>for-in 循环是为遍历 enumerable 数据描述符 为 true 的对象设计的</font>。示例：
 
 ```js
-for ( elem in elems ){ // code}
+for ( elem in elems ){ /* code */ }
 ```
+
+> **注：**for-in 是用来遍历对象中 enumerable 数据描述符 为 true 的属性，object.keys() 同样受到 enumerable 的影响。详见 [[#Object.defineProperty#属性描述符]] 中的 enumerable
 
 <font color=FF0000>不推荐用 for-in 来循环一个**数组**，因为，不像对象，数组的`index`跟普通的对象属性不一样，是重要的数值序列指标</font>。
 
@@ -648,19 +650,19 @@ myArray.forEach(function (value) {
 });
 ```
 
-写法简单了许多，但<mark>也有短处：你不能中断循环(使用`break`语句或使用`continue`语句。</mark>（但是支持return）
+写法简单了许多，但<font color=red>也有短处：你不能中断循环（使用 `break` 语句或使用 `continue` 语句）</font>，但是支持 return
 
-- for-of循环
+##### for-of 循环
 
-  ```js
-  for (var value of myArray) {
-    console.log(value);
-  }
-  ```
+```js
+for (var value of myArray) {
+  console.log(value);
+}
+```
 
-  它既比传统的 for 循环简洁，同时弥补了 forEach 和 for-in 循环的短板。
+它既比传统的 for 循环简洁，同时弥补了 forEach 和 for-in 循环的短板。
 
-  //todo  for-of的具体使用参考下面的文章。
+//todo  for-of的具体使用参考下面的文章。
 
 摘自：[JavaScript里的循环方法：forEach，for-in，for-of](https://www.webhek.com/post/javascript-loop-foreach-for-in-for-of.html)
 
@@ -761,7 +763,7 @@ for (const [index, val] of arr.entries()) {
 
 **补充：**
 
-- for of <font color=FF0000 size=4>**遍历的是拥有 iterator 属性（注：即 Symbol.iterator ）的对象**</font>，出来的是属性值；
+- for of <font color=FF0000 size=4>**遍历的是拥有 iterator 属性（即 Symbol.iterator ）的对象**</font>，出来的是属性值；
 
 - for in 遍历对象的属性，出来的是属性名，<font color=FF0000 size=4>**包括继承的属性**</font>，<font color=FF0000>**可枚举的属性**</font>（ enumerable 为 true 的属性），<font color=FF0000>**不包括 symbol**</font>
 
@@ -797,23 +799,23 @@ const iterator = array1.keys();
 for (const key of iterator) { console.log(key); }
 ```
 
-- **语法**
+##### 语法
 
-  ```js
-  arr.keys()
-  ```
+```js
+arr.keys()
+```
 
-- **返回值：**一个新的 Array 迭代器对象。
+**返回值：**一个新的 Array 迭代器对象。
 
-- **示例：**<font color=FF0000>索引迭代器会包含那些没有对应元素的索引</font>
+**示例：**<font color=FF0000>索引迭代器会包含那些没有对应元素的索引</font>
 
-  ```js
-  var arr = ["a", , "c"];
-  var sparseKeys = Object.keys(arr);
-  var denseKeys = [...arr.keys()];
-  console.log(sparseKeys); // ['0', '2'] 注：使用 Object.keys() 不包含
-  console.log(denseKeys);  // [0, 1, 2] 注：使用 Array.prototype.keys() 是包含的
-  ```
+```js
+var arr = ["a", , "c"];
+var sparseKeys = Object.keys(arr);
+var denseKeys = [...arr.keys()];
+console.log(sparseKeys); // ['0', '2'] 注：使用 Object.keys() 不包含
+console.log(denseKeys);  // [0, 1, 2] 注：使用 Array.prototype.keys() 是包含的
+```
 
 摘自：[MDN - Array.prototype.keys()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/keys)
 
@@ -3325,7 +3327,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                         
+  >                                                                                                                                                                                           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3344,7 +3346,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                         
+  >                                                                                                                                                                                           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -6537,76 +6539,78 @@ newCookie是一个键值对形式的字符串。需要注意的是，<font color
 
 ##### Cookie的其他方法
 
-- **写入cookie**
+###### 写入cookie
 
-  **语法：**
+**语法：**
 
-  ```js
-  docCookies.setItem(name, value[, end[, path[, domain[, secure]]]])
-  ```
+```js
+docCookies.setItem(name, value[, end[, path[, domain[, secure]]]])
+```
 
-  **描述：**创建或覆盖一个cookie
+**描述：**创建或覆盖一个cookie
 
-  **参数**
+**参数**
 
-  - **name** (<mark>必要</mark>)：要<font color=FF0000>创建或覆盖的cookie的名字 (string)</font>。
-  - **value** (<mark>必要</mark>)：<font color=FF0000>cookie的值 (string)</font>。
-  - **end** (可选)：最大生命的秒数max-age-in-seconds (一年为31536e3， <font color=FF0000>永不过期的cookie为Infinity</font>) ，或者过期时间的GMTString格式或Date对象; 如果没有定义则会在会话结束时过期 (number – 有限的或 Infinity – string, Date object or null)。
-  - **path** (可选)：例如 '/', '/mydir'。 如果没有定义，默认为当前文档位置的路径。(string or null)。路径必须为绝对路径（参见 RFC 2965）。关于如何在这个参数使用相对路径的方法请参见这段。
-  - **domain** (可选)：例如 'example.com'， '.example.com' (包括所有子域名), 'subdomain.example.com'。如果没有定义，默认为当前文档位置的路径的域名部分 (string或null)。
-  - <font color=FF0000>**secure**</font> (可选)：<font color=FF0000>cookie只会被https传输 (boolean或null)</font>。
+- **name** (<mark>必要</mark>)：要<font color=FF0000>创建或覆盖的cookie的名字 (string)</font>。
+- **value** (<mark>必要</mark>)：<font color=FF0000>cookie的值 (string)</font>。
+- **end** (可选)：最大生命的秒数max-age-in-seconds (一年为31536e3， <font color=FF0000>永不过期的cookie为Infinity</font>) ，或者过期时间的GMTString格式或Date对象; 如果没有定义则会在会话结束时过期 (number – 有限的或 Infinity – string, Date object or null)。
+- **path** (可选)：例如 '/', '/mydir'。 如果没有定义，默认为当前文档位置的路径。(string or null)。路径必须为绝对路径（参见 RFC 2965）。关于如何在这个参数使用相对路径的方法请参见这段。
+- **domain** (可选)：例如 'example.com'， '.example.com' (包括所有子域名), 'subdomain.example.com'。如果没有定义，默认为当前文档位置的路径的域名部分 (string或null)。
+- <font color=FF0000>**secure**</font> (可选)：<font color=FF0000>cookie只会被https传输 (boolean或null)</font>。
 
-- **获得cookie**
+###### 获得 cookie
 
-  **语法**
+**语法**
 
-  ```js
-  docCookies.getItem(name)
-  ```
+```js
+docCookies.getItem(name)
+```
 
-  **描述：**读取一个cookie。<font color=FF0000>如果cookie不存在返回null</font>。
+**描述：**读取一个cookie。<font color=FF0000>如果cookie不存在返回null</font>。
 
-  **参数**
+**参数**
 
-  - name：读取的cookie名 (string).
+- name：读取的cookie名 (string).
 
-- **移除cookie**
+###### 移除cookie
 
-  **语法：**
+**语法：**
 
-  ```js
-  docCookies.removeItem(name[, path],domain)
-  ```
+```js
+docCookies.removeItem(name[, path],domain)
+```
 
-  **描述：**删除一个cookie。
+**描述：**删除一个cookie。
 
-  **参数**
+**参数**
 
-  - **name：**要移除的cookie名(string).
-  - **path** (可选)：例如 '/', '/mydir'。 <mark>如果没有定义，默认为当前文档位置的路径</mark>。(string or null)。路径必须为绝对路径（参见 RFC 2965）。关于如何在这个参数使用相对路径的方法请参见这段。
-  - domain (可选)：例如 'example.com'， '.example.com' (包括所有子域名), 'subdomain.example.com'。<mark>如果没有定义，默认为当前文档位置的路径的域名部分</mark> (string或null)。
+- **name：**要移除的cookie名(string).
+- **path** (可选)：例如 '/', '/mydir'。 <mark>如果没有定义，默认为当前文档位置的路径</mark>。(string or null)。路径必须为绝对路径（参见 RFC 2965）。关于如何在这个参数使用相对路径的方法请参见这段。
+- domain (可选)：例如 'example.com'， '.example.com' (包括所有子域名), 'subdomain.example.com'。<mark>如果没有定义，默认为当前文档位置的路径的域名部分</mark> (string或null)。
 
-- **检测cookie**
-  **语法**
+###### 检测cookie
 
-  ```js
-  docCookies.hasItem(name)
-  ```
+**语法**
 
-  **描述：**检查一个cookie是否存在
+```js
+docCookies.hasItem(name)
+```
 
-  **参数**
+**描述：**检查一个cookie是否存在
 
-  - **name：**要检查的cookie名 (string).
+**参数**
 
-- **获得所有cookie的列表**
-  **语法**
+- **name：**要检查的cookie名 (string).
 
-  ```js
-  docCookies.keys()
-  ```
+###### 获得所有cookie的列表
 
-  **描述：**<font color=FF0000>返回一个这个路径所有可读的cookie的数组</font>。
+**语法**
+
+```js
+docCookies.keys()
+```
+
+**描述：**<font color=FF0000>返回一个这个路径所有可读的cookie的数组</font>。
 
 摘自：[MDN - Document.cookie](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/cookie)
 
@@ -6666,9 +6670,9 @@ obj[key] = "some value";
 alert(obj[key]); // "some value"
 ```
 
-Object.create(null) 创建了一个空对象，这个对象没有原型（[[Prototype]] 是 null）。因此，它没有继承 \__proto__ 的 getter/setter 方法。现在，它被作为正常的数据属性进行处理，因此上面的这个示例能够正常工作
+Object.create(null) 创建了一个空对象，这个对象没有原型（ `[[Prototype]]` 是 null）。因此，它没有继承 `__proto__` 的 getter/setter 方法。现在，它被作为正常的数据属性进行处理，因此上面的这个示例能够正常工作
 
-**总结：使用 \__proto__ 不安全。**
+**总结：使用 `__proto__` 不安全。**
 
 摘自：[原型方法，没有 _\_proto__ 的对象](https://zh.javascript.info/prototype-methods)
 
@@ -6781,7 +6785,7 @@ JavaScript 在需要用到布尔类型值的上下文中使用强制类型转换
 | 0          | 数值 zero                                                    |
 | -0         | 数值 负 zero                                                 |
 | 0n         | 当 BigInt作为布尔值使用时, 遵从其作为数值的规则. 0n 是 falsy 值 |
-| "", '', `` | 这是一个空字符串 (字符串的长度为零)。 JavaScript 中的字符串可用双引号 "", 单引号 '', 或 模板字面量``定义。 |
+| "", '', `` | 这是一个空字符串（字符串的长度为零）。JavaScript 中的字符串可用双引号 "", 单引号 '', 或 模板字面量 ```` `` 定义。 |
 | null       | null - 缺少值                                                |
 | undefined  | undefined - 原始值                                           |
 | NaN        | NaN - 非数值                                                 |
@@ -6801,7 +6805,7 @@ let windowObjectReference = window.open(strUrl, strWindowName, [strWindowFeature
 - **strWindowName：**新窗口的名称。该字符串可以用来作为超链接 \<a> 或表单 \<form> 元素的目标属性值。字符串中不能含有空白字符。注意：strWindowName 并不是新窗口的标题。
 - **strWindowFeatures：**<font color=FF0000>**可选参数**</font>。是一个字符串值，<font color=FF0000>这个值列出了将要打开的窗口的一些特性（窗口功能和工具栏）</font> 。 字符串中不能包含任何空白字符，特性之间用逗号分隔开。
 
-**补充：**
+##### 补充
 
 - open() 方法，是创建一个新的浏览器窗口对象。
 - 如果已经存在以 strWindowName 为名称的窗口，则不再打开一个新窗口，而是把 strUrl 加载到这个窗口中。在这种情况下，方法的返回值是这个已经打开的窗口，并忽略参数 strWindowFeatures 。
@@ -9223,15 +9227,15 @@ Object.defineProperty(o, "a", {
 这两种描述符都是对象。它们共享以下可选键值（默认值是指在使用 Object.defineProperty() 定义属性时的默认值）
 
 - **configurable：**<font color=FF0000>当且仅当该属性的 configurable 键值为 true 时，该属性的**描述符才能够被改变**</font>，同时该属性也能从对应的对象上被删除。<font color=FF0000 size=4>**默认为 false**</font>。(补充：<font color=FF0000>configurable 特性表示对象的属性是否可以被删除</font>，以及除 value 和 writable 特性外的其他特性是否可以被修改。)
-- **enumerable：**<font color=FF0000>当且仅当该属性的 enumerable 键值为 true 时，该属性**才会出现在对象的枚举属性中**</font>。<font color=FF0000 size=4>**默认为 false**</font>。(补充：<font color=FF0000>enumerable 定义了对象的属性是否可以在 for...in 循环和 Object.keys() 中被枚举。</font>)
+- **enumerable：**<font color=FF0000>当且仅当该属性的 enumerable 键值为 true 时，该属性**才会出现在对象的枚举属性中**</font>。<font color=FF0000 size=4>**默认为 false**</font>。(补充：<font color=fuchsia size=4>**enumerable 定义了对象的属性是否可以在 for...in 循环和 Object.keys() 中被枚举**</font>。)
 
 - **value：**该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。<font color=FF0000 size=4>**默认为 undefined**</font>。
 - **writable：**<font color=FF0000>当且仅当该属性的 writable 键值为 true 时，**属性的值**，也就是上面的 value，**才能被赋值运算符改变**</font>。<font color=FF0000 size=4>**默认为 false**</font>。
 
 <mark style="background:aqua">存取描述符</mark>还具有以下可选键值
 
-- **get：**属性的 getter 函数，如果没有 getter，则为 undefined。<font color=FF0000>**当访问该属性时，会调用此函数**</font>。<mark style="background:fuchsia">执行时不传入任何参数，但是会传入 this 对象（由于继承关系，这里的this并不一定是定义该属性的对象）</mark>。该函数的返回值会被用作属性的值。<font color=FF0000>默认为 undefined</font>。
-- **set：**属性的 setter 函数，如果没有 setter，则为 undefined。<font color=FF0000>**当属性值被修改时，会调用此函数**</font>。<mark style="background:fuchsia">该方法接受一个参数（也就是被赋予的新值），会传入赋值时的 this 对象</mark>。<font color=FF0000>默认为 undefined</font>。
+- **get：**属性的 getter 函数，如果没有 getter，则为 undefined。<font color=FF0000>**当访问该属性时，会调用此函数**</font>。<font color=fuchsia>**执行时不传入任何参数，但是会传入 this 对象（由于继承关系，这里的this并不一定是定义该属性的对象）**</font>。该函数的返回值会被用作属性的值。<font color=FF0000>默认为 undefined</font>。
+- **set：**属性的 setter 函数，如果没有 setter，则为 undefined。<font color=FF0000>**当属性值被修改时，会调用此函数**</font>。<font color=fuchsia>**该方法接受一个参数（也就是被赋予的新值），会传入赋值时的 this 对象**</font>。<font color=FF0000>默认为 undefined</font>。
 
 |            | configurable | enumerable | value  | writable | get    | set    |
 | ---------- | ------------ | ---------- | ------ | -------- | ------ | ------ |
@@ -14058,7 +14062,9 @@ var obj = eval ("(" + txt + ")");
 
 ### AJAX
 
-AJAX（Asynchronous JavaScript and XML <font color=FF0000>异步的 JavaScript 和 XML</font>）是一种使用现有标准的新方法，用于创建快速动态网页的技术。
+AJAX（Asynchronous JavaScript and XML <font color=fuchsia><font size=4>**异步的**</font> JavaScript 和 XML</font>）是一种使用现有标准的新方法，用于创建快速动态网页的技术。
+
+> 👀 注：还有同步的网络请求，这也是 AJAX 和它的区别。AJAX 是一个技术方案，不仅仅是 jQuery 的方法
 
 AJAX 最大的优点是在<font color=FF0000>不重新加载整个页面的情况下，可以与服务器交换数据并更新部分网页内容</font>。即：<font color=FF0000>通过在后台与服务器进行少量数据交换，AJAX 可以使网页实现异步更新</font>；而传统的网页（不使用 AJAX）如果需要更新内容，必需重载整个网页面。
 

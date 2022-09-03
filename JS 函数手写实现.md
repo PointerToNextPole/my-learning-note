@@ -190,7 +190,7 @@ const cloneDeep = (target, hash = new WeakMap()) => {
 
 #### Object.is() 实现
 
-Object.is() 主要解决的是：
+Object.is() 主要解决的是如下两个不太合理的问题。
 
 ```js
 +0 === -0 // true

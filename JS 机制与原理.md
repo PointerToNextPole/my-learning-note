@@ -12,82 +12,82 @@
 
 #### 常见的 垃圾回收算法
 
-- **标记-清除法**
+##### 标记-清除法
 
-  标记-清除法由 John McCarthy（**注：**即那位“约翰·麦肯锡”） 于 1960 年发表的一篇论文提出，其主要分两个阶段：
+标记-清除法由 John McCarthy（**注：**即那位“约翰·麦肯锡”） 于 1960 年发表的一篇论文提出，其主要分两个阶段：
 
-  1. 第一阶段是标记，从一个 GC root 集合出发，沿着「指针」找到所有对象，将其标记为活动对象。
-  2. 第二阶段是清除，将内存中未被标记的对象删除，释放内存空间。
+1. 第一阶段是标记，从一个 GC root 集合出发，沿着「指针」找到所有对象，将其标记为活动对象。
+2. 第二阶段是清除，将内存中未被标记的对象删除，释放内存空间。
 
-  <img src="https://s2.loli.net/2022/04/15/zg5pDorOeMX9PWJ.png" alt="图片" style="zoom:70%;" />
+<img src="https://s2.loli.net/2022/04/15/zg5pDorOeMX9PWJ.png" alt="图片" style="zoom:70%;" />
 
-  从上面的描述来看，<mark>标记-清除算法可以说是非常简单的</mark>，现在的各类垃圾回收算法也都是它的思想的延续。
+从上面的描述来看，<mark>标记-清除算法可以说是非常简单的</mark>，现在的各类垃圾回收算法也都是它的思想的延续。
 
-  <mark>虽然简单，但其也有着很明显的缺点</mark>，即<font color=FF0000>在多次回收操作后，会产生大量的内存碎片，由于算法没有再整理内存空间，内存空间将变得很碎</font>，此时<mark>如果需要申请一个较大的内存空间，即使剩余内存总大小足够，也很容易因为没有足够的连续内存而分配失败</mark>。
+<mark>虽然简单，但其也有着很明显的缺点</mark>，即<font color=FF0000>在多次回收操作后，会产生大量的内存碎片，由于算法没有再整理内存空间，内存空间将变得很碎</font>，此时<mark>如果需要申请一个较大的内存空间，即使剩余内存总大小足够，也很容易因为没有足够的连续内存而分配失败</mark>。
 
-  **注：**这个感觉 有点类似“位示图”。另外，感觉缺陷在于：没有考虑“（定期）内存资源整理”。
+> 👀 **注：**这个感觉 有点类似“位示图”。另外，感觉缺陷在于：没有考虑“（定期）内存资源整理”。
 
-- **复制算法**
+##### 复制算法
 
-  为了解决以上问题，Marvin L. Minsky 在 1963 年提出了著名的 ***复制算法*** ：
+为了解决以上问题，Marvin L. Minsky 在 1963 年提出了著名的 ***复制算法*** ：
 
-  1. <mark>将整个空间平均分成 ***from*** 和 ***to*** 两部分</mark>。
+1. <mark>将整个空间平均分成 ***from*** 和 ***to*** 两部分</mark>。
 
-  2. <font color=FF0000>先在 ***from 空间*** 进行内存分配，当空间被占满时，标记活动对象，并将其复制到 ***to 空间***</font>。（**注：**感觉是先在 ***from 空间*** 中随意使用空间，当空间不足（无法放下一个新的任务）时，再进行整理并放入 ***to 空间*** ）
+2. <font color=FF0000>先在 ***from 空间*** 进行内存分配，当空间被占满时，标记活动对象，并将其复制到 ***to 空间***</font>。（**注：**感觉是先在 ***from 空间*** 中随意使用空间，当空间不足（无法放下一个新的任务）时，再进行整理并放入 ***to 空间*** ）
 
-  3. 复制完成后，将 ***from*** 和 ***to*** 空间互换。
+3. 复制完成后，将 ***from*** 和 ***to*** 空间互换。
 
-  <img src="https://s2.loli.net/2022/04/01/RAK8wbHrWIdkl3j.png" alt="图片" style="zoom:70%;" />
+<img src="https://s2.loli.net/2022/04/01/RAK8wbHrWIdkl3j.png" alt="图片" style="zoom:70%;" />
 
-  由于直接将活动对象复制到另一半空间，没有了清除阶段的开销，所以能在较短时间内完成回收操作，并且每次复制的时候，对象都会集中到一起，相当于同时做了整理操作，避免了内存碎片的产生。
+由于直接将活动对象复制到另一半空间，没有了清除阶段的开销，所以能在较短时间内完成回收操作，并且每次复制的时候，对象都会集中到一起，相当于同时做了整理操作，避免了内存碎片的产生。
 
-  虽然复制算法有吞吐量高、没有碎片的优点，但其缺点也非常明显。**首先**，<font color=FF0000>复制操作也是需要时间成本的，若堆空间很大且活动对象很多，则每次清理时间会很久</font>。**其次**，<font color=FF0000>将空间二等分的操作，让可用的内存空间直接减少了一半</font>。
+虽然复制算法有吞吐量高、没有碎片的优点，但其缺点也非常明显。**首先**，<font color=FF0000>复制操作也是需要时间成本的，若堆空间很大且活动对象很多，则每次清理时间会很久</font>。**其次**，<font color=FF0000>将空间二等分的操作，让可用的内存空间直接减少了一半</font>。
 
-- **引用计数**
+##### 引用计数
 
-  该算法由 George E. Collins 于 1960 年提出，主要操作为：
+该算法由 George E. Collins 于 1960 年提出，主要操作为：
 
-  1. 实时统计指向对象的引用数（指针数量）。
+1. 实时统计指向对象的引用数（指针数量）。
 
-  2. 当引用数为 0 时，实时回收对象。
+2. 当引用数为 0 时，实时回收对象。
 
-  <img src="https://s2.loli.net/2022/04/01/UfDnaNpCo6YXGrJ.png" alt="图片" style="zoom:75%;" />
+<img src="https://s2.loli.net/2022/04/01/UfDnaNpCo6YXGrJ.png" alt="图片" style="zoom:75%;" />
 
-  该算法可以即时回收垃圾数据，（**优点**）<font color=FF0000>对程序的影响时间很短，效率很高。高性能、实时回收</font>，看似完美的方案其实也有个**问题**，<font color=FF0000>当对象中存在循环引用时，由于引用数不会降到 0，所以对象不会被回收</font>。
+该算法可以即时回收垃圾数据，（**优点**）<font color=FF0000>对程序的影响时间很短，效率很高。高性能、实时回收</font>，看似完美的方案其实也有个**问题**，<font color=FF0000>当对象中存在循环引用时，由于引用数不会降到 0，所以对象不会被回收</font>。
 
-  <img src="https://s2.loli.net/2022/04/15/2HEmQgS4JpBVwlR.png" alt="图片" style="zoom:75%;" />
+<img src="https://s2.loli.net/2022/04/15/2HEmQgS4JpBVwlR.png" alt="图片" style="zoom:75%;" />
 
 上面三大算法的出现，基本奠定了垃圾回收的根本性内容，后续出现的垃圾回收算法，基本都是基于上面三个算法的取舍和组合。
 
-- **标记-压缩算法**
+##### 标记-压缩算法
 
-  该算法于 1970 年出现，其<font color=FF0000>**结合了 *标记-清除法* 和 *复制算法* 的优点**</font>，主要操作如下：
+该算法于 1970 年出现，其<font color=FF0000>**结合了 *标记-清除法* 和 *复制算法* 的优点**</font>，主要操作如下：
 
-  1. 从一个 GC root 集合出发，<font color=FF0000>标记所有活动对象</font>。
+1. 从一个 GC root 集合出发，<font color=FF0000>标记所有活动对象</font>。
 
-  2. <font color=FF0000>将所有活动对象移到内存的一端，集中到一起</font>。
-  3. 直接清理掉边界以外的内存，释放连续空间。（**注：**直接移动指针即可）
+2. <font color=FF0000>将所有活动对象移到内存的一端，集中到一起</font>。
+3. 直接清理掉边界以外的内存，释放连续空间。（**注：**直接移动指针即可）
 
-  <img src="https://s2.loli.net/2022/04/01/6Qi9fNKctTHpPn3.png" alt="图片" style="zoom:70%;" />
+<img src="https://s2.loli.net/2022/04/01/6Qi9fNKctTHpPn3.png" alt="图片" style="zoom:70%;" />
 
-  可以发现，该算法既避免了标记-清除法产生内存碎片的问题，又避免了复制算法导致可用内存空间减少的问题。当然，<mark>该算法也不是没有缺点的</mark>，<font color=FF0000>由于其清除和整理的操作很麻烦，甚至需要对整个堆做多次搜索，故而堆越大，耗时越多</font>。
+可以发现，该算法既避免了标记-清除法产生内存碎片的问题，又避免了复制算法导致可用内存空间减少的问题。当然，<mark>该算法也不是没有缺点的</mark>，<font color=FF0000>由于其清除和整理的操作很麻烦，甚至需要对整个堆做多次搜索，故而堆越大，耗时越多</font>。
 
-- **代际假设和分代收集**
+##### 代际假设和分代收集
 
-  **「代际假说」**
+**「代际假说」**
 
-  > It has been empirically observed that in many programs, the most recently created objects are also those most likely to become unreachable quickly.
-  >
-  > 经过调查发现，大多数应用程序内的数据有以下两个特点：
-  >
-  > - 大多数对象的生命周期很短，很快就不再被需要了
-  > - 那些一直存活的对象通常会存在很久
+> It has been empirically observed that in many programs, the most recently created objects are also those most likely to become unreachable quickly.
+>
+> 经过调查发现，大多数应用程序内的数据有以下两个特点：
+>
+> - 大多数对象的生命周期很短，很快就不再被需要了
+> - 那些一直存活的对象通常会存在很久
 
-  简单讲就是对象的生存时间有点两极化的情况：
+简单讲就是对象的生存时间有点两极化的情况：
 
-  ![图片](https://s2.loli.net/2022/04/01/6Q7bv9MTnaeZOdC.png)
+![图片](https://s2.loli.net/2022/04/01/6Q7bv9MTnaeZOdC.png)
 
-  **「分代收集」：** 所以可以将对象进行分代，从而 <font color=FF0000>对不同分代实施不同的垃圾回收算法，以达到更高的效率</font>（如 Java GC: https://plumbr.io/handbook/garbage-collection-in-java/generational-hypothesis）。
+**「分代收集」：** 所以可以将对象进行分代，从而 <font color=FF0000>对不同分代实施不同的垃圾回收算法，以达到更高的效率</font>（如 Java GC: https://plumbr.io/handbook/garbage-collection-in-java/generational-hypothesis）。
 
 #### JavaScript 垃圾回收
 
@@ -145,6 +145,8 @@ JavaScript 中主要的内存管理概念是 **可达性**。简而言之，“�
 - 没有被标记的对象都会被删除。
 
 摘自：[现代js教程 - 垃圾回收](https://zh.javascript.info/garbage-collection)
+
+
 
 ### WeakMap
 
@@ -257,7 +259,7 @@ map.delete(key);
 key = null;
 ```
 
-我们依然通过 Node 证明一下（**注：**代码略，见原文）
+我们依然通过 Node 证明一下（ 👀 **注：**代码略，见原文）
 
 这个时候就要说到 WeakMap 了：
 
@@ -6355,7 +6357,7 @@ import { method } from 'commonjs-package';
 
 Brendan Eich 发明浏览器事件机制是从苹果当年的低代码开发工具 Hypercard 找的灵感，事件处理器的名称用 on 加上一个事件名称的命名方式是继承了 Hypercard 的脚本语言 Hypertalk。
 
-因为 <font color=fuchsia size=4>**HTML 的标签和属性名是不区分大小写的**</font>（👀 注：之所以这点加上高亮，是因为这句话有点重要，也听过，不过几乎没什么印象了...）。
+因为 <font color=fuchsia size=4>**HTML 的标签和属性名是不区分大小写的**</font>（👀 注：之所以这点加上高亮，是因为这句话有点重要，也听过，不过几乎没什么印象了... 之后回想起来是在 Vue 文档中，见 [Vue3 官方文档 - 组件基础 # DOM 模板解析注意事项](https://cn.vuejs.org/guide/essentials/component-basics.html#case-insensitivity) ）。
 
 在当年，从网景的 JS 文档里到人们真实写的 HTML 里，都是用的驼峰写法（Hypertalk 就是用驼峰的），比如 onClick：
 
@@ -6382,3 +6384,17 @@ Brendan Eich 发明浏览器事件机制是从苹果当年的低代码开发工�
 - sendBeacon 请求
 
 学习自：[为什么都说根据X-Requested-With判断ajax请求，但原生js发送ajax默认不带这个头？ - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/365435784/answer/968292664)
+
+##### 网络请求判断来源方式
+
+比如使用 `x-Requested-With` 这个自定义（非标准）的 HTTP 头。
+
+其实 Chrome 已经搞了个更复杂的东西，大多数人不知道而已，Chrome 现在发起的请求会带有一个  `Sec-Fetch-Dest` 请求头 https://www.w3.org/TR/fetch-metadata/#sec-fetch-dest-header，表示请求的发起方式。如果该请求是作为页面直接打开的，比如在地址栏上回车，这个值会是 `document`，如果是用 `<img>` 标签发起的图片请求，这个值会是 `image` ，如果用 `XHR/fetch` 发起的，这个值会是 `empty` ，等等。下图截自上面的网址：
+
+<img src="https://s2.loli.net/2022/09/03/KefcgkBRrqY4MPW.png" alt="image-20220903002718707" style="zoom:45%;" />
+
+打开开发者工具看一看，比如就看本知乎页面的，就有很多种：
+
+<img src="https://s2.loli.net/2022/09/03/KbtqL5hTYajxgMe.png" alt="image-20220903003005340" style="zoom:50%;" />
+
+摘自：[为什么都说根据X-Requested-With判断ajax请求，但原生js发送ajax默认不带这个头？ - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/365435784/answer/968292664)
