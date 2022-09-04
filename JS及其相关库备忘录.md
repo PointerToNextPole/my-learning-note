@@ -612,7 +612,7 @@ str.normalize( [form] )
 
 - **!==**： <font color=FF0000>不绝对等于</font>（<font color=FF0000>**值和类型有一个不相等，或两个都不相等**</font>）
 
-#### For 循环
+#### JS 循环
 
 for-in 循环，<font color=FF0000>for-in 循环是为遍历 enumerable 数据描述符 为 true 的对象设计的</font>。示例：
 
@@ -622,7 +622,7 @@ for ( elem in elems ){ /* code */ }
 
 > **注：**for-in 是用来遍历对象中 enumerable 数据描述符 为 true 的属性，object.keys() 同样受到 enumerable 的影响。详见 [[#Object.defineProperty#属性描述符]] 中的 enumerable
 
-<font color=FF0000>不推荐用 for-in 来循环一个**数组**，因为，不像对象，数组的`index`跟普通的对象属性不一样，是重要的数值序列指标</font>。
+<font color=FF0000>不推荐用 for-in 来循环一个**数组**，因为，不像对象，数组的 `index` 跟普通的对象属性不一样，是重要的数值序列指标</font>。
 
 ##### forEach 循环（ JavaScript5 引入）
 
@@ -666,13 +666,13 @@ for (var value of myArray) {
 
 摘自：[JavaScript里的循环方法：forEach，for-in，for-of](https://www.webhek.com/post/javascript-loop-foreach-for-in-for-of.html)
 
-#### for ... of
+##### for-of
 
-for ... of语句<font color=FF0000>在可迭代对象（包括 Array，Map，Set，String，TypedArray，arguments 对象等等）上创建一个迭代循环</font>，调用自定义迭代钩子，并为每个不同属性的值执行语句
+for-of 语句<font color=FF0000>在可迭代对象（包括 Array，Map，Set，String，TypedArray，arguments 对象等等）上创建一个迭代循环</font>，调用自定义迭代钩子，并为每个不同属性的值执行语句
 
 **补充：**
 
-for of 循环获取index值，将Array.entries()将其包装为可迭代对象，再遍历，示例如下：
+for-of 循环获取index值，将Array.entries()将其包装为可迭代对象，再遍历，示例如下：
 
 ```js
 for (const [index, val] of arr.entries()) {
@@ -682,7 +682,7 @@ for (const [index, val] of arr.entries()) {
 
 摘自：[for of 循环获取index值](https://blog.csdn.net/Hero_rong/article/details/109536906)
 
-<font size=4>**对于对象的遍历**</font>
+##### 对象的遍历的方法
 
 遍历对象有如下方法：
 
@@ -718,12 +718,11 @@ for (const [index, val] of arr.entries()) {
   })
   ```
 
+##### 对象遍历方法间的区别
 
-**区别：**
+- <font color=fuchsia>**Reflect.ownKeys() 和 Object.getOwnPropertyNames() 可以获取 enumerable 为 false 的对象成员**</font>，而 Object.keys() 和 for...of 不可以。
 
-- Reflect.ownKeys() 和 Object.getOwnPropertyNames() 可以获取 enumerable 为 false 的数据，而 Object.keys() 和 for...of 不可以。
-
-- Object.getOwnPropertyNames() 不能获取Symbol，需要通过Object.getOwnPropertySymbols() 获取；而Reflect.ownKeys() 都可以拿到。
+- <font color=fuchsia>Object.getOwnPropertyNames() 不能获取 对象中包含的 Symbol</font>，可以通过Object.getOwnPropertySymbols() 获取；而<font color=fuchsia>Reflect.ownKeys() 都可以拿到</font>。
 
   补充：经 codingstartup群友的补充：Reflect.ownKeys()的遍历是有序的，按照你添加的顺序：
 
@@ -742,7 +741,7 @@ for (const [index, val] of arr.entries()) {
 
 
 
-#### **for ... of 和 for ... in 的区别**
+#### for ... of 和 for ... in 的区别
 
 无论是 for...in 还是 for...of 语句都是迭代一些东西。它们之间的主要区别在于它们的迭代方式。
 
@@ -9017,7 +9016,7 @@ let style = window.getComputedStyle(element, [pseudoElt]);
 
 Object.create() 方法<font color=FF0000>创建一个新对象</font>，<font color=FF0000>**使用现有的对象来提供新创建的对象的 \__proto__**</font>
 
-**示例如下：**
+##### 使用示例
 
 ```js
 const person = {
@@ -9035,13 +9034,13 @@ me.isHuman = true; // inherited properties can be overwritten
 me.printIntroduction(); // expected output: "My name is Matthew. Am I human? true"
 ```
 
-**语法：**
+##### 语法
 
 ```js
 Object.create(proto，[propertiesObject])
 ```
 
-**参数**
+##### 参数
 
 - **proto：**新创建对象的原型对象。
 
@@ -9051,9 +9050,13 @@ Object.create(proto，[propertiesObject])
 
 **返回值：**一个新对象，带着指定的原型对象和属性。
 
-**注意：**<font color=FF0000>如果proto参数不是 null 或非原始包装对象，则抛出一个 TypeError 异常</font>。
+##### 异常
 
-**示例：用 Object.create实现类式继承**，演示如何使用Object.create() 来实现类式继承。这是一个所有版本JavaScript都支持的单继承。
+<font color=FF0000>如果 proto 参数不是 null 或 非原始包装对象，则抛出一个 TypeError 异常</font>。
+
+##### 示例
+
+用 Object.create 实现类式继承，演示如何使用Object.create() 来实现类式继承。这是一个所有版本JavaScript都支持的单继承。
 
 ```js
 // Shape - 父类(superclass)
@@ -9135,7 +9138,7 @@ o = Object.create(Constructor.prototype);
 
 摘自：[MDN - Object.create()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
 
-**补充：**
+##### 补充
 
 如下示例：
 
@@ -9147,7 +9150,7 @@ fooCp.__proto__ === Object.getPrototypeOf(fooCp) === Foo.prototype
 //              true                             true
 ```
 
-> 其实new 是一种语法糖，真正new干了两件事，第一是在构造函数中第一句加上 this = Object.create(Parent.prototype)， 第二件事是最后结束的时候 return this; 你在构造函数里面写这两句，实例化对象的时候就不用new了
+> 其实 new 是一种语法糖，真正new干了两件事，第一是在构造函数中第一句加上 this = Object.create(Parent.prototype)， 第二件事是最后结束的时候 return this; 你在构造函数里面写这两句，实例化对象的时候就不用new了
 
 参考自：[js继承实现之Object.create](https://segmentfault.com/a/1190000014592412)
 
@@ -9479,7 +9482,9 @@ console.log(obj); // { 0: "a", 1: "b", 2: "c" }
 
 #### Object.assign()
 
-Object.assign() 方法用于<font color=FF0000>将所有可枚举属性的值</font>从一个**或多个源对象**分配到目标对象。它将返回目标对象。
+`Object.assign()` 方法<font color=fuchsia>将所有 可枚举（ `obj.propertyIsEnumerable()` 返回 true ）和自有（ `obj.hasOwnProperty()` 返回 true ）属性</font>从一个<font color=red>**或多个**</font>源对象复制到目标对象，返回修改后的对象。
+
+> 👀 进一步的解释下这里的话：即 enumerable 为 true，并且在实例自身（而不是在原型）上的属性。关于“在实例本身”参考 [[#Object.prototype.hasOwnProperty()#《 JS 高程》补充]]
 
 ##### 语法
 
@@ -9487,28 +9492,28 @@ Object.assign() 方法用于<font color=FF0000>将所有可枚举属性的值</f
 Object.assign(target, ...sources)
 ```
 
-<font color=FF0000>自我补充：</font>之所以sources前面加了展开运算符，是因为可能有多个源对象
+> 👀 注：之所以 `sources` 前面加了展开运算符，是因为可能有多个源对象
 
-**参数**
+##### 参数
 
-- **target：**目标对象。
-- **sources：**源对象。
+- **target：**目标对象，接收源对象属性的对象，也是修改后的返回值。
+- **sources：**源对象，包含将被合并的属性。
 
 **返回值：**目标对象。
 
 ##### 描述
 
-<font color=FF0000 size=4>如果目标对象中的属性具有相同的键，则属性将被源对象中的属性 **覆盖**</font>。后面的源对象的属性将类似地覆盖前面的源对象的属性
+<font color=fuchsia>**如果目标对象中的属性具有相同的键，则属性将被源对象中的属性 <font size=4>覆盖</font>**</font>。后面的源对象的属性将类似地覆盖前面的源对象的属性
 
-<font color=FF0000 size=4>**Object.assign 方法只会拷贝源对象自身的并且可枚举的属性到目标对象**</font>。该方法使用源对象的 [[Get]] 和目标对象的 [[Set]]，所以它会调用相关 getter 和 setter。<font color=FF0000>因此，它分配属性，而不仅仅是复制或定义新的属性</font>。<font color=FF0000>如果合并源包含getter，这可能使其不适合将新属性合并到原型中</font>。为了将属性定义（包括其可枚举性）复制到原型，应使用Object.getOwnPropertyDescriptor()和Object.defineProperty() 。
+<font color=fuchsia size=4>**Object.assign 方法只会拷贝源对象 *可枚举的* 并且 *自身的* 属性到目标对象**</font>。该方法使用源对象的 `[[Get]]` 和目标对象的 `[[Set]]`，所以它会调用相关 getter 和 setter。<font color=red>因此，它分配属性，而不仅仅是复制或定义新的属性</font>。<font color=FF0000>如果合并源包含 getter，这可能使其不适合将新属性合并到原型中</font>。为了将属性定义（包括其可枚举性）复制到原型，应使用 Object.getOwnPropertyDescriptor() 和Object.defineProperty() 。
 
-<font color=FF0000>String类型和 **Symbol 类型**的属性都会被拷贝。</font>
+<font color=fuchsia>String 类型和 **Symbol 类型**的属性都会被拷贝。</font>
 
-<font color=FF0000>在出现错误的情况下，例如，**如果属性不可写，会引发TypeError**</font>，如果在引发错误之前添加了任何属性，则可以更改target对象。
+<font color=FF0000>在出现错误的情况下，例如，**如果属性不可写，会引发 TypeError**</font>，如果在引发错误之前添加了任何属性，则可以更改target对象。
 
-<font color=FF0000>注意，Object.assign **不会** 在那些source对象值为 null 或 undefined 的时候抛出错误</font>。
+<font color=FF0000>注意，Object.assign **不会** 在那些 source 对象值为 null 或 undefined 的时候抛出错误</font>。
 
-- **深拷贝问题：**针对深拷贝，需要使用其他办法，因为 Object.assign()拷贝的是（可枚举）属性值。假如源值是一个对象的引用，它仅仅会复制其引用值。
+- **深拷贝问题：**Object.assign() 无法实现深拷贝，需要使用其他办法。因为 Object.assign() 拷贝的是（可枚举）属性值。假如源值是一个对象的引用，它仅仅会复制其引用值。
 
 - <font color=FF0000>**继承属性和不可枚举属性是不能拷贝的**</font>
 
@@ -9544,11 +9549,11 @@ Object.assign(target, ...sources)
 
 摘自：[MDN - Object.assign()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
 
-补充：如果要实现深拷贝，除了自己手写实现外；还可以使用：
-
-- lodash 的 deepClone
-- JSON.parse( JSON.toString() )
-- structuredClone() ，**注：**这是一个新特性
+> 👀 补充：如果要实现深拷贝，除了自己手写实现外；还可以使用：
+>
+> - lodash 的 deepClone
+> - JSON.parse( JSON.stringify() )
+> - structuredClone() ，**注：**这是一个新特性
 
 
 
@@ -9975,9 +9980,27 @@ alert(obj + 2); // 22（"2" + 2）被转换为原始值字符串 => 级联
 
 摘自：[JS中判断对象是否包含某个key的方法](https://blog.csdn.net/sinat_34241861/article/details/107347288)
 
+
+
 #### Object.prototype.hasOwnProperty()
 
-hasOwnProperty() 方法会返回一个布尔值，指示对象自身属性中是否具有指定的属性
+hasOwnProperty() 方法会返回一个布尔值，指示 ( indicating ) <font color=fuchsia>**对象自身属性中**</font> <font color=red>是否具有指定的属性</font>
+
+##### 《 JS 高程》补充
+
+> 👀 注：上面 MDN 的解释说的并不清楚，没有说清楚 “对象自身属性中” 是什么，<font color=LightSeaGreen>因为这里涉及到原型相关的内容了，对原型概念有所遗忘的话将不能很好理解这里的内容</font>。下面摘抄《 JS 高程》的内容：
+>
+> > `hasOwnProperty(propertyName)` ：用于判断 <font color=fuchsia size=4>**当前对象实例（不是原型）**</font>上是否存在给定的属性。要检查的属性名必须是字符串（如 `o.hasOwnProperty("name")` ）或符号。
+> >
+> > > 👀 摘自：P56 3.4.8 Object 类型
+> >
+> > hasOwnProperty()方法用于确定某个属性是在实例上还是在原型对象上。 
+> >
+> > > 👀 摘自：P229 8.2.4 原型模式
+> >
+> > 只要通过对象可以访问（ Enumerable 为 true ），in 操作符就返回 true，而 hasOwnProperty()只有属性存在于实例上 时才返回 true。因此，只要 in 操作符返回 true 且 hasOwnProperty()返回 false，就说明该属性 是一个原型属性。
+> >
+> > > 👀 摘自：P231 8.2.4 原型模式
 
 **语法**
 
@@ -9998,12 +10021,6 @@ prop：要检测的属性的 String 字符串形式表示的名称，或者 Symb
 **备注：**即使属性的值是 null 或 undefined，只要属性存在，hasOwnProperty 依旧会返回 true。
 
 摘自：[MDN - Object.prototype.hasOwnProperty()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty)
-
-##### 《红宝书》中的关于 hasOwnProperty 的补充
-
-hasOwnProperty() 方法（可以）<font color=FF0000>用于 **确定** 某个属性是在实例上，还是在原型对象上</font>。这个方法是继承自 Object 的，会<font color=FF0000>在（该）属性存在于 **调用它的对象实例上时**，**返回 true**</font>
-
-**摘自：**《JS 高程 第四版》P229
 
 
 
@@ -10145,7 +10162,7 @@ obj：一个对象，其自身的可枚举和不可枚举属性的名称被返�
 
 ##### 描述
 
-Object.getOwnPropertyNames() 返回一个数组，该数组对元素是 obj自身拥有的枚举或不可枚举属性名称字符串。 数组中枚举属性的顺序与通过 for...in 循环（或 Object.keys ）迭代该对象属性时一致。数组中不可枚举属性的顺序未定义。
+<font color=red>Object.getOwnPropertyNames() 返回一个数组</font>，该数组对元素是 obj自身拥有的枚举或不可枚举属性名称字符串。 数组中枚举属性的顺序与通过 for...in 循环（或 Object.keys ）迭代该对象属性时一致。数组中不可枚举属性的顺序未定义。
 
 ##### 特殊示例
 
@@ -10154,7 +10171,7 @@ const arr = [1, 2, 3]
 console.log(Object.getOwnPropertyNames(arr)) // [ '0', '1', '2', 'length' ]
 ```
 
-注意：离这里是会打印出 length 的，用Reflect.ownKeys() 也是，但是用 Object.keys() 不会
+> ⚠️ 注意：这里是会打印出 length 的，Reflect.ownKeys() 也是，但是用 Object.keys() 不会
 
 摘自：[MDN - Object.getOwnPropertyNames()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames)
 
@@ -10426,23 +10443,23 @@ class AbstractClass {
 
 <font color=FF0000>静态方法</font> Reflect.ownKeys() <font color=FF0000>返回一个**由目标对象自身的属性键组成的数组**</font>。
 
-**语法：**
+##### 语法
 
 ```js
 Reflect.ownKeys(target)
 ```
 
-- 参数
+##### 参数
 
-  **target：**获取自身属性键的目标对象。
+**target：**获取自身属性键的目标对象。
 
-- 返回值：由目标对象的自身属性键组成的 Array。 
+返回值：由目标对象的自身属性键组成的 Array。 
 
-- 异常：<font color=FF0000>如果目标不是 Object，抛出一个 TypeError</font>。
+异常：<font color=FF0000>如果目标不是 Object，抛出一个 TypeError</font>。
 
-**描述：**Reflect.ownKeys 方法返回一个由目标对象自身的属性键组成的数组。它的返回值等同于Object.getOwnPropertyNames(target).concat(Object.getOwnPropertySymbols(target))
+**描述：**<font color=red>Reflect.ownKeys 方法返回一个由目标对象自身的属性键组成的数组</font>。它的<font color=LightSeaGreen>返回值等同于Object.getOwnPropertyNames(target).concat(Object.getOwnPropertySymbols(target))</font
 
-**示例：**
+##### 示例
 
 ```js
 const obj = {
@@ -10457,7 +10474,9 @@ console.log(Reflect.ownKeys(arr)) // [ '0', 'length' ]
 
 摘自：[MDN - Reflect.ownKeys()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect/ownKeys)
 
-**个人补充：**Reflect.ownKeys() 可以获取 enumerable 为 false 的数据，而 Object.keys() 和 for...of 不可以
+> 👀 补充：Reflect.ownKeys() 可以获取 enumerable 为 false 的数据，而 Object.keys() 和 for...of 不可以。
+>
+> 另外，可以参考下 [[#对象遍历方法间的区别]]
 
 
 
@@ -11660,7 +11679,7 @@ history.replaceState(stateObj, title[, url]);
 
   摘自：[WayBack Machine - MDN - GlobalEventHandlers.onerror](https://web.archive.org/web/20220405193010/https://developer.mozilla.org/zh-CN/docs/Web/API/GlobalEventHandlers/onerror) MDN 原文的链接已经找不到了...
 
-  ##### 补充：实践中 “image 加载失败事件” 的发现
+  ##### 实践中发现的 “image 加载失败事件” 补充
 
   ```html
   <img src="unavailableImgUrl" alt="" onerror="console.log('fetch img failed')" />
@@ -11676,7 +11695,7 @@ history.replaceState(stateObj, title[, url]);
 
   同时根据 [49 个在工作中常用且容易遗忘的 CSS 样式清单整理 - 爱前端不爱恋爱的文章 - 知乎](https://zhuanlan.zhihu.com/p/405394824) 中第13条的说法：
 
-  > 使用onerror 异常处理时，<font color=red>若 `onerror` 的图片也出现问题，则图片显示会陷入死循环</font>，所以<font color=fuchsia>要在赋值异常图片之后，将地址置空</font>
+  > 使用 onerror 异常处理时，<font color=red>若 `onerror` 的图片也出现问题，则图片显示会陷入死循环</font>，所以<font color=fuchsia>要在赋值异常图片之后，将地址置空</font>
   >
   > ```html
   > <img onerror="this.src='url; this.onerror=null'" />
@@ -11881,9 +11900,7 @@ history.replaceState(stateObj, title[, url]);
 
   摘自：[MDN - submit](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLFormElement/submit_event)
 
-  <font size=4>**补充：**</font>
-
-  submit 事件触发后默认会<font color=FF0000> **重载页面** </font>
+  > 👀 补充：submit 事件触发后默认会<font color=FF0000> **重载页面** </font>
 
   摘自：[Vue3官方文档 - 事件处理 - 事件修饰符](https://v3.cn.vuejs.org/guide/events.html#事件修饰符)
 
@@ -11893,7 +11910,8 @@ history.replaceState(stateObj, title[, url]);
 
   摘自：[MDN - Document: DOMContentLoaded 事件](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/DOMContentLoaded_event)
 
-  **注：**感觉 MDN 的解释并不易懂，摘抄 《现代 JS 教程》中的内容：
+  > **注：**感觉 MDN 的解释并不易懂，摘抄 《现代 JS 教程》中的内容：
+  >
   > - DOMContentLoaded：浏览器已完全加载 HTML，并构建了 DOM 树，但像 \<img> 和样式表之类的外部资源可能尚未加载完成。
   > - load：浏览器不仅加载完成了 HTML，还加载完成了所有外部资源：图片，样式等。
   >
@@ -11941,9 +11959,11 @@ history.replaceState(stateObj, title[, url]);
 
   摘自：[MDN - Window: hashchange event](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/hashchange_event)
 
-  **注：**这个事件是 vue-router hash模式的原理
+  > 👀 **注：**这个事件是 vue-router hash模式的原理
+  
+- <font size=4>**屏幕旋转事件**</font>：之前的事件名称是 [`orientationchange`](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/orientationchange_event) ，已经废弃，不过在 Chrome DevTool 中 可以在 window 对象内找到 `ondeviceorientation` （见 [MDN - Window：deviceorientation 事件](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/deviceorientation_event)）和 `ondeviceorientationabsolute` （这是非标准的，MDN 不推荐使用）。鉴于 `orientationchange` 已经废弃， MDN 建议使用 [Screen Orientation API](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation)
 
-<font size=4>**补充：**</font>
+#### 事件补充
 
 - **pageshow 和 load 区别：**
   

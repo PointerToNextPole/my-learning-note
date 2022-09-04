@@ -481,29 +481,88 @@ axios 依赖原生的ES6 Promise实现而被支持。 如果你的环境不支�
 
 
 
-## 一些网络请求的补充
+## 网络请求相关补充
 
-#### 请求已经发出去了，如何取消掉这个已经发出去的请求
 
-> <font size=4>**前置知识：**</font>
->
+
+#### 如何中断已发出去的请求
+
+##### 前置知识
+
 > AbortController 接口表示一个控制器对象，可以根据需要终止一个或多个Web请求。
 >
 > - **AbortController()**： AbortController() 构造函数创建一个新的 AbortController 对象实例
-> - **signal**：signal 属性返回一个 AbortSignal 对象实例，它可以用来 with/about 一个Web(网络)请求
+>- **signal**：signal 属性返回一个 AbortSignal 对象实例，它可以用来 with/about 一个Web(网络)请求
 > - **abort()**：终止一个尚未完成的Web(网络)请求，它能够终止 fetch 请求，任何响应Body的消费者和流
+
+##### 取消方法
 
 - **xhr 取消请求：** 使用 xhr.abort() 方法
 - **fetch 取消请求：** 使用 abortController.abort() 方法。示例参见链接
-- **axios 取消请求：** 在V0.22.0版本之前（不包含V0.22.0），使用 cancelToken （详见官方文档，这里略；在V0.22.0版本 cancelToken depercated，详见官方文档：[axios - 取消请求](https://axios-http.com/zh/docs/cancellation)）。<font color=FF0000>在 V0.22.0 版本及之后，<font size=4>**推荐使用 abortController**</font></font>
+- **axios 取消请求：** 在V0.22.0版本之前（不包含V0.22.0），使用 cancelToken （详见官方文档，这里略；在V0.22.0版本 cancelToken 废弃，详见官方文档：[axios - 取消请求](https://axios-http.com/zh/docs/cancellation)）。<font color=FF0000>在 V0.22.0 版本及之后，<font size=4>**推荐使用 abortController**</font></font>
 
 - **umi-request 中断请求：**略，详见链接
 
-**使用场景：**取消登录（比如QQ登录）、取消上传
+##### 取消请求的使用场景
 
-**cancelToken 取消的原理：**当用户调用内部对外暴露的 cancel 方法后，axios 内部会执行 resolvePromise，改变 promise（CancelToken 实例的 promise）的状态，触发 promise 的 then 回调，然后执行 onCanceled方法，<font color=FF0000>在 onCanceled 中则调用XMLHttpRequest 的 abort 方法取消请求，同时调用 reject 让外层的 promise 失败</font>。详见：[axios解析之cancelToken取消请求原理](https://juejin.cn/post/7044532592640524324)
+取消登录（比如 QQ 登录）、取消上传
+
+##### cancelToken 取消的原理
+
+<font color=red>当用户调用内部对外暴露的 cancel 方法后，axios 内部会执行 resolvePromise，改变 promise</font>（ CancelToken 实例的 promise）<font color=red>的状态</font>；触发 promise 的 then 回调，然后执行 onCanceled 方法，<font color=fuchsia>在 onCanceled 中则调用 XMLHttpRequest 的  abort 方法取消请求，同时调用 reject 让外层的 promise 失败</font>。详见：[axios解析之cancelToken取消请求原理](https://juejin.cn/post/7044532592640524324)
+
+> 👀 注：在浏览器中 Axios 实现方法是 XHR，Node 中是 http 模块；所以上面用了 `xhr.abort()` 
 
 以上摘自：[面试官：如何中断已发出去的请求？](https://juejin.cn/post/7033906910583586829)
+
+
+
+#### Fetch 和 Axios 的区别
+
+##### 总述
+
+Axios是对 XMLHttpRequest 的封装（ 👀 浏览器环境下），Fetch 是一种新的获取资源的接口方式，并<font color=red>不是对 XMLHttpRequest 的封装</font>
+
+它们最大的不同点在于：Fetch 是浏览器原生支持，而 Axios 需要引入 Axios 库。
+
+##### 区别
+
+- 兼容性不同：Axios 可以兼容 IE ，而 Fetch 在IE 和一些老版本浏览器上没有受到支持。
+
+  > 👀 补充：[whatwg-fetch](https://github.com/github/fetch) 可以让老版本浏览器支持 Fetch。还有老版本浏览器不兼容 Promise，需要添加 polyfill
+
+- 请求方法不同：axios 是 `axios(options).then( ... )` ，fetch 是 `fetch(url, options).then( ... )`
+
+  ```js
+  // axios
+  const options = {
+    url: "http://example.com/",
+    method: "POST",
+    headers: { ... },
+    data: { ... },
+  };
+  
+  axios(options).then((response) => { ... });
+  ```
+
+  ```js
+  const url = "http://example.com/";
+  const options = {
+    method: "POST",
+    headers: { ... },
+    body: JSON.stringify({/*data to transmit*/}),
+  };
+  
+  fetch(url, options).then((response) => { ... });
+  ```
+
+- 请求超时设置方法不同：Axios 的相应超时设置是非常简单，直接设置 `timeout` 属性就可以了；而 Fetch 没有实现该功能，需要手动使用 AbortController
+
+- <font color=red>Axios 会自动对数据进行转化</font>，而 Fetch 需要使用者进行手动转化；使用 `response.json()` , `res.formData()` , `res.arrayBuffer()` 等方法
+
+- Axios 提供了拦截器，可以统一对请求或响应进行一些处理；而 Fetch 没有提供。
+
+学习与摘自：[越来越火的网络请求Fetch和Axios到底有什么区别](https://juejin.cn/post/6934155066198720519)
 
 
 

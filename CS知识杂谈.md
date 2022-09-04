@@ -191,6 +191,8 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 
 但是, 世界上这么多 CPU，这么多语言，每个类型系统都不一样，想想也没法统一；不能统一就会有混乱, 混乱乘以发展时间就是屎山的大小。你用 node 肯定被 node-gyp 恶心过，用 Java 肯定被 JNI 恶心过。在时间面前，再好的约定也会变得混乱，最后把你埋葬在屎山之中
 
+> 👀 注：JS 生态就有 FFI 插件：[node-ffi](https://github.com/node-ffi/node-ffi)
+
 ##### RPC ( Remote Procedure Call )
 
 那我不管别人怎么规定了，我就按自己的规定来，你们都给我转成这个格式交互（👀 **注：**适配器模式，中间层？）。

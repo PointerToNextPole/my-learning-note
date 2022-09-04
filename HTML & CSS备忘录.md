@@ -2741,46 +2741,49 @@ text-indent 属性能定义一个块元素首行文本内容之前的缩进量�
 
 ##### position 属性的五个值
 
-- **static**：HTML 元素的<font color=FF0000>默认值</font>，即没有定位，遵循正常的文档流对象。
+- **static**：HTML 元素的<font color=fuchsia>**默认值**</font>，即<font color=red>没有定位，遵循正常的文档流对象</font>。
   
-  浏览器会按照源码的顺序，决定每个元素的位置，这称为“正常的页面流” ( normal flow ) 。每个块级元素占据自己的区块 ( block )，元素与元素之间不产生重叠，这个位置就是元素的默认位置。
+  浏览器会按照源码的顺序，决定每个元素的位置，这称为 “正常的页面流” ( normal flow ) 。每个块级元素占据自己的区块 ( block )，元素与元素之间不产生重叠，这个位置就是元素的默认位置。
   
-  <mark>注意，static 定位所导致的元素位置，是浏览器自主决定的；所以这时 top、bottom、left、right 这四个属性无效。</mark>
+  > ⚠️ 注意：<font color=red>static 定位所导致的元素位置，是浏览器自主决定的</font>；所以 <font color=red>top、bottom、left、right 这四个属性无效</font>。
 
 - **relative**：相对定位元素的定位是相对其正常位置。<font color=FF0000>**（相对于自身定位）**</font>
   
-  relative 表示：相对于默认位置（即 static 时的位置）进行偏移，即定位基点是元素的默认位置。
+  relative 表示：<font color=red>相对于默认位置（即 static 时的位置）进行偏移</font>，即定位基点是元素的默认位置。
   
-  它<mark>必须搭配 top、bottom、left、right 这四个属性一起使用，用来指定偏移的方向和距离</mark>。
+  它<font color=lightSeaGreen>必须搭配 top、bottom、left、right 这四个属性一起使用，用来指定偏移的方向和距离</font>。
 
-- **fixed**：<mark>元素的位置相对于浏览器窗口是固定位置</mark>。
+- **fixed**：<font color=red>元素的位置相对于浏览器窗口是固定位置</font>。
   
   它如果搭配 top、bottom、left、right 这四个属性一起使用，表示元素的初始位置是基于视口计算的，否则初始位置就是元素的默认位置。
 
-- **absolute**：<font color=FF0000>**绝对定位的元素的位置相对于最近的<mark>已定位的</mark>父元素（即：父元素带有position属性（一般是relative）。如果没有，absolute将相对于 body 移动）**</font>，如果元素没有已定位的父元素，那么它的位置相对于\<html>
+- **absolute**：<font color=fuchsia>**绝对定位的元素的位置相对于 <font size=4>最近的已定位的</font> 父元素**</font>（即：父元素带有 position 属性（一般是 relative ）。<font color=fuchsia>如果没有，absolute将相对于 body 移动）</font>，如果元素没有已定位的父元素，那么它的位置相对于 \<html>
   
-  absolute 表示：相对于上级元素（一般是父元素）进行偏移，即定位基点是父元素。
+  absolute 表示：相对于上级元素（一般是父元素）进行偏移，即 <font color=red>定位基点是父元素</font>。
   
-  <font color=FF0000>它有一个重要的限制条件：定位基点（一般是父元素）不能是 static 定位，否则定位基点就会变成整个网页的根元素html</font>。另外，<mark>absolute定位也必须搭配 top、bottom、left、right 这四个属性一起使用</mark>。
+  <font color=dodgerblue>它有一个重要的限制条件：</font><font color=red>定位基点（一般是父元素）不能是 static 定位，否则定位基点就会变成整个网页的根元素html</font>。另外，<font color=LightSeaGreen>absolute定位也必须搭配 top、bottom、left、right 这四个属性一起使用</font>。
 
-- **sticky**：sticky 英文字面意思是粘，粘贴，所以可以把它称之为粘性定位。<font color=FF0000>**position: sticky** 基于用户的滚动位置来定位。粘性定位的元素是依赖于用户的滚动，在 **position: relative** 与 **position: fixed** 定位之间切换</font>。
+- **sticky**：sticky 英文字面意思是粘，粘贴，所以可以把它称之为粘性定位。
   
-  **使用场景**：<font color=FF0000>网页的搜索工具栏，初始加载时在自己的默认位置（ relative 定位），页面向下滚动时，工具栏变成固定位置，始终停留在页面头部（ fixed 定位）</font>。
+  `position: sticky` <font color=fuchsia>基于用户的滚动位置来定位</font>。粘性定位的元素是依赖于用户的滚动，在 `position: relative` 与 `position: fixed` 定位之间切换。
   
-  <mark>sticky<font color=FF0000>**生效的前提**</font>是，<font color=FF0000>必须搭配 top、bottom、left、right 这四个属性一起使用，不能省略</font>，否则等同于 relative 定位，不产生 “动态固定” 的效果</mark>。原因是这四个属性用来定义"偏移距离"，浏览器把它当作 sticky 的生效门槛。
+  <font color=dodgerBlue>使用场景：</font>比如，网页的搜索工具栏；初始加载时在自己的默认位置（ relative 定位），页面向下滚动时，工具栏变成固定位置，始终停留在页面头部（ fixed 定位）。
   
-  它的<font color=FF0000>**具体规则**</font>是，<font color=FF0000>当页面滚动，父元素开始脱离视口时（即部分不可见），只要与 sticky 元素的距离达到生效门槛，relative定位自动切换为 fixed 定位</font>；<font color=FF0000>等到父元素完全脱离视口时（即完全不可见），fixed 定位自动切换回 relative 定位。</font>
+  <font color=dodgerBlue>sticky **生效的前提**是：</font><font color=FF0000>必须搭配 top、bottom、left、right 这四个属性一起使用，不能省略</font>，否则等同于 relative 定位，不产生 “动态固定” 的效果。原因是这四个属性用来定义"偏移距离"，浏览器把它当作 sticky 的生效门槛。
   
-  注意，除了已被淘汰的 IE 以外，其他浏览器目前都支持 sticky。但是，Safari 浏览器需要加上浏览器前缀 `-webkit-`
+  <font color=dodgerBlue>运行的具体规则是：</font><font color=fuchsia>当页面滚动，父元素开始脱离视口时（即部分不可见），只要与 sticky 元素的距离达到生效门槛，relative定位自动切换为 fixed 定位</font>；<font color=FF0000>等到父元素完全脱离视口时（即完全不可见），fixed 定位自动切换回 relative 定位。</font>
   
+  > ⚠️ 注意：除了已被淘汰的 IE 以外，其他浏览器目前都支持 sticky。但是，<font color=red>Safari 浏览器需要加上浏览器前缀 `-webkit-`</font>
 
 部分摘自：[阮一峰的网络日志 - CSS 定位详解](https://www.ruanyifeng.com/blog/2019/11/css-position.html)
+
+> 👀 注：这部分内容可以参考 [[前端面试点总结#定位]]
 
 
 
 #### **重叠的元素**
 
-元素的定位与文档流无关，所以它们可以覆盖页面上的其它元素。<mark>z-index属性指定了一个元素的堆叠顺序（哪个元素应该放在前面，或后面）</mark>。一个元素可以有正数或负数的堆叠顺序，<font color=FF0000>具有更高堆叠顺序的元素总是在较低的堆叠顺序元素的前面</font>。
+元素的定位与文档流无关，所以它们可以覆盖页面上的其它元素。<font color=red>z-index 属性指定了一个元素的堆叠顺序（哪个元素应该放在前面，或后面）</font>。一个元素可以有正数或负数的堆叠顺序，<font color=lightSeaGreen>具有更高堆叠顺序的元素总是在较低的堆叠顺序元素的前面</font>。
 
 
 
@@ -2788,15 +2791,15 @@ text-indent 属性能定义一个块元素首行文本内容之前的缩进量�
 
 CSS overflow 属性<mark>可以控制内容溢出元素框时在对应的元素区间内添加滚动条</mark>。
 
-overflow属性有以下值：
+##### overflow 属性有以下值
 
-| 值       | 描述                                        |
-|:-------:|:-----------------------------------------:|
-| visible | 默认值。内容不会被修剪，会呈现在元素框之外。                    |
+| 值      | 描述                                                         |
+| :------ | :----------------------------------------------------------- |
+| visible | 默认值。内容不会被修剪，会呈现在元素框之外。                 |
 | hidden  | 内容会被修剪，并且其余内容是不可见的。                       |
 | scroll  | <mark>内容会被修剪，但是浏览器会显示滚动条以便查看其余的内容</mark>。 |
-| auto    | 如果内容被修剪，则浏览器会显示滚动条以便查看其余的内容。              |
-| inherit | 规定应该从父元素继承 overflow 属性的值。                 |
+| auto    | 如果内容被修剪，则浏览器会显示滚动条以便查看其余的内容。     |
+| inherit | 规定应该从父元素继承 overflow 属性的值。                     |
 
 **注意：**overflow 属性只工作于指定高度的块元素上。
 
@@ -6359,7 +6362,7 @@ width 属性用于设置元素的宽度。width 默认设置内容区域的宽�
 **语法**
 \<length> 数据类型由一个 \<number> 和一个长度单位构成。 与所有 CSS 维度一样，单位的字面值与数字之间没有空格。 数字为 0 时，长度单位是可选的。
 
-> 👀 注：由于这里单位较多，这里略；只摘录有必要的，其他见 下面的链接
+> 👀 注：由于这里单位较多，这里略；只摘录有必要的，其他见引用的链接
 
 - vmin：视口高度 vw 和宽度 vh 两者之间的最小值。
 - vmax：视口高度 vw 和宽度 vh 两者之间的最大值。
