@@ -4582,7 +4582,7 @@ actions: {
 
 #### **TS**
 
-**TS解决JS的痛点：**
+##### TS解决JS的痛点
 
 **编程开发中我们有一个共识：错误出现的越早越好**
 
@@ -4596,7 +4596,7 @@ actions: {
 
 
 
-**TS介绍**
+##### TS 介绍
 
 TypeScript是拥有类型的JavaScript超集，它可以编译成普通、干净、完整的JavaScript代码。
 
@@ -4607,13 +4607,13 @@ TypeScript是拥有类型的JavaScript超集，它可以编译成普通、干净
 
 
 
-**TS编译环境**
+##### TS 编译环境
 
 TS最终会被编译成JS来运行；需要在电脑上安装TS，这样就可以通过 TypeScript的Compiler（即：tsc，安装TS自带）将其编译成JS
 
-**TS运行环境**
+##### TS 运行环境
 
-在不使用其他工具的话，为了查看TypeScript代码的运行效果，都需要通过tsc编译TS为JS，并在浏览器或Node环境运行；这太麻烦了
+在不使用其他工具的话，为了查看 TypeScript 代码的运行效果，都需要通过tsc编译TS为JS，并在浏览器或Node环境运行；这太麻烦了
 
 **如何简化该操作？**有两种解决方案
 
@@ -4623,15 +4623,15 @@ TS最终会被编译成JS来运行；需要在电脑上安装TS，这样就可�
 
 - **通过ts-node库，为TypeScript的运行提供执行环境**
 
-  安装ts-node 外，还需要安装 依赖 tslib 和 @types/node
+  除了安装 ts-node 外，还需要安装 依赖 tslib 和 @types/node
 
-补充：在vue-cli中会让用户选择是使用 babel编译TS，还是tsc；这里推荐babel（官方文档中也推荐babel  ），因为babel会打上polyfill
+> 👀 注：还有第三种方式：[deno](https://github.com/denoland/deno) 提供了 TS 运行环境的支持；可以使用 `deno run target.ts` 命令 运行 ts 文件。
 
-另外，TS
+补充：在 vue-cli 中会让用户选择是使用 babel 编译 TS，还是使用 tsc ；这里推荐 babel（官方文档中也推荐 babel  ），因为 babel 会打上 polyfill
 
 
 
-**变量声明**
+##### 变量声明
 
 ```typescript
 [var | let | const] 标识符 : 数据类型 = 赋值
@@ -4649,7 +4649,7 @@ let message: string = 'hello world'
 
 
 
-**变量的类型推导（推断）**
+##### 变量的类型推导（推断）
 
 在开发中，有时候为了方便起见我们并不会在声明每一个变量时都写上对应的数据类型，我们更希望可以通过TypeScript本身的特性帮助我们推断出对应的变量类型，比如：let message = 'hello world'，TS会自动推断出是string类型。
 
@@ -4657,7 +4657,7 @@ let message: string = 'hello world'
 
 
 
-**TS中的数据类型**
+##### TS 中的数据类型
 
 因为TS是JS的超集，所以JS中的数据类型，TS都有。
 

@@ -2843,18 +2843,52 @@ text-align: center;
 margin: auto;
 ```
 
-另外，需要注意的是：对于行内块级元素（display:inline-block），想要用`margin: auto;`实现居中对齐，需要加上`display: block`。比如：\<button>
+另外，需要注意的是：对于行内块级元素“inline-block” ，想要用`margin: auto;` 实现居中对齐，需要加上`display: block`。比如：`<button>`
 
-**注：**这里居中对齐是 `margin: auto` 相当于 `margin: auto auto auto auto` ，但是为什么 垂直方向没有居中？同时，使用 flex box / gridbox 也就可以了，为什么？
-
-对于这个问题： `margin[-(left, right)]: auto` 的 居中 或 居左 居右，《css权威指南》中有说。但是，没提到垂直方向的。在看了 [为什么「margin:auto」可以让块级元素水平居中？ - 杜瑶的回答 - 知乎](https://www.zhihu.com/question/21644198/answer/18895538)（如下图）感觉有点理解了。我的理解是：html 默认的渲染方向 ( writing-mode ) 是水平的，无法参考垂直的。而是用来 flexbox / gridbox 就不得不参考垂直的了。
-
-<img src="https://s2.loli.net/2022/03/10/bFS82LQwWOip7Po.png" alt="image-20220310235610739" style="zoom: 42%;" />
+> 👀 **注：**这里居中对齐是 `margin: auto` 相当于 `margin: auto auto auto auto` ，但是为什么 垂直方向没有居中？同时，使用 flex box / gridbox 也就可以了，为什么？
+>
+> 对于这个问题： `margin[-(left, right)]: auto` 的 居中 或 居左 居右，《css权威指南》中有说。但是，没提到垂直方向的。在看了 [为什么「margin:auto」可以让块级元素水平居中？ - 杜瑶的回答 - 知乎](https://www.zhihu.com/question/21644198/answer/18895538)（如下图）感觉有点理解了。我的理解是：html 默认的渲染方向 ( writing-mode ) 是水平的，无法参考垂直的。而是用来 flexbox / gridbox 就不得不参考垂直的了。
+>
+> <img src="https://s2.loli.net/2022/09/05/waQs3Fby8PldNjE.png" alt="image-20220905174516397" style="zoom:55%;" />
 
 ##### 文本垂直居中
 
 - 对于一行文本，可以使用 line-height === height，来实现 文本垂直居中。
 - 对于多行文本，可以通过使用 `vertical-align: middle; display: table-cell` 实现。
+
+##### 元素水平垂直居中对齐
+
+见 [CSS 拷问：水平垂直居中方法你会几种？](https://liuyib.github.io/2020/04/07/css-h-and-v-center/) 其中答案相当全面，除了 flexbox、gridbox、position+transform、margin: auto 等写法；还有<font color=dodgerBlue>**值得注意的是如下的写法**</font>：
+
+> ```html
+> <div class="outer">
+>   <div class="inner"></div>
+> </div>
+> 
+> <style>
+>   .outer {
+>     position: relative;
+>     width: 400px; height: 400px; background-color: lightblue;
+>   }
+>   .inner {
+>     position: absolute;
+>     top: 0; left: 0; right: 0; bottom: 0; // 👀
+>     margin: auto;                         // 👀
+>     width: 200px; height: 200px; background-color: lightcoral;
+>   }
+> </style>
+> ```
+>
+> 该方案的原理是：使用了 CSS 中的定位属性（`absolute`、`fixed` 等）后，如果 `left` 设置了具体值，没有设置 `right` 和 `width`，那么就会自动计算，把剩余的空间分配给 `right` 和 `width`。如果 `left`、`right` 和 `width` 都设置了具体值，并且没有占满横向空间，那么剩余空间就处于待分配状态，此时设置 `margin: auto;` 意味着把剩余的空间分配给 `margin`，并且左右均分，所以就实现了水平居中，垂直方向同理。
+>
+> <font color=dodgerblue>但是要知道该方法的副作用：</font>
+>
+> - <font color=red>`left: 0; right: 0;` 相当于 `width: 100%;`</font>
+> - <font color=red>`top: 0; bottom: 0;` 相当于 `height: 100%;`</font>
+>
+> **缺点**：<font color=red>需要固定居中元素的宽高，否则其宽高会被设为 `100%`（副作用）</font>。
+
+
 
 #### CSS 组合选择符
 
@@ -3276,19 +3310,11 @@ CSS计数器对创建有序列表特别有用，因为在子元素中会自动�
 
 
 
-#### CSS 边框
-
-##### border-radius
-
-```css
-border-radius: 25px;
-```
-
-##### box-shadow
+#### box-shadow
 
 盒阴影。可以在同一个元素上设置多个阴影效果，并用逗号将他们分隔开。该属性 <font color=FF0000>可设置的值包括阴影的 **X轴偏移量**、**Y轴偏移量**、**模糊半径**、**扩散半径** 和 **颜色**</font>。
 
-**向元素添加单个 box-shadow 效果时使用以下规则：**
+##### 向元素添加单个 box-shadow 效果时使用以下规则
 
 - 当给出两个、三个或四个 \<length> 值时
   - 如果只给出两个值, 那么这两个值将会被当作 \<offset-x> \<offset-y> 来解释。
@@ -3299,7 +3325,7 @@ border-radius: 25px;
 
 若要对同一个元素添加多个阴影效果，请使用逗号将每个阴影规则分隔开。
 
-###### 取值
+##### 取值
 
 - **inset**
   
@@ -3323,13 +3349,17 @@ border-radius: 25px;
 
 - **\<color>** **阴影颜色**
   
-  相关事项查看 \<length> 。如果没有指定，则由浏览器决定——通常是color的值，不过目前Safari取透明。
+  相关事项查看 \<length> 。如果没有指定，则由浏览器决定——通常是color的值，不过目前 Safari 取透明。
 
-相关摘自：[MDN - box-shadow](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-shadow)
+##### box-shadow 工具
+
+MDN 提供了一个在线工具： [Box-shadow generator](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Box-shadow_generator)  ，可以以可视化的方式编辑，并生成 CSS 代码。
+
+摘自：[MDN - box-shadow](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-shadow)
 
 > 👀 **补充**：text-shadow 用法和 box-shadow 一样，是用来对于文字进行设置阴影
 
-##### border-image
+#### border-image
 
 边界图片
 

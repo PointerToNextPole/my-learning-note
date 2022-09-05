@@ -330,3 +330,19 @@
 - **下划线 `_`** ：underline
 - **逗号 `,`** ：comma
 - **问号 `?`** ：question mark
+- **冒号 `:`** ：colon
+
+##### Google 特殊字符搜索方法
+
+| Symbol                  | How it is helpful                                            |
+| :---------------------- | :----------------------------------------------------------- |
+| Plus sign (+)           | Search for things like blood type [ AB+ ] or for a Google+ page like [ +Chrome ] |
+| "At" sign (@)           | Find social tags like [ @google ] or [ @ladygaga]            |
+| Ampersand (&)           | Find strongly connected ideas and phrases like [ Brothers & Sisters ] or [ A&E ] |
+| Percent (%)             | Search for a percent value like [ 40% of 80 ] or [ 10% of .1 ] |
+| Dollar sign ($)         | Indicate prices, so [ nikon 400 ] and [ nikon $400 ] give different results |
+| Hashtag/number sign (#) | Search for trending topics indicated by hashtags like [ #lifewithoutgoogle ] |
+| Dash (-)                | Indicate that words around it are strongly connected as in [ twelve-year-old dog ] and [ cross-reference ] |
+| Underscore symbol (_)   | Connected two works like [ quick_sort ]. Your search results will find this pair of words either linked together (e.g., quicksort) or connected by an underscore (e.g., quick_sort). |
+
+摘自：[Google搜索特殊字符的方法](https://blog.csdn.net/LongZh_CN/article/details/14453317)

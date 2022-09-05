@@ -33,6 +33,10 @@
 
 <img src="https://s2.loli.net/2022/08/06/XwtKEZvqNJOUIpP.png" alt="image-20220806194800985" style="zoom:45%;" />
 
+另外，发现用来写 markdown 效果出奇的好：
+
+<img src="https://s2.loli.net/2022/09/05/1I2spWkfXBeZ4VH.png" alt="image-20220905005539528" style="zoom:50%;" />
+
 
 
 #### 快捷键

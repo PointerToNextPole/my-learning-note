@@ -1,5 +1,9 @@
 # Vue2 学习笔记
 
+
+
+## Vue2 官方文档笔记
+
 #### Vue.js 是什么
 
 Vue (读音 /vjuː/，类似于 **view**) 是一套用于构建用户界面的<font color=FF0000>**渐进式框架**</font>。与其它大型框架不同的是，<mark>Vue 被设计为可以自底向上逐层应用</mark>。<mark>Vue 的核心库只关注视图层</mark>，不仅易于上手，还便于与第三方库或既有项目整合。另一方面，当与[现代化的工具链](https://cn.vuejs.org/v2/guide/single-file-components.html)以及各种[支持类库](https://github.com/vuejs/awesome-vue#libraries--plugins)结合使用时，Vue 也完全能够为复杂的单页应用提供驱动。
@@ -4407,7 +4411,7 @@ methods: {
 
 另外，***深度作用选择器*** 可以用作 ***样式穿透***
 
-使用 >>> 提高自定义class / id的优先级
+使用 `>>>` 提高自定义class / id的优先级
 
 详见：[想要改变插件里组件的样式？使用样式穿透！【Vue】](https://www.bilibili.com/video/BV1Jv41117QN)
 
@@ -4444,7 +4448,7 @@ v-if如果不满足，则对应的元素则不会在页面中渲染出来；而v
 
 #### 生命周期
 
-![实例的生命周期](https://v3.cn.vuejs.org/images/lifecycle.svg)
+![组件生命周期图示](https://cn.vuejs.org/assets/lifecycle.16e4c08e.png)
 
 - **初始化事件 & 生命周期：**分析代码中的事件绑定和生命周期函数
 - **beforeCreate：**在实例生成之前自动执行的函数
@@ -4499,7 +4503,7 @@ Proxy {
 
 
 
-#### v-if和v-show
+#### v-if 和 v-show
 
 - v-if每次执行都是在执行渲染：如果v-if为false，则所对应的dom会被销毁；同时在原dom上会加上 \<!--v-if-->的注释
 - v-show每次执行并非都真的渲染，如果v-show为false，对应的dom会被加上 style="display: none"
@@ -4514,9 +4518,11 @@ Proxy {
 <button @click='fn(), fn2()'>foobar</button>
 ```
 
+>  👀 注：这种写法很不推荐
 
 
-#### checkbox的vue中的补充属性
+
+#### checkbox 的 vue 中的补充属性
 
 由于checkbox对应的v-model数据类型只能是bool型，所以vue添加了 **true-value** 和 **false-value** 两个属性，使得v-model的数据类型可以是其他基础类型，也包括数组、对象和方法（不过，经过测试，似乎数组、对象和方法都会原封不动的变成字符串）；示例如下：
 
@@ -4531,9 +4537,7 @@ template: `
 
 
 
-***
-
-## Element-UI 备忘录
+## Element UI 备忘录
 
 #### \<el-table>
 
@@ -4846,7 +4850,7 @@ template: `
   </script>
   ```
 
-- 选择多行数据时，使用type=“selection”；同时，<font color=FF0000>如果不想要全选的checkbox</font>，可以使用如下方法：
+- 选择多行数据时，使用 `type="selection"` ；同时，<font color=FF0000>如果不想要全选的checkbox</font>，可以使用如下方法：
 
   ```css
   .el-table__header-wrapper  .el-checkbox{

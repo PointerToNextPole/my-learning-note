@@ -3326,7 +3326,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                           
+  >                                                                                                                                                                                             
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3345,7 +3345,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                           
+  >                                                                                                                                                                                             
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -6894,7 +6894,7 @@ Window.close() 方法用于：关闭当前窗口或某个指定的窗口。
 
 #### window.frames
 
-<font color=FF0000>返回当前窗口，一个类数组对象，列出了当前窗口的所有直接子窗口</font>
+<font color=lightSeaGreen>返回当前窗口</font>，<font color=red>一个**类数组对象**</font>，<font color=red>列出了当前窗口的所有直接子窗口</font>
 
 ##### 语法
 
@@ -6902,11 +6902,53 @@ Window.close() 方法用于：关闭当前窗口或某个指定的窗口。
 frameList = window.frames;
 ```
 
-- frameList 是一个 frame 对象的集合，它<font color=FF0000>类似一个数组，有 length 属性且可以使用索引 ( [i] ) 来访问</font>
+- frameList 是一个 frame 对象的集合，它类似一个数组，有 length 属性且可以使用索引 ( [i] ) 来访问
 - <font color=FF0000>**`frameList === window` 计算结果为 true**</font>
 - 在 <font color=FF0000>window.frames 类数组中的 **每一项都代表了窗口对应给定对象的 \<frame> 或 \<iframe>的内容**</font>，而不是 (i)frame DOM元素（即window.frames[0] 与 document.getElementsByTagName("iframe")[0].contentWindow 是相同的）。
 
 摘自：[MDN - Window.frames](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/frames)
+
+
+
+#### BroadcastChannel
+
+**`BroadcastChannel`** 接口代理了一个命名频道，可以让指定 origin 下的任意 [browsing context](https://developer.mozilla.org/zh-CN/docs/Glossary/Browsing_context) 来订阅它。<font color=fuchsia>它允许同源的不同浏览器窗口，Tab 页，frame 或者 iframe 下的不同文档之间相互通信</font>。通过<font color=fuchsia>触发一个 [`message`](https://developer.mozilla.org/zh-CN/docs/Web/API/BroadcastChannel/message_event) 事件</font>，<font color=red>消息可以广播到 **所有监听了该频道的 `BroadcastChannel` 对象**</font>。
+
+> **备注：** 此特性在 Web Worker 中可用
+
+```mermaid
+classDiagram
+EventTarget <|-- BroadcastChannel
+```
+
+##### 构造函数
+
+`BroadcastChannel()` ：创建一个链接到命名频道的对象。
+
+##### 属性
+
+*该接口会从它的父级 `EventTarget` 继承属性。*
+
+- `BroadcastChannel.name` ：频道名称，返回 `DOMString`
+
+###### 事件处理程序
+
+- `BroadcastChannel.onmessage` ：`event handler` ，用于定义当该对象上触发了 `message` 事件时要执行的函数。
+- `BroadcastChannel.onmessageerror` ：`event handler` ，用于定义当该对象上触发了类型为 `MessageError` 的 `MessageEvent` 事件时要执行的函数。当接收到一条无法反序列化的消息时会触发此事件。
+
+##### 方法
+
+*该接口会从它的父级 `EventTarget` 继承方法。*
+
+- `BroadcastChannel.postMessage()` ：<font color=red>向所有监听了相同频道的 `BroadcastChannel` 对象发送一条消息</font>，<font color=fuchsia>消息内容可以是任意类型的数据</font>。
+- `BroadcastChannel.close()` ：<font color=red>**关闭频道对象**，告诉它不要再接收新的消息，并允许它最终被垃圾回收</font>。
+
+##### 事件
+
+- `message` ：当频道收到一条消息时触发。 也可以使用 `onmessage` 属性访问。
+- `messageerror` ：当频道<font color=red>收到一条**无法反序列化的消息**时触发</font>。 也可以使用 `onmessageerror` 属性访问。
+
+摘自：[MDN - BroadcastChannel](https://developer.mozilla.org/zh-CN/docs/Web/API/BroadcastChannel)
 
 
 
