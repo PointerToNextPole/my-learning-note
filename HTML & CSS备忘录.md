@@ -3767,7 +3767,7 @@ CSS 属性 overflow-wrap 是用来说明当一个不能被分开的字符串太�
 
 #### text-orientation
 
-text-orientation CSS 属性<font color=FF0000>设定行中字符的方向</font>。但<font color=FF0000>它仅影响纵向模式（当 writing-mode 的值不是horizontal-tb）下的文本</font>。此属性在控制使用竖排文字的语言的显示上很有作用，也可以用来构建垂直的表格头。
+text-orientation CSS 属性<font color=FF0000>设定行中字符的方向</font>。但<font color=FF0000>它仅影响纵向模式（当 `writing-mode` 的值不是`horizontal-tb` ）下的文本</font>。此属性在控制使用竖排文字的语言的显示上很有作用，也可以用来构建垂直的表格头。
 
 ##### 关键值
 
@@ -3833,6 +3833,102 @@ text-orientation CSS 属性<font color=FF0000>设定行中字符的方向</font>
 效果如下，这显然是比较合适的：
 
 <img src="https://s2.loli.net/2022/02/08/5qkHnlWOLwDIVuZ.png" alt="image-20220208145023666" style="zoom:50%;" />
+
+
+
+#### direction
+
+CSS 属性 `direction` 用来<font color=red>设置文本、表列水平溢出的方向</font>。 `rtl` 表示从右到左 (类似希伯来语或阿拉伯语)， `ltr` 表示从左到右（类似英语等大部分语言）
+
+值得注意的是文本方向通常由文档定义（比如：[dir - html 全局属性](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/dir) ）而不是通过直接使用 direction 属性定义。
+
+<font color=red>该属性设置可以设置块级元素文本的基本方向</font>，<font color=fuchsia>也可以设置由通过 `unicode-bidi`属性创建的嵌入元素的方向</font>。与此同时，它还可以设置文本、块级元素的默认对齐方式 ，以及表行中的单元格的流动方向。
+
+与 HTML 中的 `dir` 属性不同，`direction` 属性不会从表列继承到表单元格，因为 CSS 继承遵从文档流，而表单元格位于行内部，但不在列内部。
+
+`direction` 属性和 `unicode-bidi` 属性不受 `all` 属性影响。
+
+##### 语法
+
+```css
+/* Keyword values */
+direction: ltr;
+direction: rtl;
+
+/* Global values */
+direction: inherit;
+direction: initial;
+direction: unset;
+```
+
+##### 取值
+
+- `ltr` ：默认属性。可设置文本和其他元素的默认方向是从左到右。
+- `rtl ` ：可设置文本和其他元素的默认方向是从右到左。
+
+摘自：[MDN - direction](https://developer.mozilla.org/zh-CN/docs/Web/CSS/direction)
+
+#### unicode-bidi
+
+CSS `unicode-bidi` 属性，<font color=fuchsia>和 `direction` 属性，决定如何处理文档中的双书写方向文本</font> ( bidirectional text )。比如，如果一块内容同时包含有从左到右书写和从右到左书写的文本，那么用户代理 ( the user-agent ) 会使用复杂的 Unicode 算法来决定如何显示文本。<font color=red>`unicode-bidi` 属性会覆盖此算法，允许开发人员控制文本嵌入 ( text embedding )</font>。
+
+`unicode-bidi` 与 `direction` 是仅有的两个不受 `all` 简写影响的属性。
+
+> **注意：**此属性是文档类型定义 ( Document Type Definition , DTD ) 的设计者专用的。Web 设计者与其他类似的人员不应覆盖此属性
+
+```css
+/* 关键字值 */
+unicode-bidi: normal;
+unicode-bidi: embed;
+unicode-bidi: isolate;
+unicode-bidi: bidi-override;
+unicode-bidi: isolate-override;
+unicode-bidi: plaintext;
+/* 全局值 */
+unicode-bidi: inherit;
+unicode-bidi: initial;
+unicode-bidi: unset;
+```
+
+##### 语法
+
+- `normal` ：对双向算法，此元素不提供额外的嵌入级别。对于内联元素，隐式的重新排序在元素的边界上起作用
+- `embed` ：对于内联元素，该值会为双向算法打开一个额外的嵌入级别。嵌入级别的方向是由 `direction` 属性给出的
+- `bidi-override` ：对于内联元素，该值会创建一个覆盖；对于块容器元素，该值将为不在另一个块容器元素内的内联级别的后代创建一个覆盖。这意味着在元素内部，根据 `direction` 属性，重新排序是严格按照顺序排列的；双向算法的隐式部分被忽略。
+- `isolate` ：这个关键字表示计算元素容器的方向时，不考虑这个元素的内容。因此，这个元素就从它的兄弟姐妹中分离出来了。当应用它的双向分辨算法的时候，它的容器元素将其视为一个或多个 `U+FFFC Object Replacement Character`，即像 image 一样。
+- `isolate-override `：<font color=red>这个关键字将 `isolate` 关键字的隔离行为应用于周围的内容，并将 `bidi-override` 关键字的覆盖行为应用于内部内容</font>。
+- `plaintext` ：这个关键字在计算元素方向的时候，不考虑父元素的双向状态，也不考虑 `direction` 属性的值。它是使用 Unicode 双向算法的 P2 和 P3 规则计算的。 这个值允许按照 Unicode 双向算法显示已经格式化的数据。
+
+摘自：[MDN - unicode-bidi](https://developer.mozilla.org/zh-CN/docs/Web/CSS/unicode-bidi)
+
+#### direction 和 unicode-bidi 示例
+
+##### 代码
+
+```html
+<p>hello world</p>
+
+<style>
+  p {
+    width: 70px;
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+</style>
+```
+
+##### 效果
+
+<img src="https://s2.loli.net/2022/09/06/UGRPvoIAdBcp42M.png" alt="image-20220906171852089" style="zoom:70%;" />
+
+另外，如果没有指定宽度，文字将会居右：
+
+<img src="https://s2.loli.net/2022/09/06/trLU9q2vSmjcE4e.png" alt="image-20220906172141115" style="zoom:60%;" />
+
+
 
 
 
