@@ -1959,7 +1959,7 @@ visitElement() {
 
 <font color=FF0000>每个组件都可能会经历从创建( create )、挂载 ( mount )、更新( update )、卸载 ( unmount )等一系列的过程</font>。生命周期函数是一些钩子函数，在某个时间会被Vue源码内部进行回调
 
-![实例的生命周期](https://v3.cn.vuejs.org/images/lifecycle.svg)
+<img src="https://cn.vuejs.org/assets/lifecycle.16e4c08e.png" alt="组件生命周期图示" style="zoom:55%;" />
 
 
 
