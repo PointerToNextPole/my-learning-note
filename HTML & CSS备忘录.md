@@ -3930,6 +3930,36 @@ unicode-bidi: unset;
 
 
 
+#### all
+
+CSS <font color=red>`all` [简写属性](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Shorthand_properties)</font> <font color=fuchsia>将除了 `unicode-bidi` 与 `direction` 之外的所有属性重设至其初始值，或继承值</font>。
+
+##### 语法
+
+```css
+/* Global values */
+all: initial
+all: inherit
+all: unset
+
+/* CSS Cascading and Inheritance Level 4 */
+all: revert;
+```
+
+`all` 属性被作为 CSS 全局关键词的其中之一。不过需要注意的是，`unicode-bidi` 与 `direction` 这两个属性是不受 `all` 影响的
+
+###### 取值
+
+- `initial` ：该关键字代表改变该元素或其父元素的所有属性<font color=red>至初始值</font>。
+- `inherit` ：该关键字代表改变该元素或其父元素的所有属性的值<font color=red>至他们的父元素属性的值</font>。
+- `unset` ：该关键字代表<font color=dodgerblue>如果该元素的属性的值是可继承的</font>，则<font color=red>改变该元素或该元素的父元素的所有属性的值为他们父元素的属性值</font>，<font color=dodgerBlue>反之</font> 则<font color=red>改变为初始值</font>。
+- `revert` ：指定依赖于声明所属的样式表原点的行为：
+  - [User-agent origin](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Cascade#user-agent_stylesheets) 相当于 `unset`
+  - [User origin](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Cascade#user_stylesheets) 将层叠回滚到用户代理级别，以便计算指定的值，就好像没有为该元素指定作者级别或用户级别规则。
+  - [Author origin](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Cascade#author_stylesheets) 将层叠回滚到用户级别，以便计算指定的值，就好像没有为元素指定作者级规则。出于`revert`的目的，“作者”原点包括“覆盖”和“动画”原点。
+
+摘自：[MDN - all](https://developer.mozilla.org/zh-CN/docs/Web/CSS/all)
+
 
 
 #### CSS3 2D 转换
