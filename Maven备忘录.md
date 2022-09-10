@@ -1,34 +1,39 @@
-# Maven备忘录
-
-### <font color=FF0000>maven解决了哪些需求/痛点</font>
-> <font size=3>个人的一个小感受，<mark>学习一个新技术，应该以历史的眼光开看待这个新技术出现的原因，以及帮我们解决了什么问题</mark>。我们来回忆一下没有Maven的日子是怎么样的？</br>
-> 1. 开发一个项目，需要用别人写好的jar包，我们先把开源的jar包下载下来放到项目的lib目录下，并把这个目录添加到CLASSPATH（告诉Java执行环境，在哪些目录下可以找到你要执行的Java程序需要的类或者包）
-> 2. 我们下载了a.jar发现a.jar还需要依赖b.jar，结果又去把b.jar包下载下来开始运行。
-> 3. 如果运气够好，我们的项目在添加完所有的依赖后，能正产运行了。如果运气差点，还会遇到版本的问题，例如a.jar在调用b.jar的时候发现b.jar根本没有这个方法，在别的版本中才有，现在好了，光找依赖和适配版本就能花上不少时间。
-> 4. 而且我们往git上上传代码的时候，还必须把这些lib都上传上去。别人下载我们的代码时也必须把lib下载下来，这个真心耗费时间</br> 
->
-> <mark>**这时候Maven作为Java世界的包管理工具出现了，当然Java世界还有其他包管理工具，例如gradle等。就像yum是Linux世界的包管理工具，webpack是前端世界的包管理工具一样**</mark></br>
+# Maven 备忘录
 
 
 
-### <font color=FF0000>Maven寻找jar包过程</font>
+#### maven 解决了哪些需求/痛点
+个人的一个小感受，<font color=dodgerBlue>学习一个新技术，应该以历史的眼光开看待这个新技术出现的原因，以及帮我们解决了什么问题</font>。我们来回忆一下没有Maven的日子是怎么样的？
 
-> <font size=3>Maven找jar包的过程是这样的：<mark>先在本地仓库找，找不到再去私服（如果配置了的话），再找不到去中央仓库</mark>（http://repo1.maven.org/maven2/，maven团队负责维护）
+1. 开发一个项目，需要用别人写好的jar包，我们先把开源的jar包下载下来放到项目的lib目录下，并把这个目录添加到CLASSPATH（告诉Java执行环境，在哪些目录下可以找到你要执行的Java程序需要的类或者包）
+2. 我们下载了a.jar发现a.jar还需要依赖b.jar，结果又去把b.jar包下载下来开始运行。
+3. 如果运气够好，我们的项目在添加完所有的依赖后，能正产运行了。如果运气差点，还会遇到版本的问题，例如a.jar在调用b.jar的时候发现b.jar根本没有这个方法，在别的版本中才有，现在好了，光找依赖和适配版本就能花上不少时间。
+4. 而且我们往git上上传代码的时候，还必须把这些lib都上传上去。别人下载我们的代码时也必须把lib下载下来，这个真心耗费时间
+
+这时候Maven作为Java世界的包管理工具出现了，当然Java世界还有其他包管理工具，例如gradle等。就像yum是Linux世界的包管理工具，webpack是前端世界的包管理工具一样
+
+摘自：[把Maven的架构，用法，坑点介绍的清清楚楚](https://cloud.tencent.com/developer/article/1429941)
+
+
+
+#### Maven 寻找jar包过程
+
+<font size=3>Maven找jar包的过程是这样的：<mark>先在本地仓库找，找不到再去私服（如果配置了的话），再找不到去中央仓库</mark>（http://repo1.maven.org/maven2/，maven团队负责维护）
 </font>
 
-**以上节选自博文：**[**maven仓库详解**](https://blog.csdn.net/weixin_41325595/article/details/93617821)</br></font>
+**以上节选自博文：**[**maven仓库详解**](https://blog.csdn.net/weixin_41325595/article/details/93617821)
 
 
 
-maven在打包时，会自动把application-*.properties中的「后缀\*」作为当前项目的profile
+maven在打包时，会自动把 `application-*.properties` 中的「后缀\*」作为当前项目的 profile
 
 
 
-### <font color=FF0000>将IDEA中的Maven的镜像设置为国内镜像</font>
+#### 将IDEA中的Maven的镜像设置为国内镜像
 
-**打开`settings.xml`，其中查找`<mirrors>`标签**
+打开 `settings.xml` ，其中查找 `<mirrors>` 标签
 
-**在`<mirrors>`标签的注释后面 加下面语句：**
+在 `<mirrors>` 标签的注释后面 加下面语句：
 
 ```xml
 <mirror>
@@ -64,7 +69,7 @@ maven在打包时，会自动把application-*.properties中的「后缀\*」作�
 
 
 
-### 约定配置
+#### 约定配置
 
 Maven 提倡使用一个共同的标准目录结构，Maven 使用<font color=FF0000>约定优于配置</font>的原则，<font color=FF0000>大家尽可能的遵守这样的目录结构</font>。如下所示：
 
@@ -84,7 +89,7 @@ Maven 提倡使用一个共同的标准目录结构，Maven 使用<font color=FF
 
 
 
-### pom.xml结构
+#### pom.xml结构
 
 ```xml
 <project xmlns = "http://maven.apache.org/POM/4.0.0"
@@ -117,7 +122,7 @@ Maven 提倡使用一个共同的标准目录结构，Maven 使用<font color=FF
 
 
 
-### Maven构建生命周期
+#### Maven构建生命周期
 
 Maven 构建生命周期定义了一个项目构建跟发布的过程。
 
@@ -129,7 +134,7 @@ Maven 构建生命周期定义了一个项目构建跟发布的过程。
 | :------------ | :------- | :------------------------------------------------------- |
 | 验证 validate | 验证项目 | 验证项目是否正确且所有必须信息是可用的                   |
 | 编译 compile  | 执行编译 | 源代码编译在此阶段完成                                   |
-| 测试 Test     | 测试     | 使用适当的单元测试框架（例如JUnit）运行测试。            |
+| 测试 test     | 测试     | 使用适当的单元测试框架（例如JUnit）运行测试。            |
 | 包装 package  | 打包     | 创建JAR/WAR包如在 pom.xml 中定义提及的包                 |
 | 检查 verify   | 检查     | 对集成测试的结果进行检查，以保证质量达标                 |
 | 安装 install  | 安装     | 安装打包的项目到本地仓库，以供其他项目使用               |

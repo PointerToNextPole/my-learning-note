@@ -3326,7 +3326,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                             
+  >                                                                                                                                                                                               
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3345,7 +3345,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                             
+  >                                                                                                                                                                                               
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -12933,15 +12933,17 @@ func?.(args)
 
 #### 空值合并运算符（ES2020）
 
-空值合并操作符 ( ?? ) 是一个逻辑操作符，<font color=FF0000>**当 <font size=4>左侧</font> 的操作数为 null 或者 undefined 时**</font>，<font color=FF0000>返回其右侧操作数，否则返回左侧操作数</font>。
+空值合并操作符 ( `??` ) 是一个逻辑操作符，<font color=FF0000>**当 <font size=4>左侧</font> 的操作数为 null 或者 undefined 时**</font>，<font color=FF0000>返回其右侧操作数，否则返回左侧操作数</font>。
 
-与逻辑或操作符（||）不同，逻辑或操作符会在左侧操作数为假值时返回右侧操作数。也就是说，<font color=FF0000>如果使用 || 来为某些变量设置默认值，可能会遇到意料之外的行为。比如为假值（例如，'' 或 0）时</font>。<mark>注：使用 || 会出现 falsy值 的问题，而其中部分 falsy值 是不想它被 隐式转换 的</mark>
+与逻辑或操作符 ( `||` ) 不同，逻辑或操作符会在左侧操作数为假值时返回右侧操作数。也就是说，<font color=FF0000>如果使用 `||` 来为某些变量设置默认值，可能会遇到意料之外的行为。比如为假值（例如，`''` 或 0）时</font>。
+
+> 👀 注：使用 `||` 会出现 falsy值 的问题，而其中部分 falsy值 是不想它被 隐式转换 的
 
 **使用场景：**函数中，你不清楚对方传不传该参数，这时候可以在函数体中使用 `let foo = paramFoo ?? 'default foo'`以附上默认值
 
 **短路：**与 OR 和 AND 逻辑操作符相似，当左表达式不为 null 或 undefined 时，不会对右表达式进行求值。（可以通过在右侧放置一个带有打印功能的函数，以验证）
 
-<font color=FF0000>**不能与 AND 或 OR 操作符共用：**</font>将 ?? 直接与 AND（&&）和 OR（||）操作符组合使用是不可取的。（译者注：应当是因为空值合并操作符和其他逻辑操作符之间的运算优先级/运算顺序是未定义的）这种情况下会抛出 SyntaxError 。
+<font color=FF0000>**不能与 AND 或 OR 操作符共用：**</font>将 ?? 直接与 AND (  `&&`  ) 和 OR ( `||` ) 操作符组合使用是不可取的。（译者注：应当是因为空值合并操作符和其他逻辑操作符之间的运算优先级/运算顺序是未定义的）这种情况下会抛出 SyntaxError 。
 
 ```js
 null || undefined ?? "foo"; // 抛出 SyntaxError
@@ -12950,11 +12952,13 @@ true || undefined ?? "foo"; // 抛出 SyntaxError
 
 摘自：[MDN - 空值合并运算符](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator)
 
-补充：null == undefined，另外null经过隐式转换 只等于 undefined（另外，null === null），通过这点可以辅助记忆。
+> 👀 补充，辅助记忆：
+>
+> `(null == undefined) === true`，另外 <font color=fuchsia>**null 经过隐式转换 只等于 undefined**</font>（另外，null === null），通过这点可以辅助记忆。类似的， TS 中有一个概念叫做 “ 非空断言 ”，就是针对 null 和 undefined 的；这里的 “空” 就是 null 和 undefined。和上面的 “空值合并运算符” 的 “空” 是同样的意思。
 
-#### Logical OR assignment (||=) 
+#### Logical OR assignment ( ||= ) 
 
-逻辑或赋值（x ||= y）运算仅在 x 为虚值（即：falsy ）时赋值。
+逻辑或赋值（ `x ||= y` ）运算仅在 x 为虚值（即：falsy ）时赋值。
 
 ##### 示例
 
@@ -12998,9 +13002,9 @@ x = x || y;
 
 摘自：[MDN - Logical OR assignment (||=)](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Logical_OR_assignment)
 
-#### Logical AND assignment (&&=)
+#### Logical AND assignment ( &&= )
 
-逻辑与赋值  (x &&= y) 操作符 只在 x 为 truthy 时赋值
+逻辑与赋值  ( `x &&= y` )  操作符 只在 x 为 truthy 时赋值
 
 ##### 示例
 
