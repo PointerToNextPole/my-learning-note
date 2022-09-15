@@ -6511,7 +6511,7 @@ declare module '*.vue' {
 const refName = ref<InstanceType<typeof componentName>>()
 ```
 
-这里InstanceType是TS的内部语法，用typeof 获取 componentName 的类型
+这里 `InstanceType` 是TS的内部语法，用 typeof 获取 componentName 的类型。详见 [[TypeScript学习笔记#InstanceType]]
 
 **对上面内容的补充：**
 

@@ -518,30 +518,32 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
 
 - 输入 URL 之后，浏览器会进行 DNS查找，找到 URL 所在服务器的域名（补充：在进行 DNS解析 之前，浏览器会先判断是否需要重定向和缓存检查，缓存涉及到强缓存和协商缓存 ）
 
+  > 👀 注：补充的说法存疑，而且不记得是是什么时候写的了；这里需要查下资料 // TODO
+
 - 找到服务器之后，浏览器会通过 TCP 握手与服务器建立连接。如果是基于 HTTPS 的连接，会多一步<font color=FF0000 size=4> **TLS握手**</font>，建立加密的隧道，保证数据不被监听和篡改。
 
 - 在建立连接之后，浏览器会发送 HTTP / HTTPS 请求，一般服务器的响应就是 html 的网页代码。
 
   - 浏览器在接收服务器响应时，由于 TCP 的慢启动 ( slow start ) 的机制，浏览器会先收到前 14kb 的数据；后面才会慢慢增加传输速度（ 这里的 14kb 衍生出了“首屏优化，首屏的资源要小于 14kb ”的限制 ）
 
-    **注 👀：**关于 14kb 相关的内容，在 Google Chrome 的网站 web.dev 中有 [文章](https://web.dev/i18n/zh/extract-critical-css/) 提及，也说明了 “为什么是 14KB ”：
-
-    > 新的 [TCP](https://hpbn.co/building-blocks-of-tcp/) 连接无法立即利用客户端和服务器之间的全部可用带宽，这些连接会经过[慢启动](https://hpbn.co/building-blocks-of-tcp/#slow-start)以避免数据量超过连接的承载能力。在这个过程中，服务器会先开始传输少量数据，如果数据以完美的状态到达客户端，那么下一次往返中数据量会加倍。<font color=FF0000>对于大多数服务器，第一次往返最多可以传输 10 个数据包或大约 14 KB</font>。
-    >
-    > 摘自：[提取关键 CSS (Critical CSS)](https://web.dev/i18n/zh/extract-critical-css/)e
+    > 👀 注：关于 14kb 相关的内容，在 Google Chrome 的网站 web.dev 中有 [文章](https://web.dev/i18n/zh/extract-critical-css/) 提及，也说明了 “为什么是 14KB ”：
+  >
+    > > 新的 [TCP](https://hpbn.co/building-blocks-of-tcp/) 连接无法立即利用客户端和服务器之间的全部可用带宽，这些连接会经过[慢启动](https://hpbn.co/building-blocks-of-tcp/#slow-start)以避免数据量超过连接的承载能力。在这个过程中，服务器会先开始传输少量数据，如果数据以完美的状态到达客户端，那么下一次往返中数据量会加倍。<font color=FF0000>对于大多数服务器，第一次往返最多可以传输 10 个数据包或大约 14 KB</font>。
+    > >
+    > > 摘自：[提取关键 CSS (Critical CSS)](https://web.dev/i18n/zh/extract-critical-css/)
 
 - 在收到 html 文件之后，浏览器开始渲染网页，共有五个步骤，被称为：<font color=FF0000 size=4> **关键渲染路径**</font>
 
   - **构建 DOM (Document Object Model) 树**
 
-    - 浏览器解析 HTML、构建DOM 树是顺序执行的（从上到下），并且只有一个主线程负责解析
-    - 如果在解析的过程中遇到 \<script> 标签，浏览器会加载 JS 文件，并执行里面的代码；这时候主线程会暂停解析HTML，直到JS代码执行完毕，才会继续
-    - 对于图片、CSS文件、rel 属性设置为 defer async 的 \<script> 标签，将不会影响主线程；而是会异步的加载
-    - 浏览器有一个 <font color=FF0000>**预扫描线程**</font> (Pre Scanner / Preload Scanner ？) ，会扫描 HTML 代码，预先下载 CSS文件、字体、JS代码
+    - 浏览器解析 HTML、构建DOM 树是顺序执行的（从上到下），并且<font color=fuchsia>只有一个**主线**程负责解析</font>（ 👀 防止冲突）
+    - <font color=red>如果在解析的过程中遇到 `<script>` 标签，浏览器会加载 JS 文件，并执行里面的代码</font>；这时候<font color=fuchsia>**主线程会暂停解析 HTML，直到 JS 代码执行完毕，才会继续**</font>（👀 因为 script 会产生/修改 DOM 元素）
+    - 对于<font color=fuchsia>**图片、CSS文件、rel 属性设置为 `defer` 、`async` 的 `<script>` 标签**</font>，将<font color=fuchsia>不会影响主线程</font>；而是<font color=fuchsia>会异步的加载</font>
+    - 浏览器有一个 <font color=FF0000>**预扫描线程**</font> ( Pre Scanner / Preload Scanner ？) ，会扫描 HTML 代码，预先下载 CSS文件、字体、JS代码
 
     <img src="https://i.loli.net/2021/10/19/k1zobO8ZBEnAVcx.png" alt="image-20211019182116485" style="zoom:40%;" />
 
-  - **构建 CSSOM (CSS Object Model) 树**
+  - **构建 CSSOM ( CSS Object Model ) 树**
 
     <img src="https://i.loli.net/2021/10/19/Lzy9VXM2JuYEeIF.png" alt="image-20211019180750859" style="zoom: 40%;" />
 
@@ -549,13 +551,13 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
 
   - **合并 DOM 树 和 CSSOM 树（形成渲染树）**
 
-    浏览器会从 DOM 的根节点开始，合并 CSSOM 中的样式到 DOM 中的每个节点，形成一棵渲染树 ( Render Tree )，渲染树的节点被称为 ***渲染对象***
+    浏览器会从 DOM 的根节点开始，合并 CSSOM 中的样式到 DOM 中的每个节点，形成一棵渲染树 ( Render Tree )，<font color=fuchsia>渲染树的节点被称为 ***渲染对象***</font>
 
     <img src="https://i.loli.net/2021/10/19/oAuSFHbZWYXcajT.png" alt="image-20211019182315113" style="zoom:40%;" />
 
-  - **布局 Layout** 
+  - **布局 Layout**
 
-    生成渲染树之后，浏览器会根据样式计算每个可见节点的宽高和位置等，对每个节点进行布局规划。对于像图片这样的节点（置换元素？）如果没有指定宽高，浏览器会先忽略它的大小（如下图）
+    生成渲染树之后，<font color=fuchsia>浏览器会根据样式计算每个可见节点的宽高和位置等，对每个节点进行布局规划</font>。<font color=fuchsia>**对于像图片这样的节点**</font>（置换元素？）<font color=fuchsia>**如果没有指定宽高，浏览器会先忽略它的大小**</font>（如下图）
 
     <img src="https://i.loli.net/2021/10/19/qV5uGPlobEwmk2M.png" alt="image-20211019182426724" style="zoom:40%;" />
 
@@ -600,41 +602,41 @@ Web 性能包含了服务器请求和响应、加载、执行脚本、渲染、�
 
 ##### 文本对象模型 ( DOM )
 
-<font color=FF0000> DOM构建是增量的</font>。 <font color=FF0000 size=4>**HTML响应变成令牌 ( token )**（注：这里的token和鉴权的Token没有关系，应该是编译原理中的分词，毕竟“分词”的英文为 Tokenization），**令牌变成节点**</font>，而节点又变成DOM树。<font color=FF0000>  单个DOM节点以 <font size=4>**startTag令牌开始，以 endTag 令牌结束**</font>。 <font size=4>**节点包含有关HTML元素的所有相关信息。 该信息是使用令牌描述的**</font></font>。 节点根据令牌层次结构连接到DOM树中。 如果另一组 startTag 和 endTag 令牌位于一组 startTag 和 endTag 之间，则您在节点内有一个节点，这就是我们定义DOM树层次结构的方式。
+<font color=FF0000> DOM构建是增量的</font>。 <font color=fuchsia>**HTML响应变成令牌 ( token )**</font>（ 👀 注：这里的 token 和 鉴权的 Token 没有关系，与编译原理中的分词相关，毕竟“分词”的英文为 Tokenization ），<font color=red>**令牌变成节点**</font>，而节点又变成 DOM树。<font color=FF0000>  单个 DOM节点以 **startTag令牌 开始，以 endTag令牌 结束**。 **节点包含有关 HTML 元素的所有相关信息。 该信息是使用令牌描述的**</font>。 节点根据令牌层次结构连接到 DOM树中。 如果另一组 startTag 和 endTag 令牌位于一组 startTag 和 endTag 之间，则您在节点内有一个节点，这就是我们定义DOM树层次结构的方式。
 
 节点数量越多，关键渲染路径中的后续事件将花费的时间就越长。 测一下吧！ 几个额外的节点不会有什么区别，但“DIV癖”（divitis）可能会导致问题。
 
 ##### CSS 对象模型 ( CSSOM )
 
- DOM 包含页面所有的内容。CSSOM 包含了页面所有的样式，也就是如何展示 DOM 的信息。 CSSOM 跟 DOM 很像，但是不同。 DOM 构造是增量的，CSSOM 却不是。 CSS 是渲染阻塞的：浏览器会阻塞页面渲染直到它接收和执行了所有的 CSS。CSS 是渲染阻塞是因为规则可以被覆盖，所以内容不能被渲染直到 CSSOM 的完成。
+DOM 包含页面所有的内容。CSSOM 包含了页面所有的样式，也就是如何展示 DOM 的信息。 CSSOM 跟 DOM 很像，但是不同。 <font color=red>DOM 构造是增量的，CSSOM 却不是</font>。 <font color=fuchsia>CSS 是渲染阻塞的：浏览器会阻塞页面渲染直到它接收和执行了所有的 CSS</font>。CSS 是渲染阻塞是因为规则可以被覆盖，所以内容不能被渲染直到 CSSOM 的完成。
 
-CSS 有其自身的规则集合用来定义标识。注意 CSS 中的 C 代表的是“层叠”。CSS 规则是级联的。随着解析器转换标识为节点，节点的后代继承了样式。像处理 HTML 那样的增量处理功能没有被应用到 CSS 上，因为后续规则可能被之前的所覆盖。CSS 对象模型随着 CSS 的解析而被构建，但是直到完成都不能被用来构建渲染树，因为样式将会被之后的解析所覆盖而不应该被渲染到屏幕上。
+CSS 有其自身的规则集合用来定义标识。注意 CSS 中的 C 代表的是“层叠” ( Cascading )。CSS 规则是级联的。随着解析器转换标识为节点，节点的后代继承了样式。像处理 HTML 那样的增量处理功能没有被应用到 CSS 上，因为后续规则可能被之前的所覆盖。CSS 对象模型随着 CSS 的解析而被构建，但是直到完成都不能被用来构建渲染树，因为样式将会被之后的解析所覆盖而不应该被渲染到屏幕上。
 
-<mark>从选择器性能的角度，更少的特定选择器是比更多的要快</mark>。例如，.foo {} 是比 .bar .foo {} 更快的因为当浏览器发现  .foo ，接下来必须沿着 DOM 向上走来检查 .foo 是不是有一个祖先 .bar。越是具体的标签浏览器就需要更多的工作，但这样的弊端未必值得优化。
+<font color=dodgerblue>从选择器性能的角度，更少的特定选择器是比更多的要快</font>。例如，`.foo {}` 是比 `.bar .foo {}` 更快的因为当浏览器发现  `.foo` ，接下来必须沿着 DOM 向上走来检查 `.foo` 是不是有一个祖先 `.bar`。越是具体的标签浏览器就需要更多的工作，但这样的弊端未必值得优化
 
 如果你测量过解析 CSS 的时间，你将会被浏览器实在地快所震惊。更具体的规则更昂贵因为它必须遍历更多的 DOM 树节点，但这所带来的额外的消耗通常很小。先测量一下。然后按需优化。特定化或许不是你的低垂的果实。在 CSS 中选择器的性能优化，提升仅仅是毫秒级的。有其他一些方式来优化 CSS，例如压缩和使用媒体查询来异步处理 CSS 为非阻塞的请求。
 
 ##### 渲染树
 
-<mark>渲染树包括了内容和样式：DOM 和 CSSOM 树结合为渲染树</mark>。<font color=FF0000> 为了构造渲染树，浏览器检查每个节点，**从 DOM 树的根节点开始，并且决定哪些 CSS 规则被添加**</font>。
+渲染树包括了内容和样式：DOM 和 CSSOM 树结合为渲染树。<font color=fuchsia> 为了构造渲染树，浏览器检查每个节点，**从 DOM 树的根节点开始，并且决定哪些 CSS 规则被添加**</font>。
 
 <font color=FF0000> 渲染树只包含了可见内容。头部（通常）不包含任何可见信息，因此不会被包含在渲染树种</font>。如果有元素上有 `display: none;`，它本身和其后代都不会出现在渲染树中。
 
 ##### 布局
 
-一旦渲染树被构建，布局变成了可能。<mark>布局取决于屏幕的尺寸。布局这个步骤决定了在哪里和如何在页面上放置元素，决定了每个元素的宽和高，以及他们之间的相关性</mark>。
+一旦渲染树被构建，布局变成了可能。<font color=lightSeaGreen>布局取决于屏幕的尺寸。布局这个步骤决定了在哪里和如何在页面上放置元素，决定了每个元素的宽和高，以及他们之间的相关性</font>。
 
 什么是一个元素的宽？块级元素，根据定义，默认有父级宽度的 100%。一个宽度 50% 的元素，将占据父级宽度的一半。除非另外定义，body 有 100% 的宽，意味着它占据视窗的 100%。设备的宽度影响布局。 
 
-视窗的元标签定义了布局视窗的宽度，从而影响布局。没有的话，浏览器使用视窗的默认宽度，默认全屏浏览器通常是 960px。在默认情况下像你的手机浏览器的全屏浏览器，通过设置 \<meta name="viewport" content="width=device-width">，宽度将会是设备的宽度而不是默认的视窗宽度。设备宽度当用户在横向和纵向模式旋转他们的手机时将会改变。布局发生在每次设备旋转或浏览器缩放时。
+<font color=dodgerblue>视窗的元标签定义了布局视窗的宽度，从而影响布局</font>。没有的话，浏览器使用视窗的默认宽度，默认全屏浏览器通常是 960px。在默认情况下像你的手机浏览器的全屏浏览器，<font color=lightSeaGreen>通过设置 `<meta name="viewport" content="width=device-width">` ，宽度将会是设备的宽度而不是默认的视窗宽度</font>。设备宽度当用户在横向和纵向模式旋转他们的手机时将会改变。布局发生在每次设备旋转或浏览器缩放时。
 
-布局性能受 DOM 影响 -- 节点数越多，布局就需要更长的时间。布局将会变成瓶颈，如果期间需要滚动或者其他动画将会导致迟滞。20ms 的延迟在加载或者方向改变时或许还可以接受，但在动画或滚动时就会迟滞。任何渲染树改变的时候，像添加节点、改变内容或者在一个节点更新盒模型样式的时候布局就会发生。
+布局性能受 DOM 影响：节点数越多，布局就需要更长的时间。布局将会变成瓶颈，如果期间需要滚动或者其他动画将会导致迟滞。20ms 的延迟在加载或者方向改变时或许还可以接受，但在动画或滚动时就会迟滞。任何渲染树改变的时候，像添加节点、改变内容或者在一个节点更新盒模型样式的时候布局就会发生。
 
 为了减小布局事件的频率和时长，批量更新或者避免改动盒模型属性。
 
 ##### 绘制
 
-最后一步是将像素绘制在屏幕上。 一旦渲染树创建并且布局完成，像素就可以被绘制在屏幕上。加载时，整个屏幕被绘制出来。之后， 只有受影响的屏幕区域会被重绘，浏览器被优化为只重绘需要绘制的最小区域。绘制时间取决于何种类型的更新被附加在渲染树上。绘制是一个非常快的过程，所以聚焦在提升性能时这大概不是最有效的部分，重点要记住的是当测量一个动画帧需要的时间需要考虑到布局和重绘时间。添加到节点的样式会增加渲染时间，但是移除样式增加的 0.001ms 或许不能让你的优化物有所值。记住先测量。然后你可决定它的优化优先级。
+最后一步是将像素绘制在屏幕上。 一旦渲染树创建并且布局完成，像素就可以被绘制在屏幕上。加载时，整个屏幕被绘制出来。之后， <font color=red>只有受影响的屏幕区域会被重绘，**浏览器被优化为只重绘需要绘制的最小区域**</font>。绘制时间取决于何种类型的更新被附加在渲染树上。绘制是一个非常快的过程，所以聚焦在提升性能时这大概不是最有效的部分，重点要记住的是当测量一个动画帧需要的时间需要考虑到布局和重绘时间。添加到节点的样式会增加渲染时间，但是移除样式增加的 0.001ms 或许不能让你的优化物有所值。记住先测量。然后你可决定它的优化优先级。
 
 ##### 合成 Composite
 
@@ -650,7 +652,7 @@ CSS 有其自身的规则集合用来定义标识。注意 CSS 中的 C 代表�
 
 摘自：[MDN - 关键渲染路径](https://developer.mozilla.org/zh-CN/docs/Web/Performance/Critical_rendering_path)
 
-#### 渲染树的补充
+#### 渲染树补充
 
 **关键渲染路径中的令牌 ( Token )**
 
@@ -661,9 +663,9 @@ HTML中 尖括号 里的文本，具有特殊含义，属于标记。<font color
 - 结束标签 end tag
 - 注释 comment
 - 字符 character
-- 文件结束end-of-file
+- 文件结束 end-of-file
 
-<font color=FF0000 size=4> 整个流程都由令牌解析器来完成，当令牌解析器在执行这一流程时，有另一个流程正在消耗这些令牌。并按照某种规则将它们转换为节点对象。</font>
+<font color=fuchsia> 整个流程都由令牌解析器来完成，当令牌解析器在执行这一流程时，有另一个流程正在消耗这些令牌。并按照某种规则将它们转换为节点对象。</font>
 
 <font color=FF0000> 令牌解析器发出了 **起始令牌** 和 **结束令牌**，这样就可以显示节点之间的关系</font>，比如StartTag：head令牌出现在EndTag：HTML令牌前面，表示head令牌是HTML令牌的子级。
 
@@ -676,11 +678,11 @@ HTML中 尖括号 里的文本，具有特殊含义，属于标记。<font color
 - 在令牌生成的同时，另一个流程会同时消耗这些令牌并转换成 HTML head 这些节点对象，起始和结束令牌表明了节点之间的关系
 - 当所有的令牌消耗完以后就转换成了DOM（文档对象模型）
 
-![](https://codertw.com/wp-content/uploads/img/95mZC7G291.jpg)
+<img src="https://codertw.com/wp-content/uploads/img/95mZC7G291.jpg" style="zoom:80%;" />
 
 摘自：[详解 CRP：如何最大化提升首屏渲染速度](https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/677333/)
 
-#### 渲染树的其他补充
+#### 渲染树 其他补充
 
 尽管不同的渲染引擎渲染流程不同，但是都需要解析 HTML 和 CSS 用于生成渲染树。前端开发接触最多的渲染引擎是 WebKit（以及在其基础上派生的 Blink ），接下来本文会以 Webkit 为基础介绍渲染树。
 
@@ -692,13 +694,13 @@ HTML中 尖括号 里的文本，具有特殊含义，属于标记。<font color
 
 ##### RenderObject 渲染对象
 
-RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对应，RenderObject 也构成了一颗树。但是RenderObject 的树与 DOM 节点并不是一一对应关系（**注：**比如 `display: none` 的节点，不会生成渲染对象）。《Webkit 技术内幕》指出，如果满足下列条件，则会创建一个 RenderObject ：
+RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对应，RenderObject 也构成了一颗树。但是RenderObject 的树与 DOM 节点并不是一一对应关系（ 👀 注：比如 `display: none` 的节点，不会生成渲染对象）。《Webkit 技术内幕》指出，如果满足下列条件，则会创建一个 RenderObject ：
 
 - DOM 树中的 document 节点
 - DOM 树中的可见节点（webkit 不会为非可视节点创建 RenderObject 节点）
 - 为了处理需要，Webkit 建立匿名的 RenderObject 节点，如表示块元素的 RenderBlock（ RenderObject 的子类）节点
 
-<font color=FF0000>将 DOM 节点绘制在页面上，除了要知道渲染节点的信息外，**还需要各渲染节点的层级**</font>（**注：**可参考 composite ）。浏览器提供了 RenderLayer 来定义渲染层级
+<font color=FF0000>将 DOM 节点绘制在页面上，除了要知道渲染节点的信息外，**还需要各渲染节点的层级**</font>（ 👀 注：可参考 composite ）。浏览器提供了 RenderLayer 来定义渲染层级
 
 ##### RenderLayer 渲染层级
 
@@ -743,7 +745,7 @@ RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对
 
 对于合成层的提升条件，[无线性能优化：Composite](https://fed.taobao.org/blog/taofed/do71ct/performance-composite/) 中有更详细的介绍。结合 RenderLayer 和 GraphicsLayer 的创建条件，可以看出动画（尺寸、位置、样式等改变）元素更容易创建 RenderLayer ，进而提升为合成层（这里要注意，并不是所有的 CSS 动画元素都会被提升为合成层，这个会在后续的渲染流水线中介绍）。这种设计使浏览器可以更好使用 GPU 的能力，给用户带来流畅的动画体验。
 
-// TODO
+> 👀 有点多，等有空了在看... // TODO 
 
 摘自：[从浏览器渲染原理谈动画性能优化](https://segmentfault.com/a/1190000041295744)
 
