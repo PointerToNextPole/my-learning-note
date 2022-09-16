@@ -2,6 +2,14 @@
 
 
 
+#### 一些资料
+
+官方文档：https://code.visualstudio.com/docs
+
+有效果 gif 的快捷键教程：https://www.vscheatsheet.com
+
+
+
 ##### 进入 settings.json 方法
 
 按下 ⇧ + ⌘ + P ，会显示搜索框；在输入框中输入 `settings.json` ，会显示如下结果：
@@ -42,8 +50,22 @@
 #### 快捷键
 
 - **⇧ + ⌥ + F** ：代码格式化。不过，如果代码被检测出错误，将不会执行
+
 - **⇧ + ⌘ + L** ：批量重命名
+
+  > 👀 注：不知道为什么这个方法偶尔会失灵... 😳 在 www.vscheatsheet.com 中找到了更好的解决方案：光标聚焦使用 `F2` 会出现如下效果：
+  >
+  > <img src="https://s2.loli.net/2022/09/16/j9Dd7elL3YZg4vc.png" alt="image-20220916203504239" style="zoom:50%;" />
+
 - **⌃ + Space** ：智能建议（只能是短按，长按和 Mac 自带切切换输入法相冲突），光标悬浮也可以产生同样的效果
+
+- **⌘ + P** ：搜索文件，并快速跳转。有点类似于 IDEA 中的 “double space”
+
+- **⌘ + K  ➡ ⌘ + S** ：键盘快捷键列表，效果如下：
+
+  <img src="https://s2.loli.net/2022/09/16/7IYL5C1qSB4Xj8f.png" alt="image-20220916205802024" style="zoom:40%;" />
+
+- **⌘ + J** / **⌃ + `** ：打开内置的 Terminal
 
 
 

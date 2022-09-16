@@ -6560,25 +6560,25 @@ CSS 属性 object-position 规定了 <font color=FF0000 size=4>**可替换元素
 
 pointer-events 是 CSS 3 的一个属性，<font color=FF0000>指定在什么情况下元素可以成为鼠标事件的 target</font>（包括鼠标的样式）
 
-<mark>pointer-events 属性有很多值</mark>，但是<font color=FF0000>对于浏览器来说，只有 auto 和 none 两个值可用</font>，<mark>其它的几个是针对SVG的（本身这个属性就来自于 SVG 技术）</mark>。
+<font color=dodgerblue>pointer-events 属性有很多值</font>，但是<font color=FF0000>对于浏览器来说，只有 auto 和 none 两个值可用</font>，<font color=lightSeaGreen>其它的几个是针对 SVG 的（本身这个属性就来自于 SVG 技术）</font>。
 
 - **auto（默认）：**效果和没有定义 pointer-events 属性相同（即默认），<font color=FF0000>鼠标不会穿透当前层</font>。在 SVG 中，该值和 visiblePainted 的效果相同
 - **none：**<font color=FF0000>元素永远不会成为鼠标事件的 target（目标）。但是，当其后代元素的 pointer-events 属性指定其他值时，鼠标事件可以指向后代元素，在这种情况下，鼠标事件将在捕获或冒泡阶段触发父元素的事件侦听器。</font>
 
-摘自：[非常有用的pointer-events属性](https://www.cnblogs.com/kunmomo/p/11752669.html) 另外，这个博客还有一些 pointer-events 的使用示例，比如地图工具栏，很详细地说明了使用场景
+摘自：[非常有用的pointer-events属性](https://www.cnblogs.com/kunmomo/p/11752669.html)  👀 注：该博客还有一些 pointer-events 的使用示例，比如地图工具栏，很详细地说明了使用场景
 
 
 
 #### will-change
 
-CSS 属性 <font color=FF0000> will-change 为 web 开发者提供了一种告知浏览器该元素会有哪些变化的方法，这样浏览器可以在元素属性真正发生变化之前提前做好对应的优化准备工作</font>。 <mark>这种优化可以将一部分复杂的计算工作提前准备好，使页面的反应更为快速灵敏</mark>。
+CSS 属性 will-change <font color=red>为 web 开发者提供了一种</font> <font color=fuchsia>告知浏览器该元素会有 **哪些变化的方法**</font>（👀 will-change 的值 *可以是* CSS 属性，比如 `will-change: filter` ，当然，在这种情况下，CSS 样式中要包含 filter 属性。另外，参考下 [[#用好这个属性并不是很容易]] 中的 “这个属性是用来让页面开发者告知浏览器哪些属性可能会变化的”），这样 <font color=red>浏览器可以在元素属性真正发生变化之前提前做好对应的优化准备工作</font>。 <font color=lightSeaGreen>这种优化可以将一部分复杂的计算工作提前准备好，使页面的反应更为快速灵敏</font>。
 
-**用好这个属性并不是很容易：**
+##### 用好这个属性并不是很容易
 
-- **不要将 will-change 应用到太多元素上：**浏览器已经尽力尝试去优化一切可以优化的东西了。有一些更强力的优化，如果与 will-change 结合在一起的话，有可能会消耗很多机器资源，如果过度使用的话，可能导致页面响应缓慢或者消耗非常多的资源。
-- **有节制地使用：**<mark> **通常**，当元素恢复到初始状态时，**浏览器会丢弃掉之前做的优化工作**</mark>。但是<font color=FF0000> **如果直接在样式表中显式声明了 will-change 属性，则表示目标元素可能会经常变化，浏览器会将优化工作保存得比之前更久（即：浏览器将对应的优化工作一直保存在内存中）**</font>。所以最佳实践是当元素变化之前和之后通过脚本来切换 will-change 的值。
-- <font color=FF0000> **不要过早应用 will-change 优化：**</font><mark>如果你的页面在性能方面没什么问题，则不要添加 will-change 属性来榨取一丁点的速度</mark>。 <font color=FF0000> will-change 的设计初衷是作为最后的优化手段，用来尝试解决现有的性能问题。它**不应该被用来预防性能问题**</font>。<mark>过度使用 will-change 会导致大量的内存占用，并会导致更复杂的渲染过程，因为浏览器会试图准备可能存在的变化过程。这会导致更严重的性能问题</mark>。
-- **给它足够的工作时间：**<font color=FF0000> 这个属性是用来让页面开发者告知浏览器哪些属性可能会变化的。然后浏览器可以选择在变化发生前提前去做一些优化工作。所以给浏览器一点时间去真正做这些优化工作是非常重要的</font>。使用时需要尝试去找到一些方法提前一定时间获知元素可能发生的变化，然后为它加上 will-change 属性。
+- **不要将 will-change 应用到太多元素上**：浏览器已经尽力尝试去优化一切可以优化的东西了。有一些更强力的优化，如果与 will-change 结合在一起的话，有可能会消耗很多机器资源，如果过度使用的话，可能导致页面响应缓慢或者消耗非常多的资源。
+- **有节制地使用**：<font color=fuchsia> **通常**，当元素恢复到初始状态时，**浏览器会丢弃掉之前做的优化工作**</font>。但是<font color=FF0000> **如果直接在样式表中显式声明了 will-change 属性，则表示目标元素可能会经常变化，浏览器会将优化工作保存得比之前更久**</font>（👀 即：浏览器将对应的优化工作一直保存在内存中）。所以最佳实践是当元素变化之前和之后通过脚本来切换 will-change 的值。
+- <font color=FF0000> **不要过早应用 will-change 优化：**</font>如果你的页面在性能方面没什么问题，则不要添加 will-change 属性来榨取一丁点的速度。 <font color=FF0000> will-change 的设计初衷是作为最后的优化手段，用来尝试解决现有的性能问题。它**不应该被用来预防性能问题**</font>。<font color=lightSeaGreen>过度使用 will-change 会导致大量的内存占用，并会导致更复杂的渲染过程，因为浏览器会试图准备可能存在的变化过程。这会导致更严重的性能问题</font>。
+- **给它足够的工作时间：**<font color=fuchsia> 这个属性是用来 让页面开发者告知浏览器 <font size=4>**哪些属性可能会变化的**</font></font>（👀 这句话是重点 ⭐️） 。然后<font color=red>浏览器可以选择在变化发生前提前去做一些优化工作。所以给浏览器一点时间去真正做这些优化工作是非常重要的</font>。使用时需要尝试去找到一些方法提前一定时间获知元素可能发生的变化，然后为它加上 will-change 属性。
 
 | 属性           | 值           |
 | :------------- | ------------ |
@@ -6588,7 +6588,7 @@ CSS 属性 <font color=FF0000> will-change 为 web 开发者提供了一种告�
 | 计算值         | as specified |
 | Animation type | discrete     |
 
-**语法：**
+##### 语法
 
 ```css
 auto | <animateable-feature>
@@ -6596,13 +6596,13 @@ where
 <animateable-feature> = scroll-position | contents | <custom-ident>
 ```
 
-**取值：**
+##### 取值
 
 - **auto：**表示没有特别指定哪些属性会变化，<font color=FF0000> **浏览器需要自己去猜**，然后使用浏览器经常使用的一些常规方法优化</font>。
-- **\<animateable-feature> 可以是以下值：**
-  - **scroll-position：**表示开发者希望在<font color=FF0000> 不久后 **改变滚动条的位置**，或者使之产生动画</font>。
-  - **contents：**表示开发者希望在<font color=FF0000> 不久后 **改变元素内容中的某些东西**，或者使它们产生动画</font>。
-  - **\<custom-ident>：**表示开发者希望在<font color=FF0000> 不久后改变指定的属性名或者使之产生动画</font>。如果属性名是简写，则代表所有与之对应的简写或者全写的属性。
+- **\<animateable-feature> 可以是以下值**：
+  - **scroll-position** ：表示开发者希望在<font color=FF0000> 不久后 **改变滚动条的位置**，或者使之产生动画</font>。
+  - **contents** ：表示开发者希望在<font color=FF0000> 不久后 **改变元素内容中的某些东西**，或者使它们产生动画</font>。
+  - **\<custom-ident>** ：表示开发者希望在<font color=FF0000> 不久后改变指定的属性名或者使之产生动画</font>。如果属性名是简写，则代表所有与之对应的简写或者全写的属性。
 
 ```css
 will-change: auto
@@ -6618,6 +6618,8 @@ will-change: inherit
 ```
 
 摘自：[MDN - will-change](https://developer.mozilla.org/zh-CN/docs/Web/CSS/will-change)
+
+> 👀 注：will-change 可以用于 防止 回流和重绘，相关见 [[前端面试点总结#减少 回流 和 重绘 的操作]] 中的 “使用硬件 ( GPU ) 加速”
 
 
 
