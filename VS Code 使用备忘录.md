@@ -65,7 +65,7 @@
 
   <img src="https://s2.loli.net/2022/09/16/7IYL5C1qSB4Xj8f.png" alt="image-20220916205802024" style="zoom:40%;" />
 
-- **⌘ + J** / **⌃ + `** ：打开内置的 Terminal
+- **⌘ + J** / **⌃ + `** ：打开 VSC 内置的 Terminal
 
 
 

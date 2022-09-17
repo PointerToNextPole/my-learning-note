@@ -32,9 +32,9 @@
 - **包括编译方面的优化：**
   - 生成 Block Tree、Slot 编译优化、diff 算法优化
 
-##### 新的API
+##### 新的 API
 
-- **由Options API到Composition API：**
+- **由 Options API到Composition API：**
   - 在 Vue2.x 的时候,我们会通过 Options API 来描述组件对象;
   
   - Options API 包括 data、props、methods、computed、生命周期等等这些选项;
@@ -44,18 +44,15 @@
   
   - Composition API 可以将相关联的代码放到同一处进行处理,而不需要在多个Options之间寻找
   
-- **Hooks函数增加代码的复用性：**
-
+- **Hooks 函数增加代码的复用性：**
   - 在 Vue2.x 的时候，我们通常通过 mixins 在多个组件之间共享逻辑
   - 但是有一个很大的缺陷就是 mixins 也是由一大堆的Options组成的，并且多个 mixins 会存在命名冲突的问题
   - 在 Vue3.x 中，我们可以通过 Hook 函数，来将一部分独立的逻辑抽取出去，并且它们还可以做到是响应式的
   - 具体的好处,会在后续的课程中演练和讲解（包括原理）
 
-
-
 ##### Vue3 的 data和 Vue2 的 data 是不同的
 
-Vue3 的data属性必须是一个函数，<font color=FF0000>**否则会报错**</font>。而在Vue2 中不是这样。
+Vue3 的 data 属性必须是一个函数，<font color=FF0000>**否则会报错**</font>。而在Vue2 中不是这样。
 
 ```js
 // Vue3
@@ -210,7 +207,11 @@ style中可以写驼峰也可以写短横线分隔 (kebab-case)，但是短横�
 <div v-bind="foo">foo</div>
 <script>
 	const App = {
-    data() { return { foo: { bar: 'bar', baz: 'baz', qux: 'qux' } } }
+    data() { 
+      return { 
+        foo: { bar: 'bar', baz: 'baz', qux: 'qux' } 
+      } 
+    }
   }
 </script>
 ```
@@ -221,7 +222,7 @@ style中可以写驼峰也可以写短横线分隔 (kebab-case)，但是短横�
 <div bar="bar" baz="baz" qux="qux">foo</div>
 ```
 
-另外，上面的 v-bind 也是可以省略的：
+另外，上面的 `v-bind` 也是可以省略的：
 
 ```html
 <div :="foo">foo</div>
@@ -229,9 +230,9 @@ style中可以写驼峰也可以写短横线分隔 (kebab-case)，但是短横�
 
 一般用于高级组件开发中传递配置，或者是父组件向子组件中传递多个值，而用对象直接封装（见下面的 "**父子组件通信方式**" ）。
 
-##### 关于 v-bind 的个人补充
+##### Vue3 新特性：`v-bind()` 可以用于 style 标签中
 
-v-bind() 可以用于 \<style> 标签，如下示例摘自：[Vue3 成为默认版本后新文档 - SFC CSS Features - v-bind() in CSS](https://vuejs.org/api/sfc-css-features.html#v-bind-in-css)
+`v-bind()` 可以用于 `<style>` 标签，如下示例：
 
 ```vue
 <template>
@@ -247,13 +248,66 @@ export default {
 </script>
 
 <style>
-.text { color: v-bind(color); }
+.text { color: v-bind(color); } // 👀
 </style>
 ```
 
-同样，这个语法 也适用于 \<script setup>
+同样，这个语法 也适用于 `<script setup>`
 
 如上摘自：[Vue3 成为默认版本后新文档 - SFC CSS Features - v-bind() in CSS](https://vuejs.org/api/sfc-css-features.html#v-bind-in-css)，另外，可以参考：[Vue3 \<style>状态驱动 CSS 变量](https://www.qiyuandi.com/zhanzhang/zonghe/17302.html)
+
+
+
+#### 模板语法：Vue3 新文档的补充
+
+( 👀 v-bind ) 如果绑定的值是 `null` 或者 `undefined`，那么该 attribute 将会从渲染的元素上移除。
+
+> 👀 注：这点是之前不知道的
+
+##### 受限的全局访问
+
+模板中的表达式将被沙盒化，仅能够访问到 [有限的全局对象列表](https://github.com/vuejs/core/blob/main/packages/shared/src/globalsWhitelist.ts#L3)。该列表中会暴露常用的内置全局对象，比如 `Math` 和 `Date`。
+
+> 👀 注：上面  [有限的全局对象列表](https://github.com/vuejs/core/blob/main/packages/shared/src/globalsWhitelist.ts#L3) 的链接这里做一下摘抄和思考：
+>
+> > ```js
+> > const GLOBALS_WHITE_LISTED =
+> >   'Infinity,undefined,NaN,isFinite,isNaN,parseFloat,parseInt,decodeURI,' +
+> >   'decodeURIComponent,encodeURI,encodeURIComponent,Math,Number,Date,Array,' +
+> >   'Object,Boolean,String,RegExp,Map,Set,JSON,Intl,BigInt'
+> > ```
+> >
+> > 可以发现：这里的 `GLOBALS_WHITE_LISTED` 是没有 `window` / `global` 的，这也说明了：为什么在 template 里面使用 `console.log()` 会报错说找不到，因为 `console.log()` 属于 DOM，属于 `window` / `global` 的，所以会报错。
+
+没有显式包含在列表中的全局对象将不能在模板内表达式中访问，例如用户附加在 `window` 上的属性。然而，你也可以自行在 `app.config.globalPropezrties` 上显式地添加它们，供所有的 Vue 表达式使用。
+
+##### 参数 Arguments
+
+某些指令会需要一个“参数”，在指令名后通过一个冒号隔开做标识。例如用 `v-bind` 指令来响应式地更新一个 HTML attribute：
+
+```vue
+<a v-bind:href="url"> ... </a>
+
+<!-- 简写 -->
+<a :href="url"> ... </a>
+```
+
+这里 `href` 就是一个参数，它告诉 `v-bind` 指令将表达式 `url` 的值绑定到元素的 `href` attribute 上。在简写中，参数前的一切 (例如 `v-bind:` ) 都会被缩略为一个 `:` 字符。
+
+另一个例子是 `v-on` 指令，它将监听 DOM 事件：
+
+```vue
+<a v-on:click="doSomething"> ... </a>
+
+<!-- 简写 -->
+<a @click="doSomething"> ... </a>
+```
+
+> 👀 注：这里 `v-bind:attrName` 和 `v-on:eventName` 就是 `v-directive` 中 `binding.arg` 的一种；这是之前完全没有想到的... 🥬
+>
+> 同样的，事件修饰符也是。
+
+摘自：[Vue3 新文档 - 模板语法](https://cn.vuejs.org/guide/essentials/template-syntax.html)
 
 
 
@@ -289,7 +343,9 @@ export default {
   
   <script>
     const app = {
-      methods: {onclick() { console.log(event) } }
+      methods: {
+        onclick() { console.log(event) } 
+      }
     }
   </script>
   ```
