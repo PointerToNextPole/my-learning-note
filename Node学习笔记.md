@@ -2,9 +2,11 @@
 
 
 
-> ## 《从零开发Web Server博客项目  前端晋升全栈工程师必备》笔记
+## 《从零开发Web Server博客项目  前端晋升全栈工程师必备》笔记
 
-**nvm 使用命令**
+
+
+##### nvm 使用命令
 
 - **nvm list：**查看当前所有的node版本
 - **nvm install v10.13.0：**安装指定的版本
@@ -12,7 +14,7 @@
 
 
 
-**common.js中的导出和导入**
+##### common.js 中的导出和导入
 
 ```js
 // 导出 foo.js
@@ -35,7 +37,7 @@ const {foo, bar} = require('foo.js')
 
 
 
-**Node代码的调试**
+##### Node 代码的调试
 
 在 package.json 中，默认（使用 `npm init -y ` ）main属性对应的值为 "index.js"，表示：主文件是 "index.js"。如果要在 VSCode中调试 (debug) 项目时，必须要有 "index.js" 这个文件（当然，这个名字可以自定义，当然实际文件名也要跟着变化）
 
@@ -47,78 +49,78 @@ const {foo, bar} = require('foo.js')
 
 
 
-**Node处理http请求**
+#### Node 处理 http 请求
 
-- **get 请求 和 querystring（所有的 url参数）**
+##### get 请求 和 querystring（所有的 url参数）
 
-  - get请求，即客户端要向server端获取数据，如查询博客列表 
-  - 通过querystring来传递数据，如a.html?a=100&b=200
-  - 浏览器直接访问，就发送get请求
+- get请求，即客户端要向server端获取数据，如查询博客列表 
+- 通过querystring来传递数据，如a.html?a=100&b=200
+- 浏览器直接访问，就发送get请求
 
-  - 代码示例：
+- 代码示例：
 
-    ```js
-    const http = require('http')
-    const querystring = require('querystring')
-    
-    const server = http.createServer((req, res) => {
-      console.log(req.method) // GET
-      const url = req.url // 获取请求的完整 url
-      req.query = querystring.parse(url.split('?')[1]) // 解析querystring
-      console.log('query: ', req.query) // 控制台打印 query
-      res.end(JSON.stringify(req.query)) // 将querystring 返回
-    })
-    
-    server.listen(8000)
-    console.log("OK")
-    ```
+  ```js
+  const http = require('http')
+  const querystring = require('querystring')
+  
+  const server = http.createServer((req, res) => {
+    console.log(req.method) // GET
+    const url = req.url // 获取请求的完整 url
+    req.query = querystring.parse(url.split('?')[1]) // 解析querystring
+    console.log('query: ', req.query) // 控制台打印 query
+    res.end(JSON.stringify(req.query)) // 将querystring 返回
+  })
+  
+  server.listen(8000)
+  console.log("OK")
+  ```
 
-- **post 请求 和 post-data**
+##### post 请求 和 post-data
 
-  - post请求，即客户端要向服务端传递数据，如新建博客
+- post请求，即客户端要向服务端传递数据，如新建博客
 
-  - 通过post data传递数据
+- 通过post data传递数据
 
-  - 浏览器无法直接模拟，需要手写js，或者使用postman
+- 浏览器无法直接模拟，需要手写js，或者使用postman
 
-  - 示例代码：
+- 示例代码：
 
-    另外，需要在postman中去模拟post请求
+  另外，需要在postman中去模拟post请求
 
-    ```js
-    const http = require('http')
-    
-    const server = http.createServer((req, res) => {
-      if(req.method === 'POST') {
-        console.log('content-type: ', req.headers['content-type'])
-        
-        // 接收数据，采用数据流的方式接收
-        let postData = ''
-        req.on('data', chunk => {
-          postData += chunk.toString()
-        })
-        req.on('end', () => {
-          console.log('postData: ', postData)
-          res.end('hello world!')
-        })
-      }
-    })
-    
-    server.listen(8000)
-    console.log('OK!')
-    ```
+  ```js
+  const http = require('http')
+  
+  const server = http.createServer((req, res) => {
+    if(req.method === 'POST') {
+      console.log('content-type: ', req.headers['content-type'])
+      
+      // 接收数据，采用数据流的方式接收
+      let postData = ''
+      req.on('data', chunk => {
+        postData += chunk.toString()
+      })
+      req.on('end', () => {
+        console.log('postData: ', postData)
+        res.end('hello world!')
+      })
+    }
+  })
+  
+  server.listen(8000)
+  console.log('OK!')
+  ```
 
-- **路由（接口地址 api/foo/bar ）**
-
-
-
-可以使用 nodemon 来监控你项目中文件的变动，并自动重启服务。即：热部署工具？
+##### 路由（接口地址 api/foo/bar ）
 
 
 
-> ## coderwhy Node.js
+可以使用 nodemon 来监控你项目中文件的变动，并自动重启服务。即：热部署工具
 
-**浏览器引擎**
+
+
+## coderwhy Node.js 学习笔记
+
+##### 浏览器引擎
 
 - **Gecko：**早期被Netscape和Mozilla Firefox浏览器使用;
 
@@ -131,11 +133,13 @@ const {foo, bar} = require('foo.js')
 
 
 
-**渲染引擎工作原理**（关键渲染路径）
+##### 渲染引擎工作原理
+
+关键渲染路径
 
 <img src="https://i.loli.net/2021/10/27/GIKUCpTzsqESofe.png" alt="image-20211027232236491" style="zoom: 75%;" />
 
-**常见的JS引擎：**
+##### 常见的 JS 引擎
 
 -  **SpiderMonkey：**第一款JavaScript引擎，由Brendan Eich开发（也就是JavaScript作者）
 - **Chakra：**微软开发，用于IT浏览器
@@ -144,18 +148,18 @@ const {foo, bar} = require('foo.js')
 
 
 
-**JS引擎和浏览器内核之间的关系：**
+##### JS引擎和浏览器内核之间的关系
 
 这里我们先以WebKit为例，WebKit事实上由两部分组成的：
 
 - **WebCore：**负责HTML解析、布局、渲染等等相关的工作
-- **JavaScriptCore（JS引擎）：**解析、执行JavaScript代码
+- **JavaScriptCore（ JS 引擎）：**解析、执行JavaScript代码
 
 所以JS引擎是浏览器内核的一部分。
 
 
 
-**V8引擎处理过程**
+##### V8 引擎处理过程
 
 <img src="https://i.loli.net/2021/10/28/E4pUv58nlmfdK6V.png" alt="image-20211028000541086" style="zoom: 67%;" />
 
@@ -180,13 +184,13 @@ V8引擎本身的源码非常复杂，大概有超过100w行C++代码,但是我�
 
 
 
-**回顾:官方对Node.js的定义:**
+##### 回顾：官方对Node.js的定义
 
-Node.js是一个基于V8 JavaScript引擎的JavaScript运行时环境。
+Node.js 是一个基于 V8 JavaScript 引擎的 JavaScript 运行时环境。
 
 > Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine.
 
-也就是说Node.js基于V8引擎来执行JavaScript的代码，但是不仅仅只有V8引擎:
+也就是说 Node.js 基于 V8 引擎来执行 JavaScript 的代码，但是不仅仅只有 V8 引擎：
 
 - 前面我们知道V8可以嵌入到任何C ++应用程序中，无论是Chrome还是Node.js，事实上都是嵌入了v8引擎来执行JavaScript代码
 - 但是在Chrome浏览器中,还需要解析、渲染HTML，CSs等相关渲染引擎，另外还需要提供支持浏览器操作的API、浏览器自己的事件循环等
@@ -194,11 +198,11 @@ Node.js是一个基于V8 JavaScript引擎的JavaScript运行时环境。
 
 
 
-**浏览器和Node的区别**
+##### 浏览器和 Node 的区别
 
 <img src="https://i.loli.net/2021/10/28/qFDoY35ETyCAOBw.png" alt="image-20211028004205435" style="zoom:40%;" />
 
-**Node架构图**
+##### Node 架构图
 
 - 我们编写的JavaScript代码会经过V8引擎，再通过Nodejs的Bindings，将任务放到Libuv的事件循环中
 - libuv ( Unicorn Velociraptor-独角伶盗龙)是使用C语言编写的库;
@@ -208,7 +212,7 @@ Node.js是一个基于V8 JavaScript引擎的JavaScript运行时环境。
 
 
 
-**Node 管理工具**
+##### Node 管理工具
 
 - NVM：https://github.com/nvm-sh/nvm
 - N：https://github.com/tj/n
@@ -218,20 +222,20 @@ Node.js是一个基于V8 JavaScript引擎的JavaScript运行时环境。
 
 
 
-**REPL**
+##### REPL
 
 - REPL是 Read-Eval-Print Loop的简称，翻译为"读取-求值-输出"循环
 - REPL 一个简单的、交互的编程环境
 
 
 
-**给Node传递参数**
+##### 给Node传递参数
 
- 在 Node 中的 全局对象process 对象中，存在一个 argv 数组 ( argument vector )，其中存放的都是字符串。其中第一个元素是：node的安装路径，第二个元素是当前脚本的路径。第三个元素才是用户传递的参数。
+ 在 Node 中的 全局对象 process 对象中，存在一个 argv 数组 ( argument vector )，其中存放的都是字符串。其中第一个元素是：node的安装路径，第二个元素是当前脚本的路径。第三个元素才是用户传递的参数。
 
-即：使用 process.argv[i]
+即：使用 `process.argv[i]`
 
-**为什么叫 argv？**
+##### 为什么叫 argv ？
 
 在C/C++程序中的main函数中,实际上可以获取到两个参数：
 
@@ -249,7 +253,7 @@ Node.js是一个基于V8 JavaScript引擎的JavaScript运行时环境。
 
 
 
-**Node 程序的输出**
+##### Node 程序的输出
 
 - **console.log()**
 - **console.clear()：**将控制台中的内容清空
@@ -257,7 +261,7 @@ Node.js是一个基于V8 JavaScript引擎的JavaScript运行时环境。
 
 
 
-**Node 中常见的全局对象**
+##### Node 中常见的全局对象
 
 所有的全局对象可见：[官方文档 - Globals](https://nodejs.org/dist/latest-v17.x/docs/api/globals.html)
 
@@ -321,7 +325,7 @@ var module = ;(function (){
 
 
 
-**CJS 导入导出**
+##### CJS 导入导出
 
 Node中实现CJS的本质是 <font color=FF0000>引用赋值</font>（详见下面的 exports.foo 中的内容），可以通过分别在 prod.js 和 user.js 中使用 setTimeout 以验证（比如，先在 user.js 中打印；而后一秒钟之后 prod.js 中内容改变；再在user.js 中打印。甚至可以反过来，user.js 中改变引入的值，并让 prod.js 打印，查看是否改变（结果是 “改变了”））
 
@@ -492,9 +496,9 @@ ESM exports 的三种用法
 
 
 
-**ESM export 的三种用法**
+##### ESM export 的三种用法
 
-- import {} from file_path
+- `import {} from file_path`
 
   ```js
   import {foo, bar, baz} from './prod.js'
@@ -547,7 +551,7 @@ export {foo as fooAlias} from './prod.js'
 
 
 
-**export default的使用**
+##### export default的使用
 
 在export 中使用 default，在导出时，是可以不命名的：
 
@@ -569,7 +573,7 @@ import myFn from './prod.js'
 
 
 
-import foo from 'foo.js' 这种模式的引入，不是一个函数（真正是函数的是 import() ）。同时，他也在parsing 阶段就已经确定了依赖关系（parse -> AST -> bytecode ->  执行）；这是静态导入。
+`import foo from 'foo.js'` 这种模式的引入，不是一个函数（真正是函数的是 import() ）。同时，他也在parsing 阶段就已经确定了依赖关系（parse -> AST -> bytecode ->  执行）；这是静态导入。
 
 而在 ES2020 时提供了 import() 支持动态导入（解析时加载），import() 是一个函数。
 
@@ -585,7 +589,7 @@ if( bool ) {
 
 
 
-**ES Module 加载过程**
+##### ES Module 加载过程
 
 ES Module加载 js文件的过程是编译（解析）时加载的,并且是异步的：
 
@@ -626,9 +630,9 @@ ES Module加载 js文件的过程是编译（解析）时加载的,并且是异�
 
 
 
-**CJS 和 ESM的交互**
+##### CJS 和 ESM的交互
 
-**通常情况下, CommonJS不能加载ES Module**（模块用ESM导出，CJS导入）
+**通常情况下，CommonJS不能加载ES Module**（模块用 ESM 导出，CJS 导入）
 
 - 因为CommonJS 是同步加载的，但是ES Module必须经过静态分析等（而且ESM是异步的，可能ESM的内容还没有变成ByteCode，这是CJS无法执行），(ESM) 无法在这个时候执行JavaScript代码。见下图：ESM加载在第一二阶段之间，CJS执行在三四阶段之间，所以无法使用ESM。
 
@@ -993,9 +997,9 @@ ES Module加载 js文件的过程是编译（解析）时加载的,并且是异�
 
 
 
-**Node 包管理工具 npm**
+#### Node 包管理工具 npm
 
-**配置文件：**
+##### 配置文件
 
 每一个项目都会有一个对应的配置文件，无论是前端项目还是后端项目：
 
@@ -1006,12 +1010,12 @@ package.json 中 main属性是 程序的入口，
 
 在 npm scripts 中，npm run start 和 npm start 是等价的，同样的还有：test、stop、restart 命令。
 
-**dependencies属性**
+##### dependencies 属性
 
 - dependencies属性是指定<font color=FF0000>无论开发环境还是生成环境都需要依赖的包</font>
 - 通常是我们项目实际开发用到的一些库模块;
 
-**devDependencies属性**
+##### devDependencies 属性
 
 <font color=FF0000>一些包在生成环境是不需要的，比如webpack、babel 等</font>。这个时候我们会通过 npm install webpack --save-dev，将它安装到 devDependencies 属性中。
 
@@ -1051,7 +1055,7 @@ npm全局安装的包都是一些工具包，比如：yarn、webpack等。<font 
 
 
 
-**npm install 的原理：**
+#### npm install 的原理
 
 ![image-20211101175159270](https://i.loli.net/2021/11/01/LhPGwR6UC1poWXZ.png)
 
@@ -1061,7 +1065,7 @@ npm全局安装的包都是一些工具包，比如：yarn、webpack等。<font 
 
 package-lock.json 会优先从 缓存文件中获取 依赖包；如果找不到，则先下载，在把下载好的依赖包放入缓存文件
 
-**更多详解：**
+##### 更多详解
 
 npm install会检测是有package-lock.json文件:
 
@@ -1136,20 +1140,20 @@ npm install会检测是有package-lock.json文件:
 
 
 
-**安装工具包附带的依赖**
+##### 安装工具包附带的依赖
 
 在安装 axios 时，axios 也会将自己的依赖 follow-redirectives 在项目中下载下来，打开node_modules中axios 文件夹中的 package.json，可以看到 devDependencies 中有大量的依赖，这是它开发时所使用的依赖，而这不是我们需要关心的。dependencies 中只有一个 follow-redirectives，需要被下载。所以，在安装包时，如果它的 package.json 中 dependencies 中有依赖，npm 会将其下载下来。
 
 
 
-**npm 的其他命令**
+##### npm 的其他命令
 
 - **npm rebuild：**强制重新 build，比如将项目从 windows 拷贝到macOS 上，依赖需要重新编译，这时就要使用 npm rebuild。另外，切换 node 版本时，也最好执行一下。
 - **npm cache clean：**清除缓存
 
 
 
-**yarn的使用**
+##### yarn的使用
 
 | npm                                     | Yarn                          |
 | --------------------------------------- | ----------------------------- |
@@ -1167,9 +1171,9 @@ npm install会检测是有package-lock.json文件:
 
 
 
-**npx工具**
+##### npx 工具
 
-如果全局安装 webpack，且在项目中本地安装webpack，在项目根目录使用 webpack，依然使用的是全局安装的 webpack，如果要使用本地安装的 webpack，需要键入 `./node_modules/.bin/webpack --version`，这是非常麻烦的，所以这时可以使用 npx webpack
+如果全局安装 webpack，且在项目中本地安装webpack，在项目根目录使用 webpack，依然使用的是全局安装的 webpack，如果要使用本地安装的 webpack，需要输入 `./node_modules/.bin/webpack --version`，这是非常麻烦的，所以这时可以使用 npx webpack
 
 另外，在 npm scripts 中 设置的script，会优先调用局部安装的 工具，比如 webpack，比如：
 
@@ -1183,7 +1187,7 @@ npm run webpackVersion 时，会优先查找局部安装的 webpack，并调用�
 
 
 
-**自定义终端指令**
+##### 自定义终端指令
 
 步骤：
 
@@ -1379,45 +1383,45 @@ ejs 文件是 Node 的模版引擎，同时也可以用作 脚手架生成前端
 
 
 
-**Node 中的 Buffer**
+#### Node 中的 Buffer
 
 Node 中 Buffer 是处理二进制数据的。
 
 Buffer 相当于是一个字节的数组，数组中的每一项对于一个字节的大小
 
-创建Buffer
+##### 创建Buffer
 
-- 方法一：
+###### 方法一
 
-  ```js
-  const msg = 'hello world'
-  const buffer = new Buffer(msg)
-  console.log(buffer) 
-  ```
+```js
+const msg = 'hello world'
+const buffer = new Buffer(msg)
+console.log(buffer) 
+```
 
-  这是一个已经过时的方法，警告如下：
+这是一个已经过时的方法，警告如下：
 
-  ```
-  (node:81005) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
-  // (Use `node --trace-deprecation ...` to show where the warning was created)
-  ```
+```
+(node:81005) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+// (Use `node --trace-deprecation ...` to show where the warning was created)
+```
 
-- 方法二：
+###### 方法二
 
-  ```js
-  const buffer = Buffer.from(msg)
-  console.log(buffer) // <Buffer 68 65 6c 6c 6f 20 77 6f 72 6c 64>
-  
-  const msg2 = '你好啊'
-  const buffer2 = Buffer.from(msg2)
-  console.log(buffer2) // <Buffer e4 bd a0 e5 a5 bd e5 95 8a> 默认使用 UTF-8编码，想要修改编码
-  console.log(buffer2.toString('utf8')) // '你好啊'，toString() 用于解码。默认使用 UTF-8解码，所以这里 UTF8 可以不写。
-  // 另外，使用什么格式进行编码，就使用什么格式解码；否则，会出现乱码。
-  ```
+```js
+const buffer = Buffer.from(msg)
+console.log(buffer) // <Buffer 68 65 6c 6c 6f 20 77 6f 72 6c 64>
 
-- 方法三：
+const msg2 = '你好啊'
+const buffer2 = Buffer.from(msg2)
+console.log(buffer2) // <Buffer e4 bd a0 e5 a5 bd e5 95 8a> 默认使用 UTF-8编码，想要修改编码
+console.log(buffer2.toString('utf8')) // '你好啊'，toString() 用于解码。默认使用 UTF-8解码，所以这里 UTF8 可以不写。
+// 另外，使用什么格式进行编码，就使用什么格式解码；否则，会出现乱码。
+```
 
-  Buffer.alloc(size, fill[, encoding])，略
+###### 方法三
+
+Buffer.alloc(size, fill[, encoding])，略
 
 <font color=FF0000>**Buffer 是一个数组，所以可以通过数组索引的方式修改其中的元素（内容）**</font>
 
@@ -1429,7 +1433,7 @@ Buffer 相当于是一个字节的数组，数组中的每一项对于一个字�
 
 
 
-**事件循环**
+#### 事件循环
 
 **事件循环可以理解为：用户编写的 JS代码 和 浏览器 或者 Node（因为都有事件循环） 之间的桥梁**
 
@@ -1471,7 +1475,7 @@ Buffer 相当于是一个字节的数组，数组中的每一项对于一个字�
 
    - 如果不为空，那么就优先执行微任务队列中的任务（回调）
 
-事件循环面试题：
+##### 事件循环面试题
 
 ```js
 setTimeout(function () {
@@ -1524,7 +1528,7 @@ new Promise(function (resolve) {
 
 
 
-**Node 中事件循环**
+##### Node 中事件循环
 
 浏览器中的EventLoop是根据HTML5定义的规范来实现的，不同的浏览器可能会有不同的实现；而<font color=FF0000>Node中是由 libuv实现的</font>。
 
@@ -1543,7 +1547,7 @@ libuv 是一个跨平台 的专注于 异步IO 的库
 
 
 
-**阻塞IO 和 非阻塞IO**
+##### 阻塞IO 和 非阻塞IO
 
 **操作系统通常为我们提供了两种调用方式：阻塞式调用 和 非阻塞式调用：**
 
@@ -1572,7 +1576,7 @@ libuv 是一个跨平台 的专注于 异步IO 的库
 
 
 
-**阻塞和非阻塞，同步和异步的区别**
+##### 阻塞和非阻塞，同步和异步的区别
 
 - **阻塞和非阻塞是对于<font color=FF0000>被调用者</font>来说的：**
 
@@ -1587,7 +1591,7 @@ libuv 是一个跨平台 的专注于 异步IO 的库
 
 
 
-**Node 中的事件循环**
+##### Node 中的事件循环
 
 我们最前面就强调过：事件循环像是一个桥梁，是连接着应用程序的 JavaScript 和 系统调用 之间的通道：
 
@@ -1607,7 +1611,7 @@ libuv 是一个跨平台 的专注于 异步IO 的库
 
 图源：[Node.js官方文档 - Guide - The Node.js Event Loop, Timers, and process.nextTick()](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/)
 
-**Node 中的 宏任务 和 微任务**
+##### Node 中的 宏任务 和 微任务
 
 - **宏任务(macrotask )：**setTimeout、setInterval、I/O事件、setimmediate、close事件;
 - **微任务(microtask)：**Promise的then回调、process.nextTick、queueMicrotask
@@ -1698,7 +1702,7 @@ setImmediate(() => {
 
 
 
-**Node中的 Stream**
+#### Node中的 Stream
 
 可以这样理解流：
 
@@ -1717,14 +1721,14 @@ setImmediate(() => {
 
 <font color=FF0000>**所有的流Stream 都是 EventEmitter 的实例**</font>
 
-**Node.js 中有四种基本流类型：**
+##### Node.js 中有四种基本流类型
 
 - **Writable：**可以向其<font color=FF0000>写入数据的流</font>（ 例如 fs.createWriteStream()  ）
 - **Readable：**可以从中<font color=FF0000>读取数据的流</font>（例如 fs.createReadStream() ）
 - **Duplex：**<font color=FF0000>同时为Readable和的流Writable</font>（例如 net.Socket ）
 - **Transform：**Duplex可以在写入和读取数据时修改或转换数据的流（ 例如 zlib.createDeflate() )
 
-读取Stream 代码示例：
+##### 读取 Stream 代码示例
 
 ```js
 const fs = require('fs')
@@ -1750,7 +1754,7 @@ reader.on('data', (data) => {
 })
 ```
 
-写入Stream 代码示例
+##### 写入Stream 代码示例
 
 ```js
 const writer = fs.createWriteStream('./bar.txt', {
@@ -1776,9 +1780,9 @@ writer.on('close', () => {
 })
 ```
 
-**pipe方法**
+##### pipe 方法
 
-传统的写法：
+###### 传统的写法
 
 ```js
 // 读取文件，并写入
@@ -1789,7 +1793,7 @@ fs.readFile('./bar.txt', (err, data) => {
 })
 ```
 
-用stream的方法（更加优雅）：
+###### 用stream的方法（更加优雅）
 
 ```js
 const reader = fs.createReadStream('./foo.txt')
@@ -1800,11 +1804,11 @@ reader.pipe(writer)
 
 
 
-**http开发**
+#### http开发
 
 **Web服务器是：**当应用程序（客户端）需要某一个资源时，可以向一台服务器，通过Http请求获取到这个资源；提供资源的这个服务器就是一个Web服务器
 
-http模块代码示例：
+##### http 模块代码示例
 
 ```js
 const http = require('http')
@@ -1848,7 +1852,7 @@ server.listen(8888)
 
 http.server() 这种方法和 createServer() 效果是一摸一样的，而且在源码中 createServer的实现就是 return http.server()
 
-**server.listen() 的参数：**
+##### server.listen() 的参数
 
 - server.listen() 中如果不设置一个端口号，也是可以的；这将会随机使用一个端口号。另外，可以通过 `serverName.address().port` 获取到端口号。
 - 主机host，通常可以传入 localhost、127.0.0.1、0.0.0.0 ；同时，<font color=FF0000>默认是 0.0.0.0</font>
@@ -1861,7 +1865,7 @@ http.server() 这种方法和 createServer() 效果是一摸一样的，而且�
     - 监听IPV4上所有的地址，再根据端口找到不同的应用程序
     - 比如我们监听0.0.0.0时，<font color=FF0000>在同一个网段下的主机中，通过ip地址是可以访问的</font>
 
-**request 对象**
+##### request 对象
 
 request 对象中 封装 了客户端给我们服务器传递过来的所有信息，重要的有：
 
@@ -1909,32 +1913,32 @@ req.on('data', (data) => {
 
 
 
-**reponse 对象**
+##### reponse 对象
 
-- **响应结果**
+###### 响应结果
+
+```js
+res.write('hello world')
+res.end('bye')
+```
+
+###### 响应状态码
+
+设置状态码 的方法：
+
+- 直接给 statusCode 属性赋值
 
   ```js
-  res.write('hello world')
-  res.end('bye')
+  res.statusCode = 200
   ```
 
-- **响应状态码**
+- 与 header 一起设置
 
-  设置状态码 的方法：
-
-  - 直接给 statusCode 属性赋值
-
-    ```js
-    res.statusCode = 200
-    ```
-
-  - 与 header 一起设置
-
-    ```js
-    res.writeHead(503, {
-      // header 的其他内容。这个对象是可选的
-    })
-    ```
+  ```js
+  res.writeHead(503, {
+    // header 的其他内容。这个对象是可选的
+  })
+  ```
 
 - **响应header**
 
@@ -1956,52 +1960,52 @@ req.on('data', (data) => {
 
 
 
-**Node http 发送请求**
+##### Node http 发送请求
 
 Node 的 http 模块，不仅仅可以接收与处理浏览器的请求，也可以发送 http 的请求；比如作为中间层，比如做请求转发？
 
-- 发送 GET请求
+###### 发送 GET请求
 
-  ```js
-  const http = require('http')
-  
-  http.get('http://localhost:8000', (res) => {
-    // 监听 服务器 返回的数据
-    res.on('data', (data) => {
-      console.log(data)
-    })
+```js
+const http = require('http')
+
+http.get('http://localhost:8000', (res) => {
+  // 监听 服务器 返回的数据
+  res.on('data', (data) => {
+    console.log(data)
   })
-  ```
+})
+```
 
-- 发送 POST请求
+###### 发送 POST请求
 
-  另外，http原生没有post方法，所以需要其他方法实现：
+另外，http原生没有post方法，所以需要其他方法实现：
 
-  ```js
-  // 另外，在使用 request 发送请求时，如果不告诉Node请求的内容配置 已经结束了，否则是不会发送请求的。
-  // 所以，需要接收 http.request 生成的变量，并告诉它要请求的内容的配置 已经结束（end）了，这时候才会发送请求。通知结束，需要使用 req.end()。而 http.get() 会自动做这件事。
-  const req = http.request({
-    method: 'post',
-    hostname: 'localhost',
-    port: 8888,
-  }, (res) => {
-    res.on('data', (data) => {
-      console.log(data.toString())
-    })
-    
-    res.on('end', () => {
-      console.log('获得了请所有结果，关闭')
-    })
+```js
+// 另外，在使用 request 发送请求时，如果不告诉Node请求的内容配置 已经结束了，否则是不会发送请求的。
+// 所以，需要接收 http.request 生成的变量，并告诉它要请求的内容的配置 已经结束（end）了，这时候才会发送请求。通知结束，需要使用 req.end()。而 http.get() 会自动做这件事。
+const req = http.request({
+  method: 'post',
+  hostname: 'localhost',
+  port: 8888,
+}, (res) => {
+  res.on('data', (data) => {
+    console.log(data.toString())
   })
   
-  req.end()
-  ```
+  res.on('end', () => {
+    console.log('获得了请所有结果，关闭')
+  })
+})
+
+req.end()
+```
 
 另外，如果在Node 中发送 网络请求，一般（更多情况下）是不会通过 原生方法去写的（太麻烦）；而是 会使用 Axios，<font color=FF0000>在Node 环境中，Axios会使用 Node的 http模块（进行封装）</font>，在浏览器环境中，使用 XMLHttpRequest。
 
 
 
-**Node 原生 文件上传**
+##### Node 原生 文件上传
 
 常见错误的方法：
 
@@ -2042,7 +2046,7 @@ const server = http.createServer((req, res) => {
 
 这里需要使用 querystring 的 parse() 方法。qs.parse() 的声明：querystring.parse( str [, sep [, eq[, options] ] ] )
 
-其中
+##### 其中
 
 - str： 是需要被解析为对象的内容
 - sep：是分隔为单个键值对字符串的参考值（比如，str经过sep的分割，被分为多个："key:value" ），默认值是 "&"
@@ -2084,7 +2088,7 @@ req.on('end', () => {
 
 
 
-**web框架（express、koa）**
+#### web框架（express、koa）
 
 已经有了使用http内置模块来搭建Web服务器，为什么还要使用框架?
 
@@ -2095,7 +2099,7 @@ req.on('end', () => {
 
 express早于koa出现,并且在Node社区中迅速流行起来：我们可以基于express快速、方便的开发自己的Web服务器；并且可以通过一些实用工具和中间件来扩展自己功能。Express 整个框架的核心就是中间件，理解了中间件其他一切都非常简单（中间件可以理解为：回调函数）
 
-**express的使用过程有两种方式：**
+##### express的使用过程有两种方式
 
 - **方式一：**通过express提供的脚手架，直接创建一个应用的骨架。需要安装 express-generator
 
@@ -2140,11 +2144,11 @@ express早于koa出现,并且在Node社区中迅速流行起来：我们可以�
 
 
 
-**中间件**
+#### 中间件
 
 Express是一个路由和中间件的Web框架，它本身的功能非常少。Express应用程序 <font color=FF0000>本质上是一系列中间件函数的调用</font>
 
-**中间件是什么：**
+##### 中间件是什么
 
 - 中间件的本质是传递给 express 的一个回调函数
 - **这个回调函数接受三个参数：**
@@ -2152,7 +2156,7 @@ Express是一个路由和中间件的Web框架，它本身的功能非常少。E
   - 响应对象：response对象
   - <font color=FF0000>next函数</font>：<font color=FF0000>在express 中定义的用于执行下一个中间件的函数</font>
 
-**中间件中可以执行哪些任务：**
+##### 中间件中可以执行哪些任务
 
 - 执行任何代码
 - 更改请求( request )和响应( response )对象
@@ -2163,80 +2167,80 @@ Express是一个路由和中间件的Web框架，它本身的功能非常少。E
 
 在中间件 ( req, res, next) => { ... } 中（这个函数确实是一个中间件），如果不调用 res.end()，就必须要调用 next()，否则这个请求响应的生命周期将一直不会结束，即：请求被挂起。
 
-**如何将一个中间件应用到我们的应用程序中？**
+##### 如何将一个中间件应用到我们的应用程序中？
 
 - express主要提供了两种方式：app.use / router.use 和 app.methods / router.methods
 - 可以是 app，也可以是router
 - methods指的是常用的请求方式，比如：app.get / app.post / app.all
 
-**应用中间件示例：**
+##### 应用中间件示例
 
-- **最普通的中间件**
+###### 最普通的中间件
 
-  ```js
-  const express = require('express')
+```js
+const express = require('express')
+
+const app = express()
+
+// 编写普通的中间件
+// 用use 注册一个中间件（回调函数）
+// 因为没有设置路径和请求方法，所以这个中间件，可以被任意的路径和方法请求执行
+app.use((req, res, next) => {
+  console.log('注册了一个最普通的中间件')
+  // 如果第二个中间件加了res.end()，那么这里res.end()就不能加上，因为生命周期已经结束(end)了，还在调用res.end()，是不被允许的。一般 end都是放到最后一个执行的中间件中。
+  //res.end('end')
   
-  const app = express()
-  
-  // 编写普通的中间件
-  // 用use 注册一个中间件（回调函数）
-  // 因为没有设置路径和请求方法，所以这个中间件，可以被任意的路径和方法请求执行
-  app.use((req, res, next) => {
-    console.log('注册了一个最普通的中间件')
-    // 如果第二个中间件加了res.end()，那么这里res.end()就不能加上，因为生命周期已经结束(end)了，还在调用res.end()，是不被允许的。一般 end都是放到最后一个执行的中间件中。
-    //res.end('end')
-    
-    // 如果这里没有next()，下面定义的第二个中间件将不会执行。因为中间件默认（不加next()的情况）只会访问第一个配置上的中间价
-    // 如果加上了 next()，将会查找下一个可以执行（可以匹配上）的中间件。
-    // 第三个中间件同样
-    next()
-  })
-  
-  // 这里注册了第二个中间件，如果上面的中间件没有调用 next()，这个定义的中间件将不会执行。
-  app.use((req, res, next) => {
-    console.log('注册了一个最普通的中间件2')
-    next()
-    res.end('end')
-  })
-  
-  app.listen(8000, () => {
-    console.log('普通的中间件启动成功')
-  })
-  ```
+  // 如果这里没有next()，下面定义的第二个中间件将不会执行。因为中间件默认（不加next()的情况）只会访问第一个配置上的中间价
+  // 如果加上了 next()，将会查找下一个可以执行（可以匹配上）的中间件。
+  // 第三个中间件同样
+  next()
+})
 
-- **路径匹配中间件**
+// 这里注册了第二个中间件，如果上面的中间件没有调用 next()，这个定义的中间件将不会执行。
+app.use((req, res, next) => {
+  console.log('注册了一个最普通的中间件2')
+  next()
+  res.end('end')
+})
 
-  ```js
-  app.use('/home', (req, res, next) => {
-    console.log('home middleware')
-    res.end（'home middleware')
-  })
-  ```
+app.listen(8000, () => {
+  console.log('普通的中间件启动成功')
+})
+```
 
-- **路径和方法匹配的中间件**
+###### 路径匹配中间件
 
-  ```js
-  app.get('/home', (req, res, next) => {
-    console.log('path and method middleware')
-  })
-  ```
+```js
+app.use('/home', (req, res, next) => {
+  console.log('home middleware')
+  res.end（'home middleware')
+})
+```
 
-- **连续注册中间件**
+###### 路径和方法匹配的中间件
 
-  ```js
-  app.get('/home', (req, res, next) => {
-    console.log('path and method middleware')
-    next()
-  }, (req, res, next) => {
-    console.log('path and method middleware')
-    next()
-  }, (req, res, next) => {
-    console.log('path and method middleware')
-    next()
-  })
-  ```
+```js
+app.get('/home', (req, res, next) => {
+  console.log('path and method middleware')
+})
+```
 
-**中间件json 解析**
+###### 连续注册中间件
+
+```js
+app.get('/home', (req, res, next) => {
+  console.log('path and method middleware')
+  next()
+}, (req, res, next) => {
+  console.log('path and method middleware')
+  next()
+}, (req, res, next) => {
+  console.log('path and method middleware')
+  next()
+})
+```
+
+###### 中间件json 解析
 
 ```js
 app.post('/login', (req, res, next) => {
@@ -2295,7 +2299,7 @@ const upload = multer() // 相当于创建了一个multer对象
 app.use(upload.any()) // 设置中间件，另外，根据官方文档：不建议将 upload.any() 作为全局中间件使用；所以，这里的代码，不建议这样写；建议直接放在中间件中（见下面 /login 的示例）。
 ```
 
-**使用 multer 保存上传的文件：**
+###### 使用 multer 保存上传的文件
 
 ```js
 const path = require('path')
@@ -2332,7 +2336,7 @@ app.post('/upload', upload.single('file'), (req, res, next) => {
 
 
 
-**express保存日志信息**
+##### express保存日志信息
 
 如果我们希望将请求日志记录下来，那么可以使用express官网开发的第三方库: [morgan](https://github.com/expressjs/morgan)，使用示例：
 
@@ -2356,7 +2360,7 @@ app.get('/home', (req, res, next) => {
 
 
 
-**客户端传递到服务器参数的方法常见的是5种：**
+##### 客户端传递到服务器参数的方法常见的是5种
 
 - 通过get请求中的URL的params（类似于 Vue-router中动态路由）
 - 通过get请求中的URL的query
@@ -2364,7 +2368,7 @@ app.get('/home', (req, res, next) => {
 - 通过post请求中的body的x-www-form-urlencoded格式（中间件使用过）
 - 通过post请求中的form-data格式（中间件中使用过）
 
-**params 参数的处理：**
+###### params 参数的处理
 
 ```js
 app.get('/products/:id', (req, res, next) => {
@@ -2372,7 +2376,7 @@ app.get('/products/:id', (req, res, next) => {
 })
 ```
 
-**query 参数的处理：**
+###### query 参数的处理
 
 ```js
 app.get('/login', (req, res, next) => {
@@ -2383,7 +2387,7 @@ app.get('/login', (req, res, next) => {
 
 
 
-**express的response响应数据和状态**
+##### express的response响应数据和状态
 
 res.end() 中的返回的内容必须是 字符串。如果想要返回json格式，需要先进行 JSON.stringify()：
 
@@ -2409,7 +2413,7 @@ res.status(204)
 
 
 
-**express的路由**
+##### express的路由
 
 如果我们将所有的代码逻辑都写在app中，那么app会变得越来越复杂：
 
@@ -2472,7 +2476,7 @@ res.status(204)
 
 
 
-**express 作为静态服务器**
+##### express 作为静态服务器
 
 ```js
 const express = require('express')
@@ -2492,7 +2496,7 @@ express 确实可以作为静态服务器，但是选择nginx 是更好的选择
 
 
 
-**express 的错误处理**
+##### express 的错误处理
 
 比如在 login 接口中，用户提交用户名和密码，数据库查询发现用户不存在；或者 在register 接口中，用户提交用户名和密码，数据查询发现用户已存在。<font color=FF0000>这里的判断逻辑是非常相似的</font>，所以，<font color=FF0000>对于错误处理，可以专门做一个 中间件</font>。
 
@@ -2557,13 +2561,13 @@ app.listen(8000, () => {
 
 
 
-**express 源码阅读**
+##### express 源码阅读
 
 // 需要重看...
 
 
 
-koa
+### koa
 
 Koa官方的介绍:
 
@@ -2576,9 +2580,9 @@ Koa官方的介绍:
 - 相对于express具有更强的异步处理能力（后续我们再对比）
 - Koa的核心代码只有1600+行，是一个更加轻量级的框架，我们可以根据需要安装和使用中间件
 
-**示例：**
+##### 示例
 
-没有中间件：
+###### 没有中间件
 
 ```js
 // express中导入的是一个createApplication的函数
@@ -2596,7 +2600,7 @@ app.listen(8888, () => {
 })
 ```
 
-写上中间件：
+###### 写上中间件
 
 ```js
 // 第一个参数是 ctx，即context，上下文；其中的内容有：ctx.request、ctx.response
@@ -2678,7 +2682,7 @@ app.listen(8000, () => {
 })
 ```
 
-**koa 参数解析**
+##### koa 参数解析
 
 在（原生的）koa 中，可以通过 ctx.request.url 获取路径，通过 ctx.request.query 获取请求的query参数；但是无法获取到 params。这时就需要通过路由 koa-router 获取。
 
@@ -2725,7 +2729,7 @@ app.use((ctx, next) => {
 })
 ```
 
-**koa处理上传文件，比如上传头像**
+##### koa处理上传文件，比如上传头像
 
 示例如下：
 
@@ -2755,7 +2759,7 @@ uploadRouter.post('/avator', upload.single('avator'), (ctx, next) => {
 
 
 
-**koa中数据的响应**
+##### koa中数据的响应
 
 **输出结果：body将响应主体设置为以下之一：**
 
@@ -2791,7 +2795,7 @@ uploadRouter.post('/avator', upload.single('avator'), (ctx, next) => {
 
 
 
-**koa部署静态资源**
+##### koa部署静态资源
 
 需要使用第三方库：[koa-static](https://github.com/koajs/static)
 
@@ -2805,7 +2809,7 @@ app.use(staticAsset('./build'))
 
 
 
-**koa错误处理**
+##### koa错误处理
 
 koa 给出了多种错误处理的方式，常用的有：
 
@@ -2828,19 +2832,20 @@ app.on('error', (err, ctx) => {
 
 
 
-**koa 和 express 的区别**
+##### koa 和 express 的区别
 
-- 从架构设计上来说：
-  - express是完整和强大的,其中帮助我们内置了非常多好用的功能;
-  - koa是简洁和自由的,它只包含最核心的功能,并不会对我们使用其他中间件进行任何的限制。
-    - 甚至是在app中连最基本的get, post都没有给我们提供;
-    - 我们需要通过自己或者路由来判断请求方式或者其他功能;
-  - 因为express和koa框架他们的核心其实都是中间件：
-    - 但是他们的中间件事实上，它们的中间件的执行机制是不同的：express中的next() 是同步代码实现的，所以如果下一个中间件有异步操作，则不会等待其执行完成（如果使用 Node promisify将其变成一个promise，是否可以改变？）。而koa 中的next() 是通过promise 实现的，所以下一个中间件有异步处理，如果加上promise 或者 async / await 就会等待。
+###### 从架构设计上来说
+
+- express是完整和强大的,其中帮助我们内置了非常多好用的功能;
+- koa是简洁和自由的,它只包含最核心的功能,并不会对我们使用其他中间件进行任何的限制。
+  - 甚至是在app中连最基本的get, post都没有给我们提供;
+  - 我们需要通过自己或者路由来判断请求方式或者其他功能;
+- 因为express和koa框架他们的核心其实都是中间件：
+  - 但是他们的中间件事实上，它们的中间件的执行机制是不同的：express中的next() 是同步代码实现的，所以如果下一个中间件有异步操作，则不会等待其执行完成（如果使用 Node promisify将其变成一个promise，是否可以改变？）。而koa 中的next() 是通过promise 实现的，所以下一个中间件有异步处理，如果加上promise 或者 async / await 就会等待。
 
 
 
-**洋葱模型**
+##### 洋葱模型
 
 **两层理解含义：**
 
@@ -2854,7 +2859,7 @@ app.on('error', (err, ctx) => {
 
 
 
-**mysql**
+#### mysql
 
 - 将mysql路径写入环境变量
 
@@ -2876,7 +2881,7 @@ app.on('error', (err, ctx) => {
 
   
 
-**MySQL默认的数据库：**
+##### MySQL默认的数据库
 
 - **infomation-schema：**信息数据库,其中包括MySQL在维护的其他数据库、表、列、访问权限等信息
 - **performance-schema：**性能数据库,记录着MySQL Server数据库引擎在运行过程中的一些资源消耗相关的信息；
@@ -2885,7 +2890,7 @@ app.on('error', (err, ctx) => {
 
 
 
-**在Navicat中，表有这样属性：**
+##### 在Navicat中，表有这样属性
 
 - **字符集：**即存储数据的编码，默认使用 utf8mb4，不建议使用直接使用utf8，因为utf8无法存储emoji
 - **排序规则：**在select中 orderby prop <font color=FF0000>asc / desc </font> 中的正序倒序的排序规则。
@@ -2902,7 +2907,7 @@ app.on('error', (err, ctx) => {
 
 
 
-**常见的SQL语句我们可以分成四类：**
+##### 常见的SQL语句我们可以分成四类
 
 - **DDL** ( Data Definition Language )：数据定义语言。可以通过DDL语句对数据库或者表进行:创建、删除、修改等操作
 
@@ -3734,11 +3739,46 @@ async function queryProducts() {
 
 
 
----
+## Node 补充
 
-**Node 可以做什么**
+
+
+##### Node 可以做什么
 
 ![596181630397925_.pic_hd](https://i.loli.net/2021/09/10/9Ig4SoB6b3zxnDT.png)
+
+
+
+#### Node 查看 V8 信息
+
+##### 查看 V8 版本方法一
+
+使用 `node -p process.versions.v8` ，结果如下：
+
+<img src="https://s2.loli.net/2022/09/19/JyaBrAxI36VeqZ8.png" alt="image-20220919234454543" style="zoom:60%;" />
+
+##### 查看 V8 信息方法二
+
+使用 `npm version` ，结果如下：
+
+<img src="https://s2.loli.net/2022/09/19/uJnsrRBOd5FbxKo.png" alt="image-20220919234857310" style="zoom:50%;" />
+
+> 👀 注：顺带看了下 `node -p process.versions` 的结果，和 `npm version` 的运行结果一样。
+
+##### 查看 v8 提供的选项
+
+```sh
+$ node --v8-options
+```
+
+打印结果相当多，这里略。不过可以使用 grep 对结果进行筛选：
+
+```sh
+# 查询 v8 引擎中 harmony（ES6）功能
+$ node --v8-options | grep -e '--harmony'
+```
+
+摘自：[楊傑文的資訊技術手札 - NodeJS - 查看 v8 引擎的版本編號及支援特性](http://chiehwenyang.logdown.com/posts/2016/10/28/1048713)
 
 
 
@@ -3750,64 +3790,63 @@ async function queryProducts() {
 
 #### 基本使用
 
-- **安装**
+##### 安装
 
-  ```sh
-  npm install package-name  					#本地安装
-  npm install package-name @"version" #安装特定版本
-  npm install -g package-name  				#全局安装
-  npm install     										#通过package.json安装，将项目依赖的包都在文件内声明
-  ```
+```sh
+npm install package-name  					#本地安装
+npm install package-name @"version" #安装特定版本
+npm install -g package-name  				#全局安装
+npm install     										#通过package.json安装，将项目依赖的包都在文件内声明
+```
 
-  安装之前，npm install会先检查，node_modules目录之中是否已经存在指定模块。如果存在，就不再重新安装了，即使远程仓库已经有了一个新版本，也是如此。
+安装之前，npm install会先检查，node_modules目录之中是否已经存在指定模块。如果存在，就不再重新安装了，即使远程仓库已经有了一个新版本，也是如此。
 
-  如果你希望，一个模块不管是否安装过，npm 都要强制重新安装，可以使用`*-f`或`*--force`参数。
+如果你希望，一个模块不管是否安装过，npm 都要强制重新安装，可以使用`*-f`或`*--force`参数。
 
-  ```sh
-  npm install packageName -force
-  ```
+```sh
+npm install packageName -force
+```
 
-- **卸载**
+##### 卸载
 
-  ```sh
-  npm uninstall package-name
-  ```
+```sh
+npm uninstall package-name
+```
 
-- **查看已安装的包**
+##### 查看已安装的包
 
-  ```sh
-  npm ls      						#查看所有
-  npm ls package-name     #查看某安装包的具体信息
-  ```
+```sh
+npm ls      						#查看所有
+npm ls package-name     #查看某安装包的具体信息
+```
 
-- **更新**
+##### 更新
 
-  ```sh
-  npm update package-name
-  ```
+```sh
+npm update package-name
+```
 
-  **顺序**
+##### 顺序
 
-  先到npm模块仓库查询最新版本（提供registry查询服务）==> 返回json对象(包含该模块所有版本信息；含有dist.tarball属性，属性值为该压缩包网址，访问下载源码) ==> 查询本地版本（若本地版本不存在或远程版本较新，则安装更新）
-  npm install和npm update都是以此方式安装模块
+先到npm模块仓库查询最新版本（提供registry查询服务）==> 返回json对象(包含该模块所有版本信息；含有dist.tarball属性，属性值为该压缩包网址，访问下载源码) ==> 查询本地版本（若本地版本不存在或远程版本较新，则安装更新）
+npm install和npm update都是以此方式安装模块
 
-- **搜索安装包**
+##### 搜索安装包
 
-  ```sh
-  npm seach package-name
-  ```
+```sh
+npm seach package-name
+```
 
 摘自：[npm和gem](https://blog.csdn.net/u011099640/article/details/53083845)
 
 
 
-#### 命令摘录
+#### 命令解释
 
-- npm version：除了返回npm的版本外，还可以返回其他关于包的信息，比如：你正在使用的node.js的版本，openSSL或者V8的版本
-- npm list：显示当前npm所有的安装的包及其相关信息（比如：版本号）
+- `npm version` ：除了返回 npm 的版本外，还返回其他关于包的信息，比如：你正在使用的node.js的版本，openSSL或者V8的版本
+- `npm list` ：显示当前npm所有的安装的包及其相关信息（比如：版本号）
 
-- npm install系列
-
+- `npm install` 系列
   - **npm install** **<font color=FF0000>=</font>** **npm i**。在git clone项目的时候，项目文件中并没有 node_modules文件夹，项目的依赖文件可能很大。直接执行，<font color=FF0000>npm会根据package.json配置文件中的依赖配置下载安装</font>。
   
   - **-global** **<font color=FF0000>=</font>** **-g**，全局安装，安装后的包位于系统预设目录下
@@ -3818,13 +3857,15 @@ async function queryProducts() {
 
 摘自：[npm install说明](https://www.jianshu.com/p/b3e407942ac5)
 
-**补充：**
+##### 补充
 
 - **npm info packageName：**查看包的信息，及其历史版本的信息等（在你想要安装特定版本的npm包，且不确定是否存在时，可以使用该命令）
 - **npm config ls / npm config list：**查看所有Node环境配置
 - **npm config get cache：**查看缓存路径
 - **npm config set cache cache-path：**设置缓存
 - **npm config set prefix prefix-path：**设置路径
+
+
 
 #### npm config 相关使用
 
@@ -3838,7 +3879,7 @@ npm get <key>
 npm set <key> <value> [-g|--global]
 ```
 
-**Description**
+##### Description
 
 npm gets its config settings from the command line, environmentvariables, `npmrc` files, and in some cases, the `package.json` file.
 
@@ -3848,7 +3889,7 @@ See config for a more thorough discussion of the mechanisms involved.
 
 The `npm config` command can be used to update and edit the contents of the user and global npmrc files.
 
-**Sub-commands**
+##### Sub-commands
 
 Config supports the following sub-commands:
 
@@ -3886,20 +3927,23 @@ npm config edit
 
 
 
-#### --save / --save-dev / --save-optional
+#### --save 系列 options
 
 npm install takes 3 exclusive, optional flags which save or update the package version in your main package.json:
 
 npm install 提供了3种独立的、可选的用于保存和更新在你主要的package.json的包版本的标记
 
-- <mark>-S, --save: Package will appear in your dependencies.</mark>
-  - -S是--save的缩写，package将会出现在你的dependencies中（自动把模块和版本号添加到dependencies部分（生产环境））
+- `-S` , `--save` : Package will appear in your dependencies.
 
-- <mark>-D, --save-dev: Package will appear in your devDependencies.</mark>
-  - -D是--save-dev的缩写，package将会出现在你的devDependencies中（自动把模块和版本号添加到devDependencies部分（开发环境））
+  `-S` 是 `--save` 的缩写，package将会出现在你的dependencies中（自动把模块和版本号添加到dependencies部分（生产环境））
 
-- <mark>-O, --save-optional: Package will appear in your optionalDependencies.</mark>
-  - -O是--save-optinal的缩写，package将会出现在你的optionalDependencies中
+- `-D` , `--save-dev` : Package will appear in your devDependencies.
+
+  `-D` 是 `--save-dev` 的缩写，package将会出现在你的devDependencies中（自动把模块和版本号添加到devDependencies部分（开发环境））
+
+- `-O` , `--save-optional` : Package will appear in your optionalDependencies.
+
+  `-O` 是 `--save-optinal` 的缩写，package将会出现在你的optionalDependencies中
 
 摘自：[npm 安装参数中的 --save-dev 是什么意思](https://segmentfault.com/q/1010000000403629)
 

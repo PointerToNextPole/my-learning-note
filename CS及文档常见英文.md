@@ -331,9 +331,10 @@
 - **斜杠**
   - 正斜杠  `/`：forward slash
   - 反斜杠  `\ ` ：backslash 
+- **竖杠 `|`** ：一般称为 “Vertical bar”，但是在 CS 中更多称为 “pipe symbol”
 - **引号**
   - 反引号 ``	`：backquote
-- **下划线 `_`** ：underline
+- **下划线 `_`** ：underline，CS 中更倾向使用 **underscore**
 - **逗号 `,`** ：comma
 - **问号 `?`** ：question mark
 - **冒号 `:`** ：colon
