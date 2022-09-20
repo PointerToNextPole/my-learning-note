@@ -493,6 +493,10 @@ Dockerfile 指令说明 **简洁版**：
 
 ### docker 命令
 
+> 👀 注：具体参考 [Docker Doc - Docker CLI](https://docs.docker.com/engine/reference/commandline/docker/) ，不过并没有深度使用 docker，且官方文档不够简洁，所以选择摘抄 [runoob](https://www.runoob.com/) 中的内容
+
+
+
 #### docker run
 
 `docker run` ：创建一个新的容器并运行一个命令
@@ -563,7 +567,22 @@ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
   >
   > 摘自：[阮一峰 - Docker 微服务教程](https://www.ruanyifeng.com/blog/2018/02/docker-wordpress-tutorial.html)
   >
-  > 这个参数，可以将 本地代码和 docker 容器绑定起来，在本地编写项目，修改同样会反映在 docker 容器中；相当方便 ⭐️
+  > 👀 其他补充：
+  >
+  > `-v` 选项，可以将 本地代码和 docker 容器绑定起来，在本地编写项目，修改同样会反映在 docker 容器中；相当方便 ⭐️
+  >
+  > 一般 前端在 打包后、上传打包 之前 会使用 [http-server](https://github.com/http-party/http-server) 或 [serve](https://github.com/vercel/serve) 运行打包结果，以检查“打包结果” 和 开发环境 是否有区别。而在使用 docker 后，提供了另一种方案：
+  >
+  > 在 `dist` 文件夹下，运行如下命令：
+  >
+  > ```sh
+  > $ docker run --name web-server -d -p 8000:80 -v $(pwd):/usr/share/nginx/html nginx
+  > #            命名container  独立模式 映射端口   映射本地文件夹                    运行nginx image
+  > ```
+  >
+  > 这时，可以访问 `localhost:8000`  ，查看 dist 中的打包效果。
+  >
+  > 学习自：[codingstartup - 初探 Docker](https://www.bilibili.com/video/BV1vD4y1X7ce)
 
 摘自：[runoob - Docker run 命令](https://www.runoob.com/docker/docker-run-command.html)
 
@@ -585,6 +604,59 @@ $ docker rmi [OPTIONS] IMAGE [IMAGE...]
 - **`--no-prune`** ：不移除该镜像的过程镜像，默认移除
 
 摘自：[runoob - Docker rmi 命令](https://www.runoob.com/docker/docker-rmi-command.html)
+
+
+
+#### docker commit 
+
+`docker commit` ：从容器（ 👀 为基础）创建一个新的镜像。
+
+##### 语法
+
+```sh
+$ docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+```
+
+##### 选项
+
+- **`-a`** ：提交的镜像作者
+- **`-c`** ：使用 Dockerfile 指令来创建镜像
+- **`-m`** ：提交时的说明文字；
+- **`-p`** ：在 commit 时，将容器暂停。
+
+摘自：[runoob - Docker commit 命令](https://www.runoob.com/docker/docker-commit-command.html)
+
+
+
+#### docker diff
+
+`docker diff` : 检查<font color=red>容器里文件结构</font>的更改。
+
+##### 语法
+
+```sh
+docker diff [OPTIONS] CONTAINER
+```
+
+摘自：[runoob - Docker diff 命令](https://www.runoob.com/docker/docker-diff-command.html)
+
+
+
+#### docker attach
+
+`docker attach` ：<font color=fuchsia>连接到正在运行中的容器</font>
+
+##### 语法
+
+```
+docker attach [OPTIONS] CONTAINER
+```
+
+要 attach 上去的容器必须正在运行，可以同时连接上同一个container来共享屏幕（与 screen 命令的attach类似）。
+
+官方文档中说 attach 后可以通过 CTRL-C 来 detach，但实际上经过我的测试，如果 container 当前在运行 bash，CTRL-C 自然是当前行的输入，没有退出；如果 container 当前正在前台运行进程，如输出 nginx 的 access.log 日志，CTRL-C 不仅会导致退出容器，而且还stop 了。这不是我们想要的，detach 的意思按理应该是脱离容器终端，但容器依然运行。好在 attach 是可以带上`--sig-proxy=false` 来确保 CTRL-D 或 CTRL-C 不会关闭容器。
+
+摘自：[runoob - Docker attach 命令](https://www.runoob.com/docker/docker-attach-command.html)
 
 
 

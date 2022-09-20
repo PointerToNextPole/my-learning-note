@@ -3749,15 +3749,121 @@ async function queryProducts() {
 
 
 
+#### 《一杯茶的时间，上手 Node.js》笔记
+
+Node（或者说 Node.js，两者是等价的）是 JavaScript 的一种**运行环境**。同时：**浏览器也是 JavaScript 的运行环境**，两个运行环境的区别：
+
+<img src="https://i.loli.net/2020/12/21/Ppjc5Vu4TbaFHCS.jpg" style="zoom: 25%;" />
+
+运行 Node 代码通常有两种方式：1）在 REPL 中交互式输入和运行；2）将代码写入 JS 文件，并用 Node 执行。
+
+> **补充**
+> REPL 的全称是 Read Eval Print Loop（读取-执行-输出-循环），通常可以理解为**交互式解释器**，你可以输入任何表达式或语句，然后就会立刻执行并返回结果。<font color=lightSeaGreen>如果你用过 Python 的 REPL 一定会觉得很熟悉。</font>
+
+类似于Python，对于js文件也可通过如下命令使其在终端执行：
+
+```sh
+$ node script.js
+```
+
+在浏览器中，我们有 document 和 window 等全局对象；而<font color=FF0000> Node 只包含 ECMAScript 和 V8，不包含 BOM 和 DOM，因此 Node 中不存在 document 和 window；取而代之，Node 专属的全局对象是 process</font>。
+
+**JavaScript 全局对象的分类**
+
+1. 浏览器专属，例如 `window`、`alert` 等等；
+2. <font color=FF0000>Node 专属，例如 `process`、`Buffer`、`__dirname`、`__filename` 等等；</font>
+3. <font color=FF0000>浏览器和 Node 共有，但是**实现方式不同**</font>，例如 `console`（第一节中已提到）、`setTimeout`、`setInterval` 等；
+4. <font color=FF0000>浏览器和 Node 共有，并且属于 **ECMAScript 语言定义**的一部分</font>，例如 `Date`、`String`、`Promise` 等；
+
+<img src="https://i.loli.net/2020/12/21/cWpCzIl3Nao6RAG.jpg" style="zoom: 30%;" />
+
+##### Node 专属全局对象解析
+
+- **process：**<font color=FF0000>process 全局对象可以说是 Node.js 的灵魂，它是管理当前 Node.js 进程状态的对象，提供了与操作系统的简单接口。</font>
+
+  在REPL中可以输入`process`查看process中包含哪些熟悉
+
+- **Buffer：**Buffer 全局对象让 JavaScript 也能够轻松地处理二进制数据流，结合 Node 的流接口（Stream），能够实现高效的二进制文件处理。
+
+- **\_\_filename 和 \_\_dirname：**分别代表当前所运行 Node 脚本的文件路径和所在目录路径。（\_\_filename 和 \_\_dirname 只能在 Node 脚本文件中使用，在 REPL 中是没有定义的。）
+
+* 了解一下 Node 具体是怎样实现模块机制的。具体而言：Node 引入了三个新的全局对象（Node专属）：**require**、**exports**和**module**。
+
+  - **require：**<font color=FF0000>require 用于导入其他 Node 模块</font>，其参数接受一个字符串代表模块的名称或路径，通常被称为模块标识符。具体有以下三种形式：
+
+    - 直接写模块名称，通常是核心模块或第三方文件模块，例如 `os`、`express` 等
+    - 模块的相对路径，指向项目中其他 Node 模块，例如 `./utils`
+    - 模块的绝对路径<font color=FF0000>（**不推荐！**）</font>，例如 `/home/xxx/MyProject/utils`
+
+    示例如下：
+
+    ```js
+    // 导入内置库或第三方模块
+    const os = require('os');
+    const express = require('express');
+    
+    // 通过相对路径导入其他模块
+    const utils = require('./utils');
+    
+    // 通过绝对路径导入其他模块
+    const utils = require('/home/xxx/MyProject/utils');
+    ```
+
+    > **提示：**在通过路径导入模块时，通常省略文件名中的 `.js` 后缀。
+
+  - **exports：**导出Node模块。另外：exports对象本质上就是`module.exports`的补充，示例如下：
+
+    ```js
+    // myModule.js
+    function add(a, b) {
+      return a + b;
+    }
+    
+    // 导出函数 add
+    exports.add = add;  //有空研究一下：这里前一个add是否可以起别名？
+    ```
+
+    通过将 add 函数添加到 exports 对象中，外面的模块就可以通过以下代码使用这个函数。在 myModule.js 旁边创建一个 main.js，代码如下：
+
+    ```js
+    // main.js
+    const myModule = require('./myModule');
+    
+    // 调用 myModule.js 中的 add 函数
+    myModule.add(1, 2);
+    ```
+
+    > 提示：如果你熟悉 ECMAScript 6 中的解构赋值，那么可以用更优雅的方式获取 add 函数：
+    >
+    > ```js
+    > const { add } = require('./myModule');
+    > ```
+
+  - **module：** 模块对象
+
+摘自：[一杯茶的时间，上手 Node.js](https://zhuanlan.zhihu.com/p/97413574)
+
+
+
 #### Node 查看 V8 信息
 
-##### 查看 V8 版本方法一
+> 👀 注：之所以想要了解 查看 Node 查看 V8 版本的方法，除了好奇之外，也是看见了 antfu 给 vscode 提的一个 issue 的截图（如下图），在提 issue 时很有必要给出自己运行环境的信息，这是一个 “减少不必要沟通” 的好习惯：
+>
+> <img src="https://s2.loli.net/2022/09/20/32JyPTvCenM6OSW.png" alt="image-20220920003722224" style="zoom: 33%;" />
+>
+> 链接：https://github.com/microsoft/vscode/issues/95937
+
+##### 查看 V8 版本
+
+###### 方法一
 
 使用 `node -p process.versions.v8` ，结果如下：
 
 <img src="https://s2.loli.net/2022/09/19/JyaBrAxI36VeqZ8.png" alt="image-20220919234454543" style="zoom:60%;" />
 
-##### 查看 V8 信息方法二
+> 👀 注：`-p` 完整写法是 `--print` ，作用“应该”是 print “script” ，参见 [Node Doc - cli # `-p` , `--print` "script"](https://nodejs.org/api/cli.html#-p---print-script)
+
+###### 方法二
 
 使用 `npm version` ，结果如下：
 
@@ -3779,6 +3885,14 @@ $ node --v8-options | grep -e '--harmony'
 ```
 
 摘自：[楊傑文的資訊技術手札 - NodeJS - 查看 v8 引擎的版本編號及支援特性](http://chiehwenyang.logdown.com/posts/2016/10/28/1048713)
+
+##### Chrome 查看 V8 版本
+
+在 Chrome 地址栏 输入并访问 `chrome://version/`  ，会显示 chrome 的一些信息，其中也包含 V8 的信息：
+
+<img src="https://s2.loli.net/2022/09/20/D5aQCo9fbE1PFck.png" alt="image-20220920003308551" style="zoom:50%;" />
+
+
 
 
 
@@ -3859,11 +3973,11 @@ npm seach package-name
 
 ##### 补充
 
-- **npm info packageName：**查看包的信息，及其历史版本的信息等（在你想要安装特定版本的npm包，且不确定是否存在时，可以使用该命令）
-- **npm config ls / npm config list：**查看所有Node环境配置
-- **npm config get cache：**查看缓存路径
-- **npm config set cache cache-path：**设置缓存
-- **npm config set prefix prefix-path：**设置路径
+- `npm info packageName` ：查看包的信息，及其历史版本的信息等（在你想要安装特定版本的npm包，且不确定是否存在时，可以使用该命令）
+- `npm config ls` / `npm config list` ：查看所有Node环境配置
+- `npm config get cache` ：查看缓存路径
+- `npm config set cache cache-path` ：设置缓存
+- `npm config set prefix prefix-path`：设置路径
 
 
 
@@ -3895,33 +4009,33 @@ Config supports the following sub-commands:
 
 - **set：**Sets the config key to the value. If value is omitted, then it sets it to "true".
 
-```bash
-npm config set key value
-```
+  ```sh
+  npm config set key value
+  ```
 
 - **get：**Echo the config value to stdout.
 
-```bash
-npm config get key
-```
+  ```sh
+  npm config get key
+  ```
 
 - **list：**Show all the config settings. Use `-l` to also show defaults. Use `--json` to show the settings in json format.
 
-```bash
-npm config list
-```
+  ```sh
+  npm config list
+  ```
 
 - **delete：**Deletes the key from all configuration files.
 
-```bash
-npm config delete key
-```
+  ```sh
+  npm config delete key
+  ```
 
 - **edit：**Opens the config file in an editor. Use the `--global` flag to edit the global config.
 
-```bash
-npm config edit
-```
+  ```sh
+  npm config edit
+  ```
 
 摘自：[npm-config](https://docs.npmjs.com/cli/v6/commands/npm-config)
 
@@ -3963,7 +4077,7 @@ npm install 提供了3种独立的、可选的用于保存和更新在你主要�
 
 
 
-#### 关于package-lock.json
+#### package-lock.json 相关
 
 npm 创建了一个 package-lock.json，这个文件就是用来**锁定全部直接依赖和间接依赖的精确版本号**，或者说提供了关于 node_modules 目录的精确描述，从而确保在这个项目中开发的所有人都能有完全一致的 npm 依赖。
 
@@ -3985,35 +4099,35 @@ npm root -g
 
 #### 镜像设置
 
-- 查看npm<font color=FF0000>默认</font>镜像地址
+##### 查看npm默认镜像地址
 
-  ```sh
-  npm config get registry
-  ```
+```sh
+npm config get registry
+```
 
-- 将npm<font color=FF0000>默认</font>镜像地址修改为淘宝
+##### 将npm默认镜像地址修改为淘宝
 
-  ```sh
-  npm config set registry https://registry.npm.taobao.org
-  ```
+```sh
+npm config set registry https://registry.npm.taobao.org
+```
 
-- 使用官方镜像
+##### 使用官方镜像
 
-  ```sh
-  npm config set registry https://registry.npmjs.org
-  ```
+```sh
+npm config set registry https://registry.npmjs.org
+```
 
-- 通过cnpm
+##### 通过cnpm
 
-  ```sh
-  npm install -g cnpm --registry=https://registry.npm.taobao.org
-  ```
+```sh
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+```
 
-- 临时使用淘宝镜像
+##### 临时使用淘宝镜像
 
-  ```sh
-  npm --registry https://registry.npm.taobao.org install express
-  ```
+```sh
+npm --registry https://registry.npm.taobao.org install express
+```
 
 摘自：[npm换源](https://www.jianshu.com/p/f311a3a155ff)
 
@@ -4023,8 +4137,8 @@ npm root -g
 
 - **编写模块**
 
-- **编写模块**
-  package.json 文件的内容尽管相对较多，但是实际发布一个包时并不需要一行一行编写。NPM提供的 npm init 命令会帮助你生成package.json 文件，NPM通过提问式的交互逐个填入选项，最后生成预览的包描述文件。如果你满意，输入yes，此时会在目录下得到package.json文件。
+- **初始化包描述信息**
+  package.json 文件的内容尽管相对较多，但是实际发布一个包时并不需要一行一行编写。NPM提供的 npm init 命令会帮助你生成package.json 文件，NPM 通过提问式的交互逐个填入选项，最后生成预览的包描述文件。如果你满意，输入yes，此时会在目录下得到package.json文件。
 
 - **注册包仓库账号**
   为了维护包，NPM必须要使用仓库账号才允许将包发布到仓库中。<font color=FF0000>**注册账号的命令是npm adduser**</font>。这也是一个提问式的交互过程，按顺序进行即可：
@@ -4442,102 +4556,6 @@ Github地址：https://github.com/nodejs/node-gyp
 > GYP工具，即 “Generate Your Projects” 短句的缩写。它的好处在于，可以帮助你生成各个平台下的项目文件，比如Windows下的VisualStudio 解决方案文件（.sln）、Mac下的XCode项目配置文件以及Scons工具。在这个基础上，再动用各自平台下的编译器编译项目。这大大减少了跨平台模块在项目组织上的精力投入。
 >
 > 摘自：《深入浅出Node.js》P28
-
-
-
-#### Node相关笔记
-
-以下内容摘自：[一杯茶的时间，上手 Node.js](https://zhuanlan.zhihu.com/p/97413574)
-
-- Node（或者说 Node.js，两者是等价的）是 JavaScript 的一种**运行环境**。同时：**浏览器也是 JavaScript 的运行环境**，两个运行环境的区别：
-
-  <img src="https://i.loli.net/2020/12/21/Ppjc5Vu4TbaFHCS.jpg" style="zoom: 25%;" />
-
-- 运行 Node 代码通常有两种方式：1）在 REPL 中交互式输入和运行；2）将代码写入 JS 文件，并用 Node 执行。
-
-  > **补充**
-  > REPL 的全称是 Read Eval Print Loop（读取-执行-输出-循环），通常可以理解为**交互式解释器**，你可以输入任何表达式或语句，然后就会立刻执行并返回结果。<mark>如果你用过 Python 的 REPL 一定会觉得很熟悉。</mark>
-
-  类似于Python，对于js文件也可通过如下命令使其在终端执行：
-
-  ```sh
-  node script.js
-  ```
-
-- 在浏览器中，我们有 document 和 window 等全局对象；而<font color=FF0000> Node 只包含 ECMAScript 和 V8，不包含 BOM 和 DOM，因此 Node 中不存在 document 和 window；取而代之，Node 专属的全局对象是 process</font>。
-
-  **JavaScript 全局对象的分类**
-
-  1. 浏览器专属，例如 `window`、`alert` 等等；
-  2. <font color=FF0000>Node 专属，例如 `process`、`Buffer`、`__dirname`、`__filename` 等等；</font>
-  3. <font color=FF0000>浏览器和 Node 共有，但是**实现方式不同**</font>，例如 `console`（第一节中已提到）、`setTimeout`、`setInterval` 等；
-  4. <font color=FF0000>浏览器和 Node 共有，并且属于 **ECMAScript 语言定义**的一部分</font>，例如 `Date`、`String`、`Promise` 等；
-
-  <img src="https://i.loli.net/2020/12/21/cWpCzIl3Nao6RAG.jpg" style="zoom: 30%;" />
-
-- ##### **Node 专属全局对象解析**
-
-  - **process：**<font color=FF0000>process 全局对象可以说是 Node.js 的灵魂，它是管理当前 Node.js 进程状态的对象，提供了与操作系统的简单接口。</font>
-
-    在REPL中可以输入`process`查看process中包含哪些熟悉
-
-  - **Buffer：**Buffer 全局对象让 JavaScript 也能够轻松地处理二进制数据流，结合 Node 的流接口（Stream），能够实现高效的二进制文件处理。
-
-  - **\_\_filename 和 \_\_dirname：**分别代表当前所运行 Node 脚本的文件路径和所在目录路径。（\_\_filename 和 \_\_dirname 只能在 Node 脚本文件中使用，在 REPL 中是没有定义的。）
-
-* 了解一下 Node 具体是怎样实现模块机制的。具体而言：Node 引入了三个新的全局对象（Node专属）：**require**、**exports**和**module**。
-
-  - **require：**<font color=FF0000>require 用于导入其他 Node 模块</font>，其参数接受一个字符串代表模块的名称或路径，通常被称为模块标识符。具体有以下三种形式：
-
-    - 直接写模块名称，通常是核心模块或第三方文件模块，例如 `os`、`express` 等
-    - 模块的相对路径，指向项目中其他 Node 模块，例如 `./utils`
-    - 模块的绝对路径<font color=FF0000>（**不推荐！**）</font>，例如 `/home/xxx/MyProject/utils`
-
-    示例如下：
-
-    ```js
-    // 导入内置库或第三方模块
-    const os = require('os');
-    const express = require('express');
-    
-    // 通过相对路径导入其他模块
-    const utils = require('./utils');
-    
-    // 通过绝对路径导入其他模块
-    const utils = require('/home/xxx/MyProject/utils');
-    ```
-
-    > **提示：**在通过路径导入模块时，通常省略文件名中的 `.js` 后缀。
-
-  - **exports：**导出Node模块。另外：exports对象本质上就是`module.exports`的补充，示例如下：
-
-    ```js
-    // myModule.js
-    function add(a, b) {
-      return a + b;
-    }
-    
-    // 导出函数 add
-    exports.add = add;  //有空研究一下：这里前一个add是否可以起别名？
-    ```
-
-    通过将 add 函数添加到 exports 对象中，外面的模块就可以通过以下代码使用这个函数。在 myModule.js 旁边创建一个 main.js，代码如下：
-
-    ```js
-    // main.js
-    const myModule = require('./myModule');
-    
-    // 调用 myModule.js 中的 add 函数
-    myModule.add(1, 2);
-    ```
-
-    > 提示：如果你熟悉 ECMAScript 6 中的解构赋值，那么可以用更优雅的方式获取 add 函数：
-    >
-    > ```js
-    > const { add } = require('./myModule');
-    > ```
-
-  - **module：** 模块对象
 
 
 
