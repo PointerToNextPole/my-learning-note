@@ -156,8 +156,28 @@ Xcode 中 “Xcode” -> “Open Developer Tool” -> “Simulator”
 
 ##### 添加指定的 OS 版本
 
-OS 版本必须要在 Xcode 中下载，在 X
+OS 版本必须要在 Xcode 中下载，点击 Xcode 中 “Xcode” -> “window” -> “Devices and Simulators”
 
-<img src="/Users/yan/Library/Application Support/typora-user-images/image-20220921235659086.png" alt="image-20220921235659086" style="zoom:50%;" />
+<img src="https://s2.loli.net/2022/09/21/grcubENiMp1KXAR.png" alt="image-20220921235659086" style="zoom:40%;" />
 
-<img src="https://s2.loli.net/2022/09/21/Cd5OzHRtMrn6ypw.png" alt="image-20220921225319095" style="zoom:50%;" />
+进入如下页面，点击 “+” 号
+
+<img src="https://s2.loli.net/2022/09/22/qCkOn5QJfM1zupG.png" alt="image-20220922000009823" style="zoom:40%;" />
+
+选择 “Download more simulator runtimes...”
+
+<img src="https://s2.loli.net/2022/09/22/YjkV7RU5XMDlyqG.png" alt="image-20220922000229461" style="zoom:40%;" />
+
+从而进行选择：
+
+<img src="https://s2.loli.net/2022/09/22/F9CKBc6vynwue7L.png" alt="image-20220922000410775" style="zoom:45%;" />
+
+<img src="https://s2.loli.net/2022/09/22/UwFfnTBe6ucLApm.png" alt="image-20220922000539319" style="zoom:45%;" />
+
+##### 创建与打开 Simulator
+
+<img src="https://s2.loli.net/2022/09/22/gQiobnVB5KpwZXh.png" alt="image-20220922000810475" style="zoom:45%;" />
+
+##### 使用 Simulator
+
+<img src="https://s2.loli.net/2022/09/22/1TamIy639VkRltU.png" alt="image-20220922000957059" style="zoom:35%;" />
