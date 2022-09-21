@@ -32,17 +32,17 @@ DevOps是Development和Operations两个词的结合，将开发和运维结合�
 
 持续集成CI：
 
-<img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtt3bgnnvbj60rs0c8dgu02.jpg" alt="持续集成" style="zoom:67%;" />
+<img src="https://s2.loli.net/2022/09/20/gAtcfVDJn9UC3Yj.jpg" alt="持续集成" alt="https://tva1.sinaimg.cn/large/008i3skNgy1gtt3bgnnvbj60rs0c8dgu02.jpg" style="zoom:67%;" />
 
 持续交付和持续部署：
 
-<img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtt3da1cd2j60rs0kkmz602.jpg" alt="持续交付" style="zoom:67%;" />
+<img src="https://s2.loli.net/2022/09/20/hOEJpPAwdBDLY1b.jpg" alt="持续交付" alt="https://tva1.sinaimg.cn/large/008i3skNgy1gtt3da1cd2j60rs0kkmz602.jpg" style="zoom:67%;" />
 
-<img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtt3dtbewsj60rs0kk76a02.jpg" alt="持续部署" style="zoom:67%;" />
+<img src="https://s2.loli.net/2022/09/20/J6FNMr9lobzOkWd.jpg" alt="持续部署" alt="https://tva1.sinaimg.cn/large/008i3skNgy1gtt3dtbewsj60rs0kk76a02.jpg" style="zoom:67%;" />
 
 ### 1.4. 自动化部署流程
 
-![自动化部署的流程](https://tva1.sinaimg.cn/large/008i3skNgy1gtt5buus2kj60wu0lgq7002.jpg)
+<img src="https://s2.loli.net/2022/09/20/Yd9rQNGFqxOtPzf.jpg" alt="自动化部署的流程" alt="https://tva1.sinaimg.cn/large/008i3skNgy1gtt5buus2kj60wu0lgq7002.jpg" style="zoom:100%;" />
 
 
 

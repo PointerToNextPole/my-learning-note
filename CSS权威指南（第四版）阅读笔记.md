@@ -739,7 +739,7 @@ body::after {content: "The End.";}
 
 #### P105
 
-继承（inheritance）是指把一个元素的某些属性值传给其后代的机制。 <font color=FF0000>确定应该把哪些值应用到元素上时，用户代理不仅要考虑继承，还要考虑声明的特指度（specificity），以及声明的来源。这个过程称为层叠（cascade）</font>。
+继承（inheritance）是指把一个元素的某些属性值传给其后代的机制。 <font color=fuchsia>确定应该把哪些值应用到元素上时，用户代理 **不仅要考虑继承**，还要考虑声明的特指度（specificity），以及声明的来源。这个过程称为层叠（cascade）</font>。
 
 
 
@@ -760,13 +760,13 @@ li#answer {color: navy;}
 
 每对规则中只有一个能胜出，因为<font color=FF0000>匹配的元素只能显示为其中一个颜色</font>。 那么我们如何知道哪个规则胜出呢？
 
-<mark>答案隐藏在每个选择符的特指度中。<font color=FF0000>**用户代理会计算每个规则中选择符的特指度，然后将其依附到规则中的每个声明上**。 **如果两个或多个属性声明有冲突，特指度最高的声明胜出**</font>。</mark>
+<font color=dodgerBlue>答案隐藏在每个选择符的特指度中</font>。<font color=FF0000>**用户代理会计算每个规则中选择符的特指度，然后将其依附到规则中的每个声明上**。 **如果两个或多个属性声明有冲突，特指度最高的声明胜出**</font>。
 
 选择符的特指度由选择符本身的组成部分决定。 一个特指度值由四部分构成，例如0, 0, 0, 0选择符的特指度通过下述规则确定：
 
-- 选择符中的每个 <font color=FF0000>ID 属性</font>值加<font color=FF0000>0, 1, 0, 0</font>。
-- 选择符中的每个<font color=FF0000>类属性值</font>、<font color=FF0000>属性选择</font>或<font color=FF0000>伪类</font>加<font color=FF0000>0, 0, 1, 0</font>。
-- 选择符中的每个<font color=FF0000>元素</font>和<font color=FF0000>伪元素</font>加<font color=FF0000>0, 0, 0, 1</font>。伪类到底有没有特指度在CSS2中表述的有些自相矛盾，不过<mark>CSS2.1明确指出，伪元素有特指度</mark>。
+- 选择符中的每个 <font color=FF0000>ID 属性</font>值加 <font color=FF0000>0, 1, 0, 0</font>。
+- 选择符中的每个<font color=FF0000>类属性值</font>、<font color=FF0000>属性选择</font>或<font color=FF0000>伪类</font>加 <font color=FF0000>0, 0, 1, 0</font>。
+- 选择符中的每个<font color=FF0000>元素</font>和<font color=FF0000>伪元素</font>加 <font color=FF0000>0, 0, 0, 1</font>。伪类到底有没有特指度在CSS2中表述的有些自相矛盾，不过<mark>CSS2.1明确指出，伪元素有特指度</mark>。
 - <font color=FF0000>连结符和通用选择符不增加特指度</font>。
 
 **下面给出几个规则中选择符的特指度**
@@ -794,11 +794,11 @@ html > body table tr[id="totals"] td ul > li {color: maroon;} 	/* 0,0,1,7 */
 li#answer {color: navy;} 																				/* 0,1,0,1(winner) */
 ```
 
-<font color=FF0000 size="4">**特指度从左向右比较**</font>
+<font color=fuchsia size=4>**特指度值是从左向右比较的**</font>。特指度 `1, 0, 0, 0` 比所有 以 0开头 的特指度大，不管后面的数有多大。同样，`0, 1, 0, 1 ` 大于 `0, 0, 1, 7` ，因为前者位于第二位的1比后者位于第二位的0大。
 
 
 
-#### P09 ID 和属性选择符的特指度
+#### P109 ID 和属性选择符的特指度
 
 <font color=FF0000>ID选择符</font> 和 <font color=FF0000>选择id属性的属性选择符</font> 之间在特指度上是有区别的，这一点一定要注意。来看前述示例中的第三对规则：
 
@@ -807,7 +807,7 @@ html > body table tr[id="totals"] td ul > li {color: maroon;} /* 0,0,1,7 */
 li#answer {color: navy;} 																			/* 0,1,0,1 (wins) */
 ```
 
-第二个规则中的ID 选择符（#answer）为选择符的总特指度贡献0, 1, 0, 0。然而，第一个规则中的属性选择符（ [id="totals"] ）为总特指度贡献0, 0, 1, 0。 因此，对下述规则来说，id为meadow的元素将显示为绿色：
+第二个规则中的ID 选择符 ( `#answer` ) 为选择符的总特指度贡献 `0, 1, 0, 0` 。然而，第一个规则中的属性选择符 ( `[id="totals"]` ) 为总特指度贡献 `0, 0, 1, 0`。 因此，对下述规则来说，id为meadow的元素将显示为绿色：
 
 ```css
 #meadow {color: green;} /* 0,1,0,0 */

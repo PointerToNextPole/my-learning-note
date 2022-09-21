@@ -338,6 +338,8 @@
 - **逗号 `,`** ：comma
 - **问号 `?`** ：question mark
 - **冒号 `:`** ：colon
+- **点号 `.`** ：dot
+- **间隔号 `·`** ：interpunct
 
 ##### Google 特殊字符搜索方法
 
@@ -347,7 +349,7 @@
 | "At" sign (@)           | Find social tags like [ @google ] or [ @ladygaga]            |
 | Ampersand (&)           | Find strongly connected ideas and phrases like [ Brothers & Sisters ] or [ A&E ] |
 | Percent (%)             | Search for a percent value like [ 40% of 80 ] or [ 10% of .1 ] |
-| Dollar sign ($)         | Indicate prices, so [ nikon 400 ] and [ nikon $400 ] give different results |
+| Dollar sign (\$)        | Indicate prices, so [ nikon 400 ] and [ nikon \$400 ] give different results |
 | Hashtag/number sign (#) | Search for trending topics indicated by hashtags like [ #lifewithoutgoogle ] |
 | Dash (-)                | Indicate that words around it are strongly connected as in [ twelve-year-old dog ] and [ cross-reference ] |
 | Underscore symbol (_)   | Connected two works like [ quick_sort ]. Your search results will find this pair of words either linked together (e.g., quicksort) or connected by an underscore (e.g., quick_sort). |
