@@ -304,9 +304,28 @@
 
 - **encapsulate** ：**封装**，概括
 
+- **paradigm** ：范式
+
+- **acquaint** ：熟悉的
+
+- **parallelism** ：相似 noun
+
+- **Mutexes** ：互斥量
+
+- **synchronization** ：**同步**，校准
+
+- **notify** ：通知 ( verb) ，notification 的动词形式
+
+- **afterthought** ：回想 👀 虽然但是，这不该猜不出意思的
+- **foreground** ：前景。在 [微信官方文档 - 小程序 - 框架接口 / 页面 / 页面生命周期](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/page-life-cycle.html) 中看到的 “set to foreground ”，应该有 前一个页面的意思。另外，它的反义词是 background
+
+
+
 #### 术语的英文
 
 - **埋点**：Event Tracking
+
+
 
 
 #### 特殊字符

@@ -1,4 +1,14 @@
-# Web调试备忘录
+# Web 调试笔记
+
+
+
+## 神光调试小册笔记
+
+[前端调试通关秘籍](https://juejin.cn/book/7070324244772716556/section) // TODO 首发买的，有空一定看... 👀
+
+
+
+## devTools 使用
 
 
 
@@ -263,7 +273,9 @@ queryObjects(Constructor)
 
 
 
-### 技巧
+## 其他技巧
+
+
 
 #### 《微软产品经理：你不能不知道的6个Web开发者工具》笔记
 
@@ -322,3 +334,63 @@ Overrides 的作用是为远程脚本存储一份本地副本，并在页面加�
 > <img src="https://s2.loli.net/2022/08/27/pFJuvjHinEUKMP8.gif" alt="img" style="zoom:45%;" />
 
 摘自：[微软产品经理：你不能不知道的6个Web开发者工具](https://mp.weixin.qq.com/s/FMfrl28EoMaasZ5sXsHnjQ)
+
+
+
+#### iOS 模拟器调试 WebView
+
+##### 打开模拟器
+
+打开模拟器至少有两种方法
+
+###### 方法一
+
+spotlight 中输入 “simulator” ，可以直接运行
+
+###### 方法二
+
+Xcode 中 “Xcode” -> “Open Developer Tool” -> “Simulator”
+
+<img src="https://s2.loli.net/2022/09/21/pAaUwdYtOeVCh4T.png" alt="image-20220921234836028" style="zoom:50%;" />
+
+##### 创建新的模拟器与打开模拟器
+
+如下
+
+<img src="https://s2.loli.net/2022/09/21/JdDfCsMr6gAqPiI.png" alt="image-20220921235233136" style="zoom:50%;" />
+
+<img src="https://s2.loli.net/2022/09/21/eUgK7LMOIBZHbvD.png" alt="image-20220921235038192" style="zoom:50%;" />
+
+有一个问题是：只能使用 已经下载的 OS 版本，在这里没法添加新指定的 OS版本 ( OS Version )，感觉有点反人类... 方法见下面
+
+##### 添加指定的 OS 版本
+
+OS 版本必须要在 Xcode 中下载，点击 Xcode 中 “Xcode” -> “window” -> “Devices and Simulators”
+
+<img src="https://s2.loli.net/2022/09/21/grcubENiMp1KXAR.png" alt="image-20220921235659086" style="zoom:40%;" />
+
+进入如下页面，点击 “+” 号
+
+<img src="https://s2.loli.net/2022/09/22/qCkOn5QJfM1zupG.png" alt="image-20220922000009823" style="zoom:40%;" />
+
+选择 “Download more simulator runtimes...”
+
+<img src="https://s2.loli.net/2022/09/22/YjkV7RU5XMDlyqG.png" alt="image-20220922000229461" style="zoom:40%;" />
+
+从而进行选择：
+
+<img src="https://s2.loli.net/2022/09/22/F9CKBc6vynwue7L.png" alt="image-20220922000410775" style="zoom:45%;" />
+
+<img src="https://s2.loli.net/2022/09/22/UwFfnTBe6ucLApm.png" alt="image-20220922000539319" style="zoom:45%;" />
+
+##### 创建与打开 Simulator
+
+<img src="https://s2.loli.net/2022/09/22/gQiobnVB5KpwZXh.png" alt="image-20220922000810475" style="zoom:45%;" />
+
+##### 使用 Simulator
+
+<img src="https://s2.loli.net/2022/09/22/1TamIy639VkRltU.png" alt="image-20220922000957059" style="zoom:35%;" />
+
+需要注意的是：虽然是模拟器，但还是不像 Docker，Simulator 可以访问本机 Mac 的端口，也就是说：本机 Mac 上 web dev server 启动的项目也是可以直接在 模拟器上访问到的；这就不需要打包上传到服务器，再访问了；这样很方便。
+
+> 👀 // TODO https://juejin.cn/post/6844903702445162509 其中还有 `Whistle ` 配合 `Proxifier` 的使用，以及利用 Mac safari 的 DevTools 作为调试工具的演示；很有必要看一下

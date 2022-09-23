@@ -40,7 +40,8 @@ Axios是一个 **异步请求** 技术，即：基于XMLHttpRequest对象发起�
 > - 不容易调试
 >
 > 摘自：[ajax和axios的区别是什么？](https://www.html.cn/qa/frontend/19023.html)
-同时Vue的作者尤雨溪也推荐使用Axios
+>
+> 同时，Vue 的作者尤雨溪也推荐使用 Axios，放弃了 vue-resource
 
 
 

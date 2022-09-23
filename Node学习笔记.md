@@ -4133,25 +4133,28 @@ npm --registry https://registry.npm.taobao.org install express
 
 
 
-#### 发布npm 包
+#### 发布 npm 包
 
 - **编写模块**
 
 - **初始化包描述信息**
-  package.json 文件的内容尽管相对较多，但是实际发布一个包时并不需要一行一行编写。NPM提供的 npm init 命令会帮助你生成package.json 文件，NPM 通过提问式的交互逐个填入选项，最后生成预览的包描述文件。如果你满意，输入yes，此时会在目录下得到package.json文件。
-
+  
+  `package.json` 文件的内容尽管相对较多，但是实际发布一个包时并不需要一行一行编写。NPM提供的 `npm init` 命令会帮助你生成`package.json` 文件，NPM 通过提问式的交互逐个填入选项，最后生成预览的包描述文件。如果你满意，输入 yes，此时会在目录下得到 `package.json` 文件。
+  
 - **注册包仓库账号**
-  为了维护包，NPM必须要使用仓库账号才允许将包发布到仓库中。<font color=FF0000>**注册账号的命令是npm adduser**</font>。这也是一个提问式的交互过程，按顺序进行即可：
-
+  
+  为了维护包，NPM 必须要使用仓库账号才允许将包发布到仓库中。<font color=FF0000>**注册账号的命令是 `npm adduser`**</font> 。这也是一个提问式的交互过程，按顺序进行即可：
+  
   ```bash
   $ npm adduser
   Username: (jacksontian)
   Email: (shyvo1987@gmail.com)
   ```
-
+  
 - **上传包**
-  <font color=FF0000>**上传包的命令是 npm publish \<folder>**</font>。在刚刚创建的 package.json 文件所在的目录下，执行 `npm publish .` 开始上传包，相关代码如下：
-
+  
+  <font color=FF0000>**上传包的命令是 `npm publish <folder>`**</font>。在刚刚创建的 package.json 文件所在的目录下，执行 `npm publish .` 开始上传包，相关代码如下：
+  
   ```bash
   $ npm publish .
   npm http PUT http://registry.npmjs.org/hello_test_jackson
@@ -4166,14 +4169,14 @@ npm --registry https://registry.npm.taobao.org install express
   npm http 201 http://registry.npmjs.org/hello_test_jackson/-/hello_test_jackson-0.0.1.tgz/-rev/2-2d64e0946b866878bb252f182070c1d5
   + hello_test_jackson@0.0.1
   ```
-
+  
   在这个过程中，NPM会将目录打包为一个存档文件，然后上传到官方源仓库中
+  
+- **安装包** ：`npm install`
 
-- **安装包**（npm install）
+- **管理包权限**
 
-- 管理包权限
-
-  通常，一个包只有一个人拥有权限进行发布。如果需要多人进行发布，可以使用npm owner命令帮助你管理包的所有者：
+  通常，一个包只有一个人拥有权限进行发布。如果需要多人进行发布，可以使用 `npm owner` 命令帮助你管理包的所有者：
 
   ```bash
   $ npm owner ls eventproxy
@@ -4191,6 +4194,7 @@ npm --registry https://registry.npm.taobao.org install express
   ```
 
 **分析包**
+
 在使用 NPM 的过程中，或许你不能确认当前目录下能否通过 require() 顺利引入想要的包，<font color=FF0000>这时可以执行 npm ls 分析包</font>。
 
 这个命令可以为你分析出当前路径下能够通过模块路径找到的所有包，并生成依赖树，如下：

@@ -32,6 +32,115 @@ wx.miniProgram.navigateTo({ url: urlStr })
 
 
 
+#### 小程序生命周期
+
+##### 页面 `Page` 实例的生命周期
+
+<img src="https://s2.loli.net/2022/09/23/iXBRNuCZklsQbrL.png" alt="img" style="zoom:75%;" />
+
+摘自：[微信官方文档 - 小程序 - 框架接口 / 页面 / 页面生命周期](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/page-life-cycle.html)
+
+##### App 生命周期回调函数
+
+###### onLoad(Object query)
+
+页面加载时触发。一个页面只会调用一次，<font color=red>可以在 onLoad 的参数中获取打开当前页面路径中的参数</font>。
+
+**参数：**
+
+| 名称  | 类型   | 说明                     |
+| :---- | :----- | :----------------------- |
+| query | Object | 打开当前页面路径中的参数 |
+
+###### onShow()
+
+页面显示 / 切入前台时触发。
+
+###### onReady()
+
+页面初次渲染完成时触发。一个页面只会调用一次，代表页面已经准备妥当，可以和视图层进行交互。
+
+注意：对界面内容进行设置的 API 如 [wx.setNavigationBarTitle](https://developers.weixin.qq.com/miniprogram/dev/api/ui/navigation-bar/wx.setNavigationBarTitle.html) ，请在 `onReady` 之后进行。详见[生命周期](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/page-life-cycle.html)
+
+###### onHide()
+
+页面隐藏/切入后台时触发。 如 [wx.navigateTo](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.navigateTo.html) 或底部 `tab` 切换到其他页面，小程序切入后台等。
+
+###### onUnload()
+
+页面卸载时触发。如 [wx.redirectTo](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.redirectTo.html) 或 [wx.navigateBack](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.navigateBack.html) 到其他页面时。
+
+摘自：[微信官方文档 - 小程序 - 框架接口 / 页面 / Page](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html)
+
+
+
+#### Page 对象
+
+注册小程序中的一个页面。接受一个 `Object` 类型参数，其指定页面的初始数据、生命周期回调、事件处理函数等。
+
+##### 参数
+
+| 属性                                                         | 类型         | 默认值 | 必填 | 说明                                                         |
+| :----------------------------------------------------------- | :----------- | :----- | :--- | :----------------------------------------------------------- |
+| [data](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#data) | Object       |        |      | 页面的初始数据                                               |
+| options                                                      | Object       |        |      | 页面的组件选项，同 [`Component` 构造器](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Component.html) 中的 `options` ，需要基础库版本 [2.10.1](https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html) |
+| [behaviors](https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/behaviors.html) | String Array |        |      | 类似于 mixins 和 traits 的组件间代码复用机制，参见 [behaviors](https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/behaviors.html)，需要基础库版本 [2.9.2](https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html) |
+| [onLoad](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onLoad-Object-query) | function     |        |      | 生命周期回调—监听页面加载                                    |
+| [onShow](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onShow) | function     |        |      | 生命周期回调—监听页面显示                                    |
+| [onReady](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onReady) | function     |        |      | 生命周期回调—监听页面初次渲染完成                            |
+| [onHide](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onHide) | function     |        |      | 生命周期回调—监听页面隐藏                                    |
+| [onUnload](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onUnload) | function     |        |      | 生命周期回调—监听页面卸载                                    |
+| [onPullDownRefresh](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onPullDownRefresh) | function     |        |      | 监听用户下拉动作                                             |
+| [onReachBottom](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onReachBottom) | function     |        |      | 页面上拉触底事件的处理函数                                   |
+| [onShareAppMessage](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onShareAppMessage-Object-object) | function     |        |      | 用户点击右上角转发                                           |
+| [onShareTimeline](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onShareTimeline) | function     |        |      | 用户点击右上角转发到朋友圈                                   |
+| [onAddToFavorites](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onAddToFavorites-Object-object) | function     |        |      | 用户点击右上角收藏                                           |
+| [onPageScroll](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onPageScroll-Object-object) | function     |        |      | 页面滚动触发事件的处理函数                                   |
+| [onResize](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onResize-Object-object) | function     |        |      | 页面尺寸改变时触发，详见 [响应显示区域变化](https://developers.weixin.qq.com/miniprogram/dev/framework/view/resizable.html#在手机上启用屏幕旋转支持) |
+| [onTabItemTap](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onTabItemTap-Object-object) | function     |        |      | 当前是 tab 页时，点击 tab 时触发                             |
+| [onSaveExitState](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onSaveExitState) | function     |        |      | 页面销毁前保留状态回调                                       |
+| 其他                                                         | any          |        |      | 开发者可以添加任意的函数或数据到 `Object` 参数中，在页面的函数中用 `this` 可以访问。**这部分属性会在页面实例创建时进行一次深拷贝**。 |
+
+摘自：[微信官方文档 - 小程序 - 框架接口 / 页面 / Page](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html)
+
+
+
+#### 页面路由
+
+在小程序中所有页面的路由全部由框架进行管理：
+
+##### 页面栈
+
+框架以栈的形式维护了当前的所有页面。 当发生路由切换的时候，页面栈的表现如下：
+
+| 路由方式   | 页面栈表现                        |
+| :--------- | :-------------------------------- |
+| 初始化     | 新页面入栈                        |
+| 打开新页面 | 新页面入栈                        |
+| 页面重定向 | 当前页面出栈，新页面入栈          |
+| 页面返回   | 页面不断出栈，直到目标返回页      |
+| Tab 切换   | 页面全部出栈，只留下新的 Tab 页面 |
+| 重加载     | 页面全部出栈，只留下新的页面      |
+
+开发者可以使用 `getCurrentPages()` 函数获取当前页面栈。
+
+##### 路由方式
+
+对于路由的触发方式以及页面生命周期函数如下：
+
+| 路由方式   | 触发时机                                                     | 路由前页面 | 路由后页面         |
+| :--------- | :----------------------------------------------------------- | :--------- | :----------------- |
+| 初始化     | 小程序打开的第一个页面                                       |            | onLoad, onShow     |
+| 打开新页面 | 调用 API [wx.navigateTo](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.navigateTo.html) 使用组件 [`<navigator open-type="navigateTo"/>`](https://developers.weixin.qq.com/miniprogram/dev/component/navigator.html) | onHide     | onLoad, onShow     |
+| 页面重定向 | 调用 API [wx.redirectTo](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.redirectTo.html) 使用组件 [`<navigator open-type="redirectTo"/>`](https://developers.weixin.qq.com/miniprogram/dev/component/navigator.html) | onUnload   | onLoad, onShow     |
+| 页面返回   | 调用 API [wx.navigateBack](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.navigateBack.html) 使用组件[`<navigator open-type="navigateBack">`](https://developers.weixin.qq.com/miniprogram/dev/component/navigator.html) 用户按左上角返回按钮 | onUnload   | onShow             |
+| Tab 切换   | 调用 API [wx.switchTab](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.switchTab.html) 使用组件 [`<navigator open-type="switchTab"/>`](https://developers.weixin.qq.com/miniprogram/dev/component/navigator.html) 用户切换 Tab |            | 各种情况请参考下表 |
+| 重启动     | 调用 API [wx.reLaunch](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.reLaunch.html) 使用组件 [`<navigator open-type="reLaunch"/>`](https://developers.weixin.qq.com/miniprogram/dev/component/navigator.html) | onUnload   | onLoad, onShow     |
+
+摘自：[微信官方文档 - 小程序 - 框架接口 / 页面 / 页面路由](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/route.html)
+
+
+
 #### webView 移动端调试工具
 
 一般使用 vconsole
@@ -125,59 +234,3 @@ changefocus() {
 ```
 
 以上内容摘自：[微信H5页面前端开发，大多数人都会遇到的几个兼容性坑](https://juejin.cn/post/6844903907139780616)
-
-
-
-#### iOS 模拟器调试 WebView
-
-##### 打开模拟器
-
-打开模拟器至少有两种方法
-
-###### 方法一
-
-spotlight 中输入 “simulator” ，可以直接运行
-
-###### 方法二
-
-Xcode 中 “Xcode” -> “Open Developer Tool” -> “Simulator”
-
-<img src="https://s2.loli.net/2022/09/21/pAaUwdYtOeVCh4T.png" alt="image-20220921234836028" style="zoom:50%;" />
-
-##### 创建新的模拟器与打开模拟器
-
-如下
-
-<img src="https://s2.loli.net/2022/09/21/JdDfCsMr6gAqPiI.png" alt="image-20220921235233136" style="zoom:50%;" />
-
-<img src="https://s2.loli.net/2022/09/21/eUgK7LMOIBZHbvD.png" alt="image-20220921235038192" style="zoom:50%;" />
-
-有一个问题是：只能使用 已经下载的 OS 版本，在这里没法添加新指定的 OS版本 ( OS Version )，感觉有点反人类... 方法见下面
-
-##### 添加指定的 OS 版本
-
-OS 版本必须要在 Xcode 中下载，点击 Xcode 中 “Xcode” -> “window” -> “Devices and Simulators”
-
-<img src="https://s2.loli.net/2022/09/21/grcubENiMp1KXAR.png" alt="image-20220921235659086" style="zoom:40%;" />
-
-进入如下页面，点击 “+” 号
-
-<img src="https://s2.loli.net/2022/09/22/qCkOn5QJfM1zupG.png" alt="image-20220922000009823" style="zoom:40%;" />
-
-选择 “Download more simulator runtimes...”
-
-<img src="https://s2.loli.net/2022/09/22/YjkV7RU5XMDlyqG.png" alt="image-20220922000229461" style="zoom:40%;" />
-
-从而进行选择：
-
-<img src="https://s2.loli.net/2022/09/22/F9CKBc6vynwue7L.png" alt="image-20220922000410775" style="zoom:45%;" />
-
-<img src="https://s2.loli.net/2022/09/22/UwFfnTBe6ucLApm.png" alt="image-20220922000539319" style="zoom:45%;" />
-
-##### 创建与打开 Simulator
-
-<img src="https://s2.loli.net/2022/09/22/gQiobnVB5KpwZXh.png" alt="image-20220922000810475" style="zoom:45%;" />
-
-##### 使用 Simulator
-
-<img src="https://s2.loli.net/2022/09/22/1TamIy639VkRltU.png" alt="image-20220922000957059" style="zoom:35%;" />
