@@ -3995,7 +3995,7 @@ npm set <key> <value> [-g|--global]
 
 ##### Description
 
-npm gets its config settings from the command line, environmentvariables, `npmrc` files, and in some cases, the `package.json` file.
+npm gets its config settings from the command line, environment variables, `npmrc` files, and in some cases, the `package.json` file.
 
 See npmrc for more information about the npmrc files.
 
@@ -4111,13 +4111,15 @@ npm config get registry
 npm config set registry https://registry.npm.taobao.org
 ```
 
+> 👀 注：这时打开 `~/.npmrc` ，会发现：多了 `registry=https://registry.npm.taobao.org/`
+
 ##### 使用官方镜像
 
 ```sh
 npm config set registry https://registry.npmjs.org
 ```
 
-##### 通过cnpm
+##### 通过 cnpm
 
 ```sh
 npm install -g cnpm --registry=https://registry.npm.taobao.org
