@@ -65,7 +65,7 @@ Function.prototype.apply = function(context = window, args) {
 
 #### new 运算符
 
-**注：**可以参考下 [[JS 机制与原理#new 运算符实现]] 中的讲解。另外，其中还有另一种 new 的调用方法的源码实现 [[JS 机制与原理#视频《new实例化的重写--检测一下自己this 指向？？》的补充#new 的实现]]
+> 👀 注：可以参考下 [[JS 机制与原理#new 运算符实现]] 中的讲解。另外，其中还有另一种 new 的调用方法的源码实现 [[JS 机制与原理#视频《new实例化的重写--检测一下自己this 指向？？》的补充#new 的实现]]
 
 ```js
 function myNew(fn, ...args) {
@@ -84,8 +84,6 @@ function myNew(fn, ...args) {
 
 ```js
 const instanceof = (left, right) => {
-  // 基本数据类型都返回 false
-  if (typeof left !== 'object' || typeof right !== 'object') return false
   let proto = Object.getPrototypeOf(left)
   while (true) {
     if (proto === null) return false
@@ -94,6 +92,21 @@ const instanceof = (left, right) => {
   }
 }
 ```
+
+> 👀 开始上面的代码有一个判断
+>
+> ```js
+> if(typeof left !== 'object' || typeof right !== 'object') return false
+> ```
+>
+> 用于判断：如果不是引用类型，则直接返回 false；不过在测试的过程中，发现 `instanceof( (() => {}), Object )` 返回值为 false， 但是 `(() => {}) instanceof Object === true` ，这时发现 function 也是引用类型，这里就直接被排除了；那是不是就要改成下面的方式？
+>
+> ```js
+> const isRef = ['object', 'function']
+> if(!isRef.includes(typeof left) || !isRef.includes(typeof right)) return false
+> ```
+>
+> 看了其他博文的实现，都没有加上这个，我也不加了...
 
 #### 原型继承
 
