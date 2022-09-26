@@ -1340,7 +1340,7 @@ HTML \<section> 元素<font color=FF0000>表示一个包含在 HTML 文档中的
 
 #### \<progress>：进度指示元素
 
-HTML 中的 \<progress> 元素<font color=FF0000>用来显示一项任务的完成进度</font>。<mark>虽然规范中没有规定该元素具体如何显示，浏览器开发商可以自己决定，但通常情况下，该元素都显示为一个进度条形式</mark>。如下示例：
+HTML 中的 \<progress> 元素<font color=FF0000>用来显示一项任务的完成进度</font>。<font color=LightSeaGreen>虽然规范中没有规定该元素具体如何显示，浏览器开发商可以自己决定，但通常情况下，该元素都显示为一个进度条形式</font>。如下示例：
 
 <img src="https://i.loli.net/2021/02/23/6a4NvX5LlUoCQId.png" alt="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/progress" style="zoom:40%;" />
 
@@ -1357,10 +1357,10 @@ HTML 中的 \<progress> 元素<font color=FF0000>用来显示一项任务的完�
 
 HTML \<address> 元素 表示其中的 HTML <font color=FF0000>提供了某个人或某个组织（等等）的联系信息</font>。
 
-**用法说明**
+##### 用法说明
 
-- <mark>当表示一个和联系信息无关的任意的地址时，请改用 \<p> 元素而不是 \<address> 元素</mark>。
-- <mark>这个元素不能包含除联系信息之外的任何信息</mark>，比如出版日期（这应当被包含在 \<time> 元素之中）。
+- <font color=LightSeaGreen>当表示一个和联系信息无关的任意的地址时，请改用 `<p>` 元素而不是 `<address>` 元素</font>。
+- <font color=LightSeaGreen>这个元素不能包含除联系信息之外的任何信息</font>，比如出版日期（这应当被包含在 \<time> 元素之中）。
 - 通常，\<address> 元素可以放在 \<footer> 元素之中（如果存在的话）。
 
 
@@ -1373,7 +1373,7 @@ HTML \<address> 元素 表示其中的 HTML <font color=FF0000>提供了某个�
   
   摘自：[input输入框事件](https://www.jianshu.com/p/4517117abd8e)
 
-- <mark> 修改输入框光标的颜色：可以使用 caret-color 属性</mark>
+- <font color=LightSeaGreen>修改输入框光标的颜色：可以使用 caret-color 属性</font>
 
 - ##### **\<input type="hidden">**
   
@@ -1406,7 +1406,7 @@ HTML \<address> 元素 表示其中的 HTML <font color=FF0000>提供了某个�
 | image                                  | 带图像的 submit 按钮。显示的图像由 src 属性规定。如果 src 缺失，alt 属性就会显示。 |       |
 | month                                  | 输入年和月的控件，没有时区。                                 | HTML5 |
 | <font color=FF0000>**number**</font>   | 用于输入数字的控件。如果支持的话，会显示滚动按钮并提供缺省验证（即只能输入数字）。拥有动态键盘的设备上会显示数字键盘。 |       |
-| password                               | 单行的文本区域，<mark>其值会被遮盖</mark>。如果站点不安全，会警告用户。 |       |
+| password                               | 单行的文本区域，<font color=LightSeaGreen>其值会被遮盖</font>。如果站点不安全，会警告用户。 |       |
 | radio                                  | 单选按钮，允许在多个拥有相同 name 值的选项中选中其中一个。   |       |
 | range                                  | 此控件用于输入不需要精确的数字。控件是一个范围组件，默认值为正中间的值。同时使用 htmlattrdefmin  和 htmlattrdefmax 来规定值的范围。 | HTML5 |
 | reset                                  | 此按钮将表单的所有内容重置为默认值。不推荐。                 |       |

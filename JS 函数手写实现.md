@@ -26,7 +26,7 @@ Function.prototype.bind = function(context, ...args) {
 
 #### call 和 apply 的实现
 
-**注：**可以参考下 [[JS 机制与原理#call 和 apply 实现]] 中的内容。另外，call 和 apply 两者实现极为类似，可一起记忆。
+> 👀 注：可以参考下 [[JS 机制与原理#call 和 apply 实现]] 中的内容。另外，call 和 apply 两者实现极为类似，可一起记忆。
 
 ##### call 实现
 
@@ -69,7 +69,7 @@ Function.prototype.apply = function(context = window, args) {
 
 ```js
 function myNew(fn, ...args) {
-  // 基于原型链 创建一个新对象。注：使用 Object.create() 是最常用，且简洁的方法
+  // 基于原型链 创建一个新对象。👀 使用 Object.create() 是最常用，且简洁的方法
   let newObj = Object.create(fn.prototype)
   // 添加属性到新对象上 并获取obj函数的结果
   let res = fn.call(newObj, ...args)
@@ -93,13 +93,13 @@ const instanceof = (left, right) => {
 }
 ```
 
-> 👀 开始上面的代码有一个判断
+> 👀 补充：摘抄实现的代码版本的最上面，有一个判断
 >
 > ```js
 > if(typeof left !== 'object' || typeof right !== 'object') return false
 > ```
 >
-> 用于判断：如果不是引用类型，则直接返回 false；不过在测试的过程中，发现 `instanceof( (() => {}), Object )` 返回值为 false， 但是 `(() => {}) instanceof Object === true` ，这时发现 function 也是引用类型，这里就直接被排除了；那是不是就要改成下面的方式？
+> 用于判断：如果不是引用类型，则直接返回 false。不过在测试的过程中，发现 `instanceof( (() => {}), Object )` 返回值为 false， 但是 `( () => {} ) instanceof Object` 显然是 `true` ，这时发现 function 也是引用类型，这里就直接被排除了；那是不是就要改成下面的方式？
 >
 > ```js
 > const isRef = ['object', 'function']
@@ -124,7 +124,7 @@ Child.prototype.constructor = Child
 
 #### Object.assign 实现
 
-Object.assign() 方法用于：将所有枚举属性值从一个或多个源对象复制到目标对象。它将返回目标对象（该操作是浅拷贝）
+`Object.assign()` 方法用于：将所有枚举属性值从一个或多个源对象复制到目标对象。它将返回目标对象（该操作是浅拷贝）
 
 ```js
 Object.defineProperty(Object, 'assign', {
@@ -588,7 +588,7 @@ const unique = arr => arr.filter((e, index) => arr.indexOf(e) === index)
 const unique = arr => arr.reduce((acc, cur) => acc.includes(cur) ? acc : acc.concat(cur), [])
 ```
 
-注意：开始时没有对 `acc.includes(cur) === true` 的情况进行返回 ( acc )，这是会报错的；因为没有返回 acc 的话，默认返回 undefined，而 undefined 没有 includes 方法，将会报错。所以，无论如何都要返回 acc，哪怕本次操作没有对其进行任何操作。
+> ⚠️ 注意：开始时没有对 `acc.includes(cur) === true` 的情况进行返回 ( `acc` )，这是会报错的；因为没有返回 acc 的话，默认返回 undefined，而 undefined 没有 includes 方法，将会报错。所以，无论如何都要返回 acc，哪怕本次操作没有对其进行任何操作。
 
 #### 类数组转为数组
 

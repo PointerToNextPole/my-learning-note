@@ -12,6 +12,14 @@
 
 
 
+##### Cheat Sheet
+
+![console](https://s2.loli.net/2022/09/26/KtPYa862LcXqs4k.png)
+
+摘自：https://github.com/wangzhengya/cheatsheet
+
+
+
 #### Console Utilities API
 
 <font color=dodgerBlue>The Console Utilities API contains a collection of convenience functions for performing common tasks</font> , such as:
@@ -393,4 +401,4 @@ OS 版本必须要在 Xcode 中下载，点击 Xcode 中 “Xcode” -> “windo
 
 需要注意的是：虽然是模拟器，但还是不像 Docker，Simulator 可以访问本机 Mac 的端口，也就是说：本机 Mac 上 web dev server 启动的项目也是可以直接在 模拟器上访问到的；这就不需要打包上传到服务器，再访问了；这样很方便。
 
-> 👀 // TODO https://juejin.cn/post/6844903702445162509 其中还有 `Whistle ` 配合 `Proxifier` 的使用，以及利用 Mac safari 的 DevTools 作为调试工具的演示；很有必要看一下
+> 👀 // TODO https://juejin.cn/post/6844903702445162509 其中还有 `Whistle ` 配合 `Proxifier` 的使用，以及利用 Mac safari 的 DevTools 作为调试工具的演示；很有必要看一下w

@@ -1779,7 +1779,7 @@ checkscope();
 
 简而言之：new 运算符 创建一个用户定义的对象类型的实例 或 具有构造函数的内置对象类型之一
 
-举个例子：
+##### 举个例子
 
 ```js
 // Otaku 御宅族，简称宅
@@ -1805,14 +1805,14 @@ console.log(person.strength) // 60
 person.sayYourName(); // I am Kevin
 ```
 
-根据示例可知，new 创建的 person 实例可以：
+<font color=dodgerBlue>根据示例可知，new 创建的 person 实例可以：</font>
 
 - 访问 Otaku 构造函数里的属性
 - 访问到 Otaku.prototype 中的属性
 
 ##### 接下来，我们可以尝试着模拟一下了
 
-<mark>因为 new 是关键字，所以无法像 bind 函数一样直接覆盖</mark>，所以我们写一个函数，命名为 objectFactory，来模拟 new 的效果。用的时候是这样的：
+<font color=lightSeaGreen>因为 new 是关键字，所以无法像 bind 函数一样直接覆盖</font>，所以我们写一个函数，命名为 `objectFactory` ，来模拟 new 的效果。用的时候是这样的：
 
 ```js
 function Otaku () { …… }
@@ -1827,7 +1827,7 @@ var person = objectFactory(Otaku, ……) // 注：第一个参数为“构造�
 
 ##### 分析
 
-因为 new 的结果是一个新对象，所以在模拟实现的时候，我们也要建立一个新对象，假设这个对象叫 obj，因为 obj 会具有 Otaku 构造函数里的属性，<font color=FF0000>想想**「经典继承」**的例子</font>，我们<font color=FF0000>**可以使用 Otaku.apply(obj, arguments)来给 obj 添加新的属性**</font>。
+因为 new 的结果是一个新对象，所以在模拟实现的时候，我们也要建立一个新对象，假设这个对象叫 obj，因为 obj 会具有 Otaku 构造函数里的属性，<font color=FF0000>想想**「经典继承」**的例子</font>，我们<font color=FF0000>**可以使用 `Otaku.apply(obj, arguments)` 来给 obj 添加新的属性**</font>。
 
 在 [JavaScript 深入系列第一篇：JavaScript深入之从原型到原型链](https://github.com/mqyqingfeng/Blog/issues/2) 中，我们便讲了原型与原型链，我们知道实例的 \_\_proto__ 属性会指向构造函数的 prototype，也正是因为建立起这样的关系，实例可以访问原型上的属性。
 
@@ -1836,13 +1836,14 @@ var person = objectFactory(Otaku, ……) // 注：第一个参数为“构造�
 ```js
 // 第一版代码
 function objectFactory() {
-    // 注：创建一个新的对象，最后返回
+    // 👀 创建一个新的对象，最后返回
     var obj = new Object();
-    // 注：弹出并使用 第一个实参（构造函数名），用名为 Constructor 的变量保存起来。另外，这里的 [].shift.call() 一般写作 Array.prototype.shift.call()；[].shift.call() 有点不易读
+    // 👀 弹出并使用 第一个实参（构造函数名），用名为 Constructor 的变量保存起来。
+    // 👀 这里的 [].shift.call() 一般写作 Array.prototype.shift.call() ；[].shift.call() 有点不易读
     Constructor = [].shift.call(arguments);
-    // 注：将 Contructor 构造函数的原型 赋值到 创建的对象 obj 的原型上。这里 obj.__proto__ 是 ES5 的写法，已经不推荐使用；可以使用 ES6 的 Object.setPrototypeOf() 替代。另外，new 本身也是 ES6 的语法，不会出现不兼容的情况。
+    // 👀 将 Contructor 构造函数的原型 赋值到 创建的对象 obj 的原型上。这里 obj.__proto__ 是 ES5 的写法，已经不推荐使用；可以使用 ES6 的 Object.setPrototypeOf() 替代。另外，new 本身也是 ES6 的语法，不会出现不兼容的情况。
     obj.__proto__ = Constructor.prototype;
-    // 注：使用 apply 调用 contructor 函数
+    // 👀 使用 apply 调用 contructor 函数
     Constructor.apply(obj, arguments);
     // 返回 obj
     return obj;
@@ -1851,7 +1852,7 @@ function objectFactory() {
 
 在这一版中，我们：
 
-1. 用new Object() 的方式新建了一个对象 obj
+1. 用 `new Object()` 的方式新建了一个对象 obj
 2. 取出第一个参数，就是我们要传入的构造函数。此外因为 shift 会修改原数组，所以 arguments 会被去除第一个参数
 3. 将 obj 的原型指向构造函数，这样 obj 就可以访问到构造函数原型中的属性
 4. 使用 apply，改变构造函数 this 的指向到新建的对象，这样 obj 就可以访问到构造函数中的属性
@@ -1891,7 +1892,7 @@ person.sayYourName(); // I am Kevin
 
 #### 返回值效果实现
 
-**注：**下面的内容讲的有点唐突，可以看下下面的补充 [[#视频《new实例化的重写--检测一下自己this 指向？？》的补充#不同方法返回值区别]] 中 不同返回值的总结
+> 👀 注：下面的内容讲的有点唐突，可以看下下面的补充 [[#视频《new实例化的重写--检测一下自己this 指向？？》的补充#不同方法返回值区别]] 中 不同返回值的总结
 
 接下来我们再来看一种情况，假如构造函数有返回值，举个例子：
 
@@ -1910,13 +1911,13 @@ var person = new Otaku('Kevin', '18');
 
 console.log(person.name) // Kevin
 console.log(person.habit) // Games
-console.log(person.strength) // undefined 注：不是返回的属性，拿不到
-console.log(person.age) // undefined      注：不是返回的属性，拿不到
+console.log(person.strength) // undefined 👀 不是返回的属性，拿不到
+console.log(person.age) // undefined      👀 不是返回的属性，拿不到
 ```
 
 在这个例子中，构造函数返回了一个对象，在 <font color=FF0000>**实例 person 中只能访问返回的对象中的属性**</font>。
 
-而且还要注意一点，在这里我们是返回了一个对象，<font color=FF0000>假如我们只是返回一个基本类型的值呢</font>？再举个例子：
+而且还要注意一点，在这里我们是返回了一个对象，<font color=fuchsia>假如我们只是返回一个基本类型的值呢</font>？再举个例子：
 
 ```js
 function Otaku (name, age) {
@@ -1947,7 +1948,7 @@ function objectFactory() {
     Constructor = [].shift.call(arguments);
     obj.__proto__ = Constructor.prototype;
     var ret = Constructor.apply(obj, arguments);
-    // 注：只有这里改变了，加了判断
+    // 👀 只有这里改变了，加了判断
     return typeof ret === 'object' ? ret : obj;
 };
 ```
@@ -1966,7 +1967,7 @@ function Person(name) {
 
 ##### 不同方法返回值区别
 
-- **直接函数执行：**返回的内容要看 函数内容 return 的内容：有返回值则有值，没有返回值则为 undefined
+- **直接函数执行：**<font color=red>返回的内容要看 “函数内容 return 的内容”</font>：有返回值则有值，没有返回值则为 undefined
 
 - **使用 new 运算符：**一般没有 return 返回值，且返回的内容是实例之后的对象。
 
@@ -2005,8 +2006,8 @@ p.say()
 
 #### call 的模拟实现
 
-一句话介绍 call：<mark>call() 方法在使用一个 
-**指定的 this 值** 和 **若干个指定的参数值** 的前提下调用某个函数或方法</mark>。
+一句话介绍 call：<font color=lightSeaGreen>`call()` 方法在使用一个 
+**指定的 this 值** 和 **若干个指定的参数值** 的前提下调用某个函数或方法</font>。
 
 举个例子：
 
@@ -2334,7 +2335,7 @@ Function.prototype.bind = function (context) {
 
 > 一个绑定函数也能使用 new 操作符创建对象：这种行为就像把原函数当成构造器（即：Constructor）。<font color=FF0000>**提供的 this 值被忽略**</font>，同时调用时的参数被提供给模拟函数。
 
-也就是说当 bind 返回的函数作为构造函数的时候，bind 时指定的 this 值会失效，但传入的参数依然生效（**注：**这里可以参考 [[前端面试点总结#this的绑定（学习自 coderwhy 的文章）]] 中的：<font color=FF0000>**bind 的优先级没有 new 高**</font>）。举个例子：
+也就是说当 bind 返回的函数作为构造函数的时候，bind 时指定的 this 值会失效，但传入的参数依然生效（ 👀 注：这里可以参考 [[前端面试点总结#this 指向（学习自 coderwhy 的文章）]] 中的：<font color=FF0000>**bind 的优先级没有 new 高**</font>）。举个例子：
 
 ```js
 var value = 2;

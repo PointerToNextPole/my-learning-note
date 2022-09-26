@@ -4401,7 +4401,7 @@ bind() 方法<font color=FF0000>创建一个新的函数</font>，<mark>在 bind
 
 - **参数**
 
-  - **thisArg：**调用绑定函数时作为 this 参数传递给目标函数的值。 <font color=FF0000 size=4>**如果使用 new 运算符构造绑定函数，则忽略该值（注：bind的优先级没有new高，详细讲解可以参见：[[前端面试点总结#this的绑定（学习自 coderwhy 的文章）]] 中 “this 绑定操作”的优先级）**</font>。当<font color=FF0000>使用 bind 在 setTimeout 中创建一个函数（作为回调提供）时，作为 thisArg 传递的任何原始值都将转换为 object</font>。如果 <font color=FF0000>bind 函数的参数列表为空，或者thisArg是null或undefined，执行作用域的 this 将被视为新函数的 thisArg</font>。
+  - **thisArg：**调用绑定函数时作为 this 参数传递给目标函数的值。 <font color=FF0000 size=4>**如果使用 new 运算符构造绑定函数，则忽略该值（注：bind的优先级没有new高，详细讲解可以参见：[[前端面试点总结#this 指向（学习自 coderwhy 的文章）]] 中 “this 绑定操作”的优先级）**</font>。当<font color=FF0000>使用 bind 在 setTimeout 中创建一个函数（作为回调提供）时，作为 thisArg 传递的任何原始值都将转换为 object</font>。如果 <font color=FF0000>bind 函数的参数列表为空，或者thisArg是null或undefined，执行作用域的 this 将被视为新函数的 thisArg</font>。
 
   - **arg1, arg2, ...：**<font color=FF0000>当目标函数被调用时，被 <font size=4>**预置入**</font> 绑定函数的参数列表中的参数</font>。这些参数 偏函数中 会用到。
 
