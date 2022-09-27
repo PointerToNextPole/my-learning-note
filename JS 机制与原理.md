@@ -1383,9 +1383,9 @@ VariableEnvironment: {
 
 <font color=FF0000>在**「函数上下文」**中，我们 **用「活动对象」**( activation object, AO ) 来**表示「变量对象」**</font>。
 
-<font color=FF0000>「活动对象」和「变量对象」其实是一个东西</font>，只是<font color=FF0000>**「变量对象」是「规范上的」或者说是「引擎实现上」的，不可在 JavaScript 环境中访问**</font>。<font color=FF0000>**只有到当进入一个「执行上下文」中，这个「执行上下文」的「变量对象」才会被激活**</font>；所以才叫 Activation Object，而 <font color=FF0000>只有被激活的变量对象、也就是活动对象上的各种属性，**才能被访问**</font>。
+<font color=fuchsia>「活动对象」和「变量对象」其实是一个东西</font>，只是<font color=fuchsia>**「变量对象」是「规范上的」或者说是「引擎实现上」的，不可在 JavaScript 环境中访问**</font>。<font color=fuchsia>**只有到当进入一个「执行上下文」中，这个「执行上下文」的「变量对象」才会被激活**</font>；所以<font color=fuchsia>才叫 Activation Object</font>，而 <font color=FF0000>只有被激活的变量对象、也就是活动对象上的各种属性，**才能被访问**</font>。
 
-「活动对象」是在进入「函数上下文」时刻被创建的（**注：**根据下面 [[#关于「函数上下文」Kuitos 博文中的补充]] 的说法，“进入”的意思就是“被调用”、”执行到“），<font color=FF0000>**它（AO）通过函数的 arguments 属性初始化**</font>。arguments 属性值是 Arguments 对象。
+<font color=fuchsia>「活动对象」是在进入「函数上下文」时刻被创建的</font>（ 👀 根据下面 [[#关于「函数上下文」Kuitos 博文中的补充]] 的说法，“进入”的意思就是“被调用”、”执行到“），<font color=FF0000>**它（AO）通过函数的 arguments 属性初始化**</font>。arguments 属性值是 Arguments 对象。
 
 ##### 关于「函数上下文」Kuitos 博文中的补充
 
@@ -1401,7 +1401,7 @@ VariableEnvironment: {
 > a(“k”,10);
 > ```
 >
-> <font color=FF0000 size=4>**a 被调用时**</font>（**注：**这里说的很明白了，是 a 被调用之后，创建 AO），<font color=FF0000>**在 a 的执行上下文会创建一个 活动对象 AO，并且被初始化为 AO = [arguments]**</font>。随后 AO 又被当做变量对象 ( variable object ) VO进行变量初始化，此时 VO = [arguments].concat([name,age,gender,b])。
+> <font color=FF0000 size=4>**a 被调用时**</font>（ 👀 这里说的很明白了，是 a 被调用之后，创建 AO），<font color=FF0000>**在 a 的执行上下文会创建一个 活动对象 AO，并且被初始化为 AO = [arguments]**</font>。随后 AO 又被当做变量对象 ( variable object ) VO进行变量初始化，此时 VO = `[arguments].concat([name,age,gender,b])` 。
 >
 > 摘自：[一道js面试题引发的思考](https://github.com/kuitos/kuitos.github.io/issues/18)
 
@@ -1416,24 +1416,27 @@ VariableEnvironment: {
 
 <font color=FF0000>当进入「执行上下文」时，这时候还没有执行代码</font>，**「变量对象」会包括**：
 
-- <font color=FF0000>函数的**所有形参**</font>（如果是「函数上下文」）。**注：**这个应该对应下面例子中的 有实参的“形参a“
+- <font color=FF0000>函数的**所有形参**</font>（如果是「函数上下文」）。👀 这个应该对应下面例子中的 有实参的 “ 形参a “
 
   - 由名称和对应值组成的一个变量对象的属性被创建
 
-  - 没有实参（**注：**可以理解为：调用时没有实参），属性值设为 undefined
+  - 没有实参（ 👀 可以理解为：调用时没有实参），属性值设为 undefined
 
 - 函数声明
 
   - <font color=FF0000>由“名称”和“对应值”（**函数对象** ( function-object ) ）组成一个变量对象的属性被创建</font>
-  - 如果变量对象已经存在相同名称的属性，则完全替换这个属性（**注：**应该是覆盖？）
+  - 如果变量对象已经存在相同名称的属性，则完全替换这个属性（ 👀 应该是覆盖？）
 
-- 变量声明。**注：**这里对应下面的变量 b 和 d（ d 是变量声明）
+- 变量声明。👀 这里对应下面的变量 b 和 d（ d 是变量声明）
 
-  - 由名称和对应值 ( undefined ) 组成一个「变量对象」的属性被创建（注：如下面的）
-  - <font color=FF0000 size=4>**如果「变量名称」跟 “已经声明的形式参数”或函数相同，则变量声明不会干扰已经存在的这类属性**</font>。**注：** 这句话非常重要，解释了「函数提升」和 「var 变量提升」冲突，谁优先（**不是覆盖**）的问题。具体示例参见下面 [[#变量对象的思考题 第二题]]
-
+  - 由名称和对应值 ( undefined ) 组成一个「变量对象」的属性被创建（👀 如下面的）
+  
+  - <font color=FF0000 size=4>**如果「变量名称」跟 “已经声明的形式参数”或函数相同，则变量声明不会干扰已经存在的这类属性**</font>。
+  
+    > 👀 注： 这句话非常重要，解释了「函数提升」和 「var 变量提升」冲突，谁优先（**不是覆盖**）的问题。具体示例参见下面 [[#变量对象的思考题 第二题]]
+  
   **补充：**
-
+  
   > 这里有一点特殊就是只有 函数声明 ( function declaration ) 会被加入到「变量对象」中，而 <font color=FF0000>**函数表达式 ( function expression )** 则不会</font>。看代码：
   >
   > ```js
@@ -1564,42 +1567,42 @@ var foo = 1;
 
 ### JS 词法作用域
 
-- <font size=4>**作用域**</font>
+##### 作用域
 
-  **「作用域」是指：<font color=FF0000>程序源代码中定义变量的区域</font>**。
+**「作用域」是指：<font color=FF0000>程序源代码中定义变量的区域</font>**。
 
-  <font color=FF0000 size=4>**「作用域」规定了如何查找变量**</font>，也就是确定当前执行代码对变量的访问权限。
+<font color=FF0000 size=4>**「作用域」规定了如何查找变量**</font>，也就是确定当前执行代码对变量的访问权限。
 
-  <font color=FF0000 size=4>JavaScript 采用词法作用域 ( lexical scoping)，也就是静态作用域</font>。
+<font color=FF0000 size=4>JavaScript 采用词法作用域 ( lexical scoping)，也就是静态作用域</font>。
 
-- <font size=4>**静态作用域 和 动态作用域**</font>
+##### 静态作用域 和 动态作用域
 
-  因为 JavaScript 采用的是词法作用域，<font color=FF0000 size=4>**函数的作用域 在函数定义的时候就决定了**</font>。
+因为 JavaScript 采用的是词法作用域，<font color=FF0000 size=4>**函数的作用域 在函数定义的时候就决定了**</font>。
 
-  与词法作用域相对的是 <font color=FF0000>**动态作用域**，函数的作用域是在 **函数调用** 的时候才决定的</font>。动态作用域的语言有：lisp、bash
+与词法作用域相对的是 <font color=FF0000>**动态作用域**，函数的作用域是在 **函数调用** 的时候才决定的</font>。动态作用域的语言有：lisp、bash
 
-  **证明 js 是静态作用域的例子：**
+##### 证明 js 是静态作用域的例子
 
-  ```js
-  var value = 1;
-  function foo() { console.log(value); }
-  
-  function bar() {
-      var value = 2;
-      foo();
-  }
-  
-  bar(); // 1
-  ```
+```js
+var value = 1;
+function foo() { console.log(value); }
 
-  - **如果是静态作用域：**执行 foo 函数，先从 foo 函数内部查找是否有局部变量 value，如果没有，就根据书写的位置，查找上面一层的代码，也就是 value 等于 1，所以结果会打印 1。
-  - **如果是动态作用域：**执行 foo 函数，依然是从 foo 函数内部查找是否有局部变量 value。如果没有，就从调用函数的作用域，也就是 bar 函数内部查找 value 变量，所以结果会打印 2。
+function bar() {
+    var value = 2;
+    foo();
+}
 
-  但结果为1
+bar(); // 1
+```
+
+- **如果是静态作用域：**执行 foo 函数，先从 foo 函数内部查找是否有局部变量 value，如果没有，就根据书写的位置，查找上面一层的代码，也就是 value 等于 1，所以结果会打印 1。
+- **如果是动态作用域：**执行 foo 函数，依然是从 foo 函数内部查找是否有局部变量 value。如果没有，就从调用函数的作用域，也就是 bar 函数内部查找 value 变量，所以结果会打印 2。
+
+但结果为1
 
 摘自：[JavaScript深入之词法作用域和动态作用域](https://github.com/mqyqingfeng/Blog/issues/3)
 
-##### 博主“冴羽”在issue评论区的引用
+##### 博主“冴羽”在 issue 评论区的引用
 
 此条评论链接：https://github.com/mqyqingfeng/Blog/issues/3#issuecomment-308667350
 
@@ -1617,7 +1620,7 @@ var foo = 1;
 
 ### JS 作用域链
 
-> **注意** ⚠️：现在标准已经发生变化，*作用域链* ( scope chain ) 现在在标准中已经变成了 *环境记录* ( Enviornment Record )
+> ⚠️ 注意：现在标准已经发生变化，*作用域链* ( scope chain ) 现在在标准中已经变成了 *环境记录* ( Enviornment Record )
 >
 > 学习自：[鉴定一下网络热门面试题：如何理解闭包的概念？](https://www.bilibili.com/video/BV1b3411w7rX?t=8m56s)
 
@@ -1633,53 +1636,54 @@ var foo = 1;
 
 在[《JavaScript深入之变量对象》](https://github.com/mqyqingfeng/Blog/issues/5)中讲到，<font color=FF0000>当查找变量的时候，会先从当前上下文的变量对象中查找，**如果没有找到，就会从父级（词法层面上的父级）执行上下文的变量对象中查找**，一直找到全局上下文的变量对象，也就是全局对象</font>。<font size=4>**这样由多个执行上下文的变量对象构成的链表就叫做<font color=FF0000>「作用域链」</font>**</font>。
 
-下面，让我们以一个<font color=FF0000>函数的 <font size=4>**创建**</font> 和 <font size=4>**激活**</font> 两个时期</font>来讲解作用域链是如何创建和变化的（**注：**函数创建是指函数定义，函数激活是指函数被调用？）：
+下面，让我们以一个<font color=FF0000>函数的 <font size=4>**创建**</font> 和 <font size=4>**激活**</font> 两个时期</font>来讲解作用域链是如何创建和变化的（ 👀 函数创建是指函数定义，函数激活是指函数被调用？）：
 
-- <font size=4>**函数创建**</font>
+##### 函数创建
 
-  在[《JavaScript深入之词法作用域和动态作用域》](https://github.com/mqyqingfeng/Blog/issues/3)中讲到，<font color=FF0000 size=4>**函数的作用域在函数定义的时候就决定了**</font>。
+在[《JavaScript深入之词法作用域和动态作用域》](https://github.com/mqyqingfeng/Blog/issues/3)中讲到，<font color=FF0000 size=4>**函数的作用域在函数定义的时候就决定了**</font>。
 
-  这是因为 <font color=FF0000>**函数有一个 内部属性 \[\[scope]]，当函数创建的时候，就会 <font size=4>保存所有父「变量对象」到其中</font>**</font>（**注：**会保存 父变量对象（即：父「执行上下文环境」的 VO ）到 [[scope]] 中，这点要注意！！ 另外，下面有 testScope 函数的 \[\[scope]] 内部属性截图），你 <font color=FF0000 size=4>**可以理解 [[scope]] 就是所有父变量对象的层级链**</font>，但是<font color=FF0000>**注意⚠️：\[\[scope]] 并不代表 完整的作用域链**</font>！
+这是因为 <font color=FF0000>**函数有一个 内部属性 `[[scope]]` ，当函数创建的时候，就会 <font size=4>保存所有父「变量对象」到其中</font>**</font>（ 👀 会保存 父变量对象（即：父「执行上下文环境」的 VO ）到 `[[scope]]` 中，这点要注意！！ 另外，下面有 testScope 函数的 `[[scope]]` 内部属性截图），你 <font color=FF0000 size=4>**可以理解 `[[scope]]` 就是所有父变量对象的层级链**</font>，但是 <font color=FF0000>**注意 ⚠️：`[[scope]]` 并不代表 完整的作用域链**</font>！
 
-  <img src="https://s2.loli.net/2022/04/05/vT5iDzLo4cqYWPy.png" alt="image-20220405214215002" style="zoom:60%;" />
+<img src="https://s2.loli.net/2022/04/05/vT5iDzLo4cqYWPy.png" alt="image-20220405214215002" style="zoom:60%;" />
 
-  **注：**Scope 本来也有 “作用域” 的含义，如下图 Chrome 调试中的 Scope。图片摘自：[现代JS方法 - 在浏览器中调试 - Debugger 命令](https://zh.javascript.info/debugging-chrome#debugger-ming-ling)
+> 👀 注：Scope 本来也有 “作用域” 的含义，如下图 Chrome 调试中的 Scope。图片摘自：[现代JS方法 - 在浏览器中调试 - Debugger 命令](https://zh.javascript.info/debugging-chrome#debugger-ming-ling)
+>
+> <img src="https://s2.loli.net/2022/04/05/ATwHPeGcvMKgQnu.png" alt="image-20220405215320848" style="zoom:60%;" />
 
-  > <img src="https://s2.loli.net/2022/04/05/ATwHPeGcvMKgQnu.png" alt="image-20220405215320848" style="zoom:60%;" />
+**举个例子：**
 
-  **举个例子：**
+```js
+function foo() { // 注：虽然文中没说，但是要注意：foo 函数是在全局作用域下
+    function bar() { ... }
+}
+```
 
-  ```js
-  function foo() { // 注：虽然文中没说，但是要注意：foo 函数是在全局作用域下
-      function bar() { ... }
-  }
-  ```
+函数创建时，各自的 `[[scope]]` 为：
 
-  函数创建时，各自的 [[scope]] 为：
+```js
+// 👀 之所以这里写成 foo.[[scope]] 是因为 [[scope]] 就是包含在 foo 对象中的；如上面“打印 testScope 函数内容”的图
+foo.[[scope]] = [
+  globalContext.VO // variable object
+];
+bar.[[scope]] = [
+  fooContext.AO, // 注：上面有说，AO 是 Activation Object 的缩写
+  globalContext.VO
+  /* 👀 bar 在 foo 的内部，所以 bar 的 [[scope]] 有 fooContext；同时，还有 globalContext，这是我没有想到的；不过，否则的话，[[scope]] 也不会是个数组了。
+  另外，开始我以为 [[scope]] 是一个指针，指向上一级的作用域；但现在看来，不是一般认知的指针；或许是个指针数组？*/
+];
+```
 
-  ```js
-  // 注：之所以这里写成 foo.[[scope]] 是因为 [[scope]] 就是包含在 foo 对象中的；如上面“打印 testScope 函数内容”的图
-  foo.[[scope]] = [
-    globalContext.VO // variable object
-  ];
-  bar.[[scope]] = [
-    fooContext.AO, // 注：上面有说，AO 是 Activation Object 的缩写
-    globalContext.VO
-    /* 注：bar 在 foo 的内部，所以 bar 的 [[scope]] 有 fooContext；同时，还有 globalContext，这是我没有想到的；不过，否则的话，[[scope]] 也不会是个数组了。
-    另外，开始我以为 [[scope]] 是一个指针，指向上一级的作用域；但现在看来，不是一般认知的指针；或许是个指针数组？*/
-  ];
-  ```
+##### 函数激活
 
-- <font size=4>**函数激活**</font>
-  当函数激活时，进入函数上下文，创建 VO/AO 后，就会将「活动对象」添加到作用链的前端。（**注：**添加到作用链的前端，也就是下面写的操作：[AO].concat(\[\[Scope]])。<font color=FF0000>另外，添加到作用链（一个数组）的最前端，是方便依次查找</font>）
+当函数激活时，进入函数上下文，创建 VO/AO 后，就会将「活动对象」添加到作用链的前端。（ 👀 添加到作用链的前端，也就是下面写的操作：`[AO].concat([[Scope]])` 。<font color=FF0000>另外，添加到作用链（一个数组）的最前端，是方便依次查找</font>）
 
-  这时候执行上下文的作用域链，我们命名为 Scope：
+这时候执行上下文的作用域链，我们命名为 Scope：
 
-  ```js
-  Scope = [AO].concat([[Scope]]);
-  ```
+```js
+Scope = [AO].concat([[Scope]]);
+```
 
-  至此，作用域链创建完毕。
+至此，作用域链创建完毕。
 
 #### 示例与总结
 
@@ -1696,7 +1700,7 @@ checkscope();
 
 ##### 函数「执行上下文」执行过程如下
 
-1. <font color=FF0000>**checkscope 函数被 <font size=4>创建</font>，保存「作用域链」到 内部属性  \[\[scope]]**</font>（**注：**亦即，父「执行上下文环境」的 VO 保存到 \[\[scope]] ）
+1. <font color=FF0000>**checkscope 函数被 <font size=4>创建</font>，保存「作用域链」到 内部属性  `[[scope]]`**</font>（ 👀 亦即，父「执行上下文环境」的 VO 保存到 `[[scope]]` ）
 
    ```js
    checkscope.[[scope]] = [
@@ -1713,7 +1717,7 @@ checkscope();
    ];
    ```
 
-3. <font color=FF0000 size=4>**checkscope 函数并不立刻执行，开始做准备工作**</font>，<mark>第一步</mark>：<font color=FF0000>复制函数 [[scope]] 属性 <font size=4>**创建作用域链**</font></font>
+3. <font color=FF0000 size=4>**checkscope 函数并不立刻执行，开始做准备工作**</font>，<mark>第一步</mark>：<font color=FF0000>复制函数 `[[scope]]` 属性 <font size=4>**创建作用域链**</font></font>
 
    ```js
    checkscopeContext = { // 注：这里checkscopeContext 是步骤二中 ECStack 的成员。
@@ -1721,7 +1725,7 @@ checkscope();
    }
    ```
 
-4. <mark>第二步</mark>：<font color=FF0000>**用 arguments 创建活动对象**</font>，<font color=FF0000>随后初始化活动对象，加入形参、函数声明、变量声明</font>。（**注：**这里创建 VO 的内容，可以看 [[# JS 变量对象 （词法环境）]] 部分，那里有详细的讲述）
+4. <mark>第二步</mark>：<font color=FF0000>**用 arguments 创建活动对象**</font>，<font color=FF0000>随后初始化活动对象，加入形参、函数声明、变量声明</font>。（ 👀 这里创建 VO 的内容，可以看 [[# JS 变量对象 （词法环境）]] 部分，那里有详细的讲述）
 
    ```js
    checkscopeContext = {
@@ -1735,7 +1739,7 @@ checkscope();
    }
    ```
 
-5. <mark>第三步</mark>：<font color=FF0000>将活动对象压入 checkscope 作用域链顶端</font>（**注：**即 Scope 数组的开头）
+5. <mark>第三步</mark>：<font color=FF0000>将活动对象压入 checkscope 作用域链顶端</font>（ 👀 即 Scope 数组的开头）
 
    ```js
    checkscopeContext = {
@@ -1763,7 +1767,7 @@ checkscope();
    }
    ```
 
-7. 查找到 scope2 的值，<font color=FF0000>返回后函数执行完毕，<font size=4>**函数上下文从执行上下文栈中弹出**</font></font>（注：即 checkscopeContext 被弹出、销毁）
+7. 查找到 scope2 的值，<font color=FF0000>返回后函数执行完毕，<font size=4>**函数上下文从执行上下文栈中弹出**</font></font>（ 👀 即 checkscopeContext 被弹出、销毁）
 
    ```js
    ECStack = [
@@ -1829,7 +1833,7 @@ var person = objectFactory(Otaku, ……) // 注：第一个参数为“构造�
 
 因为 new 的结果是一个新对象，所以在模拟实现的时候，我们也要建立一个新对象，假设这个对象叫 obj，因为 obj 会具有 Otaku 构造函数里的属性，<font color=FF0000>想想**「经典继承」**的例子</font>，我们<font color=FF0000>**可以使用 `Otaku.apply(obj, arguments)` 来给 obj 添加新的属性**</font>。
 
-在 [JavaScript 深入系列第一篇：JavaScript深入之从原型到原型链](https://github.com/mqyqingfeng/Blog/issues/2) 中，我们便讲了原型与原型链，我们知道实例的 \_\_proto__ 属性会指向构造函数的 prototype，也正是因为建立起这样的关系，实例可以访问原型上的属性。
+在 [JavaScript 深入系列第一篇：JavaScript深入之从原型到原型链](https://github.com/mqyqingfeng/Blog/issues/2) 中，我们便讲了原型与原型链，我们知道实例的 `__proto__` 属性会指向构造函数的 prototype，也正是因为建立起这样的关系，实例可以访问原型上的属性。
 
 现在，我们可以尝试着写第一版了：
 
@@ -2009,7 +2013,7 @@ p.say()
 一句话介绍 call：<font color=lightSeaGreen>`call()` 方法在使用一个 
 **指定的 this 值** 和 **若干个指定的参数值** 的前提下调用某个函数或方法</font>。
 
-举个例子：
+##### 举个例子
 
 ```js
 var foo = { value: 1 };
@@ -2042,7 +2046,7 @@ foo.bar(); // 1
 
 这个时候 this 就指向了 foo，是不是很简单呢？
 
-但是这样却<font color=FF0000>给 foo 对象本身添加了一个属性</font>，这可不行呐！不过也不用担心，（注：在执行完毕后）我们<font color=FF0000>用 delete 再删除它</font>不就好了~
+但是这样却<font color=FF0000>给 foo 对象本身添加了一个属性</font>，这可不行呐！不过也不用担心，（ 👀 在执行完毕后）我们<font color=FF0000>用 delete 再删除它</font>不就好了~
 
 **所以我们模拟的步骤可以分为：**
 
@@ -2124,7 +2128,7 @@ for(var i = 1, len = arguments.length; i < len; i++) {
 context.fn( args.join(',') ); // 这个方法肯定是不行的啦！！！
 ```
 
-也许有人想到用 ES6 的方法（**注：**比如 “展开表达式”，结果测试确实可行 ），不过 call 是 ES3 的方法，我们为了模拟实现一个 ES3 的方法，要用到ES6的方法，好像……，嗯，也可以啦。但是我们这次用 eval 方法拼成一个函数，类似于这样：
+也许有人想到用 ES6 的方法（ 👀 比如 “展开表达式”，结果测试确实可行 ），不过 call 是 ES3 的方法，我们为了模拟实现一个 ES3 的方法，要用到ES6的方法，好像……，嗯，也可以啦。但是我们这次用 eval 方法拼成一个函数，类似于这样：
 
 ```js
 eval('context.fn(' + args +')')
@@ -2366,9 +2370,9 @@ Function.prototype.bind = function (context) {
     var args = Array.prototype.slice.call(arguments, 1);
 
     var fBound = function () {
-        // 注：这里的 arguments 和上面的 arguments 不同一次调用获取的，也就是说：不是一个东西。
+        // 👀 这里的 arguments 和上面的 arguments 不同一次调用获取的，也就是说：不是一个东西。
         var bindArgs = Array.prototype.slice.call(arguments);
-        // 当作为构造函数时，this 指向实例，此时结果为 true；将绑定函数的 this 指向该实例，可以让实例获得来自绑定函数的值。**注：**个人理解，作为构造函数使用时：this 在 new 操作符的作用下，指向实例；另外，此时 fBound 就是指定 this 指向后 的“构造函数”。
+        // 当作为构造函数时，this 指向实例，此时结果为 true；将绑定函数的 this 指向该实例，可以让实例获得来自绑定函数的值。👀 个人理解：作为构造函数使用时：this 在 new 操作符的作用下，指向实例；另外，此时 fBound 就是指定 this 指向后 的“构造函数”。
         // 以上面的是 demo 为例，如果改成 `this instanceof fBound ? null : context`，实例只是一个空对象，将 null 改成 this ，实例会具有 habit 属性
         // 当作为普通函数时，this 指向 window，此时（**注：**this instanceof fBound 的 ）结果为 false，将绑定函数的 this 指向 context
         return self.apply(this instanceof fBound ? this : context, args.concat(bindArgs));
@@ -2376,7 +2380,7 @@ Function.prototype.bind = function (context) {
     
     // 修改返回函数的 prototype 为绑定函数的 prototype，实例就可以继承绑定函数的原型中的值。
     fBound.prototype = this.prototype;
-    return fBound; // 注：返回 fBound 函数
+    return fBound; // 👀 返回 fBound 函数
 }
 ```
 
@@ -2503,9 +2507,9 @@ Function.prototype.bind2 = function (context) {
   >
   > 摘自：《你不知道的 JavaScript 中卷》P48 - P49
 
-  **注：**以上总结：对于“不安全的 JSON 值”，包含：undefined、function、symbol 和 包含循环引用的对象，在 stringify 时，如果在对象中会被忽略；在数组中，则返回 null。
-
-  2022/5/19 补充： 在 [MDN - JSON.stringify()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) 中也有类似的讲解，在 [[JS及其相关库备忘录#JSON.stringify()#JSON stringify 将值转换为相应的 JSON 格式]] 中有做笔记。
+  > 👀 注：以上总结：对于“不安全的 JSON 值”，包含：undefined、function、symbol 和 包含循环引用的对象，在 stringify 时，如果在对象中会被忽略；在数组中，则返回 null。
+>
+  > 2022/5/19 补充： 在 [MDN - JSON.stringify()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) 中也有类似的讲解，在 [[JS及其相关库备忘录#JSON.stringify()#JSON stringify 将值转换为相应的 JSON 格式]] 中有做笔记。
 
 - 文章 [JSON.stringify深拷贝的缺点](https://www.jianshu.com/p/52db1d0c1780) 中 还有其他上面没有说到的：
   - 如果深拷贝的对象 / 数组 里有 <font color=FF0000>**时间对象**</font>，则 JSON.stringify( JSON.parse ) 的结果，将只是<font color=FF0000>字符串</font>的形式，而不是对象的形式
@@ -2755,7 +2759,7 @@ console.log(Object.prototype.toString.call(JSON)); // [object JSON]
 
 **注：**还有上面提及的 Symbol 和 BigInt。另外，还有 Promise、Set、Map、weakSet、weakMap、location、history、window（只在浏览器下生效，结果为 '[object Window]' ）、 globalThis（ globalThis 在不同宿主环境的值不同，浏览器下的值为 '[object Window]'，在 Node 中为 '[object global]' ）
 
-#### 实现 type 方法：
+#### 实现 type 方法
 
 需要注意的是<font color=FF0000>边界情况</font>：在 IE6 中，null 和 undefined 会被 Object.prototype.toString 识别成 [object Object]
 
@@ -2814,7 +2818,7 @@ function type(obj) {
 
 ##### plainObject
 
-plainObject 来自于 jQuery，可以翻译成<mark>纯粹的对象，所谓“纯粹的对象”</mark>，就是<font color=FF0000>该对象是 **通过 "{}" 或 "new Object" 创建的**，该对象含有零个或者多个键值对</font>。
+plainObject 来自于 jQuery，可以翻译成<font color=lightSeaGreen>纯粹的对象，所谓“纯粹的对象”</font>，就是<font color=FF0000>该对象是 **通过 `{}` 或 `new Object` 创建的**，该对象含有零个或者多个键值对</font>。
 
 之所以要判断是不是 plainObject，是为了跟其他的 JavaScript对象如 null，数组，宿主对象（documents）等作区分，因为这些用 typeof 都会返回object。
 
@@ -2972,7 +2976,7 @@ isElement = function(obj) {
 };
 ```
 
-**注：**只读属性 Node.nodeType 表示的是该节点的类型。详见：[MDN - Node.nodeType](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/nodeType)
+> 👀 注：只读属性 Node.nodeType 表示的是该节点的类型。详见：[MDN - Node.nodeType](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/nodeType)
 
 摘自：[JavaScript专题之类型判断(上)  ](https://github.com/mqyqingfeng/Blog/issues/28) 和  [JavaScript专题之类型判断(下)](https://github.com/mqyqingfeng/Blog/issues/30)
 
@@ -2982,7 +2986,7 @@ isElement = function(obj) {
 
 所谓的类数组对象：拥有一个 length 属性和若干索引属性的对象。
 
-举个例子：
+##### 举个例子
 
 ```js
 var array = ['name', 'age', 'sex'];
@@ -3198,7 +3202,7 @@ throw new Error('error');
 console.log(233333);
 ```
 
-在<mark>这种情况下，因为 throw error 的缘故，代码被阻断执行，并不会打印 233333</mark>，再举个例子：
+在<font color=LightSeaGreen>这种情况下，因为 throw error 的缘故，代码被阻断执行，并不会打印 233333</font>，再举个例子：
 
 ```js
 const promise = new Promise(null);
@@ -3310,11 +3314,11 @@ var g = gen();
 var result1 = g.next();
 
 result1.value.then(function(data){ return data.json(); })
-             .then(function(data){ return g.next(data).value; }) // 注：第一个 yield 完成，返回值放入 r1
+             .then(function(data){ return g.next(data).value; }) // 👀 第一个 yield 完成，返回值放入 r1
              .then(function(data){ return data.json(); })
-             .then(function(data){ return g.next(data).value })  // 注：第二个 yield 完成，返回值放入 r2
+             .then(function(data){ return g.next(data).value })  // 👀 第二个 yield 完成，返回值放入 r2
              .then(function(data){ return data.json(); })
-             .then(function(data){ g.next(data) });              // 注：第三个 yield 完成，返回值放入 r3
+             .then(function(data){ g.next(data) });              // 👀 第三个 yield 完成，返回值放入 r3
 ```
 
 但我知道你肯定不想写成这样……
@@ -3327,7 +3331,7 @@ function run(gen) {
 
     function next(data) {
         var result = g.next(data);
-        if (result.done) return; // 注：递归 退出条件
+        if (result.done) return; // 👀 递归 退出条件
         result.value.then(function(data) { return data.json(); })
                     .then(function(data) { next(data); });
     }
@@ -3341,14 +3345,14 @@ run(gen);
 
 #### 启动器函数
 
-<font color=FF0000>在 **run 这个启动器函数** 中</font>，我们在 then 函数中将数据格式化 `data.json()`；但在更广泛的情况下，比如 yield 直接跟一个 Promise，而非一个 fetch 函数返回的 Promise，因为没有 json 方法，代码就会报错。所以为了更具备通用性，连同这个例子和启动器，我们修改为：
+<font color=FF0000>在 **run 这个启动器函数** 中</font>，我们在 then 函数中将数据格式化 `data.json()` ；但在更广泛的情况下，比如 yield 直接跟一个 Promise，而非一个 fetch 函数返回的 Promise，因为没有 json 方法，代码就会报错。所以为了更具备通用性，连同这个例子和启动器，我们修改为：
 
 ```js
 var fetch = require('node-fetch');
 
 function* gen() {
     var r1 = yield fetch('https://api.github.com/users/github');
-    // 注：response.json() 返回一个 Promise，详见下面的“注”
+    // 👀 response.json() 返回一个 Promise，详见下面的 “补充”
     var json1 = yield r1.json();
     var r2 = yield fetch('https://api.github.com/users/github/followers');
     var json2 = yield r2.json();
@@ -3372,8 +3376,10 @@ function run(gen) {
 run(gen);
 ```
 
-只要 yield 后跟着一个 Promise 对象，我们就可以利用这个 run 函数将 Generator 函数自动执行。**注：**
+只要 yield 后跟着一个 Promise 对象，我们就可以利用这个 run 函数将 Generator 函数自动执行。
 
+> 👀 补充
+>
 > Response  mixin 的 json() 方法接收一个 Response 流，并将其读取完成。它 <font color=FF0000>**返回一个 Promise**</font>，Promise 的解析 resolve 结果是将文本体解析为 JSON。
 >
 > 摘自：[MDN - Response.json()](https://developer.mozilla.org/zh-CN/docs/Web/API/Response/json)
@@ -3547,7 +3553,7 @@ function fetchData(url) {
 
 #### co
 
-<font color=FF0000>如果我们再将这个启动器函数写的完善一些，我们就**相当于写了一个 [co](https://github.com/tj/co)**</font>（注：根据 [[#async await]] 中的说法，co 是 “自动执行器”）。实际上，上面的代码确实是来自于 co。而 co 是什么？ co 是大神 TJ Holowaychuk 于 2013 年 6 月发布的一个小模块，用于 Generator 函数的自动执行。
+<font color=FF0000>如果我们再将这个启动器函数写的完善一些，我们就**相当于写了一个 [co](https://github.com/tj/co)**</font>（ 👀 根据 [[#async await]] 中的说法，co 是 “自动执行器”）。实际上，上面的代码确实是来自于 co。而 co 是什么？ co 是大神 TJ Holowaychuk 于 2013 年 6 月发布的一个小模块，用于 Generator 函数的自动执行。
 
 如果直接使用 co 模块，这两种不同的例子可以简写为：
 
@@ -3757,7 +3763,7 @@ console.log(res);
 
 #### async 地狱
 
-async 地狱主要是<mark>指开发者贪图语法上的简洁而让原本可以并行执行的内容变成了顺序执行，从而影响了性能</mark>，但用地狱形容有点夸张了
+async 地狱主要是<font color=LightSeaGreen>指开发者贪图语法上的简洁而让原本可以并行执行的内容变成了顺序执行，从而影响了性能</font>，但用地狱形容有点夸张了
 
 ##### 例子一
 
@@ -3781,7 +3787,7 @@ async 地狱主要是<mark>指开发者贪图语法上的简洁而让原本可�
 })();
 ```
 
-也可以使用 Promise.all()：
+也可以使用 `Promise.all()` ：
 
 ```js
 (async () => {
@@ -3807,7 +3813,7 @@ async 地狱主要是<mark>指开发者贪图语法上的简洁而让原本可�
 
 因为 await 的特性，整个例子有明显的先后顺序，然而 `getList()` 和 `getAnotherList()` 其实并无依赖，`submit(listData)` 和 `submit(anotherListData)` 也没有依赖关系，那么对于这种例子，我们该怎么改写呢？
 
-**基本分为三个步骤：**
+###### 基本分为三个步骤
 
 1. **找出依赖关系：**在这里，submit(listData) 需要在 getList() 之后，submit(anotherListData) 需要在 anotherListPromise() 之后。
 
@@ -4199,7 +4205,7 @@ var postFromTest = post('www.test.com');
 postFromTest("name=kevin");
 ```
 
-想想 jQuery 虽然有 \$.ajax 这样通用的方法，但是也有 \$.get 和 \$.post 的语法糖。(当然 jQuery 底层是否是这样做的，我就没有研究了)。
+想想 jQuery 虽然有 `$.ajax` 这样通用的方法，但是也有 `$.get` 和 `$.post` 的语法糖（ 当然 jQuery 底层是否是这样做的，我就没有研究了）
 
 <font color=FF0000>curry 的这种用途可以理解为：**参数复用**。**本质上是降低通用性，提高适用性**</font>。可是即便如此，是不是依然感觉没什么用呢？
 
@@ -4242,11 +4248,11 @@ var name = person.map(prop('name'))
 
 ```js
 // 第一版
-var curry = function (fn) { // 注：这里只知道使用者会传入 fn，还有其他的参数不知道，通过 arguments 处理。
-    var args = [].slice.call(arguments, 1); // 注：截取 1 ~ length-1 的数组，即非 fn 的预设（默认）元素。
+var curry = function (fn) { // 👀 这里只知道使用者会传入 fn，还有其他的参数不知道，通过 arguments 处理。
+    var args = [].slice.call(arguments, 1); // 👀 截取 1 ~ length-1 的数组，即非 fn 的预设（默认）元素。
     return function() {
-        var newArgs = args.concat([].slice.call(arguments)); // 注：将默认参数 和 新传入的实参合并
-        return fn.apply(this, newArgs); // 注：通过 apply 调用 fn。另外，经过实验发现，使用 call 和 apply，若（总传入的）实参个数超出 被调用函数形参的个数，多余的实参会被抛弃
+        var newArgs = args.concat([].slice.call(arguments)); // 👀 将默认参数 和 新传入的实参合并
+        return fn.apply(this, newArgs); // 👀 通过 apply 调用 fn。另外，经过实验发现，使用 call 和 apply，若（总传入的）实参个数超出 被调用函数形参的个数，多余的实参会被抛弃
     };
 };
 ```
@@ -4272,7 +4278,7 @@ addCurry(1, 2) // 3
 
 ```js
 // 第二版
-function sub_curry(fn) { // 注：第一版的代码，作为辅助函数
+function sub_curry(fn) { // 👀 第一版的代码，作为辅助函数
     var args = [].slice.call(arguments, 1);
     return function() {
         return fn.apply(this, args.concat([].slice.call(arguments)));
@@ -4280,17 +4286,16 @@ function sub_curry(fn) { // 注：第一版的代码，作为辅助函数
 }
 
 function curry(fn, length) {
-    // 注：function.length 表示形参个数，第一次调用 curry，没传递 length，所以 length 为 fn.length。因为下面有递归调用 curry，所以“可能”会有第二次调用 curry。递归调用时，会传递 length；所以这时候，length 是传来的实参，不是 fn.length。另外，这里传来的 length 也影响了是否继续递归的判断
+    // 👀 function.length 表示形参个数，第一次调用 curry，没传递 length，所以 length 为 fn.length。因为下面有递归调用 curry，所以“可能”会有第二次调用 curry。递归调用时，会传递 length；所以这时候，length 是传来的实参，不是 fn.length。另外，这里传来的 length 也影响了是否继续递归的判断
     length = length || fn.length;
 
     return function() {
-        if (arguments.length < length) { // 注：这里的 length 表示 还能传递多少实参
-            // 注：调用 sub_curry 第一个参数就是 fn，所以放在第一个，后面的参数作为“默认参数”
+        if (arguments.length < length) { // 👀 这里的 length 表示 还能传递多少实参
+            // 👀 调用 sub_curry 第一个参数就是 fn，所以放在第一个，后面的参数作为“默认参数”
             var combined = [fn].concat([].slice.call(arguments));
-            // 注：递归调用 curry 函数。length - arguments.length 作为 curry 函数的形参 length 对应的实参，表示：还可以传
-            // 递多少实参
+            // 👀 递归调用 curry 函数。length - arguments.length 作为 curry 函数的形参 length 对应的实参，表示：还可以传递多少实参
             return curry( sub_curry.apply( this, combined), length - arguments.length );
-        } else { // 注：传递了足够的参数，则停止递归；调用 fn
+        } else { // 👀 传递了足够的参数，则停止递归；调用 fn
             return fn.apply(this, arguments);
         }
     };
@@ -4400,7 +4405,7 @@ function curry(fn, args, holes) {
     }
 }
 
-var _ = {}; // 注：和偏函数中实现类似
+var _ = {}; // 👀 和偏函数中实现类似
 var fn = curry(function(a, b, c, d, e) {
     console.log([a, b, c, d, e]);
 });
@@ -4444,11 +4449,11 @@ var curry = fn =>
 function curry(func) {
 
   return function curried(...args) {
-    if (args.length >= func.length) { // 注：如果（多次调用的）arguments 合并的长度够了，则运行函数；否则，函数继续等待调用
-      return func.apply(this, args); // 注：执行函数
+    if (args.length >= func.length) { // 👀 如果（多次调用的）arguments 合并的长度够了，则运行函数；否则，函数继续等待调用
+      return func.apply(this, args); // 👀 执行函数
     } else {
-      return function(...args2) { // 注：继续等待调用
-        // 注：递归。在递归前，将 args 和 args2 合并，并替代 args，用于递归判断
+      return function(...args2) { // 👀 继续等待调用
+        // 👀 递归。在递归前，将 args 和 args2 合并，并替代 args，用于递归判断
         return curried.apply(this, args.concat(args2));
       }
     }
@@ -4463,17 +4468,17 @@ function curry(func) {
 
 然后，如果我们再次调用它，我们将得到一个新的偏函数（如果没有足够的参数），或者最终的结果。
 
-##### 注意 ⚠️
+##### ⚠️ 注意
 
-柯里化要求函数具有固定数量的参数。使用 rest 参数的函数，例如 `f(...args)`，不能以这种方式进行柯里化。
+柯里化要求函数具有固定数量的参数。使用 rest 参数的函数，例如 `f(...args)` ，不能以这种方式进行柯里化。
 
 摘自：[现代 JS 教程 - 柯里化（Currying）](https://zh.javascript.info/currying-partials)
 
 #### 维基百科中的柯里化
 
-在「计算机科学」中，柯里化（英语：Currying），又译为卡瑞化或加里化，是<font color=FF0000>把 **接受多个参数的函数** 变换成 **接受一个单一参数**（最初函数的第一个参数）**的函数**，并且返回接受余下的参数 而且 <font size=4>**返回结果的新函数**</font> 的技术</font>（**注：**这是核心概念。注意：是 一种样式的函数 转变为 另一种样式函数）。这个技术由克里斯托弗·斯特雷奇以逻辑学家哈斯凯尔·加里命名的，尽管它是 Moses Schönfinkel 和 戈特洛布·弗雷格 发明的。
+在「计算机科学」中，柯里化 ( Currying )，又译为卡瑞化或加里化，是<font color=FF0000>把 **接受多个参数的函数** 变换成 **接受一个单一参数**（最初函数的第一个参数）**的函数**，并且返回接受余下的参数 而且 <font size=4>**返回结果的新函数**</font> 的技术</font>（ 👀 这是核心概念。⚠️ 是 一种样式的函数 转变为 另一种样式函数）。这个技术由克里斯托弗·斯特雷奇以逻辑学家哈斯凯尔·加里命名的，尽管它是 Moses Schönfinkel 和 戈特洛布·弗雷格 发明的。
 
-在「直觉」上，柯里化声称 “如果你固定某些参数，你将得到接受余下参数的一个函数”。所以对于有两个变量的函数 $y^x$，如果固定了 $y=2$，则得到有一个变量的函数 $2^x$（**注：**有点像偏函数）。
+在「直觉」上，柯里化声称 “如果你固定某些参数，你将得到接受余下参数的一个函数”。所以对于有两个变量的函数 $y^x$，如果固定了 $y=2$，则得到有一个变量的函数 $2^x$（ 👀 有点像偏函数）。
 
 在「理论计算机科学」中，柯里化提供了在简单的理论模型中，比如：只接受一个单一参数的 lambda 演算中，研究带有多个参数的函数的方式。
 
@@ -4497,7 +4502,7 @@ var foo = function(a) {
 
 维基百科中对偏函数 ( Partial application ) 的定义为：
 
-> In computer science, partial application ( or partial function application ) refers to the process of <mark>fixing a number of arguments to a function</mark>, producing another function of smaller arity.
+> In computer science, partial application ( or partial function application ) refers to the process of <font color=lightSeaGreen>fixing a number of arguments to a function</font>, producing another function of smaller arity.
 
 **翻译成中文：**在计算机科学中，局部应用是指 <font color=FF0000>固定一个函数的一些参数</font>，<font color=FF0000>然后产生另一个更小元的函数</font>。
 

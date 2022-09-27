@@ -5927,7 +5927,7 @@ MDN 也有 总结：[MDN - CSS Functional Notation](https://developer.mozilla.or
 
 ##### url()
 
-url()不再局限于 background-image 属性中，还可以用于：
+url() 不再局限于 background-image 属性中，还可以用于：
 
 ```css
 background-image: url("https://mdn.mozillademos.org/files/16761/star.gif");

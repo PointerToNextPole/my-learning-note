@@ -2,21 +2,37 @@
 
 
 
-#### 判断是否在“小程序”环境中
+#### WebView 和 小程序 联动
+
+
+
+##### webview 网页 跳转到小程序中
+
+```js
+wx.miniProgram.navigateTo({ url: urlStr })
+```
+
+同时，小程序内部的页面跳转也是使用 `wx.navigateTo()`
+
+
+
+##### 判断当前环境是否在 小程序 中
 
 可以根据字段 `window.__wxjs_environment`，如果是一个对象，则在小程序中；否则应该是 undefined
 
+具体可以参考 [微信官方文档 - 小程序 - 组件 - web-view](https://developers.weixin.qq.com/miniprogram/dev/component/web-view.html)
 
 
-#### 安装和使用 微信官方 js-sdk
 
-##### 安装
+##### 安装和使用 微信官方 js-sdk
+
+###### 安装
 
 ```sh
 npm install weixin-js-sdk
 ```
 
-##### 使用
+###### 使用
 
 ```js
 import wx from 'weixin-js-sdk'
@@ -24,17 +40,9 @@ import wx from 'weixin-js-sdk'
 
 
 
-#### webview 网页 跳转到小程序中
-
-```js
-wx.miniProgram.navigateTo({ url: urlStr })
-```
-
-
-
 #### 小程序生命周期
 
-##### 页面 `Page` 实例的生命周期
+##### 页面 Page 实例的生命周期
 
 <img src="https://s2.loli.net/2022/09/23/iXBRNuCZklsQbrL.png" alt="img" style="zoom:75%;" />
 
