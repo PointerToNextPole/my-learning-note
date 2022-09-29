@@ -1,4 +1,4 @@
-# webView & 微信生态开发备忘录
+# WebView & 微信生态开发备忘录
 
 
 
@@ -16,9 +16,30 @@ wx.miniProgram.navigateTo({ url: urlStr })
 
 
 
+#### 环境判断
+
 ##### 判断当前环境是否在 小程序 中
 
-可以根据字段 `window.__wxjs_environment`，如果是一个对象，则在小程序中；否则应该是 undefined
+可以根据字段 `window.__wxjs_environment`，如果是一个对象，则在小程序中；否则应该是 undefined。也可以使用 [JSSDK 1.3.2](https://res.wx.qq.com/open/js/jweixin-1.3.2.js) 提供的 `getEnv` 接口。
+
+```js
+// web-view下的页面内
+function ready() {
+  console.log(window.__wxjs_environment === 'miniprogram') // true
+}
+if (!window.WeixinJSBridge || !WeixinJSBridge.invoke) {
+  document.addEventListener('WeixinJSBridgeReady', ready, false)
+} else {
+  ready()
+}
+
+// 或者
+wx.miniProgram.getEnv(function(res) {
+  console.log(res.miniprogram) // true
+})
+```
+
+从微信 `7.0.0` 开始，可以通过判断 `userAgent` 中包含 `miniProgram` 字样来判断小程序 web-view 环境。
 
 具体可以参考 [微信官方文档 - 小程序 - 组件 - web-view](https://developers.weixin.qq.com/miniprogram/dev/component/web-view.html)
 
@@ -37,6 +58,10 @@ npm install weixin-js-sdk
 ```js
 import wx from 'weixin-js-sdk'
 ```
+
+
+
+### 小程序文档笔记
 
 
 

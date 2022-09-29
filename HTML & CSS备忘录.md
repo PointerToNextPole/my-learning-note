@@ -186,47 +186,57 @@ HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向�
 
 ##### \<a> 的作用
 
-- **链接到外部地址**
+###### 链接到外部地址
 
-  ```html
-  <a href="http://www.mozilla.com/">External Link</a>
-  ```
+```html
+<a href="http://www.mozilla.com/">External Link</a>
+```
 
-- **链接到本页的某个部分**（注：即作为 锚点）
+###### 链接到本页的某个部分
 
-  ```html
-  <a href="#属性">Description of Same-Page Links</a>
-  ```
+> 👀 即作为 锚点
 
-- **创建一个可点击的图片** 类似的使得用 \<a>包裹 div，使得整个 div 都可以点击跳转
+```html
+<a href="#属性">Description of Same-Page Links</a>
+```
 
-  ```html
-  <a href="https://developer.mozilla.org/en-US/">
-    <img src="https://mdn.mozillademos.org/files/6851/mdn_logo.png" alt="MDN logo" />
-  </a>
-  ```
+###### 创建一个可点击的图片
 
-- **创建一个email链接：**这是常见的创建按钮或链接，将用户的电子邮件程序打开，让他们发送新邮件。这是通过使用一个mailto链接完成的。这里有一个简单的例子：
+类似的使得用 \<a>包裹 div，使得整个 div 都可以点击跳转
 
-  ```html
-  <a href="mailto:nowhere@mozilla.org">Send email to nowhere</a>
-  ```
+```html
+<a href="https://developer.mozilla.org/en-US/">
+  <img src="https://mdn.mozillademos.org/files/6851/mdn_logo.png" alt="MDN logo" />
+</a>
+```
 
-  **创建电话链接：**提供电话链接有助于用户查看连接到手机的网络文档和笔记本电脑。
+###### 创建一个 email 链接
 
-  ```html
-  <a href="tel:+491570156">+49 157 0156</a>
-  ```
+这是常见的创建按钮或链接，将用户的电子邮件程序打开，让他们发送新邮件。这是通过使用一个 mailto 链接完成的。这里有一个简单的例子：
 
-  **发短信：**
+```html
+<a href="mailto:nowhere@mozilla.org">Send email to nowhere</a>
+```
 
-  ```html
-  <a href="sms:"13764567708">13764567708</a>
-  ```
+###### 创建电话链接
 
-  <font color=FF0000>**注：发现这里的无论是 mailto协议、tel协议 以及 sms协议 都和 url scheme 有些类似；可以说URL Scheme 是一种自定义的协议**</font>
+提供电话链接有助于用户查看连接到手机的网络文档和笔记本电脑。
 
-- **使用 download 属性将 \<canvas> 保存为 PNG 格式：**有点没搞懂，这里略，详见引用链接
+```html
+<a href="tel:+491570156">+49 157 0156</a>
+```
+
+###### 发短信
+
+```html
+<a href="sms:"13764567708">13764567708</a>
+```
+
+> 👀 注：发现这里的无论是 mailto协议、tel协议 以及 sms协议 都和 url scheme 有些类似；可以说URL Scheme 是一种自定义的协议
+
+###### 使用 download 属性将 \<canvas> 保存为 PNG 格式
+
+有点没搞懂，这里略，详见引用链接
 
 摘自：[MDN - \<a>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/a)
 
@@ -582,7 +592,7 @@ format-detection （是 meta 标签内的属性）翻译成中文是“格式检
 <meta name="format-detection" content="telephone=no,email=no,adress=no">
 ```
 
-**解释：**
+###### 解释
 
 - **telephone：**你明明写的一串数字没加链接样式，而 iPhone 会自动把你这个文字加链接样式、并且点击这个数字还会自动拨号！想去掉这个拨号链接该如何操作呢？这时我们的 meta 又该大显神通了，代码如下：
   - **telephone=no：**就<font color=FF0000> 禁止</font>了把数字转化为拨号链接
@@ -600,6 +610,10 @@ format-detection （是 meta 标签内的属性）翻译成中文是“格式检
   - adress=yes：就开启了点击地址直接跳转至地图的功能,在默认是情况下就是开启！
 
 摘自：[meta的format-detection属性](https://www.jianshu.com/p/82a85a53d5b4)
+
+> 👀 注：打电话、发送邮件可以通过 [[#创建电话链接]] 和 [[#创建一个 email 链接]] 实现
+
+
 
 ##### \<meta> name-content 键值对的补充
 
