@@ -17,6 +17,7 @@
 - [这才是真正的GIT——GIT内部原理](https://www.lzane.com/tech/git-internal) 一共有三篇，这是第一篇。说明了一些 Git 原理性的东西，配合动图，清晰易懂
 - [给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960) 一些补充的命令
 - [GitHub - Docs](https://docs.github.com/cn) GitHub 官方文档（中文）
+- [十分钟学会正确的github工作流，和开源作者们使用同一套流程](https://www.bilibili.com/video/BV19e4y1q7JJ) 挺基础的教程，不过鉴于我只用 merge，完全不用 rebase；再加上之前没有在 remote 合并过分支 🥬，所以还是有些收获
 
 
 
@@ -1527,13 +1528,13 @@ The `git prune` command is an internal housekeeping（家务） utility that <fo
 
 
 
-<font size=4>**git merge 命令**</font>
+##### git merge 命令
 
-**git merge \<branch>：**将指定分支导入到HEAD指定的分支。
+`git merge <branch>` ：将指定分支导入到HEAD指定的分支。
 
-**注意，在实际开发时发现：**在运行 git merge 之前，需要将被合并分支的内容均 commited；否则无法将想要的内容<font color=FF0000 size=4>**完全**合并成功</font>。
+**注意，在实际开发时发现：**在运行 `git merge` 之前，需要将被合并分支的内容均 commited；否则无法将想要的内容<font color=FF0000 size=4>**完全**合并成功</font>。
 
-**merge 有一个特殊选项：squash**（注：意为 拥挤( n )，压缩( verb ) ）。用这个选项指定分支的合并，就可以 <font color=FF0000 size=4>**把所有汇合的提交添加到分支上**</font>（注：如下图所示，将 X 和 Y 两个提交合并在一起，并通过 git merge，生成新的节点）。
+**merge 有一个特殊选项：squash**（ 👀 意为 拥挤( n )，压缩( verb )。另外，在 rebase 命令中也有这个选项 ）。用这个选项指定分支的合并，就可以 <font color=FF0000 size=4>**把所有汇合的提交添加到分支上**</font>（ 👀 如下图所示，将 X 和 Y 两个提交合并在一起，并通过 `git merge`，生成新的节点）。
 
 ![squash选项](https://s2.loli.net/2022/02/22/YXGWnJliQUC8RPL.png)
 
@@ -1545,7 +1546,7 @@ squash 选项示例：[猴子都能懂的GIT入门 - 教程3 改写提交！-  m
 
 <font size=4>**git rebase**</font>
 
-rebase 的时候，修改冲突后的提交不是使用 commit 命令，而是执行 rebase 命令指定 --continue 选项。若 <font color=FF0000 size=4>要取消 rebase，指定 --abort 选项</font>。
+rebase 的时候，修改冲突后的提交不是使用 commit 命令，而是执行 rebase 命令指定 `--continue` 选项。若 <font color=FF0000 size=4>要取消 rebase，指定 --abort 选项</font>。
 
 
 
