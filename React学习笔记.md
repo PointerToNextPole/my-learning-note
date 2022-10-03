@@ -310,7 +310,53 @@ JSX 是一种 JavaScript 的语法扩展 ( eXtension ) ，也在很多地方称�
 2) 三元运算符
 3) 执行一个函数（ 函数有返回值即可）。👀 感觉类似于 Vue 的计算属性
 
+##### JSX 绑定属性
 
+- 比如元素都会有 title 属性，img 元素会有 src 属性，a 元素会有 href 属性
+
+  ```jsx
+  <p title={ titleCnt }>paragraph</p>
+  <img src={ srcURL } />
+  <a href={ hrefLink }>link</a>
+  ```
+
+- 元素可能需要绑定 class，有三种方法
+
+  ###### 方法一
+
+  ```jsx
+  {/* classNameStr = `foo bar` */}
+  <h2 className={classNameStr}>h2 cnt</h2>
+  ```
+
+  ###### 方法二
+
+  ```jsx
+  {/* classList = ['foo', 'bar'] */}
+  {/* 如果不加上 join，className 将会编译为 class="foo,bar"，显然不是我们想要的 */}
+  <h2 className={classList.join(' ')}>h2 cnt</h2>
+  ```
+
+  ###### 方法三
+
+  使用第三方库 [classnames](https://github.com/JedWatson/classnames) ，这里暂时略
+
+- 原生使用内联样式 style
+
+  ###### 方法一
+
+  ```jsx
+  <h2 style={ {color: 'red', fontSize: '30px'} }>h2 cnt</h2>
+  ```
+
+  ###### 方法二
+
+  ```jsx
+  {/* styleObj: {color: 'red', fontSize: '30px'} */}
+  <h2 style={styleObj}>h2 cnt</h2>
+  ```
+
+  
 
 
 
