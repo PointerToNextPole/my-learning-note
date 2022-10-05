@@ -78,7 +78,7 @@
 
 ###### 引入 babel 所连带的问题
 
-⚠️ 值得注意的是：经过 babel 处理的代码，默认会使用严格模式；主要的影响：this 的 undefined 时的指向；还有尾调用优化等。也正是因为 babel 处理过程中导致 this 的丢失（类似于 `const loseThisFn = this.fn` ），所以需要使用 bind 方法进行绑定 this；详见 [[#类组件#示例]]
+⚠️ 值得注意的是：经过 babel 处理的代码，默认会使用严格模式；主要的影响：this 的 undefined 时的指向；还有尾调用优化等。
 
 ##### ReactDOM.createRoot
 
@@ -165,7 +165,7 @@ class App extends React.Component { // 👀 这里 App 是自定义的组件名
     return (
       <div>
         <h2>{ this.state.message }</h2>
-        <button onClick={ this.onBtnClick.bind(this) }>修改文本</button> <!-- ⚠️ 使用了 bind -->
+        <button onClick={ this.onBtnClick.bind(this) }>修改文本</button> {/* ⚠️ 使用了 bind */}
       </div>
     )
   }
@@ -179,9 +179,17 @@ root.render(<App/>)
 
 setState 方法是来自继承的 `React.Component` 类中，setState 在内部做了两件事：1) 修改 state 中的值 2) 自动重新执行 render 函数
 
-上面使用 bind 的部分原因见 [[#引入 babel 所连带的问题]]。<font color=dodgerBlue>更详细的原因是</font>：
+[[#类组件#示例]] 中使用 bind 的部分原因：因为 JSX 被编译转变为 `React.createElement` 的处理过程，导致 this 的丢失，示例如下：
 
-在正常的 DOM 操作中监听点击，监听函数中的 this 其实是节点对象（比如说是 button 对象）；<font color=fuchsia>因为 React 并不是直接渲染成真实的 DOM，我们所编写的 button 只是一个语法糖，它的本质 React 的 Element 对象</font>； 那么在这里发生监听的时候，React 给我们的函数绑定的 this，默认情况下就是一个 undefined。
+```react
+React.createElement('button', { onClick: this.btnClick} )
+```
+
+它的内部可以这样处理（示例代码）： `const click = config.onClick` ，这就导致了 this 的丢失；同时，因为 babel 默认使用了严格模式，丢失的 this 将会是 undefined ；所以需要使用 bind 方法进行绑定 this。
+
+<font color=dodgerBlue>更详细的原因是</font>：在正常的 DOM 操作中监听点击，监听函数中的 this 其实是节点对象（比如说是 button 对象）；<font color=fuchsia>因为 React 并不是直接渲染成真实的 DOM，我们所编写的 button 只是一个语法糖，它的本质 React 的 Element 对象</font>； 那么在这里发生监听的时候，React 给我们的函数绑定的 this，默认情况下就是一个 undefined。
+
+在 [[#JSX 中 this 丢失的解决方法]] 中还有更多的解决 JSX this 丢失的方法
 
 <font color=dodgerBlue>由于 jsx 中可能出现大量的事件处理，也就会出现大量的 bind 调用，就显得很啰嗦；所以：</font>除了在 jsx 中添加 bind，也可以在 `constructor` 中提前做好绑定，如下示例：
 
@@ -244,7 +252,7 @@ class App extends React.Component {
 
 ###### 注意点
 
-列表渲染使用 map 方法可以说是“最佳实践”了。上面的 `this.state.list.map( item => <li>{item}</li> )` 返回的是一个列表，也就是说：在 React 中的 `{}` 是可以放入一个 jsx 列表，并且无需做其他操作，直接让 React 渲染的。同时，该特性在对象上无法直接实现（除非开发者对 对象做处理... 将其转变成列表）。相关内容可以参考 [[#JSX 嵌入变量]]
+列表渲染使用 map 方法可以说是“最佳实践”了。上面的 `this.state.list.map( item => <li>{item}</li> )` 返回的是一个列表，也就是说：在 React 中的 `{}` 是可以放入一个 JSX 列表，并且无需做其他操作，直接让 React 渲染的。同时，该特性在对象上无法直接实现（除非开发者对 对象做处理... 将其转变成列表）。相关内容可以参考 [[#JSX 嵌入变量]]
 
 除了上面的 map，也可以使用 其他一些 “麻烦的方法”，虽然麻烦但是可以发现 React JSX 中的一些特性：
 
@@ -277,7 +285,7 @@ JSX 是一种 JavaScript 的语法扩展 ( eXtension ) ，也在很多地方称�
 
 > 👀 这部分内容可以参考下 [React Doc - Thinking in React](https://reactjs.org/docs/thinking-in-react.html)
 
-<font color=red>React 认为渲染逻辑本质上与其他 UI 逻辑存在内在耦合</font>：比如 UI 需要绑定事件（button、a原生等）；比如 UI 中需要展示数据状态，在某些状态发生改变时，又需要改变UI。因为 它们之间是密不可分的，所以 React 没有将标记 ( html tag ) 分离到不同的文件中，而是将它们组合到了一起，即组件 Component 中
+<font color=red>React 认为渲染逻辑本质上与其他 UI 逻辑存在内在耦合</font>：比如 UI 需要绑定事件（ button、a 等）；比如 UI 中需要展示数据状态，在某些状态发生改变时，又需要改变UI。因为 它们之间是密不可分的，所以 React 没有将标记 ( html tag ) 分离到不同的文件中，而是将它们组合到了一起，即组件 Component 中
 
 ##### JSX 书写规范
 
@@ -356,7 +364,37 @@ JSX 是一种 JavaScript 的语法扩展 ( eXtension ) ，也在很多地方称�
   <h2 style={styleObj}>h2 cnt</h2>
   ```
 
-  
+##### JSX 中 this 丢失的解决方法
+
+###### 使用 bind
+
+上面有示例，这里略。
+
+###### 使用 ES6 class fields
+
+使用 “箭头函数” 中，从外层获取 this 的特性。
+
+```react
+class App extends React.component {
+  constructor() { super() }
+  onBtnClick = () => { /* ... */ }
+  render() {
+    return (
+      <button onClick={ onBtnClick }>click me</button>
+    )
+  }
+}
+```
+
+###### 事件监听时传入箭头函数
+
+> ⭐️ 推荐，这也是最佳实践
+
+`{}` 本身就是传入一个函数，所以也可以传入一个箭头函数。原理上和 [[#使用 ES6 class fields]] 类似
+
+```jsx
+<button onClick={ () => onBtnClick() }>click me</button>
+```
 
 
 
@@ -391,3 +429,78 @@ ReactDOM.render(
 <font color=fuchsia>把调用组件的操作交给 React 去做，React 可以更好的协调，避免没必要的代码执行和渲染，他可以让浏览器在组件调用之间做一些工作，这样渲染大量的组件树就不会阻塞主线程</font>。这里 Button 只是一个简单的示例，在复杂的业务场景中，会有很多层的组件嵌套的情况。
 
 摘自：[React的两种渲染方式有什么区别？ - 郭小铭的回答 - 知乎](https://www.zhihu.com/question/548006973/answer/2623307955)
+
+
+
+#### React 动态异步组件
+
+##### 总述
+
+Lazy loading of React components can:
+
+- reduce the initial load time,
+- download components only as needed
+
+<font color=fuchsia>React’s Suspense APIs</font> let you handle the asynchronous loading of components in the UI. It lets components “wait” for something before rendering.
+
+##### Use of React.lazy()
+
+<font color=fuchsia>`React.lazy()`</font> lets you define a component that is loaded dynamically.
+
+To dynamically load a component `LazyComponent.js` we would need to dynamically import and load it as below.
+
+```react
+import { lazy } from 'react';
+...
+const LazyLoadComponent = lazy(() => import('./LazyComponent');
+```
+
+<font color=red>`React.lazy` is only supported for default imports</font>. We have to modify the promise returned by the dynamic import to have a default for named imports.
+
+```react
+const LazyLoadComponent = lazy(() => import('./LazyComponent')
+  .then(
+     module => ({ default: module.Content })
+  )
+);
+```
+
+<font color=dodgerBlue>Dynamically importing and loading</font> <font color=fuchsia>makes the component not part of the main bundle or chunk of code</font>. Thus, <font color=LightSeaGreen>reducing the initial page loading</font>. <font color=red>This way we can split our components based on if it’s a large component</font>, if it’s part of the initial render, its visibility rate to users, if it’s conditionally rendered, or if it’s not so critical.
+
+##### Use of React.Suspense
+
+<font color=dodgerBlue>Lazy load components might cost some waiting if it’s heavy to import and load, poor network connection, processing time in old devices, etc</font>. In this case, <font color=red>we need to provide a fallback UI to indicate to the users that the component is loading</font>. This is where `React.Suspense` comes in.
+
+`React.Suspense` lets you specify the loading indicator in case some components in the tree below it are not yet ready to render.
+
+```react
+import { lazy, Suspense } from 'react;
+const Content = lazy(() => import("./Content"));
+
+export const AppComponent = () => (
+   <Suspense fallback={<div>Loading...</div>}> {/* 👀 使用了 Suspense */}
+      <Content cost={COST} />
+   </Suspense>
+);
+```
+
+##### Use of Intersection Observer API
+
+<font color=dodgerBlue>`React.Suspense` APIs don’t support lazy data fetching</font>. Using [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) we <font color=red>can under the hood fetch data **only if the component comes in the visibility**</font>. This way we can reduce the load time again on top of lazy loading, we are also lazy fetching the component. We can also use the same principle to supply data for the component.
+
+To use Intersection Observer API we can create an observer as below:
+
+```react
+const options = {
+  root: null,
+  rootMargin: '750px',
+  threshold: 1.0,
+};
+
+const observer = new IntersectionObserver(callback, options);
+observer.observe(targetElement);
+```
+
+We can also use [`react-intersection-observer`](https://www.npmjs.com/package/react-intersection-observer) npm package that uses the API to provide hooks, props, etc. for your React application.
+
+摘自：[How to Handle Dynamic & Async Components in React](https://javascript.plainenglish.io/how-to-handle-dynamic-async-components-in-react-99ca13578fd8)

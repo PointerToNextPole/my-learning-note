@@ -320,6 +320,12 @@
 - **foreground** ：前景。在 [微信官方文档 - 小程序 - 框架接口 / 页面 / 页面生命周期](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/page-life-cycle.html) 中看到的 “set to foreground ”，应该有 前一个页面的意思。另外，它的反义词是 background
 - **mitigate** ：缓解
 - **squash** ：压碎，压缩。这个意思一般和 `git rebase` 和 `git merge` 相关
+- **in a nutshell** ：简而言之
+- **recipes** ：食谱
+- **characterize** ：描述、表征 ( verb )
+- **peculiar** ：特有的、奇怪的
+- **intricacy** ：错综复杂（的事物）
+- **react** ：反应 ( verb ) 👀 这个忘记是不应该的
 
 
 

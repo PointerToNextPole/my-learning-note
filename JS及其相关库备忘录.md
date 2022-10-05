@@ -3326,7 +3326,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                               
+  >                                                                                                                                                                                                 
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3345,7 +3345,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                               
+  >                                                                                                                                                                                                 
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -6220,23 +6220,16 @@ window.location 对象用于<font color=FF0000>获得当前页面的地址 (URL)
 
 #### JavaScript Window Navigator
 
-window.navigator 对象<font color=FF0000>包含有关访问者浏览器的信息</font>，在编写时可不使用 window 这个前缀
+window.navigator 对象<font color=FF0000>包含有关访问者浏览器的信息</font>，在编写时可不使用 window 这个前缀。
 
-- **navigator.appCodeName：**    浏览器代号
-- **navigator.appName：**             浏览器名称
-- **navigator.appVersion：**          浏览器版本
-- **navigator.cookieEnabled：**    启用Cookies
-- **navigator.platform：**               硬件平台
-- **navigator.userAgent：**             用户代理
-- **navigator.systemLanguage：** 用户代理语言
-
-**警告：**来自 navigator 对象的信息具有误导性，不应该被用于检测浏览器版本，这是因为：
+⚠️ 警告：来自 navigator 对象的信息具有误导性，不应该被用于检测浏览器版本，这是因为：
 
 - <font color=FF0000>navigator 数据可被浏览器使用者更改</font>
-- <mark>一些浏览器对测试站点会识别错误</mark>
-- <mark>浏览器无法报告晚于浏览器发布的新操作系统</mark>
+- 一些浏览器对测试站点会识别错误
+- <font color=LightSeaGreen>浏览器无法报告晚于浏览器发布的新操作系统</font>
 
-**补充：**
+##### 补充
+
 <font color=FF0000>Navigator <font size=4>**接口**</font>表示 **用户代理的状态和标识**</font>。 它允许脚本查询它和注册自己进行一些活动。可以使用只读的 window.navigator 属性检索navigator对象。
 
 链接处还有一些属性和方法，这里略。
@@ -6244,6 +6237,21 @@ window.navigator 对象<font color=FF0000>包含有关访问者浏览器的信�
 另外，也可以通过 在 浏览器 devtools terminal 上输入 navigator（ node环境没有 navigator ），查看属性和方法。
 
 摘自：[MDN - Navigator](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator)
+
+##### 常见属性
+
+- **navigator.cookieEnabled** : Returns a boolean of true if the browser cookies are enabled, otherwise it return false.
+- **navigator.language** : Returns a string with the value of the browser language. If the browser language is set English, the property will return `en` .
+- **navigator.onLine** : <font color=red>Returns a boolean of true if the browser is connected to the internet, otherwise it return false</font>. It might be useful for progressive web apps that need to check whether the user is connected to the internet to make a certain change.
+- **navigator.appVersion** : Returns a string with the value of the version of the browser. If you’re using Chrome 105 it will return that, and depending on your OS it might also return extra information.
+- **navigator.appName** : Returns a string with the name of the browser. Currently, modern browsers return “Netscape” for compatibility reasons.
+- **navigator.appCodeName** : Returns a string with the value of the browser code name, not to be confused with the browser name. Currently, modern browsers return “Mozilla” even if they’re not Mozilla Firefox, for compatibility reasons.
+- **navigator.platform **: Returns a string with the value of the platform for which the browser is designed. If you’re using a Mac in 2022, it will return a value of `MacIntel` .
+- **navigator.userAgent** : Returns a string with the value of the browser name, version and platform.
+- **navigator.geolocation **: Returns a geolocation object containing the user’s location information. [Read more about it.](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/geolocation)
+- **navigator.product** : Returns a string the name of the browser engine. Currently, modern browsers return “Gecko” for compatibility reasons.
+
+摘自：[The Navigator Object: What It Is and What You Can Do With It](https://medium.com/@jesusmejiasg/the-navigator-object-what-it-is-and-what-you-can-do-with-it-fb9b2fdde5bf)
 
 #### Navigator.sendBeacon()
 
