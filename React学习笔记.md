@@ -16,11 +16,17 @@
 
 ##### 声明式编程
 
+> 👀 这里还提了一下 “命令式” 和 “声明式”，不过并没有讲什么内容。
+
 声明式编程是目前整个大前端开发的模式：Vue、React、Flutter、SwiftUI 。它允许我们只需要维护自己的状态，当状态改变时，React 可以根据最新的状态去渲染我们的 UI 界面。
 
 <img src="https://s2.loli.net/2022/10/02/ZJfk4NSLXHiz3rU.png" alt="A mathematical formula of UI = f(state). 'UI' is the layout on the screen. 'f' is your build methods. 'state' is the application state." style="zoom:85%;" />
 
 > 👀 注：上图摘自 https://docs.flutter.dev/development/data-and-backend/state-mgmt/declarative
+
+##### render 函数
+
+不论在 Vue 还是在 React 中都包含一个 render 函数。
 
 
 

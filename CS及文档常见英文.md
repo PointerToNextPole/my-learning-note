@@ -325,7 +325,7 @@
 - **characterize** ：描述、表征 ( verb )
 - **peculiar** ：特有的、奇怪的
 - **intricacy** ：错综复杂（的事物）
-- **react** ：反应 ( verb ) 👀 这个忘记是不应该的
+- **react** ：反应 ( verb ) 👀 这个不应该忘记的...
 
 
 
