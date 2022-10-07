@@ -7907,7 +7907,7 @@ options: {
 
 #### Tree Shaking
 
-对于 ES Module 引入时候，默认会将业务代码中所有ES6代码打包引入（不管这个代码块是否被调用），这样就没有做到<font color=FF0000>按需引入 / 按需打包 </font>。对于这个痛点，可以使用 <font color=FF0000>**Tree Shaking** 解决</font>。Tree Shaking <font color=FF0000>只支持</font> ES Module 代码的引入（即 import module，是 ES6 的特性；不支持 commonJS ）。代码使用如下：
+对于 ES Module 引入时候，默认会将业务代码中所有 ES6 代码打包引入（不管这个代码块是否被调用），这样就没有做到<font color=FF0000>按需引入 / 按需打包 </font>。对于这个痛点，可以使用 <font color=FF0000>**Tree Shaking** 解决</font>。Tree Shaking <font color=fuchsia size=4>**只支持 ES Module**</font> 代码的引入（即 import module，是 ES6 的特性；不支持 commonJS ）。代码使用如下：
 
 ```js
 //webpack.config.js
@@ -7934,7 +7934,7 @@ module.exports = {
 
 另外：即使不使用的那些代码，在<font color=FF0000>开发环境</font>的打包中，那些不用的代码将不会被删掉，而是告知你只使用了哪些代码，便于你开发。而在生产环境的打包中，将会直接删掉那些不用的代码。
 
-<font size=4>**补充：**</font>在生产环境的打包中，Tree Shaking 是自动生效的，即：你不需要写 `optimization.usedExports: true ` 配置项，不过 `package.json` 中的 sideEffects 还是要写的。
+> 👀 自我补充：在生产环境的打包中，Tree Shaking 是自动生效的，即：你不需要写 `optimization.usedExports: true ` 配置项，不过 `package.json` 中的 sideEffects 还是要写的。
 
 ##### 《现代 JS 教程》中的关于 tree-shaking 的内容
 > 删除未使用的导出 ( “tree-shaking” )
@@ -7942,6 +7942,16 @@ module.exports = {
 > 摘自：[现代 JS 教程 - 模块 (Module) 简介 - 构建工具](https://zh.javascript.info/modules-intro#gou-jian-gong-ju)
 
 《现代 JS 教程》中关于 tree-shaking 的定义，相当直接易懂。
+
+##### 《 Vue.js 设计与实现》中 tree-shaking 的内容
+
+> 👀 2022/10/7 注：这部分的内容感觉言简意赅，让我发现部分内容彻底遗忘... 同时消除了先前自己的一些误解；所以做此摘抄。
+
+什么是 Tree-Shaking 呢？<font color=LightSeaGreen>在前端领域，这个概念因 rollup.js 而普及</font>。简单地说，Tree-Shaking 指的就是消除那些永远不会被执行的代 码，也就是<font color=red>排除 dead code</font>，现在无论是 rollup.js 还是 webpack，都支持 Tree-Shaking。
+
+想要实现 Tree-Shaking，必须满足一个条件，<font color=fuchsia>即模块必须是 ESM</font> ( ES Module )，因为 <font color=fuchsia>Tree-Shaking 依赖 ESM 的静态结构</font> ⚠️ 注意：这点完全忘记了
+
+
 
 #### Tree Shaking 文档补充
 
@@ -8038,7 +8048,7 @@ The array accepts simple glob patterns（简单的全局模式） to the relevan
 
 Finally , `"sideEffects"` can <font color=FF0000>**also** be set</font> from the [`module.rules` configuration option](https://webpack.js.org/configuration/module/#modulerules).
 
-#####  `usedExports` ( Tree Shaking ) 和 `sideEffects` 的区别
+#####  usedExports ( Tree Shaking ) 和 sideEffects 的区别
 
 The <font color=dodgerBlue>**`sideEffects` and `usedExports`**</font> ( more known as tree shaking ) <font color=dodgerBlue>**optimizations are two different things**</font> .
 
