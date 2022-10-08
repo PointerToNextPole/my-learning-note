@@ -3787,7 +3787,7 @@ $ node script.js
 
 - **\_\_filename 和 \_\_dirname：**分别代表当前所运行 Node 脚本的文件路径和所在目录路径。（\_\_filename 和 \_\_dirname 只能在 Node 脚本文件中使用，在 REPL 中是没有定义的。）
 
-* 了解一下 Node 具体是怎样实现模块机制的。具体而言：Node 引入了三个新的全局对象（Node专属）：**require**、**exports**和**module**。
+* 了解一下 Node 具体是怎样实现模块机制的。具体而言：Node 引入了三个新的全局对象（Node专属）：**require**、**exports** 和**module**。
 
   - **require：**<font color=FF0000>require 用于导入其他 Node 模块</font>，其参数接受一个字符串代表模块的名称或路径，通常被称为模块标识符。具体有以下三种形式：
 
@@ -3859,7 +3859,7 @@ $ node script.js
 
 使用 `node -p process.versions.v8` ，结果如下：
 
-<img src="https://s2.loli.net/2022/09/19/JyaBrAxI36VeqZ8.png" alt="image-20220919234454543" style="zoom:60%;" />
+<img src="https://s2.loli.net/2022/09/19/JyaBrAxI36VeqZ8.png" alt="image-20220919234454543" style="zoom:55%;" />
 
 > 👀 注：`-p` 完整写法是 `--print` ，作用“应该”是 print “script” ，参见 [Node Doc - cli # `-p` , `--print` "script"](https://nodejs.org/api/cli.html#-p---print-script)
 
@@ -3896,9 +3896,9 @@ $ node --v8-options | grep -e '--harmony'
 
 
 
-## npm
+## NPM
 
-**NPM**（node package manager），通常称为node包管理器。顾名思义，它的主要功能就是管理node包，包括：安装、卸载、更新、查看、搜索、发布等。
+**NPM** ( node package manager )，通常称为 node 包管理器。顾名思义，它的主要功能就是管理 node 包，包括：安装、卸载、更新、查看、搜索、发布等。
 
 
 
@@ -4673,3 +4673,63 @@ function someMiddleware(req, res, next) {
 
 
 摘自：[一杯茶的时间，上手 Express 框架开发](https://zhuanlan.zhihu.com/p/98019249)
+
+
+
+## DENO
+
+#### Web Platform APIs
+
+##### 总述
+
+DENO 实现了 一些 Node 未实现的 浏览器 Web API，比如 `localStorage` 和 DOM Event
+
+##### 详情
+
+Deno aims to use web platform APIs (like `fetch` ) <font color=red>instead of inventing a new proprietary API</font> where it makes sense. These APIs generally follow the specifications and should match the implementation in Chrome and Firefox. <font color=LightSeaGreen>In some cases it makes sense to deviate from</font>（偏离） <font color=LightSeaGreen>the spec slightly, because of the different security model Deno has</font>.
+
+Here is a list of web platform APIs Deno implements:
+
+- Blob
+
+- BroadcastChannel
+
+- Channel Messaging API
+
+- Compression Streams API
+
+- Console
+
+- <font color=red>DOM `CustomEvent`, `EventTarget` and `EventListener`</font>
+
+  > 在 Node 中可以使用 [jsdom](https://github.com/jsdom/jsdom) 替代
+
+- Encoding API
+
+- Fetch API
+
+- `FormData`
+
+- Location API
+
+- Performance API
+
+- `setTimeout` , `setInterval` , `clearInterval`
+
+- Streams API
+
+- `URL`
+
+- `URLPattern`
+
+- `URLSearchParams`
+
+- <font color=red>Web Crypto API</font>
+
+- <font color=red>Web Storage API</font>
+
+- <font color=red>Web Workers API</font>
+
+- `WebSocket`
+
+摘自：[deno doc - runtime - Web Platform APIs](https://deno.land/manual@v1.26.1/runtime/web_platform_apis)

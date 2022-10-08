@@ -326,6 +326,8 @@
 - **peculiar** ：特有的、奇怪的
 - **intricacy** ：错综复杂（的事物）
 - **react** ：反应 ( verb ) 👀 这个不应该忘记的...
+- **deviate** ：偏离。一般使用：deviate from
+- **canonical** ：权威性的。比较常见的用在 `<link rel="canonical">` 和 CNAME record ( Canonical Name Record )
 
 
 

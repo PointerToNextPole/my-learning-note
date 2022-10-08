@@ -10,7 +10,7 @@ webpack 是一种构建工具工具。那，为什么需要构建或者说编译
 
 ##### webpack 解析 ES6
 
-需要掌握一个新的概念，loaders：所谓 loaders ，就是说把原本 webpack 不支持加载的文件或者文件内容通过 loaders 进行加载解析，实现应用的目的。<mark>这里讲解 ES6 解析，原生支持 JS 解析，但是不能解析 ES6，需要 babel-loader ，而 babel-loader 又依赖 babel</mark>
+需要掌握一个新的概念，loaders：所谓 loaders ，就是说把原本 webpack 不支持加载的文件或者文件内容通过 loaders 进行加载解析，实现应用的目的。<font color=LightSeaGreen>这里讲解 ES6 解析，原生支持 JS 解析，但是不能解析 ES6，需要 babel-loader ，而 babel-loader 又依赖 babel</font>
 
 ##### webpack 加载 css、less 等样式文件
 
@@ -80,7 +80,6 @@ You can configure this part of the process by specifying an `output` field in yo
 
 ```js
 // webpack.config.js
-
 const path = require('path');
 
 module.exports = {
@@ -7949,9 +7948,43 @@ module.exports = {
 
 什么是 Tree-Shaking 呢？<font color=LightSeaGreen>在前端领域，这个概念因 rollup.js 而普及</font>。简单地说，Tree-Shaking 指的就是消除那些永远不会被执行的代 码，也就是<font color=red>排除 dead code</font>，现在无论是 rollup.js 还是 webpack，都支持 Tree-Shaking。
 
-想要实现 Tree-Shaking，必须满足一个条件，<font color=fuchsia>即模块必须是 ESM</font> ( ES Module )，因为 <font color=fuchsia>Tree-Shaking 依赖 ESM 的静态结构</font> ⚠️ 注意：这点完全忘记了
+<font color=dodgerBlue>想要实现 Tree-Shaking，必须满足一个条件</font>，<font color=fuchsia>即模块必须是 ESM</font> ( ES Module )，因为 <font color=fuchsia>Tree-Shaking 依赖 ESM 的静态结构</font> ⚠️ 注意：这点完全忘记了
 
+<font color=dodgerBlue>Tree-Shaking 中的第二个关键点——副作用</font>。如果一个函数调用会产生副作用，那么就不能将其移除。什么是副作用？简单地说，副作用就是，当调用函数的时候会对外部产生影响，例如修改了全局变量。<font color=dodgerBlue>对于如下代码示例：</font>
 
+```js
+function foo(obj) { obj && obj.foo }
+```
+
+<font color=dodgerblue>**我们不能轻易的说它是没有副作用的**</font>：试想一下，<font color=red>如果 obj 对象是一个通过 Proxy 创建的代理对象，那么当我们读取对象属性时，就会触发代理对象的 get 夹子 ( trap )</font>，<font color=red>在 get 夹子中是可能产生副作用的，例如我们在 get 夹子中修改了某个全局变量。而到底会不会产生副作用，只有代码真正运行的时候才能知道</font>。<font color=fuchsia>**JavaScript 本身是动态语言，因此想要静态地分析哪些代码是 dead code 很有难度**</font>，上面只是举了一个简单的例子。
+
+因为静态地分析 JavaScript 代码很困难，所以像 rollup.js 这类工具都会提供一个机制，让我们能明确地告诉 rollup.js：“放心吧，这段代码不会产生副作用，你可以移除它。”，如下示例：
+
+```js
+import {foo} from './utils'
+
+/*#__PURE__*/ foo()
+```
+
+注意注释代码 `/*#__PURE__*/`，<font color=fuchsia>其作用就是告诉 rollup.js，**对于 foo 函数的调用不会产生副作用，可以放心地对其进行 Tree-Shaking**</font>
+
+在编写框架的时候需要合理使用 `/*#__PURE__*/` 注释。如果你去搜索 Vue.js 3 的源码，会发现它大量使用了该注释，例如下面这句：
+
+```js
+export const isHTMLTag = /*#__PURE__*/ makeMap(HTML_TAGS)
+```
+
+这会不会对编写代码造成很大的心智负担呢？其实不会，因为<font color=fuchsia size=4>通常产生副作用的代码都是 **模块内函数的顶级调用**</font>。什么是顶级调用呢？如以下代码所示：
+
+```js
+foo() // 顶级调用
+
+function bar() {
+  foo() // 函数内调用
+}
+```
+
+可以看到，<font color=fuchsia>对于顶级调用来说，是可能产生副作用的</font>；但<font color=fuchsia>对于函数内调用来说，只要函数 bar 没有被调用，那么 foo 函数的调用自然不会产生副作用</font>。<font color=red>因此，在 Vue.js 3 的源码中，基本都是在一些顶级调用的函数上使用 `/*#__PURE__*/` 注释</font>。当然，该注释不仅仅作用于函数，它可以应用于任何语句上。该注释也不是只有 rollup.js 才能识别，webpack 以及压缩工具（如 terser）都能识别它。
 
 #### Tree Shaking 文档补充
 
@@ -7979,7 +8012,7 @@ The **webpack 2** release came with built-in support for ES2015 modules (alias *
 
 但是仅仅加上这些还是不够的，没有使用的代码在打包时候，依然会被加入；所以，还要加上 sideEffects
 
-##### 将文件标记为 side-effect-free (无副作用)
+##### 将文件标记为 side-effect-free
 
 In a 100% ESM module world, identifying side effects is straightforward. However, <font color=FF0000>we aren't there quite yet</font> , so in the mean time <font color=fuchsia>it's necessary to provide hints to webpack's compiler on the "pureness" of your code</font>.
 
@@ -8072,11 +8105,13 @@ var Button$1 = /*#__PURE__*/ withAppProvider()(Button);
 
 <font color=dodgerBlue>**To tackle（解决） this , we use the [`"sideEffects"`](https://webpack.js.org/guides/tree-shaking/#mark-the-file-as-side-effect-free) property in `package.json`**</font> .
 
-It's <font color=FF0000>**similar to `/*#__PURE__*/`**</font> but on a module level instead of a statement level（**译**：作用于模块的层面，而不是代码语句的层面（这是在说 `/*#__PURE__*/` 这种））. <font color=dodgerBlue>**It says ( `"sideEffects"` property )**</font> : "<mark>If no direct export from a module flagged with no-sideEffects is used</mark>（**译**：如果被标记为无副作用的模块没有被直接导出使用）, <mark>the bundler can **skip evaluating the module for side effects**</mark>." .
+It's <font color=FF0000>**similar to `/*#__PURE__*/`**</font> but on a module level instead of a statement level（**译**：作用于模块的层面，而不是代码语句的层面（这是在说 `/*#__PURE__*/` 这种））. <font color=dodgerBlue>**It says ( `"sideEffects"` property )**</font> : "<font color=LightSeaGreen>If no direct export from a module flagged with no-sideEffects is used</font>（**译**：如果被标记为无副作用的模块没有被直接导出使用）, <font color=LightSeaGreen>the bundler can **skip evaluating the module for side effects**</font>." .
+
+> 👀 注：这部分内容并没有完全看懂，可以参考下 [[#《 Vue.js 设计与实现》中 tree-shaking 的内容]] 中 `/*#__PURE__*/` 中的内容
 
 ##### Mark a function call as side-effect-free
 
-It is possible to tell webpack that a function call is side-effect-free ( pure ) by using the `/*#__PURE__*/` annotation. <font color=FF0000>It **can be put in front of**</font> <font color=fuchsia size=4>**function calls**</font>（👀 注：这里是**函数调用**，下面的示例也是这样用的） <font color=FF0000>to mark them as side-effect-free</font>. Arguments passed to the function are not being marked by the annotation and may need to be marked individually. <font color=FF0000>When the initial value in a variable declaration of an unused variable is considered as side-effect-free ( pure ) , it is getting marked as dead code, not executed and dropped by the minimizer</font>. <font color=fuchsia>**This behavior is enabled when [`optimization.innerGraph`](https://webpack.js.org/configuration/optimization/#optimizationinnergraph) is set to `true`**</font> .
+It is possible to tell webpack that a function call is side-effect-free ( pure ) by using the `/*#__PURE__*/` annotation. <font color=FF0000>It **can be put in front of**</font> <font color=fuchsia size=4>**function calls**</font>（👀 这里是**函数调用**，下面的示例也是这样用的） <font color=FF0000>to mark them as side-effect-free</font>. Arguments passed to the function are not being marked by the annotation and may need to be marked individually. <font color=FF0000>When the initial value in a variable declaration of an unused variable is considered as side-effect-free ( pure ) , it is getting marked as dead code, not executed and dropped by the minimizer</font>. <font color=fuchsia>**This behavior is enabled when [`optimization.innerGraph`](https://webpack.js.org/configuration/optimization/#optimizationinnergraph) is set to `true`**</font> .
 
 ```js
 // file.js
@@ -8135,7 +8170,7 @@ new webpack.optimize.ModuleConcatenationPlugin();
 
 > ⚠️ **Warning** : Keep in mind that this plugin will only be applied to [ES6 modules](https://webpack.js.org/api/module-methods/#es6-recommended) processed directly by webpack. When using a transpiler, you'll need to disable module processing (e.g. the [`modules`](https://babeljs.io/docs/en/babel-preset-env#modules) option in Babel).
 
-👀 注：文档下面还有一些内容，没怎么看懂...略。
+> 👀 注：文档下面还有一些内容，没怎么看懂...略。
 
 摘自：[webpack doc - Plugins - ModuleConcatenationPlugin](https://webpack.js.org/plugins/module-concatenation-plugin/)
 

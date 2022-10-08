@@ -381,7 +381,7 @@ HTML \<legend> 元素用于表示其父元素 \<fieldset> 的内容标题。
 
 #### \<meta>
 
-HTML \<meta> 元素表示那些不能由其它 HTML 元相关 ( meta-related ) 元素（ ( \<base>、\<link>、\<script>、\<style> 或 \<title> ) 之一表示的任何元数据信息。
+HTML \<meta> 元素表示那些不能由其它 HTML 元相关 ( meta-related ) 元素 ( \<base>、\<link>、\<script>、\<style> 或 \<title> ) 之一表示的任何元数据信息。
 
 |                  | 描述                                                         |
 | :--------------- | ------------------------------------------------------------ |
@@ -407,7 +407,7 @@ HTML \<meta> 元素表示那些不能由其它 HTML 元相关 ( meta-related ) �
 
 **注意：**全局属性 name 在 \<meta> 元素中具有特殊的语义；另外，<font color=FF0000>  在 **同一个 \<meta> 标签中**，name, http-equiv 或者 charset 三者中 **任何一个属性存在** 时，**itemprop 属性不能被使用** </font>。
 
-- **charset：**这个属性<font color=FF0000>声明了文档的字符编码</font>。<mark>如果使用了这个属性</mark>，<font color=FF0000>其值必须是</font>与 ASCII 大小写无关(ASCII case-insensitive)的<font color=FF0000>"utf-8"</font>
+- **charset：**这个属性<font color=FF0000>声明了文档的字符编码</font>。<font color=dodgerBlue>如果使用了这个属性</font>，<font color=FF0000>其值必须是</font>与 ASCII 大小写无关(ASCII case-insensitive)的<font color=FF0000>"utf-8"</font>
 
 - **content：**此属性包含 http-equiv 或 name 属性的值，具体取决于所使用的值。
 
@@ -457,13 +457,53 @@ HTML \<meta> 元素表示那些不能由其它 HTML 元相关 ( meta-related ) �
 
 摘自：[MDN - \<meta>：文档级元数据元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/meta)
 
+##### link rel="canonical"
+
+###### 什么是权威内容标签
+
+<font color=red>权威内容标签是一种 HTML 代码片段，主要用于定义重复、近似重复或类似页面的主要版本</font>。换句话说，<font color=fuchsia>如果不同的网址上出现了相同或相似的内容，则可以使用权威内容标签去指定一个应该被索引的主要版本</font>。
+
+###### 权威内容标签长的形式
+
+权威内容标签使用简单一致的语法，放置在网页的 `<head>` 部分中：
+
+```html
+<link rel="canonical" href="https://example.com/sample-page/" />
+```
+
+说得明白点，每个部分的含义如下：
+
+- **`link rel="canonical"`** ：带有此标记的链接是此网页的主（权威）版本。
+
+- **`href="https://example.com/sample-page/"`** ：<font color=fuchsia>可以在这个网址找到权威版本</font>。
+
+###### 为什么权威内容标签对于  SEO  来说如此重要
+
+<font color=red>Google 并不喜欢重复的内容，因为这让它们很难抉择</font>：
+
+1. 要索引哪一个页面版本？（它们只会索引一个！）
+2. 哪一个页面版本可在相关查询中拔得头筹？
+3. 是否应该在一个页面上整合出一个“链接权益”，或者在多个页面版本之间进行拆分？
+
+再说<font color=red>过多的重复内容也会影响你的“抓取配额”</font>。<font color=fuchsia>这意味着 Google 最终可能会放弃浪费时间，抓取同一页面的多个版本，而不是发掘出你网站上的其他重要内容</font>。
+
+> ###### 💡 关于抓取配额的真相？
+>
+> 当然，应该尽可能避免让 Google 浪费时间去抓取重复的内容。但是，Google 表示，这对大多数网站来说只是小菜一碟。
+>
+> > 如果新的网页往往会在发布当天被抓取，那么抓取配额不是网站管理员需要关注的东西。同样，如果一个站点的网址少于几千个，那么大多数时候它都会被有效抓取。
+
+<font color=red>权威内容标签解决了所有这些问题</font>。<font color=fuchsia>它们能让 Google 知道你想索引和排名哪个页面版本，以及在哪里巩固 “链接权益”的位置</font>。
+
+摘自：[权威内容标签—简明入门指南](https://ahrefs.com/blog/zh/canonical-tags/) 这里只是摘抄了概念部分，后面还有更多篇幅介绍了使用与使用技巧（以后做 SEO 的话可以继续回来看）。另外，也可以看下 [rel=canonical: the ultimate guide](https://yoast.com/rel-canonical/)
+
 ##### http-equiv
 
 http-equiv 顾名思义，<font color=FF0000>**相当于 http 的文件头作用**</font>，它可以向浏览器传回一些有用的信息，以帮助正确和精确地显示网页内容，与之对应的属性值为 content，content 中的内容其实就是各个参数的变量值。
 
-**注：**<font color=FF0000>http-equiv 的 equiv 是 equivalent （译为：同等物 ）的缩写，所以 http-equiv 即 “ http 同等物”</font>
+> 👀 注：<font color=FF0000>http-equiv 的 equiv 是 equivalent （译为：同等物 ）的缩写，所以 http-equiv 即 “ http 同等物”</font>
 
-> quiv does stand for equivalent. <font color=FF0000>It's **equivalent to the HTTP response header**</font>. For example, these two are the same
+> equiv does stand for equivalent. <font color=FF0000>It's **equivalent to the HTTP response header**</font>. For example, these two are the same
 >
 > ```html
 > <META http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -477,27 +517,33 @@ http-equiv 顾名思义，<font color=FF0000>**相当于 http 的文件头作用
 >
 > 摘自：[http-equiv - what's equiv stand for?](https://stackoverflow.com/questions/33967395/http-equiv-whats-equiv-stand-for)
 
-meta 标签的 http-equiv 属性语法格式是：\<meta http-equiv="参数" content="参数变量值"> ；其中 http-equiv 属性主要有以下几种参数：
+meta 标签的 http-equiv 属性语法格式是：`<meta http-equiv="参数" content="参数变量值">` ；其中 http-equiv 属性主要有以下几种参数：
 
-- **Expires（期限）：**可以用于设定网页的到期时间。一旦网页过期，必须到服务器上重新传输。必须使用GMT的时间格式。用法：
+###### Expires
 
-  ```html
-  <meta http-equiv="expires" content="Wed, 20 Jun 2007 22:33:00 GMT">
-  ```
+期限。可以用于设定网页的到期时间。一旦网页过期，必须到服务器上重新传输。必须使用GMT的时间格式。用法：
 
-- **Pragma（cache模式）：**是用于设定禁止浏览器从本地机的缓存中调阅页面内容，设定后一旦离开网页就无法从Cache中再调出。这样设定，访问者将无法脱机浏览。用法：
+```html
+<meta http-equiv="expires" content="Wed, 20 Jun 2007 22:33:00 GMT">
+```
 
-  ```html
-  <meta http-equiv="Pragma" content="no-cache">
-  ```
+###### Pragma
 
-- **Refresh（刷新）：**自动刷新并指向新页面。用法：
+cache模式。是用于设定禁止浏览器从本地机的缓存中调阅页面内容，设定后一旦离开网页就无法从Cache中再调出。这样设定，访问者将无法脱机浏览。用法：
 
-  ```html
-  <meta http-equiv="Refresh" content="2；URL=http://www.net.cn/">
-  ```
+```html
+<meta http-equiv="Pragma" content="no-cache">
+```
 
-  注意：其中的2是指停留2秒钟后自动刷新到URL网址。
+###### Refresh
+
+刷新。自动刷新并指向新页面。用法：
+
+```html
+<meta http-equiv="Refresh" content="2；URL=http://www.net.cn/">
+```
+
+注意：其中的2是指停留2秒钟后自动刷新到URL网址。
 
 - **Set-Cookie（ cookie 设定）：**如果网页过期，那么存盘的cookie将被删除。 注意：必须使用GMT的时间格式。用法：
 
@@ -511,68 +557,80 @@ meta 标签的 http-equiv 属性语法格式是：\<meta http-equiv="参数" con
   <meta http-equiv="Window-target" content="_top">
   ```
 
-- **content-Type（显示字符集的设定）：**设定页面使用的字符集。用法：
+###### content-Type
+
+显示字符集的设定，设定页面使用的字符集。用法：
+
+```html
+<meta http-equiv="content-Type" content="text/html; charset=gb2312">
+```
+
+###### Pics-label
+
+网页等级评定。在 IE 的 internet 选项中有一项内容设置，可以防止浏览一些受限制的网站，而网站的限制级别就是通过 meta 属性来设置的。用法：
+
+```html
+<meta http-equiv="Pics-label" contect="">  
+```
+
+###### Page_Enter、Page_Exit
+
+- **Page_Enter：**设定进入页面时的特殊效果
 
   ```html
-  <meta http-equiv="content-Type" content="text/html; charset=gb2312">
+  <meta http-equiv="Page-Enter" contect="revealTrans(duration=1.0,transtion=12)">
   ```
 
-- **Pics-label（网页等级评定）：**在IE的internet选项中有一项内容设置，可以防止浏览一些受限制的网站，而网站的限制级别就是通过meta属性来设置的。用法：
+- **Page_Exit：**设定离开页面时的特殊效果
 
   ```html
-  <meta http-equiv="Pics-label" contect="">  
+  <meta http-equiv="Page-Exit" contect="revealTrans(duration=1.0,transtion=12)">
   ```
 
-- **Page_Enter、Page_Exit**
+Duration 的值为网页动态过渡的时间，单位为秒。
 
-  - **Page_Enter：**设定进入页面时的特殊效果
+Transition 是过渡方式，它的值为 0 到 23 ，分别对应 24 种过渡方式。如下表：
 
-    ```html
-    <meta http-equiv="Page-Enter" contect="revealTrans(duration=1.0,transtion=12)">
-    ```
+|                          |                          |                          |                          |
+| ------------------------ | ------------------------ | ------------------------ | ------------------------ |
+| 0：盒状收缩              | 1：盒状放射              | 2：圆形收缩              | 3：圆形放射              |
+| 4：由下往上              | 5：由上往下              | 6：从左至右              | 7：从右至左              |
+| 8：垂直百叶窗            | 9：水平百叶窗            | 10：水平格状百叶窗       | 11：垂直格状百叶窗       |
+| 12：随意溶解             | 13：从左右两端向中间展开 | 14：从中间向左右两端展开 | 15：从上下两端向中间展开 |
+| 16：从中间向上下两端展开 | 17：从右上角向左下角展开 | 18：从右下角向左上角展开 | 19：从左上角向右下角展开 |
+| 20：从左下角向右上角展开 | 21：水平线状展开         | 22：垂直线状展开         | 23：随机产生一种过渡方式 |
 
-  - **Page_Exit：**设定离开页面时的特殊效果
+###### cache-control
 
-    ```html
-    <meta http-equiv="Page-Exit" contect="revealTrans(duration=1.0,transtion=12)">
-    ```
+清除缓存。再访问这个网站要重新下载
 
-  Duration 的值为网页动态过渡的时间，单位为秒。
+```html
+<meta http-equiv="cache-control" content="no-cache">
+```
 
-  Transition 是过渡方式，它的值为 0 到 23 ，分别对应 24 种过渡方式。如下表：
+###### expires
 
-  |                          |                          |                          |                          |
-  | ------------------------ | ------------------------ | ------------------------ | ------------------------ |
-  | 0：盒状收缩              | 1：盒状放射              | 2：圆形收缩              | 3：圆形放射              |
-  | 4：由下往上              | 5：由上往下              | 6：从左至右              | 7：从右至左              |
-  | 8：垂直百叶窗            | 9：水平百叶窗            | 10：水平格状百叶窗       | 11：垂直格状百叶窗       |
-  | 12：随意溶解             | 13：从左右两端向中间展开 | 14：从中间向左右两端展开 | 15：从上下两端向中间展开 |
-  | 16：从中间向上下两端展开 | 17：从右上角向左下角展开 | 18：从右下角向左上角展开 | 19：从左上角向右下角展开 |
-  | 20：从左下角向右上角展开 | 21：水平线状展开         | 22：垂直线状展开         | 23：随机产生一种过渡方式 |
+设定网页的到期时间：
 
--  **cache-control（清除缓存）：**再访问这个网站要重新下载
+```html
+<meta http-equiv="expires" content="0">
+```
 
-  ```html
-  <meta http-equiv="cache-control" content="no-cache">
-  ```
+###### keywords
 
-- **expires：**设定网页的到期时间：
+关键字，给搜索引擎用的
 
-  ```html
-  <meta http-equiv="expires" content="0">
-  ```
+```html
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+```
 
-- **keywords：**关键字，给搜索引擎用的
+###### description
 
-  ```html
-  <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-  ```
+页面描述
 
-- **description：**页面描述
-
-  ```html
-  <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-  ```
+```html
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+```
 
 摘自：[Meta Http-equiv属性详解](https://cnbin.github.io/blog/2016/02/03/http-equivshu-xing-xiang-jie/)
 
