@@ -38,7 +38,7 @@
 
 - **retrieve**：检索，获取
 
-- **decoupled**：解耦的
+- **decoupled**：解耦的，decouple ( verb )
 
 - **critical**：关键的。一般见：关键渲染路径 ( Critical Rendering Path ) 。虽然更常见的翻译是 “批评性的”
 

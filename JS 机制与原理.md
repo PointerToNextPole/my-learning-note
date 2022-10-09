@@ -4240,6 +4240,14 @@ var name = person.map(prop('name'))
 
 `person.map(prop('name'))` 就好像直白的告诉你：person 对象遍历 ( map ) 获取 ( prop ) name 属性。是不是感觉有点意思了呢？
 
+> 👀 一直没有读懂，上面为什么要这样写；直到看到了 阮一峰的 Pointfree 文章 [Pointfree 编程风格指南](https://www.ruanyifeng.com/blog/2017/03/pointfree.html) 中 “四、Pointfree 的本质”，有点懂了。这部分做了笔记 [[函数式编程笔记#Pointfree 风格]] 👀 // TODO 链接做笔记，并且这里Bi-Directional links 精确些
+>
+> 根据例子上面 Pointfree 的文章，可以发现：Pointfree 中使用了相当多的 Currying。另外 Pointfree 中使用很多的 [ramda](https://github.com/ramda/ramda) 库中，所有方法都支持柯里化。
+>
+> > Ramda 还有一个特点：**所有方法都支持柯里化**。
+> >
+> > 摘自：[Ramda 函数库参考教程](https://www.ruanyifeng.com/blog/2017/03/ramda.html)
+
 #### 第一版
 
 未来我们会接触到更多有关柯里化的应用，不过那是未来的事情了，现在我们该编写这个 curry 函数了。
@@ -4262,23 +4270,25 @@ var curry = function (fn) { // 👀 这里只知道使用者会传入 fn，还�
 ```js
 function add(a, b) { return a + b; }
 
-var addCurry = curry(add, 1, 2);
+var addCurry = curry(add, 1, 2); // 👀 这里参数传递的方式不符合要求，而且也不能多次（类似于链式）调用，所以下面还有第二版
 addCurry() // 3
-//或者
+
+// 或者
 var addCurry = curry(add, 1);
 addCurry(2) // 3
-//或者
+
+// 或者
 var addCurry = curry(add);
 addCurry(1, 2) // 3
 ```
 
-已经有柯里化的感觉了，但是还没有达到要求；不过我们可以把（注：第一版）这个函数用作辅助函数，帮助我们写真正的 curry 函数。
+已经有柯里化的感觉了，但是还没有达到要求；不过<font color=red>我们可以把这个函数用作辅助函数，帮助我们写真正的 curry 函数</font>。
 
 #### 第二版
 
 ```js
 // 第二版
-function sub_curry(fn) { // 👀 第一版的代码，作为辅助函数
+function sub_curry(fn) { // 👀 第一版的代码，作为辅助函数；作用是：返回一个只可调用一次的函数
     var args = [].slice.call(arguments, 1);
     return function() {
         return fn.apply(this, args.concat([].slice.call(arguments)));
@@ -4286,20 +4296,33 @@ function sub_curry(fn) { // 👀 第一版的代码，作为辅助函数
 }
 
 function curry(fn, length) {
-    // 👀 function.length 表示形参个数，第一次调用 curry，没传递 length，所以 length 为 fn.length。因为下面有递归调用 curry，所以“可能”会有第二次调用 curry。递归调用时，会传递 length；所以这时候，length 是传来的实参，不是 fn.length。另外，这里传来的 length 也影响了是否继续递归的判断
+    // 👀 function.length 表示形参个数，第一次调用 curry，没传递 length，所以 length 为 fn.length。因为下面有递归调用 curry，所以“可能”会有第二次调用 curry。递归调用时，会传递 length；所以这时 length 是传来的实参，不是 fn.length。另外，这里传来的 length 也会影响是否继续递归的判断
     length = length || fn.length;
 
     return function() {
-        if (arguments.length < length) { // 👀 这里的 length 表示 还能传递多少实参
+        if (arguments.length < length) { // 👀 这里 length 表示：还能传递多少实参
             // 👀 调用 sub_curry 第一个参数就是 fn，所以放在第一个，后面的参数作为“默认参数”
             var combined = [fn].concat([].slice.call(arguments));
-            // 👀 递归调用 curry 函数。length - arguments.length 作为 curry 函数的形参 length 对应的实参，表示：还可以传递多少实参
-            return curry( sub_curry.apply( this, combined), length - arguments.length );
+            // 👀 递归调用 curry 函数。length - arguments.length 作为 curry 函数的形参 length 对应的实参，表示还可以传递多少实参
+            return curry( sub_curry.apply( this, combined), length - arguments.length ); // 👀 调用 sub_curry。这里应该是 递归形成多层闭包了
         } else { // 👀 传递了足够的参数，则停止递归；调用 fn
             return fn.apply(this, arguments);
         }
     };
 }
+```
+
+##### 验证
+
+```js
+var fn = curry(function(a, b, c) {
+    console.log([a, b, c]);
+});
+
+fn("a", "b", "c") // ["a", "b", "c"]
+fn("a", "b")("c") // ["a", "b", "c"]
+fn("a")("b")("c") // ["a", "b", "c"]
+fn("a")("b", "c") // ["a", "b", "c"]
 ```
 
 #### 第二版更易懂的实现
@@ -4312,7 +4335,7 @@ function curry(fn, args) {
     args = args || [];
 
     return function() {
-        var _args = args.slice(0),
+        var _args = args.slice(0), // 👀 这里 slice 的作用是浅拷贝，不做浅拷贝的话 push 会影响到前面的逻辑
             arg, i;
 
         for (i = 0; i < arguments.length; i++) {
@@ -4327,20 +4350,11 @@ function curry(fn, args) {
         }
     }
 }
-
-var fn = curry(function(a, b, c) {
-    console.log([a, b, c]);
-});
-
-fn("a", "b", "c") // ["a", "b", "c"]
-fn("a", "b")("c") // ["a", "b", "c"]
-fn("a")("b")("c") // ["a", "b", "c"]
-fn("a")("b", "c") // ["a", "b", "c"]
 ```
 
 #### 第三版
 
-curry 函数写到这里其实已经很完善了，但是注意这个函数的传参顺序必须是从左到右，根据形参的顺序依次传入，如果我不想根据这个顺序传呢？我们<font color=FF0000>可以创建一个占位符</font>，比如这样（**注：**偏函数中有类似操作）：
+curry 函数写到这里其实已经很完善了，但是注意这个函数的传参顺序必须是从左到右，根据形参的顺序依次传入，如果我不想根据这个顺序传呢？我们<font color=FF0000>可以创建一个占位符</font>，比如这样（ 👀 偏函数中有类似操作）：
 
 ```js
 var fn = curry(function(a, b, c) {
@@ -4433,7 +4447,7 @@ var curry = fn =>
 
 ##### 柯里化的原理总结
 
-用闭包把参数保存起来，当参数的数量足够执行函数了，就开始执行函数。
+<font color=fuchsia>用闭包把参数保存起来，当参数的数量足够执行函数了，就开始执行函数</font>。
 
 摘自：[JavaScript专题之函数柯里化](https://github.com/mqyqingfeng/Blog/issues/42)
 
@@ -4450,9 +4464,9 @@ function curry(func) {
 
   return function curried(...args) {
     if (args.length >= func.length) { // 👀 如果（多次调用的）arguments 合并的长度够了，则运行函数；否则，函数继续等待调用
-      return func.apply(this, args); // 👀 执行函数
+      return func.apply(this, args);  // 👀 执行函数
     } else {
-      return function(...args2) { // 👀 继续等待调用
+      return function(...args2) {     // 👀 继续等待调用
         // 👀 递归。在递归前，将 args 和 args2 合并，并替代 args，用于递归判断
         return curried.apply(this, args.concat(args2));
       }
@@ -4463,7 +4477,7 @@ function curry(func) {
 
 当我们运行它时，这里有两个 `if` 执行分支：
 
-1. 如果传入的 `args` 长度与原始函数所定义的（`func.length`）相同或者更长，那么只需要使用 `func.apply` 将调用传递给它即可。
+1. 如果传入的 `args` 长度与原始函数所定义的 ( `func.length` ) 相同或者更长，那么只需要使用 `func.apply` 将调用传递给它即可。
 2. 否则，获取一个偏函数：我们目前还没调用 `func`。取而代之的是，返回另一个包装器 `pass`，它将重新应用 `curried`，将之前传入的参数与新的参数一起传入。
 
 然后，如果我们再次调用它，我们将得到一个新的偏函数（如果没有足够的参数），或者最终的结果。
@@ -4482,7 +4496,7 @@ function curry(func) {
 
 在「理论计算机科学」中，柯里化提供了在简单的理论模型中，比如：只接受一个单一参数的 lambda 演算中，研究带有多个参数的函数的方式。
 
-<font color=FF0000>函数柯里化的对偶是 Uncurrying</font>，一种<font color=FF0000>使用匿名单参数函数来实现多参数函数的方法</font>。例如：
+<font color=FF0000>函数柯里化的对偶是 Uncurrying</font>（反柯里化），一种<font color=FF0000>使用匿名单参数函数来实现多参数函数的方法</font>。例如：
 
 ```js
 var foo = function(a) {
@@ -4492,7 +4506,7 @@ var foo = function(a) {
 }
 ```
 
-这样调用上述函数：`(foo(3))(4)`，或直接`foo(3)(4)`。
+这样调用上述函数：`(foo(3))(4)` ，或直接 `foo(3)(4)` 。
 
 摘自：[wikipedia - 柯里化](https://zh.wikipedia.org/wiki/%E6%9F%AF%E9%87%8C%E5%8C%96)
 

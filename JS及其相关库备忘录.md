@@ -1116,15 +1116,15 @@ const array1 = [1, 4, 9, 16];
 const map1 = array1.map(x => x * 2);
 ```
 
-**Array.prototype.map() 可以起到和 forEach类似的作用**。注：map方法 在编程中一个常用的场景是：“挑出对象数组中的部分属性形成一个新的数组，甚至是对跳出的属性进行属性名修改”；不过，在编程中发现：map 这种形成新数组的方法，对其中引用类型的属性只是拷贝了引用，不是深拷贝。
+Array.prototype.map() 可以起到和 forEach 类似的作用。注：map方法 在编程中一个常用的场景是：“挑出对象数组中的部分属性形成一个新的数组，甚至是对跳出的属性进行属性名修改”；不过，在编程中发现：map 这种形成新数组的方法，对其中引用类型的属性只是拷贝了引用，不是深拷贝。
 
-**语法**
+##### 语法
 
 ```js
 var new_array = arr.map(callback(currentValue[, index[, array]])[, thisArg])
 ```
 
-**参数**
+###### 参数
 
 - callback：生成新数组元素的函数，使用三个参数：
   - currentValue：callback 数组中正在处理的当前元素。
@@ -1143,11 +1143,16 @@ const map1 = array1.map((x, index, arr) => {
 });
 ```
 
-**其他：**
+##### 其他
 
-- 因为 map 生成一个新数组，当你不打算使用返回的新数组却使用 map 是违背设计初衷的，请用forEach或者for-of替代。你不该使用map: (A) 你不打算使用返回的新数组，或 (B) 你没有从回调函数中返回值。
+- 因为 map 生成一个新数组，当你不打算使用返回的新数组却使用 map 是违背设计初衷的，请用 forEach 或者 for-of 替代。
 
-- map() 中可以直接写函数，示例如下：
+  <font color=dodgerBlue>如果有以下情形，则不该使用 `map` ：</font>
+
+  - 你不打算使用返回的新数组
+  - 你没有从回调函数中返回值。
+
+- map() 中可以直接写函数名，示例如下：
 
   ```js
   var numbers = [1, 4, 9];
@@ -1156,7 +1161,7 @@ const map1 = array1.map((x, index, arr) => {
 
 摘自：[MDN - Array.prototype.map()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/map)
 
-##### 关于上面的三个函数式编程的补充
+##### 关于 map、reduce、filter 三个函数式编程方法
 
 > map 是<font color=FF0000>**映射**</font>、reduce 是<font color=FF0000>聚合</font>，filter 是筛选。
 >
@@ -1166,6 +1171,8 @@ const map1 = array1.map((x, index, arr) => {
 >
 > 摘自：[python如何理解map，reduce，filter？ - gashero的回答 - 知乎](https://www.zhihu.com/question/265648060/answer/2418365397)
 
+> 👀 另外，在 FP 中有一个 Pointfree 的概念，可以看下 [[函数式编程笔记#Pointfree 风格]]
+
 
 
 #### Array.prototype.sort()
@@ -1174,20 +1181,21 @@ sort() 方法用原地算法对数组的元素进行排序，并返回数组。<
 
 同时和C++的**比较器**一样，sort函数可以自定义比较函数。
 
-- **语法**
-  
-  ```js
-  arr.sort([compareFunction])
-  ```
+##### 语法
 
-- **参数**
-  
-  - compareFunction： 可选，用来指定按某种顺序进行排列的函数。如果省略，元素按照转换为的字符串的各个字符的Unicode位点进行排序。
-    - firstEl：第一个用于比较的元素。
-    - secondEl：第二个用于比较的元素。
+```js
+arr.sort([compareFunction])
+```
 
-- **返回值**
-  排序后的数组。请注意，数组已原地排序，并且不进行复制。
+###### 参数
+
+- compareFunction： 可选，用来指定按某种顺序进行排列的函数。如果省略，元素按照转换为的字符串的各个字符的Unicode位点进行排序。
+  - firstEl：第一个用于比较的元素。
+  - secondEl：第二个用于比较的元素。
+
+###### 返回值
+
+排序后的数组。请注意，数组已原地排序，并且不进行复制。
 
 摘自：[MDN - Array.prototype.sort()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
 
@@ -3326,7 +3334,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                 
+  >                                                                                                                                                                                                   
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3345,7 +3353,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                 
+  >                                                                                                                                                                                                   
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -11539,7 +11547,7 @@ history.replaceState(stateObj, title[, url]);
 
 
 
-#### window事件
+#### window 事件
 
 - <font size=4>**load：**</font>当整个页面及所有依赖资源如样式表和图片都已完成加载时，将触发load事件。
 
@@ -11547,17 +11555,17 @@ history.replaceState(stateObj, title[, url]);
 
   摘自：[MDN - load](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/load_event)
 
-  **补充：GlobalEventHandlers.onload**
+  ##### 补充：GlobalEventHandlers.onload
 
   GlobalEventHandlers mixin 的 onload 属性是一个事件处理程序<font color=FF0000>用于处理Window, XMLHttpRequest, \<img> 等元素的加载事件，当资源已加载时被触发</font>。
 
-  **语法**
+  ###### 语法
 
   ```js
   window.onload = funcRef;
   ```
 
-  当 window load事件触发时，funcRef 方法会被调用；funcRef 是窗口加载事件触发时调用的处理函数。
+  当 window load 事件触发时，funcRef 方法会被调用；funcRef 是窗口加载事件触发时调用的处理函数。
 
   摘自：[MDN web docs - GlobalEventHandlers.onload](https://developer.mozilla.org/zh-CN/docs/Web/API/GlobalEventHandlers/onload)
 
@@ -12009,34 +12017,36 @@ history.replaceState(stateObj, title[, url]);
 
   摘自：[MDN - Window: hashchange event](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/hashchange_event)
 
-  > 👀 **注：**这个事件是 vue-router hash模式的原理
+  > 👀 **注：**这个事件是 vue-router hash 模式的原理
   
 - <font size=4>**屏幕旋转事件**</font>：之前的事件名称是 [`orientationchange`](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/orientationchange_event) ，已经废弃，不过在 Chrome DevTool 中 可以在 window 对象内找到 `ondeviceorientation` （见 [MDN - Window：deviceorientation 事件](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/deviceorientation_event)）和 `ondeviceorientationabsolute` （这是非标准的，MDN 不推荐使用）。鉴于 `orientationchange` 已经废弃， MDN 建议使用 [Screen Orientation API](https://developer.mozilla.org/en-US/docs/Web/API/ScreenOrientation)
 
+- 打印相关：有 onbeforeprint 和 onafterprint。
+
 #### 事件补充
 
-- **pageshow 和 load 区别：**
-  
-  pageshow 事件类似于 load 事件，<font color=FF0000>**load 事件在页面第一次加载时触发， pageshow 事件在每次加载页面时触发**，即 load 事件在页面从浏览器缓存中读取时不触发</font>。
-  
-  <mark>一般情况下，移动端浏览器会将当前已访问页面存入缓存中，缓存中保存着页面数据，DOM和js的状态，前进和后退操作时直接从浏览器缓存中读取页面内容，而不进行页面刷新，所以监听前进和后退操作时可用pageshow事件</mark>。
-  
-  <mark style="background: aqua">**触发时间：**load先触发，pageshow后触发。</mark>
-  
-- **pageshide 和 unload 区别：**
-  
-  <font color=FF0000>pagehide 事件类似于 unload 事件，在用户离开网页时触发（如点击一个链接、刷新页面、提交表单、关闭浏览器、前进、后退等）</font>
-  
-  页面缓存：pagehide触发可以缓存页面，但unload 事件触发后无法缓存。
-  
-  <mark style="background: aqua">**触发时间：**pagehide 先触发，unload 后触发。</mark>
+##### pageshow 和 load 区别
+
+pageshow 事件类似于 load 事件，<font color=FF0000>**load 事件在页面第一次加载时触发， pageshow 事件在每次加载页面时触发**，即 load 事件在页面从浏览器缓存中读取时不触发</font>。
+
+<mark>一般情况下，移动端浏览器会将当前已访问页面存入缓存中，缓存中保存着页面数据，DOM和js的状态，前进和后退操作时直接从浏览器缓存中读取页面内容，而不进行页面刷新，所以监听前进和后退操作时可用pageshow事件</mark>。
+
+<mark style="background: aqua">**触发时间：**load先触发，pageshow后触发。</mark>
+
+##### pageshide 和 unload 区别
+
+<font color=FF0000>pagehide 事件类似于 unload 事件，在用户离开网页时触发（如点击一个链接、刷新页面、提交表单、关闭浏览器、前进、后退等）</font>
+
+页面缓存：pagehide触发可以缓存页面，但unload 事件触发后无法缓存。
+
+<mark style="background: aqua">**触发时间：**pagehide 先触发，unload 后触发。</mark>
 
 摘自：[pageshow 和 pagehide](https://blog.csdn.net/yihanzhi/article/details/88244913)
 
 更多 浏览器事件可以参考 MDN 的 [事件参考](https://developer.mozilla.org/zh-CN/docs/Web/Events)，里面列出的事件比较全面。另外，还可以使用如下方法查看浏览器支持的所有事件。
 
 ```js
-const onEvt = Object.keys(window).fileter(_ => _.match(/^on/))
+const onEvtLs = Object.keys(window).fileter(_ => _.match(/^on/))
 ```
 
 

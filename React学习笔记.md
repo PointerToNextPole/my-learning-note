@@ -510,3 +510,11 @@ observer.observe(targetElement);
 We can also use [`react-intersection-observer`](https://www.npmjs.com/package/react-intersection-observer) npm package that uses the API to provide hooks, props, etc. for your React application.
 
 摘自：[How to Handle Dynamic & Async Components in React](https://javascript.plainenglish.io/how-to-handle-dynamic-async-components-in-react-99ca13578fd8)
+
+
+
+#### React Best Practices – Tips for Writing Better React Code in 2022 笔记
+
+// TODO
+
+[React Best Practices – Tips for Writing Better React Code in 2022](freecodecamp.org/news/best-practices-for-react/)

@@ -535,7 +535,7 @@ Array.prototype.reduce = function(cb, initialValue) {
 
 #### flat 实现
 
-注：可以参考下 [JavaScript专题之数组扁平化](https://github.com/mqyqingfeng/Blog/issues/36)
+👀 可以参考下 [JavaScript专题之数组扁平化](https://github.com/mqyqingfeng/Blog/issues/36)
 
 ##### 使用 reduce() 实现
 
@@ -544,7 +544,7 @@ const flat = arr => arr.reduce(
   (pre, cur) => pre.concat(Array.isArray(cur) ? flat(cur) : cur), [])
 ```
 
-**注：** 这里用到了递归。另外，兼容性方面，Array.prototype.reduce() 是 ES5 甚至更早 的方法（兼容 IE9），Array.isArray() 是 ES5 的方法
+👀 这里用了递归。另外，兼容性方面，Array.prototype.reduce() 是 ES5 甚至更早 的方法（兼容 IE9），Array.isArray() 是 ES5 的方法
 
 ##### 使用递归
 
@@ -606,7 +606,7 @@ const arr = Array.prototype.slice.call(arrLike)
 
 ##### 扩展运算符
 
-**注：**这个挺巧妙，但没想到
+👀 这个挺巧妙，但没想到
 
 ```js
 const arr = [ ...arrLike ]
@@ -614,7 +614,7 @@ const arr = [ ...arrLike ]
 
 ##### 使用 concat
 
-**注：**没想到。另外，这里 只能用 apply，不可用 call
+👀 没想到。另外，这里 只能用 apply，不可用 call
 
 ```js
 const arr = Array.prototype.concat.apply([], arrLike)
@@ -623,6 +623,8 @@ const arr = Array.prototype.concat.apply([], arrLike)
 
 
 #### 柯里化
+
+##### 理想情况下的简单实现
 
 如果是实现简单的 add(1)(2) = 3，则利用闭包，有如下代码：
 
@@ -652,6 +654,23 @@ function add() {
     return _args.reduce((sum, cur) => sum + cur)
   }
   return fn
+}
+```
+
+##### 通用实现
+
+```javascript
+function curry(fn, args) {
+  const { length } = fn;
+  const myArgs = args || [];
+  return function () {
+    // 这里的arguments是第二次及以后的入参
+    const newArgs = myArgs.concat(Array.prototype.slice.call(arguments));
+    if (newArgs.length < length) {
+      return curry.call(this, fn, newArgs);
+    }
+    return fn.apply(this, newArgs);
+  };
 }
 ```
 
