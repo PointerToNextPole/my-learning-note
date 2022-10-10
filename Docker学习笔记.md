@@ -580,6 +580,8 @@ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
   > #            命名container  独立模式 映射端口   映射本地文件夹                    运行nginx image
   > ```
   >
+  > > 👀 这里 `$(pwd)` 也可以写成 `$PWD` ，但 `$PWD` 大小写敏感，`$pwd` 的返回值为空；而 `$(pwd)` 大小写不敏感，所以推荐使用
+  >
   > 这时，可以访问 `localhost:8000`  ，查看 dist 中的打包效果。
   >
   > 学习自：[codingstartup - 初探 Docker](https://www.bilibili.com/video/BV1vD4y1X7ce)

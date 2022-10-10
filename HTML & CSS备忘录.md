@@ -452,6 +452,10 @@ HTML \<meta> 元素表示那些不能由其它 HTML 元相关 ( meta-related ) �
     > 来打开 dns 对 a 标签的提前解析
     >
     > 摘自：[作为前端，你必须要知道的meta标签知识](https://juejin.cn/post/7089271039842058253)
+    
+    > 👀 还有一个 dns-prefetch，详见 [[#dns-prefetch 补充]] 。区别是： x-dns-prefetch-control 是 http-equiv 中的值，dns-prefetch 是 rel 中的值
+    
+    
   
 - **name：**<font color=FF0000> name 和 content 属性可以一起使用，以名-值对的方式给文档提供元数据</font>，其中 name 作为元数据的名称，content 作为元数据的值。
 
@@ -1811,7 +1815,7 @@ Link: header 也可以通过使用 HTML meta 标签定义在 HTML 文档中：
 <link rel="dns-prefetch" href="https://example.com/">
 ```
 
-注：这部分的内容，可以参考后面的 [[#dns-prefetch]] ，有更详细的中文说明。
+注：这部分的内容，可以参考后面的 [[#dns-prefetch 补充]] ，有更详细的中文说明。
 
 ##### Link prefetching
 
@@ -1830,7 +1834,7 @@ Link: ; rel=dns-prefetch,
 
 #### preconnect 补充
 
-<font color=FF0000>The `preconnect` keyword for the **`rel` attribute of the \<link> element**</font> is <font color=FF0000>**a hint to browsers** that the **user is likely to need resources from the target resource's origin**</font>, and therefore the **browser can likely improve the user experience** by <font color=FF0000>**preemptively （先发制人地）initiating a <font size=4>*connection*</font> to that origin**</font>. **注：**这里的 connection 也就说明了 preconnect 的作用
+<font color=FF0000>The `preconnect` keyword for the **`rel` attribute of the \<link> element**</font> is <font color=FF0000>**a hint to browsers** that the **user is likely to need resources from the target resource's origin**</font>, and therefore the **browser can likely improve the user experience** by <font color=FF0000>**preemptively （先发制人地）initiating a <font size=4>*connection*</font> to that origin**</font>. 👀 这里的 connection 也就说明了 preconnect 的作用
 
 ```html
 <link rel="preconnect" href="https://example.com">
@@ -1838,7 +1842,7 @@ Link: ; rel=dns-prefetch,
 
 摘自：[MDN US - Link types: preconnect](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preconnect)
 
-**注：**建议在 “没有很多第三方域连接” 时，dns-prefetch 与 preconnect（预连接）提示配对；原因见： [[#dns-prefetch 补充#最佳实践]] 第三点。
+> 👀 注：建议在 “没有很多第三方域连接” 时，dns-prefetch 与 preconnect（预连接）提示配对；原因见： [[#dns-prefetch 补充#最佳实践]] 第三点。
 
 #### prerender 补充
 
@@ -1860,7 +1864,7 @@ The `prerender` keyword for the `rel` attribute of the \<link> element is a <fon
 
 DNS-prefetch（ DNS 预获取 ）是尝试 **在请求资源之前解析域名**。这可能是后面要加载的文件，也可能是用户尝试打开的链接目标
 
-##### 为什么要使用 dns-prefetch?
+##### 为什么要使用 dns-prefetch ？
 
 <mark>当浏览器从（第三方）服务器请求资源时，必须先将该跨域域名解析为 IP 地址，然后浏览器才能发出请求；此过程称为 DNS 解析</mark>。<font color=FF0000>DNS 缓存可以帮助减少此延迟，而 DNS 解析可以导致请求增加明显的延迟</font>。对于打开了与许多第三方的连接的网站，此延迟可能会大大降低加载性能。
 
@@ -1889,7 +1893,9 @@ Link: <https://fonts.gstatic.com/>; rel=dns-prefetch
 <link rel="dns-prefetch" href="https://fonts.gstatic.com/">
 ```
 
-不过需要注意⚠️：<font color=FF0000>如果页面需要建立与许多第三方域的连接，则将它们 ***预先连接*** 会适得其反</font>。<font size=4>**`preconnect` 提示最好仅用于最关键的连接**</font>。对于其他的，只需使用 `<link rel="dns-prefetch">` 即可节省 ***第一步的时间** ~ **DNS 查找***
+不过需要注意 ⚠️：<font color=FF0000>如果页面需要建立与许多第三方域的连接，则将它们 ***预先连接*** 会适得其反</font>。<font size=4>**`preconnect` 提示最好仅用于最关键的连接**</font>。对于其他的，只需使用 `<link rel="dns-prefetch">` 即可节省 ***第一步的时间** ~ **DNS 查找***
+
+摘自：[MDN - dns-prefetch](https://developer.mozilla.org/zh-CN/docs/Web/Performance/dns-prefetch)
 
 
 

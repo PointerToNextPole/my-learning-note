@@ -1,8 +1,12 @@
 # Spring全家桶学习笔记
 
-> 基于极客时间课程《玩转Spring全家桶》
 
-## 杂项
+
+## 极客时间课程《玩转Spring全家桶》笔记
+
+
+
+#### 杂项
 
 Spring Boot和Spring最大的区别在于：自动配置（Spring Boot无需像Spring一样自己写配置了），约定大于配置。
 
@@ -30,17 +34,17 @@ public class IndexController {
 
 
 
-### <font color=FF0000>HttpServletRequest & HttpServletRespone</font>
+### HttpServletRequest & HttpServletRespone
 
 浏览器通过http协议与Tomcat（web服务器）通信时，会生成两个对象：<font color=FF0000>一个是HttpServletRequest对象</font>，<font color=0000FF>一个是HttpServletResponse对象</font>。它们是一对数据封装对象，<font color=FF0000>前者封装客户端的请求头</font>，<font color=0000FF>后者封装服务器的响应头</font>。
 
 
 
-#### <font color=FF0000>HttpServletRequest</font>
+#### HttpServletRequest
 
 HttpServletRequest对象<font color=FF0000>代表客户端的请求</font>，当客户端通过HTTP协议访问服务器时，HTTP请求头中的所有信息都封装在这个对象中，通过这个对象提供的方法，可以获得客户端请求的所有信息。
 
-**获得客户机信息：**
+##### 获得客户机信息
 
 |       方法        |                             注解                             |
 | :---------------: | :----------------------------------------------------------: |
@@ -54,7 +58,7 @@ HttpServletRequest对象<font color=FF0000>代表客户端的请求</font>，当
 |  getLocalAddr()   |                    返回WEB服务器的IP地址                     |
 |  getLocalName()   |                    返回WEB服务器的主机名                     |
 
-**获得客户机请求头**
+##### 获得客户机请求头
 
 |          方法           |                             注解                             |
 | :---------------------: | :----------------------------------------------------------: |
@@ -62,7 +66,7 @@ HttpServletRequest对象<font color=FF0000>代表客户端的请求</font>，当
 | getHeaders(String name) |  以 String 对象的 Enumeration 的形式返回指定请求头的所有值   |
 |    getHeaderNames()     | 返回此请求包含的所有头名称的枚举。如果该请求没有头，则此方法返回一个空枚举 |
 
-**获得客户机请求参数**
+##### 获得客户机请求参数
 
 |              方法               |                             注解                             |
 | :-----------------------------: | :----------------------------------------------------------: |
@@ -72,7 +76,7 @@ HttpServletRequest对象<font color=FF0000>代表客户端的请求</font>，当
 
 
 
-## Model
+#### Model
 
 为什么大多程序在controller中给jsp传值时使用`model.addAttribute()`而不使用`httpServeletRequest.setAttribute()`
 
@@ -82,7 +86,7 @@ HttpServletRequest对象<font color=FF0000>代表客户端的请求</font>，当
 
 
 
-## <font color=FF0000>**From 1.4**</font>
+#### From 1.4
 
 在代码编写完成后，在terminal键入如下代码，将会<mark>显示对应网址所显示的HTML</mark>
 
@@ -150,9 +154,11 @@ curl http://localhost:8080/actuator/health
 
 另外，可以参考阅读：[Spring Boot Jar 包 配置、依赖文件分离](https://www.jianshu.com/p/a97501bb5460)，了解更多关于Spring Boot打包的知识
 
-## <font color=FF0000>**From 2.1**</font>
 
-**配置单个数据源**
+
+#### From 2.1
+
+##### 配置单个数据源
 
 ```java
 @SpringBootApplication
@@ -188,9 +194,13 @@ public class DatasourcedemoApplication implements CommandLineRunner {
 }
 ```
 
-## <font color=FF0000>From 2.2</font>
 
-**配置多数据源**：不同数据源的配置要分开配置
+
+#### From 2.2
+
+##### 配置多数据源
+
+不同数据源的配置要分开配置
 
 ```properties
 #application.properties
@@ -270,17 +280,23 @@ public class MultidatasourcedemoApplication {
 }
 ```
 
-## <font color=FF0000>From 2.3</font>
+
+
+#### From 2.3
 
 **介绍hikariCP连接池**
 
 Spring Boot2.x默认使用hikariCP
 
-## <font color=FF0000>From 2.4</font>
+
+
+#### From 2.4
 
 **介绍Druid连接池**
 
-## <font color=FF0000>From 2.5</font>
+
+
+#### From 2.5
 
 **Spring中JDBC操作**：spring-jdbc
 
@@ -320,9 +336,11 @@ Spring Boot2.x默认使用hikariCP
   - batchUpdate
   - SqlParameterSourceUtils.createBatch
 
-## <font color=FF0000>From 2.6</font>
 
-#### **Spring事务抽象**
+
+#### From 2.6
+
+##### Spring事务抽象
 
 **spring提供了<mark>一致的事务模型</mark>**
 
@@ -345,7 +363,7 @@ Spring Boot2.x默认使用hikariCP
   TransactionStatus getTransaction(@Nullable TransactionDefinition definition) throws TransactionException;
   ```
 
-**spring事务的传播特性<mark>（7种）</mark>**
+###### spring事务的传播特性（7种）
 
 |                  传播性                   |  值  |                 描述                 |
 | :---------------------------------------: | :--: | :----------------------------------: |
@@ -357,7 +375,7 @@ Spring Boot2.x默认使用hikariCP
 |            PROPAGATION__NEVER             |  5   |   不支持事务，如果有事务则抛出异常   |
 |            PROPAGATION_NESTED             |  6   | 当前有事务就在当前事务里再起一个事务 |
 
-**事务隔离特性<mark>（与数据库相关，由数据库决定，默认值为-1）</mark>**
+###### 事务隔离特性（与数据库相关，由数据库决定，默认值为-1）
 
 |           隔离性           |  值  | 脏读 | 不可复读 | 幻读 |
 | :------------------------: | :--: | :--: | :------: | :--: |
@@ -366,16 +384,18 @@ Spring Boot2.x默认使用hikariCP
 | ISOLATION_REPEATABLE_READ  |  3   |  ×   |    ×     |  √   |
 |   ISOLATION_SERIALIZABLE   |  4   |  ×   |    ×     |  ×   |
 
-## <font color=FF0000>From 2.7</font>
 
-#### **基于注解配置<mark>声明式事务</mark>**
 
-**开启事务注解的两种方法：**
+#### From 2.7
+
+##### 基于注解配置声明式事务
+
+###### 开启事务注解的两种方法
 
 - 添加`@EnableTransactionManagement`注解
 - 在xml文件中添加`<tx.annotation-driven/>`
 
-**一些配置**
+###### 一些配置
 
 - proxyTargetClass：设置AOP是基于接口还是类，一般情况下是定义接口，则设置为True；否则设置为False
 - mode：可选AspectJ，但一般默认为Java
@@ -390,7 +410,7 @@ Spring Boot2.x默认使用hikariCP
 - readOnly
 - 如何判断回滚：设置当碰到特定的异常类时回滚
 
-#### **@Transactioinal(<font color=FF0000>rollbackFor</font>)**
+##### @Transactioinal(rollbackFor)
 
 `@Transactional`的`rollbackFor`用于<mark>指定能够触发事务回滚的异常类型</mark>，<mark>可以指定多个，用逗号分隔</mark>。
  `rollbackFor`<mark>默认值为UncheckedException</mark>，包括了RuntimeException和Error.
@@ -400,13 +420,15 @@ Spring Boot2.x默认使用hikariCP
 
 **在方法上加上`@Transactinal`的注解，<font color=FF0000>将赋予整个方法以事务的特性，方法要么commit，要么rollback。</font>**
 
-## <font color=FF0000>From 2.8</font>
 
-#### **Spring的JDBC异常**
+
+#### From 2.8
+
+##### Spring的JDBC异常
 
 Spring会将操作访问的异常转化为DataAccessException，即无论使用何种数据访问方式（使用何种数据库、何种ORM框架），都能使用一样的异常。这样可以方便开发人员处理。
 
-**实现方法：**
+###### 实现方法
 
 通过SQL<mark>ErrorCode</mark>SQLExceptionTranslator类进行**解析错误码**
 
@@ -417,9 +439,11 @@ Spring会将操作访问的异常转化为DataAccessException，即无论使用�
 
 如何自定义并使用，见视频
 
-## <font color=FF0000>**From 2.9**</font>
 
-#### **Java <mark>config</mark>相关注解**
+
+#### From 2.9
+
+##### Java config相关注解
 
 - **@Configuration**：标明当前类是一个配置类
 
@@ -433,7 +457,7 @@ Spring会将操作访问的异常转化为DataAccessException，即无论使用�
 
 - **@ConfigurationProperties**：将一些其他配置绑定来
 
-#### **与Bean的定义相关的注解**
+##### 与Bean的定义相关的注解
 
 - **@Component** 所有Java Bean都可以同@Component来定义，spring也提供了其他含有语义的注解，如下：
   -  **@Repository** 数据访问层的Bean
@@ -441,14 +465,14 @@ Spring会将操作访问的异常转化为DataAccessException，即无论使用�
 - **@Controller** web层的Bean / **@RestController** 与REST相关的web层的Bean 
 - **@RequestMapping** 帮助定义当前方法和类下面的方法<mark>在哪个url下面的</mark>，做一个映射
 
-#### **注入相关注解**
+##### 注入相关注解
 
 - **@AutoWired** / **@Qualifier**：有多个同类型的Bean，只使用Bean会有歧义，通过@Qualifier来指定 / **@Resource**：通过名字来注入
 - **@Value**：在Bean中注入常量或SpEL表达式
 
 ***
 
-#### **Actuator提供的一些好用的Endpoint**
+##### Actuator提供的一些好用的Endpoint
 
 |        URL         |         作用         |
 | :----------------: | :------------------: |
@@ -469,7 +493,9 @@ Spring会将操作访问的异常转化为DataAccessException，即无论使用�
 
 有<mark>**多数据源、分库分表、读写分离（出于性能考虑）**</mark>的需求可使用<mark>数据库中间件</mark>作为路由，以使得逻辑上成为一个整体，简化开发。
 
-## <font color=FF0000>**From 2.10**</font>
+
+
+#### From 2.10
 
 **REQUIRES_NEW和NESTED事务<mark>传播特性</mark>**
 
@@ -486,7 +512,9 @@ Spring会将操作访问的异常转化为DataAccessException，即无论使用�
 
 关于Druid（略）
 
-## <font color=FF0000>**From 3.1**</font>
+
+
+#### From 3.1
 
 **对象与关系的范式不匹配**
 
@@ -534,9 +562,11 @@ Spring会将操作访问的异常转化为DataAccessException，即无论使用�
   </dependency>
   ```
 
-## <font color=FF0000>**From 3.2**</font>
 
-#### 常用JPA注解
+
+#### From 3.2
+
+##### 常用JPA注解
 
 **在JPA中使用注解来定义实体**，常用的注解有：
 
@@ -568,9 +598,9 @@ Spring会将操作访问的异常转化为DataAccessException，即无论使用�
     - **@OneToOne**、**@OneToMany**、**@ManyToOne**、**@ManyToMany**：用于定义<mark>表间关系</mark>
     - **@OrderBy**：用于数据排序
 
-***
 
-#### Lombok
+
+##### Lombok
 
 Lombok能够自动嵌入IDE和构建工具，提升开发效率
 
@@ -584,7 +614,9 @@ Lombok能够自动嵌入IDE和构建工具，提升开发效率
 - **@Slf4j** / **@CommonsLog** / **@Log4j2**：日志相关注解
 - **补充：**注解中有一个参数callSuper=true/false，表示是否调用父类的该方法。比如`@ToString(callSuper = true)`
 
-## <font color=FF0000>From 3.3</font>
+
+
+#### From 3.3
 
 实体定义，示例如下：
 
@@ -672,9 +704,11 @@ public class CoffeeOrder implements Serializable {
 }
 ```
 
-## <font color=FF0000>**From 3.4**</font>
 
-#### 通过SpringDataJPA操控数据库
+
+#### From 3.4
+
+##### 通过SpringDataJPA操控数据库
 
 关于JPA可以参考文章：[SpingDataJpa](https://blog.csdn.net/HQZ820844012/article/details/80188742)
 
@@ -699,22 +733,24 @@ public class CoffeeOrder implements Serializable {
 - **Pageable**：记录分页信息 / **Sort**：记录排序信息
 - **Slice\<T>** / **Page\<T>**
 
-***
+
 
 @Query
 
 @Modifying
 
-## <font color=FF0000>**From 3.5**</font>
 
-#### Repository是如何变成Bean的
+
+#### From 3.5
+
+##### Repository是如何变成Bean的
 
 - <mark>**JpaRepositoriesRegistrar**</mark>激活了`@EnableJpaRepositories`返回了`JpaRepositoryConfigExtension`
 - <mark>**RepositoryBeanDefinitionRegistrarSupport.registerBeanDefinition**</mark>注册Repository Bean（类型是JpaRepositoryFactoryBean）
 - <mark>**RepositoryConfigurationExtensionSupport.getRepositoryConfigurtions**</mark>取得Repository配置
 - <mark>**JpaRepositoryFactory.getTargetRepository**</mark>创建Repository
 
-#### 接口中的方法是如何被解释的
+##### 接口中的方法是如何被解释的
 
 **RepositoryFactorySupport.getRepository添加了Advice**
 
@@ -727,7 +763,7 @@ AbstractJpaQuery.execute 执行具体的查询
 
 
 
-## <font color=FF0000>**From 3.6**</font>
+#### From 3.6
 
 **MyBatis需要自己定制SQL，而Jpa和hibernate可以根据映射关系写出来的，该如何使用？**
 
@@ -738,7 +774,7 @@ AbstractJpaQuery.execute 执行具体的查询
 
 在Spring中使用MyBatis
 
-#### **在Spring中使用mybatis**
+##### 在Spring中使用mybatis
 
 - MyBatis Spring Adapter (https://github.com/mybatis/spring)
 
@@ -840,9 +876,9 @@ List<Book> list = bookMapper.selectBookByName(map, new RowBounds(0, 5));
 
 
 
-## <font color=FF0000>**From 3.7**</font>
+#### From 3.7
 
-#### MyBatis Generator
+##### MyBatis Generator
 
 **Mybatis Generator** (https://www.mybatis.org/generator/)是一个MyBatis代码生成器，可以根据数据表生成相关代码（包括：POJO， Mapper接口， SQL Map XML）
 
@@ -922,9 +958,9 @@ List<Book> list = bookMapper.selectBookByName(map, new RowBounds(0, 5));
 
 
 
-## <font color=FF0000>**From 3.8**</font>
+#### From 3.8
 
-#### MyBatis PageHelper
+##### MyBatis PageHelper
 
 mybatis-pagehelper用于作分页
 
@@ -935,23 +971,23 @@ mybatis-pagehelper用于作分页
 
 
 
-## <font color=FF0000>**From 4.1**</font>
+#### From 4.1
 
-#### Docker常用命令
+##### Docker常用命令
 
-**镜像相关**
+###### 镜像相关
 
 - **docker pull \<image>：**从hub下载镜像
 - **docker search \<image>：**搜索镜像
 
-**容器相关**
+###### 容器相关
 
 - **docker run：**运行镜像
 - **docker start / stop <容器名>：**启动和停止容器
 - **docker ps \<容器名>：**
 - **docker logs \<容器名>：**查看日志
 
-#### **docker run常用选项**
+###### docker run 常用选项
 
 **docker run [options] image [command] [arg...]**，选项说明：
 
@@ -964,9 +1000,9 @@ mybatis-pagehelper用于作分页
 
 
 
-## <font color=FF0000>**From 4.2**</font>
+#### From 4.2
 
-#### Spring Data MongoDB 的基本用法
+##### Spring Data MongoDB 的基本用法
 **注解**
 
 - **@Document**：<mark>表明这个类对应的是哪一个文档 </mark>。把一个Java类声明为mongodb的文档，可以通过collection参数指定这个类对应的文档。
@@ -984,7 +1020,7 @@ mybatis-pagehelper用于作分页
 - **save / remove**
 - **Criteria / Query / Update**
 
-#### **初始化MongoDB的库及权限**
+##### 初始化MongoDB的库及权限
 
 - **创建库 ：**`use springbucks;`
 
@@ -1002,7 +1038,7 @@ mybatis-pagehelper用于作分页
   )
   ```
 
-#### Spring Data MongoDB 的 Repository
+##### Spring Data MongoDB 的 Repository
 
 **@EnableMongoRepositories对应接口**
 
@@ -1012,9 +1048,9 @@ mybatis-pagehelper用于作分页
 
 
 
-## <font color=FF0000>**From 4.3**</font>
+#### From 4.3
 
-#### Spring 对 Redis 的支持
+##### Spring 对 Redis 的支持
 
 **Spring Data Redis**
 
@@ -1022,13 +1058,13 @@ mybatis-pagehelper用于作分页
 - **RedisTemplate**
 - **Repository 支持**
 
-#### Jedis 客户端的简单使用
+##### Jedis 客户端的简单使用
 
 - Jedis 不是线程安全的（所以往往使用 JedisPool ）
 - 通过 JedisPool 获得 Jedis 实例
 - 直接使用 Jedis 中的方法
 
-#### Jedis客户端的简单使用
+##### Jedis客户端的简单使用
 
 ```java
 @Bean
@@ -1045,15 +1081,15 @@ public JedisPool jedisPool(@Value("${redis.host}") String host) {
 
 
 
-## <font color=FF0000>**From 4.4**</font>
+#### From 4.4
 
-#### Redis的哨兵和集群模式
+##### Redis的哨兵和集群模式
 
 
 
-## <font color=FF0000>**From 4.5**</font>
+#### From 4.5
 
-#### Spring 的缓存抽象
+##### Spring 的缓存抽象
 
 **Spring为不同的缓存提供一层抽象**
 
@@ -1063,7 +1099,7 @@ public JedisPool jedisPool(@Value("${redis.host}") String host) {
   - org.springframework.cache.Cache
   - org.springframework.cache.CacheManager
 
-#### Spring基于注解的缓存
+##### Spring基于注解的缓存
 **@EnableCaching**
 
 - **@Cacheable**：开启缓存
@@ -1074,9 +1110,9 @@ public JedisPool jedisPool(@Value("${redis.host}") String host) {
 
 
 
-## <font color=FF0000>From 4.6</font>
+#### From 4.6
 
-#### Redis 在 Spring 中的其他⽤用法
+##### Redis 在 Spring 中的其他⽤用法
 
 **配置连接工厂**
 
@@ -1085,7 +1121,7 @@ public JedisPool jedisPool(@Value("${redis.host}") String host) {
 - **RedisSentinelConfiguration**
 - **RedisClusterConfiguration**
 
-#### 读写分离
+##### 读写分离
 
 **Lettuce 内置支持读写分离**
 
@@ -1098,9 +1134,9 @@ LettuceClientConfigurationBuilderCustomizer
 
 
 
-## <font color=FF0000>**From 5.1**</font>
+#### From 5.1
 
-#### Project Reactor
+##### Project Reactor
 
 **响应式编程**
 
@@ -1108,9 +1144,9 @@ LettuceClientConfigurationBuilderCustomizer
 
 
 
-## <font color=FF0000>**From 6.1**</font>
+#### From 6.1
 
-#### Spring MVC
+##### Spring MVC
 
 **核心：DispatcherServlet**（即<font color=FF0000>**前端控制器**</font>，是所有请求的入口）
 
@@ -1123,9 +1159,7 @@ LettuceClientConfigurationBuilderCustomizer
   - **...**
 - **HandlerMapping：**请求如何映射到Controller上，请求映射处理的逻辑
 
-***
-
-####  补充：SpringMVC中的Servlet
+#####  补充：SpringMVC中的Servlet
 
 SpringMVC中的Servlet一共有三个层次，分别是HttpServletBean、FrameworkServlet和 DispatcherServlet
 
@@ -1135,9 +1169,7 @@ SpringMVC中的Servlet一共有三个层次，分别是HttpServletBean、Framewo
 
 摘自：[【SpringMVC】9大组件概览](https://blog.csdn.net/hu_zhiting/article/details/73648939)
 
-***
-
-#### 补充：Spring MVC九大组件
+##### 补充：Spring MVC九大组件
 
 Spring MVC工作的时候，关键位置都是由这九大组件完成的；<font color=FF0000>**这九大组件都是接口**</font>（接口就是规范）
 
@@ -1185,15 +1217,11 @@ handlerMapping --> handlerAdapter --> requestToViewNameResolver  --> handlerExce
 
 摘自：[从DISPATCHERSERVLET中的DOSERVICE了解SPRING组件之间的处理流程](https://www.cnblogs.com/afraidToForget/p/10102909.html)
 
-***
-
 **补充：**<mark>DispatcherServlet继承于HttpServlet</mark>，可以说spring mvc是基于Servlet的一个实现，DispatcherServlet负责协调和组织不同组件以完成请求处理并返回响应的工作，实现了MVC模式。
 
 摘自：[跟我一起造轮子 手写springmvc](https://www.jianshu.com/p/fd01beb1749a)
 
-***
-
-#### **Spring MVC工作流程示意图：**
+##### Spring MVC工作流程示意图
 
 ![Spring MVC工作流程示意图](https://upload-images.jianshu.io/upload_images/11644829-7a9a30a9ec382011.png?imageMogr2/auto-orient/strip|imageView2/2/w/720/format/webp)
 
@@ -1223,11 +1251,9 @@ handlerMapping --> handlerAdapter --> requestToViewNameResolver  --> handlerExce
 
 摘自：[spring boot和SSM开发中有什么区别？ - 东方翌的回答 - 知乎](https://www.zhihu.com/question/284488830/answer/439068110)
 
-#### **有待研究：DispatcherServlet的`doServlet`方法和`doDispatch`方法**
+有待研究：DispatcherServlet的doServlet方法和doDispatch方法
 
-***
-
-#### **Spring MVC 中的常用注解**
+##### Spring MVC 中的常用注解
 
 - **@Controller**：定义控制器
   - **@RestController**：结合Rest服务的控制器（@RequestBody + @Controller = @RestController）
@@ -1282,9 +1308,9 @@ public class CoffeeOrderController {
 
 
 
-## <font color=FF0000>**From 6.2**</font>
+#### From 6.2
 
-#### Spring 的应用程序上下文
+##### Spring 的应用程序上下文
 
 **关于上下文常用的接口及其实现**
 
@@ -1304,9 +1330,9 @@ public class CoffeeOrderController {
 
 
 
-## <font color=FF0000>From 6.3</font>
+#### From 6.3
 
-#### 一个请求的大致<font color=FF0000>处理流程</font>（DispatcherServlet内部）
+##### 一个请求的大致处理流程（DispatcherServlet内部）
 **绑定一些 Attribute**
 
 - WebApplicationContext / LocaleResolver / ThemeResolver
@@ -1421,9 +1447,11 @@ SpringMVC 处理方法（Controller）提供了以下几种返回方式：ModelA
 
 摘自：[SpringMVC学习笔记 | SpringMVC中处理模型数据的几种方法（ModelAndView|@SessionAttributes|@ModelAttribute）以及运行原理](https://www.jianshu.com/p/3f47048b01fc)
 
-## <font color=FF0000>From 6.4</font>
 
-#### 定义映射关系
+
+#### From 6.4
+
+##### 定义映射关系
 
 **@Controller**
 **@RequestMapping**
@@ -1482,7 +1510,7 @@ SpringMVC 处理方法（Controller）提供了以下几种返回方式：ModelA
 
   部分摘自：[RequestMapping 中produces 和 consumes](https://www.jianshu.com/p/f78b43f048e6) 和 [produces在@requestMapping中的使用方式和作用](https://blog.csdn.net/jaryle/article/details/72965885)
 
-#### **一些快捷方式**（相当于组合注解）
+##### **一些快捷方式**（相当于组合注解）
 
 - **@RestController**：相当于@Controller+@ResponseBody
 
@@ -1502,16 +1530,16 @@ SpringMVC 处理方法（Controller）提供了以下几种返回方式：ModelA
 
 - **@PatchMapping**
 
-#### 定义处理理方法
+##### 定义处理理方法
 - **@RequestBody** 接收请求正文 / **@ResponseBody** 发送响应正文 / **@ResponseStatus** 响应Http的状态码
 - **@PathVariable** 路径变量 / **@RequestParam** 请求参数 / **@RequestHeader** 请求Http的头
 - **HttpEntity** / **ResponseEntity**
 
 以上可以参考：[spring文档中的1.3.3 Handler Methods](https://docs.spring.io/spring/docs/5.1.5.RELEASE/spring-framework-reference/web.html#mvc-ann-methods)
 
-#### **@RequestBody**
+##### **@RequestBody**
 
- **@RequestBody**主要用来<mark style=background-color:aqua><font style=color:red size=4>**接收前端传递给后端**</font>的<font style=color:red>**json字符串**</font>中的<font style=color:red size=4>**数据**</font>并<font color=FF0000>**将其封装为对应的JavaBean**</font></mark>(**<font size=4><font color=FF0000>请求体</font>中的数据</font>**)。封装时使用到的一个对象是系统默认配置的 HttpMessageConverter进行解析，然后封装到形参上。
+ **@RequestBody**主要用来<font style=color:red size=4>**接收前端传递给后端**</font>的<font style=color:red>**json字符串**</font>中的<font style=color:red size=4>**数据**</font>并<font color=FF0000>**将其封装为对应的JavaBean**</font>(**<font size=4><font color=FF0000>请求体</font>中的数据</font>**)。封装时使用到的一个对象是系统默认配置的 HttpMessageConverter进行解析，然后封装到形参上。
 
 GET方式无请求体，所以<mark>使用`@RequestBody`接收数据时，前端不能使用GET方式提交数据，而是用POST方式进行提交</mark>。**在后端的<font color=FF0000>同一个接收方法里</font>**，<mark>`@RequestBody`与`@RequestParam`**可以同时使用**</mark>，<mark>`@RequestBody`最多只能有一个，而`@RequestParam()`可以有多个</mark>（即：一个请求，只有一个RequestBody；一个请求，可以有多个RequestParam）。另外：当同时使用`@RequestParam`和`@RequestBody`时，`@RequestParam()`中指定的参数可以是普通元素、数组、集合、对象等；<mark>且RequestBody 接收的是请求体里面的数据；而<font color=FF0000>**RequestParam接收的是key-value里面的参数**</font></mark>
 
@@ -1520,8 +1548,6 @@ GET方式无请求体，所以<mark>使用`@RequestBody`接收数据时，前端
 如果参数时**放在请求体中**传入后台的话，那么后台要用`@RequestBody`才能接收到；
 
 如果**不是放在请求体中**的话，后台接收前台传过来的参数，要用`@RequestParam`来接收，或者形参前什么也不写也能接收。
-
-***
 
 如果参数前<font color=FF0000>**写了**</font>`@RequestParam(xxx)`，那么前端<mark>**必须有**对应的xxx名字</mark>才行(不管其是否有值，当然可以通过设置该注解的required属性来调节是否必须传)，<mark>如果没有xxx名的话，那么请求会出错，报400。</mark>
 
@@ -1536,7 +1562,7 @@ public String myTestController(@RequestBody String jsonString){}
 
 摘自：[@RequestBody的使用](https://blog.csdn.net/justry_deng/article/details/80972817)
 
-#### @ResponseBody
+##### @ResponseBody
 
 简单地说：@ResponseBody的**作用**其实是**<mark style=color:red>将java对象转为json格式的数据</mark>**。
 
@@ -1550,7 +1576,7 @@ public String myTestController(@RequestBody String jsonString){}
 
 摘自：[@ResponseBody详解](https://blog.csdn.net/originations/article/details/89492884)
 
-#### **@ResponseStatus**
+##### **@ResponseStatus**
 
 @ResponseStatus注解有两种用法，一种是加载自定义异常类上，一种是加在目标方法中
 
@@ -1562,7 +1588,7 @@ public String myTestController(@RequestBody String jsonString){}
 
 摘自：[springmvc中@ResponseStatus注解使用](https://blog.csdn.net/qq_36722039/article/details/80825117)
 
-#### HttpStatus
+##### HttpStatus
 
 **常用HttpStatus状态：**
 
@@ -1578,7 +1604,7 @@ public String myTestController(@RequestBody String jsonString){}
 
 摘自：[HttpStatus详解](https://blog.csdn.net/csdn1844295154/article/details/78980174)
 
-#### @PathVariable
+##### @PathVariable
 
 **@PathVariable**是spring3.0的一个新功能：<mark>接收请求路径中<font color=FF0000>**占位符**</font>的值</mark>
 
@@ -1597,7 +1623,7 @@ public Coffee getById(@PathVariable("id") Long id) {
 
 部分摘自：[@PathVariable注解使用](https://blog.csdn.net/sswqzx/article/details/84194979)
 
-#### @RequestParam
+##### @RequestParam
 
 在访问各种各样的网站时，经常会发现网站的URL的最后一部分形如：`?xx=yy&zz=ww`。<mark>这就是HTTP协议中的<font color=FF0000>**Request参数**</font></mark>，如：`https://www.zhihu.com/search?type=content&q=web`，这里的type=content&q=web就是搜索请求的参数，不同参数之间用&分隔，每个参数形如name=value的形式，分别表示参数名字和参数值。
 
@@ -1633,7 +1659,7 @@ public Coffee getByName(@RequestParam String name) {
 
 摘自：[SpringBoot-@PathVariable](https://www.cnblogs.com/williamjie/p/9139548.html)
 
-#### @RequestParam和@PathVariable<font color=FF0000>相同与区别</font>
+##### @RequestParam和@PathVariable<font color=FF0000>相同与区别</font>
 
  @RequestParam和@PathVariable都能够完成类似的功能——因为本质上，它们都是用户的输入，只不过输入的部分不同，一个在URL路径部分，另一个在参数部分。要访问一篇博客文章，这两种URL设计都是可以的：
 
@@ -1654,7 +1680,7 @@ public Coffee getByName(@RequestParam String name) {
 
 摘自：[@RequestParam和@PathVariable的用法与区别](https://blog.csdn.net/a15028596338/article/details/84976223)
 
-#### @RequestHeader
+##### @RequestHeader
 
 **@RequestHeader**注解用于<mark>将**<font color=FF0000 size=4>请求头信息</font>数据**<font color=FF0000>映射</font>到请求处理方法的**形式参数**上</mark>
 
@@ -1669,7 +1695,7 @@ public Coffee getByName(@RequestParam String name) {
 
 摘自：[3.7 @RequestHeader注解](https://www.dazhuanlan.com/2019/10/11/5d9fa9ed195b5/)
 
-#### HttpEntity
+##### HttpEntity
 
 **Spring Web将类`HttpEntity`包装一个HTTP请求或响应的以下内容 : <font color=FF0000>头部和消息体。</font>**
 
@@ -1685,11 +1711,11 @@ public Coffee getByName(@RequestParam String name) {
 
 摘自：[Spring Web : 概念模型 HttpEntity](https://blog.csdn.net/andy_zhang2007/article/details/100193873)
 
-#### RequestEntity
+##### RequestEntity
 
 无相关介绍
 
-#### ResponseEntity
+##### ResponseEntity
 
 ResponseEntity可以定义返回的HttpStatus（状态码）和HttpHeaders（消息头：请求头和响应头）
 
@@ -1699,11 +1725,11 @@ ResponseEntity ：标识整个http响应：状态码、头部信息、响应体�
 
 摘自：[spring中的ResponseEntity理解](https://www.cnblogs.com/flypig666/p/11729757.html)
 
-#### @CookieValue
+##### @CookieValue
 
 @CookieValue用于获取某个cookie的值
 
-#### HTTP
+##### HTTP
 
 **简介：**HTTP协议是Hyper Text Transfer Protocol（超文本传输协议）的缩写，是用于从万维网（WWW: World Wide Web ）服务器传输超文本到本地浏览器的传送协议。
 
@@ -1919,9 +1945,11 @@ Content-Type: multipart/form-data; boundary=something
 
 补充阅读：[http请求头及其作用](https://blog.csdn.net/qq_42820268/article/details/82424353)
 
-## <font color=FF0000>From 6.5</font>
 
-#### 定义类型转换
+
+#### From 6.5
+
+##### 定义类型转换
 
 **自己实现 WebMvcConfigurer**
 
@@ -1929,7 +1957,7 @@ Content-Type: multipart/form-data; boundary=something
 - 添加自定义的 Converter
 - 添加自定义的 Formatter
 
-#### 定义校验
+##### 定义校验
 - <font color=FF0000 size=4>**通过 Validator 对绑定结果进行校验**</font>
   
   - Hibernate Validator
@@ -1963,7 +1991,7 @@ Content-Type: multipart/form-data; boundary=something
 
   摘自：[@Valid介绍及相关注解](https://www.jianshu.com/p/c8686fa5ef63)
 
-  #### **@Valid和@Validated的区别**
+  ##### @Valid和@Validated的区别
 
   @Validated：属于spring下，用在类型、方法和方法参数上；但<font color=FF0000>**不能**</font>用于<mark>成员属性</mark>（字段 field）；<mark>提供分组功能</mark>
 
@@ -1985,7 +2013,7 @@ Content-Type: multipart/form-data; boundary=something
 
   摘自：[Springboot 使用BindingResult校验参数](https://blog.csdn.net/lihua5419/article/details/83418043)
 
-#### Multipart 上传（文件上传）
+##### Multipart 上传（文件上传）
 
 - 配置 MultipartResolver
   - Spring Boot 自动配置 MultipartAutoConfiguration
@@ -2005,9 +2033,11 @@ Multipart/form-data是建立在HTTP的<mark>**POST请求方式**</mark>以上的
 
 摘自：[SpringMVC处理Multipart数据](https://www.jianshu.com/p/c74049afaee2)
 
-## <font color=FF0000>From 6.6</font>
 
-#### 视图解析的实现基础
+
+#### From 6.6
+
+##### 视图解析的实现基础
 
 **视图解析通过ViewResolver 与 View 接口实现**
 
@@ -2026,9 +2056,11 @@ Multipart/form-data是建立在HTTP的<mark>**POST请求方式**</mark>以上的
     - 没有返回视图的话，尝试 RequestToViewNameTranslator
     - resolveViewName() 解析 View 对象
 
-## <font color=FF0000>From 6.7</font>
 
-#### **DispatcherServlet 中的视图解析逻辑**
+
+#### From 6.7
+
+##### DispatcherServlet 中的视图解析逻辑
 
 **使用 @ResponseBody 的情况**
 
@@ -2037,20 +2069,22 @@ Multipart/form-data是建立在HTTP的<mark>**POST请求方式**</mark>以上的
     - HandlerMethodReturnValueHandlerComposite.handleReturnValue()
       - RequestResponseBodyMethodProcessor.handleReturnValue()
 
-#### 重定向
+##### 重定向
 
 **两种不同的重定向前缀**
 
 - `redirect:`：<font color=FF0000>到目标地址的**重定向**的操作</font>。相当于http 302的跳转，是客户端发起的跳转（浏览器的url发生了跳转），同时会丢失request中的一些信息导致无法获取上一个request的信息；另外由于是集群化部署，上一个请求和当前请求发往的未必是同一个服务器，所以可以认为：redirect会丢失上一个request的信息
 - `forward:`：<font color=FF0000>到目标地址的**转发**操作</font>。是在服务端发起的跳转（浏览器的url未发生跳转）
 
-## <font color=FF0000>From 6.8</font>
 
-#### Spring MVC 中的常用视图
+
+#### From 6.8
+
+##### Spring MVC 中的常用视图
 
 参见文档：[1.9. View Technologies](https://docs.spring.io/spring/docs/5.1.5.RELEASE/spring-framework-reference/web.html#mvc-view)
 
-#### Jackson
+##### Jackson
 
 Java生态圈中有很多<mark>处理JSON和XML格式化的类库</mark>，Jackson是其中比较著名的一个。虽然 JDK 自带了XML处理类库，但是相对来说比较低级，使用Jackson等高级类库处理起来会方便很多。
 
@@ -2062,7 +2096,7 @@ Jackson中有**ObjectMapper**类非常重要，可以<mark>将java对象序列�
 
 可以参考阅读：[介绍 Jackson ObjectMapper](https://blog.csdn.net/neweastsun/article/details/87940257)
 
-#### Spring Boot 对 Jackson 的支持
+##### Spring Boot 对 Jackson 的支持
 
 - JacksonAutoConfiguration
   - Spring Boot 通过 @JsonComponent 注册 JSON 序列化组件
@@ -2070,15 +2104,17 @@ Jackson中有**ObjectMapper**类非常重要，可以<mark>将java对象序列�
 - JacksonHttpMessageConvertersConfiguration
   - 增加 jackson-dataformat-xml 以支持 XML 序列列化
 
-## <font color=FF0000>From 6.9</font>
 
-#### 模板引擎
+
+#### From 6.9
+
+##### 模板引擎
 
 在做前端开发项目的时候，有时候经常需要根据后端返回的json数据，然后来生成html，再渲染页面。传统技术非常麻烦（比如JSP，<mark>JSP也是一种模板引擎</mark>），这时候就出现了模板引擎
 
 摘自：[为什么会用到模板引擎？模板引擎的使用简析](https://blog.csdn.net/weixin_43924228/article/details/86724134)
 
-#### Thymeleaf 简介
+##### Thymeleaf 简介
 
 Thymeleaf 是一个跟 Velocity、FreeMarker 类似的模板引擎，<mark>它可以完全替代 JSP</mark> 。相较与其他的模板引擎，它有如下三个极吸引人的特点：
 
@@ -2090,7 +2126,7 @@ Thymeleaf 是一个跟 Velocity、FreeMarker 类似的模板引擎，<mark>它�
 
 摘自：[Thymeleaf-模板引擎](https://www.cnblogs.com/Zender/p/8709031.html)
 
-#### 使用 Thymeleaf
+##### 使用 Thymeleaf
 
 **添加 Thymeleaf 依赖**
 
@@ -2101,7 +2137,7 @@ Thymeleaf 是一个跟 Velocity、FreeMarker 类似的模板引擎，<mark>它�
 - ThymeleafAutoConfiguration
   - ThymeleafViewResolver
 
-#### Thymeleaf 的一些默认配置
+##### Thymeleaf 的一些默认配置
 
 ```properties
 spring.thymeleaf.cache=true                     #开启缓存
@@ -2115,9 +2151,11 @@ spring.thymeleaf.prefix=classpath:/templates/   #指定模板的前缀
 spring.thymeleaf.suffix=.html                   #指定模板后缀
 ```
 
-## <font color=FF0000>From 6.10</font>
 
-#### Spring Boot 中的静态资源配置
+
+#### From 6.10
+
+##### Spring Boot 中的静态资源配置
 
 **核心逻辑**
 
@@ -2201,7 +2239,7 @@ public SimpleUrlHandlerMapping faviconHandlerMapping() {//...}
 
 摘自：[SpringBoot 访问web中的静态资源](https://blog.csdn.net/qq_42402854/article/details/90295079)
 
-#### **<font color=FF0000>补充：</font>自定义静态资源访问**
+##### 补充：自定义静态资源访问
 
 静态资源路径是指系统可以直接访问的路径，且路径下的所有文件均可被用户直接读取。
 
@@ -2244,7 +2282,7 @@ public SimpleUrlHandlerMapping faviconHandlerMapping() {//...}
 
 摘自：[玩转springboot：默认静态资源和自定义静态资源实战](https://blog.csdn.net/sihai12345/article/details/81205359)
 
-#### <font color=FF0000>补充：</font>webjars
+##### 补充：webjars
 
 SpringBoot 使用 Webjars 统一管理静态资源，以jar包的方式引入静态资源（官网是：[webjars.org](www.webjars.org)）
 
@@ -2266,7 +2304,7 @@ SpringBoot 使用 Webjars 统一管理静态资源，以jar包的方式引入静
 
 摘自：[【SpringBoot】使用Maven添加jQuery、bootstrap等依赖（WebJars）](https://blog.csdn.net/sinat_42483341/article/details/104095618)
 
-#### Spring Boot 中的缓存配置
+##### Spring Boot 中的缓存配置
 
 **常用配置（默认时间单位都是秒）**
 
@@ -2275,9 +2313,11 @@ SpringBoot 使用 Webjars 统一管理静态资源，以jar包的方式引入静
 - spring.resources.cache.cachecontrol.no-cache=true/false    是否想让它做缓存
 - spring.resources.cache.cachecontrol.s-max-age=时间           公共资源最长缓存的时间
 
-## <font color=FF0000>From 6.11</font>
 
-#### Spring MVC 的异常解析
+
+#### From 6.11
+
+##### Spring MVC 的异常解析
 
 **核心接口**
 
@@ -2290,7 +2330,7 @@ SpringBoot 使用 Webjars 统一管理静态资源，以jar包的方式引入静
 - ResponseStatusExceptionResolver
 - ExceptionHandlerExceptionResolver
 
-#### 异常处理理方法
+##### 异常处理理方法
 
 **处理方法**
 
@@ -2303,9 +2343,11 @@ SpringBoot 使用 Webjars 统一管理静态资源，以jar包的方式引入静
 
 在@ControllerAdvice中定义的方法优先级低于@Controller
 
-## <font color=FF0000>From 6.12</font>
 
-#### Spring MVC 的拦截器
+
+#### From 6.12
+
+##### Spring MVC 的拦截器
 
 **核心接口**
 
@@ -2338,7 +2380,7 @@ SpringBoot 使用 Webjars 统一管理静态资源，以jar包的方式引入静
 - AsyncHandlerInterceptor
   - void afterConcurrentHandlingStarted()
 
-#### **拦截器的配置方式**
+##### 拦截器的配置方式
 
 **常规方法**
 
@@ -2349,7 +2391,7 @@ SpringBoot 使用 Webjars 统一管理静态资源，以jar包的方式引入静
 - 创建一个带 @Configuration 的 WebMvcConfigurer 配置类
 - 不能带 @EnableWebMvc（想彻底自己控制 MVC 配置除外）
 
-#### <font color=FF0000>补充：</font>
+##### 补充
 
 Spring MVC 中的拦截器（Interceptor）<mark>类似于 Servlet  开发中的过滤器 Filter</mark>，它主要用于拦截用户请求并作相应的处理，它也是 AOP 编程思想的体现，底层通过动态代理模式完成。
 
@@ -2376,15 +2418,17 @@ Spring MVC 中的拦截器（Interceptor）<mark>类似于 Servlet  开发中的
 
 摘自：[Spring Boot 2.X(九)：Spring MVC - 拦截器（Interceptor）](https://www.jianshu.com/p/c6b44175d06b)
 
-## <font color=FF0000>From 7.1</font>
 
-#### Spring Boot 中的 RestTemplate
+
+#### From 7.1
+
+##### Spring Boot 中的 RestTemplate
 
 - Spring Boot 中没有自动配置 RestTemplate（需要自己new）
 - Spring Boot 提供了RestTemplateBuilder
   - RestTemplateBuilder.build()
 
-#### RestTemplate常用方法
+##### RestTemplate常用方法
 
 - **GET 请求**
   - getForObject()  / getForEntity()
@@ -2404,7 +2448,7 @@ String result = restTemplate.getForObject(
 
 上面的代码是手写的一个URI，其实可以构造URI，如下：
 
-#### 构造URI
+##### 构造URI
 
 **构造 URI**
 
@@ -2418,7 +2462,7 @@ String result = restTemplate.getForObject(
 
 - MvcUriComponentsBuilder
 
-#### 补充：RestTemplate相关
+##### 补充：RestTemplate相关
 
 RestTemplate就是<font color=FF0000>Spring 封装的处理同步 HTTP 请求的类</font>。
 
@@ -2432,9 +2476,11 @@ RestTemplate的行为可以通过callback回调方法和配置`HttpMessageConver
 
 spring boot官方文档中关于RestTemplate和WebClient的部分：[1.8. REST Endpoints](https://docs.spring.io/spring/docs/5.1.6.RELEASE/spring-framework-reference/integration.html#rest-client-access)
 
-## <font color=FF0000>From 7.2</font>
 
-#### RestTemplate 的高阶用法
+
+#### From 7.2
+
+##### RestTemplate 的高阶用法
 
 **传递 HTTP Header**
 
@@ -2451,9 +2497,11 @@ spring boot官方文档中关于RestTemplate和WebClient的部分：[1.8. REST E
 - RestTemplate.exchange()
 - ParameterizedTypeReference\<T>
 
-## <font color=FF0000>From 7.3</font>
 
-#### RestTemplate支持的 HTTP 库
+
+#### From 7.3
+
+##### RestTemplate支持的 HTTP 库
 
 **通用接口**
 
@@ -2475,7 +2523,7 @@ spring boot官方文档中关于RestTemplate和WebClient的部分：[1.8. REST E
 
 - OkHttp3ClientHttpRequestFactory
 
-#### 优化底层请求策略
+##### 优化底层请求策略
 
 **连接管理**
 
@@ -2491,9 +2539,11 @@ spring boot官方文档中关于RestTemplate和WebClient的部分：[1.8. REST E
 
 - 证书检查策略
 
-## <font color=FF0000>From 7.4</font>
 
-#### 通过 WebClient 访问 Web 资源
+
+#### From 7.4
+
+##### 通过 WebClient 访问 Web 资源
 
 **WebClient**
 
@@ -2504,7 +2554,7 @@ spring boot官方文档中关于RestTemplate和WebClient的部分：[1.8. REST E
 - Reactor Netty - ReactorClientHttpConnector
 - Jetty ReactiveStream HttpClient - JettyClientHttpConnector
 
-#### WebClient 的基本用法
+##### WebClient 的基本用法
 
 **创建 WebClient**
 
@@ -2527,11 +2577,11 @@ spring boot官方文档中关于RestTemplate和WebClient的部分：[1.8. REST E
 
 - bodyToMono() / bodyToFlux()
 
-***
 
-## <font color=FF0000>From 8.1 & 8.2</font>
 
-#### 如何实现 Restful Web Service
+#### From 8.1 & 8.2
+
+##### 如何实现 Restful Web Service
 
 - **识别资源**
 
@@ -2626,7 +2676,7 @@ spring boot官方文档中关于RestTemplate和WebClient的部分：[1.8. REST E
 - Hybermedia As The Engine Of Application State
 - REST 统一接口的必要组成部分
 
-#### HATEOAS v.s. WSDL
+##### HATEOAS v.s. WSDL
 
 **HATEOAS**
 
@@ -2637,7 +2687,7 @@ spring boot官方文档中关于RestTemplate和WebClient的部分：[1.8. REST E
 
 - 必须事先约定服务的地址与格式
 
-#### 常用的超链接类型
+##### 常用的超链接类型
 
 |    REL     |                      描述                      |
 | :--------: | :--------------------------------------------: |
@@ -2651,11 +2701,11 @@ spring boot官方文档中关于RestTemplate和WebClient的部分：[1.8. REST E
 |  previous  |    集合遍历相关的类型，指向上一个资源的链接    |
 |    next    |    集合遍历相关的类型，指向下一个资源的链接    |
 
-***
 
-## <font color=FF0000>From 8.4</font>
 
-#### 认识 HAL
+#### From 8.4
+
+##### 认识 HAL
 
 **HAL**
 
@@ -2668,7 +2718,7 @@ spring boot官方文档中关于RestTemplate和WebClient的部分：[1.8. REST E
 - 内嵌资源
 - 状态
 
-#### Spring Data REST
+##### Spring Data REST
 
 Spring Data REST 可以帮我们实现Controller
 
@@ -2682,11 +2732,11 @@ Spring Data REST 可以帮我们实现Controller
 - **Resource\<T>：**T类型的资源
 - **PagedResource\<T>：**变成T类型的分页资源
 
-***
 
-## <font color=FF0000>From 8.5</font>
 
-#### 如何访问 HATEOAS 服务
+#### From 8.5
+
+##### 如何访问 HATEOAS 服务
 
 **配置 Jackson JSON**
 
@@ -2697,11 +2747,11 @@ Spring Data REST 可以帮我们实现Controller
 - 找到需要的 Link
 - 访问超链接
 
-***
 
-## <font color=FF0000>From 8.6</font>
 
-#### 分布式环境中如何解决 Session 的问题
+#### From 8.6
+
+##### 分布式环境中如何解决 Session 的问题
 
 **常见的会话解决方案**
 
@@ -2709,7 +2759,7 @@ Spring Data REST 可以帮我们实现Controller
 - **会话复制 Session Replication：**将每台机器上的会话都做一次复制（缺点：成本过高）
 - **<font color=FF0000>集中会话 Centralized Session</font>：**用 JDBC / Redis 集中存储会话信息，只要有相同的Session ID，就可以将Session从集中会话中取出，无论会话是在哪一台，只要是相同的Session ID，就可以取到相同的会话
 
-#### **Spring用Spring Session来实现集中会话**
+##### Spring用Spring Session来实现集中会话
 
 **Spring Session**
 
@@ -2723,7 +2773,7 @@ Spring Data REST 可以帮我们实现Controller
 - JDBC
 - Hazelcast
 
-#### Spring Session实现原理
+##### Spring Session实现原理
 
 **定制 HttpSession**
 
@@ -2732,7 +2782,7 @@ Spring Data REST 可以帮我们实现Controller
   - SessionRepositoryFilter
   - DelegatingFilterProxy
 
-#### 基于 Redis 的 HttpSession
+##### 基于 Redis 的 HttpSession
 **引入依赖**
 
 - spring-session-data-redis
@@ -2744,7 +2794,7 @@ Spring Data REST 可以帮我们实现Controller
 - 实现 AbstractHttpSessionApplicationInitializer
   - 配置 DelegatingFilterProxy
 
-#### Spring Boot 对 Spring Session 的⽀支持
+##### Spring Boot 对 Spring Session 的⽀支持
 **application.properties**
 
 - spring.session.store-type=redis
@@ -2754,11 +2804,11 @@ Spring Data REST 可以帮我们实现Controller
 - spring.session.redis.flush-mode=on-save
 - spring.session.redis.namespace=spring:session
 
-***
 
-## <font color=FF0000>From 8.7 & 8.8</font>
 
-#### 使用 WebFlux 代替 Spring MVC
+#### From 8.7 & 8.8
+
+##### 使用 WebFlux 代替 Spring MVC
 
 **什么是 WebFlux**
 
@@ -2775,14 +2825,14 @@ Spring Data REST 可以帮我们实现Controller
 - 请求的耗时并不会有很大的改善
 - 仅需少量固定数量的线程和较少的内存即可实现扩展
 
-#### WebMVC v.s. WebFlux
+##### WebMVC v.s. WebFlux
 
 - 已有 Spring MVC 应用，运行正常，就别改了
 - 依赖了了大量阻塞式持久化 API （比如MySQL数据库）和网络 API，建议使用 Spring MVC
 - 已经使用了非阻塞技术栈（Redi，MongoDB），可以考虑使用 WebFlux
 - 想要使用 Java 8 Lambda 结合轻量级函数式框架，可以考虑 WebFlux
 
-#### WebFlux 中的编程模型
+##### WebFlux 中的编程模型
 
 **两种编程模型**
 
@@ -2795,13 +2845,12 @@ Spring Data REST 可以帮我们实现Controller
   - @RequestBody / @ResponseBody
 
   **返回值**
-  • Mono\<T> / Flux\<T>
+
+  - Mono\<T> / Flux\<T>
 
 - 函数式 Endpoints
 
-***
-
-#### 补充：WebFlux
+##### 补充：WebFlux
 
 了解 WebFlux，首先了解下什么是 Reactive Streams。Reactive Streams 是 JVM 中面向流的库标准和规范：
 
@@ -2850,7 +2899,7 @@ Spring Boot Webflux 就是基于 Reactor 实现的。Spring Boot 2.0 包括一�
 
 摘自：[Spring Boot 2.0 WebFlux 上手系列课程：快速入门（一）](https://www.jianshu.com/p/3ccfca09dcd6)
 
-#### Spring MVC和WebFlux
+##### Spring MVC和WebFlux
 
 <img src="https://upload-images.jianshu.io/upload_images/6010936-15cbf9d5be1c15b6?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp" alt="Spring Boot2.0 Reactor" style="zoom:50%;" />
 
@@ -2902,11 +2951,11 @@ public interface WebHandler{
 
 摘自：[Spring Boot 2.0 WebFlux 教程 (一) | 入门篇](https://www.jianshu.com/p/66571e29c610) 和 [Spring Boot 2.0 WebFlux 上手系列课程：快速入门（一）](https://www.jianshu.com/p/3ccfca09dcd6)
 
-***
 
-## <font color=FF0000>From 9.1</font>
 
-#### 认识 Spring Boot 的组成部分
+#### From 9.1
+
+##### 认识 Spring Boot 的组成部分
 
 **Spring Boot 的特性**
 
@@ -2923,11 +2972,11 @@ public interface WebHandler{
 - 命令行界面 - Spring Boot CLI
 - Actuator
 
-***
 
-## <font color=FF0000>From 9.2</font>
 
-#### 了解自动配置的实现原理
+#### From 9.2
+
+##### 了解自动配置的实现原理
 
 **自动配置**
 
@@ -2940,7 +2989,7 @@ public interface WebHandler{
   - exclude = Class<?>[]：排除掉自动配置类
 - @SpringBootApplication：包含@EnableAutoConfiguration
 
-#### 自动配置的实现原理
+##### 自动配置的实现原理
 
 **@EnableAutoConfiguration**
 
@@ -2957,7 +3006,7 @@ public interface WebHandler{
 - **@ConditionalOnProperty：**在我配置了特定属性之后，条件生效
 - **……**
 
-#### 了解自动配置的情况
+##### 了解自动配置的情况
 
 **观察自动配置的判断结果**
 
@@ -2971,11 +3020,11 @@ public interface WebHandler{
 - Exclusions：排除掉的自动配置
 - Unconditional classes：无条件配置的
 
-***
 
-## <font color=FF0000>From 9.3</font>
 
-#### 动手实现自己的自动配置，主要工作内容
+#### From 9.3
+
+##### 动手实现自己的自动配置，主要工作内容
 
 编写 Java Config
 
@@ -2989,7 +3038,7 @@ public interface WebHandler{
 
 - META-INF/spring.factories
 
-#### 条件注解大家庭
+##### 条件注解大家庭
 
 条件注解
 
@@ -3025,7 +3074,7 @@ Web 应用条件
 - @ConditionalOnJava
 - @ConditionalOnJndi
 
-#### 自动配置的执行顺序
+##### 自动配置的执行顺序
 
 **执行顺序**
 
@@ -3033,17 +3082,17 @@ Web 应用条件
 - @AutoConfigureAfter
 - @AutoConfigureOrder
 
-***
+
 
 **在pom.xml文件中导入自定义的Module：**
 
 在File -> New -> Module from Existing Sources -> 选择对应的Module（也是pom.xml文件）
 
-***
 
-## <font color=FF0000>From 9.4</font>
 
-#### 如何在低版本 Spring 中快速实现类似自动配置的功能
+#### From 9.4
+
+##### 如何在低版本 Spring 中快速实现类似自动配置的功能
 
 ##### **需求与问题**
 
@@ -3089,7 +3138,7 @@ Web 应用条件
 
 
 
-#### 关于 Bean 的一些定制
+##### 关于 Bean 的一些定制
 **Lifecycle Callback**
 
 - InitializingBean / @PostConstruct / init-method
@@ -3122,9 +3171,9 @@ Web 应用条件
 
 
 
-## <font color=FF0000>From 9.5</font>
+#### From 9.5
 
-#### 关于 Maven 依赖管理的一些小技巧
+##### 关于 Maven 依赖管理的一些小技巧
 
 **痛点**
 
@@ -3149,7 +3198,7 @@ Web 应用条件
 
 
 
-#### Spring Boot 的起步依赖
+##### Spring Boot 的起步依赖
 
 **Starter Dependencies**
 
@@ -3162,9 +3211,9 @@ Web 应用条件
 
 
 
-## <font color=FF0000>From 9.6</font>
+#### From 9.6
 
-#### **定制自己的起步依赖**
+##### 定制自己的起步依赖
 
 **主要内容**
 
@@ -3183,11 +3232,11 @@ Web 应用条件
 - starter 中仅添加必要的依赖
 - 声明对 spring-boot-starter 的依赖
 
-***
 
-## <font color=FF0000>From 9.7</font>
 
-#### 深挖 Spring Boot 的配置加载机制
+#### From 9.7
+
+##### 深挖 Spring Boot 的配置加载机制
 
 **外化配置加载顺序**
 
@@ -3227,7 +3276,7 @@ Web 应用条件
 - spring.config.location
 - spring.config.additional-location
 
-#### Relaxed Binding
+##### Relaxed Binding
 
 |      命名风格      |             使用范围              |              示例               |
 | :----------------: | :-------------------------------: | :-----------------------------: |
@@ -3236,9 +3285,11 @@ Web 应用条件
 |     下划线分隔     |               同上                | geektime.spring_boot.first_demo |
 | 全大写，下划线分隔 |             环境变量              |  GEEKTIME_SPRINGBOOT_FIRSTDEMO  |
 
-## <font color=FF0000>From 9.8</font>
 
-#### 理解配置背后的 PropertySource 抽象
+
+#### From 9.8
+
+##### 理解配置背后的 PropertySource 抽象
 
 **添加 PropertySource**
 
@@ -3268,9 +3319,11 @@ Web 应用条件
 - EnvironmentPostProcessor
 - BeanFactoryPostProcessor
 
-## <font color=FF0000>From 10.1</font>
 
-#### Actuator
+
+#### From 10.1
+
+##### Actuator
 
 **目的：**监控并管理理应⽤用程序
 
@@ -3302,7 +3355,7 @@ Web 应用条件
 |    heapdump    |   返回 Heap Dump 文件，格式为 HPROF   |              Y              |              N              |  N / A  |
 |   prometheus   |    返回可供 Prometheus 抓取的信息     |              Y              |              N              |  N / A  |
 
-#### 如何访问 Actuator Endpoint
+##### 如何访问 Actuator Endpoint
 **HTTP 访问**
 
 - /actuator/\<id>
@@ -3326,11 +3379,11 @@ Web 应用条件
 - management.endpoints.web.exposure.exclude=
 - management.endpoints.web.exposure.include=info, health
 
-***
 
-## <font color=FF0000>From 10.2</font>
 
-#### Spring Boot 自带的 Health Indicator
+#### From 10.2
+
+##### Spring Boot 自带的 Health Indicator
 
 **目的**
 
@@ -3343,9 +3396,9 @@ Web 应用条件
 - UP - 200
 - UNKNOWN - 200
 
-## <font color=FF0000>下面没看完</font>
+##### 下面没看完
 
 
 
-## <font color=FF0000>From 10.5</font>
+#### From 10.5
 

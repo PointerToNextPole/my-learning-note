@@ -10,8 +10,6 @@
 >
 > 👀 可以看下：[万法归宗——CGI](https://zhuanlan.zhihu.com/p/25013398)
 
-
-
 > 当虚拟 DOM 和真实 DOM 之间发生协调时，大型交互式应用程序会对用户的输入失去响应。像<font color=fuchsia>“长任务”</font>这样的术语开始出现了。
 >
 > 这导致了 React 在 2017 年被重新编写，为<font color=fuchsia>并发模式</font>奠定了基础。

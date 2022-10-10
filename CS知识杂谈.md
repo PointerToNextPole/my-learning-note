@@ -740,7 +740,7 @@ console.log(lowerCaseChar_z) // z
 
 银行家舍入法 是由 IEEE 754 标准规定的浮点数取整算法，大部分的编程软件都使用的是这种方法。 所谓银行家舍入法，其实质是一种<font color=FF0000>四舍六入五取偶</font>（又称 四舍六入五留双）<font color=FF0000>法</font>。
 
-“四舍六入五成双”，也即“4舍 6入 5凑偶”，这里 “四”是指 ≤4 时舍去，"六"是指 ≥6 时进上。<mark style="background: lightskyblue">“五”指的是 根据 5 后面的数字来定</mark>：当 <font color=FF0000>5 后有数时，舍 5 入 1</font>；<mark style="background: lightskyblue">当 5 后无有效数字时，需要分两种情况来讲</mark>：<font color=fuchsia>**5 前为奇数，舍 5 入 1**</font> ；<font color=fuchsia>**5 前为偶数，舍 5 不进（ 0 是偶数）**</font>。
+“四舍六入五成双”，也即“4舍 6入 5凑偶”，这里 “四”是指 ≤4 时舍去，"六"是指 ≥6 时进上。<font color=dodgerBlue>“五”指的是 根据 5 后面的数字来定</font>：当 <font color=FF0000>5 后有数时，舍 5 入 1</font>；<font color=dodgerBlue>当 5 后无有效数字时，需要分两种情况来讲</font>：<font color=fuchsia>**5 前为奇数，舍 5 入 1**</font> ；<font color=fuchsia>**5 前为偶数，舍 5 不进（ 0 是偶数）**</font>。
 
 摘自：[百度百科 - 银行家舍入](https://baike.baidu.com/item/%E9%93%B6%E8%A1%8C%E5%AE%B6%E8%88%8D%E5%85%A5/4781630)
 
@@ -755,3 +755,9 @@ console.log(lowerCaseChar_z) // z
 #### nonce
 
 number once // TODO https://en.wikipedia.org/wiki/Cryptographic_nonce
+
+
+
+#### 关注点分离
+
+// TODO

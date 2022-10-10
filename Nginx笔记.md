@@ -6,11 +6,29 @@
 
 ##### 反向代理
 
-- **正向代理：**在客户端（浏览器）配置代理服务器，通过<font color=FF0000>代理服务器</font>进行互联网访问<font color=FF0000>目标服务器</font>
+###### 正向代理
 
-- **反向代理：**服务器根据客户端的请求，<font color=FF0000>从其关系的一组或多组后端服务器（如Web服务器）上获取资源</font>，<font color=FF0000>然后再将这些资源返回给客户端</font>，<font color=LightSeaGreen>客户端只会得知反向代理的IP地址，而不知道在代理服务器后面的服务器集群的存在</font>。  摘自：[维基百科 -- 反向代理]([https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86](https://zh.wikipedia.org/wiki/反向代理))
+在客户端（浏览器）配置代理服务器，通过<font color=FF0000>代理服务器</font>进行互联网访问<font color=FF0000>目标服务器</font>
 
-**区别：**正向代理隐藏真实客户端，反向代理隐藏真实服务端
+###### 反向代理
+
+服务器根据客户端的请求，<font color=FF0000>从其关系的一组或多组后端服务器（如Web服务器）上获取资源</font>，<font color=FF0000>然后再将这些资源返回给客户端</font>，<font color=LightSeaGreen>客户端只会得知反向代理的IP地址，而不知道在代理服务器后面的服务器集群的存在</font>。
+
+摘自：[维基百科 -- 反向代理]([https://zh.wikipedia.org/wiki/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86](https://zh.wikipedia.org/wiki/反向代理))
+
+###### 区别
+
+正向代理隐藏真实客户端，反向代理隐藏真实服务端
+
+###### 进一步解释
+
+> 👀 上面的解释，还是有点不明白。这里再做点补充
+
+<font color=dodgerBlue>**反向代理**</font>，假设我们是一个用户，在上述场景中，<font color=LightSeaGreen>不管增加多少台服务器，用户始终访问一个相同的域名，对于用户而言，其做的 **反向代理对用户是无感知的**</font>，这里的代理是 Nginx 中间件这一层把用户的请求代理到了我们的服务器上，同时他也是在服务端完成的，<font color=red>**反向代理的过程，隐藏了真实的服务端**</font>（👀 这里原文是客户端，应该是笔误）。<font color=red>**客户端请求的服务都被代理服务器代替来请求**</font>
+
+<font color=dodgerBlue>**正向代理**</font>，假设这样一个场景：在日常开发中应该经常会使用到 vpn，公司的一些项目或者私有 git 或者一些内部的网站，需要登录 vpn 才能访问。其基本原理是：有一个位于客户端和原始服务器之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并且指定目标（原始服务器），然后代理向原始服务器转交请求并将获得的内容返回给客户端，客户端才能使用正向代理，<font color=LightSeaGreen>登录 vpn 之后所有的请求将会通过 vpn 的这台服务器代理客户去访问某些资源或者网站，那么这台代理服务器将会是公司内部的白名单 ip，这样所有的请求都统一从这里进入，就实现了一个正向代理</font>。如此一来，<font color=fuchsia>**正向代理的过程就隐藏了真实的客户端，客户端请求的服务都被代理服务器代替来请求**</font>。
+
+摘自：[前端必备知识之Nginx](https://juejin.cn/post/7108394145068089374)
 
 ##### 负载均衡
 
@@ -27,19 +45,27 @@
 - config文件目录：  `/usr/local/etc/nginx/nginx.conf`
 - 系统hosts位置：  `/private/etc/hosts`
 
+
+
+
+
 #### nginx 常用命令
 
 ```bash
-nginx  #启动nginx
-nginx -s quit  #快速停止nginx
-nginx -V #查看版本，以及配置文件地址
-nginx -v #查看版本
-nginx -t #测试nginx配置，并离开（命令行中将会显示ngnix所在配置路径）
-nginx -s reload|reopen|stop|quit   #重新加载配置|重启|快速停止|安全关闭nginx
+$ nginx                                  # 启动 nginx
+$ nginx -s quit  												 # 快速停止 nginx
+$ nginx -V   														 # 查看版本，以及配置文件地址
+$ nginx -v   														 # 查看版本
+$ nginx -t                               # 测试 nginx 配置，并离开（命令行中将会显示 ngnix 所在配置路径 ）
+$ nginx -s reload | reopen | stop | quit # 重新加载配置 ⭐️ | 重启 | 快速停止 | 安全关闭 ⭐️ nginx 
+```
 
-nginx -h #帮助
-nginx version: nginx/1.19.1
-Usage: nginx [-?hvVtTq] [-s signal] [-c filename] [-p prefix] [-g directives]
+```bash
+$ nginx -h         # 帮助
+nginx version: nginx/1.23.1
+Usage: nginx [-?hvVtTq] [-s signal] [-p prefix]
+             [-e filename] [-c filename] [-g directives]
+
 Options:
   -?,-h         : this help
   -v            : show version and exit
@@ -48,12 +74,21 @@ Options:
   -T            : test configuration, dump it and exit
   -q            : suppress non-error messages during configuration testing
   -s signal     : send signal to a master process: stop, quit, reopen, reload
-  -p prefix     : set prefix path (default: /usr/local/Cellar/nginx/1.19.1/)
+  -p prefix     : set prefix path (default: /usr/local/Cellar/nginx/1.23.1/)
+  -e filename   : set error log file (default: /usr/local/var/log/nginx/error.log)
   -c filename   : set configuration file (default: /usr/local/etc/nginx/nginx.conf)
   -g directives : set global directives out of configuration file
 ```
 
 摘自：[mac下nginx的安装和配置](https://www.jianshu.com/p/026d67cc6cb1)
+
+##### ngnix -t
+
+```bash
+$ nginx -t
+nginx: the configuration file /usr/local/etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /usr/local/etc/nginx/nginx.conf test is successful
+```
 
 
 
@@ -110,7 +145,21 @@ events {
 
     这块的主要作用是基于 Nginx 服务器接收到的请求字符串（例如 server_name/uri-string），对虚拟主机名称（也可以是IP别名）之外的字符串（例如 前面的 /uri-string）进行匹配，对特定的请求进行处理。地址定向、数据缓存和应答控制等功能，还有许多第三方模块的配置也在这里进行。 
 
-***
 
-chapter 8
+
+#### 前端必备知识之Nginx 笔记
+
+##### 反向代理
+
+见 [[#反向代理#进一步解释]] ，这里略
+
+##### 配置重载
+
+Nginx 修改完配置之后需要<font color=red>重载</font>，可以停止进程后再运行（👀 就像是 webpack ）；或者更简单的方法是使用 `nginx -s reload`
+
+##### 如何在一台服务器部署多个网站
+
+
+
+学习自：[前端必备知识之Nginx](https://juejin.cn/post/7108394145068089374)
 

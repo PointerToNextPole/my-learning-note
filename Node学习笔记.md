@@ -2492,13 +2492,13 @@ app.listen(8000, () => {
 })
 ```
 
-express 确实可以作为静态服务器，但是选择nginx 是更好的选择
+express 确实可以作为静态服务器，但是选择 nginx 是更好的选择
 
 
 
 ##### express 的错误处理
 
-比如在 login 接口中，用户提交用户名和密码，数据库查询发现用户不存在；或者 在register 接口中，用户提交用户名和密码，数据查询发现用户已存在。<font color=FF0000>这里的判断逻辑是非常相似的</font>，所以，<font color=FF0000>对于错误处理，可以专门做一个 中间件</font>。
+比如在 login 接口中，用户提交用户名和密码，数据库查询发现用户不存在；或者在 register 接口中，用户提交用户名和密码，数据查询发现用户已存在。<font color=FF0000>这里的判断逻辑是非常相似的</font>，所以，<font color=FF0000>对于错误处理，可以专门做一个 中间件</font>。
 
 ```js
 const express = require('express');

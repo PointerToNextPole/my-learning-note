@@ -6126,38 +6126,46 @@ console.log(addOne.num) // 3
 
 在 ES6 之前，ECMAScript 并没有提供代码组织的方式，那时候通常是基于 IIFE 来实现“模块化”
 
-// TODO [CommonJS 和 ES6 Module 究竟有什么区别？](https://juejin.cn/post/6844904080955932680) 还有：[前端科普系列-CommonJS：不是前端却革命了前端 - 无名之辈的文章 - 知乎](https://zhuanlan.zhihu.com/p/113009496) 从背景（痛点）介绍到解决方案，再到技术实现；同时加上 “lin clark” 式的漫画，感觉不错。
+#### // TODO 
+
+[CommonJS 和 ES6 Module 究竟有什么区别？](https://juejin.cn/post/6844904080955932680)
+
+[前端科普系列-CommonJS：不是前端却革命了前端 - 无名之辈的文章 - 知乎](https://zhuanlan.zhihu.com/p/113009496) 从背景（痛点）介绍到解决方案，再到技术实现；同时加上 “lin clark style” 的漫画，感觉不错。
+
+
 
 ### CommonJS 和 ES6 Module 区别
 
 #### 为什么在浏览器上不用 CommonJS
 
-<font color=FF0000 size=4>**CommonJS 的 require 语法是同步的**：当我们 **使用 require 加载一个模块的时候，必须要等这个模块加载完后，才会执行后面的代码**</font>。如果知道这个事实，那我们的问题也就很容易回答了：Node 是服务端，使用 require 语法加载模块，一般是一个文件，只需要从本地硬盘中读取文件，它的速度是比较快的。但在<font color=FF0000>浏览器端就不一样了，文件一般存放在服务器或者 CDN 上，如果使用同步的方式加载一个模块还需要由网络来决定快慢，可能时间会很长，这样浏览器很容易进入“假死状态”</font>。所以<font color=FF0000>才有了后面的 AMD 和 CMD 模块化方案，<font size=4>它们都是 **异步加载** 的</font>，比较适合在浏览器端使用</font>
+<font color=fuchsia size=4>**CommonJS 的 require 语法是同步的**</font>：<font color=red>当我们 **使用 require 加载一个模块的时候，必须要等这个模块加载完后，才会执行后面的代码**</font>。如果知道这个事实，那我们的问题也就很容易回答了：Node 是服务端，使用 require 语法加载模块，一般是一个文件，只需要从本地硬盘中读取文件，它的速度是比较快的。但在<font color=dodgerBlue>**浏览器端就不一样了**</font>，<font color=red>文件一般存放在服务器或者 CDN 上，如果使用同步的方式加载一个模块还需要由网络来决定快慢，可能时间会很长，这样浏览器很容易进入“假死状态”</font>。所以 <font color=fuchsia>才有了后面的 AMD 和 CMD 模块化方案，<font size=4>它们都是 **异步加载** 的</font>，比较适合在浏览器端使用</font>
 
-> **注：**关于这一点，可以总结为：
+> 👀 注：关于这点，可以总结为：
 >
 > CommonJS 模块的 require() 是同步加载模块，<font color=FF0000>ES6 模块的 import 命令是异步加载</font>，有一个独立的模块依赖的解析阶段
 >
 > 摘自：[ES6 入门 - Module 的加载实现 - ES6 模块与 CommonJS 模块的差异](https://es6.ruanyifeng.com/#docs/module-loader#ES6-模块与-CommonJS-模块的差异)
->
-> 另外：
+
+> 💡 补充
 >
 > In CommonJS, require() is synchronous; <font color=FF0000>it doesn't return a promise or call a callback</font>.
 >
-> In ESM, the module loader runs in asynchronous phases. <font color=FF0000>In the first phase, it parses the script to detect calls to import and export without running the imported script</font>. <font color=FF0000>In the parsing phase, the **ESM loader can immediately detect a typo in named imports and throw an exception without ever actually running the dependency code**</font>.
+> In ESM, the module loader runs in asynchronous phases. <font color=dodgerBlue>In the first phase</font>, <font color=red>it parses the script to detect calls to import and export without running the imported script</font>. <font color=dodgerblue>In the parsing phase</font>, <font color=red>the **ESM loader can immediately detect a typo**</font>（打字错误） <font color=red>**in named imports and throw an exception without ever actually running the dependency code**</font>.
 >
-> <font color=FF0000>The ESM module loader then asynchronously downloads and parses any scripts that you imported, and then scripts that your scripts imported, **building out a “module graph” of dependencies**, **until eventually it finds a script that doesn’t import anything**</font>. Finally, that script is allowed to execute, and then scripts that depend on that are allowed to run, and so on.
+> The ESM module loader then <font color=red>asynchronously downloads and parses any scripts that you imported, and then scripts that your scripts imported</font>, <font color=fuchsia>**building out a “module graph” of dependencies**, **until eventually it finds a script that doesn’t import anything**</font>. Finally, that script is allowed to execute, and then scripts that depend on that are allowed to run, and so on.
 >
 > 摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1)
 
-#### CJS 和 ESM 最大的两个大的区别
+#### CJS 和 ESM 主要的两个区别
 
-- CommonJS <font color=FF0000>输出的是 **<font size=4>单个</font> 值的拷贝**</font>，ES6 Module 输出的是<font color=FF0000>**（多个）值的引用**</font>
-- CommonJS 是 <font color=FF0000 size=4>**运行时加载**</font>，ES6 Module 是 <font color=FF0000 size=4>**编译时输出接口**</font>
+- CommonJS <font color=fuchsia>输出的是 **<font size=4>单个</font> 值的拷贝**</font>，ES6 Module 输出的是<font color=fuchsia>**（多个）值的引用**</font>
+- CommonJS 是 <font color=fuchsia size=4>**运行时加载**</font>，ES6 Module 是 <font color=fuchsia size=4>**编译时输出接口**</font>
 
-**第一点差异：**CJS 输出的是值的拷贝。换句话说：一旦输出了某个值，如果模块内部后续的变化，影响不了外部对这个值的使用。
+##### 第一点差异
 
-示例如下：
+CJS 输出的是值的拷贝。换句话说：<font color=LightSeaGreen>一旦输出了某个值，如果模块内部后续的变化，影响不了外部对这个值的使用</font>。
+
+###### 示例如下
 
 ```js
 // lib.js
@@ -6181,9 +6189,9 @@ mod.incCounter();
 console.log(mod.counter); // 3
 ```
 
-上面的例子说明：<mark>如果对外输出了 counter 变量，就算后续调用模块内部的 incCounter 方法去修改它的值，它的值依旧没有变化</mark>
+上面的例子说明：<font color=LightSeaGreen>如果对外输出了 counter 变量，就算后续调用模块内部的 incCounter 方法去修改它的值，它的值依旧没有变化</font>
 
-**ES6 Module 运行机制完全不一样：**<font color=FF0000>**JS 引擎 对脚本静态分析的时候，遇到模块加载命令 import，就会生成一个只读引用**；等到脚本真正执行的时候，再根据这个只读引用，到被加载的那个模块里去取值</font>。
+<font color=dodgerBlue>**ES6 Module 运行机制完全不一样**</font>：<font color=fuchsia>**JS 引擎 对脚本静态分析的时候，遇到模块加载命令 import，就会生成一个只读引用**</font>；<font color=red size=4>**等到脚本真正执行的时候，再根据这个只读引用，到被加载的那个模块里去取值**</font>。
 
 ```js
 // lib.js
@@ -6205,7 +6213,9 @@ console.log(counter) // 4
 
 上面代码说明：ES6 Module import 的变量 counter 是可变的，完全反应其所在模块 lib.js 内部的变化
 
-**第二个差异：**也是为什么 ES6 Module 这么受人欢迎的最大原因之一。<font color=FF0000>CommonJS 其实加载的是一个对象，这个对象只有在脚本运行时才会生成，而且只会生成一次</font>（注：这里可以参考下后面的 [[#CJS 和 ESM 的 循环依赖]]，这里有说明 生成对象的细节）。但是 <font color=FF0000>**ES6 Module 不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成**；这样就可以使用各种工具对 JS 模块进行依赖分析，优化代码</font>。webpack 中的 tree shaking 和 scope hoisting 实际上就是依赖 ES6 Module。
+##### 第二个差异
+
+这也是为什么 ES6 Module 这么受人欢迎的最大原因之一。<font color=fuchsia>**CommonJS 其实加载的是一个对象**，这个对象只有在脚本运行时才会生成，而且只会生成一次</font>（ 👀 这里可以参考下 [[#CJS 和 ESM 的 循环依赖]]，那有说明 生成对象的细节）。但是 <font color=fuchsia size=4>**ES6 Module 不是对象，它的 *对外接口* 只是一种静态定义，在代码静态解析阶段就会生成**</font>；这样就可以使用各种工具对 JS 模块进行依赖分析，优化代码。webpack 中的 tree shaking 和 scope hoisting 实际上就是依赖 ES6 Module。
 
 #### CJS 和 ESM 的 循环依赖
 
@@ -6222,11 +6232,11 @@ CJS 的一个模块，一般就是一个文件；使用 reqiure 第一次加载�
 }
 ```
 
-> 注：可以打印 module 对象以查看（如下），另外，可以参考 [[Node学习笔记#Module 中的内容]] 中的内容
+> 👀 注：可以打印 module 对象以查看（如下），另外，可以参考 [[Node学习笔记#Module 中的内容]] 中的内容
 >
 > <img src="https://s2.loli.net/2022/05/31/qhbVEg12LkxZote.png" alt="image-20220531004437463" style="zoom:55%;" />
 
-上面的例子我们只列出了关键的几个属性：<font color=FF0000>id 就是 ***模块名***，exports 是 ***模块输出的各个接口***，loaded 表示 ***模块是否执行完毕*** </font>。<font color=FF0000>**以后再用到这个模块的时候，会直接从这个对象的 exports 属性里面取值**</font>。<mark>**即使多次执行一个模块的 require 命令，它都只会在第一次加载时运行一次**，后面都会从缓存中读取，除非手动清除缓存</mark>。（ 清除缓存和 require.cache 相关，可以参考：[stack overflow - Clearing require cache](https://stackoverflow.com/questions/23685930/clearing-require-cache)）
+上面的例子我们只列出了关键的几个属性：<font color=FF0000>id 就是 ***模块名***，exports 是 ***模块输出的各个接口***，loaded 表示 ***模块是否执行完毕*** </font>。<font color=FF0000>**以后再用到这个模块的时候，会直接从这个对象的 exports 属性里面取值**</font>。<font color=LightSeaGreen>**即使多次执行一个模块的 require 命令，它都只会在第一次加载时运行一次**，后面都会从缓存中读取，除非手动清除缓存</font>。（ 清除缓存和 require.cache 相关，可以参考：[stack overflow - Clearing require cache](https://stackoverflow.com/questions/23685930/clearing-require-cache)）
 
 CommonJS 模块的特性就是：<font color=FF0000 size=4>**加载时执行，当脚本被 reqiure 的时候，就会全部执行**</font>。<font color=FF0000>**一旦出现某个模块被 “循环加载” ，就只输出已经执行的部分，还未执行的部分不会输出**</font>。我们看一个官方的例子，首先定义 a.js 如下：
 
@@ -6344,15 +6354,15 @@ import { method } from 'commonjs-package';
 
 ##### 补充：为什么 CJS 不能加载 ESM
 
-> The simplest reason that <font color=FF0000>CJS can’t require() ESM is that ESM can do top-level await, but CJS scripts can't</font>.
->
-> <font color=FF0000 size=4>**[Top-level](https://v8.dev/features/top-level-await) `await` lets us use the `await` keyword outside of an `async` [function](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await) , at the “top level.”**</font>
->
-> ... 关于 top-level await 的内容，略。详见原文，以及 V8 团队博客 [Top-level `await`](https://v8.dev/features/top-level-await)
->
-> If you dive in, you’ll find that top-level await isn’t even the only problematic case… <font color=FF0000>what do you think happens if you synchronously require ESM which can asynchronously import some CJS which can synchronously require some ESM</font>? What you get is a sync/async zebra stripe of death, that’s what! <mark>Top-level await is just the last nail in the coffin, and the easiest to explain</mark>.)
->
->  摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1)
+The simplest reason that <font color=fuchsia>CJS can’t require() ESM is that **ESM can do top-level await, but CJS scripts can't**</font>.
+
+<font color=FF0000 size=4>**[Top-level](https://v8.dev/features/top-level-await) `await` lets us use the `await` keyword outside of an `async` [function](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await) , at the “top level.”**</font>
+
+> 👀 关于 top-level await 的内容，还有更多，这里略。详见原文，以及 V8 团队博客 [Top-level `await`](https://v8.dev/features/top-level-await)
+
+If you dive in, you’ll find that top-level await isn’t even the only problematic case… <font color=FF0000>what do you think happens if you synchronously require ESM which can asynchronously import some CJS which can synchronously require some ESM</font>? What you get is a sync/async zebra stripe of death, that’s what! <font color=LightSeaGreen>Top-level await is just the last nail in the coffin, and the easiest to explain</font>.)
+
+摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1)
 
 #### CJS 和 ESM 区别总结
 
@@ -6367,7 +6377,7 @@ import { method } from 'commonjs-package';
 
 - 关于两个模块互相引用的问题，在 ESM 中，是支持加载 CJS 模块的。但反过来，CJS 并不能 require ES6 Module ，在 Node 中，两种模块方案是分开处理的
 
-摘自：[CommonJS和ES6模块的区别](https://juejin.cn/post/6844904067651600391)，另外，不少补充内容摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1) 本文看了$3/4$ 左右，有点看不懂了；没看完，有空可以继续看。
+摘自：[CommonJS和ES6模块的区别](https://juejin.cn/post/6844904067651600391) 。另外，其中大量补充内容摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1) 文章看了$3/4$ 左右，有点看不懂了；没看完，有空可以继续看 👀 // TODO
 
 
 
