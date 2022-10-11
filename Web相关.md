@@ -3019,6 +3019,8 @@ Apple 官网喜欢用用户滚动页面 实现 播放视频（动画）效果，
 
   摘自：[The Chromium Projects - about-signin-internals](https://www.chromium.org/developers/about-signin-internals/)
 
+另外还在 [DNS Prefetching的两三事 - 于秋的文章 - 知乎](https://zhuanlan.zhihu.com/p/22362198) 发现了 `chrome://histograms/` 以及它下面的 `chrome://histograms/dns` 
+
 部分参考自：[我所了解的chrome ](https://www.cnblogs.com/liyunhua/p/4531964.html) 、[你可能不知道的chrome隐藏技巧 - 伯衡君的文章 - 知乎](https://zhuanlan.zhihu.com/p/99527398)
 
 另外，[The Chromium Projects](https://www.chromium.org/chromium-projects/) 中有不少相关内容，可参考。

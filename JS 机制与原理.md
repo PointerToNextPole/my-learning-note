@@ -6215,13 +6215,13 @@ console.log(counter) // 4
 
 ##### 第二个差异
 
-这也是为什么 ES6 Module 这么受人欢迎的最大原因之一。<font color=fuchsia>**CommonJS 其实加载的是一个对象**，这个对象只有在脚本运行时才会生成，而且只会生成一次</font>（ 👀 这里可以参考下 [[#CJS 和 ESM 的 循环依赖]]，那有说明 生成对象的细节）。但是 <font color=fuchsia size=4>**ES6 Module 不是对象，它的 *对外接口* 只是一种静态定义，在代码静态解析阶段就会生成**</font>；这样就可以使用各种工具对 JS 模块进行依赖分析，优化代码。webpack 中的 tree shaking 和 scope hoisting 实际上就是依赖 ES6 Module。
+这也是为什么 ES6 Module 这么受人欢迎的最大原因之一。<font color=fuchsia>**CommonJS 其实加载的是一个对象**，这个对象只有在脚本运行时才会生成，而且只会生成一次</font>（ 👀 可以参考下 [[#CJS 和 ESM 的 循环依赖]]，那有说明 生成对象的细节）。但是 <font color=fuchsia size=4>**ES6 Module 不是对象，它的 *对外接口* 只是一种静态定义，在代码静态解析阶段就会生成**</font>；这样就可以使用各种工具对 JS 模块进行依赖分析，优化代码。webpack 中的 tree shaking 和 scope hoisting 实际上就是依赖 ES6 Module。
 
 #### CJS 和 ESM 的 循环依赖
 
 ##### CJS 的 循环依赖
 
-CJS 的一个模块，一般就是一个文件；使用 reqiure 第一次加载一个模块时，就会在内存中生成一个对象。大概长这个样子：
+CJS 的一个模块，一般就是一个文件；<font color=fuchsia>使用 reqiure 第一次加载一个模块时，就会**在内存中生成一个对象**</font>。大概长这个样子：
 
 ```js
 {
@@ -6232,17 +6232,19 @@ CJS 的一个模块，一般就是一个文件；使用 reqiure 第一次加载�
 }
 ```
 
-> 👀 注：可以打印 module 对象以查看（如下），另外，可以参考 [[Node学习笔记#Module 中的内容]] 中的内容
+> 👀 注：可以打印 module 对象查看（如下），另外，可以参考 [[Node学习笔记#Module 中的内容]] 中的内容
 >
 > <img src="https://s2.loli.net/2022/05/31/qhbVEg12LkxZote.png" alt="image-20220531004437463" style="zoom:55%;" />
 
-上面的例子我们只列出了关键的几个属性：<font color=FF0000>id 就是 ***模块名***，exports 是 ***模块输出的各个接口***，loaded 表示 ***模块是否执行完毕*** </font>。<font color=FF0000>**以后再用到这个模块的时候，会直接从这个对象的 exports 属性里面取值**</font>。<font color=LightSeaGreen>**即使多次执行一个模块的 require 命令，它都只会在第一次加载时运行一次**，后面都会从缓存中读取，除非手动清除缓存</font>。（ 清除缓存和 require.cache 相关，可以参考：[stack overflow - Clearing require cache](https://stackoverflow.com/questions/23685930/clearing-require-cache)）
+上面的例子我们只列出了关键的几个属性：<font color=FF0000>id 就是 ***模块名***，exports 是 ***模块输出的各个接口*** ，loaded 表示 ***模块是否执行完毕*** </font>。<font color=FF0000>**以后再用到这个模块的时候，会直接从这个对象的 exports 属性里面取值**</font>。<font color=fuchsia><font size=4>**即使多次执行一个模块的 require 命令，它都只会在第一次加载时运行一次**</font>，后面都会从缓存中读取，**除非手动清除缓存**</font>。（ 👀 清除缓存和 `require.cache` 相关，参考：[stack overflow - Clearing require cache](https://stackoverflow.com/questions/23685930/clearing-require-cache)）
 
-CommonJS 模块的特性就是：<font color=FF0000 size=4>**加载时执行，当脚本被 reqiure 的时候，就会全部执行**</font>。<font color=FF0000>**一旦出现某个模块被 “循环加载” ，就只输出已经执行的部分，还未执行的部分不会输出**</font>。我们看一个官方的例子，首先定义 a.js 如下：
+**CommonJS 模块的特性是：**<font color=fuchsia size=4>**加载时执行，当脚本被 reqiure 的时候，就会全部执行**</font>。<font color=fuchsia>**一旦出现某个模块被 “循环加载” ，就只输出已经执行的部分，还未执行的部分不会输出**</font>。
+
+我们看一个官方的例子，<font color=dodgerBlue>首先定义 `a.js` 如下</font>：
 
 ```js
 // a.js
-exports.done = false; // 导出 done
+exports.done = false;     // 导出 done
 var b = require('./b.js');
 
 console.log('在 a.js 之中，b.done = %j', b.done);
@@ -6250,11 +6252,13 @@ exports.done = true;
 console.log('a.js 执行完毕');
 ```
 
-上面的代码，首先导出一个 done 变量，然后开始加载 b.js 。注意，<font color=FF0000>此时 **a.js 就会停在这里**</font>（**注：**这代表了 “同步” 的特性），<font color=FF0000>**等待 b.js 执行完，才会继续执行后面的代码**</font>。再定义 b.js 代码：
+上面的代码，首先导出一个 done 变量，然后开始加载 `b.js` 。注意，<font color=FF0000>此时 **`a.js` 就会停在这里**</font>（ 👀 这说明了 “同步” 的特性），<font color=FF0000>**等待 `b.js` 执行完，才会继续执行后面的代码**</font>。
+
+<font color=dodgerBlue>再定义 `b.js` 代码</font>：
 
 ```js
 // b.js
-exports.done = false; // 导出 done
+exports.done = false;     // 导出 done
 var a = require('./a.js');
 
 console.log('在 b.js 之中，a.done = %j', a.done);
@@ -6262,7 +6266,7 @@ exports.done = true;
 console.log('b.js 执行完毕');
 ```
 
-与 a.js 类似：<font color=FF0000>b.js 导出一个变量后，在第二行就开始加载 a.js ，发生了循环依赖</font>。然后，系统就会去内存对象的 exports 中取 done 变量的值，可<font color=FF0000>因为 a.js 没有执行完，所以只取到刚开始输出的值 false</font> 。接着，<font color=FF0000>**b.js 继续执行后面的代码，执行完毕后，再把执行权交还给 a.js**</font> ，执行完后面剩下的代码。为了验证这个过程，新建一个 main.js ：
+与 `a.js` 类似：<font color=fuchsia>`b.js` 导出一个变量后，在第二行就开始加载 `a.js` ，发生了循环依赖</font>。然后，系统就会去内存对象的 exports 中取 done 变量的值，可<font color=FF0000>因为 `a.js` 没有执行完，所以只取到刚开始输出的值 false</font> 。接着，<font color=FF0000>**`b.js` 继续执行后面的代码，执行完毕后，再把执行权交还给 `a.js`**</font> ，执行完后面剩下的代码。为了验证这个过程，新建一个 `main.js` ：
 
 ```js
 // main.js
@@ -6288,7 +6292,7 @@ import { odd } from './odd'
 
 export var counter = 0;
 export function even(n) {
-  counter++;
+  counter ++;
   return n === 0 || odd(n - 1);
 }
 ```
@@ -6302,11 +6306,11 @@ export function odd(n) {
 }
 ```
 
-上面代码中，even.js 里面的函数 even 有一个参数 n，只要不等于 0，就会减去 1，传入加载的 odd() 。odd.js 也会做类似操作
+上面代码中，`even.js` 里面的函数 even 有一个参数 n，只要不等于 0，就会减去 1，传入加载的 `odd()` 。`odd.js` 也会做类似操作
 
 运行上面这段代码，结果如下：
 
-```sh
+```js
 > import * as m from './even.js';
 > m.even(10);
 true
@@ -6314,7 +6318,7 @@ true
 6
 ```
 
-上面代码中，参数 n 从 10 变为 0 的过程中，even() 一共会执行 6 次，所以变量 counter 等于 6。在这个例子中，我们可以看到，<font color=FF0000>even.js 中输出的 counter 变量值会随着模块内部的变化而变化</font>（**注：**即不是拷贝式的）。
+上面代码中，参数 n 从 10 变为 0 的过程中，`even()` 一共会执行 6 次，所以变量 counter 等于 6。在这个例子中，我们可以看到，<font color=FF0000>`even.js` 中输出的 counter 变量值会随着模块内部的变化而变化</font>（ 👀 即不是拷贝式的）。
 
 因为两个模块化方案的加载方式的不同，导致它们对待循环加载的不同处理。
 
@@ -6370,7 +6374,7 @@ If you dive in, you’ll find that top-level await isn’t even the only problem
 
 - CJS 模块输出的是<font color=FF0000>单个值的拷贝</font>，而 ESM 输出的是<font color=FF0000>（多个）值的引用</font>
 
-- CJS 模块是 运行时加载，而 ESM 是 编译时输出接口，使得对JS的模块进行静态分析成为了可能；
+- <font color=fuchsia>CJS 模块是 运行时加载</font>，而 <font color=fuchsia>ESM 是 编译时输出接口</font>，使得对 JS 的模块进行静态分析成为了可能；
 - 因为两个模块加载机制的不同，所以在对待循环加载的时候，它们会有不同的表现。CJS 遇到循环引用时，只会输出已经执行的部分，后续的输出或者变化，是不会影响已经输出的变量。而 ESM 相反，使用 import 加载一个变量，变量不会被缓存，真正取值的时候就能取到最终的值
 
 - 关于模块顶层的 this 指向：在 CJS 顶层，this 指向当前模块；ESM 中，this 指向 undefined

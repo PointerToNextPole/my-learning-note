@@ -329,6 +329,7 @@
 - **deviate** ：偏离。一般使用：deviate from
 - **canonical** ：权威性的。比较常见的用在 `<link rel="canonical">` 和 CNAME record ( Canonical Name Record )
 - **typo** ：打字错误
+- **eavesdrop** ：窃听。eaves 屋檐。eavesdropper 窃听者。
 
 
 

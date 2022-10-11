@@ -12,7 +12,7 @@
 wx.miniProgram.navigateTo({ url: urlStr })
 ```
 
-同时，小程序内部的页面跳转也是使用 `wx.navigateTo()`
+另外，小程序内部的页面跳转也是使用 `wx.navigateTo()`
 
 
 

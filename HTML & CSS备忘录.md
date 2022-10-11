@@ -453,9 +453,7 @@ HTML \<meta> 元素表示那些不能由其它 HTML 元相关 ( meta-related ) �
     >
     > 摘自：[作为前端，你必须要知道的meta标签知识](https://juejin.cn/post/7089271039842058253)
     
-    > 👀 还有一个 dns-prefetch，详见 [[#dns-prefetch 补充]] 。区别是： x-dns-prefetch-control 是 http-equiv 中的值，dns-prefetch 是 rel 中的值
-    
-    
+    > 👀 还有一个 dns-prefetch，详见 [[#dns-prefetch 补充]] 。区别是： x-dns-prefetch-control 是 http-equiv 中的值，dns-prefetch 是 rel 中的值。另外，可以看下 [[计算机网络#X-DNS-Prefetch-Control#示例]]
   
 - **name：**<font color=FF0000> name 和 content 属性可以一起使用，以名-值对的方式给文档提供元数据</font>，其中 name 作为元数据的名称，content 作为元数据的值。
 
@@ -1809,17 +1807,17 @@ Link: header 也可以通过使用 HTML meta 标签定义在 HTML 文档中：
 
 ##### DNS Prefetching
 
-<mark>Domain lookups can be slow, especially with network latency on mobile phones</mark>. They are most relevant when there are a plethora of links to external websites that may be clicked on, like search engine results, <font color=FF0000>**DNS prefetching resolves domain names in advance** thereby **speeding up load times by reducing the time associated with domain lookup at request time**</font>.
+<font color=dodgerBlue>Domain lookups can be slow, especially with network latency on mobile phones</font>. They are most relevant when there are a plethora of links to external websites that may be clicked on, like search engine results, <font color=FF0000>**DNS prefetching resolves domain names in advance** thereby **speeding up load times by reducing the time associated with domain lookup at request time**</font>.
 
 ```html
 <link rel="dns-prefetch" href="https://example.com/">
 ```
 
-注：这部分的内容，可以参考后面的 [[#dns-prefetch 补充]] ，有更详细的中文说明。
+> 👀 注：这部分内容，可以参考 [[#dns-prefetch 补充]] ，有更详细的中文说明。
 
 ##### Link prefetching
 
-Link prefetching is a **performance optimization** technique that works by assuming which links the user is likely to click, then downloading the content of those links. <mark>If the user decides to click on one of the links, then the page will be rendered instantly as the content has already been downloaded</mark>.
+Link prefetching is a **performance optimization** technique that works by assuming which links the user is likely to click, then downloading the content of those links. <font color=lightSeaGreen>If the user decides to click on one of the links, then the page will be rendered instantly as the content has already been downloaded</font>.
 
 The prefetch hints are sent in HTTP headers:
 
@@ -1834,7 +1832,7 @@ Link: ; rel=dns-prefetch,
 
 #### preconnect 补充
 
-<font color=FF0000>The `preconnect` keyword for the **`rel` attribute of the \<link> element**</font> is <font color=FF0000>**a hint to browsers** that the **user is likely to need resources from the target resource's origin**</font>, and therefore the **browser can likely improve the user experience** by <font color=FF0000>**preemptively （先发制人地）initiating a <font size=4>*connection*</font> to that origin**</font>. 👀 这里的 connection 也就说明了 preconnect 的作用
+<font color=FF0000>The `preconnect` keyword for the **`rel` attribute of the \<link> element**</font> is <font color=FF0000>**a hint to browsers** that the **user is likely to need resources from the target resource's origin**</font>, and therefore the **browser can likely improve the user experience** by <font color=fuchsia>**preemptively**</font> （先发制人地）<font color=fuchsia>**initiating a <font size=4>*connection*</font> to that origin**</font>. 👀 这里的 connection 也就说明了 preconnect 的作用
 
 ```html
 <link rel="preconnect" href="https://example.com">
@@ -1846,11 +1844,11 @@ Link: ; rel=dns-prefetch,
 
 #### prerender 补充
 
-The `prerender` keyword for the `rel` attribute of the \<link> element is a <font color=FF0000>hint to browsers that the user might need the target resource for the next navigation</font>, and <font color=FF0000>therefore the browser can likely improve the user experience by **preemptively**</font>（预先） <font color=FF0000>**fetching and processing the resource**</font> — for example, by <mark>fetching its subresources or **performing some rendering in the background offscreen**</mark>.
+The `prerender` keyword for the `rel` attribute of the \<link> element is a <font color=FF0000>hint to browsers that the user might need the target resource for the next navigation</font>, and <font color=FF0000>therefore the browser can likely improve the user experience by **preemptively**</font>（预先） <font color=FF0000>**fetching and processing the resource**</font> — for example, by <font color=lightSeaGreen>fetching its subresources or **performing some rendering in the background offscreen**</font>.
 
 摘自：[MDN US - Link types: prerender](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/prerender)
 
-<mark>With prerendering</mark>, <font color=FF0000>**the content is prefetched** and **<font size=4>then</font> rendered in the background**</font> by the browser as if the **content had been rendered into an invisible separate tab**. <mark>When the user **navigates to the prerendered content**</mark>, the <font color=FF0000>**current content is replaced by the prerendered content instantly**</font>.
+<font color=dodgerBlue>With prerendering</font>, <font color=FF0000>**the content is prefetched** and **<font size=4>then</font> rendered in the background**</font> by the browser as if the **content had been rendered into an invisible separate tab**. <font color=lightSeaGreen>When the user **navigates to the prerendered content**</font>, the <font color=FF0000>**current content is replaced by the prerendered content instantly**</font>.
 
 ```html
 <link rel="prerender" href="https://example.com/content/to/prerender">
@@ -1866,7 +1864,7 @@ DNS-prefetch（ DNS 预获取 ）是尝试 **在请求资源之前解析域名**
 
 ##### 为什么要使用 dns-prefetch ？
 
-<mark>当浏览器从（第三方）服务器请求资源时，必须先将该跨域域名解析为 IP 地址，然后浏览器才能发出请求；此过程称为 DNS 解析</mark>。<font color=FF0000>DNS 缓存可以帮助减少此延迟，而 DNS 解析可以导致请求增加明显的延迟</font>。对于打开了与许多第三方的连接的网站，此延迟可能会大大降低加载性能。
+<font color=lightSeaGreen>当浏览器从（第三方）服务器请求资源时，必须先将该跨域域名解析为 IP 地址，然后浏览器才能发出请求；此过程称为 DNS 解析</font>。<font color=FF0000>DNS 缓存可以帮助减少此延迟，而 DNS 解析可以导致请求增加明显的延迟</font>。对于打开了与许多第三方的连接的网站，此延迟可能会大大降低加载性能。
 
 dns-prefetch 可帮助开发人员掩盖 DNS 解析延迟。 HTML \<link>元素 通过 `dns-prefetch` 的 `rel` 属性值 提供此功能。然后在 `href` 属性中指要跨域的域名：
 
@@ -1878,7 +1876,9 @@ dns-prefetch 可帮助开发人员掩盖 DNS 解析延迟。 HTML \<link>元素 
 
 请记住以下三点：
 
-**首先**：**dns-prefetch <font color=FF0000 size=4>仅对 *跨域* 域上的 DNS 查找有效</font>**，<font color=FF0000 size=4>因此请避免使用它来指向您的站点或域</font>。<mark>这是因为，到浏览器看到提示时，您站点域背后的 IP 已经被解析</mark>。
+**首先**：**dns-prefetch <font color=FF0000 size=4>仅对 *跨域* 域上的 DNS 查找有效</font>**，<font color=FF0000 size=4>因此请避免使用它来指向您的站点或域</font>。<font color=LightSeaGreen>这是因为，到浏览器看到提示时，您站点域背后的 IP 已经被解析</font>。
+
+>  👀 参考 [[#DNS Prefetching的两三事 笔记#总结]] 第五点
 
 **其次**：可以通过使用 HTTP 链接字段将 dns-prefetch（以及其他资源提示）指定为 HTTP 标头：
 
@@ -1893,9 +1893,63 @@ Link: <https://fonts.gstatic.com/>; rel=dns-prefetch
 <link rel="dns-prefetch" href="https://fonts.gstatic.com/">
 ```
 
-不过需要注意 ⚠️：<font color=FF0000>如果页面需要建立与许多第三方域的连接，则将它们 ***预先连接*** 会适得其反</font>。<font size=4>**`preconnect` 提示最好仅用于最关键的连接**</font>。对于其他的，只需使用 `<link rel="dns-prefetch">` 即可节省 ***第一步的时间** ~ **DNS 查找***
+> ⚠️ 不过需要注意：<font color=FF0000>如果页面需要建立与许多第三方域的连接，则将它们 ***预先连接*** 会适得其反</font>。<font size=4>**`preconnect` 提示最好仅用于最关键的连接**</font>。对于其他的，只需使用 `<link rel="dns-prefetch">` 即可节省 ***第一步的时间** ~ **DNS 查找***
 
 摘自：[MDN - dns-prefetch](https://developer.mozilla.org/zh-CN/docs/Web/Performance/dns-prefetch)
+
+##### DNS Prefetching的两三事 笔记
+
+###### 移动端痛点
+
+既然要解析就会损耗时间，<font color=red>**对于前端特别是移动端而言，分秒必争**</font>，这个时间大家也想省去，所以浏览器厂商 Chrome 最先搞了这个新功能
+
+###### Chrome 文档注意点
+
+> 👀 文档地址：[The Chromium Projects - DNS Prefetching](https://www.chromium.org/developers/design-documents/dns-prefetching/)
+
+> The most obvious example where DNS prefetching can help is when a user is looking at a page with many links to various domains, such as a search results page.
+
+所以这个功能有个默认加载条件，所有的 a 标签的 href 都会自动去启用 DNS Prefetching，也就是说，<font color=fuchsia>网页的 a 标签 href 带的域名，是不需要在 head 里面加上 link 手动设置的</font>。
+
+> **DNS Prefetch Control**
+>
+> By default, Chromium does not prefetch host names in hyperlinks that appear in HTTPS pages. <font color=fuchsia>This restriction helps **prevent an eavesdropper from inferring the host names of hyperlinks** that appear in HTTPS pages based on DNS prefetch traffic</font>. The one exception is that Chromium may periodically re-resolve the domain of the HTTPS page itself.
+
+###### 总结
+
+1. DNS Prefetching 是提前加载域名解析的，省去了解析时间。
+2. a 标签的 href 是可以在 chrome，firefox 包括高版本的 IE 起作用，但是在 HTTPS 下面不起作用，需要 meta http-equiv 来强制开启功能
+3. 这是 DNS 的提前解析，并不是 css，js 之类的文件缓存，不要混淆了两个不同的概念。
+4. 如果直接做了 js 的重定向，或者在服务端做了重定向，没有在link里面手动设置，是不起作用的。
+5. 这个对于什么样的网站更有作用呢--- 类似 taobao 这种网站，你的网页引用了大量很多其他域名的资源，<font color=lightSeaGreen>如果你的网站，基本所有的资源都在你本域名下，那么这个基本没有什么作用</font>。因为 <font color=red>DNS Chrome 在访问你的网站就帮你缓存了</font>。
+
+![img](https://pic2.zhimg.com/v2-6072dcba45249eb25bd9cc7a9fe9af85_b.jpg)
+
+###### 深入 Chrome 实现底层
+
+**浏览器实现方式**
+
+<font color=fuchsia>Chromium 直接启动了 8个完全异步的线程来做这个预解析</font>，每个线程都处理一个队列，等待域名响应，最终操作系统会响应一个 DNS 解析给线程，然后线程剔除队列，开始下一个。因为有 8 个同时，基本上最多一两个会阻塞，其他都很快执行完。所以从上也可以看出直接修改本机的 hosts 会影响浏览器的解析。也算一种简单的翻墙方式。以下命令可以查看队列状态
+
+```url
+about:histograms/DNS.PrefetchQueue
+```
+
+**浏览器启动**
+
+<font color=red>Chrome 浏览器启动的时候，就会自动的快速解析浏览器最近一次启动时记录的 domin 的前 10 个</font>。<font color=fuchsia>所以一般说来你经常访问的网址打开的速度就没有DNS解析的延迟，更快</font>
+
+> **Browser Startup**
+>
+> <font color=red>Chromium automatically remembers the first 10 domains that were resolved the last time the Chromium was started</font>, and <font color=red>automatically starts to resolve these names **very** early in the startup process</font>. As a result, the domains for a user's home page(s), along with any embedded domains (or anything the user "always" visits just after startup), are generally resolved before much of Chromium has ever loaded. When Chromium finally starts to try to load and render those pages, there is typically no DNS induced latency, and the application effectively "starts up" (becoming usable) faster. <font color=fuchsia>Average startup savings are 200ms or more, with common acceleration over 1 second</font>.
+
+###### 功能的有效性
+
+1. 如果本地就有缓存，那么解析大概是 0 ~ 1ms，如果去路由器查找大概是 15ms ，如果当地的服务器，一些常见的域名可能需要 150ms 左右，那么不常见的可能要 1S 以上。
+2. DNS 解析的包很小，因为 DNS 是分层协议的，不需要跟 http 协议一样，一个 UDP 的包就ok，大概100bytes，快速。
+3. <font color=dodgerBlue>本机的 DNS 缓存是有限，例如 XP 大概 50 到 200 个域名，所以Chrome这里做了优化</font>，会<font color=red>根据你的网站访问频率，来保证你常用的网站的DNS都能被缓存住</font>。
+
+摘自：[DNS Prefetching的两三事 - 于秋的文章 - 知乎](https://zhuanlan.zhihu.com/p/22362198)
 
 
 
