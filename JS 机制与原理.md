@@ -6238,7 +6238,7 @@ CJS 的一个模块，一般就是一个文件；<font color=fuchsia>使用 reqi
 
 上面的例子我们只列出了关键的几个属性：<font color=FF0000>id 就是 ***模块名***，exports 是 ***模块输出的各个接口*** ，loaded 表示 ***模块是否执行完毕*** </font>。<font color=FF0000>**以后再用到这个模块的时候，会直接从这个对象的 exports 属性里面取值**</font>。<font color=fuchsia><font size=4>**即使多次执行一个模块的 require 命令，它都只会在第一次加载时运行一次**</font>，后面都会从缓存中读取，**除非手动清除缓存**</font>。（ 👀 清除缓存和 `require.cache` 相关，参考：[stack overflow - Clearing require cache](https://stackoverflow.com/questions/23685930/clearing-require-cache)）
 
-**CommonJS 模块的特性是：**<font color=fuchsia size=4>**加载时执行，当脚本被 reqiure 的时候，就会全部执行**</font>。<font color=fuchsia>**一旦出现某个模块被 “循环加载” ，就只输出已经执行的部分，还未执行的部分不会输出**</font>。
+**CommonJS 模块的特性是：**<font color=red size=4>**加载时执行，当脚本被 reqiure 的时候，就会全部执行**</font>。<font color=fuchsia size=4>**一旦出现某个模块被 “循环加载” ，就只输出已经执行的部分，还未执行的部分不会输出**</font>。
 
 我们看一个官方的例子，<font color=dodgerBlue>首先定义 `a.js` 如下</font>：
 
@@ -6266,7 +6266,7 @@ exports.done = true;
 console.log('b.js 执行完毕');
 ```
 
-与 `a.js` 类似：<font color=fuchsia>`b.js` 导出一个变量后，在第二行就开始加载 `a.js` ，发生了循环依赖</font>。然后，系统就会去内存对象的 exports 中取 done 变量的值，可<font color=FF0000>因为 `a.js` 没有执行完，所以只取到刚开始输出的值 false</font> 。接着，<font color=FF0000>**`b.js` 继续执行后面的代码，执行完毕后，再把执行权交还给 `a.js`**</font> ，执行完后面剩下的代码。为了验证这个过程，新建一个 `main.js` ：
+与 `a.js` 类似：<font color=dodgerBlue>`b.js` 导出一个变量后，在第二行就开始加载 `a.js` ，发生了循环依赖</font>。然后，系统就会去内存对象的 exports 中取 done 变量的值，可<font color=fuchsia>因为 `a.js` 没有执行完，所以只取到刚开始输出的值 false</font> 。接着，<font color=red size=4>**`b.js` 继续执行后面的代码，执行完毕后，再把执行权交还给 `a.js`**</font> ，执行完后面剩下的代码。为了验证这个过程，新建一个 `main.js` ：
 
 ```js
 // main.js
@@ -6276,7 +6276,7 @@ var b = require('./b.js');
 console.log('在 main.js 之中, a.done=%j, b.done=%j', a.done, b.done);
 ```
 
-最后执行 main.js 结果为：
+<font color=dodgerBlue>最后执行 `main.js` 结果为：</font>
 
 <img src="https://s2.loli.net/2022/05/30/mXpu5L6i9lEDMTJ.png" alt="image-20220530201251076" style="zoom:55%;" />
 
@@ -6284,7 +6284,7 @@ console.log('在 main.js 之中, a.done=%j, b.done=%j', a.done, b.done);
 
 ##### ESM 的 循环依赖
 
-ES6 Module 是动态引用。<font color=FF0000>如果使用 import 加载一个变量，变量不会被缓存，真正取值的时候就能取到最终的值</font>。如下示例：
+ES6 Module 是动态引用。<font color=dodgerBlue>如果使用 import 加载一个变量</font>，<font color=fuchsia>**变量不会被缓存**，真正取值的时候就能取到最终的值</font>。如下示例：
 
 ```js
 // even.js
@@ -6306,7 +6306,7 @@ export function odd(n) {
 }
 ```
 
-上面代码中，`even.js` 里面的函数 even 有一个参数 n，只要不等于 0，就会减去 1，传入加载的 `odd()` 。`odd.js` 也会做类似操作
+上面代码中，`even.js` 里面的函数 even 有一个参数 n，只要不等于 0 ，就会减去 1，传入加载的 `odd()` 。`odd.js` 也会做类似操作
 
 运行上面这段代码，结果如下：
 
@@ -6324,9 +6324,9 @@ true
 
 #### 其他区别
 
-首先，就是 this 关键词：<font color=FF0000>**在 ES6 Module 顶层，this 指向 undefined**</font> （因为 ESM 中默认采用 "use strict" ）；而 <font color=FF0000>**CommonJS 模块的顶层的 this 指向当前模块**</font>。
+<font color=dodgerBlue>首先</font>，就是 this 关键词：<font color=fuchsia>**在 ES6 Module 顶层，this 指向 undefined**</font> （因为 ESM 中默认采用 "use strict" ）；而 <font color=fuchsia>**CommonJS 模块的顶层的 this 指向当前模块**</font>。
 
-其次，<font color=FF0000>ES6 Module 中 **可以直接加载 CommonJS 模块**，但是 **只能整体加载，不能加载单一的输出项**</font> 。
+<font color=dodgerBlue>其次</font>，<font color=FF0000>ES6 Module 中 **可以直接加载 CommonJS 模块**，但 **只能整体加载，不能加载单一的输出项**</font> 。
 
 ```js
 // 正确
@@ -6340,11 +6340,11 @@ import { method } from 'commonjs-package';
 
 > ESM scripts *can* `import` CJS scripts, but only by using the “default import” syntax `import _ from 'lodash'` , not the “named import” syntax `import {shuffle} from 'lodash'` , which is a hassle if the CJS script uses named exports.
 >
-> <font color=FF0000>ESM scripts *can* `require()` CJS scripts</font>, even with named exports, but it’s typically not worth the trouble, because it requires even more boilerplate, and, <font color=FF0000>worst of all, bundlers like Webpack and Rollup don’t/won’t know how to work with ESM scripts that use `require()`</font> .
+> <font color=FF0000>ESM scripts *can* `require()` CJS scripts</font> , even with named exports, but it’s typically not worth the trouble, because it requires even more boilerplate, and, <font color=FF0000>worst of all, bundlers like Webpack and Rollup don’t/won’t know how to work with ESM scripts that use `require()`</font> .
 >
 > 摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1)
 
-<font color=FF0000>Node 对 ES6 Module 的处理比较麻烦，因为它有自己的 CommonJS 模块规范，**与 ES6 Module 格式不兼容**</font>。目前两个模块方案是分开处理的，<font color=FF0000>从 v13.2 版本开始，Node 已经默认打开了 ES6 Module 支持：**Node 要求 ES6 Module 使用 .mjs 后缀文件名，只要 Node 遇到 .mjs 结尾的文件，就认定是 ES6 Module**</font>。除了修改文件后缀，也<font color=FF0000>可以在项目的 package.json 文件中，指定 type 字段为 module</font> ：
+<font color=FF0000>Node 对 ES6 Module 的处理比较麻烦，因为它有自己的 CommonJS 模块规范，**与 ES6 Module 格式不兼容**</font>。目前两个模块方案是分开处理的，<font color=dodgerBlue>从 v13.2 版本开始，Node 已经默认打开了 ES6 Module 支持</font>：<font color=red>**Node 要求 ES6 Module 使用 `.mjs` 后缀文件名，只要 Node 遇到 `.mjs` 结尾的文件，就认定是 ES6 Module**</font>。除了修改文件后缀，也<font color=FF0000>可以在项目的 package.json 文件中，指定 type 字段为 module</font> ：
 
 ```js
 // package.json
@@ -6354,32 +6354,32 @@ import { method } from 'commonjs-package';
 }
 ```
 
-尽管如此，<font color=FF0000>require 命令不能加载 .mjs 文件，会报错</font>；<font color=FF0000>**只有 import 命令才可以加载 .mjs 文件**</font>。反过来，<font color=FF0000>**.mjs 文件里面也不能使用require 命令，必须使用 import**</font> ；所以在平时开发当中，<font color=FF0000>ES6 Module 与 CommonJS 模块尽量不要混用</font>。
+尽管如此，<font color=FF0000>require 命令不能加载 `.mjs` 文件，会报错</font>；<font color=FF0000>**只有 import 命令才可以加载 .mjs 文件**</font>。反过来，<font color=FF0000>**.mjs 文件里面也不能使用require 命令，必须使用 import**</font> ；所以在平时开发当中，<font color=FF0000>ES6 Module 与 CommonJS 模块尽量不要混用</font>。
 
 ##### 补充：为什么 CJS 不能加载 ESM
 
-The simplest reason that <font color=fuchsia>CJS can’t require() ESM is that **ESM can do top-level await, but CJS scripts can't**</font>.
+The simplest reason that <font color=fuchsia>CJS can’t require() ESM is that **ESM can do *top-level await* , but CJS scripts can't**</font>.
 
 <font color=FF0000 size=4>**[Top-level](https://v8.dev/features/top-level-await) `await` lets us use the `await` keyword outside of an `async` [function](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await) , at the “top level.”**</font>
 
 > 👀 关于 top-level await 的内容，还有更多，这里略。详见原文，以及 V8 团队博客 [Top-level `await`](https://v8.dev/features/top-level-await)
 
-If you dive in, you’ll find that top-level await isn’t even the only problematic case… <font color=FF0000>what do you think happens if you synchronously require ESM which can asynchronously import some CJS which can synchronously require some ESM</font>? What you get is a sync/async zebra stripe of death, that’s what! <font color=LightSeaGreen>Top-level await is just the last nail in the coffin, and the easiest to explain</font>.)
+If you dive in , you’ll find that <font color=dodgerBlue>top-level await isn’t even the only problematic case</font>… <font color=FF0000>what do you think happens if you synchronously require ESM which can asynchronously import some CJS which can synchronously require some ESM</font>? What you get is a sync/async zebra stripe of death, that’s what! <font color=LightSeaGreen>Top-level await is just the last nail in the coffin, and the easiest to explain</font>.)
 
 摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1)
 
 #### CJS 和 ESM 区别总结
 
-- CJS 的 require 语法是同步的，所以 CJS 只适合用在服务端；ESM 语法是异步的，无论是在浏览器端还是服务端都是可以使用，但在服务端中，ESM 还需要遵循一些特殊的规则才能使用
+- <font color=red>CJS 的 require 语法是同步的</font>，所以 CJS 只适合用在服务端；<font color=red>ESM 语法是异步的</font>，无论是在浏览器端还是服务端都是可以使用，但在服务端中，ESM 还需要遵循一些特殊的规则才能使用
 
 - CJS 模块输出的是<font color=FF0000>单个值的拷贝</font>，而 ESM 输出的是<font color=FF0000>（多个）值的引用</font>
 
 - <font color=fuchsia>CJS 模块是 运行时加载</font>，而 <font color=fuchsia>ESM 是 编译时输出接口</font>，使得对 JS 的模块进行静态分析成为了可能；
-- 因为两个模块加载机制的不同，所以在对待循环加载的时候，它们会有不同的表现。CJS 遇到循环引用时，只会输出已经执行的部分，后续的输出或者变化，是不会影响已经输出的变量。而 ESM 相反，使用 import 加载一个变量，变量不会被缓存，真正取值的时候就能取到最终的值
+- 因为两个模块加载机制的不同，所以在对待循环加载的时候，它们会有不同的表现。<font color=red>CJS 遇到循环引用时，只会输出已经执行的部分，后续的输出或者变化，是不会影响已经输出的变量</font>。而 <font color=red>ESM</font> 相反，<font color=red>使用 import 加载一个变量，**变量不会被缓存**，真正取值的时候就能取到最终的值</font>
 
-- 关于模块顶层的 this 指向：在 CJS 顶层，this 指向当前模块；ESM 中，this 指向 undefined
+- <font color=dodgerBlue>关于模块顶层的 this 指向</font>：在 <font color=red>CJS 顶层，this 指向当前模块</font>；<font color=red>ESM 中，this 指向 undefined</font>
 
-- 关于两个模块互相引用的问题，在 ESM 中，是支持加载 CJS 模块的。但反过来，CJS 并不能 require ES6 Module ，在 Node 中，两种模块方案是分开处理的
+- 关于两个模块互相引用的问题：<font color=fuchsia>在 ESM 中，是支持加载 CJS 模块的</font>。但反过来，CJS 并不能 require ES6 Module ，在 Node 中，两种模块方案是分开处理的
 
 摘自：[CommonJS和ES6模块的区别](https://juejin.cn/post/6844904067651600391) 。另外，其中大量补充内容摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1) 文章看了$3/4$ 左右，有点看不懂了；没看完，有空可以继续看 👀 // TODO
 
@@ -6389,9 +6389,9 @@ If you dive in, you’ll find that top-level await isn’t even the only problem
 
 #### 一些历史
 
-Brendan Eich 发明浏览器事件机制是从苹果当年的低代码开发工具 Hypercard 找的灵感，事件处理器的名称用 on 加上一个事件名称的命名方式是继承了 Hypercard 的脚本语言 Hypertalk。
+Brendan Eich 发明浏览器事件机制是从苹果当年的低代码开发工具 Hypercard 找的灵感，事件处理器的名称用 on 加上一个事件名称的命名方式是继承了 Hypercard 的脚本语言 Hypertalk 。
 
-因为 <font color=fuchsia size=4>**HTML 的标签和属性名是不区分大小写的**</font>（👀 注：之所以这点加上高亮，是因为这句话有点重要，也听过，不过几乎没什么印象了... 之后回想起来是在 Vue 文档中，见 [Vue3 官方文档 - 组件基础 # DOM 模板解析注意事项](https://cn.vuejs.org/guide/essentials/component-basics.html#case-insensitivity) ）。
+因为 <font color=fuchsia size=4>**HTML 的标签和属性名是不区分大小写的**</font>（👀 之所以这点加上高亮，是因为这句话有点重要，也听过，不过几乎没什么印象了... 之后回想起来是在 Vue 文档中，见 [Vue3 官方文档 - 组件基础 # DOM 模板解析注意事项](https://cn.vuejs.org/guide/essentials/component-basics.html#case-insensitivity) ）。
 
 在当年，从网景的 JS 文档里到人们真实写的 HTML 里，都是用的驼峰写法（Hypertalk 就是用驼峰的），比如 onClick：
 
