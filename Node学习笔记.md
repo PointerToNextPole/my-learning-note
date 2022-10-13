@@ -3845,6 +3845,46 @@ $ node script.js
 
 
 
+#### Node 自定义配置
+
+V8 提供了 可配置项 来让我们手动地调整内存大小，但是<font color=red>需要在 Node 初始化的时候进行配置</font>（ 👀 以此类推，可以修改其他默认配置）。通过 `node --v8-options` 查看配置，会在命令行窗口中看到大量关于 V8 的选项，这里暂且只关注图中红色选框中的几个选项：
+
+> 👀 关于 `node --v8-options` ，可参见 [[#查看 V8 提供的选项 / 配置]]
+
+![](https://s2.loli.net/2022/10/13/k8b9ZaCSvd5DXcW.png)
+
+```sh
+# 设置新生代内存中单个半空间的内存最小值，单位 MB
+node --min-semi-space-size=1024 xxx.js
+
+# 设置新生代内存中单个半空间的内存最大值，单位 MB
+node --max-semi-space-size=1024 xxx.js
+
+# 设置老生代内存最大值，单位 MB
+node --max-old-space-size=2048 xxx.js
+```
+
+通过以上方法便可以手动放宽 V8 引擎所使用的内存限制，同时 <font color=red>node 也提供了 `process.memoryUsage()` 方法来查看当前Node 进程所占用的实际内存大小</font>：
+
+![](https://s2.loli.net/2022/10/13/qCvsHPXJGyu3Ubm.png)
+
+在上图中，包含的几个字段的含义分别如下所示，<font color=dodgerBlue>单位均为字节</font>：
+
+- `heapTotal` ：表示 V8 当前申请到的堆内存总大小
+- `heapUsed` ：表示当前内存使用量
+- `external` ：表示 V8 内部的 C++ 对象所占用的内存
+- `rss` ( resident set size ) ：表示驻留集大小，是给这个 Node 进程分配了多少物理内存，这些物理内存中包含堆，栈和代码片段。对象，闭包等存于堆内存，变量存于栈内存，实际的 JavaScript 源代码存于代码段内存。使用 Worker 线程时，`rss` 将会是一个对整个进程有效的值，而其他字段则只针对当前线程。
+
+> 👀 应该还有一个 `arrayBuffer` 属性，如下：
+>
+> <img src="https://s2.loli.net/2022/10/13/iUqxdawE5FRyjeo.png" alt="image-20221013172951381" style="zoom:50%;" />
+
+> 在 JS 中声明对象时，该对象的内存就分配在堆中，<font color=red>如果当前已申请的堆内存已经不够分配新的对象，则会继续申请堆内存直到堆的大小超过 V8 的限制为止</font>
+
+摘自：[一文搞懂V8引擎的垃圾回收](https://juejin.cn/post/6844904016325902344)
+
+
+
 #### Node 查看 V8 信息
 
 > 👀 注：之所以想要了解 查看 Node 查看 V8 版本的方法，除了好奇之外，也是看见了 antfu 给 vscode 提的一个 issue 的截图（如下图），在提 issue 时很有必要给出自己运行环境的信息，这是一个 “减少不必要沟通” 的好习惯：
@@ -3871,7 +3911,7 @@ $ node script.js
 
 > 👀 注：顺带看了下 `node -p process.versions` 的结果，和 `npm version` 的运行结果一样。
 
-##### 查看 v8 提供的选项
+##### 查看 V8 提供的选项 / 配置
 
 ```sh
 $ node --v8-options
@@ -3885,6 +3925,8 @@ $ node --v8-options | grep -e '--harmony'
 ```
 
 摘自：[楊傑文的資訊技術手札 - NodeJS - 查看 v8 引擎的版本編號及支援特性](http://chiehwenyang.logdown.com/posts/2016/10/28/1048713)
+
+
 
 ##### Chrome 查看 V8 版本
 

@@ -650,7 +650,7 @@ new Promise(function(resolve) {
 console.log(5)
 ```
 
-这题做对了，但是 对于 3要不要打印，不清楚。也就是 resolve() 后 是不是直接返回不确定。
+这题做对了，但是 对于 3要不要打印，不清楚。也就是 Promise 在 `resolve()` 之后后 是不是直接返回不确定。
 
 <details>
   <summary>点击查看答案</summary>
@@ -705,7 +705,7 @@ setTimeout(function() {
 
 > 👀 注：这题文章的答案 和 实际运行的结果有出入；应该按实际运行结果为准。这里就不放答案了，自行运行即可。
 >
-> 另外，2022/5/9 又做了一遍，对了。
+> 另外，2022/5/9 又做了一遍，对了。2022/10/13 也对了。
 
 ##### 事件队列第3题
 
@@ -725,6 +725,8 @@ console.log('script end')
 ```
 
 > 👀 注：这题错了，有点意外；但是说明还是存在知识盲点：promise 中 resolve() 之后的函数是会执行的，也是同步的；reject 之后的函数就不会执行了
+>
+> 2022/10/13 重做了一边，对了
 
 ##### 《promise的前世今生 + 应用 + 面试 + 源码》中的题目
 
@@ -735,9 +737,19 @@ Promise.resolve()
        .then(() => new Error('errr!!!') )
        .then(res => console.log('then', res))
        .catch(err => console.log('catch', err))
-// then Error: errr!!! 
-// 注意：这里是then，而不是catch；因为这里还是new了一个Error并返回，还是相当于Promise.resolve(new Error('errr!!!')) ；而不是抛出(throw)一个Error。如果是 throw new Error('errr!!!')，则打印catch
 ```
+
+<details>
+  <summary>查看答案</summary>
+  then Error: errr!!! 
+</details>
+
+<details>
+  <summary>查看解析</summary>
+  ⚠️ 注意：这里是 then，而不是 catch；因为这里还是 new 了一个 Error 并返回，还是相当于 Promise.resolve(new Error('errr!!!')) ；而不是抛出 ( throw ) 一个 Error。如果是 throw new Error('errr!!!')，则打印 catch
+</details>
+
+> 👀 2022/10/13 重新做了一遍，错了
 
 ###### 第二题
 
@@ -755,15 +767,26 @@ Promise.resolve()
        .then(() => {
          console.log(3)
        })
-// 1 3 2，原因：这里 1和3 的 then是同一层的，所以先后进入微任务队列，3的promise最后进入微任务队列
 ```
+
+<details>
+  <summary>查看答案</summary>
+  1 3 2
+</details>
+
+<details>
+  <summary>查看解析</summary>
+  这里 1 和 3 的 then 是同一层的，所以先后进入微任务队列，3 的 promise最后进入微任务队列
+</details>
+
+> 👀 2022/10/13 重新做了一遍，错了
 
 想要上面的结果改为 1 2 3：
 
 ```js
 Promise.resolve()
        .then(() => {
-  			 // 在这里加上 return，形成依赖
+  			 // ⭐️ 在这里加上 return，形成依赖
          return Promise.resolve().
                  then(() => {
                    console.log(1)
@@ -781,7 +804,7 @@ Promise.resolve()
 
 ```js
 async function async1() {
-  await async2() // 这里可以看做：async2先执行，await后执行。然后，await返回的一定是一个promise，所以下面的会被放入微任务队列；所以下面的 console.log(10) 先执行。另外，根据 coderwhy 的结论：第一个 await 看作是 new promise(resolve, reject)的东西，后面的 await 都是 promise.then
+  await async2()
   console.log('async1 end')
 }
 
@@ -791,8 +814,19 @@ async function async2() {
 
 async1()
 console.log(10)
-// async2 end - 10 - async1 end
 ```
+
+<details>
+  <summary>查看答案</summary>
+  async2 end
+  10
+  async1 end
+</details>
+
+<details>
+  <summary>查看解析</summary>
+  await async2() 可以看做：async2 先执行，await 后执行。然后，await返回的一定是一个 promise，所以下面的会被放入微任务队列；所以下面的 console.log(10) 先执行。另外，根据 coderwhy 的结论：第一个 await 看作是 new promise(resolve, reject) 的东西，后面的 await 都是 promise.then
+</details>
 
 ###### 第三题变种
 
@@ -809,9 +843,19 @@ async function async2() {
 
 async1()
 console.log(10)
-// async2 end - 10 - UnhandledPromiseRejection 报错
-// 注：如果要让UnhandledPromiseRejection消失，可以给 await-async2() 包上 try-catch
 ```
+
+<details>
+  <summary>查看答案</summary>
+  async2 end
+  10
+  UnhandledPromiseRejection 报错
+</details>
+
+<details>
+  <summary>查看解析</summary>
+  如果要让 UnhandledPromiseRejection 消失，可以给 await-async2() 包上 try-catch
+</details>
 
 ###### 第四题
 
@@ -823,7 +867,7 @@ const b = new Promise((resolve, reject) => {
   console.log('promise1') // 1，new Promise()中 同步代码
   resolve();
 }).then(() => {
-  console.log('promise2 // 4
+  console.log('promise2') // 4
 }).then(() => {
   console.log('promise3') // 5
 }).then(() => {

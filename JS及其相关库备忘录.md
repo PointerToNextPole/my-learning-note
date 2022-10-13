@@ -3334,7 +3334,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                   
+  >                                                                                                                                                                                                     
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3353,7 +3353,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                   
+  >                                                                                                                                                                                                     
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -12338,132 +12338,145 @@ DataTransfer 对象用于保存拖动并放下（drag and drop，**注：**html 
 
 #### Event Loop 和 JS 引擎、渲染引擎的关系
 
-<font color=FF0000 size=4>**js 引擎**</font>
+##### JS 引擎
 
-- **组成**
+###### 组成
 
-  **js 引擎包括 parser、解释器、gc 再加一个 JIT 编译器这几部分：**
+**JS 引擎包括 parser、解释器 interpreter、gc 再加一个 JIT 编译器这几部分：**
 
-  - **parser：**负责<font color=FF0000>把 javascript 源码转成 AST</font>
+- **parser** ：负责<font color=FF0000>把 javascript 源码转成 AST</font>
 
-  - **interpeter：**解释器，<font color=FF0000>负责转换 AST 成字节码</font>，并解释执行
+- **interpeter** ：解释器，<font color=FF0000>负责转换 AST 成字节码</font>，并解释执行
 
-  - **JIT compiler：**对执行时的热点函数进行编译，<font color=FF0000>把字节码转成机器码</font>，<font color=FF0000>之后可以直接执行机器码</font>
+- **JIT compiler** ：对执行时的热点函数进行编译，<font color=FF0000>把字节码转成机器码</font>，<font color=FF0000>之后可以直接执行机器码</font>
 
-  - **gc (garbage collector)：**<font color=FF0000>垃圾回收器</font>，<mark>清理堆内存中不再使用的对象</mark>
+- **gc** (garbage collector)：<font color=FF0000>垃圾回收器</font>，<font color=LightSeaGreen>清理堆内存中不再使用的对象</font>
 
-- **编译流水线**
+###### 编译流水线
 
-  一般的 JS 引擎的 **编译流水线** 是 parse 源码成 AST，之后 AST 转为字节码，解释执行字节码。运行时会收集函数执行的频率，对于到达了一定阈值的热点代码，会把对应的字节码转成机器码（JIT），然后直接执行。这就是 js 代码能够生效的流程。
+一般的 JS 引擎的 **编译流水线** 是：<font color=fuchsia>parse 源码成 AST，之后 AST 转为字节码，解释执行字节码</font>。<font color=red>运行时会收集函数执行的频率</font>，<font color=fuchsia>对于到达了一定阈值的热点代码，会把对应的字节码转成机器码 ( JIT )，然后直接执行</font>。这就是 JS 代码能够生效的流程。
 
-  <img src="https://s2.loli.net/2022/01/10/LjWasQ7mJUHYDh1.png" alt="https://mmbiz.qpic.cn/mmbiz_png/zPh0erYjkib1W6VwQ03NU6clT1alBexqetjkCauOPwGqjos8Vo6TQBN7E4pR72cCjDiby3G2yG001kSyvb7xxqvA/640.png" style="zoom: 80%;" />
+<img src="https://s2.loli.net/2022/01/10/LjWasQ7mJUHYDh1.png" alt="https://mmbiz.qpic.cn/mmbiz_png/zPh0erYjkib1W6VwQ03NU6clT1alBexqetjkCauOPwGqjos8Vo6TQBN7E4pR72cCjDiby3G2yG001kSyvb7xxqvA/640.png" style="zoom: 80%;" />
 
-<font color=FF0000 size=4>**渲染引擎**</font>
+##### 渲染引擎
 
-渲染时会把 html、css 分别用 parser 解析成 dom 和 cssom<mark>（注：注意下面的图，html是通过xml praser prase的）</mark>，然后合并到一起，并计算布局样式成绝对的坐标，生成渲染树，之后把渲染树的内容复制到显存就可以由显卡来完成渲染。
+渲染时会把 html、css 分别用 parser 解析成 dom 和 cssom（ 👀 注意下图，html 是通过 xml parser parse 的），然后合并到一起，并计算布局样式成绝对的坐标，生成渲染树，之后把渲染树的内容复制到显存就可以由显卡来完成渲染。
+
+> 👀 即关键渲染路径
 
 <img src="https://s2.loli.net/2022/01/10/LxPVIXyBjYeSW8o.png" alt="https://mmbiz.qpic.cn/mmbiz_png/zPh0erYjkib1W6VwQ03NU6clT1alBexqess0cic5sUraDQTQGEqLQCcZ2kNIPIuqf4JAC3VQrGDON8spQpDicsqlw/640.png" style="zoom:80%;" />
 
 每一次渲染流程叫做一帧，浏览器会有一个帧率（比如一秒 60帧）来刷新。
 
-<font size=4>**如何结合 <font color=FF0000>JS 引擎</font>和<font color=FF0000>渲染引擎</font>**</font>
+##### 如何结合 JS 引擎和渲染引擎
 
-<mark>不管是 JS 引擎、还是渲染引擎，都比较傻（纯粹），JS 引擎只会不断执行 JS 代码，渲染引擎也是只会布局和渲染</mark>。但是<font color=FF0000>要完成一个完整的网页应用，这两者都需要</font>。怎么综合两者呢？有两种思路：多线程 和 单线程
+<font color=LightSeaGreen>不管是 JS 引擎、还是渲染引擎，都比较傻（纯粹），**JS 引擎只会不断执行 JS 代码，渲染引擎也是只会布局和渲染**</font>。但是<font color=FF0000>要完成一个完整的网页应用，这两者都需要</font>。怎么综合两者呢？有两种思路：多线程 和 单线程
 
-- **多线程：**分为多个线程，<font color=FF0000>主线程用来操作 ui 和渲染，其他线程用来执行一些任务</font>（不能多个线程同时修改 ui，顺序没法控制）。
+###### 多线程
 
-  - **安卓 ui 架构：**安卓就是这样的架构，<font color=FF0000>在**主线程里面完成 ui 的更新，事件的绑定**</font>，其他逻辑可以放到别的线程，然后完成以后在消息队列中放一个消息，主线程不断循环的取消息来执行。
-  - **electron ui 架构：**开发过 electron 应用的同学会知道，<mark>electron 中分为了主进程和渲染进程，window 相关的操作只能在主线程，由渲染进程向主进程发消息</mark>。
+分为多个线程，<font color=FF0000>主线程用来操作 ui 和渲染，其他线程用来执行一些任务</font>（不能多个线程同时修改 ui，顺序没法控制）。
 
-  从上面两个案例我们可以总结出，**所有的 ui 系统的设计，如果使用了多线程（进程）的架构，<font color=FF0000>基本都是 ui 只能在一个线程（进程）中操作，由别的线程（进程）来发消息到这边来更新</font>，如果多个线程，会有一个消息队列和 looper。消息队列的生产者是各个子线程（进程），消费者是主线程（进程）。**
+- **安卓 ui 架构：**安卓就是这样的架构，<font color=FF0000>在**主线程里面完成 ui 的更新，事件的绑定**</font>，其他逻辑可以放到别的线程，然后完成以后在消息队列中放一个消息，主线程不断循环的取消息来执行。
+- **electron ui 架构：**开发过 electron 应用的同学会知道，<font color=LightSeaGreen>electron 中分为了主进程和渲染进程，window 相关的操作只能在主线程，由渲染进程向主进程发消息</font>。
 
-  而且，<mark>不只是 ui 架构是这样，后端也大量运用了消息队列的概念，后端因为不同服务负载能力不一样，所以中间会加一个消息队列来异步处理消息</mark>，<font color=FF0000>**和前端客户端的 ui 架构不同的是，后端的消息队列中间件会有多个消费者、多个队列，而 ui 系统的消息队列只有一个队列，一个消费者（主线程、主进程）**</font>
+从上面两个案例我们可以总结出，**所有的 ui 系统的设计，<font color=dodgerBlue>如果使用了多线程（进程）的架构</font>，<font color=fuchsia>基本都是 ui 只能在一个线程（进程）中操作，由别的线程（进程）来发消息到这边来更新</font>，如果多个线程，会有一个消息队列和 looper。消息队列的生产者是各个子线程（进程），消费者是主线程（进程）。**
 
-  **在一个线程做 ui 操作，其他线程做逻辑计算的架构很普遍，会需要一个消息队列来做异步消息处理。** 网页中后来有了 web worker，也是这种架构的实现，但是最开始并不是这样的。
+而且，<font color=LightSeaGreen>不只是 ui 架构是这样，后端也大量运用了消息队列的概念，后端因为不同服务负载能力不一样，所以中间会加一个消息队列来异步处理消息</font>，<font color=dodgerBlue>**和前端客户端的 ui 架构不同的是**</font>，<font color=red>**后端的消息队列中间件会有多个消费者、多个队列，而 ui 系统的消息队列只有一个队列，一个消费者（主线程、主进程）**</font>
 
-- **单线程：**因为 JavaScript 最开始只是被设计用来做表单处理，那么就不会有特别大的计算量，就没有采用多线程架构，而是在一个线程内进行 dom 操作和逻辑计算，渲染和 JS 执行相互阻塞。（后来加了 web worker，但不是主流）
+**在一个线程做 ui 操作，其他线程做逻辑计算的架构很普遍，会需要一个消息队列来做异步消息处理。** 网页中后来有了 web worker，也是这种架构的实现，但是最开始并不是这样的。
 
-  > 👀 注：上面关于 “ JS 为什么是单线程？”的解释感觉没有说服力，[阮一峰 - JavaScript 运行机制详解：再谈Event Loop](http://www.ruanyifeng.com/blog/2014/10/event-loop.html) 中的说法是更有说服力的：
-  >
-  > > <font color=dodgerblue>JavaScript 的单线程，与它的用途有关</font>。作为浏览器脚本语言，JavaScript 的主要用途是与用户互动，以及操作 DOM。这决定了<font color=fuchsia>它只能是单线程，否则会带来很复杂的同步问题</font>。比如，<font color=red>假定 JavaScript 同时有两个线程，一个线程在某个DOM节点上添加内容，另一个线程删除了这个节点，这时浏览器应该以哪个线程为准？</font>
-  >
-  > 另外，该文章在 [[前端面试点总结#事件循环 event loop]] 中也做了笔记。
+###### 单线程
 
-  我们知道，<font color=FF0000>JS 引擎只知道执行 JS，渲染引擎只知道渲染，它们两个并不知道彼此，该怎么配合呢？答案就是 event loop</font>
+因为 JavaScript 最开始只是被设计用来做表单处理，那么就不会有特别大的计算量，就没有采用多线程架构，而是在一个线程内进行 dom 操作和逻辑计算，渲染和 JS 执行相互阻塞。（后来加了 web worker，但不是主流）
 
-  **宿主环境**
+> 👀 注：上面关于 “ JS 为什么是单线程？”的解释感觉没有说服力，[阮一峰 - JavaScript 运行机制详解：再谈Event Loop](http://www.ruanyifeng.com/blog/2014/10/event-loop.html) 中的说法是更有说服力的：
+>
+> > <font color=dodgerblue>JavaScript 的单线程，与它的用途有关</font>。作为浏览器脚本语言，JavaScript 的主要用途是与用户互动，以及操作 DOM。这决定了<font color=fuchsia>它只能是单线程，否则会带来很复杂的同步问题</font>。比如，<font color=red>假定 JavaScript 同时有两个线程，一个线程在某个DOM节点上添加内容，另一个线程删除了这个节点，这时浏览器应该以哪个线程为准？</font>
+>
+> 另外，该文章在 [[前端面试点总结#事件循环 event loop]] 中也做了笔记。
 
-  <font color=FF0000>JS 引擎并 <font size=4>**不提供 event loop**</font></font>（可能很多同学以为 event loop 是 JS 引擎提供的，其实不是），它<font color=FF0000>是宿主环境为了集合渲染和 JS 执行，也为了处理 JS 执行时的高优先级任务而设计的机制</font>。
+我们知道，<font color=FF0000>JS 引擎只知道执行 JS，渲染引擎只知道渲染，它们两个并不知道彼此，该怎么配合呢？答案就是 event loop</font>
 
-  **宿主环境有浏览器、node、跨端引擎等，<font color=FF0000>不同的宿主环境有一些区别</font>：**
+##### 宿主环境
 
-  - **注入的全局 api 不同**
+<font color=FF0000>JS 引擎并 <font size=4>**不提供 event loop**</font></font>（可能很多同学以为 event loop 是 JS 引擎提供的，其实不是），它 ( 👀 Event Loop ) <font color=fuchsia>是宿主环境为了集合渲染和 JS 执行，也为了处理 JS 执行时的高优先级任务而设计的机制</font>。👀 也就是说 Event Loop 是由 “宿主环境“ 提供的
 
-    - node 会注入一些全局的 require api，同时提供 fs、os 等内置模块
+**宿主环境有浏览器、node、跨端引擎等，<font color=dodgerBlue>不同的宿主环境有一些区别</font>：**
 
-    - 浏览器会注入 w3c 标准的 api
+###### 注入的全局 api 不同
 
-    - 跨端引擎会注入设备的 api，同时会注入一套操作 ui 的 api（可能是对标 w3c 的 api 也可能不是）
-  
-  - **event loop 的实现不同**
+- node 会注入一些全局的 require api，同时提供 fs、os 等内置模块
 
-    上文说过，event loop 是宿主环境提供了，不同的宿主环境有不同的需要调度的任务，所以也会有不同的设计：
-  
-    - 浏览器里面主要是调度渲染和 JS 执行，还有 worker
-    - node 里面主要是调度各种 io
-    - 跨端引擎也是调度渲染和 JS 执行
-  
-    **这里我们只关心浏览器里面的 event loop**
+- 浏览器会注入 w3c 标准的 api ( 👀 Deno 也有，而 Node 没有 )
 
-<font size=4>**浏览器的event loop**</font>
+- 跨端引擎会注入设备的 api，同时会注入一套操作 ui 的 api（可能是对标 w3c 的 api 也可能不是）
 
-<font color=FF0000>浏览器里面执行一个 JS 任务就是一个 event loop</font>，每个 loop 结束会检查下是否需要渲染，是否需要处理 worker 的消息，通过这种每次 loop 结束都 check 的方式来综合渲染、JS 执行、worker 等，让它们都能在一个线程内得到执行（渲染其实是在别的线程，但是会和 JS 线程相互阻塞）。
+###### Event Loop 的实现不同
+
+上文说过，event loop 是宿主环境提供了，不同的宿主环境有不同的需要调度的任务，所以也会有不同的设计：
+
+- 浏览器里面主要是调度渲染和 JS 执行，还有 worker
+- node 里面主要是调度各种 io
+- 跨端引擎也是调度渲染和 JS 执行
+
+**这里我们只关心浏览器里面的 event loop**
+
+##### 浏览器的 event loop
+
+###### check
+
+<font color=FF0000>浏览器里面执行一个 JS 任务就是一个 event loop</font>，每个 loop 结束会检查下是否需要渲染，是否需要处理 worker 的消息，通过这种每次 loop 结束都用 check 的方式来综合渲染、JS 执行、worker 等，让它们都能在一个线程内得到执行（渲染其实是在别的线程，但是会和 JS 线程相互阻塞）。
+
+> 👀 这里有点费解，不过，想到：一个标签页 就是一个 进程 ( Chrome env )，标签页中更细粒度的任务，自然由线程管理了
 
 <img src="https://s2.loli.net/2022/01/10/gV2Lz746MtZFhkc.png" alt="https://mmbiz.qpic.cn/mmbiz_png/zPh0erYjkib1W6VwQ03NU6clT1alBexqeVCVsRm613URKK4hNsTJZeW0Hb41o8a2JOibUk5hz6ibvzTceQibzQ7beQ/640.png" style="zoom:80%;" />
 
 <font color=FF0000>这样就解决了渲染、JS 执行、worker 这三者的调度问题</font>。但是这样有没有问题？
 
-我们会在任务队列中不断的放新的任务，这样<font color=FF0000>如果有更高优的任务是不是要等所有任务都执行完才能被执行。如果是“急事”呢？</font>所以这样还不行，<font color=FF0000 size=4>**要给 event loop 加上“急事”处理的快速通道，这就是微任务 micro tasks**</font>。
+我们会在任务队列中不断的放新的任务，这样<font color=FF0000>如果有更高优的任务是不是要等所有任务都执行完才能被执行。如果是“急事”呢？</font>所以这样还不行，<font color=fuchsia size=4>**要给 event loop 加上“急事”处理的快速通道，这就是微任务 micro tasks**</font>。
 
-**micro tasks**
+##### micro tasks
 
 <img src="https://s2.loli.net/2022/01/10/TtEvVNhMSod7pxZ.png" alt="https://mmbiz.qpic.cn/mmbiz_png/zPh0erYjkib1W6VwQ03NU6clT1alBexqeIjfMdbbdArgJU4z4DRxqjxJ7zrs1FekxRqZ1HTSzcaYiacibej19JW9w/640.png" style="zoom:75%;" />
 
 任务还是每次取一个执行，执行完检查下要不要渲染，处理下 worker 消息，但是<font color=FF0000>也给高优先级的“急事”加入了插队机制，会在执行完任务之后，把所有的急事 ( micro task ) 全部处理完</font>。这样，event loop 貌似就挺完美的了，每次都会检查是否要渲染，也能更快的处理 JS 的“急事”。
 
-<font size=4>**requestAnimationFrame**</font>
+##### requestAnimationFrame
 
 <font color=FF0000>JS 执行完，开始渲染之前会有一个生命周期，就是 **requestAnimationFrame**</font>，**在这里面做一些计算最合适了，能保证一定是在渲染之前做的计算**。
 
 <img src="https://s2.loli.net/2022/01/10/em9rhbSQ8NgYp5q.png" alt="https://mmbiz.qpic.cn/mmbiz_png/zPh0erYjkib1W6VwQ03NU6clT1alBexqeQuwS6YRPXUoU0EObFMI90MIhj4IxIuian0EF2SGdLYxITdytL1mo8hQ/640.png" style="zoom: 50%;" />
 
-如果有人问 requestAnimationFrame 是宏任务还是微任务，就可以告诉他：**requestAnimationFrame 是每次 loop 结束发现需要渲染，<font color=FF0000>在渲染之前执行的一个回调函数，不是宏微任务</font>**
+如果有人问 requestAnimationFrame 是宏任务还是微任务，就可以告诉他：**requestAnimationFrame 是每次 loop 结束发现需要渲染，<font color=fuchsia>在渲染之前执行的一个回调函数，不是宏微任务</font>**
 
-<font size=4>**event loop 的问题**</font>
+##### event loop 的问题
 
 上文聊过，虽然后面加入了 worker，但是主流的方式还是 JS 计算和渲染相互阻塞，这样就导致了一个问题：
 
 <font color=FF0000>**每一帧的计算和渲染是有固定频率的，如果 JS 执行时间过长，超过了一帧的刷新时间，那么就会导致渲染延迟，甚至掉帧（因为上一帧的数据还没渲染到界面就被覆盖成新的数据了），给用户的感受就是“界面卡了”**</font>
 
-<mark>什么情况会导致帧刷新拖延甚至帧数据被覆盖（丢帧）呢？</mark> <font color=FF0000>**每个 loop 在 check 渲染之前的每一个阶段都有可能**</font>，也就是 <mark style=background:fuchsia>**task、microtask、requestAnimationFrame、requestIdleCallback 都有可能导致阻塞了 check**</mark>，<font color=FF0000>这样等到了 check 的时候发现要渲染了，再去渲染的时候就晚了</font>。
+什么<font color=dodgerBlue>情况会导致帧刷新拖延甚至帧数据被覆盖（丢帧）呢？</font> <font color=FF0000>**每个 loop 在 check 渲染之前的每一个阶段都有可能**</font>，也就是 <font color=fuchsia>**task、microtask、requestAnimationFrame、requestIdleCallback 都有可能导致阻塞了 check**</font>，<font color=FF0000>这样等到了 check 的时候发现要渲染了，再去渲染的时候就晚了</font>。
 
-<font color=FF0000>所以主线程 JS 代码不要做太多的计算</font>（不像安卓会很自然的起一个线程来做），<font color=FF0000>要做拆分</font>，<font color=FF0000>这也是为啥 ui 框架要做计算的 fiber 化</font>，就是因为处理交互的时候，<mark>不能让计算阻塞了渲染，要递归改循环，通过链表来做计算的暂停恢复</mark>（注：这里说的是react的fiber架构，父子兄弟用链表关联起来）。
+<font color=FF0000>所以主线程 JS 代码不要做太多的计算</font>（不像安卓会很自然的起一个线程来做），<font color=FF0000>要做拆分</font>，<font color=FF0000>这也是为啥 ui 框架要做计算的 fiber 化</font>，就是因为处理交互的时候，<font color=LightSeaGreen>不能让计算阻塞了渲染，要递归改循环，通过链表来做计算的暂停恢复</font>
 
-除了 JS 代码本身要注意之外，如果浏览器能够提供 API 就是在每帧间隔来执行，那样岂不是就不会阻塞了，所以后来有了 requestIdleCallback
+> 👀 这里说的是 React 的 fiber 架构，父子兄弟用链表关联起来。另外，[[#Event Loop 和 JS 引擎、渲染引擎的关系#requestIdleCallback]] 最后也有提及。
 
-<font size=4>**requestIdleCallback**</font>
+除了 JS 代码本身要注意之外，如果浏览器能够提供 API 就是（ 👀 让代码）在每帧间隔来执行，那样岂不是就不会阻塞了，所以后来有了 requestIdleCallback
 
-requestIdleCallback <font color=FF0000>会在每次 check 结束发现距离下一帧的刷新还有时间，就执行一下这个</font>；<font color=FF0000>如果时间不够，就下一帧再说</font>（注：这里应该可以理解为 响应优先）。<font color=FF0000>**如果每一帧都没时间呢，那也不行，所以提供了 timeout 的参数可以指定最长的等待时间，如果一直没时间执行这个逻辑，那么就算拖延了帧渲染也要执行**</font>。
+##### requestIdleCallback
+
+requestIdleCallback <font color=FF0000>会在每次 check 结束发现距离下一帧的刷新还有时间，就执行一下这个</font>；<font color=FF0000>如果时间不够，就下一帧再说</font>（ 👀 这里应该可以理解为 响应优先）。<font color=fuchsia>**如果每一帧都没时间呢，那也不行，所以提供了 timeout 的参数可以指定最长的等待时间，如果一直没时间执行这个逻辑，那么就算拖延了帧渲染也要执行**</font>。
 
 <img src="https://s2.loli.net/2022/01/10/wiDYB9khmbAK1ZC.png" alt="https://mmbiz.qpic.cn/mmbiz_png/zPh0erYjkib1W6VwQ03NU6clT1alBexqeuPodh2TAHEibkTP2gu3jibstYww60jafMmSbxHtqMFYcjWE9TAN1WjMQ/640.png" style="zoom:67%;" />
 
-这个 api 对于前端框架来说太需要了，框架就是希望计算不阻塞渲染，也就是在每一帧的间隔时间（idle时间）做计算，但是<mark>这个 api 毕竟是最近加的，有兼容问题，所以 react 自己实现了类似 idle callback 的 fiber 机制，在执行逻辑之前判断一下离下一帧刷新还有多久，来判断是否执行逻辑。</mark>
+这个 api 对于前端框架来说太需要了，框架就是希望计算不阻塞渲染，也就是在每一帧的间隔时间（ idle 时间）做计算，但是<font color=LightSeaGreen>这个 api 毕竟是最近加的，有兼容问题，所以 react 自己实现了类似 idle callback 的 fiber 机制，在执行逻辑之前判断一下离下一帧刷新还有多久，来判断是否执行逻辑</font>。
 
-<font size=4>**总结**</font>
+##### 总结
+
 总之，浏览器里有 JS 引擎做 JS 代码的执行，利用注入的浏览器 API 完成功能，有渲染引擎做页面渲染，两者都比较纯粹，需要一个调度的方式，就是 event loop。
 event loop 实现了 task 和 急事处理机制 microtask，而且每次 loop 结束会 check 是否要渲染，渲染前会有 requestAnimationFrames 生命周期。
 帧刷新不能被拖延否则会卡顿甚至掉帧，所以就需要 JS 代码里面不要做过多计算，于是有了 requestIdleCallback 的 api，希望在每次 check 完发现还有时间就执行，没时间就不执行（这个deadline的时间也作为参数让 js 代码自己判断），为了避免一直没时间，还提供了 timeout 参数强制执行。
-防止计算时间过长导致渲染掉帧是 ui 框架一直关注的问题，就是怎么不阻塞渲染，让逻辑能够拆成帧间隔时间内能够执行完的小块。浏览器提供了 idelcallback 的 api，很多 ui 框架也通过递归改循环然后记录状态等方式实现了计算量的拆分，目的只有一个：loop 内的逻辑执行不能阻塞 check，也就是不能阻塞渲染引擎做帧刷新。所以不管是 JS 代码宏微任务、 requestAnimationCallback、requestIdleCallback 都不能计算时间太长。这个问题是前端开发的持续性阵痛。
+<font color=LightSeaGreen>防止计算时间过长导致渲染掉帧是 ui 框架一直关注的问题，就是怎么不阻塞渲染，让逻辑能够拆成帧间隔时间内能够执行完的小块</font>。浏览器提供了 idelcallback 的 api，<font color=red>很多 ui 框架也通过递归改循环然后记录状态等方式实现了计算量的拆分，目的只有一个：loop 内的逻辑执行不能阻塞 check，也就是不能阻塞渲染引擎做帧刷新</font>。所以不管是 JS 代码宏微任务、 requestAnimationCallback、requestIdleCallback 都不能计算时间太长。这个问题是前端开发的持续性阵痛。
 
 摘自：[Event Loop 和 JS 引擎、渲染引擎的关系](https://mp.weixin.qq.com/s/1PCQMgrXt4bPYtW-uVZgHQ)
 
@@ -12473,7 +12486,7 @@ window.requestAnimationFrame() <font color=FF0000>告诉浏览器</font>：你<f
 
 > ⚠️ 注意：<font color=FF0000>若你想在浏览器下次重绘之前继续更新下一帧动画，那么 **回调函数自身必须再次调用 window.requestAnimationFrame()**</font>
 
-当你准备更新动画时你应该调用此方法。这将使浏览器在下一次重绘之前 调用你传入给该方法的动画函数（即你的回调函数）。<font color=FF0000>回调函数执行次数通常是 每秒 60 次</font>，但<font color=FF0000>在大多数遵循 W3C 建议的浏览器中，回调函数执行次数通常与浏览器屏幕刷新次数相匹配</font>。<mark>为了提高性能和电池寿命，因此在大多数浏览器里，当 requestAnimationFrame() 运行在后台标签页 或者 隐藏的 \<iframe> 里时，requestAnimationFrame() 会被暂停调用以提升性能和电池寿命</mark>。
+当你准备更新动画时你应该调用此方法。这将使浏览器在下一次重绘之前 调用你传入给该方法的动画函数（即你的回调函数）。<font color=FF0000>回调函数执行次数通常是 每秒 60 次</font>，但<font color=FF0000>在大多数遵循 W3C 建议的浏览器中，回调函数执行次数通常与浏览器屏幕刷新次数相匹配</font>。<font color=LightSeaGreen>为了提高性能和电池寿命，因此在大多数浏览器里，当 `requestAnimationFrame()` 运行在后台标签页 或者 隐藏的 `<iframe>` 里时，`requestAnimationFrame()` 会被暂停调用以提升性能和电池寿命</font>。
 
 回调函数会被传入 DOMHighResTimeStamp 参数，DOMHighResTimeStamp 指示当前被 requestAnimationFrame() 排序的回调函数被触发的时间。在同一个帧中的多个回调函数，它们每一个都会接受到一个相同的时间戳，即使在计算上一个回调函数的工作负载期间已经消耗了一些时间。该时间戳是一个十进制数，单位毫秒，最小精度为 1ms。
 
@@ -12508,6 +12521,8 @@ window.requestAnimationFrame(callback);
 #### window.requestIdleCallback
 
 > 🧪 ：这是一个实验中的功能
+
+> 👀 这个函数的作用，老是忘记，可以看下 [[#Event Loop 和 JS 引擎、渲染引擎的关系#requestIdleCallback]] 及它上面的内容，作为背景介绍；有助记忆。
 
 window.requestIdleCallback() 方法<font color=FF0000>插入一个函数</font>，<font color=FF0000>这个函数将在浏览器空闲时期被调用</font>。这<font color=FF0000>使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件</font>，如动画和输入响应。函数一般会按先进先调用的顺序执行，然而，如果回调函数指定了执行超时时间timeout，则有可能为了在超时前执行函数而打乱执行顺序。
 
@@ -13209,6 +13224,14 @@ SharedArrayBuffer <font color=fuchsia>是一个前端 **跨线程** 共享数据
 > 👀 // TODO 这里暂时看得有点懵，等等再读...
 
 摘自：[SharedArrayBuffer与幽灵漏洞（Spectre） - 李银城的文章 - 知乎](https://zhuanlan.zhihu.com/p/556051833)
+
+
+
+#### Atomics
+
+// TODO
+
+可以看下 [ECMAScript的浏览器运行时中，如何在不消耗cpu资源的情况下实现同步的sleep()? - d41d8c的回答 - 知乎](https://www.zhihu.com/question/558691474/answer/2711454298) ，`Atomics.wait` 有点意思
 
 
 

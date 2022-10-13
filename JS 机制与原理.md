@@ -2,38 +2,40 @@
 
 
 
-### 常见垃圾回收算法与 JavaScript 中垃圾回收原理
+### 常见垃圾回收算法 & JavaScript 中垃圾回收原理
 
-根据不同的需求而有了不同的取舍，从而产生了不同的算法。不论哪个垃圾回收算法，都有一套共同的流程：
+根据不同的需求而有了不同的取舍，从而产生了不同的算法。<font color=dodgerBlue>不论哪个垃圾回收算法，都有一套共同的流程</font>：
 
-1. 标记内存空间中的活动对象（在使用中的对象）和非活动对象（可以回收的对象）。
-2. 删除非活动对象，释放内存空间。
-3. 整理内存空间，避免频繁回收后产生的大量内存碎片（不连续内存空间）。
+1. 标记内存空间中的活动对象（在使用中的对象）和非活动对象（可以回收的对象）
+2. 删除非活动对象，释放内存空间
+3. 整理内存空间，避免频繁回收后产生的大量内存碎片（不连续内存空间）
 
 #### 常见的 垃圾回收算法
 
 ##### 标记-清除法
 
-标记-清除法由 John McCarthy（**注：**即那位“约翰·麦肯锡”） 于 1960 年发表的一篇论文提出，其主要分两个阶段：
+标记-清除法由 John McCarthy（ 👀 即那位“约翰·麦肯锡”） 于 1960 年发表的一篇论文提出，其主要分两个阶段：
 
 1. 第一阶段是标记，从一个 GC root 集合出发，沿着「指针」找到所有对象，将其标记为活动对象。
 2. 第二阶段是清除，将内存中未被标记的对象删除，释放内存空间。
 
 <img src="https://s2.loli.net/2022/04/15/zg5pDorOeMX9PWJ.png" alt="图片" style="zoom:70%;" />
 
-从上面的描述来看，<mark>标记-清除算法可以说是非常简单的</mark>，现在的各类垃圾回收算法也都是它的思想的延续。
+从上面的描述来看，<font color=lightSeaGreen>标记-清除算法可以说是非常简单的</font>，现在的各类垃圾回收算法也都是它的思想的延续。
 
-<mark>虽然简单，但其也有着很明显的缺点</mark>，即<font color=FF0000>在多次回收操作后，会产生大量的内存碎片，由于算法没有再整理内存空间，内存空间将变得很碎</font>，此时<mark>如果需要申请一个较大的内存空间，即使剩余内存总大小足够，也很容易因为没有足够的连续内存而分配失败</mark>。
+<font color=dodgerBlue>虽然简单，但其也有着很明显的缺点</font>，即<font color=FF0000>在多次回收操作后，会产生大量的内存碎片，由于算法没有再整理内存空间，内存空间将变得很碎</font>，此时<font color=LightSeaGreen>如果需要申请一个较大的内存空间，即使剩余内存总大小足够，也很容易因为没有足够的连续内存而分配失败</font>。
 
-> 👀 **注：**这个感觉 有点类似“位示图”。另外，感觉缺陷在于：没有考虑“（定期）内存资源整理”。
+> 👀 注：这个感觉 有点类似“位示图”。另外，感觉缺陷在于：没有考虑“（定期）内存资源整理”。
 
 ##### 复制算法
 
 为了解决以上问题，Marvin L. Minsky 在 1963 年提出了著名的 ***复制算法*** ：
 
-1. <mark>将整个空间平均分成 ***from*** 和 ***to*** 两部分</mark>。
+1. <font color=fuchsia>将整个空间平均分成 ***from*** 和 ***to*** 两部分</font>。
 
-2. <font color=FF0000>先在 ***from 空间*** 进行内存分配，当空间被占满时，标记活动对象，并将其复制到 ***to 空间***</font>。（**注：**感觉是先在 ***from 空间*** 中随意使用空间，当空间不足（无法放下一个新的任务）时，再进行整理并放入 ***to 空间*** ）
+2. <font color=FF0000>先在 ***from 空间*** 进行内存分配，当空间被占满时，标记活动对象，并将其复制到 ***to 空间***</font>。
+
+   > 👀 注：感觉是先在 ***from 空间*** 中随意使用空间，当空间不足（无法放下一个新的任务）时，再进行整理并放入 ***to 空间*** 
 
 3. 复制完成后，将 ***from*** 和 ***to*** 空间互换。
 
@@ -41,19 +43,19 @@
 
 由于直接将活动对象复制到另一半空间，没有了清除阶段的开销，所以能在较短时间内完成回收操作，并且每次复制的时候，对象都会集中到一起，相当于同时做了整理操作，避免了内存碎片的产生。
 
-虽然复制算法有吞吐量高、没有碎片的优点，但其缺点也非常明显。**首先**，<font color=FF0000>复制操作也是需要时间成本的，若堆空间很大且活动对象很多，则每次清理时间会很久</font>。**其次**，<font color=FF0000>将空间二等分的操作，让可用的内存空间直接减少了一半</font>。
+虽然复制算法有吞吐量高、没有碎片的优点，但其缺点也非常明显。<font color=dodgerBlue>**首先**</font>，<font color=FF0000>复制操作也是需要时间成本的，若堆空间很大且活动对象很多，则每次清理时间会很久</font>。<font color=dodgerBlue>**其次**</font>，<font color=fuchsia>将空间二等分的操作，让可用的内存空间直接减少了一半</font>。
 
 ##### 引用计数
 
 该算法由 George E. Collins 于 1960 年提出，主要操作为：
 
-1. 实时统计指向对象的引用数（指针数量）。
+1. <font color=fuchsia>实时统计指向对象的引用数（指针数量）</font>
 
-2. 当引用数为 0 时，实时回收对象。
+2. <font color=fuchsia>当引用数为 0 时，实时回收对象</font>
 
 <img src="https://s2.loli.net/2022/04/01/UfDnaNpCo6YXGrJ.png" alt="图片" style="zoom:75%;" />
 
-该算法可以即时回收垃圾数据，（**优点**）<font color=FF0000>对程序的影响时间很短，效率很高。高性能、实时回收</font>，看似完美的方案其实也有个**问题**，<font color=FF0000>当对象中存在循环引用时，由于引用数不会降到 0，所以对象不会被回收</font>。
+该算法可以即时回收垃圾数据，（**优点**）<font color=FF0000>对程序的影响时间很短，效率很高。高性能、实时回收</font>，看似完美的方案其实<font color=dodgerBlue>也有个**问题**</font>，<font color=fuchsia>当对象中存在循环引用时，由于引用数不会降到 0，所以对象不会被回收</font>。
 
 <img src="https://s2.loli.net/2022/04/15/2HEmQgS4JpBVwlR.png" alt="图片" style="zoom:75%;" />
 
@@ -63,18 +65,18 @@
 
 该算法于 1970 年出现，其<font color=FF0000>**结合了 *标记-清除法* 和 *复制算法* 的优点**</font>，主要操作如下：
 
-1. 从一个 GC root 集合出发，<font color=FF0000>标记所有活动对象</font>。
+1. 从一个 GC root 集合出发，<font color=fuchsia>标记所有活动对象</font>。
 
-2. <font color=FF0000>将所有活动对象移到内存的一端，集中到一起</font>。
-3. 直接清理掉边界以外的内存，释放连续空间。（**注：**直接移动指针即可）
+2. <font color=fuchsia>将所有活动对象移到内存的一端，集中到一起</font>。
+3. 直接清理掉边界以外的内存，释放连续空间。（ 👀 直接移动指针即可）
 
 <img src="https://s2.loli.net/2022/04/01/6Qi9fNKctTHpPn3.png" alt="图片" style="zoom:70%;" />
 
-可以发现，该算法既避免了标记-清除法产生内存碎片的问题，又避免了复制算法导致可用内存空间减少的问题。当然，<mark>该算法也不是没有缺点的</mark>，<font color=FF0000>由于其清除和整理的操作很麻烦，甚至需要对整个堆做多次搜索，故而堆越大，耗时越多</font>。
+可以发现，该算法既避免了 “标记-清除法” 产生内存碎片的问题，又避免了复制算法导致可用内存空间减少的问题。当然，<font color=LightSeaGreen>该算法也不是没有缺点的</font>，<font color=fuchsia>由于其清除和整理的操作很麻烦，甚至需要对整个堆做多次搜索，故而堆越大，耗时越多</font>。
 
 ##### 代际假设和分代收集
 
-**「代际假说」**
+###### 「代际假说」
 
 > It has been empirically observed that in many programs, the most recently created objects are also those most likely to become unreachable quickly.
 >
@@ -87,19 +89,19 @@
 
 ![图片](https://s2.loli.net/2022/04/01/6Q7bv9MTnaeZOdC.png)
 
-**「分代收集」：** 所以可以将对象进行分代，从而 <font color=FF0000>对不同分代实施不同的垃圾回收算法，以达到更高的效率</font>（如 Java GC: https://plumbr.io/handbook/garbage-collection-in-java/generational-hypothesis）。
+**「分代收集」：** 所以可以将对象进行分代，从而 <font color=FF0000>对不同分代实施不同的垃圾回收算法，以达到更高的效率</font>（如 Java GC : https://plumbr.io/handbook/garbage-collection-in-java/generational-hypothesis ）
 
 #### JavaScript 垃圾回收
 
-JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，引用数据类型存在 *堆* 中**</font>（**注：**引用类型存在「堆」中，同时，<font color=FF0000>***栈*** 中存储堆内的地址的引用</font>），所以 **讨论 JavaScript 的垃圾回收，即讨论其 *栈* 中数据的回收，以及 *堆* 中数据的回收**。
+JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，引用数据类型存在 *堆* 中**</font>（ 👀 引用类型存在「堆」中，同时，<font color=FF0000>***栈*** 中存储堆内的地址的引用</font>），所以 **讨论 JavaScript 的垃圾回收，即讨论其 *栈* 中数据的回收，以及 *堆* 中数据的回收**。
 
 ##### 栈中垃圾回收
 
 > **ESP ( Extended <font color=FF0000>Stack</font> Pointer )：**扩展栈指针寄存器，用于存放函数栈顶指针。
 
-<font color=FF0000>JavaScript 在 **执行函数时，会将其 *上下文* 压入栈中，ESP 上移**，而当函数执行完成后，其执行上下文可以销毁了</font>，<mark>此时仅需将 ESP 下移到下一个函数执行上下文即可，当下一个函数入栈时，会将 ESP 以上的空间直接覆盖</mark>。
+<font color=FF0000>JavaScript 在 **执行函数时，会将其 *上下文* 压入栈中，ESP 上移**，而当函数执行完成后，其执行上下文可以销毁了</font>，<font color=LightSeaGreen>此时仅需将 ESP 下移到下一个函数执行上下文即可，当下一个函数入栈时，会将 ESP 以上的空间直接覆盖</font>。
 
-所以 JavaScript 引擎是通过下移 ESP 来完成栈的垃圾回收的。
+所以 JavaScript 引擎是通过下移 ESP 来完成栈的垃圾回收的
 
 <img src="https://s2.loli.net/2022/04/01/sGRZhVHibCKQO3g.png" alt="图片" style="zoom:65%;" />
 
@@ -107,34 +109,64 @@ JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，
 
 不同于栈中的垃圾回收，**<font color=FF0000>*堆*</font> 中的垃圾数据回收需要用到 <font color=FF0000>JavaScript 的垃圾回收器</font>**
 
-<font color=FF0000>JavaScript ***堆* 中垃圾数据回收就使用到了 *分代收集* 的思想**</font>（**注：**搜了一下 ***分代收集*** 相关内容，发现：JVM 也是使用该思想 ），<font color=FF0000>引擎将堆空间分为 **「新生代 ( young-space ) 」** 和 **「老生代 ( old-space ) 」**</font> ；并且，<font color=FF0000>**对两个区域实施不同的垃圾回收策略**</font>
+<font color=fuchsia>JavaScript **<font size=4>堆</font> 中垃圾数据回收就使用到了 *分代收集* 的思想**</font>，<font color=fuchsia>引擎将 **堆空间** 分为**「新生代 ( young-space ) 」**和**「老生代 ( old-space ) 」**</font> ；并且，<font color=FF0000>**对两个区域实施不同的垃圾回收策略**</font>
 
-- **新生代**：<font color=FF0000>***新生代*** 用于 **存放生存时间短的对象**，大多数新创建的小的对象都会被分配到该区域，该区域的垃圾回收会比较频繁</font>。
+> 👀 搜了一下 ***分代收集*** 相关内容，发现：JVM 也是使用该思想
 
-  在 ***新生代*** 中，引擎使用 Scavenge 算法 ( https://v8.dev/blog/trash-talk ) 进行垃圾回收，<font color=FF0000>即上面提到的 ***复制算法***</font>。
+###### 新生代
 
-  <mark>其将 ***新生代*** 空间对半分为 ***from-space*** 和 ***to-space*** 两个区域</mark>。新创建的对象都被存放到 ***from-space*** ，当空间快被写满时触发垃圾回收。先对 ***from-space*** 中的对象进行标记，完成后将标记对象复制到 ***to-space*** 的一端，然后将两个区域角色反转，就完成了回收操作。
+<font color=FF0000>***新生代*** 用于 **存放生存时间短的对象**，大多数新创建的小的对象都会被分配到该区域，该区域的垃圾回收会比较频繁</font>。
 
-  <font color=FF0000>**由于每次执行清理操作都需要复制对象，而复制对象需要时间成本，所以「新生代」空间会设置得比较小 ( 1~8M )**</font>。
+在 ***新生代*** 中，引擎使用 Scavenge 算法 ( https://v8.dev/blog/trash-talk ) 进行垃圾回收，<font color=FF0000>即上面提到的 ***复制算法***</font>。
 
-- **老生代：** 老生代被用于<font color=FF0000>存放生存 “时间长的对象” 和 “大的对象”</font>：
+<font color=LightSeaGreen>其将 ***新生代*** 空间对半分为 ***from-space*** 和 ***to-space*** 两个区域</font>。新创建的对象都被存放到 ***from-space*** ，<font color=red>当空间快被写满时触发垃圾回收</font>。先对 ***from-space*** 中的对象进行标记，完成后将标记对象复制到 ***to-space*** 的一端，然后将两个区域角色反转，就完成了回收操作
 
-  - 即<font color=FF0000>一些 **大的对象** 会被直接分配到老生代空间</font>
-  - <font color=FF0000>**新生代中经过 两次垃圾回收后 仍然存活的对象，会晋升到老生代空间**</font>
+<font color=FF0000>**由于每次执行清理操作都需要复制对象，而复制对象需要时间成本，所以「新生代」空间会设置得比较小 ( 1~8M )**</font>。
 
-  引擎在该（老生代）空间主要使用上面提到的 ***标记-压缩算法*** 。首先对活动对象进行标记，标记完成后，将所有存活对象移到内存的一段，然后清理掉边界外的内存。
+###### 老生代
 
-由于 JavaScript 是单线程运行的，意味着<mark>垃圾回收算法和脚本任务在同一线程内运行，在执行垃圾回收逻辑时，后续的脚本任务需要等垃圾回收完成后才能继续执行</mark>。<font color=FF0000>若堆中的数据量非常大，一次完整垃圾回收的时间会非常长，将导致应用的性能和响应能力都直线下降</font>。
+老生代被用于<font color=FF0000>存放生存 “时间长的对象” 和 “大的对象”</font>：
 
-<font color=FF0000>为了避免垃圾回收影响应用的性能，V8 将标记的过程拆分成多个子标记</font>，<mark>让垃圾回收标记和应用逻辑交替执行，避免脚本任务等待较长时间</mark>。
+- 即<font color=FF0000>一些 **大的对象** 会被直接分配到老生代空间</font>
+- <font color=fuchsia>**新生代中经过 两次垃圾回收后 仍然存活的对象，会晋升到老生代空间**</font>
+
+引擎在该（老生代）空间主要使用上面提到的 ***标记-压缩算法*** 。首先对活动对象进行标记，标记完成后，将所有存活对象移到内存的一段，然后清理掉边界外的内存。
+
+由于 JavaScript 是单线程运行的，意味着<font color=LightSeaGreen>垃圾回收算法和脚本任务在同一线程内运行，在执行垃圾回收逻辑时，后续的脚本任务需要等垃圾回收完成后才能继续执行</font>。<font color=FF0000>若堆中的数据量非常大，一次完整垃圾回收的时间会非常长，将导致应用的性能和响应能力都直线下降</font>。
+
+<font color=FF0000>为了避免垃圾回收影响应用的性能，V8 将标记的过程拆分成多个子标记</font>，<font color=LightSeaGreen>让垃圾回收标记和应用逻辑交替执行，避免脚本任务等待较长时间</font>。
 
 摘自：[科普文：常见垃圾回收算法与 JS GC 原理](https://mp.weixin.qq.com/s/KZsgQxlrsfYMvJejbZqGHw)
 
-##### 《现代JS教程》中关于 GC 的补充
+#### V8 GC 补充
+
+##### V8 堆结构组成
+
+在 V8 引擎的堆结构组成中，<font color=dodgerBlue>除了 “新生代” 和 “老生代” 外，还包含其他几个部分</font>，但是<font color=LightSeaGreen>垃圾回收的过程主要出现在新生代和老生代</font>，所以<font color=LightSeaGreen>对于其他的部分没必要做太多的深入</font>，有兴趣的小伙伴儿可以查阅下相关资料；<font color=dodgerBlue>V8 的内存结构主要由以下几个部分组成</font>：
+
+- **新生代** ( new_space ) ：大多数的对象开始都会被分配在这里，这个区域相对较小但是垃圾回收特别频繁，<font color=red>该区域被分为两半，一半用来分配内存，另一半用于在垃圾回收时将需要保留的对象复制过来</font>。
+- **老生代** ( old_space ) ：<font color=red>新生代中的对象在存活一段时间后就会被转移到老生代内存区</font>，相对于新生代该内存区域的垃圾回收频率较低。<font color=fuchsia>老生代又分为 **老生代指针区** 和 **老生代数据区**</font>，前者包含大多数可能存在指向其他对象的指针的对象，后者只保存原始数据对象，这些对象没有指向其他对象的指针。
+- **大对象区** ( large_object_space ) ：存放体积超越其他区域大小的对象，每个对象都会有自己的内存，<font color=red>垃圾回收不会移动大对象区</font>。
+- **代码区** ( code_space ) ：<font color=red>代码对象，会被分配在这里</font>，唯一拥有执行权限的内存区域。
+- **map 区** ( map_space ) ：<font color=red>存放 Cell 和 Map</font> ，每个区域都是存放相同大小的元素，结构简单
+
+内存结构图如下所示：
+
+<img src="https://s2.loli.net/2022/10/13/k5vlSTQYcrLBI36.jpg" alt="img" style="zoom:75%;" />
+
+上图中的带斜纹的区域代表暂未使用的内存。
+
+##### 新生代
+
+新生代内存是由两个 semispace（ 半空间 ）构成的，内存最大值在 64位系统 和 32位系统 上分别为 32MB 和 16MB。
+
+摘自：[一文搞懂V8引擎的垃圾回收](https://juejin.cn/post/6844904016325902344)
+
+#### 《现代JS教程》中关于 GC 的补充
 
 JavaScript 中主要的内存管理概念是 **可达性**。简而言之，“可达”值 是那些以某种方式可访问或可用的值。它们一定是存储在内存中的。另外：对外引用不重要，只有传入引用才可以使对象可达。
 
-**内部算法：**垃圾回收的基本算法被称为 “mark-and-sweep”（**注：**即上面所说的 ***标记法*** ）
+**内部算法：**垃圾回收的基本算法被称为 “mark-and-sweep”（ 👀 即上面所说的 ***标记法***  ）
 
 **定期执行以下“垃圾回收”步骤：**
 
@@ -168,9 +200,9 @@ map.set(null, 2); // TypeError: Invalid value used as weak map key
 
 翻译过来应该是 <font color=FF0000>WeakMaps 保持了 **对键名所引用的对象的弱引用**</font>。
 
-我们先聊聊弱引用：
+###### 先聊聊弱引用
 
-> <mark>在计算机程序设计中，**弱引用与强引用相对**</mark>，是指 <font color=FF0000>**不能确保** 其引用的对象 **不会被垃圾回收器回收** 的引用</font>。 <font color=FF0000>一个对象若只被弱引用所引用，**则被认为是 不可访问**（或弱可访问）的，并 **因此可能在任何时刻被回收**</font>。
+> <font color=LightSeaGreen>在计算机程序设计中，**弱引用与强引用相对**</font>，是指 <font color=FF0000>**不能确保** 其引用的对象 **不会被垃圾回收器回收** 的引用</font>。 <font color=FF0000>一个对象若只被弱引用所引用，**则被认为是 不可访问**（或弱可访问）的，并 **因此可能在任何时刻被回收**</font>。
 
 在 JavaScript 中，<font color=FF0000>一般我们创建一个对象，**都是建立一个强引用**</font>：
 
@@ -200,11 +232,11 @@ const key = new Array(5 * 1024 * 1024);
 const arr = [ [key, 1] ];
 ```
 
-使用这种方式，我们<mark>其实建立了 arr 对 key 所引用的对象</mark>（我们假设这个真正的对象叫 Obj ）<mark>的 **强引用**</mark>。
+使用这种方式，我们<font color=LightSeaGreen>其实建立了 arr 对 key 所引用的对象</font>（我们假设这个真正的对象叫 Obj ）<font color=LightSeaGreen>的 **强引用**</font>。
 
 所以<font color=FF0000>**当你设置 `key = null` 时，只是去掉了 key 对 Obj 的强引用**</font>，<font color=FF0000>并 **没有去除 arr 对 Obj 的强引用，所以 Obj 还是不会被回收掉**</font>。
 
-**Map 类型也是类似：**
+###### Map 类型也是类似
 
 ```js
 let map = new Map();
@@ -217,7 +249,7 @@ key = null;      // key = null 不会导致 key 的原引用对象被回收
 我们依然通过 Node 证明一下：
 
 ```js
-// 注：假设文件名为 node-gc.js
+// 👀 假设文件名为 node-gc.js
 global.gc();
 process.memoryUsage(); // heapUsed: 4638376 ≈ 4.4M
 
@@ -237,10 +269,10 @@ process.memoryUsage(); // heapUsed: 4808064 ≈ 4.6M
 ```
 
 ```sh
-node --expose-gc node-gc.js # 注：注意 --expose-gc 必需放在 js 文件名前
+node --expose-gc node-gc.js # 👀 注意 --expose-gc 必需放在 js 文件名前
 ```
 
-**注：**要查看运行结果可以在 `process.memoryUsage();` 外面包裹一层 `console.log()`。打印结果为：
+> 👀 注：要查看运行结果可以在 `process.memoryUsage();` 外面包裹一层 `console.log()` 。打印结果为：
 
 ```js
 { rss: 27213824, heapTotal: 6070272, heapUsed: 3503776, external: 447189, arrayBuffers: 10430 }
@@ -259,7 +291,7 @@ map.delete(key);
 key = null;
 ```
 
-我们依然通过 Node 证明一下（ 👀 **注：**代码略，见原文）
+我们依然通过 Node 证明一下（ 👀 代码略，见原文）
 
 这个时候就要说到 WeakMap 了：
 
@@ -270,7 +302,7 @@ wm.set(key, 1);
 key = null;
 ```
 
-当我们 <font color=FF0000>设置 `wm.set(key, 1)` 时，其实建立了 wm 对 key 所引用的对象的弱引用</font>，<mark>但因为 `let key = new Array(5 * 1024 * 1024)` **建立了 key 对所引用对象的强引用**，被引用的对象并不会被回收</mark>，但是<font color=FF0000>**当我们设置 `key = null` 的时候，就只有 wm 对所引用对象的弱引用**，下次垃圾回收机制执行的时候，该引用对象就会被回收掉</font>。
+当我们 <font color=FF0000>设置 `wm.set(key, 1)` 时，其实建立了 wm 对 key 所引用的对象的弱引用</font>，<font color=LightSeaGreen>但因为 `let key = new Array(5 * 1024 * 1024)` **建立了 key 对所引用对象的强引用**，被引用的对象并不会被回收</font>，但是<font color=FF0000>**当我们设置 `key = null` 的时候，就只有 wm 对所引用对象的弱引用**，下次垃圾回收机制执行的时候，该引用对象就会被回收掉</font>。
 
 我们用 Node 证明一下：
 
@@ -371,13 +403,13 @@ export default Person;
 
 ##### 堆
 
-堆可以简单的认为是一大块内存空间，就像一个篮子，你往里面放什么都没关系，但是篮子是私人物品，<font color=FF0000>操作系统并不会管你的篮子里都放了什么，也不会主动去清理你的篮子</font>，<mark>因此在 C 语言中，堆中内容是需要程序员手动清理的，不然就会出现内存溢出的情况</mark>。
+堆可以简单的认为是一大块内存空间，就像一个篮子，你往里面放什么都没关系，但是篮子是私人物品，<font color=FF0000>操作系统并不会管你的篮子里都放了什么，也不会主动去清理你的篮子</font>，<font color=LightSeaGreen>因此在 C 语言中，堆中内容是需要程序员手动清理的，不然就会出现内存溢出的情况</font>。
 
 既然堆是一个大大的篮子，那么<font color=FF0000>在栈中存储不了的数据（比如一个对象），就会被存储在堆中，**栈中就仅仅保留一个对该数据的引用（也就是该块数据的首地址）**</font>。
 
-**注：**这里补充一张 NJU《计算机系统基础》课程的 PPT 截图：可以看到「栈」和「堆」在内存中的位置，以及他们两者的“数据存储方向”。另外，关于「栈」：「栈」又被称为栈帧 ( stack frame ) 结构，ESP ( Extended Stack Pointer ) 是栈顶指针寄存器（亦即，栈指针），EBP ( Extended Base Pointer ) 是栈底指针寄存器（亦即，帧指针）。
-
-<img src="https://s2.loli.net/2022/04/01/1ESFxit6IGcrKmv.png" alt="image-20220401182634913" style="zoom: 30%;" />
+> 👀 注：这里补充一张 NJU《计算机系统基础》课程的 PPT 截图：可以看到「栈」和「堆」在内存中的位置，以及他们两者的“数据存储方向”。另外，关于「栈」：「栈」又被称为栈帧 ( stack frame ) 结构，ESP ( Extended Stack Pointer ) 是栈顶指针寄存器（亦即，栈指针），EBP ( Extended Base Pointer ) 是栈底指针寄存器（亦即，帧指针）。
+>
+> <img src="https://s2.loli.net/2022/04/01/1ESFxit6IGcrKmv.png" alt="image-20220401182634913" style="zoom: 30%;" />
 
 **问题：**既然栈中数据在函数执行结束后就会被销毁，那么 JavaScript 中函数闭包该如何实现？先简单来个闭包：
 
@@ -418,7 +450,7 @@ function test () {
 }
 ```
 
-伴随着 “test 函数” 的调用，为了保证变量不被销毁，在堆中先生成一个对象就叫 Scope 吧，把变量作为 Scope 的属性给存起来。堆中的数据结构大致如下所示（**注：**注意下图 Scope 和箭头的位置）：
+伴随着 “test 函数” 的调用，为了保证变量不被销毁，在堆中先生成一个对象就叫 Scope 吧，把变量作为 Scope 的属性给存起来。堆中的数据结构大致如下所示（ 👀 注意下图 Scope 和箭头的位置）：
 
 <img src="https://s2.loli.net/2022/04/15/nFN83Elpu7oQXq6.jpg" alt="使用 Scope 保存变量" style="zoom:50%;" />
 
@@ -426,7 +458,9 @@ function test () {
 
 <img src="https://s2.loli.net/2022/04/01/BHMCzFkaQtRsdSJ.jpg" alt="Chrome 中 Scope 的表示" style="zoom:55%;" />
 
-红框部分，与上述一致，同时也反应出了之前提及的问题：<font color=FF0000>例子中 JS 变量并没有存在栈中，而是在堆里，用一个特殊的对象 Scope 保存</font>。（**注：**这里还是很重要，第一次见到 <font color=FF0000>内部属性 \[\[scope]] 中的 Closure 元素，且其中保存着闭包内使用的所有的「自由变量」</font>。另外，这里打印使用的是 console.dir()，自行尝试了下：如果使用 console.log() 只能看到最外层的函数定义）
+红框部分，与上述一致，同时也反应出了之前提及的问题：<font color=FF0000>例子中 JS 变量并没有存在栈中，而是在堆里，用一个特殊的对象 Scope 保存</font>
+
+> 👀 注：这里还是很重要，第一次见到 <font color=FF0000>内部属性 `[[scope]]` 中的 Closure 元素，且其中保存着闭包内使用的所有的「自由变量」</font>。另外，这里打印使用的是 `console.dir()`，自行尝试了下：如果使用 `console.log()` 只能看到最外层的函数定义）
 
 #### JS 中变量有三种类型
 
