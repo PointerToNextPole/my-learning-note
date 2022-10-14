@@ -874,12 +874,12 @@ const b = new Promise((resolve, reject) => {
   console.log('promise4') // 6
 })
 
-a = new Promise(async (resolve, reject) => { // promise内代码为同步代码
-  console.log(a) // 2，结果为 undefined，由于这里没有a还没有完成赋值，所以a为undefined
-  await b; // 打印完成a为undefined之后，会执行b，因为b是微任务，所以先放入微任务队列，所以下面的 end 先打印
-  console.log(a) // 7 这时候，由于 await b返回的是一个promise，所以a已经完成赋值；但是，在a中没有 resolve 和 reject，所以结果为 Promise { <pending> }
+a = new Promise(async (resolve, reject) => { // promise 内代码为同步代码
+  console.log(a) // 2，结果为 undefined。由于这里没有 a 还没有完成赋值，所以 a 为 undefined
+  await b; // 打印完成 a 为 undefined 后，会执行 b，因为 b 是微任务，所以先放入微任务队列，所以下面的 end 先打印。另外，这里 await 的 b 是一个 promise，是 promise4 打印完之后 fulfilled 的 promise （不是一个函数），所以，上面 promise2、promise3、promise4 会依次打印
+  console.log(a) // 7 这时候，await b 返回的是一个 fulfilled 的 promise，当前同步任务和微任务都已经完成；所以 a 已经完成赋值；但是，在 a 中没有 resolve 和 reject，所以结果为 Promise { <pending> }
   console.log('after1') // 8
-  await a // 这里a是一个promise，但还是pending状态，所以后面的代码（包括resolve），都不会执行
+  await a      // 这里 a 是一个 promise，但还是 pending 状态，所以后面的代码（包括 resolve ），都不会执行
   resolve(true)
   console.log('after2') // 不会执行
 })
@@ -887,14 +887,14 @@ a = new Promise(async (resolve, reject) => { // promise内代码为同步代码
 console.log('end') // 3
 ```
 
-> 👀 注：上面 `await a` 下面的代码之所以不会执行，是因为 “只有 await 返回结果为 fulfilled 时，后面的代码才会执行”。如下示例：
+> 👀 注：上面 `await a` 下面的代码之所以不会执行，是因为 <font color=fuchsia>只有 await 返回结果为 fulfilled 时，后面的代码才会执行</font>。如下示例：
 
 ```js
 const promise = new Promise((resolve, reject) => {})
 
 async function fn() {
   console.log(promise) // Promise { <pending> }
-  await promise
+  await promisej
   console.log('never run') // 没有打印
 }
 
@@ -903,3 +903,47 @@ fn()
 
 学习自：[【全网首发:更新完】promise的前世今生 + 应用 + 面试 + 源码 【合集】](https://www.bilibili.com/video/BV1tM4y1F7he)
 
+```js
+async function async1() {
+  console.log("async1");
+  await async2();
+  console.log("async1 end");
+}
+
+console.log("scripts start");
+
+async1();
+
+async function async2() {
+  await console.log("async2");
+}
+
+new Promise((resolve, reject) => {
+  console.log("promise1");
+  resolve();
+}).then(() => {
+  console.log("promise2");
+});
+
+setTimeout( () => console.log("setTimeout") );
+
+console.log("scripts end");
+```
+
+<details>
+  <summary>查看答案</summary>
+  scripts start
+  async1
+  async2
+  promise1
+  scripts end
+  promise2
+  async1 end
+  setTimeout
+</details>
+
+<details>
+  <summary>查看解析</summary>
+  这题 6 和 7 的顺序总是会反掉。
+  这题的重点是 async1 end 的 async () => await () => await xxx ；有两层 promise，要多等一轮微任务。所以，会比 promise2 执行晚。
+</details>

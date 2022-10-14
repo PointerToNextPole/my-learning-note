@@ -12482,13 +12482,13 @@ event loop 实现了 task 和 急事处理机制 microtask，而且每次 loop �
 
 #### window.requestAnimationFrame
 
-window.requestAnimationFrame() <font color=FF0000>告诉浏览器</font>：你<font color=FF0000>希望执行一个动画，并且**要求浏览器在下次 <font size=4>*重绘*</font> 之前，调用指定的回调函数更新动画**</font>。该方法<font color=FF0000>需要传入一个 <font size=4>**回调函数**</font> 作为参数，该 <font size=4>**回调函数会在浏览器下一次重绘之前执行**</font></font>
+`window.requestAnimationFrame()` <font color=FF0000>告诉浏览器</font>：你<font color=FF0000>希望执行一个动画，并且**要求浏览器在下次 <font size=4>*重绘*</font> 之前，调用指定的回调函数更新动画**</font>。该方法<font color=FF0000>需要传入一个 <font size=4>**回调函数**</font> 作为参数，该 <font size=4>**回调函数会在浏览器下一次重绘之前执行**</font></font>
 
 > ⚠️ 注意：<font color=FF0000>若你想在浏览器下次重绘之前继续更新下一帧动画，那么 **回调函数自身必须再次调用 window.requestAnimationFrame()**</font>
 
 当你准备更新动画时你应该调用此方法。这将使浏览器在下一次重绘之前 调用你传入给该方法的动画函数（即你的回调函数）。<font color=FF0000>回调函数执行次数通常是 每秒 60 次</font>，但<font color=FF0000>在大多数遵循 W3C 建议的浏览器中，回调函数执行次数通常与浏览器屏幕刷新次数相匹配</font>。<font color=LightSeaGreen>为了提高性能和电池寿命，因此在大多数浏览器里，当 `requestAnimationFrame()` 运行在后台标签页 或者 隐藏的 `<iframe>` 里时，`requestAnimationFrame()` 会被暂停调用以提升性能和电池寿命</font>。
 
-回调函数会被传入 DOMHighResTimeStamp 参数，DOMHighResTimeStamp 指示当前被 requestAnimationFrame() 排序的回调函数被触发的时间。在同一个帧中的多个回调函数，它们每一个都会接受到一个相同的时间戳，即使在计算上一个回调函数的工作负载期间已经消耗了一些时间。该时间戳是一个十进制数，单位毫秒，最小精度为 1ms。
+回调函数会被传入 DOMHighResTimeStamp 参数，DOMHighResTimeStamp 指示当前被 `requestAnimationFrame()` 排序的回调函数被触发的时间。在同一个帧中的多个回调函数，它们每一个都会接受到一个相同的时间戳，即使在计算上一个回调函数的工作负载期间已经消耗了一些时间。该时间戳是一个十进制数，单位毫秒，最小精度为 1ms。
 
 **语法**
 
@@ -12496,11 +12496,13 @@ window.requestAnimationFrame() <font color=FF0000>告诉浏览器</font>：你<f
 window.requestAnimationFrame(callback);
 ```
 
-##### 参数
+###### 参数
 
-- **callback：**下一次重绘之前更新动画帧所调用的函数（即上面所说的回调函数）。该回调函数会被传入 DOMHighResTimeStamp 参数，该参数与 performance.now() 的返回值相同，它表示 requestAnimationFrame() 开始去执行回调函数的时刻。
+- **callback：**下一次重绘之前更新动画帧所调用的函数（即上面所说的回调函数）。该回调函数会被传入 DOMHighResTimeStamp 参数，该参数与 `performance.now()` 的返回值相同，它表示 `requestAnimationFrame()` 开始去执行回调函数的时刻。
 
-**返回值：**<font color=FF0000>一个 long 整数，请求 ID ，是回调列表中唯一的标识</font>。是个非零值，没别的意义。你<font color=FF0000>可以传这个值给 window.cancelAnimationFrame() 以取消回调函数</font>。
+###### 返回值
+
+<font color=FF0000>一个 long 整数，请求 ID ，是回调列表中唯一的标识</font>。是个非零值，没别的意义。你<font color=FF0000>可以传这个值给 `window.cancelAnimationFrame()` 以取消回调函数</font>。
 
 摘自：[MDN - window.requestAnimationFrame](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestAnimationFrame)
 
@@ -12508,13 +12510,13 @@ window.requestAnimationFrame(callback);
 >
 > - **CPU 节能：**
 >
->   使用 setInterval 实现的动画，当页面被隐藏或最小化时，setInterval 仍然在后台执行动画任务，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费CPU资源。
+>   使用 setInterval 实现的动画，<font color=red>当页面被隐藏或最小化时，setInterval 仍然在后台执行动画任务</font>，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费 CPU 资源。
 >
->   而 RequestAnimationFrame 则完全不同，当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，因此跟着系统走的 RequestAnimationFrame 也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了 CPU 开销。
+>   而 <font color=dodgerBlue>RequestAnimationFrame 则完全不同</font>：<font color=red>当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停</font>，因此跟着系统走的 RequestAnimationFrame 也会停止渲染，<font color=red>当页面被激活时，动画就从上次停留的地方继续执行，有效节省了 CPU 开销</font>。
 >
-> - **函数<font color=FF0000>节流</font>**：在高频率事件（ resize, scroll 等）中，为了防止在一个刷新间隔内发生多次函数执行，<font color=FF0000>RequestAnimationFrame 可保证每个刷新间隔内，函数只被执行一次</font>。
+> - **函数<font color=FF0000>节流</font>**：在高频率事件（ resize , scroll 等）中，为了防止在一个刷新间隔内发生多次函数执行，<font color=FF0000>RequestAnimationFrame 可保证每个刷新间隔内，函数只被执行一次</font>。
 >
-> - **减少 DOM 操作**：<font color=FF0000>requestAnimationFrame **会把每一帧中的所有 DOM 操作集中起来**，**在一次重绘或回流中完成**</font>；并且重绘或回流的时间间隔会紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+> - **减少 DOM 操作**：<font color=FF0000>requestAnimationFrame **会把每一帧中的所有 DOM 操作集中起来**，**在一次重绘或回流中完成**</font>；并且重绘或回流的时间间隔会紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒 60 帧。
 >
 > 摘自：[「2021」高频前端面试题汇总之CSS篇](https://juejin.cn/post/6905539198107942919)
 
@@ -12524,11 +12526,11 @@ window.requestAnimationFrame(callback);
 
 > 👀 这个函数的作用，老是忘记，可以看下 [[#Event Loop 和 JS 引擎、渲染引擎的关系#requestIdleCallback]] 及它上面的内容，作为背景介绍；有助记忆。
 
-window.requestIdleCallback() 方法<font color=FF0000>插入一个函数</font>，<font color=FF0000>这个函数将在浏览器空闲时期被调用</font>。这<font color=FF0000>使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件</font>，如动画和输入响应。函数一般会按先进先调用的顺序执行，然而，如果回调函数指定了执行超时时间timeout，则有可能为了在超时前执行函数而打乱执行顺序。
+window.requestIdleCallback() 方法<font color=FF0000>插入一个函数</font>，<font color=fuchsia>这个函数将在浏览器空闲时期被调用</font>。这<font color=FF0000>使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件</font>，如动画和输入响应。函数一般会按先进先调用的顺序执行，然而，如果回调函数指定了执行超时时间 timeout，则有可能为了在超时前执行函数而打乱执行顺序。
 
 你可以在空闲回调函数中调用 `requestIdleCallback()` ，以便在下一次通过事件循环之前调度另一个回调。
 
-> 强烈建议使用 timeout 选项进行必要的工作，否则可能会在触发回调之前经过几秒钟。
+> 💡备注：强烈建议使用 timeout 选项进行必要的工作，否则可能会在触发回调之前经过几秒钟。
 
 ##### 语法
 
@@ -12536,13 +12538,15 @@ window.requestIdleCallback() 方法<font color=FF0000>插入一个函数</font>�
 var handle = window.requestIdleCallback(callback[, options])
 ```
 
-**返回值**：一个ID，可以把它传入 `Window.cancelIdleCallback()` 方法来结束回调。
+###### 返回值
 
-**参数**
+一个 ID，可以把它传入 `Window.cancelIdleCallback()` 方法来结束回调。
+
+###### 参数
 
 - **callback：**<font color=FF0000>一个在事件循环空闲时即将被调用的函数的引用</font>。<font color=FF0000>函数会接收到一个名为 IdleDeadline 的参数</font>，<mark>这个参数可以获取当前空闲时间以及回调是否在超时时间前已经执行的状态</mark>
 - **options：**可选，包括可选的配置参数。具有如下属性：
-  - **timeout：**<font color=FF0000>如果指定了timeout，并且有一个正值，而回调在 timeout 毫秒过后还没有被调用，那么回调任务将放入事件循环中排队</font>（注：可以理解为 强制执行），即使这样做有可能对性能产生负面影响
+  - **timeout：**<font color=FF0000>如果指定了 timeout，并且有一个正值，而回调在 timeout 毫秒过后还没有被调用，那么回调任务将放入事件循环中排队</font>，即使这样做有可能对性能产生负面影响
 
 摘自：[MDN - requestIdleCallback](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)
 
