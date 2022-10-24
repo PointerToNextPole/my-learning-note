@@ -858,7 +858,7 @@ checkscope();
 
 6. f 函数执行上下文初始化, 以下跟第 4 步相同：
 
-   1. 复制函数 [[scope]] 属性创建作用域链
+   1. 复制函数 `[[scope]]` 属性创建作用域链
    2. 用 arguments 创建活动对象
    3. 初始化活动对象，即加入形参、函数声明、变量声明
    4. 将活动对象压入 f 作用域链顶端
@@ -940,7 +940,7 @@ ExecutionContext = {
 }
 ```
 
-**注：**这里相当于变相的说明了：<font color=FF0000 size=4>**「执行上下文」是由「词法环境」和「变量环境」所组成的**</font>（<font color=FF0000>至于有没有 this binding 不确定</font>，不过下面的[[#文章《【译】理解 Javascript 执行上下文和执行栈 》的评论区补充]] 中摘抄的第一条评论给出支持的观点；另外，这个不确定，要看 ES 官方文档了）。另外，为什么要划分「词法环境 」和 「变量环境」可参见 [[#文章《JS：深入理解JavaScript-执行上下文》的补充#为什么要有两个词法环境：LexicalEnvironment 和 VariableEnvironment]] 
+> 👀 这里相当于变相的说明了：<font color=FF0000 size=4>**「执行上下文」是由「词法环境」和「变量环境」所组成的**</font>（<font color=FF0000>至于有没有 this binding 不确定</font>，不过下面的[[#文章《【译】理解 Javascript 执行上下文和执行栈 》的评论区补充]] 中摘抄的第一条评论给出支持的观点；另外，这个不确定，要看 ES 官方文档了）。另外，为什么要划分「词法环境 」和 「变量环境」可参见 [[#文章《JS：深入理解JavaScript-执行上下文》的补充#为什么要有两个词法环境：LexicalEnvironment 和 VariableEnvironment]] 
 
 #### 词法环境 LexicalEnvironment
 
@@ -948,9 +948,11 @@ ExecutionContext = {
 
 > 「词法环境」是一种<font color=FF0000>规范类型</font>，基于 ECMAScript 代码的词法嵌套结构来定义标识符与特定变量和函数的关联关系。<font color=FF0000 size=4>「词法环境」由环境记录 ( environment record ) 和可能为空引用 ( null ) 的「外部词法环境」组成</font>。
 
-简而言之，<font color=FF0000>词法环境是一个包含 **「标识符 变量 <font size=4>映射</font>」** 的结构</font>。（这里的<font color=FF0000>**「标识符」**表示 变量 / 函数 的 **名称**</font>，**「变量」**是对 实际对象【包括函数类型对象、数组对象】或原始值的 引用）。**注：**变量是 实际对象 和 原始值 的引用。这里有点不太好断句，附上原文：
+简而言之，<font color=FF0000>词法环境是一个包含 **「标识符 变量 <font size=4>映射</font>」** 的结构</font>。（这里的<font color=FF0000>**「标识符」**表示 变量 / 函数 的 **名称**</font>，**「变量」**是对 实际对象【包括函数类型对象、数组对象】或原始值的 引用）。
 
-> Simply put, A *lexical environment* is a structure that holds **identifier-variable mapping**. (here **identifier** refers to the name of variables/functions, and the **variable** is the reference to actual object [including function object and array object] or primitive value).
+> 👀 变量是 实际对象 和 原始值 的引用。这里有点不太好断句，附上原文：
+>
+> > Simply put, A *lexical environment* is a structure that holds **identifier-variable mapping**. (here **identifier** refers to the name of variables/functions, and the **variable** is the reference to actual object [including function object and array object] or primitive value).
 
 举个例子，假设有如下的代码片段：
 
@@ -1005,9 +1007,9 @@ lexicalEnvironment = {
 
 - **对象环境记录 Object environment record：** 全局代码的「词法环境」包含 一个「对象环境记录」。除了变量和函数声明外，对象环境记录还存储全局绑定对象（浏览器环境下是 window 对象）。因此，每有一个绑定对象的属性（在浏览器环境下，「对象环境记录」包含浏览器向 window 对象提供的 属性 和 方法），就会在「对象环境记录」中创建一个新条目。
 
-  **译文中的总结：**「对象环境记录」用于<font color=FF0000>定义在「全局执行上下文」中出现的 变量 和 函数 的**关联**</font>，<font color=FF0000 size=4>**「全局环境」包含「对象环境记录」**</font>（**注：**注意和上面「声明性环境记录」的对比）。
+  **译文中的总结：**「对象环境记录」用于<font color=FF0000>定义在「全局执行上下文」中出现的 变量 和 函数 的**关联**</font>，<font color=FF0000 size=4>**「全局环境」包含「对象环境记录」**</font>（ 👀 注意和上面「声明性环境记录」的对比）。
 
-**注：**在下面 [[#文章《JS：深入理解JavaScript-词法环境》的补充#词法环境有两个组成部分]] 还提及了 「对象式环境记录」用于 with 和 global 词法环境。另外，[[#文章《JS：深入理解JavaScript-词法环境》的补充#声明式环境记录的两种类型]] 中还提及了 「 声明性环境记录」的两种类型。
+> 👀 在下面 [[#文章《JS：深入理解JavaScript-词法环境》的补充#词法环境有两个组成部分]] 还提及了 「对象式环境记录」用于 with 和 global 词法环境。另外，[[#文章《JS：深入理解JavaScript-词法环境》的补充#声明式环境记录的两种类型]] 中还提及了 「 声明性环境记录」的两种类型。
 
 **注意：**对于函数，环境记录也包含一个 arguments 对象，其中包含着 索引 ( index )和 “传递给函数的实参”的映射，另外还有“实参个数”（即：length）。举个例子，一个下面的函数的 arguments 对象就像这样：
 
@@ -1300,29 +1302,29 @@ VariableEnvironment: {
 
 在 《JS 忍者秘籍》（第二版）5.4.2 中：
 
-> 无论何时创建函数，都会创建一个与之相关联的词法环境，并存储在名为a \[\[Environment]] 的内部属性上（也就是说无法直接访问或操作）。
+> 无论何时创建函数，都会创建一个与之相关联的词法环境，并存储在名为a `[[Environment]]` 的内部属性上（也就是说无法直接访问或操作）。
 >
-> 无论何时调用函数，都会创建一个新的执行环境，被推入执行上下文栈。此外，还会创建一个与之相关联的词法环境。现在来看最重要的部分：<font color=FF0000>外部环境与新建的词法环境，**JavaScript 引擎 将调用函数的内置 \[\[Environment]] 属性与创建函数时的环境进行关联**</font>。
+> 无论何时调用函数，都会创建一个新的执行环境，被推入执行上下文栈。此外，还会创建一个与之相关联的词法环境。现在来看最重要的部分：<font color=FF0000>外部环境与新建的词法环境，**JavaScript 引擎 将调用函数的内置 `[[Environment]]` 属性与创建函数时的环境进行关联**</font>。
 >
 > 摘自：JavaScript忍者秘籍（第2版）5.4.2
 
 博文 [温故而知新 - 重新认识JavaScript的Closure](https://segmentfault.com/a/1190000039786991) 中有说：
 
-> 规范中关于[FunctionInitialize](https://link.segmentfault.com/?enc=k%2BighkKqljzLwV4Op6%2BqTQ%3D%3D.6dLKKfSD%2F8VuWQYB5UoCPFqpN4auFrWXlVP0Z8WdYkENynL%2FSnenyXgcSbWLOCgLX%2F49E2zETX5JvYltZ5TLfw%3D%3D)，可以看到 “4.Set F.[[Environment]] to Scope.“ ，看下规范关于 \[\[Environment]] 的说明
+> 规范中关于[FunctionInitialize](https://link.segmentfault.com/?enc=k%2BighkKqljzLwV4Op6%2BqTQ%3D%3D.6dLKKfSD%2F8VuWQYB5UoCPFqpN4auFrWXlVP0Z8WdYkENynL%2FSnenyXgcSbWLOCgLX%2F49E2zETX5JvYltZ5TLfw%3D%3D)，可以看到 “4.Set F.\[\[Environment]] to Scope.“ ，看下规范关于 `[[Environment]]` 的说明
 >
 > > | Type                | Description                                                  |
 > > | ------------------- | ------------------------------------------------------------ |
 > > | Lexical Environment | The Lexical Environment that the function was closed over. Used as the outer environment when evaluating the code of the function. |
 
-再者：在 stackoverflow 的问题：[What is the Javascript [[Environment\]] Property?](https://stackoverflow.com/questions/51748127/what-is-the-javascript-environment-property) 中有解答如下：
+再者：在 stackoverflow 的问题：[What is the Javascript \[\[Environment\]] Property?](https://stackoverflow.com/questions/51748127/what-is-the-javascript-environment-property) 中有解答如下：
 
-> Looks like [[Scope]] is an old name for [[Environment]]; [here](http://ecma-international.org/ecma-262/#sec-functioninitialize)
+> Looks like `[[Scope]]` is an old name for `[[Environment]]`; [here](http://ecma-international.org/ecma-262/#sec-functioninitialize)
 >
 > ```js
 > Set F.[[Environment]] to Scope.
 > ```
 >
-> While ES5 docs call it [[Scope]]; [here](https://www.ecma-international.org/ecma-262/5.1/#sec-13.2)
+> While ES5 docs call it `[[Scope]]`; [here](https://www.ecma-international.org/ecma-262/5.1/#sec-13.2)
 >
 > ```js
 > Set the [[Scope]] internal property of F to the value of Scope.
@@ -1332,7 +1334,7 @@ VariableEnvironment: {
 >
 > | Internal Property | **Value Type Domain**                                        | **Value Type Domain**                                        |
 > | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-> | [[Scope]]         | [Lexical Environment](https://262.ecma-international.org/5.1/#sec-10.2) | A [lexical environment](https://262.ecma-international.org/5.1/#sec-10.2) that defines the environment in which a Function object is executed. Of the standard built-in ECMAScript objects, only Function objects implement [[Scope]]. |
+> | `[[Scope]]`       | [Lexical Environment](https://262.ecma-international.org/5.1/#sec-10.2) | A [lexical environment](https://262.ecma-international.org/5.1/#sec-10.2) that defines the environment in which a Function object is executed. Of the standard built-in ECMAScript objects, only Function objects implement `[[Scope]]`. |
 
 
 
@@ -2735,31 +2737,31 @@ getType(Promise.resolve('foo')) // Promise
 
 现在 <font color=FF0000>**不完全一样**</font> 了，至少对于 symbol、bigint 是可以判别的；至于其他的（比如 Date ）就不行了。如下摘自：[MDN - typeof](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/typeof)
 
-> | 型                                              | 结果             |
-> | :---------------------------------------------- | :--------------- |
-> | Undefined                                       | "undefined"      |
-> | Null                                            | "object"         |
-> | Boolean                                         | "boolean"        |
-> | Number                                          | "number"         |
-> | BigInt(ECMAScript 2020 新增)                    | "bigint"         |
-> | String                                          | "string"         |
-> | Symbol (ECMAScript 2015 新增)                   | "symbol"         |
-> | 宿主对象（由 JS 环境提供）                      | *取决于具体实现* |
-> | Function 对象 (按照 ECMA-262 规范实现 [[Call]]) | "function"       |
-> | 其他任何对象                                    | "object"         |
+> | 型                                                 | 结果             |
+> | :------------------------------------------------- | :--------------- |
+> | Undefined                                          | "undefined"      |
+> | Null                                               | "object"         |
+> | Boolean                                            | "boolean"        |
+> | Number                                             | "number"         |
+> | BigInt(ECMAScript 2020 新增)                       | "bigint"         |
+> | String                                             | "string"         |
+> | Symbol (ECMAScript 2015 新增)                      | "symbol"         |
+> | 宿主对象（由 JS 环境提供）                         | *取决于具体实现* |
+> | Function 对象 (按照 ECMA-262 规范实现 `[[Call]]` ) | "function"       |
+> | 其他任何对象                                       | "object"         |
 
 #### Object.prototype.toString
 
 先献上 ES5 规范地址：https://es5.github.io/#x15.2.4.2。
 
-在第 15.2.4.2 节讲的就是 Object.prototype.toString()，为了不误导大家，我先奉上英文版：
+在第 15.2.4.2 节讲的就是 `Object.prototype.toString()`，为了不误导大家，我先奉上英文版：
 
 > When the toString method is called, the following steps are taken:
 
-> 1. If the **this** value is **undefined**, return "**[object Undefined]**".
-> 2. If the **this** value is **null**, return "**[object Null]**".
+> 1. If the **this** value is **undefined**, return "**`[object Undefined]`**".
+> 2. If the **this** value is **null**, return "**`[object Null]`**".
 > 3. Let *O* be the result of calling ToObject passing the **this** value as the argument.
-> 4. Let *class* be the value of the [[Class]] internal property of *O*.
+> 4. Let *class* be the value of the `[[Class]]` internal property of *O*.
 > 5. Return the String value that is the result of concatenating the three Strings "**[object** ", *class*, and "**]**".
 
 凡是规范上加粗或者斜体的，在这里我也加粗或者斜体了，就是要让大家感受原汁原味的规范！
@@ -2776,7 +2778,7 @@ getType(Promise.resolve('foo')) // Promise
 
 3. <font color=FF0000>让 O 成为 ToObject(this) 的结果</font>
 
-4. <font color=FF0000>让 class 成为 O 的内部属性 [[Class]] 的值</font>
+4. <font color=FF0000>让 class 成为 O 的内部属性 `[[Class]]` 的值</font>
 
 5. 最后返回由 "[object " 和 class 和 "]" 三个部分组成的字符串
 
@@ -2789,7 +2791,7 @@ console.log(Object.prototype.toString.call(Math)); // [object Math]
 console.log(Object.prototype.toString.call(JSON)); // [object JSON]
 ```
 
-所以我们可以识别至少 14 种类型，当然我们也可以算出来，[[class]] 属性至少有 12 个。
+所以我们可以识别至少 14 种类型，当然我们也可以算出来，`[[class]]` 属性至少有 12 个。
 
 **注：**还有上面提及的 Symbol 和 BigInt。另外，还有 Promise、Set、Map、weakSet、weakMap、location、history、window（只在浏览器下生效，结果为 '[object Window]' ）、 globalThis（ globalThis 在不同宿主环境的值不同，浏览器下的值为 '[object Window]'，在 Node 中为 '[object global]' ）
 
@@ -2822,7 +2824,7 @@ function type(obj) {
 
 2. **constructor**
 
-   使用  ***.constructor.name** 可以实现判断类型功能（**注：**泛用性没有 toString 好，比如 null、undefined 不可用，arguments 的结果还是 Object。另外，这里的原理是： constructor 是一个函数，Function 有 name 这个属性 ），示例如下：
+   使用  ***`.constructor.name`** 可以实现判断类型功能（ 👀 泛用性没有 toString 好，比如 null、undefined 不可用，arguments 的结果还是 Object。另外，这里的原理是： constructor 是一个函数，Function 有 name 这个属性 ），示例如下：
 
    ```js
    const reg = /abc/

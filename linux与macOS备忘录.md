@@ -1341,7 +1341,7 @@ Linux 文件系统中，有所谓的<font color=red>链接 ( link )</font>，我
 
 
 
-## **Bash**
+## Bash
 
 #### 变量类型
 
@@ -1372,7 +1372,7 @@ echo “$num”  # 结果：3
 
 
 
-#### Bash获取字符串长度
+#### Bash 获取字符串长度
 
 ```bash
 string="abcd"
@@ -1418,17 +1418,17 @@ lengthn=${#array_name[n]}
 
 
 
-#### <font color=FF0000>Bash的注释</font>
+#### Bash的注释
 
-行内注释（Inline comments）：
+##### 行内注释（Inline comments）
 
 ```bash
 # your comments
 ```
 
-注释块（Block comments）：
+##### 注释块（Block comments）
 
-- 方法一：
+###### 方法一
 
   ```bash
   :<<!
@@ -1453,30 +1453,30 @@ lengthn=${#array_name[n]}
   '
   ```
 
-- 方法二：
+###### 方法二
 
-  ```bash
-  if false; then
-  your comments
-  fi
-  ```
+```bash
+if false; then
+your comments
+fi
+```
 
-- 方法三：
+###### 方法三
 
-  ```bash
-  && {
-  your comments
-  }
-  ```
+```bash
+&& {
+your comments
+}
+```
 
 
 摘自：[shell脚本注释方法](https://www.cnblogs.com/Braveliu/p/10855771.html)
 
 
 
-### iTerm2使用
+### iTerm2 使用
 
-#### **快捷键**
+#### 快捷键
 
 - 新建标签：⌘ + t
 

@@ -9,6 +9,7 @@
   参数相当于函数内部的变量（详见 第一题）。<br>
   给参数赋默认值时，是有顺序的，同时也是有类型死区的。（详见 第二题）
 </details>
+
 ##### 函数参数第1题
 
 ```js
@@ -52,6 +53,7 @@ a()
   <summary>点击查看解析</summary>
   <font color=FF0000>给函数多个参数<font size=4>设置默认值实际上跟按顺序定义变量一样</font>，所以<font size=4> 会存在暂时性死区</font></font>的问题，即<mark>前面定义的变量不能引用后面还未定义的变量，而后面的可以访问前面的</mark>。
 </details>
+
 ##### 函数参数第3题
 
 ```js
@@ -195,6 +197,7 @@ var name = 'World'
   <summary>点击查看答案</summary>
   这道题考察的是变量提升的问题，var声明变量时会把变量自动提升到当前作用域顶部，所以函数内的name虽然是在if分支里声明的，但是也会提升到外层，因为和全局的变量name重名，所以访问不到外层的name，最后因为已声明未赋值的变量的值都为undefined，导致if的第一个分支满足条件。
 </details>
+
 ##### 提升第2题
 
 ```js
@@ -220,6 +223,7 @@ console.log(a)
   运行时代码：function getNum() { a = 3 }; var a = undefined; var getNum = undefined; console.log(a); a = 1; getNum = function() { a = 2 }; console.log(a); getNum(); console.log(a);<br>
   另外：根据 《现代JS教程 - 变量作用域，闭包》的说法：<mark>这种行为（函数提升）仅适用于函数声明，而不适用于我们将函数分配给变量的函数表达式，例如 let say = function(name)...</mark>
 </details>
+
 ##### 提升第3题
 
 ```js
@@ -261,6 +265,77 @@ var foo = 1;
 ```
 
 和第一种情况同样的道理，变量提升被忽略。
+
+##### 阅读文章的发现
+
+以下学习自：[在块语句中的函数声明](https://blog.csdn.net/aimingoo/article/details/115270358)
+
+```js
+consol.log(a)
+{
+  console.log(a)
+  function a() {}
+  a = 1; // 如果改成 var a = 1 会怎样？如果不是在块级作用域，而是在全局作用域下，又会怎么样？见下面代码示例
+  a = 2;
+  console.log(a);
+}
+console.log(a);
+```
+
+<details>
+  <summary>查看答案</summary>
+  undefined<br>
+  function a() {}<br>
+  2<br>
+  1<br>
+</details>
+
+<details>
+  <summary>查看解析</summary>
+前两个 console.log(a) ：function a() {} 等价于 var a = function() {}（不过优先级比 a 高），会将定义提升到 top-level，不过初始化会在定义初始化的那个块级作用域最面上。<br>  
+第三个 console.log(a) 则是 a 被 a = 2 覆盖。<br>
+⭐️ 第四个，也是最为重要的
+</details>
+
+###### 代码示例
+
+```js
+// 在块级作用域下，改成 var a = 1
+{
+  function a() {}
+  var a = 1 // 因为函数提升，var a = 1 放在 fn a 下面还是上面，没有区别
+  console.log(a)
+}
+```
+
+```js
+// 在全局作用域下，改成 var a = 1
+function a() {}
+var a = 1 // 同样，因为函数提升，var a = 1 放在 fn a 下面还是上面，没有区别
+console.log(a)
+```
+
+***
+
+###### 另一题
+
+```js
+var a = 0
+
+console.log(a) 
+
+{
+  a = 2
+  function a() {}
+  a = 3
+  function a() {}
+  a = 4
+}
+
+console.log(a)
+```
+
+// TODO 没搞懂，为什么是这个结果
 
 
 
@@ -442,6 +517,7 @@ console.log( Object.assign([1, 2, 3], [4, 5]) )
   <summary>点击查看解析</summary>
   是不是从来没有用assign方法合并过数组？<font color=FF0000>assign方法可以用于处理数组，不过会把数组视为对象</font>，比如<font color=FF0000 size=4>这里会把目标数组视为是属性为0、1、2的对象</font>，<font color=FF0000>所以源数组的0、1属性的值覆盖了目标对象的值</font>。
 </details>
+
 ##### 赋值第3题
 
 ```js
@@ -465,6 +541,7 @@ console.log(Object.assign(obj, obj1))
   <summary>点击查看解析</summary>
   这道题很简单，因为 <font color=FF0000>assign 方法执行的是 浅拷贝</font>，所以源对象的a属性会直接覆盖目标对象的 a 属性。
 </details>
+
 ##### 赋值第4题
 
 ```js
@@ -606,6 +683,7 @@ a()
   <summary>点击查看解析</summary>
   这道题考察的是作用域的问题，<font color=FF0000>作用域其实就是一套变量的查找规则</font>，<font color=FF0000 size=4><strong>每个函数在执行时都会创建一个执行上下文，其中会关联一个变量对象，也就是它的作用域，上面保存着该函数能访问的所有变量</strong></font><mark>（<strong>注：</strong>这里的作用域链很重要，在笔记的其他地方也有提及）</mark>，另外，<font color=FF0000 size=4><strong>上下文中的代码在执行时还会创建一个作用域链，如果某个标识符在当前作用域中没有找到，会沿着外层作用域继续查找，直到最顶端的全局作用域</strong></font>，因为 <font color=FF0000 size=4><strong>js 是词法作用域，（标识符）在写代码阶段作用域就已经确定了，换句话说，是在函数定义的时候确定的，而不是执行的时候</strong></font>，所以a函数是在全局作用域中定义的，虽然在 b 函数内调用，但是它只能访问到全局的作用域而不能访问到 b 函数的作用域。
 </details>
+
 ##### 闭包第2题
 
 ```js
@@ -660,6 +738,7 @@ console.log(5)
 <details>
   <summary>点击查看解析</summary>
 </details>
+
 ##### 事件队列第2题
 
 ```js
@@ -947,3 +1026,61 @@ console.log("scripts end");
   这题 6 和 7 的顺序总是会反掉。
   这题的重点是 async1 end 的 async () => await () => await xxx ；有两层 promise，要多等一轮微任务。所以，会比 promise2 执行晚。
 </details>
+```js
+const promise1= new Promise((resolve,reject)=>{
+  console.log('promise1');
+  setTimeout(()=> {
+    resolve('success promise1')
+  })
+})
+
+const promise2 = promise1.then(() => {
+  console.log('success promise2');
+  return 666;
+})
+
+const promise3 = promise2.then(res => {
+  console.log('success promise3:', res);
+  return Promise.resolve(818);
+  
+})
+
+promise3.then((res) => {
+  console.log('success promise4:',res);
+})
+
+setTimeout(()=> {
+  console.log('timer duration=10')
+}, 10)
+
+setTimeout(()=> {
+  console.log('timer duration=0')
+}, 0)
+
+console.log('just test')
+```
+
+这题做对了，不过还是有点不太确定。详见 [宏任务，微任务中setTimeout和promise.then的执行顺序](https://www.jianshu.com/p/82d47214e38b) 
+
+```js
+Promise.resolve().then(() => {
+    console.log(0);
+    return Promise.resolve(4);
+}).then((res) => {
+    console.log(res)
+})
+
+Promise.resolve().then(() => {
+    console.log(1);
+}).then(() => {
+    console.log(2);
+}).then(() => {
+    console.log(3);
+}).then(() => {
+    console.log(5);
+}).then(() =>{
+    console.log(6);
+})
+```
+
+详见：[从一道让我失眠的 Promise 面试题开始，深入分析 Promise 实现细节](https://juejin.cn/post/6945319439772434469)

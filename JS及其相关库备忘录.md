@@ -3334,7 +3334,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                     
+  >                                                                                                                                                                                                       
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3353,7 +3353,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                     
+  >                                                                                                                                                                                                       
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -15126,13 +15126,15 @@ onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'').replace('.','$#$').
 />
 ```
 
-**注意：**该表达式似乎无法限制最后一个字符的输入，需要将结果使用parseFloat处理
+> ⚠️ 注意：该表达式无法限制最后一个字符的输入，需要将结果使用 parseFloat   处理
 
 ##### 限制输入框输入的只能是数量（非负整数）
 
 ```js
 onkeyup="value=value.replace(/[^\d]/g,'')"
 ```
+
+> ⚠️ 注意：和上面的类似，需要将结果使用 parseInt 处理。
 
 
 

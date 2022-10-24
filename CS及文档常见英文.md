@@ -192,7 +192,9 @@
 
 - **histogram**：直方图
 
-- **omnibox**：地址栏
+- **omnibox**：地址栏。
+
+  > 👀 百度翻译的结果是 “地址栏”，但 苹果和谷歌的翻译 都给出的都不是 “地址栏”，原因参见 [[Web相关#关于 Omnibox]]
 
 - **ultimate**：一般的含义是 “最终的，最后的”。不过这里要注意的是，还有 “基本的” 的意思。来自：“The `Compiler` is **ultimately** a function which performs bare minimum functionality to keep a lifecycle running.”
 
@@ -317,18 +319,31 @@
 - **notify** ：通知 ( verb) ，notification 的动词形式
 
 - **afterthought** ：回想 👀 虽然但是，不该猜不出意思
+
 - **foreground** ：前景。在 [微信官方文档 - 小程序 - 框架接口 / 页面 / 页面生命周期](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/page-life-cycle.html) 中看到的 “set to foreground ”，应该有 前一个页面的意思。另外，它的反义词是 background
+
 - **mitigate** ：缓解
+
 - **squash** ：压碎，压缩。这个意思一般和 `git rebase` 和 `git merge` 相关
+
 - **in a nutshell** ：简而言之
+
 - **recipes** ：食谱
+
 - **characterize** ：描述、表征 ( verb )
+
 - **peculiar** ：特有的、奇怪的
+
 - **intricacy** ：错综复杂（的事物）
+
 - **react** ：反应 ( verb ) 👀 这个不应该忘记的...
+
 - **deviate** ：偏离。一般使用：deviate from
+
 - **canonical** ：权威性的。比较常见的用在 `<link rel="canonical">` 和 CNAME record ( Canonical Name Record )
+
 - **typo** ：打字错误
+
 - **eavesdrop** ：窃听。eaves 屋檐。eavesdropper 窃听者。
 
 

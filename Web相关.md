@@ -2973,8 +2973,6 @@ Apple 官网喜欢用用户滚动页面 实现 播放视频（动画）效果，
 
 - `chrome://network-errors/`：网络错误列表
 
-- `chrome://omnibox/`：地址栏设置
-
 - `chrome://system/`：系统信息
 
 - `chrome://bookmarks/`：书签
@@ -2989,7 +2987,21 @@ Apple 官网喜欢用用户滚动页面 实现 播放视频（动画）效果，
 
 - `chrome://print/`：调用打印组件
 
-- `chrome://predictors/`：浏览器的地址栏( Omnibox ) 的预测器，可以根据用户输入提前做 pre-fetch、pre-render、preload；该链接显示相关预测的信息。相关内容可参考 [Mac 平台的 Chrome 比 Safari 性能更好吗？为什么用的人那么多？ - 李熠的回答 - 知乎](https://www.zhihu.com/question/24541628/answer/28168760)
+- `chrome://predictors/`：浏览器的地址栏 ( Omnibox ) 的预测器，可以根据用户输入提前做 pre-fetch、pre-render、preload；该链接显示相关预测的信息。相关内容可参考 [Mac 平台的 Chrome 比 Safari 性能更好吗？为什么用的人那么多？ - 李熠的回答 - 知乎](https://www.zhihu.com/question/24541628/answer/28168760)
+
+- `chrome://omnibox/`：地址栏设置
+
+  ###### 关于 Omnibox
+
+  omnibox 本意不是 “地址栏”，它只是：Chrome 的地址栏代号是 Omnibox。详见下面：
+
+  > Chrome 的地址栏代号是 Omnibox，omni 是万能、全能的词根，Omnibox 就是全能盒子的意思。在 2008 年 Chrome 发布的时候，其它浏览器都是在一个长的地址栏右侧有个短的搜索框，Omnibox 把搜索和网址输入合二为一是当时一个大的创新。
+  >
+  > Omnibox 是个很复杂的东西，远比我们用户想的要复杂，Chrome 就自带一个给他们的开发者调试用的页面，chrome://omnibox：
+  >
+  > ![img](https://pic3.zhimg.com/v2-ba1a9d1c59e5e2103fdbfac92aab4999_r.jpg)
+  >
+  > 摘自：[Chrome 是怎么判断地址栏输入的东西是不是网址? - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/560616439/answer/2722866208)
 
 - `chrome://crashes/`：浏览器崩溃历史
 
