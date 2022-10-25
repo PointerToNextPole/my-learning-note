@@ -37,7 +37,7 @@
 
    > 👀 注：感觉是先在 ***from 空间*** 中随意使用空间，当空间不足（无法放下一个新的任务）时，再进行整理并放入 ***to 空间*** 
 
-3. 复制完成后，将 ***from*** 和 ***to*** 空间互换。
+3. 复制完成后，<font color=fuchsia>将 ***from*** 和 ***to*** 空间互换</font>。
 
 <img src="https://s2.loli.net/2022/04/01/RAK8wbHrWIdkl3j.png" alt="图片" style="zoom:70%;" />
 
@@ -117,7 +117,7 @@ JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，
 
 <font color=FF0000>***新生代*** 用于 **存放生存时间短的对象**，大多数新创建的小的对象都会被分配到该区域，该区域的垃圾回收会比较频繁</font>。
 
-在 ***新生代*** 中，引擎使用 Scavenge 算法 ( https://v8.dev/blog/trash-talk ) 进行垃圾回收，<font color=FF0000>即上面提到的 ***复制算法***</font>。
+在 ***新生代*** 中，引擎使用 Scavenge 算法 ( https://v8.dev/blog/trash-talk ) 进行垃圾回收，<font color=FF0000>即上面提到的 ***复制算法***</font>。参见 [[#V8 GC 补充#新生代]]
 
 <font color=LightSeaGreen>其将 ***新生代*** 空间对半分为 ***from-space*** 和 ***to-space*** 两个区域</font>。新创建的对象都被存放到 ***from-space*** ，<font color=red>当空间快被写满时触发垃圾回收</font>。先对 ***from-space*** 中的对象进行标记，完成后将标记对象复制到 ***to-space*** 的一端，然后将两个区域角色反转，就完成了回收操作
 
@@ -146,7 +146,7 @@ JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，
 
 - **新生代** ( new_space ) ：大多数的对象开始都会被分配在这里，这个区域相对较小但是垃圾回收特别频繁，<font color=red>该区域被分为两半，一半用来分配内存，另一半用于在垃圾回收时将需要保留的对象复制过来</font>。
 - **老生代** ( old_space ) ：<font color=red>新生代中的对象在存活一段时间后就会被转移到老生代内存区</font>，相对于新生代该内存区域的垃圾回收频率较低。<font color=fuchsia>老生代又分为 **老生代指针区** 和 **老生代数据区**</font>，前者包含大多数可能存在指向其他对象的指针的对象，后者只保存原始数据对象，这些对象没有指向其他对象的指针。
-- **大对象区** ( large_object_space ) ：存放体积超越其他区域大小的对象，每个对象都会有自己的内存，<font color=red>垃圾回收不会移动大对象区</font>。
+- **大对象区** ( large_object_space ) ：<font color=LightSeaGreen>存放体积超越其他区域大小的对象，每个对象都会有自己的内存</font>，<font color=red>垃圾回收不会移动大对象区</font>。
 - **代码区** ( code_space ) ：<font color=red>代码对象，会被分配在这里</font>，唯一拥有执行权限的内存区域。
 - **map 区** ( map_space ) ：<font color=red>存放 Cell 和 Map</font> ，每个区域都是存放相同大小的元素，结构简单
 
@@ -154,11 +154,36 @@ JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，
 
 <img src="https://s2.loli.net/2022/10/13/k5vlSTQYcrLBI36.jpg" alt="img" style="zoom:75%;" />
 
-上图中的带斜纹的区域代表暂未使用的内存。
+上图中的带斜纹的区域代表暂未使用的内存。新生代 ( new_space ) 被划分为了两个部分：其中一部分叫做 inactive new space，表示暂未激活的内存区域，另一部分为激活状态
 
 ##### 新生代
 
-新生代内存是由两个 semispace（ 半空间 ）构成的，内存最大值在 64位系统 和 32位系统 上分别为 32MB 和 16MB。在新生代的垃圾回收过程中主要采用了 Scavenge 算法。
+新生代内存是 <font color=red>**由两个 semispace（ 半空间 ）构成**</font>的，内存最大值在 64位系统 和 32位系统 上分别为 32MB 和 16MB。<font color=red>在新生代的垃圾回收过程中主要采用了 Scavenge 算法</font>。Scavenge 算法是一种典型的牺牲空间换取时间的算法。
+
+> <font color=red>在 Scavenge 算法的具体实现中，主要采用了 Cheney 算法</font>。它将新生代内存一分为二，每一个部分的空间称为 semispace ，也就是上图中 new_space 中划分的两个区域，其中处于激活状态的区域我们称为 From 空间，未激活 ( inactive new space ) 的区域我们称为 To 空间。这两个空间中，始终只有一个处于使用状态，另一个处于闲置状态。我们的程序中声明的对象首先会被分配到 From 空间，当进行垃圾回收时，如果 From 空间中尚有存活对象，则会被复制到 To 空间进行保存，非存活的对象会被自动回收。当复制完成后，From 空间和 To 空间完成一次角色互换，To 空间会变为新的 From 空间，原来的 From 空间则变为 To 空间
+
+Scavenge 算法的垃圾回收过程主要就是将存活对象在 From 空间和 To 空间之间进行复制，同时完成两个空间之间的角色互换，因此该算法的缺点也比较明显，浪费了一半的内存用于复制。
+
+##### 对象晋升
+
+<font color=red>当一个对象在 **经过多次复制之后** 依旧存活</font>，<font color=red>那么它会被认为是一个生命周期较长的对象</font>，<font color=fuchsia>在下一次进行垃圾回收时，该对象会被直接转移到老生代中</font>，这种对象从新生代转移到老生代的过程我们称之为 “晋升”。
+
+> 👀 上面的 “经过多次复制” 意思应该是“达到年龄阈值” ？，不过下面的解释完全没有说到多次复制（还是说“年龄阈值”为1？），搜“V8 GC 年龄阈值” 也搜不到相关内容；这里，没搞懂 ⚠️
+
+<font color=dodgerBlue>对象晋升的条件主要有以下两个：</font>
+
+- 对象是否经历过一次 Scavenge 算法
+- To 空间的内存占比是否已经超过 25%（👀 这里的 25% 是内存占用达到的阈值）
+
+<font color=fuchsia>默认情况下，我们 **创建的对象都会分配在 From 空间中**</font>。当进行垃圾回收时，在将对象从 From 空间复制到 To 空间之前，会先检查该对象的内存地址来判断是否已经经历过一次 Scavenge 算法，如果地址已经发生变动则会将该对象转移到老生代中，不会再被复制到 To 空间，可以用以下的流程图来表示：
+
+<img src="https://s2.loli.net/2022/10/25/SNMrXHWltJwabd7.png" alt="img" style="zoom:75%;" />
+
+如果对象没有经历过 Scavenge 算法，会被复制到 To 空间，但是如果此时 To 空间的内存占比已经超过 25%，则该对象依旧会被转移到老生代，如下图所示:
+
+<img src="https://s2.loli.net/2022/10/25/I5Hz8yuG3j7gtYh.png" alt="img" style="zoom:75%;" />
+
+之所以有 25% 的内存限制是因为 To 空间在经历过一次 Scavenge 算法后会和 From 空间完成角色互换，会变为 From 空间，后续的内存分配都是在 From 空间中进行的，如果内存使用过高甚至溢出，则会影响后续对象的分配，因此超过这个限制之后对象会被直接转移到老生代来进行管理。
 
 摘自：[一文搞懂V8引擎的垃圾回收](https://juejin.cn/post/6844904016325902344)
 
@@ -272,7 +297,7 @@ process.memoryUsage(); // heapUsed: 4808064 ≈ 4.6M
 node --expose-gc node-gc.js # 👀 注意 --expose-gc 必需放在 js 文件名前
 ```
 
-> 👀 注：要查看运行结果可以在 `process.memoryUsage();` 外面包裹一层 `console.log()` 。打印结果为：
+> 👀 注：要查看运行结果可以在 `process.memoryUsage()` 外面包裹一层 `console.log()` 。打印结果为：
 
 ```js
 { rss: 27213824, heapTotal: 6070272, heapUsed: 3503776, external: 447189, arrayBuffers: 10430 }

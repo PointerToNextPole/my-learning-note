@@ -346,6 +346,8 @@
 
 - **eavesdrop** ：窃听。eaves 屋檐。eavesdropper 窃听者。
 
+- **throughput** ：吞吐量
+
 
 
 #### 术语的英文
