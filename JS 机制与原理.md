@@ -140,6 +140,8 @@ JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，
 
 #### V8 GC 补充
 
+GC 与 JS 互斥 
+
 ##### V8 堆结构组成
 
 在 V8 引擎的堆结构组成中，<font color=dodgerBlue>除了 “新生代” 和 “老生代” 外，还包含其他几个部分</font>，但是<font color=LightSeaGreen>垃圾回收的过程主要出现在新生代和老生代</font>，所以<font color=LightSeaGreen>对于其他的部分没必要做太多的深入</font>，有兴趣的小伙伴儿可以查阅下相关资料；<font color=dodgerBlue>V8 的内存结构主要由以下几个部分组成</font>：
@@ -160,7 +162,15 @@ JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，
 
 新生代内存是 <font color=red>**由两个 semispace（ 半空间 ）构成**</font>的，内存最大值在 64位系统 和 32位系统 上分别为 32MB 和 16MB。<font color=red>在新生代的垃圾回收过程中主要采用了 Scavenge 算法</font>。Scavenge 算法是一种典型的牺牲空间换取时间的算法。
 
-> <font color=red>在 Scavenge 算法的具体实现中，主要采用了 Cheney 算法</font>。它将新生代内存一分为二，每一个部分的空间称为 semispace ，也就是上图中 new_space 中划分的两个区域，其中处于激活状态的区域我们称为 From 空间，未激活 ( inactive new space ) 的区域我们称为 To 空间。这两个空间中，始终只有一个处于使用状态，另一个处于闲置状态。我们的程序中声明的对象首先会被分配到 From 空间，当进行垃圾回收时，如果 From 空间中尚有存活对象，则会被复制到 To 空间进行保存，非存活的对象会被自动回收。当复制完成后，From 空间和 To 空间完成一次角色互换，To 空间会变为新的 From 空间，原来的 From 空间则变为 To 空间
+> 💡 **原文部分摘抄**
+>
+> <font color=red>在 Scavenge 算法的具体实现中，主要采用了 Cheney 算法</font>。它将新生代内存一分为二，每一个部分的空间称为 semispace ，也就是上图中 new_space 中划分的两个区域，其中处于激活状态的区域我们称为 From 空间，未激活 ( inactive new space ) 的区域我们称为 To 空间。这两个空间中，始终只有一个处于使用状态，另一个处于闲置状态。我们的程序中声明的对象首先会被分配到 From 空间，当进行垃圾回收时，如果 From 空间中尚有存活对象，则会被复制到 To 空间进行保存，非存活的对象会被自动回收。当复制完成后，From 空间和 To 空间完成一次角色互换，To 空间会变为新的 From 空间，原来的 From 空间则变为 To 空间。
+
+> 为了确保 JS 的正常执行，GC 和 JS 执行不能并行执行，因此选择了类似于共享 CPU 时间片的执行方式，将 GC 和 JS 交替执行。
+>
+> ![这里写图片描述](https://s2.loli.net/2022/10/26/EXnhHmrfR6YAxTy.png)
+>
+> 摘自：[v8 GC机制](https://www.cnblogs.com/coderL/p/7941914.html)
 
 Scavenge 算法的垃圾回收过程主要就是将存活对象在 From 空间和 To 空间之间进行复制，同时完成两个空间之间的角色互换，因此该算法的缺点也比较明显，浪费了一半的内存用于复制。
 
@@ -185,13 +195,79 @@ Scavenge 算法的垃圾回收过程主要就是将存活对象在 From 空间�
 
 之所以有 25% 的内存限制是因为 To 空间在经历过一次 Scavenge 算法后会和 From 空间完成角色互换，会变为 From 空间，后续的内存分配都是在 From 空间中进行的，如果内存使用过高甚至溢出，则会影响后续对象的分配，因此超过这个限制之后对象会被直接转移到老生代来进行管理。
 
+##### 老生代
+
+在老生代中，采用新的算法 Mark-Sweep（标记清除）和 Mark-Compact （标记整理）来进行管理。
+
+<font color=dodgerBlue>Mark-Sweep（标记清除）分为 **标记** 和 **清除** 两个阶段</font>：在标记阶段会遍历堆中的所有对象，然后标记活着的对象，在清除阶段中，会将死亡的对象进行清除。<font color=red>Mark-Sweep 算法主要是通过判断某个对象是否可以被访问到，从而知道该对象是否应该被回收</font>，<font color=dodgerBlue>具体步骤如下</font>：
+
+- 垃圾回收器会<font color=fuchsia>在内部构建一个根列表</font>，用于<font color=red>从根节点出发去寻找那些可以被访问到的变量</font>。比如在 JavaScript 中，window 全局对象可以看成一个根节点。
+- 然后，<font color=fuchsia>垃圾回收器从所有根节点出发，遍历其可以访问到的子节点，并将其标记为活动的</font>，<font color=red>根节点不能到达的地方即为非活动的，将会被视为垃圾</font>。
+- 最后，垃圾回收器将会释放所有非活动的内存块，并将其归还给操作系统。
+
+> 以下几种情况都可以作为根节点：
+>
+> 1. 全局对象
+> 2. 本地函数的局部变量和参数
+> 3. 当前嵌套调用链上的其他函数的变量和参数
+
+<img src="https://miro.medium.com/max/1400/1*WVtok3BV0NgU95mpxk9CNg.gif" alt="img" style="zoom:70%;" />
+
+但是 Mark-Sweep 算法存在一个问题：<font color=red>在经历过一次标记清除后，内存空间可能会出现不连续的状态</font>，因为我们所清理的对象的内存地址可能不是连续的，所以就<font color=red>会出现内存碎片的问题</font>，导致后面如果需要分配一个大对象而空闲内存不足以分配，就会提前触发垃圾回收，而这次垃圾回收其实是没必要的，因为我们确实有很多空闲内存，只不过是不连续的。
+
+<font color=dodgerBlue>为了解决这种内存碎片的问题</font>，<font color=red>Mark-Compact（标记整理）算法被提了出来，该算法主要就是用来解决内存的碎片化问题的</font>，<font color=fuchsia>回收过程中将死亡对象清除后，在整理的过程中，会将活动的对象往堆内存的一端进行移动，移动完成后再清理掉边界外的全部内存</font>。
+
+<font color=red>由于 JS 单线程机制，垃圾回收的过程会阻碍主线程同步任务的执行，待执行完垃圾回收后才会再次恢复执行主任务的逻辑</font>，这种行为被称为 “全停顿” ( stop-the-world ) （ 👀 参考下面的补充）。在标记阶段同样会阻碍主线程的执行，一般来说，老生代会保存大量存活的对象，如果在标记阶段将整个堆内存遍历一遍，那么势必会造成严重的卡顿。
+
+> 垃圾回收本身也是一件非常耗时的操作，假设 V8 的堆内存为 `1.5G`，那么 V8 做一次小的垃圾回收需要 50ms 以上，而做一次非增量式回收甚至需要 1s 以上，可见其耗时之久，而在这 1s 的时间内，浏览器一直处于等待的状态，同时会失去对用户的响应，如果有动画正在运行，也会造成动画卡顿掉帧的情况，严重影响应用程序的性能。因此如果内存使用过高，那么必然会导致垃圾回收的过程缓慢，也就会导致主线程的等待时间越长，浏览器也就越长时间得不到响应。
+
+因此，<font color=dodgerBlue>为了减少垃圾回收带来的停顿时间</font>，<font color=red>V8 引擎又引入了 **Incremental Marking（ 增量标记 ）的概念**，即将原本需要一次性遍历堆内存的操作改为增量标记的方式</font>：<font color=fuchsia>先标记堆内存中的一部分对象，然后暂停，将执行权重新交给 JS 主线程，待主线程任务执行完毕后再从原来暂停标记的地方继续标记，直到标记完整个堆内存</font>。这个理念其实有点像 React 框架中的 Fiber 架构，只有在浏览器的空闲时间才会去遍历 Fiber Tree 执行对应的任务，否则延迟执行，尽可能少地影响主线程的任务，避免应用卡顿，提升应用性能。
+
+> 👀 也有点类似于 requestIdleCallback
+
+得益于增量标记的好处，<font color=red>V8 引擎后续继续引入了 **延迟清理** ( lazy sweeping ) 和 **增量式整理** ( incremental compaction )，让清理和整理的过程也变成增量式的</font>。同时<font color=red>为了充分利用多核 CPU 的性能，也将引入并行标记和并行清理，进一步地减少垃圾回收对主线程的影响</font>，为应用提升更多的性能。
+
+##### 如何避免内存泄漏
+
+###### 尽可能少地创建全局变量
+
+在 ES5 中以 var 声明的方式在全局作用域中创建一个变量时，或者在函数作用域中不以任何声明的方式创建一个变量时，都会无形地挂载到 window 全局对象上，也就无意创建了一个全局变量。
+
+<font color=red>当进行垃圾回收时，在标记阶段因为 window 对象可以作为根节点，在 window 上挂载的属性均可以被访问到</font>，<font color=fuchsia>并将其标记为活动的从而常驻内存，因此也就不会被垃圾回收，只有在整个进程退出时全局作用域才会被销毁</font>。如果你遇到需要必须使用全局变量的场景，那么<font color=red>请保证一定要在全局变量使用完毕后将其设置为 null 从而触发回收机制</font>。
+
+###### 手动清除定时器
+
+使用 setTimeout 或者 setInterval 等定时器的场景，忘记在适当的时间手动清除定时器，那么很有可能就会导致内存泄漏。
+
+###### 少用闭包
+
+详见 [[前端面试点总结#闭包与执行上下文]]
+
+###### 清除 DOM 引用
+
+以往我们在操作DOM元素时，为了避免多次获取DOM元素，我们会将DOM元素存储在一个数据字典中，示例如下：
+
+```javascript
+const elements = { button: document.getElementById('button') };
+
+function removeButton() {
+    document.body.removeChild(document.getElementById('button'));
+}
+```
+
+在这个示例中，我们想调用 `removeButton` 方法来清除 `button` 元素，但是<font color=LightSeaGreen>由于在 `elements` 字典中存在对 `button` 元素的引用，所以即使我们通过 `removeChild` 方法移除了 `button` 元素，它其实还是依旧存储在内存中无法得到释放</font>，<font color=red>只有手动清除对 `button` 元素的引用才会被垃圾回收</font>。
+
+###### 使用弱引用
+
+ES6 中新增了两个数据结构 WeakMap 和 WeakSet，是为了解决内存泄漏的问题而诞生的。其表示弱引用，它的键名所引用的对象均是弱引用，弱引用是指垃圾回收的过程中不会将键名对该对象的引用考虑进去，只要所引用的对象没有其他的引用了，垃圾回收机制就会释放该对象所占用的内存。这也就意味着我们不需要关心WeakMap中键名对其他对象的引用，也不需要手动地进行引用清除。
+
 摘自：[一文搞懂V8引擎的垃圾回收](https://juejin.cn/post/6844904016325902344)
 
 #### 《现代JS教程》中关于 GC 的补充
 
 JavaScript 中主要的内存管理概念是 **可达性**。简而言之，“可达”值 是那些以某种方式可访问或可用的值。它们一定是存储在内存中的。另外：对外引用不重要，只有传入引用才可以使对象可达。
 
-**内部算法：**垃圾回收的基本算法被称为 “mark-and-sweep”（ 👀 即上面所说的 ***标记法***  ）
+**内部算法：**垃圾回收的基本算法被称为 “mark-and-sweep”
 
 **定期执行以下“垃圾回收”步骤：**
 
@@ -294,7 +370,7 @@ process.memoryUsage(); // heapUsed: 4808064 ≈ 4.6M
 ```
 
 ```sh
-node --expose-gc node-gc.js # 👀 注意 --expose-gc 必需放在 js 文件名前
+node --expose-gc node-gc.js # 👀 --expose-gc 表示允许手动执行垃圾回收机制。⚠️ --expose-gc 必需放在 js 文件名前
 ```
 
 > 👀 注：要查看运行结果可以在 `process.memoryUsage()` 外面包裹一层 `console.log()` 。打印结果为：
