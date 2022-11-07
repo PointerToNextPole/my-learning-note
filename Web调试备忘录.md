@@ -41,7 +41,7 @@ These commands only work by entering them directly into the DevTools **Console**
 | <font color=red>\$\$(selector, **startNode**)</font> | <font color=red>Query selector all</font>; returns an <font color=red>array of elements</font> that match the specified CSS selector, <font color=red>like `document.querySelectorAll() `</font> . |
 | $x(path, startNode)                                  | Returns an <font color=red>array of DOM elements</font> that <font color=red>match the specified XPath expression</font>. |
 | clear()                                              | Clears the console of its history.                           |
-| copy(object)                                         | Copies a string representation of the specified object to the clipboard. |
+| <font color=fuchsia>copy(object)</font>              | <font color=fuchsia>Copies a string</font> representation of the specified object <font color=fuchsia>to the clipboard</font>. |
 | debug(function)                                      | When the specified function is called, the debugger is invoked and breaks inside the function on the Sources panel. |
 | dir(object)                                          | Displays an object-style listing of all of the properties for the specified object, <font color=red>like `console.dir()`</font>. |
 | dirxml(object)                                       | <font color=red>Prints an XML representation of the specified object</font>, as displayed in the **Elements** tool, <font color=red>like `console.dirxml()`</font> . |
@@ -279,6 +279,12 @@ queryObjects(Constructor)
 
 > 👀 注：另外，也可以参考 [Chrome Developers - Console Utilities API reference](https://developer.chrome.com/docs/devtools/console/utilities/) ，因为 MS Edge 的有一个总结的表格，所以摘抄的 MS Edge 的文档。
 
+##### Copy
+
+> 👀 在写上面笔记的时候，没注意注意到 `copy` 函数，直到看到文章 [11+ chrome 高级调试技巧，学会效率直接提升 666%](https://juejin.cn/post/7085135692568723492) 
+
+要将控制台中打印的对象发给别人，可以通过 `JSON.stringify(target, null, 2)` 实现（ 👀 这也是上文中说的），但是更简单的方法是使用 `copy(target)` 。
+
 
 
 ## 其他技巧
@@ -342,6 +348,50 @@ Overrides 的作用是为远程脚本存储一份本地副本，并在页面加�
 > <img src="https://s2.loli.net/2022/08/27/pFJuvjHinEUKMP8.gif" alt="img" style="zoom:45%;" />
 
 摘自：[微软产品经理：你不能不知道的6个Web开发者工具](https://mp.weixin.qq.com/s/FMfrl28EoMaasZ5sXsHnjQ)
+
+
+
+#### 《11+ chrome高级调试技巧，学会效率直接提升666%》笔记
+
+##### `$i` 直接在控制台安装 npm 包
+
+你遇到过这个场景吗？有时候想使用比如 `dayjs`  或者 `lodash` 的某个 `API`，但是又不想去官网查，如果可以在控制台直接试出来就好了
+
+[Console Importer](https://chrome.google.com/webstore/detail/console-importer/hgajpakhafplebkdljleajgbpdmplhie/related?utm_source=chrome-ntp-icon) 就是这么一个插件，用来在控制台直接安装 `npm` 包。
+
+1. 安装 `Console Importer` 插件
+
+2. `$i('name')` 安装npm包
+
+3. 如下使用：
+
+   <img src="https://s2.loli.net/2022/11/07/dIW8RTBxrqpMNbw.png" alt="image-20221107212336477" style="zoom:50%;" />
+
+##### ⌘ + ⇧ + P 执行 Command 系列
+
+按下 ⌘ + ⇧ + P 可以唤出 DevTools 的 Command 搜索框，输入与 DevTools 的自动联想，选择想要的命令。下面是一些常见的命令：
+
+###### 截取全屏
+
+输入 `Capture full size screenshot` 按下回车，可实现截取全屏（更确切的说法是“截取当前网页，所有可浏览的部分”）
+
+###### 截取节点
+
+在 Elements 中 选择截取的目标节点，并在 Command 中输入`Capture node screenshot` 并回车，可实现对目标节点进行截取
+
+###### 自由选择截取部分
+
+输入 `Capture area screenshot` ，便可以像截图软件一样，自由选择截取部分。
+
+##### 切换 DevTools 明暗主题
+
+`Switch to dark theme` 或者 `Switch to light theme` 进行主题切换
+
+##### 重新请求接口
+
+
+
+摘自：[11+ chrome高级调试技巧，学会效率直接提升666%](https://juejin.cn/post/7085135692568723492)
 
 
 
