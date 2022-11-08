@@ -389,9 +389,25 @@ Overrides 的作用是为远程脚本存储一份本地副本，并在页面加�
 
 ##### 重新请求接口
 
+重新请求接口，不一定需要刷新界面，也可以在 “ Network ” 中选择想要重新请求的接口，右键选择 “ Replay XHR ”，如下：
+
+<img src="https://s2.loli.net/2022/11/08/cUjLHhsABYbQplN.png" alt="image-20221108013804733" style="zoom:50%;" />
+
+##### 在控制台快速发起请求
+
+和上面类似，不过是选择 “ Copy ” 以及下面的 “ Copy as fetch ”，这时以 fetch 形式实现的 xhr 请求边在系统剪切板中了，可以在 DevTools 中的 Console 进行粘贴与运行
+
+<img src="/Users/yan/Library/Application Support/typora-user-images/image-20221108013914275.png" alt="image-20221108013914275" style="zoom:50%;" />
+
+学习自：[11+ chrome高级调试技巧，学会效率直接提升666%](https://juejin.cn/post/7085135692568723492)
 
 
-摘自：[11+ chrome高级调试技巧，学会效率直接提升666%](https://juejin.cn/post/7085135692568723492)
+
+#### Chrome DevTools 的 Network 用法
+
+
+
+摘自：[Chrome DevTools 的 Network 还能这么用？](https://juejin.cn/post/7159519090229887013)
 
 
 

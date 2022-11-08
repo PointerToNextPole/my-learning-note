@@ -82,7 +82,7 @@
 
 - **walkthrough**：演练
 
-- **casting function**：转型函数。关于翻译，在 [[JS及其相关库备忘录#包装类#JS 中的“原始值包装类型” ( Primitive wrapper types )]] 中有过说明
+- **casting function**：转型函数。👀 关于翻译，在 [[JS及其相关库备忘录#包装类#JS 中的“原始值包装类型” ( Primitive wrapper types )]] 中有过说明
 
 - **DRY**：即：Don't Repeat Yourself 。不重复（原则）
 
@@ -347,6 +347,8 @@
 - **eavesdrop** ：窃听。eaves 屋檐。eavesdropper 窃听者。
 
 - **throughput** ：吞吐量
+
+- **apropos** ：关于。除了这个意思，这也是一个常用的 Linux 命令，用于根据描述搜索 Linux 帮助文档来找到想要的命令。
 
 
 

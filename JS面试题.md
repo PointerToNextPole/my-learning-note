@@ -1026,8 +1026,9 @@ console.log("scripts end");
   这题 6 和 7 的顺序总是会反掉。
   这题的重点是 async1 end 的 async () => await () => await xxx ；有两层 promise，要多等一轮微任务。所以，会比 promise2 执行晚。
 </details>
+
 ```js
-const promise1= new Promise((resolve,reject)=>{
+const promise1 = new Promise((resolve,reject)=>{
   console.log('promise1');
   setTimeout(()=> {
     resolve('success promise1')

@@ -4171,7 +4171,7 @@ Chrome 和 Safari 要求前缀 -webkit- 版本.
   </style>
   ```
   
-  > ⚠️ 注意：<font color=fuchsia>使用 scale 之后，字体会出现位移；所以，需要使用 `translate(-50%, -50%)` 来抵消位移</font>
+  > ⚠️ 注意：<font color=fuchsia>使用 scale 之后，字体会出现位移；所以，需要使用 `translate(-50%, -50%)` 来抵消位移</font>。同时，因为上面的效果仅仅是缩放，会发现字体虽然缩放成功，但是段落宽度缩小了 scaleNum ，所以可以让 `width` 变成先前的 $1/scaleNum$ 倍以抵消效果。
   
 - **skew()**
   

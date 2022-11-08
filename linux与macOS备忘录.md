@@ -497,13 +497,49 @@ rm -rf folderName # -r表示递归，-f表示强行删除
 
 
 
-#### 管道 与 `|`
+#### 管道 与 |
 
-**管道定义：**在类Unix操作系统（以及一些其他借用了这个设计的操作系统，如 Windows）中，管道（英语：Pipeline）是<mark>一系列将标准输入输出<font color=FF0000>**链接**</font>起来的进程</mark>，**<mark>其中每一个<font color=FF0000>进程的输出被直接作为下一个进程的输入</font></mark>**。 <font color=FF0000>每一个链接都由匿名管道实现</font>[来源请求]。管道中的组成元素也被称作过滤程序。
+##### Pipeline 定义
 
-`|` **的用法：**这个特殊的 `|` 字符告诉命令行解释器 ( Shell )**<font color=FF0000>将前一个命令的输出通过“管道”导入到接下来的一行命令作为输入</font>**。
+在 类Unix 操作系统（以及一些其他借用了这个设计的操作系统，如 Windows ）中，<font color=fuchsia>管道 ( Pipeline ) 是一系列 将 <font size=4>**标准输入输出**</font> 链接起来的 <font size=4>**进程**</font></font>，其中<font color=fuchsia>每一个进程的输出被直接作为下一个进程的输入</font>（ 👀 `|` 两边都是进程。如果 `|` 右边改成一个 txt 文件，将会报错，因为它不是一个进程。这也是 `|` 和`>` 一个很大的区别）。 <font color=red>**每一个链接都由匿名管道实现**</font>。管道中的组成元素也被称作过滤程序。
 
-摘自：[wiki - 管道 (Unix)]([https://zh.wikipedia.org/wiki/%E7%AE%A1%E9%81%93_(Unix)](https://zh.wikipedia.org/wiki/管道_(Unix))
+这个概念是由道格拉斯·麦克罗伊为 Unix 命令行发明的，因与物理上的管道相似而得名。
+
+##### | 的用法
+
+这个特殊的 `|` 字符告诉命令行解释器 ( Shell ) <font color=FF0000>**将前一个命令的输出通过“管道”导入到接下来的一行命令作为输入**</font>。
+
+摘自：[wiki - 管道 (Unix)](https://zh.wikipedia.org/wiki/%E7%AE%A1%E9%81%93_(Unix))
+
+
+
+#### 重定向
+
+在计算机领域，**重定向** 是大多数命令行解释器所具有的功能，包括各种可以将标准流重定向用户规定地点的 Unix shells。类 Unix 操作系统的程序可以透过 `dup2(2)` 系统调用完成重定向，或者透过缺少一些灵活性但是更高一级层次的 `freopen(3)` 和 `popen(3)` 来完成。
+
+##### 重定向标准输入输出
+
+重定向一般透过在命令间插入特定的符号来实现。特别的，<font color=dodgerBlue>这些符号的语法如下所示</font>：
+
+```bash
+command1 >file1
+```
+
+上面这个命令执行 `command1` 然后将输出的内容存入 `file1` 。注意<font color=red>任何 `file1` 内的已经存在的内容将被新内容替代</font>（ 👀 覆盖）。如果<font color=fuchsia>要将新内容添加在文件末尾，请使用 `>>` 操作符</font>。
+
+```
+command1 <file1
+```
+
+执行 `command1` ，使用 `file1` 作为用来替代键盘的输入源。
+
+```
+command1  <infile > outfile
+```
+
+同时替换输入和输出，执行 `command1` ，从文件 `infile` 读取内容，然后将输出写入到 `outfile` 中。
+
+摘自：[wiki - 重定向 (计算机)](https://zh.wikipedia.org/wiki/%E9%87%8D%E5%AE%9A%E5%90%91_(%E8%AE%A1%E7%AE%97%E6%9C%BA))
 
 
 
@@ -553,7 +589,7 @@ command1 || command2 [|| command3 ...]
 
 - 一条命令需要独占一个物理行，如果需要将多条命令放在同一行，命令之间使用命令分隔符`;`分隔。执行的效果等同于多个独立的命令单独执行的效果。
 
-- <font color=FF0000>`()` 表示在当前 shell 中**将多个命令作为一个整体执行**</font>。<mark>需要注意的是，使用 `()` 括起来的命令在执行前面都不会切换当前工作目录，也就是说命令组合都是在当前工作目录下被执行的，尽管命令中有切换目录的命令</mark>。
+- <font color=FF0000>`()` 表示在当前 shell 中**将多个命令作为一个整体执行**</font>。<font color=LightSeaGreen>需要注意的是，使用 `()` 括起来的命令在执行前面都不会切换当前工作目录，也就是说命令组合都是在当前工作目录下被执行的，尽管命令中有切换目录的命令</font>。
 
 - 命令组合常和命令执行控制结合起来使用
 
@@ -939,7 +975,7 @@ curl由于可自定义各种请求参数所以在模拟web请求方面更擅长�
 
 #### cat  (concatenate)
 
-cat 命令<font color=FF0000>连接文件并打印到标准输出设备上</font>，cat 经常用来显示文件的内容，类似于下的 type 命令。
+cat 命令<font color=FF0000>连接文件并打印到标准输出设备上</font>，cat 经常用来显示文件的内容，类似于下的 `type` 命令。
 
 注意：当文件较大时，文本在屏幕上迅速闪过（滚屏），用户往往看不清所显示的内容。因此，一般用 more 等命令分屏显示。为了控制滚屏，可以按 Ctrl+S 键，停止滚屏；按 Ctrl+Q 键可以恢复滚屏。按 Ctrl+C（中断）键可以终止该命令的执行，并且返回 Shell 提示符状态。
 
@@ -1100,7 +1136,7 @@ which 指令会在环境变量 `$PATH` 设置的目录里查找符合条件的�
 
 #### type 命令
 
-The **type** command <font color=fuchsia>is used to describe how its argument would be translated **if used as commands**</font>. It is <font color=red>also used to find out whether it is built-in or external binary file</font>.
+The **`type`** command <font color=fuchsia>is used to describe how its argument would be translated **if used as commands**</font>. It is <font color=red>also used to find out whether it is built-in or external binary file</font>.
 
 ##### Syntax
 
@@ -1131,6 +1167,12 @@ type [Options] command-names
   ![img](https://s2.loli.net/2022/08/28/Ub17scxIHXZwtTL.png)
 
 摘自：[type command in Linux with Examples](https://www.geeksforgeeks.org/type-command-in-linux-with-examples/)
+
+> 💡 **补充**
+>
+> 你可以用 `type 命令` 来判断这个命令到底是可执行文件、shell 内置命令还是别名。
+>
+> 摘自：[the-art-of-command-line / 命令行的艺术](https://github.com/jlevy/the-art-of-command-line)
 
 
 
