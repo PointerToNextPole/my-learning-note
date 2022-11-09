@@ -3334,7 +3334,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                       
+  >                                                                                                                                                                                                         
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3353,7 +3353,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                       
+  >                                                                                                                                                                                                         
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -12779,7 +12779,7 @@ expr1, expr2, expr3...
 
 ##### 描述
 
-当你想要在<mark>期望一个表达式的位置包含多个表达式时，可以使用逗号操作符</mark>。<font color=FF0000>这个操作符最常用的一种情况是：for 循环中提供多个参数</font>
+当你想要在<font color=LightSeaGreen>期望一个表达式的位置包含多个表达式时，可以使用逗号操作符</font>。<font color=FF0000>这个操作符最常用的一种情况是：for 循环中提供多个参数</font>
 
 摘自：[MDN - 逗号操作符](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Comma_Operator)
 
@@ -12795,17 +12795,36 @@ expr1, expr2, expr3...
 > 这只是一个简单的示例，正常在项目中使用的情况，比如：要通过数组的 map 返回一个对象数组，在 map 返回对象数组中的“定义对象”中，可能需要打印出某个属性的值或类型；而在对象定义中显然不可能“直接执行”一个函数，所以可以通过 “逗号操作符” 实现，只执行函数，返回值交给 “逗号操作符” 表达式中的最后一个元素。
 >
 > 另外，在 vue template 中的插值表达式内，也可以进行类似的操作。
+>
+> 最后，在 Vue 官方的 [示例 - 带有排序和过滤器的网格](https://cn.vuejs.org/examples/#grid) 中也有用例：
+>
+> ```js
+> const sortOrders = ref(
+>   props.columns.reduce((o, key) => ((o[key] = 1), o), {})
+> )
+> ```
+>
+> 这相当于是返回以每一个数组元素为 key ，value 为 1 的对象。测试如下：
+>
+> ```js
+> const col = ['name', 'power']
+> 
+> const res = col.reduce((o, key) => ((o[key] = 1), o), {})
+> console.log(res) // { name: 1, power: 1 }
+> ```
+
+
 
 
 #### 尾后逗号
 
-<mark>尾后逗号 （有时叫做“终止逗号”）在向 JavaScript 代码添加元素、参数、属性时十分有用</mark>。<font color=FF0000>如果你想要添加新的属性，并且上一行已经使用了尾后逗号，你可以仅仅添加新的一行，而不需要修改上一行。这使得版本控制的代码比较（diff）更加清晰，代码编辑过程中遇到的麻烦更少</font>。
+<font color=LightSeaGreen>尾后逗号 （有时叫做“终止逗号”）在向 JavaScript 代码添加元素、参数、属性时十分有用</font>。<font color=FF0000>如果你想要添加新的属性，并且上一行已经使用了尾后逗号，你可以仅仅添加新的一行，而不需要修改上一行。这使得版本控制的代码比较（diff）更加清晰，代码编辑过程中遇到的麻烦更少</font>。
 
 JavaScript 一开始就支持数组字面量中的尾后逗号，随后向对象字面量（ECMAScript 5）中添加了尾后逗号。最近<font color=FF0000>（ECMAScript 2017），又将其添加到**函数参数**中</font>。
 
 但是，<font color=FF0000>**JSON 不允许尾后逗号**</font>。对象中的尾后逗号仅仅在 ECMAScript 5 中引入。由于 JSON 基于 ES5 之前的语法， JSON 中并不允许尾后逗号。
 
-JavaScript 忽略数组中的尾后逗号。<font color=FF0000>**如果使用了多于一个尾后逗号，会产生省略**</font>（elision，或者间隙 hole）。 <mark>带有间隙的数组叫做稀疏数组（sparse 紧凑数组 dense array 没有省略/间隙）</mark>。 例如，当使用 Array.prototype.forEach() 或 Array.prototype.map() 迭代数组时，会跳过数组间隙。
+JavaScript 忽略数组中的尾后逗号。<font color=FF0000>**如果使用了多于一个尾后逗号，会产生省略**</font>（elision，或者间隙 hole）。 <font color=LightSeaGreen>带有间隙的数组叫做稀疏数组（sparse 紧凑数组 dense array 没有省略/间隙）</font>。 例如，当使用 Array.prototype.forEach() 或 Array.prototype.map() 迭代数组时，会跳过数组间隙。
 
 ```js
 var arr = [1, 2, 3,,,];
@@ -12843,7 +12862,7 @@ const hugeBin = BigInt("0b11111111111111111111111111111111111111111111111111111"
 
 它在某些方面类似于 Number ，但是也有几个关键的不同点：<font color=FF0000>**不能用于 Math 对象中的方法；不能和任何 Number 实例混合运算，两者必须转换成同一种类型**。在两种类型来回转换时要小心，因为 BigInt 变量在转换成 Number 变量时可能会丢失精度</font>。
 
-<mark>使用 typeof 测试时， BigInt 对象返回 "bigint" </mark>
+<font color=LightSeaGreen>使用 typeof 测试时， BigInt 对象返回 "bigint" </font>
 
 **运算：**
 
