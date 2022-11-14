@@ -18,6 +18,8 @@
 
 - **on the fly**：即时，在运行时（热更新）。参考：[如何优雅的翻译 on the fly ？ - 知乎](https://www.zhihu.com/question/21136587)
 
+- **day-to-day** ：日常
+
 - **pros and cons**：利弊
 
 - **overhead**：开销（和性能相关）
@@ -349,6 +351,14 @@
 - **throughput** ：吞吐量
 
 - **apropos** ：关于。除了这个意思，这也是一个常用的 Linux 命令，用于根据描述搜索 Linux 帮助文档来找到想要的命令。
+
+- **turnary** ：三元运算符 `expr ? :`
+
+- **doodle** ：涂鸦
+
+- **formula** ：公式
+
+- **from scratch** ：从头做起。👀 其中，scratch 的意思是 “划痕”。
 
 
 

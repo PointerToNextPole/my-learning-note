@@ -1518,21 +1518,21 @@ arr4.flat(Infinity); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 <font color=FF0000>flatMap() 方法首先使用映射函数映射每个元素，**然后将结果压缩成一个新数组**</font>。<font color=FF0000>它与 map 连着深度值为1的 flat 几乎相同</font>，但 flatMap 通常在合并成一种方法的效率稍微高一些。
 
-- **语法**
+##### 语法
 
-  ```js
-  var new_array = arr.flatMap(function callback(currentValue[, index[, array]]) {
-      // return element for new_array
-  }[, thisArg])
-  ```
+```js
+var new_array = arr.flatMap(function callback(currentValue[, index[, array]]) {
+    // return element for new_array
+}[, thisArg])
+```
 
-- **参数（与Array.prototype.map()一致）**
+**参数（与 Array.prototype.map() 一致）**
 
-  - **callback：**可以生成一个新数组中的元素的函数，可以传入三个参数：
-    - **currentValue：**当前正在数组中处理的元素
-    - **index：**<font color=FF0000>可选</font>，数组中正在处理的当前元素的索引。
-    - **array：**<font color=FF0000>可选</font>，被调用的 map 数组
-  - **thisArg：**<font color=FF0000>可选</font>，执行 callback 函数时 使用的this 值。
+- **callback：**可以生成一个新数组中的元素的函数，可以传入三个参数：
+  - **currentValue：**当前正在数组中处理的元素
+  - **index：**<font color=FF0000>可选</font>，数组中正在处理的当前元素的索引。
+  - **array：**<font color=FF0000>可选</font>，被调用的 map 数组
+- **thisArg：**<font color=FF0000>可选</font>，执行 callback 函数时 使用的this 值。
 
 - **返回值：** 一个新的数组，其中每个元素都是回调函数的结果，并且结构深度 depth 值为1。
 
@@ -1552,7 +1552,7 @@ let arr = ["科比 詹姆斯 安东尼", "利拉德 罗斯 麦科勒姆"];
 [ '科比', '詹姆斯', '安东尼', '利拉德', '罗斯', '麦科勒姆' ]
 ```
 
-第一时间想到map + flat
+第一时间想到 map + flat
 
 ```js
 console.log(arr.map(x => x.split(" ")).flat());
@@ -1567,6 +1567,120 @@ console.log(arr.flatMap(x => x.split(" ")));
 ```
 
 摘自：[基础很好？总结了38个ES6-ES12的开发技巧，倒要看看你能拿几分？🐶](https://juejin.cn/post/6995334897065787422)
+
+
+
+#### 数组的空位
+
+数组的空位指的是：<font color=red>数组的某一个位置没有任何值</font>，比如 `Array()` 构造函数返回的数组都是空位。
+
+```javascript
+Array(3) // [, , ,]
+```
+
+上面代码中，`Array(3)` 返回一个具有 3 个空位的数组。
+
+注意，<font color=fuchsia>空位不是 `undefined` ，某一个位置的值等于 `undefined` ，依然是有值的。空位是没有任何值</font>，<font color=red>`in` 运算符可以说明这一点</font>。
+
+```javascript
+0 in [undefined, undefined, undefined] // true
+0 in [, , ,] // false
+```
+
+上面代码说明，第一个数组的 0 号位置是有值的，第二个数组的 0 号位置没有值。
+
+<font color=dodgerBlue>**ES5 对空位的处理，已经很不一致了，大多数情况下会忽略空位**</font>。
+
+- `forEach()` , `filter()` , `reduce()` , `every()` 和 `some()` 都会跳过空位。
+- <font color=red>`map()` 会跳过空位，但会保留这个值</font>
+- `join()` 和 `toString()`会将空位视为`undefined`，而`undefined`和`null`会被处理成空字符串。
+
+```js
+// forEach方法
+[,'a'].forEach((x,i) => console.log(i)); // 1
+
+// filter方法
+['a',,'b'].filter(x => true) // ['a','b']
+
+// every方法
+[,'a'].every(x => x==='a') // true
+
+// reduce方法
+[1,,2].reduce((x,y) => x+y) // 3
+
+// some方法
+[,'a'].some(x => x !== 'a') // false
+
+// map方法
+[,'a'].map(x => 1) // [,1]
+
+// join方法
+[,'a',undefined,null].join('#') // "#a##"
+
+// toString方法
+[,'a',undefined,null].toString() // ",a,,"
+```
+
+<font color=dodgerBlue>**ES6 则是明确将空位转为 `undefined`**</font> 。
+
+`Array.from()`方法会将数组的空位，转为`undefined`，也就是说，这个方法不会忽略空位。
+
+```javascript
+Array.from(['a',,'b']) // [ "a", undefined, "b" ]
+```
+
+扩展运算符 ( `...` ) 也会将空位转为 `undefined` 。
+
+```javascript
+[...['a',,'b']] // [ "a", undefined, "b" ]
+```
+
+`copyWithin()` 会连空位一起拷贝。
+
+```javascript
+[,'a','b',,].copyWithin(2,0) // [,"a",,"a"]
+```
+
+`fill()` 会将空位视为正常的数组位置。👀 这是符合预期的
+
+```javascript
+new Array(3).fill('a') // ["a","a","a"]
+```
+
+`for...of`循环也会遍历空位。
+
+```javascript
+let arr = [, ,];
+for (let i of arr) {
+  console.log(1);
+}
+// 1 1
+```
+
+上面代码中，数组 `arr` 有两个空位，`for...of` 并没有忽略它们。如果改成 `map()` 方法遍历，空位是会跳过的。
+
+`entries()`、`keys()`、`values()`、`find()` 和 `findIndex()`会将空位处理成 `undefined` 。
+
+```javascript
+// entries()
+[...[,'a'].entries()] // [[0,undefined], [1,"a"]]
+
+// keys()
+[...[,'a'].keys()] // [0,1]
+
+// values()
+[...[,'a'].values()] // [undefined,"a"]
+
+// find()
+[,'a'].find(x => true) // undefined
+
+// findIndex()
+[,'a'].findIndex(x => true) // 0
+```
+
+由于空位的处理规则非常不统一，所以建议避免出现空位。
+
+摘自：[ECMAScript 6 入门 - 数组的扩展 # 数组的空位](https://es6.ruanyifeng.com/#docs/array#%E6%95%B0%E7%BB%84%E7%9A%84%E7%A9%BA%E4%BD%8D)
 
 
 
@@ -3334,7 +3448,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                         
+  >                                                                                                                                                                                                           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3353,7 +3467,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                         
+  >                                                                                                                                                                                                           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2

@@ -281,6 +281,8 @@ Vue2 的 Diff 算法是全量对比，而 Vue3 不是。Vue3 采用了静态标�
 
 
 
+#### 总述
+
 ##### Vue 的三个核心模块
 
 响应式模块 reactivity module 、编译器模块 compiler module 、渲染模块render module
@@ -299,4 +301,201 @@ Vue2 的 Diff 算法是全量对比，而 Vue3 不是。Vue3 采用了静态标�
 
 ##### 简单组件执行顺序
 
-首先，模板编译器将 HTML 转换成渲染函数，响应式模块初始化响应对象；
+首先，模板编译器将 HTML 转换成 render 函数，响应式模块初始化响应对象。然后，在渲染模块中，进入渲染阶段；调用 render 函数，render 函数引用了响应对象，开始侦听响应对象的变化；render 函数返回一个虚拟 DOM 节点。在挂载阶段，调用 mount 函数，使用 虚拟 DOM 节点创建 web 页面。最后，（补丁阶段）如果响应对象发生任何变化，将被监听到，渲染器将再次调用 render 函数，创建一个新的虚拟 DOM 节点。新的 vnode 和 旧的 vnode 被发送到 patch 函数中，根据需要更新网页
+
+
+
+#### render 函数
+
+##### Vue2 render 函数
+
+```js
+render(h) {
+  return h('div', {
+    attrs: { id: 'foo' },
+    on: { click: this.onClick }
+  }, 'hello')
+}
+```
+
+h 函数的第一个参数是“类型”（👀 尤雨溪的说法），第二个参数对象，包含 vnode 上所有的数据或者属性。第三个参数，可以是字符串，表示是一个文本子节点；也可以是数组，以包含多个字节点
+
+Vue2 render 有点啰嗦 verbose：第二个参数，需要指明传递给节点的绑定类型。比如，绑定属性，需要嵌套在 attrs 下；绑定事件侦听器，需要嵌套在 on 下。
+
+##### Vue3 render 函数
+
+Vue3 做了一些简化：对 第二个参数 props 对象做了扁平化处理。按照惯例，监听器以 on 开头，任何以 on 为前缀的都会自动绑定为一个监听器。另外，将 h 函数全局引入，这使得在同一个文件中拆分大的 render 函数，变得很方便（不需要多次传递）
+
+```js
+import { h } from 'vue'
+
+render() {
+  return h('div', {
+    id: 'foo',
+    onClick: this.onClick
+  }, 'hello')
+}
+```
+
+h 是 hyperscript 的缩写。
+
+##### render 进一步用法
+
+在 render 中没有 v-if，可以用 三元运算符 `expr ? :` 替代。如下：
+
+```js
+import { h } from 'vue'
+
+const App = {
+  render() {
+    // 这里可以添加逻辑，比如下面 return 中使用的内容。感觉和 React 的 render 很像...
+    
+    return this.ok
+      ? h('div', { id: 'hello' }, [h('span', 'world')])
+      : h('p', 'other branch')
+  }
+}
+```
+
+类似的，没有 v-for，可以使用 map 函数来替代。
+
+
+
+可以使用 https://vue-next-template-explorer.netlify.app 来将 Vue3 的模板 按照一定的自定义的选项配置（比如静态提升）转化成 render 函数的版本。
+
+
+
+#### 响应式原理
+
+##### 响应式示例
+
+```html
+<span class="cell b1"> {{ state.a * 10 }} </span>
+
+<script>
+  onStateChanged(() => { 
+    view = render(state) 
+  })
+</script>
+```
+
+那么，如何实现 上面抽象的 `onStateChanged` 函数？理想化的、假设状态是不变的，方法是：
+
+```js
+let update, state
+
+const onStateChanged = _update => {
+  update = _update // 缓存输入的更新函数 _update
+}
+
+// 暴露出的 setState 方法，将会使用新的状态替换旧的状态，并调用缓存的更新函数
+const setState = newState => {
+  state = newState
+  update()
+}
+
+// 用户需要手动调用 setState，来告诉框架，数据发生了变化，需要做相应的响应。
+setState({a: 5})
+```
+
+上面 `setState` 的操作 和 React 的工作原理很相似。而在 Vue 中是使用 `state.a = 5` ，要追踪依赖变得更加复杂
+
+
+
+##### 依赖追踪的数据粒度
+
+依赖追踪有好处也有坏处 ( pros and cons )，但是相较其他的解决方案，其最大的好处是：允许我们做非常细粒度的追踪实际状态的变化，只会在需要的部分触发变化。当然，依赖追踪本身也会在记录状态时产生运行时开销，所以需要找到一个好的依赖追踪关系的粒度。在实践中发现：在组件级别进行依赖追踪更加有效。
+
+
+
+##### watchEffect API
+
+watchEffect API 就是依赖追踪的实现函数（就如同上面 [[#响应式示例]] 的 `onStateChanged` ）。不像 Vue2 中的 watch 是监听某个属性，当属性发生变化，便执行回调；watchEffect 会监听整个函数，直接运行它；并追踪该函数执行时 所有使用过的响应式属性。示例如下：
+
+```js
+import { reactive, watchEffect } from 'vue'
+
+const state = reactive({ count: 0 })
+
+watchEffect(() => {
+  console.log(state.count)
+}) // 0
+
+state.count++ // 1
+```
+
+
+
+##### 从头开始实现响应式
+
+```js
+let activeEffect; // 保存添加哪一个函数作为订阅
+
+class Dep {
+  constructor(value) {
+    this.subscribers = new Set(); // 订阅者
+    this._value = value // 将 dep 和一个值相关联
+  }
+  get value() {
+    this.depend() // ⭐️
+    return this._value
+  }
+  set value(newValue) {
+    this._value = newValue
+    this.notify() // ⭐️
+  }
+  depend() {
+    if (activeEffect) {
+      this.subscribers.add(activeEffect);
+    }
+  }
+  notify() {
+    // 通知订阅者
+    this.subscribers.forEach((effect) => {
+      effect();
+    });
+  }
+}
+
+// 类似代码可见 https://cn.vuejs.org/guide/extras/reactivity-in-depth.html#how-reactivity-works-in-vue
+function watchEffect(effect) {
+  activeEffect = effect;
+  effect();
+  activeEffect = null;
+}
+
+const dep = new Dep('hello');
+
+watchEffect(() => {
+  console.log(dep.value);
+});
+
+dep.value = 'changed'
+```
+
+这里使用的是 depend 和 notify，而不是 track 和 trigger，是为了减少其中与响应式原理不相关的优化，从而更好的理解工作原理
+
+
+
+
+
+#### 《Vue 响应式原理解析》笔记
+
+##### Dep
+
+```javascript
+var Dep = function Dep() {
+  this.id = uid++
+  this.subs = []
+}
+```
+
+Dep 的含义，自然就是 dependency（也就是**依赖**，一个计算机领域的名词）。
+
+就像编写 node.js 程序，常会使用 npm 仓库的依赖。<font color=red>在 Vue 中，依赖具体指的是**经过响应式处理的数据**</font>。后面会提到，<font color=red>响应式处理的关键函数之一是</font>在很多 Vue 原理文章都会提到的 <font color=red>`defineReactive`</font> 。
+
+<font color=fuchsia>Dep 与每个响应式数据绑定后，该响应式数据就会成为一个依赖</font>（名词），下面介绍 Watcher 时会提到，<font color=red>响应式数据可能被 watch、computed、渲染模板 3 种函数依赖（动词）</font>。
+
+###### subs
+
+Dep 对象下有一个 subs 属性，是一个数组，是 subscriber（订阅者）列表的意思。订阅者可能是 watch 函数、computed 函数、视图更新函数。
