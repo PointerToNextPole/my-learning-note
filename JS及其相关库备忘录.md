@@ -3448,7 +3448,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                           
+  >                                                                                                                                                                                                             
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3467,7 +3467,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                           
+  >                                                                                                                                                                                                             
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -12914,13 +12914,12 @@ expr1, expr2, expr3...
 >
 > ```js
 > const sortOrders = ref(
->   props.columns.reduce((o, key) => ((o[key] = 1), o), {})
-> )
+>   props.columns.reduce((o, key) => ((o[key] = 1), o), {}))
 > ```
->
-> 这相当于是返回以每一个数组元素为 key ，value 为 1 的对象。测试如下：
->
-> ```js
+> 
+>这相当于是返回以每一个数组元素为 key ，value 为 1 的对象。测试如下：
+> 
+>```js
 > const col = ['name', 'power']
 > 
 > const res = col.reduce((o, key) => ((o[key] = 1), o), {})
@@ -12934,9 +12933,9 @@ expr1, expr2, expr3...
 
 <font color=LightSeaGreen>尾后逗号 （有时叫做“终止逗号”）在向 JavaScript 代码添加元素、参数、属性时十分有用</font>。<font color=FF0000>如果你想要添加新的属性，并且上一行已经使用了尾后逗号，你可以仅仅添加新的一行，而不需要修改上一行。这使得版本控制的代码比较（diff）更加清晰，代码编辑过程中遇到的麻烦更少</font>。
 
-JavaScript 一开始就支持数组字面量中的尾后逗号，随后向对象字面量（ECMAScript 5）中添加了尾后逗号。最近<font color=FF0000>（ECMAScript 2017），又将其添加到**函数参数**中</font>。
+JavaScript 一开始就支持数组字面量中的尾后逗号，随后向对象字面量 ( ECMAScript 5 ) 中添加了尾后逗号。最近<font color=FF0000>（ECMAScript 2017），又将其添加到**函数参数**中</font>。
 
-但是，<font color=FF0000>**JSON 不允许尾后逗号**</font>。对象中的尾后逗号仅仅在 ECMAScript 5 中引入。由于 JSON 基于 ES5 之前的语法， JSON 中并不允许尾后逗号。
+但是，<font color=fuchsia>**JSON 不允许尾后逗号**</font>。对象中的尾后逗号仅仅在 ECMAScript 5 中引入。由于 JSON 基于 ES5 之前的语法， JSON 中并不允许尾后逗号。
 
 JavaScript 忽略数组中的尾后逗号。<font color=FF0000>**如果使用了多于一个尾后逗号，会产生省略**</font>（elision，或者间隙 hole）。 <font color=LightSeaGreen>带有间隙的数组叫做稀疏数组（sparse 紧凑数组 dense array 没有省略/间隙）</font>。 例如，当使用 Array.prototype.forEach() 或 Array.prototype.map() 迭代数组时，会跳过数组间隙。
 
@@ -12960,7 +12959,9 @@ function f(...p,) {} // SyntaxError: parameter after rest parameter
 
 
 
-#### BigInt (ES2020)
+#### BigInt
+
+> ES2020 特性
 
 BigInt 是一种内置对象，它<font color=FF0000>提供了一种方法来表示大于 2^53^ - 1 的整数</font>。这原本是 Javascript中可以用 Number 表示的最大数字。<font color=FF0000>BigInt 可以表示任意大的整数。</font>
 
@@ -12978,7 +12979,7 @@ const hugeBin = BigInt("0b11111111111111111111111111111111111111111111111111111"
 
 <font color=LightSeaGreen>使用 typeof 测试时， BigInt 对象返回 "bigint" </font>
 
-**运算：**
+##### 运算
 
 以下操作符可以和 BigInt 一起使用： 
 
@@ -12986,7 +12987,7 @@ const hugeBin = BigInt("0b11111111111111111111111111111111111111111111111111111"
 - <font color=FF0000>除 >>> （无符号右移）之外的 位操作 也可以支持</font>。因为 BigInt 都是有符号的， >>> （无符号右移）不能用于 BigInt。
 - 为了兼容 asm.js ，<font color=FF0000>BigInt 不支持单目 (+) 运算符</font>。
 
-**比较**
+##### 比较
 
 BigInt 和 Number 不是严格相等的（!==），但是宽松相等的（\==）。
 
@@ -13012,47 +13013,51 @@ const mixed = [4n, 6, -12n, 10, 4, 0, 0n]; // ↪  [4n, 6, -12n, 10, 4, 0, 0n]
 mixed.sort(); // ↪ [-12n, 0, 0n, 10, 4n, 4, 6]
 ```
 
-**构造器**
+##### 构造器
 
 - BigInt()：创建BigInt 对象。
 
-**静态方法**
+##### 静态方法
 
-- **BigInt.asIntN()：**将 BigInt 值转换为一个 -2^width-1^ 与 2^width-1^-1 之间的有符号整数。
+###### BigInt.asIntN()
 
-  **语法**
+将 BigInt 值转换为一个 -2^width-1^ 与 2^width-1^-1 之间的有符号整数。
 
-  ```js
-  BigInt.asIntN(width, bigint);
-  ```
+**语法**
 
-  **参数**
+```js
+BigInt.asIntN(width, bigint);
+```
 
-  - width：可存储整数的位数。
-  - bigint：要存储在指定位数上的整数。
+**参数**
 
-  - **返回值：**bigint 模(modulo) 2^width^ 作为有符号整数的值。
+- width：可存储整数的位数。
+- bigint：要存储在指定位数上的整数。
 
-  摘自：[MDN - BigInt.asIntN()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt/asIntN)
+- **返回值：**bigint 模(modulo) 2^width^ 作为有符号整数的值。
 
-- **BigInt.asUintN()：**将一个 BigInt 值转换为 0 与 2^width^-1 之间的无符号整数。
+摘自：[MDN - BigInt.asIntN()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt/asIntN)
 
-  **语法**
+###### BigInt.asUintN()
 
-  ```js
-  BigInt.asUintN(width, bigint);
-  ```
+将一个 BigInt 值转换为 0 与 2^width^-1 之间的无符号整数。
 
-  **参数**
+**语法**
 
-  - width：可存储整数的位数。
-  - bigint： 要存储在指定位数上的整数。
+```js
+BigInt.asUintN(width, bigint);
+```
 
-  **返回值：**bigint 模(modulo) 2^width^ 作为无符号整数的值。
+**参数**
+
+- width：可存储整数的位数。
+- bigint： 要存储在指定位数上的整数。
+
+**返回值：**bigint 模(modulo) 2^width^ 作为无符号整数的值。
 
 摘自：[MDN - BigInt.asUintN()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt/asUintN)
 
-**实例方法**
+##### 实例方法
 
 - **BigInt.prototype.toLocaleString()：**返回此数字的 language-sensitive 形式的字符串。覆盖 Object.prototype.toLocaleString()  方法。
 - **BigInt.prototype.toString()：**返回以指定基数(base)表示指定数字的字符串。覆盖 Object.prototype.toString() 方法。
@@ -13062,15 +13067,17 @@ mixed.sort(); // ↪ [-12n, 0, 0n, 10, 4n, 4, 6]
 
 
 
-#### globalThis（ES2020）
+#### globalThis
 
-全局属性 globalThis 包含全局的 this 值，类似于全局对象（global object）。
+> ES2020 特性
 
-**globalThis 属性的属性特性：**
+全局属性 globalThis 包含全局的 this 值，类似于全局对象 ( global object ) 。
 
-- **writable：**true
-- **enumerable：**false
-- **configurable：**true
+| Property attributes of `globalThis` | 值    |
+| ----------------------------------- | ----- |
+| writable                            | true  |
+| enumerable                          | false |
+| configurable                        | true  |
 
 ##### 描述
 
@@ -13082,11 +13089,13 @@ mixed.sort(); // ↪ [-12n, 0, 0n, 10, 4n, 4, 6]
 
 
 
-#### 可选链操作符 ( ES2020 )
+#### 可选链操作符 ( ?. )
 
-可选链操作符( ?. )允许读取位于连接对象链深处的属性的值，而不必明确验证链中的每个引用是否有效。
+> ES2020 特性
 
-?. 操作符的功能类似于 . 链式操作符，不同之处在于，<font color=FF0000>在引用为空(nullish ) （null 或者 undefined）的情况下不会引起错误，该表达式短路返回值是 undefined</font>。与函数调用一起使用时，如果给定的函数不存在，则返回 undefined。
+可选链操作符( `?.` )允许读取位于连接对象链深处的属性的值，而不必明确验证链中的每个引用是否有效。
+
+`?.` 操作符的功能类似于 `.` 链式操作符，不同之处在于，<font color=FF0000>在引用为空 ( nullish ) （null 或者 undefined ）的情况下不会引起错误，该表达式短路返回值是 undefined</font>。与函数调用一起使用时，如果给定的函数不存在，则返回 undefined。
 
 当尝试访问可能不存在的对象属性时，<font color=FF0000>可选链操作符将会使表达式更短、更简明</font>。在探索一个对象的内容时，如果不能确定哪些属性必定存在，可选链操作符也是很有帮助的。
 
@@ -13101,7 +13110,9 @@ func?.(args)
 
 摘自：[MDN - 可选链操作符](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
 
-#### 空值合并运算符（ES2020）
+#### 空值合并运算符
+
+> ES2020 特性
 
 空值合并操作符 ( `??` ) 是一个逻辑操作符，<font color=FF0000>**当 <font size=4>左侧</font> 的操作数为 null 或者 undefined 时**</font>，<font color=FF0000>返回其右侧操作数，否则返回左侧操作数</font>。
 
@@ -13109,11 +13120,17 @@ func?.(args)
 
 > 👀 注：使用 `||` 会出现 falsy值 的问题，而其中部分 falsy值 是不想它被 隐式转换 的
 
-**使用场景：**函数中，你不清楚对方传不传该参数，这时候可以在函数体中使用 `let foo = paramFoo ?? 'default foo'`以附上默认值
+##### 使用场景
 
-**短路：**与 OR 和 AND 逻辑操作符相似，当左表达式不为 null 或 undefined 时，不会对右表达式进行求值。（可以通过在右侧放置一个带有打印功能的函数，以验证）
+函数中，你不清楚对方传不传该参数，这时候可以在函数体中使用 `let foo = paramFoo ?? 'default foo'` 以附上默认值
 
-<font color=FF0000>**不能与 AND 或 OR 操作符共用：**</font>将 ?? 直接与 AND (  `&&`  ) 和 OR ( `||` ) 操作符组合使用是不可取的。（译者注：应当是因为空值合并操作符和其他逻辑操作符之间的运算优先级/运算顺序是未定义的）这种情况下会抛出 SyntaxError 。
+##### 短路
+
+与 OR 和 AND 逻辑操作符相似，<font color=red>**当左表达式不为 null 或 undefined 时，不会对右表达式进行求值**</font>。
+
+##### 不能与 AND 或 OR 操作符共用
+
+<font color=fuchsia>**将 `??` 直接与 AND (  `&&`  ) 和 OR ( `||` ) 操作符组合使用是不可取的**</font>。（译者注：应当是因为空值合并操作符和其他逻辑操作符之间的运算优先级/运算顺序是未定义的）这种情况下会抛出 SyntaxError 。
 
 ```js
 null || undefined ?? "foo"; // 抛出 SyntaxError
@@ -13124,7 +13141,7 @@ true || undefined ?? "foo"; // 抛出 SyntaxError
 
 > 👀 补充，辅助记忆：
 >
-> `(null == undefined) === true`，另外 <font color=fuchsia>**null 经过隐式转换 只等于 undefined**</font>（另外，null === null），通过这点可以辅助记忆。类似的， TS 中有一个概念叫做 “ 非空断言 ”，就是针对 null 和 undefined 的；这里的 “空” 就是 null 和 undefined。和上面的 “空值合并运算符” 的 “空” 是同样的意思。
+> `(null == undefined) === true`，另外 <font color=fuchsia>**null 经过隐式转换 只等于 undefined**</font>（另外，null === null），通过这点可以辅助记忆。类似的， TS 中有一个概念叫做 “ 非空断言 ”，就是针对 null 和 undefined 的；这里的 “空” 就是 null 和 undefined （参见 [[#可选链操作符 ( ?. )]] 中的内容）。和上面的 “空值合并运算符” 的 “空” 是同样的意思。
 
 #### Logical OR assignment ( ||= ) 
 

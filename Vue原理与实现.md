@@ -426,7 +426,9 @@ state.count++ // 1
 
 
 
-##### 从头开始实现响应式
+#### 从头开始实现响应式
+
+##### Dep & watchEffect 实现
 
 ```js
 let activeEffect; // 保存添加哪一个函数作为订阅
@@ -451,7 +453,7 @@ class Dep {
   }
   notify() {
     // 通知订阅者
-    this.subscribers.forEach((effect) => {
+    this.subscribers.forEach(effect => {
       effect();
     });
   }
@@ -460,22 +462,97 @@ class Dep {
 // 类似代码可见 https://cn.vuejs.org/guide/extras/reactivity-in-depth.html#how-reactivity-works-in-vue
 function watchEffect(effect) {
   activeEffect = effect;
-  effect();
+  /* 这是为了访问 dep.value，以触发 getter，从而收集依赖添加入 subscribers 中。否则 subscribers 为空 */
+  effect(); // console.log -> 'hello'
   activeEffect = null;
 }
 
-const dep = new Dep('hello');
+const dep = new Dep('hello'); 
 
 watchEffect(() => {
   console.log(dep.value);
 });
 
-dep.value = 'changed'
+dep.value = 'changed' // console.log -> 'changed'
 ```
 
-这里使用的是 depend 和 notify，而不是 track 和 trigger，是为了减少其中与响应式原理不相关的优化，从而更好的理解工作原理
+这里的 Dep 实现，和 composition API 中的 ref 非常相似。
+
+> ⚠️ 注意：这里使用的是 depend 和 notify，而不是 track 和 trigger，是为了减少其中与响应式原理不相关的优化，从而更好的理解工作原理
 
 
+
+##### reactive 实现
+
+实现 reactive 可以复用上面代码中的一些逻辑。
+
+因为在响应式内部使用时，依赖类不需要追踪它自己的值，因为值在对象上；所以可以去掉 `_value` 和 对应的 getter / setter。
+
+###### Vue2 风格实现
+
+使用 `Object.defineProperty` ：
+
+```js
+let activeEffect; // 保存添加哪一个函数作为订阅
+
+class Dep {
+  subscribers = new Set(); // 订阅者
+  depend() {
+    if (activeEffect) {
+      this.subscribers.add(activeEffect);
+    }
+  }
+  notify() {
+    // 通知订阅者
+    this.subscribers.forEach((effect) => {
+      effect();
+    });
+  }
+}
+
+function watchEffect(effect) {
+  activeEffect = effect;
+  effect();
+  activeEffect = null;
+}
+
+function reactive(raw) {
+  Object.keys(raw).forEach((key) => {
+    const dep = new Dep();
+    let value = raw[key];
+
+    // Vue2 style
+    Object.defineProperty(raw, key, {
+      get() {
+        dep.depend();
+        return value;
+      },
+      set(newValue) {
+        value = newValue;
+        dep.notify();
+      },
+    });
+  });
+  return raw;
+}
+
+const state = reactive({
+  count: 0,
+});
+
+watchEffect(() => {
+  console.log(state.count);
+});
+
+state.count++;
+```
+
+###### Vue3 风格实现
+
+在 ES6 Proxy 的加持下，可以讲 reactive 的实现做如下修改：
+
+```js
+```
 
 
 
