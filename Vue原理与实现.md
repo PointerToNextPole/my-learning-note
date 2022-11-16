@@ -156,12 +156,6 @@ render 函数的参数是 createElement 函数，createElement 也有返回值�
 
 
 
-
-
-
-
-
-
 ##### WatchEffect
 
 Vue 提供了 watchEffect 来创建响应式副作用，当依赖发生变化时自动执行（产生作用）。
@@ -361,6 +355,114 @@ const App = {
 
 
 
+##### vdom 实现 ( h , mount , patch )
+
+```js
+function h(tag, props, children) {
+  return { tag, props, children };
+}
+
+function mount(vnode, container) {
+  const el = vnode.el = document.createElement(vnode.tag);
+
+  if (vnode.props) {
+    for (const key in vnode.props) {
+      const value = vnode.props[key];
+      el.setAttribute(key, value);
+    }
+    // children
+    if(vnode.children) {
+      if(typeof vnode.children === 'string') {
+        el.textContent = vnode.children
+      } else {
+        vnode.children.forEach(child => {
+          mount(child, el)
+        })
+      }
+    }
+  }
+  container.appendChild(el)
+}
+
+const vdom = h('div', { class: 'red' }, [
+  h('span', null, 'hello')
+])
+
+mount(vdom, document.getElementById('app'))
+
+function patch(n1, n2) {
+  if (n1.tag == n2.tag) {
+    const el = (n2.el = n1.el);
+
+    // props
+    const oldProps = n1.props || {};
+    const newProps = n2.props || {};
+    for (const key in newProps) {
+      const oldValue = oldProps[key];
+      const newValue = newProps[key];
+      if (newValue !== oldValue) {
+        el.setAttribute(key, newValue);
+      }
+    }
+    for (const key in oldProps) {
+      if(!(key in newProps)) {
+        el.removeAttribute(key)
+      }
+    }
+
+    // children
+    const oldChildren = n1.children
+    const newChildren = n2.children
+    
+    if(typeof newChildren === 'string') {
+      if (typeof oldChildren === 'string') {
+        if (newChildren !== oldChildren) {
+          el.textContent = newChildren
+        }
+      } else {
+        el.textContent = newChild
+      }
+    } else {
+      if (typeof oldChildren === 'string') {
+        el.innerHTML = ''
+        newChildren.forEach(children => {
+          mount(child, el)
+        })
+      } else {
+        const commonLength = Math.min(oldChildren.length, newChildren.length)
+        for(let i = 0; i < commonLength; i++) {
+          patch(oldChildren[i], newChildren[i])
+        }
+        if(newChildren.length > oldChildren.length) {
+          newChildren.slice(oldChildren.length).forEach(child => {
+            mount(child, el)
+          })
+        } else if (newChildren.length < oldChildren.length) {
+          oldChildren.slice(newChildren.length).forEach(child => {
+            el.removeChild(child.el)
+          })
+        }
+      }
+    }
+  } 
+  else {
+    // replace, 略
+  }
+}
+
+const vom = h('div', { class: 'red' }, [
+  h('span', null, 'hello')
+])
+
+const vdom2 = h('div', { class: 'green' }, [
+  h('span', null, 'changed')
+])
+
+patch(vdom, vdom2)
+```
+
+
+
 可以使用 https://vue-next-template-explorer.netlify.app 来将 Vue3 的模板 按照一定的自定义的选项配置（比如静态提升）转化成 render 函数的版本。
 
 
@@ -486,7 +588,7 @@ dep.value = 'changed' // console.log -> 'changed'
 
 实现 reactive 可以复用上面代码中的一些逻辑。
 
-因为在响应式内部使用时，依赖类不需要追踪它自己的值，因为值在对象上；所以可以去掉 `_value` 和 对应的 getter / setter。
+因为在响应式内部使用时，依赖类不需要追踪它自己的值，因为值就在对象上；所以可以去掉 `_value` 和 对应的 getter / setter。
 
 ###### Vue2 风格实现
 
@@ -552,7 +654,92 @@ state.count++;
 在 ES6 Proxy 的加持下，可以讲 reactive 的实现做如下修改：
 
 ```js
+let activeEffect; // 保存添加哪一个函数作为订阅
+
+class Dep {
+  subscribers = new Set(); // 订阅者
+  depend() {
+    if (activeEffect) {
+      this.subscribers.add(activeEffect);
+    }
+  }
+  notify() {
+    // 通知订阅者
+    this.subscribers.forEach((effect) => {
+      effect();
+    });
+  }
+}
+
+function watchEffect(effect) {
+  activeEffect = effect;
+  effect();
+  activeEffect = null;
+}
+
+// 因为 reactiveHandler 只创建一次，为了在运行时找到同一个那个 dep 实例，所以使用全局的 weakMap 来缓存 dep 实例，并保持唯一性
+// 另外，因为 weakMap 的 key 必须是对象，并且在 key 不可达，对应的 value 可以自动触发 GC。正因为此，weakMap 的 key 不可枚举。
+const targetMap = new WeakMap()
+
+function getDep(target, key) {
+  let depsMap = targetMap.get(target)
+  if(!depsMap) {
+    depsMap = new Map()
+    targetMap.set(target, depsMap)
+  }
+  let dep = depsMap.get(key)
+  if(!dep) {
+    dep = new Dep()
+    depsMap.set(key, dep)
+  }
+  return dep
+}
+
+// reactiveHandler 拆出来是为了只创建一次，避免重新创建
+const reactiveHandlers = {
+  get(target, key, receiver) {
+    const dep = getDep(target, key)
+
+    dep.depend()
+    return Reflect.get(target, key, receiver) 
+    // 虽然也可以 return target[key]。但考虑到原型继承问题，在这种情况下，receiver 和 target 会指向不同的东西。总之，用 Reflect 让一切正常
+  },
+  set(target, key, value, receiver) {
+    const dep = getDep(target, key)
+    const result = Reflect.set(target, key, value, receiver)
+    dep.notify()
+    return result
+  }
+}
+
+function reactive(raw) {
+  return new Proxy(raw, reactiveHandlers)
+}
+
+const state = reactive({
+  count: 0,
+});
+
+watchEffect(() => {
+  console.log(state.count);
+});
+
+state.count++;
 ```
+
+上面的实现还有一些边界情况，比如：用户可能在同一个对象中调用 reactive 两次，在 reactive 过的 state 上再次调用 reactive；所以，需要跟踪以确保对同一个对象调用 reactive ，原始对象 ( raw object ) 将会返回相同的代理实例
+
+使用 Proxy 一个非常棒的好处是：Proxy 和它的 handler（ 在这里是 reactiveHandler ） 也可以用于数组。这相当于使用 JS 内置的功能监听数组，而不是在 Vue2 中手动实现、进行处理 ( hack array prototype to override some of the array of the array built-in methods, like push and pop )。👀 具体哪些方法会被重写（劫持）参见 [[#Vue2 监听数组的原理]]
+
+> 👀 来自弹幕：
+>
+> > Proxy 在数组 push 时会读取数组的 length，同样会触发 get 和 set。
+>
+> 那么显然，pop、unshift、shift、splice 也会产生类似效果。
+
+
+
+##### mini-vue 实现
 
 
 

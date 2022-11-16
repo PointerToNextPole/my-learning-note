@@ -720,11 +720,11 @@ for (const [index, val] of arr.entries()) {
 
 ##### 对象遍历方法间的区别
 
-- <font color=fuchsia>**Reflect.ownKeys() 和 Object.getOwnPropertyNames() 可以获取 enumerable 为 false 的对象成员**</font>，而 Object.keys() 和 for...of 不可以。
+- <font color=fuchsia>**`Reflect.ownKeys()` 和 `Object.getOwnPropertyNames()` 可以获取 enumerable 为 false 的对象成员**</font>，而 `Object.keys()` 和 `for...of` 不可以。
 
-- <font color=fuchsia>Object.getOwnPropertyNames() 不能获取 对象中包含的 Symbol</font>，可以通过Object.getOwnPropertySymbols() 获取；而<font color=fuchsia>Reflect.ownKeys() 都可以拿到</font>。
+- <font color=fuchsia>`Object.getOwnPropertyNames()` 不能获取 对象中包含的 Symbol</font>，可以通过 `Object.getOwnPropertySymbols()` 获取；而 <font color=fuchsia>`Reflect.ownKeys()` 都可以拿到</font>。
 
-  补充：经 codingstartup群友的补充：Reflect.ownKeys()的遍历是有序的，按照你添加的顺序：
+  补充：经 codingstartup群友的补充：`Reflect.ownKeys()` 的遍历是有序的，按照你添加的顺序：
 
   - 首先遍历所有数值键，按照数值升序排列
   - 其次遍历所有字符串键，按照加入时间升序排列
@@ -743,10 +743,10 @@ for (const [index, val] of arr.entries()) {
 
 #### for ... of 和 for ... in 的区别
 
-无论是 for...in 还是 for...of 语句都是迭代一些东西。它们之间的主要区别在于它们的迭代方式。
+无论是 `for...in` 还是 `for...of` 语句都是迭代一些东西。它们之间的主要区别在于它们的迭代方式。
 
-- for...in 语句以任意顺序迭代对象的可枚举属性。
-- for...of 语句遍历可迭代对象定义要迭代的数据。
+- `for...in` 语句以任意顺序迭代对象的可枚举属性。
+- `for...of` 语句遍历可迭代对象定义要迭代的数据。
 
 摘自：[MDN - for ... of](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...of)
 
@@ -762,19 +762,28 @@ for (const [index, val] of arr.entries()) {
 
 **补充：**
 
-- for of <font color=FF0000 size=4>**遍历的是拥有 iterator 属性（即 Symbol.iterator ）的对象**</font>，出来的是属性值；
+- `for...of` <font color=FF0000 size=4>**遍历的是拥有 iterator 属性（即 Symbol.iterator ）的对象**</font>，出来的是属性值；
 
-- for in 遍历对象的属性，出来的是属性名，<font color=FF0000 size=4>**包括继承的属性**</font>，<font color=FF0000>**可枚举的属性**</font>（ enumerable 为 true 的属性），<font color=FF0000>**不包括 symbol**</font>
+- `for...in` 遍历对象的属性，出来的是属性名，<font color=FF0000 size=4>**包括继承的属性**</font>，<font color=FF0000>**可枚举的属性**</font>（ enumerable 为 true 的属性），<font color=FF0000>**不包括 symbol**</font>
 
-  **注：**如果不想要 for in 打印出 父类的属性，可以用 hasOwnProperty 方法，判断是否为本对象的属性。
+  👀 注：如果不想要 for...in 打印出 父类的属性，可以用 hasOwnProperty 方法，判断是否为本对象的属性。
 
 摘自：[峰华前端工程师动态 的 评论区 -PILOT- 的评论](https://t.bilibili.com/524677482676016409)
 
-#### forEach 和 map 方法有什么区别
+#### forEach 和 map 方法的区别
 
 这方法都是用来遍历数组的，两者区别如下：
 
-- **forEach()：**会针对每一个元素执行提供的函数，对数据的操作<font color=FF0000>**会改变原数组**，该方法**没有返回值**</font>
+- **forEach()：**会针对每一个元素执行提供的函数，对数据的操作<font color=fuchsia size=4>**不会改变原数组**</font>（见下面的示例代码），<font color=red>该方法**没有返回值**</font>
+
+  ```js
+  const arr = ['1', '2', '3']
+  arr.forEach(e => e = +e)
+  console.log(arr) // ['1', '2', '3'] 👀 ⚠️
+  ```
+
+  所以：forEach 无法修改原数组的 原始类型元素 / 元素的引用地址，但是修改元素中的内容
+
 - **map()：**<font color=FF0000>**不会改变原数组的值**，**返回一个新数组**</font>，新数组中的值为原数组调用函数处理之后的值
 
 
@@ -783,7 +792,7 @@ for (const [index, val] of arr.entries()) {
 
 
 #### JS中的实例方法和静态方法定义
-下面对象和数组的方法中，带有prototype的属于实例方法（作用在对象上），不带prototype的是静态方法（作用在类上）
+下面对象和数组的方法中，带有prototype的属于实例方法（作用在对象上），不带 prototype 的是静态方法（作用在类上）
 
 
 
@@ -12835,7 +12844,7 @@ window.addEventListener('pageshow', function(event) {
 **构造函数**
 
 ```js
-FormData() // 创建一个新的 FormData 对象。
+FormData() // 创建一个新的 FormData 对象
 ```
 
 **方法**

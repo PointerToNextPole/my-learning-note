@@ -360,6 +360,9 @@
 
 - **from scratch** ：从头做起。👀 其中，scratch 的意思是 “划痕”。
 
+- **territory** ：领域。
+- **resort** ：采取
+
 
 
 #### 术语的英文
