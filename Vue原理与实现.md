@@ -357,108 +357,106 @@ const App = {
 
 ##### vdom 实现 ( h , mount , patch )
 
-```js
-function h(tag, props, children) {
-  return { tag, props, children };
-}
+```html
+<div id="app"></div>
 
-function mount(vnode, container) {
-  const el = vnode.el = document.createElement(vnode.tag);
-
-  if (vnode.props) {
-    for (const key in vnode.props) {
-      const value = vnode.props[key];
-      el.setAttribute(key, value);
-    }
-    // children
-    if(vnode.children) {
-      if(typeof vnode.children === 'string') {
-        el.textContent = vnode.children
-      } else {
-        vnode.children.forEach(child => {
-          mount(child, el)
-        })
-      }
-    }
+<script>
+  function h(tag, props, children) {
+    return { tag, props, children };
   }
-  container.appendChild(el)
-}
 
-const vdom = h('div', { class: 'red' }, [
-  h('span', null, 'hello')
-])
+  function mount(vnode, container) {
+    const el = (vnode.el = document.createElement(vnode.tag));
 
-mount(vdom, document.getElementById('app'))
-
-function patch(n1, n2) {
-  if (n1.tag == n2.tag) {
-    const el = (n2.el = n1.el);
-
-    // props
-    const oldProps = n1.props || {};
-    const newProps = n2.props || {};
-    for (const key in newProps) {
-      const oldValue = oldProps[key];
-      const newValue = newProps[key];
-      if (newValue !== oldValue) {
-        el.setAttribute(key, newValue);
+    if (vnode.props) {
+      for (const key in vnode.props) {
+        const value = vnode.props[key];
+        el.setAttribute(key, value);
       }
     }
-    for (const key in oldProps) {
-      if(!(key in newProps)) {
-        el.removeAttribute(key)
-      }
-    }
-
     // children
-    const oldChildren = n1.children
-    const newChildren = n2.children
-    
-    if(typeof newChildren === 'string') {
-      if (typeof oldChildren === 'string') {
-        if (newChildren !== oldChildren) {
-          el.textContent = newChildren
+    if (vnode.children) {
+      if (typeof vnode.children === "string") {
+        el.textContent = vnode.children;
+      } else {
+        vnode.children.forEach((child) => {
+          mount(child, el);
+        });
+      }
+    }
+
+    container.appendChild(el);
+  }
+
+  const vdom = h("div", { class: "red" }, [h("span", null, "hello")]);
+
+  mount(vdom, document.getElementById("app"));
+
+  function patch(n1, n2) {
+    if (n1.tag == n2.tag) {
+      const el = (n2.el = n1.el);
+
+      // props
+      const oldProps = n1.props || {};
+      const newProps = n2.props || {};
+      for (const key in newProps) {
+        const oldValue = oldProps[key];
+        const newValue = newProps[key];
+        if (newValue !== oldValue) {
+          el.setAttribute(key, newValue);
+        }
+      }
+      for (const key in oldProps) {
+        if (!(key in newProps)) {
+          el.removeAttribute(key);
+        }
+      }
+
+      // children
+      const oldChildren = n1.children;
+      const newChildren = n2.children;
+
+      if (typeof newChildren === "string") {
+        if (typeof oldChildren === "string") {
+          if (newChildren !== oldChildren) {
+            el.textContent = newChildren;
+          }
+        } else {
+          el.textContent = newChildren;
         }
       } else {
-        el.textContent = newChild
+        if (typeof oldChildren === "string") {
+          el.innerHTML = "";
+          newChildren.forEach((child) => {
+            mount(child, el);
+          });
+        } else {
+          const commonLength = Math.min(oldChildren.length, newChildren.length);
+          for (let i = 0; i < commonLength; i++) {
+            patch(oldChildren[i], newChildren[i]);
+          }
+          if (newChildren.length > oldChildren.length) {
+            newChildren.slice(oldChildren.length).forEach((child) => {
+              mount(child, el);
+            });
+          } else if (newChildren.length < oldChildren.length) {
+            oldChildren.slice(newChildren.length).forEach((child) => {
+              el.removeChild(child.el);
+            });
+          }
+        }
       }
     } else {
-      if (typeof oldChildren === 'string') {
-        el.innerHTML = ''
-        newChildren.forEach(children => {
-          mount(child, el)
-        })
-      } else {
-        const commonLength = Math.min(oldChildren.length, newChildren.length)
-        for(let i = 0; i < commonLength; i++) {
-          patch(oldChildren[i], newChildren[i])
-        }
-        if(newChildren.length > oldChildren.length) {
-          newChildren.slice(oldChildren.length).forEach(child => {
-            mount(child, el)
-          })
-        } else if (newChildren.length < oldChildren.length) {
-          oldChildren.slice(newChildren.length).forEach(child => {
-            el.removeChild(child.el)
-          })
-        }
-      }
+      // replace, 略
     }
-  } 
-  else {
-    // replace, 略
   }
-}
 
-const vom = h('div', { class: 'red' }, [
-  h('span', null, 'hello')
-])
-
-const vdom2 = h('div', { class: 'green' }, [
-  h('span', null, 'changed')
-])
-
-patch(vdom, vdom2)
+  const vdom2 = h('div', { class: 'green' }, [
+    h('span', null, 'changed')
+  ])
+  
+  patch(vdom, vdom2)
+</script>
 ```
 
 
@@ -740,6 +738,223 @@ state.count++;
 
 
 ##### mini-vue 实现
+
+```html
+<div id="app"></div>
+
+<script>
+  // vdom
+  function h(tag, props, children) {
+    return { tag, props, children };
+  }
+
+  function mount(vnode, container) {
+    const el = (vnode.el = document.createElement(vnode.tag));
+    // props
+    if (vnode.props) {
+      for (const key in vnode.props) {
+        const value = vnode.props[key];
+        if (key.startsWith("on")) {
+          el.addEventListener(key.slice(2).toLowerCase(), value  )
+        } else {
+          el.setAttribute(key, value);
+        }
+      }
+    }
+    // children
+    if (vnode.children) {
+      if (typeof vnode.children === "string") {
+        el.textContent = vnode.children;
+      } else {
+        vnode.children.forEach((child) => {
+          mount(child, el);
+        });
+      }
+    }
+    container.appendChild(el);
+  }
+
+  function patch(n1, n2) {
+    if (n1.tag == n2.tag) {
+      const el = (n2.el = n1.el);
+
+      // props
+      const oldProps = n1.props || {};
+      const newProps = n2.props || {};
+      for (const key in newProps) {
+        const oldValue = oldProps[key];
+        const newValue = newProps[key];
+        if (newValue !== oldValue) {
+          el.setAttribute(key, newValue);
+        }
+      }
+      for (const key in oldProps) {
+        if (!(key in newProps)) {
+          el.removeAttribute(key);
+        }
+      }
+
+      // children
+      const oldChildren = n1.children;
+      const newChildren = n2.children;
+
+      if (typeof newChildren === "string") {
+        if (typeof oldChildren === "string") {
+          if (newChildren !== oldChildren) {
+            el.textContent = newChildren;
+          }
+        } else {
+          el.textContent = newChildren;
+        }
+      } else {
+        if (typeof oldChildren === "string") {
+          el.innerHTML = "";
+          newChildren.forEach((child) => {
+            mount(child, el);
+          });
+        } else {
+          const commonLength = Math.min(oldChildren.length, newChildren.length);
+          for (let i = 0; i < commonLength; i++) {
+            patch(oldChildren[i], newChildren[i]);
+          }
+          if (newChildren.length > oldChildren.length) {
+            newChildren.slice(oldChildren.length).forEach((child) => {
+              mount(child, el);
+            });
+          } else if (newChildren.length < oldChildren.length) {
+            oldChildren.slice(newChildren.length).forEach((child) => {
+              el.removeChild(child.el);
+            });
+          }
+        }
+      }
+    } else {
+      // replace, 略
+    }
+  }
+
+  // reactivity
+  let activeEffect; // 保存添加哪一个函数作为订阅
+
+  class Dep {
+    subscribers = new Set(); // 订阅者
+    depend() {
+      if (activeEffect) {
+        this.subscribers.add(activeEffect);
+      }
+    }
+    notify() {
+      // 通知订阅者
+      this.subscribers.forEach((effect) => {
+        effect();
+      });
+    }
+  }
+
+  function watchEffect(effect) {
+    activeEffect = effect;
+    effect();
+    activeEffect = null;
+  }
+
+  // 因为 reactiveHandler 只创建一次，为了在运行时找到同一个那个 dep 实例，所以使用全局 weakMap 来缓存 dep 实例，并保持唯一性
+  // 另外，因为 weakMap 的 key 必须是对象，并且当 key 不可达，对应的 value 可以自动触发 GC。正因为此，weakMap 的 key 不可枚举
+  const targetMap = new WeakMap();
+
+  function getDep(target, key) {
+    let depsMap = targetMap.get(target);
+    if (!depsMap) {
+      depsMap = new Map();
+      targetMap.set(target, depsMap);
+    }
+    let dep = depsMap.get(key);
+    if (!dep) {
+      dep = new Dep();
+      depsMap.set(key, dep);
+    }
+    return dep;
+  }
+
+  // reactiveHandler 拆出来是为了只创建一次，避免重新创建
+  const reactiveHandlers = {
+    get(target, key, receiver) {
+      const dep = getDep(target, key);
+
+      dep.depend();
+      return Reflect.get(target, key, receiver);
+      // 虽然也可以 return target[key]。但考虑到原型继承问题，在这种情况下，receiver 和 target 会指向不同的东西。总之，用 Reflect 让一切正常
+    },
+    set(target, key, value, receiver) {
+      const dep = getDep(target, key);
+      const result = Reflect.set(target, key, value, receiver);
+      dep.notify();
+      return result;
+    },
+  };
+
+  function reactive(raw) {
+    return new Proxy(raw, reactiveHandlers);
+  }
+
+  const App = {
+    data: reactive({ count: 0 }),
+    render() {
+      return h(
+        "div",
+        {
+          onClick: () => this.data.count++, 
+          // 当前的代码并不能处理事件侦听器，上面 mount 的 props 部分需要修改，加上 addEventListener
+        },
+        String(this.data.count)
+      );
+    },
+  };
+
+  function mountApp(component, container) {
+    let isMounted = false;
+    let prevVdom = component;
+    watchEffect(() => {
+      if (!isMounted) {
+        prevVdom = component.render();
+        mount(prevVdom, container);
+        isMounted = true;
+      } else {
+        const newVdom = component.render();
+        patch(prevVdom, newVdom);
+        prevVdom = newVdom;
+      }
+    });
+  }
+
+  mountApp(App, document.getElementById("app"));
+</script>
+```
+
+
+
+##### Compostion API
+
+> **Compostion API = Reactivity API + Lifecycle hooks**
+
+Ref 就像是一个 “拥有内部值的容器，同时能够追踪它的依赖关系”，这和 dep 实例很像。
+
+Setup 会是新的第一个被调用的 hook ，甚至在 beforeCreate 之前。👀 结合下面的摘抄，感觉类似于 main 函数之于 c-like 语言的项目
+
+> `setup()` 钩子是在组件中使用组合式 API 的入口
+>
+> 摘自：[Vue3 Doc - API - 组合式 API：setup()](https://cn.vuejs.org/api/composition-api-setup.html)
+
+因为大部分暴露在 this 上面的功能，使用 Compostion API 的函数 同样可以做到；所以 setup 内部并没有太多 this 的用例 ( use case )。
+
+另外，<font color=fuchsia>**因为 setup 是在其他的所有 options**</font> ( 👀 Options API ) <font color=fuchsia>**被处理之前调用的；比如 data 和 computed ，它们都是在 setup 之后处理的，所以不能在 setup 中使用它们**</font>。所以，在同时使用这两者时，知道它们谁先被处理很重要。
+
+一般的经验时：在 setup 内部，假设不会知道其他 Options 的内容；它有它自己的世界。但是，<font color=fuchsia>**当所有东西都从 setup 中返回，它们将在其他 Options 中可用**</font>
+
+
+
+@vue/reactivity 是一个内部包，Vue 设计者只是碰巧暴露了它的一些 API，通过 Vue 接口 ( interface )；而一些 @vue/reactivity 的 API 被认为是底层或者进阶的 API；Vue 设计者甚至不通过 Vue 将其暴露。从技术上来讲，如果你是 Vue 的超级进阶用户，可以单独使用 响应式包，在它的基础上建立一个替代系统；但这不是 API 合同 ( API contract ) 的一部分。
+
+对于 Vue 来说，watchEffect 是一个建立在原始的 Effect 上的包装器。当建立了一个 watchEffect（这里我们称为 watcher ），这个 watcher 将自动和组件实例关联；当这个组件实例被卸载时，这个 effect 也会自动停止。
 
 
 
