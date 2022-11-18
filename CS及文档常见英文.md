@@ -392,7 +392,7 @@
 - **连字符 `-`**：hyphen。用于连接单词，将不同单词连接变成一个单词。
 - **分号 `;`** ：semicolon
 - **斜杠**
-  - 正斜杠  `/`：forward slash
+  - 正斜杠  `/`：forward slash 👀 其中 w/ 的意思是 with
   - 反斜杠  `\ ` ：backslash 
 - **竖杠 `|`** ：一般称为 “Vertical bar”，但是在 CS 中更多称为 “pipe symbol”
 - **引号**

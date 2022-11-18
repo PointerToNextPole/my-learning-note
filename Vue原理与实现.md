@@ -958,6 +958,245 @@ Setup 会是新的第一个被调用的 hook ，甚至在 beforeCreate 之前。
 
 
 
+##### how a component re-renders
+
+```js
+watchEffect(() => {
+  const oldTree = component.vnode
+  const newTree = component.render.call(renderContext)
+  patch(oldTree, newTree)
+})
+```
+
+
+
+在一个组件中的 setup 函数中，可以调用另一个组件的 setup 函数。这种 组合 ( composition ) 的方式相比传统的面向对象的扩展更为灵活（ 👀 弹幕有人总结：组合优于继承 ）
+
+
+
+##### 为何 Compoistion API 的逻辑重用比 mixin 更好
+
+###### 使用 Options + Mixin 实现封装与逻辑重用
+
+```vue
+<script src="https://unpkg.com/vue"></script>
+
+<div id="app"></div>
+
+<script>
+  const { createApp } = Vue
+  const MouseMixin = {
+    data() {
+      return { x: 0, y: 0 }
+    },
+    methods: {
+      update(e) {
+        this.x = e.pageX
+        this.y = e.pageY
+      }
+    },
+    mounted() {
+      window.addEventListener('mousemove', this.update)
+    },
+    unmounted() {
+      window.removeEventListener('mousemove')
+    }
+  }
+
+  const App = {
+    mixins: [MouseMixin],
+    template: `{{x}} {{y}}`,
+  }
+
+  createApp(App).mount('#app')
+</script>
+```
+
+多个 Mixin 在同一个组件中使用，导致的混乱，但并没有一个好的替代品；React 想出来 高阶组件 ( Higher-Order Component / HOC ) 的概念，作为解决方案。HOC 就是：不把所有东西都混在一起，而是需要什么就注入什么。代码如下：
+
+```vue
+<script src="https://unpkg.com/vue"></script>
+
+<div id="app"></div>
+
+<script>
+  const { createApp, h } = Vue;
+  function withMouse(Inner) { // 👀 相当于一个命名空间
+    return {
+      data() {
+        return { x: 0, y: 0 };
+      },
+      methods: {
+        update(e) {
+          this.x = e.pageX;
+          this.y = e.pageY;
+        },
+      },
+      mounted() {
+        window.addEventListener("mousemove", this.update);
+      },
+      unmounted() {
+        window.removeEventListener("mousemove");
+      },
+      render() {
+        return h(Inner, { x: this.x, y: this.y }); // 👀
+      },
+    };
+  }
+
+  const App = withMouse({ // 👀
+    props: ["x", "y"],
+    template: `{{x}} {{y}}`,
+  });
+
+  createApp(App).mount("#app");
+</script>
+```
+
+不过，HOC 并没有真正解决根本问题：这里有仍然有可能存在命名空间的冲突，比如多个高阶组件相互包装，再加上 props 中也有很多属性（分不清哪个属性来自哪个高阶组件），如下：
+
+```js
+const App = withFoo(withBar(withMouse({
+  props: ["x", "y", 'foo', 'bar'],
+  template: `{{x}} {{y}}`,
+})))
+```
+
+所以，HOC 也不能完全解决问题 ( not silver bullet )。于是，React 产生了 “渲染 props” 的概念；而在 Vue 生态中，有类似的概念：作用域插槽。写法如下：
+
+```vue
+<script src="https://unpkg.com/vue"></script>
+
+<div id="app"></div>
+
+<script>
+  const { createApp, h } = Vue;
+  const Mouse = {
+    data() {
+      return { x: 0, y: 0 };
+    },
+    methods: {
+      update(e) {
+        this.x = e.pageX;
+        this.y = e.pageY;
+      },
+    },
+    mounted() {
+      window.addEventListener("mousemove", this.update);
+    },
+    unmounted() {
+      window.removeEventListener("mousemove");
+    },
+    template: `<slot :x="x" :y="y"  />`,
+    render() {
+      return (
+        this.$slots.default && this.$slots.default({
+          x: this.x,
+          y: this.y,
+        })
+      );
+    },
+  };
+  const App = {
+    components: { Mouse },
+    template: `
+      <Mouse v-slot="{ x, y }">
+        {{ x }} {{ y }}
+      </Mouse>
+    `,
+  };
+
+  createApp(App).mount("#app");
+</script>
+```
+
+而如果有多种类型的组件，相较于 “动态 props”：
+
+```js
+const App = {
+  components: { Mouse, Foo },
+  template: `
+    <Mouse v-slot="{ x, y }">
+      <Foo v-slot="{ foo }">
+        {{ x }} {{ y }} {{ foo }}
+      </Foo>
+    </Mouse>
+  `,
+};
+```
+
+props 的归属关系就很明显了：x，y 属于 Mouse，foo 属于 Foo。
+
+即使出现 相同名称的 prop，也是可以利用 对象的 alias 重命名的。假设 Foo 中也有 名为 x 的 prop ，可以通过如下方法 `{ x: alias }` 避免冲突。如下：
+
+```js
+const App = {
+  components: { Mouse, Foo },
+  template: `
+    <Mouse v-slot="{ x, y }">
+      <Foo v-slot="{ x: foo }">
+        {{ x }} {{ y }} {{ foo }}
+      </Foo>
+    </Mouse>
+  `,
+};
+```
+
+##### Composition API 实现
+
+```vue
+<script src="https://unpkg.com/vue"></script>
+
+<div id="app"></div>
+
+<script>
+  const { createApp, ref, onMounted, onUnmounted } = Vue;
+  function useMouse() {
+    const x = ref(0)
+    const y = ref(0)
+    const update = e => {
+      x.value = e.pageX
+      y.value = e.pageY
+    }
+    onMounted(() => { window.addEventListener('mousemove', update) })
+    onUnmounted(() => { window.removeEventListener('mousemove', update) })
+    return { x, y }
+  }
+
+  const App = {
+    setup() {
+      const { x, y } = useMouse() // 👀 见下面解释
+      return { x, y }
+    },
+    template: `{{ x }} {{ y }}`,
+  };
+
+  createApp(App).mount("#app");
+</script>
+```
+
+> 👀 补充
+>
+> 虽然上面 `const { x, y } = useMouse(); return { x, y }` 有点啰嗦，甚至可以直接写成
+>
+> ```js
+> return { ...useMouse() }
+> ```
+>
+> 但是这样就会造成黑箱化、表达不明确，导致像 mixin 一样的使用（也会让阅读代码的人不得不去调用定义处查看代码返回内容）。同样的，如果有变量冲突，同样可以使用别名
+>
+> ```js
+> const { foo: bar } = useFoo()
+> ```
+
+
+
+###### 使用 Composition API 最后一个好处
+
+当你尝试将多个东西合并在一起的时候，在类型系统中很难正确的进行类型推导是很困难的；但是在 Composition API 中，一切都是函数调用，Vue 也提供了开箱即用正确的类型定义。在 90% 的情况下，一起都是自动推断出来的。当你（在 setup 中）调用 （封装的函数）时，所有的东西都会有类型，所以返回的（暴露）的数据将会返回到模版时，IDE、vetur 插件将可以接收到它们，然后推断模版进行自动补全。
+
+
+
 #### 《Vue 响应式原理解析》笔记
 
 ##### Dep
