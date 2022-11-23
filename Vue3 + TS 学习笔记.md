@@ -6605,13 +6605,15 @@ vuex中保存的数据是放置在内容中的，一旦刷新页面，那么就�
 
 ## antfu Vue conf 2021 演讲
 
-在同时可以使用ref 和 reactive，更推荐使用ref：
+
+
+<font color=fuchsia>在同时可以使用 ref 和 reactive ，更推荐使用 ref</font> ： 
 
 - **ref**
-  - 显式调用（需要使用 .value ），类型检查
+  - 显式调用（需要使用 `.value` ），类型检查
   - 相比Reactive局限更少
 - **reactive**
-  - 自动 Unwrap（即：不需要 .value）
+  - 自动 Unwrap（即：不需要 `.value` ）
   - 在类型上和一般对象没有区别
   - 使用ES6解构会使响应性丢失
-  - 由于担心响应式丢失，所以需要使用箭头函数包装才能使用'watch
+  - 由于担心响应式丢失，所以需要使用箭头函数包装才能使用 watch
