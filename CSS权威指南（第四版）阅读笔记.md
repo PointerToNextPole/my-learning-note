@@ -142,7 +142,7 @@ style 元素应该始终设定 type 属性。对CSS 文档来说，正确的值�
 </style>
 ```
 
-与link一样，<mark>一个文档中可以有多个＠import语句</mark>。然而，不同的是：＠import指令导人的每个样式表都会使用，无法指定候选样式表。 
+与link一样，<font color=LightSeaGreen>一个文档中可以有多个＠import语句</font>。然而，不同的是：＠import指令导人的每个样式表都会使用，无法指定候选样式表。 
 
 与link类似，<font color=FF0000>＠import指令也可以显示导入的样式表应用于何种媒体</font>。 方法是在样式表的URL后面提供媒体描述符：
 
@@ -209,7 +209,7 @@ h1 ｛color:blue；｝
 
   对整个查询取反。 假如所有条件都为真，那样式表不会应用到文档上。 例如，not（color）and（orientation:landscape）and（min-device-width:800px）表示三个条目都满足时，整个语句得到的结果与之相反。 因此，当媒体环境是彩色的、横向放着，而且设备的屏幕宽至少为800像素，样式表不会应用到文档上。 除此之外的情况下，都将应用样式表。
 
-注意，<font color=FF0000>not 关键字只能在媒体查询的开头使用</font>。<mark>写为这样是无效的：（color）and not（min-device-width:800px）。如果真这样写，媒体查询将被忽略</mark>。 还要注意，太旧的浏览器不支持媒体查询，因此会跳过媒体描述符以 not开头的样式表。
+注意，<font color=FF0000>not 关键字只能在媒体查询的开头使用</font>。<font color=LightSeaGreen>写为这样是无效的：（color）and not（min-device-width:800px）。如果真这样写，媒体查询将被忽略</font>。 还要注意，太旧的浏览器不支持媒体查询，因此会跳过媒体描述符以 not开头的样式表。
 
 <font color=FF0000>媒体设备不支持OR关键字。 不过，分隔多个媒体查询的逗号相当于OR</font>。 例如，screen，print 的意思是，“为屏幕或印刷媒体时应用样式＂；而screen and（max-color:2）or（monochrome）是无效的，会被忽略，正确的写法是 screen and（max-color:2）screen and（monochrome）。
 
@@ -217,7 +217,7 @@ h1 ｛color:blue；｝
 
 - **only**
 
-  在<font color=FF0000>**不支持**媒体查询的旧浏览器中</font><font color=000FF0>隐藏样式表</font>。<mark> 例如，如果想在所有媒体中应用一个样式表，但是只在支持媒体查询的浏览器中应用，可以这样写：`＠import url(new.css) only all`。在支持媒体查询的浏览器中，only关键字被忽略，样式表会应用到文档上。而在不支持媒体查询的浏览器中，媒体类型为 only all，而这是无效的，因此不会应用样式表</mark>。 <font color=FF0000>注意，only关键字只能用在媒体查询的开头</font>。
+  在<font color=FF0000>**不支持**媒体查询的旧浏览器中</font><font color=000FF0>隐藏样式表</font>。<font color=LightSeaGreen> 例如，如果想在所有媒体中应用一个样式表，但是只在支持媒体查询的浏览器中应用，可以这样写：`＠import url(new.css) only all`。在支持媒体查询的浏览器中，only关键字被忽略，样式表会应用到文档上。而在不支持媒体查询的浏览器中，媒体类型为 only all，而这是无效的，因此不会应用样式表</font>。 <font color=FF0000>注意，only关键字只能用在媒体查询的开头</font>。
 
 
 
@@ -316,7 +316,7 @@ p.criticalInfo {font-weight:bold;}
 
 #### P53 属性选择符
 
-不管是类选择符还是ID 选择符，我们选择的其实都是属性的值。 前两节使用的句法专门针对 HTML，XHTML，SVG和MathML 文档（截至写作本书时）。<mark>在其他标记语言中，这样编写的类选择符和ID选择符可能无法使用（class和id属性或许根本不存在）。为了解决这个问题，CSS2 引入了属性选择符（attribute selector），根据属性及其值选择元素</mark>。 <font color=FF0000>属性选择符大致可以分为四类： 简单属性选择符</font>（simple attribute selectors）、 <font color=FF0000>精准属性值选择符</font>（ exact attribute value selectors）、<font color=FF0000>部分匹配属性值选择符</font>（partial-match attribute value selectors）和<font color=FF0000>起始值属性选择符</font>（leading-value attribute selectors）。
+不管是类选择符还是ID 选择符，我们选择的其实都是属性的值。 前两节使用的句法专门针对 HTML，XHTML，SVG和MathML 文档（截至写作本书时）。<font color=LightSeaGreen>在其他标记语言中，这样编写的类选择符和ID选择符可能无法使用（class和id属性或许根本不存在）。为了解决这个问题，CSS2 引入了属性选择符（attribute selector），根据属性及其值选择元素</font>。 <font color=FF0000>属性选择符大致可以分为四类： 简单属性选择符</font>（simple attribute selectors）、 <font color=FF0000>精准属性值选择符</font>（ exact attribute value selectors）、<font color=FF0000>部分匹配属性值选择符</font>（partial-match attribute value selectors）和<font color=FF0000>起始值属性选择符</font>（leading-value attribute selectors）。
 
 
 
@@ -344,7 +344,7 @@ h1[class] {
 
 <img src="https://i.loli.net/2021/02/09/tyRUwG7MXInQBW9.png" style="zoom:40%;" />
 
-此外，还可以基于多个属性选择。 为此，要把多个属性选择符串在一起。 例如，若<mark>想让同时具有href和title属性的 HTML 超链接显示为粗体</mark>，可以这样写：
+此外，还可以基于多个属性选择。 为此，要把多个属性选择符串在一起。 例如，若<font color=LightSeaGreen>想让同时具有href和title属性的 HTML 超链接显示为粗体</font>，可以这样写：
 
 ```css
 a[href][title] {font-weight:bold;}
@@ -442,7 +442,7 @@ Select入一个新的同胞连结符，名为一般同胞连结符（general sib
 
 深人讨论之前，<font color=FF0000>对伪类要明确一点：伪类始终指代所依附的元素。 </font>这听起来有点奇怪，但是又理所当然，不是吗？之所以强调这一点，是因为有几个结构伪类容易让人误以为是描述符，认为指代的是后代元素。
 
-下面笔者举个例子。2003年，我的第一个孩子出生时，我（像你一样）在网上宣布了这个好消息。有些人对我表示了祝贺，还用CSS 开起了玩笑，比如 <font color=FF0000>#ericmeyer:first-child</font>选择符。 <font color=FF0000>这个选择符的问题是，**它选择的是我，而不是我的女儿**，而且我必须是爸妈的第一个孩子才行（碰巧我是）。若想正确选择我的第一个孩子，选择符应该是 `#ericmeyer > :first-child`</font>。
+下面笔者举个例子。2003年，我的第一个孩子出生时，我（像你一样）在网上宣布了这个好消息。有些人对我表示了祝贺，还用 CSS 开起了玩笑，比如 <font color=FF0000>`#ericmeyer:first-child`</font> 选择符。 <font color=FF0000>这个选择符的问题是，**它选择的是我，而不是我的女儿**，而且我必须是爸妈的第一个孩子才行（碰巧我是）。若想正确选择我的第一个孩子，选择符应该是 `#ericmeyer > :first-child`</font>。
 
 
 
@@ -484,7 +484,7 @@ p:only-child {color:red;}
 p:first-child:last-child {background-color:red;}
 ```
 
-这两个规则在一起把段落设为红底红字（<mark>这么做显然不好</mark>）。
+这两个规则在一起把段落设为红底红字（<font color=LightSeaGreen>这么做显然不好</font>）。
 
 
 
@@ -535,7 +535,7 @@ tr:nth-child(odd) {background:silver;}
 
 有超过十年的时间，已访问的链接可以使用任何可用的 CSS 属性装饰，与未访问链接无异。 然而，大约在2005年，有几个人通过示例揭露，通过视觉样式和简单的DOM 脚本可以判断用户是否访问过特定的页面。例如，对 `:visited { font-weight: bold;}`规则来说，脚本可以找出所有加粗的链接，告诉用户他们访问计哪些网站。 <font color=FF0000>更糟的是，已访问的网站可能会被服务器收集。 不使用脚本的话，还可以通过背景图像达到相同的效果</font>。
 
-<mark>对你来说这可能不是什么严重的问题，但在有些国家，访问某些网站（反对党，未经批准的宗教组织、邪教或腐败网站等）可能招致牢狱之灾。 钓鱼网站还可以利用这一点查出用户访问过哪些在线银行</mark>。<font color=FF0000>鉴于此，相关方采取了两个措施。</font>
+<font color=LightSeaGreen>对你来说这可能不是什么严重的问题，但在有些国家，访问某些网站（反对党，未经批准的宗教组织、邪教或腐败网站等）可能招致牢狱之灾。 钓鱼网站还可以利用这一点查出用户访问过哪些在线银行</font>。<font color=FF0000>鉴于此，相关方采取了两个措施。</font>
 
 首先，<font color=FF0000>只能把**颜色相关的属性**应用到已访问的链接上，包括：color，background-color，column-rule-color，outline-color，border-color，以及各边的边框颜色属性（例如 border-top-color）。**除此之外的属性将被忽略**</font>。<font color=FF0000>此外，`:link` 定义的样式除了应用到未访问的链接上之外，也会应用到已访问的链接上，因此 `:link` 能“装饰所有超链接”，而不只是“装饰所有未访问的超链接”</font>。
 
@@ -550,10 +550,10 @@ tr:nth-child(odd) {background:silver;}
 |   伪类   |                             说明                             |
 | :------: | :----------------------------------------------------------: |
 |  :link   | 指代用作超链接的锚记（即具有href属性），而且<font color=FF0000>指向尚未访问的地址</font> |
-| :visited | 指代<font color=FF0000>指向已访问地址的超链接</font>。 <mark>出于安全考虑，能应用到已访问链接上的样式十分有限</mark> |
+| :visited | 指代<font color=FF0000>指向已访问地址的超链接</font>。 <font color=LightSeaGreen>出于安全考虑，能应用到已访问链接上的样式十分有限</font> |
 |  :focus  | 指代<font color=FF0000>当前获得输入焦点的元素</font>，即可以接受键盘输入或以某种方式激活 |
 |  :hover  | 指代<font color=FF0000>鼠标指针放置其上的元素</font>，<font color=FF0000>例如鼠标指针悬停在超链接上</font> |
-| :active  | 指代<font color=FF0000>由用户输入激活的元素</font>，<mark>例如用户单击超链接时按下鼠标按键的那段时间</mark> |
+| :active  | 指代<font color=FF0000>由用户输入激活的元素</font>，<font color=LightSeaGreen>例如用户单击超链接时按下鼠标按键的那段时间</font> |
 
 很多网页都有类似下面的样式：
 
@@ -695,7 +695,7 @@ http://www.w3.org/TR/css3-selectors/#target-pseudo
 
 伪元素与伪类很像，为了实现特定的效果，它在文档中插入虚构的元素<font color=FF0000>CSS2定义了四个基本的伪元素</font>，分别用于<font color=FF0000>装饰元素的首字母</font>，<font color=FF0000>首行</font>，以及<font color=FF0000>创建和装饰“前置”和“后置”内容</font>。CSS2之后的规范又定义了其他伪元素（例如 `::marker`），我们将在相关的章节中探讨。 这一节介绍CSS2 定义的那四个，因为它们由来已久，借此机会还可以讨论伪元素的行为。
 
-伪类使用一个冒号，而伪元素使用一对冒号，例如 `::first-line`。 这么做是为了把伪元素与伪类区分开。 <mark>一开始并不是这样的，在CSS2中，这两种选择符都使用一个冒号。因此，为了向后兼容，浏览器也接受使用单个冒号的伪元素选择符。 但是，不要因为这样就懈怠。 为了确保你编写的 CSS在未来还能继续使用，应该使用正确的冒号个数，毕竟我们无法预知浏览器什么时候不再接受单个冒号的伪元素选择符</mark>。
+伪类使用一个冒号，而伪元素使用一对冒号，例如 `::first-line`。 这么做是为了把伪元素与伪类区分开。 <font color=LightSeaGreen>一开始并不是这样的，在CSS2中，这两种选择符都使用一个冒号。因此，为了向后兼容，浏览器也接受使用单个冒号的伪元素选择符。 但是，不要因为这样就懈怠。 为了确保你编写的 CSS在未来还能继续使用，应该使用正确的冒号个数，毕竟我们无法预知浏览器什么时候不再接受单个冒号的伪元素选择符</font>。
 
 注意，<font color=FF0000><font size="4">**所有伪元素只能出现在选择符的最后**</font>。p::first-line em是无效的，因为伪元素在选择符的主词前面（主词是选择符中的最后一个元素）。这也表明一个选择符中只能有一个伪元素</font>，不过在CSS以后的版本中可能会取消这一限制。
 
@@ -766,7 +766,7 @@ li#answer {color: navy;}
 
 - 选择符中的每个 <font color=FF0000>ID 属性</font>值加 <font color=FF0000>0, 1, 0, 0</font>。
 - 选择符中的每个<font color=FF0000>类属性值</font>、<font color=FF0000>属性选择</font>或<font color=FF0000>伪类</font>加 <font color=FF0000>0, 0, 1, 0</font>。
-- 选择符中的每个<font color=FF0000>元素</font>和<font color=FF0000>伪元素</font>加 <font color=FF0000>0, 0, 0, 1</font>。伪类到底有没有特指度在CSS2中表述的有些自相矛盾，不过<mark>CSS2.1明确指出，伪元素有特指度</mark>。
+- 选择符中的每个<font color=FF0000>元素</font>和<font color=FF0000>伪元素</font>加 <font color=FF0000>0, 0, 0, 1</font>。伪类到底有没有特指度在CSS2中表述的有些自相矛盾，不过<font color=LightSeaGreen>CSS2.1明确指出，伪元素有特指度</font>。
 - <font color=FF0000>连结符和通用选择符不增加特指度</font>。
 
 **下面给出几个规则中选择符的特指度**
@@ -852,7 +852,7 @@ p.light {color: yellow; font: smaller Times, serif !important;}
 
 祖先的属性值会沿着树状图向下传播到后代元素，直到没有后代为止。 <font color=FF0000>属性值绝不向上传播，即元素的样式绝不传给祖辈元素</font>。
 
-在HTML中，**<font color=FF0000>向上传播规则有个例外</font>**：<mark>应用到body 元素上的背景样式会传给 html元素。html是文档的根元素，用于定义渲染文档的画布。<font color=FF0000>这一例外仅发生在为body元素定义了背景而没有为html元素定义背景的情况下</font>。</mark>
+在HTML中，**<font color=FF0000>向上传播规则有个例外</font>**：<font color=LightSeaGreen>应用到body 元素上的背景样式会传给 html元素。html是文档的根元素，用于定义渲染文档的画布。<font color=FF0000>这一例外仅发生在为body元素定义了背景而没有为html元素定义背景的情况下</font>。</font>
 
 
 
@@ -887,7 +887,7 @@ h1#page-title {color: black;}
 - 找到匹配特定元素的所有规则。
 
 - <font color=FF0000>按显式权重排序应用到特定元素上的所有声明</font>。以 `!important` 标记的规则比没有这一标记的权重高。
-- 按来源排序应用到特定元素上的所有声明。 <mark>声明有三个来源：创作人员、 读者和用户代理。 正常情况下，创作人员编写的样式击败读者提供的样式； 读者样式中以 `!important` 标记的声明比其他样式权重高，包括创作人员编写的样式中以 `!important` 标记的声明； 创作人员和读者样式覆盖用户代理的默认样式</mark>。
+- 按来源排序应用到特定元素上的所有声明。 <font color=LightSeaGreen>声明有三个来源：创作人员、 读者和用户代理。 正常情况下，创作人员编写的样式击败读者提供的样式； 读者样式中以 `!important` 标记的声明比其他样式权重高，包括创作人员编写的样式中以 `!important` 标记的声明； 创作人员和读者样式覆盖用户代理的默认样式</font>。
 - 按特指度排序应用到特定元素上的所有声明。 特指度高的声明具有较高的权重。
 - <font color=FF0000>**按声明的前后位置排序**应用到特定元素上的所有声明。 样式表或文档中<font size="4">**靠后的声明权重较高**</font>。**导入的样式表中的声明放在当前样式表中所有声明的前面**</font>。
 
@@ -959,7 +959,7 @@ a:link {color: blue;}
 a:visited {color: purple;}
 ```
 
-读过本章的内容之后我们知道，<font color=FF0000>这些选择符的特指度相等，都是0, 0, 1, 0。 因为它们的显式权重、来源和特指度都一样，所以最后一个匹配的规则将胜出</font>。 <mark>单击或激活（例如使用键盘）未访问的链接时，匹配其中四个规则，:link，:focus，:hover和 :active。因此，这四个规则中的最后一个胜出</mark>。对LVFHA顺序来说，:active 将胜出，这通常正是创作人员想要的。
+读过本章的内容之后我们知道，<font color=FF0000>这些选择符的特指度相等，都是0, 0, 1, 0。 因为它们的显式权重、来源和特指度都一样，所以最后一个匹配的规则将胜出</font>。 <font color=LightSeaGreen>单击或激活（例如使用键盘）未访问的链接时，匹配其中四个规则，:link，:focus，:hover和 :active。因此，这四个规则中的最后一个胜出</font>。对LVFHA顺序来说，:active 将胜出，这通常正是创作人员想要的。
 
 
 
@@ -971,7 +971,7 @@ a:visited {color: purple;}
 
 #### P121
 
-接受关键字的属性， 所取的关键字必须在那个属性允许使用的关键字范围之内。 <mark>如果两个属性使用相同的关键字，在不同的属性中相同的关键字可能具有不一样的行为。 例如，letter-spacing属性的 normal关键字与font-style属性的 normal关键字就相差很大</mark>。
+接受关键字的属性， 所取的关键字必须在那个属性允许使用的关键字范围之内。 <font color=LightSeaGreen>如果两个属性使用相同的关键字，在不同的属性中相同的关键字可能具有不一样的行为。 例如，letter-spacing属性的 normal关键字与font-style属性的 normal关键字就相差很大</font>。
 
 
 
@@ -1045,9 +1045,9 @@ for a newline."
 - 厘米（cm）
 - 毫米（mm）
 - 四分之一毫米（q）
-- 点（pt）：点是一个标准的印刷度量单位，<mark>1英寸有72个点</mark>
-- 派卡（pc）：派卡（pica）也是印刷术语，<mark>1派卡等于12点，1英寸等于6派卡</mark>
-- 像素（px）：像素是屏幕上的小点，不过CSS定义的像素较为抽象。<mark>在CSS中，1像素所占的尺寸够1英寸中放下96像素。</mark> 
+- 点（pt）：点是一个标准的印刷度量单位，<font color=LightSeaGreen>1英寸有72个点</font>
+- 派卡（pc）：派卡（pica）也是印刷术语，<font color=LightSeaGreen>1派卡等于12点，1英寸等于6派卡</font>
+- 像素（px）：像素是屏幕上的小点，不过CSS定义的像素较为抽象。<font color=LightSeaGreen>在CSS中，1像素所占的尺寸够1英寸中放下96像素。</font> 
 
 
 
@@ -1099,7 +1099,7 @@ CSS3 新增了一个有趣的单位：ch。这个单位基本上可以理解为�
 
 #### P136 视区相关的单位
 
-<font color=FF0000>CSS3 还新增了三个与视区尺寸相关的单位</font>。 <mark>这些单位根据视区的尺寸计算，比如浏览器窗口、可打印区域，移动设备的显示屏等</mark>。
+<font color=FF0000>CSS3 还新增了三个与视区尺寸相关的单位</font>。 <font color=LightSeaGreen>这些单位根据视区的尺寸计算，比如浏览器窗口、可打印区域，移动设备的显示屏等</font>。
 
 - 视区电度单位（vw）
 
@@ -1117,15 +1117,15 @@ CSS3 新增了一个有趣的单位：ch。这个单位基本上可以理解为�
 
   <font color=FF0000>这个单位等于视区宽度或高度的1/100，始终取宽度和高度中较大的那个</font>。 因此，如果一个视区的宽度为937像素，高度为650像素，那么1vmax等于9.37px。
 
-<mark>这些单位特别适合用于创建全视区界面，例如移动设备的界面，因为元素是根据视区的尺寸而变化的，与文档树中的任何元素都没关系</mark>。 因此，轻易就能填满整个视区，或者至少填满视区的大部分，而不用担心特定情况下视区的具体尺寸。
+<font color=LightSeaGreen>这些单位特别适合用于创建全视区界面，例如移动设备的界面，因为元素是根据视区的尺寸而变化的，与文档树中的任何元素都没关系</font>。 因此，轻易就能填满整个视区，或者至少填满视区的大部分，而不用担心特定情况下视区的具体尺寸。
 
 
 
 #### P138 计算值
 
-为方便你做数学计算，CSS 提供了`calc()` 值。括号中可以使用简单的数学算式。<mark>允许使用的运算符有+（加）、-（减）、*（乘）、/（除），以及括号</mark>。另外，<font color=FF0000>`calc()` 不允许做指数运算</font>。
+为方便你做数学计算，CSS 提供了`calc()` 值。括号中可以使用简单的数学算式。<font color=LightSeaGreen>允许使用的运算符有+（加）、-（减）、*（乘）、/（除），以及括号</font>。另外，<font color=FF0000>`calc()` 不允许做指数运算</font>。
 
-<mark style="background: fuchsia">注意：允许在 `calc()` 中使用括号似乎是浏览器提供的便利措施，因为 `calc()` 的句法定义中没有提到括号。因此，浏览器可能会继续支持，不过使用时要小心</mark>。
+<font color=fuchsia>注意：允许在 `calc()` 中使用括号似乎是浏览器提供的便利措施，因为 `calc()` 的句法定义中没有提到括号。因此，浏览器可能会继续支持，不过使用时要小心</font>。
 
 <font color=FF0000>在允许使用这些值的地方，都能使用` calc()`：\<length>、\<frequency>、\<angle>、\<time>、\<percentage>、\<number>和\<integer></font>。这些单位类型也都能在 `calc()` 中使用，不过有些限制要注意。
 
@@ -1141,7 +1141,7 @@ CSS3 新增了一个有趣的单位：ch。这个单位基本上可以理解为�
 
 此外还有一个小限制要注意，即**<font color=FF0000> + 和 - 运算符的两侧必须有空白，\* 和 / 没有这一限制，这样有助于避免混淆负数</font>**
 
-除此之外，<font color=FF0000>规范要求用户代理至少要支持 `calc()` 中的算式可以使用20个算子</font>，<mark>算子可以是数字、百分数，也可以是大小量（长度）。<font color=FF0000>超过这一限制的算式应该视为无效的</font></mark>。
+除此之外，<font color=FF0000>规范要求用户代理至少要支持 `calc()` 中的算式可以使用20个算子</font>，<font color=LightSeaGreen>算子可以是数字、百分数，也可以是大小量（长度）。<font color=FF0000>超过这一限制的算式应该视为无效的</font></font>。
 
 
 
@@ -1215,7 +1215,7 @@ h2 {color: rgb(25.5%,40%,98.6%);}
 
 #### P145 十六进制RGB值
 
-如果每个十六进制数中的内个数字相等，（CSS 允许使用简短表示法。一般的句法是#RGB:
+如果每个十六进制数中的内个数字相等，CSS 允许使用简短表示法。一般的句法是 `#RGB` ：
 
 ```css
 h1 {color: #000;} /* set H1s to black */
@@ -1223,9 +1223,9 @@ h2 {color: #666;} /* set H2s to dark gray */
 h3 {color: #FFF;} /* set H3s to white */
 ```
 
-可以看出，每个颜色值中只有三个数字。可是，00和FF之间的十六进制数需要两个数字，这里总共只有三个数字，这样怎么行呢？
+可以看出，每个颜色值中只有三个数字。可是，00 和 FF 之间的十六进制数需要两个数字，这里总共只有三个数字，这样怎么行呢？
 
-其实，<font color=FF0000>浏览器会把每个数字复制成两个。 因此，#F00 变成了#FF0000，#6FA 变成了#66FFAA，#FFF变成了#FFFFFF，即白色（white）</font>。不是每个颜色都能像这样表示。比如说，中灰色就要写成标准的十六进制表示法，即#808080。 这个颜色不能使用简短表示法表示。与之最接近的是#888，它等同于 #888888。
+其实，<font color=FF0000>浏览器会把每个数字复制成两个。 因此，`#F00` 变成了 `#FF0000` ，`#6FA` 变成了 `#66FFAA` ，`#FFF` 变成了`#FFFFFF` ，即白色 ( white )</font>。不是每个颜色都能像这样表示。比如说，中灰色就要写成标准的十六进制表示法，即 `#808080` 。 这个颜色不能使用简短表示法表示。与之最接近的是 `#888` ，它等同于 `#888888` 。
 
 
 
@@ -1233,17 +1233,17 @@ h3 {color: #FFF;} /* set H3s to white */
 
 （截至2017年年末）有个新的十六进制表示法在后面添加一个十六进制值，表示 alpha通道的值。 
 
-<mark>与不带 alpha 值的十六进制表示法一样，如果四个十六进制值中的两个数字都一样，可以简写。 因此，#663399AA 可以写成#639A</mark>。 
+<font color=LightSeaGreen>与不带 alpha 值的十六进制表示法一样，如果四个十六进制值中的两个数字都一样，可以简写。 因此，#663399AA 可以写成#639A</font>。 
 
 
 
 #### P146 HSL和HSLa颜色
 
-<mark>CSS3新增了HSL表示法（不过与一般的颜色理论不同）</mark>。<font color=FF0000>HSD是Hue（色相）Saturation（饱和度）和Lightness（明度）的简称，其中色相是角度值，取值范围是0 ~ 360，饱和度是从0（无饱和度）~ 100（完全饱和）的百分数，明度是从0（全暗）~ 100（全明）的百分数</font>。
+<font color=LightSeaGreen>CSS3新增了HSL表示法（不过与一般的颜色理论不同）</font>。<font color=FF0000>HSD是Hue（色相）Saturation（饱和度）和Lightness（明度）的简称，其中色相是角度值，取值范围是0 ~ 360，饱和度是从0（无饱和度）~ 100（完全饱和）的百分数，明度是从0（全暗）~ 100（全明）的百分数</font>。
 
-<font color=FF0000>饱和度衡量颜色的强度</font>。 <mark>饱和度为 0％时，不管色相角度为多少，得到的都是不太暗的灰色；饱和度为100％时，在明度一定时，色相最饱满</mark>。<font color=FF0000>明度定义颜色有多暗或多亮</font>。<mark>明度为0％时，不管色相和饱和度为多少，始终为黑色；而明度为100％时，得到的是白色</mark>。
+<font color=FF0000>饱和度衡量颜色的强度</font>。 <font color=LightSeaGreen>饱和度为 0％时，不管色相角度为多少，得到的都是不太暗的灰色；饱和度为100％时，在明度一定时，色相最饱满</font>。<font color=FF0000>明度定义颜色有多暗或多亮</font>。<font color=LightSeaGreen>明度为0％时，不管色相和饱和度为多少，始终为黑色；而明度为100％时，得到的是白色</font>。
 
-RGB 有对应的 RGBa，类似地，<font color=FF0000>HSL有对应的HSLa</font>。<mark>HSLa在HSL的三个值后面加上一个alpha值，取值范围是0~1</mark>。 
+RGB 有对应的 RGBa，类似地，<font color=FF0000>HSL有对应的HSLa</font>。<font color=LightSeaGreen>HSLa在HSL的三个值后面加上一个alpha值，取值范围是0~1</font>。 
 
 
 
@@ -1251,7 +1251,7 @@ RGB 有对应的 RGBa，类似地，<font color=FF0000>HSL有对应的HSLa</font
 
 <font color=FF0000>有两个特殊的关键字**可以在任何允许使用颜色值的地方使用**：transparent 和 currentColor</font>。
 
-从名称可以看出，<font color=FF0000>transparent 表示完全透明的颜色。按照 CSS Color Module的定义，它与 `rgba(0, 0, 0, 0)` 等效</font>，而这就是transparent 计算得到的值。 <mark>这个关键字不常用于设定文本颜色，不过却是元素背景色的默认值。 此外，还可以用它为元素定义只占空间但不可见的边框，定义渐变时也常用</mark>，这些话题将在后面的章节中讨论。
+从名称可以看出，<font color=FF0000>transparent 表示完全透明的颜色。按照 CSS Color Module的定义，它与 `rgba(0, 0, 0, 0)` 等效</font>，而这就是transparent 计算得到的值。 <font color=LightSeaGreen>这个关键字不常用于设定文本颜色，不过却是元素背景色的默认值。 此外，还可以用它为元素定义只占空间但不可见的边框，定义渐变时也常用</font>，这些话题将在后面的章节中讨论。
 
 <font color=FF0000>currentColor的意思是，“当前元素 color属性计算得到的值”</font>。 对下述规则来说：
 
@@ -1281,9 +1281,9 @@ main {color: gray; border-color: currentColor;}
 
 <font color=FF0000>属性的值为一段时间时，使用 \<time>表示，它是一个 \<number> 值后跟s（秒）或ms（毫秒）。时间值最常在过渡和动画中使用，用干定义持续时间或延迟时间</font>。
 
-<mark>视听CSS 也能用到时间值，用于定义持续时间或延迟时间。 不过，写作本书时，对视听CSS的支持极其有限</mark>
+<font color=LightSeaGreen>视听CSS 也能用到时间值，用于定义持续时间或延迟时间。 不过，写作本书时，对视听CSS的支持极其有限</font>
 
-<mark>视听CSS中还有一种值 \<frequency>它是一个 \<number> 值后跟Hz（赫兹）或kHz（千赫兹）</mark>。一同往常，这个单位的标识符不区分大小写，因此Hz和 hz是等效的。 
+<font color=LightSeaGreen>视听CSS中还有一种值 \<frequency>它是一个 \<number> 值后跟Hz（赫兹）或kHz（千赫兹）</font>。一同往常，这个单位的标识符不区分大小写，因此Hz和 hz是等效的。 
 
 
 
@@ -1310,7 +1310,7 @@ h2 {color: var(--highlight-color);}
 
 #### P155
 
-<font color=FF0000>CSS2开始支持使用＠font-face 下载指定的自定义字体</font>，不过直到 2009年前后这个功能才以一致的方式被广泛支持。<mark>现在，借助（Typekit）等在线服务，网站可以使用任何想用的字体</mark>。一般来说，只要你有权使用一个字体，就能在设计中使用它。
+<font color=FF0000>CSS2开始支持使用＠font-face 下载指定的自定义字体</font>，不过直到 2009年前后这个功能才以一致的方式被广泛支持。<font color=LightSeaGreen>现在，借助（Typekit）等在线服务，网站可以使用任何想用的字体</font>。一般来说，只要你有权使用一个字体，就能在设计中使用它。
 
 <font color=FF0000>然而，要注意，这并不表明你能完全控制字体。如果字体下载失败，或者字体的格式不被用户的浏览器支持，那么文本将使用后备字体显示</font>。 这是好事，因为即使指定的字体无法使用，依然能把内容呈现给用户。 <font color=FF0000>不过要注意的是，你不能完全依赖某个字体，千万不要觉得设计成什么样就会显示成什么样</font>。
 
@@ -1346,7 +1346,7 @@ h1 {font-family: Georgia, serif;}
 
 如果你没有安装Georgia，但是安装了Times，用户代理可能会使用Times显示h1元素。即便Times 与Georgia 不完全一样，但是足够接近。
 
-<mark>鉴于此，强烈建议始终在 font-family 规则中指定通用字体族。 这样做相当于提供一种后备机制，在用户代理找不到匹配的字体时，选择一个字体代替。</mark>
+<font color=LightSeaGreen>鉴于此，强烈建议始终在 font-family 规则中指定通用字体族。 这样做相当于提供一种后备机制，在用户代理找不到匹配的字体时，选择一个字体代替。</font>
 
 
 
@@ -1366,7 +1366,7 @@ p {font-family: Times, 'Times New Roman', 'New Century Schoolbook', Georgia, 'Ne
 h2 {font-family: Wedgie, 'Karrank%', Klingon, fantasy;}
 ```
 
-<font color=FF0000>如果没有引号，用户代理可能会忽略那个字体名称，然后接着处理规则后面的部分</font>。<mark>注意，把包含符号的字体名称放在引号里不是强制要求，只是推荐做法，相当于CSS规逗中所说的最佳实践</mark>。 
+<font color=FF0000>如果没有引号，用户代理可能会忽略那个字体名称，然后接着处理规则后面的部分</font>。<font color=LightSeaGreen>注意，把包含符号的字体名称放在引号里不是强制要求，只是推荐做法，相当于CSS规逗中所说的最佳实践</font>。 
 
 <font color=FF0000>font-family使用的引号既可以是单引号，也可以是双引号</font>。注意，<font color=FF0000>如果把 font-family 规则放在style属性中（一般不应该这么做），使用的引号要与属性使用的不同。 因此，如果font-family 规则放在双引号里，那么规则内部就要使用单引号</font>，如下所示：
 
@@ -1391,7 +1391,7 @@ h2 {font-family: Wedgie, 'Karrank%', Klingon, fantasy;}
 
 用户代理见到 `font-family: SwitzeraADF` 声明后，会加载对应的 `.otf` 文件，然后使用它渲染文本。
 
-<font color=FF0000>`＠font-face` 是惰性加载字型的。 这表明，仅当需要使用指定的字型渲染文本时，才会加载，否则不加载</font>。 <mark>其实， 浏览器不管是否需要，都会先行下载声明的全部字型，这是浏览器的缺陷</mark>。
+<font color=FF0000>`＠font-face` 是惰性加载字型的。 这表明，仅当需要使用指定的字型渲染文本时，才会加载，否则不加载</font>。 <font color=LightSeaGreen>其实， 浏览器不管是否需要，都会先行下载声明的全部字型，这是浏览器的缺陷</font>。
 
 
 
@@ -1401,7 +1401,7 @@ h2 {font-family: Wedgie, 'Karrank%', Klingon, fantasy;}
 
 <font color=FF0000>描述符中有两个是必需的：font-family和src</font>
 
-<font color=FF0000>src的作用</font>不言而喻：<font color=FF0000>为定义的字型提供一个或多个源</font>，<mark>如果有多个源，之间以逗号分隔</mark>。<font color=FF0000>字型的源可以指向任何 URI，不过有个限制：字型必须与样式表同源</font>。因此，不能把src指向别人的网站，下载别人的字体。你要在自己的服务器中存储一份本地副本，或者使用同时提供样式表和字体文件的字体托管服务。
+<font color=FF0000>src的作用</font>不言而喻：<font color=FF0000>为定义的字型提供一个或多个源</font>，<font color=LightSeaGreen>如果有多个源，之间以逗号分隔</font>。<font color=FF0000>字型的源可以指向任何 URI，不过有个限制：字型必须与样式表同源</font>。因此，不能把src指向别人的网站，下载别人的字体。你要在自己的服务器中存储一份本地副本，或者使用同时提供样式表和字体文件的字体托管服务。
 
 <font color=FF0000>同源限制有个例外：使用HTTP首部 `Access-Control-Allow-Origin` 设定服务器，允许跨站加载</font>
 
@@ -1411,7 +1411,7 @@ h2 {font-family: Wedgie, 'Karrank%', Klingon, fantasy;}
 
 你可能觉得奇怪，这里的 font-family和前一节所讲的有何不同？区别是，<font color=FF0000>这里（@font-face）的font-family是字体族描述符</font>，而<font color=FF0000>前一节中的font-family是字体族属性</font>。
 
-其实，<font color=FF0000>＠font-face 做的是低层定义，是为字体相关的属性（如 font-family）服务的</font>。<mark>通过描述符 `font-family: "SwitzeraADF";` 定义一个字体族名称之后，用户代理的字体族名称表中便会出现“SwitzeraADF”条目，与Helvetica，Georgia，Courier 等具有同等地位，可以在 font-family属性的值中引用</mark>：
+其实，<font color=FF0000>＠font-face 做的是低层定义，是为字体相关的属性（如 font-family）服务的</font>。<font color=LightSeaGreen>通过描述符 `font-family: "SwitzeraADF";` 定义一个字体族名称之后，用户代理的字体族名称表中便会出现“SwitzeraADF”条目，与Helvetica，Georgia，Courier 等具有同等地位，可以在 font-family属性的值中引用</font>：
 
 ```css
 @font-face {
@@ -1438,7 +1438,7 @@ h1 {font-family: SwitzeraADF, Helvetica, sans-serif;} /* property 属性*/
 
 这样做的好处是，<font color=FF0000>让用户代理跳过不支持的字体格式，从而减少带宽用量，提升加载速度</font>。
 
-<mark>此外，使用 format() 还能为不带有常规扩展名的字体文件指定格式，以防用户代理不识别</mark>：
+<font color=LightSeaGreen>此外，使用 format() 还能为不带有常规扩展名的字体文件指定格式，以防用户代理不识别</font>：
 
 ```css
 @font-face {
@@ -1522,13 +1522,13 @@ unicode-range: U+4E00-9FFF, U+FF00-FF9F, U+30??, U+A5; /* 日语汉字，平假�
 
 - **字重的工作方式**
 
-  为了弄清用户代理如何确定一个字体变体的粗细（或字重），先要理解关键字 100到900。这些数字关键字对应于字体设计中的九级字重。<mark>如果一个字体族中有全部九级字重，那么这些数字就直接对应于预定义的级别，100是最细的，900是最粗的</mark>。
+  为了弄清用户代理如何确定一个字体变体的粗细（或字重），先要理解关键字 100到900。这些数字关键字对应于字体设计中的九级字重。<font color=LightSeaGreen>如果一个字体族中有全部九级字重，那么这些数字就直接对应于预定义的级别，100是最细的，900是最粗的</font>。
 
   其实，这些数字并不表示字重本身。CSS 规范只是说，每个数字对应的权重至少和前面的数字具有相同的字重。因此，100，200，300和400可能都对应于同样细的变体；500和600对应于同样粗的变体；700，800和900则对应同样较粗的变体。 只要后面的数字关键字对应的粗细不比前面的数字关键字细就行。
 
 - **增大字重 bolder**
 
-  <font color=FF0000>如果把一个元素的字重设为 bolder，用户代理首先要确定从父元素继承的 font-weight值是什么，然后选择比继承的字重高一级的最小数字</font>。 <mark>如果找不到，用户代理把元素的字重设为下一个数字值，直到900；到顶后，就把字重设为 900</mark>
+  <font color=FF0000>如果把一个元素的字重设为 bolder，用户代理首先要确定从父元素继承的 font-weight值是什么，然后选择比继承的字重高一级的最小数字</font>。 <font color=LightSeaGreen>如果找不到，用户代理把元素的字重设为下一个数字值，直到900；到顶后，就把字重设为 900</font>
 
 - **减小字重 lighter**
 
@@ -1542,7 +1542,7 @@ unicode-range: U+4E00-9FFF, U+FF00-FF9F, U+30??, U+A5; /* 日语汉字，平假�
 
 - <font color=FF0000>初始值：medium</font>
 
-- font-size 属性与渲染结果之间的关系由字体设计者决定。 <font color=FF0000>这个关系在字体中通过em方框（或em盒子）表示</font>。<mark>em方框（以及字号）与字体中字符的边界没有关系，其实它指的是在没有行距（CSS中的line-height）的情况下两条基线之间的距离</mark>。字体中完全有可能存在高度超过基线之间距离的字符。<font color=FF0000>鉴于此，设计字体时要确保所有字符都比em方框小</font>。事实上，多数字体就是这么做的。 
+- font-size 属性与渲染结果之间的关系由字体设计者决定。 <font color=FF0000>这个关系在字体中通过em方框（或em盒子）表示</font>。<font color=LightSeaGreen>em方框（以及字号）与字体中字符的边界没有关系，其实它指的是在没有行距（CSS中的line-height）的情况下两条基线之间的距离</font>。字体中完全有可能存在高度超过基线之间距离的字符。<font color=FF0000>鉴于此，设计字体时要确保所有字符都比em方框小</font>。事实上，多数字体就是这么做的。 
 
 - **绝对大小**
 
@@ -1587,7 +1587,7 @@ unicode-range: U+4E00-9FFF, U+FF00-FF9F, U+30??, U+A5; /* 日语汉字，平假�
   - 初始值：0
   - 适用于：块级元素
 
-- <mark>text-indent属性把元素的第一行文本缩进指定的长度</mark>，<font color=FF0000>缩进的长度可以是负值</font>。这个属性通常用于缩进段落的第一行。
+- <font color=LightSeaGreen>text-indent属性把元素的第一行文本缩进指定的长度</font>，<font color=FF0000>缩进的长度可以是负值</font>。这个属性通常用于缩进段落的第一行。
 
 - text-indent 属性可以用在任何块级元素上，缩进将沿着行内方向展开。<font color=FF0000>text-indent属性不能用于行内元素或置换元素（如图像）。然而，如果图像在块级元素的第一行里，它将随行中的其他文本一起后移</font>。
 

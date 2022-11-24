@@ -422,7 +422,7 @@ RPC 指的是远程调用，也就是说，调用的函数不在同一内存空�
 
 #### 规格继承和实现继承
 
-
+// TODO
 
 
 
@@ -451,7 +451,7 @@ RPC 指的是远程调用，也就是说，调用的函数不在同一内存空�
 
 #### 回调函数
 
-// todo
+// TODO
 
 
 
@@ -761,3 +761,13 @@ number once // TODO https://en.wikipedia.org/wiki/Cryptographic_nonce
 #### 关注点分离
 
 // TODO
+
+
+
+#### 数字表示
+
+在上计算机课程（尤其是计算机组成）的时候，了解到了 double、triple 和 quad 分别表示 二、三、四，然而它还有更多：
+
+2 = double , 3 = triple , 4 = quadruple , 5 = quintuple , 6 = sextuple , 7 = septuple , 8 = octuple
+
+学习自：[2=double,3=triple,what's for 4,5,6,e.t.c.](https://www.proz.com/kudoz/english/other/526192-2%3Ddouble3%3Dtriplewhats-for-456etc.html)

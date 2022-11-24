@@ -4,6 +4,8 @@
 
 ### 《Vue 3 Deep Dive with Evan You》笔记
 
+> 🔗 ：https://www.bilibili.com/video/BV1rC4y187Vw
+
 
 
 #### 总述
@@ -309,7 +311,7 @@ dep.value = 'changed' // console.log -> 'changed'
 
 这里的 Dep 实现，和 composition API 中的 ref 非常相似。
 
-> ⚠️ 注意：这里使用的是 depend 和 notify，而不是 track 和 trigger，是为了减少其中与响应式原理不相关的优化，从而更好的理解工作原理
+> ⚠️ 注意：这里使用的是 depend 和 notify ，而不是 track 和 trigger，是为了减少其中与响应式原理不相关的优化，从而更好的理解工作原理。而在 Vue3 源码中函数的命名就是 track 和 trigger ，见 https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L213 和 L259
 
 
 
@@ -1026,9 +1028,94 @@ return toRefs(state)
 
 
 
+### 《Vue 3 Reactivity》笔记
+
+> 🔗 https://www.bilibili.com/video/BV1SZ4y1x7a9
 
 
-## Vue 实例生命周期
+
+
+
+<img src="https://s2.loli.net/2022/11/23/G6U89sMVCr7blDa.jpg" style="zoom: 33%;" />
+
+track 函数保存的是 effect，即上图所说的 Save this code。trigger 函数调用 effect，以及其他所有已经保存了的代码。
+
+为了存储 effect<font color=red size=4>**s**</font> ，需要使用 dep 变量，表示依赖关系，它的数据结构是一个 Set（可避免重复）。在 track 函数中，使用 `dep.add(effect)` 来保存 effect 。
+
+<img src="https://s2.loli.net/2022/11/23/5qeBxnjhzTDHUai.png" alt="image-20221123235212889" style="zoom:33%;" />
+
+通常，对象会有多个属性，每一个属性都需要有自己的 dep（依赖关系），或者说 effect 的 Set 。那么，如何存储，或者说：让每个属性都拥有（自己的）依赖？     
+
+dep 其实就是一个 effect Set，这个 <font color=fuchsia>**effect Set 应该在 值发生改变时 重新运行**</font>。
+
+<img src="https://s2.loli.net/2022/11/24/PQ1Jrlv49US8CfD.jpg" alt="20221124_000713.jpeg" style="zoom:45%;" />
+
+Set 中的每一个值，都只是一个需要执行的 effect；就如上面的匿名函数  `() => { total = product.price * product.quantity}`
+
+而要把这些 deps 存储起来，并且<font color=fuchsia size=4>**方便以后再找到它们** </font>，需要创建一个 <font color=fuchsia size=4>**deps map**</font>（数据结构是 ES6 Map）；它是一张存储了每一个属性及其 dep 对象的 字典。结构如下图所示：
+
+<img src="https://s2.loli.net/2022/11/24/fnCYwBA5apyhkde.jpg" alt="20221124_003042.jpeg" style="zoom: 40%;" />
+
+###### track 和 trigger 实现
+
+<img src="https://s2.loli.net/2022/11/24/H9qOvympxcC7WrD.jpg" alt="20221124_004115.jpeg" style="zoom:33%;" />
+
+###### 具体调用结果
+
+<img src="https://s2.loli.net/2022/11/24/2k3HijUndpZXfgD.jpg" alt="20221124_004330.jpeg" style="zoom:30%;" />
+
+现在我们有了 对不同的属性有了一种跟踪依赖关系的方法，但<font color=dodgerBlue>如果有多个响应式对象呢</font>？<font color=dodgerBlue>甚至其中一个对象的某个属性指向的是另一个响应式对象呢</font>？
+
+存储每个“响应式对象属性”相关联的依赖，在 Vue3 中，被称为 “ TargetMap ”。如下图：
+
+![20221124_150709.jpeg](https://s2.loli.net/2022/11/24/EO5pATJbn9sFrfh.jpg)
+
+TargetMap 的类型是 WeakMap（ 👀 为什么选择 WeakMap ，[[#reactive 实现#Vue3 风格实现]] 中有说）。那么，现在 TargetMap 的结构就是 `WeakMap<any, Map<any, Set>>` 。
+
+<font color=dodgerBlue>看了下 Vue3 源码也确实如此：</font>  
+
+<img src="https://s2.loli.net/2022/11/24/4ScDHJTghuGnIor.png" alt="image-20221124143602125" style="zoom:50%;" />
+
+根据 L18～L19  ，targetMap 的结构是 `WeakMap<any, Map<any, Dep>>` ；而根据 L6 中 deps 的来源 `dep.ts` ：
+
+<img src="https://s2.loli.net/2022/11/24/Ow7FQHlmSoruq4k.png" alt="image-20221124144053871" style="zoom:50%;" />
+
+根据 L3 ，发现 Dep 的结构是 `Set<ReactiveEffect> & TrackedMarkers` ，所以 TargetMap 的结构可以简单理解为 `WeakMap<any, Map<any, Set<ReactiveEffect>>`
+
+###### 使用 TargetMap 的 track 和 trigger 的实现
+
+```js
+const targetMap = new WeakMap(); // For storing the dependencies for each reactive object
+
+function track(target, key) {
+  let depsMap = target.get(target); // Get the current depsMap for this target (relative object)
+  if (!depsMap) {
+    targetMap.set(target, (depsMap = new Map())); // If it doesn't exist, create it
+  }
+  let dep = depsMap.get(key); // Get the dependency object for this property
+  if (!dep) {
+    depsMap.set(key, (dep = new Set())); // If it doesn't exist, create it
+  }
+  dep.add(effect); // Add the effect to the dependency
+}
+
+function trigger(target, key) {
+  const depsMap = targetMap.get(target); // Does this object have any properties that have dependencies
+  if (!depsMap) return; // If no, return from the function immediately
+  let dep = depsMap.get(key); // Otherwise, check if this property has a dependency
+  if (dep) {
+    dep.forEach((effect) => effect()); // Run those
+  }
+}
+```
+
+现在 track 和 trigger 确实是实现了，但还是需要像 [[#具体调用结果]] 一样，手动调用 track 和 trigger，没有办法让 effect 重新运行（自动进行 “依赖收集” 和 “派发更新” ）。这需要在 getter / setter 中收集和派发，这就需要使用 Proxy 的 handler 和 Reflect 。
+
+
+
+
+
+### Vue 实例生命周期
 
 
 
@@ -1276,8 +1363,6 @@ vm.items.splice(newLength)
 > 摘自：[记一次思否问答的问题思考：Vue为什么不能检测数组变动](https://segmentfault.com/a/1190000015783546)
 
 摘自：[Vue2 Doc - 列表渲染 # 变更方法](https://v2.cn.vuejs.org/v2/guide/list.html#%E5%8F%98%E6%9B%B4%E6%96%B9%E6%B3%95)
-
-
 
 
 

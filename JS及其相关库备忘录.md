@@ -3457,7 +3457,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                             
+  >                                                                                                                                                                                                               
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3476,7 +3476,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                             
+  >                                                                                                                                                                                                               
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -15360,25 +15360,25 @@ jQuery 选择器允许您对 HTML 元素组或单个元素进行操作。
 
 jQuery 选择器基于元素的 id、类（class）、类型、属性、属性值等"查找"（或选择）HTML 元素。 它基于已经存在的 [CSS 选择器](https://www.runoob.com/cssref/css-selectors.html)，除此之外，它还有一些自定义的选择器。
 
-- **元素选择器**
-  
-  ```js
-  $("p")
-  ```
+##### 元素选择器
 
-- **#id 选择器**
-  
-  ```js
-  $("#test")
-  ```
+```js
+$("p")
+```
 
-- **.class 选择器**
-  
-  ```js
-  $(".test")
-  ```
+##### \#id 选择器
 
-**更多示例：**
+```js
+$("#test")
+```
+
+##### .class 选择器
+
+```js
+$(".test")
+```
+
+##### 更多示例
 
 | 语法                                                 | 描述                                                              |
 |:-------------------------------------------------- |:--------------------------------------------------------------- |

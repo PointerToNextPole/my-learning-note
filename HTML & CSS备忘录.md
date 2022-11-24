@@ -5390,7 +5390,7 @@ srcset 属性的必须的，定义了图片资源。
 | 选择器                                                       | 例子                  | 例子描述                                                     | CSS版本 |
 | :----------------------------------------------------------- | :-------------------- | :----------------------------------------------------------- | :-----: |
 | [.*class*](https://www.w3school.com.cn/cssref/selector_class.asp) | .intro                | 选择 class="intro" 的所有元素。                              |    1    |
-| [#*id*](https://www.w3school.com.cn/cssref/selector_id.asp)  | #firstname            | 选择 id="firstname" 的所有元素。                             |    1    |
+| [#*id*](https://www.w3school.com.cn/cssref/selector_id.asp)  | \#firstname           | 选择 id="firstname" 的所有元素。                             |    1    |
 | [*](https://www.w3school.com.cn/cssref/selector_all.asp)     | *                     | 选择所有元素。                                               |    2    |
 | [*element*](https://www.w3school.com.cn/cssref/selector_element.asp) | p                     | 选择所有 \<p> 元素。                                         |    1    |
 | [*element*,*element*](https://www.w3school.com.cn/cssref/selector_element_comma.asp) | div,p                 | 选择所有\<div> 元素和所有\<p> 元素。                         |    1    |
@@ -5427,7 +5427,7 @@ srcset 属性的必须的，定义了图片资源。
 | [:last-child](https://www.w3school.com.cn/cssref/selector_last-child.asp) | p:last-child          | 选择属于其父元素最后一个子元素每个\<p>元素。                 |    3    |
 | [:root](https://www.w3school.com.cn/cssref/selector_root.asp) | :root                 | 选择文档的根元素。                                           |    3    |
 | [:empty](https://www.w3school.com.cn/cssref/selector_empty.asp) | p:empty               | 选择<font color=FF0000>没有子元素</font>的每个\<p>元素（<font color=FF0000>包括文本节点</font>）。 |    3    |
-| [:target](https://www.w3school.com.cn/cssref/selector_target.asp) | #news:target          | 选择当前活动的 #news 元素。                                  |    3    |
+| [:target](https://www.w3school.com.cn/cssref/selector_target.asp) | \#news:target         | 选择当前活动的 \#news 元素。                                 |    3    |
 | [:enabled](https://www.w3school.com.cn/cssref/selector_enabled.asp) | input:enabled         | 选择每个启用的\<input>元素。                                 |    3    |
 | [:disabled](https://www.w3school.com.cn/cssref/selector_disabled.asp) | input:disabled        | 选择每个禁用的\<input>元素                                   |    3    |
 | [:checked](https://www.w3school.com.cn/cssref/selector_checked.asp) | input:checked         | 选择每个被选中的\<input>元素。                               |    3    |

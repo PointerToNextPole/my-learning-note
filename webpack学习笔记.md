@@ -5703,7 +5703,7 @@ webpack 本质上是一个模块打包工具，同时支持 ES Module / CommonJS
 > - Assets
 > - WebAssembly modules
 >
-> 摘自：[webpack doc - concept - modules #supported-module-types](https://webpack.js.org/concepts/modules/#supported-module-types)
+> 摘自：[webpack doc - concept - modules # supported-module-types](https://webpack.js.org/concepts/modules/#supported-module-types)
 
 
 

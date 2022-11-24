@@ -1686,7 +1686,7 @@ infer 有一个问题，比如这样：
 
 从 string 数组中提取的元素，默认会推导为 unknown 类型，这就导致了不能直接把它当 string 用：
 
-<img src="/Users/yan/Library/Application Support/typora-user-images/image-20220825224420465.png" alt="image-20220825224420465" style="zoom:50%;" />
+<img src="https://s2.loli.net/2022/11/23/zL8oiAEUDFONIQT.png" alt="image-20220825224420465" style="zoom:50%;" />
 
 之前的处理方式是这样的（如下），加一层判断，这样 Last 就推导为 string 类型了。
 
