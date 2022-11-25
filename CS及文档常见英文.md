@@ -364,6 +364,7 @@
 - **resort** ：采取
 - **explicit** ：明确的。cpp 关键字
 - **operand** ：操作数
+- **caveat** ：警告
 
 
 

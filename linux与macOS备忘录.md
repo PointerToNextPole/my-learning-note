@@ -1609,3 +1609,5 @@ your comments
 可以通过 修改 `$HOME/.zshrc` 的 `ZSH_THEME` 以设置 theme，较为常见的是 `agnoster`。另外，可以在 `$HOME/.oh-my-zsh/themes` 下面设置目标主题的设置，比如 `agnoster.zsh-theme`。
 
 另外，可以参考视频：[2022年打造程序员完美的终端环境，颜值爆表，效率 X 10倍 The Ultimate Guide to Your Terminal for Better Productivity](https://www.youtube.com/watch?v=AWtc3SQQPpI) 以及对应的文档 [打造程序员完美的终端环境，颜值爆表，效率 X 10倍](https://vikingz.me/best-terminal-setup/)
+
+关于 zsh 的插件，可以看下 https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins ，这是一个 plugin 列表。

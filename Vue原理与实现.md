@@ -264,7 +264,7 @@ state.count++ // 1
 ##### Dep & watchEffect 实现
 
 ```js
-let activeEffect; // 保存添加哪一个函数作为订阅
+let activeEffect; // 保存添加哪一个函数作为订阅，另外这里没有说清楚 activeEffect 的作用，见下面
 
 class Dep {
   constructor(value) {
@@ -297,7 +297,7 @@ function watchEffect(effect) {
   activeEffect = effect;
   /* 这是为了访问 dep.value，以触发 getter，从而收集依赖添加入 subscribers 中。否则 subscribers 为空 */
   effect(); // console.log -> 'hello'
-  activeEffect = null;
+  activeEffect = null; // 👀 因为每次调用 effect 后都会重置 activeEffect，所以 activeEffect 是一个单一变量是可以的
 }
 
 const dep = new Dep('hello'); 
@@ -308,6 +308,12 @@ watchEffect(() => {
 
 dep.value = 'changed' // console.log -> 'changed'
 ```
+
+> 👀 关于 activeEffect 的作用，见 [[#activeEffect]]。另外，在源码中，也是有这个变量的。
+>
+> <img src="https://s2.loli.net/2022/11/24/68mgj3DGoMdWzOs.png" alt="image-20221124233057515" style="zoom:60%;" />
+>
+> 见：https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L48 。
 
 这里的 Dep 实现，和 composition API 中的 ref 非常相似。
 
@@ -433,7 +439,7 @@ const reactiveHandlers = {
 
     dep.depend()
     return Reflect.get(target, key, receiver) 
-    // 虽然也可以 return target[key]。但考虑到原型继承问题，在这种情况下，receiver 和 target 会指向不同的东西。总之，用 Reflect 让一切正常
+    // 虽然也可以 return target[key]。但考虑到原型继承问题，在这种情况下，receiver 和 target 会指向不同的东西。总之，用 Reflect 让一切正常。👀 更详细一些的解释见下面
   },
   set(target, key, value, receiver) {
     const dep = getDep(target, key)
@@ -457,6 +463,10 @@ watchEffect(() => {
 
 state.count++;
 ```
+
+> 👀 **补充**
+>
+> 根据 Vue Mastery 《Vue 3 Reactivity》（ 👀 笔记见 [[#《Vue 3 Reactivity》笔记]]）中的说法：使用 receiver 和 Reflect 保证了当操作的对象有继承自其它对象的值或者函数时，this 能够指向正确的目标对象，这将避免一些 使用 Vue2 时出现的响应式警告
 
 上面的实现还有一些边界情况，比如：用户可能在同一个对象中调用 reactive 两次，在 reactive 过的 state 上再次调用 reactive；所以，需要跟踪以确保对同一个对象调用 reactive ，原始对象 ( raw object ) 将会返回相同的代理实例
 
@@ -1088,7 +1098,7 @@ TargetMap 的类型是 WeakMap（ 👀 为什么选择 WeakMap ，[[#reactive �
 const targetMap = new WeakMap(); // For storing the dependencies for each reactive object
 
 function track(target, key) {
-  let depsMap = target.get(target); // Get the current depsMap for this target (relative object)
+  let depsMap = targetMap.get(target); // Get the current depsMap for this target (relative object)
   if (!depsMap) {
     targetMap.set(target, (depsMap = new Map())); // If it doesn't exist, create it
   }
@@ -1112,6 +1122,62 @@ function trigger(target, key) {
 现在 track 和 trigger 确实是实现了，但还是需要像 [[#具体调用结果]] 一样，手动调用 track 和 trigger，没有办法让 effect 重新运行（自动进行 “依赖收集” 和 “派发更新” ）。这需要在 getter / setter 中收集和派发，这就需要使用 Proxy 的 handler 和 Reflect 。
 
 
+
+##### 使用 Reflect 和 handler
+
+```js
+// 👀 track、trigger 函数省略，见上面
+
+function reactive(target) {
+  const handler = {
+    get(target, key, receiver) {
+      let result = Reflect.get(target, key, receiver)
+      track(target, key)
+      return result
+    },
+    set(target, key, value, receiver) {
+      let oldValue = target[key]
+      let result = Reflect.set(target, key, value, receiver)
+      // ⚠️ 不同于 Reflect.get，**Reflect.set 返回值是 bool**，所以不能将 oldValue !== result 拿来判断
+      if(oldValue !== value) {
+        trigger(target, key)
+      }
+      return result
+    }
+  }
+  return new Proxy(target, handler)
+}
+
+let product = reactive({ price: 5, quantity: 2 })
+let total = 0
+let effect = () => {
+  total = product.price * product.quantity
+}
+
+effect()
+console.log('total',total)
+
+product.quantity = 3
+console.log('total',total)
+```
+
+
+
+##### activeEffect
+
+现在的代码是：每次访问响应式属性都会调用 track 函数，而这显然是不必要的，也是不被希望的；应该只在 effect 中调用 track 函数，这就需要用到变量 activeEffect 。
+
+```js
+let activeEffect = null
+
+function 
+```
+
+// TODO 再看一下 chapter3
+
+
+
+##### Ref
 
 
 
