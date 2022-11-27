@@ -6342,7 +6342,7 @@ footer p:hover {
 }
 ```
 
-**`:where()` 和 `:is()` 的不同之处在于：**<font color=FF0000>`:where()` 的优先级总是为 0</font> ，但是 <font color=FF0000>`:is()` 的优先级是 **由它的选择器列表中优先级最高的选择器决定的**</font>
+<font color=dodgerBlue>`:where()` 和 `:is()` 的不同之处在于</font>：<font color=fuchsia>`:where()` 的优先级总是为 0</font> ，但是 `:is()` 的优先级是由 <font color=fuchsia>**它的选择器列表中优先级最高的选择器决定的**</font>
 
 摘自：[MDN - :where()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:where) 、[MDN US - :where()](https://developer.mozilla.org/en-US/docs/Web/CSS/:where)
 
@@ -6406,7 +6406,7 @@ CSS 伪类函数 :host() <font color=FF0000>选择包含使用这段 CSS 的 Sha
 
 **注意：**<font color=FF0000 size=4>**该伪类的css样式在 shadow DOM 之外的元素上是没有效果的**</font>
 
-典型的使用方法是后代选择器表达式。例如 h1，<mark>只选择在\<h1> 内的自定义元素的实例</mark>。
+典型的使用方法是后代选择器表达式。例如 h1， <font color=LightSeaGreen>只选择在\<h1> 内的自定义元素的实例</font>。
 
 ```css
 /* 选择了一个 shadow root host, 当且仅当这个
@@ -6458,7 +6458,7 @@ user-select: auto | text | none | contain | all
   - 否则，如果此元素的父元素的 user-select 采用的属性值为 all，则该元素采用的属性值也为 all
   - 否则，如果此元素的父元素的 user-select 采用的属性值为 none，则该元素采用的属性值也为 none
   - 否则，采用的属性值为 text
-- **text：**<mark>用户可以选择文本</mark>
+- **text：** <font color=LightSeaGreen>用户可以选择文本</font>
 - **all：**在一个HTML编辑器中，当双击子元素或者上下文时，那么包含该子元素的最顶层元素也会被选中。
 - **contain：**允许在元素内选择；但是，选区将被限制在该元素的边界之内。
 - **element**（IE 专有别名）：与 contain 相同，但仅在 Internet Explorer 中受支持。
@@ -6551,39 +6551,45 @@ touch-action: unset;
 
 
 
-#### 实现图片切换效果的两种方法，值得参考：
+#### 实现图片切换效果的两种方法
 
-- 用单纯的CSS（更优雅。但当hover事件发生时，似乎只能对本级元素进行修改）
+##### 用单纯的CSS
 
-  ```html
-  <img src="icon_rise@2x.png" alt="" id="img" />
-  
-  <style>
-    #img:hover {
-      content: url(icon_discharge@2x.png)
-    }
-  </style>
-  ```
+更优雅。但当hover事件发生时，似乎只能对本级元素进行修改
 
-  参考自：[CSS小技巧之替换图片(content)](https://blog.csdn.net/qq_45745643/article/details/108697191)
+```html
+<img src="icon_rise@2x.png" alt="" id="img" />
 
-- JS（更灵活。当hover事件发生时，可以对任意位置的元素进行修改）
+<style>
+  #img:hover {
+    content: url(icon_discharge@2x.png)
+  }
+</style>
+```
 
-  ```html
-  <img src="icon_rise@2x.png" alt="" id="img" onmouseover="changeImg()" onmouseout="resotreImg()">
-  
-  <script>
-    function changeImg() {
-      let e = document.querySelector('#img')
-      e.src = 'icon_discharge@2x.png'
-    }
-  
-    function restoreImg() {
-      let e = document.querySelector('#img')
-      e.src = 'icon_rise@2x.png'
-    }
-  </script>
-  ```
+参考自：[CSS小技巧之替换图片(content)](https://blog.csdn.net/qq_45745643/article/details/108697191)
+
+##### JS
+
+更灵活。当hover事件发生时，可以对任意位置的元素进行修改
+
+```html
+<img src="icon_rise@2x.png" alt="" id="img" onmouseover="changeImg()" onmouseout="resotreImg()">
+
+<script>
+  function changeImg() {
+    let e = document.querySelector('#img')
+    e.src = 'icon_discharge@2x.png'
+  }
+
+  function restoreImg() {
+    let e = document.querySelector('#img')
+    e.src = 'icon_rise@2x.png'
+  }
+</script>
+```
+
+
 
 #### content
 
@@ -6611,7 +6617,7 @@ content 属性与 `::before` 及 `::after` 伪元素配合使用，来插入生�
 
 #### width
 
-width 属性用于设置元素的宽度。width 默认设置内容区域的宽度，但<mark>如果 box-sizing 属性被设置为 border-box，就转而设置边框区域的宽度</mark>。
+width 属性用于设置元素的宽度。width 默认设置内容区域的宽度，但 <font color=LightSeaGreen>如果 box-sizing 属性被设置为 border-box，就转而设置边框区域的宽度</font>。
 
 <font color=FF0000>min-width 和 max-width 属性的优先级高于 width</font>。
 
@@ -6626,7 +6632,7 @@ width 属性用于设置元素的宽度。width 默认设置内容区域的宽�
 
 - **\<percentage>：**使用外层元素的容纳区块宽度（the containing block's width）的百分比定义宽度。
 
-- **auto：**<mark>浏览器将会为指定的元素计算并选择一个宽度</mark>。
+- **auto：** <font color=LightSeaGreen>浏览器将会为指定的元素计算并选择一个宽度</font>。
 
 - **max-content：🧪 **<font color=FF0000>元素内容固有的（intrinsic）合适宽度</font>。
 
@@ -6664,7 +6670,7 @@ width 属性用于设置元素的宽度。width 默认设置内容区域的宽�
 #### object-fit
 
 <font color=FF0000>object-fit CSS 属性**指定 <font size=4>可替换元素</font>**</font>（这个名词，隔壁的《CSS权威指南阅读笔记》有解释）<font color=FF0000>的内容应该如何适应到其使用的高度和宽度确定的框。</font>
-<mark>您可以通过使用 object-position 属性来切换被替换元素的内容对象在元素框内的对齐方式。</mark>
+<font color=dodgerBlue>您可以通过使用 object-position 属性来切换被替换元素的内容对象在元素框内的对齐方式。</font>
 
 **取值**
 
@@ -6676,7 +6682,7 @@ width 属性用于设置元素的宽度。width 默认设置内容区域的宽�
 
 摘自：[MDN - object-fit](https://developer.mozilla.org/zh-CN/docs/Web/CSS/object-fit)
 
-> **注：**经过实践发现：object-fit 可以设置图片的展示效果。这在之前是使用 background-image + background-size 去实现的，现在发现 object-fit 同样可以。
+> 👀 注：经过实践发现，object-fit 可以设置图片的展示效果。这在之前是使用 background-image + background-size 去实现的，现在发现 object-fit 同样可以。
 
 另外，参考文章：[张鑫旭 - 半深入理解CSS3 object-position/object-fit属性](https://www.zhangxinxu.com/wordpress/2015/03/css3-object-position-object-fit/)
 
@@ -6939,7 +6945,7 @@ CSS 属性 text-align-last  <font color=FF0000>描述的是一段文本中最后
 
 CSS 的属性 vertical-align <font color=FF0000>用来指定 <font size=4>**行内元素 ( inline )**</font> 或 <font size=4>**表格单元格 ( table-cell )**</font> 元素的垂直对齐方式</font>。
 
-**vertical-align属性可被用于两种环境：**
+##### vertical-align属性可被用于两种环境
 
 - 使 <font color=FF0000>**行内元素盒模型**</font> 与其 <font color=FF0000>**行内元素容器**</font> 垂直对齐。例如，用于垂直对齐一行文本内的图片
 
@@ -6951,10 +6957,9 @@ CSS 的属性 vertical-align <font color=FF0000>用来指定 <font size=4>**行�
 
 **注意：**<font color=FF0000>**vertical-align 只对行内元素、表格单元格元素生效**：不能用它垂直对齐块级元素</font>。
 
-**vertical-align 属性指定为下面列出的值之一。**
+##### vertical-align 属性指定为下面列出的值之一
 
-- <font size=4>**行内元素的值**</font>
-
+- **行内元素的值**
   - **<font color=FF0000 size=4>相对父元素</font> 的值：**这些值使元素相对其父元素垂直对齐：
     - **baseline：**<font color=FF0000>使元素的基线与父元素的基线对齐</font>。HTML规范没有详细说明部分可替换元素的基线，如 \<textarea> ，这意味着<font color=FF0000>这些元素使用此值的表现 **因浏览器而异**</font>。
     - **sub：**使<font color=FF0000>元素的 **基线** 与父元素的 <font color=FF0000>**下标基线**</font> 对齐</font>
@@ -6971,7 +6976,7 @@ CSS 的属性 vertical-align <font color=FF0000>用来指定 <font size=4>**行�
 
   没有基线的元素，使用外边距的下边缘替代。
 
-- <font size=4>**表格单元格的值**</font>
+- **表格单元格的值**
 
   - **baseline（以及 sub, super, text-top, text-bottom, \<length>, \<percentage>）：**使单元格的基线，与该行中所有以基线对齐的其它单元格的基线对齐。
   - **top：**使单元格内边距的上边缘与该行顶部对齐。
@@ -6986,12 +6991,12 @@ CSS 的属性 vertical-align <font color=FF0000>用来指定 <font size=4>**行�
 
 #### text-overflow
 
-<font color=FF0000>这个属性只对那些在**块级元素**溢出的内容有效</font>，但是必须要与块级元素内联(inline)方向一致<mark>（举个反例：内容在盒子的下方溢出。此时就不会生效）</mark>。文本可能在以下情况下溢出：当其因为某种原因而无法换行(例子：设置了**`white-space:nowrap`**)，或者一个单词因为太长而不能合理地被安置(fit)。
+<font color=FF0000>这个属性只对那些在**块级元素**溢出的内容有效</font>，但是必须要与块级元素内联(inline)方向一致 <font color=LightSeaGreen>（举个反例：内容在盒子的下方溢出。此时就不会生效）</font>。文本可能在以下情况下溢出：当其因为某种原因而无法换行(例子：设置了**`white-space:nowrap`**)，或者一个单词因为太长而不能合理地被安置(fit)。
 
-**一般可选值（被一般浏览器实现的）**
+##### 一般可选值（被一般浏览器实现的）
 
-- **clip：**此为默认值。这个关键字的意思是"在内容区域的极限处截断文本"，因此在字符的中间可能会发生截断。<mark>如果你的目标浏览器支持</mark>  `text-overflow: ''`，<mark>为了能在两个字符过渡处截断，你可以使用一个空字符串值</mark> (`''`) <mark>作为 text-overflow 属性的值。</mark>
-- **ellipsis：**这个关键字的意思是“用一个省略号 (`'…'`, U+2026 HORIZONTAL ELLIPSIS)来表示被截断的文本”。这个省略号被添加在内容区域中，因此会减少显示的文本。<font color=FF0000>如果空间太小到连省略号都容纳不下，那么这个省略号也会被截断</font>。
+- **clip：**此为默认值。这个关键字的意思是"在内容区域的极限处截断文本"，因此在字符的中间可能会发生截断。<font color=dodgerBlue>如果你的目标浏览器支持</font>  `text-overflow: ''`， <font color=LightSeaGreen>为了能在两个字符过渡处截断，你可以使用一个空字符串值</font> (`''`)  <font color=LightSeaGreen>作为 text-overflow 属性的值。</font>
+- **ellipsis：**这个关键字的意思是 “用一个省略号 ( `'…'` , U+2026 HORIZONTAL ELLIPSIS ) 来表示被截断的文本”。这个省略号被添加在内容区域中，因此会减少显示的文本。<font color=FF0000>如果空间太小到连省略号都容纳不下，那么这个省略号也会被截断</font>。
 - **\<string>：**\<string>用来表示被截断的文本。字符串内容将被添加在内容区域中，所以会减少显示出的文本。如果空间太小到连省略号都容纳不下，那么这个字符串也会被截断。
 
 摘自：[MDN - text-overflow](https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-overflow)
