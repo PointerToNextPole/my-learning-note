@@ -3457,7 +3457,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                               
+  >                                                                                                                                                                                                                 
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3476,7 +3476,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                               
+  >                                                                                                                                                                                                                 
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -5123,7 +5123,7 @@ JavaScript 代码只需将要匹配的媒体查询字符串传递到 matchMedia(
 
 #### JavaScript HTML DOM EventListener
 
-**addEventListener() 方法**
+##### addEventListener() 方法
 
 - addEventListener() 方法用于<font color=FF0000>向指定元素添加事件句柄</font>。
 - addEventListener() 方法<font color=FF0000>添加的事件句柄**不会覆盖已存在的事件句柄**</font>。
@@ -5132,11 +5132,11 @@ JavaScript 代码只需将要匹配的媒体查询字符串传递到 matchMedia(
 - 你可以<font color=FF0000>向**任何 DOM 对象**添加事件监听</font>，不仅仅是 HTML 元素。如： window 对象。
 - addEventListener() 方法可以更简单的控制事件（<font color=FF0000>冒泡与捕获</font>）。
 
-<font size=4>**补充：**</font>
+> 👀 如下是 MDN 补充
 
-**EventTarget.addEventListener()（摘自MDN）**
+#### EventTarget.addEventListener()
 
-EventTarget.addEventListener() 方法<font color=FF0000>将指定的监听器 <font size=4>**注册到 EventTarget 上**</font></font>，<mark>当该对象触发指定的事件时，指定的回调函数就会被执行</mark>。 <mark>**事件目标可以是一个文档上的元素 Element, Document和Window或者任何其他支持事件的对象 (比如 XMLHttpRequest)**</mark>。
+EventTarget.addEventListener() 方法<font color=FF0000>将指定的监听器 <font size=4>**注册到 EventTarget 上**</font></font>，<font color=LightSeaGreen>当该对象触发指定的事件时，指定的回调函数就会被执行</font>。 <font color=LightSeaGreen>**事件目标可以是一个文档上的元素 Element, Document和Window或者任何其他支持事件的对象 (比如 XMLHttpRequest)**</font>。
 
 addEventListener()的 <font color=FF0000>**工作原理**是将实现EventListener的函数或对象添加到调用它的EventTarget上的指定事件类型的事件侦听器列表中</font>
 
@@ -5155,8 +5155,8 @@ target.addEventListener(type, listener, useCapture);
 
 - **options：<font color=FF0000>可选</font>**，一个指定有关 listener 属性的<font color=FF0000>可选参数对象</font>。可用的选项如下：
   - **capture:**  Boolean，表示 listener 会在该类型的事件<font color=FF0000>捕获阶段传播到该 EventTarget 时触发</font>。（<font color=FF0000>默认为false</font>）
-  - **once:**  Boolean，<font color=FF0000>表示 listener 在添加之后最多只调用一次</font>。<mark>如果是 true， listener 会在其被调用之后自动移除</mark>。
-  - **passive:**  Boolean，<font color=FF0000>设置为true时，表示 listener 永远不会调用 preventDefault()</font>。<mark>如果 listener 仍然调用了这个函数，客户端将会忽略它并抛出一个控制台警告</mark>。
+  - **once:**  Boolean，<font color=FF0000>表示 listener 在添加之后最多只调用一次</font>。<font color=LightSeaGreen>如果是 true， listener 会在其被调用之后自动移除</font>。 👀 Vue 中的 
+  - **passive:**  Boolean，<font color=FF0000>设置为true时，表示 listener 永远不会调用 preventDefault()</font>。<font color=LightSeaGreen>如果 listener 仍然调用了这个函数，客户端将会忽略它并抛出一个控制台警告</font>。
   - **signal：**AbortSignal，该 AbortSignal 的 abort() 方法被调用时，监听器会被移除。
 
 - **useCapture： <font color=FF0000>可选</font>**，Boolean，<font color=FF0000>在DOM树中，**注册了listener的元素， 是否要先于它下面的EventTarget，调用该listener**</font>。 <font color=FF0000 size=4>**当useCapture（设为true）时，沿着DOM树向上冒泡的事件，不会触发listener**</font>。当一个元素嵌套了另一个元素，并且两个元素都对同一事件注册了一个处理函数时，所发生的事件冒泡和事件捕获是两种不同的事件传播方式。事件传播模式决定了元素以哪个顺序接收事件。 **如果没有指定， <font color=FF0000>useCapture 默认为 false</font> **。 
@@ -5173,7 +5173,7 @@ target.addEventListener(type, listener, useCapture);
 
 
 
-#### removeEventListener()方法
+#### EventTarget.removeEventListener()
 
 <font color=FF0000>删除使用 EventTarget.addEventListener() 方法添加的事件</font>。使用事件类型，事件侦听器函数本身，以及可能影响匹配过程的各种可选择的选项的组合来标识要删除的事件侦听器。
 
@@ -5190,11 +5190,11 @@ target.removeEventListener(type, listener[, useCapture]);
 
 - **listener：**<font color=FF0000>需要从目标事件移除的 EventListener 函数</font>。
 
-- **options：**<mark style=background-color:hotpink>可选</mark>，一个指定事件侦听器特征的可选对象。可选项有：
+- **options：** <font color=LightSeaGreen>**可选**</font>，一个指定事件侦听器特征的可选对象。可选项有：
 
   - **capture：**一个 Boolean 表示这个类型的事件将会被派遣到已经注册的侦听器，然后再派遣到DOM树中它下面的任何 EventTarget。
 
-- **useCapture：**<mark style=background-color:hotpink>可选</mark>，指定需要移除的 EventListener 函数是否为捕获监听器。如果无此参数，默认值为 false。
+- **useCapture：**<font color=LightSeaGreen>**可选**</font>，指定需要移除的 EventListener 函数是否为捕获监听器。如果无此参数，默认值为 false
 
   如果同一个监听事件分别为“事件捕获”和“事件冒泡”注册了一次，这两次事件需要分别移除。两者不会互相干扰。移除捕获监听器不会影响非捕获版本的相同监听器，反之亦然。
 
@@ -5202,13 +5202,13 @@ target.removeEventListener(type, listener[, useCapture]);
 
 摘自：[MDN - EventTarget.removeEventListener](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/removeEventListener)
 
-补充：
 
-#### 事件传递有两种方式：冒泡与捕获
 
-事件冒泡和事件捕获分别由微软和网景公司提出，这两个概念都是为了解决页面中事件流（事件发生顺序）的问题。
+#### 事件传递的两种方式：冒泡与捕获
 
-考虑下面这段代码：
+事件冒泡和事件捕获分别由微软和网景公司提出，这两个概念都是为了解决页面中事件流（事件发生顺序）的问题
+
+<font color=dodgerBlue>考虑下面这段代码：</font>
 
 ```html
 <div id="outer">
@@ -5216,18 +5216,23 @@ target.removeEventListener(type, listener[, useCapture]);
 </div>
 ```
 
-上面的代码当中一个div元素当中有一个p子元素，<font color=FF0000>如果两个元素都有一个click的处理函数</font>，那么我们怎么才能知道哪一个函数会首先被触发呢？
-为了解决这个问题微软和网景提出了两种几乎完全相反的概念。
+上面的代码当中一个div元素当中有一个p子元素，<font color=FF0000>如果两个元素都有一个 click 的处理函数</font>，那么我们怎么才能知道哪一个函数会首先被触发呢？为了解决这个问题微软和网景提出了两种几乎完全相反的概念。
 
-- **事件冒泡：**微软提出了名为 事件冒泡(event bubbling)的事件流。事件冒泡可以形象地比喻为把一颗石头投入水中，泡泡会一直从水底冒出水面。也就是说，事件会从最内层的元素开始发生，一直向上传播，直到document对象。
-  
-  因此在事件冒泡的概念下在p元素上发生click事件的顺序应该是**`p -> div -> body -> html -> document`**
-  
-- **事件捕获：**网景提出另一种事件流名为 事件捕获 ( event capturing ) 。与事件冒泡相反，事件会从最外层开始发生，直到最具体的元素。
-  
-  因此在事件捕获的概念下在p元素上发生click事件的顺序应该是 **`document -> html -> body -> div -> p`**
+##### 事件冒泡
+
+微软提出了名为 事件冒泡 ( event bubbling ) 的事件流。事件冒泡可以形象地比喻为把一颗石头投入水中，泡泡会一直从水底冒出水面。也就是说，事件会从最内层的元素开始发生，一直向上传播，直到 document 对象。
+
+因此在事件冒泡的概念下在 p 元素上发生 click 事件的顺序应该是 **`p -> div -> body -> html -> document`**
+
+##### 事件捕获
+
+网景提出另一种事件流名为 事件捕获 ( event capturing ) 。与事件冒泡相反，事件会从最外层开始发生，直到最具体的元素。
+
+因此在事件捕获的概念下在 p 元素上发生 click 事件的顺序应该是 **`document -> html -> body -> div -> p`**
 
 摘自：[JS中事件冒泡与捕获](https://segmentfault.com/a/1190000005654451) 具体更多可以参考：[Javascript info -- 冒泡和捕获](https://zh.javascript.info/bubbling-and-capturing)
+
+> 👀 需要注意的是：虽然事件是先捕获再冒泡，但 冒泡和捕获这两种策略，只能二选一。
 
 
 

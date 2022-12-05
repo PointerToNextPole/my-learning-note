@@ -309,7 +309,7 @@ watchEffect(() => {
 dep.value = 'changed' // console.log -> 'changed'
 ```
 
-> 👀 关于 activeEffect 的作用，见 [[#activeEffect]]。另外，在源码中，也是有这个变量的。
+> 👀 关于 activeEffect 的作用，简单来说就是 “ 正在运行的 effect ，避免对一个依赖进行多次/重复收集 ”（也因此，上面 watchEffect 中最后的赋为 null，也得到了解释）；具体见 [[#activeEffect]]。另外，在源码中，也是有这个变量。
 >
 > <img src="https://s2.loli.net/2022/11/24/68mgj3DGoMdWzOs.png" alt="image-20221124233057515" style="zoom:60%;" />
 >
@@ -1125,9 +1125,17 @@ function trigger(target, key) {
 
 ##### 使用 Reflect 和 handler
 
-```js
-// 👀 track、trigger 函数省略，见上面
+代理是另一个对象的占位符，默认情况下对该对象进行委托 ( Proxy is a placeholder for another object , which by default delegates to that object)。如下图：在访问 `proxiedProduct.quantity` 时，<font color=fuchsia>会先调用 proxy，然后再调用 `product` ，<font size=4>**之后再返回 proxy**</font></font> ⚠️ 前面的调用顺序是之前所不知道的。
 
+![image-20221205214516621](https://s2.loli.net/2022/12/05/E7MovZ68dimlT5p.png)
+
+> 👀 注：除了使用 `obj.prop` 和 `obj['prop']` 访问对象的属性，<font color=fuchsia>**还可以使用 `Reflect.get('prop')`**</font> ，这是之前没有想到的。
+
+###### 代码实现
+
+> 👀 这里 track、trigger 函数省略，见上面 [[#track 和 trigger 实现]]
+
+```js
 function reactive(target) {
   const handler = {
     get(target, key, receiver) {
@@ -1139,7 +1147,7 @@ function reactive(target) {
       let oldValue = target[key]
       let result = Reflect.set(target, key, value, receiver)
       // ⚠️ 不同于 Reflect.get，**Reflect.set 返回值是 bool**，所以不能将 oldValue !== result 拿来判断
-      if(oldValue !== value) {
+      if(oldValue !== value) { // 👀
         trigger(target, key)
       }
       return result
@@ -1161,23 +1169,73 @@ product.quantity = 3
 console.log('total',total)
 ```
 
+###### 示例图示与变化
+
+利用 Proxy 和 Reflect 实现了自动的 track 和 trigger，[[#具体调用结果]] 中的手动 track 和 trigger ，可以删掉了。下面是：示例代码中 运行结果 与对应的依赖收集的结构示意图，depsMap 中的 price 和 quantity 也分别指向一个内部结构为 Set 的 Dep 。
+
+![image-20221205221733117](https://s2.loli.net/2022/12/05/S7e2GLxzbAoh81n.png)
+
 
 
 ##### activeEffect
 
-现在的代码是：每次访问响应式属性都会调用 track 函数，而这显然是不必要的，也是不被希望的；应该只在 effect 中调用 track 函数，这就需要用到变量 activeEffect 。
+现在的代码是：每次访问响应式属性都会调用 track 函数，也就会多次收集同一个依赖。这显然是不必要的，也是不被希望的；我们的预期是：<font color=fuchsia>只在 effect 中调用 track 函数</font>，这就需要用到变量 activeEffect ，<font color=fuchsia>它表示的是 “**正在运行的 effect** ”</font>，这也是 Vue3 中解决该问题的方法
 
 ```js
 let activeEffect = null
+// ...
 
-function 
+function track(target, key) {
+  if (activeEffect) { // ⚠️
+    let depsMap = targetMap.get(target)
+    if (!depsMap) {
+      targetMap.set(target, (depsMap = new Map()))
+    }
+    let dep = depsMap.get(key)
+    if (!dep) {
+      depsMap.set(key, (dep = new Set()))
+    }
+    dep.add(activeEffect) // ⚠️
+  }
+}
+
+function effect(eff) { // 👀
+  activeEffect = eff   // Set this as the activeEffect
+  activeEffect()       // Run it
+  activeEffect = null  // Unset it
+}
+
+let product = reactive({ price: 5, quantity: 2 })
+let total = 0
+effect(() => { total = product.price * product.quantity } ) // 这里之前的代码是 let total = () => { product.price * product.quantity } ，这里使用 effect 将其包裹。也可以删掉下面一行代码了。
+// effect() // 由于上面 effect 的存在，至此，也就不需要手动调用 effect() 了
 ```
-
-// TODO 再看一下 chapter3
 
 
 
 ##### Ref
+
+Vue3 通过对象访问器 Object Accessors（即 getter / setter，<font color=red>也被称为计算属性</font> Computed properties ）实现 `Ref` ，如下示例：
+
+```js
+let user = {
+  firstName: 'Gregg',
+  lastName: 'Pollack',
+
+  get fullName() {
+    return `${this.firstName} ${this.lastName}`
+  },
+  set fullName(value) {
+    [this.firstName, this.lastName] = value.split(' ')
+  }
+}
+
+console.log(`Name is ${user.fullName}`)
+user.fullName = 'Adam Jahr'
+console.log(`Name is ${user.fullName}`)
+```
+
+> ⚠️ 另外，这里发现了一个之前看 《现代 JS 教程》时忽略的误区：在 [Class 基本语法 # Getters/setters](https://zh.javascript.info/class#getterssetters) 中提及了 “计算属性” ，也提到了 “计算属性名称 `[...]` ” ；而 [对象 # 计算属性](https://zh.javascript.info/object#ji-suan-shu-xing) 中也提到了 “计算属性” ，
 
 
 

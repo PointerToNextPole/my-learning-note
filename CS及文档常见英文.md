@@ -320,6 +320,8 @@
 
 - **notify** ：通知 ( verb) ，notification 的动词形式
 
+- **notation** ：符号
+
 - **afterthought** ：回想 👀 虽然但是，不该猜不出意思
 
 - **foreground** ：前景。在 [微信官方文档 - 小程序 - 框架接口 / 页面 / 页面生命周期](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/page-life-cycle.html) 中看到的 “set to foreground ”，应该有 前一个页面的意思。另外，它的反义词是 background
@@ -365,6 +367,7 @@
 - **explicit** ：明确的。cpp 关键字
 - **operand** ：操作数
 - **caveat** ：警告
+- **concise** ：简明的
 
 
 
