@@ -368,6 +368,7 @@
 - **operand** ：操作数
 - **caveat** ：警告
 - **concise** ：简明的
+- **stay tuned (for)** ：敬请关注
 
 
 

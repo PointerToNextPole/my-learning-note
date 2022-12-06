@@ -317,7 +317,9 @@ dep.value = 'changed' // console.log -> 'changed'
 
 这里的 Dep 实现，和 composition API 中的 ref 非常相似。
 
-> ⚠️ 注意：这里使用的是 depend 和 notify ，而不是 track 和 trigger，是为了减少其中与响应式原理不相关的优化，从而更好的理解工作原理。而在 Vue3 源码中函数的命名就是 track 和 trigger ，见 https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L213 和 L259
+> ⚠️ 注意：这里使用的是 depend 和 notify ，而不是 track 和 trigger，是为了减少其中与响应式原理不相关的优化，从而更好的理解工作原理。而在 Vue3 源码中函数的命名就是 track 和 trigger ，见 https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L213 和 L259。
+>
+> 👀 另外，根据 Vue Mastery 《Vue 3 Reactivity》中的说法：
 
 
 
@@ -1215,7 +1217,7 @@ effect(() => { total = product.price * product.quantity } ) // 这里之前的�
 
 ##### Ref
 
-Vue3 通过对象访问器 Object Accessors（即 getter / setter，<font color=red>也被称为计算属性</font> Computed properties ）实现 `Ref` ，如下示例：
+Vue3 通过对象访问器 Object Accessors（即 getter / setter ）实现 `Ref` ，如下示例：
 
 ```js
 let user = {
@@ -1235,7 +1237,98 @@ user.fullName = 'Adam Jahr'
 console.log(`Name is ${user.fullName}`)
 ```
 
-> ⚠️ 另外，这里发现了一个之前看 《现代 JS 教程》时忽略的误区：在 [Class 基本语法 # Getters/setters](https://zh.javascript.info/class#getterssetters) 中提及了 “计算属性” ，也提到了 “计算属性名称 `[...]` ” ；而 [对象 # 计算属性](https://zh.javascript.info/object#ji-suan-shu-xing) 中也提到了 “计算属性” ，
+
+
+###### Ref 实现
+
+```js
+function ref(raw) {
+  const r = {
+    get value() {
+      track(r, 'value')
+      return raw
+    },
+    set value(newVal) {
+      if (newVal !== raw) { // ⚠️
+        raw = newVal
+        trigger(r, 'value')
+      }
+    }
+    return r
+  }
+}
+```
+
+以上，实际就是 Vue3 中 `refImpl` 的实现原理；不过，Vue3 实际实现要复杂不少，比如 `refImpl` 是一个 class ，也有自己的构造函数...
+
+
+
+##### Computed 实现
+
+###### 原理与思路
+
+> 👀 当然，下面所说的 computed 实现，还是相当简化的：无论是计算属性中可以放入 getter 方法，也可以放入包含 getter setter 的对象；还是 computed 的值的缓存。
+
+首先，computed 期望接收一个 getter（ 👀 也可见下面官方文档的引用），所以形如：
+
+```js
+function computed(getter) {
+  // TODO
+}
+```
+
+> `computed()` 方法期望接收一个 getter 方法，返回值为一个**计算属性 ref** 。
+>
+> 计算属性默认是只读的（ 👀 即默认/期望只接受一个 getter 方法）。
+>
+> 摘自：[Vue3 Doc - 计算属性 # 基础示例](https://cn.vuejs.org/guide/essentials/computed.html#basic-example)
+>
+> 👀 另外，<font color=dodgerBlue>**容易遗忘的是**</font>：computed 的返回值是一个 ref ，所以：和 ref 一样，computed 需要通过 `.value` 来访问计算结果；而在模板中，computed 会被自动解包，
+
+这就需要在 `// TODO` 中添加了逻辑：
+
+1. 创建一个响应式引用，称之为 `result` ( Create a reactive reference called `result` )
+2. 在 `effect()` 中 运行 `getter` ，因为需要监听响应值（ 👀 即：收集依赖），然后将其 ( getter ) 赋值为 `result.value` 。 ( Run the `getter` in an `effect()` which sets the `result.value` )
+3. 返回 `result` ( Return the `result` )
+
+###### 代码实现
+
+```js
+function computed(getter) {
+  let result = ref()
+  
+  effect( () => ( result.value = getter() ) )
+  
+  return result
+}
+```
+
+
+
+###### Vue 2 的局限
+
+Vue2 中，Get 和 Set 的钩子，是添加在（响应式对象的）各个属性下的；所以，对 `reactiveObj`  直接添加（不使用 `Vue.set(obj, prop, val)` ）一个属性，这个属性是不会得到响应式的；而 Vue3 因为使用了 Proxy，不会出现类似的问题，属性将自动变成响应式。
+
+
+
+##### Vue3 响应式实现文件结构
+
+实现响应式的代码，在 packages/reactivity/src/ 目录下；作用包含如下：
+
+- effect.ts ：定义 `effect` ，`track` 和 `trigger`
+- baseHandlers.ts ：定义 proxy handlers ( `get` ，`set` 等 )
+- reactive.ts ：定义 `reactive` ，其创建了一个 ES6 Proxy
+- ref.ts ：定义了响应式的引用，使用对象访问器。
+
+###### 文件间的关系
+
+![image-20221206224917968](https://s2.loli.net/2022/12/06/goDxz1hPRml2bXf.png)
+
+
+
+##### 尤雨溪源码解读
+
+在 Vue2 中就是用的 depend 和 notify ，而在 Vue3 中改成了 track 和 trigger ；同时，这两对方法，都在做同样的事情。depend 和 notify 都是动词，和所有者 Dep（一个依赖实例）相关，可以说：一个依赖实例被依赖 ( depend )，或者它正在通知它的订阅者( sub )；而 Vue3 对依赖关系做了改变。从技术角度来说，Vue3 已经没有 Dep 类了，然后 depend 和 notify 里的逻辑也被抽离到两个独立的函数 track 和 trigger 中。
 
 
 
