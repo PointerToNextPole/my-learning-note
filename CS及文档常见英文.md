@@ -18,6 +18,8 @@
 
 - **on the fly**：即时，在运行时（热更新）。参考：[如何优雅的翻译 on the fly ？ - 知乎](https://www.zhihu.com/question/21136587)
 
+- **on the spot** ：当场、立即
+
 - **day-to-day** ：日常
 
 - **pros and cons**：利弊

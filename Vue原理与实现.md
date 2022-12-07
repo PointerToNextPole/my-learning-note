@@ -319,7 +319,7 @@ dep.value = 'changed' // console.log -> 'changed'
 
 > ⚠️ 注意：这里使用的是 depend 和 notify ，而不是 track 和 trigger，是为了减少其中与响应式原理不相关的优化，从而更好的理解工作原理。而在 Vue3 源码中函数的命名就是 track 和 trigger ，见 https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L213 和 L259。
 >
-> 👀 另外，根据 Vue Mastery 《Vue 3 Reactivity》中的说法：
+> 👀 另外，关于 depend notify 和 track trigger ，建议去看下 [[#尤雨溪源码解读#depend notify v.s. track trigger]]
 
 
 
@@ -366,7 +366,7 @@ function reactive(raw) {
     Object.defineProperty(raw, key, {
       get() {
         dep.depend();
-        return value;
+        return value; // ⚠️ 这里形成了闭包，存储了属性关联的 Dep，即：value 变量保存了 raw[key]
       },
       set(newValue) {
         value = newValue;
@@ -416,7 +416,7 @@ function watchEffect(effect) {
   activeEffect = null;
 }
 
-// 因为 reactiveHandler 只创建一次，为了在运行时找到同一个那个 dep 实例，所以使用全局的 weakMap 来缓存 dep 实例，并保持唯一性
+// 因为 reactiveHandler 只创建一次，为了在运行时找到同一个那个 dep 实例，所以使用全局的 weakMap 来缓存 dep 实例，并保持唯一性 🤔 猜测：这也是没有形成闭包，无法保存依赖的解决方法？
 // 另外，因为 weakMap 的 key 必须是对象，并且在 key 不可达，对应的 value 可以自动触发 GC。正因为此，weakMap 的 key 不可枚举。
 const targetMap = new WeakMap()
 
@@ -1046,8 +1046,6 @@ return toRefs(state)
 
 
 
-
-
 <img src="https://s2.loli.net/2022/11/23/G6U89sMVCr7blDa.jpg" style="zoom: 33%;" />
 
 track 函数保存的是 effect，即上图所说的 Save this code。trigger 函数调用 effect，以及其他所有已经保存了的代码。
@@ -1083,6 +1081,8 @@ Set 中的每一个值，都只是一个需要执行的 effect；就如上面的
 ![20221124_150709.jpeg](https://s2.loli.net/2022/11/24/EO5pATJbn9sFrfh.jpg)
 
 TargetMap 的类型是 WeakMap（ 👀 为什么选择 WeakMap ，[[#reactive 实现#Vue3 风格实现]] 中有说）。那么，现在 TargetMap 的结构就是 `WeakMap<any, Map<any, Set>>` 。
+
+> 👀 除了上面的 TargetMap，另外值得注意的是： `depsMap` ，以及 dep 指向的 “Effect to re-run”
 
 <font color=dodgerBlue>看了下 Vue3 源码也确实如此：</font>  
 
@@ -1326,9 +1326,59 @@ Vue2 中，Get 和 Set 的钩子，是添加在（响应式对象的）各个属
 
 
 
-##### 尤雨溪源码解读
+##### 尤雨溪 Vue3 原理 Q&A
 
-在 Vue2 中就是用的 depend 和 notify ，而在 Vue3 中改成了 track 和 trigger ；同时，这两对方法，都在做同样的事情。depend 和 notify 都是动词，和所有者 Dep（一个依赖实例）相关，可以说：一个依赖实例被依赖 ( depend )，或者它正在通知它的订阅者( sub )；而 Vue3 对依赖关系做了改变。从技术角度来说，Vue3 已经没有 Dep 类了，然后 depend 和 notify 里的逻辑也被抽离到两个独立的函数 track 和 trigger 中。
+###### depend notify v.s. track trigger
+
+![image-20221207000256378](https://s2.loli.net/2022/12/07/3GKsvgwDL7cAkiU.png)
+
+在 Vue2 中使用的是 depend 和 notify ，在 Vue3 中改成了 track 和 trigger ；而这两对函数，在做同样的事情。
+
+depend 和 notify 都是动词，和所有者 Dep（一个依赖实例）相关，可以说：一个依赖实例被依赖 ( depend )，或者它正在通知它的订阅者 ( sub )；而 Vue3 对依赖关系做了改变。从技术角度来说，Vue3 已经没有 Dep 类了，depend 和 notify 中的逻辑也被抽离到两个独立的函数 track 和 trigger 中。所以，当调用 track 和 trigger 时，它们的行为更像是在追踪什么，而不是什么被依赖。
+
+![image-20221207000359984](https://s2.loli.net/2022/12/07/x9nIZ32VmKWSt7q.png)
+
+<font color=dodgerBlue>在 Vue2 中有一个独立的 Dep 类，而在 Vue3 中，只有一个 Set ；为什么会有这样的改变？</font>
+
+看下上图中的代码，Dep 类中的 `subscribers` 数组其实就是一个 Set ，和 Vue3 的 dep 的 Set 其实是一样的。而由于 Vue3 实现逻辑的改变，depend 和 notify 被抽离成了 track 和 trigger， Dep 类中只剩下了 `subscribers` Set 了，无论从必要性还是<font color=red>**性能**</font>而言，都没有必要再实现一个 Dep 类。
+
+
+
+###### TargetMap<depsMap\<dep>> 结构
+
+Vue2 中依赖收集过程中，包含在 forEach 内的 `Object.defineProperty()` 中的 getter 中形成了闭包（ 👀 [[#Vue2 风格实现]] 中相关代码有注释标记），闭包为属性存储关联的 Dep 。而 Vue3 是使用了 Proxy 和 Handler，<font color=fuchsia>Handler **直接接收** target</font> （👀 指的是代理的对象）和 key (👀 指的是代理对象的键)，无法创建闭包，为每个属性存储关联的依赖项。那么，如何给定目标对象以及该对象上的键，为键找到相应的实例？便需要将它们放入两个层级的嵌套 map ( given a target object and a key on that object, how do we manage to always locate the same dependency instance. The only way to do that put them into two level of nested maps ) 。
+
+
+
+###### ref v.s reactive
+
+![image-20221207215835463](https://s2.loli.net/2022/12/07/eqczmnwBKTG74bh.png)
+
+如上图：<font color=dodgerBlue>可以通过 `return reactive({ value: initialValue })` 来 “实现一个” ref ，为什么不应这样做？</font>
+
+<font color=fuchsia>ref 根据定义应该只暴露一个属性</font>，就是值 ( value ) 本身。但是，从技术层面，用响应式可以给 ref 变量附加一些新的属性，但这就违背了 ref 的目的。<font color=fuchsia>**ref 只能为包装一个内部值而服务，不应该被当作一个一般的响应式对象**</font>；另外，Vue 也实现了 isRef 检查，ref 对象实际上有一些特殊的东西（ 👀 看了下源码是 `__v_isRef` ，定义是 `public readonly __v_isRef = true` ），让 用户 / Vue 知道这实际上是一个 ref ，而不是一个 reactive 对象。最后，ref 在性能方面也是更好的。当创建一个 reactive 对象时，需要检查是否依旧有相应的 reactive 副本 ( already has a corresponding on the reactive copy of it ) ，是否有一个只读副本；总之，有很多额外工作要做。而如果仅仅需要使用一个对象字面量，使用 ref 更加节省性能。
+
+###### 使用 Proxy 和 Reflect 除响应式之外的好处
+
+直接说答案：Proxy 实现了类似“懒加载”的好处。
+
+在 Vue2 中，当进行（响应式）转换时，Vue 必须尽快的完成（全部）转换，因为当 对象被传递给 Vue2 的响应式（系统）时，Vue 必须要遍历所有的键，并当场、立即 ( on the spot ) 转换；以便之后被访问时，它们已经被转换（为响应式的）了。
+
+而在 Vue3 中，当对一个对象调用 reactive 时，Vue3 所做的就是返回一个代理对象；<font color=fuchsia>仅在需要时转换嵌套对象，即当访问它们时</font> ( 👀 这里很明显的说明了 按需和类似“懒加载” 的特性）。如果应用中有一个很大的对象列表，但，在分页的情况下，只需要渲染前十个，那么只有前十个会进行响应式处理。
+
+
+
+#### 尤雨溪源码解读
+
+> 👀 注：由于视频录制时还是 Vue3 早期版本，所以在做笔记时，会按照当前（2022/12）的 Vue3 实现去阅读与笔记。
+
+##### reactivity/baseHandlers 中
+
+###### createGetter(isReadonly = false, shallow = false)
+
+createGetter 有 “readonly 版本” 和 “ shallow 版本”，“readonly 版本” 只允许创建只读的响应式对象，它可以被读取和追踪，但不能被改变；“shallow 版本” 意味着：当你把一个对象放入另一个对象作为嵌套属性时，是不会将它转换为响应式的（ 👀 实现 shallowRef 和 shallowReactive ）。
+
+
 
 
 
