@@ -1372,13 +1372,276 @@ Vue2 中依赖收集过程中，包含在 forEach 内的 `Object.defineProperty(
 
 > 👀 注：由于视频录制时还是 Vue3 早期版本，所以在做笔记时，会按照当前（2022/12）的 Vue3 实现去阅读与笔记。
 
-##### reactivity/baseHandlers 中
+##### reactivity/baseHandlers.ts
 
-###### createGetter(isReadonly = false, shallow = false)
+###### createGetter 函数
 
-createGetter 有 “readonly 版本” 和 “ shallow 版本”，“readonly 版本” 只允许创建只读的响应式对象，它可以被读取和追踪，但不能被改变；“shallow 版本” 意味着：当你把一个对象放入另一个对象作为嵌套属性时，是不会将它转换为响应式的（ 👀 实现 shallowRef 和 shallowReactive ）。
+createGetter 中有 readonly 和 shallow 的判断，readonly 只允许创建只读的响应式对象，它可以被读取和追踪，但不能被改变；而 shallow 意味着：当你把一个对象放入另一个对象作为嵌套属性时，是不会将它转换为响应式的（ 👀 实现 shallowRef 和 shallowReactive ）。
+
+在  createGetter 中使用了 `ArrayInstrumentations` ，这是一个处理边缘情况的 “数组检测器”
+
+```ts
+function createGetter(isReadonly = false, shallow = false) {
+  return function get(target: Target, key: string | symbol, receiver: object) {
+    if (key === ReactiveFlags.IS_REACTIVE) {
+      return !isReadonly
+    } else if (key === ReactiveFlags.IS_READONLY) {
+      return isReadonly
+    } else if (key === ReactiveFlags.IS_SHALLOW) {
+      return shallow
+    } else if (
+      key === ReactiveFlags.RAW &&
+      receiver ===
+        (isReadonly
+          ? shallow
+            ? shallowReadonlyMap
+            : readonlyMap
+          : shallow
+          ? shallowReactiveMap
+          : reactiveMap
+        ).get(target)
+    ) {
+      return target
+    }
+
+    const targetIsArray = isArray(target)
+
+    if (!isReadonly) {
+      if (targetIsArray && hasOwn(arrayInstrumentations, key)) { // arrayInstrumentations 处理边缘情况
+        return Reflect.get(arrayInstrumentations, key, receiver)
+      }
+      if (key === 'hasOwnProperty') {
+        return hasOwnProperty
+      }
+    }
+
+    const res = Reflect.get(target, key, receiver)
+
+    if (isSymbol(key) ? builtInSymbols.has(key) : isNonTrackableKeys(key)) { // 经测试：builtInSymbols 是为了拿到 JS 13个内置 symbol
+      return res
+    }
+
+    if (!isReadonly) {
+      track(target, TrackOpTypes.GET, key) // 👀 可写的属性进行 track。另外，这里的 GET，下面还有 ADD、SET 和 CLEAR
+    }
+
+    if (shallow) { // shallow 的处理
+      return res
+    }
+
+    if (isRef(res)) { // ref 的处理，如果 target 不是一个数组且 key 不是整型，则自动对 ref 拆箱
+      // ref unwrapping - skip unwrap for Array + integer key.
+      return targetIsArray && isIntegerKey(key) ? res : res.value
+    }
+
+    if (isObject(res)) {
+      // Convert returned value into a proxy as well. we do the isObject check
+      // here to avoid invalid value warning. Also need to lazy access readonly
+      // and reactive here to avoid circular dependency.
+      return isReadonly ? readonly(res) : reactive(res)
+    }
+
+    return res
+  }
+}
+```
+
+###### createSetter 函数
+
+```ts
+function createSetter(shallow = false) {
+  return function set(
+    target: object,
+    key: string | symbol,
+    value: unknown,
+    receiver: object
+  ): boolean {
+    let oldValue = (target as any)[key]
+    if (isReadonly(oldValue) && isRef(oldValue) && !isRef(value)) {
+      return false
+    }
+    if (!shallow) {
+      if (!isShallow(value) && !isReadonly(value)) {
+        oldValue = toRaw(oldValue)
+        value = toRaw(value)
+      }
+      if (!isArray(target) && isRef(oldValue) && !isRef(value)) { // 检查 set 属性，属性是否是 ref
+        oldValue.value = value
+        return true
+      }
+    } else {
+      // in shallow mode, objects are set as-is regardless of reactive or not
+    }
+
+    const hadKey =
+      isArray(target) && isIntegerKey(key)
+        ? Number(key) < target.length
+        : hasOwn(target, key)
+    const result = Reflect.set(target, key, value, receiver)
+    // don't trigger if target is something up in the prototype chain of original
+    if (target === toRaw(receiver)) {
+      if (!hadKey) { // key 不存在，则添加 ( ADD )
+        trigger(target, TriggerOpTypes.ADD, key, value)
+      } else if (hasChanged(value, oldValue)) { // key 存在，则修改 ( SET )
+        trigger(target, TriggerOpTypes.SET, key, value, oldValue)
+      } // 虽然上面所说的 ADD 和 SET，但是对于 proxy 而言，没有区别，都是同样的 proxy trap
+    }
+    return result
+  }
+}
+```
+
+##### reactivity/effect.ts
+
+###### track 函数
+
+> 👀 关于 track 函数，可以看下上面的讲解与实现
+
+```ts
+export function track(target: object, type: TrackOpTypes, key: unknown) {
+  if (shouldTrack && activeEffect) { // shouldTrack 是内部标志，作为检查条件
+    let depsMap = targetMap.get(target)
+    if (!depsMap) {
+      targetMap.set(target, (depsMap = new Map()))
+    }
+    let dep = depsMap.get(key)
+    if (!dep) {
+      depsMap.set(key, (dep = createDep()))
+    }
+
+    const eventInfo = __DEV__
+      ? { effect: activeEffect, target, type, key }
+      : undefined
+
+    trackEffects(dep, eventInfo)
+  }
+}
+
+export function trackEffects(
+  dep: Dep,
+  debuggerEventExtraInfo?: DebuggerEventExtraInfo
+) {
+  let shouldTrack = false
+  if (effectTrackDepth <= maxMarkerBits) {
+    if (!newTracked(dep)) {
+      dep.n |= trackOpBit // set newly tracked
+      shouldTrack = !wasTracked(dep)
+    }
+  } else {
+    // Full cleanup mode.
+    shouldTrack = !dep.has(activeEffect!)
+  }
+
+  if (shouldTrack) {
+    dep.add(activeEffect!)
+    activeEffect!.deps.push(dep) // ⚠️ 注意这里：activeEffect 也可以有自己的 deps 集合。这表示一种双向关系，在 dep 和 effect 之间；即：effect 可以有多个 dep，dep 作为订阅者可以有多个 effect；也就是 N：N的关系。之所以是这样的关系，是因为需要追踪这者以便做清理工作(cleanupEffect)
+    if (__DEV__ && activeEffect!.onTrack) {
+      activeEffect!.onTrack({
+        effect: activeEffect!,
+        ...debuggerEventExtraInfo!
+      })
+    }
+  }
+}
+```
+
+###### trigger 函数
+
+```ts
+export function trigger(
+  target: object,
+  type: TriggerOpTypes,
+  key?: unknown,
+  newValue?: unknown,
+  oldValue?: unknown,
+  oldTarget?: Map<unknown, unknown> | Set<unknown>
+) {
+  const depsMap = targetMap.get(target)
+  if (!depsMap) {
+    // never been tracked
+    return
+  }
+
+  let deps: (Dep | undefined)[] = []
+  if (type === TriggerOpTypes.CLEAR) { // 当清除集合时，必须要触发所有与之相关的 effects
+    // collection being cleared
+    // trigger all effects for target
+    deps = [...depsMap.values()]
+  } else if (key === 'length' && isArray(target)) {
+    const newLength = Number(newValue)
+    depsMap.forEach((dep, key) => {
+      if (key === 'length' || key >= newLength) {
+        deps.push(dep)
+      }
+    })
+  } else {
+    // schedule runs for SET | ADD | DELETE
+    if (key !== void 0) {
+      deps.push(depsMap.get(key))
+    }
+
+    // also run for iteration key on ADD | DELETE | Map.SET
+    switch (type) {
+      case TriggerOpTypes.ADD:
+        if (!isArray(target)) {
+          deps.push(depsMap.get(ITERATE_KEY))
+          if (isMap(target)) {
+            deps.push(depsMap.get(MAP_KEY_ITERATE_KEY))
+          }
+        } else if (isIntegerKey(key)) {
+          // new index added to array -> length changes
+          deps.push(depsMap.get('length'))
+        }
+        break
+      case TriggerOpTypes.DELETE:
+        if (!isArray(target)) {
+          deps.push(depsMap.get(ITERATE_KEY))
+          if (isMap(target)) {
+            deps.push(depsMap.get(MAP_KEY_ITERATE_KEY))
+          }
+        }
+        break
+      case TriggerOpTypes.SET:
+        if (isMap(target)) {
+          deps.push(depsMap.get(ITERATE_KEY))
+        }
+        break
+    }
+  }
+
+  const eventInfo = __DEV__
+    ? { target, type, key, newValue, oldValue, oldTarget }
+    : undefined
+
+  if (deps.length === 1) {
+    if (deps[0]) {
+      if (__DEV__) {
+        triggerEffects(deps[0], eventInfo)
+      } else {
+        triggerEffects(deps[0])
+      }
+    }
+  } else {
+    const effects: ReactiveEffect[] = []
+    for (const dep of deps) {
+      if (dep) {
+        effects.push(...dep)
+      }
+    }
+    if (__DEV__) {
+      triggerEffects(createDep(effects), eventInfo)
+    } else {
+      triggerEffects(createDep(effects))
+    }
+  }
+}
+```
 
 
+
+值得注意的是：视频中的 scheduleRun 方法改名为 triggerEffect 
+
+onTrack 和 onTrigger 就是对应 track 和 trigger，另外，onTrack 和 onTrigger 包含的参数 e，包含了 Vue 使用 Proxy 运行时的一些过程细节；比如 GET / SET / ADD 操作类型，以及 SET 过程中的 oldvalue 和 newvalue （ 👀 见视频最后的 debugging 演示）。此外，还提到了 Dev 阶段专用的 renderTracked 和 renderTriggered 生命周期。
 
 
 

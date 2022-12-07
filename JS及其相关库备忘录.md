@@ -894,14 +894,15 @@ arr.entries()
 
 @@iterator<font color=FF0000>（`@@` 是 `Symbol.` 的简写；即：`Symbol.iterator`为`@@iterator`） </font>属性和 Array.prototype.values() 属性的初始值是同一个函数对象。
 
-- **语法**
+##### 语法
 
-  ```js
-  arr[Symbol.iterator]()
-  ```
+```js
+arr[Symbol.iterator]()
+```
 
-- **返回值**
-  数组的 iterator 方法，<font color=FF0000>默认情况下，与 values() 返回值相同</font>， arr[Symbol.iterator] 则会返回 values() 函数。
+##### 返回值
+
+数组的 iterator 方法，<font color=FF0000>默认情况下，与 values() 返回值相同</font>， arr[Symbol.iterator] 则会返回 values() 函数。
 
 摘自：[MDN - Array.prototype[@@iterator]()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/@@iterator)
 
@@ -911,31 +912,33 @@ arr.entries()
 
 reverse() 方法将数组中元素的位置颠倒，并返回该数组。数组的第一个元素会变成最后一个，数组的最后一个元素变成第一个。该方法会改变原数组。
 
-- **语法：**
+##### 语法
 
-  ```js
-  arr.reverse()
-  ```
+```js
+arr.reverse()
+```
 
-- **返回值：**颠倒后的数组。
+###### 返回值
 
-- **描述：**
+颠倒后的数组。
 
-  reverse 方法颠倒数组中元素的位置，改变了数组，并返回该数组的引用。
+##### 描述
 
-  <font color=FF0000> reverse方法是特意类化的</font>；<font color=FF0000> 此方法可被 called 或 applied于类似数组对象</font>。对象如果不包含反映一系列连续的、基于零的数值属性中的最后一个长度的属性，则该对象可能不会以任何有意义的方式运行。
+reverse 方法颠倒数组中元素的位置，改变了数组，并返回该数组的引用。
 
-- **示例：**
+<font color=FF0000> reverse方法是特意类化的</font>；<font color=FF0000> 此方法可被 called 或 applied于类似数组对象</font>。对象如果不包含反映一系列连续的、基于零的数值属性中的最后一个长度的属性，则该对象可能不会以任何有意义的方式运行。
 
-  **颠倒类数组中的元素**
-  下例<mark>创造了一个类数组对象 a, 包含3个元素和一个 length 属性, 然后颠倒这个类数组对象</mark>。  reverse() 的调用返回一个颠倒后的类数组对象 a的引用。
+##### 示例
 
-  ```js
-  const a = {0: 1, 1: 2, 2: 3, length: 3};
-  console.log(a); // {0: 1, 1: 2, 2: 3, length: 3}
-  Array.prototype.reverse.call(a); //这里用apply也一样
-  console.log(a); // {0: 3, 1: 2, 2: 1, length: 3}
-  ```
+**颠倒类数组中的元素**
+下例<mark>创造了一个类数组对象 a, 包含3个元素和一个 length 属性, 然后颠倒这个类数组对象</mark>。  reverse() 的调用返回一个颠倒后的类数组对象 a的引用。
+
+```js
+const a = {0: 1, 1: 2, 2: 3, length: 3};
+console.log(a); // {0: 1, 1: 2, 2: 3, length: 3}
+Array.prototype.reverse.call(a); //这里用apply也一样
+console.log(a); // {0: 3, 1: 2, 2: 1, length: 3}
+```
 
 摘自：[MDN - Array.prototype.reverse()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse)
 
@@ -951,17 +954,19 @@ find() 方法<font color=FF0000>返回数组中满足提供的测试函数的第
 arr.find(callback[, thisArg])
 ```
 
-**参数**
+##### 参数
 
 - **callback：**在数组每一项上执行的函数，接收 3 个参数：
   - element：当前遍历到的元素。
   - index：可选，当前遍历到的索引。
   - array：可选，数组本身。
-- **thisArg：**可选，<font color=FF0000>执行回调时用作this 的对象</font>。
+- thisArg：可选，执行回调时用作this 的对象。
 
-**返回值：**数组中第一个满足所提供测试函数的元素的值，否则返回 undefined。
+###### 返回值
 
-**示例：**
+数组中第一个满足所提供测试函数的元素的值，否则返回 undefined。
+
+###### 示例
 
 ```js
 const array1 = [5, 12, 8, 130, 44];
@@ -3457,7 +3462,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                 
+  >                                                                                                                                                                                                                   
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3476,7 +3481,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                 
+  >                                                                                                                                                                                                                   
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -9931,7 +9936,7 @@ o.toString(); // 返回 [object Object]
 
 👀 **注，上面没有说痛点是什么，这里补充下：**<font color=FF0000>在 JavaScript 里使用 typeof 判断数据类型，只能区分基本类型</font>，即：number、string、undefined、boolean、object。<font color=FF0000>对于null、array、function、object 来说，使用 typeof 都会统一返回 object 字符串。要想区分对象、数组、函数、单纯使用 typeof 是不行的</font>。
 
-在 JS 中，可以通过 Object.prototype.toString() 方法，判断某个对象之属于哪种内置类型（注：这也是判断内置类型 <font color=FF0000>最靠谱的方法</font>）。分为 null、string、boolean、number、undefined、array、function、object、date、math。（注：error 也可以）
+在 JS 中，可以通过 Object.prototype.toString() 方法，判断某个对象之属于哪种内置类型（注：这也是判断内置类型 <font color=FF0000>最靠谱的方法</font>）。分为 null、string、boolean、number、undefined、array、function、object、date、math。（ 👀 error 也可以）
 
 另外，上面说的不全，还包含：RegExp、JSON、Arguments。示例如下：
 
@@ -9949,7 +9954,7 @@ console.log(argToString()) // [object Arguments]
 
 摘自：[浅谈 Object.prototype.toString.call() 方法](https://www.jianshu.com/p/585926ae62cc)
 
-使用  ***.constructor.name** 可以实现类似的功能（**注：**当然泛用性没有 toString 好，比如 null、undefined 不可用，arguments 的结果还是 Object。另外，这里的原理是： constructor 是一个函数，Function 有 name 这个属性 ），示例如下：
+使用  ***.constructor.name** 可以实现类似的功能（ 👀 当然泛用性没有 toString 好，比如 null、undefined 不可用，arguments 的结果还是 Object。另外，这里的原理是： constructor 是一个函数，Function 有 name 这个属性 ），示例如下：
 
 ```js
 const reg = /abc/
@@ -9981,20 +9986,20 @@ console.log(Object.getPrototypeOf(reg).constructor.name) // 'RegExp'
 - ReturnIfAbrupt(isArray) （如果 isArray 不是一个正常值，比如抛出一个错误，中断执行）；
 - 如果 isArray 为 true ， 令 builtinTag 为 'Array' ;
 - else ，如果 O is an exotic String object ， 令 builtinTag 为 'String' ；
-- else ，如果 O 含有 [[ParameterMap]] internal slot, ， 令 builtinTag 为 'Arguments' ； 
-- else ，如果 O 含有 [[Call]] internal method ， 令 builtinTag 为 Function ；
-- else ，如果 O 含有 [[ErrorData]] internal slot ， 令 builtinTag 为 Error ；
-- else ，如果 O 含有 [[BooleanData]] internal slot ， 令 builtinTag 为 Boolean ；
-- else ，如果 O 含有 [[NumberData]] internal slot ， 令 builtinTag 为 Number ；
-- else ，如果 O 含有 [[DateValue]] internal slot ， 令 builtinTag 为 Date ；
-- else ，如果 O 含有 [[RegExpMatcher]] internal slot ， 令 builtinTag 为 RegExp ；
+- else ，如果 O 含有 `[[ParameterMap]]` internal slot, ， 令 builtinTag 为 'Arguments' ； 
+- else ，如果 O 含有 `[[Call]]` internal method ， 令 builtinTag 为 Function ；
+- else ，如果 O 含有 `[[ErrorData]]` internal slot ， 令 builtinTag 为 Error ；
+- else ，如果 O 含有 `[[BooleanData]]` internal slot ， 令 builtinTag 为 Boolean ；
+- else ，如果 O 含有 `[[NumberData]]` internal slot ， 令 builtinTag 为 Number ；
+- else ，如果 O 含有 `[[DateValue]]` internal slot ， 令 builtinTag 为 Date ；
+- else ，如果 O 含有 `[[RegExpMatcher]]` internal slot ， 令 builtinTag 为 RegExp ；
 - else ， 令 builtinTag 为 Object ；
 - 令 tag 为 Get(O, @@toStringTag) 的返回值（ Get(O, @@toStringTag) 方法，既是在 O 是一个对象，并且具有 @@toStringTag 属性时，返回 O[Symbol.toStringTag] ）；
 - ReturnIfAbrupt(tag) ，如果 tag 是正常值，继续执行下一步；
 - 如果 Type(tag) 不是一个字符串，let tag be builtinTag ；
 - 返回由三个字符串 `"[object", tag, and "]"` 拼接而成的一个字符串。
 
-在ES6里，之前的 [[Class]] 不再使用，取而代之的是一系列的 internal slot，有一个比较完整的解释：
+在ES6里，之前的 `[[Class]]` 不再使用，取而代之的是一系列的 internal slot，有一个比较完整的解释：
 
 > Internal slots correspond to internal state that is associated with objects and used by various ECMAScript specification algorithms. Internal slots are not object properties and they are not inherited. Depending upon the specific internal slot specification, such state may consist of values of any ECMAScript language type or of specific ECMAScript specification type values
 
