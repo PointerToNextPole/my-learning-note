@@ -209,9 +209,13 @@ vConsole.destroy();
 
 ##### 其他替代品
 
-背景：在公司的 iOS 12 系统的 iPhone 6S 测试机上使用 vconsole 时，发现 Network 无法良好的工作，访问接口的请求没有展示出（可能是 CDN 安装的原因？），感觉不对劲；便搜索 vconsole 的替代品，找到了 [eruda](https://github.com/liriliri/eruda) ，最后确实 eruda 是正常的。
+背景：在公司的 iOS 12 系统的 iPhone 6S 测试机上使用 vconsole 时，发现 Network 无法良好的工作，访问接口的请求没有展示出（可能是 CDN 安装的原因？👀 事后似乎是找到了原因，见 [[#vConsole 问题与解决]] ），感觉不对劲；便搜索 vconsole 的替代品，找到了 [eruda](https://github.com/liriliri/eruda) ，最后确实 eruda 是正常的。
 
 类似的还有：[weinre](http://people.apache.org/~pmuellr/weinre/) ⚠️ 相当有名，但是废弃了... ，[spy-debugger](https://github.com/wuchangming/spy-debugger)
+
+##### vConsole 问题与解决
+
+在微信小程序中使用 web-view 组件时，由于无法在开发者工具中看见接口请求，所以需要使用 vConsole；却发现两个月前还可以的 vconsole 始终无法展示 log 和 network 的内容，虽然代码逻辑确实是执行了；也试了 eruda，还是不行。结果发现，cdn 引入 vconsole 的代码放在 `<body>` 下面了；把代码放在 `<head>` 中，就有效果了。
 
 
 

@@ -2,32 +2,34 @@
 
 
 
-#### P10 - P11：摘抄
+##### P10 - P11：摘抄
 
 **在CSS 中，<font color=FF0000>元素通常有两种形式：置换元素和⾮置换元素</font>。**
 
-- **置换元素**
-  <font color=FF0000>置换元素（replaced element）指用来置换元素内容的部分不由文档内容直接表示</font>。
+###### 置换元素
 
-  在 HTML 中，最常见的置换元素要数 `img` ，它的内容由文档之外的图像文件替换。其实，通过下面这个简单的例子可以看出，img 元素没有内容：
+<font color=FF0000>置换元素（replaced element）指用来置换元素内容的部分不由文档内容直接表示</font>。
 
-  ```html
-  <img src=＂howdy.gif＂>
-  ```
+在 HTML 中，最常见的置换元素要数 `img` ，它的内容由文档之外的图像文件替换。其实，通过下面这个简单的例子可以看出，img 元素没有内容：
 
-  这段标记只包含一个元素名和一个属性。如不指向外部内容（这里通过 src 属性指定一个图像），这个元素什么也表示不了。如果指向的图像文件存在，文档会把那个图像显示出来；否则，浏览器什么也不显示，或者显示“图像损坏”占位图。
-  `input` 元素类似，根据类型的不同，会替换成单选按钮、复选框或文本输入框。
+```html
+<img src=＂howdy.gif＂>
+```
 
-- **非置换元素**
-  HTML 元素大部分是非置换元素 ( nonreplaced element )，即元素的内容由用户代理（通常是浏览器）在元素自身生成的框中显示。
+这段标记只包含一个元素名和一个属性。如不指向外部内容（这里通过 src 属性指定一个图像），这个元素什么也表示不了。如果指向的图像文件存在，文档会把那个图像显示出来；否则，浏览器什么也不显示，或者显示“图像损坏”占位图。
+`input` 元素类似，根据类型的不同，会替换成单选按钮、复选框或文本输入框。
 
-  例如，`<span>hi there<span> ` 是非置换元素，用户代理会显示 “hi there” 文本。
+###### 非置换元素
 
-  <font color=FF0000>段落（p）、标题（h1～h5）、单元格（table中的th和td）、列表（list）</font>，以及HTML中<font color=FF0000>其他几乎所有元素</font>都是非置换元素。
+HTML 元素大部分是非置换元素 ( nonreplaced element )，即元素的内容由用户代理（通常是浏览器）在元素自身生成的框中显示。
+
+例如，`<span>hi there<span> ` 是非置换元素，用户代理会显示 “hi there” 文本。
+
+<font color=FF0000>段落（p）、标题（h1～h5）、单元格（table中的th和td）、列表（list）</font>，以及HTML中<font color=FF0000>其他几乎所有元素</font>都是非置换元素。
 
 
 
-#### **P12 - P13**：摘抄
+##### P12 - P13：摘抄
 
 <img src="https://i.loli.net/2021/02/09/OnIoZDwK4CEyzBi.png" style="zoom: 37%;" />
 
@@ -35,7 +37,7 @@
 
 
 
-#### P14：总结
+##### P14：总结
 
 在html文件中放入xml也是可以的，不过不会有任何效果。示例如下：
 
@@ -77,41 +79,45 @@ publisher, pubdate {display: inline;}
 
 
 
-#### P16 - P19
-
-**link标签**
+##### P16 - P19 link标签
 
 ```html
 <link rel="stylesheet" type="text/css" href="sheet1.css" media="all">
 ```
 
-- link标签少有关注，但它完全是有效的标签，在HTML规范中已经存在多年，一直等待重用。它的基本作用是把其他文档与当前文档关联起来。<font color=FF0000>CSS使用它链接应用到文档上的样式表</font>。为了正确加载外部样式表，<font color=FF0000>link标签必须放在head元素中，不能放在其他元素中</font>。
-  Web浏览器遇到link标签时，会查找并加载指定的样式表，使用样式表中的样式渲染HTML文档。
+link标签少有关注，但它完全是有效的标签，在HTML规范中已经存在多年，一直等待重用。它的基本作用是把其他文档与当前文档关联起来。<font color=FF0000>CSS使用它链接应用到文档上的样式表</font>。为了正确加载外部样式表，<font color=FF0000>link标签必须放在head元素中，不能放在其他元素中</font>。
+Web浏览器遇到link标签时，会查找并加载指定的样式表，使用样式表中的样式渲染HTML文档。
 
-  类似的还有@import，<font color=FF0000>＠import声明必须放在所在样式表的开头，此外别无限制</font>。
+类似的还有@import，<font color=FF0000>＠import声明必须放在所在样式表的开头，此外别无限制</font>。
 
-- rel是“relation”（关系）的简称，这里指定的关系是 stylesheet。type属性的值始终为text/css，说明通过link标签加载的数据类型。这样Web浏览器才知道加载的样式表是CSS样式表，然后确定如何处理加载的数据。以后可能会出现其他样式语言，因此最好声明使用的是哪种语言。
+###### rel
 
-- href属性，它的值是样式表的URL，可以是绝对地址，也可以是相对地址，具体由需求而定。前例使用的是相对URL.此外，也可以使用绝对URL，例如 URL  url， http:/I meyerweb. com/sheetI.css.
+rel 是“relation”（关系）的简称，这里指定的关系是 stylesheet。type属性的值始终为text/css，说明通过link标签加载的数据类型。这样Web浏览器才知道加载的样式表是CSS样式表，然后确定如何处理加载的数据。以后可能会出现其他样式语言，因此最好声明使用的是哪种语言。
 
-- media属性，它的值是一个或多个媒体描述符（media descriptor），指明媒体的类型和具有的功能（比如screen projection等）。多个媒体描述符以逗号分开候选样式表
+###### href
 
-- <font color=FF0000>此外还有候选样式表（alternate stylesheet），定义方式为把rel属性的值设为 alternate stylesheet当用户自己选择，文档才会使用候选样式表渲染</font>。
-  <font color=FF0000>如果浏览器支持候选样式表，会使用link元素 title属性的值生成候选样式列表</font>。对下面的示例来说:
+href属性，它的值是样式表的URL，可以是绝对地址，也可以是相对地址，具体由需求而定。前例使用的是相对URL.此外，也可以使用绝对URL，例如 URL  url， http:/I meyerweb. com/sheetI.css.
 
-  ```html
-  <link rel=＂stylesheet＂type=＂text/css＂ href=＂sheet1. css＂ title=＂Default＂>
-  <link rel=＂alternate stylesheet＂type=textcs  href=＂bigtext. css＂ title=＂Big Text＂>
-  <link rel=＂alternate stylesheet＂ type=＂text/css＂href=＂zany.css＂ title＂Crazy colors！＂>
-  ```
+###### media
 
-  浏览器默认使用第一个样式表（这里是名为“Default”的样式表），此外用户还可以自选择想使用的样式表。
+media属性，它的值是一个或多个媒体描述符（media descriptor），指明媒体的类型和具有的功能（比如screen projection等）。多个媒体描述符以逗号分开候选样式表
 
-  <font color=FF0000>属性为rel的 stylesheet的link元素设定标题，也就是将其定为**首选样式表**（preferred stylesheet）</font>。这意味着，首选样式表优先于候选样式表，显示文档时默认使用。而选择候选样式表之后，首选样式表就不使用了。<font color=FF0000>如果不为样式表设定标题，那它就是**永久样式表**（ persistent stylesheet），始终用于显示文档</font>。
+<font color=FF0000>此外还有候选样式表（alternate stylesheet），定义方式为把rel属性的值设为 alternate stylesheet当用户自己选择，文档才会使用候选样式表渲染</font>。
+<font color=FF0000>如果浏览器支持候选样式表，会使用link元素 title属性的值生成候选样式列表</font>。对下面的示例来说:
+
+```html
+<link rel=＂stylesheet＂type=＂text/css＂ href=＂sheet1. css＂ title=＂Default＂>
+<link rel=＂alternate stylesheet＂type=textcs  href=＂bigtext. css＂ title=＂Big Text＂>
+<link rel=＂alternate stylesheet＂ type=＂text/css＂href=＂zany.css＂ title＂Crazy colors！＂>
+```
+
+浏览器默认使用第一个样式表（这里是名为“Default”的样式表），此外用户还可以自选择想使用的样式表。
+
+<font color=FF0000>属性为rel的 stylesheet的link元素设定标题，也就是将其定为**首选样式表**（preferred stylesheet）</font>。这意味着，首选样式表优先于候选样式表，显示文档时默认使用。而选择候选样式表之后，首选样式表就不使用了。<font color=FF0000>如果不为样式表设定标题，那它就是**永久样式表**（ persistent stylesheet），始终用于显示文档</font>。
 
 
 
-#### P20
+##### P20
 
 style元素也是一种引入样式表的方式，直接写在文档中：
 
@@ -125,11 +131,11 @@ style 元素应该始终设定 type 属性。对CSS 文档来说，正确的值�
 
 
 
-#### P21 - P22
+##### P21 - P22
 
 链接的外部样式表中也有的＠import指令：
 
-```html
+```css
 ＠import url(sheet2.css)
 ```
 
@@ -146,7 +152,7 @@ style 元素应该始终设定 type 属性。对CSS 文档来说，正确的值�
 
 与link类似，<font color=FF0000>＠import指令也可以显示导入的样式表应用于何种媒体</font>。 方法是在样式表的URL后面提供媒体描述符：
 
-```html
+```css
 ＠import url（sheet2.css）all；
 ＠import url（blueworld.css）screen；
 ＠import url（zany.css）projection，print；
@@ -154,7 +160,7 @@ style 元素应该始终设定 type 属性。对CSS 文档来说，正确的值�
 
 如果一个外部样式表需要用到另一个外部样式表中的样式，＠import指令的作用就体现出来了。 我们知道，<font color=FF0000>外部样式表不能包含任何文档标记，也就是不能使用link元素，但是可以使用＠import指令</font>。因此，外部样式表中可能包含下述内容：
 
-```html
+```css
 ＠import url（http://example.org/library/layout.css）；
 ＠import url（basic-text.css）；
 ＠import url（printer.css）print；
@@ -164,7 +170,7 @@ h1 ｛color:blue；｝
 
 
 
-#### P23
+##### P23
 
 除了body元素之外的标签（如head或title），所有HTML标签都能设定style属性.
 
@@ -172,7 +178,7 @@ h1 ｛color:blue；｝
 
 
 
-#### P24
+##### P24
 
 一个规则由两个基本部分构成：选择符（selector）和声明块（declaration block）.声明块由一个或多个声明组成，而一个声明包含一个属性（property）和对应的值（value）。一个样式表由一系列规则构成。 下图展示的是一个规则的各个部分。
 
@@ -180,7 +186,7 @@ h1 ｛color:blue；｝
 
 
 
-#### P28
+##### P28
 
 创作人员通过媒体查询 ( media query ) 定义浏览器在何种媒体环境中使用指定的样式表。过去，实现这一机制的方法是通过 link 元素或 style 元素的 media 属性设定媒体类型，或者为 ＠import 或 ＠media 指令提供媒体描述符，媒体查询更进一步，允许创作人员通过媒体描述符根据指定媒体类型的特性选择样式表。
 
@@ -197,17 +203,17 @@ h1 ｛color:blue；｝
 
 
 
-#### P31
+##### P31
 
 <font color=FF0000>媒体查询中可使用的逻辑关键字有两个：</font>
 
-- **and**
+###### and
 
-  连接的两个或多个媒体特性必须同时满足条件，整个查询得到的结果才是真值。例如，（color）and （orientation:landscape）and（min-device-width:800px）表示三个条件都要满足：当媒体环境是彩色的、横向放着，而且设备的屏幕宽至少为800像素，才会应用样株式表。
+连接的两个或多个媒体特性必须同时满足条件，整个查询得到的结果才是真值。例如，（color）and （orientation:landscape）and（min-device-width:800px）表示三个条件都要满足：当媒体环境是彩色的、横向放着，而且设备的屏幕宽至少为800像素，才会应用样株式表。
 
-- **not**
+###### not
 
-  对整个查询取反。 假如所有条件都为真，那样式表不会应用到文档上。 例如，not（color）and（orientation:landscape）and（min-device-width:800px）表示三个条目都满足时，整个语句得到的结果与之相反。 因此，当媒体环境是彩色的、横向放着，而且设备的屏幕宽至少为800像素，样式表不会应用到文档上。 除此之外的情况下，都将应用样式表。
+对整个查询取反。 假如所有条件都为真，那样式表不会应用到文档上。 例如，not（color）and（orientation:landscape）and（min-device-width:800px）表示三个条目都满足时，整个语句得到的结果与之相反。 因此，当媒体环境是彩色的、横向放着，而且设备的屏幕宽至少为800像素，样式表不会应用到文档上。 除此之外的情况下，都将应用样式表。
 
 注意，<font color=FF0000>not 关键字只能在媒体查询的开头使用</font>。<font color=LightSeaGreen>写为这样是无效的：（color）and not（min-device-width:800px）。如果真这样写，媒体查询将被忽略</font>。 还要注意，太旧的浏览器不支持媒体查询，因此会跳过媒体描述符以 not开头的样式表。
 
@@ -215,13 +221,13 @@ h1 ｛color:blue；｝
 
 <font color=FF0000>此外还有一个only关键词，**专门用于保证向后兼容**（是的，这是真的）</font>。
 
-- **only**
+###### only
 
-  在<font color=FF0000>**不支持**媒体查询的旧浏览器中</font><font color=000FF0>隐藏样式表</font>。<font color=LightSeaGreen> 例如，如果想在所有媒体中应用一个样式表，但是只在支持媒体查询的浏览器中应用，可以这样写：`＠import url(new.css) only all`。在支持媒体查询的浏览器中，only关键字被忽略，样式表会应用到文档上。而在不支持媒体查询的浏览器中，媒体类型为 only all，而这是无效的，因此不会应用样式表</font>。 <font color=FF0000>注意，only关键字只能用在媒体查询的开头</font>。
+在<font color=FF0000>**不支持**媒体查询的旧浏览器中</font><font color=000FF0>隐藏样式表</font>。<font color=LightSeaGreen> 例如，如果想在所有媒体中应用一个样式表，但是只在支持媒体查询的浏览器中应用，可以这样写：`＠import url(new.css) only all`。在支持媒体查询的浏览器中，only关键字被忽略，样式表会应用到文档上。而在不支持媒体查询的浏览器中，媒体类型为 only all，而这是无效的，因此不会应用样式表</font>。 <font color=FF0000>注意，only关键字只能用在媒体查询的开头</font>。
 
 
 
-#### P32
+##### P32
 
 下面列出所有可用的描述符（截至2017年年末）:
 
@@ -234,9 +240,9 @@ h1 ｛color:blue；｝
 
 
 
-#### P32
+##### P32
 
-**特性查询**
+###### 特性查询
 
 2015~2016年间，CSS新增了一个功能：<font color=FF0000>根据用户代理是否支持特定的CSS 属性及其值来应用一段样式：这个功能称为**特性查询**（feature query）</font>。
 
@@ -288,17 +294,17 @@ h1 ｛color:blue；｝
 
 
 
-#### P52
+##### P52
 
-<font color=FF0000>**在类选择符和ID选择符之间选择（区别）**</font>
+###### 在类选择符和ID选择符之间选择（区别）
 
-- 如前所示，<font color=FF0000>类（class）可以赋予任意个元素，warning 这个类名赋子了p 元素和 span 元素</font>，比外可以赋予更多的元素。而ID就不同了，<font color=FF0000>**在一个HTML 文档中，一个ID 能且只能使用一次**</font>。因此，如果文档中有个元素的 id 属性值为lead-para，其他元素的id 属性就不能再设为这个值.
+如前所示，<font color=FF0000>类（class）可以赋予任意个元素，warning 这个类名赋子了p 元素和 span 元素</font>，比外可以赋予更多的元素。而ID就不同了，<font color=FF0000>**在一个HTML 文档中，一个ID 能且只能使用一次**</font>。因此，如果文档中有个元素的 id 属性值为lead-para，其他元素的id 属性就不能再设为这个值.
 
-  <font color=FF0000>实际上，浏览器不一定总会检查 HTML 中的 ID 是不是唯一的。也就是说，如果HTML 文档中的多个元素具有相同的 ID 属性，相同的样式可能会应用到每个元素上。这是不正确的行为，但却可能发生</font>。 文档中出现多个相同的 ID 值还不利于DOM 脚本编程，因为getElementById()等函数预期只有一个 ID 属性为指定值的元素。
+<font color=FF0000>实际上，浏览器不一定总会检查 HTML 中的 ID 是不是唯一的。也就是说，如果HTML 文档中的多个元素具有相同的 ID 属性，相同的样式可能会应用到每个元素上。这是不正确的行为，但却可能发生</font>。 文档中出现多个相同的 ID 值还不利于DOM 脚本编程，因为getElementById()等函数预期只有一个 ID 属性为指定值的元素。
 
-  与类选择符不同，ID选择符不能串在一起使用，因为 ID属性的值不能是以空格分隔的列表。
+与类选择符不同，ID选择符不能串在一起使用，因为 ID属性的值不能是以空格分隔的列表。
 
-- <font color=FF0000>类选择符（class）和 ID 选择符之间的另一个区别是，用户代理判断该把哪个样式应用到元素时，ID选择符的权重更高</font>。
+<font color=FF0000>类选择符（class）和 ID 选择符之间的另一个区别是，用户代理判断该把哪个样式应用到元素时，ID选择符的权重更高</font>。
 
 此外还要注意，<font color=FF0000>类选择符和 ID 选择符可能是区分大小写的， 这取决于文档语言</font>。 <font color=FF0000>**根据 HTML规范，类和ID 的值是区分大小写的，因此类选择符和ID选择符的大小写必须与文档中的一致**</font>。 因此，对于下述 CSS 和 HTML 而言，元素中的文本不会显示为粗体：
 
@@ -314,13 +320,13 @@ p.criticalInfo {font-weight:bold;}
 
 
 
-#### P53 属性选择符
+##### P53 属性选择符
 
 不管是类选择符还是ID 选择符，我们选择的其实都是属性的值。 前两节使用的句法专门针对 HTML，XHTML，SVG和MathML 文档（截至写作本书时）。<font color=LightSeaGreen>在其他标记语言中，这样编写的类选择符和ID选择符可能无法使用（class和id属性或许根本不存在）。为了解决这个问题，CSS2 引入了属性选择符（attribute selector），根据属性及其值选择元素</font>。 <font color=FF0000>属性选择符大致可以分为四类： 简单属性选择符</font>（simple attribute selectors）、 <font color=FF0000>精准属性值选择符</font>（ exact attribute value selectors）、<font color=FF0000>部分匹配属性值选择符</font>（partial-match attribute value selectors）和<font color=FF0000>起始值属性选择符</font>（leading-value attribute selectors）。
 
 
 
-#### P53 - P54 简单属性选择符
+##### P53 - P54 简单属性选择符
 
 如果想选择具有某个属性的元素，而不管属性的值是什么，可以使用简单属性选择符。列如，若想选择县有class 属性（可以包含任何值）的所有h1元素，把文本设为银色。
 
@@ -360,7 +366,7 @@ a[href][title] {font-weight:bold;}
 
 
 
-#### P55 - P56 精准属性值选择符
+##### P55 - P56 精准属性值选择符
 
 此外，还可以进一步缩小范围，只选择属性为特定值的元素。 比如说我们想把指向 Web服务器上某个文档的超链接显示为粗体，可以这么写：
 
@@ -384,7 +390,7 @@ a[href="http://www.w3.org/"][title="W3C Home"]{
 
 
 
-#### P57 根据部分属性值选择
+##### P57 根据部分属性值选择
 
 有时，我们想根据属性值的一部分选择元素，而不是完整的值。CSS 为这种情况提供』多种选择，以不同的方式匹配属性值的子串。这些方式的概述见下表
 
@@ -400,7 +406,7 @@ a[href="http://www.w3.org/"][title="W3C Home"]{
 
 
 
-#### P70 选择<font color=FF0000>紧邻</font>同胞元素，`+`
+##### P70 选择<font color=FF0000>紧邻</font>同胞元素，`+`
 
 为了正常工作，CSS要求两个元素的顺序与“原始顺序”一样。 在前面的示例中，0元素后面是ul元素。因此，可以使用ol+ ul选择后一个元素，但是不能使用相同的句法选择前一个元素。 若想让 `ul + ol` 成功匹配，有序列表必须紧跟在无序列表后面。注意，两个元素之间的文本不影响紧邻同胞连结符的作用。以下述标记片段为例
 
@@ -424,7 +430,7 @@ a[href="http://www.w3.org/"][title="W3C Home"]{
 
 
 
-#### P71 选择后续同胞（兄弟结点）
+##### P71 选择后续同胞（兄弟结点）
 
 Select入一个新的同胞连结符，名为一般同胞连结符（general siblingcombinator）这个连结符使用波浪号（~）表示，<font color=FF0000>选择**一个元素后面**同属一个父元素的另一个元素</font>。
 
@@ -432,13 +438,13 @@ Select入一个新的同胞连结符，名为一般同胞连结符（general sib
 
 
 
-#### P71 伪类选择符
+##### P71 伪类选择符
 
 讲到伪类选择符（pseudo-class selector），事情就变得有趣了。 <font color=FF0000>利用这种选择符可以为文档中不一定真实存在的结构指定样式，或者为某些元素 （甚至文档本身） 的特定状态赋予幽灵类</font>。
 
 
 
-#### P73
+##### P73
 
 深人讨论之前，<font color=FF0000>对伪类要明确一点：伪类始终指代所依附的元素。 </font>这听起来有点奇怪，但是又理所当然，不是吗？之所以强调这一点，是因为有几个结构伪类容易让人误以为是描述符，认为指代的是后代元素。
 
@@ -446,7 +452,7 @@ Select入一个新的同胞连结符，名为一般同胞连结符（general sib
 
 
 
-#### P74 选择空元素
+##### P74 选择空元素
 
 使用 `:empty` 伪类<font color=FF0000>可以选择没有任何子代的元素</font>，<font color=FF0000>**甚至连文本节点都没有（包括文本和空白）**</font>。CMS 经常生成没有任何内容的空元素，此时便可以使用这个伪类。例如，`p:empty{ display: none; }`能禁止显示空段落。
 
@@ -467,7 +473,7 @@ Select入一个新的同胞连结符，名为一般同胞连结符（general sib
 
 
 
-#### P76 - P77
+##### P76 - P77
 
 `:only-of-type` 匹配同胞中唯一的那种元素（那种元素只有一个），而 `:only-child` 只匹配完全没有同胞的元素（只有着一个元素）。
 
@@ -475,7 +481,7 @@ Select入一个新的同胞连结符，名为一般同胞连结符（general sib
 
 
 
-#### P79
+##### P79
 
 `:first-child` 和 `:last-child` 这两个伪类结合在一起的效果相当于 `:only-child。 下述两个规则选择的是相同的元素：
 
@@ -488,13 +494,13 @@ p:first-child:last-child {background-color:red;}
 
 
 
-#### P80 选择第一个和最后一个某种元素
+##### P80 选择第一个和最后一个某种元素
 
 除了选择一个元素中的第一个和最后一个子代（`:first-child` 、`:last-child`）之外，还可以选择一个元素中某种元素的第一个或最后一个。 （`:first-of-type`、`:last-of-type`）
 
 
 
-#### P81
+##### P81
 
 我们可以把伪类`:first-of-type`、 `last-of-type` 连在一起，达到 `:only-of-type` 的效果。下述两个规则选择的是相同的元素：
 
@@ -505,7 +511,7 @@ table:first-of-type:last-of-type {background:red;}
 
 
 
-#### P81
+##### P81
 
 `:nth-child()` 伪类。 我们<font color=FF0000>可以在括号中填上</font>整数，<font color=FF0000>**甚至是简单的代数式**</font>，选择任何想选择的子元素。
 
@@ -523,7 +529,7 @@ tr:nth-child(odd) {background:silver;}
 
 
 
-#### P84 - P85
+##### P84 - P85
 
 `:nth-last-child()` 它的作用与 `:nth-child()` 一样，只不过是<font color=FF0000>从一组同胞的最后一个元素开始</font>，从后向前计算。
 
@@ -531,7 +537,7 @@ tr:nth-child(odd) {background:silver;}
 
 
 
-#### P88 已访问链接的<font color=FF0000>隐私保护</font>
+##### P88 已访问链接的<font color=FF0000>隐私保护</font>
 
 有超过十年的时间，已访问的链接可以使用任何可用的 CSS 属性装饰，与未访问链接无异。 然而，大约在2005年，有几个人通过示例揭露，通过视觉样式和简单的DOM 脚本可以判断用户是否访问过特定的页面。例如，对 `:visited { font-weight: bold;}`规则来说，脚本可以找出所有加粗的链接，告诉用户他们访问计哪些网站。 <font color=FF0000>更糟的是，已访问的网站可能会被服务器收集。 不使用脚本的话，还可以通过背景图像达到相同的效果</font>。
 
@@ -545,7 +551,7 @@ tr:nth-child(odd) {background:silver;}
 
 
 
-#### P86 - P89
+##### P86 - P89
 
 |   伪类   |                             说明                             |
 | :------: | :----------------------------------------------------------: |
@@ -569,7 +575,7 @@ a:active {color: yellow;}
 
 
 
-#### P90 - P91
+##### P90 - P91
 
 |      伪类      |                             说明                             |
 | :------------: | :----------------------------------------------------------: |
@@ -605,7 +611,7 @@ Selectors Level3 为这种状态提供了`:checked` 伪类，但是不知为何�
 
 
 
-#### P94
+##### P94
 
 下面的示例为获得焦点的电子邮件地址输入框设定背景图，一个在输入的地址无效时显示，一个在输入的地址有效时显示。
 
@@ -632,7 +638,7 @@ input[type="email"]:focus:valid {
 
 
 
-#### P96 :target 伪类
+##### P96 :target 伪类
 
 URL中有个片段标识符（fragment identifier），它所指向的文档片段（在CSS中）称为目标（target）。URL片段标识符指向的目标元素可以使用 `:target`伪类特别装饰。即便不知道“片段标识符”这个术语，你肯定也见过。 比如下面这URL：
 
@@ -650,7 +656,7 @@ http://www.w3.org/TR/css3-selectors/#target-pseudo
 
 
 
-#### P97 :lang伪类
+##### P97 :lang伪类
 
 如果<font color=FF0000>想根据文本使用的语言选择元素，可以使用 `:lang()` 伪类</font>。在匹配方式上，<font color=FF0000>`:lang()` 伪类与 `|=` 属性选择符类似。 </font>假设想让使用法语编写的元素倾斜显示，可以编写下述规则中的任何一个：
 
@@ -667,7 +673,7 @@ http://www.w3.org/TR/css3-selectors/#target-pseudo
 
 
 
-#### P98 - P100 :not伪类
+##### P98 - P100 :not伪类
 
 <font color=FF0000>选择不满足条件的元素，可以使用 Selectors Level3引入的否定伪类 `:not()` </font>。这个伪类与其他选择符不太一样，而且自身有一些限制。 
 
@@ -675,7 +681,7 @@ http://www.w3.org/TR/css3-selectors/#target-pseudo
 
 基本上，简单选择符是指没有祖辈 - 后代关系的选择符。
 
-<font color=FF0000>注意定义中的<font size=5>**“或”**</font>，它的意思是 `:not()` 伪类中只能使用其中一个选择符</font>。 不能使用群组选择符，也不能使用连结符，因此不能使用后代选择符，因为后代选择符中分隔元素的空格是连结符。
+<font color=FF0000>注意定义中的 <font size=4>**“或”**</font>，它的意思是 `:not()` 伪类中只能使用其中一个选择符</font>。 不能使用群组选择符，也不能使用连结符，因此不能使用后代选择符，因为后代选择符中分隔元素的空格是连结符。
 
 严格来说，`:not()`伪类的括号中可以使用通用选择符，但这么做意义不大。毕竟，`p:not(*)` 的意思是“选择不是元素的 p元素”。试想，怎么可能存在不是元素的元素。` p:not(p)`与之类似，也选择不了任何元素。 此外，还有`p:not(div)`这样的选择符，即选择不是div元素的p元素，这相当于选择所有p元素。 可见，没有什么缘由这样做。
 
@@ -691,7 +697,7 @@ http://www.w3.org/TR/css3-selectors/#target-pseudo
 
 
 
-#### P100 - P101 伪元素选择符
+##### P100 - P101 伪元素选择符
 
 伪元素与伪类很像，为了实现特定的效果，它在文档中插入虚构的元素<font color=FF0000>CSS2定义了四个基本的伪元素</font>，分别用于<font color=FF0000>装饰元素的首字母</font>，<font color=FF0000>首行</font>，以及<font color=FF0000>创建和装饰“前置”和“后置”内容</font>。CSS2之后的规范又定义了其他伪元素（例如 `::marker`），我们将在相关的章节中探讨。 这一节介绍CSS2 定义的那四个，因为它们由来已久，借此机会还可以讨论伪元素的行为。
 
@@ -701,10 +707,11 @@ http://www.w3.org/TR/css3-selectors/#target-pseudo
 
 
 
-#### P101 - P103
+##### P101 - P103
 
--  `::first-letter` 伪元素用于<font color=FF0000>装饰**任何非行内元素**的首字母</font>，或者开头的标点符号和首字母（如果文本以标点符号开头）
--  `::first-line` 用于装饰元素的<font color=FF0000>首行文本</font>
+`::first-letter` 伪元素用于<font color=FF0000>装饰**任何非行内元素**的首字母</font>，或者开头的标点符号和首字母（如果文本以标点符号开头）
+
+`::first-line` 用于装饰元素的<font color=FF0000>首行文本</font>
 
 对 `::first-letter`和 `::first-line` 的限制
 
@@ -726,7 +733,7 @@ http://www.w3.org/TR/css3-selectors/#target-pseudo
 
 
 
-#### P103 - P104
+##### P103 - P104
 
 使用CSS 可以插入生成的内容（generated content），生成的这些内容可以直接使用 `::before` 和 `::after` 伪元素装饰。示例如下：
 
@@ -737,13 +744,13 @@ body::after {content: "The End.";}
 
 
 
-#### P105
+##### P105
 
-继承（inheritance）是指把一个元素的某些属性值传给其后代的机制。 <font color=fuchsia>确定应该把哪些值应用到元素上时，用户代理 **不仅要考虑继承**，还要考虑声明的特指度（specificity），以及声明的来源。这个过程称为层叠（cascade）</font>。
+继承 ( inheritance ) 是指把一个元素的某些属性值传给其后代的机制。 <font color=fuchsia>确定应该把哪些值应用到元素上时，用户代理 **不仅要考虑继承**，还要考虑声明的特指度 ( specificity )，以及声明的来源。这个过程称为层叠 ( cascade )</font>。
 
 
 
-#### P105 特指度
+##### P105 特指度
 
 我们可以使用多种不同的方法选择元素。 实际上，同一个元素可能会被两个或多个规则选择，而且每个规则的选择符不尽相同。以下面三对规则为例，假设每一对规则匹配相同的元素：
 
@@ -769,7 +776,7 @@ li#answer {color: navy;}
 - 选择符中的每个<font color=FF0000>元素</font>和<font color=FF0000>伪元素</font>加 <font color=FF0000>0, 0, 0, 1</font>。伪类到底有没有特指度在CSS2中表述的有些自相矛盾，不过<font color=LightSeaGreen>CSS2.1明确指出，伪元素有特指度</font>。
 - <font color=FF0000>连结符和通用选择符不增加特指度</font>。
 
-**下面给出几个规则中选择符的特指度**
+###### 下面给出几个规则中选择符的特指度
 
 ```css
 h1 {color: red;} 												/* specificity = 0,0,0,1 */
@@ -798,7 +805,7 @@ li#answer {color: navy;} 																				/* 0,1,0,1(winner) */
 
 
 
-#### P109 ID 和属性选择符的特指度
+##### P109 ID 和属性选择符的特指度
 
 <font color=FF0000>ID选择符</font> 和 <font color=FF0000>选择id属性的属性选择符</font> 之间在特指度上是有区别的，这一点一定要注意。来看前述示例中的第三对规则：
 
@@ -816,13 +823,13 @@ li#answer {color: navy;} 																			/* 0,1,0,1 (wins) */
 
 
 
-#### P109 行内样式的特指度
+##### P109 行内样式的特指度
 
 <font color=FF0000>目前见到的特指度都以零开头</font>，因此你可能在想，那一位为什么要存在呢？存在必定有用。<font color=FF0000>那一位是为行内样式声明保留的，行内样式声明的特指度比其他声明都高</font>。 
 
 
 
-#### P110 importance
+##### P110 importance
 
 有时某个声明可能非常重要，超过其他所有声明，CSS称之为重要声明（important declaration，原因显而易见）。这种声明要在声明末尾的分号之前插入 `!important` ，例如：
 
@@ -848,7 +855,7 @@ p.light {color: yellow; font: smaller Times, serif !important;}
 
 
 
-#### P112
+##### P112
 
 祖先的属性值会沿着树状图向下传播到后代元素，直到没有后代为止。 <font color=FF0000>属性值绝不向上传播，即元素的样式绝不传给祖辈元素</font>。
 
@@ -856,11 +863,11 @@ p.light {color: yellow; font: smaller Times, serif !important;}
 
 
 
-#### P112 - P113 不继承
+##### P112 - P113 不继承
 
 很多属性是不继承的，这通常是为了避免得到意外的结果。例如，<font color=FF0000>border属性就不继承</font>。如果继承边框，文档将变得杂乱无章，除非编写样式时付出额外的精力去掉继承的边框。
 
-此外，<font color=FF0000>基于同样的原因，**多数**盒模型属性也不继承，包括外边距、内边距、背景和边框</font>。试想，你肯定不想让段落中的所有链接都从父元素那里继承30像素的左外边距。其次，<font color=FF0000 size="5">**继承的值没有特指度，连零都没有（在和零比较时，零胜出）**</font>。这看起来似乎只是理论上的不同，但是等你了解到继承的值没有特指度将产生怎样的结果时，便会发现这种差距绝不能忽视（如下示例）。
+此外，<font color=FF0000>基于同样的原因，**多数**盒模型属性也不继承，包括外边距、内边距、背景和边框</font>。试想，你肯定不想让段落中的所有链接都从父元素那里继承30像素的左外边距。其次，<font color=fuchsia size="4">**继承的值没有特指度，连零都没有（在和零比较时，零胜出）**</font>。这看起来似乎只是理论上的不同，但是等你了解到继承的值没有特指度将产生怎样的结果时，便会发现这种差距绝不能忽视（如下示例）。
 
 ```html
 <style>
@@ -880,9 +887,9 @@ h1#page-title {color: black;}
 
 
 
-#### P115 CSS层叠规则
+##### P115 CSS层叠规则
 
-**CSS 的层叠规则如下：**
+###### CSS 的层叠规则如下
 
 - 找到匹配特定元素的所有规则。
 
@@ -893,7 +900,7 @@ h1#page-title {color: black;}
 
 
 
-#### P115
+##### P115
 
 如果两个规则应用到同一个元素上，而其中一个以！important标记，那么有此标记的规则胜出：
 
@@ -909,7 +916,7 @@ h1#page-title {color: black;}
 
 
 
-#### P115 - P116
+##### P115 - P116
 
 <font color=FF0000>如果显式权重相同，就要考虑规则的来源</font>。如果匹配元素的两个样式权重相同，而一个在创作人员编写的样式表中，另一个在读者提供的样式表中，那么元素将使用创作人员编写的样式表中的样式。 例如，假设下面两个样式分别来自指定的位置：
 
@@ -929,7 +936,7 @@ p em {color: yellow !important;} /* reader's style sheet */
 
 
 
-#### P116
+##### P116
 
 在声明的权重上，基本要考虑五个方面。下面按<font color=FF0000>权重**从高到低**列出</font>：
 
@@ -947,7 +954,7 @@ p em {color: yellow !important;} /* reader's style sheet */
 
 
 
-#### P118
+##### P118
 
 因为样式在样式表中的前后位置对效果有影响，所以通常才推荐按照一定的顺序编写链接的样式。 链接样式的推荐顺序是“link-visited-focus-hover-active”（LVFHA），如下所示：
 
@@ -963,33 +970,39 @@ a:visited {color: purple;}
 
 
 
-#### P119 - P120 CSS之外的表现提示
+##### P119 - P120 CSS之外的表现提示
 
 文档除了CSS 之外可能包含<font color=FF0000>表现提示（presentational hint）</font>，例如font 元素。 这种表现提示的特指度为o，而且认为出现在创作人员编写的样式表的开头。 表现提示将被创作人员编写的样式或读者提供的样式覆盖，但是不会被用户代理的默认样式覆盖。 css3把CSS 外部的表现提示视作用户代理默认样式表的一部分，而且假定出现在默认样式表的最后（不过，写作本书时，规范没有这么表述）。
 
 
 
-#### P121
+##### P121
 
 接受关键字的属性， 所取的关键字必须在那个属性允许使用的关键字范围之内。 <font color=LightSeaGreen>如果两个属性使用相同的关键字，在不同的属性中相同的关键字可能具有不一样的行为。 例如，letter-spacing属性的 normal关键字与font-style属性的 normal关键字就相差很大</font>。
 
 
 
-#### P122 - P123 全局关键字
+##### P122 - P123 全局关键字
 
 CSS3定义了几个“全局”关键字，规范中的每个属性都能使用：**inherit，initial和unset.**
 
-- **inherit：**<font color=FF0000>关键字inherit把元素某个属性的值设为与父元素同一属性的值一样</font>。也就是说，<font color=FF0000>这个关键字强制继承，即便是在通常情况下不继承时。 很多时候无需这么做，因为多数属性会自动继承</font>。
+###### inherit
 
-  <font color=FF0000>使用inherit 还能把通常情况下不从父元素继承的属性值强制拉过来</font>。比如说，border属性不会继承（这是正确的行为）。如果想让span 继承父元素的边框，只需使用 `span { border: inherit; }`
+<font color=FF0000>关键字inherit把元素某个属性的值设为与父元素同一属性的值一样</font>。也就是说，<font color=FF0000>这个关键字强制继承，即便是在通常情况下不继承时。 很多时候无需这么做，因为多数属性会自动继承</font>。
 
-- **initial：**<font color=FF0000>关键字initial 把属性的值设为预定义的初始值，相当于“重设”值</font>。例如，font-weight属性的默认值是 normal。因此，font-weight: initial的作用与font-weight: normal一样。
+<font color=FF0000>使用inherit 还能把通常情况下不从父元素继承的属性值强制拉过来</font>。比如说，border属性不会继承（这是正确的行为）。如果想让span 继承父元素的边框，只需使用 `span { border: inherit; }`
 
-- **unset：**<font color=FF0000>关键字 unset是inherit和initial的通用替身</font>。<font color=FF0000>对继承的属性来说，unset的作用与inherit一样；对不继承的属性来说，unset的作用与initial一样</font>。
+###### initial
+
+<font color=FF0000>关键字initial 把属性的值设为预定义的初始值，相当于“重设”值</font>。例如，font-weight属性的默认值是 normal。因此，font-weight: initial的作用与font-weight: normal一样。
+
+###### unset
+
+<font color=FF0000>关键字 unset是inherit和initial的通用替身</font>。<font color=FF0000>对继承的属性来说，unset的作用与inherit一样；对不继承的属性来说，unset的作用与initial一样</font>。
 
 
 
-#### P123 all
+##### P123 all
 
 <font color=FF0000>inherit、initial、unset这三个全局关键字在所有属性中都可以使用</font>。<font color=FF0000>有个特殊的属性只接受这几个全局关键字：all</font>。
 
@@ -1001,7 +1014,7 @@ CSS3定义了几个“全局”关键字，规范中的每个属性都能使用�
 
 
 
-#### P125 字符串
+##### P125 字符串
 
 如果字符串值中有换行,可以转义换行符。CSS 会去掉换行符,就像从未换行一样。因此，下面两个字符串在CSS看来是一样的：
 
@@ -1019,27 +1032,27 @@ for a newline."
 
 
 
-#### P128
+##### P128
 
 按照某些属性的定义，取值范围外的数字会被设为与所用值最接近的数（这种行为一般称为 clamping）.
 
 
 
-#### P128 弹性值
+##### P128 弹性值
 
 弹性值（fraction value或flex value）是\<number>后跟fr。因此，单位弹性值是1fr。这个概念由栅格布局引入，用于把布局中不受限制的空间分成几部分。
 
 
 
-#### P128
+##### P128
 
 **长度单位分两种：绝对长度单位和<font color=FF0000>相对长度单位</font>**
 
 
 
-#### P129 **绝对长度单位：**
+##### P129 **绝对长度单位：**
 
-#### **绝对长度单位有<font color=FF0000>七个</font>**
+###### 绝对长度单位有七个
 
 - 英寸（in）
 - 厘米（cm）
@@ -1051,7 +1064,7 @@ for a newline."
 
 
 
-#### P131 **分辨率单位**
+##### P131 分辨率单位
 
 随着媒体查询和响应式设计的出现，为了描述显示器的分辨率，出现了三个新单位。
 
@@ -1061,13 +1074,13 @@ for a newline."
 
 
 
-#### P132 相对长度单位
+##### P132 相对长度单位
 
 **<font color=FF0000>相对长度单位中的“相对”是指其长度是相对其他东西而言的</font>。相对长度的实际值（或绝对值）<font color=FF0000>根据不受其控制的因素而变</font>，例如屏幕分辨率，视区宽度、用户的偏好设置等。**比外，有些相对单位的实际尺寸始终相对当前元素，因此在元素之间也有差异。
 
 
 
-#### P132 - P133 em和ex单位
+##### P132 - P133 em和ex单位
 
 按CSS的定义，1em等于元素的 font-size属性值。如果元素的font-size为14像素，那么对那个元素来说，1em就等于14像素。
 
@@ -1077,7 +1090,7 @@ for a newline."
 
 
 
-#### P134 rem单位
+##### P134 rem单位
 
 与em单位类似，rem也基于声明的字号。二者之间的区别是（很微小），em相对当前元素的字号计算，而 rem 始终相对根元素计算。在HTML中，根元素是html。因此，`font-size: 1rem;` 声明把元素的字号设为与文档根元素的字号一样大。
 
@@ -1085,7 +1098,7 @@ for a newline."
 
 
 
-#### P134 ch单位
+##### P134 ch单位
 
 CSS3 新增了一个有趣的单位：ch。这个单位基本上可以理解为“一个字符”。CSS3规范是这样定义的：
 
@@ -1097,31 +1110,31 @@ CSS3 新增了一个有趣的单位：ch。这个单位基本上可以理解为�
 
 
 
-#### P136 视区相关的单位
+##### P136 视区相关的单位
 
 <font color=FF0000>CSS3 还新增了三个与视区尺寸相关的单位</font>。 <font color=LightSeaGreen>这些单位根据视区的尺寸计算，比如浏览器窗口、可打印区域，移动设备的显示屏等</font>。
 
-- 视区电度单位（vw）
+###### 视区电度单位（vw）
 
-  这个单位<font color=FF0000>根据视区的宽度计算，然后除以100</font>。因此，如果视区的宽度是937像素，那么1vw等于9.37px。如果视区的宽度有变，例如把浏览器窗口拉宽或缩窄，vw的值随之改变。
+这个单位<font color=FF0000>根据视区的宽度计算，然后除以100</font>。因此，如果视区的宽度是937像素，那么1vw等于9.37px。如果视区的宽度有变，例如把浏览器窗口拉宽或缩窄，vw的值随之改变。
 
-- 视区高度单位（vh）
+###### 视区高度单位（vh）
 
-  这个单位<font color=FF0000>根据视区的高度计算，然后除以100</font>。因此，如果视区的高度是650像素，那么1vh等于6.5px。如果视区的高度有变，例如把浏览器窗口拉高或缩矮，vh的值随之改变。
+这个单位<font color=FF0000>根据视区的高度计算，然后除以100</font>。因此，如果视区的高度是650像素，那么1vh等于6.5px。如果视区的高度有变，例如把浏览器窗口拉高或缩矮，vh的值随之改变。
 
-- 视区尺寸最小值单位（vmin）
+###### 视区尺寸最小值单位（vmin）
 
-  <font color=FF0000>这个单位等于视区宽度或高度的1/100，始终取宽度和高度中较小的那个</font>。 因此，如果一个视区的宽度为937像素，高度为650像素，那么1vmin等于6.5px.
+<font color=FF0000>这个单位等于视区宽度或高度的1/100，始终取宽度和高度中较小的那个</font>。 因此，如果一个视区的宽度为937像素，高度为650像素，那么1vmin等于6.5px.
 
-- 视区尺寸最大值单位（vmax）
+###### 视区尺寸最大值单位（vmax）
 
-  <font color=FF0000>这个单位等于视区宽度或高度的1/100，始终取宽度和高度中较大的那个</font>。 因此，如果一个视区的宽度为937像素，高度为650像素，那么1vmax等于9.37px。
+<font color=FF0000>这个单位等于视区宽度或高度的1/100，始终取宽度和高度中较大的那个</font>。 因此，如果一个视区的宽度为937像素，高度为650像素，那么1vmax等于9.37px。
 
 <font color=LightSeaGreen>这些单位特别适合用于创建全视区界面，例如移动设备的界面，因为元素是根据视区的尺寸而变化的，与文档树中的任何元素都没关系</font>。 因此，轻易就能填满整个视区，或者至少填满视区的大部分，而不用担心特定情况下视区的具体尺寸。
 
 
 
-#### P138 计算值
+##### P138 计算值
 
 为方便你做数学计算，CSS 提供了`calc()` 值。括号中可以使用简单的数学算式。<font color=LightSeaGreen>允许使用的运算符有+（加）、-（减）、*（乘）、/（除），以及括号</font>。另外，<font color=FF0000>`calc()` 不允许做指数运算</font>。
 
@@ -1145,7 +1158,7 @@ CSS3 新增了一个有趣的单位：ch。这个单位基本上可以理解为�
 
 
 
-#### P139 属性值
+##### P139 属性值
 
 在一些CSS 属性中，可以使用样式对应的元素上的 HTML 属性值。 方法是使用 `attr()` 表达式。
 
@@ -1169,7 +1182,7 @@ p::before {content: "[" attr(id) "]";}
 
 
 
-#### P140 - P141 颜色
+##### P140 - P141 颜色
 
 怎样设定页面中使用的颜色？在HTML中，<font color=FF0000>有两个选择：可以使用数量不多的颜色名，例如red或purple，或者使用有点晦涩的十六进制代码</font>。CSS也支持这两种方法， 不过还提供了其他我觉得更直观的方法。
 
@@ -1187,7 +1200,7 @@ fuchsia  maroon 	red 		yellow
 
 
 
-#### P141 函数式RGB颜色
+##### P141 函数式RGB颜色
 
 有两种颜色值使用函数式RGB 表示法，而不使用十六进制表示法。这种颜色值的一般句法是 rgb（color），其中color是三个值，可以是百分数或整数。百分数的取值范围是0~100％，整数的取值范围是0~255。
 
@@ -1205,7 +1218,7 @@ h2 {color: rgb(25.5%,40%,98.6%);}
 
 
 
-#### P143 RGBa
+##### P143 RGBa
 
 从CSS3起，上述两种函数式RGB 表示法发展成了函数式RGBa表示法。 这种表示法在RGB 的三个通道后面增加了一个 alpha值，即“red-green-blue-alpha＂，简称RGBa。这里的alpha指alpha通道，用于衡量不透明度。
 
@@ -1213,7 +1226,7 @@ h2 {color: rgb(25.5%,40%,98.6%);}
 
 
 
-#### P145 十六进制RGB值
+##### P145 十六进制RGB值
 
 如果每个十六进制数中的内个数字相等，CSS 允许使用简短表示法。一般的句法是 `#RGB` ：
 
@@ -1229,7 +1242,7 @@ h3 {color: #FFF;} /* set H3s to white */
 
 
 
-#### P145 十六进制RGBa颜色
+##### P145 十六进制RGBa颜色
 
 （截至2017年年末）有个新的十六进制表示法在后面添加一个十六进制值，表示 alpha通道的值。 
 
@@ -1237,7 +1250,7 @@ h3 {color: #FFF;} /* set H3s to white */
 
 
 
-#### P146 HSL和HSLa颜色
+##### P146 HSL和HSLa颜色
 
 <font color=LightSeaGreen>CSS3新增了HSL表示法（不过与一般的颜色理论不同）</font>。<font color=FF0000>HSD是Hue（色相）Saturation（饱和度）和Lightness（明度）的简称，其中色相是角度值，取值范围是0 ~ 360，饱和度是从0（无饱和度）~ 100（完全饱和）的百分数，明度是从0（全暗）~ 100（全明）的百分数</font>。
 
@@ -1247,7 +1260,7 @@ RGB 有对应的 RGBa，类似地，<font color=FF0000>HSL有对应的HSLa</font
 
 
 
-#### P149 颜色关键字
+##### P149 颜色关键字
 
 <font color=FF0000>有两个特殊的关键字**可以在任何允许使用颜色值的地方使用**：transparent 和 currentColor</font>。
 
@@ -1263,7 +1276,7 @@ main {color: gray; border-color: currentColor;}
 
 
 
-#### P149 - P150 角度
+##### P149 - P150 角度
 
 讲完 HSL中的色相角度，现在比较适合讨论角度单位。 角度一般使用 \<angle> 表示，即一个 \<number> 后跟下列四个单位中的一个。
 
@@ -1277,7 +1290,7 @@ main {color: gray; border-color: currentColor;}
 
 
 
-#### P150 时间和频率
+##### P150 时间和频率
 
 <font color=FF0000>属性的值为一段时间时，使用 \<time>表示，它是一个 \<number> 值后跟s（秒）或ms（毫秒）。时间值最常在过渡和动画中使用，用干定义持续时间或延迟时间</font>。
 
@@ -1287,7 +1300,7 @@ main {color: gray; border-color: currentColor;}
 
 
 
-#### P151
+##### P151
 
 2017年年末，CSS新增了一个特性。这个特性的术语是“自定义属性”（custom property），不过它的作用其实是在CSS 中创建变量。这个名称词不达意，它并不创建特殊的CSS属性（像color或font 之类的）。示例如下：
 
@@ -1306,9 +1319,9 @@ h2 {color: var(--highlight-color);}
 
 
 
-## Chapter 5 : font
+#### Chapter 5 : font
 
-#### P155
+##### P155
 
 <font color=FF0000>CSS2开始支持使用＠font-face 下载指定的自定义字体</font>，不过直到 2009年前后这个功能才以一致的方式被广泛支持。<font color=LightSeaGreen>现在，借助（Typekit）等在线服务，网站可以使用任何想用的字体</font>。一般来说，只要你有权使用一个字体，就能在设计中使用它。
 
@@ -1316,7 +1329,7 @@ h2 {color: var(--highlight-color);}
 
 
 
-#### P155 - P156
+##### P155 - P156
 
 我们熟知的“字体” 通常包含多个变体，分别针对粗体、斜体等。 例如你可能熟悉（至少听说过）的Times字体，其实它有多种变体，包括 TimesRegular，TimesBold，TimesItalic，TimesBoldItalic等。<font color=FF0000>Times 的这些变体各自都是一个字型（font face），我们通常说的Times，其实是这些不同字型的统称。也就是说，Times其实是一个字体族（font family），而不是一个字体</font>。大多数人都会把字体理解为单个实体。
 
@@ -1330,7 +1343,7 @@ h2 {color: var(--highlight-color);}
 
 
 
-#### P158
+##### P158
 
 ```css
 h1 {font-family: Georgia;}
@@ -1358,7 +1371,7 @@ p {font-family: Times, 'Times New Roman', 'New Century Schoolbook', Georgia, 'Ne
 
 
 
-#### P159 使用引号
+##### P159 使用引号
 
 在上例中，你可能注意到了之前没见过的单引号。<font color=FF0000>在font-family 声明中，如果字体名称中有一个或多个空格（例如“New York”），或者字体名称中有符号（例如#或$），建议使用引号</font>。因此，名为Karrank％的字体就应该放在引号里：
 
@@ -1376,7 +1389,7 @@ h2 {font-family: Wedgie, 'Karrank%', Klingon, fantasy;}
 
 
 
-#### P160 - P161 ＠font-face
+##### P160 - P161 ＠font-face
 
 ＠font-face 的作用是让你在设计中使用自定义的字体，这个特性首次出现在CSS2中，不过直到21 世纪头十年的后半期才实现。 尽管无法保证每个终端用户都能用上你指定的字体，但是这个特性却得到了广泛支持。
 
@@ -1395,7 +1408,7 @@ h2 {font-family: Wedgie, 'Karrank%', Klingon, fantasy;}
 
 
 
-#### P161 - P162
+##### P161 - P162
 
 定义字体的全部参数都在`＠font-face {}` 结构中编写。这些参数称为描述符（descriptor），与属性十分相似，格式为 `descriptor: value;` 。 其实，多数描述符都直接使用现有的属性名，稍后将做详细说明。
 
@@ -1407,7 +1420,7 @@ h2 {font-family: Wedgie, 'Karrank%', Klingon, fantasy;}
 
 
 
-#### P162
+##### P162
 
 你可能觉得奇怪，这里的 font-family和前一节所讲的有何不同？区别是，<font color=FF0000>这里（@font-face）的font-family是字体族描述符</font>，而<font color=FF0000>前一节中的font-family是字体族属性</font>。
 
@@ -1425,7 +1438,7 @@ h1 {font-family: SwitzeraADF, Helvetica, sans-serif;} /* property 属性*/
 
 
 
-#### P163
+##### P163
 
 如果想告诉用户代理所用的字体是什么格式，可以使用可选的 format()
 
@@ -1450,7 +1463,7 @@ h1 {font-family: SwitzeraADF, Helvetica, sans-serif;} /* property 属性*/
 
 
 
-#### P164 可用的字体格式值
+##### P164 可用的字体格式值
 
 |        值         |              格式              |
 | :---------------: | :----------------------------: |
@@ -1478,7 +1491,7 @@ h1 {font-family: SwitzeraADF, Helvetica, sans-serif;} /* property 属性*/
 
 
 
-#### P166 - P168 其他字体描述符
+##### P166 - P168 其他字体描述符
 
 除了必须的font-family和src描述符，还有几个可选的描述符用于为字型指定属性值。
 
@@ -1514,25 +1527,26 @@ unicode-range: U+4E00-9FFF, U+FF00-FF9F, U+30??, U+A5; /* 日语汉字，平假�
 
 
 
-#### P172 字重 font-weight
+##### P172 字重 font-weight
 
 - <font color=FF0000>取值：normal | bold | bolder | lighter | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900</font>
 
 - <font color=FF0000>初始值：normal</font>
 
-- **字重的工作方式**
 
-  为了弄清用户代理如何确定一个字体变体的粗细（或字重），先要理解关键字 100到900。这些数字关键字对应于字体设计中的九级字重。<font color=LightSeaGreen>如果一个字体族中有全部九级字重，那么这些数字就直接对应于预定义的级别，100是最细的，900是最粗的</font>。
+###### 字重的工作方式
 
-  其实，这些数字并不表示字重本身。CSS 规范只是说，每个数字对应的权重至少和前面的数字具有相同的字重。因此，100，200，300和400可能都对应于同样细的变体；500和600对应于同样粗的变体；700，800和900则对应同样较粗的变体。 只要后面的数字关键字对应的粗细不比前面的数字关键字细就行。
+为了弄清用户代理如何确定一个字体变体的粗细（或字重），先要理解关键字 100到900。这些数字关键字对应于字体设计中的九级字重。<font color=LightSeaGreen>如果一个字体族中有全部九级字重，那么这些数字就直接对应于预定义的级别，100是最细的，900是最粗的</font>。
 
-- **增大字重 bolder**
+其实，这些数字并不表示字重本身。CSS 规范只是说，每个数字对应的权重至少和前面的数字具有相同的字重。因此，100，200，300和400可能都对应于同样细的变体；500和600对应于同样粗的变体；700，800和900则对应同样较粗的变体。 只要后面的数字关键字对应的粗细不比前面的数字关键字细就行。
 
-  <font color=FF0000>如果把一个元素的字重设为 bolder，用户代理首先要确定从父元素继承的 font-weight值是什么，然后选择比继承的字重高一级的最小数字</font>。 <font color=LightSeaGreen>如果找不到，用户代理把元素的字重设为下一个数字值，直到900；到顶后，就把字重设为 900</font>
+###### 增大字重 bolder
 
-- **减小字重 lighter**
+<font color=FF0000>如果把一个元素的字重设为 bolder，用户代理首先要确定从父元素继承的 font-weight值是什么，然后选择比继承的字重高一级的最小数字</font>。 <font color=LightSeaGreen>如果找不到，用户代理把元素的字重设为下一个数字值，直到900；到顶后，就把字重设为 900</font>
 
-  lighter的工作方式与bolder类似，只不过是让用户代理向下减小字重。
+###### 减小字重 lighter
+
+lighter的工作方式与bolder类似，只不过是让用户代理向下减小字重。
 
 
 
@@ -1544,25 +1558,26 @@ unicode-range: U+4E00-9FFF, U+FF00-FF9F, U+30??, U+A5; /* 日语汉字，平假�
 
 - font-size 属性与渲染结果之间的关系由字体设计者决定。 <font color=FF0000>这个关系在字体中通过em方框（或em盒子）表示</font>。<font color=LightSeaGreen>em方框（以及字号）与字体中字符的边界没有关系，其实它指的是在没有行距（CSS中的line-height）的情况下两条基线之间的距离</font>。字体中完全有可能存在高度超过基线之间距离的字符。<font color=FF0000>鉴于此，设计字体时要确保所有字符都比em方框小</font>。事实上，多数字体就是这么做的。 
 
-- **绝对大小**
 
-  font-size 支持的绝对大小值有七个：XX-Small，x-small，small，medium，large，x-large 和xx-large。这几个关键字没有固定的大小，而是相对而言的。
+###### 绝对大小
 
-  根据<font color=FF0000>CSS1规范</font>，这些绝对大小之间相差的倍数（成叫换算系数）是向上1.5，同下0.66。因此，如果medium相当于 10px，那么large应该是15px，后来，人们觉得换算系数太大，因此<font color=FF0000>CSS2</font>建议取1.0~1.2，而<font color=FF0000>CSS3草案</font>提供更为复茶的计算方式（例如，small是medium8/9，xx-small是medium的3/5）。<font color=FF0000>不过，这些只是简易的换算系数，用户代理随时可以调整。</font>
+font-size 支持的绝对大小值有七个：XX-Small，x-small，small，medium，large，x-large 和xx-large。这几个关键字没有固定的大小，而是相对而言的。
 
-  |  关键字  | CSS1 | CSS2 | CSS3 (草案) |
-  | :------: | :--: | :--: | :---------: |
-  | xx-small | 5px  | 9px  |    10px     |
-  | x-small  | 7px  | 11px |    12px     |
-  |  small   | 11px | 13px |    14px     |
-  |  medium  | 16px | 16px |    16px     |
-  |  large   | 24px | 19px |    19px     |
-  | x-large  | 36px | 23px |    24px     |
-  | xx-large | 54px | 28px |    32px     |
+根据<font color=FF0000>CSS1规范</font>，这些绝对大小之间相差的倍数（成叫换算系数）是向上1.5，同下0.66。因此，如果medium相当于 10px，那么large应该是15px，后来，人们觉得换算系数太大，因此<font color=FF0000>CSS2</font>建议取1.0~1.2，而<font color=FF0000>CSS3草案</font>提供更为复茶的计算方式（例如，small是medium8/9，xx-small是medium的3/5）。<font color=FF0000>不过，这些只是简易的换算系数，用户代理随时可以调整。</font>
+
+|  关键字  | CSS1 | CSS2 | CSS3 (草案) |
+| :------: | :--: | :--: | :---------: |
+| xx-small | 5px  | 9px  |    10px     |
+| x-small  | 7px  | 11px |    12px     |
+|  small   | 11px | 13px |    14px     |
+|  medium  | 16px | 16px |    16px     |
+|  large   | 24px | 19px |    19px     |
+| x-large  | 36px | 23px |    24px     |
+| xx-large | 54px | 28px |    32px     |
 
 
 
-#### P191 - P192 字形 font-style
+##### P191 - P192 字形 font-style
 
 - <font color=FF0000>取值：italic | oblique | normal</font>
 
@@ -1577,53 +1592,54 @@ unicode-range: U+4E00-9FFF, U+FF00-FF9F, U+30??, U+A5; /* 日语汉字，平假�
 
 
 
-## Chapter 6 文本属性
+#### Chapter 6 文本属性
 
-#### P214 缩进文本 text-indent
+##### P214 缩进文本 text-indent
 
-- **基本信息**
+###### 基本信息
 
-  - 取值：\<length> | \<percentage>
-  - 初始值：0
-  - 适用于：块级元素
+- 取值：\<length> | \<percentage>
+- 初始值：0
+- 适用于：块级元素
 
-- <font color=LightSeaGreen>text-indent属性把元素的第一行文本缩进指定的长度</font>，<font color=FF0000>缩进的长度可以是负值</font>。这个属性通常用于缩进段落的第一行。
+<font color=LightSeaGreen>text-indent属性把元素的第一行文本缩进指定的长度</font>，<font color=FF0000>缩进的长度可以是负值</font>。这个属性通常用于缩进段落的第一行。
 
-- text-indent 属性可以用在任何块级元素上，缩进将沿着行内方向展开。<font color=FF0000>text-indent属性不能用于行内元素或置换元素（如图像）。然而，如果图像在块级元素的第一行里，它将随行中的其他文本一起后移</font>。
+text-indent 属性可以用在任何块级元素上，缩进将沿着行内方向展开。<font color=FF0000>text-indent属性不能用于行内元素或置换元素（如图像）。然而，如果图像在块级元素的第一行里，它将随行中的其他文本一起后移</font>。
 
-  text-indent 属性的值可以是负值，这样可以实现一些有趣的效果。 最常见的用法是实现悬挂缩进，，即首行相比元素的其他内容悬挂在一边。<font color=FF0000>使用负值时要小心，以防前几个词被浏览器窗口的边缘吃掉</font>。为免出现这种显示问题，建议加上外边距或内边距
+text-indent 属性的值可以是负值，这样可以实现一些有趣的效果。 最常见的用法是实现悬挂缩进，，即首行相比元素的其他内容悬挂在一边。<font color=FF0000>使用负值时要小心，以防前几个词被浏览器窗口的边缘吃掉</font>。为免出现这种显示问题，建议加上外边距或内边距
 
-- 注意，文本缩进只影响元素的第一行，即便有换行也是如此。<font color=FF0000>**text-indent会继承，因此可能会出现预料之外的效果**</font>。
-
-
-
-#### P217 文本对齐 text-align
-
-- text-align控制元素中各文本的对齐方式
-
-- **基础信息**
-
-  - **取值：**start | end | left | right | center | justify | match-parent | start end
-  - **初始值：**<font color=FF0000>在**CSS3**中是start</font>，<font color=FF0000>在**CSS2.1**中，由**用户代理指定**</font>，有可能根据书写方向而定（例如，英语等西方语言是left）
-
-  - **适用于：**块级元素
-
-  - **计算值：**指定的值，match-parent除外
-
-- **`text-align：center` 和 `<center>`的区别：**
-
-  毫无疑问，center 使元素中的各行文本居中对齐。你可能以为 `text-align: center` 的作用与 `<CENTER>`元素一样，其实不然。`<CENTER>`不仅影响文本，还能把整个元素（如表格）居中显示，而text-align不控制元素的对齐方式，只影响元素中的内容。
+注意，文本缩进只影响元素的第一行，即便有换行也是如此。<font color=FF0000>**text-indent会继承，因此可能会出现预料之外的效果**</font>。
 
 
 
-#### P220  对齐最后一行 text-align-last
+##### P217 文本对齐 text-align
+
+text-align控制元素中各文本的对齐方式
+
+###### 基础信息
+
+- **取值：**start | end | left | right | center | justify | match-parent | start end
+- **初始值：**<font color=FF0000>在**CSS3**中是start</font>，<font color=FF0000>在**CSS2.1**中，由**用户代理指定**</font>，有可能根据书写方向而定（例如，英语等西方语言是left）
+
+- **适用于：**块级元素
+
+- **计算值：**指定的值，match-parent除外
+
+**`text-align：center` 和 `<center>`的区别：**
+
+毫无疑问，center 使元素中的各行文本居中对齐。你可能以为 `text-align: center` 的作用与 `<CENTER>`元素一样，其实不然。`<CENTER>`不仅影响文本，还能把整个元素（如表格）居中显示，而text-align不控制元素的对齐方式，只影响元素中的内容。
+
+
+
+##### P220  对齐最后一行 text-align-last
 
 有时，你可能<font color=FF0000>想使用不同于其他内容的方式对齐元素的最后一行</font>。例如，在两端对齐的文本块中，可能想左对齐最后一行，或者把左对齐换成居中对齐。 此时，可以使用text-align-last 属性.
 
-- **基础信息**
-  - 取值：auto | start | end | left | right | center | justify
-  - 初始值：auto
-  - 适用于：块级元素
+###### 基础信息
+
+- 取值：auto | start | end | left | right | center | justify
+- 初始值：auto
+- 适用于：块级元素
 
 
 
