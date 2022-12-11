@@ -374,7 +374,7 @@
 - **instrument** ：一般的意思是乐器、仪器。不过，在 Vue3 源码中看到了 ArrayInstrumentations 数组检测器的东西；instrument 在计算机中还有 “检测” 的含义，尤其在 macOS 中有一个 instruments 的性能分析和可视化 应用。
 - **baffled** ：感到困惑的
 - **perspective** ：一般的意思是：态度。但也有 “角度”的意思，无论是 from someone's perspective ，还是 CSS 中的 perspective 属性。
-
+- **coverage** ：覆盖率
 
 
 #### 术语的英文

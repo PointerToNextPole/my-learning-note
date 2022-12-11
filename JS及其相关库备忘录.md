@@ -3462,7 +3462,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                   
+  >                                                                                                                                                                                                                         
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3481,7 +3481,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                   
+  >                                                                                                                                                                                                                         
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -6209,7 +6209,7 @@ console.log(a); // 10
 
 #### Element.getBoundingClientRect()
 
-Element.getBoundingClientRect() 方法<font color=FF0000>返回元素的 大小 及其 相对于视口 ( viewport ) 的位置</font>（**注：**视口即页面窗口）。
+Element.getBoundingClientRect() 方法<font color=FF0000>返回元素的 大小 及其 相对于视口 ( viewport ) 的位置</font>（ 👀 **注：**视口即页面窗口）。
 
 如果是 <font color=FF0000>**标准盒子模型**</font>，<font color=FF0000>元素的尺寸等于 `width/height` + `padding` + `border-width` 的总和</font>。如果 <font color=fuchsia>**`box-sizing: border-box`**</font> ，<font color=fuchsia>元素的的尺寸等于 `width/height` </font>。
 
@@ -6221,7 +6221,7 @@ domRect = element.getBoundingClientRect();
 
 返回值是一个 DOMRect 对象，这个对象是由该元素的 getClientRects() 方法返回的一组矩形的集合，就是该元素的 CSS 边框大小。<font color=FF0000>返回的结果是包含完整元素的最小矩形，并且拥有 <font size=4>**left、top、right、bottom、x、y、width 和 height**</font> 这几个以像素为单位的 **只读属性** 用于描述整个边框</font>。**除了 width 和 height 以外的属性是<font color=FF0000>相对于视图窗口的左上角来计算的</font>**。
 
-> **注：**需要注意的是 ⚠️：经过实验发现，这里<font color=FF0000>计算 top 和 bottom 值的 ***上界*** 是 ***整个页面（文档）*** 的最上面，而不是 ***当前可视区域*** 的最上面。所以，y 和 height 的值是可以大于 100vh 的</font>。
+> 👀 **注：**需要注意的是 ⚠️：经过实验发现，这里<font color=FF0000>计算 top 和 bottom 值的 ***上界*** 是 ***整个页面（文档）*** 的最上面，而不是 ***当前可视区域*** 的最上面。所以，y 和 height 的值是可以大于 100vh 的</font>。
 >
 > 上面说的都是 ***竖向滚动*** 的情况，类似的，如果是 <font color=FF0000>***横向滚动*** 的话，x 和 width 的值也是可以大于 100vw 的</font>（TODO，竖向滚动的情况经过了代码测试，但横向滚动的情况没有经过代码测试；不知道为什么 onscroll 和 addEventListener('scroll', ...) 都不能监听到 横向滚动的事件；应该是我代码写的有问题？）
 
@@ -6353,7 +6353,7 @@ window.location 对象用于<font color=FF0000>获得当前页面的地址 (URL)
 
 **HTML5** 引入了 <font color=FF0000>history.pushState()</font> 和 <font color=0000FF>history.replaceState()</font> 方法，它们分别可以<font color=FF0000>添加</font>和<font color=0000FF>修改</font>**历史记录条目**。这些方法通常与window.onpopstate 配合使用。
 
-<mark>使用 history.pushState() 可以改变referrer，它在用户发送 XMLHttpRequest 请求时在HTTP头部使用，改变state后创建的 XMLHttpRequest 对象的referrer都会被改变</mark>。因为referrer是标识创建 XMLHttpRequest 对象时 this 所代表的window对象中document的URL。
+<font color=LightSeaGreen>使用 history.pushState() 可以改变referrer，它在用户发送 XMLHttpRequest 请求时在HTTP头部使用，改变state后创建的 XMLHttpRequest 对象的referrer都会被改变</font>。因为referrer是标识创建 XMLHttpRequest 对象时 this 所代表的window对象中document的URL。
 
 摘自： [MDN - History API](https://developer.mozilla.org/zh-CN/docs/Web/API/History_API)
 
@@ -6415,7 +6415,7 @@ navigator.sendBeacon(url[, data]);
 
 ##### 描述
 
-这个方法 <font color=FF0000>**主要用于满足 统计 和 诊断代码 的需要，这些代码通常尝试在卸载 ( unload ) 文档之前向 web 服务器发送数据**</font>。<font color=FF0000>过早的发送数据可能导致错过收集数据的机会</font>。然而，<mark>对于开发者来说保证在文档卸载期间发送数据一直是一个困难</mark>。<mark>因为用户代理通常会忽略在 unload 事件处理器中产生的异步 XMLHttpRequest </mark>。
+这个方法 <font color=FF0000>**主要用于满足 统计 和 诊断代码 的需要，这些代码通常尝试在卸载 ( unload ) 文档之前向 web 服务器发送数据**</font>。<font color=FF0000>过早的发送数据可能导致错过收集数据的机会</font>。然而，<font color=LightSeaGreen>对于开发者来说保证在文档卸载期间发送数据一直是一个困难</font>。<font color=LightSeaGreen>因为用户代理通常会忽略在 unload 事件处理器中产生的异步 XMLHttpRequest </font>。
 
 过去，为了解决这个问题， 统计和诊断代码通常要在： 1) 发起一个同步 XMLHttpRequest 来发送数据。2) 创建一个 \<img> 元素并设置 src，大部分用户代理会延迟卸载（unload）文档以加载图像。3) 创建一个几秒的 no-op 循环。
 
@@ -6441,7 +6441,7 @@ document.addEventListener('visibilitychange', function logData() {
 
 ##### 避免使用 unload 和 beforeunload
 
-<mark><font size=4>**过去**</font>，许多网站使用 unload 或 beforeunload 事件以在会话结束时发送统计数据</mark>。然而<font color=FF0000>**这是不可靠的**</font>，<font color=FF0000>**在许多情况下（尤其是移动设备）浏览器不会产生 unload、beforeunload 或 pagehide 事件**</font>。下面列出了一种不触发上述事件的情况：
+<font color=dodgerBlue>**过去**，许多网站使用 unload 或 beforeunload 事件以在会话结束时发送统计数据</font>。然而<font color=FF0000>**这是不可靠的**</font>，<font color=FF0000>**在许多情况下（尤其是移动设备）浏览器不会产生 unload、beforeunload 或 pagehide 事件**</font>。下面列出了一种不触发上述事件的情况：
 
 1. 用户加载了网页并与其交互。
 2. 完成浏览后，用户切换到了其它应用程序，而不是关闭选项卡。
@@ -6517,87 +6517,97 @@ navigator.permissions.query({name:'geolocation'}).then(function(result) {
 
 我们可以<font color=FF0000>在一个设定的时间间隔之后来执行代码</font>。我们称之为计时事件。
 
-- **setInterval() ：** <font color=FF0000>间隔指定的毫秒数**不停地**执行指定的代码</font>。另外：**window.setInterval()** 方法可以不使用 window 前缀，直接使用函数 **setInterval()**。
-  
-  **语法**
-  
-  ```js
-  window.setInterval(function, milliseconds);
-  ```
-  
-  - 第一个参数是函数（function）
-  
-  - 第二个参数<font color=FF0000>间隔的**毫秒数**</font>
-  
-  **示例：**
-  
-  ```js
-  // 每三秒弹出 "hello" 
-  setInterval(function(){alert("Hello")},3000);
-  ```
+##### setInterval()
 
-  **补充：**如下内容摘自 [MDN - window.setInterval](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/setInterval)
-  
-  WindowOrWorkerGlobalScope 的 setInterval() 方法重复调用一个函数或执行一个代码段，在每次调用之间具有固定的时间延迟。
-  
-  在窗口和工作接口上提供的setInterval()方法重复调用函数或执行代码片段，每次调用之间有固定的时间延迟。<font color=FF0000>它**返回一个时间间隔ID**，**该ID唯一地标识时间间隔**，因此您可以稍后通过调用 clearInterval() 来删除它</font>。这个方法是由 WindowOrWorkerGlobalScope mixin 定义的。
-  
-  - **语法**
-  
-    ```js
-    var intervalID = scope.setInterval(func, delay, [arg1, arg2, ...]);
-    var intervalID = scope.setInterval(code, delay);
-    ```
-  
-    **注：值得注意的是，由上面的语法可知：<font color=FF0000>setInterval() 除了接收两个参数外，是可以接收更多参数的</font>。**
-  
-  - **参数**
-  
-    - **func：**要重复调用的函数。 每经过指定 延迟 毫秒后执行的函数 。<font color=FF0000>该函数不接受任何参数，也没有返回值</font>。
-    - <font color=FF0000>**code：**</font><mark>这个语法是<font color=FF0000>**可选**</font>的，你可以传递一个字符串来代替一个函数对象，你传递的字符串会被编译然后每个delay毫秒时间内执行一次。<font color=FF0000>这个语法因为存在安全风险所以不被推荐使用</font></mark>。
-    - **delay：**是每次延迟的毫秒数（一秒等于1000毫秒），函数的每次调用会在该延迟之后发生。<font color=FF0000>和setTimeout一样，实际的延迟时间可能会稍长一点</font>。这个时间计算单位是毫秒（千分之一秒），这个定时器会使指定方法或者代码段执行的时候进行时间延迟。<font color=FF0000>如果这个参数值小于10，则默认使用值为10。请注意，真正延迟时间或许更长</font>
-    - <font color=FF0000>**arg1, ..., argN：**</font><font color=FF0000>可选</font>，**当定时器过期的时候，将被传递给func指定函数的附加参数。**
-  
-  - **返回值：**<font color=FF0000>此返回值 intervalID 是一个非零数值，用来标识通过 setInterval() 创建的计时器，这个值可以用来作为clearInterval()的参数来清除对应的计时器 </font>。
-  
-  <font color=FF0000>值得注意的是</font>，<font color=FF0000 size=4>**setInterval() 和 setTimeout() 共享同一个 ID池，并且 clearInterval() 和 clearTimeout() 在技术上是可互换使用的**</font>。但是，我们必须去匹配 clearInterval() 和 clearTimeout() 对应的 id，以避免代码杂乱无章，增强代码的可维护性。
-  
-  **补充：**经过测试，setInterval(function, intervalTime) 第一次执行function是在intervalTime之后。另外，返回的id是一个 对象。
-  
-- **clearInterval()：** 用于停止 setInterval() 方法执行的函数代码
-  
-  语法：
-  
-  ```js
-  window.clearInterval(intervalVariable)
-  ```
-  
-  window.clearInterval()方法可以不使用window前缀，直接使用函数**clearInterval()**。
-  
-  <mark>要使用clearTimeout() 方法, 你<font color=FF0000>必须在创建超时方法中（setTimeout）使用全局变量</font></mark>
+<font color=FF0000>间隔指定的毫秒数**不停地**执行指定的代码</font>。另外：**window.setInterval()** 方法可以不使用 window 前缀，直接使用函数 **setInterval()**。
 
-- **setTimeout()：** <font color=FF0000>在指定的毫秒数后执行指定代码</font>。
-  
-  **语法**
-  
-  ```js
-  myVar = window.setTimeout(function, milliseconds);
-  ```
+###### 语法
 
-  注：setTimeout 有部分内容还是挺重要 和 易错的，还是要看下；不过，由于setTimeout 的内容和 setInterval 过于相似，所以省略；<font color=FF0000>这里只说重点摘要</font>，详见上面 setInterval 中的内容，或者直接看 [MDN - window.setTimeout](https://developer.mozilla.org/zh-CN/docs/Web/API/setTimeout)
-  
-  - setTimeout 可以传入超过两个参数，多于两个参数是：可选的附加参数，一旦定时器到期，它们会作为参数传递给function
-  - setTimeout()和setInterval()共用一个编号池，技术上，clearTimeout()和 clearInterval() 可以互换。但是，为了避免混淆，不要混用取消定时函数
-  
-- **clearTimeout()：** 方法用于<font color=FF0000>停止执行setTimeout()方法的函数代码</font>。
-  
-  **语法**
-  
-  ```js
-  window.clearTimeout(timeoutVariable)
-  ```
-  
-  类似clearInterval()，使用clearTimeout() 方法, 你必须在创建超时方法中（setTimeout）使用全局变量
+```js
+window.setInterval(function, milliseconds);
+```
+
+- 第一个参数是函数（function）
+
+- 第二个参数<font color=FF0000>间隔的**毫秒数**</font>
+
+###### 示例
+
+```js
+// 每三秒弹出 "hello" 
+setInterval(function(){alert("Hello")},3000);
+```
+
+##### 补充
+
+> 如下内容摘自 [MDN - window.setInterval](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/setInterval)
+
+WindowOrWorkerGlobalScope 的 setInterval() 方法重复调用一个函数或执行一个代码段，在每次调用之间具有固定的时间延迟。
+
+在窗口和工作接口上提供的setInterval()方法重复调用函数或执行代码片段，每次调用之间有固定的时间延迟。<font color=FF0000>它**返回一个时间间隔ID**，**该ID唯一地标识时间间隔**，因此您可以稍后通过调用 clearInterval() 来删除它</font>。这个方法是由 WindowOrWorkerGlobalScope mixin 定义的。
+
+###### 语法
+
+```js
+var intervalID = scope.setInterval(func, delay, [arg1, arg2, ...]);
+var intervalID = scope.setInterval(code, delay);
+```
+
+> 👀 **注：值得注意的是，由上面的语法可知：<font color=FF0000>setInterval() 除了接收两个参数外，是可以接收更多参数的</font>。**
+
+###### 参数
+
+- **func：**要重复调用的函数。 每经过指定 延迟 毫秒后执行的函数 。<font color=FF0000>该函数不接受任何参数，也没有返回值</font>。
+- <font color=FF0000>**code：**</font><mark>这个语法是<font color=FF0000>**可选**</font>的，你可以传递一个字符串来代替一个函数对象，你传递的字符串会被编译然后每个delay毫秒时间内执行一次。<font color=FF0000>这个语法因为存在安全风险所以不被推荐使用</font></mark>。
+- **delay：**是每次延迟的毫秒数（一秒等于1000毫秒），函数的每次调用会在该延迟之后发生。<font color=FF0000>和setTimeout一样，实际的延迟时间可能会稍长一点</font>。这个时间计算单位是毫秒（千分之一秒），这个定时器会使指定方法或者代码段执行的时候进行时间延迟。<font color=FF0000>如果这个参数值小于10，则默认使用值为10。请注意，真正延迟时间或许更长</font>
+- <font color=FF0000>**arg1, ..., argN：**</font><font color=FF0000>可选</font>，**当定时器过期的时候，将被传递给func指定函数的附加参数。**
+
+**返回值：**<font color=FF0000>此返回值 intervalID 是一个非零数值，用来标识通过 setInterval() 创建的计时器，这个值可以用来作为clearInterval()的参数来清除对应的计时器 </font>。
+
+<font color=FF0000>值得注意的是</font>，<font color=FF0000 size=4>**setInterval() 和 setTimeout() 共享同一个 ID池，并且 clearInterval() 和 clearTimeout() 在技术上是可互换使用的**</font>。但是，我们必须去匹配 clearInterval() 和 clearTimeout() 对应的 id，以避免代码杂乱无章，增强代码的可维护性。
+
+> **补充：**经过测试，setInterval(function, intervalTime) 第一次执行function是在intervalTime之后。另外，返回的id是一个 对象。
+
+##### clearInterval()
+
+用于停止 setInterval() 方法执行的函数代码
+
+##### 语法
+
+```js
+window.clearInterval(intervalVariable)
+```
+
+window.clearInterval()方法可以不使用window前缀，直接使用函数**clearInterval()**。
+
+<mark>要使用clearTimeout() 方法, 你<font color=FF0000>必须在创建超时方法中（setTimeout）使用全局变量</font></mark>
+
+##### setTimeout()
+
+ <font color=FF0000>在指定的毫秒数后执行指定代码</font>。
+
+###### 语法
+
+```js
+myVar = window.setTimeout(function, milliseconds);
+```
+
+> 👀 注：setTimeout 有部分内容还是挺重要 和 易错的，还是要看下；不过，由于setTimeout 的内容和 setInterval 过于相似，所以省略；<font color=FF0000>这里只说重点摘要</font>，详见上面 setInterval 中的内容，或者直接看 [MDN - window.setTimeout](https://developer.mozilla.org/zh-CN/docs/Web/API/setTimeout)
+
+- setTimeout 可以传入超过两个参数，多于两个参数是：可选的附加参数，一旦定时器到期，它们会作为参数传递给function
+- setTimeout()和setInterval()共用一个编号池，技术上，clearTimeout()和 clearInterval() 可以互换。但是，为了避免混淆，不要混用取消定时函数
+
+##### clearTimeout()
+
+用于<font color=FF0000>停止执行setTimeout()方法的函数代码</font>。
+
+###### 语法
+
+```js
+window.clearTimeout(timeoutVariable)
+```
+
+类似clearInterval()，使用clearTimeout() 方法, 你必须在创建超时方法中（setTimeout）使用全局变量
 
 
 
@@ -6605,7 +6615,7 @@ navigator.permissions.query({name:'geolocation'}).then(function(result) {
 
 JavaScript 可以使用<font color=FF0000> **document.cookie** 属性来创建 、读取、及删除 cookie</font>。
 
-**使用 JavaScript 创建Cookie**
+###### 使用 JavaScript 创建Cookie
 
 - JavaScript 中，创建 cookie 如下所示：
   
@@ -6625,7 +6635,7 @@ JavaScript 可以使用<font color=FF0000> **document.cookie** 属性来创建 �
   document.cookie="username=John Doe; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
   ```
 
-**使用 JavaScript 使用 Cookie**
+###### 使用 JavaScript 使用 Cookie
 
 - 在 JavaScript 中, 可以使用以下代码来读取 cookie：
   
@@ -6653,11 +6663,11 @@ JavaScript 可以使用<font color=FF0000> **document.cookie** 属性来创建 �
   
   <font color=FF0000>注意，当您删除时不必指定 cookie 的值。</font>
 
-<font size=4>**补充：**</font>
+##### 补充
 
 获取并设置与当前文档相关联的 cookie。可以把它当成一个 getter and setter。
 
-##### 语法
+###### 语法
 
 读取所有可从此位置访问的Cookie
 
@@ -6667,7 +6677,7 @@ allCookies = document.cookie;
 
 在上面的代码中，allCookies被赋值为一个字符串，该字符串包含所有的Cookie，<mark>每条cookie以"分号和空格(; )"分隔(即, key=value 键值对)</mark>。
 
-写一个新 cookie
+**写一个新 cookie**
 
 ```js
 document.cookie = newCookie;
@@ -6772,17 +6782,17 @@ js以原型链的形式，保证函数或对象中的方法、属性可以让向
 
 #### \__proto__
 
-<font color=FF0000>\__proto__ 被认为是过时且不推荐使用的（deprecated）</font>，这里的不推荐使用是指 JavaScript 规范中规定，proto 必须仅在浏览器环境下才能得到支持。
+<font color=FF0000>`__proto__` 被认为是过时且不推荐使用的（deprecated）</font>，这里的不推荐使用是指 JavaScript 规范中规定，proto 必须仅在浏览器环境下才能得到支持。
 
-**现代的方法有：**
+##### 现代的方法有
 
-- **Object.create(proto,  [descriptors]) ：** 利用给定的 proto 作为 [[Prototype]] 和可选的属性描述来创建一个空对象。
-- **Object.getPrototypeOf(obj) ：**<font color=FF0000>返回对象 obj 的 [[Prototype]]</font>
-- **Object.setPrototypeOf(obj, proto) ：<font color=FF0000>**将对象 obj 的 [[Prototype]] 设置为 proto</font>
+- **Object.create(proto,  [descriptors]) ：** 利用给定的 proto 作为 `[[Prototype]]` 和可选的属性描述来创建一个空对象。
+- **Object.getPrototypeOf(obj) ：**<font color=FF0000>返回对象 obj 的 `[[Prototype]]`</font>
+- **Object.setPrototypeOf(obj, proto) **：<font color=FF0000>将对象 obj 的 `[[Prototype]]` 设置为 proto</font>
 
 应该使用这些方法来代替 \__proto__。
 
-**为什么不建议使用\__proto__ ？**
+###### 为什么不建议使用 \__proto__ ？
 
 如果我们尝试在其中存储 用户提供的 键（例如：一个用户输入的字典），我们可以发现一个有趣的小故障：所有的键都正常工作，除了 "\__proto__"。如下示例：
 
@@ -6795,19 +6805,19 @@ obj[key] = "some value";
 alert(obj[key]); // 如果对于 默认值 __proto__ 不做修改，则打印：[object Object]，并不是 "some value"！
 ```
 
-这里如果用户输入 __proto__，那么赋值会被忽略！因为：<font color=FF0000 size=4>**\__proto__ 属性很特别：它必须是对象或者 null；字符串不能成为 prototype**</font>
+这里如果用户输入 __proto__，那么赋值会被忽略！因为：<font color=fuchsia>**`__proto__` 属性很特别：它必须是对象或者 null；字符串不能成为 prototype**</font>
 
-在这里，后果并没有很严重。但是在其他情况下，我们可能会对对象进行赋值操作，然后原型可能就被更改了。结果，可能会导致完全意想不到的结果。最可怕的是：通常开发者完全不会考虑到这一点。这让此类 bug 很难被发现，甚至变成漏洞，尤其是在 JavaScript 被用在服务端的时候。另外，上述的字典可以使用 Map来实现，这样就不会出现上述的\__proto__的问题。
+在这里，后果并没有很严重。但是在其他情况下，我们可能会对对象进行赋值操作，然后原型可能就被更改了。结果，可能会导致完全意想不到的结果。最可怕的是：通常开发者完全不会考虑到这一点。这让此类 bug 很难被发现，甚至变成漏洞，尤其是在 JavaScript 被用在服务端的时候。另外，上述的字典可以使用 Map来实现，这样就不会出现上述的 `__proto__` 的问题。
 
-<font color=FF0000 size=4>**\__proto__ 不是一个对象的属性，只是 Object.prototype 的访问器属性：**</font>
+<font color=fuchsia>**`__proto__` 不是一个对象的属性，只是 Object.prototype 的访问器属性：**</font>
 
 <img src="https://s2.loli.net/2021/12/31/sI4O5fTJ1zRiodc.png" alt="image-20211231110323159" style="zoom:50%;" />
 
-因此，如果 obj.\__proto__ 被读取或者赋值，那么对应的 getter/setter 会被从它的原型中调用，它会 set/get [[Prototype]]。
+因此，如果 `obj.__proto__` 被读取或者赋值，那么对应的 getter/setter 会被从它的原型中调用，它会 set/get `[[Prototype]]` 。
 
-就像在本部分教程的开头所说的那样：\__proto__ 是一种访问 [[Prototype]] 的方式，而不是 [[prototype]] 本身。
+就像在本部分教程的开头所说的那样：`__proto__` 是一种访问 `[[Prototype]]` 的方式，而不是 `[[prototype]]` 本身。
 
-另外：上面的问题，除了用Map 还可以使用 如下方法：
+另外：上面的问题，除了用 Map 还可以使用 如下方法：
 
 ```js
 let obj = Object.create(null);
@@ -6824,7 +6834,7 @@ Object.create(null) 创建了一个空对象，这个对象没有原型（ `[[Pr
 
 摘自：[原型方法，没有 _\_proto__ 的对象](https://zh.javascript.info/prototype-methods)
 
-**补充：**
+##### 补充
 
 如下示例：
 
@@ -6836,7 +6846,7 @@ Object.getPrototypeOf(foo) === foo.__proto__ === Foo.prototype
 //                         true              true
 ```
 
-尤其是：<font color=FF0000 size=4>**foo.\__proto__ === Foo.prototype**</font>
+尤其是：<font color=FF0000 size=4>**`foo.__proto__ === Foo.prototype`**</font>
 
 参考自：[js继承实现之Object.create](https://segmentfault.com/a/1190000014592412)
 
@@ -6863,46 +6873,50 @@ function potentiallyBuggyCode() {
 
 #### var和let
 
-- <font color=FF0000>在 ES6 之前，我们都是用 var 来声明变量，而且 JS 只有函数作用域和全局作用域，没有块级作用域，所以`{}`限定不了 var 声明变量的访问范围。</font>
-  
-  ```javascript
-  { 
-    var i = 9;
-  } 
-  console.log(i);  // 9
-  ```
-  
-  ES6 新增了`let`命令，用来声明局部变量。它的用法类似于`var`，<font color=FF0000>但是所声明的变量，只在`let`命令所在的代码块内有效，而且有暂时性死区的约束</font>
-  
-  ```javascript
-  { 
-    let i = 9;     // i变量只在 花括号内有效！！！
-  } 
-  console.log(i);  // Uncaught ReferenceError: i is not defined
-  ```
-  
-  由于上述特性，`let`非常适合用于 `for`循环内部的块级作用域。
+##### var
 
-- 用`let`声明的变量，**<font color=FF0000>不存在变量提升</font>**（相关概念见下方）。而且<font color=FF0000>要求必须 等`let`声明语句执行完之后，变量才能使用，不然会报`Uncaught ReferenceError`错误。</font>示例：
-  
-  ```javascript
-  console.log(aicoder);    // 错误：Uncaught ReferenceError ...
-  let aicoder = 'aicoder.com';
-  // 这里就可以安全使用aicoder
-  ```
-  
-  > ES6 明确规定，如果区块中存在let和const命令，这个区块对这些命令声明的变量，从一开始就形成了封闭作用域。凡是在声明之前就使用这些变量，就会报错。
-  > 总之，在代码块内，使用let命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区”（temporal dead zone，简称 TDZ）。
+<font color=FF0000>在 ES6 之前，我们都是用 var 来声明变量，而且 JS 只有函数作用域和全局作用域，没有块级作用域，所以`{}`限定不了 var 声明变量的访问范围。</font>
 
-- **let变量不能重复声明**
-  
-  let<font color=FF0000>不允许在相同作用域内，重复声明同一个变量。否则报错</font>：`Uncaught SyntaxError: Identifier 'XXX' has already been declared`
-  
-  ```javascript
-  let a = 0;
-  let a = 'sss';
-  // Uncaught SyntaxError: Identifier 'a' has already been declared
-  ```
+```javascript
+{ 
+  var i = 9;
+} 
+console.log(i);  // 9
+```
+
+ES6 新增了`let`命令，用来声明局部变量。它的用法类似于`var`，<font color=FF0000>但是所声明的变量，只在`let`命令所在的代码块内有效，而且有暂时性死区的约束</font>
+
+```javascript
+{ 
+  let i = 9;     // i变量只在 花括号内有效！！！
+} 
+console.log(i);  // Uncaught ReferenceError: i is not defined
+```
+
+由于上述特性，`let`非常适合用于 `for`循环内部的块级作用域。
+
+##### let
+
+用`let`声明的变量，**<font color=FF0000>不存在变量提升</font>**（相关概念见下方）。而且<font color=FF0000>要求必须 等`let`声明语句执行完之后，变量才能使用，不然会报`Uncaught ReferenceError`错误。</font>示例：
+
+```javascript
+console.log(aicoder);    // 错误：Uncaught ReferenceError ...
+let aicoder = 'aicoder.com';
+// 这里就可以安全使用aicoder
+```
+
+> ES6 明确规定，如果区块中存在let和const命令，这个区块对这些命令声明的变量，从一开始就形成了封闭作用域。凡是在声明之前就使用这些变量，就会报错。
+> 总之，在代码块内，使用let命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区”（temporal dead zone，简称 TDZ）。
+
+##### let变量不能重复声明
+
+let<font color=FF0000>不允许在相同作用域内，重复声明同一个变量。否则报错</font>：`Uncaught SyntaxError: Identifier 'XXX' has already been declared`
+
+```javascript
+let a = 0;
+let a = 'sss';
+// Uncaught SyntaxError: Identifier 'a' has already been declared
+```
 
 摘自：[前端面试题：JS中的let和var的区别](https://www.cnblogs.com/fly_dragon/p/8669057.html)
 
@@ -6926,7 +6940,7 @@ function potentiallyBuggyCode() {
 
 JavaScript 在需要用到布尔类型值的上下文中使用强制类型转换(Type Conversion )将值转换为布尔值，例如条件语句和循环语句。
 
-**在 JavaScript 中只有 8 个 falsy 值。**
+##### 在 JavaScript 中只有 8 个 falsy 值
 
 | false      | false 关键字                                                 |
 | ---------- | ------------------------------------------------------------ |
@@ -6938,7 +6952,7 @@ JavaScript 在需要用到布尔类型值的上下文中使用强制类型转换
 | undefined  | undefined - 原始值                                           |
 | NaN        | NaN - 非数值                                                 |
 
-摘自：[MDN官方文档 - Falsy](https://developer.mozilla.org/zh-CN/docs/Glossary/Falsy)
+摘自：[MDN - Falsy](https://developer.mozilla.org/zh-CN/docs/Glossary/Falsy)
 
 
 
@@ -6973,7 +6987,7 @@ var objRef = window.opener;
 
 ##### 备注
 
-<mark>如果当前窗口是由另一个窗口打开的，window.opener保留了那个窗口的引用</mark>。<font color=FF0000>如果当前窗口不是由其他窗口打开的, 则该属性返回 null.</font>
+<font color=LightSeaGreen>如果当前窗口是由另一个窗口打开的，window.opener保留了那个窗口的引用</font>。<font color=FF0000>如果当前窗口不是由其他窗口打开的, 则该属性返回 null.</font>
 
 摘自：[MDN - window.opener](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/opener)
 
@@ -6981,7 +6995,7 @@ var objRef = window.opener;
 
 #### window.postMessage
 
-<font color=FF0000>**window.postMessage() 方法可以安全地实现跨源通信**</font>。通常，<mark>对于两个不同页面的脚本，只有当执行它们的页面位于具有相同的协议（通常为 https ），端口号（ 443 为 https 的默认值 ），以及主机（两个页面的模数 Document.domain 设置为相同的值）时，这两个脚本才能相互通信</mark><font color=FF0000>**（同源限制）**</font>。window.postMessage() 方法提供了一种受控机制来规避此限制，只要正确使用，这种方法就很安全
+<font color=FF0000>**window.postMessage() 方法可以安全地实现跨源通信**</font>。通常，<font color=LightSeaGreen>对于两个不同页面的脚本，只有当执行它们的页面位于具有相同的协议（通常为 https ），端口号（ 443 为 https 的默认值 ），以及主机（两个页面的模数 Document.domain 设置为相同的值）时，这两个脚本才能相互通信</font><font color=FF0000>**（同源限制）**</font>。window.postMessage() 方法提供了一种受控机制来规避此限制，只要正确使用，这种方法就很安全
 
 从广义上讲，<font color=FF0000>一个窗口可以获得对另一个窗口的引用</font>（比如 <font color=FF0000>**targetWindow = window.opener**</font> ），<font color=FF0000>然后在窗口上调用 targetWindow.postMessage() 方法分发一个  MessageEvent 消息</font>。接收消息的窗口可以根据需要自由处理此事件。<font color=FF0000>传递给 window.postMessage() 的参数（比如 message ）将通过消息事件对象暴露给接收消息的窗口</font>。
 
@@ -7015,9 +7029,9 @@ window.addEventListener("message", (event) => {
 
 - **data：**从其他 window 中传递过来的对象。
 - **origin：**<font color=FF0000>调用 postMessage  时消息发送方窗口的 origin . **这个字符串由 协议、“://“、域名、“ : 端口号”拼接而成**</font>。例如 “https://example.org (隐含端口 443)”、“http://example.net (隐含端口 80)”、“http://example.com:8080”。请注意，这个origin不能保证是该窗口的当前或未来origin，因为postMessage被调用后可能被导航到不同的位置。
-- **source：**<font color=FF0000 size=4>**对发送消息的窗口对象的引用**</font>；<mark style=background-color:hotpink>您可以使用此来在具有不同origin的两个窗口之间建立双向通信</mark>。
+- **source：**<font color=FF0000 size=4>**对发送消息的窗口对象的引用**</font>；<font color=fuchsia>您可以使用此来在具有不同origin的两个窗口之间建立双向通信</font>。
 
-**安全问题**
+##### 安全问题
 
 <font color=FF0000>如果您不希望从其他网站接收 message，请不要为 message 事件添加任何事件侦听器。这是一个完全万无一失的方式来避免安全问题</font>。
 
@@ -7109,7 +7123,7 @@ EventTarget <|-- BroadcastChannel
 object.reload(forcedReload);
 ```
 
-##### 参数：
+##### 参数
 
 forcedReload 可选，该参数要求为 布尔 类型，当取值为 true 时，将强制浏览器从服务器重新获取当前页面资源，而不是从浏览器的缓存中读取，如果取值为 false 或不传该参数时，浏览器则可能会从缓存中读取当前页面。
 
@@ -7119,31 +7133,35 @@ forcedReload 可选，该参数要求为 布尔 类型，当取值为 true 时�
 
 #### alert()、confirm()、prompt()
 
-- **alert()**：alert 方法有一个参数，即希望对用户显示的文本字符串。该字符串不是 HTML 格式。该消息框提供了一个“确定”按钮让用户关闭该消息框，并且该消息框是模式对话框，也就是说，用户必须先关闭该消息框然后才能继续进行操作。
-  
-  <img src="https://s1.ax1x.com/2020/07/29/aZWwng.png" style="zoom:50%;" />
+##### alert()
 
-- **confirm()**：使用确认消息框可向用户问一个“是-或-否”问题，并且用户可以选择单击“确定”按钮或者单击“取消”按钮。<font color=FF0000>confirm 方法的返回值为 true 或 false</font>。该消息框也是模式对话框：用户必须在响应该对话框（单击一个按钮）将其关闭后，才能进行下一步操作。
-  
-  <img src="https://s1.ax1x.com/2020/07/29/aZhEz6.png" style="zoom:50%;" />
+alert 方法有一个参数，即希望对用户显示的文本字符串。该字符串不是 HTML 格式。该消息框提供了一个“确定”按钮让用户关闭该消息框，并且该消息框是模式对话框，也就是说，用户必须先关闭该消息框然后才能继续进行操作。
 
-- **prompt()**：提示消息框提供了一个文本字段，用户可以在此字段输入一个答案来响应您的提示。该消息框有一个“确定”按钮和一个“取消”按钮。如果您提供了一个辅助字符串参数，则提示消息框将在文本字段显示该辅助字符串作为默认响应。否则，默认文本为 ""。
+<img src="https://s1.ax1x.com/2020/07/29/aZWwng.png" style="zoom:50%;" />
 
-  <img src="https://s1.ax1x.com/2020/07/29/aZhJQf.png" style="zoom:50%;" />
+##### confirm()
 
-  语法：
+使用确认消息框可向用户问一个“是-或-否”问题，并且用户可以选择单击“确定”按钮或者单击“取消”按钮。<font color=FF0000>confirm 方法的返回值为 true 或 false</font>。该消息框也是模式对话框：用户必须在响应该对话框（单击一个按钮）将其关闭后，才能进行下一步操作。
 
-  ```js
-  result = window.prompt(text, value);
-  ```
-  
-  - **result：** 用来<font color=FF0000>存储用户输入文字的字符串</font>，或者是 null。
-  - **text：** 用来<font color=FF0000>提示用户输入文字的字符串</font>，如果没有任何提示内容，该参数<font color=FF0000>可以省略不写</font>。
-  - **value：** 文本输入框中的<font color=FF0000>默认值</font>，该参数也<font color=FF0000>可以省略不写</font>。不过在 Internet Explorer 7 和 8 中，省略该参数会导致输入框中显示默认值"undefined"。
-  
-  摘自：[MDN - window.prompt](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/prompt)
+<img src="https://s1.ax1x.com/2020/07/29/aZhEz6.png" style="zoom:50%;" />
 
-摘自：[**JS alert()、confirm()、prompt()的区别**](https://www.imooc.com/article/6751)
+##### prompt()
+
+提示消息框提供了一个文本字段，用户可以在此字段输入一个答案来响应您的提示。该消息框有一个“确定”按钮和一个“取消”按钮。如果您提供了一个辅助字符串参数，则提示消息框将在文本字段显示该辅助字符串作为默认响应。否则，默认文本为 ""。
+
+<img src="https://s1.ax1x.com/2020/07/29/aZhJQf.png" style="zoom:50%;" />
+
+###### 语法
+
+```js
+result = window.prompt(text, value);
+```
+
+- **result：** 用来<font color=FF0000>存储用户输入文字的字符串</font>，或者是 null。
+- **text：** 用来<font color=FF0000>提示用户输入文字的字符串</font>，如果没有任何提示内容，该参数<font color=FF0000>可以省略不写</font>。
+- **value：** 文本输入框中的<font color=FF0000>默认值</font>，该参数也<font color=FF0000>可以省略不写</font>。不过在 Internet Explorer 7 和 8 中，省略该参数会导致输入框中显示默认值"undefined"。
+
+摘自：[MDN - window.prompt](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/prompt) 、[JS alert()、confirm()、prompt()的区别](https://www.imooc.com/article/6751)
 
 
 
@@ -7153,7 +7171,7 @@ Console 对象可以接入浏览器控制台（如：Firefox 的 Web Console）�
 
 Console 对象可以从任何全局对象中访问到，如 Window，WorkerGlobalScope 以及控制台属性中的特殊变量。它被定义为 Window.console，而且可直接通过 console 调用。
 
-**方法**
+##### 方法
 
 - **Console.assert()：**如果第一个参数为 `false` ，则将消息和堆栈跟踪记录到控制台。
 - **Console.clear()：**清空控制台，并输出 Console was cleared。
@@ -7179,16 +7197,18 @@ Console 对象可以从任何全局对象中访问到，如 Window，WorkerGloba
 - **Console.trace()：**输出一个 stack trace。
 - **Console.warn()：**常用，打印一个警告信息，可以使用 string substitution 和额外的参数。
 
-##### **使用字符串替换** （注：这里感觉用“格式化输出“表述，似乎更好些）
+##### **使用字符串替换**
+
+> 👀 注：标题感觉用“格式化输出“表述，似乎更好些?
 
 可以在传递给 console 的方法的时候使用下面的字符以期进行参数的替换。
 
 | Substitution string | Description                                                  |
 | ------------------- | ------------------------------------------------------------ |
 | %o or %O            | 打印 JavaScript 对象。在审阅器点击对象名字可展开更多对象的信息。 |
-| %d or %i            | 打印整数。支持数字格式化。例如, console.log("Foo %.2d", 1.1) 会输出有先导 0 的两位有效数字: Foo 01。 |
+| %d or %i            | 打印整数。支持数字格式化。例如，`console.log("Foo %.2d", 1.1)` 会输出有先导 0 的两位有效数字: Foo 01。 |
 | %s                  | 打印字符串。                                                 |
-| %f                  | 打印浮点数。支持格式化，比如 console.log("Foo %.2f", 1.1) 会输出两位小数: Foo 1.10 |
+| %f                  | 打印浮点数。支持格式化，比如 `console.log("Foo %.2f", 1.1)` 会输出两位小数: Foo 1.10 |
 
 ##### 为控制台定义样式
 
@@ -7202,7 +7222,7 @@ console.log("This is %cMy stylish message", "color: yellow; font-style: italic; 
 
 ![img](https://s2.loli.net/2022/07/14/fJ1diR4SgjnavhD.png)
 
-%c 语法可用的属性如下 (至少在 Firefox 中是这样，别的浏览器会有诸多不同)：
+<font color=dodgerBlue>%c 语法可用的属性如下</font> (至少在 Firefox 中是这样，别的浏览器会有诸多不同)：
 
 - background 与其全写版本。
 - border 与其全写版本。
@@ -8708,17 +8728,18 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 #### FileReader
 
 <font color=FF0000>FileReader 对象</font>允许Web应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，<font color=FF0000>使用 File 或 Blob 对象指定要读取的文件或数据</font>。
+
 其中File对象<font color=FF0000>可以是来自用户在一个`<input>`元素上选择文件后返回的FileList对象</font>，也可以来自拖放操作生成的 DataTransfer对象，还可以是来自在一个HTMLCanvasElement上执行mozGetAsFile()方法后返回结果。
 
-**重要提示：** <mark>FileReader仅用于以安全的方式从用户（远程）系统读取文件内容，它不能用于从文件系统中按路径名简单地读取文件。 <font color=FF0000>要在JavaScript中按路径名读取文件，应使用标准Ajax解决方案进行服务器端文件读取，如果读取跨域，则使用CORS权限。</font></mark>
+⚠️ **重要提示：**<font color=LightSeaGreen>FileReader 仅用于以安全的方式从用户（远程）系统读取文件内容，它**不能用于从文件系统中按路径名简单地读取文件**</font>。 <font color=FF0000>要在 JavaScript 中按路径名读取文件，应使用标准Ajax解决方案进行服务器端文件读取，如果读取跨域，则使用CORS权限。</font>
 
-**构造函数**
+##### 构造函数
 
-- **FileReader()：**返回一个新构造的FileReader。
+- **FileReader()：**返回一个新构造的 FileReader。
 
 有关详细信息和示例，请参阅[如何在web应用程序中使用文件](https://developer.mozilla.org/zh-CN/Using_files_from_web_applications)。
 
-**属性**
+##### 属性
 
 - **FileReader.error：** 只读，一个DOMException，表示在读取文件时发生的错误 。
 
@@ -8732,7 +8753,7 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 
 - <font color=FF0000>**FileReader.result：**</font>只读，<font color=FF0000>文件的内容</font>。该属性仅在读取操作完成后才有效，数据的格式取决于使用哪个方法来启动读取操作。
 
-**事件处理**
+##### 事件处理
 
 - FileReader.onabort：处理abort事件。该事件在读取操作被中断时触发。
 - FileReader.onerror：处理error事件。该事件在读取操作发生错误时触发。
@@ -8741,7 +8762,7 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 - FileReader.onloadend：处理loadend事件。该事件在读取操作结束时（要么成功，要么失败）触发。
 - FileReader.onprogress：处理progress事件。该事件在读取Blob时触发。
 
-**方法**
+##### 方法
 
 - FileReader.abort()：中止读取操作。在返回时，readyState属性为DONE。
 - FileReader.readAsArrayBuffer()：开始读取指定的 Blob中的内容, 一旦完成, result 属性中保存的将是被读取文件的 ArrayBuffer 数据对象.
@@ -8755,7 +8776,7 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 
 #### URL
 
-<font color=FF0000>**URL接口 用于解析，构造，规范化和编码 URLs**（统一资源定位器）</font>。 它通过<mark>提供允许您轻松阅读和修改URL组件的属性</mark>来工作。 <mark>通常，通过在调用URL的构造函数时将URL指定为字符串或提供相对URL和基本URL来创建新的URL对象</mark>。 然后，您可以轻松读取URL的已解析组成部分或对URL进行更改。
+<font color=FF0000>**URL接口 用于解析，构造，规范化和编码 URLs**（统一资源定位器）</font>。 它通过<font color=LightSeaGreen>提供允许您轻松阅读和修改URL组件的属性</font>来工作。 <font color=LightSeaGreen>通常，通过在调用URL的构造函数时将URL指定为字符串或提供相对URL和基本URL来创建新的URL对象</font>。 然后，您可以轻松读取URL的已解析组成部分或对URL进行更改。
 
 <font color=FF0000>**如果浏览器尚不支持URL()构造函数**</font>，则可以使用Window中的<font color=FF0000>Window.URL</font>属性。 确保检查您的任何目标浏览器是否要求对此添加前缀。
 
@@ -8769,10 +8790,10 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 - **host：**一个USVString，其中包含域（即主机名），后跟（如果指定了端口）“：”和URL的端口。
 - **hostname：**包含 URL 域名的 USVString。
 - **href：**包含完整 URL 的 USVString。
-- **origin：**只读，<mark>返回一个包含协议名、域名和端口号</mark>的 USVString。
+- **origin：**只读，<font color=LightSeaGreen>返回一个包含协议名、域名和端口号</font>的 USVString。
 - **password：**包含在域名前面指定的密码的  USVString 。
 - **pathname：**以 '/' 起头紧跟着 URL 文件路径的 DOMString。
-- **port：**<mark>包含 URL 端口号的 USVString</mark>。
+- **port：**<font color=LightSeaGreen>包含 URL 端口号的 USVString</font>。
 - **protocol：**包含 URL 协议名的 USVString，<font color=FF0000>末尾带 ':'</font>。
 - **search：**一个USVString ，指示URL的参数字符串； 如果提供了任何参数，则<font color=FF0000>此字符串包括所有参数，并**以开头的“？”开头 字符**</font>
 - <font color=FF0000>**searchParams：**</font>只读，
@@ -8786,48 +8807,56 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 
 ##### 静态方法
 
-- **createObjectURL()：**返回一个 DOMString ，包含一个唯一的 blob 链接（该链接协议为以 `blob:`，后跟唯一标识浏览器中的对象的掩码）。
+###### createObjectURL()
 
-  > URL.createObjectURL() 静态方法 <font color=FF0000>会创建一个 DOMString</font>，<font color=FF0000>其中包含一个表示参数中给出的对象的 URL</font>。**这个 URL 的<font color=FF0000>生命周期和创建它的窗口中的 document 绑定</font>**。这个新的 URL 对象表示指定的 File 对象或 Blob 对象。
-  >
-  > **注意⚠️：**此特性<font color=FF0000>在 Web Worker 中可用</font>。<font color=FF0000>在 Service Worker 中**不可用**</font>，因为它有可能导致内存泄漏。
-  >
-  > **语法：**
-  >
-  > ```js
-  > objectURL = URL.createObjectURL(object);
-  > ```
-  >
-  > - **参数：**
-  >
-  >   **object：**<font color=FF0000>用于创建 URL 的 File 对象、Blob 对象或者 MediaSource 对象</font>。
-  >
-  > - **返回值：**一个 DOMString 包含了一个对象 URL，该 URL 可用于指定源 object 的内容。
-  >
-  > **附注**
-  >
-  > - **内存管理：**在每次调用 createObjectURL() 方法时，都会创建一个新的 URL 对象，即使你已经用相同的对象作为参数创建过。<font color=FF0000>当不再需要这些 URL 对象时，每个对象必须通过调用 URL.revokeObjectURL() 方法来释放</font>。<font color=FF0000>浏览器在 document 卸载的时候，会自动释放它们</font>；**但为了获得最佳性能和内存使用状况，你应该在安全的时机主动释放掉它们**
-  > - 使用相对URLs 作为媒体流：在旧版本的媒体资源规范中，添加流作为 \<video> 元素需要创建一个关于 MediaStream的对象URL。<mark>现已没必要这样做了，浏览器已经移除了该操作的支持</mark>。
-  >
-  > 补充内容摘自：[MDN - URL.createObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/createObjectURL)
+返回一个 DOMString ，包含一个唯一的 blob 链接（该链接协议为以 `blob:`，后跟唯一标识浏览器中的对象的掩码）。
 
-  **revokeObjectURL()：**销毁之前使用 URL.createObjectURL() 方法创建的URL实例。
+> URL.createObjectURL() 静态方法 <font color=FF0000>会创建一个 DOMString</font>，<font color=FF0000>其中包含一个表示参数中给出的对象的 URL</font>。**这个 URL 的<font color=FF0000>生命周期和创建它的窗口中的 document 绑定</font>**。这个新的 URL 对象表示指定的 File 对象或 Blob 对象。
+>
+> ⚠️**注意：**此特性<font color=FF0000>在 Web Worker 中可用</font>。<font color=FF0000>在 Service Worker 中**不可用**</font>，因为它有可能导致内存泄漏。
+>
+> ###### 语法
+>
+> ```js
+> objectURL = URL.createObjectURL(object);
+> ```
+>
+> ###### 参数
+>
+> **object：**<font color=FF0000>用于创建 URL 的 File 对象、Blob 对象或者 MediaSource 对象</font>。
+>
+> - **返回值：**一个 DOMString 包含了一个对象 URL，该 URL 可用于指定源 object 的内容。
+>
+> ###### 附注
+>
+> - **内存管理：**在每次调用 createObjectURL() 方法时，都会创建一个新的 URL 对象，即使你已经用相同的对象作为参数创建过。<font color=FF0000>当不再需要这些 URL 对象时，每个对象必须通过调用 URL.revokeObjectURL() 方法来释放</font>。<font color=FF0000>浏览器在 document 卸载的时候，会自动释放它们</font>；**但为了获得最佳性能和内存使用状况，你应该在安全的时机主动释放掉它们**
+> - 使用相对URLs 作为媒体流：在旧版本的媒体资源规范中，添加流作为 \<video> 元素需要创建一个关于 MediaStream的对象URL。<mark>现已没必要这样做了，浏览器已经移除了该操作的支持</mark>。
+>
+> 补充内容摘自：[MDN - URL.createObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/createObjectURL)
 
-  > URL.revokeObjectURL() 静态方法用来<font color=FF0000>释放一个之前已经存在的、通过调用 URL.createObjectURL() 创建的 URL 对象</font>。当你结束使用某个 URL 对象之后，应该通过调用这个方法来让浏览器知道不用在内存中继续保留对这个文件的引用了。
-  >
-  > **语法：**
-  >
-  > ```js
-  > window.URL.revokeObjectURL(objectURL);
-  > ```
-  >
-  > - **参数：**
-  >   **objectURL：**一个 DOMString，表示通过调用 URL.createObjectURL() 方法产生的 URL 对象。
-  > - **返回值：**undefined
-  >
-  > 内容摘自：[MDN - URL.revokeObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/revokeObjectURL)
+###### revokeObjectURL()
+
+销毁之前使用 URL.createObjectURL() 方法创建的URL实例。
+
+> URL.revokeObjectURL() 静态方法用来<font color=FF0000>释放一个之前已经存在的、通过调用 URL.createObjectURL() 创建的 URL 对象</font>。当你结束使用某个 URL 对象之后，应该通过调用这个方法来让浏览器知道不用在内存中继续保留对这个文件的引用了。
+>
+> ###### 语法
+>
+> ```js
+> window.URL.revokeObjectURL(objectURL);
+> ```
+>
+> ###### 参数
+>
+> **objectURL：**一个 DOMString，表示通过调用 URL.createObjectURL() 方法产生的 URL 对象。
+>
+> **返回值：**undefined
+>
+> 内容摘自：[MDN - URL.revokeObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/revokeObjectURL)
 
 摘自：[MDN - URL](https://developer.mozilla.org/zh-CN/docs/Web/API/URL)
+
+
 
 #### URLSearchParams
 
@@ -8840,7 +8869,7 @@ for (const [key, value] of mySearchParams) {}
 for (const [key, value] of mySearchParams.entries()) {}
 ```
 
-注意：此特性在 Web Worker 中可用
+⚠️ 注意：此特性在 Web Worker 中可用
 
 ##### 构造函数
 
@@ -15001,8 +15030,72 @@ SharedWorker 接口代表一种特定类型的 worker，可以从几个浏览上
 
 
 
-
 ### Canvas
+
+#### HTMLCanvasElement
+
+`HTMLCanvasElement` 接口提供用于操纵 `<canvas>` 元素的布局和表示的属性和方法。 **`HTMLCanvasElement`** 接口还继承了 `HTMLElement `接口的属性和方法。
+
+##### 属性
+
+从其父项`HTMLElement`继承属性。
+
+- `HTMLCanvasElement.height` 是一个正整数，反映了`<canvas>` 元素的`height` HTML 属性，以 CSS 像素表示。如果未指定属性，或者将其设置为无效值（例如负数），则使用默认值 150。
+- `HTMLCanvasElement.width` 是一个正整数，反映了`<canvas>` 元素的 `width` HTML 属性，以 CSS 像素表示。如果未指定属性，或者将其设置为无效值（例如负数），则使用默认值 300。
+
+> 👀 这里省略了 非标准&已废弃的`HTMLCanvasElement.mozOpaque` 和 非标准的`HTMLCanvasElement.mozPrintCallback`
+
+##### 方法
+
+从其父项 `HTMLElement` 继承方法。
+
+- `HTMLCanvasElement.captureStream()` 🧪 ：返回 `CanvasCaptureMediaStream` ，它是对画布表面的实时视频捕获。
+
+- `HTMLCanvasElement.getContext()` ：返回画布上的绘图上下文；如果不支持上下文 ID，则返回 null。绘图上下文可让您在画布上绘图。调用 getContext 传入`"2d"` 可以返回一个`CanvasRenderingContext2D`对象，也可以传入`"webgl"`（或 `"experimental-webgl"` ）返回一个`WebGLRenderingContext` 对象。此上下文仅在实现WebGL的浏览器上可用。
+
+- `HTMLCanvasElement.toDataURL()` ：<font color=red>返回一个 Data URL</font>，该 URL 包含由类型参数指定的格式的图像（默认为`png`）。返回的图像分辨率为 96dpi。
+
+- `HTMLCanvasElement.toBlob()` ：<font color=red>创建一个`Blob` 对象，表示 canvas 中包含的图像</font>；该文件可以由用户代理决定是否缓存在磁盘上或存储在内存中。
+
+  > <font color=red>可以在调用时指定所需的文件格式和图像质量</font>，若未指定文件格式（或不支持指定的文件格式），则<font color=red>默认导出 `image/png` 类型</font>。浏览器需要支持 `image/png`，<font color=LightSeaGreen>大多数浏览器还支持额外的图片格式，包括 `image/jpeg` 和 `image/webp`</font> 。
+  >
+  > <font color=red>对于支持以指定分辨率编码的图片格式，如不特别指明，图片的默认分辨率为 96dpi</font>。
+  >
+  > ##### 语法
+  >
+  > ```js
+  > toBlob(callback, type, quality)
+  > ```
+  >
+  > ###### 参数
+  >
+  > - `callback `：回调函数，<font color=red>可获得一个单独的 `Blob` 对象参数</font>。如果图像未被成功创建，可能会获得 `null` 值。
+  > - `type` ：<font color=LightSeaGreen>可选</font>，`DOMString` 类型，<font color=red>指定图片格式</font>，<font color=LightSeaGreen>默认格式</font>（未指定或不支持）<font color=LightSeaGreen>为 `image/png`</font>。
+  > - `quality` ：<font color=LightSeaGreen>可选</font>，`Number` 类型，<font color=LightSeaGreen>值在 0 与 1 之间</font>，当请求图片格式为 `image/jpeg` 或者 `image/webp` 时用来指定图片展示质量。如果这个参数的值不在指定类型与范围之内，则使用默认值，其余参数将被忽略。
+  >
+  > **返回值** ：无。
+  >
+  > ###### 异常
+  >
+  > - `SecurityError` ：canvas“[被污染](https://developer.mozilla.org/zh-CN/docs/Web/HTML/CORS_enabled_image)”的情况下不能使用此方法。
+  >
+  > 摘自：[MDN - HTMLCanvasElement.toBlob()](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement/toBlob)
+
+  >  👀 注：toBlob 方法对于将 canvas 保存为图片是很有用的，具体见下面 [[#Canvas 使用场景与代码#图片添加水印]]
+
+- `HTMLCanvasElement.transferControlToOffscreen()` 🧪：将控制权转移到主线程或辅助线程上的 `OffscreenCanvas`对象。
+
+> 👀 省略了非标准&已废弃的 `HTMLCanvasElement.mozGetAsFile()`
+
+##### 事件
+
+使用 `addEventListener()` 监听这些事件。
+
+- `webglcontextcreationerror` ：如果用户代理无法创建 `WebGLRenderingContext` 或 `WebGL2RenderingContext` 上下文，则触发该事件。
+- `webglcontextlost` ：如果用户代理检测到与 `WebGLRenderingContext` 或 `WebGL2RenderingContext` 对象关联的绘图缓冲区已丢失，则触发此事件。
+- `webglcontextrestored` ：如果用户代理为 `WebGLRenderingContext` 或 `WebGL2RenderingContext` 对象恢复绘图缓冲区，则触发该事件。
+
+摘自：[MDN - HTMLCanvasElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement)
 
 #### CanvasRenderingContext2D
 
@@ -15170,7 +15263,7 @@ ctx.fillText("Hello world", 50, 100);
 
 CanvasRenderingContext2D.strokeText() 是 Canvas 2D API 在给定的 (x, y) 位置绘制文本的方法
 
-**注：**该方法详细内容略。因为无论 ***参数*** 还是 ***效果*** 都和 CanvasRenderingContext2D.fillText() 没大的区别。唯一的区别是 <font color=FF0000>**fillText() 是填充文本**</font>（和一般见到的文本的一样，详见 [MDN - CanvasRenderingContext2D.fillText()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/fillText) 中的示例），而 <font color=FF0000>**strokeText() 是 描边文本**</font>；效果见 [MDN - CanvasRenderingContext2D.strokeText()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/strokeText)
+> 👀 注：该方法详细内容略。因为无论 ***参数*** 还是 ***效果*** 都和 CanvasRenderingContext2D.fillText() 没大的区别。唯一的区别是 <font color=FF0000>**fillText() 是填充文本**</font>（和一般见到的文本的一样，详见 [MDN - CanvasRenderingContext2D.fillText()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/fillText) 中的示例），而 <font color=FF0000>**strokeText() 是 描边文本**</font>；效果见 [MDN - CanvasRenderingContext2D.strokeText()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/strokeText)
 
 #### CanvasRenderingContext2D.drawImage()
 
@@ -15207,13 +15300,46 @@ void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 
 摘自：[MDN - CanvasRenderingContext2D.drawImage()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/drawImage)
 
+#### Canvas 使用场景与代码
+
+###### 图片添加水印
+
+```js
+function waterMarkProc(file, cnt, offset) {
+  return new Promise(resolve => {
+    const img = new Image()
+    img.src = file.content
+
+    let retFile = null
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      canvas.width = img.width
+      canvas.height = img.height
+
+      let ctx = canvas.getContext('2d')
+      ctx.drawImage(img, 0, 0)
+
+      ctx.font = "bold 20px sans-serif"
+      ctx.fillStyle = '#fff'
+      ctx.textAlign = 'right'
+      ctx.fillText(cnt, canvas.width - offset.right, canvas.height - offset.bottom)
+
+      canvas.toBlob(async blob => {
+        retFile = new File([blob], file.file.name, {type: file.file.type})
+        resolve(retFile)
+      })
+    }
+  })
+}
+```
+
 
 
 ### 其他补充
 
 #### JSX
 
-JSX 是 Javascript 和 XML 结合的一种格式。React 发明了 JSX ，利用 HTML 语法来创建 虚拟DOM 。<mark>当遇到 `<` ，JSX 就当 HTML 解析，遇到 `{` 就当 JavaScript 解析</mark>。
+JSX 是 Javascript 和 XML 结合的一种格式。React 发明了 JSX ，利用 HTML 语法来创建 虚拟DOM 。<font color=lightSeaGreen>当遇到 `<` ，JSX 就当 HTML 解析，遇到 `{` 就当 JavaScript 解析</font>。
 
 
 
