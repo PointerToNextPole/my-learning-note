@@ -1041,7 +1041,7 @@ git push -u origin master
 
 ##### git clone 做了什么？
 
-1. 自动将服务器默认命名为 origin（**注：**相当于 `git push -u origin master`）
+1. 自动将服务器默认命名为 origin（ 👀 相当于 `git push -u origin master`）
 2. 创建远程分支origin / branch（指向master分支的指针）
 3. 创建名为 master 的本地分支
 
@@ -1307,15 +1307,15 @@ The `git prune` command is an internal housekeeping（家务） utility that <fo
 
   ##### 《Git不要只会pull和push，试试这5条提高效率的命令》中关于 git reset 的补充
 
-  > **git reset --soft 的<mark style="background: aqua">使用场景</mark>：**
+  > **git reset --soft 的<font color=dodgerBlue>使用场景</font>：**
   >
   > - 有时候手滑不小心把不该提交的内容 commit 了，这时想改回来，只能再 commit 一次，又多一条“黑历史”。
   >
   > - 规范些的团队，一般对于 commit 的内容要求职责明确，颗粒度要细，便于后续出现问题排查。本来属于两块不同功能的修改，一起 commit 上去，这种就属于不规范。这次恰好又手滑了，一次性 commit 上去。
   >
-  > reset --soft 相当于后悔药，给你重新改过的机会 。<mark style="background: aqua">对于上面的场景</mark>，就可以再次修改重新提交，保持干净的 commit 记录（<font color=FF0000 size=4>**之前修改的内容，会被放入暂存区**</font>）。
+  > reset --soft 相当于后悔药，给你重新改过的机会 。<font color=dodgerBlue>对于上面的场景</font>，就可以再次修改重新提交，保持干净的 commit 记录（<font color=FF0000 size=4>**之前修改的内容，会被放入暂存区**</font>）。
   >
-  > <mark>以上说的是还未 push 的 commit</mark>。<font color=FF0000>对于已经 push 的 commit，也可以使用该命令，不过，**再次 push 时，由于远程分支和本地分支有差异，<font size=4>需要强制推送 git push -f 来覆盖被 reset 的 commit</font>**</font>。
+  > <font color=dodgerBlue>以上说的是还未 push 的 commit</font>。<font color=FF0000>对于已经 push 的 commit，也可以使用该命令，不过，**再次 push 时，由于远程分支和本地分支有差异，<font size=4>需要强制推送 git push -f 来覆盖被 reset 的 commit</font>**</font>。
   >
   > 还有一点需要注意⚠️：<font color=FF0000>在 reset --soft 指定 commit 号时，会将该 commit 到最近一次 commit 的所有修改内容全部恢复</font>，而不是只针对该 commit。
   >
@@ -1325,9 +1325,9 @@ The `git prune` command is an internal housekeeping（家务） utility that <fo
 
   **自己总结：**
 
-  - **git restore \<file>...：**对于工作区中被修改的文件，进行还原
+  - **git restore \<file>...：**对于工作区中被修改的文件，<font color=red>**进行还原**</font>
 
-  - **git restore --staged \<file>...：**将从工作区被添加到 暂存区中的文件，回滚到工作区中；但是修改的内容不变（不还原）。即：`git add <file>...` 的 逆操作。
+  - **git restore --staged \<file>...：**将从工作区被添加到 暂存区中的文件，回滚到工作区中；但是<font color=fuchsia>修改的内容不变（不还原）</font>。即：`git add <file>...` 的 逆操作。
 
   **自己试验的示例如下：**
 
@@ -1367,31 +1367,35 @@ The `git prune` command is an internal housekeeping（家务） utility that <fo
 
 #### 分支
 
-<font size=4>**使用背景 / 痛点**</font>
+##### 使用背景 / 痛点
 
-在开发软件时，<mark>可能有多人同时为同一个软件开发功能或修复 BUG，<font color=FF0000>可能存在多个 Release 版本</font>，并且<font color=FF0000>需要对各个版本进行维护</font></mark>。所幸，<font color=FF0000 size=4>Git 的分支功能可以 **支持同时进行多个功能的开发和版本管理**</font>
+在开发软件时，<font color=LightSeaGreen>可能有多人同时为同一个软件开发功能或修复 BUG</font>，<font color=FF0000>可能存在多个 Release 版本</font>，并且<font color=FF0000>需要对各个版本进行维护</font>。所幸，<font color=FF0000 size=4>Git 的分支功能可以 **支持同时进行多个功能的开发和版本管理**</font>
 
-<font size=4>**分支是什么**</font>
+##### 分支是什么
 
 分支是为了将修改记录的整体流程分叉保存。<font color=FF0000 size=4>分叉后的分支不受其他分支的影响</font>，所以在同一个数据库里可以同时进行多个修改。另外，<font color=FF0000 size=4>**分叉的分支可以合并**</font>。
 
 ![img](https://s2.loli.net/2022/02/19/Uf8y9ixZJSOaKrw.png)
 
-<mark>为了不受其他开发人员的影响，您 **可以在主分支上建立自己专用的分支**</mark>。<font color=FF0000 size=4>完成工作后，将自己分支上的修改合并到主分支</font>。因为每一次提交的历史记录都会被保存，所以当发生问题时，定位和修改造成问题的提交就容易多了。
+<font color=LightSeaGreen>为了不受其他开发人员的影响，您 **可以在主分支上建立自己专用的分支**</font>。<font color=FF0000 size=4>完成工作后，将自己分支上的修改合并到主分支</font>。因为每一次提交的历史记录都会被保存，所以当发生问题时，定位和修改造成问题的提交就容易多了。
 
 ![img](https://s2.loli.net/2022/02/19/9q18C4XLoBNFe7n.png)
 
 在数据库进行最初的提交后，Git会创建一个名为 master 的分支。因此之后的提交，在切换分支之前都会添加到 master 分支里。
 
-<font size=4>**两种分支 的 运用规则**</font>
+##### 两种分支 的 运用规则
 
-- **Merge 分支：**<font color=FF0000 size=4>Merge 分支是**为了可以随时发布 release 而创建的分支**</font>，它 <font color=FF0000 size=4>还能作为 Topic 分支的 **源分支** 使用</font>（注：下面的 Topic 分支 中也有提及）。<font color=FF0000 size=4>保持分支稳定的状态是很重要的，**如果要进行更改，通常先创建 Topic 分支**</font>（**注：**感觉可以理解为，使用更小的粒度进行操作）；而针对该分支，可以使用 Jenkins 之类的 CI 工具进行自动化编译以及测试。
+###### Merge 分支
 
-  通常，大家会将 master 分支当作 Merge 分支使用。
+<font color=FF0000 size=4>Merge 分支是**为了可以随时发布 release 而创建的分支**</font>，它 <font color=FF0000 size=4>还能作为 Topic 分支的 **源分支** 使用</font>（注：下面的 Topic 分支 中也有提及）。<font color=FF0000 size=4>保持分支稳定的状态是很重要的，**如果要进行更改，通常先创建 Topic 分支**</font>（**注：**感觉可以理解为，使用更小的粒度进行操作）；而针对该分支，可以使用 Jenkins 之类的 CI 工具进行自动化编译以及测试。
 
-- **Topic 分支：**<font color=FF0000 size=4>Topic 分支**是为了开发新功能或修复 Bug 等任务而建立的分支**</font>（**注：**通过 Topic 的名字，就可以看出该分支的意思和目的，方便理解和记忆 ）。若<font color=FF0000>要同时进行多个的任务，请创建多个的 Topic 分支</font>（注：和上面的类似，使用更小粒度的同时，粒度之间最好是解耦的）。
+通常，大家会将 master 分支当作 Merge 分支使用。
 
-  <font color=FF0000 size=4>Topic 分支**是从稳定的 Merge 分支创建的**</font>。<font color=FF0000>完成作业后，要把 Topic 分支 <font color=FF0000 size=4>**合并回**</font> Merge 分支</font>。
+###### Topic 分支
+
+<font color=FF0000 size=4>Topic 分支**是为了开发新功能或修复 Bug 等任务而建立的分支**</font>（**注：**通过 Topic 的名字，就可以看出该分支的意思和目的，方便理解和记忆 ）。若<font color=FF0000>要同时进行多个的任务，请创建多个的 Topic 分支</font>（注：和上面的类似，使用更小粒度的同时，粒度之间最好是解耦的）。
+
+<font color=FF0000 size=4>Topic 分支**是从稳定的 Merge 分支创建的**</font>。<font color=FF0000>完成作业后，要把 Topic 分支 <font color=FF0000 size=4>**合并回**</font> Merge 分支</font>。
 
 摘自：[猴子都能懂的GIT入门 - 分支的运用](https://backlog.com/git-tutorial/cn/stepup/stepup1_2.html)
 
@@ -1401,108 +1405,106 @@ The `git prune` command is an internal housekeeping（家务） utility that <fo
 
 合并分支有2种方法：使用 merge 或 rebase。使用这2种方法，合并后分支的历史记录会有很大的差别。
 
-- <font size=4>**merge：**</font>
+##### merge
 
-  使用 merge 可以合并多个历史记录的流程。 
+使用 merge 可以合并多个历史记录的流程。 
 
-  如下图所示，bugfix分支是从master分支分叉出来的。
+如下图所示，bugfix分支是从master分支分叉出来的。
 
-  ![分支](https://s2.loli.net/2022/02/22/bzRpQgWOSfD6KoN.png)
+![分支](https://s2.loli.net/2022/02/22/bzRpQgWOSfD6KoN.png)
 
-  master 分支时，<font color=FF0000>如果 master 分支的状态没有被更改过（注：即 fast-forward ），那么这个合并是非常简单的</font>。 <font color=FF0000>**bugfix 分支的历史记录包含master 分支所有的历史记录，所以通过把 master 分支的位置移动到bugfix的最新分支上，Git 就会合并**</font>。 <font color=FF0000 size=4>**这样的合并被称为 fast-forward（快进）合并**</font>。（**注：**这里没有产生新的节点)
+master 分支时，<font color=FF0000>如果 master 分支的状态没有被更改过（注：即 fast-forward ），那么这个合并是非常简单的</font>。 <font color=FF0000>**bugfix 分支的历史记录包含master 分支所有的历史记录，所以通过把 master 分支的位置移动到bugfix的最新分支上，Git 就会合并**</font>。 <font color=FF0000 size=4>**这样的合并被称为 fast-forward（快进）合并**</font>。（**注：**这里没有产生新的节点)
 
-  ![fast-forward合并](https://s2.loli.net/2022/02/22/k2slWP59tGAhvIS.png)
+![fast-forward合并](https://s2.loli.net/2022/02/22/k2slWP59tGAhvIS.png)
 
-  但是，<mark>master 分支的历史记录有可能在 bugfix 分支分叉出去后有新的更新</mark>。<font color=FF0000>这种情况下，要把 master 分支的修改内容和 bugfix 分支的修改内容汇合起来</font>。
+但是，<mark>master 分支的历史记录有可能在 bugfix 分支分叉出去后有新的更新</mark>。<font color=FF0000>这种情况下，要把 master 分支的修改内容和 bugfix 分支的修改内容汇合起来</font>。
 
-  ![分叉分支後进行新的更新](https://s2.loli.net/2022/02/22/HIqePVoZEwQuRJO.png)
+![分叉分支後进行新的更新](https://s2.loli.net/2022/02/22/HIqePVoZEwQuRJO.png)
 
-  因此，<font color=FF0000 size=4>**合并两个修改会生成一个提交**</font>。这时，master 分支的 HEAD 会移动到该提交上。
+因此，<font color=FF0000 size=4>**合并两个修改会生成一个提交**</font>。这时，master 分支的 HEAD 会移动到该提交上。
 
-  ![结合了两个修改的合并提交](https://s2.loli.net/2022/02/22/GSL9qEsKy1Tmcod.png)
+![结合了两个修改的合并提交](https://s2.loli.net/2022/02/22/GSL9qEsKy1Tmcod.png)
 
-  **注意：**执行合并时，<font color=FF0000>如果设定了 non fast-forward 选项，即使在能够 fast-forward 合并的情况下也会生成新的提交并合并</font>。执行 non fast-forward 后，分支会维持原状。那么要查明在这个分支里的操作就很容易了。
+**注意：**执行合并时，<font color=FF0000>如果设定了 non fast-forward 选项，即使在能够 fast-forward 合并的情况下也会生成新的提交并合并</font>。执行 non fast-forward 后，分支会维持原状。那么要查明在这个分支里的操作就很容易了。
 
-  ![non fast-forward合并](https://s2.loli.net/2022/02/22/6iu5WpJUtR4KdmT.png)
+![non fast-forward合并](https://s2.loli.net/2022/02/22/6iu5WpJUtR4KdmT.png)
 
-  **补充：**
+##### git merge 补充
 
-  Git 可执行两种类型的合并：fast-forward 和 no-fast-forward。
+Git 可执行两种类型的合并：fast-forward 和 no-fast-forward。
 
-  - **Fast-forward ( --ff )：**
+###### Fast-forward ( --ff )
 
-    <font color=FF0000>在当前分支相比于我们要合并的分支没有额外的提交（commit）时，可以执行 fast-forward 合并</font>。<font color=FF0000>Git</font> 很懒，<font color=FF0000>首先会尝试执行最简单的选项：fast-forward</font>！这类合并<font color=FF0000>不会创建新的提交</font>，而是<font color=FF0000>会将我们正在合并的分支上的提交直接合并到当前分支</font>。
+<font color=FF0000>在当前分支相比于我们要合并的分支没有额外的提交（commit）时，可以执行 fast-forward 合并</font>。<font color=FF0000>Git</font> 很懒，<font color=FF0000>首先会尝试执行最简单的选项：fast-forward</font>！这类合并<font color=FF0000>不会创建新的提交</font>，而是<font color=FF0000>会将我们正在合并的分支上的提交直接合并到当前分支</font>。
 
-    ![img](https://pic2.zhimg.com/v2-0a0431c992211561f14ee66f1cf0ea89_b.gif)
+![img](https://pic2.zhimg.com/v2-0a0431c992211561f14ee66f1cf0ea89_b.gif)
 
-  - **No-fast-foward ( --no-ff )：**
+###### No-fast-foward ( --no-ff )
 
-    <mark>如果你的当前分支相比于你想要合并的分支没有任何提交，那当然很好，但很遗憾现实情况很少如此</mark>！如果我们<font color=FF0000>在当前分支上提交我们想要合并的分支不具备的改变，那么 git 将会执行 no-fast-forward 合并</font>。
+<mark>如果你的当前分支相比于你想要合并的分支没有任何提交，那当然很好，但很遗憾现实情况很少如此</mark>！如果我们<font color=FF0000>在当前分支上提交我们想要合并的分支不具备的改变，那么 git 将会执行 no-fast-forward 合并</font>。
 
-    <font color=FF0000>**使用 no-fast-forward 合并时，Git 会在当前活动分支上创建新的 merging commit**</font>。这个提交的父提交（parent commit）即指向这个活动分支，也指向我们想要合并的分支！
+<font color=FF0000>**使用 no-fast-forward 合并时，Git 会在当前活动分支上创建新的 merging commit**</font>。这个提交的父提交（parent commit）即指向这个活动分支，也指向我们想要合并的分支！
 
-    ![img](https://s2.loli.net/2022/02/23/1vajGPTt4wAy76D.gif)
+![img](https://s2.loli.net/2022/02/23/1vajGPTt4wAy76D.gif)
 
-  摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
+摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
 
-  **补充：**
+**git merge 有一个 `--no-ff` 的选项：**<font color=FF0000>在合并时创建一个新的合并后的提交，不要 Fast-Foward 合并，这样可以生成 merge 提交</font>
 
-  **git merge 有一个 `--no-ff` 的选项：**<font color=FF0000>在合并时创建一个新的合并后的提交，不要 Fast-Foward 合并，这样可以生成 merge 提交</font>
+学习自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
-  补充内容学习自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+##### rebase
 
-- <font size=4>**rebase**</font>
+跟merge的例子一样，如下图所示，bugfix分支是从master分支分叉出来的。
 
-  跟merge的例子一样，如下图所示，bugfix分支是从master分支分叉出来的。
+![分支](https://s2.loli.net/2022/02/22/W5J98HkwNEpRZor.png)
 
-  ![分支](https://s2.loli.net/2022/02/22/W5J98HkwNEpRZor.png)
+如果 <font color=FF0000>使用 rebase 方法进行分支合并，会出现下图所显示的历史记录</font>（**注：**这和 merge 完全不一样。因为这使得 <font color=FF0000 size=4>commit 之间的关系，变成线性的了</font>。同时，使用 rebase 进行合并，没有产生新的 commit)。现在我们来简单地讲解一下合并的流程吧。
 
-  如果 <font color=FF0000>使用 rebase 方法进行分支合并，会出现下图所显示的历史记录</font>（**注：**这和 merge 完全不一样。因为这使得 <font color=FF0000 size=4>commit 之间的关系，变成线性的了</font>。同时，使用 rebase 进行合并，没有产生新的 commit)。现在我们来简单地讲解一下合并的流程吧。
+![使用rebase合并分支](https://s2.loli.net/2022/02/22/VZ96GN7vi5IhxAB.png)
 
-  ![使用rebase合并分支](https://s2.loli.net/2022/02/22/VZ96GN7vi5IhxAB.png)
+首先，rebase bugfix 分支到 master 分支， <font color=FF0000 size=4>**bugfix 分支的历史记录会添加在 master 分支的后面**</font>。如图所示，历史记录成一条线，相当整洁。<font color=FF0000>**这时移动提交 X 和 Y 有可能会发生冲突，所以需要修改各自的提交时发生冲突的部分**</font>。
 
-  首先，rebase bugfix 分支到 master 分支， <font color=FF0000 size=4>**bugfix 分支的历史记录会添加在 master 分支的后面**</font>。如图所示，历史记录成一条线，相当整洁。<font color=FF0000>**这时移动提交 X 和 Y 有可能会发生冲突，所以需要修改各自的提交时发生冲突的部分**</font>。
+![使用rebase合并分支](https://s2.loli.net/2022/02/22/JlObyNVtxmRc8Pw.png)
 
-  ![使用rebase合并分支](https://s2.loli.net/2022/02/22/JlObyNVtxmRc8Pw.png)
+<font color=FF0000 size=4>**rebase 之后，master 的 HEAD 位置不变**</font>。因此，要合并 master 分支和 bugfix 分支，即是<font color=FF0000>将 master 的 HEAD 移动到 bugfix 的 HEAD这里</font>。
 
-  <font color=FF0000 size=4>**rebase 之后，master 的 HEAD 位置不变**</font>。因此，要合并 master 分支和 bugfix 分支，即是<font color=FF0000>将 master 的 HEAD 移动到 bugfix 的 HEAD这里</font>。
+![使用rebase合并分支](https://s2.loli.net/2022/02/22/ekvPxlNRAaLFdh1.png)
 
-  ![使用rebase合并分支](https://s2.loli.net/2022/02/22/ekvPxlNRAaLFdh1.png)
-  
-  <font size=4>**补充：**</font>
-  
-  git rebase 会将当前分支的提交复制到指定的分支之上。
-  
-  ![https://pic2.zhimg.com/v2-6b8427b4baf6cdfb08b852ab1cdb4941_b.gif](https://s2.loli.net/2022/02/24/PAu9XB4nV1wZ6Gp.gif)
-  
-  **变基与合并有一个重大的区别：**Git 不会尝试确定要保留或不保留哪些文件。我们执行 rebase 的分支总是含有我们想要保留的最新近的修改！这样我们不会遇到任何合并冲突，而且可以保留一个漂亮的、线性的 Git 历史记录。
-  
-  **交互式变基（Interactive Rebase）**
-  
-  在为提交执行变基之前，我们可以修改它们！我们可以使用交互式变基来完成这一任务。交互式变基在你当前开发的分支上以及想要修改某些提交时会很有用。
-  
-  **在我们正在 rebase 的提交上，我们可以执行以下 6 个动作：**
-  
-  - **reword：**修改提交信息。**注：**即编辑 commit 的 msg
-  - **edit：**修改此提交；
-  - **squash：**将提交融合到前一个提交中；
-  - **fixup：**将提交融合到前一个提交中，不保留该提交的日志消息；
-  - **exec：**在每个提交上运行我们想要 rebase 的命令；
-  - **drop：**移除该提交。
-  
-  很棒！这样我们就能完全控制我们的提交了。如果你想要移除一个提交，只需 drop 即可。
-  
-  ![https://pic4.zhimg.com/v2-7189da3226d1fdedeb6a297fbc2b1177_b.gif](https://s2.loli.net/2022/02/24/S9KjiUEZNoRQB36.gif)
-  
-  如果你想把多个提交融合到一起以便得到清晰的提交历史，那也没有问题！
-  
-  ![img](https://s2.loli.net/2022/02/24/1mHqAysCPIY9drT.gif)
-  
-  交互式变基能为你在 rebase 时提供大量控制，甚至可以控制当前的活动分支。
-  
-  补充内容摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
+##### git reabase 补充
 
-<font size=4>**总结**</font>
+git rebase 会将当前分支的提交复制到指定的分支之上。
+
+![https://pic2.zhimg.com/v2-6b8427b4baf6cdfb08b852ab1cdb4941_b.gif](https://s2.loli.net/2022/02/24/PAu9XB4nV1wZ6Gp.gif)
+
+**变基与合并有一个重大的区别：**Git 不会尝试确定要保留或不保留哪些文件。我们执行 rebase 的分支总是含有我们想要保留的最新近的修改！这样我们不会遇到任何合并冲突，而且可以保留一个漂亮的、线性的 Git 历史记录。
+
+**交互式变基（Interactive Rebase）**
+
+在为提交执行变基之前，我们可以修改它们！我们可以使用交互式变基来完成这一任务。交互式变基在你当前开发的分支上以及想要修改某些提交时会很有用。
+
+**在我们正在 rebase 的提交上，我们可以执行以下 6 个动作：**
+
+- **reword：**修改提交信息。**注：**即编辑 commit 的 msg
+- **edit：**修改此提交；
+- **squash：**将提交融合到前一个提交中；
+- **fixup：**将提交融合到前一个提交中，不保留该提交的日志消息；
+- **exec：**在每个提交上运行我们想要 rebase 的命令；
+- **drop：**移除该提交。
+
+很棒！这样我们就能完全控制我们的提交了。如果你想要移除一个提交，只需 drop 即可。
+
+![https://pic4.zhimg.com/v2-7189da3226d1fdedeb6a297fbc2b1177_b.gif](https://s2.loli.net/2022/02/24/S9KjiUEZNoRQB36.gif)
+
+如果你想把多个提交融合到一起以便得到清晰的提交历史，那也没有问题！
+
+![img](https://s2.loli.net/2022/02/24/1mHqAysCPIY9drT.gif)
+
+交互式变基能为你在 rebase 时提供大量控制，甚至可以控制当前的活动分支。
+
+补充内容摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
+
+##### 总结
 
 **merge 和 rebase 都是合并历史记录，但是各自的特征不同。**
 
@@ -1516,7 +1518,7 @@ The `git prune` command is an internal housekeeping（家务） utility that <fo
 
 摘自：[猴子都能懂的GIT入门 - 分支的合并](https://backlog.com/git-tutorial/cn/stepup/stepup1_4.html)
 
-**补充：**
+##### rebase 和 merge 区别的补充
 
 **git rebase 与 git merge的最大区别是：**它会更改变更历史对应的 commit 节点。
 
@@ -1544,7 +1546,7 @@ The `git prune` command is an internal housekeeping（家务） utility that <fo
 
 squash 选项示例：[猴子都能懂的GIT入门 - 教程3 改写提交！-  merge --squash](https://backlog.com/git-tutorial/cn/stepup/stepup7_7.html)，在 试了 `git merge --squash issue1` 和 `git merge issue1` 两种 merge 后，发现  `git merge --squash issue1`  是将 issue1 中 <font color=FF0000 size=4>所有**分支产生后添加的 commit 节点**都合并了</font>，并入了 master 分支中；因此多了一个 commit。而 `git merge issue1` 是不合并 issue1 中分支产生后添加的 commit 节点，将其完全并入 master 分支中；多了两个 commit 节点（应该是 覆盖掉了 master 分支中 head 位置的 commit，并入了 issue1 分支中的 两个 commit，并新生成了 一个合并后的 commit）
 
-<font size=4>**git rebase**</font>
+##### git rebase
 
 rebase 的时候，修改冲突后的提交不是使用 commit 命令，而是执行 rebase 命令指定 `--continue` 选项。若 <font color=FF0000 size=4>要取消 rebase，指定 --abort 选项</font>。
 
@@ -1552,9 +1554,9 @@ rebase 的时候，修改冲突后的提交不是使用 commit 命令，而是�
 
 <font size=4>**git fetch 命令**</font>
 
-执行 pull，远程数据库的内容就会自动合并。但是，<mark>有时只是想确认本地数据库的内容而不想合并。这种情况下，请使用 fetch</mark>。
+执行 pull，远程数据库的内容就会自动合并。但是，<font color=LightSeaGreen>有时只是想确认本地数据库的内容而不想合并。这种情况下，请使用 fetch</font>。
 
-<mark>执行 fetch 就可以取得远程数据库的最新历史记录</mark>。<font color=FF0000>**取得的提交 会导入到没有名字的分支，这个分支名为 FETCH_HEAD**</font>。
+<font color=LightSeaGreen>执行 fetch 就可以取得远程数据库的最新历史记录</font>。<font color=FF0000>**取得的提交 会导入到没有名字的分支，这个分支名为 FETCH_HEAD**</font>。
 
 ![在本地端数据库和远端数据库的origin，在从B进行提交的状态下执行fetch](https://s2.loli.net/2022/02/22/I5YkiFWzatSZcfs.png)
 
@@ -1562,13 +1564,15 @@ rebase 的时候，修改冲突后的提交不是使用 commit 命令，而是�
 
 ![合并FETCH_HEAD](https://s2.loli.net/2022/02/22/mRhTzNADxVoPnX7.png)
 
-**补充：**
+##### git fetch 补充
 
-- **git fetch 图解：**
-  ![https://pic2.zhimg.com/v2-686ae54f78ea69b6c00cc8b159cf7369_b.gif](https://s2.loli.net/2022/02/24/xZMOgY6LENzCp3u.gif)
+###### git fetch 图解
 
-- **git pull 图解：**
-  ![https://pic2.zhimg.com/v2-1298832b975cf9cf0ad6c399ec5da32d_b.gif](https://s2.loli.net/2022/02/24/L6tx2VHDyfsCArh.gif)
+![https://pic2.zhimg.com/v2-686ae54f78ea69b6c00cc8b159cf7369_b.gif](https://s2.loli.net/2022/02/24/xZMOgY6LENzCp3u.gif)
+
+###### git pull 图解
+
+![https://pic2.zhimg.com/v2-1298832b975cf9cf0ad6c399ec5da32d_b.gif](https://s2.loli.net/2022/02/24/L6tx2VHDyfsCArh.gif)
 
 补充内容摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
 
@@ -1592,7 +1596,7 @@ rebase 的时候，修改冲突后的提交不是使用 commit 命令，而是�
 
 摘自：[segmentfault Salamander的回答 -- git pull和git merge 区别? ](https://segmentfault.com/q/1010000009076820)
 
-**补充：**
+##### 补充
 
 git pull 有 `--no-ff` 选项，表示：抓取远程仓库所有分支更新并合并到本地，不要快进合并
 
@@ -1606,7 +1610,7 @@ git pull 有 `--no-ff` 选项，表示：抓取远程仓库所有分支更新并
 
 ![提取提交](https://s2.loli.net/2022/02/22/63rU5ZkLSEymOpi.png)
 
-**主要使用的场合：**
+##### 主要使用的场合
 
 - 把弄错分支的提交移动到正确的地方
 - 把其他分支的提交添加到现在的分支
@@ -1615,9 +1619,9 @@ git pull 有 `--no-ff` 选项，表示：抓取远程仓库所有分支更新并
 
 在 [猴子都能懂的GIT入门 - - 教程3 改写提交！- 4. cherry-pick](https://backlog.com/git-tutorial/cn/stepup/stepup7_4.html) 有示例。命令为 `git cherry-pick commitHash` 其实挺简单；大致意思就是，在一个分支（假设为 A）中，将另一个分支（假设为 B）的 commit （commitHash 所对应的 commit）中的内容导入该分支 ( A ) 中（只是倒入这个 commitHash 指定的 commit，他后面无论有什么变化，都不导入）；另外，该操作可能会导致冲突，如果出现，需要手动清除冲突（示例中就存在冲突）。
 
-**补充：**
+##### git cherry-pick 补充
 
-假设 dev 分支上的提交 76d12 为 index.js 文件添加了一项修改，而我们希望将其整合到 master 分支中。<mark>我们并不想要整个 dev 分支，而只需要这个提交</mark>！
+假设 dev 分支上的提交 76d12 为 index.js 文件添加了一项修改，而我们希望将其整合到 master 分支中。<font color=LightSeaGreen>我们并不想要整个 dev 分支，而只需要这个提交</font>！
 
 ![img](https://s2.loli.net/2022/02/24/yLq3CbzrYGjS1Mh.gif)
 
@@ -1772,7 +1776,7 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 
 #### git 图解
 
-<font size=4>**基本用法：**</font>
+##### 基本用法
 
 <img src="https://marklodato.github.io/visual-git-guide/basic-usage.svg" alt="img" style="zoom: 70%;" />
 
@@ -1795,7 +1799,7 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 
 <img src="https://marklodato.github.io/visual-git-guide/diff.svg" alt="img" style="zoom: 65%;"/>
 
-**注：**注意上图，git diff 的默认值，和不同参数之间 效果的区别。
+> 👀 注：注意上图，git diff 的默认值，和不同参数之间 效果的区别。
 
 <font size=4>**git commit**</font>
 
@@ -1815,7 +1819,7 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 
 <font color=FF0000 size=4>**checkout命令 用于从历史提交（或者暂存区域）中拷贝文件到工作目录**</font>，<font color=FF0000>也可用于切换分支</font>。
 
-<font color=FF0000>**当给定某个文件名**</font>（或者打开 -p选项，或者 文件名 和 -p选项 同时打开）时，<font color=FF0000 size=4>**git 会从指定的提交中拷贝文件到暂存区域和工作目录**</font>（**注：**<mark>注意，如下图，是同时拷入 暂存区 和 工作区；另外，这也是最上面所说的 `git add files` 的逆操作</mark>）。比如，<font color=FF0000>`git checkout HEAD~ foo.c` 会将提交节点 *HEAD~* （即当前提交节点的父节点）中的 `foo.c` 复制到工作目录并且加到暂存区域中</font>。（如果命令中没有指定提交节点，则会从暂存区域中拷贝内容）注意当前分支不会发生变化。
+<font color=FF0000>**当给定某个文件名**</font>（或者打开 -p选项，或者 文件名 和 -p选项 同时打开）时，<font color=FF0000 size=4>**git 会从指定的提交中拷贝文件到暂存区域和工作目录**</font>（ 👀 注意，如下图，是同时拷入 暂存区 和 工作区；另外，这也是最上面所说的 `git add files` 的逆操作）。比如，<font color=FF0000>`git checkout HEAD~ foo.c` 会将提交节点 *HEAD~* （即当前提交节点的父节点）中的 `foo.c` 复制到工作目录并且加到暂存区域中</font>。（如果命令中没有指定提交节点，则会从暂存区域中拷贝内容）注意当前分支不会发生变化。
 
 <img src="https://marklodato.github.io/visual-git-guide/checkout-files.svg" alt="img" style="zoom:67%;" />
 
