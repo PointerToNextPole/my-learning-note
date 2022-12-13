@@ -453,7 +453,7 @@ str.codePointAt(pos)
 
 > 代理对也就是 UTF-16 （的）<font color=FF0000>扩展字符</font>
 >
-> 摘自：[现代JS教程 - Iterable object（可迭代对象）- 字符串是可迭代的](https://zh.javascript.info/iterable#zi-fu-chuan-shi-ke-die-dai-de)
+> 摘自：[现代JS教程 - Iterable object（可迭代对象）# 字符串是可迭代的](https://zh.javascript.info/iterable#zi-fu-chuan-shi-ke-die-dai-de)
 
 ##### 示例
 
@@ -2741,15 +2741,17 @@ javascript:void(func())
 
 - javascript:void(0)，仅仅<font color=FF0000>表示一个死链接</font>。如果你要定义一个死链接请使用 javascript:void(0) 。
 
+
+
 #### JavaScript 异步编程
 
 异步（Asynchronous, async）是与同步（Synchronous, sync）相对的概念。
 
 在我们学习的传统单线程编程中，程序的运行是同步的（同步不意味着所有步骤同时运行，而是指<font color=FF0000>步骤在一个控制流序列中**按顺序执行**</font>）。而<font color=FF0000>异步的概念则是不保证同步的概念</font>，也就是说，一个<font color=FF0000>异步过程的执行将不再与原有的序列有顺序关系。</font>
 
-<mark>**简单来理解就是：同步按你的代码顺序执行，异步不按照代码顺序执行，异步的执行效果更高**</mark>
+<font color=LightSeaGreen>**简单来理解就是：同步按你的代码顺序执行，异步不按照代码顺序执行，异步的执行效果更高**</font>
 
-JavaScript 中的<font color=FF0000>异步操作函数往往通过**回调函数**来实现异步任务的结果处理</font>。补充：可以说，回调函数 (callback) 是 JavaScript异步编程的基础。
+JavaScript 中的<font color=FF0000>异步操作函数往往通过**回调函数**来实现异步任务的结果处理</font>。补充：可以说，回调函数 (callback) 是 JavaScript 异步编程的基础。
 
 <font color=FF0000>回调函数</font>就是一个函数，它是在我们启动一个异步任务的时候就告诉它：等你完成了这个任务之后要干什么。这样一来主线程几乎不用关心异步任务的状态了，他自己会善始善终。
 
@@ -2763,23 +2765,29 @@ setTimeout(function () {
 
 这个函数执行之后会产生一个子线程，子线程会等待 3 秒，然后执行回调函数 "print"，在命令行输出 "RUNOOB!"。
 
+
+
 #### Promise
 
 Promise 是一个 ECMAScript 6 提供的类，目的是更加优雅地书写复杂的异步任务。<font color=FF0000>本质上 Promise 是一个函数返回的对象，对象用于表示一个**异步操作**的最终完成 （或失败）及其结果值</font>。
 
-**补充：**一个 Promise 对象代表一个在这个 promise 被创建出来时不一定已知的值。它让您能够把异步操作最终的成功返回值或者失败原因和相应的处理程序关联起来。 这样使得异步方法可以像同步方法那样返回值：<font color=FF0000>异步方法并不会立即返回最终的值，而是会返回一个 promise，以便在未来某个时候把值交给使用者。</font>
-
-**一个 Promise <font color=FF0000><font size=4>必然</font> 处于以下几种状态之一</font>：**
-
-- **待定（pending）：**<font color=FF0000>初始状态</font>，<font color=FF0000>既没有被兑现，也没有被拒绝</font>。
-- **已兑现（fulfilled）：**意味着<font color=FF0000>操作成功完成</font>。
-- **已拒绝（rejected）：** 意味着<font color=FF0000>操作失败</font>。
+> 👀 **MDN 补充**
+>
+> 一个 Promise 对象代表一个在这个 promise 被创建出来时不一定已知的值。它让您能够把异步操作最终的成功返回值或者失败原因和相应的处理程序关联起来。 这样使得异步方法可以像同步方法那样返回值：<font color=FF0000>异步方法并不会立即返回最终的值，而是会返回一个 promise，以便在未来某个时候把值交给使用者。</font>
+>
+> ##### 一个 Promise 必然 处于以下几种状态之一
+>
+> - **待定（pending）：**<font color=FF0000>初始状态</font>，<font color=FF0000>既没有被兑现，也没有被拒绝</font>。
+> - **已兑现（fulfilled）：**意味着<font color=FF0000>操作成功完成</font>。
+> - **已拒绝（rejected）：** 意味着<font color=FF0000>操作失败</font>。
+>
+> 摘自：[MDN - Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
 <font color=FF0000>待定（pending）状态的 Promise 对象 **要么** 会通过一个值被兑现（fulfilled），**要么** 会通过一个原因（错误）被拒绝（rejected）</font>。
 
 **另外：** 如果一个 promise 已经被兑现（fulfilled）或被拒绝（rejected），那么我们也可以说它处于已敲定（settled）状态
 
-<font size=4>**构造 Promise**</font>
+##### 构造 Promise
 
 新建一个 Promise 对象：
 
@@ -2799,7 +2807,7 @@ Promise 类有 **`.then()`** **` .catch()`** 和 **`.finally()`** 三个方法�
 
 - **.finally()** ：是在 <font color=FF0000>Promise 执行的最后一定会执行的序列</font>
 
-示例：
+###### 示例
 
 ```js
 new Promise(function (resolve, reject) {
@@ -2828,7 +2836,9 @@ const myPromise =
   .then(handleFulfilledC,handleRejectedC);
 ```
 
-**替代方案：**（注：这样就不用写多个 handleRejected 了）
+**替代方案：**
+
+> 👀 这样就不用写多个 handleRejected 了
 
 ```js
 const myPromise =
@@ -2845,11 +2855,11 @@ const myPromise =
 - 即使异步操作已经完成（成功或失败），在这之后通过 then() 添加的回调函数也会被调用。
 - <font color=FF0000>通过**多次调用 then()** 可以**添加多个回调函数**，它们会按照插入顺序进行执行</font>。
 
-<font size=4>**Promise 很棒的一点就是链式调用（chaining）：**</font>
+##### Promise 很棒的一点就是链式调用（chaining）
 
 <font color=FF0000>连续执行两个或者多个异步操作是一个常见的需求，在上一个操作执行成功之后，开始下一个的操作，并带着上一步操作所返回的结果</font>。我们可以通过创造一个 **Promise 链**来实现这种需求。<font color=FF0000>then() 函数会返回一个**和原来不同的新的 Promise**</font>。
 
-> **注意：**执行的函数一定要有返回值，否则，callback 将无法获取上一个 Promise 的结果（如果使用箭头函数，() => x 比 () => { return x; } 更简洁一些，但后一种保留 return 的写法才支持使用多个语句）。
+> ⚠️ **注意：**执行的函数一定要有返回值，否则，callback 将无法获取上一个 Promise 的结果（如果使用箭头函数，`() => x` 比 `() => { return x; }` 更简洁一些，但后一种保留 return 的写法才支持使用多个语句）
 
 **补充：**因为 <font color=FF0000>Promise.prototype.then 和 Promise.prototype.catch 方法 **返回的是 promise**， 所以它们可以被链式调用</font>。
 
@@ -3462,7 +3472,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                         
+  >                                                                                                                                                                                                                             
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3481,7 +3491,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                         
+  >                                                                                                                                                                                                                             
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -3614,62 +3624,68 @@ yield 关键字用来<font color=FF0000>暂停和恢复一个生成器函数（ 
 
  yield* 表达式<font color=FF0000>用于委托给另一个generator 或可迭代对象</font>。
 
-**语法**
+##### 语法
 
 ```js
  yield* [[expression]];
 ```
 
-expression：返回一个可迭代对象的表达式。
+expression：<font color=red>返回一个**可迭代对象**的表达式</font>。
 
-**描述：**yield* 表达式迭代操作数，并产生它返回的每个值。yield* 表达式本身的值是当迭代器关闭时返回的值（即done为true时）。
+**描述：**yield* 表达式迭代操作数，并产生它返回的每个值。yield* 表达式本身的值是当迭代器关闭时返回的值（即done 为 true 时）。
 
-**示例：**
+##### 示例
 
-- **委托给其他生成器：**以下代码中，<font color=FF0000>g1() yield 出去的每个值都会在 g2() 的 next() 方法中返回</font>，就像那些 yield 语句是写在 g2() 里一样
+###### 委托给其他生成器
 
-  ```js
-  function* g1() { yield 2; yield 3; yield 4; }
-  function* g2() { yield 1; yield* g1(); yield 5; } // 注意这里的 yield* g1()
-  
-  var iterator = g2();
-  console.log(iterator.next()); // { value: 1, done: false }
-  console.log(iterator.next()); // { value: 2, done: false }
-  console.log(iterator.next()); // { value: 3, done: false }
-  console.log(iterator.next()); // { value: 4, done: false }
-  console.log(iterator.next()); // { value: 5, done: false } 注意，执行完g1后，g2继续执行
-  console.log(iterator.next()); // { value: undefined, done: true }
-  ```
+以下代码中，<font color=FF0000>g1() yield 出去的每个值都会在 g2() 的 next() 方法中返回</font>，就像那些 yield 语句是写在 g2() 里一样
 
-- **委托给其他可迭代对象：**除了生成器对象这一种可迭代对象，<font color=FF0000 size=4>yield* 还可以 yield 其它任意的**可迭代对象**</font>，比如说 <font color=FF0000 size=4>**数组、字符串、arguments 对象**等等</font>。
+```js
+function* g1() { yield 2; yield 3; yield 4; }
+function* g2() { yield 1; yield* g1(); yield 5; } // 注意这里的 yield* g1()
 
-  ```js
-  function* g3() { yield* [1, 2]; yield* "34"; yield* arguments; } 
-  
-  var iterator = g3(5, 6);
-  console.log(iterator.next()); // { value: 1, done: false }
-  console.log(iterator.next()); // { value: 2, done: false }
-  console.log(iterator.next()); // { value: "3", done: false }
-  console.log(iterator.next()); // { value: "4", done: false }
-  console.log(iterator.next()); // { value: 5, done: false }
-  console.log(iterator.next()); // { value: 6, done: false }
-  console.log(iterator.next()); // { value: undefined, done: true }
-  ```
+var iterator = g2();
+console.log(iterator.next()); // { value: 1, done: false }
+console.log(iterator.next()); // { value: 2, done: false }
+console.log(iterator.next()); // { value: 3, done: false }
+console.log(iterator.next()); // { value: 4, done: false }
+console.log(iterator.next()); // { value: 5, done: false } 注意，执行完g1后，g2继续执行
+console.log(iterator.next()); // { value: undefined, done: true }
+```
 
-- **yield* 表达式的值：**<font color=FF0000>**yield* 是一个表达式，不是语句，所以它会有自己的值**</font>。
+##### 委托给其他可迭代对象
 
-  ```js
-  function* g4() { yield* [1, 2, 3]; return "foo"; }
-  var result;
-  function* g5() { result = yield* g4(); }
-  
-  var iterator = g5();
-  console.log(iterator.next()); // { value: 1, done: false }
-  console.log(iterator.next()); // { value: 2, done: false }
-  console.log(iterator.next()); // { value: 3, done: false }
-  console.log(iterator.next()); // { value: undefined, done: true } 此时 g4()返回了 { value: "foo", done: true }
-  console.log(result);          // "foo"
-  ```
+除了生成器对象这一种可迭代对象，<font color=FF0000 size=4>yield* 还可以 yield 其它任意的**可迭代对象**</font>，比如说 <font color=FF0000 size=4>**数组、字符串、arguments 对象**等等</font>。
+
+```js
+function* g3() { yield* [1, 2]; yield* "34"; yield* arguments; } 
+
+var iterator = g3(5, 6);
+console.log(iterator.next()); // { value: 1, done: false }
+console.log(iterator.next()); // { value: 2, done: false }
+console.log(iterator.next()); // { value: "3", done: false }
+console.log(iterator.next()); // { value: "4", done: false }
+console.log(iterator.next()); // { value: 5, done: false }
+console.log(iterator.next()); // { value: 6, done: false }
+console.log(iterator.next()); // { value: undefined, done: true }
+```
+
+##### yield* 表达式的值
+
+<font color=FF0000>**yield* 是一个表达式，不是语句，所以它会有自己的值**</font>。
+
+```js
+function* g4() { yield* [1, 2, 3]; return "foo"; }
+var result;
+function* g5() { result = yield* g4(); }
+
+var iterator = g5();
+console.log(iterator.next()); // { value: 1, done: false }
+console.log(iterator.next()); // { value: 2, done: false }
+console.log(iterator.next()); // { value: 3, done: false }
+console.log(iterator.next()); // { value: undefined, done: true } 此时 g4()返回了 { value: "foo", done: true }
+console.log(result);          // "foo"
+```
 
 摘自：[MDN - yield*](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/yield*)
 
@@ -3677,7 +3693,7 @@ expression：返回一个可迭代对象的表达式。
 
 #### iterator
 
-**<font color=FF0000>原生</font>具备Iterator接口的数据结构**
+##### 原生具备 Iterator 接口的数据结构
 
 - Array
 - Map
@@ -3699,38 +3715,37 @@ expression：返回一个可迭代对象的表达式。
 
   即：返回一个对象，对象中包含 next() 函数，对象中必须有函数的值（value）和done的值
 
-<font size=4>**补充：**</font>
-
-<font size=4>**迭代协议**</font>
+##### 迭代协议
 
 作为 ECMAScript 2015 的一组补充规范，迭代协议并不是新的内置实现或语法，而是协议。这些协议可以被任何遵循某些约定的对象来实现。 <font color=FF0000>迭代协议具体分为两个协议：可迭代协议和迭代器协议。</font>
 
-- **可迭代协议**
+###### 可迭代协议
 
-  <font color=FF0000>可迭代协议允许 JavaScript 对象定义或定制它们的迭代行为，例如，在一个 for..of 结构中，哪些值可以被遍历到</font>。一些内置类型同时是内置可迭代对象，并且有默认的迭代行为，比如 Array 或者 Map，而其他内置类型则不是（比如 Object)）。
+<font color=FF0000>可迭代协议允许 JavaScript 对象定义或定制它们的迭代行为，例如，在一个 for..of 结构中，哪些值可以被遍历到</font>。一些内置类型同时是内置可迭代对象，并且有默认的迭代行为，比如 Array 或者 Map，而其他内置类型则不是（比如 Object)。
 
-  <font color=FF0000>要成为可迭代对象， 一个对象必须实现 @@iterator 方法。这意味着对象（或者它原型链上的某个对象）必须有一个键为 @@iterator 的属性</font>，可通过常量 Symbol.iterator 访问该属性：
+<font color=FF0000>要成为可迭代对象， 一个对象必须实现 @@iterator 方法。这意味着对象（或者它原型链上的某个对象）必须有一个键为 @@iterator 的属性</font>，可通过常量 Symbol.iterator 访问该属性：
 
-  | 属性              | 值                                                     |
-  | :---------------- | :----------------------------------------------------- |
-  | [Symbol.iterator] | 一个无参数的函数，其返回值为一个符合迭代器协议的对象。 |
+| 属性              | 值                                                     |
+| :---------------- | :----------------------------------------------------- |
+| [Symbol.iterator] | 一个无参数的函数，其返回值为一个符合迭代器协议的对象。 |
 
-  <font color=FF0000>当一个对象需要被迭代的时候（比如被置入一个 for...of 循环时），首先，会不带参数调用它的 @@iterator 方法，然后使用此方法返回的迭代器获得要迭代的值</font>。
-  值得注意的是调用此零个参数函数时，它将作为对可迭代对象的方法进行调用。 因此，在函数内部，this关键字可用于访问可迭代对象的属性，以决定在迭代过程中提供什么。
+<font color=FF0000>当一个对象需要被迭代的时候（比如被置入一个 for...of 循环时），首先，会不带参数调用它的 @@iterator 方法，然后使用此方法返回的迭代器获得要迭代的值</font>。
+值得注意的是调用此零个参数函数时，它将作为对可迭代对象的方法进行调用。 因此，在函数内部，this关键字可用于访问可迭代对象的属性，以决定在迭代过程中提供什么。
 
-  <font color=FF0000>此函数可以是普通函数，也可以是生成器函数，以便在调用时返回迭代器对象。 在此生成器函数的内部，可以使用yield提供每个条目</font>。
+<font color=FF0000>此函数可以是普通函数，也可以是生成器函数，以便在调用时返回迭代器对象。 在此生成器函数的内部，可以使用yield提供每个条目</font>。
 
-- **迭代器协议**
-  迭代器协议定义了产生一系列值（无论是有限个还是无限个）的标准方式。当值为有限个时，所有的值都被迭代完毕后，则会返回一个默认返回值。
-  只有实现了一个拥有以下语义（semantic）的 next() 方法，一个对象才能成为迭代器：
+###### 迭代器协议
 
-  | 属性 | 值                                                           |
-  | :--- | :----------------------------------------------------------- |
-  | next | 一个无参数函数，返回一个应当拥有以下两个属性的对象：<br/><font color=FF0000>**done（boolean）：**</font>如果迭代器可以产生序列中的下一个值，则为 false。（这等价于没有指定 done 这个属性。）<br>如果迭代器已将序列迭代完毕，则为 true。这种情况下，value 是可选的，如果它依然存在，即为迭代结束之后的默认返回值。<br /><font color=FF0000>**value：**</font>迭代器返回的任何 JavaScript 值。done 为 true 时可省略。<br /><font color=FF0000>next() 方法必须返回一个对象，该对象应当有两个属性： done 和 value</font>，<mark>如果返回了一个非对象值（比如 false 或 undefined），则会抛出一个 TypeError 异常</mark>（"iterator.next() returned a non-object value"）。 |
+迭代器协议定义了产生一系列值（无论是有限个还是无限个）的标准方式。当值为有限个时，所有的值都被迭代完毕后，则会返回一个默认返回值。
+只有实现了一个拥有以下语义（semantic）的 next() 方法，一个对象才能成为迭代器：
 
-  一些内置的语法结构，比如 展开运算符 其内部实现也使用了同样的迭代协议。
+| 属性 | 值                                                           |
+| :--- | :----------------------------------------------------------- |
+| next | 一个无参数函数，返回一个应当拥有以下两个属性的对象：<br/><font color=FF0000>**done（boolean）：**</font>如果迭代器可以产生序列中的下一个值，则为 false。（这等价于没有指定 done 这个属性。）<br>如果迭代器已将序列迭代完毕，则为 true。这种情况下，value 是可选的，如果它依然存在，即为迭代结束之后的默认返回值。<br /><font color=FF0000>**value：**</font>迭代器返回的任何 JavaScript 值。done 为 true 时可省略。<br /><font color=FF0000>next() 方法必须返回一个对象，该对象应当有两个属性： done 和 value</font>，<mark>如果返回了一个非对象值（比如 false 或 undefined），则会抛出一个 TypeError 异常</mark>（"iterator.next() returned a non-object value"）。 |
 
-  摘自：[MDN - 迭代协议](https://developer.mozilla.org/zh-CN/docs/orphaned/Web/JavaScript/Reference/Iteration_protocols)
+一些内置的语法结构，比如 展开运算符 其内部实现也使用了同样的迭代协议。
+
+摘自：[MDN - 迭代协议](https://developer.mozilla.org/zh-CN/docs/orphaned/Web/JavaScript/Reference/Iteration_protocols)
 
 
 
@@ -8765,20 +8780,70 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 ##### 方法
 
 - FileReader.abort()：中止读取操作。在返回时，readyState属性为DONE。
-- FileReader.readAsArrayBuffer()：开始读取指定的 Blob中的内容, 一旦完成, result 属性中保存的将是被读取文件的 ArrayBuffer 数据对象.
+- FileReader.readAsArrayBuffer()：开始读取指定的 Blob中的内容, 一旦完成（👀 load 事件触发），result 属性中保存的将是被读取文件的 ArrayBuffer 数据对象
 - FileReader.readAsBinaryString()：开始读取指定的Blob中的内容。一旦完成，result属性中将包含所读取文件的原始二进制数据。
-- FileReader.readAsDataURL()：开始读取指定的Blob中的内容。一旦完成，result属性中将包含一个data: URL格式的Base64字符串以表示所读取文件的内容。
+- FileReader.readAsDataURL()：开始读取指定的Blob中的内容。一旦完成，result 属性中将包含一个 data: URL 格式的 Base64 字符串以表示所读取文件的内容。
 - FileReader.readAsText()：开始读取指定的Blob中的内容。一旦完成，result属性中将包含一个字符串以表示所读取的文件内容。
 
 摘自：[MDN - FileReader](https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader)
+
+##### 《现代 JS 教程》FileReader 补充
+
+###### 主要方法
+
+- **`readAsArrayBuffer(blob)`** ：将数据<font color=red>读取为二进制格式</font>的 `ArrayBuffer`。
+- **`readAsText(blob, [encoding])`** ：将数据<font color=LightSeaGreen>读取为给定编码</font>（<font color=red>**默认为 `utf-8` 编码**</font>）的<font color=red>**文本字符串**</font>。
+- **`readAsDataURL(blob)`** ：读取二进制数据，并<font color=red>将其编码为 base64 的 data url</font>。
+- **`abort()`** ：<font color=red>**取消操作**</font>。
+
+<font color=dodgerBlue>`read*` 方法的选择，取决于我们喜欢哪种格式，以及如何使用数据</font>。
+
+- `readAsArrayBuffer` ：用于二进制文件，<font color=red>执行低级别的二进制操作</font>。对于诸如切片 ( slicing ) 之类的高级别的操作，`File` 是继承自 `Blob` 的，所以我们可以直接调用它们，而无需读取。
+- `readAsText` ：<font color=red>用于文本文件</font>，当我们想要获取字符串时。
+- `readAsDataURL` ：当我们<font color=red>想在 `src` 中使用此数据，并将其用于 `img` 或其他标签时</font>。正如我们在 [Blob](https://zh.javascript.info/blob) 一章中所讲的，还有一种用于此的读取文件的替代方案：`URL.createObjectURL(file)`。
+
+###### 读取过程中，有以下事件
+
+- `loadstart` ：开始加载。
+- `progress` ：在读取过程中出现。
+- `load` ：读取完成，没有 error。
+- `abort` ：调用了 `abort() `。
+- `error` ：出现 error。
+- `loadend` ：读取完成，无论成功还是失败。
+
+###### 读取完成后，我们可以通过以下方式访问读取结果
+
+- `reader.result` 是结果（如果成功）
+- `reader.error` 是 error（如果失败）
+
+###### FileReader 用于 blob
+
+正如我们在 [Blob](https://zh.javascript.info/blob) 一章中所提到的，<font color=fuchsia>`FileReader` 不仅可读取文件，还可读取任何 blob</font>。
+
+<font color=dodgerBlue>我们可以使用它将 blob 转换为其他格式：</font>
+
+- `readAsArrayBuffer(blob)` ：转换为 `ArrayBuffer`
+- `readAsText(blob, [encoding])` 
+- ：转换为字符串（ `TextDecoder` 的一个替代方案）
+- `readAsDataURL(blob)` ：转换为 base64 的 data url
+
+###### 在 Web Workers 中可以使用 FileReaderSync
+
+<font color=dodgerBlue>对于 Web Worker，还有一种同步的 `FileReader` 变体，称为 [FileReaderSync](https://www.w3.org/TR/FileAPI/#FileReaderSync)</font>
+
+它的读取方法 `read*` 不会生成事件，但是会像常规函数那样返回一个结果。
+
+不过，这<font color=red>仅在 Web Worker 中可用</font>，因为在读取文件的时候，同步调用会有延迟，而在 Web Worker 中，这种延迟并不是很重要。它不会影响页面。
+
+摘自：[现代 JS 教程 - File 和 FileReader # FileeReader](https://zh.javascript.info/file#filereader)
 
 
 
 #### URL
 
-<font color=FF0000>**URL接口 用于解析，构造，规范化和编码 URLs**（统一资源定位器）</font>。 它通过<font color=LightSeaGreen>提供允许您轻松阅读和修改URL组件的属性</font>来工作。 <font color=LightSeaGreen>通常，通过在调用URL的构造函数时将URL指定为字符串或提供相对URL和基本URL来创建新的URL对象</font>。 然后，您可以轻松读取URL的已解析组成部分或对URL进行更改。
+<font color=FF0000>**URL接口 用于解析，构造，规范化和编码 URLs**（统一资源定位器）</font>。 它通过<font color=LightSeaGreen>提供允许您轻松阅读和修改 URL 组件的属性</font>来工作。 <font color=LightSeaGreen>通常，通过在调用 URL 的构造函数时将 URL 指定为字符串或提供相对 URL 和基本 URL 来创建新的URL对象</font>。 然后，您可以轻松读取URL的已解析组成部分或对 URL 进行更改。
 
-<font color=FF0000>**如果浏览器尚不支持URL()构造函数**</font>，则可以使用Window中的<font color=FF0000>Window.URL</font>属性。 确保检查您的任何目标浏览器是否要求对此添加前缀。
+<font color=FF0000>**如果浏览器尚不支持 `URL()` 构造函数**</font>，则可以使用 Window 中的 <font color=FF0000>Window.URL</font> 属性。 确保检查您的任何目标浏览器是否要求对此添加前缀。
 
 ##### 构造器
 
@@ -8809,52 +8874,90 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 
 ###### createObjectURL()
 
-返回一个 DOMString ，包含一个唯一的 blob 链接（该链接协议为以 `blob:`，后跟唯一标识浏览器中的对象的掩码）。
+返回一个 DOMString ，包含一个唯一的 blob 链接（该链接协议为以 `blob:` ，后跟唯一标识浏览器中的对象的掩码）。
 
-> URL.createObjectURL() 静态方法 <font color=FF0000>会创建一个 DOMString</font>，<font color=FF0000>其中包含一个表示参数中给出的对象的 URL</font>。**这个 URL 的<font color=FF0000>生命周期和创建它的窗口中的 document 绑定</font>**。这个新的 URL 对象表示指定的 File 对象或 Blob 对象。
->
-> ⚠️**注意：**此特性<font color=FF0000>在 Web Worker 中可用</font>。<font color=FF0000>在 Service Worker 中**不可用**</font>，因为它有可能导致内存泄漏。
->
-> ###### 语法
->
-> ```js
-> objectURL = URL.createObjectURL(object);
-> ```
->
-> ###### 参数
->
-> **object：**<font color=FF0000>用于创建 URL 的 File 对象、Blob 对象或者 MediaSource 对象</font>。
->
-> - **返回值：**一个 DOMString 包含了一个对象 URL，该 URL 可用于指定源 object 的内容。
->
-> ###### 附注
->
-> - **内存管理：**在每次调用 createObjectURL() 方法时，都会创建一个新的 URL 对象，即使你已经用相同的对象作为参数创建过。<font color=FF0000>当不再需要这些 URL 对象时，每个对象必须通过调用 URL.revokeObjectURL() 方法来释放</font>。<font color=FF0000>浏览器在 document 卸载的时候，会自动释放它们</font>；**但为了获得最佳性能和内存使用状况，你应该在安全的时机主动释放掉它们**
-> - 使用相对URLs 作为媒体流：在旧版本的媒体资源规范中，添加流作为 \<video> 元素需要创建一个关于 MediaStream的对象URL。<mark>现已没必要这样做了，浏览器已经移除了该操作的支持</mark>。
->
-> 补充内容摘自：[MDN - URL.createObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/createObjectURL)
+> 👀 详见 [[#URL.createObjectURL()]]
 
 ###### revokeObjectURL()
 
 销毁之前使用 URL.createObjectURL() 方法创建的URL实例。
 
-> URL.revokeObjectURL() 静态方法用来<font color=FF0000>释放一个之前已经存在的、通过调用 URL.createObjectURL() 创建的 URL 对象</font>。当你结束使用某个 URL 对象之后，应该通过调用这个方法来让浏览器知道不用在内存中继续保留对这个文件的引用了。
->
-> ###### 语法
->
-> ```js
-> window.URL.revokeObjectURL(objectURL);
-> ```
->
-> ###### 参数
->
-> **objectURL：**一个 DOMString，表示通过调用 URL.createObjectURL() 方法产生的 URL 对象。
->
-> **返回值：**undefined
->
-> 内容摘自：[MDN - URL.revokeObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/revokeObjectURL)
+> 👀 详见 [[#URL.revokeObjectURL()]]
 
 摘自：[MDN - URL](https://developer.mozilla.org/zh-CN/docs/Web/API/URL)
+
+#### URL.createObjectURL()
+
+URL.createObjectURL() 静态方法 <font color=FF0000>会创建一个 DOMString</font>，<font color=FF0000>其中包含一个表示参数中给出的对象的 URL</font>。**这个 URL 的<font color=FF0000>生命周期和创建它的窗口中的 document 绑定</font>**。这个新的 URL 对象表示指定的 File 对象或 Blob 对象。
+
+> ⚠️ **注意：**此特性<font color=FF0000>在 Web Worker 中可用</font>。<font color=FF0000>在 Service Worker 中**不可用**</font>，因为它有可能导致内存泄漏。
+>
+
+##### 语法
+
+```js
+objectURL = URL.createObjectURL(object);
+```
+
+###### 参数
+
+**object：**<font color=FF0000>用于创建 URL 的 File 对象、Blob 对象或者 MediaSource 对象</font>。
+
+###### 返回值
+
+<font color=LightSeaGreen>一个 DOMString 包含了一个对象 URL</font>，该 URL 可用于指定源 object 的内容。
+
+##### 附注
+
+###### 内存管理
+
+在每次调用 createObjectURL() 方法时，都会创建一个新的 URL 对象，即使你已经用相同的对象作为参数创建过。<font color=FF0000>当不再需要这些 URL 对象时，每个对象必须通过调用 URL.revokeObjectURL() 方法来释放</font>。<font color=FF0000>浏览器在 document 卸载的时候，会自动释放它们</font>；**但为了获得最佳性能和内存使用状况，你应该在安全的时机主动释放掉它们**
+
+###### 使用相对URLs 作为媒体流
+
+在旧版本的媒体资源规范中，添加流作为 \<video> 元素需要创建一个关于 MediaStream的对象URL。<font color=LightSeaGreen>现已没必要这样做了，浏览器已经移除了该操作的支持</font>。
+
+摘自：[MDN - URL.createObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/createObjectURL)
+
+##### 《现代JS教程》补充
+
+> 👀 上面说的内容，感觉还是没说清楚，下面做一点补充：
+
+> `URL.createObjectURL` 取一个 `Blob`，并为其创建一个唯一的 URL，<font color=red>**形式为 `blob:<origin>/<uuid>`**</font> 。
+>
+> > ⚠️ 注意这里的 origin 和 uuid
+>
+> 也就是 `link.href` 的值的样子：
+>
+> ```js
+> blob:https://javascript.info/1e67e00e-860d-40a5-89ae-6ab0cbee6273
+> ```
+>
+> 浏览器内部为每个<font color=red>通过 `URL.createObjectURL` 生成的 URL 存储了一个 URL → `Blob` 映射</font>。因此，此类 URL 很短，但可以访问 `Blob`。
+>
+> <font color=LightSeaGreen>生成的 URL（即其链接）**仅在当前文档打开的状态下才有效**</font>（👀 这点注意下）。它允许引用 `<img>`、`<a>` 中的 `Blob`，以及基本上任何其他期望 URL 的对象。
+>
+> 摘自：[《现代 JS 教程 - Blob # Blob 用作 URL》](https://zh.javascript.info/blob#blob-yong-zuo-url)
+
+#### URL.revokeObjectURL()
+
+URL.revokeObjectURL() 静态方法用来<font color=FF0000>释放一个之前已经存在的、通过调用 URL.createObjectURL() 创建的 URL 对象</font>。当你结束使用某个 URL 对象之后，应该通过调用这个方法来让浏览器知道不用在内存中继续保留对这个文件的引用了。
+
+##### 语法
+
+```js
+window.URL.revokeObjectURL(objectURL);
+```
+
+###### 参数
+
+**objectURL：**一个 DOMString，表示通过调用 URL.createObjectURL() 方法产生的 URL 对象。
+
+###### 返回值
+
+undefined
+
+摘自：[MDN - URL.revokeObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/revokeObjectURL)
 
 
 
@@ -8869,7 +8972,7 @@ for (const [key, value] of mySearchParams) {}
 for (const [key, value] of mySearchParams.entries()) {}
 ```
 
-⚠️ 注意：此特性在 Web Worker 中可用
+> ⚠️ 注意：此特性在 Web Worker 中可用
 
 ##### 构造函数
 
@@ -8892,6 +8995,8 @@ for (const [key, value] of mySearchParams.entries()) {}
 - **URLSearchParams.values()：**返回iterator 此对象包含了键/值对的所有值。
 
 摘自：[MDN - URLSearchParams](https://developer.mozilla.org/zh-CN/docs/Web/API/URLSearchParams)
+
+
 
 #### URL.searchParams
 
@@ -9006,15 +9111,21 @@ decodeURI() 函数能解码由encodeURI 创建或其它流程得到的统一资�
 decodeURI(encodedURI)
 ```
 
-##### 参数
+###### 参数
 
 - **encodedURI：**一个完整的编码过的 URI
 
-**返回值：**返回一个给定编码统一资源标识符(URI)的未编码版本的新字符串。
+###### 返回值
 
-**异常：**当encodedURI 包含无效字符序列时，引发URIError（“格式错误的URI序列”）异常。
+返回一个给定编码统一资源标识符(URI)的未编码版本的新字符串。
 
-**描述：**将已编码 URI 中所有能识别的转义序列转换成原字符，但不能解码那些不会被 encodeURI 编码的内容（例如 "#"）。
+###### 异常
+
+当encodedURI 包含无效字符序列时，引发URIError（“格式错误的URI序列”）异常。
+
+##### 描述
+
+将已编码 URI 中所有能识别的转义序列转换成原字符，但不能解码那些不会被 encodeURI 编码的内容（例如 "#"）
 
 摘自：[MDN - decodeURI()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/decodeURI)
 
@@ -9028,35 +9139,41 @@ decodeURIComponent() 方法<font color=FF0000>用于解码由 encodeURIComponent
 decodeURIComponent(encodedURI)
 ```
 
-##### 参数
+###### 参数
 
 - encodedURI：编码后的部分 URI
 
-**返回值：**<font color=FF0000>一个解码后的统一资源标识符（URI）字符串</font>，处理前的URI经过了给定格式的编码。
+###### 返回值
 
-**异常：**<font color=FF0000>当该方法使用不当时，将会抛出一个URIError（“格式错误的URI序列”）异常</font>。
+<font color=FF0000>一个解码后的统一资源标识符（URI）字符串</font>，处理前的URI经过了给定格式的编码。
 
-**描述：**<font color=FF0000>**将已编码 URI 中所有能识别的<font size=4>转义序列转换成原字符</font>**</font>。
+###### 异常
+
+<font color=FF0000>当该方法使用不当时，将会抛出一个URIError（“格式错误的URI序列”）异常</font>。
+
+##### 描述
+
+<font color=FF0000>**将已编码 URI 中所有能识别的<font size=4>转义序列转换成原字符</font>**</font>。
 
 ##### 示例
 
-- 解码一个西里尔字母的URL
+###### 解码一个西里尔字母的URL
 
-  ```js
-  decodeURIComponent("JavaScript_%D1%88%D0%B5%D0%BB%D0%BB%D1%8B");
-  // "JavaScript_шеллы"
-  ```
+```js
+decodeURIComponent("JavaScript_%D1%88%D0%B5%D0%BB%D0%BB%D1%8B");
+// "JavaScript_шеллы"
+```
 
-- 捕捉异常
+###### 捕捉异常
 
-  ```js
-  try {
-    var a = decodeURIComponent('%E0%A4%A');
-  } catch(e) {
-    console.error(e);
-  }
-  // URIError: malformed URI sequence
-  ```
+```js
+try {
+  var a = decodeURIComponent('%E0%A4%A');
+} catch(e) {
+  console.error(e);
+}
+// URIError: malformed URI sequence
+```
 
 摘自：[MDN - decodeURIComponent()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent)
 
@@ -9132,20 +9249,22 @@ decoder = new TextDecoder(utfLabel, options);
 
 
 
-#### Event.target
+#### Event.target & Event.currentTarget
 
-触发事件的对象 (某个DOM元素) 的引用。当事件处理程序在事件的冒泡或捕获阶段被调用时，它与event.currentTarget不同。
+##### Event.target
+
+触发事件的对象 (某个DOM元素) 的引用。当事件处理程序在事件的冒泡或捕获阶段被调用时，它与event.currentTarget 不同。
 
 摘自：[MDN - Event.target](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/target)
 
-#### Event.currentTarget
+##### Event.currentTarget
 
 Event 接口的只读属性 currentTarget 表示的，<font color=FF0000 size=4> **标识是当事件沿着 DOM 触发时事件的当前目标** </font>。它总是指向事件绑定的元素，而 Event.target 则是事件触发的元素。
 
 摘自：[MDN - event.currentTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/Event/currentTarget)
 
-#### 两者对比示例
-##### Event.target 示例
+##### 两者对比示例
+###### Event.target 示例
 ```html
 <div id="cntr">
   <div id="wrapper">
@@ -9160,7 +9279,7 @@ Event 接口的只读属性 currentTarget 表示的，<font color=FF0000 size=4>
 </script>
 ```
 
-##### Event.currentTarget 示例
+###### Event.currentTarget 示例
 ```html
 <div id="cntr">
   <div id="wrapper">
@@ -9185,17 +9304,17 @@ Event 接口的只读属性 currentTarget 表示的，<font color=FF0000 size=4>
 
 如果这时想要获取该元素的高度，可以使用如下方法
 
-**有两种方法：**
+##### 有两种方法
 
 - offsetHeight 、clientHeight
 
 - getComputedStyle
 
-**offsetHeight 和 clientHeight 的区别：**
+##### offsetHeight 和 clientHeight 的区别
 
 <font color=FF0000>offsetHeight的值包括 元素内容 + 内边距 + 边框</font>，而 <font color=FF0000>clientHeight 的值等于 元素内容 + 内边距</font>。区别就在于有没有边框~
 
-**getComputedStyle**
+##### getComputedStyle
 
 <font color=FF0000>getComputedStyle 方法获取的是最终应用在元素上的所有 CSS 属性对象（即使没有 CSS 代码，也会把默认的祖宗八代都显示出来）</font>；这和<font color=FF0000> `style` 属性只能获取**内联样式**的行为形成了鲜明的对比</font>。除此之外，<font color=FF0000>**getComputedStyle 是只读的**</font>，但是 style 能文能武，可读可写，我们也可以利用它动态设置元素的高度。示例如下：
 
@@ -9211,7 +9330,9 @@ console.log(window.getComputedStyle(div).getPropertyValue('height')); // 200px
 
 摘自：[JS获取div高度的方法](https://www.jianshu.com/p/58c12245c2cc)
 
-**补充：Window.getComputedStyle() **
+> 👀 下面是一些补充
+
+#### Window.getComputedStyle() 
 
 Window.getComputedStyle() 方法<font color=FF0000>返回一个对象</font>，<font color=FF0000>该对象在应用活动样式表并解析这些值可能包含的任何基本计算后报告元素的所有 CSS 属性的值</font>。 私有的 CSS 属性值可以通过对象提供的 API 或通过简单地使用 CSS 属性名称进行索引来访问。
 
@@ -9234,7 +9355,7 @@ let style = window.getComputedStyle(element, [pseudoElt]);
 
 #### Object.create()
 
-Object.create() 方法<font color=FF0000>创建一个新对象</font>，<font color=FF0000>**使用现有的对象来提供新创建的对象的 \__proto__**</font>
+Object.create() 方法<font color=FF0000>创建一个新对象</font>，<font color=FF0000>**使用现有的对象来提供新创建的对象的 `__proto__`**</font>
 
 ##### 使用示例
 
@@ -9260,7 +9381,7 @@ me.printIntroduction(); // expected output: "My name is Matthew. Am I human? tru
 Object.create(proto，[propertiesObject])
 ```
 
-##### 参数
+###### 参数
 
 - **proto：**新创建对象的原型对象。
 
@@ -9268,9 +9389,11 @@ Object.create(proto，[propertiesObject])
 
   相关示例参见：[MDN - Object.create - 使用 Object.create 的 propertyObject参数](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create#使用_object.create_的_propertyobject参数) 另外，关于Object.create()的最后也有摘录部分
 
-**返回值：**一个新对象，带着指定的原型对象和属性。
+###### 返回值
 
-##### 异常
+一个新对象，带着指定的原型对象和属性。
+
+###### 异常
 
 <font color=FF0000>如果 proto 参数不是 null 或 非原始包装对象，则抛出一个 TypeError 异常</font>。
 
@@ -9388,17 +9511,17 @@ fooCp.__proto__ === Object.getPrototypeOf(fooCp) === Foo.prototype
 Object.defineProperty(obj, prop, descriptor)
 ```
 
-##### 参数
+###### 参数
 
 - obj：要定义属性的对象。
 - prop：<font color=FF0000>要定义或修改的属性的名称或 Symbol </font>。
 - <font color=FF0000>descriptor：要定义或修改的属性描述符（writable / enumerable / configurable）</font>。
 
-##### 返回值
+###### 返回值
 
 被传递给函数的对象。
 
-⚠️ **注意：**在 ES6 中，由于 Symbol 类型的特殊性，用 Symbol 类型的值来做对象的 key 与常规的定义或修改不同，而Object.defineProperty 是定义 key 为 Symbol 的属性的方法之一。
+> ⚠️ **注意：**在 ES6 中，由于 Symbol 类型的特殊性，用 Symbol 类型的值来做对象的 key 与常规的定义或修改不同，而Object.defineProperty 是定义 key 为 Symbol 的属性的方法之一。
 
 默认情况下，<font color=FF0000>**使用 Object.defineProperty() 添加的属性值是不可修改 ( immutable ) 的（writable 默认是 false）**</font>。（同时也是在打印中不显示的，因为enumerable 默认为 false）
 
@@ -9450,9 +9573,9 @@ Object.defineProperty(o, "a", {
 这两种描述符都是对象。它们共享以下可选键值（默认值是指在使用 Object.defineProperty() 定义属性时的默认值）
 
 - **configurable：**<font color=FF0000>当且仅当该属性的 configurable 键值为 true 时，该属性的**描述符才能够被改变**</font>，同时该属性也能从对应的对象上被删除。<font color=FF0000 size=4>**默认为 false**</font>。(补充：<font color=FF0000>configurable 特性表示对象的属性是否可以被删除</font>，以及除 value 和 writable 特性外的其他特性是否可以被修改。)
-- **enumerable：**<font color=FF0000>当且仅当该属性的 enumerable 键值为 true 时，该属性**才会出现在对象的枚举属性中**</font>。<font color=FF0000 size=4>**默认为 false**</font>。(补充：<font color=fuchsia size=4>**enumerable 定义了对象的属性是否可以在 for...in 循环和 Object.keys() 中被枚举**</font>。)
+- **enumerable：**<font color=FF0000>当且仅当该属性的 enumerable 键值为 true 时，该属性**才会出现在对象的枚举属性中**</font>。<font color=FF0000 size=4>**默认为 false**</font>。(补充：<font color=fuchsia size=4>**enumerable 定义了对象的属性是否可以在 for...in 循环和 Object.keys() 中被枚举**</font>)
 
-- **value：**该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。<font color=FF0000 size=4>**默认为 undefined**</font>。
+- **value：**该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。<font color=FF0000 size=4>**默认为 undefined**</font>
 - **writable：**<font color=FF0000>当且仅当该属性的 writable 键值为 true 时，**属性的值**，也就是上面的 value，**才能被赋值运算符改变**</font>。<font color=FF0000 size=4>**默认为 false**</font>。
 
 <mark style="background:aqua">存取描述符</mark>还具有以下可选键值

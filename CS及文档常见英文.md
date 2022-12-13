@@ -376,6 +376,10 @@
 - **perspective** ：一般的意思是：态度。但也有 “角度”的意思，无论是 from someone's perspective ，还是 CSS 中的 perspective 属性。
 - **coverage** ：覆盖率
 
+- **revoke** ：撤销
+
+
+
 
 #### 术语的英文
 
