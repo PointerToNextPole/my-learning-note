@@ -1534,7 +1534,7 @@ export function trackEffects(
 
   if (shouldTrack) {
     dep.add(activeEffect!)
-    activeEffect!.deps.push(dep) // ⚠️ 注意这里：activeEffect 也可以有自己的 deps 集合。这表示一种双向关系，在 dep 和 effect 之间；即：effect 可以有多个 dep，dep 作为订阅者可以有多个 effect；也就是 N：N的关系。之所以是这样的关系，是因为需要追踪这者以便做清理工作(cleanupEffect)
+    activeEffect!.deps.push(dep) // ⚠️ 注意这里：activeEffect 是一个列表，也可以有自己的 deps 集合。这表示一种双向关系，在 dep 和 effect 之间；即：effect 可以有多个 dep，dep 作为订阅者可以有多个 effect；也就是 many to many 的关系。之所以是这样的关系，是因为需要追踪以便做清理工作(cleanupEffect)
     if (__DEV__ && activeEffect!.onTrack) {
       activeEffect!.onTrack({
         effect: activeEffect!,

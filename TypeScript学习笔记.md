@@ -2754,7 +2754,7 @@ TypeScript 类型系统中有些类型比较特殊：比如 any、never、联合
 
 如果给我们一种类型让我们判断是什么类型，应该怎么做呢？
 
-**类型的判断要根据它的特性来，比如判断联合类型就要根据它的 distributive （注：即“分布式条件类型” ） 的特性。**
+**类型的判断要根据它的特性来，比如判断联合类型就要根据它的 distributive （ 👀 即“分布式条件类型” ） 的特性。**
 
 我们分别看一下这些特性：
 
@@ -2766,11 +2766,11 @@ TypeScript 类型系统中有些类型比较特殊：比如 any、never、联合
 type IsAny<T> = 'foo' extends ('bar' & T) ? true : false
 ```
 
-这里的 'foo' 和 'bar' 可以换成任意类型（**注：**这里 'foo' 和 'bar' 都代表一种类型，所以可以换成 'string' 和 'number' ）
+这里的 'foo' 和 'bar' 可以换成任意类型（ 👀 这里 'foo' 和 'bar' 都代表一种类型，所以可以换成 'string' 和 'number' ）
 
 <img src="https://s2.loli.net/2022/05/04/IjWPzOXD1SAcqkN.png" alt="image-20220504202335587" style="zoom:50%;" />
 
-**注：**另外，下面 [[#IsNever]] 还提及了为什么 any 不能直接使用 `extends ? :` 去判断（简单来说，会返回 `extends ? :` 设定的 trueVal 和 falseVal 的联合 ( Union) ）
+> 👀 注：下面 [[#IsNever]] 还提及了为什么 any 不能直接使用 `extends ? :` 去判断（简单来说，会返回 `extends ? :` 设定的 trueVal 和 falseVal 的联合 ( Union) ）
 
 ##### IsEqual
 
@@ -2797,7 +2797,7 @@ type IsEqual<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends 
 
 这是因为 TS 对这种形式的类型做了特殊处理，是一种 hack 的写法，它的解释要从 TypeScript 源码找答案了，放到原理篇我们一起读下 TypeScript 源码。这里暂时就这样写吧。 TODO
 
-**注：**下面 [[#IsTuple]] 有实现一个 NonEqual ，有说实现原理，可以参考下。
+> 👀 下面 [[#IsTuple]] 有实现一个 NonEqual ，有说实现原理，可以参考下。
 
 ##### IsUnion
 
@@ -2856,7 +2856,7 @@ type TestAny<T> = T extends number ? 1 : 2;
 
 ```ts
 type IsTuple<T> = 
-    // 注：第一：readonly 的性质没想到，第二：没想到可以 readonly 这样判断。另外，`params:` 可加可不加
+    // 👀 第一：readonly 的性质没想到，第二：没想到可以 readonly 这样判断。另外，`params:` 可加可不加
     T extends readonly [...params: infer Eles]
         ? NotEqual<Eles['length'], number> // 注：由上图可知，number 没有引号
         : false
@@ -2866,7 +2866,7 @@ type IsTuple<T> =
 
 首先判断 T 是否是数组类型，如果不是则返回 false。如果是，继续判断 length 属性是否是 number；如果是数组并且 length 不是 number 类型，那就代表 T 是元组。
 
-**NotEqual 的实现：**
+###### NotEqual 的实现
 
 ```ts
 type NotEqual<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2)
@@ -2902,7 +2902,7 @@ type UnionToIntersection<U> =
 
 类型参数 U 是要转换的联合类型。
 
-`U extends U` 是为了触发 “联合类型” 的 distributive（即：“分布式条件类型” ） 的性质，让每个类型单独传入做计算，最后（TS自动做）合并（交叉操作）。利用 U 做为参数构造一个函数类型，<font color=FF0000>通过模式匹配取参数的类型</font>，利用函数参数的逆变的性质，就能实现联合转交叉。（**注：**这里实现原理可见 [[#逆变性质有什么用]]）。结果就是交叉类型：
+`U extends U` 是为了触发 “联合类型” 的 distributive（即：“分布式条件类型” ） 的性质，让每个类型单独传入做计算，最后（TS自动做）合并（交叉操作）。利用 U 做为参数构造一个函数类型，<font color=FF0000>通过模式匹配取参数的类型</font>，利用函数参数的逆变的性质，就能实现联合转交叉。（ 👀 这里实现原理可见 [[#逆变性质有什么用]]）。结果就是交叉类型：
 
 <img src="https://s2.loli.net/2022/05/07/ORaw4WoSYd78MQk.png" alt="image-20220507123618479" style="zoom:50%;" />
 
@@ -2914,7 +2914,7 @@ type UnionToIntersection<U> =
 
 <img src="https://s2.loli.net/2022/05/04/uxlX6D7yPq2fWAY.png" alt="img" style="zoom:65%;" />
 
-**注：**在当前 VS Code & typescript@4.5.4 中，不知道为什么只能显示出 `age?: number` ，而不能显示出 `age?: number | undefined` 
+> 👀 在当前 VS Code & typescript@4.5.4 环境下，不知道为什么只能显示出 `age?: number` ，不能显示出 `age?: number | undefined` 
 
 ```ts
 type GetOptional<Obj extends Record<string, any>> = {
@@ -2968,7 +2968,7 @@ type Dong = {
 type RemoveIndexSignature<Obj extends Record<string, any>> = {
   [
       Key in keyof Obj 
-          as Key extends `${infer Str}` ? Str : never // 注：注意这里 `${infer Str}` 的写法，trick
+          as Key extends `${infer Str}` ? Str : never /* 👀注意这里 `${infer Str}` 的写法，trick */
   ]: Obj[Key]
 }
 ```
@@ -3005,11 +3005,11 @@ keyof 拿到的只有 name：
 
 <img src="https://s2.loli.net/2022/05/05/YZGK1RBz6v9T2fC.png" alt="image-20220505002343657" style="zoom:50%;" />
 
-所以，我们就可以根据这个特性实现 public 索引的过滤（**注：**而不需要添加其他判断）：
+所以，我们就可以根据这个特性实现 public 索引的过滤（ 👀 而不需要添加其他判断）：
 
 ```typescript
 type ClassPublicProps<Obj extends Record<string, any>> = {
-  // 注：在尝试的时候，还用 as 添加了判断 ( as Key extends keyof Obj ? Key : never )；虽然结果没问题；但这是没有必要的
+  // 👀 在尝试的时候，还用 as 添加了判断 ( as Key extends keyof Obj ? Key : never )；虽然结果没问题；但这是没有必要的
   [Key in keyof Obj]: Obj[Key]
 }
 ```
@@ -3019,6 +3019,38 @@ type ClassPublicProps<Obj extends Record<string, any>> = {
 构造新的索引类型，索引是 `keyof Obj` 过滤出的索引，也就是 public 的索引。值保持不变，依然是 `Obj[Key]` 。这样就能过滤出 public 的属性：
 
 <img src="https://s2.loli.net/2022/05/05/gbxDwvYT6e5ynO4.png" alt="image-20220505005120760" style="zoom:50%;" />
+
+##### as const
+
+> 👀 as const 的名称是 “ const 断言” ( const assertions )，官方文档见 [TS 官方文档 - TypeScript 3.4 # const assertions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions)
+
+TypeScript <font color=red>默认推导出来的类型并不是字面量类型</font>。
+
+比如对象：
+
+<img src="https://s2.loli.net/2022/12/15/fGg78DMtwUBWOnp.png" alt="image-20221215173931113" style="zoom:65%;" />
+
+比如数组：
+
+<img src="https://s2.loli.net/2022/12/15/4Vnfjz9CGdROh2l.png" alt="image-20221215174144657" style="zoom:65%;" />
+
+但是<font color=dodgerBlue>类型编程很多时候是需要推导出字面量类型的</font>，这时候<font color=red>就需要用 `as const`</font> ：
+
+<img src="https://s2.loli.net/2022/12/15/b8n4oDrXOMqkHtI.png" alt="image-20221215174452766" style="zoom:65%;" />
+
+<img src="https://s2.loli.net/2022/12/15/M6EfGyHQzTW2sae.png" alt="image-20221215174310939" style="zoom:65%;" />
+
+因为<font color=dodgerBlue>加上 `as const` 后推导出来的类型是带有 readonly 修饰的</font>，所以<font color=red>在通过模式匹配提取类型的时候也要加上 readonly 的修饰</font>才行。
+
+> <font color=dodgerBlue>const 是常量的意思</font>，<font color=red>也就是说这个变量首先是一个字面量值，而且还不可修改，有字面量和 readonly 两重含义</font>。所以加上 `as const` 会推导出 readonly 的字面量类型。
+
+比如反转上面的三个元素的元组类型，不加上 readonly 再匹配是匹配不出来的：
+
+<img src="https://s2.loli.net/2022/12/15/ndHRlY6jFPeVTNO.png" alt="image-20221215180447220" style="zoom:65%;" />
+
+加上 readonly 之后就可以正常匹配了：
+
+<img src="https://s2.loli.net/2022/12/15/e4mxAqFGXD6iQsa.png" alt="image-20221215180636495" style="zoom:65%;" />
 
 #### 总结
 
@@ -3033,6 +3065,7 @@ type ClassPublicProps<Obj extends Record<string, any>> = {
 - 可选索引的值为 undefined 和值类型的联合类型。可以用来过滤可选索引，反过来也可以过滤非可选索引。
 - 索引类型的索引为字符串字面量类型，而可索引签名不是，可以用这个特性过滤掉可索引签名。
 - keyof 只能拿到 class 的 public 的索引，可以用来过滤出 public 的属性。
+- 默认推导出来的不是字面量类型，加上 `as const` 可以推导出字面量类型，但带有 readonly 修饰，这样模式匹配的时候也得加上 readonly 才行。
 
 这些类型的特性要专门记一下，其实过两遍就记住了。
 
@@ -3042,7 +3075,7 @@ type ClassPublicProps<Obj extends Record<string, any>> = {
 
 ### 类型体操顺口溜
 
-**注：**下面的内容是对前面六章的总结概括，虽然有重复；但是，再复习一遍、部分代码再写一遍，也很好。
+> 👀 注：下面的内容是对前面六章的总结概括，虽然有重复；但是，再复习一遍、部分代码再写一遍，也很好。
 
 <font size=4>**类型体操顺口溜**</font>
 
