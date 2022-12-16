@@ -63,7 +63,7 @@ data() {
 
 
 
-#### **template 属性**
+#### template 属性
 
 ##### template属性：表示的是Vue需要帮助我们渲染的模板信息
 
@@ -149,7 +149,7 @@ data() {
 
 
 
-#### **v-pre 和 v-cloak**
+#### v-pre 和 v-cloak
 
 ##### v-pre
 
@@ -201,7 +201,7 @@ style中可以写驼峰也可以写短横线分隔 (kebab-case)，但是短横�
 
 另外，style 对象中的键值对，值是引用类型或者是一个字符串。如果写如下代码且data中没有定义，将会报错：`:style="color: red"`，因为 `red` 是一个变量，且没有定义。应该写成 `:style="color: 'red'"`
 
-##### **V-bind 直接绑定对象**
+##### v-bind 直接绑定对象
 
 ```html
 <div v-bind="foo">foo</div>
@@ -3521,26 +3521,30 @@ createApp -> app.mount -> rerender 的 render 函数 -> patch（会判断类型�
 
 
 
-#### **Vue Router**
+#### Vue Router
 
-**前端路由的两种实现思路：hash / history**
+##### 前端路由的两种实现思路：hash / history
 
 一般 一个url对应着后端的一个网页，所以<font color=FF0000>输入一个url或url发生改变，就会向后端请求资源</font>。但是<font color=FF0000>有两种方法可以让url改变，但是不会向后端请求资源；分别是hash和history</font>。通过这两种方式，是前端自己渲染。
 
 前端路由是通过监听URL的改变，做到URL和内容进行映射。
 
-- **URL的 hash：**URL 的 hash也就是锚点(#)，<font color=FF0000>本质上是改变window.location的href属性； 可以通过直接赋值 location.hash 来改变href，但保证页面不发生刷新</font>
+##### URL的 hash
 
-  hash的优势就是兼容性更好，在老版IE中都可以运行，但是缺陷是有一个#，显得不像一个真实的路径；另外SEO 不友好
+URL 的 hash也就是锚点(#)，<font color=FF0000>本质上是改变window.location的href属性； 可以通过直接赋值 location.hash 来改变href，但保证页面不发生刷新</font>
 
-- **HTML5 History：**history接口是HTML5新增的，它有六种模式改变URL而不刷新页面：
+hash的优势就是兼容性更好，在老版IE中都可以运行，但是缺陷是有一个#，显得不像一个真实的路径；另外SEO 不友好
 
-  - **replaceState：**替换原来的路径
-  - **pushState：**使用新的路径
-  - **popState：**路径的回退
-  - **go：**向前或向后改变路径
-  - **forward：**向前改变路径
-  - **back：**向后改变路径
+##### HTML5 History
+
+history接口是HTML5新增的，它有六种模式改变URL而不刷新页面：
+
+- **replaceState：**替换原来的路径
+- **pushState：**使用新的路径
+- **popState：**路径的回退
+- **go：**向前或向后改变路径
+- **forward：**向前改变路径
+- **back：**向后改变路径
 
 
 
@@ -4636,9 +4640,9 @@ actions: {
 
 
 
-#### **TS**
+#### TypeScript
 
-##### TS解决JS的痛点
+##### TS 解决 JS 的痛点
 
 **编程开发中我们有一个共识：错误出现的越早越好**
 
@@ -4717,486 +4721,543 @@ let message: string = 'hello world'
 
 因为TS是JS的超集，所以JS中的数据类型，TS都有。
 
-- **number类型：**TypeScript和JavaScript一样，不区分整数类型（int）和浮点型 （double），统一为number类型
+###### number类型
 
-  另外，ES6有二进制、八进制、十六进制的表示方法；TS同样有。
+TypeScript和JavaScript一样，不区分整数类型（int）和浮点型 （double），统一为number类型
 
-  ```typescript
-  num = 100
-  num = 0b100
-  num = 0o100
-  num = 0x100
+另外，ES6有二进制、八进制、十六进制的表示方法；TS同样有。
+
+```typescript
+num = 100
+num = 0b100
+num = 0o100
+num = 0x100
+```
+
+###### boolean类型
+
+只有两个取值：true和false
+
+```typescript
+let flag: boolean = true
+```
+
+###### string 类型
+
+```typescript
+let msg: string = 'hello world'
+```
+
+另外，TS同样支持ES6的模版字符串
+
+###### Array 类型
+
+数组类型的定义也非常简单，有两种方式
+
+- ```typescript
+  const names: string[] = ['foo', 'bar', 'baz']
   ```
 
-- **boolean类型：**只有两个取值：true和false
-
-  ```typescript
-  let flag: boolean = true
+- ```typescript
+  const names: Array<string> = ['foo', 'bar', 'baz']
   ```
 
-- **string 类型：**
+  不推荐第二种，因为在React的jsx（\<el>\</el>）是有冲突的
+
+**另外，TS中的Array 类型 只能放入定义时定义的那种类型的数据**
+
+###### Object 类型
+
+```typescript
+const myInfo: object = {
+  name: 'foo',
+  age: 18,
+  height: 1.88
+}
+```
+
+但是从myinfo中我们不能获取数据，也不能设置数据
+
+```typescript
+myInfo['name'] = 'foobar' // 无法设置数据，会报错
+console.log(myInfo['age']) // 无法获取数据，会报错
+```
+
+另外，这样写并不推荐；<font color=FF0000>更推荐自动的类型推导</font>。因为下面的name拿不到（编译通不过）。虽然，也可以通过类型断言解决这个问题
+
+###### Symbol 类型
+
+略
+
+###### null & undefined 类型
+
+> 👀 TS 特有
+
+在 JavaScript 中，undefined 和 null 是两个基本数据类型。 <font color=FF0000 size=4>在TypeScript中，它们各自的类型也是undefined和null，也就意味着它们既是实际的值，也是自己的类型</font>
+
+```typescript
+let n: null = null
+let u: undefined = undefined
+```
+
+<font color=FF0000 size=4>**如果写上类型注解null，则可选值只有null；如果不加类型注解，类型推导的值会是any**</font>。另外，在非“严格检查模式”下，可以将null 赋值给string类型之类的变量
+
+###### any 类型
+
+> 👀 TS 特有
+
+在某些情况下，确实无法确定一个变量的类型，并且可能它会发生一些变化，这时可以使用any类型（类似 于Dart语言中的dynamic类型）。
+
+**any 类型有点像一种讨巧的TypeScript手段：**
+
+- 我们可以对any类型的变量进行任何的操作，包括获取不存在的属性、方法
+- 我们给一个any类型的变量赋值任何的值，比如数字、字符串的值
+
+###### unknown类型
+
+> 👀 TS 特有
+
+unknown是TypeScript中比较特殊的一种类型，它用于描述类型不确定的变量
+
+unknown类型只能赋值给 any / unknown类型；而any类型可以赋值给任意类型。一个变量，如果既可以使用unknown，也可以使用any，则推荐使用unknown
+
+使用示例：
+
+```typescript
+function foo(): string { return 'foo' }
+function bar(): number { return 123 }
+
+const flag = true
+let resulet: unknown
+
+if( flag ) { result = foo() }
+else { result = bar() }
+
+export {}
+```
+
+默认情况下，所有的ts 文件 都会在统一作用域下进行编译，所以如果一个项目中出现两个name变量的定义，将会冲突 并报错；这<font color=FF0000 size=4>**需要把每个ts文件看作不同的作用域，需要使用export {}，将其作为一个模块**</font>。另外，还有其他的方法解决这个问题。
+
+###### void类型
+
+> 👀 TS 特有
+
+void通常用来指定一个函数是没有返回值的，那么它的返回值就是void类型
+
+```typescript
+function sum(num1: number, num2: number): void {
+  console.log( num1 + num2 )
+}
+```
+
+###### never 类型
+
+> 👀 TS 特有
+
+never 表示永远不会发生值的类型，比如一个函数：
+
+<font color=FF0000>**如果一个函数中是一个死循环或者抛出一个异常，那么这个函数不会返回东西；那么写void类型或者其他类型作为返回值类型都不合适，我们就可以使用never类型**</font>。
+
+##### tuple类型
+
+> 👀 TS 特有
+
+tuple是元组类型。tuple和数组的区别：
+
+- 数组中通常建议存放相同类型的元素，不同类型的元素是不推荐放在数组中（可以放在对象或者元组 中）
+- <font color=FF0000>元组中每个元素都有自己特性的类型，根据索引值获取到的值可以确定对应的类型</font>
+
+示例如下：
+
+```typescript
+const info: (string|number)[] = ['foo', 18, 1.88]
+const item1 = info[0] // 不能确定类型
+
+const tupleInfo: [ string, number, number ] = ['foo', 18, 1.88]
+const item2 = tupleInfo[0] // 一定是string类型
+```
+
+**Tuple的使用场景：**通常可以作为返回的值，在使用的时候会非常的方便
+
+```typescript
+function useState<T>(state: T): [T, (newState: T) => void] {
+  let curState = state
+  const change = (newState: T) => {
+    curState = newState
+  }
+  
+  return [curState, changeState]
+}
+
+const [counter, setCounter] = useState(10)
+```
+
+###### 函数的参数类型
+
+> 👀 TS 特有
+
+函数是JavaScript非常重要的组成部分，<font color=FF0000>TypeScript允许我们指定函数的参数和返回值的类型</font>
+
+- **参数的类型注解：**声明函数时，可以在每个参数后添加类型注解，以声明函数接受的参数类型
 
   ```typescript
-  let msg: string = 'hello world'
-  ```
-
-  另外，TS同样支持ES6的模版字符串
-
-- **Array 类型：**数组类型的定义也非常简单，有两种方式
-
-  - ```typescript
-    const names: string[] = ['foo', 'bar', 'baz']
-    ```
-
-  - ```typescript
-    const names: Array<string> = ['foo', 'bar', 'baz']
-    ```
-
-    不推荐第二种，因为在React的jsx（\<el>\</el>）是有冲突的
-
-  **另外，TS中的Array 类型 只能放入定义时定义的那种类型的数据**
-
-- **Object类型：**
-
-  ```typescript
-  const myInfo: object = {
-    name: 'foo',
-    age: 18,
-    height: 1.88
+  function greet(name: string) {
+    console.log('hello ' + name.toUpperCase())
   }
   ```
 
-  但是从myinfo中我们不能获取数据，也不能设置数据
+- **函数的返回值类型：**可以添加返回值的类型注解，这个注解出现在函数列表的后面
 
   ```typescript
-  myInfo['name'] = 'foobar' // 无法设置数据，会报错
-  console.log(myInfo['age']) // 无法获取数据，会报错
-  ```
-
-  另外，这样写并不推荐；<font color=FF0000>更推荐自动的类型推导</font>。因为下面的name拿不到（编译通不过）。虽然，也可以通过类型断言解决这个问题
-
-- **Symbol类型：**
-
-- **null & undefined 类型<font color=FF0000>（TS特有）</font>：**在 JavaScript 中，undefined 和 null 是两个基本数据类型。 <font color=FF0000 size=4>在TypeScript中，它们各自的类型也是undefined和null，也就意味着它们既是实际的值，也是自己的类型</font>
-
-  ```typescript
-  let n: null = null
-  let u: undefined = undefined
-  ```
-
-  <font color=FF0000 size=4>**如果写上类型注解null，则可选值只有null；如果不加类型注解，类型推导的值会是any**</font>。另外，在非“严格检查模式”下，可以将null 赋值给string类型之类的变量
-
-- **any类型<font color=FF0000>（TS特有）</font>：**在某些情况下，确实无法确定一个变量的类型，并且可能它会发生一些变化，这时可以使用any类型（类似 于Dart语言中的dynamic类型）。
-
-  **any类型有点像一种讨巧的TypeScript手段：**
-
-  - 我们可以对any类型的变量进行任何的操作，包括获取不存在的属性、方法
-  - 我们给一个any类型的变量赋值任何的值，比如数字、字符串的值
-
-- **unknown类型<font color=FF0000>（TS特有）</font>：**unknown是TypeScript中比较特殊的一种类型，它用于描述类型不确定的变量
-
-  unknown类型只能赋值给 any / unknown类型；而any类型可以赋值给任意类型。一个变量，如果既可以使用unknown，也可以使用any，则推荐使用unknown
-
-  使用示例：
-
-  ```typescript
-  function foo(): string { return 'foo' }
-  function bar(): number { return 123 }
-  
-  const flag = true
-  let resulet: unknown
-  
-  if( flag ) { result = foo() }
-  else { result = bar() }
-  
-  export {}
-  ```
-
-  默认情况下，所有的ts 文件 都会在统一作用域下进行编译，所以如果一个项目中出现两个name变量的定义，将会冲突 并报错；这<font color=FF0000 size=4>**需要把每个ts文件看作不同的作用域，需要使用export {}，将其作为一个模块**</font>。另外，还有其他的方法解决这个问题。
-
-- **void类型<font color=FF0000>（TS特有）</font>：**void通常用来指定一个函数是没有返回值的，那么它的返回值就是void类型
-
-  ```typescript
-  function sum(num1: number, num2: number): void {
-    console.log( num1 + num2 )
+  function sum(num1: number, num2: number): number {
+    return num1 + num2
   }
   ```
 
-- **never 类型<font color=FF0000>（TS特有）</font>：**never 表示永远不会发生值的类型，比如一个函数：
+  和变量的类型注解一样，<font color=FF0000>通常情况下不需要返回类型注解，因为TypeScript会根据 return 返回值推断函数的 返回类型</font>
 
-  <font color=FF0000>**如果一个函数中是一个死循环或者抛出一个异常，那么这个函数不会返回东西；那么写void类型或者其他类型作为返回值类型都不合适，我们就可以使用never类型**</font>。
+- **匿名函数的参数：**当一个函数出现在TypeScript可以确定该函数会被如何调用的地方时，该函数的参数会自动指定类型。
 
-- **tuple类型<font color=FF0000>（TS特有）</font>：**tuple是元组类型。tuple和数组的区别：
-
-  - 数组中通常建议存放相同类型的元素，不同类型的元素是不推荐放在数组中（可以放在对象或者元组 中）
-  - <font color=FF0000>元组中每个元素都有自己特性的类型，根据索引值获取到的值可以确定对应的类型</font>
-
-  示例如下：
-
-  ```typescript
-  const info: (string|number)[] = ['foo', 18, 1.88]
-  const item1 = info[0] // 不能确定类型
-  
-  const tupleInfo: [ string, number, number ] = ['foo', 18, 1.88]
-  const item2 = tupleInfo[0] // 一定是string类型
+  ```ts
+  const names = ['foo', 'bar', 'baz']
+  names.forEach(item => {
+    console.log(item.toUpperCase())
+  })
   ```
 
-  **Tuple的使用场景：**通常可以作为返回的值，在使用的时候会非常的方便
+  上面的item的类型不需要指定，<font color=FF0000>这是因为TypeScript会根据forEach函数的类型以及数组的类型推断出item的类型</font>。<font color=FF0000 size=4>这个过程称之为**上下文类型** ( contextual typing )，**因为函数执行的上下文可以帮助确定参数和返回值的类型**</font>
 
-  ```typescript
-  function useState<T>(state: T): [T, (newState: T) => void] {
-    let curState = state
-    const change = (newState: T) => {
-      curState = newState
+  即：上下文中的函数可以不添加类型注解，当然添加也可以。
+
+###### 对象类型
+
+> 👀 TS 特有
+
+限定一个函数接受的参数是一个对象：
+
+```ts
+function printCoordinate(point: {x: number, y: number}) { ... }
+
+printCoordinate({x: 100, y: 30})
+```
+
+上面使用了一个对象来作为类型：在对象可以添加属性，并且告知TypeScript 该属性需要是什么类型；属性之间可以使用 `, `或者 `;` 来分割，最后一个分隔符是可选的。<font color=FF0000>每个属性的类型部分也是可选的，如果不指定，那么就是any类型</font>
+
+###### 可选类型
+
+对象类型也可以指定哪些属性是可选的，可以在属性的后面添加一个`?`
+
+```ts
+function printCoordinate(point: {x: number, y: number, z?: number}) { ... }
+
+printCoordinate({x: 100, y: 30})
+printCoordinate({x: 100, y: 30, z: 40})
+```
+
+另外：<font color=FF0000>**可选类型可以看做是 类型 和 undefined 的联合类型**</font>
+
+```ts
+// 等价于 string | undefined
+function print(message?: string) { console.log(message) }
+
+// 如下都不会报错
+print()
+print('foo')
+print(undefined)
+
+// 会报错，因为不是 string 和 undefined 的联合了
+print(null)
+```
+
+###### 联合类型
+
+> 👀 TS 特有
+
+联合类型是由两个或者多个其他类型组成的类型，表示指定的类型可以是这些类型中的任何一个值。联合类型中的每一个类型被称之为联合成员
+
+```ts
+function printId(id: number|string) { console.log(id)}
+
+printId(10)
+printId('10')
+```
+
+**使用联合类型**
+
+传入给一个联合类型的值是非常简单的：只要保证是联合类型中的某一个类型的值即可。但是拿到这个值之后，应该如何使用它呢？因为它可能是任何一种类型。 比如拿到的值可能是 string或者number，就不能对其调用string上的一些方法。如何处理？
+
+<font color=FF0000>**这就需要使用缩小（narrow）联合，TypeScript可以根据我们缩小的代码结构，推断出更加具体的类型**</font>：
+
+```ts
+function printId(id: number|string) {
+  if (typeof id === 'string') { console.log(id.toUpperCase()) }
+  else { console.log(id) }
+}
+```
+
+###### 字面量类型
+
+> 👀 TS 特有
+
+literal types。<font color=FF0000>字面量类型必须类型和值一样</font>。
+
+```ts
+let msg: 'hello world' = 'hello world'
+
+// 这时会报错，因为字面量类型必须类型和值一样
+msg = 'foobar'
+```
+
+如下代码，<font color=FF0000>**因为使用了const，且没有指定类型注解，所以类型推断的结果会是字面量类型**</font>
+
+```ts
+const message = 'hello world'
+// 相当于
+const message: 'hello world' = 'hello world'
+```
+
+字面量类型也可以是数组，比如：
+
+```ts
+let num: 123 = 123
+```
+
+默认情况下字面量类型是没有太大的意义的，但是可以将其用在 将多个类型联合在一起
+
+```ts
+type Alignment = 'left' | 'right' | 'center'
+function changeAlign(align: Alignment) {
+  console.log('方向：', align)
+}
+
+changeAlign('left')
+```
+
+这里的用法类似于枚举
+
+**字面量推理**
+
+> 👀 // TODO 没看懂...
+
+###### 函数类型
+
+使用函数的过程中，函数也可以有自己的类型。可以编写函数类型的表达式 ( Function Type Expressions ) ，来表示函数类型
+
+```ts
+type calcFunc = (num1: number, num2: number) => void
+function calc(fn: calcFunc, num1: number, num2: number) { console.log( fn(num1, num2) ) }
+
+function sum(num1: number, num2: number) { return num1 + num2 }
+function mul(num1: number, num2: number) { return num1 * num2 }
+
+calc(sum, 10, 20)
+calc(mul, 30, 40)
+```
+
+上面的 `(num1: number, num2: number) => void` ，代表的就是一个函数类型。接收两个参数的函数：num1和num2，并且都是number类型；并且这个函数是没有返回值的，所以是void
+
+- **参数的可选类型**
+
+  ```ts
+  function foo(x: number, y?: number) {
+    console.log(x, y)
+  }
+  ```
+
+  可选类型需要在必传参数的后面，否则将会报错。
+
+- **默认参数**
+
+  从ES6开始，JavaScript是支持默认参数的，TypeScript也是支持默认参数的。
+
+  ```ts
+  function foo(x: number, y; number = 6) {
+    console.log(x, y)
+  }
+  foo(10)
+  foo(10, 20)
+  ```
+
+  <font color=FF0000>这时y的类型其实是 undefined 和 number 类型的联合</font>
+
+  <font color=FF0000>默认参数的位置没有限制，可以放在最前面</font>。<font size=4>**但一般推荐的参数使用顺序是：必传参数 - 有默认值的参数 - 可选参数**</font>
+
+- **剩余参数**
+
+  从ES6开始，JavaScript也支持剩余参数，剩余参数语法允许我们将一个不定数量的参数放到一个数组中。另外，<font color=FF0000>剩余参数前面也可以加上其他参数，但是剩余参数后面不能跟参数</font>
+
+  ```ts
+  function sum(...nums: number[]) {
+    let total = 0
+    for (const num of nums) {
+      total += num
     }
-    
-    return [curState, changeState]
+    return total
   }
   
-  const [counter, setCounter] = useState(10)
+  sum(10, 20, 30)
+  sum(10, 20, 30, 40)
   ```
 
-- **函数的参数类型<font color=FF0000>（TS特有）</font>：**函数是JavaScript非常重要的组成部分，<font color=FF0000>TypeScript允许我们指定函数的参数和返回值的类型</font>
+###### 枚举类型
 
-  - **参数的类型注解：**声明函数时，可以在每个参数后添加类型注解，以声明函数接受的参数类型
+> 👀 TS 特有
 
-    ```typescript
-    function greet(name: string) {
-      console.log('hello ' + name.toUpperCase())
-    }
-    ```
+枚举就是将一组可能出现的值，一一列举出来，定义在一个类型中，这个类型就是枚举类型。枚举允许开发者定义一组命名常量，常量可以是数字、字符串类型。
 
-  - **函数的返回值类型：**可以添加返回值的类型注解，这个注解出现在函数列表的后面
+```ts
+enum Direction {
+  LEFT,
+  RIGHT,
+  TOP,
+  BOTTOM
+}
 
-    ```typescript
-    function sum(num1: number, num2: number): number {
-      return num1 + num2
-    }
-    ```
+function turnDir(dir: Direction) {
+  switch(dir) {
+    case Direction.LEFT ... break;
+    case Direction.RIGHT ... break;
+    case Direction.TOP ... break;
+    case Direction.BOTTOM ... break;
+    default: const myDir: never = dir
+  }
+}
+```
 
-    和变量的类型注解一样，<font color=FF0000>通常情况下不需要返回类型注解，因为TypeScript会根据 return 返回值推断函数的 返回类型</font>
+**枚举类型的值**
 
-  - **匿名函数的参数：**当一个函数出现在TypeScript可以确定该函数会被如何调用的地方时，该函数的参数会自动指定类型。
+枚举类型默认是有值的，默认值 是从零开始逐次加一。也可以手动赋值
 
-    ```ts
-    const names = ['foo', 'bar', 'baz']
-    names.forEach(item => {
-      console.log(item.toUpperCase())
-    })
-    ```
-
-    上面的item的类型不需要指定，<font color=FF0000>这是因为TypeScript会根据forEach函数的类型以及数组的类型推断出item的类型</font>。<font color=FF0000 size=4>这个过程称之为**上下文类型** ( contextual typing )，**因为函数执行的上下文可以帮助确定参数和返回值的类型**</font>
-
-    即：上下文中的函数可以不添加类型注解，当然添加也可以。
-
-- **对象类型<font color=FF0000>（TS特有）</font>：**限定一个函数接受的参数是一个对象：
+- 数字类型，这时会从100进行递增
 
   ```ts
-  function printCoordinate(point: {x: number, y: number}) { ... }
-  
-  printCoordinate({x: 100, y: 30})
-  ```
-
-  上面使用了一个对象来作为类型：在对象可以添加属性，并且告知TypeScript 该属性需要是什么类型；属性之间可以使用 `, `或者 `;` 来分割，最后一个分隔符是可选的。<font color=FF0000>每个属性的类型部分也是可选的，如果不指定，那么就是any类型</font>
-
-  **可选类型：**对象类型也可以指定哪些属性是可选的，可以在属性的后面添加一个`?`
-
-  ```ts
-  function printCoordinate(point: {x: number, y: number, z?: number}) { ... }
-  
-  printCoordinate({x: 100, y: 30})
-  printCoordinate({x: 100, y: 30, z: 40})
-  ```
-
-  另外：<font color=FF0000>**可选类型可以看做是 类型 和 undefined 的联合类型**</font>
-
-  ```ts
-  // 等价于 string | undefined
-  function print(message?: string) { console.log(message) }
-  
-  // 如下都不会报错
-  print()
-  print('foo')
-  print(undefined)
-  
-  // 会报错，因为不是 string 和 undefined 的联合了
-  print(null)
-  ```
-
-- **联合类型<font color=FF0000>（TS特有）</font>：**联合类型是由两个或者多个其他类型组成的类型，表示指定的类型可以是这些类型中的任何一个值。联合类型中的每一个类型被称之为联合成员
-
-  ```ts
-  function printId(id: number|string) { console.log(id)}
-  
-  printId(10)
-  printId('10')
-  ```
-
-  **使用联合类型**
-
-  传入给一个联合类型的值是非常简单的：只要保证是联合类型中的某一个类型的值即可。但是拿到这个值之后，应该如何使用它呢？因为它可能是任何一种类型。 比如拿到的值可能是 string或者number，就不能对其调用string上的一些方法。如何处理？
-
-  <font color=FF0000>**这就需要使用缩小（narrow）联合，TypeScript可以根据我们缩小的代码结构，推断出更加具体的类型**</font>：
-
-  ```ts
-  function printId(id: number|string) {
-    if (typeof id === 'string') { console.log(id.toUpperCase()) }
-    else { console.log(id) }
+  enum Direction {
+    LEFT = 100,
+    RIGHT,
+    TOP,
+    BOTTOM
   }
   ```
 
-- **字面量类型：<font color=FF0000>（TS特有）</font>：**literal types。<font color=FF0000>字面量类型必须类型和值一样</font>。
-
-  ```ts
-  let msg: 'hello world' = 'hello world'
-  // 这时会报错，因为字面量类型必须类型和值一样
-  msg = 'foobar'
-  ```
-
-  如下代码，<font color=FF0000>**因为使用了const，且没有指定类型注解，所以类型推断的结果会是字面量类型**</font>
-
-  ```ts
-  const message = 'hello world'
-  // 相当于
-  const message: 'hello world' = 'hello world'
-  ```
-
-  字面量类型也可以是数组，比如：
-
-  ```ts
-  let num: 123 = 123
-  ```
-
-  默认情况下字面量类型是没有太大的意义的，但是可以将其用在 将多个类型联合在一起
-
-  ```ts
-  type Alignment = 'left' | 'right' | 'center'
-  function changeAlign(align: Alignment) {
-    console.log('方向：', align)
-  }
-  
-  changeAlign('left')
-  ```
-
-  这里的用法类似于枚举
-
-  **字面量推理：**
-
-  // TODO 没看懂...
-
-- **函数类型：**使用函数的过程中，函数也可以有自己的类型。可以编写函数类型的表达式 ( Function Type Expressions ) ，来表示函数类型
-
-  ```ts
-  type calcFunc = (num1: number, num2: number) => void
-  function calc(fn: calcFunc, num1: number, num2: number) { console.log( fn(num1, num2) ) }
-  
-  function sum(num1: number, num2: number) { return num1 + num2 }
-  function mul(num1: number, num2: number) { return num1 * num2 }
-  
-  calc(sum, 10, 20)
-  calc(mul, 30, 40)
-  ```
-
-  上面的 (num1: number, num2: number) => void，代表的就是一个函数类型。接收两个参数的函数：num1和num2，并且都是number类型；并且这个函数是没有返回值的，所以是void
-
-  - **参数的可选类型**
-
-    ```ts
-    function foo(x: number, y?: number) {
-      console.log(x, y)
-    }
-    ```
-
-    可选类型需要在必传参数的后面，否则将会报错。
-
-  - **默认参数**
-
-    从ES6开始，JavaScript是支持默认参数的，TypeScript也是支持默认参数的。
-
-    ```ts
-    function foo(x: number, y; number = 6) {
-      console.log(x, y)
-    }
-    foo(10)
-    foo(10, 20)
-    ```
-
-    <font color=FF0000>这时y的类型其实是 undefined 和 number 类型的联合</font>
-
-    <font color=FF0000>默认参数的位置没有限制，可以放在最前面</font>。<font size=4>**但一般推荐的参数使用顺序是：必传参数 - 有默认值的参数 - 可选参数**</font>
-
-  - **剩余参数**
-
-    从ES6开始，JavaScript也支持剩余参数，剩余参数语法允许我们将一个不定数量的参数放到一个数组中。另外，<font color=FF0000>剩余参数前面也可以加上其他参数，但是剩余参数后面不能跟参数</font>
-
-    ```ts
-    function sum(...nums: number[]) {
-      let total = 0
-      for (const num of nums) {
-        total += num
-      }
-      return total
-    }
-    
-    sum(10, 20, 30)
-    sum(10, 20, 30, 40)
-    ```
-
-- **枚举类型<font color=FF0000>（TS特有）</font>：**枚举就是将一组可能出现的值，一一列举出来，定义在一个类型中，这个类型就是枚举类型。枚举允许开发者定义一组命名常量，常量可以是数字、字符串类型。
+- 其他类型：
 
   ```ts
   enum Direction {
     LEFT,
     RIGHT,
-    TOP,
-    BOTTOM
+    TOP = 'TOP',
+    BOTTOM = 'BOTTOM'
   }
+  ```
+
+###### 泛型
+
+参数的类型也可以参数化，程序员可以选择传递参数的类型。这就<font color=FF0000>需要使用一种特性的变量：**类型变量** ( type variable )，它**作用于类型**，而不是值</font>。示例如下：
+
+```ts
+// 这里的<Type> 可以理解为定义Type
+function foo<Type>(arg: Type): Type {
+  return arg
+}
+```
+
+**有两种方式来调用它：**
+
+1. 通过 <类型> 的方式将类型传递给函数
+
+   ```ts
+   foo<string>('abc')
+   foo<number>(123)
+   ```
+
+2. **通过类型推导，自动推导出传入变量的类型**
+
+   ```ts
+   foo('abc')
+   foo(123)
+   ```
+
+**泛型可以传入多个类型：**
+
+```ts
+function foo<T, E>(a1: T, a2: E) { ... }
+```
+
+平时在开发中我们可能会看到一些常用的名称：
+
+- **T：**Type的缩写，类型 
+- **K、V：**key和value的缩写，键值对
+- **E：**Element的缩写，元素
+- **O：**Object的缩写，对象
+
+**泛型接口：**在定义接口的时候我们也可以使用泛型
+
+```ts
+interface IFoo<T> {
+  initialValue: T,
+  valueList: T[],
+  handleValue: (value: T) => void
+}
+
+const foo: IFoo<number> = {
+  initialValue: 0,
+  valueList: [0, 1, 3],
+  handleValue: function(value: number) { ... }
+}
+```
+
+另外，定义接口的时候也是可以给泛型加上默认值的：
+
+```ts
+interface IFoo<T = number> {
+  initialValue: T,
+  valueList: T[],
+  handleValue: (value: T) => void
+}
+```
+
+**泛型类：**
+
+```ts
+class Point<T> {
+  x: T
+  y: T
   
-  function turnDir(dir: Direction) {
-    switch(dir) {
-      case Direction.LEFT ... break;
-      case Direction.RIGHT ... break;
-      case Direction.TOP ... break;
-      case Direction.BOTTOM ... break;
-      default: const myDir: never = dir
-    }
+  constructor(x: T, y: T) {
+    this.x = x
+    this.y = y
   }
-  ```
+}
 
-  **枚举类型的值**
+const p1 = new Point(10, 20)
+const p2 = new Point<number>(10, 20)
+const p3: Point<number> = new Point(10, 20)
+```
 
-  枚举类型默认是有值的，默认值 是从零开始逐次加一。也可以手动赋值
+**泛型约束：**我们希望传入的类型有某些共性，但<font color=FF0000>这些共性可能不是在同一种类型中</font>
 
-  - 数字类型，这时会从100进行递增
+比如string和array都是有length的，或者某些对象也是会有length属性的；那么<font color=FF0000>只要是拥有length的属性都可以作为我们的参数类型</font>，那么该如何操作？
 
-    ```ts
-    enum Direction {
-      LEFT = 100,
-      RIGHT,
-      TOP,
-      BOTTOM
-    }
-    ```
+```ts
+// 定义一个约束接口
+interface ILength {
+  length: number
+}
 
-  - 其他类型：
+function getLength<T extends ILength>(args: T) {
+  return args.length
+}
 
-    ```ts
-    enum Direction {
-      LEFT,
-      RIGHT,
-      TOP = 'TOP',
-      BOTTOM = 'BOTTOM'
-    }
-    ```
-
-- **泛型**
-
-  参数的类型也可以参数化，程序员可以选择传递参数的类型。这就<font color=FF0000>需要使用一种特性的变量：**类型变量** ( type variable )，它**作用于类型**，而不是值</font>。示例如下：
-
-  ```ts
-  // 这里的<Type> 可以理解为定义Type
-  function foo<Type>(arg: Type): Type {
-    return arg
-  }
-  ```
-
-  **有两种方式来调用它：**
-
-  1. 通过 <类型> 的方式将类型传递给函数
-
-     ```ts
-     foo<string>('abc')
-     foo<number>(123)
-     ```
-
-  2. **通过类型推导，自动推导出传入变量的类型**
-
-     ```ts
-     foo('abc')
-     foo(123)
-     ```
-
-  **泛型可以传入多个类型：**
-
-  ```ts
-  function foo<T, E>(a1: T, a2: E) { ... }
-  ```
-
-  平时在开发中我们可能会看到一些常用的名称：
-
-  - **T：**Type的缩写，类型 
-  - **K、V：**key和value的缩写，键值对
-  - **E：**Element的缩写，元素
-  - **O：**Object的缩写，对象
-
-  **泛型接口：**在定义接口的时候我们也可以使用泛型
-
-  ```ts
-  interface IFoo<T> {
-    initialValue: T,
-    valueList: T[],
-    handleValue: (value: T) => void
-  }
-  
-  const foo: IFoo<number> = {
-    initialValue: 0,
-    valueList: [0, 1, 3],
-    handleValue: function(value: number) { ... }
-  }
-  ```
-
-  另外，定义接口的时候也是可以给泛型加上默认值的：
-
-  ```ts
-  interface IFoo<T = number> {
-    initialValue: T,
-    valueList: T[],
-    handleValue: (value: T) => void
-  }
-  ```
-
-  **泛型类：**
-
-  ```ts
-  class Point<T> {
-    x: T
-    y: T
-    
-    constructor(x: T, y: T) {
-      this.x = x
-      this.y = y
-    }
-  }
-  
-  const p1 = new Point(10, 20)
-  const p2 = new Point<number>(10, 20)
-  const p3: Point<number> = new Point(10, 20)
-  ```
-
-  **泛型约束：**我们希望传入的类型有某些共性，但<font color=FF0000>这些共性可能不是在同一种类型中</font>
-
-  比如string和array都是有length的，或者某些对象也是会有length属性的；那么<font color=FF0000>只要是拥有length的属性都可以作为我们的参数类型</font>，那么该如何操作？
-
-  ```ts
-  // 定义一个约束接口
-  interface ILength {
-    length: number
-  }
-  
-  function getLength<T extends ILength>(args: T) {
-    return args.length
-  }
-  
-  getLength('foo')
-  getLength(['foo', 'bar', 'baz'])
-  getLength({length: 100, name: 'foo'})
-  ```
-
-  
+getLength('foo')
+getLength(['foo', 'bar', 'baz'])
+getLength({length: 100, name: 'foo'})
+```
 
 
 
-**类型别名：**可以给对象类型起一个别名，避免在类型注解中重复编写 对象类型 和 联合类型，过于麻烦。
+##### 类型别名
+
+可以给对象类型起一个别名，避免在类型注解中重复编写 对象类型 和 联合类型，过于麻烦。
 
 ```ts
 type ID = number | string
@@ -5206,7 +5267,7 @@ function printId(id: ID) { console.log(id) }
 
 
 
-**类型断言：**
+##### 类型断言
 
 有时TypeScript无法获取具体的类型信息，这时就需要使用类型断言 (Type Assertions)
 
@@ -5221,7 +5282,7 @@ TypeScript 只允许类型断言转换为 更具体（父类转化为子类） �
 
 
 
-**非空类型断言**
+##### 非空类型断言
 
 ```ts
 function printMsg(msg?: string) {
@@ -5264,7 +5325,7 @@ function printMsg(msg?: string) {
 - 在给定的执行路径中，我们可以缩小比声明时更小的类型，这个过程称之为 缩小。
   - typeof padding === 'number' 可以称之为 类型保护 ( type guards )
 
-**常见的类型保护有：**
+##### 常见的类型保护有
 
 - **typeof：**检查返回的值typeof是一种类型保护：因为 TypeScript 对如何typeof操作不同的值进行编码
 
@@ -5322,7 +5383,7 @@ function printMsg(msg?: string) {
 
 
 
-**TS中的this**
+##### TS 中的 this
 
 ```ts
 const info = {
@@ -5351,7 +5412,7 @@ info.sayHello()
 
 这段代码运行会报错。TypeScript进行类型检测的目的是让我们的代码更加的安全，所以这里对于 sayHello 的调用来说，我们虽然将其放到了info中，通过info去调用，this依然是指向info对象的；但对于TypeScript编译器来说，这个代码是非常不安全的，因为我们也有可能直接调用函数，或者通过别的对象来 调用函数。
 
-**指定this的类型**
+###### 指定this的类型
 
 对上面的代码进行修补：
 
@@ -5366,7 +5427,7 @@ function sayHello(this: NameType) {
 
 
 
-**函数重载**
+##### 函数重载
 
 ```jsx
 function sum(a1: number, a2: number): number;
@@ -5380,7 +5441,7 @@ function sum(a1: any, a2: any): any {
 
 
 
-**联合类型和重载**
+##### 联合类型和重载
 
 联合和重载是两者非常相似，都可以实现类似的功能。在开发中我们选择使用哪一种呢？ 在可能的情况下，尽量选择使用联合类型来实现。
 
@@ -5388,7 +5449,7 @@ function sum(a1: any, a2: any): any {
 
 
 
-**类 class**
+##### 类 class
 
 在早期的JavaScript开发中（ES5）我们需要通过函数和原型链来实现类和继承，从ES6开始，引入了class关键字，可以 更加方便的定义和使用类。TypeScript作为JavaScript的超集，也是支持使用class关键字的，并且还可以对类的属性和方法等进行静态类型检测。
 
@@ -5401,7 +5462,7 @@ function sum(a1: any, a2: any): any {
 
 
 
-**类的定义**
+##### 类的定义
 
 可以声明一些类的属性，在类的内部声明类的属性以及对应的类型。
 
@@ -5411,13 +5472,13 @@ function sum(a1: any, a2: any): any {
 
 
 
-**类的继承**
+##### 类的继承
 
-使用extends关键字来实现继承，子类中使用super来访问父类；使用super() 调用父类的构造方法，使用super.method() 调用父类的方法
+使用 extends 关键字来实现继承，子类中使用 super 来访问父类；使用 super() 调用父类的构造方法，使用 super.method() 调用父类的方法
 
 
 
-**类的成员修饰符**
+##### 类的成员修饰符
 
 在TypeScript中，类的属性和方法支持三种修饰符： public、private、protected。默认的修饰符是public
 

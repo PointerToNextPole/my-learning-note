@@ -1109,7 +1109,7 @@ enum Transpiler {
 const transpiler = Transpiler.TypeScriptCompiler;
 ```
 
-##### 字面量类型
+##### 字面量类型 ( literal types )
 
 此外，TypeScript 还支持字面量类型，也就是<font color=FF0000>类似</font> `1111`、`'aaaa'`、`{ a: 1 }` <font color=FF0000>这种值也可以作为类型</font>
 
@@ -1215,13 +1215,15 @@ type res = 1 extends 2 ? true : false;
 
 这就是 TypeScript 类型系统里的 if else。
 
->  **注：**当前场景对 `extends ? :` 表示为 “是否是子类型”（学习自：[白话typescript中的【extends】和【infer】](https://juejin.cn/post/6844904146877808653)），而不是 “是否继承自” （虽然，在其他场景中也可以用来判断是否是继承关系。另外， TS 是 **结构类型系统 **），如下示例：
+>  👀 补充：
 >
-> ```typescript
-> type Union = 1 | 2 | 3
-> type IsUnion = (1 | 2) extends Union ? true: false // type IsUnion = true
-> type ISUnion2 = 4 extends Union ? true: false // type ISUnion2 = false
-> ```
+>  当前场景对 `extends ? :` 表示为 “是否是子类型”（学习自：[白话typescript中的【extends】和【infer】](https://juejin.cn/post/6844904146877808653)），而不是 “是否继承自” （虽然，在其他场景中也可以用来判断是否是继承关系。另外， TS 是 **结构类型系统 **），如下示例：
+>
+>  ```typescript
+>  type Union = 1 | 2 | 3
+>  type IsUnion = (1 | 2) extends Union ? true: false // type IsUnion = true
+>  type ISUnion2 = 4 extends Union ? true: false // type ISUnion2 = false
+>  ```
 
 但是，上面这样的逻辑没啥意义，静态的值自己就能算出结果来，为什么要用代码去判断呢？所以，类型运算逻辑都是用来做一些动态的类型的运算的，也就是对类型参数的运算
 
@@ -1242,7 +1244,9 @@ type res2 = isTwo<2>
 
 <font color=FF0000 size=4>**如何提取类型的一部分呢？答案是 infer**</font>
 
-> **注：**infer 关键字，可以<font color=FF0000>推断一个类型变量</font>，<font color=FF0000>高效地**对类型进行「模式匹配」**</font> 。但是，这个（模式匹配出的）<font color=FF0000>**类型变量只能在 true 的分支中使用**</font>。（学习自：[白话typescript中的【extends】和【infer】](https://juejin.cn/post/6844904146877808653)）
+> 👀 补充：
+>
+> infer 关键字，可以<font color=FF0000>推断一个类型变量</font>，<font color=FF0000>高效地**对类型进行「模式匹配」**</font> 。但是，这个（模式匹配出的）<font color=FF0000>**类型变量只能在 true 的分支中使用**</font>。（学习自：[白话typescript中的【extends】和【infer】](https://juejin.cn/post/6844904146877808653)）
 
 比如提取元组类型的第一个元素：
 
@@ -1287,7 +1291,7 @@ type res = { a: number, c: boolean} extends ObjType ? true : false
 
 对象、class 在 TypeScript 对应的类型是 「索引类型」 ( Index Type ) ，那么如何对索引类型作修改呢？答案是「映射类型」 。
 
-> **注：**映射类型是通过 in 操作符遍历类型的 key 得到的新的类型（也就是： `[Key in keyof IndexType]` ）
+> 👀 补充：映射类型是通过 in 操作符遍历类型的 key 得到的新的类型（也就是： `[Key in keyof IndexType]` ）
 >
 > 学习自：[TypeScript 类型编程](https://segmentfault.com/a/1190000040247980)
 
@@ -1304,7 +1308,7 @@ type MapTypeRes = MapType<{a: 1, b: 2}>
 
 `T[Key]` 是取索引类型某个索引的值，叫做「索引访问」。
 
-`in` 是用于遍历联合类型的运算符（**注：**类似于 for...in ）。
+`in` 是用于遍历联合类型的运算符（ 👀 类似于 `for...in` ）。
 
 比如我们把一个索引类型的值变成 3 个元素的数组：
 
@@ -3022,7 +3026,7 @@ type ClassPublicProps<Obj extends Record<string, any>> = {
 
 ##### as const
 
-> 👀 as const 的名称是 “ const 断言” ( const assertions )，官方文档见 [TS 官方文档 - TypeScript 3.4 # const assertions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions)
+> 👀 as const 的名称是 “ const 断言” ( const assertions )，官方文档见 [TS Doc - TypeScript 3.4 # const assertions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions)
 
 TypeScript <font color=red>默认推导出来的类型并不是字面量类型</font>。
 
@@ -3121,7 +3125,7 @@ type UppercaseKey<Obj extends Record<string, any>> = {
 type StringToUnion<Str extends string> = 
     Str extends `${infer First}${infer Rest}`
         ? First | StringToUnion<Rest>
-        : never; // 注：这里再写的时候，写成了 Str，这会导致结果的联合类型中多一个 `""``
+        : never; // 👀 这里再写的时候，写成了 Str，这会导致结果的联合类型中多一个 `""``
 ```
 
 #### 数组长度做计数
@@ -3247,7 +3251,7 @@ type ParseParam<Param extends string> =
 
 ##### 每个 query param 处理完了，最后把这一系列构造出的索引类型合并成一个就行了
 
-**注：**这一步实现的时候卡住了，上面的逻辑处理，实现没什么问题。另外，这里还是有点没看懂 TODO
+> 👀 这一步实现的时候卡住了，上面的逻辑处理，实现没什么问题。另外，这里还是有点没看懂 TODO
 
 <img src="https://s2.loli.net/2022/05/05/anyLw6pI3SiNXWU.png" alt="img" style="zoom:75%;" />
 
@@ -3300,7 +3304,7 @@ type MergeValues<One, Other> =
 
 #### Parameters
 
-Parameters 用于<font color=FF0000>**提取函数类型的参数类型**</font>（**注：**类似于 Object.keys() ，不过返回的数组中的元素有数据类型 ）。源码是这样的：
+Parameters 用于<font color=FF0000>**提取函数类型的参数类型**</font>（ 👀 类似于 Object.keys() ，不过返回的数组中的元素有数据类型 ）。源码是这样的：
 
 ```typescript
 type Parameters<T extends (...args: any) => any> 
@@ -3334,7 +3338,7 @@ type ReturnType<T extends (...args: any) => any>
 
 <img src="https://s2.loli.net/2022/05/05/VSuQArdvk7B49oP.png" alt="image-20220505010230432" style="zoom:50%;" />
 
-**注：**这个自己写出来了，不复杂
+> 👀这个自己写出来了，不复杂
 
 #### ConstructorParameters
 
@@ -3356,7 +3360,7 @@ type ConstructorParameters<
 
 <img src="https://s2.loli.net/2022/05/05/AG7DMTZ45V3K8aY.png" alt="image-20220505011243327" style="zoom:50%;" />
 
-**注：**这个也不复杂，自己实现的没有加上 abstract
+> 👀 这个也不复杂，自己实现的没有加上 abstract
 
 #### InstanceType
 
@@ -3370,7 +3374,7 @@ type InstanceType<
     : any;
 ```
 
-**注：**讲解略
+> 👀 讲解略
 
 #### ThisParameterType
 
@@ -3395,7 +3399,7 @@ type ThisParameterType<T> =
 
 用 T 匹配一个模式类型，提取 this 的类型到 infer 声明的局部变量 U 里返回。这样就实现了 this 类型的提取。
 
-> **注：**这个借鉴了 [[#模式匹配做提取#函数#GetThisParameterType]] 写出来了，原因时 `infer U` 没有 加上 `this:` 。另外，在调用时，添加 typeof ，如： `ThisParameterType<typeof Fn>` 。关于这里 typeof 的使用，可以参考如下代码：
+> 👀 这个借鉴了 [[#模式匹配做提取#函数#GetThisParameterType]] 写出来了，原因时 `infer U` 没有 加上 `this:` 。另外，在调用时，添加 typeof ，如： `ThisParameterType<typeof Fn>` 。关于这里 typeof 的使用，可以参考如下代码：
 >
 > ```ts
 > const foo = () => 'foo';
@@ -3454,7 +3458,7 @@ type Required<T> = {
 };
 ```
 
-> **注：**写出来了，不过这个 `-` 教程中还没讲过，是在其他地方了解的。
+> 👀 写出来了，不过这个 `-` 教程中还没讲过，是在其他地方了解的。
 
 类型参数 T 为待处理的类型。
 
@@ -3765,7 +3769,7 @@ interface PromiseConstructor {
 
 所以自然要用类型编程来提取出 Promise 的 value 的类型，构造成新的 Promise 类型。
 
-**具体来看下这两个类型定义：**
+##### 具体来看下这两个类型定义
 
 ```ts
 interface PromiseConstructor {
@@ -4429,7 +4433,7 @@ TS 的 namespace 是可以导出非 const 的值的，后面可以修改；但�
 
 **开启了 jsx 编译之后，不能用 `<type> variable`  的方式做类型断言**。ts 是可以做类型断言来修改某个类型到某个类型的：用 `variable as type`  或者 `<type> variable` 的方式；但是如果开启了 jsx 编译之后， 的形式会和 jsx 的语法冲突，所以就不支持 做类型断言了。TSC 都不支持，Babel 当然也是一样
 
-> **注：**这里有点乱，不过下面有总结
+> 👀 这里有点乱，不过下面有总结
 
 #### babel 还是 tsc ？
 
@@ -4445,7 +4449,93 @@ babel 不支持 `const enum`（会作为 enum 处理），不支持 namespace �
 
 
 
-## 其他笔记
+## 官方文档阅读
+
+
+
+#### literal types 字面量类型
+
+In addition to the general types `string` and `number` , <font color=red>we can refer to *specific* strings and numbers in type positions</font>.
+
+One way to think about this is to consider how JavaScript comes with different ways to declare a variable. Both `var` and `let` allow for changing what is held inside the variable, and `const` does not. <font color=red>This is reflected in how TypeScript creates types for literals</font>.
+
+<img src="https://s2.loli.net/2022/12/16/2ewPRachpULzHSm.png" alt="image-20221216152859931" style="zoom:45%;" />
+
+By themselves, literal types aren’t very valuable: 
+
+> 👀 感觉意思是：对于它们自身，字面量类型没有那么有用
+
+<img src="https://s2.loli.net/2022/12/16/IHrQLm6aNjvkuRx.png" alt="image-20221216154112706" style="zoom:45%;" />
+
+It’s not much use to have a variable that can only have one value!
+
+<font color=red>But **by *combining* literals into unions** , you can express a much more useful concept</font> - for example, <font color=dodgerBlue>functions that only accept a certain set of known values</font>:
+
+<img src="https://s2.loli.net/2022/12/16/LBnOJDu73vizVNe.png" alt="image-20221216154501257" style="zoom:45%;" />
+
+<font color=dodgerBlue>**Numeric literal types work the same way:**</font>
+
+<img src="https://s2.loli.net/2022/12/16/ZsTVJrNi9lRFS2k.png" alt="image-20221216154735957" style="zoom:45%;" />
+
+Of course, you <font color=dodgerBlue>can combine these with non-literal types</font>:
+
+> 👀 即字面量类型和 非字面量类型 进行联合，从而约束
+
+<img src="https://s2.loli.net/2022/12/16/XxIRulzLwk3nmcJ.png" alt="image-20221216154916542" style="zoom:45%;" />
+
+There’s one more kind of literal type: boolean literals. There are only two boolean literal types, and as you might guess, they are the types `true` and `false`. <font color=red>The type `boolean` itself is actually just an alias for the union `true | false`</font> .
+
+<img src="https://s2.loli.net/2022/12/16/VrogC1Mfhy84eZ7.png" alt="image-20221216155543167" style="zoom:60%;" />
+
+摘自：[TS Doc - Everyday Types # Everyday Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types)
+
+
+
+#### const assertions 常量断言
+
+> 👀 在 [[#神光《 TypeScript 类型体操通关秘籍》笔记#as const]] 中有对 `as const` 做过介绍，不过在阅读过官方文档之后，发现还有少了点东西，所以做下补充
+
+<font color=red>TypeScript 3.4</font> introduces a new construct for literal values called *`const`* assertions. Its syntax <font color=red>is a type assertion with `const`</font> in place of the type name (e.g. `123 as const` ). When we construct new literal expressions with `const` assertions, we can signal to the language that
+
+- no literal types（字面量类型） in that expression should be widened (e.g. no going from `"hello"` to `string`)
+- object literals <font color=red>get `readonly` properties</font>
+- array literals <font color=red>become `readonly` tuples</font>
+
+```ts
+// Type '"hello"'
+let x = "hello" as const;
+
+// Type 'readonly [10, 20]'
+let y = [10, 20] as const;
+ƒ
+// Type '{ readonly text: "hello" }'
+let z = { text: "hello" } as const;
+```
+
+> 👀 关于 上面的 `let x = "hello" as const` ， [[#神光《 TypeScript 类型体操通关秘籍》笔记#as const]] 没有讲，看了文档后感觉作用就是：将 `let` 定义的原始类型变成 `const` 定义的（字面量类型）
+>
+> <img src="https://s2.loli.net/2022/12/16/w9BPjm2MKlYHQZo.png" alt="image-20221216134143766" style="zoom: 65%;" />
+>
+> `const str = 'foo'` 是一样的：
+>
+> <img src="https://s2.loli.net/2022/12/16/g9EKUjxqAXJOPYc.png" alt="image-20221216134408784" style="zoom:67%;" />
+
+<font color=red>Outside of `.tsx` files</font> , the angle bracket assertion syntax can also be used.
+
+```ts
+// Type '"hello"'
+let x = <const>"hello";
+
+// Type 'readonly [10, 20]'
+let y = <const>[10, 20];
+
+// Type '{ readonly text: "hello" }'
+let z = <const>{ text: "hello" };
+```
+
+摘自： [TS Doc - TypeScript 3.4 # const assertions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions)
+
+
 
 #### // @ts-ignore
 
@@ -4467,11 +4557,13 @@ if (false) {
 > console.logg('hello')
 > ```
 
-A `// @ts-ignore` comment <font color=fuchsia>suppresses **all errors**</font> that originate on the <font color=fuchsia>**following line**</font>（ 👀 注：接下来的**一行**，即无法作用于代码块）. It is <font color=red>recommended practice to **have the remainder of the comment following `@ts-ignore` explain which error is being suppressed**</font> （译：建议实践中在 `@ts-ignore `之后添加相关提示，解释忽略了什么错误。👀 注：如上示例代码）.
+A `// @ts-ignore` comment <font color=fuchsia>suppresses **all errors**</font> that originate on the <font color=fuchsia>**following line**</font>（ 👀 注：接下来的**一行**，即无法作用于代码块）. It is <font color=red>recommended practice to **have the remainder of the comment following `@ts-ignore` explain which error is being suppressed**</font> （译：建议实践中在 `@ts-ignore ` 之后添加相关提示，解释忽略了什么错误。👀 注：如上示例代码）.
 
 Please note that this comment <font color=red>only suppresses the error reporting</font>（译：仅会隐藏报错）, and we <font color=red>recommend you use this comments *very sparingly*</font>.
 
-摘自：[TS doc -  handbook - TS 2.6 - Suppress errors in .ts files using ’// @ts-ignore’ comments](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html#suppress-errors-in-ts-files-using--ts-ignore-comments)
+摘自：[TS Doc -  handbook - TS 2.6 - Suppress errors in .ts files using ’// @ts-ignore’ comments](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html#suppress-errors-in-ts-files-using--ts-ignore-comments)
+
+
 
 #### // @ts-nocheck
 
@@ -4484,6 +4576,12 @@ TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类
 你可以通过添加 `// @ts-nocheck` 注释来忽略类型检查；相反你可以通过去掉 `--checkJs` 设置并添加 `// @ts-check` 注释来选则检查某些 `.js` 文件。 你还可以使用 `// @ts-ignore` 来忽略本行的错误。
 
 摘自：[TypeScript 中文手册 - JavaScript文件里的类型检查](https://typescript.bootcss.com/type-checking-javascript-files.html)
+
+
+
+
+
+## 其他笔记
 
 
 
