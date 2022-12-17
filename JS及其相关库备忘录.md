@@ -3472,7 +3472,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                             
+  >                                                                                                                                                                                                                                 
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3491,7 +3491,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                             
+  >                                                                                                                                                                                                                                 
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -10415,9 +10415,9 @@ obj：要返回其原型的对象。
 
 #### Object.setPrototypeOf()
 
-<font color=FF0000>Object.setPrototypeOf() 方法设置一个指定的对象的原型 ( 即, 内部[[Prototype]]属性）到另一个对象或  null。</font>
+<font color=FF0000>Object.setPrototypeOf() 方法设置一个指定的对象的原型 ( 即, 内部 `[[Prototype]]` 属性）到另一个对象或  null。</font>
 
-<font size=4 color=FF0000>**警告:** </font>由于现代 JavaScript 引擎优化属性访问所带来的特性的关系，<font color=FF0000>更改对象的 [[Prototype]]在各个浏览器和 JavaScript 引擎上都是一个很慢的操作。其在更改继承的性能上的影响是微妙而又广泛的，这不仅仅限于 obj.\__proto__ = ... 语句上的时间花费，而且可能会延伸到任何代码，那些可以访问任何[[Prototype]]已被更改的对象的代码</font>。<mark>如果你关心性能，你应该避免设置一个对象的 [[Prototype]]。相反，你应该使用 Object.create()来创建带有你想要的[[Prototype]]的新对象</mark>。
+<font size=4 color=FF0000>**警告:** </font>由于现代 JavaScript 引擎优化属性访问所带来的特性的关系，<font color=FF0000>更改对象的 `[[Prototype]]` 在各个浏览器和 JavaScript 引擎上都是一个很慢的操作。其在更改继承的性能上的影响是微妙而又广泛的，这不仅仅限于 `obj.__proto__ = ...` 语句上的时间花费，而且可能会延伸到任何代码，那些可以访问任何 `[[Prototype]]` 已被更改的对象的代码</font>。<font color=LightSeaGreen>如果你关心性能，你应该避免设置一个对象的 `[[Prototype]]` 。相反，你应该使用 `Object.create()` 来创建带有你想要的[[Prototype]]的新对象</font>。
 
 ##### 语法
 
@@ -10425,18 +10425,18 @@ obj：要返回其原型的对象。
 Object.setPrototypeOf(obj, prototype)
 ```
 
-##### 参数
+###### 参数
 
 - **obj：**要设置其原型的对象。.
 - **prototype：**该对象的新原型(一个对象 或 null).
 
 ##### 描述
 
-- 如果对象的[[Prototype]]被修改成不可扩展(通过 Object.isExtensible()查看)，就会抛出 TypeError异常。
-- 如果prototype参数不是一个对象或者null(例如，数字，字符串，boolean，或者 undefined)，则什么都不做。
-- 否则，该方法将obj的[[Prototype]]修改为新的值。
+- 如果对象的 `[[Prototype]]` 被修改成不可扩展（通过 Object.isExtensible() 查看），就会抛出 TypeError异常。
+- 如果prototype 参数不是一个对象或者null(例如，数字，字符串，boolean，或者 undefined)，则什么都不做。
+- 否则，该方法将 obj 的 `[[Prototype]]` 修改为新的值。
 
-Object.setPrototypeOf() 是ECMAScript 6 最新草案中的方法，相对于 Object.prototype.\__proto__  ，它被认为是修改对象原型更合适的方法
+Object.setPrototypeOf() 是ECMAScript 6 最新草案中的方法，相对于 `Object.prototype.__proto__`  ，它被认为是修改对象原型更合适的方法
 
 摘自：[MDN - Object.setPrototypeOf()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf)
 
@@ -10452,7 +10452,7 @@ Object.getOwnPropertyDescriptor() 方法 <font color=FF0000>返回指定对象�
 Object.getOwnPropertyDescriptor(obj, prop)
 ```
 
-##### 参数
+###### 参数
 
 - **obj：**需要查找的目标对象
 - **prop：**目标对象内属性名称。**注：**prop需要 引号包裹
@@ -10473,11 +10473,11 @@ Object.getOwnPropertyDescriptors() 方法用来获取一个对象的所有自身
 Object.getOwnPropertyDescriptors(obj)
 ```
 
-##### 参数
+###### 参数
 
 obj：任意对象
 
-##### 返回值
+###### 返回值
 
 所指定对象的所有自身属性的描述符，如果没有任何自身属性，则返回空对象。
 
@@ -10495,11 +10495,11 @@ Object.getOwnPropertyNames() 方法返回一个由指定对象的所有自身属
 Object.getOwnPropertyNames(obj)
 ```
 
-##### 参数
+###### 参数
 
 obj：一个对象，其自身的可枚举和不可枚举属性的名称被返回。
 
-##### 返回值
+###### 返回值
 
 在给定对象上找到的自身属性对应的字符串数组。
 
@@ -10583,40 +10583,41 @@ new.target 属性适用于所有函数访问的元属性。<font color=FF0000>�
 
 ##### 示例
 
-- **函数调用中的 new.target**
-  在普通的函数调用中（和作为构造函数来调用相对），new.target 的值是 undefined。这使得你可以检测一个函数是否是作为构造函数通过 new 被调用的。
+###### 函数调用中的 new.target
 
-  ```js
-  function Foo() {
-    if (!new.target) throw "Foo() must be called with new";
-    console.log("Foo instantiated with new");
-  }
-  
-  Foo(); // throws "Foo() must be called with new"
-  new Foo(); // logs "Foo instantiated with new"
-  ```
-  
-- **构造方法中的 new.target**
+在普通的函数调用中（和作为构造函数来调用相对），new.target 的值是 undefined。这使得你可以检测一个函数是否是作为构造函数通过 new 被调用的。
 
-  在类的构造方法中，new.target 指向直接被 new 执行的构造函数。并且当一个父类构造方法在子类构造方法中被调用时，情况与之相同。
+```js
+function Foo() {
+  if (!new.target) throw "Foo() must be called with new";
+  console.log("Foo instantiated with new");
+}
 
-  ```js
-  class A {
-    constructor() { console.log(new.target.name); }
-  }
-  class B extends A { constructor() { super(); } }
-  
-  var a = new A(); // logs "A"
-  var b = new B(); // logs "B"
-  
-  class C { constructor() { console.log(new.target); } }
-  class D extends C { constructor() { super(); } }
-  
-  var c = new C(); // logs class C{constructor(){console.log(new.target);}}
-  var d = new D(); // logs class D extends C{constructor(){super();}}
-  ```
-  
-  从上面类 C 和 D 的例子可以看出来，new.target 指向的是初始化类的类定义。比如当 D 通过 new 初始化的时候，打印出了 D 的类定义，C 的例子与之类似，打印出的是 C 的类定义。
+Foo(); // throws "Foo() must be called with new"
+new Foo(); // logs "Foo instantiated with new"
+```
+
+###### 构造方法中的 new.target
+
+在类的构造方法中，new.target 指向直接被 new 执行的构造函数。并且当一个父类构造方法在子类构造方法中被调用时，情况与之相同。
+
+```js
+class A {
+  constructor() { console.log(new.target.name); }
+}
+class B extends A { constructor() { super(); } }
+
+var a = new A(); // logs "A"
+var b = new B(); // logs "B"
+
+class C { constructor() { console.log(new.target); } }
+class D extends C { constructor() { super(); } }
+
+var c = new C(); // logs class C{constructor(){console.log(new.target);}}
+var d = new D(); // logs class D extends C{constructor(){super();}}
+```
+
+从上面类 C 和 D 的例子可以看出来，new.target 指向的是初始化类的类定义。比如当 D 通过 new 初始化的时候，打印出了 D 的类定义，C 的例子与之类似，打印出的是 C 的类定义。
 
 摘自：[MDN - new.target](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/new.target)
 
@@ -10661,168 +10662,6 @@ class AbstractClass {
 
 
 
-#### Reflect
-
-**Reflect** 是一个<font color=FF0000>**内置的对象**，它提供拦截 JavaScript 操作的方法</font>。<font color=FF0000>Reflect 不是一个函数对象，因此它是不可构造的</font>。
-
-与大多数全局对象不同，Reflect 并非一个构造函数，所以<font color=FF0000>不能通过 new 运算符对其进行调用</font>，或者将Reflect对象作为一个函数来调用。<font color=FF0000>Reflect的所有属性和方法都是静态的</font>（<font color=FF0000>就像Math对象</font>）。
-
-##### 《现代 JS 教程》中的 Reflect
-
-由于 MDN 中 没有说清楚 Reflect 的作用，所以摘抄《现代 JS 教程》中的内容：
-
-> Reflect 是一个内建对象，可简化 Proxy 的创建。
->
-> <font color=FF0000>Proxy 中定义的内部方法</font>（👀 **注**：即那些「内部属性」，详见原文中的表格），<font color=FF0000>例如 \[[Get]] 和 \[[Set]] 等，都只是规范性的，不能直接调用</font>。
->
-> <font color=FF0000>Reflect 对象（👀 **注：**的存在？）使调用这些内部方法成为了可能</font>。<font color=FF0000>它的方法</font>（👀 **注：**即 Reflect 调用这些 “内部方法” 的方法）<font color=FF0000>是内部方法的 **最小包装**</font>。
->
-> <font color=FF0000>**对于每个可被 Proxy 捕获的内部方法，在 Reflect 中都有一个对应的方法，其名称和参数与 Proxy 捕捉器相同**</font>。所以，我们可以使用 Reflect 来将操作转发给原始对象。
->
-> **以下是执行相同操作和 Reflect 调用的示例：**
->
-> | 操作              | Reflect 调用                      | 内部方法       |
-> | :---------------- | :-------------------------------- | :------------- |
-> | obj[prop]         | Reflect.get(obj, prop)            | \[[Get]]       |
-> | obj[prop] = value | Reflect.set(obj, prop, value)     | \[[Set]]       |
-> | delete obj[prop]  | Reflect.deleteProperty(obj, prop) | \[[Delete]]    |
-> | new F(value)      | Reflect.construct(F, value)       | \[[Construct]] |
-> | …                 | …                                 | …              |
->
-> **代码示例：**
->
-> ```js
-> let user = {};
-> Reflect.set(user, 'name', 'John');
-> 
-> alert(user.name); // John
-> ```
->
-> 在下面这个示例中，捕捉器 get 和 set 均透明地（好像它们都不存在一样）将读取/写入操作转发到对象，并显示一条消息：
->
-> ```js
-> let user = { name: "John", };
-> 
-> user = new Proxy(user, {
->     get(target, prop, receiver) {
->       alert(`GET ${prop}`);
->       return Reflect.get(target, prop, receiver); // (1)
->     },
->     set(target, prop, val, receiver) {
->       alert(`SET ${prop}=${val}`);
->       return Reflect.set(target, prop, val, receiver); // (2)
->     }
-> });
-> 
-> let name = user.name; // 显示 "GET name"
-> user.name = "Pete"; // 显示 "SET name=Pete"
-> ```
->
-> 摘自：[现代 JS 教程 - Proxy 和 Reflect - Reflect](https://zh.javascript.info/proxy#reflect)
-
-##### Vue3 官方文档中的补充
-
-> 使用 Proxy 的一个难点是 this 绑定。我们希望任何方法都绑定到这个 Proxy，而不是目标对象，这样我们也可以拦截它们。值得庆幸的是，ES6 引入了另一个名为 Reflect 的新特性，它允许我们以最小的代价消除了这个问题。
->
-> 摘自：[Vue3 官方文档 - 深入响应性原理](https://v3.cn.vuejs.org/guide/reactivity.html)
-
-**静态方法**
-
-- **Reflect.<font color=FF0000>apply</font>(target, thisArgument, argumentsList)：**<font color=FF0000>对一个函数进行调用操作，同时可以传入一个数组作为调用参数</font>。和 Function.prototype.apply() 功能类似。
-
-- **Reflect.construct(target, argumentsList[, newTarget])：**对构造函数进行 new 操作，相当于执行 new target(...args)。
-
-- **Reflect.<font color=FF0000>defineProperty</font>(target, propertyKey, attributes)：**<font color=FF0000>和 Object.defineProperty() 类似</font>。如果设置成功就会返回 true。
-
-  <font color=FF0000>**补充：**</font><mark>**不同于Object.defineProperty()，不同的是该方法返回的是布尔值，而不需要你像以前那样去捕捉异常(因为Object.defineProperty 是在执行出错的时候直接抛错的)，<font color=FF0000>下面类似的也一样</font>**</mark>
-
-  如果target不是 Object，抛出一个 TypeError。
-
-- **Reflect.<font color=FF0000>deleteProperty</font>(target, propertyKey)：**作为函数的delete操作符，<font color=FF0000>相当于执行 delete target[name]</font>。
-
-- **Reflect.get(target, propertyKey[, receiver])：**获取对象身上某个属性的值，类似于 target[name]。
-
-- **Reflect.getOwnPropertyDescriptor(target, propertyKey)：**类似于 Object.getOwnPropertyDescriptor()。如果对象中存在该属性，则返回对应的属性描述符,  否则返回 undefined.
-
-- **Reflect.getPrototypeOf(target)：**类似于 Object.getPrototypeOf()。
-
-- **Reflect.<font color=FF0000>has</font>(target, propertyKey)：**<font color=FF0000>判断一个对象是否存在某个属性，和 in 运算符 的功能完全相同</font>。
-
-- **Reflect.isExtensible(target)：**类似于 Object.isExtensible().
-
-- **Reflect.<font color=FF0000>ownKeys</font>(target)：**<font color=FF0000>返回一个包含所有自身属性（不包含继承属性）的数组</font>。(<mark>类似于 Object.keys() ，但不会受enumerable影响</mark>).
-
-- **Reflect.preventExtenions(target)：**类似于 Object.preventExtensions()。返回一个Boolean。
-
-- **Reflect.<font color=FF0000>set</font>(target, propertyKey, value[, receiver])：**<font color=FF0000>将值分配给属性的函数（即：为这个对象添加一个新的属性）</font>。返回一个Boolean，如果更新成功，则返回true。
-
-- **Reflect.setPrototypeOf(target, prototype)：**设置对象原型的函数. 返回一个 Boolean， 如果更新成功，则返回true。
-
-摘自：[MDN - Reflect](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect) 另外，可以补充阅读：[JS的Reflect学习和应用](https://zhuanlan.zhihu.com/p/92700557)，该文章对上面的静态方法，做了示例。
-
-##### 使用 Reflect 的好处
-
-- **将 Object 属于语言内部的方法转移到 Reflect 上**
-
-  如上面 ES6 中：将 window.isNaN() 转移到 Number 下，成为 Number.isNaN() ，使之设计更合理。<font color=FF0000>在 ES5 设计初期，将一些方法放到 Object 下，这样的设计并不合理。而在 ES6 中，将其放到 Reflect 下（ 比如 Object.defineProperty() 变成 Reflect.defineProperty() ），这样设计会更加规范</font>
-
-- **修改某些Object方法的返回结果，让其变得更合理**
-
-  还是以 Object.defineProperty() 为例，如果当前有些属性无法定义，则会抛出异常，需要使用try...catch。而在 Reflect.defineProperty()中，会返回一个boolean值，如果出现异常则会返回一个false
-
-- **让 Object 操作变成函数行为**
-
-  Object 的一些操作都是命令式的，如判断 Object 中是否含有 assign 这一方法，使用： ` assign in Object ` ，返回 boolean 值；而在 Reflect 中是函数式的：`Reflect.has(Object, 'assign')` 返回 boolean 值，这样更加合理
-
-- <font color=FF0000>**Reflect 对象的方法与 Proxy 对象的方法一对应**</font>
-
-  在 Proxy 下，使用 Object 的方法，可以使用 Reflect 替代，并且使用方法和 Proxy 一样。
-
-##### CodingStartup 群群友关于 Proxy 和 Reflect 的补充
-
-> proxy 是代理行为，reflect 是注入行为
-
-#### Reflect.ownKeys()
-
-<font color=FF0000>静态方法</font> Reflect.ownKeys() <font color=FF0000>返回一个**由目标对象自身的属性键组成的数组**</font>。
-
-##### 语法
-
-```js
-Reflect.ownKeys(target)
-```
-
-##### 参数
-
-**target：**获取自身属性键的目标对象。
-
-返回值：由目标对象的自身属性键组成的 Array。 
-
-异常：<font color=FF0000>如果目标不是 Object，抛出一个 TypeError</font>。
-
-**描述：**<font color=red>Reflect.ownKeys 方法返回一个由目标对象自身的属性键组成的数组</font>。它的<font color=LightSeaGreen>返回值等同于Object.getOwnPropertyNames(target).concat(Object.getOwnPropertySymbols(target))</font
-
-##### 示例
-
-```js
-const obj = {
-  foo: 1,
-  bar: 2
-}
-console.log(Reflect.ownKeys(obj)); // [ 'foo', 'bar' ]
-
-const arr = [1]
-console.log(Reflect.ownKeys(arr)) // [ '0', 'length' ]
-```
-
-摘自：[MDN - Reflect.ownKeys()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect/ownKeys)
-
-> 👀 补充：Reflect.ownKeys() 可以获取 enumerable 为 false 的数据，而 Object.keys() 和 for...of 不可以。
->
-> 另外，可以参考下 [[#对象遍历方法间的区别]]
-
-
-
 #### Symbol
 
 <font color=FF0000>**symbol 是一种基本数据类型**</font> （primitive data type）。<font color=FF0000>Symbol() 函数会返回 symbol 类型的值，该类型具有静态属性和静态方法</font>。它的静态属性会暴露几个内建的成员对象；它的静态方法会暴露全局的 symbol 注册，且类似于内建对象类，但<font color=FF0000>作为构造函数来说它并不完整，因为它不支持语法："new Symbol()"</font>（注：下面有示例代码）。
@@ -10853,13 +10692,13 @@ console.log(Reflect.ownKeys(arr)) // [ '0', 'length' ]
 >
 > 摘自：[MDN - Symbol - Symbol 包装器对象作为属性的键](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol#symbol_包装器对象作为属性的键)
 
-**语法**
+##### 语法
 
 ```js
 Symbol([description])
 ```
 
-**参数**
+###### 参数
 
 - **description：**可选，字符串类型。对 symbol 的描述，可用于调试但不是访问 symbol 本身。
 
@@ -10895,12 +10734,12 @@ var sym = new Symbol(); // TypeError
 
 Object.getOwnPropertySymbols() 方法让你在查找一个给定对象的符号属性时返回一个 symbol 类型的数组。注意，每个初始化的对象都是没有自己的 symbol 属性的，因此这个数组可能为空，除非你已经在对象上设置了 symbol 属性。
 
-**属性**
+##### 属性
 
 - **Symbol.length：**长度属性，值为0。
 - **Symbol.prototype：**symbol 构造函数的原型。
 
-**方法**
+##### 方法
 
 - **Symbol.for(key)：**<font color=FF0000>使用给定的 key 搜索现有的 symbol</font>，如果<mark>找到则返回该 symbol；否则将使用给定的 key 在全局 symbol注册表中创建一个新的 symbol</mark>。
 - **Symbol.keyFor(sym)：**<font color=FF0000>从全局 symbol注册表中，为给定的 symbol检索一个共享的 symbol key</font>。
@@ -10911,14 +10750,14 @@ Object.getOwnPropertySymbols() 方法让你在查找一个给定对象的符号�
 
 - **Symbol.prototype.description：**一个只读的字符串，意为对该 Symbol 对象的描述
 
-**实例方法**
+实例方法
 
 - **Symbol.prototype.toSource：**返回该 Symbol 对象的源代码。该方法重写了 Object.prototype.toSource 方法
 - **Symbol.prototype.toString：**返回一个包含着该 Symbol 对象描述的字符串。该方法重写了 Object.prototype.toString 方法
 - **Symbol.prototype.valueOf：**返回该 Symbol 对象。该方法重写了 Symbol.prototype.valueOf 方法
 - **Symbol.prototype[@@toPrimitive]：**返回该 Symbol 对象。
 
-##### **其他细节**
+##### 其他细节
 
 - ```js
   typeof Symbol.iterator === 'symbol'
@@ -10938,7 +10777,7 @@ Object.getOwnPropertySymbols() 方法让你在查找一个给定对象的符号�
 
  JS 对象的标识符可以是 string、number、symbol 这三种类型的。
 
-> <mark>一个对象的属性名可以是任何有效的 JavaScript 字符串，<font color=FF0000>或者可以被转换为字符串的任何类型，包括空字符串</font></mark>。然而，<font color=FF0000>一个属性的名称如果不是一个有效的 JavaScript 标识符</font> ( JavaScript identifier )（例如，一个由空格或连字符，或者以数字开头的属性名），<font color=FF0000>就只能通过方括号标记访问</font>。<font color=FF0000>**这个标记法在属性名称是动态判定（属性名只有到运行时才能判定）时非常有用**</font>（**注：**这里和 JS 的计算属性值非常类似，甚至感觉就是一个东西）。
+> 一个对象的属性名可以是任何有效的 JavaScript 字符串，<font color=FF0000>或者可以被转换为字符串的任何类型，包括空字符串</font>。然而，<font color=FF0000>一个属性的名称如果不是一个有效的 JavaScript 标识符</font> ( JavaScript identifier )（例如，一个由空格或连字符，或者以数字开头的属性名），<font color=FF0000>就只能通过方括号标记访问</font>。<font color=FF0000>**这个标记法在属性名称是动态判定（属性名只有到运行时才能判定）时非常有用**</font>。
 >
 > ```js
 > // 同时创建四个变量，用逗号分隔
@@ -11508,7 +11347,7 @@ const p = new Proxy(target, handler)
 
 - **Proxy.revocable()：**<font color=FF0000>创建一个可撤销的 Proxy 对象</font>。
 
-  《现代 JS 教程》的补充
+  ###### 《现代 JS 教程》的补充
 
   > 一个 **可撤销** 的代理是可以被禁用的代理。
   >
@@ -11561,59 +11400,331 @@ handler 对象是一个容纳一批特定属性的占位符对象。它包含有
 
 <font color=FF0000>一些不标准的捕捉器已经被废弃并且移除了。</font>
 
-**基础示例**
+##### 示例
 
-- 在以下简单的例子中，当对象中不存在属性名时，默认返回值为 37。下面的代码以此展示了 `get` handler 的使用场景。
+###### 基础示例
 
-  ```js
-  const handler = {
-      get: function(obj, prop) {
-          return prop in obj ? obj[prop] : 37;
-      }
-  };
-  
-  const p = new Proxy({}, handler);
-  p.a = 1;
-  p.b = undefined;
-  
-  console.log(p.a, p.b);      // 1, undefined
-  console.log('c' in p, p.c); // false, 37
-  ```
+在以下简单的例子中，当对象中不存在属性名时，默认返回值为 37。下面的代码以此展示了 `get` handler 的使用场景。
 
-- **无操作转发代理**
+```js
+const handler = {
+    get: function(obj, prop) {
+        return prop in obj ? obj[prop] : 37;
+    }
+};
 
-  在以下例子中，我们使用了一个原生 JavaScript 对象，代理会将所有应用到它的操作转发到这个对象上。
+const p = new Proxy({}, handler);
+p.a = 1;
+p.b = undefined;
 
-  ```js
-  let target = {};
-  let p = new Proxy(target, {});
-  
-  p.a = 37;   // 操作转发到目标
-  
-  console.log(target.a);    // 37. 操作已经被正确地转发
-  ```
+console.log(p.a, p.b);      // 1, undefined
+console.log('c' in p, p.c); // false, 37
+```
+
+###### 无操作转发代理
+
+在以下例子中，我们使用了一个原生 JavaScript 对象，代理会将所有应用到它的操作转发到这个对象上。
+
+```js
+let target = {};
+let p = new Proxy(target, {});
+
+p.a = 37;   // 操作转发到目标
+
+console.log(target.a);    // 37. 操作已经被正确地转发
+```
 
 摘自：[MDN - Proxy](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy)
 
-**补充：**
+##### 补充
 
-| 内部方法               | Handler 方法             | 何时触发                                                     |
-| :--------------------- | :----------------------- | :----------------------------------------------------------- |
-| \[[Get]]               | get                      | 读取属性                                                     |
-| \[[Set]]               | set                      | 写入属性                                                     |
-| \[[HasProperty]]       | has                      | in 操作符                                                    |
-| \[[Delete]]            | deleteProperty           | delete 操作符                                                |
-| \[[Call]]              | apply                    | 函数调用                                                     |
-| \[[Construct]]         | construct                | new 操作符                                                   |
-| \[[GetPrototypeOf]]    | getPrototypeOf           | Object.getPrototypeOf                                        |
-| \[[SetPrototypeOf]]    | setPrototypeOf           | Object.setPrototypeOf                                        |
-| \[[IsExtensible]]      | isExtensible             | Object.isExtensible                                          |
-| \[[PreventExtensions]] | preventExtensions        | Object.preventExtensions                                     |
-| \[[DefineOwnProperty]] | defineProperty           | Object.defineProperty, Object.defineProperties               |
-| \[[GetOwnProperty]]    | getOwnPropertyDescriptor | Object.getOwnPropertyDescriptor, for..in, Object.keys/values/entries |
-| \[[OwnPropertyKeys]]   | ownKeys                  | Object.getOwnPropertyNames, Object.getOwnPropertySymbols, for..in, Object/keys/values/entries |
+| 内部方法                | Handler 方法                         | 何时触发                                                     |
+| :---------------------- | :----------------------------------- | :----------------------------------------------------------- |
+| `[[Get]]`               | get                                  | 读取属性                                                     |
+| `[[Set]]`               | set                                  | 写入属性                                                     |
+| `[[HasProperty]]`       | has                                  | in 操作符                                                    |
+| `[[Delete]]`            | deleteProperty                       | delete 操作符                                                |
+| `[[Call]]`              | <font color=fuchsia>**apply**</font> | 函数调用                                                     |
+| `[[Construct]]`         | construct                            | new 操作符                                                   |
+| `[[GetPrototypeOf]]`    | getPrototypeOf                       | Object.getPrototypeOf                                        |
+| `[[SetPrototypeOf]]`    | setPrototypeOf                       | Object.setPrototypeOf                                        |
+| `[[IsExtensible]]`      | isExtensible                         | Object.isExtensible                                          |
+| `[[PreventExtensions]]` | preventExtensions                    | Object.preventExtensions                                     |
+| `[[DefineOwnProperty]]` | defineProperty                       | Object.defineProperty, Object.defineProperties               |
+| `[[GetOwnProperty]]`    | getOwnPropertyDescriptor             | Object.getOwnPropertyDescriptor, for..in, Object.keys/values/entries |
+| `[[OwnPropertyKeys]]`   | ownKeys                              | Object.getOwnPropertyNames, Object.getOwnPropertySymbols, for..in, Object/keys/values/entries |
 
 摘自：[现代JavaScript教程 - Proxy 和 Reflect](https://zh.javascript.info/proxy)
+
+
+
+#### Reflect
+
+**Reflect** 是一个<font color=FF0000>**内置的对象**，它提供拦截 JavaScript 操作的方法</font>。<font color=FF0000>Reflect 不是一个函数对象，因此它是不可构造的</font>。
+
+与大多数全局对象不同，Reflect 并非一个构造函数，所以<font color=FF0000>不能通过 new 运算符对其进行调用</font>，或者将Reflect对象作为一个函数来调用。<font color=FF0000>Reflect的所有属性和方法都是静态的</font>（<font color=FF0000>就像Math对象</font>）。
+
+##### 静态方法
+
+- **Reflect.<font color=FF0000>apply</font>(target, thisArgument, argumentsList)：**<font color=FF0000>对一个函数进行调用操作，同时可以传入一个数组作为调用参数</font>。和 Function.prototype.apply() 功能类似。
+
+- **Reflect.construct(target, argumentsList[, newTarget])：**对构造函数进行 new 操作，相当于执行 new target(...args)。
+
+- **Reflect.<font color=FF0000>defineProperty</font>(target, propertyKey, attributes)：**<font color=FF0000>和 Object.defineProperty() 类似</font>。如果设置成功就会返回 true。
+
+  > 👀 补充
+  >
+  > 不同于 Object.defineProperty() ，不同的是该方法 ( 👀 Reflect.defineProperty ) 返回的是布尔值，而不需要你像以前 ( 👀 Object.defineProperty ) 那样去捕捉异常（因为 Object.defineProperty 是在执行出错的时候直接抛错的），<font color=FF0000>下面类似的也一样</font>
+  >
+  > 摘自：[JS的Reflect学习和应用](https://zhuanlan.zhihu.com/p/92700557)
+
+  如果 target 不是 Object ，抛出一个 TypeError。
+
+- **Reflect.<font color=FF0000>deleteProperty</font>(target, propertyKey)：**作为函数的delete操作符，<font color=FF0000>相当于执行 delete target[name]</font>。
+
+- **Reflect.get(target, propertyKey[, receiver])：**获取对象身上某个属性的值，类似于 target[name]。
+
+- **Reflect.getOwnPropertyDescriptor(target, propertyKey)：**类似于 Object.getOwnPropertyDescriptor()。如果对象中存在该属性，则返回对应的属性描述符,  否则返回 undefined.
+
+- **Reflect.getPrototypeOf(target)：**类似于 Object.getPrototypeOf()。
+
+- **Reflect.<font color=FF0000>has</font>(target, propertyKey)：**<font color=FF0000>判断一个对象是否存在某个属性，和 in 运算符 的功能完全相同</font>。
+
+- **Reflect.isExtensible(target)：**类似于 Object.isExtensible().
+
+- **Reflect.<font color=FF0000>ownKeys</font>(target)：**<font color=FF0000>返回一个包含所有自身属性（不包含继承属性）的数组</font>。（ 👀 类似于 Object.keys() ，但不会受enumerable影响 ）
+
+- **Reflect.preventExtenions(target)：**类似于 Object.preventExtensions() 。返回一个Boolean。
+
+- **Reflect.<font color=FF0000>set</font>(target, propertyKey, value[, receiver])：**<font color=FF0000>将值分配给属性的函数（即：为这个对象添加一个新的属性）</font>。返回一个Boolean，如果更新成功，则返回true。
+
+- **Reflect.setPrototypeOf(target, prototype)：**设置对象原型的函数. 返回一个 Boolean， 如果更新成功，则返回true。
+
+摘自：[MDN - Reflect](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect) 另外，可以补充阅读：[JS的Reflect学习和应用](https://zhuanlan.zhihu.com/p/92700557)，该文章对上面的静态方法，做了示例。
+
+##### 使用 Reflect 的好处
+
+- **将 Object 属于语言内部的方法转移到 Reflect 上**
+
+  如上面 ES6 中：将 window.isNaN() 转移到 Number 下，成为 Number.isNaN() ，使之设计更合理。<font color=FF0000>在 ES5 设计初期，将一些方法放到 Object 下，这样的设计并不合理。而在 ES6 中，将其放到 Reflect 下（ 比如 Object.defineProperty() 变成 Reflect.defineProperty() ），这样设计会更加规范</font>
+
+- **修改某些Object方法的返回结果，让其变得更合理**
+
+  还是以 Object.defineProperty() 为例，如果当前有些属性无法定义，则会抛出异常，需要使用try...catch。而在 Reflect.defineProperty()中，会返回一个boolean值，如果出现异常则会返回一个false
+
+- **让 Object 操作变成函数行为**
+
+  Object 的一些操作都是命令式的，如判断 Object 中是否含有 assign 这一方法，使用： ` assign in Object ` ，返回 boolean 值；而在 Reflect 中是函数式的：`Reflect.has(Object, 'assign')` 返回 boolean 值，这样更加合理
+
+- <font color=FF0000>**Reflect 对象的方法与 Proxy 对象的方法一对应**</font>
+
+  在 Proxy 下，使用 Object 的方法，可以使用 Reflect 替代，并且使用方法和 Proxy 一样。
+
+##### 《现代 JS 教程》中的 Reflect
+
+> 👀 由于 MDN 中 没有说清楚 Reflect 的作用，所以摘抄《现代 JS 教程》中的内容：
+
+Reflect 是一个内建对象，可简化 Proxy 的创建。
+
+<font color=FF0000>Proxy 中定义的内部方法</font>（👀 即那些「内部属性」，详见原文中的表格），<font color=FF0000>例如 `[[Get]]` 和 `[[Set]]` 等，都只是规范性的，不能直接调用</font>。
+
+<font color=FF0000>Reflect 对象（👀 的存在？）使调用这些内部方法成为了可能</font>。<font color=FF0000>它的方法</font>（👀 即 Reflect 调用这些 “内部方法” 的方法）<font color=FF0000>是内部方法的 **最小包装**</font>。
+
+<font color=FF0000>**对于每个可被 Proxy 捕获的内部方法，在 Reflect 中都有一个对应的方法，其名称和参数与 Proxy 捕捉器相同**</font>。所以，我们可以使用 Reflect 来将操作转发给原始对象。
+
+###### 以下是执行相同操作和 Reflect 调用的示例
+
+| 操作              | Reflect 调用                      | 内部方法        |
+| :---------------- | :-------------------------------- | :-------------- |
+| obj[prop]         | Reflect.get(obj, prop)            | `[[Get]]`       |
+| obj[prop] = value | Reflect.set(obj, prop, value)     | `[[Set]]`       |
+| delete obj[prop]  | Reflect.deleteProperty(obj, prop) | `[[Delete]]`    |
+| new F(value)      | Reflect.construct(F, value)       | `[[Construct]]` |
+| …                 | …                                 | …               |
+
+###### 代码示例
+
+```js
+let user = {};
+Reflect.set(user, 'name', 'John');
+
+alert(user.name); // John
+```
+
+在下面这个示例中，捕捉器 get 和 set 均透明地（好像它们都不存在一样）将读取/写入操作转发到对象，并显示一条消息：
+
+```js
+let user = { name: "John", };
+
+user = new Proxy(user, {
+ get(target, prop, receiver) {
+   alert(`GET ${prop}`);
+   return Reflect.get(target, prop, receiver); // (1)
+ },
+ set(target, prop, val, receiver) {
+   alert(`SET ${prop}=${val}`);
+   return Reflect.set(target, prop, val, receiver); // (2)
+ }
+});
+
+let name = user.name; // 显示 "GET name"
+user.name = "Pete";   // 显示 "SET name=Pete"
+```
+
+##### Reflect.handler 使用 receiver 的原因
+
+<font color=dodgerBlue>让我们看一个示例，来说明为什么 `Reflect.get` 更好</font>。此外，我们还将看到为什么 `get/set` 有第三个参数 `receiver`，而且我们之前从来没有使用过它。
+
+我们有一个带有 `_name` 属性和 getter 的对象 `user` 。这是对 `user` 对象的一个代理：
+
+```js
+let user = {
+  _name: "Guest",
+  get name() { return this._name; }
+};
+
+let userProxy = new Proxy(user, {
+  get(target, prop, receiver) { return target[prop]; }
+});
+
+alert(userProxy.name); // Guest
+```
+
+其 `get` 捕捉器在这里是“透明的”，它返回原来的属性，不会做任何其他的事。这对于我们的示例而言就足够了。
+
+一切似乎都很好。<font color=dodgerBlue>但是让我们将示例变得稍微复杂一点</font>。<font color=dodgerBlue>**另一个对象 `admin` 从 `user` 继承后，我们可以观察到错误的行为**</font>：
+
+```js
+let user = {
+  _name: "Guest",
+  get name() { return this._name; }
+};
+
+let userProxy = new Proxy(user, {
+  get(target, prop, receiver) {
+    return target[prop]; // (*) target = user
+  }
+});
+
+let admin = {
+  __proto__: userProxy,
+  _name: "Admin"
+};
+
+// 期望输出：Admin
+alert(admin.name); // 输出：Guest (?!?)
+```
+
+<font color=dodgerBlue>读取 `admin.name` 应该返回 `"Admin"`，而不是 `"Guest"`</font>！
+
+发生了什么？或许我们在继承方面做错了什么？但是，如果我们移除代理，那么一切都会按预期进行。
+
+<font color=dodgerBlue>**问题实际上出在代理中，在 `(*)` 行**</font>。
+
+1. 当我们读取 `admin.name` 时，由于 `admin` 对象自身没有对应的的属性，搜索将转到其原型。
+
+2. 原型是 `userProxy`。
+
+3. 从代理读取 `name` 属性时，`get` 捕捉器会被触发，并从原始对象返回 `target[prop]` 属性，在 `(*)` 行。
+
+   当调用 `target[prop]` 时，若 `prop` 是一个 getter，它将在 `this=target` 上下文中运行其代码。因此，结果是来自原始对象 `target` 的 `this._name`，即来自 `user`。
+
+<font color=red>为了解决这种情况，我们需要 `get` 捕捉器的第三个参数 `receiver`</font> 。<font color=fuchsia>它保证将正确的 `this` 传递给 getter。在我们的例子中是 `admin`</font>。
+
+如何把上下文传递给 getter？对于一个常规函数，我们可以使用 `call/apply`，但这是一个 getter，它不能“被调用”，只能被访问。
+
+`Reflect.get` 可以做到。如果我们使用它，一切都会正常运行。
+
+这是更正后的变体：
+
+```js
+let user = {
+  _name: "Guest",
+  get name() { return this._name; }
+};
+
+let userProxy = new Proxy(user, {
+  get(target, prop, receiver) { // receiver = admin
+    return Reflect.get(target, prop, receiver); // (*)
+  }
+});
+
+let admin = {
+  __proto__: userProxy,
+  _name: "Admin"
+};
+
+alert(admin.name); // Admin
+```
+
+现在 `receiver` 保留了对正确 `this` 的引用（即 `admin`），该引用是在 `(*)` 行中被通过 `Reflect.get` 传递给 getter 的。
+
+我们可以把捕捉器重写得更短：
+
+```javascript
+get(target, prop, receiver) {
+  return Reflect.get(...arguments);
+}
+```
+
+`Reflect` 调用的命名与捕捉器的命名完全相同，并且接受相同的参数。它们是以这种方式专门设计的。
+
+因此，`return Reflect...` 提供了一个安全的方式，可以轻松地转发操作，并确保我们不会忘记与此相关的任何内容。
+
+摘自：[现代 JS 教程 - Proxy 和 Reflect - Reflect](https://zh.javascript.info/proxy#reflect)
+
+
+
+##### Vue3 官方文档中的补充
+
+使用 Proxy 的一个难点是 this 绑定。我们希望任何方法都绑定到这个 Proxy，而不是目标对象，这样我们也可以拦截它们。值得庆幸的是，ES6 引入了另一个名为 Reflect 的新特性，它允许我们以最小的代价消除了这个问题。
+
+摘自：[Vue3 官方文档 - 深入响应性原理](https://v3.cn.vuejs.org/guide/reactivity.html)
+
+##### CodingStartup 群群友关于 Proxy 和 Reflect 的补充
+
+> proxy 是代理行为，reflect 是注入行为
+
+
+
+#### Reflect.ownKeys()
+
+<font color=FF0000>静态方法</font> Reflect.ownKeys() <font color=FF0000>返回一个**由目标对象自身的属性键组成的数组**</font>。
+
+##### 语法
+
+```js
+Reflect.ownKeys(target)
+```
+
+##### 参数
+
+**target：**获取自身属性键的目标对象。
+
+返回值：由目标对象的自身属性键组成的 Array。 
+
+异常：<font color=FF0000>如果目标不是 Object，抛出一个 TypeError</font>。
+
+**描述：**<font color=red>Reflect.ownKeys 方法返回一个由目标对象自身的属性键组成的数组</font>。它的<font color=LightSeaGreen>返回值等同于Object.getOwnPropertyNames(target).concat(Object.getOwnPropertySymbols(target))</font>
+
+##### 示例
+
+```js
+const obj = {
+  foo: 1,
+  bar: 2
+}
+console.log(Reflect.ownKeys(obj)); // [ 'foo', 'bar' ]
+
+const arr = [1]
+console.log(Reflect.ownKeys(arr)) // [ '0', 'length' ]
+```
+
+摘自：[MDN - Reflect.ownKeys()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect/ownKeys)
+
+> 👀 补充：Reflect.ownKeys() 可以获取 enumerable 为 false 的数据，而 Object.keys() 和 for...of 不可以。
+>
+> 另外，可以参考下 [[#对象遍历方法间的区别]]
 
 
 
@@ -11621,16 +11732,16 @@ handler 对象是一个容纳一批特定属性的占位符对象。它包含有
 
 instanceof 运算符用于检测构造函数的 prototype 属性（即： `constructor.prototype ` ）是否出现在某个实例对象( object )的原型链上
 
-- **语法**
+##### 语法
 
-  ```js
-  object instanceof constructor
-  ```
+```js
+object instanceof constructor
+```
 
-- **参数**
+##### 参数
 
-  - object：某个实例对象
-  - constructor：某个构造函数
+- object：某个实例对象
+- constructor：某个构造函数
 
 摘自：[MDN - instanceof](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/instanceof)
 
@@ -11640,13 +11751,15 @@ instanceof 运算符用于检测构造函数的 prototype 属性（即： `const
 
 extends 关键字用于类声明或者类表达式中，以创建一个类，该类是另一个类的子类。
 
-- **语法：**
+##### 语法
 
-  ```js
-  class ChildClass extends ParentClass { ... }
-  ```
+```js
+class ChildClass extends ParentClass { ... }
+```
 
-- **描述：**extends 关键字用来创建一个普通类或者内建对象的子类。继承的 `.prototype` 必须是一个 Object 或者 null 。
+##### 描述
+
+extends 关键字用来创建一个普通类或者内建对象的子类。继承的 `.prototype` 必须是一个 Object 或者 null 。
 
 摘自：[MDN - extends](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes/extends)
 
@@ -11656,15 +11769,17 @@ extends 关键字用于类声明或者类表达式中，以创建一个类，该
 
 super 关键字<font color=FF0000>用于访问和调用一个对象的父对象上的函数</font>。super.prop 和 super[expr] 表达式在类和对象字面量任何方法定义中都是有效的。
 
-- **语法**
+##### 语法
 
-  ```js
-  super([arguments]);  // 调用 父对象/父类 的构造函数
-  
-  super.functionOnParent([arguments]);  // 调用 父对象/父类 上的方法
-  ```
+```js
+super([arguments]);  // 调用 父对象/父类 的构造函数
 
-- **描述：**<font color=FF0000>在构造函数中使用时，super 关键字将单独出现，并且必须在使用 this 关键字之前使用</font>。<font color=FF0000>super 关键字也可以用来调用父对象上的函数</font>。
+super.functionOnParent([arguments]);  // 调用 父对象/父类 上的方法
+```
+
+##### 描述
+
+<font color=FF0000>在构造函数中使用时，super 关键字将单独出现，并且必须在使用 this 关键字之前使用</font>。<font color=FF0000>super 关键字也可以用来调用父对象上的函数</font>。
 
 摘自：[MDN - super](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/super)
 
@@ -11701,28 +11816,31 @@ Set 对象允许你存储任何类型的唯一值，无论是原始值或者是�
 
 <font color=FF0000>NaN和undefined都可以被存储在Set 中， NaN之间被视为相同的值（NaN被认为是相同的，尽管 NaN !== NaN）。</font>
 
-- **构造方法：**
-  **Set()：**创建一个新的Set对象。
+##### 构造方法
 
-  <mark>补充：set() 可以添加Array或者String（也是一种字符的Array）作为参数</mark>
+**Set()：**创建一个新的Set对象。
 
-- **静态属性：**
-  **get Set[@@species]：**构造函数用来创建派生对象.
+> 👀 补充：set() 可以添加Array或者String（也是一种字符的Array）作为参数
 
-- **实例属性：**
-  <font color=FF0000>**Set.prototype.size：**返回 Set 对象中的值的个数</font>
+##### 静态属性
 
-- **实例方法：**
+**get Set[@@species]：**构造函数用来创建派生对象.
 
-  - **Set.prototype.<font color=FF0000>add</font>(value)：**<font color=FF0000>在Set对象尾部添加一个元素</font>。返回该Set对象。
-  - **Set.prototype.<font color=FF0000>clear()</font>：**<font color=FF0000>移除Set对象内的所有元素</font>。
-  - **Set.prototype.<font color=FF0000>delete(value)</font>：**<font color=FF0000>移除Set中与这个值相等的元素</font>，<font color=FF0000>返回Set.prototype.has(value)在这个操作前会返回的值</font>（即如果该元素存在，返回true，否则返回false）。Set.prototype.has(value)在此后会返回false。
-  - **Set.prototype.entries()：**返回一个新的迭代器对象，该对象包含Set对象中的按插入顺序排列的所有元素的值的[value, value]数组。为了使这个方法和Map对象保持相似， 每个值的键和值相等。
-  - **Set.prototype.forEach(callbackFn[, thisArg])：**按照插入顺序，为Set对象中的每一个值调用一次callBackFn。如果提供了thisArg参数，回调中的this会是这个参数。
-  - **Set.prototype.<font color=FF0000>has(value)</font>：**<font color=FF0000>返回一个布尔值，表示该值在Set中存在与否</font>。
-  - **Set.prototype.keys()：**与values()方法相同，返回一个新的迭代器对象，该对象包含Set对象中的按插入顺序排列的所有元素的值。
-  - **Set.prototype.values()：**返回一个新的迭代器对象，该对象包含Set对象中的按插入顺序排列的所有元素的值。
-  - **Set.prototype\[@@iterator]()：**返回一个新的迭代器对象，该对象包含Set对象中的按插入顺序排列的所有元素的值。
+##### 实例属性
+
+<font color=FF0000>**Set.prototype.size：**返回 Set 对象中的值的个数</font>
+
+##### 实例方法
+
+- **Set.prototype.<font color=FF0000>add</font>(value)：**<font color=FF0000>在Set对象尾部添加一个元素</font>。返回该Set对象。
+- **Set.prototype.<font color=FF0000>clear()</font>：**<font color=FF0000>移除Set对象内的所有元素</font>。
+- **Set.prototype.<font color=FF0000>delete(value)</font>：**<font color=FF0000>移除Set中与这个值相等的元素</font>，<font color=FF0000>返回Set.prototype.has(value)在这个操作前会返回的值</font>（即如果该元素存在，返回true，否则返回false）。Set.prototype.has(value)在此后会返回false。
+- **Set.prototype.entries()：**返回一个新的迭代器对象，该对象包含Set对象中的按插入顺序排列的所有元素的值的[value, value]数组。为了使这个方法和Map对象保持相似， 每个值的键和值相等。
+- **Set.prototype.forEach(callbackFn[, thisArg])：**按照插入顺序，为Set对象中的每一个值调用一次callBackFn。如果提供了thisArg参数，回调中的this会是这个参数。
+- **Set.prototype.<font color=FF0000>has(value)</font>：**<font color=FF0000>返回一个布尔值，表示该值在Set中存在与否</font>。
+- **Set.prototype.keys()：**与values()方法相同，返回一个新的迭代器对象，该对象包含Set对象中的按插入顺序排列的所有元素的值。
+- **Set.prototype.values()：**返回一个新的迭代器对象，该对象包含Set对象中的按插入顺序排列的所有元素的值。
+- **Set.prototype\[@@iterator]()：**返回一个新的迭代器对象，该对象包含Set对象中的按插入顺序排列的所有元素的值。
 
 摘自：[MDN - Set](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Set)
 
@@ -11746,15 +11864,19 @@ DocumentFragment，<font color=FF0000>文档片段 **接口**</font>，一个<f
 
 **属性：**该接口没有特殊的属性，其<font color=FF0000 size=4>**属性都继承自 Node**</font>。并补充了 Node 接口中的属性。原文这里下面列举了几个属性，这里略。
 
-**构造函数：DocumentFragment()** 返回一个空的 DocumentFragment 对象。
+##### 构造函数
 
-**方法：**<font color=FF0000>该接口继承 Node 的全部方法</font>，并实现了 ParentNode 接口中的方法。
+**DocumentFragment()** 返回一个空的 DocumentFragment 对象。
+
+##### 方法
+
+<font color=FF0000>该接口继承 Node 的全部方法</font>，并实现了 ParentNode 接口中的方法。
 
 - **DocumentFragment.querySelector()**：返回在DocumentFragment中以文档顺序排列的第一个符合指定选择器的Element节点。
 - **DocumentFragment.querySelectorAll()**：返回在DocumentFragment中所有的符合指定选择器的Element节点组成的NodeList数组。
 - **DocumentFragment.getElementById()**：返回在DocumentFragment中以文档顺序排列的第一个符合指定ID选择器的Element节点。与Document.getElementById()作用相同。
 
-**示例如下：**
+##### 示例如下
 
 ```html
 <ul id="list"></ul>
@@ -11798,13 +11920,13 @@ HTML5引入了 <mark style="background: fuchsia">**history.pushState()** </mark
 
 **用法：**history.pushState() 方法向当前浏览器会话的历史堆栈中添加一个状态（state）。
 
-**语法**
+###### 语法
 
 ```js
 history.pushState(state, title[, url])
 ```
 
-**参数**
+###### 参数
 
 - **state：**状态对象是一个JavaScript对象，它与pushState()创建的新历史记录条目相关联。 每当用户导航到新状态时，都会触发popstate 事件，并且该事件的状态属性包含历史记录条目的状态对象的副本。<mark>状态对象可以是任何可以序列化的对象</mark>。 
 - **title：**当前大多数浏览器都忽略此参数，尽管将来可能会使用它。 在此处传递空字符串应该可以防止将来对方法的更改。 或者，您可以为要移动的状态传递简短的标题。
