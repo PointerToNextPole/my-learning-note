@@ -317,7 +317,7 @@ dep.value = 'changed' // console.log -> 'changed'
 
 这里的 Dep 实现，和 composition API 中的 ref 非常相似。
 
-> ⚠️ 注意：这里使用的是 depend 和 notify ，而不是 track 和 trigger，是为了减少其中与响应式原理不相关的优化，从而更好的理解工作原理。而在 Vue3 源码中函数的命名就是 track 和 trigger ，见 https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L213 和 L259。
+> ⚠️ 注意：这里使用的是 depend 和 notify，而不是 Vue3 源码中的 [track](https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L213) 和 [trigger](https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L259)，尤雨溪的说法是：为了减少其中与响应式原理不相关的优化，从而更好的理解工作原理。而我个人的感觉是：这里定义的是 Dep 类，这是 Vue2 特有的，Vue3 取消了 Dep 类的设计，所以自然使用 Dep 类相关的 depend 和 notify
 >
 > 👀 另外，关于 depend notify 和 track trigger ，建议去看下 [[#尤雨溪源码解读#depend notify v.s. track trigger]]
 
@@ -1927,8 +1927,84 @@ Dep 的含义，自然就是 dependency（也就是**依赖**，一个计算机�
 
 就像编写 node.js 程序，常会使用 npm 仓库的依赖。<font color=red>在 Vue 中，依赖具体指的是**经过响应式处理的数据**</font>。后面会提到，<font color=red>响应式处理的关键函数之一是</font>在很多 Vue 原理文章都会提到的 <font color=red>`defineReactive`</font> 。
 
-<font color=fuchsia>Dep 与每个响应式数据绑定后，该响应式数据就会成为一个依赖</font>（名词），下面介绍 Watcher 时会提到，<font color=red>响应式数据可能被 watch、computed、渲染模板 3 种函数依赖（动词）</font>。
+<font color=fuchsia>Dep 与每个响应式数据绑定后，该响应式数据就会成为一个依赖</font>（名词），下面介绍 Watcher 时会提到，<font color=red>**响应式数据 可能被 watch、computed、渲染模板 3 种函数依赖**</font>（动词）。
 
 ###### subs
 
-Dep 对象下有一个 subs 属性，是一个数组，是 subscriber（订阅者）列表的意思。订阅者可能是 watch 函数、computed 函数、视图更新函数。
+Dep 对象下有一个 subs 属性，是一个数组，是 subscriber（订阅者）列表的意思。<font color=fuchsia>订阅者可能是 watch 函数、computed 函数、视图更新函数</font>（ 👀 render 函数？）。
+
+##### Watcher
+
+<font color=fuchsia>Watcher 是 Dep 里提到的**订阅者**</font> subs（不要和后面的 Observer 观察者搞混）。
+
+因为 <font color=fuchsia>Watcher 的功能在于及时响应 Dep 的更新</font>，就像一些 App 的订阅推送，<font color=red>你 ( Watcher ) 订阅了某些资讯 ( Dep )，资讯更新时会提醒你阅读</font>。
+
+###### deps
+
+与 Dep 拥有 subs 属性类似，<font color=red>Watcher 对象也有 deps 属性</font>。这样构成了 <font color=fuchsia>**Watcher 和 Dep** 就是一个 <font size=4>**多对多的关系**</font>，互相记录的原因是 <font size=4>**当一方被清除的时候可以及时更新相关对象**</font></font>。
+
+###### Watcher 如何产生
+
+上面多次提到的 watch、computed、渲染模板产生 Watcher，在 Vue 源码里都有简明易懂的体现：
+
+- `mountComponent` 的 `vm._watcher = new Watcher(vm, updateComponent, noop);`
+
+  > 👀 见 https://github.com/vuejs/vue/blob/main/src/core/instance/lifecycle.ts#L219
+
+- `initComputed` 的 `watchers[key] = new Watcher(vm, getter || noop, noop, computedWatcherOptions)`
+
+  > 👀 见 https://github.com/vuejs/vue/blob/main/src/core/instance/state.ts#L192
+
+- `$watcher` 的 `var watcher = new Watcher(vm, expOrFn, cb, options);`
+
+  > 👀 当前 Vue2.7 没有找到 `$watcher` 相关定义，看定义应该是 https://github.com/vuejs/vue/blob/main/src/core/instance/state.ts#L376
+
+##### Observer
+
+Observer 是观察者，它 <font color=red>**负责递归地观察（或者说是处理）响应式对象（或数组）**</font>。在打印出的实例里，可以注意到<font color=fuchsia>**响应式的对象都会带着一个 `__ob__` ，这是已经被观察的证明**</font>。观察者没有上面的 Dep 和 Watcher 重要，稍微了解下就可以了。
+
+> 👀 看了下 [Vue2 Observer 的主要逻辑]()，就是使用 Object.defineProperty 设置 getter / setter ，并在其中分别调用 depend 和 notify 。搜了下 Vue3 的代码 Observer 部分已经不存在了，相关功能应该在 `reactive.ts` 和 `ref.ts` 中已经通过调用 `baseHandlers` 和 `collectionHandlers` 中定义的 Proxy handler 实现了。
+>
+> 另外，根据 [Vue3 源码解析 06上篇--响应式 baseHandler](https://juejin.cn/post/6912030427519647751) 和 [Vue3 源码解析 06下篇--响应式 collectionHandler](https://juejin.cn/post/6912031278850113544) 中的说法：
+>
+> > <font color=red>baseHandlers 主要是针对基本数据类型</font>。其主要包含四种 handler:mutableHandlers、readonlyHandlers、shallowReactiveHandlers、shallowReadonlyHandlers，通过方法名称我们应该也能看出，这四种是针对目标数据 target 的普通类型、readonly、shallow 等类型的
+>
+> > <font color=red>collectionHandlers 针对的是集合数据类型（即 set、map、weakSet、weakMap）</font>。其主要包含三种：mutableCollectionHandlers（普通响应式数据）、shallowCollectionHandlers（浅层响应式数据）、readonlyCollectionHandlers（只读响应式数据）
+>
+> 至于为什么要设置两种 handler ，这是由 Proxy 对于 “内置对象” 的缺陷导致的；[Vue3 源码解析 06下篇--响应式 collectionHandler](https://juejin.cn/post/6912031278850113544) 中有提及：
+>
+> > 具体原因我们可以参考一下 [Proxy 的局限性](https://zh.javascript.info/proxy#proxy-de-ju-xian-xing)，这跟内置对象（例如 Map、Set、Date、Promise）的内部机制有关，他们的内部所有的数据存储在一个“internal slots”中。当我们访问 Set.prototype.add 其实就是通过内部的 this 来访问该方法的，但是数据代理的时候 **this=proxy**，但是 proxy 并没有相应的“internal slots”这个东西，所以会报错。 所以，可以用另一种方式来实现代理：
+> >
+> > ```JavaScript
+> > let map = new Map();
+> > 
+> > let proxy = new Proxy(map, {
+> >   get(target, prop, receiver) {
+> >     let value = Reflect.get(...arguments);
+> >     return typeof value == 'function' ? value.bind(target) : value;
+> >   }
+> > });
+> > 
+> > proxy.set('test', 1);
+> > alert(proxy.get('test'));//1
+> > ```
+> >
+> > 我们通过这种方式，改变了 this 的指向，这时候的 this 绑定为了原始对象（即 Map ），而不是之前说的 proxy。所以就避开了上面的坑。
+
+##### 核心流程
+
+按照上面几个概念的关系，如何搭配，该如何实现数据响应式更新？
+
+首先定下我们的目标：自然是在数据更新时，自动刷新视图，显示最新的数据。
+
+这就是上面提到的 Dep 和 Watcher 的关系，<font color=fuchsia>**数据是 Dep**</font>，而 <font color=fuchsia>**Watcher 触发的是页面渲染函数**</font>（这是最重要的 watcher）。
+
+但是新问题随之而来，Dep 怎么知道有什么 Watcher 依赖于他？
+
+Vue 采用了一个很有意思的方法：
+
+- 在运行 Watcher 的回调函数前，先记下当前 Watcher 是什么（通过 Dep.target）
+- 运行回调函数中用到响应式数据，那么**必然会调用响应式数据的 getter 函数**
+- 在响应式数据的 **getter 函数中就能记下当前的 Watcher**，建立 Dep 和 Watcher 的关系
+- 之后，在响应式数据更新时，必然会**调用响应式数据的 setter 函数**
+- 基于之前建立的关系，在 setter 函数中就能触发对应 Watcher 的回调函数了
