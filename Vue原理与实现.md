@@ -12,7 +12,7 @@
 
 ##### Vue 的三个核心模块
 
-响应式模块 reactivity module 、编译器模块 compiler module 、渲染模块render module
+响应式模块 reactivity module 、编译器模块 compiler module 、渲染模块 render module
 
 ##### 编译器模块
 
@@ -1937,15 +1937,15 @@ Dep 对象下有一个 subs 属性，是一个数组，是 subscriber（订阅�
 
 <font color=fuchsia>Watcher 是 Dep 里提到的**订阅者**</font> subs（不要和后面的 Observer 观察者搞混）。
 
-因为 <font color=fuchsia>Watcher 的功能在于及时响应 Dep 的更新</font>，就像一些 App 的订阅推送，<font color=red>你 ( Watcher ) 订阅了某些资讯 ( Dep )，资讯更新时会提醒你阅读</font>。
+因为 <font color=dodgerBlue>**Watcher 的功能在于**</font> <font color=fuchsia size=4>**及时响应 Dep 的更新**</font>，就像一些 App 的订阅推送，<font color=red>你 ( Watcher ) 订阅了某些资讯 ( Dep )，资讯更新时会提醒你阅读</font>。
 
 ###### deps
 
-与 Dep 拥有 subs 属性类似，<font color=red>Watcher 对象也有 deps 属性</font>。这样构成了 <font color=fuchsia>**Watcher 和 Dep** 就是一个 <font size=4>**多对多的关系**</font>，互相记录的原因是 <font size=4>**当一方被清除的时候可以及时更新相关对象**</font></font>。
+与 Dep 拥有 subs 属性类似，<font color=red>Watcher 对象也有 deps 属性</font>。这样构成了 <font color=fuchsia>**Watcher 和 Dep** 就是一个 <font size=4>**多对多的关系**</font>，<font size=4>**互相记录**</font> 的原因是 <font size=4>**当一方被清除的时候可以及时更新相关对象**</font></font>。
 
 ###### Watcher 如何产生
 
-上面多次提到的 watch、computed、渲染模板产生 Watcher，在 Vue 源码里都有简明易懂的体现：
+上面多次提到的 <font color=fuchsia>**watch、computed、渲染模板 产生 Watcher**</font>，在 Vue 源码里都有简明易懂的体现：
 
 - `mountComponent` 的 `vm._watcher = new Watcher(vm, updateComponent, noop);`
 
@@ -1961,13 +1961,21 @@ Dep 对象下有一个 subs 属性，是一个数组，是 subscriber（订阅�
 
 ##### Observer
 
-Observer 是观察者，它 <font color=red>**负责递归地观察（或者说是处理）响应式对象（或数组）**</font>。在打印出的实例里，可以注意到<font color=fuchsia>**响应式的对象都会带着一个 `__ob__` ，这是已经被观察的证明**</font>。观察者没有上面的 Dep 和 Watcher 重要，稍微了解下就可以了。
+Observer 是观察者，它 <font color=red>**负责递归地观察（或者说是处理）响应式对象（或数组）**</font>。在打印出的实例里，可以注意到<font color=fuchsia>**响应式的对象都会带着一个 `__ob__` ，这是已经被观察的证明**</font>。Observer 没有上面的 Dep 和 Watcher 重要，稍微了解下就可以了。
 
-> 👀 看了下 [Vue2 Observer 的主要逻辑]()，就是使用 Object.defineProperty 设置 getter / setter ，并在其中分别调用 depend 和 notify 。搜了下 Vue3 的代码 Observer 部分已经不存在了，相关功能应该在 `reactive.ts` 和 `ref.ts` 中已经通过调用 `baseHandlers` 和 `collectionHandlers` 中定义的 Proxy handler 实现了。
+###### walk
+
+`Observer.prototype.walk` 是 Observer 初始化时递归处理的核心方法，不过此方法用于处理对象，另外还有 `Observer.prototype.observeArray` 处理数组。
+
+> 👀 在 Vue2.7 以及 Vue3 中，walk 方法已删除，相关逻辑合并进了 Observer 的 constructor 中；而 observeArray 依然存在。
+
+###### 👀 补充
+
+> 看了下 Vue2 Observer 的主要逻辑，就是使用 Object.defineProperty 设置 getter / setter ，并在其中分别调用 depend 和 notify 。<font color=red>搜了下 Vue3 的代码 Observer 部分已经不存在了</font>，相关功能应该在 `reactive.ts` 和 `ref.ts` 中已经通过调用 `baseHandlers` 和 `collectionHandlers` 中定义的 Proxy handler 实现了。
 >
 > 另外，根据 [Vue3 源码解析 06上篇--响应式 baseHandler](https://juejin.cn/post/6912030427519647751) 和 [Vue3 源码解析 06下篇--响应式 collectionHandler](https://juejin.cn/post/6912031278850113544) 中的说法：
 >
-> > <font color=red>baseHandlers 主要是针对基本数据类型</font>。其主要包含四种 handler:mutableHandlers、readonlyHandlers、shallowReactiveHandlers、shallowReadonlyHandlers，通过方法名称我们应该也能看出，这四种是针对目标数据 target 的普通类型、readonly、shallow 等类型的
+> > <font color=red>baseHandlers 主要是针对基本数据类型</font>。其主要包含四种 handler : mutableHandlers、readonlyHandlers、shallowReactiveHandlers、shallowReadonlyHandlers，通过方法名称我们应该也能看出，这四种是针对目标数据 target 的普通类型、readonly、shallow 等类型的
 >
 > > <font color=red>collectionHandlers 针对的是集合数据类型（即 set、map、weakSet、weakMap）</font>。其主要包含三种：mutableCollectionHandlers（普通响应式数据）、shallowCollectionHandlers（浅层响应式数据）、readonlyCollectionHandlers（只读响应式数据）
 >
@@ -1999,12 +2007,150 @@ Observer 是观察者，它 <font color=red>**负责递归地观察（或者说�
 
 这就是上面提到的 Dep 和 Watcher 的关系，<font color=fuchsia>**数据是 Dep**</font>，而 <font color=fuchsia>**Watcher 触发的是页面渲染函数**</font>（这是最重要的 watcher）。
 
-但是新问题随之而来，Dep 怎么知道有什么 Watcher 依赖于他？
+但是新问题随之而来，<font color=dodgerBlue>Dep 怎么知道有什么 Watcher 依赖于它？</font>
 
 Vue 采用了一个很有意思的方法：
 
-- 在运行 Watcher 的回调函数前，先记下当前 Watcher 是什么（通过 Dep.target）
-- 运行回调函数中用到响应式数据，那么**必然会调用响应式数据的 getter 函数**
-- 在响应式数据的 **getter 函数中就能记下当前的 Watcher**，建立 Dep 和 Watcher 的关系
-- 之后，在响应式数据更新时，必然会**调用响应式数据的 setter 函数**
-- 基于之前建立的关系，在 setter 函数中就能触发对应 Watcher 的回调函数了
+- 在<font color=red>**运行 Watcher 的回调函数前，先记下当前 Watcher 是什么**</font>（<font color=fuchsia>通过 Dep.target</font>）
+
+  > 👀 下面的都有听过，上面的这个没有
+
+- 运行回调函数中用到响应式数据，那么**必然会调用响应式数据的 getter 函数**。<font color=red>在响应式数据的 **getter 函数中就能记下当前的 Watcher**，建立 Dep 和 Watcher 的关系</font>
+
+- 之后，在响应式数据更新时，必然会**调用响应式数据的 setter 函数**。基于之前建立的关系，在 setter 函数中就能触发对应 Watcher 的回调函数了
+
+##### 代码
+
+<font color=fuchsia>上面的逻辑就在 `defineReactive` 函数中</font>。👀 代码略，总之 defineReactive 就是 实现依赖收集。
+
+响应式对象的每个属性都是一个“依赖”，所以借闭包的能力给每个值造一个 Dep。 Vue 3 就不需要闭包了
+
+###### getter
+
+getter 函数会建立 Dep 和 Watcher 的关系，具体来说依靠的是 `dep.depend()` 。
+
+下面贴一下 `Dep` 和 `Watcher` 互相调用的几个方法：
+
+```js
+Dep.prototype.depend = function depend() {
+  if (Dep.target) {
+    Dep.target.addDep(this)
+  }
+}
+
+Dep.prototype.addSub = function addSub(sub) {
+  this.subs.push(sub)
+}
+```
+
+见：https://github.com/vuejs/vue/blob/main/src/core/observer/dep.ts
+
+```js
+Watcher.prototype.addDep = function addDep(dep) {
+  var id = dep.id
+  if (!this.newDepIds.has(id)) {
+    this.newDepIds.add(id)
+    this.newDeps.push(dep)
+    if (!this.depIds.has(id)) {
+      dep.addSub(this)
+    }
+  }
+}
+```
+
+见：https://github.com/vuejs/vue/blob/main/src/core/observer/watcher.ts
+
+###### setter
+
+setter 函数，其中的关键是 `dep.notify()`
+
+```js
+Dep.prototype.notify = function notify() {
+  // stabilize the subscriber list first
+  var subs = this.subs.slice()
+  for (var i = 0, l = subs.length; i < l; i++) {
+    subs[i].update()
+  }
+}
+```
+
+不难理解，就是 Dep 提醒他的订阅者列表 ( subs ) 里的所有人更新，所谓订阅者都是 Watcher ， `subs[i].update()` 调用的也就是 `Watcher.prototype.update`。
+
+那么来看一下 Watcher 的 `update` 做了什么：
+
+```js
+Watcher.prototype.update = function update() {
+  if (this.lazy) {
+    this.dirty = true
+  } else if (this.sync) {
+    this.run()
+  } else {
+    queueWatcher(this)
+  }
+}
+```
+
+> 👀 从这里开始文章就讲的就很乱了... 由于对源码理解不足，这里只做简单整理和摘抄
+
+如果不是同步更新的话会跑到 queueWatcher 中，queueWatcher 中的更新也还是会运行 run 方法。
+
+Watcher 的 cb 函数可能会处理 watch、computed 和**组件更新函数**
+
+lazy 时没有运行下面的步骤，只会标记数据更新过，在下次取值再计算新的值
+
+```js
+Watcher.prototype.run = function run() {
+  if (this.active) {
+    var value = this.get()
+    if (
+      value !== this.value ||
+      // Deep watchers and watchers on Object/Arrays should fire even
+      // when the value is the same, because the value may
+      // have mutated.
+      isObject(value) ||
+      this.deep
+    ) {
+      // set new value
+      var oldValue = this.value
+      this.value = value
+      if (this.user) {
+        try {
+          this.cb.call(this.vm, value, oldValue)
+        } catch (e) {
+          handleError(
+            e,
+            this.vm,
+            'callback for watcher "' + this.expression + '"'
+          )
+        }
+      } else {
+        this.cb.call(this.vm, value, oldValue)
+      }
+    }
+  }
+}
+```
+
+这段代码的重点在于需要 先在 get 方法中对 Dep.target 进行了设置。（具体路径是 run -> get -> pushTarget）
+
+因为只有 `Dep.target` 存在，之后在回调函数 cb（例如页面渲染函数就是一个典型的 Watcher cb）调用时，`Dep.prototype.depend` 才能真正生效。再之后的逻辑，就回到使用响应式数据的取值。
+
+##### 总结
+
+- Dep 与数据关联，代表数据可以成为依赖
+
+- <font color=fuchsia>Watcher 有 watch、computed、渲染函数 3 种，这些函数可以成为依赖的订阅者</font>
+
+  > 👀 这句话非常重要
+
+- Observer 算是一个处理 Dep 的入口，递归处理响应式数据
+
+- Watcher 的回调函数在使用响应式数据时，会先设置 `Dep.target`
+
+- 响应式数据在 getter 函数中通过 `Dep.target` 得知调用者，并与调用者建立订阅者和依赖的关系
+
+- 响应式数据在 setter 函数中遍历 subs 通知所有订阅者该数据更新
+
+- 当订阅者为视图更新函数 ( `updateComponent` -> `_update` ) 时，用户就能在响应式数据更新时看到页面更新，从而实现响应式更新效果
+
+摘自：[Vue 响应式原理解析](https://ssshooter.com/2021-07-15-how-does-vue-work-1/)
