@@ -1914,6 +1914,8 @@ Vue2 的 Diff 算法是全量对比，而 Vue3 不是。Vue3 采用了静态标�
 
 #### 《Vue 响应式原理解析》笔记
 
+> 👀 感觉这篇讲的有点差，可以考虑换一篇讲 Dep、Watcher、Observer 的文章作为笔记主体，将这里的笔记删掉，其中必要的内容作为补充。
+
 ##### Dep
 
 ```javascript
@@ -1961,7 +1963,7 @@ Dep 对象下有一个 subs 属性，是一个数组，是 subscriber（订阅�
 
 ##### Observer
 
-Observer 是观察者，它 <font color=red>**负责递归地观察（或者说是处理）响应式对象（或数组）**</font>。在打印出的实例里，可以注意到<font color=fuchsia>**响应式的对象都会带着一个 `__ob__` ，这是已经被观察的证明**</font>。Observer 没有上面的 Dep 和 Watcher 重要，稍微了解下就可以了。
+Observer 是观察者，它 <font color=red>**负责递归地观察（或者说是处理）响应式对象（或数组）**</font>。在打印出的实例里，可以注意到<font color=fuchsia>**响应式的 <font size=4>对象</font> 都会带着一个 `__ob__` ，这是已经被观察的证明**</font>（👀 标记 / <font color=fuchsia>属性</font>，表示已经经过响应式处理。另外，一定要是对象）。Observer 没有上面的 Dep 和 Watcher 重要，稍微了解下就可以了。
 
 ###### walk
 
@@ -2154,3 +2156,4 @@ Watcher.prototype.run = function run() {
 - 当订阅者为视图更新函数 ( `updateComponent` -> `_update` ) 时，用户就能在响应式数据更新时看到页面更新，从而实现响应式更新效果
 
 摘自：[Vue 响应式原理解析](https://ssshooter.com/2021-07-15-how-does-vue-work-1/)
+
