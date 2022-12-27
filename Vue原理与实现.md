@@ -1965,6 +1965,12 @@ Dep 对象下有一个 subs 属性，是一个数组，是 subscriber（订阅�
 
 Observer 是观察者，它 <font color=red>**负责递归地观察（或者说是处理）响应式对象（或数组）**</font>。在打印出的实例里，可以注意到<font color=fuchsia>**响应式的 <font size=4>对象</font> 都会带着一个 `__ob__` ，这是已经被观察的证明**</font>（👀 标记 / <font color=fuchsia>属性</font>，表示已经经过响应式处理。另外，一定要是对象）。Observer 没有上面的 Dep 和 Watcher 重要，稍微了解下就可以了。
 
+> 👀 补充
+>
+> `__ob__` 是 Observer类的实例，里面保存着Dep实例 `__ob__.dep` => `dep(uid:5)`
+>
+> 摘自：[深入解析Vue依赖收集原理](https://juejin.cn/post/6844903702881386504)
+
 ###### walk
 
 `Observer.prototype.walk` 是 Observer 初始化时递归处理的核心方法，不过此方法用于处理对象，另外还有 `Observer.prototype.observeArray` 处理数组。
@@ -2157,3 +2163,18 @@ Watcher.prototype.run = function run() {
 
 摘自：[Vue 响应式原理解析](https://ssshooter.com/2021-07-15-how-does-vue-work-1/)
 
+
+
+##### Dep、Watcher、Observer 的关系
+
+Vue源码中实现依赖收集，实现了三个类
+
+- Dep：扮演观察目标的角色，每一个数据都会有 Dep 类实例，它内部有个 subs 队列，subs 就是 subscribers 的意思，<font color=fuchsia>保存着依赖本数据的 **观察者**</font>，当本数据变更时，调用 `dep.notify()` 通知观察者
+
+- Watcher：扮演观察者的角色，<font color=fuchsia size=4>进行 **观察者函数** 的包装处理</font>。如 `render()` 函数，会被进行包装成一个 Watcher 实例
+
+- Observer：辅助的可观测类，<font color=fuchsia>**数组/对象通过它的转化**，可成为可观测数据</font>
+
+##### Dep.target
+
+由于 JavaScript 是单线程模型，所以<font color=dodgerBlue>虽然有多个观察者函数</font>，但是<font color=red>一个时刻内，就只会有一个观察者函数在执行</font>，那么此刻正在执行的那个观察者函数，所对应的 Watcher 实例，便 <font color=fuchsia size=4>**会被赋给 `Dep.target` 这一类变量**</font>，从而只要访问 `Dep.target` 就能知道当前的观察者是谁。 在后续的依赖收集工作里，getter 里会调用 `dep.depend()` ，而 setter 里则会调用 `dep.notify()`
