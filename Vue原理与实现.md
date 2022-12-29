@@ -1967,7 +1967,7 @@ Observer 是观察者，它 <font color=red>**负责递归地观察（或者说�
 
 > 👀 补充
 >
-> `__ob__` 是 Observer类的实例，里面保存着Dep实例 `__ob__.dep` => `dep(uid:5)`
+> `__ob__` 是 Observer类的实例，里面保存着 Dep 实例 `__ob__.dep` => `dep(uid:5)`
 >
 > 摘自：[深入解析Vue依赖收集原理](https://juejin.cn/post/6844903702881386504)
 
@@ -1995,14 +1995,14 @@ Observer 是观察者，它 <font color=red>**负责递归地观察（或者说�
 > > let map = new Map();
 > > 
 > > let proxy = new Proxy(map, {
-> >   get(target, prop, receiver) {
-> >     let value = Reflect.get(...arguments);
-> >     return typeof value == 'function' ? value.bind(target) : value;
-> >   }
+> >     get(target, prop, receiver) {
+> >        let value = Reflect.get(...arguments);
+> >        return typeof value == 'function' ? value.bind(target) : value;
+> >     }
 > > });
 > > 
 > > proxy.set('test', 1);
-> > alert(proxy.get('test'));//1
+> > alert(proxy.get('test')); // 1
 > > ```
 > >
 > > 我们通过这种方式，改变了 this 的指向，这时候的 this 绑定为了原始对象（即 Map ），而不是之前说的 proxy。所以就避开了上面的坑。
@@ -2021,7 +2021,7 @@ Vue 采用了一个很有意思的方法：
 
 - 在<font color=red>**运行 Watcher 的回调函数前，先记下当前 Watcher 是什么**</font>（<font color=fuchsia>通过 Dep.target</font>）
 
-  > 👀 下面的都有听过，上面的这个没有
+  > 👀 下面的都有听过，上面的这个没有。另外，Dep.target 和 activeEffect 作用类似，Vue2 收集 watcher，Vue3 中收集 effect
 
 - 运行回调函数中用到响应式数据，那么**必然会调用响应式数据的 getter 函数**。<font color=red>在响应式数据的 **getter 函数中就能记下当前的 Watcher**，建立 Dep 和 Watcher 的关系</font>
 
@@ -2169,12 +2169,122 @@ Watcher.prototype.run = function run() {
 
 Vue源码中实现依赖收集，实现了三个类
 
-- Dep：扮演观察目标的角色，每一个数据都会有 Dep 类实例，它内部有个 subs 队列，subs 就是 subscribers 的意思，<font color=fuchsia>保存着依赖本数据的 **观察者**</font>，当本数据变更时，调用 `dep.notify()` 通知观察者
+- Dep：扮演观察目标的角色，<font color=red>每一个数据都会有 Dep 类实例</font>（👀 这句话 [[#配置数据观测]] 有解释），它内部有个 subs 队列，subs 就是 subscribers 的意思，<font color=fuchsia>保存着依赖本数据的 **观察者**</font>，当本数据变更时，调用 `dep.notify()` 通知观察者
 
-- Watcher：扮演观察者的角色，<font color=fuchsia size=4>进行 **观察者函数** 的包装处理</font>。如 `render()` 函数，会被进行包装成一个 Watcher 实例
+  > Dep 实际上就是对 Watcher 的管理，Dep 脱离 Watcher 单独存在是没有意义的。
+  >
+  > - Dep 是一个发布者，可以订阅多个观察者，依赖收集之后 Dep 中会有一个 subs 存放一个或多个观察者，在数据变更的时候通知所有的 watcher。
+  > - Dep 和 Observer 的关系就是 Observer 监听整个data，遍历 data 的每个属性给每个属性绑定defineReactive 方法劫持 getter 和 setter，在 getter 的时候往 Dep 类里塞依赖 ( dep.depend )，在setter 的时候通知所有 watcher 进行 `update(dep.notify)` 。
+  >
+  > 摘自：[【Vue源码学习】依赖收集](https://juejin.cn/post/7058444984432721957)
+
+- Watcher：扮演观察者的角色，<font color=fuchsia size=4>进行 **观察者函数** 的包装处理</font>。如 `render()` 函数，会被进行包装成一个 Watcher 实例。 👀 当然，计算、watch、render 都会形成 watcher
+
+  > watcher 做了如下两件事：
+  >
+  > 1. 通过 Dep 接收数据变动的通知，实例化的时候将自己添加到 dep 中
+  > 2. 属性变更时，<font color=red>接收 dep 的 notify</font>，<font color=fuchsia>调用自身 update 方法，**触发 Compile 中绑定的更新函数，进而更新视图**</font>
+  >
+  > 摘自：[合格前端系列第三弹-实现一个属于我们自己的简易MVVM库 - qiangdada的文章 - 知乎](https://zhuanlan.zhihu.com/p/27028242)
 
 - Observer：辅助的可观测类，<font color=fuchsia>**数组/对象通过它的转化**，可成为可观测数据</font>
 
 ##### Dep.target
 
-由于 JavaScript 是单线程模型，所以<font color=dodgerBlue>虽然有多个观察者函数</font>，但是<font color=red>一个时刻内，就只会有一个观察者函数在执行</font>，那么此刻正在执行的那个观察者函数，所对应的 Watcher 实例，便 <font color=fuchsia size=4>**会被赋给 `Dep.target` 这一类变量**</font>，从而只要访问 `Dep.target` 就能知道当前的观察者是谁。 在后续的依赖收集工作里，getter 里会调用 `dep.depend()` ，而 setter 里则会调用 `dep.notify()`
+由于 JavaScript 是单线程模型，所以<font color=dodgerBlue>虽然有多个观察者函数</font>，但是<font color=red>一个时刻内，就只会有一个观察者函数在执行</font>，那么<font color=red>此刻正在执行的那个观察者函数，所对应的 Watcher 实例</font>，便 <font color=fuchsia size=4>**会被赋给 `Dep.target` 这一类变量**</font>，从而只要访问 `Dep.target` 就能知道当前的观察者是谁。 在后续的依赖收集工作里，getter 里会调用 `dep.depend()` ，而 setter 里则会调用 `dep.notify()`。 👀 `dep.notify()` 实际上是 subs 依次调用 update，如下：
+
+```js
+// class Dep
+notify() {
+    const subs = this.subs.slice();
+    for (let i = 0, l = subs.length; i < l; i++) {
+        subs[i].update();
+    }
+}
+```
+
+##### 配置数据观测
+
+上面 [[#Dep、Watcher、Observer 的关系]] 的 Dep 部分说“每一个数据都会有一个 ‘Dep类’ 的实例”，如下示例：
+
+```js
+{
+    a: 1,
+    b: [2, 3, 4],
+    c: {
+        d: 5
+    }
+}
+```
+
+在配置完数据观测后，会变成这样子：
+
+```js
+{
+    __ob__, // Observer 类的实例，里面保存着 Dep 实例 __ob__.dep => dep(uid:0)
+    a: 1,   // 在闭包里存在 dep(uid:1)
+    b: [2, 3, 4], // 在闭包里存在着 dep(uid:2)，还有 b.__ob__.dep => dep(uid:4)
+    c: {
+        __ob__, // Observer 类的实例，里面保存着 Dep 实例 __ob__.dep => dep(uid:5)
+        d: 5    // 在闭包里存在着 dep(uid:6)
+    }
+}
+```
+
+> ⚠️ 上面的重点是：Observer 类的实例，里面保存着 Dep 实例
+
+> 👀 这里省略了 observe 方法 和 Observer 类的定义代码，详见原文
+
+总结起来，就是：
+
+- <font color=fuchsia>将 Observer类 的实例挂载在 `__ob__` 属性上</font> ( 代码：`def(value, '__ob__', this)` ) ，提供后续观测数据使用，以及避免被重复实例化。然后，实例化 Dep 类实例，并且 <font color=red>将 对象/数组 作为 value 属性保存下来</font>
+- 如果 <font color=dodgerBlue>value 是个对象</font>，就执行 `walk()` 过程，<font color=red>遍历对象把每一项数据都变为可观测数据</font>（<font color=red>调用 defineReactive 方法</font>处理）
+- 如果 <font color=dodgerBlue>value 是个数组</font>，<font color=red>就执行 `observeArray()` 过程，递归地对数组元素调用 `observe()`</font> ，以便能够对元素还是数组的情况进行处理
+
+##### watcher
+
+在 Watcher 类里做的事情，概括起来则是：
+
+1. 传入 组件实例、观察者函数、回调函数、选项。先解释4个变量：`deps` 、`depIds` 、`newDeps` 、 `newDepIds` ，它们的作用如下：
+   - deps：缓存上一轮执行观察者函数用到的dep实例
+   - depIds：Hash表，用于快速查找
+   - newDeps：存储本轮执行观察者函数用到的dep实例
+   - newDepIds：Hash表，用于快速查找
+2. 进行初始求值，初始求值时，会调用 `watcher.get()` 方法
+3. `watcher.get()` 会做以下处理：初始准备工作、调用`观察者函数`计算、事后清理工作
+4. 在初始准备工作里，会将当前 Watcher 实例赋给 `Dep.target`，清空数组 `newDeps`、`newDepIds`
+5. 执行`观察者函数`，进行计算。由于数据观测阶段执行了 `defineReactive()` ，所以计算过程用到的数据会得以访问，从而触发数据的 `getter`，从而执行 `watcher.addDep()` 方法，将特定的数据记为依赖
+6. 对每个数据执行 `watcher.addDep(dep)` 后，数据对应的 `dep` 如果在 `newDeps` 里不存在，就会加入到 `newDeps` 里，这是因为一次计算过程数据有可能被多次使用，但是同样的依赖只能收集一次。并且如果在 `deps` 不存在，表示上一轮计算中，当前 watcher 未依赖过某个数据，那个数据相应的 `dep.subs` 里也不存在当前 watcher，所以要将当前 watcher 加入到数据的 `dep.subs` 里
+7. 进行事后清理工作，首先释放 `Dep.target`，然后拿 `newDeps` 和 `deps` 进行对比，接着进行以下的处理： 
+   - `newDeps` 里不存在，`deps` 里存在的数据，表示是过期的缓存数据。相应的，从数据对应的 `dep.subs` 移除掉当前 watcher
+   - 将 `newDeps` 赋给 `deps`，表示缓存本轮的计算结果，这样子下轮计算如果再依赖同一个数据，就不需要再收集了
+8. 当某个数据更新时，由于进行了 setter 拦截，所以会对该数据的 `dep.subs` 这一观察者队列里的 watchers 进行通知，从而执行 `watcher.update()` 方法，而 `update()` 方法会重复求值过程（即为步骤3～7），从而使得 “观察者函数”重新计算，而 `render()` 这种观察者函数重新计算的结果，就使得视图同步了最新的数据
+
+
+
+摘自：[深入解析Vue依赖收集原理](https://juejin.cn/post/6844903702881386504)
+
+
+
+#### Compiler
+
+MVVM 库的流程图：
+
+![img](https://s2.loli.net/2022/12/29/7cQ4iwe8oP6qBDh.jpg)
+
+如上图所示，我们可以看到，整体实现分为四步
+
+1. 实现一个 Observer，对数据进行劫持，通知数据的变化
+2. 实现一个 Compile，<font color=red>对指令进行解析</font>，<font color=red>初始化视图</font>，并且<font color=fuchsia>订阅数据的变更</font>，<font color=fuchsia>绑定好更新函数</font>
+3. 实现一个 Watcher，将其作为以上两者的一个中介点，在接收数据变更的同时，让 Dep 添加当前 Watcher，并及时通知视图进行update
+4. 实现 MVVM，整合以上三者，作为一个入口函数
+
+> 👀 当然这里重点是 Compiler 的笔记
+
+##### Compile 需要做的事情也很简单
+
+1. 解析指令，将指令模板中的变量替换成数据，对视图进行初始化操作
+2. 订阅数据的变化，绑定好更新函数
+3. 接收到数据变化，通知视图进行 view update
+
+摘自：[合格前端系列第三弹-实现一个属于我们自己的简易MVVM库 - qiangdada的文章 - 知乎](https://zhuanlan.zhihu.com/p/27028242)
