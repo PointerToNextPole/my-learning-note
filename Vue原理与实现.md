@@ -2031,7 +2031,7 @@ Vue 采用了一个很有意思的方法：
 
 <font color=fuchsia>上面的逻辑就在 `defineReactive` 函数中</font>。👀 代码略，总之 defineReactive 就是 实现依赖收集。
 
-响应式对象的每个属性都是一个“依赖”，所以借闭包的能力给每个值造一个 Dep。 Vue 3 就不需要闭包了
+响应式对象的每个属性都是一个“依赖”，所以借闭包的能力给每个值造一个 Dep（ 👀 get / set 中使用了 自由变量 dep，所以形成了闭包）。 Vue 3 就不需要闭包了
 
 ###### getter
 
@@ -2173,8 +2173,8 @@ Vue源码中实现依赖收集，实现了三个类
 
   > Dep 实际上就是对 Watcher 的管理，Dep 脱离 Watcher 单独存在是没有意义的。
   >
-  > - Dep 是一个发布者，可以订阅多个观察者，依赖收集之后 Dep 中会有一个 subs 存放一个或多个观察者，在数据变更的时候通知所有的 watcher。
-  > - Dep 和 Observer 的关系就是 Observer 监听整个data，遍历 data 的每个属性给每个属性绑定defineReactive 方法劫持 getter 和 setter，在 getter 的时候往 Dep 类里塞依赖 ( dep.depend )，在setter 的时候通知所有 watcher 进行 `update(dep.notify)` 。
+  > - Dep 是一个发布者，可以订阅多个观察者，依赖收集之后 Dep 中会有一个 <font color=fuchsia>subs 存放一个或多个观察者</font>，在<font color=red>数据变更时通知所有的 watcher</font>。
+  > - Dep 和 Observer 的关系就是 Observer 监听整个 data，遍历 data 的每个属性给每个属性绑定defineReactive 方法劫持 getter 和 setter，<font color=red>在 getter 的时候往 Dep 类里塞依赖 ( dep.depend )</font>，在<font color=fuchsia>setter 的时候通知</font> ( 👀 notify ) <font color=fuchsia>所有 watcher 进行 `update(dep.notify)`</font> 。
   >
   > 摘自：[【Vue源码学习】依赖收集](https://juejin.cn/post/7058444984432721957)
 
@@ -2245,22 +2245,145 @@ notify() {
 
 在 Watcher 类里做的事情，概括起来则是：
 
-1. 传入 组件实例、观察者函数、回调函数、选项。先解释4个变量：`deps` 、`depIds` 、`newDeps` 、 `newDepIds` ，它们的作用如下：
-   - deps：缓存上一轮执行观察者函数用到的dep实例
+1. 传入 组件实例、观察者函数、回调函数、选项。<font color=dodgerBlue>先解释4个变量：`deps` 、`depIds` 、`newDeps` 、 `newDepIds`</font> ，它们的作用如下：
+   - deps：缓存 <font color=red>**上一轮**执行观察者函数用到的 dep 实例</font>
    - depIds：Hash表，用于快速查找
-   - newDeps：存储本轮执行观察者函数用到的dep实例
+   - newDeps：存储 <font color=red>**本轮**执行观察者函数用到的 dep 实例</font>
    - newDepIds：Hash表，用于快速查找
-2. 进行初始求值，初始求值时，会调用 `watcher.get()` 方法
-3. `watcher.get()` 会做以下处理：初始准备工作、调用`观察者函数`计算、事后清理工作
-4. 在初始准备工作里，会将当前 Watcher 实例赋给 `Dep.target`，清空数组 `newDeps`、`newDepIds`
-5. 执行`观察者函数`，进行计算。由于数据观测阶段执行了 `defineReactive()` ，所以计算过程用到的数据会得以访问，从而触发数据的 `getter`，从而执行 `watcher.addDep()` 方法，将特定的数据记为依赖
-6. 对每个数据执行 `watcher.addDep(dep)` 后，数据对应的 `dep` 如果在 `newDeps` 里不存在，就会加入到 `newDeps` 里，这是因为一次计算过程数据有可能被多次使用，但是同样的依赖只能收集一次。并且如果在 `deps` 不存在，表示上一轮计算中，当前 watcher 未依赖过某个数据，那个数据相应的 `dep.subs` 里也不存在当前 watcher，所以要将当前 watcher 加入到数据的 `dep.subs` 里
-7. 进行事后清理工作，首先释放 `Dep.target`，然后拿 `newDeps` 和 `deps` 进行对比，接着进行以下的处理： 
-   - `newDeps` 里不存在，`deps` 里存在的数据，表示是过期的缓存数据。相应的，从数据对应的 `dep.subs` 移除掉当前 watcher
-   - 将 `newDeps` 赋给 `deps`，表示缓存本轮的计算结果，这样子下轮计算如果再依赖同一个数据，就不需要再收集了
-8. 当某个数据更新时，由于进行了 setter 拦截，所以会对该数据的 `dep.subs` 这一观察者队列里的 watchers 进行通知，从而执行 `watcher.update()` 方法，而 `update()` 方法会重复求值过程（即为步骤3～7），从而使得 “观察者函数”重新计算，而 `render()` 这种观察者函数重新计算的结果，就使得视图同步了最新的数据
+2. 进行初始求值，<font color=red>初始求值时，会调用 `watcher.get()` 方法</font>； `watcher.get()` 会做以下处理：初始准备工作、调用 “观察者函数” 计算、事后清理工作
+4. 在初始准备工作里，会<font color=red>将当前 Watcher 实例赋给 `Dep.target`</font>，<font color=red>清空数组 `newDeps`、`newDepIds`</font>
+5. 执行 “观察者函数” ，进行计算。由于数据观测阶段执行了 `defineReactive()` ，所以计算过程用到的数据会得以访问，从而触发数据的 `getter`，从而执行 `watcher.addDep()` 方法，将特定的数据记为依赖
+6. 对每个数据执行 `watcher.addDep(dep)` 后，<font color=red>数据对应的 `dep` 如果在 `newDeps` 里不存在，就会加入到 `newDeps` 里</font>；这是因为一次计算过程数据有可能被多次使用，但是同样的依赖只能收集一次。并且<font color=LightSeaGreen>如果在 `deps` 不存在，表示上一轮计算中，当前 watcher 未依赖过某个数据</font>，那个数据相应的 `dep.subs` 里也不存在当前 watcher，所以要将当前 watcher 加入到数据的 `dep.subs` 里
+7. <font color=dodgerBlue>进行事后清理工作</font>，<font color=red>首先释放 `Dep.target`</font> ，然后拿 `newDeps` 和 `deps` 进行对比，接着进行以下的处理： 
+   - <font color=dodgerBlue>`newDeps` 里不存在，`deps` 里存在的数据</font>，<font color=red>表示是过期的缓存数据</font>。相应的，<font color=red>从数据对应的 `dep.subs` 移除掉当前 watcher</font>
+   - <font color=lightSeaGreen>将 `newDeps` 赋给 `deps`，表示缓存本轮的计算结果</font>，这样子<font color=red>下轮计算如果再依赖同一个数据，就不需要再收集了</font>
+8. 当某个数据更新时，由于进行了 setter 拦截，所以会对该数据的 `dep.subs` 这一观察者队列里的 watchers 进行通知，从而执行 `watcher.update()` 方法，而 <font color=red>`update()` 方法会重复求值过程（即为步骤3～6）</font>，从而<font color=red>使得 “观察者函数” 重新计算</font>，而 `render()` 这种观察者函数重新计算的结果，就使得视图同步了最新的数据
 
+##### defineReactive
 
+源码如下：
+
+```js
+function defineReactive (obj, key, val) {
+    var dep = new Dep()
+    var property = Object.getOwnPropertyDescriptor(obj, key)
+    if (property && property.configurable === false) {
+        return
+    }
+    var getter = property && property.get
+    var setter = property && property.set
+
+    var childOb = observe(val)
+    Object.defineProperty(obj, key, {
+        enumerable: true,
+        configurable: true,
+        get: function reactiveGetter () {
+            var value = getter ? getter.call(obj) : val
+            if (Dep.target) {
+                dep.depend() // 👀 使用了自由变量 dep，形成了闭包
+                if (childOb) {
+                    childOb.dep.depend()
+                }
+                if (isArray(value)) {
+                    for (var e, i = 0, l = value.length; i < l; i++) {
+                        e = value[i]
+                        e && e.__ob__ && e.__ob__.dep.depend()
+                    }
+                }
+            }
+            return value
+        },
+        set: function reactiveSetter (newVal) {
+            var value = getter ? getter.call(obj) : val
+            if (newVal === value) {
+                return
+            }
+            if (setter) {
+                setter.call(obj, newVal)
+            } else {
+                val = newVal
+            }
+            childOb = observe(newVal)
+            dep.notify() // 👀 使用了自由变量 dep，形成了闭包
+        }
+    })
+}
+```
+
+Object.defineProperty 中的 get / set 使用了 “自由变量 dep”，形成了闭包。👀 更直观的理解是：使用了 dep 的 get / set 被挂载到了其他对象上，自然是形成了闭包。
+
+###### getter 依赖收集
+
+`getter` 里进行的是依赖的收集工作。如果某个观察者函数访问了某个数据，我们就可以把这个观察者函数认为是依赖这个数据的，所以举个具体的例子：`data.a`，在以下地方被使用：
+
+```vue
+<template>
+    <div>{{a}}</div>
+</template>
+
+<script>
+computed: {
+    newValue() {
+        return this.a + 1;
+    }
+}
+</script>
+```
+
+那么，template 被编译后，会形成 AST，<font color=red>在执行 `render()` 函数过程中就 **会触发 `data.a` 的 `getter`**</font> ，并且<font color=fuchsia>**这个过程是 惰性收集 的**</font>（如 `newValue` 虽然用到了 a，但如果它没有被调用执行，就不会触发 `getter`，也就不会被添加到 `data.a` 的 `dep.subs` 里）。现在，假设 template 变成了这样子：
+
+```vue
+<template>
+    <div>I am {{a}}，plus 1 is {{newValue}}</div>
+</template>
+```
+
+那么，可以看到就对应了两个 “观察者函数” ：计算属性 `newValue` 和 `render()` 函数，它们会被包装为两个watcher。 
+
+在执行 `render()` 函数渲染的过程中，访问了 `data.a` ，从而<font color=red>使得 `data.a` 的 `dep.subs` 里加入了`render@watcher`</font> ；又访问了计算属性 `newValue` ，计算属性里访问了 `data.a` ，使得 `data.a` 的 `dep.subs` 里加入了 `newValue@watcher` 。所以 `data.a` 的 `dep.subs` 里就有了 `[render@watcher, newValue@watcher]`。
+
+为什么访问特定数据就使能让数据的 `deps.subs` 里加入了 watcher 呢？ 这是因为，在访问 `getter` 之前，就已经进入了某个 watcher 的上下文了，所以有一件事情是可以保证的：**Watcher 类的实例 watcher 已经准备好了，并且已经调用了 `watcher.get()` ，`Dep.target` 是有值的** 。所以，我们看到 `getter` 里进行依赖收集的写法是 `dep.depend()` ，并没有传入什么参数，这是因为，我们只需要把 `Dep.target` 加入当前 `dep.subs` 里就好了。 但是我们又发现，`Dep.prototype.depend()` 的实现是：
+
+```js
+depend() {
+    Dep.target.addDep(this);
+}
+```
+
+为什么 `depend()` 的时候，不直接把 `Dep.target` 加入 `dep.subs` ，而是调用了 `Dep.target.addDep` 呢？ 这是因为，我们<font color=LightSeaGreen>不能无脑地直接把当前 watcher 塞入 `dep.subs` 里</font>，我们<font color=LightSeaGreen>要保证 `dep.subs` 里的每个 `watcher` 都是唯一的</font>。 `Dep.target` 是 Watcher 类实例，调用 `dep.depend()` 相当于调用了 `watcher.addDep` 方法，所以我们再来看一下这个方法里做了什么事情：
+
+```js
+Watcher.prototype.addDep = function (dep) {
+    var id = dep.id
+    if (!this.newDepIds[id]) {
+        this.newDepIds[id] = true
+        this.newDeps.push(dep)
+        if (!this.depIds[id]) {
+            dep.addSub(this)
+        }
+    }
+}
+```
+
+概括起来就是：判断本轮计算中是否收集过这个依赖，收集过就不再收集，没有收集过就加入 `newDeps` 。同时，判断有无缓存过依赖，缓存过就不再加入到 `dep.subs` 里了。
+
+##### 总结
+
+###### 观察者模式
+
+<img src="https://s2.loli.net/2022/12/30/wnz35OCvLGQgbN7.jpg" alt="img" style="zoom:80%;" />
+
+###### 配置依赖观测
+
+<img src="https://s2.loli.net/2022/12/30/51eJC3kWDGpLuXo.jpg" alt="img" style="zoom:90%;" />
+
+###### 收集依赖
+
+![img](https://s2.loli.net/2022/12/30/Hfe8B2gvauSWwi1.jpg)
+
+###### 数据值变更
+
+![img](https://s2.loli.net/2022/12/30/SgsACNKQevH59EL.jpg)
 
 摘自：[深入解析Vue依赖收集原理](https://juejin.cn/post/6844903702881386504)
 
