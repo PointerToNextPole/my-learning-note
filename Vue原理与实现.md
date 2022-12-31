@@ -1094,6 +1094,20 @@ TargetMap 的类型是 WeakMap（ 👀 为什么选择 WeakMap ，[[#reactive �
 
 根据 L3 ，发现 Dep 的结构是 `Set<ReactiveEffect> & TrackedMarkers` ，所以 TargetMap 的结构可以简单理解为 `WeakMap<any, Map<any, Set<ReactiveEffect>>`
 
+> 👀 在看下面 神光 下面的文章之前，我还是有点不明白，看了之后，明白了很多：
+>
+> > <font color=fuchsia>状态对象的每个 key 都有关联的一系列 effect 副作用函数</font>，也就是变化的时候联动执行的逻辑，<font color=fuchsia>通过 Set 来组织。</font>
+> >
+> > 每个 key 都是这样关联了一系列 effect 函数，那<font color=red>多个 key 就可以放到一个 Map 里维护</font>。
+> >
+> > 这个 Map 是在对象存在的时候它就存在，对象销毁的时候它也要跟着销毁（因为<font color=LightSeaGreen>对象都没了自然也不需要维护每个 key 关联的 effect 了</font>）。而 WeakMap 正好就有这样的特性，WeakMap 的 key 必须是一个对象，value 可以是任意数据，key 的对象销毁的时候，value 也会销毁。
+> >
+> > 所以，<font color=red>响应式的 Map 会用 WeakMap 来保存，key 为原对象</font>。
+> >
+> > <img src="https://s2.loli.net/2022/12/31/KlvB1eDhqHkbuNM.png" style="zoom: 45%;" />
+> >
+> > 摘自：[手写 Vue3 响应式系统：核心就一个数据结构](https://juejin.cn/post/7112212380397862926)
+
 ###### 使用 TargetMap 的 track 和 trigger 的实现
 
 ```js
@@ -2389,6 +2403,63 @@ Watcher.prototype.addDep = function (dep) {
 
 
 
+#### observer 简单实现
+
+```js
+const data = {
+  foo: 'foo',
+  bar: {
+    baz: 'baz'
+  },
+  quz: [1, 2, 3]
+}
+
+// 拦截修改原数组的方法
+// 👀 如果仅仅是 data.quz[0] = 0 这样的操作，没有下面代码也是可以的，不过，一旦对数组使用 push 之类的方法，就无法监听了（打印 re-render 了）
+const oldArrProto = Array.prototype
+const newArrProto = Object.create(oldArrProto)
+['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'].forEach(methodName => {
+  oldArrProto[methodName].call(this, ...arguments)
+  console.log('re-render')
+})
+
+observer(data)
+
+function observer(target) {
+  if(typeof target !== 'object' || target === null) {
+    return target
+  }
+
+  if(Array.isArray(target)) {
+    target.__proto__ = newArrProto // 修改数组原型，实现 对“修改原数组的方法”实现拦截
+  }
+
+  for(const key in target) {
+    defineReactive(target, key, target[key])
+  }
+}
+
+function defineReactive(target, key, value) {
+  observer(value) // 深度观察，递归处理深层次对象，比如 data.bar
+  Object.defineProperty(target, key, {
+    get() {
+      return value
+    },
+    set(newValue) {
+      observer(newValue) // ⚠️ 如下代码 data.foo = {qux: 'qux'}; data.foo 对象中的内容将不会变成响应式，所以在 set 中也要 observer
+      if(newValue !== value) {
+        value = newValue
+        console.log('re-render')
+      }
+    }
+  })
+}
+```
+
+学习自：[Vue2响应式原理【Vue】](https://www.bilibili.com/video/BV1za411c7tC) -> [快速实现简易Vue响应式【Vue】](https://www.bilibili.com/video/BV18p4y167We) -> [实现Vue2响应式之复杂对象情况【Vue】](https://www.bilibili.com/video/BV1SD4y197gP) -> [实现Vue2响应式之改写数组方法【Vue】](https://www.bilibili.com/video/BV1Gp4y1r7MS)
+
+
+
 #### Compiler
 
 MVVM 库的流程图：
@@ -2411,3 +2482,237 @@ MVVM 库的流程图：
 3. 接收到数据变化，通知视图进行 view update
 
 摘自：[合格前端系列第三弹-实现一个属于我们自己的简易MVVM库 - qiangdada的文章 - 知乎](https://zhuanlan.zhihu.com/p/27028242)
+
+
+
+#### 《vue源码分析之watcher为何收集dep？》笔记
+
+##### New Vue 做了什么？
+
+- initState，初始化 data、computed 等，我们常说的数据劫持发生在这里
+- 调用 `$mount` 方法，把我们写的 template 最终渲染成真实 dom 挂载到页面上
+
+```ts
+// new Vue 仅仅调用了 init，init方法是在 initMixin 挂在到 Vue原型上
+function Vue (options) {
+	// ....
+  this._init(options)
+}
+
+function initMixin (Vue: Class<Component>) {
+  Vue.prototype._init = function (options?: Object) {
+    const vm: Component = this
+    // 合并options
+    if (options && options._isComponent) {
+      initInternalComponent(vm, options)
+    } else {
+      vm.$options = mergeOptions(
+        resolveConstructorOptions(vm.constructor),
+        options || {},
+        vm
+      )
+    }
+		// initState 中对我们传入对data进行了数据劫持
+    initState(vm)
+		// 调用 $mount，开始挂载 
+    if (vm.$options.el) {
+      vm.$mount(vm.$options.el)
+    }
+  }
+}
+```
+
+##### initState
+
+> 👀 可以看下 [[#为什么在 Vue 中使用 this.dataProp 可以访问到 data 中的数据？]] 或视频，要易懂一些
+
+initState 主要是对我们传入的 options 进行了初始化
+
+```ts
+export function initState(vm: Component) {
+  const opts = vm.$options // 获取 opts
+  if (opts.props) initProps(vm, opts.props) // init props
+
+  // Composition API
+  initSetup(vm)
+
+  if (opts.methods) initMethods(vm, opts.methods) // init methods
+  if (opts.data) { initData(vm) } // init data
+  else {
+    const ob = observe((vm._data = {}))
+    ob && ob.vmCount++
+  }
+  if (opts.computed) initComputed(vm, opts.computed) // init computed
+  if (opts.watch && opts.watch !== nativeWatch) { 
+    initWatch(vm, opts.watch) // init watch
+  }
+}
+```
+
+initData 主要干了两件事：
+
+- proxy 函数对 `this._data` 进行代理，所以我们可以通过 `this.xxx` 访问到 data 的数据
+
+  > ⚠️ 如下面代码所示，在进行 proxy 之前，还做了 key 冲突的校验，即 data 中的数据 key 不能和 methods 和 props 中的数据 key 冲突
+
+- observe 函数把 data 变成响应式
+
+```ts
+function initData (vm: Component) {
+  let data = vm.$options.data
+  data = vm._data = typeof data === 'function'
+    ? getData(data, vm)
+    : data || {}
+	// ...
+  const keys = Object.keys(data)
+  const props = vm.$options.props
+  const methods = vm.$options.methods
+  let i = keys.length
+  while (i--) {
+		// ⚠️ key 重复校验，如 methods 中的 key 不能和 data 中的 key 重复，因为两者最终都会被代理 this 上
+    const key = keys[i]
+    if (process.env.NODE_ENV !== 'production') {
+      if (methods && hasOwn(methods, key)) {
+        warn(
+          `Method "${key}" has already been defined as a data property.`,
+          vm
+        )
+      }
+    }
+    if (props && hasOwn(props, key)) {
+      process.env.NODE_ENV !== 'production' && warn(
+        `The data property "${key}" is already declared as a prop. ` +
+        `Use prop default value instead.`,
+        vm
+      )
+    } else if (!isReserved(key)) {
+			// this._data.xxx 变 this.xxx
+      proxy(vm, `_data`, key)
+    }
+  }
+  // 数据变响应式
+  observe(data, true /* asRootData */)
+}
+```
+
+
+
+
+
+##### 为什么在 Vue 中使用 this.dataProp 可以访问到 data 中的数据？
+
+###### 代码示例
+
+```js
+var app = new Vue({
+  el: "#app",
+  data() {
+    return {
+      msg: 'foo'
+    };
+  },
+  methods: {
+    onClick() {
+      console.log(this.msg) // 👀
+    }
+  }
+});
+```
+
+###### 解释
+
+首先看下 `new Vue` ，显然 `Vue` 是一个构造函数，在 DevTool 中打印 `Vue` ，有如下结果：
+
+<img src="https://s2.loli.net/2022/12/31/7RTi1MkYjXaxt5h.png" alt="image-20221231163516152" style="zoom:60%;" />
+
+可以在 src/core/instance/index.ts 中找到 `Vue` 的定义，也可以看见 `_init` ：
+
+```ts
+function Vue(options) {
+  // ...
+  this._init(options)
+}
+```
+
+而 `_init` 方法定义在 src/core/instance/init.ts 中：
+
+```ts
+export function initMixin(Vue: typeof Component) {
+  Vue.prototype._init = function (options?: Record<string, any>) {
+    // ...
+  }
+}
+```
+
+`_init` 方法定义了 组件在初始化时，做的一些事情。这里值得关注的是 `_init` 方法中的 `initState(vm)` ，`initState` 函数定义在 src/core/instance/state.ts 中，代码如下：
+
+```ts
+export function initState(vm: Component) {
+  const opts = vm.$options
+  if (opts.props) initProps(vm, opts.props)
+
+  // Composition API
+  initSetup(vm)
+
+  if (opts.methods) initMethods(vm, opts.methods)
+  if (opts.data) {
+    initData(vm) // 👀  
+  } else {
+    const ob = observe((vm._data = {}))
+    ob && ob.vmCount++
+  }
+  if (opts.computed) initComputed(vm, opts.computed)
+  if (opts.watch && opts.watch !== nativeWatch) {
+    initWatch(vm, opts.watch)
+  }
+}
+```
+
+这里的重点是 `if(opts.data) { initData(vm) }` ，其中 `opts.data` 就是实例化 Vue 时，传入的 `data() {}` 。
+
+initData 也定义在 src/core/instance/state.ts 中，关键逻辑是
+
+```ts
+data = vm._data = isFunction(data) ? getData(data, vm) : data || {}
+```
+
+如果 data 是一个函数，则运行 `getData(data, vm)` ，并将返回值返回到 `data` 和 `vm._data` 中；否则会返回 `data || {}` 。
+
+initData 函数接下来的重点是：
+
+```ts
+  const keys = Object.keys(data) // 👀 获取 keys
+  const props = vm.$options.props
+  const methods = vm.$options.methods
+  let i = keys.length
+  while (i--) { // 👀 遍历 keys
+    const key = keys[i]
+    // ...
+    if (props && hasOwn(props, key)) {
+      // ...
+    } else if (!isReserved(key)) {
+      proxy(vm, `_data`, key) // ⚠️ 重点：调用 proxy
+    }
+  }
+
+```
+
+会遍历整个 data 数据的所有 key，并运行 ``proxy(vm, `_data`, key)`` 。仍在 src/core/instance/state.ts 中找到 proxy 函数，定义如下：
+
+```ts
+export function proxy(target: Object, sourceKey: string, key: string) {
+  sharedPropertyDefinition.get = function proxyGetter() {
+    return this[sourceKey][key]
+  }
+  sharedPropertyDefinition.set = function proxySetter(val) {
+    this[sourceKey][key] = val
+  }
+  Object.defineProperty(target, key, sharedPropertyDefinition)
+}
+```
+
+可以看见定义了 key 属性，并为 key 属性添加了名为 sharedPropertyDefinition 的 get/set ，其中 get 返回了 `this[sourceKey][key]` ，其中 `sourceKey` 就是 `_data` ，也就是返回 `this['_data'][key]` ；同理，set 修改了 `this['_data'][key]`
+
+根据 [[#为什么在 Vue 中使用 this.dataProp 可以访问到 data 中的数据？#代码示例]] 中的内容，访问 `this.msg`，就相当于访问 `this._data.msg` （通过 get），修改 `this.msg`，就相当于修改 `this._data.msg` （通过 set）。通过 `proxy` 函数的修改，使得这一切实现。
+
+学习自：[为什么 Vue 中 this.xxx 能访问到 data 里的数据？【Vue源码解析】](https://www.bilibili.com/video/BV1BV411478m)
