@@ -2490,7 +2490,7 @@ MVVM 库的流程图：
 ##### New Vue 做了什么？
 
 - initState，初始化 data、computed 等，我们常说的数据劫持发生在这里
-- 调用 `$mount` 方法，把我们写的 template 最终渲染成真实 dom 挂载到页面上
+- 调用 `$mount` 方法，把我们写的 template 最终渲染成真实 dom 挂载到页面上 👀 见 `Vue.prototype._init` 代码最后部分
 
 ```ts
 // new Vue 仅仅调用了 init，init方法是在 initMixin 挂在到 Vue原型上
@@ -2516,7 +2516,7 @@ function initMixin (Vue: Class<Component>) {
     initState(vm)
 		// 调用 $mount，开始挂载 
     if (vm.$options.el) {
-      vm.$mount(vm.$options.el)
+      vm.$mount(vm.$options.el) // 👀
     }
   }
 }
@@ -2555,7 +2555,7 @@ initData 主要干了两件事：
 
   > ⚠️ 如下面代码所示，在进行 proxy 之前，还做了 key 冲突的校验，即 data 中的数据 key 不能和 methods 和 props 中的数据 key 冲突
 
-- observe 函数把 data 变成响应式
+- observe 函数把 data 变成响应式 👀 见 initData 代码最后部分
 
 ```ts
 function initData (vm: Component) {
@@ -2591,9 +2591,19 @@ function initData (vm: Component) {
     }
   }
   // 数据变响应式
-  observe(data, true /* asRootData */)
+  observe(data, true /* asRootData */) // 👀
 }
 ```
+
+> 👀 这里省略 defineReactive 和 defineReactive 中的 Dep.prototype.depend 还有 Watcher.prototype.addDep 的相关笔记和代码，感觉没有太多值得记录的内容
+
+##### Watcher 收集 dep 的时机
+
+vue 中的 watcher 大体可以分成三类：
+
+- 渲染 watcher
+- 计算 watcher
+- watchWatcher
 
 
 
@@ -2625,7 +2635,7 @@ var app = new Vue({
 
 <img src="https://s2.loli.net/2022/12/31/7RTi1MkYjXaxt5h.png" alt="image-20221231163516152" style="zoom:60%;" />
 
-可以在 src/core/instance/index.ts 中找到 `Vue` 的定义，也可以看见 `_init` ：
+可以在 `src/core/instance/index.ts` 中找到 `Vue` 的定义，也可以看见 `_init` ：
 
 ```ts
 function Vue(options) {
@@ -2634,7 +2644,7 @@ function Vue(options) {
 }
 ```
 
-而 `_init` 方法定义在 src/core/instance/init.ts 中：
+而 `_init` 方法定义在 `src/core/instance/init.ts` 中：
 
 ```ts
 export function initMixin(Vue: typeof Component) {
@@ -2644,7 +2654,7 @@ export function initMixin(Vue: typeof Component) {
 }
 ```
 
-`_init` 方法定义了 组件在初始化时，做的一些事情。这里值得关注的是 `_init` 方法中的 `initState(vm)` ，`initState` 函数定义在 src/core/instance/state.ts 中，代码如下：
+`_init` 方法定义了 组件在初始化时，做的一些事情。这里值得关注的是 `_init` 方法中的 `initState(vm)` ，`initState` 函数定义在 `src/core/instance/state.ts` 中，代码如下：
 
 ```ts
 export function initState(vm: Component) {
@@ -2670,7 +2680,7 @@ export function initState(vm: Component) {
 
 这里的重点是 `if(opts.data) { initData(vm) }` ，其中 `opts.data` 就是实例化 Vue 时，传入的 `data() {}` 。
 
-initData 也定义在 src/core/instance/state.ts 中，关键逻辑是
+initData 也定义在 `src/core/instance/state.ts` 中，关键逻辑是
 
 ```ts
 data = vm._data = isFunction(data) ? getData(data, vm) : data || {}
@@ -2697,7 +2707,7 @@ initData 函数接下来的重点是：
 
 ```
 
-会遍历整个 data 数据的所有 key，并运行 ``proxy(vm, `_data`, key)`` 。仍在 src/core/instance/state.ts 中找到 proxy 函数，定义如下：
+会遍历整个 data 数据的所有 key，并运行 ``proxy(vm, `_data`, key)`` 。仍在 `src/core/instance/state.ts` 中找到 proxy 函数，定义如下：
 
 ```ts
 export function proxy(target: Object, sourceKey: string, key: string) {

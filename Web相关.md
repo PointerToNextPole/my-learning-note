@@ -2690,7 +2690,7 @@ WebDAV 扩展了 request 方法所允许的标准 HTTP谓词 和 HTTP头。增�
 
 无埋点则是 <font color=fuchsia>前端自动**采集全部事件**，上报埋点数据</font>，由<font color=red>后端来过滤和计算出有用的数据</font>。<font color=dodgerBlue>**优点**</font>是 前端只要一次加载埋点脚本，<font color=dodgerBlue>**缺点**</font>是 <font color=red>流量和采集的数据过于庞大，服务器性能压力山大</font>。
 
-###### 使用GIF上报的原因
+###### 使用 GIF 上报的原因
 
 向服务器端上报数据，<font color=LightSeaGreen>可以通过请求接口</font>，<font color=fuchsia>**请求**普通文件</font>，或者 <font color=fuchsia>**请求** 图片资源</font>的方式进行。<font color=lightSeaGreen>只要能上报数据，无论是请求 GIF 文件还是请求 js文件 或者是 调用页面接口，服务器端其实并不关心具体的上报方式</font>。那为什么使用了请求 GIF 图片的方式上报数据呢（👀 准确的说是 “借用图片的src属性来发起请求”，至于 src 指向的图片是否存在是无所谓的）？
 
@@ -2722,20 +2722,20 @@ WebDAV 扩展了 request 方法所允许的标准 HTTP谓词 和 HTTP头。增�
 >
 > > Web 应用程序开发中的一个常见做法是建立中心化的错误日志存储和跟踪系统。数据库和服务器错 误正常写到日志中并按照常用 API 加以分类。对复杂的 Web 应用程序而言，最好也把 JavaScript 错误发 送回服务器记录下来。这样做可以把错误记录到与服务器相同的系统，只要把它们归类到前端错误即可。 使用相同的系统可以进行相同的分析，而不用考虑错误来源。
 > >
-> > 要建立 JavaScript 错误日志系统，首先需要在服务器上有页面或入口可以处理错误数据。该页面只 要从查询字符串中取得错误数据，然后把它们保存到错误日志中即可。比如，该页面可以使用如下代码：
+> > 要建立 JavaScript 错误日志系统，首先需要在服务器上有页面或入口可以处理错误数据。该页面只要从查询字符串中取得错误数据，然后把它们保存到错误日志中即可。比如，该页面可以使用如下代码：
 > >
 > > ```js
 > > function logError(sev, msg) {
-> >   let img = new Image(), 
+> >    let img = new Image(), 
 > >       encodedSev = encodeURIComponent(sev),
 > >       encodedMsg = encodeURIComponent(msg);
-> >   img.src = 'log.php?sev=${encodedSev}&msg=${encodedMsg}';
+> >      img.src = 'log.php?sev=${encodedSev}&msg=${encodedMsg}';
 > > }
 > > ```
 > >
 > > `logError()` 函数接收两个参数：严重程度和错误消息。严重程度可以是数值或字符串，具体取决于使用的日志系统。这里使用 Image 对象发送请求主要是从灵活性方面考虑的。
 > >
-> > - 所有浏览器都支持 Image 对象，即使不支持 XMLHttpRequest 对象也一样。
+> > - <font color=red>所有浏览器都支持 Image 对象，即使不支持 XMLHttpRequest 对象也一样</font>。
 > > - 不受跨域规则限制。通常，接收错误消息的应该是多个服务器中的一个，而 XMLHttpRequest 此时就比较麻烦。
 > > - 记录错误的过程很少出错。大多数 Ajax 通信借助 JavaScript 库的包装来处理。如果这个库本身 出错，而你又要利用它记录错误，那么显然错误消息永远不会发给服务器。
 > >
@@ -2876,42 +2876,46 @@ Apple 官网喜欢用用户滚动页面 实现 播放视频（动画）效果，
 
 #### JSBridge
 
-<font color=FF0000>**JSBridge 是一种 JS 实现的 Bridge，连接着桥两端的 Native（注：这里的 Native 是指移动端原生应用） 和 H5**</font>。它<font color=FF0000>在 APP 内方便地让 Native 调用 JS，JS 调用 Native ，是双向通信的通道</font>。JSBridge <mark>**主要提供了 JS 调用 Native 代码的能力**，实现原生功能如查看本地相册、打开摄像头、指纹支付等</mark>。
+<font color=FF0000>**JSBridge 是一种 JS 实现的 Bridge，连接着桥两端的 Native（注：这里的 Native 是指移动端原生应用） 和 H5**</font>。它<font color=FF0000>在 APP 内方便地让 Native 调用 JS，JS 调用 Native ，是双向通信的通道</font>。JSBridge <font color=LightSeaGreen>**主要提供了 JS 调用 Native 代码的能力**，实现原生功能如查看本地相册、打开摄像头、指纹支付等</font>。
 
-**注：**双向通道的含义是：
-
+> 💡 双向通道的含义是：
+>
 > - **JS 向 Native 发送消息：**调用相关功能、<font color=FF0000>通知 Native 当前 JS 的相关状态</font>等。
 > - **Native 向 JS 发送消息 :** 回溯调用结果、消息推送、<font color=FF0000>通知 JS 当前 Native 的状态</font>等。
 >
 > 摘自：[JSBridge的原理](https://juejin.cn/post/6844903585268891662)
 
-**H5 与 Native 对比**
+##### H5 与 Native 对比
 
-|    name     |                        H5                         |                       Native                       |
-| :---------: | :-----------------------------------------------: | :------------------------------------------------: |
-|   稳定性    |          调用系统浏览器内核，稳定性较差           |               使用原生内核，更加稳定               |
-|   灵活性    |               版本迭代快，上线灵活                |      迭代慢，需要应用商店审核，上线速度受限制      |
-| 受网速 影响 |                       较大                        |                        较小                        |
-|   流畅度    |          有时加载慢，给用户“卡顿”的感觉           |                加载速度快，更加流畅                |
-|  用户体验   |          功能受浏览器限制，体验有时较差           |   原生系统 api 丰富，能实现的功能较多，体验较好    |
-|  可移植性   | 兼容跨平台跨系统，如 PC 与 移动端，iOS 与 Android | 可移植性较低，对于 iOS 和 Android 需要维护两套代码 |
+| name        | H5                                                | Native                                             |
+| :---------- | :------------------------------------------------ | :------------------------------------------------- |
+| 稳定性      | 调用系统浏览器内核，稳定性较差                    | 使用原生内核，更加稳定                             |
+| 灵活性      | 版本迭代快，上线灵活                              | 迭代慢，需要应用商店审核，上线速度受限制           |
+| 受网速 影响 | 较大                                              | 较小                                               |
+| 流畅度      | 有时加载慢，给用户“卡顿”的感觉                    | 加载速度快，更加流畅                               |
+| 用户体验    | 功能受浏览器限制，体验有时较差                    | 原生系统 api 丰富，能实现的功能较多，体验较好      |
+| 可移植性    | 兼容跨平台跨系统，如 PC 与 移动端，iOS 与 Android | 可移植性较低，对于 iOS 和 Android 需要维护两套代码 |
 
-<font size=4>**JSBridge 的双向通信原理**</font>
+##### JSBridge 的双向通信原理
 
-- **JS 调用 Native：**<font color=FF0000>JS 调用 Native 的**实现方式**较多</font>，主要有拦截 URL Scheme 、重写 prompt 、注入 API 等方法
+- **JS 调用 Native：**<font color=dodgerBlue>JS 调用 Native 的**实现方式**较多</font>，主要有拦截 URL Scheme 、重写 prompt 、注入 API 等方法
   - **拦截 URL Scheme：**Android 和 iOS 都可以通过拦截 URL Scheme 并解析 scheme 来决定是否进行对应的 Native 代码逻辑处理
   - **重写 prompt 等原生 JS 方法**
-    - Android 4.2 之前注入对象的接口是 addJavascriptInterface ，但是由于安全原因慢慢不被使用。一般会通过修改浏览器的部分 Window 对象的方法来完成操作。<mark>主要是拦截 alert、confirm、prompt、console.log 四个方法，分别被 Webview 的 onJsAlert、onJsConfirm、onConsoleMessage、onJsPrompt 监听</mark>。
-    - iOS 由于安全机制， <mark>WKWebView 对 alert、confirm、prompt 等方法做了拦截，如果通过此方式进行 Native 与 JS 交互，需要实现 WKWebView 的三个 WKUIDelegate 代理方法</mark>。
+    - Android 4.2 之前注入对象的接口是 addJavascriptInterface ，但是由于安全原因慢慢不被使用。一般会通过修改浏览器的部分 Window 对象的方法来完成操作。<font color=LightSeaGreen>主要是拦截 alert、confirm、prompt、console.log 四个方法，分别被 Webview 的 onJsAlert、onJsConfirm、onConsoleMessage、onJsPrompt 监听</font>。
+    - iOS 由于安全机制， <font color=LightSeaGreen>WKWebView 对 alert、confirm、prompt 等方法做了拦截，如果通过此方式进行 Native 与 JS 交互，需要实现 WKWebView 的三个 WKUIDelegate 代理方法</font>。
   - **注入 API：**<font color=FF0000>基于 Webview 提供的能力</font>，我们<font color=FF0000>可以向 Window 上注入对象或方法</font>。<font color=FF0000>JS 通过这个对象或方法进行调用时，执行对应的逻辑操作，可以直接调用 Native 的方法</font>。使用该方式时，JS 需要等到 Native 执行完对应的逻辑后才能进行回调里面的操作。
 - **Native 调用 JS：**Native 调用 JS 比较简单，只要 <font color=FF0000>H5 将 JS 方法暴露在 Window 上给 Native 调用即可</font>。
 
-<font size=4>**JSBridge 的使用**</font>
+##### JSBridge 的使用
 
-- **如何引用**
-  - **由 H5 引用：**在我司移动端初期版本时采用的是该方式，采用本地引入 npm 包的方式进行调用。这种方式可以确定 JSBridge 是存在的，可直接调用 Native 方法。但是如果后期 Bridge 的实现方式改变，双方需要做更多的兼容，维护成本高
-  - **由 Native 注入：**这是当前我司移动端选用的方式。在考虑到后期业务需要的情况下，进行了重新设计，选用 Native 注入的方式来引用 JSBridge。这样有利于保持 API 与 Native 的一致性，但是缺点是在 Native 注入的方法和时机都受限，JS 调用 Native 之前需要先判断 JSBridge 是否注入成功
-- **使用规范：**见链接，略
+###### 如何引用
+
+- **由 H5 引用：**在我司移动端初期版本时采用的是该方式，采用本地引入 npm 包的方式进行调用。这种方式可以确定 JSBridge 是存在的，可直接调用 Native 方法。但是如果后期 Bridge 的实现方式改变，双方需要做更多的兼容，维护成本高
+- **由 Native 注入：**这是当前我司移动端选用的方式。在考虑到后期业务需要的情况下，进行了重新设计，选用 Native 注入的方式来引用 JSBridge。这样有利于保持 API 与 Native 的一致性，但是缺点是在 Native 注入的方法和时机都受限，JS 调用 Native 之前需要先判断 JSBridge 是否注入成功
+
+###### 使用规范
+
+见链接，略
 
 摘自：[小白必看，JSBridge 初探](https://www.zoo.team/article/jsbridge)
 

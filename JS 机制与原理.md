@@ -3355,11 +3355,11 @@ let promise = new Promise(() => { throw new Error('error') });
 console.log(2333333);
 ```
 
-这次会正常的打印 `233333`，说明 <font color=FF0000>**Promise 内部的错误不会影响到 Promise 外部的代码**，而这种情况我们就通常称为 “吃掉错误”</font>。
+这次会正常的打印 `2333333`，说明 <font color=FF0000>**Promise 内部的错误不会影响到 Promise 外部的代码**，而这种情况我们就通常称为 “吃掉错误”</font>。
 
-其实这并不是 Promise 独有的局限性，try..catch 也是这样，同样会捕获一个异常并简单的吃掉错误。
+其实这并不是 Promise 独有的局限性，try...catch 也是这样，同样会捕获一个异常并简单的吃掉错误。
 
-而<font color=FF0000>**正是因为错误被吃掉，Promise 链中的错误很容易被忽略掉**，这也是为什么会一般推荐在 Promise 链的最后添加一个 catch 函数</font>，<font color=FF0000>因为对于一个没有错误处理函数的 Promise 链，**任何错误都会在链中被传播下去，直到你注册了错误处理函数**</font>。
+而<font color=FF0000>**正是因为错误被吃掉，Promise 链中的错误很容易被忽略掉**，这也是为什么会一般推荐在 Promise 链的最后添加一个 catch 函数</font>，<font color=FF0000>因为对于一个没有错误处理函数的 Promise 链，**任何错误都会在链中被传播下去，直到你注册了错误处理函数**</font>。 👀 或者触发 unhandledrejection 事件
 
 ##### 2. 单一值
 
