@@ -1696,6 +1696,8 @@ onTrack 和 onTrigger 就是对应 track 和 trigger，另外，onTrack 和 onTr
 
 以上的优先级 对应着 [[#Vue2 实例生命周期示意图]] 图中 “created 生命周期” 下方 “是否有 el 选项” ( Has “el” option? ) 的判断：如果有的话，还会判断 “是否有 template 选项” ( Has “template” option?  ) 。如果有的话，会直接使用 template 中的内容 ( Compile template into render function )；没有则退而求其次，使用 el 选项对应的 outer HTML ( Compile el’s outer HTML as template )
 
+> 💡 这部分的代码可以看下 `src/platform/web/runtime-with-compiler` 中的 `Vue.prototype.$mount` 
+
 学习自：[哈默 - Vue原来是这样使用我们的模板（template）的！](https://www.bilibili.com/video/BV1Df4y1Q7KK)
 
 ##### Vue3 文档中的补充
@@ -2495,7 +2497,7 @@ MVVM 库的流程图：
 ```ts
 // new Vue 仅仅调用了 init，init方法是在 initMixin 挂在到 Vue原型上
 function Vue (options) {
-	// ....
+  // ....
   this._init(options)
 }
 
@@ -2512,9 +2514,9 @@ function initMixin (Vue: Class<Component>) {
         vm
       )
     }
-		// initState 中对我们传入对data进行了数据劫持
+    // initState 中对我们传入对data进行了数据劫持
     initState(vm)
-		// 调用 $mount，开始挂载 
+    // 调用 $mount，开始挂载 
     if (vm.$options.el) {
       vm.$mount(vm.$options.el) // 👀
     }
@@ -2569,7 +2571,7 @@ function initData (vm: Component) {
   const methods = vm.$options.methods
   let i = keys.length
   while (i--) {
-		// ⚠️ key 重复校验，如 methods 中的 key 不能和 data 中的 key 重复，因为两者最终都会被代理 this 上
+    // ⚠️ key 重复校验，如 methods 中的 key 不能和 data 中的 key 重复，因为两者最终都会被代理 this 上
     const key = keys[i]
     if (process.env.NODE_ENV !== 'production') {
       if (methods && hasOwn(methods, key)) {
@@ -2585,8 +2587,8 @@ function initData (vm: Component) {
         `Use prop default value instead.`,
         vm
       )
-    } else if (!isReserved(key)) {
-			// this._data.xxx 变 this.xxx
+    } else if (!isReserved(key)) { // 验证 key值的合法性
+      // this._data.xxx 变 this.xxx
       proxy(vm, `_data`, key)
     }
   }
@@ -2595,7 +2597,7 @@ function initData (vm: Component) {
 }
 ```
 
-> 👀 这里省略 defineReactive 和 defineReactive 中的 Dep.prototype.depend 还有 Watcher.prototype.addDep 的相关笔记和代码，感觉没有太多值得记录的内容
+> 👀 这里省略 defineReactive 和 defineReactive 中的 `Dep.prototype.depend` 还有 `Watcher.prototype.addDep` 的相关笔记和代码，感觉没有太多值得记录的内容
 
 ##### Watcher 收集 dep 的时机
 
@@ -2633,18 +2635,28 @@ var app = new Vue({
 
 首先看下 `new Vue` ，显然 `Vue` 是一个构造函数，在 DevTool 中打印 `Vue` ，有如下结果：
 
-<img src="https://s2.loli.net/2022/12/31/7RTi1MkYjXaxt5h.png" alt="image-20221231163516152" style="zoom:60%;" />
+<img src="https://s2.loli.net/2022/12/31/7RTi1MkYjXaxt5h.png" alt="image-20221231163516152" style="zoom:60%;" /> 
 
-可以在 `src/core/instance/index.ts` 中找到 `Vue` 的定义，也可以看见 `_init` ：
+可以在 `src/core/instance/index.ts` 中找到 `Vue` 的定义，也可以看见 `_init` 被调用 ：
 
 ```ts
-function Vue(options) {
+function Vue(options) { // 👀 这里 options 就是开发者传进来的各种 data methods computed 等各种选项
   // ...
   this._init(options)
 }
 ```
 
-而 `_init` 方法定义在 `src/core/instance/init.ts` 中：
+不过没有找到 `_init` 的定义，继续看 `src/core/instance/index.ts` 的代码：
+
+```ts
+initMixin(Vue) // 👀
+stateMixin(Vue)
+eventsMixin(Vue)
+lifecycleMixin(Vue)
+renderMixin(Vue)
+```
+
+在 `initMixin(Vue)` 的定义 `src/core/instance/init.ts` 处可以找到 `Vue.prototype._init` 的定义：
 
 ```ts
 export function initMixin(Vue: typeof Component) {
@@ -2691,20 +2703,24 @@ data = vm._data = isFunction(data) ? getData(data, vm) : data || {}
 initData 函数接下来的重点是：
 
 ```ts
-  const keys = Object.keys(data) // 👀 获取 keys
-  const props = vm.$options.props
-  const methods = vm.$options.methods
-  let i = keys.length
-  while (i--) { // 👀 遍历 keys
-    const key = keys[i]
+const keys = Object.keys(data) // 👀 获取 keys
+const props = vm.$options.props
+const methods = vm.$options.methods
+let i = keys.length
+while (i--) { // 👀 遍历 keys
+  const key = keys[i]
+  // ...
+  if (props && hasOwn(props, key)) {
     // ...
-    if (props && hasOwn(props, key)) {
-      // ...
-    } else if (!isReserved(key)) {
-      proxy(vm, `_data`, key) // ⚠️ 重点：调用 proxy
-    }
+  } else if (!isReserved(key)) {
+    proxy(vm, `_data`, key) // ⚠️ 重点：调用 proxy
   }
+}
 
+// 👀 这部分是让 data 响应式，很重要，不过在当前笔记主题下不是重点
+// observe data
+const ob = observe(data)
+ob && ob.vmCount++
 ```
 
 会遍历整个 data 数据的所有 key，并运行 ``proxy(vm, `_data`, key)`` 。仍在 `src/core/instance/state.ts` 中找到 proxy 函数，定义如下：
@@ -2726,3 +2742,386 @@ export function proxy(target: Object, sourceKey: string, key: string) {
 根据 [[#为什么在 Vue 中使用 this.dataProp 可以访问到 data 中的数据？#代码示例]] 中的内容，访问 `this.msg`，就相当于访问 `this._data.msg` （通过 get），修改 `this.msg`，就相当于修改 `this._data.msg` （通过 set）。通过 `proxy` 函数的修改，使得这一切实现。
 
 学习自：[为什么 Vue 中 this.xxx 能访问到 data 里的数据？【Vue源码解析】](https://www.bilibili.com/video/BV1BV411478m)
+
+
+
+#### 《面试官：Vue实例挂载的过程发生了什么?》笔记
+
+##### 总述
+
+`src/core/instance/index.ts` 中的代码，除了定义 `function Vue(options){}` 之外，调用了如下函数；下面的函数都是非常重要的：
+
+```ts
+initMixin(Vue);      // 定义 _init
+stateMixin(Vue);     // 定义 $set $get $delete $watch 等
+eventsMixin(Vue);    // 定义事件 $on  $once $off $emit
+lifecycleMixin(Vue); // 定义 _update  $forceUpdate  $destroy
+renderMixin(Vue);    // 定义 _render 返回 虚拟dom
+```
+
+##### initMixin 函数
+
+```js
+Vue.prototype._init = function (options?: Object) {
+    const vm: Component = this
+    // a uid
+    vm._uid = uid++
+    let startTag, endTag
+    /* istanbul ignore if */
+    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+      startTag = `vue-perf-start:${vm._uid}`
+      endTag = `vue-perf-end:${vm._uid}`
+      mark(startTag)
+    }
+
+    // a flag to avoid this being observed
+    vm._isVue = true
+    // merge options
+    // 合并属性，判断初始化的是否是组件，这里合并主要是 mixins 或 extends 的方法
+    if (options && options._isComponent) {
+      // optimize internal component instantiation
+      // since dynamic options merging is pretty slow, and none of the
+      // internal component options needs special treatment.
+      initInternalComponent(vm, options)
+    } else { // 合并 vue 属性
+      vm.$options = mergeOptions(
+        resolveConstructorOptions(vm.constructor),
+        options || {},
+        vm
+      )
+    }
+    /* istanbul ignore else */
+    if (process.env.NODE_ENV !== 'production') {
+      // 初始化proxy拦截器
+      initProxy(vm)
+    } else {
+      vm._renderProxy = vm
+    }
+    // expose real self
+    vm._self = vm
+    // 初始化组件生命周期标志位
+    initLifecycle(vm)
+    // 初始化组件事件侦听
+    initEvents(vm)
+    // 初始化渲染方法
+    initRender(vm)
+    callHook(vm, 'beforeCreate') // 👀 beforeCreate 钩子执行
+    // 初始化依赖注入内容，在初始化 data、props 之前
+    initInjections(vm) // resolve injections before data / props
+    // 初始化 props / data / method / watch / methods 👀
+    initState(vm)
+    initProvide(vm) // resolve provide after data / props
+    callHook(vm, 'created') // 👀 created 钩子执行
+
+    /* istanbul ignore if */
+    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+      vm._name = formatComponentName(vm, false)
+      mark(endTag)
+      measure(`vue ${vm._name} init`, startTag, endTag)
+    }
+    // 挂载元素
+    if (vm.$options.el) {
+      vm.$mount(vm.$options.el) // 👀 调用 $mount
+    }
+  }
+```
+
+> 💡 上面注释中出现的 “Istanbul” 直译为 “伊斯坦布尔” ，实际上 [Istanbul](https://github.com/gotwarlost/istanbul) 是一个 JavaScript 程序的代码覆盖率工具。其中 `/* istanbul ignore if */` 等语句，就是在操作 Istanbul 的运行（类似于 eslint）。
+>
+> 学习自：[一日一练-JS 了解Istanbul](https://jobbym.github.io/2018/06/19/%E4%B8%80%E6%97%A5%E4%B8%80%E7%BB%83-JS-%E4%BA%86%E8%A7%A3Istanbul/) ，其中还有更多内容没有看完；另外，阮一峰也写了介绍的博文 [代码覆盖率工具 Istanbul 入门教程](http://www.ruanyifeng.com/blog/2015/06/istanbul.html) // TODO
+
+阅读上面的代码，我们得到以下结论：
+
+- <font color=dodgerBlue>在调用 `beforeCreate` 之前</font>，<font color=LightSeaGreen>数据初始化并未完成</font>，像 <font color=red>`data`、`props` 这些属性无法访问到</font>
+- <font color=dodgerBlue>到了 `created` 的时候</font>，数据已经初始化完成，能够访问 `data` 、`props` 这些属性，但这时候并<font color=red>未完成 `dom` 的挂载</font>，因此<font color=red>无法访问到 `dom` 元素</font>
+- 挂载方法是调用 `vm.$mount` 方法
+
+###### initState
+
+`initState` 方法是完成 props / data / method / watch / methods 的初始化。源码如下：
+
+```js
+export function initState (vm: Component) {
+  // 初始化组件的 watcher 列表
+  vm._watchers = []
+  const opts = vm.$options
+  // 初始化 props
+  if (opts.props) initProps(vm, opts.props)
+  // 初始化 methods 方法
+  if (opts.methods) initMethods(vm, opts.methods)
+  if (opts.data) {
+    // 初始化 data  
+    initData(vm)
+  } else {
+    observe(vm._data = {}, true /* asRootData */)
+  }
+  if (opts.computed) initComputed(vm, opts.computed)
+  if (opts.watch && opts.watch !== nativeWatch) {
+    initWatch(vm, opts.watch)
+  }
+}
+```
+
+> 👀 这里省略了 initData 的代码，可以看下 [[#《vue源码分析之watcher为何收集dep？》笔记#initState]] 中 `initData` 代码和解释的注释
+
+阅读上面代码，可以得到以下结论：
+
+- 初始化顺序：`props`、`methods`、`data`
+- `data` 定义的时候可选择函数形式或者对象形式（组件只能为函数形式）
+
+###### Vue.prototype.$mount 方法
+
+> 💡 在 Vue2 中 `Vue.prototype.$mount` 定义了两处，分别在 `src/platform/web/runtime-with-compiler` 和 `src/platform/web/runtime/index`。前者 ( runtime-with-compiler ) 是使用 url （ cdn 或本地路径）引入 Vue 使用的，后者是使用脚手架，使用 vue-loader 的版本。
+>
+> 另外，如下截图所示：
+>
+> <img src="https://s2.loli.net/2023/01/02/La4ZcbKoMf27T1E.png" alt="image-20230102181229760" style="zoom:50%;" />
+>
+> `runtime-with-compiler` 的 `Vue.prototype.$mount` 会先保存一份 `runtime/index` 的 `$mount` 代码，并在最后使用 call 调用保存的 `$mount` 代码。
+
+> 👀 这里省略 `src/platform/web/runtime-with-compiler` 的 `Vue.prototype.$mount ` 代码，逻辑参考下 [[#outerHTML、Template 和 render 函数 优先级]]。
+
+阅读  `src/platform/web/runtime-with-compiler` 的 `Vue.prototype.$mount ` 代码，能得到以下结论：
+
+- 不要将根元素放到 `body` 或者 `html` 上
+- 可以在对象中定义 `template/render` 或者直接使用 `template`、`el` 表示元素选择器
+- 最终都会解析成 `render` 函数，调用 `compileToFunctions`，会将 `template` 解析成 `render` 函数
+
+对 `template` 的解析步骤大致分为以下几步：
+
+- 将`html`文档片段解析成`ast`描述符
+- 将`ast`描述符解析成字符串
+- 生成`render`函数
+
+`runtime/index` 的 `$mount` 代码如下：
+
+```ts
+// public mount method
+Vue.prototype.$mount = function (
+  el?: string | Element,
+  hydrating?: boolean
+): Component {
+  el = el && inBrowser ? query(el) : undefined
+  // 渲染组件
+  return mountComponent(this, el, hydrating)
+}
+```
+
+显然 `$mount` 的重点在 `mountComponent` 。
+
+###### mountComponent
+
+```ts
+export function mountComponent (
+  vm: Component,
+  el: ?Element,
+  hydrating?: boolean
+): Component {
+  vm.$el = el
+  // 如果没有获取解析的 render 函数，则会抛出警告
+  // render 是解析模板文件生成的
+  if (!vm.$options.render) {
+    vm.$options.render = createEmptyVNode
+    if (process.env.NODE_ENV !== 'production') {
+      /* istanbul ignore if */
+      if ((vm.$options.template && vm.$options.template.charAt(0) !== '#') ||
+        vm.$options.el || el) {
+        warn(
+          'You are using the runtime-only build of Vue where the template ' +
+          'compiler is not available. Either pre-compile the templates into ' +
+          'render functions, or use the compiler-included build.',
+          vm
+        )
+      } else {
+        // 没有获取到 vue 的模板文件
+        warn(
+          'Failed to mount component: template or render function not defined.',
+          vm
+        )
+      }
+    }
+  }
+  // 执行 beforeMount 钩子
+  callHook(vm, 'beforeMount')
+
+  let updateComponent
+  /* istanbul ignore if */
+  if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
+    updateComponent = () => {
+      const name = vm._name
+      const id = vm._uid
+      const startTag = `vue-perf-start:${id}`
+      const endTag = `vue-perf-end:${id}`
+
+      mark(startTag)
+      const vnode = vm._render() // 👀 render 方法
+      mark(endTag)
+      measure(`vue ${name} render`, startTag, endTag)
+
+      mark(startTag)
+      vm._update(vnode, hydrating)
+      mark(endTag)
+      measure(`vue ${name} patch`, startTag, endTag)
+    }
+  } else {
+    // 定义更新函数
+    updateComponent = () => {
+      // 实际调⽤是在lifeCycleMixin中定义的_update和renderMixin中定义的_render
+      vm._update(vm._render(), hydrating) //  👀 update 方法
+    }
+  }
+  // we set this to vm._watcher inside the watcher's constructor
+  // since the watcher's initial patch may call $forceUpdate (e.g. inside child
+  // component's mounted hook), which relies on vm._watcher being already defined
+  // 监听当前组件状态，当有数据变化时，更新组件
+  new Watcher(vm, updateComponent, noop, {
+    before () {
+      if (vm._isMounted && !vm._isDestroyed) {
+        // 数据更新引发的组件更新
+        callHook(vm, 'beforeUpdate')
+      }
+    }
+  }, true /* isRenderWatcher */)
+  hydrating = false
+
+  // manually mounted instance, call mounted on self
+  // mounted is called for render-created child components in its inserted hook
+  if (vm.$vnode == null) {
+    vm._isMounted = true
+    callHook(vm, 'mounted')
+  }
+  return vm
+}
+```
+
+阅读上面代码，我们得到以下结论：
+
+- 会触发 `beforeMount` 钩子
+- 定义 `updateComponent` 渲染页面视图的方法
+- 监听组件数据，一旦发生变化，触发 `beforeUpdate` 生命钩子
+
+`updateComponent` 方法主要执行在 `vue` 初始化时声明的 `render` ，`update` 方法
+
+`render` 的作用主要是生成 `vnode`。
+
+##### Vue.prototype._render 方法
+
+`render` 的作用主要是生成 vnode
+
+```ts
+Vue.prototype._render = function (): VNode {
+    const vm: Component = this
+    // render 函数来自于组件的 options
+    const { render, _parentVnode } = vm.$options
+
+    if (_parentVnode) {
+        vm.$scopedSlots = normalizeScopedSlots(
+            _parentVnode.data.scopedSlots,
+            vm.$slots,
+            vm.$scopedSlots
+        )
+    }
+
+    // set parent vnode. this allows render functions to have access
+    // to the data on the placeholder node.
+    vm.$vnode = _parentVnode
+    // render self
+    let vnode
+    try {
+        // There's no need to maintain a stack because all render fns are called
+        // separately from one another. Nested component's render fns are called
+        // when parent component is patched.
+        currentRenderingInstance = vm
+        // 调用 render 方法，自己的独特的 render 方法， 传入 createElement 参数，生成 vNode
+        vnode = render.call(vm._renderProxy, vm.$createElement)
+    } catch (e) {
+        handleError(e, vm, `render`)
+        // return error render result,
+        // or previous vnode to prevent render error causing blank component
+        /* istanbul ignore else */
+        if (process.env.NODE_ENV !== 'production' && vm.$options.renderError) {
+            try {
+                vnode = vm.$options.renderError.call(vm._renderProxy, vm.$createElement, e)
+            } catch (e) {
+                handleError(e, vm, `renderError`)
+                vnode = vm._vnode
+            }
+        } else {
+            vnode = vm._vnode
+        }
+    } finally {
+        currentRenderingInstance = null
+    }
+    // if the returned array contains only a single node, allow it
+    if (Array.isArray(vnode) && vnode.length === 1) {
+        vnode = vnode[0]
+    }
+    // return empty vnode in case the render function errored out
+    if (!(vnode instanceof VNode)) {
+        if (process.env.NODE_ENV !== 'production' && Array.isArray(vnode)) {
+            warn(
+                'Multiple root nodes returned from render function. Render function ' +
+                'should return a single root node.',
+                vm
+            )
+        }
+        vnode = createEmptyVNode()
+    }
+    // set parent
+    vnode.parent = _parentVnode
+    return vnode
+}
+```
+
+##### Vue.prototype._update 方法
+
+`_update` 主要功能是调用 `patch` ，将 `vnode` 转换为真实 DOM ，并且更新到页面中
+
+```ts
+Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
+    const vm: Component = this
+    const prevEl = vm.$el
+    const prevVnode = vm._vnode
+    // 设置当前激活的作用域
+    const restoreActiveInstance = setActiveInstance(vm)
+    vm._vnode = vnode
+    // Vue.prototype.__patch__ is injected in entry points
+    // based on the rendering backend used.
+    if (!prevVnode) {
+      // initial render
+      // 执行具体的挂载逻辑
+      vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */)
+    } else {
+      // updates
+      vm.$el = vm.__patch__(prevVnode, vnode)
+    }
+    restoreActiveInstance()
+    // update __vue__ reference
+    if (prevEl) {
+      prevEl.__vue__ = null
+    }
+    if (vm.$el) {
+      vm.$el.__vue__ = vm
+    }
+    // if parent is an HOC, update its $el as well
+    if (vm.$vnode && vm.$parent && vm.$vnode === vm.$parent._vnode) {
+      vm.$parent.$el = vm.$el
+    }
+    // updated hook is called by the scheduler to ensure that children are
+    // updated in a parent's updated hook.
+  }
+```
+
+##### 总结
+
+- `new Vue` 的时候调用会调用 `_init` 方法
+  - stateMixin 定义 `$set`、` $get` 、`$delete`、`$watch` 等方法
+  - eventsMixin 定义 `$on`、`$off`、`$emit`、`$off `等事件
+  - lifecycleMixin 定义 `_update`、`$forceUpdate`、`$destroy` 生命周期
+- 调用 `$mount` 进行页面的挂载
+- 挂载主要是通过 `mountComponent` 方法
+- 定义 `updateComponent` 更新函数
+- 执行 `render` 生成虚拟 DOM
+- `_update` 将虚拟DOM 生成真实 DOM 结构，并且渲染到页面中
+
+摘自：[面试官：Vue实例挂载的过程发生了什么?](https://segmentfault.com/a/1190000039482311)

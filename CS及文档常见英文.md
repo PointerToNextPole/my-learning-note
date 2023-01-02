@@ -378,6 +378,8 @@
 
 - **revoke** ：撤销
 
+- **facilitate** ：促进
+
 
 
 

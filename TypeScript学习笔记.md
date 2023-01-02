@@ -21,7 +21,7 @@
 - **动态类型** 是指在<font color=FF0000> 运行时才会进行类型检查</font>，这种语言的类型错误往往会导致运行时错误。
 - **静态类型** 是指<font color=FF0000> 编译阶段就能确定每个变量的类型</font>，这种语言的类型错误往往会导致语法错误。
 
-<mark>JavaScript 是一门解释型语言，没有编译阶段，所以它是动态类型。</mark>
+<font color=LightSeaGreen>JavaScript 是一门解释型语言，没有编译阶段，所以它是动态类型。</font>
 
 <font color=fuchsia>**TypeScript 在运行前需要先编译为 JavaScript，而在编译阶段就会进行类型检查，所以 TypeScript 是静态类型**</font>
 
@@ -1037,50 +1037,52 @@ type Tuple = [number, string];
 
 接口 ( Interface ) 可以描述函数、对象、<font color=FF0000 size=4>**构造器**</font> 的结构
 
-- **对象：**
+###### 对象
 
-  ```typescript
-  interface IPerson {
-      name: string;
-      age: number;
-  }
-  
-  class Person implements IPerson {
-      name: string;
-      age: number;
-  }
-  
-  const obj: IPerson = {
-      name: 'guang',
-      age: 18
-  }
-  ```
+```typescript
+interface IPerson {
+    name: string;
+    age: number;
+}
 
-- **函数：**
+class Person implements IPerson {
+    name: string;
+    age: number;
+}
 
-  ```typescript
-  interface SayHello {
-      (name: string): string;
-  }
-  
-  const func: SayHello = (name: string) => {
-      return 'hello,' + name
-  }
-  ```
+const obj: IPerson = {
+    name: 'guang',
+    age: 18
+}
+```
 
-- **<font color=FF0000>构造器</font>**（**注：**这个没见过，不过 接口函数签名前多了 `new` ）：
+###### 函数
 
-  ```typescript
-  interface PersonConstructor {
-    new (name: string, age: number): IPerson;
-  }
-  
-  function createPerson(ctor: PersonConstructor): IPerson {
-    return new ctor('guang', 18)
-  }
-  ```
+```typescript
+interface SayHello {
+    (name: string): string;
+}
 
-<font color=FF0000 size=4>**对象类型、class 类型**</font>（**注：**如下面 “总之” 所说，「数组类型」也是） <font color=FF0000 size=4>**在 TypeScript 里也叫做索引类型**</font>，<font color=FF0000>**也就是索引了多个元素的类型的意思**</font>（**注：**这个概念下面会有进一步讲解）。对象可以动态添加属性，如果不知道会有什么属性，可以用 <font color=FF0000 size=4>**可索引签名**</font>（**注：**不要和前面的「索引类型」混淆。另外，下面这个 “索引签名” 和  JS「计算属性名」设计思路是一样的）
+const func: SayHello = (name: string) => {
+    return 'hello,' + name
+}
+```
+
+###### 构造器
+
+> 👀 这个没见过，不过 接口函数签名前多了 `new` 
+
+```typescript
+interface PersonConstructor {
+  new (name: string, age: number): IPerson;
+}
+
+function createPerson(ctor: PersonConstructor): IPerson {
+  return new ctor('guang', 18)
+}
+```
+
+<font color=FF0000 size=4>**对象类型、class 类型**</font>（ 👀 如下面 “总之” 所说，「数组类型」也是） <font color=FF0000 size=4>**在 TypeScript 里也叫做 “索引类型”**</font>，<font color=FF0000>**也就是索引了多个元素的类型的意思**</font>（ 👀 这个概念下面会有进一步讲解）。对象可以动态添加属性，如果不知道会有什么属性，可以用 <font color=FF0000 size=4>**可索引签名**</font>（ 👀 不要和前面的「索引类型」混淆。另外，下面这个 “索引签名” 和  JS「计算属性名」设计思路是一样的）
 
 ```typescript
 interface IPerson {
@@ -1130,7 +1132,7 @@ const transpiler = Transpiler.TypeScriptCompiler;
 
 > 👀 注：下面有说 any 和 unknown 的区别： [[#数组类型#First]] ，简单来说就是：unknown 不可给别的类型赋值，而 any 可以（除了 never ）。
 
-**这些就是 TypeScript 类型系统中的全部类型了**，<mark>大部分是从 JS 中迁移过来的</mark>，比如基础类型、Array、class 等；<mark>也添加了一些类型</mark>，比如 枚举 ( enum ) 、接口 ( interface ) 、元组等，<mark>还支持了字面量类型和 void、never、any、unknown 的特殊类型</mark>。
+**这些就是 TypeScript 类型系统中的全部类型了**，<font color=LightSeaGreen>大部分是从 JS 中迁移过来的</font>，比如基础类型、Array、class 等；<font color=LightSeaGreen>也添加了一些类型</font>，比如 枚举 ( enum ) 、接口 ( interface ) 、元组等，<font color=LightSeaGreen>还支持了字面量类型和 void、never、any、unknown 的特殊类型</font>。
 
 > 👀 下面是一点补充
 
@@ -1215,7 +1217,7 @@ type res = 1 extends 2 ? true : false;
 
 这就是 TypeScript 类型系统里的 if else。
 
->  👀 补充：
+>  💡 补充
 >
 >  当前场景对 `extends ? :` 表示为 “是否是子类型”（学习自：[白话typescript中的【extends】和【infer】](https://juejin.cn/post/6844904146877808653)），而不是 “是否继承自” （虽然，在其他场景中也可以用来判断是否是继承关系。另外， TS 是 **结构类型系统 **），如下示例：
 >
@@ -1238,13 +1240,13 @@ type res2 = isTwo<2>
 
 <img src="https://s2.loli.net/2022/05/01/JRTgaqY59E8ju6F.png" alt="image-20220501204852937" style="zoom:50%;" />
 
-<font color=FF0000>这种类型也叫做「高级类型」。**高级类型的特点是 传入类型参数，经过一系列类型运算逻辑后，返回新的类型**</font>（**注：**感觉和 “高阶函数” 有点类似 ）。
+<font color=FF0000>这种类型也叫做「高级类型」。**高级类型的特点是 传入类型参数，经过一系列类型运算逻辑后，返回新的类型**</font>。
 
 ##### 推导：infer
 
 <font color=FF0000 size=4>**如何提取类型的一部分呢？答案是 infer**</font>
 
-> 👀 补充：
+> 👀 补充
 >
 > infer 关键字，可以<font color=FF0000>推断一个类型变量</font>，<font color=FF0000>高效地**对类型进行「模式匹配」**</font> 。但是，这个（模式匹配出的）<font color=FF0000>**类型变量只能在 true 的分支中使用**</font>。（学习自：[白话typescript中的【extends】和【infer】](https://juejin.cn/post/6844904146877808653)）
 
@@ -1270,7 +1272,7 @@ type res = First<[1,2,3]>;
 type Union = 1 | 2 | 3;
 ```
 
-**注：** 上面有自己的关于 `extends ? :` 使用 Union 的示例。
+> 👀 上面有自己的关于 `extends ? :` 使用 Union 的示例。
 
 ##### 交叉：&
 
@@ -1296,8 +1298,8 @@ type res = { a: number, c: boolean} extends ObjType ? true : false
 > 学习自：[TypeScript 类型编程](https://segmentfault.com/a/1190000040247980)
 
 ```typescript
-type MapType<T> = { // 注：注意这里用大括号包裹 {}，
-  [Key in keyof T]?: T[Key] // 注：这里的 ? 表示可选
+type MapType<T> = { // 👀 注意这里用大括号包裹 {}，
+  [Key in keyof T]?: T[Key] // 👀 这里的 ? 表示可选
 }
 type MapTypeRes = MapType<{a: 1, b: 2}>
 ```
@@ -1528,9 +1530,9 @@ type GetParameters<Func extends Function> =
 
 ```ts
 type GetReturnType<Func extends Function> = 
-    Func extends (...args: any[]) => infer ReturnType // 注：注意这里就是一个 infer ReturnType 
+    Func extends (...args: any[]) => infer ReturnType // 👀 注意这里就是一个 infer ReturnType 
         ? ReturnType : never;
-// 注：自己尝试写的时候，想要在 infer 前面加 unknown 之类的返回值类型，不过在报错；所以没写出来。
+// 👀 自己尝试写的时候，想要在 infer 前面加 unknown 之类的返回值类型，不过在报错；所以没写出来。
 ```
 
 Func 和模式类型做匹配，提取返回值到通过 infer 声明的局部变量 ReturnType 里返回。
@@ -1638,7 +1640,7 @@ GetInstanceType 是提取构造器返回值类型，那同样也可以提取构�
 ```ts
 type GetConstructorParameters<
     ConstructorType extends new (...args: any) => any
-> = ConstructorType extends new (...args: infer ParametersType) => any // 注：自己尝试实现时，没准备加上 `args:`
+> = ConstructorType extends new (...args: infer ParametersType) => any // 👀 自己尝试实现时，没准备加上 `args:`
     ? ParametersType
     : never;
 ```
@@ -1883,7 +1885,7 @@ type CamelCase<Str extends string> =
         : Str;
 ```
 
-> 注：这个写出来了
+> 👀 这个写出来了
 >
 > ```ts
 > type CamelCase<Str extends String> = 
@@ -1927,12 +1929,12 @@ type DropSubStr<Str extends string, SubStr extends string> =
 
 之前我们分别实现了参数和返回值的提取，那么 <font color=FF0000>重新构造就是用这些提取出的类型做下修改，构造一个新的类型</font> 即可。
 
-比如，<font color=FF0000>在已有的 **函数类型**</font> （**注：**这里不要看错 ）<font color=FF0000>上添加一个参数</font>：
+比如，<font color=FF0000>在已有的 **函数类型**</font> （⚠️ 这里不要看错 ）<font color=FF0000>上添加一个参数</font>：
 
 ```ts
 type AppendArgument<Func extends Function, Arg> = 
-    Func extends (...args: infer Args) => infer ReturnType // 注：这里实现时 ...args: infer Args 有遗忘
-        ? (...args: [...Args, Arg]) => ReturnType : never; // 注：这里实现时写错了，没组成一个数组
+    Func extends (...args: infer Args) => infer ReturnType // 👀 这里实现时 ...args: infer Args 有遗忘
+        ? (...args: [...Args, Arg]) => ReturnType : never; // 👀 这里实现时写错了，没组成一个数组
 ```
 
 类型参数 Func 是待处理的函数类型，通过 extends 约束为 Function，Arg 是要添加的参数类型。
@@ -1943,7 +1945,7 @@ type AppendArgument<Func extends Function, Arg> =
 
 #### 索引类型的重新构造
 
-**注：**这部分内容和 [[#TypeScript 类型系统中的类型运算#映射类型]] 中的几乎一致，这里略。不过，还说了一个 UppercaseKey 的 “参数名大写的变换”；不过由于前面知识的学习，这没有什么难度：
+> 👀 这部分内容和 [[#TypeScript 类型系统中的类型运算#映射类型]] 中的几乎一致，这里略。不过，还说了一个 UppercaseKey 的 “参数名大写的变换”；不过由于前面知识的学习，这没有什么难度：
 
 ```typescript
 type UppercaseKey<Obj extends object> = { 
@@ -2074,14 +2076,14 @@ TypeScript 的高级类型支持类型参数，可以做各种类型运算逻辑
 type ttt = Promise<Promise<Promise<Record<string, any>>>>;
 ```
 
-这里是 3 层 Promise，value 类型是索引类型。<mark>数量不确定，一涉及到这个就要想到用递归来做，每次只处理一层的提取，然后剩下的到下次递归做，直到结束条件</mark>。
+这里是 3 层 Promise，value 类型是索引类型。<font color=LightSeaGreen>数量不确定，一涉及到这个就要想到用递归来做，每次只处理一层的提取，然后剩下的到下次递归做，直到结束条件</font>。
 
 所以高级类型是这样的：
 
 ```ts
 type DeepPromiseValueType<P extends Promise<unknown>> = 
      P extends Promise<infer ValueType>
-        ? ValueType extends Promise<unknown> // 注：这里做的是判断 ValueType 是不是 Promise 类型，还是 Promise 的内容
+        ? ValueType extends Promise<unknown> // 👀 这里做的是判断 ValueType 是不是 Promise 类型，还是 Promise 的内容
             ? DeepPromiseValueType<ValueType>
             : ValueType
         : never
@@ -2119,7 +2121,7 @@ type ReverseArr<Arr extends unknown[]> =
         : Arr;
 ```
 
-**注：**这个写出来了，而且代码几乎一模一样；讲解略。
+> 👀 这个写出来了，而且代码几乎一模一样；讲解略。
 
 ##### includes
 
@@ -2166,7 +2168,9 @@ type IsEqual<A, B> = (A extends B ? true : false) & (B extends A ? true : false)
 
 类型参数 Arr 是待处理的数组，元素类型任意，也就是 `unknown[]` 。类型参数 Item 为待查找的元素类型。类型参数 Result 是构造出的新数组，默认值是 []。
 
-通过「模式匹配」提取数组中的一个元素的类型，如果是 Item 类型的话就删除，也就是不放入构造的新数组，直接返回之前的 Result ；否则放入构造的新数组，也就是再构造一个新的数组 `[...Result, First]` 。直到模式匹配不再满足，也就是处理完了所有的元素，返回这时候的 Result 。**注：**这里 `[...Result, First]` 为什么 First 放在后面，是因为 First 是 “当前“ 递归 的 Item ，所以相当于 将当前的 Item 放在 Result 后面。另外，下面有类似的例子 [[#字符串类型的递归#ReverseStr]]，也有讲解。
+通过「模式匹配」提取数组中的一个元素的类型，如果是 Item 类型的话就删除，也就是不放入构造的新数组，直接返回之前的 Result ；否则放入构造的新数组，也就是再构造一个新的数组 `[...Result, First]` 。直到模式匹配不再满足，也就是处理完了所有的元素，返回这时候的 Result 。
+
+> 👀 这里 `[...Result, First]` 为什么 First 放在后面，是因为 First 是 “当前“ 递归 的 Item ，所以相当于 将当前的 Item 放在 Result 后面。另外，下面有类似的例子 [[#字符串类型的递归#ReverseStr]]，也有讲解。
 
 这样我们就完成了不确定元素个数的数组的某个元素的删除：
 
@@ -2188,7 +2192,7 @@ type BuildArray<
         : BuildArray<Length, Ele, [...Arr, Ele]>;
 ```
 
-注：这个不难，但是没写出；原因在于不知道使用 `Arr['length']`
+> 👀 这个不难，但是没写出；原因在于不知道使用 `Arr['length']`
 
 <img src="https://s2.loli.net/2022/05/03/cs5UVW9xzGelLZA.png" alt="image-20220503225509657" style="zoom:50%;" />
 
@@ -2227,16 +2231,16 @@ type ReplaceAll<
         : Str;
 ```
 
-**注：**较原版只是添加了递归，讲解略
+> 👀 较原版只是添加了递归，讲解略
 
 ##### StringToUnion
 
-我们想把字符串字面量类型的每个字符都提取出来组成联合类型，也就是把 'dong' 转为 'd' | 'o' | 'n' | 'g' 。
+我们想把字符串字面量类型的每个字符都提取出来组成联合类型，也就是把 'dong' 转为 `'d' | 'o' | 'n' | 'g'` 。
 
 ```ts
 type StringToUnion<Str extends string> = 
-    Str extends `${infer First}${infer Rest}` // 注：这里写的时候，始终想着 ...infer Rest，这是数组的用法
-        ? First | StringToUnion<Rest> // 注：这里确实没想到 `｜` 可以直接使用
+    Str extends `${infer First}${infer Rest}` // 👀 这里写的时候，始终想着 ...infer Rest，这是数组的用法
+        ? First | StringToUnion<Rest> // 👀 这里确实没想到 `｜` 可以直接使用
         : never;
 ```
 
@@ -2259,13 +2263,13 @@ type ReverseStr<
     : Result;
 ```
 
-类型参数 Str 为待处理的字符串。类型参数 Result 为构造出的字符，<font color=FF0000>默认值是空串</font>（注：注意这种写法）。
+类型参数 Str 为待处理的字符串。类型参数 Result 为构造出的字符，<font color=FF0000>默认值是空串</font>（ ⚠️ 注意这种写法）。
 
 通过模式匹配提取第一个字符到 infer 声明的局部变量 First，其余字符放到 Rest 。用 First 和之前的 Result 构造成新的字符串，<font color=FF0000>**把 First 放到前面，因为 <font size=4>递归是从左到右处理，那么不断往前插就是把右边的放到了左边</font>，完成了反转的效果**</font>。直到模式匹配不满足，就处理完了所有的字符。
 
 这样就完成了字符串的反转：
 
-> 注：自己写对了，不过方法不一样。
+> 👀 自己写对了，不过方法不一样。
 >
 > ```ts
 > type ReverseStr<Str extends string> = 
@@ -2450,7 +2454,7 @@ type Divide<
 
 如果 Num1 减到了 0 ，那么这时候减了几次就是除法结果，也就是 `CountArr['length']` ；否则继续递归的减，让 Num1 减去 Num2，并且 CountArr 多加一个元素代表又减了一次。
 
-> **注：**有点神奇的是，Divide 的 “代码逻辑” 上没有找到处理 无法整除的情况；但是 `Divide<10, 3>` 结果会是 never 。有点没搞懂 TODO
+> 👀 有点神奇的是，Divide 的 “代码逻辑” 上没有找到处理 无法整除的情况；但是 `Divide<10, 3>` 结果会是 never 。有点没搞懂 TODO
 
 <img src="https://s2.loli.net/2022/05/04/PKnTMeWisY7lVyr.png" alt="image-20220504012916479" style="zoom:50%;" />
 
@@ -2469,7 +2473,7 @@ type StrLen<Str extends string, CountArr extends unknown[] = []> =
          : CountArr["length"]
 ```
 
-**注：**TS 中字符串没有 "length" 属性，所以才需要将其转换成 数组，再获取数组的长度。另外，这里实现没什么问题，讲解略。
+> 👀 TS 中字符串没有 "length" 属性，所以才需要将其转换成 数组，再获取数组的长度。另外，这里实现没什么问题，讲解略。
 
 ##### GreaterThan
 
@@ -2534,7 +2538,7 @@ type Fibonacci<Num extends number> = FibonacciLoop<[1], [], [], Num>;
 
 #### 分布式条件类型 ( Distributive conditional types )
 
-**当 <font color=FF0000>类型参数为联合类型</font>，并且在 <font color=FF0000 size=4>条件类型</font> （注：即 `extends ? :` 。另外，这个很重要，下面 [[#IsUnion]] 中会用到这个特性 ）左边直接引用该类型参数的时候：<font color=FF0000>TypeScript 会把 <font size=4>每一个元素单独传入来做类型运算，最后再合并成联合类型</font></font>，这种语法叫做「分布式条件类型」。**
+当 <font color=FF0000>类型参数为联合类型</font>，并且在 <font color=FF0000 size=4>条件类型</font> （ 👀 即 `extends ? :` 。另外，这个很重要，下面 [[#IsUnion]] 中会用到这个特性 ）左边直接引用该类型参数的时候：<font color=FF0000>TypeScript 会把 <font size=4>每一个元素单独传入来做类型运算，最后再合并成联合类型</font></font>，这种语法叫做「分布式条件类型」。
 
 比如这样一个联合类型：
 
@@ -2574,7 +2578,7 @@ type Camelcase<Str extends string> =
         : Str; // 注：第一遍写没写出来，题目看错了（是由 snake_case 变成 camelCase ）；第二遍写，这里 Str 写成 Rest 了
 ```
 
-提取 \_ 左右的字符，把右边字符大写之后构造成新的字符串，余下的字符串递归处理。
+提取 `_` 左右的字符，把右边字符大写之后构造成新的字符串，余下的字符串递归处理。
 
 <img src="https://s2.loli.net/2022/05/04/DOWzqgQj8xhulNY.png" alt="image-20220504142306146" style="zoom:50%;" />
 
@@ -2618,13 +2622,13 @@ type CamelcaseUnion<Item extends string> =
 ```ts
 type IsUnion<A, B = A> =
     A extends A
-        ? [B] extends [A] // 注：注意这里的 [B] 和 [A]，A 和 B 都使用 [] 包裹，原因见下面。
+        ? [B] extends [A] // 👀 注意这里的 [B] 和 [A]，A 和 B 都使用 [] 包裹，原因见下面。
             ? false
             : true
         : never
 ```
 
-这段逻辑有点奇怪（见上面 “注” ），这就是分布式条件类型带来的认知成本。
+这段逻辑有点奇怪（见上面代码中的 “注” ），这就是分布式条件类型带来的认知成本。
 
 我们先来看这样一个类型：
 
@@ -2637,7 +2641,7 @@ type TestUnion<A, B = A> =
 type TestUnionResult = TestUnion<'a' | 'b' | 'c'>;
 ```
 
-传入联合类型 'a' | 'b' | 'c' 的时候，结果是这样的：
+传入联合类型 `'a' | 'b' | 'c'` 的时候，结果是这样的：
 
 <img src="https://s2.loli.net/2022/05/04/n384fWeyRqhNkms.png" alt="image-20220504162905687" style="zoom:50%;" />
 
@@ -2658,7 +2662,7 @@ type IsUnion<A, B = A> =
 
 `A extends A` 这段看似没啥意义，主要是为了触发「分布式条件类型」，让 A 的每个类型单独传入。`[B] extends [A]` 这样<font color=FF0000 size=4>**不直接写 B 就可以避免触发「分布式条件类型」**</font>（**注：**这里的避免的原理见 [[#分布式条件类型]] 开头的定义 ），<font color=FF0000>那么 B 就是 整个联合类型</font>。B 是联合类型整体，而 A 是单个类型，自然不成立，而其它类型没有这种特殊处理，A 和 B 都是同一个，怎么判断都成立。
 
-> 注：上面最后一句没看懂。不过，经过实验：`'a' extends ['a' | 'b' | 'c'] ? true : false`  结果为 false，而 `['a'] extends ['a' | 'b' | 'c'] ? true : false` 结果为 true。
+> 👀 上面最后一句没看懂。不过，经过实验：`'a' extends ['a' | 'b' | 'c'] ? true : false`  结果为 false，而 `['a'] extends ['a' | 'b' | 'c'] ? true : false` 结果为 true。
 
 利用这个特点就可以判断出是否是联合类型。
 
@@ -2700,7 +2704,7 @@ type BEM<
     Block extends string,
     Element extends string[],
     Modifiers extends string[]
-> = `${Block}__${Element[number]}--${Modifiers[number]}`; // 注：注意这里的 [number]，就是上面的用法
+> = `${Block}__${Element[number]}--${Modifiers[number]}`; // 👀 注意这里的 [number]，就是上面的用法
 ```
 
 类型参数 Block、Element、Modifiers 分别是 bem 规范的三部分，其中 Element 和 Modifiers 都可能多个，约束为 `string[]` 。
@@ -2774,7 +2778,7 @@ type IsAny<T> = 'foo' extends ('bar' & T) ? true : false
 
 <img src="https://s2.loli.net/2022/05/04/IjWPzOXD1SAcqkN.png" alt="image-20220504202335587" style="zoom:50%;" />
 
-> 👀 注：下面 [[#IsNever]] 还提及了为什么 any 不能直接使用 `extends ? :` 去判断（简单来说，会返回 `extends ? :` 设定的 trueVal 和 falseVal 的联合 ( Union) ）
+> 👀 下面 [[#IsNever]] 还提及了为什么 any 不能直接使用 `extends ? :` 去判断（简单来说，会返回 `extends ? :` 设定的 trueVal 和 falseVal 的联合 ( Union) ）
 
 ##### IsEqual
 
@@ -2924,7 +2928,7 @@ type UnionToIntersection<U> =
 type GetOptional<Obj extends Record<string, any>> = {
     [
         Key in keyof Obj 
-            as {} extends Pick<Obj, Key> ? Key : never // 注：这里将 Pick<Obj, Key> 换成 Obj[Key] 没法得到预期的结果
+            as {} extends Pick<Obj, Key> ? Key : never // 👀 这里将 Pick<Obj, Key> 换成 Obj[Key] 没法得到预期的结果
     ] : Obj[Key];
 }
 ```
@@ -2962,7 +2966,7 @@ type Dong = {
 }
 ```
 
-这里的 sleep 是具体的索引，`[key: string]: any` 就是可索引签名，代表<font color=FF0000>可以添加 **任意个** string 类型的索引</font>（**注：**“可索引签名” 和 接口的“任意属性” 有点类似；“任意属性” 可见 [[#对象的类型——接口]] 中的 “任意属性” ）。
+这里的 sleep 是具体的索引，`[key: string]: any` 就是可索引签名，代表<font color=FF0000>可以添加 **任意个** string 类型的索引</font>（👀 “可索引签名” 和 接口的“任意属性” 有点类似；“任意属性” 可见 [[#对象的类型——接口]] 中的 “任意属性” ）
 
 **如果想删除索引类型中的可索引签名呢？**
 
@@ -3079,7 +3083,7 @@ TypeScript <font color=red>默认推导出来的类型并不是字面量类型</
 
 ### 类型体操顺口溜
 
-> 👀 注：下面的内容是对前面六章的总结概括，虽然有重复；但是，再复习一遍、部分代码再写一遍，也很好。
+> 👀 下面的内容是对前面六章的总结概括，虽然有重复；但是，再复习一遍、部分代码再写一遍，也很好
 
 <font size=4>**类型体操顺口溜**</font>
 

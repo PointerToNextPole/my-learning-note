@@ -2976,7 +2976,9 @@ console.log( $.isPlainObject( Object.create({}) ))               // false
 
 由此我们可以看到，除了 {} 和 new Object 创建的之外，jQuery 认为 <font color=FF0000>**一个没有原型的对象也是一个纯粹的对象**</font>。
 
-源码实现，有些复杂，略。
+源码实现，有些复杂，略。// TODO 有空还是要看下
+
+>💡 不过，看 Vue2 的源码，发现 Vue 2.7.14 中 `src/shared/util.ts` 的 `isPlainObject` 实现就是：判断 `Object.prototype.toString.call(obj) === '[object Object]'` 为 true 还是 false
 
 ##### EmptyObject
 

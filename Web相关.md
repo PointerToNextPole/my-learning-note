@@ -16,9 +16,9 @@ escape 就有 “转义” 的意思，所以 JS 中有编码的 `escape()` 方�
 
 ### unicode 相关
 
-<font color=FF0000>Unicode 是一种字符集标准，用于对来自世界上不同语言、文字系统和符号进行编号和字符定义</font>。<mark>通过给每个字符分配一个编号，程序员可以创建字符编码，让计算机在同一个文件或程序中存储、处理和传输任何语言组合</mark>。
+<font color=FF0000>Unicode 是一种字符集标准，用于对来自世界上不同语言、文字系统和符号进行编号和字符定义</font>。<font color=LightSeaGreen>通过给每个字符分配一个编号，程序员可以创建字符编码，让计算机在同一个文件或程序中存储、处理和传输任何语言组合</font>。
 
-<mark>在 Unicode 定义之前，在同一数据中混合使用不同的语言是很困难的，而且容易出错</mark>。例如，一个字符集存储的是日文字符，而另一个字符集存储的是阿拉伯字母。如果没有明确标明数据的哪些部分属于哪个字符集，其他程序和计算机就会错误地显示文本，或者在处理过程中损坏文本。如果你曾经见过像  ( `“”` )被替换为胡言乱语 `Ã‚Â£` ，那么你就已经看到过这个被称为  [Mojibake](https://zh.wikipedia.org/wiki/Mojibake) 的问题。
+<font color=LightSeaGreen>在 Unicode 定义之前，在同一数据中混合使用不同的语言是很困难的，而且容易出错</font>。例如，一个字符集存储的是日文字符，而另一个字符集存储的是阿拉伯字母。如果没有明确标明数据的哪些部分属于哪个字符集，其他程序和计算机就会错误地显示文本，或者在处理过程中损坏文本。如果你曾经见过像  ( `“”` )被替换为胡言乱语 `Ã‚Â£` ，那么你就已经看到过这个被称为  [Mojibake](https://zh.wikipedia.org/wiki/Mojibake) 的问题。
 
 <font color=FF0000 size=4>**网络上最常见的 Unicode 字符编码是 UTF-8**</font>。还存在一些其他编码，如 UTF-16 或过时的 UCS-2，但推荐使用 UTF-8
 
@@ -26,7 +26,7 @@ escape 就有 “转义” 的意思，所以 JS 中有编码的 `escape()` 方�
 
 #### 阮一峰文章《Unicode与JavaScript详解》笔记
 
-> ⚠️ 注意：下面这篇文章，写于2014年，部分内容或已过时
+> ⚠️ 下面这篇文章，写于2014年，部分内容或已过时
 
 ##### Unicode 是什么
 
@@ -34,7 +34,7 @@ Unicode源于一个很简单的想法：将全世界所有的字符包含在一�
 
 > 👀 关于 Unicode 的介绍，可以看下 [[正则表达式#Unicode 属性 `\p{…}`]] 中的内容；其中说明了 Unicode 中类别/分类相关的内容
 
-<mark>它从 0 开始，为每个符号指定一个编号</mark>，<font color=FF0000>这叫做"码点" ( code point ) </font>。比如，码点0 的符号就是 null（表示所有二进制位都是 0 ）。
+<font color=LightSeaGreen>它从 0 开始，为每个符号指定一个编号</font>，<font color=FF0000>这叫做"码点" ( code point ) </font>。比如，码点0 的符号就是 null（表示所有二进制位都是 0 ）。
 
 ```
 U+0000 = null
@@ -42,13 +42,13 @@ U+0000 = null
 
 上式中，U+ 表示 <font color=FF0000>**紧跟在后面的十六进制数是 Unicode 的码点**</font>。
 
-<mark>目前（2014年），Unicode 的最新版本是 7.0版，一共收入了 109449 个符号，其中的中日韩文字为 74500 个</mark>。可以近似认为，全世界现有的符号当中，三分之二以上来自东亚文字。比如，中文"好"的码点是十六进制的 597D。
+<font color=LightSeaGreen>目前（2014年），Unicode 的最新版本是 7.0版，一共收入了 109449 个符号，其中的中日韩文字为 74500 个</font>。可以近似认为，全世界现有的符号当中，三分之二以上来自东亚文字。比如，中文"好"的码点是十六进制的 597D。
 
 <font color=FF0000>这么多符号，Unicode 不是一次性定义的，而是 <font size=4>**分区定义**</font></font>。<font color=FF0000>每个区可以存放 65536 个 ( 216 ) 字符，称为一个平面 ( plane ) </font>。<font color=FF0000>目前，一共有 17 个 ( 2^5^ ) 平面，也就是说，整个 Unicode 字符集的大小现在是 2^21^</font>。
 
-<font color=FF0000><font size=4>**最前面的 65536 个字符位**</font>，称为<font size=4>**基本平面（Basic Multilingual Plane，缩写 BMP ）**</font></font>，<font color=FF0000>它的码点范围是从 0 一直到 2^16^-1 ，写成 16进制就是从 U+0000 到 U+FFFF </font>。<mark>**所有最常见的字符都放在这个平面**，这是 Unicode 最先定义和公布的一个平面</mark>。
+<font color=FF0000><font size=4>**最前面的 65536 个字符位**</font>，称为<font size=4>**基本平面（Basic Multilingual Plane，缩写 BMP ）**</font></font>，<font color=FF0000>它的码点范围是从 0 一直到 2^16^-1 ，写成 16进制就是从 U+0000 到 U+FFFF </font>。<font color=LightSeaGreen>**所有最常见的字符都放在这个平面**，这是 Unicode 最先定义和公布的一个平面</font>。
 
-<font color=FF0000><font size=4>**剩下的字符**</font> 都放在 <font size=4>**辅助平面 ( Supplementary Multilingual Plane, SMP ) **</font></font>，<mark>码点范围从 U+010000 一直到 U+10FFFF</mark> 。
+<font color=FF0000><font size=4>**剩下的字符**</font> 都放在 <font size=4>**辅助平面 ( Supplementary Multilingual Plane, SMP ) **</font></font>，<font color=LightSeaGreen>码点范围从 U+010000 一直到 U+10FFFF</font> 。
 
 ##### UTF-32 与 UTF-8
 
@@ -61,7 +61,7 @@ U+0000 = 0x0000 0000
 U+597D = 0x0000 597D
 ```
 
-UTF-32 的<font color=0000FF>优点</font>在于，<font color=0000FF>转换规则简单直观，查找效率高</font>。<font color=FF0000>缺点</font>在于<font color=FF0000>浪费空间</font>，同样内容的英语文本，它会比 ASCII 编码大四倍。<mark>这个缺点很致命，导致实际上没有人使用这种编码方法</mark>，<font color=FF0000>HTML5 标准就明文规定，网页不得编码成 UTF-32</font>。
+<font color=dodgerBlue>UTF-32 的**优点**在于</font>，<font color=red>转换规则简单直观，查找效率高</font>。<font color=dodgerBlue>**缺点**</font>在于<font color=FF0000>浪费空间</font>，同样内容的英语文本，它会比 ASCII 编码大四倍。<font color=LightSeaGreen>这个缺点很致命，导致实际上没有人使用这种编码方法</font>，<font color=FF0000>HTML5 标准就明文规定，网页不得编码成 UTF-32</font>。
 
 人们真正需要的是一种节省空间的编码方法，这导致了 UTF-8 的诞生。**UTF-8 是一种 <font size=4>变长的编码方法，字符长度从 1 个字节到 4 个字节不等</font>。**<font color=FF0000>越是常用的字符，字节越短，最前面的 128 个字符，只使用 1 个字节表示，与 ASCII 码完全相同</font>。
 
@@ -124,7 +124,7 @@ JavaScript 语言采用 Unicode 字符集，但是只支持一种编码方法。
 
 UTF-8 最大的一个特点，就是<font color=FF0000> 它是一种变长的编码方式</font>。它<font color=FF0000> 可以使用1~4个字节表示一个符号</font>，根据不同的符号而变化字节长度。
 
-**UTF-8 的编码规则很简单，只有二条：**
+###### UTF-8 的编码规则很简单，只有二条
 
 - <font color=FF0000>对于 **单字节** 的符号，**字节的第一位设为0**（和下面的多字节的对应，用 多少个1 标示是多少个字节）</font>，后面7位为这个符号的 Unicode 码。因此对于英语字母，UTF-8 编码和 ASCII 码是相同的。
 
@@ -183,7 +183,7 @@ HTML 为了解决上面这些问题，<font color=FF0000> **允许使用 Unicode
 <p>&#x68;&#x65;&#x6c;&#x6c;&#x6f;</p>
 ```
 
-**注：**这里 &# 是用来表示 unicode 的
+> 👀 这里 `&#` 是用来表示 unicode 的
 
 > 使用 HTML，可以直接通过 Unicode 展示字符实体，形式是在 &#x 后面加上对应 CodePoint 的十六进制。或者 &#后面加 CodePoint 的十进制数字。
 >
