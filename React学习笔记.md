@@ -22,7 +22,7 @@
 
 <img src="https://s2.loli.net/2022/10/02/ZJfk4NSLXHiz3rU.png" alt="A mathematical formula of UI = f(state). 'UI' is the layout on the screen. 'f' is your build methods. 'state' is the application state." style="zoom:85%;" />
 
-> 👀 注：上图摘自 https://docs.flutter.dev/development/data-and-backend/state-mgmt/declarative
+> 👀 上图摘自 https://docs.flutter.dev/development/data-and-backend/state-mgmt/declarative
 
 ##### render 函数
 
@@ -84,7 +84,7 @@
 
 ###### 引入 babel 所连带的问题
 
-⚠️ 值得注意的是：经过 babel 处理的代码，默认会使用严格模式；主要的影响：this 的 undefined 时的指向；还有尾调用优化等。
+> ⚠️ 值得注意的是：经过 babel 处理的代码，默认会使用严格模式；主要的影响：this 的 undefined 时的指向；还有尾调用优化等。
 
 ##### ReactDOM.createRoot
 
