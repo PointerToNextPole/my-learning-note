@@ -2412,6 +2412,8 @@ Javascript 的保留关键字不可以用作变量、标签或者函数名。有
 | try      | typeof    | var        | void      | volatile     |
 | while    | with      | yield      |           |              |
 
+>⚠️ 其中需要注意的是：undefined 不是 JS 的保留关键字，这也间接导致了一些问题，详见 [[#void 0 和 undefined]]
+
 ##### JavaScript this关键字
 
 <font color=FF0000>JavaScript 中 this 不是固定不变的，它会随着执行环境的改变而改变</font>。
@@ -2702,7 +2704,9 @@ JSON.parse('{"foo" : 1, }');
 
 
 
-#### javascript:void(0) 含义
+#### void
+
+##### `javascript:void(0)` 的含义
 
 **javascript:void(0)** 中最关键的是 **void** 关键字， <font color=FF0000>**void**</font> 是 JavaScript 中非常重要的关键字，<font color=FF0000>该操作符**指定要计算一个表达式但是不返回值**</font>
 
@@ -2733,13 +2737,60 @@ javascript:void(func())
 <a href="javascript:void(alert('Warning!!!'))">点我!</a>
 ```
 
-**href="#"与href="javascript:void(0)"的区别**
+###### href="#"与href="javascript:void(0)"的区别
 
 - <font color=FF0000>**`#`** 包含了一个位置信息</font>，默认的锚是**`#top`** 也就是网页的上端。
   
   在页面很长的时候会使用 **#** 来定位页面的具体位置，格式为：**# + id**。
 
 - javascript:void(0)，仅仅<font color=FF0000>表示一个死链接</font>。如果你要定义一个死链接请使用 javascript:void(0) 。
+
+##### void 0 和 undefined
+
+###### 背景
+
+在看 Vue3 diff 相关的源码时，发现了如下代码：
+
+```ts
+// packages/runtime-core/src/renderer.ts
+if (__DEV__) {
+  effect.onTrack = instance.rtc
+    ? e => invokeArrayFns(instance.rtc!, e)
+    : void 0 // 👀
+  effect.onTrigger = instance.rtg
+    ? e => invokeArrayFns(instance.rtg!, e)
+    : void 0 // 👀
+  update.ownerInstance = instance
+}
+```
+
+使用 `void 0` ，而之前也见过群友讨论过类似的，有印象却没有放在心上；这次自己遇到，就查阅了一下：
+
+发现 `undefined` 并不是 JS 的保留关键字（它只是 JS 原始类型值之一，全局对象 window 的属性），在一些老版本的浏览器中（比如 IE7 和 IE8），是可以在全局作用域中被覆盖定义的，在当前的 Chrome 浏览器下，局部作用域下也是可以被覆盖定义的（代码如下）；这也就会引发漏洞。
+
+```js
+var testUndefined = function () {
+  var obj = {}
+  var undefined = 'underscore'
+  var window = {
+    'undefined': 'qianlongo'
+  }
+  console.log(window) // {'undefined': 'qianlongo'}
+  console.log(undefined) // underscore
+  console.log(window.undefined) // qianlongo
+  console.log(obj.name === undefined) // false
+  console.log(obj.name === window.undefined) // false
+  console.log(obj.name === (void 0)) // true
+}
+
+testUndefined()
+```
+
+而 void 关键字操作的值都是 undefined，通过 `void 0` 得到的 结果，显然不会是被覆盖定义的 undefined。
+
+另外，应该 `void 0` 比 undefined 要短，能节省不少字节；事实上，不少 JavaScript 压缩工具在压缩过程中，正是将 undefined 用 `void 0` 代替掉了。
+
+学习自：[(void 0) 与 undefined 之间的小九九](https://juejin.cn/post/6844903477420752904) 、[为什么用「void 0」代替「undefined」](https://github.com/lessfish/underscore-analysis/issues/1)
 
 
 
@@ -3472,7 +3523,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                 
+  >                                                                                                                                                                                                                                   
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3491,7 +3542,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                 
+  >                                                                                                                                                                                                                                   
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2

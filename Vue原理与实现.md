@@ -20,11 +20,11 @@
 
 ##### 渲染模块
 
-渲染模块包含在网页上渲染组件的三个不同阶段：渲染阶段 render phase 、挂载阶段 mount phase 、补丁阶段 patch phase
+渲染模块包含在网页上渲染组件的三个不同阶段：渲染阶段 render phase 、挂载阶段 mount phase 、<font color=red>补丁阶段 patch phase</font>
 
 - 渲染阶段，render 函数将会返回一个虚拟 DOM 节点
 - 挂载阶段，使用虚拟 DOM 节点，并调用 DOM API 来创建网页
-- 补丁阶段，渲染器将旧的 vnode 和新的 vnode 进行比较，并更新需要改变的部分
+- 补丁阶段，<font color=red>渲染器将旧的 vnode 和新的 vnode 进行比较</font>（ 👀 进行 diff ），并<font color=red>更新需要改变的部分</font>
 
 ##### 简单组件执行顺序
 
@@ -3125,3 +3125,8 @@ Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
 - `_update` 将虚拟DOM 生成真实 DOM 结构，并且渲染到页面中
 
 摘自：[面试官：Vue实例挂载的过程发生了什么?](https://segmentfault.com/a/1190000039482311)
+
+
+
+#### Vue3 Diff 算法
+

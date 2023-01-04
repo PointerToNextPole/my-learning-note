@@ -380,6 +380,10 @@
 
 - **facilitate** ：促进
 
+- **resilient** ：有弹性的
+
+- **complement** ：补足
+
 
 
 
