@@ -466,15 +466,45 @@ arr[0]()
 
 这题对了，但是很模糊。
 
+##### this 指向第4题
+
+```js
+function Pet(name) {
+  this.name = name
+  this.getName = () => this.name
+}
+
+const cat = new Pet('Fluffy')
+console.log(cat.getName()) // ?
+
+const { getName } = cat
+console.log(getName()) // ?
+```
+
 <details>
   <summary>点击查看答案</summary>
-  arr本身
+  Fluffy<br>
+  Fluffy
 </details>
 
 <details>
   <summary>点击查看解析</summary>
-  <font color=FF0000 size=4><strong>函数作为某个对象的方法调用，this 指向该对象</strong></font>，数组显然也是对象，只不过我们都习惯了对象引用属性的方法：obj.fn，但是实际上obj['fn']引用也是可以的。
+  这里的重点是：为什么解构之后，为什么 解构出的 getName 的 this 指向还是 cat，没有丢失？其实这里 this.getName 构成了闭包，保存了 this。有如下示例：
 </details>
+
+```js
+function Pet(name) {
+  this.name = name
+}
+
+Pet.prototype.getName = function() { return this.name }
+
+const cat = new Pet('Fluffy')
+
+const { getName } = cat
+console.log(getName()) // ?
+```
+
 另外， coderwhy 的文章[前端面试之彻底搞懂this指向](https://mp.weixin.qq.com/s/hYm0JgBI25grNG_2sCRlTA) 中也有不错的面试题，在 [[前端面试点总结#this 相关面试题]] 中有做题目，并解释答案。
 
 

@@ -18,12 +18,12 @@
 
 #### 图灵机
 
-图灵机（Turing Machine）是图灵在1936年发表的 "On Computable Numbers, with an Application to the Entscheidungsproblem"（《论可计算数及其在判定性问题上的应用》）中提出的数学模型。既然是数学模型，它就并非一个实体概念，而是架空的一个想法。在文章中图灵描述了它是什么，并且证明了：<mark>只要图灵机可以被实现，就可以用来解决任何可计算问题。</mark>
+图灵机（Turing Machine）是图灵在1936年发表的 "On Computable Numbers, with an Application to the Entscheidungsproblem"（《论可计算数及其在判定性问题上的应用》）中提出的数学模型。既然是数学模型，它就并非一个实体概念，而是架空的一个想法。在文章中图灵描述了它是什么，并且证明了：<font color=LightSeaGreen>只要图灵机可以被实现，就可以用来解决任何可计算问题。</font>
 
 **图灵机的结构包括以下几个部分：**
 
 > - 一条无限长的<font color=FF0000>纸带</font>（tape），纸带被分成一个个相邻的格子（square），每个格子都可以写上至多一个字符（symbol）。
-> - 一个<font color=FF0000>字符表</font>（alphabet），<mark>即字符的集合，它包含纸带上可能出现的所有字符。</mark>其中包含一个特殊的空白字符（blank），意思是此格子没有任何字符。
+> - 一个<font color=FF0000>字符表</font>（alphabet），<font color=LightSeaGreen>即字符的集合，它包含纸带上可能出现的所有字符。</font>其中包含一个特殊的空白字符（blank），意思是此格子没有任何字符。
 > - 一个读写头（head），可理解为指向其中一个格子的指针。它可以读取/擦除/写入当前格子的内容，此外也可以每次向左/右移动一个格子。
 > - 一个状态寄存器（state register），它追踪着每一步运算过程中，整个机器所处的状态（运行/终止）。当这个状态从运行变为终止，则运算结束，机器停机并交回控制权。如果你了解有限状态机，它便对应着有限状态机里的状态。
 > - 一个有限的指令集（instructions table），它记录着读写头在特定情况下应该执行的行为。可以想象读写头随身有一本操作指南，里面记录着很多条类似于“当你身处编号53的格子并看到其内容为0时，擦除，改写为1，并向右移一格。此外，令下一状态为运行。”这样的命令。其实某种意义上，这个指令集就对应着程序员所写下的程序了。
@@ -48,7 +48,7 @@
 
 摘自：[图灵完备-百度百科](https://baike.baidu.com/item/%E5%9B%BE%E7%81%B5%E5%AE%8C%E5%A4%87/4634934?fr=aladdin)
 
-图灵完备 ( Turing Completeness ) 是指<mark>机器执行任何其他可编程计算机能够执行计算的能力</mark>。
+图灵完备 ( Turing Completeness ) 是指<font color=LightSeaGreen>机器执行任何其他可编程计算机能够执行计算的能力</font>。
 
 图灵完备也意味着你的语言可以做到能够用图灵机能做到的所有事情，可以解决所有的可计算问题。
 
@@ -58,7 +58,7 @@
 
 #### 编程范式
 
-编程范型、编程范式或程序设计法（Programming paradigm），（范即模范、典范之意，范式即模式、方法），是一类典型的编程风格，是指从事软件工程的一类典型的风格（可以对照方法学）。
+编程范型、编程范式或程序设计法 ( Programming paradigm)，（范即模范、典范之意，范式即模式、方法），是一类典型的编程风格，是指从事软件工程的一类典型的风格（可以对照方法学）。
 
 摘自：[编程范型-百度百科](https://baike.baidu.com/item/%E7%BC%96%E7%A8%8B%E8%8C%83%E5%9E%8B/1475451?fromtitle=%E7%BC%96%E7%A8%8B%E8%8C%83%E5%BC%8F&fromid=23696164&fr=aladdin)
 
@@ -74,15 +74,15 @@
 
 #### UUID
 
-**UUID** 是指 Universally Unique Identifier，翻译为中文是**通用唯一识别码**，<mark>UUID 的目的是让分布式系统中的所有元素都能有唯一的识别信息</mark>。如此一来，每个人都可以创建不与其它人冲突的 UUID，就不需考虑数据库创建时的名称重复问题。
+**UUID** 是指 Universally Unique Identifier，翻译为中文是**通用唯一识别码**，<font color=LightSeaGreen>UUID 的目的是让分布式系统中的所有元素都能有唯一的识别信息</font>。如此一来，每个人都可以创建不与其它人冲突的 UUID，就不需考虑数据库创建时的名称重复问题。
 
 ##### 定义
 
-UUID 是<mark>由一组32位数的16进制数字所构成</mark>，是故 UUID 理论上的总数为1632=2128，约等于3.4 x 10123。
+UUID 是<font color=LightSeaGreen>由一组32位数的16进制数字所构成</font>，是故 UUID 理论上的总数为1632=2128，约等于3.4 x 10123。
 
 ##### 格式
 
-UUID 的十六个八位字节被表示为 32个十六进制数字，<mark>以连字号分隔的五组来显示，形式为 8-4-4-4-12</mark>，总共有 36个字符（即三十二个英数字母和四个连字号）。例如：
+UUID 的十六个八位字节被表示为 32个十六进制数字，<font color=LightSeaGreen>以连字号分隔的五组来显示，形式为 8-4-4-4-12</font>，总共有 36个字符（即三十二个英数字母和四个连字号）。例如：
 
 ```
 123e4567-e89b-12d3-a456-426655440000
@@ -111,9 +111,9 @@ UUID 版本通过 M 表示，当前规范有5个版本，M可选值为`1, 2, 3, 
 
 #### foo & bar
 
-foo & bar 是类似于”哑变元“，<mark>我们可以把 foo 理解成张三李四, 或者"某某"</mark>，但真正了解 foo 及 foobar 等词的含义，还是能使我们更好的理解英文文档，避免产生不必要的歧义。
+foo & bar 是类似于”哑变元“，<font color=LightSeaGreen>我们可以把 foo 理解成张三李四，或者"某某"</font>，但真正了解 foo 及 foobar 等词的含义，还是能使我们更好的理解英文文档，避免产生不必要的歧义。
 
-术语 foobar , foo , bar , baz 和 qux 经常在计算机编程或计算机相关的文档中<mark>被用作**占位符**的名字</mark>。<mark>当变量，函数，或命令本身不太重要的时候， foobar , foo , bar , baz 和 qux 就被用来充当这些实体的名字</mark>，这样做的目的仅仅是阐述一个概念，说明一个想法。这些术语本身相对于使用的场景来说没有任何意义。Foobar经常被单独使用；而当需要多个实体举例的时候，foo，bar，和baz则经常被按顺序使用。
+术语 foobar , foo , bar , baz 和 qux 经常在计算机编程或计算机相关的文档中 <font color=LightSeaGreen>被用作**占位符**的名字</font>。<font color=LightSeaGreen>当变量，函数，或命令本身不太重要的时候， foobar , foo , bar , baz 和 qux 就被用来充当这些实体的名字</font>，这样做的目的仅仅是阐述一个概念，说明一个想法。这些术语本身相对于使用的场景来说没有任何意义。Foobar经常被单独使用；而当需要多个实体举例的时候，foo，bar，和baz则经常被按顺序使用。
 
 摘自：[**你所不知道的“foo”和“bar”**](https://cloud.tencent.com/developer/article/1360988)
 
@@ -121,7 +121,7 @@ foo & bar 是类似于”哑变元“，<mark>我们可以把 foo 理解成张�
 
 #### 哑元
 
-哑元，即虚拟变量 ( Dummy Variables ) 又称虚设变量、名义变量或哑变量，用以反映质的属性的一个人工变量，是量化了的自变量，通常取值为0或1。<mark>引入哑变量可使线形回归模型变得更复杂，但对问题描述更简明，一个方程能达到两个方程的作用，而且接近现实</mark>。
+哑元，即虚拟变量 ( Dummy Variables ) 又称虚设变量、名义变量或哑变量，用以反映质的属性的一个人工变量，是量化了的自变量，通常取值为0或1。<font color=LightSeaGreen>引入哑变量可使线形回归模型变得更复杂，但对问题描述更简明，一个方程能达到两个方程的作用，而且接近现实</font>。
 
 摘自：[**百度百科 - 虚拟变量**]([https://baike.baidu.com/item/%E8%99%9A%E6%8B%9F%E5%8F%98%E9%87%8F/8262721?fr=aladdin](https://baike.baidu.com/item/虚拟变量/8262721?fr=aladdin))
 
@@ -129,9 +129,9 @@ foo & bar 是类似于”哑变元“，<mark>我们可以把 foo 理解成张�
 
 #### Mixin
 
-**Mixin是面向对象程序设计语言中的类**，提供了方法的实现。其他类可以访问mixin类的方法而不必成为其子类。Mixin有时被称作"included"而不是"inherited"。mixin为使用它的class提供额外的功能，但<mark>自身却不单独使用（不能单独生成实例对象，属于抽象类）</mark>。因为有以上限制，Mixin类通常作为功能模块使用，在需要该功能时“混入”，而且不会使类的关系变得复杂。用户与Mixin不是“is-a”的关系，而是“-able”关系
+**Mixin是面向对象程序设计语言中的类**，提供了方法的实现。其他类可以访问mixin类的方法而不必成为其子类。Mixin有时被称作"included"而不是"inherited"。mixin为使用它的class提供额外的功能，但 <font color=dodgerBlue>自身却不单独使用（不能单独生成实例对象，属于抽象类）</font>。因为有以上限制，Mixin类通常作为功能模块使用，在需要该功能时“混入”，而且不会使类的关系变得复杂。用户与 Mixin 不是 “is-a” 的关系，而是 “-able” 关系
 
-<font color=FF0000>Mixin 有利于代码复用 又 **避免了多重继承的复杂**</font>。使用Mixin享有单一继承的单纯性和多重继承的共有性。接口与mixin相同的地方是都可以多继承，不同的地方在于mixin是带实现的。Mixin也可以看作是带实现的interface。这种设计模式实现了依赖反转原则。
+<font color=FF0000>Mixin 有利于代码复用 又 **避免了多重继承的复杂**</font>。使用 Mixin 享有单一继承的单纯性和多重继承的共有性。接口与 mixin 相同的地方是都可以多继承，不同的地方在于 mixin 是带实现的。Mixin 也可以看作是带实现的 interface 。这种设计模式实现了依赖反转原则。
 
 Mixin 实质上是利用语言特性（比如 Ruby 的 include 语法、Python 的多重继承）来更简洁地实现组合模式。
 
@@ -155,7 +155,7 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 >
 > 摘自：《代码大全（第二版）》chapter 7 - P162
 
-如果细分起来：function 是有返回值的 routine，procedure（过程）是没有返回值的 routine，method 是作为 class 的成员的 routine，甚至 C++ 中重载了的运算符也算是 routine。👀 注：这部分也可以参考 [[#Side Effect 副作用]] 中的内容
+如果细分起来：function 是有返回值的 routine，procedure（过程）是没有返回值的 routine，method 是作为 class 的成员的 routine，甚至 C++ 中重载了的运算符也算是 routine。👀 这部分也可以参考 [[#Side Effect 副作用]] 中的内容
 
 摘自：[CC2e 术语：把 routine 译为“子程序”的理由](https://blog.csdn.net/techcrunch/article/details/1961970)
 
@@ -185,13 +185,13 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 
 那么我<font color=FF0000>把输入输出的空间准备好</font>，然后<font color=FF0000>直接调用别的语言生成的二进制</font>去跑不就行了吗？这就是 FFI，<font color=FF0000>**FFI 能更好的管理二进制资源的生命周期**</font>。
 
-管生命周期的那个作为宿主语言，所以 FFI 中一般高级语言做主导，低级语言被调用，而且还能封装成二进制库，比如 lib、dll、so 之类的给不同语言用（👀 **注**：比如 ffmpeg ？）。
+管生命周期的那个作为宿主语言，所以 FFI 中一般高级语言做主导，低级语言被调用，而且还能封装成二进制库，比如 lib、dll、so 之类的给不同语言用（👀 比如 ffmpeg ？）。
 
 **缺点**：二进制毕竟太底层了，没有大家一致认可的调用约定也是不可能互通的，要遵守一些基本准则。调用约定、类型表示 和 名称修饰这三者，构成了二进制接口 ( Application Binary Interface )。
 
 但是, 世界上这么多 CPU，这么多语言，每个类型系统都不一样，想想也没法统一；不能统一就会有混乱, 混乱乘以发展时间就是屎山的大小。你用 node 肯定被 node-gyp 恶心过，用 Java 肯定被 JNI 恶心过。在时间面前，再好的约定也会变得混乱，最后把你埋葬在屎山之中
 
-> 👀 注：JS 生态就有 FFI 插件：[node-ffi](https://github.com/node-ffi/node-ffi)
+> 💡 JS 生态就有 FFI 插件：[node-ffi](https://github.com/node-ffi/node-ffi)
 
 ##### RPC ( Remote Procedure Call )
 
@@ -201,9 +201,9 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 
 **缺点**：只有一点点微小的代价：<font color=FF0000>发出时有一个序列化开销，收到时还有一个反序列化开销，对面也有这两个开销</font>。
 
-虽然名义上是远程调用，但是也常常开两个端口本地往本地发。比如 LSP 就基于 JSON-RPC ，本地往本地发（**注：**LSP 即，语言服务协议，这也是 VS Code 可以支持编写多语言的技术原理）。
+虽然名义上是远程调用，但是也常常开两个端口本地往本地发。比如 LSP 就基于 JSON-RPC ，本地往本地发（💡 LSP 即，语言服务协议，这也是 VS Code 可以支持编写多语言的技术原理）。
 
-当然 json 的 serde（👀 **注：**进行 “序列化” 和“反序列化”操作的程序，似乎是 [GitHub - serde-rs/json](https://github.com/serde-rs/json) ） 太慢了，计算机就该用二进制说话，所以 <font color=FF0000>谷歌的 **grpc** 使用 **Protocol Buffers** 这种二进制格式作为交换格式</font>。👀 **注**：ProtoBuf 是一种 IDL ( Interactive Data Language ) 接口描述语言。
+当然 json 的 serde（👀 进行 “序列化” 和“反序列化”操作的程序，似乎是 [GitHub - serde-rs/json](https://github.com/serde-rs/json) ） 太慢了，计算机就该用二进制说话，所以 <font color=FF0000>谷歌的 **grpc** 使用 **Protocol Buffers** 这种二进制格式作为交换格式</font>。👀 **注**：ProtoBuf 是一种 IDL ( Interactive Data Language ) 接口描述语言。
 
 一般的应用远远达不到要优化掉 serde 开销这个地步，所以现在就慢慢演变到传 json 搞定一切了。
 
@@ -219,7 +219,7 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 
 如果涉及的软件采用面向对象编程，那么远程过程调用亦可称作远端呼叫或远端方法呼叫，例：Java RMI 。
 
-<font color=FF0000>RPC 是一种 **进程间通信** 的模式，程序分布在不同的地址空间里</font>。如果<mark style="background: aqua">在同一主机里</mark>，RPC 可以通过不同的虚拟地址空间（即便使用相同的物理地址）进行通讯；而<mark>在不同的主机间</mark>，则通过不同的物理地址进行交互。许多技术（通常是不兼容）都是基于这种概念而实现的。
+<font color=FF0000>RPC 是一种 **进程间通信** 的模式，程序分布在不同的地址空间里</font>。如果 <font color=dodgerBlue>**在同一主机里**</font>，RPC 可以通过不同的虚拟地址空间（即便使用相同的物理地址）进行通讯；而 <font color=dodgerBlue>**在不同的主机间**</font>，则通过不同的物理地址进行交互。许多技术（通常是不兼容）都是基于这种概念而实现的。
 
 摘自：[wikipedia - 远程过程调用](https://zh.wikipedia.org/zh-cn/%E9%81%A0%E7%A8%8B%E9%81%8E%E7%A8%8B%E8%AA%BF%E7%94%A8)
 
@@ -233,7 +233,7 @@ RPC 是指远程过程调用，也就是说两台服务器 A 和 B，一个应�
 - 第二，要解决寻址的问题。也就是说，<font color=FF0000>**A服务器上的应用怎么告诉底层的 RPC 框架，如何连接到 B服务器（如主机 或 IP地址）以及特定的端口，<font size=4>方法的名称名称是什么</font>**，这样才能完成调用</font>。比如基于 Web 服务协议栈的 RPC，就要提供一个 endpoint URI ，或者是从 UDDI 服务上查找。如果是 RMI 调用的话，还需要一个 RMI Registry 来注册服务的地址。
 - 第三，<font color=FF0000>**当 A服务器 上的应用发起远程过程调用时，方法的参数需要通过底层的网络协议如 TCP 传递到 B服务器**</font>，由于网络协议是基于二进制的，内存中的参数的值要序列化成二进制的形式，也就是<font color=FF0000>**序列化 ( Serialize ) 或编组 ( marshal )**</font> ，通过寻址和传输将序列化的二进制发送给 B服务器。
 - 第四，B服务器收到请求后，需要对参数进行反序列化（序列化的逆操作），<font color=FF0000>**恢复为内存中的表达方式**</font>，然后<font color=FF0000>**找到对应的方法**（寻址的一部分）进行本地调用</font>，然后得到返回值。
-- 第五，<font color=FF0000>**返回值还要发送回 A服务器 上的应用**</font>（👀 **注**：这点差点忘了... 类似函数调用，往往有返回值；这里自然要发送），也<font color=FF0000>要经过序列化的方式发送</font>；A服务器 接到后，再反序列化，恢复为内存中的表达方式，交给 A服务器 上的应用
+- 第五，<font color=FF0000>**返回值还要发送回 A服务器 上的应用**</font>（👀 这点差点忘了... 类似函数调用，往往有返回值；这里自然要发送），也<font color=FF0000>要经过序列化的方式发送</font>；A服务器 接到后，再反序列化，恢复为内存中的表达方式，交给 A服务器 上的应用
 
 <img src="https://s2.loli.net/2022/07/12/VqJ8LAHpDnUjxyG.png" alt="img" style="zoom:50%;" />
 
@@ -304,7 +304,7 @@ RPC 就是要像调用本地的函数一样去调远程函数。在研究 RPC �
 
 RPC 只是对底层协议的封装，其实对具体的通信协议是啥并没有太多要求。
 
-实际上 application layer 是可以有不止一层的，比如说 <font color=FF0000>RPC 可以直接建立在 TCP 之上</font>（👀 **注**：比如 Socket ），<font color=FF0000>也可以建立在 HTTP 协议之上；对于 RPC 来说，这都是一样的，只要把通讯的内容塞进不同的报文理好了</font>。
+实际上 application layer 是可以有不止一层的，比如说 <font color=FF0000>RPC 可以直接建立在 TCP 之上</font>（👀 比如 Socket ），<font color=FF0000>也可以建立在 HTTP 协议之上；对于 RPC 来说，这都是一样的，只要把通讯的内容塞进不同的报文理好了</font>。
 
 其实 <font color=FF0000>HTTP 是最常用的承载 RPC 的通信协议之一</font>。而且我们可以在 HTTP 上传输 XML 和 JSON 这样的文本协议，也可以是 protobuf 和 thrift 这样的二进制协议，这都不是问题。
 
@@ -316,7 +316,7 @@ RPC 只是对底层协议的封装，其实对具体的通信协议是啥并没�
 
 这就像是牛 ( HTTP ) 不能和马车 ( RPC ) 比较。要想比较，就应该将牛补齐为牛车，然后和马车比较。
 
-👀 **注**：后面是  **HTTP 加上接口规范、序列化反序列化等 的远程调用方案** （比如 HTTP + Restful + JSON）和 **采用 RPC 的远程调用方案** 进行比较的内容，由于暂时用不到，略。
+> 👀 后面是  **HTTP 加上接口规范、序列化反序列化等 的远程调用方案** （比如 HTTP + Restful + JSON）和 **采用 RPC 的远程调用方案** 进行比较的内容，由于暂时用不到，略。
 
 摘自：[既然有 HTTP 请求，为什么还要用 RPC 调用？ - 易哥的回答 - 知乎](https://www.zhihu.com/question/41609070/answer/1030913797)
 
@@ -343,11 +343,11 @@ RPC 只是对底层协议的封装，其实对具体的通信协议是啥并没�
 
 在计算机科学中，消息队列 ( Message queue ) 是一种 <font color=FF0000>**进程间通信** 或 **同一进程的不同线程间** 的 <font color=FF0000 size=4>**通信方式**</font></font>，软件的队列用来处理一系列的输入，通常是来自用户。<font color=FF0000>消息队列提供了 <font size=4>**异步的通信协议**</font></font>，每一个队列中的纪录包含详细说明的资料，包含发生的时间，输入设备的种类，以及特定的输入参数，也就是说：<font color=FF0000>消息的发送者和接收者不需要同时与消息队列交互</font>（👀 **注**：“不需要同时” 说明了这是异步的）。<font color=FF0000 size=4>**消息会保存在队列中，直到接收者取回它**</font>。
 
-一个 WIMP (👀 **注**：Window, Icon, Menu, Pointer ) 环境像是 Microsoft Windows，借由优先的某些形式（通常是事件的时间或是重要性的顺序）来存储用户产生的事件到一个 事件队列 中。系统把每个事件从事件队列中传递给目标的应用程序。
+一个 WIMP (👀 Window, Icon, Menu, Pointer ) 环境像是 Microsoft Windows，借由优先的某些形式（通常是事件的时间或是重要性的顺序）来存储用户产生的事件到一个 事件队列 中。系统把每个事件从事件队列中传递给目标的应用程序。
 
 <font color=FF0000>**消息队列常常保存在 链表结构 中。拥有权限的进程可以向消息队列中写入或读取消息**</font>。
 
-消息队列本身是异步的，<font color=FF0000>它允许接收者在消息发送很长时间后再取回消息，**这和大多数通信协议是不同的**</font>。例如 WWW 中使用的 <mark>HTTP 协议（ HTTP/2 之前）是同步的，因为客户端在发出请求后必须等待服务器回应</mark>。然而，很多情况下我们需要异步的通信协议。比如，一个进程通知另一个进程发生了一个事件，但不需要等待回应。但<font color=FF0000>消息队列的异步特点，**也造成了一个缺点**，就是 **接收者必须轮询消息队列，才能收到最近的消息**</font>。
+消息队列本身是异步的，<font color=FF0000>它允许接收者在消息发送很长时间后再取回消息，**这和大多数通信协议是不同的**</font>。例如 WWW 中使用的 <font color=LightSeaGreen>HTTP 协议（ HTTP/2 之前）是同步的，因为客户端在发出请求后必须等待服务器回应</font>。然而，很多情况下我们需要异步的通信协议。比如，一个进程通知另一个进程发生了一个事件，但不需要等待回应。但<font color=FF0000>消息队列的异步特点，**也造成了一个缺点**，就是 **接收者必须轮询消息队列，才能收到最近的消息**</font>。
 
 <font color=FF0000>**和信号 ( signal ) 相比，消息队列能够传递更多的信息**</font>。<font color=fuchsia>**与管道 ( pipeline ) 相比，消息队列提供了有格式的数据**</font>，这可以减少开发人员的工作量。但<font color=FF0000>**消息队列仍然有大小限制**</font>。
 
@@ -489,7 +489,7 @@ RPC 指的是远程调用，也就是说，调用的函数不在同一内存空�
 - 函数（function）是指一段可以直接被其名称调用的代码块，它可以传入一些参数进行处理并返回一些数据，所有传入函数的数据都是被明确定义。
 - 方法指的是一段<font color=FF0000>被它关联的对象</font>通过它的名字调用的代码块。
 
-**总结：方法就是面向对象版的函数**
+> 💡 总结：方法就是面向对象版的函数
 
 摘自：[方法和函数的区别](https://blog.csdn.net/notsaltedfish/article/details/75174556)
 
@@ -557,16 +557,21 @@ A <font color=FF0000>**wrapper**</font> instead is something that <font color=FF
 
 #### 重写方法和重载方法
 
-- 重写 (Override) ：是子类对父类的允许访问的方法的实现过程进行重新编写, 返回值和形参都不能改变。即外壳不变，核心重写！
-- 重载 (overload) ：是在一个类里面，方法名字相同，而参数不同。返回类型可以相同也可以不同。
+##### 重写 (Override)
+
+是子类对父类的允许访问的方法的实现过程进行重新编写, 返回值和形参都不能改变。即外壳不变，核心重写！
+
+##### 重载 ( Overload )
+
+是在一个类里面，方法名字相同，而参数不同。返回类型可以相同也可以不同。
 
 
 
 #### 一等公民
 
-第一类物件（英语：First-class object）在电脑科学中指可以在执行期创造并作为参数传递给其他函数或存入一个变数的实体。将一个实体变为第一类物件的过程叫做“物件化”（Reification）。
+第一类物件（英语：First-class object）在电脑科学中指可以在执行期创造并作为参数传递给其他函数或存入一个变数的实体。将一个实体变为第一类物件的过程叫做“物件化” ( Reification )。
 
-<mark>“第一类物件”这一名称最早由克里斯托弗·斯特雷奇在1960年代发明，原称“第一类公民”（First-class citizen），意指函数可作为电脑语言中的第一类公民</mark>。英文中也称“First-class entity”或“First-class value”。
+<font color=LightSeaGreen>“第一类物件”这一名称最早由克里斯托弗·斯特雷奇在1960年代发明，原称“第一类公民”（First-class citizen），意指函数可作为电脑语言中的第一类公民</font>。英文中也称 “First-class entity” 或 “First-class value”。
 
 第一类物件不一定是物件导向程式设计所指的物件，而可以指任何程式中的实体。<font color=FF0000> **一般第一类物件所特有的特性为**</font>：
 
@@ -576,7 +581,7 @@ A <font color=FF0000>**wrapper**</font> instead is something that <font color=FF
 - <font color=FF0000>**可以在执行期创造，而无需完全在设计期全部写出**</font>
 - <font color=FF0000>即使没有被系结至某一名称，也可以存在</font>
 
-<mark>绝大多数语言中，数值与基础型别都是第一类物件</mark>，然而不同语言中对函数的区别很大，例如C语言与C++中的函数不是第一类物件，因为在这些语言中函数不能在执行期创造，而必须在设计时全部写好。相比之下，<font color=FF0000> Scheme中的函数是第一类物件，因为可以用lambda表达式来创造匿名函数并作为第一类物件来操作</font>。
+<font color=LightSeaGreen>绝大多数语言中，数值与基础型别都是第一类物件</font>，然而不同语言中对函数的区别很大，例如C语言与C++中的函数不是第一类物件，因为在这些语言中函数不能在执行期创造，而必须在设计时全部写好。相比之下，<font color=FF0000> Scheme中的函数是第一类物件，因为可以用lambda表达式来创造匿名函数并作为第一类物件来操作</font>。
 
 摘自：[wiki - 第一类对象](https://zh.wikipedia.org/wiki/%E7%AC%AC%E4%B8%80%E9%A1%9E%E7%89%A9%E4%BB%B6)
 
@@ -623,6 +628,10 @@ A <font color=FF0000>**wrapper**</font> instead is something that <font color=FF
 
 
 
+
+
+
+
 #### 闭包 ( Closure ) 
 
 <font color=FF0000 size=4>**// TODO 下面的链接包含大量的知识（不仅仅是 js 中的闭包，凡是实现 FP 的语言应该都有闭包），建议阅读与记录。**</font>
@@ -637,7 +646,7 @@ A <font color=FF0000>**wrapper**</font> instead is something that <font color=FF
 
 <font color=dodgerBlue>**副作用 ( side-effect ) 是指让一个函数变得不再纯净 ( pure ) 的东西**</font>。
 
-<font color=fuchsia size=4>**一个纯净的函数，无论何时何地 ( any time any wherer ) 执行，都会得到稳定的结果**</font>（👀注： 即，是“幂等”的），这对保障程序的稳定性和性能都有极大的帮助。<font color=FF0000>反过来：如果一个函数不能 any time any wherer 得到稳定的结果，那这个函数就不是纯净的，就是有副作用了</font>。
+<font color=fuchsia size=4>**一个纯净的函数，无论何时何地 ( any time any wherer ) 执行，都会得到稳定的结果**</font>（👀 即，是“幂等”的），这对保障程序的稳定性和性能都有极大的帮助。<font color=FF0000>反过来：如果一个函数不能 any time any wherer 得到稳定的结果，那这个函数就不是纯净的，就是有副作用了</font>。
 
 <font color=dodgerBlue>**常见副作用包括**</font>：<mark style="background: lightpink">对外部可变数据或变量的修改</mark>，<mark>外部接口的调用尤其是IO</mark>，<mark style="background: Aquamarine">异常的抛出</mark>。因为<font color=FF0000>它们都会让函数的执行不再稳定，要么会导致函数输出变化，要么导致函数报错</font>。 <font color=dodgerBlue>**举一些例子**</font>：
 
@@ -664,7 +673,7 @@ function doWork() {
 
 在我们的业务代码中有很多这样的“稳定”的函数，我们总是“愿意相信”它们不会出问题，然而这样的函数事实上就是不稳定的；因为它依赖了外部的可变数据。其实一些 lib 比如 webpack 要比我们理性的多，它们会不带任何主观因素的把这样的函数视为带有副作用的函数
 
-<font color=dodgerBlue>我们经常有一个误解是：**我们总认为我们以为的稳定的函数是纯净的**，实际上并非如此</font>（👀 注：下面的组合可以总结为：“纯洁” 和 “函数稳定” 是充分不必要的）：
+<font color=dodgerBlue>我们经常有一个误解是：**我们总认为我们以为的稳定的函数是纯净的**，实际上并非如此</font>（💡 下面的组合可以总结为：“纯洁” 和 “函数稳定” 是充分不必要的）：
 
 - 纯 -> 稳定 ✅
 - 不纯 -> 不稳定 ✅
@@ -764,7 +773,7 @@ number once // TODO https://en.wikipedia.org/wiki/Cryptographic_nonce
 
 
 
-#### 数字表示
+#### 数字英文表示
 
 在上计算机课程（尤其是计算机组成）的时候，了解到了 double、triple 和 quad 分别表示 二、三、四，然而它还有更多：
 
