@@ -159,7 +159,9 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 
 摘自：[CC2e 术语：把 routine 译为“子程序”的理由](https://blog.csdn.net/techcrunch/article/details/1961970)
 
+##### 协程 coroutine
 
+// TODO
 
 #### 不同语言间互相调用 & SharedMemory & FFI & RPC
 
@@ -628,7 +630,29 @@ A <font color=FF0000>**wrapper**</font> instead is something that <font color=FF
 
 
 
+#### 字节码和机器码
 
+##### 机器码
+
+机器码 ( machine code )，学名 “机器语言指令” ，有时也被称为 “原生码”  ( Native Code )，是 <font color=red>CPU 可直接解读的数据</font>（👀 CPU 直接面对和执行的数据）；运行速度也是最快的代码。
+
+##### 字节码
+
+字节码 ( byte code ) 是一种包含执行程序、由一序列 “OP代码（操作码）/ 数据对” 组成的二进制文件。 <font color=red>字节码是一种 “中间码” ，它比机器码更抽象，需要 “直译器转译” 后才能成为机器码的中间代码</font>。
+
+<font color=red>通常情况下它是已经经过编译，但与特定机器码无关</font>。字节码通常不像源码一样可以让人阅读，而是编码后的数值常量、引用、指令等构成的序列。
+
+<font color=red>字节码主要为了实现特定软件运行和软件环境、与硬件环境无关</font>。字节码的实现方式是通过编译器和虚拟机器。编译器将源码编译成字节码，特定平台上的虚拟机器将字节码转译为可以直接执行的指令。
+
+<font color=red>字节码的典型应用为 Java bytecode</font> ，<font color=LightSeaGreen>字节码在运行时通过 JVM 做一次转换生成机器指令，因此能够更好的跨平台运行</font>。
+
+摘自：[机器码(machine code)和字节码(byte code)是什么？](https://juejin.cn/post/6844903943714111501)
+
+##### 在 V8 中的使用
+
+V8 引擎诞生的使命就是要在速度和内存回收上进行革命。JavaScriptCore 的架构是采用生成字节码的方式，然后执行字节码。<font color=LightSeaGreen>Google 觉得 JavaScriptCore 这套架构不行，生成字节码会浪费时间，不如直接生成机器码快</font>。所以 V8 在前期的架构设计上是非常激进的，采用了直接编译成机器码的方式。后期的实践证明 Google 的这套架构速度是有改善，但是同时也造成了「内存消耗问题」
+
+摘自：[字节码和机器码的区别](https://blog.51cto.com/zhangchiworkos/4941089)
 
 
 

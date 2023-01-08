@@ -3128,5 +3128,23 @@ Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
 
 
 
-#### Vue3 Diff 算法
+### Vue3 Diff 算法
+
+#### 精读《DOM diff 原理详解》笔记
+
+##### 理想的 DOM Diff
+
+理想情況的 Diff 算法 时间复杂度 是 $O(n^3)$ 
+
+<img src="https://s2.loli.net/2023/01/08/Y9IWbvFRUSlVN5m.png" alt="img" style="zoom:45%;" />
+
+如图所示，理想的 Dom diff 自然是滴水不漏的复用所有能复用的，实在遇到新增或删除时，才执行插入或删除。这样的操作最贴近 jQuery 时代手写的 Dom diff 性能。
+
+<font color=red>可惜程序无法猜到你的想法，想要精确复用就必须付出高昂的代价</font>：时间复杂度 $O(n^3)$  的 diff 算法，这显然是无法接受的，因此理想的 Dom diff 算法无法被使用。
+
+> <font color=dodgerBlue>关于 $O(n^3)$ 的由来</font>：由于左树中任意节点都可能出现在右树，所以必须<font color=red>在对左树深度遍历的同时，对右树进行深度遍历</font>，找到每个节点的对应关系，这里的时间复杂度是 $O(n^2)$ （💡 <font color=dodgerBlue>DFS 的复杂度是 $O(n)$，对两棵树进行 DFS，复杂度是 $O(n^2)$ </font> ），<font color=red>之后需要对树的各节点进行增删移的操作，这个过程简单可以理解为加了一层遍历循环</font>，因此再乘一个 $n$。
+
+##### 简化的 Dom diff
+
+<img src="https://s2.loli.net/2023/01/08/Sawq56IdpVKJUWm.png" alt="img" style="zoom:45%;" />
 
