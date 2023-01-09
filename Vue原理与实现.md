@@ -3142,9 +3142,66 @@ Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
 
 <font color=red>可惜程序无法猜到你的想法，想要精确复用就必须付出高昂的代价</font>：时间复杂度 $O(n^3)$  的 diff 算法，这显然是无法接受的，因此理想的 Dom diff 算法无法被使用。
 
-> <font color=dodgerBlue>关于 $O(n^3)$ 的由来</font>：由于左树中任意节点都可能出现在右树，所以必须<font color=red>在对左树深度遍历的同时，对右树进行深度遍历</font>，找到每个节点的对应关系，这里的时间复杂度是 $O(n^2)$ （💡 <font color=dodgerBlue>DFS 的复杂度是 $O(n)$，对两棵树进行 DFS，复杂度是 $O(n^2)$ </font> ），<font color=red>之后需要对树的各节点进行增删移的操作，这个过程简单可以理解为加了一层遍历循环</font>，因此再乘一个 $n$。
+> <font color=dodgerBlue>关于 $O(n^3)$ 的由来</font>：由于左树中任意节点都可能出现在右树，所以必须<font color=red>在对左树深度遍历的同时，对右树进行深度遍历</font>，找到每个节点的对应关系，这里的时间复杂度是 $O(n^2)$ （💡 <font color=dodgerBlue>DFS 的复杂度是 $O(n)$，对两棵树进行 DFS，所以复杂度是 $O(n^2)$ </font> ），<font color=red>之后需要对树的各节点进行增删移的操作，这个过程简单可以理解为加了一层遍历循环</font>，因此再乘一个 $n$。
 
 ##### 简化的 Dom diff
 
 <img src="https://s2.loli.net/2023/01/08/Sawq56IdpVKJUWm.png" alt="img" style="zoom:45%;" />
 
+如图所示，<font color=dodgerBlue>只按层比较，就可以将时间复杂度降低为 $O(n)$ </font>。<font color=red>按层比较也不是广度遍历，其实就是判断某个节点的子元素间 diff，**跨父节点的兄弟节点也不必比较**</font>。
+
+这样做确实非常高效，但代价就是，判断的有点傻，（👀 如上图）比如 ac 明明是一个移动操作，却被误识别为删除 + 新增。
+
+<font color=fuchsia>**好在跨 DOM 复用在实际业务场景中很少出现，因此这种笨拙出现的频率实际上非常低**</font>（👀 这也是 Vue3 Diff 实现的关键思想 / 思想前提），这时候我们就不要太追求学术思维上的严谨了，毕竟框架是给实际项目用的，实际项目中很少出现的场景，算法是可以不考虑的 （ 👀 理论与工程实现间的 trade off ）。
+
+<font color=dodgerBlue>下面是同层 diff 可能出现的三种情况，非常简单，看图即可：</font>
+
+<img src="https://s2.loli.net/2023/01/09/9OxNHJnZ4UsKhrd.png" alt="" style="zoom:45%;" />
+
+##### Vue 的 Dom diff
+
+Vue 的 Dom diff 一共 5 步，我们结合下图先看前三步：
+
+<img src="https://s2.loli.net/2023/01/09/lH8jSfoKBRE5m6V.png" alt="img" style="zoom:47%;" />
+
+如图所示，第一和第二步分别从首尾两头向中间逼近，尽可能跳过首位相同的元素，因为我们的<font color=fuchsia>目的是 **尽量保证不要发生 dom 位移**</font>。
+
+> 💡 保证尽量不要发生 dom 位移，这也是后面使用 LIS 算法最重要的原因
+
+这种算法一般采用双指针。如果前两步做完后，<font color=dodgerBlue>发现旧树指针重合了，新树还未重合</font>，说明什么？<font color=LightSeaGreen>说明新树剩下来的都是要新增的节点，批量插入即可</font>。很简单吧？那如果反过来呢？如下图所示：
+
+<img src="https://s2.loli.net/2023/01/09/YxlmWIEzL7Okf9U.png" alt="img" style="zoom:47%;" />
+
+第一和第二步完成后，发现<font color=dodgerBlue>新树指针重合了，但旧树还未重合</font>，说明什么？<font color=LightSeaGreen>说明旧树剩下来的在新树都不存在了，批量删除即可</font>。
+
+当然，<font color=dodgerBlue>**如果 1、2、3、4 步走完之后，指针还未处理完**</font>，那么就进入一个小小算法时间了，我们需要在 $O(n)$  时间复杂度内把剩下节点处理完。熟悉算法的同学应该很快能反映出，<font color=dodgerBlue>**一个数组做一些检测操作，还得把时间复杂度控制在 $O(n)$** </font>，<font color=fuchsia>**得用一个 Map 空间换一下时间**</font>，实际上也是如此，我们看下图具体做法：
+
+<img src="https://s2.loli.net/2023/01/09/EwyupoCnLKsfZbO.png" alt="img" style="zoom:48%;" />
+
+如图所示，1、2、3、4 步走完后（👀 首尾指针对比完，并判断处理完是否存在老旧指针相遇），Old 和 New 都有剩余，因此走到第五步，第五步分为三小步：
+
+1. 遍历 Old 创建一个 Map，这个就是那个换时间的空间消耗，<font color=fuchsia>它记录了每个旧节点的 index 下标</font>，一会好在 New 里查出来。
+2. 遍历 New，顺便利用上面的 Map 记录下下标，同时 <font color=red>Old 在 New 中不存在的说明被删除了，直接删除</font>。
+3. 不存在的位置补 0，我们<font color=fuchsia>拿到 `e:4 d:3 c:2 h:0` 这样一个 **数组**</font>，<font color=fuchsia>下标 0 是新增，非 0 就是移过来的</font>，批量转化为插入操作即可。
+
+最后一步的优化也很关键，我们不要看见不同就随便移动，为了性能最优，要保证移动次数尽可能的少，那么怎么才能尽可能的少移动呢？假设我们随意移动，如下图所示：
+
+<img src="https://s2.loli.net/2023/01/09/VIY1AR53qUCvbZN.png" alt="img" style="zoom:50%;" />
+
+但其实最优的移动方式是下面这样：
+
+<img src="https://s2.loli.net/2023/01/09/YDbq7UPrSRILZnB.png" alt="img" style="zoom:50%;" />
+
+什么是相对有序？`a c e` 这三个字母在 Old 原始顺序 `a b c d e` 中是相对有序的，我们只要把 `b d` 移走，这三个字母的位置自然就正确了。因此我们只需要找到 New 数组中的 **最长子序列**。具体的找法可以当作一个小算法题了，由于知道每个元素的实际下标，比如这个例子中，下标是这样的：
+
+```
+[b:1, d:3, a:0, c:2, e:4]
+```
+
+肉眼看上去，连续自增的子串有 `b d` 和 `a c e`，由于 `a c e` 更长，所以选择后者。
+
+换成程序去做，可以采用贪心 + 二分法进行查找，详细可以看这道题 [最长递增子序列](https://leetcode-cn.com/problems/longest-increasing-subsequence/)，时间复杂度 $O(nlogn)$ （💡 仅仅通过 DP 写，时间复杂度是 $O(n^2)$，不够优 ）。由于该算法得出的结果顺序是乱的，Vue 采用提前复制数组的方式辅助找到了正确序列。
+
+> 👀 后面还有 React Diff 的实现思想，由于这里是 Vue3 Diff 的笔记，这里暂时略
+
+摘自：[精读《DOM diff 原理详解》](https://github.com/ascoders/weekly/blob/v2/190.精读《DOM%20diff%20原理详解》.md)
