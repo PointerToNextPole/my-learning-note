@@ -3178,13 +3178,17 @@ Vue 的 Dom diff 一共 5 步，我们结合下图先看前三步：
 
 <img src="https://s2.loli.net/2023/01/09/EwyupoCnLKsfZbO.png" alt="img" style="zoom:48%;" />
 
-如图所示，1、2、3、4 步走完后（👀 首尾指针对比完，并判断处理完是否存在老旧指针相遇），Old 和 New 都有剩余，因此走到第五步，第五步分为三小步：
+如图所示，1、2、3、4 步走完后（👀 首尾指针对比结束，并判断与处理完 老旧指针相遇 相遇的情况），Old 和 New 都有剩余，因此走到第五步，第五步分为三小步：
 
-1. 遍历 Old 创建一个 Map，这个就是那个换时间的空间消耗，<font color=fuchsia>它记录了每个旧节点的 index 下标</font>，一会好在 New 里查出来。
-2. 遍历 New，顺便利用上面的 Map 记录下下标，同时 <font color=red>Old 在 New 中不存在的说明被删除了，直接删除</font>。
-3. 不存在的位置补 0，我们<font color=fuchsia>拿到 `e:4 d:3 c:2 h:0` 这样一个 **数组**</font>，<font color=fuchsia>下标 0 是新增，非 0 就是移过来的</font>，批量转化为插入操作即可。
+1. <font color=fuchsia>**遍历 Old 创建一个 Map**</font>，这个就是那个换时间的空间消耗，<font color=fuchsia>它记录了每个旧节点的 index 下标</font>（👀 如上图所示），一会好在 New 里查出来。
+2. 遍历 New，顺便<font color=red>利用上面的 Map 记录下下标</font>，同时 <font color=red>Old 在 New 中不存在的说明被删除了，直接删除</font>。
+3. <font color=fuchsia>不存在的位置补 0</font>，我们<font color=fuchsia>拿到 `e:4 d:3 c:2 h:0` 这样一个 <font size=4>**数组**</font></font>，<font color=red>下标 0 是新增，非 0 就是移过来的</font>，批量转化为插入操作即可。
 
-最后一步的优化也很关键，我们不要看见不同就随便移动，为了性能最优，要保证移动次数尽可能的少，那么怎么才能尽可能的少移动呢？假设我们随意移动，如下图所示：
+> 💡这里创建的 Map ，在源码中的名字是 `keyToNewIndexMap` ，
+
+> 👀 注意：这里的说法有点问题，如果到第五步时候， i 还是等于 0，到时候遍历 New 生成的 Arr 数组中，必定会有一个下标为 0 的元素，而且它不是新增的。
+
+最后一步的优化也很关键，我们不要看见不同就随便移动，<font color=red>**为了性能最优，要保证移动次数尽可能的少**</font>，那么怎么才能尽可能的少移动呢？假设我们随意移动，如下图所示：
 
 <img src="https://s2.loli.net/2023/01/09/VIY1AR53qUCvbZN.png" alt="img" style="zoom:50%;" />
 
@@ -3192,16 +3196,231 @@ Vue 的 Dom diff 一共 5 步，我们结合下图先看前三步：
 
 <img src="https://s2.loli.net/2023/01/09/YDbq7UPrSRILZnB.png" alt="img" style="zoom:50%;" />
 
-什么是相对有序？`a c e` 这三个字母在 Old 原始顺序 `a b c d e` 中是相对有序的，我们只要把 `b d` 移走，这三个字母的位置自然就正确了。因此我们只需要找到 New 数组中的 **最长子序列**。具体的找法可以当作一个小算法题了，由于知道每个元素的实际下标，比如这个例子中，下标是这样的：
+什么是相对有序？<font color=fuchsia>`a c e` 这三个字母在 Old 原始顺序 `a b c d e` 中是相对有序的</font>，我们只要把 `b d` 移走，这三个字母的位置自然就正确了。因此我们只<font color=red>需要找到 New 数组中的 **最长子序列**</font>。具体的找法可以当作一个小算法题了，由于知道每个元素的实际下标，比如这个例子中，下标是这样的：
 
 ```
 [b:1, d:3, a:0, c:2, e:4]
 ```
 
-肉眼看上去，连续自增的子串有 `b d` 和 `a c e`，由于 `a c e` 更长，所以选择后者。
+肉眼看上去，<font color=red>连续自增的子串有 `b d` 和 `a c e`，由于 `a c e` 更长，所以选择后者</font>（⚠️ 值得注意的是：这里示例中 最长子序列 `a c e` 是连续且相邻的，但是实际上：最长子序列并没有要求是连续且相邻的 ）。
 
-换成程序去做，可以采用贪心 + 二分法进行查找，详细可以看这道题 [最长递增子序列](https://leetcode-cn.com/problems/longest-increasing-subsequence/)，时间复杂度 $O(nlogn)$ （💡 仅仅通过 DP 写，时间复杂度是 $O(n^2)$，不够优 ）。由于该算法得出的结果顺序是乱的，Vue 采用提前复制数组的方式辅助找到了正确序列。
+换成程序去做，可以采用贪心 + 二分法进行查找，详细可以看这道题 [最长递增子序列](https://leetcode-cn.com/problems/longest-increasing-subsequence/)，时间复杂度 $O(nlogn)$ 。由于该算法得出的结果顺序是乱的，Vue 采用提前复制数组的方式辅助找到了正确序列。
 
 > 👀 后面还有 React Diff 的实现思想，由于这里是 Vue3 Diff 的笔记，这里暂时略
 
 摘自：[精读《DOM diff 原理详解》](https://github.com/ascoders/weekly/blob/v2/190.精读《DOM%20diff%20原理详解》.md)
+
+
+
+#### 《在vue中为什么不推荐用 index 做 key》笔记
+
+Vue3.0中 在 patchChildren 方法中有这么一段源码 （💡见：`packages/runtime/runtime-core/src/renderer.ts` ）
+
+```ts
+if (patchFlag > 0) {
+  if (patchFlag & PatchFlags.KEYED_FRAGMENT) { 
+     /* 对于存在 key 的情况用于 diff 算法 */
+    patchKeyedChildren(
+     ...
+    )
+    return
+  } else if (patchFlag & PatchFlags.UNKEYED_FRAGMENT) {
+     /* 对于不存在 key 的情况,直接 patch  */
+    patchUnkeyedChildren( 
+      ...
+    )
+    return
+  }
+}
+```
+
+patchChildren 根据是否存在 key 进行真正的 diff 或者直接 patch。<font color=dodgerBlue>对于 key 不存在的情况我们就不做深入研究了</font>。
+
+> 💡 下面是对 patchKeyedChildren 方法进行分析
+
+###### patchKeyedChildren 方法一些声明的变量
+
+```ts
+/* c1 是老的 vnode ，c2 是新的 vnode */
+let i = 0              /* 首部记录索引 */
+const l2 = c2.length   /* 新 vnode 的数量 */
+let e1 = c1.length - 1 /* 老 vnode 最后一个节点的索引 */
+let e2 = l2 - 1        /* 新节点最后一个节点的索引 */
+```
+
+> 💡 **补充**
+>
+> ```ts
+> const patchKeyedChildren = (
+>     c1: VNode[],  // 旧节点集合
+>     c2: VNodeArrayChildren,  // 新节点集合
+>     container: RendererElement, // 父容器
+>     parentAnchor: RendererNode | null, // 锚点
+>     parentComponent: ComponentInternalInstance | null, // 以下参数和diff无关
+>     parentSuspense: SuspenseBoundary | null,
+>     isSVG: boolean,
+>     slotScopeIds: string[] | null,
+>     optimized: boolean
+> ) => {
+>     let i = 0
+>     const l2 = c2.length // 新子节点长度
+>     let e1 = c1.length - 1 // prev ending index
+>     let e2 = l2 - 1 // next ending index
+>     
+>     // ...
+> }
+> ```
+>
+> 摘自：[vue3子节点diff算法分析](https://juejin.cn/post/7070469227416649742)
+
+##### 同步头部节点
+
+第一步的事情就是：从头开始寻找相同的 vnode，然后进行 patch ；如果发现不是相同的节点，那么立即跳出循环。
+
+```ts
+// (a b) c
+// (a b) d e
+/* 从头对比找到有相同的节点 patch ，发现不同，立即跳出 */
+while (i <= e1 && i <= e2) {
+  const n1 = c1[i]
+  const n2 = (c2[i] = optimized
+    ? cloneIfMounted(c2[i] as VNode)
+    : normalizeVNode(c2[i]))
+  /* isSameVNodeType 根据 key ，type 是否相等，判断两个 vnode 是否相等 */
+  if (isSameVNodeType(n1, n2)) {
+    patch( /* ... */ ) // 👀
+  } else {
+    break
+  }
+  i++
+}
+```
+
+流程如下：
+
+<img src="https://s2.loli.net/2023/01/10/aHAZ8FXNvRfsjQr.jpg" alt="" style="zoom:52%;" />
+
+isSameVNodeType 作用就是：判断当前 vnode 类型 和 vnode 的 key 是否相等
+
+```javascript
+export function isSameVNodeType(n1: VNode, n2: VNode): boolean {
+  return n1.type === n2.type && n1.key === n2.key
+}
+```
+
+##### 同步尾部节点
+
+第二步从尾开始 diff
+
+```javascript
+//a (b c)
+//d e (b c)
+/* 如果第一步没有 patch 完，立即从后往前开始 patch，如果发现不同，则立即跳出循环 */
+while (i <= e1 && i <= e2) {
+  const n1 = c1[e1]
+  const n2 = (c2[e2] = optimized
+    ? cloneIfMounted(c2[e2] as VNode)
+    : normalizeVNode(c2[e2]))
+  if (isSameVNodeType(n1, n2)) {
+    patch( /* ... */ )
+  } else {
+    break
+  }
+  e1--
+  e2--
+}
+```
+
+经历第一步操作之后，立即进行第二步，从尾部开始遍历依次向前 diff。如果发现不是相同的节点，那么立即跳出循环。 流程如下：
+
+<img src="https://s2.loli.net/2023/01/10/Z8Xm9awfxNgGSJd.jpg" alt="" style="zoom:55%;" />
+
+##### 添加新的节点
+
+第三步如果老节点是否全部 patch，新节点没有被 patch 完,创建新的 vnode
+
+```ts
+// (a b)
+// (a b) c
+// i = 2, e1 = 1, e2 = 2
+// (a b)
+// c (a b)
+// i = 0, e1 = -1, e2 = 0
+/* 如果新的节点大于老的节点数 ，对于剩下的节点全部以新的 vnode 处理（这种情况说明已经 patch 完相同的 vnode ） */
+if (i > e1) {    // 👀 老 vnode 首尾指针对比完成
+  if (i <= e2) { // 👀 新 vnode 首尾指针对比还没完成
+    const nextPos = e2 + 1
+    const anchor = nextPos < l2 ? (c2[nextPos] as VNode).el : parentAnchor
+    while (i <= e2) {
+      patch( /* ... */ ) /* 创建新的节点 */
+      i++
+    }
+  }
+}
+```
+
+流程如下：
+
+<img src="https://s2.loli.net/2023/01/10/Z8Xm9awfxNgGSJd.jpg" style="zoom:55%;" />
+
+##### 删除多余节点
+
+第四步如果新节点全部被 patch，老节点有剩余，那么卸载所有老节点
+
+```ts
+// i > e2
+// (a b) c
+// (a b)
+// i = 2, e1 = 2, e2 = 1
+// a (b c)
+// (b c)
+// i = 0, e1 = 0, e2 = -1
+else if (i > e2) { // 👀 else 说明： i <= e1，即老 vnode 没有对比结束。i > e2 即：新 vnode 对比结束
+  while (i <= e1) {
+     unmount(c1[i], parentComponent, parentSuspense, true)
+     i++
+  }
+}
+```
+
+流程如下：
+
+<img src="https://s2.loli.net/2023/01/10/RTSOziZX9mnroJd.jpg" style="zoom:55%;" />
+
+##### 最长递增子序列
+
+剩下的一个场景是新老节点都还有多个子节点存在的情况
+
+<img src="https://s2.loli.net/2023/01/10/ZVnF3W4phSaGwDX.jpg" alt="" style="zoom:37%;" />
+
+每次在对元素进行移动的时候，我们可以发现一个规律：如果想要移动的次数最少，就意味着需要有一部分元素是稳定不动的（👀 也要尽可能的多），那么究竟能够保持稳定不动的元素有一些什么规律呢？
+
+可以看一下上面这个例子：`c h d e` vs `d e i c`，在比对的时候，凭着肉眼可以看出只需要将 `c` 进行移动到最后，然后卸载 `h` ，新增 `i` 就好了。`d e` 可以保持不动，可以发现 `d e` 在新老节点中的顺序都是不变的，`d` 在 `e` 的后面，下标处于递增状态。
+
+这里引入一个概念：最长递增子序列。官方解释：在一个给定的数组中，找到一组递增的数值，并且长度尽可能的大；有点比较难理解，那来看具体例子：
+
+input : `const arr = [10, 9, 2, 5, 3, 7, 101, 18]` ，output : `[2, 3, 7, 18]`
+
+这一列数组就是 arr 的最长递增子序列，其实 `[2, 3, 7, 101]` 也是。
+
+<font color=dodgerBlue>最长递增子序列符合三个要求：</font>
+
+1. 子序列内的数值是递增的
+
+2. 子序列内数值的下标在原数组中是递增的
+
+3. 这个子序列是能够找到的最长的
+
+但是我们一般会找到数值较小的那一组数列，因为他们可以增长的空间会更多。
+
+那接下来的思路是：如果能找到老节点在新节点序列中顺序不变的节点们，就知道，哪一些节点不需要移动，然后只需要把不在这里的节点插入进来就可以了。**因为最后要呈现出来的顺序是新节点的顺序，移动是只要老节点移动，所以只要老节点保持最长顺序不变，通过移动个别节点，就能够跟它保持一致。**所以在此之前，先把所有节点都找到，再找对应的序列。最后其实要得到的则是这一个数组：[2, 3, 新增 , 0]。其实这就是 diff 移动的思路了。
+
+<img src="https://s2.loli.net/2023/01/10/HAOemK34a2nRCzg.jpg" alt="image (5).png" style="zoom:38%;" />
+
+>💡 文章后面还说了：为什么不建议使用 index 作为 key，除了会导致无意义的性能消耗外，还会导致 “数据错位”，如下图
+>
+>![](https://sitecdn.zcycdn.com/f2e-assets/5d0fa2e7-ba10-458b-869d-4349e4d78f6e.gif)
+>
+>另外，文章还推荐使用 uuid / symbol 作为 v-for 的 key，使用 uuid 的思路很有启发性。而 symobl
+
+摘自：[在vue中为什么不推荐用 index 做 key](http://zoo.zhengcaiyun.cn/blog/article/vue-index)

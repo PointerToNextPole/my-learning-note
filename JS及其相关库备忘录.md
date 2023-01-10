@@ -670,15 +670,15 @@ for (var value of myArray) {
 
 for-of 语句<font color=FF0000>在可迭代对象（包括 Array，Map，Set，String，TypedArray，arguments 对象等等）上创建一个迭代循环</font>，调用自定义迭代钩子，并为每个不同属性的值执行语句
 
-**补充：**
-
-for-of 循环获取index值，将Array.entries()将其包装为可迭代对象，再遍历，示例如下：
-
-```js
-for (const [index, val] of arr.entries()) {
-  // ...
-}
-```
+> 💡 **补充**
+>
+> for-of 循环中如何获取 index 值：将 `Array.entries()` 将其包装为可迭代对象，再遍历，示例如下：
+>
+> ```js
+> for (const [index, val] of arr.entries()) {
+>   // ...
+> }
+> ```
 
 摘自：[for of 循环获取index值](https://blog.csdn.net/Hero_rong/article/details/109536906)
 
@@ -686,37 +686,37 @@ for (const [index, val] of arr.entries()) {
 
 遍历对象有如下方法：
 
-- **使用for in**
+###### 使用 for in
 
-  ```js
-  for (const key in obj) {
-    console.log(key, obj[key])
-  }
-  ```
+```js
+for (const key in obj) {
+  console.log(key, obj[key])
+}
+```
 
-- **使用Object.keys()**
+###### 使用 Object.keys()
 
-  ```js
-  Object.keys(obj).forEach(key => {
-    console.log(key, obj[key])
-  })
-  ```
+```js
+Object.keys(obj).forEach(key => {
+  console.log(key, obj[key])
+})
+```
 
-- **使用Object.getOwnPropertyNames()**
+###### 使用 Object.getOwnPropertyNames()
 
-  ```js
-  Object.getOwnPropertyNames(obj).forEach(key => {
-    console.log(key, obj[key])
-  })
-  ```
+```js
+Object.getOwnPropertyNames(obj).forEach(key => {
+  console.log(key, obj[key])
+})
+```
 
-- **使用Reflect.ownKeys()**
+###### 使用 Reflect.ownKeys()
 
-  ```js
-  Reflect.ownKeys(obj).forEach(key => {
-    console.log(key, obj[key])
-  })
-  ```
+```js
+Reflect.ownKeys(obj).forEach(key => {
+  console.log(key, obj[key])
+})
+```
 
 ##### 对象遍历方法间的区别
 
@@ -724,11 +724,11 @@ for (const [index, val] of arr.entries()) {
 
 - <font color=fuchsia>`Object.getOwnPropertyNames()` 不能获取 对象中包含的 Symbol</font>，可以通过 `Object.getOwnPropertySymbols()` 获取；而 <font color=fuchsia>`Reflect.ownKeys()` 都可以拿到</font>。
 
-  补充：经 codingstartup群友的补充：`Reflect.ownKeys()` 的遍历是有序的，按照你添加的顺序：
-
-  - 首先遍历所有数值键，按照数值升序排列
-  - 其次遍历所有字符串键，按照加入时间升序排列
-  - 最后遍历所有 Symbol 键，按照加入时间升序排列
+ >💡 经 codingstartup 群友补充：`Reflect.ownKeys()` 的遍历是有序的，按照你添加的顺序：
+ >
+ >-  首先遍历所有数值键，按照数值升序排列
+ >- 其次遍历所有字符串键，按照加入时间升序排列
+ >- 最后遍历所有 Symbol 键，按照加入时间升序排列
 
 ##### 《现代 JS 教程》中的相关内容
 
@@ -750,23 +750,21 @@ for (const [index, val] of arr.entries()) {
 
 摘自：[MDN - for ... of](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...of)
 
-**更多：**
+##### 补充
 
 - 推荐<font color=FF0000>在循环对象属性的时候，使用 for...in </font>，<font color=0000FF>在遍历数组的时候的时候使用 for...of</font>。
-- **<font color=FF0000>for...in 循环出的是 key</font>，<font color=0000FF>for...of 循环出的是value</font>（ <font color=FF0000>for in是遍历键名</font>，<font color=0000FF>for of是遍历键值</font>）**
-- 注意，<font color=0000FF>for...of 是 ES6 新引入的特性</font>。修复了 ES5 引入的for...in的不足
+- **<font color=FF0000>for...in 循环出的是 key</font>，<font color=0000FF>for...of 循环出的是 value</font>（ <font color=FF0000>for in 是遍历键名</font>，<font color=0000FF>for of 是遍历键值</font>）**
+- 注意，<font color=0000FF>for...of 是 ES6 新引入的特性</font>。修复了 ES5 引入的 for...in 的不足
 - <font color=FF0000>for...of 不能循环普通的对象，需要通过和 Object.keys() 搭配使用</font>
 - for...of 兼容性还不够，移动端安卓微信浏览器貌似不支持，苹果的可以；web端 IE 支持也不够，chrome 可以。
 
-摘自：[javascript总for of和for in的区别？](https://segmentfault.com/q/1010000006658882)
+摘自：[javascript中for of和for in的区别？](https://segmentfault.com/q/1010000006658882)
 
-**补充：**
-
-- `for...of` <font color=FF0000 size=4>**遍历的是拥有 iterator 属性（即 Symbol.iterator ）的对象**</font>，出来的是属性值；
+- `for...of` <font color=red>**遍历的是拥有 iterator 属性（即 Symbol.iterator ）的对象**</font>，出来的是属性值；
 
 - `for...in` 遍历对象的属性，出来的是属性名，<font color=FF0000 size=4>**包括继承的属性**</font>，<font color=FF0000>**可枚举的属性**</font>（ enumerable 为 true 的属性），<font color=FF0000>**不包括 symbol**</font>
 
-  👀 注：如果不想要 for...in 打印出 父类的属性，可以用 hasOwnProperty 方法，判断是否为本对象的属性。
+  > 💡 如果不想要 for...in 打印出 父类的属性，可以用 Object.hasOwnProperty 方法，判断是否为本对象的属性。
 
 摘自：[峰华前端工程师动态 的 评论区 -PILOT- 的评论](https://t.bilibili.com/524677482676016409)
 
@@ -792,7 +790,7 @@ for (const [index, val] of arr.entries()) {
 
 
 #### JS中的实例方法和静态方法定义
-下面对象和数组的方法中，带有prototype的属于实例方法（作用在对象上），不带 prototype 的是静态方法（作用在类上）
+下面对象和数组的方法中，带有 prototype 的属于实例方法（作用在对象上），不带 prototype 的是静态方法（作用在类上）
 
 
 
@@ -3523,7 +3521,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                   
+  >                                                                                                                                                                                                                                       
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3542,7 +3540,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                   
+  >                                                                                                                                                                                                                                       
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
