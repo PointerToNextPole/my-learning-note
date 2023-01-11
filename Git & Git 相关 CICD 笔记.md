@@ -1051,6 +1051,12 @@ git push -u origin master
 
 
 
+#### Git worktree
+
+// TODO 可以参考： [Git Worktree：解决分支依赖冲突的问题](https://zhuanlan.zhihu.com/p/41006726)
+
+
+
 #### git add
 
 - **`git add .`** ：提交所有<font color=FF0000>修改的</font>和<font color=FF0000>新建的</font>数据暂存区
