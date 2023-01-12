@@ -3521,7 +3521,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                       
+  >                                                                                                                                                                                                                                           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3540,7 +3540,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                       
+  >                                                                                                                                                                                                                                           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7859,7 +7859,7 @@ observer.disconnect();
 
 #### MutationObserver.MutationObserver()
 
-<font color=FF0000>DOM 规范中的 MutationObserver() 构造函数</font>——是 MutationObserver 接口内容的一部分——<font color=FF0000>**创建并返回一个新的观察器**</font>，它会在触发指定 DOM 事件时，调用指定的回调函数。<mark>MutationObserver 对 DOM 的观察不会立即启动；而必须先调用 observe() 方法来确定，要监听哪一部分的 DOM 以及要响应哪些更改</mark>。
+<font color=FF0000>DOM 规范中的 MutationObserver() 构造函数</font>——是 MutationObserver 接口内容的一部分——<font color=FF0000>**创建并返回一个新的观察器**</font>，它会在触发指定 DOM 事件时，调用指定的回调函数。<font color=LightSeaGreen>MutationObserver 对 DOM 的观察不会立即启动；而必须先调用 observe() 方法来确定，要监听哪一部分的 DOM 以及要响应哪些更改</font>。
 
 ##### 语法
 
@@ -7912,7 +7912,7 @@ MutationObserverInit 字典描述了 MutationObserver 的配置。因此，它�
 
 当调用 observe() 方法时，**<font color=FF0000 size=4>childList，attributes 或者 characterData 三个属性之中，至少有一个必须为 true</font>，否则会抛出 TypeError 异常**。
 
-- **attributeFilter：可选**，<font color=FF0000>要监视的特定属性名称的数组</font>。<mark>如果未包含此属性，则对所有属性的更改都会触发变动通知</mark>。<font color=FF0000>无默认值</font>。
+- **attributeFilter：可选**，<font color=FF0000>要监视的特定属性名称的数组</font>。<font color=LightSeaGreen>如果未包含此属性，则对所有属性的更改都会触发变动通知</font>。<font color=FF0000>无默认值</font>。
 
 - **attributeOldValue：可选**，当监视节点的属性改动时，将此属性设为 true 将记录任何有改动的属性的上一个值。有关观察属性更改和值记录的详细信息。<font color=FF0000>无默认值</font>。
 
@@ -7934,17 +7934,19 @@ MutationObserverInit 字典描述了 MutationObserver 的配置。因此，它�
 
 MutationObserver 的 <font color=FF0000>disconnect() 方法告诉观察者停止观察变动</font>。<font color=FF0000> **可以通过调用其observe()方法来重用观察者**</font>。
 
-- **语法**
+##### 语法
 
-  ```js
-  mutationObserver.disconnect()
-  ```
+```js
+mutationObserver.disconnect()
+```
 
-- **参数：**无
+**参数：**无
 
-- **返回值：**undefined
+**返回值：**undefined
 
-- **使用说明：**<font color=FF0000>如果被观察的元素被从DOM中移除，然后被浏览器的垃圾回收机制释放，此MutationObserver将同样被删除</font>。
+##### 使用说明
+
+<font color=FF0000>如果被观察的元素被从DOM中移除，然后被浏览器的垃圾回收机制释放，此MutationObserver将同样被删除</font>。
 
 摘自：[MDN - MutationObserver.disconnect()](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver/disconnect)
 
@@ -7952,16 +7954,17 @@ MutationObserver 的 <font color=FF0000>disconnect() 方法告诉观察者停止
 
 MutationObserver 的 takeRecords() 方法<font color=FF0000>**返回已检测到但尚未由观察者的回调函数处理的所有匹配DOM更改的列表，使变更队列保持为空**</font>。 此方法<font color=FF0000>**最常见的使用场景**是<font size=4>**在断开观察者之前立即获取所有未处理的更改记录**</font>，以便在停止观察者时可以处理任何未处理的更改</font>。
 
-- **语法**
+##### 语法
 
-  ```js
-  mutationRecords = mutationObserver.takeRecords()
-  ```
+```js
+mutationRecords = mutationObserver.takeRecords()
+```
 
-- **参数：**无
+**参数：**无
 
-- **返回值：**<font color=FF0000>返回一个MutationRecord 对象列表</font>，<mark>每个对象都描述了应用于DOM树某部分的一次改动</mark>。
-- **注意：**<font color=FF0000>调用takeRecords()后，已发生但未传递给回调的变更队列将保留为空</font>。
+**返回值：**<font color=FF0000>返回一个MutationRecord 对象列表</font>，<font color=LightSeaGreen>每个对象都描述了应用于DOM树某部分的一次改动</font>。
+
+> ⚠️ **注意：**<font color=FF0000>调用 takeRecords() 后，已发生但未传递给回调的变更队列将保留为空</font>。
 
 摘自：[MDN - MutationObserver.takeRecords()](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver/takeRecords)
 
@@ -7971,7 +7974,7 @@ MutationObserver 的 takeRecords() 方法<font color=FF0000>**返回已检测到
 
 摘自：[MDN - MutationRecord](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationRecord)
 
-**MutationRecord 对象具有以下属性：**
+##### MutationRecord 对象具有以下属性
 
 - **type：**变动类型，以下类型之一：
   - "attributes"：特性被修改了，
@@ -7985,27 +7988,31 @@ MutationObserver 的 takeRecords() 方法<font color=FF0000>**返回已检测到
 
 摘自：[现代 JavaScript 教程 - DOM 变动观察器（Mutation observer）](https://zh.javascript.info/mutation-observer)
 
-<font size=4>**补充：**</font>
+> 💡 **补充**
+>
+> MutationObserver 可以用来监听 DOM 的任何变化，比如子元素、属性和文本内容的变化。
+>
+> <font color=LightSeaGreen>概念上，它很接近事件，可以理解为 DOM 发生变动就会触发 Mutation Observer 事件</font>。但是，<font color=FF0000>它与事件有一个本质不同</font>：<font color=FF0000>**事件是同步触发**</font>，也就是说，<font color=FF0000>**DOM 的变动立刻会触发相应的事件**</font>；而 <font color=FF0000>Mutation Observer 则是 <font size=4>**异步触发**</font></font>，<font color=FF0000>DOM 发生变化并不会马上触发</font>，而是<font color=FF0000 size=4>**要等到当前所有 DOM 操作都结束才触发**</font>，执行时机有点类似于宏任务。
+>
+> <font color=red>这样设计是为了应对 DOM 变动频繁的特点</font>。<font color=LightSeaGreen>如果不这么做，当文档中连续插入 1000 个 \<p> 元素，就会连续触发 1000 个插入事件并执行每个事件的回调函数，这很可能造成浏览器的卡顿</font>。而 Mutation Observer 完全不同，只在 1000 个段落都插入结束后才会触发，而且只触发一次。
+>
+> **综上所述，Mutation Observer 有以下特点：**
+>
+> - 它等待所有脚本任务完成后，才会触发（宏任务）。
+> - 它把所有 DOM 变动记录封装成一个数组进行处理，而不是单独处理每个 DOM 变动。
+> - 它既可以观察 DOM 的所有类型变动，也可以指定只观察某一类型的变动。
+>
+> 摘自： [MutationObserver 和 IntersectionObserver](https://juejin.cn/post/6999950594207121444)。另外，这篇文章还有更详细的介绍（也比 MDN 中的容易理解），推荐阅读。由于只是简单了解，同时 当前的工作中完全找不到使用场景，所以，这里略。
 
-以下内容摘自 [MutationObserver 和 IntersectionObserver](https://juejin.cn/post/6999950594207121444)。另外，这篇文章还有更详细的介绍（也比 MDN 中的容易理解），推荐阅读。由于只是简单了解，同时 当前的工作中完全找不到使用场景，所以，这里略。
 
-MutationObserver 可以用来监听 DOM 的任何变化，比如子元素、属性和文本内容的变化。
-
-<mark>概念上，它很接近事件，可以理解为 DOM 发生变动就会触发 Mutation Observer 事件</mark>。但是，<font color=FF0000>它与事件有一个本质不同</font>：<font color=FF0000>**事件是同步触发**</font>，也就是说，<font color=FF0000>**DOM 的变动立刻会触发相应的事件**</font>；而 <font color=FF0000>Mutation Observer 则是 <font size=4>**异步触发**</font></font>，<font color=FF0000>DOM 发生变化并不会马上触发</font>，而是<font color=FF0000 size=4>**要等到当前所有 DOM 操作都结束才触发**</font>，执行时机有点类似于宏任务。
-
-<mark>这样设计是为了应对 DOM 变动频繁的特点</mark>。<mark>如果不这么做，当文档中连续插入 1000 个 \<p> 元素，就会连续触发 1000 个插入事件并执行每个事件的回调函数，这很可能造成浏览器的卡顿</mark>。而 Mutation Observer 完全不同，只在 1000 个段落都插入结束后才会触发，而且只触发一次。
-
-**综上所述，Mutation Observer 有以下特点：**
-
-- 它等待所有脚本任务完成后，才会触发（宏任务）。
-- 它把所有 DOM 变动记录封装成一个数组进行处理，而不是单独处理每个 DOM 变动。
-- 它既可以观察 DOM 的所有类型变动，也可以指定只观察某一类型的变动。
 
 #### Intersection Observer 
 
-> **注：**intersection 译为 交叉、相交，这可用于辅助记忆。
+> 💡 intersection 译为 交叉、相交，这可用于辅助记忆。
 
-IntersectionObserver 接口（<mark>从属于 Intersection Observer API </mark>）<font color=FF0000>提供了一种 <font size=4>**异步 观察 目标元素 与 其祖先元素 或 顶级文档视窗 ( viewport ) 交叉状态 的方法**</font></font>。<mark>祖先元素与视窗 ( viewport ) 被称为根 ( root ) </mark> **注：**这里 root 使用 下面有提及；另外，这里的 root 是一个相对概念，只表示祖先节点，不是绝对的根节点。
+IntersectionObserver 接口（<mark>从属于 Intersection Observer API </mark>）<font color=FF0000>提供了一种 <font size=4>**异步 观察 目标元素 与 其祖先元素 或 顶级文档视窗 ( viewport ) 交叉状态 的方法**</font></font>。<mark>祖先元素与视窗 ( viewport ) 被称为根 ( root ) </mark> 
+
+> 👀 这里 root 使用 下面有提及；另外，这里的 root 是一个相对概念，只表示祖先节点，不是绝对的根节点。
 
 <font color=FF0000>当一个 IntersectionObserver 对象被创建时，其被配置为监听根中一段给定比例的可见区域</font>。<font color=FF0000 size=4>**一旦 IntersectionObserver 被创建，则无法更改其配置**</font>，所以 **一个给定的观察者对象** 只能用来监听可见区域的  **特定变化值**；然而，你 <font color=FF0000>可以在同一个观察者对象中配置监听多个目标元素</font>。
 
@@ -8071,7 +8078,7 @@ var intersectionObserver = new IntersectionObserver(function(entries) {
 intersectionObserver.observe(document.querySelector('.scrollerFooter'));
 ```
 
-**注：**上面代码提到了 IntersectionObserverEntry.intersectionRatio
+> 👀 上面代码提到了 IntersectionObserverEntry.intersectionRatio
 
 > The `IntersectionObserverEntry` interface's <font color=FF0000>read-only</font> **`intersectionRatio`** property <font color=FF0000>tells you **how much of the target element is currently visible within the root's intersection ratio**, **as a value between 0.0 and 1.0**</font>
 >
@@ -8085,7 +8092,9 @@ intersectionObserver.observe(document.querySelector('.scrollerFooter'));
 
 **痛点：**<mark>以往我们 **实现图片懒加载** 往往是通过监听存放图片的滚动容器的滚动事件（ 即：scroll 事件）或者 整个页面的滚动事件，在滚动事件触发的时候调用图片元素的 getBoundingClientRect() 函数来进行可见性比对</mark>。<font color=FF0000>这种方式是在事件触发的时候同步进行，如果运算量过大极有可能会导致主线程阻塞，从而页面卡顿</font>。延伸开来，我们急迫地需要一个高性能的元素可见性变化解决方案，所以 IntersectionObserver 诞生了。（**注：**也就是说，<font color=FF0000>**IntersectionObserver 可用来实现图片懒加载**</font>）
 
-**概述：**<font color=FF0000>这个 API 可以 <font size=4>**观察目标元素与视口或指定根元素产生的交叉区的变化**</font>，所以这个 API 也叫做“交叉观察器”</font>。<mark>它和 MutationObserver 一样都是 <font color=FF0000>**异步的**</font>，不随着目标元素的滚动 同步触发</mark>。<font color=FF0000>发明者规定，IntersectionObserver 的实现，应该采用 requestIdleCallback() 的方式，即只有线程空闲下来，才会执行观察器</font>。这意味着，<mark>这个观察器的优先级非常低，只在其他任务执行完，浏览器有了空闲才会执行</mark>。**注：**异步 + 低优先级 所以高性能（似乎也可以称为：不会影响性能...）
+**概述：**<font color=FF0000>这个 API 可以 <font size=4>**观察目标元素与视口或指定根元素产生的交叉区的变化**</font>，所以这个 API 也叫做“交叉观察器”</font>。<font color=LightSeaGreen>它和 MutationObserver 一样都是 <font color=FF0000>**异步的**</font>，不随着目标元素的滚动 同步触发</font>。<font color=FF0000>发明者规定，IntersectionObserver 的实现，应该采用 requestIdleCallback() 的方式，即只有线程空闲下来，才会执行观察器</font>。这意味着，<font color=LightSeaGreen>这个观察器的优先级非常低，只在其他任务执行完，浏览器有了空闲才会执行</font>。
+
+> 👀 异步 + 低优先级 所以高性能（似乎也可以称为：不会影响性能...）
 
 摘自：[MutationObserver 和 IntersectionObserver](https://juejin.cn/post/6999950594207121444) 。文章中还有 root、rootmargin、threshold 的 介绍，内容比 MDN 清楚、具体很多，这里略。
 
@@ -8135,7 +8144,9 @@ document.querySelectorAll('mark').forEach(mark => { observer.observe(mark) })
 
 
 
-#### ResizeObserver 🧪
+#### ResizeObserver
+
+🧪
 
 > ##### Resize Observer API
 >
@@ -8155,7 +8166,7 @@ document.querySelectorAll('mark').forEach(mark => { observer.observe(mark) })
 >
 > 摘自：[MDN - Resize Observer API](https://developer.mozilla.org/zh-CN/docs/Web/API/Resize_Observer_API)
 
-ResizeObserver 接口 <font color=FF0000>可以监听到 Element 的 <font size=4>**内容区域**</font>（**注：**Mutation observer 是监听 DOM树 的改变）</font> **或** <font color=0000FF>SVGElement的边界框</font> <font size=4>**改变**</font>。<font color=FF0000>内容区域则需要减去内边距 padding</font>。（有关内容区域、内边距资料见 [盒子模型](https://developer.mozilla.org/docs/Learn/CSS/Introduction_to_CSS/Box_model)）
+ResizeObserver 接口 <font color=FF0000>可以监听到 Element 的 <font size=4>**内容区域**</font>（👀 Mutation observer 是监听 DOM树 的改变）</font> **或** <font color=0000FF>SVGElement的边界框</font> <font size=4>**改变**</font>。<font color=FF0000>内容区域则需要减去内边距 padding</font>。（有关内容区域、内边距资料见 [盒子模型](https://developer.mozilla.org/docs/Learn/CSS/Introduction_to_CSS/Box_model)）
 
 <font color=FF0000>ResizeObserver **避免了在自身回调中调整大小，从而触发的无限回调和循环依赖**</font>。它 <font color=FF0000>仅通过在后续帧中处理DOM中更深层次的元素来实现这一点</font>。<mark>如果（浏览器）遵循规范，**只会在 绘制前或布局后触发调用**</mark>。
 
@@ -8185,23 +8196,27 @@ resizeObserver.observe(document.querySelector('.box:nth-child(2)'));
 
 摘自：[MDN - ResizeObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/ResizeObserver)
 
+
+
 #### ResizeObserverEntry
 
 The `ResizeObserverEntry` interface represents the object passed to the `ResizeObserver()` constructor's callback function, which <font color=FF0000>allows you to access the new dimensions （尺寸） of the `Element` or `SVGElement` being observed</font>.
 
 ##### Properties
 
-- **ResizeObserverEntry.borderBoxSize**: <mark>只读</mark>, An object containing the  <font color=FF0000>new **border box** size</font> of the observed element when the callback is run. **注：**注意 和 contentBoxSize 的区别
+- **ResizeObserverEntry.borderBoxSize**: <mark>只读</mark>，An object containing the  <font color=FF0000>new **border box** size</font> of the observed element when the callback is run. 
 
-- **ResizeObserverEntry.contentBoxSize**: <mark>只读</mark>, An object containing the <font color=FF0000>new **content box** size</font> of the observed element when the callback is run.
+  > 👀 注意 和 contentBoxSize 的区别
 
-- **ResizeObserverEntry.devicePixelContentBoxSize**: <mark>只读</mark>, An object containing the <font color=FF0000>new content box size in device pixels</font> of the observed element when the callback is run.
+- **ResizeObserverEntry.contentBoxSize**: <mark>只读</mark>，An object containing the <font color=FF0000>new **content box** size</font> of the observed element when the callback is run.
 
-- **ResizeObserverEntry.contentRect**: <mark>只读</mark>, <font color=FF0000>**A `DOMRectReadOnly` object**</font> （**注：** `getBoundingClientRect` 返回值就是一个 `DOMRect` ，而 `DOMRect` 继承自 `DOMRectReadOnly` ，上面有做笔记 [[#DOMRect]] / [[#DOMRectReadOnly]]）<font color=FF0000>**containing the new size of the observed element**</font> when the callback is run. 
+- **ResizeObserverEntry.devicePixelContentBoxSize**: <mark>只读</mark>，An object containing the <font color=FF0000>new content box size in device pixels</font> of the observed element when the callback is run.
+
+- **ResizeObserverEntry.contentRect**: <mark>只读</mark>，<font color=FF0000>**A `DOMRectReadOnly` object**</font> （👀  `getBoundingClientRect` 返回值就是一个 `DOMRect` ，而 `DOMRect` 继承自 `DOMRectReadOnly` ，上面有做笔记 [[#DOMRect]] / [[#DOMRectReadOnly]]）<font color=FF0000>**containing the new size of the observed element**</font> when the callback is run. 
 
   Note that <mark>this is better supported than the above two properties</mark>, but it is left over from an earlier implementation of the Resize Observer API, is still included in the spec for web compat reasons, and may be deprecated in future versions.
 
-- **ResizeObserverEntry.target**: <mark>只读</mark>, <font color=FF0000>A reference to the `Element` or `SVGElement` being observed</font>.
+- **ResizeObserverEntry.target**: <mark>只读</mark>，<font color=FF0000>A reference to the `Element` or `SVGElement` being observed</font>.
 
 ##### Methods
 
@@ -8214,7 +8229,9 @@ The `ResizeObserverEntry` interface represents the object passed to the `ResizeO
 #### PerformanceObserver 性能监测对象
 
 PerformanceObserver <font color=FF0000>用于监测性能度量事件</font>，<mark>在浏览器的性能时间轴记录下一个新的 performance entries  的时候将会被通知</mark> 。
-注意：<mark>此特性在 <font color=FF0000>**Web Worker**</font> 中可用</mark>。**注：**performance entries 是 Performance API 中的内容，详见下面 [[#Performance API]]
+注意：<mark>此特性在 <font color=FF0000>**Web Worker**</font> 中可用</mark>。
+
+> 👀 performance entries 是 Performance API 中的内容，详见下面 [[#Performance API]]
 
 ##### 构造函数
 
@@ -8254,7 +8271,7 @@ observer2.observe( { entryTypes: ["measure"] } )
 
 #### Performance API
 
-> 👀 注：当时注意到 Performance API，是因为“首屏渲染优化”，就按习惯搜起了 MDN ...看到后面发现， 自己不应该在不了解背景的情况下，一上来就看 API，这样很容易看懵，而且看了没怎么用也就忘了；所以，如果之后想要复习这部分的内容，可以先看看后面的 [[#Performance Timeline 介绍]] 了解下背景。
+> 👀 当时注意到 Performance API，是因为“首屏渲染优化”，就按习惯搜起了 MDN ...看到后面发现， 自己不应该在不了解背景的情况下，一上来就看 API，这样很容易看懵，而且看了没怎么用也就忘了；所以，如果之后想要复习这部分的内容，可以先看看后面的 [[#Performance Timeline 介绍]] 了解下背景。
 
 High Resolution Time 标准定义了 Performance 接口，该接口支持应用程序中客户端的延时测量。<font color=FF0000>Performance 接口被认为是高采样率的</font>，因为其<font color=FF0000>精确度可达千分之一毫秒</font>（受硬件或软件限制）。这些接口支持许多使用情形，包括计算帧速率（在动画中可能很重要）和基准测试（例如加载资源的时间）。
 
@@ -8278,7 +8295,7 @@ DOMHighResTimeStamp 的单位是毫秒，应精确到 5 µs（微秒）（**注�
 
 - **now() 方法**：返回一个 DOMHighResTimeStamp，其值取决于 navigation start 和 作用域。如果作用域是 window ，则值是创建 ***浏览器上下文*** 的时间；如果作用域是 worker，则值是创建 worker 的时间。
 
-  > **注：**在 Chrome 和 Safari 中测试，now 方法返回的均是当前标签页 ( Tab ) 打开的时间（单位是毫秒）。所以，这里所说的 ***浏览器上下文***  <mark>**感觉应该**</mark> 和 ***标签页*** 一一对应，即：打开一个 ***标签页***，生成一个 ***浏览器上下文***
+  > 👀 在 Chrome 和 Safari 中测试，now 方法返回的均是当前标签页 ( Tab ) 打开的时间（单位是毫秒）。所以，这里所说的 ***浏览器上下文***  <mark>**感觉应该**</mark> 和 ***标签页*** 一一对应，即：打开一个 ***标签页***，生成一个 ***浏览器上下文***
 
 - **toJSON() 方法**：返回 Performance 对象的序列化结果，包含可以被序列化的属性。
 
@@ -8300,15 +8317,15 @@ DOMHighResTimeStamp 的单位是毫秒，应精确到 5 µs（微秒）（**注�
 
 - **PerformanceMark**：条目类型为 "mark" 的 PerformanceEntry 抽象接口，该类型的条目通过调用 mark() 将命名的DOMHighResTimeStamp mark 添加到浏览器的性能时间轴来创建
 
-  > **注：**这里的 mark() ，即 Performance.mark()
+  > 👀 这里的 mark() ，即 Performance.mark()
 
 - **PerformanceMeasure**：条目类型为 "measure" 的 PerformanceEntry 抽象接口，该类型的条目通过调用 measure() 在浏览器的性能时间轴的两个标记之间添加一个命名的 DOMHighResTimeStamp measure 来创建
 
-  > **注：**这里的 measure() ，即 Performance.measure()
+  > 👀 这里的 measure() ，即 Performance.measure()
 
 - **PerformanceNavigationTiming**：提供方法和属性，用于 <font color=FF0000>存储和检索</font> 有关 <font color=FF0000>浏览器文档导航事件 的高采样率时间戳或其他指标</font>。
 
-  > **注：**即 Navigation Timing API
+  > 👀 即 Navigation Timing API
   >
   > 另外，PerformanceResourceTiming 继承自 PerformanceEntry
   >
@@ -8384,7 +8401,9 @@ Performance 接口<font color=FF0000>**可以获取到当前页面中与性能�
 
 - <font color=FF0000>**Performance.getEntries()**</font>：基于给定的 filter 返回一个 PerformanceEntry 对象的列表。
 
-  > **注：**filter 是 getEntries 方法传入的参数，语法如下。另外，相对后面的 getEntriesByName 和 getEntriesByType 方法，getEntries 方法传入 filter 要更灵活，泛用性更强些。
+  > 💡 补充
+  >
+  > filter 是 getEntries 方法传入的参数，语法如下。另外，相对后面的 getEntriesByName 和 getEntriesByType 方法，getEntries 方法传入 filter 要更灵活，泛用性更强些。
   >
   > ```js
   > // 取全部
@@ -8403,7 +8422,7 @@ Performance 接口<font color=FF0000>**可以获取到当前页面中与性能�
 
 - <font color=FF0000>**Performance.mark()**</font>：根据给出 name 值，<font color=FF0000>在 ***浏览器的性能输入缓冲区*** 中创建一个相关的 timestamp</font>
 
-  > **注：** name 是 mark 方法中指定的参数
+  > 💡 name 是 mark 方法中指定的参数
   >
   > ```js
   > performance.mark(name);
@@ -8469,11 +8488,11 @@ PerformanceTiming 接口不包含任何继承属性
 
 - **PerformanceTiming.domLoading**：只读，是一个无符号long long 型的毫秒数。返回 <font color=FF0000>当前网页 DOM 结构开始解析</font>时（即 <mark style="background: aqua"><font size=4>**Document.readyState 属性变为 “loading”**</font></mark>、相应的 readystatechange 事件触发时）的 Unix 毫秒时间戳
 
-- **PerformanceTiming.domInteractive**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>**当前网页 DOM 结构结束解析、开始加载内嵌资源时**</font>（即 ]<mark style="background: aqua"><font  size=4>**Document.readyState 属性变为 “interactive”**</font></mark>、相应的 readystatechange 事件触发时）的 Unix 毫秒时间戳
+- **PerformanceTiming.domInteractive**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>**当前网页 DOM 结构结束解析、开始加载内嵌资源时**</font>（即 <mark style="background: aqua"><font  size=4>**Document.readyState 属性变为 “interactive”**</font></mark>、相应的 readystatechange 事件触发时）的 Unix 毫秒时间戳
 
 - **PerformanceTiming.domContentLoadedEventStart**：只读，是一个无符号 long long 型的毫秒数。返回当解析器发送 DOMContentLoaded 事件，即所有需要被执行的脚本已经被解析时的 Unix 毫秒时间戳
 
-- **PerformanceTiming.domContentLoadedEventEnd**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>当所有需要立即执行的脚本已经被执行</font>（不论执行顺序。**注：**即， 非 async 的脚本 ）时的 Unix 毫秒时间戳
+- **PerformanceTiming.domContentLoadedEventEnd**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>当所有需要立即执行的脚本已经被执行</font>（不论执行顺序。👀 即， 非 async 的脚本 ）时的 Unix 毫秒时间戳
 
 - **PerformanceTiming.domComplete**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>**当前文档解析完成**</font>，即 <mark style="background: aqua"><font size=4>**Document.readyState 变为 ”complete“**</font></mark> ，且相对应的 readystatechange 被触发时的 Unix 毫秒时间戳
 
@@ -8499,7 +8518,7 @@ mark 事件可以指定任意的名字并且可以在放在应用的任何位置
 
 PerformanceEntry 对象代表了 performance 时间列表中的单个 metric 数据。每一个 performance entry 都可以在应用运行过程中通过手动构建 mark 或者 measure （ 例如调用 `mark()` 方法 ） 生成。此外，Performance Entries 在资源加载的时候，也会被动生成（ 例如：图片、script、CSS 等资源加载）
 
-> 👀 一点总结：
+> 💡 一点总结：
 >
 > performanceEntry 通过 `getEntries( filter )`、`getEntriesByName( name, entryType )`、`getEntriesByType(enterType )` 检索，通过 `mark( name )` 创建，`clearMarks( name )` 移除。
 
@@ -8574,7 +8593,7 @@ function measurePerf() {
 { "name": "endWork", "entryType": "mark", "startTime": 2050.5150000099093, "duration": 0 }
 ```
 
-> **注：**上面的打印经过了压缩，实际打印结果自行运行
+> 👀 上面的打印经过了压缩，实际打印结果自行运行
 
 注意其中，entryType 有  navigation、resource、mark、paint（其中可见：name 有 first-paint ( FP ) 和 first-contentful-paint ( FCP ) ）。另外，FP 表示：<font color=FF0000>页面上 **第一个像素落点** 的时候</font>；FCP 表示：<font color=FF0000>页面上 **开始有内容绘制** 的时候</font>
 
@@ -8695,7 +8714,7 @@ The ReportingObserver interface of the Reporting API <font color=FF0000>allows y
 
 对于JS中的基本数据类型，如 String、Number、Boolean、Undefined、Null 是存在于栈内存中的，在栈内存中储存变量名及相应的值。而Object、Array、Function 存在于堆内存中，在堆内存中储存变量名及引用位置。
 
-> 👀 **注：**这部分的内容可以参考 [[JS 机制与原理#JS 中变量的存储]] 以及 [[JS 机制与原理#常见垃圾回收算法与 JavaScript 中垃圾回收原理#JavaScript 垃圾回收]] 中的相关内容。
+> 👀 这部分的内容可以参考 [[JS 机制与原理#JS 中变量的存储]] 以及 [[JS 机制与原理#常见垃圾回收算法与 JavaScript 中垃圾回收原理#JavaScript 垃圾回收]] 中的相关内容。
 
 
 
@@ -8742,40 +8761,40 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 
 要从其他非blob对象和数据构造一个 Blob，请使用 Blob() 构造函数。要创建一个 blob 数据的子集 blob，请使用 slice() 方法（**注：**类似于切片）。要获取用户文件系统上的文件对应的 Blob 对象，请参阅 File 文档。
 
-- **构造函数**
+##### 构造函数
 
-  **Blob(blobParts[, options])**：返回一个新创建的 Blob 对象，其内容由参数中给定的数组串联组成。
+**Blob(blobParts[, options])**：返回一个新创建的 Blob 对象，其内容由参数中给定的数组串联组成。
+
+> **参数**
+>
+> - **array**（即上面的 blobParts，这里的 blobParts 必须是数组） <font color=FF0000>是一个由 **ArrayBuffer、ArrayBufferView、Blob、DOMString** 等对象构成的 Array</font> ，<font color=FF0000>或者其他类似对象的混合体</font>，它将会被放进 Blob。<font color=FF0000>**DOMStrings 会被编码为 UTF-8**</font>。
+> - **options** 是一个 <font color=FF0000>**可选的 BlobPropertyBag 字典**</font>，它可能会指定如下两个属性：
+>   - **type：**<font color=FF0000>**默认值为 ""**</font>，它代表了将会被放入到 blob 中的<font color=FF0000>**数组内容**</font>（注：即对应了上面的Array） 的 <font color=FF0000 size=4>**MIME 类型**</font>。
+>   - **endings：👎 ** <font color=FF0000>默认值为 "transparent"，用于指定包含行结束符\n的字符串如何被写入</font>。 它是以下两个值中的一个："native"，代表行结束符会被更改为适合宿主操作系统文件系统的换行符，或者 "transparent"，代表会保持blob中保存的结束符不变
+>
+> 摘自：[MDN - Blob()](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob/Blob)
+
+###### 属性
+
+- **Blob.size：**<font color=FF0000>只读</font>，Blob 对象中所包含数据的大小（字节）。
+- **Blob.type：**<font color=FF0000>只读</font>，一个字符串，<font color=FF0000>表明该 Blob 对象所包含数据的 MIME 类型</font>。如果类型未知，则该值为空字符串。
+
+###### 方法
+
+- **Blob.slice([start[, end[, contentType]]])**：返回一个新的 Blob 对象，包含了源 Blob 对象中指定范围内的数据。
 
   > **参数**
   >
-  > - **array**（即上面的 blobParts，这里的 blobParts 必须是数组） <font color=FF0000>是一个由 **ArrayBuffer、ArrayBufferView、Blob、DOMString** 等对象构成的 Array</font> ，<font color=FF0000>或者其他类似对象的混合体</font>，它将会被放进 Blob。<font color=FF0000>**DOMStrings 会被编码为 UTF-8**</font>。
-  > - **options** 是一个 <font color=FF0000>**可选的 BlobPropertyBag 字典**</font>，它可能会指定如下两个属性：
-  >   - **type：**<font color=FF0000>**默认值为 ""**</font>，它代表了将会被放入到 blob 中的<font color=FF0000>**数组内容**</font>（注：即对应了上面的Array） 的 <font color=FF0000 size=4>**MIME 类型**</font>。
-  >   - **endings：👎 ** <font color=FF0000>默认值为 "transparent"，用于指定包含行结束符\n的字符串如何被写入</font>。 它是以下两个值中的一个："native"，代表行结束符会被更改为适合宿主操作系统文件系统的换行符，或者 "transparent"，代表会保持blob中保存的结束符不变
+  > - **start：**可选，这个参数代表 Blob 里的下标，表示第一个会被会被拷贝进新的 Blob 的字节的起始位置。如果你传入的是一个负数，那么这个偏移量将会从数据的末尾从后到前开始计算。举例来说，-10 将会是  Blob 的倒数第十个字节。它的<font color=FF0000>**默认值是0**</font>， <mark>如果你传入的start的长度大于源 Blob 的长度，那么返回的将会是一个长度为 0 并且不包含任何数据的一个 Blob 对象</mark>
+  > - **end：**可选，这个参数代表的是 Blob 的一个下标，这个下标 -1 的对应的字节将会是被拷贝进新的Blob 的最后一个字节。如果你传入了一个负数，那么这个偏移量将会从数据的末尾从后到前开始计算。举例来说， -10 将会是 Blob 的倒数第十个字节。它的<font color=FF0000>默认值就是它的原始长度 ( size )</font>
+  > - **contentType：**可选，<font color=FF0000>**给新的 Blob 赋予一个新的文档类型**</font>。这将会把它的 type 属性设为被传入的值。它的<font color=FF0000>默认值是一个空的字符串</font>。
   >
-  > 摘自：[MDN - Blob()](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob/Blob)
+  > 摘自：[MDN - Blob.slice](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob/slice)
 
-- **属性：**
+- **Blob.stream()**：<font color=FF0000>返回一个能读取 blob 内容的 **ReadableStream**</font>。
 
-  - **Blob.size：**<font color=FF0000>只读</font>，Blob 对象中所包含数据的大小（字节）。
-  - **Blob.type：**<font color=FF0000>只读</font>，一个字符串，<font color=FF0000>表明该 Blob 对象所包含数据的 MIME 类型</font>。如果类型未知，则该值为空字符串。
-
-- **方法：**
-
-  - **Blob.slice([start[, end[, contentType]]])**：返回一个新的 Blob 对象，包含了源 Blob 对象中指定范围内的数据。
-
-    > **参数**
-    >
-    > - **start：**可选，这个参数代表 Blob 里的下标，表示第一个会被会被拷贝进新的 Blob 的字节的起始位置。如果你传入的是一个负数，那么这个偏移量将会从数据的末尾从后到前开始计算。举例来说，-10 将会是  Blob 的倒数第十个字节。它的<font color=FF0000>**默认值是0**</font>， <mark>如果你传入的start的长度大于源 Blob 的长度，那么返回的将会是一个长度为 0 并且不包含任何数据的一个 Blob 对象</mark>
-    > - **end：**可选，这个参数代表的是 Blob 的一个下标，这个下标 -1 的对应的字节将会是被拷贝进新的Blob 的最后一个字节。如果你传入了一个负数，那么这个偏移量将会从数据的末尾从后到前开始计算。举例来说， -10 将会是 Blob 的倒数第十个字节。它的<font color=FF0000>默认值就是它的原始长度 ( size )</font>
-    > - **contentType：**可选，<font color=FF0000>**给新的 Blob 赋予一个新的文档类型**</font>。这将会把它的 type 属性设为被传入的值。它的<font color=FF0000>默认值是一个空的字符串</font>。
-    >
-    > 摘自：[MDN - Blob.slice](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob/slice)
-
-  - **Blob.stream()**：<font color=FF0000>返回一个能读取 blob 内容的 **ReadableStream**</font>。
-
-  - **Blob.text()**：<font color=FF0000>返回一个 **Promise**</font> 且<font color=FF0000>包含 blob 所有内容的 **UTF-8 格式**的 USVString</font>。
-  - **Blob.arrayBuffer()**：<font color=FF0000>返回一个 **Promise**</font> 且<font color=FF0000>包含 blob 所有内容的**二进制格式**的 ArrayBuffer</font>
+- **Blob.text()**：<font color=FF0000>返回一个 **Promise**</font> 且<font color=FF0000>包含 blob 所有内容的 **UTF-8 格式**的 USVString</font>。
+- **Blob.arrayBuffer()**：<font color=FF0000>返回一个 **Promise**</font> 且<font color=FF0000>包含 blob 所有内容的**二进制格式**的 ArrayBuffer</font>
 
 摘自：[MDN - Blob](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob) 
 
@@ -8795,11 +8814,11 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 
 其中File对象<font color=FF0000>可以是来自用户在一个`<input>`元素上选择文件后返回的FileList对象</font>，也可以来自拖放操作生成的 DataTransfer对象，还可以是来自在一个HTMLCanvasElement上执行mozGetAsFile()方法后返回结果。
 
-⚠️ **重要提示：**<font color=LightSeaGreen>FileReader 仅用于以安全的方式从用户（远程）系统读取文件内容，它**不能用于从文件系统中按路径名简单地读取文件**</font>。 <font color=FF0000>要在 JavaScript 中按路径名读取文件，应使用标准Ajax解决方案进行服务器端文件读取，如果读取跨域，则使用CORS权限。</font>
+> ⚠️ **重要提示：**<font color=LightSeaGreen>FileReader 仅用于以安全的方式从用户（远程）系统读取文件内容，它**不能用于从文件系统中按路径名简单地读取文件**</font>。 <font color=FF0000>要在 JavaScript 中按路径名读取文件，应使用标准Ajax解决方案进行服务器端文件读取，如果读取跨域，则使用CORS权限。</font>
 
 ##### 构造函数
 
-- **FileReader()：**返回一个新构造的 FileReader。
+- **FileReader()：**返回一个新构造的 FileReader
 
 有关详细信息和示例，请参阅[如何在web应用程序中使用文件](https://developer.mozilla.org/zh-CN/Using_files_from_web_applications)。
 
