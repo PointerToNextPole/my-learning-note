@@ -2885,7 +2885,7 @@ const myPromise =
   .then(handleFulfilledC,handleRejectedC);
 ```
 
-**替代方案：**
+###### 替代方案
 
 > 👀 这样就不用写多个 handleRejected 了
 
@@ -2898,29 +2898,31 @@ const myPromise =
   .catch(handleRejectedAny);
 ```
 
-**在使用 Promise 时，会有以下约定：**
+###### 在使用 Promise 时，会有以下约定
 
 - 在本轮 事件循环 运行完成之前，回调函数是不会被调用的。
 - 即使异步操作已经完成（成功或失败），在这之后通过 then() 添加的回调函数也会被调用。
 - <font color=FF0000>通过**多次调用 then()** 可以**添加多个回调函数**，它们会按照插入顺序进行执行</font>。
 
-##### Promise 很棒的一点就是链式调用（chaining）
+###### Promise 很棒的一点就是链式调用 ( chaining )
 
 <font color=FF0000>连续执行两个或者多个异步操作是一个常见的需求，在上一个操作执行成功之后，开始下一个的操作，并带着上一步操作所返回的结果</font>。我们可以通过创造一个 **Promise 链**来实现这种需求。<font color=FF0000>then() 函数会返回一个**和原来不同的新的 Promise**</font>。
 
-> ⚠️ **注意：**执行的函数一定要有返回值，否则，callback 将无法获取上一个 Promise 的结果（如果使用箭头函数，`() => x` 比 `() => { return x; }` 更简洁一些，但后一种保留 return 的写法才支持使用多个语句）
+> ⚠️ 执行的函数一定要有返回值，否则，callback 将无法获取上一个 Promise 的结果（如果使用箭头函数，`() => x` 比 `() => { return x; }` 更简洁一些，但后一种保留 return 的写法才支持使用多个语句）
 
-**补充：**因为 <font color=FF0000>Promise.prototype.then 和 Promise.prototype.catch 方法 **返回的是 promise**， 所以它们可以被链式调用</font>。
+> 💡 补充：
+>
+> 因为 <font color=FF0000>Promise.prototype.then 和 Promise.prototype.catch 方法 **返回的是 promise**， 所以它们可以被链式调用</font>。
+>
+> ![https://mdn.mozillademos.org/files/8633/promises.png](https://i.loli.net/2021/01/05/WDzh3PxfvlRNqCp.png)
+>
+> 链式调用中的 promise 们就像俄罗斯套娃一样，是嵌套起来的，但又像是一个栈，每个都必须从顶端被弹出。链式调用中的第一个 promise 是嵌套最深的一个，也将是第一个被弹出的。
 
-![原链接：https://mdn.mozillademos.org/files/8633/promises.png](https://i.loli.net/2021/01/05/WDzh3PxfvlRNqCp.png)
-
-链式调用中的 promise 们就像俄罗斯套娃一样，是嵌套起来的，但又像是一个栈，每个都必须从顶端被弹出。链式调用中的第一个 promise 是嵌套最深的一个，也将是第一个被弹出的。
-
-<font size=4>**构造函数：**</font>
+##### 构造函数
 
 **Promise()：**<font color=FF0000>创建一个新的 Promise 对象</font>。该构造函数主要用于包装还没有添加 promise 支持的函数。
 
-<font size=4>**组合：**</font>
+##### 组合
 
 <font color=FF0000>Promise.all(iterable) 和 Promise.race(iterable) 是并行运行异步操作的两个组合式工具</font>。
 
@@ -2938,128 +2940,147 @@ Promise.all([func1(), func2(), func3()])
 .then(result3 => { /* use result3 */ });
 ```
 
-<font size=4>**静态方法**</font>
+##### 静态方法
 
-- <font size=4>**Promise.all(iterable)：**</font><font color=FF0000>这个方法返回一个新的 promise对象：**该promise对象 在 iterable参数对象里（的） <font size=4>所有 promise对象都成功的时候才会触发成功</font>**，**一旦有任何一个 iterable 里面的 promise 对象失败则立即触发该promise对象的失败**</font>。（<mark>注：感觉说成 “当所有的 promise 都 fulfilled 才会 返回 promise” 更容易理解些</mark>）
+###### Promise.all(iterable)
+
+<font color=FF0000>这个方法返回一个新的 promise对象：**该promise对象 在 iterable参数对象里（的） <font size=4>所有 promise对象都成功的时候才会触发成功</font>**，**一旦有任何一个 iterable 里面的 promise 对象失败则立即触发该promise对象的失败**</font>。（<mark>注：感觉说成 “当所有的 promise 都 fulfilled 才会 返回 promise” 更容易理解些</mark>）
+
+这个新的 promise 对象在 <font color=FF0000>**触发成功状态**</font> 以后，<font color=FF0000>会把一个包含 iterable 里所有 promise 返回值的数组作为成功回调的返回值</font>，<font color=FF0000 size=4>**顺序跟iterable的顺序保持一致**</font>； **如果这个新的 promise对象 <font color=FF0000>触发了失败状态</font>，<font color=FF0000>它会把 iterable 里第一个触发失败的 promise对象的错误信息作为它的失败错误信息</font>**。Promise.all方法常被用于处理多个promise对象的状态集合。（可以参考jQuery.when方法---译者注）
+
+###### Promise.allSettled(iterable)
+
+等到所有promises都 **已敲定（settled）**（<font color=FF0000>每个promise都已兑现（fulfilled）或已拒绝（rejected）</font>）。 **返回一个 promise**，该 promise 在所有 promise 完成后完成。<font color=FF0000>并带有一个对象数组，每个对象对应每个promise的结果</font>。
+
+**补充：**摘自：[MDN - Promise.allSettled()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled)
+
+<font color=FF0000>Promise.allSettled() 方法返回一个 在所有给定的promise 都已经 fulfilled 或 rejected 后的 promise，**并带有一个对象数组，每个对象表示对应的 promise 结果**。</font>
+
+<mark style="background: aqua">当您有多个彼此不依赖的异步任务成功完成时，或者您总是想知道每个promise的结果时，通常使用它。</mark>
+
+<mark>相比之下，Promise.all() 更适合彼此相互依赖或者在其中任何一个reject时立即结束。</mark>
+
+- **语法**
+
+  ```js
+  Promise.allSettled(iterable);
+  ```
+
+- **参数**
+
+  **iterable：**一个可迭代的对象，例如Array，其中<font color=FF0000>每个成员都是 Promise</font>。
+
+- **返回值**
+  一旦所指定的 promises 集合中每一个 promise 已经完成，<font color=FF0000>无论是成功的达成或被拒绝，未决议的 Promise将被异步完成</font>。那时，所返回的 promise 的处理器将传入一个数组作为输入，该数组包含原始 promises 集中每个 promise 的结果。
+
+  <mark>对于每个结果对象，都有一个 status 字符串。如果它的值为 fulfilled，则结果对象上存在一个 value 。如果值为 rejected，则存在一个 reason 。value（或 reason ）反映了每个 promise 决议（或拒绝）的值</mark>。
+
+- **示例：**
+
+  ```js
+  const promise1 = Promise.resolve(3);
+  const promise2 = new Promise((resolve, reject) => setTimeout(reject, 100, 'foo'));
+  const promises = [promise1, promise2];
   
-  这个新的 promise 对象在 <font color=FF0000>**触发成功状态**</font> 以后，<font color=FF0000>会把一个包含 iterable 里所有 promise 返回值的数组作为成功回调的返回值</font>，<font color=FF0000 size=4>**顺序跟iterable的顺序保持一致**</font>； **如果这个新的 promise对象 <font color=FF0000>触发了失败状态</font>，<font color=FF0000>它会把 iterable 里第一个触发失败的 promise对象的错误信息作为它的失败错误信息</font>**。Promise.all方法常被用于处理多个promise对象的状态集合。（可以参考jQuery.when方法---译者注）
+  Promise.allSettled(promises).
+    then((results) => results.forEach((result) => console.log(result.status)));
+  // expected output:
+  // "fulfilled"
+  // "rejected"
+  ```
+  
+- **群友写的简单实现：**
 
-- <font size=4>**Promise.allSettled(iterable)：**</font>等到所有promises都 **已敲定（settled）**（<font color=FF0000>每个promise都已兑现（fulfilled）或已拒绝（rejected）</font>）。 **返回一个 promise**，该 promise 在所有 promise 完成后完成。<font color=FF0000>并带有一个对象数组，每个对象对应每个promise的结果</font>。
-
-  **补充：**摘自：[MDN - Promise.allSettled()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled)
-
-  <font color=FF0000>Promise.allSettled() 方法返回一个 在所有给定的promise 都已经 fulfilled 或 rejected 后的 promise，**并带有一个对象数组，每个对象表示对应的 promise 结果**。</font>
-
-  <mark style="background: aqua">当您有多个彼此不依赖的异步任务成功完成时，或者您总是想知道每个promise的结果时，通常使用它。</mark>
-
-  <mark>相比之下，Promise.all() 更适合彼此相互依赖或者在其中任何一个reject时立即结束。</mark>
-
-  - **语法**
-
-    ```js
-    Promise.allSettled(iterable);
-    ```
-
-  - **参数**
-
-    **iterable：**一个可迭代的对象，例如Array，其中<font color=FF0000>每个成员都是 Promise</font>。
-
-  - **返回值**
-    一旦所指定的 promises 集合中每一个 promise 已经完成，<font color=FF0000>无论是成功的达成或被拒绝，未决议的 Promise将被异步完成</font>。那时，所返回的 promise 的处理器将传入一个数组作为输入，该数组包含原始 promises 集中每个 promise 的结果。
-
-    <mark>对于每个结果对象，都有一个 status 字符串。如果它的值为 fulfilled，则结果对象上存在一个 value 。如果值为 rejected，则存在一个 reason 。value（或 reason ）反映了每个 promise 决议（或拒绝）的值</mark>。
-
-  - **示例：**
-
-    ```js
-    const promise1 = Promise.resolve(3);
-    const promise2 = new Promise((resolve, reject) => setTimeout(reject, 100, 'foo'));
-    const promises = [promise1, promise2];
-    
-    Promise.allSettled(promises).
-      then((results) => results.forEach((result) => console.log(result.status)));
-    // expected output:
-    // "fulfilled"
-    // "rejected"
-    ```
-    
-  - **群友写的简单实现：**
-
-    ```js
-    const promiseAllSettled = (arr) => {
-      const res = []
-      let count = 0
-      return new Promise((resolve, reject) => {
-        arr.forEach((item, index) => {
-          item().then(r => Promise.resolve(r))
-          .catch(e => Promise.resolve(e))
-          .then(r => {
-            res[index] = r
-            if(++count === arr.length) { resolve(res) }
-          })
+  ```js
+  const promiseAllSettled = (arr) => {
+    const res = []
+    let count = 0
+    return new Promise((resolve, reject) => {
+      arr.forEach((item, index) => {
+        item().then(r => Promise.resolve(r))
+        .catch(e => Promise.resolve(e))
+        .then(r => {
+          res[index] = r
+          if(++count === arr.length) { resolve(res) }
         })
       })
-    }
-    ```
+    })
+  }
+  ```
 
-- <font size=4>**Promise.any(iterable)：**</font>接收一个Promise对象的集合，<font color=FF0000>当其中的一个 promise **成功**，**就返回那个成功的promise的值**</font>。（**注：**注意和 Promise.race 的区别。另外，有点类似于 Array.prototype.some() ）
+###### Promise.any(iterable)
 
-- <font size=4>**Promise.race(iterable)：**</font>当 iterable参数 里的 <font color=FF0000>任意一个子promise被**成功或失败**后</font>，父promise 马上也会用 子promise 的成功返回值 或 失败详情作为参数调用 父promise绑定的相应句柄，并返回该promise对象<mark>（注：这里说的让人困惑，看下面的详解）</mark>。
+接收一个Promise对象的集合，<font color=FF0000>当其中的一个 promise **成功**，**就返回那个成功的promise的值**</font>。
 
-  **补充：**摘自 [MDN - Promise.race()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/race)
+> 👀 注意和 Promise.race 的区别。另外，有点类似于 Array.prototype.some() 
 
-  Promise.race(iterable) 方法返回一个 promise，<font color=FF0000 size=4>**一旦迭代器中的 某个promise解决或拒绝，返回的 promise就会解决或拒绝**</font>。（**注：**可以理解为：任意一个promise settled了，直接返回这个promise的状态( fulfilled / rejected )作为整个 iterable 的结果）
+###### Promise.race(iterable)
 
-  - **语法：**
+当 iterable参数 里的 <font color=FF0000>任意一个子promise被**成功或失败**后</font>，父promise 马上也会用 子promise 的成功返回值 或 失败详情作为参数调用 父promise绑定的相应句柄，并返回该promise对象<mark>（注：这里说的让人困惑，看下面的详解）</mark>。
 
-    ```js
-    Promise.race(iterable);
-    ```
+>  💡**补充**
+>
+> Promise.race(iterable) 方法返回一个 promise，<font color=FF0000 size=4>**一旦迭代器中的 某个promise解决或拒绝，返回的 promise就会解决或拒绝**</font>。（👀 可以理解为：任意一个promise settled了，直接返回这个promise的状态( fulfilled / rejected )作为整个 iterable 的结果）
+>
+> ###### 语法
+>
+> ```js
+> Promise.race(iterable);
+> ```
+>
+> **参数**
+>
+> - iterable：可迭代对象，类似Array。详见 iterable。
+>
+> **返回值：**一个待定的 Promise 只要给定的迭代中的一个promise解决或拒绝，就采用第一个promise的值作为它的值，从而异步地解析或拒绝（一旦堆栈为空）。
+>
+> ###### 描述
+>
+> race 函数返回一个 Promise，它将与第一个传递的 promise 相同的完成方式被完成。它可以是完成（ resolves ），也可以是失败（rejects），这要取决于第一个完成的方式是两个中的哪个。
+>
+> <font color=FF0000>如果传的迭代是空的，则返回的 promise 将永远等待</font>。<font color=FF0000>如果迭代包含一个或多个非承诺值和/或已解决/拒绝的承诺，则 **Promise.race 将解析为迭代中找到的第一个值**</font>。
+>
+> ###### 示例
+>
+> ```js
+> const promise1 = new Promise((resolve, reject) => {
+>   setTimeout(resolve, 500, 'one');
+> });
+> const promise2 = new Promise((resolve, reject) => {
+>   setTimeout(resolve, 100, 'two');
+> });
+> 
+> Promise.race([promise1, promise2]).then((value) => {
+>   console.log(value); // Both resolve, but promise2 is faster
+> });
+> // expected output: "two"
+> ```
+>
+> 摘自：[MDN - Promise.race()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/race)
 
-  - **参数：**
-    iterable：可迭代对象，类似Array。详见 iterable。
+###### Promise.reject(reason)
 
-  - **返回值：**一个待定的 Promise 只要给定的迭代中的一个promise解决或拒绝，就采用第一个promise的值作为它的值，从而异步地解析或拒绝（一旦堆栈为空）。
+<font color=FF0000>返回一个**状态为失败**的Promise对象</font>，并将给定的失败信息传递给对应的处理方法
 
-  - **描述：**race 函数返回一个 Promise，它将与第一个传递的 promise 相同的完成方式被完成。它可以是完成（ resolves ），也可以是失败（rejects），这要取决于第一个完成的方式是两个中的哪个。
+###### Promise.resolve(value)
 
-    <font color=FF0000>如果传的迭代是空的，则返回的 promise 将永远等待</font>。<font color=FF0000>如果迭代包含一个或多个非承诺值和/或已解决/拒绝的承诺，则 **Promise.race 将解析为迭代中找到的第一个值**</font>。
+<font color=FF0000>返回一个状态由给定value、决定的Promise对象</font>。<font color=LightSeaGreen>如果该值是thenable（即，带有then方法的对象），返回的Promise对象的最终状态由then方法执行决定</font>；否则的话（该value为空，基本类型或者不带then方法的对象），返回的 Promise对象状态为fulfilled，并且将 该value传递给对应的 then方法。<font color=LightSeaGreen>通常而言，如果您不知道一个值是否是Promise对象，使用 Promise.resolve(value) 来返回一个Promise对象，这样就能将该value以Promise对象形式使用</font>。
 
-  - **示例：**
+##### Promise 原型
 
-    ```js
-    const promise1 = new Promise((resolve, reject) => {
-      setTimeout(resolve, 500, 'one');
-    });
-    const promise2 = new Promise((resolve, reject) => {
-      setTimeout(resolve, 100, 'two');
-    });
-    
-    Promise.race([promise1, promise2]).then((value) => {
-      console.log(value); // Both resolve, but promise2 is faster
-    });
-    // expected output: "two"
-    ```
+###### 实例属性
 
-- <font size=4>**Promise.reject(reason)：**</font><font color=FF0000>返回一个**状态为失败**的Promise对象</font>，并将给定的失败信息传递给对应的处理方法
+**Promise.prototype.constructor** 返回被创建的实例函数.  默认为 Promise 函数.
 
-- <font size=4>**Promise.resolve(value)：**</font><font color=FF0000>返回一个状态由给定value、决定的Promise对象</font>。<mark>如果该值是thenable（即，带有then方法的对象），返回的Promise对象的最终状态由then方法执行决定</mark>；否则的话（该value为空，基本类型或者不带then方法的对象），返回的 Promise对象状态为fulfilled，并且将 该value传递给对应的 then方法。<mark>通常而言，如果您不知道一个值是否是Promise对象，使用 Promise.resolve(value) 来返回一个Promise对象，这样就能将该value以Promise对象形式使用</mark>。
+###### 实例方法
 
-<font size=4>**Promise 原型**</font>
+- **Promise.prototype.catch(onRejected)：**<font color=FF0000>添加一个拒绝 ( rejection ) 回调到当前 promise，返回一个新的 promise</font>。当这个回调函数被调用，新 promise 将以它的返回值来resolve，否则如果当前promise 进入fulfilled状态，则以当前promise的完成结果作为新promise 的完成结果。
+- **Promise.prototype.then(onFulfilled, onRejected)：**<font color=FF0000>添加解决 ( fulfillment ) 和拒绝 ( rejection ）回调到当前 promise</font>，返回一个新的 promise，将以回调的返回值来resolve。
+- **Promise.prototype.finally(onFinally)：**添加一个事件处理回调于当前 promise对象，并且在原promise对象解析完毕后，返回一个新的promise对象。回调会在当前promise运行完毕后被调用，无论当前promise的状态是完成(fulfilled)还是失败(rejected)
 
-- **实例属性：**
-  
-  **Promise.prototype.constructor** 返回被创建的实例函数.  默认为 Promise 函数.
+##### 创建 Promise
 
-- **实例方法**
-  
-  - **Promise.prototype.catch(onRejected)：**<font color=FF0000>添加一个拒绝 ( rejection ) 回调到当前 promise，返回一个新的 promise</font>。当这个回调函数被调用，新 promise 将以它的返回值来resolve，否则如果当前promise 进入fulfilled状态，则以当前promise的完成结果作为新promise 的完成结果。
-  - **Promise.prototype.then(onFulfilled, onRejected)：**<font color=FF0000>添加解决 ( fulfillment ) 和拒绝 ( rejection ）回调到当前 promise</font>，返回一个新的 promise，将以回调的返回值来resolve。
-  - **Promise.prototype.finally(onFinally)：**添加一个事件处理回调于当前 promise对象，并且在原promise对象解析完毕后，返回一个新的promise对象。回调会在当前promise运行完毕后被调用，无论当前promise的状态是完成(fulfilled)还是失败(rejected)
-
-<font size=4>**创建Promise**</font>
-
-<mark>Promise 对象是由关键字 new 及其构造函数来创建的</mark>。<font color=FF0000>该构造函数会把一个叫做“处理器函数”（executor function）的函数作为它的参数</font>。<mark>这个“处理器函数”接受两个函数——resolve 和 reject ——作为其参数</mark>。当异步任务顺利完成且返回结果值时，会调用 resolve 函数；而当异步任务失败且返回失败原因（通常是一个错误对象）时，会调用 reject 函数。
+<font color=LightSeaGreen>Promise 对象是由关键字 new 及其构造函数来创建的</font>>。<font color=FF0000>该构造函数会把一个叫做“处理器函数”（executor function）的函数作为它的参数</font>。<font color=LightSeaGreen>这个“处理器函数”接受两个函数——resolve 和 reject ——作为其参数</font>。当异步任务顺利完成且返回结果值时，会调用 resolve 函数；而当异步任务失败且返回失败原因（通常是一个错误对象）时，会调用 reject 函数。
 
 ```js
 const myFirstPromise = new Promise((resolve, reject) => {
@@ -3087,17 +3108,20 @@ function myAsyncFunction(url) {
 
 **以上补充内容摘自：**[MDN - 使用 Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Using_promises)  和  [MDN - Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise) 另外，还有一些东西，在两篇MDN教程中都没有找到，应该是学习自：慕课网课程：[再学JavaScript ES(6-11)全版本语法大全](https://coding.imooc.com/class/444.html)
 
-以下补充摘自：[ECMAScript 6 入门 - Promise 对象](https://es6.ruanyifeng.com/#docs/promise)
+> 💡 补充
+>
+> ##### Promise 也有一些缺点
+>
+> - 无法取消Promise，一旦新建它就会立即执行，无法中途取消。
+> - 如果不设置回调函数，Promise 内部抛出的错误，不会反应到外部。
+> - 当处于pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
+>
+> 如果某些事件不断地反复发生，一般来说，使用 Stream 模式（💡 是 Node 的 Stream）是比部署Promise更好的选择。
+>
+> 摘自：[ECMAScript 6 入门 - Promise 对象](https://es6.ruanyifeng.com/#docs/promise)
 
-**Promise也有一些缺点**
+##### Promise 的基本用法
 
-- 无法取消Promise，一旦新建它就会立即执行，无法中途取消。
-- 如果不设置回调函数，Promise 内部抛出的错误，不会反应到外部。
-- 当处于pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
-
-如果某些事件不断地反复发生，一般来说，使用 Stream 模式（注：是Node 的 Stream）是比部署Promise更好的选择。
-
-**( Promise的 ) 基本用法：**
 Promise构造函数接受一个函数作为参数，该函数的两个参数分别是 <font color=FF0000>resolve 和 reject</font>。<font color=FF0000>它们是两个函数，<font size=4>**由 JavaScript 引擎提供，不用自己部署**</font></font>。
 **resolve 函数的作用是：**<font color=FF0000>将Promise对象的状态从“未完成”变为“成功”</font>（即从 pending 变为 resolved），<font color=FF0000>在异步操作成功时调用，并 <font size=4>**将异步操作的结果，作为参数传递出去**</font></font>。**reject函数的作用是：**<font color=FF0000>将Promise对象的状态从“未完成”变为“失败”</font>（即从 pending 变为 rejected），<font color=FF0000>在异步操作失败时调用，并 <font size=4>**将异步操作报出的错误，作为参数传递出去**</font></font>。示例如下：
 
@@ -3121,7 +3145,9 @@ function loadImageAsync(url) {
 }
 ```
 
-Promise实例生成以后，<font color=FF0000>可以用 then 方法分别指定 resolved状态 和 rejected状态 的回调函数</font>。（<mark>**注：感觉这里MDN 没有 阮一峰讲的清楚**</mark>）
+Promise实例生成以后，<font color=FF0000>可以用 then 方法分别指定 resolved状态 和 rejected状态 的回调函数</font>。
+
+> 👀 感觉这里的 MDN 没有 阮一峰讲的清楚）
 
 ```js
 promise.then(function(value) {
@@ -3176,9 +3202,11 @@ new Promise((resolve, reject) => {
 
 <mark>（注：和上面 p1 的状态 会影响 p2 一样）</mark> 采用链式的then，可以指定一组<font color=FF0000 size=4>**按照次序调用的回调函数**</font>（<mark>注，这样是在表明：返回promise 实例的 promise.then 调用链，是按顺序执行的</mark>）。这时，<font color=FF0000>**前一个回调函数，有可能返回的还是一个 Promise对象（即有异步操作），这时后一个回调函数，就会等待该 Promise 对象的状态发生变化，才会被调用**</font>
 
-<font size=4>**Promise.prototype.catch()**</font>
+###### Promise.prototype.catch()
+
 <font color=FF0000>**Promise.prototype.catch() 方法是 .then(null, rejection) 或 .then(undefined, rejection) 的别名**</font>，用于指定发生错误时的回调函数。
 如果<font color=FF0000>异步操作抛出错误，状态就会变为 rejected，就会调用 catch() 方法指定的回调函数，处理这个错误</font>。另外，<font color=FF0000>then() 方法指定的回调函数种，如果运行中抛出错误，也会被catch()方法捕获</font>。
+
 **如果 Promise 状态已经变成 resolved，再抛出错误是无效的**；示例如下：
 
 ```js
@@ -3203,8 +3231,10 @@ getJSON('/post/1.json').then(function(post) {
 });
 ```
 上面代码中，一共有三个 Promise 对象：一个由 getJSON() 产生，两个由 then() 产生。<font color=FF0000>它们之中任何一个抛出的错误，都会被最后一个 catch() 捕获</font>。
+
 <font color=FF0000>**一般来说，不要在then()方法里面定义 Reject 状态的回调函数（即 then 的第二个参数），总是使用 catch 方法**</font>。使用 catch方法 的写法可以捕获前面 then方法 执行中的错误，也<font color=FF0000>更接近同步的写法 ( try / catch )</font>
 跟传统的 try / catch 代码块不同的是，如果没有使用 catch() 方法指定错误处理的回调函数，Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应。
+
 ```js
 const someAsyncThing = function() {
   return new Promise(function(resolve, reject) {
@@ -3222,9 +3252,14 @@ setTimeout(() => { console.log(123) }, 2000);
 上面代码中，someAsyncThing()函数产生的 Promise 对象，内部有语法错误。<font color=FF0000>浏览器运行到这一行，会打印出错误提示ReferenceError: x is not defined，但是不会退出进程、终止脚本执行，2 秒之后还是会输出123</font>。这就是说，<font color=FF0000 size=4>**Promise 内部的错误不会影响到 Promise 外部的代码，通俗的说法就是 “Promise 会吃掉错误”**</font>。
 在catch中也有可能会抛出错误，这时候，如果在当前catch 后面继续 catch捕获异常的话；这时候，会报错。
 
-<font size=4>**Promise.prototype.finally()**</font> ES2018
+###### Promise.prototype.finally()
+
+> 👀 ES2018 推出
+
 <mark>不管 promise 最后的状态，在执行完 then 或 catch 指定的回调函数以后，都会执行 finally 方法指定的回调函数</mark>。
-<font color=FF0000>**finally方法 的回调函数不接受任何参数，这意味着 <font size=4>（finally方法）没有办法知道，前面的 Promise 状态到底是 fulfilled 还是 rejected</font>**</font>。这表明：<mark>finally方法 里面的操作，应该是与状态无关的，不依赖于 Promise 的执行结果</mark>。
+
+<font color=FF0000>**finally 方法 的回调函数不接受任何参数，这意味着 <font size=4>（finally方法）没有办法知道，前面的 Promise 状态到底是 fulfilled 还是 rejected</font>**</font>。这表明：<mark>finally方法 里面的操作，应该是与状态无关的，不依赖于 Promise 的执行结果</mark>。
+
 <font color=FF0000>**finally本质上是then方法的特例：**</font>
 
 ```js
@@ -3255,11 +3290,14 @@ Promise.prototype.finally = function (callback) {
   );
 };
 ```
-<font size=4>**Promise.race()**</font>
+###### Promise.race()
+
 该方法返回的新的 Promise 实例，<font color=FF0000>一旦发生状态变更，状态总是 fulfilled，不会变成 rejected</font>。状态变成 fulfilled 后，它的回调函数会接收到一个数组作为参数，该数组的每个成员对应前面数组的每个 Promise 对象。
 
-<font size=4>**Promise.resolve()**</font>
+###### Promise.resolve()
+
 有时需要将现有对象转为 Promise 对象，Promise.resolve() 方法就起到这个作用。比如 Promise.all( iterator ) 的 iterator 如果为 非promise的数组，会将这些数组成员 通过 Promise.resolve() 转成 Promise，再进一步处理。
+
 **Promise.resolve()等价于下面的写法：**
 
 ```js
@@ -3268,6 +3306,7 @@ Promise.resolve('foo')
 new Promise(resolve => resolve('foo'))
 ```
 **Promise.resolve()方法的参数分成四种情况：**
+
 1. **参数是一个 Promise 实例：**如果<font color=FF0000>参数是 Promise 实例</font>，那么 Promise.resolve <font color=FF0000>将不做任何修改、原封不动地返回这个实例</font>。
 
 2. **参数是一个thenable对象：**<font color=FF0000>thenable 对象指的是具有then方法的对象</font>，比如下面这个对象。
@@ -3305,7 +3344,8 @@ p1.then(function (value) { console.log(value); }); // 42
   p.then(function () { ... });
   ```
 
-<font size=4>**Promise.reject()**</font>
+###### Promise.reject()
+
 Promise.reject(reason) 方法也会<font color=FF0000>返回一个新的 Promise 实例，该**实例的状态为rejected**</font>。
 
 ```javascript
@@ -3325,7 +3365,9 @@ Promise.reject('出错了')
 
 上面代码中，Promise.reject() 方法的参数是一个字符串，后面 catch() 方法的参数e就是这个字符串。
 
-<font size=4>**Promise.try()**</font> （<font color=FF0000>**注：目前还只是提案**</font>）
+###### Promise.try()
+
+> 💡 目前还只是提案
 
 实际开发中，经常遇到一种情况：<mark>不知道或者不想区分，函数f是同步函数还是异步操作，但是想用 Promise 来处理它</mark>。因为<mark>这样就可以不管 f 是否包含异步操作，都用 then 方法指定下一步流程，用 catch 方法处理f抛出的错误</mark>。一般就会采用下面的写法。 
 
@@ -3521,7 +3563,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                           
+  >                                                                                                                                                                                                                                             
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3540,7 +3582,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                           
+  >                                                                                                                                                                                                                                             
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
