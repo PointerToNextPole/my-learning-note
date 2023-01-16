@@ -2747,15 +2747,79 @@ background-origin <font color=FF0000>规定了指定背景图片background-image
 
 font 属性可以用来作为 font-style, font-variant, font-weight, font-size, line-height 和 font-family 属性的简写，或将元素的字体设置为系统字体。
 
-##### 补充
+> 💡 补充
 
 - <font color=FF0000>**line-height CSS 属性**</font>用于设置多行元素的空间量，如多行文本的间距。<font color=FF0000>**对于块级元素，它指定元素行盒（line boxes）的最小高度。对于非替代的 inline 元素，它用于计算行盒（line box）的高度**</font>。
 
-- **letter-spacing：**用于设置文本字符的间距表现。
+- **letter-spacing** 用于设置文本字符的间距表现。
 
 ##### 用 em 来设置字体大小
 
-为了避免Internet Explorer 中无法调整文本的问题，许多开发者使用 em 单位代替像素。em的尺寸单位由W3C建议。1em和当前字体大小相等。在浏览器中默认的文字大小是16px。因此，1em的默认大小是16px。可以通过下面这个公式将像素转换为em：px/16=em
+为了避免 Internet Explorer 中无法调整文本的问题，许多开发者使用 em 单位代替像素。em 的尺寸单位由 W3C 建议。1em 和当前字体大小相等。在浏览器中默认的文字大小是 16px。因此，1em 的默认大小是 16px。可以通过下面这个公式将像素转换为em：px/16=em
+
+#### font
+
+`font` 属性可以用来<font color=LightSeaGreen>作为 `font-style` ，`font-variant` ， `font-weight` ， `font-size` ， `line-height` 和 `font-family` 属性的简写</font>，或将元素的字体设置为系统字体。
+
+<font color=red>与任何简写属性一样，任何未指定的值都将设置为其对应的初始值</font>（可能覆盖先前使用非简写属性设置的值）。<font color=red>虽然不能通过 font 直接设置，但是[`font-stretch`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font-stretch)，[`font-size-adjust`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font-size-adjust) 和 [`font-kerning`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font-kerning) 也会重置为初始值</font>。
+
+##### 语法
+
+可以将`font`属性指定为单个关键字，它将选择系统字体，或者作为字体相关的属性的简写。
+
+如果将 `font` 指定为系统关键字，则它必须是以下之一：[`caption`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font#caption), [`icon`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font#icon), [`menu`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font#menu), [`message-box`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font#message-box), [`small-caption`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font#small-caption), [`status-bar`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font#status-bar)。
+
+<font color=dodgerBlue>**如果 `font` 字体相关的属性的简写：**</font>
+
+- <font color=fuchsia>必须包含以下值：`<font-size>` ，`<font-family>`</font>
+
+- 可以选择性包含以下值：`<font-style>` ，`<font-variant>` ， `<font-weight>` ， `<line-height>`
+
+- `font-style` ， `font-variant` 和 `font-weight` 必须在 `font-size` 之前
+- 在 CSS 2.1 中 `font-variant` 只可以是 `normal` 和 `small-caps`
+- <font color=fuchsia>**`line-height` 必须跟在 `font-size` 后面，由 "/" 分隔，例如 "`16px/3`"**</font>
+- `font-family` 必须最后指定
+
+摘自：[MDN - font](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font)
+
+#### font-style
+
+**`font-style`** CSS 属性允许你选择 `font-family` 字体下的 `italic` 或 `oblique` 样式。
+
+**Italic** 字体一般是现实生活中的草书，相比无样式的字体，通常会占用较少的水平空间，而 **oblique** 字体一般只是常规字形的倾斜版本。如果当前字体没有对应的斜体，那么斜体 ( italic ) 和倾斜体 ( oblique ) 都会通过人工倾斜常规字体的字形来模拟（使用 [`font-synthesis`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font-synthesis) 对此进行控制）。
+
+##### 语法
+
+```css
+font-style: normal;
+font-style: italic;
+font-style: oblique;
+font-style: oblique 10deg;
+
+/* Global values */
+font-style: inherit;
+font-style: initial;
+font-style: unset;
+```
+
+`font-style` 属性被指定为从下面的取值列表中的单独一个关键字，<font color=red>如果关键字是 `oblique`，则可附加一个可选的角度</font>。
+
+###### 值
+
+- `normal` ：选择 `font-family` 的常规字体。
+- `italic` ：选择斜体，如果当前字体没有可用的斜体版本，会选用倾斜体 ( `oblique` ) 替代。
+
+- `oblique` [`<angle>`](https://developer.mozilla.org/en-US/docs/Web/CSS/angle) ：Selects a font classified as `oblique` , and additionally specifies an angle for the slant of the text. If one or more oblique faces are available in the chosen font family, the one that most closely matches the specified angle is chosen. If no oblique faces are available, the browser will synthesize an oblique version of the font by slanting a normal face by the specified amount. Valid values are degree values of `-90deg` to `90deg` inclusive. If an angle is not specified, an angle of 14 degrees is used. Positive values are slanted to the end of the line, while negative values are slanted towards the beginning.
+
+  In general, for a requested angle of 14 degrees or greater, larger angles are preferred; otherwise, smaller angles are preferred (see the spec's [font matching section](https://drafts.csswg.org/css-fonts-4/#font-matching-algorithm) for the precise algorithm).
+
+摘自：[MDN - font-style](https://developer.mozilla.org/en-US/docs/Web/CSS/font-style)
+
+
+
+#### font-variant
+
+// TODO
 
 
 

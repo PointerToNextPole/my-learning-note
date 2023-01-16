@@ -404,6 +404,8 @@
   >
   > 摘自：[wikipedia - 协程](https://zh.wikipedia.org/wiki/%E5%8D%8F%E7%A8%8B)
 - **intermediary** ：中间的，中介的
+- **bespoke** ：定制的
+- **minimal**：最小的。缩写 min 很常见，全称有点难认。另外，max 的全称是 maximum
 
 #### 术语的英文
 
