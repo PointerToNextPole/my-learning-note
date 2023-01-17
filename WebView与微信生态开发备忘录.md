@@ -2,9 +2,7 @@
 
 
 
-#### WebView 和 小程序 联动
-
-
+## WebView 和 小程序 联动
 
 ##### webview 网页 跳转到小程序中
 
@@ -16,9 +14,9 @@ wx.miniProgram.navigateTo({ url: urlStr })
 
 
 
-#### 环境判断
+##### 环境判断
 
-##### 判断当前环境是否在 小程序 中
+###### 判断当前环境是否在 小程序 中
 
 可以根据字段 `window.__wxjs_environment`，如果是一个对象，则在小程序中；否则应该是 undefined。也可以使用 [JSSDK 1.3.2](https://res.wx.qq.com/open/js/jweixin-1.3.2.js) 提供的 `getEnv` 接口。
 
@@ -53,7 +51,7 @@ wx.miniProgram.getEnv(function(res) {
 npm install weixin-js-sdk
 ```
 
-###### 使用
+###### 使用时引入
 
 ```js
 import wx from 'weixin-js-sdk'
@@ -61,9 +59,7 @@ import wx from 'weixin-js-sdk'
 
 
 
-### 小程序文档笔记
-
-
+## 小程序文档笔记
 
 #### 小程序生命周期
 
@@ -174,6 +170,10 @@ import wx from 'weixin-js-sdk'
 
 
 
+## 实践中的笔记
+
+
+
 #### webView 移动端调试工具
 
 一般使用 vconsole
@@ -223,11 +223,50 @@ vConsole.destroy();
 
 ##### Clear Cache
 
-出现了这样的问题：明明自己打测试包，使用 http-server 运行，访问的始终是生产环境的接口；不知如何处理，甚至删掉重新打包之后，依然如此。经过同事指点，点击调试工具右上方的 “ Clear Cache ” 简单粗暴的 “ Clear All ” 即可解决... 
+出现了这样的问题：明明自己打测试包，使用 http-server 运行，访问的始终是生产环境的接口；不知如何处理，甚至删掉重新打包之后，依然如此。经过同事指点，点击调试工具右上方的 “ Clear Cache ” 简单粗暴的 “ Clear All ” 即可解决... 于是，现在发现不对劲的问题，便开始遇事不决，直接 clear cache ...
 
 
 
-#### 问题与解决方法
+### 需求与方法
+
+#### 父子组件间方法调用
+
+##### 父组件调用子组件的方法
+
+```html
+<!-- parent-component.wxml -->
+<childCompoent id="child-id" />
+```
+
+```js
+// parent-component.js
+callChildFnWrap() {
+  const child = this.selectComponent('#child-id')
+  child.childFn()
+}
+```
+
+##### 子组件调用父组件的方法
+
+```html
+<!-- parent-component.wxml -->
+<childrComponent bind:parentComponentFn="parentComponentFn" />
+```
+
+```js
+// child-component.js
+methods: {
+  parentCompnentFn() {
+    this.triggerEvent('parentComponentFn')
+  }
+}
+```
+
+
+
+
+
+### 问题与解决方法
 
 ##### ios端微信h5页面上下滑动时卡顿、页面缺失
 

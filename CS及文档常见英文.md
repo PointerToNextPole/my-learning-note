@@ -403,9 +403,24 @@
   > 协程可以通过 `yield`（取其“让步”之义而非“出产”）来调用其它协程，接下来的每次协程被调用时，从协程上次 `yield` 返回的位置接着执行，通过 `yield` 方式转移执行权的协程之间不是调用者与被调用者的关系，而是彼此对称、平等的。
   >
   > 摘自：[wikipedia - 协程](https://zh.wikipedia.org/wiki/%E5%8D%8F%E7%A8%8B)
+  
 - **intermediary** ：中间的，中介的
+
 - **bespoke** ：定制的
+
 - **minimal**：最小的。缩写 min 很常见，全称有点难认。另外，max 的全称是 maximum
+
+- **quo** ：现状。来自：
+
+  > After years of relative stability, many are now beginning to question the status **quo**.
+  >
+  > 摘自：[stateofjs 2022](https://2022.stateofjs.com/en-US/)
+  
+- **respondents** ：受访者
+
+- **proportion** ：比例
+
+- **come in handy** ：派上用场
 
 #### 术语的英文
 

@@ -2743,20 +2743,6 @@ background-origin <font color=FF0000>规定了指定背景图片background-image
 
 
 
-#### CSS 字体
-
-font 属性可以用来作为 font-style, font-variant, font-weight, font-size, line-height 和 font-family 属性的简写，或将元素的字体设置为系统字体。
-
-> 💡 补充
-
-- <font color=FF0000>**line-height CSS 属性**</font>用于设置多行元素的空间量，如多行文本的间距。<font color=FF0000>**对于块级元素，它指定元素行盒（line boxes）的最小高度。对于非替代的 inline 元素，它用于计算行盒（line box）的高度**</font>。
-
-- **letter-spacing** 用于设置文本字符的间距表现。
-
-##### 用 em 来设置字体大小
-
-为了避免 Internet Explorer 中无法调整文本的问题，许多开发者使用 em 单位代替像素。em 的尺寸单位由 W3C 建议。1em 和当前字体大小相等。在浏览器中默认的文字大小是 16px。因此，1em 的默认大小是 16px。可以通过下面这个公式将像素转换为em：px/16=em
-
 #### font
 
 `font` 属性可以用来<font color=LightSeaGreen>作为 `font-style` ，`font-variant` ， `font-weight` ， `font-size` ， `line-height` 和 `font-family` 属性的简写</font>，或将元素的字体设置为系统字体。
@@ -2821,11 +2807,53 @@ font-style: unset;
 
 // TODO
 
+摘自：[MDN - font-variant](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font-variant)
+
+
+
+#### 字体相关补充
+
+- <font color=FF0000>**line-height CSS 属性**</font>用于设置多行元素的空间量，如多行文本的间距。<font color=FF0000>**对于块级元素，它指定元素行盒（line boxes）的最小高度。对于非替代的 inline 元素，它用于计算行盒（line box）的高度**</font>。
+
+- **letter-spacing** 用于设置文本字符的间距表现。
+
+##### 用 em 来设置字体大小
+
+为了避免 Internet Explorer 中无法调整文本的问题，许多开发者使用 em 单位代替像素。em 的尺寸单位由 W3C 建议。1em 和当前字体大小相等。在浏览器中默认的文字大小是 16px。因此，1em 的默认大小是 16px。可以通过下面这个公式将像素转换为em：px/16=em
+
 
 
 #### text-indent
 
 text-indent 属性能定义一个块元素首行文本内容之前的缩进量。
+
+##### 语法
+
+```css
+/* <length> 长度值 */
+text-indent: 3mm;
+text-indent: 40px;
+
+/* <percentage>百分比值取决于其包含块（containing block）的宽度*/
+text-indent: 15%;
+
+/* 关键字 */
+text-indent: 5em each-line;
+text-indent: 5em hanging;
+text-indent: 5em hanging each-line;
+
+/* 全局值 */
+text-indent: inherit;
+text-indent: initial;
+text-indent: unset;
+```
+
+###### 可选值
+
+- `<length>` ：`使用固定的<length>值来指定文本的缩进。允许使用负值。查阅可能`的 [`<length>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/length) 单位。
+- `<percentage>` ：使用包含块宽度的百分比作为缩进。
+- `each-line` 🧪 ：文本缩进会影响第一行，以及使用 `<br>` 强制断行后的第一行。
+- `hanging` 🧪 ：该值会对所有的行进行反转缩进：除了第一行之外的所有的行都会被缩进，看起来就像第一行设置了一个负的缩进值
 
 摘自：[MDN - text-indent](https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-indent)
 
