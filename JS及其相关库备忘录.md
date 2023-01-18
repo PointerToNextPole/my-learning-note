@@ -976,6 +976,40 @@ console.log(found); // expected output: 12
 
 摘自：[MDN - Array.prototype.find()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
 
+> 💡 类似的，JS 提供了 [Array.prototype.findLast()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast) 方法
+
+
+#### Array.prototype.findIndex()
+
+`findIndex()` 方法返回数组中满足提供的测试函数的第一个元素的 **索引**。若没有找到对应元素则返回 -1。
+
+##### 语法
+
+```js
+findIndex((element, index, array) => { /* … */ } )
+findIndex(function(element, index, array) { /* … */ }, thisArg)
+```
+
+###### 参数
+
+- `callback` ：针对数组中的每个元素，都会执行该回调函数，执行时会自动传入下面三个参数：
+
+	- `element` ：当前元素。
+
+	- `index` ：当前元素的索引。
+
+	- `array` ：调用 `findIndex` 的数组。
+
+- `thisArg` ：可选。执行`callback`时作为`this`对象的值。
+
+###### 返回值
+
+数组中通过提供测试函数的第一个元素的**索引**。否则，返回 -1
+
+摘自：[MDN - # Array.prototype.findIndex()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex)
+
+> 💡 类似的，JS 提供了 [Array.prototype.findLastIndex()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex)
+
 
 #### Array.prototype.reduce()
 
@@ -1083,31 +1117,34 @@ console.log(array1); // expected output: Array [4, 5, 2, 3, 0, 1]
 
 **filter()** 方法创建一个新数组, 其包含通过所提供函数实现的测试（即满足条件）的所有元素。 
 
-- **示例如下：**
-  
-  ```js
-  const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
-  const result = words.filter(word => word.length > 6);
-  console.log(result);
-  // expected output: Array ["exuberant", "destruction", "present"]
-  ```
+##### 示例
 
-- **语法**
-  
-  ```js
-  var newArray = arr.filter(callback(element[, index[, array]])[, thisArg])
-  ```
+```js
+const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
+const result = words.filter(word => word.length > 6);
+console.log(result);
+// expected output: Array ["exuberant", "destruction", "present"]
+```
 
-- **参数**
-  
-  - callback：用来测试数组的每个元素的函数。返回 true 表示该元素通过测试，保留该元素，false 则不保留。它接受以下三个参数：
-    - element：数组中当前正在处理的元素。
-    - index：（可选）正在处理的元素在数组中的索引。
-    - array：（可选）调用了 filter 的数组本身。
-  - thisArg：（可选）<font color=FF0000>**执行 callback 时，用于 this 的值**。</font>
+##### 语法
 
-- **返回值**
-  一个<font color=FF0000>新的</font>、由通过测试的元素组成的数组，<font color=FF0000>如果没有任何数组元素通过测试，则返回空数组</font>。
+```js
+var newArray = arr.filter(callback(element[, index[, array]])[, thisArg])
+```
+
+###### 参数
+
+- callback：用来测试数组的每个元素的函数。返回 true 表示该元素通过测试，保留该元素，false 则不保留。它接受以下三个参数：
+  - element：数组中当前正在处理的元素。
+  - index：（可选）正在处理的元素在数组中的索引。
+  - array：（可选）调用了 filter 的数组本身。
+- thisArg：（可选）<font color=FF0000>**执行 callback 时，用于 this 的值**。</font>
+
+###### 返回值
+
+一个新的、由通过测试的元素组成的数组，如果没有任何数组元素通过测试，则返回空数组。
+
+##### 描述
 
 如果为 filter 提供一个 thisArg 参数，则它会被作为 callback 被调用时的 this 值。否则，callback 的 this 值在非严格模式下将是全局对象，严格模式下为 undefined
 
@@ -3563,7 +3600,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                             
+  >                                                                                                                                                                                                                                                 
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3582,7 +3619,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                             
+  >                                                                                                                                                                                                                                                 
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -4062,7 +4099,7 @@ console.log(myHeaders.get('X-Custom-Header')); // null
 
 摘自：[执行机制 - 宏任务和微任务分别有哪些 #34](https://github.com/logan70/Blog/issues/34)
 
-> 👀 **注：**这里不全，可以参考 [[前端面试点总结#宏任务和微任务]]
+> 👀 这里不全，可以参考 [[前端面试点总结#宏任务和微任务]]
 
 ##### queueMicrotask() 补充
 
@@ -5536,7 +5573,7 @@ var elements = rootElement.getElementsByClassName(names);
 
 <font color=FF0000>大部分浏览器的 **querySelectorAll()** 返回 NodeList 对象</font>。
 
-**HTMLCollection 与 NodeList 的区别**
+##### HTMLCollection 与 NodeList 的区别
 
 - [HTMLCollection](https://www.runoob.com/js/js-htmldom-collections.html) 是 HTML 元素的集合。NodeList 是一个文档节点的集合。
 
@@ -5550,8 +5587,6 @@ var elements = rootElement.getElementsByClassName(names);
   
   - NodeList 与 HTMLCollection 都与数组对象有点类似，可以使用索引 (0, 1, 2, 3, 4, ...) 来获取元素。
   - NodeList 与 HTMLCollection 都有 length 属性。
-
-**补充**：
 
 #### document.querySelector() & document.querySelectorAll()
 
@@ -7622,9 +7657,9 @@ var dupNode = node.cloneNode(deep);
 
 #### Node.contains
 
-Node.contains()返回的是一个布尔值，来表示传入的节点是否为该节点的后代节点。
+Node.contains() 返回的是一个布尔值，来表示传入的节点是否为该节点的后代节点。
 
-**语法**
+##### 语法
 
 ```js
 node.contains( otherNode )
@@ -7676,6 +7711,63 @@ someOtherNode.textContent = string;
 **此外，使用 textContent 可以防止 XSS 攻击。**
 
 摘自：[MDN - Node.textContent](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/textContent)
+
+
+
+#### Node.nextSibling
+
+**`Node.nextSibling`** 是一个只读属性，返回其父节点的 `childNodes` 列表中紧跟在其后面的节点，如果指定的节点为最后一个节点，则返回 `null`。
+
+##### 语法
+
+```js
+nextNode = node.nextSibling
+```
+
+摘自：[MDN - Node.nextSibling](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/nextSibling) ，类似的有 Node.previousSibling，参见 [MDN - Node.previousSibling](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/previousSibling)
+
+##### 实践中的发现
+
+如下代码：
+
+```html
+<div class="parent">
+  <div class="child">child</div>
+  <div class="bro">bro</div>
+</div>
+<div class="uncle">uncle</div>
+
+<script>
+  const child = document.querySelector(".child");
+
+  console.log(child.nextSibling);
+  console.log(child.nextSibling.nextSibling);
+  console.log(child.nextElementSibling);
+</script>
+```
+
+运行结果如下：
+
+<img src="https://s2.loli.net/2023/01/18/qJdXCepExRnAwzl.png" alt="image-20230118005807718" style="zoom:65%;" />
+
+发现 `child.nextSibling` 的运行结果是一个 `#text` 的对象，而不是预想的 bro 节点，事实上：<font color=fuchsia size=4>**换行也是一个 text节点**</font> ，所以 nextSibling 打印 `#text` 是非常合理的；如果把换行去掉，代码改成如下：
+
+```html
+<div class="parent">
+  <div class="child">child</div><div class="bro">bro</div>
+</div>
+<div class="uncle">uncle</div>
+```
+
+`child.nextSibling` 的运行结果 将会和预期一样变成 `<div class="bro">bro</div>` 。
+
+如果不去掉换行的话，`child.nextSibling.nextSibling` 将会是 bro 节点。另外，`NonDocumentTypeChildNode.nextElementSibling` 
+
+> 返回当前元素在其父元素的子元素节点中的后一个元素节点，如果该元素已经是最后一个元素节点，则返回 `null` ，该属性是只读的
+>
+> 摘自：[MDN - NonDocumentTypeChildNode.nextElementSibling](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/nextElementSibling) 。类似的也有 [NonDocumentTypeChildNode.previousElementSibling](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/previousElementSibling)
+
+将会跳过 非Element 节点，所以运行结果也将会和预期一样
 
 
 
@@ -9814,7 +9906,7 @@ obj：需要检测的对象
 
 #### Object.keys()
 
-Object.keys() 方法会<font color=FF0000>**返回一个由一个给定对象的自身可枚举属性组成的数组**</font>，<mark>数组中属性名的排列顺序和正常循环遍历该对象时返回的顺序一致 </mark>。
+Object.keys() 方法会<font color=FF0000>**返回一个由一个给定对象的自身可枚举属性组成的数组**</font>，<font color=fuchsia>**数组中属性名的排列顺序和正常循环遍历该对象时返回的顺序一致**</font>。 ⭐️ 值得注意。
 
 ##### 需要注意的示例
 
@@ -9823,7 +9915,7 @@ var arr = ['a', 'b', 'c'];
 console.log(Object.keys(arr)); // console: ['0', '1', '2']
 ```
 
-在ES5里，如果Object.keys()的参数不是对象（而是一个原始值），那么它会抛出 TypeError。<font color=FF0000>在ES2015中，非对象的参数将被强制转换为一个对象</font>。代码示例如下：
+在 ES5 里，如果 Object.keys() 的参数不是对象（而是一个原始值），那么它会抛出 TypeError。<font color=FF0000>在ES2015中，非对象的参数将被强制转换为一个对象</font>。代码示例如下：
 
 ```js
 Object.keys("foo"); // TypeError: "foo" is not an object (ES5 code)
@@ -9832,9 +9924,11 @@ Object.keys("foo"); // ["0", "1", "2"] (ES2015 code)
 
 摘自：[MDN - Object.keys()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/keys)
 
-<font size=4>**补充：**</font>如果Object里面有其他不属于属性的东西，Object.keys() 不会拿到这些东西。
+> 💡 补充：`Object.keys` 只返回属于对象的键，会忽略原型上的（键）
+>
+> 摘自：[JS现代教程 - LocalStorage，sessionStorage - 遍历键](https://zh.javascript.info/localstorage#bian-li-jian)
 
-参考自：[JS现代教程 - LocalStorage，sessionStorage - 遍历键](https://zh.javascript.info/localstorage#bian-li-jian)
+
 
 #### Object.values()
 
@@ -9899,21 +9993,29 @@ console.log(map); // Map { foo: "bar", baz: 42 }
 
  Object.fromEntries() 方法<font color=FF0000>把键值对列表转换为一个对象</font>。
 
-##### 参数
+##### 语法
+
+```
+Object.fromEntries(iterable);
+```
+
+###### 参数
 
 <font color=FF0000>**iterable**</font>：<font color=FF0000>类似 Array 、 Map 或者其它**实现了可迭代协议的可迭代对象**</font>。
 
-**返回值**：一个由该迭代对象条目提供对应属性的新对象。
+###### 返回值
+
+一个由该迭代对象条目提供对应属性的新对象。
 
 ##### 描述
 
-Object.fromEntries() 方法接收一个键值对的列表参数，并返回一个带有这些键值对的新对象。<mark>这个迭代参数应该<font color=FF0000>是一个能够实现@@iterator方法的的对象</font>，返回一个迭代器对象。它生成一个具有两个元素的类数组的对象，第一个元素是将用作属性键的值，第二个元素是与该属性键关联的值。</mark>
+Object.fromEntries() 方法接收一个键值对的列表参数，并返回一个带有这些键值对的新对象。这个迭代参数应该<font color=FF0000>是一个能够实现 `@@iterator` 方法的的对象</font>，<font color=LightSeaGreen>返回一个迭代器对象</font>。它<font color=dodgerBlue>**生成一个具有两个元素的类数组的对象**</font>，<font color=LightSeaGreen>第一个元素是将用作属性键的值，第二个元素是与该属性键关联的值</font>。
 
 <font color=FF0000>Object.fromEntries() 执行与 Object.entries 互逆的操作。</font>
 
 ##### 示例
 
-Map 转化为 Object
+###### Map 转化为 Object
 
 ```js
 const map = new Map([ ['foo', 'bar'], ['baz', 42] ]);
@@ -9921,7 +10023,7 @@ const obj = Object.fromEntries(map);
 console.log(obj); // { foo: "bar", baz: 42 }
 ```
 
-Array 转化为 Object
+###### Array 转化为 Object
 
 ```js
 const arr = [ ['0', 'a'], ['1', 'b'], ['2', 'c'] ];
@@ -9945,14 +10047,16 @@ console.log(obj); // { 0: "a", 1: "b", 2: "c" }
 Object.assign(target, ...sources)
 ```
 
-> 👀 注：之所以 `sources` 前面加了展开运算符，是因为可能有多个源对象
+> 👀 之所以 `sources` 前面加了展开运算符，是因为可能有多个源对象
 
-##### 参数
+###### 参数
 
 - **target：**目标对象，接收源对象属性的对象，也是修改后的返回值。
 - **sources：**源对象，包含将被合并的属性。
 
-**返回值：**目标对象。
+###### 返回值
+
+目标对象。
 
 ##### 描述
 
@@ -10006,7 +10110,7 @@ Object.assign(target, ...sources)
 >
 > - lodash 的 deepClone
 > - JSON.parse( JSON.stringify() )
-> - structuredClone() ，**注：**这是一个新特性
+> - structuredClone()
 
 
 
@@ -10044,7 +10148,7 @@ Object.is() 方法判断两个值是否为同一个值。<font color=FF0000>如�
 
 与== 运算不同。  <font color=FF0000>== 运算符在判断相等前对两边的变量（如果它们不是同一类型）进行强制转换（这种行为的结果会将 "" == false 判断为 true）</font>， <font color=FF0000>而 **Object.is不会强制转换两边的值**</font>。
 
-与\=== 运算也不相同， <font color=FF0000>\=== 运算符 (也包括 == 运算符) 将数字 -0 和 +0 视为相等（ **注：根据上面的判断规则，Object.is(+0, =0) 是 false** ），而将Number.NaN 与NaN视为不相等</font>
+与 `===` 运算也不相同， <font color=FF0000>`===` 运算符 (也包括 `==` 运算符) 将数字 `-0` 和 `+0` 视为相等</font>（👀 **根据上面的判断规则，Object.is(+0, -0) 是 false** ），<font color=red>而将 Number.NaN 与 NaN 视为不相等</font>
 
 摘自：[MDN - Object.is()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is)
 
@@ -10077,13 +10181,13 @@ JavaScript 调用 valueOf 方法将对象转换为原始值。你很少需要自
 | Array    | 返回数组对象本身                                             |
 | Boolean  | 布尔值                                                       |
 | Date     | 存储的时间是 <font color=FF0000>从 1970 年 1 月 1 日午夜开始计的毫秒数 UTC</font>。注：即时间戳 |
-| Function | <mark>函数本身</mark>                                        |
+| Function | <font color=LightSeaGreen>函数本身</font>                    |
 | Number   | 数字值。                                                     |
 | Object   | 对象本身。这是 <font color=FF0000>默认情况</font>            |
 | String   | 字符串值                                                     |
 |          | Math 和 Error 对象没有 valueOf 方法                          |
 
-你可以在自己的代码中使用 valueOf 将内置对象转换为原始值。<font color=FF0000>**创建自定义对象时，可以覆盖Object.prototype.valueOf() 来调用自定义方法（注：这里可以理解为 override ），而不是默认 Object 方法**</font>。
+你可以在自己的代码中使用 valueOf 将内置对象转换为原始值。<font color=FF0000>**创建自定义对象时，可以覆盖Object.prototype.valueOf() 来调用自定义方法**</font>（👀 这里可以理解为 override ），<font color=red>**而不是默认 Object 方法**</font>。
 
 ##### 覆盖自定义对象的 valueOf方法
 
@@ -10095,9 +10199,9 @@ JavaScript 调用 valueOf 方法将对象转换为原始值。你很少需要自
 MyNumberType.prototype.valueOf = function() { return customPrimitiveValue; };
 ```
 
-<mark>有了这样的一个方法，下一次每当 MyNumberType 要被转换为原始类型值时，JavaScript 在此之前会自动调用自定义的 valueOf 方法</mark>。
+<font color=LightSeaGreen>有了这样的一个方法，下一次每当 MyNumberType 要被转换为原始类型值时，JavaScript 在此之前会自动调用自定义的 valueOf 方法</font>。
 
-<mark>valueOf 方法一般都会被 JavaScript 自动调用，但你也可以像下面代码那样自己调用</mark>：
+<font color=LightSeaGreen>valueOf 方法一般都会被 JavaScript 自动调用，但你也可以像下面代码那样自己调用</font>：
 
 ```js
 myNumberType.valueOf()
@@ -10441,19 +10545,19 @@ hasOwnProperty() 方法会返回一个布尔值，指示 ( indicating ) <font co
 
 ##### 《 JS 高程》补充
 
-> 👀 注：上面 MDN 的解释说的并不清楚，没有说清楚 “对象自身属性中” 是什么，<font color=LightSeaGreen>因为这里涉及到原型相关的内容了，对原型概念有所遗忘的话将不能很好理解这里的内容</font>。下面摘抄《 JS 高程》的内容：
+> 💡 上面 MDN 的解释说的并不清楚，没有说清楚 “对象自身属性中” 是什么，<font color=LightSeaGreen>因为这里涉及到原型相关的内容了，对原型概念有所遗忘的话将不能很好理解这里的内容</font>。下面摘抄《 JS 高程》的内容：
 >
-> > `hasOwnProperty(propertyName)` ：用于判断 <font color=fuchsia size=4>**当前对象实例（不是原型）**</font>上是否存在给定的属性。要检查的属性名必须是字符串（如 `o.hasOwnProperty("name")` ）或符号。
+> > `hasOwnProperty(propertyName)` ：用于判断 <font color=fuchsia size=4>**当前对象实例（不包含原型）**</font>上是否存在给定的属性。要检查的属性名必须是字符串（如 `o.hasOwnProperty("name")` ）或符号。
 > >
-> > > 👀 摘自：P56 3.4.8 Object 类型
+> > 摘自：P56 3.4.8 Object 类型
+> 
+> > hasOwnProperty() 方法用于确定某个属性是在实例上还是在原型对象上。 
 > >
-> > hasOwnProperty()方法用于确定某个属性是在实例上还是在原型对象上。 
+> > 摘自：P229 8.2.4 原型模式
+> 
+> > 只要通过对象可以访问（ Enumerable 为 true ），in 操作符就返回 true，而 hasOwnProperty() 只有属性存在于实例上 时才返回 true。因此，只要 in 操作符返回 true 且 hasOwnProperty()返回 false，就说明该属性 是一个原型属性。
 > >
-> > > 👀 摘自：P229 8.2.4 原型模式
-> >
-> > 只要通过对象可以访问（ Enumerable 为 true ），in 操作符就返回 true，而 hasOwnProperty()只有属性存在于实例上 时才返回 true。因此，只要 in 操作符返回 true 且 hasOwnProperty()返回 false，就说明该属性 是一个原型属性。
-> >
-> > > 👀 摘自：P231 8.2.4 原型模式
+> > 摘自：P231 8.2.4 原型模式
 
 **语法**
 
@@ -10461,19 +10565,116 @@ hasOwnProperty() 方法会返回一个布尔值，指示 ( indicating ) <font co
 obj.hasOwnProperty(prop)
 ```
 
-##### 参数
+###### 参数
 
 prop：要检测的属性的 String 字符串形式表示的名称，或者 Symbol。
 
-##### 返回值
+###### 返回值
 
 用来判断某个对象是否含有指定的属性的布尔值 Boolean。
 
+##### 描述
+
 所有继承了 Object 的对象都会继承到 hasOwnProperty 方法。这个方法可以用来检测一个对象是否含有特定的自身属性；<font color=FF0000>和 in 运算符不同，该方法**会忽略**掉那些从原型链上继承到的属性</font>。
 
-**备注：**即使属性的值是 null 或 undefined，只要属性存在，hasOwnProperty 依旧会返回 true。
+##### 备注
+
+即使属性的值是 null 或 undefined，只要属性存在，hasOwnProperty 依旧会返回 true。
 
 摘自：[MDN - Object.prototype.hasOwnProperty()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty)
+
+
+
+#### Object.hasOwn()
+
+（类似于 `Object.prototype.hasOwnProperty()` ）如果指定的<font color=red>对象自身</font>有指定的属性，则静态方法 **`Object.hasOwn()`** 返回 `true`。如果属性是继承的或者不存在，该方法返回 `false`。
+
+> 💡 **备注：** `Object.hasOwn()` 旨在取代 `Object.hasOwnProperty()`
+
+##### 语法
+
+```js
+hasOwn(instance, prop)
+```
+
+###### 参数
+
+- `instance` ：要测试的 JavaScript 实例对象。
+- `prop` ：要测试属性的 `String` 类型的名称或者 Symbol
+
+###### 返回值
+
+如果指定的对象中直接定义了指定的属性，则返回 `true`；否则返回 `false`。
+
+##### 描述
+
+如果指定的属性是该对象的直接属性——**`Object.hasOwn()`** 方法返回 `true`，即使属性值是 `null` 或 `undefined`。如果属性是继承的或者不存在，该方法返回 `false`。它不像 `in` 运算符，这个方法不检查对象的原型链中的指定属性。
+
+建议使用此方法替代 `Object.hasOwnProperty()`，因为它适用于使用 `Object.create(null)` 创建的对象以及覆盖了继承的 `hasOwnProperty()` 方法的对象。尽管可以通过在外部对象上调用 `Object.prototype.hasOwnProperty()` 解决这些问题，但是 `Object.hasOwn()` 更加直观。
+
+##### 示例
+
+###### 直接属性和继承属性
+
+以下示例区分了直接属性和通过原型链继承的属性：
+
+```js
+const example = {};
+example.prop = 'exists';
+
+// `hasOwn` will only return true for direct properties:
+Object.hasOwn(example, 'prop');             // returns true
+Object.hasOwn(example, 'toString');         // returns false 👀
+Object.hasOwn(example, 'hasOwnProperty');   // returns false 👀
+
+// The `in` operator will return true for direct or inherited properties:
+'prop' in example;                          // returns true
+'toString' in example;                      // returns true
+'hasOwnProperty' in example;                // returns true
+```
+
+###### 检查数组索引是否存在
+
+> 👀 这一点是之前没有想到的。另外，Object.prototype.hasOwnProperty() 同样有效
+
+`Array` 中的元素被定义为直接属性，所以你可以使用 `hasOwn()` 方法去检查一个指定的索引是否存在：
+
+```js
+const fruits = ['Apple', 'Banana','Watermelon', 'Orange'];
+Object.hasOwn(fruits, 3);   // true ('Orange')
+Object.hasOwn(fruits, 4);   // false - not defined
+```
+
+###### hasOwnProperty 的问题案例
+
+本部分证明了（会）影响 `hasOwnProperty` 的问题对 `hasOwn()` 是免疫的。首先，它可以与重新实现的 `hasOwnProperty()` 一起使用：
+
+>👀 即 Object.prototype.hasOwnProperty() 可以被重写，
+
+```js
+const foo = {
+  hasOwnProperty() {
+    return false;
+  },
+  bar: 'The dragons be out of office',
+};
+
+if (Object.hasOwn(foo, 'bar')) {
+  console.log(foo.bar); //true - reimplementation of hasOwnProperty() does not affect Object
+}
+```
+
+它也可以用于测试使用 `Object.create(null)` 创建的对象。这些都不继承自 `Object.prototype`，因此 `hasOwnProperty()` 无法访问。
+
+```js
+const foo = Object.create(null);
+foo.prop = 'exists';
+if (Object.hasOwn(foo, 'prop')) {
+  console.log(foo.prop); //true - works irrespective of how the object is created.
+}
+```
+
+摘自：[MDN - Object.hasOwn()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn)
 
 
 
@@ -10481,7 +10682,7 @@ prop：要检测的属性的 String 字符串形式表示的名称，或者 Symb
 
 <font color=FF0000>isPrototypeOf() 方法用于测试一个对象是否存在于另一个对象的**原型链**上</font>。
 
-<font color=FF0000>isPrototypeOf() 与 instanceof 运算符不同</font>。<mark>在表达式 "object instanceof AFunction"中，object 的原型链是针对 AFunction.prototype 进行检查的，而不是针对 AFunction 本身</mark>。
+<font color=FF0000>isPrototypeOf() 与 instanceof 运算符不同</font>。<font color=LightSeaGreen>在表达式 "object instanceof AFunction"中，object 的原型链是针对 AFunction.prototype 进行检查的，而不是针对 AFunction 本身</font>。
 
 ##### 语法
 
@@ -10489,15 +10690,15 @@ prop：要检测的属性的 String 字符串形式表示的名称，或者 Symb
 prototypeObj.isPrototypeOf(object)
 ```
 
-##### 参数
+###### 参数
 
 object：在该对象的原型链上搜寻
 
-##### 返回值
+###### 返回值
 
 Boolean：表示调用对象是否在另一个对象的原型链上。
 
-##### 报错
+###### 报错
 
 TypeError：如果 prototypeObj 为 undefined 或 null，会抛出 TypeError。
 
@@ -10505,7 +10706,7 @@ TypeError：如果 prototypeObj 为 undefined 或 null，会抛出 TypeError。
 
 #### Object.getPrototypeOf()
 
-<font color=FF0000>Object.getPrototypeOf() 方法返回指定对象的原型（**内部[[Prototype]]属性的值**）</font>。
+<font color=FF0000>Object.getPrototypeOf() 方法返回指定对象的原型（**内部 `[[Prototype]]` 属性的值**）</font>。
 
 ##### 语法
 
@@ -10513,11 +10714,11 @@ TypeError：如果 prototypeObj 为 undefined 或 null，会抛出 TypeError。
 Object.getPrototypeOf(object)
 ```
 
-##### 参数
+###### 参数
 
 obj：要返回其原型的对象。
 
-##### 返回值
+###### 返回值
 
 给定对象的原型。如果没有继承属性，则返回 null 。
 
@@ -10525,9 +10726,9 @@ obj：要返回其原型的对象。
 
 #### Object.setPrototypeOf()
 
-<font color=FF0000>Object.setPrototypeOf() 方法设置一个指定的对象的原型 ( 即, 内部 `[[Prototype]]` 属性）到另一个对象或  null。</font>
+<font color=FF0000>Object.setPrototypeOf() 方法设置一个指定的对象的原型 ( 即，内部 `[[Prototype]]` 属性）到另一个对象或  null。</font>
 
-<font size=4 color=FF0000>**警告:** </font>由于现代 JavaScript 引擎优化属性访问所带来的特性的关系，<font color=FF0000>更改对象的 `[[Prototype]]` 在各个浏览器和 JavaScript 引擎上都是一个很慢的操作。其在更改继承的性能上的影响是微妙而又广泛的，这不仅仅限于 `obj.__proto__ = ...` 语句上的时间花费，而且可能会延伸到任何代码，那些可以访问任何 `[[Prototype]]` 已被更改的对象的代码</font>。<font color=LightSeaGreen>如果你关心性能，你应该避免设置一个对象的 `[[Prototype]]` 。相反，你应该使用 `Object.create()` 来创建带有你想要的[[Prototype]]的新对象</font>。
+⚠️ 由于现代 JavaScript 引擎优化属性访问所带来的特性的关系，<font color=FF0000>更改对象的 `[[Prototype]]` 在各个浏览器和 JavaScript 引擎上都是一个很慢的操作。其在更改继承的性能上的影响是微妙而又广泛的，这不仅仅限于 `obj.__proto__ = ...` 语句上的时间花费，而且可能会延伸到任何代码，那些可以访问任何 `[[Prototype]]` 已被更改的对象的代码</font>。<font color=LightSeaGreen>如果你关心性能，你应该避免设置一个对象的 `[[Prototype]]` 。相反，你应该使用 `Object.create()` 来创建带有你想要的 `[[Prototype]]` 的新对象</font>。
 
 ##### 语法
 
@@ -10543,7 +10744,7 @@ Object.setPrototypeOf(obj, prototype)
 ##### 描述
 
 - 如果对象的 `[[Prototype]]` 被修改成不可扩展（通过 Object.isExtensible() 查看），就会抛出 TypeError异常。
-- 如果prototype 参数不是一个对象或者null(例如，数字，字符串，boolean，或者 undefined)，则什么都不做。
+- 如果prototype 参数不是一个对象或者null （例如，数字，字符串，boolean，或者 undefined），则什么都不做。
 - 否则，该方法将 obj 的 `[[Prototype]]` 修改为新的值。
 
 Object.setPrototypeOf() 是ECMAScript 6 最新草案中的方法，相对于 `Object.prototype.__proto__`  ，它被认为是修改对象原型更合适的方法

@@ -2548,7 +2548,7 @@ float CSS属性指定一个元素应沿其容器的左侧或右侧放置，允�
 
 float 和 `margin-left: auto` & `margin-right: auto`的关系：在flexbox中，float是失效的；这时如果想实现float的效果，该怎么处理？
 
-可以使用 `margin-left: auto` 替代 `float: right` ， `margin-right: auto` 替代 `float: left`（这里使用绝对定位似乎也可以实现）。跟进一步：如果flexbox使用了`flex-wrap: wrap` 且 右侧没有空间了，那只能换行，且放到下一行的右侧。这种情况下，是用绝对定位也不行了（无法放到下一行，只能放到该行末尾，会出现覆盖的情况）；这时使用`margin-right: auto`依然是有效的。原理是：使用auto<font color=FF0000>会将所有剩余空间都占满</font>；类似的可参考《CSS权威指南》
+可以使用 `margin-left: auto` 替代 `float: right` ， `margin-right: auto` 替代 `float: left`（这里使用绝对定位似乎也可以实现）。跟进一步：如果 flexbox 使用了`flex-wrap: wrap` 且 右侧没有空间了，那只能换行，且放到下一行的右侧。这种情况下，是用绝对定位也不行了（无法放到下一行，只能放到该行末尾，会出现覆盖的情况）；这时使用 `margin-right: auto` 依然是有效的。原理是：使用auto<font color=FF0000>会将所有剩余空间都占满</font>；类似的可参考《CSS权威指南》
 
 
 
@@ -5012,164 +5012,176 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
 
 ##### Flex容器（父容器）
 
-- **flex-direction**
-  
-  flex-direction 属性指定了弹性子元素在父容器中的位置
-  
-  **语法**
-  
-  ```css
-  flex-direction: row | row-reverse | column | column-reverse
-  ```
-  
-  - **row**：横向从左到右排列（左对齐），默认的排列方式。
-  - **row-reverse**：反转横向排列（右对齐，从后往前排，最后一项排在最前面）。
-  - **column**：纵向排列。
-  - **column-reverse**：反转纵向排列，从后往前排，最后一项排在最上面。
+###### flex-direction
 
-- **justify-content 属性**
-  
-  内容对齐（justify-content）属性应用在弹性容器上，把弹性项沿着弹性容器的主轴线（main axis）对齐。
-  
-  **语法**
-  
-  ```css
-  justify-content: flex-start | flex-end | center | space-between | space-around
-  ```
-  
-  - **flex-start**：弹性项目<font color=FF0000>向**行头**紧挨着填充</font>。这个<font color=FF0000>是默认值</font>。<font color=FF0000>第一个弹性项的main-start外边距边线被放置在该行的**main-start边线**</font>，而后续弹性项依次平齐摆放
-  - **flex-end**：弹性项目<font color=FF0000>向**行尾**紧挨着填充</font>。<font color=FF0000>第一个弹性项的main-end外边距边线被放置在该行的**main-end边线**</font>，而后续弹性项依次平齐摆放。
-  - **center**：弹性项目居中紧挨着填充。（<mark>如果剩余的自由空间是负的，则弹性项目将在两个方向上同时溢出</mark>）。
-  - **space-between**：弹性项目<mark>平均分布在该行</mark>上。<mark>如果剩余<font color=FF0000>空间为负</font>或者<font color=FF0000>只有一个弹性项</font>，则该值<font color=FF0000>等同于flex-start</font></mark>。否则，第1个弹性项的外边距和行的main-start边线对齐，而最后1个弹性项的外边距和行的main-end边线对齐，然后剩余的弹性项分布在该行上，相邻项目的间隔相等。
-  - **space-around**：弹性项目<mark>平均分布在该行</mark>上，<font color=FF0000>两边留有一半的间隔空间</font>。<mark>如果剩余空间为负或者只有一个弹性项，则该值等同于center</mark>。否则，弹性项目沿该行分布，且<font color=FF0000>彼此间隔相等（比如是20px）</font>，同时<font color=FF0000>首尾两边和弹性容器之间留有一半的间隔（1/2*20px=10px）</font>。
-  - **space-evenly：**flex项都沿着主轴均匀分布在指定的对齐容器中。相邻flex项之间的间距，主轴起始位置到第一个flex项的间距，主轴结束位置到最后一个flex项的间距，都完全一样。
-  - **stretch：**均匀排列每个元素'auto'-sized 的元素会被拉伸以适应容器的大小
-  - **safe：**与对齐关键字一起使用，如果选定的关键字会导致元素溢出容器造成数据丢失，那么将会使用 start 代替它。
-  - **unsafe**
-  
-- **align-items 属性**
-  
-  align-items<mark>设置或检索弹性盒子元素在<font color=FF0000>侧轴（纵轴）方向上的对齐方式</font></mark>。
-  
-  **语法**
-  
-  ```css
-  align-items: flex-start | flex-end | center | baseline | stretch
-  ```
-  
-  - **flex-start**：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴<font color=FF0000>起始</font>边界。
-  - **flex-end**：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴<font color=FF0000>结束</font>边界。
-  - **center**：弹性盒子元素在该行的侧轴（纵轴）上居中放置。（如果该行的尺寸小于弹性盒子元素的尺寸，则会向两个方向溢出相同的长度）。
-  - **baseline**：如弹性盒子元素的行内轴与侧轴为同一条，则该值与'flex-start'等效。其它情况下，该值<font color=FF0000>将与基线对齐</font>。
-  - **stretch**：<font color=FF0000>默认值</font>，如果指定侧轴大小的属性值为'auto'，则其值会使项目的边距盒的尺寸尽可能接近所在行的尺寸，但同时会遵照'min/max-width/height'属性的限制。
+flex-direction 属性指定了弹性子元素在父容器中的位置
 
-- **flex-wrap 属性**
-  
-  **flex-wrap** 属性用于指定弹性盒子的子元素换行方式。
-  
-  **语法**
-  
-  ```css
-  flex-wrap: nowrap|wrap|wrap-reverse|initial|inherit;
-  ```
-  
-  - **nowrap**： <font color=FF0000>默认</font>， 弹性容器为<font color=FF0000>单行</font>。该情况下<mark>弹性子项**可能会**溢出容器</mark>。
-  - **wrap**： 弹性容器为<font color=FF0000>多行</font>。该情况下<mark>弹性子项溢出的部分会被放置到新行</mark>，子项内部会发生断行
-  - **wrap-reverse**：反转 wrap 排列。
+**语法**
 
-- **align-content 属性**
-  
-  align-content 属性用于<font color=FF0000>修改 flex-wrap属性的行为</font>。类似于align-items, 但它不是设置弹性子元素的对齐，而是<font color=FF0000>**设置各个行的对齐**</font>。
-  
-  **语法**
-  
-  ```css
-  align-content: flex-start | flex-end | center | space-between | space-around | stretch
-  ```
-  
-  - **stretch** - <font color=FF0000>默认</font>。各行将会<font color=FF0000>伸展以占用剩余的空间</font>。
-  - **flex-start** - 各行向弹性盒容器的<font color=FF0000>起始位置堆叠</font>。
-  - **flex-end** - 各行向弹性盒容器的<font color=FF0000>结束位置堆叠</font>。
-  - **center** -各行向弹性盒容器的<font color=FF0000>中间位置堆叠</font>。
-  - **space-between** -各行在弹性盒容器中<font color=FF0000>平均分布</font>。
-  - **space-around** - 各行在弹性盒容器中<font color=FF0000>平均分布</font>，<font color=FF0000>两端保留子元素与子元素之间间距大小的一半</font>。
+```css
+flex-direction: row | row-reverse | column | column-reverse
+```
+
+- **row**：横向从左到右排列（左对齐），默认的排列方式。
+- **row-reverse**：反转横向排列（右对齐，从后往前排，最后一项排在最前面）。
+- **column**：纵向排列。
+- **column-reverse**：反转纵向排列，从后往前排，最后一项排在最上面。
+
+###### justify-content 属性
+
+内容对齐（justify-content）属性应用在弹性容器上，把弹性项沿着弹性容器的主轴线（main axis）对齐。
+
+**语法**
+
+```css
+justify-content: flex-start | flex-end | center | space-between | space-around
+```
+
+- **flex-start**：弹性项目<font color=FF0000>向**行头**紧挨着填充</font>。这个<font color=FF0000>是默认值</font>。<font color=FF0000>第一个弹性项的main-start外边距边线被放置在该行的**main-start边线**</font>，而后续弹性项依次平齐摆放
+- **flex-end**：弹性项目<font color=FF0000>向**行尾**紧挨着填充</font>。<font color=FF0000>第一个弹性项的main-end外边距边线被放置在该行的**main-end边线**</font>，而后续弹性项依次平齐摆放。
+- **center**：弹性项目居中紧挨着填充。（<mark>如果剩余的自由空间是负的，则弹性项目将在两个方向上同时溢出</mark>）。
+- **space-between**：弹性项目<mark>平均分布在该行</mark>上。<mark>如果剩余<font color=FF0000>空间为负</font>或者<font color=FF0000>只有一个弹性项</font>，则该值<font color=FF0000>等同于flex-start</font></mark>。否则，第1个弹性项的外边距和行的main-start边线对齐，而最后1个弹性项的外边距和行的main-end边线对齐，然后剩余的弹性项分布在该行上，相邻项目的间隔相等。
+- **space-around**：弹性项目<mark>平均分布在该行</mark>上，<font color=FF0000>两边留有一半的间隔空间</font>。<mark>如果剩余空间为负或者只有一个弹性项，则该值等同于center</mark>。否则，弹性项目沿该行分布，且<font color=FF0000>彼此间隔相等（比如是20px）</font>，同时<font color=FF0000>首尾两边和弹性容器之间留有一半的间隔（1/2*20px=10px）</font>。
+- **space-evenly：**flex项都沿着主轴均匀分布在指定的对齐容器中。相邻flex项之间的间距，主轴起始位置到第一个flex项的间距，主轴结束位置到最后一个flex项的间距，都完全一样。
+- **stretch：**均匀排列每个元素'auto'-sized 的元素会被拉伸以适应容器的大小
+- **safe：**与对齐关键字一起使用，如果选定的关键字会导致元素溢出容器造成数据丢失，那么将会使用 start 代替它。
+- **unsafe**
+
+###### align-items 属性
+
+align-items<mark>设置或检索弹性盒子元素在<font color=FF0000>侧轴（纵轴）方向上的对齐方式</font></mark>。
+
+**语法**
+
+```css
+align-items: flex-start | flex-end | center | baseline | stretch
+```
+
+- **flex-start**：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴<font color=FF0000>起始</font>边界。
+- **flex-end**：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴<font color=FF0000>结束</font>边界。
+- **center**：弹性盒子元素在该行的侧轴（纵轴）上居中放置。（如果该行的尺寸小于弹性盒子元素的尺寸，则会向两个方向溢出相同的长度）。
+- **baseline**：如弹性盒子元素的行内轴与侧轴为同一条，则该值与'flex-start'等效。其它情况下，该值<font color=FF0000>将与基线对齐</font>。
+- **stretch**：<font color=FF0000>默认值</font>，如果指定侧轴大小的属性值为'auto'，则其值会使项目的边距盒的尺寸尽可能接近所在行的尺寸，但同时会遵照'min/max-width/height'属性的限制。
+
+###### flex-wrap 属性
+
+**flex-wrap** 属性用于指定弹性盒子的子元素换行方式。
+
+**语法**
+
+```css
+flex-wrap: nowrap|wrap|wrap-reverse|initial|inherit;
+```
+
+- **nowrap**： <font color=FF0000>默认</font>， 弹性容器为<font color=FF0000>单行</font>。该情况下<mark>弹性子项**可能会**溢出容器</mark>。
+- **wrap**： 弹性容器为<font color=FF0000>多行</font>。该情况下<mark>弹性子项溢出的部分会被放置到新行</mark>，子项内部会发生断行
+- **wrap-reverse**：反转 wrap 排列。
+
+###### align-content 属性
+
+align-content 属性用于<font color=FF0000>修改 flex-wrap属性的行为</font>。类似于align-items, 但它不是设置弹性子元素的对齐，而是<font color=FF0000>**设置各个行的对齐**</font>。
+
+**语法**
+
+```css
+align-content: flex-start | flex-end | center | space-between | space-around | stretch
+```
+
+- **stretch** - <font color=FF0000>默认</font>。各行将会<font color=FF0000>伸展以占用剩余的空间</font>。
+- **flex-start** - 各行向弹性盒容器的<font color=FF0000>起始位置堆叠</font>。
+- **flex-end** - 各行向弹性盒容器的<font color=FF0000>结束位置堆叠</font>。
+- **center** -各行向弹性盒容器的<font color=FF0000>中间位置堆叠</font>。
+- **space-between** -各行在弹性盒容器中<font color=FF0000>平均分布</font>。
+- **space-around** - 各行在弹性盒容器中<font color=FF0000>平均分布</font>，<font color=FF0000>两端保留子元素与子元素之间间距大小的一半</font>。
 
 ##### Flex项目（子项目）
 
 以下6个属性设置在项目上
 
-- <font color=FF0000 size="5">**order**：</font><font color=FF0000>（容易被忽略）</font>定义项目的<font color=FF0000>排列顺序</font>。数值越小，排列越靠前，默认为0，可以为负值。]
-  
-  ```css
-  .item {
-      order: <integer>;
-  }
-  ```
+###### order
 
-- **flex-grow**定义项目的<font color=FF0000>**放大比例**</font>，<font color=FF0000>**默认为0**</font>，<font color=FF0000>即如果存在剩余空间，也不放大</font>。
-  
-  <font color=FF0000>如果所有项目的flex-grow属性都为1，则它们将等分剩余空间（如果有的话）。如果一个项目的flex-grow属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍</font>。
-  
-  ```css
-  .item {
-    flex-grow: <number>; /* default 0 */
-  }
-  ```
+<font color=FF0000>（容易被忽略）</font>定义项目的<font color=FF0000>排列顺序</font>。数值越小，排列越靠前，默认为0，可以为负值。]
 
-- **flex-shrink**：定义了项目的<font color=FF0000>**缩小比例**</font>，<font color=FF0000>**默认为1**</font>，即如果空间不足，该项目将缩小。
-  
-  <font color=FF0000>如果所有项目的flex-shrink属性都为1，当空间不足时，都将等比例缩小。如果一个项目的flex-shrink属性为0，其他项目都为1，则空间不足时，前者不缩小</font>。
-  
-  ```css
-  .item {
-    flex-shrink: <number>; /* default 1 */
-  }
-  ```
+```css
+.item {
+    order: <integer>;
+}
+```
 
-- **flex-basis**：定义了在<font color=FF0000>**flex-basis给上面两个属性分配多余空间之前, 计算项目是否有多余空间, 默认值为 auto, 即项目本身的大小**</font>。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。
-  
-  ```css
-  .item {
-    flex-basis: <length> | auto; /* default auto */
-  }
-  ```
+###### flex-grow
 
-- **flex**：flex属性是flex-grow, flex-shrink 和 flex-basis的简写，<font color=FF0000>默认值为0 1 auto。后两个属性可选</font>。
-  
-  **语法**
-  
-  ```css
-  .item {
-      1 | initial | none | inherit |  [ flex-grow ] || [ flex-shrink ] || [ flex-basis ]
-  }
-  ```
-  
-  - auto: 计算值为 1 1 auto
-  - initial: 计算值为 0 1 auto
-  - none：计算值为 0 0 auto
-  - inherit：从父元素继承
+定义项目的<font color=FF0000>**放大比例**</font>，<font color=FF0000>**默认为0**</font>，<font color=FF0000>即如果存在剩余空间，也不放大</font>。
 
-- **align-self**：<font color=FF0000>允许单个项目有与其他项目不一样的对齐方式</font>，设置弹性元素自身在侧轴（纵轴）方向上的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
-  
-  **语法**
-  
-  ```css
-  .item {
-      align-self: auto | flex-start | flex-end | center | baseline | stretch
-  }
-  ```
-  
-  - **auto**：<font color=FF0000>默认值</font>，如果'align-self'的值为'auto'，则其计算值为元素的父元素的'align-items'值，<font color=FF0000>如果其没有父元素，则计算值为'stretch'</font>。
-  
-  - **flex-start**：弹性盒子元素的<font color=FF0000>侧轴（纵轴）</font>起始位置的边界紧靠住该行的侧轴<font color=FF0000>起始边界</font>。
-  
-  - **flex-end**：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴<font color=FF0000>结束边界</font>。
-  
-  - **center**：弹性盒子元素在该行的侧轴（纵轴）上<font color=FF0000>居中放置</font>。（如果该行的尺寸小于弹性盒子元素的尺寸，则会向两个方向溢出相同的长度）。
-  
-  - **baseline**：如弹性盒子元素的行内轴<font color=FF0000>与侧轴为同一条</font>，则该值与'flex-start'等效。其它情况下，该值将与基线对齐。
-  
-  - **stretch**：如果指定侧轴大小的属性值为'auto'，则其值会使项目的边距盒的尺寸尽可能接近所在行的尺寸，但同时会遵照'min/max-width/height'属性的限制。
+<font color=FF0000>如果所有项目的flex-grow属性都为1，则它们将等分剩余空间（如果有的话）。如果一个项目的flex-grow属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍</font>。
+
+```css
+.item {
+  flex-grow: <number>; /* default 0 */
+}
+```
+
+###### flex-shrink
+
+定义了项目的<font color=FF0000>**缩小比例**</font>，<font color=FF0000>**默认为1**</font>，即如果空间不足，该项目将缩小。
+
+<font color=FF0000>如果所有项目的flex-shrink属性都为1，当空间不足时，都将等比例缩小。如果一个项目的flex-shrink属性为0，其他项目都为1，则空间不足时，前者不缩小</font>。
+
+```css
+.item {
+  flex-shrink: <number>; /* default 1 */
+}
+```
+
+###### flex-basis
+
+定义了在<font color=FF0000>**flex-basis给上面两个属性分配多余空间之前, 计算项目是否有多余空间, 默认值为 auto, 即项目本身的大小**</font>。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。
+
+```css
+.item {
+  flex-basis: <length> | auto; /* default auto */
+}
+```
+
+###### flex
+
+flex 属性是 flex-grow、 flex-shrink 和 flex-basis的简写，<font color=FF0000>默认值为0 1 auto。后两个属性可选</font>。
+
+**语法**
+
+```css
+.item {
+    1 | initial | none | inherit |  [ flex-grow ] || [ flex-shrink ] || [ flex-basis ]
+}
+```
+
+- auto: 计算值为 1 1 auto
+- initial: 计算值为 0 1 auto
+- none：计算值为 0 0 auto
+- inherit：从父元素继承
+
+###### align-self
+
+<font color=FF0000>允许单个项目有与其他项目不一样的对齐方式</font>，设置弹性元素自身在侧轴（纵轴）方向上的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
+
+**语法**
+
+```css
+.item {
+    align-self: auto | flex-start | flex-end | center | baseline | stretch
+}
+```
+
+- **auto**：<font color=FF0000>默认值</font>，如果'align-self'的值为'auto'，则其计算值为元素的父元素的'align-items'值，<font color=FF0000>如果其没有父元素，则计算值为'stretch'</font>。
+
+- **flex-start**：弹性盒子元素的<font color=FF0000>侧轴（纵轴）</font>起始位置的边界紧靠住该行的侧轴<font color=FF0000>起始边界</font>。
+
+- **flex-end**：弹性盒子元素的侧轴（纵轴）起始位置的边界紧靠住该行的侧轴<font color=FF0000>结束边界</font>。
+
+- **center**：弹性盒子元素在该行的侧轴（纵轴）上<font color=FF0000>居中放置</font>。（如果该行的尺寸小于弹性盒子元素的尺寸，则会向两个方向溢出相同的长度）。
+
+- **baseline**：如弹性盒子元素的行内轴<font color=FF0000>与侧轴为同一条</font>，则该值与'flex-start'等效。其它情况下，该值将与基线对齐。
+
+- **stretch**：如果指定侧轴大小的属性值为'auto'，则其值会使项目的边距盒的尺寸尽可能接近所在行的尺寸，但同时会遵照'min/max-width/height'属性的限制。
 
 以上摘自：[RUNOOB - CSS3 弹性盒子(Flex Box)](https://www.runoob.com/css3/css3-flexbox.html)  [阮一峰的网络日志  - Flex 布局教程：语法篇](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)  
 
@@ -5185,7 +5197,7 @@ CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font co
 
 - flex: none; === flex: 0 0 auto;
 
-​            摘自：[flex:1 到底代表什么?](https://zhuanlan.zhihu.com/p/136223806)
+摘自：[flex:1 到底代表什么?](https://zhuanlan.zhihu.com/p/136223806)
 
 - place-content 是 align-content 和 justify-content 的简写属性；而 <font color=FF0000>place-items 是 align-items 和 justify-items 的简写属性</font>。即：
   
@@ -7010,7 +7022,7 @@ text-align CSS属性定义行内内容（例如文字）<font color=FF0000>如�
 
 CSS 属性 text-align-last  <font color=FF0000>描述的是一段文本中最后一行在被强制换行之前的对齐规则</font>。
 
-**属性值**
+##### 属性值
 
 - **auto：**每一行的对齐规则由 text-align 的值来确定，当 text-align 的值是 justify，text-align-last 的表现和设置了 start 的表现是一样的，即如果文本的展示方向是从左到右，则最后一行左侧对齐与内容盒子。
   译者注：经测试，当 text-align 的值为 right，并且 text-align-last 设置为 auto 时，文本最后一行的对齐方式相当于 text-align-last 被设置为 right 时的效果。<font color=FF0000>即 text-align-last 设置为 auto 后的表现跟 text-align 的设置有关</font>。

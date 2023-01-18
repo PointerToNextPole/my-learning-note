@@ -454,9 +454,9 @@ Select入一个新的同胞连结符，名为一般同胞连结符（general sib
 
 ##### P74 选择空元素
 
-使用 `:empty` 伪类<font color=FF0000>可以选择没有任何子代的元素</font>，<font color=FF0000>**甚至连文本节点都没有（包括文本和空白）**</font>。CMS 经常生成没有任何内容的空元素，此时便可以使用这个伪类。例如，`p:empty{ display: none; }`能禁止显示空段落。
+使用 `:empty` 伪类<font color=FF0000>可以选择没有任何子代的元素</font>，<font color=FF0000>**甚至连文本节点都没有（包括文本和空白）**</font>。CMS 经常生成没有任何内容的空元素，此时便可以使用这个伪类。例如，`p:empty{ display: none; }` 能禁止显示空段落。
 
-注意，为了能正确匹配，从解析的角度来看，元素必须真的为空，没有有空白、 可见内容或后代元素。对下面几个元素来说，只有第一个和最后一个能被p:empty 匹配：
+注意，为了能正确匹配，从解析的角度来看，元素必须真的为空，没有有空白、 可见内容或后代元素。对下面几个元素来说，只有第一个和最后一个能被 `p:empty` 匹配：
 
 ```html
 <p></p>
@@ -469,7 +469,7 @@ Select入一个新的同胞连结符，名为一般同胞连结符（general sib
 <p><!—-a comment--></p>
 ```
 
-<font color=FF0000>第二个和第三个段落不能被：empty 匹配，因为它们不是空的，而是分别有一个空格和一个换行符</font>。这两种空白都算文本节点，因此也就不是空的。<font color=FF0000>最后一个段落之所以能匹配，是因为注释不是内容，也不是空白</font>。然而，如果在注释的某一边加上一个空格或一个换行符，p:empty就无法匹配了。
+<font color=FF0000>第二个和第三个段落不能被 `:empty` 匹配，因为它们不是空的，而是分别有一个空格</font>和<font color=fuchsia size=4>**一个换行符**</font>。这两种空白都算文本节点，因此也就不是空的。<font color=FF0000>最后一个段落之所以能匹配，是因为注释不是内容，也不是空白</font>。然而，如果在注释的某一边加上一个空格或一个换行符，`p:empty` 就无法匹配了。
 
 
 
@@ -483,11 +483,11 @@ Select入一个新的同胞连结符，名为一般同胞连结符（general sib
 
 ##### P79
 
-`:first-child` 和 `:last-child` 这两个伪类结合在一起的效果相当于 `:only-child。 下述两个规则选择的是相同的元素：
+`:first-child` 和 `:last-child` 这两个伪类结合在一起的效果相当于 `:only-child` 。 下述两个规则选择的是相同的元素：
 
 ```css
-p:only-child {color:red;}
-p:first-child:last-child {background-color:red;}
+p:only-child {color: red;}
+p:first-child:last-child {background-color: red;}
 ```
 
 这两个规则在一起把段落设为红底红字（<font color=LightSeaGreen>这么做显然不好</font>）。
