@@ -422,6 +422,8 @@
 
 - **come in handy** ：派上用场
 
+- **calibrate** ：校准
+
 #### 术语的英文
 
 - **埋点**：Event Tracking

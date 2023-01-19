@@ -10635,7 +10635,7 @@ Object.hasOwn(example, 'hasOwnProperty');   // returns false 👀
 
 ###### 检查数组索引是否存在
 
-> 👀 这一点是之前没有想到的。另外，Object.prototype.hasOwnProperty() 同样有效
+> 👀 这一点是之前没有想到的。另外，经过实验 Object.prototype.hasOwnProperty() 同样有效
 
 `Array` 中的元素被定义为直接属性，所以你可以使用 `hasOwn()` 方法去检查一个指定的索引是否存在：
 
@@ -10649,7 +10649,7 @@ Object.hasOwn(fruits, 4);   // false - not defined
 
 本部分证明了（会）影响 `hasOwnProperty` 的问题对 `hasOwn()` 是免疫的。首先，它可以与重新实现的 `hasOwnProperty()` 一起使用：
 
->👀 即 Object.prototype.hasOwnProperty() 可以被重写，
+>👀 即 Object.prototype.hasOwnProperty() 可以被重写，将不知情的情况下（比如：其他开发者在调用），将会出现和预想不一致的情况
 
 ```js
 const foo = {
@@ -10770,7 +10770,7 @@ Object.getOwnPropertyDescriptor(obj, prop)
 
 ##### 返回值
 
-<mark>如果指定的属性存在于对象上，则返回其属性描述符对象（property descriptor），否则返回 undefined</mark>。
+<font color=LightSeaGreen>如果指定的属性存在于对象上，则返回其属性描述符对象 ( property descriptor) ，否则返回 undefined</font>。
 
 摘自：[MDN - Object.getOwnPropertyDescriptor()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor)
 
@@ -10841,11 +10841,11 @@ Object.getOwnPropertySymbols() 方法<font color=FF0000>返回一个给定对象
 Object.getOwnPropertySymbols(obj)
 ```
 
-##### 参数
+###### 参数
 
 obj：要返回 Symbol 属性的对象。
 
-##### 返回值
+###### 返回值
 
 在给定对象自身上找到的所有 Symbol 属性的数组。
 
@@ -10878,7 +10878,7 @@ console.log(objectSymbols[0])      // Symbol(a)
 
 #### new.target
 
-new.target 属性允许你<font color=FF0000> **检测函数或构造方法是否是通过 new 运算符被调用的**</font>。<font color=FF0000> 在通过 new 运算符被初始化的函数或构造方法中，**new.target 返回一个指向构造方法或函数的引用**</font>。<mark>在普通的函数调用中，new.target 的值是<font color=FF0000> undefined</font></mark>。
+new.target 属性允许你<font color=FF0000> **检测函数或构造方法是否是通过 new 运算符被调用的**</font>。<font color=FF0000> 在通过 new 运算符被初始化的函数或构造方法中，**new.target 返回一个指向构造方法或函数的引用**</font>。<font color=LightSeaGreen>在普通的函数调用中，new.target 的值是 **undefined**</font>。
 
 ##### 语法
 
@@ -10934,7 +10934,7 @@ var d = new D(); // logs class D extends C{constructor(){super();}}
 
 ##### 视频《ES6中的难点--new.target是什么鬼东西？》的补充
 
-new.target 是 ES6 新增的
+💡 new.target 是 ES6 新增的。
 
 class 定义的类( `class ClassName { ...  }` )，是无法通过 “非 new” 的方式调用的。必须要 `new ClassName()`，否则会报错。那么 如何让 `function ClassName() {}` 定义的类，也必须要通过 new 调用（否则报错）？可以通过判断 new.target。
 
@@ -10975,9 +10975,9 @@ class AbstractClass {
 
 #### Symbol
 
-<font color=FF0000>**symbol 是一种基本数据类型**</font> （primitive data type）。<font color=FF0000>Symbol() 函数会返回 symbol 类型的值，该类型具有静态属性和静态方法</font>。它的静态属性会暴露几个内建的成员对象；它的静态方法会暴露全局的 symbol 注册，且类似于内建对象类，但<font color=FF0000>作为构造函数来说它并不完整，因为它不支持语法："new Symbol()"</font>（注：下面有示例代码）。
+<font color=FF0000>**symbol 是一种基本数据类型**</font> （primitive data type）。<font color=FF0000>Symbol() 函数会返回 symbol 类型的值，该类型具有静态属性和静态方法</font>。它的静态属性会暴露几个内建的成员对象；它的静态方法会暴露全局的 symbol 注册，且类似于内建对象类，但<font color=FF0000>作为构造函数来说它并不完整，因为它不支持语法：`new Symbol()`</font>（ 👀下面有示例代码）。
 
-每个从 Symbol() 返回的 symbol值都是唯一的。<font color=FF0000>**一个 symbol值能作为对象属性的标识符**</font>（**注：**示例如下）；这是该数据类型仅有的目的
+每个从 Symbol() 返回的 symbol值都是唯一的。<font color=FF0000>**一个 symbol值能作为对象属性的标识符**</font>（ 👀 示例如下）；这是该数据类型仅有的目的
 
 > ```js
 > var obj = {};
@@ -11011,7 +11011,7 @@ Symbol([description])
 
 ###### 参数
 
-- **description：**可选，字符串类型。对 symbol 的描述，可用于调试但不是访问 symbol 本身。
+**description：**可选，字符串类型。对 symbol 的描述，可用于调试但不是访问 symbol 本身。
 
 **描述**
 
@@ -11035,11 +11035,11 @@ Symbol("foo") === Symbol("foo"); // false
 var sym = new Symbol(); // TypeError
 ```
 
-这会阻止创建一个显式的 Symbol 包装器对象而不是一个 Symbol 值。<font color=FF0000>**围绕原始数据类型创建一个显式包装器对象从 ECMAScript 6 开始不再被支持**</font>。 然而，<mark>现有的原始包装器对象，如 `new Boolean`、`new String` 以及 `new Number`，因为遗留原因仍可被创建</mark>。
+这会阻止创建一个显式的 Symbol 包装器对象而不是一个 Symbol 值。<font color=FF0000>**围绕原始数据类型创建一个显式包装器对象从 ECMAScript 6 开始不再被支持**</font>。 然而，<font color=LightSeaGreen>现有的原始包装器对象，如 `new Boolean`、`new String` 以及 `new Number`，因为遗留原因仍可被创建</font>。
 
 ##### 全局共享的 Symbol
 
-上面<mark>使用 Symbol() 函数的语法，<font color=FF0000 size=4>**不会**</font>在你的整个代码库中创建一个可用的全局的 symbol 类型</mark>。 <font color=FF0000>要创建跨文件可用的 symbol，甚至跨域（每个都有它自己的全局作用域），**使用 Symbol.for() 方法和  Symbol.keyFor() 方法从全局的 symbol注册表设置和取得 symbol**</font>。
+上面<font color=LightSeaGreen>使用 Symbol() 函数的语法</font>，<font color=FF0000 size=4>**不会**</font> <font color=LightSeaGreen>在你的整个代码库中创建一个可用的全局的 symbol 类型</font>。 <font color=FF0000>要创建跨文件可用的 symbol，甚至跨域（每个都有它自己的全局作用域），**使用 Symbol.for() 方法和  Symbol.keyFor() 方法从全局的 symbol注册表设置和取得 symbol**</font>。
 
 ##### 在对象中查找 Symbol 属性
 
@@ -11151,7 +11151,7 @@ Symbol.asyncIterator 符号指定了一个对象的默认异步迭代器。<font
 
 Symbol.asyncIterator 是一个用于访问对象的 @@asyncIterator 方法的 <font color=FF0000>内建符号</font>。<font color=FF0000>一个异步可迭代对象 <font size=4>**必须**</font> 要有Symbol.asyncIterator属性</font>。
 
-**内建异步可迭代对象：**<font color=FF0000>目前没有默认设定了 [Symbol.asyncIterator] 属性的JavaScript内建的对象</font>。不过，<mark>WHATWG（网页超文本应用技术工作小组）Streams会被设定为第一批异步可迭代对象，[Symbol.asyncIterator] 最近已在设计规范中落地</mark>。
+**内建异步可迭代对象：**<font color=FF0000>目前没有默认设定了 [Symbol.asyncIterator] 属性的JavaScript内建的对象</font>。不过，<font color=LightSeaGreen>WHATWG（网页超文本应用技术工作小组）Streams会被设定为第一批异步可迭代对象，[Symbol.asyncIterator] 最近已在设计规范中落地</font>。
 
 摘自：[MDN - Symbol.asyncIterator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/asyncIterator)
 
@@ -11165,7 +11165,7 @@ species 访问器属性 <font color=FF0000 size=4>**允许 子类覆盖对象的
 
 摘自：[MDN - Symbol.species](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species)
 
-**补充**
+> 💡 补充
 
 #### get Array[@@species]
 
@@ -11177,7 +11177,7 @@ species 访问器属性 <font color=FF0000 size=4>**允许 子类覆盖对象的
 Array[Symbol.species]
 ```
 
-##### 返回值
+###### 返回值
 
 <font color=FF0000>Array 的构造函数</font>。
 
@@ -11202,11 +11202,13 @@ class MyArray extends Array {
 }
 ```
 
-👀 **注：**这里的示例使用场景，参看 [现代JS教程 - 扩展内建类](https://zh.javascript.info/extend-natives)
+> 👀 这里的示例使用场景，参看 [现代JS教程 - 扩展内建类](https://zh.javascript.info/extend-natives)
 
 摘自：[MDN - get Array[@@species]](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/@@species)
 
 **类似的还有：**get Map[@@species]、get Set[@@species]、get TypedArray[@@species]、get ArrayBuffer[@@species]、get RegExp[@@species]
+
+
 
 #### Symbol.match
 
@@ -11250,7 +11252,9 @@ console.log('foo'.replace(new Replace1('bar'))); // expected output: "s/foo/bar/
 
 #### Symbol.split
 
-Symbol.split <font color=FF0000>指向 一个 <font size=4>**正则表达式的索引处**</font> 分割字符串的方法</font>。 这个方法<font color=FF0000>通过 String.prototype.split() 调用</font>。<mark>注：这里表达有点问题，感觉应该是 String.prototype.split() 会调用 Symbol.split</mark>
+Symbol.split <font color=FF0000>指向 一个 <font size=4>**正则表达式的索引处**</font> 分割字符串的方法</font>。 这个方法<font color=FF0000>通过 String.prototype.split() 调用</font>。
+
+> 👀 这里表达有点问题，感觉应该是 String.prototype.split() 会调用 Symbol.split
 
 ```js
 class Split1 {
@@ -11270,7 +11274,9 @@ console.log('foobar'.split(new Split1('foo'))); // expected output: "foo/bar"
 
 #### Symbol.toStringTag
 
-Symbol.toStringTag 是一个内置 symbol，它 <font color=FF0000>通常作为对象的属性键使用</font>，<font color=FF0000>对应的属性值应该为字符串类型</font>，<font color=FF0000>这个字符串用来表示该对象的自定义类型标签</font>，通常只有内置的 Object.prototype.toString() 方法会去读取这个标签并把它包含在自己的返回值里。(👀  <mark>注，这里说成：使用 Object.prototype.toString() 方法时，会自动调用 Symbol.toStringTag，似乎更好；否则太让人费解了... </mark>)
+Symbol.toStringTag 是一个内置 symbol，它 <font color=FF0000>通常作为对象的属性键使用</font>，<font color=FF0000>对应的属性值应该为字符串类型</font>，<font color=FF0000>这个字符串用来表示该对象的自定义类型标签</font>，通常只有内置的 Object.prototype.toString() 方法会去读取这个标签并把它包含在自己的返回值里。
+
+> 👀  这里说成：使用 Object.prototype.toString() 方法时，会自动调用 Symbol.toStringTag，似乎更好；否则太让人费解了...
 
 **描述：**<font color=FF0000 size=4>**许多内置的 JavaScript 对象类型即便没有 toStringTag 属性，也能被 toString() 方法识别并返回特定的类型标签**</font>，比如，另外，注意下面的用法，使用 call 确实很巧妙
 
@@ -11293,7 +11299,7 @@ Object.prototype.toString.call(Promise.resolve()); // "[object Promise]"
 // ... and more
 ```
 
-但你自己创建的类（👀  **注**：不是内建类）不会有这份特殊待遇，toString() 找不到 toStringTag 属性时只好返回默认的 Object 标签：
+但你自己创建的类（👀 不是内建类）不会有这份特殊待遇，toString() 找不到 toStringTag 属性时只好返回默认的 Object 标签：
 
 ```js
 class ValidatorClass {}
@@ -11313,7 +11319,7 @@ Object.prototype.toString.call(new ValidatorClass()); // "[object Validator]"
 
 摘自：[MDN - Symbol.toStringTag](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag)
 
-👀  **注**：这里说的不太清楚，可以参见 [阮一峰的 ECMAScript 6 入门 - Symbol - Symbol.toStringTag](https://es6.ruanyifeng.com/#docs/symbol#Symbol-toStringTag)
+> 💡 这里说的不太清楚，可以参见 [阮一峰的 ECMAScript 6 入门 - Symbol - Symbol.toStringTag](https://es6.ruanyifeng.com/#docs/symbol#Symbol-toStringTag)
 
 对象的 Symbol.toStringTag 属性，指向一个方法。在该对象上面调用 Object.prototype.toString 方法时，如果这个属性存在，它的返回值会出现在 toString 方法返回的字符串之中，表示对象的类型。也就是说，这个属性可以用来定制 [object Object] 或 [object Array] 中 object 后面的那个字符串。
 
@@ -11348,13 +11354,15 @@ ES6 新增内置对象的 Symbol.toStringTag 属性值如下。
 - **Symbol.prototype[Symbol.toStringTag]：**'Symbol'
 - **Generator.prototype[Symbol.toStringTag]：**'Generator'
 - **GeneratorFunction.prototype[Symbol.toStringTag]：**'GeneratorFunction'
-- 👀 注，上面类似的还有：
-  -  **globalThis[Symbol.toStringTag] /  window[Symbol.toStringTag]：**'global' / 'window'
-  - **XMLHttpRequest.prototype[Symbol.toStringTag]：**'XMLHttpRequest'
+
+> 💡 上面类似的还有：
+>
+> - **globalThis[Symbol.toStringTag] /  window[Symbol.toStringTag]：**'global' / 'window'
+> - **XMLHttpRequest.prototype[Symbol.toStringTag]：**'XMLHttpRequest'
 
 摘自： [阮一峰的 ECMAScript 6 入门 - Symbol - Symbol.toStringTag](https://es6.ruanyifeng.com/#docs/symbol#Symbol-toStringTag)
 
-**补充：** toString 和 typeof、instanceof 的对比
+##### toString 和 typeof、instanceof 的对比
 
 | 操作        | 用于                                                       | 返回值       |
 | :---------- | :--------------------------------------------------------- | :----------- |
@@ -11382,11 +11390,13 @@ const object1 = {
 console.log(+object1); // expected output: 42
 ```
 
-**描述：**<font color=FF0000 size=4>**在 Symbol.toPrimitive 属性（用作函数值）的帮助下，一个对象可被转换为原始值**</font>。<font color=FF0000>**该函数被调用时，会被传递一个字符串参数 hint ，表示要转换到的原始值的预期类型**</font>。<font color=FF0000>hint 参数的取值是 "number"、"string" 和 "default" 中的任意一个</font>。注：这里的 hint 是：
+**描述：**<font color=FF0000 size=4>**在 Symbol.toPrimitive 属性（用作函数值）的帮助下，一个对象可被转换为原始值**</font>。<font color=FF0000>**该函数被调用时，会被传递一个字符串参数 hint ，表示要转换到的原始值的预期类型**</font>。<font color=FF0000>hint 参数的取值是 "number"、"string" 和 "default" 中的任意一个</font>。
 
-> a type of the primitive the object is going to be converted to.
+> 💡 这里的 hint 是：
 >
-> 摘自：[Understanding JavaScript type conversions](https://dev.to/antonmelnyk/understanding-javascript-type-conversions-43n)
+> > a type of the primitive the object is going to be converted to.
+> >
+> > 摘自：[Understanding JavaScript type conversions](https://dev.to/antonmelnyk/understanding-javascript-type-conversions-43n)
 
 更多的，可以参见上面 Object.prototype.valueOf() 和 Object.prototype.toString() 的内容。
 
@@ -11458,7 +11468,7 @@ Symbol.hasInstance <font color=FF0000>用于判断某对象是否为某构造器
 
 摘自：[MDN - Symbol.hasInstance](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/hasInstance)
 
-对象的 Symbol.hasInstance属性，指向一个内部方法。<font color=FF0000>当其他对象使用 instanceof 运算符，判断是否为该对象的实例时，会调用这个方法</font>。<mark>比如，foo instanceof Foo 在语言内部，实际调用的是 Foo\[Symbol.hasInstance](foo)</mark>。
+对象的 Symbol.hasInstance属性，指向一个内部方法。<font color=FF0000>当其他对象使用 instanceof 运算符，判断是否为该对象的实例时，会调用这个方法</font>。<font color=LightSeaGreen>比如，foo instanceof Foo 在语言内部，实际调用的是 `Foo[Symbol.hasInstance](foo)`</font>。
 
 摘自：[JavaScript ES6 Symbol.hasInstance的理解](https://www.cnblogs.com/waitforyou/p/7080591.html)
 
@@ -11480,7 +11490,7 @@ with (object1) {
 
 可以在任何对象上定义 @@unscopables symbol ( Symbol.unscopables )，用于排除属性名称并与 with 环境绑定在一起作为词法变量公开。 请注意，如果使用 Strict mode，语句将不可用，并且可能也不需要 symbol。
 
-在 unscopables 对象上设置属性为 true（<mark>注：根据 Symbol.match 中的特性，如果值为 falsy，则表示该对象不打算用作正则表达式对象。类似的，也经过测试，发现这里属性值为 truthy，则... </mark>），将使其 unscopable 并且因此该属性也将不会在词法环境变量中出现。 如果设置属性为 false ，则将使其可 scopable 并且该属性会出现在词法环境变量中。
+在 unscopables 对象上设置属性为 true（👀 根据 Symbol.match 中的特性，如果值为 falsy，则表示该对象不打算用作正则表达式对象。类似的，也经过测试，发现这里属性值为 truthy，则... ），将使其 unscopable 并且因此该属性也将不会在词法环境变量中出现。 如果设置属性为 false ，则将使其可 scopable 并且该属性会出现在词法环境变量中。
 
 ##### 示例
 
@@ -11494,7 +11504,7 @@ Object.keys(Array.prototype[Symbol.unscopables]);
 // ['copyWithin', 'entries', 'fill', 'find', 'findIndex', 'flat', 'flatMap', 'includes', 'keys', 'values', 'at']
 ```
 
-👀  **注**：可以尝试下打印 `Array.prototype[Symbol.unscopables]` 的结果：
+👀 可以尝试下打印 `Array.prototype[Symbol.unscopables]` 的结果：
 
 ```js
 [Object: null prototype] {
@@ -11540,26 +11550,26 @@ Symbol.for(key) 方法会根据给定的键 key，来从运行时的 symbol 注�
 Symbol.for(key);
 ```
 
-##### 参数
+###### 参数
 
 **key：**一个字符串，<font color=FF0000>作为 symbol 注册表中与某 symbol 关联的键（同时也会作为该 symbol 的描述）</font>。
 
-##### 返回值
+###### 返回值
 
 <font color=FF0000>返回由给定的 key 找到的 symbol，否则就是返回新创建的 symbol</font>。
 
 ##### 描述
 
-和 <font color=FF0000>Symbol() 不同的是，（ Symbol() ）用 Symbol.for() 方法创建的的 symbol 会被放入一个全局 symbol 注册表中</font>。<mark>Symbol.for() 并不是每次都会创建一个新的 symbol，它会首先检查给定的 key 是否已经在注册表中了。假如是，则会直接返回上次存储的那个。否则，它会再新建一个</mark>。
+和 <font color=FF0000>Symbol() 不同的是，（ Symbol() ）用 Symbol.for() 方法创建的的 symbol 会被放入一个全局 symbol 注册表中</font>。<font color=LightSeaGreen>Symbol.for() 并不是每次都会创建一个新的 symbol，它会首先检查给定的 key 是否已经在注册表中了。假如是，则会直接返回上次存储的那个。否则，它会再新建一个</font>。
 
 ##### 全局 symbol 注册表
 
 symbol 注册表中的记录结构：
 
-| 字段名      | 字段值                          |
-| :---------- | :------------------------------ |
-| \[[key]]    | 一个字符串，用来标识每个 symbol |
-| \[[symbol]] | 存储的 symbol 值                |
+| 字段名       | 字段值                          |
+| :----------- | :------------------------------ |
+| `[[key]]`    | 一个字符串，用来标识每个 symbol |
+| `[[symbol]]` | 存储的 symbol 值                |
 
 ##### 示例
 
@@ -11593,17 +11603,19 @@ Symbol.keyFor(sym) 方法用来获取全局symbol 注册表中与某个 symbol �
 Symbol.keyFor(sym);
 ```
 
-##### 参数
+###### 参数
 
 sym：必选参数，需要查找键值的某个 Symbol 。
 
-##### 返回值
+###### 返回值
 
 <mark>如果全局注册表中查找到该 symbol，则返回该 symbol 的 key 值，返回值为字符串类型。否则返回 undefined</mark>
 
 摘自：[MDN - Symbol.keyFor()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/keyFor)
 
-#### Symbol.prototype.description（ES2019）
+#### Symbol.prototype.description
+
+> 💡 ES2019
 
 description 是一个<font color=FF0000>只读属性</font>，它会返回 Symbol 对象的可选描述的字符串。
 
@@ -11611,9 +11623,7 @@ description 是一个<font color=FF0000>只读属性</font>，它会返回 Symbo
 
 ```js
 console.log(Symbol('desc').description); // expected output: "desc"
-
 console.log(Symbol.iterator.description); // expected output: "Symbol.iterator"
-
 console.log(Symbol.for('foo').description); // expected output: "foo"
 ```
 
@@ -11649,30 +11659,30 @@ Proxy 对象用于创建一个对象的代理，从而实现基本操作的拦�
 const p = new Proxy(target, handler)
 ```
 
-##### 参数
+###### 参数
 
 - **target：**<font color=FF0000>要使用 Proxy 包装的目标对象</font>（<mark>可以是任何类型的对象，包括原生数组，函数，甚至另一个代理</mark>）。
 - **handler：**一个通常以函数作为属性的对象，各属性中的函数分别定义了在执行各种操作时代理 p 的行为。
 
 ##### 方法
 
-- **Proxy.revocable()：**<font color=FF0000>创建一个可撤销的 Proxy 对象</font>。
+**Proxy.revocable()：**<font color=FF0000>创建一个可撤销的 Proxy 对象</font>。
 
-  ###### 《现代 JS 教程》的补充
+###### 《现代 JS 教程》的补充
 
-  > 一个 **可撤销** 的代理是可以被禁用的代理。
-  >
-  > 假设我们有一个资源，并且想随时关闭对该资源的访问。我们可以做的是将它包装成可一个撤销的代理，没有任何捕捉器。这样的代理会将操作转发给对象，并且我们可以随时将其禁用。
-  >
-  > 语法为：
-  >
-  > ```js
-  > let {proxy, revoke} = Proxy.revocable(target, handler)
-  > ```
-  >
-  > 该调用返回一个带有 proxy 和 revoke 函数的对象以将其禁用。
-  >
-  > 摘自：[现代 JS 教程 - Proxy 和 Reflect - 可撤销 Proxy](https://zh.javascript.info/proxy#ke-che-xiao-proxy)
+> 一个 **可撤销** 的代理是可以被禁用的代理。
+>
+> 假设我们有一个资源，并且想随时关闭对该资源的访问。我们可以做的是将它包装成可一个撤销的代理，没有任何捕捉器。这样的代理会将操作转发给对象，并且我们可以随时将其禁用。
+>
+> 语法为：
+>
+> ```js
+> let {proxy, revoke} = Proxy.revocable(target, handler)
+> ```
+>
+> 该调用返回一个带有 proxy 和 revoke 函数的对象以将其禁用。
+>
+> 摘自：[现代 JS 教程 - Proxy 和 Reflect - 可撤销 Proxy](https://zh.javascript.info/proxy#ke-che-xiao-proxy)
 
 ##### handler 对象的方法
 
@@ -11747,7 +11757,7 @@ console.log(target.a);    // 37. 操作已经被正确地转发
 
 摘自：[MDN - Proxy](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy)
 
-##### 补充
+##### 💡 补充
 
 | 内部方法                | Handler 方法                         | 何时触发                                                     |
 | :---------------------- | :----------------------------------- | :----------------------------------------------------------- |
