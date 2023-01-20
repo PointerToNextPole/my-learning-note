@@ -3887,11 +3887,13 @@ node --max-old-space-size=2048 xxx.js
 
 #### Node 查看 V8 信息
 
-> 👀 注：之所以想要了解 查看 Node 查看 V8 版本的方法，除了好奇之外，也是看见了 antfu 给 vscode 提的一个 issue 的截图（如下图），在提 issue 时很有必要给出自己运行环境的信息，这是一个 “减少不必要沟通” 的好习惯：
+> 💡 之所以想要了解 查看 Node 查看 V8 版本的方法，除了好奇之外，也是看见了 antfu 给 vscode 提的一个 issue 的截图（如下图），在提 issue 时很有必要给出自己运行环境的信息，这是一个 “减少不必要沟通” 的好习惯：
 >
 > <img src="https://s2.loli.net/2022/09/20/32JyPTvCenM6OSW.png" alt="image-20220920003722224" style="zoom: 33%;" />
 >
 > 链接：https://github.com/microsoft/vscode/issues/95937
+> 
+> 另外，也非常推荐阅读 antfu 的文章：[# Why Reproductions are Required](https://antfu.me/posts/why-reproductions-are-required)
 
 ##### 查看 V8 版本
 
@@ -3901,7 +3903,7 @@ node --max-old-space-size=2048 xxx.js
 
 <img src="https://s2.loli.net/2022/09/19/JyaBrAxI36VeqZ8.png" alt="image-20220919234454543" style="zoom:55%;" />
 
-> 👀 注：`-p` 完整写法是 `--print` ，作用“应该”是 print “script” ，参见 [Node Doc - cli # `-p` , `--print` "script"](https://nodejs.org/api/cli.html#-p---print-script)
+> 👀 `-p` 完整写法是 `--print` ，作用“应该”是 print “script” ，参见 [Node Doc - cli # `-p` , `--print` "script"](https://nodejs.org/api/cli.html#-p---print-script)
 
 ###### 方法二
 
@@ -3909,7 +3911,7 @@ node --max-old-space-size=2048 xxx.js
 
 <img src="https://s2.loli.net/2022/09/19/uJnsrRBOd5FbxKo.png" alt="image-20220919234857310" style="zoom:50%;" />
 
-> 👀 注：顺带看了下 `node -p process.versions` 的结果，和 `npm version` 的运行结果一样。
+> 👀 顺带看了下 `node -p process.versions` 的结果，和 `npm version` 的运行结果一样。
 
 ##### 查看 V8 提供的选项 / 配置
 

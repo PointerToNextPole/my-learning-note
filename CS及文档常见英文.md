@@ -424,6 +424,12 @@
 
 - **calibrate** ：校准
 
+- **in time** ：及时。 **on time** ：准时
+
+- **triage** ：分类诊断
+
+- **equity** ：公平
+
 #### 术语的英文
 
 - **埋点**：Event Tracking

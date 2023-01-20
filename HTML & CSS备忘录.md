@@ -22,9 +22,9 @@ Lorem ipsum，简称为 Lipsum，是指一篇常用于排版设计领域的拉�
 
 另外，今天（2022/9/2）在 [http/4会是什么样的？ - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/536812181/answer/2521339835) 看到了类似的概念：
 
-> 多年以来，“HTML5” 这个词更多是一个非规范的叫法，尤其是现在都已经 2022 年了，基本上我只能在国内的招聘 JD 里看到（不够专业）。现在的 HTML 规范早已经没有版本号了，更加不会有 HTML6 [https://weibo.com/1708684567/FxE3idXgy](https://link.zhihu.com/?target=https%3A//weibo.com/1708684567/FxE3idXgy)。
+> 多年以来，“HTML5” 这个词更多是一个非规范的叫法，尤其是现在都已经 2022 年了，基本上我只能在国内的招聘 JD 里看到（不够专业）。现在的 HTML 规范早已经没有版本号了，更加不会有 HTML6 。
 >
-> CSS 也同样早已没有版本号，CSS3 也是个非规范叫法，基本只能在招聘 JD 里看到，十年前我翻译的文章：[[译\]根本没有"CSS4" - 紫云飞 - 博客园](https://link.zhihu.com/?target=https%3A//www.cnblogs.com/ziyunfei/archive/2012/12/11/2813263.html)
+> CSS 也同样早已没有版本号，CSS3 也是个非规范叫法，基本只能在招聘 JD 里看到，十年前我翻译的文章：[[译\]根本没有"CSS4" - 紫云飞 - 博客园](https://www.cnblogs.com/ziyunfei/archive/2012/12/11/2813263.html)
 
 
 
@@ -45,7 +45,7 @@ HTML \<label> 元素（标签）表示用户界面中某个元素的说明。
 
 <font color=FF0000>将一个 \<label> 和一个 \<input> 元素匹配在一起，你需要给 \<input> 一个 id 属性。而 \<label> 需要一个 for 属性，其值和  \<input> 的 id 一样。</font>
 
-<mark>另外，你也可以将 \<input> 直接放在 \<label> 里，此时则不需要 for 和 id 属性，因为关联已隐含存在：</mark>
+<font color=LightSeaGreen>另外，你也可以将 `<input>` 直接放在 `<label>` 里，此时则不需要 for 和 id 属性，因为关联已隐含存在：</font>
 
 ```html
 <label>Do you like peas?
@@ -63,9 +63,11 @@ HTML \<label> 元素（标签）表示用户界面中某个元素的说明。
 
 该元素包含 全局属性。
 
-- <font color=FF0000>**for：**即和 \<label> 元素在同一文档中的 可关联标签的元素 的 id</font>。 <mark>文档中第一个 id 值与 \<label> 元素 for 属性值相同的元素，如果可关联标签 ( labelable ) ，则为已关联标签的控件，其标签就是这个 \<label> 元素</mark>。如果这个元素不可关联标签，则 for 属性没有效果。如果文档中还有其他元素的 id 值也和 for 属性相同，for 属性对这些元素也没有影响。
-  **注意：**\<label> 元素可同时有一个 for 属性和一个子代控件元素，只是 for 属性需要指向这个控件元素。
-- **form：**<font color=FF0000>表示与 label 元素关联的 \<form> 元素（即它的表单拥有者）</font>。**如果声明了该属性，其值应是同一文档中 \<form> 元素的 id。因此你可以将 label 元素放在文档的任何位置，而不仅作为 \<form> 元素的后代**。
+- <font color=FF0000>**for：**即和 `<label>` 元素在同一文档中的 可关联标签的元素 的 id</font>。 <font color=LightSeaGreen>文档中第一个 id 值与 `<label>` 元素 for 属性值相同的元素，如果可关联标签 ( labelable ) ，则为已关联标签的控件，其标签就是这个 `<label>` 元素</font>。如果这个元素不可关联标签，则 for 属性没有效果。如果文档中还有其他元素的 id 值也和 for 属性相同，for 属性对这些元素也没有影响。
+  
+  > ⚠️ `<label>` 元素可同时有一个 for 属性和一个子代控件元素，只是 for 属性需要指向这个控件元素
+
+- **form：**<font color=FF0000>表示与 label 元素关联的 `<form>` 元素（即它的表单拥有者）</font>。**如果声明了该属性，其值应是同一文档中 `<form>` 元素的 id。因此你可以将 label 元素放在文档的任何位置，而不仅作为 `<form>` 元素的后代**。
 
 摘自：[MDN - \<label>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/label)
 
@@ -4865,7 +4867,7 @@ CSS3 box-sizing 属性在一个元素的 width 和 height 中包含 padding（�
 
 #### @supports
 
-**@supports** CSS的 @规则。您<font color=FF0000>可以**指定依赖于浏览器中的一个或多个特定的CSS功能的支持声明**</font>。这<font color=FF0000>被称为特性查询</font>。<mark>该规则可以放在代码的顶层，也可以嵌套在任何其他条件组规则中</mark>。
+**@supports** CSS的 @规则。您<font color=FF0000>可以**指定依赖于浏览器中的一个或多个特定的CSS功能的支持声明**</font>。这<font color=FF0000>被称为特性查询</font>。<font color=LightSeaGreen>该规则可以放在代码的顶层，也可以嵌套在任何其他条件组规则中</font>。
 
 ```css
 /* 支持 grid布局 */
@@ -4884,83 +4886,182 @@ CSS3 box-sizing 属性在一个元素的 width 和 height 中包含 padding（�
 
 <font color=FF0000>**在 JavaScript 中，可以通过 CSS 对象模型接口 CSSSupportsRule 来访问 @supports**</font>。
 
-**语法**
+##### 语法
 
 @supports @规则 <font color=FF0000>**由一组样式声明和一条支持条件构成**</font>。<font color=FF0000>支**持条件由一条或多条使用 逻辑与（and）、逻辑或（or）、逻辑非（not）结合的名称-值对（name-value pair）组成**</font>。<font color=FF0000>**可以使用圆括号调整操作符的优先级**</font>。
 
-- **声明语法**
+###### 声明语法
 
-  最基本的支持条件就是 CSS 声明，也就是<font color=FF0000>一个 CSS 属性后跟一个值，中间用冒号分开</font>。<font color=FF0000>如果 transform-origin 的实现语法认为 `5% 5%  ` 是有效的值，则下面的表达式会返回 true</font>。
+最基本的支持条件就是 CSS 声明，也就是<font color=FF0000>一个 CSS 属性后跟一个值，中间用冒号分开</font>。<font color=FF0000>如果 transform-origin 的实现语法认为 `5% 5%  ` 是有效的值，则下面的表达式会返回 true</font>。
 
-  ```css
-  @supports (transform-origin: 5% 5%) {}
-  ```
+```css
+@supports (transform-origin: 5% 5%) {}
+```
 
-- **函数语法**
-  
-  第二种基本支持条件是支持函数，几乎所有浏览器都支持这种语法，但函数本身仍在标准化进程中。
-  
-- **selector()** 🧪
-  
-  测试浏览器是否支持经过测试的选择器语法。如果浏览器支持子组合器，则以下示例返回true：
-  
-  ```css
-  @supports selector(A > B) {}
-  ```
-  
-- **not 操作符**
+###### 函数语法
 
-  将 <font color=FF0000>not 操作符放在任何表达式之前就能否定一条表达式</font>。<mark>如果 transform-origin 的实现语法认为 10em 10em 10em 是无效的，则下面的表达式会返回 true</mark>。
+第二种基本支持条件是支持函数，几乎所有浏览器都支持这种语法，但函数本身仍在标准化进程中。
 
-  ```css
-  @supports not (transform-origin: 10em 10em 10em) {}
-  ```
+###### selector() 🧪
 
-  <font color=FF0000>和其他操作符一样，not 操作符可以应用在任意复杂度的表达式上</font>。下面的几个例子中都是合法的表达式：
+测试浏览器是否支持经过测试的选择器语法。如果浏览器支持子组合器，则以下示例返回true：
 
-  ```css
-  @supports not (not (transform-origin: 2px)) {}
-  @supports (display: grid) and (not (display: inline-grid)) {}
-  ```
+```css
+@supports selector(A > B) {}
+```
 
-  <mark>**注意：**如果 not 操作符位于表达式的最外层，则没有必要使用圆括号将它括起来。但如果要将该表达式与其他表达式连接起来使用，比如 and 和 or，则需要外面的圆括号</mark>。
+###### not 操作符
 
-- **and 操作符**
+将 <font color=FF0000>not 操作符放在任何表达式之前就能否定一条表达式</font>。<mark>如果 transform-origin 的实现语法认为 10em 10em 10em 是无效的，则下面的表达式会返回 true</mark>。
 
-  and 操作符用来将两个原始的表达式做逻辑与后生成一个新的表达式，如果两个原始表达式的值都为真，则生成的表达式也为真。在下例中，当且仅当两个原始表达式同时为真时，整个表达式才为真：
+```css
+@supports not (transform-origin: 10em 10em 10em) {}
+```
 
-  ```css
-  @supports (display: table-cell) and (display: list-item) {}
-  ```
+<font color=FF0000>和其他操作符一样，not 操作符可以应用在任意复杂度的表达式上</font>。下面的几个例子中都是合法的表达式：
 
-  可以将多个合取词并置而不需要更多的括号。以下两者都是等效的：
+```css
+@supports not (not (transform-origin: 2px)) {}
+@supports (display: grid) and (not (display: inline-grid)) {}
+```
 
-  ```css
-  @supports (display: table-cell) and (display: list-item) and (display:run-in) {}
-  @supports (display: table-cell) and ((display: list-item) and (display:run-in)) {}
-  ```
+<mark>**注意：**如果 not 操作符位于表达式的最外层，则没有必要使用圆括号将它括起来。但如果要将该表达式与其他表达式连接起来使用，比如 and 和 or，则需要外面的圆括号</mark>。
 
-- **or 操作符**
+###### and 操作符
 
-  or 操作符用来将两个原始的表达式做逻辑或后生成一个新的表达式，如果两个原始表达式的值有一个或者都为真，则生成的表达式也为真。在下例中，当两个原始表达式中至少有一个为真时，整个表达式才为真：
+and 操作符用来将两个原始的表达式做逻辑与后生成一个新的表达式，如果两个原始表达式的值都为真，则生成的表达式也为真。在下例中，当且仅当两个原始表达式同时为真时，整个表达式才为真：
 
-  ```css
-  @supports (transform-style: preserve) or (-moz-transform-style: preserve) {}
-  ```
+```css
+@supports (display: table-cell) and (display: list-item) {}
+```
 
-  可以将多个析取词并置而不需要更多的括号。以下两者都是等效的：
+可以将多个合取词并置而不需要更多的括号。以下两者都是等效的：
 
-  ```css
-  @supports (transform-style: preserve) or (-moz-transform-style: preserve) or
-            (-o-transform-style: preserve) or (-webkit-transform-style: preserve) {}
-  
-  @supports (transform-style: preserve-3d) or ((-moz-transform-style: preserve-3d) or
-            ((-o-transform-style: preserve-3d) or (-webkit-transform-style: preserve-3d))) {}
-  ```
+```css
+@supports (display: table-cell) and (display: list-item) and (display:run-in) {}
+@supports (display: table-cell) and ((display: list-item) and (display:run-in)) {}
+```
 
-  **注意：**在使用 and 和 or 操作符时，如果是为了定义多个表达式的执行顺序，则必须使用圆括号。如果不这样做的话，该条件就是无效的，会导致整个 @规则 失效。
+###### or 操作符
+
+or 操作符用来将两个原始的表达式做逻辑或后生成一个新的表达式，如果两个原始表达式的值有一个或者都为真，则生成的表达式也为真。在下例中，当两个原始表达式中至少有一个为真时，整个表达式才为真：
+
+```css
+@supports (transform-style: preserve) or (-moz-transform-style: preserve) {}
+```
+
+可以将多个析取词并置而不需要更多的括号。以下两者都是等效的：
+
+```css
+@supports (transform-style: preserve) or (-moz-transform-style: preserve) or
+          (-o-transform-style: preserve) or (-webkit-transform-style: preserve) {}
+
+@supports (transform-style: preserve-3d) or ((-moz-transform-style: preserve-3d) or
+          ((-o-transform-style: preserve-3d) or (-webkit-transform-style: preserve-3d))) {}
+```
+
+> ⚠️ 在使用 and 和 or 操作符时，如果是为了定义多个表达式的执行顺序，则必须使用圆括号。如果不这样做的话，该条件就是无效的，会导致整个 @规则 失效。
 
 摘自：[MDN - @supports](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@support)
+
+
+
+#### @layer
+
+CSS @规则中的 <font color=red>`@layer` 声明了一个级联层</font>，<font color=red>同一层内的规则将级联在一起</font>，这给予了开发者对层叠机制的更多控制。
+
+```css
+@layer utilities {
+  /* 创建一个名为 utilities 的级联层 */
+}
+```
+
+##### 形式语法
+
+```css
+@layer = 
+  @layer <layer-name>? { <stylesheet> } |
+  @layer <layer-name># ;
+
+<layer-name> = <ident> [ '.' <ident> ]*  
+```
+
+##### 语法
+
+`@layer` @规则 可以通过三种方式其一来创建级联层。
+
+###### 第一种
+
+创建一个块级的 @规则，其中包含作用于该层内部的 CSS 规则。
+
+```css
+@layer utilities {
+  .padding-sm { padding: .5rem; }
+  .padding-lg { padding: .8rem; }
+}
+```
+
+###### 第二种
+
+一个级联层同样可以通过 `@import` 来创建，规则存在于被引入的样式表内：
+
+```css
+@import(utilities.css) layer(utilities);
+```
+
+###### 第三种
+
+你也可以创建带命名的级联层，但不指定任何样式。例如，单一的命名层：
+
+```css
+@layer utilities
+```
+
+或者，<font color=red>多个命名层也可以被同时定义</font>。例如：
+
+```css
+@layer theme, layout, utilities
+```
+
+这一做法很有用，因为<font color=dodgerBlue>层最初被指定的顺序决定了它是否有优先级</font>。<font color=red>**对于声明而言，如果同一声明在多个级联层中被指定，最后一层中的将优先于其他层**</font>。因此，在上面的例子中，如果 `theme` 层和 `utilities` 层中存在冲突的规则，那么 `utilities` 层中的将优先被应用。
+
+<font color=fuchsia>即使 `utilities` 层中规则的优先级低于 `theme` 层中的</font>，该规则仍会被应用。一旦级联层顺序建立之后，优先级和出现顺序都会被忽略。<font color=red>这将使创建 CSS 选择器变得更加简单</font>，因为你<font color=red>不需要确保每一个选择器都有足够高的优先级来覆盖其他冲突的规则</font>，你<font color=red>只需要确保它们出现在一个顺序更靠后的级联层中</font>。
+
+> 💡 **备注：** 在已经声明级联层的名字后，它们的顺序随即被确立，你<font color=red>可以重复声明某级联层的名字来向其添加 CSS 规则</font>。这些样式将被附加到该层的末尾，且级联层之间的顺序不会改变。
+
+<font color=red>其他不属于任何一级联层的样式将被集中到同一匿名层，并置于所有层的后部</font>，这意味着任何在层外声明的样式都会覆盖在层内声明的样式。
+
+##### 嵌套层
+
+<font color=red>级联层允许嵌套</font>，例如：
+
+```css
+@layer framework {
+  @layer layout { /* ... */ }
+}
+```
+
+向 `layout` 层内部的 `framework` 层附加规则，只需用 `.` 连接这两层。
+
+```css
+@layer framework.layout {
+  p { margin-block: 1rem; }
+}
+```
+
+##### 匿名层
+
+如果创建了一个级联层但并未指定名字，例如：
+
+```css
+@layer {
+  p { margin-block: 1rem; }
+}
+```
+
+那么则称为创建了一个匿名层。除<font color=red>创建后无法向其添加规则</font>外，<font color=lightSeaGreen>该层和其他命名层功能一致</font>。
+
+摘自：[MDN - @layer](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@layer)
 
 
 
@@ -4998,25 +5099,25 @@ div{
 
 <mark>弹性盒子</mark>是 CSS3 的<mark>一种新的布局模式</mark>。
 
-CSS3 弹性盒（ Flexible Box 或 flexbox），是一种当页面需要<font color=FF0000>适应不同的屏幕大小以及设备类型时确保元素拥有恰当的行为的布局方式</font>。
+CSS3 弹性盒 ( Flexible Box 或 flexbox )，是一种当页面需要<font color=FF0000>适应不同的屏幕大小以及设备类型时确保元素拥有恰当的行为的布局方式</font>。
 
 引入弹性盒布局模型的目的是提供一种更加有效的方式来<mark>对一个容器中的子元素进行排列、对齐和分配空白空间</mark>。
 
 <font color=FF0000>**弹性盒子**</font>由**<font color=FF0000>弹性容器(Flex container)</font>**和**<font color=FF0000>弹性子元素(Flex item)</font>**组成。
 
-弹性容器<font color=FF0000>通过设置 display 属性的值</font>为 <font color=FF0000>**flex**</font> 或 **<font color=FF0000>inline-flex</font>**将其定义为弹性容器。
+弹性容器<font color=FF0000>通过设置 display 属性的值</font>为 <font color=FF0000>**flex**</font> 或 **<font color=FF0000>inline-flex</font>** 将其定义为弹性容器。
 
 弹性容器内包含了<font color=FF0000>一个</font>或<font color=FF0000>多个</font>弹性子元素。弹性子元素<font color=FF0000>通常在弹性盒子内一行显示</font>。<font color=FF0000>**默认情况每个容器只有一行**</font>。
 
-<font color=FF0000 size=4>**注意，设为 Flex 布局以后，子元素的float、clear和vertical-align属性将失效。**</font>
+> ⚠️ 设为 Flex 布局以后，子元素的 float、clear 和 vertical-align 属性将失效。
 
-##### Flex容器（父容器）
+#### Flex容器（父容器）
 
-###### flex-direction
+##### flex-direction
 
 flex-direction 属性指定了弹性子元素在父容器中的位置
 
-**语法**
+###### 语法
 
 ```css
 flex-direction: row | row-reverse | column | column-reverse
@@ -5027,11 +5128,11 @@ flex-direction: row | row-reverse | column | column-reverse
 - **column**：纵向排列。
 - **column-reverse**：反转纵向排列，从后往前排，最后一项排在最上面。
 
-###### justify-content 属性
+##### justify-content 属性
 
 内容对齐（justify-content）属性应用在弹性容器上，把弹性项沿着弹性容器的主轴线（main axis）对齐。
 
-**语法**
+###### 语法
 
 ```css
 justify-content: flex-start | flex-end | center | space-between | space-around
@@ -5047,11 +5148,11 @@ justify-content: flex-start | flex-end | center | space-between | space-around
 - **safe：**与对齐关键字一起使用，如果选定的关键字会导致元素溢出容器造成数据丢失，那么将会使用 start 代替它。
 - **unsafe**
 
-###### align-items 属性
+##### align-items 属性
 
 align-items<mark>设置或检索弹性盒子元素在<font color=FF0000>侧轴（纵轴）方向上的对齐方式</font></mark>。
 
-**语法**
+###### 语法
 
 ```css
 align-items: flex-start | flex-end | center | baseline | stretch
@@ -5063,11 +5164,11 @@ align-items: flex-start | flex-end | center | baseline | stretch
 - **baseline**：如弹性盒子元素的行内轴与侧轴为同一条，则该值与'flex-start'等效。其它情况下，该值<font color=FF0000>将与基线对齐</font>。
 - **stretch**：<font color=FF0000>默认值</font>，如果指定侧轴大小的属性值为'auto'，则其值会使项目的边距盒的尺寸尽可能接近所在行的尺寸，但同时会遵照'min/max-width/height'属性的限制。
 
-###### flex-wrap 属性
+##### flex-wrap 属性
 
 **flex-wrap** 属性用于指定弹性盒子的子元素换行方式。
 
-**语法**
+###### 语法
 
 ```css
 flex-wrap: nowrap|wrap|wrap-reverse|initial|inherit;
@@ -5077,11 +5178,11 @@ flex-wrap: nowrap|wrap|wrap-reverse|initial|inherit;
 - **wrap**： 弹性容器为<font color=FF0000>多行</font>。该情况下<mark>弹性子项溢出的部分会被放置到新行</mark>，子项内部会发生断行
 - **wrap-reverse**：反转 wrap 排列。
 
-###### align-content 属性
+##### align-content 属性
 
 align-content 属性用于<font color=FF0000>修改 flex-wrap属性的行为</font>。类似于align-items, 但它不是设置弹性子元素的对齐，而是<font color=FF0000>**设置各个行的对齐**</font>。
 
-**语法**
+###### 语法
 
 ```css
 align-content: flex-start | flex-end | center | space-between | space-around | stretch
@@ -5094,11 +5195,11 @@ align-content: flex-start | flex-end | center | space-between | space-around | s
 - **space-between** -各行在弹性盒容器中<font color=FF0000>平均分布</font>。
 - **space-around** - 各行在弹性盒容器中<font color=FF0000>平均分布</font>，<font color=FF0000>两端保留子元素与子元素之间间距大小的一半</font>。
 
-##### Flex项目（子项目）
+#### Flex项目（子项目）
 
 以下6个属性设置在项目上
 
-###### order
+##### order
 
 <font color=FF0000>（容易被忽略）</font>定义项目的<font color=FF0000>排列顺序</font>。数值越小，排列越靠前，默认为0，可以为负值。]
 
@@ -5108,7 +5209,7 @@ align-content: flex-start | flex-end | center | space-between | space-around | s
 }
 ```
 
-###### flex-grow
+##### flex-grow
 
 定义项目的<font color=FF0000>**放大比例**</font>，<font color=FF0000>**默认为0**</font>，<font color=FF0000>即如果存在剩余空间，也不放大</font>。
 
@@ -5120,7 +5221,7 @@ align-content: flex-start | flex-end | center | space-between | space-around | s
 }
 ```
 
-###### flex-shrink
+##### flex-shrink
 
 定义了项目的<font color=FF0000>**缩小比例**</font>，<font color=FF0000>**默认为1**</font>，即如果空间不足，该项目将缩小。
 
@@ -5132,7 +5233,7 @@ align-content: flex-start | flex-end | center | space-between | space-around | s
 }
 ```
 
-###### flex-basis
+##### flex-basis
 
 定义了在<font color=FF0000>**flex-basis给上面两个属性分配多余空间之前, 计算项目是否有多余空间, 默认值为 auto, 即项目本身的大小**</font>。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。
 
@@ -5142,11 +5243,11 @@ align-content: flex-start | flex-end | center | space-between | space-around | s
 }
 ```
 
-###### flex
+##### flex
 
 flex 属性是 flex-grow、 flex-shrink 和 flex-basis的简写，<font color=FF0000>默认值为0 1 auto。后两个属性可选</font>。
 
-**语法**
+###### 语法
 
 ```css
 .item {
@@ -5159,11 +5260,11 @@ flex 属性是 flex-grow、 flex-shrink 和 flex-basis的简写，<font color=FF
 - none：计算值为 0 0 auto
 - inherit：从父元素继承
 
-###### align-self
+##### align-self
 
 <font color=FF0000>允许单个项目有与其他项目不一样的对齐方式</font>，设置弹性元素自身在侧轴（纵轴）方向上的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
 
-**语法**
+###### **语法**
 
 ```css
 .item {
@@ -5187,7 +5288,7 @@ flex 属性是 flex-grow、 flex-shrink 和 flex-basis的简写，<font color=FF
 
 具体实例：[阮一峰的网络日志  - Flex 布局教程：实例篇](http://www.ruanyifeng.com/blog/2015/07/flex-examples.html)
 
-##### 补充
+> 💡 **补充**
 
 - flex: 1; === flex: 1 1 (0 / 任意数字+任意长度单位); <font color=FF0000>（就是代表均匀分配元素）</font>
   
@@ -5199,32 +5300,32 @@ flex 属性是 flex-grow、 flex-shrink 和 flex-basis的简写，<font color=FF
 
 摘自：[flex:1 到底代表什么?](https://zhuanlan.zhihu.com/p/136223806)
 
-- place-content 是 align-content 和 justify-content 的简写属性；而 <font color=FF0000>place-items 是 align-items 和 justify-items 的简写属性</font>。即：
-  
-  ```css
-  .flex__container {
-     place-content: center;
-     place-items: center;
-  }
-  
-  /*等效于：*/
-  .flex__container {
-     align-content: center;
-     justify-content: center;
-  
-     align-items: center;
-     justify-items: center;
-  }
-  ```
+place-content 是 align-content 和 justify-content 的简写属性；而 <font color=FF0000>place-items 是 align-items 和 justify-items 的简写属性</font>。即：
+
+```css
+.flex__container {
+   place-content: center;
+   place-items: center;
+}
+
+/*等效于：*/
+.flex__container {
+   align-content: center;
+   justify-content: center;
+
+   align-items: center;
+   justify-items: center;
+}
+```
 
 摘自：[收藏！40 个 CSS 布局技巧](https://zhuanlan.zhihu.com/p/161822219)
 
-- flex和inline-flex的区别
-  
-  - flex： 将对象作为<font color=FF0000>弹性伸缩盒</font>显示
-  - inline-flex：将对象作为<font color=FF0000>**内联**块级弹性伸缩盒</font>显示
-  
-  摘自：[display：flex和display: inline-flex区别](https://www.jianshu.com/p/4d596708f61b)
+##### flex 和 inline-flex 的区别
+
+- flex： 将对象作为<font color=FF0000>弹性伸缩盒</font>显示
+- inline-flex：将对象作为<font color=FF0000>**内联**块级弹性伸缩盒</font>显示
+
+摘自：[display：flex和display: inline-flex区别](https://www.jianshu.com/p/4d596708f61b)
 
 ![](https://i.loli.net/2020/08/25/A3Qhi7IHJotxzMr.png)
 
@@ -5232,7 +5333,7 @@ flex 属性是 flex-grow、 flex-shrink 和 flex-basis的简写，<font color=FF
 
 #### CSS3 多媒体查询
 
-<mark>使用 @media 查询，你<font color=FF0000>可以针对不同的媒体类型定义不同的样式</font></mark>。
+使用 @media 查询，你<font color=FF0000>可以针对不同的媒体类型定义不同的样式</font>。
 
 CSS3 的多媒体查询继承了 CSS2 多媒体类型的所有思想： 取代了查找设备的类型，CSS3 根据设置自适应显示。
 
@@ -5257,17 +5358,21 @@ CSS3 的多媒体查询继承了 CSS2 多媒体类型的所有思想： 取代�
 
 除非你使用了 not 或 only 操作符，否则所有的样式会适应在所有设备上显示效果。
 
-- **not:** not是用来<font color=FF0000>排除掉某些特定的设备</font>的，比如 @media not print（非打印设备）。
+- **not** ：not是用来<font color=FF0000>排除掉某些特定的设备</font>的，比如 @media not print（非打印设备）。
   
-  **补充**（摘自：[MDN - 使用媒体查询](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Media_queries)）：用于否定媒体查询，<mark>如果不满足这个条件则返回true，否则返回false</mark>。 如果出现在以逗号分隔的查询列表中，它将仅否定应用了该查询的特定查询。 如果使用not运算符，则还必须指定媒体类型。
+  > 💡 **补充**
+  >
+  > 用于否定媒体查询，<font color=LightSeaGreen>如果不满足这个条件则返回 true，否则返回false</font>。 如果出现在以逗号分隔的查询列表中，它将仅否定应用了该查询的特定查询。 如果使用not运算符，则还必须指定媒体类型。
+  >
+  > 摘自：[MDN - 使用媒体查询](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Media_queries)
+  
+- **only** ：用来<font color=FF0000>定某种特别的媒体类型</font>。对于支持 Media Queries 的移动设备来说，如果存在 only 关键字，移动设备的 Web 浏览器会忽略 only 关键字并直接根据后面的表达式应用样式文件。对于不支持 Media Queries 的设备但能够读取 Media Type 类型的 Web 浏览器，遇到 only 关键字时会忽略这个样式文件。
 
-- **only:** 用来<font color=FF0000>定某种特别的媒体类型</font>。对于支持Media Queries的移动设备来说，如果存在only关键字，移动设备的Web浏览器会忽略only关键字并直接根据后面的表达式应用样式文件。对于不支持Media Queries的设备但能够读取Media Type类型的Web浏览器，遇到only关键字时会忽略这个样式文件。
+- **all** ：<font color=FF0000>所有设备</font>
 
-- **all:** <font color=FF0000>所有设备</font>
+- **and** ：and 操作符用于 <font color=LightSeaGreen>将多个媒体查询规则组合成单条媒体查询</font>，<font color=FF0000>当每个查询规则都为真时则该条媒体查询为真</font>，它还用于将媒体功能与媒体类型结合在一起。
 
-- **and:** and 操作符用于<mark>将多个媒体查询规则组合成单条媒体查询</mark>，<font color=FF0000>当每个查询规则都为真时则该条媒体查询为真</font>，它还用于将媒体功能与媒体类型结合在一起。
-
-- **, (逗号): **逗号<mark>用于将多个媒体查询合并为一个规则</mark>。 逗号分隔列表中的每个查询都与其他查询分开处理。 因此，<mark>如果列表中的任何查询为true，则整个media语句均返回true</mark>。 换句话说，<font color=FF0000>列表的行为类似于逻辑或`or`运算符</font>。
+- **,** （逗号）：逗号 用于<font color=LightSeaGreen>将多个媒体查询合并为一个规则</font>。 逗号分隔列表中的每个查询都与其他查询分开处理。 因此，<font color=LightSeaGreen>如果列表中的任何查询为 true ，则整个 media 语句均返回 true</font>。 换句话说，<font color=FF0000>列表的行为类似于逻辑或 `or` 运算符</font>。
 
 以上部分内容摘自：[MDN - 使用媒体查询](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Media_queries)
 
@@ -5284,7 +5389,7 @@ CSS3 的多媒体查询继承了 CSS2 多媒体类型的所有思想： 取代�
 
 ##### 关于的像素密度补充
 
-CSS 中有关于“像素密度”的媒体查询，如下示例：
+CSS 中有关于 “像素密度” 的媒体查询，如下示例：
 
 ```css
 @media only screen and (min-device-pixel-ratio: 1.5) {
@@ -5315,13 +5420,21 @@ CSS 中有关于“像素密度”的媒体查询，如下示例：
 
 
 
+#### @container-query
+
+// TODO 
+
+和 @media 使用一样，不过使用场景不同。入门参考：[最新：CSS Container Queries 容器查询，响应式布局利器](https://www.bilibili.com/video/BV1oo4y1C7nJ)
+
+
+
 #### 响应式 Web 设计 - Viewport
 
 ##### Viewport
 
 Viewport 是<font color=FF0000>用户网页的可视区域</font>，翻译为中文可以叫做"<font color=FF0000>视区</font>"。
 
-<mark>手机浏览器是<font color=FF0000>把页面放在一个虚拟的"窗口"（viewport）中</font>，<font color=FF0000>**通常这个虚拟的"窗口"（viewport）比屏幕宽**</font>，这样就不用把每个网页挤到很小的窗口中</mark>（这样会破坏没有针对手机浏览器优化的网页的布局），用户可以通过平移和缩放来看网页的不同部分。
+手机浏览器是<font color=FF0000>把页面放在一个虚拟的"窗口"（viewport）中</font>，<font color=FF0000>**通常这个虚拟的"窗口"（viewport）比屏幕宽**</font>，这样就不用把每个网页挤到很小的窗口中（这样会破坏没有针对手机浏览器优化的网页的布局），用户可以通过平移和缩放来看网页的不同部分。
 
 **设置 Viewport**
 
@@ -5377,11 +5490,11 @@ Viewport 是<font color=FF0000>用户网页的可视区域</font>，翻译为中
 
 #### 响应式 Web 设计 - 媒体查询
 
-**方向：横屏/竖屏**
+##### 方向：横屏/竖屏
 
-结合CSS媒体查询，<mark>可以创建适应不同设备的方向(<font color=FF0000>横屏landscape</font>、<font color=FF0000>竖屏portrait</font>等)的布局</mark>。
+结合 CSS 媒体查询，<mark>可以创建适应不同设备的方向（<font color=FF0000>横屏landscape</font>、<font color=FF0000>竖屏portrait</font> 等）的布局</mark>。
 
-**语法：**
+##### 语法
 
 ```css
 orientation：portrait | landscape
@@ -5390,7 +5503,7 @@ orientation：portrait | landscape
 - **portrait：**指定输出设备中的页面可见区域高度大于或等于宽度
 - **landscape：** 除portrait值情况外，都是landscape
 
-**示例：**
+##### 示例
 
 ```css
 @media only screen and (orientation: landscape) {
@@ -5400,11 +5513,11 @@ orientation：portrait | landscape
 }
 ```
 
-**使用指点设备**
+##### 使用指点设备
 
 作为四级规范的一部分，hover媒体特征被引入了进来。这种特征意味着你<mark>可以测试用户是否能在一个元素上悬浮</mark>，这也<mark>基本就是说他们正在使用某种指点设备，因为触摸屏和键盘导航是没法实现悬浮的</mark>。
 
-示例如下：
+###### 示例
 
 ```css
 @media (hover: hover) {
@@ -5414,11 +5527,13 @@ orientation：portrait | landscape
 }
 ```
 
-**断点**
+##### 断点
 
-引入媒体查询的点就叫做**断点**。
+引入媒体查询的点就叫做 **断点**。
 
-以上部分内容摘自：[MDN - 使用媒体查询](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Media_queries)
+摘自：[MDN - 使用媒体查询](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Media_queries)
+
+
 
 #### prefers-color-scheme
 
@@ -5431,12 +5546,12 @@ prefers-color-scheme CSS <font color=FF0000 size=4>**媒体特性 **</font> 用
 - **dark：**表示用户已告知系统他们选择使用暗色主题的界面。
 
 > 译者注：“未得知”、“已告知”等用语，英文原文如此。
-> **“未得知”** 可理解为：浏览器的宿主系统不支持设置主题色，或者支持主题色并默认为/被设为了未设置/无偏好。
+> **“未得知”** 可理解为：浏览器的宿主系统不支持设置主题色，或者支持主题色并默认为/被设为了未设置/无偏好
 > **“已告知”** 为：浏览器的宿主系统支持设置主题色，且被设置为了亮色或者暗色。
 
-目前，<mark>若结果为 no-preference，无法通过此媒体特性获知宿主系统是否支持设置主题色，或者用户是否主动将其设置为无偏好</mark>。出于隐私保护等方面的考虑，用户或用户代理也可能在一些情况下在浏览器内部将其设置为 no-preference。
+目前，<font color=LightSeaGreen>若结果为 no-preference，无法通过此媒体特性获知宿主系统是否支持设置主题色，或者用户是否主动将其设置为无偏好</font>。出于隐私保护等方面的考虑，用户或用户代理也可能在一些情况下在浏览器内部将其设置为 no-preference。
 
-示例如下：
+##### 示例
 
 ```css
 @media (prefers-color-scheme: dark) {
@@ -5561,7 +5676,7 @@ p:nth-of-type(4n) {
 
 **:nth-child(an+b)** 这个 CSS 伪类首先找到所有当前元素的兄弟元素，然后按照位置先后顺序从1开始排序，选择的结果为CSS伪类:nth-child括号中表达式（an+b）匹配到的元素集合（n=0，1，2，3...）。
 
-**示例：**
+##### 示例
 
 - `0n+3` 或简单的 `3` 匹配第三个元素。
 - `1n+0` 或简单的 `n` 匹配每个元素。（兼容性提醒：在 Android 浏览器 4.3 以下的版本 `n` 和 `1n` 的匹配方式不一致。`1n` 和 `1n+0` 是一致的，可根据喜好任选其一来使用。）
@@ -5585,67 +5700,71 @@ a 和 b 都必须为整数，并且元素的第一个子元素的下标为 1。�
 
 #### placeholoder 加上颜色
 
-- 方法一：用 `::placeholder`（<font color=FF0000>比较简洁，但这是一个实验功能，兼容性比较差</font>）
+##### 方法一
 
-  伪元素 ::placeholder可以选择一个表单元素的占位文本，它允许开发者和设计师自定义占位文本的样式。
+用 `::placeholder`（<font color=FF0000>比较简洁，但这是一个实验功能，兼容性比较差</font>）
 
-  ##### 示例
+伪元素 `::placeholder` 可以选择一个表单元素的占位文本，它允许开发者和设计师自定义占位文本的样式。
 
-  ```css
-  ::placeholder {
-    color: red;
-    font-size: 1.5em;
-  }
-  ```
+###### 示例
 
-- 方法二：不同浏览器分别解决
+```css
+::placeholder {
+  color: red;
+  font-size: 1.5em;
+}
+```
 
-  ```css
-  /* - Chrome ≤56,
-     - Safari 5-10.0
-     - iOS Safari 4.2-10.2
-     - Opera 15-43
-     - Opera Mobile >12
-     - Android Browser 2.1-4.4.4
-     - Samsung Internet
-     - UC Browser for Android
-     - QQ Browser */
-  ::-webkit-input-placeholder {
-      color: #ccc;
-      font-weight: 400;
-  }
-  
-  /* Firefox 4-18 */
-  :-moz-placeholder {
-      color: #ccc;
-      font-weight: 400;
-  }
-  
-  /* Firefox 19-50 */
-  ::-moz-placeholder {
-      color: #ccc;
-      font-weight: 400;
-  }
-  
-  /* - Internet Explorer 10–11
-     - Internet Explorer Mobile 10-11 */
-  :-ms-input-placeholder {
-      color: #ccc !important;
-      font-weight: 400 !important;
-  }
-  
-  /* Edge (also supports ::-webkit-input-placeholder) */
-  ::-ms-input-placeholder {
-      color: #ccc;
-      font-weight: 400;
-  }
-  
-  /* CSS Working Draft */
-  ::placeholder {
-      color: #ccc;
-      font-weight: 400;
-  }
-  ```
+##### 方法二
+
+不同浏览器分别解决
+
+```css
+/* - Chrome ≤56,
+   - Safari 5-10.0
+   - iOS Safari 4.2-10.2
+   - Opera 15-43
+   - Opera Mobile >12
+   - Android Browser 2.1-4.4.4
+   - Samsung Internet
+   - UC Browser for Android
+   - QQ Browser */
+::-webkit-input-placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+
+/* Firefox 4-18 */
+:-moz-placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+
+/* Firefox 19-50 */
+::-moz-placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+
+/* - Internet Explorer 10–11
+   - Internet Explorer Mobile 10-11 */
+:-ms-input-placeholder {
+    color: #ccc !important;
+    font-weight: 400 !important;
+}
+
+/* Edge (also supports ::-webkit-input-placeholder) */
+::-ms-input-placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+
+/* CSS Working Draft */
+::placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+```
 
 摘自：[MDN - ::placeholder](https://developer.mozilla.org/zh-CN/docs/Web/CSS/::placeholder)  [如何修改placeholder样式](https://juejin.cn/post/6844903697135173645)
 
@@ -5653,7 +5772,7 @@ a 和 b 都必须为整数，并且元素的第一个子元素的下标为 1。�
 
 > 🧪 ：这是一个实验性质的功能
 
-:placeholder-shown CSS 伪类 在 \<input> 或 \<textarea> 元素显示 placeholder text 时生效。示例如下：
+`:placeholder-shown` CSS 伪类 在 `<input>` 或 `<textarea>` 元素显示 placeholder text 时生效。示例如下：
 
 ```css
 /* 选择所有显示占位符(placeholder)的元素 */
@@ -5668,7 +5787,7 @@ a 和 b 都必须为整数，并且元素的第一个子元素的下标为 1。�
 
 #### div实现“可输入”
 
-可以使用contenteditable属性。示例如下：
+可以使用 contenteditable 属性。示例如下：
 
 ```html
 <div class='input' contenteditable placeholder='请输入文字' />
@@ -5696,7 +5815,9 @@ a 和 b 都必须为整数，并且元素的第一个子元素的下标为 1。�
 
 摘自：[MDN - Content Editable](https://developer.mozilla.org/zh-CN/docs/Web/Guide/HTML/Editable_content)
 
-**补充：<font size='4'>document.execCommand</font>（<font color=FF0000>注意：已废弃，详见[CanIuse-execCommand](https://caniuse.com/?search=execCommand)</font>）**
+**<font size='4'>document.execCommand</font>**
+
+> ⚠️已废弃，详见 [CanIuse-execCommand](https://caniuse.com/?search=execCommand)
 
 当一个HTML文档切换到设计模式时，document暴露 execCommand 方法，该方法允许运行命令来操纵可编辑内容区域的元素。
 

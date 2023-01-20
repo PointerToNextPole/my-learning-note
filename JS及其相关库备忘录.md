@@ -3600,7 +3600,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                 
+  >                                                                                                                                                                                                                                                   
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3619,7 +3619,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                                 
+  >                                                                                                                                                                                                                                                   
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -4105,13 +4105,13 @@ console.log(myHeaders.get('X-Custom-Header')); // null
 
 为了允许第三方库、框架、polyfills 能使用微任务，Window 暴露了 queueMicrotask() 方法，而 Worker 接口则通过WindowOrWorkerGlobalScope mixin 提供了同名的 queueMicrotask() 方法。
 
-<font color=FF0000>如果一个微任务通过调用 queueMicrotask()，向队列中加入了更多的微任务，则 **那些新加入的微任务 会早于下一个任务运行**</font>（<mark>注：这里的任务是task，即宏任务</mark>） 。这是因为事件循环会持续调用微任务直至队列中没有留存的，即使是在有更多微任务持续被加入的情况下
+<font color=FF0000>如果一个微任务通过调用 queueMicrotask()，向队列中加入了更多的微任务，则 **那些新加入的微任务 会早于下一个任务运行**</font>（ 💡 这里的任务是task，即宏任务） 。这是因为事件循环会持续调用微任务直至队列中没有留存的，即使是在有更多微任务持续被加入的情况下
 
-虽然在过去要使得入列微任务成为可能有可用的技巧（比如创建一个立即 resolve 的 promise），但新加入的 queueMicrotask() 方法增加了一种标准的方式，<font color=FF0000>**可以安全的引入微任务而避免使用额外的技巧**</font>。<mark>通过引入 queueMicrotask()，由晦涩地使用 promise 去创建微任务而带来的风险就可以被避免了</mark>。举例来说，当使用 promise 创建微任务时，由回调抛出的异常被报告为 rejected promises 而不是标准异常。同时，创建和销毁 promise 带来了事件和内存方面的额外开销，这是正确入列微任务的函数应该避免的。
+虽然在过去要使得入列微任务成为可能有可用的技巧（比如创建一个立即 resolve 的 promise），但新加入的 queueMicrotask() 方法增加了一种标准的方式，<font color=FF0000>**可以安全的引入微任务而避免使用额外的技巧**</font>。<font color=LightSeaGreen>通过引入 queueMicrotask()，由晦涩地使用 promise 去创建微任务而带来的风险就可以被避免了</font>。举例来说，当使用 promise 创建微任务时，由回调抛出的异常被报告为 rejected promises 而不是标准异常。同时，创建和销毁 promise 带来了事件和内存方面的额外开销，这是正确入列微任务的函数应该避免的。
 
 ##### 何时使用微任务
 
-<mark>如果可能的话，大部分开发者并不应该过多的使用微任务</mark>。**使用微任务的最主要原因简单归纳为：**<font color=FF0000>确保任务顺序的一致性，即便当结果或数据是同步可用的，也要同时减少操作中用户可感知到的延迟而带来的风险</font>。
+<font color=lightSeaGreen>**如果可能的话，大部分开发者并不应该过多的使用微任务**</font>。**使用微任务的最主要原因简单归纳为：**<font color=FF0000>确保任务顺序的一致性，即便当结果或数据是同步可用的，也要同时减少操作中用户可感知到的延迟而带来的风险</font>。
 
 摘自：[MDN - 在 JavaScript 中通过 queueMicrotask() 使用微任务](https://developer.mozilla.org/zh-CN/docs/Web/API/HTML_DOM_API/Microtask_guide)
 
@@ -13272,13 +13272,13 @@ var handle = window.requestIdleCallback(callback[, options])
 
 ###### 参数
 
-- **callback：**<font color=FF0000>一个在事件循环空闲时即将被调用的函数的引用</font>。<font color=FF0000>函数会接收到一个名为 IdleDeadline 的参数</font>，<mark>这个参数可以获取当前空闲时间以及回调是否在超时时间前已经执行的状态</mark>
+- **callback：**<font color=FF0000>一个在事件循环空闲时即将被调用的函数的引用</font>。<font color=FF0000>函数会接收到一个名为 IdleDeadline 的参数</font>，<font color=LightSeaGreen>这个参数可以获取当前空闲时间以及回调是否在超时时间前已经执行的状态</font>
 - **options：**可选，包括可选的配置参数。具有如下属性：
   - **timeout：**<font color=FF0000>如果指定了 timeout，并且有一个正值，而回调在 timeout 毫秒过后还没有被调用，那么回调任务将放入事件循环中排队</font>，即使这样做有可能对性能产生负面影响
 
 摘自：[MDN - requestIdleCallback](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)
 
-> 👀 关于垃圾回收的补充
+> 💡 关于垃圾回收的补充
 
 #### FinalizationRegistry
 
@@ -13289,6 +13289,60 @@ FinalizationRegistry 对象<font color=FF0000>可以让你在对象被垃圾回�
 FinalizationRegistry 提供了这样的一种方法：<font color=FF0000>当一个在 **注册表中注册的对象被回收时**，请求在某个时间点上调用一个清理回调</font>。（清理回调有时被称为 finalizer ）。
 
 摘自：[MDN - FinalizationRegistry](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry)
+
+
+
+#### Web Animations API
+
+##### 介绍
+
+Web Animation API 将浏览器动画引擎向开发者打开，并由 JavaScript 进行操作。这些 API 被设计成 CSS Animations 和 CSS Transitions 的接口，未来会对这些 API 做补充以丰富更多的功能。它是对网络上动画化的支持最有效的方式之一，让浏览器进行自己的内部，不需要 hacks，或者强迫，或者 `Window.requestAnimationFrame()`
+
+通过 Web 动画 API，我们<font color=red>可以将交互式动画从样式表移动到 JavaScript</font>，将表现与行为分开。我们不再需要依赖 DOM 重的技术，如将 CSS 属性和范围类写入元素来控制播放方向。<font color=red>**与纯粹的声明式 CSS 不同，JavaScript 还允许我们动态地将属性值设置为持续时间**</font>。对于构建自定义动画库和创建交互式动画，Web 动画 API 可能是完成工作的完美工具。
+
+###### 示例编写
+
+略，见原文
+
+摘自：[MDN - Using the Web Animations API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Animations_API/Using_the_Web_Animations_API)
+
+##### API 定义
+
+Web Animations API 允许 <font color=red>同步和定时</font> 更改网页的呈现，即 DOM 元素的动画。<font color=dodgerBlue>它通过组合两个模型来实现</font>：<font color=red>时序模型 和 动画模型</font>。
+
+###### 概念和用法
+
+Web Animations API 为浏览器和开发人员提供了 <font color=red>一种用于描述 DOM 元素的动画的通用语言</font>。
+
+###### 网页动画接口
+
+- **Animation** ：<font color=red>提供播放控制、动画节点或源的 **时间轴**</font>。可以接受使用 `KeyframeEffect.KeyframeEffect` 构造函数创建的对象作为参数。
+- **KeyframeEffect** ：<font color=red>**描述动画属性的集合**</font>，调用 keyframes 及 `Animation Effect Timing Properties`。然后可以使用 `Animation` 构造函数进行播放。
+- **AnimationTimeline** ：表示动画的时间轴。此接口<font color=red>用以定义时间轴功能</font>（继承自 `DocumentTimeline` 和`future timeline` ），并且本身不被开发人员访问。
+- **DocumentTimeline** ：表示动画时间轴，<font color=red>包括默认的 `DocumentTimeline`</font>（通过 `Document.timeline` 访问）
+- **AnimationEffectTiming** ：包含 `KeyframeEffect` 的 `timing` 返回的定时属性对象。它从`AnimationEffectTimingReadOnly` 继承其属性，但是以非只读形式。
+- **SharedKeyframeList** ：<font color=red>表示可在 `KeyframeEffect` 对象之间 **共享的关键帧序列**</font>。通过使用该对象，多个 `KeyframeEffect` 对象可以重用相同的关键帧，而无需支付多次解析它们的成本。
+- **AnimationEffectTimingProperties**：`Element.animate()`，`KeyframeEffectReadOnly.KeyframeEffectReadOnly()` 和 `KeyframeEffect.KeyframeEffect()`的定时属性对象。
+
+###### 扩展的其他接口
+
+The Web Animations API <font color=red>向 `document` 和 `element` 添加了一些新的功能</font>。
+
+**扩展到 Document 的接口**
+
+- `document.timeline` ：`DocumentTimeline` 表示默认文档时间轴
+- `document.getAnimations()` ：返回当前对文档中的元素有效的 `Animation` 对象的数组。
+
+**扩展到 Element 的接口**
+
+- `Element.animate()` ：用于在元素上创建和播放动画的快捷方式。它返回创建的 `Animation` 对象实例。
+
+###### Web 动画只读接口
+
+> 略
+
+摘自：[MDN - Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API)
+
 
 
 
