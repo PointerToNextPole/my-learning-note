@@ -75,7 +75,7 @@ HTML \<label> 元素（标签）表示用户界面中某个元素的说明。
 
 #### \<button>
 
-HTML \<button> 元素表示一个可点击的按钮，可以用在表单或文档其它需要使用简单标准按钮的地方。 <mark>默认情况下，HTML按钮的显示样式接近于 user agent 所在的宿主系统平台（用户操作系统）的按钮</mark>， 但你可以使用 CSS 来改变按钮的样貌。
+HTML \<button> 元素表示一个可点击的按钮，可以用在表单或文档其它需要使用简单标准按钮的地方。 <font color=LightSeaGreen>默认情况下，HTML按钮的显示样式接近于 user agent 所在的宿主系统平台（用户操作系统）的按钮</font>， 但你可以使用 CSS 来改变按钮的样貌。
 
 ##### 属性
 
@@ -89,7 +89,7 @@ HTML \<button> 元素表示一个可点击的按钮，可以用在表单或文�
 
 - **form：**<mark style=background-color:hotpink>HTML5</mark>，<font color=FF0000>表示button元素关联的form元素（它的表单拥有者）</font>。<font color=FF0000 size=4>**此属性值必须为同一文档中的一个\<form>元素的id属性**</font>。如果此属性未指定，\<button>元素必须是form元素的后代。利用此属性，你可以将\<button>元素放置在文档内的任何位置，而不仅仅是作为他们form元素的后代。
 
-- **formaction：**<mark style=background-color:hotpink>HTML5</mark>，<font color=FF0000>表示程序处理button提交信息的URI</font>。<mark>如果指定了，将重写button表单拥有者（即form）的action属性</mark>。
+- **formaction：**<mark style=background-color:hotpink>HTML5</mark>，<font color=FF0000>表示程序处理button提交信息的URI</font>。<font color=LightSeaGreen>如果指定了，将重写button表单拥有者（即form）的action属性</font>。
 
 - **formenctype：**<mark style=background-color:hotpink>HTML5</mark>，<font color=FF0000>如果button是**submit**类型，**此属性值指定提交表单到服务器的内容类型**</font>。可选值：
 
@@ -106,12 +106,12 @@ HTML \<button> 元素表示一个可点击的按钮，可以用在表单或文�
 
 - **formnovalidate：**<mark style=background-color:hotpink>HTML5</mark>，<font color=FF0000>如果button是**submit**类型，**此布尔属性指定当表单被提交时不需要验证**</font>。如果指定了，它会重写button拥有者的novalidate属性。
 
-- **formtarget：**<mark style=background-color:hotpink>HTML5</mark>，<font color=FF0000>如果button是**submit**类型，此属性指定一个名称或关键字，表示接收提交的表单后在哪里显示响应</font>。这是一个浏览上下文（例如tab，window或内联框架）的名称或关键字。如果指定了，它会重写button拥有者的target 属性。关键字如下：
+- **formtarget：**<mark style=background-color:hotpink>HTML5</mark>，<font color=FF0000>如果 button 是 **submit** 类型，此属性指定一个名称或关键字，表示接收提交的表单后在哪里显示响应</font>。这是一个浏览上下文（例如tab，window或内联框架）的名称或关键字。如果指定了，它会重写button拥有者的target 属性。关键字如下：
 
-  - **\_self：**在同一个浏览上下文中加载响应作为当前的。未指定时此值为默认值。
-  - **\_blank：**在一个新的不知名浏览上下文中加载响应。
-  - **\_parent：**在当前浏览上下文父级中加载响应。如果没有父级的，此选项将按\_self执行。
-  - **\_top：**在顶级浏览上下文（即当前浏览上下文的祖先，且没有父级）中架加载响应。如果没有顶级的，此选项将按\_self执行。
+  - **`_self`** ：在同一个浏览上下文中加载响应作为当前的。未指定时此值为默认值。
+  - **`_blank`** ：在一个新的不知名浏览上下文中加载响应。
+  - **`_parent`** ：在当前浏览上下文父级中加载响应。如果没有父级的，此选项将按 `_self` 执行。
+  - **`_top`** ：在顶级浏览上下文（即当前浏览上下文的祖先，且没有父级）中架加载响应。如果没有顶级的，此选项将按 `_self` 执行。
 
 - **name：**<font color=FF0000>button的名称</font>，<font color=FF0000 size=4>**与表单数据一起提交**</font>。
 
@@ -132,29 +132,29 @@ HTML \<button> 元素表示一个可点击的按钮，可以用在表单或文�
 
 <font color=FF0000>**a 是 anchor的缩写。**</font>
 
-HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向其他网页、文件、同一页面内的位置、电子邮件地址或任何其他 URL 的超链接。\<a> 中的内容应该应该指明链接的意图。<mark>如果存在 href 属性，当 \<a> 元素聚焦时按下回车键就会激活它</mark>。
+HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向其他网页、文件、同一页面内的位置、电子邮件地址或任何其他 URL 的超链接。\<a> 中的内容应该应该指明链接的意图。<font color=LightSeaGreen>如果存在 href 属性，当 `<a>` 元素聚焦时按下回车键就会激活它</font>。
 
 ##### 属性
 
 该元素的属性包含全局属性
 
-- **download：**<mark>HTML5</mark>，<font color=FF0000>此属性指示**浏览器下载 URL** 而不是导航到它</font>，因此将提示用户将其保存为本地文件。<font color=FF0000>如果属性有一个值，那么此值将在下载保存过程中作为预填充的文件名</font>（<mark>如果用户需要，仍然可以更改文件名</mark>）。此属性对允许的值没有限制，但是 / 和 \ 会被转换为下划线。大多数文件系统限制了文件名中的标点符号，故此，浏览器将相应地调整建议的文件名。
+- **download：**HTML5，<font color=FF0000>此属性指示**浏览器下载 URL** 而不是导航到它</font>，因此将提示用户将其保存为本地文件。<font color=FF0000>如果属性有一个值，那么此值将在下载保存过程中作为预填充的文件名</font>（<font color=LightSeaGreen>如果用户需要，仍然可以更改文件名</font>）。此属性对允许的值没有限制，但是 / 和 \ 会被转换为下划线。大多数文件系统限制了文件名中的标点符号，故此，浏览器将相应地调整建议的文件名。
 
   **注意:**
 
   - 此属性<font color=FF0000>**仅适用于同源 URL**</font>。
-  - <mark>尽管 HTTP URL 需要位于同一源中</mark>，<font color=FF0000>但是**可以使用 blob: URL 和 data: URL** ，以方便用户下载使用 JavaScript 生成的内容</font>（例如使用在线绘图 Web 应用程序创建的照片）。
+  - <font color=LightSeaGreen>尽管 HTTP URL 需要位于同一源中</font>，<font color=FF0000>但是**可以使用 `blob: URL` 和 `data: URL`** ，以方便用户下载使用 JavaScript 生成的内容</font>（例如使用在线绘图 Web 应用程序创建的照片）。
   - 如果 HTTP 头中的 Content-Disposition 属性赋予了一个不同于此属性的文件名，HTTP 头属性优先于此属性。
   - 如果 HTTP 头属性 Content-Disposition 被设置为 inline（即 Content-Disposition='inline' ），那么 Firefox 优先考虑 HTTP 头 Content-Dispositiondownload 属性。
 
 - **href：**包含超链接指向的 URL 或 URL 片段。
-  <font color=FF0000>URL 片段是哈希标记（#）前面的名称</font>，哈希标记（即：锚点链接）指定当前文档中的内部目标位置（ HTML 元素的 ID ）。<font color=FF0000>URL 不限于基于 Web ( HTTP ) 的文档，也可以使用浏览器支持的任何协议</font>。<mark>例如，在大多数浏览器中正常工作的 file: 、ftp: 和 mailto:</mark>
+  <font color=FF0000>URL 片段是哈希标记（#）前面的名称</font>，哈希标记（即：锚点链接）指定当前文档中的内部目标位置（ HTML 元素的 ID ）。<font color=FF0000>URL 不限于基于 Web ( HTTP ) 的文档，也可以使用浏览器支持的任何协议</font>。<font color=LightSeaGreen>例如，在大多数浏览器中正常工作的 `file:` 、`ftp:` 和 `mailto:`</font>
 
-  **注意：**<mark>可以使用 href="#top" 或者 href="#" 链接返回到页面顶部</mark>。<font color=FF0000>这种行为是 HTML5 的特性</font>。
+  **注意：**<font color=LightSeaGreen>可以使用 `href="#top"` 或者 `href="#"` 链接返回到页面顶部</font>。<font color=FF0000>这种行为是 HTML5 的特性</font>。
 
-- **hreflang：**该属性<font color=FF0000>用于指定链接文档的人类语言</font>。其<mark>仅提供建议，并没有内置的功能</mark>。hreflang 允许的值取决于HTML5 BCP47。
+- **hreflang：**该属性<font color=FF0000>用于指定链接文档的人类语言</font>。其<font color=LightSeaGreen>仅提供建议，并没有内置的功能</font>。hreflang 允许的值取决于HTML5 BCP47。
 
-- **ping：**包含一个以空格分隔的url列表，<mark>当跟随超链接时，将由浏览器(在后台)发送带有正文 PING 的 POST 请求</mark>。<mark>通常用于跟踪</mark>。
+- **ping：**包含一个以空格分隔的 url 列表，<font color=LightSeaGreen>当跟随超链接时，将由浏览器(在后台)发送带有正文 PING 的 POST 请求</font>。<font color=LightSeaGreen>通常用于跟踪</font>。
 
 - **referrerpolicy：**<font color=FF0000>**实验性质**</font>，<font color=FF0000>表明在获取URL时发送哪个提交者</font>（referrer）:
 
@@ -163,16 +163,16 @@ HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向�
   - **origin：**<font color=FF0000>表示 referrer将会是页面的来源</font>，大致为这样的组合：主机和端口（不包含具体的路径和参数的信息）。
   - **origin-when-cross-origin：**表示导航到其它源将会限制为这种组合：主机 + 端口，而导航到相同的源将会只包含 referrer 的路径
   - **strict-origin-when-cross-origin**
-  - **unsafe-url：**表示 referrer将会包含源和路径（domain + path）（但是不包含密码或用户名的片段）。这种情况是不安全的，因为它可能会将安全的URLs数据泄露给不安全的源。
+  - **unsafe-url：**表示 referrer将会包含源和路径 ( domain + path )（但是不包含密码或用户名的片段）。这种情况是不安全的，因为它可能会将安全的 URLs 数据泄露给不安全的源。
 
-- **rel：**该属性<mark>指定了目标对象到链接对象的关系</mark>。该值是空格分隔的列表类型值。
+- **rel：**该属性<font color=LightSeaGreen>指定了目标对象到链接对象的关系</font>。该值是空格分隔的列表类型值。
 
-- **target：**该属性<font color=FF0000>**指定在何处显示链接的资源**</font>。 <font color=FF0000>取值为标签（tab），窗口（window），或框架（iframe）等浏览上下文的名称或其他关键词</font>。以下关键字具有特殊的意义:
+- **target：**该属性<font color=FF0000>**指定在何处显示链接的资源**</font>。 <font color=FF0000>取值为标签 ( tab )，窗口( window )，或框架 ( iframe ) 等浏览上下文的名称或其他关键词</font>。以下关键字具有特殊的意义:
 
-  - **\_self：**<font color=FF0000>当前页面加载</font>，即当前的响应到同一HTML 4 frame（或HTML5浏览上下文）。<font color=FF0000>**此值是默认的**，如果没有指定属性的话</font>。
-  - **\_blank：**<font color=FF0000>新窗口打开</font>，即到一个<mark>新的未命名</mark>的HTML4窗口或HTML5浏览器上下文
-  - **\_parent：**<mark>加载响应到当前框架的HTML4父框架或当前的HTML5浏览上下文的父浏览上下文</mark>。<font color=FF0000>如果没有parent框架或者浏览上下文，此选项的行为方式与 \_self 相同</font>。
-  - **\_top：**HTML4中：加载的响应成完整的，原来的窗口，取消所有其它frame。 HTML5中：加载响应进入顶层浏览上下文（即，浏览上下文，它是当前的一个的祖先，并且没有parent）。如果没有parent框架或者浏览上下文，此选项的行为方式相同\_self
+  - **`_self`** ：<font color=FF0000>当前页面加载</font>，即当前的响应到同一HTML 4 frame（或HTML5浏览上下文）。<font color=FF0000>**此值是默认的**，如果没有指定属性的话</font>。
+  - **`_blank`** ：<font color=FF0000>新窗口打开</font>，即到一个<font color=LightSeaGreen>新的未命名</font>的HTML4窗口或HTML5浏览器上下文
+  - **`_parent`** ：<font color=LightSeaGreen>加载响应到当前框架的HTML4父框架或当前的HTML5浏览上下文的父浏览上下文</font>。<font color=FF0000>如果没有parent框架或者浏览上下文，此选项的行为方式与 \_self 相同</font>。
+  - **`_top`** ：HTML4中：加载的响应成完整的，原来的窗口，取消所有其它frame。 HTML5中：加载响应进入顶层浏览上下文（即，浏览上下文，它是当前的一个的祖先，并且没有parent）。如果没有parent框架或者浏览上下文，此选项的行为方式相同\_self
 
   **注意：**在 \<a> 元素上使用 target="_blank" 隐式提供了与使用 rel="noopener" 相同的 rel 行为，即不会设置 window.opener。
 
@@ -234,7 +234,7 @@ HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向�
 <a href="sms:"13764567708">13764567708</a>
 ```
 
-> 👀 注：发现这里的无论是 mailto协议、tel协议 以及 sms协议 都和 url scheme 有些类似；可以说URL Scheme 是一种自定义的协议
+> 💡 发现这里的无论是 mailto协议、tel协议 以及 sms协议 都和 url scheme 有些类似；可以说：URL Scheme 是一种自定义的协议
 
 ###### 使用 download 属性将 \<canvas> 保存为 PNG 格式
 
@@ -246,7 +246,7 @@ HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向�
 
 #### \<pre>
 
-HTML \<pre> 元素表示预定义格式文本。<font color=FF0000>在该元素中的文本通常按照原文件中的编排，以等宽字体的形式展现出来，文本中的空白符（比如空格和换行符）都会显示出来</font>。（<mark>紧跟在 \<pre> 开始标签后的换行符也会被省略</mark>）
+HTML \<pre> 元素表示预定义格式文本。<font color=FF0000>在该元素中的文本通常按照原文件中的编排，以等宽字体的形式展现出来，文本中的空白符（比如空格和换行符）都会显示出来</font>。（<font color=LightSeaGreen>紧跟在 \<pre> 开始标签后的换行符也会被省略</font>）
 
 摘自：[MDN - \<pre>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/pre)
 
@@ -263,7 +263,7 @@ HTML \<form> 元素表示文档中的一个区域，此区域包含交互控件�
 此元素拥有 全局属性。
 
 - **accept：**<font color=FF0000>**（已废弃）**</font>一个逗号分隔的列表，包括服务器能接受的内容类型。
-  <mark>此属性已在 HTML5 中被移除并且不再被使用</mark>。<font color=FF0000>作为替代，可以使用 \<input type=file> 元素中的 accept 属性</font>。
+  <mark>此属性已在 HTML5 中被移除并且不再被使用</mark>。<font color=FF0000>作为替代，可以使用 \<input type=file> 元素中的 accept 属性</font>
 - **accept-charset：**<mark>一个空格分隔或逗号分隔的列表</mark>，此<font color=FF0000>列表包括了服务器支持的字符编码</font>。<font color=FF0000>浏览器**以这些编码被列举的顺序使用它们**</font>。<font color=FF0000>默认值是一个保留字符串 "UNKNOWN"</font>。此字符串指的是，和包含此表单元素的文档相同的编码。
   <mark>在之前版本的 HTML 中，不同的字符编码可以用空格或逗号分隔</mark>。<font color=FF0000>在 HTML5 中，**只有空格可以允许作为分隔符**</font>。
 - **autocapitalize：**iOS Safari特有，略
@@ -273,9 +273,11 @@ HTML \<form> 元素表示文档中的一个区域，此区域包含交互控件�
 - **name：**<font color=FF0000>表单的名称</font>。<mark>HTML 4中不推荐（应使用 id）</mark>。<font color=FF0000>**在 HTML 5 中，该值必须是所有表单中独一无二的，而且不能是空字符串**</font>。
 - **rel：**根据 value 创建一个超链接或 Creates a hyperlink or annotation depending on the value
 
-**关于提交表单的属性**
+##### 关于提交表单的属性
 
-- **action：**<font color=FF0000>处理表单提交的 URL</font>。<mark style=background-color:hotpink>这个值可被 \<button>、\<input type="submit"> 或 \<input type="image"> 元素上的 **formaction 属性覆盖**</mark>。
+- **action：**<font color=FF0000>处理表单提交的 URL</font>。
+
+  这个值可被 `<button>`、`<input type="submit">` 或 `<input type="image">` 元素上的 formaction 属性覆盖
 
 - **enctype：**<font color=FF0000>当 method 属性值为 **post** 时，**enctype 就是将表单的内容提交给服务器的 MIME 类型**</font> 。可能的取值有：
 
@@ -283,7 +285,7 @@ HTML \<form> 元素表示文档中的一个区域，此区域包含交互控件�
   - **multipart/form-data：**<mark>当表单包含 type=file 的 \<input> 元素时使用此值</mark>。
   - **text/plain：**<mark>出现于 HTML5，用于调试</mark>。
 
-  <mark style=background-color:hotpink>这个值可被 \<button>、\<input type="submit"> 或 \<input type="image"> 元素上的 **formenctype** 属性覆盖</mark>。
+  这个值可被 `<button>`、`<input type="submit">` 或 `<input type="image">` 元素上的 formenctype 属性覆盖。
 
 - **method：**浏览器使用哪种 HTTP 方式来提交 表单. 可能的值有：
 
@@ -291,11 +293,11 @@ HTML \<form> 元素表示文档中的一个区域，此区域包含交互控件�
   - **get：**指的是 HTTP GET 方法；<mark>表单数据会附加在 action 属性的 URL 中，并以 '?' 作为分隔符</mark>，没有副作用 时使用这个方法。
   - **dialog：**<mark>如果表单在 \<dialog> 元素中，提交时关闭对话框</mark>。
 
-  <mark style=background-color:hotpink>此值可以被 \<button>、\<input type="submit"> 或 \<input type="image"> 元素中的 **formmethod** 属性覆盖</mark>。
+  此值可以被 `<button>` 、`<input type="submit">` 或 `<input type="image">` 元素中的 formmethod 属性覆盖。
 
 - **novalidate：**<font color=FF0000>此布尔值属性表示提交表单时不需要验证表单</font>。 <font color=FF0000>如果没有声明该属性 （因此表单需要通过验证）</font>。
 
-  <mark style=background-color:hotpink>该属性可以被表单中的 \<button>、\<input type="submit"> 或 \<input type="image"> 元素中的 **formnovalidate** 属性覆盖</mark>。
+  该属性可以被表单中的 `<button>`、`<input type="submit">` 或 `<input type="image">` 元素中的 formnovalidate 属性覆盖。
 
 - **target：**<mark>表示在提交表单之后，在哪里显示响应信息</mark>。在 HTML 4 中, 这是一个 frame 的名字/关键字对。<font color=FF0000>在 HTML5 里，这是一个浏览上下文 的名字/关键字（如标签页、窗口或 iframe）</font>。下述关键字有特别含义：
 
@@ -304,37 +306,41 @@ HTML \<form> 元素表示文档中的一个区域，此区域包含交互控件�
   - **_parent：**在当前上下文的父级浏览上下文中加载，<font color=FF0000>如果没有父级，则与 _self 表现一致</font>。
   - **_top：**在最顶级的浏览上下文中（即当前上下文的一个没有父级的祖先浏览上下文），<font color=FF0000>如果没有父级，则与 _self 表现一致</font>。
 
-  <mark style=background-color:hotpink>此值可以被 \<button>、 \<input type="submit"> 或 \<input type="image"> 元素中的 formtarget 属性覆盖</mark>。
+  此值可以被 `<button>`、 `<input type="submit">` 或 `<input type="image">` 元素中的 formtarget 属性覆盖
 
 摘自：[MDN - form](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/form)
 
 ##### 表单相关伪类
 
-- **:valid**：`:valid` CSS 伪类 <font color=FF0000>表示内容验证正确的 \<input> 或其他 \<form> 元素</font>。这<font color=FF0000>能简单地将校验字段展示为一种能让用户辨别出其输入数据的正确性的样式</font>。
+###### :valid
 
-  ```css
+`:valid` CSS 伪类 <font color=FF0000>表示内容验证正确的 \<input> 或其他 \<form> 元素</font>。这<font color=FF0000>能简单地将校验字段展示为一种能让用户辨别出其输入数据的正确性的样式</font>。
+
+```css
 /* Selects any valid <input> */
-   input:valid {
-     background-color: powderblue;
-  }
-  ```
-  
-  该伪类对于高亮正确字段是很有用的。
+ input:valid {
+   background-color: powderblue;
+}
+```
 
-  摘自：[MDN - :valid](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:valid)
+该伪类对于高亮正确字段是很有用的。
 
-- **:invalid**：`:invalid` CSS 伪类 <font color=FF0000>表示任意内容未通过验证的 \<input> 或其他 \<form> 元素 </font>
+摘自：[MDN - :valid](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:valid)
 
-  ```css
-  /* 可选定任意无效的<input> */
-  input:invalid {
-    background-color: pink;
-  }
-  ```
-  
-  这个伪类对于突出显示用户的字段错误非常有用。
+##### :invalid
 
-  摘自：[MDN - :invalid](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:invalid)
+`:invalid` CSS 伪类 <font color=FF0000>表示任意内容未通过验证的 \<input> 或其他 \<form> 元素 </font>
+
+```css
+/* 可选定任意无效的<input> */
+input:invalid {
+  background-color: pink;
+}
+```
+
+这个伪类对于突出显示用户的字段错误非常有用。
+
+摘自：[MDN - :invalid](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:invalid)
 
 
 
@@ -346,12 +352,12 @@ HTML \<dialog> 元素<font color=FF0000>表示一个对话框或其他交互式�
 
 这个元素包含了全局属性。但是 tabindex 特性不能被使用在 \<dialog> 元素上。
 
-- **open：**<font color=FF0000>指示这个对话框是激活的和能互动的</font>。<mark>当这个 open 特性没有被设置，对话框不应该显示给用户</mark>。
+- **open：**<font color=FF0000>指示这个对话框是激活的和能互动的</font>。<font color=LightSeaGreen>当这个 open 特性没有被设置，对话框不应该显示给用户</font>。
 
 ##### 使用备注
 
-- <font color=FF0000>\<form>元素可在此对话框中使用，但需要指定属性 method="dialog"</font>。当提交表单时，对话框的 returnValue 属性将会等于表单中被使用的提交按钮的 value 。
-- ::backdrop CSS 伪元素可用于更改 \<dialog> 背景元素样式，例如在对话框被打开激活时，调暗背景中不可访问的内容。仅当使用  HTMLDialogElement.showModal()  显示对话框时才会绘制 backdrop 背景。
+- <font color=FF0000>`<form>` 元素可在此对话框中使用，但需要指定属性 `method="dialog"`</font>。当提交表单时，对话框的 returnValue 属性将会等于表单中被使用的提交按钮的 value 。
+- `::backdrop` CSS 伪元素可用于更改 `<dialog>` 背景元素样式，例如在对话框被打开激活时，调暗背景中不可访问的内容。仅当使用 `HTMLDialogElement.showModal()` 显示对话框时才会绘制 backdrop 背景。
 
 摘自：[MDN - \<dialog>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/dialog)
 
@@ -359,11 +365,13 @@ HTML \<dialog> 元素<font color=FF0000>表示一个对话框或其他交互式�
 
 #### \<fieldset>
 
-HTML \<fieldset> 元素用于对表单中的控制元素<font color=FF0000>进行分组</font>（也包括 label 元素）。
+HTML `<fieldset>` 元素用于对表单中的控制元素<font color=FF0000>进行分组</font>（也包括 label 元素）。
 
-\<fieldset> 元素将一个HTML表单的一部分组成一组，<font color=FF0000>内置了一个 \<legend> 元素作为 fieldset 的标题</font>。这个元素有几个属性，最值得注意的是 form，其可以包含同一页面的 \<form> 元素的 id，以使 <font color=FF0000>\<fieldset> 成为这个 \<form> 的一部分</font>，即使 \<fieldset> 不在其内。还有 disabled 属性，可将 \<fieldset> 及其所有内容设置为不可用。
+`<fieldset>` 元素将一个HTML表单的一部分组成一组，<font color=FF0000>内置了一个 \<legend> 元素作为 fieldset 的标题</font>。这个元素有几个属性，最值得注意的是 form，其可以包含同一页面的 \<form> 元素的 id，以使 <font color=FF0000>\<fieldset> 成为这个 \<form> 的一部分</font>，即使 \<fieldset> 不在其内。还有 disabled 属性，可将 \<fieldset> 及其所有内容设置为不可用。
 
-**属性：**<font color=FF0000>这个元素包含所有全局属性</font>。
+##### 属性
+
+<font color=FF0000>这个元素包含所有全局属性</font>。
 
 - **disabled：**如果设置了这个 bool 值属性，\<fieldset> 的所有子代表单控件也会继承这个属性。<font color=FF0000>这意味着它们不可编辑，也不会随着 \<form> 一起提交</font>。它们也不会接收到任何浏览器事件，如鼠标点击或与聚焦相关的事件。默认情况下，浏览器会将这样的控件展示为灰色。注意，\<legend> 中的表单元素不会被禁用。
 - **form：**将该值<font color=FF0000>设为一个 \<form> 元素的 id 属性值以将 \<fieldset> 设置成这个 \<form> 的一部分</font>。      
@@ -383,14 +391,14 @@ HTML \<legend> 元素用于表示其父元素 \<fieldset> 的内容标题。
 
 #### \<meta>
 
-HTML \<meta> 元素表示那些不能由其它 HTML 元相关 ( meta-related ) 元素 ( \<base>、\<link>、\<script>、\<style> 或 \<title> ) 之一表示的任何元数据信息。
+HTML \<meta> 元素表示那些不能由其它 HTML 元相关 ( meta-related ) 元素 ( `<base>` 、`<link>` 、`<script>` 、`<style>` 或 `<title>` ) 之一表示的任何元数据信息。
 
 |                  | 描述                                                         |
 | :--------------- | ------------------------------------------------------------ |
 | 内容分类         | 元数据内容，如果 itemprop 属性存在：流数据，表述内容         |
 | 允许的内容       | 无，这是一个 空元素                                          |
 | 标签省略         | 因为这是一个 void 元素，必须有开始标签而闭合标签可以省略     |
-| 允许的父元素     | \<meta charset>, \<meta http-equiv>: \<head> 元素. 如果 http-equiv 不是编码声明, 它也可以放在 \<noscript> 元素内，它本身在 \<head> 元素内部 |
+| 允许的父元素     | `<meta charset>` ， `<meta http-equiv>: <head>` 元素. 如果 http-equiv 不是编码声明, 它也可以放在 `<noscript>` 元素内，它本身在 `<head>` 元素内部 |
 | 默认无障碍语义   | 没有相应的语义                                               |
 | 允许的无障碍语义 | 没有允许的语义                                               |
 | DOM 接口         | HTMLMetaElement                                              |
@@ -407,7 +415,7 @@ HTML \<meta> 元素表示那些不能由其它 HTML 元相关 ( meta-related ) �
 
 ##### 属性
 
-**注意：**全局属性 name 在 \<meta> 元素中具有特殊的语义；另外，<font color=FF0000>  在 **同一个 \<meta> 标签中**，name, http-equiv 或者 charset 三者中 **任何一个属性存在** 时，**itemprop 属性不能被使用** </font>。
+> ⚠️ 全局属性 name 在 \<meta> 元素中具有特殊的语义；另外，<font color=FF0000>  在 **同一个 \<meta> 标签中**，name, http-equiv 或者 charset 三者中 **任何一个属性存在** 时，**itemprop 属性不能被使用** </font>。
 
 - **charset：**这个属性<font color=FF0000>声明了文档的字符编码</font>。<font color=dodgerBlue>如果使用了这个属性</font>，<font color=FF0000>其值必须是</font>与 ASCII 大小写无关(ASCII case-insensitive)的<font color=FF0000>"utf-8"</font>
 
@@ -505,7 +513,7 @@ HTML \<meta> 元素表示那些不能由其它 HTML 元相关 ( meta-related ) �
 
 http-equiv 顾名思义，<font color=FF0000>**相当于 http 的文件头作用**</font>，它可以向浏览器传回一些有用的信息，以帮助正确和精确地显示网页内容，与之对应的属性值为 content，content 中的内容其实就是各个参数的变量值。
 
-> 👀 注：<font color=FF0000>http-equiv 的 equiv 是 equivalent （译为：同等物 ）的缩写，所以 http-equiv 即 “ http 同等物”</font>
+> 💡 <font color=FF0000>http-equiv 的 equiv 是 equivalent （译为：同等物 ）的缩写，所以 http-equiv 即 “ http 同等物”</font>
 
 > equiv does stand for equivalent. <font color=FF0000>It's **equivalent to the HTTP response header**</font>. For example, these two are the same
 >
@@ -525,7 +533,7 @@ meta 标签的 http-equiv 属性语法格式是：`<meta http-equiv="参数" con
 
 ###### Expires
 
-期限。可以用于设定网页的到期时间。一旦网页过期，必须到服务器上重新传输。必须使用GMT的时间格式。用法：
+期限。可以用于设定网页的到期时间。一旦网页过期，必须到服务器上重新传输。必须使用 GMT 的时间格式。用法：
 
 ```html
 <meta http-equiv="expires" content="Wed, 20 Jun 2007 22:33:00 GMT">
@@ -533,7 +541,7 @@ meta 标签的 http-equiv 属性语法格式是：`<meta http-equiv="参数" con
 
 ###### Pragma
 
-cache模式。是用于设定禁止浏览器从本地机的缓存中调阅页面内容，设定后一旦离开网页就无法从Cache中再调出。这样设定，访问者将无法脱机浏览。用法：
+cache 模式。是用于设定禁止浏览器从本地机的缓存中调阅页面内容，设定后一旦离开网页就无法从 Cache 中再调出。这样设定，访问者将无法脱机浏览。用法：
 
 ```html
 <meta http-equiv="Pragma" content="no-cache">
@@ -547,7 +555,7 @@ cache模式。是用于设定禁止浏览器从本地机的缓存中调阅页面
 <meta http-equiv="Refresh" content="2；URL=http://www.net.cn/">
 ```
 
-注意：其中的2是指停留2秒钟后自动刷新到URL网址。
+注意：其中的2是指停留 2秒钟后自动刷新到 URL 网址。
 
 - **Set-Cookie（ cookie 设定）：**如果网页过期，那么存盘的cookie将被删除。 注意：必须使用GMT的时间格式。用法：
 

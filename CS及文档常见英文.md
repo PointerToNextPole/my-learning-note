@@ -430,6 +430,8 @@
 
 - **equity** ：公平
 
+- **malware** ：恶意软件。Malicious Software 的合成词
+
 #### 术语的英文
 
 - **埋点**：Event Tracking
