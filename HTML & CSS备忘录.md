@@ -367,7 +367,7 @@ HTML \<dialog> 元素<font color=FF0000>表示一个对话框或其他交互式�
 
 HTML `<fieldset>` 元素用于对表单中的控制元素<font color=FF0000>进行分组</font>（也包括 label 元素）。
 
-`<fieldset>` 元素将一个HTML表单的一部分组成一组，<font color=FF0000>内置了一个 \<legend> 元素作为 fieldset 的标题</font>。这个元素有几个属性，最值得注意的是 form，其可以包含同一页面的 \<form> 元素的 id，以使 <font color=FF0000>\<fieldset> 成为这个 \<form> 的一部分</font>，即使 \<fieldset> 不在其内。还有 disabled 属性，可将 \<fieldset> 及其所有内容设置为不可用。
+`<fieldset>` 元素将一个HTML表单的一部分组成一组，<font color=FF0000>内置了一个 `<legend>` 元素作为 fieldset 的标题</font>。这个元素有几个属性，最值得注意的是 form，其可以包含同一页面的 `<form>` 元素的 id，以使 <font color=FF0000>`<fieldset>` 成为这个 `<form>` 的一部分</font>，即使 `<fieldset>` 不在其内。还有 disabled 属性，可将 `<fieldset>` 及其所有内容设置为不可用。
 
 ##### 属性
 
@@ -377,13 +377,13 @@ HTML `<fieldset>` 元素用于对表单中的控制元素<font color=FF0000>进�
 - **form：**将该值<font color=FF0000>设为一个 \<form> 元素的 id 属性值以将 \<fieldset> 设置成这个 \<form> 的一部分</font>。      
 - **name：**元素分组 ( fieldset ) 的名称
 
-注意：fieldset 的标题由第一个 \<legend> 子元素确定。
+> ⚠️ fieldset 的标题由第一个 `<legend>` 子元素确定。
 
 摘自：[MDN - \<fieldset>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/fieldset)
 
 #### \<legend>
 
-HTML \<legend> 元素用于表示其父元素 \<fieldset> 的内容标题。
+HTML `<legend>` 元素用于表示其父元素 `<fieldset>` 的内容标题。
 
 摘自：[MDN - \<legend>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/legend)
 
@@ -681,7 +681,7 @@ format-detection （是 meta 标签内的属性）翻译成中文是“格式检
 
 摘自：[meta的format-detection属性](https://www.jianshu.com/p/82a85a53d5b4)
 
-> 👀 注：打电话、发送邮件可以通过 [[#创建电话链接]] 和 [[#创建一个 email 链接]] 实现
+> 👀  打电话、发送邮件可以通过 [[#创建电话链接]] 和 [[#创建一个 email 链接]] 实现
 
 
 
@@ -713,9 +713,9 @@ format-detection （是 meta 标签内的属性）翻译成中文是“格式检
 
 #### \<base>
 
-<font color=FF0000> HTML \<base> 元素 指定用于一个文档中包含的所有相对 URL 的根 URL。一份（文档）中只能有一个 \<base> 元素</font>。
+<font color=FF0000> HTML `<base>` 元素 指定用于一个文档中包含的所有相对 URL 的根 URL。一份（文档）中只能有一个 `<base>` 元素</font>。
 
-一个文档的基本 URL，可以通过使用 document.baseURI 的 JS 脚本查询。如果文档不包含 \<base> 元素，baseURI 默认为 document.location.href。
+一个文档的基本 URL，可以通过使用 document.baseURI 的 JS 脚本查询。如果文档不包含 `<base>` 元素，baseURI 默认为 document.location.href。
 
 | 属性             | 描述                                                         |
 | ---------------- | ------------------------------------------------------------ |
@@ -738,26 +738,26 @@ format-detection （是 meta 标签内的属性）翻译成中文是“格式检
 
 <font color=FF0000> **如果指定了以下任一属性，这个元素必须在其他任何属性是URL的元素之前**</font>。例如：\<link> 的 href 属性。
 
-- **href：**<mark>用于文档中相对 URL 地址的基础 URL。允许绝对和相对URL</mark>。
+- **href：**<font color=LightSeaGreen>用于文档中相对 URL 地址的基础 URL。允许绝对和相对URL</font>。
 
-- **target：**<mark>默认浏览上下文的关键字或作者定义的名称</mark>，<mark>当没有明确目标的链接 \<a> 或表单 \<form> 导致导航被激活时显示其结果</mark>。该属性值定位到浏览上下文（例如选项卡，窗口或内联框 \<iframe> ）。
+- **target：**<font color=LightSeaGreen>默认浏览上下文的关键字或作者定义的名称</font>，<font color=LightSeaGreen>当没有明确目标的链接 `<a>` 或表单 `<form>` 导致导航被激活时显示其结果</font>。该属性值定位到浏览上下文（例如选项卡，窗口或内联框 `<iframe>` ）。
 
   **以下的关键字指定特殊的意思：**
 
-  - **\_self：**载入结果到当前浏览上下文中。（该值是元素的默认值）。
-  - **\_blank：**载入结果到一个新的未命名的浏览上下文。
-  - **\_parent：**载入结果到父级浏览上下文（如果当前页是内联框）。如果没有父级结构，该选项的行为和 \_self一样。
-  - **\_top：**载入结果到顶级浏览上下文（该浏览上下文是当前上下文的最顶级上下文）。如果没有父级，该选项的行为和 \_self一样。
+  - **`_self`** ：载入结果到当前浏览上下文中。（该值是元素的默认值）。
+  - **`_blank`** ：载入结果到一个新的未命名的浏览上下文。
+  - **`_parent`** ：载入结果到父级浏览上下文（如果当前页是内联框）。如果没有父级结构，该选项的行为和 \_self一样。
+  - **`_top`** ：载入结果到顶级浏览上下文（该浏览上下文是当前上下文的最顶级上下文）。如果没有父级，该选项的行为和 `_self` 一样。
 
 **使用说明**
 
-- **多个 \<base> 元素：**<mark>如果指定了多个 \<base> 元素</mark>，<font color=FF0000> 只会使用第一个 href 和 target 值, 其余都会被忽略</font>。
+- **多个 `<base>` 元素：**<font color=LightSeaGreen>如果指定了多个 `<base>` 元素</font>，<font color=FF0000> 只会使用第一个 href 和 target 值, 其余都会被忽略</font>。
 
-- **页内锚：**指向文档中某个片段的链接，例如 \<a href="#some-id"> 用 \<base> 解析，触发对带有附加片段的基本 URL 的 HTTP 请求。
+- **页内锚：**指向文档中某个片段的链接，例如 `<a href="#some-id">` 用 `<base>` 解析，触发对带有附加片段的基本 URL 的 HTTP 请求。
 
-  例如：给定 \<base href="https://example.com">
+  例如：给定 `<base href="https://example.com">`
 
-  以及此链接 \<a href="#anchor">Anker\</a>
+  以及此链接 `<a href="#anchor">Anker</a>`
 
   链接指向 https://example.com/#anchor
 
@@ -777,12 +777,12 @@ format-detection （是 meta 标签内的属性）翻译成中文是“格式检
 
 #### 表单属性
 
-- **maxlength / minlength：**用于 \<input> 和 \<textarea>，作用是限制输入最多的和最少的字符数量
-- **autocomplete：**可用于以文本或数字值作为输入的 \<input> 元素 ， \<textarea> 元素, \<select> 元素, 和 \<form> 元素。 autocomplete 允许web开发人员指定，如果有任何权限 user agent 必须提供填写表单字段值的自动帮助，并为浏览器提供关于字段中所期望的信息类型的指导。<mark>建议值的来源通常取决于浏览器。 通常，值来自用户输入的过去值，但它们也可能来自预先配置的值。 </mark>
+- **maxlength / minlength：**用于 `<input>` 和 `<textarea>` ，作用是限制输入最多的和最少的字符数量
+- **autocomplete：**可用于以文本或数字值作为输入的 `<input>` 元素 ， `<textarea>` 元素， `<select>` 元素, 和 `<form>` 元素。 autocomplete 允许 web开发人员指定，如果有任何权限 user agent 必须提供填写表单字段值的自动帮助，并为浏览器提供关于字段中所期望的信息类型的指导。<font color=LightSeaGreen>建议值的来源通常取决于浏览器。 通常，值来自用户输入的过去值，但它们也可能来自预先配置的值。 </font>
 
 #### data-*（数据属性）
 
-HTML5 是具有扩展性的设计，它初衷是数据应与特定的元素相关联，但不需要任何定义。<font color=FF0000>data-* 属性允许我们在标准内于HTML元素中存储额外的信息</font>，而不需要使用类似于 classList，标准外属性，DOM额外属性或是 setUserData 之类的技巧。
+HTML5 是具有扩展性的设计，它初衷是数据应与特定的元素相关联，但不需要任何定义。<font color=FF0000>`data-*` 属性允许我们在标准内于HTML元素中存储额外的信息</font>，而不需要使用类似于 classList，标准外属性，DOM 额外属性或是 setUserData 之类的技巧。
 
 ##### HTML语法
 
@@ -814,7 +814,7 @@ article.dataset.parent // "cars"
 
 ##### CSS 访问
 
-注意：data设定为HTML属性，他们同样能被CSS访问。比如你可以通过generated content使用函数attr()来显示data-parent的内容：
+注意：data设定为HTML属性，他们同样能被CSS访问。比如你可以通过 generated content 使用函数 `attr()` 来显示data-parent的内容：
 
 ```css
 article::before {
@@ -835,17 +835,19 @@ article[data-columns='4'] {
 
 摘自：[MDN - 使用数据属性](https://developer.mozilla.org/zh-CN/docs/Learn/HTML/Howto/Use_data_attributes)
 
-##### 补充
-
-- data-* 属性用于存储页面或应用程序的<font color=FF0000>私有自定义数据</font>。
-
-- data-* 属性赋予我们在所有 HTML 元素上嵌入自定义 data 属性的能力。
-
-- **data-* 属性包括两部分：**
-  - <font color=FF0000>属性名不应该包含任何大写字母</font>，并且在前缀 "data-" 之后必须有至少一个字符
-  - 属性值可以是任意字符串
-
-摘自：[w3school - HTML data-* 属性](https://www.w3school.com.cn/tags/att_global_data.asp)
+> 💡 补充
+>
+> `data-*` 属性用于存储页面或应用程序的<font color=FF0000>私有自定义数据</font>。
+>
+> `data-*` 属性赋予我们在所有 HTML 元素上嵌入自定义 data 属性的能力。
+>
+> **`data-*` 属性包括两部分：**
+>
+> - <font color=FF0000>属性名不应该包含任何大写字母</font>，并且在前缀 "data-" 之后必须有至少一个字符
+> - 属性值可以是任意字符串
+>
+> 摘自：[w3school - HTML data-* 属性](https://www.w3school.com.cn/tags/att_global_data.asp)
+>
 
 
 
@@ -855,9 +857,9 @@ article[data-columns='4'] {
 
 **摘自：**[wiki - CDATA](https://zh.wikipedia.org/wiki/CDATA)
 
-<font color=FF0000>所有 XML 文档中的文本均会被解析器解析，除了 CDATA 区段（CDATA section）中的文本会被解析器忽略。</font>
+<font color=FF0000>所有 XML 文档中的文本均会被解析器解析，除了 CDATA 区段 ( CDATA section ) 中的文本会被解析器忽略。</font>
 
-CDATA 的形式如下：\<![CDATA[ 文本内容 ]]> 。
+CDATA 的形式如下：`<![CDATA[ 文本内容 ]]>` 。
 
 CDATA 的文本内容中不能出现字符串 `]]>`。另外，CDATA 不能嵌套。
 
@@ -902,13 +904,13 @@ XML 解析器通常会解析 XML 文档中所有的文本。
 
 - src：是必须的，它包含了你想嵌入的图片的文件路径。
 
-- alt： 属性包含一条对图像的文本描述，这<mark>不是强制性的</mark>，<mark style="background: fuchsia">但对可访问性而言，它难以置信地有用——屏幕阅读器会将这些描述读给需要使用阅读器的使用者听，让他们知道图像的含义</mark>。如果由于某种原因无法加载图像，普通浏览器也会在页面上显示alt 属性中的备用文本：例如，网络错误、内容被屏蔽或链接过期时。
+- alt： 属性包含一条对图像的文本描述，这<font color=LightSeaGreen>不是强制性的</font>，<font color=red>但对可访问性而言，它难以置信地有用——屏幕阅读器会将这些描述读给需要使用阅读器的使用者听，让他们知道图像的含义</font>。如果由于某种原因无法加载图像，普通浏览器也会在页面上显示alt 属性中的备用文本：例如，网络错误、内容被屏蔽或链接过期时。
 
 - **还有很多其他属性，可以实现各种不同的目的：**
 
   Referrer/CORS 控制，保证安全与隐私：详见 crossorigin 属性和 referrerpolicy 属性。
 
-  - **crossorigin：**这个<mark>枚举属性表明是否必须使用 CORS 完成相关图像的抓取</mark>。启用 CORS 的图像 可以在 \<canvas> 元素中重复使用，而不会被污染（tainted）。允许的值有：
+  - **crossorigin：**这个枚举<font color=LightSeaGreen>属性表明是否必须使用 CORS 完成相关图像的抓取</font>。启用 CORS 的图像 可以在 \<canvas> 元素中重复使用，而不会被污染（tainted）。允许的值有：
 
     - **anonymous：**执行一个跨域请求（比如，有 Origin HTTP header）。但是<font color=FF0000>**没有发送证书**</font>（比如，没有 cookie，没有 X.509 证书，没有 HTTP 基本授权认证）。如果服务器没有把证书给到源站（没有设置 Access-Control-Allow-Origin HTTP 头），图像会被污染，而且它的使用会被限制。
     - **use-credentials：**<font color=FF0000>一个有证书的跨域请求</font>（比如，有 Origin HTTP header）被发送 （比如，cookie, 一份证书，或者 HTTP 基本验证信息）。如果服务器没有给源站发送证书（通过 Access-Control-Allow-Credentials HTTP header），图像将会被污染，且它的使用会受限制。
@@ -958,9 +960,9 @@ XML 解析器通常会解析 XML 文档中所有的文本。
 
 #### \<picture>
 
-HTML \<picture> 元素 <font color=FF0000> 通过包含零或多个 \<source> 元素和一个 \<img> 元素来为不同的显示/设备场景提供图像版本</font>。<mark>浏览器会选择最匹配的子 \<source> 元素</mark>，<font color=FF0000> 如果没有匹配的，就选择 \<img> 元素的 src 属性中的 URL</font>。然后，所选图像呈现在 \<img> 元素占据的空间中。
+HTML `<picture>` 元素 <font color=FF0000> 通过包含零或多个 `<source>` 元素和一个 `<img>` 元素来为不同的显示/设备场景提供图像版本</font>。<font color=LightSeaGreen>浏览器会选择最匹配的子 `<source>` 元素</font>，<font color=FF0000> 如果没有匹配的，就选择 `<img>` 元素的 src 属性中的 URL</font>。然后，所选图像呈现在 `<img>` 元素占据的空间中。
 
-**示例如下：**
+##### 示例
 
 ```html
 <picture>
@@ -970,7 +972,7 @@ HTML \<picture> 元素 <font color=FF0000> 通过包含零或多个 \<source> �
 </picture>
 ```
 
-要决定加载哪个URL，<font color=FF0000> user agent 检查每个 \<source> 的 srcset、media 和 type 属性</font>，<mark>来选择最匹配页面当前布局、显示设备特征等的兼容图像</mark>。
+要决定加载哪个URL，<font color=FF0000> user agent 检查每个 \<source> 的 srcset、media 和 type 属性</font>，<font color=LightSeaGreen>来选择最匹配页面当前布局、显示设备特征等的兼容图像</font>。
 
 | 属性              | 描述                                                         |
 | :---------------- | ------------------------------------------------------------ |
@@ -983,7 +985,7 @@ HTML \<picture> 元素 <font color=FF0000> 通过包含零或多个 \<source> �
 
 你可以使用 object-position 属性调整元素框架内图像的位置，用 object-fit 属性控制图片如何调整大小来适应框架。另外，<font color=FF0000> **是在子 \<img> 元素上使用这些属性，不是 \<picture> 元素**</font>。
 
-**属性**
+##### 属性
 
 - **media 属性：**media 属性<font color=FF0000>允许你提供一个用于给用户代理作为选择 \<source> 元素的依据的媒体条件(media condition)</font>（类似于媒体查询）。如果这个媒体条件匹配结果为 false，那么这个 \<source> 元素会被跳过。
 - **type 属性：**type 属性<font color=FF0000>允许你为 \<source> 元素的 srcset 属性指向的资源指定一个 MIME 类型</font>。如果用户代理不支持指定的类型，那么这个 \<source> 元素会被跳过。
@@ -1086,7 +1088,7 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
 
 **HTML 语义化是什么？**
 
-语义化是指<font color=FF0000>根据内容的结构化（内容语义化），选择合适的标签（代码语义化）</font>，<mark>便于开发者阅读和写出更优雅的代码的同时，让浏览器的爬虫和机器很好的解析</mark>。
+语义化是指<font color=FF0000>根据内容的结构化（内容语义化），选择合适的标签（代码语义化）</font>，<font color=LightSeaGreen>便于开发者阅读和写出更优雅的代码的同时，让浏览器的爬虫和机器很好的解析</font>。
 
 **为什么要语义化？**
 
@@ -1101,19 +1103,19 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
 
 #### HTML5 全局属性
 
-<mark>全局属性是**所有 HTML 元素共有的属性**; 它们可以用于所有元素，即使属性可能对某些元素不起作用</mark>
+<font color=LightSeaGreen>全局属性是**所有 HTML 元素共有的属性**，它们可以用于所有元素，即使属性可能对某些元素不起作用</font>
 
-<font color=FF0000>我们可以在所有的HTML元素上指定全局属性，甚至是在标准里没有指定的元素</font>。<mark>这意味着任何非标准元素仍必须能够应用这些属性，即使使用这些元素意味着文档不再是 html5 兼容的</mark>。例如，虽然 \<foo> 不是一个有效的 HTML 元素，但是 html5 兼容的浏览器隐藏了标记为 \<foo hidden>...\</foo> 的内容。
+<font color=FF0000>我们可以在所有的HTML元素上指定全局属性，甚至是在标准里没有指定的元素</font>。<font color=LightSeaGreen>这意味着任何非标准元素仍必须能够应用这些属性，即使使用这些元素意味着文档不再是 html5 兼容的</font>。例如，虽然 `<foo>` 不是一个有效的 HTML 元素，但是 html5 兼容的浏览器隐藏了标记为 `<foo hidden>...</foo>` 的内容。
 
 **除了基本的 HTML 全局属性之外，还存在以下全局属性:**
 
-- **xml:lang 和 xml:base** ——<mark>两者都是从 XHTML 规范继承，但为了兼容性而被保留的</mark>。
-- **多重 aria-* 属性**，<mark>用于改善可访问性</mark>。
+- **xml:lang 和 xml:base** —— <font color=LightSeaGreen>两者都是从 XHTML 规范继承，但为了兼容性而被保留的</font>。
+- **多重 `aria-*` 属性**，<font color=LightSeaGreen>用于改善可访问性</font>。
 - **事件处理程序 属性：**on+事件名称。由于过多，这里略；详见原文。
 
 **全局属性列表**
 
-- **accesskey：**<mark>提供了为当前元素生成键盘快捷键的提示</mark>。这个属性由空格分隔的字符列表组成。浏览器应该使用在计算机键盘布局上存在的第一个。
+- **accesskey：**<font color=LightSeaGreen>提供了为当前元素生成键盘快捷键的提示</font>。这个属性由空格分隔的字符列表组成。浏览器应该使用在计算机键盘布局上存在的第一个。
 
 - **autocapitalize：**<font color=FF0000>**控制用户的文本输入是否和如何自动大写**</font>，它可以有以下的值：
 
@@ -1122,16 +1124,16 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
   - **words**，<font color=FF0000>每个<font size=4>**单词**</font>的第一个字母默认为大写字母；所有其他字母都默认为小写字母</font>。
   - **characters**，<font color=FF0000>所有的字母都应该默认为大写</font>。
 
-- **class：**<font color=FF0000>一个以空格分隔的元素的类名 ( classes ) <font size=4>**列表**</font></font>，它允许 CSS 和 Javascript 通过类选择器  ( class selectors ) 或 DOM 方法 ( document.getElementsByClassName ) 来选择和访问特定的元素。
+- **class：**<font color=FF0000>一个以空格分隔的元素的类名 ( classes )</font> <font color=fuchsia><font size=4>**列表**</font></font>，它允许 CSS 和 Javascript 通过类选择器  ( class selectors ) 或 DOM 方法 ( document.getElementsByClassName ) 来选择和访问特定的元素。
 
-- **contenteditable：**一个<font color=FF0000>枚举属性</font>（enumerated attribute），<font color=FF0000>表示元素是否可被用户编辑</font>。 如果可以，浏览器会调整元素的部件 ( widget ) 以允许编辑。
+- **contenteditable：**一个<font color=FF0000>枚举属性</font> ( enumerated attribute )，<font color=FF0000>表示元素是否可被用户编辑</font>。 如果可以，浏览器会调整元素的部件 ( widget ) 以允许编辑。
 
   - **true 或者空字符串**，表明元素是可被编辑的；
   - **false**，表明元素不能被编辑。
 
 - **contextmenu：**\<menu> 的 id ，作为该元素的上下文菜单（<font color=FF0000>已经不被支持，将从所有浏览器中删除</font>）。
 
-- **data-*：**<font color=FF0000>一类自定义数据属性</font>，<mark>它赋予我们在所有 HTML 元素上嵌入自定义数据属性的能力</mark>，并可以通过脚本（一般指 JavaScript ） 与 HTML 之间进行专有数据的交换。所有这些自定义数据属性都可以通过所属元素的 HTMLElement 接口来访问。  <font color=FF0000>**HTMLElement.dataset 属性可以访问它们**</font>。
+- **data-*：**<font color=FF0000>一类自定义数据属性</font>，<font color=LightSeaGreen>它赋予我们在所有 HTML 元素上嵌入自定义数据属性的能力</font>，并可以通过脚本（一般指 JavaScript ） 与 HTML 之间进行专有数据的交换。所有这些自定义数据属性都可以通过所属元素的 HTMLElement 接口来访问。  <font color=FF0000>**HTMLElement.dataset 属性可以访问它们**</font>。
 
 - **dir：**<font color=FF0000>一个指示元素中**文本方向**的枚举属性</font>。它的取值如下：
 
@@ -1154,22 +1156,22 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
 
 - **hidden：**布尔属性，<font color=FF0000>表示该元素尚未或不再相关</font>。例如，它可用于隐藏在登录过程完成之前无法使用的页面元素。浏览器不会呈现此类元素。不得使用此属性隐藏可合法显示的内容
 
-- **id：**定义唯一标识符（ID），<font color=FF0000>该标识符在整个文档中必须是唯一的</font>。 其目的是在链接（使用片段标识符），脚本或样式（使用CSS）时标识元素。
+- **id：**定义唯一标识符 ( ID )，<font color=FF0000>该标识符在整个文档中必须是唯一的</font>。 其目的是在链接（使用片段标识符），脚本或样式（使用CSS）时标识元素。
 
-- **inputmode：**<font color=FF0000>向浏览器提供有关在编辑此元素或其内容时<font size=4>**要使用的虚拟键盘配置类型**</font>的提示</font>。主要用于 \<input> 元素，但在contenteditable 模式下可用于任何元素。它可以是以下值：
+- **inputmode：**<font color=FF0000>向浏览器提供有关在编辑此元素或其内容时<font size=4>**要使用的虚拟键盘配置类型**</font>的提示</font>。主要用于 `<input>` 元素，但在contenteditable 模式下可用于任何元素。它可以是以下值：
 
   - **none：**无虚拟键盘。在应用程序或者站点需要实现自己的键盘输入控件时很有用。
   - **text：**使用用户本地区域设置的标准文本输入键盘。（<font color=FF0000>**默认值**</font>）
   - **decimal：**小数输入键盘，包含数字和分隔符（通常是“ . ”或者“ , ”），设备可能也可能不显示减号键。
   - **numeric：**数字输入键盘，所需要的就是 0 到 9 的数字，设备可能也可能不显示减号键。
-  - **tel：**电话输入键盘，包含 0 到 9 的数字、星号 ( * ) 和井号 ( # ) 键。表单输入里面的电话输入通常应该使用 \<input type="tel"> 
+  - **tel：**电话输入键盘，包含 0 到 9 的数字、星号 ( * ) 和井号 ( # ) 键。表单输入里面的电话输入通常应该使用 `<input type="tel">`
   - **search：**为搜索输入优化的虚拟键盘，比如，返回键可能被重新标记为“搜索”，也可能还有其他的优化。
-  - **email：**为邮件地址输入优化的虚拟键盘，通常包含"@"符号和其他优化。表单里面的邮件地址输入应该使用 \<input type="email"> 。
-  - **url：**为网址输入优化的虚拟键盘，比如，“/” 键会更加明显、历史记录访问等。表单里面的网址输入通常应该使用 \<input type="url">
+  - **email：**为邮件地址输入优化的虚拟键盘，通常包含"@"符号和其他优化。表单里面的邮件地址输入应该使用 `<input type="email">` 。
+  - **url：**为网址输入优化的虚拟键盘，比如，“/” 键会更加明显、历史记录访问等。表单里面的网址输入通常应该使用 `<input type="url">`
 
   摘自：[MDN - inputmode](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/inputmode)
 
-- **is：**<font color=FF0000>允许您指定标准 HTML 元素</font>（**注：**即，自定义组件）<font color=FF0000>应该**像已注册的自定义内置元素一样**<font size=4>**（便于语义化和 SEO）**</font></font>
+- **is：**<font color=FF0000>允许您指定标准 HTML 元素</font>（👀 即，自定义组件）<font color=FF0000>应该**像已注册的自定义内置元素一样**<font size=4>**（便于语义化和 SEO）**</font></font>
 
   只有在当前文档中已成功定义 ( defined ) 指定的自定义元素名称并且扩展了要应用的元素类型时，才能使用此属性。示例如下：
 
@@ -1193,11 +1195,11 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
   <p is="word-count"></p>
   ```
 
-- **itemid：**<font color=FF0000><font size=4>**项**</font> 的唯一全局标识符</font>。
+- **itemid：**<font color=FF0000>**项** 的唯一全局标识符</font>。
 
 - **itemprop：**<font color=FF0000>用于向项添加属性</font>。 每个 HTML 元素都可以指定一个 itemprop 属性，其中一个 itemprop 由一个名称和值对组成。
 
-  > **注：**itemprop 可以用于 meta 标签，参见 [[#\<meta>]]
+  > 💡 itemprop 可以用于 meta 标签，参见 [[#\<meta>]]
 
 - **itemref：**只有不是具有 itemscope 属性的元素的后代，它的属性才可以与使用 itemref 项目相关联。它提供了元素 ID 列表（而不是 itemids ）以及文档中其他位置的其他属性。
 
@@ -1205,18 +1207,18 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
 
 - **itemtype：**指定将用于在数据结构中定义 itemprops（项属性）的词汇表的 URL。 itemscope 用于设置数据结构中按 itemtype 设置的词汇表的生效范围。
 
-- **lang：**<font color=FF0000>帮助定义元素的语言：不可编辑元素所在的语言，或者应该由用户编写的可编辑元素的语言</font>。该属性包含一个“语言标记”(由用连字符分隔的“语言子标记”组成)，格式在 Tags for Identifying Languages (BCP47) 中定义。xml:lang 优先于它。
+- **lang：**<font color=FF0000>帮助定义元素的语言：不可编辑元素所在的语言，或者应该由用户编写的可编辑元素的语言</font>。该属性包含一个“语言标记”(由用连字符分隔的“语言子标记”组成)，格式在 Tags for Identifying Languages ( BCP47 ) 中定义。xml:lang 优先于它。
 
-- **part：**<font color=FF0000>实验性质</font>。元素的部件名称的空格分隔列表。part 名称允许 CSS 通过 ::part() 伪元素选择和设置阴影关联树中的特定元素。
+- **part：**<font color=FF0000>实验性质</font>。元素的部件名称的空格分隔列表。part 名称允许 CSS 通过 `::part()` 伪元素选择和设置阴影关联树中的特定元素
 
-- **slot：**<font color=FF0000>**将 shadow DOM 阴影关联树中的一个沟槽分配给一个元素**</font>：具有 slot 属性的元素被分配给由 \<slot> 元素创建的插槽，其 name 属性的值与 slot 属性的值匹配。
+- **slot：**<font color=FF0000>**将 shadow DOM 阴影关联树中的一个沟槽分配给一个元素**</font>：具有 slot 属性的元素被分配给由 `<slot>` 元素创建的插槽，其 name 属性的值与 slot 属性的值匹配。
 
 - **spellcheck：**<font color=FF0000>实验性质</font>。枚举属性，<font color=FF0000>定义**是否可以检查元素是否存在拼写错误**</font>。它可能具有以下值：
 
   - **true：**<font color=FF0000>表示如果可能，应检查元素是否存在拼写错误</font>；
   - **false：**表示<font color=FF0000>不应检查元素的拼写错误</font>。
 
-- **style：**<font color=FF0000>含要应用于元素的CSS样式声明</font>。 请注意，建议在单独的文件中定义样式。 该属性和 \<style>元素主要用于快速样式化，例如用于测试目的。
+- **style：**<font color=FF0000>含要应用于元素的CSS样式声明</font>。 请注意，建议在单独的文件中定义样式。 该属性和 `<style>` 元素主要用于快速样式化，例如用于测试目的。
 
 - **tabindex：**整数属性，<font color=FF0000>指示元素是否可以获取输入焦点（可聚焦），是否应该参与顺序键盘导航</font>，如果是，则表示哪个位置。它可能需要几个值：
 
@@ -1226,7 +1228,7 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
 
 - **title：**<font color=FF0000>包含表示与其所属元素相关信息的文本</font>。 这些信息通常可以作为提示呈现给用户，但不是必须的。
 
-- **translate：**<font color=FF0000>实验性质</font>。枚举属性，<font color=FF0000>用于指定**在页面本地化时**是否转换元素的属性值及其Text 节点子节点的值，或者是否保持它们不变</font>。它可以具有以下值：
+- **translate：**<font color=FF0000>实验性质</font>。枚举属性，<font color=FF0000>用于指定**在页面本地化时**是否转换元素的属性值及其 Text 节点子节点的值，或者是否保持它们不变</font>。它可以具有以下值：
 
   - <font color=FF0000>**空字符串和"yes："**</font><font color=FF0000>表示元素将被翻译</font>。
   - **"no："**表示该元素不会被翻译。
