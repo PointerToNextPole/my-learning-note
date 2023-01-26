@@ -5,11 +5,12 @@
 
 ## <font color=FF0000>**From 1**</font>
 
-<font size=3>**简介**</br>
-Spring Boot简化Spring应用开发，整个Spring技术栈的一个大整合，约定大于配置，去繁从简，just run就能创建一个独立的产品级别的应用</br>
-Spring Boot -> J2EE一站式解决方案</br>
-Spring Cloud -> 分布式整体解决方案</br>
-**优点**</br>
+
+
+Spring Boot简化Spring应用开发，整个Spring技术栈的一个大整合，约定大于配置，去繁从简，just run就能创建一个独立的产品级别的应用
+Spring Boot -> J2EE一站式解决方案
+Spring Cloud -> 分布式整体解决方案
+**优点**
 
 - 快速创建独立运行的Spring项目以及与主流框架集成
 - 使用嵌入式的Servlet容器，应用无需打包成WAR包
@@ -18,7 +19,8 @@ Spring Cloud -> 分布式整体解决方案</br>
 - 无需配置XML，无代码生成，开箱即用
 - 准生产环境的运行时应用监控
 - 与云计算天然集成
-</font>
+
+
 
 ## <font color=FF0000>**From 2**</font>
 <font size=3>**微服务**</br>
@@ -79,7 +81,7 @@ Spring Cloud -> 分布式整体解决方案</br>
     </build>
    ```
    之后在IDEA界面右侧的Maven Projects选项中在对应的项目名下选择Lifecycle选项，并选择package选项，在项目target文件夹下生成了jar包，比如：spring-boot-01-helloworld-1.0-SNAPSHOT.jar。这时候在Terminal中键入 ```java -jar jar包名``` 即可在浏览器中运行（因为jar中内置Tomcat所以运行环境中无需安装Tomcat）
-</font>
+   </font>
 
 ## <font color=FF0000>**From 5**</font>
 <font size=3>**pom.xml文件**</br>
@@ -160,7 +162,7 @@ public @interface SpringBootApplication {...} //...表示省略
   <font style=color:olive>@Import</font>是Spring的底层注解，<mark>其作用是给容器中导入一个组件</mark>，导入的组件是括号中的内容，这里的是<font style=color:navy>AutoConfigurationPackages.Registrar.class</font>
   - <font style=color:lime>@EnableAutoConfiguration</font>的<mark style=background-color:aqua;color:red>**实际原理**</mark>是<mark>将主配置类（@SpringBootApplication标注的类）所在包及其包含的所有子包内的所有组件扫描到Spring容器中</mark>
   - <font style=color:olive>@Import</font>(<font style=color:navy>AutoConfigurationPackages.Registrar.class</font>)是给容器中导入组件，<font style=color:navy>AutoConfigurationPackages</font>是开启自动导包的选择器，将所有需要导入的组件以全类名的形式返回，这些组件就会被添加容器中；最后会给容器中导入非常多的自动配置类（xxxAutoConfiguration），这些自动配置类的作用就是给容器中导入这些场景需要的所有组件，并配置好这些组件。有来自动配置类，免去了我们手动编写配置、注入功能组件等的工作。<mark>Spring Boot在启动的时候从类路径下的META-INF/spring.factories中获取EnableAutoConfiguration指定的值，将这些值作为自动配置类导入容器中，自动配置类就会生效，帮我们进行自动配置工作</mark>；以前我们需要自己配置的东西，现在自动配置类都帮我们自动配置了。J2EE的整体整合解决方案和自动配置都在Spring-boot-autoconfigure-1.5.9.RELEASE.jar中
-</font>
+  </font>
 
 ## <font color=FF0000>**From 7**</font>
 <font size=3>IDE都支持使用Spring的项目创建向导（Spring Initializer）快速创建Spring Boot程序（与在 https://start.spring.io/ 生成类似）</br>
@@ -183,7 +185,7 @@ public class HelloController {
   - static：保存所有的静态资源，js css images等
   - template：保存所有的模板页面（Spring Boot默认jar包使用嵌入式Tomcat，默认不支持JSP页面），可以使用模板引擎（freemarker、thymeleaf）
   - application.properties：Spring Boot应用的配置文件：比如修改使用的端口号只需写入```server.port=8081```，修改sql端口、密码、驱动等。该文件可以修改一些默认设置。
-</font>
+  </font>
 
 ## <font color=FF0000>**From 8**</font>
 <font size=3>**Spring Boot的配置文件**</br>
@@ -235,7 +237,7 @@ server:
   ```yaml
   pets: [cat,dog,pig]
   ```
-</font>
+  </font>
 
 ## <font color=FF0000>**From 10**</font>
 <font size=3>**使用yaml在配置文件生成对象的数据，并将其与对应的类绑定**</br>

@@ -1,12 +1,17 @@
 # Spring Boot踩坑与解决方法集合
 
-## <font color=FF0000>**创建文件时出现：**</font>
+
+
+##### 创建文件时出现
+
 ```
 Failed to create a Maven project: 'C:/Users/13168/Desktop/spring-boot-01-helloworld/pom.xml' already exists in VFS
 ```
 解决办法见：[解决办法：Failed to create a Maven project: 'IdeaProjects/config/pom.xml' already exists in V](https://blog.csdn.net/chengyuqiang/article/details/90721691)
 
-## <font color=FF0000>**使用log出现如下情况：**</font>
+
+
+##### 使用 log 出现如下情况
 
 `Cannot resolve symbol 'log'`
 

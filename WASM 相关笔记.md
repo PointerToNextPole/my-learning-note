@@ -22,7 +22,7 @@
 - [Emscripten](https://github.com/emscripten-core/emscripten)：可以说是 WebAssembly 的灵魂工具不为过，上面说了很多编译，这个就是那个编译器（👀 命令是 `mscc`。命令格式类似于 `gcc`，生成可以在浏览器上运行的 `.wasm` 文件 ）。将其他的高级语言，编译成WebAssembly。
 - [WABT](https://github.com/WebAssembly/wabt)：是个将 WebAssembly 在字节码和文本格式相互转换的一个工具，方便开发者去理解这个wasm到底是在做什么事。
 
-> 👀 注：本文还介绍了一些 wasm 出现的背景，和 Emscripten 编译器  `mscc` 命令 相关的内容（暂时用不到，这里略）。
+> 👀 本文还介绍了一些 wasm 出现的背景，和 Emscripten 编译器  `mscc` 命令 相关的内容（暂时用不到，这里略）。
 >
 > 不过也做了一点总结，WASM 有点点类似于 FFI，不过，WASM本质上是“运行在现代浏览器上的虚拟机”，参见：[蚂蚁集团 Wasm 编译器虚拟机基础能力建设 - PDF](https://gw.alipayobjects.com/os/bmw-prod/8bf7483e-baaa-4119-bd4b-210aeea2d632.pdf) 和 [WebAssembly 虚拟机是什么？为什么应该使用它？](https://learnblockchain.cn/article/3486) // TODO 这两篇文章也建议读下。
 
