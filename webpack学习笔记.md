@@ -6498,11 +6498,11 @@ module: {
 - **style-loader：**<font color=FF0000> 在得到 css-loader 输出的内容后，会把生成的 css 文件挂载到页面的 header 部分；即：生成一个 `<style>...</style>` 并插入</font>
 - **postcss-loader：**见下面。
 
-<font color=FF0000>**在webpack中，loader的使用是<font size=4>有先后顺序</font>的，分别是：<font size=4>从下到上，从右到左</font>。**</font> 所以，上面关于 sass 的讲解，是 sass-loader 先解析 sass，交给 css-loader 分析所有 css 关系，并整合成一个文件；最后，style-loader 挂载到 header 上
+<font color=fuchsia>**在 webpack 中，use 指定的 loader 使用是 <font size=4>有先后顺序</font>的，分别是：<font size=4>从下到上，从右到左</font>。**</font> 所以，上面关于 sass 的讲解，是 sass-loader 先解析 sass，交给 css-loader 分析所有 css 关系，并整合成一个文件；最后，style-loader 挂载到 header 上
 
 
 
-如果想要针对不同的浏览器进行适配（需要写前缀，如 `webkit-` ），<font color=FF0000> **这时需要使用 postcss-loader**</font>，
+如果想要针对不同的浏览器进行适配（需要写前缀，如 `webkit-` ，使用 autoprefixer ），<font color=FF0000> **这便需要使用 postcss-loader**</font>。
 
 想要对 postcss-loader 进行配置，需要添加并配置 postcss.config.js 配置文件，可以使用 autoprefixer 插件
 
