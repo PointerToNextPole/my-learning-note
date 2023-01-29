@@ -436,6 +436,18 @@
 
 - **catalog** ：目录
 
+- **vendor** ：
+
+  > It's a <font color=dodgerBlue>common convention</font> to <font color=red>put files coming from various third party sources (the "vendors") in a folder named that way</font>.
+  >
+  > You can use it as it makes it clearer what's "from the project" and what is a dependency you rely upon, but it is merely a convention, not an obligation.
+  >
+  > ***
+  >
+  > `/vendor` usually refers to a directory that contains third party plugins.
+  >
+  > 摘自：[stackoverflow - What does vendor mean in web file structure?](https://stackoverflow.com/questions/16865980/what-does-vendor-mean-in-web-file-structure)
+
 #### 术语的英文
 
 - **埋点**：Event Tracking

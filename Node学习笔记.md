@@ -4607,6 +4607,15 @@ Github地址：https://github.com/nodejs/node-gyp
 >
 > 摘自：《深入浅出Node.js》P28
 
+##### node-gyp 的依赖问题与解决
+
+因为 node-gyp 主要的代码构成就是 Python，所以 node-gyp 在使用时依赖于 Python 环境；这也导致了一些问题：
+
+> 在 M1 电脑上跑 taro2 项目的时候出现了安装 node-sass 的问题，<font color=dodgerBlue>主要原因是本地电脑环境存在两个 Python 环境，Python2 和 Python3， 编译 node-sass 需要使用 Python2，但是默认会使用 Python3，始终编译不过，折腾了大半天</font>
+> 最后在同事的提醒下，<font color=red>**在项目根目录下的 `.yarnrc` 中指定下 python 路径就好了**</font>。
+>
+> 摘自：codingstartup 微信群 群友的反馈
+
 
 
 ## Express.js
