@@ -12,6 +12,7 @@
 <font color=FF0000>常见的开发语言均能做到元编程</font>，Lisp 这货就不用多说了，C 的 Marco，<font color=FF0000>C++ 的 Template，Java的Annotation</font>，C# 的 Attribute、Reflection、CodeDom 和 IL Emitter，各种脚本语言（如 js、python）的 eval，甚至连 Unix/Linux 的 shell 脚本也能。
 
 元编程常见的<font color=FF0000>**应用场景**</font>很多，扩展（重构）语法、开发 DSL、生成代码、根据特定场景自动选择代码优化、解决一些正交的架构设计问题、AOP等等。
+
 摘自：[什么是元编程以及元语言？ - 猫杀的回答 - 知乎](https://www.zhihu.com/question/22572900/answer/21828721)
 
 
@@ -654,7 +655,10 @@ V8 引擎诞生的使命就是要在速度和内存回收上进行革命。JavaS
 
 摘自：[字节码和机器码的区别](https://blog.51cto.com/zhangchiworkos/4941089)
 
-
+> 💡 补充
+> 影响 Bun 性能的第二个因素是使用了 Apple 的 JavaScriptCore 引擎。事实证明，JavaScriptCore 比 V8 更快。差异相对较小，但绝对存在。
+> 摘自：[TS、Vue、React、SSR、Node、Deno、Bun：回顾2022，展望2023](https://mp.weixin.qq.com/s/wC9Wq7FJ_sKg1I-z8AozCQ)
+> 👀 似乎也验证了 wwdc 上说 Safari 是最快的。
 
 #### 闭包 ( Closure ) 
 

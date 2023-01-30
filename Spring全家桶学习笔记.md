@@ -2284,7 +2284,7 @@ public SimpleUrlHandlerMapping faviconHandlerMapping() {//...}
 
 ##### 补充：webjars
 
-SpringBoot 使用 Webjars 统一管理静态资源，以jar包的方式引入静态资源（官网是：[webjars.org](www.webjars.org)）
+SpringBoot 使用 Webjars 统一管理静态资源，以jar包的方式引入静态资源（官网是：[webjars.org](https://www.webjars.org)）
 
 **推荐使用Webjars的三大理由:**
 

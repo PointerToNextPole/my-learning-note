@@ -117,7 +117,7 @@ JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，
 
 <font color=FF0000>***新生代*** 用于 **存放生存时间短的对象**，大多数新创建的小的对象都会被分配到该区域，该区域的垃圾回收会比较频繁</font>。
 
-在 ***新生代*** 中，引擎使用 Scavenge 算法 ( https://v8.dev/blog/trash-talk ) 进行垃圾回收，<font color=FF0000>即上面提到的 ***复制算法***</font>。参见 [[#V8 GC 补充#新生代]]
+在 ***新生代*** 中，引擎使用 Scavenge 算法 ( https://v8.dev/blog/trash-talk ) 进行垃圾回收，<font color=FF0000>即上面提到的 ***复制算法***</font>。参见 [[#V8 GC#新生代]]
 
 <font color=LightSeaGreen>其将 ***新生代*** 空间对半分为 ***from-space*** 和 ***to-space*** 两个区域</font>。新创建的对象都被存放到 ***from-space*** ，<font color=red>当空间快被写满时触发垃圾回收</font>。先对 ***from-space*** 中的对象进行标记，完成后将标记对象复制到 ***to-space*** 的一端，然后将两个区域角色反转，就完成了回收操作
 
@@ -128,7 +128,7 @@ JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，
 老生代被用于<font color=FF0000>存放生存 “时间长的对象” 和 “大的对象”</font>：
 
 - 即<font color=FF0000>一些 **大的对象** 会被直接分配到老生代空间</font>
-- <font color=fuchsia>**新生代中经过 两次垃圾回收后 仍然存活的对象，会晋升到老生代空间**</font>
+- <font color=fuchsia>**新生代中经过 两次垃圾回收后**</font>（👀 即一次循环，一次 Scavenge 算法？） <font color=fuchsia>**仍然存活的对象，会晋升到老生代空间**</font>
 
 引擎在该（老生代）空间主要使用上面提到的 ***标记-压缩算法*** 。首先对活动对象进行标记，标记完成后，将所有存活对象移到内存的一段，然后清理掉边界外的内存。
 
@@ -138,7 +138,7 @@ JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，
 
 摘自：[科普文：常见垃圾回收算法与 JS GC 原理](https://mp.weixin.qq.com/s/KZsgQxlrsfYMvJejbZqGHw)
 
-#### V8 GC 补充
+#### V8 GC
 
 GC 与 JS 互斥 
 
@@ -165,7 +165,7 @@ GC 与 JS 互斥
 > 💡 **原文部分摘抄**
 >
 > <font color=red>在 Scavenge 算法的具体实现中，主要采用了 Cheney 算法</font>。它将新生代内存一分为二，每一个部分的空间称为 semispace ，也就是上图中 new_space 中划分的两个区域，其中处于激活状态的区域我们称为 From 空间，未激活 ( inactive new space ) 的区域我们称为 To 空间。这两个空间中，始终只有一个处于使用状态，另一个处于闲置状态。我们的程序中声明的对象首先会被分配到 From 空间，当进行垃圾回收时，如果 From 空间中尚有存活对象，则会被复制到 To 空间进行保存，非存活的对象会被自动回收。当复制完成后，From 空间和 To 空间完成一次角色互换，To 空间会变为新的 From 空间，原来的 From 空间则变为 To 空间。
-
+>
 > 为了确保 JS 的正常执行，GC 和 JS 执行不能并行执行，因此选择了类似于共享 CPU 时间片的执行方式，将 GC 和 JS 交替执行。
 >
 > ![这里写图片描述](https://s2.loli.net/2022/10/26/EXnhHmrfR6YAxTy.png)
@@ -176,14 +176,19 @@ Scavenge 算法的垃圾回收过程主要就是将存活对象在 From 空间�
 
 ##### 对象晋升
 
-<font color=red>当一个对象在 **经过多次复制之后** 依旧存活</font>，<font color=red>那么它会被认为是一个生命周期较长的对象</font>，<font color=fuchsia>在下一次进行垃圾回收时，该对象会被直接转移到老生代中</font>，这种对象从新生代转移到老生代的过程我们称之为 “晋升”。
+<font color=red>当一个对象在 **经过多次复制之后**</font> （👀 根据下面 “对象晋升的条件主要有以下两个” 的说法，是两次复制，即一次循环，也是一次  Scavenge 算法）<font color=red>依旧存活</font>，<font color=red>那么它会被认为是一个生命周期较长的对象</font>，<font color=fuchsia>在下一次进行垃圾回收时，该对象会被直接转移到老生代中</font>，这种对象从新生代转移到老生代的过程我们称之为 “晋升”。
 
-> 👀 上面的 “经过多次复制” 意思应该是“达到年龄阈值” ？，不过下面的解释完全没有说到多次复制（还是说“年龄阈值”为1？），搜“V8 GC 年龄阈值” 也搜不到相关内容；这里，没搞懂 ⚠️
-
-<font color=dodgerBlue>对象晋升的条件主要有以下两个：</font>
+<font color=dodgerBlue>**对象晋升的条件主要有以下两个**：</font>
 
 - 对象是否经历过一次 Scavenge 算法
-- To 空间的内存占比是否已经超过 25%（👀 这里的 25% 是内存占用达到的阈值）
+
+- <font color=fuchsia>To 空间的内存占比是否已经超过 25%</font>（👀 这里的 25% 是内存占用达到的阈值）
+
+  > 💡 To 空间的内存占比超过 25% 会引发晋升 的原因：
+  >
+  > > 当这次 Scavenge 回收完成后，这个 To 空间将变成 From 空间，接下来的内存分配将在这个空间中进行，<font color=red>如果占比过高，会影响后续的内存分配</font>
+  > >
+  > > 摘自：[详细讲解node/v8/js垃圾回收机制](https://splwany.github.io/zh-cn/posts/javascripts/js_gc/)
 
 <font color=fuchsia>默认情况下，我们 **创建的对象都会分配在 From 空间中**</font>。当进行垃圾回收时，在将对象从 From 空间复制到 To 空间之前，会先检查该对象的内存地址来判断是否已经经历过一次 Scavenge 算法，如果地址已经发生变动则会将该对象转移到老生代中，不会再被复制到 To 空间，可以用以下的流程图来表示：
 
@@ -373,7 +378,7 @@ process.memoryUsage(); // heapUsed: 4808064 ≈ 4.6M
 node --expose-gc node-gc.js # 👀 --expose-gc 表示允许手动执行垃圾回收机制。⚠️ --expose-gc 必需放在 js 文件名前
 ```
 
-> 👀 注：要查看运行结果可以在 `process.memoryUsage()` 外面包裹一层 `console.log()` 。打印结果为：
+> 💡 要查看运行结果可以在 `process.memoryUsage()` 外面包裹一层 `console.log()` 。打印结果为：
 
 ```js
 { rss: 27213824, heapTotal: 6070272, heapUsed: 3503776, external: 447189, arrayBuffers: 10430 }
@@ -508,7 +513,7 @@ export default Person;
 
 既然堆是一个大大的篮子，那么<font color=FF0000>在栈中存储不了的数据（比如一个对象），就会被存储在堆中，**栈中就仅仅保留一个对该数据的引用（也就是该块数据的首地址）**</font>。
 
-> 👀 注：这里补充一张 NJU《计算机系统基础》课程的 PPT 截图：可以看到「栈」和「堆」在内存中的位置，以及他们两者的“数据存储方向”。另外，关于「栈」：「栈」又被称为栈帧 ( stack frame ) 结构，ESP ( Extended Stack Pointer ) 是栈顶指针寄存器（亦即，栈指针），EBP ( Extended Base Pointer ) 是栈底指针寄存器（亦即，帧指针）。
+> 💡 这里补充一张 NJU《计算机系统基础》课程的 PPT 截图：可以看到「栈」和「堆」在内存中的位置，以及他们两者的“数据存储方向”。另外，关于「栈」：「栈」又被称为栈帧 ( stack frame ) 结构，ESP ( Extended Stack Pointer ) 是栈顶指针寄存器（亦即，栈指针），EBP ( Extended Base Pointer ) 是栈底指针寄存器（亦即，帧指针）。
 >
 > <img src="https://s2.loli.net/2022/04/01/1ESFxit6IGcrKmv.png" alt="image-20220401182634913" style="zoom: 30%;" />
 
@@ -561,7 +566,7 @@ function test () {
 
 红框部分，与上述一致，同时也反应出了之前提及的问题：<font color=FF0000>例子中 JS 变量并没有存在栈中，而是在堆里，用一个特殊的对象 Scope 保存</font>
 
-> 👀 注：这里还是很重要，第一次见到 <font color=FF0000>内部属性 `[[scope]]` 中的 Closure 元素，且其中保存着闭包内使用的所有的「自由变量」</font>。另外，这里打印使用的是 `console.dir()`，自行尝试了下：如果使用 `console.log()` 只能看到最外层的函数定义）
+> 👀 这里还是很重要，第一次见到 <font color=FF0000>内部属性 `[[scope]]` 中的 Closure 元素，且其中保存着闭包内使用的所有的「自由变量」</font>。另外，这里打印使用的是 `console.dir()`，自行尝试了下：如果使用 `console.log()` 只能看到最外层的函数定义）
 
 #### JS 中变量有三种类型
 
@@ -585,7 +590,7 @@ function test () {
 
 ##### 被捕获变量
 
-<mark>被捕获变量就是 **局部变量的反面**</mark>：<font color=FF0000>在函数中声明，但在函数返回后仍有未执行作用域（函数或是类）使用到该变量，那么该变量就是被捕获变量</font>。下面代码中的 `catch*` 都是「被捕获变量」。**注：**应该可以理解为「自由变量」把？
+<font color=LightSeaGreen>被捕获变量就是 **局部变量的反面**</font>：<font color=FF0000>在函数中声明，但在函数返回后仍有未执行作用域（函数或是类）使用到该变量，那么该变量就是被捕获变量</font>。下面代码中的 `catch*` 都是「被捕获变量」。👀 应该可以理解为「自由变量」吧？
 
 ```js
 function test1 () {
@@ -614,18 +619,18 @@ console.dir(test1())
 console.dir(test2())
 ```
 
-复制代码到 Chrome 即可查看输出对象下的 \[\[Scopes]] 下有对应的 Scope。
+复制代码到 Chrome 即可查看输出对象下的 `[[Scopes]]` 下有对应的 Scope。
 
 ##### 全局变量
 
-全局变量就是 global，在 浏览器上为 window 在 node 里为 global。、<font color=FF0000>全局变量会被默认添加到「函数作用域链」的最低端</font>，<font color=FF0000>也就是上述函数中 \[\[Scopes]] 中的最后一个</font>。
+全局变量就是 global，在 浏览器上为 window 在 node 里为 global。、<font color=FF0000>全局变量会被默认添加到「函数作用域链」的最低端</font>，<font color=FF0000>也就是上述函数中 `[[Scopes]]` 中的最后一个</font>。
 
 全局变量需要特别注意一点：var 和 let / const 的区别：
 
 - **var：**全局的 var 变量其实仅仅是为 global 对象添加了一条属性。毕竟，全局环境下的 var变量 会被挂载到「全局对象」上（即：window / gloabl）。
 
-  **注：**根据 MDN 的说法，在全局作用域中定义的函数，同样会挂载到 全局对象下。示例如下：
-
+>  💡 根据 MDN 的说法，在全局作用域中定义的函数，同样会挂载到 全局对象下。示例如下：
+>
   > ```js
   > function greeting() {
   >    console.log("Hi!");
@@ -655,24 +660,24 @@ console.dir(test2())
 
 #### 结论
 
-根据上面的说法：<font color=FF0000>**除了局部变量，其他的**</font>（**注：**即，被捕获的变量、全局变量）<font color=FF0000>**全都存在「堆」中**</font>。**注：**即，「局部变量」存在「栈」中
+根据上面的说法：<font color=FF0000>**除了局部变量，其他的**</font>（👀 即，被捕获的变量、全局变量）<font color=FF0000>**全都存在「堆」中**</font>。👀 即，「局部变量」存在「栈」中
 
 根据变量的数据类型，分为以下两种情况：
 
 - 如果是基础类型，那栈中存的是数据本身
 - 如果是对象类型，那栈中存的是堆中对象的引用。
 
-但这是理想情况，再问一个问题：<mark>JS 解析器如何判断一个变量是局部变量呢？</mark> <font color=FF0000>判断出是否被内部函数引用即可</font>（**注：**如果不被使用，则是「局部属性」）。那<mark>如果 JS 解析器并没有判断呢？</mark>那就只能存在堆里。
+但这是理想情况，再问一个问题：<font color=dodgerBlue>JS 解析器如何判断一个变量是局部变量呢？</font> <font color=FF0000>判断出是否被内部函数引用即可</font>（👀 如果不被使用，则是「局部属性」）。那<font color=dodgerBlue>如果 JS 解析器并没有判断呢？</font>那就只能存在堆里。
 
 那么你一定想问，Chrome 的 V8 能否判断出？从结果看应该是可以的。
 
 <img src="https://s2.loli.net/2022/04/01/Z1CcojehHLKIywz.jpg" alt="Chrome 下的局部变量" style="zoom:60%;" />
 
-红框内仅有变量 a，而变量 b 已经消失不见了。**注：**这里 “变量a” 不是局部变量，存在「堆」中；“变量b” 是局部变量，存在「栈」中。
+红框内仅有变量 a，而变量 b 已经消失不见了。👀 这里 “变量a” 不是局部变量，存在「堆」中；“变量b” 是局部变量，存在「栈」中。
 
 摘自：[JS 变量存储？栈 & 堆？NONONO!](https://juejin.cn/post/6844903997615128583)
 
-#### 《「2021」高频前端面试题汇总之JavaScript篇》中的补充：
+#### 《「2021」高频前端面试题汇总之JavaScript篇》中的补充
 
 **简单数据类型** 直接存储在栈 ( stack ) 中的简单数据段，占据空间小、大小固定，属于被频繁使用数据，所以放入栈中存储。
 
@@ -704,7 +709,7 @@ console.log(numberepsilon(0.1 + 0.2, 0.3)); // true
 
 ### JS 执行上下文栈
 
-**注：**在 [[前端面试点总结#词法环境 和 执行上下文的区别]] 中有讲述 「执行上下文」和「执行上下文栈」的内容，但是由于这部分内容太多，不该放到名为“前端面试点**总结**” 的笔记中，同时也比较忙；所以，这里先在这里做笔记，等有时间在将那边的内容搬（整理）过来。
+> 👀 在 [[前端面试点总结#词法环境 和 执行上下文 的区别]] 中有讲述 「执行上下文」和「执行上下文栈」的内容，但是由于这部分内容太多，不该放到名为“前端面试点总结” 的笔记中，同时也比较忙；所以，这里先在这里做笔记，等有时间在将那边的内容搬（整理）过来。
 
 ##### 铺垫
 
@@ -714,7 +719,7 @@ console.log(numberepsilon(0.1 + 0.2, 0.3)); // true
 var foo = function () { console.log('foo1'); }
 foo();  // foo1
 var foo = function () { console.log('foo2'); }
-foo(); // foo2
+foo();  // foo2
 ```
 
 然而去看这段代码：
@@ -723,10 +728,10 @@ foo(); // foo2
 function foo() { console.log('foo1'); }
 foo();  // foo2
 function foo() { console.log('foo2'); }
-foo(); // foo2
+foo();  // foo2
 ```
 
-打印的结果却是两个 `foo2`。因为 <font color=FF0000>JavaScript 引擎 **并非一行一行地分析和执行程序**，而是**一段一段地分析执行**</font>。<font color=FF0000>当执行一段代码的时候，会进行一个“准备工作”</font>，比如第一个例子中的变量提升，和第二个例子中的函数提升。
+打印的结果却是两个 `foo2`。因为 <font color=fuchsia>JavaScript 引擎 **并非一行一行地分析和执行程序**，而是**一段一段地分析执行**</font>。<font color=FF0000>当执行一段代码的时候，会进行一个“准备工作”</font>，比如第一个例子中的变量提升，和第二个例子中的函数提升。
 
 但是本文真正想让大家思考的是：<font color=FF0000>这个 “一段一段”中的 **“段” 究竟是怎么划分的** 呢？到底 JavaScript引擎 **遇到一段怎样的代码** 时**才会做“准备工作”**呢？</font>
 
@@ -734,15 +739,15 @@ foo(); // foo2
 
 这就要说到 <font color=FF0000>**JavaScript 的可执行代码 ( executable code ) 的类型**</font> 有哪些了？
 
-其实很简单，就<font color=FF0000>**三种，1) 全局代码、2) 函数代码、3) eval代码**</font>。如下是一些补充：
+其实很简单，就<font color=FF0000>**三种，1) 全局代码、2) 函数代码、3) eval代码**</font>。
 
-> **执行上下文总共有三种类型：**
+> 💡 **执行上下文总共有三种类型：**
 >
-> - **全局执行上下文：** <mark>这是默认的、最基础的执行上下文</mark>。<font color=FF0000>不在任何函数中的代码都位于全局执行上下文中</font>。**它做了两件事**：1. <font color=FF0000>创建一个全局对象</font>，在浏览器中这个全局对象就是 window 对象。2. <font color=FF0000>将 this 指针指向这个全局对象</font>。一个程序中只能存在一个全局执行上下文。
+> - **全局执行上下文：** <font color=LightSeaGreen>这是默认的、最基础的执行上下文</font>。<font color=FF0000>不在任何函数中的代码都位于全局执行上下文中</font>。**它做了两件事**：1. <font color=FF0000>创建一个全局对象</font>，在浏览器中这个全局对象就是 window 对象。2. <font color=FF0000>将 this 指针指向这个全局对象</font>。一个程序中只能存在一个全局执行上下文。
 >
 >   另外，<font color=FF0000 size=4>**一旦所有代码执行完毕，Javascript 引擎把「全局执行上下文」从「执行栈」中移除**</font>。
 >
-> - **函数执行上下文：** <mark>每次调用函数时，都会为该函数创建一个新的执行上下文。每个函数都拥有自己的执行上下文</mark>，<font color=FF0000>**但是只有在函数被调用的时候才会被创建**</font>。一个程序中可以存在任意数量的函数执行上下文。每当一个新的执行上下文被创建，它都会按照特定的顺序执行一系列步骤，具体过程将在本文后面讨论。
+> - **函数执行上下文：** <font color=LightSeaGreen>每次调用函数时，都会为该函数创建一个新的执行上下文。每个函数都拥有自己的执行上下文</font>，<font color=FF0000>**但是只有在函数被调用的时候才会被创建**</font>。一个程序中可以存在任意数量的函数执行上下文。每当一个新的执行上下文被创建，它都会按照特定的顺序执行一系列步骤，具体过程将在本文后面讨论。
 >
 > - **Eval 函数执行上下文：** 运行在 eval 函数中的代码也获得了自己的执行上下文，但由于 JavaScript 开发人员不常用 eval 函数，所以在这里不再讨论。
 >
@@ -754,15 +759,15 @@ foo(); // foo2
 
 接下来问题来了，我们写的函数多了去了，<font color=FF0000>如何管理创建的那么多执行上下文</font>呢？
 
-所以 JavaScript 引擎创建了 <font color=FF0000>执行上下文**栈**</font> ( Execution context stack, ECS ) 来<font color=FF0000>管理执行上下文</font>
+所以 JavaScript 引擎创建了 <font color=FF0000>执行上下文**栈**</font> ( Execution context stack , ECS ) 来<font color=FF0000>管理执行上下文</font>
 
-<mark>为了**模拟**执行上下文栈的行为，让我们定义执行上下文栈是一个数组</mark>：
+<font color=dodgerBlue>为了**模拟**执行上下文栈的行为，让我们定义执行上下文栈是一个数组</font>：
 
 ```js
 ECStack = [];
 ```
 
-试想<font color=FF0000>当 JavaScript 开始要解释执行代码的时候，最先遇到的就是全局代码</font>，所以<font color=FF0000>初始化的时候首先就会向执行上下文栈压入一个全局执行上下文</font>，我们<font color=FF0000>用 globalContext 表示它</font>，并且<font color=FF0000>只有当整个应用程序结束的时候，ECStack 才会被清空</font>，所以<font color=FF0000>程序结束之前， ECStack 最底部永远有个 globalContext</font>：
+试想<font color=FF0000>当 JavaScript 开始要解释执行代码的时候，最先遇到的就是全局代码</font>，所以<font color=FF0000>初始化的时候首先就会向执行上下文栈压入一个全局执行上下文</font>，我们<font color=dodgerBlue>用 globalContext 表示它</font>，并且<font color=FF0000>只有当整个应用程序结束的时候，ECStack 才会被清空</font>，所以<font color=lightSeaGreen>程序结束之前， ECStack 最底部永远有个 globalContext</font>：
 
 ```js
 ECStack = [
@@ -779,7 +784,7 @@ function fun1() { fun2(); }
 fun1();
 ```
 
-<font color=FF0000>当 <font size=4>**执行** 一个函数的时候</font></font>（**注：**注意是 **执行**，不是初始化。另外，可以看下面 push 的顺序，是执行的 fun1 最先被 push），<font color=FF0000>就会创建一个执行上下文，并且压入执行上下文栈</font>，<font color=FF0000>当函数执行完毕的时候，就会将函数的执行上下文从栈中弹出</font>。知道了这样的工作原理，让我们来看看如何处理上面这段代码：
+<font color=FF0000>当 <font size=4>**执行** 一个函数的时候</font></font>（⚠️ 注意是 **执行**，不是初始化。可以看下面 push 的顺序，是执行的 fun1 最先被 push），<font color=FF0000>就会创建一个执行上下文，并且压入执行上下文栈</font>，<font color=FF0000>当函数执行完毕的时候，就会将函数的执行上下文从栈中弹出</font>。知道了这样的工作原理，让我们来看看如何处理上面这段代码：
 
 ```js
 /* 伪代码 */
@@ -811,26 +816,26 @@ ECStack.pop();
 
 ```js
 var scope = "global scope";
-function checkscope(){
+function checkscope() {
     var scope = "local scope";
-    function f(){
+    function f() {
         return scope;
     }
     return f();
 }
-checkscope(); // 注：未形成闭包
+checkscope(); // 👀 未形成闭包
 ```
 
 ```js
 var scope = "global scope";
-function checkscope(){
+function checkscope() {
     var scope = "local scope";
-    function f(){
+    function f() {
         return scope;
     }
     return f;
 }
-checkscope()(); // 注：形成闭包
+checkscope()(); // 👀 形成闭包
 ```
 
 两段代码执行的结果一样，但是两段代码究竟有哪些不同呢？答案就是执行上下文栈的变化不一样。
@@ -848,14 +853,14 @@ ECStack.pop();
 
 ```js
 ECStack.push(<checkscope> functionContext);
-ECStack.pop();              // 注：这里 checkscope 函数执行完毕，所以销毁了
+ECStack.pop();              // 👀 这里 checkscope 函数执行完毕，所以销毁了
 ECStack.push(<f> functionContext);
 ECStack.pop();
 ```
 
 摘自：[JavaScript深入之执行上下文栈](https://github.com/mqyqingfeng/Blog/issues/4)
 
-**注：**本文没讲到「执行上下文」中包含什么，这要在作者“连载”的其他文章中寻找答案（下面有做笔记 [[#JS 执行上下文]]）。虽然 [[前端面试点总结#词法环境 和 执行上下文的区别]] 中也有...
+> 👀 本文没讲到「执行上下文」中包含什么，这要在作者“连载”的其他文章中寻找答案（下面有做笔记 [[#JS 执行上下文]]）。虽然 [[前端面试点总结#词法环境 和 执行上下文的区别]] 中也有...
 
 
 
@@ -864,12 +869,12 @@ ECStack.pop();
 ##### 对于每个执行上下文，都有三个重要属性
 
 - 变量对象 ( Variable object，VO )
-- 作用域<font color=FF0000 size=4>**链**</font> ( Scope chain ) 注：注意有个「链」字
+- 作用域<font color=FF0000 size=4>**链**</font> ( Scope chain ) 👀 注意有个「链」字
 - this
 
-本文按照原博客的顺序而言，应该放在 变量对象（[[#JS 变量对象 （词法环境）]]）、作用域链（[[#JS 作用域链]]）、this 的后面，不过感觉「执行上下文」放在「执行上下文栈」的后面并不坏；同时，先父后子的结构，能让结构清晰些。有遗忘的再到后面查找即可。
+> 👀 本文就作者的博客顺序而言，应该放在变量对象（[[#JS 变量对象 （词法环境）]]）、作用域链（[[#JS 作用域链]]）、this 的后面，不过感觉「执行上下文」放在「执行上下文栈」的后面并不坏；同时，先父后子的结构，能让结构清晰些。有遗忘的再到后面查找即可。
 
-在[《JavaScript深入之词法作用域和动态作用域》](https://github.com/mqyqingfeng/Blog/issues/3)中，提出这样一道思考题（**注：**由于源链接中并没有做太多讲解，所以下面的 [[#JS 词法作用域]] 中没有做摘抄；具体参见 [[#《JavaScript深入之词法作用域和动态作用域》思考题解惑]] ；另外，下面有以“执行上下文”为角度，更详细的讲解）
+在[《JavaScript深入之词法作用域和动态作用域》](https://github.com/mqyqingfeng/Blog/issues/3)中，提出这样一道思考题（👀 由于源链接中并没有做太多讲解，所以下面的 [[#JS 词法作用域]] 中没有做摘抄；具体参见 [[#《JavaScript深入之词法作用域和动态作用域》思考题解惑]] ；另外，下面有以“执行上下文”为角度，更详细的讲解）
 
 #### 具体执行分析
 
@@ -887,7 +892,7 @@ function checkscope(){
 checkscope();
 ```
 
-##### 执行过程如下：
+##### 执行过程如下
 
 1. 执行全局代码，创建「全局执行上下文」，「全局上下文」被压入「执行上下文栈」
 
@@ -907,7 +912,7 @@ checkscope();
    }
    ```
 
-   初始化的同时，checkscope 函数被创建，<font color=FF0000>保存「作用域链」到函数的 内部属性 \[\[scope]]</font>
+   初始化的同时，checkscope 函数被创建，<font color=FF0000>保存「作用域链」到函数的 内部属性 `[[scope]]`</font>
 
    ```js
    checkscope.[[scope]] = [
@@ -926,12 +931,17 @@ checkscope();
 
 4. checkscope 函数执行上下文初始化：
 
-   1. <font color=FF0000 size=4>**复制函数 \[\[scope]] 属性创建作用域链**</font>
-   2. 用 arguments 创建活动对象，
-   3. 初始化活动对象，即加入形参、函数声明、变量声明。<mark>**注：**这里初始化 VO 的内容，可以看 [[# JS 变量对象 （词法环境）]] 部分，那里有详细的讲述。</mark>
-   4. 将活动对象压入 checkscope 作用域链顶端。
+   1. <font color=FF0000 size=4>**复制函数 `[[scope]]` 属性创建作用域链**</font>
 
-   同时 f 函数被创建，保存作用域链到 f 函数的内部属性 \[\[scope]]
+   2. 用 arguments 创建活动对象 AO
+
+   3. 初始化活动对象，即加入形参、函数声明、变量声明
+
+      > 👀 这里初始化 VO 的内容，可以看 [[#JS 变量对象 （词法环境）]] 部分，那里有详细的讲述
+
+   4. 将活动对象压入 checkscope 作用域链顶端
+
+   同时 f 函数被创建，保存作用域链到 f 函数的内部属性 `[[scope]]`
 
    ```js
    checkscopeContext = {
@@ -961,7 +971,7 @@ checkscope();
 
    1. 复制函数 `[[scope]]` 属性创建作用域链
    2. 用 arguments 创建活动对象
-   3. 初始化活动对象，即加入形参、函数声明、变量声明
+   3. 初始化活动对象，即加入 形参、函数声明、变量声明
    4. 将活动对象压入 f 作用域链顶端
 
    ```js
@@ -1001,7 +1011,7 @@ checkscope();
 
 ### ES6 中的执行上下文
 
-**注：**这里的摘抄很多是阅文前端团队对本文进行了翻译，本来准备只摘抄译文的；但是发现译文和原文相差有点多（应该是原文之后修改了...），便还是看了原文，遇见相同的则摘抄译文。另外，下面的 [[#文章《【译】理解 Javascript 执行上下文和执行栈 》的评论区补充]] 中的评论解释了为什么原文会改动。
+>👀 这里的摘抄很多是阅文前端团队对本文进行了翻译，本来准备只摘抄译文的；但是发现译文和原文相差有点多（应该是原文后来修改了...），便还是看了原文，遇见相同的则摘抄译文。另外，下面的 [[#文章《【译】理解 Javascript 执行上下文和执行栈 》的评论区补充]] 中的评论解释了为什么原文会改动。
 
 #### 什么是执行上下文
 
@@ -1110,9 +1120,13 @@ lexicalEnvironment = {
 
   **译文中的总结：**「对象环境记录」用于<font color=FF0000>定义在「全局执行上下文」中出现的 变量 和 函数 的**关联**</font>，<font color=FF0000 size=4>**「全局环境」包含「对象环境记录」**</font>（ 👀 注意和上面「声明性环境记录」的对比）。
 
-> 👀 在下面 [[#文章《JS：深入理解JavaScript-词法环境》的补充#词法环境有两个组成部分]] 还提及了 「对象式环境记录」用于 with 和 global 词法环境。另外，[[#文章《JS：深入理解JavaScript-词法环境》的补充#声明式环境记录的两种类型]] 中还提及了 「 声明性环境记录」的两种类型。
+> 💡补充：
+>
+> 在下面 [[#文章《JS：深入理解JavaScript-词法环境》的补充#词法环境有两个组成部分]] 还提及了 「对象式环境记录」用于 with 和 global 词法环境。
+>
+> 另外，[[#文章《JS：深入理解JavaScript-词法环境》的补充#声明式环境记录的两种类型]] 中还提及了 「 声明性环境记录」的两种类型。
 
-**注意：**对于函数，环境记录也包含一个 arguments 对象，其中包含着 索引 ( index )和 “传递给函数的实参”的映射，另外还有“实参个数”（即：length）。举个例子，一个下面的函数的 arguments 对象就像这样：
+**注意：**对于函数，环境记录也包含一个 arguments 对象，其中包含着 索引 ( index ) 和 “传递给函数的实参” 的映射，另外还有 “实参个数”（即：length）。举个例子，一个下面的函数的 arguments 对象就像这样：
 
 ```js
 function foo(a, b) { var c = a + b; }
@@ -1181,7 +1195,7 @@ FunctionExectionContext = { // 函数执行上下文
 
 如上所述，变量环境也是一个词法环境，因此它具有上面所说的「词法环境」所被定义的所有属性。
 
-在 ES6 中，LexicalEnvironment 组件和 VariableEnvironment 组件的区别在于：<font color=FF0000>**前者用于存储「函数声明」和变量（ let 和 const ）绑定**</font>，而<font color=FF0000>**后者仅用于存储变量（ var ）绑定**</font>。
+在 ES6 中，LexicalEnvironment 组件和 VariableEnvironment 组件的区别在于：<font color=FF0000>**前者用于存储「函数声明」和变量（ let 和 const ）绑定**</font>，而<font color=FF0000>**后者仅用于存储变量（ var 和 function ）绑定**</font>。
 
 #### 执行阶段
 
@@ -1189,7 +1203,7 @@ FunctionExectionContext = { // 函数执行上下文
 
 **译文中的补充：**
 
-> 注： 在执行阶段，如果 Javascript 引擎在源代码中声明的实际位置找不到 let 变量的值，那么将为其分配 undefined 值。
+> 💡 在执行阶段，如果 Javascript 引擎在源代码中声明的实际位置找不到 let 变量的值，那么将为其分配 undefined 值。
 
 #### 执行上下文的示例
 
@@ -1336,7 +1350,7 @@ VariableEnvironment: {
 
 另外，评论区有人在问 “为什么没有看见 变量对象 概念了”，评论回复如下：
 
-> <font color=FF0000>那（注：即 变量对象）是 ES3 里面的概念</font>了，<mark>基本上 **变量对象 VO** 相当于这里的 **全局词法环境 + 全局变量环境**</mark>，<font color=FF0000>推出「词法作用域」和「变量作用域」应该是为了更好得区分 var 与 let / const的区别</font>
+> <font color=FF0000>那（👀 即 变量对象）是 ES3 里面的概念</font>了，<font color=red>基本上 **变量对象 VO** 相当于这里的 **全局词法环境 + 全局变量环境**</font>，<font color=lightSeaGreen>推出「词法作用域」和「变量作用域」应该是为了更好得区分 var 与 let / const的区别</font>
 
 #### 文章《JS：深入理解JavaScript-执行上下文》的补充
 
@@ -1347,13 +1361,13 @@ VariableEnvironment: {
 - global code：整个 js 文件。
 - function code：函数代码。
 - module：模块代码
-- eval code：放在eval的代码。
+- eval code：放在 eval 的代码
 
-**注：**这里说明的是有几种执行上下文，在 [[#JS 执行上下文栈#可执行代码]] 中的说法是 三种 global、function、eval；没有 module；另外，[[#ES6 中的执行上下文#执行上下文的类型]] 中是三种。
+> 👀 这里说明的是有几种执行上下文，在 [[#JS 执行上下文栈#可执行代码]] 中的说法是 三种 global、function、eval；没有 module；另外，[[#ES6 中的执行上下文#执行上下文的类型]] 中是三种。
 
 ##### 为什么要有两个词法环境：LexicalEnvironment 和 VariableEnvironment
 
-<font color=FF0000>变量环境组件 ( VariableEnvironment ) 是用来 **登记 `var` `function` 变量声明**</font>，<font color=FF0000>词法环境组件 ( LexicalEnvironment ) 是用来 **登记 `let` `const` `class` 等变量声明**</font>。**注：**注意其中的 function 和 class
+<font color=FF0000>变量环境组件 ( VariableEnvironment ) 是用来 **登记 `var` `function` 变量声明**</font>，<font color=FF0000>词法环境组件 ( LexicalEnvironment ) 是用来 **登记 `let` `const` `class` 等变量声明**</font>。⚠️ 注意其中的 function 和 class
 
 在 ES6 之前都没有块级作用域，ES6 之后我们可以用 `let` `const` 来声明块级作用域，<font color=FF0000>**有这两个词法环境是为了实现块级作用域的同时不影响 `var` 变量声明 和 函数声明**</font>，具体如下：
 
@@ -1367,10 +1381,10 @@ VariableEnvironment: {
 
 #### 文章《JS：深入理解JavaScript-词法环境》的补充
 
-在介绍 Lexical Environment 之前，我们先看下<font color=FF0000>**在 V8 里 JS 的编译执行过程**</font>，<font color=FF0000>大致上可以分为三个阶段</font>：
+在介绍 Lexical Environment 之前，我们先看下<font color=FF0000>**在 V8 里 JS 的编译执行过程**</font>，<font color=dodgerBlue>大致上可以分为三个阶段</font>：
 
-- **第一步：**V8 引擎刚拿到「执行上下文」的时候（<mark>**注：**这里是 V8 引擎拿到 执行上下文？执行上下文不是 JS 引擎生成的？**这里持怀疑态度**</mark>），会把代码从上到下一行一行的先做 分词 / 词法分析 ( Tokenizing / Lexing )。分词是指：比如 `var a = 2;` 这段代码，会被分词为：`var`  `a`  `2` 和 `;` 这样的原子符号 ( atomic token )；词法分析是指：登记变量声明、函数声明、函数声明的形参。
-- **第二步：**<mark>在分词结束以后，会做代码解析，引擎将 token 解析翻译成一个 AST（抽象语法树）</mark>， 在这一步的时候，如果发现语法错误，就会直接报错不会再往下执行。
+- **第一步：**V8 引擎刚拿到「执行上下文」的时候（👀 这里是 V8 引擎拿到 执行上下文？执行上下文不是 JS 引擎生成的？**这里持怀疑态度** ），会把代码从上到下一行一行的先做 分词 / 词法分析 ( Tokenizing / Lexing )。分词是指：比如 `var a = 2;` 这段代码，会被分词为：`var`  `a`  `2` 和 `;` 这样的原子符号 ( atomic token )；词法分析是指：登记变量声明、函数声明、函数声明的形参。
+- **第二步：**<font color=LightSeaGreen>在分词结束以后，会做代码解析，引擎将 token 解析翻译成一个 AST（抽象语法树）</font>， 在这一步的时候，如果发现语法错误，就会直接报错不会再往下执行。
 - **第三步：**引擎生成 CPU 可以执行的机器码。
 
 在第一步里有个词法分析，它用来登记变量声明、函数声明、函数声明的形参，后续代码执行的时候就知道去哪里拿变量的值和函数了，这个登记的地方就是 Lexical Environment（词法环境）。
@@ -1395,7 +1409,7 @@ VariableEnvironment: {
 
 #### 内部属性 和 词法环境
 
-##### \[\[environment]] 相关
+##### `[[environment]]` 相关
 
 在《现代JS教程》中有说：
 
@@ -1403,15 +1417,15 @@ VariableEnvironment: {
 
 在 《JS 忍者秘籍》（第二版）5.4.2 中：
 
-> 无论何时创建函数，都会创建一个与之相关联的词法环境，并存储在名为a `[[Environment]]` 的内部属性上（也就是说无法直接访问或操作）。
+> 无论何时创建函数，都会创建一个与之相关联的词法环境，并存储在名为 `[[Environment]]` 的内部属性上（也就是说无法直接访问或操作）。
 >
-> 无论何时调用函数，都会创建一个新的执行环境，被推入执行上下文栈。此外，还会创建一个与之相关联的词法环境。现在来看最重要的部分：<font color=FF0000>外部环境与新建的词法环境，**JavaScript 引擎 将调用函数的内置 `[[Environment]]` 属性与创建函数时的环境进行关联**</font>。
+> 无论何时调用函数，都会创建一个新的执行环境，被推入执行上下文栈。此外，还会创建一个与之相关联的词法环境。现在来看最重要的部分：<font color=FF0000>外部环境与新建的词法环境，**JavaScript 引擎 将调用函数的内置 `[[Environment]]` 属性与创建函数时的环境进行关联**</font>
 >
 > 摘自：JavaScript忍者秘籍（第2版）5.4.2
 
 博文 [温故而知新 - 重新认识JavaScript的Closure](https://segmentfault.com/a/1190000039786991) 中有说：
 
-> 规范中关于[FunctionInitialize](https://link.segmentfault.com/?enc=k%2BighkKqljzLwV4Op6%2BqTQ%3D%3D.6dLKKfSD%2F8VuWQYB5UoCPFqpN4auFrWXlVP0Z8WdYkENynL%2FSnenyXgcSbWLOCgLX%2F49E2zETX5JvYltZ5TLfw%3D%3D)，可以看到 “4.Set F.\[\[Environment]] to Scope.“ ，看下规范关于 `[[Environment]]` 的说明
+> 规范中关于 [FunctionInitialize](https://link.segmentfault.com/?enc=k%2BighkKqljzLwV4Op6%2BqTQ%3D%3D.6dLKKfSD%2F8VuWQYB5UoCPFqpN4auFrWXlVP0Z8WdYkENynL%2FSnenyXgcSbWLOCgLX%2F49E2zETX5JvYltZ5TLfw%3D%3D)，可以看到 “4.Set `F.[[Environment]]` to Scope.“ ，看下规范关于 `[[Environment]]` 的说明
 >
 > > | Type                | Description                                                  |
 > > | ------------------- | ------------------------------------------------------------ |
@@ -1441,7 +1455,7 @@ VariableEnvironment: {
 
 ### JS 变量对象 （词法环境）
 
-**注：**在 ES3 中称为「变量对象」，而在 ES6 中称为 「词法环境」。这里文章是讲述 ES3 的，所以是「变量对象」，上面做了 ES6 中「词法环境」的笔记  [[#词法环境 LexicalEnvironment]]。
+> 💡 <font color=fuchsia>**在 ES3 中称为「变量对象」，而在 ES6 中称为 「词法环境」**</font>。这里文章是讲述 ES3 的，所以是「变量对象」，上面做了 ES6 中「词法环境」的笔记  [[#词法环境 LexicalEnvironment]]。
 
 **对于每个执行上下文，都有三个重要属性**
 
@@ -1469,7 +1483,7 @@ VariableEnvironment: {
 
 因为不同执行上下文下的变量对象稍有不同，所以我们来聊聊「全局上下文」下的「变量对象」和「函数上下文」下的「变量对象」。
 
-**补充：**
+##### 补充
 
 > 变量对象对于程序而言是不可读的，只有编译器才有权访问变量对象。
 >
@@ -1504,7 +1518,7 @@ VariableEnvironment: {
    console.log(a === global.a) // true
    ```
 
-5. 客户端 JavaScript（**注：**这里应该是指“浏览器”） 中，全局对象有 window 属性指向自身
+5. 客户端 JavaScript（👀 这里应该是指“浏览器”） 中，全局对象有 window 属性指向自身
 
    ```js
    var a = 1
@@ -1518,9 +1532,9 @@ VariableEnvironment: {
 
 #### 函数上下文
 
-<font color=FF0000>在**「函数上下文」**中，我们 **用「活动对象」**( activation object, AO ) 来**表示「变量对象」**</font>。
+<font color=fuchsia size=4>在**「函数上下文」**中，我们 **用「活动对象」**( activation object , AO ) 来**表示「变量对象」**</font>。
 
-<font color=fuchsia>「活动对象」和「变量对象」其实是一个东西</font>，只是<font color=fuchsia>**「变量对象」是「规范上的」或者说是「引擎实现上」的，不可在 JavaScript 环境中访问**</font>。<font color=fuchsia>**只有到当进入一个「执行上下文」中，这个「执行上下文」的「变量对象」才会被激活**</font>；所以<font color=fuchsia>才叫 Activation Object</font>，而 <font color=FF0000>只有被激活的变量对象、也就是活动对象上的各种属性，**才能被访问**</font>。
+<font color=fuchsia>「活动对象」和「变量对象」其实是一个东西</font>，只是<font color=fuchsia>**「变量对象」是「规范上的」或者说是「引擎实现上」的，不可在 JavaScript 环境中访问**</font>。<font color=fuchsia>**只有到当进入一个「执行上下文」中，这个「执行上下文」的「变量对象」才会被 <font size=4>激活</font>**</font>；所以<font color=fuchsia>才叫 Activation Object</font>，而 <font color=FF0000>只有被激活的变量对象、也就是活动对象上的各种属性，**才能被访问**</font>。
 
 <font color=fuchsia>「活动对象」是在进入「函数上下文」时刻被创建的</font>（ 👀 根据下面 [[#关于「函数上下文」Kuitos 博文中的补充]] 的说法，“进入”的意思就是“被调用”、”执行到“），<font color=FF0000>**它（AO）通过函数的 arguments 属性初始化**</font>。arguments 属性值是 Arguments 对象。
 
@@ -1551,7 +1565,7 @@ VariableEnvironment: {
 
 ##### 进入执行上下文
 
-<font color=FF0000>当进入「执行上下文」时，这时候还没有执行代码</font>，**「变量对象」会包括**：
+<font color=FF0000>当进入「执行上下文」时，这时候还没有执行代码</font>，**变量对象 VO 会包括**：
 
 - <font color=FF0000>函数的**所有形参**</font>（如果是「函数上下文」）。👀 这个应该对应下面例子中的 有实参的 “ 形参a “
 
@@ -1562,7 +1576,7 @@ VariableEnvironment: {
 - 函数声明
 
   - <font color=FF0000>由“名称”和“对应值”（**函数对象** ( function-object ) ）组成一个变量对象的属性被创建</font>
-  - 如果变量对象已经存在相同名称的属性，则完全替换这个属性（ 👀 应该是覆盖？）
+  - 如果变量对象 VO 已经存在相同名称的属性，则完全替换这个属性（ 👀 用“覆盖”似乎更好些？另外，这也说明了函数的优先级最高，一等公民）
 
 - 变量声明。👀 这里对应下面的变量 b 和 d（ d 是变量声明）
 
@@ -1570,15 +1584,15 @@ VariableEnvironment: {
   
   - <font color=FF0000 size=4>**如果「变量名称」跟 “已经声明的形式参数”或函数相同，则变量声明不会干扰已经存在的这类属性**</font>。
   
-    > 👀 注： 这句话非常重要，解释了「函数提升」和 「var 变量提升」冲突，谁优先（**不是覆盖**）的问题。具体示例参见下面 [[#变量对象的思考题 第二题]]
+    > 👀  这句话非常重要，解释了「函数提升」和 「var 变量提升」冲突，谁优先（**不是覆盖**）的问题。具体示例参见下面 [[#变量对象的思考题 第二题]]
   
-  **补充：**
+  ###### 补充
   
   > 这里有一点特殊就是只有 函数声明 ( function declaration ) 会被加入到「变量对象」中，而 <font color=FF0000>**函数表达式 ( function expression )** 则不会</font>。看代码：
   >
   > ```js
   > // 函数声明
-  > function a(){}
+  > function a() {}
   > console.log(typeof a); // "function"
   > 
   > // 函数表达式
@@ -1710,7 +1724,7 @@ var foo = 1;
 
 <font color=FF0000 size=4>**「作用域」规定了如何查找变量**</font>，也就是确定当前执行代码对变量的访问权限。
 
-<font color=FF0000 size=4>JavaScript 采用词法作用域 ( lexical scoping)，也就是静态作用域</font>。
+<font color=FF0000 size=4>JavaScript 采用词法作用域 ( lexical scoping)，也就是 **静态作用域**</font>。
 
 ##### 静态作用域 和 动态作用域
 
@@ -1739,7 +1753,7 @@ bar(); // 1
 
 摘自：[JavaScript深入之词法作用域和动态作用域](https://github.com/mqyqingfeng/Blog/issues/3)
 
-##### 博主“冴羽”在 issue 评论区的引用
+##### 博主“冴羽”在 issue 评论区内容补充
 
 此条评论链接：https://github.com/mqyqingfeng/Blog/issues/3#issuecomment-308667350
 
@@ -1757,7 +1771,7 @@ bar(); // 1
 
 ### JS 作用域链
 
-> ⚠️ 注意：现在标准已经发生变化，*作用域链* ( scope chain ) 现在在标准中已经变成了 *环境记录* ( Enviornment Record )
+> ⚠️ 注意：现在标准已经发生变化，<font color=fuchsia size=4>*作用域链* ( scope chain ) 现在在标准中已经变成了 *环境记录* ( Enviornment Record )</font>
 >
 > 学习自：[鉴定一下网络热门面试题：如何理解闭包的概念？](https://www.bilibili.com/video/BV1b3411w7rX?t=8m56s)
 
@@ -1765,8 +1779,8 @@ bar(); // 1
 
 **对于每个执行上下文，都有三个重要属性：**
 
-- 变量对象 ( Variable object，VO )。**注：**下面会更详细的说明 VO
-- 作用域链 ( Scope chain)
+- 变量对象 ( Variable object，VO )。
+- 作用域链 ( Scope chain )
 - this
 
 #### 作用域链
@@ -1777,13 +1791,13 @@ bar(); // 1
 
 ##### 函数创建
 
-在[《JavaScript深入之词法作用域和动态作用域》](https://github.com/mqyqingfeng/Blog/issues/3)中讲到，<font color=FF0000 size=4>**函数的作用域在函数定义的时候就决定了**</font>。
+在[《JavaScript深入之词法作用域和动态作用域》](https://github.com/mqyqingfeng/Blog/issues/3)中讲到，<font color=FF0000 size=4>**函数的作用域在函数定义的时候就决定了**</font>（静态作用域）。
 
 这是因为 <font color=FF0000>**函数有一个 内部属性 `[[scope]]` ，当函数创建的时候，就会 <font size=4>保存所有父「变量对象」到其中</font>**</font>（ 👀 会保存 父变量对象（即：父「执行上下文环境」的 VO ）到 `[[scope]]` 中，这点要注意！！ 另外，下面有 testScope 函数的 `[[scope]]` 内部属性截图），你 <font color=FF0000 size=4>**可以理解 `[[scope]]` 就是所有父变量对象的层级链**</font>，但是 <font color=FF0000>**注意 ⚠️：`[[scope]]` 并不代表 完整的作用域链**</font>！
 
 <img src="https://s2.loli.net/2022/04/05/vT5iDzLo4cqYWPy.png" alt="image-20220405214215002" style="zoom:60%;" />
 
-> 👀 注：Scope 本来也有 “作用域” 的含义，如下图 Chrome 调试中的 Scope。图片摘自：[现代JS方法 - 在浏览器中调试 - Debugger 命令](https://zh.javascript.info/debugging-chrome#debugger-ming-ling)
+> 👀 Scope 本来也有 “作用域” 的含义，如下图 Chrome 调试中的 Scope。图片摘自：[现代JS方法 - 在浏览器中调试 - Debugger 命令](https://zh.javascript.info/debugging-chrome#debugger-ming-ling)
 >
 > <img src="https://s2.loli.net/2022/04/05/ATwHPeGcvMKgQnu.png" alt="image-20220405215320848" style="zoom:60%;" />
 
@@ -2033,7 +2047,7 @@ person.sayYourName(); // I am Kevin
 
 #### 返回值效果实现
 
-> 👀 注：下面的内容讲的有点唐突，可以看下下面的补充 [[#视频《new实例化的重写--检测一下自己this 指向？？》的补充#不同方法返回值区别]] 中 不同返回值的总结
+> 👀 下面的内容讲的有点唐突，可以看下下面的补充 [[#视频《new实例化的重写--检测一下自己this 指向？？》的补充#不同方法返回值区别]] 中 不同返回值的总结
 
 接下来我们再来看一种情况，假如构造函数有返回值，举个例子：
 

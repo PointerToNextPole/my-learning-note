@@ -3444,7 +3444,7 @@ Promise.resolve().then(f)
 
 ##### 关于如何从 Promise 中取值的补充
 
-打印一个 promise 对象，发现有三个内部属性 \[[Prototype]]、\[[PromiseState]]、\[[PromiseResult]]。其中 \[[PromiseState]] 表示Promise的状态 pending / fulfilled / rejected。\[[PromiseResult]] 表示 promise 中包含的数据。而js无法访问内部属性，但是可以通过 then 的回调函数获得：
+打印一个 promise 对象，发现有三个内部属性 `[[Prototype]]`、`[[PromiseState]]`、`[[PromiseResult]]`。其中 `[[PromiseState]]` 表示Promise的状态 pending / fulfilled / rejected。`[[PromiseResult]]` 表示 promise 中包含的数据。而 js 无法访问内部属性，但是可以通过 then 的回调函数获得：
 ```js
 const promise = Promise.resolve(1)
 promise.then(console.log)          // 1
@@ -7619,7 +7619,7 @@ var type = node.nodeType;
 | :------------------------------- | :--- | :----------------------------------------------------------- |
 | Node.ELEMENT_NODE                | 1    | 一个 元素 节点，例如 \<p> 和 \<div>。                        |
 | Node.TEXT_NODE                   | 3    | Element 或者 Attr 中实际的 文字                              |
-| Node.CDATA_SECTION_NODE          | 4    | 一个 CDATASection，例如 <!CDATA[[ … ]]>。                    |
+| Node.CDATA_SECTION_NODE          | 4    | 一个 CDATASection，例如 `<!CDATA[[ … ]]>`。                    |
 | Node.PROCESSING_INSTRUCTION_NODE | 7    | 一个用于XML文档的 ProcessingInstruction ，例如 \<?xml-stylesheet ... ?> 声明。 |
 | Node.COMMENT_NODE                | 8    | 一个 Comment 节点。                                          |
 | Node.DOCUMENT_NODE               | 9    | 一个 Document 节点。                                         |
@@ -7750,7 +7750,10 @@ nextNode = node.nextSibling
 
 <img src="https://s2.loli.net/2023/01/18/qJdXCepExRnAwzl.png" alt="image-20230118005807718" style="zoom:65%;" />
 
-发现 `child.nextSibling` 的运行结果是一个 `#text` 的对象，而不是预想的 bro 节点，事实上：<font color=fuchsia size=4>**换行也是一个 text节点**</font> ，所以 nextSibling 打印 `#text` 是非常合理的；如果把换行去掉，代码改成如下：
+发现 `child.nextSibling` 的运行结果是一个 `#text` 的对象，而不是预想的 bro 节点，事实上：<font color=fuchsia size=4>**换行也是一个 text节点**</font> ，所以 nextSibling 打印 `#text` 是非常合理的。
+> 💡 可以参考 [[前端面试点总结#span与span之间有看不见的空白间隔是什么原因引起的]] 中的内容，原理是类似的
+
+如果把换行去掉，代码改成如下：
 
 ```html
 <div class="parent">
@@ -10335,13 +10338,13 @@ console.log(Object.getPrototypeOf(reg).constructor.name) // 'RegExp'
 
 <font color=FF0000 size=4>**在 ECMAScript 5 中，Object.prototype.toString() 被调用时，会进行如下步骤：**</font>
 
-- 如果 this 是 undefined ，返回 [object Undefined] ；
-- 如果 this 是 null ， 返回 [object Null] ；
+- 如果 this 是 undefined ，返回 `[object Undefined]` ；
+- 如果 this 是 null ， 返回 `[object Null]` ；
 - 令 `O` 为以 this 作为参数调用 ToObject 的结果；
-- <font color=FF0000>令 class 为 `O` 的内部属性 [[Class]] 的值</font>；
+- <font color=FF0000>令 class 为 `O` 的内部属性 `[[Class]]` 的值</font>；
 - 返回三个字符串 `"[object", class, 以及"]"` 拼接而成的字符串。
 
-注，也就是说，在 ES5 中，toString 是通过 内部属性 [[class]] 获取的结果
+注，也就是说，在 ES5 中，toString 是通过 内部属性 `[[class]]` 获取的结果
 
 <font color=FF0000 size=4>**在 ES6，调用 Object.prototype.toString 时，会进行如下步骤：**</font>
 

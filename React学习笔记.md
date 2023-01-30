@@ -517,4 +517,4 @@ We can also use [`react-intersection-observer`](https://www.npmjs.com/package/re
 
 // TODO
 
-[React Best Practices – Tips for Writing Better React Code in 2022](freecodecamp.org/news/best-practices-for-react/)
+[React Best Practices – Tips for Writing Better React Code in 2022](https://freecodecamp.org/news/best-practices-for-react/)
