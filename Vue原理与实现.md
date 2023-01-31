@@ -1720,7 +1720,7 @@ onTrack 和 onTrigger 就是对应 track 和 trigger，另外，onTrack 和 onTr
 
 
 
-## 响应式原理
+## Vue 响应式原理
 
 
 
@@ -3128,6 +3128,10 @@ Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
 
 
 
+## Diff 算法
+
+
+
 ### Vue3 Diff 算法
 
 #### 精读《DOM diff 原理详解》笔记
@@ -3178,7 +3182,7 @@ Vue 的 Dom diff 一共 5 步，我们结合下图先看前三步：
 
 <img src="https://s2.loli.net/2023/01/09/EwyupoCnLKsfZbO.png" alt="img" style="zoom:48%;" />
 
-如图所示，1、2、3、4 步走完后（👀 首尾指针对比结束，并判断与处理完 老旧指针相遇 相遇的情况），Old 和 New 都有剩余，因此走到第五步，第五步分为三小步：
+如图所示，1、2、3、4 步走完后（👀 首尾指针对比结束，并判断与处理完 老旧指针相遇 相遇的情况），Old 和 New 都有剩余，因此走到第五步，<font color=dodgerBlue>第五步分为三小步</font>：
 
 1. <font color=fuchsia>**遍历 Old 创建一个 Map**</font>，这个就是那个换时间的空间消耗，<font color=fuchsia>它记录了每个旧节点的 index 下标</font>（👀 如上图所示），一会好在 New 里查出来。
 2. 遍历 New，顺便<font color=red>利用上面的 Map 记录下下标</font>，同时 <font color=red>Old 在 New 中不存在的说明被删除了，直接删除</font>。
@@ -3186,7 +3190,7 @@ Vue 的 Dom diff 一共 5 步，我们结合下图先看前三步：
 
 > 💡这里创建的 Map ，在源码中的名字是 `keyToNewIndexMap` ，
 
-> 👀 注意：这里的说法有点问题，如果到第五步时候， i 还是等于 0，到时候遍历 New 生成的 Arr 数组中，必定会有一个下标为 0 的元素，而且它不是新增的。
+> 👀 注意：这里的说法有点问题：如果进行到第五步时， i 还是等于 0，到时候遍历 New 生成的 Arr 数组中，必定会有一个下标为 0 的元素，而且它不是新增的。
 
 最后一步的优化也很关键，我们不要看见不同就随便移动，<font color=red>**为了性能最优，要保证移动次数尽可能的少**</font>，那么怎么才能尽可能的少移动呢？假设我们随意移动，如下图所示：
 
@@ -3204,7 +3208,7 @@ Vue 的 Dom diff 一共 5 步，我们结合下图先看前三步：
 
 肉眼看上去，<font color=red>连续自增的子串有 `b d` 和 `a c e`，由于 `a c e` 更长，所以选择后者</font>（⚠️ 值得注意的是：这里示例中 最长子序列 `a c e` 是连续且相邻的，但是实际上：最长子序列并没有要求是连续且相邻的 ）。
 
-换成程序去做，可以采用贪心 + 二分法进行查找，详细可以看这道题 [最长递增子序列](https://leetcode-cn.com/problems/longest-increasing-subsequence/)，时间复杂度 $O(nlogn)$ 。由于该算法得出的结果顺序是乱的，Vue 采用提前复制数组的方式辅助找到了正确序列。
+换成程序去做，可以<font color=red>采用贪心 + 二分法进行查找</font>，详细可以看这道题 [最长递增子序列](https://leetcode-cn.com/problems/longest-increasing-subsequence/)，时间复杂度 $O(nlogn)$ （💡 使用 DP 的话，时间复杂度为 $O(n^2)$ ，显然：贪心+二分查找 的方法是更优的）。由于该算法得出的结果顺序是乱的，Vue 采用提前复制数组的方式辅助找到了正确序列。
 
 > 👀 后面还有 React Diff 的实现思想，由于这里是 Vue3 Diff 的笔记，这里暂时略
 
@@ -3421,6 +3425,109 @@ input : `const arr = [10, 9, 2, 5, 3, 7, 101, 18]` ，output : `[2, 3, 7, 18]`
 >
 >![](https://sitecdn.zcycdn.com/f2e-assets/5d0fa2e7-ba10-458b-869d-4349e4d78f6e.gif)
 >
->另外，文章还推荐使用 uuid / symbol 作为 v-for 的 key，使用 uuid 的思路很有启发性。而 symobl
+>另外，文章还推荐使用 uuid / symbol 作为 v-for 的 key，使用 uuid 的思路很有启发性。而 symobl 无法通过正常的遍历访问到（比如 for in 和 Object.keys，如下代码），会导致问题。
+>
+>```js
+>const sym = Symbol('foo')
+>
+>const obj = {
+>  bar: 1,
+>  [sym]: 2
+>}
+>
+>for(const key in obj) { console.log(obj[key]) } // 1
+>
+>Object.keys(obj).forEach(key => console.log(obj[key])) // 1
+>
+>Reflect.ownKeys(obj).forEach(key => console.log(obj[key])) // 1, 2
+>```
 
 摘自：[在vue中为什么不推荐用 index 做 key](http://zoo.zhengcaiyun.cn/blog/article/vue-index)
+
+
+
+### Vue2 Diff 算法
+
+#### 《15张图，20分钟吃透Diff算法核心原理，我说的！！！》笔记
+
+// TODO 由于忙于面试，没有时间做笔记，这里暂时 TODO
+
+```js
+function updateChildren(parentElm, oldCh, newCh) {
+  let oldStartIdx = 0, newStartIdx = 0
+  let oldEndIdx = oldCh.length - 1
+  let oldStartVnode = oldCh[0]
+  let oldEndVnode = oldCh[oldEndIdx]
+  let newEndIdx = newCh.length - 1
+  let newStartVnode = newCh[0]
+  let newEndVnode = newCh[newEndIdx]
+  let oldKeyToIdx
+  let idxInOld
+  let elmToMove
+  let before
+  while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
+    // 👀 下面是四种指针对应的 vnode 为 null，指针移动，直接跳过
+    if (oldStartVnode == null) {
+      oldStartVnode = oldCh[++oldStartIdx]
+    } else if (oldEndVnode == null) {
+      oldEndVnode = oldCh[--oldEndIdx]
+    } else if (newStartVnode == null) {
+      newStartVnode = newCh[++newStartIdx]
+    } else if (newEndVnode == null) {
+      newEndVnode = newCh[--newEndIdx]
+    } 
+    // 👀 oldVnode 首尾指针，newVnode 首尾指针，四种情况进行比较与置换
+    else if (sameVnode(oldStartVnode, newStartVnode)) {
+      patchVnode(oldStartVnode, newStartVnode)
+      oldStartVnode = oldCh[++oldStartIdx]
+      newStartVnode = newCh[++newStartIdx]
+    } else if (sameVnode(oldEndVnode, newEndVnode)) {
+      patchVnode(oldEndVnode, newEndVnode)
+      oldEndVnode = oldCh[--oldEndIdx]
+      newEndVnode = newCh[--newEndIdx]
+    } else if (sameVnode(oldStartVnode, newEndVnode)) {
+      patchVnode(oldStartVnode, newEndVnode)
+      api.insertBefore(parentElm, oldStartVnode.el, api.nextSibling(oldEndVnode.el))
+      oldStartVnode = oldCh[++oldStartIdx]
+      newEndVnode = newCh[--newEndIdx]
+    } else if (sameVnode(oldEndVnode, newStartVnode)) {
+      patchVnode(oldEndVnode, newStartVnode)
+      api.insertBefore(parentElm, oldEndVnode.el, oldStartVnode.el)
+      oldEndVnode = oldCh[--oldEndIdx]
+      newStartVnode = newCh[++newStartIdx]
+    } 
+    // 👀 首尾指针比较结束，对剩余的 vnode 进行复用
+    else {
+      // 使用key时的比较
+      if (oldKeyToIdx === undefined) {
+        oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx) // 有key生成index表
+      }
+      idxInOld = oldKeyToIdx[newStartVnode.key]
+      if (!idxInOld) {
+        api.insertBefore(parentElm, createEle(newStartVnode).el, oldStartVnode.el)
+        newStartVnode = newCh[++newStartIdx]
+      }
+      else {
+        elmToMove = oldCh[idxInOld]
+        if (elmToMove.sel !== newStartVnode.sel) {
+          api.insertBefore(parentElm, createEle(newStartVnode).el, oldStartVnode.el)
+        } else {
+          patchVnode(elmToMove, newStartVnode)
+          oldCh[idxInOld] = null
+          api.insertBefore(parentElm, elmToMove.el, oldStartVnode.el)
+        }
+        newStartVnode = newCh[++newStartIdx]
+      }
+    }
+  }
+  // 循环结束，删除或添加节点
+  if (oldStartIdx > oldEndIdx) {
+    before = newCh[newEndIdx + 1] == null ? null : newCh[newEndIdx + 1].el
+    addVnodes(parentElm, before, newCh, newStartIdx, newEndIdx)
+  } else if (newStartIdx > newEndIdx) {
+    removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx)
+  }
+}
+```
+
+摘自：[15张图，20分钟吃透Diff算法核心原理，我说的！！！](https://juejin.cn/post/6994959998283907102)

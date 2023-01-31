@@ -1020,29 +1020,29 @@ HTML \<source> 元素为 \<picture>, \<audio> 或者 \<video> 元素指定多个
 
 ##### 示例
 
-- **使用 crossorigin 的 script 元素**
+###### 使用 crossorigin 的 script 元素
 
-  你可以使用下面的 \<script> 元素告诉浏览器执行来自 https://example.com/example-framework.js 的脚本且不发送用户凭据。
+你可以使用下面的 \<script> 元素告诉浏览器执行来自 https://example.com/example-framework.js 的脚本且不发送用户凭据。
 
-  ```html
-  <script src="https://example.com/example-framework.js" crossorigin="anonymous"></script>
-  ```
+```html
+<script src="https://example.com/example-framework.js" crossorigin="anonymous"></script>
+```
 
-- **Web manifest with credentials**
+###### Web manifest with credentials
 
-  在获取需要用户凭据的 manifest 时，属性值必须设置为 use-credentials。即使是同源的情况。
+在获取需要用户凭据的 manifest 时，属性值必须设置为 use-credentials。即使是同源的情况。
 
-  ```html
-  <link rel="manifest" href="/app.webmanifest" crossorigin="use-credentials">
-  ```
+```html
+<link rel="manifest" href="/app.webmanifest" crossorigin="use-credentials">
+```
 
-摘自：[MDN - CORS settings attributes](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Attributes/crossorigin)
+摘自：[MDN - HTML 属性：crossorigin](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Attributes/crossorigin)
 
 
 
 #### AppCache 的相关的离线缓存
 
-**注：**AppCache 已过时，请使用 Service Worker 实现功能
+> 👀 AppCache 已过时，请使用 Service Worker 实现功能
 
 HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制，<font color=FF0000>通过 `.appcache` 文件上的 **解析清单** 离线存储资源</font>，这些资源就会像 cookie 一样被存储了下来。之后当网络在处于离线状态下时，浏览器会通过被离线存储的数据进行页面展示。使用方法如下： 
 

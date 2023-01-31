@@ -11,6 +11,7 @@ Function.prototype.bind = function(context, ...args) {
   if (typeof this !== 'function') {
     throw new TypeError('Type Error')
   }
+  
   // 保存 this 的值
   var self = this
 
@@ -19,28 +20,36 @@ Function.prototype.bind = function(context, ...args) {
     if (this instanceof F) {
       return new self(...args, ...arguments)
     }
-    return self.apply(context, [...args, ...arguments])
+    return self.apply(context, [...args, ...arguments]) // 👀 这里也可以使用 args.concat(arguments)，兼容性更好些
   }
 }
 ```
 
 #### call 和 apply 的实现
 
-> 👀 注：可以参考下 [[JS 机制与原理#call 和 apply 实现]] 中的内容。另外，call 和 apply 两者实现极为类似，可一起记忆。
+> 👀 可以参考下 [[JS 机制与原理#call 和 apply 实现]] 中的内容。另外，call 和 apply 两者实现极为类似，可一起记忆。
 
 ##### call 实现
 
 ```js
-Function.prototype.call = function(context = functions, ...args) {
-  if (typeof this !== 'function') {
-    throw new TypeError('Type Error')
+Function.prototype.myCall = function(context, ...args) {
+  if(typeof this !== 'function') {
+    throw new TypeError('type error')
   }
-  // 新建一个唯一的Symbol变量避免重复
-  const fn = Symbol('fn')
-  context[fn] = this
 
-  const res = context[fn](...args)
-  delete context[fn]
+  if(context === undefined || context === null) {
+    context = window
+  } else {
+    context = Object(context)
+  }
+
+  // 新建一个唯一的Symbol变量避免重复
+  const fnSym = Symbol('fn')
+  context[fnSym] = this
+
+  const res = context[fnSym](...args)
+  delete context(fnSym)
+
   return res
 }
 ```
@@ -48,15 +57,23 @@ Function.prototype.call = function(context = functions, ...args) {
 ##### apply 实现
 
 ```js
-Function.prototype.apply = function(context = window, args) {
-  if (typeof this !== 'function') {
-    throw new TypeError('Type Error')
+Function.prototype.myApply = function(context, args) {
+  if(typeof this !== 'function') {
+    throw new TypeError('type error')
   }
-  const fn = Symbol('fn')
-  context[fn] = this
 
-  const res = context[fn](...args)
-  delete context[fn]
+  if(context === undefined || context === null) {
+    context = window
+  } else {
+    context = Object(context)
+  }
+
+  const fnSym = Symbol('fn')
+  context[fnSym] = this
+
+  const res = args === undefined ? context[fnSym]() : context[fnSym](...args)
+  delete context[fnSym]
+
   return res
 }
 ```
@@ -65,7 +82,7 @@ Function.prototype.apply = function(context = window, args) {
 
 #### new 运算符
 
-> 👀 注：可以参考下 [[JS 机制与原理#new 运算符实现]] 中的讲解。另外，其中还有另一种 new 的调用方法的源码实现 [[JS 机制与原理#视频《new实例化的重写--检测一下自己this 指向？？》的补充#new 的实现]]
+> 👀 可以参考下 [[JS 机制与原理#new 运算符实现]] 中的讲解。另外，其中还有另一种 new 的调用方法的源码实现 [[JS 机制与原理#视频《new实例化的重写--检测一下自己this 指向？？》的补充#new 的实现]]
 
 ```js
 function myNew(fn, ...args) {
@@ -93,7 +110,7 @@ const instanceof = (left, right) => {
 }
 ```
 
-> 👀 补充：摘抄实现的代码版本的最上面，有一个判断
+> 💡 补充：摘抄实现的代码版本的最上面，有一个判断
 >
 > ```js
 > if(typeof left !== 'object' || typeof right !== 'object') return false
@@ -210,7 +227,7 @@ Object.is() 主要解决的是如下两个不太合理的问题。
 NaN === NaN // false
 ```
 
-实现：
+##### 实现
 
 ```js
 const is = (x, y) => {
@@ -236,13 +253,11 @@ const isNaN(value) {
 
 
 
-
-
-### 防抖和节流
+#### 防抖和节流
 
 总的来说：是用来 限制函数 的执行次数
 
-#### 防抖
+##### 防抖
 
 通过 setTimeout，在一定时间间隔内，将多次触发变成一次触发。
 
@@ -258,7 +273,7 @@ const debounce = (fn, time) => {
 }
 ```
 
-#### 节流
+##### 节流
 
 减少一段时间的触发频率
 
@@ -266,7 +281,7 @@ const debounce = (fn, time) => {
 const throttle = (fn, time) => {
   let flag = true
   return function() {
-    // 注：定时器没有执行，flag 始终都是 false；始终 return 掉。一旦定时器执行，flag 变成 true，就执行下一次，不会 return
+    // 👀 定时器没有执行，flag 始终都是 false；始终 return 掉。一旦定时器执行，flag 变成 true，就执行下一次，不会 return
     if (!flag) return
     flag = false
     setTimeout(() => {
@@ -285,33 +300,55 @@ const throttle = (fn, time) => {
 
 ```
 
-https://www.bilibili.com/video/BV1gb4y1z736 最后有实现。
+https://www.bilibili.com/video/BV1gb4y1z736 最后有实现。另外，https://github.com/ractivejs/ractive/blob/dev/src/polyfills/Promise.js 的实现也非常值得借鉴
 
 
 
-#### Promise.all() 实现
+##### Promise.all() 实现
 
 ```js
-Promise.myAll = function(promiseArr) {
+Promise.myAll = arr => {
+  const ret = []
+  let count = 0
   return new Promise((resolve, reject) => {
-    const ans = []
-    let index = 0
-    for (let i = 0; i < promiseArr.length; i++) {
-      promiseArr[i]
+    arr.forEach((p, index) => {
+      Promise.resolve(p)
         .then(res => {
-          ans[i] = res
-            index++
-            if (index === promiseArr.length) {
-              resolve(ans)
-            }
-          })
-        .catch(err => reject(err))
-    }
+          ret[index] = res
+          count++
+          if (count === arr.length) {
+            resolve(ret)
+          }
+        }).catch(err => reject(err))
+    })
   })
 }
 ```
 
-#### Promise.race() 实现
+##### Promise.allSettled() 实现
+
+```js
+Promise.myAllSettled = arr => {
+  const ret = []
+  let count = 0
+  return new Promise((resolve, reject) => {
+    arr.forEach((p, index) => {
+      Promise.resolve(p)
+        .then(res => Promise.resolve(res))
+        .catch(err => Promise.resolve(err))
+        .then(res => {
+          ret[index] = res
+          count ++
+          if(count === arr.length) {
+            resolve(ret)
+          }
+        })
+    })
+  })
+}
+```
+
+##### Promise.race() 实现
 
 ```js
 Promise.myRace = function(promiseArr) {
@@ -329,7 +366,7 @@ Promise.myRace = function(promiseArr) {
 
 #### Promise 并行调度器
 
-**注：**只有代码，没太看懂
+> 👀 只有代码，没太看懂
 
 ```js
 // 类的现实
@@ -383,17 +420,17 @@ addTask(400, '4')
 
 ### 函数高阶函数实现
 
-**注：**这些函数编程的实现有点难度了。不过，很多东西是共通的，就像有个模版。
+> 👀 这些函数编程的实现有点难度了。不过，很多东西是共通的，就像有个模版。
 
 #### Array.prototype.forEach() 实现
 
-语法：
+##### 语法
 
 ```js
 arr.forEach(callback(currentValue [, index [, array]])[, thisArg])
 ```
 
-实现：
+##### 实现
 
 ```js
 Array.prototype.map = function(cb, thisArg) {
@@ -419,13 +456,13 @@ Array.prototype.map = function(cb, thisArg) {
 
 #### Array.prototype.map() 实现
 
-语法：
+##### 语法
 
 ```js
 var new_array = arr.map(callback(currentValue[, index[, array]])[, thisArg])
 ```
 
-实现：
+##### 实现
 
 ```js
 Array.prototype.map = function(cb, thisArg) {
@@ -453,13 +490,13 @@ Array.prototype.map = function(cb, thisArg) {
 
 #### Array.prototype.filter() 实现
 
-语法：
+##### 语法
 
 ```js
 var newArray = arr.filter(callback(element[, index[, array]])[, thisArg])
 ```
 
-实现：
+##### 实现
 
 ```js
 Array.prototype.filter = function(cb, thisArg) {
@@ -489,13 +526,13 @@ Array.prototype.filter = function(cb, thisArg) {
 
 #### Array.prototype.reduce() 实现
 
-`语法：
+##### 语法
 
 ```js
 reduce(callback(previousValue, currentValue[, currentIndex, array])[, initialValue])
 ```
 
-实现：
+##### 实现
 
 ```js
 Array.prototype.reduce = function(cb, initialValue) {
@@ -588,7 +625,7 @@ const unique = arr => arr.filter((e, index) => arr.indexOf(e) === index)
 const unique = arr => arr.reduce((acc, cur) => acc.includes(cur) ? acc : acc.concat(cur), [])
 ```
 
-> ⚠️ 注意：开始时没有对 `acc.includes(cur) === true` 的情况进行返回 ( `acc` )，这是会报错的；因为没有返回 acc 的话，默认返回 undefined，而 undefined 没有 includes 方法，将会报错。所以，无论如何都要返回 acc，哪怕本次操作没有对其进行任何操作。
+> ⚠️ 开始时没有对 `acc.includes(cur) === true` 的情况进行返回 ( `acc` )，这是会报错的；因为没有返回 acc 的话，默认返回 undefined，而 undefined 没有 includes 方法，将会报错。所以，无论如何都要返回 acc，哪怕本次操作没有对其进行任何操作。
 
 #### 类数组转为数组
 
@@ -664,7 +701,7 @@ function curry(fn, args) {
   const { length } = fn;
   const myArgs = args || [];
   return function () {
-    // 这里的arguments是第二次及以后的入参
+    // 这里的 arguments 是第二次及以后的入参
     const newArgs = myArgs.concat(Array.prototype.slice.call(arguments));
     if (newArgs.length < length) {
       return curry.call(this, fn, newArgs);
@@ -699,8 +736,6 @@ const ajax = function (url) {
   })
 }
 ```
-
-
 
 
 
@@ -852,9 +887,7 @@ function _render(vnode) {
 
 
 
-
-
-参考资料：
+#### 参考资料
 
 [测试一下前端基本功--简单的源码重写？](https://www.bilibili.com/video/BV1dS4y1X7pn) 
 

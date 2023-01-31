@@ -1771,7 +1771,7 @@ bar(); // 1
 
 ### JS 作用域链
 
-> ⚠️ 注意：现在标准已经发生变化，<font color=fuchsia size=4>*作用域链* ( scope chain ) 现在在标准中已经变成了 *环境记录* ( Enviornment Record )</font>
+> ⚠️ 现在标准已经发生变化：<font color=fuchsia size=4>***作用域链* ( scope chain ) 现在在标准中已经变成了 *环境记录* ( Enviornment Record )**</font>
 >
 > 学习自：[鉴定一下网络热门面试题：如何理解闭包的概念？](https://www.bilibili.com/video/BV1b3411w7rX?t=8m56s)
 
@@ -1804,7 +1804,7 @@ bar(); // 1
 **举个例子：**
 
 ```js
-function foo() { // 注：虽然文中没说，但是要注意：foo 函数是在全局作用域下
+function foo() { // 👀 虽然文中没说，但是要注意：foo 函数是在全局作用域下
     function bar() { ... }
 }
 ```
@@ -1817,10 +1817,10 @@ foo.[[scope]] = [
   globalContext.VO // variable object
 ];
 bar.[[scope]] = [
-  fooContext.AO, // 注：上面有说，AO 是 Activation Object 的缩写
+  fooContext.AO, // 👀 上面有说，AO 是 Activation Object 的缩写
   globalContext.VO
   /* 👀 bar 在 foo 的内部，所以 bar 的 [[scope]] 有 fooContext；同时，还有 globalContext，这是我没有想到的；不过，否则的话，[[scope]] 也不会是个数组了。
-  另外，开始我以为 [[scope]] 是一个指针，指向上一级的作用域；但现在看来，不是一般认知的指针；或许是个指针数组？*/
+  另外，开始我以为 [[scope]] 是一个指针，指向上一级的作用域；但现在看来，不是一般认知的指针；这里的内容下面又进一步说明 */
 ];
 ```
 
@@ -1862,21 +1862,21 @@ checkscope();
 2. <font color=FF0000>执行 checkscope 函数，创建 checkscope 函数「执行上下文」，**checkscope 函数「执行上下文」被压入「执行上下文栈」**</font>
 
    ```js
-   ECStack = [ // 注：这里 ECStack 全称应该是：Execution Context Stack
+   ECStack = [ // 👀 这里 ECStack 全称应该是：Execution Context Stack
        checkscopeContext,
        globalContext
    ];
    ```
 
-3. <font color=FF0000 size=4>**checkscope 函数并不立刻执行，开始做准备工作**</font>，<mark>第一步</mark>：<font color=FF0000>复制函数 `[[scope]]` 属性 <font size=4>**创建作用域链**</font></font>
+3. <font color=FF0000 size=4>**checkscope 函数并不立刻执行，开始做准备工作**</font>，<font color=dodgerBlue>第一步</font>：<font color=FF0000>复制函数 `[[scope]]` 属性 <font size=4>**创建作用域链**</font></font>
 
    ```js
-   checkscopeContext = { // 注：这里checkscopeContext 是步骤二中 ECStack 的成员。
+   checkscopeContext = { // 👀 这里checkscopeContext 是步骤二中 ECStack 的成员。
        Scope: checkscope.[[scope]],
    }
    ```
 
-4. <mark>第二步</mark>：<font color=FF0000>**用 arguments 创建活动对象**</font>，<font color=FF0000>随后初始化活动对象，加入形参、函数声明、变量声明</font>。（ 👀 这里创建 VO 的内容，可以看 [[# JS 变量对象 （词法环境）]] 部分，那里有详细的讲述）
+4. <font color=dodgerBlue>第二步</font>：<font color=FF0000>**用 arguments 创建活动对象**</font>，<font color=FF0000>随后初始化活动对象，加入形参、函数声明、变量声明</font>。（ 👀 这里创建 VO 的内容，可以看 [[# JS 变量对象 （词法环境）]] 部分，那里有详细的讲述）
 
    ```js
    checkscopeContext = {
@@ -1890,7 +1890,7 @@ checkscope();
    }
    ```
 
-5. <mark>第三步</mark>：<font color=FF0000>将活动对象压入 checkscope 作用域链顶端</font>（ 👀 即 Scope 数组的开头）
+5. <font color=dodgerBlue>第三步</font>：<font color=FF0000>将活动对象压入 checkscope 作用域链顶端</font>（ 👀 即 Scope 数组的开头）
 
    ```js
    checkscopeContext = {
@@ -5411,7 +5411,7 @@ container.onmousemove = getUserAction;
 
 #### 防抖
 
-防抖的原理就是：你<font color=FF0000>尽管触发事件</font>，但是我 <font color=FF0000>**一定 <font size=4>在事件触发 n 秒后</font> 才执行**</font>，如果你<font color=FF0000>在一个事件触发的 n 秒内又触发了这个事件</font>，那我就<font color=FF0000 size=4>**以新的事件的时间为准，n 秒后才执行**</font>，总之，<font color=FF0000 size=4>**就是要等你触发完事件 n 秒内不再触发事件，我才执行**</font>，真是任性呐!
+防抖的原理就是：你<font color=FF0000>尽管触发事件</font>，但是我 <font color=FF0000>**一定 <font size=4>在事件触发 n 秒后</font> 才执行**</font>，如果你<font color=FF0000>在一个事件触发的 n 秒内又触发了这个事件</font>，那我就 <font color=fuchsia size=4>**以新的事件的时间为准，n 秒后才执行**</font>，总之，<font color=fuchsia size=4>**就是要等你触发完事件 n 秒内不再触发事件，我才执行**</font>，真是任性呐!
 
 ##### 第一版
 
@@ -5651,7 +5651,7 @@ document.getElementById("button").addEventListener('click', function(){
 
 #### 节流
 
-节流的原理很简单：如果你<font color=FF0000>持续触发事件，每隔一段时间，只执行一次事件</font>。
+<font color=dodgerBlue>节流的原理</font>很简单：如果你<font color=fuchsia>持续触发事件，每隔一段时间，只执行一次事件</font>。
 
 <font color=FF0000>根据首次是否执行以及结束后是否执行，效果有所不同，实现的方式也有所不同</font>。我们用 leading 代表首次是否执行，trailing 代表结束后是否再执行一次。
 
@@ -6385,7 +6385,7 @@ CJS 的一个模块，一般就是一个文件；<font color=fuchsia>使用 reqi
 }
 ```
 
-> 👀 注：可以打印 module 对象查看（如下），另外，可以参考 [[Node学习笔记#Module 中的内容]] 中的内容
+> 👀 可以打印 module 对象查看（如下），另外，可以参考 [[Node学习笔记#Module 中的内容]] 中的内容
 >
 > <img src="https://s2.loli.net/2022/05/31/qhbVEg12LkxZote.png" alt="image-20220531004437463" style="zoom:55%;" />
 
@@ -6527,7 +6527,7 @@ If you dive in , you’ll find that <font color=dodgerBlue>top-level await isn�
 
 - CJS 模块输出的是<font color=FF0000>单个值的拷贝</font>，而 ESM 输出的是<font color=FF0000>（多个）值的引用</font>
 
-- <font color=fuchsia>CJS 模块是 运行时加载</font>，而 <font color=fuchsia>ESM 是 编译时输出接口</font>，使得对 JS 的模块进行静态分析成为了可能；
+- <font color=fuchsia>CJS 模块是 运行时加载</font>，而 <font color=fuchsia>ESM 是 编译时输出接x口</font>，使得对 JS 的模块进行静态分析成为了可能；
 - 因为两个模块加载机制的不同，所以在对待循环加载的时候，它们会有不同的表现。<font color=red>CJS 遇到循环引用时，只会输出已经执行的部分，后续的输出或者变化，是不会影响已经输出的变量</font>。而 <font color=red>ESM</font> 相反，<font color=red>使用 import 加载一个变量，**变量不会被缓存**，真正取值的时候就能取到最终的值</font>
 
 - <font color=dodgerBlue>关于模块顶层的 this 指向</font>：在 <font color=red>CJS 顶层，this 指向当前模块</font>；<font color=red>ESM 中，this 指向 undefined</font>
@@ -6567,7 +6567,7 @@ Brendan Eich 发明浏览器事件机制是从苹果当年的低代码开发工�
 - XHR
 - fetch
 - \<script> 发起的 jsonp
-- 老式的 `new Image()`发起的请求
+- 老式的 `new Image()` 发起的请求
 - sendBeacon 请求
 
 学习自：[为什么都说根据X-Requested-With判断ajax请求，但原生js发送ajax默认不带这个头？ - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/365435784/answer/968292664)
