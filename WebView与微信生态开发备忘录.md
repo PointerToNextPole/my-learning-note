@@ -250,19 +250,92 @@ callChildFnWrap() {
 
 ```html
 <!-- parent-component.wxml -->
-<childrComponent bind:parentComponentFn="parentComponentFn" />
+<childrComponent bind:parentCustomEvent="parentComponentFn" />
 ```
 
 ```js
 // child-component.js
 methods: {
-  parentCompnentFn() {
-    this.triggerEvent('parentComponentFn')
+  childCpmFn() {
+    // ...
+    this.triggerEvent('parentCustomEvent')
+    // ...
   }
 }
 ```
 
 
+
+#### 小程序图片添加水印并上传
+
+```html
+<canvas style="position: fixed; top: 0; left: -100%; z-index: -9999;" type="2d" id="canvas"></canvas>
+```
+
+```js
+async waterMarkProc(file) {
+  return new Promise((resolve) => {
+
+    const query = this.createSelectorQuery()
+    query.select('#canvas') // canvas 和 上面的 <canvas> id 一致
+      .fields({ node: true, size: true })
+      .exec(res => {
+        const canvas = res[0].node
+        const img = canvas.createImage()
+        img.src = file.file.url
+
+        img.onload = () => {
+          canvas.width = img.width
+          canvas.height = img.height
+
+          const ctx = canvas.getContext('2d')
+          ctx.drawImage(img, 0, 0)
+
+          ctx.font = "bold 20px sans-serif"
+          ctx.fillStyle = '#fff'
+          ctx.textAlign = 'right'
+          ctx.fillText('string as water mark ctx')
+
+          wx.canvasToTempFilePath({ // canvas 导出图片的本地暂时路径 (url)
+            x: 0,
+            y: 0,
+            width: canvas.width,
+            height: canvas.height,
+            destWidth: canvas.width,
+            destHeight: canvas.height,
+            canvas: canvas,
+            fileType: 'jpg',
+            success: ({ tempFilePath }) => {
+              wx.compressImage({ // 压缩图片。另外，不知道为什么 canvasToTempFilePath 的 quantity 选项没有生效；于是使用了 wx.compressImage
+                src: tempFilePath,
+                quality: 50,
+                success: ({tempFilePath}) => resolve(tempFilePath),
+                fail: err => resolve(file.file.url) // resolve 压缩后图片的 temp file url。给下面的 uploadFile 使用
+              })
+            },
+            fail: err => resolve(file.file.url)
+          })
+        }
+      })
+  })
+},
+  
+uploadFile(imgUrl) {
+  wx.uploadFile({
+    url: app.globalData.url + '/index/img/up_img_oss',
+    filePath: imgUrl, // filePath 接收一个 url
+    name: 'img',
+    success: res => { /* ... */ }
+  })
+},
+  
+async onImgAfterRead(event) {
+  const img = event.detail
+  
+  const waterMarkUrl = await this.waterMarkProc(img)
+  this.uploadFile(waterMarkUrl)
+}
+```
 
 
 

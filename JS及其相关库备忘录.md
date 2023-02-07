@@ -1468,44 +1468,101 @@ includes() 方法用来判断一个数组是否包含一个指定的值，根据
 
 Array.from() 方法<font color=FF0000>从一个 类数组 （比如带有length属性，而没有数组的方法（比如push））或 可迭代对象 创建一个新的，浅拷贝的数组实例</font>。
 
-**语法**
+##### 语法
 
 ```js
 Array.from(arrayLike[, mapFn[, thisArg]])
 ```
 
-**参数**
+###### 参数
 
 - arrayLike：想要转换成数组的<font color=FF0000>**伪数组对象** 或 **可迭代对象**</font>。
 - mapFn： <font color=FF0000>可选</font>，如果指定了该参数，新数组中的每个元素会执行该回调函数。
 - thisArg：<font color=FF0000>可选</font>，可选参数，执行回调函数 mapFn 时 this 对象。
 
-**返回值：**一个新的数组实例。
+###### 返回值
+
+一个新的数组实例。
+
+##### 描述
 
 **Array.from() 可以通过以下方式来创建数组对象：**
 
 - 伪数组对象（拥有一个 length 属性和若干索引属性的任意对象）
-- 可迭代对象（可以获取对象中的元素,如 Map和 Set 等）
+- 可迭代对象（可以获取对象中的元素，如 Map 和 Set 等）
+
+##### 示例
+
+###### 从 String 生成数组
+
+```js
+Array.from('foo'); // [ "f", "o", "o" ]
+```
+
+###### 从 Set 生成数组
+
+```js
+const set = new Set(['foo', 'bar', 'baz', 'foo']);
+Array.from(set); // [ "foo", "bar", "baz" ]
+```
+
+###### 从 Map 生成数组
+
+```js
+const map = new Map([[1, 2], [2, 4], [4, 8]]);
+Array.from(map); // [[1, 2], [2, 4], [4, 8]]
+
+const mapper = new Map([['1', 'a'], ['2', 'b']]);
+Array.from(mapper.values()); // ['a', 'b'];
+
+Array.from(mapper.keys()); // ['1', '2'];
+```
+
+###### 从类数组对象（arguments）生成数组
+
+```js
+function f() {
+  return Array.from(arguments);
+}
+
+f(1, 2, 3); // [ 1, 2, 3 ]
+```
+
+###### 在 Array.from 中使用箭头函数
+
+```js
+// Using an arrow function as the map function to
+// manipulate the elements
+Array.from([1, 2, 3], x => x + x); // [2, 4, 6]
+
+// Generate a sequence of numbers
+// Since the array is initialized with `undefined` on each position,
+// the value of `v` below will be `undefined`
+Array.from({length: 5}, (v, i) => i); // [0, 1, 2, 3, 4]
+```
+
+> ⚠️ 上面这个 `Array.from({length}, cb)` 的写法，有点意思。
+>
+> 另外，在一次面试中，被要求使用 ES6 的方法（提示使用 Array.from ）写一个置换矩阵的方法；实在没想到方法，便去看了下答案，有点意思。答案如下：
+>
+> ```ts
+> export const transposeArr = (arr: number[][]): number[][] => {
+>   return Array.from({length: arr[0].length}, (_: never, i) => arr.map(k => k[i]))
+> }
+> 
+> const targetMat = [[1, 2, 3], [4, 5, 6]]
+> const transposedArr = transposeArr(targetMat)
+> 
+> console.log(transposedArr)
+> ```
 
 摘自：[MDN - Array.from()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
 
-**示例如下：**
-
-```js
-let arrayLike = {
-  0: "Hello",
-  1: "World",
-  length: 2
-};
-const genArr = Array.from(arrayLike)
-console.log(Array.isArray(genArr)) // true
-```
-
-**补充：**
-
-Array.from() 可以通过 Array.prototype.slice( arrayLikeVarible ) 实现。
-
-学习自：[MDN - Array.prototype.slice()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)
+> 💡 **补充**
+>
+> Array.from() 可以通过 Array.prototype.slice( arrayLikeVarible ) 实现。
+>
+> 学习自：[MDN - Array.prototype.slice()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)
 
 
 
@@ -3600,7 +3657,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                   
+  >                                                                                                                                                                                                                                                     
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3619,7 +3676,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                                   
+  >                                                                                                                                                                                                                                                     
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -15956,7 +16013,7 @@ function waterMarkProc(file, cnt, offset) {
 }
 ```
 
-
+在微信小程序中使用 canvas 给图片添加水印代码见：[[WebView与微信生态开发备忘录#小程序图片添加水印并上传]]
 
 ### 其他补充
 

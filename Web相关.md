@@ -10,7 +10,7 @@
 
 escape 就有 “转义” 的意思，所以 JS 中有编码的 `escape()` 方法也是很自然的了；虽然，该方法已经废弃，不推荐使用。
 
-> 👀 补充： 键盘中 `ESC` 键 也是 escape 的意思。
+> 💡 补充： 键盘中 `ESC` 键 也是 escape 的意思。
 
 
 
@@ -526,9 +526,11 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
 
 #### 浏览器访问网站的工作流程
 
-- 输入 URL 之后，浏览器会进行 DNS查找，找到 URL 所在服务器的域名（补充：在进行 DNS解析 之前，浏览器会先判断是否需要重定向和缓存检查，缓存涉及到强缓存和协商缓存 ）
+- 输入 URL 之后，浏览器会进行 DNS查找，找到 URL 所在服务器的域名
 
-  > 👀 注：补充的说法存疑，而且不记得是是什么时候写的了；这里需要查下资料 // TODO
+  > 💡 在进行 DNS 解析 之前，浏览器会先判断是否需要重定向和缓存检查，缓存涉及到强缓存和协商缓存。
+  >
+  > 具体参考 [[前端面试点总结#在浏览器中输入 URL 并且按下回车之后发生了什么]] 中的第二步
 
 - 找到服务器之后，浏览器会通过 TCP 握手与服务器建立连接。如果是基于 HTTPS 的连接，会多一步<font color=FF0000 size=4> **TLS握手**</font>，建立加密的隧道，保证数据不被监听和篡改。
 
@@ -536,56 +538,66 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
 
   - 浏览器在接收服务器响应时，由于 TCP 的慢启动 ( slow start ) 的机制，浏览器会先收到前 14kb 的数据；后面才会慢慢增加传输速度（ 这里的 14kb 衍生出了“首屏优化，首屏的资源要小于 14kb ”的限制 ）
 
-    > 👀 注：关于 14kb 相关的内容，在 Google Chrome 的网站 web.dev 中有 [文章](https://web.dev/i18n/zh/extract-critical-css/) 提及，也说明了 “为什么是 14KB ”：
-  >
+    > 💡 关于 14kb 相关的内容，在 Google Chrome 的网站 web.dev 中有 [文章](https://web.dev/i18n/zh/extract-critical-css/) 提及，也说明了 “为什么是 14KB ”：
+    >
     > > 新的 [TCP](https://hpbn.co/building-blocks-of-tcp/) 连接无法立即利用客户端和服务器之间的全部可用带宽，这些连接会经过[慢启动](https://hpbn.co/building-blocks-of-tcp/#slow-start)以避免数据量超过连接的承载能力。在这个过程中，服务器会先开始传输少量数据，如果数据以完美的状态到达客户端，那么下一次往返中数据量会加倍。<font color=FF0000>对于大多数服务器，第一次往返最多可以传输 10 个数据包或大约 14 KB</font>。
     > >
     > > 摘自：[提取关键 CSS (Critical CSS)](https://web.dev/i18n/zh/extract-critical-css/)
 
 - 在收到 html 文件之后，浏览器开始渲染网页，共有五个步骤，被称为：<font color=FF0000 size=4> **关键渲染路径**</font>
 
-  - **构建 DOM (Document Object Model) 树**
 
-    - 浏览器解析 HTML、构建DOM 树是顺序执行的（从上到下），并且<font color=fuchsia>只有一个**主线**程负责解析</font>（ 👀 防止冲突）
-    - <font color=red>如果在解析的过程中遇到 `<script>` 标签，浏览器会加载 JS 文件，并执行里面的代码</font>；这时候<font color=fuchsia>**主线程会暂停解析 HTML，直到 JS 代码执行完毕，才会继续**</font>（👀 因为 script 会产生/修改 DOM 元素）
-    - 对于<font color=fuchsia>**图片、CSS文件、rel 属性设置为 `defer` 、`async` 的 `<script>` 标签**</font>，将<font color=fuchsia>不会影响主线程</font>；而是<font color=fuchsia>会异步的加载</font>
-    - 浏览器有一个 <font color=FF0000>**预扫描线程**</font> ( Pre Scanner / Preload Scanner ？) ，会扫描 HTML 代码，预先下载 CSS文件、字体、JS代码
+##### 关键渲染路径
 
-    <img src="https://i.loli.net/2021/10/19/k1zobO8ZBEnAVcx.png" alt="image-20211019182116485" style="zoom:40%;" />
+###### 构建 DOM ( Document Object Model ) 树
 
-  - **构建 CSSOM ( CSS Object Model ) 树**
+- 浏览器解析 HTML、构建DOM 树是顺序执行的（从上到下），并且<font color=fuchsia>只有一个 **主线程** 负责解析</font>（ 👀 防止冲突）
 
-    <img src="https://i.loli.net/2021/10/19/Lzy9VXM2JuYEeIF.png" alt="image-20211019180750859" style="zoom: 40%;" />
+- <font color=red>如果在解析的过程中遇到 `<script>` 标签，浏览器会加载 JS 文件，并执行里面的代码</font>；这时候 <font color=fuchsia>**主线程会暂停解析 HTML，直到 JS 代码执行完毕，才会继续**</font>（👀 因为 script 会产生/修改 DOM 元素）
 
-    CSSOM树 是 CSS 在浏览器中的对象表示，也是树状结构
+- 对于<font color=fuchsia>**图片、CSS文件、rel 属性设置为 `defer` 、`async` 的 `<script>` 标签**</font>，将<font color=fuchsia>不会影响主线程</font>；而是<font color=fuchsia>会异步的加载</font>
 
-  - **合并 DOM 树 和 CSSOM 树（形成渲染树）**
+- 浏览器有一个 <font color=FF0000>**预扫描线程**</font> ( Pre Scanner / Preload Scanner ？) ，会扫描 HTML 代码，预先下载 CSS文件、字体、JS代码
 
-    浏览器会从 DOM 的根节点开始，合并 CSSOM 中的样式到 DOM 中的每个节点，形成一棵渲染树 ( Render Tree )，<font color=fuchsia>渲染树的节点被称为 ***渲染对象***</font>
+  > 👀 和 `rel="preload"` / `rel="prefetch"` 相关？
 
-    <img src="https://i.loli.net/2021/10/19/oAuSFHbZWYXcajT.png" alt="image-20211019182315113" style="zoom:40%;" />
+<img src="https://i.loli.net/2021/10/19/k1zobO8ZBEnAVcx.png" alt="image-20211019182116485" style="zoom:40%;" />
 
-  - **布局 Layout**
+###### 构建 CSSOM ( CSS Object Model ) 树
 
-    生成渲染树之后，<font color=fuchsia>浏览器会根据样式计算每个可见节点的宽高和位置等，对每个节点进行布局规划</font>。<font color=fuchsia>**对于像图片这样的节点**</font>（置换元素？）<font color=fuchsia>**如果没有指定宽高，浏览器会先忽略它的大小**</font>（如下图）
+<img src="https://i.loli.net/2021/10/19/Lzy9VXM2JuYEeIF.png" alt="image-20211019180750859" style="zoom: 40%;" />
 
-    <img src="https://i.loli.net/2021/10/19/qV5uGPlobEwmk2M.png" alt="image-20211019182426724" style="zoom:40%;" />
+CSSOM树 是 CSS 在浏览器中的对象表示，也是树状结构
 
-    在图片加载完成之后，浏览器会根据图片的宽高和位置，<font color=FF0000 size=4> **再次计算受影响的节点的大小和位置**</font>，这个过程被称为<font color=FF0000 size=4> **回流 (reflow)**</font>。如下图：
+###### 合并 DOM 树 和 CSSOM 树（形成渲染树）
 
-    <img src="https://i.loli.net/2021/10/19/mPIbkxRulrdTKCE.png" alt="image-20211019182604357" style="zoom:40%;" />
+浏览器会从 DOM 的根节点开始，合并 CSSOM 中的样式到 DOM 中的每个节点，形成一棵渲染树 ( Render Tree )，<font color=fuchsia>渲染树的节点被称为 ***渲染对象***</font>
 
-    可见节点即：没有设置display: none 的节点。
+<img src="https://i.loli.net/2021/10/19/oAuSFHbZWYXcajT.png" alt="image-20211019182315113" style="zoom:40%;" />
 
-  - **绘制 Paint**
+###### 布局 Layout
 
-    在第一次布局完成之后，浏览器会真正将节点和节点的样式绘制到屏幕上。这个过程要求十分快速，否则会影响动画和交互的性能。如果之前发生了回流，浏览器还会发生<font color=FF0000> **重绘**</font>，将变化的布局重新绘制到屏幕上。在绘制期间，也有可能会有 <font color=FF0000> 组合</font>发生。在渲染节点时，可能会产生新的图层，比如：\<video />、opacity、will-change、transform 等属性的节点，浏览器需要将这些图层组合起来，按正确的堆叠顺序渲染。同样，回流和重绘操作也会引发重新组合操作
-    
-  - **合成 Composite**
+生成渲染树之后，<font color=fuchsia>浏览器会根据样式计算每个可见节点的宽高和位置等，对每个节点进行布局规划</font>。<font color=fuchsia>**对于像图片这样的节点**</font>（置换元素？）<font color=fuchsia>**如果没有指定宽高，浏览器会先忽略它的大小**</font>（如下图）
 
-    <font color=FF0000>**由于页面的各部分可能被绘制到多层，由此它们需要按正确顺序绘制到屏幕上，以便正确渲染页面**</font>。这一步往往不会被提及。
+<img src="https://i.loli.net/2021/10/19/qV5uGPlobEwmk2M.png" alt="image-20211019182426724" style="zoom:40%;" />
 
-- 上面 5 步（加上 composite 是 6 步）完成之后，设置 rel为 refer / async 的 \<script> 标签中的 JS 文件，开始加载并执行。完成之后，整个网页便加载完成了
+在图片加载完成之后，浏览器会根据图片的宽高和位置，<font color=FF0000 size=4> **再次计算受影响的节点的大小和位置**</font>，这个过程被称为<font color=FF0000 size=4> **回流 (reflow)**</font>。如下图：
+
+<img src="https://i.loli.net/2021/10/19/mPIbkxRulrdTKCE.png" alt="image-20211019182604357" style="zoom:40%;" />
+
+可见节点即：没有设置display: none 的节点。
+
+###### 绘制 Paint
+
+在第一次布局完成之后，浏览器会真正将节点和节点的样式绘制到屏幕上。这个过程要求十分快速，否则会影响动画和交互的性能。如果之前发生了回流，浏览器还会发生<font color=FF0000> **重绘**</font>，将变化的布局重新绘制到屏幕上。在绘制期间，也有可能会有 <font color=FF0000> 组合</font>发生。在渲染节点时，可能会产生新的图层，比如：\<video />、opacity、will-change、transform 等属性的节点，浏览器需要将这些图层组合起来，按正确的堆叠顺序渲染。同样，回流和重绘操作也会引发重新组合操作
+
+###### 合成 Composite
+
+<font color=FF0000>**由于页面的各部分可能被绘制到多层，由此它们需要按正确顺序绘制到屏幕上，以便正确渲染页面**</font>。这一步往往不会被提及。
+
+##### 总结
+
+上面 5 步（加上 composite 是 6 步）完成之后，设置 rel 为 refer / async 的 \<script> 标签中的 JS 文件，开始加载并执行。完成之后，整个网页便加载完成了
 
 摘自：[浏览器的工作原理是什么?](https://www.bilibili.com/video/BV1Dh411J71c)
 
@@ -612,7 +624,7 @@ Web 性能包含了服务器请求和响应、加载、执行脚本、渲染、�
 
 ##### 文本对象模型 ( DOM )
 
-<font color=FF0000> DOM构建是增量的</font>。 <font color=fuchsia>**HTML响应变成令牌 ( token )**</font>（ 👀 注：这里的 token 和 鉴权的 Token 没有关系，与编译原理中的分词相关，毕竟“分词”的英文为 Tokenization ），<font color=red>**令牌变成节点**</font>，而节点又变成 DOM树。<font color=FF0000>  单个 DOM节点以 **startTag令牌 开始，以 endTag令牌 结束**。 **节点包含有关 HTML 元素的所有相关信息。 该信息是使用令牌描述的**</font>。 节点根据令牌层次结构连接到 DOM树中。 如果另一组 startTag 和 endTag 令牌位于一组 startTag 和 endTag 之间，则您在节点内有一个节点，这就是我们定义DOM树层次结构的方式。
+<font color=FF0000> DOM构建是增量的</font>。 <font color=fuchsia>**HTML响应变成令牌 ( token )**</font>（ 👀 这里的 token 和 鉴权的 Token 没有关系，与编译原理中的分词 ( Tokenization ) 概念相关），<font color=red>**令牌变成节点**</font>，而节点又变成 DOM 树。<font color=FF0000>  单个 DOM节点以 **startTag令牌 开始，以 endTag令牌 结束**。 **节点包含有关 HTML 元素的所有相关信息。 该信息是使用令牌描述的**</font>。 节点根据令牌层次结构连接到 DOM树中。 如果另一组 startTag 和 endTag 令牌位于一组 startTag 和 endTag 之间，则您在节点内有一个节点，这就是我们定义DOM树层次结构的方式。
 
 节点数量越多，关键渲染路径中的后续事件将花费的时间就越长。 测一下吧！ 几个额外的节点不会有什么区别，但“DIV癖”（divitis）可能会导致问题。
 

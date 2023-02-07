@@ -48,7 +48,7 @@ Function.prototype.myCall = function(context, ...args) {
   context[fnSym] = this
 
   const res = context[fnSym](...args)
-  delete context(fnSym)
+  delete context[fnSym]
 
   return res
 }

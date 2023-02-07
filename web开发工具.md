@@ -1073,3 +1073,33 @@ qrcode.makeCode("http://naver.com"); // make another code.
 官方GitHub地址：https://github.com/pnpm/pnpm，可以阅读readme.md 以了解。
 
 关于原理：硬连接( hard link ) / 软连接( symlink 符号连接 ) 可以参考：[pnpm原理](https://juejin.cn/post/6916101419703468045#heading-8)
+
+
+## 地图服务
+
+### 高德地图
+
+##### 获取用户地址
+使用 `AMap.Geolocation` 可以获得用户的经纬度等位置信息。另外，需要注意的是：要是用定位功能，需要保证网页 url ，接口 url，以及静态资源 OSS 的 url 都是安全的、是 https 的；否则在 iOS 以及其他一些平台中，将会（被拒绝）拿不到用户坐标。
+
+使用 AMap.CitySearch 通过 IP定位获取当前城市信息
+
+##### 地理编码 / 逆地理编码
+使用 AMap.Geocoder 。
+
+##### 绘制图形
+使用 AMap.MouseTool 。包含
+
+##### 路线规划
+使用 AMap.Driving。这其中包含路径显示，可以通过 `driving.search` 方法实现；另外，相较 [[#腾讯地图#路线规划]] 的内容，AMap.Driving 显然使用起来要简单不少。
+
+##### 点聚合
+使用 AMap.MarkerCluster 。
+>👀 看了下实现相关功能同事的代码，感觉使用起来很简单，只能说高德提供的 api 做的很完善；没什么上手门槛。
+
+### 腾讯地图
+##### 路线规划
+使用 `qqmapsdk.direction(conf)` 来获取路线 polyline 的点坐标集合，（至少在微信小程序中）需要手动绘制（小程序 `<map>` 组件的 polyline 属性）
+
+react-scripts run
+
