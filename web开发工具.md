@@ -2,15 +2,15 @@
 
 
 
-## Axios
+### Axios
 
 
 
-#### Axios是什么
+##### Axios是什么
 
 <font color=FF0000> Axios 是一个 <font size=4>**基于 promise**</font> 网络请求库，作用于node.js 和浏览器中</font>。 它是 isomorphic 的（即同一套代码可以运行在浏览器和node.js中）。<font color=FF0000> **在服务端它使用原生 node.js http 模块, 而在客户端 (浏览端) 则使用 XMLHttpRequests**</font>。
 
-**特性**
+###### 特性
 
 - 从浏览器创建 XMLHttpRequests
 - 从 node.js 创建 http 请求
@@ -23,7 +23,7 @@
 
 
 
-#### 引言
+##### 引言
 
 Axios是一个 **异步请求** 技术，即：基于XMLHttpRequest对象发起的请求都是异步请求
 
@@ -45,7 +45,7 @@ Axios是一个 **异步请求** 技术，即：基于XMLHttpRequest对象发起�
 
 
 
-#### Axios Post
+##### Axios Post
 
 **注意：**Axios在发送post方式的<font color=FF0000>**请求时传递的参数如果为对象类型**，<font size=4>**axios会自动将对象转为json格式的字符串使用 application/json 的请求头向后端服务接口传递参数**</font></font>。而这时后端无法正常获取到前端传递来的参数。
 
@@ -53,7 +53,7 @@ Axios是一个 **异步请求** 技术，即：基于XMLHttpRequest对象发起�
 > 摘自官方文档：[axios - 请求体编码](https://axios-http.com/zh/docs/urlencoded)
 
 
-<mark><font size=4>如果想让后端接收到参数header的格式必须是 application/www-x-form-urlencoded 才可以，如果是application/json不行</font>。</mark>
+如果想让后端接收到参数header的格式必须是 application/www-x-form-urlencoded 才可以，如果是application/json不行。
 
 <font color=FF0000>**Axios的post请求传递参数的两种方式**</font>
 
@@ -64,7 +64,7 @@ Axios是一个 **异步请求** 技术，即：基于XMLHttpRequest对象发起�
 
 
 
-#### 并发请求
+##### 并发请求
 
 示例如下：
 
@@ -90,7 +90,7 @@ axios.all([getUserAccount(), getUserPermissions()])
 
 
 
-#### Axios的RESTful风格的API
+##### Axios的RESTful风格的API
 
 或者也可以被称为：请求方式别名
 
@@ -107,7 +107,7 @@ axios.all([getUserAccount(), getUserPermissions()])
 
 
 
-#### Axios的配置对象
+##### Axios的配置对象
 
 可以使用自定义配置<font color=FF0000> 新建一个 axios 实例</font>
 
@@ -121,7 +121,7 @@ const instance = axios.create({
 });
 ```
 
-**实例方法**
+###### 实例方法
 
 以下是可用的实例方法。指定的配置将与实例的配置合并。
 
@@ -145,7 +145,7 @@ const instance = axios.create({
 
 
 
-#### 请求配置
+##### 请求配置
 
 这些是创建请求时可以用的<font color=FF0000> **配置选项**</font>。只有 `url` 是必需的。如果没有指定 `method`，请求将默认使用 `get` 方法。
 
@@ -288,7 +288,7 @@ const instance = axios.create({
 
 
 
-#### 响应结构
+##### 响应结构
 
 某个请求的响应包含以下信息
 
@@ -333,11 +333,11 @@ axios.get('/user/12345')
 
 
 
-#### 默认配置
+##### 默认配置
 
 您可以指定默认配置，它将作用于每个请求。
 
-**全局 axios 默认值**
+###### 全局 axios 默认值
 
 ```js
 axios.defaults.baseURL = 'https://api.example.com';
@@ -345,7 +345,7 @@ axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 ```
 
-**自定义实例默认值**
+###### 自定义实例默认值
 
 ```js
 // 创建实例时配置默认值
@@ -357,7 +357,7 @@ const instance = axios.create({
 instance.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 ```
 
-**配置的优先级**
+###### 配置的优先级
 
 <font color=FF0000> 配置将会**按优先级进行合并** </font>。它的**顺序**是：<font color=FF0000> 在lib/defaults.js中找到的库默认值，然后是实例的 defaults 属性，最后是请求的 config 参数。后面的优先级要高于前面的</font>。
 
@@ -378,7 +378,7 @@ instance.get('/longRequest', {
 
 
 
-#### 拦截器
+##### 拦截器
 
 在请求或响应被 then 或 catch 处理前拦截它们。
 
@@ -420,7 +420,7 @@ instance.interceptors.request.use(function () {/*...*/});
 
 
 
-#### 自己写的 axios 实例封装
+##### 自己写的 axios 实例封装
 
 ```js
 // instance.js
@@ -482,13 +482,13 @@ axios 依赖原生的ES6 Promise实现而被支持。 如果你的环境不支�
 
 
 
-## 网络请求相关补充
+###### 网络请求相关补充
 
 
 
-#### 如何中断已发出去的请求
+##### 如何中断已发出去的请求
 
-##### 前置知识
+###### 前置知识
 
 > AbortController 接口表示一个控制器对象，可以根据需要终止一个或多个Web请求。
 >
@@ -496,7 +496,7 @@ axios 依赖原生的ES6 Promise实现而被支持。 如果你的环境不支�
 >- **signal**：signal 属性返回一个 AbortSignal 对象实例，它可以用来 with/about 一个Web(网络)请求
 > - **abort()**：终止一个尚未完成的Web(网络)请求，它能够终止 fetch 请求，任何响应Body的消费者和流
 
-##### 取消方法
+###### 取消方法
 
 - **xhr 取消请求：** 使用 xhr.abort() 方法
 - **fetch 取消请求：** 使用 abortController.abort() 方法。示例参见链接
@@ -504,23 +504,23 @@ axios 依赖原生的ES6 Promise实现而被支持。 如果你的环境不支�
 
 - **umi-request 中断请求：**略，详见链接
 
-##### 取消请求的使用场景
+###### 取消请求的使用场景
 
 取消登录（比如 QQ 登录）、取消上传
 
-##### cancelToken 取消的原理
+###### cancelToken 取消的原理
 
 <font color=red>当用户调用内部对外暴露的 cancel 方法后，axios 内部会执行 resolvePromise，改变 promise</font>（ CancelToken 实例的 promise）<font color=red>的状态</font>；触发 promise 的 then 回调，然后执行 onCanceled 方法，<font color=fuchsia>在 onCanceled 中则调用 XMLHttpRequest 的  abort 方法取消请求，同时调用 reject 让外层的 promise 失败</font>。详见：[axios解析之cancelToken取消请求原理](https://juejin.cn/post/7044532592640524324)
 
-> 👀 注：在浏览器中 Axios 实现方法是 XHR，Node 中是 http 模块；所以上面用了 `xhr.abort()` 
+> 👀 在浏览器中 Axios 实现方法是 XHR，Node 中是 http 模块；所以上面用了 `xhr.abort()` 
 
 以上摘自：[面试官：如何中断已发出去的请求？](https://juejin.cn/post/7033906910583586829)
 
 
 
-#### Fetch 和 Axios 的区别
+##### Fetch 和 Axios 的区别
 
-##### 总述
+###### 总述
 
 Axios是对 XMLHttpRequest 的封装（ 👀 浏览器环境下），Fetch 是一种新的获取资源的接口方式，并<font color=red>不是对 XMLHttpRequest 的封装</font>
 
@@ -567,11 +567,11 @@ Axios是对 XMLHttpRequest 的封装（ 👀 浏览器环境下），Fetch 是�
 
 
 
-## WebSocket
+#### WebSocket
 
 WebSocket <font color=FF0000>是一种网络通信**协议**</font>，很多高级功能都需要它。
 
-#### 为什么需要 WebSocket？
+##### 为什么需要 WebSocket？
 
 > 我们已经有了 HTTP 协议，为什么还需要另一个协议？它能带来什么好处？
 
@@ -581,7 +581,7 @@ WebSocket <font color=FF0000>是一种网络通信**协议**</font>，很多高�
 
 轮询的效率低，非常浪费资源（因为必须不停连接，或者 HTTP 连接始终打开）。因此，工程师们一直在思考，有没有更好的方法。WebSocket 就是这样发明的。
 
-#### 简介
+##### 简介
 
 WebSocket 协议在2008年诞生，2011年成为国际标准。所有浏览器都已经支持了。
 
@@ -617,7 +617,7 @@ WebSocket 协议在2008年诞生，2011年成为国际标准。所有浏览器�
 
 - <font color=FF0000>支持扩展</font>：ws协议定义了扩展，<font color=FF0000>用户可以扩展协议，或者实现自定义的子协议</font>。（比如支持自定义压缩算法等）
 
-#### 简单示例
+##### 简单示例
 
 ```js
 var ws = new WebSocket("wss://echo.websocket.org");
@@ -637,7 +637,7 @@ ws.onclose = function(evt) {
 };
 ```
 
-#### 属性
+##### 属性
 
 - **WebSocket.binaryType：**使用二进制的数据类型连接。
 - **WebSocket.bufferedAmount：** 只读，未发送至服务器的字节数。
@@ -652,150 +652,150 @@ ws.onclose = function(evt) {
 - **WebSocket.readyState：** 只读，当前的链接状态。
 - **WebSocket.url：** 只读，WebSocket 的绝对路径。
 
-#### 客户端API
+##### 客户端API
 
-- **构造函数**
+###### 构造函数
 
-  WebSocket 对象作为一个构造函数，用于新建 WebSocket 实例。
+WebSocket 对象作为一个构造函数，用于新建 WebSocket 实例。
 
-  ```js
-  var ws = new WebSocket('ws://localhost:8080');
-  ```
+```js
+var ws = new WebSocket('ws://localhost:8080');
+```
 
-  <font color=FF0000>执行上面语句之后，客户端就会与服务器进行连接。</font>
+<font color=FF0000>执行上面语句之后，客户端就会与服务器进行连接。</font>
 
-  **语法：**
+**语法**
 
-  ```js
-  WebSocket(url[, protocols])
-  ```
+```js
+WebSocket(url[, protocols])
+```
 
-  返回一个 WebSocket 对象。
+返回一个 WebSocket 对象。
 
-- **webSocket.readyState**
+##### webSocket.readyState
 
-  readyState属性返回实例对象的当前状态，共有四种。
+readyState属性返回实例对象的当前状态，共有四种。
 
-  - **CONNECTING：**值为<font color=FF0000>**0**</font>，表示<font color=FF0000>正在连接</font>
-  - **OPEN：**值为<font color=FF0000>**1**</font>，表示<font color=FF0000>连接成功</font>，可以通信了
-  - **CLOSING：**值为<font color=FF0000>**2**</font>，表示<font color=FF0000>连接**正在**关闭</font>
-  - **CLOSED：**值为<font color=FF0000>**3**</font>，表示<font color=FF0000>连接**已经**关闭</font>，<font color=FF0000>**或者**打开连接失败</font>
+- **CONNECTING：**值为<font color=FF0000>**0**</font>，表示<font color=FF0000>正在连接</font>
+- **OPEN：**值为<font color=FF0000>**1**</font>，表示<font color=FF0000>连接成功</font>，可以通信了
+- **CLOSING：**值为<font color=FF0000>**2**</font>，表示<font color=FF0000>连接**正在**关闭</font>
+- **CLOSED：**值为<font color=FF0000>**3**</font>，表示<font color=FF0000>连接**已经**关闭</font>，<font color=FF0000>**或者**打开连接失败</font>
 
-- **webSocket.onopen**
+##### webSocket.onopen
 
-  实例对象的onopen属性，用于<font color=FF0000>指定**连接成功后**的**回调函数**</font>。
+实例对象的onopen属性，用于<font color=FF0000>指定**连接成功后**的**回调函数**</font>。
 
-  ```js
-  ws.onopen = function () {
-    ws.send('Hello Server!');
+```js
+ws.onopen = function () {
+  ws.send('Hello Server!');
+}
+```
+
+如果<font color=FF0000>要指定多个回调函数，可以使用addEventListener方法</font>。
+
+```js
+ws.addEventListener('open', function (event) {
+  ws.send('Hello Server!');
+});
+```
+
+**webSocket.onclose**
+
+实例对象的onclose属性，用于<font color=FF0000>指定**连接关闭后**的**回调函数**</font>。
+
+```js
+ws.onclose = function(event) {
+  var code = event.code;
+  var reason = event.reason;
+  var wasClean = event.wasClean;
+  // handle close event
+};
+
+ws.addEventListener("close", function(event) {
+  var code = event.code;
+  var reason = event.reason;
+  var wasClean = event.wasClean;
+  // handle close event
+});
+```
+
+###### webSocket.onmessage
+
+实例对象的onmessage属性，用于指定<font color=FF0000>收到服务器数据后</font>的<font color=FF0000>回调函数</font>。
+
+```js
+ws.onmessage = function(event) {
+  var data = event.data;
+  // 处理数据
+};
+
+ws.addEventListener("message", function(event) {
+  var data = event.data;
+  // 处理数据
+});
+```
+
+注意，<font color=FF0000>服务器数据可能是文本，也可能是二进制数据（blob对象或Arraybuffer对象）</font>。
+
+```js
+ws.onmessage = function(event){
+  if(typeof event.data === String) {
+    console.log("Received data string");
   }
-  ```
 
-  如果<font color=FF0000>要指定多个回调函数，可以使用addEventListener方法</font>。
-
-  ```js
-  ws.addEventListener('open', function (event) {
-    ws.send('Hello Server!');
-  });
-  ```
-
-- **webSocket.onclose**
-
-  实例对象的onclose属性，用于<font color=FF0000>指定**连接关闭后**的**回调函数**</font>。
-
-  ```js
-  ws.onclose = function(event) {
-    var code = event.code;
-    var reason = event.reason;
-    var wasClean = event.wasClean;
-    // handle close event
-  };
-  
-  ws.addEventListener("close", function(event) {
-    var code = event.code;
-    var reason = event.reason;
-    var wasClean = event.wasClean;
-    // handle close event
-  });
-  ```
-
-- **webSocket.onmessage**
-
-  实例对象的onmessage属性，用于指定<font color=FF0000>收到服务器数据后</font>的<font color=FF0000>回调函数</font>。
-
-  ```js
-  ws.onmessage = function(event) {
-    var data = event.data;
-    // 处理数据
-  };
-  
-  ws.addEventListener("message", function(event) {
-    var data = event.data;
-    // 处理数据
-  });
-  ```
-
-  注意，<font color=FF0000>服务器数据可能是文本，也可能是二进制数据（blob对象或Arraybuffer对象）</font>。
-
-  ```js
-  ws.onmessage = function(event){
-    if(typeof event.data === String) {
-      console.log("Received data string");
-    }
-  
-    if(event.data instanceof ArrayBuffer){
-      var buffer = event.data;
-      console.log("Received arraybuffer");
-    }
+  if(event.data instanceof ArrayBuffer){
+    var buffer = event.data;
+    console.log("Received arraybuffer");
   }
-  ```
+}
+```
 
-  <font color=FF0000>除了动态判断收到的数据类型，也可以使用binaryType属性，显式指定收到的二进制数据类型</font>。
+<font color=FF0000>除了动态判断收到的数据类型，也可以使用binaryType属性，显式指定收到的二进制数据类型</font>。
+
+```js
+// 收到的是 blob 数据
+ws.binaryType = "blob";
+ws.onmessage = function(e) {
+  console.log(e.data.size);
+};
+
+// 收到的是 ArrayBuffer 数据
+ws.binaryType = "arraybuffer";
+ws.onmessage = function(e) {
+  console.log(e.data.byteLength);
+};
+```
+
+###### webSocket.send()
+
+实例对象的send()方法<font color=FF0000>用于向服务器发送数据</font>。
+
+- 发送文本的例子
 
   ```js
-  // 收到的是 blob 数据
-  ws.binaryType = "blob";
-  ws.onmessage = function(e) {
-    console.log(e.data.size);
-  };
-  
-  // 收到的是 ArrayBuffer 数据
-  ws.binaryType = "arraybuffer";
-  ws.onmessage = function(e) {
-    console.log(e.data.byteLength);
-  };
+  ws.send('your message');
   ```
 
-- **webSocket.send()**
+- 发送 Blob 对象的例子
 
-  实例对象的send()方法<font color=FF0000>用于向服务器发送数据</font>。
+  ```js
+  var file = document
+    .querySelector('input[type="file"]')
+    .files[0];
+  ws.send(file);
+  ```
 
-  - 发送文本的例子
+- 发送 ArrayBuffer 对象的例子
 
-    ```js
-    ws.send('your message');
-    ```
-
-  - 发送 Blob 对象的例子
-
-    ```js
-    var file = document
-      .querySelector('input[type="file"]')
-      .files[0];
-    ws.send(file);
-    ```
-
-  - 发送 ArrayBuffer 对象的例子
-
-    ```js
-    // Sending canvas ImageData as ArrayBuffer
-    var img = canvas_context.getImageData(0, 0, 400, 320);
-    var binary = new Uint8Array(img.data.length);
-    for (var i = 0; i < img.data.length; i++) {
-      binary[i] = img.data[i];
-    }
-    ws.send(binary.buffer);
-    ```
+  ```js
+  // Sending canvas ImageData as ArrayBuffer
+  var img = canvas_context.getImageData(0, 0, 400, 320);
+  var binary = new Uint8Array(img.data.length);
+  for (var i = 0; i < img.data.length; i++) {
+    binary[i] = img.data[i];
+  }
+  ws.send(binary.buffer);
+  ```
 
 - **webSocket.bufferedAmount**
 
@@ -828,7 +828,7 @@ ws.onclose = function(evt) {
 
 以上摘自：[阮一峰 - WebSocket 教程](http://www.ruanyifeng.com/blog/2017/05/websocket.html)，补充内容摘自：[MDN - WebSocket](https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket) 
 
-<font size=4>**补充：**</font>
+##### 补充
 
 <font color=FF0000>**WebSocket是HTML5出的东西（协议）**</font>，也就是说HTTP协议没有变化，或者说没关系，**但<font color=FF0000>HTTP是不支持持久连接的</font>（长连接，循环连接的不算）**<font color=FF0000>（即：WS 是持久连接的）</font>
 
@@ -852,9 +852,9 @@ WebSocket 解决的第一个问题是，通过第一个 HTTP request 建立了 T
 
 
 
-## Server Sent Event (SSE)
+#### Server Sent Event ( SSE )
 
-#### 使用服务器发送事件
+##### 使用服务器发送事件
 
 在Web应用程序中使用服务器发送事件很简单。<mark>在服务器端，只需要按照一定的格式返回事件流，在客户端中，只需要为一些事件类型绑定监听函数，和处理其他普通的事件没多大区别</mark>。
 
@@ -866,7 +866,7 @@ WebSocket 解决的第一个问题是，通过第一个 HTTP request 建立了 T
 const evtSource = new EventSource("ssedemo.php");
 ```
 
-<font color=FF0000>如果发送事件的脚本<font size=4>**不同源**</font>，**应该创建一个新的包含URL和options参数的EventSource对象**</font>。例如，假设客户端脚本在example.com上：
+<font color=FF0000>如果发送事件的脚本 <font size=4>**不同源**</font>，**应该创建一个新的包含URL和options参数的EventSource对象**</font>。例如，假设客户端脚本在example.com上：
 
 ```js
 const evtSource = new EventSource("//api.example.com/ssedemo.php", { withCredentials: true } );
@@ -920,65 +920,80 @@ evtSource.close();
 
 <mark>与 WebSockets不同的是，服务端推送是单向的</mark>。数据信息被单向从服务端到客户端分发. 当不需要以消息形式将数据从客户端发送到服务器时，这使它们成为绝佳的选择。例如，对于处理社交媒体状态更新，新闻提要或将数据传递到客户端存储机制（如IndexedDB或Web存储）之类的，EventSource无疑是一个有效方案。
 
-- **构造函数**
-  - <font color=FF0000>**EventSource()：**以指定的 USVString 创建一个新的 EventSource。</font>
-- **属性：**此接口从其父接口 EventTarget 继承属性。
-  - **EventSource.onerror：**是一个 event handler，当<font color=FF0000>发生错误</font>时被调用，并且在此对象上派发 error 事件。
-  - **EventSource.onmessage：**是一个 event handler，当收到一个 <font color=FF0000>message 事件</font>，即消息来自源头时被调用。
-  - **EventSource.onopen：**是一个 event handler，当收到一个<font color=FF0000>open 事件</font>，即连接刚打开时被调用。
-  - **EventSource.readyState：**只读，一个 unsigned short 值，<font color=FF0000>代表连接状态</font>。<font color=FF0000>可能值是 CONNECTING (0), OPEN (1), 或者 CLOSED (2)</font>。
-  - **EventSource.url：**只读，一个DOMString，<font color=FF0000>代表事件源的 URL</font>。
-- **事件接收器**
-  - EventSource.onerror
-  - EventSource.onmessage
-  - EventSource.onopen
-- **方法：**此接口从其父接口 EventTarget 继承方法。
-  - **EventSource.close()：**<font color=FF0000>如果存在，则关闭连接，并且设置 readyState 属性为 CLOSED</font>。<font color=FF0000>如果连接已经被关闭，此方法不会再进行任何操作</font>。
-- **事件**
-  - error
-  - message
-  - open
+##### 构造函数
+
+- <font color=FF0000>**EventSource()：**以指定的 USVString 创建一个新的 EventSource。</font>
+
+##### 属性
+
+此接口从其父接口 EventTarget 继承属性。
+
+- **EventSource.onerror：**是一个 event handler，当<font color=FF0000>发生错误</font>时被调用，并且在此对象上派发 error 事件。
+- **EventSource.onmessage：**是一个 event handler，当收到一个 <font color=FF0000>message 事件</font>，即消息来自源头时被调用。
+- **EventSource.onopen：**是一个 event handler，当收到一个<font color=FF0000>open 事件</font>，即连接刚打开时被调用。
+- **EventSource.readyState：**只读，一个 unsigned short 值，<font color=FF0000>代表连接状态</font>。<font color=FF0000>可能值是 CONNECTING (0), OPEN (1), 或者 CLOSED (2)</font>。
+- **EventSource.url：**只读，一个DOMString，<font color=FF0000>代表事件源的 URL</font>。
+
+##### 事件接收器
+
+- EventSource.onerror
+- EventSource.onmessage
+- EventSource.onopen
+
+###### 方法
+
+此接口从其父接口 EventTarget 继承方法。
+
+- **EventSource.close()：**<font color=FF0000>如果存在，则关闭连接，并且设置 readyState 属性为 CLOSED</font>。<font color=FF0000>如果连接已经被关闭，此方法不会再进行任何操作</font>。
+
+##### 事件
+
+- error
+- message
+- open
 
 摘自：[MDN - EventSource](https://developer.mozilla.org/zh-CN/docs/Web/API/EventSource)
 
 ***
 
-## gem
+
+
+#### gem
 
 Gem是封装起来的Ruby应用程序或代码库，是 Ruby 模块 (叫做 Gems) 的包管理器。
 
-- **gem包安装**
+##### gem包安装
 
-  ```sh
-  gem install packageName     //安装指定gem包，先从本机查找gem包并安装，若本地没有则从远程gem安装。
-  gem install -l packageName      //仅从本机安装gem包
-  gem install -r packageName      //仅从远程安装gem包
-  gem install packageName --no-ri --no-rdoc       //安装gem包，但不安装相关文档文件
-  gem install packageName --vision=[ver]      //安装指定版本的gem包12345
-  ```
+```sh
+gem install packageName     //安装指定gem包，先从本机查找gem包并安装，若本地没有则从远程gem安装。
+gem install -l packageName      //仅从本机安装gem包
+gem install -r packageName      //仅从远程安装gem包
+gem install packageName --no-ri --no-rdoc       //安装gem包，但不安装相关文档文件
+gem install packageName --vision=[ver]      //安装指定版本的gem包12345
+```
 
-- **卸载gem包**
+##### 卸载gem包
 
-  ```sh
-  gem uninstall packageName
-  ```
+```sh
+gem uninstall packageName
+```
 
-- **查看已安装的包**
+##### 查看已安装的包
 
-  ```sh
-  gem list    //查看本机已安装的所有gem包
-  gem list -r keyword     //列出远程RubyGems.org 上有此关键字的gem包（可用正则表达式）
-  gem list -r>remote_gem_list.txt     //列出远程RubyGems.org 上所有Gmes清单，并保存到文件。
-  gem server      //查看所有gem包文档及资料1234
-  ```
+```sh
+gem list    //查看本机已安装的所有gem包
+gem list -r keyword     //列出远程RubyGems.org 上有此关键字的gem包（可用正则表达式）
+gem list -r>remote_gem_list.txt     //列出远程RubyGems.org 上所有Gmes清单，并保存到文件。
+gem server      //查看所有gem包文档及资料1234
+```
 
-- **更新安装包**
+##### 更新安装包
 
-  ```sh
-  gem update --system     //更新升级RubyGems软件自身
-  gem update      //更新所有已安装的gem包
-  gem update packageName      //更新指定的gem包
-  ```
+```sh
+gem update --system     //更新升级RubyGems软件自身
+gem update      //更新所有已安装的gem包
+gem update packageName      //更新指定的gem包
+```
 
 摘自：[npm和gem](https://blog.csdn.net/u011099640/article/details/53083845)
 
