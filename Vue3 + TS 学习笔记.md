@@ -689,7 +689,7 @@ npm scripts 中的命令，比如`"serve": "webpack serve"` ，webpack会到node
 
 - 然后遍历图结构，打包一个个模块（根据文件的不同使用不同的loader来解析）
 
-webpack 默认（没有配置webpack.config.js 的情况下），只能对js代码进行解析（新的ES，似乎哈是要借助 babel），对于css不能进行解析（会报错）。所以，需要使用 css-loader 对 css 模块进行解析。
+webpack 默认（没有配置webpack.config.js 的情况下），只能对js代码进行解析（新的ES，似乎还是要借助 babel），对于css不能进行解析（会报错）。所以，需要使用 css-loader 对 css 模块进行解析。
 
 但是，<font color=FF0000 size=4>**仅仅使用 css-loader 对css 文件进行加载是不足以让css样式 显示到页面上的，因为css-loader 只是做了解析，不会将解析之后的页面插入到页面中，如果希望将css 插入到 style中，还需要 style-loader**</font>
 
