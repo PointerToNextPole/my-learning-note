@@ -448,6 +448,8 @@
   >
   > 摘自：[stackoverflow - What does vendor mean in web file structure?](https://stackoverflow.com/questions/16865980/what-does-vendor-mean-in-web-file-structure)
 
+- **layout** ：布局。这个词一般和 关键渲染路径 相关
+- **forgery** ：伪造
 #### 术语的英文
 
 - **埋点**：Event Tracking

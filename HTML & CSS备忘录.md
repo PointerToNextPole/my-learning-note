@@ -6054,6 +6054,21 @@ body::after {
   margin-top: calc(var(--gap) * 1px);
 }
 ```
+> 💡 在开发中，由于忘记了这个写法，写成了
+> ```css
+> .trunk-icon {
+>   --icon-width: 30px;
+>   width: var(--icon-with);
+> }
+> ```
+> 导致在开发环境 icon 显示正常，线上测试环境 icon 不显示的情况。改成如下代码后，线上测试环境 icon 显示也正常的情况：
+> 
+> ```css
+> .trunk-icon {
+>   --icon-width: 30;
+>   width: calc(var(--icon-width) * 1px)
+> }
+> ```
 
 <font color=FF0000>**如果变量值带有单位，就不能写成字符串**</font>
 
@@ -6179,7 +6194,7 @@ document.body.style.getPropertyValue('--primary').trim();
 document.body.style.removeProperty('--primary');
 ```
 
-> 注：示例可参考 https://www.zhangxinxu.com/study/201811/js-set-css-var.php
+> 💡 示例可参考 https://www.zhangxinxu.com/study/201811/js-set-css-var.php
 
 这意味着，JavaScript 可以将任意值存入样式表。下面是一个监听事件的例子，事件信息被存入 CSS 变量。
 
