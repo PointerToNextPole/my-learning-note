@@ -154,7 +154,7 @@ In the example above, <font color=FF0000>the `html-webpack-plugin` **generates 
 
 <font color=red>The plugin <font size=4>**interface**</font> **allows users to tap directly into the compilation process**</font>. <font color=fuchsia>Plugins can <font size=4>**register handlers on lifecycle hooks**</font> that <font size=4>**run at different points throughout a compilation**</font></font>. <font color=red>**When <font size=4>each hook</font> is executed, the plugin will <font size=4>have full access to the current state of the compilation</font>**</font>.
 
-> 👀 注：上面这段话很重要，虽然不难懂；但为了强调，这里摘抄下中文文档中的 [翻译](https://www.webpackjs.com/api/#plugin)：
+> 👀 上面这段话很重要，虽然不难懂；但为了强调，这里摘抄下中文文档中的 [翻译](https://www.webpackjs.com/api/#plugin)：
 >
 > 插件接口可以帮助用户直接触及到编译过程 ( compilation process )。 插件可以将处理函数 ( handler ) 注册到编译过程中的不同事件点上运行的生命周期钩子函数上。 当执行每个钩子时， 插件能够完全访问到编译 ( compilation ) 的当前状态。
 

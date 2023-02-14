@@ -5833,23 +5833,25 @@ a 和 b 都必须为整数，并且元素的第一个子元素的下标为 1。�
 
 大多数命令影响document的 selection（粗体，斜体等），当其他命令插入新元素（添加链接）或影响整行（缩进）。当使用contentEditable时，调用 execCommand() 将影响当前活动的可编辑元素。
 
-- **语法**
+##### 语法
 
-  ```js
-  bool = document.execCommand(aCommandName, aShowDefaultUI, aValueArgument)
-  ```
+```js
+bool = document.execCommand(aCommandName, aShowDefaultUI, aValueArgument)
+```
 
-- **返回值**：一个 Boolean ，如果是 false 则表示操作不被支持或未被启用。
+###### 返回值
 
-- **参数**
-  
-  - **aCommandName：**一个 DOMString ，命令的名称。可用命令列表请参阅 [命令](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand#%E5%91%BD%E4%BB%A4) 。
-  - **aShowDefaultUI：**一个 Boolean， 是否展示用户界面，一般为 false。Mozilla 没有实现。
-  - **aValueArgument：**一些命令（例如insertImage）需要额外的参数（insertImage需要提供插入image的url），默认为null。
-  
-- **命令**
+一个 Boolean ，如果是 false 则表示操作不被支持或未被启用。
 
-  由于过长：略。地址： [命令](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand#%E5%91%BD%E4%BB%A4) 
+###### 参数
+
+- **aCommandName：**一个 DOMString ，命令的名称。可用命令列表请参阅 [命令](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand#%E5%91%BD%E4%BB%A4) 。
+- **aShowDefaultUI：**一个 Boolean， 是否展示用户界面，一般为 false。Mozilla 没有实现。
+- **aValueArgument：**一些命令（例如insertImage）需要额外的参数（insertImage需要提供插入image的url），默认为null。
+
+###### 命令
+
+由于过长：略。地址： [命令](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand#%E5%91%BD%E4%BB%A4) 
 
 摘自：[MDN - document.execCommand](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand)
 
@@ -5881,8 +5883,8 @@ width: calc(100% - 80px);
 
 - **+**：加法。
 - **-** ：减法。
-- *****：乘法，乘数中至少有一个是\<number>
-- **/**：除法，除数（/右面的数）必须是\<number>
+- *****：乘法，乘数中至少有一个是 `<number>`
+- **/**：除法，除数（/右面的数）必须是 `<number>`
 
 表达式中的运算对象可以使用任意 `<length>` 值。如果你愿意，你<font color=FF0000>可以在一个表达式中混用这类值的不同单位</font>。在需要时，你<font color=FF0000>还可以使用小括号来建立计算顺序</font>。
 
@@ -5921,7 +5923,7 @@ var( <custom-property-name> , <declaration-value>? )
 
 **注意：**<font color=FF0000>自定义属性的回退值允许使用逗号</font>。例如， `var(--foo, red, blue)` 将 `red, blue`同时指定为回退值；即是说<mark>任何在第一个逗号之后到函数结尾前的值都会被考虑为回退值</mark>。
 
-**值**
+###### 值
 
 - **\<custom-property-name> 自定义属性名：**在实际应用中它被定义为以两个破折号开始的任何有效标识符。 自定义属性仅供作者和用户使用; CSS 将永远不会给他们超出这里表达的意义。
 - **\<declaration-value> 声明值（后备值）：**回退值被用来在自定义属性值无效的情况下保证函数有值。回退值可以包含任何字符，但是部分有特殊含义的字符除外，例如换行符、不匹配的右括号（如`)`、 `]`或`}`）、感叹号以及顶层分号（不被任何非`var()`的括号包裹的分号，例如`var(--bg-color, --bs;color)`是不合法的，而`var(--bg-color, --value(bs;color))`是合法的）。
@@ -5930,15 +5932,15 @@ var( <custom-property-name> , <declaration-value>? )
 
 #### CSS自定义属性
 
-自定义属性（有时候也被称作CSS变量或者级联变量）是由CSS作者定义的，它包含的值可以在整个文档中重复使用。由自定义属性标记设定值（比如： `--main-color: black;`），<font color=FF0000>**由var() 函数来获取值**</font>（比如： color: var(--main-color);）
+自定义属性（有时候也被称作 CSS变量或者级联变量）是由CSS作者定义的，它包含的值可以在整个文档中重复使用。由自定义属性标记设定值（比如： `--main-color: black;`），<font color=FF0000>**由 `var()` 函数来获取值**</font>（比如： `color: var(--main-color);` ）
 
-注意：自定义属性名是大小写敏感的，--my-color 和 --My-color 会被认为是两个不同的自定义属性。
+> 💡 自定义属性名是大小写敏感的，`--my-color` 和 `--My-color` 会被认为是两个不同的自定义属性。
 
 摘自：[MDN - 使用CSS自定义属性（变量）](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Using_CSS_custom_properties)
 
-<mark>今年三月，微软宣布 Edge 浏览器将支持 CSS 变量。这个重要的 CSS 新功能，所有主要浏览器已经都支持了</mark>。
+今年( 2017 ) 三月，微软宣布 Edge 浏览器将支持 CSS 变量。这个重要的 CSS 新功能，所有主要浏览器已经都支持了。
 
-声明变量的时候，变量名前面要加两根连词线（ -- ）。
+声明变量的时候，变量名前面要加两根连词线（ `--` ）。
 
 ```css
 body {
@@ -5949,11 +5951,11 @@ body {
 
 上面代码中，body 选择器里面声明了两个变量：`--foo` 和 `--bar` 。
 
-<mark>它们与 color、font-size 等正式属性没有什么不同，只是 **没有默认含义**</mark>。所以 <font color=FF0000>CSS 变量 ( CSS variable ) 也叫做 “ CSS 自定义属性” ( CSS custom properties )</font> 。因为变量与自定义的 CSS 属性其实是一回事。
+<font color=LightSeaGreen>它们与 color、font-size 等正式属性没有什么不同，只是 **没有默认含义**</font>。所以 <font color=FF0000>CSS 变量 ( CSS variable ) 也叫做 “ CSS 自定义属性” ( CSS custom properties )</font> 。因为变量与自定义的 CSS 属性其实是一回事。
 
-你可能会问，<mark>为什么选择两根连词线（--）表示变量？因为 \$foo 被 Sass 用掉了，@foo 被 Less 用掉了。为了不产生冲突，官方的 CSS 变量就改用两根连词线了</mark>。
+你可能会问，<font color=dodgerBlue>为什么选择两根连词线( `--` )表示变量</font>？因为 <font color=lightSeaGreen>`$foo` 被 Sass 用掉了，`@foo` 被 Less 用掉了</font>。为了不产生冲突，官方的 CSS 变量就改用两根连词线了。
 
-<mark style="background:aqua">各种值都可以放入 CSS 变量</mark>：
+<font color=dodgerBlue>**各种值都可以放入 CSS 变量**：</font>
 
 ```css
 :root{
@@ -5982,7 +5984,7 @@ a {
 }
 ```
 
-var() 函数 <font color=FF0000>**还可以使用第二个参数，表示变量的默认值**。如果该变量不存在，就会使用这个默认值</font>。
+`var()` 函数 <font color=fuchsia>**还可以使用第二个参数**</font>，<font color=red>**表示变量的默认值**。如果该变量不存在，就会使用这个默认值</font>。
 
 ```css
 color: var(--foo, #7F583F);
@@ -5995,7 +5997,7 @@ var(--font-stack, "Roboto", "Helvetica");
 var(--pad, 10px 15px 20px);
 ```
 
-<font color=FF0000>var() 函数还可以用在变量的声明</font>。
+<font color=FF0000>`var()` 函数还可以用在变量的声明</font>。
 
 ```css
 :root {
@@ -6004,7 +6006,7 @@ var(--pad, 10px 15px 20px);
 }
 ```
 
-> 注：上面的等价于 `:root { --logo-text: red }` 
+> 👀 上面的等价于 `:root { --logo-text: red }` 
 
 <font color=FF0000>**注意，变量值只能用作属性值，不能用作属性名**</font>。
 
@@ -6020,7 +6022,9 @@ var(--pad, 10px 15px 20px);
 
 ##### 变量值的类型
 
-<font color=FF0000>如果变量值是一个字符串，**可以与其他字符串拼接**</font>。**注：**注意⚠️，是直接拼接，不需要加上其他连接符号
+<font color=FF0000>如果变量值是一个字符串，**可以与其他字符串拼接**</font>。
+
+> ⚠️ 是直接拼接，不需要加上其他连接符号
 
 ```css
 --bar: 'hello';
@@ -6057,16 +6061,16 @@ body::after {
 > 💡 在开发中，由于忘记了这个写法，写成了
 > ```css
 > .trunk-icon {
->   --icon-width: 30px;
->   width: var(--icon-with);
+>     --icon-width: 30px;
+>     width: var(--icon-with);
 > }
 > ```
 > 导致在开发环境 icon 显示正常，线上测试环境 icon 不显示的情况。改成如下代码后，线上测试环境 icon 显示也正常的情况：
 > 
 > ```css
 > .trunk-icon {
->   --icon-width: 30;
->   width: calc(var(--icon-width) * 1px)
+>     --icon-width: 30;
+>     width: calc(var(--icon-width) * 1px)
 > }
 > ```
 
@@ -6143,7 +6147,7 @@ a {
 
 **兼容性处理**
 
-对于不支持 CSS 变量的浏览器，<mark>可以采用下面的写法</mark>。
+对于不支持 CSS 变量的浏览器，<font color=dodgerBlue>可以采用下面的写法</font>。
 
 ```css
 a {
@@ -6152,7 +6156,7 @@ a {
 }
 ```
 
-<font color=FF0000>**也可以使用 @support 命令进行检测**</font>。
+<font color=FF0000>**也可以使用 `@support` 命令进行检测**</font>。
 
 ```css
 @supports ( (--a: 0)) { 
@@ -6243,7 +6247,7 @@ document.addEventListener('mousemove', (e) => {
 
 #### counter()
 
-CSS 函数 counter()，返回一个代表计数器的当前值的字符串。它通常和伪元素搭配使用，但是理论上可以在支持\<string>值的任何地方使用。
+CSS 函数 `counter()` ，返回一个代表计数器的当前值的字符串。它通常和伪元素搭配使用，但是理论上可以在支持 `<string>` 值的任何地方使用。
 
 ```css
 /* 简单使用 */
@@ -6253,11 +6257,13 @@ counter(计数器名称);
 counter(countername, upper-roman)
 ```
 
+摘自：[MDN - counter()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/counter)
+
 #### clamp()
 
-clamp() 函数的作用是<font color=FF0000>把一个值限制在一个上限和下限之间，当这个值超过最小值和最大值的范围时，在最小值和最大值之间选择一个值使用</font>。<mark style="background: aqua"><font size=4>它接收三个参数：最小值、**首选值**、最大值</font></mark>。 clamp() 被用在 \<length>、\<frequency>、\<angle>、\<time>、\<percentage>、\<number>、\<integer> 中都是被允许的。
+`clamp()` 函数的作用是<font color=FF0000>把一个值限制在一个上限和下限之间，当这个值超过最小值和最大值的范围时，在最小值和最大值之间选择一个值使用</font>。<font color=lightSeaGreen>它接收三个参数：最小值、**首选值**、最大值</font>。 `clamp()` 被用在 `<length>`、`<frequency>`、`<angle>`、`<time>`、`<percentage>`、`<number>`、`<integer>` 中都是被允许的。
 
-<mark>clamp(MIN, VAL, MAX) 其实就是表示 max(MIN, min(VAL, MAX))</mark>
+`clamp(MIN, VAL, MAX)` 其实就是表示 `max(MIN, min(VAL, MAX) )`
 
 ##### 语法
 

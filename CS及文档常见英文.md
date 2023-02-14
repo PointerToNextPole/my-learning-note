@@ -20,13 +20,17 @@
 
 - **on the spot** ：当场、立即
 
+- **on-going** ：正在进行中的
+
 - **day-to-day** ：日常
 
 - **pros and cons**：利弊
 
+- **downside** ：缺点
+
 - **overhead**：开销（和性能相关）
 
-- **from scratch**：从零开始
+- **vice versa** ：反之亦然
 
 - **preflight**：预检。一般情况下的含义：预检请求 ( preflight request )。不过，在 antfu 的 UnoCSS 相关博客 [Reimagine Atomic CSS](https://antfu.me/posts/reimagine-atomic-css#scoping) 中 [scoping](https://antfu.me/posts/reimagine-atomic-css#scoping) 部分 发现了有 “样式预检” 的含义，翻译在 [重新构想原子化 CSS - CSS 作用域](https://antfu.me/posts/reimagine-atomic-css-zh#css-%E4%BD%9C%E7%94%A8%E5%9F%9F) 中
 
@@ -272,6 +276,8 @@
 
 - **unray**：一元的（一元运算）
 
+- **ternary** ：三元的。Ternary expression 三元表达式
+
 - **general purpose**：通用
 
 - **factorize**：分解
@@ -356,13 +362,11 @@
 
 - **apropos** ：关于。除了这个意思，这也是一个常用的 Linux 命令，用于根据描述搜索 Linux 帮助文档来找到想要的命令。
 
-- **turnary** ：三元运算符 `expr ? :`
-
 - **doodle** ：涂鸦
 
 - **formula** ：公式
 
-- **from scratch** ：从头做起。👀 其中，scratch 的意思是 “划痕”。
+- **from scratch** ：从头做起，从零开始。👀 其中，scratch 的意思是 “划痕”。
 
 - **territory** ：领域。
 
@@ -403,7 +407,7 @@
   > 协程可以通过 `yield`（取其“让步”之义而非“出产”）来调用其它协程，接下来的每次协程被调用时，从协程上次 `yield` 返回的位置接着执行，通过 `yield` 方式转移执行权的协程之间不是调用者与被调用者的关系，而是彼此对称、平等的。
   >
   > 摘自：[wikipedia - 协程](https://zh.wikipedia.org/wiki/%E5%8D%8F%E7%A8%8B)
-  
+
 - **intermediary** ：中间的，中介的
 
 - **bespoke** ：定制的
@@ -415,7 +419,7 @@
   > After years of relative stability, many are now beginning to question the status **quo**.
   >
   > 摘自：[stateofjs 2022](https://2022.stateofjs.com/en-US/)
-  
+
 - **respondents** ：受访者
 
 - **proportion** ：比例
@@ -449,7 +453,34 @@
   > 摘自：[stackoverflow - What does vendor mean in web file structure?](https://stackoverflow.com/questions/16865980/what-does-vendor-mean-in-web-file-structure)
 
 - **layout** ：布局。这个词一般和 关键渲染路径 相关
+
 - **forgery** ：伪造
+
+- **nitpick** ：吹毛求疵。在阅读 Prettier 文档时，多次出现了单词 “nit”，比如：
+
+  > People get very emotional around particular ways of writing code and nobody likes spending time writing and receiving <font color=lightSeaGreen>nits</font>.
+  >
+  > Our top reason was to stop wasting our time debating style <font color=LightSeaGreen>nits</font>.
+  >
+  > 摘自：[Prettier Doc - Why Prettier?](https://prettier.io/docs/en/why-prettier.html)
+
+  查阅字典也并没有相关的意思，直到在文档更后面处看到 “nitpick”，所以 “nit” 应该可以被译为“细节”
+
+- **trivial** ：不重要的
+
+- **proportional** ：成比例的。disproportional 不成比例的
+
+- **ramp up** ：加快
+
+- **alleviate** ：减轻
+
+- **rationale** ：根本原因
+
+- **dominant** ：占主导地位的，显性的。显性性状 ( n )
+
+- **heuristic** ：启发式
+
+- **pragmatic** ：实用的
 #### 术语的英文
 
 - **埋点**：Event Tracking
@@ -482,6 +513,8 @@
 - **竖杠 `|`** ：一般称为 “Vertical bar”，但是在 CS 中更多称为 “pipe symbol”
 - **引号**
   - 反引号 ``	`：backquote
+  - 单引号 `'` ：single quote
+  - 双引号 `"` ：double quote
 - **下划线 `_`** ：underline，CS 中更倾向使用 **underscore**
 - **逗号 `,`** ：comma
 - **问号 `?`** ：question mark
