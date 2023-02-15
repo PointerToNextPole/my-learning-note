@@ -876,21 +876,21 @@ console.log(iterator1.next().value); // expected output: Array [0, "a"]
 console.log(iterator1.next().value); // expected output: Array [1, "b"]
 ```
 
-**语法**
+##### 语法
 
 ```js
 arr.entries()
 ```
 
-**返回值**
+###### 返回值
 
-一个新的 Array 迭代器对象。Array Iterator是对象，它的原型（\__proto__: Array Iterator）上有一个next方法，可用用于遍历迭代器取得原数组的 [ key, value ] 。
+一个新的 Array 迭代器对象。Array Iterator是对象，它的原型 ( `__proto__: Array Iterator` ) 上有一个next方法，可用用于遍历迭代器取得原数组的 [ key, value ] 。
 
 摘自：[MDN - Array.prototype.entries()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/entries)
 
-#### Array.prototype\[@@iterator]()
+#### `Array.prototype[@@iterator]()`
 
-@@iterator<font color=FF0000>（`@@` 是 `Symbol.` 的简写；即：`Symbol.iterator`为`@@iterator`） </font>属性和 Array.prototype.values() 属性的初始值是同一个函数对象。
+`@@iterator` <font color=FF0000>（ `@@` 是 `Symbol.` 的简写；即：`Symbol.iterator` 为 `@@iterator`） </font>属性和 `Array.prototype.values()` 属性的初始值是同一个函数对象。
 
 ##### 语法
 
@@ -898,9 +898,9 @@ arr.entries()
 arr[Symbol.iterator]()
 ```
 
-##### 返回值
+###### 返回值
 
-数组的 iterator 方法，<font color=FF0000>默认情况下，与 values() 返回值相同</font>， arr[Symbol.iterator] 则会返回 values() 函数。
+数组的 iterator 方法，<font color=FF0000>默认情况下，与 `values()` 返回值相同</font>， `arr[Symbol.iterator]` 则会返回 `values()` 函数。
 
 摘自：[MDN - Array.prototype[@@iterator]()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/@@iterator)
 
@@ -928,8 +928,9 @@ reverse 方法颠倒数组中元素的位置，改变了数组，并返回该数
 
 ##### 示例
 
-**颠倒类数组中的元素**
-下例<mark>创造了一个类数组对象 a, 包含3个元素和一个 length 属性, 然后颠倒这个类数组对象</mark>。  reverse() 的调用返回一个颠倒后的类数组对象 a的引用。
+###### 颠倒类数组中的元素
+
+下例创造了一个类数组对象 a, 包含3个元素和一个 length 属性, 然后颠倒这个类数组对象。  reverse() 的调用返回一个颠倒后的类数组对象 a的引用。
 
 ```js
 const a = {0: 1, 1: 2, 2: 3, length: 3};
@@ -952,7 +953,7 @@ find() 方法<font color=FF0000>返回数组中满足提供的测试函数的第
 arr.find(callback[, thisArg])
 ```
 
-##### 参数
+###### 参数
 
 - **callback：**在数组每一项上执行的函数，接收 3 个参数：
   - element：当前遍历到的元素。
@@ -964,7 +965,7 @@ arr.find(callback[, thisArg])
 
 数组中第一个满足所提供测试函数的元素的值，否则返回 undefined。
 
-###### 示例
+##### 示例
 
 ```js
 const array1 = [5, 12, 8, 130, 44];
@@ -1013,11 +1014,11 @@ findIndex(function(element, index, array) { /* … */ }, thisArg)
 
 #### Array.prototype.reduce()
 
-**reduce()** 方法 <font color=FF0000>对数组中的每个元素 **执行一个自定义的 reducer 函数（升序执行）**</font>，<font color=FF0000>每一次运行 **reducer** 会将先前元素的计算结果</font>（**注：**说成“上一次的计算结果”，感觉更容易理解些）<font color=FF0000>作为参数传入</font>，<font color=FF0000>**最后将其结果汇总为单个返回值**（**注：**非常重要！**上一次的计算结果必须要返回**）</font>，真是因为要返回，如果写了没有 {}包裹、也没有 return 的箭头函数时，不要用 push，使用 concat。
+**reduce()** 方法 <font color=FF0000>对数组中的每个元素 **执行一个自定义的 reducer 函数（升序执行）**</font>，<font color=FF0000>每一次运行 **reducer** 会将先前元素的计算结果</font>（ 👀  说成“上一次的计算结果”，感觉更容易理解些）<font color=FF0000>作为参数传入</font>，<font color=FF0000>**最后将其结果汇总为单个返回值**（ 👀非常重要！**上一次的计算结果必须要返回**，否则会报错）</font>，真是因为要返回，如果写了没有 {} 包裹、也没有 return 的箭头函数时，不要用 push，使用 concat。
 
-第一次执行回调函数时，不存在 “上一次的计算结果”。如果需要回调函数从数组索引为 0 的元素开始执行，则需要传递初始值。<mark>否则，数组索引为 0 的元素将被作为初始值 *initialValue*</mark>，<font color=FF0000>**迭代器将从第二个元素开始执行（索引为 1 而不是 0）**</font>。
+第一次执行回调函数时，不存在 “上一次的计算结果”。如果需要回调函数从数组索引为 0 的元素开始执行，则需要传递初始值。<font color=LightSeaGreen>否则，数组索引为 0 的元素将被作为初始值 *initialValue*</font>，<font color=FF0000>**迭代器将从第二个元素开始执行（索引为 1 而不是 0）**</font>。
 
-示例如下：
+##### 示例如下
 
 ```js
 const array1 = [1, 2, 3, 4];
@@ -1032,7 +1033,7 @@ console.log(array1.reduce(reducer, 5));  // expected output: 15
 
 **reducer** 逐个遍历数组元素，每一步都将当前元素的值与上一步的计算结果相加（上一步的计算结果是当前元素之前 所有元素的总和）——直到没有更多的元素被相加。
 
-**reducer 函数接收4个参数：**
+##### reducer 函数接收4个参数
 
 1. Accumulator ( acc ) ：累计器（累加器）。**注：**2022 / 4 / 8 MDN 文档改变了，这个参数被称为 previousValue；不过，毕竟 reduce 不仅仅有 “累加的” 功能。
 
@@ -1050,7 +1051,7 @@ console.log(array1.reduce(reducer, 5));  // expected output: 15
 array.reduce( callback( accumulator, currentValue [, index [, array]]) [, initialValue] )
 ```
 
-**参数**
+###### 参数
 
 - **callback：**执行数组中每个值（如果没有提供 initialValue，则第一个值除外）的函数，包含四个参数：
   - **accumulator：**累计器累计回调的返回值；它是上一次调用回调时返回的累积值，或 initialValue（见于下方）。
@@ -1063,9 +1064,11 @@ array.reduce( callback( accumulator, currentValue [, index [, array]]) [, initia
   
 - **initialValue：**<font color=FF0000>可选</font>，作为第一次调用 callback 函数时的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。
 
-**返回值：**函数累计处理的结果
+###### 返回值
 
-##### 异常
+函数累计处理的结果
+
+###### 异常
 
 **TypeError：**数组为空且初始值 initialValue 未提供。
 
@@ -1099,15 +1102,18 @@ reduceRight() 方法接受一个函数作为累加器（accumulator）和数组�
 | <mark style="background: aqua">= 0</mark> |         提供          |                    直接返回 initialValue                     |
 | <mark style="background: aqua">=0</mark>  |        未提供         |                     抛出 TypeError 错误                      |
 
-**个人补充：**<font color=FF0000>该函数有作为迭代器的作用（从右向左迭代），否则，仅仅作为累加器的功能，Array.prototype.reduce()同样可以做到</font>。示例如下：
-
-```js
-const array1 = [[0, 1], [2, 3], [4, 5]].reduceRight(
-  (accumulator, currentValue) => accumulator.concat(currentValue)
-);
-
-console.log(array1); // expected output: Array [4, 5, 2, 3, 0, 1]
-```
+> 💡 个人补充
+>
+> <font color=FF0000>该函数有作为迭代器的作用（从右向左迭代），否则，仅仅作为累加器的功能，`Array.prototype.reduce()` 同样可以做到</font>。示例如下：
+>
+> ```js
+> const array1 = [[0, 1], [2, 3], [4, 5]].reduceRight(
+>   (accumulator, currentValue) => accumulator.concat(currentValue)
+> );
+> 
+> console.log(array1); // expected output: Array [4, 5, 2, 3, 0, 1]
+> ```
+>
 
 摘自：[MDN - Array.prototype.reduceRight()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight)
 
@@ -1165,7 +1171,9 @@ const array1 = [1, 4, 9, 16];
 const map1 = array1.map(x => x * 2);
 ```
 
-Array.prototype.map() 可以起到和 forEach 类似的作用。注：map方法 在编程中一个常用的场景是：“挑出对象数组中的部分属性形成一个新的数组，甚至是对跳出的属性进行属性名修改”；不过，在编程中发现：map 这种形成新数组的方法，对其中引用类型的属性只是拷贝了引用，不是深拷贝。
+`Array.prototype.map()` 可以起到和 forEach 类似的作用。
+
+> 💡 map方法 在编程中一个常用的场景是：“挑出对象数组中的部分属性形成一个新的数组，甚至是对跳出的属性进行属性名修改”；不过，在编程中发现：map 这种形成新数组的方法，对其中引用类型的属性只是拷贝了引用，不是深拷贝。
 
 ##### 语法
 
@@ -1175,12 +1183,15 @@ var new_array = arr.map(callback(currentValue[, index[, array]])[, thisArg])
 
 ###### 参数
 
-- callback：生成新数组元素的函数，使用三个参数：
-  - currentValue：callback 数组中正在处理的当前元素。
-  - index可选：callback 数组中正在处理的当前元素的索引。
-  - array可选：map 方法调用的数组。
-  - thisArg可选：执行 callback 函数时值被用作this。
-- 返回值：一个由原数组每个元素执行回调函数的结果组成的新数组。
+callback：生成新数组元素的函数，使用三个参数：
+- currentValue：callback 数组中正在处理的当前元素。
+- index可选：callback 数组中正在处理的当前元素的索引。
+- array可选：map 方法调用的数组。
+- thisArg可选：执行 callback 函数时值被用作this。
+
+##### 返回值
+
+一个由原数组每个元素执行回调函数的结果组成的新数组。
 
 即，如上代码可以这样写：
 
@@ -1238,9 +1249,9 @@ arr.sort([compareFunction])
 
 ###### 参数
 
-- compareFunction： 可选，用来指定按某种顺序进行排列的函数。如果省略，元素按照转换为的字符串的各个字符的Unicode位点进行排序。
-  - firstEl：第一个用于比较的元素。
-  - secondEl：第二个用于比较的元素。
+compareFunction： 可选，用来指定按某种顺序进行排列的函数。如果省略，元素按照转换为的字符串的各个字符的Unicode位点进行排序。
+- firstEl：第一个用于比较的元素。
+- secondEl：第二个用于比较的元素。
 
 ###### 返回值
 
@@ -1250,33 +1261,37 @@ arr.sort([compareFunction])
 
 
 
-#### Array.prototype.slice() 切片
+#### Array.prototype.slice()
+
+> 💡 即：切片
 
 slice() 方法<font color=FF0000>**返回一个新的数组对象**</font>，这一对象是一个<font color=FF0000>由 begin 和 end 决定的原数组的**浅拷贝**</font>（包括 begin，不包括end）。<font color=FF0000>原始数组不会被改变</font>。
 
-- **语法**
-  
-  ```js
-  arr.slice([begin[, end]])
-  ```
+##### 语法
 
-- **参数**
-  
-  - **begin** <font color=FF0000>可选</font>，提取起始处的索引（从 0 开始），从该索引开始提取原数组元素。
-    - <font color=FF0000>如果该参数为负数，则表示从原数组中的倒数第几个元素开始提取</font>（**注：**注意和 substring() 的区别），slice(-2) 表示提取原数组中的倒数第二个元素到最后一个元素（包含最后一个元素）。
-    - <font color=FF0000>如果省略 begin，则 slice 从索引 0 开始。</font>
-    - <font color=FF0000>如果 begin 超出原数组的索引范围，则会返回空数组。</font>
-  - **end** <font color=FF0000>可选</font>
-    - 提取终止处的索引（从 0 开始），在该索引处结束提取原数组元素。slice 会提取原数组中索引从 begin 到 end 的所有元素（包含 begin，但不包含 end）。
-    - slice(1,4) 会提取原数组中从第二个元素开始一直到第四个元素的所有元素 （索引为 1, 2, 3的元素）。
-      <font color=FF0000>如果该参数为负数， 则它表示在原数组中的倒数第几个元素结束抽取</font>。 **slice(-2,-1) 表示抽取了原数组中的倒数第二个元素到最后一个元素（不包含最后一个元素，也就是只有倒数第二个元素）**。
-    - <font color=FF0000>如果 end 被省略，则 slice 会一直提取到原数组末尾。</font>
-    - <font color=FF0000>如果 end 大于数组的长度，slice 也会一直提取到原数组末尾。</font>
+```js
+arr.slice([begin[, end]])
+```
 
-- **返回值**
-  一个含有被提取元素的新数组。
+###### 参数
 
-**描述**
+- **begin** <font color=FF0000>可选</font>，提取起始处的索引（从 0 开始），从该索引开始提取原数组元素。
+  - <font color=FF0000>如果该参数为负数，则表示从原数组中的倒数第几个元素开始提取</font>（**注：**注意和 substring() 的区别），slice(-2) 表示提取原数组中的倒数第二个元素到最后一个元素（包含最后一个元素）。
+  - <font color=FF0000>如果省略 begin，则 slice 从索引 0 开始。</font>
+  - <font color=FF0000>如果 begin 超出原数组的索引范围，则会返回空数组。</font>
+- **end** <font color=FF0000>可选</font>
+  - 提取终止处的索引（从 0 开始），在该索引处结束提取原数组元素。slice 会提取原数组中索引从 begin 到 end 的所有元素（包含 begin，但不包含 end）。
+  - slice(1,4) 会提取原数组中从第二个元素开始一直到第四个元素的所有元素 （索引为 1, 2, 3的元素）。
+    <font color=FF0000>如果该参数为负数， 则它表示在原数组中的倒数第几个元素结束抽取</font>。 **slice(-2,-1) 表示抽取了原数组中的倒数第二个元素到最后一个元素（不包含最后一个元素，也就是只有倒数第二个元素）**。
+  - <font color=FF0000>如果 end 被省略，则 slice 会一直提取到原数组末尾。</font>
+  - <font color=FF0000>如果 end 大于数组的长度，slice 也会一直提取到原数组末尾。</font>
+
+###### 返回值
+
+一个含有被提取元素的新数组。
+
+##### 描述
+
 <font color=FF0000>slice 不会修改原数组，只会返回一个浅复制了原数组中的元素的一个新数组</font>。原数组的元素会按照下述规则拷贝：
 
 - 如果该元素是个对象引用 （不是实际的对象），slice 会拷贝这个对象引用到新的数组里。两个对象引用都引用了同一个对象。如果被引用的对象发生改变，则新的和原来的数组中的这个元素也会发生改变。
@@ -1290,20 +1305,23 @@ slice() 方法<font color=FF0000>**返回一个新的数组对象**</font>，这
 
 substring() 方法<font color=FF0000>返回一个字符串在开始索引到结束索引之间的一个子集</font>，<font color=FF0000>**或** 从开始索引直到字符串的末尾的一个子集</font>。
 
-**语法**
+##### 语法
 
 ```js
 str.substring(indexStart[, indexEnd])
 ```
 
-**参数**
+##### 参数
 
 - **indexStart：**需要截取的第一个字符的索引，该索引位置的字符作为返回的字符串的首字母。
 - **indexEnd：**<font color=FF0000>**可选**</font>。一个 0 到字符串长度之间的整数，以该数字为索引的字符不包含在截取的字符串内。
 
-**返回值：**包含给定字符串的指定部分的新字符串。
+###### 返回值
 
-**描述**
+包含给定字符串的指定部分的新字符串。
+
+##### 描述
+
 substring 提取从 indexStart 到 indexEnd（不包括）之间的字符。特别地：
 
 - <font color=FF0000>如果 indexStart 等于 indexEnd，substring 返回一个空字符串</font>。
@@ -1318,22 +1336,22 @@ substring 提取从 indexStart 到 indexEnd（不包括）之间的字符。特�
 
 #### String.prototype.substr()
 
-⚠️<font color=FF0000 size=4>**警告：**</font>尽管 String.prototype.substr(…) 没有严格被废弃 (as in "removed from the Web standards")，但<font color=FF0000>它被认作是遗留的函数并且可以的话应该避免使用</font> 。<font color=FF0000>**它并非 JavaScript核心语言的一部分，未来将可能会被移除掉**。如果可以的话，使用 substring() 替代它</font>。
+> ⚠️ <font color=FF0000 size=4>**警告：**</font>尽管 String.prototype.substr(…) 没有严格被废弃 (as in "removed from the Web standards")，但<font color=FF0000>它被认作是遗留的函数并且可以的话应该避免使用</font> 。<font color=FF0000>**它并非 JavaScript核心语言的一部分，未来将可能会被移除掉**。如果可以的话，使用 substring() 替代它</font>。
 
 **substr()** 方法返回一个字符串中从指定位置开始到指定字符数的字符。
 
-**语法**
+##### 语法
 
 ```js
 str.substr(start[, length])
 ```
 
-**参数**
+###### 参数
 
 - **start：**开始提取字符的位置。<font color=FF0000>如果为负值，则被看作 strLength + start</font>，其中 strLength 为字符串的长度（例如，如果 start 为 -3，则被看作 strLength + (-3) ）。
 - **length：**<font color=FF0000>**可选**</font>。<font color=FF0000>提取的字符数</font>。
 
-**描述**
+##### 描述
 
 start 是一个字符的索引。substr 从 start 位置开始提取字符，提取 length 个字符（或直到字符串的末尾）。
 
@@ -1363,22 +1381,28 @@ start 是一个字符的索引。substr 从 start 位置开始提取字符，提
 
 splice() 方法<font color=FF0000>通过**删除或替换现有元素**或者**原地添加新的元素**来修改数组</font>，并以数组形式返回被修改的内容。此方法会改变原数组。
 
-- **语法**
+##### 语法
 
-  ```js
-  array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
-  ```
+```js
+array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
+```
 
-- **参数**
-  - <font color=FF0000>**start：**指定修改的开始位置（从0计数）</font>。如果超出了数组的长度，则从数组末尾开始添加内容；如果是负值，则表示从数组末位开始的第几位（从-1计数，这意味着-n是倒数第n个元素并且等价于array.length-n）；如果负数的绝对值大于数组的长度，则表示开始位置为第0位。
-  - <font color=FF0000>**deleteCount ：**（可选）整数，表示**要移除的数组元素的个数**</font>。
-    - 如果 deleteCount 大于 start 之后的元素的总数，则从 start 后面的元素都将被删除（含第 start 位）。
-    - 如果 deleteCount 被省略了，或者它的值大于等于array.length - start(也就是说，如果它大于或者等于start之后的所有元素的数量)，那么start之后数组的所有元素都会被删除。
-    - 如果 deleteCount 是 0 或者负数，则不移除元素。这种情况下，至少应添加一个新元素。
-  - **item1, item2, ... ：**（可选）要添加进数组的元素,从start 位置开始。如果不指定，则 splice() 将只删除数组元素。
-- **返回值：**由被删除的元素组成的一个数组。如果只删除了一个元素，则返回只包含一个元素的数组。<font color=FF0000>如果没有删除元素，则返回空数组</font>。
+###### 参数
 
-- **描述：**如果添加进数组的元素个数不等于被删除的元素个数，数组的长度会发生相应的改变。
+- <font color=FF0000>**start：**指定修改的开始位置（从0计数）</font>。如果超出了数组的长度，则从数组末尾开始添加内容；如果是负值，则表示从数组末位开始的第几位（从-1计数，这意味着-n是倒数第n个元素并且等价于array.length-n）；如果负数的绝对值大于数组的长度，则表示开始位置为第0位。
+- <font color=FF0000>**deleteCount ：**（可选）整数，表示**要移除的数组元素的个数**</font>。
+  - 如果 deleteCount 大于 start 之后的元素的总数，则从 start 后面的元素都将被删除（含第 start 位）。
+  - 如果 deleteCount 被省略了，或者它的值大于等于array.length - start(也就是说，如果它大于或者等于start之后的所有元素的数量)，那么start之后数组的所有元素都会被删除。
+  - 如果 deleteCount 是 0 或者负数，则不移除元素。这种情况下，至少应添加一个新元素。
+- **item1, item2, ... ：**（可选）要添加进数组的元素,从start 位置开始。如果不指定，则 splice() 将只删除数组元素。
+
+###### 返回值
+
+由被删除的元素组成的一个数组。如果只删除了一个元素，则返回只包含一个元素的数组。<font color=FF0000>如果没有删除元素，则返回空数组</font>。
+
+##### 描述
+
+如果添加进数组的元素个数不等于被删除的元素个数，数组的长度会发生相应的改变。
 
 摘自：[MDN - Array.prototype.splice()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)
 
@@ -1396,18 +1420,25 @@ splice() 方法<font color=FF0000>通过**删除或替换现有元素**或者**�
 
 fill() 方法用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。不包括终止索引。
 
-- **语法**
+##### 语法
 
-  ```js
-  arr.fill(value[, start[, end]])
-  ```
+```js
+arr.fill(value[, start[, end]])
+```
 
-- **参数**
-  - value：用来填充数组元素的值。
-  - start：可选，起始索引，<font color=FF0000>默认值为0</font>。
-  - end 可选，终止索引，<font color=FF0000>默认值为 this.length</font>。
-- **返回值：**修改后的数组。
-- **描述：**<font color=FF0000>**[start, end)是左闭右开**</font>。<font color=FF0000>如果 start 是个负数</font>, 则开始索引会被自动计算成为 length+start, 其中 length 是 this 对象的 length 属性值。<font color=FF0000>如果 end 是个负数</font>, 则结束索引会被自动计算成为 length+end。
+###### 参数
+
+- value：用来填充数组元素的值。
+- start：可选，起始索引，<font color=FF0000>默认值为0</font>。
+- end 可选，终止索引，<font color=FF0000>默认值为 this.length</font>。
+
+###### 返回值
+
+修改后的数组。
+
+##### 描述
+
+<font color=FF0000>**[start, end) 是左闭右开**</font>。<font color=FF0000>如果 start 是个负数</font>, 则开始索引会被自动计算成为 length + start， 其中 length 是 this 对象的 length 属性值。<font color=FF0000>如果 end 是个负数</font>，则结束索引会被自动计算成为 length + end。
 
 摘自：[MDN - Array.prototype.fill()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/fill)
 
@@ -1417,22 +1448,38 @@ fill() 方法用一个固定值填充一个数组中从起始索引到终止索�
 
 copyWithin() 方法<font color=FF0000>浅复制</font>数组的一部分到同一数组中的另一个位置，并返回它，<font color=FF0000>不会改变原数组的长度</font>。
 
-- **语法**
+##### 语法
 
-  ```js
-  arr.copyWithin(target[, start[, end]])
-  ```
+```js
+arr.copyWithin(target[, start[, end]])
+```
 
-- **参数**
-  - **target：**0 为基底的索引，复制序列到该位置。<font color=FF0000>如果是负数，target 将从末尾开始计算</font>（<mark>**自我补充：**<font color=FF0000>**经过实验**</font>，如果target为负数，且范围在 `[-arr.length, -1]`，target会变成target + arr.length；而如果target为负数，且小于 -arr.length，则不作任何操作</mark>）。<font color=FF0000>如果 target 大于等于 arr.length，将会不发生拷贝</font>。如果 target 在 start 之后，复制的序列将被修改以符合 arr.length。
-  - **start：**0 为基底的索引，开始复制元素的起始位置。如果是负数，start 将从末尾开始计算。如果 start 被忽略，copyWithin 将会从0开始复制。<font color=FF0000>即：默认为0</font>。而如果start为负数，且小于 -arr.length，则不作任何操作
-  - **end：**0 为基底的索引，开始复制元素的结束位置。copyWithin 将会拷贝到该位置，但<font color=FF0000>不包括 end 这个位置的元素</font>。如果是负数， end 将从末尾开始计算。如果 end 被忽略，copyWithin 方法将会一直复制至数组结尾（默认为 arr.length）。<font color=FF0000>即：默认为arr.length</font>。而如果end为负数，且小于 -arr.length，则不作任何操作
-  - **自我补充：**<font color=FF0000>经过实验</font>，[start, end)是左闭右开。同时，会将索引从target开始到target+(end-start-1)的值，变成arr[start]到arr[end]的值。如果start >= end，则不进行操作
-- **返回值：**改变后的数组。
+###### 参数
 
-- **描述：**
-  - 如果 start 为负，则其指定的索引位置等同于 length+start，length 为数组的长度。end 也是如此。
-  - <font color=FF0000>copyWithin 函数被设计为通用式的，其不要求其 this 值必须是一个数组对象</font>。
+- **target：**0 为基底的索引，复制序列到该位置。<font color=FF0000>如果是负数，target 将从末尾开始计算</font>
+
+  > 💡 自我补充
+  >
+  > <font color=dodgerBlue>**经过实验**</font>，如果target为负数，且范围在 `[-arr.length, -1] `，target 会变成 target + arr.length；而如果 target 为负数，且小于 -arr.length，则不作任何操作）。
+
+  <font color=FF0000>如果 target 大于等于 arr.length，将会不发生拷贝</font>。如果 target 在 start 之后，复制的序列将被修改以符合 `arr.length` 。
+
+- **start：**0 为基底的索引，开始复制元素的起始位置。如果是负数，start 将从末尾开始计算。如果 start 被忽略，copyWithin 将会从0开始复制。<font color=FF0000>即：默认为0</font>。而如果start为负数，且小于 `-arr.length`，则不作任何操作
+
+- **end：**0 为基底的索引，开始复制元素的结束位置。copyWithin 将会拷贝到该位置，但<font color=FF0000>不包括 end 这个位置的元素</font>。如果是负数， end 将从末尾开始计算。如果 end 被忽略，copyWithin 方法将会一直复制至数组结尾（默认为 `arr.length` ）。<font color=FF0000>即：默认为arr.length</font>。而如果end为负数，且小于 `-arr.length` ，则不作任何操作
+
+> 💡 自我补充
+>
+> <font color=FF0000>经过实验</font>，[start, end)  是左闭右开。同时，会将索引从 target 开始到 `target + ( end - start - 1)` 的值，变成 `arr[start]` 到`arr[end]` 的值。如果 start >= end，则不进行操作
+
+###### 返回值
+
+改变后的数组。
+
+##### 描述
+
+- 如果 start 为负，则其指定的索引位置等同于 length+start，length 为数组的长度。end 也是如此。
+- <font color=FF0000>copyWithin 函数被设计为通用式的，其不要求其 this 值必须是一个数组对象</font>。
 
 摘自：[MDN - Array.prototype.copyWithin()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin)
 
@@ -1442,23 +1489,24 @@ copyWithin() 方法<font color=FF0000>浅复制</font>数组的一部分到同�
 
 includes() 方法用来判断一个数组是否包含一个指定的值，根据情况，如果包含则返回 true，否则返回false。
 
-- **语法**
+##### 语法
 
-  ```js
-  arr.includes(valueToFind[, fromIndex])
-  ```
+```js
+arr.includes(valueToFind[, fromIndex])
+```
 
-- **参数**
-  - valueToFind：需要查找的元素值。**注意：**使用 includes()比较字符串和字符时是<font color=FF0000>区分大小写</font>。
-  - fromIndex：<font color=FF0000>**可选**</font>，<font color=FF0000>从fromIndex 索引处开始查找 valueToFind</font>。<mark>如果为负值，则按升序从 array.length + fromIndex 的索引开始搜</mark> （即使从末尾开始往前跳 fromIndex 的绝对值个索引，然后往后搜寻）。<font color=FF0000>默认为 0</font>。
+###### 参数
 
-- **注意：**
+- valueToFind：需要查找的元素值。**注意：**使用 includes()比较字符串和字符时是<font color=FF0000>区分大小写</font>。
+- fromIndex：<font color=FF0000>**可选**</font>，<font color=FF0000>从fromIndex 索引处开始查找 valueToFind</font>。<mark>如果为负值，则按升序从 array.length + fromIndex 的索引开始搜</mark> （即使从末尾开始往前跳 fromIndex 的绝对值个索引，然后往后搜寻）。<font color=FF0000>默认为 0</font>。
 
-  - NaN != NaN，且`NaN in [NaN] == false`；但是 `[1, 2, NaN].includes(NaN) === true`
-  - <mark>如果 fromIndex 大于等于数组的长度，则会返回 false，且该数组不会被搜索</mark>。
+##### 注意
 
-  - 如果 fromIndex 为负值，计算出的索引将作为开始搜索searchElement的位置。<font color=FF0000>如果计算出的索引小于 0，则整个数组都会被搜索</font>。
-  - <font color=FF0000>**includes() 方法有意设计为通用方法。它不要求this值是数组对象，所以它可以被用于其他类型的对象 (比如类数组对象)**。</font>
+- NaN != NaN，且`NaN in [NaN] == false`；但是 `[1, 2, NaN].includes(NaN) === true`
+- <font color=LightSeaGreen>如果 fromIndex 大于等于数组的长度，则会返回 false，且该数组不会被搜索</font>。
+
+- 如果 fromIndex 为负值，计算出的索引将作为开始搜索searchElement的位置。<font color=FF0000>如果计算出的索引小于 0，则整个数组都会被搜索</font>。
+- <font color=FF0000>**includes() 方法有意设计为通用方法。它不要求this值是数组对象，所以它可以被用于其他类型的对象 (比如类数组对象)**。</font>
 
 摘自：[MDN - Array.prototype.includes()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/includes)
 
@@ -1572,17 +1620,19 @@ Array.of() 方法<font color=FF0000>创建一个具有可变数量参数的新�
 
  **Array.of() 和 Array 构造函数之间的区别**在于处理整数参数：<font color=FF0000>Array.of(7) 创建一个具有单个元素 7 的数组</font>，<font color=FF0000>而 Array(7) 创建一个长度为7的空数组</font>（注意：<font color=FF0000>这是指一个有7个空位(empty)的数组</font>，而不是由7个undefined组成的数组）。
 
-- **语法**
+##### 语法
 
-  ```js
-  Array.of(element0[, element1[, ...[, elementN]]])
-  ```
+```js
+Array.of(element0[, element1[, ...[, elementN]]])
+```
 
-- **参数**
+###### 参数
 
-  elementN：任意个参数，将按顺序成为返回数组中的元素。
+elementN：任意个参数，将按顺序成为返回数组中的元素。
 
-- **返回值：**新的 Array 实例。
+###### 返回值
+
+新的 Array 实例。
 
 摘自：[MDN - Array.of()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/of)
 
@@ -1592,19 +1642,21 @@ Array.of() 方法<font color=FF0000>创建一个具有可变数量参数的新�
 
 flat() 方法会按照一个可指定的深度递归遍历数组，并将所有元素与遍历到的子数组中的元素合并为一个新数组返回。
 
-**语法：**
+##### 语法
 
 ```js
 var newArray = arr.flat([depth])
 ```
 
-**参数：**
+###### 参数
 
 - depth 可选，指定要提取嵌套数组的结构深度，默认值为 1。
 
-**返回值：**一个包含将数组与子数组中所有元素的新数组。
+###### 返回值
 
-**示例：**
+一个包含将数组与子数组中所有元素的新数组。
+
+##### 示例
 
 ```js
 var arr2 = [1, 2, [3, 4, [5, 6]]];
@@ -1632,7 +1684,9 @@ var new_array = arr.flatMap(function callback(currentValue[, index[, array]]) {
 }[, thisArg])
 ```
 
-**参数（与 Array.prototype.map() 一致）**
+###### 参数
+
+与 `Array.prototype.map()` 一致
 
 - **callback：**可以生成一个新数组中的元素的函数，可以传入三个参数：
   - **currentValue：**当前正在数组中处理的元素
@@ -1640,11 +1694,14 @@ var new_array = arr.flatMap(function callback(currentValue[, index[, array]]) {
   - **array：**<font color=FF0000>可选</font>，被调用的 map 数组
 - **thisArg：**<font color=FF0000>可选</font>，执行 callback 函数时 使用的this 值。
 
-- **返回值：** 一个新的数组，其中每个元素都是回调函数的结果，并且结构深度 depth 值为1。
+
+###### 返回值
+
+ 一个新的数组，其中每个元素都是回调函数的结果，并且结构深度 depth 值为1。
 
 摘自：[MDN - Array.prototype.flatMap()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap)
 
-**flatMap 举例：**
+##### flatMap 示例
 
 现在给你一个需求
 
@@ -1753,7 +1810,7 @@ Array.from(['a',,'b']) // [ "a", undefined, "b" ]
 new Array(3).fill('a') // ["a","a","a"]
 ```
 
-`for...of`循环也会遍历空位。
+`for...of` 循环也会遍历空位。
 
 ```javascript
 let arr = [, ,];
@@ -1790,9 +1847,11 @@ for (let i of arr) {
 
 
 
-#### JavaScript typeof, null, 和 undefined
+#### typeof
 
-可以使用 typeof 操作符来检测变量的数据类型。**实例**
+可以使用 typeof 操作符来检测变量的数据类型。
+
+##### 示例
 
 ```js
 typeof "John"        // 返回 string
@@ -1802,16 +1861,7 @@ typeof [1,2,3,4]       // 返回 object，这里要注意：数组是一种特�
 typeof {name:'John', age:34} // 返回 object
 ```
 
-<font color=FF0000>**undefined 和 null 的区别**</font>
-
-```js
-typeof undefined             // undefined
-typeof null                  // object
-null === undefined           // false
-null == undefined            // true
-```
-
-更多类型
+##### 更多类型
 
 ```js
 typeof NaN                    // 返回 number
@@ -1820,6 +1870,35 @@ typeof function () {}         // 返回 function
 typeof myCar                  // 返回 undefined (如果 myCar 没有声明)
 typeof null                   // 返回 object
 ```
+
+> 💡 补充
+>
+> 在 vue2 源码中实现 nextTick 有这样的代码：
+>
+> ```ts
+> if (typeof Promise !== 'undefined' && isNative(Promise)) { ... }
+> ```
+>
+> > 💡 源代码见 https://github.com/vuejs/vue/blob/main/src/core/util/next-tick.ts
+>
+> 有点好奇，为什么这里用 `typeof Promise !== 'undefined'` 而不是 `Promise !== undefined` ，问了 chatGPT；得到如下回复：
+>
+> <img src="https://s2.loli.net/2023/02/15/wYvTLk6gF43RVSP.png" alt="image-20230215164329843" style="zoom: 47%;" />
+>
+> 这是因为 `Promise !== undefined` 可能会有 throw Error，可能导致程序报错（虽然可以 try catch，不过也很麻烦了）；而 `typeof Promise !== 'undefined'` 不会报错。如下示例：
+>
+> <img src="/Users/yan/Library/Application Support/typora-user-images/image-20230215164934038.png" alt="image-20230215164934038" style="zoom:50%;" />
+
+##### undefined 和 null 的区别
+
+```js
+typeof undefined             // undefined
+typeof null                  // object
+null === undefined           // false
+null == undefined            // true
+```
+
+
 
 #### JavaScript 类型转换
 
@@ -1835,49 +1914,49 @@ new Date().constructor             // 返回函数 Date()    { [native code] }
 function () {}.constructor         // 返回函数 Function(){ [native code] }
 ```
 
-**转换为字符串**
+##### 转换为字符串
 
-- **<font color=FF0000>全局方法</font>** **String()** 可以将数字转换为字符串，<font color=FF0000>该方法（全局方法）可用于任何类型的数字，字母，变量，表达式</font>。示例：
-  
-  ```js
-  String(x)         // 将变量 x 转换为字符串并返回
-  String(123)       // 将数字 123 转换为字符串并返回
-  String(100 + 23)  // 将数字表达式转换为字符串并返回
-  ```
+**<font color=FF0000>全局方法</font>** **String()** 可以将数字转换为字符串，<font color=FF0000>该方法（全局方法）可用于任何类型的数字，字母，变量，表达式</font>。示例：
 
-- Number / Boolean / Date 的方法 **toString()** 也是有同样的效果，示例：
-  
-  ```js
-  x.toString()
-  (123).toString()
-  (100 + 23).toString()
-  ```
+```js
+String(x)         // 将变量 x 转换为字符串并返回
+String(123)       // 将数字 123 转换为字符串并返回
+String(100 + 23)  // 将数字表达式转换为字符串并返回
+```
 
-- 更多数字转换为字符串的方法：
-  
-  | 方法                                    | 描述                                                         |
-  | :-------------------------------------- | :----------------------------------------------------------- |
-  | toExponential()                         | 把对象的值转换为指数计数法。                                 |
-  | <font color=FF0000>**toFixed()**</font> | <font color=FF0000>把数字转换为**字符串**</font>，结果的小数点后有<font color=FF0000>通过**四舍五入**指定位数的数字</font>。 |
-  | toPrecision()                           | 把数字格式化为指定的长度。                                   |
+Number / Boolean / Date 的方法 **toString()** 也是有同样的效果，示例：
 
-- 关于日期转换为字符串的函数：
-  
-  | 方法                | 描述                            |
-  |:----------------- |:----------------------------- |
-  | getDate()         | 从 Date 对象返回一个月中的某一天 (1 ~ 31)。 |
-  | getDay()          | 从 Date 对象返回一周中的某一天 (0 ~ 6)。   |
-  | getFullYear()     | 从 Date 对象以四位数字返回年份。           |
-  | getHours()        | 返回 Date 对象的小时 (0 ~ 23)。       |
-  | getMilliseconds() | 返回 Date 对象的毫秒(0 ~ 999)。       |
-  | getMinutes()      | 返回 Date 对象的分钟 (0 ~ 59)。       |
-  | getMonth()        | 从 Date 对象返回月份 (0 ~ 11)。       |
-  | getSeconds()      | 返回 Date 对象的秒数 (0 ~ 59)。       |
-  | getTime()         | 返回 1970 年 1 月 1 日至今的毫秒数。      |
-  
-  更多请参考：[Date 方法](https://www.runoob.com/jsref/jsref-obj-date.html) 
+```js
+x.toString()
+(123).toString()
+(100 + 23).toString()
+```
 
-<font size=4>**补充：**</font>
+##### 更多数字转换为字符串的方法
+
+| 方法                                    | 描述                                                         |
+| :-------------------------------------- | :----------------------------------------------------------- |
+| toExponential()                         | 把对象的值转换为指数计数法。                                 |
+| <font color=FF0000>**toFixed()**</font> | <font color=FF0000>把数字转换为**字符串**</font>，结果的小数点后有<font color=FF0000>通过**四舍五入**指定位数的数字</font>。 |
+| toPrecision()                           | 把数字格式化为指定的长度。                                   |
+
+##### 关于日期转换为字符串的函数
+
+| 方法                | 描述                            |
+|:----------------- |:----------------------------- |
+| getDate()         | 从 Date 对象返回一个月中的某一天 (1 ~ 31)。 |
+| getDay()          | 从 Date 对象返回一周中的某一天 (0 ~ 6)。   |
+| getFullYear()     | 从 Date 对象以四位数字返回年份。           |
+| getHours()        | 返回 Date 对象的小时 (0 ~ 23)。       |
+| getMilliseconds() | 返回 Date 对象的毫秒(0 ~ 999)。       |
+| getMinutes()      | 返回 Date 对象的分钟 (0 ~ 59)。       |
+| getMonth()        | 从 Date 对象返回月份 (0 ~ 11)。       |
+| getSeconds()      | 返回 Date 对象的秒数 (0 ~ 59)。       |
+| getTime()         | 返回 1970 年 1 月 1 日至今的毫秒数。      |
+
+更多请参考：[Date 方法](https://www.runoob.com/jsref/jsref-obj-date.html) 
+
+##### 补充
 
 **将时间戳转换为‘YYYY-MM-DD HH:mm:ss’形式：**
 
@@ -1893,7 +1972,7 @@ time(); // "2018-08-09 18:25:54"
 
 
 
-**将字符串转换为数字**
+##### 将字符串转换为数字
 
 <font color=FF0000>**全局方法**</font> <font color=FF0000>**Number()** 可以将字符串转换为数字。</font>
 
@@ -1919,7 +1998,7 @@ Number("99 88")   // 返回 NaN
 | parseFloat() | 解析一个字符串，并返回一个浮点数。 |
 | parseInt()   | 解析一个字符串，并返回一个整数。  |
 
-**一元运算符 +**
+###### 一元运算符 +
 
 **Operator +** 可用于将变量转换为数字。示例： 
 
@@ -1935,7 +2014,7 @@ var y = "John";   // y 是一个字符串
 var x = + y;      // x 是一个数字 (NaN)
 ```
 
-**将布尔值转换为数字**
+##### 将布尔值转换为数字
 
 全局方法 **Number()** 可将布尔值转换为数字。
 
@@ -1944,7 +2023,7 @@ Number(false)   // 返回 0
 Number(true)   // 返回 1
 ```
 
-**将日期转换为数字**
+##### 将日期转换为数字
 
 全局方法 **Number()** 可将日期转换为数字，示例：
 
@@ -1959,6 +2038,8 @@ Number(d)     // 返回 1404568027739
 d = new Date();
 d.getTime()    // 返回 1404568027739
 ```
+
+
 
 #### instanceof
 
@@ -1980,7 +2061,9 @@ console.log(auto instanceof Object); // expected output: true
 
 摘自：[MDN - instanceof](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/instanceof)
 
-**补充：**obj instanceof Class 算法的执行过程大致如下：
+##### 补充
+
+`obj instanceof Class` 算法的执行过程大致如下：
 
 1. <font color=FF0000>**如果这儿有静态方法 Symbol.hasInstance，那就直接调用这个方法**</font>。例如：
 
@@ -1994,11 +2077,11 @@ console.log(auto instanceof Object); // expected output: true
    console.log(obj instanceof Animal); // true：Animal[Symbol.hasInstance](obj) 被调用
    ```
 
-2. <font color=FF0000>**大多数 class 没有 Symbol.hasInstance**</font>。在这种情况下，标准的逻辑是：使用 obj instanceOf Class 检查 Class.prototype 是否等于 obj 的原型链中的原型之一。换句话说就是，一个接一个地比较。
+2. <font color=FF0000>**大多数 class 没有 `Symbol.hasInstance`**</font>。在这种情况下，标准的逻辑是：使用 obj instanceOf Class 检查 Class.prototype 是否等于 obj 的原型链中的原型之一。换句话说就是，一个接一个地比较。
 
 摘自：[现代JS教程 - 类检查："instanceof"](https://zh.javascript.info/instanceof)
 
-#### JS获取对象的结构：constructor
+#### constructor
 
 **constructor** 属性返回所有 JavaScript 变量的构造函数。示例如下：
 
@@ -2011,6 +2094,8 @@ false.constructor                  // 返回函数 Boolean() { [native code] }
 new Date().constructor             // 返回函数 Date()    { [native code] }
 function () {}.constructor         // 返回函数 Function(){ [native code] }
 ```
+
+
 
 #### JavaScript 正则表达式
 
@@ -3657,7 +3742,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                     
+  >                                                                                                                                                                                                                                                         
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3676,7 +3761,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                                     
+  >                                                                                                                                                                                                                                                         
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -10166,7 +10251,7 @@ Object.assign(target, ...sources)
 
 摘自：[MDN - Object.assign()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
 
-> 👀 补充：如果要实现深拷贝，除了自己手写实现外；还可以使用：
+> 💡 如果要实现深拷贝，除了自己手写实现外；还可以使用：
 >
 > - lodash 的 deepClone
 > - JSON.parse( JSON.stringify() )
@@ -10326,7 +10411,9 @@ toString() 方法返回一个表示该对象的字符串
 obj.toString()
 ```
 
-**返回值：**一个表示该对象的字符串。
+###### 返回值
+
+一个表示该对象的字符串。
 
 ##### 描述
 
@@ -10337,30 +10424,38 @@ var o = new Object();
 o.toString(); // 返回 [object Object]
 ```
 
-- **覆盖默认的 toString 方法：**可以自定义一个方法，来取代默认的 toString() 方法。该 toString() 方法不能传入参数，并且必须返回一个字符串。自定义的 toString() 方法可以是任何我们需要的值，但如果它附带有关对象的信息，它将变得非常有用。
+##### 示例
 
-  下面的示例略，大致是：对一个对象使用 toString 方法只会打印 [object Object]；可以通过覆盖 Object.prototype.toString() 方法来自定义打印内容。
+###### 覆盖默认的 toString 方法
 
-- **使用 toString() 检测对象类型：**可以通过 toString() 来获取每个对象的类型。为了每个对象都能通过 Object.prototype.toString() 来检测，需要以 Function.prototype.call() 或者 Function.prototype.apply() 的形式来调用，传递要检查的对象作为第一个参数，称为 thisArg。
+可以自定义一个方法，来取代默认的 toString() 方法。该 toString() 方法不能传入参数，并且必须返回一个字符串。自定义的 toString() 方法可以是任何我们需要的值，但如果它附带有关对象的信息，它将变得非常有用。
 
-  ```js
-  var toString = Object.prototype.toString;
-  
-  toString.call(new Date); // [object Date]
-  toString.call(new String); // [object String]
-  toString.call(Math); // [object Math]
-  
-  //Since JavaScript 1.8.5
-  toString.call(undefined); // [object Undefined]
-  toString.call(null); // [object Null]
-  ```
+下面的示例略，大致是：对一个对象使用 toString 方法只会打印 [object Object]；可以通过覆盖 Object.prototype.toString() 方法来自定义打印内容。
+
+###### 使用 toString() 检测对象类型
+
+可以通过 toString() 来获取每个对象的类型。为了每个对象都能通过 Object.prototype.toString() 来检测，需要以 Function.prototype.call() 或者 Function.prototype.apply() 的形式来调用，传递要检查的对象作为第一个参数，称为 thisArg。
+
+```js
+var toString = Object.prototype.toString;
+
+toString.call(new Date); // [object Date]
+toString.call(new String); // [object String]
+toString.call(Math); // [object Math]
+
+//Since JavaScript 1.8.5
+toString.call(undefined); // [object Undefined]
+toString.call(null); // [object Null]
+```
 
 
 摘自：[MDN - Object.prototype.toString()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)
 
 ##### 关于 typeof 判断类型的不足 & 解决方法的补充
 
-👀 **注，上面没有说痛点是什么，这里补充下：**<font color=FF0000>在 JavaScript 里使用 typeof 判断数据类型，只能区分基本类型</font>，即：number、string、undefined、boolean、object。<font color=FF0000>对于null、array、function、object 来说，使用 typeof 都会统一返回 object 字符串。要想区分对象、数组、函数、单纯使用 typeof 是不行的</font>。
+> 💡 上面没有说痛点是什么，这里补充下：
+>
+> <font color=FF0000>在 JavaScript 里使用 typeof 判断数据类型，只能区分基本类型</font>，即：number、string、undefined、boolean、object。<font color=FF0000>对于null、array、function、object 来说，使用 typeof 都会统一返回 object 字符串。要想区分对象、数组、函数、单纯使用 typeof 是不行的</font>
 
 在 JS 中，可以通过 Object.prototype.toString() 方法，判断某个对象之属于哪种内置类型（注：这也是判断内置类型 <font color=FF0000>最靠谱的方法</font>）。分为 null、string、boolean、number、undefined、array、function、object、date、math。（ 👀 error 也可以）
 
@@ -10380,7 +10475,11 @@ console.log(argToString()) // [object Arguments]
 
 摘自：[浅谈 Object.prototype.toString.call() 方法](https://www.jianshu.com/p/585926ae62cc)
 
-使用  ***.constructor.name** 可以实现类似的功能（ 👀 当然泛用性没有 toString 好，比如 null、undefined 不可用，arguments 的结果还是 Object。另外，这里的原理是： constructor 是一个函数，Function 有 name 这个属性 ），示例如下：
+使用 **`*.constructor.name`** 可以实现类似的功能
+
+>  👀 当然泛用性没有 toString 好，比如 null、undefined 不可用，arguments 的结果还是 Object。另外，这里的原理是： constructor 是一个函数，Function 有 name 这个属性 ）
+
+###### 示例如下
 
 ```js
 const reg = /abc/
@@ -10420,7 +10519,7 @@ console.log(Object.getPrototypeOf(reg).constructor.name) // 'RegExp'
 - else ，如果 O 含有 `[[DateValue]]` internal slot ， 令 builtinTag 为 Date ；
 - else ，如果 O 含有 `[[RegExpMatcher]]` internal slot ， 令 builtinTag 为 RegExp ；
 - else ， 令 builtinTag 为 Object ；
-- 令 tag 为 Get(O, @@toStringTag) 的返回值（ Get(O, @@toStringTag) 方法，既是在 O 是一个对象，并且具有 @@toStringTag 属性时，返回 O[Symbol.toStringTag] ）；
+- 令 tag 为 `Get(O, @@toStringTag)` 的返回值（ `Get(O, @@toStringTag` ) 方法，既是在 O 是一个对象，并且具有 `@@toStringTag`  属性时，返回 `O[Symbol.toStringTag]` ）；
 - ReturnIfAbrupt(tag) ，如果 tag 是正常值，继续执行下一步；
 - 如果 Type(tag) 不是一个字符串，let tag be builtinTag ；
 - 返回由三个字符串 `"[object", tag, and "]"` 拼接而成的一个字符串。
@@ -10429,89 +10528,101 @@ console.log(Object.getPrototypeOf(reg).constructor.name) // 'RegExp'
 
 > Internal slots correspond to internal state that is associated with objects and used by various ECMAScript specification algorithms. Internal slots are not object properties and they are not inherited. Depending upon the specific internal slot specification, such state may consist of values of any ECMAScript language type or of specific ECMAScript specification type values
 
-大概的意思是：Internal slots 对应于与对象相关联并由各种ECMAScript规范算法使用的内部状态，它们没有对象属性，也不能被继承，根据具体的 Internal slot 规范，这种状态可以由任何ECMAScript语言类型或特定ECMAScript规范类型值的值组成。
+大概的意思是：Internal slots 对应于与对象相关联并由各种 ECMAScript 规范算法使用的内部状态，它们没有对象属性，也不能被继承，根据具体的 Internal slot 规范，这种状态可以由任何 ECMAScript 语言类型或特定 ECMAScript 规范类型值的值组成。
 
-**注：**上面 ES6 toString 的 执行过程中包含了大量的 内部属性，在学习 内部属性 时可以分别了解下。
+> 👀 上面 ES6 `toString` 的 执行过程中包含了大量的 内部属性，在学习 内部属性 时可以分别了解下。
 
 摘自：[谈谈 Object.prototype.toString](https://juejin.cn/post/6844903477940846600)
 
-#### 对象的原始值转换 和 valueOf toString
+#### 对象的原始值转换 和 valueOf & toString
 
-**背景：**当对象相加 obj1 + obj2，相减 obj1 - obj2，或者使用 alert(obj) 打印时会发生什么？在这种情况下，对象会被自动转换为原始值，然后执行操作。
+##### 背景
 
-这里要提到：Symbol.toPrimitive 中的 hint。
+当对象相加 `obj1 + obj2` ，相减 `obj1 - obj2` ，或者使用 `alert(obj)` 打印时会发生什么？在这种情况下，对象会被自动转换为原始值，然后执行操作。
 
-> The hint is a type of the primitive the object is going to be converted to.
+这里要提到：`Symbol.toPrimitive` 中的 hint。
+
+> The `hint` is a type of the primitive the object is going to be converted to.
 >
 > 摘自：[Understanding JavaScript type conversions](https://dev.to/antonmelnyk/understanding-javascript-type-conversions-43n)
 
-即：hint 是对象将要 转换成为的 基本类型，且 hint 的值，只有三种："number"、"string"、"defalut"
+即：hint 是对象将要 转换成为的 基本类型，且 hint 的值，只有三种："number"、"string"、"defalut"。
 
-- **"string"：**对象到字符串的转换，当我们对期望一个字符串的对象执行操作时，如 "alert"：
+##### 转换规则
 
-  ```js
-  // 输出
-  alert(obj);
-  
-  // 将对象作为属性键
-  anotherObj[obj] = 123;
-  ```
+> ⚠️  需要注意的是：下面是有顺序的。
 
-- **"number"：**对象到数字的转换，例如当我们进行数学运算
+1. **“string”**：对象到字符串的转换，当我们对期望一个字符串的对象执行操作时，如 "alert"：
 
-  ```js
-  // 显式转换
-  let num = Number(obj);
-  
-  // 数学运算（除了二元加法）
-  let n = +obj; // 一元加法
-  let delta = date1 - date2;
-  
-  // 小于/大于的比较
-  let greater = user1 > user2;
-  ```
+   > 💡 string 即：对该对象的操作是关于字符串的操作，比如打印
 
-- **"default"：**在少数情况下发生，当运算符“不确定”期望值的类型时。
+   ```js
+   // 输出
+   alert(obj);
+   
+   // 将对象作为属性键
+   anotherObj[obj] = 123;
+   ```
 
-  例如，二元加法 `+` 可用于字符串（连接），也可以用于数字（相加），所以字符串和数字这两种类型都可以。因此，当二元加法得到对象类型的参数时，它将依据 "default" hint 来对其进行转换。
+2. **“number”**：对象到数字的转换，例如当我们进行数学运算
 
-  此外，如果对象被用于与字符串、数字或 symbol 进行 `==` 比较，这时到底应该进行哪种转换也不是很明确，因此使用 "default" hint。
+   > 💡number 即：对该对象的操作是关于数字的操作，比如 Number() / 一元加法 / 比较大小
 
-  ```js
-  // 二元加法使用默认 hint
-  let total = obj1 + obj2;
-  
-  // obj == number 使用默认 hint
-  if (user == 1) { ... };
-  ```
+   ```js
+   // 显式转换
+   let num = Number(obj);
+   
+   // 数学运算（除了二元加法）
+   let n = +obj; // 一元加法
+   let delta = date1 - date2;
+   
+   // 小于/大于的比较
+   let greater = user1 > user2;
+   ```
 
-  像 `<` 和 `>` 这样的小于/大于比较运算符，也可以同时用于字符串和数字。不过，它们使用 “number” hint，而不是 “default”。这是历史原因。
+3. **“default”**：在少数情况下发生，当运算符“不确定”期望值的类型时。
 
-**为了进行转换，JavaScript 尝试查找并调用三个对象方法：**
+   > 💡 default 即：以上其他情况都不满足时，则是 default 的情况
 
-1. 调用 obj\[Symbol.toPrimitive](hint) —— 带有 symbol 键 Symbol.toPrimitive（系统 symbol）的方法，如果这个方法存在的话，
-2. 否则，如果 hint 是 "string" —— <font color=FF0000>尝试 obj.toString() 和 obj.valueOf()</font>，无论哪个存在。
-3. 否则，如果 hint 是 "number" 或 "default" —— <font color=FF0000>尝试 obj.valueOf() 和 obj.toString()</font>，无论哪个存在。
+   例如，二元加法 `+` 可用于字符串（连接），也可以用于数字（相加），所以字符串和数字这两种类型都可以。因此，当二元加法得到对象类型的参数时，它将依据 “default” hint 来对其进行转换。
 
-注：注意 hint 是 "string" 和 "number" / "default" 这两种情况下 toString() valueOf() 的顺序，下面也会说到。
+   此外，如果对象被用于与字符串、数字或 symbol 进行 `==` 比较，这时到底应该进行哪种转换也不是很明确，因此使用 “default” hint。
 
-<font size=4>**toString / valueOf**</font>
+   ```js
+   // 二元加法使用默认 hint
+   let total = obj1 + obj2;
+   
+   // obj == number 使用默认 hint
+   if (user == 1) { ... };
+   ```
 
-方法 toString 和 valueOf 来自上古时代（注：根据 MDN 相关页面的规范，这两个方法最早均来自 ES1）。它们不是 symbol（那时候还没有 symbol 这个概念），而是 “常规的” 字符串命名的方法。它们提供了一种可选的“老派”的实现转换的方法。
+   像 `<` 和 `>` 这样的小于/大于比较运算符，也可以同时用于字符串和数字。不过，它们使用 “number” hint，而不是 “default”。这是历史原因。
 
-<mark>**如果没有 Symbol.toPrimitive**，那么 JavaScript 将尝试找到它们，并且按照下面的顺序进行尝试</mark>：
+   **为了进行转换，JavaScript 尝试查找并调用三个对象方法：**
 
-- **对于 "string" hint：**<font color=FF0000>toString -> valueOf</font>
-- **其他情况**（注：即 "number" / "defalut" ）：<font color=FF0000>valueOf -> toString</font>
+   1. 调用 `obj[Symbol.toPrimitive](hint) `—— 带有 `symbol` 键 `Symbol.toPrimitive`（系统 symbol）的方法，如果这个方法存在的话。
+   2. 否则，如果 hint 是 "string" —— <font color=FF0000>尝试 obj.toString() 和 obj.valueOf()</font>，无论哪个存在。
+   3. 否则，如果 hint 是 "number" 或 "default" —— <font color=FF0000>尝试 obj.valueOf() 和 obj.toString()</font>，无论哪个存在。
 
-这些方法必须返回一个原始值。如果 toString 或 valueOf 返回了一个对象，那么返回值会被忽略（和这里没有方法的时候相同）。
+   > ⚠️ hint 是 "string" 和 "number" / "default" 这两种情况下 toString() valueOf() 的顺序，下面也会说到。
+
+##### toString / valueOf
+
+方法 toString 和 valueOf 来自上古时代（ 💡 根据 MDN 相关页面的规范，这两个方法最早均来自 ES1）。它们不是 symbol（那时候还没有 symbol 这个概念），而是 “常规的” 字符串命名的方法。它们提供了一种可选的“老派”的实现转换的方法。
+
+<font color=dodgerBlue>**如果没有 Symbol.toPrimitive**</font>，那么 JavaScript 将尝试找寻找 toString 和 valueOf 方法，并且按照下面的顺序进行尝试：
+
+- **对于 "string" hint：**<font color=red>**调用 `toString` 方法**</font>，<font color=dodgerBlue>如果它不存在</font>，则<font color=red>调用 `valueOf` 方法</font>（因此，对于字符串转换，优先调用 `toString` ）
+- **其他 hint**（👀 即 “number” / “defalut” ）：<font color=red>**调用 `valueOf` 方法**</font>，<font color=dodgerBlue>如果它不存在</font>，则<font color=red>调用 `toString` 方法</font>（因此，对于数学运算，优先调用 `valueOf` 方法）。
+
+<font color=fuchsia>**这些方法必须返回一个原始值**</font> ( 👀 primitive value )。<font color=red>如果 `toString` 或 `valueOf` 返回了一个对象，那么返回值会被忽略</font>（和这里没有方法的时候相同）。
 
 **默认情况下，普通对象具有 toString 和 valueOf 方法：**
 
-- <font color=FF0000>toString 方法返回一个字符串 "[object Object]"</font>。
-- <font color=FF0000>valueOf 方法返回对象自身</font>。
+- <font color=FF0000>`toString` 方法返回一个字符串 `"[object Object]"`</font>。
+- <font color=FF0000>`valueOf` 方法返回对象自身</font>。
 
-示例如下：
+###### 示例如下
 
 ```js
 let user = {name: "John"};
@@ -10520,7 +10631,7 @@ alert(user); // [object Object]
 alert(user.valueOf() === user); // true
 ```
 
-让我们实现一下这些方法（注：即在对象中 定义（也可以认为是覆盖 override） valueOf() 和 toString() ）。例如，这里的 user 执行和前面提到的那个 user 一样的操作，使用 toString 和 valueOf 的组合（而不是 Symbol.toPrimitive）：
+让我们实现一下这些方法（👀 即在对象中 定义（也可以认为是覆盖 override） `valueOf()` 和 `toString()` ）。例如，这里的 user 执行和前面提到的那个 user 一样的操作，使用 `toString` 和 `valueOf` 的组合（而不是 `Symbol.toPrimitive` ）：
 
 ```js
 let user = {
@@ -10539,24 +10650,26 @@ alert(+user); // valueOf -> 1000
 alert(user + 500); // valueOf -> 1500
 ```
 
-<font size=4>**返回类型**</font>
+我们可以看到，<font color=red>执行的动作和前面使用 `Symbol.toPrimitive` 的那个例子相同</font>。
 
-关于所有原始转换方法，有一个重要的点需要知道，就是它们不一定会返回 "hint" 的原始值。<font color=FF0000>没有限制 toString() 是否返回字符串</font>，<font color=FF0000>或 Symbol.toPrimitive 方法是否为 hint "number" 返回数字</font>。<font color=FF0000>**唯一强制性的事情是：这些方法必须返回一个原始值，而不是对象**</font>。
+###### 返回类型
 
-> **历史原因**
+关于所有原始转换方法，有一个重要的点需要知道：它们不一定会返回 "hint" 的原始值。<font color=FF0000>没有限制 `toString()` 是否返回字符串</font>，<font color=FF0000>或 `Symbol.toPrimitive` 方法是否为 hint "number" 返回数字</font>。<font color=dodgerBlue>**唯一强制性的事情是：**</font><font color=red>**这些方法必须返回一个原始值 Primitive value，而不是对象**</font>。
+
+> 💡 **历史原因**
 >
-> <font color=FF0000>由于历史原因，如果 toString 或 valueOf 返回一个对象，则不会出现 error，但是这种值会被忽略</font>（就像这种方法根本不存在）。<font color=FF0000>这是因为在 JavaScript 语言发展初期，没有很好的 “error” 的概念</font>（注：Error 确实是在 ES1 时代就已经有了）。
+> <font color=FF0000>由于历史原因，如果 `toString` 或 `valueOf` 返回一个对象，则不会出现 error，但是这种值会被忽略</font>（就像这种方法根本不存在）。<font color=FF0000>这是因为在 JavaScript 语言发展初期，没有很好的 “error” 的概念</font>（💡 Error 确实是在 ES1 时代就已经有了）。
 >
-> 相反，<font color=FF0000>Symbol.toPrimitive **必须** 返回一个原始值，否则就会出现 error</font>。
+> 相反，<font color=FF0000>`Symbol.toPrimitive` **必须** 返回一个原始值，否则就会出现 error</font>。
 
-<font size=4>**进一步的转换**</font>
+##### 进一步的转换
 
 **如果我们将对象作为参数传递，则会出现两个阶段：**
 
 1. 对象被转换为原始值（通过前面我们描述的规则）。
 2. <font color=FF0000 size=4>**如果生成的原始值的类型不正确，则继续进行转换**</font>。
 
-例如：
+###### 例如
 
 ```javascript
 let obj = {
@@ -10570,7 +10683,7 @@ alert(obj * 2); // 4，对象被转换为原始值字符串 "2"，之后它被�
 1. 乘法 `obj * 2` 首先将对象转换为原始值（字符串 “2”）。
 2. 之后 `"2" * 2` 变为 `2 * 2`（字符串被转换为数字）。
 
-<mark>二元加法在同样的情况下会将其连接成字符串，因为它更愿意接受字符串</mark>：
+<font color=LightSeaGreen>二元加法在同样的情况下会将其连接成字符串，因为它更愿意接受字符串</font>：
 
 ```js
 let obj = {
@@ -10580,7 +10693,7 @@ let obj = {
 alert(obj + 2); // 22（"2" + 2）被转换为原始值字符串 => 级联
 ```
 
-摘自：[现代JS教程 - 对象 — 原始值转换](https://zh.javascript.info/object-toprimitive#symboltoprimitive)
+摘自：[现代JS教程 - 对象 - 原始值转换](https://zh.javascript.info/object-toprimitive#symboltoprimitive)
 
 
 
@@ -11035,33 +11148,46 @@ class AbstractClass {
 
 #### Symbol
 
-<font color=FF0000>**symbol 是一种基本数据类型**</font> （primitive data type）。<font color=FF0000>Symbol() 函数会返回 symbol 类型的值，该类型具有静态属性和静态方法</font>。它的静态属性会暴露几个内建的成员对象；它的静态方法会暴露全局的 symbol 注册，且类似于内建对象类，但<font color=FF0000>作为构造函数来说它并不完整，因为它不支持语法：`new Symbol()`</font>（ 👀下面有示例代码）。
-
-每个从 Symbol() 返回的 symbol值都是唯一的。<font color=FF0000>**一个 symbol值能作为对象属性的标识符**</font>（ 👀 示例如下）；这是该数据类型仅有的目的
-
-> ```js
-> var obj = {};
-> var a = Symbol("a");
-> var b = Symbol.for("b");
-> 
-> obj[a] = "localSymbol";
-> obj[b] = "globalSymbol";
-> ```
+> 💡 一点补充
 >
-> 摘自：[MDN - Object.getOwnPropertySymbols()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols)
-
-上面是在初始化之后赋值，也可以<font color=FF0000>使用“计算属性”在初始化时赋值</font>：
-
-> 当一个 Symbol 包装器对象作为一个属性的键时，这个对象将被强制转换为它包装过的 symbol 值：
+> 在看 [在vue中为什么不推荐用 index 做 key](http://zoo.zhengcaiyun.cn/blog/article/vue-index) 时，最后推荐可以使用 UUID 或者 symbol 作为 key；确实让人耳目一新；不过不确定是否可行，就去问了群友；群友在说 symbol 不合适的原因：
 >
-> ```js
-> var sym = Symbol("foo");
-> var obj = {[sym]: 1};
-> obj[sym];            // 1
-> obj[Object(sym)];    // still 1
-> ```
+> > 印象里 symbol 本来设计的时候是打算实现私有属性的
 >
-> 摘自：[MDN - Symbol - Symbol 包装器对象作为属性的键](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol#symbol_包装器对象作为属性的键)
+> 这句话让我也是让我大受启发。于是看到下面这句话时候，感觉验证了群友的话
+>
+> > symbol 允许我们创建对象的“隐藏”属性，代码的任何其他部分都不能意外访问或重写这些属性
+> >
+> > 摘自：[现代JS教程 - symbol 类型 # “隐藏”属性](https://zh.javascript.info/symbol#yin-cang-shu-xing)
+
+<font color=FF0000>**symbol 是一种基本数据类型**</font> ( primitive data type )（ 👀 这里翻译成 “原始数据类型” 更好些）。<font color=red>`Symbol()` 函数会返回 symbol 类型的值，该类型具有静态属性和静态方法</font>。它的静态属性会暴露几个内建的成员对象；它的静态方法会暴露全局的 symbol 注册，且类似于内建对象类，但<font color=FF0000>**作为构造函数来说它并不完整，因为它不支持语法：`new Symbol()`**</font>（ 👀 下面有示例代码）。
+
+每个从 `Symbol()` 返回的 symbol值都是唯一的。<font color=FF0000>**一个 symbol值能作为对象属性的标识符**</font>（ 👀 示例如下）；这是该数据类型仅有的目的。
+> 💡 **补充**
+>
+> > ```js
+> > var obj = {};
+> > var a = Symbol("a");
+> > var b = Symbol.for("b");
+> > 
+> > obj[a] = "localSymbol";
+> > obj[b] = "globalSymbol";
+> > ```
+> >
+> > 摘自：[MDN - Object.getOwnPropertySymbols()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols)
+>
+> 上面是在初始化之后赋值，也可以<font color=FF0000>使用 “计算属性” 在初始化时赋值</font>：
+>
+> > 当一个 Symbol 包装器对象作为一个属性的键时，这个对象将被强制转换为它包装过的 symbol 值：
+> >
+> > ```js
+> > var sym = Symbol("foo");
+> > var obj = { [sym] : 1 };
+> > obj[sym];            // 1
+> > obj[Object(sym)];    // still 1
+> > ```
+> >
+> > 摘自：[MDN - Symbol # Symbol 包装器对象作为属性的键](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol#symbol_包装器对象作为属性的键)
 
 ##### 语法
 
@@ -11075,7 +11201,7 @@ Symbol([description])
 
 **描述**
 
-直接使用 Symbol() 创建新的 symbol 类型，并<font color=FF0000>用一个可选的字符串作为其描述</font>。
+直接使用 `Symbol()` 创建新的 symbol 类型，并<font color=FF0000>用一个可选的字符串作为其描述</font>。
 
 ```js
 var sym1 = Symbol();
@@ -11083,13 +11209,13 @@ var sym2 = Symbol('foo');
 var sym3 = Symbol('foo');
 ```
 
-上面的代码创建了三个新的symbol类型。 注意，Symbol("foo") 不会强制将字符串 “foo” 转换成symbol类型。它每次都会创建一个新的 symbol类型：
+上面的代码创建了三个新的 symbol 类型。 注意，`Symbol("foo")` 不会强制将字符串 “foo” 转换成 symbol 类型。它每次都会创建一个新的 symbol 类型：
 
 ```js
 Symbol("foo") === Symbol("foo"); // false
 ```
 
-**下面带有 new 运算符的语法将抛出 TypeError 错误：**
+###### 下面带有 new 运算符的语法将抛出 TypeError 错误
 
 ```js
 var sym = new Symbol(); // TypeError
@@ -11097,50 +11223,60 @@ var sym = new Symbol(); // TypeError
 
 这会阻止创建一个显式的 Symbol 包装器对象而不是一个 Symbol 值。<font color=FF0000>**围绕原始数据类型创建一个显式包装器对象从 ECMAScript 6 开始不再被支持**</font>。 然而，<font color=LightSeaGreen>现有的原始包装器对象，如 `new Boolean`、`new String` 以及 `new Number`，因为遗留原因仍可被创建</font>。
 
-##### 全局共享的 Symbol
+###### 全局共享的 Symbol
 
-上面<font color=LightSeaGreen>使用 Symbol() 函数的语法</font>，<font color=FF0000 size=4>**不会**</font> <font color=LightSeaGreen>在你的整个代码库中创建一个可用的全局的 symbol 类型</font>。 <font color=FF0000>要创建跨文件可用的 symbol，甚至跨域（每个都有它自己的全局作用域），**使用 Symbol.for() 方法和  Symbol.keyFor() 方法从全局的 symbol注册表设置和取得 symbol**</font>。
+> 💡 在 [现代 JS 教程 - symbol 类型 # 全局 symbol](https://zh.javascript.info/symbol#quan-ju-symbol) 中， 被直接成为 “全局 symbol”
 
-##### 在对象中查找 Symbol 属性
+上面<font color=LightSeaGreen>使用 `Symbol()` 函数的语法</font>，<font color=FF0000 size=4>**不会**</font> <font color=LightSeaGreen>在你的整个代码库中创建一个可用的全局的 symbol 类型</font>。 <font color=fuchsia>要创建跨文件可用的 symbol，甚至跨域（每个都有它自己的全局作用域）</font>，<font color=fuchsia>**使用 `Symbol.for()` 方法和 `Symbol.keyFor()` 方法从 <font size=4>全局的 symbol注册表</font> 设置和取得 symbol**</font>。
 
-Object.getOwnPropertySymbols() 方法让你在查找一个给定对象的符号属性时返回一个 symbol 类型的数组。注意，每个初始化的对象都是没有自己的 symbol 属性的，因此这个数组可能为空，除非你已经在对象上设置了 symbol 属性。
+###### 在对象中查找 Symbol 属性
+
+`Object.getOwnPropertySymbols()` 方法让你在查找一个给定对象的符号属性时返回一个 symbol 类型的数组。注意，每个初始化的对象都是没有自己的 symbol 属性的，因此这个数组可能为空，除非你已经在对象上设置了 symbol 属性。
 
 ##### 属性
 
-- **Symbol.length：**长度属性，值为0。
-- **Symbol.prototype：**symbol 构造函数的原型。
+- **`Symbol.length`** ：长度属性，值为 0。
+- **`Symbol.prototype`** ：symbol 构造函数的原型。
 
 ##### 方法
 
-- **Symbol.for(key)：**<font color=FF0000>使用给定的 key 搜索现有的 symbol</font>，如果<mark>找到则返回该 symbol；否则将使用给定的 key 在全局 symbol注册表中创建一个新的 symbol</mark>。
-- **Symbol.keyFor(sym)：**<font color=FF0000>从全局 symbol注册表中，为给定的 symbol检索一个共享的 symbol key</font>。
+- **`Symbol.for(key)`**：<font color=FF0000>使用给定的 key 搜索现有的 symbol</font>，如果找到则返回该 symbol；<font color=fuchsia>否则将使用给定的 key 在全局 symbol注册表中创建一个新的 symbol</font>。
+- **`Symbol.keyFor(sym)`**：<font color=FF0000>从全局 symbol注册表中，为给定的 symbol 检索一个共享的 symbol key</font>。
 
-<font size=4>**Symbol 原型：**</font>所有 Symbols 继承自 Symbol.prototype
+##### Symbol 原型
 
-**实例属性**
+所有 Symbols 继承自 `Symbol.prototype`
 
-- **Symbol.prototype.description：**一个只读的字符串，意为对该 Symbol 对象的描述
+###### 实例属性
 
-实例方法
+- **`Symbol.prototype.description`** ：一个只读的字符串，意为对该 Symbol 对象的描述
 
-- **Symbol.prototype.toSource：**返回该 Symbol 对象的源代码。该方法重写了 Object.prototype.toSource 方法
-- **Symbol.prototype.toString：**返回一个包含着该 Symbol 对象描述的字符串。该方法重写了 Object.prototype.toString 方法
-- **Symbol.prototype.valueOf：**返回该 Symbol 对象。该方法重写了 Symbol.prototype.valueOf 方法
-- **Symbol.prototype[@@toPrimitive]：**返回该 Symbol 对象。
+###### 实例方法
+
+- **`Symbol.prototype.toSource`**：返回该 Symbol 对象的源代码。该方法重写了 `Object.prototype.toSource` 方法
+- **`Symbol.prototype.toString`** ：返回一个包含着该 Symbol 对象描述的字符串。该方法重写了 `Object.prototype.toString` 方法
+- **`Symbol.prototype.valueOf`**：返回该 Symbol 对象。该方法重写了 `Symbol.prototype.valueOf` 方法
+- **`Symbol.prototype[@@toPrimitive]`**：返回该 Symbol 对象。
 
 ##### 其他细节
 
-- ```js
+- well-known symbols 的类型
+  
+  ```js
   typeof Symbol.iterator === 'symbol'
+  typeof Symbol.asyncIterator === 'symbol'
+  // 其他的略
   ```
+  
+- **Symbols 与 `JSON.stringify()`**
 
-- **Symbols 与 JSON.stringify()**
-
-  当<font color=FF0000 size=4>**使用 JSON.stringify() 时，以 symbol 值作为键的属性会被完全忽略**</font>：
+  当 <font color=FF0000 size=4>**使用 `JSON.stringify()` 时，以 symbol 值作为键的属性会被完全忽略**</font>：
 
   ```js
   JSON.stringify({[Symbol("foo")]: "foo"}); // '{}'
   ```
+  
+  > 💡也可以参考 [MDN - JSON.stringify() # 描述](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#%E6%8F%8F%E8%BF%B0) 中的内容
 
 摘自：[MDN - Symbol](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
 
@@ -11173,17 +11309,40 @@ Object.getOwnPropertySymbols() 方法让你在查找一个给定对象的符号�
 
 学习自：[几个一看就会的 TypeScript 小技巧](https://juejin.cn/post/7077536309804859428)
 
+> 💡 **补充**
+>
+> 关于上面 “JS 对象的标识符可以是 string、number、symbol 这三种类型的” 这句话被群友提出了质疑。认为 number 的 key 最后还是被转化为了 string。如下代码：
+>
+> ```js
+> const sym = Symbol('sym')
+> 
+> const obj = {
+>   a: 1,
+>   2: '2',
+>   [sym]: 3
+> }
+> 
+> Reflect.ownKeys(obj).forEach(key => console.log(key, typeof key))
+> // 2 string
+> // a string
+> // Symbol(sym) symbol
+> ```
+>
+> 这里只是提出异议，关于结果暂时不确定
 
 
-#### symbol 的 11个 内置值
 
->  除了定义自己使用的 Symbol 值以外，ES6 还提供了 11 个内置的 Symbol 值，指向语言内部使用的方法。
+#### symbol 的 内置值
+
+>  > 除了定义自己使用的 Symbol 值以外，ES6 还提供了 11 个内置的 Symbol 值，指向语言内部使用的方法。
 >
-> 摘自：[阮一峰 ECMAScript 6 (ES6) 标准入门教程 第三版 - Symbol - 8. 内置的 Symbol 值](https://es6.ruanyifeng.com/#docs/symbol#内置的-Symbol-值)
+>  摘自：[阮一峰 ECMAScript 6 (ES6) 标准入门教程 第三版 - Symbol - 8. 内置的 Symbol 值](https://es6.ruanyifeng.com/#docs/symbol#内置的-Symbol-值)
 >
-> 这些内置的 Symbol 值被称为 well-known symbols（常用内置符号）。另外，<font color=FF0000 size=4>**`Symbol.` 可以简写为 `@@`**</font>
+>  > 👀 看了下 [EMCA262 doc # well-known symbols](https://tc39.es/ecma262/#sec-well-known-symbols) 部分的文档，是13个 symbol；不知道是不是写书时比较早？
 >
-> 摘自：[Detailed Overview of Well-known Symbols](https://dmitripavlutin.com/detailed-overview-of-well-known-symbols/)
+>  > 这些内置的 Symbol 值被称为 well-known symbols（常用内置符号）。另外，<font color=FF0000 size=4>**`Symbol.` 可以简写为 `@@`**</font>
+>
+>  摘自：[Detailed Overview of Well-known Symbols](https://dmitripavlutin.com/detailed-overview-of-well-known-symbols/)
 
 在 说明 Symbol 各值之前，说一些共性：Symbol 值的对象属性描述符 (writable、enumerable、configurable) 均为 false：
 
@@ -11193,45 +11352,47 @@ Object.getOwnPropertySymbols() 方法让你在查找一个给定对象的符号�
 | enumerable           | false |
 | configurable         | false |
 
-#### Symbol.iterator
+##### Symbol.iterator
 
-Symbol.iterator 为每一个对象定义了默认的迭代器。该迭代器可以被 for...of 循环使用。
+`Symbol.iterator` 为每一个对象定义了默认的迭代器。该迭代器可以被 `for...of` 循环使用。
 
-当需要对一个对象进行迭代时（比如开始用于一个 for...of 循环中），它的 @@iterator 方法都会在不传参情况下被调用，返回的迭代器用于获取要迭代的值。
+当需要对一个对象进行迭代时（比如开始用于一个 `for...of` 循环中），它的 `@@iterator` 方法都会在不传参情况下被调用，返回的迭代器用于获取要迭代的值。
 
-<font color=FF0000>一些内置类型拥有默认的迭代器行为，其他类型（如 Object）则没有</font>。下表中的内置类型拥有默认的 @@iterator 方法：Array.prototype\[@@iterator]()、TypedArray.prototype\[@@iterator]()、String.prototype\[@@iterator]()、Map.prototype\[@@iterator]()、Set.prototype\[@@iterator]()
+<font color=FF0000>一些内置类型拥有默认的迭代器行为，其他类型（如 Object）则没有</font>。下表中的内置类型拥有默认的 `@@iterator` 方法：`Array.prototype[@@iterator]()` 、`TypedArray.prototype[@@iterator]()`、`String.prototype[@@iterator]()` 、`Map.prototype[@@iterator]()` 、`Set.prototype[@@iterator]()`
 
 摘自：[MDN - Symbol.iterator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/iterator)
 
-#### Symbol.asyncIterator
+##### Symbol.asyncIterator
 
-Symbol.asyncIterator 符号指定了一个对象的默认异步迭代器。<font color=FF0000>如果一个对象设置了这个属性，它就是异步可迭代对象，可用于 for await...of 循环</font>。
+`Symbol.asyncIterator` 符号指定了一个对象的默认异步迭代器。<font color=FF0000>如果一个对象设置了这个属性，它就是异步可迭代对象，可用于 `for await ... of` 循环</font>。
 
-##### 描述
+###### 描述
 
-Symbol.asyncIterator 是一个用于访问对象的 @@asyncIterator 方法的 <font color=FF0000>内建符号</font>。<font color=FF0000>一个异步可迭代对象 <font size=4>**必须**</font> 要有Symbol.asyncIterator属性</font>。
+`Symbol.asyncIterator` 是一个用于访问对象的 `@@asyncIterator` 方法的 <font color=FF0000>内建符号</font>。<font color=FF0000>一个异步可迭代对象 <font size=4>**必须**</font> 要有 `Symbol.asyncIterator` 属性</font>。
 
-**内建异步可迭代对象：**<font color=FF0000>目前没有默认设定了 [Symbol.asyncIterator] 属性的JavaScript内建的对象</font>。不过，<font color=LightSeaGreen>WHATWG（网页超文本应用技术工作小组）Streams会被设定为第一批异步可迭代对象，[Symbol.asyncIterator] 最近已在设计规范中落地</font>。
+**内建异步可迭代对象：**<font color=FF0000>目前没有默认设定了 `[Symbol.asyncIterator]` 属性的JavaScript内建的对象</font>。不过，<font color=LightSeaGreen>WHATWG（网页超文本应用技术工作小组）Streams会被设定为第一批异步可迭代对象，`[Symbol.asyncIterator]` 最近已在设计规范中落地</font>。
 
 摘自：[MDN - Symbol.asyncIterator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/asyncIterator)
 
-#### Symbol.species
+##### Symbol.species
 
 Symbol.species 是个 “函数值属性” ，其被构造函数用以创建派生对象。
 
-##### 描述
+###### 描述
 
-species 访问器属性 <font color=FF0000 size=4>**允许 子类覆盖对象的默认构造函数**</font>。**注：**具体使用参见 下面补充的 get Array[@@species]
+species 访问器属性 <font color=FF0000 size=4>**允许 子类覆盖对象的默认构造函数**</font>。
+
+> 👀 具体使用参见补充的 [[#`get Array[@@species]`]]
 
 摘自：[MDN - Symbol.species](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species)
 
 > 💡 补充
 
-#### get Array[@@species]
+##### `get Array[@@species]`
 
-<font color=FF0000>**Array[@@species] 访问器属性**</font> <font color=FF0000>返回 Array 的 **构造函数**</font>。
+<font color=FF0000>**`Array[@@species]` 访问器属性**</font> <font color=FF0000>返回 Array 的 **构造函数**</font>。
 
-**语法**
+###### 语法
 
 ```js
 Array[Symbol.species]
@@ -11241,11 +11402,11 @@ Array[Symbol.species]
 
 <font color=FF0000>Array 的构造函数</font>。
 
-##### 描述
+###### 描述
 
 species 访问器属性返回 Array 对象的默认构造函数。<font color=FF0000>子类的构造函数可能会覆盖并改变构造函数的赋值</font>。
 
-##### 示例
+###### 示例
 
 species 属性返回默认构造函数，它用于 Array 对象的构造函数 Array：
 
@@ -11266,13 +11427,11 @@ class MyArray extends Array {
 
 摘自：[MDN - get Array[@@species]](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/@@species)
 
-**类似的还有：**get Map[@@species]、get Set[@@species]、get TypedArray[@@species]、get ArrayBuffer[@@species]、get RegExp[@@species]
+**类似的还有：**`get Map[@@species] `、`get Set[@@species]` 、`get TypedArray[@@species]` 、`get ArrayBuffer[@@species]` 、`get RegExp[@@species]`
 
+##### Symbol.match
 
-
-#### Symbol.match
-
-Symbol.match <font color=FF0000>指定了 匹配的是 正则表达式 而不是 字符串</font>。<font color=FF0000>**String.prototype.match() 方法会调用此函数**</font>。示例如下：
+`Symbol.match` <font color=FF0000>指定了 匹配的是 正则表达式 而不是 字符串</font>。<font color=FF0000>**`String.prototype.match()` 方法会调用此函数**</font>。示例如下：
 
 ```js
 const regexp1 = /foo/;
@@ -11287,15 +11446,15 @@ console.log('/foo/'.startsWith(regexp1)); // expected output: true
 console.log('/baz/'.endsWith(regexp1)); // expected output: false
 ```
 
-##### 描述
+###### 描述
 
-此函数还用于标识对象是否具有正则表达式的行为。<font color=FF0000>比如， String.prototype.startsWith()，String.prototype.endsWith() 和 String.prototype.includes() **这些方法会检查其第一个参数是否是正则表达式，是正则表达式就抛出一个TypeError**</font>。现在，<font color=FF0000>如果 match symbol 设置为 false（ <font size=4>**或者一个 假值 falsy**</font> ）</font>，就表示该对象不打算用作正则表达式对象。
+此函数还用于标识对象是否具有正则表达式的行为。<font color=FF0000>比如，`String.prototype.startsWith()` ，`String.prototype.endsWith()` 和 `String.prototype.includes()` **这些方法会检查其第一个参数是否是正则表达式，是正则表达式就抛出一个 TypeError**</font>。现在，<font color=FF0000>如果 match symbol 设置为 false（ <font size=4>**或者一个 假值 falsy**</font> ）</font>，就表示该对象不打算用作正则表达式对象。
 
 摘自：[MDN - Symbol.match](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/match)
 
-#### Symbol.replace
+##### Symbol.replace
 
-Symbol.replace 这个属性 <font color=FF0000>指定了当一个字符串替换所匹配字符串时所调用的方法</font>。String.prototype.replace() 方法会调用此方法。示例如下：
+`Symbol.replace` 这个属性 <font color=FF0000>指定了当一个字符串替换所匹配字符串时所调用的方法</font>。`String.prototype.replace()` 方法会调用此方法。示例如下：
 
 ```js
 class Replace1 {
@@ -11306,15 +11465,15 @@ class Replace1 {
 console.log('foo'.replace(new Replace1('bar'))); // expected output: "s/foo/bar/g" 注：'bar'外面封装了一层new Replace1
 ```
 
-更多信息， 详见 RegExp.prototype\[@@replace]() 和 String.prototype.replace()。
+更多信息， 详见 `RegExp.prototype[@@replace]()` 和 `String.prototype.replace()` 。
 
 摘自：[MDN - Symbol.replace](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/replace)
 
-#### Symbol.split
+##### Symbol.split
 
-Symbol.split <font color=FF0000>指向 一个 <font size=4>**正则表达式的索引处**</font> 分割字符串的方法</font>。 这个方法<font color=FF0000>通过 String.prototype.split() 调用</font>。
+`Symbol.split` <font color=FF0000>指向 一个 <font size=4>**正则表达式的索引处**</font> 分割字符串的方法</font>。 这个方法<font color=FF0000>通过 `String.prototype.split()` 调用</font>。
 
-> 👀 这里表达有点问题，感觉应该是 String.prototype.split() 会调用 Symbol.split
+> 👀 这里表达有点问题，感觉应该是 `String.prototype.split()` 会调用 `Symbol.split`
 
 ```js
 class Split1 {
@@ -11328,17 +11487,19 @@ class Split1 {
 console.log('foobar'.split(new Split1('foo'))); // expected output: "foo/bar"
 ```
 
-详情请参阅RegExp.prototype\[@@split]() 和String.prototype.split().
+详情请参阅 `RegExp.prototype[@@split]()` 和 `String.prototype.split()` 
 
 摘自：[MDN - Symbol.split](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/split)
 
-#### Symbol.toStringTag
+##### Symbol.toStringTag
 
-Symbol.toStringTag 是一个内置 symbol，它 <font color=FF0000>通常作为对象的属性键使用</font>，<font color=FF0000>对应的属性值应该为字符串类型</font>，<font color=FF0000>这个字符串用来表示该对象的自定义类型标签</font>，通常只有内置的 Object.prototype.toString() 方法会去读取这个标签并把它包含在自己的返回值里。
+`Symbol.toStringTag` 是一个内置 symbol，它 <font color=FF0000>通常作为对象的属性键使用</font>，<font color=FF0000>对应的属性值应该为字符串类型</font>，<font color=FF0000>这个字符串用来表示该对象的自定义类型标签</font>，通常只有内置的 `Object.prototype.toString()` 方法会去读取这个标签并把它包含在自己的返回值里。
 
-> 👀  这里说成：使用 Object.prototype.toString() 方法时，会自动调用 Symbol.toStringTag，似乎更好；否则太让人费解了...
+> 👀  这里说成：使用 `Object.prototype.toString()` 方法时，会自动调用 `Symbol.toStringTag` ，似乎更好；否则太让人费解了...
 
-**描述：**<font color=FF0000 size=4>**许多内置的 JavaScript 对象类型即便没有 toStringTag 属性，也能被 toString() 方法识别并返回特定的类型标签**</font>，比如，另外，注意下面的用法，使用 call 确实很巧妙
+###### 描述
+
+<font color=FF0000 size=4>**许多内置的 JavaScript 对象类型即便没有 `toStringTag` 属性，也能被 `toString()` 方法识别并返回特定的类型标签**</font>，比如，另外，注意下面的用法，使用 call 确实很巧妙
 
 ```js
 Object.prototype.toString.call('foo');     // "[object String]"
@@ -11350,7 +11511,7 @@ Object.prototype.toString.call(null);      // "[object Null]"
 // ... and more
 ```
 
-<font color=FF0000>另外一些对象类型则不然，toString() 方法能识别它们是因为引擎为它们设置好了 toStringTag 标签</font>：
+<font color=FF0000>另外一些对象类型则不然，`toString()` 方法能识别它们是因为引擎为它们设置好了 `toStringTag` 标签</font>：
 
 ```js
 Object.prototype.toString.call(new Map());         // "[object Map]"
@@ -11359,7 +11520,7 @@ Object.prototype.toString.call(Promise.resolve()); // "[object Promise]"
 // ... and more
 ```
 
-但你自己创建的类（👀 不是内建类）不会有这份特殊待遇，toString() 找不到 toStringTag 属性时只好返回默认的 Object 标签：
+但你自己创建的类（👀 不是内建类）不会有这份特殊待遇，`toString()` 找不到 `toStringTag` 属性时只好返回默认的 Object 标签：
 
 ```js
 class ValidatorClass {}
@@ -11367,11 +11528,11 @@ class ValidatorClass {}
 Object.prototype.toString.call(new ValidatorClass()); // "[object Object]"
 ```
 
-加上 toStringTag 属性，你的类也会有自定义的类型标签了：
+加上 `toStringTag` 属性，你的类也会有自定义的类型标签了：
 
 ```js
 class ValidatorClass {
-  get [Symbol.toStringTag]() { return "Validator"; } // 注：注意这里的 get 方法，get [Symbol.species]()也有用到
+  get [Symbol.toStringTag]() { return "Validator"; } // 👀 注意这里的 get 方法，get [Symbol.species]()也有用到
 }
 
 Object.prototype.toString.call(new ValidatorClass()); // "[object Validator]"
@@ -11381,7 +11542,7 @@ Object.prototype.toString.call(new ValidatorClass()); // "[object Validator]"
 
 > 💡 这里说的不太清楚，可以参见 [阮一峰的 ECMAScript 6 入门 - Symbol - Symbol.toStringTag](https://es6.ruanyifeng.com/#docs/symbol#Symbol-toStringTag)
 
-对象的 Symbol.toStringTag 属性，指向一个方法。在该对象上面调用 Object.prototype.toString 方法时，如果这个属性存在，它的返回值会出现在 toString 方法返回的字符串之中，表示对象的类型。也就是说，这个属性可以用来定制 [object Object] 或 [object Array] 中 object 后面的那个字符串。
+对象的 `Symbol.toStringTag` 属性，指向一个方法。在该对象上面调用 `Object.prototype.toString` 方法时，如果这个属性存在，它的返回值会出现在 toString 方法返回的字符串之中，表示对象的类型。也就是说，这个属性可以用来定制 `[object Object]` 或 `[object Array]` 中 object 后面的那个字符串。
 
 ```javascript
 // 例一
@@ -11395,50 +11556,53 @@ let x = new Collection();
 Object.prototype.toString.call(x) // "[object xxx]"
 ```
 
-ES6 新增内置对象的 Symbol.toStringTag 属性值如下。
+ES6 新增内置对象的 `Symbol.toStringTag` 属性值如下。
 
-- **JSON[Symbol.toStringTag]：**'JSON'
-- **Math[Symbol.toStringTag]：**'Math'
-- **Module 对象 M[Symbol.toStringTag]：**'Module'
-- **ArrayBuffer.prototype[Symbol.toStringTag]：**'ArrayBuffer'
-- **DataView.prototype[Symbol.toStringTag]：**'DataView'
-- **Map.prototype[Symbol.toStringTag]：**'Map'
-- **Promise.prototype[Symbol.toStringTag]：**'Promise'
-- **Set.prototype[Symbol.toStringTag]：**'Set'
-- **%TypedArray%.prototype[Symbol.toStringTag]：**'Uint8Array'等
-- **WeakMap.prototype[Symbol.toStringTag]：**'WeakMap'
-- **WeakSet.prototype[Symbol.toStringTag]：**'WeakSet'
-- **%MapIteratorPrototype%[Symbol.toStringTag]：**'Map Iterator'
-- **%SetIteratorPrototype%[Symbol.toStringTag]：**'Set Iterator'
-- **%StringIteratorPrototype%[Symbol.toStringTag]：**'String Iterator'
-- **Symbol.prototype[Symbol.toStringTag]：**'Symbol'
-- **Generator.prototype[Symbol.toStringTag]：**'Generator'
-- **GeneratorFunction.prototype[Symbol.toStringTag]：**'GeneratorFunction'
+- **`JSON[Symbol.toStringTag]`** ：'JSON'
+- **`Math[Symbol.toStringTag]`** ：'Math'
+- **Module 对象 `M[Symbol.toStringTag]`**：'Module'
+- **`ArrayBuffer.prototype[Symbol.toStringTag]`** ：'ArrayBuffer'
+- **`DataView.prototype[Symbol.toStringTag]`** ：'DataView'
+- **`Map.prototype[Symbol.toStringTag]`** ：'Map'
+- **`Promise.prototype[Symbol.toStringTag]`** ：'Promise'
+- **`Set.prototype[Symbol.toStringTag]`** ：'Set'
+- **`%TypedArray%.prototype[Symbol.toStringTag]`** ：'Uint8Array' 等
+- **`WeakMap.prototype[Symbol.toStringTag]`** ：'WeakMap'
+- **`WeakSet.prototype[Symbol.toStringTag]`** ：'WeakSet'
+- **`%MapIteratorPrototype%[Symbol.toStringTag]`** ：'Map Iterator'
+- **`%SetIteratorPrototype%[Symbol.toStringTag]`** ：'Set Iterator'
+- **`%StringIteratorPrototype%[Symbol.toStringTag]`** ：'String Iterator'
+- **`Symbol.prototype[Symbol.toStringTag]`** ：'Symbol'
+- **`Generator.prototype[Symbol.toStringTag]`** ：'Generator'
+- **`GeneratorFunction.prototype[Symbol.toStringTag]`** ：'GeneratorFunction'
 
 > 💡 上面类似的还有：
 >
-> - **globalThis[Symbol.toStringTag] /  window[Symbol.toStringTag]：**'global' / 'window'
-> - **XMLHttpRequest.prototype[Symbol.toStringTag]：**'XMLHttpRequest'
+> - **`globalThis[Symbol.toStringTag]`** : 'global'
+> - **`window[Symbol.toStringTag]`**  ：'window'
+> - **`XMLHttpRequest.prototype[Symbol.toStringTag]`** ：'XMLHttpRequest'
 
 摘自： [阮一峰的 ECMAScript 6 入门 - Symbol - Symbol.toStringTag](https://es6.ruanyifeng.com/#docs/symbol#Symbol-toStringTag)
 
-##### toString 和 typeof、instanceof 的对比
+> 💡 补充
+>
+> ##### toString 和 typeof、instanceof 的对比
+>
+> | 操作          | 用于                                                         | 返回值       |
+> | :------------ | :----------------------------------------------------------- | :----------- |
+> | typeof        | 原始数据类型                                                 | string       |
+> | `{}.toString` | 原始数据类型，内建对象，包含 `Symbol.toStringTag` 属性的对象 | string       |
+> | instanceof    | 对象                                                         | true / false |
+>
+> 正如我们所看到的，<font color=FF0000>从技术上讲，toString 是一种“更高级的” typeof</font>。
+>
+> toString 就类似于“磕了药似的 typeof”，不仅能检查原始数据类型，而且适用于内建对象，更可贵的是还支持自定义。所以，如果我们想要获取内建对象的类型，并希望把该信息以字符串的形式返回，而不只是检查类型的话，我们可以用 `{}.toString.call` 替代 instanceof
+>
+> 摘自：[现代JS教程 - 类检查："instanceof"](https://zh.javascript.info/instanceof)
 
-| 操作        | 用于                                                       | 返回值       |
-| :---------- | :--------------------------------------------------------- | :----------- |
-| typeof      | 原始数据类型                                               | string       |
-| {}.toString | 原始数据类型，内建对象，包含 Symbol.toStringTag 属性的对象 | string       |
-| instanceof  | 对象                                                       | true / false |
+##### Symbol.toPrimitive
 
-正如我们所看到的，<font color=FF0000>从技术上讲，toString 是一种“更高级的” typeof</font>。
-
-toString 就类似于“磕了药似的 typeof”，不仅能检查原始数据类型，而且适用于内建对象，更可贵的是还支持自定义。所以，如果我们想要获取内建对象的类型，并希望把该信息以字符串的形式返回，而不只是检查类型的话，我们可以用 {}.toString.call 替代 instanceof
-
-摘自：[现代JS教程 - 类检查："instanceof"](https://zh.javascript.info/instanceof)
-
-#### Symbol.toPrimitive
-
-Symbol.toPrimitive 是一个内置的 Symbol 值，它 是作为对象的函数值属性存在的，<font color=FF0000 size=4>**当一个对象转换为对应的原始值时，会调用此函数**</font>。示例如下：
+`Symbol.toPrimitive` 是一个内置的 Symbol 值，它是作为对象的函数值属性存在的，<font color=FF0000 size=4>**当一个对象转换为对应的原始值时，会调用此函数**</font>。示例如下：
 
 ```js
 const object1 = {
@@ -11450,7 +11614,7 @@ const object1 = {
 console.log(+object1); // expected output: 42
 ```
 
-**描述：**<font color=FF0000 size=4>**在 Symbol.toPrimitive 属性（用作函数值）的帮助下，一个对象可被转换为原始值**</font>。<font color=FF0000>**该函数被调用时，会被传递一个字符串参数 hint ，表示要转换到的原始值的预期类型**</font>。<font color=FF0000>hint 参数的取值是 "number"、"string" 和 "default" 中的任意一个</font>。
+**描述：**<font color=FF0000 size=4>**在 `Symbol.toPrimitive` 属性（用作函数值）的帮助下，一个对象可被转换为原始值**</font>。<font color=FF0000>**该函数被调用时，会被传递一个字符串参数 hint ，表示要转换到的原始值的预期类型**</font>。<font color=FF0000>hint 参数的取值是 "number"、"string" 和 "default" 中的任意一个</font>。
 
 > 💡 这里的 hint 是：
 >
@@ -11458,9 +11622,11 @@ console.log(+object1); // expected output: 42
 > >
 > > 摘自：[Understanding JavaScript type conversions](https://dev.to/antonmelnyk/understanding-javascript-type-conversions-43n)
 
-更多的，可以参见上面 Object.prototype.valueOf() 和 Object.prototype.toString() 的内容。
+更多的，可以参见上面 `Object.prototype.valueOf()` 和 `Object.prototype.toString()` 的内容。
 
-**示例：**下面的例子展示了， Symbol.toPrimitive 属性是如何干扰一个对象转换为原始值时输出的结果的。
+###### 示例
+
+下面的例子展示了， `Symbol.toPrimitive` 属性是如何干扰一个对象转换为原始值时输出的结果的。
 
 ```js
 // 一个没有提供 Symbol.toPrimitive 属性的对象，参与运算时的输出结果
@@ -11483,9 +11649,9 @@ console.log(obj2 + ""); // "true"  -- hint 参数值是 "default"
 
 摘自：[MDN - Symbol.toPrimitive](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toPrimitive) 另外，关于对象的初始值转换可以参看：[现代JS教程 - 对象 — 原始值转换](https://zh.javascript.info/object-toprimitive)，另外，其中也有关于 hint 的三种类型（number、string、default）使用更易懂的解释
 
-#### Symbol.isConcatSpreadable
+##### Symbol.isConcatSpreadable
 
-内置的 Symbol.isConcatSpreadable 符号<font color=FF0000>用于配置某对象作为 Array.prototype.concat() 方法的参数时是否展开其数组元素</font>。示例如下，注意下面numeric的 Symbol.isConcatSpreadable 属性值 被设置为 false 后，再使用 concat 的效果。
+内置的 `Symbol.isConcatSpreadable` 符号<font color=FF0000>用于配置某对象作为 `Array.prototype.concat()` 方法的参数时是否展开其数组元素</font>。示例如下，注意下面 numeric 的 `Symbol.isConcatSpreadable` 属性值 被设置为 false 后，再使用 concat 的效果。
 
 ```js
 const alpha = ['a', 'b', 'c'];
@@ -11500,11 +11666,13 @@ alphaNumeric = alpha.concat(numeric);
 console.log(alphaNumeric); // expected output: Array ["a", "b", "c", Array [1, 2, 3]]
 ```
 
-**描述：**@@isConcatSpreadable 符号 (Symbol.isConcatSpreadable) <font color=FF0000>可以直接定义为 对象属性 或 继承而来，它是 **布尔类型**</font>。它 <font color=FF0000>可以控制 数组 或 类似数组 (array-like) 的对象的行为</font>：
+###### 描述
 
-- 对于数组对象，默认情况下：用于concat时，会按数组元素展开然后进行连接（数组元素作为新数组的元素）。重置Symbol.isConcatSpreadable 可以改变默认行为。
+`@@isConcatSpreadable` 符号 ( `Symbol.isConcatSpreadable` ) <font color=FF0000>可以直接定义为 对象属性 或 继承而来，它是 **布尔类型**</font>。它 <font color=FF0000>可以控制 数组 或 类似数组 (array-like) 的对象的行为</font>：
 
-- 对于类似数组的对象，用于 concat 时，该对象整体作为新数组的元素，重置 Symbol.isConcatSpreadable 可改变默认行为。如下：
+- 对于数组对象，默认情况下：用于concat时，会按数组元素展开然后进行连接（数组元素作为新数组的元素）。重置`Symbol.isConcatSpreadable` 可以改变默认行为。
+
+- 对于类似数组的对象，用于 concat 时，该对象整体作为新数组的元素，重置 `Symbol.isConcatSpreadable` 可改变默认行为。如下
 
   ```js
   var x = [1, 2, 3];
@@ -11520,21 +11688,21 @@ console.log(alphaNumeric); // expected output: Array ["a", "b", "c", Array [1, 2
 
 摘自：[MDN - Symbol.isConcatSpreadable](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/isConcatSpreadable)
 
-#### Symbol.hasInstance
+##### Symbol.hasInstance
 
-Symbol.hasInstance <font color=FF0000>用于判断某对象是否为某构造器的实例</font>。因此你可以用它自定义 instanceof 操作符在某个类上的行为。
+`Symbol.hasInstance` <font color=FF0000>用于判断某对象是否为某构造器的实例</font>。因此你可以用它自定义 `instanceof` 操作符在某个类上的行为。
 
-注：自己的理解，Symbol.hasInstance 可以用来自定义 instanceof 运算符的行为。
+> 👀 自己的理解，`Symbol.hasInstance` 可以用来自定义 `instanceof` 运算符的行为。
 
 摘自：[MDN - Symbol.hasInstance](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/hasInstance)
 
-对象的 Symbol.hasInstance属性，指向一个内部方法。<font color=FF0000>当其他对象使用 instanceof 运算符，判断是否为该对象的实例时，会调用这个方法</font>。<font color=LightSeaGreen>比如，foo instanceof Foo 在语言内部，实际调用的是 `Foo[Symbol.hasInstance](foo)`</font>。
+对象的 `Symbol.hasInstance` 属性，指向一个内部方法。<font color=FF0000>当其他对象使用 instanceof 运算符，判断是否为该对象的实例时，会调用这个方法</font>。<font color=LightSeaGreen>比如，`foo instanceof Foo` 在语言内部，实际调用的是 `Foo[Symbol.hasInstance](foo)`</font>。
 
 摘自：[JavaScript ES6 Symbol.hasInstance的理解](https://www.cnblogs.com/waitforyou/p/7080591.html)
 
-#### Symbol.unscopables
+##### Symbol.unscopables
 
-Symbol.unscopables 指 <font color=FF0000>用于指定对象值，其对象自身和继承的从关联对象的 with 环境绑定中排除的属性名称</font>。示例如下：
+`Symbol.unscopables` 指 <font color=FF0000>用于指定对象值，其对象自身和继承的从关联对象的 with 环境绑定中排除的属性名称</font>。示例如下：
 
 ```js
 const object1 = { property1: 42 };
@@ -11546,49 +11714,50 @@ with (object1) {
 }
 ```
 
-##### 描述
+###### 描述
 
-可以在任何对象上定义 @@unscopables symbol ( Symbol.unscopables )，用于排除属性名称并与 with 环境绑定在一起作为词法变量公开。 请注意，如果使用 Strict mode，语句将不可用，并且可能也不需要 symbol。
+可以在任何对象上定义 `@@unscopables symbol` ( `Symbol.unscopables` )，用于排除属性名称并与 with 环境绑定在一起作为词法变量公开。 请注意，如果使用 Strict mode，语句将不可用，并且可能也不需要 symbol。
 
-在 unscopables 对象上设置属性为 true（👀 根据 Symbol.match 中的特性，如果值为 falsy，则表示该对象不打算用作正则表达式对象。类似的，也经过测试，发现这里属性值为 truthy，则... ），将使其 unscopable 并且因此该属性也将不会在词法环境变量中出现。 如果设置属性为 false ，则将使其可 scopable 并且该属性会出现在词法环境变量中。
+在 unscopables 对象上设置属性为 true（👀 根据 `Symbol.match` 中的特性，如果值为 falsy，则表示该对象不打算用作正则表达式对象。类似的，也经过测试，发现这里属性值为 truthy，则... ），将使其 `unscopable` 并且因此该属性也将不会在词法环境变量中出现。 如果设置属性为 false ，则将使其可 scopable 并且该属性会出现在词法环境变量中。
 
-##### 示例
+###### 示例
 
-下列的代码可兼容 ES5 及以下版本。然而，在 ES6 或其后续版本中，Array.prototype.keys() 方法才会出现。意味着内部 with 环境“关键字” 存在该方法，但变量中不会存在。 也就是说，当 unscopables symbol 被展示时，内置的unscopables设置是由 Array.prototype[@@unscopables\] 展示并实现的， 一些 Array 的方法 将作为 scoped 放入 with语句中。
+下列的代码可兼容 ES5 及以下版本。然而，在 ES6 或其后续版本中，`Array.prototype.keys()` 方法才会出现。意味着内部 with 环境“关键字” 存在该方法，但变量中不会存在。 也就是说，当 unscopables symbol 被展示时，内置的 `unscopables` 设置是由 `Array.prototype[@@unscopables]` 展示并实现的， 一些 Array 的方法 将作为 scoped 放入 with语句中。
 
 ```js
 var keys = [];
-with(Array.prototype) { keys.push("something"); } // 注：如果不加上这行代码，似乎代码也可以运行...
+with(Array.prototype) { keys.push("something"); } // 👀 如果不加上这行代码，似乎代码也可以运行...
 
 Object.keys(Array.prototype[Symbol.unscopables]);
 // ['copyWithin', 'entries', 'fill', 'find', 'findIndex', 'flat', 'flatMap', 'includes', 'keys', 'values', 'at']
 ```
 
-👀 可以尝试下打印 `Array.prototype[Symbol.unscopables]` 的结果：
-
-```js
-[Object: null prototype] {
-  copyWithin: true,
-  entries: true,
-  fill: true,
-  find: true,
-  findIndex: true,
-  flat: true,
-  flatMap: true,
-  includes: true,
-  keys: true,
-  values: true,
-  at: true
-}
-```
-
-所以上面的 `Object.keys(Array.prototype[Symbol.unscopables])` 的结果，也不意外。
+> 👀 可以尝试下打印 `Array.prototype[Symbol.unscopables]` 的结果：
+>
+> ```js
+> [Object: null prototype] {
+>   copyWithin: true,
+>   entries: true,
+>   fill: true,
+>   find: true,
+>   findIndex: true,
+>   flat: true,
+>   flatMap: true,
+>   includes: true,
+>   keys: true,
+>   values: true,
+>   at: true
+> }
+> ```
+>
+> 所以上面的 `Object.keys(Array.prototype[Symbol.unscopables])` 的结果，也不意外。
+>
 
 **也可以为你自己的对象设置 unscopables：**
 
 ```js
 var obj = { foo: 1, bar: 2 };
-obj[Symbol.unscopables] = { foo: false, bar: true }; // 注：即在这里设置
+obj[Symbol.unscopables] = { foo: false, bar: true }; // 👀 即在这里设置
 
 with(obj) {
   console.log(foo); // 1
@@ -11597,8 +11766,6 @@ with(obj) {
 ```
 
 摘自：[MDN - Symbol.unscopables](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/unscopables)
-
-
 
 #### Symbol.for()
 
@@ -11620,7 +11787,7 @@ Symbol.for(key);
 
 ##### 描述
 
-和 <font color=FF0000>Symbol() 不同的是，（ Symbol() ）用 Symbol.for() 方法创建的的 symbol 会被放入一个全局 symbol 注册表中</font>。<font color=LightSeaGreen>Symbol.for() 并不是每次都会创建一个新的 symbol，它会首先检查给定的 key 是否已经在注册表中了。假如是，则会直接返回上次存储的那个。否则，它会再新建一个</font>。
+和 <font color=FF0000>`Symbol()` 不同的是，（ `Symbol()` ）用 `Symbol.for()` 方法创建的的 symbol 会被放入一个全局 symbol 注册表中</font>。<font color=LightSeaGreen>`Symbol.for()` 并不是每次都会创建一个新的 symbol，它会首先检查给定的 key 是否已经在注册表中了。假如是，则会直接返回上次存储的那个。否则，它会再新建一个</font>。
 
 ##### 全局 symbol 注册表
 
@@ -11669,7 +11836,7 @@ sym：必选参数，需要查找键值的某个 Symbol 。
 
 ###### 返回值
 
-<mark>如果全局注册表中查找到该 symbol，则返回该 symbol 的 key 值，返回值为字符串类型。否则返回 undefined</mark>
+<font color=LightSeaGreen>如果全局注册表中查找到该 symbol，则返回该 symbol 的 key 值，返回值为字符串类型。否则返回 undefined</font>
 
 摘自：[MDN - Symbol.keyFor()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/keyFor)
 
