@@ -227,6 +227,12 @@ vConsole.destroy();
 
 
 
+#### 上传打包
+
+环境管理：https://mp.weixin.qq.com
+
+
+
 ### 需求与方法
 
 #### 父子组件间方法调用

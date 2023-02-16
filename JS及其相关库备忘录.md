@@ -68,8 +68,18 @@ element.outerHTML = content;
 ##### JS 命名规则
 
 - 变量<font color=FF0000>必须以字母开头</font>
-- 变量也能以 $ 和 _ 符号开头（不过我们不推荐这么做）
+- 变量也能以 `$` 和 `_` 符号开头（不过我们不推荐这么做）
 - 变量名称<font color=FF0000>对大小写敏感</font>（ y 和 Y 是不同的变量）
+
+##### var 和 non-var 的变量
+
+`var foo = 10` 只是定义了一个变量，可以通过 `window.foo` 访问；但它无法被 delete 删除掉（因为它不是 window 的属性，能打印出来似乎是 JS 设计的问题）
+
+不加上 var / let / const 的 `bar = 20`，则是在 window 对象下加了一个 `bar` 属性（可以打印出 `window.bar` ），且可以被 delete 删除掉（ `delete bar` 返回 true ）
+
+学习自：[再学JavaScript ES(6-11)全版本语法大全](https://coding.imooc.com/class/444.html)
+
+
 
 #### JavaScript 数据类型
 
@@ -87,19 +97,24 @@ Undefined 这个值表示变量不含有值。
 
 可以通过将变量的值设置为 null 来清空变量。
 
-##### 补充
+###### 区别
 
-`var foo = 10` 只是定义了一个变量，可以通过 window.foo 访问；但它无法被 delete 删除掉（因为它不是 window 的属性，能打印出来似乎是 JS 设计的问题）
+```js
+typeof undefined             // undefined
+typeof null                  // object
+null === undefined           // false
+null == undefined            // true
+```
 
-不加上 var / let / const 的 `bar = 20`，则是在 window 对象下加了一个bar属性（可以打印出 window.bar ），且可以被 delete 删除掉（ `delete bar` 返回 true ）
-
-学习自：[再学JavaScript ES(6-11)全版本语法大全](https://coding.imooc.com/class/444.html)
+> 💡 补充
+>
+> undefined 和 null 的关系还可以看下： [[#空值合并运算符]] 中的 “注”，都是空值；还有 [[前端面试点总结#undefined 和 null 的区别]]
 
 
 
 #### JavaScript 事件
 
-##### 一些常见的HTML事件的列表
+##### 一些常见的 HTML 事件的列表
 
 | 事件        | 描述                           |
 | :---------- | :----------------------------- |
@@ -118,9 +133,11 @@ onfocus ( focus ) -> 键盘输入 -> onkeydown ( keydown )  -> onkeypress ( keyp
 
 摘自：[input输入框事件](https://www.jianshu.com/p/4517117abd8e)
 
+
+
 #### JavaScript 字符串
 
-**字符串中可以使用转义字符转义的特殊字符：**
+##### 字符串中可以使用转义字符转义的特殊字符
 
 | 代码  | 输出       |
 |:---:|:--------:|
@@ -133,7 +150,7 @@ onfocus ( focus ) -> 键盘输入 -> onkeydown ( keydown )  -> onkeypress ( keyp
 | \b  | 退格符      |
 | \f  | 换页符      |
 
-<font color=FF0000>**字符串属性**</font>
+##### 字符串属性
 
 | 属性                                   | 描述                                              |
 |:------------------------------------:|:-----------------------------------------------:|
@@ -175,7 +192,9 @@ onfocus ( focus ) -> 键盘输入 -> onkeydown ( keydown )  -> onkeypress ( keyp
 
 ##### 标签函数
 
-> 👀 **2022/8/23** **注**：当时读 “模板字符串” 中文版 MDN，没有找到“标签函数”相关内容。今天正好碰见 “TaggedTemplateExpression” 这个 ECMAScript Spec 的概念，搜索其含义时，才发现英文版 MDN 是有这部分内容的：见 [MDN - Template literals (Template strings) # Tagged templates](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates)
+> 👀 **2022/8/23** **注**
+>
+> 当时读 “模板字符串” 中文版 MDN，没有找到“标签函数”相关内容。今天正好碰见 “TaggedTemplateExpression” 这个 ECMAScript Spec 的概念，搜索其含义时，才发现英文版 MDN 是有这部分内容的：见 [MDN - Template literals (Template strings) # Tagged templates](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates)
 
 标签函数的语法是函数名后面直接带一个模板字符串，并从模板字符串中的插值表达式中获取参数，举个例子。
 
@@ -1887,16 +1906,7 @@ typeof null                   // 返回 object
 >
 > 这是因为 `Promise !== undefined` 可能会有 throw Error，可能导致程序报错（虽然可以 try catch，不过也很麻烦了）；而 `typeof Promise !== 'undefined'` 不会报错。如下示例：
 >
-> <img src="/Users/yan/Library/Application Support/typora-user-images/image-20230215164934038.png" alt="image-20230215164934038" style="zoom:50%;" />
-
-##### undefined 和 null 的区别
-
-```js
-typeof undefined             // undefined
-typeof null                  // object
-null === undefined           // false
-null == undefined            // true
-```
+> <img src="https://s2.loli.net/2023/02/16/EcANQsBIUaWLS7J.png" alt="image-20230215164934038" style="zoom:50%;" />
 
 
 
@@ -3742,7 +3752,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                         
+  >                                                                                                                                                                                                                                                           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3761,7 +3771,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                                         
+  >                                                                                                                                                                                                                                                           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -11150,7 +11160,7 @@ class AbstractClass {
 
 > 💡 一点补充
 >
-> 在看 [在vue中为什么不推荐用 index 做 key](http://zoo.zhengcaiyun.cn/blog/article/vue-index) 时，最后推荐可以使用 UUID 或者 symbol 作为 key；确实让人耳目一新；不过不确定是否可行，就去问了群友；群友在说 symbol 不合适的原因：
+> 在看 [在vue中为什么不推荐用 index 做 key](http://zoo.zhengcaiyun.cn/blog/article/vue-index) （笔记见 [[Vue原理与实现#《在vue中为什么不推荐用 index 做 key》笔记]]）时，最后推荐可以使用 UUID 或者 symbol 作为 key；确实让人耳目一新；不过不确定是否可行，就去问了群友；群友在说 symbol 不合适的原因（symbol 正常情况下无法被遍历到）时，说了这样一句话：
 >
 > > 印象里 symbol 本来设计的时候是打算实现私有属性的
 >
@@ -14007,13 +14017,13 @@ func?.(args)
 
 #### 空值合并运算符
 
-> ES2020 特性
+> 💡 ES2020 特性
 
 空值合并操作符 ( `??` ) 是一个逻辑操作符，<font color=FF0000>**当 <font size=4>左侧</font> 的操作数为 null 或者 undefined 时**</font>，<font color=FF0000>返回其右侧操作数，否则返回左侧操作数</font>。
 
 与逻辑或操作符 ( `||` ) 不同，逻辑或操作符会在左侧操作数为假值时返回右侧操作数。也就是说，<font color=FF0000>如果使用 `||` 来为某些变量设置默认值，可能会遇到意料之外的行为。比如为假值（例如，`''` 或 0）时</font>。
 
-> 👀 注：使用 `||` 会出现 falsy值 的问题，而其中部分 falsy值 是不想它被 隐式转换 的
+> 👀 使用 `||` 会出现 falsy值 的问题，而其中部分 falsy值 是不想它被 隐式转换 的
 
 ##### 使用场景
 

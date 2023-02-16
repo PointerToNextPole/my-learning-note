@@ -46,7 +46,7 @@
 
 - **retrieve**：检索，获取
 
-- **decoupled**：解耦的，decouple ( verb )
+- **decoupled**：解耦的，decouple ( verb )。coupled 耦合的
 
 - **critical**：关键的。一般见：关键渲染路径 ( Critical Rendering Path ) 。虽然更常见的翻译是 “批评性的”
 
@@ -481,6 +481,14 @@
 - **heuristic** ：启发式
 
 - **pragmatic** ：实用的
+
+- **detach** ：使...分离。这个词是在 [Vue3 rfc - reactivity-effect-scope](https://github.com/vuejs/rfcs/blob/master/active-rfcs/0041-reactivity-effect-scope.md) 中看见的：
+
+  > It also provides the functionality to create "detached" effects from the component's `setup()` scope or user-defined scope.
+
+  另外，docker 中也有 detached mode。
+
+- **pitfall** ：陷阱
 #### 术语的英文
 
 - **埋点**：Event Tracking
