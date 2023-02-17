@@ -489,6 +489,11 @@
   另外，docker 中也有 detached mode。
 
 - **pitfall** ：陷阱
+
+- **outline** ：轮廓。outline 是一种 CSS 属性
+
+
+
 #### 术语的英文
 
 - **埋点**：Event Tracking

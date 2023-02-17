@@ -3865,66 +3865,72 @@ clip-path CSS 属性<font color=FF0000>使用裁剪方式创建元素的可显�
 
 CSS3 渐变（gradients）可以让你在两个或多个指定的颜色之间显示平稳的过渡。
 
-CSS3 定义了两种类型的渐变（gradients）：
+CSS3 定义了两种类型的渐变 ( gradients )：
 
-- **线性渐变（Linear Gradients）**- 向下/向上/向左/向右/对角方向
+##### 线性渐变 ( Linear Gradients )
 
-  语法
+向下/向上/向左/向右/对角方向
 
-  ```css
-  background-image: linear-gradient(direction, color-stop1, color-stop2, ...);
-  ```
+###### 语法
 
-  - **可以使用预定义方向**（to bottom、to top、to right、to left、to bottom right，等等）
+```css
+background-image: linear-gradient(direction, color-stop1, color-stop2, ...);
+```
 
-    **示例：**
+**可以使用预定义方向**（to bottom、to top、to right、to left、to bottom right，等等）
 
-    ```css
-    /*演示了从左上角开始（到右下角）的线性渐变。起点是红色，慢慢过渡到黄色：*/
-    #grad {
-      height: 200px;
-      background-image: linear-gradient(to bottom right, red, yellow);
-    }
-    ```
+###### 示例
 
-  - **使用角度**
+```css
+/*演示了从左上角开始（到右下角）的线性渐变。起点是红色，慢慢过渡到黄色：*/
+#grad {
+  height: 200px;
+  background-image: linear-gradient(to bottom right, red, yellow);
+}
+```
 
-    如果你想要在渐变的方向上做更多的控制，你可以定义一个角度，而不用预定义方向（to bottom、to top、to right、to left、to bottom right，等等）。
+##### 使用角度
 
-    **语法**
+如果你想要在渐变的方向上做更多的控制，你可以定义一个角度，而不用预定义方向（to bottom、to top、to right、to left、to bottom right，等等）。
 
-    ```css
-    background-image: linear-gradient(angle, color-stop1, color-stop2);
-    ```
+##### 语法
 
-    角度是指水平线和渐变线之间的角度，逆时针方向计算。换句话说，0deg 将创建一个从下到上的渐变，90deg 将创建一个从左到右的渐变。
+```css
+background-image: linear-gradient(angle, color-stop1, color-stop2);
+```
 
-    <img src="https://i.loli.net/2020/08/25/GB2mqyRKZiTP8zS.jpg" style="zoom:50%;" />
+角度是指水平线和渐变线之间的角度，逆时针方向计算。换句话说，0deg 将创建一个从下到上的渐变，90deg 将创建一个从左到右的渐变。
 
-  - **使用多个颜色节点**，示例：
+<img src="https://i.loli.net/2020/08/25/GB2mqyRKZiTP8zS.jpg" style="zoom:50%;" />
 
-    ```css
-    /*带有多个颜色节点的从上到下的线性渐变*/
-    #grad {
-      background-image: linear-gradient(red, yellow, green);
-    }
-    ```
+###### 使用多个颜色节点
 
-  - **使用透明度**（transparent）
+示例：
 
-    rgba() 函数中的最后一个参数可以是从 0 到 1 的值，它定义了颜色的透明度：0 表示完全透明，1 表示完全不透明。
+```css
+/*带有多个颜色节点的从上到下的线性渐变*/
+#grad {
+  background-image: linear-gradient(red, yellow, green);
+}
+```
 
-    ```css
-    #grad {
-      background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1));
-    }
-    ```
+###### 使用透明度 ( transparent )
 
-- **径向渐变（Radial Gradients）**- 由它们的中心定义
+rgba() 函数中的最后一个参数可以是从 0 到 1 的值，它定义了颜色的透明度：0 表示完全透明，1 表示完全不透明。
 
-  径向渐变由它的中心定义。
+```css
+#grad {
+  background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1));
+}
+```
 
-  为了创建一个径向渐变，你也必须至少定义两种颜色节点。颜色节点即你想要呈现平稳过渡的颜色。同时，你也可以指定渐变的中心、形状（圆形或椭圆形）、大小。默认情况下，渐变的中心是 center（表示在中心点），渐变的形状是 ellipse（表示椭圆形），渐变的大小是 farthest-corner（表示到最远的角落）。
+###### 径向渐变 ( Radial Gradients )
+
+由它们的中心定义
+
+径向渐变由它的中心定义。
+
+为了创建一个径向渐变，你也必须至少定义两种颜色节点。颜色节点即你想要呈现平稳过渡的颜色。同时，你也可以指定渐变的中心、形状（圆形或椭圆形）、大小。默认情况下，渐变的中心是 center（表示在中心点），渐变的形状是 ellipse（表示椭圆形），渐变的大小是 farthest-corner（表示到最远的角落）。
 
 
 
