@@ -57,23 +57,24 @@ const {foo, bar} = require('foo.js')
 - 通过querystring来传递数据，如a.html?a=100&b=200
 - 浏览器直接访问，就发送get请求
 
-- 代码示例：
 
-  ```js
-  const http = require('http')
-  const querystring = require('querystring')
-  
-  const server = http.createServer((req, res) => {
-    console.log(req.method) // GET
-    const url = req.url // 获取请求的完整 url
-    req.query = querystring.parse(url.split('?')[1]) // 解析querystring
-    console.log('query: ', req.query) // 控制台打印 query
-    res.end(JSON.stringify(req.query)) // 将querystring 返回
-  })
-  
-  server.listen(8000)
-  console.log("OK")
-  ```
+###### 代码示例
+
+```js
+const http = require('http')
+const querystring = require('querystring')
+
+const server = http.createServer((req, res) => {
+  console.log(req.method) // GET
+  const url = req.url // 获取请求的完整 url
+  req.query = querystring.parse(url.split('?')[1]) // 解析querystring
+  console.log('query: ', req.query) // 控制台打印 query
+  res.end(JSON.stringify(req.query)) // 将querystring 返回
+})
+
+server.listen(8000)
+console.log("OK")
+```
 
 ##### post 请求 和 post-data
 
@@ -83,32 +84,33 @@ const {foo, bar} = require('foo.js')
 
 - 浏览器无法直接模拟，需要手写js，或者使用postman
 
-- 示例代码：
 
-  另外，需要在postman中去模拟post请求
+###### 示例代码
 
-  ```js
-  const http = require('http')
-  
-  const server = http.createServer((req, res) => {
-    if(req.method === 'POST') {
-      console.log('content-type: ', req.headers['content-type'])
-      
-      // 接收数据，采用数据流的方式接收
-      let postData = ''
-      req.on('data', chunk => {
-        postData += chunk.toString()
-      })
-      req.on('end', () => {
-        console.log('postData: ', postData)
-        res.end('hello world!')
-      })
-    }
-  })
-  
-  server.listen(8000)
-  console.log('OK!')
-  ```
+另外，需要在postman中去模拟post请求
+
+```js
+const http = require('http')
+
+const server = http.createServer((req, res) => {
+  if(req.method === 'POST') {
+    console.log('content-type: ', req.headers['content-type'])
+    
+    // 接收数据，采用数据流的方式接收
+    let postData = ''
+    req.on('data', chunk => {
+      postData += chunk.toString()
+    })
+    req.on('end', () => {
+      console.log('postData: ', postData)
+      res.end('hello world!')
+    })
+  }
+})
+
+server.listen(8000)
+console.log('OK!')
+```
 
 ##### 路由（接口地址 api/foo/bar ）
 
