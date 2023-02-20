@@ -1085,7 +1085,7 @@ html2canvas(element[, options]).then(function(canvas) {
 
 #### pnpm
 
-官方GitHub地址：https://github.com/pnpm/pnpm，可以阅读readme.md 以了解。
+官方GitHub地址：https://github.com/pnpm/pnpm，可以阅读 readme.md 以了解。
 
 关于原理：硬连接( hard link ) / 软连接( symlink 符号连接 ) 可以参考：[pnpm原理](https://juejin.cn/post/6916101419703468045#heading-8)
 
@@ -1115,8 +1115,18 @@ html2canvas(element[, options]).then(function(canvas) {
 
 
 
-### 腾讯地图
+#### 腾讯地图
 
-###### 路线规划
+###### 路线规划 
 使用 `qqmapsdk.direction(conf)` 来获取路线 polyline 的点坐标集合，（至少在微信小程序中）需要手动绘制（小程序 `<map>` 组件的 polyline 属性）
+
+> ⚠️ 主要注意的是：在小程序开发时，除了引入 `qqmap-wx-jssdk.js` 时，还需要添加 “域名设置”。
+>
+> > 安全域名设置，在[小程序管理后台](https://mp.weixin.qq.com/wxamp/home/guide) -> 开发 -> 开发管理 -> 开发设置 -> “服务器域名” 中设置request合法域名，添加 https://apis.map.qq.com
+> >
+> > 摘自：[微信小程序JavaScript SDK -  入门及使用限制 # Hello world！](https://lbs.qq.com/miniProgram/jsSdk/jsSdkGuide/jsSdkOverview)
+>
+> 这一点非常重要。在开发中，曾经出现开发环境和测试环境的调试模式可以展示路径，而测试环境的非调试模式无法展示路径的情况；就是没有添加 “域名设置”。另外，遇到类似问题，可以通过在“详情”中取消“不校验合法...” 使得在开发环境中发现该问题，及时处理。
+>
+> <img src="https://s2.loli.net/2023/02/20/t61pQD5WqHLJkyr.png" alt="image-20230220180752377" style="zoom:50%;" />
 

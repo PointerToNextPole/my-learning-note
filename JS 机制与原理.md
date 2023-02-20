@@ -6344,7 +6344,7 @@ console.log(mod.counter); // 3
 
 上面的例子说明：<font color=LightSeaGreen>如果对外输出了 counter 变量，就算后续调用模块内部的 incCounter 方法去修改它的值，它的值依旧没有变化</font>
 
-<font color=dodgerBlue>**ES6 Module 运行机制完全不一样**</font>：<font color=fuchsia>**JS 引擎 对脚本静态分析的时候，遇到模块加载命令 import，就会生成一个只读引用**</font>；<font color=red size=4>**等到脚本真正执行的时候，再根据这个只读引用，到被加载的那个模块里去取值**</font>。
+<font color=dodgerBlue>**ES6 Module 运行机制完全不一样**</font>：<font color=fuchsia>**JS 引擎 对脚本静态分析的时候，遇到模块加载命令 import，就会 <font size=4>生成一个只读引用</font>**</font>；<font color=red size=4>**等到脚本真正执行的时候，再根据这个只读引用，到被加载的那个模块里去取值**</font>。
 
 ```js
 // lib.js
@@ -6507,7 +6507,7 @@ import { method } from 'commonjs-package';
 }
 ```
 
-尽管如此，<font color=FF0000>require 命令不能加载 `.mjs` 文件，会报错</font>；<font color=FF0000>**只有 import 命令才可以加载 .mjs 文件**</font>。反过来，<font color=FF0000>**.mjs 文件里面也不能使用require 命令，必须使用 import**</font> ；所以在平时开发当中，<font color=FF0000>ES6 Module 与 CommonJS 模块尽量不要混用</font>。
+尽管如此，<font color=FF0000>require 命令不能加载 `.mjs` 文件，会报错</font>；<font color=FF0000>**只有 import 命令才可以加载 `.mjs` 文件**</font>。反过来，<font color=FF0000>**`.mjs` 文件里面也不能使用require 命令，必须使用 import**</font> ；所以在平时开发当中，<font color=FF0000>ES6 Module 与 CommonJS 模块尽量不要混用</font>。
 
 ##### 补充：为什么 CJS 不能加载 ESM
 
@@ -6527,7 +6527,7 @@ If you dive in , you’ll find that <font color=dodgerBlue>top-level await isn�
 
 - CJS 模块输出的是<font color=FF0000>单个值的拷贝</font>，而 ESM 输出的是<font color=FF0000>（多个）值的引用</font>
 
-- <font color=fuchsia>CJS 模块是 运行时加载</font>，而 <font color=fuchsia>ESM 是 编译时输出接x口</font>，使得对 JS 的模块进行静态分析成为了可能；
+- <font color=fuchsia>CJS 模块是 运行时加载</font>，而 <font color=fuchsia>ESM 是 编译时输出接口</font>，使得对 JS 的模块进行静态分析成为了可能；
 - 因为两个模块加载机制的不同，所以在对待循环加载的时候，它们会有不同的表现。<font color=red>CJS 遇到循环引用时，只会输出已经执行的部分，后续的输出或者变化，是不会影响已经输出的变量</font>。而 <font color=red>ESM</font> 相反，<font color=red>使用 import 加载一个变量，**变量不会被缓存**，真正取值的时候就能取到最终的值</font>
 
 - <font color=dodgerBlue>关于模块顶层的 this 指向</font>：在 <font color=red>CJS 顶层，this 指向当前模块</font>；<font color=red>ESM 中，this 指向 undefined</font>

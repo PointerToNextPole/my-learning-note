@@ -28,3 +28,10 @@
 
 摘自：[WebAssembly完全入门——了解wasm的前世今身 - SH的全栈笔记的文章 - 知乎](https://zhuanlan.zhihu.com/p/68048524)
 
+
+
+#### 其他
+
+##### 补充阅读
+
+[Maybe you don't need Rust and WASM to speed up your JS](https://mrale.ph/blog/2018/02/03/maybe-you-dont-need-rust-to-speed-up-your-js.html)
