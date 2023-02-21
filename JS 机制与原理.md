@@ -5879,7 +5879,9 @@ _.reverse('hello'); // 'olleh'
 
 之所以写这一句，是因为我们要<font color=FF0000>通过 this 获得全局对象</font>，然后 <font color=FF0000>将 `_` 对象 挂载上去</font>。
 
-然而<font color=FF0000>在严格模式下，this 返回 undefined，而不是指向 Window</font>，幸运的是 underscore 并没有采用严格模式，可是即便如此，也不能避免：因为在 <font color=FF0000 size=4>**ES6 中模块脚本自动采用严格模式，不管有没有声明 `use strict`**</font>。**注：**即 ES6 Module 中顶层 this 指向为 undefined，相关内容可以参考：[[前端面试点总结#CommonJS 和 ES6 Module 区别#其他区别]] 的开始
+然而<font color=FF0000>在严格模式下，this 返回 undefined，而不是指向 Window</font>，幸运的是 underscore 并没有采用严格模式，可是即便如此，也不能避免：因为在 <font color=FF0000 size=4>**ES6 中模块脚本自动采用严格模式，不管有没有声明 `use strict`**</font>。
+
+>👀 即 ES6 Module 中顶层 this 指向为 undefined，相关内容可以参考：[[前端面试点总结#CommonJS 和 ES6 Module 区别#其他区别]] 的开始
 
 如果 this 返回 undefined，代码就会报错，所以我们的思路是<font color=FF0000>对环境进行检测，然后挂载到正确的对象上</font>。我们修改一下代码：
 
@@ -5895,7 +5897,7 @@ var root = (typeof window == 'object' && window.window == window && window) ||
 
 Web Worker 属于 HTML5 中的内容，引用《JavaScript权威指南》中的话就是：
 
-> 在 Web Worker 标准中，定义了<mark>解决客户端 JavaScript 无法多线程的问题</mark>。<font color=FF0000>其中定义的 “worker” 是指执行代码的并行过程</font>。不过，<font color=FF0000>**Web Worker 处在一个自包含的执行环境中，无法访问 Window 对象和 Document 对象**，和主线程之间的通信业只能通过异步消息传递机制来实现</font>。
+> 在 Web Worker 标准中，定义了<font color=LightSeaGreen>解决客户端 JavaScript 无法多线程的问题</font>。<font color=FF0000>其中定义的 “worker” 是指执行代码的并行过程</font>。不过，<font color=FF0000>**Web Worker 处在一个自包含的执行环境中，无法访问 Window 对象和 Document 对象**，和主线程之间的通信业只能通过异步消息传递机制来实现</font>。
 
 为了演示 Web Worker 的效果，我写了一个 demo，[查看代码](https://github.com/mqyqingfeng/Blog/tree/master/demos/web-worker)。
 
