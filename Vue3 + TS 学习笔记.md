@@ -796,7 +796,7 @@ PostCSS是一个通过 JavaScript 来转换样式的工具。<font color=FF0000>
 
 postcss-preset-env 也是一个 postcss 的插件，它可以帮助我们将一些现代的CSS特性，转成大多数浏览器认识的CSS，并且会根据目标浏览器或者运行时环境添加所需的polyfill；也包括会自动帮助我们添加autoprefixer（所以相当于已经内置了autoprefixer）；
 
-👀 注：在 [[前端工程化笔记#PostCSS]] 中，也有一些笔记。
+> 💡 在 [[前端工程化笔记#PostCSS]] 中，也有一些笔记。
 
 
 

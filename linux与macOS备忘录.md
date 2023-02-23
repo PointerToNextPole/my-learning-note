@@ -2,7 +2,7 @@
 
 
 
-## macOS快捷键
+### macOS 快捷键
 
 #### 基础键
 
@@ -80,7 +80,7 @@
 
 
 
-#### **⌘ + ␣ **
+#### ⌘ + ␣ 
 
 - **短按：**spotlight
 - **长按：**呼出 / 关闭 Siri
@@ -130,6 +130,14 @@
 
 
 ### Mac 使用
+
+
+
+##### Mac 软件推荐
+
+[Awesome Mac](https://wangchujiang.com/awesome-mac/README-zh.html)
+
+
 
 ##### 修改终端用户名
 
@@ -409,7 +417,7 @@ https://web.archive.org/web/20160812022408/https://www.zhihu.com/question/490738
 
 #### Linux 命令行 flags、switches、options 区别
 
-👀 注：由于在中文网中没有搜索到解答，甚至感觉完全混为一谈；英文网中没找到找到权威的解答，且解答与解答间相互矛盾...所以，<font color=fuchsia>**当前的笔记，<font size=4>只供参考</font>**</font>
+> 👀 由于在中文网中没有搜索到解答，甚至感觉完全混为一谈；英文网中没找到找到权威的解答，且解答与解答间相互矛盾...所以，<font color=fuchsia>**当前的笔记，<font size=4>只供参考</font>**</font>
 
 ##### 关于 flags & switches
 
@@ -1383,7 +1391,7 @@ Linux 文件系统中，有所谓的<font color=red>链接 ( link )</font>，我
 
 
 
-## Bash
+### Bash
 
 #### 变量类型
 

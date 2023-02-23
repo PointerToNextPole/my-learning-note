@@ -4,21 +4,21 @@
 
 #### 高亮
 
-**在markdown中可以使用`<mark> ... </mark>`来时让文字背景高亮，效果如下**
+**在markdown中可以使用 `<mark> ... </mark>` 来时让文字背景高亮，效果如下**
 
 <mark>在 markdown 中可以使用 \<mark>\</mark> 来时让文字背景高亮</mark>
 
-\<mark> 标签默认背景颜色为黄色，如果想要其他颜色，可以使用 style 属性，`style="background-color:colorName"`
+`<mark>` 标签默认背景颜色为黄色，如果想要其他颜色，可以使用 style 属性，`style="background-color:colorName"`
 
 **示例如下：**
 
-<mark style=background-color:lightpink>\<mark>标签默认背景颜色为黄色，如果想要其他颜色，可以使用style属性，style=background-color:colorName</mark>
+\<mark style=background-color:lightpink><mark  style=background-color:lightpink>标签默认背景颜色为黄色，如果想要其他颜色，可以使用style属性，style=background-color:colorName</mark>\</mark>
 
-若要换成其他颜色，使用其他<mark style="background: lightskyblue">颜色关键字(Color Keywords)</mark>即可：其他颜色关键字可见：https://www.html.cn/book/css/appendix/color-keywords.htm#basic
+若要换成其他颜色，使用其他<mark style="background: lightskyblue">颜色关键字 ( Color Keywords )</mark> 即可：其他颜色关键字可见：https://www.html.cn/book/css/appendix/color-keywords.htm#basic
 
-再者：如果要同时设置背景色和字体颜色，需要使用分号（ **;** ）分隔两个设置，示例如下：
+再者：如果要同时设置背景色和字体颜色，需要使用分号（ **`;`** ）分隔两个设置，示例如下：
 
-<mark style=color:red;background-color:lightpink>如果要同时设置背景色和字体颜色，需要使用分号（ **;** ）分隔两个设置</mark>
+\<mark style=color: red; background-color: lightpink><mark style=color:red;background-color:lightpink>如果要同时设置背景色和字体颜色，需要使用分号（ **;** ）分隔两个设置</mark>\</mark>
 
 虽然上面的 `<mark style=background-color:><font>...</font></mark>` 也可以实现类似的效果
 
@@ -26,16 +26,16 @@
 
 #### 代码显示
 
-**在markdown中添加<mark>代码块</mark>，可以在 \``` 之后加上语言名称，即可实现对应语言的语法高亮。示例如下**
+**在markdown中添加 代码块，可以在 ` ``` ` 之后加上语言名称，即可实现对应语言的语法高亮。示例如下**
 
   ```java
    @AutoConfigurationPackage
    @Import({EnableAutoConfigurationImportSelector.class})
    public @interface EnableAutoConfiguration {...}
   ```
-更多支持的语言，见链接：[**markdown代码块支持的语言**](https://www.jianshu.com/p/1f223eb78ad8)，以及补充：[**markdown 代码块(```code)支持的语言列表**](https://www.jianshu.com/p/d32a3328489c)
+更多支持的语言，见链接：[markdown代码块支持的语言](https://www.jianshu.com/p/1f223eb78ad8)，以及补充：[markdown 代码块(```code)支持的语言列表](https://www.jianshu.com/p/d32a3328489c)
 
-同时：若要标注<mark>**段落中的代码**</mark>，使用<mark> **\`** </mark>即可，示例如下：`print('hello wolrd')`
+同时：若要标注 **段落中的代码**，使用 ` `` ` 即可，示例如下：`print('hello wolrd')`
 
 ##### 如何转义反引号 backquote ？
 
@@ -49,7 +49,7 @@
 
 #### 多级列表
 
-**若要用markdown生成多级列表，方法如下：在'-'前按下Tab即可；效果如下**
+**若要用 markdown 生成多级列表，方法如下：在 `-` 前按下Tab即可；效果如下**
 
 - 一级列表1
   - 二级列表1
@@ -78,7 +78,7 @@
 ##### 类似的markdown插入跳转的方法
 `[link text](link url "Optinal title")`
 
-<font color=FF0000>**示例如下：**</font>
+##### 示例如下
 
 **This is an [example link](http://www.baidu.com/ "With a Title").** 
 
@@ -86,9 +86,9 @@
 
 #### **markdown插入图片**
 
-**有两种方法：**
+##### 有两种方法
 
-- markdown特有格式：<font color=FF0000>**\!\[Alt text](address "optional title")**</font>
+- markdown特有格式：`![Alt text](address "optional title")`
   - Alt text: 当按下Alt时显示的文字，用于描述图片的关键词，可以不写
   - address: 就是地址，可以写绝对路径和相对路径
   - optional title: 鼠标悬置于图片上会出现的标题文字，可以不写
@@ -121,7 +121,7 @@
 
 #### **Markdown插入分割线**
 
-使用\***以产生分割线，如下：
+使用 `***` 以产生分割线，如下：
 
 ***
 
@@ -138,6 +138,10 @@
 <div align='center' ><font size='40'>实习总结报告</font></div>
 
 
+
+#### 数学公式
+
+详见 [Typora数学公式汇总（Markdown）](https://zhuanlan.zhihu.com/p/261750408)
 
 
 
