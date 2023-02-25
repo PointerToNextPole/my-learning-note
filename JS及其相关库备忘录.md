@@ -8377,11 +8377,13 @@ intersectionObserver.observe(document.querySelector('.scrollerFooter'));
 
 ##### 补充
 
-以下内容摘自  [MutationObserver 和 IntersectionObserver](https://juejin.cn/post/6999950594207121444)。另外，这篇文章还有更详细的介绍（也比 MDN 中的容易理解），推荐阅读。由于只是简单了解，同时 当前的工作中完全找不到使用场景，所以，这里略。
+>👀 以下内容摘自  [MutationObserver 和 IntersectionObserver](https://juejin.cn/post/6999950594207121444)。另外，这篇文章还有更详细的介绍（也比 MDN 中的容易理解），推荐阅读。由于只是简单了解，同时 当前的工作中完全找不到使用场景，所以，这里略。
 
-**痛点：**<mark>以往我们 **实现图片懒加载** 往往是通过监听存放图片的滚动容器的滚动事件（ 即：scroll 事件）或者 整个页面的滚动事件，在滚动事件触发的时候调用图片元素的 getBoundingClientRect() 函数来进行可见性比对</mark>。<font color=FF0000>这种方式是在事件触发的时候同步进行，如果运算量过大极有可能会导致主线程阻塞，从而页面卡顿</font>。延伸开来，我们急迫地需要一个高性能的元素可见性变化解决方案，所以 IntersectionObserver 诞生了。（**注：**也就是说，<font color=FF0000>**IntersectionObserver 可用来实现图片懒加载**</font>）
+###### 痛点
+<font color=dodgerBlue>以往我们 **实现图片懒加载** 往往是通过监听存放图片的滚动容器的滚动事件（ 即：scroll 事件）或者 整个页面的滚动事件，在滚动事件触发的时候调用图片元素的 `getBoundingClientRect()` 函数来进行可见性比对</font>。<font color=FF0000>这种方式是在事件触发的时候同步进行，如果运算量过大极有可能会导致主线程阻塞，从而页面卡顿</font>。延伸开来，我们急迫地需要一个高性能的元素可见性变化解决方案，所以 IntersectionObserver 诞生了。（ 👀 也就是说，<font color=FF0000>**IntersectionObserver 可用来实现图片懒加载**</font>）
 
-**概述：**<font color=FF0000>这个 API 可以 <font size=4>**观察目标元素与视口或指定根元素产生的交叉区的变化**</font>，所以这个 API 也叫做“交叉观察器”</font>。<font color=LightSeaGreen>它和 MutationObserver 一样都是 <font color=FF0000>**异步的**</font>，不随着目标元素的滚动 同步触发</font>。<font color=FF0000>发明者规定，IntersectionObserver 的实现，应该采用 requestIdleCallback() 的方式，即只有线程空闲下来，才会执行观察器</font>。这意味着，<font color=LightSeaGreen>这个观察器的优先级非常低，只在其他任务执行完，浏览器有了空闲才会执行</font>。
+###### 概述
+<font color=FF0000>这个 API 可以 <font size=4>**观察目标元素与视口或指定根元素产生的交叉区的变化**</font>，所以这个 API 也叫做“交叉观察器”</font>。<font color=LightSeaGreen>它和 MutationObserver 一样都是 <font color=FF0000>**异步的**</font>，不随着目标元素的滚动 同步触发</font>。<font color=FF0000>发明者规定，IntersectionObserver 的实现，应该采用 requestIdleCallback() 的方式，即只有线程空闲下来，才会执行观察器</font>。这意味着，<font color=LightSeaGreen>这个观察器的优先级非常低，只在其他任务执行完，浏览器有了空闲才会执行</font>。
 
 > 👀 异步 + 低优先级 所以高性能（似乎也可以称为：不会影响性能...）
 

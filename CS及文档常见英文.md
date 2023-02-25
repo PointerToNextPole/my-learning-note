@@ -56,7 +56,7 @@
 
 - **prune**：剪枝。这是一个一般性概念，可以用于 机器学习，数据库 以及  树形数据结构，也是前端构建 Tree Shaking 的概念。
 
-  补充：git 有 prune 命令，用于清除 “不可达” 或 “孤儿 ( orphaned ) ” 的对象；详见：https://www.atlassian.com/git/tutorials/git-prune ；这里略。npm 也有 prune 命令：`npm prune [[<@scope>/]<pkg>...]` ，详见 [npm docs - npm-prune](https://docs.npmjs.com/cli/v8/commands/npm-prune)。同时 docker 也有，详见 [docker docs - Prune unused Docker objects](https://docs.docker.com/config/pruning/)
+  >💡 git 有 prune 命令，用于清除 “不可达” 或 “孤儿 ( orphaned ) ” 的对象；详见：https://www.atlassian.com/git/tutorials/git-prune ；这里略。npm 也有 prune 命令：`npm prune [[<@scope>/]<pkg>...]` ，详见 [npm docs - npm-prune](https://docs.npmjs.com/cli/v8/commands/npm-prune)。同时 docker 也有，详见 [docker docs - Prune unused Docker objects](https://docs.docker.com/config/pruning/)
 
 - **utilize**：利用
 
@@ -320,7 +320,7 @@
 
 - **acquaint** ：熟悉的
 
-- **parallelism** ：相似 noun
+- **parallelism** ：相似 ( noun )
 
 - **Mutexes** ：互斥量
 
@@ -491,6 +491,8 @@
 - **pitfall** ：陷阱
 
 - **outline** ：轮廓。outline 是一种 CSS 属性
+
+- **simulate** ：模拟。simulator 则是模拟器
 
 
 

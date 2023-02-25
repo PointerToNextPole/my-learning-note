@@ -808,7 +808,7 @@ RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对
 
 SOAP：简单对象访问协议（Simple Object Access Protocol）是一种<mark>基于 XML 的协议</mark>，可以和现存的许多因特网协议和格式结合使用，包括超文本传输协议（HTTP），简单邮件传输协议（SMTP），多用途网际邮件扩充协议（MIME），基于“通用”传输协议是 SOAP的一个优点。它还支持从消息系统到远程过程调用（Remote Procedure Call，RPC）等大量的应用程序。SOAP提供了一系列的标准，如WSRM（WS-Reliable Messaging）形式化契约确保可靠性与安全性，确保异步处理与调用；WS-Security、WS-Transactions和WS-Coordination等标准提供了上下文信息与对话状态管理
 
-##### Rest
+##### REST
 
 **REST（Representational State Transfer）表现层状态转化**，如果一个架构符合REST原则，就称它为RESTful架构。
 
@@ -885,7 +885,7 @@ SOAP：简单对象访问协议（Simple Object Access Protocol）是一种<mark
 
 摘自：[简书文章：rest](https://www.jianshu.com/p/90d757e925d1)
 
-**Rest架构的主要原则**
+**REST 架构的主要原则**
 
 - <font color=FF0000>网络上的所有事物都被抽象为资源</font>
 - <font color=FF0000>每个资源都有一个唯一的资源标识符</font>
@@ -1992,18 +1992,19 @@ This means that if your application is server-side rendered, the content is fetc
 
 <img src="https://s2.loli.net/2022/07/11/CMYwdWahyHAxecV.png" alt="image-20220711110546200" style="zoom: 40%;" />
 
-<font color=FF0000>This approach **is good if you’re building a complex application that requires user interaction**</font>（👀 **注**：这应该是相较于 SSG）, that relies on a database, or whose content changes often. If the content changes often, then users would need to see the updates right away. <mark style="background: LightSkyBlue ">**The approach is also good for applications**</mark> that tailor content（译：定制内容） according to who is viewing it and that store user data such as email addresses and user preferences, while also attending to SEO. An example would be a large e-commerce or social media platform. Let’s look at some of the advantages of SSR for your applications.
+<font color=FF0000>This approach **is good if you’re building a complex application that requires user interaction**</font>（👀 这应该是相较于 SSG）, that relies on a database, or whose content changes often. If the content changes often, then users would need to see the updates right away. **The approach is also good for applications**</mark> that tailor content（译：定制内容） according to who is viewing it and that store user data such as email addresses and user preferences, while also attending to SEO. An example would be a large e-commerce or social media platform. Let’s look at some of the advantages of SSR for your applications.
 
 ##### SSR 优点
 
-- The <font color=FF0000>content is up to date because it is fetched on the go</font>（**译**：随时随地。👀 注：毕竟资源都在本地？）.
+- The <font color=FF0000>content is up to date because it is fetched on the go</font>（**译**：随时随地。👀 毕竟资源都在本地？）.
 - The <font color=FF0000>website loads quickly</font> because the browser fetches content from the server before rendering it for the user.
 - Because the JavaScript is rendered server-side, <font color=FF0000>the user’s device has little bearing</font>（译：没什么影响） <font color=FF0000>on the loading time of the page, making for better performance</font>.
 
 ##### SSR 缺点
 
 - More API calls to the server are made, because they’re made per request.
-- The website cannot be deployed to a static content delivery network (CDN). 👀 注：这个可以通过 ESR 解决，ESR 相关见 [[#ESR 边缘渲染]]
+- The website cannot be deployed to a static content delivery network (CDN). 
+ > 👀 这个可以通过 ESR 解决，ESR 相关见 [[#ESR 边缘渲染]]
 
 ##### 常见的 SSR 框架 Next.js & Nuxt.js
 
@@ -2088,7 +2089,7 @@ ESR ( Edge Side Rendering ) 时代，略。见下面 [[#ESR 边缘渲染]]
 
 #### ESR 边缘渲染
 
-随着边缘计算的发展，<font color=FF0000>由于 CDN 节点距离用户更近，有更短网络延时的优势</font>；我们 <font color=FF0000>可以将页面进行 <font size=4>**动静拆分**</font>，将 **静态内容** 缓存在 CDN 先快速返回给用户</font>，然后 <font color=FF0000 size=4>**在 CDN 节点上发起** **动态内容** 的请求</font>（👀 注：是 CDN 发起对静态内容的请求，不是客户端 ），之后 <font color=FF0000 size=4>将 **动态内容** 与 **静态部分** **以流的形式进行拼接**</font>，从而<font color=FF0000>进一步提高了用户的首屏加载时间</font>，尤其在边缘地区或者弱网环境也有能拥有很好的用户体验，此外还<font color=FF0000>减少原先 SSR 服务器压力</font>。
+随着边缘计算的发展，<font color=FF0000>由于 CDN 节点距离用户更近，有更短网络延时的优势</font>；我们 <font color=FF0000>可以将页面进行 <font size=4>**动静拆分**</font>，将 **静态内容** 缓存在 CDN 先快速返回给用户</font>，然后 <font color=FF0000 size=4>**在 CDN 节点上发起** **动态内容** 的请求</font>（👀 是 CDN 发起对静态内容的请求，不是客户端 ），之后 <font color=FF0000 size=4>将 **动态内容** 与 **静态部分** **以流的形式进行拼接**</font>，从而<font color=FF0000>进一步提高了用户的首屏加载时间</font>，尤其在边缘地区或者弱网环境也有能拥有很好的用户体验，此外还<font color=FF0000>减少原先 SSR 服务器压力</font>。
 
 <img src="https://img-blog.csdnimg.cn/b4c2d46ba41944afa183e9d02b8d43ea.png" alt="img" style="zoom:60%;" />
 
@@ -2254,6 +2255,45 @@ OSS传输加速 是 针对 OSS 的链路加速，使用 OSS 传输加速后支�
 
 
 
+#### 基本式JPEG 和 渐进式JPEG
+
+##### 基本式 ( Baseline ) JPEG
+
+这种类型的 JPEG 文件存储方式是按从上到下的扫描方式，把每一行顺序的保存在 JPEG 文件中。打开这个文件显示它的内容时，数据将按照存储时的顺序从上到下一行一行的被显示出来，直到所有的数据都被读完，就完成了整张图片的显示。如果文件较大或者网络下载速度较慢，那么就会看到图片被一行行加载的效果，这种格式的 JPEG 没有什么优点；<font color=dodgerBlue>因此，一般都推荐使用 Progressive JPEG</font>。
+
+##### 渐进式 ( Progressive ) JPEG
+
+<font color=dodgerBlue>和 Baseline 一遍扫描不同</font>，<font color=red>Progressive JPEG 文件 **包含多次扫描**，这些扫描顺寻的存储在 JPEG 文件中。打开文件过程中，会先显示整个图片的模糊轮廓，随着扫描次数的增加，图片变得越来越清晰</font>。这种格式的主要优点是在网络较慢的情况下，可以看到图片的轮廓知道正在加载的图片大概是什么。在一些网站打开较大图片时，你就会注意到这种技术。
+
+![](https://s2.loli.net/2023/02/25/jS5QBNPC3UGgLVI.gif)
+
+渐进式图片带来的好处是可以让用户在没有下载完图片就可以看到最终图像的大致轮廓，一定程度上可以提升用户体验。（瀑布流的网站建议还是使用标准型的）
+
+![img](https://s2.loli.net/2023/02/25/ARcjbmSpJ3l5ir1.jpg)
+
+另外渐进式的图片的大小并不会和基本的图片大小相差很多，有时候可能会比基本图片更小。渐进式的图片的缺点就是吃用户的 CPU 和内存，不过对于现在的电脑来说这点图片的计算并不算什么。
+
+##### 图片如何保存为Progressive JPEG
+
+###### PhotoShop
+
+在PS中有“存储为web所用格式”，打开后选择“连续”就是渐进式JPEG。
+
+###### Linux
+
+检测是否为 progressive jpeg ： `identify -verbose filename.jpg | grep Interlace` ；如果输出 None 说明不是 progressive jpeg；如果输出 Plane 说明是 progressive jpeg 。
+
+将 basic jpeg 转换成 progressive jpeg ：`convert infile.jpg -interlace Plane outfile.jpg`
+
+> 👀 下面还有使用 Python、php、jpegtran、C# 等工具转换为响应式图片的介绍，这里略；详见原文
+
+> 💡知乎问题：[medium.com 是如何让图片加载时从模糊到清晰的？ - 知乎](https://www.zhihu.com/question/40757342) 也有讨论。其中有提到，medium 实现渐进式图片方法的博文：[How Medium does progressive image loading](https://jmperezperez.com/blog/medium-image-progressive-loading-placeholder/)
+
+学习自：[使用渐进式JPEG来提升用户体验](https://www.biaodianfu.com/progressive-jpeg.html)
+
+
+
+
 #### 前端路由 VS 后端路由
 
 - **后端路由: **对于普通的网站，<font color=FF0000>所有的超链接都是 URL 地址</font>，<font color=FF0000>所有的URL地址都对应服务器上对应的资源</font>
@@ -2270,7 +2310,7 @@ CORS 是一个 W3C 标准，全称是 “跨域资源共享” ( Cross-origin re
 
 ##### 补充
 
-跨源资源共享 (CORS) （或通俗地译为跨域资源共享）是一种基于HTTP 头的机制，该机制通过允许服务器标示除了它自己以外的其它origin（域，协议和端口），这样浏览器可以访问加载这些资源
+跨源资源共享 CORS （或通俗地译为跨域资源共享）是一种基于 HTTP 头的机制，该机制通过允许服务器标示除了它自己以外的其它origin（域，协议和端口），这样浏览器可以访问加载这些资源
 
 出于安全性，浏览器限制脚本内发起的跨源HTTP请求。跨源域资源共享（ CORS ）机制允许 Web 应用服务器进行跨源访问控制，从而使跨源数据传输得以<font color=FF0000>安全进行</font>。现代浏览器支持在 API 容器中（例如 XMLHttpRequest 或 Fetch ）使用 CORS，以降低跨源 HTTP 请求所带来的风险。
 

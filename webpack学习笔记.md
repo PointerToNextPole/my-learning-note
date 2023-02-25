@@ -7760,13 +7760,13 @@ if (module.hot) {
 
 This is only one example, but <font color=FF0000>**there are many others that can easily trip people up**</font>（绊倒）. Luckily, <font color=fuchsia>there are a lot of loaders out there (some of which are mentioned below) that will make hot module replacement much easier</font>.
 
-> 👀 注：这部分看得有点懵，可以参考 [[Vue3 + TS 学习笔记#如何使用 HMR？]]
+> 👀 这部分看得有点懵，可以参考 [[Vue3 + TS 学习笔记#如何使用 HMR？]]
 
 ##### HMR with Stylesheets
 
 Hot Module Replacement with CSS is actually fairly straightforward（👀 注：“极其简单”更好理解） <font color=FF0000>with the **help** of the `style-loader`</font> . <font color=fuchsia>This loader **uses `module.hot.accept` behind the scenes to patch `<style>` tags when CSS dependencies are updated**</font>.
 
-> 👀 注：下面是实践的代码，安装 style-loader 和 css-loader；并在 webpack.config.js 的 `module.rules` 中配置 style-loader、css-loader，略；详见原文。
+> 👀 下面是实践的代码，安装 style-loader 和 css-loader；并在 webpack.config.js 的 `module.rules` 中配置 style-loader、css-loader，略；详见原文。
 
 Change the style on `body` to `background: red;` and you <font color=FF0000>should immediately see the page's background color change without a full refresh</font>.
 
@@ -7906,7 +7906,11 @@ options: {
 
 #### Tree Shaking
 
-对于 ES Module 引入时候，默认会将业务代码中所有 ES6 代码打包引入（不管这个代码块是否被调用），这样就没有做到<font color=FF0000>按需引入 / 按需打包 </font>。对于这个痛点，可以使用 <font color=FF0000>**Tree Shaking** 解决</font>。Tree Shaking <font color=fuchsia size=4>**只支持 ES Module**</font> 代码的引入（即 import module，是 ES6 的特性；不支持 commonJS ）。代码使用如下：
+对于 ES Module 引入时候，默认会将业务代码中所有 ES6 代码打包引入（不管这个代码块是否被调用），这样就没有做到<font color=FF0000>按需引入 / 按需打包 </font>。对于这个痛点，可以使用 <font color=FF0000>**Tree Shaking** 解决</font>。Tree Shaking <font color=fuchsia size=4>**只支持 ES Module**</font> 代码的引入（即 import module，是 ES6 的特性；不支持 commonJS ）。
+
+> 💡 Tree Shaking 是借助了 ESM 的静态代码分析，所以只支持 ESM
+
+代码使用如下：
 
 ```js
 //webpack.config.js
@@ -7933,7 +7937,7 @@ module.exports = {
 
 另外：即使不使用的那些代码，在<font color=FF0000>开发环境</font>的打包中，那些不用的代码将不会被删掉，而是告知你只使用了哪些代码，便于你开发。而在生产环境的打包中，将会直接删掉那些不用的代码。
 
-> 👀 自我补充：在生产环境的打包中，Tree Shaking 是自动生效的，即：你不需要写 `optimization.usedExports: true ` 配置项，不过 `package.json` 中的 sideEffects 还是要写的。
+> 💡 自我补充：在生产环境的打包中，Tree Shaking 是自动生效的，即：你不需要写 `optimization.usedExports: true ` 配置项，不过 `package.json` 中的 sideEffects 还是要写的。
 
 ##### 《现代 JS 教程》中的关于 tree-shaking 的内容
 > 删除未使用的导出 ( “tree-shaking” )
@@ -11201,9 +11205,11 @@ https://trusted.cdn.com;
 
 ##### Trusted Types
 
-Webpack is also capable of using Trusted Types to load dynamically constructed scripts, to adhere to CSP [`require-trusted-types-for`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/require-trusted-types-for) directive restrictions. See [`output.trustedTypes`](https://webpack.js.org/configuration/output/#outputtrustedtypes) configuration option. （**译文：**webpack 还能够使用 Trusted Types 来加载动态构建的脚本，遵守 CSP require-trusted-types-for 指令的限制。可查看 output.trustedTypes 配置项 ）**注：**没怎么看懂
+Webpack is also capable of using Trusted Types to load dynamically constructed scripts, to adhere to CSP [`require-trusted-types-for`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/require-trusted-types-for) directive restrictions. See [`output.trustedTypes`](https://webpack.js.org/configuration/output/#outputtrustedtypes) configuration option. （**译文：**webpack 还能够使用 Trusted Types 来加载动态构建的脚本，遵守 CSP require-trusted-types-for 指令的限制。可查看 output.trustedTypes 配置项 ）
 
-注：[webpack 文档 - Guide - Content Security Policies](https://webpack.js.org/guides/csp/)
+>👀 没怎么看懂
+
+摘自：[webpack 文档 - Guide - Content Security Policies](https://webpack.js.org/guides/csp/)
 
 
 
@@ -11213,7 +11219,7 @@ Webpack is also capable of using Trusted Types to load dynamically constructed s
 
 If you <font color=FF0000>have a more advanced project</font> and <font color=FF0000>use [Vagrant](https://www.vagrantup.com/) to run your development environment in a Virtual Machine</font>（译文：使用 Vagrant 来实现在虚拟机 ( Virtual Machine ) 上运行你的开发环境）, you'll often want to also <font color=FF0000>**run webpack in the VM**</font>.
 
-**注：**Vagrant 是一个开发的虚拟环境，类似于 docker。由于目前没有使用到，所以一扫而过，暂时略。不过，下面说了 webpack-dev-server 的部分原理：
+>💡 Vagrant 是一个开发的虚拟环境，类似于 docker。由于目前没有使用到，所以一扫而过，暂时略。不过，下面说了 webpack-dev-server 的部分原理：
 
 `webpack-dev-server` will <font color=FF0000>**include a script**</font> in your bundle that <font color=FF0000 size=4>**connects to a WebSocket** to **reload when a change in any of your files occurs**</font>
 
