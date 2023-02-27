@@ -59,6 +59,8 @@ git config --system --list
 
 这时使用命令 `git config --global --unset user.mail` 即可将其删除（在 `git config --list`中查不到）。
 
+> 💡 相关的配置，可以在 `~/.gitconfig` 文件中找到
+
 #### From  1.4
 
 ##### 建造Git仓库有两种场景
