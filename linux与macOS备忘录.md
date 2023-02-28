@@ -338,6 +338,15 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 
 摘自：[stack overflow - What does “brew link” do?](https://stackoverflow.com/questions/33268389/what-does-brew-link-do)
 
+##### brew 信息搜索
+
+可以使用 `brew search` 搜索 brew 中的软件，也可以使用 `brew info` 查看软件的信息。
+
+除了上面的方法之外，还可以通过访问 [Homebrew Formulae](https://formulae.brew.sh) 在网页端进行搜索。
+
+##### brew service
+
+// TODO 可以参考下 [使用brew services管理服务](https://www.jianshu.com/p/6c3b26490861) ，其中提及了 Mac 的 `launchctl` 加载开机自动运行的服务的命令
 
 
 #### Mac 用命令行进行设置

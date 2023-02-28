@@ -10,6 +10,8 @@
 
 
 
+#### 一些设置
+
 ##### 进入 settings.json 方法
 
 按下 ⇧ + ⌘ + P ，会显示搜索框；在输入框中输入 `settings.json` ，会显示如下结果：
@@ -70,6 +72,23 @@
 - **⌘ + J** / **⌃ + `** ：打开 VSC 内置的 Terminal
 
 - **⌘ + B** ：展示 / 隐藏 活动栏 ( Activity Bar ) 
+
+
+
+#### User and Workspace Settings
+
+You can <font color=dodgerBlue>configure Visual Studio Code to your liking through its various settings</font>. Nearly every part of VS Code's editor, <font color=red>user interface</font>, and functional behavior has options you can modify.
+
+> 👀 之所以 “user interface” 加了重点，是因为 `git clone` 并用 vsc 打开 [ractive](https://github.com/ractivejs/ractive) 时，发现 UI 样式和日常使用的 vsc 样式不一样，于是找到了 `.vscode/settings.json` 文件，找到了修改 vsc UI 的相关配置。
+>
+> 💡 `.vscode` 文件夹可以放置 `settings.json` 和 `launch.json` 文件。
+
+<font color=dodgerBlue>**VS Code provides several different scopes for settings**</font>. When you open a workspace, you will see at least the following two scopes:
+
+- **User Settings** - Settings that <font color=red>apply globally</font> to any instance of VS Code you open.
+- **Workspace Settings** - <font color=red>Settings **stored inside your workspace**</font> and <font color=red>only apply when the workspace is opened</font>.
+
+
 
 
 

@@ -494,6 +494,10 @@
 
 - **simulate** ：模拟。simulator 则是模拟器
 
+- **Palette** ：调色板
+
+- **criteria** ：标准
+
 
 
 #### 术语的英文
