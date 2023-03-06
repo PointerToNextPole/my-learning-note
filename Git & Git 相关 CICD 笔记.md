@@ -434,7 +434,10 @@ $ cat .git/refs/heads/master
 ##### 💡 git branch 的 -d 和 -D 选项 的区别
 
 - **git branch -d：**会<font color=FF0000>在删除前检查 merge 状态</font>（其与上游分支 或者 （其）与head）。
-- **git branch -D：**是 `git branch --delete --force` 的简写，它<font color=FF0000>会直接删除</font>（**注：**即，不会检查 merge 状态）。
+
+- **git branch -D：**是 `git branch --delete --force` 的简写，它<font color=FF0000>会直接删除</font>
+
+  > 👀 即，不会检查 merge 状态。总之：删除没有被合并的分支要用 `-D`
 
 摘自：[删除分支 git branch -d与git branch -D的区别](https://blog.csdn.net/qq_33592641/article/details/103871482)
 
@@ -856,7 +859,12 @@ where git # 👀 类似的，可以通过 type git 起到类似的效果
       
       「在命令行中使用 Token」这部分摘自：[GitHub改为token验证后,如何提交代码?](https://python.iitter.com/other/39385.html)
       
-      > 👀 注：上面的命令，\<your-token> 可以通过 `git remote -v` 命令查看。
+      > 👀 上面的命令，`<your-token>` 可以通过 `git remote -v` 命令查看。
+      > > 💡 `git remote -v` 是 `git remote` 的进阶用法。 “v” 表示 “verbose”， `git remote` 只会显示远端 repo 的名称，而 `-v` 是在 repo 的名称之后，还会显示示远端 repo 的 url 
+      > >
+      > > 详见 [Git doc - git remote](https://git-scm.com/docs/git-remote)
+      >
+      > 👀 参见 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 的 “1、设置错误的远程库怎么办？”，所以，`git remote set-url` 只是一个“设置远程仓库地址”的命令（参考 [[#其他 git 命令]]）
 
   - 出现：`error: src refspec master does not match any`
 
@@ -995,6 +1003,12 @@ git commit --amend --no-edit
 git commit --amend
 ```
 
+> 💡 在 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 中给出了类似的方法：
+>
+> ```sh
+> git commit --amend --only -m 'msg content'
+> ```
+
 这时候会通过 vim 打开「提交」的相关信息（如下），只需要对其进行修改即可
 
 <img src="https://s1.ax1x.com/2020/06/26/NrRojI.png" style="zoom: 40%;" />
@@ -1049,7 +1063,7 @@ git push -u origin master
 
 #### Git Forks and Upstreams
 
-// TODO
+// TODO 可以参考 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 的 “2、Github Fork 的项目如何更新源项目更新？”
 
 
 
@@ -1778,13 +1792,23 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 
   > 💡 `-` 在 *nix 中表示上一个，
 
-- **`git branch --set-upstream [branch] [remote-branch]`** ：建立追踪关系，在现有分支与指定的远程分支之间
+- `git branch --set-upstream [branch] [remote-branch]` ：建立追踪关系，在现有分支与指定的远程分支之间
 
 - **删除远程分支：**
   - `git push origin --delete [branch-name]`
   - `git branch -dr [remote/branch]`
 
 摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
+> 💡 补充
+>
+> 批量删除分支
+>
+> ```sh
+> git branch | grep 'fix/' | xargs git branch -d
+> ```
+>
+> 摘自：[百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw)
 
 
 
@@ -1801,45 +1825,51 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 
 #### git 具体需求的解决方法
 
-- **找回丢失的commit节点或分支**：使用 `git reflog` 获取 commitHash，再使用 `git reset --hard commitHash` ，示例如下：
+##### 找回丢失的 commit 节点或分支
 
-  <img src="https://www.lzane.com/tech/git-tips/git_reflog.gif" alt="https://www.lzane.com/tech/git-tips/git_reflog.gif" style="zoom:80%;" />
+使用 `git reflog` 获取 commitHash，再使用 `git reset --hard commitHash` ，示例如下：
 
-  主要思路为：**找到要返回的commit object的哈希值，然后执行`git reset`恢复**。
+<img src="https://www.lzane.com/tech/git-tips/git_reflog.gif" alt="https://www.lzane.com/tech/git-tips/git_reflog.gif" style="zoom:80%;" />
 
-  我们知道 Git 的出现就是为了尽量保证我们的操作不被丢失，在 [Git内部原理](https://www.lzane.com/tech/git-internal/) 中我们讲过，<font color=FF0000>git object ( commit、tree、blob ) 一旦被创建，就不可变更 ( immutable )</font>；所以只要找到它对应的哈希值，就能找回。但是 <font color=FF0000>ref</font> 呢？在 [Git内部原理](https://www.lzane.com/tech/git-internal/) 中我们也讲过，<font color=FF0000>它是一个可变的指针</font>，比如说你在 master 中提交了一个 commit，那当前的 master 这个 ref 就会指向新的 commit object 的哈希值。reflog 就是将这些可变指针的历史给记录下来，可以理解成 **ref的log**，也可以理解成 **版本控制的版本控制**。
+主要思路为：**找到要返回的commit object的哈希值，然后执行`git reset`恢复**。
 
-- **提交一个文件中的部分修改：使用 `git add -i` ，具体如下：**
+> 👀 类似的见 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 中的 “9、不小心删除了分支怎么办？”
 
-  <img src="https://s2.loli.net/2022/02/25/FeqsIg7XVDk38QZ.gif" alt="https://www.lzane.com/tech/git-tips/git_add_i.gif" style="zoom:80%;" />
+我们知道 Git 的出现就是为了尽量保证我们的操作不被丢失，在 [Git内部原理](https://www.lzane.com/tech/git-internal/) 中我们讲过，<font color=FF0000>git object ( commit、tree、blob ) 一旦被创建，就不可变更 ( immutable )</font>；所以只要找到它对应的哈希值，就能找回。但是 <font color=FF0000>ref</font> 呢？在 [Git内部原理](https://www.lzane.com/tech/git-internal/) 中我们也讲过，<font color=FF0000>它是一个可变的指针</font>，比如说你在 master 中提交了一个 commit，那当前的 master 这个 ref 就会指向新的 commit object 的哈希值。reflog 就是将这些可变指针的历史给记录下来，可以理解成 **ref的log**，也可以理解成 **版本控制的版本控制**。
 
-- **从整个历史中删除一个文件**
+##### 提交一个文件中的部分修改
 
-  代码要开源了，但发现其中包括密钥文件或内网ip怎么办？
+使用 `git add -i` ，具体如下：
 
-  ```bash
-  git filter-branch --tree-filter 'rm -f passwords.txt' HEAD
-  ```
+<img src="https://s2.loli.net/2022/02/25/FeqsIg7XVDk38QZ.gif" alt="https://www.lzane.com/tech/git-tips/git_add_i.gif" style="zoom:80%;" />
 
-  可以使用 `filter-branch` 命令，它的实现原理是将每个 commit checkout出来，然后执行你给它的命令，像上面的 `rm -f passwords.txt` ，然后重新 commit 回去。
+##### 从整个历史中删除一个文件
 
-  ⚠️ 这个操作属于高危操作，会修改历史变更记录链，产生全新的 commit object。所以执行前请通知仓库的所有开发者，执行后所有开发者从新的分支继续开发，弃用以前的所有分支。
+代码要开源了，但发现其中包括密钥文件或内网ip怎么办？
 
-- **查看 git 分支之间的区别**
+```bash
+git filter-branch --tree-filter 'rm -f passwords.txt' HEAD
+```
 
-  ```sh
-  git show-branch
-  ```
+可以使用 `filter-branch` 命令，它的实现原理是将每个 commit checkout出来，然后执行你给它的命令，像上面的 `rm -f passwords.txt` ，然后重新 commit 回去。
 
-- **二分查找出现问题的变更节点**
+⚠️ 这个操作属于高危操作，会修改历史变更记录链，产生全新的 commit object。所以执行前请通知仓库的所有开发者，执行后所有开发者从新的分支继续开发，弃用以前的所有分支。
 
-  当代码出现问题时，想要找到是哪一个变更导致了该问题的出现；此时，会很自然的想要使用二分法；而人工二分法非常麻烦，git 会自动做二分法，你只需要告诉 git 这个二分结果是好的还是坏的，从而定位到变更的地方。
+##### 查看 git 分支之间的区别
 
-  ```sh
-  git bisect
-  ```
+```sh
+git show-branch
+```
 
-  学习自：[[中文] 这才是真正的 Git——Git 内部原理揭秘！（freeCodeConf 2019 深圳站）](https://www.bilibili.com/video/av77252063) 
+##### 二分查找出现问题的变更节点
+
+当代码出现问题时，想要找到是哪一个变更导致了该问题的出现；此时，会很自然的想要使用二分法；而人工二分法非常麻烦，git 会自动做二分法，你只需要告诉 git 这个二分结果是好的还是坏的，从而定位到变更的地方。
+
+```sh
+git bisect
+```
+
+学习自：[[中文] 这才是真正的 Git——Git 内部原理揭秘！（freeCodeConf 2019 深圳站）](https://www.bilibili.com/video/av77252063) 
 
 
 
