@@ -624,7 +624,7 @@ vm.a = 3 // => new: 3, old: 1
 
 - v-bind 绑定 value属性的值
 
-- v-on 绑定input事件监听到函数中，函数会获取最新的值赋值到绑定的属性中
+- v-on 绑定 input 事件监听到函数中，函数会获取最新的值赋值到绑定的属性中
 
 ```html
 <input v-model="searchText" />
@@ -643,6 +643,8 @@ vm.a = 3 // => new: 3, old: 1
 #### SFC 顶层 template 下的顶层标签
 
 Vue3中，之所以 \<template> 标签下，可以添加多个标签，而不再需要一个根标签；是因为：Vue 把 tempate 里面的内容，当作代码片段 fragment 来处理；也就是说：Vue 会自动加上 fragment
+
+> 💡 Fragment 是 Vue3 的一个新组件，主要用来解决上面 Vue2 的痛点。
 
 
 

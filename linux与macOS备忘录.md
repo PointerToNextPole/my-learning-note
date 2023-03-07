@@ -80,14 +80,14 @@
 
 
 
-#### ⌘ + ␣ 
+##### ⌘ + ␣ 
 
 - **短按：**spotlight
 - **长按：**呼出 / 关闭 Siri
 
 
 
-#### 查单词
+##### 查单词
 
 - **单指长按 / 三指按住：**在官方应用中调出字典查词
 
@@ -105,7 +105,7 @@
 
 
 
-#### ⌃ + 方向键
+##### ⌃ + 方向键
 
 - **⌃ + ←：相当于四指滑动的左滑，前往左侧的页面**
 - **⌃ + →：相当于四指滑动的右滑，前往右侧的页面**
@@ -114,7 +114,7 @@
 
 
 
-#### Chrome 相关
+##### Chrome 相关
 
 - **⌥ + ⌘ + I：打开/ 关闭 Developer Tools**
 - **⌥ + ⌘ + J：打开 / 关闭 Developer Tools 并进入控制台**
@@ -123,13 +123,61 @@
 
 
 
-**更多快捷键，请参看设置中的键盘选项：**
+##### 更多快捷键，请参看设置中的键盘选项
 
 <img src="https://s1.ax1x.com/2020/09/02/wpQmKP.png" style="zoom:45%;" />
 
 
 
 ### Mac 使用
+
+
+
+#### Spotlight 使用
+
+##### 快捷键
+
+⌘ + R ：搜索文件名，打开光标出的文件所在文件夹。或者按住 ⌘ ，并用光标选择文件，则可以进入文件所在的文件夹
+
+⌘ + L ：查单词，详见  [[#查单词]]
+
+##### 类型查找
+
+###### 前缀搜索
+
+- `author:` ：文件作者
+
+- `comment:` ：文件备注
+
+- `created:` ：文件创建日期
+
+- `date:` ：文件修改日期
+
+- `filename:` ：文件名称
+
+- `from:` ：从 ... 寄来的邮件
+
+- `subject:` ：标题是 ... 的邮件
+
+- `intext:` ：包含的 ... 字样的文件内容
+
+- `kind:` ：文件的种类
+
+  > 如果你想通过文件类型进行查找：可以在Spotlight中输入 “kind:(file type)” ，这里的 “file type” 可以是 “image”、“moive”、“music”、“email”、“application”、“text”、“archive” 等
+  >
+  > 摘自：[Spotlight--Mac上的查询利器 - 李宇的文章 - 知乎](https://zhuanlan.zhihu.com/p/29796308)
+
+- `label:` ：标签的颜色
+
+- `modified:` ：档案最后更新的日期
+
+
+
+
+
+
+
+
 
 
 
@@ -294,7 +342,7 @@ Homebrew 安装软件时将会<font color=FF0000>自动下载各种依赖</font>
 
 学习自：[Mac下获取Homebrew安装的软件路径](https://juejin.cn/post/6844903561705291789)
 
-##### 关于taps(third-party-repositories)，相关命令：`brew tap`
+##### 关于 taps ( third-party-repositories )，相关命令：`brew tap`
 
 brew tap可以为brew的软件的 跟踪, 更新, 安装添加更多的的`tap formulae`
 
@@ -421,6 +469,16 @@ RUNOOB Linux 命令总结：[Linux 命令大全](https://www.runoob.com/linux/li
 //TODO 还有更多
 
 https://web.archive.org/web/20160812022408/https://www.zhihu.com/question/49073893/（原链接被删除了...只找到了 archive）
+
+
+
+#### double dash : `--`
+
+问了下 new bing 得到了如下答案：
+
+<img src="/Users/yan/Library/Application Support/typora-user-images/image-20230308005044277.png" alt="image-20230308005044277" style="zoom:50%;" />
+
+有点点类似于转义
 
 
 

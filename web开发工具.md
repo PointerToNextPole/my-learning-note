@@ -57,8 +57,28 @@ Axios是一个 **异步请求** 技术，即：基于XMLHttpRequest对象发起�
 
 <font color=FF0000>**Axios的post请求传递参数的两种方式**</font>
 
-- 使用字符串直接传递（即键值对的拼接），示例："fooKey=fooVal&barKey=barVal"。使用 URLSearchParams / qs.stringify()
-- 后端接口直接使用@RequestBody注解形式接收参数（Spring）。这时候就需要前端必须传递json格式的字符串且header必须是application/json格式
+- 使用字符串直接传递（即键值对的拼接），示例：`fooKey=fooVal&barKey=barVal`。使用 URLSearchParams / `qs.stringify()`
+
+  > 💡 使用 URLSearchParams 实现 `qs.stringify()` 
+  >
+  > **问了下 new Bing，截图如下：**
+  >
+  > <img src="https://s2.loli.net/2023/03/07/ZgASkR4OXI9VCYq.png" alt="image-20230307172443854" style="zoom:50%;" />
+  >
+  > 试了下中文和需要转义的字符，确实可以：
+  >
+  > ```js
+  > const obj = {
+  >   foo: '%哈哈',
+  >   bar: '$啦啦'
+  > }
+  > 
+  > const params = new URLSearchParams(obj)
+  > const query = params.toString()
+  > 
+  > console.log(query) // foo=%25%E5%93%88%E5%93%88&bar=%24%E5%95%A6%E5%95%A6
+  > ```
+- 后端接口直接使用 `@RequestBody` 注解形式接收参数 ( Spring )。这时候就需要前端必须传递 json 格式的字符串且 header 必须是application/json 格式
 
 这里可以参考官方文档：[axios - 请求体编码](https://axios-http.com/zh/docs/urlencoded)
 

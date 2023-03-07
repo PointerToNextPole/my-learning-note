@@ -1036,7 +1036,7 @@ git push -u origin master
 
 ##### 其他 git remote 命令
 
-- **`git remove -v`** ：显示所有远程仓库
+- **`git remove -v`** ：显示所有远程仓库的详细 ( verbose ) 信息
 
 - **`git remote show [remote]`** ：显示某个远程仓库的信息
 
@@ -1052,6 +1052,56 @@ git push -u origin master
 
 
 摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
+
+
+#### git  clean
+
+git-clean - <font color=red>Remove untracked files from the working tree</font>
+
+##### DESCRIPTION
+
+Cleans the working tree by <font color=red>**recursively**</font> removing files that are not under version control, starting from the current directory.
+
+<font color=dodgerBlue>Normally, only files unknown to Git are removed</font>, but <font color=red>if the `-x` option is specified, ignored files are also removed</font>. This can, for example, be useful to remove all build products.
+
+<font color=dodgerBlue>**If any optional `<pathspec>...` arguments are given**</font>, <font color=red>only those paths that match the pathspec are affected</font>.
+
+##### OPTIONS
+
+###### -d
+
+Normally, when no `<pathspec>` is specified, git clean will not recurse into untracked directories to avoid removing too much. Specify `-d` to have it recurse into such directories as well. If a `<pathspec>` is specified, `-d` is irrelevant; all untracked files matching the specified paths (with exceptions for nested git directories mentioned under `--force`) will be removed.
+
+###### -f/ --force
+
+If the Git configuration variable `clean.requireForce` is not set to false, `git clean` will refuse to delete files or directories unless given `-f` or `-i`. Git will refuse to modify untracked nested git repositories (directories with a .git subdirectory) unless a second `-f` is given.
+
+###### -i / --interactive
+
+Show what would be done and clean files interactively. See “[Interactive mode](https://git-scm.com/docs/git-clean#_interactive_mode)” for details. 👀 Interactive mode 这里略
+
+###### -n / --dry-run
+
+Don’t actually remove anything, just show what would be done.
+
+###### -q / --quiet
+
+Be quiet, only report errors, but not the files that are successfully removed.
+
+###### -e \<pattern> / --exclude=\<pattern>
+
+Use the given exclude pattern in addition to the standard ignore rules (see [gitignore[5\]](https://git-scm.com/docs/gitignore)).
+
+###### -x
+
+Don’t use the standard ignore rules (see [gitignore[5\]](https://git-scm.com/docs/gitignore)), but still use the ignore rules given with `-e` options from the command line. This allows removing all untracked files, including build products. This can be used (possibly in conjunction with *git restore* or *git reset*) to create a pristine working directory to test a clean build.
+
+###### -X
+
+Remove only files ignored by Git. This may be useful to rebuild everything from scratch, but keep manually created files.
+
+摘自：[Git doc - git clean](https://git-scm.com/docs/git-clean)
 
 
 
