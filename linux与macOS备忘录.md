@@ -119,7 +119,7 @@
 - **⌥ + ⌘ + I：打开/ 关闭 Developer Tools**
 - **⌥ + ⌘ + J：打开 / 关闭 Developer Tools 并进入控制台**
 - **⇧ + ⌘ + C： 打开 检查元素**
-- **⇧ + ⌘ + P：**在控制台时，按下，会出现命令菜单(Command Menu)，类似于Mac中的spotlight
+- **⇧ + ⌘ + P：**在控制台时，按下，会出现命令菜单 ( Command Menu )，类似于 Mac 的 spotlight
 
 
 
@@ -137,9 +137,17 @@
 
 ##### 快捷键
 
-⌘ + R ：搜索文件名，打开光标出的文件所在文件夹。或者按住 ⌘ ，并用光标选择文件，则可以进入文件所在的文件夹
+- ⌘ + R ：搜索文件名，打开光标出的文件所在文件夹。
 
-⌘ + L ：查单词，详见  [[#查单词]]
+  > 💡其他方法：
+  >
+  > - 按住 ⌘ ，并用光标选择文件；可以进入文件所在的文件夹。
+  >
+  >   另外，按住 ⌘ ，就会在 spotlight 中展示文件的路径
+  >
+  > - 按下 ⌘ + ⏎ 
+
+- ⌘ + L ：查单词，详见  [[#查单词]]
 
 ##### 类型查找
 
@@ -151,7 +159,18 @@
 
 - `created:` ：文件创建日期
 
-- `date:` ：文件修改日期
+- `date:` ：文件日期
+
+  > 当您使用 Mac 多年时，有意义的是在特定日期范围内搜索文件。这将很容易地帮助您在指定日期内过滤所需的文件。您可以通过以下方式使用 “date:” 关键字根据日期进行过滤：
+  >
+  > - 日期：今天
+  > - 日期：昨天
+  > - 日期：2020/6/29
+  > - 日期：2020/6 / 4-2020 / 6/29
+  >
+  > 确保根据Mac使用正确的日期格式。如有疑问，请在“日期和时间”偏好设置部分检查正确的日期格式。
+  >
+  > 摘自：[Mac新手用户需要了解的14个Spotlight搜索技巧](https://zhuanlan.zhihu.com/p/151785840) 
 
 - `filename:` ：文件名称
 
@@ -163,19 +182,39 @@
 
 - `kind:` ：文件的种类
 
-  > 如果你想通过文件类型进行查找：可以在Spotlight中输入 “kind:(file type)” ，这里的 “file type” 可以是 “image”、“moive”、“music”、“email”、“application”、“text”、“archive” 等
+  > <font color=dodgerBlue>**如果你想通过文件类型进行查找**</font>：可以在 Spotlight 中输入 “kind:(file type)” ，这里的 “file type” 可以是 “image”、“moive”、“music”、“email”、“application”、“text”、“archive” 等。
+  >
+  > > 💡 还有 “bookmark” 、“app”
+  >
+  > <font color=dodgerBlue>**如果想通过文件格式进行查找**</font>：就在 Spotlight 中输入 “kind:(file format)”，这里 “format” 可以是 “jpeg”、“gif”、“pdf”、“mp3”、“mp4”、“zip” 等等。比如你想查找 pdf 文件，就在 Spotlight 中输入 “kind:pdf” ，之后 Spotlight 就会列出最近使用过的 pdf 文件，点击下面的 “在Finder中显示全部” 就可以在 Finder 中打开所有的 pdf 文件。
   >
   > 摘自：[Spotlight--Mac上的查询利器 - 李宇的文章 - 知乎](https://zhuanlan.zhihu.com/p/29796308)
 
 - `label:` ：标签的颜色
 
-- `modified:` ：档案最后更新的日期
+- `modified:` ：文件最后更新的日期
 
+###### 条件搜索
 
+- AND ：搜索包含 ... 和 ... 
 
+- AND NOT ：搜索包含 ... 但不包含 ... 
 
+- NOT ：搜索不包含 ... 
 
+  > 💡 可以使用 “-” 替代（和搜索引擎中的用法一致）
+  >
+  > 了解自：[Mac新手用户需要了解的14个Spotlight搜索技巧](https://zhuanlan.zhihu.com/p/151785840) 的 “13.不包括在Spotlight中”
 
+- OR ：搜索包含 ... 或 ...
+
+摘自：[身為 Mac 用戶，你不可不知道的 24 個 Spotlight 搜尋技巧！](https://mrwuli.com/mac-spotlight-tips/)
+
+> 💡 值得补充的是：
+>
+> 上面所说的搜索条件，在 finder 的搜索框中同样可用。如下示例：输入 “filename: frontend AND kind:image”，搜索到了一张 gif。
+>
+> <img src="https://s2.loli.net/2023/03/08/oUW8HYhdzjlQk6y.png" alt="image-20230308225440510" style="zoom:50%;" />
 
 
 
@@ -356,15 +395,15 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 
 - **brew tap \<user>/\<repo>** 
 
-  在本地对这个 `https://github.com/user/repo` 仓库上做了一个浅度的克隆，完成之后 `brew`就可以在这个仓库包含的`formulae`上工作,好比就在`Homebrew`规范的仓库,你可使用`brew install` 或者`brew uninstall `安装或者卸载这个仓库上的软件。当你执行`brew update`这个命令时，`tap` 和 `formulae` 就会自定更新
+  在本地对这个 `https://github.com/user/repo` 仓库上做了一个浅度的克隆，完成之后 `brew` 就可以在这个仓库包含的 `formulae`上工作，好比就在 `Homebrew` 规范的仓库，你可使用 `brew install` 或者 `brew uninstall `安装或者卸载这个仓库上的软件。当你执行 `brew update` 这个命令时，`tap` 和 `formulae` 就会自定更新
 
 - **brew tap \<user>/\<repo> URL** 
 
-  在本地对这个 `URL` 仓库上做了一个浅度的克隆,和上面一个参数命令是不一样的,`URL`没有默认关联到`Github`,这个`URL`没有要求必须是`HTTP`协议，任何位置和任何协议而且**Git**也是能很好的处理的
+  在本地对这个 `URL` 仓库上做了一个浅度的克隆,和上面一个参数命令是不一样的,`URL`没有默认关联到`Github`,这个`URL`没有要求必须是 `HTTP` 协议，任何位置和任何协议而且**Git**也是能很好的处理的
 
 - **brew untap \<user>/\<repo> [\<user>/\<repo> \<user>/\<repo> ...]**
 
-  移除已经安装的`tap`.这个仓库被删除,`brew`就不在可用在这个仓库的`formulae`.可以同时删除几个仓库
+  移除已经安装的`tap`。这个仓库被删除，`brew` 就不在可用在这个仓库的 `formulae`。可以同时删除几个仓库
 
 **仓库命名的规范**
 
@@ -395,6 +434,7 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 ##### brew service
 
 // TODO 可以参考下 [使用brew services管理服务](https://www.jianshu.com/p/6c3b26490861) ，其中提及了 Mac 的 `launchctl` 加载开机自动运行的服务的命令
+
 
 
 #### Mac 用命令行进行设置
@@ -474,11 +514,11 @@ https://web.archive.org/web/20160812022408/https://www.zhihu.com/question/490738
 
 #### double dash : `--`
 
-问了下 new bing 得到了如下答案：
+##### 问了下 new bing ，得到如下答案
 
 <img src="/Users/yan/Library/Application Support/typora-user-images/image-20230308005044277.png" alt="image-20230308005044277" style="zoom:50%;" />
 
-有点点类似于转义
+有点点 类似于转义。
 
 
 

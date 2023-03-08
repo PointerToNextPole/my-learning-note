@@ -202,6 +202,68 @@ When modifying a setting while there is a language filter in place, <font color=
 
 <img src="https://s2.loli.net/2023/03/01/7yGgf3ZVYMzUSvK.png" alt="image-20230301180224655" style="zoom:48%;" />
 
+Now you can start editing settings specifically for that language:
+
+<img src="https://s2.loli.net/2023/03/08/xYv3VyMpWEnCHGj.png" alt="image-20230308233334111" style="zoom:45%;" />
+
+Or, if `workbench.settings.editor` is set to `json` , now you can start adding language-specific settings to your user settings:
+
+<img src="https://s2.loli.net/2023/03/08/olbanBLGyiQEF6N.png" alt="image-20230308233731085" style="zoom:45%;" />
+
+If you <font color=dodgerBlue>have a file open</font> and you <font color=dodgerBlue>want to customize the editor for this file type</font>, select the Language Mode in the Status Bar to the bottom-right of the VS Code window. This opens the Language Mode picker with an option **Configure 'language_name' language based settings**. Selecting this opens your user `settings.json` with the language entry where you can add applicable settings.
+
+<img src="https://s2.loli.net/2023/03/09/K7SedvfNJkGqWZr.png" alt="image-20230309000715804" style="zoom:50%;" />
+
+You can <font color=lightSeaGreen>use IntelliSense in `settings.json` to help you find language-specific settings</font>. All editor settings and some non-editor settings are supported. Some languages have default language-specific settings already set, which you can review in `defaultSettings.json` by running the **Preferences: Open Default Settings** command.
+
+###### Multiple language-specific editor settings
+
+You <font color=dodgerBlue>can configure language specific editor settings for multiple languages at once</font>. The following example shows how you can customize settings for `javascript` and `typescript` languages together in your `settings.json` file:
+
+```json
+"[javascript][typescript]": {
+  "editor.maxTokenizationLineLength": 2500
+}
+```
+
+##### Settings precedence
+
+> 👀 设置优先级
+
+Configurations can be overridden at multiple levels by the different setting scopes. In the following list, <font color=dodgerBlue>**later scopes override earlier scopes**</font>:
+
+- Default settings - This scope represents the default unconfigured setting values.
+- User settings - Apply globally to all VS Code instances.
+- Remote settings - Apply to a remote machine opened by a user.
+- Workspace settings - Apply to the open folder or workspace.
+- Workspace Folder settings - Apply to a specific folder of a [multi-root workspace](https://code.visualstudio.com/docs/editor/multi-root-workspaces).
+- Language-specific default settings - These are language-specific default values that can be contributed by extensions.
+- Language-specific user settings - Same as User settings, but specific to a language.
+- Language-specific remote settings - Same as Remote settings, but specific to a language.
+- Language-specific workspace settings - Same as Workspace settings, but specific to a language.
+- Language-specific workspace folder settings - Same as Workspace Folder settings, but specific to a language.
+- Policy settings - Set by the system administrator, <font color=red>these values always override other setting values</font>.
+
+<font color=dodgerBlue>**Setting values can be of various types:**</font>
+
+- String - `"files.autoSave": "afterDelay"`
+- Boolean - `"editor.minimap.enabled": true`
+- Number - `"files.autoSaveDelay": 1000`
+- Array - `"editor.rulers": []`
+- Object - `"search.exclude": { "**/node_modules": true, "**/bower_components": true }`
+
+<font color=red>Values with primitive types and Array types are overridden</font>, meaning a configured value in a scope that takes precedence over another scope is used instead of the value in the other scope. But, <font color=fuchsia>**values with Object types are merged**</font>.
+
+> 👀 准确的说：对象类型的值出现重复：配置出现冲突，高优先级的配置替换优先级低低；没有冲突的，则合并为一个新的对象。
+>
+> 原文这有示例与讲解，这里略。
+
+###### Note about multiple language specific settings
+
+If you are using multiple language-specific settings, <font color=dodgerBlue>be aware that</font> language-specific settings are merged and <font color=fuchsia>precedence is set based on the full language string</font> (for example `"[typescript][javascript]"`) and <font color=fuchsia>not the individual language IDs</font> (`typescript` and `javascript`). This means that for example, a <font color=red>**`"[typescript][javascript]"` workspace setting will not override a `"[javascript]"` user setting**</font>.
+
+
+
 
 
 #### VS Code 工具

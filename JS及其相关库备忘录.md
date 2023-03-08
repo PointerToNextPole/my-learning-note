@@ -242,15 +242,58 @@ String.raw(callSite, ...substitutions)
 String.raw`templateString`
 ```
 
-##### 参数
+###### 参数
 
-- **callSite：**一个模板字符串的“调用点对象”。类似{ raw: ['foo', 'bar', 'baz'] }。
-- **...substitutions：**任意个可选的参数，表示任意个内插表达式对应的值。
-- **templateString：**模板字符串，可包含占位符（${...}）。
+- **callSite** ：一个模板字符串的“调用点对象”。类似{ raw: ['foo', 'bar', 'baz'] }。
+- **...substitutions** ：任意个可选的参数，表示任意个内插表达式对应的值。
+- **templateString** ：模板字符串，可包含占位符（${...}）。
 
-**返回值：**给定模板字符串的原始字符串。
+###### 返回值
+
+给定模板字符串的原始字符串。
 
 摘自：[MDN - String.raw()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/raw)
+
+
+
+#### String.prototype.includes()
+
+**`includes()`** 方法执行<font color=red>区分大小写的搜索</font>，以确定是否可以在另一个字符串中找到一个字符串，并根据情况返回 `true` 或 `false`。
+
+##### 语法
+
+```js
+includes(searchString)
+includes(searchString, position)
+```
+
+###### 返回值
+
+如果当前字符串包含被搜寻的字符串，就返回 **`true`**，否则返回 **`false`**。
+
+###### 异常
+
+TypeError ：如果 `searchString` 是一个正则表达式。
+
+##### 描述
+
+此方法可以帮你判断一个字符串是否包含另外一个字符串。
+
+###### 区分大小写
+
+`includes()` 方法是区分大小写的。例如，下面的表达式会返回 `false`：
+
+```js
+"Blue Whale".includes("blue"); // returns false
+```
+
+你<font color=LightSeaGreen>可以通过将原字符串和搜索字符串全部转换为小写来解决这个约束</font>：
+
+```js
+"Blue Whale".toLowerCase().includes("blue"); // returns true
+```
+
+摘自：[MDN - String.prototype.includes()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/includes)
 
 
 
@@ -262,16 +305,32 @@ String.raw`templateString`
 str.repeat(count)
 ```
 
-##### 参数
+###### 参数
 
-count：介于 0 和 +Infinity 之间的整数。表示在新构造的字符串中重复了多少遍原字符串。
+count ：介于 0 和 +Infinity 之间的整数。表示在新构造的字符串中重复了多少遍原字符串。
 
-**返回值：**包含指定字符串的指定数量副本的新字符串。
+###### 返回值
 
-##### 异常
+包含指定字符串的指定数量副本的新字符串。
 
-- RangeError: 重复次数不能为负数。
-- RangeError: 重复次数必须小于 infinity，且长度不会大于最长的字符串。
+###### 异常
+
+- RangeError : 重复次数不能为负数。
+- RangeError : 重复次数必须小于 infinity，且长度不会大于最长的字符串。
+
+##### 示例
+
+```js
+"abc".repeat(-1)     // RangeError: repeat count must be positive and less than inifinity
+"abc".repeat(0)      // ""
+"abc".repeat(1)      // "abc"
+"abc".repeat(2)      // "abcabc"
+"abc".repeat(3.5)    // "abcabcabc" 参数 count 将会被自动转换成整数。
+"abc".repeat(1/0)    // RangeError: repeat count must be positive and less than inifinity
+
+({toString : () => "abc", repeat : String.prototype.repeat}).repeat(2)
+//"abcabc",repeat 是一个通用方法，也就是它的调用者可以不是一个字符串对象。
+```
 
 摘自：[MDN - String.prototype.repeat()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/repeat)
 
@@ -287,20 +346,22 @@ startsWith() 方法用来判断当前字符串是否以另外一个给定的子�
 str.startsWith(searchString[, position])
 ```
 
-##### 参数
+###### 参数
 
-- **searchString：**要搜索的子字符串。
-- **position：**<font color=FF0000>可选</font>，在 str 中搜索 searchString 的开始位置，<font color=FF0000>默认值为 0</font>。
+- **searchString** ：要搜索的子字符串。
+- **position** ：<font color=FF0000>可选</font>，在 str 中搜索 searchString 的开始位置。<font color=FF0000>默认值为 0</font>。
 
-**返回值：**如果在字符串的开头找到了给定的字符则返回true；否则返回false。
+###### 返回值
 
-**描述：**这个方法能够让你确定一个字符串是否以另一个字符串开头。<font color=FF0000>这个方法区分大小写</font>。
+如果在字符串的开头找到了给定的字符则返回 true；否则返回false。
+
+##### 描述
+
+这个方法能够让你确定一个字符串是否以另一个字符串开头。<font color=FF0000>这个方法区分大小写</font>。
 
 摘自：[MDN - tring.prototype.startsWith()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)
 
-##### 补充
-
-和正则中的 `^` 符号一致
+> 💡 和正则中的 `^` 符号一致
 
 #### String.prototype.endsWith()
 
@@ -312,20 +373,22 @@ endsWith() 方法用来判断当前字符串是否是以另外一个给定的子
 str.endsWith(searchString[, length])
 ```
 
-##### 参数
+###### 参数
 
-- **searchString：**要搜索的子字符串。
-- **length：**<font color=FF0000>可选</font>，作为 str 的长度。<font color=FF0000>默认值为 str.length</font>。
+- **searchString** ：要搜索的子字符串。
+- **length** ：<font color=FF0000>可选</font>，作为 str 的长度。<font color=FF0000>默认值为 `str.length`</font>。
 
-**返回值：**如果传入的子字符串在搜索字符串的末尾则返回true；否则将返回 false。
+###### 返回值
 
-**描述：**这个方法帮助你确定一个字符串是否在另一个字符串的末尾。<font color=FF0000>这个方法是大小写敏感的</font>。
+如果传入的子字符串在搜索字符串的末尾则返回true；否则将返回 false。
+
+##### 描述
+
+这个方法帮助你确定一个字符串是否在另一个字符串的末尾。<font color=FF0000>这个方法是大小写敏感的</font>。
 
 摘自：[MDN - String.prototype.endsWith()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith)
 
-##### 补充
-
-和正则中的 `$` 符号一致
+> 💡 和正则中的 `$` 符号一致
 
 
 
@@ -339,12 +402,14 @@ padStart() 方法用另一个字符串填充当前字符串(如果需要的话�
 str.padStart(targetLength [, padString])
 ```
 
-##### 参数
+###### 参数
 
-- **targetLength：**当前字符串需要填充到的目标长度。<font color=FF0000>如果这个数值小于当前字符串的长度，则返回当前字符串本身</font>。
-- **padString：**<font color=FF0000>可选</font>，填充字符串。<font color=FF0000>如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留（padString的）最左侧的部分，其他部分会被截断</font>。<font color=FF0000>**此参数的默认值为 " "**</font>（U+0020）。
+- **targetLength** ：当前字符串需要填充到的目标长度。<font color=FF0000>如果这个数值小于当前字符串的长度，则返回当前字符串本身</font>。
+- **padString** ：<font color=FF0000>可选</font>，填充字符串。<font color=FF0000>如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留（padString的）最左侧的部分，其他部分会被截断</font>。<font color=FF0000>**此参数的默认值为 " "**</font>（U+0020）。
 
-**返回值：**在原字符串开头填充指定的填充字符串直到目标长度所形成的新字符串。
+###### 返回值
+
+在原字符串开头填充指定的填充字符串直到目标长度所形成的新字符串。
 
 摘自：[MDN - String.prototype.padStart()]()
 
@@ -358,12 +423,14 @@ padEnd()  方法会用一个字符串填充当前字符串（如果需要的话�
 str.padEnd(targetLength [, padString])
 ```
 
-##### 参数
+###### 参数
 
-- **targetLength：**当前字符串需要填充到的目标长度。<font color=FF0000>如果这个数值小于当前字符串的长度，则返回当前字符串本身</font>。
-- **padString：**<font color=FF0000>可选</font>，填充字符串。<font color=FF0000>如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留（padString的）最左侧的部分，其他部分会被截断。**此参数的缺省值为 " "（U+0020）**</font>。
+- **targetLength**：当前字符串需要填充到的目标长度。<font color=FF0000>如果这个数值小于当前字符串的长度，则返回当前字符串本身</font>。
+- **padString**：<font color=FF0000>可选</font>，填充字符串。<font color=FF0000>如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留（padString的）最左侧的部分，其他部分会被截断。**此参数的缺省值为 " "（U+0020）**</font>。
 
-**返回值：**在原字符串末尾填充指定的填充字符串直到目标长度所形成的新字符串。
+###### 返回值
+
+在原字符串末尾填充指定的填充字符串直到目标长度所形成的新字符串。
 
 摘自：[MDN - String.prototype.padEnd()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/padEnd)
 
@@ -382,11 +449,11 @@ str.trimLeft();
 
 ##### 描述
 
-trimStart() / trimLeft()方法移除原字符串右端的连续空白符并返回，trimStart() / trimLeft()方法并不会直接修改原字符串本身。
+trimStart() / trimLeft() 方法移除原字符串右端的连续空白符并返回，trimStart() / trimLeft() 方法并不会直接修改原字符串本身。
 
-##### 别名
+###### 别名
 
-<mark>为了与 String.prototype.padStart 等函数保持一致，标准方法名称为trimStart。 但是，出于 Web 兼容性原因，trimLeft 仍然是 trimStart 的别名</mark>。在某些引擎中，这意味着：
+<font color=LightSeaGreen>为了与 String.prototype.padStart 等函数保持一致，标准方法名称为 trimStart</font>。 但是，<font color=LightSeaGreen>出于 Web 兼容性原因，trimLeft 仍然是 trimStart 的别名</font>。在某些引擎中，这意味着：
 
 ```js
 String.prototype.trimLeft.name === "trimStart";
@@ -3752,7 +3819,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                           
+  >                                                                                                                                                                                                                                                               
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3771,7 +3838,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                                           
+  >                                                                                                                                                                                                                                                               
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2

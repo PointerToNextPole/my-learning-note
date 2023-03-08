@@ -506,6 +506,17 @@
 
 - **signify** ：表示
 
+- **troubleshooting** ：排错，分析解决问题
+
+- **trait** ：特征，特点
+
+- **segregation** ：隔离。read / write segregation 读写隔离
+
+- **precedence** ：优先地位，优先级
+
+- **squiggles** ：波浪线，波形
+
+
 
 
 #### 术语的英文
