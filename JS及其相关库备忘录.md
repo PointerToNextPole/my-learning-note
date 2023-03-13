@@ -68,7 +68,11 @@ element.outerHTML = content;
 ##### JS 命名规则
 
 - 变量<font color=FF0000>必须以字母开头</font>
+
 - 变量也能以 `$` 和 `_` 符号开头（不过我们不推荐这么做）
+
+  > 💡 变量 `_` 一般作为无意义的变量（占位符）使用
+
 - 变量名称<font color=FF0000>对大小写敏感</font>（ y 和 Y 是不同的变量）
 
 ##### var 和 non-var 的变量
@@ -83,7 +87,9 @@ element.outerHTML = content;
 
 #### JavaScript 数据类型
 
-- **<font color=FF0000>值类型(基本类型)</font>**：字符串 ( String )、数字(Number)、布尔(Boolean)、对空(Null)、未定义 ( Undefined )、Symbol ( Symbol 是 ES6 引入了一种新的原始数据类型，表示独一无二的值）
+- **值类型（基本类型 Primitive value ）**：字符串 ( String )、数字(Number)、布尔( Boolean )、空( Null )、未定义 ( Undefined )、Symbol ( Symbol 是 ES6 引入了一种新的原始数据类型，表示独一无二的值）
+
+  > 💡另外，还有 bigint
 
 - **<font color=FF0000>引用数据类型</font>**：对象 ( Object )、数组 ( Array )、函数 ( Function ) 
 
@@ -525,11 +531,12 @@ codePointAt() 方法<font color=FF0000>返回 一个 **Unicode 编码点值的�
 str.codePointAt(pos)
 ```
 
-##### 参数
+###### 参数
 
 - **pos：**这个字符串中需要转码的元素的位置。
 
-**返回值：**返回值是在字符串中的给定索引的编码单元体现的数字，<font color=FF0000>如果在索引处没找到元素则返回 undefined</font> 。
+###### 返回值
+返回值是在字符串中的给定索引的编码单元体现的数字，<font color=FF0000>如果在索引处没找到元素则返回 undefined</font> 。
 
 ##### 描述
 
@@ -555,6 +562,8 @@ str.codePointAt(pos)
 >
 > 摘自：深入理解ES6 - 字符串和正则表达式 P16
 
+
+
 #### String.fromCodePoint()
 
 String.fromCodePoint() **静态方法** <font color=FF0000>返回 使用指定的代码点序列创建的字符串</font>。
@@ -565,17 +574,21 @@ String.fromCodePoint() **静态方法** <font color=FF0000>返回 使用指定�
 String.fromCodePoint(num1[, ...[, numN]])
 ```
 
-##### 参数
+###### 参数
 
 - **num1, ... , num*N* ：**一串 Unicode 编码位置，即“代码点”。
 
-**返回值：**使用指定的 Unicode 编码位置创建的字符串。
+###### 返回值
 
-##### 异常
+使用指定的 Unicode 编码位置创建的字符串。
+
+###### 异常
 
 - **RangeError：**如果传入无效的 Unicode 编码，将会抛出一个RangeError（例如："RangeError: NaN is not a valid code point"）。
 
-**说明：**该方法返回一个字符串，而不是一个 String 对象。因为 fromCodePoint() 是 String 的一个静态方法，所以只能通过 String.fromCodePoint() 这样的方式来使用，不能在你创建的 String 对象实例上直接调用。
+##### 说明
+
+该方法返回一个字符串，而不是一个 String 对象。因为 fromCodePoint() 是 String 的一个静态方法，所以只能通过 String.fromCodePoint() 这样的方式来使用，不能在你创建的 String 对象实例上直接调用。
 
 摘自：[MDN - String.fromCodePoint()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint)
 
@@ -589,6 +602,8 @@ String.fromCodePoint(num1[, ...[, numN]])
 >
 > 摘自：深入理解ES6 - 字符串和正则表达式 P17
 
+
+
 #### String.prototype.normalize()
 
 normalize() 方法会按照指定的一种 Unicode 正规形式将当前字符串正规化。（如果该值不是字符串，则首先将其转换为一个字符串）。
@@ -599,7 +614,7 @@ normalize() 方法会按照指定的一种 Unicode 正规形式将当前字符�
 str.normalize( [form] )
 ```
 
-##### 参数
+###### 参数
 
 - **form：**<font color=FF0000>可选</font>。四种 Unicode 正规形式 ( Unicode Normalization Form ) "NFC"、"NFD"、"NFKC"，或 "NFKD" 其中的一个，默认值为 "NFC"。
 
@@ -610,9 +625,11 @@ str.normalize( [form] )
   >
   > 摘自：深入理解ES6 - 字符串和正则表达式 P17
 
-**返回值：**含有给定字符串的 Unicode 规范化形式的字符串。
+###### 返回值
 
-##### 可能出现的异常
+含有给定字符串的 Unicode 规范化形式的字符串。
+
+###### 可能出现的异常
 
 - **RangeError：**如果给 form 传入了上述四个字符串以外的参数，则会抛出 RangeError 异常。
 
@@ -686,7 +703,7 @@ str.normalize( [form] )
 >
 > 与 str.split 方法不同，它依赖于字符串的可迭代特性（注：这是 ES6 的 Symbol.iterator 的特性）。因此，就像 for..of 一样，可以正确地处理代理对。
 >
-> **注：**个人感觉，ES6 中新增的字符串相关的方法，都是支持代理对的；感觉这也是在情理之中的。
+> > 💡个人感觉，ES6 中新增的字符串相关的方法，都是支持代理对的；感觉这也是在情理之中的。
 >
 > 摘自：[现代JS教程 - Iterable object（可迭代对象）](https://zh.javascript.info/iterable)
 
@@ -706,21 +723,21 @@ for-in 循环，<font color=FF0000>for-in 循环是为遍历 enumerable 数据�
 for ( elem in elems ){ /* code */ }
 ```
 
-> **注：**for-in 是用来遍历对象中 enumerable 数据描述符 为 true 的属性，object.keys() 同样受到 enumerable 的影响。详见 [[#Object.defineProperty#属性描述符]] 中的 enumerable
+> 注：for-in 是用来遍历对象中 enumerable 数据描述符 为 true 的属性，object.keys() 同样受到 enumerable 的影响。详见 [[#Object.defineProperty#属性描述符]] 中的 enumerable
 
 <font color=FF0000>不推荐用 for-in 来循环一个**数组**，因为，不像对象，数组的 `index` 跟普通的对象属性不一样，是重要的数值序列指标</font>。
 
-##### forEach 循环（ JavaScript5 引入）
+##### forEach
 
 forEach() 方法用于调用<font color=FF0000>数组</font>的每个元素，并将元素传递给回调函数。
 
-**语法：**
+###### 语法
 
 ```js
 array.forEach(function(currentValue, index, arr), thisValue)
 ```
 
-**参数：**
+###### 参数
 
 - **function(currentValue, index, arr)**：<font color=FF0000>必需</font>。 数组中每个元素需要调用的函数。
   - **currentValue**    必需。当前元素
@@ -728,7 +745,7 @@ array.forEach(function(currentValue, index, arr), thisValue)
   - **arr**    可选。当前元素所属的数组对象。
 - **thisValue**：<font color=FF0000>可选</font>。传递给函数的值一般用 "this" 值。
 
-**示例：**
+###### 示例
 
 ```js
 myArray.forEach(function (value) {
@@ -816,7 +833,7 @@ Reflect.ownKeys(obj).forEach(key => {
  >- 其次遍历所有字符串键，按照加入时间升序排列
  >- 最后遍历所有 Symbol 键，按照加入时间升序排列
 
-##### 《现代 JS 教程》中的相关内容
+###### 《现代 JS 教程》中的相关内容
 
 > -   Object.getOwnPropertyNames(obj) 返回非 Symbol 键。
 > -   Object.getOwnPropertySymbols(obj) 返回 Symbol 键。
@@ -825,6 +842,58 @@ Reflect.ownKeys(obj).forEach(key => {
 >
 > 摘自：[现代 JS 教程 - Proxy 和 Reflect](https://zh.javascript.info/proxy)
 
+#### Object 中的 key 是否有序？
+
+> 💡 先说结论：ES5 及之前，key 是无序的；ES6 及之后，规则修改了，key 是有序的
+
+> ⚠️ 同样值得注意的是：<font color=fuchsia>Map 实例会维护键值对的插入顺序</font>。
+
+##### 排序规则
+
+1. Key 都为自然数（正整数或 0），按照自然数的大小进行升序排序。如果是其他类的 Number —— 浮点数或者负数 —— 都会走到下一组类型里，像 `NaN` 或者 `Infinity` 这种也自然归到下一个类型里；另外，科学计数法的数字会被转换为直接表示的数字，作为 key，并按照这里的规则进行排序
+
+2. 如果 <font color=fuchsia>key 是不为自然数的 String（Number 也会转为 String ）处理</font>，则按照加入的时间顺序进行排序。
+
+   > 无论是存在 小数点 还是存在 正负号，都会作为 string 处理
+
+3. Key 都为 Symbol，顺序和 String 一样，也是按照添加的顺序进行排序的。
+
+##### 排列示例
+
+```js
+const obj = {
+  "002": "002",
+  [Symbol("first")]: "first",
+  c: "c",
+  b: "b",
+  "100": "100",
+  001: 001,
+  [Symbol("second")]: "second",
+  Infinity: Infinity,
+  NaN: NaN,
+  123e2: 123e3,
+  456e-7: 456e-7,
+  '+1': '+1'
+}
+
+const keys = Reflect.ownKeys(obj)
+console.log(keys)
+```
+
+###### 结果
+
+```
+[
+  '1',           '100',
+  '12300',       '002',
+  'c',           'b',
+  'Infinity',    'NaN',
+  '0.0000456',   '+1',
+  Symbol(first), Symbol(second)
+]
+```
+
+学习自：[# [科普] JS中Object的keys是无序的吗](https://mp.weixin.qq.com/s/qyyrQNC6q6p496OdZIQ6ew)
 
 
 #### for ... of 和 for ... in 的区别
@@ -3819,7 +3888,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                               
+  >                                                                                                                                                                                                                                                                       
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3838,7 +3907,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                                               
+  >                                                                                                                                                                                                                                                                       
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -4694,59 +4763,59 @@ fn(1, 2, 3, 4)
 
 <font color=FF0000>JavaScript 函数有 **4 种**调用方式</font>。每种方式的不同在于 **this** 的初始化。
 
-- **作为一个函数调用**
-  
-  <font color=FF0000>函数不属于任何对象。但是在 JavaScript 中它始终是默认的全局对象</font>。而在 <mark>HTML 中默认的全局对象是 HTML 页面本身</mark>，所以函数是属于 HTML 页面。
-  
-  this对象：当<font color=FF0000>函数没有被自身的对象调用时 **this** 的值就会变成全局对象</font>。在 web 浏览器中全局对象是浏览器窗口（window 对象）。
+##### 作为一个函数调用
 
-- **函数作为方法调用**
-  
-  在 JavaScript 中你可以将函数定义为对象的方法。这里的**this**对象是当前方法所在的对象
+<font color=FF0000>函数不属于任何对象。但是在 JavaScript 中它始终是默认的全局对象</font>。而在 <mark>HTML 中默认的全局对象是 HTML 页面本身</mark>，所以函数是属于 HTML 页面。
 
-- **使用构造函数调用函数**
-  
-  如果函数调用前使用了 **new** 关键字, 则是调用了构造函数。
-  
-  这看起来就像创建了新的函数，但实际上 <font color=FF0000>**JavaScript 函数是重新创建的对象**</font>。示例：
-  
-  ```js
-  // 构造函数:
-  function myFunction(arg1, arg2) {
-      this.firstName = arg1;
-      this.lastName  = arg2;
-  }
-  
-  // This creates a new object
-  var x = new myFunction("John","Doe");
-  x.firstName;                             // 返回 "John"
-  ```
+this对象：当<font color=FF0000>函数没有被自身的对象调用时 **this** 的值就会变成全局对象</font>。在 web 浏览器中全局对象是浏览器窗口（window 对象）。
 
-- **作为函数方法调用函数**
-  
-  在 JavaScript 中, <font color=FF0000>函数是对象。JavaScript **函数有它的属性和方法**</font>。
-  
-  <font color=FF0000>**call()** 和 **apply()** 是**预定义**的函数方法</font>。 <font color=FF0000>两个方法可用于调用函数</font>，<font color=FF0000>两个方法的**第一个参数必须是对象本身**</font>。
-  示例：
-  
-  ```js
-  function myFunction(a, b) {
-      return a * b;
-  }
-  myObject = myFunction.call(myObject, 10, 2);     // 返回 20
-  ```
-  
-  两个方法都使用了对象本身作为第一个参数。 两者的区别在于第二个参数： 
-  
-  - **apply**<font color=FF0000>传入的是一个参数数组</font>，也就是将多个参数组合成为一个数组传入
-  
-  - **call**则作为call的参数传入（从第二个参数开始）。
-  
-  在 JavaScript <font color=FF0000>严格模式(strict mode)下</font>, 在<font color=FF0000>调用函数时第一个参数会成为 **this** 的值</font>， 即使该参数不是一个对象。
-  
-  在 JavaScript <font color=FF0000>非严格模式(non-strict mode)下</font>, <font color=FF0000>如果第一个参数的值是 null 或 undefined</font>, 它<font color=FF0000>将使用全局对象替代</font>。
-  
-  注意：通过 call() 或 apply() 方法你可以设置 **this** 的值, 且作为已存在对象的新方法调用。
+##### 函数作为方法调用
+
+在 JavaScript 中你可以将函数定义为对象的方法。这里的**this**对象是当前方法所在的对象
+
+##### 使用构造函数调用函数
+
+如果函数调用前使用了 **new** 关键字, 则是调用了构造函数。
+
+这看起来就像创建了新的函数，但实际上 <font color=FF0000>**JavaScript 函数是重新创建的对象**</font>。示例：
+
+```js
+// 构造函数:
+function myFunction(arg1, arg2) {
+    this.firstName = arg1;
+    this.lastName  = arg2;
+}
+
+// This creates a new object
+var x = new myFunction("John","Doe");
+x.firstName;                             // 返回 "John"
+```
+
+##### 作为函数方法调用函数
+
+在 JavaScript 中, <font color=FF0000>函数是对象。JavaScript **函数有它的属性和方法**</font>。
+
+<font color=FF0000>**call()** 和 **apply()** 是**预定义**的函数方法</font>。 <font color=FF0000>两个方法可用于调用函数</font>，<font color=FF0000>两个方法的**第一个参数必须是对象本身**</font>。
+示例：
+
+```js
+function myFunction(a, b) {
+    return a * b;
+}
+myObject = myFunction.call(myObject, 10, 2);     // 返回 20
+```
+
+两个方法都使用了对象本身作为第一个参数。 两者的区别在于第二个参数： 
+
+- **apply**<font color=FF0000>传入的是一个参数数组</font>，也就是将多个参数组合成为一个数组传入
+
+- **call**则作为call的参数传入（从第二个参数开始）。
+
+在 JavaScript <font color=FF0000>严格模式(strict mode)下</font>, 在<font color=FF0000>调用函数时第一个参数会成为 **this** 的值</font>， 即使该参数不是一个对象。
+
+在 JavaScript <font color=FF0000>非严格模式(non-strict mode)下</font>, <font color=FF0000>如果第一个参数的值是 null 或 undefined</font>, 它<font color=FF0000>将使用全局对象替代</font>。
+
+注意：通过 call() 或 apply() 方法你可以设置 **this** 的值, 且作为已存在对象的新方法调用。
 
 
 
@@ -4756,39 +4825,42 @@ call() 方法<font color=FF0000>使用一个指定的 this 值</font>和<font co
 
 **注意：**该方法的语法和作用与 apply() 方法类似，只有一个区别，就是 call() 方法接受的是一个参数列表，而 apply() 方法接受的是一个包含多个参数的数组。
 
-- **语法**
+##### 语法
 
-  ```js
-  function.call(thisArg, arg1, arg2, ...)
-  ```
+```js
+function.call(thisArg, arg1, arg2, ...)
+```
 
-- **参数**
+###### 参数
 
-  - **thisArg：**<font color=FF0000>**可选的**</font>。在 function 函数运行时使用的 this 值。请注意，this可能不是该方法看到的实际值：<font color=FF0000>如果这个函数处于非严格模式下，则指定为 null 或 undefined 时会自动替换为指向全局对象</font>，原始值会被包装。
-  - **arg1, arg2, ...：**指定的参数列表。
+- **thisArg：**<font color=FF0000>**可选的**</font>。在 function 函数运行时使用的 this 值。请注意，this可能不是该方法看到的实际值：<font color=FF0000>如果这个函数处于非严格模式下，则指定为 null 或 undefined 时会自动替换为指向全局对象</font>，原始值会被包装。
+- **arg1, arg2, ...：**指定的参数列表。
 
-- **返回值：**<font color=FF0000>使用调用者提供的 this 值和参数调用该函数的返回值</font>。若该方法没有返回值，则返回 undefined。
+###### 返回值
 
-- **描述：**
-  call() 允许为不同的对象分配和调用属于一个对象的函数/方法。
+<font color=FF0000>使用调用者提供的 this 值和参数调用该函数的返回值</font>。若该方法没有返回值，则返回 undefined。
 
-  call() 提供新的 this 值给当前调用的函数/方法。你<font color=FF0000>可以使用 call 来实现继承</font>：写一个方法，然后让另外一个新的对象来继承它（而不是在新对象中再写一次这个方法）。
+##### 描述
 
-- **其他：**
+call() 允许为不同的对象分配和调用属于一个对象的函数/方法。
 
-  **使用 call 方法调用函数并且不指定第一个参数（argument）**
+call() 提供新的 this 值给当前调用的函数/方法。你<font color=FF0000>可以使用 call 来实现继承</font>：写一个方法，然后让另外一个新的对象来继承它（而不是在新对象中再写一次这个方法）。
 
-  在下面的例子中，我们调用了 display 方法，但并没有传递它的第一个参数。<font color=FF0000>如果没有传递第一个参数，this 的值将会被绑定为全局对象</font>。
+##### 其他
 
-  ```js
-  var sData = 'Wisen';
-  
-  function display() {
-    console.log('sData value is %s ', this.sData);
-  }
-  
-  display.call();  // sData value is Wisen
-  ```
+**使用 call 方法调用函数并且不指定第一个参数（argument）**
+
+在下面的例子中，我们调用了 display 方法，但并没有传递它的第一个参数。<font color=FF0000>如果没有传递第一个参数，this 的值将会被绑定为全局对象</font>
+
+```js
+var sData = 'Wisen';
+
+function display() {
+  console.log('sData value is %s ', this.sData);
+}
+
+display.call();  // sData value is Wisen
+```
 
 摘自：[MDN - Function.prototype.call()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/call)
 
@@ -4796,208 +4868,216 @@ call() 方法<font color=FF0000>使用一个指定的 this 值</font>和<font co
 
 apply() 方法<font color=FF0000>调用一个具有给定this值的函数</font>，以及<font color=FF0000>以一个数组（或类数组对象）的形式提供的参数</font>。
 
-**注意：**call() 方法的作用和 apply() 方法类似，区别就是 call() 方法接受的是参数列表，而 apply() 方法接受的是一个参数数组。
+> ⚠️ call() 方法的作用和 apply() 方法类似，区别就是 call() 方法接受的是参数列表，而 apply() 方法接受的是一个参数数组。
 
-- **语法**
+**语法**
 
-  ```js
-  func.apply(thisArg, [argsArray])
-  ```
+```js
+func.apply(thisArg, [argsArray])
+```
 
-- **参数**
+###### 参数
 
-  - **thisArg：**<font color=FF0000>必选</font>。在 func 函数运行时使用的 this 值。请注意，this可能不是该方法看到的实际值：如果这个函数处于非严格模式下，则<font color=FF0000>指定为 null 或 undefined 时会自动替换为指向全局对象，原始值会被包装</font>。
-  - **argsArray：**<font color=FF0000>可选</font>。<font color=FF0000>一个数组或者类数组对象</font>，其中的数组元素将作为单独的参数传给 func 函数。如果该参数的值为 null 或 undefined，则表示不需要传入任何参数。从 ECMAScript 5 开始可以使用类数组对象。
+- **thisArg：**<font color=FF0000>必选</font>。在 func 函数运行时使用的 this 值。请注意，this可能不是该方法看到的实际值：如果这个函数处于非严格模式下，则<font color=FF0000>指定为 null 或 undefined 时会自动替换为指向全局对象，原始值会被包装</font>。
+- **argsArray：**<font color=FF0000>可选</font>。<font color=FF0000>一个数组或者类数组对象</font>，其中的数组元素将作为单独的参数传给 func 函数。如果该参数的值为 null 或 undefined，则表示不需要传入任何参数。从 ECMAScript 5 开始可以使用类数组对象。
 
-- **返回值：**调用有指定this值和参数的函数的结果。
+###### 返回值
 
-- **描述：**
+调用有指定this值和参数的函数的结果。
 
-  apply <font color=FF0000>可以使用数组字面量</font> ( array literal )，如 fun.apply(this, ['eat', 'bananas'])，或<font color=FF0000>数组对象</font>， 如  fun.apply(this, new Array('eat', 'bananas'))。
+##### 描述
 
-  你<font color=FF0000>也可以使用 arguments 对象作为 argsArray 参数</font>。 arguments 是一个函数的局部变量。 它可以被用作被调用对象的所有未指定的参数。 这样，你在使用 apply函数的时候就不需要知道被调用对象的所有参数。 你可以使用 arguments 来把所有的参数传递给被调用对象。 被调用对象接下来就负责处理这些参数。
+apply <font color=FF0000>可以使用数组字面量</font> ( array literal )，如 `fun.apply(this, ['eat', 'bananas'])`，或<font color=FF0000>数组对象</font>， 如 `fun.apply(this, new Array('eat', 'bananas'))` 。
 
-- **示例：** 声明apply的功能可以通过 Function.prototype.call() 加上解构赋值来实现，当然这是ES6的写法。这里的示例都是ES5的
+你<font color=FF0000>也可以使用 arguments 对象作为 argsArray 参数</font>。 arguments 是一个函数的局部变量。 它可以被用作被调用对象的所有未指定的参数。 这样，你在使用 apply函数的时候就不需要知道被调用对象的所有参数。 你可以使用 arguments 来把所有的参数传递给被调用对象。 被调用对象接下来就负责处理这些参数。
 
-  **用 apply 将数组各项添加到另一个数组**
+##### 示例
 
-  ```js
-  var array = ['a', 'b'];
-  var elements = [0, 1, 2];
-  array.push.apply(array, elements);
-  console.info(array); // ["a", "b", 0, 1, 2]
-  ```
-  
-  **注：**需要注意的是，由上例发现：在 apply 函数内传入的 argsArray，在处理时，不是以一个整个数组传入，而是会被展开一个一个元素传入函数，如下示例：
-  
-  ```js
-  // 示例1
-  function test(argArr) { console.log(argArr) }
-  test.apply({}, [1, 2, 3]) // 1。结果只打印了 1
-  
-  // 示例2
-  functionn test2() { console.log(arguments) }
-  test2.apply({}, [1, 2, 3]) // { '0': 1, '1': 2, '2': 3 }。如果传入的整个数组，则应该打印 { '0': [1, 2, 3] }
-  ```
+声明 apply 的功能可以通过 `Function.prototype.call()` 加上解构赋值来实现，当然这是ES6的写法。这里的示例都是ES5的
 
-  - **使用apply和内置函数**，用Math.max/Math.min求得数组中的最大/小值。注意下面的
+###### 用 apply 将数组各项添加到另一个数组
 
-    ```js
-    /* 找出数组中最大/小的数字 */
-    var numbers = [5, 6, 2, 3, 7];
-    
-    /* 使用Math.min/Math.max以及apply 函数时的代码 */
-    var max = Math.max.apply(null, numbers); /* 基本等同于 Math.max(numbers[0], ...) 或 Math.max(5, 6, ..) */
-    var min = Math.min.apply(null, numbers);
-    ```
+```js
+var array = ['a', 'b'];
+var elements = [0, 1, 2];
+array.push.apply(array, elements);
+console.info(array); // ["a", "b", 0, 1, 2]
+```
 
-    **注意：**<font color=FF0000>如果按上面方式调用apply，有超出JavaScript引擎参数长度上限的风险</font>。<mark>一个方法传入过多参数（比如一万个）时的后果在不同JavaScript 引擎中表现不同。（JavaScriptCore引擎中有被硬编码的 参数个数上限：65536）。这是因为此限制（实际上也是任何用到超大栈空间的行为的自然表现）是不明确的</mark>。一些引擎会抛出异常，更糟糕的是其他引擎会直接限制传入到方法的参数个数，导致参数丢失。比如：假设某个引擎的方法参数上限为4（实际上限当然要高得多）, 这种情况下，上面的代码执行后, 真正被传递到 apply的参数为 5, 6, 2, 3 ，而不是完整的数组。
+> 👀 需要注意的是，由上例发现：在 apply 函数内传入的 argsArray，在处理时，不是以一个整个数组传入，而是会被展开一个一个元素传入函数，如下示例：
 
-    <font color=FF0000>如果你的参数数组可能非常大，那么推荐使用下面这种混合策略：将数组切块后循环传入目标方法</font>：
+```js
+// 示例1
+function test(argArr) { console.log(argArr) }
+test.apply({}, [1, 2, 3]) // 1。结果只打印了 1
 
-    ```js
-    function minOfArray(arr) {
-      var min = Infinity;
-      var QUANTUM = 32768;
-    
-      for (var i = 0, len = arr.length; i < len; i += QUANTUM) {
-        var submin = Math.min.apply(null, arr.slice(i, Math.min(i + QUANTUM, len)));
-        min = Math.min(submin, min);
-      }
-    
-      return min;
-    }
-    
-    var min = minOfArray([5, 6, 2, 3, 7]);
-    ```
+// 示例2
+functionn test2() { console.log(arguments) }
+test2.apply({}, [1, 2, 3]) // { '0': 1, '1': 2, '2': 3 }。如果传入的整个数组，则应该打印 { '0': [1, 2, 3] }
+```
 
-  - **使用apply来链接构造器** 
+###### 使用 apply 和内置函数
 
-    可以使用apply来链接一个对象构造器。下面示例中会创建一个全局Function 对象的construct方法 ，来使你能够在构造器中使用一个类数组对象而非参数列表
+用 Math.max / Math.min 求得数组中的最大/小值。注意下面的
 
-    ```js
-    Function.prototype.construct = function (aArgs) {
-      var oNew = Object.create(this.prototype);
-      this.apply(oNew, aArgs);
-      return oNew;
-    };
-    ```
+```js
+/* 找出数组中最大/小的数字 */
+var numbers = [5, 6, 2, 3, 7];
 
-    因为Object.create() 是“相对”比较新的技术(ES5.1)，还有一些更老的技术实现（比如 object.\__proto__、闭包、Function构造器），由于看的时候水平不够，这里略。等水平够了，再来看
+/* 使用Math.min/Math.max以及apply 函数时的代码 */
+var max = Math.max.apply(null, numbers); /* 基本等同于 Math.max(numbers[0], ...) 或 Math.max(5, 6, ..) */
+var min = Math.min.apply(null, numbers);
+```
+
+**注意：**<font color=FF0000>如果按上面方式调用apply，有超出JavaScript引擎参数长度上限的风险</font>。<mark>一个方法传入过多参数（比如一万个）时的后果在不同JavaScript 引擎中表现不同。（JavaScriptCore引擎中有被硬编码的 参数个数上限：65536）。这是因为此限制（实际上也是任何用到超大栈空间的行为的自然表现）是不明确的</mark>。一些引擎会抛出异常，更糟糕的是其他引擎会直接限制传入到方法的参数个数，导致参数丢失。比如：假设某个引擎的方法参数上限为4（实际上限当然要高得多）, 这种情况下，上面的代码执行后, 真正被传递到 apply的参数为 5, 6, 2, 3 ，而不是完整的数组。
+
+<font color=FF0000>如果你的参数数组可能非常大，那么推荐使用下面这种混合策略：将数组切块后循环传入目标方法</font>：
+
+```js
+function minOfArray(arr) {
+  var min = Infinity;
+  var QUANTUM = 32768;
+
+  for (var i = 0, len = arr.length; i < len; i += QUANTUM) {
+    var submin = Math.min.apply(null, arr.slice(i, Math.min(i + QUANTUM, len)));
+    min = Math.min(submin, min);
+  }
+
+  return min;
+}
+
+var min = minOfArray([5, 6, 2, 3, 7]);
+```
+
+###### 使用apply来链接构造器 
+
+可以使用apply来链接一个对象构造器。下面示例中会创建一个全局Function 对象的construct方法 ，来使你能够在构造器中使用一个类数组对象而非参数列表
+
+```js
+Function.prototype.construct = function (aArgs) {
+  var oNew = Object.create(this.prototype);
+  this.apply(oNew, aArgs);
+  return oNew;
+};
+```
+
+因为Object.create() 是“相对”比较新的技术 ( ES5.1 )，还有一些更老的技术实现（比如 object.\__proto__、闭包、Function构造器），由于看的时候水平不够，这里略。等水平够了，再来看
 
 摘自：[MDN - Function.prototype.apply()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/apply)
 
 #### Function.prototype.bind()
 
-bind() 方法<font color=FF0000>创建一个新的函数</font>，<mark>在 bind() 被调用时，这个新函数的 this 被指定为 bind() 的第一个参数，而其余参数将作为新函数的参数，供调用时使用</mark>。
+bind() 方法<font color=FF0000>创建一个新的函数</font>，<font color=LightSeaGreen>在 bind() 被调用时，这个新函数的 this 被指定为 bind() 的第一个参数，而其余参数将作为新函数的参数，供调用时使用</font>。
 
-- **语法**
+##### 语法
 
-  ```js
-  function.bind(thisArg[, arg1[, arg2[, ...]]])
-  ```
+```js
+function.bind(thisArg[, arg1[, arg2[, ...]]])
+```
 
-- **参数**
+###### 参数
 
-  - **thisArg：**调用绑定函数时作为 this 参数传递给目标函数的值。 <font color=FF0000 size=4>**如果使用 new 运算符构造绑定函数，则忽略该值（注：bind的优先级没有new高，详细讲解可以参见：[[前端面试点总结#this 指向（学习自 coderwhy 的文章）]] 中 “this 绑定操作”的优先级）**</font>。当<font color=FF0000>使用 bind 在 setTimeout 中创建一个函数（作为回调提供）时，作为 thisArg 传递的任何原始值都将转换为 object</font>。如果 <font color=FF0000>bind 函数的参数列表为空，或者thisArg是null或undefined，执行作用域的 this 将被视为新函数的 thisArg</font>。
+- **thisArg：**调用绑定函数时作为 this 参数传递给目标函数的值。 <font color=FF0000 size=4>**如果使用 new 运算符构造绑定函数，则忽略该值（注：bind的优先级没有new高，详细讲解可以参见：[[前端面试点总结#this 指向（学习自 coderwhy 的文章）]] 中 “this 绑定操作”的优先级）**</font>。当<font color=FF0000>使用 bind 在 setTimeout 中创建一个函数（作为回调提供）时，作为 thisArg 传递的任何原始值都将转换为 object</font>。如果 <font color=FF0000>bind 函数的参数列表为空，或者thisArg是null或undefined，执行作用域的 this 将被视为新函数的 thisArg</font>。
 
-  - **arg1, arg2, ...：**<font color=FF0000>当目标函数被调用时，被 <font size=4>**预置入**</font> 绑定函数的参数列表中的参数</font>。这些参数 偏函数中 会用到。
+- **arg1, arg2, ...：**<font color=FF0000>当目标函数被调用时，被 <font size=4>**预置入**</font> 绑定函数的参数列表中的参数</font>。这些参数 偏函数中 会用到。
 
-- **返回值：**返回一个原函数的拷贝，并拥有指定的 this 值和初始参数。
+###### 返回值
 
-- **描述**
+返回一个原函数的拷贝，并拥有指定的 this 值和初始参数。
 
-  <font color=FF0000>bind() 函数会创建一个新的绑定函数</font>（bound function，BF）。<font color=FF0000>绑定函数是一个 exotic function object</font>（怪异函数对象，ECMAScript 2015 中的术语），<font color=FF0000>它包装了原函数对象</font>。<font color=FF0000>调用绑定函数通常会导致执行包装函数</font>。
+##### 描述
 
-  **绑定函数具有以下内部属性：**
+<font color=FF0000>bind() 函数会创建一个新的绑定函数</font>（bound function，BF）。<font color=FF0000>绑定函数是一个 exotic function object</font>（怪异函数对象，ECMAScript 2015 中的术语），<font color=FF0000>它包装了原函数对象</font>。<font color=FF0000>调用绑定函数通常会导致执行包装函数</font>。
 
-  - **\[[BoundTargetFunction]]：**<font color=FF0000>包装的函数对象</font>
-  - **\[[BoundThis]]：**<font color=FF0000>在调用包装函数时始终作为 this 值传递的值</font>
-  - **\[[BoundArguments]]：**<font color=FF0000>列表</font>，在对包装函数做任何调用都会优先用列表元素填充参数列表。
-  - **\[[Call]]：**<font color=FF0000>执行与此对象关联的代码</font>。通过函数调用表达式调用。内部方法的参数是一个this值和一个包含通过调用表达式传递给函数的参数的列表。
+绑定函数具有以下内部属性：
 
-  <font color=FF0000>当调用绑定函数时，它调用 \[[BoundTargetFunction]] 上的内部方法 \[[Call]]</font>，就像这样 <font color=FF0000>Call(boundThis, args) </font>。其中，<font color=FF0000>boundThis 是 \[[BoundThis]]</font>，<font color=FF0000>args 是 \[[BoundArguments]] 加上通过函数调用传入的参数列表</font>。
+- **`[[BoundTargetFunction]]`** ：<font color=FF0000>包装的函数对象</font>
+- **`[[BoundThis]]`** ：<font color=FF0000>在调用包装函数时始终作为 this 值传递的值</font>
+- **`[[BoundArguments]]`** ：<font color=FF0000>列表</font>，在对包装函数做任何调用都会优先用列表元素填充参数列表。
+- **`[[Call]]`** ：<font color=FF0000>执行与此对象关联的代码</font>。通过函数调用表达式调用。内部方法的参数是一个this值和一个包含通过调用表达式传递给函数的参数的列表。
 
-  绑定函数也可以使用 new 运算符构造，它会表现为目标函数已经被构建完毕了似的。提供的 this 值会被忽略，但前置参数仍会提供给模拟函数。
+<font color=FF0000>当调用绑定函数时，它调用 `[[BoundTargetFunction]]` 上的内部方法 `[[Call]]`</font>，就像这样 <font color=FF0000>`Call(boundThis, args)` </font>。其中，<font color=FF0000>boundThis 是 `[[BoundThis]]`</font>，<font color=FF0000>args 是 `[[BoundArguments]]` 加上通过函数调用传入的参数列表</font>。
 
-- **示例**
+绑定函数也可以使用 new 运算符构造，它会表现为目标函数已经被构建完毕了似的。提供的 this 值会被忽略，但前置参数仍会提供给模拟函数。
 
-  - **创建绑定函数**
+##### 示例
 
-    <font color=FF0000>bind() 最简单的用法是创建一个函数，<font size=4>**不论怎么调用，这个函数都有同样的 this 值**</font></font> 。JavaScript新手经常犯的一个错误是将一个方法从对象中拿出来，然后再调用，期望方法中的 this 是原来的对象（比如在回调中传入这个方法）；<mark>前面说的这个问题就是：下面代码中的retireveX() 调用的结果为9，而不是81；原因是在全局作用域调用，且没有做绑定；所以，此时的this为window</mark>。如果不做特殊处理的话，一般会丢失原来的对象。基于这个函数，用原始的对象创建一个绑定函数，巧妙地解决了这个问题；<mark>即：下面的boundGetX</mark>：
+###### 创建绑定函数
 
-    ```js
-    this.x = 9;    // 在浏览器中，this 指向全局的 "window" 对象
-    var module = {
-      x: 81,
-      getX: function() { return this.x; }
-    };
-    
-    module.getX(); // 81
-    
-    var retrieveX = module.getX;
-    retrieveX();
-    // 返回 9，因为函数是在全局作用域中调用的
-    
-    // 创建一个新函数，把 'this' 绑定到 module 对象
-    // 新手可能会将全局变量 x 与 module 的属性 x 混淆
-    var boundGetX = retrieveX.bind(module);
-    boundGetX(); // 81
-    ```
+<font color=FF0000>bind() 最简单的用法是创建一个函数，<font size=4>**不论怎么调用，这个函数都有同样的 this 值**</font></font> 。JavaScript新手经常犯的一个错误是将一个方法从对象中拿出来，然后再调用，期望方法中的 this 是原来的对象（比如在回调中传入这个方法）；<mark>前面说的这个问题就是：下面代码中的retireveX() 调用的结果为9，而不是81；原因是在全局作用域调用，且没有做绑定；所以，此时的this为window</mark>。如果不做特殊处理的话，一般会丢失原来的对象。基于这个函数，用原始的对象创建一个绑定函数，巧妙地解决了这个问题；<mark>即：下面的boundGetX</mark>：
 
-  - **偏函数**
+```js
+this.x = 9;    // 在浏览器中，this 指向全局的 "window" 对象
+var module = {
+  x: 81,
+  getX: function() { return this.x; }
+};
 
-    <font color=FF0000>bind() 的另一个最简单的用法是 **使一个函数拥有预设的初始参数**</font>。只要<mark>将这些参数（如果有的话）作为 bind() 的参数写在 this 后面；当绑定函数被调用时，这些参数会被插入到目标函数的参数列表的开始位置，传递给绑定函数的参数会跟在它们后面</mark>。
+module.getX(); // 81
 
-    ```js
-    function list() {
-      return Array.prototype.slice.call(arguments);
-    }
-    
-    function addArguments(arg1, arg2) { return arg1 + arg2 }
-    
-    // 直接使用这些函数
-    var list1 = list(1, 2, 3); // [1, 2, 3]
-    var result1 = addArguments(1, 2); // 3
-    
-    // 创建一个函数，它拥有预设参数列表。
-    var leadingThirtysevenList = list.bind(null, 37);
-    
-    // 创建一个函数，它拥有预设的第一个参数
-    var addThirtySeven = addArguments.bind(null, 37);
-    
-    var list2 = leadingThirtysevenList(); // [37]
-    
-    var list3 = leadingThirtysevenList(1, 2, 3); // [37, 1, 2, 3]
-    
-    var result2 = addThirtySeven(5); // 37 + 5 = 42
-    
-    var result3 = addThirtySeven(5, 10); // 37 + 5 = 42 ，第二个参数被忽略
-    ```
+var retrieveX = module.getX;
+retrieveX();
+// 返回 9，因为函数是在全局作用域中调用的
 
-  - **配合 setTimeout**
+// 创建一个新函数，把 'this' 绑定到 module 对象
+// 新手可能会将全局变量 x 与 module 的属性 x 混淆
+var boundGetX = retrieveX.bind(module);
+boundGetX(); // 81
+```
 
-    在默认情况下，使用 window.setTimeout() 时，this 关键字会指向 window （或 global）对象。<font color=FF0000>当类的方法中需要 this 指向类的实例时，你可能需要显式地把 this 绑定到回调函数，就不会丢失该实例的引用</font>。
+###### 偏函数
 
-    ```js
-    function LateBloomer() {
-      this.petalCount = Math.ceil(Math.random() * 12) + 1;
-    }
-    
-    // 在 1 秒钟后声明 bloom
-    LateBloomer.prototype.bloom = function() {
-      /* 注：这里的写法，在类的方法的 最外层、或类的方法中的不改变this指向的函数内层，this默认指向类的实例；所以这里bind(this) 指向的就是类的实例 */
-      window.setTimeout(this.declare.bind(this), 1000);
-    };
-    
-    LateBloomer.prototype.declare = function() {
-      console.log('I am a beautiful flower with ' +
-        this.petalCount + ' petals!');
-    };
-    
-    var flower = new LateBloomer();
-    flower.bloom();  // 一秒钟后, 调用 'declare' 方法
-    ```
+<font color=FF0000>bind() 的另一个最简单的用法是 **使一个函数拥有预设的初始参数**</font>。只要<mark>将这些参数（如果有的话）作为 bind() 的参数写在 this 后面；当绑定函数被调用时，这些参数会被插入到目标函数的参数列表的开始位置，传递给绑定函数的参数会跟在它们后面</mark>。
+
+```js
+function list() {
+  return Array.prototype.slice.call(arguments);
+}
+
+function addArguments(arg1, arg2) { return arg1 + arg2 }
+
+// 直接使用这些函数
+var list1 = list(1, 2, 3); // [1, 2, 3]
+var result1 = addArguments(1, 2); // 3
+
+// 创建一个函数，它拥有预设参数列表。
+var leadingThirtysevenList = list.bind(null, 37);
+
+// 创建一个函数，它拥有预设的第一个参数
+var addThirtySeven = addArguments.bind(null, 37);
+
+var list2 = leadingThirtysevenList(); // [37]
+
+var list3 = leadingThirtysevenList(1, 2, 3); // [37, 1, 2, 3]
+
+var result2 = addThirtySeven(5); // 37 + 5 = 42
+
+var result3 = addThirtySeven(5, 10); // 37 + 5 = 42 ，第二个参数被忽略
+```
+
+###### 配合 setTimeout
+
+在默认情况下，使用 window.setTimeout() 时，this 关键字会指向 window （或 global）对象。<font color=FF0000>当类的方法中需要 this 指向类的实例时，你可能需要显式地把 this 绑定到回调函数，就不会丢失该实例的引用</font>。
+
+```js
+function LateBloomer() {
+  this.petalCount = Math.ceil(Math.random() * 12) + 1;
+}
+
+// 在 1 秒钟后声明 bloom
+LateBloomer.prototype.bloom = function() {
+  /* 注：这里的写法，在类的方法的 最外层、或类的方法中的不改变this指向的函数内层，this默认指向类的实例；所以这里bind(this) 指向的就是类的实例 */
+  window.setTimeout(this.declare.bind(this), 1000);
+};
+
+LateBloomer.prototype.declare = function() {
+  console.log('I am a beautiful flower with ' +
+    this.petalCount + ' petals!');
+};
+
+var flower = new LateBloomer();
+flower.bloom();  // 一秒钟后, 调用 'declare' 方法
+```
 
 摘自：[MDN - Function.prototype.bind()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/bind)
 
@@ -5017,67 +5097,67 @@ bind() 方法<font color=FF0000>创建一个新的函数</font>，<mark>在 bind
 
 new 运算符创建一个用户定义的对象类型的实例或具有构造函数的内置对象的实例。
 
-- **语法**
+##### 语法
 
-  ```js
-  new constructor[([arguments])]
-  ```
+```js
+new constructor[([arguments])]
+```
 
-- **参数**
+###### 参数
 
-  - **constructor：**一个指定对象实例的类型的类或函数。
-  - **arguments：**一个用于被 constructor 调用的参数列表。
+- **constructor：**一个指定对象实例的类型的类或函数。
+- **arguments：**一个用于被 constructor 调用的参数列表。
 
-- **描述：** 
+##### 描述 
 
-  **new 关键字会进行如下的操作：**
+**new 关键字会进行如下的操作：**
 
-  1. <font color=FF0000>创建一个空的简单JavaScript对象（即{} ）</font>
-  2. 为步骤1 <font color=FF0000 size=4>**新创建的对象添加属性 \__proto__，将该属性链接至构造函数的原型对象** ⭐️⭐️⭐️</font>
-  3. 将步骤1 <font color=FF0000 size=4>**新创建的对象作为this的上下文**</font>
-  4. 如果该函数没有返回对象，则返回this
+1. <font color=FF0000>创建一个空的简单JavaScript对象（即{} ）</font>
+2. 为步骤1 <font color=FF0000 size=4>**新创建的对象添加属性 \__proto__，将该属性链接至构造函数的原型对象** ⭐️⭐️⭐️</font>
+3. 将步骤1 <font color=FF0000 size=4>**新创建的对象作为this的上下文**</font>
+4. 如果该函数没有返回对象，则返回this
 
-  **当代码 new Foo(...) 执行时，会发生以下事情：**
+**当代码 new Foo(...) 执行时，会发生以下事情：**
 
-  1. <font color=FF0000 size=4>**一个继承自 Foo.prototype 的新对象被创建**</font>
+1. <font color=FF0000 size=4>**一个继承自 Foo.prototype 的新对象被创建**</font>
 
-  2. 使用指定的参数调用构造函数 Foo，并将 this 绑定到新创建的对象。<font color=FF0000>new Foo 等同于 new Foo()，也就是没有指定参数列表，Foo 不带任何参数调用的情况</font>。如下示例
+2. 使用指定的参数调用构造函数 Foo，并将 this 绑定到新创建的对象。<font color=FF0000>new Foo 等同于 new Foo()，也就是没有指定参数列表，Foo 不带任何参数调用的情况</font>。如下示例
 
-     ```js
-     function Foo() { this.x = 0, this.y = 0 };
-     const foo = new Foo // 这里没加括号
-     console.log(foo) // Foo { x: 0, y: 0 }
-     ```
+   ```js
+   function Foo() { this.x = 0, this.y = 0 };
+   const foo = new Foo // 这里没加括号
+   console.log(foo) // Foo { x: 0, y: 0 }
+   ```
 
-  3. <font color=FF0000>由构造函数返回的对象就是 new 表达式的结果</font>。如果构造函数没有显式返回一个对象，则使用步骤1创建的对象。（一般情况下，构造函数不返回值，但是用户可以选择主动返回对象，来覆盖正常的对象创建步骤）
+3. <font color=FF0000>由构造函数返回的对象就是 new 表达式的结果</font>。如果构造函数没有显式返回一个对象，则使用步骤1创建的对象。（一般情况下，构造函数不返回值，但是用户可以选择主动返回对象，来覆盖正常的对象创建步骤）
 
-  始终可以对已定义的对象添加新的属性。例如，car1.color = "black" 语句给 car1 添加了一个新的属性 color，并给这个属性赋值 "black"。但是，<mark>这不会影响任何其他对象</mark>。要<font color=FF0000>将新属性添加到相同类型的所有对象，你必须将该属性添加到 Car 对象类型的定义中</font>。
+始终可以对已定义的对象添加新的属性。例如，car1.color = "black" 语句给 car1 添加了一个新的属性 color，并给这个属性赋值 "black"。但是，<mark>这不会影响任何其他对象</mark>。要<font color=FF0000>将新属性添加到相同类型的所有对象，你必须将该属性添加到 Car 对象类型的定义中</font>。
 
-  <font color=FF0000>可以使用 Function.prototype 属性将共享属性添加到以前定义的对象类型</font>。这<font color=FF0000>定义了一个由该函数创建的所有对象共享的属性，而不仅仅是对象类型的其中一个实例</font>。
+<font color=FF0000>可以使用 Function.prototype 属性将共享属性添加到以前定义的对象类型</font>。这<font color=FF0000>定义了一个由该函数创建的所有对象共享的属性，而不仅仅是对象类型的其中一个实例</font>。
 
-  下面的代码将一个值为 null 的 color 属性添加到 car 类型的所有对象，然后仅在实例对象 car1 中用字符串 "black" 覆盖该值：
+下面的代码将一个值为 null 的 color 属性添加到 car 类型的所有对象，然后仅在实例对象 car1 中用字符串 "black" 覆盖该值：
 
-  ```js
-  function Car() {}
-  car1 = new Car();
-  car2 = new Car();
-  
-  console.log(car1.color);    // undefined
-  
-  // 添加 “共享属性”
-  Car.prototype.color = "original color";
-  console.log(car1.color);    // original color
-  
-  car1.color = 'black';
-  console.log(car1.color);   // black
-  
-  console.log(car1.__proto__.color) //original color
-  console.log(car2.__proto__.color) //original color
-  console.log(car1.color)  // black
-  console.log(car2.color) // original color
-  ```
+```js
+function Car() {}
+car1 = new Car();
+car2 = new Car();
 
-  **注意：**如果<font color=FF0000>没有使用 new 运算符， 构造函数会像其他的常规函数一样被调用， 并不会创建一个对象</font>。在这种情况下， this 的指向也是不一样的。
+console.log(car1.color);    // undefined
+
+// 添加 “共享属性”
+Car.prototype.color = "original color";
+console.log(car1.color);    // original color
+
+car1.color = 'black';
+console.log(car1.color);   // black
+
+console.log(car1.__proto__.color) //original color
+console.log(car2.__proto__.color) //original color
+console.log(car1.color)  // black
+console.log(car2.color) // original color
+```
+
+**注意：**如果<font color=FF0000>没有使用 new 运算符， 构造函数会像其他的常规函数一样被调用， 并不会创建一个对象</font>。在这种情况下， this 的指向也是不一样的。
 
 摘自：[MDN - new 运算符](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/new)
 
@@ -5085,34 +5165,36 @@ new 运算符创建一个用户定义的对象类型的实例或具有构造函�
 
 <font color=FF0000>**返回**创建实例对象的 Object **构造函数的引用**</font>。注意，此属性的值是对函数本身的引用，而不是一个包含函数名称的字符串。对原始类型来说，如1，true和"test"，该值只可读。
 
-- **描述：**<font color=FF0000>所有对象都会从它的原型上继承一个 constructor 属性</font>
+##### 描述
 
-  ```js
-  var o = {};
-  o.constructor === Object; // true
-  
-  var o = new Object;
-  o.constructor === Object; // true
-  
-  var a = [];
-  a.constructor === Array; // true
-  
-  var a = new Array;
-  a.constructor === Array // true
-  
-  var n = new Number(3);
-  n.constructor === Number; // true
-  ```
+<font color=FF0000>所有对象都会从它的原型上继承一个 constructor 属性</font>
 
-- **示例：**
+```js
+var o = {};
+o.constructor === Object; // true
 
-  基本类型对象的 constructor 属性的值是可以修改的，<font color=FF0000>只有boolean number string 类型 在修改Object.prototype.constructor 后Object.prototype.constructor 不受影响（因为创建他们的是只读的原生构造函数 (native constructors)）</font>；其他JS类型（包括Boolean Number String）都是会被修改成功。
+var o = new Object;
+o.constructor === Object; // true
 
-  另外，只修改constructor，不能修改instanceof 关系。通过instanceof 返回的还是false。
+var a = [];
+a.constructor === Array; // true
 
-  这也说明了依赖一个对象的 constructor 属性并不安全。
+var a = new Array;
+a.constructor === Array // true
 
-  示例太长了，略。详见链接地址：[MDN - Object.prototype.constructor - 改变对象的 constructor](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor#example_changing_the_constructor_of_an_object)
+var n = new Number(3);
+n.constructor === Number; // true
+```
+
+##### 示例
+
+基本类型对象的 constructor 属性的值是可以修改的，<font color=FF0000>只有boolean number string 类型 在修改Object.prototype.constructor 后Object.prototype.constructor 不受影响（因为创建他们的是只读的原生构造函数 (native constructors)）</font>；其他JS类型（包括Boolean Number String）都是会被修改成功。
+
+另外，只修改constructor，不能修改instanceof 关系。通过instanceof 返回的还是false。
+
+这也说明了依赖一个对象的 constructor 属性并不安全。
+
+示例太长了，略。详见链接地址：[MDN - Object.prototype.constructor - 改变对象的 constructor](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor#example_changing_the_constructor_of_an_object)
 
 摘自：[MDN - Object.prototype.constructor](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor)
 
@@ -5120,38 +5202,38 @@ new 运算符创建一个用户定义的对象类型的实例或具有构造函�
 
 <font color=FF0000>每个 JavaScript 函数实际上都是一个 Function 对象</font>。运行 `  (function(){}).constructor === Function  ` 的结果为 true；便可以得到这个结论。
 
-- **构造函数：<font color=FF0000>即 new Function()</font>**
+**构造函数：<font color=FF0000>即 new Function()</font>**
 
-  Function 构造函数创建一个新的 Function 对象。<font color=FF0000>直接调用此构造函数可用动态创建函数</font>，但会遇到和 eval 类似的的安全问题和（相对较小的）性能问题。然而，与 eval 不同的是，Function 创建的函数只能在全局作用域中运行。示例如下：
+Function 构造函数创建一个新的 Function 对象。<font color=FF0000>直接调用此构造函数可用动态创建函数</font>，但会遇到和 eval 类似的的安全问题和（相对较小的）性能问题。然而，与 eval 不同的是，Function 创建的函数只能在全局作用域中运行。示例如下：
 
-  ```js
-  const sum = new Function('a', 'b', 'return a + b');
-  ```
+```js
+const sum = new Function('a', 'b', 'return a + b');
+```
 
-- **语法**
+##### 语法
 
-  ```js
-  new Function ([arg1[, arg2[, ...argN]],] functionBody)
-  ```
+```js
+new Function ([arg1[, arg2[, ...argN]],] functionBody)
+```
 
-- **参数**
+###### 参数
 
-  - **arg1, arg2, ... argN：**被函数使用的参数的名称必须是合法命名的。参数名称是一个有效的JavaScript标识符的字符串，或者一个用逗号分隔的有效字符串的列表；例如 “×”，“theValue”，或 “a,b”。
-  - **functionBody：**一个含有包括函数定义的 JavaScript 语句的字符串。
+- **arg1, arg2, ... argN：**被函数使用的参数的名称必须是合法命名的。参数名称是一个有效的JavaScript标识符的字符串，或者一个用逗号分隔的有效字符串的列表；例如 “×”，“theValue”，或 “a,b”。
+- **functionBody：**一个含有包括函数定义的 JavaScript 语句的字符串。
 
-- **描述：**
+##### 描述
 
-  使用 Function 构造器生成的 Function 对象是在函数创建时解析的。这<font color=FF0000>比你使用函数声明或者函数表达式并在你的代码中调用 <font size=4>更为低效</font>，因为使用后者创建的函数是跟其他代码一起解析的</font>。
+使用 Function 构造器生成的 Function 对象是在函数创建时解析的。这<font color=FF0000>比你使用函数声明或者函数表达式并在你的代码中调用 <font size=4>更为低效</font>，因为使用后者创建的函数是跟其他代码一起解析的</font>。
 
-  所有被传递到构造函数中的参数，都将被视为将被创建的函数的参数，并且是相同的标示符名称和传递顺序。
+所有被传递到构造函数中的参数，都将被视为将被创建的函数的参数，并且是相同的标示符名称和传递顺序。
 
-  以调用函数的方式调用 Function 的构造函数（而不是使用 new 关键字) 跟以构造函数来调用是一样的。
+以调用函数的方式调用 Function 的构造函数（而不是使用 new 关键字) 跟以构造函数来调用是一样的。
 
 - **属性和方法：**全局的 Function 对象没有自己的属性和方法，但是，因为它本身也是一个函数，所以它也会通过原型链从自己的原型链 Function.prototype 上继承一些属性和方法。
 
 摘自：[MDN - Function](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
-#### New Function 补充
+#### New Function
 
 以下三种声明的含义相同：
 
@@ -5167,7 +5249,7 @@ new Function('a , b', 'return a + b'); // 逗号和空格分隔
 
 ECMA-262 定义了内部才用的特性是为了实现 JavaScript 引擎用的，因此在 JS 中不能直接访问它们。内部属性的特征是 通过 \[[]] 包裹。
 
-描述符对象就是一种内部属性，包含数据描述符 和 存取描述符： \[[Configurable]]、\[[Enumerable]]、\[[writable]]、\[[value]]、\[[Get]]、\[[Set]]
+描述符对象就是一种内部属性，包含数据描述符 和 存取描述符： `[[Configurable]]` 、`[[Enumerable]]` 、`[[writable]]` 、`[[value]]`  、`[[Get]]` 、`[[Set]]`
 
 摘自：[JS属性-------内部属性（数据属性和访问器属性）](https://blog.csdn.net/baidu_36065997/article/details/79110331)
 
@@ -5175,7 +5257,7 @@ ECMA-262 定义了内部才用的特性是为了实现 JavaScript 引擎用的�
 
 摘自：[不为人知的javascript的内部属性](https://segmentfault.com/a/1190000012842459)
 
-**内部属性还有：**\[[ConstructorKind]] 用于构造器中，\[[HomeObject]] 只用于 super（方法在内部的 \[[HomeObject]] 属性中记住了它们的类/对象。这就是 super 如何解析父方法的）
+**内部属性还有：**`[[ConstructorKind]]` 用于构造器中，`[[HomeObject]]` 只用于 super（方法在内部的 `[[HomeObject]]` 属性中记住了它们的类/对象。这就是 super 如何解析父方法的）
 
 
 
@@ -5221,25 +5303,25 @@ add(); // counter = 3
 
 ##### 查找 HTML 元素有三种方法
 
-- 通过 id 找到 HTML 元素
-  
-  ```js
-  var x=document.getElementById("intro");
-  ```
+###### 通过 id 找到 HTML 元素
 
-- 通过标签名找到 HTML 元素
-  
-  ```js
-  var y=x.getElementsByTagName("p");
-  ```
+```js
+var x=document.getElementById("intro");
+```
 
-- 通过类名找到 HTML 元素
-  
-  ```js
-  var x = document.getElementsByClassName("intro");
-  ```
+###### 通过标签名找到 HTML 元素
 
-**补充：**
+```js
+var y=x.getElementsByTagName("p");
+```
+
+###### 通过类名找到 HTML 元素
+
+```js
+var x = document.getElementsByClassName("intro");
+```
+
+
 
 #### **Element.classList**
 
@@ -5252,9 +5334,11 @@ add(); // counter = 3
 const elementClasses = elementNodeReference.classList;
 ```
 
-##### 返回值
+###### 返回值
 
 elementClasses 是一个 DOMTokenList 表示  elementNodeReference 的类属性 。如果类属性未设置或为空，那么 elementClasses.length 返回 0。element.classList 本身是只读的，但是你可以使用 add(className) 和 remove(className) 方法修改它。
+
+##### 方法
 
 - **add(className) /  remove(className)：**甚至其中的add() / remove()可以放多组类值，甚至可以通过使用展开语法添加或移除多个类值。示例如下：
 
@@ -5313,25 +5397,7 @@ elementClasses 是一个 DOMTokenList 表示  elementNodeReference 的类属性 
 
 
 
-
-
-#### JavaScript HTML DOM - 改变 HTML
-
-如需改变 HTML 元素的属性，请使用这个语法：
-
-```js
-document.getElementById(id).attribute = new-attribute
-```
-
-#### JavaScript HTML DOM - 改变CSS
-
-如需改变 HTML 元素的样式，请使用这个语法：
-
-```js
-document.getElementById(id).style.property = new-style
-```
-
-**使用事件**
+#### 使用事件
 
 HTML DOM 允许我们通过触发事件来执行代码。比如以下事件：
 
@@ -5365,7 +5431,7 @@ HTML DOM 允许我们通过触发事件来执行代码。比如以下事件：
 - **onmouseover 和 onmouseout 事件：**onmouseover 和 onmouseout 事件可用于在用户的鼠标移至 HTML 元素上方或移出元素时触发函数。
 - **onmousedown、onmouseup 以及 onclick 事件：**onmousedown, onmouseup 以及 onclick 构成了鼠标点击事件的所有部分。首先当点击鼠标按钮时，会触发 onmousedown 事件，当释放鼠标按钮时，会触发 onmouseup 事件，最后，当完成鼠标点击时，会触发 onclick 事件。
 
-<font size=4>**补充：**</font><font size=4>**CSSStyleDeclaration.getPropertyValue()**</font>
+#### CSSStyleDeclaration.getPropertyValue()
 
 CSSStyleDeclaration.getPropertyValue() 接口返回一个 DOMString ，其中包含请求的 CSS 属性的值。
 
@@ -5375,11 +5441,11 @@ CSSStyleDeclaration.getPropertyValue() 接口返回一个 DOMString ，其中包
 var value = style.getPropertyValue(property);
 ```
 
-##### 参数
+###### 参数
 
 property 是一个 DOMString，是需要查询的CSS 属性名称。
 
-##### 返回值
+###### 返回值
 
 value 是 DOMString ，包含查找属性的值。若对应属性没有设置，则返回空字符串。
 
@@ -6088,29 +6154,29 @@ Bar.prototype.constuctor = Foo
 
 **<font color=FF0000>所有 JavaScript 数字均为 64 位</font>**
 
-JavaScript 不是类型语言。与许多其他编程语言不同，<mark>JavaScript 不定义不同类型的数字，比如整数、短、长、浮点等等</mark>。
+JavaScript 不是类型语言。与许多其他编程语言不同，<font color=LightSeaGreen>JavaScript 不定义不同类型的数字，比如整数、短、长、浮点等等</font>。
 
-在JavaScript中，<mark>数字不分为整数类型和浮点型类型，<font color=FF0000>**所有的数字都是由 浮点型类型**</font></mark>。JavaScript 采用 IEEE 754 标准定义的 64 位浮点格式表示数字，它能表示最大值为 ±1.7976931348623157e+308，最小值为 ±5e-324。
+在JavaScript中，数字不分为整数类型和浮点型类型，<font color=FF0000>**所有的数字都是由 浮点型类型**</font>。JavaScript 采用 IEEE 754 标准定义的 64 位浮点格式表示数字，它能表示最大值为 ±1.7976931348623157e+308，最小值为 ±5e-324。
 
 | 值 (aka Fraction/Mantissa) | 指数                | Sign       |
 |:-------------------------:|:-----------------:|:----------:|
 | 52 bits (0 - 51)          | 11 bits (50 - 62) | 1 bit (63) |
 
-**精度**
+##### 精度
 
-- 整数（不使用小数点或指数计数法）最多为 15 位。
+- 整数：（不使用小数点或指数计数法）最多为 15 位。
   
   - 超过15位的一律变成100,000,000,000,000,000（15个0）
 
-- 小数的最大位数是 17
+- 小数：最大位数是 17
 
-**八进制和十六进制**
+##### 八进制和十六进制
 
 要加上前缀 `0` 和 `0x`
 
 默认情况下，JavaScript 数字为十进制显示。但是你可以使用 toString() 方法 输出16进制、8进制、2进制。
 
-示例：
+###### 示例
 
 ```js
 var myNumber = 128;
@@ -6119,20 +6185,20 @@ myNumber.toString(8);  // 返回 200
 myNumber.toString(2);  // 返回 10000000
 ```
 
-**无穷大（Infinity）**
+##### 无穷大 Infinity
 
 - <font color=FF0000>当数字运算结果超过了JavaScript所能表示的数字**上限**（溢出），结果为一个特殊的无穷大（infinity）值</font>，在JavaScript中以Infinity表示。
 - 同样地，当负数的值超过了JavaScript所能表示的负数范围，结果为负无穷大，在JavaScript中以-Infinity表示。
 
-**NaN - 非数字值**
+##### NaN - 非数字值
 
 NaN 属性是代表非数字值的特殊值。该属性用于指示某个值不是数字。可以把 Number 对象设置为该值，来指示其不是数字值。
 
 你可以使用 <font color=FF0000>isNaN() 全局函数来判断一个值是否是 NaN 值</font>。
 
-补充：无穷大是一个数字
+> 👀 无穷大是一个数字
 
-**数字可以是数字或者对象**
+##### 数字可以是数字或者对象
 
 示例如下：
 
@@ -6143,15 +6209,13 @@ typeof(x) // 返回 Number
 typeof(y) // 返回 Object
 ```
 
-<font size=4>**补充：**</font>
+##### ES6 的 Number 类
 
-isNaN() 方法是 ES5 的方法，实际上是 window.isNaN() 的简写；而在 ES6中添加了 Number.isNaN()，之所以添加，是为了避免 window 下挂载的方法过多，而 Number.isNaN() 是一种更优 / 更合适的设计 / 模块化设计
+isNaN() 方法是 ES5 的方法，实际上是 `window.isNaN()` 的简写；而在 ES6中添加了 `Number.isNaN()`，之所以添加，是为了避免 window 下挂载的方法过多，而 `Number.isNaN()` 是一种更优 / 更合适的设计 / 模块化设计
 
 同样的还有 Number.parseInt() / Number.parseFloat() / Number.isFinite()
 
-
-
-**Number 属性**
+##### Number 属性
 
 | 属性                     | 描述                                                         |
 | :----------------------- | :----------------------------------------------------------- |
@@ -6164,24 +6228,52 @@ isNaN() 方法是 ES5 的方法，实际上是 window.isNaN() 的简写；而在
 | Number.MIN_SAFE_INTEGER  | 最小安全整数。 -(2^53^ - 1)<br>属性同下                      |
 | Number.MAX_SAFE_INTEGER  | 最大安全整数。 2^53^ - 1<br>属性描述符：writable: false, enumerable: false, configurable: false<br>Number.MAX_SAFE_INTEGER + 1 === Number.MAX_SAFE_INTEGER + 2 将得到 true的结果，而这在数学上是错误的<br>由于 MAX_SAFE_INTEGER 是Number的一个静态属性 |
 
-**数字方法**
+###### 数字方法
 
 | 方法                   | 描述                                                         |
 | :--------------------- | :----------------------------------------------------------- |
-| Number.parseFloat()    | 将字符串转换成浮点数，和全局方法 [parseFloat()](https://www.runoob.com/jsref/jsref-parsefloat.html) 作用一致。 |
-| Number.parseInt()      | 将字符串转换成整型数字，和全局方法 [parseInt()](https://www.runoob.com/jsref/jsref-parseint.html) 作用一致。 |
+| Number.parseFloat()    | 将字符串转换成浮点数，和全局方法 parseFloat() 作用一致。     |
+| Number.parseInt()      | 将字符串转换成整型数字，和全局方法 parseInt() 作用一致。     |
 | Number.isFinite()      | 判断传递的参数是否为有限数字。                               |
 | Number.isInteger()     | 判断传递的参数是否为整数。                                   |
 | Number.isNaN()         | 判断传递的参数是否为 isNaN()。                               |
 | Number.isSafeInteger() | 判断传递的参数是否为安全整数。<br>安全整数范围为 -(2^53^ - 1)到 2^53^ - 1之间的整数，包含 -(2^53^ - 1)和 2^53^ - 1。 |
 
-**数字类型原型上的一些方法**
+##### 数字类型原型上的一些方法
 
 | 方法            | 描述                                                         |
 | :-------------- | :----------------------------------------------------------- |
 | toExponential() | 返回一个数字的指数形式的字符串，如：1.23e+2                  |
 | toFixed()       | 返回指定小数位数的表示形式。<br />var a=123; b=a.toFixed(2); // b="123.00" |
 | toPrecision()   | 返回一个指定精度的数字。如下例子中，a=123 中，3会由于精度限制消失：<br />var a=123; b=a.toPrecision(2); // b="1.2e+2" |
+
+##### 整数自面量的解析
+
+###### 背景
+
+想把 整数自面量 转变为 String，可以使用 toString，不过可以发现 `1.toString()` 是会报错的，而 `1..toString()` 不会；这就引起了我好奇。另外，不仅仅是 `toString()` ，使用 `valueOf()` 也会出现一样的问题
+
+> 以下内容摘自：[面试题：关于 1toString()、1.toString()、1..toString()、1.0.toString()、(1.).toString()等结果](https://blog.csdn.net/NewAir1798/article/details/88207671)
+
+- `1toString()` ：报错。语法错误
+- `1.toString()`  ：报错。<font color=red>JS引擎无法确定这里的 `.` 是什么意思，是点运算符（对象方法）还是浮点数</font>
+- `1..toString()`  ：成功，运算结果 "1"。解析：第二个点被视为点运算符，前面的是浮点数。
+- `1.0.toString()`  ：成功，运算结果"1"。第二个点被视为点运算符，前面的是浮点数。
+- `1 .toString()`  ：成功，运算结果 "1"。解析: 用空格和后面的 `.toString()` 隔开，把前面的当成运算式处理
+- `1+2.toString()` ：报错。JS引擎无法确定这里的 `.` 是什么意思，是点运算符（对象方法）还是浮点数？
+- `1+2 .toString()` ：成功，运算结果"12"。用空格和后面的 `.toString()` 隔开，把前面的当成运算式处理
+- `(1+2).toString()` ：成功，运算结果 "3"。 解析: 括号内部的先进行算法运算，在进行类型转换
+- `(1)+(2).toString()` ：运算结果"12" 解析: 括号内部进行类型修改并将数字n转换为字符串“n “，在进行拼接，然后再应用toString方法。
+- `(1)+(2)+0 .toString()` ：成功，运算结果"30" 解析: 如果有多个`+`号，且不包含中括号与""的情况下，则把最后一个加号之前的进行数学运算(不管他有没有被括号包住)，最后一个加号留作拼接作用。
+- `(1)+(2)+0+(11) .toString()` ：成功，运算结果 "311"。原因同上
+- `(1)+(2)+0+12 .toString()` ：成功，运算结果 "312"。 原因同上
+- `([1]+[2]+[3])+12 .toString()` ：成功，运算结果"12312"。如果里面只有方括号(单个数值的数组)，则+起连接作用
+- `((1)+(2)+[3])+12+43 .toString()` ：成功，运算结果"331243"。如果里面包含圆括号，则先要进行运算，再把运算的结果与后面的内容拼接起来。
+- `(1)+(2)+6+2+5+"(15)"+1+0+(1) .toString()` : 成功，运算结果"16(15)101"解析: 如果字符串包裹的前面有多个加号，则把字符串双引号前面的进行运算(不管他有没有被圆括号包住)，得到的数值拼接上字符串包裹的内容再拼接上之后的内容。
+
+> 摘自：[面试题：关于 1toString()、1.toString()、1..toString()、1.0.toString()、(1.).toString()等结果](https://blog.csdn.net/NewAir1798/article/details/88207671)
+
+
 
 #### Number.prototype.toString()
 
@@ -6193,11 +6285,11 @@ toString() 方法返回指定 Number 对象的字符串表示形式。
 numObj.toString([radix])
 ```
 
-##### 参数
+###### 参数
 
 - **radix：**<font color=FF0000>指定要用于数字到字符串的转换的基数（从2到36）</font>。如果未指定 radix 参数，则默认值为 10。
 
-##### 异常信息
+###### 异常信息
 
 - **RangeError：**<font color=FF0000>如果 toString() 的 radix 参数不在 2 到 36 之间，将会抛出一个 RangeError</font>。
 
@@ -6213,7 +6305,7 @@ numObj.toString([radix])
 
 <font color=FF0000>**进行数字到字符串的转换时，建议用小括号将要转换的目标括起来，防止出错**</font>。
 
-**示例：**
+###### 示例
 
 ```js
 console.log((-10).toString(2));   // 输出 '-1010'
@@ -6238,7 +6330,7 @@ cbrt 是 "cube root" 的缩写, 意思是立方根
 
 摘自：[MDN - Math.cbrt()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Math/cbrt)
 
-<font size=4>**补充：**</font>
+> 💡 补充
 
 **进制前缀**
 
@@ -6254,47 +6346,39 @@ Date 对象用于处理日期和时间。 可以通过 new 关键词来定义 Da
 
 <font color=FF0000>有四种方式初始化日期：</font>
 
-- ```js
-  new Date();
-  ```
-  
-  示例：
-  
-  ```js
-  var today = new Date()
-  ```
+##### `new Date()`
 
-- ```js
-  new Date(value);
-  ```
-  
-  示例：
-  
-  ```js
-  var d2 = new Date(79,5,24)
-  ```
+示例：
 
-- ```js
-  new Date(dateString);
-  ```
-  
-  示例：
-  
-  ```js
-  var d1 = new Date("October 13, 1975 11:13:00")
-  ```
+```js
+var today = new Date()
+```
 
-- ```js
-  new Date(year, monthIndex [, day [, hours [, minutes [, seconds [, milliseconds]]]]]);
-  ```
-  
-  示例：
-  
-  ```js
-  var d3 = new Date(79,5,24,11,33,0)
-  ```
+##### `new Date(value)`
 
-**设置日期**
+示例：
+
+```js
+var d2 = new Date(79,5,24)
+```
+
+##### `new Date(dateString)`
+
+示例：
+
+```js
+var d1 = new Date("October 13, 1975 11:13:00")
+```
+
+##### `new Date(year, monthIndex [, day [, hours [, minutes [, seconds [, milliseconds]]]]])`
+
+示例：
+
+```js
+var d3 = new Date(79,5,24,11,33,0)
+```
+
+##### 设置日期
 
 通过使用针对日期对象的方法，我们可以很容易地对日期进行操作。
 
