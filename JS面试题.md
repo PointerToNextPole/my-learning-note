@@ -996,7 +996,7 @@ a = new Promise(async (resolve, reject) => { // promise 内代码为同步代码
 console.log('end') // 3
 ```
 
-> 👀 注：上面 `await a` 下面的代码之所以不会执行，是因为 <font color=fuchsia>只有 await 返回结果为 fulfilled 时，后面的代码才会执行</font>。如下示例：
+> 👀 上面 `await a` 下面的代码之所以不会执行，是因为 <font color=fuchsia>只有 await 返回结果为 fulfilled 时，后面的代码才会执行</font>。如下示例：
 
 ```js
 const promise = new Promise((resolve, reject) => {})
@@ -1011,6 +1011,8 @@ fn()
 ```
 
 学习自：[【全网首发:更新完】promise的前世今生 + 应用 + 面试 + 源码 【合集】](https://www.bilibili.com/video/BV1tM4y1F7he)
+
+##### 事件队列第4题
 
 ```js
 async function async1() {
@@ -1056,6 +1058,8 @@ console.log("scripts end");
   这题 6 和 7 的顺序总是会反掉。
   这题的重点是 async1 end 的 async () => await () => await xxx ；有两层 promise，要多等一轮微任务。所以，会比 promise2 执行晚。
 </details>
+
+##### 事件队列第5题
 
 ```js
 const promise1 = new Promise((resolve,reject)=>{
@@ -1115,3 +1119,101 @@ Promise.resolve().then(() => {
 ```
 
 详见：[从一道让我失眠的 Promise 面试题开始，深入分析 Promise 实现细节](https://juejin.cn/post/6945319439772434469)
+
+##### 事件队列第6题
+
+```js
+async function async1() {
+  await new Promise((resolve, reject) => {
+    resolve()
+  })
+  console.log('A')
+}
+
+async1()
+
+new Promise((resolve) => {
+  console.log('B')
+  resolve()
+}).then(() => {
+  console.log('C')
+}).then(() => {
+  console.log('D')
+})
+```
+
+```js
+async function async1() {
+  await async2()
+  console.log('A')
+}
+
+async function async2() {
+  return new Promise((resolve, reject) => {
+    resolve()
+  })
+}
+
+async1()
+
+new Promise((resolve) => {
+  console.log('B')
+  resolve()
+}).then(() => {
+  console.log('C')
+}).then(() => {
+  console.log('D')
+})
+```
+
+上面两题比较结果。
+
+> 讲解见 [[前端面试点总结#async / await#async 返回值的等待时间]]
+
+<details>
+  <summary>查看解析</summary>
+  讲解中提到的：async 函数在抛出返回值，在第二小题中对应的是 `return new Promise((resolve, reject) => { ... }` 所以要等待两个 then 时间。而第一个没有抛出返回值的 async 函数
+</details>
+
+###### 类似经典面试题
+```js
+async function async1() {
+  console.log('1')
+  await async2()
+  console.log('AAA')
+}
+
+async function async2() {
+  console.log('3')
+  return new Promise((resolve, reject) => {
+    resolve()
+    console.log('4')
+  })
+}
+
+console.log('5')
+
+setTimeout(() => {
+  console.log('6')
+}, 0);
+
+async1()
+
+new Promise((resolve) => {
+  console.log('7')
+  resolve()
+}).then(() => {
+  console.log('8')
+}).then(() => {
+  console.log('9')
+}).then(() => {
+  console.log('10')
+})
+
+console.log('11')
+```
+
+<details>
+  <summary>查看解析</summary>
+  这里主要注意的是：resolve() 后面的代码，（只要不改变状态）也是会执行的
+</details>

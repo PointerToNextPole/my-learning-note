@@ -4599,7 +4599,7 @@ TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类
 
 #### TS 的鸭子类型
 
-> 👀 注：关于鸭子类型的介绍，详见 [[CS知识杂谈#鸭子类型]]
+> 👀 关于鸭子类型的介绍，详见 [[CS知识杂谈#鸭子类型]]
 
 <font color=fuchsia>TypeScript 的类型系统是 “结构类型系统”</font> ( Structural type system )，任两个以相同结构所描述的值的类型都是等价的（👀 这句话没完全看懂）。<font color=dodgerBlue>与之相反的是</font>，<font color=fuchsia>“标明类型系统” Nominative type system：表示类型若要相等，就必须具有相同的“名字”</font>。
 
@@ -4607,10 +4607,176 @@ TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类
 
 摘自：[TypeScript类型系统（5/5）-类型编程篇 - Ethan Ruan的文章 - 知乎](https://zhuanlan.zhihu.com/p/145679056)
 
-> 👀 注：看了下 [关于 TS ，你必须知道的鸭子?类型](https://jishuin.proginn.com/p/763bfbd6f46f) 其中结合 Py 和 JS 再引入 TS 的鸭子类型，（以我当前的水平）没完全看懂... 有空再看下。另外，还提到了 TS 的 `is` 关键字及 类型谓词 ”type predicates“  ，还有“类型保护”
+> 👀 看了下 [关于 TS ，你必须知道的鸭子?类型](https://jishuin.proginn.com/p/763bfbd6f46f) 其中结合 Py 和 JS 再引入 TS 的鸭子类型，（以我当前的水平）没完全看懂... 有空再看下。另外，还提到了 TS 的 `is` 关键字及 类型谓词 ”type predicates“  ，还有“类型保护”
 
 
 
 #### is 关键字
 
 // TODO 参见 [TS handbook V2 - narrowing # Using type predicates](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates) 以及 [StackOverflow - What does the `is` keyword do in typescript?](https://stackoverflow.com/questions/40081332/what-does-the-is-keyword-do-in-typescript)
+
+#### 声明文件 d.ts
+
+TS 目前支持三种文件格式：`.ts` `.tsx` 和 `.d.ts`，分别是普通的 ts 文件，主要用于 React 支持的 tsx 文件和 声明 ( declaration ) 文件。<font color=fuchsia>d.ts 文件会参与编译，但不会输出任何代码</font>，<font color=red>它的主要作用是为其他 JS 文件提供类型声明</font>。 比较像 C C++ 的 头文件。
+
+##### ts 内置 d.ts
+
+默认情况下我们每个 TS 项目都包含了至少一个 d.ts 文件，就是 `lib.d.ts`。比如如下代码：
+
+```ts
+const arr = [1, 2, 3]
+arr.forEach(e => console.log(e))
+```
+在 `forEach` 上右击，选择“转到定义”
+
+<img src="https://s2.loli.net/2023/03/14/ZIwYxigKEz7djJo.png" alt="image-20230314121830275" style="zoom:50%;" />
+
+会打开 `lib.d.ts` 文件，其中包含：
+
+```ts
+interface Array<T> {
+    /**
+     * Performs the specified action for each element in an array.
+     * @param callbackfn  A function that accepts up to three arguments. forEach calls the callbackfn function one time for each element in the array.
+     * @param thisArg  An object to which the this keyword can refer in the callbackfn function. If thisArg is omitted, undefined is used as the this value.
+     */
+    forEach(callbackfn: (value: T, index: number, array: T[]) => void, thisArg?: any): void;
+}
+```
+
+`lib.d.ts` 中定义了 `Array` 类型拥有的属性和方法。
+
+<font color=dodgerBlue>**`lib.d.ts` 是被 TSC 默认包含的**</font>，它<font color=red>里面定义了 JavaScript 的公共库</font>，如 Array、Math、RegExp 等。 除了 JS 公共库，它里面<font color=red>还包含了 HTML DOM 的类型定义</font>，比如 `window`、`document`、`DOMParser`等等。这样的默认设定 可以满足大部分 TS 开发的需求。
+
+##### 指定项目需要的公共库
+
+如果开发一个 NodeJS 应用，不希望有 DOM API，因为运行时肯定会报错。TSC 有对应的解决方案：<font color=red>可以在 `tsconfig.json` 中通过 `lib` 指定需要包含的 libs</font>。<font color=fuchsia>没有指定时，它的值相当于 `target` 语言版本 + `dom`</font>。
+
+```json
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "es2015",
+        "lib": ["es5", "dom"]
+    }
+}
+```
+
+可以通过指定 `lib` 为 `es5` 或者 `es2015` 表示 NodeJS 这种没有 DOM 的开发环境。<font color=dodgerBlue>**`lib` 的可选值非常多**</font>，TS team 针对当下的 JS 开发环境，<font color=red>对 `es2015` 的库进行了细分</font>，让开发者可以方便的使用部分 `es2015` 中的库，<font color=red>比如可以通过添加
+`es2015.promise` 来增加 `Promise` 支持</font>。
+
+##### 第三方库的 d.ts
+
+知道了 JS 公共库的定义方式，其他第三方库也是一样的道理。<font color=LightSeaGreen>社区中已经有大量常用库的 d.ts 文件，可以根据需要下载使用</font>；但社区中的 d.ts 五花八门，良莠不齐。为了更好的让他们为我所用，我们还是 <font color=dodgerBlue>**需要了解一些编写 d.ts 的技巧，这样遇到不符合我们 需求的 d.ts 文件，我们可以对他们稍加修改**</font>。<font color=LightSeaGreen>对于没那么热门的库，自己编写 d.ts 就尤为重要了</font>。
+
+##### 为 jQuery 编写 d.ts
+
+<font color=dodgerBlue>**jQuery 的 `$()` 函数主要有两个用法**</font>：
+1. 在 `$()` 中添加回调函数，在 DOM Ready 时执行该回调，如下：
+   ```js
+   $(() => console.log('DOM Ready'))
+   ```
+2. 在 `$()` 中添加 css selector ，返回 jQuery 封装的对象，并进行操作。如下：
+    ```js
+    var button = $('#id')
+    var color = button.css('color')
+    button.css('height', '20px')
+               .click(e => console.log('click'))
+    ```
+
+编写 `jQuery.d.ts` 中的 `$()` 显然需要使用“重载”：
+```json
+declare function $(callback: Function): void;
+declare function $(selector: string): any;
+```
+这里重复声明了 `$`，TSC 会根据 `$` 的参数类型自动匹配函数的返回值。
+
+不过，第二种情况还不够准确，毕竟函数签名中返回的是 any，而事实上返回的对象( jQueryElement )，还包含 `css`、`click` 等方法；any 显然描述不够准确，这就需要给 jQueryElement 定义一个 interface。
+
+##### interface 定义
+
+```ts
+interface JQueryElement {
+    click(Function): JQueryElement;
+
+    css(name: string): string;
+    css(name: string, value: any): JQueryElement;
+}
+
+declare function $(selector: string): JQueryElement;
+```
+<font color=red>**针对可以链式访问的方法返回类型同样设置成 `JQueryElement`**</font> ，另外 `css` 这个方法也使用了重载。
+
+##### 复杂类型的变量声明
+jQuery 远没有这么简单，比如使用频度跟 Selector 差不多的还有它对 XHR 的封装。
+```js
+$.get("http://domain.com/data", data => { });
+$.get("http://domain.com/data", { param: 1 }, data => { });
+```
+<font color=dodgerBlue>此时 `$` 其实已经不是一个简单的 Function 了，它同时还是一个包含属性的 Object</font>。于是需要给它单独定义一个 interface 来满足它的各种特性。先把刚刚写的 function 形式转化成 interface 形式：
+```js
+interface JQueryVariable {
+    (callback: Function): void;
+    (selector: string): JQueryElement;
+}
+
+declare var $: JQueryVariable;
+```
+可以简单的通过定义一个没有名字的方法来告诉 TSC，这个类型的变量是一个 Function。 然后我们声明一个类型是 `JQueryVariable` 的变量 `$`。
+
+此时，为 `$` 添加 `get` 方法就很容易了，完成后的效果如下
+
+```ts
+interface JQueryVariable {
+    (callback: Function): void;
+    (selector: string): JQueryElement;
+
+    get(url: string, success: Function);
+    get(url: string, data: any, success: Function);
+}
+```
+
+上面 dts 中所有的回调函数都用使用了 Function 类型，但在实际项目中，应该尽量避免；它起不到任何约束或者智能提示的作用。
+> 👀 这里的意思是说：不推荐使用 Function 类型，而是使用Function 的签名，以描述清楚 ？
+
+##### 总结
+在 TS 中，函数的类型一般有下面几种表示方式：
+
+```ts
+// 直接声明
+declare function name(): void;
+
+// interface 形式
+interface Callback {
+    (): void;
+}
+declare var name: Callback;
+```
+
+还有最常用的：lambda 表达式方式
+```ts
+declare var name: () => void;
+```
+
+给回调函数指定类型时，最常用的是 lambda 表达式方式，毕竟写起来比较简单。但是，<font color=red>当一个回掉函数类型需要被重用， 或者回掉函数需要比较丰富的注释时，还是更加推荐 interface 的写法</font>。
+
+摘自：[TypeScript 进阶：给第三方库编写声明文件](http://imzc.me/dev/2016/11/30/write-d-ts-files/)
+
+
+
+#### tsconfig.json
+
+##### files、include 和 exclude
+files、include 和 exclude 都是用于指定（设置）需要被编译的文件的：其中 files 是直接指定文件路径，include 和 exclude 是一对，用匹配模式 包含和排除一些文件。
+
+> 💡 以下是 new bing 的回答：
+
+<img src="https://s2.loli.net/2023/03/14/jEohQ2uMGLg8Bpv.png" alt="image-20230314223540978" style="zoom: 40%;" />
+
+如果 files 和 exclude 设置了同时一个文件，则以 files 为准。
+
+> 👀 显然这也是解释得通的：iles 是直接指定，exclude 是匹配，直接指定更具体，所以优先级更高。
+
+> 💡 以下是 new bing 的解答：
+
+<img src="https://s2.loli.net/2023/03/14/1HutaoNlv8PzJQA.png" alt="image-20230314223200401" style="zoom:45%;" />

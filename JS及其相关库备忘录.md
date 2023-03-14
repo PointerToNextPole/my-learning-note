@@ -3888,7 +3888,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                                       
+  >                                                                                                                                                                                                                                                                         
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3907,7 +3907,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                                                       
+  >                                                                                                                                                                                                                                                                         
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -6254,6 +6254,8 @@ isNaN() 方法是 ES5 的方法，实际上是 `window.isNaN()` 的简写；而�
 想把 整数自面量 转变为 String，可以使用 toString，不过可以发现 `1.toString()` 是会报错的，而 `1..toString()` 不会；这就引起了我好奇。另外，不仅仅是 `toString()` ，使用 `valueOf()` 也会出现一样的问题
 
 > 以下内容摘自：[面试题：关于 1toString()、1.toString()、1..toString()、1.0.toString()、(1.).toString()等结果](https://blog.csdn.net/NewAir1798/article/details/88207671)
+
+> 💡 总结：之所以会报错，是：JS 引擎无法确定 `.` 是小数点还是点运算符，因为歧义导致的报错；消除歧义，即可正常运行。
 
 - `1toString()` ：报错。语法错误
 - `1.toString()`  ：报错。<font color=red>JS引擎无法确定这里的 `.` 是什么意思，是点运算符（对象方法）还是浮点数</font>

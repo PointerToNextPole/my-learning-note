@@ -516,7 +516,7 @@ https://web.archive.org/web/20160812022408/https://www.zhihu.com/question/490738
 
 ##### 问了下 new bing ，得到如下答案
 
-<img src="/Users/yan/Library/Application Support/typora-user-images/image-20230308005044277.png" alt="image-20230308005044277" style="zoom:50%;" />
+<img src="https://s2.loli.net/2023/03/15/kSocVDZ42KOWJ9j.png" alt="image-20230308005044277" style="zoom:50%;" />
 
 有点点 类似于转义。
 
