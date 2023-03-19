@@ -246,7 +246,7 @@ let tom: Person = {
 
 ##### 任意属性
 
-> 👀 注：更专业的名称叫作 “索引签名” ( [Index Signatures](https://www.typescriptlang.org/docs/handbook/2/objects.html#index-signatures) )，也可参考 [[#TS 类型系统中的类型#接口]] 中的 “可索引签名”
+> 💡 更专业的名称叫作 “索引签名” ( [Index Signatures](https://www.typescriptlang.org/docs/handbook/2/objects.html#index-signatures) )，也可参考 [[#TS 类型系统中的类型#接口]] 中的 “可索引签名”
 
 有时候我们<font color=dodgerblue> **希望一个接口允许有任意的属性，可以使用如下方式**</font>：
 
@@ -982,7 +982,7 @@ doStuff({ bar: 123, common: '123' });
 
 - **<font color=FF0000>支持类型编程</font>的类型系统**
 
-  <mark>在 Java 里面，**拿到了对象的类型就能找到它的类，进一步拿到各种信息**，所以类型系统支持泛型就足够了</mark>。但 <font color=FF0000>在 JavaScript 里面，对象可以字面量的方式创建，还可以灵活的增删属性，**拿到对象并不能确定什么，所以要支持对传入的类型参数做进一步的处理**</font>。
+  <font color=LightSeaGreen>在 Java 里面，**拿到了对象的类型就能找到它的类，进一步拿到各种信息**，所以类型系统支持泛型就足够了</font>。但 <font color=FF0000>在 JavaScript 里面，对象可以字面量的方式创建，还可以灵活的增删属性，**拿到对象并不能确定什么，所以要支持对传入的类型参数做进一步的处理**</font>。
 
   <font color=FF0000 size=4>**对传入的类型参数（泛型）做各种逻辑运算，产生新的类型，这就是类型编程。**</font>
 
@@ -999,15 +999,21 @@ doStuff({ bar: 123, common: '123' });
 
   这里的 `keyof T`、`T[Key]` 就是对 “ 类型参数 T ” 的类型运算。
 
-  > **注：**这里 keyof 操作符 会 <font color=FF0000>**提取出 “对象类型” 里的所有 key** 然后 <font size=4>**得到一个「联合类型」**</font></font>。
+  > 💡 这里 `keyof` 操作符 会 <font color=FF0000>**提取出 “对象类型” 里的所有 key** 然后 <font size=4>**得到一个「联合类型」**</font></font>。
   >
   > 学习自：[TypeScript 类型编程](https://segmentfault.com/a/1190000040247980)
+  >
+  > **官网文档截图**
+  >
+  > <img src="https://s2.loli.net/2023/03/15/82OxcZy5wQvmUYf.png" alt="image-20230315153748488" style="zoom:45%;" />
+  > 
+  >   文档地址：[TS Doc - Keyof Type Operator](https://www.typescriptlang.org/docs/handbook/2/keyof-types.html)
   
-  <mark style="background: aqua">TypeScript 的类型系统就是第三种，支持对类型参数做各种逻辑处理，可以写很复杂的类型逻辑</mark>。
+  <font color=LightSeaGreen>TypeScript 的类型系统就是第三种，支持对类型参数做各种逻辑处理，可以写很复杂的类型逻辑</font>。
 
 ##### TS 的类型系统
 
-<font color=FF0000>**TypeScript 的类型系统是<font size=4>「图灵完备」的</font>，也就是能描述各种可计算逻辑**</font>。<mark>简单点来理解就是 循环、条件 等各种 JS 里面有的语法它都有，JS 能写的逻辑它都能写</mark>。
+<font color=FF0000>**TypeScript 的类型系统是<font size=4>「图灵完备」的</font>，也就是能描述各种可计算逻辑**</font>。<font color=LightSeaGreen>简单点来理解就是 循环、条件 等各种 JS 里面有的语法它都有，JS 能写的逻辑它都能写</font>。
 
 “对类型参数的编程” 是 TypeScript 类型系统最强大的部分，可以实现各种复杂的类型计算逻辑，是它的优点。但同时也被认为是它的缺点，因为除了业务逻辑外还要写很多类型逻辑。不过，我倒是觉得这种复杂度是不可避免的，因为 JS 本身足够灵活，要准确定义类型那类型系统必然也要设计的足够灵活。
 
@@ -1110,6 +1116,19 @@ enum Transpiler {
 
 const transpiler = Transpiler.TypeScriptCompiler;
 ```
+###### TS 枚举的反向映射
+TypeScript 的枚举类型是支持 <font color=red>**“反向映射” Reverse mappings**</font> 的，也就是：可以根据 枚举值 ( enum values ) 去找到 枚举名( enum names )的。如下示例：
+```ts
+enum Animal {
+	Cat,
+	Dog,
+	Mouse,
+}
+
+console.log(Animal) // { '0': 'Cat', '1': 'Dog', '2': 'Mouse', Cat: 0, Dog: 1, Mouse: 2 }
+console.log(Animal[Animal.Cat]) // Cat
+```
+这里只是做了大概介绍，详见文档： [TS Doc - Enums # Reverse mappings](https://www.typescriptlang.org/docs/handbook/enums.html#reverse-mappings)
 
 ##### 字面量类型 ( literal types )
 
@@ -1126,11 +1145,20 @@ const transpiler = Transpiler.TypeScriptCompiler;
 还有<font color=FF0000>**四种特殊的类型：void、never、any、unknown**</font>：
 
 - **void** 代表空，可以是 null 或者 undefined，<font color=FF0000>一般是用于函数返回值</font>。
-- **any** 是任意类型，任何类型都可以赋值给它，它也<font color=FF0000>可以赋值给任何类型（ <font size=4>**除了 never**</font> ）</font>。
-- **unknown** 是<font color=FF0000>**未知类型**，**任何类型都可以赋值给它**，但是它 <font size=4>**不可以赋值给别的类型**</font></font>。
-- **never** <font color=FF0000>**代表不可达，比如函数抛异常的时候，返回值就是 never**</font> （**注：**“异常” 的相关示例 [[#交叉：&]] 。另外，根据下面（[[#推导：infer]]）的代码可知，在类型编程时，使用 `infer ? :` 不符合条件的，也可用 never 作为类型）。
 
-> 👀 注：下面有说 any 和 unknown 的区别： [[#数组类型#First]] ，简单来说就是：unknown 不可给别的类型赋值，而 any 可以（除了 never ）。
+- **any** 是任意类型，任何类型都可以赋值给它，它也<font color=FF0000>可以赋值给任何类型（ <font size=4>**除了 never**</font> ）</font>。
+
+- **unknown** 是<font color=FF0000>**未知类型**，**任何类型都可以赋值给它**，但是它 <font size=4>**不可以赋值给别的类型**</font></font>。
+
+- **never** <font color=FF0000>**代表不可达，比如函数抛异常的时候，返回值就是 never**</font> 
+
+  > 👀 “异常” 的相关示例 [[#交叉：&]] 。另外，根据下面 [[#推导：infer]] 的代码可知，在类型编程时，使用 `infer ? :` 不符合条件的，也可用 never 作为类型。
+
+  > 💡 never 是 `|` 运算的幺元，即：`x | never === x`。
+  >
+  > 摘自：[TypeScript 中高级应用与最佳实践](http://www.alloyteam.com/2019/07/13796/)
+
+> 👀 下面有说 any 和 unknown 的区别： [[#数组类型#First]] ，简单来说就是：unknown 不可给别的类型赋值，而 any 可以（除了 never ）。
 
 **这些就是 TypeScript 类型系统中的全部类型了**，<font color=LightSeaGreen>大部分是从 JS 中迁移过来的</font>，比如基础类型、Array、class 等；<font color=LightSeaGreen>也添加了一些类型</font>，比如 枚举 ( enum ) 、接口 ( interface ) 、元组等，<font color=LightSeaGreen>还支持了字面量类型和 void、never、any、unknown 的特殊类型</font>。
 
@@ -1293,7 +1321,7 @@ type res = { a: number, c: boolean} extends ObjType ? true : false
 
 对象、class 在 TypeScript 对应的类型是 「索引类型」 ( Index Type ) ，那么如何对索引类型作修改呢？答案是「映射类型」 。
 
-> 👀 补充：映射类型是通过 in 操作符遍历类型的 key 得到的新的类型（也就是： `[Key in keyof IndexType]` ）
+> 💡 映射类型是通过 in 操作符遍历类型的 key 得到的新的类型（也就是： `[Key in keyof IndexType]` ）
 >
 > 学习自：[TypeScript 类型编程](https://segmentfault.com/a/1190000040247980)
 
@@ -1962,6 +1990,19 @@ type Record<K extends string | number | symbol, T> = { [P in K]: T; }
 ```
 
 <font color=FF0000>**指定索引和值的类型分别为 K 和 T**，就可以 <font size=4>**创建一个对应的索引类型**</font></font>。
+
+> 💡 使用示例：
+> ```ts
+> type Size = 'small' | 'default' | 'big'
+> /*
+> {
+>   small: number
+>   default: number
+>   big: number
+> }
+> */
+> type sizeMap = Record<Size, number>
+> ```
 
 上面（示例）的 <font color=FF0000>**索引类型的约束** 我们用的 object </font>，其实**<font color=FF0000>更语义化一点我推荐用</font> <font size=4>`Record<string, object>` </font>**：
 
@@ -3506,7 +3547,7 @@ type Record<K extends keyof any, T> = {
 };
 ```
 
-这里很巧妙的用到了 `keyof any` ，它的结果是 string | number | symbol：
+这里很巧妙的用到了 `keyof any` ，它的结果是 `string | number | symbol`：
 
 <img src="https://s2.loli.net/2022/05/05/SuHeYaRypEUBr62.png" alt="image-20220505115217239" style="zoom:50%;" />
 
@@ -3928,9 +3969,9 @@ type Chunk<
 
 #### TupleToNestedObject
 
->  **注：**这题有卡住的地方，解决了之后，虽然结果看起来没什么问题；不过，对于异常的数据（数组中存在非字符类型）依然有问题
+>  👀 这题有卡住的地方，解决了之后，虽然结果看起来没什么问题；不过，对于异常的数据（数组中存在非字符类型）依然有问题
 
-我们希望实现这样一个功能：根据数组类型，比如 ['a', 'b', 'c'] 的元组类型，再加上值的类型 'xxx'，构造出这样的索引类型：
+我们希望实现这样一个功能：根据数组类型，比如 `['a', 'b', 'c']` 的元组类型，再加上值的类型 'xxx'，构造出这样的索引类型：
 
 ```json
 {
@@ -3962,7 +4003,7 @@ type TupleToNestedObject<Tuple extends unknown[], Value> =
 
 为什么后面还有个 `as Key extends keyof any ? Key : never` 的重映射呢？因为比如 <font color=FF0000>**null、undefined 等类型是不能作为索引类型的 key 的，就需要做下过滤**；如果是这些类型，就返回 never，否则返回当前 Key </font>。
 
-这里的 `keyof any` 在内置的高级类型那节也有讲到，就是取当前支持索引支持 string | number | symbol 类型的。
+这里的 `keyof any` 在内置的高级类型那节也有讲到，就是取当前支持索引支持 `string | number | symbol` 类型的。
 
 如果提取不出元素，那就构造结束了，返回 Value。
 
@@ -4000,7 +4041,7 @@ type PartialObjectPropByKeys<
 // 先将Obj中符合“联合类型”Key的键以“联合类型”形式提取(Extract)出来，并挑选(Pick)Extract的结果，组成一个缩阴类型，对其做可选操作(Partial)，最后和“不在‘联合类型’Key组成的索引类型”合并（用 & 合并）。
 ```
 
-交叉类型 ( `&` ) 会把同类型做合并，不同类型舍弃（**注：**这里发现对交叉类型有点遗忘， [[#交叉：&]] 做了笔记）。
+交叉类型 ( `&` ) 会把同类型做合并，不同类型舍弃（👀 这里发现对交叉类型有点遗忘， [[#交叉：&]] 做了笔记）。
 
 不过，上面的代码运行结果有点问题：
 
@@ -4415,7 +4456,7 @@ module.exports = {
 
 #### Babel 不支持的 TS 语法
 
-> 👀 注：这里有大量截图和代码，不适合笔记，所以做了省略。
+> 👀 这里有大量截图和代码，不适合笔记，所以做了省略。
 
 <font color=FF0000>**Babel 是每个文件单独编译的**</font>，而 <font color=FF0000>**TSC 不是**</font>；<font color=FF0000>**TSC 是整个项目一起编译**：会处理类型声明文件，会做跨文件的类型声明合并，**比如 namespace 和 interface 就可以跨文件合并**</font>。所以 Babel 编译 TS 代码有一些特性是没法支持的：
 
@@ -4448,9 +4489,6 @@ babel 不支持 `const enum`（会作为 enum 处理），不支持 namespace �
 <font color=FF0000>babel 编译 ts 代码的优点是 **可以通过插件支持更多的语言特性**</font>，而且<font color=FF0000>**生成的代码是按照 targets 的配置按需引入 core-js 的**</font>；而 <font color=FF0000>tsc 没做这方面的处理，只能全量引入</font>。而且 <font color=FF0000>tsc 因为要做类型检查所以是比较慢的</font>，而 <font color=FF0000>**babel 不做类型检查，编译会快很多**</font>。
 
 那用 babel 编译，就不做类型检查了么？<font color=FF0000>**可以用 `tsc --noEmit` 来做类型检查，加上 noEmit 选项就不会生成代码了**</font>。如果你要生成 d.ts，也要单独跑下 tsc 编译。
-
-
-
 
 
 ## 官方文档阅读
@@ -4583,17 +4621,73 @@ TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类
 
 
 
-
-
 ## 其他笔记
 
+#### interface VS type
+##### type 可以，interface 不能
+###### type 可以声明基本类型别名，联合类型，元组等类型
 
+```ts
+// 基本类型别名
+type Name = string
 
-#### Tripe-slash Directives
+// 联合类型
+interface Dog {
+    wong();
+}
+interface Cat {
+    miao();
+}
 
-// TODO https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html
+type Pet = Dog | Cat
 
-// TODO 《Programming Typescript》Appendix E. Triple-Slash Directives
+// 具体定义数组每个位置的类型
+type PetList = [Dog, Pet]
+```
+
+###### type 语句中还可以使用 typeof 获取实例的 类型进行赋值
+
+```ts
+const divEl = document.createElement('div');
+type divElType = typeof divEl
+```
+
+###### type 其他操作
+
+```ts
+type StringOrNumber = string | number;  
+type Text = string | { text: string };  
+type NameLookup = Dictionary<string, Person>;  
+type Callback<T> = (data: T) => void;  
+type Pair<T> = [T, T];  
+type Coordinates = Pair<number>;  
+type Tree<T> = T | { left: Tree<T>, right: Tree<T> };
+```
+
+##### interface 可以，type 不能
+
+###### interface 能够声明合并
+
+```ts
+interface User {
+  name: string
+  age: number
+}
+
+interface User {
+  sex: string
+}
+
+/*
+User 接口为 {
+  name: string
+  age: number
+  sex: string
+}
+*/
+```
+
+摘自：[TypeScript真香系列——接口篇](https://mp.weixin.qq.com/s?__biz=Mzg4MTYwMzY1Mw==&mid=2247496256&idx=1&sn=427a5bf509546ee1ba349c70d7095aa1&source=41#wechat_redirect)
 
 
 
@@ -4614,6 +4708,35 @@ TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类
 #### is 关键字
 
 // TODO 参见 [TS handbook V2 - narrowing # Using type predicates](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates) 以及 [StackOverflow - What does the `is` keyword do in typescript?](https://stackoverflow.com/questions/40081332/what-does-the-is-keyword-do-in-typescript)
+
+
+
+#### Tripe-slash Directives
+
+在实际应用开发时有一种场景，当前作用域下可以访问某个变量，但这个变量并不由开发者控制。例如通过 Script 标签直接引入的第三方库 CDN、一些宿主环境的 API 等。这个时候可以利用 TS 的环境声明功能，来告诉 TS 当前作用域可以访问这些变量，以获得类型提醒。
+
+具体有两种方式，declare 和三斜线指令。
+
+###### 声明文件
+
+详见 [[#声明文件 d.ts]]，略
+
+###### 三斜线指令
+
+用三斜线指令可以一次性引入整个类型声明文件。
+
+```ts
+/// <reference path="../typings/monaco.d.ts" />
+const range = new monaco.Range(2, 3, 6, 7);
+```
+
+摘自：[TypeScript 中高级应用与最佳实践](http://www.alloyteam.com/2019/07/13796/)
+
+// TODO https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html
+
+// TODO 《Programming Typescript》Appendix E. Triple-Slash Directives
+
+
 
 #### 声明文件 d.ts
 
@@ -4736,8 +4859,44 @@ interface JQueryVariable {
 }
 ```
 
-上面 dts 中所有的回调函数都用使用了 Function 类型，但在实际项目中，应该尽量避免；它起不到任何约束或者智能提示的作用。
-> 👀 这里的意思是说：不推荐使用 Function 类型，而是使用Function 的签名，以描述清楚 ？
+上面 `d.ts` 中所有的回调函数都用使用了 Function 类型，但在实际项目中，应该尽量避免；它起不到任何约束或者智能提示的作用。
+> 👀 这里的意思是说：不推荐使用 Function 类型，而是使用 Function 的签名，以描述清楚 ？
+
+> 💡补充：感觉上面的写法有点麻烦 / 过度抽象，其实没有绝对必要将其封装到一个 interface 中。这里摘抄一下 [如何编写一个d.ts文件](https://segmentfault.com/a/1190000009247663) 中的内容
+>
+> > ###### 混合类型
+> >
+> > 有时候有些值既是函数又是class又是对象的复杂对象。比如常用的 jQuery 有各种用法：
+> >
+> > ```javascript
+> > new $()
+> > $.ajax()
+> > $()
+> > ```
+> >
+> > 既是函数又是对象
+> >
+> > ```typescript
+> > declare function $2(s:string): void
+> > 
+> > declare namespace $2{
+> >     let aaa: number
+> > }
+> > ```
+> >
+> > **效果**
+> >
+> > 作为函数用：
+> >
+> > ![](https://s2.loli.net/2023/03/16/zrtlKkR9XFaqmiB.png)
+> >
+> > 作为对象用：
+> >
+> > ![](https://s2.loli.net/2023/03/16/JOwZhNv1P3KMmiu.png)
+> >
+> > 也就是说：TS 会自动把同名的 namespace 和 function 合并到一起。
+> >
+> > > 💡 本文下面还说：ts3.6 增加了新功能，function 声明和 class 声明可以合并了；所以，可以声明同名的 function、class 还有 namespace。
 
 ##### 总结
 在 TS 中，函数的类型一般有下面几种表示方式：
@@ -4761,6 +4920,74 @@ declare var name: () => void;
 给回调函数指定类型时，最常用的是 lambda 表达式方式，毕竟写起来比较简单。但是，<font color=red>当一个回掉函数类型需要被重用， 或者回掉函数需要比较丰富的注释时，还是更加推荐 interface 的写法</font>。
 
 摘自：[TypeScript 进阶：给第三方库编写声明文件](http://imzc.me/dev/2016/11/30/write-d-ts-files/)
+
+##### 全局变量 与 模块化的全局变量
+
+在 TypeScript 规则中，<font color=dodgerBlue>如果一个 `.ts`、`.d.ts` 文件如果没有用到 import 或者 export 语法的话</font>，<font color=fuchsia>**那么最顶层声明的变量就是全局变量**</font>。
+
+###### 模块化的全局变量
+
+如果定义全局变量的时候需要引入（👀 使用 import ）第三方文件，比如：
+
+```ts
+import { Request, Response } from 'express'
+
+declare var req: Request
+declare var res: Response
+```
+
+由于上面的 `d.ts` 文件使用了 import / export 语法，（按照上面的规则）ts 编译器不会将 `req` 和 `res` 当作全局变量，那么就需要通过以下的方式声明全局变量：
+
+```ts
+import { Request, Response } from 'express'
+
+declare glob {
+  var req: Request
+  var res: Response
+  
+  // 后面还可以跟 namespace 等声明
+}
+```
+
+##### 模块化导出
+
+###### CommonJS 的导出
+
+如果想要使用 commonJS 的方式引入模块化的代码，比如：
+
+```ts
+const content = require('cjs_module')
+```
+
+对应的模块，需要这样声明：
+
+```ts
+declare module 'cjs_module' {
+  export let foo: number
+  export function bar(): number
+  export namespace quz { ... }
+}
+```
+
+基本上就是在 export 外层套了一个 `declare module "module_name"` 。另外，甚至可以先定义再导出：
+
+```ts
+declare module 'cjs_module' {
+  let foo: number
+  export = foo
+}
+```
+
+###### ESM 的导出
+
+```ts
+declare var foo: 'foo'
+declare var bar: 'bar'
+
+export { foo, bar }
+```
+
+摘自：[如何编写一个d.ts文件](https://segmentfault.com/a/1190000009247663)
 
 
 

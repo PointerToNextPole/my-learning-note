@@ -4,13 +4,19 @@
 
 #### 数据类型
 
+##### NaN
+
 NaN 是粘性的。任何对 NaN 的进一步操作都会返回 NaN。
 
 > 💡 补充
 >
-> NaN的全部要点是它们是“粘性的”（也许Monadic是一个更好的术语？），一旦我们在表达式中包含NaN，整个表达式的值就会变为NaN。
+> *NaN* have a **sign** and a **payload**, together are called the *information contained in the NaN*.
 >
-> 摘自：https://www.coder.work/article/6753344
+> The whole point of NaNs is that they are "sticky" (maybe Monadic is a better term?), once we have a NaN in an expression the whole expression evaluate to NaN.
+>
+> Also NaNs are treated specially when evaluating predicates (like binary relations), for example if `a` is NaN, then it is not equal to itself.
+>
+> 摘自：[Questions regarding operations on NaN](https://stackoverflow.com/questions/37895991/questions-regarding-operations-on-nan)
 
 
 

@@ -3581,9 +3581,9 @@ setTimeout(() => { console.log(123) }, 2000);
 
 > 👀 ES2018 推出
 
-<mark>不管 promise 最后的状态，在执行完 then 或 catch 指定的回调函数以后，都会执行 finally 方法指定的回调函数</mark>。
+<font color=LightSeaGreen>不管 promise 最后的状态，在执行完 then 或 catch  指定的回调函数以后，都会执行 finally 方法指定的回调函数</font>。
 
-<font color=FF0000>**finally 方法 的回调函数不接受任何参数，这意味着 <font size=4>（finally方法）没有办法知道，前面的 Promise 状态到底是 fulfilled 还是 rejected</font>**</font>。这表明：<mark>finally方法 里面的操作，应该是与状态无关的，不依赖于 Promise 的执行结果</mark>。
+<font color=FF0000>**finally 方法 的回调函数不接受任何参数，这意味着 <font size=4>（finally方法）没有办法知道，前面的 Promise 状态到底是 fulfilled 还是 rejected</font>**</font>。这表明：<font color=LightSeaGreen>finally方法 里面的操作，应该是与状态无关的，不依赖于 Promise 的执行结果</font>。
 
 <font color=FF0000>**finally本质上是then方法的特例：**</font>
 
@@ -3623,51 +3623,59 @@ Promise.prototype.finally = function (callback) {
 
 有时需要将现有对象转为 Promise 对象，Promise.resolve() 方法就起到这个作用。比如 Promise.all( iterator ) 的 iterator 如果为 非promise的数组，会将这些数组成员 通过 Promise.resolve() 转成 Promise，再进一步处理。
 
-**Promise.resolve()等价于下面的写法：**
+**Promise.resolve() 等价于下面的写法：**
 
 ```js
 Promise.resolve('foo')
 // 等价于
 new Promise(resolve => resolve('foo'))
 ```
-**Promise.resolve()方法的参数分成四种情况：**
+**Promise.resolve() 方法的参数分成四种情况：**
 
-1. **参数是一个 Promise 实例：**如果<font color=FF0000>参数是 Promise 实例</font>，那么 Promise.resolve <font color=FF0000>将不做任何修改、原封不动地返回这个实例</font>。
+1. **参数是一个 Promise 实例：**如果<font color=FF0000>参数是 Promise 实例</font>，那么 `Promise.resolve` <font color=FF0000>将不做任何修改、原封不动地返回这个实例</font>。
 
-2. **参数是一个thenable对象：**<font color=FF0000>thenable 对象指的是具有then方法的对象</font>，比如下面这个对象。
+2. <font color=dodgerBlue>**参数是一个 thenable 对象**</font>：<font color=fuchsia>**thenable 对象指的是具有 then 方法的对象**</font>，比如下面这个对象。
 
-```js
-let thenable = {
-  then: function(resolve, reject) { resolve(42); }
-};
-```
-<font color=FF0000>Promise.resolve() 方法会将这个对象转为 Promise 对象，**然后就立即执行thenable对象的then()方法**</font>。
-```javascript
-let thenable = {
-  then: function(resolve, reject) { resolve(42); }
-};
+   ```js
+   let thenable = {
+     then: function(resolve, reject) { resolve(42); }
+   };
+   ```
 
-let p1 = Promise.resolve(thenable);
-p1.then(function (value) { console.log(value); }); // 42
-```
-上面代码中，thenable 对象的 then() 方法执行后，对象p1的状态就变为 resolved，从而立即执行最后那个 then() 方法指定的回调函数，输出42。
+   <font color=FF0000>Promise.resolve() 方法会将这个对象转为 Promise 对象，**然后就立即执行 thenable 对象的 then() 方法**</font>。
 
-- <font color=FF0000>**参数不是具有then()方法的对象，或根本就不是对象：**</font><font color=FF0000>如果参数是一个原始值，或者是一个不具有then()方法的对象</font>，则Promise.resolve() 方法 <font color=FF0000 size=4>**返回一个新的 Promise 对象，状态为 resolved**</font>。
-  ```js
-  const p = Promise.resolve('Hello');
-  
-  p.then(function (s) { console.log(s) }); // Hello
-  ```
-  上面代码生成一个新的 Promise 对象的 实例p。<font color=FF0000>由于字符串Hello不属于异步操作（判断方法是字符串对象不具有 then 方法）</font>，返回 Promise 实例的状态从一生成就是resolved，所以回调函数会立即执行。Promise.resolve() 方法的参数，会同时传给回调函数。
-- **不带有任何参数：**<font color=FF0000>Promise.resolve() 方法允许调用时不带参数，直接返回一个 resolved 状态的 Promise 对象</font>。
+   ```js
+   let thenable = {
+     then: function(resolve, reject) { resolve(42); }
+   };
+   
+   let p1 = Promise.resolve(thenable);
+   p1.then(function (value) { console.log(value); }); // 42
+   ```
 
-  所以，<mark>如果希望得到一个 Promise 对象，比较方便的方法就是直接调用 Promise.resolve() 方法</mark>。
+   上面代码中，thenable 对象的 then() 方法执行后，对象 p1 的状态就变为 resolved，从而立即执行最后那个 then() 方法指定的回调函数，输出42。
 
-  ```javascript
-  const p = Promise.resolve();
-  
-  p.then(function () { ... });
-  ```
+3. <font color=dodgerBlue>**参数不是具有 then() 方法的对象，或根本就不是对象**：</font><font color=FF0000>如果参数是一个原始值，或者是一个不具有 `then()` 方法的对象</font>，则 Promise.resolve() 方法 <font color=FF0000 size=4>**返回一个新的 Promise 对象，状态为 resolved**</font>。
+
+   ```js
+   const p = Promise.resolve('Hello');
+   
+   p.then(function (s) { console.log(s) }); // Hello
+   ```
+
+   上面代码生成一个新的 Promise 对象的实例 p。<font color=FF0000>由于字符串Hello不属于异步操作（判断方法是字符串对象不具有 then 方法）</font>，返回 Promise 实例的状态从一生成就是 resolved，所以回调函数会立即执行。`Promise.resolve()` 方法的参数，会同时传给回调函数。
+
+4. **不带有任何参数：**<font color=FF0000>`Promise.resolve()` 方法允许调用时不带参数，直接返回一个 resolved 状态的 Promise 对象</font>。
+
+   所以，<font color=LightSeaGreen>如果希望得到一个 Promise 对象，比较方便的方法就是直接调用 `Promise.resolve()` 方法</font>。
+
+   ```js
+   const p = Promise.resolve();
+   
+   p.then(function () { ... });
+   ```
+
+   
 
 ###### Promise.reject()
 
@@ -3888,7 +3896,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                                         
+  >                                                                                                                                                                                                                                                                           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3907,7 +3915,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                                                         
+  >                                                                                                                                                                                                                                                                           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
