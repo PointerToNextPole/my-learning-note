@@ -1935,18 +1935,6 @@ BOM 层次结构的顶层是窗口对象, 它包含有关显示文档的窗口�
 
 
 
-#### 单页富应用程序（SPA）
-
-单页应用 ( single-page application: SPA ) 是<font color=FF0000>一种网络应用程序或网站的**模型**</font>，<font color=FF0000>它通过**动态重写当前页面**来与用户交互</font>，<font color=FF0000>而非传统的从服务器重新加载整个新页面</font>。<mark>这种方法避免了页面之间切换打断用户体验，使应用程序更像一个桌面应用程序</mark>。在单页应用中，所有必要的代码（HTML、CSS 和 JavaScript ）都通过单个页面的加载而检索，或者根据需要（通常是为响应用户操作）动态装载适当的资源并添加到页面。尽管可以<font color=FF0000>用 hash 或HTML5 history API 来提供应用程序中单独逻辑页面的感知和导航能力，但 **页面在过程中的任何时间点都不会重新加载，也不会将控制转移到其他页面**</font>。与单页应用的交互通常涉及到与网页服务器后端的动态通信。
-
-摘自：[维基百科 - 单页应用](https://zh.wikipedia.org/wiki/%E5%8D%95%E9%A1%B5%E5%BA%94%E7%94%A8)
-
-简单的说 SPA 就是<font color=FF0000>一个WEB项目只有一个 HTML 页面</font>，<font color=FF0000>一旦页面加载完成，SPA 不会因为用户的操作而进行页面的重新加载或跳转</font>。 取而代之的是<font color=FF0000>利用 JS 动态的变换 HTML 的内容，从而来模拟多个视图间跳转</font>。
-
-摘自：[「前端进阶」彻底弄懂前端路由](https://juejin.im/post/6844903890278694919)
-
-
-
 #### Static Generated Sites Vs. SSR
 
 ##### 前言 & 背景
@@ -1992,7 +1980,7 @@ This means that if your application is server-side rendered, the content is fetc
 
 <img src="https://s2.loli.net/2022/07/11/CMYwdWahyHAxecV.png" alt="image-20220711110546200" style="zoom: 40%;" />
 
-<font color=FF0000>This approach **is good if you’re building a complex application that requires user interaction**</font>（👀 这应该是相较于 SSG）, that relies on a database, or whose content changes often. If the content changes often, then users would need to see the updates right away. **The approach is also good for applications**</mark> that tailor content（译：定制内容） according to who is viewing it and that store user data such as email addresses and user preferences, while also attending to SEO. An example would be a large e-commerce or social media platform. Let’s look at some of the advantages of SSR for your applications.
+<font color=FF0000>This approach **is good if you’re building a complex application that requires user interaction**</font>（👀 这应该是相较于 SSG）, that relies on a database, or whose content changes often. If the content changes often, then users would need to see the updates right away. **The approach is also good for applications** that tailor content（译：定制内容） according to who is viewing it and that store user data such as email addresses and user preferences, while also attending to SEO. An example would be a large e-commerce or social media platform. Let’s look at some of the advantages of SSR for your applications.
 
 ##### SSR 优点
 
@@ -2594,6 +2582,9 @@ MIME是对传统电子邮件的一个扩展，现在已经成为电子邮件实�
 
 摘自：[wiki - 单页应用](https://zh.wikipedia.org/wiki/单页应用)
 
+简单的说 SPA 就是<font color=FF0000>一个WEB项目只有一个 HTML 页面</font>，<font color=FF0000>一旦页面加载完成，SPA 不会因为用户的操作而进行页面的重新加载或跳转</font>。 取而代之的是<font color=FF0000>利用 JS 动态的变换 HTML 的内容，从而来模拟多个视图间跳转</font>。
+
+摘自：[「前端进阶」彻底弄懂前端路由](https://juejin.im/post/6844903890278694919)
 
 
 #### Comet （web技术）
@@ -2809,53 +2800,53 @@ WebDAV 扩展了 request 方法所允许的标准 HTTP谓词 和 HTTP头。增�
 URL Schemes 有两个单词：
 
 - **URL：**我们都很清楚，http://www.apple.com 就是个 URL，我们也叫它链接或网址
-- **Schemes：**表示的是一个 URL 中的一个位置——<mark>最初始的位置，即 ://之前的那段字符</mark>。比如 https://www.apple.com 这个网址的 Schemes 是 https
+- **Schemes：**表示的是一个 URL 中的一个位置——<font color=dodgerBlue>最初始的位置，即 `://` 之前的那段字符</font>。比如 `https://www.apple.com` 这个网址的 Schemes 是 https
 
 根据我们上面对 URL Schemes 的使用，我们可以很轻易地理解，在以本地应用为主的 iOS 上，我们可以像定位一个网页一样，用一种特殊的 URL 来定位一个应用甚至应用里某个具体的功能。而定位这个应用的，就应该这个应用的 URL 的 Schemes 部分，也就是开头儿那部分。比如短信，就是 `sms:`
 
 你可以完全按照理解一个网页的 URL ——也就是它的网址——的方式来理解一个 iOS 应用的 URL，拿苹果的网站和 iOS 上的微信来做个简单对比：
 
-|                   | 网页（苹果）                         | iOS 应用（微信）              |
-| :---------------- | :----------------------------------- | :---------------------------- |
-| 网站首页/打开应用 | http://www.apple.com                 | weixin://                     |
-| 子页面/具体功能   | http://www.apple.com/mac/（Mac页面） | weixin://dl/moments（朋友圈） |
+|                   | 网页（苹果）                         | iOS 应用（微信）                |
+| :---------------- | :----------------------------------- | :------------------------------ |
+| 网站首页/打开应用 | http://www.apple.com                 | `weixin://`                     |
+| 子页面/具体功能   | http://www.apple.com/mac/（Mac页面） | `weixin://dl/moments`（朋友圈） |
 
 摘自：[URL Schemes 使用详解](https://sspai.com/post/31500)
 
-**URL Schemes 从功能上分为了 4 种：**
+##### URL Schemes 从功能上分为了 4 种
 
-1. **基础 URL Schemes**：用于启动应用，比如：[drafts4://](drafts4://)；
-2. **复杂 URL Schemes**：用于直接打开应用的具体功能，比如：[drafts4://dictate](drafts4://dictate)；
-3. **变形 URL Schemes：**用于输入内容，含有第三方应用的特殊语法，比如：在 Launch Center Pro 里用这一条 drafts4://create?text=[prompt]；
-4. **x-callback-URL：**前面的 URL Schemes 只能执行一个动作，而 x-callback-URL 可以根据根据前一段 URL Schemes 的执行情况决定进一步的行动。
+1. **基础 URL Schemes**：用于启动应用，比如：`drafts4://`；
+2. **复杂 URL Schemes**：用于直接打开应用的具体功能，比如：`drafts4://dictate`；
+3. **变形 URL Schemes：**用于输入内容，含有第三方应用的特殊语法，比如：在 Launch Center Pro 里用这一条 `drafts4://create?text=[prompt]`；
+4. **x-callback-URL：**前面的 URL Schemes 只能执行一个动作，而 `x-callback-URL` 可以根据根据前一段 URL Schemes 的执行情况决定进一步的行动。
 
 摘自：[入门 iOS 自动化：读懂 URL Schemes](https://sspai.com/post/44591)
 
-**URL Schemes在应用中的“注册”**
+##### URL Schemes在应用中的“注册”
 
-- macOS 在<font color=FF0000>Info.plist</font> 文件中。
+- macOS 在 <font color=FF0000>Info.plist</font> 文件中。
 - Windows 通过往<font color=FF0000>注册表</font>的 HKCR (HKEY_CALSSES_ROOT) 目录下添加一条记录来完成该协议的注册。
 
 摘自：[pc网页端调起客户端应用的那些事--electron](https://blog.csdn.net/dengdongxia/article/details/105906975) 该链接中还有开发相关的设置，这里略，需要用了再看。
 
-**URL Schemes的一些缺点**
+##### URL Schemes的一些缺点
 
 URL Scheme方式优点是开发简单，但弊端也很明显：
 
 我们只能通过固定协议格式的链接来实现跳转，而且<font color=FF0000>打开H5页面时，会出现一个提示框：“是否打开XXX”。用户确认了才会跳转到App中，增加了用户流程</font>
 
-<mark>微信、QQ等把URL Scheme 打开App这种方式给禁了，但是它们都各自维护着一个白名单，如果Scheme不在该白名单内，那么就不能在他们的App内打开这个App</mark>（如果被封锁了那么用户只能通过右上角浏览器内打开App）
+<font color=LightSeaGreen>微信、QQ 等把 URL Scheme 打开App这种方式给禁了，但是它们都各自维护着一个白名单，如果Scheme不在该白名单内，那么就不能在他们的App内打开这个App</font>（如果被封锁了那么用户只能通过右上角浏览器内打开App）
 
 摘自：[什么是Deeplink？以及Deeplink的原理-阿里云开发者社区](https://developer.aliyun.com/article/780283)
 
-**URL Scheme列表：**
+##### URL Scheme列表
 
 - [URL Scheme 分享](https://st3376519.huoban.com/share/1985010/VGi2N5Vf0C1MVnHCVWiBc8L9g15c9VGJbMGcFrb6/172707/list)
 - [【基础知识】现在很火的app上的deeplink技术，到底是什么？](https://cloud.tencent.com/developer/article/1049347) 在最后的附录中
 
 #### DeepLink
 
-“Deeplink”又名“深度链接”，<mark>是一种能将用户直接从网页带到App指定页面的技术</mark>。
+“Deeplink”又名“深度链接”，<font color=dodgerBlue>是一种能将用户直接从网页带到App指定页面的技术</font>。
 
 目前广义上的 “深度链接” 概念包含了 DeepLink 和 Deferred Deeplink，主要触发场景分为两种：
 
@@ -2864,48 +2855,48 @@ URL Scheme方式优点是开发简单，但弊端也很明显：
 
 ![](https://i.loli.net/2021/10/23/k2RwgbMQpvWyiUC.jpg)
 
-**Deeplink在实际运用中能起到什么效果？**
+##### Deeplink在实际运用中能起到什么效果？
 
 Deeplink（深度链接）能被运用于任意渠道触点（微信、QQ、微博、短信、邮箱、各大浏览器、其他App等），<font color=FF0000>直接从这些平台跳转至目标内容页</font>，省去中间“打开App首页”“搜索页面”等无效步骤。
 
-<mark>深度链接（Deeplink）对于“App社交分享、裂变传播转化、沉默用户唤醒、用户流失召回、DSP广告投放、短信邮箱营销、地推首单激活、搜索引擎引流”等运营场景都有着奇效，一方面能快速实现场景还原，带来更高效的用户体验；另一方面，缩短转化路径，减少App推广拉新环节中20%以上的流失率</mark>。
+<font color=LightSeaGreen>深度链接（Deeplink）对于“App社交分享、裂变传播转化、沉默用户唤醒、用户流失召回、DSP广告投放、短信邮箱营销、地推首单激活、搜索引擎引流”等运营场景都有着奇效，一方面能快速实现场景还原，带来更高效的用户体验；另一方面，缩短转化路径，减少App推广拉新环节中20%以上的流失率</font>。
 
-其中涉及到的一些技术要点：
+##### 其中涉及到的一些技术要点
 
-- **URL Scheme（iOS/Android都适用）**
+###### URL Scheme（iOS/Android都适用）
 
-  URL Scheme 是实现 Deeplink兼容性最高、也最简单的一项方法，原生App可以先向操作系统注册一个URL，其中Scheme的作用是从不同平台唤醒相应App。
+URL Scheme 是实现 Deeplink兼容性最高、也最简单的一项方法，原生App可以先向操作系统注册一个URL，其中 Scheme 的作用是从不同平台唤醒相应App。
 
-- **进阶版深度链接：Universal link（iOS 9.2及以上适用）**
+###### 进阶版深度链接：Universal link（iOS 9.2及以上适用）
 
-  Universal Link是 iOS 9 以后苹果推出的通用链接技术，能够方便的通过一个https链接来打开App指定页面，不需要额外的判断；如果没有安装App，则跳转到自定义地址。
+Universal Link是 iOS 9 以后苹果推出的通用链接技术，能够方便的通过一个https链接来打开App指定页面，不需要额外的判断；如果没有安装App，则跳转到自定义地址。
 
-  <mark>相对Scheme的优势在于，Universal Link 是一个 Web Link，因此少了很多麻烦：</mark>
+<font color=LightSeaGreen>相对Scheme的优势在于，Universal Link 是一个 Web Link，因此少了很多麻烦：</font>
 
-  <font color=FF0000>当用户已安装该 App 时，不需要加载任何页面以及判断提示，能够立即唤醒 App，用户未安装App，则跳去对应的 web link（自定义页面）</font>。
-  Universal Links支持从其他App中的UIWebView中跳转到目标App。
-  绝大多数平台都支持Universal Link，能被搜索引擎索引，iOS微信7.0.5版本也解除了对Universal Link的限制，目前微信7.0.5以上版本已经能流畅运行Universal Link。
-  在Deeplink的实现方案中，Universal Link相比Scheme无疑具有更优的用户体验，iOS9.2及以上的版本更推荐使用Universal Link唤醒App。
+<font color=FF0000>当用户已安装该 App 时，不需要加载任何页面以及判断提示，能够立即唤醒 App，用户未安装App，则跳去对应的 web link（自定义页面）</font>。
+Universal Links支持从其他App中的UIWebView中跳转到目标App。
+绝大多数平台都支持Universal Link，能被搜索引擎索引，iOS微信7.0.5版本也解除了对Universal Link的限制，目前微信7.0.5以上版本已经能流畅运行Universal Link。
+在Deeplink的实现方案中，Universal Link相比Scheme无疑具有更优的用户体验，iOS9.2及以上的版本更推荐使用Universal Link唤醒App。
 
--  **App Link**——Andriod M（6）以后
+###### App Link——Andriod M（6）以后
 
-  App Link是由安卓发布的，在Andriod M以后才能使用。用户可以点击一个H5链接时直接跳转到 App 指定页面，而不会让用户点击”是否打开xx“。所以App Link比URL Scheme方式体验更好。
+App Link是由安卓发布的，在Andriod M以后才能使用。用户可以点击一个H5链接时直接跳转到 App 指定页面，而不会让用户点击”是否打开xx“。所以App Link比URL Scheme方式体验更好。
 
-  注：因为目前App Link在中国大陆内使用不便。所以国内的Top第三方如友盟+暂未支持AppLink这种方式，Andriod端只能使用URL Scheme这种方式。但据小编所知，后续友盟+会支持AppLink这种拉起App方式。
+注：因为目前App Link在中国大陆内使用不便。所以国内的Top第三方如友盟+暂未支持AppLink这种方式，Andriod端只能使用URL Scheme这种方式。但据小编所知，后续友盟+会支持AppLink这种拉起App方式。
 
-- **巧用工具，快速实现深度链接（Deeplink）**
+###### 巧用工具，快速实现深度链接（Deeplink）
 
-  <font color=FF0000>Deeplink虽然无非是通过Scheme、Universal Link、App link这几种方法</font>，<mark>但这几项技术是基于系统和平台实现的，Android及iOS在几个系统版本的迭代后，配置方式会有新的变化，且安卓机型众多、浏览器众多等问题也会导致出现兼容上的麻烦，开发者自行研发的话，资源配置以及系统更新后的维护成本相对较高，还要考虑各种各样的跳转场景问题</mark>。
+<font color=FF0000>Deeplink虽然无非是通过Scheme、Universal Link、App link这几种方法</font>，<font color=LightSeaGreen>但这几项技术是基于系统和平台实现的，Android及iOS在几个系统版本的迭代后，配置方式会有新的变化，且安卓机型众多、浏览器众多等问题也会导致出现兼容上的麻烦，开发者自行研发的话，资源配置以及系统更新后的维护成本相对较高，还要考虑各种各样的跳转场景问题</font>。
 
-  <font color=FF0000>基于这些困扰，许多想要敏捷开发的开发者就会选择使用第三方服务，省去复杂的配置和维护工作，同时更能保障深度链接服务的稳定运行</font>。
+<font color=FF0000>基于这些困扰，许多想要敏捷开发的开发者就会选择使用第三方服务，省去复杂的配置和维护工作，同时更能保障深度链接服务的稳定运行</font>。
 
 摘自：[深度链接(Deeplink)的实现与使用 - 心心相印印的文章 - 知乎](https://zhuanlan.zhihu.com/p/394363004) 部分摘自：[什么是Deeplink？以及Deeplink的原理](https://developer.aliyun.com/article/780283)
 
-<font size=4>**补充：**</font>
+##### 补充
 
-deep linking 强大的地方是<font color=FF0000>**能携带信息**</font>。虽然URL Schemes 也可以用 query 携带信息；但是：你点击了我生成的deeplink 去下载客户端 然后安装 注册 这么多步骤 等你登录的时候 客户端能上报deeplink的信息 知道你点了谁的；而这时 URL Schemes 的 query肯定丢失了
+deep linking 强大的地方是<font color=FF0000>**能携带信息**</font>。虽然URL Schemes 也可以用 query 携带信息；但是：你点击了我生成的deeplink 去下载客户端 然后安装 注册 这么多步骤 等你登录的时候 客户端能上报 deeplink 的信息 知道你点了谁的；而这时 URL Schemes 的 query 肯定丢失了
 
-来自：微信群友
+学习自：微信群 codingstartup 群友
 
 
 
@@ -2918,6 +2909,149 @@ deep linking 强大的地方是<font color=FF0000>**能携带信息**</font>。�
 ##### structured data
 
 ##### sitemap
+
+
+
+#### Open graph
+
+> 👀 open graph ( og ) 是一个 fb 推出的协议，在 twitter 中也被称为 twitter card。
+
+##### What is Open Graph?
+
+**[Open Graph](https://ogp.me/) 🔗 is <font color=dodgerBlue>an internet protocol</font>** that was <font color=LightSeaGreen>originally created by [Facebook](http://fbdevwiki.com/wiki/Open_Graph_protocol)</font> to <font color=red>standardize the use of metadata within a webpage</font> to represent the content of a page.
+
+Within it, you <font color=lightSeaGreen>can provide details as simple as the title of a page or as specific as the duration of a video</font>. These pieces all fit together to form a representation of each individual page of the internet.
+
+##### Why do I need it?
+
+Content on the internet is typically created with at least one goal in mind -- to share it with others. This might not necessarily matter if you’re just sending it to one friend, but <font color=dodgerBlue>if you want to share it or want it to be shared on any social network or app that utilizes rich previews</font>, you’ll want that preview to be as effective as possible.
+
+<img src="https://s2.loli.net/2023/03/20/MDh6merZ5VOYQXb.png" alt="" style="zoom:42%;" />
+
+> 👀 这里图片在原文中就是一个 open graph 展示，由于无法展示，所以做了截图
+
+This <font color=lightSeaGreen>will help encourage people to check out your content and inevitably click through to your content</font>.
+
+##### Starting with the basics of open graph
+
+The <font color=dodgerBlue>**four basic open graph tags**</font> that are <font color=red>**required for each page**</font> are <font color=red>`og:title` , `og:type` , `og:image` and `og:url`</font> . These tags should be unique for each page you serve, <font color=lightSeaGreen>meaning your homepage’s tags should all be different from your blog post article’s page</font>.
+
+<img src="https://s2.loli.net/2023/03/20/fbBKrnLX327IETe.jpg" style="zoom: 45%;" />
+
+While it should be pretty straightforward, here’s a breakdown of what each of the tags mean:
+
+- **`og:title`** : The title of your page. This is typically the same as your webpage's `<title>` tag unless you’d like to present it differently.
+- **`og:type`** : <font color=lightSeaGreen>The “type” of website you have</font>. I’ll explain more in the next section, though a generic “type” is “website”.
+- **`og:image`** : This should be a link to an image that you’d like to represent your content. It <font color=LightSeaGreen>should be a high resolution image</font> that the social networks will use in their feeds.
+- **`og:url`** : This should be the URL of the current page.
+
+When placing a tag on your website, you should place it in the `<head>` along with any other metadata. The tag used will be a `<meta>` tag and should look like this pattern:
+
+```html
+<meta property=“[NAME]” content=“[VALUE]” />
+```
+
+So if I were to create a set four basic open graph tags for my website, [colbyfayock.com](https://colbyfayock.com/), it might look like:
+
+```html
+<meta property="og:title" content="Colby Fayock - A UX Designer &amp; Front-end Developer Blog" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="/static/website-social-card-44070c4a901df708aa1563ac4bbe595a.jpg" />
+<meta property="og:url" content="https://www.colbyfayock.com" />
+```
+
+##### Website open graph type
+
+<font color=dodgerBlue>The open graph protocol has a few variations of the “**type**” of website it supports</font>. This <font color=red>includes types like website, article, or video</font>.
+
+When setting up your open graph tags, you’ll <font color=lightSeaGreen>want to have an idea of **which type will make more sense for your website**</font>. <font color=dodgerBlue>If your page is focused on a single video</font>, it probably makes sense to use the type “video”. <font color=dodgerBlue>If it’s a general website with no specific vertical,</font> you would probably just want to use the type “website”.
+
+Similar to the others, this is unique for each page. So if your homepage is "website,” you could always have another page of type “video”.
+
+So if I were to create an open graph type for my website, it might look like the following on my homepage:
+
+```html
+<!-- colbyfayock.com -->
+<meta property=“og:type” content=“profile” />
+```
+
+When navigating to a blog post, it would look like:
+
+```html
+<!-- https://www.colbyfayock.com/2020/03/anyone-can-map-inspiration-and-an-introduction-to-the-world-of-mapping/ -->
+<meta property=“og:type” content=“article” />
+```
+
+You can find the most common open graph website types on the open graph webpage: https://ogp.me/#types
+
+##### Some other open graph tags that are worth adding
+
+Though you’ll generally be okay with the basics, <font color=dodgerBlue>here are a few more that would be worth adding</font>:
+
+- **`og:description`** : A description of your page. Similarly to `og:title` , this may be the same as your website’s `<meta type=“description”>` tag, unless you’d like to present it differently.
+- **`og:locale`** : If you <font color=LightSeaGreen>want to localize your tags</font>, it would probably make sense to include locale. The format is `language_TERRITORY` , where <font color=LightSeaGreen>the default is `en_US`</font> .
+- **`og:site_name`** : The name of the overall website your content is on. If you're on a blog post page, you might have a `title` using that blog post’s title, where the `site_name` would be the name of your blog.
+- **`og:video`** : Have a video that supports your content? Here’s a chance to include it. Add a link to your video using this tag.
+
+##### Twitter and other social media networks using open graph
+
+Most of the social networks adhere to the basics of open graph standards, <font color=dodgerBlue>but a few of them also include their own extension to help customize the look and feel within their ecosystem</font>.
+
+<font color=dodgerBlue>Twitter for instance</font>, **allows you to specify `twitter:card`** , which is the type of “card” you can use when they show your website. At this time, <font color=dodgerBlue>**their card types include**</font>:
+
+- summary
+- summary_large_image
+- app
+- player
+
+This will help you choose how your links are used in their feed. If you choose `summary_large_image` for instance, Twitter will show your links with big high resolution images as long as you’re providing it in the in the `og:image` tag.
+
+<font color=dodgerBlue>**Here are some quick references to the documentation of how to use open graph tags with some of the social media sites**</font>:
+
+- Twitter: https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started
+- Facebook: https://developers.facebook.com/docs/sharing/webmasters/
+- Pinterest: https://developers.pinterest.com/docs/rich-pins/overview/?
+- LinkedIn: https://www.linkedin.com/help/linkedin/answer/46687/making-your-website-shareable-on-linkedin?lang=en
+
+##### Images in open graph
+
+While adding your image as `og:image` should often be enough, sometimes it can be challenging to get your image to show up correctly. If you seem to be running into trouble,<font color=LightSeaGreen> the open graph standard includes a few image tags such as `og:image:url` vs `og:image:secure_url` as well as the `og:image:width` and `og:image:height`</font>.
+
+Try to make sure you’re following all of the [notes and examples in the open graph documentation](https://ogp.me/#structured). Additionally, some of the social networks have image requirements. [Twitter for instance requires](https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/summary-card-with-large-image) <font color=LightSeaGreen>a ratio of 2:1 with a minimum size of 300x157 and a maximum size of 4096x4096 that’s under 5MB and of JPG, PNG, WEBP or GIF format</font>.
+
+If you’re stuck, test your tags using the social media network’s tools to see if you can find the issue.
+
+##### Testing your open graph tags
+
+Luckily, our favorite social networks also <font color=red>**provide tools to help us debug our tags**</font>. Once you make sure that your tags are actually showing up in the source code of your website, you’ll be able to preview how your website will look in the feed.
+
+- Twitter: https://cards-dev.twitter.com/validator
+- Facebook: https://developers.facebook.com/tools/debug/
+- Pinterest: https://developers.pinterest.com/tools/url-debugger/
+
+##### Example
+
+If you’re simply looking for an example to get started, here’s what you should end up with when setting up your tags for [a blog post](https://www.colbyfayock.com/2020/03/anyone-can-map-inspiration-and-an-introduction-to-the-world-of-mapping/):
+
+```html
+<meta property="og:site_name" content="Colby Fayock" />
+<meta property=“og:title” content=“Anyone Can Map! Inspiration and an introduction to the world of mapping - Colby Fayock" />
+<meta property="og:description" content="Chef Gusteau was a visionary who created food experiences for the world to enjoy. How can we take his lessons and apply them to the world of…" />
+<meta property="og:url" content="https://www.colbyfayock.com/2020/03/anyone-can-map-inspiration-and-an-introduction-to-the-world-of-mapping/" />
+<meta property="og:type" content="article" />
+<meta property="article:publisher" content="https://www.colbyfayock.com" />
+<meta property="article:section" content="Coding" />
+<meta property="article:tag" content="Coding" />
+<meta property="og:image" content="https://res.cloudinary.com/fay/image/upload/w_1280,h_640,c_fill,q_auto,f_auto/w_860,c_fit,co_rgb:232129,g_west,x_80,y_-60,l_text:Source%20Sans%20Pro_70_line_spacing_-10_semibold:Anyone%20Can%20Map!%20Inspiration%20and%20an%20introduction%20to%20the%20world%20of%20mapping/blog-social-card-1.1" />
+<meta property="og:image:secure_url" content="https://res.cloudinary.com/fay/image/upload/w_1280,h_640,c_fill,q_auto,f_auto/w_860,c_fit,co_rgb:232129,g_west,x_80,y_-60,l_text:Source%20Sans%20Pro_70_line_spacing_-10_semibold:Anyone%20Can%20Map!%20Inspiration%20and%20an%20introduction%20to%20the%20world%20of%20mapping/blog-social-card-1.1" />
+<meta property="og:image:width" content="1280" />
+<meta property="og:image:height" content="640" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://res.cloudinary.com/fay/image/upload/w_1280,h_640,c_fill,q_auto,f_auto/w_860,c_fit,co_rgb:232129,g_west,x_80,y_-60,l_text:Source%20Sans%20Pro_70_line_spacing_-10_semibold:Anyone%20Can%20Map!%20Inspiration%20and%20an%20introduction%20to%20the%20world%20of%20mapping/blog-social-card-1.1" />
+<meta property="twitter:site" content="@colbyfayock" />
+```
+
+摘自：[What is Open Graph and how can I use it for my website?](https://www.freecodecamp.org/news/what-is-open-graph-and-how-can-i-use-it-for-my-website/)
 
 
 
