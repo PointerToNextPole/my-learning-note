@@ -516,6 +516,8 @@
 
 - **squiggles** ：波浪线，波形
 
+- succinct
+
 
 
 

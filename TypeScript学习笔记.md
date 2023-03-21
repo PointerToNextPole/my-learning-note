@@ -427,9 +427,9 @@ let mySum: (x: number, y: number) => number = function (x: number, y: number): n
 
 **注意不要混淆了 TypeScript 中的 => 和 ES6 中的 =>。**
 
-在 TypeScript 的类型定义中，=> 用来表示函数的定义，左边是输入类型，需要用括号括起来，右边是输出类型。
+在 TypeScript 的类型定义中，`=>` 用来表示函数的定义，左边是输入类型，需要用括号括起来，右边是输出类型。
 
-在 ES6 中，=> 叫做箭头函数，应用十分广泛，可以参考 [ES6 中的箭头函数](http://es6.ruanyifeng.com/#docs/function#箭头函数)
+在 ES6 中，`=>` 叫做箭头函数，应用十分广泛，可以参考 [ES6 中的箭头函数](http://es6.ruanyifeng.com/#docs/function#箭头函数)
 
 ##### 用接口定义函数的形状
 
@@ -530,6 +530,123 @@ function reverse(x: number | string): number | string | void {
 
 
 
+### 声明文件
+
+##### 总结
+
+- `declare var` ： 声明全局变量
+- `declare function` ：声明全局方法
+- `declare class` ：声明全局类
+- `declare enum` ：声明全局枚举类型
+- `declare namespace` ：声明（含有子属性的）全局对象
+- `interface` 和 `type` ：声明全局类型
+- `export` ：导出变量
+- `export namespace` ：导出（含有子属性的）对象
+- `export default` ：ES6 默认导出
+- `export =` ：commonjs 导出模块
+- `export as namespace` ：UMD 库声明全局变量
+- `declare global` ：扩展全局变量
+- `declare module` ：扩展模块
+- `/// <reference /> ` ：三斜线指令
+
+##### 书写声明语句
+
+以通过在 html 的 `<script>` 引入并使用 jQuery 为例：通常有 `$` 或 `jQuery` 两种获取一个元素的方法：
+
+```ts
+$('foo')
+jQuery('#foo')
+```
+
+但是如果使用 ts， tsc 并不知道 `$` 或 `jQuery` 是什么，这继续需要通过 `declare var` 来定义它的类型：
+
+```ts
+declare var jQuery: (selector: string) => any;
+jQuery('#foo')
+```
+
+上例中，<font color=red>`declare var` 并没有真的定义一个变量，只是定义了全局变量 `jQuery` 的类型</font>，<font color=red>仅仅会用于编译时的检查，在编译结果中会被删除</font>。它编译结果是：
+
+```ts
+jQuery('#foo');
+```
+
+##### 书写声明文件
+
+通常我们会把声明语句放到一个单独的文件中，比如 `jQuery.d.ts` ；这就是声明文件：
+
+```ts
+// src/jQuery.d.ts
+declare var jQuery: (selector: string) => any;
+```
+
+```ts
+// src/index.ts
+jQuery('#foo');
+```
+
+声明文件必须以 `.d.ts` 为后缀。
+
+<font color=dodgerBlue>一般来说，ts 会解析项目中所有的 `*.ts` 文件，当然也包含以 `.d.ts` 结尾的文件</font>；所以<font color=LightSeaGreen>将 `jQuery.d.ts` 放到项目中时，其他所有 `*.ts` 文件就都可以获得 `jQuery` 的类型定义了</font>。
+
+假如仍然无法解析，那么可以检查下 `tsconfig.json` 中的 `files`、`include` 和 `exclude` 配置，确保其包含了 `jQuery.d.ts` 文件。
+
+> 💡 `files`、`include` 和 `exclude` 的配置及之间的关系，可以参考 [[#files、include 和 exclude]] 中的内容
+
+###### 第三方声明文件
+
+当然，jQuery 的声明文件不需要我们定义了，社区已经帮我们定义好了：[jQuery in DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/jquery/index.d.ts)。
+
+> 💡 点击链接就是 GitHub DefinelyTyped repo 中的一个  `.d.ts` 文件
+
+可以直接下载下来使用（这个 `.d.ts` 文件），但是<font color=red>更推荐的是：使用 `@types` 统一管理第三方库的声明文件</font>。
+
+<font color=LightSeaGreen>`@types` 的使用方式很简单，直接用 npm 安装对应的声明模块即可</font>，以 jQuery 举例：
+
+```bash
+npm install @types/jquery --save-dev
+```
+
+#### 书写声明文件
+
+当一个第三方库没有提供声明文件时，使用者就需要自己书写声明文件。
+
+<font color=dodgerBlue>**库的使用场景主要有以下几种**</font>：
+
+- **全局变量**：通过 `<script>` 标签引入第三方库，注入全局变量
+- **npm 包**：通过 `import foo from 'foo'` 导入，符合 ES6 模块规范
+- **UMD 库**：<font color=red>既可以通过 `<script>` 标签引入，又可以通过 `import` 导入</font>
+- **直接扩展全局变量**：通过 `<script>` 标签引入后，改变一个全局变量的结构
+- **在 npm 包或 UMD 库中扩展全局变量**：引用 npm 包或 UMD 库后，改变一个全局变量的结构
+- **模块插件**：通过 `<script>` 或 `import` 导入后，改变另一个模块的结构
+
+##### 全局变量
+
+全局变量是最简单的一种场景，先前的例子就是通过 `<script>` 标签引入 jQuery，注入全局变量 `$` 和 `jQuery`。
+
+使用全局变量的声明文件时，<font color=dodgerBlue>如果是以 `npm install @types/xxx --save-dev` 安装</font>的，则<font color=red>**不需要任何配置**</font>。如果是<font color=dodgerBlue>将声明文件直接存放于当前项目中</font>，则<font color=red>建议和其他源码一起放到 `src`目录下（或者对应的源码目录下）</font>：
+
+```
+/path/to/project
+├── src
+|  ├── index.ts
+|  └── jQuery.d.ts
+└── tsconfig.json
+```
+
+<font color=dodgerBlue>**全局变量的声明文件主要有以下几种语法：**</font>
+
+- `declare var` ：声明全局变量
+- `declare function` ：声明全局方法
+- `declare class` ：声明全局类
+- `declare enum` ：声明全局枚举类型
+- `declare namespace` ：声明（含有子属性的）<font color=red>全局对象</font>
+- `interface` 和 `type` ：声明全局类型
+
+###### declare var
+
+
+
 ## 《TypeScript 编程》笔记
 
 
@@ -568,7 +685,7 @@ So if we include typechecking and JavaScript emission, the process of compiling 
 
 
 
-#### TS 类型的结构关系图
+#### TS 类型结构关系图
 
 <img src="https://s2.loli.net/2022/05/07/AQ2daqsipyXJcYL.png" alt="图片来自 Programming TypeScript Making Your JavaScript Applications Scale (Boris Cherny) (z-lib.org)，第 38 页" style="zoom:43%;" />
 
@@ -1142,23 +1259,31 @@ console.log(Animal[Animal.Cat]) // Cat
 
 ##### 四种特殊类型
 
-还有<font color=FF0000>**四种特殊的类型：void、never、any、unknown**</font>：
+还有<font color=dodgerBlue>**四种特殊的类型：void、never、any、unknown**</font>：
 
 - **void** 代表空，可以是 null 或者 undefined，<font color=FF0000>一般是用于函数返回值</font>。
 
-- **any** 是任意类型，任何类型都可以赋值给它，它也<font color=FF0000>可以赋值给任何类型（ <font size=4>**除了 never**</font> ）</font>。
+  > 👀 可以参考 [[JS及其相关库备忘录#undefined & null 与 “空” void]]
 
-- **unknown** 是<font color=FF0000>**未知类型**，**任何类型都可以赋值给它**，但是它 <font size=4>**不可以赋值给别的类型**</font></font>。
+- **any** 是任意类型，任何类型都可以赋值给它，它也<font color=fuchsia>可以赋值给任何类型（ <font size=4>**除了 never**</font> ）</font>。
 
+- **unknown** 是<font color=fuchsia>**未知类型**，**任何类型都可以赋值给它**，但是它 <font size=4>**不可以赋值给别的类型**</font></font>。
+  
+   > 💡 [[#unknown vs never#unknown]] 中做了一些补充
+   >
+   
 - **never** <font color=FF0000>**代表不可达，比如函数抛异常的时候，返回值就是 never**</font> 
 
   > 👀 “异常” 的相关示例 [[#交叉：&]] 。另外，根据下面 [[#推导：infer]] 的代码可知，在类型编程时，使用 `infer ? :` 不符合条件的，也可用 never 作为类型。
 
-  > 💡 never 是 `|` 运算的幺元，即：`x | never === x`。
+  > 💡 补充
+  >
+  > never 是 `|` 运算的幺元，即：`x | never === x`。
   >
   > 摘自：[TypeScript 中高级应用与最佳实践](http://www.alloyteam.com/2019/07/13796/)
+  >
 
-> 👀 下面有说 any 和 unknown 的区别： [[#数组类型#First]] ，简单来说就是：unknown 不可给别的类型赋值，而 any 可以（除了 never ）。
+> 💡 [[#数组类型#First]] 中有说 any 和 unknown 的区别，简单来说就是：unknown 不可给别的类型赋值，而 any 可以（除了 never ）。
 
 **这些就是 TypeScript 类型系统中的全部类型了**，<font color=LightSeaGreen>大部分是从 JS 中迁移过来的</font>，比如基础类型、Array、class 等；<font color=LightSeaGreen>也添加了一些类型</font>，比如 枚举 ( enum ) 、接口 ( interface ) 、元组等，<font color=LightSeaGreen>还支持了字面量类型和 void、never、any、unknown 的特殊类型</font>。
 
@@ -4688,6 +4813,318 @@ User 接口为 {
 ```
 
 摘自：[TypeScript真香系列——接口篇](https://mp.weixin.qq.com/s?__biz=Mzg4MTYwMzY1Mw==&mid=2247496256&idx=1&sn=427a5bf509546ee1ba349c70d7095aa1&source=41#wechat_redirect)
+
+
+
+#### unknown vs never
+##### TypeScript 中的 top type、bottom type
+<font color=dodgerBlue>**在类型系统设计中，有两种特别的类型**</font>：
+
+- Top type：被称为通用父类型，也就是能够包含所有值的类型。
+- Bottom type：代表没有值的类型，它也被称为**零**或**空**类型，是所有类型的子类型。
+
+按照类型系统的解释，<font color=dodgerBlue>在 TypeScript 3.0 中，有两个 top type</font>（any 和 unknown） 和<font color=dodgerBlue>一个 bottom type</font>（never）。
+
+##### unknown
+
+参考 [[#TS 类型结构关系图]] ：unknown 是所有类型的“通用父类型” ( Top type )。
+
+<font color=fuchsia>unknown 是安全版本的 any 类型</font>。unknown 调用特定类型的方法时，代码会飘红（因为不确定）；而 any 不会飘红（使用 any ，意味着放弃类型检查了，因为它不是用来描述具体类型的）。如下示例：
+
+```ts
+function format1(value: any) {
+  value.toFixed(2); // 不飘红，想干什么干什么，very dangerous
+}
+
+function format2(value: unknown) {
+  value.toFixed(2); // 代码会飘红，阻止你这么做
+
+  // 你需要收窄类型范围，例如：
+
+  // 1、类型断言 —— 不飘红，但执行时可能错误
+  (value as Number).toFixed(2);
+
+  // 2、类型守卫 —— 不飘红，且确保正常执行
+  if (typeof value === 'number') {
+     // 推断出类型: number
+     value.toFixed(2);
+  }
+
+  // 3、类型断言函数，抛出错误 —— 不飘红，且确保正常执行
+  assert IsNumber(value);
+  value.toFixed(2);
+}
+
+
+/** 类型断言函数，抛出错误 */
+function assertIsNumber(arg: unknown): asserts arg is Number {
+  if (!(arg instanceof Number)) {
+     throw new TypeError('Not a Number: ' + arg);
+  }
+}
+```
+
+unknown 结合类型守卫等方式，可以确保上游数据结构不确定时，也能让代码正常执行。
+
+##### never
+
+`never` 类型表示的是空类型，也就是值永不存在的类型。
+
+###### 值会永不存在的两种情况
+
+1. 如果一个<font color=red>函数执行时抛出了 **异常**</font>，那么这个函数永远不存在返回值（因为抛出异常会直接中断程序运行，这使得程序运行不到返回值那一步，即具有不可达的终点，也就永不存在返回了）；
+2. 函数中<font color=red>执行无限循环的代码（**死循环**）</font>，使得程序永远无法运行到函数返回值那一步，永不存在返回。
+
+```ts
+// 异常
+function err(msg: string): never { // OK
+  throw new Error(msg); 
+}
+
+// 死循环
+function loopForever(): never { // OK
+  while (true) {};
+}
+```
+
+###### never 是唯一的 bottom type
+
+参考 [[#TS 类型结构关系图]] ：never 是（ ts 中唯一一个）所有类型的“子类型” ( bottom type )，它能够表示任何类型的子类型，所以能够赋值给任何类型：
+
+```ts
+let err: never;
+let num: number = 4;
+
+num = err; // OK
+```
+
+可以用集合来理解 never：unknown 是全集，never 是最小单元（空集），任意类型都包含了 never。
+
+<img src="https://s2.loli.net/2023/03/20/cDGnsEYBWivauOq.png" style="zoom:50%;" />
+
+###### null/undefined 和 never
+
+<font color=dodgerBlue>null 和 undefined 好像也可以表示任何类型的子类型，为什么不是 bottom type？</font>**never 特殊就特殊在**：除了自身以外，没有任何类型是它的子类型，或者说可以赋值给它。而 null 和 undefined，除了自身，还有 never 可以赋值给它
+
+```ts
+// null 和 undefined，可以被 never 赋值
+declare const n: never;
+
+let a: null = n; // 正确
+let b: undefined = n; // 正确
+
+// never 是 bottom type，除了自己以外没有任何类型可以赋值给它
+let ne: never;
+
+ne = null; // 错误
+ne = undefined; // 错误
+
+declare const an: any;
+ne = an; // 错误，any 也不可以
+
+declare const nev: never;
+ne = nev; // 正确，只有 never 可以赋值给 never
+```
+
+###### never 的使用场景
+
+- Unreachable code 检查：标记不可达代码，获得编译提示。
+- 类型运算：作为类型运算中的最小因子。
+- Exhaustive Check：为复合类型创造编译提示。
+- ...
+
+关于 never 的用途，知乎上有个很好的讨论 [TypeScript中的never类型具体有什么用？](https://www.zhihu.com/question/354601204)。never 这个东西很奇妙，从集合论的角度，它是一个空集合，因此它可以通过空集合的一些特性，为我们的类型运算工作带来很大便利。接下来来具体讲讲各个使用场景
+
+###### Unreachable code 检查
+
+如下代码：
+
+```ts
+process.exit(0);
+console.log("hello world") // Unreachable code detected.ts(7027)
+```
+
+如果你使用了 ts，它会给你一个编译器提示：`Error: Unreachable code detected.ts(7027)`
+
+因为 <font color=LightSeaGreen>`process.exit()` 返回类型被定义为了 never，在它之后的自然就是「unreachable code」了</font>。
+
+<font color=dodgerBlue>类似的还有：</font>
+
+```ts
+function listen(): never {
+  while(true){
+    let conn = server.accept();
+  }
+}
+
+listen();
+console.log("!!!"); // Unreachable code detected.ts(7027)
+```
+
+通常来说，我们手动标记函数返回值为 never 类型，来帮助编译器识别「unreachable code」，并帮助我们收窄（narrow）类型。下面是一个没标记的例子：
+
+```ts
+function throwError() {
+  throw new Error();
+}
+
+function firstChar(msg: string | undefined) {
+  if (msg === undefined)
+    throwError();
+  let chr = msg.charAt(1) // Object is possibly 'undefined'.
+}
+```
+
+由于编译器不知道 throwError 是一个无返回的函数，所以 `throwError()` 之后的代码被认为在任意情况下都是可达的，让编译器误会 msg 的类型是 string | undefined。
+
+<font color=red>**这时候如果标记上了 never 类型，那么 msg 的类型将会在空检查之后收窄为 string**</font>：
+
+```diff
+- function throwError()
++ function throwError(): never {
+    throw new Error();
+  }
+
+  function firstChar(msg: string | undefined) {
+    if (msg === undefined)
+      throwError();
+    let chr = msg.charAt(1) // ✅
+  }
+```
+
+##### 类型运算
+
+###### 最小因子
+
+never 可以理解为一个空集，那么它将满足下面的运算规则：
+
+```ts
+T | never => T
+T & never => never
+```
+
+如下示例：
+
+<img src="https://s2.loli.net/2023/03/20/gfmTGApvdJ9eVi7.png" style="zoom:55%;" />
+
+<img src="https://s2.loli.net/2023/03/20/DgzSVkNH9WX6CZy.png" style="zoom:55%;" />
+
+即：never 是类型运算的最小因子，这些规则帮助我们简化了一些琐碎的类型运算。如下示例：
+
+```ts
+function fetchData(userId: string): Promise<{ userName: string }> {
+    return new Promise((resolve) => {
+        resolve({ userName: 'lll' });
+    })
+}
+
+function timeout(ms: number): Promise<never> {
+    return new Promise((_, reject) => {
+        setTimeout(() => reject(new Error("Timeout!")), ms)
+    })
+}
+
+async function fetchNameWithTimeout(userId: string): Promise<string> {
+    const data = await Promise.race([
+        fetchData(userId),
+        timeout(3000)
+    ]);
+    return data.userName;
+}
+```
+
+`Promise.race` 合并的多个 `Promise`，有时是无法确切知道时序和返回结果的。这里使用一个 `Promise.race` 将一个有网络请求返回值的 `Promise` 和另一个在给定时间之内就会被 `reject` 的 `Promise` 合并起来。
+
+timeout 函数的实现，如果超过指定时间，将会抛出一个 Error。<font color=fuchsia>由于它是无返回的，所以返回结果定义为了 `Promise<never>`</font>。
+
+接下来编译器会去推断 `Promise.race` 的返回值，因为 race 会取最先完成的那个 `Promise` 的结果，所以在上面这个例子里，它的函数签名类似这样：
+
+```ts
+function race<A, B>(inputs: [Promise<A>, Promise<B>]): Promise<A | B>
+```
+
+代入 fetchData 和 timeout 进来，A 则是 `{ userName: string }`，而 B 则是 `never`。因此，函数输出的 `promise` 返回值类型为 `{ userName: string } | never`。 又因为 `never` 是最小因子，可以消去。故返回值可简化为 `{ userName: string }`，这正是我们希望的。
+
+###### 条件类型中使用
+
+我们经常在条件类型中见到 never，它被用于表示 else 的情况。
+
+```ts
+type Arguments<T> = T extends (...args: infer A) => any ? A : never
+type Return<T> = T extends (...args: any[]) => infer R ? R : never
+```
+
+在收窄联合类型时，never 也巧妙地发挥了它作为最小因子的作用。如下示例，从 `T` 中排除 `null` 和 `undefined` 
+
+```ts
+type NullOrUndefined = null | undefined
+type NonNullable<T> = T extends NullOrUndefined ? never : T
+
+// 运算过程
+type NonNullable<string | null> 
+  // 联合类型被分解成多个分支单独运算 👀 分布式条件类型
+  => (string extends NullOrUndefined ? never : string) | (null extends NullOrUndefined ? never : null)
+  // 多个分支得到结果，再次联合
+  => string | never
+  // never 在联合类型运算中被消解
+  => string
+```
+
+##### Exhaustive Check
+
+联合类型、代数数据类型等复合类型，可以结合 switch 语句来进行类型收窄：
+
+```ts
+interface Foo {
+  type: 'foo'
+}
+
+interface Bar {
+  type: 'bar'
+}
+
+type All = Foo | Bar;
+
+function handleValue(val: All) {
+  switch (val.type) {
+    case'foo': // val 此时是 Foo
+      break;
+    case'bar': // val 此时是 Bar
+      break;
+    default:   // val 此时是 never
+      const exhaustiveCheck: never = val;
+      break;
+  }
+}
+```
+
+如果后面有人修改了 `All` 类型，它会发现产生了一个编译错误：
+
+```ts
+type All = Foo | Bar | Baz;
+
+function handleValue(val: All) {
+  switch (val.type) {
+    case'foo': // val 此时是 Foo
+      break;
+    case'bar': // val 此时是 Bar
+      break;
+    default:   // val 此时是 Baz
+      // ❌ Type 'Baz' is not assignable to type 'never'.(2322)
+      const exhaustiveCheck: never = val;
+      break;
+  }
+}
+```
+
+<font color=red>在 default branch 里面 val 会被收窄为 `Baz`，导致无法赋值给 never，产生一个编译错误</font>；开发者能够意识到 handleValue 里面需要加上针对 Baz 的处理逻辑。通过这个办法，可以确保 handleValue 总是穷尽 ( exhaust ) 了 All 所有可能的类型。
+
+> 👀 上面这个示例来自：[TypeScript中的never类型具体有什么用？ - 尤雨溪的回答 - 知乎](https://www.zhihu.com/question/354601204/answer/888551021)。
+>
+> 另外，看了下这个问题的更多回答，感觉这篇文章就是这个知乎问题回答整理做的笔记。
+
+摘自：[【TypeScript】never 和 unknown 的优雅之道](https://mp.weixin.qq.com/s/rZ96wy8xUrx4T1qG5OKS0w)
+
 
 
 
