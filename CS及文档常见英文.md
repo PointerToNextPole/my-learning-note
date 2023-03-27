@@ -516,7 +516,9 @@
 
 - **squiggles** ：波浪线，波形
 
-- succinct
+- **succinct** ：简明的
+
+- **curved** ：弯曲的，curved line 曲线
 
 
 
