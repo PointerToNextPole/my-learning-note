@@ -342,9 +342,25 @@ mdfind -onlyin ~/Library queryTxt
 
 #### Homebrew 使用
 
-Homebrew 是使用 ruby 开发的 Mac的软件包管理器
+Homebrew 是使用 ruby 开发的 Mac 的软件包管理器
 
 Homebrew 安装软件时将会<font color=FF0000>自动下载各种依赖</font>，这一点非常方便。
+
+##### 名词解释
+
+> “鬼话”：
+>
+> Homebrew 首先阅读**配方**（formula），如果有中意的**瓶装版**（bottle），就直接存入**酒窖**（cellar）里的**加压桶**（keg），然后**倒**（pour）给顾客。也可以从**木桶**（cask）里直接倒酒，或者从别人的**酒头**（tap）里打酒。
+>
+> ***
+>
+> “人话”：
+>
+> Homebrew 首先读取**软件包定义文件**，如果有适用的**预编译二进制文件**，就下载到**统一安装路径**下**以名称和版本命名的子目录**，然后在 `bin` 目录中为其**创建符号链接**。也支持安装 **macOS 原生应用**，以及添加**第三方软件仓库**。
+>
+> 摘自：[Homebrew 升级 4.0.0，麦金塔上的啤酒会更香吗？](https://sspai.com/post/78587)
+
+更多名词解释参见：[Homebrew doc - Formula Cookbook](https://docs.brew.sh/Formula-Cookbook)
 
 ##### 命令列表
 
@@ -437,9 +453,13 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 
 
 
-#### Mac 用命令行进行设置
+#### 场景与解决方法
 
-##### Mac 自带截图，如何去除影印
+
+
+##### Mac 用命令行进行设置
+
+###### Mac 自带截图，如何去除影印
 
 ```sh
 # 去阴影
@@ -448,13 +468,13 @@ defaults write com.apple.screencapture disable-shadow -bool TRUE
 defaults write com.apple.screencapture disable-shadow -bool FALSE
 ```
 
-##### 更多的设置
+###### 更多的设置
 
 更多的设置，参见：https://github.com/mathiasbynens/dotfiles/blob/main/.macos
 
 
 
-#### macOS 清理 DNS 缓存
+##### macOS 清理 DNS 缓存
 
 ```sh
 sudo killall -HUP mDNSResponder
@@ -462,7 +482,7 @@ sudo killall -HUP mDNSResponder
 
 
 
-#### macOS 重启音频服务
+##### macOS 重启音频服务
 
 有的时候（间隔半年左右），Mac 会出现 没有声音的情况，这时候运行如下命令即可：
 
@@ -476,11 +496,12 @@ sudo killall coreaudiod
 
 #### 相关资料
 
-[Linux commands chect sheet - pdf](https://phoenixnap.com/kb/wp-content/uploads/2021/11/linux-commands-cheat-sheet-by-pnap.pdf)
+- [Linux commands chect sheet - pdf](https://phoenixnap.com/kb/wp-content/uploads/2021/11/linux-commands-cheat-sheet-by-pnap.pdf)
 
-[Linux大神都是怎么记住这么多命令的？ - 知乎](https://www.zhihu.com/question/452895041)
+- [Linux大神都是怎么记住这么多命令的？ - 知乎](https://www.zhihu.com/question/452895041)
 
-RUNOOB Linux 命令总结：[Linux 命令大全](https://www.runoob.com/linux/linux-command-manual.html)
+- RUNOOB Linux 命令总结：[Linux 命令大全](https://www.runoob.com/linux/linux-command-manual.html)
+- [Filesystem Hierarchy Standard](https://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.html) ： Linux 世界中被广泛遵循的《文件系统层次结构标准》（FHS）
 
 
 

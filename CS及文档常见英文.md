@@ -520,6 +520,10 @@
 
 - **curved** ：弯曲的，curved line 曲线
 
+- **latency** ：延迟
+
+- **comply** ：遵守
+
 
 
 

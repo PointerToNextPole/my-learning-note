@@ -3896,7 +3896,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                                           
+  >                                                                                                                                                                                                                                                                               
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3915,7 +3915,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                                                           
+  >                                                                                                                                                                                                                                                                               
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7396,15 +7396,15 @@ JavaScript 在需要用到布尔类型值的上下文中使用强制类型转换
 
 ##### 在 JavaScript 中只有 8 个 falsy 值
 
-| false      | false 关键字                                                 |
-| ---------- | ------------------------------------------------------------ |
-| 0          | 数值 zero                                                    |
-| -0         | 数值 负 zero                                                 |
-| 0n         | 当 BigInt作为布尔值使用时, 遵从其作为数值的规则. 0n 是 falsy 值 |
-| "", '', `` | 这是一个空字符串（字符串的长度为零）。JavaScript 中的字符串可用双引号 "", 单引号 '', 或 模板字面量 ```` `` 定义。 |
-| null       | null - 缺少值                                                |
-| undefined  | undefined - 原始值                                           |
-| NaN        | NaN - 非数值                                                 |
+| false              | false 关键字                                                 |
+| ------------------ | ------------------------------------------------------------ |
+| 0                  | 数值 zero                                                    |
+| -0                 | 数值 负 zero                                                 |
+| 0n                 | 当 BigInt作为布尔值使用时, 遵从其作为数值的规则. 0n 是 falsy 值 |
+| `""`、`''`、` `` ` | 空字符串值                                                   |
+| null               | null - 缺少值                                                |
+| undefined          | undefined - 原始值                                           |
+| NaN                | NaN - 非数值                                                 |
 
 摘自：[MDN - Falsy](https://developer.mozilla.org/zh-CN/docs/Glossary/Falsy)
 
@@ -7412,22 +7412,94 @@ JavaScript 在需要用到布尔类型值的上下文中使用强制类型转换
 
 #### window.open()
 
-```javascript
-let windowObjectReference = window.open(strUrl, strWindowName, [strWindowFeatures]);
+> 👀 感觉中文版 `window.open()` 写的很糟糕，这里使用英文版
+
+The **`open()`** method of the `Window` interface <font color=red>loads a specified resource into a new or existing browsing context</font> (that is, <font color=lightSeaGreen>**a tab, a window, or an iframe**</font>) <font color=red>under a specified name</font>.
+
+##### Syntax
+
+```js
+open()
+open(url)
+open(url, target)
+open(url, target, windowFeatures)
 ```
 
-- **WindowObjectReference：**打开的新窗口对象的引用。如果调用失败，返回值会是 null 。如果父子窗口满足“同源策略”，你可以通过这个引用访问新窗口的属性或方法。
-- **strUrl：**<font color=FF0000>新窗口需要载入的url地址</font>。strUrl可以是 web 上的html页面，<font color=FF0000>也可以是图片文件或者其他任何浏览器支持的文件格式</font>。注意：<mark>如果strUrl 是一个空值，那么打开的窗口将会是带有默认工具栏的空白窗口（加载 about:blank ）</mark>。
-- **strWindowName：**新窗口的名称。该字符串可以用来作为超链接 \<a> 或表单 \<form> 元素的目标属性值。字符串中不能含有空白字符。注意：strWindowName 并不是新窗口的标题。
-- **strWindowFeatures：**<font color=FF0000>**可选参数**</font>。是一个字符串值，<font color=FF0000>这个值列出了将要打开的窗口的一些特性（窗口功能和工具栏）</font> 。 字符串中不能包含任何空白字符，特性之间用逗号分隔开。
+###### Parameters
 
-##### 补充
+- `url` <font color=dodgerBlue>Optional</font> : A string indicating the URL or path of the resource to be loaded. <font color=dodgerBlue>If an empty string (`""`) is specified or this parameter is omitted</font>, a blank page is opened into the targeted browsing context.
 
-- open() 方法，是创建一个新的浏览器窗口对象。
-- 如果已经存在以 strWindowName 为名称的窗口，则不再打开一个新窗口，而是把 strUrl 加载到这个窗口中。在这种情况下，方法的返回值是这个已经打开的窗口，并忽略参数 strWindowFeatures 。
-- 位置尺寸特征常用属性：<mark>left / top / height / width / screenX / screenY / centerscreen / outerHeight / outerWidth / innerHeight / innerWidth</mark>（还有其他省略）
+- `target` <font color=dodgerBlue>Optional</font> : A string, without whitespace, <font color=red>specifying the [name](https://developer.mozilla.org/en-US/docs/Web/API/Window/name) of the browsing context the resource is being loaded into</font>. <font color=dodgerBlue>**If the name doesn't identify an existing context**</font>, a new context is created and given the specified name. The <font color=dodgerBlue>**special `target` keywords**</font> , `_self` , `_blank` , `_parent` , and `_top` , can also be used.
 
-摘自：[MDN - Window.open()](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/open)
+  > 💡 发现 target 对应的关键词含义有所遗忘，见 [[HTML & CSS备忘录#`<a>`#属性]] 中的 target 属性
+
+  This name can be used as the `target` attribute of `<a>` or `<form>` elements.
+
+- `windowFeatures` <font color=dodgerBlue>Optional</font> : A string containing a <font color=red>**comma-separated list**</font>（逗号分隔的列表） <font color=red>**of window features in the form `name=value`**</font> — <font color=red>or for boolean features, just `name`</font>. <font color=dodgerBlue>These features include options such as the window's default size and position</font>, whether or not to <font color=red>open a minimal popup window</font>, and so forth. <font color=dodgerBlue>**The following options are supported**</font>:
+
+  - `popup` : <font color=dodgerBlue>If this feature is enabled</font>, it <font color=fuchsia>requests that a minimal popup window be used</font>. The UI features included in the popup window will be automatically decided by the browser, generally including an address bar only.
+
+    If `popup` is not enabled, and there are no window features declared, the new browsing context will be a tab.
+
+    > 💡 Specifying any features in the `windowFeatures` parameter, other than `noopener` or `noreferrer` , also has the effect of requesting a popup.
+
+    To enable the feature, <font color=LightSeaGreen>specify `popup` either with no value at all, or else set it to `yes`, `1`, or `true`</font> .
+
+    Example: `popup=yes` , `popup=1` , `popup=true` , and `popup` all have identical results.
+
+  - `width` / `innerWidth` : Specifies the width of the content area, including scrollbars. <font color=red>The minimum required value is 100</font>.
+
+  - `height` / `innerHeight` : Specifies the height of the content area, including scrollbars. <font color=red>The minimum required value is 100</font>.
+
+  - `left` / `screenX` : Specifies the distance in pixels from the left side of the work area as defined by the user's operating system where the new window will be generated.
+
+  - `top` / `screenY` : Specifies the distance in pixels from the top side of the work area as defined by the user's operating system where the new window will be generated.
+
+  - `noopener` : <font color=dodgerBlue>If this feature is set</font>, the <font color=red>**new window will not have access to the originating window via `Window.opener` and returns null**</font>.
+
+    When `noopener` is used, non-empty target names, other than `_top`, `_self`, and `_parent`, are treated like `_blank` in terms of deciding whether to open a new browsing context.
+
+    > 🌏 当使用 noopener 时，除了 `_top`、`_self` 和 `_parent` 之外的非空目标名称，在决定是否打开新的浏览上下文方面会像 `_blank` 一样处理。
+
+  - `noreferrer` : <font color=dodgerBlue>If this feature is set</font>, the browser will omit the `Referer` header, as well as set `noopener` to true. See `rel="noreferrer"` for more information.
+
+###### Return value
+
+<font color=LightSeaGreen>A `WindowProxy` object</font>. The returned reference can be used to access properties and methods of the new window <font color=fuchsia size=4>**as long as it complies with the same-origin policy security requirements**.</font>
+
+##### Description
+
+The `Window` interface's `open()` method takes a URL as a parameter, and loads the resource it identifies into a new or <font color=red>**existing tab**</font> ( 👀 `target="_self"`  ) or window. The `target` parameter determines which window or tab to load the resource into, and the `windowFeatures` parameter can be used to control to open a new popup with minimal UI features and control its size and position.
+
+⚠️ Note that <font color=red>remote URLs won't load immediately</font>. When `window.open()` returns, the window always contains `about:blank`. The actual fetching of the URL is deferred and starts after the current script block finishes executing. The window creation and the loading of the referenced resource are done asynchronously.
+
+##### Examples
+
+###### Opening a popup
+
+```js
+window.open("https://www.mozilla.org/", "mozillaWindow", "popup");
+```
+
+<font color=dodgerBlue>It is possible to control the size and position of the new popup:</font>
+
+```js
+const windowFeatures = "left=100,top=100,width=320,height=320";
+const handle = window.open(
+  "https://www.mozilla.org/",
+  "mozillaWindow",
+  windowFeatures
+);
+if (!handle) {
+  // The window wasn't allowed to open
+  // This is likely caused by built-in popup blockers.
+  // …
+}
+```
+
+摘自：[MDN US - Window.open()](https://developer.mozilla.org/en-US/docs/Web/API/Window/open)
+
+
 
 #### window.opener
 
@@ -7653,7 +7725,7 @@ Console 对象可以从任何全局对象中访问到，如 Window，WorkerGloba
 
 ##### **使用字符串替换**
 
-> 👀 注：标题感觉用“格式化输出“表述，似乎更好些?
+> 👀 标题感觉用“格式化输出“表述，似乎更好些?
 
 可以在传递给 console 的方法的时候使用下面的字符以期进行参数的替换。
 
@@ -7666,7 +7738,7 @@ Console 对象可以从任何全局对象中访问到，如 Window，WorkerGloba
 
 ##### 为控制台定义样式
 
-可以使用 <font color=FF0000 size=4>**%c**</font> 为打印内容定义样式：
+可以使用 <font color=FF0000 size=4>**`%c`**</font> 为打印内容定义样式：
 
 ```js
 console.log("This is %cMy stylish message", "color: yellow; font-style: italic; background-color: blue;padding: 2px"); // 另外，注意 %c 的位置
@@ -7676,7 +7748,7 @@ console.log("This is %cMy stylish message", "color: yellow; font-style: italic; 
 
 ![img](https://s2.loli.net/2022/07/14/fJ1diR4SgjnavhD.png)
 
-<font color=dodgerBlue>%c 语法可用的属性如下</font> (至少在 Firefox 中是这样，别的浏览器会有诸多不同)：
+<font color=dodgerBlue>`%c` 语法可用的属性如下</font> (至少在 Firefox 中是这样，别的浏览器会有诸多不同)：
 
 - background 与其全写版本。
 - border 与其全写版本。
@@ -7752,7 +7824,7 @@ var element = document.createElement(tagName[, options]);
 
 ##### Web component 示例
 
-以下示例片段取自我们的 expanding-list-web-component 示例(实时查看)。 在这个案例中， 我们的自定义元素继承了以 \<ul> 元素为代表的 HTMLUListElement
+以下示例片段取自我们的 expanding-list-web-component 示例（实时查看）。 在这个案例中， 我们的自定义元素继承了以 `<ul>` 元素为代表的 HTMLListElement
 
 ```js
 // 为新元素创建一个类
@@ -7793,9 +7865,9 @@ let expandingList = document.createElement('ul', { is : 'expanding-list' })
 >
 > ```js
 > createElement('img', {
->   attrs: {
->     src: require('../image.png') // 现在这是一个模块的请求了
->   }
+>     attrs: {
+>       src: require('../image.png') // 现在这是一个模块的请求了
+>     }
 > })
 > ```
 
@@ -7816,7 +7888,7 @@ document.createElement('img', { attrs: { src: 'imgUrl'} })
 
 创建一个新的文本节点。这个方法可以用来转义 HTML 字符。
 
-语法
+##### 语法
 
 ```js
 var text = document.createTextNode(data);
@@ -7855,7 +7927,7 @@ let attribute = element.getAttribute(attributeName);
 element.setAttribute(name, value);
 ```
 
-**参数**
+###### 参数
 
 - **name**：表示属性名称的字符串。A DOMString specifying the name of the attribute whose value is to be set. The attribute name is automatically converted to all lower-case when setAttribute() is called on an HTML element in an HTML document.
 - **value**：属性的值/新值。A DOMString 包含了分配给这个属性的值. 任何非字符串的值都会被自动转换为字符串
@@ -7872,7 +7944,7 @@ element.setAttribute(name, value);
 element.removeAttribute(attrName);
 ```
 
-**参数**
+###### 参数
 
 - **属性名：**DOMString 指定要从元素中移除的属性的名称。如果指定的属性不存在，则 removeAttribute() 返回，但不会生成错误
 

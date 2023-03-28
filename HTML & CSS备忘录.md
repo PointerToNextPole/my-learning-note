@@ -128,11 +128,11 @@ HTML \<button> 元素表示一个可点击的按钮，可以用在表单或文�
 
 
 
-#### \<a>
+#### `<a>`
 
-<font color=FF0000>**a 是 anchor的缩写。**</font>
+> 💡 a 是 anchor 的缩写。
 
-HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向其他网页、文件、同一页面内的位置、电子邮件地址或任何其他 URL 的超链接。\<a> 中的内容应该应该指明链接的意图。<font color=LightSeaGreen>如果存在 href 属性，当 `<a>` 元素聚焦时按下回车键就会激活它</font>。
+HTML `<a>` 元素（或称锚元素）可以通过它的 href 属性创建通向其他网页、文件、同一页面内的位置、电子邮件地址或任何其他 URL 的超链接。`<a>` 中的内容应该应该指明链接的意图。<font color=LightSeaGreen>如果存在 href 属性，当 `<a>` 元素聚焦时按下回车键就会激活它</font>。
 
 ##### 属性
 
@@ -140,13 +140,11 @@ HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向�
 
 - **download：**HTML5，<font color=FF0000>此属性指示**浏览器下载 URL** 而不是导航到它</font>，因此将提示用户将其保存为本地文件。<font color=FF0000>如果属性有一个值，那么此值将在下载保存过程中作为预填充的文件名</font>（<font color=LightSeaGreen>如果用户需要，仍然可以更改文件名</font>）。此属性对允许的值没有限制，但是 / 和 \ 会被转换为下划线。大多数文件系统限制了文件名中的标点符号，故此，浏览器将相应地调整建议的文件名。
 
-  **注意:**
-
   - 此属性<font color=FF0000>**仅适用于同源 URL**</font>。
   - <font color=LightSeaGreen>尽管 HTTP URL 需要位于同一源中</font>，<font color=FF0000>但是**可以使用 `blob: URL` 和 `data: URL`** ，以方便用户下载使用 JavaScript 生成的内容</font>（例如使用在线绘图 Web 应用程序创建的照片）。
   - 如果 HTTP 头中的 Content-Disposition 属性赋予了一个不同于此属性的文件名，HTTP 头属性优先于此属性。
   - 如果 HTTP 头属性 Content-Disposition 被设置为 inline（即 Content-Disposition='inline' ），那么 Firefox 优先考虑 HTTP 头 Content-Dispositiondownload 属性。
-
+  
 - **href：**包含超链接指向的 URL 或 URL 片段。
   <font color=FF0000>URL 片段是哈希标记（#）前面的名称</font>，哈希标记（即：锚点链接）指定当前文档中的内部目标位置（ HTML 元素的 ID ）。<font color=FF0000>URL 不限于基于 Web ( HTTP ) 的文档，也可以使用浏览器支持的任何协议</font>。<font color=LightSeaGreen>例如，在大多数浏览器中正常工作的 `file:` 、`ftp:` 和 `mailto:`</font>
 
@@ -171,10 +169,10 @@ HTML \<a> 元素（或称锚元素）可以通过它的 href 属性创建通向�
 
   - **`_self`** ：<font color=FF0000>当前页面加载</font>，即当前的响应到同一HTML 4 frame（或HTML5浏览上下文）。<font color=FF0000>**此值是默认的**，如果没有指定属性的话</font>。
   - **`_blank`** ：<font color=FF0000>新窗口打开</font>，即到一个<font color=LightSeaGreen>新的未命名</font>的HTML4窗口或HTML5浏览器上下文
-  - **`_parent`** ：<font color=LightSeaGreen>加载响应到当前框架的HTML4父框架或当前的HTML5浏览上下文的父浏览上下文</font>。<font color=FF0000>如果没有parent框架或者浏览上下文，此选项的行为方式与 \_self 相同</font>。
-  - **`_top`** ：HTML4中：加载的响应成完整的，原来的窗口，取消所有其它frame。 HTML5中：加载响应进入顶层浏览上下文（即，浏览上下文，它是当前的一个的祖先，并且没有parent）。如果没有parent框架或者浏览上下文，此选项的行为方式相同\_self
+  - **`_parent`** ：<font color=LightSeaGreen>加载响应到当前框架的HTML4父框架或当前的HTML5浏览上下文的父浏览上下文</font>。<font color=FF0000>如果没有parent框架或者浏览上下文，此选项的行为方式与 `_self` 相同</font>。
+  - **`_top`** ：HTML4中：加载的响应成完整的，原来的窗口，取消所有其它frame。 HTML5中：加载响应进入顶层浏览上下文（即，浏览上下文，它是当前的一个的祖先，并且没有parent）。如果没有parent框架或者浏览上下文，此选项的行为方式相同 `_self`
 
-  **注意：**在 \<a> 元素上使用 target="_blank" 隐式提供了与使用 rel="noopener" 相同的 rel 行为，即不会设置 window.opener。
+  > ⚠️ 在 `<a>` 元素上使用 `target="_blank"` 隐式提供了与使用 `rel="noopener"` 相同的 rel 行为，即不会设置 `window.opener`
 
 - **type：**该属性指定在一个 MIME type 链接目标的形式的媒体类型。其仅提供建议，并没有内置的功能。
 
@@ -4223,99 +4221,105 @@ Chrome 和 Safari 要求前缀 -webkit- 版本.
 
 **注意：** Internet Explorer 9 要求前缀 -ms- 版本.
 
-**2D变换方法：**
+##### 2D变换方法
 
-- **translate()**：根据左(X轴)和顶部(Y轴)位置给定的参数，从当前元素<font color=FF0000>位置移动</font>。**示例：**
-  
-  ```css
-  div
-  {
-      transform: translate(50px,100px);
-      -ms-transform: translate(50px,100px); /* IE 9 */
-      -webkit-transform: translate(50px,100px); /* Safari and Chrome */
-  }
-  ```
+###### translate()
 
-- **rotate()**：在一个给定度数<font color=FF0000>顺时针旋转</font>的元素。<mark>负值是允许的，这样是元素逆时针旋转</mark>。示例：
-  
-  ```css
-  div
-  {
-      transform: rotate(30deg);
-      -ms-transform: rotate(30deg); /* IE 9 */
-      -webkit-transform: rotate(30deg); /* Safari and Chrome */
-  }
-  ```
+根据左(X轴)和顶部(Y轴)位置给定的参数，从当前元素<font color=FF0000>位置移动</font>。**示例：**
 
-- **scale()**：<font color=FF0000>元素增加或减少的大小</font>，取决于宽度（X轴）和高度（Y轴）的参数。示例：
-  
-  ```css
-  /*scale(2,3)转变宽度为原来的大小的2倍，和其原始大小3倍的高度。*/
-  div
-  {
-    -ms-transform:scale(2,3); /* IE 9 */
-      -webkit-transform: scale(2,3); /* Safari */
-      transform: scale(2,3); /* 标准语法 */
-  }
-  ```
+```css
+div
+{
+    transform: translate(50px,100px);
+    -ms-transform: translate(50px,100px); /* IE 9 */
+    -webkit-transform: translate(50px,100px); /* Safari and Chrome */
+}
+```
 
-  > 👀 补充：<font color=dodgerBlue size=4>**使用 scale 可突破 chrome 字体 12px 的限制**</font>
-  
-  思路：先将 font-size 设置为 targetFontSize 的 1 / scaleVal 倍；比如 想要 font-size 设置为 10px，即：targetFontSize 为 10px，可将 scaleVal 设置为 0.5（即：`transform: scale(0.5)` ），此时 font-size 便可先设置为 20px。示例如下：
-  
-  ```html
-  <div class="container">
-    <p class="scale">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero fuga rerum enim quae labore expedita quis iste incidunt sequi. Deserunt.</p>
-  </div>
-  
-  <style>
-  .container {
-    width: 1000px;
-    height: 100px;
-    background: lightblue;
-  }
-  .scale {
-    font-size: 20px;
-    transform: scale(0.5) translate(-50%, -50%);
-  }
-  </style>
-  ```
-  
-  > ⚠️ 注意：<font color=fuchsia>使用 scale 之后，字体会出现位移；所以，需要使用 `translate(-50%, -50%)` 来抵消位移</font>。同时，因为上面的效果仅仅是缩放，会发现字体虽然缩放成功，但是段落宽度缩小了 scaleNum ，所以可以让 `width` 变成先前的 $1/scaleNum$ 倍以抵消效果。
-  
-- **skew()**
-  
-  定义了一个元素在二维平面上的倾斜转换。
-  
-  **语法**
-  
-  ```css
-  transform: skew(<angle> [,<angle>]);
-  ```
-  
-  包含两个参数值，分别表示X轴和Y轴倾斜的角度，如果第二个参数为空，则默认为0，参数为负表示向相反方向倾斜。
-  
-  **另外：**
-  
-  - **skewX(\<angle>);**  表示只在X轴(水平方向)倾斜。
-  
-  - **skewY(\<angle>);** 表示只在Y轴(垂直方向)倾斜。
-  
-  **示例：**
-  
-  ```css
-  div {
-      transform: skew(30deg,20deg);
-      -ms-transform: skew(30deg,20deg); /* IE 9 */
-      -webkit-transform: skew(30deg,20deg); /* Safari and Chrome */
-  }
-  ```
-  
-- **matrix()**
-  
-  matrix()方法将2D变换方法合并成一个。matrix 方法有六个参数，包含旋转，缩放，移动（平移）和倾斜功能。
-  
-  <font color=FF0000>matrix(a, b, c, d, tx, ty) 是 matrix3d(a, b, 0, 0, c, d, 0, 0, 0, 0, 1, 0, tx, ty, 0, 1) 的简写</font>。
+###### rotate()
+
+在一个给定度数<font color=FF0000>顺时针旋转</font>的元素。<mark>负值是允许的，这样是元素逆时针旋转</mark>。示例：
+
+```css
+div
+{
+    transform: rotate(30deg);
+    -ms-transform: rotate(30deg); /* IE 9 */
+    -webkit-transform: rotate(30deg); /* Safari and Chrome */
+}
+```
+
+###### scale()
+
+<font color=FF0000>元素增加或减少的大小</font>，取决于宽度（X轴）和高度（Y轴）的参数。示例：
+
+```css
+/*scale(2,3)转变宽度为原来的大小的2倍，和其原始大小3倍的高度。*/
+div
+{
+  -ms-transform:scale(2,3); /* IE 9 */
+    -webkit-transform: scale(2,3); /* Safari */
+    transform: scale(2,3); /* 标准语法 */
+}
+```
+
+> 💡 补充：<font color=red size=4>**使用 scale 可突破 chrome 字体 12px 的限制**</font>
+>
+> 思路：先将 font-size 设置为 targetFontSize 的 $1 / scaleVal$ 倍；比如 想要 font-size 设置为 10px，即：targetFontSize 为 10px，可将 scaleVal 设置为 0.5（即：`transform: scale(0.5)` ），此时 font-size 便可先设置为 20px。示例如下：
+>
+> ```html
+> <div class="container">
+>   <p class="scale">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero fuga rerum enim quae labore expedita quis iste incidunt sequi. Deserunt.</p>
+> </div>
+> 
+> <style>
+> .container {
+>   width: 1000px;
+>   height: 100px;
+>   background: lightblue;
+> }
+> .scale {
+>   font-size: 20px;
+>   transform: scale(0.5) translate(-50%, -50%);
+> }
+> </style>
+> ```
+>
+> ⚠️ 注意：<font color=fuchsia>使用 scale 之后，字体会出现位移；所以，需要使用 `translate(-50%, -50%)` 来抵消位移</font>。同时，因为上面的效果仅仅是缩放，会发现字体虽然缩放成功，但是段落宽度缩小了 scaleNum ，所以可以让 `width` 变成先前的 $1/scaleNum$ 倍以抵消效果。
+
+###### skew()
+
+定义了一个元素在二维平面上的倾斜转换。
+
+**语法**
+
+```css
+transform: skew(<angle> [,<angle>]);
+```
+
+包含两个参数值，分别表示X轴和Y轴倾斜的角度，如果第二个参数为空，则默认为0，参数为负表示向相反方向倾斜。
+
+**另外：**
+
+- **skewX(\<angle>);**  表示只在X轴(水平方向)倾斜。
+
+- **skewY(\<angle>);** 表示只在Y轴(垂直方向)倾斜。
+
+**示例：**
+
+```css
+div {
+    transform: skew(30deg,20deg);
+    -ms-transform: skew(30deg,20deg); /* IE 9 */
+    -webkit-transform: skew(30deg,20deg); /* Safari and Chrome */
+}
+```
+
+###### matrix()
+
+matrix()方法将2D变换方法合并成一个。matrix 方法有六个参数，包含旋转，缩放，移动（平移）和倾斜功能。
+
+<font color=FF0000>`matrix(a, b, c, d, tx, ty)` 是 `matrix3d(a, b, 0, 0, c, d, 0, 0, 0, 0, 1, 0, tx, ty, 0, 1)` 的简写</font>
 
 **总结：2D 转换方法**
 
@@ -4333,42 +4337,44 @@ Chrome 和 Safari 要求前缀 -webkit- 版本.
 | skewX(*angle*)                            | 定义 2D 倾斜转换，沿着 X 轴。                             |
 | skewY(*angle*)                            | 定义 2D 倾斜转换，沿着 Y 轴。                             |
 
-##### transform
+
+
+#### transform
 
 CSS transform 属性<font color=FF0000>允许你旋转，缩放，倾斜或平移给定元素</font>。这是通过修改CSS视觉格式化模型的坐标空间来实现的。
 
 摘自：[MDN - transform](https://developer.mozilla.org/zh-CN/docs/Web/CSS/transform)
 
-##### transform-origin
 
-transform-origin CSS属性让你<font color=FF0000>更改一个元素变形的原点</font>。<font color=FF0000>默认的转换原点是 center</font>
 
-transform-origin<font color=FF0000>属性可以使用一个，两个或三个值来指定</font>，其中<font color=FF0000>**每个值都表示一个偏移量**</font>。 <mark>没有明确定义的偏移将重置为其对应的初始值</mark>
+#### transform-origin
 
-如果定义了两个或更多值并且没有值的关键字，或者唯一使用的关键字是center，则第一个值表示水平偏移量，第二个值表示垂直偏移量。
+transform-origin CSS 属性让你<font color=FF0000>更改一个元素变形的原点</font>。<font color=FF0000>默认的转换原点是 center</font>
 
-- **一个值：**
+transform-origin <font color=FF0000>属性可以使用一个，两个或三个值来指定</font>，其中<font color=FF0000>**每个值都表示一个偏移量**</font>。 <font color=LightSeaGreen>没有明确定义的偏移将重置为其对应的初始值</font>
 
-  必须是\<length>，\<percentage>，<font color=FF0000>或</font> left, center, right, top, bottom关键字中的一个。
+如果定义了两个或更多值并且没有值的关键字，或者唯一使用的关键字是 center，则第一个值表示水平偏移量，第二个值表示垂直偏移量
+
+- **一个值：**必须是 `<length>`，`<percentage>`，<font color=FF0000>或</font> `left` , `center` , `right` , `top` , `bottom` 关键字中的一个。
 
 - **两个值：**
 
-  - 其中一个必须是\<length>，\<percentage>，<font color=FF0000>或</font> left, center, <font color=FF0000>right</font>关键字中的一个。
-  - 另一个必须是\<length>，\<percentage>，<font color=FF0000>或</font> top, center, <font color=FF0000>bottom</font>关键字中的一个。
+  - 其中一个必须是 `<length>`，`<percentage>`，<font color=FF0000>或</font> `left` , `center` , <font color=FF0000>`right`</font> 关键字中的一个。
+  - 另一个必须是 `<length>`，`<percentage>`，<font color=FF0000>或</font> `top` , `center` , <font color=FF0000>`bottom`</font>关键字中的一个。
 
 - **三个值：**
 
   - 前两个值和只有两个值时的用法相同。
-  - <font color=FF0000>**第三个值必须是\<length>**</font>。<font color=FF0000>它始终代表Z轴偏移量</font>。
+  - <font color=FF0000>**第三个值必须是 `<length>`**</font>。<font color=FF0000>它始终代表Z轴偏移量</font>。
 
-###### 值
+##### 值
 
-- **x-offset：**定义变形中心距离盒模型的左侧的\<length>或\<percentage>偏移值。
-- **offset-keyword：**left，right，top，bottom或center中之一，定义相对应的变形中心偏移。
-- **y-offset：**定义变形中心距离盒模型的顶的\<length>或\<percentage>偏移值。
-- **x-offset-keyword：**left，right或center中之一，定义相对应的变形中心偏移。
-- **y-offset-keyword：**top，bottom或center中之一，定义相对应的变形中心偏移。
-- **z-offset：**定义变形中心距离用户视线（z=0处）的\<length>（不能是\<percentage>）偏移值。
+- **x-offset：**定义变形中心距离盒模型的左侧的 `<length>` 或`<percentage>` 偏移值。
+- **offset-keyword：** `left` ，`right`，`top` ，`bottom` 或 `center` 中之一，定义相对应的变形中心偏移。
+- **y-offset：**定义变形中心距离盒模型的顶的 `<length>` 或 `<percentage>` 偏移值。
+- **x-offset-keyword：**`left`，`right`或 `center` 中之一，定义相对应的变形中心偏移。
+- **y-offset-keyword：**`top`，`bottom` 或 `center` 中之一，定义相对应的变形中心偏移。
+- **z-offset：**定义变形中心距离用户视线（z=0处）的 `<length>`（不能是 `<percentage>`）偏移值。
 
 **关键字是方便的简写方法，等同于以下\<percentage>值：**
 
@@ -4382,6 +4388,10 @@ transform-origin<font color=FF0000>属性可以使用一个，两个或三个值
 
 摘自：[MDN - transform-origin](https://developer.mozilla.org/zh-CN/docs/Web/CSS/transform-origin)
 
+> 💡发现了 transform-origin 的一个用法：使得文字呈现（圆）弧形。具体教程见：[css-tricks - Set Text on a Circle](https://css-tricks.com/set-text-on-a-circle/)
+>
+> 另外，也可以使用 svg 实现类似的效果，教程见：[css-tricks - Curved Text Along a Path](https://css-tricks.com/snippets/svg/curved-text-along-path/) ；以及示例：[codepen - Circle: Text Path](https://codepen.io/tylersticka/pen/ExxjyxO)
+
 
 
 #### CSS 3D转换
@@ -4390,7 +4400,7 @@ transform-origin<font color=FF0000>属性可以使用一个，两个或三个值
 
 表格中的数字表示支持该属性的第一个浏览器版本号。
 
-紧跟在 -webkit-, -ms- 或 -moz- 前的数字为支持该前缀属性的第一个浏览器版本号。
+紧跟在 `-webkit-` , `-ms-` 或 `-moz-` 前的数字为支持该前缀属性的第一个浏览器版本号。
 
 | 属性                                    | Chrome             | Edge | Firefox         | Safari       | Opera              |
 |:------------------------------------- | ------------------ | ---- | --------------- | ------------ | ------------------ |
@@ -4403,14 +4413,14 @@ transform-origin<font color=FF0000>属性可以使用一个，两个或三个值
 
 **转换属性**
 
-| 属性                                                                                    | 描述                   | CSS |
-|:------------------------------------------------------------------------------------- |:-------------------- |:--- |
-| [transform](https://www.runoob.com/cssref/css3-pr-transform.html)                     | 向元素应用 2D 或 3D 转换。    | 3   |
-| [transform-origin](https://www.runoob.com/cssref/css3-pr-transform-origin.html)       | 允许你改变被转换元素的位置。       | 3   |
-| [transform-style](https://www.runoob.com/cssref/css3-pr-transform-style.html)         | 规定被嵌套元素如何在 3D 空间中显示。 | 3   |
-| [perspective](https://www.runoob.com/cssref/css3-pr-perspective.html)                 | 规定 3D 元素的透视效果。       | 3   |
-| [perspective-origin](https://www.runoob.com/cssref/css3-pr-perspective-origin.html)   | 规定 3D 元素的底部位置。       | 3   |
-| [backface-visibility](https://www.runoob.com/cssref/css3-pr-backface-visibility.html) | 定义元素在不面对屏幕时是否可见。     | 3   |
+| 属性                | 描述                                 | CSS  |
+| :------------------ | :----------------------------------- | :--- |
+| transform           | 向元素应用 2D 或 3D 转换。           | 3    |
+| transform-origin    | 允许你改变被转换元素的位置。         | 3    |
+| transform-style     | 规定被嵌套元素如何在 3D 空间中显示。 | 3    |
+| perspective         | 规定 3D 元素的透视效果。             | 3    |
+| perspective-origin  | 规定 3D 元素的底部位置。             | 3    |
+| backface-visibility | 定义元素在不面对屏幕时是否可见。     | 3    |
 
 **3D 转换方法**
 
@@ -4504,8 +4514,7 @@ transform-style: unset;
 
 ```css
 /*应用于宽度属性的过渡效果，时长为 2 秒：*/
-div
-{
+div {
     transition: width 2s;
     -webkit-transition: width 2s; /* Safari */
 }
@@ -4513,13 +4522,13 @@ div
 
 **过渡属性**
 
-| 属性                                                                                                  | 描述                      | CSS |
-|:--------------------------------------------------------------------------------------------------- |:----------------------- |:--- |
-| [transition](https://www.runoob.com/cssref/css3-pr-transition.html)                                 | 简写属性，用于在一个属性中设置四个过渡属性。  | 3   |
-| [transition-property](https://www.runoob.com/cssref/css3-pr-transition-property.html)               | 规定应用过渡的 CSS 属性的名称。      | 3   |
-| [transition-duration](https://www.runoob.com/cssref/css3-pr-transition-duration.html)               | 定义过渡效果花费的时间。默认是 0。      | 3   |
-| [transition-timing-function](https://www.runoob.com/cssref/css3-pr-transition-timing-function.html) | 规定过渡效果的时间曲线。默认是 "ease"。 | 3   |
-| [transition-delay](https://www.runoob.com/cssref/css3-pr-transition-delay.html)                     | 规定过渡效果何时开始。默认是 0。       | 3   |
+| 属性                       | 描述                                         | CSS  |
+| :------------------------- | :------------------------------------------- | :--- |
+| transition                 | 简写属性，用于在一个属性中设置四个过渡属性。 | 3    |
+| transition-property        | 规定应用过渡的 CSS 属性的名称。              | 3    |
+| transition-duration        | 定义过渡效果花费的时间。默认是 0。           | 3    |
+| transition-timing-function | 规定过渡效果的时间曲线。默认是 "ease"。      | 3    |
+| transition-delay           | 规定过渡效果何时开始。默认是 0。             | 3    |
 
 
 
