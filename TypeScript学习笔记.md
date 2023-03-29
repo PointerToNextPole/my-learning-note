@@ -1263,7 +1263,7 @@ console.log(Animal[Animal.Cat]) // Cat
 
 - **void** 代表空，可以是 null 或者 undefined，<font color=FF0000>一般是用于函数返回值</font>。
 
-  > 👀 可以参考 [[JS及其相关库备忘录#undefined & null 与 “空” void]]
+  > 👀 可以参考 [[JavaScript备忘录#undefined & null 与 “空” void]]
 
 - **any** 是任意类型，任何类型都可以赋值给它，它也<font color=fuchsia>可以赋值给任何类型（ <font size=4>**除了 never**</font> ）</font>。
 

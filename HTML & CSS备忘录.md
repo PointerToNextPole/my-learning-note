@@ -2085,9 +2085,9 @@ HTML内联框架元素 (\<iframe>) 表示嵌套的 浏览上下文（browsing co
 
 **属性：**该元素包含全局属性。
 
-- **allow：**用于为 \<iframe> 指定其特征策略。
+- **allow：**用于为 `<iframe>` 指定其特征策略。
 
-- **allowfullscreen：**设置为 true 时，可以通过调用 \<iframe> 的 requestFullscreen() 方法激活全屏模式。
+- **allowfullscreen：**设置为 true 时，可以通过调用 `<iframe>` 的 requestFullscreen() 方法激活全屏模式。
 
   <mark>这是一个历史遗留属性，已经被重新定义为 allow="fullscreen"。</mark>
 
@@ -2096,22 +2096,22 @@ HTML内联框架元素 (\<iframe>) 表示嵌套的 浏览上下文（browsing co
 
 - **csp：**🧪 对嵌入的资源配置内容安全策略。 
 
-- **width：**以CSS像素格式HTML5，或以像素格式HTML 4.01，或以百分比格式指定的 frame 的宽度。默认值是300。
+- **width：**以 CSS 像素格式 HTML5，或以像素格式HTML 4.01，或以百分比格式指定的 frame 的宽度。默认值是300。
 
-- **height：**以CSS像素格式HTML5，或像素格式HTML 4.01，或百分比格式指定frame的高度。默认值为150。
+- **height：**以 CSS 像素格式 HTML5，或像素格式HTML 4.01，或百分比格式指定frame的高度。默认值为150。
 
-- **importance：**🧪表示 \<iframe> 的 src 属性指定的资源的加载优先级。允许的值有：
+- **importance：**🧪表示 `<iframe>` 的 src 属性指定的资源的加载优先级。允许的值有：
 
   - **auto (<font color=FF0000>default</font>）：**不指定优先级。浏览器根据自身情况决定资源的加载顺序
   - **high：**资源的加载优先级较高
   - **low：**资源的加载优先级较低
 
-- **name：**用于定位嵌入的浏览上下文的名称。该名称可以用作 \<a> 标签与 \<form> 标签的 target 属性值，也可以用作 \<input> 标签和 \<button> 标签的 formtarget 属性值，还可以用作 window.open() 方法的 windowName 参数值。
+- **name：**用于定位嵌入的浏览上下文的名称。该名称可以用作 `<a>` 标签与 `<form>` 标签的 target 属性值，也可以用作 `<input>` 标签和 `<button>` 标签的 formtarget 属性值，还可以用作 window.open() 方法的 windowName 参数值。
 
 - **referrerpolicy：**表示在获取 iframe 资源时如何发送 referrer 首部：
 
   - **no-referrer：**不发送 Referer 首部。
-  - **no-referrer-when-downgrade (default)：**向不受 TLS (HTTPS) 保护的 origin 发送请求时，不发送 Referer 首部。
+  - **no-referrer-when-downgrade (default)：**向不受 TLS ( HTTPS ) 保护的 origin 发送请求时，不发送 Referer 首部。
   - **origin：**referrer 首部中仅包含来源页面的源。换言之，仅包含来源页面的 scheme, host, 以及 port。
   - **origin-when-cross-origin：**发起跨域请求时，仅在 referrer 中包含来源页面的源。发起同源请求时，仍然会在 referrer 中包含来源页面在服务器上的路径信息。
   - **same-origin：**对于 same origin （同源）请求，发送 referrer 首部，否则不发送。
@@ -2142,9 +2142,9 @@ HTML内联框架元素 (\<iframe>) 表示嵌套的 浏览上下文（browsing co
 
 align、frameborder、longdesc 、marginheight 、marginwidth 、scrolling 
 
-摘自：[MDN - \<iframe>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/iframe)
+摘自：[MDN - `<iframe>`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/iframe)
 
-更多iframe相关，可参考：[Iframe 有什么好处，有什么坏处？国内还有哪些知名网站仍用Iframe，为什么？有哪些原来用的现在抛弃了？又是为什么？ - 知乎](https://www.zhihu.com/question/20653055)
+更多 iframe相关，可参考：[Iframe 有什么好处，有什么坏处？国内还有哪些知名网站仍用Iframe，为什么？有哪些原来用的现在抛弃了？又是为什么？ - 知乎](https://www.zhihu.com/question/20653055)
 
 
 
@@ -2206,11 +2206,14 @@ align、frameborder、longdesc 、marginheight 、marginwidth 、scrolling
 
 
 
-#### manifest（⚠️<font color=FF0000>注意 已从标准中移除</font>）
+#### manifest
+
+> ⚠️ <font color=FF0000>已从标准中移除</font>
 
 manifest 属性是 HTML5 中的新属性。
 
-**定义和用法**
+##### 定义和用法
+
 manifest 属性<font color=FF0000>规定文档的缓存 manifest 的位置</font>。（补充：manifest文件的后缀名必须为**.appcache**）
 HTML5 引入了应用程序缓存，<mark>这意味着 Web 应用程序可以被缓存，然后在无互联网连接的时候进行访问</mark>。
 **应用程序缓存使得应用程序有三个优点：**
@@ -2220,21 +2223,22 @@ HTML5 引入了应用程序缓存，<mark>这意味着 Web 应用程序可以被
 - **减少服务器加载：**浏览器只从服务器上下载已更新 / 已更改的资源
 
 manifest 属性<font color=FF0000>应该被 Web 应用程序中您想要缓存的每个页面包含</font>。
+
 manifest 文件<font color=FF0000>是一个简单的文本文件，列举出了浏览器用于离线访问而缓存的资源</font>。
 
-**语法**
+##### 语法
 
 ```html
 <html manifest="URL">
 ```
 
-**属性：**
+###### 属性
 
 - URL：文档的缓存 manifest 的地址。可能的值：
   - **绝对 URL：**指向另一个网站（比如 href="http://www.example.com/demo.appcache"）
   - **相对 URL：**指向网站内的一个文件（比如 href="demo.appcache"）
 
-**示例：**
+##### 示例
 
 ```html
 <html manifest="demo.appcache">
@@ -2243,7 +2247,8 @@ manifest 文件<font color=FF0000>是一个简单的文本文件，列举出了�
 摘自：[RUNOOB - HTML \<html> manifest 属性](https://www.runoob.com/tags/att-html-manifest.html)
 
 manifest 文件是简单的文本文件，它告知浏览器被缓存的内容（以及不缓存的内容）。
-**manifest 文件可分为三个部分：**
+
+<font color=dodgerBlue>manifest 文件可分为三个部分：</font>
 
 - **CACHE MANIFEST：**在此标题下列出的文件将在首次下载后进行缓存
 - **NETWORK：**在此标题下列出的文件需要与服务器的连接，且不会被缓存
@@ -2281,9 +2286,11 @@ user agent stylesheet 是 UA（一般理解为 浏览器）内置的 基本元�
 
 
 
-#### padding margin border 的区别
+#### padding margin border
 
-**示图：注意下面的名词（marign-top...）**
+##### 示图
+
+注意下面的名词（marign-top...）
 
 ![](https://i.loli.net/2020/08/15/86cKqSQWjda2nOH.gif)
 
@@ -2326,7 +2333,7 @@ margin: 40px 40px;
 margin: 40px;
 ```
 
-补充：
+###### 补充
 
 ```css
 {
@@ -2345,11 +2352,11 @@ margin: 40px;
 
 包括 padding-top、padding-right、padding-bottom、padding-left，**控制块级元素内部**，content 与 border 之间的距离。代码和margin类似。
 
-##### 补充
+##### margin 折叠
 
-当你想让两个元素的 content 在垂直方向 (vertically) 分隔时，既可以选择 padding-top/bottom，也可以选择 margin-top/bottom，在此建议你尽量使用 padding-top / bottom 来达到你的目的，这是因为 css 中存在 Collapsing margins(折叠的 margins) 的现象。
+当你想让两个元素的 content 在垂直方向 ( vertically ) 分隔时，既可以选择 padding-top / bottom，也可以选择 margin-top / bottom，在此建议你尽量使用 padding-top / bottom 来达到你的目的，这是因为 css 中存在 Collapsing margins（折叠的 margins ）的现象。
 
-Collapsing margins: margins 折叠现象只存在于临近或有从属关系的元素，垂直方向的 margin 中。
+Collapsing margins : margins 折叠现象只存在于临近或有从属关系的元素，垂直方向的 margin 中。
 
 **详细说明如下：**
 
@@ -2359,15 +2366,25 @@ Collapsing margins: margins 折叠现象只存在于临近或有从属关系的�
 - 如果提供全部四个参数值，将按上－右－下－左的顺序作用于四边。
 
 ```css
-body { padding: 36px;} //对象四边的补丁边距均为36px 
-body { padding: 36px 24px; } //上下两边的补丁边距为36px，左右两边的补丁边距为24px 
-body { padding: 36px 24px 18px; } //上、下两边的补丁边距分别为36px、18px，左右两边的补丁边距为24px 
-body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别为36px、24px、18px、12px
+body { padding: 36px;} /* 对象四边的补丁边距均为36px */
+body { padding: 36px 24px; } /* 上下两边的补丁边距为36px，左右两边的补丁边距为24px */
+body { padding: 36px 24px 18px; } /*上、下两边的补丁边距分别为36px 18px，左右两边的补丁边距为24px*/
+body { padding: 36px 24px 18px 12px; } /* 上、右、下、左补丁边距分别为36px、24px、18px、12px */
 ```
 
 摘自：[CSS padding margin border属性详解](https://www.cnblogs.com/linjiqin/p/3556497.html)
 
-**cheatsheet：**
+##### margin 和 padding 的百分比参照物
+
+当 margin 、padding 取值为百分比时，<font color=fuchsia>百分比的值是以 **父元素的 width** 为参考</font>
+
+摘自：[2023年CSS自适应正方形必须拿下🏆](https://juejin.cn/post/7204485623461691450)
+
+> 💡 关于上面的文章，介绍了 `aspect-ratio: width-ratio / height-ratio` 的的方法，通过 `aspect-ratio: 1/1` 来实现。不过，兼容性不太好：
+>
+> <img src="https://s2.loli.net/2023/03/30/bnWGNR86zu1TxoD.png" alt="image-20230330015514387" style="zoom:50%;" />
+
+##### cheatsheet
 
 ![](https://i.loli.net/2020/10/06/rKV25lxOgMSGjmL.png)
 
@@ -2375,37 +2392,41 @@ body { padding: 36px 24px 18px 12px; } //上、右、下、左补丁边距分别
 
 #### 盒子模型相关
 
-- **边距塌陷：**给两个盒子同时设置外边距，他们最终的距离可能不是两者外边距之和。
+##### 边距塌陷
 
-  这种现象会发生在相邻盒子间或父子盒子间，当他们都设置了边距时。
+给两个盒子同时设置外边距，他们最终的距离可能不是两者外边距之和。
 
-  - 如果都是正数，则取最大值。
-  - 如果相同，则取其任一。
-  - 如果正负都有，取最大正数与最小负数之和。
-  - 如果都是负数，则取两者中最小的
+这种现象会发生在相邻盒子间或父子盒子间，当他们都设置了边距时。
 
-  另外，<font color=FF0000>设置元素为BFC可以解决边距塌陷的问题。</font>
+- 如果都是正数，则取最大值。
+- 如果相同，则取其任一。
+- 如果正负都有，取最大正数与最小负数之和。
+- 如果都是负数，则取两者中最小的
 
-- **块格式化上下文**（Block Formatting Context，BFC） 是Web页面的可视CSS渲染的一部分，是块盒子的布局过程发生的区域，也是浮动元素与其他元素交互的区域。
+另外，<font color=FF0000>设置元素为 BFC 可以解决边距塌陷的问题。</font>
 
-  下列方式会创建块格式化上下文：
+##### 块格式化上下文
 
-  - 根元素（\<html>）
-  - <font color=FF0000>浮动元素（元素的 float 不是 none）</font>
-  - <font color=FF0000>绝对定位元素（元素的 position 为 absolute 或 fixed）</font>
-  - <font color=FF0000>行内块元素（元素的 display 为 inline-block）</font>
-  - 表格单元格（元素的 display 为 table-cell，HTML表格单元格默认为该值）
-  - 表格标题（元素的 display 为 table-caption，HTML表格标题默认为该值）
-  - 匿名表格单元格元素（元素的 display 为 table、table-row、 table-row-group、table-header-group、table-footer-group（分别是HTML table、row、tbody、thead、tfoot 的默认属性）或 inline-table）
-  - <font color=FF0000>overflow 计算值(Computed)不为 visible 的块元素</font>
-  - display 值为 flow-root 的元素
-  - contain 值为 layout、content 或 paint 的元素
-  - 弹性元素（display 为 flex 或 inline-flex 元素的直接子元素）
-  - 网格元素（display 为 grid 或 inline-grid 元素的直接子元素）
-  - 多列容器（元素的 column-count 或 column-width 不为 auto，包括 column-count 为 1）
-  - column-span 为 all 的元素始终会创建一个新的BFC，即使该元素没有包裹在一个多列容器中（标准变更，Chrome bug）。
+**块格式化上下文**（Block Formatting Context , BFC） 是Web页面的可视CSS 渲染的一部分，是块盒子的布局过程发生的区域，也是浮动元素与其他元素交互的区域。
 
-  摘自：[MDN - 块格式化上下文](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
+###### 下列方式会创建块格式化上下文
+
+- 根元素 `<html>`
+- <font color=FF0000>浮动元素（元素的 float 不是 none）</font>
+- <font color=FF0000>绝对定位元素（元素的 position 为 absolute 或 fixed）</font>
+- <font color=FF0000>行内块元素（元素的 display 为 inline-block）</font>
+- 表格单元格（元素的 display 为 table-cell，HTML表格单元格默认为该值）
+- 表格标题（元素的 display 为 table-caption，HTML表格标题默认为该值）
+- 匿名表格单元格元素（元素的 display 为 table、table-row、 table-row-group、table-header-group、table-footer-group（分别是HTML table、row、tbody、thead、tfoot 的默认属性）或 inline-table）
+- <font color=FF0000>overflow 计算值(Computed)不为 visible 的块元素</font>
+- display 值为 flow-root 的元素
+- contain 值为 layout、content 或 paint 的元素
+- 弹性元素（display 为 flex 或 inline-flex 元素的直接子元素）
+- 网格元素（display 为 grid 或 inline-grid 元素的直接子元素）
+- 多列容器（元素的 column-count 或 column-width 不为 auto，包括 column-count 为 1）
+- column-span 为 all 的元素始终会创建一个新的BFC，即使该元素没有包裹在一个多列容器中（标准变更，Chrome bug）。
+
+摘自：[MDN - 块格式化上下文](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)
 
 
 ##### 格式化上下文( formatting contexts )
@@ -2442,7 +2463,7 @@ box model 不完全适用于参与内联格式上下文。在水平书写模式�
 
 摘自：[MDN - Introduction to formatting contexts 格式化上下文简介](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts)
 
-**补充：**在学习 标准流（标准文档流）和 BFC 的同时，发现了这样一篇文章：[CSS 布局的本质是什么](https://zhuanlan.zhihu.com/p/395050907) 摘自部分以做补充：
+> 💡 在学习 标准流（标准文档流）和 BFC 的同时，发现了这样一篇文章：[CSS 布局的本质是什么](https://zhuanlan.zhihu.com/p/395050907) 摘自部分以做补充：
 
 根据操作系统不同，会有不同的界面的开发方式。安卓、ios、windows 等都有各自的创建 ui 的库，但是更底层的绘图库却是有标准的：跨平台的绘图 api 接口标准 OpenGL 以及 windows 下的 DirectX。
 
@@ -2453,12 +2474,12 @@ box model 不完全适用于参与内联格式上下文。在水平书写模式�
 
 - **block** 的元素会独占一行、可以设置内容的宽高，具体计算规则叫做 BFC。
 - **inline** 的元素宽高由内容撑开不可设置，不会独占一行，具体计算规则叫做 IFC。
-- **flex** 的子元素可以自动计算空白部分，由 flex 样式指定分配比例，具体计算规则叫做 <font color=FF0000 size=4>**FFC**</font>。<mark>（注：之前没听过）</mark>
-- **grid** 的子元素则是可以拆分成多个行列来计算位置，具体计算规则叫 <font color=FF0000 size=4>**GFC**</font>。<mark>（注：之前没听过）</mark>
+- **flex** 的子元素可以自动计算空白部分，由 flex 样式指定分配比例，具体计算规则叫做 <font color=FF0000 size=4>**FFC**</font>。
+- **grid** 的子元素则是可以拆分成多个行列来计算位置，具体计算规则叫 <font color=FF0000 size=4>**GFC**</font>。
 
 这些都是不同盒类型的布局计算规则。
 
-> 注：在 stack overflow 有这样一个问题：[How many CSS formatting contexts are there?](https://stackoverflow.com/questions/16908438/how-many-css-formatting-contexts-are-there) 同样解释了这个问题：
+> 👀 在 stack overflow 有这样一个问题：[How many CSS formatting contexts are there?](https://stackoverflow.com/questions/16908438/how-many-css-formatting-contexts-are-there) 同样解释了这个问题：
 >
 > In general, a "formatting context" is simply an area in which descendant boxes of a certain kind (e.g. block, inline, flex-item) are laid out (or formatted) in normal flow.
 >
@@ -2488,22 +2509,21 @@ box model 不完全适用于参与内联格式上下文。在水平书写模式�
   ```html
   <!DOCTYPE html>
   <html>
-  <head>
-  <meta charset="utf-8"> 
-  <title>菜鸟教程(runoob.com)</title> 
-  <style>
-  #para1
-  {
+    <head>
+    <meta charset="utf-8"> 
+    <title>菜鸟教程(runoob.com)</title> 
+    <style>
+    #para1 {
       text-align:center;
       color:red;
-  } 
-  </style>
+    } 
+    </style>
   </head>
   
   <body>
-  <p id="para1">Hello World!</p>
-  <p>这个段落不受该样式的影响。</p>
-  </body>
+    <p id="para1">Hello World!</p>
+    <p>这个段落不受该样式的影响。</p>
+    </body>
   </html>
   ```
 
@@ -2517,21 +2537,23 @@ box model 不完全适用于参与内联格式上下文。在水平书写模式�
 
 #### 多重样式（继承）优先级
 
-（**内联样式）Inline style > （内部样式）Internal style sheet >（外部样式）External style sheet > 浏览器默认样式**（类似于就近原则）
+（**内联样式）Inline style > （内部样式）Internal style sheet >（外部样式）External style sheet > 浏览器默认样式**
+
+> 👀 类似于就近原则
 
 
 
 #### float
 
-float CSS属性指定一个元素应沿其容器的左侧或右侧放置，允许文本和内联元素环绕它。<font color=FF0000>该元素从网页的正常流动(normal flow 文档流、正常流)中移除</font>，尽管仍然保持部分的流动性（与绝对定位相反）。
+float CSS属性指定一个元素应沿其容器的左侧或右侧放置，允许文本和内联元素环绕它。<font color=FF0000>该元素从网页的正常流动（normal flow 文档流、正常流）中移除</font>，尽管仍然保持部分的流动性（与绝对定位相反）。
 
-可选值
+###### 可选值
 
 - **left：**表明元素必须浮动在其所在的块容器左侧的关键字。
 - **right：**表明元素必须浮动在其所在的块容器右侧的关键字。
 - **none：**<font color=red>表明元素不进行浮动的关键字</font>。
-- **inline-start：**<font color="fuchsia">关键字，表明元素必须浮动在其所在块容器的开始一侧，在ltr脚本中是左侧，在rtl脚本中是右侧</font>。
-- **inline-end：**<font color=fuchsia>关键字，表明元素必须浮动在其所在块容器的结束一侧，在ltr脚本中是右侧，在rtl脚本中是左侧</font>。
+- **inline-start：**<font color="fuchsia">关键字，表明元素必须浮动在其所在块容器的开始一侧，在 ltr 脚本中是左侧，在 rtl 脚本中是右侧</font>
+- **inline-end：**<font color=fuchsia>关键字，表明元素必须浮动在其所在块容器的结束一侧，在 ltr 脚本中是右侧，在 rtl 脚本中是左侧</font>
 
 **由于float意味着使用块布局，它在某些情况下修改display 值的计算值：**
 
@@ -2556,7 +2578,7 @@ float CSS属性指定一个元素应沿其容器的左侧或右侧放置，允�
 
 ##### 个人项目体会补充
 
-float 和 `margin-left: auto` & `margin-right: auto`的关系：在flexbox中，float是失效的；这时如果想实现float的效果，该怎么处理？
+float 和 `margin-left: auto` & `margin-right: auto`的关系：在 flexbox中，float是失效的；这时如果想实现float的效果，该怎么处理？
 
 可以使用 `margin-left: auto` 替代 `float: right` ， `margin-right: auto` 替代 `float: left`（这里使用绝对定位似乎也可以实现）。跟进一步：如果 flexbox 使用了`flex-wrap: wrap` 且 右侧没有空间了，那只能换行，且放到下一行的右侧。这种情况下，是用绝对定位也不行了（无法放到下一行，只能放到该行末尾，会出现覆盖的情况）；这时使用 `margin-right: auto` 依然是有效的。原理是：使用auto<font color=FF0000>会将所有剩余空间都占满</font>；类似的可参考《CSS权威指南》
 

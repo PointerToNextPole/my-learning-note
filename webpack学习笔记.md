@@ -2771,7 +2771,7 @@ module.exports = function (source) {
 
 ##### Logger methods
 
-> 👀 注：用法类似于 JS 的 console 家族，见：[[JS及其相关库备忘录#Console]]
+> 👀 注：用法类似于 JS 的 console 家族，见：[[JavaScript备忘录#Console]]
 
 - **logger.error( ... )** : for error messages
 - **logger.warn( ... )** : for warnings

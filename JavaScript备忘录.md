@@ -1,4 +1,4 @@
-# JS 及其相关库备忘录
+# JavaScript 备忘录
 
 
 
@@ -3896,7 +3896,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                                               
+  >                                                                                                                                                                                                                                                                                       
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3915,7 +3915,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                                                               
+  >                                                                                                                                                                                                                                                                                       
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -5771,7 +5771,7 @@ element.appendChild(para);
 
 #### JavaScript HTML DOM 集合(Collection)
 
-getElementsByTagName() 方法返回 [HTMLCollection](https://www.runoob.com/jsref/dom-htmlcollection.html) 对象。
+getElementsByTagName() 方法返回 HTMLCollection 对象。
 
 ```js
 // 获取文档所有的 <p> 元素（哪怕是嵌套内层的）
@@ -5790,7 +5790,7 @@ HTMLCollection 看起来可能是一个数组，但其实不是。
 
 #### document.getElementById()
 
-Document的方法 getElementById()返回一个匹配特定 ID的元素。由于<font color=FF0000>元素的 ID 在大部分情况下要求是独一无二的</font>，这个方法自然而然地成为了一个高效查找特定元素的方法。
+Document的方法 getElementById() 返回一个匹配特定 ID的元素。由于<font color=FF0000>元素的 ID 在大部分情况下要求是独一无二的</font>，这个方法自然而然地成为了一个高效查找特定元素的方法。
 <font color=FF0000>如果需要查找到那些没有ID 的元素，你可以考虑通过CSS选择器使用 querySelector()（见下面）。</font>
 
 ##### 语法
@@ -5799,12 +5799,12 @@ Document的方法 getElementById()返回一个匹配特定 ID的元素。由于<
 var element = document.getElementById(id);
 ```
 
-##### 参数
+###### 参数
 
 - element是一个 Element 对象。如果当前文档中拥有特定ID的元素不存在则返回null.
 - <font color=FF0000>id是大小写敏感的字符串</font>，代表了所要查找的元素的唯一ID.
 
-##### 返回值
+###### 返回值
 
 返回一个匹配到 ID 的 DOM Element 对象。<font color=FF0000>若在当前 Document 下没有找到，则返回 null</font>。
 
@@ -5812,9 +5812,9 @@ var element = document.getElementById(id);
 
 #### document.getElementsByClassName()
 
-<font color=FF0000>返回一个包含了所有指定类名的子元素的**类数组对象**</font>。 <mark>当在document对象上调用时，会搜索整个DOM文档，包含根节点</mark>。<mark style="background: aqua">**你也可以在任意元素上调用getElementsByClassName() 方法，它将返回的是以当前元素为根节点，所有指定类名的子元素。**</mark>
+<font color=FF0000>返回一个包含了所有指定类名的子元素的**类数组对象**</font>。 当在 document 对象上调用时，会搜索整个DOM文档，包含根节点。<font color=red>**你也可以在任意元素上调用 getElementsByClassName() 方法，它将返回的是以当前元素为根节点，所有指定类名的子元素。**</font>
 
-**语法**
+##### 语法
 
 ```js
 var elements = document.getElementsByClassName(names); // 或者
@@ -5825,34 +5825,34 @@ var elements = rootElement.getElementsByClassName(names);
 - names 是一个字符串，表示要匹配的类名列表；类名通过空格分隔
 - getElementsByClassName 可以在任何元素上调用，不仅仅是 document。 调用这个方法的元素将作为本次查找的根元素.
 
-**示例**
+##### 示例
 
-- 获取所有 class 为 'test' 的元素：
+获取所有 class 为 'test' 的元素
 
-  ```js
-  document.getElementsByClassName('test');
-  ```
+```js
+document.getElementsByClassName('test');
+```
 
-- 获取所有 class <font color=FF0000>同时包括 'red' 和 'test' 的元素</font>：
+获取所有 class <font color=FF0000>同时包括 'red' 和 'test' 的元素</font>：
 
-  ```js
-  document.getElementsByClassName('red test');
-  ```
+```js
+document.getElementsByClassName('red test');
+```
 
-- <font color=FF0000>在id 为'main'的元素的子节点中，获取所有class为'test'的元素</font>：
+<font color=FF0000>在id 为'main'的元素的子节点中，获取所有class为'test'的元素</font>：
 
-  ```js
-  document.getElementById('main').getElementsByClassName('test');
-  ```
+```js
+document.getElementById('main').getElementsByClassName('test');
+```
 
-- 我们还可以对任意的  HTMLCollection 使用 Array.prototype 的方法，调用时传递  HTMLCollection 作为方法的参数。这里我们将查找到所有class为 'test' 的 div 元素:
+我们还可以对任意的  HTMLCollection 使用 `Array.prototype` 的方法，调用时传递  HTMLCollection 作为方法的参数。这里我们将查找到所有class为 'test' 的 div 元素:
 
-  ```js
-  var testElements = document.getElementsByClassName('test');
-  var testDivs = Array.prototype.filter.call(testElements, function(testElement){
-      return testElement.nodeName === 'DIV';
-  });
-  ```
+```js
+var testElements = document.getElementsByClassName('test');
+var testDivs = Array.prototype.filter.call(testElements, function(testElement){
+    return testElement.nodeName === 'DIV';
+});
+```
 
 摘自：[MDN - Document.getElementsByClassName()](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/getElementsByClassName)
 
@@ -5868,16 +5868,16 @@ var elements = rootElement.getElementsByClassName(names);
 
 ##### HTMLCollection 与 NodeList 的区别
 
-- [HTMLCollection](https://www.runoob.com/js/js-htmldom-collections.html) 是 HTML 元素的集合。NodeList 是一个文档节点的集合。
+HTMLCollection 是 HTML 元素的集合。NodeList 是一个文档节点的集合。
 
-- 不同：
-  
+###### 不同
+
   - **HTMLCollection** 元素可以通过 name，id 或索引来获取。
   - **NodeList** <font color=FF0000>只能</font>通过索引来获取。
   - 只有 NodeList 对象有包含属性节点和文本节点。
 
-- 类似：
-  
+###### 类似
+
   - NodeList 与 HTMLCollection 都与数组对象有点类似，可以使用索引 (0, 1, 2, 3, 4, ...) 来获取元素。
   - NodeList 与 HTMLCollection 都有 length 属性。
 
@@ -5891,61 +5891,61 @@ var elements = rootElement.getElementsByClassName(names);
 element = document.querySelector(selectors);
 ```
 
-##### 参数
+###### 参数
 
-selectors：包含一个或多个要匹配的选择器的 DOM字符串DOMString。 <font color=FF0000>该字符串必须是有效的CSS选择器字符串</font>；如果不是，则引发SYNTAX_ERR 异常。
+selectors：包含一个或多个要匹配的选择器的 DOM 字符串 DOMString。 <font color=FF0000>该字符串必须是有效的CSS选择器字符串</font>；如果不是，则引发 SYNTAX_ERR  异常。
 
-如果您需要与指定选择器匹配的所有元素的列表，则应该使用querySelectorAll() 。
+如果您需要与指定选择器匹配的所有元素的列表，则应该使用 querySelectorAll() 。
 
 
 
 #### JavaScript 对象
 
-- **创建对象，语法如下：**
-  
-  ```js
-  // 以构造函数形式来调用
-  new Object([value])
-  ```
-  
-  Object 构造函数，会根据给定的参数创建对象，具体有以下情况：
-  
-  - 如果给定值是 null 或 undefined，将会创建并返回一个空对象。
-  - <font color=fuchsia>如果传进去的是一个基本类型的值，则 **会构造其包装（类）类型的对象**</font> 
-  - 如果传进去的是引用类型的值，仍然会返回这个值，经他们复制的变量保有和源对象相同的引用地址。
-  - 当以非构造函数形式被调用时，Object 的行为等同于 new Object()。
+**创建对象，语法如下：**
 
-- **可以使用对象字面量来创建对象**，语法格式如下：
-  
-  ```js
-  { name1 : value1, name2 : value2,...nameN : valueN }
-  ```
-  
-  示例：
-  
-  ```js
-  person={firstname:"John",lastname:"Doe",age:50,eyecolor:"blue"};
-  ```
+```js
+// 以构造函数形式来调用
+new Object([value])
+```
 
-- **使用<font color=FF0000>对象构造器</font>**
-  
-  示例：
-  
-  ```js
-  function person(firstname,lastname,age,eyecolor) {
-      this.firstname=firstname;
-      this.lastname=lastname;
-      this.age=age;
-      this.eyecolor=eyecolor;
-  }
-  ```
-  
-  一旦有了对象构造器，就可以创建新的对象实例，就像这样：
-  
-  ```js
-  var myFather=new person("John","Doe",50,"blue");
-  var myMother=new person("Sally","Rally",48,"green");
-  ```
+Object 构造函数，会根据给定的参数创建对象，具体有以下情况：
+
+- 如果给定值是 null 或 undefined，将会创建并返回一个空对象。
+- <font color=fuchsia>如果传进去的是一个基本类型的值，则 **会构造其包装（类）类型的对象**</font> 
+- 如果传进去的是引用类型的值，仍然会返回这个值，经他们复制的变量保有和源对象相同的引用地址。
+- 当以非构造函数形式被调用时，Object 的行为等同于 new Object()。
+
+**可以使用对象字面量来创建对象**，语法格式如下：
+
+```js
+{ name1 : value1, name2 : value2,...nameN : valueN }
+```
+
+示例：
+
+```js
+person={firstname:"John",lastname:"Doe",age:50,eyecolor:"blue"};
+```
+
+**使用<font color=FF0000>对象构造器</font>**
+
+示例：
+
+```js
+function person(firstname,lastname,age,eyecolor) {
+    this.firstname=firstname;
+    this.lastname=lastname;
+    this.age=age;
+    this.eyecolor=eyecolor;
+}
+```
+
+一旦有了对象构造器，就可以创建新的对象实例，就像这样：
+
+```js
+var myFather=new person("John","Doe",50,"blue");
+var myMother=new person("Sally","Rally",48,"green");
+```
 
 ##### JavaScript for...in 循环
 
@@ -6013,7 +6013,7 @@ let s1 = "some text";
 let s2 = s1.substring(2);
 ```
 
-在这里，s1 是一个包含字符串的变量，它是一个原始值。<mark>第二行紧接着在 s1 上调用了 substring() 方法，并把结果保存在 s2 中。我们知道，**原始值本身不是对象，因此逻辑上不应该有方法**；而实际上这个例子又确实按照预期运行了</mark>。这是因为后台进行了很多处理，从而实现了上述操作。具体来说，当 第二行访问 s1 时，是以读模式访问的，也就是要从内存中读取变量保存的值。在以读模式访问字符串值的任何时候，后台都会执行以下 3 步：
+在这里，s1 是一个包含字符串的变量，它是一个原始值。<font color=LightSeaGreen>第二行紧接着在 s1 上调用了 substring() 方法，并把结果保存在 s2 中。我们知道，**原始值本身不是对象，因此逻辑上不应该有方法**；而实际上这个例子又确实按照预期运行了</font>。这是因为后台进行了很多处理，从而实现了上述操作。具体来说，当 第二行访问 s1 时，是以读模式访问的，也就是要从内存中读取变量保存的值。在以读模式访问字符串值的任何时候，后台都会执行以下 3 步：
 
 1. 创建一个 String 类型的实例
 2. 调用实例上的特定方法
@@ -6036,7 +6036,7 @@ s1.color = "red";
 console.log(s1.color);  // undefined
 ```
 
-<mark>这里的第二行代码尝试给字符串 s1 添加了一个 color 属性。可是，第三行代码访问 color 属性时， 它却不见了</mark>。原因就是第二行代码运行时会临时创建一个 String 对象，而<font color=red>当第三行代码执行时，**这个对象已经被销毁了**</font>。实际上，<font color=fuchsia>**第三行代码在这里创建了自己的 String 对象，但这个对象没有 color 属性**</font>。
+<font color=LightSeaGreen>这里的第二行代码尝试给字符串 s1 添加了一个 color 属性。可是，第三行代码访问 color 属性时， 它却不见了</font>。原因就是第二行代码运行时会临时创建一个 String 对象，而<font color=red>当第三行代码执行时，**这个对象已经被销毁了**</font>。实际上，<font color=fuchsia>**第三行代码在这里创建了自己的 String 对象，但这个对象没有 color 属性**</font>。
 
 可以显式地使用 Boolean、Number 和 String 构造函数创建原始值包装对象，不过应该在确实必要时再这么做，否则容易让开发者疑惑，分不清它们到底是原始值还是引用值。在原始值包装类型的实例上调用 typeof 会返回 "object"，所有原始值包装对象都会转换为布尔值 true 。
 
@@ -6047,9 +6047,9 @@ let obj = new Object("some text");
 console.log(obj instanceof String);  // true
 ```
 
-<mark>如果传给 Object 的是字符串，则会创建一个 String 的实例。如果是数值，则会创建 Number 的实例。布尔值则会得到 Boolean 的实例</mark>
+<font color=LightSeaGreen>如果传给 Object 的是字符串，则会创建一个 String 的实例。如果是数值，则会创建 Number 的实例。布尔值则会得到 Boolean 的实例</font>
 
-注意，<font color=fuchsia>**使用 new 调用原始值包装类型的构造函数，与调用同名的转型函数**</font>（👀 注：见下面自己添加的“注”）<font color=fuchsia>**并不一样**</font>。例如：
+注意，<font color=fuchsia>**使用 new 调用原始值包装类型的构造函数，与调用同名的转型函数**</font>（👀 见下面自己添加的“注”）<font color=fuchsia>**并不一样**</font>。例如：
 
 ```js
 let value = "25";
@@ -6060,11 +6060,13 @@ let obj = new Number(value);   // 构造函数
 console.log(typeof obj);       // "object"
 ```
 
-> 👀 注：原文中 “casting function” 这里译为 “转型函数”。搜了下 “casting function” ，Google 搜索排名第一的页面 [C – Type Casting functions](https://fresh2refresh.com/c-programming/c-type-casting/) 就是在讲 “强制类型转换” 的内容，所以这样翻译确实没问题。同时，`Number(value)` 这种写法在 JS 中也确实是用于类型转换的。
+> 👀 原文中 “casting function” 这里译为 “转型函数”。搜了下 “casting function” ，Google 搜索排名第一的页面 [C – Type Casting functions](https://fresh2refresh.com/c-programming/c-type-casting/) 就是在讲 “强制类型转换” 的内容，所以这样翻译确实没问题。同时，`Number(value)` 这种写法在 JS 中也确实是用于类型转换的。
 
 在这个例子中，变量 number 中保存的是一个值为 25 的原始数值，而变量 obj 中保存的是一个 Number 的实例。
 
-<font color=dodgerBlue>虽然不推荐显式创建原始值包装类型的实例，但它们对于操作原始值的功能是很重要的</font>。每个原始值包装类型都有相应的一套方法来方便数据操作。👀 注：后面依次展开讲解 Number、Boolean、String 包装类（就是类）的用法，和 “包装类”的定义没有太大关系，略。
+<font color=dodgerBlue>虽然不推荐显式创建原始值包装类型的实例，但它们对于操作原始值的功能是很重要的</font>。每个原始值包装类型都有相应的一套方法来方便数据操作。
+
+> 👀 后面依次展开讲解 Number、Boolean、String 包装类（就是类）的用法，和 “包装类”的定义没有太大关系，略
 
 摘自：《JS 高级程序设计 - 第四版》- 5.3 原始值包装类型
 
@@ -6084,7 +6086,7 @@ console.log(typeof obj);       // "object"
 
 `Date` 对象，`Array` 对象， 以及 `Person` 对象从 `Object.prototype` 继承。
 
-**添加属性和方法**
+##### 添加属性和方法
 
 有的时候我们想要在所有已经存在的对象添加新的属性或方法。另外，有时候我们想要在对象的构造函数中添加属性或方法。
 
@@ -6092,7 +6094,7 @@ console.log(typeof obj);       // "object"
 
 - 当然我们也可以使用 prototype 属性就可以给对象的构造函数添加新的方法
 
-示例：
+###### 示例
 
 ```js
 function Person(first, last, age, eyecolor) {  
@@ -6111,9 +6113,9 @@ Person.prototype.name = function() {
 };
 ```
 
-<font size=4>**补充：**</font>
+##### 补充
 
-<font color=FF0000>**在 ES<font size=5>5</font>**</font> 中，类的定义如下：
+<font color=FF0000>**在 ES<font size=4>5</font>**</font> 中，类的定义如下：
 
 ```js
 function Foo(member1, ...) {
@@ -6233,8 +6235,8 @@ isNaN() 方法是 ES5 的方法，实际上是 `window.isNaN()` 的简写；而�
 | Number.NEGATIVE_INFINITY | 负无穷，在溢出时返回                                         |
 | Number.POSITIVE_INFINITY | 正无穷，在溢出时返回                                         |
 | Number.EPSILON           | 表示 1 和比最接近 1 且大于 1 的最小 Number 之间的差别        |
-| Number.MIN_SAFE_INTEGER  | 最小安全整数。 -(2^53^ - 1)<br>属性同下                      |
-| Number.MAX_SAFE_INTEGER  | 最大安全整数。 2^53^ - 1<br>属性描述符：writable: false, enumerable: false, configurable: false<br>Number.MAX_SAFE_INTEGER + 1 === Number.MAX_SAFE_INTEGER + 2 将得到 true的结果，而这在数学上是错误的<br>由于 MAX_SAFE_INTEGER 是Number的一个静态属性 |
+| Number.MIN_SAFE_INTEGER  | 最小安全整数。 $-(2^{53} - 1)$<br>属性同下                   |
+| Number.MAX_SAFE_INTEGER  | 最大安全整数。 $2^{53} - 1$<br>属性描述符：writable: false, enumerable: false, configurable: false<br>Number.MAX_SAFE_INTEGER + 1 === Number.MAX_SAFE_INTEGER + 2 将得到 true的结果，而这在数学上是错误的<br>由于 MAX_SAFE_INTEGER 是Number的一个静态属性 |
 
 ###### 数字方法
 
@@ -6506,19 +6508,29 @@ JavaScript 提供 8 种可被 Math 对象访问的算数值：
 - Math.LOG2E
 - Math.LOG10E
 
-<font size=4>**补充：**</font>
+> 💡 补充
 
-**Math.trunc()**
+#### Math.trunc()
+
 Math.trunc() 方法会将数字的小数部分去掉，只保留整数部分。
 
-- **语法**
+##### 语法
 
-  ```js
-  Math.trunc(value)
-  ```
+```js
+Math.trunc(value)
+```
 
-- **参数**：value 任意数字
-- **返回值：**给定数字的整数部分
+###### 参数
+
+value 任意数字
+
+###### 返回值
+
+给定数字的整数部分
+
+##### 描述
+
+不像 `Math` 的其他三个方法： `Math.floor()`、`Math.ceil()`、`Math.round()` ，`Math.trunc()` 的执行逻辑很简单，仅仅是**删除**掉数字的小数部分和小数点，不管参数是正数还是负数。
 
 因为 trunc() 是 Math 对象的静态方法，你必须用 Math.trunc() 来使用，而不是调用你创建的 Math 对象的一个实例方法（Math 没有构造函数）
 
@@ -6556,106 +6568,111 @@ console.log(a); // 10
 - window.resizeTo() ：调整当前窗口的尺寸，设置绝对尺寸
 - window.resizeBy()：调整当前窗口的尺寸，改变相对尺寸
 
-<font size=4>**补充：**</font>屏幕 / 窗口 / 元素  的  高度 / 宽度
+> 💡 补充
 
-- **<font color=FF0000>整个屏幕</font> 逻辑分辨率上的 宽高度**
-  
-  - **window.screen.height：**屏幕高度 （整个屏幕 逻辑分辨率上的 高度）
-  - **window.screen.width：**屏幕宽度（整个屏幕 逻辑分辨率上的 宽度）
-  
-- **获取屏幕<font color=FF0000>可工作区域的</font>高度和宽度（<font color=FF0000>去掉状态栏</font>）**
+#### 屏幕 / 窗口 / 元素  的  高度 / 宽度
 
-  ​	<font color=FF0000>**只去除了上面的状态栏，打开控制台不受影响**</font>。<font color=FF0000>**是一个固定值，不受浏览器窗口大小而改变**</font>
+**<font color=FF0000>整个屏幕</font> 逻辑分辨率上的 宽高度**
 
-  ​	即：<mark>window.screen.availHeight = window.screen.height - 浏览器上面状态栏的高度</mark>
+- **window.screen.height：**屏幕高度 （整个屏幕 逻辑分辨率上的 高度）
+- **window.screen.width：**屏幕宽度（整个屏幕 逻辑分辨率上的 宽度）
 
-  - **window.screen.availHeight：**可视区域<font color=FF0000>去除状态栏高度 </font>
-  - **window.screen.availWidth：**可视区域<font color=FF0000>去除状态栏宽度</font>
+**获取屏幕<font color=FF0000>可工作区域的</font>高度和宽度（<font color=FF0000>去掉状态栏</font>）**
 
-- 上面的window.screen.availHeight / window.screen.availWidth不受浏览器窗口大小而改变，而<font color=FF0000>window.outerHeight / window.outerWidth**受影响**</font>
+​	<font color=FF0000>**只去除了上面的状态栏，打开控制台不受影响**</font>。<font color=FF0000>**是一个固定值，不受浏览器窗口大小而改变**</font>
 
-  - <mark style="background: aqua">**window.outerHeight ：**</mark>浏览器<font color=FF0000>**当前可见区域**（<font size=4>**包含**</font>上方工具栏 / 下方的控制台）</font>的高度
-  - <mark style="background: fuchsia">**window.outerWidth ：**</mark>浏览器<font color=FF0000>**当前可见区域**（<font size=4>**包含**</font>控制台）</font>的宽度
+​	即：<mark>window.screen.availHeight = window.screen.height - 浏览器上面状态栏的高度</mark>
+
+- **window.screen.availHeight：**可视区域<font color=FF0000>去除状态栏高度 </font>
+- **window.screen.availWidth：**可视区域<font color=FF0000>去除状态栏宽度</font>
+
+上面的window.screen.availHeight / window.screen.availWidth不受浏览器窗口大小而改变，而<font color=FF0000>window.outerHeight / window.outerWidth**受影响**</font>
+
+- <mark style="background: aqua">**window.outerHeight ：**</mark>浏览器<font color=FF0000>**当前可见区域**（<font size=4>**包含**</font>上方工具栏 / 下方的控制台）</font>的高度
+- <mark style="background: fuchsia">**window.outerWidth ：**</mark>浏览器<font color=FF0000>**当前可见区域**（<font size=4>**包含**</font>控制台）</font>的宽度
 
 - **滚动条卷上去的高度和向右卷的宽度**
 
   - document.body.scrollTop
   - document.body.scrollLeft
 
-- **网页可见区域的高度和宽度**
 
-  去除浏览器上面的状态栏和控制台高度剩下的可以显示网页内容的高度。同理：如果控制台在左/右侧，则去除浏览器左/右控制台宽度剩下的可以显示网页内容的宽度
+##### 网页可见区域的高度和宽度
 
-  - **不加边线**
+去除浏览器上面的状态栏和控制台高度剩下的可以显示网页内容的高度。同理：如果控制台在左/右侧，则去除浏览器左/右控制台宽度剩下的可以显示网页内容的宽度
 
-    - <mark style="background: lime">**document.body.clientHeight：**</mark> 可见高度，包括被滚动条隐藏的部分；如果页面长到有滚动条，则clientHeight值会比screen.height长
-    - <mark style="background: DodgerBlue">**document.body.clientWidth：**</mark> 同上，不过把高度换成宽度
+###### 不加边线
 
-  - **网页可见区域的高度和宽度（加边线）**
+- <mark style="background: lime">**document.body.clientHeight：**</mark> 可见高度，包括被滚动条隐藏的部分；如果页面长到有滚动条，则clientHeight值会比screen.height长
+- <mark style="background: DodgerBlue">**document.body.clientWidth：**</mark> 同上，不过把高度换成宽度
 
-    - **document.body.offsetHeight：**body总高度；该属性和<mark style="background: lime">document.body.clientHeight</mark>相对应。
+###### 网页可见区域的高度和宽度（加边线）
 
-    - **document.body.offsetWidth：**body总宽度；该属性和<mark style="background: DodgerBlue">document.body.clientWidth</mark>相对应：
+- **document.body.offsetHeight：**body总高度；该属性和<mark style="background: lime">document.body.clientHeight</mark>相对应。
 
-    - **window.innerHeight：**包含滚动条的高度，浏览器<font color=FF0000>**当前可见区域**、<font size=4>**不包含**</font>上方工具栏 / 下方控制台</font>的高度
+- **document.body.offsetWidth：**body总宽度；该属性和<mark style="background: DodgerBlue">document.body.clientWidth</mark>相对应：
 
-      该属性和<mark style="background: aqua">window.outerHeight</mark>相对应：工具栏高度 [ + 控制台高度]  = <mark style="background: aqua">window.outerHeight</mark> - window.innerHeight
+- **window.innerHeight：**包含滚动条的高度，浏览器<font color=FF0000>**当前可见区域**、<font size=4>**不包含**</font>上方工具栏 / 下方控制台</font>的高度
 
-    - **window.innerWidth：**包含滚动条的宽度，浏览器<font color=FF0000>**当前可见区域**、<font size=4>**不包含**</font>可能存在的控制台</font>的宽度
+  该属性和<mark style="background: aqua">window.outerHeight</mark>相对应：工具栏高度 [ + 控制台高度]  = <mark style="background: aqua">window.outerHeight</mark> - window.innerHeight
 
-      该属性和<mark style="background: fuchsia">window.outerWidth</mark>相对应： 控制台宽度 = <mark style="background: fuchsia">window.outerHeight</mark> - window.innerHeight
+- **window.innerWidth：**包含滚动条的宽度，浏览器<font color=FF0000>**当前可见区域**、<font size=4>**不包含**</font>可能存在的控制台</font>的宽度
 
-    - document.documentElement.clientHeight
+  该属性和<mark style="background: fuchsia">window.outerWidth</mark>相对应： 控制台宽度 = <mark style="background: fuchsia">window.outerHeight</mark> - window.innerHeight
 
-    - document.documentElement.clientWidth    //去除滚动条的宽度
+- document.documentElement.clientHeight
 
-- **一般元素**（上面 **`document.body.*`** 有的，一般元素也会有；而**`window.*`** 有的，一般元素没有）
+- document.documentElement.clientWidth    //去除滚动条的宽度
 
-  - **Element.clientHeight：**<font color=FF0000>只读属性</font>，<font color=FF0000>对于没有定义CSS或者内联布局盒子的元素为0</font>，否则，它是元素内部的高度（单位像素）；<font color=FF0000>Element.clientHeight包含内边距</font>，但不包括水平滚动条、边框和外边距。
+##### 一般元素
 
-    clientHeight 可以通过 CSS height + CSS padding - 水平滚动条高度 (如果存在)来计算。
+上面 **`document.body.*`** 有的，一般元素也会有；而**`window.*`** 有的，一般元素没有
 
-    <mark>Element.clientHeight<font color=FF0000>会将获取的值四舍五入取整数</font></mark>。 如果你需要小数结果, 请使用 element.getBoundingClientRect().
+- **Element.clientHeight：**<font color=FF0000>只读属性</font>，<font color=FF0000>对于没有定义CSS或者内联布局盒子的元素为0</font>，否则，它是元素内部的高度（单位像素）；<font color=FF0000>Element.clientHeight包含内边距</font>，但不包括水平滚动条、边框和外边距。
 
-  - **Element.clientWidth：**<font color=FF0000>只读属性</font>，<font color=FF0000>内联元素以及没有 CSS 样式的元素的 clientWidth 属性值为 0</font>。Element.clientWidth 属性表示元素的内部宽度，以像素计。<font color=FF0000>Element.clientWidth包括内边距 padding</font>，但不包括边框 border、外边距 margin 和垂直滚动条（如果有的话）。
+  clientHeight 可以通过 CSS height + CSS padding - 水平滚动条高度 (如果存在)来计算。
 
-    <mark>该属性值<font color=FF0000>会被四舍五入为一个整数</font></mark>。如果你需要一个小数值，可使用 element.getBoundingClientRect()。
+  <mark>Element.clientHeight<font color=FF0000>会将获取的值四舍五入取整数</font></mark>。 如果你需要小数结果, 请使用 element.getBoundingClientRect().
 
-  - **HTMLElement.offsetHeight：**<font color=FF0000>只读属性</font>，它返回该元素的像素高度，<font color=FF0000>高度包含该元素的垂直内边距和<font size=4>**边框**</font></font>，<mark>且是一个整数</mark>。
+- **Element.clientWidth：**<font color=FF0000>只读属性</font>，<font color=FF0000>内联元素以及没有 CSS 样式的元素的 clientWidth 属性值为 0</font>。Element.clientWidth 属性表示元素的内部宽度，以像素计。<font color=FF0000>Element.clientWidth包括内边距 padding</font>，但不包括边框 border、外边距 margin 和垂直滚动条（如果有的话）。
 
-    通常，元素的 offsetHeight 是一种元素CSS高度的衡量标准，<font color=FF0000>包括元素的**边框**、内边距和**元素的水平滚动条**（如果存在且渲染的话），不包含 `:before` 或 `:after` 等伪类元素的高度</font>。
+  <mark>该属性值<font color=FF0000>会被四舍五入为一个整数</font></mark>。如果你需要一个小数值，可使用 element.getBoundingClientRect()。
 
-    如果元素被隐藏（例如 元素或者元素的祖先之一的元素的style.display被设置为none），则返回0
+- **HTMLElement.offsetHeight：**<font color=FF0000>只读属性</font>，它返回该元素的像素高度，<font color=FF0000>高度包含该元素的垂直内边距和<font size=4>**边框**</font></font>，<mark>且是一个整数</mark>。
 
-  - **HTMLElement.offsetWidth：**<font color=FF0000>只读属性</font>，返回一个元素的布局宽度。一个典型的（译者注：各浏览器的offsetWidth可能有所不同）offsetWidth是测量<font color=FF0000>包含元素的边框（border）、水平线上的内边距（padding）、竖直方向滚动条（scrollbar）（如果存在的话）、以及CSS设置的宽度(width)的值</font>。
+  通常，元素的 offsetHeight 是一种元素CSS高度的衡量标准，<font color=FF0000>包括元素的**边框**、内边距和**元素的水平滚动条**（如果存在且渲染的话），不包含 `:before` 或 `:after` 等伪类元素的高度</font>。
 
-  - **Element.scrollHeight：**
+  如果元素被隐藏（例如 元素或者元素的祖先之一的元素的style.display被设置为none），则返回0
 
-  - **Element.scrollWidth：**
+- **HTMLElement.offsetWidth：**<font color=FF0000>只读属性</font>，返回一个元素的布局宽度。一个典型的（译者注：各浏览器的offsetWidth可能有所不同）offsetWidth是测量<font color=FF0000>包含元素的边框（border）、水平线上的内边距（padding）、竖直方向滚动条（scrollbar）（如果存在的话）、以及CSS设置的宽度(width)的值</font>。
 
-  - **Element.scrollTop：**Element.scrollTop 属性可以<font color=FF0000>**获取或设置**</font>一个元素的内容垂直滚动的像素数。
+- **Element.scrollHeight：**
 
-    一个元素的 <font color=FF0000>scrollTop 值是这个元素的内容顶部（卷起来的）到它的视口可见内容（的顶部）的距离的度量</font>。当一个元素的内容没有产生垂直方向的滚动条，那么它的 scrollTop 值为0。
+- **Element.scrollWidth：**
 
-    **scrollTop <font color=FF0000>可以被设置为任何整数值</font>，同时注意：**
+- **Element.scrollTop：**Element.scrollTop 属性可以<font color=FF0000>**获取或设置**</font>一个元素的内容垂直滚动的像素数。
 
-    - 如果一个元素不能被滚动（例如，它没有溢出，或者这个元素有一个"non-scrollable"属性）， scrollTop将被设置为0。
-    - 设置scrollTop的值小于0，scrollTop 被设为0
-    - 如果设置了超出这个容器可滚动的值, scrollTop 会被设为最大值。
+  一个元素的 <font color=FF0000>scrollTop 值是这个元素的内容顶部（卷起来的）到它的视口可见内容（的顶部）的距离的度量</font>。当一个元素的内容没有产生垂直方向的滚动条，那么它的 scrollTop 值为0。
 
-  - **Element.scrollLeft：**可以<font color=FF0000>**读取或设置**</font>元素滚动条到元素左边的距离。
+  **scrollTop <font color=FF0000>可以被设置为任何整数值</font>，同时注意：**
 
-    注意<mark>如果这个元素的内容排列方向（direction） 是rtl (right-to-left) ，那么滚动条会位于最右侧（内容开始处），并且scrollLeft值为0</mark>。<font color=FF0000>此时，当你从右到左拖动滚动条时，scrollLeft会从0变为负数</font>。
+  - 如果一个元素不能被滚动（例如，它没有溢出，或者这个元素有一个"non-scrollable"属性）， scrollTop将被设置为0。
+  - 设置scrollTop的值小于0，scrollTop 被设为0
+  - 如果设置了超出这个容器可滚动的值, scrollTop 会被设为最大值。
 
-    **（和scrollTop一样）<font color=FF0000>scrollLeft 可以是任意整数，然而：</font>**
+- **Element.scrollLeft：**可以<font color=FF0000>**读取或设置**</font>元素滚动条到元素左边的距离。
 
-    - 如果元素不能滚动（比如：元素没有溢出），那么 scrollLeft 的值是 0。
-    - 如果给 scrollLeft 设置的值小于0，那么 scrollLeft 的值将变为 0。
-    - 如果给 scrollLeft 设置的值大于元素内容最大宽度，那么 scrollLeft 的值将被设为元素最大宽度。
+  注意<mark>如果这个元素的内容排列方向（direction） 是rtl (right-to-left) ，那么滚动条会位于最右侧（内容开始处），并且scrollLeft值为0</mark>。<font color=FF0000>此时，当你从右到左拖动滚动条时，scrollLeft会从0变为负数</font>。
+
+  **（和scrollTop一样）<font color=FF0000>scrollLeft 可以是任意整数，然而：</font>**
+
+  - 如果元素不能滚动（比如：元素没有溢出），那么 scrollLeft 的值是 0。
+  - 如果给 scrollLeft 设置的值小于0，那么 scrollLeft 的值将变为 0。
+  - 如果给 scrollLeft 设置的值大于元素内容最大宽度，那么 scrollLeft 的值将被设为元素最大宽度。
 
 摘自：[js获取各种高度](https://juejin.cn/post/6844904112111239176) / [JS 获取屏幕、浏览器、页面的高度宽度](https://segmentfault.com/a/1190000010443608) / [MDN - Element.clientHeight](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/clientHeight) / [MDN - Element.clientWidth](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/clientWidth) / [MDN - HTMLElement.offsetHeight](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetHeight) / 
 
-<font size=4>**补充：**</font>
+##### 补充
 
 <img src="https://i.loli.net/2021/08/01/klzN3KsWC4niVAg.png" alt="image-20210801191948841" style="zoom:50%;" />
 
@@ -6675,7 +6692,7 @@ domRect = element.getBoundingClientRect();
 
 返回值是一个 DOMRect 对象，这个对象是由该元素的 getClientRects() 方法返回的一组矩形的集合，就是该元素的 CSS 边框大小。<font color=FF0000>返回的结果是包含完整元素的最小矩形，并且拥有 <font size=4>**left、top、right、bottom、x、y、width 和 height**</font> 这几个以像素为单位的 **只读属性** 用于描述整个边框</font>。**除了 width 和 height 以外的属性是<font color=FF0000>相对于视图窗口的左上角来计算的</font>**。
 
-> 👀 **注：**需要注意的是 ⚠️：经过实验发现，这里<font color=FF0000>计算 top 和 bottom 值的 ***上界*** 是 ***整个页面（文档）*** 的最上面，而不是 ***当前可视区域*** 的最上面。所以，y 和 height 的值是可以大于 100vh 的</font>。
+> 👀 需要注意的是 ⚠️：经过实验发现，这里<font color=FF0000>计算 top 和 bottom 值的 ***上界*** 是 ***整个页面（文档）*** 的最上面，而不是 ***当前可视区域*** 的最上面。所以，y 和 height 的值是可以大于 100vh 的</font>。
 >
 > 上面说的都是 ***竖向滚动*** 的情况，类似的，如果是 <font color=FF0000>***横向滚动*** 的话，x 和 width 的值也是可以大于 100vw 的</font>（TODO，竖向滚动的情况经过了代码测试，但横向滚动的情况没有经过代码测试；不知道为什么 onscroll 和 addEventListener('scroll', ...) 都不能监听到 横向滚动的事件；应该是我代码写的有问题？）
 
@@ -6748,6 +6765,69 @@ DOMRectReadOnly 接口 <font color=FF0000>**通过详细列出 DOMRect 所使用
 
 
 
+#### Element.scrollIntoView()
+
+`Element` 接口的 `scrollIntoView()` 方法会滚动元素的祖先容器，<font color=red>使被调用 `scrollIntoView()` 的元素对用户可见</font>。
+
+> 👀 感觉中文版翻译的有点差，甚至有点没读懂；这里摘录下英文版：
+>
+> The `Element` interface's **`scrollIntoView()`** method <font color=red>scrolls the element's ancestor containers</font> such that <font color=red>the element on which `scrollIntoView()` is called is visible to the user</font>.
+
+##### 语法
+
+```js
+scrollIntoView()
+scrollIntoView(alignToTop)
+scrollIntoView(scrollIntoViewOptions)
+```
+
+###### 参数
+
+- `alignToTop` 可选，一个布尔值：
+
+  - <font color=dodgerBlue>如果为 `true`</font>，<font color=red>元素的顶端将和其所在滚动区的可视区域的顶端对齐</font>。相应的 `scrollIntoViewOptions: { block: "start", inline: "nearest" }`。<font color=LightSeaGreen>这是这个参数的默认值</font>
+
+  - <font color=dodgerBlue>如果为 `false`</font>，<font color=red>元素的底端将和其所在滚动区的可视区域的底端对齐</font>。相应的 `scrollIntoViewOptions: { block: "end", inline: "nearest" }`
+
+- `scrollIntoViewOptions` 可选 🧪。一个包含下列属性的对象：
+
+  - `behavior` 可选。<font color=LightSeaGreen>定义动画过渡效果</font>，`auto` 或 `smooth` 之一。默认为 `auto`。
+
+    > 💡 阅读英文版后，发现和中文版有出入，少了 `instant` 选项；这里做下摘抄：
+    >
+    > Determines whether scrolling is instant or animates smoothly. This option is a string which must take one of the following values:
+    >
+    > - `smooth` : scrolling should animate smoothly
+    > - `instant` : <font color=red>scrolling should happen instantly in a single jump</font>
+    > - `auto` : scroll behavior is determined by the computed value of [`scroll-behavior`](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior)
+
+  - `block` 可选。<font color=red>定义垂直方向的对齐</font>，`start`、`center`、`end` 或 `nearest` 之一。默认为 `start`。
+
+  - `inline` 可选。<font color=LightSeaGreen>定义水平方向的对齐</font>，`start`、`center`、`end` 或 `nearest` 之一。默认为 `nearest`。
+
+###### 返回值
+
+无 (`undefined`)。
+
+##### 示例
+
+```js
+const element = document.getElementById("box");
+
+element.scrollIntoView();
+element.scrollIntoView(false);
+element.scrollIntoView({ block: "end" });
+element.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+```
+
+##### 注意
+
+取决于其他元素的布局情况，此元素可能不会完全滚动到顶端或底端。
+
+摘自：[MDN - Element.scrollIntoView()]()
+
+
+
 #### Window.resizeBy()
 
 **概述：**调整窗口大小。
@@ -6758,7 +6838,7 @@ DOMRectReadOnly 接口 <font color=FF0000>**通过详细列出 DOMRect 所使用
 window.resizeBy(xDelta, yDelta)
 ```
 
-##### 参数
+###### 参数
 
 - xDelta：为窗口水平方向变化的像素值。
 - yDelta：为窗口垂直方向变化的像素值 。
@@ -16560,796 +16640,3 @@ obj1.foo(); // obj1对象
 > 摘自：[JavaScript 语句后应该加分号么？ - 尤雨溪的回答](https://www.zhihu.com/question/20298345/answer/49551142)
 >
 > 参考阅读：[JavaScript 语句后应该加分号么？ - 贺师俊的回答 - 知乎](https://www.zhihu.com/question/20298345/answer/14670020) 后面的这篇文章相当于是前面hax文章的简化版[写javascript时要不要省略分号？ - 对角另一面的文章 - 知乎](https://zhuanlan.zhihu.com/p/22998282)
-
-
-
-## jQuery
-
-#### **jQuery 语法**
-
-jQuery 语法是通过选取 HTML 元素，并对选取的元素执行某些操作。
-
-基础语法：
-
-```js
-$(selector).action(){
-  //...
-}
-```
-
-- 美元符号定义 jQuery
-- 选择符（selector）"查询"和"查找" HTML 元素
-- jQuery 的 action() 执行对元素的操作
-
-**补充：**jQuery 使用的语法是 XPath 与 CSS 选择器语法的组合
-
-#### CSS选择器
-
-jQuery 选择器允许您对 HTML 元素组或单个元素进行操作。
-
-jQuery 选择器基于元素的 id、类（class）、类型、属性、属性值等"查找"（或选择）HTML 元素。 它基于已经存在的 [CSS 选择器](https://www.runoob.com/cssref/css-selectors.html)，除此之外，它还有一些自定义的选择器。
-
-##### 元素选择器
-
-```js
-$("p")
-```
-
-##### \#id 选择器
-
-```js
-$("#test")
-```
-
-##### .class 选择器
-
-```js
-$(".test")
-```
-
-##### 更多示例
-
-| 语法                                                 | 描述                                                              |
-|:-------------------------------------------------- |:--------------------------------------------------------------- |
-| $("*")                                             | 选取所有元素                                                          |
-| <font color=FF0000>**$(this)**</font>              | 选取<font color=FF0000>当前 HTML 元素</font>                          |
-| $("p.intro")                                       | 选取 class 为 intro 的 \<p> 元素                                      |
-| <font color=FF0000>**$("p:first")**</font>         | 选取<font color=FF0000>第一个 \<p> 元素</font>                         |
-| $("ul li:first")                                   | 选取第一个 \<ul> 元素的第一个 \<li> 元素                                     |
-| $("ul li:first-child")                             | 选取每个 \<ul> 元素的第一个 \<li> 元素                                      |
-| <font color=FF0000>**$("[href]")**</font>          | 选取<font color=FF0000>带有 href 属性的元素</font>                       |
-| $("a[target<font color=FF0000>=</font>'_blank']")  | 选取所有 target 属性值<font color=FF0000>等于</font> "_blank" 的 \<a> 元素  |
-| $("a[target<font color=FF0000>!=</font>'_blank']") | 选取所有 target 属性值<font color=FF0000>不等于</font> "_blank" 的 \<a> 元素 |
-
-#### jQuery 事件（action）
-
-**示例：**
-
-```js
-$("p").click(function(){
-    // 动作触发后执行的代码!!
-});
-```
-
-**所有用于处理事件的 jQuery 方法：**
-
-| 方法                                                                                                              | 描述                                                                |
-|:--------------------------------------------------------------------------------------------------------------- |:----------------------------------------------------------------- |
-| [bind()](https://www.runoob.com/jquery/event-bind.html)                                                         | 向元素添加事件处理程序                                                       |
-| [<font color=FF0000>blur()</font>](https://www.runoob.com/jquery/event-blur.html)                               | 添加/触发失去焦点事件                                                       |
-| [change()](https://www.runoob.com/jquery/event-change.html)                                                     | 添加/触发 change 事件                                                   |
-| [<font color=FF0000>click()</font>](https://www.runoob.com/jquery/event-click.html)                             | <font color=FF0000>当按钮点击事件被触发时</font>，添加/触发 click 事件              |
-| [<font color=FF0000>dblclick()</font>](https://www.runoob.com/jquery/event-dblclick.html)                       | <font color=FF0000>双击元素时</font>，添加/触发 double click 事件             |
-| [delegate()](https://www.runoob.com/jquery/event-delegate.html)                                                 | 向匹配元素的当前或未来的子元素添加处理程序                                             |
-| [die()](https://www.runoob.com/jquery/event-die.html)                                                           | 在版本 1.9 中被移除。移除所有通过 live() 方法添加的事件处理程序                            |
-| [error()](https://www.runoob.com/jquery/event-error.html)                                                       | 在版本 1.8 中被废弃。添加/触发 error 事件                                       |
-| [event.currentTarget](https://www.runoob.com/jquery/jq-event-currenttarget.html)                                | 在事件冒泡阶段内的当前 DOM 元素                                                |
-| [event.data](https://www.runoob.com/jquery/event-data.html)                                                     | 包含当前执行的处理程序被绑定时传递到事件方法的可选数据                                       |
-| [event.delegateTarget](https://www.runoob.com/jquery/event-delegatetarget.html)                                 | 返回当前调用的 jQuery 事件处理程序所添加的元素                                       |
-| [event.isDefaultPrevented()](https://www.runoob.com/jquery/event-isdefaultprevented.html)                       | 返回指定的 event 对象上是否调用了 event.preventDefault()                       |
-| [event.isImmediatePropagationStopped()](https://www.runoob.com/jquery/event-isimmediatepropagationstopped.html) | 返回指定的 event 对象上是否调用了 event.stopImmediatePropagation()             |
-| [event.isPropagationStopped()](https://www.runoob.com/jquery/event-ispropagationstopped.html)                   | 返回指定的 event 对象上是否调用了 event.stopPropagation()                      |
-| [event.namespace](https://www.runoob.com/jquery/event-namespace.html)                                           | 返回当事件被触发时指定的命名空间                                                  |
-| [event.pageX](https://www.runoob.com/jquery/event-pagex.html)                                                   | 返回相对于文档左边缘的鼠标位置                                                   |
-| [event.pageY](https://www.runoob.com/jquery/event-pagey.html)                                                   | 返回相对于文档上边缘的鼠标位置                                                   |
-| [event.preventDefault()](https://www.runoob.com/jquery/event-preventdefault.html)                               | 阻止事件的默认行为                                                         |
-| [event.relatedTarget](https://www.runoob.com/jquery/jq-event-relatedtarget.html)                                | 返回当鼠标移动时哪个元素进入或退出                                                 |
-| [event.result](https://www.runoob.com/jquery/event-result.html)                                                 | 包含由被指定事件触发的事件处理程序返回的最后一个值                                         |
-| [event.stopImmediatePropagation()](https://www.runoob.com/jquery/event-stopimmediatepropagation.html)           | 阻止其他事件处理程序被调用                                                     |
-| [event.stopPropagation()](https://www.runoob.com/jquery/event-stoppropagation.html)                             | 阻止事件向上冒泡到 DOM 树，阻止任何父处理程序被事件通知                                    |
-| [event.target](https://www.runoob.com/jquery/jq-event-target.html)                                              | 返回哪个 DOM 元素触发事件                                                   |
-| [event.timeStamp](https://www.runoob.com/jquery/jq-event-timestamp.html)                                        | 返回从 1970 年 1 月 1 日到事件被触发时的毫秒数                                     |
-| [event.type](https://www.runoob.com/jquery/jq-event-type.html)                                                  | 返回哪种事件类型被触发                                                       |
-| [event.which](https://www.runoob.com/jquery/event-which.html)                                                   | 返回指定事件上哪个键盘键或鼠标按钮被按下                                              |
-| [event.metaKey](https://www.runoob.com/jquery/event_metakey.html)                                               | 事件触发时 META 键是否被按下                                                 |
-| [<font color=FF0000>focus()</font>](https://www.runoob.com/jquery/event-focus.html)                             | 添加/触发 focus 事件                                                    |
-| [focusin()](https://www.runoob.com/jquery/event-focusin.html)                                                   | 添加事件处理程序到 focusin 事件                                              |
-| [focusout()](https://www.runoob.com/jquery/event-focusout.html)                                                 | 添加事件处理程序到 focusout 事件                                             |
-| [<font color=FF0000>hover()</font>](https://www.runoob.com/jquery/event-hover.html)                             | 添加两个事件处理程序到 hover 事件                                              |
-| [keydown()](https://www.runoob.com/jquery/event-keydown.html)                                                   | 添加/触发 keydown 事件                                                  |
-| [keypress()](https://www.runoob.com/jquery/event-keypress.html)                                                 | 添加/触发 keypress 事件                                                 |
-| [keyup()](https://www.runoob.com/jquery/event-keyup.html)                                                       | 添加/触发 keyup 事件                                                    |
-| [live()](https://www.runoob.com/jquery/event-live.html)                                                         | 在版本 1.9 中被移除。添加一个或多个事件处理程序到当前或未来的被选元素                             |
-| [load()](https://www.runoob.com/jquery/event-load.html)                                                         | 在版本 1.8 中被废弃。添加一个事件处理程序到 load 事件                                  |
-| [<font color=FF0000>mousedown()</font>](https://www.runoob.com/jquery/event-mousedown.html)                     | <font color=FF0000>鼠标指针移动到元素上方，并按下鼠标按键时</font>，添加/触发 mousedown 事件 |
-| [<font color=FF0000>mouseenter()</font>](https://www.runoob.com/jquery/event-mouseenter.html)                   | <font color=FF0000>鼠标指针穿过元素时</font>，添加/触发 mouseenter 事件           |
-| [<font color=FF0000>mouseleave()</font>](https://www.runoob.com/jquery/event-mouseleave.html)                   | <font color=FF0000>鼠标指针离开元素时</font>，添加/触发 mouseleave 事件           |
-| [mousemove()](https://www.runoob.com/jquery/event-mousemove.html)                                               | 添加/触发 mousemove 事件                                                |
-| [mouseout()](https://www.runoob.com/jquery/event-mouseout.html)                                                 | 添加/触发 mouseout 事件                                                 |
-| [mouseover()](https://www.runoob.com/jquery/event-mouseover.html)                                               | 添加/触发 mouseover 事件                                                |
-| [<font color=FF0000>mouseup()</font>](https://www.runoob.com/jquery/event-mouseup.html)                         | <font color=FF0000>在元素上松开鼠标按钮时</font>，添加/触发 mouseup 事件            |
-| [off()](https://www.runoob.com/jquery/event-off.html)                                                           | 移除通过 on() 方法添加的事件处理程序                                             |
-| [on()](https://www.runoob.com/jquery/event-on.html)                                                             | 向元素添加事件处理程序                                                       |
-| [one()](https://www.runoob.com/jquery/event-one.html)                                                           | 向被选元素添加一个或多个事件处理程序。该处理程序只能被每个元素触发一次                               |
-| [$.proxy()](https://www.runoob.com/jquery/event-proxy.html)                                                     | 接受一个已有的函数，并返回一个带特定上下文的新的函数                                        |
-| [ready()](https://www.runoob.com/jquery/event-ready.html)                                                       | 规定当 DOM 完全加载时要执行的函数                                               |
-| [resize()](https://www.runoob.com/jquery/event-resize.html)                                                     | 添加/触发 resize 事件                                                   |
-| [scroll()](https://www.runoob.com/jquery/event-scroll.html)                                                     | 添加/触发 scroll 事件                                                   |
-| [select()](https://www.runoob.com/jquery/event-select.html)                                                     | 添加/触发 select 事件                                                   |
-| [submit()](https://www.runoob.com/jquery/event-submit.html)                                                     | 添加/触发 submit 事件                                                   |
-| [toggle()](https://www.runoob.com/jquery/event-toggle.html)                                                     | 在版本 1.9 中被移除。添加 click 事件之间要切换的两个或多个函数                             |
-| [trigger()](https://www.runoob.com/jquery/event-trigger.html)                                                   | 触发绑定到被选元素的所有事件                                                    |
-| [triggerHandler()](https://www.runoob.com/jquery/event-triggerhandler.html)                                     | 触发绑定到被选元素的指定事件上的所有函数                                              |
-| [unbind()](https://www.runoob.com/jquery/event-unbind.html)                                                     | 从被选元素上移除添加的事件处理程序                                                 |
-| [undelegate()](https://www.runoob.com/jquery/event-undelegate.html)                                             | 从现在或未来的被选元素上移除事件处理程序                                              |
-| [unload()](https://www.runoob.com/jquery/event-unload.html)                                                     | 在版本 1.8 中被废弃。添加事件处理程序到 unload 事件                                  |
-| [contextmenu()](https://www.runoob.com/jquery/event-contextmenu.html)                                           | 添加事件处理程序到 contextmenu 事件                                          |
-| [$.holdReady()](https://www.runoob.com/jquery/event-holdready.html)                                             | 用于暂停或恢复.ready() 事件的执行                                             |
-
-摘自：[jQuery 参考手册 - jQuery 事件 方法](https://www.runoob.com/jquery/jquery-ref-events.html)
-
-#### jQuery 效果- 隐藏和显示
-
-- **hide() 和 show()**
-  
-  **语法：**
-  
-  ```javascript
-  $(selector).hide(speed,easing_function,callback);
-  $(selector).show(speed,easing_function,callback);
-  ```
-  
-  - 可选的 <font color=FF0000>**speed**</font> 参数规定<font color=FF0000>隐藏/显示的速度</font>，可以取以下值：<font color=FF0000>"slow"、"fast" 或毫秒</font>。
-  
-  - 可选的<font color=FF0000>**easing_function**</font>参数规定<font color=FF0000>过渡使用哪种缓动函数</font>，jQuery自身提供"linear" 和 "swing"，其他可以使用相关的插件，比如：[jQuery Easing 插件](http://gsgd.co.uk/sandbox/jquery/easing/)
-  
-  - 可选的 <font color=FF0000>**callback** </font>参数是<font color=FF0000>隐藏或显示完成后所执行的函数名称</font>。
-
-- **toggle()**：可以<font color=FF0000>使用 toggle() 方法来切换 hide() 和 show() 方法</font>。
-  
-  **语法：**
-  
-  ```js
-  $(selector).toggle(speed,easing_function,callback);
-  ```
-  
-  参数与hide()、show()一致
-
-#### jQuery 效果 - 淡入淡出
-
-通过 jQuery，您可以实现元素的淡入淡出效果。
-
-jQuery 拥有下面四种 fade 方法：
-
-- **fadeIn()**：用于<font color=FF0000>淡入**已隐藏**的元素</font>。**语法:**
-  
-  ```js
-  $(selector).fadeIn(speed,callback);
-  ```
-  
-  - 可选的 speed 参数规定效果的时长。它可以取以下值："slow"、"fast" 或毫秒。.
-  
-  - 可选的 callback 参数是 fading 完成后所执行的函数名称。
-
-- **fadeOut()**：用于<font color=FF0000>淡出**可见**元素</font>。**语法:**
-  
-  ```js
-  $(selector).fadeOut(speed,callback);
-  ```
-
-- **fadeToggle()**：可以<font color=FF0000>在 fadeIn() 与 fadeOut() 方法之间进行切换</font>。
-  
-  - 如果元素已淡出，则 fadeToggle() 会向元素添加淡入效果。
-  
-  - 如果元素已淡入，则 fadeToggle() 会向元素添加淡出效果。
-  
-  **语法:**
-  
-  ```js
-  $(selector).fadeToggle(speed,callback);
-  ```
-
-- **fadeTo()**：允许渐变为给定的不透明度（值介于 0 与 1 之间），**语法:**
-  
-  ```js
-  $(selector).fadeTo(speed,opacity,callback);
-  ```
-  
-  其中：必需的 opacity 参数将淡入淡出效果设置为给定的不透明度（值介于 0 与 1 之间）。
-
-#### jQuery 效果 - 滑动
-
-jQuery 拥有以下滑动方法：
-
-- **slideDown()**：用于<font color=FF0000>向下滑动元素</font>。**语法:**
-  
-  ```js
-  $(selector).slideDown(speed,callback);
-  ```
-
-- **slideUp()**：用于向上滑动元素。**语法:**
-  
-  ```js
-  $(selector).slideUp(speed,callback);
-  ```
-
-- **slideToggle()**：可以在 slideDown() 与 slideUp() 方法之间进行切换。
-  
-  如果元素向下滑动，则 slideToggle() 可向上滑动它们。
-  
-  如果元素向上滑动，则 slideToggle() 可向下滑动它们。
-  
-  **语法：**
-  
-  ```js
-  $(selector).slideToggle(speed,callback);
-  ```
-
-#### jQuery 效果- 动画
-
-jQuery animate() 方法允许您创建自定义的动画。**语法：**
-
-```js
-$(selector).animate({params},speed,callback);
-```
-
-- **params**：**<font color=FF0000>必需</font>**，参数定义形成动画的 CSS 属性。
-
-- **speed**：<font color=FF0000>可选</font>， 参数规定效果的时长。它可以取以下值："slow"、"fast" 或毫秒。
-
-- **callback**：<font color=FF0000>可选</font>，参数是动画完成后所执行的函数名称。
-
-**示例：**
-
-```js
-$("button").click(function(){
-  $("div").animate({left:'250px'});
-});
-```
-
-#### jQuery 停止动画
-
-jQuery stop() 方法用于<font color=FF0000>在动画或效果完成前对它们进行停止</font>。
-
-stop() 方法**<font color=FF0000>适用于所有 jQuery 效果函数</font>**，包括滑动、淡入淡出和自定义动画。
-
-**语法:**
-
-```js
-$(selector).stop(stopAll,goToEnd);
-```
-
-- **stopAll：**<font color=FF0000>可选</font>，参数规定<font color=FF0000>是否应该清除动画队列。默认是 false，即仅停止活动的动画，允许任何排入队列的动画向后执行</font>。
-
-- **goToEnd：**<font color=FF0000>可选</font>，参数规定<font color=FF0000>是否立即完成当前动画。默认是 false</font>。
-
-因此，默认地，stop() 会清除在被选元素上指定的当前动画。
-
-#### jQuery - 链(Chaining)
-
-通过 jQuery，可以把动作/方法链接在一起。
-
-Chaining 允许我们<font color=FF0000>在一条语句中运行多个 jQuery 方法（在相同的元素上）</font>。
-
-#### jQuery - 获取内容和属性（DOM 操作）
-
-**三个简单实用的用于 DOM 操作的 jQuery 方法（<font color=FF0000>获取内容</font>）：**
-
-- **text()**： <font color=FF0000>设置（有参）</font>或<font color=FF0000>返回（无参）</font>所选元素的<font color=FF0000>**文本内容**</font>
-- **html()**： <font color=FF0000>设置（有参）</font>或<font color=FF0000>返回（无参）</font>所选元素的<font color=FF0000>**内容**</font>（包括 HTML 标记）
-- **val()**： <font color=FF0000>设置（有参）</font>或<font color=FF0000>返回（无参）</font><font color=FF0000>表单字段的值</font>
-
-**示例：**
-
-```js
-$("#btn1").click(function(){
-  alert("Text: " + $("#test").text());
-});
-```
-
-**获取属性值 - attr()**
-
-jQuery attr() 方法用于<font color=FF0000>设置（有参）</font>或<font color=FF0000>返回（无参）</font><font color=FF0000>属性值</font>。示例：
-
-```js
-$("button").click(function(){
-  alert($("#runoob").attr("href"));
-});
-```
-
-#### jQuery - 设置内容和属性
-
-- text()、html() 以及 val()<font color=FF0000>拥有回调函数</font>。
-  
-  <font color=FF0000>回调函数有两个参数</font>：被选元素列表中当前元素的下标，以及原始（旧的）值。<font color=FF0000>然后以函数新值返回您希望使用的字符串。</font>示例：
-  
-  ```js
-  $("#btn1").click(function(){
-      $("#test1").text(function(i,origText){
-          return "旧文本: " + origText + " 新文本: Hello world! (index: " + i + ")"; 
-      });
-  });
-  ```
-
-- **attr()**：设置属性
-  
-  - jQuery attr() 方法也<font color=FF0000>用于设置/改变属性值</font>。**示例：**
-    
-    ```js
-    //演示如何改变（设置）链接中 href 属性的值
-    $("button").click(function(){
-      $("#runoob").attr("href","http://www.runoob.com/jquery");
-    });
-    ```
-  
-  - attr() 方法也允许您<font color=FF0000>同时设置多个属性</font>。**示例：**
-    
-    ```js
-    //演示如何同时设置 href 和 title 属性
-    $("button").click(function(){    
-      $("#runoob").attr({
-        "href" : "http://www.runoob.com/jquery",
-        "title" : "jQuery 教程"
-      });
-    });
-    ```
-  
-  - jQuery 方法 attr()，也提供回调函数。<font color=FF0000>回调函数有**两个参数**</font>：<font color=FF0000>被选元素列表中当前元素的下标，以及原始（旧的）值</font>。然后以函数新值返回您希望使用的字符串。**示例：**
-    
-    ```js
-    $("button").click(function(){
-      $("#runoob").attr("href", function(i,origValue){
-        return origValue + "/jquery"; 
-      });
-    });
-    ```
-
-#### jQuery - 添加元素
-
-用于添加新内容的四个 jQuery 方法：
-
-- **append()：** 在被选元素的<font color=FF0000>结尾</font>插入内容（<font color=FF0000>仍然在该元素的内部）</font>，**示例：**
-  
-  ```js
-  $("p").append("追加文本");
-  ```
-
-- **prepend()：** 在被选元素的<font color=FF0000>开头</font>插入内容，**示例：**
-  
-  ```js
-  $("p").prepend("在开头追加文本");
-  ```
-
-- **after()：** 在<font color=FF0000>**被选元素之后**</font>插入内容，**示例：**
-  
-  ```js
-  $("img").after("在后面添加文本");
-  ```
-
-- **before()：** 在<font color=FF0000>**被选元素之前**</font>插入内容，**示例：**
-  
-  ```js
-  $("img").before("在前面添加文本");
-  ```
-
-**补充：**四个方法插入多个元素亦可。示例：
-
-```js
-function appendText()
-{
-    var txt1="<p>文本。</p>";              // 使用 HTML 标签创建文本
-    var txt2=$("<p></p>").text("文本。");  // 使用 jQuery 创建文本
-    var txt3=document.createElement("p");
-    txt3.innerHTML="文本。";               // 使用 DOM 创建文本 text with DOM
-    $("body").append(txt1,txt2,txt3);        // 追加新元素
-}
-```
-
-#### jQuery - 删除元素
-
-如需删除元素和内容，一般可使用以下两个 jQuery 方法：
-
-- **remove()** ：删除<font color=FF0000>被选元素（**及其**子元素）</font>，示例：
-  
-  ```js
-  $("#div1").remove();
-  ```
-  
-  jQuery remove() 方法<font color=FF0000>也可接受一个参数，允许您**对被删元素进行过滤**</font>。
-  
-  ```js
-  //删除 class="italic" 的所有 <p> 元素
-  $("p").remove(".italic");
-  ```
-
-- **empty()** ：从被选元素<font color=FF0000>中的删除子元素</font>，示例：
-  
-  ```js
-  $("#div1").empty();
-  ```
-
-#### jQuery - 获取并设置 CSS 类
-
-jQuery 拥有若干进行 CSS 操作的方法
-
-- **addClass()**： 向被选元素<font color=FF0000>添加一个或**多个类**</font>，当然，在添加类时，您也<font color=FF0000>可以**选取多个元素**</font>，也可以<font color=FF0000>**在方法中规定多个类**</font>。示例：
-  
-  ```js
-  $("button").click(function(){
-    // 选取多个元素           在方法中规定多个类
-    $("body div:first").addClass("important blue");
-  });
-  ```
-
-- **removeClass()**： 从被选元素<font color=FF0000>删除一个或**多个类**</font>，与addClass()类似，<font color=FF0000>可以**选取多个元素**</font>。**示例：**
-  
-  ```js
-  $("button").click(function(){
-    $("h1,h2,p").removeClass("blue");
-  });
-  ```
-
-- **toggleClass()**： 对被选元素进行<font color=FF0000>添加 / 删除类的切换</font>操作。与addClass()类似，<font color=FF0000>可以**选取多个元素**</font>（可以用来实现比如电灯这种只有两种状态的东西）。**示例：**
-  
-  ```js
-  $("button").click(function(){
-    $("h1,h2,p").toggleClass("blue");
-  });
-  ```
-
-- **css()**：<font color=FF0000> 设置或返回</font>一个或多个样式属性
-  
-  - **<font color=FF0000>返回</font> CSS 属性**，语法如下：
-    
-    ```js
-    css("propertyname");
-    ```
-    
-    示例如下：
-    
-    ```js
-    //返回首个匹配元素的 background-color 值
-    $("p").css("background-color");
-    ```
-  
-  - **<font color=FF0000>设置</font> CSS 属性**，语法如下：
-    
-    ```js
-    css("propertyname","value");
-    ```
-    
-    示例如下：
-    
-    ```js
-    //为所有匹配元素设置 background-color 值：
-    $("p").css("background-color","yellow");
-    ```
-  
-  - <font color=FF0000>设置多个 CSS 属性</font>，语法如下：
-    
-    ```js
-    css({"propertyname":"value","propertyname":"value",...});
-    ```
-    
-    示例如下：
-    
-    ```js
-    //为所有匹配元素设置 background-color 和 font-size：
-    $("p").css({"background-color":"yellow","font-size":"200%"});
-    ```
-
-#### jQuery 尺寸
-
-<img src="https://i.loli.net/2020/08/27/ewxm9doRMDiPrbV.jpg" style="zoom: 90%;" />
-
-jQuery 提供多个处理尺寸的重要方法：
-
-- **width()**：<font color=FF0000>设置（有参）</font>或<font color=FF0000>返回（无参）</font>元素的宽度（<font color=FF0000>**不包括**内边距、边框或外边距</font>）
-- **height()**：<font color=FF0000>设置（有参）</font>或<font color=FF0000>返回（无参）</font>元素的高度（<font color=FF0000>**不包括**内边距、边框或外边距</font>）
-- **innerWidth()**：返回元素的宽度（包括内边距）
-- **innerHeight()**：返回元素的高度（包括内边距）
-- **outerWidth()**：返回元素的宽度（包括内边距和边框）
-- **outerHeight()**：返回元素的高度（包括内边距和边框）
-
-#### jQuery 遍历
-
-jQuery 遍历，意为"移动"，用于根据其相对于其他元素的关系来"查找"（或选取）HTML 元素。以某项选择开始，并沿着这个选择移动，直到抵达您期望的元素为止。
-
-下图展示了一个家族树。通过 jQuery 遍历，您能够从被选（当前的）元素开始，轻松地在家族树中向上移动（祖先），向下移动（子孙），水平移动（同胞）。这种移动被称为<font color=FF0000>对 DOM 进行遍历</font>。
-
-其中DOM中祖先的说法，类似于数据结构中树的说法。
-
-#### jQuery 遍历 - 祖先
-
-jquery用于向上遍历 DOM 树的方法：
-
-- **parent()**：parent() 方法<font color=FF0000>返回被选元素的**直接**父元素</font>。该方法只会向上一级对 DOM 树进行遍历。**示例：**
-  
-  ```js
-  //返回每个 \<span> 元素的直接父元素
-  $(document).ready(function(){  
-    $("span").parent(); 
-  });
-  ```
-
-- **parents()**：返回被选元素的<font color=FF0000>所有祖先元素</font>，它一路向上直到文档的根元素 (\<html>)。示例：
-  
-  ```js
-  //返回所有<span> 元素的所有祖先
-  $(document).ready(function(){  
-    $("span").parents(); 
-  });
-  ```
-
-- **parentsUntil()**：parentsUntil() 方法返回<font color=FF0000>介于两个给定元素之间的所有祖先元素</font>。示例：
-  
-  ```js
-  //返回介于 <span> 与 <div> 元素之间的所有祖先元素
-  $(document).ready(function(){
-    $("span").parentsUntil("div"); 
-  });
-  ```
-
-#### jQuery 遍历 - 后代
-
-通过 jQuery，能够向下遍历 DOM 树，以查找元素的后代。下面是两个用于向下遍历 DOM 树的 jQuery 方法：
-
-- **children()**：返回被选元素的<mark style=background-color:silver><font color=FF0000>**所有**</font></mark> <mark style=background-color:aqua><font color=FF0000>**直接**</font></mark> <font color=FF0000>子元素</font>。该方法只会向下一级对 DOM 树进行遍历。**示例**
-  
-  ```js
-  //返回每个 <div> 元素的所有直接子元素
-  $(document).ready(function(){  
-    $("div").children(); 
-  });
-  ```
-
-- **find()**：find() 方法<font color=FF0000>返回被选元素的后代元素</font>，一路向下<font color=FF0000>直到最后一个后代</font>。**示例**
-  
-  ```js
-  //返回属于 <div> 后代的所有 <span> 元素
-  $(document).ready(function(){
-    $("div").find("span"); 
-  });
-  ```
-
-#### jQuery 遍历 - 同胞(siblings)
-
-同胞拥有相同的父元素。通过 jQuery，能够在 DOM 树中<font color=FF0000>遍历元素的同胞元素</font>。
-
-**在 DOM 树进行水平遍历的方法：**
-
-- **siblings()**：<font color=FF0000>返回被选元素的所有同胞元素</font>。示例：
-  
-  ```js
-  //返回 <h2> 的所有同胞元素
-  $(document).ready(function(){  
-    $("h2").siblings(); 
-  });
-  ```
-  
-  也可以<font color=FF0000>使用可选参数</font>来<font color=FF0000>过滤</font>对同胞元素的搜索
-  
-  ```js
-  //返回属于 <h2> 的同胞元素的所有 <p> 元素
-  $(document).ready(function(){  
-    $("h2").siblings("p"); 
-  });
-  ```
-
-- **next()**：<font color=FF0000>返回被选元素的**下一个同胞元素**</font>。该方法<font color=FF0000>只返回一个元素</font>。示例：
-  
-  ```js
-  //返回 <h2> 的下一个同胞元素
-  $(document).ready(function(){  
-    $("h2").next(); 
-  });
-  ```
-
-- **nextAll()**：返回<font color=FF0000>被选元素的所有跟随的同胞元素</font>（<mark>即被选元素<font color=FF0000>右边的</font>、<font color=FF0000>所有兄弟节点（**不包含兄弟节点的子节点**）</font></mark>）。示例：
-  
-  ```js
-  //返回 <h2> 的所有跟随的同胞元素
-  $(document).ready(function(){  
-    $("h2").nextAll(); 
-  });
-  ```
-
-- **nextUntil()**：返回<font color=FF0000>介于两个给定参数之间（不包含边界的两个元素）的所有跟随的同胞元素</font>。示例：
-  
-  ```js
-  //返回介于 <h2> 与 <h6> 元素之间的所有同胞元素
-  $(document).ready(function(){  
-    $("h2").nextUntil("h6"); 
-  });
-  ```
-
-- **prev()**：和next()类似，方向相反
-
-- **prevAll()**：和nextAll()类似，方向相反
-
-- **prevUntil()**：和nextUtil()类似，方向相反
-
-#### jQuery 遍历- 过滤
-
-- 三个最基本的过滤方法是：**first(), last() 和 eq()**，它们允许您<font color=FF0000>基于其在一组元素中的位置来**选择一个特定的元素**</font>。
-  
-  - **first()**：返回被选元素（被过滤返回的元素列表）的首个元素。示例：
-    
-    ```js
-    //选取首个 <div> 元素内部的第一个 <p> 元素
-    $(document).ready(function(){  
-      $("div p").first(); 
-    });
-    ```
-  
-  - **last()**：返回被选元素的最后一个元素。示例：
-    
-    ```js
-    //选择最后一个 <div> 元素中的最后一个 <p> 元素
-    $(document).ready(function(){  
-      $("div p").last(); 
-    });
-    ```
-  
-  - **eq()**：返回被选元素中<font color=FF0000>带有指定**索引号**的元素</font>。**<font color=FF0000>索引号从 0 开始</font>**，因此首个元素的索引号是 0 而不是 1。示例：
-    
-    ```js
-    //选取第二个 <p> 元素（索引号 1）
-    $(document).ready(function(){  
-      $("p").eq(1); 
-    });
-    ```
-
-- 其他过滤方法，比如 **filter() 和 not()** 允许您<font color=FF0000>选取匹配或不匹配某项指定标准的元素</font>。
-  
-  - **filter()**：允许<font color=FF0000>**自定义规定**一个标准，不匹配这个标准的元素会被从集合中删除，匹配的元素会被返回</font>。
-    
-    ```js
-    //返回带有类名 "url" 的所有 <p> 元素
-    $(document).ready(function(){  
-      $("p").filter(".url"); 
-    });
-    ```
-  
-  - **not()**：返回不匹配标准的所有元素。<font color=FF0000>**not() 方法与 filter() 相反**</font>。
-    
-    ```js
-    //返回不带有类名 "url" 的所有 <p> 元素
-    $(document).ready(function(){  
-      $("p").not(".url"); 
-    });
-    ```
-
-#### AJAX
-
-AJAX = 异步 JavaScript 和 XML（Asynchronous JavaScript and XML）。
-
-- **jQuery load() **：load() 方法从服务器加载数据，并把返回的数据放入被选元素中。
-  
-  **语法:**
-  
-  ```js
-  $(selector).load(URL, data, callback);
-  ```
-  
-  - **URL：**<font color=FF0000>必需</font>，规定您希望加载的 URL资源；也可以把 jQuery 选择器添加到 URL 参数。
-  
-  - **data：**<font color=FF0000>可选</font>，<font color=FF0000>规定与请求一同发送的查询字符串键/值对集合</font>。
-  
-  - **callback：**<font color=FF0000>可选</font>，是 load() 方法完成后所执行的函数名称。
-    
-    回调函数可以设置不同的参数：
-    
-    - **responseTxt** - 包含调用成功时的结果内容
-    - **statusTXT** - 包含调用的状态
-    - **xhr** - 包含 XMLHttpRequest 对象
-
-#### jQuery - AJAX get() 和 post() 方法
-
-jQuery get() 和 post() 方法用于通过 HTTP GET 或 POST 请求从服务器请求数据。
-
-- **GET** - 从指定的资源<font color=FF0000>**请求**</font>数据，基本上用于从服务器获得（取回）数据。另外，<font color=FF0000>GET 方法**可能返回**缓存数据</font>。
-  
-  **jQuery $.get() 方法**：通过 HTTP GET 请求从服务器上请求数据。语法：
-  
-  ```js
-  $.get(URL,callback);
-  ```
-  
-  - **URL**：<font color=FF0000>必需</font>，参数规定您<font color=FF0000>希望请求的 URL</font>。
-  - **callback**：<font color=FF0000>可选</font>，参数是<font color=FF0000>**请求成功后**所执行的函数名</font>。
-
-- **POST** - 向指定的资源<font color=FF0000>**提交**</font>要处理的数据，可用于从服务器获取数据。不过，<font color=FF0000>POST 方法**不会缓存**数据</font>，并且<font color=FF0000>**常用于连同请求一起发送数据**</font>。
-  
-  **jQuery $.post() 方法**：通过 HTTP POST 请求向服务器提交数据。**语法:**
-  
-  ```js
-  $.post(URL,data,callback);
-  ```
-  
-  - **URL**：<font color=FF0000>必需</font>，参数规定您希望请求的 URL。
-  - **data**：可选，参数规定<font color=FF0000>连同请求发送的数据</font>。
-  - **callback**：可选，参数是请求成功后所执行的函数名。
-
-#### jQuery - noConflict() 方法
-
-如果其他 JavaScript 框架也使用 $ 符号作为简写怎么办？
-
-其中某些框架也使用 $ 符号作为简写（就像 jQuery），如果您在用的两种不同的框架正在使用相同的简写符号，有可能导致脚本停止运行。<mark>jQuery 的团队考虑到了这个问题，并实现了 noConflict() 方法</mark>。示例如下：
-
-```js
-$.noConflict();
-jQuery(document).ready(function(){
-  jQuery("button").click(function(){
-    jQuery("p").text("jQuery 仍然在工作!");
-  });
-});
-```
-
-如果你的 jQuery 代码块使用 $ 简写，并且您不愿意改变这个快捷方式，那么您可以把 $ 符号作为变量传递给 ready 方法。这样就可以在函数内使用 $ 符号了 - 而在函数外，依旧不得不使用 "jQuery"
-
-示例如下：（注意functoin中的$）
-
-```js
-$.noConflict();
-jQuery(document).ready(function($){
-  $("button").click(function(){
-    $("p").text("jQuery 仍然在工作!");
-  });
-});
-```
-
-#### 总结
-
-```js
-$.ajax({name:value, name:value, ... })
-```
-
-该参数规定 AJAX 请求的一个或多个名称/值对。
-
-下面的表格中列出了可能的名称/值：
-
-| 名称                           | 值/描述                                                       |
-|:---------------------------- |:---------------------------------------------------------- |
-| async                        | 布尔值，表示请求是否异步处理。默认是 true。                                   |
-| beforeSend(*xhr*)            | 发送请求前运行的函数。                                                |
-| cache                        | 布尔值，表示浏览器是否缓存被请求页面。默认是 true。                               |
-| complete(*xhr,status*)       | 请求完成时运行的函数（在请求成功或失败之后均调用，即在 success 和 error 函数之后）。         |
-| contentType                  | 发送数据到服务器时所使用的内容类型。默认是："application/x-www-form-urlencoded"。 |
-| context                      | 为所有 AJAX 相关的回调函数规定 "this" 值。                               |
-| data                         | 规定要发送到服务器的数据。                                              |
-| dataFilter(*data*,*type*)    | 用于处理 XMLHttpRequest 原始响应数据的函数。                             |
-| dataType                     | 预期的服务器响应的数据类型。                                             |
-| error(*xhr,status,error*)    | 如果请求失败要运行的函数。                                              |
-| global                       | 布尔值，规定是否为请求触发全局 AJAX 事件处理程序。默认是 true。                      |
-| ifModified                   | 布尔值，规定是否仅在最后一次请求以来响应发生改变时才请求成功。默认是 false。                  |
-| jsonp                        | 在一个 jsonp 中重写回调函数的字符串。                                     |
-| jsonpCallback                | 在一个 jsonp 中规定回调函数的名称。                                      |
-| password                     | 规定在 HTTP 访问认证请求中使用的密码。                                     |
-| processData                  | 布尔值，规定通过请求发送的数据是否转换为查询字符串。默认是 true。                        |
-| scriptCharset                | 规定请求的字符集。                                                  |
-| success(*result,status,xhr*) | 当请求成功时运行的函数。                                               |
-| timeout                      | 设置本地的请求超时时间（以毫秒计）。                                         |
-| traditional                  | 布尔值，规定是否使用参数序列化的传统样式。                                      |
-| type                         | 规定请求的类型（GET 或 POST）。                                       |
-| url                          | 规定发送请求的 URL。默认是当前页面。                                       |
-| username                     | 规定在 HTTP 访问认证请求中使用的用户名。                                    |
-| xhr                          | 用于创建 XMLHttpRequest 对象的函数。                                 |
-
-摘自：[jQuery ajax() 方法](https://www.runoob.com/jquery/ajax-ajax.html)
-
-//todo
-
-`.toggleClass()`
-
-`.data()`

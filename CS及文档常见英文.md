@@ -92,7 +92,7 @@
 
 - **walkthrough**：演练
 
-- **casting function**：转型函数。👀 关于翻译，在 [[JS及其相关库备忘录#包装类#JS 中的“原始值包装类型” ( Primitive wrapper types )]] 中有过说明
+- **casting function**：转型函数。👀 关于翻译，在 [[JavaScript备忘录#包装类#JS 中的“原始值包装类型” ( Primitive wrapper types )]] 中有过说明
 
 - **DRY**：即：Don't Repeat Yourself 。不重复（原则）
 
