@@ -647,6 +647,8 @@ npm install @types/jquery --save-dev
 
 
 
+
+
 ## 《TypeScript 编程》笔记
 
 
@@ -1397,18 +1399,22 @@ type res2 = isTwo<2>
 
 ##### 推导：infer
 
-<font color=FF0000 size=4>**如何提取类型的一部分呢？答案是 infer**</font>
+<font color=fuchsia>**如何提取类型的一部分呢？答案是 infer**</font>
 
-> 👀 补充
+> 💡 补充
 >
-> infer 关键字，可以<font color=FF0000>推断一个类型变量</font>，<font color=FF0000>高效地**对类型进行「模式匹配」**</font> 。但是，这个（模式匹配出的）<font color=FF0000>**类型变量只能在 true 的分支中使用**</font>。（学习自：[白话typescript中的【extends】和【infer】](https://juejin.cn/post/6844904146877808653)）
+> infer 关键字，可以<font color=FF0000>推断一个类型变量</font>，<font color=FF0000>高效地**对类型进行「模式匹配」**</font> 。但是，这个（模式匹配出的）<font color=FF0000>**类型变量只能在 true 的分支中使用**</font>。
+> 
+> 学习自：[白话typescript中的【extends】和【infer】](https://juejin.cn/post/6844904146877808653)
+> 
+> 另外，infer 在官方文档中也有介绍，也做了笔记；见：[[#Conditional Types#infer]]
 
 比如提取元组类型的第一个元素：
 
 ```typescript
 type First<Tuple extends unknown[]> = Tuple extends [infer T,...infer R] ? T : never;
-// 注：这里的 Tuple 是范型的“类型变量”，可以起其他名字。另外，经过实验发现：类型编程中似乎没有 tuple 这个类型。
-// 注：这里有语句 infer T 和 infer R，infer variable 相当于 声明了一个变量，这个变量可以在后面使用（比如 ? 后面返回的 T ）。学习自：https://juejin.cn/post/6844904146877808653
+// 👀 这里的 Tuple 是范型的“类型变量”，可以起其他名字。另外，经过实验发现：类型编程中似乎没有 tuple 这个类型。
+// 👀 这里有语句 infer T 和 infer R，infer variable 相当于 声明了一个变量，这个变量可以在后面使用（比如 ? 后面返回的 T ）。学习自：https://juejin.cn/post/6844904146877808653
 
 type res = First<[1,2,3]>;
 ```
@@ -2704,6 +2710,8 @@ type Fibonacci<Num extends number> = FibonacciLoop<[1], [], [], Num>;
 
 #### 分布式条件类型 ( Distributive conditional types )
 
+> 💡 分布式条件类型在官方文档中也有介绍，也做了笔记，见 [[#Conditional Types#Distributive Conditional Types]]
+
 当 <font color=FF0000>类型参数为联合类型</font>，并且在 <font color=FF0000 size=4>条件类型</font> （ 👀 即 `extends ? :` 。另外，这个很重要，下面 [[#IsUnion]] 中会用到这个特性 ）左边直接引用该类型参数的时候：<font color=FF0000>TypeScript 会把 <font size=4>每一个元素单独传入来做类型运算，最后再合并成联合类型</font></font>，这种语法叫做「分布式条件类型」。
 
 比如这样一个联合类型：
@@ -2855,7 +2863,7 @@ type bemResult = BEM<'guang', ['aaa', 'bbb'], ['warning', 'success']>;
 
 而<font color=FF0000>**如果是联合类型就不用递归遍历了**</font>，因为联合类型遇到字符串也是会单独每个元素单独传入做处理。
 
-<font color=FF0000 size=4>**数组转联合类型可以这样写：**</font>
+<font color=fuchsia>**数组转联合类型可以这样写：**</font>
 
 ```ts
 type union = ['foo', 'bar'][number]
@@ -3583,11 +3591,14 @@ type ThisParameterType<T> =
 >
 > 这里就说到了 TS 中的 typeof 和 ES 中的 typeof 是有区别的：除了 ES 中的的功能外，TS 的 typeof 还可以在类型编程中”提取类型“，无论是上面的 `typeof foo` 获得 `() => string` 类型，还是 `ReturnType<typeof foo>` 获取到返回值类型 string。另外，因为“类型编程”是在“编译期”完成，所以 TS typeof 的 ”提取类型“ 都是在“编译期”完成的。而 ES 的 typeof 是在“运行时”完成。
 >
-> 关于 TS 的 typeof 可以参考： [TypeScript基础之typeof 类型操作符](https://segmentfault.com/a/1190000042036809)
-
+> 💡 关于 TS 的 typeof 可以参考： [TypeScript基础之typeof 类型操作符](https://segmentfault.com/a/1190000042036809) ；另外 TS handbook 中也说的很详细，对于重要部分，在下面做了笔记，见：[[#官方文档阅读#Typeof Type Operator]]
 #### OmitThisParameter
 
-提取出 this 的类型之后，自然可以构造一个新的；比如<font color=FF0000>删除 this 的类型，可以用 OmitThisParameter </font>（**注：**如下截图，`say(this: Person, age: number` 被 OmitThisParameter 处理后， this 参数被去掉 ）。它的源码是这样的：
+提取出 this 的类型之后，自然可以构造一个新的；比如<font color=FF0000>删除 this 的类型，可以用 OmitThisParameter </font>
+
+> 👀 如下截图，`say(this: Person, age: number` 被 OmitThisParameter 处理后， this 参数被去掉
+
+它的源码是这样的：
 
 ```ts
 type OmitThisParameter<T> = 
@@ -3600,7 +3611,9 @@ type OmitThisParameter<T> =
 
 类型参数 T 为待处理的类型。
 
-用 ThisParameterType 提取 T 的 this 类型，如果提取出来的类型是 unknown 或者 any，那么 `unknown extends ThisParameterType ` 就成立，也就是没有指定 this 的类型，所以直接返回 T 。否则，就通过模式匹配提取参数和返回值的类型到 infer 声明的局部变量 A 和 R 中，用它们构造新的函数类型返回（**注：**没搞懂，this 的参数去哪了？TODO ）。
+用 ThisParameterType 提取 T 的 this 类型，如果提取出来的类型是 unknown 或者 any，那么 `unknown extends ThisParameterType ` 就成立，也就是没有指定 this 的类型，所以直接返回 T 。否则，就通过模式匹配提取参数和返回值的类型到 infer 声明的局部变量 A 和 R 中，用它们构造新的函数类型返回
+
+> 👀 没搞懂，this 的参数去哪了？TODO
 
 这样，就实现了去掉 this 类型的目的：
 
@@ -3668,7 +3681,7 @@ Record 用于创建索引类型，传入 key 和值的类型：
 
 ```typescript
 type Record<K extends keyof any, T> = {
-    [P in K] : T; // 注：如下示例的截图，参数 K 可能是个 “联合类型”，所以，这里用了 [P in K]
+    [P in K] : T; // 👀 如下示例的截图，参数 K 可能是个 “联合类型”，所以，这里用了 [P in K]
 };
 ```
 
@@ -3676,7 +3689,7 @@ type Record<K extends keyof any, T> = {
 
 <img src="https://s2.loli.net/2022/05/05/SuHeYaRypEUBr62.png" alt="image-20220505115217239" style="zoom:50%;" />
 
-不过，<font color=FF0000 size=4>**如果开启了 keyOfStringsOnly 的编译选项，它就只是 stirng 了**</font>：
+不过，<font color=fuchsia>**如果开启了 keyOfStringsOnly 的编译选项，它就只是 stirng 了**</font>：
 
 ```json
 // tsconfig.json
@@ -3838,11 +3851,11 @@ type Uncapitalize<S extends string> = intrinsic;
 
 有的情况下不用类型编程也行，比如：返回值可以是一个字符串类型 string ，但<font color=FF0000>用了类型编程的话，可能 **能更精确的提示出是什么 string**，也就是具体的字符串字面量类型，那 **类型提示的精准度自然就提高了一个级别**，体验也会更好</font>。
 
-<mark>这就是类型编程的意义</mark>：**类型和类型之间有关系的场景，必然要用类型编程做一些运算。有的场景下可以不用类型编程，但是 用了能够有更精准的类型提示和检查。**
+<font color=dodgerBlue>这就是类型编程的意义</font>：**类型和类型之间有关系的场景，必然要用类型编程做一些运算。有的场景下可以不用类型编程，但是 用了能够有更精准的类型提示和检查。**
 
 #### 以 ParseQueryString 为例
 
-前面我们实现了一个复杂的高级类型 ParseQueryString [[#类型体操顺口溜#练习 ParseQueryString]] ，用到了提取、构造、递归的套路。<mark>这么复杂的高级类型能用在哪里呢？有什么意义呢？</mark>
+前面我们实现了一个复杂的高级类型 ParseQueryString [[#类型体操顺口溜#练习 ParseQueryString]] ，用到了提取、构造、递归的套路。<font color=dodgerBlue>这么复杂的高级类型能用在哪里呢？有什么意义呢？</font>
 
 首先，我们写一个 JS 函数，实现对 query string 的 parse，如果有同名的参数就合并，大概实现是这样的：
 
@@ -4616,7 +4629,209 @@ babel 不支持 `const enum`（会作为 enum 处理），不支持 namespace �
 那用 babel 编译，就不做类型检查了么？<font color=FF0000>**可以用 `tsc --noEmit` 来做类型检查，加上 noEmit 选项就不会生成代码了**</font>。如果你要生成 d.ts，也要单独跑下 tsc 编译。
 
 
+
 ## 官方文档阅读
+
+
+
+#### Generic
+
+Note that <font color=red>**it is not possible to create generic enums and namespaces**</font>.
+
+##### Generic Classes
+
+As we cover in [our section on classes](https://www.typescriptlang.org/docs/handbook/2/classes.html), a class has two sides to its type: the static side and the instance side. <font color=red>Generic classes are **only generic over their instance side** rather than their static side</font>, so when working with classes, <font color=red>static members **can not use** the class’s type parameter</font>.
+
+##### Generic Constraints
+
+If you remember from an earlier example（👀 如下截图 ）, you may sometimes want to write a generic function that works on a set of types where you have *some* knowledge about what capabilities that set of types will have. In our `loggingIdentity` example, we wanted to be able to access the `.length` property of `arg` , <font color=LightSeaGreen>but the compiler could not prove that every type had a `.length` property</font>, so <font color=red>it warns us that we can’t make this assumption</font>.
+
+<img src="https://s2.loli.net/2023/03/31/BZJuqtiM2CIfbY9.png" alt="image-20230330225703525" style="zoom:50%;" />
+
+Instead of working with any and all types, we’d like to constrain this function to work with any and all types that *also* have the `.length` property. <font color=dodgerBlue>As long as the type has this member, we’ll allow it</font>, but it’s <font color=dodgerBlue>required to have at least this member</font>. To do so, we must list our requirement as a constraint on what `Type` can be.
+
+To do so, we’ll <font color=red>create an interface that describes our constraint</font>. Here, we’ll create an interface that has a single `.length` property and then we’ll use this interface and the `extends` keyword to denote our constraint:
+
+```ts
+interface Lengthwise {
+  length: number;
+}
+ 
+function loggingIdentity<Type extends Lengthwise>(arg: Type): Type {
+  console.log(arg.length); // Now we know it has a .length property, so no more error
+  return arg;
+}
+```
+
+Because the generic function is now constrained, it will no longer work over any and all types:
+
+<img src="https://s2.loli.net/2023/03/31/K32jhbOoPJyvEZz.png" alt="image-20230331004952318" style="zoom:45%;" />
+
+Instead, we need to pass in values whose type has all the required properties:
+
+```ts
+loggingIdentity({ length: 10, value: 3 });
+```
+
+##### Using Class Types in Generics
+
+When creating factories in TypeScript using generics, it is necessary to refer to class types by their constructor functions. For example,
+
+```ts
+function create<Type>(c: { new (): Type }): Type {
+  return new c();
+}
+```
+
+A more advanced example uses the prototype property to infer and constrain relationships between the constructor function and the instance side of class types.
+
+```ts
+class BeeKeeper {
+  hasMask: boolean = true;
+}
+ 
+class ZooKeeper {
+  nametag: string = "Mikle";
+}
+ 
+class Animal {
+  numLegs: number = 4;
+}
+ 
+class Bee extends Animal {
+  keeper: BeeKeeper = new BeeKeeper();
+}
+ 
+class Lion extends Animal {
+  keeper: ZooKeeper = new ZooKeeper();
+}
+ 
+function createInstance<A extends Animal>(c: new () => A): A {
+  return new c();
+}
+ 
+createInstance(Lion).keeper.nametag;
+createInstance(Bee).keeper.hasMask;
+```
+
+摘自：[TS handbook - Generics](https://www.typescriptlang.org/docs/handbook/2/generics.html)
+
+
+
+#### Typeof Type Operator
+
+<font color=red>If we try to use `ReturnType` on a **function name**</font> , we see an instructive error:
+
+<img src="https://s2.loli.net/2023/03/31/VvAm9js1lfLRd3B.png" alt="image-20230331012002664" style="zoom: 50%;" />
+
+Remember that *values* and *types* aren’t the same thing.
+
+To refer to the *type* that the *value `f`* has, we use `typeof` :
+
+<img src="https://s2.loli.net/2023/03/31/raqmAYbNlZ2FiCT.png" alt="image-20230331012115430" style="zoom:50%;" />
+
+##### Limitations
+
+<font color=dodgerBlue size=4>TypeScript **intentionally limits the sorts of expressions you can use `typeof` on**</font>.
+
+Specifically, <font color=fuchsia>it’s only legal to use `typeof` on identifiers</font> (i.e. variable names) <font color=fuchsia>or their properties</font>.
+
+This helps avoid the confusing trap of writing code you think is executing, but isn’t:
+
+<img src="https://s2.loli.net/2023/03/31/CTgHIFNLG1pintS.png" alt="image-20230331012253193" style="zoom:50%;" />
+
+摘自：[TS handbook - Typeof Type Operator](https://www.typescriptlang.org/docs/handbook/2/typeof-types.html)
+
+
+
+#### Indexed Access Types
+
+We can use an *indexed access type* to <font color=red>look up a specific property on another type</font>:
+
+<img src="https://s2.loli.net/2023/03/31/QKons3y2UeJrGEh.png" alt="image-20230331014535010" style="zoom:50%;" />
+
+<font color=dodgerBlue>The indexing type **is itself a type**</font>, so we <font color=red>**can use unions, `keyof`, or other types entirely**</font> :
+
+<img src="https://s2.loli.net/2023/03/31/F4Ig1rjyQRCzUAV.png" alt="image-20230331014721399" style="zoom:48%;" />
+
+You’ll even see an error if you try to index a property that doesn’t exist:
+
+<img src="https://s2.loli.net/2023/03/31/eLJNkq5hIHC1PXo.png" alt="image-20230331014809650" style="zoom:50%;" />
+
+Another example of indexing with an arbitrary type is <font color=fuchsia>**using `number` to get the type of an array’s elements**</font>（ 👀 见下面的神光教程的补充 💡）. We can combine this with `typeof` to conveniently capture the element type of an array literal:
+
+<img src="https://s2.loli.net/2023/03/31/KGbgVdmDe5OPHhv.png" alt="image-20230331014934299" style="zoom:48%;" />
+
+> 👀 上面 `type Age = typeof MyArray[number]["age"]` 的写法，之前完全没有见过；值得注意。
+
+> 💡 上面神光的教程中，`[number]` 有这样的用法，这里并没有讲到；这里做下补充：
+>
+> <font color=fuchsia>**数组转联合类型可以这样写：**</font>
+>
+> ```ts
+> type union = ['foo', 'bar'][number]
+> ```
+>
+> <img src="https://s2.loli.net/2022/05/07/mozrZSqcPNkYMDh.png" alt="image-20220504183301073" style="zoom:50%;" />
+
+<font color=fuchsia>You **can only use types when indexing**</font> , meaning you can’t use a `const` to make a variable reference:
+
+<img src="https://s2.loli.net/2023/03/31/92sKQj1HgxOn8Mr.png" alt="image-20230331020443466" style="zoom:48%;" />
+
+However, you can use a type alias for a similar style of refactor:
+
+```ts
+type key = "age";
+type Age = Person[key];
+```
+
+摘自：[TS handbook - Indexed Access Types](https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html)
+
+
+
+#### Conditional Types
+
+##### infer
+
+Conditional types <font color=dodgerBlue>provide us with a way to **infer from types we compare against in the true branch** using the `infer` keyword</font>. For example, we could have inferred the element type in `Flatten` instead of fetching it out “manually” with an indexed access type（👀 如何 manually 的见下面的注）:
+
+```ts
+type Flatten<Type> = Type extends Array<infer Item> ? Item : Type;
+```
+
+> 👀 没有使用 infer 的手动写法（也无法获得真正的类型）：
+>
+> ```ts
+> type Flatten<T> = T extends any[] ? T[number] : T;
+> ```
+
+Here, we <font color=red>used the `infer` keyword to declaratively introduce a new generic type variable named `Item`</font> instead of specifying how to retrieve the element type of `T` within the true branch. <font color=LightSeaGreen>This frees us from having to think about how to dig through and probing apart the structure of the types we’re interested in</font>.
+
+> 👀 这里省略了 通过 infer 实现的 GetReturnType 的定义和实现
+
+<font color=dodgerBlue>When inferring from a type with **multiple call signatures**</font> (such as the type of an overloaded function), <font color=red>inferences are made from the *last* signature</font> (which, presumably, is the most permissive catch-all case). It is not possible to perform overload resolution based on a list of argument types.
+
+<img src="https://s2.loli.net/2023/03/31/cNu1IoqCrVdaUgb.png" alt="image-20230331032339262" style="zoom:48%;" />
+
+##### Distributive Conditional Types
+
+<font color=dodgerBlue>When **conditional types act on a generic type**</font>, they <font color=red>**become *distributive* when given a union type**</font>. For example, take the following:
+
+```ts
+type ToArray<Type> = Type extends any ? Type[] : never;
+```
+
+<font color=dodgerBlue>If we plug a union type into `ToArray`</font> , then the <font color=red>conditional type will **be applied to each member of that union**</font>.
+
+<img src="https://s2.loli.net/2023/03/31/RP5AFQdMkCecvbK.png" alt="image-20230331032952530" style="zoom: 48%;" />
+
+What happens here is that `StrArrOrNumArr `distributes on: `string | number` , and maps over each member type of the union, to what is effectively: `ToArray<string> | ToArray<number>;` , which leaves us with: `string[] | number[];` 。
+
+Typically, distributivity is the desired behavior（期望的行为）. <font color=dodgerBlue>**To avoid that behavior**</font>, you can <font color=fuchsia>**surround each side of the `extends` keyword with square brackets**</font>.
+
+<img src="https://s2.loli.net/2023/03/31/bLHloJTk6sUZfFB.png" alt="image-20230331033233966" style="zoom:50%;" />
+
+摘自：[TS handbook - Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html)
 
 
 
@@ -4674,7 +4889,7 @@ let x = "hello" as const;
 
 // Type 'readonly [10, 20]'
 let y = [10, 20] as const;
-ƒ
+
 // Type '{ readonly text: "hello" }'
 let z = { text: "hello" } as const;
 ```
@@ -4717,14 +4932,14 @@ if (false) {
 }
 ```
 
-> 👀 注：这里上面注释中的 “Unreachable code error” 很重要，同时也容易忽略，即：`@ts-ignore` 仅会对不会执行的错误代码进行忽略。如果会执行，也会报错。比如如下代码（ log 写错），一定会报错
+> 👀 这里上面注释中的 “Unreachable code error” 很重要，同时也容易忽略，即：`@ts-ignore` 仅会对不会执行的错误代码进行忽略。如果会执行，也会报错。比如如下代码（ log 写错），一定会报错
 >
 > ```ts
 > // @ts-ignore
 > console.logg('hello')
 > ```
 
-A `// @ts-ignore` comment <font color=fuchsia>suppresses **all errors**</font> that originate on the <font color=fuchsia>**following line**</font>（ 👀 注：接下来的**一行**，即无法作用于代码块）. It is <font color=red>recommended practice to **have the remainder of the comment following `@ts-ignore` explain which error is being suppressed**</font> （译：建议实践中在 `@ts-ignore ` 之后添加相关提示，解释忽略了什么错误。👀 注：如上示例代码）.
+A `// @ts-ignore` comment <font color=fuchsia>suppresses **all errors**</font> that originate on the <font color=fuchsia>**following line**</font>（ 👀 注：接下来的**一行**，即无法作用于代码块）. It is <font color=red>recommended practice to **have the remainder of the comment following `@ts-ignore` explain which error is being suppressed**</font> （译：建议实践中在 `@ts-ignore ` 之后添加相关提示，解释忽略了什么错误。👀 如上示例代码）.
 
 Please note that this comment <font color=red>only suppresses the error reporting</font>（译：仅会隐藏报错）, and we <font color=red>recommend you use this comments *very sparingly*</font>.
 
@@ -4823,7 +5038,7 @@ User 接口为 {
 - Top type：被称为通用父类型，也就是能够包含所有值的类型。
 - Bottom type：代表没有值的类型，它也被称为**零**或**空**类型，是所有类型的子类型。
 
-按照类型系统的解释，<font color=dodgerBlue>在 TypeScript 3.0 中，有两个 top type</font>（any 和 unknown） 和<font color=dodgerBlue>一个 bottom type</font>（never）。
+按照类型系统的解释，<font color=dodgerBlue>在 TypeScript 3.0 中，有两个 top type</font>（any 和 unknown） 和<font color=dodgerBlue>一个 bottom type</font> ( never )。
 
 ##### unknown
 
@@ -4961,7 +5176,7 @@ listen();
 console.log("!!!"); // Unreachable code detected.ts(7027)
 ```
 
-通常来说，我们手动标记函数返回值为 never 类型，来帮助编译器识别「unreachable code」，并帮助我们收窄（narrow）类型。下面是一个没标记的例子：
+通常来说，我们手动标记函数返回值为 never 类型，来帮助编译器识别「unreachable code」，并帮助我们收窄 ( narrow ) 类型。下面是一个没标记的例子：
 
 ```ts
 function throwError() {
@@ -4975,7 +5190,7 @@ function firstChar(msg: string | undefined) {
 }
 ```
 
-由于编译器不知道 throwError 是一个无返回的函数，所以 `throwError()` 之后的代码被认为在任意情况下都是可达的，让编译器误会 msg 的类型是 string | undefined。
+由于编译器不知道 throwError 是一个无返回的函数，所以 `throwError()` 之后的代码被认为在任意情况下都是可达的，让编译器误会 msg 的类型是 `string | undefined`。
 
 <font color=red>**这时候如果标记上了 never 类型，那么 msg 的类型将会在空检查之后收窄为 string**</font>：
 

@@ -524,6 +524,24 @@
 
 - **comply** ：遵守
 
+- **snapshot** ：快照
+
+- **cover** ：报道、**介绍**、**讲述**。cover 的这种含义是在 [ts handbook - generic # Generic Classes](https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-classes) 中看到的：
+
+  > As we cover in [our section on classes](https://www.typescriptlang.org/docs/handbook/2/classes.html), a class has two sides to its type: the static side and the instance side. 
+
+- sort ：种类，类别，分类。在编程 sort 意为“排序”，但是他还有其他意思。
+
+  > TypeScript intentionally limits the sorts of expressions you can use `typeof` on.
+
+- **introspected** ：内省的
+
+- **retrieve** ：检索
+
+- **probe** ：探测
+
+- **plug** ：插头
+
 
 
 

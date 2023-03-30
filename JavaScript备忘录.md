@@ -31,8 +31,8 @@ element.src = "/images/pic_bulboff.gif";
 ##### 改变 HTML 样式
 
 ```js
-x = document.getElementById("demo")  //找到元素 
-x.style.color = "#ff0000";           //改变样式
+x = document.getElementById("demo")  // 找到元素 
+x.style.color = "#ff0000";           // 改变样式
 ```
 
 ##### 设置 HTML 样式
@@ -3896,7 +3896,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                                                       
+  >                                                                                                                                                                                                                                                                                         
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3915,7 +3915,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                                                                       
+  >                                                                                                                                                                                                                                                                                         
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -6799,7 +6799,7 @@ scrollIntoView(scrollIntoViewOptions)
     >
     > - `smooth` : scrolling should animate smoothly
     > - `instant` : <font color=red>scrolling should happen instantly in a single jump</font>
-    > - `auto` : scroll behavior is determined by the computed value of [`scroll-behavior`](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior)
+    > - `auto` : scroll behavior is determined by the computed value of `scroll-behavior`
 
   - `block` 可选。<font color=red>定义垂直方向的对齐</font>，`start`、`center`、`end` 或 `nearest` 之一。默认为 `start`。
 
