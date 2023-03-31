@@ -14,7 +14,7 @@
 
 #### TS 介绍
 
-##### TypeScript是静态语言
+##### TypeScript 是静态语言
 
 类型系统<font color=FF0000> 按照「类型检查的时机」来分类，可以分为动态类型和静态类型</font>。
 
@@ -31,9 +31,9 @@
 
 TypeScript 是完全兼容 JavaScript 的，它不会修改 JavaScript 运行时的特性，所以它们都是弱类型。
 
-**补充：**
+##### 各种语言强弱 / 静动态
 
-![20191031230816827](https://i.loli.net/2021/08/31/mvDCBdjIHUfTO8V.png)
+![](https://i.loli.net/2021/08/31/mvDCBdjIHUfTO8V.png)
 
 ##### TS的类型和编译
 
@@ -1489,6 +1489,8 @@ type MapTypeRes = MapType<{a: 1, b: 2}>;
 
 <font color=FF0000 size=4>**除了值可以变化，索引也可以做变化**</font>；用 `as` 运算符，叫做「重映射」。
 
+> 💡 TS 文档中也对 `as` 运算符做了介绍，这里也做了笔记；见 [[#Mapped Types#Key Remapping via `as`]]
+
 ```typescript
 type MapType<T> = {
     [
@@ -1696,7 +1698,9 @@ type GetReturnType<Func extends Function> =
 
 Func 和模式类型做匹配，提取返回值到通过 infer 声明的局部变量 ReturnType 里返回。
 
-参数类型可以是任意类型，也就是 any[]（<font color=FF0000>**注意，这里不能用 unknown，因为参数类型是要赋值给别的类型的，而 unknown 只能用来接收类型，所以用 any**</font> ）。**注：**这里在写的时候，使用 unknown 了
+参数类型可以是任意类型，也就是 any[]（<font color=FF0000>**注意，这里不能用 unknown，因为参数类型是要赋值给别的类型的，而 unknown 只能用来接收类型，所以用 any**</font> ）。
+
+> 👀 这里在写的时候，使用 unknown 了
 
 <img src="https://s2.loli.net/2022/05/03/Ts86t1wmAFi3Vgd.png" alt="image-20220503013038807" style="zoom:50%;" />
 
@@ -3649,7 +3653,7 @@ type Required<T> = {
 
 #### Readonly
 
-同样的方式，也可以添加 readonly 的修饰（**注：**Readonly 的 `o` 不大写）：
+同样的方式，也可以添加 readonly 的修饰（👀 Readonly 的 `o` 不大写）：
 
 ```ts
 type Readonly<T> = {
@@ -3664,8 +3668,8 @@ type Readonly<T> = {
 映射类型的语法<font color=FF0000>用于构造新的索引类型</font>，在构造的过程中可以对索引和值做一些修改或过滤（**注：**如下面的图，Pick 的第二个类型参数可以是一个「联合类型」 ）。比如可以用 Pick 实现过滤：
 
 ```typescript
-type Pick<T, K extends keyof T> = { // 注：注意这里的约束，extends keyof T
-    [P in K]: T[P]; // 注：这里 [ P in K ] 同样要注意，没见过
+type Pick<T, K extends keyof T> = { // 👀 注意这里的约束，extends keyof T
+    [P in K]: T[P]; // 👀 这里 [ P in K ] 同样要注意，没见过
 };
 ```
 
@@ -3701,7 +3705,7 @@ type Record<K extends keyof any, T> = {
 
 <img src="https://s2.loli.net/2022/05/05/eMpx3nf79SdEkoa.png" alt="image-20220505115451984" style="zoom:50%;" />
 
-<font color=FF0000>**用 `keyof any`是动态获取的，比直接写死 string | number | symbol 更好**</font>。
+<font color=FF0000>**用 `keyof any`是动态获取的，比直接写死 `string | number | symbol` 更好**</font>。
 
 继续讲 Record 这个类型，它用映射类型的语法创建了新的索引类型，索引来自 K，也就是 `P in K` ；值是传入的 T。这样就用 K 和 T 构造出了对应的索引类型。
 
@@ -3737,7 +3741,7 @@ type Extract<T, U> = T extends U ? T : never;
 type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 ```
 
-类型参数 T 为待处理的类型，类型参数 K 为索引允许的类型（ string | number | symbol 或者 string ）。
+类型参数 T 为待处理的类型，类型参数 K 为索引允许的类型（ `string | number | symbol` 或者 string ）。
 
 <font color=FF0000>通过 Pick 取出一部分索引构造成新的索引类型，这里 **用 Exclude 把 K 对应的索引去掉**，把剩下的索引保留</font>。这样就实现了删除一部分索引的目的：
 
@@ -4832,6 +4836,99 @@ Typically, distributivity is the desired behavior（期望的行为）. <font co
 <img src="https://s2.loli.net/2023/03/31/bLHloJTk6sUZfFB.png" alt="image-20230331033233966" style="zoom:50%;" />
 
 摘自：[TS handbook - Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html)
+
+
+
+#### Mapped Types
+
+##### Key Remapping via `as`
+
+<font color=dodgerBlue>In TypeScript 4.1 and onwards</font>, you <font color=red>can re-map keys in mapped types with an `as` clause in a mapped type</font>:
+
+```ts
+type MappedTypeWithNewProperties<Type> = {
+    [Properties in keyof Type as NewKeyType]: Type[Properties]
+}
+```
+
+You can leverage features like [template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) to create new property names from prior ones:
+
+<img src="https://s2.loli.net/2023/03/31/GJyPHXTMgLoZNkn.png" alt="image-20230331113002050" style="zoom:48%;" />
+
+You can filter out keys by producing `never` via a conditional type:
+
+> 💡 这里的 `never` 说的是 `Exclude` 的实现原理，详见 [[#Exclude]]
+
+<img src="https://s2.loli.net/2023/03/31/cEmkluI9jOCFevU.png" alt="image-20230331145007546" style="zoom:48%;" />
+
+You can map over arbitrary unions, not just unions of `string | number | symbol`, but unions of any type:
+
+<img src="https://s2.loli.net/2023/03/31/ELzit9mX8qVNGn1.png" alt="image-20230331145240584" style="zoom:48%;" />
+
+##### Further Exploration
+
+Mapped types work well with other features in this type manipulation section, for example here is [a mapped type using a conditional type](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html) which returns either a `true` or `false` <font color=dodgerBlue>depending on whether an object has the property `pii` set to the literal `true`</font> :
+
+<img src="https://s2.loli.net/2023/03/31/fM3likr4IPEVncu.png" alt="image-20230331150232851" style="zoom:48%;" />
+
+摘自：[TS handbook - Mapped Types](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html)
+
+
+
+#### Template Literal Types
+
+Template literal types build on [string literal types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types) , and <font color=red>have the ability to expand into many strings via unions</font>.
+
+They have the same syntax as [template literal strings in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals), but are used in type positions. When used with concrete（具体的） literal types, <font color=LightSeaGreen>a template literal produces a new string literal type by concatenating</font>（串联） <font color=LightSeaGreen>the contents</font>.
+
+<img src="https://s2.loli.net/2023/03/31/EgZ2upeo1WqF3ib.png" alt="image-20230331153911445" style="zoom:48%;" />
+
+<font color=dodgerBlue>When a union is used in the interpolated</font>（插值的） <font color=dodgerBlue>position</font>, <font color=LightSeaGreen>the type is the set of every possible string literal that could be represented by each union member</font>:
+
+![image-20230331162436534](https://s2.loli.net/2023/03/31/ugoabd3tFjnHPMh.png)
+
+For each interpolated position in the template literal, the unions are cross multiplied:
+
+<img src="https://s2.loli.net/2023/03/31/lQoZcxEv2bfHMgz.png" alt="image-20230331162931897" style="zoom:50%;" />
+
+##### String Unions in Types
+
+<font color=dodgerBlue>The power in template literals comes</font> when <font color=LightSeaGreen>defining a new string based on information inside a type</font>.
+
+> 👀 下面的示例有点啰嗦，下面内容是总结后的内容
+
+有如下需求：有这样一个 `passedObject` 对象，需要给对象添加一个 `on` 方法，该方法有两个参数：第一个参数是一个 string，形式为 `${objMemberName}Changed` ；第二个参数是一个 callback 函数，callback fn 传入一个 string 
+
+# TODO
+
+```ts
+const passedObject = {
+  firstName: "Saoirse",
+  lastName: "Ronan",
+  age: 26,
+};
+
+// makeWatchedObject has added `on` to the anonymous Object
+person.on("firstNameChanged", (newValue) => {
+  console.log(`firstName was changed to ${newValue}!`);
+});
+```
+
+
+
+```ts
+type PropEventSource<Type> = {
+    on(eventName: `${string & keyof Type}Changed`, callback: (newValue: any) => void): void;
+};
+ 
+/// Create a "watched object" with an 'on' method
+/// so that you can watch for changes to properties.
+declare function makeWatchedObject<Type>(obj: Type): Type & PropEventSource<Type>;
+```
+
+
+
+摘自：[TS handbook - Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
 
 
 

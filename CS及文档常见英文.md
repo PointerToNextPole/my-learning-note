@@ -542,6 +542,14 @@
 
 - **plug** ：插头
 
+- **concrete** ：具体的
+
+- **concatenate** ：串联，连接。可以认为 concat 是 concatenate 的缩写
+
+- **interpolated** ：插值的
+
+- **eligible** ：有资格的
+
 
 
 
