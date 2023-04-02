@@ -550,6 +550,10 @@
 
 - **eligible** ：有资格的
 
+- ergonomic ：（符合）人体工程学的
+> A more arcane, but very ***ergonomic*** way to set a compiler setting is via compiler flag which are comments starting with `// @`.
+> 摘自：[TS play handbook - Twoslash Annotations](https://www.typescriptlang.org/play?#handbook-14)
+
 
 
 

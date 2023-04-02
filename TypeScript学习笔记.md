@@ -5058,7 +5058,9 @@ TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类
 
 #### Twoslash Annotations
 
-> 💡 背景：在看 ts handbook 时，发现代码演示中存在一个 popover 可以显示 type 内容。
+> 💡 背景
+>
+> 在看 ts handbook 时，发现代码演示中存在一个 popover 可以显示 types 内容。
 >
 > <img src="https://s2.loli.net/2023/04/02/v1zMBirV7k9OGEm.png" alt="image-20230402234226080" style="zoom:50%;" />
 >
@@ -5066,22 +5068,57 @@ TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类
 >
 > <img src="https://s2.loli.net/2023/04/02/SKZLHR2nUl5Nmjz.png" alt="image-20230402234505014" style="zoom:70%;" />
 >
-> 可以发现 `// ^?` 是真实内容，而后面的 `type Greeting = "hello world"` 是自动生成的 placeholder ？这便引发的我的好奇。才知道 “Twoslash Annotations” 的存在，以及 `^?` 是其中的 “Twoslash Queries”。
+> 可以发现 `// ^?` 是真实内容，而后面的 `type Greeting = "hello world"` 是自动生成的 placeholder ？这便引发了我的好奇。经过查找才知道 “Twoslash Annotations” 的存在，以及 `^?` 是 “Twoslash Annotations” 中的 “Twoslash Queries”。
 
-[Twoslash](https://www.npmjs.com/package/@typescript/twoslash) is an annotation format for TypeScript which uses specially crafted comments (two slashes `//`) as a markup format for writing code samples (available on npm at [`@typescript/twoslash`](https://www.npmjs.com/package/@typescript/twoslash)). It powers all the code samples in the TypeScript website, you can learn more about it [here](https://shikijs.github.io/twoslash/).
+<font color=dodgerBlue>[Twoslash](https://www.npmjs.com/package/@typescript/twoslash) is an annotation format for TypeScript</font> which <font color=dodgerBlue>uses specially crafted comments (two slashes `//` ) as a markup format for writing code samples</font> (available on npm at [`@typescript/twoslash`](https://www.npmjs.com/package/@typescript/twoslash) ). It powers all the code samples in the TypeScript website, you can learn more about it [here](https://shikijs.github.io/twoslash/).
 
-
+> 💡点击上面的 ”[here](https://shikijs.github.io/twoslash/)“ 可以发现链接是一个文档。另外，该文档还有一个 playground：[Shiki Twoslash Playground](https://shikijs.github.io/twoslash/playground) ，感觉可以制作类似的 ts doc 中代码示例（带有 popover）的截图
 
 ##### Twoslash Queries
 
-The Playground supports showing the types at a certain location by using an empty comment with a `^?` to indicate the symbol you’re interested in:
+The Playground supports <font color=dodgerBlue>showing the types at a certain location</font> by using an empty comment with a `^?` to indicate the symbol you’re interested in:
 
 ```ts
 const abc = "Hello"
 //    ^?
 ```
 
-Would add a realtime inline annotation about what the type of `abc` is into the editor. This can make typing complex types easier, and make it much more obvious when sharing code what you think is important.
+Would <font color=red>add a **realtime inline annotation**</font> about what the type of `abc` is into the editor. This can make typing complex types easier, and make it much more obvious when sharing code what you think is important.
+
+> 💡 Twoslash Queries 是 TS playground 的 feat，vsc 不支持；不过，可以通过 vsc 插件 [vscode-twoslash-queries](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-twoslash-queries)，使 vsc 得到支持。
+
+##### Twoslash Compiler Flags
+
+A more arcane, but very ergonomic（符合人体工程学的） way to set a compiler setting is via compiler flag which are comments starting with `// @`.
+
+The editor will auto-complete twoslash commands for any compiler setting for the current version of TypeScript in your Playground. If the setting is a boolean, you don’t need to set a value:
+
+```ts
+// @isolatedModules
+```
+
+> 👀 也就是说默认为 true
+
+<font color=LightSeaGreen>Would have `isolatedModules` turned on in your Playground</font>. You can set the values via `true/false`:
+
+```ts
+// @strictPropertyInitialization: false
+```
+
+For more settings with more choices of values, you <font color=red>can use the same descriptive string that is available in a `tsconfig.json`</font>:
+
+```ts
+// @target: esnext
+// @module: nodenext
+```
+
+You can write a list with a comma separated string:
+
+```ts
+// @lib: es2015,dom
+```
+
+Writing a twoslash command will set the compiler flag as you type, and will be set instantly if you reload or share the URL with another person. This <font color=dodgerBlue>can act as a power-user tool for setting compiler flags</font> *and* <font color=dodgerBlue>making that change much more explicit than a query param</font> (which may require looking up in the TS Config dropdown.)
 
 摘自：[TS play handbook - Twoslash Annotations](https://www.typescriptlang.org/play?#handbook-14)
 
