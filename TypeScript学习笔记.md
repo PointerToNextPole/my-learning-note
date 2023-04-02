@@ -1335,7 +1335,7 @@ res 是 `never` 。
 
 这里确实也是 TS 的特殊处理，**当条件类型左边是 never 时，直接返回 never**。
 
-> 👀 注：这后面还有内容，因为考虑到是分析源码的内容，且暂时较忙；等等和 [我读 Typescript 源码的秘诀都在这里了](https://juejin.cn/post/7015567717876908063) 一起阅读 // TODO
+> 👀 这后面还有内容，因为考虑到是分析源码的内容，且暂时较忙；等等和 [我读 Typescript 源码的秘诀都在这里了](https://juejin.cn/post/7015567717876908063) 一起阅读 // TODO
 
 摘自：[这几个 TypeScript 类型，90% 的人说不出原因](https://juejin.cn/post/7066745410194243597)
 
@@ -1754,7 +1754,7 @@ type GetThisParameterType<T>
         : unknown;
 ```
 
-<font color=FF0000>类型参数 T 是待处理的类型</font>。<font color=FF0000>**用 T 匹配一个 模式类型，提取 this 的类型到 infer 声明的局部变量 ThisType 中**</font>（ **注：**这里有点没看懂 TODO ），其余的参数是任意类型，也就是 any，返回值也是任意类型。返回提取到的 ThisType，这样就能提取出 this 的类型：
+<font color=FF0000>类型参数 T 是待处理的类型</font>。<font color=FF0000>**用 T 匹配一个 模式类型，提取 this 的类型到 infer 声明的局部变量 ThisType 中**</font>（👀 这里有点没看懂 TODO ），其余的参数是任意类型，也就是 any，返回值也是任意类型。返回提取到的 ThisType，这样就能提取出 this 的类型：
 
 <img src="https://s2.loli.net/2022/05/03/U8fGXHzVY9Dvx4u.png" alt="image-20220503015143577" style="zoom:50%;" />
 
@@ -2768,9 +2768,9 @@ type Camelcase<Str extends string> =
 
 ```ts
 type CamelcaseArr<
-  Arr extends unknown[] // 注：这里 写 string[] 下面写 CamelcaseArr<RestArr, string[]> 会报错，不知道为什么 TODO
+  Arr extends unknown[] // 👀 这里 写 string[] 下面写 CamelcaseArr<RestArr, string[]> 会报错，不知道为什么 TODO
 > = Arr extends [infer Item, ...infer RestArr]
-        ? [Camelcase<Item & string>, ...CamelcaseArr<RestArr>] //注：这里 & string 要注意，没想到这样写。
+        ? [Camelcase<Item & string>, ...CamelcaseArr<RestArr>] //👀 这里 & string 要注意，没想到这样写。
         : [];
 ```
 
@@ -4899,8 +4899,6 @@ For each interpolated position in the template literal, the unions are cross mul
 
 有如下需求：有这样一个 `passedObject` 对象，需要给对象添加一个 `on` 方法，该方法有两个参数：第一个参数是一个 string，形式为 `${objMemberName}Changed` ；第二个参数是一个 callback 函数，callback fn 传入一个 string 
 
-# TODO
-
 ```ts
 const passedObject = {
   firstName: "Saoirse",
@@ -5055,6 +5053,37 @@ TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类
 你可以通过添加 `// @ts-nocheck` 注释来忽略类型检查；相反你可以通过去掉 `--checkJs` 设置并添加 `// @ts-check` 注释来选则检查某些 `.js` 文件。 你还可以使用 `// @ts-ignore` 来忽略本行的错误。
 
 摘自：[TypeScript 中文手册 - JavaScript文件里的类型检查](https://typescript.bootcss.com/type-checking-javascript-files.html)
+
+
+
+#### Twoslash Annotations
+
+> 💡 背景：在看 ts handbook 时，发现代码演示中存在一个 popover 可以显示 type 内容。
+>
+> <img src="https://s2.loli.net/2023/04/02/v1zMBirV7k9OGEm.png" alt="image-20230402234226080" style="zoom:50%;" />
+>
+> 类似的，点击旁边的 “Try”，进入演示代码的 ts playground 时，发现也有类似的效果：
+>
+> <img src="https://s2.loli.net/2023/04/02/SKZLHR2nUl5Nmjz.png" alt="image-20230402234505014" style="zoom:70%;" />
+>
+> 可以发现 `// ^?` 是真实内容，而后面的 `type Greeting = "hello world"` 是自动生成的 placeholder ？这便引发的我的好奇。才知道 “Twoslash Annotations” 的存在，以及 `^?` 是其中的 “Twoslash Queries”。
+
+[Twoslash](https://www.npmjs.com/package/@typescript/twoslash) is an annotation format for TypeScript which uses specially crafted comments (two slashes `//`) as a markup format for writing code samples (available on npm at [`@typescript/twoslash`](https://www.npmjs.com/package/@typescript/twoslash)). It powers all the code samples in the TypeScript website, you can learn more about it [here](https://shikijs.github.io/twoslash/).
+
+
+
+##### Twoslash Queries
+
+The Playground supports showing the types at a certain location by using an empty comment with a `^?` to indicate the symbol you’re interested in:
+
+```ts
+const abc = "Hello"
+//    ^?
+```
+
+Would add a realtime inline annotation about what the type of `abc` is into the editor. This can make typing complex types easier, and make it much more obvious when sharing code what you think is important.
+
+摘自：[TS play handbook - Twoslash Annotations](https://www.typescriptlang.org/play?#handbook-14)
 
 
 
