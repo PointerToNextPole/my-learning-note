@@ -339,6 +339,9 @@ mdfind -onlyin ~/Library queryTxt
 摘自：[Mac中用mdfind命令快速查找文件 - 东东来了的文章 - 知乎](https://zhuanlan.zhihu.com/p/86138761)
 
 
+#### traceroute
+
+类似于 win 平台的 `tracert` 命令。
 
 #### Homebrew 使用
 

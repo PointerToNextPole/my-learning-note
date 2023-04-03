@@ -366,7 +366,9 @@ Promise.myRace = function(promiseArr) {
 
 #### Promise 并行调度器
 
-> 👀 只有代码，没太看懂
+> 💡 该功能对应的专业术语是 “p-limit”，chatgpt 的介绍如下：
+>
+> <img src="https://s2.loli.net/2023/04/03/qpfRs4FATjMQYSW.png" alt="image-20230403160136690" style="zoom:50%;" />
 
 ```js
 // 类的现实

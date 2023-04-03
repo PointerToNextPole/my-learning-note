@@ -336,6 +336,8 @@
 
 - **foreground** ：前景。在 [微信官方文档 - 小程序 - 框架接口 / 页面 / 页面生命周期](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/page-life-cycle.html) 中看到的 “set to foreground ”，应该有 前一个页面的意思。另外，它的反义词是 background
 
+- **foregone** ：预先确定的
+
 - **mitigate** ：缓解
 
 - **squash** ：压碎，压缩。这个意思一般和 `git rebase` 和 `git merge` 相关
@@ -550,12 +552,55 @@
 
 - **eligible** ：有资格的
 
-- ergonomic ：（符合）人体工程学的
+- **ergonomic** ：（符合）人体工程学的
 > A more arcane, but very ***ergonomic*** way to set a compiler setting is via compiler flag which are comments starting with `// @`.
 > 摘自：[TS play handbook - Twoslash Annotations](https://www.typescriptlang.org/play?#handbook-14)
 
+- **clause** ：条款
 
+- **hypothesis** ：假设
 
+- **disclosure** ：n. 披露。disclose ：v. 披露，泄露
+
+- **obsolete** ：淘汰的
+
+- **hop** ：跳。
+> They'll hop onto SquareSpace, find a template they like, and spend $20/month.
+>
+> 摘自：[The End of Front-End Development](https://www.joshwcomeau.com/blog/the-end-of-frontend-development/)
+>
+> 💡 关于 hop：
+>
+> <img src="https://s2.loli.net/2023/04/03/FMxgbdEVJ3OuBNK.png" alt="image-20230403213515134" style="zoom:47%;" />
+
+- **tweak** ：微调
+
+- **hallucination** ：幻觉
+
+- **vulnerability** ：漏洞
+
+- **liable** ：有责任的
+
+- **self-contained** ：自给自足的
+
+- **amplify** ：v. 增加，增强。
+  > 👀 chatgpt 说：和 ample （充足的，足够的）有关系，自己感觉也是有关系的；不过语意上没太看出来...
+  
+- **speculate** ：v. 推测。speculation ：n.
+
+- **fait accompli** ：既成事实
+
+- **illustration** ：插画。illustrate ：给 ... 加插图，阐述，说明。
+
+- **globble** ：狼吞虎咽，吞咽
+
+- **bespoke** ：定制的
+
+- **synthesize** ：合成
+
+- **suspicious** ：怀疑的。suspect ：嫌疑人
+
+- **authoritative** ：权威的
 
 #### 术语的英文
 
@@ -611,4 +656,20 @@
 | Dash (-)                | Indicate that words around it are strongly connected as in [ twelve-year-old dog ] and [ cross-reference ] |
 | Underscore symbol (_)   | Connected two works like [ quick_sort ]. Your search results will find this pair of words either linked together (e.g., quicksort) or connected by an underscore (e.g., quick_sort). |
 
+> 👀 关于 `#` 的 number sign 的含义，一直没注意，直到见到这个句子：
+>
+> > I actually think that this could increase the total # of developer jobs.
+> >
+> > 摘自：[The End of Front-End Development](https://www.joshwcomeau.com/blog/the-end-of-frontend-development/)
+
 摘自：[Google搜索特殊字符的方法](https://blog.csdn.net/LongZh_CN/article/details/14453317)
+
+
+#### 前后缀
+
+##### 后缀
+
+- `-ish` 后缀：用于表达数量或时间的近似值。以 "10ish" 为例， 它是一个口语化的用法，表示数量大约为10。 
+> This is an over-generalization, but over the past 10ish years, a lot of complexity has been moving from the server to the client.
+> 摘自：[The End of Front-End Development](https://www.joshwcomeau.com/blog/the-end-of-frontend-development/)
+

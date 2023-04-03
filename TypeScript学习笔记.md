@@ -543,8 +543,8 @@ function reverse(x: number | string): number | string | void {
 - `export` ：导出变量
 - `export namespace` ：导出（含有子属性的）对象
 - `export default` ：ES6 默认导出
-- `export =` ：commonjs 导出模块
-- `export as namespace` ：UMD 库声明全局变量
+- `export =` ：<font color=LightSeaGreen>commonjs 导出模块</font>
+- `export as namespace` ：<font color=LightSeaGreen>UMD 库声明全局变量</font>
 - `declare global` ：扩展全局变量
 - `declare module` ：扩展模块
 - `/// <reference /> ` ：三斜线指令
@@ -624,7 +624,7 @@ npm install @types/jquery --save-dev
 
 全局变量是最简单的一种场景，先前的例子就是通过 `<script>` 标签引入 jQuery，注入全局变量 `$` 和 `jQuery`。
 
-使用全局变量的声明文件时，<font color=dodgerBlue>如果是以 `npm install @types/xxx --save-dev` 安装</font>的，则<font color=red>**不需要任何配置**</font>。如果是<font color=dodgerBlue>将声明文件直接存放于当前项目中</font>，则<font color=red>建议和其他源码一起放到 `src`目录下（或者对应的源码目录下）</font>：
+使用全局变量的声明文件时，<font color=dodgerBlue>如果是以 `npm install @types/xxx --save-dev` 安装</font>的，则<font color=red>**不需要任何配置**</font>。如果是<font color=dodgerBlue>将声明文件直接存放于当前项目中</font>，则<font color=red>建议和其他源码一起放到 `src` 目录下（或者对应的源码目录下）</font>：
 
 ```
 /path/to/project
@@ -643,9 +643,577 @@ npm install @types/jquery --save-dev
 - `declare namespace` ：声明（含有子属性的）<font color=red>全局对象</font>
 - `interface` 和 `type` ：声明全局类型
 
-###### declare var
+###### `declare var`
 
+在所有的声明语句中，`declare var` 是最简单的，如之前所学，它能够用来定义一个全局变量的类型。与其类似的，还有 `declare let` 和 `declare const`，<font color=red>**使用 `let` 与使用 `var` 没有什么区别**</font>：
 
+```ts
+// src/jQuery.d.ts
+declare let jQuery: (selector: string) => any;
+```
+
+```ts
+// src/index.ts
+jQuery('#foo');
+// 使用 declare let 定义的 jQuery 类型，允许修改这个全局变量
+jQuery = function(selector) {
+    return document.querySelector(selector);
+};
+```
+
+而当使用 `const` 定义时，表示此时的全局变量是一个常量，不允许再去修改它的值了：
+
+```ts
+// src/jQuery.d.ts
+declare const jQuery: (selector: string) => any;
+
+jQuery('#foo');
+// 使用 declare const 定义的 jQuery 类型，禁止修改这个全局变量
+jQuery = function(selector) {
+    return document.querySelector(selector);
+};
+// ERROR: Cannot assign to 'jQuery' because it is a constant or a read-only property.
+```
+
+一般来说，全局变量都是禁止修改的常量，所以大部分情况都应该使用 `const` 而不是 `var` 或 `let`。
+
+需要注意的是，声明语句中只能定义类型，切勿在声明语句中定义具体的实现：
+
+```ts
+// src/jQuery.d.ts
+declare const jQuery = function(selector) {
+    return document.querySelector(selector);
+};
+// ERROR: An implementation cannot be declared in ambient contexts.
+```
+
+###### `declare function`
+
+`declare function` 用来定义全局函数的类型。jQuery 其实就是一个函数，所以也可以用 `function` 来定义：
+
+```ts
+// src/jQuery.d.ts
+declare function jQuery(selector: string): any;
+```
+
+```ts
+// src/index.ts
+jQuery('#foo');
+```
+
+<font color=red>在函数类型的声明语句中，函数重载也是支持的</font>：
+
+```ts
+// src/jQuery.d.ts
+declare function jQuery(selector: string): any;
+declare function jQuery(domReadyCallback: () => any): any;
+```
+
+```ts
+// src/index.ts
+jQuery('#foo');
+jQuery(function() {
+    alert('Dom Ready!');
+});
+```
+
+###### declare class
+
+当全局变量是一个类的时候，我们用 `declare class` 来定义它的类型：
+
+```ts
+// src/Animal.d.ts
+declare class Animal {
+    name: string;
+    constructor(name: string);
+    sayHi(): string;
+}
+```
+
+```ts
+// src/index.ts
+let cat = new Animal('Tom');
+```
+
+同样的，<font color=LightSeaGreen>`declare class` 语句也只能用来定义类型，不能用来定义具体的实现</font>；如定义 `sayHi` 方法的具体实现则会报错：
+
+```ts
+// src/Animal.d.ts
+declare class Animal {
+    name: string;
+    constructor(name: string);
+    sayHi() {
+        return `My name is ${this.name}`;
+    };
+    // ERROR: An implementation cannot be declared in ambient contexts.
+}
+```
+
+###### `declare enum`
+
+使用 `declare enum` 定义的枚举类型也称作外部枚举（Ambient Enums），举例如下：
+
+```ts
+// src/Directions.d.ts
+declare enum Directions {
+    Up,
+    Down,
+    Left,
+    Right
+}
+```
+
+```ts
+// src/index.ts
+let directions = [Directions.Up, Directions.Down, Directions.Left, Directions.Right];
+```
+
+与其他全局变量的类型声明一致，`declare enum` 仅用来定义类型，而不是具体的值。
+
+`Directions.d.ts` 仅仅会用于编译时的检查，声明文件里的内容在编译结果中会被删除。它编译结果是：
+
+```js
+var directions = [Directions.Up, Directions.Down, Directions.Left, Directions.Right];
+```
+
+其中 `Directions` 是由第三方库定义好的全局变量。
+
+###### `declare namespace`
+
+<font color=dodgerBlue>`namespace` 是 ts 早期时为了解决模块化而创造的关键字，中文称为命名空间</font>。由于历史遗留原因，在早期还没有 ES6 的时候，ts 提供了一种模块化方案，使用 `module` 关键字表示内部模块。但由于后来 ES6 也使用了 `module` 关键字，ts 为了兼容 ES6，使用 `namespace` 替代了自己的 `module`，更名为命名空间。
+
+<font color=LightSeaGreen>**随着 ES6 的广泛应用，现在已经不建议再使用 ts 中的 `namespace`**</font>，而<font color=LightSeaGreen>**推荐使用 ES6 的模块化方案**</font>了，故我们不再需要学习 `namespace` 的使用了。
+
+<font color=dodgerBlue>`namespace` 被淘汰了</font>，但是<font color=red>在声明文件中，`declare namespace` 还是比较常用的</font>，它 <font color=fuchsia>**用来表示全局变量是一个对象，包含很多子属性**</font>。
+
+比如 `jQuery` 是一个全局变量，它是一个对象，提供了一个 `jQuery.ajax` 方法可以调用，那么我们就应该<font color=red>使用 `declare namespace jQuery` 来声明这个拥有多个子属性的全局变量</font>。
+
+```ts
+// src/jQuery.d.ts
+declare namespace jQuery {
+    function ajax(url: string, settings?: any): void;
+}
+```
+
+```ts
+// src/index.ts
+jQuery.ajax('/api/get_something');
+```
+
+注意，<font color=red>在 `declare namespace` 内部，**直接使用 `function ajax` 来声明函数**，而不是使用 `declare function ajax`</font> 。类似的，<font color=LightSeaGreen>也可以使用 `const` , `class` , `enum` 等语句</font>：
+
+```ts
+// src/jQuery.d.ts
+declare namespace jQuery {
+    function ajax(url: string, settings?: any): void;
+    const version: number;
+    class Event {
+        blur(eventType: EventType): void
+    }
+    enum EventType {
+        CustomClick
+    }
+}
+```
+
+```ts
+// src/index.ts
+jQuery.ajax('/api/get_something');
+console.log(jQuery.version);
+const e = new jQuery.Event();
+e.blur(jQuery.EventType.CustomClick);
+```
+
+###### 嵌套的命名空间
+
+<font color=dodgerBlue>如果对象拥有深层的层级</font>，则<font color=red>需要用嵌套的 `namespace` 来声明深层的属性的类型</font>：
+
+```ts
+// src/jQuery.d.ts
+declare namespace jQuery {
+    function ajax(url: string, settings?: any): void;
+    namespace fn { // 👀
+        function extend(object: any): void;
+    }
+}
+```
+
+```ts
+// src/index.ts
+jQuery.ajax('/api/get_something');
+jQuery.fn.extend({
+    check: function() {
+        return this.each(function() {
+            this.checked = true;
+        });
+    }
+});
+```
+
+假如 `jQuery` 下仅有 `fn` 这一个属性（没有 `ajax` 等其他属性或方法），则可以不需要嵌套 `namespace`：
+
+```ts
+// src/jQuery.d.ts
+declare namespace jQuery.fn { // 👀 jQuery.fn
+    function extend(object: any): void;
+}
+```
+
+```ts
+// src/index.ts
+jQuery.fn.extend({
+    check: function() {
+        return this.each(function() {
+            this.checked = true;
+        });
+    }
+});
+```
+
+> 👀 虽然但是，从代码可维护性的角度来考虑，感觉默认情况下嵌套 namespace 是更值得推荐的。
+
+###### `interface` 和 `type`
+
+除了全局变量之外，可能有一些类型我们也希望能暴露出来。在类型声明文件中，我们可以直接使用 `interface` 或 `type` 来声明一个全局的接口或类型：
+
+```ts
+// src/jQuery.d.ts
+interface AjaxSettings {
+    method?: 'GET' | 'POST'
+    data?: any;
+}
+declare namespace jQuery {
+    function ajax(url: string, settings?: AjaxSettings): void;
+}
+```
+
+这样的话，在其他文件中也可以使用这个接口或类型了：
+
+```ts
+// src/index.ts
+let settings: AjaxSettings = {
+    method: 'POST',
+    data: {
+        name: 'foo'
+    }
+};
+jQuery.ajax('/api/post_something', settings);
+```
+
+`type` 与 `interface` 类似，不再赘述。
+
+###### 防止命名冲突
+
+<font color=red>**暴露在最外层的 `interface` 或 `type` 会作为全局类型作用于整个项目中**</font>，我们<font color=fuchsia>应该尽可能的减少全局变量或全局类型的数量；故最好将他们放到 `namespace` 下</font>：
+
+```ts
+// src/jQuery.d.ts
+declare namespace jQuery {
+    interface AjaxSettings {
+        method?: 'GET' | 'POST'
+        data?: any;
+    }
+    function ajax(url: string, settings?: AjaxSettings): void;
+}
+```
+
+注意，在使用这个 `interface` 的时候，也应该加上 `jQuery` 前缀：
+
+```ts
+// src/index.ts
+let settings: jQuery.AjaxSettings = {
+    method: 'POST',
+    data: {
+        name: 'foo'
+    }
+};
+jQuery.ajax('/api/post_something', settings);
+```
+
+###### 声明合并
+
+假如 jQuery 既是一个函数，可以直接被调用 `jQuery('#foo')`；同时也是一个对象，拥有子属性 `jQuery.ajax()`（事实确实如此），那么我们可以组合多个声明语句，它们会不冲突的合并起来：
+
+```ts
+// src/jQuery.d.ts
+declare function jQuery(selector: string): any;
+declare namespace jQuery {
+    function ajax(url: string, settings?: any): void;
+}
+```
+
+```ts
+// src/index.ts
+jQuery('#foo');
+jQuery.ajax('/api/get_something');
+```
+
+##### npm 包
+
+一般我们通过 `import foo from 'foo'` 导入一个 npm 包，这是符合 ES6 模块规范的。
+
+在尝试给一个 npm 包创建声明文件之前，需要先看看它的声明文件是否已经存在。<font color=dodgerBlue>一般来说，npm 包的 **声明文件** 可能存在于两个地方</font>：
+
+1. **与该 npm 包绑定在一起**。<font color=red>判断依据是 `package.json` 中有 `types` 字段</font>（👀 形如 `@types/repoName`），<font color=red>或者有一个 `index.d.ts` 声明文件</font>。**这种模式不需要额外安装其他包**，是<font color=red>**最为推荐的**</font>，所以以后我们自己创建 npm 包的时候，最好也将声明文件与 npm 包绑定在一起。
+2. **发布到 `@types` 里**。我们<font color=LightSeaGreen>只需要尝试安装一下对应的 `@types` 包就知道是否存在该声明文件</font>，安装命令是 `npm install @types/foo --save-dev`。这种模式一般是由于 npm 包的维护者没有提供声明文件，所以只能由其他人将声明文件发布到 `@types` 里了。
+
+<font color=LightSeaGreen>假如以上两种方式都没有找到对应的声明文件，**那么就需要自己为它写声明文件了**</font>。由于是通过 `import` 语句导入的模块，所以声明文件存放的位置也有所约束，<font color=dodgerBlue>**一般有两种方案**</font>：
+
+1. **创建一个 `node_modules/@types/foo/index.d.ts` 文件**，存放 `foo` 模块的声明文件。<font color=LightSeaGreen>这种方式不需要额外的配置</font>，但是 <font color=red>`node_modules` 目录不稳定，代码也没有被保存到仓库中，无法回溯版本，有不小心被删除的风险</font>，故<font color=red>不太建议用这种方案</font>，一般只用作临时测试。
+2. <font color=red>**创建一个 `types` 目录，专门用来管理自己写的声明文件**，将 `foo` 的声明文件放到 `types/foo/index.d.ts` 中</font>。<font color=fuchsia>这种方式**需要配置下 `tsconfig.json` 中的 `paths` 和 `baseUrl` 字段**</font>。
+
+目录结构：
+
+```
+/path/to/project
+├── src
+|  └── index.ts
+├── types
+|  └── foo
+|     └── index.d.ts
+└── tsconfig.json
+```
+
+`tsconfig.json` 内容：
+
+```json
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "baseUrl": "./",
+        "paths": {
+            "*": ["types/*"]
+        }
+    }
+}
+```
+
+配置之后，通过 `import` 导入 `foo` 的时候，也会去 `types` 目录下寻找对应的模块的声明文件了。
+
+⚠️ 注意： `module` 配置可以有很多种选项，不同的选项会影响模块的导入导出模式。<font color=dodgerBlue>**这里我们使用了 `commonjs` 这个最常用的选项，后面的教程也都默认使用的这个选项**</font>。
+
+<font color=dodgerBlue>npm 包的声明文件主要有以下几种语法：</font>
+
+- `export` ：导出变量
+- `export namespace`  ：导出（含有子属性的）对象
+- `export default` ：ES6 默认导出
+- `export =` ：commonjs 导出模块
+
+<font color=dodgerBlue>npm 包的声明文件与全局变量的声明文件有很大区别</font>：<font color=dodgerBlue>**在 npm 包的声明文件中**</font>，<font color=red>**使用 `declare` 不再会声明一个全局变量**，**只会在当前文件中声明一个局部变量**</font>。<font color=fuchsia>只有在声明文件中使用 `export` 导出，然后在使用方 `import` 导入后，才会应用到这些类型声明</font>。
+
+`export` 的语法与普通的 ts 中的语法类似，区别仅在于声明文件中禁止定义具体的实现：
+
+```ts
+// types/foo/index.d.ts
+export const name: string;
+export function getName(): string;
+export class Animal {
+    constructor(name: string);
+    sayHi(): string;
+}
+export enum Directions { Up, Down, Left, Right }
+export interface Options {
+    data: any;
+}
+```
+
+对应的导入和使用模块：
+
+```ts
+// src/index.ts
+import { name, getName, Animal, Directions, Options } from 'foo';
+
+console.log(name);
+let myName = getName();
+let cat = new Animal('Tom');
+let directions = [Directions.Up, Directions.Down, Directions.Left, Directions.Right];
+let options: Options = {
+    data: { name: 'foo' }
+};
+```
+
+###### 混用 `declare` 和 `export`
+
+<font color=red>也可以使用 `declare` 先声明多个变量，**最后再用 `export` 一次性导出**</font>。上例的声明文件可以等价的改写为：
+
+```ts
+// types/foo/index.d.ts
+declare const name: string;
+declare function getName(): string;
+declare class Animal {
+    constructor(name: string);
+    sayHi(): string;
+}
+declare enum Directions { Up, Down, Left, Right }
+interface Options { data: any; }
+
+export { name, getName, Animal, Directions, Options };
+```
+
+注意，<font color=fuchsia>**与全局变量的声明文件类似，`interface` 前是不需要 `declare` 的**</font>。
+
+###### `export namespace`
+
+与 `declare namespace` 类似，`export namespace` 用来导出一个拥有子属性的对象：
+
+```ts
+// types/foo/index.d.ts
+export namespace foo {
+    const name: string;
+    namespace bar {
+        function baz(): string;
+    }
+}
+```
+
+```ts
+// src/index.ts
+import { foo } from 'foo';
+
+console.log(foo.name);
+foo.bar.baz();
+```
+
+###### `export default`
+
+在 ES6 模块系统中，使用 `export default` 可导出一个默认值，使用方可以用 `import foo from 'foo'` 导入默认值。
+
+在类型声明文件中，`export default` 用来导出默认值的类型：
+
+```ts
+// types/foo/index.d.ts
+export default function foo(): string;
+```
+
+```ts
+// src/index.ts
+import foo from 'foo';
+
+foo();
+```
+
+⚠️ 注意：<font color=fuchsia size=4>**只有 `function`、`class` 和 `interface` 可直接默认导出**</font>，<font color=red>**其他的变量需要先定义，再默认导出**</font>
+
+```ts
+// types/foo/index.d.ts
+export default enum Directions {
+// ERROR: Expression expected.
+    Up,
+    Down,
+    Left,
+    Right
+}
+```
+
+<font color=dodgerBlue>上例 `export default enum` 是错误的语法</font>，需要使用 `declare enum` 定义出来，再使用 `export default` 导出
+
+```ts
+// types/foo/index.d.ts
+declare enum Directions { Up, Down, Left, Right }
+
+export default Directions;
+```
+
+针对这种默认导出，我们<font color=red>**一般会将导出语句放在整个声明文件的最前面**</font>：
+
+```ts
+// types/foo/index.d.ts
+export default Directions;
+
+declare enum Directions { Up, Down, Left, Right }
+```
+
+###### `export =`
+
+在 commonjs 规范中，我们用以下方式来导出一个模块：
+
+```js
+// 整体导出
+module.exports = foo;
+// 单个导出
+exports.bar = bar;
+```
+
+在 ts 中，<font color=dodgerBlue>**针对这种模块导出，有多种方式可以导入**</font>：
+
+第一种方式是 `const ... = require-expression`
+
+```ts
+// 整体导入
+const foo = require('foo');
+// 单个导入
+const bar = require('foo').bar;
+```
+
+第二种方式是 `import ... from`，注意针对整体导出，需要使用 `import * as` 来导入：
+
+```ts
+// 整体导入
+import * as foo from 'foo';
+// 单个导入
+import { bar } from 'foo';
+```
+
+第三种方式是 `import ... = require`，<font color=red>**这也是 ts 官方推荐的方式**</font>：
+
+```ts
+// 整体导入
+import foo = require('foo');
+// 单个导入
+import bar = foo.bar;
+```
+
+对于这种使用 commonjs 规范的库，假如要为它写类型声明文件的话，就需要使用到 `export =` 这种语法了：
+
+```ts
+// types/foo/index.d.ts
+export = foo;
+
+declare function foo(): string;
+declare namespace foo {
+    const bar: number;
+}
+```
+
+⚠️ 需要注意的是：<font color=fuchsia>上例中使用了 `export =` 之后，就不能再单个导出 `export { bar }` 了</font>。所以我们通过声明合并，使用 `declare namespace foo` 来将 `bar` 合并到 `foo` 里。
+
+准确地讲，`export =` 不仅可以用在声明文件中，也可以用在普通的 ts 文件中。实际上，<font color=red>`import ... = require` 和 `export =` 都是 ts 为了兼容 AMD 规范和 commonjs 规范而创立的新语法</font>，由于并不常用也不推荐使用，所以这里就不详细介绍了，感兴趣的可以看[官方文档](https://www.typescriptlang.org/docs/handbook/modules.html#export--and-import--require)。
+
+由于很多第三方库是 commonjs 规范的，所以声明文件也就不得不用到 `export =` 这种语法了。但是还是需要再强调下，<font color=red>相比与 `export =`，我们更推荐使用 ES6 标准的 `export default` 和 `export`</font>。
+
+##### UMD 库
+
+<font color=LightSeaGreen>既可以通过 `<script>` 标签引入，又可以通过 `import` 导入的库，称为 UMD 库</font>。相比于 npm 包的类型声明文件，我们需要额外声明一个全局变量，<font color=red>为了实现这种方式，ts 提供了一个新语法 `export as namespace`</font>。
+
+###### `export as namespace`
+
+一般使用 `export as namespace` 时，<font color=red>都是先有了 npm 包的声明文件</font>，<font color=red>**再基于它添加一条 `export as namespace` 语句，即可将声明好的一个变量声明为全局变量**</font>，举例如下：
+
+```ts
+// types/foo/index.d.ts
+export as namespace foo;
+export = foo;
+
+declare function foo(): string;
+declare namespace foo {
+    const bar: number;
+}
+```
+
+当然它也可以与 `export default` 一起使用：
+
+```ts
+// types/foo/index.d.ts
+export as namespace foo;
+export default foo;
+
+declare function foo(): string;
+declare namespace foo {
+    const bar: number;
+}
+```
+
+// TODO 看不下去了...
 
 
 
@@ -4897,7 +5465,7 @@ For each interpolated position in the template literal, the unions are cross mul
 
 > 👀 下面的示例有点啰嗦，下面内容是总结后的内容
 
-有如下需求：有这样一个 `passedObject` 对象，需要给对象添加一个 `on` 方法，该方法有两个参数：第一个参数是一个 string，形式为 `${objMemberName}Changed` ；第二个参数是一个 callback 函数，callback fn 传入一个 string 
+有如下需求：有这样一个 `passedObject` 对象，需要给对象添加一个 `on` 方法，该方法有两个参数：第一个参数是一个 string，形式为 `${objMemberName}Changed` ；第二个参数是一个 callback 函数，callback fn 传入一个 newValue，没有返回值。效果示例如下所示：
 
 ```ts
 const passedObject = {
@@ -4912,7 +5480,7 @@ person.on("firstNameChanged", (newValue) => {
 });
 ```
 
-
+实现代码如下：
 
 ```ts
 type PropEventSource<Type> = {
@@ -4924,7 +5492,37 @@ type PropEventSource<Type> = {
 declare function makeWatchedObject<Type>(obj: Type): Type & PropEventSource<Type>;
 ```
 
+With this, we can build something that errors when given the wrong property:
 
+<img src="https://s2.loli.net/2023/04/03/PTeqtsNy2jYfR48.png" alt="image-20230403141149806" style="zoom:50%;" />
+
+##### Inference with Template Literals
+
+Notice that <font color=lightSeaGreen>we did not benefit from all the information provided in the original passed object</font>. <font color=dodgerBlue>Given change of a `firstName`</font> ( i.e. a `firstNameChanged` event ), we should expect that the callback will receive an argument of type `string`. Similarly, <font color=dodgerBlue>the callback for a change to `age` should receive a `number` argument</font>. We’re naively using `any` to type the `callBack`’s argument. Again, template literal types make it possible to ensure an attribute’s data type will be the same type as that attribute’s callback’s first argument.
+
+The key insight that makes this possible is this: <font color=dodgerBlue>we can use a function with a generic such that:</font>
+
+1. The literal used in the first argument is captured as a literal type
+2. That literal type can be validated as being in the union of valid attributes in the generic
+3. The type of the validated attribute can be looked up in the generic’s structure using Indexed Access
+4. This typing information can *then* be applied to ensure the argument to the callback function is of the same type
+
+```ts
+type PropEventSource<Type> = {
+    on<Key extends string & keyof Type>
+        (eventName: `${Key}Changed`, callback: (newValue: Type[Key]) => void ): void;
+};
+ 
+declare function makeWatchedObject<Type>(obj: Type): Type & PropEventSource<Type>;
+```
+
+<img src="https://s2.loli.net/2023/04/03/aIvtJGC1yd7iN9W.png" alt="image-20230403150550061" style="zoom:48%;" />
+
+##### Intrinsic String Manipulation Types
+
+To help with string manipulation, <font color=dodgerBlue>TypeScript includes a set of types which can be used in string manipulation</font>. These types come built-in to the compiler for performance and can’t be found in the `.d.ts` files included with TypeScript.
+
+`Uppercase<StringType>`、`Lowercase<StringType>`、`Capitalize<StringType>`、`Uncapitalize<StringType>`
 
 摘自：[TS handbook - Template Literal Types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html)
 
@@ -5534,7 +6132,7 @@ function handleValue(val: All) {
 
 ###### 声明文件
 
-详见 [[#声明文件 d.ts]]，略
+略
 
 ###### 三斜线指令
 
