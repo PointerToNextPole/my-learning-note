@@ -602,6 +602,18 @@
 
 - **authoritative** ：权威的
 
+- **imply** ：暗示
+
+- **assume** ：假设，假定。类似的有 presume。
+
+  <img src="https://s2.loli.net/2023/04/05/iET3t1bdynUZNDO.png" alt="image-20230405171953947" style="zoom:50%;" />
+
+
+
+***
+
+
+
 #### 术语的英文
 
 - **埋点**：Event Tracking

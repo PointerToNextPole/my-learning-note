@@ -1183,7 +1183,7 @@ declare namespace foo {
 
 ##### UMD 库
 
-<font color=LightSeaGreen>既可以通过 `<script>` 标签引入，又可以通过 `import` 导入的库，称为 UMD 库</font>。相比于 npm 包的类型声明文件，我们需要额外声明一个全局变量，<font color=red>为了实现这种方式，ts 提供了一个新语法 `export as namespace`</font>。
+<font color=LightSeaGreen>既可以通过 `<script>` 标签引入，又可以通过 `import` 导入的库，称为 UMD 库</font>。相比于 npm 包的类型声明文件，我们<font color=dodgerBlue>需要额外声明一个全局变量</font>，<font color=red>为了实现这种方式，ts 提供了一个新语法 `export as namespace`</font>。
 
 ###### `export as namespace`
 
@@ -1213,7 +1213,352 @@ declare namespace foo {
 }
 ```
 
-// TODO 看不下去了...
+##### 直接扩展全局变量
+
+有的第三方库扩展了一个全局变量，<font color=dodgerBlue>可是此全局变量的类型却没有相应的更新过来，就会导致 ts 编译错误，此时就需要扩展全局变量的类型</font>。比如扩展 `String` 类型：
+
+```ts
+interface String {
+    prependHello(): string;
+}
+
+'foo'.prependHello();
+```
+
+<font color=red>**通过声明合并**，使用 `interface String` 即可给 `String` 添加属性或方法</font>。
+
+也可以使用 `declare namespace` 给已有的命名空间添加类型声明：
+
+```ts
+// types/jquery-plugin/index.d.ts
+declare namespace JQuery {
+    interface CustomOptions {
+        bar: string;
+    }
+}
+
+interface JQueryStatic {
+    foo(options: JQuery.CustomOptions): string;
+}
+```
+
+```ts
+// src/index.ts
+jQuery.foo({
+    bar: ''
+});
+```
+
+##### 在 npm 包或 UMD 库中扩展全局变量
+
+如之前所说：<font color=lightSeaGreen>对于一个 npm 包或者 UMD 库的声明文件，只有 `export` 导出的类型声明才能被导入</font>。所以<font color=dodgerBlue>对于 npm 包或 UMD 库，如果导入此库之后会扩展全局变量</font>，则<font color=dodgerBlue>需要使用另一种语法在声明文件中扩展全局变量的类型</font>，那<font color=red>就是 `declare global`</font>。
+
+###### `declare global`
+
+使用 `declare global` 可以在 npm 包或者 UMD 库的声明文件中扩展全局变量的类型：
+
+```ts
+// types/foo/index.d.ts
+declare global {
+    interface String {
+        prependHello(): string;
+    }
+}
+
+export {};
+```
+
+```ts
+// src/index.ts
+'bar'.prependHello();
+```
+
+⚠️ 注意：<font color=red>**即使此声明文件不需要导出任何东西，仍然需要导出一个空对象**</font>，用来<font color=red>**告诉编译器这是一个模块的声明文件**，而不是一个全局变量的声明文件</font>。
+
+##### 模块插件
+
+<font color=lightSeaGreen>**有时通过 `import` 导入一个模块插件，可以改变另一个原有模块的结构**</font>。<font color=dodgerBlue>如果原有模块已经有了类型声明文件，而插件模块没有类型声明文件</font>，就会导致类型不完整，缺少插件部分的类型。ts <font color=red>提供了一个语法 `declare module`</font>，它<font color=red>可以用来扩展原有模块的类型</font>。
+
+###### `declare module`
+
+<font color=dodgerBlue>如果需要扩展原有模块</font>，<font color=red>需要在类型声明文件中先引用原有模块，**再使用 `declare module` 扩展原有模块**</font>：
+
+```ts
+// types/moment-plugin/index.d.ts
+import * as moment from 'moment'; // 👀 引入
+
+declare module 'moment' { // 👀 使用 declare module 导出
+    export function foo(): moment.CalendarKey;
+}
+```
+
+```ts
+// src/index.ts
+import * as moment from 'moment';
+import 'moment-plugin'; // 👀 使用时，需要将 original module 和 add-on 同时导入
+
+moment.foo();
+```
+
+`declare module` 也可用于在一个文件中一次性声明多个模块的类型：
+
+```ts
+// types/foo-bar.d.ts
+declare module 'foo' {
+    export interface Foo {
+        foo: string;
+    }
+}
+
+declare module 'bar' {
+    export function bar(): string;
+}
+```
+
+```ts
+// src/index.ts
+import { Foo } from 'foo';
+import * as bar from 'bar';
+
+let f: Foo;
+bar.bar();
+```
+
+##### 声明文件中的依赖
+
+<font color=dodgerBlue>一个声明文件有时会依赖另一个声明文件中的类型</font>，比如前面的 `declare module` 的例子( [[#`declare module`]] )，就在声明文件中导入了 `moment`，并使用了 `moment.CalendarKey`这个类型：
+
+```ts
+// types/moment-plugin/index.d.ts
+import * as moment from 'moment';
+
+declare module 'moment' {
+    export function foo(): moment.CalendarKey;
+}
+```
+
+<font color=dodgerBlue>除了 可以在声明文件中通过 `import` 导入另一个声明文件中的类型之外，还有一个语法也可以用来导入另一个声明文件</font>，那<font color=red>就是三斜线指令</font>。
+
+###### 三斜线指令
+
+<font color=dodgerBlue>**与 `namespace` 类似**</font>，<font color=red>三斜线指令也是 **ts 在早期版本中** 为了 <font size=4>**描述模块之间的依赖关系**</font> 而创造的语法</font>。<font color=lightSeaGreen>随着 ES6 的广泛应用，现在已经不建议再使用 ts 中的三斜线指令来声明模块之间的依赖关系了</font>。
+
+但是在声明文件中，它还是有一定的用武之地。
+
+类似于声明文件中的 `import`，它可以用来导入另一个声明文件。与 `import` 的区别是，<font color=dodgerBlue>当且仅当在以下几个场景下，我们才需要使用三斜线指令替代 `import`</font>：
+
+- 当我们在**书写**一个全局变量的声明文件时
+- 当我们需要**依赖**一个全局变量的声明文件时
+
+###### 三斜线指令 - 书写一个全局变量的声明文件
+
+这些场景听上去很拗口，但实际上很好理解：<font color=red>**在全局变量的声明文件中，是不允许出现 `import`, `export` 关键字的**</font>。<font color=LightSeaGreen>一旦出现，**就会被视为一个 npm 包或 UMD 库**，**不再是全局变量的声明文件**了</font>。故当在书写一个全局变量的声明文件时，如果需要引用另一个库的类型，那么就必须用三斜线指令了：
+
+```ts
+// types/jquery-plugin/index.d.ts 👀 在 d.ts 文件中
+
+/// <reference types="jquery" /> // 👀 引入 jquery
+declare function foo(options: JQuery.AjaxSettings): string; // 👀 使用 jquery
+```
+
+```ts
+// src/index.ts
+foo({});
+```
+
+三斜线指令的语法如上，`///` 后面使用 xml 的格式添加了对 `jquery` 类型的依赖，这样就可以在声明文件中使用 `JQuery.AjaxSettings` 类型了。
+
+⚠️ 注意：<font color=red>三斜线指令 **必须放在文件的最顶端**，**三斜线指令的前面只允许出现单行或多行注释**</font>。
+
+###### 三斜线指令 - 依赖一个全局变量的声明文件
+
+在另一个场景下，<font color=red>如果 **需要依赖** 一个全局变量的声明文件</font>，由于全局变量不支持通过 `import` 导入，当然也就必须使用三斜线指令来引入了：
+
+```ts
+// types/node-plugin/index.d.ts
+
+/// <reference types="node" />
+export function foo(p: NodeJS.Process): string;
+```
+
+```ts
+// src/index.ts
+import { foo } from 'node-plugin';
+
+foo(global.process);
+```
+
+在上面的例子中，通过三斜线指引入了 `node` 的类型，然后在声明文件中使用了 `NodeJS.Process` 这个类型。最后在使用到 `foo` 的时候，传入了 `node` 中的全局变量 `process`。
+
+<font color=dodgerBlue>由于引入的 `node` 中的类型都是全局变量的类型，是没有办法通过 `import` 来导入的</font>，所以这种场景下也只能通过三斜线指令来引入了。
+
+以上两种使用场景下，都是由于需要书写或需要依赖全局变量的声明文件，所以必须使用三斜线指令。在其他的一些不是必要使用三斜线指令的情况下，就都需要使用 `import` 来导入。
+
+###### 三斜线指令 - 拆分声明文件
+
+<font color=LightSeaGreen>全局变量的声明文件太大时，可以通过拆分为多个文件，然后在一个入口文件中将它们一一引入，来提高代码的可维护性</font>。比如 `jQuery` 的声明文件就是这样的：
+
+```ts
+// node_modules/@types/jquery/index.d.ts
+
+/// <reference types="sizzle" />
+/// <reference path="JQueryStatic.d.ts" />
+/// <reference path="JQuery.d.ts" />
+/// <reference path="misc.d.ts" />
+/// <reference path="legacy.d.ts" />
+export = jQuery;
+```
+
+其中用到了 <font color=dodgerBlue>`types` 和 `path` 两种不同的指令</font>，它们的<font color=dodgerBlue>区别是</font>：<font color=red>**`types` 用于声明对另一个库的依赖**</font>，而 <font color=red>**`path` 用于声明对另一个文件的依赖**</font>。
+
+上例中，`sizzle` 是与 `jquery` 平行的另一个库，所以需要使用 `types="sizzle"` 来声明对它的依赖。而其他的三斜线指令就是将 `jquery` 的声明拆分到不同的文件中了，然后在这个入口文件中使用 `path="foo"` 将它们一一引入。
+
+###### 其他三斜线指令
+
+除了这两种三斜线指令之外，还有其他的三斜线指令，比如 `/// <reference no-default-lib="true"/> ` , `/// <amd-module />` 等，但它们都是废弃的语法，故这里就不介绍了，详情可见[官网](http://www.typescriptlang.org/docs/handbook/triple-slash-directives.html)。
+
+##### 自动生成声明文件
+
+如果库的源码本身就是由 ts 写的，那么在使用 `tsc` 脚本将 ts 编译为 js 的时候，添加 `declaration` 选项，就可以同时也生成 `.d.ts` 声明文件了。
+
+<font color=red>可以在命令行中添加 `--declaration`（简写 `-d`），或者在 `tsconfig.json` 中添加 `declaration` 选项</font>。以 `tsconfig.json` 为例：
+
+```json
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "outDir": "lib",
+        "declaration": true,
+    }
+}
+```
+
+上例中我们添加了 `outDir` 选项，将 ts 文件的编译结果输出到 `lib` 目录下，然后添加了 `declaration` 选项，设置为 `true`，表示将会由 ts 文件自动生成 `.d.ts` 声明文件，也会输出到 `lib` 目录下。
+
+运行 `tsc` 之后，目录结构如下：
+
+```autoit
+/path/to/project
+├── lib
+|  ├── bar
+|  |  ├── index.d.ts
+|  |  └── index.js
+|  ├── index.d.ts
+|  └── index.js
+├── src
+|  ├── bar
+|  |  └── index.ts
+|  └── index.ts
+├── package.json
+└── tsconfig.json
+```
+
+在这个例子中，`src` 目录下有两个 ts 文件，分别是 `src/index.ts` 和 `src/bar/index.ts`，它们被编译到 `lib` 目录下的同时，也会生成对应的两个声明文件 `lib/index.d.ts` 和 `lib/bar/index.d.ts`。它们的内容分别是：
+
+```ts
+// src/index.ts
+export * from './bar';
+
+export default function foo() {
+    return 'foo';
+}
+```
+
+```ts
+// src/bar/index.ts
+export function bar() {
+    return 'bar';
+}
+```
+
+```ts
+// lib/index.d.ts
+export * from './bar';
+export default function foo(): string;
+```
+
+```ts
+// lib/bar/index.d.ts
+export declare function bar(): string;
+```
+
+可见，自动生成的声明文件基本保持了源码的结构，而将具体实现去掉了，生成了对应的类型声明。
+
+使用 `tsc` 自动生成声明文件时，每个 ts 文件都会对应一个 `.d.ts` 声明文件。这样的好处是，使用方不仅可以在使用 `import foo from 'foo'` 导入默认的模块时获得类型提示，还可以在使用 `import bar from 'foo/lib/bar'` 导入一个子模块时，也获得对应的类型提示。
+
+除了 `declaration` 选项之外，还有几个选项也与自动生成声明文件有关，这里只简单列举出来，不做详细演示了：
+
+- `declarationDir` 设置生成 `.d.ts` 文件的目录
+- `declarationMap` 对每个 `.d.ts` 文件，都生成对应的 `.d.ts.map`（sourcemap）文件
+- `emitDeclarationOnly` 仅生成 `.d.ts` 文件，不生成 `.js` 文件
+
+#### 发布声明文件
+
+为一个库写好了声明文件之后，下一步就是将它发布出去了。<font color=dodgerBlue>有两种方案</font>：
+
+1. 将声明文件和源码放在一起
+2. 将声明文件发布到 `@types` 下
+
+<font color=red>这两种方案中优先选择第一种方案</font>。<font color=LightSeaGreen>保持声明文件与源码在一起，使用时就不需要额外增加单独的声明文件库的依赖了</font>，而且<font color=LightSeaGreen>**也能保证声明文件的版本与源码的版本保持一致**</font>。
+
+<font color=dodgerBlue>仅当我们在给别人的仓库添加类型声明文件，但原作者不愿意合并 pull request 时</font>，<font color=LightSeaGreen>才需要使用第二种方案，将声明文件发布到 `@types` 下</font>。
+
+##### 将声明文件和源码放在一起
+
+如果声明文件是通过 `tsc` 自动生成的，那么无需做任何其他配置，只需要把编译好的文件也发布到 npm 上，使用方就可以获取到类型提示了。
+
+如果是手动写的声明文件，那么需要满足以下条件之一，才能被正确的识别：
+
+- 给 `package.json` 中的 `types` 或 `typings` 字段指定一个类型声明文件地址
+- 在项目根目录下，编写一个 `index.d.ts` 文件
+- 针对入口文件（`package.json` 中的 `main` 字段指定的入口文件），编写一个同名不同后缀的 `.d.ts` 文件
+
+第一种方式是给 `package.json` 中的 `types` 或 `typings` 字段指定一个类型声明文件地址。比如：
+
+```json
+{
+    "name": "foo",
+    "version": "1.0.0",
+    "main": "lib/index.js",
+    "types": "foo.d.ts",
+}
+```
+
+指定了 `types` 为 `foo.d.ts` 之后，导入此库的时候，就会去找 `foo.d.ts` 作为此库的类型声明文件了。
+
+`typings` 与 `types` 一样，只是另一种写法。
+
+如果没有指定 `types` 或 `typings`，那么就会在根目录下寻找 `index.d.ts` 文件，将它视为此库的类型声明文件。
+
+如果没有找到 `index.d.ts` 文件，那么就会寻找入口文件（`package.json` 中的 `main` 字段指定的入口文件）是否存在对应同名不同后缀的 `.d.ts` 文件。
+
+比如 `package.json` 是这样时：
+
+```json
+{
+    "name": "foo",
+    "version": "1.0.0",
+    "main": "lib/index.js"
+}
+```
+
+就会先识别 `package.json` 中是否存在 `types` 或 `typings` 字段。发现不存在，那么就会寻找是否存在 `index.d.ts` 文件。如果还是不存在，那么就会寻找是否存在 `lib/index.d.ts` 文件。假如说连 `lib/index.d.ts` 都不存在的话，就会被认为是一个没有提供类型声明文件的库了。
+
+有的库为了支持导入子模块，比如 `import bar from 'foo/lib/bar'`，就需要额外再编写一个类型声明文件 `lib/bar.d.ts` 或者 `lib/bar/index.d.ts`，这与自动生成声明文件类似，一个库中同时包含了多个类型声明文件。
+
+##### 将声明文件发布到 `@types` 下§
+
+如果我们是在给别人的仓库添加类型声明文件，但原作者不愿意合并 pull request，那么就需要将声明文件发布到 `@types` 下。
+
+与普通的 npm 模块不同，`@types` 是统一由 [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/) 管理的。要将声明文件发布到 `@types` 下，就需要给 [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/) 创建一个 pull-request，其中包含了类型声明文件，测试代码，以及 `tsconfig.json` 等。
+
+pull-request 需要符合它们的规范，并且通过测试，才能被合并，稍后就会被自动发布到 `@types` 下。
+
+在 [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/) 中创建一个新的类型声明，需要用到一些工具，[DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/) 的文档中已经有了[详细的介绍](https://github.com/DefinitelyTyped/DefinitelyTyped#create-a-new-package)，这里就不赘述了，以官方文档为准。
+
+> ⚠️ 值得注意的是：[ts handbook - module](https://www.typescriptlang.org/docs/handbook/modules.html) 介绍的很多的方法，比如 `export =`  在 [ts handbook V2 - module](https://www.typescriptlang.org/docs/handbook/2/modules.html) 都被省略了；原因想必是很多兼容的方法，现在都已经过时了，所以就不再介绍
+
+
 
 
 
@@ -5563,6 +5908,16 @@ There’s one more kind of literal type: boolean literals. There are only two bo
 <img src="https://s2.loli.net/2022/12/16/VrogC1Mfhy84eZ7.png" alt="image-20221216155543167" style="zoom:60%;" />
 
 摘自：[TS Doc - Everyday Types # Everyday Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types)
+
+
+
+#### module
+
+// TODO
+
+摘自：[TS handbook V2 - module](https://www.typescriptlang.org/docs/handbook/2/modules.html)
+
+> 👀 另外，有空的话看下 [TS handbook V1 - module](https://www.typescriptlang.org/docs/handbook/modules.html) V2 删掉了不少内容，考虑到兼容还是有必要稍微看下
 
 
 
