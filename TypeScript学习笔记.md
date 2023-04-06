@@ -1505,13 +1505,13 @@ export declare function bar(): string;
 
 ##### 将声明文件和源码放在一起
 
-如果声明文件是通过 `tsc` 自动生成的，那么无需做任何其他配置，只需要把编译好的文件也发布到 npm 上，使用方就可以获取到类型提示了。
+<font color=dodgerBlue>如果声明文件是通过 `tsc` 自动生成的</font>，<font color=LightSeaGreen>无需做任何其他配置，只需把编译好的文件也发布到 npm 上</font>，使用方便可获取类型提示了。
 
-如果是手动写的声明文件，那么需要满足以下条件之一，才能被正确的识别：
+<font color=dodgerBlue>**如果是手动写的声明文件**</font>，那么<font color=dodgerBlue>需要满足以下条件 <font size=4>**之一**</font>，才能被正确的识别</font>：
 
-- 给 `package.json` 中的 `types` 或 `typings` 字段指定一个类型声明文件地址
+- 在 `package.json` 中 `types` 或 `typings` 字段指定一个类型声明文件地址
 - 在项目根目录下，编写一个 `index.d.ts` 文件
-- 针对入口文件（`package.json` 中的 `main` 字段指定的入口文件），编写一个同名不同后缀的 `.d.ts` 文件
+- 针对入口文件（ `package.json` 中的 `main` 字段指定的入口文件），编写一个同名不同后缀的 `.d.ts` 文件
 
 第一种方式是给 `package.json` 中的 `types` 或 `typings` 字段指定一个类型声明文件地址。比如：
 
@@ -1524,13 +1524,13 @@ export declare function bar(): string;
 }
 ```
 
-指定了 `types` 为 `foo.d.ts` 之后，导入此库的时候，就会去找 `foo.d.ts` 作为此库的类型声明文件了。
+<font color=dodgerBlue>**指定了 `types` 为 `foo.d.ts` 之后**</font>，<font color=LightSeaGreen>导入此库的时候，就会去找 `foo.d.ts` 作为此库的类型声明文件了</font>。
 
 `typings` 与 `types` 一样，只是另一种写法。
 
-如果没有指定 `types` 或 `typings`，那么就会在根目录下寻找 `index.d.ts` 文件，将它视为此库的类型声明文件。
+<font color=dodgerBlue>**如果没有指定 `types` 或 `typings`**</font>，那么就<font color=LightSeaGreen>会在根目录下寻找 `index.d.ts` 文件</font>，将它视为此库的类型声明文件。
 
-如果没有找到 `index.d.ts` 文件，那么就会寻找入口文件（`package.json` 中的 `main` 字段指定的入口文件）是否存在对应同名不同后缀的 `.d.ts` 文件。
+<font color=dodgerBlue>**如果没有找到 `index.d.ts` 文件**</font>，那么就<font color=LightSeaGreen>会寻找入口文件</font>（ <font color=red>`package.json` 中的 `main` 字段指定的入口文件</font>）是否存在对应同名不同后缀的 `.d.ts` 文件。
 
 比如 `package.json` 是这样时：
 
@@ -1542,23 +1542,21 @@ export declare function bar(): string;
 }
 ```
 
-就会先识别 `package.json` 中是否存在 `types` 或 `typings` 字段。发现不存在，那么就会寻找是否存在 `index.d.ts` 文件。如果还是不存在，那么就会寻找是否存在 `lib/index.d.ts` 文件。假如说连 `lib/index.d.ts` 都不存在的话，就会被认为是一个没有提供类型声明文件的库了。
+就会先识别 `package.json` 中是否存在 `types` 或 `typings` 字段。发现不存在，那么就会寻找是否存在 `index.d.ts` 文件。如果还是不存在，那么就会寻找是否存在 `lib/index.d.ts` 文件。<font color=dodgerBlue>**如果 `lib/index.d.ts` 都不存在的话**</font>，就<font color=red>会被认为是一个没有提供类型声明文件的库了</font>。
 
 有的库为了支持导入子模块，比如 `import bar from 'foo/lib/bar'`，就需要额外再编写一个类型声明文件 `lib/bar.d.ts` 或者 `lib/bar/index.d.ts`，这与自动生成声明文件类似，一个库中同时包含了多个类型声明文件。
 
-##### 将声明文件发布到 `@types` 下§
+##### 将声明文件发布到 `@types` 下
 
 如果我们是在给别人的仓库添加类型声明文件，但原作者不愿意合并 pull request，那么就需要将声明文件发布到 `@types` 下。
 
-与普通的 npm 模块不同，`@types` 是统一由 [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/) 管理的。要将声明文件发布到 `@types` 下，就需要给 [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/) 创建一个 pull-request，其中包含了类型声明文件，测试代码，以及 `tsconfig.json` 等。
+与普通的 npm 模块不同，`@types` 是统一由 [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/) 管理的。<font color=LightSeaGreen>要将声明文件发布到 `@types` 下，就需要给 [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/) 创建一个 pull-request</font>，其中包含了类型声明文件，测试代码，以及 `tsconfig.json` 等。
 
-pull-request 需要符合它们的规范，并且通过测试，才能被合并，稍后就会被自动发布到 `@types` 下。
+<font color=LightSeaGreen>pull-request 需要符合它们的规范，并且通过测试，才能被合并</font>；稍后就会被自动发布到 `@types` 下。
 
 在 [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/) 中创建一个新的类型声明，需要用到一些工具，[DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/) 的文档中已经有了[详细的介绍](https://github.com/DefinitelyTyped/DefinitelyTyped#create-a-new-package)，这里就不赘述了，以官方文档为准。
 
 > ⚠️ 值得注意的是：[ts handbook - module](https://www.typescriptlang.org/docs/handbook/modules.html) 介绍的很多的方法，比如 `export =`  在 [ts handbook V2 - module](https://www.typescriptlang.org/docs/handbook/2/modules.html) 都被省略了；原因想必是很多兼容的方法，现在都已经过时了，所以就不再介绍
-
-
 
 
 
@@ -6760,6 +6758,10 @@ export { foo, bar }
 
 
 #### tsconfig.json
+
+> 💡 ts 官方有 tsconfig.json 各种配置选项的介绍，见：[Intro to the TSConfig Reference](https://www.typescriptlang.org/tsconfig)
+
+
 
 ##### files、include 和 exclude
 files、include 和 exclude 都是用于指定（设置）需要被编译的文件的：其中 files 是直接指定文件路径，include 和 exclude 是一对，用匹配模式 包含和排除一些文件。
