@@ -511,7 +511,6 @@
 - **troubleshooting** ：排错，分析解决问题
 
 - **trait** ：特征，特点
-
 - **segregation** ：隔离。read / write segregation 读写隔离
 
 - **precedence** ：优先地位，优先级
@@ -608,6 +607,7 @@
 
   <img src="https://s2.loli.net/2023/04/05/iET3t1bdynUZNDO.png" alt="image-20230405171953947" style="zoom:50%;" />
 
+- **mimic** ：v. / n. 模仿，adj. 会模仿的（人/动物）
 
 
 ***
