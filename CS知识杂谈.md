@@ -106,7 +106,7 @@ UUID 版本通过 M 表示，当前规范有5个版本，M可选值为`1, 2, 3, 
 
 因为时间戳和随机数的唯一性，版本1和版本4总是生成唯一的标识符。若希望对给定的一个字符串总是能生成相同的 UUID，使用版本3或版本5。
 
-摘自：[**什么是 UUID**](https://www.jianshu.com/p/da6dae36c290)
+摘自：[什么是 UUID](https://www.jianshu.com/p/da6dae36c290)
 
 
 
@@ -116,7 +116,7 @@ foo & bar 是类似于”哑变元“，<font color=LightSeaGreen>我们可以�
 
 术语 foobar , foo , bar , baz 和 qux 经常在计算机编程或计算机相关的文档中 <font color=LightSeaGreen>被用作**占位符**的名字</font>。<font color=LightSeaGreen>当变量，函数，或命令本身不太重要的时候， foobar , foo , bar , baz 和 qux 就被用来充当这些实体的名字</font>，这样做的目的仅仅是阐述一个概念，说明一个想法。这些术语本身相对于使用的场景来说没有任何意义。Foobar经常被单独使用；而当需要多个实体举例的时候，foo，bar，和baz则经常被按顺序使用。
 
-摘自：[**你所不知道的“foo”和“bar”**](https://cloud.tencent.com/developer/article/1360988)
+摘自：[你所不知道的“foo”和“bar”](https://cloud.tencent.com/developer/article/1360988)
 
 
 
@@ -124,7 +124,7 @@ foo & bar 是类似于”哑变元“，<font color=LightSeaGreen>我们可以�
 
 哑元，即虚拟变量 ( Dummy Variables ) 又称虚设变量、名义变量或哑变量，用以反映质的属性的一个人工变量，是量化了的自变量，通常取值为0或1。<font color=LightSeaGreen>引入哑变量可使线形回归模型变得更复杂，但对问题描述更简明，一个方程能达到两个方程的作用，而且接近现实</font>。
 
-摘自：[**百度百科 - 虚拟变量**]([https://baike.baidu.com/item/%E8%99%9A%E6%8B%9F%E5%8F%98%E9%87%8F/8262721?fr=aladdin](https://baike.baidu.com/item/虚拟变量/8262721?fr=aladdin))
+摘自：[百度百科 - 虚拟变量]([https://baike.baidu.com/item/%E8%99%9A%E6%8B%9F%E5%8F%98%E9%87%8F/8262721?fr=aladdin](https://baike.baidu.com/item/虚拟变量/8262721?fr=aladdin))
 
 
 
@@ -230,7 +230,7 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 
 RPC 是指远程过程调用，也就是说两台服务器 A 和 B，一个应用部署在 A服务器 上，想要调用 B服务器 上应用提供的函数/方法，由于不在一个内存空间，不能直接调用，需要通过网络来表达调用的语义和传达调用的数据。
 
-**需要解决如下问题：**
+###### 需要解决如下问题
 
 - 首先，<font color=FF0000>**要解决通讯的问题**</font>。主要是通过在客户端和服务器之间建立 TCP 连接，远程过程调用的所有交换的数据都在这个连接里传输。连接可以是按需连接，调用结束后就断掉，也可以是长连接，多个远程过程调用共享同一个连接。
 - 第二，要解决寻址的问题。也就是说，<font color=FF0000>**A服务器上的应用怎么告诉底层的 RPC 框架，如何连接到 B服务器（如主机 或 IP地址）以及特定的端口，<font size=4>方法的名称名称是什么</font>**，这样才能完成调用</font>。比如基于 Web 服务协议栈的 RPC，就要提供一个 endpoint URI ，或者是从 UDDI 服务上查找。如果是 RMI 调用的话，还需要一个 RMI Registry 来注册服务的地址。
@@ -346,7 +346,7 @@ RPC 只是对底层协议的封装，其实对具体的通信协议是啥并没�
 
 在计算机科学中，消息队列 ( Message queue ) 是一种 <font color=FF0000>**进程间通信** 或 **同一进程的不同线程间** 的 <font color=FF0000 size=4>**通信方式**</font></font>，软件的队列用来处理一系列的输入，通常是来自用户。<font color=FF0000>消息队列提供了 <font size=4>**异步的通信协议**</font></font>，每一个队列中的纪录包含详细说明的资料，包含发生的时间，输入设备的种类，以及特定的输入参数，也就是说：<font color=FF0000>消息的发送者和接收者不需要同时与消息队列交互</font>（👀 **注**：“不需要同时” 说明了这是异步的）。<font color=FF0000 size=4>**消息会保存在队列中，直到接收者取回它**</font>。
 
-一个 WIMP (👀 Window, Icon, Menu, Pointer ) 环境像是 Microsoft Windows，借由优先的某些形式（通常是事件的时间或是重要性的顺序）来存储用户产生的事件到一个 事件队列 中。系统把每个事件从事件队列中传递给目标的应用程序。
+一个 WIMP ( 👀 Window, Icon, Menu, Pointer ) 环境像是 Microsoft Windows，借由优先的某些形式（通常是事件的时间或是重要性的顺序）来存储用户产生的事件到一个 事件队列 中。系统把每个事件从事件队列中传递给目标的应用程序。
 
 <font color=FF0000>**消息队列常常保存在 链表结构 中。拥有权限的进程可以向消息队列中写入或读取消息**</font>。
 
@@ -370,7 +370,7 @@ RPC 指的是远程调用，也就是说，调用的函数不在同一内存空�
 
 摘自：[任务队列和消息队列，rpc的区别？ - ze ran的回答 - 知乎](https://www.zhihu.com/question/265988880/answer/301986369)
 
-消息队列 ( MQ ) 是一种能实现 <font color=FF0000>生产者 到 消费者 **单向通信**</font> 的通信模型（👀 **注**：半双工？），一般来说是指实现这个模型的中间件，比如 RabbitMQ
+消息队列 ( MQ ) 是一种能实现 <font color=FF0000>生产者 到 消费者 **单向通信**</font> 的通信模型（👀 半双工？），一般来说是指实现这个模型的中间件，比如 RabbitMQ
 
 摘自：[任务队列和消息队列，rpc的区别？ - 灵剑的回答 - 知乎](https://www.zhihu.com/question/265988880/answer/301580895)
 
