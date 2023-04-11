@@ -101,7 +101,11 @@ You can <font color=dodgerBlue>configure Visual Studio Code to your liking throu
 
 > 👀 之所以 “user interface” 加了重点，是因为 `git clone` 并用 vsc 打开 [ractive](https://github.com/ractivejs/ractive) 时，发现 UI 样式和日常使用的 vsc 样式不一样，于是找到了 `.vscode/settings.json` 文件，找到了修改 vsc UI 的相关配置。
 >
-> 💡 `.vscode` 文件夹可以放置 `settings.json` 和 `launch.json` ，以及 [[#Workspace settings]] 中提及的 task 对应的 `tasks.json` 。
+> 💡**一些补充**
+>
+>  `.vscode` 文件夹可以放置 `settings.json` 和 `launch.json` ，以及 [[#Workspace settings]] 中提及的 task 对应的 `tasks.json` 。
+>
+> 也可在 `.vscode` 中添加 `extensions.json` ，作为项目 ( workspace ) 中推荐使用的插件；官方文档介绍：[VS Code Doc - Extension Marketplace # Workspace recommended extensions](https://code.visualstudio.com/docs/editor/extension-marketplace#_workspace-recommended-extensions) 。相关讨论：[Cory House 在 23/4/11 的推文](https://twitter.com/housecor/status/1645459301249458177)
 
 <font color=dodgerBlue>**VS Code provides several different scopes for settings**</font>. When you open a workspace, you will see at least the following two scopes:
 
