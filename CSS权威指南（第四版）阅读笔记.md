@@ -432,7 +432,7 @@ a[href="http://www.w3.org/"][title="W3C Home"]{
 
 ##### P71 选择后续同胞（兄弟结点）
 
-Select入一个新的同胞连结符，名为一般同胞连结符（general siblingcombinator）这个连结符使用波浪号（~）表示，<font color=FF0000>选择**一个元素后面**同属一个父元素的另一个元素</font>。
+Selectors Level 3 引入一个新的同胞连结符，名为一般同胞连结符（general siblingcombinator）这个连结符使用波浪号（~）表示，<font color=FF0000>选择**一个元素后面**同属一个父元素的另一个元素</font>。
 
 举个例子。若想让h2后面与它同属一个父元素的ol元素的文本倾斜，可以编写 `h2 ~ ol {font-style:italic;}`。<font color=FF0000>两个元素不一定非得是紧邻同胞，不过是的话也能匹配</font>。
 

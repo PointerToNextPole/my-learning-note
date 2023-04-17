@@ -722,7 +722,7 @@ Location of where to generate the configuration. Defaults to `process.cwd()` .
 
 - **`-t` , `--template`** : `string = 'default'` , Name of template to generate.
 
-- **`-f` , `--force`** : `boolean` , To generate a project without questions. When enabled, the default answer for each question will be used. 👀 注：另外  `-y` 的选项，不知道为什么文档中没有...
+- **`-f` , `--force`** : `boolean` , To generate a project without questions. When enabled, the default answer for each question will be used. 👀 另外  `-y` 的选项，不知道为什么文档中没有...
 
 > 💡 **Tip** : See the [full documentation of `webpack init` command](https://github.com/webpack/webpack-cli/blob/master/packages/generators/INIT.md).
 
@@ -888,7 +888,7 @@ npx webpack watch --mode development
 
 #####  Core Flags
 
-<font color=dodgerBlue>Starting **CLI v4** and **webpack v5**</font>（👀 注：不要看错，是 CLI 4 和 webpack 5 ） , CLI imports the entire configuration schema from webpack core to <font color=red>allow tuning</font>（调整） <font color=red>almost every configuration option from the command line</font>.
+<font color=dodgerBlue>Starting **CLI v4** and **webpack v5**</font>（👀 不要看错，是 CLI 4 和 webpack 5 ） , CLI imports the entire configuration schema from webpack core to <font color=red>allow tuning</font>（调整） <font color=red>almost every configuration option from the command line</font>.
 
 **Here's the list of all the core flags supported by webpack v5 with CLI v4 - [link](https://github.com/webpack/webpack-cli/blob/master/OPTIONS.md)**
 
@@ -1197,7 +1197,7 @@ NODE_OPTIONS="--max-old-space-size=4096 -r /path/to/preload/file.js" webpack
 
 ##### CLI Environment Variables
 
-> 👀 注：虽然应该会很少用到，但还是有必要关注下。
+> 👀 虽然应该会很少用到，但还是有必要关注下。
 
 | Environment Variable                                         | Description                                                  |
 | :----------------------------------------------------------- | :----------------------------------------------------------- |
@@ -1253,6 +1253,8 @@ For more information, see our documentation on [writing a webpack configuration 
 
 摘自：[webpack doc - API - Command Line Interface](https://webpack.js.org/api/cli/)
 
+> 💡由于群友提起，webpack-cli 有一个 `init` 命令 ( `npx webpack-cli init` )；之前被忽略了，才发现有点意思；可以让开发者直接创建一个已经做了部分配置的 webpack 项目。
+
 
 
 #### Node Interface
@@ -1268,20 +1270,20 @@ The imported <font color=fuchsia>`webpack` function is fed</font>（传递） <f
 ```js
 const webpack = require('webpack');
 
-// 👀 注：一共两个参数，一个参数是配置，另一个是 callback
+// 👀 一共两个参数，一个参数是配置，另一个是 callback
 webpack({
   // [Configuration Object](/configuration/)
 }, (err, stats) => { // [Stats Object](#stats-object)
   if (err || stats.hasErrors()) {
     // [Handle errors here](#error-handling)
   }
-  // Done processing // 👀 注：在确保 config 没有错误后（错误被处理后），继续操作
+  // Done processing // 👀 在确保 config 没有错误后（错误被处理后），继续操作
 });
 ```
 
 > 💡 **Tip** : The `err` object **will not** include compilation errors. Those <font color=red>must be handled separately using `stats.hasErrors()`</font> , which will be covered in detail in the [Error Handling](https://webpack.js.org/api/node/#error-handling) section of this guide. The `err` object will only contain webpack-related issues, such as misconfiguration, etc.
 
-> 💡 **Tip** : <font color=fuchsia>You can provide the `webpack` function **with an array of configurations**</font>. See the [MultiCompiler](https://webpack.js.org/api/node/#multicompiler) section below for more information. 👀 注：在 [[#MultiCompiler]] 有笔记
+> 💡 **Tip** : <font color=fuchsia>You can provide the `webpack` function **with an array of configurations**</font>. See the [MultiCompiler](https://webpack.js.org/api/node/#multicompiler) section below for more information. 👀 在 [[#MultiCompiler]] 有笔记
 
 ##### Compiler Instance
 
@@ -8390,7 +8392,9 @@ It is crucial to minimize your CSS for production. Please see the [Minimizing fo
 
 ##### 命令行选项 ( CLI Alternatives )
 
-<font color=dodgerBlue>Many of the options described above can be set as command line arguments</font>. For example , <font color=red>`optimization.minimize` can be set with `--optimization-minimize`</font> , and <font color=fuchsia>`mode` can be set with `--mode`</font> . Run <font color=red>`npx webpack --help=verbose` **for a full list of CLI arguments**</font>.  👀 **注**：运行该命令需要安装 webpack 和 webpack-cli 作为依赖。另外，https://webpack.js.org/api/cli/ 也有一样的内容
+<font color=dodgerBlue>Many of the options described above can be set as command line arguments</font>. For example , <font color=red>`optimization.minimize` can be set with `--optimization-minimize`</font> , and <font color=fuchsia>`mode` can be set with `--mode`</font> . Run <font color=red>`npx webpack --help=verbose` **for a full list of CLI arguments**</font>. 
+
+> 👀 运行该命令需要安装 webpack 和 webpack-cli 作为依赖。另外，https://webpack.js.org/api/cli/ 也有一样的内容
 
 <font color=dodgerBlue>**While**</font> these shorthand（速记） methods are useful , <font color=fuchsia>we recommend setting these options in a webpack configuration file for **more configurability**</font>.
 
