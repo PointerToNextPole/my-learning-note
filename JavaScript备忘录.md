@@ -87,9 +87,9 @@ element.outerHTML = content;
 
 #### JavaScript 数据类型
 
-- **值类型（基本类型 Primitive value ）**：字符串 ( String )、数字(Number)、布尔( Boolean )、空( Null )、未定义 ( Undefined )、Symbol ( Symbol 是 ES6 引入了一种新的原始数据类型，表示独一无二的值）
+- **值类型（基本类型 Primitive value ）**：字符串 ( String )、数字 ( Number)、布尔 ( Boolean )、空 ( Null )、未定义 ( Undefined )、Symbol ( Symbol 是 ES6 引入了一种新的原始数据类型，表示独一无二的值）
 
-  > 💡另外，还有 bigint
+  > 💡另外，还有 BigInt
 
 - **<font color=FF0000>引用数据类型</font>**：对象 ( Object )、数组 ( Array )、函数 ( Function ) 
 
@@ -3896,7 +3896,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                                                         
+  >                                                                                                                                                                                                                                                                                             
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3915,7 +3915,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                                                                         
+  >                                                                                                                                                                                                                                                                                             
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -6989,7 +6989,7 @@ document.addEventListener('visibilitychange', function logData() {
 
 摘自：[MDN - Navigator.sendBeacon()](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/sendBeacon)
 
-> 👀 注：`Navigator.sendBeacon()` 也是发送请求，这是之前没有注意的... 只能说看 MDN 看的一知半解吧...
+> 👀 `Navigator.sendBeacon()` 也是发送请求，这是之前没有注意的... 只能说看 MDN 看的一知半解吧...
 >
 > 学习自：[为什么都说根据X-Requested-With判断ajax请求，但原生js发送ajax默认不带这个头？ - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/365435784/answer/968292664)
 
@@ -6997,24 +6997,35 @@ document.addEventListener('visibilitychange', function logData() {
 
 #### Clipboard & Navigator.clipboard
 
+> ⚠️ **安全上下文:** 此项功能仅在一些 [支持的浏览器](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard#浏览器兼容性) 的 [安全上下文 ](https://developer.mozilla.org/zh-CN/docs/Web/Security/Secure_Contexts) ( HTTPS ) 中可用。
+
 Clipboard 接口实现了 Clipboard API，如果用户授予了相应的权限，就能提供系统剪贴板的读写访问。在 Web 应用程序中，Clipboard API 可用于实现剪切、复制和粘贴功能。
 
-如果用户没有适时使用 Permissions API 授予相应权限和"clipboard-read" 或 "clipboard-write" 权限，调用 Clipboard 对象的方法不会成功。**注意 ⚠️：**实际上，现在浏览器对于访问剪贴板权限的索取各有不同，在章节 [剪贴板可用性](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard#剪贴板可用性) 查看更多细节。
+```mermaid
+classDiagram
+EventTarget <|-- Clipboard
+```
+
+如果用户没有适时使用 [Permissions API](https://developer.mozilla.org/zh-CN/docs/Web/API/Permissions_API) 授予相应权限和"clipboard-read" 或 "clipboard-write" 权限，调用 Clipboard 对象的方法不会成功。
+
+>  ⚠️ 实际上，现在浏览器对于访问剪贴板权限的索取各有不同，在章节 [剪贴板可用性](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard#剪贴板可用性) 查看更多细节。
 
 <font color=FF0000>**系统剪贴板暴露于全局属性 Navigator.clipboard 之中**</font>
 
-<font color=FF0000 size=4>**所有** 剪贴板 API 方法都是 **异步** 的</font>；它们 <font color=FF0000 size=4>**返回一个 Promise 对象**</font>，在剪贴板访问完成后被执行。如果剪贴板访问被拒绝，promise 也会被拒绝。
+<font color=fuchsia>**所有** 剪贴板 API 方法都是 **异步** 的</font>；它们 <font color=fuchsia>**返回一个 Promise 对象**</font>，在剪贴板访问完成后被执行。如果剪贴板访问被拒绝，promise 也会被拒绝。
 
 ##### 方法
 
 <font color=FF0000>**Clipboard 继承自 EventTarget 接口**</font>，因此拥有它的方法。
 
-- **read()：**从剪贴板读取数据（比如图片），<font color=FF0000>返回一个 Promise 对象</font>。When the data has been retrieved, the promise is resolved with a DataTransfer object that provides the data。
-- **readText()：**从操作系统读取文本；returns a Promise which is resolved with a DOMString containing the clipboard's text once it's available。
-- **write()：**写入任意数据至操作系统剪贴板。This asynchronous operation signals that it's finished by resolving the returned Promise。
-- **writeText()：**写入文本至操作系统剪贴板。returning a Promise which is resolved once the text is fully copied into the clipboard。
+- **`read()`** ：从剪贴板读取数据（比如图片），<font color=FF0000>返回一个 Promise 对象</font>。在检索到数据后，promise 将兑现一个 `ClipboardItem` 对象的数组来提供剪切板数据。
+- **`readText()`** ：从操作系统读取文本，返回一个 `Promise`，在从剪切板中检索到文本后，promise 将兑现一个包含剪切板文本数据的 `DOMString`。
+- **`write()`** ：写入任意数据至操作系统剪贴板。这是一个异步操作，在操作完成后，返回的 promise 的将被兑现。
+- **`writeText()`** ：写入文本至操作系统剪贴板。返回一个 `Promise`，在文本被完全写入剪切板后，返回的 promise 将被兑现。
 
 摘自：[MDN - Clipboard](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard)
+
+
 
 #### Navigator.permissions 🧪
 

@@ -1253,7 +1253,9 @@ For more information, see our documentation on [writing a webpack configuration 
 
 摘自：[webpack doc - API - Command Line Interface](https://webpack.js.org/api/cli/)
 
-> 💡由于群友提起，webpack-cli 有一个 `init` 命令 ( `npx webpack-cli init` )；之前被忽略了，才发现有点意思；可以让开发者直接创建一个已经做了部分配置的 webpack 项目。
+> 💡 经群友提起：webpack-cli 有一个 `init` 命令 ( `npx webpack-cli init` )，这是之前忽略的（看了下 webpack-cli GitHub repo 的 archive.org ，该命令在 webpack-cli@4.0 就有了 ）。发现有点意思；可以让开发者手动选择，并直接创建一个已经做了部分配置的 webpack 项目（类似于 vue-cli ）。
+>
+> 👀 发现一个问题，按照官方文档
 
 
 
