@@ -1253,9 +1253,16 @@ For more information, see our documentation on [writing a webpack configuration 
 
 摘自：[webpack doc - API - Command Line Interface](https://webpack.js.org/api/cli/)
 
-> 💡 经群友提起：webpack-cli 有一个 `init` 命令 ( `npx webpack-cli init` )，这是之前忽略的（看了下 webpack-cli GitHub repo 的 archive.org ，该命令在 webpack-cli@4.0 就有了 ）。发现有点意思；可以让开发者手动选择，并直接创建一个已经做了部分配置的 webpack 项目（类似于 vue-cli ）。
+> 💡 经群友提起：webpack-cli 有一个 `init` 命令 ( `npx webpack-cli init` )，这是之前忽略的（看了下 webpack-cli GitHub repo 的 archive.org ，该命令在 webpack-cli@4.0 就有了 ）。发现有点意思；可以让开发者手动选择，并直接创建一个已经做了部分配置（包含 webpack.config.js ）的 webpack 项目（类似于 vue-cli ）。
 >
-> 👀 发现一个问题，按照官方文档
+> 👀 发现一个问题，按照 [webpack-cli GitHub repo readme](https://github.com/webpack/webpack-cli) 的指引：
+>
+> ```bash
+> npm i webpack-cli @webpack-cli/init
+> npx webpack-cli init
+> ```
+>
+> 运行是会报错的，也无法生成预想的模版。不过，如果如果 mkdir 一个新项目之后，并 `npm webpack webpack-cli --D` ，再运行 `npx webpack-cli init` 是可以的...
 
 
 
