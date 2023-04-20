@@ -632,7 +632,7 @@
 
 - **extent** ：程度
 
-- **consequence** ：后果。As a consequence 因此 。👀 挺基础的，太久没接触，遗忘了
+- **consequence** ：后果。As a consequence ：因此 。👀 挺基础的，太久没接触，遗忘了
 
 ***
 
