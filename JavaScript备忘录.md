@@ -3896,7 +3896,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                                                             
+  >                                                                                                                                                                                                                                                                                                 
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3915,7 +3915,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                                                                             
+  >                                                                                                                                                                                                                                                                                                 
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -7862,29 +7862,57 @@ console.log("This is %cMy stylish message", "color: yellow; font-style: italic; 
 
 > ⚠️ 控制台信息的默认行为与行内元素相似。为了应用 padding, margin 这类效果，你应当这样设置display: inline-block.。
 
-摘自：[MDN web docs - Console](https://developer.mozilla.org/zh-CN/docs/Web/API/Console)
+摘自：[MDN - Console](https://developer.mozilla.org/zh-CN/docs/Web/API/Console)
 
 
 
-#### JS存储对象（Storage）
+#### JS 存储对象 ( Storage )
 
-作为 Web Storage API 的接口，**`Storage`** <mark>提供了访问特定域名下的<font color=FF0000>**会话存储**</font>（sessionStorage）或<font color=FF0000>**本地存储**</font>（localStorage）的功能</mark>，例如，可以添加、修改或删除存储的数据项。
+作为 Web Storage API 的接口，<font color=red>**`Storage`** 提供了访问特定域名下的 **会话存储** ( sessionStorage ) 或 **本地存储** ( localStorage ) 的功能</font>，例如，可以添加、修改或删除存储的数据项。
 
 如果你想要操作一个域名的会话存储，可以使用 Window.sessionStorage；如果想要操作一个域名的本地存储，可以使用 Window.localStorage。
 
 ##### 属性
 
-- **Storage.length：** 只读，返回一个整数，表示存储在 Storage 对象中的数据项数量。
+- **`Storage.length`** ：只读，返回一个整数，表示存储在 Storage 对象中的数据项数量。
 
 ##### 方法
 
-- **Storage.key()：**该方法接受一个数值 n 作为参数，并返回存储中的第 n 个键名。
-- **Storage.getItem()：**该方法接受一个键名作为参数，返回键名对应的值。
-- **Storage.setItem()：**该方法接受一个键名和值作为参数，将会把键值对添加到存储中，如果键名存在，则更新其对应的值。
+- **`Storage.key()`** ：该方法接受一个数值 n 作为参数，并返回存储中的第 n 个键名。
+- **`Storage.getItem()`** ：该方法接受一个键名作为参数，返回键名对应的值。
+- **`Storage.setItem()`** ：该方法接受一个键名和值作为参数，将会把键值对添加到存储中，如果键名存在，则更新其对应的值。
 - **Storage.removeItem()：**该方法接受一个键名作为参数，并把该键名从存储中删除。
 - **Storage.clear()：**<font color=FF0000>调用该方法会清空存储中的所有键名</font>。
 
-摘自：[MDN web docs - Storage](https://developer.mozilla.org/zh-CN/docs/Web/API/Storage)
+摘自：[MDN - Storage](https://developer.mozilla.org/zh-CN/docs/Web/API/Storage)
+
+#### StorageEvent
+
+当前页面使用的 storage 被其他页面修改时会触发 StorageEvent 事件。
+
+> 译者：事件在同一个域下的不同页面之间触发，即在 A 页面注册了 storge 的监听处理，只有在跟 A 同域名下的 B 页面操作 storage 对象，A 页面才会被触发 storage 事件
+
+```mermaid
+classDiagram
+Event <|-- StorageEvent
+```
+
+##### 方法描述
+
+```js
+void initStorageEvent(
+  in DOMString typeArg,
+  in boolean canBubbleArg,
+  in boolean cancelableArg,
+  in DOMString keyArg,
+  in DOMString oldValueArg,
+  in DOMString newValueArg,
+  in DOMString urlArg,
+  in nsIDOMStorage storageAreaArg
+);
+```
+
+
 
 
 
