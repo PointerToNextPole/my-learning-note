@@ -7881,8 +7881,8 @@ console.log("This is %cMy stylish message", "color: yellow; font-style: italic; 
 - **`Storage.key()`** ：该方法接受一个数值 n 作为参数，并返回存储中的第 n 个键名。
 - **`Storage.getItem()`** ：该方法接受一个键名作为参数，返回键名对应的值。
 - **`Storage.setItem()`** ：该方法接受一个键名和值作为参数，将会把键值对添加到存储中，如果键名存在，则更新其对应的值。
-- **Storage.removeItem()：**该方法接受一个键名作为参数，并把该键名从存储中删除。
-- **Storage.clear()：**<font color=FF0000>调用该方法会清空存储中的所有键名</font>。
+- **`Storage.removeItem()`** ：该方法接受一个键名作为参数，并把该键名从存储中删除。
+- **`Storage.clear()`** ：<font color=FF0000>调用该方法会清空存储中的所有键名</font>。
 
 摘自：[MDN - Storage](https://developer.mozilla.org/zh-CN/docs/Web/API/Storage)
 
