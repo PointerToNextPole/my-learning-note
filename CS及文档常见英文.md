@@ -642,6 +642,37 @@
 
 - **censor** ：审查
 
+- **spawn** ：生成，产卵，引起、导致。
+  > 💡 spawn 是 Linux 的一个系统调用，也是 Node 中 child_process 模块的方法。理所当然的： [zx](https://github.com/google/zx) 中也有使用。
+  >
+  > <img src="https://s2.loli.net/2023/05/04/AE6BML3iJSTtoCc.png" style="zoom:47%;" />
+  
+- **daemon** ：守护进程，后台进程。
+
+  > 💡 ChatGPT 的解释：
+  >
+  > <img src="https://s2.loli.net/2023/05/04/VpqUxysj7McCZrX.png" style="zoom: 47%;" />
+
+- **cryptic** ：神秘的，含义隐晦的，**晦涩难懂的**。👀 这里强调的是 “晦涩难懂的”
+
+  > ```ts
+  > interface Array<T> {
+  >     concat(...items: Array<T[] | T>): T[];
+  >     reduce<U>(
+  >       callback: (state: U, element: T, index: number, array: T[]) => U,
+  >       firstState?: U
+  >     ): U;
+  >     // ···
+  > }
+  > ```
+  >
+  > You may think that this is **cryptic**.
+  >
+  > 摘自：Tackling TypeScript - “The essentials of TypeScript” - What you’ll learn
+
+- **comprehensive** ：综合的，全面的。 👀 这个有点基础了，不该遗忘
+
+- **vault** ：保险箱，金库
 ***
 
 

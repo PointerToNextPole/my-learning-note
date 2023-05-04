@@ -509,15 +509,163 @@ referenceStr.localeCompare(compareString[, locales[, options]])
 
 
 
+#### String.prototype.isWellFormed()
+
+The **`isWellFormed()`** method of `String` values <font color=red>returns a boolean indicating whether this string contains any [lone surrogates](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters)</font>. 
+
+> 💡 lone surrogates，与之相对应的是 surrogate pair（代理对）
+
+##### 语法
+
+```js
+str.isWellFormed()
+```
+
+###### 返回值
+
+<font color=red>如果字符串 **不包含单独的代理项，返回 true**</font>；否则返回 false。
+
+##### 描述
+
+JavaScript 中的字符串是 UTF-16 编码的。UTF-16 编码中有*代理对* 的概念，这一概念在 [UTF-16 字符、Unicode 码位和字素簇（grapheme clusters）](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_字符、unicode_码位和字素簇（grapheme_clusters）)部分有详细介绍。
+
+<font color=red>`isWellFormed()` 让你能够测试一个字符串是否是格式正确的（即不包含单独的代理项）</font>。由于引擎能够直接访问字符串的内部表示，与自定义实现相比 `isWellFormed()` 更高效。如果<font color=LightSeaGreen>你需要将字符串转换为格式正确的字符串，可以使用 `toWellFormed()` 方法</font> ( 👀 [[#String.prototype.toWellFormed()]] )。`isWellFormed()` 让你可以对格式正确和格式错误的字符串进行不同的处理，比如抛出一个错误或将其标记为无效。
+
+##### 示例
+
+###### 使用 isWellFormed()
+
+```js
+const strings = [
+  // 单独的高位代理
+  "ab\uD800",
+  "ab\uD800c",
+  // 单独的低位代理
+  "\uDFFFab",
+  "c\uDFFFab",
+  // 格式正确
+  "abc",
+  "ab\uD83D\uDE04c",
+];
+
+for (const str of strings) {
+  console.log(str.isWellFormed());
+}
+// 输出:
+// false
+// false
+// false
+// false
+// true
+// true
+```
+
+###### 避免 encodeURI() 错误
+
+<font color=dodgerBlue>如果传递的字符串格式不正确， `encodeURI` 会抛出错误</font>。可以<font color=red>通过使用 `isWellFormed()` 在将字符串传递给 `encodeURI()` 之前测试字符串来避免这种情况</font>。
+
+```js
+const illFormed = "https://example.com/search?q=\uD800";
+
+try {
+  encodeURI(illFormed);
+} catch (e) {
+  console.log(e); // URIError: URI malformed
+}
+
+if (illFormed.isWellFormed()) {
+  console.log(encodeURI(illFormed));
+} else {
+  console.warn("Ill-formed strings encountered."); // Ill-formed strings encountered.
+}
+```
+
+摘自：[MDN - String.prototype.isWellFormed()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed)
+
+#### String.prototype.toWellFormed()
+
+The **`toWellFormed()`** method of `String` values <font color=red>returns a string where **all [lone surrogates](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters) of this string are replaced with the Unicode replacement character U+FFFD**</font>.
+
+##### 语法
+
+```
+str.toWellFormed()
+```
+
+###### 返回值
+
+新的字符串是原字符串的一个拷贝，其中所有的单独的代理项被替换为 Unicode 替换字符 U+FFFD。如果 `str` [是格式正确的](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed)，仍然<font color=red>会返回一个新字符串</font>（本质上是 `str` 的一个拷贝）。
+
+##### 描述
+
+JavaScript 中的字符串是 UTF-16 编码的。UTF-16 编码中有*代理对* 的概念，这一概念在 [UTF-16 字符、Unicode 码位和字素簇（grapheme clusters）](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_字符、unicode_码位和字素簇（grapheme_clusters）)部分有详细介绍。
+
+`toWellFormed()` 迭代字符串的码元，并<font color=red>将任何单独的代理项替换为 [Unicode 替换字符](https://zh.wikipedia.org/wiki/特殊_(Unicode區段)) U+FFFD `�`</font>。这确保了返回的字符串格式正确并可用于期望正确格式字符串的函数，比如 `encodeURI`。由于引擎能够直接访问字符串的内部表示，与自定义实现相比 `toWellFormed()` 更高效。
+
+<font color=red>当在某些上下文中使用格式不正确的字符串时，例如 `TextEncoder`，它们会自动转换为使用相同替换字符的格式正确的字符串</font>。当单独的代理项被呈现时，它们也会呈现为替换字符（一个带有问号的钻石形状）。
+
+##### 示例
+
+###### 使用 toWellFormed()
+
+```js
+const strings = [
+   // 单独的高位代理
+  "ab\uD800",
+  "ab\uD800c",
+  // 单独的低位代理
+  "\uDFFFab",
+  "c\uDFFFab",
+  // 格式正确
+  "abc",
+  "ab\uD83D\uDE04c",
+];
+
+for (const str of strings) {
+  console.log(str.toWellFormed());
+}
+// Logs:
+// "ab�"
+// "ab�c"
+// "�ab"
+// "c�ab"
+// "abc"
+// "ab😄c"
+```
+
+###### 避免 encodeURI() 错误
+
+<font color=dodgerBlue>如果传递的字符串格式不正确， `encodeURI` 会抛出错误</font>。可以先通过使用 `toWellFormed()` 将字符串转换为格式正确的字符串来避免这种情况。
+
+```js
+const illFormed = "https://example.com/search?q=\uD800";
+
+try {
+  encodeURI(illFormed);
+} catch (e) {
+  console.log(e); // URIError: URI malformed
+}
+
+console.log(encodeURI(illFormed.toWellFormed())); // "https://example.com/search?q=%EF%BF%BD"
+```
+
+摘自：[MDN - String.prototype.toWellFormed()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/toWellFormed)
+
+
+
 #### Unicode 相关的 字符串
 
-<font color=FF0000>**在 ECMAScript 6 出现以前， JavaScript 字符串 一直基于 16 位字符编码 ( UTF-16 ) 进行构建**</font>（<mark>**注：**由此可知：UTF-16 和“代理对”不完全等价</mark>。详细可以参见：[[#Surrogate Pair 是 UTF-16 中用于扩展字符而使用的编码方式，是一种采用四个字节（两个 UTF-16 编码）来表示一个字符，称作 代理对]]）。<mark style="background: aqua">每 16 位的序列是一个**编码单元（code unit )**，代表一个 字符。 length、charAt() 等字符串属性和方法都是基于这种编码单元构造的</mark>。 当然， 在过去 16位足以包含任何字符， 直到 Unicode 引入扩展字符集， 编码规则才不得不进行变更 。
+<font color=FF0000>**在 ECMAScript 6 出现以前， JavaScript 字符串 一直基于 16 位字符编码 ( UTF-16 ) 进行构建**</font>
+
+> 👀 由此可知：<font color=fuchsia>**UTF-16 和 “代理对” 不完全等价**</font>。详细可以参见：[[#Surrogate Pair]]。
+
+<font color=red>每 16 位的序列是一个**编码单元（code unit )**，代表一个 字符。 length、charAt() 等字符串属性和方法都是基于这种编码单元构造的</font>。 当然， 在过去 16位足以包含任何字符， 直到 Unicode 引入扩展字符集， 编码规则才不得不进行变更 。
 
 ##### UTF-16 码位
 
-Unicode 的目标是为全世界每一个字符提供全球唯一的标识符。 如果我们把字符长度限制在 16位 ， 码位数量将不足以表示如此多的字符。 <mark>这里说的“全球唯一的标识符”， 又被称作 <font color=FF0000 size=4>**码位 ( code point )**</font>， 是从 0 开始的数值</mark>（**注：**这里的 code point 和下面的各种兼容 unicode 的方法的*方法名* 相关）。 而表示字符的这些数值或码位， 我们称之为字符编码 ( character encode )。字符编码必须将码位编码为内部一致的编码单元。对于 UTF-16 来说 ， 码位可由多种编码单 元表示。
+<font color=dodgerBlue>Unicode 的目标是为全世界每一个字符提供全球唯一的标识符</font>。 如果我们把字符长度限制在 16位 ， 码位数量将不足以表示如此多的字符。 <font color=red>这里说的 “全球唯一的标识符”， 又被称作 <font size=4>**码位 ( code point )**</font>， 是从 0 开始的数值</font>（👀 这里的 code point 和下面的各种兼容 unicode 的方法的 *方法名* 相关）。 而表示字符的这些数值或码位， 我们称之为字符编码 ( character encode )。字符编码必须将码位编码为内部一致的编码单元。对于 UTF-16 来说 ， 码位可由多种编码单元表示。
 
-<font color=FF0000>在 UTF-16 中，**前 2^16^ 个码位**均 以 16 位的编码单元表示，**这个范围被称作 *基本多文种平面*** ( BMP, Basic Multilingual Plane )</font> 。<font color=FF0000>超出这个范围的码位则要归属于某个***辅助平面*** ( supplementary plane )</font> ， 其中 的码位仅用 16 位就无法表示了。<font color=FF0000 size=4>为此，**UTF-16 引入了代理对 ( surrogate pair )**，其**规定用两个 16 位编码单元表示一个码位**</font>。 这也就是说， <mark>字符串里的字符有两种， 一种是由一个编码单元 16 位表示的 BMP 字符， 另一种是由两个编码单元 32 位表示的辅助平面字符</mark>。 在 ECMAScript 5 中 ， 所有字符串 的操作都基于 16 位编码单元。 如果采用同样的方式处理包含代理对的 UTF-16 编码字符 ，得到的结果可能与预期不符。
+<font color=FF0000>在 UTF-16 中，**前 $2^{16}$ 个码位**均 以 16 位的编码单元表示，**这个范围被称作 *基本多文种平面*** ( BMP, Basic Multilingual Plane )</font> 。<font color=fuchsia>超出这个范围的码位则要归属于某个***辅助平面*** ( supplementary plane )</font> ， 其中 的码位仅用 16 位就无法表示了。<font color=fuchsia>为此，**UTF-16 引入了代理对 ( surrogate pair )**，其**规定用两个 16 位编码单元表示一个码位**</font>。 这也就是说， <font color=LightSeaGreen>**字符串里的字符有两种， 一种是由一个编码单元 16 位表示的 BMP 字符， 另一种是由两个编码单元 32 位表示的辅助平面字符**</font>。 在 ECMAScript 5 中 ， 所有字符串 的操作都基于 16 位编码单元。 如果采用同样的方式处理包含代理对的 UTF-16 编码字符 ，得到的结果可能与预期不符。
 
 摘自：深入理解ES6 - 字符串和正则表达式 P14 - P15
 
@@ -533,7 +681,7 @@ str.codePointAt(pos)
 
 ###### 参数
 
-- **pos：**这个字符串中需要转码的元素的位置。
+- **pos** ：这个字符串中需要转码的元素的位置。
 
 ###### 返回值
 返回值是在字符串中的给定索引的编码单元体现的数字，<font color=FF0000>如果在索引处没找到元素则返回 undefined</font> 。
@@ -542,7 +690,9 @@ str.codePointAt(pos)
 
 如果在指定的位置没有元素则返回 undefined 。<font color=FF0000>如果在索引处开始没有 UTF-16 代理对，将直接返回在那个索引处的编码单元</font>。
 
-##### Surrogate Pair 是 UTF-16 中用于扩展字符而使用的编码方式，是一种采用四个字节（两个 UTF-16 编码）来表示一个字符，称作*代理对*
+###### Surrogate Pair
+
+Surrogate Pair 是 UTF-16 中用于扩展字符而使用的编码方式，是一种采用四个字节（两个 UTF-16 编码）来表示一个字符，称作*代理对*
 
 > 代理对也就是 UTF-16 （的）<font color=FF0000>扩展字符</font>
 >
@@ -558,7 +708,7 @@ str.codePointAt(pos)
 
 摘自：[MDN - String.prototype.codePointAt()]()
 
-> <font color=FF0000>对于 BMP 字符集中的字符， codePointAt() 方法的返回值与 charCodeAt() 方法的相同</font>（**注：**这里不是 charAt()，注意不要混淆）， 而对于非 BMP 字符集来说返回值则不同
+> <font color=FF0000>对于 BMP 字符集中的字符， codePointAt() 方法的返回值与 charCodeAt() 方法的相同</font>（ 👀 这里不是 charAt()，注意不要混淆）， 而对于非 BMP 字符集来说返回值则不同
 >
 > 摘自：深入理解ES6 - 字符串和正则表达式 P16
 
@@ -566,7 +716,7 @@ str.codePointAt(pos)
 
 #### String.fromCodePoint()
 
-String.fromCodePoint() **静态方法** <font color=FF0000>返回 使用指定的代码点序列创建的字符串</font>。
+`String.fromCodePoint()` **静态方法** <font color=FF0000>返回 使用指定的代码点序列创建的字符串</font>。
 
 ##### 语法
 
@@ -576,7 +726,7 @@ String.fromCodePoint(num1[, ...[, numN]])
 
 ###### 参数
 
-- **num1, ... , num*N* ：**一串 Unicode 编码位置，即“代码点”。
+- **num1, ... , num*N*** ：一串 Unicode 编码位置，即“代码点”。
 
 ###### 返回值
 
@@ -584,21 +734,21 @@ String.fromCodePoint(num1[, ...[, numN]])
 
 ###### 异常
 
-- **RangeError：**如果传入无效的 Unicode 编码，将会抛出一个RangeError（例如："RangeError: NaN is not a valid code point"）。
+- **RangeError：**如果传入无效的 Unicode 编码，将会抛出一个 RangeError（例如："RangeError: NaN is not a valid code point"）。
 
 ##### 说明
 
-该方法返回一个字符串，而不是一个 String 对象。因为 fromCodePoint() 是 String 的一个静态方法，所以只能通过 String.fromCodePoint() 这样的方式来使用，不能在你创建的 String 对象实例上直接调用。
+该方法返回一个字符串，而不是一个 String 对象。因为 `fromCodePoint()` 是 String 的一个静态方法，所以只能通过 `String.fromCodePoint()` 这样的方式来使用，不能在你创建的 String 对象实例上直接调用。
 
 摘自：[MDN - String.fromCodePoint()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint)
 
-> ECMAScript 通常会面向同一个操作提供正反两种方法。你可以使用 codePointAt() 方法在字符串中检索一个字符的码位，也可以使用 String.fromCodePoint() 方法根据指定的码位生成一个字符（串）（<mark>**注：**即 **codePointAt() 和 fromCodePoint() 是一对相反的方法**。另外，类似的还有 Object.entries() 和 Object.fromEntries()</mark> ）。举个例子：
+> ECMAScript 通常会面向同一个操作提供正反两种方法。你可以使用 codePointAt() 方法在字符串中检索一个字符的码位，也可以使用 String.fromCodePoint() 方法根据指定的码位生成一个字符（串）（👀 <font color=LightSeaGreen>即 **`codePointAt()` 和 `fromCodePoint()` 是一对相反的方法**。另外，类似的还有 `Object.entries()` 和 `Object.fromEntries()`</font> ）。举个例子：
 >
 > ```js
 > console.log( String.fromCodePoint(134071) ) // 𠮷
 > ```
 >
-> 可以将 String.fromCodePoint() 看成是更完 整版的 String.fromCharCode() 。 同样，对于 BMP 中的所有字符，这两个方法的执行结果相同。 只有传递非 BMP 的码位作为参数时， 二者执行结果才有可能 不同。
+> 可以将 `String.fromCodePoint()` 看成是更完 整版的 `String.fromCharCode()` 。 同样，对于 BMP 中的所有字符，这两个方法的执行结果相同。 只有传递非 BMP 的码位作为参数时， 二者执行结果才有可能不同。
 >
 > 摘自：深入理解ES6 - 字符串和正则表达式 P17
 
@@ -631,7 +781,7 @@ str.normalize( [form] )
 
 ###### 可能出现的异常
 
-- **RangeError：**如果给 form 传入了上述四个字符串以外的参数，则会抛出 RangeError 异常。
+- **RangeError** ：如果给 form 传入了上述四个字符串以外的参数，则会抛出 RangeError 异常。
 
 摘自：[MDN - String.prototype.normalize()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/normalize)
 
@@ -675,7 +825,7 @@ str.normalize( [form] )
 
 ##### 其他关于 UTF-16代理对字符串的补充
 
-<font color=FF0000 size=4>**字符串迭代器能够识别代理对**</font>
+**字符串迭代器能够识别代理对**
 
 > ##### for...of
 >
@@ -711,9 +861,9 @@ str.normalize( [form] )
 
 #### JavaScript 比较 和 逻辑运算
 
-- **===** ：绝对等于（值和类型均相等）
+- **`===`** ：绝对等于（值和类型均相等）
 
-- **!==**： <font color=FF0000>不绝对等于</font>（<font color=FF0000>**值和类型有一个不相等，或两个都不相等**</font>）
+- **`!==`** ： <font color=FF0000>不绝对等于</font>（<font color=FF0000>**值和类型有一个不相等，或两个都不相等**</font>）
 
 #### JS 循环
 
@@ -723,7 +873,7 @@ for-in 循环，<font color=FF0000>for-in 循环是为遍历 enumerable 数据�
 for ( elem in elems ){ /* code */ }
 ```
 
-> 注：for-in 是用来遍历对象中 enumerable 数据描述符 为 true 的属性，object.keys() 同样受到 enumerable 的影响。详见 [[#Object.defineProperty#属性描述符]] 中的 enumerable
+> 👀 for-in 是用来遍历对象中 enumerable 数据描述符 为 true 的属性，object.keys() 同样受到 enumerable 的影响。详见 [[#Object.defineProperty#属性描述符]] 中的 enumerable
 
 <font color=FF0000>不推荐用 for-in 来循环一个**数组**，因为，不像对象，数组的 `index` 跟普通的对象属性不一样，是重要的数值序列指标</font>。
 
@@ -740,9 +890,9 @@ array.forEach(function(currentValue, index, arr), thisValue)
 ###### 参数
 
 - **function(currentValue, index, arr)**：<font color=FF0000>必需</font>。 数组中每个元素需要调用的函数。
-  - **currentValue**    必需。当前元素
-  - **index**    可选。当前元素的索引值。
-  - **arr**    可选。当前元素所属的数组对象。
+  - **currentValue** ：必需。当前元素
+  - **index** ：可选。当前元素的索引值。
+  - **arr** ：可选。当前元素所属的数组对象。
 - **thisValue**：<font color=FF0000>可选</font>。传递给函数的值一般用 "this" 值。
 
 ###### 示例
@@ -966,9 +1116,13 @@ for (const key of iterator) { console.log(key); }
 arr.keys()
 ```
 
-**返回值：**一个新的 Array 迭代器对象。
+###### 返回值
 
-**示例：**<font color=FF0000>索引迭代器会包含那些没有对应元素的索引</font>
+一个新的 Array 迭代器对象。
+
+##### 示例
+
+<font color=FF0000>索引迭代器会包含那些没有对应元素的索引</font>
 
 ```js
 var arr = ["a", , "c"];
@@ -984,7 +1138,7 @@ console.log(denseKeys);  // [0, 1, 2] 注：使用 Array.prototype.keys() 是包
 
 <font color=FF0000>values() 方法**返回一个新的 Array Iterator 对象**，**该对象包含数组每个索引的值**</font>
 
-**示例：**
+##### 示例
 
 ```js
 let arr = ['w', 'y', 'k', 'o', 'p'];
@@ -997,7 +1151,7 @@ for (let letter of eArr) {
 } //"w" "y "k" "o" "p"
 ```
 
-<font color=FF0000>**Array.prototype.values** 是 **Array.prototype[Symbol.iterator]** 的默认实现。</font>代码如下：
+<font color=FF0000>**`Array.prototype.values`** 是 **`Array.prototype[Symbol.iterator]`** 的默认实现。</font>代码如下：
 
 ```js
 Array.prototype.values === Array.prototype[Symbol.iterator]  // true 
@@ -1021,7 +1175,7 @@ iterator.next().value;         // undefined
 
 #### Array.prototoype.entries()
 
-entries() 方法 <font color=FF0000 size=4>**返回一个新的Array Iterator对象**</font>（不是一个数组，Array.isArray() === false ），该对象包含数组中每个索引的键/值对。示例如下：
+entries() 方法 <font color=FF0000 size=4>**返回一个新的Array Iterator对象**</font>（不是一个数组，`Array.isArray() === false` ），该对象包含数组中每个索引的键/值对。示例如下：
 
 ```js
 const array1 = ['a', 'b', 'c'];
@@ -1096,6 +1250,8 @@ console.log(a); // {0: 3, 1: 2, 2: 1, length: 3}
 
 摘自：[MDN - Array.prototype.reverse()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse)
 
+> 💡 ES2023 添加了 [`Array.prototype.toReversed()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/toReversed) 返回一个倒序的数组，同时不修改原数组
+
 
 
 #### Array.prototype.find()
@@ -1162,7 +1318,7 @@ findIndex(function(element, index, array) { /* … */ }, thisArg)
 
 数组中通过提供测试函数的第一个元素的**索引**。否则，返回 -1
 
-摘自：[MDN - # Array.prototype.findIndex()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex)
+摘自：[MDN - Array.prototype.findIndex()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex)
 
 > 💡 类似的，JS 提供了 [Array.prototype.findLastIndex()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex)
 
@@ -1173,7 +1329,7 @@ findIndex(function(element, index, array) { /* … */ }, thisArg)
 
 第一次执行回调函数时，不存在 “上一次的计算结果”。如果需要回调函数从数组索引为 0 的元素开始执行，则需要传递初始值。<font color=LightSeaGreen>否则，数组索引为 0 的元素将被作为初始值 *initialValue*</font>，<font color=FF0000>**迭代器将从第二个元素开始执行（索引为 1 而不是 0）**</font>。
 
-##### 示例如下
+##### 示例
 
 ```js
 const array1 = [1, 2, 3, 4];
@@ -1414,6 +1570,8 @@ compareFunction： 可选，用来指定按某种顺序进行排列的函数。�
 
 摘自：[MDN - Array.prototype.sort()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
 
+> 💡 ES2023 添加了 [`Array.prototype.toSorted()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted) 返回一个按规则排序的数组，同时不修改原数组
+
 
 
 #### Array.prototype.slice()
@@ -1466,10 +1624,10 @@ substring() 方法<font color=FF0000>返回一个字符串在开始索引到结�
 str.substring(indexStart[, indexEnd])
 ```
 
-##### 参数
+###### 参数
 
-- **indexStart：**需要截取的第一个字符的索引，该索引位置的字符作为返回的字符串的首字母。
-- **indexEnd：**<font color=FF0000>**可选**</font>。一个 0 到字符串长度之间的整数，以该数字为索引的字符不包含在截取的字符串内。
+- **indexStart** ：需要截取的第一个字符的索引，该索引位置的字符作为返回的字符串的首字母。
+- **indexEnd** ：<font color=red>**可选**</font>。一个 0 到字符串长度之间的整数，以该数字为索引的字符不包含在截取的字符串内。
 
 ###### 返回值
 
@@ -1560,6 +1718,8 @@ array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
 如果添加进数组的元素个数不等于被删除的元素个数，数组的长度会发生相应的改变。
 
 摘自：[MDN - Array.prototype.splice()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)
+
+> 💡 ES2023 添加了 [`Array.prototype.toSpliced()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced) 返回一个修改后的数组，同时不修改原数组
 
 
 
@@ -1669,7 +1829,7 @@ arr.includes(valueToFind[, fromIndex])
 
 #### Array.from()
 
-Array.from() 方法<font color=FF0000>从一个 类数组 （比如带有length属性，而没有数组的方法（比如push））或 可迭代对象 创建一个新的，浅拷贝的数组实例</font>。
+`Array.from()` 方法<font color=FF0000>从一个 类数组 （比如带有 length 属性，而没有数组的方法（比如 push））或 可迭代对象 创建一个新的，浅拷贝的数组实例</font>。
 
 ##### 语法
 
@@ -1746,7 +1906,7 @@ Array.from({length: 5}, (v, i) => i); // [0, 1, 2, 3, 4]
 
 > ⚠️ 上面这个 `Array.from({length}, cb)` 的写法，有点意思。
 >
-> 另外，在一次面试中，被要求使用 ES6 的方法（提示使用 Array.from ）写一个置换矩阵的方法；实在没想到方法，便去看了下答案，有点意思。答案如下：
+> 另外，在一次面试中，被要求使用 ES6 的方法（提示使用 `Array.from` ）写一个置换矩阵的方法；实在没想到方法，便去看了下答案，有点意思。答案如下：
 >
 > ```ts
 > export const transposeArr = (arr: number[][]): number[][] => {
@@ -1763,7 +1923,7 @@ Array.from({length: 5}, (v, i) => i); // [0, 1, 2, 3, 4]
 
 > 💡 **补充**
 >
-> Array.from() 可以通过 Array.prototype.slice( arrayLikeVarible ) 实现。
+> Array.from() 可以通过 `Array.prototype.slice( arrayLikeVarible )` 实现。
 >
 > 学习自：[MDN - Array.prototype.slice()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)
 
@@ -3896,7 +4056,7 @@ async function* asyncGenerator() {
   >
   >   ```js
   >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                                                                 
+  >                                                                                                                                                                                                                                                                                                           
   >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
   >   g.next();      // "Object { value: 1, done: false }"
   >   g.next();      // "Object { value: 2, done: false }"
@@ -3915,7 +4075,7 @@ async function* asyncGenerator() {
   >       console.log(value);
   >     }
   >   }
-  >                                                                                                                                                                                                                                                                                                 
+  >                                                                                                                                                                                                                                                                                                           
   >   var g = gen();
   >   g.next(1); // "{ value: null, done: false }"
   >   g.next(2); // 2
@@ -6564,7 +6724,7 @@ console.log(a); // 10
 
 - window.open() ：打开新窗口
 - window.close() ：关闭当前窗口
-- window.moveTo() ：移动当前窗口
+- window.moveTo() ：`window.moveTo(x, y)` ，将当前窗口移动到指定的坐标位置。
 - window.resizeTo() ：调整当前窗口的尺寸，设置绝对尺寸
 - window.resizeBy()：调整当前窗口的尺寸，改变相对尺寸
 
@@ -6850,7 +7010,7 @@ window.resizeBy(xDelta, yDelta)
 window.resizeBy(-200, -200);
 ```
 
-**备注：**该方法相对于窗口当前大小来调整该窗口的大小。要以绝对大小方式调整窗口的大小，可使用 [window.resizeTo](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/resizeTo)。
+> 💡 备注：该方法相对于窗口当前大小来调整该窗口的大小。要以绝对大小方式调整窗口的大小，可使用 [window.resizeTo](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/resizeTo)
 
 摘自：[MDN - window.resizeBy](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/resizeBy)
 
@@ -6881,7 +7041,7 @@ window.location 对象用于<font color=FF0000>获得当前页面的地址 (URL)
 
 - **history.back()：** 与在浏览器点击后退按钮相同
 - **history.forward()：** 与在浏览器中点击向前按钮相同
-- **history.go()**：载入到会话历史中的某一特定页面， 通过与当前页面相对位置来标志 (当前页面的相对位置标志为0)。
+- **history.go()**：载入到会话历史中的某一特定页面， 通过与当前页面相对位置来标志（当前页面的相对位置标志为 0 )
 
 ##### 补充
 
@@ -6938,12 +7098,12 @@ navigator.sendBeacon() 方法<font color=FF0000>可用于通过 HTTP POST 将少
 navigator.sendBeacon(url[, data]);
 ```
 
-##### 参数
+###### 参数
 
 - **url：**url 参数表明 data 将要被发送到的网络地址。
 - **data：**可选，data 参数是将要发送的 ArrayBuffer、ArrayBufferView、Blob、DOMString、FormData 或 URLSearchParams 类型的数据。
 
-##### 返回值
+###### 返回值
 
 当用户代理成功把数据加入传输队列时，sendBeacon() 方法将会返回 true，否则返回 false
 
@@ -6951,11 +7111,15 @@ navigator.sendBeacon(url[, data]);
 
 这个方法 <font color=FF0000>**主要用于满足 统计 和 诊断代码 的需要，这些代码通常尝试在卸载 ( unload ) 文档之前向 web 服务器发送数据**</font>。<font color=FF0000>过早的发送数据可能导致错过收集数据的机会</font>。然而，<font color=LightSeaGreen>对于开发者来说保证在文档卸载期间发送数据一直是一个困难</font>。<font color=LightSeaGreen>因为用户代理通常会忽略在 unload 事件处理器中产生的异步 XMLHttpRequest </font>。
 
-过去，为了解决这个问题， 统计和诊断代码通常要在： 1) 发起一个同步 XMLHttpRequest 来发送数据。2) 创建一个 \<img> 元素并设置 src，大部分用户代理会延迟卸载（unload）文档以加载图像。3) 创建一个几秒的 no-op 循环。
+<font color=dodgerBlue>过去，为了解决这个问题， 统计和诊断代码通常要在： </font>
+
+1. 发起一个同步 XMLHttpRequest 来发送数据。
+2. 创建一个 `<img>` 元素并设置 src，大部分用户代理会延迟卸载（unload）文档以加载图像
+3. 创建一个几秒的 no-op 循环。
 
 <font color=fuchsia>**上述的所有方法都会迫使用户代理延迟卸载文档，并使得下一个导航出现的更晚**</font>。下一个页面对于这种较差的载入表现无能为力。
 
-<mark style="background: lightskyblue">**这就是 sendBeacon() 方法存在的意义**</mark>。<font color=FF0000>使用 sendBeacon() 方法会使用户代理在有机会时异步地向服务器发送数据，同时，**不会延迟页面的卸载或影响下一导航的载入性能**</font>，这意味着：
+<font color=dodgerBlue>**这就是 sendBeacon() 方法存在的意义**</font>。<font color=FF0000>使用 sendBeacon() 方法会使用户代理在有机会时异步地向服务器发送数据，同时，**不会延迟页面的卸载或影响下一导航的载入性能**</font>，这意味着：
 
 - 数据发送是可靠的
 - 数据异步传输
