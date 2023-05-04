@@ -1,4 +1,4 @@
-# Node学习笔记
+# Node 学习笔记
 
 
 
@@ -8,9 +8,9 @@
 
 ##### nvm 使用命令
 
-- **nvm list：**查看当前所有的node版本
-- **nvm install v10.13.0：**安装指定的版本
-- **nvm use-delete-prefix 10.13.0：**切换到指定的版本
+- **`nvm list`** ：查看当前所有的node版本
+- **`nvm install v10.13.0`** ：安装指定的版本
+- **`nvm use-delete-prefix 10.13.0`** ：切换到指定的版本
 
 
 
@@ -39,11 +39,11 @@ const {foo, bar} = require('foo.js')
 
 ##### Node 代码的调试
 
-在 package.json 中，默认（使用 `npm init -y ` ）main属性对应的值为 "index.js"，表示：主文件是 "index.js"。如果要在 VSCode中调试 (debug) 项目时，必须要有 "index.js" 这个文件（当然，这个名字可以自定义，当然实际文件名也要跟着变化）
+在 package.json 中，默认（使用 `npm init -y ` ）main属性对应的值为 "index.js"，表示：主文件是 "index.js"。如果要在 VSCode 中调试 ( debug ) 项目时，必须要有 "index.js" 这个文件（当然，这个名字可以自定义，当然实际文件名也要跟着变化）
 
-**补充：**
+###### 补充
 
-模块引入方法require()在引入包时，会优先检查这个字段，并将其作为包中其余模块的入口。如果不存在这个字段，require()方法会查找包目录下的index.js、index.node、index.json文件作为默认入口
+模块引入方法 `require()` 在引入包时，会优先检查这个字段，并将其作为包中其余模块的入口。如果不存在这个字段，`require()` 方法会查找包目录下的index.js、index.node、index.json文件作为默认入口
 
 摘自：《深入浅出Node.js》P35
 
@@ -53,9 +53,9 @@ const {foo, bar} = require('foo.js')
 
 ##### get 请求 和 querystring（所有的 url参数）
 
-- get请求，即客户端要向server端获取数据，如查询博客列表 
-- 通过querystring来传递数据，如a.html?a=100&b=200
-- 浏览器直接访问，就发送get请求
+- get 请求，即客户端要向 server 端获取数据，如查询博客列表 
+- 通过 querystring 来传递数据，如 `a.html?a=100&b=200`
+- 浏览器直接访问，就发送 get 请求
 
 
 ###### 代码示例
@@ -78,16 +78,16 @@ console.log("OK")
 
 ##### post 请求 和 post-data
 
-- post请求，即客户端要向服务端传递数据，如新建博客
+- post 请求，即客户端要向服务端传递数据，如新建博客
 
-- 通过post data传递数据
+- 通过 post data 传递数据
 
-- 浏览器无法直接模拟，需要手写js，或者使用postman
+- 浏览器无法直接模拟，需要手写 js，或者使用 postman
 
 
 ###### 示例代码
 
-另外，需要在postman中去模拟post请求
+另外，需要在 postman 中去模拟 post 请求
 
 ```js
 const http = require('http')
@@ -124,40 +124,40 @@ console.log('OK!')
 
 ##### 浏览器引擎
 
-- **Gecko：**早期被Netscape和Mozilla Firefox浏览器使用;
+- **Gecko** ：早期被Netscape和Mozilla Firefox浏览器使用;
 
-- **Trident：**微软开发，被IE4-IE11浏览器使用，但是Edge浏览器已经转向Blink
-- **Webkit：**苹果基于KHTML开发、开源的，用于Safari，Google Chrome之前也在使用; 
-- **Blink：**是Webkit的一个分支，Google开发，目前应用于Google Chrome、Edge、Opera等
+- **Trident** ：微软开发，被 IE4 ~ IE11 浏览器使用，但是 Edge 浏览器已经转向 Blink
+- **Webkit** ：苹果基于 KHTML 开发、开源的，用于 Safari，Google Chrome 之前也在使用; 
+- **Blink** ：是 Webkit 的一个分支，Google 开发，目前应用于 Google Chrome、Edge、Opera 等
 - 等等…
 
-事实上，我们经常说的浏览器内核指的是浏览器的排版引擎：排版引擎( layout engine )，也称为浏览器引擎( browser engine)、页面渲染引擎( rendering engine )或样版引擎。
+事实上，我们经常说的浏览器内核指的是浏览器的排版引擎：排版引擎 ( layout engine )，也称为浏览器引擎 ( browser engine )、页面渲染引擎 ( rendering engine ) 或样版引擎。
 
 
 
 ##### 渲染引擎工作原理
 
-关键渲染路径
+###### 关键渲染路径
 
 <img src="https://i.loli.net/2021/10/27/GIKUCpTzsqESofe.png" alt="image-20211027232236491" style="zoom: 75%;" />
 
 ##### 常见的 JS 引擎
 
--  **SpiderMonkey：**第一款JavaScript引擎，由Brendan Eich开发（也就是JavaScript作者）
-- **Chakra：**微软开发，用于IT浏览器
-- **JavaScriptCore：**WebKit中的JavaScript引擎， Apple公司开发
-- **V8：**Google开发的强大JavaScript引擎，也帮助Chrome从众多浏览器中脱颖而出
+-  **SpiderMonkey** ：第一款 JavaScript 引擎，由 Brendan Eich 开发（也就是 JavaScript 作者）
+- **Chakra** ：微软开发，用于IT浏览器
+- **JavaScriptCore** ：WebKit 中的 JavaScript 引擎， Apple 公司开发
+- **V8** ：Google 开发的强大 JavaScript 引擎，也帮助 Chrome 从众多浏览器中脱颖而出
 
 
 
-##### JS引擎和浏览器内核之间的关系
+##### JS 引擎和浏览器内核之间的关系
 
-这里我们先以WebKit为例，WebKit事实上由两部分组成的：
+这里我们先以 WebKit 为例，WebKit 事实上由两部分组成的：
 
-- **WebCore：**负责HTML解析、布局、渲染等等相关的工作
-- **JavaScriptCore（ JS 引擎）：**解析、执行JavaScript代码
+- **WebCore** ：负责 HTML 解析、布局、渲染等等相关的工作
+- **JavaScriptCore（ JS 引擎）** ：解析、执行 JavaScript 代码
 
-所以JS引擎是浏览器内核的一部分。
+所以 JS 引擎是浏览器内核的一部分。
 
 
 
@@ -165,28 +165,41 @@ console.log('OK!')
 
 <img src="https://i.loli.net/2021/10/28/E4pUv58nlmfdK6V.png" alt="image-20211028000541086" style="zoom: 67%;" />
 
-V8引擎本身的源码非常复杂，大概有超过100w行C++代码,但是我们可以简单了解一下它执行JavaScript代码的原理：
+V8 引擎本身的源码非常复杂，大概有超过 100w 行 C++ 代码，但是我们可以简单了解一下它执行 JavaScript 代码的原理：
 
-- Parse模块会将JavaScript代码转换成AST (抽象语法树)这是因为解释器并不直接认识JavaScript代码
-  - 如果函数没有被调用，那么是不会被转换成AST的
-  - Parse的V8官方文档：https://v8.dev/blog/scanner
+###### Parse 模块
 
-- Ignition是一个解释器，会将AST转换成 ByteCode（字节码）
-  - 同时会收集TurboFan优化所需要的信息（比如函数参数的类型信息,有了类型才能进行真实的运算）
-  - 如果函数只调用一次，Ignition会执行解释执行ByteCode
-  - Ignition的V8官方文档：https://v8.dev/blog/ignition-interpreter
+Parse 模块会将JavaScript代码转换成AST (抽象语法树)这是因为解释器并不直接认识JavaScript代码
+- 如果函数没有被调用，那么是不会被转换成AST的
+- Parse的V8官方文档：https://v8.dev/blog/scanner
 
-- TurboFan是一个编译器，可以将字节码编译为CPU可以直接执行的机器码
-  - 如果一个函数被多次调用，那么就会被标记为热点函数，那么就会经过TurboFan转换成优化的机器码,提高代码的执行性能
-  - 但是，机器码实际上也会被还原为ByteCode，这是因为如果后续执行函数的过程中,类型发生了变化（比如sum函数原来执行的是number类型,后来执行变成了string类型），之前优化的机器码并不能正确的处理运算,就会逆向的转换成字节码
-  - TurboFan的V8官方文档：https://v8.dev/blog/turbofan-jit
-- 上面是JavaScript代码的执行过程，事实上V8的内存回收也是其强大的另外一个原因，不过这里暂时先不展开讨论：
-  - Orinoco模块，负责垃圾回收，将程序中不需要的内存回收
-  - Orinoco的V8官方文档：https://v8.dev/blog/trash-talk
+###### Ignition
+
+Ignition 是一个解释器，会将 AST 转换成 ByteCode（字节码）
+
+- 同时会收集 TurboFan 优化所需要的信息（比如函数参数的类型信息，有了类型才能进行真实的运算）
+- 如果函数只调用一次，Ignition 会执行解释执行 ByteCode
+- Ignition 的 V8 官方文档：https://v8.dev/blog/ignition-interpreter
+
+###### TurboFan
+
+TurboFan 是一个编译器，可以将字节码编译为 CPU 可以直接执行的机器码
+
+- 如果一个函数被多次调用，那么就会被标记为热点函数，那么就会经过 TurboFan 转换成优化的机器码，提高代码的执行性能
+- 但是，机器码实际上也会被还原为 ByteCode，这是因为如果后续执行函数的过程中，类型发生了变化（比如sum 函数原来执行的是 number 类型，后来执行变成了 string 类型），之前优化的机器码并不能正确的处理运算，就会逆向的转换成字节码
+- TurboFan 的 V8 官方文档：https://v8.dev/blog/turbofan-jit
+
+上面是 JavaScript 代码的执行过程，事实上 V8 的内存回收也是其强大的另外一个原因，不过这里暂时先不展开讨论：
+
+###### Orinoco 模块
+
+Orinoco 模块，负责垃圾回收，将程序中不需要的内存回收。
+
+Orinoco 的 V8 官方文档：https://v8.dev/blog/trash-talk
 
 
 
-##### 回顾：官方对Node.js的定义
+##### 回顾：官方对 Node.js 的定义
 
 Node.js 是一个基于 V8 JavaScript 引擎的 JavaScript 运行时环境。
 
@@ -194,9 +207,11 @@ Node.js 是一个基于 V8 JavaScript 引擎的 JavaScript 运行时环境。
 
 也就是说 Node.js 基于 V8 引擎来执行 JavaScript 的代码，但是不仅仅只有 V8 引擎：
 
-- 前面我们知道V8可以嵌入到任何C ++应用程序中，无论是Chrome还是Node.js，事实上都是嵌入了v8引擎来执行JavaScript代码
-- 但是在Chrome浏览器中,还需要解析、渲染HTML，CSs等相关渲染引擎，另外还需要提供支持浏览器操作的API、浏览器自己的事件循环等
-- 另外，在Node.js中我们也需要进行一些额外的操作,比如文件系统读/写、网络IO、加密、压缩解压文件等操作；
+前面我们知道 V8 可以嵌入到任何 C ++ 应用程序中，无论是 Chrome 还是 Node.js，事实上都是嵌入了 V8 引擎来执行 JavaScript 代码
+
+但是在 Chrome 浏览器中,还需要解析、渲染 HTML、CSS 等相关渲染引擎，另外还需要提供支持浏览器操作的 API、浏览器自己的事件循环等
+
+另外，在 Node.js 中我们也需要进行一些额外的操作,比如文件系统读/写、网络IO、加密、压缩解压文件等操作；
 
 
 
@@ -206,9 +221,9 @@ Node.js 是一个基于 V8 JavaScript 引擎的 JavaScript 运行时环境。
 
 ##### Node 架构图
 
-- 我们编写的JavaScript代码会经过V8引擎，再通过Nodejs的Bindings，将任务放到Libuv的事件循环中
-- libuv ( Unicorn Velociraptor-独角伶盗龙)是使用C语言编写的库;
-- libuv提供了事件循环、文件系统读写、网络IO、线程池等等内容;
+- 我们编写的 JavaScript 代码会经过 V8 引擎，再通过 Nodejs 的 Bindings，将任务放到 Libuv 的事件循环中
+- libuv ( Unicorn Velociraptor 独角伶盗龙）是使用C语言编写的库
+- libuv 提供了事件循环、文件系统读写、网络IO、线程池等等内容
 
 <img src="https://i.loli.net/2021/10/28/VIel4XGCSb2qaR8.png" alt="image-20211028004526334" style="zoom:50%;" />
 
@@ -218,38 +233,40 @@ Node.js 是一个基于 V8 JavaScript 引擎的 JavaScript 运行时环境。
 
 - NVM：https://github.com/nvm-sh/nvm
 - N：https://github.com/tj/n
-  - **n lts：**安装最新的lts版本
-  - **n latest：**安装最新的current版本
-  - **n：**查看所有版本，并且可以进行切换版本
+  - **`n lts`** ：安装最新的 lts 版本
+  - **`n latest`** ：安装最新的版本
+  - **`n`** ：查看所有版本，并且可以进行切换版本
 
 
 
 ##### REPL
 
-- REPL是 Read-Eval-Print Loop的简称，翻译为"读取-求值-输出"循环
+- REPL 是 Read-Eval-Print Loop 的简称，翻译为 “读取-求值-输出” 循环
 - REPL 一个简单的、交互的编程环境
 
 
 
-##### 给Node传递参数
+##### 给 Node 传递参数
 
- 在 Node 中的 全局对象 process 对象中，存在一个 argv 数组 ( argument vector )，其中存放的都是字符串。其中第一个元素是：node的安装路径，第二个元素是当前脚本的路径。第三个元素才是用户传递的参数。
+ 在 Node 中的 全局对象 process 对象中，存在一个 argv 数组 ( argument vector )，其中存放的都是字符串。其中第一个元素是 node 的安装路径，第二个元素是当前脚本的路径。第三个元素才是用户传递的参数。
 
 即：使用 `process.argv[i]`
 
 ##### 为什么叫 argv ？
 
-在C/C++程序中的main函数中,实际上可以获取到两个参数：
+在 C/C++ 程序中的 main 函数中，实际上可以获取到两个参数：
 
-- argc : argument counter的缩写,传递参数的个数
-- argv : argument vector的缩写,传入的具体参数。
-  - vector 翻译过来是矢量的意思，在程序中表示的是一种数据结构。
-  - 在C++、Java 中都有这种数据结构,是一种数组结构;
-  - 在JavaScript 中也是一个数组,里面存储一些参数信息;
+- **`argc`** : argument counter 的缩写，传递参数的个数
+- **`argv`** : argument vector 的缩写，传入的具体参数
+  - vector 翻译过来是矢量的意思，在程序中表示的是一种数据结构
+  - 在 C++、Java 中都有这种数据结构,是一种数组结构
+  - 在 J avaScript 中也是一个数组,里面存储一些参数信息
 
-**补充：**process对象中的内容：
+##### 补充
 
-显示方式：在Node的REPL 中，输入 `process.` 再按下两次 Tab 键
+###### process 对象中的内容
+
+显示方式：在 Node 的 REPL 中，输入 `process.` 再按下两次 Tab 键
 
 ![image-20211028224427394](https://i.loli.net/2021/10/28/5sLNoKgI6WnXqtw.png)
 
@@ -257,36 +274,25 @@ Node.js 是一个基于 V8 JavaScript 引擎的 JavaScript 运行时环境。
 
 ##### Node 程序的输出
 
-- **console.log()**
-- **console.clear()：**将控制台中的内容清空
-- **console.trace()：**打印函数调用栈
+- **`console.log()`**
+- **`console.clear()`** ：将控制台中的内容清空
+- **`console.trace()`** ：打印函数调用栈
 
 
 
 ##### Node 中常见的全局对象
 
-所有的全局对象可见：[官方文档 - Globals](https://nodejs.org/dist/latest-v17.x/docs/api/globals.html)
+所有的全局对象可见：[Node doc - Globals](https://nodejs.org/dist/latest-v17.x/docs/api/globals.html)
 
-但是 有些对象只能被称为 “特殊的全局变量”，为什么称之为特殊的全局对象？
-
-- 这些全局对象实际上是模块中的变量,只是每个模块都有,看来像是全局变量
-- 在命令行交互中是不可以使用的
-
-- 包括:\_\_dirname、\_\_filename、exports、module、require()
-
-  其中 \_\_dirname 表示当前文件 所在目录的名称（绝对路径）；\_\_filename 表示当前文件的名称（包括路径）
-
-还是以  \_\_dirname 为例，他只能在模块中使用，且每个模块都会使用这个；但是，如果在 REPL 中使用 \_\_dirname 将会报错，因为没有定义。所以，他不能被称为 “真正的全局对象”
-
-**常见的全局对象**
-
-- **process 对象：**process <font color=FF0000>提供了Node进程中相关的信息</font>：
-  - 比如Node的运行环境、参数信息、当前使用的Node版本信息 等
+- **process 对象：**process <font color=FF0000>提供了Node 进程中相关的信息</font>：
+  
+  - 比如 Node 的运行环境、参数信息、当前使用的Node版本信息 等
   - 后面在项目中，我也会讲解，如何将一些环境变量读取到 process 的 env 中
   
 - **console 对象**
 
 - **定时器对象：**setTimeout、setInterval、setImmediate。对应的有：clearTimeout、clearInterval、clearImmediate 
+  
   - 对于定时器的补充：process.nextTick
   
 - **global**
@@ -296,6 +302,17 @@ Node.js 是一个基于 V8 JavaScript 引擎的 JavaScript 运行时环境。
   ![image-20211028224901221](https://i.loli.net/2021/10/28/EdA9cZi6IS8fP3h.png)
 
   global 中放了很多东西，可以让用户很方便的获取到这些东西（<font color=FF0000>类似于浏览器中的 window</font>）
+
+##### 特殊的全局对象
+
+但是，有些对象只能被称为 “特殊的全局变量”；为什么称之为特殊的全局对象？
+
+- 这些全局对象实际上是模块中的变量，只是每个模块都有，看来像是全局变量。
+- 在命令行交互中是不可以使用的
+
+- 包括： `__dirname` 、`__filename`、`exports` 、`module` 、`require()` 。其中 `__dirname` 表示当前文件 所在目录的名称（绝对路径），`__filename` 表示当前文件的名称（包括路径）
+
+还是以  `__dirname` 为例，他只能在模块中使用，且每个模块都会使用这个；但是，如果在 REPL 中使用 `__dirname` 将会报错，因为没有定义。所以，他不能被称为 “真正的全局对象”
 
 
 
@@ -315,11 +332,11 @@ var module = ;(function (){
 
 **但是，带来的新的问题是**：
 
-- 第一,我必须记得每一个模块中返回对象的命名,才能在其他模块使用过程中正确的使用;
-- 第二,代码写起来混乱不堪,每个文件中的代码都需要包裹在一个匿名函数中来编写;
-- 第三,在没有合适的规范情况下,每个人、每个公司都可能会任意命名、甚至出现模块名称相同的情况
+- 第一，我必须记得每一个模块中返回对象的命名，才能在其他模块使用过程中正确的使用
+- 第二，代码写起来混乱不堪，每个文件中的代码都需要包裹在一个匿名函数中来编写
+- 第三，在没有合适的规范情况下，每个人、每个公司都可能会任意命名、甚至出现模块名称相同的情况
 
-**所以，我们会发现,虽然实现了模块化,但是我们的实现过于简单,并且是没有规范的。**
+**所以，我们会发现,虽然实现了模块化，但是我们的实现过于简单，并且是没有规范的。**
 
 - 我们需要制定一定的规范来约束每个人都按照这个规范去编写模块化的代码;
 - 这个规范中应该包括核心功能:模块本身可以导出暴露的属性,模块又可以导入自己需要的属性;
@@ -331,41 +348,42 @@ var module = ;(function (){
 
 Node中实现CJS的本质是 <font color=FF0000>引用赋值</font>（详见下面的 exports.foo 中的内容），可以通过分别在 prod.js 和 user.js 中使用 setTimeout 以验证（比如，先在 user.js 中打印；而后一秒钟之后 prod.js 中内容改变；再在user.js 中打印。甚至可以反过来，user.js 中改变引入的值，并让 prod.js 打印，查看是否改变（结果是 “改变了”））
 
-- **exports.foo**
+###### exports.foo
 
-  ```js
-  // prod.js
-  
-  let foo = 'foo'
-  let bar = 'bar'
-  exports.foo = foo
-  exports.bar = bar
-  ```
+```js
+// prod.js
 
-  ```js
-  // user.js
-  
-  // 注意：这个语句等价于 prod = exports
-  const prod = require('./prod.js')
-  console.log(prod.foo, prod.bar)
-  
-  // 由于 prod 就是 exports，是一个对象，所以可以使用结构赋值
-  const {foo,  bar} = require('./prod.js')
-  console.log(foo, bar)
+let foo = 'foo'
+let bar = 'bar'
+exports.foo = foo
+exports.bar = bar
+```
 
-- **module.exports = foo**
+```js
+// user.js
 
-  <font color=FF0000>**module.exports和exports有什么关系或者区别呢？**</font>
+// 注意：这个语句等价于 prod = exports
+const prod = require('./prod.js')
+console.log(prod.foo, prod.bar)
 
-  追根溯源，通过维基百科中对CommonJS规范的解析：CommonJS中是没有module.exports的概念的。但是<font color=FF0000>为了实现模块的导出, Node中使用的是 **Module的类**，**每一个模块都是Module的一个实例**，也就是 module</font>（即：每一个模块都有这个 module 属性）。（module 是一个“特殊的”全局对象）
+// 由于 prod 就是 exports，是一个对象，所以可以使用结构赋值
+const {foo,  bar} = require('./prod.js')
+console.log(foo, bar)
+```
 
-  - 所以在Node中真正用于导出的其实根本不是exports ,而是module.exports ;
+###### module.exports = foo
 
-  - 因为module才是导出的真正实现者;
+<font color=FF0000>**module.exports 和 exports有什么关系或者区别呢？**</font>
 
-  如果 <font color=FF0000 size=4>**不手动**</font>给module.exports 赋值，则node帮用户做了 module.exports = exports，也就是说：被导出的对象、exports、module.exports 这三个对象是一样的（引用赋值）
+追根溯源，通过维基百科中对CommonJS规范的解析：CommonJS中是没有module.exports的概念的。但是<font color=FF0000>为了实现模块的导出, Node中使用的是 **Module的类**，**每一个模块都是Module的一个实例**，也就是 module</font>（即：每一个模块都有这个 module 属性）。（module 是一个“特殊的”全局对象）
 
-  <font color=FF0000 size=4>**如果手动给 module.exports 赋值，module.exports 将重新开辟一个空间，将赋的值放入（深拷贝），调用者使用新开辟的空间中的数据，将不会影响被调用者的数据**</font>
+- 所以在Node中真正用于导出的其实根本不是exports ,而是module.exports ;
+
+- 因为module才是导出的真正实现者;
+
+如果 <font color=FF0000 size=4>**不手动**</font>给module.exports 赋值，则node帮用户做了 module.exports = exports，也就是说：被导出的对象、exports、module.exports 这三个对象是一样的（引用赋值）
+
+<font color=FF0000 size=4>**如果手动给 module.exports 赋值，module.exports 将重新开辟一个空间，将赋的值放入（深拷贝），调用者使用新开辟的空间中的数据，将不会影响被调用者的数据**</font>
 
 
 
@@ -375,17 +393,17 @@ Node中实现CJS的本质是 <font color=FF0000>引用赋值</font>（详见下�
 require(X)
 ```
 
-- **如果，X是一个核心模块：**比如path、http，则，直接返回核心模块，并且停止查找
+- **如果，X是一个核心模块：**比如 path、http，则直接返回核心模块，并且停止查找
 
-- **如果：X是以 ./ 或 ../ 或 / (根目录) 开头的**
+- **如果：X是以 `./` 或 `../` 或 `/` (根目录) 开头的**
 
   - 第一步：将当做一个文件在对应的目录下查找;
     - 如果有后缀名，按照后缀名的格式查找对应的文件
     - 如果没有后缀名，会按照如下顺序：
-      1. 直接查找文件X
-      2. 查找Xjs文件
-      3. 查找X.json文件
-      4. 查找X.node文件
+      1. 直接查找文件 X
+      2. 查找 `X.js` 文件
+      3. 查找 `X.json` 文件
+      4. 查找 `X.node` 文件
   
 - 第二步：没有找到对应的文件，将X作为一个目录
     - 查找目录下面的index文件
@@ -427,7 +445,7 @@ require(X)
 
 
 
-**如果有循环引入,那么加载顺序是什么?**
+**如果有循环引入，那么加载顺序是什么?**
 
 如果出现下图模块的引用关系，那么加载顺序是什么呢？
 
