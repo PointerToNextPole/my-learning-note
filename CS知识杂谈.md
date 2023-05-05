@@ -514,6 +514,38 @@ A <font size=4>**Helper**</font> <font color=FF0000>can be a **utility** class</
 
 
 
+#### let 关键字
+
+##### 背景
+
+在了解 Chris Lattner 创业推出的 mojo 语言时（[如何看待 Modular 提出的 mojo 语言？ - Nugine的回答 - 知乎](https://www.zhihu.com/question/598832787/answer/3013077756)），看到这样一句话：
+
+> `let` 声明不可变变量，`var` 声明可变变量
+
+这引起了我的好奇，毕竟这和 JS 不太一样。便去问了下 ChatGPT。
+
+> 💡 不过， Rust 的变量也是默认不可变，即：
+>
+> ```rust
+> let x = 5 // 不可变的变量
+> x = 6 // 错误: cannot assign twice to immutable variable `x`
+> 
+> let mut y = 6
+> y = 7 // 正常
+> ```
+>
+> 所以，mojo 这样的设计没毛病？
+
+##### 询问 ChatGPT 的结果
+
+<img src="https://s2.loli.net/2023/05/06/eaHYR4xo6G7P23U.png" alt="image-20230506003753515" style="zoom:47%;" />
+
+> 👀 上面的 JS 中 `let` “被用作声明一个不可变变量” 显然是错的
+
+<img src="https://s2.loli.net/2023/05/06/s8BeMURytcuLdbV.png" alt="image-20230506003907981" style="zoom:47%;" />
+
+
+
 #### 鸭子类型
 
 鸭子类型(duck typing)<font color=red>在程序设计中是**动态类型**的一种风格</font>。<font color=fuchsia>在这种风格中，**一个对象有效的语义，不是由继承自特定的类或实现特定的接口，而是由“当前方法和属性的集合”决定**</font>。这个概念的名字来源于由詹姆斯·惠特科姆·莱利提出的<font color=red>**鸭子测试**</font>，<font color=dodgerBlue>“鸭子测试”可以这样表述</font>：

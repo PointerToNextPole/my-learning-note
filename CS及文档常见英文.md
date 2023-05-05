@@ -332,6 +332,10 @@
 
 - **notation** ：符号
 
+- **notably** ：adv. 尤其，非常。
+
+  **notable** ：adj. 值得注意的，显著的，重要的。n. 名人，重要人物
+
 - **afterthought** ：回想 👀 虽然但是，不该猜不出意思
 
 - **foreground** ：前景。在 [微信官方文档 - 小程序 - 框架接口 / 页面 / 页面生命周期](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/page-life-cycle.html) 中看到的 “set to foreground ”，应该有 前一个页面的意思。另外，它的反义词是 background
@@ -511,6 +515,7 @@
 - **troubleshooting** ：排错，分析解决问题
 
 - **trait** ：特征，特点
+
 - **segregation** ：隔离。read / write segregation 读写隔离
 
 - **precedence** ：优先地位，优先级
@@ -672,12 +677,26 @@
 
 - **comprehensive** ：综合的，全面的。 👀 这个有点基础了，不该遗忘
 
+  **comprehension** ：理解，理解力。另外，Python 中 list comprehension 译作 “列表推导式”
+
 - **vault** ：保险箱，金库
+
+- **lone** ：单独的，独自的，孤零零的。
+
+  > 👀 见到这个单词是在读 [MDN - String.prototype.isWellFormed()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed) 中提及的 “lone surrogate” 。之前似乎从没有见过这个单词，查了下意思，想到了 alone 和 lonely；但 lone 确实没有半点印象，有点神奇...
+  
+- **counterpart** ：对应的人或物
+
+- **ad-hoc** ：临时的
+
+- **terminate** ：v. 终止
+
+- **mutual** ：相互的 👀 挺基础的，不该忘记
 ***
 
 
 
-#### 术语的英文
+#### 英文术语
 
 - **埋点**：Event Tracking
 
@@ -692,7 +711,7 @@
 
 - **() / 圆括号**：Round brackets / parentheses
 - **\[] / 方括号**：Square brackets / brackets
-- **{} / 花括号**： / 大括号：Curly brackets / braces
+- **{} / 花括号 / 大括号** ：Curly brackets / braces
 - **<> / 尖括号**：Angle brackets / chevrons
 
 参考自：[wikipedia - Bracket](https://en.wikipedia.org/wiki/Bracket)
@@ -741,6 +760,7 @@
 摘自：[Google搜索特殊字符的方法](https://blog.csdn.net/LongZh_CN/article/details/14453317)
 
 
+
 #### 前后缀
 
 ##### 后缀
@@ -748,4 +768,29 @@
 - `-ish` 后缀：用于表达数量或时间的近似值。以 "10ish" 为例， 它是一个口语化的用法，表示数量大约为10。 
 > This is an over-generalization, but over the past 10ish years, a lot of complexity has been moving from the server to the client.
 > 摘自：[The End of Front-End Development](https://www.joshwcomeau.com/blog/the-end-of-frontend-development/)
+
+
+
+#### 单词缩写
+
+> 💡 可以参考 [[linux与macOS备忘录#Linux 命令缩写由来|Linux 命令缩写由来]] 中的内容
+
+- **pt. n** ：第 n 部分
+- **Misc** ：杂项，其他。"Misc" 是 "miscellaneous" 的缩写
+
+
+
+#### 常见单词
+
+- **knot** ：n.（用绳索等打的）结。v. 把…打成结（或扎牢）
+
+  **unknot** ： 解开...的结
+
+- **trail** ：n. **审判**，试验，试用；比赛;  v. 试验，试用。
+
+- **top-notch** ：一流的
+
+- **motivate** ：v. 激励，成为…的动机，是…的原因
+
+  **motivated** ：adj. 有积极性的，充满热情的，**有动机的**，**有目的的**
 

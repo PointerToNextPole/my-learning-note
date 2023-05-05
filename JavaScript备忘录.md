@@ -586,6 +586,8 @@ if (illFormed.isWellFormed()) {
 
 The **`toWellFormed()`** method of `String` values <font color=red>returns a string where **all [lone surrogates](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters) of this string are replaced with the Unicode replacement character U+FFFD**</font>.
 
+>  👀 关于 U+FFFD 的概念，可以参考 [[Web相关#unicode 相关#特殊 （Unicode区段）|特殊Unicode区段]]
+
 ##### 语法
 
 ```

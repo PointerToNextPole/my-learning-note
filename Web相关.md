@@ -157,11 +157,33 @@ Unicode 规范定义，每一个文件的最前面分别加入一个表示编码
 
 摘自：[阮一峰 - 字符编码笔记：ASCII，Unicode 和 UTF-8](https://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html)
 
+#### 💡 补充
+
+##### 特殊 （Unicode区段）
+
+> 此条目介绍的是<font color=dodgerBlue>收录缺字字符的 Unicode 区段</font>
+
+特殊字符是 Unicode 的一个简短的区段，分配在基本多文种平面的最末端，位于 U+FFF0-FFFF。在这 16 个码位中，有 5 个是从 Unicode 3.0 开始分配的。
+
+- U+FFF9 ：行间注解锚，标志着注解文本的开始。
+- U+FFFA ： 行间注解分隔符，标记注解字符的开始。
+- U+FFFB ：行间注解终结者，标志着注解块的结束。
+- U+FFFC ￼ ：OBJECT REPLACEMENT CHARACTER，在文本中为另一个未指定的对象提供占位符，例如在一个复合文件中。
+- U+FFFD � ：REPLACEMENT CHARACTER（替换字符），用于替换一个未知的、不被认可的或无法表示的字符。
+- U+FFFE <非字符-FFFE> 不是一个字符。
+- U+FFFF <非字符-FFFF> 不是一个字符。
+
+FFFE 和 FFFF 不是通常意义上的未分配字符，但不是 Unicode 字符。它们可以用来猜测一个文本的编码方案，因为根据定义，任何包含这些的文本都不是一个正确编码的 Unicode 文本。Unicode 的 U+FEFF BYTE ORDER MARK 字符可以插在 Unicode 文本的开头，以表示它的字节性：一个程序在阅读这样的文本并遇到 0xFFFE 时，就会知道它应该为后面的所有字符转换字节顺序。
+
+摘自：[wikipedia - 特殊 (Unicode区段)](https://zh.wikipedia.org/wiki/%E7%89%B9%E6%AE%8A_(Unicode%E5%8D%80%E6%AE%B5))
+
 
 
 ### HTML 编码
 
-**痛点：**不是每一个 Unicode 字符都能直接在 HTML 语言里面显示
+##### 痛点
+
+不是每一个 Unicode 字符都能直接在 HTML 语言里面显示
 
 - 不是每个 Unicode 字符都可以打印出来，有些没有可打印形式，比如换行符的码点是十进制的10（十六进制的A），就没有对应的字面形式。
 
@@ -185,36 +207,38 @@ HTML 为了解决上面这些问题，<font color=FF0000> **允许使用 Unicode
 
 > 👀 这里 `&#` 是用来表示 unicode 的
 
-> 使用 HTML，可以直接通过 Unicode 展示字符实体，形式是在 &#x 后面加上对应 CodePoint 的十六进制。或者 &#后面加 CodePoint 的十进制数字。
+> 使用 HTML，可以直接通过 Unicode 展示字符实体，形式是在 `&#x` 后面加上对应 CodePoint 的十六进制。或者 &#后面加 CodePoint 的十进制数字。
 >
 > 摘自：[硬核基础编码篇（二）ascii、unicode 和 utf-8](https://juejin.cn/post/7022893476464066596)
 
-注意，<font color=FF0000> HTML 标签本身不能使用码点表示，否则浏览器会认为这是所要显示的文本内容，而不是标签</font>。比如，\<p>一旦写成<\&#112;>或者 `&#60;&#112;&#62;`，浏览器就不再认为这是标签了，而会当作文本内容将其显示为\<p>。
+> ⚠️ <font color=FF0000> HTML 标签本身不能使用码点表示，否则浏览器会认为这是所要显示的文本内容，而不是标签</font>。比如，`<p>` 一旦写成 `<\&#112;>` 或者 `&#60;&#112;&#62;`，浏览器就不再认为这是标签了，而会当作文本内容将其显示为 `<p>`。
 
 ##### 字符的实体表示法
 
-<mark>数字表示法的不方便之处，在于必须知道每个字符的码点，很难记忆。为了能够快速输入，HTML 为一些特殊字符，规定了容易记忆的名字，允许通过名字来表示它们，这称为<font color=FF0000> **实体表示法**</font>（entity）</mark>。
+> 💡 更准确的描述是 “字符实体”，可见 [wikipedia - 字符实体引用](https://zh.wikipedia.org/wiki/%E5%AD%97%E7%AC%A6%E5%AE%9E%E4%BD%93%E5%BC%95%E7%94%A8)
 
-实体的写法是&name;，其中的name是字符的名字。下面是其中一些特殊字符，及其对应的实体。
+<font color=LightSeaGreen>数字表示法的不方便之处，在于必须知道每个字符的码点，很难记忆。为了能够快速输入，HTML 为一些特殊字符，规定了容易记忆的名字，允许通过名字来表示它们，这称为<font color=FF0000> **实体表示法**</font> ( entity )</font>。
 
-- <：\&lt;
-- \> :  \&gt;
-- " ：\&quot;
-- ' ：\&apos;
-- & ：\&amp;
-- © ：\&copy;
-- \# ：\&num;
-- § ：\&sect;
-- ¥ ：\&yen;
-- $ ：\&dollar;
-- £ ：\&pound;
-- ¢ ：\&cent;
-- % ：\&percnt;
-- \* ：\&ast;
-- @ ：\&commat;
-- ^ ：&Hat;
-- ± ：\&plusmn;
-- 空格 ：\&nbsp;
+实体的写法是 `&name;`，其中的 `name` 是字符的名字。下面是其中一些特殊字符，及其对应的实体。
+
+- <：`&lt;`
+- \> :  `&gt;`
+- " ：`&quot;`
+- ' ：`&apos;`
+- & ：`&amp;`
+- © ：`&copy;`
+- \# ：`&num;`
+- § ：`&sect;`
+- ¥ ：`&yen;`
+- $ ：`&dollar;`
+- £ ：`&pound;`
+- ¢ ：`&cent;`
+- % ：`&percnt;`
+- \* ：`&ast;`
+- @ ：`&commat;`
+- ^ ：`&Hat;`
+- ± ：`&plusmn;`
+- 空格 ：`&nbsp;`
 
 字符的数字表示法和实体表示法，都可以表示正常情况无法输入的字符，逃脱了浏览器的限制，所以英语里面称为“escape”，中文翻译为“字符的转义”。
 
