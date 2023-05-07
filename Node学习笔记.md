@@ -3777,16 +3777,15 @@ Node（或者说 Node.js，两者是等价的）是 JavaScript 的一种**运行
 
 运行 Node 代码通常有两种方式：1）在 REPL 中交互式输入和运行；2）将代码写入 JS 文件，并用 Node 执行。
 
-> **补充**
-> REPL 的全称是 Read Eval Print Loop（读取-执行-输出-循环），通常可以理解为**交互式解释器**，你可以输入任何表达式或语句，然后就会立刻执行并返回结果。<font color=lightSeaGreen>如果你用过 Python 的 REPL 一定会觉得很熟悉。</font>
+> 💡 REPL 的全称是 Read Eval Print Loop（读取-执行-输出-循环），通常可以理解为**交互式解释器**，你可以输入任何表达式或语句，然后就会立刻执行并返回结果。<font color=lightSeaGreen>如果你用过 Python 的 REPL 一定会觉得很熟悉。</font>
 
-类似于Python，对于js文件也可通过如下命令使其在终端执行：
+类似于 Python，对于 js 文件也可通过如下命令使其在终端执行：
 
 ```sh
 $ node script.js
 ```
 
-在浏览器中，我们有 document 和 window 等全局对象；而<font color=FF0000> Node 只包含 ECMAScript 和 V8，不包含 BOM 和 DOM，因此 Node 中不存在 document 和 window；取而代之，Node 专属的全局对象是 process</font>。
+在浏览器中，我们有 `document` 和 `window` 等全局对象；而<font color=FF0000> Node 只包含 ECMAScript 和 V8，不包含 BOM 和 DOM，因此 Node 中不存在 `document` 和 `window`</font> ；<font color=fuchsia>取而代之，Node 专属的全局对象是 `process`</font>。
 
 **JavaScript 全局对象的分类**
 
@@ -3884,7 +3883,7 @@ node --max-semi-space-size=1024 xxx.js
 node --max-old-space-size=2048 xxx.js
 ```
 
-通过以上方法便可以手动放宽 V8 引擎所使用的内存限制，同时 <font color=red>node 也提供了 `process.memoryUsage()` 方法来查看当前Node 进程所占用的实际内存大小</font>：
+通过以上方法便可以手动放宽 V8 引擎所使用的内存限制，同时 <font color=red>node 也提供了 `process.memoryUsage()` 方法来查看当前 Node 进程所占用的实际内存大小</font>：
 
 ![](https://s2.loli.net/2022/10/13/qCvsHPXJGyu3Ubm.png)
 
@@ -3913,7 +3912,7 @@ node --max-old-space-size=2048 xxx.js
 >
 > 链接：https://github.com/microsoft/vscode/issues/95937
 > 
-> 另外，也非常推荐阅读 antfu 的文章：[# Why Reproductions are Required](https://antfu.me/posts/why-reproductions-are-required)
+> 另外，也非常推荐阅读 antfu 的文章：[Why Reproductions are Required](https://antfu.me/posts/why-reproductions-are-required)
 
 ##### 查看 V8 版本
 
@@ -3958,6 +3957,199 @@ $ node --v8-options | grep -e '--harmony'
 
 
 
+#### Node 权限模型
+
+> 💡 该笔记是阅读 [Node.js 20 为啥要搞个权限模型？到底有啥用？](https://mp.weixin.qq.com/s/LrNYU6L-wfEYXZfB8uzjyg) 的笔记。
+>
+> 作为背景：文章发布时，Node 版本是 v20.1.0
+
+##### 为什么要有权限模型？
+
+<font color=red>`Node.js 20` 的权限模型基本上是从 `Deno` 那抄过来的（目前看来只抄了个半成品）</font>。
+
+> 💡Deno 权限模型的文档见：[Deno v1.32.3 Doc - 3.Basics - Permissions](https://deno.com/manual@v1.33.2/basics/permissions) （当然，随着 Deno 以及其文档的更新，链接也会过时）
+
+因为 <font color=dodgerBlue>`Deno` 在设计之初就考虑了权限设计，所以它可以很自豪的说：`Deno is secure by default.`</font>
+
+但 <font color=dodgerBlue>`Node.js` 就不一样了，因为在一开始的设计中对安全考虑不足，也没有类似的权限模型的设计</font>，所以频繁的被爆出各种漏洞，`Node.js` 官方还有一个专门的安全相关的文档，来告诉大家使用 `Node.js` 有什么样的风险：[GitHub - node - SECURITY.md](https://github.com/nodejs/node/blob/HEAD/SECURITY.md)
+
+这些内容是需要开发者自己去规避的（但实际上大部分开发者不会主动关注，所以写出的很多代码都是有漏洞的）。
+
+<font color=dodgerBlue>举个例子，`Node.js` 提供了很多操作文件的能力，比如下面这些 `API`</font>：
+
+- fs : `createReadStream / createWriteStream / appendFileSync / appendFile` ...
+- fs-extra : `createFile / createFileSync / ensureDir / ensureDirSync / mkdir` ...
+- shelljs : `cat / cd / chmod / cp / pushd / popd / dirs / echo / find / grep` ...
+
+假设我们把一个不可信的用户输入，传入到这些 `API` 的参数中，<font color=red>这意味着外部可以随意更改传入的参数，也就是说可以随意遍历我们的目录</font>。
+
+比如下面是一个实际的业务场景，我们在服务器的 `'./image'` 这个相对路径下存储了一些图片，我们通过在参数中传入的图片名称来读取这张图片，代码如下：
+
+```js
+function readImageg(ctx) {
+  const { name } = ctx.query;
+  const content = fs.readFileSync('./image' + name);
+  return content;
+}
+```
+
+用户有可能将 `name` 参数改为 `etc/hosts` 文件的相对路径（通过暴力测试获得 hosts 文件地址），这就意味着任何人通过这个接口都可以读取你服务器上的任意文件。
+
+就算是一个典型的 <font color=red>**路径遍历漏洞**</font>。
+
+有相当一部分 `Node.js` 开发者在写到类似的功能的时候会犯这种问题，因为他根本不会意识到有什么样的安全风险。
+
+其实，<font color=red>这个问题的本质原因就是 `Node.js` 提供了很多高风险的 `API`，但是又没有给这些 `API` 比较严格的限制</font>。所以 `Node.js` 不能说是默认安全的。
+
+<font color=red>`Deno` 可以说 `Deno is secure by default.` ，主要就是因为他提供了一套完整的权限模型</font>。
+
+##### 文件系统的权限
+
+如果想要访问或文件系统，就必须要指定下面两个标志：
+
+- `--allow-fs-read`：允许读取某个路径下的文件，多个可以用逗号分隔；
+- `--allow-fs-write`：允许操作某个路径下的文件，多个可以用逗号分隔；
+
+![](https://s2.loli.net/2023/05/07/n91OWA5UkHhuqBs.png)
+
+> 💡 上面截图中的 `--experimental-permission` 是权限系统的标志
+
+再回想一下上面提到的路径遍历漏洞的场景，如果程序一开始设计的时候，启动就加上 `--experimental-permission` ，那么默认就是不允许操作文件的，如果后面有了需要操作文件系统的需求，就要强制开发者通过  `--allow-fs-read`、`--allow-fs-write` 去设置白名单，那么就可以说是默认安全的了。
+
+##### 检查权限
+
+Node 20 还提供了一个 `process.permission.has` API ，可以用来 **在运行时检查程序是不是拥有指定的权限**。如下示例：
+
+```js
+const fs = require('node:fs/promises');
+
+async function readFile() {
+  try {
+    const data = await fs.readFile('/Users/bytedance/Desktop/learn/Node.js/17.txt', {
+      encoding: 'utf8',
+    });
+    console.log(data);
+  } catch (err) { console.log(err); }
+}
+
+readFile();
+
+console.log('通用文件读取权限', process.permission.has('fs.read'));
+
+console.log(
+  '/Users/bytedance/Desktop/learn/ 目录的读取权限',
+  process.permission.has('fs.read', '/Users/bytedance/Desktop/learn/')
+);
+
+console.log('通用文件操作权限', process.permission.has('fs.write'));
+
+console.log(
+  '/Users/bytedance/Desktop/learn/ 目录的操作权限',
+  process.permission.has('fs.write', '/Users/bytedance/Desktop/learn/')
+);
+```
+
+执行命令如下：
+
+```sh
+node --experimental-permission --allow-fs-read=/Users/bytedance/Desktop/learn/ file17.js
+```
+
+结果如下：
+
+<img src="https://s2.loli.net/2023/05/07/ecPLySW32DJstTG.png" style="zoom:68%;" />
+
+可以很清晰的告诉我们程序在运行时拥有什么权限。
+
+##### 子进程的权限
+
+<font color=dodgerBlue>`Node.js` 中的 `child_process` 为我们提供了创建子进程的能力，可以在这个子进程中执行任意的 `Shell` 命令</font>。
+
+<font color=dodgerBlue>这个命令也是相当危险的</font>，原理和上面的路径遍历一样，<font color=red>如果把用户可控的参数传入到了子进程执行的命令中，就是命令注入漏洞</font>，这个要比路径遍历漏洞还严重的多。
+
+我们创建一个 `child17.js` 文件来测试执行一个简单的 `ls` 命令：
+
+```js
+const { spawn } = require('node:child_process');
+
+const ls = spawn('ls', ['/Users/bytedance/Desktop/learn/Node.js']);
+
+ls.stdout.on('data', (data) => {
+  console.log(`输出如下：\n${data}`);
+});
+
+ls.stderr.on('data', (err) => {
+  console.error(`失败: ${err}`);
+});
+
+ls.on('close', (code) => {
+  console.log(`子进程退出 ${code}`);
+});
+
+```
+
+执行结果如下，可以正常遍历目录：
+
+<img src="https://s2.loli.net/2023/05/07/4uZPORoCcJsM9Lv.png" style="zoom:65%;" />
+
+但如果加上了 `--experimental-permission` 标志，执行命令的时候就会报错：
+
+<img src="https://s2.loli.net/2023/05/07/px7YygGbtRUNhI3.png" style="zoom:70%;" />
+
+<font color=red>**必须要加上 `--allow-child-process` 才能正常允许执行子进程**</font>。另外，如果子进程中读取到了一些文件目录，我们依然需要加上 `--allow-fs-read` 才能执行成功，下面我们执行这个命令：
+
+```sh
+node --experimental-permission --allow-child-process --allow-fs-read=/Users/bytedance/Desktop/learn/ child17.js
+```
+
+结果如下：
+
+![](https://s2.loli.net/2023/05/07/PBGisplQImT1ADw.png)
+
+##### worker_threads 权限
+
+<font color=dodgerBlue>`worker_threads` 可以让我们创建多线程，然后在不同的线程中并行执行代码，一般我们会开多个 `Workers` 来执行一些 `CPU` 密集型的操作</font>。
+
+创建一个 `threads17.js` 来测试执行下面的代码：
+
+```js
+const { Worker, isMainThread, workerData } = require('node:worker_threads');
+
+if (isMainThread) {
+
+  new Worker(__filename, { workerData: 1});
+  new Worker(__filename, { workerData: 2});
+
+  console.log(`Inside Main Thread: isMainThread = ${isMainThread}`);
+} else {
+  console.log(`Inside Worker: isMainThread = ${isMainThread}, and my ID is ${workerData}`);
+}
+```
+
+代码里面创建了两个简单的 `Worker` 来并行执行代码，执行代码可以正常输出：
+
+<img src="https://s2.loli.net/2023/05/07/rNOYFBSwoG2RQxv.png" style="zoom:65%;" />
+
+但如果启用了 `--experimental-permission` 标志，代码执行就会报错：
+
+<img src="https://s2.loli.net/2023/05/07/cubJF4MnPXYTK6x.png" style="zoom:65%;" />
+
+<font color=dodgerBlue>如果要使用 `worker_threads` </font> ，<font color=red>**要添加一个 `--allow-worker` 的标志**</font>，另外它还需要通过 `--allow-fs-read` 来告诉它哪些目录下的文件是允许被执行的，所以执行下面的代码：
+
+```sh
+node --experimental-permission --allow-worker --allow-fs-read=/Users/bytedance/Desktop/learn/ threads17.js
+```
+
+这样就可以正常执行了：
+
+![](https://s2.loli.net/2023/05/07/DywGEsCrVUe7bvB.png)
+
+##### 总结
+
+目前 `Node.js` 的权限模型还是相当初级的阶段，<font color=LightSeaGreen>**还有很多能力需要完善，比如可以限制服务的网络请求白名单，这样就可以避免 `SSRF` 漏洞等等**</font>，而且<font color=red>**现在还在实验阶段，尽量不要在生产环境使用**</font>。
+
+摘自： [Node.js 20 为啥要搞个权限模型？到底有啥用？](https://mp.weixin.qq.com/s/LrNYU6L-wfEYXZfB8uzjyg)
+
 
 
 ## NPM
@@ -3971,15 +4163,15 @@ $ node --v8-options | grep -e '--harmony'
 ##### 安装
 
 ```sh
-npm install package-name  					#本地安装
-npm install package-name @"version" #安装特定版本
-npm install -g package-name  				#全局安装
-npm install     										#通过package.json安装，将项目依赖的包都在文件内声明
+npm install package-name  					# 本地安装
+npm install package-name @"version" # 安装特定版本
+npm install -g package-name  				# 全局安装
+npm install     										# 通过package.json安装，将项目依赖的包都在文件内声明
 ```
 
-安装之前，npm install会先检查，node_modules目录之中是否已经存在指定模块。如果存在，就不再重新安装了，即使远程仓库已经有了一个新版本，也是如此。
+安装之前，`npm install`会先检查，`node_modules` 目录之中是否已经存在指定模块。如果存在，就不再重新安装了，即使远程仓库已经有了一个新版本，也是如此。
 
-如果你希望，一个模块不管是否安装过，npm 都要强制重新安装，可以使用`*-f`或`*--force`参数。
+如果你希望，一个模块不管是否安装过，npm 都要强制重新安装，可以使用`*-f` 或 `*--force`参数。
 
 ```sh
 npm install packageName -force
@@ -3994,8 +4186,8 @@ npm uninstall package-name
 ##### 查看已安装的包
 
 ```sh
-npm ls      						#查看所有
-npm ls package-name     #查看某安装包的具体信息
+npm ls      						# 查看所有
+npm ls package-name     # 查看某安装包的具体信息
 ```
 
 ##### 更新
@@ -4028,10 +4220,10 @@ npm seach package-name
   - **npm install** **<font color=FF0000>=</font>** **npm i**。在git clone项目的时候，项目文件中并没有 node_modules文件夹，项目的依赖文件可能很大。直接执行，<font color=FF0000>npm会根据package.json配置文件中的依赖配置下载安装</font>。
   
   - **-global** **<font color=FF0000>=</font>** **-g**，全局安装，安装后的包位于系统预设目录下
-  - **--save** **<font color=FF0000>=</font>** **-S**，<font color=FF0000>安装的包将写入package.json里面的dependencies</font>，<mark>dependencies：生产环境需要依赖的库</mark>
-  - **--save-dev** **<font color=FF0000>=</font>** **-D**，<font color=FF0000>安装的包将写入packege.json里面的devDependencies</font>，<mark>devdependencies：只有开发环境下需要依赖的库</mark>
+  - **--save** **<font color=FF0000>=</font>** **-S**，<font color=FF0000>安装的包将写入package.json里面的dependencies</font>，<font color=LightSeaGreen>dependencies：生产环境需要依赖的库</font>
+  - **--save-dev** **<font color=FF0000>=</font>** **-D**，<font color=FF0000>安装的包将写入packege.json里面的devDependencies</font>，<font color=LightSeaGreen>devdependencies：只有开发环境下需要依赖的库</font>
 
-另外：在package name后面添加@版本号，可以安装指定版本号的包
+另外：在 package name 后面添加 @版本号，可以安装指定版本号的包
 
 摘自：[npm install说明](https://www.jianshu.com/p/b3e407942ac5)
 
@@ -4105,11 +4297,11 @@ Config supports the following sub-commands:
 
 
 
-#### --save 系列 options
+#### `--save` 系列 options
 
 npm install takes 3 exclusive, optional flags which save or update the package version in your main package.json:
 
-npm install 提供了3种独立的、可选的用于保存和更新在你主要的package.json的包版本的标记
+`npm install` 提供了3种独立的、可选的用于保存和更新在你主要的 package.json 的包版本的标记
 
 - `-S` , `--save` : Package will appear in your dependencies.
 
@@ -4175,7 +4367,7 @@ npm config get registry
 npm config set registry https://registry.npm.taobao.org
 ```
 
-> 👀 注：这时打开 `~/.npmrc` ，会发现：多了 `registry=https://registry.npm.taobao.org/`
+> 👀 这时打开 `~/.npmrc` ，会发现：多了 `registry=https://registry.npm.taobao.org/`
 
 ##### 使用官方镜像
 
@@ -4297,9 +4489,9 @@ npm 允许在package.json文件里面，使用scripts字段定义脚本命令。
 }
 ```
 
-上面代码是package.json文件的一个片段，里面的scripts字段是一个对象。它的每一个属性，对应一段脚本。比如，build命令对应的脚本是node build.js。
+上面代码是 `package.json` 文件的一个片段，里面的 scripts 字段是一个对象。它的每一个属性，对应一段脚本。比如，`build` 命令对应的脚本是 `node build.js`。
 
-<font color=FF0000> 命令行下使用 npm run 命令，就可以执行这段脚本</font>。
+<font color=FF0000> 命令行下使用 `npm run` 命令，就可以执行这段脚本</font>。
 
 ```sh
 npm run build
@@ -4307,23 +4499,23 @@ npm run build
 node build.js
 ```
 
-<mark style="background:aqua">这些定义在 package.json 里面的脚本，就称为 npm 脚本。它的优点很多</mark>。
+<font color=dodgerBlue>这些定义在 `package.json` 里面的脚本，就称为 npm 脚本。它的优点很多</font>。
 
-- <mark>项目的相关脚本，可以集中在一个地方</mark>。
+- <font color=LightSeaGreen>项目的相关脚本，可以集中在一个地方</font>。
 - 不同项目的脚本命令，只要功能相同，就可以有同样的对外接口。用户不需要知道怎么测试你的项目，只要运行 npm run test 即可。
-- <mark>可以利用 npm 提供的很多辅助功能</mark>。
+- <font color=LightSeaGreen>可以利用 npm 提供的很多辅助功能</font>。
 
-<font color=FF0000> 查看当前项目的所有 npm 脚本命令，可以使用不带任何参数的 npm run 命令</font>。
+<font color=FF0000> 查看当前项目的所有 npm 脚本命令，可以使用不带任何参数的 `npm run` 命令</font>。
 
 ```bash
 npm run
 ```
 
-**原理：**
+##### 原理
 
-npm 脚本的原理非常简单。<font color=FF0000>**每当执行npm run，就会自动新建一个 Shell，在这个 Shell 里面执行指定的脚本命令**</font>。因此，<font color=FF0000> 只要是 Shell（一般是 Bash）可以运行的命令，就可以写在 npm 脚本里面</font>。
+npm 脚本的原理非常简单。<font color=FF0000>**每当执行 `npm run` ，就会自动新建一个 Shell，在这个 Shell 里面执行指定的脚本命令**</font>。因此，<font color=FF0000> 只要是 Shell（一般是 Bash）可以运行的命令，就可以写在 npm 脚本里面</font>。
 
-<mark>比较特别的是，npm run 新建的这个 Shell，会将当前目录的 node_modules/.bin 子目录加入 PATH 变量，执行结束后，再将 PATH 变量恢复原样</mark>。这意味着，<font color=FF0000> 当前目录的 node_modules/.bin 子目录里面的所有脚本，都可以直接用脚本名调用，而不必加上路径</font>。比如，当前项目的依赖里面有 Mocha，只要直接写 mocha test 就可以了。
+<font color=LightSeaGreen>比较特别的是，`npm run` 新建的这个 Shell，会将当前目录的 `node_modules/.bin` 子目录加入 PATH 变量，执行结束后，再将 PATH 变量恢复原样</font>。这意味着，<font color=FF0000> 当前目录的 `node_modules/.bin` 子目录里面的所有脚本，都可以直接用脚本名调用，而不必加上路径</font>。比如，当前项目的依赖里面有 Mocha，只要直接写 mocha test 就可以了。
 
  ```javascript
 "test": "mocha test"
@@ -4356,7 +4548,7 @@ npm 脚本的原理非常简单。<font color=FF0000>**每当执行npm run，就
 "lint": "jshint **.js"
 ```
 
-向上面的 npm run lint 命令传入参数，必须写成下面这样。
+向上面的 `npm run lint` 命令传入参数，必须写成下面这样。
 
 ```bash
 npm run lint --  --reporter checkstyle > checkstyle.xml
@@ -4389,7 +4581,7 @@ npm run script1.js && npm run script2.js
 "install": "node-gyp rebuild"
 ```
 
-上面代码中，<mark>npm run start 的默认值是 node server.js，前提是项目根目录下有 server.js 这个脚本；npm run install 的默认值是 node-gyp rebuild，前提是项目根目录下有 binding.gyp 文件</mark>。
+上面代码中，<font color=LightSeaGreen>`npm run start` 的默认值是 `node server.js`，前提是项目根目录下有 `server.js` 这个脚本</font>；<font color=fuchsia>`npm run install` 的默认值是 `node-gyp rebuild`，前提是项目根目录下有 binding.gyp 文件</font>。
 
 **钩子**
 
@@ -4401,7 +4593,7 @@ npm run script1.js && npm run script2.js
 "postbuild": "echo I run after the build script"
 ```
 
-<font color=FF0000>用户执行 **npm run build** 的时候，会自动按照下面的顺序执行。</font>
+<font color=FF0000>用户执行 **`npm run build`** 的时候，会自动按照下面的顺序执行。</font>
 
 ```bash
 npm run prebuild && npm run build && npm run postbuild
@@ -4418,18 +4610,18 @@ npm run prebuild && npm run build && npm run postbuild
 - pre<font color=0000FF>start</font>，post<font color=0000FF>start</font>
 - pre<font color=0000FF>restart</font>，post<font color=0000FF>restart</font>
 
-<font color=FF0000> <font size=4>**自定义的脚本命令也可以加上 pre 和 post 钩子**</font>。比如， myscript 这个脚本命令，也有 pre**myscript** 和 post**myscript** 钩子。不过，**双重的 pre 和 post 无效**，比如 prepretest 和 postposttest 是无效的</font>。
+<font color=FF0000> <font size=4>**自定义的脚本命令也可以加上 pre 和 post 钩子**</font>。比如， myscript 这个脚本命令，也有 pre*myscript* 和 post*myscript* 钩子。不过，**双重的 pre 和 post 无效**，比如 pre**pre**test 和 post**post**test 是无效的</font>。
 
-npm 提供一个 npm_lifecycle_event 变量，返回当前正在运行的脚本名称，比如 pretest 、test 、posttest 等等
+npm 提供一个 `npm_lifecycle_event` 变量，返回当前正在运行的脚本名称，比如 pretest 、test 、posttest 等等
 
 **简写形式**
 
-<mark style="background:aqua">四个常用的 npm 脚本有简写形式：</mark>
+<font color=dodgerBlue>四个常用的 npm 脚本有简写形式：</font>
 
-- npm start 是 npm run start 的简写
-- npm stop 是 npm run stop 的简写
-- npm test 是 npm run test 的简写
-- npm restart 是 npm run stop && npm run restart && npm run start 的简写
+- `npm start` 是 `npm run start` 的简写
+- `npm stop` 是 `npm run stop` 的简写
+- `npm test` 是 `npm run test` 的简写
+- `npm restart` 是 `npm run stop && npm run restart && npm run start` 的简写
 
 npm start、npm stop 和 npm restart 都比较好理解，而 npm restart是一个复合命令，实际上会执行三个脚本命令：stop、restart、start。具体的执行顺序如下。
 
@@ -4446,7 +4638,7 @@ npm start、npm stop 和 npm restart 都比较好理解，而 npm restart是一�
 
 npm 脚本有一个非常强大的功能，就是可以使用 npm 的内部变量。
 
-首先，<font color=FF0000>通过 **`npm_package_`** 前缀，npm 脚本可以拿到package.json里面的字段</font>。比如，下面是一个package.json。
+首先，<font color=FF0000>通过 **`npm_package_`** 前缀，npm 脚本可以拿到 `package.json` 里面的字段</font>。比如，下面是一个 `package.json` 。
 
 ```json
 {
@@ -4458,7 +4650,7 @@ npm 脚本有一个非常强大的功能，就是可以使用 npm 的内部变�
 }
 ```
 
-那么，<font color=FF0000>变量 **`npm_package_name`** 返回 **foo**，变量 **npm_package_version** 返回 **1.2.5**</font>。
+那么，<font color=FF0000>变量 **`npm_package_name`** 返回 **foo**，变量 **`npm_package_version`** 返回 **1.2.5**</font>。
 
 ```js
 // view.js
@@ -4466,9 +4658,9 @@ console.log(process.env.npm_package_name); // foo
 console.log(process.env.npm_package_version); // 1.2.5
 ```
 
-上面代码中，我们通过环境变量 process.env 对象，拿到 package.json 的字段值。如果是 Bash 脚本，可以用 \$npm_package_name和\$npm_package_version 取到这两个值。
+上面代码中，我们<font color=red>通过环境变量 `process.env` 对象，拿到 `package.json` 的字段值</font>。<font color=dodgerBlue>如果是 Bash 脚本</font>，可以<font color=red>用 `$npm_package_name` 和 `$npm_package_version` 取到这两个值</font>。
 
-`npm_package_` 前缀也支持嵌套的 package.json 字段。
+`npm_package_` 前缀也支持嵌套的 `package.json` 字段。
 
 ```json
 "repository": {
@@ -4480,7 +4672,7 @@ scripts: {
 }
 ```
 
-上面代码中，repository 字段的 type 属性，可以通过 npm_package_repository_type 取到。
+上面代码中，`repository` 字段的 `type` 属性，可以通过 `npm_package_repository_type` 取到。
 
 另外一个例子：
 
@@ -4490,15 +4682,15 @@ scripts: {
 }
 ```
 
-上面代码中，npm_package_scripts_install 变量的值等于 foo.js。
+上面代码中，`npm_package_scripts_install` 变量的值等于 foo.js。
 
-npm 脚本还可以通过 npm_config_ 前缀，拿到 npm 的配置变量，即 npm config get xxx 命令返回的值。比如，当前模块的发行标签，可以通过npm_config_tag取到。
+npm 脚本还可以通过 `npm_config_` 前缀，拿到 npm 的配置变量，即 `npm config get xxx` 命令返回的值。比如，当前模块的发行标签，可以通过 `npm_config_tag` 取到。
 
 ```js
 "view": "echo $npm_config_tag",
 ```
 
-注意，package.json 里面的 config 对象，可以被环境变量覆盖。
+注意，`package.json` 里面的 config 对象，可以被环境变量覆盖。
 
 ```json
 { 
@@ -4508,7 +4700,7 @@ npm 脚本还可以通过 npm_config_ 前缀，拿到 npm 的配置变量，即 
 }
 ```
 
-上面代码中，npm_package_config_port 变量返回的是 8080。这个值可以用下面的方法覆盖。
+上面代码中，`npm_package_config_port` 变量返回的是 8080。这个值可以用下面的方法覆盖。
 
 ```bash
 $ npm config set foo:port 80
@@ -4553,11 +4745,11 @@ $ npm config set foo:port 80
 
 
 
-#### npx笔记
+#### npx 笔记
 
 摘自：[阮一峰 - npx 使用教程](https://www.ruanyifeng.com/blog/2019/02/npx.html)
 
-npm 从 @5.2 开始，增加了 npx 命令。
+npm 从 v5.2 开始，增加了 `npx` 命令。
 
 **解决的问题**
 
@@ -4749,13 +4941,13 @@ function someMiddleware(req, res, next) {
 
 
 
-## DENO
+## Deno
 
 #### Web Platform APIs
 
 ##### 总述
 
-DENO 实现了 一些 Node 未实现的 浏览器 Web API，比如 `localStorage` 和 DOM Event
+Deno 实现了 一些 Node 未实现的 浏览器 Web API，比如 `localStorage` 和 DOM Event
 
 ##### 详情
 

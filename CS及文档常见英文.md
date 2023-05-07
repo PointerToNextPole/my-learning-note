@@ -1,12 +1,16 @@
 # CS 及 文档书籍 常见英文
 
+
+
 ### 通用
 
 - **synchronous**： 同步
 
 - **asynchronous**：异步
 
-- **compatibility**：兼容性。compat：兼容 ( verb )。**forwards compatibility**：向后兼容性
+- **compatibility**：兼容性。**forwards compatibility**：向后兼容性
+
+  **compat**：兼容 ( verb )
 
 - **shortcut**：快捷方式，近道
 
@@ -16,7 +20,9 @@
 
 - **addon**：插件。来自 “node-gyp is a cross-platform command-line tool written in Node.js for compiling native addon modules for Node.js”
 
-- **on the fly**：即时，在运行时（热更新）。参考：[如何优雅的翻译 on the fly ？ - 知乎](https://www.zhihu.com/question/21136587)
+- **on the fly**：即时，在运行时（热更新）。
+
+  > 💡 参考：[如何优雅的翻译 on the fly ？ - 知乎](https://www.zhihu.com/question/21136587)
 
 - **on the spot** ：当场、立即
 
@@ -28,7 +34,7 @@
 
 - **downside** ：缺点
 
-- **overhead**：开销（和性能相关）
+- **overhead**：<font color=red>**开销**</font>（和性能相关）
 
 - **vice versa** ：反之亦然
 
@@ -692,6 +698,8 @@
 - **terminate** ：v. 终止
 
 - **mutual** ：相互的 👀 挺基础的，不该忘记
+
+- **factor** ：n. 因素，因子，因数，要素；（增或减的）数量，倍数；系数;
 ***
 
 
@@ -793,4 +801,35 @@
 - **motivate** ：v. 激励，成为…的动机，是…的原因
 
   **motivated** ：adj. 有积极性的，充满热情的，**有动机的**，**有目的的**
+  
+- **incur** ：v. 招致
 
+- **preceive** ：v. 感知
+
+- **sentiment** ：情感
+
+- **overtime** ：加班
+
+- **commence** ：开始
+
+- **departure** ：离开
+
+- **messy** ：凌乱的
+
+  **mess** ：混乱
+
+- **obligated** ：有义务的
+
+- **conviction** ：信念
+
+  **convict** ：n. 罪犯;已决犯;服刑囚犯 v. 定罪;宣判…有罪
+
+  <img src="https://s2.loli.net/2023/05/07/Fi1pkIUHhQZjPYc.png" alt="image-20230507173533552" style="zoom:50%;" />
+
+- **cohesion** ：凝聚力
+
+  **cohere** ：vi. 凝聚，连贯、一致；团结一致
+
+- **surgery** ：手术
+- **drift** ：v. 漂流 n. 偏航，逐渐变化（尤指向坏的方面）
+- **subsidies** ：补助金

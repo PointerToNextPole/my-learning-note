@@ -4031,122 +4031,143 @@ async function* asyncGenerator() {
 
 #### Generator
 
-生成器对象是由一个 [generator function](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/function*)（注：为 function*） 返回的,并且它符合可迭代协议和迭代器协议。
+生成器对象是由一个 [generator function](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/function*)（👀 为 `function*` ） 返回的,并且它符合可迭代协议和迭代器协议。
 
-方法
+##### 方法
 
-- **Generator.prototype.next()：**返回一个由 yield 表达式生成的值。
+###### Generator.prototype.next()
 
-  > next() 方法返回一个包含属性 done 和 value 的对象。该方法也可以通过接受一个参数用以向生成器传值。
-  >
-  > - **语法**
-  >
-  >   ```js
-  >   gen.next(value)
-  >   ```
-  >
-  > - **参数**
-  >   **value：**向生成器传递的值.
-  >
-  > - **返回值：**返回的对象包含两个属性
-  >
-  >   - **done (布尔类型)：**如果迭代器超过迭代序列的末尾，则值为 true。 在这种情况下，value可选地指定迭代器的返回值。
-  >     如果迭代器能够生成序列中的下一个值，则值为false。 这相当于没有完全指定done属性。
-  >   - **value：**迭代器返回的任意的Javascript值。当 done 的值为 true 时可以忽略该值。
-  >
-  > - **示例：**使用 next() 方法；下面的例子展示了一个简单的生成器, 以及调用 next 后方法的返回值:
-  >
-  >   ```js
-  >   function* gen() { yield 1; yield 2; yield 3; }
-  >                                                                                                                                                                                                                                                                                                           
-  >   var g = gen(); // "Generator { }" 注：这里调用 gen() 返回了一个为名为 g 的 Generator 对象
-  >   g.next();      // "Object { value: 1, done: false }"
-  >   g.next();      // "Object { value: 2, done: false }"
-  >   g.next();      // "Object { value: 3, done: false }"
-  >   g.next();      // "Object { value: undefined, done: true }"
-  >   ```
-  >
-  >   **向生成器传值**
-  >
-  >   在此示例中，使用值调用next。 <font color=FF0000>请注意，第一次调用没有记录任何内容，因为生成器最初没有产生任何结果</font>。
-  >
-  >   ```js
-  >   function* gen() {
-  >     while(true) {
-  >       var value = yield null;
-  >       console.log(value);
-  >     }
-  >   }
-  >                                                                                                                                                                                                                                                                                                           
-  >   var g = gen();
-  >   g.next(1); // "{ value: null, done: false }"
-  >   g.next(2); // 2
-  >   // "{ value: null, done: false }"
-  >   ```
-  >
-  > 摘自：[MDN - Generator.prototype.next()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator/next)
+返回一个由 `yield` 表达式生成的值。
 
-- **Generator.prototype.return()：**返回给定的值并结束生成器。
+> `next()` 方法返回一个包含属性 `done` 和 `value` 的对象。该方法也可以通过接受一个参数用以向生成器传值。
+>
+> ##### 语法
+>
+> ```js
+> gen.next(value)
+> ```
+>
+> ###### 参数
+>
+> - **`value`** ：向生成器传递的值.
+>
+> ###### 返回值
+>
+> 返回的对象包含两个属性
+>
+> - **`done`** ：( boolean ) 如果迭代器超过迭代序列的末尾，则值为 `true` 。 在这种情况下，`value` 可选地指定迭代器的返回值。
+>   如果迭代器能够生成序列中的下一个值，则值为 `false` 。 这相当于没有完全指定 `done` 属性。
+> - **`value`** ：迭代器返回的任意的 Javascript值。当 `done` 的值为 `true` 时可以忽略该值。
+>
+> ##### 示例
+>
+> 使用 `next()` 方法；下面的例子展示了一个简单的生成器, 以及调用 `next` 后方法的返回值:
+>
+> ```js
+> function* gen() { yield 1; yield 2; yield 3; }
+> 
+> var g = gen(); // "Generator { }" 👀 这里调用 gen() 返回了一个为名为 g 的 Generator 对象
+> g.next();      // "Object { value: 1, done: false }"
+> g.next();      // "Object { value: 2, done: false }"
+> g.next();      // "Object { value: 3, done: false }"
+> g.next();      // "Object { value: undefined, done: true }"
+> ```
+>
+> ###### 向生成器传值
+>
+> 在此示例中，使用值调用 `next` 。 <font color=FF0000>请注意，第一次调用没有记录任何内容，因为生成器最初没有产生任何结果</font>。
+>
+> ```js
+> function* gen() {
+>   while(true) {
+>     var value = yield null;
+>     console.log(value);
+>   }
+> }
+> 
+> var g = gen();
+> g.next(1); // "{ value: null, done: false }"
+> g.next(2); // 2
+> // "{ value: null, done: false }"
+> ```
+>
+> 摘自：[MDN - Generator.prototype.next()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator/next)
 
-  > **语法：**
-  >
-  > ```js
-  > gen.return(value) // 注意，不是在 generator 函数中调用 return
-  > ```
-  >
-  > - **参数**
-  >   **value：**需要返回的值
-  > - **返回值：**返回该函数参数中给定的值
-  >
-  > **示例：**
-  >
-  > ```js
-  > function* gen() { yield 1; yield 2; yield 3; }
-  > var g = gen();
-  > 
-  > g.next();        // { value: 1, done: false }
-  > g.return("foo"); // { value: "foo", done: true } 注：这里 done 变成了 true。另外，如果return中没有带参数，则 value 为 undefined；如果带了参数，则 value 为参数的值
-  > g.next();        // { value: undefined, done: true } 这里再调用 next()，done 始终都是 true。
-  > ```
-  >
-  > 如果对已经处于 “完成” 状态 的生成器调用 return(value)，则生成器将保持在“完成”状态。<mark>如果没有提供参数，则返回对象的 value 属性与示例最后的 .next() 方法相同</mark>。如果提供了参数，则参数将被设置为返回对象的 value 属性的值。
-  >
-  > 摘自：[MDN - Generator.prototype.return()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator/return)
+###### Generator.prototype.return()
 
-- **Generator.prototype.throw()：**向生成器抛出一个错误。
+返回给定的值并结束生成器。
 
-  > throw() 方法<font color=FF0000>用来向生成器抛出异常</font>，并恢复生成器的执行，返回带有 done 及 value 两个属性的对象。
-  >
-  > **语法：**
-  >
-  > ```js
-  > gen.throw(exception)
-  > ```
-  >
-  > - **参数：** exception：用于抛出的异常。 使用 Error 的实例对调试非常有帮助。**注：**如下示例，exception 是 Error 对象
-  > - **返回值：**带有两个属性的对象：
-  >   - **done (boolean)：**如果迭代器已经返回了迭代序列的末尾，则值为 true。在这种情况下，可以指定迭代器 value 的返回值。 如果迭代能够继续生产在序列中的下一个值，则值为 false。 这相当与不指定 done 属性的值。
-  >   - **value：**迭代器返回的任何 JavaScript 值。当 done 是 true 的时候可以省略。
-  >
-  > **示例：**
-  >
-  > 下面的例子展示了一个简单的生成器并使用 throw方法向该生成器抛出一个异常，该异常通常可以通过 try...catch 块进行捕获
-  >
-  > ```js
-  > function* gen() {
-  >   while(true) {
-  >     try { yield 42; } 
-  >     catch(e) { console.log("Error caught!"); }
-  >   }
-  > }
-  > 
-  > var g = gen();
-  > g.next(); // { value: 42, done: false }
-  > g.throw(new Error("Something went wrong")); // "Error caught!"
-  > // g.next() { value: undefined, done: true} 这行代码是我自己添加测试的，发现 throw调用后，done 就直接变成 true 了
-  > ```
-  >
-  > 摘自：[MDN - Generator.prototype.throw()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator/throw)
+> ##### 语法
+>
+> ```js
+> gen.return(value) // ⚠️ 不是在 generator 函数中调用 return
+> ```
+>
+> ###### 参数
+>
+> - **`value`** ：需要返回的值
+>
+> ###### 返回值
+>
+> 返回该函数参数中给定的值
+>
+> ##### 示例
+>
+> ```js
+> function* gen() { yield 1; yield 2; yield 3; }
+> var g = gen();
+> 
+> g.next();        // { value: 1, done: false }
+> g.return("foo"); // { value: "foo", done: true } 注：这里 done 变成了 true。另外，如果return中没有带参数，则 value 为 undefined；如果带了参数，则 value 为参数的值
+> g.next();        // { value: undefined, done: true } 这里再调用 next()，done 始终都是 true。
+> ```
+>
+> 如果对已经处于 “完成” 状态 的生成器调用 return(value)，则生成器将保持在“完成”状态。<font color=LightSeaGreen>如果没有提供参数，则返回对象的 value 属性与示例最后的 `.next()` 方法相同</font>。如果提供了参数，则参数将被设置为返回对象的 value 属性的值。
+>
+> 摘自：[MDN - Generator.prototype.return()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator/return)
+
+###### Generator.prototype.throw()
+
+向生成器抛出一个错误。
+
+> `throw()` 方法<font color=FF0000>用来向生成器抛出异常</font>，并恢复生成器的执行，返回带有 done 及 value 两个属性的对象。
+>
+> ##### 语法
+>
+> ```js
+> gen.throw(exception)
+> ```
+>
+> ###### 参数
+>
+> - `exception` ：用于抛出的异常。 使用 `Error` 的实例对调试非常有帮助。👀 如下示例，`exception` 是 `Error` 对象
+>
+> ###### 返回值
+>
+> 带有两个属性的对象：
+>
+> - **`done`** ： ( boolean )：如果迭代器已经返回了迭代序列的末尾，则值为 `true` 。在这种情况下，可以指定迭代器 value 的返回值。 如果迭代能够继续生产在序列中的下一个值，则值为 `false`。 这相当与不指定 done 属性的值。
+> - **`value`** ：迭代器返回的任何 JavaScript 值。当 `done` 是 `true` 的时候可以省略。
+>
+> ###### 示例
+>
+> 下面的例子展示了一个简单的生成器并使用 `throw` 方法向该生成器抛出一个异常，该异常通常可以通过 `try...catch` 块进行捕获
+>
+> ```js
+> function* gen() {
+>   while(true) {
+>     try { yield 42; } 
+>     catch(e) { console.log("Error caught!"); }
+>   }
+> }
+> 
+> var g = gen();
+> g.next(); // { value: 42, done: false }
+> g.throw(new Error("Something went wrong")); // "Error caught!"
+> // g.next() { value: undefined, done: true} 这行代码是我自己添加测试的，发现 throw调用后，done 就直接变成 true 了
+> ```
+>
+> 摘自：[MDN - Generator.prototype.throw()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator/throw)
 
 摘自：[MDN - Generator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator)
 
@@ -4154,28 +4175,28 @@ async function* asyncGenerator() {
 
 GeneratorFunction构造器<font color=FF0000>生成新的生成器函数对象</font>。在JavaScript中，<font color=FF0000>生成器函数实际上都是GeneratorFunction的实例对象</font>。
 
-注意，GeneratorFunction并不是一个全局对象。它可以通过下面的代码获取。
+> ⚠️ GeneratorFunction并不是一个全局对象。它可以通过下面的代码获取。
+>
+> ```js
+> Object.getPrototypeOf(function*(){}).constructor
+> ```
+
+##### 语法
 
 ```js
-Object.getPrototypeOf(function*(){}).constructor
+new GeneratorFunction ([arg1[, arg2[, ...argN]],] functionBody)
 ```
 
-- **语法**
+###### 参数
 
-  ```js
-  new GeneratorFunction ([arg1[, arg2[, ...argN]],] functionBody)
-  ```
-
-- **参数**
-
-  - **arg1, arg2, ... argN：**函数使用的名称作为形式参数名称。每个必须是一个字符串，对应于一个有效的JavaScript标识符或这样的字符串的列表，用逗号分隔；如“x”，“theValue”或“a,b”。
-  - **functionBody：**一个包含多条表示JavaScript函数体语句的字符串。
+- **`arg1, arg2, ... argN`** ：函数使用的名称作为形式参数名称。每个必须是一个字符串，对应于一个有效的JavaScript 标识符或这样的字符串的列表，用逗号分隔；如“x”，“theValue”或“a,b”。
+- **`functionBody`** ：一个包含多条表示 JavaScript 函数体语句的字符串。
 
 摘自：[MDN - GeneratorFunction](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction)
 
 #### yield
 
-yield 关键字用来<font color=FF0000>暂停和恢复一个生成器函数（ function* 或遗留的生成器函数 ）</font>。
+yield 关键字用来<font color=FF0000>暂停和恢复一个生成器函数（ `function*` 或遗留的生成器函数 ）</font>。
 
 **语法**
 
@@ -8054,39 +8075,60 @@ console.log("This is %cMy stylish message", "color: yellow; font-style: italic; 
 
 #### StorageEvent
 
-当前页面使用的 storage 被其他页面修改时会触发 StorageEvent 事件。
-
-> 译者：事件在同一个域下的不同页面之间触发，即在 A 页面注册了 storge 的监听处理，只有在跟 A 同域名下的 B 页面操作 storage 对象，A 页面才会被触发 storage 事件
+The <font color=lightSeaGreen>**`StorageEvent`** interface</font> is <font color=red>implemented by the `storage` event</font>, which is sent to a window when a storage area the window has access to is <font color=red>changed within the context of another document</font>.
 
 ```mermaid
 classDiagram
 Event <|-- StorageEvent
 ```
 
-##### 方法描述
+###### Constructor
 
-```js
-void initStorageEvent(
-  in DOMString typeArg,
-  in boolean canBubbleArg,
-  in boolean cancelableArg,
-  in DOMString keyArg,
-  in DOMString oldValueArg,
-  in DOMString newValueArg,
-  in DOMString urlArg,
-  in nsIDOMStorage storageAreaArg
-);
-```
+###### `StorageEvent()`
 
+Returns a newly constructed `StorageEvent` object.
 
+##### Instance properties
+
+*In addition to the properties listed below, this interface inherits the properties of its parent interface, `Event`.*
+
+- `key` Read only
+
+  Returns a string that represents the key changed. The `key` attribute is `null` when the change is caused by the storage `clear()` method.
+
+- `newValue` Read only 
+
+  Returns a string with the new value of the `key`. This value is `null` when the change has been invoked by storage `clear()` method, or the `key` has been removed from the storage.
+
+- `oldValue` Read only 
+
+  Returns a string with the original value of the `key`. This value is `null` when the `key` has been newly added and therefore doesn't have any previous value.
+
+- `storageArea` Read only 
+
+  Returns a `Storage` object that represents the storage that was affected.
+
+- `url` Read only 
+
+  Returns string with the <font color=red>URL of the document whose `key` changed</font>.
+
+##### Instance methods
+
+*In addition to the methods listed below, this interface inherits the methods of its parent interface, `Event`.*
+
+- `initStorageEvent()` 🗑️
+
+  Initializes the event in a manner analogous to the similarly-named `initEvent()` method in the DOM Events interfaces. Use the constructor instead.
+
+摘自：[MDN US - StorageEvent](https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent)
 
 
 
 #### DOMString
 
-DOMString 是一个UTF-16字符串。由于JavaScript已经使用了这样的字符串（即：已经使用了String），所以DOMString 直接映射到 一个String。
+DOMString 是一个 UTF-16 字符串。由于 JavaScript 已经使用了这样的字符串（即：已经使用了 String ），所以DOMString 直接映射到一个 String。
 
-将 null传递给接受DOMString的方法或参数时通常会把其字符串化为“null”。
+将 null 传递给接受 DOMString 的方法或参数时通常会把其字符串化为 “null”。
 
 摘自：[MDN - DOMString](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMString)
 
@@ -8094,7 +8136,7 @@ DOMString 是一个UTF-16字符串。由于JavaScript已经使用了这样的字
 
 #### Document.createElement()
 
-在 HTML 文档中，Document.createElement() 方法用于<font color=FF0000>创建一个由标签名称 tagName 指定的 HTML 元素</font>。<mark>如果用户代理无法识别 tagName，则会生成一个未知 HTML 元素 HTMLUnknownElement</mark>。
+在 HTML 文档中，`Document.createElement()` 方法用于<font color=FF0000>创建一个由标签名称 tagName 指定的 HTML 元素</font>。<font color=LightSeaGreen>如果用户代理无法识别 tagName，则会生成一个未知 HTML 元素 HTMLUnknownElement</font>。
 
 ##### 语法
 
@@ -8104,8 +8146,13 @@ var element = document.createElement(tagName[, options]);
 
 ##### 参数
 
-- **tagName**：指定要创建元素类型的字符串，创建元素时的 nodeName 使用 tagName 的值为初始化，该方法不允许使用限定名称(如:"html:a")，<font color=FF0000>在 HTML 文档上调用 createElement() 方法创建元素之前会将 tagName 转化成小写</font>，在 Firefox、Opera 和 Chrome 内核中，createElement(null) 等同于 createElement("null")
-- **options**：**可选**，一个可选的参数 ElementCreationOptions 是包含一个属性名为 is 的对象，该对象的值是用 customElements.define() 方法定义过的一个自定义元素的标签名。为了向前兼容较老版本的 Custom Elements specification，有一些浏览器会允许你传一个值为自定义元素的标签名的字符串作为该参数的值。可以参考本页下方的 Web component example Google 的 Extending native HTML elements 文档仔细了解如何使用该参数。
+###### tagName
+
+指定要创建元素类型的字符串，创建元素时的 nodeName 使用 tagName 的值为初始化，该方法不允许使用限定名称(如:"html:a")，<font color=FF0000>在 HTML 文档上调用 `createElement()` 方法创建元素之前会将 tagName 转化成小写</font>，在 Firefox、Opera 和 Chrome 内核中，`createElement(null)` 等同于 `createElement("null")`
+
+###### options
+
+**可选**，一个可选的参数 `ElementCreationOptions` 是包含一个属性名为 `is` 的对象，该对象的值是用 `customElements.define()` 方法定义过的一个自定义元素的标签名。为了向前兼容较老版本的 Custom Elements specification，有一些浏览器会允许你传一个值为自定义元素的标签名的字符串作为该参数的值。可以参考本页下方的 Web component example Google 的 Extending native HTML elements 文档仔细了解如何使用该参数。
 
 ##### Web component 示例
 
@@ -8132,7 +8179,7 @@ customElements.define('expanding-list', ExpandingList, { extends: "ul" });
 let expandingList = document.createElement('ul', { is : 'expanding-list' })
 ```
 
-<font color=FF0000>新元素将被赋予 is 属性，其值为自定义元素的标签名称</font>。
+<font color=FF0000>新元素将被赋予 `is` 属性，其值为自定义元素的标签名称</font>。
 
 ##### 一点自我补充
 

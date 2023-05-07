@@ -3966,29 +3966,29 @@ CSS计数器对创建有序列表特别有用，因为在子元素中会自动�
 
 ##### 取值
 
-- **inset**
-  
-  <font color=FF0000>如果没有指定inset，默认阴影在边框外，即阴影向外扩散</font>。 <font color=FF0000>使用 inset 关键字会使得阴影落在盒子内部，这样看起来就像是内容被压低了</font>。 此时阴影会在边框之内 (即使是透明边框）、背景之上、内容之下。
+###### inset
 
-- **\<offset-x>** **\<offset-y>**
-  
-  这是头两个 \<length> 值，用来设置阴影偏移量。x, y 是按照数学二维坐标系来计算的，只不过y垂直方向向下。 \<offset-x> 设置水平偏移量，<mark>正值阴影则位于元素右边，负值阴影则位于元素左边</mark>。 \<offset-y> 设置垂直偏移量，<mark>正值阴影则位于元素下方，负值阴影则位于元素上方</mark>。可用单位请查看 \<length> 。
-  
-  如果两者都是0，那么阴影位于元素后面。这时如果设置了\<blur-radius> 或\<spread-radius> 则有模糊效果。需要考虑 inset 
+<font color=FF0000>如果没有指定inset，默认阴影在边框外，即阴影向外扩散</font>。 <font color=FF0000>使用 inset 关键字会使得阴影落在盒子内部，这样看起来就像是内容被压低了</font>。 此时阴影会在边框之内 (即使是透明边框）、背景之上、内容之下。
 
-- **\<blur-radius> ** **阴影模糊半径** 
-  
-  这是第三个 \<length> 值。值越大，模糊面积越大，阴影就越大越淡。 不能为负值。默认为0，此时阴影边缘锐利。本规范不包括如何计算模糊半径的精确算法，但是，它详细说明如下：
-  
-  > 对于长而直的阴影边缘，它会创建一个过渡颜色用于模糊 以阴影边缘为中心、模糊半径为半径的局域，过渡颜色的范围在完整的阴影颜色到它最外面的终点的透明之间。 （译者注：对此有兴趣的可以了解下数字图像处理的模糊算法。）
+###### `<offset-x>` `<offset-y>`
 
-- **\<spread-radius>** **阴影扩散半径**
-  
-  这是第四个 \<length> 值。取正值时，阴影扩大；取负值时，阴影收缩。默认为0，此时阴影与元素同样大。需要考虑 inset 
+这是头两个 `<length>` 值，用来设置阴影偏移量。x , y 是按照数学二维坐标系来计算的，只不过 y 垂直方向向下。 `<offset-x>` 设置水平偏移量，<font color=LightSeaGreen>正值影则位于元素右边，负值阴影则位于元素左边</font>。 `<offset-y>` 设置垂直偏移量，<font color=LightSeaGreen>正值阴影则位于元素下方，负值阴影则位于元素上方</font>。可用单位请查看 `<length>` 。
 
-- **\<color>** **阴影颜色**
-  
-  相关事项查看 \<length> 。如果没有指定，则由浏览器决定——通常是color的值，不过目前 Safari 取透明。
+如果两者都是0，那么阴影位于元素后面。这时如果设置了\<blur-radius> 或\<spread-radius> 则有模糊效果。需要考虑 inset 
+
+###### `<blur-radius>`  阴影模糊半径 
+
+这是第三个 `<length>` 值。值越大，模糊面积越大，阴影就越大越淡。 不能为负值。默认为 0，此时阴影边缘锐利。本规范不包括如何计算模糊半径的精确算法，但是，它详细说明如下：
+
+> 对于长而直的阴影边缘，它会创建一个过渡颜色用于模糊 以阴影边缘为中心、模糊半径为半径的局域，过渡颜色的范围在完整的阴影颜色到它最外面的终点的透明之间。 （译者注：对此有兴趣的可以了解下数字图像处理的模糊算法。）
+
+###### `<spread-radius>` 阴影扩散半径
+
+这是第四个 `<length>` 值。取正值时，阴影扩大；取负值时，阴影收缩。默认为 0，此时阴影与元素同样大。需要考虑 inset 
+
+###### `<color>` 阴影颜色
+
+相关事项查看 `<length>` 。如果没有指定，则由浏览器决定——通常是color的值，不过目前 Safari 取透明。
 
 ##### box-shadow 工具
 
@@ -3996,7 +3996,7 @@ MDN 提供了一个在线工具： [Box-shadow generator](https://developer.mozi
 
 摘自：[MDN - box-shadow](https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-shadow)
 
-> 👀 **补充**：text-shadow 用法和 box-shadow 一样，是用来对于文字进行设置阴影
+> 💡 text-shadow 用法和 box-shadow 一样，是用来对于文字进行设置阴影
 
 #### border-image
 
@@ -4027,7 +4027,7 @@ border-collapse: unset;
 
 `border-collapse` 的属性值被定义为一个单独的关键词，可为下面两个值中的一个。
 
-##### 值
+###### 值
 
 - `collapse`：相邻的单元格共用同一条边框（采用 collapsed-border 表格渲染模型）。
 - `separate`：默认值。每个单元格拥有独立的边框（采用 separated-border 表格渲染模型）。
@@ -4069,11 +4069,11 @@ border-collapse: unset;
 
 #### background-clip
 
-> 👀 注：感觉 background-clip 属性有点类似于 box-sizing 的作用。不过，text 属性不一样，需要注意下，在某些场景下很有用。
+> 👀 感觉 background-clip 属性有点类似于 box-sizing 的作用。不过，text 属性不一样，需要注意下，在某些场景下很有用。
 
 `background-clip` 设置元素的背景（背景图片或颜色）是否延伸到边框、内边距盒子、内容盒子下面。
 
-> 👀 注：原文有各属性的效果展示，由于没法搬过来；详见 原文。
+> 👀 原文有各属性的效果展示，由于没法搬过来；详见 原文。
 
 如果没有设置背景图片( `background-image` ) 或背景颜色 ( `background-color` )，那么这个属性只有在边框 ( `border` ) 被设置为非固实 ( soild )、透明或半透明时才能看到视觉效果（与 `border-style` 或 `border-image` 有关），否则，本属性产生的样式变化会被边框覆盖。
 
@@ -4092,7 +4092,7 @@ background-clip: initial;
 background-clip: unset;
 ```
 
-##### 值
+###### 值
 
 - `border-box` ：背景延伸至边框外沿（但是在边框下层）。
 - `padding-box` ：背景延伸至内边距（`padding`）外沿。不会绘制到边框处。
@@ -4126,7 +4126,7 @@ background-clip: unset;
 
 摘自：[MDN - background-blend-mode](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-blend-mode)、 [RUNOOB - CSS background-blend-mode 属性](https://www.runoob.com/cssref/pr-background-blend-mode.html)
 
-> 👀 注：上面的属性值对应的效果，参见 [MDN - \<blend-mode>](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
+> 👀 上面的属性值对应的效果，参见 [MDN - \<blend-mode>](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
 
 
 
@@ -4304,7 +4304,7 @@ background-image: linear-gradient(angle, color-stop1, color-stop2);
 
 角度是指水平线和渐变线之间的角度，逆时针方向计算。换句话说，0deg 将创建一个从下到上的渐变，90deg 将创建一个从左到右的渐变。
 
-<img src="https://i.loli.net/2020/08/25/GB2mqyRKZiTP8zS.jpg" style="zoom:50%;" />
+<img src="https://s2.loli.net/2023/05/06/Cm8ynsJVozONS1G.jpg" alt="img" style="zoom:50%;" />
 
 ###### 使用多个颜色节点
 
@@ -4319,7 +4319,7 @@ background-image: linear-gradient(angle, color-stop1, color-stop2);
 
 ###### 使用透明度 ( transparent )
 
-rgba() 函数中的最后一个参数可以是从 0 到 1 的值，它定义了颜色的透明度：0 表示完全透明，1 表示完全不透明。
+`rgba()` 函数中的最后一个参数可以是从 0 到 1 的值，它定义了颜色的透明度：0 表示完全透明，1 表示完全不透明。
 
 ```css
 #grad {
@@ -4339,19 +4339,19 @@ rgba() 函数中的最后一个参数可以是从 0 到 1 的值，它定义了�
 
 #### CSS3 文本属性
 
-| 属性                                                                                    | 描述                                      | CSS |
-|:------------------------------------------------------------------------------------- |:--------------------------------------- |:---:|
-| [hanging-punctuation](https://www.runoob.com/cssref/css3-pr-hanging-punctuation.html) | 规定标点字符是否位于线框之外。                         | 3   |
-| [punctuation-trim](https://www.runoob.com/cssref/css3-pr-punctuation-trim.html)       | 规定是否对标点字符进行修剪。                          | 3   |
-| [text-align-last](https://www.runoob.com/cssref/css3-pr-text-align-last.html)         | 设置如何对齐最后一行或紧挨着强制换行符之前的行。                | 3   |
-| [text-emphasis](https://www.runoob.com/css3/css3-pr-text-emphasis.html)               | 向元素的文本应用重点标记以及重点标记的前景色。                 | 3   |
-| [text-justify](https://www.runoob.com/cssref/css3-pr-text-justify.html)               | 规定当 text-align 设置为 "justify" 时所使用的对齐方法。 | 3   |
-| [text-outline](https://www.runoob.com/cssref/css3-pr-text-outline.html)               | 规定文本的轮廓。                                | 3   |
-| [text-overflow](https://www.runoob.com/cssref/css3-pr-text-overflow.html)             | 规定当文本溢出包含元素时发生的事情。                      | 3   |
-| [text-shadow](https://www.runoob.com/cssref/css3-pr-text-shadow.html)                 | 向文本添加阴影。                                | 3   |
-| [text-wrap](https://www.runoob.com/cssref/css3-pr-text-wrap.html)                     | 规定文本的换行规则。                              | 3   |
-| [word-break](https://www.runoob.com/cssref/css3-pr-word-break.html)                   | 规定非中日韩文本的换行规则。                          | 3   |
-| [word-wrap](https://www.runoob.com/cssref/css3-pr-word-wrap.html)                     | 允许对长的不可分割的单词进行分割并换行到下一行。                | 3   |
+| 属性                | 描述                                                    | CSS  |
+| :------------------ | :------------------------------------------------------ | :--: |
+| hanging-punctuation | 规定标点字符是否位于线框之外。                          |  3   |
+| punctuation-trim    | 规定是否对标点字符进行修剪。                            |  3   |
+| text-align-last     | 设置如何对齐最后一行或紧挨着强制换行符之前的行。        |  3   |
+| text-emphasis       | 向元素的文本应用重点标记以及重点标记的前景色。          |  3   |
+| text-justify        | 规定当 text-align 设置为 "justify" 时所使用的对齐方法。 |  3   |
+| text-outline        | 规定文本的轮廓。                                        |  3   |
+| text-overflow       | 规定当文本溢出包含元素时发生的事情。                    |  3   |
+| text-shadow         | 向文本添加阴影。                                        |  3   |
+| text-wrap           | 规定文本的换行规则。                                    |  3   |
+| word-break          | 规定非中日韩文本的换行规则。                            |  3   |
+| word-wrap           | 允许对长的不可分割的单词进行分割并换行到下一行。        |  3   |
 
 #### word-break
 
@@ -4385,9 +4385,9 @@ CSS 属性 overflow-wrap 是用来说明当一个不能被分开的字符串太�
 
 #### CSS3 字体
 
-您所选择的字体在新的 **CSS3** 版本有关于 **@font-face** 规则描述。您"自己的"的字体是在 **CSS3 @font-face** 规则中定义的。
+您所选择的字体在新的 **CSS3** 版本有关于 **`@font-face`** 规则描述。您"自己的"的字体是在 **CSS3 `@font-face`** 规则中定义的。
 
-**示例：**
+##### 示例
 
 ```css
 @font-face
@@ -4397,7 +4397,7 @@ CSS 属性 overflow-wrap 是用来说明当一个不能被分开的字符串太�
 }
 ```
 
-所有的字体描述和里面的@font-face规则定义：
+所有的字体描述和里面的 `@font-face` 规则定义：
 
 | 描述符           | 值                                                                                                                                                    | 描述                                        |
 |:-------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------- |:-----------------------------------------:|
@@ -4416,11 +4416,11 @@ text-orientation CSS 属性<font color=FF0000>设定行中字符的方向</font>
 
 ##### 关键值
 
-- **mixed：**<font color=FF0000>默认值</font>。<font color=FF0000>顺时针旋转水平书写的字符90°</font>，将垂直书写的文字自然布局。
-- **upright：**<font color=FF0000>将水平书写的字符自然布局（直排）</font>，包括垂直书写的文字（as well as the glyphs for vertical scripts）。注意这个关键字会导致所有字符被视为从左到右，也就是 direction 被强制设为 ltr。
-- **sideways：**<font color=FF0000>所有字符被布局为与水平方式一样，但是整行文本被顺时针旋转90°</font>。
-- **sideways-right：**处于兼容目的，sideways 的别名。
-- **use-glyph-orientation：**对于SVG元素，这个关键字导致使用已弃用的SVG属性glyph-orientation-vertical 和 glyph-orientation-horizontal。
+- **mixed** ：<font color=FF0000>默认值</font>。<font color=FF0000>顺时针旋转水平书写的字符90°</font>，将垂直书写的文字自然布局。
+- **upright** ：<font color=FF0000>将水平书写的字符自然布局（直排）</font>，包括垂直书写的文字（as well as the glyphs for vertical scripts）。注意这个关键字会导致所有字符被视为从左到右，也就是 direction 被强制设为 ltr。
+- **sideways** ：<font color=FF0000>所有字符被布局为与水平方式一样，但是整行文本被顺时针旋转90°</font>。
+- **sideways-right** ：处于兼容目的，sideways 的别名。
+- **use-glyph-orientation** ：对于 SVG 元素，这个关键字导致使用已弃用的 SVG 属性 glyph-orientation-vertical 和 glyph-orientation-horizontal。
 
 ##### 全局值
 
@@ -4437,11 +4437,11 @@ text-orientation CSS 属性<font color=FF0000>设定行中字符的方向</font>
 
 ##### 关键值
 
-- **horizontal-tb：**  对于左对齐(ltr)脚本，内容从左到右水平流动。对于右对齐(rtr)脚本，内容从右到左水平流动。下一水平行位于上一行下方。
-- **vertical-rl：** 对于左对齐(ltr)脚本，内容从上到下垂直流动，下一垂直行位于上一行左侧。对于右对齐(rtr)脚本，内容从下到上垂直流动，下一垂直行位于上一行右侧。
-- **vertical-lr：** 对于左对齐(ltr)脚本，内容从上到下垂直流动，下一垂直行位于上一行右侧。对于右对齐(rtr)脚本，内容从下到上垂直流动，下一垂直行位于上一行左侧。
-- **sideways-rl：**（实验属性）对于左对齐(ltr)脚本，内容从下到上垂直流动。对于右对齐(rtr)脚本，内容从上到下垂直流动。所有字形（即使是垂直脚本中的字形）都朝向右侧。
-- **sideways-lr：**（实验属性）对于左对齐(ltr)脚本，内容从上到下垂直流动。对于右对齐(rtr)脚本，内容从下到上垂直流动。所有字形（即使是垂直脚本中的字形）都朝向左侧。
+- **horizontal-tb** ：对于左对齐 ( ltr ) 脚本，内容从左到右水平流动。对于右对齐 ( rtr ) 脚本，内容从右到左水平流动。下一水平行位于上一行下方。
+- **vertical-rl** ：对于左对齐 ( ltr ) 脚本，内容从上到下垂直流动，下一垂直行位于上一行左侧。对于右对齐 ( rtr ) 脚本，内容从下到上垂直流动，下一垂直行位于上一行右侧。
+- **vertical-lr：** 对于左对齐 ( ltr ) 脚本，内容从上到下垂直流动，下一垂直行位于上一行右侧。对于右对齐 ( rtr ) 脚本，内容从下到上垂直流动，下一垂直行位于上一行左侧。
+- **sideways-rl** ：🧪 对于左对齐 ( ltr ) 脚本，内容从下到上垂直流动。对于右对齐 ( rtr ) 脚本，内容从上到下垂直流动。所有字形（即使是垂直脚本中的字形）都朝向右侧。
+- **sideways-lr** ：🧪 对于左对齐 ( ltr ) 脚本，内容从上到下垂直流动。对于右对齐 ( rtr ) 脚本，内容从下到上垂直流动。所有字形（即使是垂直脚本中的字形）都朝向左侧。
 
 ##### 全局值
 
@@ -4451,7 +4451,7 @@ text-orientation CSS 属性<font color=FF0000>设定行中字符的方向</font>
 
 摘自：[MDN - writing-mode](https://developer.mozilla.org/zh-CN/docs/Web/CSS/writing-mode)
 
-👀 注：text-orientation 一般与 writing-mode 配合使用，同时一般使用 writing-mode 大概率要使用 text-orientation。如下示例：
+> 👀 `text-orientation` 一般与 `writing-mode` 配合使用，同时一般使用 `writing-mode` 大概率要使用 `text-orientation`。如下示例：
 
 ```html
 <p class="text">foo 123 你好</p>
@@ -4466,7 +4466,7 @@ text-orientation CSS 属性<font color=FF0000>设定行中字符的方向</font>
 
 <img src="https://s2.loli.net/2022/02/08/fgdnSolbc5GTC9E.png" alt="image-20220208144748538" style="zoom:50%;" />
 
-如果加上 text-orientation 即：
+如果加上 `text-orientation` 即：
 
 ```css
 .text {
@@ -4519,7 +4519,7 @@ CSS `unicode-bidi` 属性，<font color=fuchsia>和 `direction` 属性，决定�
 
 `unicode-bidi` 与 `direction` 是仅有的两个不受 `all` 简写影响的属性。
 
-> **注意：**此属性是文档类型定义 ( Document Type Definition , DTD ) 的设计者专用的。Web 设计者与其他类似的人员不应覆盖此属性
+> ⚠️ 此属性是文档类型定义 ( Document Type Definition , DTD ) 的设计者专用的。Web 设计者与其他类似的人员不应覆盖此属性
 
 ```css
 /* 关键字值 */
