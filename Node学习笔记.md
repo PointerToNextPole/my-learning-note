@@ -8,7 +8,7 @@
 
 ##### nvm 使用命令
 
-- **`nvm list`** ：查看当前所有的node版本
+- **`nvm list`** ：查看当前所有的 Node 版本
 - **`nvm install v10.13.0`** ：安装指定的版本
 - **`nvm use-delete-prefix 10.13.0`** ：切换到指定的版本
 
@@ -39,7 +39,7 @@ const {foo, bar} = require('foo.js')
 
 ##### Node 代码的调试
 
-在 package.json 中，默认（使用 `npm init -y ` ）main属性对应的值为 "index.js"，表示：主文件是 "index.js"。如果要在 VSCode 中调试 ( debug ) 项目时，必须要有 "index.js" 这个文件（当然，这个名字可以自定义，当然实际文件名也要跟着变化）
+在 `package.json` 中，默认（使用 `npm init -y ` ）`main` 属性对应的值为 `index.js`，表示：主文件是 `index.js` 。如果要在 VSCode 中调试 ( debug ) 项目时，必须要有 `index.js` 这个文件（当然，这个名字可以自定义，当然实际文件名也要跟着变化）
 
 ###### 补充
 

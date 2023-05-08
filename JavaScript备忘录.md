@@ -4207,7 +4207,8 @@ yield 关键字用来<font color=FF0000>暂停和恢复一个生成器函数（ 
 - **expression：**定义通过迭代器协议从生成器函数返回的值。如果省略，则返回undefined。
 - **rv：**返回传递给生成器的next()方法的可选值，以恢复其执行。
 
-**描述**
+##### 描述
+
 <font color=FF0000>yield 关键字使生成器函数执行暂停</font>，yield 关键字 <font color=FF0000>**后面的表达式的值返回给生成器的调用者**</font>。<font color=FF0000>**它可以被认为是一个基于生成器的版本的return 关键字**</font>。
 
 <font color=FF0000>yield关键字实际返回一个 **IteratorResult** 对象</font>，它有两个属性，value 和 done。value 属性是对 yield 表达式求值的结果，而 done 是 false，表示生成器函数尚未完全完成。
@@ -4225,27 +4226,29 @@ yield 关键字用来<font color=FF0000>暂停和恢复一个生成器函数（ 
 
 摘自：[MDN - yield](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/yield)
 
-**补充：**yield 和迭代器 iterator 很类似，不过 yield 是构造一个 generator，每有一个 yield 停下来，等待再次调用，从停下来的地方继续执行。而 iterator是通过 next() 继续执行。另外，因为 generator 内部自己实现了 next() 方法，所以，可以用 generator 来实现 iterator
+> 💡 补充：yield 和迭代器 iterator 很类似，不过 `yield` 是构造一个 `generator` ，每有一个 `yield` 停下来，等待再次调用，从停下来的地方继续执行。而 `iterator` 是通过 `next()` 继续执行。另外，因为 `generator` 内部自己实现了 `next()` 方法，所以，可以用 `generator` 来实现 `iterator`
 
 #### yield*
 
- yield* 表达式<font color=FF0000>用于委托给另一个generator 或可迭代对象</font>。
+`yield*` 表达式<font color=FF0000>用于委托给另一个 `generator` 或可迭代对象</font>。
 
 ##### 语法
 
 ```js
- yield* [[expression]];
+yield* [[expression]];
 ```
 
-expression：<font color=red>返回一个**可迭代对象**的表达式</font>。
+- **`expression`** ：<font color=red>返回一个**可迭代对象**的表达式</font>。
 
-**描述：**yield* 表达式迭代操作数，并产生它返回的每个值。yield* 表达式本身的值是当迭代器关闭时返回的值（即done 为 true 时）。
+##### 描述
+
+`yield*` 表达式迭代操作数，并产生它返回的每个值。`yield*` 表达式本身的值是当迭代器关闭时返回的值（即`done` 为 true 时）。
 
 ##### 示例
 
 ###### 委托给其他生成器
 
-以下代码中，<font color=FF0000>g1() yield 出去的每个值都会在 g2() 的 next() 方法中返回</font>，就像那些 yield 语句是写在 g2() 里一样
+以下代码中，<font color=FF0000>`g1()` yield 出去的每个值都会在 `g2()` 的 `next()` 方法中返回</font>，就像那些 `yield` 语句是写在 `g2()` 里一样
 
 ```js
 function* g1() { yield 2; yield 3; yield 4; }
@@ -4262,7 +4265,7 @@ console.log(iterator.next()); // { value: undefined, done: true }
 
 ##### 委托给其他可迭代对象
 
-除了生成器对象这一种可迭代对象，<font color=FF0000 size=4>yield* 还可以 yield 其它任意的**可迭代对象**</font>，比如说 <font color=FF0000 size=4>**数组、字符串、arguments 对象**等等</font>。
+除了生成器对象这一种可迭代对象，<font color=fuchsia>`yield*` 还可以 `yield` 其它任意的**可迭代对象**</font>，比如说 <font color=fuchsia>**数组、字符串、arguments 对象 **等等</font>。
 
 ```js
 function* g3() { yield* [1, 2]; yield* "34"; yield* arguments; } 
@@ -4277,9 +4280,9 @@ console.log(iterator.next()); // { value: 6, done: false }
 console.log(iterator.next()); // { value: undefined, done: true }
 ```
 
-##### yield* 表达式的值
+##### `yield*` 表达式的值
 
-<font color=FF0000>**yield* 是一个表达式，不是语句，所以它会有自己的值**</font>。
+<font color=FF0000>**`yield*` 是一个表达式，不是语句，所以它会有自己的值**</font>。
 
 ```js
 function* g4() { yield* [1, 2, 3]; return "foo"; }
@@ -4294,7 +4297,7 @@ console.log(iterator.next()); // { value: undefined, done: true } 此时 g4()返
 console.log(result);          // "foo"
 ```
 
-摘自：[MDN - yield*](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/yield*)
+摘自：[MDN - `yield*`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/yield*)
 
 
 
@@ -4307,10 +4310,10 @@ console.log(result);          // "foo"
 - Set
 - String
 - TypedArray
-- 函数的arguments对象
-- Nodelist对象
+- 函数的 arguments 对象
+- Nodelist 对象
 
-**对于自定义的结构，需要满足迭代协议（两个）：**
+##### 对于自定义的结构，需要满足迭代协议（两个）
 
 - **可迭代协议：**<font color=FF0000>**当前类对戏中包含 Symbol.iterator**</font>
 
@@ -4320,7 +4323,7 @@ console.log(result);          // "foo"
   return { next() { return {value, done} } }
   ```
 
-  即：返回一个对象，对象中包含 next() 函数，对象中必须有函数的值（value）和done的值
+  即：返回一个对象，对象中包含 `next()` 函数，对象中必须有函数的值 `value` 和 `done` 的值
 
 ##### 迭代协议
 
@@ -4328,13 +4331,13 @@ console.log(result);          // "foo"
 
 ###### 可迭代协议
 
-<font color=FF0000>可迭代协议允许 JavaScript 对象定义或定制它们的迭代行为，例如，在一个 for..of 结构中，哪些值可以被遍历到</font>。一些内置类型同时是内置可迭代对象，并且有默认的迭代行为，比如 Array 或者 Map，而其他内置类型则不是（比如 Object)。
+<font color=FF0000>可迭代协议允许 JavaScript 对象定义或定制它们的迭代行为，例如，在一个 `for..of` 结构中，哪些值可以被遍历到</font>。一些内置类型同时是内置可迭代对象，并且有默认的迭代行为，比如 Array 或者 Map，而其他内置类型则不是（比如 Object)。
 
-<font color=FF0000>要成为可迭代对象， 一个对象必须实现 @@iterator 方法。这意味着对象（或者它原型链上的某个对象）必须有一个键为 @@iterator 的属性</font>，可通过常量 Symbol.iterator 访问该属性：
+<font color=FF0000>要成为可迭代对象， 一个对象必须实现 `@@iterator` 方法。这意味着对象（或者它原型链上的某个对象）必须有一个键为 `@@iterator` 的属性</font>，可通过常量 Symbol.iterator 访问该属性：
 
-| 属性              | 值                                                     |
-| :---------------- | :----------------------------------------------------- |
-| [Symbol.iterator] | 一个无参数的函数，其返回值为一个符合迭代器协议的对象。 |
+| 属性                | 值                                                     |
+| :------------------ | :----------------------------------------------------- |
+| `[Symbol.iterator]` | 一个无参数的函数，其返回值为一个符合迭代器协议的对象。 |
 
 <font color=FF0000>当一个对象需要被迭代的时候（比如被置入一个 for...of 循环时），首先，会不带参数调用它的 @@iterator 方法，然后使用此方法返回的迭代器获得要迭代的值</font>。
 值得注意的是调用此零个参数函数时，它将作为对可迭代对象的方法进行调用。 因此，在函数内部，this关键字可用于访问可迭代对象的属性，以决定在迭代过程中提供什么。

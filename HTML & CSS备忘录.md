@@ -10,7 +10,7 @@
 
 Lorem ipsum，简称为 Lipsum，是指一篇常用于排版设计领域的拉丁文文章，主要的目的为测试文章或文字在不同字型、版型下看起来的效果。中文的类似用法则称为乱数假文、随机假文。
 
-摘自：[wiki -  Lorem Ipsum](https://zh.wikipedia.org/wiki/Lorem_ipsum)
+摘自：[wiki - Lorem Ipsum](https://zh.wikipedia.org/wiki/Lorem_ipsum)
 
 另外，在 html 页面中同样可以作为测试字使用。
 
