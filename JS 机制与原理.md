@@ -6134,7 +6134,7 @@ addOne(2)
 
 所以我们根据 exports 和 module 是否存在来选择不同的导出方式，那为什么在新版本中，我们还要使用 `exports = module.exports = _` 呢？
 
-这是因为<font color=FF0000>在 nodejs 中，exports 是 module.exports 的一个引用</font>，当你使用了 module.exports = function(){}，实际上覆盖了 module.exports，但是 exports 并未发生改变，为了避免后面再修改 exports 而导致不能正确输出，就写成这样，将两者保持统一。
+这是因为<font color=FF0000>在 nodejs 中，`exports` 是 `module.exports` 的一个引用</font>，当你使用了 `module.exports = function(){}` ，实际上覆盖了 `module.exports` ，但是 exports 并未发生改变，为了避免后面再修改 exports 而导致不能正确输出，就写成这样，将两者保持统一。
 
 写个 demo 吧：
 
@@ -6173,13 +6173,13 @@ console.log(addOne(1)) // 2
 console.log(addOne.num) // 3
 ```
 
-最后<font color=FF0000>为什么要进行一个 exports.nodeType 判断</font>呢？这是因为<font color=FF0000>如果你在 HTML 页面中加入一个 id 为 exports 的元素</font>，比如
+最后<font color=FF0000>为什么要进行一个 `exports.nodeType` 判断</font>呢？这是因为<font color=FF0000>如果你在 HTML 页面中加入一个 `id` 为 `exports` 的元素</font>，比如
 
 ```html
 <div id="exports"></div>
 ```
 
-就<font color=FF0000>**会生成一个 window.exports 全局变量**</font>，你可以直接在浏览器命令行中打印该变量。
+就<font color=FF0000>**会生成一个 `window.exports` 全局变量**</font>，你可以直接在浏览器命令行中打印该变量。
 
 #### 源码
 

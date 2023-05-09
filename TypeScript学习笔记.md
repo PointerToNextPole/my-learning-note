@@ -2923,7 +2923,7 @@ type Zip<One extends unknown[], Other extends unknown[]> =
              : []
 ```
 
- **注：**自己尝试实现时，`...zip` 没写出，写的是 `Zip<oneRest, OtherRest>` ，显然是错的
+> 👀 自己尝试实现时，`...zip` 没写出，写的是 `Zip<oneRest, OtherRest>` ，显然是错的
 
 类型参数 One、Other 声明为 unknown[]，也就是元素个数任意，类型任意的数组。
 

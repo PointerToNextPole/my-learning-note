@@ -20,7 +20,7 @@
 
 - **addon**：插件。来自 “node-gyp is a cross-platform command-line tool written in Node.js for compiling native addon modules for Node.js”
 
-- **on the fly**：即时，在运行时（热更新）。
+- **on the fly**：即时，在运行时（热更新）
 
   > 💡 参考：[如何优雅的翻译 on the fly ？ - 知乎](https://www.zhihu.com/question/21136587)
 
@@ -198,6 +198,12 @@
 
 - **[prefix]-agnostic**：... 无关的。比如 framework-agnostic 译为 “框架无关的”。
 
+- **[prefix]-prone** ：有 ... 倾向的。
+
+  > Uno makes heavy use of regex for dynamic utilities, which feels error-<font color=LightSeaGreen>prone</font>. 
+  >
+  > 摘自：[TailwindCSS vs. UnoCSS](https://dev.to/mapleleaf/tailwindcss-vs-unocss-2a53)
+
 - **profile**：剖析 ( verb )。来自 “ It is especially useful in the case of early prototyping and **profiling**.  ”
 
 - **scaffold**：脚手架
@@ -272,7 +278,9 @@
 
 - **interpolate**：插话，**插值**。
 
-- **constraint**：约束，限制。常见的有 SQL 中的 `constraint` 关键字
+- **constraint**：n. 约束，限制。常见的有 SQL 中的 `constraint` 关键字
+
+  **constrain** ：vt. 强迫，限制
 
 - **revive**：使复苏，使重新使用
 
@@ -373,6 +381,10 @@
   **typographic** ：排版的
 
 - **eavesdrop** ：窃听。eaves 屋檐。eavesdropper 窃听者。
+
+  > 💡 在密码学领域，除了 Alice & Bob 这两个虚拟人物，还有 Eve，<font color=red>E</font>ve 就是 <font color=red>E</font>avesdropper
+  >
+  > 学习自：[为什么计算机科学如密码学喜欢用 Alice 和 Bob 举栗子？ - 刘巍然-学酥的回答 - 知乎](https://www.zhihu.com/question/63306763/answer/255496822) ，另外文章中还提及了人物 Mallory ，指代 Malicious Adversary “恶意攻击者”
 
 - **throughput** ：吞吐量
 
@@ -565,26 +577,30 @@
 - **eligible** ：有资格的
 
 - **ergonomic** ：（符合）人体工程学的
-> A more arcane, but very ***ergonomic*** way to set a compiler setting is via compiler flag which are comments starting with `// @`.
-> 摘自：[TS play handbook - Twoslash Annotations](https://www.typescriptlang.org/play?#handbook-14)
 
+  > A more arcane, but very ***ergonomic*** way to set a compiler setting is via compiler flag which are comments starting with `// @`.
+  > 摘自：[TS play handbook - Twoslash Annotations](https://www.typescriptlang.org/play?#handbook-14)
 - **clause** ：条款
 
 - **hypothesis** ：假设
 
-- **disclosure** ：n. 披露。disclose ：v. 披露，泄露
+- **disclosure** ：n. 披露
+
+  **disclose** ：v. 披露，泄露
 
 - **obsolete** ：淘汰的
 
-- **hop** ：跳。
-> They'll hop onto SquareSpace, find a template they like, and spend $20/month.
->
-> 摘自：[The End of Front-End Development](https://www.joshwcomeau.com/blog/the-end-of-frontend-development/)
->
-> 💡 关于 hop：
->
-> <img src="https://s2.loli.net/2023/04/03/FMxgbdEVJ3OuBNK.png" alt="image-20230403213515134" style="zoom:47%;" />
+- **hop** ：跳
 
+  > They'll hop onto SquareSpace, find a template they like, and spend $20/month.
+  >
+  > 摘自：[The End of Front-End Development](https://www.joshwcomeau.com/blog/the-end-of-frontend-development/)
+  >
+  > 💡 关于 hop：
+  >
+  > <img src="https://s2.loli.net/2023/04/03/FMxgbdEVJ3OuBNK.png" alt="image-20230403213515134" style="zoom:47%;" />
+
+  **leap** ：跳跃
 - **tweak** ：微调
 
 - **hallucination** ：幻觉
@@ -714,6 +730,30 @@
 - **replicate** ：复制
 
 - **flatter** ：奉承，使显得更漂亮（ 👀 感觉可以等价为 “优化” ？，如下标题 “ Flatter `deno.json` configuration “，显然翻译为 “优化” 更好些）
+
+- **designate** ：vt. <font color=red>**命名**</font>，指定、选定，**指派**，**委任**（某人任某职）；标明、标示、指明
+
+- **primes** ：质数，类似的也可以用 prime number
+
+- **unpack** ：打开...取出东西，（网络 / 音视频领域？）**解包**
+
+- **per se** ：本身
+
+- **methodology** ：方法论
+
+- **moot** ：无意义的，无关紧要的
+
+- **sentinel** ：守卫
+
+  > But the docs, plus the syntax required to use it, discourages them from being used. I like the clear, enforced <font color=LightSeaGreen>sentinel</font> of “this does not exist in the design system”.
+  >
+  > 摘自：[TailwindCSS vs. UnoCSS](https://dev.to/mapleleaf/tailwindcss-vs-unocss-2a53)
+
+  > 💡 另外的一点吹毛求疵
+  >
+  > <img src="https://s2.loli.net/2023/05/09/GEYMZO4SdNXqrHs.png" style="zoom:45%;" />
+  >
+  > <img src="https://s2.loli.net/2023/05/09/Lj9QxHhmwbyGeV2.png" style="zoom:45%;" />
 ***
 
 
@@ -866,6 +906,12 @@
 
 - **guesstimate** ：大概估计
 
-- 
+- **portrait** ：肖像
+
+- **frustrate** ：v. 阻挠、挫败、使沮丧
+
+- **friction** ：摩擦 👀 有点基础了
+
+- **tedious** ：单调乏味的
 
   
