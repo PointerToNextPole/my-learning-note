@@ -13044,11 +13044,11 @@ DOM window 对象通过 history 对象提供了对浏览器的会话历史的访
 HTML5引入了 <mark style="background: fuchsia">**history.pushState()** </mark>和<mark style="background: aqua"> **history.replaceState()**</mark> 方法，它们分别可以<mark style="background: fuchsia">**添加**</mark>和<mark style="background: aqua">修改</mark>历史记录条目。<mark>这些方法通常与window.onpopstate 配合使用</mark>。
 使用 history.pushState() 可以改变referrer，它在用户发送 XMLHttpRequest 请求时在HTTP头部使用，改变state后创建的 XMLHttpRequest 对象的referrer都会被改变。因为referrer是标识创建  XMLHttpRequest 对象时 this 所代表的window对象中document的URL。
 
-##### history.pushState()
+#### history.pushState()
 
 **用法：**history.pushState() 方法向当前浏览器会话的历史堆栈中添加一个状态（state）。
 
-###### 语法
+##### 语法
 
 ```js
 history.pushState(state, title[, url])
@@ -13056,13 +13056,17 @@ history.pushState(state, title[, url])
 
 ###### 参数
 
-- **state：**状态对象是一个JavaScript对象，它与pushState()创建的新历史记录条目相关联。 每当用户导航到新状态时，都会触发popstate 事件，并且该事件的状态属性包含历史记录条目的状态对象的副本。<mark>状态对象可以是任何可以序列化的对象</mark>。 
-- **title：**当前大多数浏览器都忽略此参数，尽管将来可能会使用它。 在此处传递空字符串应该可以防止将来对方法的更改。 或者，您可以为要移动的状态传递简短的标题。
-- **url：** <font color=FF0000>可选</font>，新历史记录条目的URL由此参数指定。 请注意，浏览器不会在调用pushState() 之后尝试加载此URL，但可能会稍后尝试加载URL，例如在用户重新启动浏览器之后。 <font color=FF0000>新的URL**不必是绝对的**。 如果是相对的，则相对于当前URL进行解析</font>。 新网址必须与当前网址相同 origin； 否则，pushState()将引发异常。 如果未指定此参数，则将其设置为文档的当前URL。
+- **`state`** ：状态对象是一个 JavaScript 对象，它与 `pushState()` 创建的新历史记录条目相关联。 每当用户导航到新状态时，都会触发 `popstate` 事件，并且该事件的状态属性包含历史记录条目的状态对象的副本。<font color=LightSeaGreen>状态对象可以是任何可以序列化的对象</font>。 
+- **`title`** ：当前大多数浏览器都忽略此参数，尽管将来可能会使用它。 在此处传递空字符串应该可以防止将来对方法的更改。 或者，您可以为要移动的状态传递简短的标题。
+- **`url` ** ：<font color=FF0000>可选</font>，新历史记录条目的URL由此参数指定。 请注意，浏览器不会在调用 `pushState()` 之后尝试加载此 `URL` ，但可能会稍后尝试加载 `URL` ，例如在用户重新启动浏览器之后。 <font color=FF0000>新的URL**不必是绝对的**。 如果是相对的，则相对于当前URL进行解析</font>。 <font color=fuchsia>新网址必须与当前网址同源 ( origin )； 否则，`pushState()` 将引发异常</font>。 如果未指定此参数，则将其设置为文档的当前URL。
 
 摘自：[MDN - History.pushState()](https://developer.mozilla.org/zh-CN/docs/Web/API/History/pushState)
 
-##### history.replaceState()
+> 💡 没搞懂 `state` 参数是干什么用的，问了下 ChatGPT，得到如下结果：
+>
+> <img src="https://s2.loli.net/2023/05/10/XBjsVfpCIzrHM4N.png" style="zoom:45%;" />
+
+#### history.replaceState()
 
 replaceState()方法使用状态对象（state objects）, title 和 URL 作为参数，<font color=FF0000> 修改当前历史记录实体</font>，如果你想更新当前的state对象或者当前历史实体的URL来响应用户的的动作的话这个方法将会非常有用。
 
@@ -13072,7 +13076,7 @@ replaceState()方法使用状态对象（state objects）, title 和 URL 作为�
 history.replaceState(stateObj, title[, url]);
 ```
 
-**参数**
+###### 参数
 
 - **stateObj：**状态对象是一个JavaScript对象，它与传递给 replaceState 方法的历史记录实体相关联.
 - **title：**<mark>大部分浏览器忽略这个参数</mark>, 将来可能有用. 在此处传递空字符串应该可以防止将来对方法的更改。或者，您可以为该状态传递简短标题

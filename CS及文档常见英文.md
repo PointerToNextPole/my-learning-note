@@ -73,9 +73,9 @@
 - **wildcard**：通配符
 
 - **spec**：规格，细则。abbr of specification
-
-- **specific** ：特性。👀 虽然但是，这个不应该遗忘
-
+  
+   **specific** ：特性。👀 虽然但是，这个不应该遗忘
+   
 - **tackle**：解决
 
 - **yield**：产出
@@ -108,7 +108,7 @@
 
 - **shorthand**：速记
 
-- **practice**：实践，比如 Best practice。感觉可以理解为“做法”，不过字典上没“做法”这种意思
+- **practice**：实践。比如 Best practice ，感觉可以理解为“做法”，不过字典上没“做法”这种意思
 
 - **unite**：使联合
 
@@ -220,13 +220,13 @@
 
 - **ultimate**：一般的含义是 “最终的，最后的”。不过这里要注意的是，还有 “基本的” 的意思。来自：“The `Compiler` is **ultimately** a function which performs bare minimum functionality to keep a lifecycle running.”
 
-- **kickstart**：启动
+- **kickstart** ：启动
 
-- **consumable**：易于使用的
+- **consumable** ：易于使用的
 
-- **dispose**：处置
+- **dispose **：处置
 
-- **reversible**：可逆转的。**irreversible**：不可逆转的
+- **reversible** ：可逆转的。**irreversible**：不可逆转的
 
 - **idle**：空闲的，闲置的
 
@@ -242,7 +242,7 @@
 
 - **resort**：求助
 
-- **process**：一般理解为“过程”( noun )，这里强调的是“**处理**“ ( verb ) 的意思
+- **process**：一般理解为 “过程” ( noun )，这里强调的是“**处理**“ ( verb ) 的意思
 
 - **proceed**：继续
 
@@ -394,7 +394,9 @@
 
 - **formula** ：公式
 
-- **from scratch** ：从头做起，从零开始。👀 其中，scratch 的意思是 “划痕”。
+- **from scratch** ：从头做起，从零开始。
+
+  **scratch** ：划痕
 
 - **territory** ：领域。
 
@@ -580,6 +582,7 @@
 
   > A more arcane, but very ***ergonomic*** way to set a compiler setting is via compiler flag which are comments starting with `// @`.
   > 摘自：[TS play handbook - Twoslash Annotations](https://www.typescriptlang.org/play?#handbook-14)
+  
 - **clause** ：条款
 
 - **hypothesis** ：假设
@@ -601,6 +604,7 @@
   > <img src="https://s2.loli.net/2023/04/03/FMxgbdEVJ3OuBNK.png" alt="image-20230403213515134" style="zoom:47%;" />
 
   **leap** ：跳跃
+  
 - **tweak** ：微调
 
 - **hallucination** ：幻觉
@@ -719,7 +723,7 @@
 
 - **factor** ：n. 因素，因子，因数，要素；（增或减的）数量，倍数；系数;
 
-- **partition** ：n. 隔断、分割、<font color=red>**分治**</font> 。vt.分割
+- **partition** ：n. 隔断、分割、<font color=red>**分治**</font> 。vt. 分割
 
 - **contradict** ：v. 反驳、驳斥、批驳；相抵触、<font color=red>相矛盾</font>、相反。
 
@@ -754,6 +758,22 @@
   > <img src="https://s2.loli.net/2023/05/09/GEYMZO4SdNXqrHs.png" style="zoom:45%;" />
   >
   > <img src="https://s2.loli.net/2023/05/09/Lj9QxHhmwbyGeV2.png" style="zoom:45%;" />
+
+- **decompose** ：v. **分解**，腐烂
+
+- **jargon** ：（某个特定领域或职业中使用的）术语
+
+  > jargon 和 term 都有 “术语” 的意思，不过还是有所区别：
+  >
+  > <img src="https://s2.loli.net/2023/05/10/P6M3gnuNUhRmoSE.png" style="zoom:45%;" />
+
+- **idempotency** ：幂等性
+
+- **generalize** ：v. 概括，归纳
+
+  **generalization** ：n. 泛化
+  
+- **flaw** ：缺陷
 ***
 
 
@@ -828,8 +848,9 @@
 ##### 后缀
 
 - `-ish` 后缀：用于表达数量或时间的近似值。以 "10ish" 为例， 它是一个口语化的用法，表示数量大约为10。 
-> This is an over-generalization, but over the past 10ish years, a lot of complexity has been moving from the server to the client.
-> 摘自：[The End of Front-End Development](https://www.joshwcomeau.com/blog/the-end-of-frontend-development/)
+
+  > This is an over-generalization, but over the past 10ish years, a lot of complexity has been moving from the server to the client.
+  > 摘自：[The End of Front-End Development](https://www.joshwcomeau.com/blog/the-end-of-frontend-development/)
 
 
 
@@ -839,6 +860,8 @@
 
 - **pt. n** ：第 n 部分
 - **Misc** ：杂项，其他。"Misc" 是 "miscellaneous" 的缩写
+- **spec** ：规格 specification
+- **ver** ：版本 version
 
 
 
@@ -878,7 +901,7 @@
 
   **convict** ：n. 罪犯;已决犯;服刑囚犯 v. 定罪;宣判…有罪
 
-  <img src="https://s2.loli.net/2023/05/07/Fi1pkIUHhQZjPYc.png" alt="image-20230507173533552" style="zoom:50%;" />
+  <img src="https://s2.loli.net/2023/05/07/Fi1pkIUHhQZjPYc.png" alt="image-20230507173533552" style="zoom:45%;" />
 
 - **cohesion** ：凝聚力
 
@@ -914,4 +937,14 @@
 
 - **tedious** ：单调乏味的
 
-  
+- **longevity** ：长寿
+
+- **necessitate** ：vt. 使成为必要
+
+- **embark** ：v. 上船;装船;开始
+
+- **nod** ：点头
+
+- **dominance** ：支配地位，支配、控制
+
+- **ongoing** ：adj. 持续的。n. 进行，前进

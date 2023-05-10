@@ -124,7 +124,7 @@ console.log('OK!')
 
 ##### 浏览器引擎
 
-- **Gecko** ：早期被Netscape和Mozilla Firefox浏览器使用;
+- **Gecko** ：早期被 Netscape 和 Mozilla Firefox 浏览器使用;
 
 - **Trident** ：微软开发，被 IE4 ~ IE11 浏览器使用，但是 Edge 浏览器已经转向 Blink
 - **Webkit** ：苹果基于 KHTML 开发、开源的，用于 Safari，Google Chrome 之前也在使用; 
@@ -169,7 +169,7 @@ V8 引擎本身的源码非常复杂，大概有超过 100w 行 C++ 代码，但
 
 ###### Parse 模块
 
-Parse 模块会将JavaScript代码转换成AST (抽象语法树)这是因为解释器并不直接认识JavaScript代码
+Parse 模块会将 JavaScript 代码转换成 AST (抽象语法树) 这是因为解释器并不直接认识 JavaScript 代码
 - 如果函数没有被调用，那么是不会被转换成AST的
 - Parse的V8官方文档：https://v8.dev/blog/scanner
 

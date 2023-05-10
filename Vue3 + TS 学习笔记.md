@@ -10,45 +10,52 @@
 
 ##### 源码
 
-- **源码通过monorepo的形式来管理源代码：**
+###### 源码通过monorepo的形式来管理源代码
 
-  Mono：单个；Repo : repository：仓库。主要是将许多项目的代码存储在同一个repository中，这样做的目的是多个包本身相互独立，可以有自己的功能逻辑、单元测试等,同时又在同一个仓库下方便管理；而且模块划分的更加清晰，可维护性、可扩展性更强
+Mono：单个；Repo : repository：仓库。主要是将许多项目的代码存储在同一个repository中，这样做的目的是多个包本身相互独立，可以有自己的功能逻辑、单元测试等,同时又在同一个仓库下方便管理；而且模块划分的更加清晰，可维护性、可扩展性更强
 
-- **源码使用TypeScript来进行重写：**
+###### 源码使用TypeScript来进行重写
 
-  - 在Vue2.x的时候, Vue使用Flow来进行类型检测;
-  - 在Vue3.x的时候, Vue的源码全部使用TypeScript来进行重构,并且Vue本身对TypeScript支持也更好了;
+- 在Vue2.x的时候, Vue使用Flow来进行类型检测;
+- 在Vue3.x的时候, Vue的源码全部使用 TypeScript 来进行重构,并且Vue本身对TypeScript支持也更好了;
 
 ##### 性能
 
-- **用Proxy进行数据劫持：**
-  - 在Vue2.x 的时候，Vue2 是使用 Object.defineProperty 来劫持数据的 getter和 setter 方法的
-  - 这种方式一致存在一个缺陷就是当给对象添加或者删除属性时，是无法劫持和监听的
-  - 所以在 Vue2.x 的时候，不得不提供一些特殊的 API，比如 \$set 或 $delete，事实上都是一些 hack 方法，也增加了开发者学习新的 API 的成本
-  - 而在 Vue3.x 开始，Vue 使用 Proxy 来实现数据的劫持，这个 API 的用法和相关的原理我也会在后续讲到;
-- **删除了一些不必要的API：**
-  - 移除了实例上的 \$on、\$off 和 \$once
-  - 移除了一些特性：如filter、内联模板等
-- **包括编译方面的优化：**
-  - 生成 Block Tree、Slot 编译优化、diff 算法优化
+###### 用Proxy进行数据劫持
+
+- 在Vue2.x 的时候，Vue2 是使用 Object.defineProperty 来劫持数据的 getter和 setter 方法的
+- 这种方式一致存在一个缺陷就是当给对象添加或者删除属性时，是无法劫持和监听的
+- 所以在 Vue2.x 的时候，不得不提供一些特殊的 API，比如 \$set 或 $delete，事实上都是一些 hack 方法，也增加了开发者学习新的 API 的成本
+- 而在 Vue3.x 开始，Vue 使用 Proxy 来实现数据的劫持，这个 API 的用法和相关的原理我也会在后续讲到;
+
+###### 删除了一些不必要的API
+
+- 移除了实例上的 \$on、\$off 和 \$once
+- 移除了一些特性：如filter、内联模板等
+
+###### 包括编译方面的优化
+
+- 生成 Block Tree、Slot 编译优化、diff 算法优化
 
 ##### 新的 API
 
-- **由 Options API到Composition API：**
-  - 在 Vue2.x 的时候,我们会通过 Options API 来描述组件对象;
-  
-  - Options API 包括 data、props、methods、computed、生命周期等等这些选项;
-  
-  - 存在比较大的问题是多个逻辑可能是在不同的地方:
-    - 比如created中会使用某一个 method 来修改 data 的数据,代码的内聚性非常差
-  
-  - Composition API 可以将相关联的代码放到同一处进行处理,而不需要在多个Options之间寻找
-  
-- **Hooks 函数增加代码的复用性：**
-  - 在 Vue2.x 的时候，我们通常通过 mixins 在多个组件之间共享逻辑
-  - 但是有一个很大的缺陷就是 mixins 也是由一大堆的Options组成的，并且多个 mixins 会存在命名冲突的问题
-  - 在 Vue3.x 中，我们可以通过 Hook 函数，来将一部分独立的逻辑抽取出去，并且它们还可以做到是响应式的
-  - 具体的好处,会在后续的课程中演练和讲解（包括原理）
+###### 由 Options API到Composition API
+
+- 在 Vue2.x 的时候,我们会通过 Options API 来描述组件对象;
+
+- Options API 包括 data、props、methods、computed、生命周期等等这些选项;
+
+- 存在比较大的问题是多个逻辑可能是在不同的地方:
+  - 比如created中会使用某一个 method 来修改 data 的数据,代码的内聚性非常差
+
+- Composition API 可以将相关联的代码放到同一处进行处理,而不需要在多个Options之间寻找
+
+###### Hooks 函数增加代码的复用性
+
+- 在 Vue2.x 的时候，我们通常通过 mixins 在多个组件之间共享逻辑
+- 但是有一个很大的缺陷就是 mixins 也是由一大堆的Options组成的，并且多个 mixins 会存在命名冲突的问题
+- 在 Vue3.x 中，我们可以通过 Hook 函数，来将一部分独立的逻辑抽取出去，并且它们还可以做到是响应式的
+- 具体的好处,会在后续的课程中演练和讲解（包括原理）
 
 ##### Vue3 的 data和 Vue2 的 data 是不同的
 
@@ -4680,17 +4687,20 @@ TS最终会被编译成JS来运行；需要在电脑上安装TS，这样就可�
 
 **如何简化该操作？**有两种解决方案
 
-- **通过webpack，配置本地的TypeScript编译环境和开启一个本地服务，可以直接运行在浏览器上**
+- **通过 webpack，配置本地的 TypeScript 编译环境和开启一个本地服务，可以直接运行在浏览器上**
 
-  <font color=FF0000>**TS项目中配置webpack，需要使用ts-loader；另外，还需要添加 tsconfig.json 配置文件；可以使用 tsc --init 命令以自动生成一个初始配置。另外，在resolve.extensions中至少加上 ['ts', 'js']**</font>
+  <font color=FF0000>**TS 项目中配置 webpack，需要使用 ts-loader；另外，还需要添加 `tsconfig.json` 配置文件；可以使用 `tsc --init` 命令以自动生成一个初始配置。另外，在 `resolve.extensions` 中至少加上 `['ts', 'js']`**</font> 
+  
+  > 💡 `tsc --init` 将创建一个 `tsconfig.json` 文件
+
 
 - **通过ts-node库，为TypeScript的运行提供执行环境**
 
-  除了安装 ts-node 外，还需要安装 依赖 tslib 和 @types/node
+  除了安装 ts-node 外，还需要安装 依赖 tslib 和 `@types/node`
 
-> 👀 注：还有第三种方式：[deno](https://github.com/denoland/deno) 提供了 TS 运行环境的支持；可以使用 `deno run target.ts` 命令 运行 ts 文件。
+> 👀 还有第三种方式：[deno](https://github.com/denoland/deno) 提供了 TS 运行环境的支持；可以使用 `deno run target.ts` 命令 运行 ts 文件。
 
-补充：在 vue-cli 中会让用户选择是使用 babel 编译 TS，还是使用 tsc ；这里推荐 babel（官方文档中也推荐 babel  ），因为 babel 会打上 polyfill
+> 💡 补充：在 vue-cli 中会让用户选择是使用 babel 编译 TS，还是使用 tsc ；这里推荐 babel（官方文档中也推荐 babel  ），因为 babel 会打上 polyfill
 
 
 

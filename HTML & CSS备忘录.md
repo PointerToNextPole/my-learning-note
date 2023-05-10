@@ -1441,7 +1441,15 @@ customElements.define('word-count', WordCount, { extends: 'p' });
 
 ###### `part`
 
-🧪 元素的部件名称的空格分隔列表。part 名称允许 CSS 通过 `::part()` 伪元素选择和设置阴影关联树中的特定元素
+🧪 元素的部件名称的空格分隔列表。Part 名称允许 CSS 通过 `::part()` 伪元素选择和设置阴影关联树中的特定元素
+
+###### `popover`
+
+Used to <font color=red>designate an element as a popover element</font> (see [Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API) ). <font color=red>**Popover elements are hidden via `display: none` until opened via an invoking/control element**</font> (i.e. a `<button>` or `<input type="button">` with a `popovertarget` attribute) or a `HTMLElement.showPopover()` call.
+
+###### `role`
+
+Roles define the semantic meaning of content, allowing screen readers and other tools to present and support interaction with an object in a way that is consistent with user expectations of that type of object. `roles` are added to HTML elements using `role="role_type"` , where `role_type` is the name of a role in the ARIA specification.
 
 ###### `slot`
 
