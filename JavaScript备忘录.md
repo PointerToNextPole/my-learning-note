@@ -12974,9 +12974,9 @@ Set 对象允许你存储任何类型的唯一值，无论是原始值或者是�
 
 #### weakset
 
-weakset只能放入对象，同时对于对象是弱引用，当对象被回收时，不会考虑是否被weakset引用
+weakset 只能放入对象，同时对于对象是弱引用，当对象被回收时，不会考虑是否被 weakset 引用
 
-weakset不可遍历
+weakset 不可遍历
 
 
 
@@ -13068,9 +13068,9 @@ history.pushState(state, title[, url])
 
 #### history.replaceState()
 
-replaceState()方法使用状态对象（state objects）, title 和 URL 作为参数，<font color=FF0000> 修改当前历史记录实体</font>，如果你想更新当前的state对象或者当前历史实体的URL来响应用户的的动作的话这个方法将会非常有用。
+`replaceState()` 方法使用状态对象 ( state objects ) ，`title` 和 `URL` 作为参数，<font color=FF0000> 修改当前历史记录实体</font>，如果你想更新当前的 `state` 对象或者当前历史实体的 `URL` 来响应用户的的动作的话这个方法将会非常有用。
 
-**语法**
+##### 语法
 
 ```js
 history.replaceState(stateObj, title[, url]);
@@ -13078,9 +13078,9 @@ history.replaceState(stateObj, title[, url]);
 
 ###### 参数
 
-- **stateObj：**状态对象是一个JavaScript对象，它与传递给 replaceState 方法的历史记录实体相关联.
-- **title：**<mark>大部分浏览器忽略这个参数</mark>, 将来可能有用. 在此处传递空字符串应该可以防止将来对方法的更改。或者，您可以为该状态传递简短标题
-- **url：**可选，历史记录实体的URL. 新的URL跟当前的URL必须是同源; 否则 replaceState 抛出一个异常.
+- **`stateObj`** ：状态对象是一个 JavaScript 对象，它与传递给 replaceState 方法的历史记录实体相关联.
+- **`title`** ：<font color=LightSeaGreen>大部分浏览器忽略这个参数</font>, 将来可能有用. 在此处传递空字符串应该可以防止将来对方法的更改。或者，您可以为该状态传递简短标题
+- **`url`** ：可选，历史记录实体的 `URL` 。新的 `URL` 跟当前的URL必须是同源，否则 `replaceState` 抛出一个异常。
 
 摘自：[MDN - History.replaceState()](https://developer.mozilla.org/zh-CN/docs/Web/API/History/replaceState)
 

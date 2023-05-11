@@ -1387,6 +1387,46 @@ HTML5 的离线存储是基于一个新建的 `.appcache` 文件的缓存机制�
 >
 > 摘自：[MDN - inputmode](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/inputmode)
 
+###### `enterkeyhint`
+
+Hints what action label (or icon) to present for the enter key on virtual keyboards.
+
+> The **`enterkeyhint`** <font color=lightSeaGreen>global attribute</font> is an <font color=red>**enumerated attribute**</font>（👀 说明只能是规定的值，其他值都是不合法的，也不会生效） defining what action label (or icon) to present for the enter key on virtual keyboards.
+>
+> ##### Description
+>
+> Form controls (such as `<textarea>` or `input` elements) or elements using `contenteditable` can specify an `inputmode` attribute to control what kind of virtual keyboard will be used. <font color=dodgerBlue>To further improve the user's experience</font>, <font color=LightSeaGreen>the enter key can be customized specifically by providing an `enterkeyhint` attribute indicating how the enter key should be labeled</font> (or which icon should be shown). The enter key usually represents what the user should do next; typical actions are: sending text, inserting a new line, or searching.
+>
+> If no `enterkeyhint` attribute is provided, the user agent might use contextual information from the `inputmode`, `type`, or [`pattern`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#pattern) attributes to display a suitable enter key label (or icon).
+>
+> ###### Values
+>
+> The <font color=red>`enterkeyhint` attribute is an enumerated attribute</font> and <font color=red>**only accepts the following values**</font>:
+>
+> | Value                     | Description                                                  | Example label (depends on user agent and user language) |
+> | :------------------------ | :----------------------------------------------------------- | :------------------------------------------------------ |
+> | `enterkeyhint="enter"`    | Typically inserting a new line.                              | ↵                                                       |
+> | `enterkeyhint="done"`     | Typically meaning there is nothing more to input and the input method editor (IME) will be closed. | Done                                                    |
+> | `enterkeyhint="go"`       | Typically meaning to take the user to the target of the text they typed. | Open                                                    |
+> | `enterkeyhint="next"`     | Typically taking the user to the next field that will accept text. | Next                                                    |
+> | `enterkeyhint="previous"` | Typically taking the user to the previous field that will accept text. | Previous                                                |
+> | `enterkeyhint="search"`   | Typically taking the user to the results of searching for the text they have typed. | Search                                                  |
+> | `enterkeyhint="send"`     | Typically delivering the text to its target.                 | Send                                                    |
+>
+> 摘自：[MDN US - enterkeyhint](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/enterkeyhint)
+
+> 💡  `enterkeyhint` 和 `inputmode` 相当类似，区别如下：
+>
+> <img src="https://s2.loli.net/2023/05/11/ylCTZh4IHtcoOmr.png" alt="image-20230511162624422.png" style="zoom:45%;" />
+>
+> 💡 **实践补充**
+>
+> 在开发时发现一个问题：vant 中的 `van-search` 输入的虚拟键盘，enter 键显示的是 return，而不是 搜索 / “search”；显然不太符合需求，便想通过 `inputmode` 之类的属性实现。
+>
+> 经过实践发现：`inputmode="search"` 的 enter 显示的是 “前往” / “go”，而 `enterkeyinput="search"` enter 显示的是 “搜索” / “search” ，显然 `enterkeyinput="search"` 更优些。
+>
+> 另外，发现：同时使用 `inputmode="search"` 和 `enterkeyinput="search"` ，enter 展示的是 “前往” / “go” ；可见：`inputmode` 的优先级更高。
+
 ###### `is`
 
 <font color=FF0000>允许您指定标准 HTML 元素</font>（👀 即，自定义组件）<font color=FF0000>应该**像已注册的自定义内置元素一样**<font color=fuchsia>**（便于语义化和 SEO）**</font></font>
