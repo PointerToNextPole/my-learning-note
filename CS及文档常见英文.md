@@ -437,6 +437,10 @@
   > 协程可以通过 `yield`（取其“让步”之义而非“出产”）来调用其它协程，接下来的每次协程被调用时，从协程上次 `yield` 返回的位置接着执行，通过 `yield` 方式转移执行权的协程之间不是调用者与被调用者的关系，而是彼此对称、平等的。
   >
   > 摘自：[wikipedia - 协程](https://zh.wikipedia.org/wiki/%E5%8D%8F%E7%A8%8B)
+  >
+  > 另外，在 [函数式编程的核心价值是什么？ - 张宏波的回答 - 知乎](https://www.zhihu.com/question/471098472/answer/2029186480) 的评论区看到了这样一个评论，感觉受到了不小的启发。这里做下补充：
+  >
+  > <img src="https://s2.loli.net/2023/05/12/hpL7nJcyGUgKt38.png" alt="image-20230512163155036" style="zoom:65%;" />
 
 - **intermediary** ：中间的，中介的
 
@@ -774,6 +778,10 @@
   **generalization** ：n. 泛化
   
 - **flaw** ：缺陷
+
+- **cascade** ：级联
+
+- **impure** ：不纯的
 ***
 
 

@@ -337,13 +337,13 @@ Logpoints 则是一种特殊的断点。我们可以在开发者工具的 Source
 
 开发者工具中的 Snippets 是一种针对当前网站运行脚本的方式。我们可以在这些脚本中使用 Console Utilities，进而编写并存储那些需要在 Console 中执行的高复杂度 DOM 操作脚本。大家可以使用 snippets 编辑器或者命令菜单，在当前文档的窗口上下文内运行脚本。如果是使用命令菜单的情况，请注意在命令开头使用！并输入要运行的代码段名称。
 
->  👀 注：具体使用参见 [Chrome Developers - Run Snippets of JavaScript](https://developer.chrome.com/docs/devtools/javascript/snippets/) ，下图说明了Snippets 的位置；下面的 Overrides 也在同样的位置
+>  👀 具体使用参见 [Chrome Developers - Run Snippets of JavaScript](https://developer.chrome.com/docs/devtools/javascript/snippets/) ，下图说明了Snippets 的位置；下面的 Overrides 也在同样的位置
 >
 > <img src="https://s2.loli.net/2022/08/27/cAYqebWRENOrs4x.png" alt="How the page looks before running the Snippet." style="zoom:30%;" />
 
 Overrides 的作用是为远程脚本存储一份本地副本，并在页面加载时执行覆盖。例如，如果我们的整个应用程序构建过程太过缓慢，但又希望随时尝试一点新鲜设计，那么 overrides 就能发挥作用了。另外，这款工具还能在无需浏览器扩展的前提下，替换掉第三方网站中那些烦人的脚本。
 
-> 👀 注：具体使用参见 [Chrome Developments - What's New In DevTools (Chrome 65) # Local Overrides](https://developer.chrome.com/blog/new-in-devtools-65/#overrides)
+> 👀 具体使用参见 [Chrome Developments - What's New In DevTools (Chrome 65) # Local Overrides](https://developer.chrome.com/blog/new-in-devtools-65/#overrides)
 >
 > <img src="https://s2.loli.net/2022/08/27/pFJuvjHinEUKMP8.gif" alt="img" style="zoom:45%;" />
 

@@ -1991,30 +1991,42 @@ arr4.flat(Infinity); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 #### Array.prototype.flatMap()
 
-<font color=FF0000>flatMap() 方法首先使用映射函数映射每个元素，**然后将结果压缩成一个新数组**</font>。<font color=FF0000>它与 map 连着深度值为1的 flat 几乎相同</font>，但 flatMap 通常在合并成一种方法的效率稍微高一些。
+**`flatMap()`** 方法<font color=red>对数组中的每个元素应用给定的回调函数</font>，<font color=LightSeaGreen>然后将结果展开一级</font>，返回一个新数组。它<font color=red>等价于在调用 `map()` 方法后再调用深度为 1 的 `flat()` 方法 ( `arr.map(...args).flat()` )</font> ，但比分别调用这两个方法稍微更高效一些。
+
+##### 示例
+
+```js
+const arr1 = [1, 2, 1];
+const result = arr1.flatMap((num) => (num === 2 ? [2, 2] : 1));
+
+console.log(result); // Expected output: Array [1, 2, 2, 1]
+```
 
 ##### 语法
 
 ```js
-var new_array = arr.flatMap(function callback(currentValue[, index[, array]]) {
-    // return element for new_array
-}[, thisArg])
+flatMap(callbackFn)
+flatMap(callbackFn, thisArg)
 ```
 
 ###### 参数
 
-与 `Array.prototype.map()` 一致
-
-- **callback：**可以生成一个新数组中的元素的函数，可以传入三个参数：
-  - **currentValue：**当前正在数组中处理的元素
-  - **index：**<font color=FF0000>可选</font>，数组中正在处理的当前元素的索引。
-  - **array：**<font color=FF0000>可选</font>，被调用的 map 数组
-- **thisArg：**<font color=FF0000>可选</font>，执行 callback 函数时 使用的this 值。
+- `callbackFn` ：一个在数组的每个元素上执行的函数。它应该返回一个包含新数组元素的数组，或是要添加到新数组中的单个非数组值。该函数将被传入以下参数：
+  - `element` ：数组中正在处理的当前元素。
+  - `index` ：数组中正在处理的当前元素的索引。
+  - `array` ：调用 `flatMap()` 的当前数组。
+- `thisArg` ：可选 ，在执行 `callbackFn` 时用作 `this` 的值。
 
 
 ###### 返回值
 
- 一个新的数组，其中每个元素都是回调函数的结果，并且结构深度 depth 值为1。
+一个新的数组，其中每个元素都是回调函数的结果，并且被展开一级。
+
+##### 描述
+
+`flatMap()` 方法是一个迭代方法。有关回调函数的详细说明，请参见 `Array.prototype.map()`。`flatMap()`方法等同于调用 `map(callbackFn, thisArg)` 后再调用 `flat(1)` ——对于每个元素，它都会生成一个新元素数组，并将生成的数组连接起来形成一个新数组。
+
+`flatMap()` 方法是通用的。它只需要 `this` 值具有 `length` 属性和整数键属性即可。但是，如果要展开从回调函数 `callbackFn` 返回的值，则该值必须是数组。
 
 摘自：[MDN - Array.prototype.flatMap()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap)
 
