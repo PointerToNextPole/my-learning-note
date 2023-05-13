@@ -782,6 +782,8 @@
 - **cascade** ：级联
 
 - **impure** ：不纯的
+
+- **synthetic** ：合成的
 ***
 
 
@@ -956,3 +958,7 @@
 - **dominance** ：支配地位，支配、控制
 
 - **ongoing** ：adj. 持续的。n. 进行，前进
+
+- **workload** ：工作量
+
+- **semester** ：学期

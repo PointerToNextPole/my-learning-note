@@ -53,7 +53,7 @@ git config --system --list
 
 其中，如果不指定作用域，将会显示所有的配置。
 
-##### 👀 自己的补充
+##### 💡 自己的补充
 
 在配置 `git config --global user.**` 时出现将 `user.email ` 写成（配制成）`user.mail` ，这时 git 并不会报错，且会记录到 git list（可通过`git config --list` ）查到
 
@@ -1108,6 +1108,14 @@ Remove only files ignored by Git. This may be useful to rebuild everything from 
 #### git bisect 使用
 
 // TODO [git bisect 命令教程- 阮一峰的网络日志](https://www.ruanyifeng.com/blog/2018/12/git-bisect.html) 、https://git-scm.com/docs/git-bisect
+
+
+
+#### git lfs 使用
+
+// TODO
+
+参考 [Atlassian git tutorial - git lfs](https://www.atlassian.com/git/tutorials/git-lfs) 。中文翻译见 [详解 Git 大文件存储（Git LFS） - 腾讯技术工程的文章 - 知乎](https://zhuanlan.zhihu.com/p/146683392)
 
 
 
