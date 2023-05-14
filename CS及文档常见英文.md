@@ -962,3 +962,5 @@
 - **workload** ：工作量
 
 - **semester** ：学期
+
+- **fidelity** ：n. 忠诚
