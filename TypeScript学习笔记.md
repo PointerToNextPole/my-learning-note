@@ -6777,3 +6777,295 @@ files、include 和 exclude 都是用于指定（设置）需要被编译的文�
 > 💡 以下是 new bing 的解答：
 
 <img src="https://s2.loli.net/2023/03/14/1HutaoNlv8PzJQA.png" alt="image-20230314223200401" style="zoom:45%;" />
+
+
+
+#### TS Decorators
+
+##### What are TypeScript Decorators?
+
+<font color=fuchsia>Decorators are **basically just functions at their core**.</font>
+
+With decorators you <font color=red>can apply **re-useable** behaviors to</font> <font color=fuchsia>**classes, methods, properties**</font>. Decorators are inspired by decorators in other languages like Java and Python.
+
+> 💡 感觉这句话有点问题：Java 似乎只有注解 annotation，没有装饰器；只有装饰器模式
+
+##### Types of Decorators
+
+<font color=dodgerBlue>Decorators can apply to</font>
+
+1. Class
+2. Method
+3. Class Property
+4. <font color=fuchsia>Accessor</font>
+5. <font color=red>Method Parameter</font>
+
+> 👀 由于 Class、Method、Class Property 的装饰器较为常见，下面省略；详见原文
+
+###### Parameter Decorator
+
+> 👀 这个 Spring 中有，不过没什么印象了...
+
+Parameter decorators are used to <font color=red>**watch and change** the functional or methods parameters</font>.
+
+let us look at the parameter decorator with an example
+
+```typescript
+function TestParameter(target: any, propertyName: string, CoolParameter: number) {
+  console.log(`Cool Parameter: ${CoolParameter}`);
+}
+
+class SomeClass {
+  exampleMethod(@TestParameter saySomething: string) {
+    console.log(`from exampleMethod: ${saySomething}`);
+  }
+}
+
+const instance = new SomeClass();
+instance.exampleMethod('Hello');
+```
+
+Here we have a function `TestParameter` that `console.logs` the `CoolParameter` parameter
+
+and then we have `SomeClass` with a method named `exampleMethod`. When the `exampleMethod` is called the decorator is triggered and the `TestParameter` function is called which then logs the `CoolParameter` to the `console`
+
+###### Accessor Decorators
+
+Accessor decorators are <font color=dodgerBlue>like method decorators</font> but <font color=red>the only difference is the that the **Method decorators have keys in their descriptor**</font> <font color=dodgerBlue>**like**</font>
+
+- Value
+- writable
+- configurable
+- enumerable
+
+<font color=dodgerBlue>**The descriptor in the Accessor decorators has keys:**</font>
+
+- get
+- set
+- enumerable
+- configurable
+
+<font color=dodgerBlue>**The accessor decorators accept the follow theee parameters:**</font>
+
+1. Constructor function or target prototype
+2. property name 
+3. property descriptor
+
+##### When to use Decorators
+
+1. Before/After Hooks
+2. Watch property changes and method calls.
+3. Transform parameters
+4. Add extra method or properties
+5. <font color=red>Runtime type validation</font>
+6. Auto serialization and deserialization
+7. <font color=red>Dependency Injection</font>
+
+###### Before /After Hooks
+
+Before / After hooks means the decorator is called before and after the function is called which <font color=red>is quite useful in debugging , logging , and measuring performance</font>
+
+###### Watch property changes and method calls
+
+Watch is a property decorator that logs the property as well as the method calls of a decorated method.
+
+This is especially useful when debugging and performance monitering.
+
+Let us learn more about Watch property and how it works using an example:
+
+```ts
+function see(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value;
+
+  descriptor.value = function (...args: any[]) {
+    console.log(`function has been called: ${propertyName} with args:`, args);
+    return originalMethod.apply(this, args);
+  };
+}
+
+class SomeClass {
+  myProperty: string;
+
+  @see
+  setProperty(value: string) {
+    console.log('Set the value to ');
+    this.myProperty = value;
+  }
+}
+
+const instance = new SomeClass();
+instance.setProperty('Awesome Great work Done');
+```
+
+###### Transform Parameters
+
+In transform parameters function <font color=red>applies the transformation function to a specific parameter **before the method is called**</font>.
+
+Let us learn more about transform parameters with the help of an example:
+
+```ts
+function CoolFunc(SomeFunc: (arg: any) => any): ParameterDecorator {
+  return (target: any, propertyKey: any, parameterIndex:any) => {
+    const originalMethod = target[propertyKey];
+
+    target[propertyKey] = function (...args: any[]) {
+      args[parameterIndex] = SomeFunc(args[parameterIndex]);
+      return originalMethod.apply(this, args);
+    };
+  };
+}
+
+class MyClass {
+  myMethod(@CoolFunc((x) => x * 2) num: number) { // 👀 @CoolFunc 传入了一个函数
+    console.log(`Transformed parameter: ${num}`);
+  }
+}
+
+const instance = new MyClass();
+instance.myMethod(5);
+```
+
+###### Add extra method or property
+
+You can add an extra method or property using the decorators. Here is how you can achieve this using an example:
+
+```ts
+function AddMethod() {
+  return function (constructor: Function) {
+    constructor.prototype.AddMethod = function () {
+      console.log('Added a new method the property by the decorator');
+    };
+  };
+}
+
+@AddMethod()
+class SomeClass {}
+
+const instance = new SomeClass();
+(instance as any).AddMethod();
+```
+
+<font color=LightSeaGreen>When an instance of `SomeClass` is called</font> the <font color=red>`addMethod` can be called on it</font>. The add method logs a message to the console
+
+###### Runtime Type Validation
+
+> ⚠️ 注意这里是 Runtime
+
+Runtime type validation is <font color=red>ensuring the type of</font> *values of the parameters and variables and const and data used in the function* during run time <font color=red>matches the values of the expected type</font>.
+
+<font color=dodgerBlue>unlike static type validation</font> which happens during software compilation the run time type validation happens when the function or programing is running <font color=red>thus it is helpful in validating external input data</font>
+
+Let us learn more about Runtime Type Validation using an example:
+
+```ts
+function SomeFunc(target: any, propertyKey: string, parameterIndex: number) {
+  const originalMethod = target[propertyKey];
+
+  target[propertyKey] = function (...args: any[]) {
+    if (typeof args[parameterIndex] !== 'number') {
+      throw new Error(`An error has occoured ${parameterIndex}`);
+    }
+    return originalMethod.apply(this, args);
+  };
+}
+
+class TestClass {
+  calculateArea(@SomeFunc radius: number) {
+    return Math.PI * radius * radius;
+  }
+}
+
+const instance = new TestClass();
+
+try {
+  instance.calculateArea('this is NaN'); 
+} catch (error) {
+  console.error(error.message);
+}
+
+console.log(instance.calculateArea(6)); 
+```
+
+###### Auto serialization and deserialization
+
+Auto serialization and deserialization refers to the practice of <font color=red>converting from one data type to another data type deserialization</font> in order to store the data in a particular format 
+
+<font color=LightSeaGreen>then converting again from one data type to the orignal data type</font> for the purpose of rendering the data or other function can consume the data
+
+Here is an example explaining how decorators can be used to do this
+
+```typescript
+function SerializeFunc(constructor: Function) {
+  constructor.prototype.serialize = function () {
+    return JSON.stringify(this);
+  };
+
+  constructor.deserialize = function (json: string) {
+    return new constructor(JSON.parse(json));
+  };
+}
+
+function DeserializeFunc(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value;
+
+  descriptor.value = function (serializedData: string) {
+    const deserializedData = JSON.parse(serializedData);
+    return originalMethod.apply(this, deserializedData);
+  };
+}
+
+@SerializeFunc
+class Person {
+  constructor(public name: string, public age: number) {}
+
+  @SerializeFunc
+  greet(data: { name: string; age: number }) {
+    return `Awesome, people call me ${data.name} my age is ${data.age} years old.`;
+  }
+}
+
+const man = new Man('Jim Class', 43);
+const serializedMan = man.serialize();
+
+console.log(serializedMan); // {"name":"Jim Class","age":43}
+
+const deserializedMan = (Man as any).deserialize(serializedMan);
+console.log(deserializedMan.greet()); 
+
+const serializedData = '{"name":"Don markell","age":56}';
+console.log(man.greet(serializedData));
+```
+
+###### Dependency Injection
+
+Decorators can also be used for dependency injection. Dependency injection is the practice of <font color=red>providing the functions and Objects that a method depends upon to it as parameter</font>.
+
+this <font color=red>helps in decoupling the code</font> and <font color=red>makes it cleaner</font>.
+
+Decorators helps in dependency injection by providing a way to inject dependencies directly into class constructors <font color=red>without changing class implementation</font>.
+
+This making them easier to maintain and test.
+
+##### Advantages of using decorators
+
+###### Cross Cutting concerns
+
+<font color=dodgerBlue>When parts of a program relay on many other parts of the program</font>. Like a program might relay on other classes methods or properties then this could be a use case for decorators and they provide an easy way to maintain the code and provide improved readability
+
+###### Dependency Injection
+
+Dependency injection is a software design pattern where an object or a function that relies on other objects or functions receives then 
+
+This is like an inversion of control and results in loosely coupled program and a code base that is modular
+
+Here also decorators can in useful
+
+###### Validation
+
+Decorators can be used to validate inputs or the state of an Object. 
+
+###### Code organization
+
+The <font color=LightSeaGreen>code that doesn't belong in the main function or logic can be encapsulated using decorators</font> thus <font color=red>making the code more readable and maintainable</font>
+
+摘自：[TypeScript Decorators: A complete guide](https://deadsimplechat.com/blog/typescript-decorators-a-complete-guide/#7-dependency-injection)
