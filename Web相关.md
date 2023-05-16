@@ -1963,19 +1963,19 @@ BOM 层次结构的顶层是窗口对象, 它包含有关显示文档的窗口�
 
 ##### 前言 & 背景
 
-<mark>JavaScript currently enables you to **build three types of applications**</mark>: single-page applications ( SPAs ), <font size=4><font color=FF0000>**pre-rendered**</font> **or** <font color=FF0000>static-generated sites</font></font>, and server-side-rendered applications. <mark style="background: LightSkyBlue ">SPAs come with many [challenges](https://en.wikipedia.org/wiki/Single-page_application#Challenges_with_the_SPA_model), one of which is search engine optimization (SEO)</mark>. <font color=FF0000>**Possible solutions** are to make use of</font> a [**static-site generator**](https://www.smashingmagazine.com/2020/07/differences-static-generated-sites-server-side-rendered-apps/#static-site-generator) or [**server-side rendering**](https://www.smashingmagazine.com/2020/07/differences-static-generated-sites-server-side-rendered-apps/#server-side-rendering) (SSR).
+<font color=LightSeaGreen>JavaScript currently enables you to **build three types of applications**</font>: single-page applications ( SPAs ), <font size=4><font color=FF0000>**pre-rendered**</font> **or** <font color=FF0000>static-generated sites</font></font>, and server-side-rendered applications. <font color=dodgerBlue>SPAs come with many [challenges](https://en.wikipedia.org/wiki/Single-page_application#Challenges_with_the_SPA_model), one of which is search engine optimization (SEO)</font>. <font color=FF0000>**Possible solutions** are to make use of</font> a [**static-site generator**](https://www.smashingmagazine.com/2020/07/differences-static-generated-sites-server-side-rendered-apps/#static-site-generator) or [**server-side rendering**](https://www.smashingmagazine.com/2020/07/differences-static-generated-sites-server-side-rendered-apps/#server-side-rendering) (SSR).
 
 We’ll look at what static generation is, as well as static generation is, as well as <font color=FF0000>**frameworks** that help us create static-generated sites, such as **Gatsby** and **VuePress**</font>. We’ll learn what a server-side-rendered application is, as well as learn about <font color=FF0000>**frameworks** for creating one, such as **Next.js** and **Nuxt.js**</font>. 
 
 ##### SSG ( Static-Site Generator ) 是什么
 
-<font color=FF0000>A **static-site generator (SSG) is a <font size=4>software application</font>**</font> that <font color=FF0000>creates HTML pages from templates or components and a given content source</font>. <font color=fuchsia>**Give it some text files and content, and the generator will give you back a complete website**</font>（👀 **注**：这句话是重点：只需提供静态内容，比如 markdown 文件及图片，就可以生成一个网站）; this <font color=FF0000>completed website is referred to as a static-generated site</font>. This means that <font color=FF0000>the website’s pages are generated **at build time**</font>, and <font color=FF0000>their contents do not change unless you add new content or components and then **rebuild**</font> — you have to rebuild the website if you want it to be updated with the new content.
+<font color=FF0000>A **static-site generator (SSG) is a <font size=4>software application</font>**</font> that <font color=FF0000>creates HTML pages from templates or components and a given content source</font>. <font color=fuchsia>**Give it some text files and content, and the generator will give you back a complete website**</font>（👀 这句话是重点：只需提供静态内容，比如 markdown 文件及图片，就可以生成一个网站）; this <font color=FF0000>completed website is referred to as a static-generated site</font>. This means that <font color=FF0000>the website’s pages are generated **at build time**</font>, and <font color=FF0000>their contents do not change unless you add new content or components and then **rebuild**</font> — you have to rebuild the website if you want it to be updated with the new content.
 
 下图：*How static-site generation works*
 
 <img src="https://s2.loli.net/2022/07/11/VzSuanfv2YNjegB.png" alt="img" style="zoom:50%;" />
 
-<mark>This approach is good for building applications whose content does not change often</mark>. So, you wouldn’t necessarily use it for a website that has to be modified according to the user or one that has a lot of user-generated content. However, <font color=FF0000>a blog or personal website would be an ideal use</font>. Let’s look at some advantages of static-generated sites.
+<font color=LightSeaGreen>This approach is good for building applications whose content does not change often</font>. So, you wouldn’t necessarily use it for a website that has to be modified according to the user or one that has a lot of user-generated content. However, <font color=FF0000>a blog or personal website would be an ideal use</font>. Let’s look at some advantages of static-generated sites.
 
 ##### SSG 优点
 
@@ -1988,7 +1988,7 @@ We’ll look at what static generation is, as well as static generation is, as w
 
 - **If the content changes too quickly, it can be hard to keep up**.
 - <font color=FF0000>To update content, you have to rebuild the website</font>.
-- <font color=FF0000>**The build time increases according to the size of the application**</font>（👀 **注**：这一点没有想到，毕竟 这是正常现象吧... 难道 SSR 可以解决？ ）.
+- <font color=FF0000>**The build time increases according to the size of the application**</font>（👀 这一点没有想到，毕竟 这是正常现象吧... 难道 SSR 可以解决？ ）.
 
 ##### 常见的 SSG 应用 Gatsby & VuePress
 
@@ -2020,15 +2020,15 @@ This means that if your application is server-side rendered, the content is fetc
 
 ##### 常见的 SSR 框架 Next.js & Nuxt.js
 
-文中介绍了 [Next.js](https://github.com/vercel/next.js) 和 [Nuxt.js](https://github.com/nuxt/framework) （👀 **注**：文档中介绍的还是 Nuxt2，这里了链接是 Nuxt3 ） 简单的创建项目和使用，这些内容不是重点，略。同时，这些内容，在其 GitHub 主页中 Get Started 中都有介绍...
+文中介绍了 [Next.js](https://github.com/vercel/next.js) 和 [Nuxt.js](https://github.com/nuxt/framework) （👀 文档中介绍的还是 Nuxt2，这里了链接是 Nuxt3 ） 简单的创建项目和使用，这些内容不是重点，略。同时，这些内容，在其 GitHub 主页中 Get Started 中都有介绍...
 
 ##### SSG 和 SSR 的不同之处
 
 | Static-Site Generation                                       | Server-Side Rendering                                        |
 | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| Can easily be deployed to a static CDN                       | Cannot be deployed to a static CDN（👀 **注**：可通过 ESR 改进） |
+| Can easily be deployed to a static CDN                       | Cannot be deployed to a static CDN（👀 可通过 ESR 改进）      |
 | Content and pages are generated at build time                | <font color=FF0000>Content and pages are generated per request</font> |
-| <font color=FF0000>**Content can get stale**</font>（**译：**不新鲜） <font color=FF0000>**quickly**</font> （👀 **注**：需打包更新） | <font color=FF0000>Content is always up to date</font>       |
+| <font color=FF0000>**Content can get stale**</font>（**译：**不新鲜） <font color=FF0000>**quickly**</font> （👀 需打包更新） | <font color=FF0000>Content is always up to date</font>       |
 | <font color=FF0000>Fewer API calls</font>, because it only makes them at build time | <font color=FF0000>**Makes API calls each time a new page is visited**</font> |
 
 摘自：[Differences Between Static Generated Sites And Server-Side Rendered Apps](https://www.smashingmagazine.com/2020/07/differences-static-generated-sites-server-side-rendered-apps/)
@@ -2045,7 +2045,7 @@ This means that if your application is server-side rendered, the content is fetc
 
 延伸：前端渲染的方式起源于 JavaScript 的兴起，ajax 的大热更是让前端渲染更加成熟，前端渲染真正意义上的实现了前后端分离，前端只专注于 UI 的开发，后端只专注于逻辑的开发，前后端交互只通过约定好的 API 来交互，后端提供 json 数据，前端循环 json 生成 DOM 插入到页面中去。
 
-**利弊**
+###### 利弊
 
 - **好处：** 网络传输数据量小、减少了服务器压力、前后端分离、局部刷新，无需每次请求完整页面、交互好可实现各种效果
 
@@ -2055,9 +2055,9 @@ This means that if your application is server-side rendered, the content is fetc
 
 解释一：服务端在返回 html 之前，在特定的区域，符号里用数据填充，再给客户端，客户端只负责解析 HTML 。
 
-解释二：服务端渲染的模式下，<font color=FF0000>当用户第一次请求页面时，由服务器把需要的组件或页面渲染成 HTML 字符串，然后把它返回给客户端</font>。<mark>客户端拿到手的，是可以直接渲染然后呈现给用户的 HTML 内容</mark>，不需要为了生成 DOM 内容自己再去跑一遍 JS 代码。使用服务端渲染的网站，可以说是 “所见即所得”，页面上呈现的内容，我们在 html 源文件里也能找到。
+解释二：服务端渲染的模式下，<font color=FF0000>当用户第一次请求页面时，由服务器把需要的组件或页面渲染成 HTML 字符串，然后把它返回给客户端</font>。<font color=LightSeaGreen>客户端拿到手的，是可以直接渲染然后呈现给用户的 HTML 内容</font>，不需要为了生成 DOM 内容自己再去跑一遍 JS 代码。使用服务端渲染的网站，可以说是 “所见即所得”，页面上呈现的内容，我们在 html 源文件里也能找到。
 
-**利弊**
+###### 利弊
 
 - **好处:**  <font color=FF0000 size=4>**首屏渲染快**</font>（ FCP 优化）、<font color=FF0000>**利于 SEO**</font>、可以生成缓存片段，生成静态化文件、节能（对比客户端渲染的耗电）
 
@@ -2099,6 +2099,31 @@ ESR ( Edge Side Rendering ) 时代，略。见下面 [[#ESR 边缘渲染]]
 
 
 
+#### NSR ( Native Side Rendering )
+
+##### ChatGPT 的解释
+
+本地端渲染 ( Native side rendering ) 是指在移动应用程序的本地代码层面进行渲染和图形处理的技术。它<font color=red>通常与传统的基于网络的渲染方式（例如 Web视图 和 WebView ）相对</font>。
+
+<font color=LightSeaGreen>在传统的移动应用开发中，UI 和渲染通常由操作系统提供的默认组件或 Web 视图来处理</font>。这些组件使用操作系统的原生渲染引擎来呈现用户界面，并通过网络协议加载和显示远程网页内容。
+
+然而，<font color=red>随着移动设备的性能和图形处理能力的增强，以及用户对更高效、更灵活的用户界面的需求，本地端渲染成为一种常见的选择</font>。本地端渲染通过使用应用程序的本地代码和图形库，直接在设备上执行渲染和图形处理操作。
+
+<font color=dodgerBlue>本地端渲染的优势包括：</font>
+
+1. 性能优化：本地端渲染可以更好地利用设备的硬件资源，例如GPU（图形处理器）来加速图形渲染和动画效果，提供更流畅的用户体验。
+2. 离线功能：本地端渲染可以使应用程序具备离线功能，因为应用程序可以在设备上存储和处理数据，并在没有网络连接时继续提供功能。
+3. 自定义用户界面：本地端渲染提供了更大的自由度和灵活性，开发者可以根据应用程序的需求自定义用户界面，实现更复杂的布局和交互效果。
+4. 安全性：本地端渲染可以提供更高的安全性，因为敏感数据和业务逻辑可以在设备上本地处理，减少了与远程服务器的数据传输和处理。
+
+常见的本地端渲染技术包括使用原生开发语言（如 Java 或 Kotlin 用于 Android，Objective-C 或 Swift 用于 iOS ）结合图形库（如 OpenGL ES 或 Metal ）进行渲染，或使用跨平台框架（如 React Native、Flutter 或 Unity ）来实现本地端渲染。
+
+总而言之，本地端渲染是一种通过移动应用程序的本地代码和图形库来实现渲染和图形处理的技术，可以提供更好的性能、离线功能、自定义用户界面和安全性。
+
+<img src="https://s2.loli.net/2023/05/16/jtlSV3pZYg5sFHW.png" alt="image-20230516092554797" style="zoom:45%;" />
+
+
+
 #### ESR 边缘渲染
 
 随着边缘计算的发展，<font color=FF0000>由于 CDN 节点距离用户更近，有更短网络延时的优势</font>；我们 <font color=FF0000>可以将页面进行 <font size=4>**动静拆分**</font>，将 **静态内容** 缓存在 CDN 先快速返回给用户</font>，然后 <font color=FF0000 size=4>**在 CDN 节点上发起** **动态内容** 的请求</font>（👀 是 CDN 发起对静态内容的请求，不是客户端 ），之后 <font color=FF0000 size=4>将 **动态内容** 与 **静态部分** **以流的形式进行拼接**</font>，从而<font color=FF0000>进一步提高了用户的首屏加载时间</font>，尤其在边缘地区或者弱网环境也有能拥有很好的用户体验，此外还<font color=FF0000>减少原先 SSR 服务器压力</font>。
@@ -2111,7 +2136,7 @@ ESR ( Edge Side Rendering ) 时代，略。见下面 [[#ESR 边缘渲染]]
 
 - **TTFB ( Time To First Byte ) 很短**：因为静态内容在 CDN 缓存住了，会很快的返回给用户。
 
-- **FP ( First Paint ) 很短**：因为在静态内容返回后，已经可以开始 HTML 的解析，以及  JS、CSS 的下载和执行。
+- **FP ( First Paint ) 很短**：因为在静态内容返回后，已经可以开始 HTML 的解析，以及  JS、CSS 的下载和执行
 
 - **FMP ( First Meaningful Paint ) 很短**：<font color=FF0000>因为动态内容的请求是在 CDN 发起，相比于客户端与服务端直连，请求减少了 **TCP连接** 和 **网络传输** 开销</font>；而且由于动态部分是以 chunked 形式流式返回，FMP 就会很短，比如搜索网站的第一个搜索结果就会首先绘制出来
 

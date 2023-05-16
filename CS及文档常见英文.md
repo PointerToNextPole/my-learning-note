@@ -18,7 +18,9 @@
 
 - **built-in**：内置
 
-- **addon**：插件。来自 “node-gyp is a cross-platform command-line tool written in Node.js for compiling native addon modules for Node.js”
+- **addon**：插件。
+
+   > node-gyp is a cross-platform command-line tool written in Node.js for compiling native addon modules for Node.js
 
 - **on the fly**：即时，在运行时（热更新）
 
@@ -40,7 +42,9 @@
 
 - **preflight**：预检。一般情况下的含义：预检请求 ( preflight request )。不过，在 antfu 的 UnoCSS 相关博客 [Reimagine Atomic CSS](https://antfu.me/posts/reimagine-atomic-css#scoping) 中 [scoping](https://antfu.me/posts/reimagine-atomic-css#scoping) 部分 发现了有 “样式预检” 的含义，翻译在 [重新构想原子化 CSS - CSS 作用域](https://antfu.me/posts/reimagine-atomic-css-zh#css-%E4%BD%9C%E7%94%A8%E5%9F%9F) 中
 
-- **semver**：( Semantic version ) 语义化版本控制规范
+- **semver**：( semantic version ) 语义化版本控制规范
+
+- **semantical** ：语义的
 
 - **instantiate**：实例化 ( verb )
 
@@ -406,7 +410,7 @@
 
 - **operand** ：操作数
 
-- **caveat** ：警告
+- **caveat** ：n. 警告，注意事项
 
 - **concise** ：简明的
 
@@ -644,6 +648,9 @@
 
   <img src="https://s2.loli.net/2023/04/05/iET3t1bdynUZNDO.png" alt="image-20230405171953947" style="zoom:50%;" />
 
+
+- **resume** ：v. 重新开始，继续。 n. 简历
+
 - **mimic** ：v. / n. 模仿，adj. 会模仿的（人/动物）
 
 - **gist** ：要点，主旨。这个单词挺常见的，比如 `gist.github.com`
@@ -784,6 +791,24 @@
 - **impure** ：不纯的
 
 - **synthetic** ：合成的
+
+- **violate** ：vt. 违反，违规
+
+  **violation** ：n. 违反
+
+- **implicit** ：隐含的，含蓄的
+
+- **consensus** ：共识
+
+- **sequential** ：连续的，顺序的
+
+  **sequent** ：adj. 继续的，连续的。n. 后果，接着发生的事，结果
+  
+- **strip** ：n. 带、条 v. **剥去**，除去
+
+  > Things like `userState` and `useEffect` get stripped out.
+  >
+  > 摘自：[What Even Are React Server Components](https://www.viget.com/articles/what-even-are-react-server-components/)
 ***
 
 
@@ -888,7 +913,7 @@
 - **motivate** ：v. 激励，成为…的动机，是…的原因
 
   **motivated** ：adj. 有积极性的，充满热情的，**有动机的**，**有目的的**
-  
+
 - **incur** ：v. 招致
 
 - **preceive** ：v. 感知
@@ -964,3 +989,15 @@
 - **semester** ：学期
 
 - **fidelity** ：n. 忠诚
+
+- **hype** ：n. 炒作。来自 hyperbole，但是似乎不是缩写？
+
+  <img src="https://s2.loli.net/2023/05/15/cKtwg3T6ZHynzi5.png" alt="image-20230515140741048" style="zoom:45%;" />
+
+- **woe** ：麻烦，悲哀
+
+- **dread** ：v. 恐惧 n. 恐惧
+
+  **dreaded** ：令人害怕的，可怕的
+  
+  

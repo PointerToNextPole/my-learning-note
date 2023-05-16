@@ -7058,8 +7058,6 @@ Dependency injection is a software design pattern where an object or a function 
 
 This is like an inversion of control and results in loosely coupled program and a code base that is modular
 
-Here also decorators can in useful
-
 ###### Validation
 
 Decorators can be used to validate inputs or the state of an Object. 

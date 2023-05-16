@@ -63,13 +63,13 @@ HTML `<label>` 元素（标签）表示用户界面中某个元素的说明。
 
 该元素包含 全局属性。
 
-- <font color=FF0000>**for：**即和 `<label>` 元素在同一文档中的 可关联标签的元素 的 id</font>。 <font color=LightSeaGreen>文档中第一个 id 值与 `<label>` 元素 for 属性值相同的元素，如果可关联标签 ( labelable ) ，则为已关联标签的控件，其标签就是这个 `<label>` 元素</font>。如果这个元素不可关联标签，则 for 属性没有效果。如果文档中还有其他元素的 id 值也和 for 属性相同，for 属性对这些元素也没有影响。
-  
-  > ⚠️ `<label>` 元素可同时有一个 for 属性和一个子代控件元素，只是 for 属性需要指向这个控件元素
+- <font color=FF0000>**`for`** ：即和 `<label>` 元素在同一文档中的 可关联标签的元素 的 `id`</font>。 <font color=LightSeaGreen>文档中第一个 `id` 值与 `<label>` 元素 `for` 属性值相同的元素，如果可关联标签 ( labelable ) ，则为已关联标签的控件，其标签就是这个 `<label>` 元素</font>。如果这个元素不可关联标签，则 `for` 属性没有效果。如果文档中还有其他元素的 `id` 值也和 `for` 属性相同，`for` 属性对这些元素也没有影响。
 
-- **form：**<font color=FF0000>表示与 label 元素关联的 `<form>` 元素（即它的表单拥有者）</font>。**如果声明了该属性，其值应是同一文档中 `<form>` 元素的 id。因此你可以将 label 元素放在文档的任何位置，而不仅作为 `<form>` 元素的后代**。
+  > ⚠️ `<label>` 元素可同时有一个 `for` 属性和一个子代控件元素，只是 `for` 属性需要指向这个控件元素
 
-摘自：[MDN - \<label>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/label)
+- **`form`** ：<font color=FF0000>表示与 `label` 元素关联的 `<form>` 元素（即它的表单拥有者）</font>。**如果声明了该属性，其值应是同一文档中 `<form>` 元素的 `id` 。因此你可以将 `label` 元素放在文档的任何位置，而不仅作为 `<form>` 元素的后代**。
+
+摘自：[MDN - `<label>`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/label)
 
 
 
@@ -3133,10 +3133,10 @@ clear: unset;
 
 | 值        | 说明                                                         |
 | :-------- | :----------------------------------------------------------- |
-| repeat    | 图像会按需重复来覆盖整个背景图片所在的区域. 最后一个图像会被裁剪, 如果它的大小不合适的话. |
-| space     | 图像会尽可能得重复, 但是不会裁剪. 第一个和最后一个图像会被固定在元素(element)的相应的边上, 同时空白会均匀地分布在图像之间. background-position属性会被忽视, 除非只有一个图像能被无裁剪地显示. 只在一种情况下裁剪会发生, 那就是图像太大了以至于没有足够的空间来完整显示一个图像. |
-| round     | 随着允许的空间在尺寸上的增长, 被重复的图像将会伸展(没有空隙), 直到有足够的空间来添加一个图像. 当下一个图像被添加后, 所有的当前的图像会被压缩来腾出空间. 例如, 一个图像原始大小是260px, 重复三次之后, 可能会被伸展到300px, 直到另一个图像被加进来. 这样他们就可能被压缩到225px.译者注: 关键是浏览器怎么计算什么时候应该添加一个图像进来, 而不是继续伸展. |
-| no-repeat | 图像不会被重复(因为背景图像所在的区域将可能没有完全被覆盖). 那个没有被重复的背景图像的位置是由background-position属性来决定. |
+| repeat    | 图像会按需重复来覆盖整个背景图片所在的区域。最后一个图像会被裁剪, 如果它的大小不合适的话 |
+| space     | 图像会尽可能得重复，但是不会裁剪。第一个和最后一个图像会被固定在元素 ( element ) 的相应的边上，同时空白会均匀地分布在图像之间。`background-position` 属性会被忽视, 除非只有一个图像能被无裁剪地显示。只在一种情况下裁剪会发生，那就是图像太大了以至于没有足够的空间来完整显示一个图像。 |
+| round     | 随着允许的空间在尺寸上的增长，被重复的图像将会伸展（没有空隙），直到有足够的空间来添加一个图像。当下一个图像被添加后, 所有的当前的图像会被压缩来腾出空间。例如，一个图像原始大小是260px ，重复三次之后，可能会被伸展到 300px，直到另一个图像被加进来。这样他们就可能被压缩到225px。译者注：关键是浏览器怎么计算什么时候应该添加一个图像进来，而不是继续伸展. |
+| no-repeat | 图像不会被重复(因为背景图像所在的区域将可能没有完全被覆盖). 那个没有被重复的背景图像的位置是由 `background-position` 属性来决定. |
 
 以上关于background-repeat摘自：[MDN - background-repeat](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-repeat)
 
@@ -3432,7 +3432,7 @@ text-indent: unset;
   
   浏览器会按照源码的顺序，决定每个元素的位置，这称为 “正常的页面流” ( normal flow ) 。每个块级元素占据自己的区块 ( block )，元素与元素之间不产生重叠，这个位置就是元素的默认位置。
   
-  > ⚠️ 注意：<font color=red>static 定位所导致的元素位置，是浏览器自主决定的</font>；所以 <font color=red>top、bottom、left、right 这四个属性无效</font>。
+  > ⚠️ <font color=red>static 定位所导致的元素位置，是浏览器自主决定的</font>；所以 <font color=red>top、bottom、left、right 这四个属性无效</font>。
 
 - **relative**：相对定位元素的定位是相对其正常位置。<font color=FF0000>**（相对于自身定位）**</font>
   
@@ -3464,7 +3464,39 @@ text-indent: unset;
 
 部分摘自：[阮一峰的网络日志 - CSS 定位详解](https://www.ruanyifeng.com/blog/2019/11/css-position.html)
 
-> 👀 注：这部分内容可以参考 [[前端面试点总结#定位]]
+> 👀 这部分内容可以参考 [[前端面试点总结#定位]]
+
+#### inset
+
+CSS 属性 **`inset`** 为<font color=red>**简写属性**，对应于 `top`、`right`、`bottom` 和 `left` 属性</font>。其与 `margin` 简写属性具有相同的多值语法。
+
+> 👀 后面还有更多内容，不过感觉没必要摘抄
+
+##### 示例
+
+```html
+<div>
+  <span class="exampleText">示例文本</span>
+</div>
+
+<style>
+div {
+  background-color: yellow;
+  width: 150px;
+  height: 120px;
+  position: relative;
+}
+
+.exampleText {
+  writing-mode: sideways-rl;
+  position: absolute;
+  inset: 20px 40px 30px 10px;
+  background-color: #c8c800;
+}
+</style>
+```
+
+摘自：[MDN - inset](https://developer.mozilla.org/zh-CN/docs/Web/CSS/inset)
 
 
 
@@ -3476,7 +3508,7 @@ text-indent: unset;
 
 #### CSS 布局 - Overflow
 
-CSS overflow 属性<mark>可以控制内容溢出元素框时在对应的元素区间内添加滚动条</mark>。
+CSS `overflow` 属性<mark>可以控制内容溢出元素框时在对应的元素区间内添加滚动条</mark>。
 
 ##### overflow 属性有以下值
 
