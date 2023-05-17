@@ -885,7 +885,14 @@
 - `-ish` 后缀：用于表达数量或时间的近似值。以 "10ish" 为例， 它是一个口语化的用法，表示数量大约为10。 
 
   > This is an over-generalization, but over the past 10ish years, a lot of complexity has been moving from the server to the client.
+  >
   > 摘自：[The End of Front-End Development](https://www.joshwcomeau.com/blog/the-end-of-frontend-development/)
+  
+- `co-` 前缀，协同的、共同的...
+
+  > Remote plugins run as **co-processes**, safely and asynchronously.
+  >
+  > 摘自：[neovim 官网](https://neovim.io/)
 
 
 

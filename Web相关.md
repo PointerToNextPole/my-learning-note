@@ -54,7 +54,7 @@ U+0000 = null
 
 Unicode 只规定了每个字符的码点，到底用什么样的字节序表示这个码点，就涉及到 <font color=FF0000 size=4>**编码方法**</font>。
 
-<font color=FF0000>最直观</font>的编码方法是，<font color=FF0000>每个码点使用四个字节表示</font>，字节内容一一对应码点。<font color=FF0000>这种编码方法就叫做 UTF-32</font>。比如，码点0 就用四个字节的 0 表示，码点 597D 就在前面加两个字节的0。
+<font color=FF0000>最直观</font>的编码方法是，<font color=FF0000>每个码点使用四个字节表示</font>，字节内容一一对应码点。<font color=FF0000>这种编码方法就叫做 UTF-32</font>。比如，码点0 就用四个字节的 0 表示，码点 597D 就在前面加两个字节的 0。
 
 ```
 U+0000 = 0x0000 0000
@@ -2819,7 +2819,7 @@ WebDAV 扩展了 request 方法所允许的标准 HTTP谓词 和 HTTP头。增�
 
 > 👀 阅读评论区发现：使用 GIF 作为载体进行埋点，是很老的技术了；也似乎有点过时...
 
-> 👀 在评论区还看见了 《JS高程 第四版》中原理类似的内容，摘录下来作为辅助阅读：
+> 💡 在评论区还看见了 《JS高程 第四版》中原理类似的内容，摘录下来作为辅助阅读：
 >
 > > Web 应用程序开发中的一个常见做法是建立中心化的错误日志存储和跟踪系统。数据库和服务器错 误正常写到日志中并按照常用 API 加以分类。对复杂的 Web 应用程序而言，最好也把 JavaScript 错误发 送回服务器记录下来。这样做可以把错误记录到与服务器相同的系统，只要把它们归类到前端错误即可。 使用相同的系统可以进行相同的分析，而不用考虑错误来源。
 > >
@@ -2830,7 +2830,7 @@ WebDAV 扩展了 request 方法所允许的标准 HTTP谓词 和 HTTP头。增�
 > >    let img = new Image(), 
 > >       encodedSev = encodeURIComponent(sev),
 > >       encodedMsg = encodeURIComponent(msg);
-> >      img.src = 'log.php?sev=${encodedSev}&msg=${encodedMsg}';
+> >       img.src = 'log.php?sev=${encodedSev}&msg=${encodedMsg}';
 > > }
 > > ```
 > >
@@ -2851,14 +2851,22 @@ URL Schemes 有两个单词：
 - **URL：**我们都很清楚，http://www.apple.com 就是个 URL，我们也叫它链接或网址
 - **Schemes：**表示的是一个 URL 中的一个位置——<font color=dodgerBlue>最初始的位置，即 `://` 之前的那段字符</font>。比如 `https://www.apple.com` 这个网址的 Schemes 是 https
 
+> 💡 补充：
+>
+> URL Scheme 组成
+>
+> ```
+> [scheme:][//authority][path][?query][#fragment]
+> ```
+
 根据我们上面对 URL Schemes 的使用，我们可以很轻易地理解，在以本地应用为主的 iOS 上，我们可以像定位一个网页一样，用一种特殊的 URL 来定位一个应用甚至应用里某个具体的功能。而定位这个应用的，就应该这个应用的 URL 的 Schemes 部分，也就是开头儿那部分。比如短信，就是 `sms:`
 
-你可以完全按照理解一个网页的 URL ——也就是它的网址——的方式来理解一个 iOS 应用的 URL，拿苹果的网站和 iOS 上的微信来做个简单对比：
+你可以完全按照理解一个网页的 URL （也就是它的网址）的方式来理解一个 iOS 应用的 URL，拿苹果的网站和 iOS 上的微信来做个简单对比：
 
-|                   | 网页（苹果）                         | iOS 应用（微信）                |
-| :---------------- | :----------------------------------- | :------------------------------ |
-| 网站首页/打开应用 | http://www.apple.com                 | `weixin://`                     |
-| 子页面/具体功能   | http://www.apple.com/mac/（Mac页面） | `weixin://dl/moments`（朋友圈） |
+|                   | 网页（苹果）                           | iOS 应用（微信）                |
+| :---------------- | :------------------------------------- | :------------------------------ |
+| 网站首页/打开应用 | `http://www.apple.com`                 | `weixin://`                     |
+| 子页面/具体功能   | `http://www.apple.com/mac/`（Mac页面） | `weixin://dl/moments`（朋友圈） |
 
 摘自：[URL Schemes 使用详解](https://sspai.com/post/31500)
 
@@ -2871,27 +2879,31 @@ URL Schemes 有两个单词：
 
 摘自：[入门 iOS 自动化：读懂 URL Schemes](https://sspai.com/post/44591)
 
-##### URL Schemes在应用中的“注册”
+##### URL Schemes在应用中的 “注册”
 
-- macOS 在 <font color=FF0000>Info.plist</font> 文件中。
-- Windows 通过往<font color=FF0000>注册表</font>的 HKCR (HKEY_CALSSES_ROOT) 目录下添加一条记录来完成该协议的注册。
+- macOS 在 <font color=FF0000>`Info.plist`</font> 文件中。
+- Windows 通过往<font color=FF0000>注册表</font>的 HKCR ( HKEY_CALSSES_ROOT ) 目录下添加一条记录来完成该协议的注册。
 
 摘自：[pc网页端调起客户端应用的那些事--electron](https://blog.csdn.net/dengdongxia/article/details/105906975) 该链接中还有开发相关的设置，这里略，需要用了再看。
 
-##### URL Schemes的一些缺点
+##### URL Schemes 的缺点
 
-URL Scheme方式优点是开发简单，但弊端也很明显：
+URL Scheme 方式优点是开发简单，但弊端也很明显：
 
 我们只能通过固定协议格式的链接来实现跳转，而且<font color=FF0000>打开H5页面时，会出现一个提示框：“是否打开XXX”。用户确认了才会跳转到App中，增加了用户流程</font>
 
-<font color=LightSeaGreen>微信、QQ 等把 URL Scheme 打开App这种方式给禁了，但是它们都各自维护着一个白名单，如果Scheme不在该白名单内，那么就不能在他们的App内打开这个App</font>（如果被封锁了那么用户只能通过右上角浏览器内打开App）
+<font color=LightSeaGreen>微信、QQ 等把 URL Scheme 打开 App 这种方式给禁了，但是它们都各自维护着一个白名单，如果 Scheme 不在该白名单内，那么就不能在他们的 App 内打开这个 App</font>（如果被封锁了那么用户只能通过右上角浏览器内打开 App）
 
 摘自：[什么是Deeplink？以及Deeplink的原理-阿里云开发者社区](https://developer.aliyun.com/article/780283)
 
-##### URL Scheme列表
+##### URL Scheme 列表
 
 - [URL Scheme 分享](https://st3376519.huoban.com/share/1985010/VGi2N5Vf0C1MVnHCVWiBc8L9g15c9VGJbMGcFrb6/172707/list)
 - [【基础知识】现在很火的app上的deeplink技术，到底是什么？](https://cloud.tencent.com/developer/article/1049347) 在最后的附录中
+
+
+
+
 
 #### DeepLink
 
@@ -2941,11 +2953,13 @@ App Link是由安卓发布的，在Andriod M以后才能使用。用户可以点
 
 摘自：[深度链接(Deeplink)的实现与使用 - 心心相印印的文章 - 知乎](https://zhuanlan.zhihu.com/p/394363004) 部分摘自：[什么是Deeplink？以及Deeplink的原理](https://developer.aliyun.com/article/780283)
 
-##### 补充
+##### deep linking 携带信息
 
-deep linking 强大的地方是<font color=FF0000>**能携带信息**</font>。虽然URL Schemes 也可以用 query 携带信息；但是：你点击了我生成的deeplink 去下载客户端 然后安装 注册 这么多步骤 等你登录的时候 客户端能上报 deeplink 的信息 知道你点了谁的；而这时 URL Schemes 的 query 肯定丢失了
+deep linking 强大的地方是<font color=FF0000>**能携带信息**</font>。虽然vURL Schemes 也可以用 query 携带信息；但是：你点击了我生成的deeplink 去下载客户端 然后安装 注册 这么多步骤 等你登录的时候 客户端能上报 deeplink 的信息 知道你点了谁的；而这时 URL Schemes 的 query 肯定丢失了
 
 学习自：微信群 codingstartup 群友
+
+
 
 
 
