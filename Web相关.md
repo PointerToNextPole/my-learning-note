@@ -2844,16 +2844,24 @@ WebDAV 扩展了 request 方法所允许的标准 HTTP谓词 和 HTTP头。增�
 
 
 
-#### URL Scheme
+#### H5 唤端技术
+
+唤端技术也称之为 `deep link` 技术。不同平台的实现方式有些不同，一般常见的有这几种，分别是：
+
+- URL Scheme（通用）
+- Universal Link （iOS）
+- App Link、Chrome Intents（android）
+
+##### URL Scheme
 
 URL Schemes 有两个单词：
 
 - **URL：**我们都很清楚，http://www.apple.com 就是个 URL，我们也叫它链接或网址
-- **Schemes：**表示的是一个 URL 中的一个位置——<font color=dodgerBlue>最初始的位置，即 `://` 之前的那段字符</font>。比如 `https://www.apple.com` 这个网址的 Schemes 是 https
+- **Schemes：**表示的是一个 URL 中的一个位置——<font color=lightSeaGreen>最初始的位置，即 `://` 之前的那段字符</font>。比如 `https://www.apple.com` 这个网址的 Schemes 是 https
 
 > 💡 补充：
 >
-> URL Scheme 组成
+> <font color=dodgerBlue>URL Scheme 组成</font>
 >
 > ```
 > [scheme:][//authority][path][?query][#fragment]
@@ -2870,96 +2878,175 @@ URL Schemes 有两个单词：
 
 摘自：[URL Schemes 使用详解](https://sspai.com/post/31500)
 
-##### URL Schemes 从功能上分为了 4 种
+###### URL Schemes 从功能上分为了 4 种
 
-1. **基础 URL Schemes**：用于启动应用，比如：`drafts4://`；
-2. **复杂 URL Schemes**：用于直接打开应用的具体功能，比如：`drafts4://dictate`；
-3. **变形 URL Schemes：**用于输入内容，含有第三方应用的特殊语法，比如：在 Launch Center Pro 里用这一条 `drafts4://create?text=[prompt]`；
-4. **x-callback-URL：**前面的 URL Schemes 只能执行一个动作，而 `x-callback-URL` 可以根据根据前一段 URL Schemes 的执行情况决定进一步的行动。
+1. **基础 URL Schemes** ：用于启动应用，比如：`drafts4://`
+2. **复杂 URL Schemes** ：用于直接打开应用的具体功能，比如：`drafts4://dictate`
+3. **变形 URL Schemes** ：用于输入内容，含有第三方应用的特殊语法，比如：在 Launch Center Pro 里用这一条 `drafts4://create?text=[prompt]`
+4. **x-callback-URL** ：前面的 URL Schemes 只能执行一个动作，而 `x-callback-URL` 可以根据根据前一段 URL Schemes 的执行情况决定进一步的行动。
 
 摘自：[入门 iOS 自动化：读懂 URL Schemes](https://sspai.com/post/44591)
 
-##### URL Schemes在应用中的 “注册”
+###### URL Schemes 在应用中的 “注册”
 
 - macOS 在 <font color=FF0000>`Info.plist`</font> 文件中。
 - Windows 通过往<font color=FF0000>注册表</font>的 HKCR ( HKEY_CALSSES_ROOT ) 目录下添加一条记录来完成该协议的注册。
 
 摘自：[pc网页端调起客户端应用的那些事--electron](https://blog.csdn.net/dengdongxia/article/details/105906975) 该链接中还有开发相关的设置，这里略，需要用了再看。
 
-##### URL Schemes 的缺点
+###### URL Schemes 的优缺点
 
-URL Scheme 方式优点是开发简单，但弊端也很明显：
+**优点**
 
-我们只能通过固定协议格式的链接来实现跳转，而且<font color=FF0000>打开H5页面时，会出现一个提示框：“是否打开XXX”。用户确认了才会跳转到App中，增加了用户流程</font>
+- 兼容性好，无论安卓或者 iOS 都能支持，是目前最常用的方式
+- 开发简单
 
-<font color=LightSeaGreen>微信、QQ 等把 URL Scheme 打开 App 这种方式给禁了，但是它们都各自维护着一个白名单，如果 Scheme 不在该白名单内，那么就不能在他们的 App 内打开这个 App</font>（如果被封锁了那么用户只能通过右上角浏览器内打开 App）
+**缺点**
 
-摘自：[什么是Deeplink？以及Deeplink的原理-阿里云开发者社区](https://developer.aliyun.com/article/780283)
+- 只能通过固定协议格式的链接来实现跳转，而且<font color=FF0000>打开H5页面时，会出现一个提示框：“是否打开XXX”。用户确认了才会跳转到 App 中，增加了用户流程</font>；可能会导致用户流失
 
-##### URL Scheme 列表
+- 容易被屏蔽，app 很轻松就可以拦截掉通过 URL Scheme 发起的跳转。<font color=LightSeaGreen>微信、QQ 等禁用了 URL Scheme 打开 App，但是它们都各自维护着一个白名单，如果 Scheme 不在该白名单内，那么就不能在他们的 App 内打开这个 App</font>（如果被封锁了那么用户只能通过右上角浏览器内打开 App）
+- 无法准确判断是否唤起成功，因为本质上这种方式就是打开一个链接，并且还不是普通的 http 链接，所以如果用户没有安装对应的 APP，那么尝试跳转后在浏览器中会没有任何反应，通过定时器来引导用户跳到应用商店，但这个定时器的时间又没有准确值，不同手机的唤端时间也不同，我们只能大概的估计一下它的时间来实现，一般设为3000ms左右比较合适；
+- 有 URL Scheme 劫持风险。比如有一个 app 也向系统注册了 `zhihu://` 这个 scheme ，唤起流量可能就会被劫持到这个 app 里
+
+摘自：[什么是Deeplink？以及Deeplink的原理-阿里云开发者社区](https://developer.aliyun.com/article/780283) 、[H5如何实现唤起APP](https://juejin.cn/post/7097784616961966094)
+
+###### URL Scheme 列表
 
 - [URL Scheme 分享](https://st3376519.huoban.com/share/1985010/VGi2N5Vf0C1MVnHCVWiBc8L9g15c9VGJbMGcFrb6/172707/list)
 - [【基础知识】现在很火的app上的deeplink技术，到底是什么？](https://cloud.tencent.com/developer/article/1049347) 在最后的附录中
 
+###### 判断是否成功唤起
 
+当用户唤起APP失败时，我们希望可以引导用户去进行下载。那怎么才能知道当前 APP 是否成功唤起呢？
 
+可以监听当前页面的 `visibilitychange` 事件，如果页面隐藏，则表示唤端成功；否则唤端失败，跳转到应用商店。
 
+```vue
+<template>
+  <div class="open_app">
+    <div class="open_btn" @click="open">打开腾讯微博</div>
+  </div>
+</template>
 
-#### DeepLink
+<script>
+export default {
+  data() {
+    return {
+      timer: null
+    }
+  },
+  mounted() {
+    this.watchVisibility()
+  },
+  methods: {
+    watchVisibility() {
+       window.addEventListener('visibilitychange', () => {
+         // 监听页面 visibility
+         if(document.hidden) {
+           // 如果页面隐藏了，则表示唤起成功，这时候需要清除下载定时器
+           clearTimeout(this.timer)
+         }
+       })
+    },
+    open() {
+      this.timer = setTimeout(() => {
+        // 没找到腾讯微博的下载页，这里暂时以淘宝下载页代替
+        window.location.href = 'http://apps.apple.com/cn/app/id387682726'
+      }, 3000)
+      window.location.href = 'TencentWeibo://'
+    }
+  }
+}
+</script>
+```
 
-“Deeplink”又名“深度链接”，<font color=dodgerBlue>是一种能将用户直接从网页带到App指定页面的技术</font>。
+> 👀 这里源代码有点问题，总之没看懂 `visibilitychange` 事件是如何开始监听的；所以做了部分改动
 
-目前广义上的 “深度链接” 概念包含了 DeepLink 和 Deferred Deeplink，主要触发场景分为两种：
+##### Universal Link
 
-- 用户**已安装目标App**情况下：在web网页点击链接，就能直接跳转到App内指定页面。
-- 用户**未安装目标App**情况下：在web网页点击链接，会先跳转应用商店，下载后首次打开App，会自动跳转到指定页面。
+Universal Link 是 iOS 9 中新增的功能，可以直接通过 `https` 协议的链接来打开 APP。 相比 URL Scheme 的优点是使用`https`协议；<font color=LightSeaGreen>如果没有唤端成功，那么就会直接打开这个网页，不再需要判断是否唤起成功</font>。并且使用 Universal Link，<font color=red>不会再弹出是否打开的弹出</font>；对用户来说，唤端的效率更高了。
 
-![](https://i.loli.net/2021/10/23/k2RwgbMQpvWyiUC.jpg)
+###### 原理
 
-##### Deeplink在实际运用中能起到什么效果？
+- 在 APP 中注册自己要支持的域名
+- 在自己域名的根目录下配置一个 `apple-app-site-association` 文件即可（具体的配置前端同学不用关注，只需与 iOS 同学确认好支持的域名即可）
 
-Deeplink（深度链接）能被运用于任意渠道触点（微信、QQ、微博、短信、邮箱、各大浏览器、其他App等），<font color=FF0000>直接从这些平台跳转至目标内容页</font>，省去中间“打开App首页”“搜索页面”等无效步骤。
+###### 打开方式
 
-<font color=LightSeaGreen>深度链接（Deeplink）对于“App社交分享、裂变传播转化、沉默用户唤醒、用户流失召回、DSP广告投放、短信邮箱营销、地推首单激活、搜索引擎引流”等运营场景都有着奇效，一方面能快速实现场景还原，带来更高效的用户体验；另一方面，缩短转化路径，减少App推广拉新环节中20%以上的流失率</font>。
+```js
+openByUniversal () {
+  // 打开知乎问题页
+  window.location.href = 'https://oia.zhihu.com/questions/64966868'
+  // oia.zhihu.com
+},
+```
 
-##### 其中涉及到的一些技术要点
+###### 适用性
 
-###### URL Scheme（iOS/Android都适用）
+- 相对 URL Scheme，有一个较大优点是它唤端时没有弹窗提示是否打开，提升用户体验，可以减少一部分用户流失
+- <font color=red>无需关心用户是否安装对应的 APP</font>。对于没有安装的用户，点击链接就会直接打开对应的页面，因为它也是 http 协议的路径，这样也能一定程度解决 URL Scheme 无法准确判断唤端失败的问题；
+- 只能够在 iOS 上使用
+- 只能由用户主动触发
 
-URL Scheme 是实现 Deeplink兼容性最高、也最简单的一项方法，原生App可以先向操作系统注册一个URL，其中 Scheme 的作用是从不同平台唤醒相应App。
+##### App Link & Chrome Intents
 
-###### 进阶版深度链接：Universal link（iOS 9.2及以上适用）
+2015 年的 Google I/O 大会上，Android M 宣布了一个新特性：App Links 让用户在点击一个普通 web 链接的时候可以打开指定 APP 的指定页面，<font color=LightSeaGreen>前提是这个 APP 已经安装并且经过了验证</font>，否则会显示一个打开确认选项的弹出框，只支持 Android M 以上系统。
 
-Universal Link是 iOS 9 以后苹果推出的通用链接技术，能够方便的通过一个https链接来打开App指定页面，不需要额外的判断；如果没有安装App，则跳转到自定义地址。
+App Links 的最大的作用就是可以避免从页面唤醒 App 时出现的选择浏览器选项框，前提是必须注册相应的Scheme，就可以实现直接打开关联的 App
 
-<font color=LightSeaGreen>相对Scheme的优势在于，Universal Link 是一个 Web Link，因此少了很多麻烦：</font>
+###### 缺点
 
-<font color=FF0000>当用户已安装该 App 时，不需要加载任何页面以及判断提示，能够立即唤醒 App，用户未安装App，则跳去对应的 web link（自定义页面）</font>。
-Universal Links支持从其他App中的UIWebView中跳转到目标App。
-绝大多数平台都支持Universal Link，能被搜索引擎索引，iOS微信7.0.5版本也解除了对Universal Link的限制，目前微信7.0.5以上版本已经能流畅运行Universal Link。
-在Deeplink的实现方案中，Universal Link相比Scheme无疑具有更优的用户体验，iOS9.2及以上的版本更推荐使用Universal Link唤醒App。
+- App links 在国内的支持还不够，部分安卓浏览器并不支持跳转至App，而是直接在浏览器上打开对应页面
+- 系统询问是否打开对应App时，假如用户选择“取消”并且选中了“记住此操作”，那么用户以后就无法再跳转App
 
-###### App Link——Andriod M（6）以后
+###### Chrome Intents
 
-App Link是由安卓发布的，在Andriod M以后才能使用。用户可以点击一个H5链接时直接跳转到 App 指定页面，而不会让用户点击”是否打开xx“。所以App Link比URL Scheme方式体验更好。
+- Chrome Intent 是 Android 设备上 Chrome 浏览器中 URI 方案的深层链接替代品。
+- 如果 APP 已安装，则通过配置的 URI SCHEME 打开 APP。
+- 如果 APP 未安装，配置了 fallback url 的跳转 fallback url，没有配置的则跳转应用市场。
 
-注：因为目前App Link在中国大陆内使用不便。所以国内的Top第三方如友盟+暂未支持AppLink这种方式，Andriod端只能使用URL Scheme这种方式。但据小编所知，后续友盟+会支持AppLink这种拉起App方式。
+这两种方案在国内的应用都比较少。
 
-###### 巧用工具，快速实现深度链接（Deeplink）
+##### 方案对比
 
-<font color=FF0000>Deeplink虽然无非是通过Scheme、Universal Link、App link这几种方法</font>，<font color=LightSeaGreen>但这几项技术是基于系统和平台实现的，Android及iOS在几个系统版本的迭代后，配置方式会有新的变化，且安卓机型众多、浏览器众多等问题也会导致出现兼容上的麻烦，开发者自行研发的话，资源配置以及系统更新后的维护成本相对较高，还要考虑各种各样的跳转场景问题</font>。
+|                   | URL Scheme  | Universal Link | App Link       |
+| ----------------- | ----------- | -------------- | -------------- |
+| <ios9             | 支持        | 不支持         | 不支持         |
+| >=ios9            | 支持        | 支持           | 不支持         |
+| <android6         | 支持        | 不支持         | 不支持         |
+| >=android6        | 支持        | 不支持         | 支持           |
+| 是否需要HTTPS     | 不需要      | 需要           | 需要           |
+| 是否需要客户端    | 需要        | 需要           | 需要           |
+| 无对应APP时的现象 | 报错/无反应 | 跳到对应的页面 | 跳到对应的页面 |
 
-<font color=FF0000>基于这些困扰，许多想要敏捷开发的开发者就会选择使用第三方服务，省去复杂的配置和维护工作，同时更能保障深度链接服务的稳定运行</font>。
+###### URI Scheme
 
-摘自：[深度链接(Deeplink)的实现与使用 - 心心相印印的文章 - 知乎](https://zhuanlan.zhihu.com/p/394363004) 部分摘自：[什么是Deeplink？以及Deeplink的原理](https://developer.aliyun.com/article/780283)
+- URL Scheme 的兼容性最高，但使用体验相对较差
+- 当要被唤起的 App 没有安装时，这个链接就会出错，页面无反应
+- 当注册有多个 Scheme 相同的时候，没有办法区分
+- 不支持从其他 App 中的 UIWebView 中跳转到目标 APP， 所以 iOS 和 Android 都出现了自己的独有解决方案
 
-##### deep linking 携带信息
+###### Universal Link
 
-deep linking 强大的地方是<font color=FF0000>**能携带信息**</font>。虽然vURL Schemes 也可以用 query 携带信息；但是：你点击了我生成的deeplink 去下载客户端 然后安装 注册 这么多步骤 等你登录的时候 客户端能上报 deeplink 的信息 知道你点了谁的；而这时 URL Schemes 的 query 肯定丢失了
+- 已经安装 APP，直接唤起 APP；APP 没有安装，则跳去对应的 web link
+- Universal Link 是从服务器上查询是哪个APP需要被打开，所以不会存在冲突问题
+- Universal Link 支持从其他 App 中的 UIWebView 中跳转到目标 App
+- 缺点在于会记住用户的选择：在用户点击了 Universal Link 之后，iOS 会去检测用户最近一次是选择了直接打开 App 还是打开网站。一旦用户点击了这个选项，他就会通过 safiri 打开你的网站。并且在之后的操作中，默认一直延续这个选择，除非用户从你的 webpage 上通过点击 Smart App Banner 上的 OPEN 按钮来打开。
+
+###### App link
+
+- 优点与 Universal Link 类似
+- 缺点在于国内的支持相对较差，在有的浏览器或者手机 ROM 中并不能链接至 APP，而是在浏览器中打开了对应的链接。
+- 在询问是否用 APP 打开对应的链接时，如果选择了“取消”并且“记住选择”被勾上，那么下次你再次想链接至 APP 时就不会有任何反应
+
+摘自：[H5如何实现唤起APP](https://juejin.cn/post/7097784616961966094)
+
+##### deep link 携带信息
+
+deep link 强大的地方是<font color=FF0000>**能携带信息**</font>。虽然 URL Schemes 也可以用 query 携带信息；但是：你点击了我生成的deeplink 去下载客户端 然后安装、注册 这么多步骤 等你登录的时候 客户端能上报 deeplink 的信息 知道你点了谁的；而这时 URL Schemes 的 query 肯定丢失了
 
 学习自：微信群 codingstartup 群友
-
-
 
 
 
