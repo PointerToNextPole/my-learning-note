@@ -20,13 +20,13 @@ escape 就有 “转义” 的意思，所以 JS 中有编码的 `escape()` 方�
 
 <font color=LightSeaGreen>在 Unicode 定义之前，在同一数据中混合使用不同的语言是很困难的，而且容易出错</font>。例如，一个字符集存储的是日文字符，而另一个字符集存储的是阿拉伯字母。如果没有明确标明数据的哪些部分属于哪个字符集，其他程序和计算机就会错误地显示文本，或者在处理过程中损坏文本。如果你曾经见过像  ( `“”` )被替换为胡言乱语 `Ã‚Â£` ，那么你就已经看到过这个被称为  [Mojibake](https://zh.wikipedia.org/wiki/Mojibake) 的问题。
 
-<font color=FF0000 size=4>**网络上最常见的 Unicode 字符编码是 UTF-8**</font>。还存在一些其他编码，如 UTF-16 或过时的 UCS-2，但推荐使用 UTF-8
+<font color=fuchsia>**网络上最常见的 Unicode 字符编码是 UTF-8**</font>。还存在一些其他编码，如 UTF-16 或过时的 UCS-2，但推荐使用 UTF-8
 
 摘自：[MDN - Unicode](https://developer.mozilla.org/zh-CN/docs/Glossary/Unicode)
 
 #### 阮一峰文章《Unicode与JavaScript详解》笔记
 
-> ⚠️ 下面这篇文章，写于2014年，部分内容或已过时
+> ⚠️ 由于这篇文章，写于2014年，所以下面部分内容 *或* 已过时
 
 ##### Unicode 是什么
 
