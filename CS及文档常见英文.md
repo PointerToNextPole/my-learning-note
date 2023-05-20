@@ -809,6 +809,8 @@
   > Things like `userState` and `useEffect` get stripped out.
   >
   > 摘自：[What Even Are React Server Components](https://www.viget.com/articles/what-even-are-react-server-components/)
+  
+- **portable** ：<font color=red>可移植的</font>，便携的
 ***
 
 
