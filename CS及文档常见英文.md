@@ -811,6 +811,36 @@
   > 摘自：[What Even Are React Server Components](https://www.viget.com/articles/what-even-are-react-server-components/)
   
 - **portable** ：<font color=red>可移植的</font>，便携的
+
+- **carousel** ：旋转木马。**image carousel** ：图片轮播
+
+- **standby** ：待机
+
+- **mitigate** ：缓和，缓解，减轻
+
+- **policy** ：**策略**，政策。
+
+  > Policies in place to aid background page performance
+  >
+  > 摘自：[MDN US - Page Visibility API](https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API) 
+  >
+  > 另外，类似的还有 Content Security Policy
+
+- **throttle** ：vt. 掐死;使窒息;勒死 n. **节流阀**。另外，因为‘节流阀“的含义，引申出 ”节流“ 的含义
+
+  > <img src="https://s2.loli.net/2023/05/21/capsQL24kFU5vT6.png" alt="image-20230521172230218" style="zoom:50%;" />
+
+- **incoming** ：传入的
+
+  > It’s a continuous loop executing incoming work. 
+  >
+  > 摘自：[Practical Guide To Not Blocking The Event Loop](https://www.bbss.dev/posts/eventloop/)
+
+- **indefinite** ：adj. **无限期的**，模糊不清的，不明确的
+
+  > In server contexts, one such request can block all others indefinitely.
+  >
+  > 摘自：[Practical Guide To Not Blocking The Event Loop](https://www.bbss.dev/posts/eventloop/)
 ***
 
 
@@ -1009,4 +1039,4 @@
 
   **dreaded** ：令人害怕的，可怕的
   
-  
+- **budget** ：预算

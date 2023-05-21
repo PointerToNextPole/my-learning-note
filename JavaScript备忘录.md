@@ -7128,7 +7128,7 @@ window.navigator 对象<font color=FF0000>包含有关访问者浏览器的信�
 
 #### Navigator.sendBeacon()
 
-navigator.sendBeacon() 方法<font color=FF0000>可用于通过 HTTP POST 将少量数据异步传输到 Web 服务器</font>。它<font color=FF0000>**主要用于将统计数据发送到 Web 服务器，同时避免了用传统技术**</font>（如：XMLHttpRequest）发送分析数据的一些问题。
+`navigator.sendBeacon()` 方法<font color=FF0000>可用于通过 HTTP POST 将少量数据异步传输到 Web 服务器</font>。它<font color=FF0000>**主要用于将统计数据发送到 Web 服务器，同时避免了用传统技术**</font>（如：XMLHttpRequest）发送分析数据的一些问题。
 
 ##### 语法
 
@@ -7138,12 +7138,12 @@ navigator.sendBeacon(url[, data]);
 
 ###### 参数
 
-- **url：**url 参数表明 data 将要被发送到的网络地址。
-- **data：**可选，data 参数是将要发送的 ArrayBuffer、ArrayBufferView、Blob、DOMString、FormData 或 URLSearchParams 类型的数据。
+- **`url`** ：url 参数表明 data 将要被发送到的网络地址。
+- **`data`** ：可选，data 参数是将要发送的 ArrayBuffer、ArrayBufferView、Blob、DOMString、FormData 或 URLSearchParams 类型的数据。
 
 ###### 返回值
 
-当用户代理成功把数据加入传输队列时，sendBeacon() 方法将会返回 true，否则返回 false
+当用户代理成功把数据加入传输队列时，`sendBeacon()` 方法将会返回 `true`，否则返回 false
 
 ##### 描述
 
@@ -7152,12 +7152,12 @@ navigator.sendBeacon(url[, data]);
 <font color=dodgerBlue>过去，为了解决这个问题， 统计和诊断代码通常要在： </font>
 
 1. 发起一个同步 XMLHttpRequest 来发送数据。
-2. 创建一个 `<img>` 元素并设置 src，大部分用户代理会延迟卸载（unload）文档以加载图像
+2. 创建一个 `<img>` 元素并设置 `src` ，大部分用户代理会延迟卸载 ( unload ) 文档以加载图像
 3. 创建一个几秒的 no-op 循环。
 
 <font color=fuchsia>**上述的所有方法都会迫使用户代理延迟卸载文档，并使得下一个导航出现的更晚**</font>。下一个页面对于这种较差的载入表现无能为力。
 
-<font color=dodgerBlue>**这就是 sendBeacon() 方法存在的意义**</font>。<font color=FF0000>使用 sendBeacon() 方法会使用户代理在有机会时异步地向服务器发送数据，同时，**不会延迟页面的卸载或影响下一导航的载入性能**</font>，这意味着：
+<font color=dodgerBlue>**这就是 `sendBeacon()` 方法存在的意义**</font>。<font color=FF0000>使用 `sendBeacon()` 方法会使用户代理在有机会时异步地向服务器发送数据，同时，**不会延迟页面的卸载或影响下一导航的载入性能**</font>，这意味着：
 
 - 数据发送是可靠的
 - 数据异步传输
@@ -7165,7 +7165,7 @@ navigator.sendBeacon(url[, data]);
 
 ##### 在会话结束时发送统计数据
 
-网站通常 <font color=FF0000>在用户完成页面浏览后向服务器发送分析或诊断数据</font>，**<font color=fuchsia>最可靠的方法是在</font> [visibilitychange](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilitychange_event) <font color=fuchsia>事件发生时发送数据</font>**：
+网站通常 <font color=FF0000>在用户完成页面浏览后向服务器发送分析或诊断数据</font>，**<font color=fuchsia>最可靠的方法是在</font> visibilitychange <font color=fuchsia>事件发生时发送数据</font>**：
 
 ```js
 document.addEventListener('visibilitychange', function logData() {
@@ -7194,6 +7194,71 @@ document.addEventListener('visibilitychange', function logData() {
 > 👀 `Navigator.sendBeacon()` 也是发送请求，这是之前没有注意的... 只能说看 MDN 看的一知半解吧...
 >
 > 学习自：[为什么都说根据X-Requested-With判断ajax请求，但原生js发送ajax默认不带这个头？ - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/365435784/answer/968292664)
+
+
+
+#### Page Visibility API
+
+The Page Visibility API <font color=dodgerBlue>provides **events** you can watch</font> for <font color=red>to know when a document becomes visible or hidden</font>, as well as features <font color=red>to look at the current visibility state of the page</font>.
+
+<font color=dodgerBlue>This is especially useful</font> for saving resources and improving performance by letting a page <font color=lightSeaGreen>avoid performing unnecessary tasks when the document isn't visible</font>.
+
+##### Concepts and usage
+
+<font color=LightSeaGreen>When the user minimizes the window or switches to another tab</font>, <font color=red>the API sends a `visibilitychange` event to let listeners know the state of the page has changed</font>. You can detect the event and perform some actions or behave differently. For example, if your web app is playing a video, it can pause the video when the user puts the tab into the background, and resume playback when the user returns to the tab. The user doesn't lose their place in the video, the video's soundtrack doesn't interfere with audio in the new foreground tab, and the user doesn't miss any of the video in the meantime.
+
+<font color=red>Visibility states of an `<iframe>` are the same as the parent document</font>. <font color=LightSeaGreen>Hiding an `<iframe>` using CSS properties (such as `display: none;`) doesn't trigger visibility events or change the state of the document contained within the frame</font>.
+
+###### Use cases
+
+- A site has an image carousel（图片轮播） that shouldn't advance to the next slide unless the user is viewing the page
+- An application showing a dashboard of information <font color=red>doesn't want to poll the server for updates when the page isn't visible</font>
+- A page wants to detect when it is being prerendered so it can keep accurate count of page views
+- <font color=red>A site wants to switch off sounds when a device is in standby mode</font> (user pushes power button to turn screen off)
+
+###### Policies in place to aid background page performance
+
+> 💡 这里的 policy 译为“策略”，类似的还有： Content Security Policy 
+
+<font color=dodgerBlue>**Separately from the Page Visibility API**</font>, <font color=red>user agents typically have a number of policies in place to mitigate</font>（减轻，缓解） <font color=red>the performance impact of background or hidden tabs</font>. These may include:
+
+- Most browsers <font color=red>stop sending</font>（👀 这里翻译为“调用”更好些？） <font color=red>`requestAnimationFrame()` callbacks to background tabs or hidden `<iframe>`s</font> in order to improve performance and battery life.
+- <font color=red>Timers such as `setTimeout()` are **throttled** in background / inactive tabs</font> to help improve performance. See [Reasons for delays longer than specified](https://developer.mozilla.org/en-US/docs/Web/API/setTimeout#reasons_for_delays_longer_than_specified) for more details.
+- Browsers implement budget-based background timeout throttling. This operates in a similar way across modern browsers, with the details being as follows:
+  - In Firefox, windows in background tabs each have their own time budget in milliseconds — a max and a min value of +50 ms and -150 ms, respectively. Chrome is very similar except that the budget is specified in seconds.
+  - Windows are subjected to throttling after 30 seconds, with the same throttling delay rules as specified for window timers (again, see [Reasons for delays longer than specified](https://developer.mozilla.org/en-US/docs/Web/API/setTimeout#reasons_for_delays_longer_than_specified)). In Chrome, this value is 10 seconds.
+  - Timer tasks are only permitted when the budget is non-negative.
+  - Once a timer's code has finished running, the duration of time it took to execute is subtracted from its window's timeout budget.
+  - The budget regenerates at a rate of 10 ms per second, in both Firefox and Chrome.
+
+<font color=red>Some processes are **exempt**</font>（豁免） <font color=red>from this throttling behavior</font>. <font color=dodgerBlue>In these cases, you can use the Page Visibility API to reduce the tabs' performance impact while they're hidden</font>.
+
+- Tabs which are playing audio are considered foreground and aren't throttled.
+- Tabs running code that's using real-time network connections (WebSockets and WebRTC) go unthrottled in order to avoid closing these connections timing out and getting unexpectedly closed.
+- IndexedDB processes are also left unthrottled in order to avoid timeouts.
+
+##### Extensions to other interfaces
+
+###### Instance properties
+
+The Page Visibility API adds the following properties to the `Document` interface:
+
+- **`Document.hidden`** ：🗑️ Read only . Returns `true` if the page is in a state considered to be hidden to the user, and `false` otherwise.
+
+  > ⚠️ 虽然大量老旧代码依然在使用 `Document.hidden` （比如 [[Web相关#H5 唤端技术#判断 URL Scheme 是否成功唤起|判断 URL Scheme 是否成功唤起]]），但是它已经被废弃，当然也就不推荐使用了。
+
+- **`Document.visibilityState`** : Read only . A string indicating the document's current visibility state. <font color=dodgerBlue>Possible values are:</font>
+
+  - `visible` : The page content may be <font color=red>at least partially visible</font>. In practice this means that the page is the foreground tab of a non-minimized window.
+  - `hidden` : The page's content is not visible to the user, <font color=red>either due to the document's tab being in the background</font> or <font color=red>part of a window that is minimized</font>, or <font color=red>because the device's screen is off</font>.
+
+###### Events
+
+The Page Visibility API adds the following events to the `Document` interface:
+
+- `visibilitychange` : Fired when the content of a tab has become visible or has been hidden.
+
+摘自：[MDN US - Page Visibility API](https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API)
 
 
 

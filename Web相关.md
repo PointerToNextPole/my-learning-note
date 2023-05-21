@@ -2916,7 +2916,7 @@ URL Schemes 有两个单词：
 - [URL Scheme 分享](https://st3376519.huoban.com/share/1985010/VGi2N5Vf0C1MVnHCVWiBc8L9g15c9VGJbMGcFrb6/172707/list)
 - [【基础知识】现在很火的app上的deeplink技术，到底是什么？](https://cloud.tencent.com/developer/article/1049347) 在最后的附录中
 
-###### 判断是否成功唤起
+###### 判断 URL Scheme 是否成功唤起
 
 当用户唤起APP失败时，我们希望可以引导用户去进行下载。那怎么才能知道当前 APP 是否成功唤起呢？
 
