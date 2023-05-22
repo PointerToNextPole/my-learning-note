@@ -1168,7 +1168,7 @@ new Promise((resolve) => {
 
 上面两题比较结果。
 
-> 讲解见 [[前端面试点总结#async / await#async 返回值的等待时间]]
+> 讲解见 [[前端面试点总结#async / await#async 返回值的等待时间|async 返回值的等待时间]]
 
 <details>
   <summary>查看解析</summary>
@@ -1219,3 +1219,157 @@ console.log('11')
 </details>
 
 > 👀 2023/4/11 重新做了一遍，对了。
+
+##### 事件队列第7题
+
+```js
+function func() {
+  console.log(2);
+
+  Promise.resolve()
+    .then(() => console.log(5))
+    .then(() => console.log(6))
+    .then(() => console.log(7))
+}
+
+async function test() {
+  console.log(1);
+  await func();
+  console.log(3);
+}
+
+test();
+console.log(4);
+```
+
+> ⚠️ 这题可以和 [[#事件队列第7题 变体3]] 做一下对比。
+
+<details>
+  <summary>查看结果</summary>
+  1 2 4 5 3 6 7
+</details>
+
+<details>
+  <summary>查看解析</summary>
+  这里的重点是：await 是存在等待（阻塞）微任务的轮数的时间的，也就是说：await 不是无限制地等待（阻塞）的，也会按照下面 “await 在等待什么” 的规则，等待规则次数的轮数，并执行 await 后面的逻辑；对应这里就是： `await func()` 会等待（阻塞）多久？因为 `func()` 返回值为 undefined，不会专门等待；所以仅将 `log(5)` 的任务放入任务队列后；就把 `log(3)` 的任务放入任务队列中了；所以，`log(5)` 之后打印的是 `log(3)` ！！！
+</details>
+
+> 讲解见 [[前端面试点总结#async / await#await 后接内容等待时间 总结|await 后接内容等待时间 总结]] 的 “await 后接” 总结。
+
+##### 事件队列第7题 变体1
+
+```js
+function func() {
+  console.log(2);
+
+  return Promise.resolve()
+    .then(() => console.log(5))
+    .then(() => console.log(6))
+    .then(() => console.log(7))
+}
+
+async function test() {
+  console.log(1);
+  await func();
+  console.log(3);
+}
+
+test();
+console.log(4);
+```
+
+> 👀 23/5/22 这题做对了，虽然非常不确定...
+
+<details>
+  <summary>查看结果</summary>
+  1 2 4 5 6 7 3
+</details>
+
+<details>
+  <summary>查看解析</summary>
+  这题给出的启示是：`await func()` 如果这里的 `func()` 返回值为一个 Promise，如果该 Promise 不运行完毕，`await func()` 将会始终被阻塞。这也是 `log(3)` 最后才知性的原因
+</details>
+
+##### 事件队列第7题 变体2
+
+```js
+function func() {
+  console.log(2);
+
+  return Promise.resolve()
+    .then(() => console.log(5))
+    .then(() => console.log(6))
+    .then(() => console.log(7))
+}
+
+async function test() {
+  console.log(1);
+  await func()
+  console.log(3);
+}
+
+test();
+console.log(4);
+
+new Promise((resolve) => {
+  console.log('B')
+  resolve()
+}).then(() => {
+  console.log('C')
+}).then(() => {
+  console.log('D')
+})
+```
+
+> 这题和上面的一题原理是类似的，不过更进一步；详见下面的“个人领悟”
+>
+> 👀 23/5/22 做对了，但非常不确定...
+
+<details>
+  <summary>查看结果</summary>
+  1 2 4 B 5 C 6 D 7 3
+</details>
+
+<details>
+  <summary>查看解析</summary>
+  和上一题原理一样，不过多了其他 promise。这题给出的启示是：上面的 `await func()` 中的 `func()` 返回值是 Promise，这里返回的 Promise 只会阻塞（同一个代码块中） `await` 后面的逻辑，其他部分的微任务依然会执行，甚至可以和这个 Promise 共用微任务队列（也就是上面穿插着运行）
+</details>
+
+##### 事件队列第7题 变体3
+
+```js
+async function test() {
+  console.log(1);
+  await Promise.resolve()
+    .then(() => console.log(5))
+    .then(() => console.log(6))
+    .then(() => console.log(7))
+  console.log(3);
+}
+
+test();
+console.log(4);
+
+new Promise((resolve) => {
+  console.log('B')
+  resolve()
+}).then(() => {
+  console.log('C')
+}).then(() => {
+  console.log('D')
+})
+```
+
+> ⚠️ 这一题和 [[#事件队列第7题 变体2]] 原理是一样的，但是做错了。另外，需要注意和 [[#事件队列第7题 变体1]] 的区别
+
+<details>
+  <summary>查看结果</summary>
+  1 4 B 5 C 6 D 7 3
+</details>
+
+<details>
+  <summary>查看解析</summary>
+  在写这题的时候，受到了 [[#事件队列第7题 变体1]] 的影响，以为 `log(5)` 和 `log(3)` 先后放入微任务队列中，但显然这是错的。
+</details>
+
+摘自：[📢 你不知道的 async、await 魔鬼细节](https://juejin.cn/post/7194744938276323384)
