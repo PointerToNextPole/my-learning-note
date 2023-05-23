@@ -1366,10 +1366,67 @@ new Promise((resolve) => {
   <summary>查看结果</summary>
   1 4 B 5 C 6 D 7 3
 </details>
+<details>
+  <summary>查看解析</summary>
+  在写这题的时候，受到了 [[#事件队列第7题 变体1]] 的影响，以为 `log(5)` 和 `log(3)` 先后放入微任务队列中，但显然这是错的。<br>
+  至于错的原因，参考原文中的解释：“await 一定要等到右侧的表达式有确切的值才会放行，否则将一直等待（阻塞当前async 函数内的后续代码）”。所以 [[#事件队列第7题 变体1]] 中确定 `fūn()` return 的是 undefined，所以会在规定的轮数后停止阻塞；但这里不确定 Promise 的结果是什么，所以会一直阻塞
+</details>
+
+##### 事件队列第7题 变体4
+
+> 👀 这是上一题 [[#事件队列第7题 变体3]] 解析中给出的论证 相关的题目，这题做错了；
+>
+> 同样，这题很有必要和上面的其他变体对比下。
+
+```js
+async function func() {
+  return new Promise((resolve) => {
+    console.log('B')
+    // resolve() // 故意一直保持 pending
+  })
+}
+
+async function test() {
+  console.log(1);
+  await func()
+  console.log(3);
+}
+
+test();
+console.log(4);
+```
+
+<details>
+  <summary>查看结果</summary>
+  1 B 4
+</details>
 
 <details>
   <summary>查看解析</summary>
-  在写这题的时候，受到了 [[#事件队列第7题 变体1]] 的影响，以为 `log(5)` 和 `log(3)` 先后放入微任务队列中，但显然这是错的。
+  因为 `func` 中 return 的 promise 迟迟没有 `resolve` ，所以，`log(3)` 直到程序运行结束，都一直被阻塞。所以 `log(3)` 没有执行
 </details>
 
 摘自：[📢 你不知道的 async、await 魔鬼细节](https://juejin.cn/post/7194744938276323384)
+
+##### 事件队列第7题 变体5
+
+> 👀 这题是 “托尼带水” 微信群群友分享的，重点还是 `return` ；虽然做对了，但还是不确定
+
+```js
+const { log } = console
+
+Promise.resolve().then(() => {
+  log(0)
+  return Promise.resolve(4)
+}).then(res => {
+  log(res)
+})
+
+Promise.resolve()
+  .then(() => log(1))
+  .then(() => log(2))
+  .then(() => log(3))
+  .then(() => log(5))
+  .then(() => log(6))
+```
+
