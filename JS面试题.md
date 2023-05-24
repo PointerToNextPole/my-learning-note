@@ -1055,7 +1055,7 @@ console.log("scripts end");
 
 <details>
   <summary>查看解析</summary>
-  这题 6 和 7 的顺序总是会反掉。
+  这题 6 和 7 的顺序**总是**会反掉（直到 23/5/24 还是错的）。<br>
   这题的重点是 async1 end 的 async () => await () => await xxx ；有两层 promise，要多等一轮微任务。所以，会比 promise2 执行晚。
 </details>
 
@@ -1410,7 +1410,7 @@ console.log(4);
 
 ##### 事件队列第7题 变体5
 
-> 👀 这题是 “托尼带水” 微信群群友分享的，重点还是 `return` ；虽然做对了，但还是不确定
+> 👀 这题是 “托尼带水” 微信群群友分享的，重点还是 `return` ；虽然做对了，但对结果不确定
 
 ```js
 const { log } = console
@@ -1429,4 +1429,3 @@ Promise.resolve()
   .then(() => log(5))
   .then(() => log(6))
 ```
-
