@@ -4998,3 +4998,41 @@ Here is a list of web platform APIs Deno implements:
 - `WebSocket`
 
 摘自：[deno doc - runtime - Web Platform APIs](https://deno.land/manual@v1.26.1/runtime/web_platform_apis)
+
+
+
+## Nest 学习笔记
+
+
+
+#### IoC 解决了什么问题
+
+##### 背景
+
+后端系统中，会有很多对象：
+
+- Controller 对象：接收 http 请求，调用 Service，返回响应
+- Service 对象：实现业务逻辑
+- Repository 对象：实现对数据库的增删改查
+
+此外，还有数据库链接对象 DataSource，配置对象 Config 等等。
+
+这些对象有着错综复杂的关系：
+
+Controller 依赖了 Service 实现业务逻辑，Service 依赖了 Repository 来做增删改查，Repository 依赖 DataSource 来建立连接，DataSource 又需要从 Config 对象拿到用户名密码等信息。
+
+这就导致了创建这些对象是很复杂的，你要理清它们之间的依赖关系，哪个先创建哪个后创建。
+
+```javascript
+const config = new Config({ username: 'xxx', password: 'xxx'});
+const dataSource = new DataSource(config);
+const repository = new Repository(dataSource);
+const service = new Service(repository);
+const controller = new Controller(service);
+```
+
+要经过一系列的初始化之后才可以使用 Controller 对象。像 config、dataSource、repository、service、controller 等这些对象不需要每次都 new 一个新的，一直用一个就可以，也就是保持单例。
+
+在应用初始化的时候，需要理清依赖的先后关系，创建一大堆对象组合起来，还要保证不要多次 new，很麻烦；这是一个后端系统都有的痛点问题。
+
+解决这个痛点的方式就是 IoC（Inverse of Control）。

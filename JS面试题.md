@@ -1052,12 +1052,12 @@ console.log("scripts end");
   async1 end
   setTimeout
 </details>
-
 <details>
   <summary>查看解析</summary>
   这题 6 和 7 的顺序**总是**会反掉（直到 23/5/24 还是错的）。<br>
   这题的重点是 async1 end 的 async () => await () => await xxx ；有两层 promise，要多等一轮微任务。所以，会比 promise2 执行晚。
 </details>
+
 
 ##### 事件队列第5题
 
