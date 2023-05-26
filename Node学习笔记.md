@@ -37,7 +37,7 @@ const {foo, bar} = require('foo.js')
 
 
 
-##### Node 代码的调试
+##### Node 代码调试
 
 在 `package.json` 中，默认（使用 `npm init -y ` ）`main` 属性对应的值为 `index.js`，表示：主文件是 `index.js` 。如果要在 VSCode 中调试 ( debug ) 项目时，必须要有 `index.js` 这个文件（当然，这个名字可以自定义，当然实际文件名也要跟着变化）
 
@@ -5002,6 +5002,18 @@ Here is a list of web platform APIs Deno implements:
 
 
 ## Nest 学习笔记
+
+
+
+#### 5 种 HTTP 数据传输方式
+
+对于前端来说，<font color=dodgerBlue>后端主要是提供 http 接口来传输数据</font>，而这种<font color=dodgerBlue>数据传输的方式主要有 5 种</font>：
+
+- url param
+- query
+- form-urlencoded
+- form-data
+- json
 
 
 
