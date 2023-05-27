@@ -5048,3 +5048,25 @@ const controller = new Controller(service);
 在应用初始化的时候，需要理清依赖的先后关系，创建一大堆对象组合起来，还要保证不要多次 new，很麻烦；这是一个后端系统都有的痛点问题。
 
 解决这个痛点的方式就是 IoC（Inverse of Control）。
+
+
+
+#### Provider 声明
+
+Nest 实现了 IOC 容器，会从入口模块开始扫描，分析 Module 之间的引用关系，对象之间的依赖关系，自动把 provider 注入到目标对象。
+
+
+
+#### 全局模块
+
+@global() // TODO
+
+
+
+#### Nest 包含的生命周期
+
+##### overview
+
+![img](https://docs.nestjs.com/assets/lifecycle-events.png)
+
+Nest 在启动的时候，会递归解析 Module 依赖，扫描其中的 provider、controller，注入它的依赖。全部解析完后，会监听网络端口，开始处理请求。这个过程中，Nest 暴露了一些生命周期方法：
