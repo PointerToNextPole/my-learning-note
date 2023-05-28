@@ -867,15 +867,17 @@ str.normalize( [form] )
 
 - **`!==`** ： <font color=FF0000>不绝对等于</font>（<font color=FF0000>**值和类型有一个不相等，或两个都不相等**</font>）
 
+
+
 #### JS 循环
 
-for-in 循环，<font color=FF0000>for-in 循环是为遍历 enumerable 数据描述符 为 true 的对象设计的</font>。示例：
+for-in 循环，<font color=FF0000>for-in 循环是为遍历 `enumerable` 数据描述符 为 `true` 的对象设计的</font>。示例：
 
 ```js
-for ( elem in elems ){ /* code */ }
+for ( elem in elems ){ /* code */ 
 ```
 
-> 👀 for-in 是用来遍历对象中 enumerable 数据描述符 为 true 的属性，object.keys() 同样受到 enumerable 的影响。详见 [[#Object.defineProperty#属性描述符]] 中的 enumerable
+> 👀 for-in 是用来遍历对象中 `enumerable` 数据描述符 为 `true` 的属性，`Object.keys()` 同样受到 `enumerable` 的影响。详见 [[#Object.defineProperty#属性描述符]] 中的 enumerable
 
 <font color=FF0000>不推荐用 for-in 来循环一个**数组**，因为，不像对象，数组的 `index` 跟普通的对象属性不一样，是重要的数值序列指标</font>。
 
@@ -1071,7 +1073,7 @@ console.log(keys)
 
 - `for...in` 遍历对象的属性，出来的是属性名，<font color=FF0000 size=4>**包括继承的属性**</font>，<font color=FF0000>**可枚举的属性**</font>（ enumerable 为 true 的属性），<font color=FF0000>**不包括 symbol**</font>
 
-  > 💡 如果不想要 for...in 打印出 父类的属性，可以用 Object.hasOwnProperty 方法，判断是否为本对象的属性。
+  > 💡 如果不想要 for...in 打印出 父类的属性，可以用 `Object.hasOwnProperty` 方法，判断是否为本对象的属性。
 
 摘自：[峰华前端工程师动态 的 评论区 -PILOT- 的评论](https://t.bilibili.com/524677482676016409)
 
@@ -1087,7 +1089,7 @@ console.log(keys)
   console.log(arr) // ['1', '2', '3'] 👀 ⚠️
   ```
 
-  所以：forEach 无法修改原数组的 原始类型元素 / 元素的引用地址，但是修改元素中的内容
+  所以：forEach 无法修改原数组的 原始类型元素 / 元素的引用地址，但可以修改对象元素中的成员内容
 
 - **map()：**<font color=FF0000>**不会改变原数组的值**，**返回一个新数组**</font>，新数组中的值为原数组调用函数处理之后的值
 
@@ -4351,23 +4353,80 @@ console.log(result);          // "foo"
 | :------------------ | :----------------------------------------------------- |
 | `[Symbol.iterator]` | 一个无参数的函数，其返回值为一个符合迭代器协议的对象。 |
 
-<font color=FF0000>当一个对象需要被迭代的时候（比如被置入一个 for...of 循环时），首先，会不带参数调用它的 @@iterator 方法，然后使用此方法返回的迭代器获得要迭代的值</font>。
+<font color=FF0000>当一个对象需要被迭代的时候（比如被置入一个 for...of 循环时），首先，会不带参数调用它的 `@@iterator` 方法，然后使用此方法返回的迭代器获得要迭代的值</font>。
 值得注意的是调用此零个参数函数时，它将作为对可迭代对象的方法进行调用。 因此，在函数内部，this关键字可用于访问可迭代对象的属性，以决定在迭代过程中提供什么。
 
-<font color=FF0000>此函数可以是普通函数，也可以是生成器函数，以便在调用时返回迭代器对象。 在此生成器函数的内部，可以使用yield提供每个条目</font>。
+<font color=FF0000>此函数可以是普通函数，也可以是生成器函数，以便在调用时返回迭代器对象。 在此生成器函数的内部，可以使用 `yield` 提供每个条目</font>。
 
 ###### 迭代器协议
 
 迭代器协议定义了产生一系列值（无论是有限个还是无限个）的标准方式。当值为有限个时，所有的值都被迭代完毕后，则会返回一个默认返回值。
-只有实现了一个拥有以下语义（semantic）的 next() 方法，一个对象才能成为迭代器：
+只有实现了一个拥有以下语义（semantic）的 `next()` 方法，一个对象才能成为迭代器：
 
 | 属性 | 值                                                           |
 | :--- | :----------------------------------------------------------- |
-| next | 一个无参数函数，返回一个应当拥有以下两个属性的对象：<br/><font color=FF0000>**done（boolean）：**</font>如果迭代器可以产生序列中的下一个值，则为 false。（这等价于没有指定 done 这个属性。）<br>如果迭代器已将序列迭代完毕，则为 true。这种情况下，value 是可选的，如果它依然存在，即为迭代结束之后的默认返回值。<br /><font color=FF0000>**value：**</font>迭代器返回的任何 JavaScript 值。done 为 true 时可省略。<br /><font color=FF0000>next() 方法必须返回一个对象，该对象应当有两个属性： done 和 value</font>，<mark>如果返回了一个非对象值（比如 false 或 undefined），则会抛出一个 TypeError 异常</mark>（"iterator.next() returned a non-object value"）。 |
+| next | 一个无参数函数，返回一个应当拥有以下两个属性的对象：<br><font color=FF0000>**`done` ( boolean )**</font> ：如果迭代器可以产生序列中的下一个值，则为 `false`。（这等价于没有指定 `done` 这个属性。）<br>如果迭代器已将序列迭代完毕，则为 `true`。这种情况下，`value` 是可选的，如果它依然存在，即为迭代结束之后的默认返回值。<br><font color=FF0000>**`value`**</font> ：迭代器返回的任何 JavaScript 值。`done` 为 `true` 时可省略。<br><font color=FF0000>next() 方法必须返回一个对象，该对象应当有两个属性： `done` 和 `value`</font>，<font color=LightSeaGreen>如果返回了一个非对象值（比如 `false` 或 `undefined`），则会抛出一个 TypeError 异常</font>：`"iterator.next() returned a non-object value"` |
 
 一些内置的语法结构，比如 展开运算符 其内部实现也使用了同样的迭代协议。
 
 摘自：[MDN - 迭代协议](https://developer.mozilla.org/zh-CN/docs/orphaned/Web/JavaScript/Reference/Iteration_protocols)
+
+#### 可迭代对象生成迭代器 与用途
+
+可迭代对象是可以通过如下方法获取到一个迭代器实例的：
+
+```js
+const iterator = iteratableObj[Symbol.iterator]()
+```
+
+以数组为例：
+
+```js
+const arr = [ 1, 2, 3 ]
+const iterator = arr[Symbol.iterator]()
+
+let it = iterator.next()
+
+while(!it.done) {
+  console.log(it.value)
+  it = iterator.next()
+}
+// 1 2 3
+```
+
+以 `arguments` 为例：
+
+```js
+function iterateArgs() {
+  const iterator = arguments[Symbol.iterator]()
+
+  let it = iterator.next()
+
+  while (!it.done) {
+    console.log(it.value)
+    it = iterator.next()
+  }
+}
+
+iterateArgs(1, 2, 3) // 1 2 3
+```
+
+至于用法，可以作为 `for await of` 的替代品，比如有一个数组名为 `taskArr` 其中放着一些 promise 任务，如果想要让他们按序执行，除了用 `for await of` 也可以用迭代器实现：
+
+```js
+const taskArr = [ /* ... */ ]
+const iterator = taskArr[Symbol.iterator]()
+
+let it = iterator.next()
+
+while (!it.done) {
+  const task = it.value
+  await doTask(task)
+  it = iterator.next()
+}
+```
+
+学习自：[😲完了完了，forEach异步执行，怎么后面的先完成了！？](https://juejin.cn/post/7236313127070105637)
 
 
 
@@ -15039,9 +15098,9 @@ import '/modules/my-module.js';
 
 摘自：[MDN - import](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/import)
 
-> 👀 注：[MDN US - import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) 还提到了 “顶层 await” ( top-level await )，中文版没有提到。另外， [[JS 机制与原理#补充：为什么 CJS 不能加载 ESM]] 也提到了 top-level await
+> 👀 [MDN US - import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) 还提到了 ESM 相关的 “顶层 await” ( top-level await )，中文版没有提到。另外， [[JS 机制与原理#补充：为什么 CJS 不能加载 ESM]] 也提到了 top-level await
 >
-> ⚠️ 注：经过实践，使用 import 引入的变量，是 constant 的，是无法修改的。
+> ⚠️ 经过实践发现：使用 import 引入的变量，是 constant 的，是无法修改的。
 >
 > ```js
 > // export.js

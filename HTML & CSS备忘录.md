@@ -2478,6 +2478,136 @@ callback: {
 
 
 
+#### `<script type="importmap">`
+
+`<script>` 元素的 `type` 属性的 `importmap` 值表示元素的主体包含一个导入映射。
+
+导入映射（import map）是一个 JSON 对象，其允许开发者在导入 [JavaScript 模块](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Modules)时，控制浏览器如何解析模块标识符。它提供了在 `import` 语句或 `import()` 运算符中用作模块标识符的文本，其会在解析标识符时与要替换的文本之间建立映射。JSON 对象必须符合[导入映射 JSON 表示格式](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap#导入映射_json_表示)。
+
+导入映射用于解析静态和动态导入中的模块标识符，因此必须在使用映射表中声明的标识符导入模块的任何 `<script>` 元素之前声明和处理。注意，导入映射仅适用于在 `import` 语句或 `import()` 运算符 中的模块标识符；它不适用于 `<script>` 元素的 `src` 属性中指定的路径。
+
+##### 语法
+
+```html
+<script type="importmap">
+  // 定义导入的 JSON 对象
+</script>
+```
+
+<font color=red>不得指定 `src`、`async`、`nomodule`、`defer`、`crossorigin`、`integrity` 和 `referrerpolicy` 属性</font>。
+
+<font color=red>仅处理文档中具有内联定义的第一个导入映射</font>；忽略任何额外的导入映射和外部导入映射。
+
+###### 异常
+
+- `TypeError` ：导入映射的定义不是 JSON 对象、`importmap` 键已定义但它的值不是 JSON 对象或 `scopes` 键已定义但它的值不是 JSON 对象。
+
+对于导入映射 JSON 不符合[导入映射](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap#导入映射_json_表示)模式的其他情况，浏览器会生成控制台警告。
+
+如果 script 元素中的 `type="importmap"` 没有被处理，则会触发 `error` 事件。这是可能发生的，例如，在处理导入模块时模块已经开始加载，或页面中定义了多个导入映射。
+
+##### 描述
+
+当导入 JavaScript 模块时，`import` 语句和 `import()` 运算符 都有一个“模块标识符”，其指示要导入的模块。浏览器必须能够将此标识符解析为绝对路径，才能导入模块。
+
+例如，以下语句从模块标识符 `"./modules/shapes/square.js"` 导入元素，其是一个相对于文档的基础 URL 路径，而模块标识符 `"https://example.com/shapes/circle.js"` 是一个绝对路径。
+
+```js
+import { name as squareName, draw } from "./modules/shapes/square.js";
+import { name as circleName } from "https://example.com/shapes/circle.js";
+```
+
+导入映射允许开发者在模块标识中指定（几乎）他们想要的任意文本；映射提供了一个相应的值，该值在解析模块标识符时替换文本。
+
+###### 裸模块
+
+下面的导入映射定义了一个 `imports` 键，该键具有属性为 `square` 和 `circle` 的“模块标识符映射”。
+
+```html
+<script type="importmap">
+  {
+    "imports": {
+      "square": "./module/shapes/square.js",
+      "circle": "https://example.com/shapes/circle.js"
+    }
+  }
+</script>
+```
+
+使用导入映射，我们可以导入以上相同的模块，但在我们的模块标识符要使用“裸模块（bare module）”。
+
+```js
+import { name as squareName, draw } from "square";
+import { name as circleName } from "circle";
+```
+
+###### 映射路径前缀
+
+模块标识符映射键也可用于重新映射模块标识符中的路径前缀。请注意，在这种情况下，属性和映射路径都必须有一个尾随的正斜杠（`/`）。
+
+```html
+<script type="importmap">
+  {
+    "imports": {
+      "shapes/": "./module/shapes/",
+      "othershapes/": "https://example.com/modules/shapes/"
+    }
+  }
+</script>
+```
+
+然后我们可以这样导入 circle 模块。
+
+```js
+import { name as squareName, draw } from "shapes/circle.js";
+```
+
+###### 模块标识符映射键中的路径
+
+模块标识符键不必是单个单词名称（“裸模块的名称”）。它们也可以包含路径分隔符或者以路径分隔符结尾，或者是绝对 URL，或者以 `/`、`./` 或 `../` 开始的相对 URL。
+
+```json
+{
+  "imports": {
+    "modules/shapes/": "./module/src/shapes/",
+    "modules/square": "./module/src/other/shapes/square.js",
+    "https://example.com/modules/square.js": "./module/src/other/shapes/square.js",
+    "../modules/shapes/": "/modules/shapes/"
+  }
+}
+```
+
+如果模块标识符映射中对应几个可能匹配的模块标识符键，则将选择最具体的键（即具有较长路径/值的键）。
+
+在匹配之前，`./Foo/../js/app.js` 的模块说明符将解析为 `./js/app.js`。这意味着，即使 `./js/app.js` 的模块标识符键与模块标识符不完全相同，它们也是匹配的。
+
+##### 作用域模块标识符映射
+
+你可以使用 `scopes` 键提供映射，仅当导入模块的脚本包含特定的 URL 路径时才使用。仅当导入模块的脚本包含一个指定的 URL 路径时，你才可以使用 `scopes` 键去提供映射。如果加载的脚本 URL 匹配提供的路径，则将使用与作用域相关联的映射。这允许根据正在导入的代码使用不同版本的模块。
+
+例如，仅有加载的模块包含以下路径的 URL：“/modules/customshapes/”，映射才会使用作用域映射。
+
+```html
+<script type="importmap">
+  {
+    "imports": {
+      "square": "./module/shapes/square.js"
+    },
+    "scopes": {
+      "/modules/customshapes/": {
+        "square": "https://example.com/modules/shapes/square.js"
+      }
+    }
+  }
+</script>
+```
+
+如果多个作用域与引用 URL 匹配，则使用最具体的作用域路径（具有最长名称的作用域键名称）。如果没有匹配的标识符，浏览器将会回落到下一个更具体的作用域路径，以此类推，最后会回落到 `imports` 键的模块标识符映射。
+
+摘自：[MDN - `<script type="importmap">`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script/type/importmap)
+
+
+
 #### `<iframe>`
 
 HTML 内联框架元素 ( `<iframe>` ) 表示嵌套的 浏览上下文 ( browsing context ）。它能够将另一个 HTML 页面嵌入到当前页面中。

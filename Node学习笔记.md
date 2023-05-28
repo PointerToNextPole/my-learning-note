@@ -5049,6 +5049,14 @@ const controller = new Controller(service);
 
 解决这个痛点的方式就是 IoC（Inverse of Control）。
 
+// TODO
+
+##### Nest IoC 总结
+
+<font color=fuchsia>**IOC 是指 Nest 会自动扫描带有 `@Controller` 、`@Injectable` 装饰器的类，创建它们的对象，并根据依赖关系自动注入它依赖的对象，免去了手动创建和组装对象的麻烦**</font> 。
+
+> 💡 这里的关于 Nest 的 IoC 总结很棒
+
 
 
 #### Provider 声明
@@ -5065,8 +5073,24 @@ Nest 实现了 IOC 容器，会从入口模块开始扫描，分析 Module 之�
 
 #### Nest 包含的生命周期
 
-##### overview
+![lifecycle-events](https://s2.loli.net/2023/05/28/9QfLudtqEwJ2WhN.jpg)
 
-![img](https://docs.nestjs.com/assets/lifecycle-events.png)
+Nest 在启动的时候，会递归解析 Module 依赖，扫描其中的 provider、controller，注入它的依赖。全部解析完后，会监听网络端口，开始处理请求。这个过程中，Nest 暴露了一些生命周期方法
 
-Nest 在启动的时候，会递归解析 Module 依赖，扫描其中的 provider、controller，注入它的依赖。全部解析完后，会监听网络端口，开始处理请求。这个过程中，Nest 暴露了一些生命周期方法：
+// TODO
+
+
+
+#### AOP
+
+**AOP 的好处是可以把一些通用逻辑分离到切面中，保持业务逻辑的存粹性，这样切面逻辑可以复用，还可以动态的增删。**
+
+其实 Express 的中间件的洋葱模型也是一种 AOP 的实现，因为你可以透明的在外面包一层，加入一些逻辑，内层感知不到。
+
+Nest 实现 AOP 的方式更多，一共有五种；包括 Middleware、Guard、Pipe、Interceptor、ExceptionFilter。
+
+##### 中间件 Middleware
+
+Nest 的底层是 Express，所以自然也可以使用中间件，但是做了进一步的细分，分为了全局中间件和路由中间件
+
+// TODO

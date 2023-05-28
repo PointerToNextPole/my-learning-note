@@ -437,7 +437,7 @@ arr.forEach(callback(currentValue [, index [, array]])[, thisArg])
 ```js
 Array.prototype.map = function(cb, thisArg) {
   if (this == undefined) {
-    // 注：TypeError（类型错误） 对象用来表示值的类型非预期类型时发生的错误。
+    // 👀 TypeError（类型错误） 对象用来表示值的类型非预期类型时发生的错误。
     throw new TypeError('this is null or undefined')
   }
   if (typeof cb !== 'function') {
@@ -445,7 +445,7 @@ Array.prototype.map = function(cb, thisArg) {
   }
   // 让 O 成为回调函数的对象传递（强制转换对象）
   const O = Object(this)
-  // >>> 0 保证 length 为 number 类型，且为正整数
+  // `>>> 0` 保证 length 为 number 类型，且为正整数
   const len = O.length >>> 0
   let k = 0
   while (k < len) {
