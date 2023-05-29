@@ -841,6 +841,8 @@
   > In server contexts, one such request can block all others indefinitely.
   >
   > 摘自：[Practical Guide To Not Blocking The Event Loop](https://www.bbss.dev/posts/eventloop/)
+  
+- **monolithic** ：庞大而单一的，单体化的。monorepo 即 Monolithic Repository
 ***
 
 
