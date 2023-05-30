@@ -7067,3 +7067,9 @@ Decorators can be used to validate inputs or the state of an Object.
 The <font color=LightSeaGreen>code that doesn't belong in the main function or logic can be encapsulated using decorators</font> thus <font color=red>making the code more readable and maintainable</font>
 
 摘自：[TypeScript Decorators: A complete guide](https://deadsimplechat.com/blog/typescript-decorators-a-complete-guide/#7-dependency-injection)
+
+
+
+#### json schema 和 TypeScript
+
+<img src="https://s2.loli.net/2023/05/30/gJHwcuLI5B3l4S1.png" alt="image-20230530225419605" style="zoom:46%;" />

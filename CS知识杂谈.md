@@ -233,9 +233,15 @@ RPC 是指远程过程调用，也就是说两台服务器 A 和 B，一个应�
 ###### 需要解决如下问题
 
 - 首先，<font color=FF0000>**要解决通讯的问题**</font>。主要是通过在客户端和服务器之间建立 TCP 连接，远程过程调用的所有交换的数据都在这个连接里传输。连接可以是按需连接，调用结束后就断掉，也可以是长连接，多个远程过程调用共享同一个连接。
+
 - 第二，要解决寻址的问题。也就是说，<font color=FF0000>**A服务器上的应用怎么告诉底层的 RPC 框架，如何连接到 B服务器（如主机 或 IP地址）以及特定的端口，<font size=4>方法的名称名称是什么</font>**，这样才能完成调用</font>。比如基于 Web 服务协议栈的 RPC，就要提供一个 endpoint URI ，或者是从 UDDI 服务上查找。如果是 RMI 调用的话，还需要一个 RMI Registry 来注册服务的地址。
+
 - 第三，<font color=FF0000>**当 A服务器 上的应用发起远程过程调用时，方法的参数需要通过底层的网络协议如 TCP 传递到 B服务器**</font>，由于网络协议是基于二进制的，内存中的参数的值要序列化成二进制的形式，也就是<font color=FF0000>**序列化 ( Serialize ) 或编组 ( marshal )**</font> ，通过寻址和传输将序列化的二进制发送给 B服务器。
+
+  > 👀 关于 Marshal ，可见 [[#Marshal]]
+
 - 第四，B服务器收到请求后，需要对参数进行反序列化（序列化的逆操作），<font color=FF0000>**恢复为内存中的表达方式**</font>，然后<font color=FF0000>**找到对应的方法**（寻址的一部分）进行本地调用</font>，然后得到返回值。
+
 - 第五，<font color=FF0000>**返回值还要发送回 A服务器 上的应用**</font>（👀 这点差点忘了... 类似函数调用，往往有返回值；这里自然要发送），也<font color=FF0000>要经过序列化的方式发送</font>；A服务器 接到后，再反序列化，恢复为内存中的表达方式，交给 A服务器 上的应用
 
 <img src="https://s2.loli.net/2022/07/12/VqJ8LAHpDnUjxyG.png" alt="img" style="zoom:50%;" />
@@ -379,7 +385,7 @@ RPC 指的是远程调用，也就是说，调用的函数不在同一内存空�
 
 <img src="https://s2.loli.net/2022/07/13/L5b3PVNAG8iu7f4.jpg" style="zoom:80%;" />
 
-基于这些问题，我们发展出来了消息队列 ( MQ ) 技术，<font color=FF0000>所有的处理请求先作为一个消息发送到 MQ（一般我们叫做 broker ），接着处理消息的系统从 MQ 拿到消息并进行处理</font>（👀 **注**：有点类似于 网络中的 “星型拓扑”）。这样就实现了各个系统间的解耦，同时可以把失败策略、重试等作为一个机制，对各个应用透明，直接在 MQ 与各调用方的应用接口层面实现即可。如下图：
+基于这些问题，我们发展出来了消息队列 ( MQ ) 技术，<font color=FF0000>所有的处理请求先作为一个消息发送到 MQ（一般我们叫做 broker ），接着处理消息的系统从 MQ 拿到消息并进行处理</font>（👀 有点类似于 网络中的 “星型拓扑”）。这样就实现了各个系统间的解耦，同时可以把失败策略、重试等作为一个机制，对各个应用透明，直接在 MQ 与各调用方的应用接口层面实现即可。如下图：
 
 <img src="https://s2.loli.net/2022/07/13/urjEPvw39TVF5fD.jpg" alt="img" style="zoom:80%;" />
 
@@ -408,6 +414,34 @@ RPC 指的是远程调用，也就是说，调用的函数不在同一内存空�
 - 发送方/接收方 的数据会存在暂时的不一致性
 
 学习自：[消息队列的使用场景是怎样的？ - 祁达方的回答 - 知乎](https://www.zhihu.com/question/34243607/answer/140732170)
+
+
+
+#### Marshal
+
+##### 背景
+
+在看文章 [在业务系统中寻找技术含量]() 时看到这样一句话：
+
+> 如果嫌 nginx 那样的配置格式麻烦，用 json 可以表达任意形式的数据结构、逻辑流程、映射方式。这里你可以有些疑惑，我们可以认为：
+>
+> - 代码和 AST 之间是可以互相转换的
+> - AST 可以被 *Marshal 为 json*
+> - 所以 json 从原理上可以表达一切程序逻辑
+
+除了对这句话感觉颇有收获外，也对 Marshal 是什么有点好奇。
+
+##### 是什么
+
+Google 了下 “Marshal json” ，发现主要和 Go 相关，主要是因为 Go 的 package [json](https://pkg.go.dev/encoding/json) 中包含 [`Marshal`](https://pkg.go.dev/encoding/json#Marshal) 和 [`Unmarshal`](https://pkg.go.dev/encoding/json#Unmarshal) 函数。
+
+另外，问了下 ChatGPT，得到如下信息：
+
+<img src="https://s2.loli.net/2023/05/30/cPeSr4Z8RXy1QoU.png" alt="image-20230530162605279" style="zoom:46%;" />
+
+<img src="https://s2.loli.net/2023/05/30/IHVOMNmWLeRG6jP.png" alt="image-20230530170550942" style="zoom:46%;" />
+
+总结：Marshal 是比 Serialization 更宽泛的概念。
 
 
 
