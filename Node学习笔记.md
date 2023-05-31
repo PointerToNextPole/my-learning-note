@@ -5085,12 +5085,38 @@ Nest 在启动的时候，会递归解析 Module 依赖，扫描其中的 provid
 
 **AOP 的好处是可以把一些通用逻辑分离到切面中，保持业务逻辑的存粹性，这样切面逻辑可以复用，还可以动态的增删。**
 
-其实 Express 的中间件的洋葱模型也是一种 AOP 的实现，因为你可以透明的在外面包一层，加入一些逻辑，内层感知不到。
+其实 <font color=red>Express 的中间件的洋葱模型也是一种 AOP 的实现</font>，因为你可以透明的在外面包一层，加入一些逻辑，内层感知不到。
 
-Nest 实现 AOP 的方式更多，一共有五种；包括 Middleware、Guard、Pipe、Interceptor、ExceptionFilter。
+<font color=dodgerBlue>Nest 实现 AOP 的方式更多，一共有五种</font>；包括 Middleware、Guard、Pipe、Interceptor、ExceptionFilter。
 
 ##### 中间件 Middleware
 
 Nest 的底层是 Express，所以自然也可以使用中间件，但是做了进一步的细分，分为了全局中间件和路由中间件
+
+全局中间件就是 Express 的那种中间件，在请求之前和之后加入一些处理逻辑，每个请求都会走到这里：
+
+```ts
+const app = await NestFactory.create(AppModule)
+app.use(logger) // 👀
+await app.listen(3000)
+```
+
+路由中间件则是针对某个路由来说的，范围更小一些：
+
+```ts
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware) // 👀
+      .forRoutes('cats')       // 👀
+  }
+}
+```
+
+这个是继承了 Express 的概念，比较容易理解。
+
+##### Guard
+
+Guard 即路由守卫，可以用于在调用某个 Controller 之前判断权限，返回 true 或者 false 来决定是否放行：
 
 // TODO
