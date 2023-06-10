@@ -3140,58 +3140,80 @@ box model 不完全适用于参与内联格式上下文。在水平书写模式�
 
 #### float
 
-float CSS属性指定一个元素应沿其容器的左侧或右侧放置，允许文本和内联元素环绕它。<font color=FF0000>该元素从网页的正常流动（normal flow 文档流、正常流）中移除</font>，尽管仍然保持部分的流动性（与绝对定位相反）。
+`float` CSS 属性指定一个元素应沿其容器的左侧或右侧放置，允许文本和内联元素环绕它。<font color=FF0000>该元素从网页的正常流动（normal flow 文档流、正常流）中移除</font>，尽管仍然保持部分的流动性（与绝对定位相反）。
 
 ###### 可选值
 
-- **left：**表明元素必须浮动在其所在的块容器左侧的关键字。
-- **right：**表明元素必须浮动在其所在的块容器右侧的关键字。
-- **none：**<font color=red>表明元素不进行浮动的关键字</font>。
-- **inline-start：**<font color="fuchsia">关键字，表明元素必须浮动在其所在块容器的开始一侧，在 ltr 脚本中是左侧，在 rtl 脚本中是右侧</font>
-- **inline-end：**<font color=fuchsia>关键字，表明元素必须浮动在其所在块容器的结束一侧，在 ltr 脚本中是右侧，在 rtl 脚本中是左侧</font>
+- **`left`** ：表明元素必须浮动在其所在的块容器左侧的关键字。
+- **`right`** ：表明元素必须浮动在其所在的块容器右侧的关键字。
+- **`none`** ：<font color=red>表明元素不进行浮动的关键字</font>。
+- **`inline-start`** ：关键字，<font color=LightSeaGreen>表明元素必须浮动在其所在块容器的开始一侧，在 ltr 脚本中是左侧，在 rtl 脚本中是右侧</font>
+- **`inline-end`** ：关键字，<font color=lightSeaGreen>表明元素必须浮动在其所在块容器的结束一侧，在 ltr 脚本中是右侧，在 rtl 脚本中是左侧</font>
 
-**由于float意味着使用块布局，它在某些情况下修改display 值的计算值：**
+> 💡 补充
+>
+> ##### `inline-start` 和 `inline-end` 的兼容性
+>
+> 在 [MDN - float 的 **演示**](https://developer.mozilla.org/zh-CN/docs/Web/CSS/float#%E5%B0%9D%E8%AF%95%E4%B8%80%E4%B8%8B) 中，发现 `inline-start` 和 `inline-end` 旁边都打了 ❌ 的标志，在文档中搜索了下发现兼容性很差；还搜了下 [Can I use](https://caniuse.com/?search=float%3A%20inline-) 中相关兼容性，发现在 Chrome 和 Edge 等 Chromium 内核的浏览器中，这两者在现在和可规划的将来都属于完全不兼容的状态；如下截图：
+>
+> <img src="https://s2.loli.net/2023/06/10/teQzufDwUc1Mlno.png" alt="image-20230610150132884" style="zoom:50%;" />
+>
+> 甚至感觉可以彻底忘掉这两个属性了...
 
-| 指定值             | 计算值                                                       |
-| :----------------- | :----------------------------------------------------------- |
-| inline             | block                                                        |
-| inline-block       | block                                                        |
-| inline-table       | table                                                        |
-| table-row          | block                                                        |
-| table-row-group    | block                                                        |
-| table-column       | block                                                        |
-| table-column-group | block                                                        |
-| table-cell         | block                                                        |
-| table-caption      | block                                                        |
-| table-header-group | block                                                        |
-| table-footer-group | block                                                        |
-| flex               | <font color=FF0000>flex, 但是float对这样的元素不起作用</font> |
-| inline-flex        | inline-flex, 但是float对这样的元素不起作用                   |
-| *other*            | *unchanged*                                                  |
+**由于 `float` 意味着使用块布局，它<font color=fuchsia>在某些情况下修改 `display` 值的计算值</font>：**
 
-摘自：[MDN - float](https://developer.mozilla.org/zh-CN/docs/Web/CSS/float)
+| 指定值               | 计算值      |
+| :------------------- | :---------- |
+| `inline`             | `block`     |
+| `inline-block`       | `block`     |
+| `inline-table`       | `table`     |
+| `table-row`          | `block`     |
+| `table-row-group`    | `block`     |
+| `table-column`       | `block`     |
+| `table-column-group` | `block`     |
+| `table-cell`         | `block`     |
+| `table-caption`      | `block`     |
+| `table-header-group` | `block`     |
+| `table-footer-group` | `block`     |
+| `inline-flex`        | `flex`      |
+| `inline-grid`        | `grid`      |
+| *other*              | *unchanged* |
+
+> 👀 上面的表格中没有 `flex` 和 `grid`  ，也就是说：<font color=fuchsia>`float` 无法修改 `flex` 和 `grid`</font>
+>
+> 💡 **关于上面表格的总结：**
+>
+> float 可以修改除 flex 和 grid 以外 `display` 中 <font color=fuchsia>部分</font> 的值，比如修改 `inline-flex` 为 `flex` ，修改 `inline-grid` 为 `grid` ，还会将 **其他** 受影响的值修改为 `block` 。
+
+摘自：[MDN - `float`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/float)
 
 ##### 个人项目体会补充
 
-float 和 `margin-left: auto` & `margin-right: auto`的关系：在 flexbox中，float是失效的；这时如果想实现float的效果，该怎么处理？
+###### 问题
 
-可以使用 `margin-left: auto` 替代 `float: right` ， `margin-right: auto` 替代 `float: left`（这里使用绝对定位似乎也可以实现）。跟进一步：如果 flexbox 使用了`flex-wrap: wrap` 且 右侧没有空间了，那只能换行，且放到下一行的右侧。这种情况下，是用绝对定位也不行了（无法放到下一行，只能放到该行末尾，会出现覆盖的情况）；这时使用 `margin-right: auto` 依然是有效的。原理是：使用auto<font color=FF0000>会将所有剩余空间都占满</font>；类似的可参考《CSS权威指南》
+float 和 `margin-left: auto` & `margin-right: auto` 的关系：在 flexbox 中，float 是失效的（无法影响或者修改 `display: flex`）；这时如果想实现 `float` 的效果，该怎么处理？
+
+###### 方法
+
+可以使用 `margin-left: auto` 替代 `float: right` ， `margin-right: auto` 替代 `float: left`（这里使用绝对定位似乎也可以实现）。跟进一步：如果 flexbox 使用了`flex-wrap: wrap` 且 右侧没有空间了，那只能换行，且放到下一行的右侧。这种情况下，是用绝对定位也不行了（无法放到下一行，只能放到该行末尾，会出现覆盖的情况）；这时使用 `margin-right: auto` 依然是有效的。原理是：使用 `auto` <font color=FF0000>会将所有剩余空间都占满</font>；类似的可参考《CSS权威指南》
 
 
 
 #### clear
 
- **clear** CSS 属性指定一个元素是否必须移动（清除浮动后）到在它之前的浮动元素下面。clear 属性适用于浮动和非浮动元素。
+`clear` CSS 属<font color=red>性指定一个元素是否必须移动（清除浮动后）到在它之前的浮动元素下面</font>。`clear` 属性适用于浮动和非浮动元素。
 
-<font color=FF0000>如果一个元素（注：按照按照这个示例的说法，这个元素有id属性 container）里只有浮动元素，那它的高度会是0</font>（注：即塌陷）。如果你想要它自适应即包含所有浮动元素，那你需要清除它的子元素。一种方法叫做clearfix，即clear一个不浮动的 ::after 伪元素（注：即给该元素加一个 ::after 伪元素）。
+> 💡 上面的说法有点抽象，参考原文的效果示例：
+>
+> <img src="https://s2.loli.net/2023/06/10/TSqbIcjRJPnGNKg.png" alt="image-20230610160253704" style="zoom:42%;" />
+>
+> <img src="https://s2.loli.net/2023/06/10/3RmZny9AYiaXPQt.png" alt="image-20230610160340503" style="zoom:42%;" />
 
-```css
-#container::after {
-  content: "";
-  display: block;
-  clear: both;
-}
-```
+<font color=dodgerBlue>当应用于 **非浮动块** 时</font>，它 <font color=fuchsia>**将非浮动块的边框边界移动到所有相关浮动元素外边界的下方**</font>。这个非浮动块的顶部外边距会折叠。
+
+另一方面，两个浮动元素的垂直外边距将不会折叠。<font color=dodgerBlue>当应用于 **浮动元素** 时</font>，它将底部元素的外边界边缘移动到所有相关的浮动元素外边界边缘的下方。这会影响后面浮动元素的布局，因为后面的浮动元素的位置无法高于它之前的元素。
+
+要被清除的相关浮动元素指的是在相同块级格式化上下文中的前置浮动。
 
 ##### 语法
 
@@ -3210,21 +3232,34 @@ clear: initial;
 clear: unset;
 ```
 
-##### 值
+###### 值
 
-- **none：**元素*不会*向下移动清除之前的浮动。
+- **`none`** ：元素*不会*向下移动清除之前的浮动。
+- **`left`** ：元素被向下移动用于清除之前的左浮动。
+- **`right`** ：元素被向下移动用于清除之前的右浮动。
+- **`both`** ：元素被向下移动用于清除之前的左右浮动。
+- **`inline-start`** ：该关键字表示该元素向下移动以清除其包含块的起始侧上的浮动。即在某个区域的左侧浮动或右侧浮动
+- **`inline-end`** ：该关键字表示该元素向下移动以清除其包含块的末端的浮点，即在某个区域的右侧浮动或左侧浮动
 
-- **left：**元素被向下移动用于清除之前的左浮动。
+> 💡 **补充**
+>
+> 类似 [[#`inline-start` 和 `inline-end` 的兼容性]] ，`clear: inline-*` 在 Chrome & Edge 等 Chromium 内核浏览器完全不兼容性；如下图：
+>
+> <img src="https://s2.loli.net/2023/06/10/Y9W4vFTnN3J72Oz.png" alt="image-20230610155537382" style="zoom:50%;" />
 
-- **right：**元素被向下移动用于清除之前的右浮动。
+##### 示例补充
 
-- **both：**元素被向下移动用于清除之前的左右浮动。
+<font color=dodgerBlue>**如果一个元素**</font>（👀 <font color=lightSeaGreen>按照当前示例的说法，这个元素有 `id` 属性 container</font>）<font color=dodgerBlue>**里只有浮动元素**</font>，<font color=fuchsia>那它的高度会是 0</font>（👀 即塌陷）。如果你想要它自适应即包含所有浮动元素，那你需要清除它的子元素。一种方法叫做 clearfix ，即 `clear` 一个不浮动的 `::after` 伪元素（👀 即给该元素加一个 `::after` 伪元素）。
 
-- **inline-start：**该关键字表示该元素向下移动以清除其包含块的起始侧上的浮动。即在某个区域的左侧浮动或右侧浮动。
+```css
+#container::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+```
 
-- **inline-end：**该关键字表示该元素向下移动以清除其包含块的末端的浮点，即在某个区域的右侧浮动或左侧浮动。
-
-摘自：[MDN - clear](https://developer.mozilla.org/zh-CN/docs/Web/CSS/clear)
+摘自：[MDN - `clear`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/clear)
 
 
 
@@ -3255,7 +3290,7 @@ clear: unset;
 
 另外这里的内容可以参考：[MDN - Cursor](https://developer.mozilla.org/zh-CN/docs/Web/CSS/cursor)，这里内容更加全面
 
-注，这里有三个补充：all-scroll、row-resize、col-resize，用于拖动 分割线，自定义元素的宽高。详见上面的 MDN - Cursor 以及 CodingStartup 的视频：[[JS] 实现可调侧栏](https://www.bilibili.com/video/BV1L54y197vj)
+> 这里有三个补充：all-scroll、row-resize、col-resize，用于拖动 分割线，自定义元素的宽高。详见上面的 MDN - Cursor 以及 CodingStartup 的视频：[[JS] 实现可调侧栏](https://www.bilibili.com/video/BV1L54y197vj)
 
 
 
