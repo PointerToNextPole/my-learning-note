@@ -11767,25 +11767,23 @@ console.log(objectSymbols[0])      // Symbol(a)
 
 #### new.target
 
-new.target 属性允许你<font color=FF0000> **检测函数或构造方法是否是通过 new 运算符被调用的**</font>。<font color=FF0000> 在通过 new 运算符被初始化的函数或构造方法中，**new.target 返回一个指向构造方法或函数的引用**</font>。<font color=LightSeaGreen>在普通的函数调用中，new.target 的值是 **undefined**</font>。
+`new.target` 属性允许你<font color=fuchsia> **检测函数或构造方法是否是通过 `new` 运算符被调用的**</font>。<font color=FF0000> 在通过 `new` 运算符被初始化的函数或构造方法中</font>，<font color=fuchsia>**`new.target` 返回一个指向构造方法或函数的引用**</font>。<font color=LightSeaGreen>在普通的函数调用中，`new.target` 的值是 **`undefined`**</font>。
 
 ##### 语法
 
-```js
 new.target
-```
 
-##### 描述 
+##### 描述
 
-new.target 语法由一个关键字 "new"，一个点，和一个属性名 "target" 组成。<font color=FF0000> 通常 "new." 的作用是提供属性访问的上下文，但 **这里 "new." 其实不是一个真正的对象**</font>。不过在构造方法调用中，new.target 指向被 new 调用的构造函数，所以 "new." 成为了一个虚拟上下文。
+`new.target` 语法由一个关键字 `new`，一个点，和一个属性名 `target` 组成。<font color=FF0000> 通常 `new.` 的作用是提供属性访问的上下文，但 **这里 `new.` 其实不是一个真正的对象**</font>。不过在构造方法调用中，`new.target` 指向被 `new` 调用的构造函数，所以 `new.` 成为了一个虚拟上下文。
 
-new.target 属性适用于所有函数访问的元属性。<font color=FF0000>在箭头函数中，new.target 指向最近的外层函数的 new.target</font>
+`new.target` 属性适用于所有函数访问的元属性。<font color=FF0000>在箭头函数中，`new.target` 指向最近的外层函数的 `new.target`</font>
 
 ##### 示例
 
 ###### 函数调用中的 new.target
 
-在普通的函数调用中（和作为构造函数来调用相对），new.target 的值是 undefined。这使得你可以检测一个函数是否是作为构造函数通过 new 被调用的。
+在普通的函数调用中（和作为构造函数来调用相对），`new.target` 的值是 `undefined` 。这使得你可以检测一个函数是否是作为构造函数通过 `new` 被调用的。
 
 ```js
 function Foo() {
@@ -11799,7 +11797,7 @@ new Foo(); // logs "Foo instantiated with new"
 
 ###### 构造方法中的 new.target
 
-在类的构造方法中，new.target 指向直接被 new 执行的构造函数。并且当一个父类构造方法在子类构造方法中被调用时，情况与之相同。
+在类的构造方法中，`new.target` 指向直接被 `new` 执行的构造函数。并且当一个父类构造方法在子类构造方法中被调用时，情况与之相同。
 
 ```js
 class A {
@@ -11817,17 +11815,17 @@ var c = new C(); // logs class C{constructor(){console.log(new.target);}}
 var d = new D(); // logs class D extends C{constructor(){super();}}
 ```
 
-从上面类 C 和 D 的例子可以看出来，new.target 指向的是初始化类的类定义。比如当 D 通过 new 初始化的时候，打印出了 D 的类定义，C 的例子与之类似，打印出的是 C 的类定义。
+从上面类 C 和 D 的例子可以看出来，`new.target` 指向的是初始化类的类定义。比如当 D 通过 new 初始化的时候，打印出了 D 的类定义，C 的例子与之类似，打印出的是 C 的类定义。
 
 摘自：[MDN - new.target](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/new.target)
 
 ##### 视频《ES6中的难点--new.target是什么鬼东西？》的补充
 
-💡 new.target 是 ES6 新增的。
+> 💡 `new.target` 是 ES6 新增的。
 
 class 定义的类( `class ClassName { ...  }` )，是无法通过 “非 new” 的方式调用的。必须要 `new ClassName()`，否则会报错。那么 如何让 `function ClassName() {}` 定义的类，也必须要通过 new 调用（否则报错）？可以通过判断 new.target。
 
-有点类似于 Event.target （而不是 Event.currentTarget ），在继承中，哪怕父类中有 new.target，new.target 指向的也会是 当前 new 的对象，如下示例：
+有点类似于 `Event.target` （而不是 `Event.currentTarget` ），在继承中，哪怕父类中有 `new.target`，`new.target` 指向的也会是 当前 `new` 的对象，如下示例：
 
 ```js
 class Parent {
@@ -11847,7 +11845,7 @@ class Child extends Parent {
 new Child()
 ```
 
-类似的，new.target 可以用来实现（不可实例化的）抽象类
+类似的，`new.target` 可以用来实现（不可实例化的）抽象类
 ```js
 class AbstractClass {
   constructor() {
