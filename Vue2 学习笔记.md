@@ -6242,9 +6242,9 @@ Vue CLI 是对 webpack 的封装，可以通过 `vue inspect` 命令，输出对
 
 
 
-#### 在 vue.config.js 中实现 resolve.alias
+#### 在 vue.config.js 中实现 `resolve.alias`
 
-在 vue cli 中默认是实现了 @ 是 `/src` 的别名，如果想要自己定义别名，配置如下：
+在 vue cli 中默认是实现了 `@` 是 `/src` 的别名，如果想要自己定义别名，配置如下：
 
 ```js
 module.exports = defineConfig({
@@ -6254,7 +6254,7 @@ module.exports = defineConfig({
 })
 ```
 
-同时，默认情况下，点击使用别名无法像使用 `@` 的路径一样，跳转到 定义处；这时，可以在 jsconfig.json（详见 [[#@vue/cli 5 的新特性#jsconfig.json]]） 中配置如下：
+同时，默认情况下，点击使用别名无法像使用 `@` 的路径一样，跳转到定义处；这时，可以在 jsconfig.json（详见 [[#@vue/cli 5 的新特性#jsconfig.json]]） 中配置如下：
 
 ```diff
 // jsconfig.jon
@@ -6286,7 +6286,7 @@ module.exports = defineConfig({
 
 ##### jsconfig.json
 
-使用 @vue/cli 5 创建项目，会发现 多了一个 jsconfig.json 的文件（注意不是 tsconfig.json ）
+使用 @vue/cli 5 创建项目，会发现 多了一个 jsconfig.json 的文件（ ⚠️ 注意不是 tsconfig.json ）
 
 > ##### What is jsconfig.json?
 >
