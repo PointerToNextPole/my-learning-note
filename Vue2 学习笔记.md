@@ -6286,7 +6286,7 @@ module.exports = defineConfig({
 
 ##### jsconfig.json
 
-使用 @vue/cli 5 创建项目，会发现 多了一个 jsconfig.json 的文件（ ⚠️ 注意不是 tsconfig.json ）
+使用 @vue/cli 5 创建项目，会发现：多了一个 jsconfig.json 的文件（ ⚠️ 注意不是 tsconfig.json ）
 
 > ##### What is jsconfig.json?
 >
@@ -6294,7 +6294,7 @@ module.exports = defineConfig({
 >
 > > 💡 **Tip:** If you are not using JavaScript , you do not need to worry about `jsconfig.json`.
 >
-> > 💡 **Tip:** <font color=fuchsia>`jsconfig.json` is a descendant of `tsconfig.json`</font> , which is a configuration file for TypeScript. <font color=fuchsia>`jsconfig.json` is `tsconfig.json` with `"allowJs"` attribute set to `true`</font> .
+> > 💡 **Tip:** <font color=red>**`jsconfig.json` is a descendant of `tsconfig.json`**</font> , which is a configuration file for TypeScript. <font color=fuchsia>`jsconfig.json` is `tsconfig.json` with `"allowJs"` attribute set to `true`</font> .
 >
 > ##### Why do I need a jsconfig.json file?
 >
