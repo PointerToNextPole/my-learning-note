@@ -4415,29 +4415,14 @@ background-blend-mode 属性<font color=FF0000>定义了背景层的混合模式
 
 #### mix-blend-mode
 
-> 👀 感觉 [MDN - `mix-blend-mode`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/mix-blend-mode) 对于 `mix-blend-mode` 各个可选值并没有详细的讲解，可参考 《CSS 权威指南》19.2 合成与混合
+> 👀 感觉 [MDN - `mix-blend-mode`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/mix-blend-mode) 对于 `mix-blend-mode` 各个可选值并没有详细的讲解，不过可选值就是 `<blend-mode>` ，MDN 是有专门的页面的 [MDN - `<blend-mode>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)；可见 [[#`blend-mode`]]
 
 **`mix-blend-mode`** CSS 属性<font color=red>描述了元素的内容应该与元素的直系父元素的内容和元素的背景如何混合</font>。
 
 ##### 语法
 
 ```css
-mix-blend-mode: normal;
-mix-blend-mode: multiply;
-mix-blend-mode: screen;
-mix-blend-mode: overlay;
-mix-blend-mode: darken;
-mix-blend-mode: lighten;
-mix-blend-mode: color-dodge
-mix-blend-mode: color-burn;
-mix-blend-mode: hard-light;
-mix-blend-mode: soft-light;
-mix-blend-mode: difference;
-mix-blend-mode: exclusion;
-mix-blend-mode: hue;
-mix-blend-mode: saturation;
-mix-blend-mode: color;
-mix-blend-mode: luminosity;
+mix-blend-mode: <blend-mode>;
 
 mix-blend-mode: initial;
 mix-blend-mode: inherit;
@@ -4464,13 +4449,32 @@ mix-blend-mode: unset;
 
 #### `<blend-mode>`
 
-`<blend-mode>` <font color=FF0000 size=4>**是一种 CSS 数据类型**</font>（ 👀 `<blend-mode>` 不是一种标签，而是一个数据类型，类似于 `<length>`，具体介绍见：[MDN - CSS 基本数据类型](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Types) ），<font color=FF0000>用于描述当元素重叠时，颜色应当如何呈现</font>。它<font color=FF0000>被用于 background-blend-mode 和 mix-blend-mode 属性</font>。
+`<blend-mode>` <font color=fuchisa>**是一种 CSS 数据类型**</font>，<font color=FF0000>用于描述当元素重叠时，颜色应当如何呈现</font>。它<font color=FF0000>被用于 `background-blend-mode` 和 `mix-blend-mode` 属性</font>。
+
+> 💡 `<blend-mode>` 不是一种标签，而是一个数据类型，类似于 `<length>`，具体介绍见：[MDN - CSS 基本数据类型](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Types) 
 
 当层重叠时，混合模式是计算像素最终颜色值的方法，每种混合模式采用前景和背景的颜色值，执行其计算并返回最终的颜色值。最终的可见层是对混合层中的每个重叠像素执行混合模式计算的结果。
 
-下面还有 包含的属性值，由于上面（background-blend-mode）已经包含了，所以这里略。不过，MDN 的文档中还包含属性值对应的效果图，可以参考下。
+##### 属性值
 
-摘自：[MDN - \<blend-mode>](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
+- `normal` ：最终颜色永远是顶层颜色，无论底层颜色是什么。 其效果类似于两张不透明的纸重叠 ( overlapping ) 在一起
+- `multiply` ：最终颜色为顶层颜色与底层颜色相乘的结果。 如果叠加黑色层，则最终层必为黑色层，叠加白色层不会造成变化。 其效果类似于在透明薄膜上重叠印刷的两个图像。
+- `screen` ：最终的颜色是**反转顶层颜色和底层颜色，将反转后的两个颜色相乘，再反转相加得到的和**得到的结果。 黑色层不会造成变化，白色层导致白色最终层。 其效果类似于（被投影仪）投射到投影屏幕上的两个图像。
+- `overlay` ：如果底层颜色比顶层颜色深，则最终颜色是 `multiply` 的结果，如果底层颜色比顶层颜色浅，则最终颜色是 `screen` 的结果。 此混合模式相当于顶层与底层互换后的 `hard-light`。
+- `darken` ：最终颜色是由每个颜色通道下，顶底两层颜色中的最暗值所组成的颜色。
+- `lighten` ：最终颜色是每个颜色通道下，顶底两层颜色中的最亮值所组成的颜色。
+- `color-dodge` ：最终颜色是将底部颜色除以顶部颜色的反色的结果。 黑色前景不会造成变化。前景如果是背景的反色，会得到白色（fully lit color，完全亮起的颜色，应当为白色）。 此混合模式类似于 `screen`，但是，前景只需要和背景的反色一样亮，最终图像就会变为全白。
+- `color-burn` ：最终颜色是**反转底部颜色，将反转后的值除以顶部颜色，再反转除以后的值**得到的结果。 白色的前景不会导致变化，前景如果是背景的反色，会得到黑色。 此混合模式类似于 `multiply`，但是，前景只需要和背景的反色一样暗，最终图像就会变为全黑。
+- `hard-light` ：如果顶层颜色比底层颜色深，则最终颜色是 `multiply` 的结果，如果顶层颜色比底层颜色浅，则最终颜色是 `screen` 的结果。 此混合模式相当于顶层与底层互换后的 `overlay`。 其效果类似于在背景层上（用前景层）打出一片_刺眼_的聚光灯。
+- `soft-light` ：最终颜色类似于 `hard-light` 的结果，但更加柔和一些。 此混合模式的表现类似 `hard-light`。 其效果类似于在背景层上（用前景层）打出一片_发散_的聚光灯。
+- ``difference`` ：最终颜色是 两种颜色中较浅的颜色 减去 两种颜色中较深的颜色 得到的结果。 黑色层不会造成变化，而白色层会反转另一层的颜色。
+- `exclusion` ：最终颜色类似于 `difference`，但对比度更低一些。 和 `difference` 相同，黑色层不会造成变化，而而白色层会反转另一层的颜色。
+- `hue` ：最终颜色由顶部颜色的_色调_和底部颜色的_饱和度_与_亮度_组成。
+- `saturation` ：最终颜色由顶部颜色的_色调_和底部颜色的_饱和度_与_发光度_组成。 饱和度为零的纯灰色背景层不会造成变化。
+- `color` ：最终颜色由顶部颜色的_色调_ 与_饱和度_和底部颜色的_亮度_组成。 此效果保留了灰度级别，可用于为前景着色。（The effect preserves gray levels and can be used to colorize the foreground.）
+- `luminosity` ：最终颜色由顶部颜色的亮度和底部颜色的色调和饱和度组成。此混合模式相当于顶层与底层互换后的 `color`。
+
+摘自：[MDN - `<blend-mode>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
 
 
 
