@@ -4384,11 +4384,15 @@ background-clip: unset;
 
 #### background-blend-mode
 
-**（MDN）**background-blend-mode CSS属性<font color=FF0000>定义该元素的背景图片，以及背景色如何混合</font>。
+##### MDN 的解释
+
+background-blend-mode CSS属性<font color=FF0000>定义该元素的背景图片，以及背景色如何混合</font>。
 
 混合模式应该按background-image CSS属性同样的顺序定义。如果混合模式数量与背景图像的数量不相等，它会被截取至相等的数量。
 
-**（RUNOOB）**background-blend-mode 属性<font color=FF0000>定义了背景层的混合模式（图片与颜色）</font>。
+##### RUNOOB 的解释
+
+background-blend-mode 属性<font color=FF0000>定义了背景层的混合模式（图片与颜色）</font>。
 
 | 值          | 描述                         |
 | :---------- | :--------------------------- |
@@ -4405,13 +4409,62 @@ background-clip: unset;
 
 摘自：[MDN - background-blend-mode](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-blend-mode)、 [RUNOOB - CSS background-blend-mode 属性](https://www.runoob.com/cssref/pr-background-blend-mode.html)
 
-> 👀 上面的属性值对应的效果，参见 [MDN - \<blend-mode>](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
+> 👀 上面的属性值对应的效果，参见 [MDN - `<blend-mode>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
 
 
 
-#### \<blend-mode>
+#### mix-blend-mode
 
-`<blend-mode>` <font color=FF0000 size=4>**是一种 CSS 数据类型**</font>（ 👀 注：`<blend-mode>` 不是一种标签，而是一个数据类型，类似于 `<length>`，具体介绍见：[MDN - CSS 基本数据类型](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Types) ），<font color=FF0000>用于描述当元素重叠时，颜色应当如何呈现</font>。它<font color=FF0000>被用于 background-blend-mode 和 mix-blend-mode 属性</font>。
+> 👀 感觉 [MDN - `mix-blend-mode`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/mix-blend-mode) 对于 `mix-blend-mode` 各个可选值并没有详细的讲解，可参考 《CSS 权威指南》19.2 合成与混合
+
+**`mix-blend-mode`** CSS 属性<font color=red>描述了元素的内容应该与元素的直系父元素的内容和元素的背景如何混合</font>。
+
+##### 语法
+
+```css
+mix-blend-mode: normal;
+mix-blend-mode: multiply;
+mix-blend-mode: screen;
+mix-blend-mode: overlay;
+mix-blend-mode: darken;
+mix-blend-mode: lighten;
+mix-blend-mode: color-dodge
+mix-blend-mode: color-burn;
+mix-blend-mode: hard-light;
+mix-blend-mode: soft-light;
+mix-blend-mode: difference;
+mix-blend-mode: exclusion;
+mix-blend-mode: hue;
+mix-blend-mode: saturation;
+mix-blend-mode: color;
+mix-blend-mode: luminosity;
+
+mix-blend-mode: initial;
+mix-blend-mode: inherit;
+mix-blend-mode: unset;
+```
+
+###### 值
+
+- `<blend-mode>` ：表示应该应用的混合模式。
+
+##### 形式定义
+
+| 初始值                                                       | `normal`       |
+| :----------------------------------------------------------- | -------------- |
+| 适用元素                                                     | all elements   |
+| 是否是继承属性                                               | 否             |
+| 计算值                                                       | as specified   |
+| Animation type                                               | Not animatable |
+| Creates [stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_context) | yes            |
+
+摘自：[MDN - `mix-blend-mode`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/mix-blend-mode)
+
+
+
+#### `<blend-mode>`
+
+`<blend-mode>` <font color=FF0000 size=4>**是一种 CSS 数据类型**</font>（ 👀 `<blend-mode>` 不是一种标签，而是一个数据类型，类似于 `<length>`，具体介绍见：[MDN - CSS 基本数据类型](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Types) ），<font color=FF0000>用于描述当元素重叠时，颜色应当如何呈现</font>。它<font color=FF0000>被用于 background-blend-mode 和 mix-blend-mode 属性</font>。
 
 当层重叠时，混合模式是计算像素最终颜色值的方法，每种混合模式采用前景和背景的颜色值，执行其计算并返回最终的颜色值。最终的可见层是对混合层中的每个重叠像素执行混合模式计算的结果。
 

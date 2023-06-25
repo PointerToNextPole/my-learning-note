@@ -1050,8 +1050,9 @@ git push -u origin master
 
 - **`git remote set-url repoRename remoteUrl`** ：设置远程仓库地址（用于修改远程仓库地址）
 
-
 摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
+> 💡 补充： **`git remote remove <name>`** ：`git remote add` 的逆操作
 
 
 
@@ -1940,9 +1941,14 @@ git bisect
 **上面的四条命令在工作目录、暂存目录（也叫做索引）和仓库之间复制文件：**
 
 - **`git add files`** ：把当前文件放入暂存区域。
+
 - **`git commit`** ：给暂存区域生成快照并提交。
+
 - <font color=FF0000 size=4>**`git reset -- files`**</font> ：用来<font color=FF0000>撤销最后一次 `git add files`</font>，你<font color=FF0000>也可以用 `git reset` 撤销所有暂存区域文件</font>。
+
 - <font color=FF0000 size=4>**`git checkout -- files`**</font> ：<font color=FF0000>把文件从暂存区域复制到工作目录，用来丢弃本地修改</font>。
+
+  > 💡 如果是修改消除所有的修改，则直接 `git checkout .` ；不过，新增的文件，不会被删除
 
 **也可以跳过暂存区域直接从仓库取出文件或者直接提交代码：**
 
