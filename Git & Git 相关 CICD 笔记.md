@@ -666,15 +666,29 @@ normal 模式键入 `:wq!`，显示如下：
 
 - **`git stash clear`** ：清除堆栈中的所有内容
 
+  > 💡 `git stash clear` 或 `git stash drop` 清除的数据是可以恢复的。
+  >
+  > 参考文章 [git stash clear后如何恢复](https://www.jianshu.com/p/3c2292223335) 中的内容，输入 `git fsck --lost-found` 会显示一条条记录，如下示例：
+  >
+  > <img src="https://s2.loli.net/2023/06/27/cVs8CN5BYSaIQmW.png" alt="image-20230627222208403" style="zoom:47%;" />
+  >
+  > 这里的"dangling commit ..." 可以理解为你 stash 的 id。经原文作者测试，该 id 不是按时间顺序排列（不过，我在恢复数据时，发现就是最后一条 id ）；所以，需要通过对每一个 id 进行 `git show id` ，从而查看该 id 的具体内容。如下示例：
+  >
+  > <img src="https://s2.loli.net/2023/06/27/FQ4r7KbWwyUdkpC.png" alt="image-20230627223125756" style="zoom:45%;" />
+  >
+  > 记录中会描述日期和摘要，日期是你 `git stash` 的日期，摘要会记录你是在哪一条 commit 上进行 `git stash` 操作的。另外，经过测试，“dangling blob” 并不会记录上面所说的 stash 的日期等信息，只有内容；所以只能使用 commit id。
+  >
+  > 找到符合需求的 id 后，通过 `git merge commitId` 即可恢复 stash 的数据
+
 - **`git stash show`** ：查看堆栈中最新保存的stash和当前目录的差异
 
   可以通过 `git stash show <stashName>` 的方式，指定某一个 stash 与当前目录的差异
 
   通过 `git stash show [<stashName>] -p` 查看详细的不同
 
-- **`git stash branch`** ：从最新的stash创建分支。
+- **`git stash branch`** ：从最新的 stash 创建分支。
 
-  **应用场景**：当储藏了部分工作，暂时不去理会，继续在当前分支进行开发，后续想将stash中的内容恢复到当前工作目录时，如果是针对同一个文件的修改（即便不是同行数据），那么可能会发生冲突，恢复失败，这里通过创建新的分支来解决。可以用于解决stash中的内容和当前目录的内容发生冲突的情景。
+  **应用场景**：当储藏了部分工作，暂时不去理会，继续在当前分支进行开发，后续想将 stash 中的内容恢复到当前工作目录时，如果是针对同一个文件的修改（即便不是同行数据），那么可能会发生冲突，恢复失败，这里通过创建新的分支来解决。可以用于解决 stash 中的内容和当前目录的内容发生冲突的情景。
   发生冲突时，需手动解决冲突。
   
   「命令相关内容」摘自：[git stash详解](https://blog.csdn.net/stone_yw/article/details/80795669)

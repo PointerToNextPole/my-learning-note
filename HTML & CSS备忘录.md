@@ -2971,13 +2971,27 @@ body { padding: 36px 24px 18px 12px; } /* 上、右、下、左补丁边距分�
 
 ##### margin 和 padding 的百分比参照物
 
-当 margin 、padding 取值为百分比时，<font color=fuchsia>百分比的值是以 **父元素的 width** 为参考</font>
+当 margin 、padding 取值为百分比时，<font color=fuchsia size=4>百分比的值是以 **父元素的 width** 为参考</font>
+
+> ⚠️ 上面这点非常重要，最近实现类似功能时，发现忘记了
 
 摘自：[2023年CSS自适应正方形必须拿下🏆](https://juejin.cn/post/7204485623461691450)
 
 > 💡 关于上面的文章，介绍了 `aspect-ratio: width-ratio / height-ratio` 的的方法，通过 `aspect-ratio: 1/1` 来实现。不过，兼容性不太好：
 >
 > <img src="https://s2.loli.net/2023/03/30/bnWGNR86zu1TxoD.png" alt="image-20230330015514387" style="zoom:50%;" />
+>
+> 所以，可以考虑通过：
+>
+> ```css
+> .aspect-ratio-realize {
+>   width: width-val;
+>   height: 0;
+>   padding-bottom: aspect-ratio-val;
+> }
+> ```
+>
+> 实现。在这里，为了实现正方形， `aspect-ratio-val` 为 100%
 
 ##### cheatsheet
 
@@ -3093,11 +3107,11 @@ box model 不完全适用于参与内联格式上下文。在水平书写模式�
 
 ##### id选择器
 
-- id 选择器可以<mark>为标有特定 id 的 HTML 元素指定特定的样式</mark>。
+- id 选择器可以 <font color=lightSeaGreen>为标有特定 id 的 HTML 元素指定特定的样式</font>。
 
-- HTML元素以id属性来设置id选择器，**<font color=FF0000>CSS 中 id 选择器以 "#" 来定义</font>**。
+- HTML 元素以 `id` 属性来设置 id 选择器，**<font color=FF0000>CSS 中 id 选择器以 "#" 来定义</font>**。
 
-- <mark>ID属性不要以数字开头</mark>，数字开头的ID在 Mozilla/Firefox 浏览器中不起作用。
+- <font color=red>`id` 属性不要以数字开头</font>，数字开头的 `id` 在 Mozilla/Firefox 浏览器中不起作用。
   
   示例如下：
   
@@ -3124,7 +3138,7 @@ box model 不完全适用于参与内联格式上下文。在水平书写模式�
 
 ##### class 选择器
 
-- class 选择器用于描述一组元素的样式，<font color=FF0000>class 选择器有别于id选择器，**class可以在多个元素中使用**</font>。
+- class 选择器用于描述一组元素的样式，<font color=FF0000>class 选择器有别于id选择器，**class 可以在多个元素中使用**</font>。
 
 - class 选择器在HTML中以class属性表示，在 CSS 中，<font color=FF0000>**类选择器以一个点"."号显示**</font>
 
@@ -3903,7 +3917,7 @@ button:hover {
 
 伪元素是一个附加至选择器末的关键词，允许你对被选择元素的特定部分修改样式。
 
-下例 [`::first-line`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/::first-line) 伪元素可改变段落首行文字的样式。
+下例 `::first-line` 伪元素可改变段落首行文字的样式。
 
 ```css
 /* 每一个 <p> 元素的第一行。 */
@@ -3923,27 +3937,33 @@ selector::pseudo-element {
 
 **所有CSS伪类/元素**
 
-| 选择器                                                                 | 示例             | 示例说明                        |
-|:------------------------------------------------------------------- |:-------------- |:--------------------------- |
-| [:link](https://www.runoob.com/cssref/sel-link.html)                | a:link         | 选择所有未访问链接                   |
-| [:visited](https://www.runoob.com/cssref/sel-visited.html)          | a:visited      | 选择所有访问过的链接                  |
-| [:active](https://www.runoob.com/cssref/sel-active.html)            | a:active       | 选择正在活动链接                    |
-| [:hover](https://www.runoob.com/cssref/sel-hover.html)              | a:hover        | 把鼠标放在链接上的状态                 |
-| [:focus](https://www.runoob.com/cssref/sel-focus.html)              | input:focus    | 选择元素输入后具有焦点                 |
-| [:first-letter](https://www.runoob.com/cssref/sel-firstletter.html) | p:first-letter | 选择每个\<p> 元素的第一个字母           |
-| [:first-line](https://www.runoob.com/cssref/sel-firstline.html)     | p:first-line   | 选择每个\<p> 元素的第一行             |
-| [:first-child](https://www.runoob.com/cssref/sel-firstchild.html)   | p:first-child  | 选择器匹配属于任意元素的第一个子元素的 \<p> 元素 |
-| [:before](https://www.runoob.com/cssref/sel-before.html)            | p:before       | 在每个\<p>元素之前插入内容             |
-| [:after](https://www.runoob.com/cssref/sel-after.html)              | p:after        | 在每个\<p>元素之后插入内容             |
-| [:lang(*language*)](https://www.runoob.com/cssref/sel-lang.html)    | p:lang(it)     | 为\<p>元素的lang属性选择一个开始值       |
+| 选择器              | 示例              | 示例说明                                          |
+| :------------------ | :---------------- | :------------------------------------------------ |
+| `:link`             | `a:link`          | 选择所有未访问链接                                |
+| `:visited`          | `a:visited`       | 选择所有访问过的链接                              |
+| `:active`           | `a:active`        | 选择正在活动链接                                  |
+| `:hover`            | `a:hover`         | 把鼠标放在链接上的状态                            |
+| `:focus`            | `input:focus`     | 选择元素输入后具有焦点                            |
+| `::first-letter`    | `p::first-letter` | 选择每个 `<p>` 元素的第一个字母                   |
+| `::first-line`      | `p::first-line`   | 选择每个 `<p>` 元素的第一行                       |
+| `::first-child`     | `p::first-child`  | 选择器匹配属于任意元素的第一个子元素的 `<p>` 元素 |
+| `::before`          | `p::before`       | 在每个 `<p>`元素之前插入内容                      |
+| `::after`           | `p::after`        | 在每个 `<p>`元素之后插入内容                      |
+| `:lang(*language*)` | `p:lang(it)`      | 为\<p>元素的 `lang` 属性选择一个开始值            |
 
 以上部分摘自：[MDN - 伪元素](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Pseudo-elements)
+
+> 💡 相当值得⚠️注意的点是：
+>
+> `input` 元素是不支持 `::before` 和 `::after` 的，加上了也不会按照预期显示。
+>
+> 另外，可以参考 [为什么input不支持伪元素(:after,:before)？ - 知乎](https://www.zhihu.com/question/21296044)
 
 
 
 #### CSS 图像透明度
 
-CSS3中属性的透明度是 **opacity**，示例：
+CSS3中属性的透明度是 `opacity`，示例：
 
 ```css
 opacity:0.4;
@@ -6585,9 +6605,9 @@ a 和 b 都必须为整数，并且元素的第一个子元素的下标为 1。�
 
 > ⚠️已废弃，详见 [CanIuse-execCommand](https://caniuse.com/?search=execCommand)
 
-当一个HTML文档切换到设计模式时，document暴露 execCommand 方法，该方法允许运行命令来操纵可编辑内容区域的元素。
+当一个 HTML 文档切换到设计模式时，document 暴露 execCommand 方法，该方法允许运行命令来操纵可编辑内容区域的元素。
 
-大多数命令影响document的 selection（粗体，斜体等），当其他命令插入新元素（添加链接）或影响整行（缩进）。当使用contentEditable时，调用 execCommand() 将影响当前活动的可编辑元素。
+大多数命令影响 document 的 selection（粗体，斜体等），当其他命令插入新元素（添加链接）或影响整行（缩进）。当使用 `contentEditable` 时，调用 `execCommand()` 将影响当前活动的可编辑元素。
 
 ##### 语法
 
@@ -6597,23 +6617,25 @@ bool = document.execCommand(aCommandName, aShowDefaultUI, aValueArgument)
 
 ###### 返回值
 
-一个 Boolean ，如果是 false 则表示操作不被支持或未被启用。
+一个 Boolean ，如果是 `false` 则表示操作不被支持或未被启用。
 
 ###### 参数
 
 - **aCommandName：**一个 DOMString ，命令的名称。可用命令列表请参阅 [命令](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand#%E5%91%BD%E4%BB%A4) 。
 - **aShowDefaultUI：**一个 Boolean， 是否展示用户界面，一般为 false。Mozilla 没有实现。
-- **aValueArgument：**一些命令（例如insertImage）需要额外的参数（insertImage需要提供插入image的url），默认为null。
+- **aValueArgument：**一些命令（例如 insertImage ）需要额外的参数（ insertImage 需要提供插入 image 的url ），默认为 null。
 
 ###### 命令
 
-由于过长：略。地址： [命令](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand#%E5%91%BD%E4%BB%A4) 
+由于过长：略，见原文
 
 摘自：[MDN - document.execCommand](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/execCommand)
 
-**补充：** contenteditable 有一个类似功能的 js 属性为：`Document.designMode`
+##### 补充
 
-> document.designMode 控制整个文档是否可编辑。有效值为 "on" 和 "off" 。
+`contenteditable` 有一个类似功能的 js 属性为：`Document.designMode`
+
+> `document.designMode` 控制整个文档是否可编辑。有效值为 "on" 和 "off" 。
 >
 > 摘自：[MDN - Document.designMode](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/designMode)
 
