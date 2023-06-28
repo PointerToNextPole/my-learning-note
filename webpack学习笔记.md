@@ -10,7 +10,7 @@ webpack 是一种构建工具工具。那，为什么需要构建或者说编译
 
 ##### webpack 解析 ES6
 
-需要掌握一个新的概念，loaders：所谓 loaders ，就是说把原本 webpack 不支持加载的文件或者文件内容通过 loaders 进行加载解析，实现应用的目的。<font color=LightSeaGreen>这里讲解 ES6 解析，原生支持 JS 解析，但是不能解析 ES6，需要 babel-loader ，而 babel-loader 又依赖 babel</font>
+需要掌握一个新的概念，loaders。所谓 loaders ，就是说把原本 webpack 不支持加载的文件或者文件内容通过 loaders 进行加载解析，实现应用的目的。<font color=LightSeaGreen>这里讲解 ES6 解析，原生支持 JS 解析，但是不能解析 ES6，需要 babel-loader ，而 babel-loader 又依赖 babel</font>
 
 ##### webpack 加载 css、less 等样式文件
 
@@ -9715,7 +9715,7 @@ module.exports = {
 }
 ```
 
-**注：**上面相关 外置化 第三方库，下面有 webpack 文档 的补充 [[#Externalize Lodash]]
+> 👀 上面相关 外置化 第三方库，下面有 webpack 文档 的补充 [[#Externalize Lodash]]
 
 
 
@@ -9799,9 +9799,9 @@ Let's update the `output.library` option with its `type` set to [`'umd'`](https:
 
 ##### Externalize Lodash
 
-**注：**实际上不仅仅是 lodash，而是所有的第三库。
+> 👀 实际上不仅仅是 lodash，而是所有的第三库。
 
-Now, if you run `npx webpack` , you will find that a largish（相当大的） bundle is created. <mark>If you inspect the file, you'll see that lodash has been bundled along with your code</mark>. <font color=FF0000>In this case, we'd prefer to treat `lodash` as a ***peer dependency*** </font>. Meaning that <font color=FF0000>**the consumer should already have `lodash` installed**</font> （**注：**感觉这里可以理解为：用户（库的使用者，自身也是程序员）在自己的项目中也引入了 lodash，可能会造成多次安装 ）. <font color=FF0000>Hence you would want to **give up control of this external library to the consumer of your library**</font>.
+Now, if you run `npx webpack` , you will find that a largish（相当大的） bundle is created. <mark>If you inspect the file, you'll see that lodash has been bundled along with your code</mark>. <font color=FF0000>In this case, we'd prefer to treat `lodash` as a ***peer dependency*** </font>. Meaning that <font color=FF0000>**the consumer should already have `lodash` installed**</font> （ 👀 感觉这里可以理解为：用户（库的使用者，自身也是程序员）在自己的项目中也引入了 lodash，可能会造成多次安装 ）. <font color=FF0000>Hence you would want to **give up control of this external library to the consumer of your library**</font>.
 
 This can be done using the [`externals`](https://webpack.js.org/configuration/externals/) configuration:
 
@@ -10933,7 +10933,7 @@ module.exports = {
 }
 ```
 
-将打包的 dll 文件，对其生成一个全局变量（比如上面 library: [name] 生成的 vendors ），并且在 index.html 上引入（ \<script src="vendors.dll.js" \>），需要使用插件：add-asset-html-webpack-plugin
+将打包的 dll 文件，对其生成一个全局变量（比如上面 `library: [name]` 生成的 vendors ），并且在 index.html 上引入（ `<script src="vendors.dll.js">` ），需要使用插件：add-asset-html-webpack-plugin
 
 ```js
 // webpack.common.conf.js
@@ -10956,7 +10956,6 @@ module.exports = {
 
 ```js
 // webpack.dll.js
-
 const webpack = require('webpack')
 
 // 之前有的 webpack.dll.js 中的配置，省略
@@ -10972,7 +10971,7 @@ module.export = {
 }
 ```
 
-运行 npm run build:dll，此时 dll 文件夹下会出现一个名为 vendors.manifest.json 的映射文件。所以在webpack 打包时，可以结合 之前生成的 全局变量 和 manifest映射关系 来对代码进行分析。这时候，需要使用 webpack.DllReference ，在 webpack.common.conf.js中配置：
+运行 `npm run build:dll`，此时 dll 文件夹下会出现一个名为 vendors.manifest.json 的映射文件。所以在webpack 打包时，可以结合 之前生成的 全局变量 和 manifest 映射关系 来对代码进行分析。这时候，需要使用 webpack.DllReference ，在 webpack.common.conf.js 中配置：
 
 ```js
 // webpack.common.conf.js
@@ -10989,9 +10988,9 @@ module.exports = {
 
 在 webpack 打包，引入第三方的模块时， 会到 vendors.manifest.json 中寻找映射关系。如果能找到映射关系，则 webpack 知道 没有必要从 node_modules 中打包进来了，直接去 vendors.dll.js 中拿即可（原理上，会从全局变量那边拿到，那里存储了打包生成的第三方模块）；如果没有找到映射关系，则还会从 node_modules 中拿到模块，去打包。
 
-<font size=4>**Dllplugin使用的一些优化**</font>
+##### Dllplugin 使用的一些优化
 
-对于 entry 中 自定义的 vendors 数组太长，是可以拆分的，比如按照模块的关系进行拆分：
+对于 entry 中自定义的 vendors 数组太长，是可以拆分的，比如按照模块的关系进行拆分：
 
 ```js
 // webpack.dll.js
@@ -11003,7 +11002,7 @@ module.exports = {
 }
 ```
 
-这时候运行 npm run build:dll 将会在 dll 文件夹下 会多出 react.dll.js 和 react.manifest.json 两个文件。这时，webpack.common.conf.js 也要修改，在 addAssetHtmlWebpackPlugin 和 DllReferencePlugin 中添加配置 react.manifest.json 
+这时候运行 `npm run build:dll` 将会在 dll 文件夹下 会多出 react.dll.js 和 react.manifest.json 两个文件。这时，webpack.common.conf.js 也要修改，在 addAssetHtmlWebpackPlugin 和 DllReferencePlugin 中添加配置 react.manifest.json 
 
 ```js
 // webpack.common.conf.js
@@ -11028,7 +11027,7 @@ module.exports = {
 }
 ```
 
-<font color=FF0000 size=4> **但是**</font>，在大型项目中，引入的第三方模块会很多，同样 webpack.dll.js 中 entry 的入口 数组也很多，如果一个一个 在 webpack.common.conf.js 中 配置 addAssetHtmlWebpackPlugin 和 DllReferencePlugin，将会非常麻烦；可以使用脚本动态的添加配置，将原先的 plugins 数组删掉，在 module.exports 上面添加变量 const plugins，使用 Node 的 FS 模块在 dll 文件夹下，自动、动态地进行匹配（正则） 和 添加：
+<font color=dodgerBlue> **但是**</font>，在大型项目中，引入的第三方模块会很多，同样 webpack.dll.js 中 entry 的入口 数组也很多，如果一个一个 在 webpack.common.conf.js 中 配置 addAssetHtmlWebpackPlugin 和 DllReferencePlugin，将会非常麻烦；可以使用脚本动态的添加配置，将原先的 plugins 数组删掉，在 module.exports 上面添加变量 const plugins，使用 Node 的 FS 模块在 dll 文件夹下，自动、动态地进行匹配（正则） 和 添加：
 
 ```js
 // webpack.common.conf.js
@@ -11062,14 +11061,41 @@ files.forEach(file => {
 })
 
 module.exports = {
-  // ES6 语法，等价于 plugins: plugins
   plugins,
 }
 ```
 
 这样写，entry 中即使有很多个 数组，webpack 会自动的做好引入。
 
-以上，现在只需要在第一次打包时，运行 npm run build:dll 分析第三方模块中的代码，并做好全局变量暴露 和 对应关系；后面的打包只需要运行 npm run build 即可 很好地加快打包速度。
+以上，现在只需要在第一次打包时，运行 `npm run build:dll` 分析第三方模块中的代码，并做好全局变量暴露 和 对应关系；后面的打包只需要运行 `npm run build` 即可 很好地加快打包速度。
+
+> 💡 下面是之后看文章做的一些补充
+
+##### 《JS工程化之代码共享》笔记
+
+###### DLLPlugin 的缺点
+
+DLLPlugin 有一个缺点，就是需要手动维护和更新 DLL 文件。<font color=red>当第三方库有更新，或者需要添加新的库时，都需要重新构建 DLL 文件</font>。这对于大型项目来说，可能会带来一些额外的维护成本。
+
+> 💡另外，该文中也有关于 DLLPlugin 的配置，可以结合上面的配置一起看
+
+###### DLLPlugin 使用场景
+
+DLL Bundling <font color=red>主要关注第三方库或模块的共享</font>，Monorepo、微前端和模块联邦等方式更注重项目内部的模块和应用之间的共享。
+
+###### DLLPlugin 和 Externals 的区别
+
+Externals 是在编译时，直接排除对某些外部库（如：CDN 引入的库）的打包，而将其标记为外部依赖。当代码中出现这些外部依赖时，<font color=red>Webpack 不会将它们打包到输出的 bundle 中，而是 **在运行时，从全局对象**（如 window、global ）**中获取这些依赖**</font>。
+
+**主要区别**
+
+1. **打包方式**：DLLPlugin 是预先将公共库打包为一个 DLL 文件，然后在需要的地方引用这个 DLL 文件；Externals 是直接排除对某些库的打包，这些库需要在运行时从全局对象中获取。
+2. **使用场景**：<font color=red>DLLPlugin **更适合于本地开发环境**，可以大大提高开发环境的构建速度</font>。而 <font color=red>Externals 更适合于生产环境</font>，可以<font color=red>减少输出 bundle 的大小</font>，并<font color=red>**利用 CDN 提高库的加载速度**</font>。
+3. **缓存**：使用 DLLPlugin 打包的库可以被浏览器缓存，提高页面的加载速度；而使用 Externals 的方式，则需要依赖浏览器对 CDN 资源的缓存。
+
+总的来说，DLLPlugin 和 Externals 都是优化构建和加载速度的有效手段，但适用的场景不同；在选择使用哪种方式时，需要根据项目的实际情况和需求来决定。
+
+摘自：[JS工程化之代码共享（微前端+monorepo+模块联盟等）](https://juejin.cn/post/7241835342897889341#heading-8)
 
 
 
@@ -11586,7 +11612,7 @@ module.exports 中的 bail 配置的作用是，一旦打包出现错误，则�
 
 **Webpack5 模块联邦让 Webpack 达到了线上 Runtime 的效果**，<font color=FF0000>**让代码直接在项目间利用 CDN 直接共享**</font>，不再需要本地安装 Npm 包、构建再发布了（ 👀 **注**：可以理解为修改公共组件之后，让使用组件的项目 不需要重新打包？）！
 
-我们知道 <font color=FF0000>Webpack 可以通过 DLL</font> （👀 **注**：参考 [[#Dlls]]）<font color=FF0000>或者 Externals</font>（👀 **注**：参考 [[#Externalize Lodash]]） <font color=FF0000>做代码共享时 Common Chunk</font>（👀 **注**：即一个 lib 在项目中（抽离出来）只保留一份，不论它被项目直接依赖，还是作为依赖的依赖... ），但不同应用和项目间这个任务就变得困难了，我们几乎无法在项目之间做到按需热插拔。
+我们知道 <font color=FF0000>Webpack 可以通过 DLL</font> （👀 参考 [[#Dlls]]）<font color=FF0000>或者 Externals</font>（👀 参考 [[#Externalize Lodash]]） <font color=FF0000>做代码共享时 Common Chunk</font>（👀 即一个 lib 在项目中（抽离出来）只保留一份，不论它被项目直接依赖，还是作为依赖的依赖... ），但不同应用和项目间这个任务就变得困难了，我们几乎无法在项目之间做到按需热插拔。
 
 模块联邦是 Webpack5 新内置的一个重要功能，可以让跨应用间真正做到模块共享。
 
@@ -11622,12 +11648,12 @@ We distinguish between <font color=FF0000>**local**</font>（**译**：本地模
 
 <font color=FF0000>**Loading remote modules** is considered an **asynchronous operation**</font>. When using a remote module these asynchronous operations will <font color=FF0000>be placed in the next chunk loading operation(s) that is between the remote module and the entrypoint</font>（**译**：当使用远程模块时，这些异步操作将被放置在远程模块和入口之间的下一个 chunk 的加载操作中）. It's not possible to use a remote module without a chunk loading operation（**译**：如果没有 chunk 加载操作，就不能使用远程模块）.
 
-A chunk loading operation is usually an `import()` call, but older constructs like `require.ensure` or `require([...])` are supported as well. <font color=FF0000>A container is created through a container entry, which exposes asynchronous access to the specific modules</font>. <mark style="background: lightskyblue">**The exposed access is separated into two steps**</mark>:
+A chunk loading operation is usually an `import()` call, but older constructs like `require.ensure` or `require([...])` are supported as well. <font color=FF0000>A container is created through a container entry, which exposes asynchronous access to the specific modules</font>. <font color=dodgerBlue>**The exposed access is separated into two steps**</font>:
 
 1. loading the module ( asynchronous )
 2. evaluating the module ( synchronous )
 
-Step 1 will be done during the chunk loading. Step 2 will be done during the module evaluation interleaved（**译**：交错地） with other ( local and remote ) modules. This way, <font color=FF0000>evaluation order is unaffected by converting a module from local to remote or the other way around</font>（**译**：执行顺序不受模块从本地转换为远程或从远程转为本地的影响。👀 **注**：即，当前“构建”既可能有“本地模块”，也有可能有“远端模块”）.
+Step 1 will be done during the chunk loading. Step 2 will be done during the module evaluation interleaved（**译**：交错地） with other ( local and remote ) modules. This way, <font color=FF0000>evaluation order is unaffected by converting a module from local to remote or the other way around</font>（**译**：执行顺序不受模块从本地转换为远程或从远程转为本地的影响。👀 即，当前“构建”既可能有“本地模块”，也有可能有“远端模块”）.
 
 It is possible to nest a container. Containers can use modules from other containers. Circular dependencies between containers are also possible.
 
@@ -11647,7 +11673,7 @@ The `packageName` option allows setting a package name to look for a `requiredVe
 
 - <font color=fuchsia size=4>**ModuleFederationPlugin**</font> (high level) : [`ModuleFederationPlugin`](https://webpack.js.org/plugins/module-federation-plugin) <font color=FF0000>combines `ContainerPlugin` and `ContainerReferencePlugin`</font> .
 
-摘自：[webpack 文档 - Concepts - Module Federation](https://webpack.js.org/concepts/module-federation) 以及 中文版 [印记中国 webpack 文档 - 概念 - Module Federation](https://webpack.docschina.org/concepts/module-federation/) 👀 **注**：后面还有内容，但看不下去了... 感觉官方文档写得太唐突了，深入但不浅出... 或许因为它被放在 Concepts 中了吧...
+摘自：[webpack 文档 - Concepts - Module Federation](https://webpack.js.org/concepts/module-federation) 以及 中文版 [印记中国 webpack 文档 - 概念 - Module Federation](https://webpack.docschina.org/concepts/module-federation/) 👀 后面还有内容，但看不下去了... 感觉官方文档写得太唐突了，深入但不浅出... 或许因为它被放在 Concepts 中了吧...
 
 ***
 
@@ -11655,7 +11681,7 @@ The `packageName` option allows setting a package name to look for a `requiredVe
 
 ##### webpack-bundle-analyzer
 
-🔗 : https://github.com/webpack-contrib/webpack-bundle-analyzer
+> 🔗  https://github.com/webpack-contrib/webpack-bundle-analyzer
 
 生成webpack打包后，包的组成的可视化页面
 

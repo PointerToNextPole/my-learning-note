@@ -3975,7 +3975,7 @@ opacity:0.4;
 
 **filter** CSS 属性<font color=FF0000>将模糊或颜色偏移等图形效果应用于元素</font>。<font color=FF0000>滤镜通常用于调整图像，背景和边框的渲染。</font>
 
-<mark>CSS 标准里包含了一些已实现预定义效果的函数</mark>。你也可以参考一个 SVG 滤镜，通过一个 URL 链接到 SVG 滤镜元素(SVG filter element)
+<font color=dodgerBlue>CSS 标准里包含了一些已实现预定义效果的函数</font>。你也可以参考一个 SVG 滤镜，通过一个 URL 链接到 SVG 滤镜元素 ( SVG filter element )
 
 ##### 示例
 
@@ -4009,25 +4009,25 @@ filter: unset;
 
 摘自：[MDN - filter](https://developer.mozilla.org/zh-CN/docs/Web/CSS/filter)
 
-由于MDN 中说的并不是很清楚，所以又去阅读了：[CSS filter 有哪些神奇用途](https://segmentfault.com/a/1190000040058430)
+> 👀 由于MDN 中说的并不是很清楚，所以又去阅读了：[CSS filter 有哪些神奇用途](https://segmentfault.com/a/1190000040058430)
 
 ##### 基本概念
 
-CSS filter 属性将模糊或颜色偏移等图形效果应用于元素形成滤镜，<font color=FF0000>滤镜通常用于调整图像，背景和边框的渲染</font>。它的<font color=FF0000>值可以为 **filter 函数** \<filter-function></font>（👀 **注**：如下面的代码 第一行）<font color=FF0000> 或 **使用 url 添加的 svg 滤镜**</font>（👀 **注**：如下面的代码 第二行）。
+CSS filter 属性将模糊或颜色偏移等图形效果应用于元素形成滤镜，<font color=FF0000>滤镜通常用于调整图像，背景和边框的渲染</font>。它的<font color=FF0000>值可以为 **filter 函数** `<filter-function>`</font>（👀 如下面的代码 第一行）<font color=FF0000> 或 **使用 url 添加的 svg 滤镜**</font>（ 👀 如下面的代码 第二行）。
 
 ```css
 filter: <filter-function> [<filter-function>]* | none
 filter: url(file.svg#filter-element-id)
 ```
 
-👀 **注**：无论是摘抄的文章，还是 [MDN - filter](https://developer.mozilla.org/zh-CN/docs/Web/CSS/filter) 中都没有 [MDN - backdrop-filter](https://developer.mozilla.org/zh-CN/docs/Web/CSS/backdrop-filter) 说的清楚（下面有引用，也可见 [[#backdrop-filter#语法]]）。这两者 filter 是作用于前面的区域，backdrop-filter 作用于后面区域。
+> 👀 无论是摘抄的文章，还是 [MDN - filter](https://developer.mozilla.org/zh-CN/docs/Web/CSS/filter) 中都没有 [MDN - backdrop-filter](https://developer.mozilla.org/zh-CN/docs/Web/CSS/backdrop-filter) 说的清楚（下面有引用，也可见 [[#backdrop-filter#语法]]）。这两者 `filter` 是作用于前面的区域，`backdrop-filter` 作用于后面区域。
 
-> **可选值**
->
-> - **none**：没有应用于背景的滤镜。
-> - **\<filter-function-list>**：一个以空格分隔的滤镜函数 ( \<filter-function> ) 或是要应用到背景上的 SVG 滤镜。
+###### 可选值
 
-\<filter-function> 可以用于 filter 和 backdrop-filter（👀 **注**：详见下面 [[#backdrop-filter]]） 属性。它的数据类型由下列过滤器函数之一指定。每个函数需要一个参数，如果参数无效，则滤镜不会生效。以下是对滤镜函数含义的解释：
+- **`none`** ：没有应用于背景的滤镜。
+- **`<filter-function-list>`** ：一个以空格分隔的滤镜函数 ( `<filter-function>` ) 或是要应用到背景上的 SVG 滤镜。
+
+\<filter-function> 可以用于 filter 和 backdrop-filter（👀 详见下面 [[#backdrop-filter]]） 属性。它的数据类型由下列过滤器函数之一指定。每个函数需要一个参数，如果参数无效，则滤镜不会生效。以下是对滤镜函数含义的解释：
 
 - **blur()：**<font color=FF0000>模糊</font>图像
 - **brightness() ：**让图像<font color=FF0000>更明亮或更暗淡</font>
@@ -4050,8 +4050,8 @@ backdrop-filter CSS 属性可以让你 <font color=FF0000>为一个 元素 <font
 
 可选值
 
-- **none**：没有应用于背景的滤镜。
-- **\<filter-function-list>**：一个以空格分隔的滤镜函数 ( \<filter-function> ) 或是要应用到背景上的 SVG 滤镜。
+- **`none`** ：没有应用于背景的滤镜。
+- **`<filter-function-list>`** ：一个以空格分隔的滤镜函数 ( `<filter-function>` ) 或是要应用到背景上的 SVG 滤镜。
 
 ##### 形式化定义
 
@@ -4070,7 +4070,7 @@ backdrop-filter CSS 属性可以让你 <font color=FF0000>为一个 元素 <font
 
 **媒介类型(Media Types)允许你定义以何种媒介来提交文档。文档可以被显示在显示器、纸媒介或者听觉浏览器等等。**
 
-##### @media规则
+##### @media 规则
 
 @media 规则使你有能力在相同的样式表中，使用不同的样式规则来针对不同的媒介。
 
