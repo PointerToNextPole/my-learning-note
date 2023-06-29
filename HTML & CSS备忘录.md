@@ -1956,7 +1956,7 @@ HTML标记文本元素 ( `<mark>` ) 表示为引用或符号目的而标记或�
 
 #### `<link>`
 
-HTML 外部资源链接元素 ( `<link>` ) 规定了当前文档与外部资源的关系。<font color=FF0000>该元素 **最常用于链接样式表**，此外 **也可以被用来创建站点图标**（ 比如 PC 端的 “favicon” 图标和移动设备上用以显示在主屏幕的图标 ）</font>
+HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文档与外部资源的关系**</font>。<font color=lightSeaGreen>该元素 **最常用于链接样式表**，此外 **也可以被用来创建站点图标**</font>（ 比如 PC 端的 “favicon” 图标和移动设备上用以显示在主屏幕的图标 ）
 
 要链接一个外部的样式表，你需要像这样在你的 `<head>` 中包含一个 `<link>` 元素：
 
@@ -1964,7 +1964,7 @@ HTML 外部资源链接元素 ( `<link>` ) 规定了当前文档与外部资源�
 <link href="main.css" rel="stylesheet">
 ```
 
-<font color=FF0000>在这个简单的例子中，使用了 **`href` 属性设置外部资源的路径**，并设置 `rel` 属性的值为 “stylesheet”（样式表）</font>。<font color=FF0000>**`rel` 表示 “关系 ( relationship ) ”**</font>，它可能是 `<link>` 元素其中一个关键的特性——属性值表示 `<link>` 项的链接方式与包含它的文档之间的关系。可以在 [链接类型](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Link_types) 中看到很多不同类型的关系。
+<font color=FF0000>在这个简单的例子中，使用了 **`href` 属性设置外部资源的路径**，并设置 `rel` 属性的值为 “stylesheet”（样式表）</font>。<font color=lightSeaGreen>**`rel` 表示 “关系 ( relationship ) ”**</font>，它可能是 `<link>` 元素其中一个关键的特性——属性值表示 `<link>` 项的链接方式与包含它的文档之间的关系。可以在 [链接类型 ( rel )](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Link_types) 中看到很多不同类型的关系。
 
 这里有一些你经常遇到的其它类型。例如，<font color=dodgerBlue>这里是一个网站图标的链接</font>：
 
@@ -1972,7 +1972,7 @@ HTML 外部资源链接元素 ( `<link>` ) 规定了当前文档与外部资源�
 <link rel="icon" href="favicon.ico">
 ```
 
-<font color=FF0000>还有一些其它的与图标相关的 `rel` 值</font>，主要用于表示不同移动平台上特殊的图标类型，例如：
+<font color=dodgerBlue>还有一些其它的与图标相关的 `rel` 值</font>，主要用于表示不同移动平台上特殊的图标类型，例如：
 
 ```html
 <link
@@ -1983,9 +1983,9 @@ HTML 外部资源链接元素 ( `<link>` ) 规定了当前文档与外部资源�
 />
 ```
 
-<font color=LightSeaGreen>`sizes` 属性表示图标大小，`type` 属性包含了链接资源的 MIME 类型</font>。<font color=FF0000>这些属性为浏览器选择最合适的图标提供了有用的提示</font>。
+<font color=LightSeaGreen>`sizes` 属性表示图标大小，`type` 属性包含了链接资源的 MIME 类型</font>。<font color=lightSeaGreen>**这些属性为浏览器选择最合适的图标提供了有用的提示**</font>。
 
-你<font color=FF0000>**也可以提供一个媒体类型，或者在 `media` 属性内部进行查询**；这种资源将只在满足媒体条件的情况下才被加载进来</font>。例如：
+你<font color=dodgerBlue>**也可以提供一个媒体类型，或者在 `media` 属性内部进行查询**</font>；<font color=lightSeaGreen>这种资源将只在满足媒体条件的情况下才被加载进来</font>。例如：
 
 ```html
 <link href="print.css" rel="stylesheet" media="print">
@@ -1995,12 +1995,32 @@ HTML 外部资源链接元素 ( `<link>` ) 规定了当前文档与外部资源�
 `<link>` 也加入了一些新的有意思的性能和安全特性。举例如下：
 
 ```html
-<link rel="preload" href="myFont.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+<link
+  rel="preload"
+  href="myFont.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
+>
 ```
 
-<font color=FF0000>**将 `rel` 设定为 `preload` ，表示浏览器应该预加载该资源**</font>。<font color=FF0000>`as` 属性表示获取特定的内容类</font>。`crossorigin` 属性表示该资源是否应该使用一个CORS请求来获取
+<font color=lightSeaGreen>**将 `rel` 设定为 `preload` ，表示浏览器应该预加载该资源**</font>。<font color=FF0000>`as` 属性表示获取特定的内容类</font>。`crossorigin` 属性表示该资源是否应该使用一个 CORS 请求来获取。
 
 > 💡 crossorigin 相关内容可参考 [[#CORS 设置属性]]
+
+###### `<link>` 其他用法的注解
+
+- `<link>` 元素可以出现在 `<head>` 元素或者 `<body>` 元素中，（能否出现在 `<body>` 中）具体取决于它是否有一个 **body-ok** 的[链接类型](https://html.spec.whatwg.org/multipage/links.html#body-ok)。例如，`stylesheet` 链接类型是 body-ok 的，因此 `<link rel="stylesheet">` 允许出现在 body 中。然而，这不是一种好的可遵循的实践方式；更合理的方式是，将你的 `<link>` 元素从你的 body 内容中分离出来，将其放在`<head>`中。
+
+  > 👀 上述可以理解为：`<link>` 
+
+- 当使用`<link>`为网站创建一个 favicon 时，你的网站使用内容安全策略 (Content Security Policy，CSP) 来增强它的安全性，这种策略适用于 favicon。如果你遇到 favicon 未加载的问题，验证 `Content-Security-Policy` 头的`img-src` 没有在阻止对它的访问。
+
+- HTML 和 XHTML 规范为 `<link>` 元素定义了一些事件处理器 ( event handler ) ，但是对于它们的使用方法不明确。
+
+- 在 XHTML 1.0 下，例如`<link>`的空元素需要一个尾斜杠：`<link />`。
+
+- WebTV 支持 `rel` 使用 `next` 值，用于在一个 document series 中预加载下一页。
 
 ##### 属性
 
@@ -2008,7 +2028,7 @@ HTML 外部资源链接元素 ( `<link>` ) 规定了当前文档与外部资源�
 
 ###### `as`
 
-<font color=FF0000>该属性 **仅在 `<link>` 元素设置了 `rel="preload"` 或者 `rel="prefetch"` 时才能使用**</font>。它规定了 \<link> 元素加载的内容的类型，<font color=LightSeaGreen>对于内容的优先级、请求匹配、正确的 ***内容安全策略 ( CSP )*** 的选择以及正确的 Accept请求头的设置，**这个属性是必需的**</font>。
+<font color=FF0000>该属性 **仅在 `<link>` 元素设置了 `rel="preload"` 或者 `rel="prefetch"` 时才能使用**</font>。它规定了 `<link>` 元素加载的内容的类型，<font color=LightSeaGreen>对于内容的优先级、请求匹配、正确的 **内容安全策略 ( CSP )** 的选择以及正确的 Accept请求头的设置，**这个属性是必需的**</font>。
 
 **可选值有：**audio、document、embed、fetch、font、image、object、script、style、track、video、worker 
 
@@ -2058,8 +2078,8 @@ HTML 外部资源链接元素 ( `<link>` ) 规定了当前文档与外部资源�
 
 🧪 一个字符串，<font color=FF0000>指示在获取资源时使用哪个引荐来源网址</font>
 
-- `'no-referrer'` 表示[`Referer`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Referer) 标头将不会发送。
-- `'no-referrer-when-downgrade'` 的原始位置时不会发送任何[`Referer`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Referer)标头。如果未指定其他政策，这是用户代理的默认行为。
+- `'no-referrer'` 表示 `Referer` 标头将不会发送。
+- `'no-referrer-when-downgrade'` 的原始位置时不会发送任何 `Referer` 标头。如果未指定其他政策，这是用户代理的默认行为。
 - `'origin'` 意味着引荐来源网址将是页面的来源，大致是方案，主机和端口。
 - `'origin-when-cross-origin'` 这意味着导航到其他来源将仅限于方案，主机和端口，而在同一来源上导航将包括引荐来源网址的路径。
 - `'unsafe-url'` 意味着引荐来源网址将包含来源和路径（但不包括片段，密码或用户名）。这种情况是不安全的，因为它可能会将来源和路径从受 TLS 保护的资源泄漏到不安全的来源。
