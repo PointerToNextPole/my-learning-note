@@ -438,7 +438,7 @@ HTML `<meta>` 元素表示那些不能由其它 HTML 元相关 ( meta-related ) 
 
 |                  | 描述                                                         |
 | :--------------- | ------------------------------------------------------------ |
-| 内容分类         | 元数据内容，如果 itemprop 属性存在：流数据，表述内容         |
+| 内容分类         | 元数据内容，如果 `itemprop` 属性存在：流数据，表述内容       |
 | 允许的内容       | 无，这是一个 空元素                                          |
 | 标签省略         | 因为这是一个 void 元素，必须有开始标签而闭合标签可以省略     |
 | 允许的父元素     | `<meta charset>` ， `<meta http-equiv>: <head>` 元素. 如果 http-equiv 不是编码声明, 它也可以放在 `<noscript>` 元素内，它本身在 `<head>` 元素内部 |
@@ -512,15 +512,15 @@ HTML `<meta>` 元素表示那些不能由其它 HTML 元相关 ( meta-related ) 
   >
   > 摘自：[作为前端，你必须要知道的meta标签知识](https://juejin.cn/post/7089271039842058253)
   
-  > 👀 还有一个 `dns-prefetch` ，详见 [[#dns-prefetch 补充]] 。区别是： `x-dns-prefetch-control` 是 `http-equiv` 中的值，`dns-prefetch` 是 `rel` 中的值。另外，可以看下 [[计算机网络#X-DNS-Prefetch-Control#示例]]
+  > 💡 还有一个 `dns-prefetch` ，详见 [[#dns-prefetch 补充]] 。区别是： `x-dns-prefetch-control` 是 `http-equiv` 中的值，`dns-prefetch` 是 `rel` 中的值。另外，可以看下 [[计算机网络#X-DNS-Prefetch-Control#示例]]
 
 ###### `name`
 
 <font color=FF0000>`name` 和 `content` 属性可以一起使用，以名-值对的方式给文档提供元数据</font>，其中 `name` 作为元数据的名称，`content` 作为元数据的值。
 
-摘自：[MDN - \<meta>：文档级元数据元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/meta)
+摘自：[MDN - `<meta>`：文档级元数据元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/meta)
 
-##### link rel="canonical"
+##### `<link rel="canonical">`
 
 ###### 什么是权威内容标签
 
@@ -2010,11 +2010,11 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 ###### `<link>` 其他用法的注解
 
-- `<link>` 元素可以出现在 `<head>` 元素或者 `<body>` 元素中，（能否出现在 `<body>` 中）具体取决于它是否有一个 **body-ok** 的[链接类型](https://html.spec.whatwg.org/multipage/links.html#body-ok)。例如，`stylesheet` 链接类型是 body-ok 的，因此 `<link rel="stylesheet">` 允许出现在 body 中。然而，这不是一种好的可遵循的实践方式；更合理的方式是，将你的 `<link>` 元素从你的 body 内容中分离出来，将其放在`<head>`中。
+- `<link>` 元素可以出现在 `<head>` 元素或者 `<body>` 元素中，（能否出现在 `<body>` 中）具体取决于它是否有一个 **body-ok** 的[链接类型](https://html.spec.whatwg.org/multipage/links.html#body-ok)。例如，`stylesheet` 链接类型是 body-ok 的，因此 `<link rel="stylesheet">` 允许出现在 body 中。然而，<font color=dodgerBlue>这不是一种好的可遵循的实践方式</font>；<font color=red>更合理的方式是，将你的 `<link>` 元素从你的 body 内容中分离出来，将其放在 `<head>` 中</font>。
 
-  > 👀 上述可以理解为：`<link>` 
+  > 👀 上述可以理解为：`<link>` 一定可以放在 `<head>` 中，部分可以放在 `<body>` 中；不过更推荐放在 `<head>`
 
-- 当使用`<link>`为网站创建一个 favicon 时，你的网站使用内容安全策略 (Content Security Policy，CSP) 来增强它的安全性，这种策略适用于 favicon。如果你遇到 favicon 未加载的问题，验证 `Content-Security-Policy` 头的`img-src` 没有在阻止对它的访问。
+- 当使用 `<link>` 为网站创建一个 favicon 时，你的网站使用内容安全策略 ( Content Security Policy, CSP ) 来增强它的安全性，这种策略适用于 favicon。如果你遇到 favicon 未加载的问题，验证 `Content-Security-Policy` 头的`img-src` 没有在阻止对它的访问。
 
 - HTML 和 XHTML 规范为 `<link>` 元素定义了一些事件处理器 ( event handler ) ，但是对于它们的使用方法不明确。
 
