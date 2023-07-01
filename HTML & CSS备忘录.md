@@ -3324,56 +3324,116 @@ clear: unset;
 
 另外这里的内容可以参考：[MDN - Cursor](https://developer.mozilla.org/zh-CN/docs/Web/CSS/cursor)，这里内容更加全面
 
-> 这里有三个补充：all-scroll、row-resize、col-resize，用于拖动 分割线，自定义元素的宽高。详见上面的 MDN - Cursor 以及 CodingStartup 的视频：[[JS] 实现可调侧栏](https://www.bilibili.com/video/BV1L54y197vj)
+> 💡 这里有三个补充：all-scroll、row-resize、col-resize，用于拖动 分割线，自定义元素的宽高。详见上面的 MDN - Cursor 以及 CodingStartup 的视频：[[JS] 实现可调侧栏](https://www.bilibili.com/video/BV1L54y197vj)
 
 
 
 #### CSS 背景
 
-##### background-color
+#### background-color
 
-定义了元素的背景颜色。CSS中，颜色值通常以以下方式定义:
+##### 概览
 
-- 十六进制 - 如："#ff0000"
-- RGB - 如："rgb(255,0,0)"
-- 颜色名称 - 如："red"
+CSS 属性中的 **background-color** 会设置元素的背景色，<font color=red>属性的值为颜色值 **或 关键字"transparent"**二者选其一</font>
 
-- **background-image**
+| 属性           | 值                                                           |
+| :------------- | ------------------------------------------------------------ |
+| 初始值         | <font color=fuchsia>`transparent`</font>                     |
+| 适用元素       | all elements. It also applies to `::first-letter` and `::first-line`. |
+| 是否是继承属性 | 否                                                           |
+| 计算值         | computed color                                               |
+| Animation type | a [`<color>`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#interpolation) |
 
-  描述了元素的背景图像。示例：
+> ⚠️ `background-color` 的初始值是 `transparent` ，这点是完全没有想到的
 
-  ```css
-  body {
-      background-image: url('paper.gif');
-  }
-  ```
+##### 语法
 
+```css
+/* Keyword values */
+background-color: red;
 
-##### background-repeat
+/* Hexadecimal value */
+background-color: #bbff00;
 
-属性定义背景图像的重复方式。背景图像<mark>可以沿着水平轴，垂直轴，两个轴重复，或者根本不重复</mark>。
+/* RGB value */
+background-color: rgb(255, 255, 128);
 
-| **单值**  | **等价于双值（XY两个方向）** |
-| :-------: | :--------------------------: |
-| repeat-x  |       repeat no-repeat       |
-| repeat-y  |       no-repeat repeat       |
-|  repeat   |        repeat repeat         |
-|   space   |         space space          |
-|   round   |         round round          |
-| no-repeat |     no-repeat no-repeat      |
+/* HSLA value */
+background-color: hsla(50, 33%, 25%, 0.75);
 
-在双值语法中, 第一个值表示<mark>水平重复行为</mark>, 第二个值表示<mark>垂直重复行为</mark>. 下面是关于每一个值是怎么工作的具体说明：
+/* Special keyword values */
+background-color: currentColor;
+background-color: transparent;
 
-| 值        | 说明                                                         |
-| :-------- | :----------------------------------------------------------- |
-| repeat    | 图像会按需重复来覆盖整个背景图片所在的区域。最后一个图像会被裁剪, 如果它的大小不合适的话 |
-| space     | 图像会尽可能得重复，但是不会裁剪。第一个和最后一个图像会被固定在元素 ( element ) 的相应的边上，同时空白会均匀地分布在图像之间。`background-position` 属性会被忽视, 除非只有一个图像能被无裁剪地显示。只在一种情况下裁剪会发生，那就是图像太大了以至于没有足够的空间来完整显示一个图像。 |
-| round     | 随着允许的空间在尺寸上的增长，被重复的图像将会伸展（没有空隙），直到有足够的空间来添加一个图像。当下一个图像被添加后, 所有的当前的图像会被压缩来腾出空间。例如，一个图像原始大小是260px ，重复三次之后，可能会被伸展到 300px，直到另一个图像被加进来。这样他们就可能被压缩到225px。译者注：关键是浏览器怎么计算什么时候应该添加一个图像进来，而不是继续伸展. |
-| no-repeat | 图像不会被重复(因为背景图像所在的区域将可能没有完全被覆盖). 那个没有被重复的背景图像的位置是由 `background-position` 属性来决定. |
+/* Global values */
+background-color: inherit;
+background-color: initial;
+background-color: unset;
+```
 
-以上关于background-repeat摘自：[MDN - background-repeat](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-repeat)
+`background-color` 属性只能使用 `<color>` 值。
 
-##### background-attachment
+###### 取值
+
+`<color>` ：一个描述背景统一颜色的 CSS `<color>` 值。<font color=dodgerBlue>**即使一个或几个的 `background-image` 被定义**</font>，<font color=red>**如果图像是不透明的，通过透明度该颜色也能影响到渲染**</font>。在 <font color=lightSeaGreen>**CSS 中，`transparent` 是一种颜色**</font>。
+
+摘自：[MDN - `background-color`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-color)
+
+#### background-repeat
+
+**`background-repeat`** CSS 属性<font color=red>定义背景图像的重复方式</font>。<font color=lightSeaGreen>背景图像可以沿着水平轴，垂直轴，两个轴重复，或者根本不重复</font>。
+
+默认情况下，重复的图像被剪裁为元素的大小，但<font color=red>它们可以缩放（使用 `round`）或者均匀地分布（使用 `space` ）</font>
+
+##### 语法
+
+```css
+/* 单值语法 */
+background-repeat: repeat-x;
+background-repeat: repeat-y;
+background-repeat: repeat;
+background-repeat: space;
+background-repeat: round;
+background-repeat: no-repeat;
+
+/* 双值语法：水平 horizontal | 垂直 vertical */
+background-repeat: repeat space;
+background-repeat: repeat repeat;
+background-repeat: round space;
+background-repeat: no-repeat round;
+
+background-repeat: inherit;
+```
+
+###### 值
+
+`<repeat-style>`
+
+<font color=dodgerBlue>单值语法</font>是<font color=red>完整的双值语法的简写</font>：
+
+| **单值**    | **等价于双值**        |
+| :---------- | :-------------------- |
+| `repeat-x`  | `repeat no-repeat`    |
+| `repeat-y`  | `no-repeat repeat`    |
+| `repeat`    | `repeat repeat`       |
+| `space`     | `space space`         |
+| `round`     | `round round`         |
+| `no-repeat` | `no-repeat no-repeat` |
+
+在<font color=dodgerBlue>双值语法</font>中，<font color=dodgerBlue>第一个值</font>表示水平重复行为，<font color=dodgerBlue>第二个值</font>表示垂直重复行为。
+
+<font color=dodgerBlue>下面是关于每一个值是怎么工作的具体说明</font>：
+
+| 值          | 描述                                                         |
+| :---------- | :----------------------------------------------------------- |
+| `repeat`    | 图像会按需重复来覆盖整个背景图片所在的区域。<font color=red>最后一个图像会被裁剪，如果它的大小不合适的话</font> |
+| `space`     | 图像会**尽可能得重复**，但是**不会裁剪**。第一个和最后一个图像会被固定在元素 (element) 的相应的边上，同时空白会均匀地分布在图像之间。`background-position` 属性会被忽视，除非只有一个图像能被无裁剪地显示。只在一种情况下裁剪会发生，那就是图像太大了以至于没有足够的空间来完整显示一个图像。 |
+| `round`     | 随着允许的空间在尺寸上的增长，被重复的图像将会伸展 (没有空隙), 直到有足够的空间来添加一个图像。当下一个图像被添加后，所有的当前的图像会被压缩来腾出空间。例如，一个图像原始大小是 260px, 重复三次之后，可能会被伸展到 300px，直到另一个图像被加进来。这样他们就可能被压缩到 225px.译者注：关键是浏览器怎么计算什么时候应该添加一个图像进来，而不是继续伸展。 |
+| `no-repeat` | 图像不会被重复 (因为背景图像所在的区域将可能没有完全被覆盖). 那个没有被重复的背景图像的位置是由 `background-position` 属性来决定。 |
+
+摘自：[MDN - `background-repeat`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-repeat)
+
+#### background-attachment
 
 决定背景图像的位置是在视口内固定，或者随着包含它的区块滚动。
 
@@ -3384,7 +3444,7 @@ clear: unset;
 
 以上关于background-attachment的内容摘自：[MDN - background-attachment](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-attachment)
 
-##### background-position
+#### background-position
 
 background-position 为每一个背景图片设置初始位置。 这个位置是相对于由 background-origin 定义的位置图层的。
 
@@ -3423,7 +3483,7 @@ background-position: unset;
 
 以上关于background-position的内容摘自：[MDN - background-position](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-position)
 
-##### background-origin
+#### background-origin
 
 background-origin <font color=FF0000>规定了指定背景图片background-image 属性的**原点位置的背景相对区域**</font>
 
@@ -3436,6 +3496,10 @@ background-origin <font color=FF0000>规定了指定背景图片background-image
 - **content-box：**背景图片的摆放以content区域为参考
 
 摘自：[MDN - background-origin](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-origin)
+
+#### background-blend-mode
+
+// TODO
 
 
 
@@ -3548,8 +3612,8 @@ text-indent: unset;
 
 - `<length>` ：`使用固定的<length>值来指定文本的缩进。允许使用负值。查阅可能`的 [`<length>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/length) 单位。
 - `<percentage>` ：使用包含块宽度的百分比作为缩进。
-- `each-line` 🧪 ：文本缩进会影响第一行，以及使用 `<br>` 强制断行后的第一行。
-- `hanging` 🧪 ：该值会对所有的行进行反转缩进：除了第一行之外的所有的行都会被缩进，看起来就像第一行设置了一个负的缩进值
+- `each-line` ：🧪 文本缩进会影响第一行，以及使用 `<br>` 强制断行后的第一行。
+- `hanging` ：🧪 该值会对所有的行进行反转缩进：除了第一行之外的所有的行都会被缩进，看起来就像第一行设置了一个负的缩进值
 
 摘自：[MDN - text-indent](https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-indent)
 
@@ -3557,12 +3621,12 @@ text-indent: unset;
 
 #### CSS链接
 
-四个链接状态：
+##### 四个链接状态
 
-- **a:link** - 正常，未访问过的链接
-- **a:visited** - 用户已访问过的链接
-- **a:hover** - 当用户鼠标放在链接上时
-- **a:active** - 链接被点击的那一刻
+- **`a:link`** ：正常，未访问过的链接
+- **`a:visited`** ：用户已访问过的链接
+- **`a:hover`** ：当用户鼠标放在链接上时
+- **`a:active`** ：链接被点击的那一刻
 
 当设置为若干链路状态的样式，也有一些顺序规则：
 
@@ -3571,7 +3635,7 @@ text-indent: unset;
 
 
 
-#### CSS轮廓
+#### CSS 轮廓
 
 轮廓（outline）是绘制于元素周围的一条线，位于边框边缘的外围，可起到突出元素的作用。
 

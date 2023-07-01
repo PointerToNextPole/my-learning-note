@@ -7085,6 +7085,47 @@ element.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 
 
 
+#### Element.requestFullscreen()
+
+**`Element.requestFullscreen()`** 方法用于<font color=red>**发出异步请求**</font> 使元素进入全屏模式。
+
+<font color=red>调用此 API **并不能保证元素一定能够进入全屏模式**</font>。<font color=dodgerBlue>如果元素被允许进入全屏幕模式</font>，<font color=lightSeaGreen>返回的 `Promise` 会 resolve</font> ，并且<font color=red>该元素会收到一个 `fullscreenchange` 事件，通知它已经进入全屏模式</font>。<font color=dodgerBlue>如果全屏请求被拒绝</font>，<font color=lightSeaGreen>返回的 promise 会变成 rejected</font>，并且<font color=red>该元素会收到一个 `fullscreenerror` 事件</font>。如果该元素已经从原来的文档中分离，那么该文档将会收到这些事件。
+
+##### 语法
+
+```js
+requestFullscreen()
+requestFullscreen(options)
+```
+
+###### 参数
+
+`options` ：**Optional**. <font color=red>An object that **controls the behavior of the transition to fullscreen mode**</font>. The <font color=dodgerBlue>available options are</font>:
+
+- `navigationUI` : **Optional**. <font color=red>Controls whether or not to show navigation UI while the element is in fullscreen mode</font>. The <font color=red>**default value is `"auto"`**</font> , which indicates that the browser should decide what to do.
+  - `"hide"` : The browser's navigation interface will be <font color=lightSeaGreen>hidden and the entire dimensions of the screen</font> will be allocated to the display of the element.
+  - `"show"` : The browser will present page navigation controls and possibly other user interface; the dimensions of the element (and the perceived size of the screen) will be clamped to leave room for this user interface.
+  - `"auto"` : The browser will choose which of the above settings to apply. This is the default value.
+
+###### 返回值
+
+在完成切换全屏模式后，返回一个已经用值 `undefined` resolved 的 `Promise`
+
+###### 异常
+
+`requestFullscreen()` 通过拒绝返回的 `Promise`来生成错误条件，而不是抛出一个传统的异常。拒绝控制器接收以下的某一个值：`TypeError`
+
+在以下几种情况下，会抛出 `TypeError`：
+
+- 文档中包含的元素未完全激活，也就是说不是当前活动的元素。
+- 元素不在文档之内。
+- 因为功能策略限制配置或其他访问控制，元素不被允许使用`"fullscreen"`功能。
+- 元素和它的文档是同一个节点。
+
+摘自：[MDN - Element.requestFullscreen()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/requestFullscreen) 、[MDN US - Element: requestFullscreen() method](https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullscreen)
+
+
+
 #### Window.resizeBy()
 
 **概述：**调整窗口大小。
@@ -15435,25 +15476,25 @@ var shadowroot = element.attachShadow(shadowRootInit);
 
 **参数**
 
-- **shadowRootInit：**一个 ShadowRootInit 字典，包括下列字段：
+- **shadowRootInit** ：一个 ShadowRootInit 字典，包括下列字段：
 
-  - **mode 模式：**指定 Shadow DOM 树封装模式的字符串，可以是以下值：
+  - **mode 模式**：指定 Shadow DOM 树封装模式的字符串，可以是以下值：
 
-    - **open：**shadow root元素允许<font color=FF0000>从js外部访问根节点</font>，例如使用 Element.shadowRoot:
+    - **open**：shadow root元素允许<font color=FF0000>从js外部访问根节点</font>，例如使用 Element.shadowRoot:
 
       ```js
       element.shadowRoot; // 返回一个ShadowRoot对象
       ```
 
-    - **closed：<font color=FF0000>拒绝从js外部访问关闭的shadow root节点</font>
+    - **closed**：<font color=FF0000>拒绝从js外部访问关闭的shadow root节点</font>
 
       ```js
       element.shadowRoot; // 返回null
       ```
 
-  - **delegatesFocus：**焦点委托
+  - **delegatesFocus** ：焦点委托
 
-    一个布尔值, <font color=FF0000>当设置为 true 时, 指定减轻自定义元素的聚焦性能问题行为</font>.
+    一个布尔值，当设置为 true 时, 指定减轻自定义元素的聚焦性能问题行为</font>.
     当shadow DOM中不可聚焦的部分被点击时, 让第一个可聚焦的部分成为焦点, 并且shadow host（影子主机）将提供所有可用的 :focus 样式.
 
 **返回值：**<font color=FF0000>返回一个 ShadowRoot 对象或者 **null**</font>。

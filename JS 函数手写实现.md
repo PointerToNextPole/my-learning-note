@@ -629,6 +629,17 @@ const unique = arr => arr.reduce((acc, cur) => acc.includes(cur) ? acc : acc.con
 
 > ⚠️ 开始时没有对 `acc.includes(cur) === true` 的情况进行返回 ( `acc` )，这是会报错的；因为没有返回 acc 的话，默认返回 undefined，而 undefined 没有 includes 方法，将会报错。所以，无论如何都要返回 acc，哪怕本次操作没有对其进行任何操作。
 
+#### 多数组取交集
+
+```js
+const intersection = (first, ...rest) => [...new Set(first)].filter(el => rest.every(arr => arr.includes(el)))
+
+// 测试
+intersection([1, 2, 3, 4], [2, 3, 4, 7, 8], [1, 3, 4, 9]) // [3, 4]
+```
+
+
+
 #### 类数组转为数组
 
 ##### 使用 Array.from
@@ -645,7 +656,7 @@ const arr = Array.prototype.slice.call(arrLike)
 
 ##### 扩展运算符
 
-👀 这个挺巧妙，但没想到
+> 👀 这个挺巧妙，但没想到
 
 ```js
 const arr = [ ...arrLike ]
@@ -653,7 +664,7 @@ const arr = [ ...arrLike ]
 
 ##### 使用 concat
 
-👀 没想到。另外，这里 只能用 apply，不可用 call
+> 👀 没想到。另外，这里 只能用 apply，不可用 call
 
 ```js
 const arr = Array.prototype.concat.apply([], arrLike)
