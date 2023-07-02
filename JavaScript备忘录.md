@@ -1910,11 +1910,11 @@ Array.from({length: 5}, (v, i) => i); // [0, 1, 2, 3, 4]
 
 > ⚠️ 上面这个 `Array.from({length}, cb)` 的写法，有点意思。
 >
-> 另外，在一次面试中，被要求使用 ES6 的方法（提示使用 `Array.from` ）写一个置换矩阵的方法；实在没想到方法，便去看了下答案，有点意思。答案如下：
+> 另外，在一次面试中，被要求使用 ES6 的方法（提示使用 `Array.from` ）写一个转置矩阵的方法；实在没想到方法，便去看了下答案，有点意思。答案如下：
 >
 > ```ts
 > export const transposeArr = (arr: number[][]): number[][] => {
->   return Array.from({length: arr[0].length}, (_: never, i) => arr.map(k => k[i]))
+>     return Array.from({length: arr[0].length}, (_: never, i) => arr.map(k => k[i]))
 > }
 > 
 > const targetMat = [[1, 2, 3], [4, 5, 6]]

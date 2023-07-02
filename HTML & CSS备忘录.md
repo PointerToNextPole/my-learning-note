@@ -1144,8 +1144,8 @@ HTML `<picture>` 元素 <font color=FF0000> 通过包含零或多个 `<source>` 
 
 ```html
 <picture>
-    <source srcset="/media/cc0-images/surfer-240-200.jpg" media="(min-width: 800px)">
-    <img src="/media/cc0-images/painted-hand-298-332.jpg" alt="" />
+  <source srcset="/media/cc0-images/surfer-240-200.jpg" media="(min-width: 800px)">
+  <img src="/media/cc0-images/painted-hand-298-332.jpg" alt="" />
 </picture>
 ```
 
@@ -2012,11 +2012,11 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 - `<link>` 元素可以出现在 `<head>` 元素或者 `<body>` 元素中，（能否出现在 `<body>` 中）具体取决于它是否有一个 **body-ok** 的[链接类型](https://html.spec.whatwg.org/multipage/links.html#body-ok)。例如，`stylesheet` 链接类型是 body-ok 的，因此 `<link rel="stylesheet">` 允许出现在 body 中。然而，<font color=dodgerBlue>这不是一种好的可遵循的实践方式</font>；<font color=red>更合理的方式是，将你的 `<link>` 元素从你的 body 内容中分离出来，将其放在 `<head>` 中</font>。
 
-  > 👀 上述可以理解为：`<link>` 一定可以放在 `<head>` 中，部分可以放在 `<body>` 中；不过更推荐放在 `<head>`
+  > 👀 上述可以理解为：`<link>` 一定可以放在 `<head>` 中，部分可以放在 `<body>` 中；不过更推荐放在 `<head>` 中
 
-- 当使用 `<link>` 为网站创建一个 favicon 时，你的网站使用内容安全策略 ( Content Security Policy, CSP ) 来增强它的安全性，这种策略适用于 favicon。如果你遇到 favicon 未加载的问题，验证 `Content-Security-Policy` 头的`img-src` 没有在阻止对它的访问。
+- 当使用 `<link>` 为网站创建一个 favicon 时，你的网站使用内容安全策略 ( Content Security Policy, CSP ) 来增强它的安全性，这种策略适用于 favicon。如果你遇到 favicon 未加载的问题，验证 `Content-Security-Policy` 头的 `img-src` 没有在阻止对它的访问。
 
-- HTML 和 XHTML 规范为 `<link>` 元素定义了一些事件处理器 ( event handler ) ，但是对于它们的使用方法不明确。
+- HTML 和 XHTML 规范为 `<link>` 元素定义了一些事件处理器 ( event handler ) ，但是对于它们的使用方法不明确
 
 - 在 XHTML 1.0 下，例如`<link>`的空元素需要一个尾斜杠：`<link />`。
 
@@ -2028,7 +2028,7 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 ###### `as`
 
-<font color=FF0000>该属性 **仅在 `<link>` 元素设置了 `rel="preload"` 或者 `rel="prefetch"` 时才能使用**</font>。它规定了 `<link>` 元素加载的内容的类型，<font color=LightSeaGreen>对于内容的优先级、请求匹配、正确的 **内容安全策略 ( CSP )** 的选择以及正确的 Accept请求头的设置，**这个属性是必需的**</font>。
+<font color=FF0000>该属性 **仅在 `<link>` 元素设置了 `rel="preload"` 或者 `rel="prefetch"` 时才能使用**</font>。它规定了 `<link>` 元素加载的内容的类型，<font color=LightSeaGreen>对于内容的优先级、请求匹配、正确的 **内容安全策略 ( CSP )** 的选择以及正确的 `Accept` 请求头的设置，**这个属性是必需的**</font>。
 
 **可选值有：**audio、document、embed、fetch、font、image、object、script、style、track、video、worker 
 
@@ -2040,13 +2040,17 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 此 <font color=FF0000>**枚举属性** 指定在加载相关资源时是否必须使用 CORS</font> 。启用 CORS 的图片 可以在 `<canvas>` 元素中重复使用，并避免其被污染
 
-> 💡 `crossorigin` 相关内容可参考 [[#CORS 设置属性]]
+> 💡 `crossorigin` 相关内容可参考 [[#CORS 设置属性]]。
+>
+> 这里原文说了可选值 `"anonymous"` 和 `"use-credentials"`。为避免重复，这里略；详见原文
 
-当不设置此属性时，资源将会不使用 CORS 加载 (即不发送 `Origin:` HTTP 头)，这将阻止其在 `<canvas>` 元素中进行使用。若设置了非法的值，则视为使用 anonymous。前往 CORS settings attributes 获取更多信息。
+当不设置此属性时，资源将会不使用 CORS 加载（即不发送 `Origin` HTTP 头），这将阻止其在 `<canvas>` 元素中进行使用。若设置了非法的值，则视为使用 `anonymous`
 
 ###### `disabled`
 
-仅对于 `rel="stylesheet"` ，`disabled` 的 Boolean 属性指示是否应加载所描述的样式表并将其应用于文档。
+<font color=red>仅对于 `rel="stylesheet"`</font> ，`disabled` 的 Boolean 属性指示是否应加载所描述的样式表并将其应用于文档。
+
+<font color=dodgerBlue>如果在加载 HTML 时在 HTML 中指定了 Disabled</font>，则<font color=red>在页面加载期间不会加载样式表</font>。相反，<font color=dodgerBlue>如果禁用属性更改为 false 或删除</font>时，<font color=red>样式表将按需加载</font>。但是，一旦加载样式表，对 Disabled 属性的值所做的更改将不再与`StyleSheet.disabled` 属性的值有任何关系。相反，更改此属性的值只是启用和禁用应用于文档的样式表表单。这与 StyleSheet 的 disable 属性不同；将其更改为 true 会将样式表从文档的 `document.styleSheets` 列表中删除，并且在切换回 false 时不会自动重新加载样式表。
 
 ###### `href`
 
@@ -2054,7 +2058,7 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 ###### `hreflang`
 
-此属性指明了被链接资源的语言。其意义仅供参考。
+此属性<font color=lightSeaGreen>指明了被链接资源的语言</font>。其意义仅供参考。
 
 ###### `importance`
 
@@ -2072,7 +2076,7 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 ###### `media`
 
-这个属性<font color=FF0000>规定了外部资源适用的媒体类型</font>。它的值必须是"媒体查询"。这个属性使得用户代理能选择最适合设备运行的媒体类型
+这个属性 <font color=FF0000>**规定了外部资源适用的媒体类型**</font>。它的值必须是"媒体查询"。这个属性使得用户代理能选择最适合设备运行的媒体类型
 
 ###### `referrerpolicy`
 
@@ -2086,11 +2090,23 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 ###### `rel`
 
-<font color=FF0000>此属性命名链接文档与当前文档的关系</font>。 该属性必须是链接类型值的用空格分隔的列表。
+<font color=FF0000>**此属性命名链接文档与当前文档的关系**</font>。 该属性必须是链接类型值的用空格分隔的列表。
 
 ###### `sizes`
 
-这个属性<font color=FF0000>定义了包含相应资源的可视化媒体中的 icons 的大小</font>。它只有在 `rel` 包含 icon 的 link 类型值。
+这个属性<font color=FF0000>定义了包含相应资源的可视化媒体中的 icons 的大小</font>。它只有在 `rel` 包含 icon 的 link 类型值。它可能有如下的规则：
+
+- `any` 表示图标可以按矢量格式缩放到任意大小，例如 `image/svg+xml`。
+- 一个由空白符分隔的尺寸列表。每一个都以`<width in pixels>x<height in pixels>`或 `<width in pixels>X<height in pixels>给出。`尺寸列表中的每一个尺寸都必须包含在资源里。
+
+> 💡 这里没有说清楚，摘抄一下 [HTML中link标签的那些属性](https://juejin.cn/post/7229126088227487800) 中的内容
+>
+> > `sizes`：当使用`link`标签链接到多个尺寸的图标时，可以使用`sizes`属性指定图标的大小。这对于根据设备显示不同大小图标的情况很有用。示例：
+> >
+> > ```html
+> > <link rel="icon" href="icon-48x48.png" sizes="48x48">
+> > <link rel="icon" href="icon-96x96.png" sizes="96x96">
+> > ```
 
 ###### `title`
 
@@ -2098,7 +2114,7 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 ###### `type`
 
-这个属性被<font color=FF0000>**用于定义链接的内容的类型**</font>。这个<font color=LightSeaGreen>属性的值应该是像 `text/html`，`text/css` 等 MIME 类型</font>。这个属性常用的用法是定义链接的样式表，最常用的值是表明了 CSS 的 `text/css`
+这个属性被<font color=FF0000>**用于定义链接的内容的 MIME 类型**</font>。这个<font color=LightSeaGreen>属性的值应该是像 `text/html`，`text/css` 等 **MIME 类型**</font>。这个属性常用的用法是定义链接的样式表，最常用的值是表明了 CSS 的 `text/css`
 
 ##### 非标准属性 ⚠️
 
@@ -2113,9 +2129,246 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 摘自：[MDN - `<link>`：外部资源链接元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/link#attr-as)
 
-#### preload 补充
 
-<font color=FF0000>The `preload` value of the `<link>` element's ***`rel`*** attribute lets you **declare fetch requests in the HTML's `<head>`**</font> , <font color=FF0000>specifying **resources** that **your page will need very soon**</font>, which <font color=FF0000>you want to **start loading early** in the page lifecycle, <font color=fuchsia>**before browsers' main rendering machinery kicks in**</font></font>（在浏览器的主要渲染机制启动之前）. This <font color=FF0000>**ensures they are available earlier** and are <font color=fuchsia>**less likely to block the page's render**</font></font>, improving performance.
+
+#### HTML 属性 `rel`
+
+**`rel`** 属性<font color=red>**定义了所链接的资源与当前文档的关系**</font>，<font color=red>在 `<a>`、`<area>` 和 `<link>` 元素上有效</font>。支持的值取决于拥有该属性的元素。
+
+关系的类型是由 `rel` 属性的值给出的，<font color=dodgerBlue>如果存在的话</font>，<font color=red>它的值必须是一组无序的、唯一的、用空格隔开的关键字</font>。与不表达语义的 `class` 名称不同，<font color=lightSeaGreen>**`rel` 属性必须使用对机器和人类都有语义的标记**</font>。目前关于 `rel` 属性的可能值的注册表是 [IANA 链接关系注册表](https://www.iana.org/assignments/link-relations/link-relations.xhtml)、[HTML 现行标准](https://html.spec.whatwg.org/multipage/links.html#linkTypes)和 microformats wiki 中可自由编辑的 [existing-rel-values 页面](https://microformats.org/wiki/existing-rel-values)（根据现行标准的[建议](https://html.spec.whatwg.org/multipage/links.html#other-link-types)）。<font color=dodgerBlue>如果使用一个不存在于上述三个来源之一的 `rel` 属性</font>，一些 HTML 验证器（如 [W3C Markup Validation Service](https://validator.w3.org/)）会产生一个警告。
+
+下表列出了一些最重要的现有关键词。在一个以空格分隔的值内的每个关键词在该值内都应该是唯一的。
+
+| `rel` 值        | 描述                                                         | `<link>` | `a` 和 `<area>` | `<form>` |
+| :-------------- | :----------------------------------------------------------- | :------- | :-------------- | :------- |
+| `alternate`     | 当前文档的替代描述。                                         | 链接     | 链接            | 不允许   |
+| `author`        | 当前文档或文章的作者。                                       | 链接     | 链接            | 不允许   |
+| `bookmark`      | 到最近祖先章节的永久链接。                                   | 不允许   | 链接            | 不允许   |
+| `canonical`     | 当前文档的首要 URL。                                         | 链接     | 不允许          | 不允许   |
+| `dns-prefetch`  | 告知浏览器为目标资源的来源预先执行 DNS 解析。                | 外部资源 | 不允许          | 不允许   |
+| `external`      | 引用的文档与当前的文档不属于同一个站点。                     | 不允许   | 注解            | 注解     |
+| `help`          | 链接到上下文相关的帮助。                                     | 链接     | 链接            | 链接     |
+| `icon`          | 代表当前文档的图标。                                         | 外部资源 | 不允许          | 不允许   |
+| `license`       | 表示当前文档的主要内容由被引用文件描述的版权许可所涵盖。     | 链接     | 链接            | 链接     |
+| `manifest`      | Web 应用清单                                                 | 链接     | 不允许          | 不允许   |
+| `me`            | 表示当前文档代表拥有链接内容的人。                           | 链接     | 链接            | 不允许   |
+| `modulepreload` | 告知浏览器预先获取该脚本，并将其存储在文档的模块映射中，以便稍后评估。也可以一同获取该模块的依赖关系。 | 外部资源 | 不允许          | 不允许   |
+| `next`          | 表示当前文档是一个系列的一部分，被引用的文档是该系列中的下一个文档。 | 链接     | 链接            | 链接     |
+| `nofollow`      | 表示当前文档的原作者或出版商不认可被引用的文件。             | 不允许   | 注解            | 注解     |
+| `noopener`      | 创建一个顶级浏览上下文。如果该超链接一开始就会创建其中之一，则该浏览上下文不是一个辅助浏览上下文（即有一个适当的 `target` 属性值）。 | 不允许   | 不允许          | 注解     |
+| `noreferrer`    | 不会包含 `Referer` 标头。和 `noopener` 效果类似。            | 不允许   | 注解            | 注解     |
+| `opener`        | 如果超链接会创建一个非辅助浏览上下文的顶级浏览上下文（即以“`_blank`”作为 `target` 属性值），则创建一个辅助浏览上下文。 | 不允许   | 注解            | 注解     |
+| `pingback`      | 给出处理当前文档 pingback 的 pingback 服务器的地址。         | 外部资源 | 不允许          | 不允许   |
+| `preconnect`    | 指定用户代理应预先连接到目标资源的来源。                     | 外部资源 | 不允许          | 不允许   |
+| `prefetch`      | 指定用户代理应预先获取并缓存目标资源，因为后续的导航可能需要它。 | 外部资源 | 不允许          | 不允许   |
+| `preload`       | 指定用户代理必须根据 [`as`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/link#attr-as) 属性给出的潜在目的地（以及与相应目的地相关的优先级），为当前导航预先获取和缓存目标资源。 | 外部资源 | 不允许          | 不允许   |
+| `prerender`     | 指定用户代理应预先获取目标资源，并以有助于在未来提供更快的响应的方式处理它。 | 外部资源 | 不允许          | 不允许   |
+| `prev`          | 表示当前文档是系列的一部分，被引用的文档是该系列中的上一个文档。 | 链接     | 链接            | 链接     |
+| `search`        | 给出一个资源的链接，可以用来搜索当前文件及其相关页面。       | 链接     | 链接            | 链接     |
+| `stylesheet`    | 导入样式表。                                                 | 外部资源 | 不允许          | 不允许   |
+| `tag`           | 给出一个适用于当前文档的标签（由给定地址识别）。             | 不允许   | 链接            | 链接     |
+
+`rel` 属性与 `<link>`、`<a>`、`<area>` 和 `<form>` 元素有关，但有些值只与这些元素的子集有关。像所有的 HTML 关键字属性值一样，这些值是不区分大小写的。
+
+`rel` 属性没有默认值。如果该属性被省略，或者该属性中没有一个值被支持，那么除了两者之间有一个超链接之外，文档与目标资源没有特别的关系。在这种情况下，在 `<link>` 和 `<form>` 元素上，如果 `rel` 属性不存在，没有关键词，或者如果不是上述一个或多个空格分隔的关键词，那么该元素就不会创建任何链接。`<a>` 和 `<area>` 仍将创建链接，但没有定义关系。
+
+##### 值
+
+###### `alternate`
+
+表示当前文档的另一种方式。对 `<link>`、`<a>` 和 `<area>` 有效，其含义取决于其他属性的值。
+
+- 在 `<link>` 上使用 `stylesheet` 关键字，会创建一个替代样式表。
+
+  ```html
+  <!-- 一个永久样式表 -->
+  <link rel="stylesheet" href="default.css" />
+  <!-- 替代样式表 -->
+  <link
+    rel="alternate stylesheet"
+    href="highcontrast.css"
+    title="High contrast"
+  />
+  ```
+
+- `hreflang` 属性与文档所使用语言不同时，表示该页面的一个翻译。
+
+- `type` 属性值为 `"application/rss+xml"` 或 `"application/atom+xml"` 会创建一个 syndication feed 的参照链接。
+
+  ```html
+  <link
+    rel="alternate"
+    type="application/atom+xml"
+    href="posts.xml"
+    title="Blog"
+  />
+  ```
+
+- 否则，它将创建一个超链接，引用当前文档的另一种表述，其性质由 `hreflang` 和 `type` 属性赋予。
+
+  - 如果一起给出 `hreflang` 和 `alternate`，并且 `hreflang` 的值与当前文档的语言不同，则表明引用的文档是一个翻译。
+  - 如果一起给出 `type` 和 `alternate`，它表示被引用的文件是一种替代格式（如 PDF）。
+  - `hreflang` 和 `type` 属性可以与 `alternate` 一同给出。
+
+  ```html
+  <link
+    rel="alternate"
+    href="/fr/html/print"
+    hreflang="fr"
+    type="text/html"
+    media="print"
+    title="French HTML (for printing)"
+  />
+  <link
+    rel="alternate"
+    href="/fr/pdf"
+    hreflang="fr"
+    type="application/pdf"
+    title="French PDF"
+  />
+  ```
+
+###### `author`
+
+表示被引用的文档提供了关于当前文档或文章作者的进一步信息。与 `<link>`、`<a>` 和 `<area>` 元素有关。
+
+`<a>` 和 `<area>` 元素表示链接的文档（或 `mailto:`）提供了最近的祖先 `<article>` 元素的作者信息，如果无 article 元素就是整个文档的作者信息。
+
+`<link>` 元素代表了整个文档的作者信息。
+
+> 💡 **备注：** 由于历史原因，废弃的属性值 `rev="made"` 被视为 `rel="author"`。
+
+###### `bookmark`
+
+与 `<a>` 和 `<area>` 元素的 `rel` 属性值相关。如果有的话，给最近的祖先 `<article>` 元素提供一个固定链接。如果没有祖先 `<article>` 元素，则给出链接元素与之联系最紧密的部分的固定链接。
+
+###### `canonical`
+
+对 `<link>` 元素有效，它定义了当前文档的首选 URL，这有助于搜索引擎减少重复内容。
+
+###### `dns-prefetch`
+
+在 `<body>` 和 `<head>` 元素内与 `<link>` 元素相关。它告诉浏览器为目标资源的来源预先执行 DNS 解析。对于用户可能需要的资源来说，它有助于减少延迟，从而提高用户访问资源时的性能，因为浏览器会预先对指定资源的来源进行 DNS 解析。
+
+###### `external`
+
+与 `<form>`、`<a>` 和 `<area>` 元素相关，它表示引用的文档不是当前网站的一部分。这可以与属性选择器一起使用，使外部链接的样式向用户表明他们将离开当前网站。
+
+###### `help`
+
+与 `<form>`、`<link>`、`<a>` 和 `<area>` 元素相关，`help` 关键字表示链接到的内容提供上下文敏感的帮助，为定义超链接的元素的父元素及其子元素提供信息。当在 `<link>` 中使用时，针对整个文档。当与 `<a>` 和 `<area>` 一起包含并支持这种使用方法时，默认的 `cursor` 将是 `help` 而不是 `pointer`。
+
+###### `icon`
+
+对 `<link>` 元素有效，链接的资源代表了当前文档的图标，这是一种在用户界面上代表页面资源的方法。
+
+`icon` 值最常见的用途是网站图标：
+
+```html
+<link rel="icon" href="favicon.ico" />
+```
+
+如果有多个 `<link rel="icon">`，浏览器会使用它们的 `media`、`type` 和 `sizes` 属性来选择最合适的图标。如果几个图标同样合适，则使用最后一个。如果后来发现最合适的图标不合适，例如使用了不支持的格式，浏览器就会继续选择下一个最合适的，以此类推。
+
+###### `license`
+
+在 `<a>`、`<area>`、`<form>`、 `<link>` 元素上有效，`license` 值表示该超链接指向描述许可信息的文件；当前文件的主要内容被引用文件描述的版权许可所覆盖。如果不在 `<head>` 元素内，标准并不区分适用于文档特定部分的超链接还是适用于整个文档的超链接。只有页面上的数据可以表明这一点。
+
+```html
+<link rel="license" href="#license" />
+```
+
+###### `manifest`
+
+代表 [Web 应用清单](https://developer.mozilla.org/zh-CN/docs/Web/Manifest)。需要使用 CORS 协议进行跨源获取。
+
+###### `modulepreload`
+
+对于提高性能很有用，并且与文档中的 `<link>` 元素相关，设置 `rel="modulepreload"` 告诉浏览器预先获取脚本（和依赖关系）并存储在文档的模块映射中，以便以后评估。 `modulepreload` 链接可以确保网络抓取时，模块映射中的模块已经准备好（但没有评估），然后才一定需要它。参见 [`modulepreload` (en-US)](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload)。
+
+###### `next`
+
+与 `<form>`、`<link>`、`<a>` 和 `<area>` 元素相关，`next` 值表示当前文档是一个系列的一部分，引用文档是该系列的下一个文档。当包含在 `<link>` 中时，浏览器可能会假定将要获取那个文档，并将其作为一个资源提示。
+
+###### `nofollow`
+
+与 `<form>`、`<a>` 和 `<area>` 元素相关， `nofollow` 关键字告诉搜索引擎蜘蛛忽略链接关系。nofollow 关系可能表明当前文档的所有者并不认可被引用的文档。它经常被搜索引擎优化者包括在内，假装他们的链接农场不是垃圾页面。
+
+###### `noopener`
+
+与 `<form>`、`<a>` 和 `<area>` 元素相关，如果超链接一开始就会创建其中之一（即有一个适当的 `target`属性值），则会创建一个顶级浏览环境，而不是一个辅助浏览环境。换句话说，它使链接的行为如同 `window.opener`是空的，并且 `target="_parent"` 被设置。
+
+这与 `opener` 具有的含义相反。
+
+###### `noreferrer`
+
+与 `<form>`、`<a>` 和 `<area>` 元素相关，包括这个值使得 referrer 未知（不会包含 `Referer` 标头），并创建一个顶级的浏览上下文，就像 `noopener` 也被设置一样。
+
+###### `opener`
+
+如果超链接会创建一个非辅助浏览上下文的顶级浏览上下文（即以“`_blank`”作为 `target` 属性值），则创建一个辅助浏览上下文。与 `noopener` 作用相反。
+
+###### `pingback`
+
+给出处理当前文档的 pingback 的 pingback 服务器地址。详见 [Pingback 规范](https://www.hixie.ch/specs/pingback/pingback)。
+
+###### `preconnect`
+
+向浏览器提供提示，建议它提前打开与链接网站的连接，而不透露任何私人信息或下载任何内容，以便在跟踪链接时能更快地获取链接内容。
+
+###### `prefetch`
+
+指定用户代理应预先获取并缓存目标资源，因为后续导航可能需要该资源。
+
+###### `preload`
+
+指定用户代理必须根据 `as` 属性给出的潜在目的地（以及与相应目的地相关的优先级），为当前导航预先获取和缓存目标资源。
+
+###### `prerender`
+
+指定用户代理应抢先获取目标资源，并以有助于在未来提供更快的响应的方式对其进行处理，例如，获取其子资源或执行一些渲染。
+
+###### `prev`
+
+与 `next` 关键字类似，与 `<form>`、`<link>`、`<a>` 和 `<area>` 元素相关，`prev` 值表示当前文档是一个系列的一部分，而链接引用该系列中的一个先前文档就是被引用的文档。
+
+备注：同义词 `previous` 并不正确，不应被使用。
+
+###### `search`
+
+与 `<form>`、`<link>`、`<a>` 和 `<area>` 元素相关，`search` 关键字表示该超链接引用一个文档，其界面是专门为在当前文档、站点和相关资源中搜索而设计的，提供一个可以用来搜索的资源链接。
+
+如果 `type` 属性被设置为 `application/opensearchdescription+xml`，则该资源是一个 [OpenSearch (en-US)](https://developer.mozilla.org/en-US/docs/Web/OpenSearch) 插件，可以很容易地添加到一些浏览器（如 Firefox 或 Internet Explorer）的界面中。
+
+###### `stylesheet`
+
+对 `<link>` 元素有效，它导入一个外部资源作为样式表使用。`text/css` 的样式表不需要 `type` 属性，因为这是该属性的默认值。如果它不是 `text/css` 类型的样式表，最好是声明这个类型。
+
+虽然这个属性将链接定义为一个样式表，但与其他属性的交互以及 rel 值中的其他关键术语会影响样式表是否被下载和/或使用。
+
+当与 `alternate` 关键字一起使用时，它定义了一个替代的样式表。在这种情况下，包括一个非空的 `title`。
+
+如果媒体与 `media` 属性的值不匹配，外部样式表将不会被使用，甚至不会下载。
+
+需要使用 CORS 协议进行跨源获取。
+
+###### `tag`
+
+对 `<a>` 和 `<area>` 元素有效，它给出了一个适用于当前文档的标签（由给定地址标识）。标签值表示该链接指向一个描述适用于其所在文档的标签的文档。这种链接类型不是指标签云中的标签，因为这些标签适用于一组页面，而 `rel` 属性的 `tag` 值是针对单个文档。
+
+##### 非标准值
+
+###### `apple-touch-icon`
+
+指定 iOS 设备上的网络应用的图标。
+
+摘自：[MDN - HTML 属性：`rel`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Attributes/rel)
+
+
+
+#### Link preload
+
+The `preload` value of the `<link>` element's ***`rel`*** attribute <font color=red>lets you **declare fetch requests in the HTML's `<head>`**</font> , <font color=FF0000>specifying **resources** that **your page will need very soon**</font>, which <font color=FF0000>you want to **start loading early** in the page lifecycle, <font color=fuchsia>**before browsers' main rendering machinery kicks in**</font></font>（在浏览器的主要渲染机制启动之前）. This <font color=FF0000>**ensures they are available earlier** and are <font color=fuchsia>**less likely to block the page's render**</font></font>, improving performance.
 
 ##### The basics
 
@@ -2125,25 +2378,25 @@ You <font color=LightSeaGreen>most commonly use `<link>` to load a CSS file</fon
 <link rel="stylesheet" href="styles/main.css">
 ```
 
-Here however, we will use a `rel` value of `preload`, which turns `<link>` into a preloader for any resource we want. You will <font color=FF0000>**also need to specify**</font>:
+Here however, we will use a `rel` value of `preload`, which turns `<link>` into a preloader for any resource we want. You will <font color=FF0000>**also need to specify**</font> :
 
 - The path to the resource in the `href` attribute.
 
 - The <font color=FF0000>type of resource in the `as` attribute</font>.
 
-  Using `as` to <font color=LightSeaGreen>specify the type of content to be preloaded allows the browser to</font>:
+  <font color=dodgerBlue>**Using `as`** to specify the type of content to be preloaded **allows the browser to**</font>:
 
   - Prioritize resource loading more accurately.
   
   - <font color=FF0000>**Store in the cache for future requests**, reusing the resource if appropriate</font>.
   
-    > 💡 这里的内容，可以参考 [[#prefetch 补充#资源正在被预载时点击了某个链接会发生什么？]]
+    > 💡 这里的内容，可以参考 [[#Link prefetch#资源正在被预载时点击了某个链接会发生什么？]]
   
-  - <font color=FF0000>Apply the correct ***content security policy*** ( CSP ) to the resource</font>.
+  - <font color=FF0000>Apply the correct **content security policy** ( CSP ) to the resource</font>.
   
   - <font color=FF0000>Set the correct ***`Accept` request headers*** for it</font>. 即：设置对的 `Accept` 请求头
   
-  > 💡 这些 在上面的 [[#\<link>#属性]] 的 `as` 中有提及。
+  > 💡 这些在 [[#`<link>`#属性#as]] 中有提及。
 
 ```html
 <link rel="preload" href="style.css" as="style">
@@ -2169,11 +2422,11 @@ Here however, we will use a `rel` value of `preload`, which turns `<link>` into 
 
 ##### prefetch 简介 与 对比
 
-`<link rel="prefetch">` has been supported in browsers for a long time, but it is <font color=LightSeaGreen>intended for prefetching resources that will be used in the next navigation/page load</font> (e.g. when you go to the next page). This is fine, but isn't useful for the current page! In addition, <font color=FF0000>browsers will give prefetch resources a lower priority than preload ones</font> — <font color=LightSeaGreen>the current page is more important than the next</font>.
+`<link rel="prefetch">` has been supported in browsers for a long time, but it is <font color=LightSeaGreen>intended for prefetching resources</font> that <font color=red>**will be used in the next navigation/page load**</font> (e.g. when you go to the next page). This is fine, but isn't useful for the current page! <font color=dodgerBlue>In addition</font>, <font color=FF0000>**browsers will give prefetch resources a lower priority than preload** ones</font> — <font color=LightSeaGreen>the current page is more important than the next</font>.
 
 摘自：[MDN - Link types: preload](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preload#scripting_and_preloads)
 
-#### prefetch 补充
+#### Link prefetch
 
 关键字 `prefetch` 作为元素 `<link>`  的属性 `rel` 的值，是为了提示浏览器：用户未来的浏览 有可能需要加载目标资源，所以浏览器有可能通过事先获取和缓存对应资源，优化用户体验。
 
@@ -2181,7 +2434,7 @@ Here however, we will use a `rel` value of `preload`, which turns `<link>` into 
 
 ##### prefetching hints
 
-<font color=red>浏览器会 <font color=fuchisa>**查找 *关系类型* ( relation type 即：`rel` ) 为 `next` 或 `prefetch`**</font> 的 HTML `<link>`  或 HTTP `Link:` header</font>。
+浏览器会 <font color=red>**查找 关系类型 ( relation type 即：`rel` ) 为 `next` 或 `prefetch`**</font> 的 HTML `<link>`  或 HTTP `Link:` header。
 
 下面是一个使用 `<link>` 标签的例子：
 
@@ -2209,13 +2462,13 @@ Link: </images/big.jpeg>; rel=prefetch
 
 ##### DNS Prefetching
 
-<font color=dodgerBlue>Domain lookups can be slow, especially with network latency on mobile phones</font>. They are most relevant when there are a plethora of links to external websites that may be clicked on, like search engine results, <font color=FF0000>**DNS prefetching resolves domain names in advance** thereby **speeding up load times by reducing the time associated with domain lookup at request time**</font>.
+<font color=dodgerBlue>**Domain lookups** can be slow, especially with network latency on mobile phones</font>. They are most relevant when there are a plethora of links to external websites that may be clicked on, like search engine results, <font color=FF0000>**DNS prefetching resolves domain names in advance** thereby **speeding up load times by reducing the time associated with domain lookup at request time**</font>.
 
 ```html
 <link rel="dns-prefetch" href="https://example.com/">
 ```
 
-> 👀 这部分内容，可以参考 [[#dns-prefetch 补充]] ，有更详细的中文说明。
+> 👀 这部分内容，可以参考 [[#Link dns-prefetch]] ，有更详细的中文说明。
 
 ##### Link prefetching
 
@@ -2232,9 +2485,9 @@ Link: ; rel=dns-prefetch,
 
 摘自：[MDN US - Prefetch](https://developer.mozilla.org/en-US/docs/Glossary/Prefetch)
 
-#### preconnect 补充
+#### Link preconnect
 
-<font color=FF0000>The `preconnect` keyword for the **`rel` attribute of the \<link> element**</font> is <font color=FF0000>**a hint to browsers** that the **user is likely to need resources from the target resource's origin**</font>, and therefore the **browser can likely improve the user experience** by <font color=fuchsia>**preemptively**</font> （先发制人地）<font color=fuchsia>**initiating a <font size=4>*connection*</font> to that origin**</font>. 👀 这里的 connection 也就说明了 preconnect 的作用
+The `preconnect` keyword for the **`rel` attribute of the `<link>` element** is <font color=FF0000>a hint to browsers</font> that the <font color=red>**user is likely to need resources from the target resource's origin**</font>, and therefore the **browser can likely improve the user experience** by <font color=fuchsia>**preemptively**</font> （先发制人地）<font color=fuchsia>initiating a **connection** to that origin</font>. 👀 这里的 connection 也就说明了 preconnect 的作用
 
 ```html
 <link rel="preconnect" href="https://example.com">
@@ -2242,9 +2495,9 @@ Link: ; rel=dns-prefetch,
 
 摘自：[MDN US - Link types: preconnect](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preconnect)
 
-> 👀 建议在 “没有很多第三方域连接” 时，`dns-prefetch` 与 `preconnect`（预连接）提示配对；原因见： [[#dns-prefetch 补充#最佳实践]] 第三点。
+> 👀 建议在 “没有很多第三方域连接” 时，`dns-prefetch` 与 `preconnect`（预连接）提示配对；原因见： [[#Link dns-prefetch#最佳实践]] 第三点。
 
-#### `prerender` 补充
+#### Link prerender
 
 The `prerender` keyword for the `rel` attribute of the \<link> element is a <font color=FF0000>hint to browsers that the user might need the target resource for the next navigation</font>, and <font color=FF0000>therefore the browser can likely improve the user experience by **preemptively**</font>（预先） <font color=FF0000>**fetching and processing the resource**</font> — for example, by <font color=lightSeaGreen>fetching its subresources or **performing some rendering in the background offscreen**</font>.
 
@@ -2258,9 +2511,11 @@ The `prerender` keyword for the `rel` attribute of the \<link> element is a <fon
 
 摘自：[MDN US - Prerender](https://developer.mozilla.org/en-US/docs/Glossary/prerender)
 
-##### `subresource` 已经废弃
+#### Link subresource
 
-#### `dns-prefetch` 补充
+已经废弃，略
+
+#### Link dns-prefetch
 
 `DNS-prefetch`（ DNS 预获取 ）是尝试 **在请求资源之前解析域名**。这可能是后面要加载的文件，也可能是用户尝试打开的链接目标
 
@@ -3383,7 +3638,7 @@ background-color: unset;
 
 **`background-repeat`** CSS 属性<font color=red>定义背景图像的重复方式</font>。<font color=lightSeaGreen>背景图像可以沿着水平轴，垂直轴，两个轴重复，或者根本不重复</font>。
 
-默认情况下，重复的图像被剪裁为元素的大小，但<font color=red>它们可以缩放（使用 `round`）或者均匀地分布（使用 `space` ）</font>
+默认情况下，重复的图像被剪裁为元素的大小，但<font color=red>它们可以 **缩放**（使用 `round` ）或者 **均匀地分布**（使用 `space` ）</font>
 
 ##### 语法
 
@@ -3409,7 +3664,7 @@ background-repeat: inherit;
 
 `<repeat-style>`
 
-<font color=dodgerBlue>单值语法</font>是<font color=red>完整的双值语法的简写</font>：
+<font color=dodgerBlue>单值语法</font>是<font color=lightSeaGreen>**完整的双值语法的简写**</font>：
 
 | **单值**    | **等价于双值**        |
 | :---------- | :-------------------- |
@@ -3420,35 +3675,126 @@ background-repeat: inherit;
 | `round`     | `round round`         |
 | `no-repeat` | `no-repeat no-repeat` |
 
-在<font color=dodgerBlue>双值语法</font>中，<font color=dodgerBlue>第一个值</font>表示水平重复行为，<font color=dodgerBlue>第二个值</font>表示垂直重复行为。
+在<font color=dodgerBlue>双值语法</font>中，<font color=dodgerBlue>第一个值</font>表示<font color=lightSeaGreen>水平重复行为</font>，<font color=dodgerBlue>第二个值</font>表示<font color=lightSeaGreen>垂直重复行为</font>。
 
 <font color=dodgerBlue>下面是关于每一个值是怎么工作的具体说明</font>：
 
 | 值          | 描述                                                         |
 | :---------- | :----------------------------------------------------------- |
 | `repeat`    | 图像会按需重复来覆盖整个背景图片所在的区域。<font color=red>最后一个图像会被裁剪，如果它的大小不合适的话</font> |
-| `space`     | 图像会**尽可能得重复**，但是**不会裁剪**。第一个和最后一个图像会被固定在元素 (element) 的相应的边上，同时空白会均匀地分布在图像之间。`background-position` 属性会被忽视，除非只有一个图像能被无裁剪地显示。只在一种情况下裁剪会发生，那就是图像太大了以至于没有足够的空间来完整显示一个图像。 |
-| `round`     | 随着允许的空间在尺寸上的增长，被重复的图像将会伸展 (没有空隙), 直到有足够的空间来添加一个图像。当下一个图像被添加后，所有的当前的图像会被压缩来腾出空间。例如，一个图像原始大小是 260px, 重复三次之后，可能会被伸展到 300px，直到另一个图像被加进来。这样他们就可能被压缩到 225px.译者注：关键是浏览器怎么计算什么时候应该添加一个图像进来，而不是继续伸展。 |
-| `no-repeat` | 图像不会被重复 (因为背景图像所在的区域将可能没有完全被覆盖). 那个没有被重复的背景图像的位置是由 `background-position` 属性来决定。 |
+| `space`     | <font color=red>图像会**尽可能得重复**，但是**不会裁剪**</font>。第一个和最后一个图像会被固定在元素 ( element ) 的相应的边上，同时空白会均匀地分布在图像之间。`background-position` 属性会被忽视，除非只有一个图像能被无裁剪地显示。只在一种情况下裁剪会发生，那就是图像太大了以至于没有足够的空间来完整显示一个图像。 |
+| `round`     | 随着允许的空间在尺寸上的增长，<font color=red>被重复的图像将会伸展（没有空隙）</font>， 直到有足够的空间来添加一个图像。当下一个图像被添加后，所有的当前的图像会被压缩来腾出空间。<br/>例如，一个图像原始大小是 260px，重复三次之后，可能会被伸展到 300px，直到另一个图像被加进来。这样他们就可能被压缩到 225px。<br/>译者注：关键是浏览器怎么计算什么时候应该添加一个图像进来，而不是继续伸展。 |
+| `no-repeat` | 图像不会被重复（因为背景图像所在的区域将可能没有完全被覆盖）。那个没有被重复的背景图像的位置是由 `background-position` 属性来决定。 |
 
 摘自：[MDN - `background-repeat`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-repeat)
 
+#### background-size
+
+`background-size` 设置背景图片大小。图片可以保有其原有的尺寸，或者拉伸到新的尺寸，或者在保持其原有比例的同时缩放到元素的可用空间的尺寸。
+
+⚠️ 注意：<font color=lightSeaGreen>没有被背景图片覆盖的背景区域仍然会显示用 `background-color` 属性设置的背景颜色</font>。此外，如果背景图片设置了透明或者半透明属性，衬在背景图片后面的背景色也会显示出来。
+
+| 属性                          | 值                                                           |
+| :---------------------------- | ------------------------------------------------------------ |
+| <font color=red>初始值</font> | `auto auto`                                                  |
+| 适用元素                      | all elements. It also applies to `::first-letter` and `::first-line`. |
+| 是否是继承属性                | 否                                                           |
+| Percentages                   | relative to the background positioning area                  |
+| 计算值                        | as specified, but with relative lengths converted into absolute lengths |
+| Animation type                | a repeatable list of                                         |
+
+##### 语法
+
+```css
+/* Keyword values */
+background-size: cover;
+background-size: contain;
+
+/* One-value syntax */
+/* the width of the image (height becomes 'auto') */
+background-size: 50%;
+background-size: 3.2em;
+background-size: 12px;
+background-size: auto;
+
+/* Two-value syntax */
+/* first value: width of the image, second value: height */
+background-size: 50% auto;
+background-size: 3em 25%;
+background-size: auto 6px;
+background-size: auto auto;
+
+/* Multiple backgrounds */
+background-size: auto, auto; /* Not to be confused with `auto auto` */
+background-size: 50%, 25%, 25%;
+background-size: 6px, auto, contain;
+
+/* Global values */
+background-size: inherit;
+background-size: initial;
+background-size: revert;
+background-size: revert-layer;
+background-size: unset;
+```
+
+<font color=dodgerBlue>单张图片的背景大小可以使用以下三种方法中的一种来规定</font>：
+
+- 使用关键词 `contain`
+- 使用关键词 `cover`
+- 设定宽度和高度值
+
+当通过宽度和高度值来设定尺寸时，你可以提供一或者两个数值：
+
+- 如果仅有一个数值被给定，这个数值将作为宽度值大小，高度值将被设定为 `auto`。
+- 如果有两个数值被给定，第一个将作为宽度值大小，第二个作为高度值大小。
+
+每个值可以是 `<length>` ，是 `<percentage>` 或者 `auto` .
+
+###### 属性值
+
+- **`<length>`** ：`<length>` 值，指定背景图片大小，不能为负值。
+- **`<percentage>`** ：`<percentage>` 值，指定背景图片相对背景区 ( background positioning area ) 的百分比。背景区由 `background-origin` 设置，默认为盒模型的内容区与内边距，也可设置为只有内容区，或者还包括边框。如果 `attachment` 为 `fixed`，背景区为浏览器可视区（即视口），不包括滚动条。不能为负值。
+- **`auto`** ：以背景图片的比例缩放背景图片。
+- **`cover`** ：缩放背景图片以完全覆盖背景区，可能背景图片部分看不见。和 `contain` 值相反，`cover` 值尽可能大的缩放背景图像并保持图像的宽高比例（图像不会被压扁）。该背景图以它的全部宽或者高覆盖所在容器。<font color=red>当容器和背景图大小不同时，背景图的 左/右 或者 上/下 部分会被裁剪</font>。
+- **`contain`** ：<font color=red>缩放背景图片以完全装入背景区，可能背景区部分空白</font>。`contain` 尽可能的缩放背景并保持图像的宽高比例（图像不会被压缩）。该背景图会填充所在的容器。当背景图和容器的大小的不同时，容器的空白区域（上/下或者左/右）会显示由 `background-color` 设置的背景颜色。
+
+位图一定有固有尺寸与固有比例，矢量图可能两者都有，也可能只有一个。渐变视为只有固有尺寸或者只有固有比例的图片。
+
+摘自：[MDN - `background-size`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-size)
+
 #### background-attachment
 
-决定背景图像的位置是在视口内固定，或者随着包含它的区块滚动。
+**`background-attachment`** CSS 属性<font color=red>决定背景图像的位置是在视口内固定，或者随着包含它的区块滚动</font>。
 
-- fixed：此关键属性值表示背景相对于视口固定。即使一个元素拥有滚动机制，背景也不会随着元素的内容滚动。
-- local：此关键属性值表示背景相对于元素的内容固定。如果一个元素拥有滚动机制，背景将会随着元素的内容滚动， 并且背景的绘制区域和定位区域是相对于可滚动的区域而不是包含他们的边框。
+> 💡 原文这里有可交互的示例，建议看一下
 
-- scroll：此关键属性值表示背景相对于元素本身固定， 而不是随着它的内容滚动（对元素边框是有效的）。
+##### 语法
 
-以上关于background-attachment的内容摘自：[MDN - background-attachment](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-attachment)
+```css
+/* 关键 属性值 */
+background-attachment: scroll;
+background-attachment: fixed;
+background-attachment: local;
+
+/* 全局 属性值 */
+background-attachment: inherit;
+background-attachment: initial;
+background-attachment: unset;
+```
+
+###### 取值
+
+- `fixed` ：此关键属性值表示 <font color=red>背景相对于 **viewport** 固定</font>。<font color=red>**即使一个元素拥有滚动机制，背景也不会随着元素的内容滚动**</font>。
+- `local` ：此关键属性值表示 <font color=red>背景相对于 **元素的内容** 固定</font>。<font color=dodgerBlue>如果一个元素拥有滚动机制</font>，<font color=red>背景将会随着元素的内容滚动</font>，并且<font color=red>背景的绘制区域和定位区域是相对于可滚动的区域</font>而不是包含他们的边框。
+- `scroll` ：此关键属性值表示 <font color=red>背景相对于 **元素本身** 固定</font>，而<font color=red>**不是随着它的内容滚动**</font>（对元素边框是有效的）
+
+摘自：[MDN - background-attachment](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-attachment)
 
 #### background-position
 
-background-position 为每一个背景图片设置初始位置。 这个位置是相对于由 background-origin 定义的位置图层的。
+**`background-position`** CSS 属性 <font color=red>为每一个背景图片设置初始位置</font>。这个位置是 <font color=red>相对于由 `background-origin` 定义的位置图层的</font>。
 
-示例：
+##### 语法
 
 ```css
 /* Keyword values */
@@ -3456,7 +3802,7 @@ background-position: top;
 background-position: bottom;
 background-position: left;
 background-position: right;
-background-position: center;
+background-position: center; /* 👀 */
 
 /* <percentage> values */
 background-position: 25% 75%;
@@ -3467,7 +3813,7 @@ background-position: 1cm 2cm;
 background-position: 10ch 8em;
 
 /* Multiple images */
-background-position: 0 0, center;
+background-position: 0 0, center; /* 👀 */
 
 /* Edge offsets values */
 background-position: bottom 10px right 20px;
@@ -3478,28 +3824,231 @@ background-position: top right 10px;
 /* Global values */
 background-position: inherit;
 background-position: initial;
-background-position: unset; 
+background-position: revert;
+background-position: unset;
 ```
 
-以上关于background-position的内容摘自：[MDN - background-position](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-position)
+`background-position` 属性被指定为一个或多个 `<position>` 值，用逗号隔开。
+
+###### 值
+
+`<position>` ：一个 `<position>` 定义一组 x/y 坐标（相对于一个元素盒子模型的边界），来放置背景图 ( item )。它<font color=dodgerBlue>可以使用一到四个值进行定义</font>。如果使用两个非关键字值，第一个值表示水平位置，第二个值表示垂直位置。<font color=dodgerBlue>**如果仅指定一个值**</font>，则<font color=red>**第二个值默认是 `center`**</font>。<font color=dodgerBlue>**如果使用三个或四个值**</font>，则<font color=red>长度百分比值是前面关键字值的偏移量</font>。
+
+**一个值的语法：** 值可能是：
+
+- 关键字 `center`，用来居中背景图片。
+- 关键字 `top`、`left`、`bottom`、`right` 中的一个。用来指定把这个背景图 ( item ) 放在哪一个边界。另一个维度被设置成 50% ，所以这个背景图 ( item ) 被放在指定边界的中间位置。
+- `<length>` 或 `<percentage>`。指定相对于左边界的 x 坐标，y 坐标被设置成 50%。
+
+**两个值的语法：** 一个定义 x 坐标，另一个定义 y 坐标。每个值可以是：
+
+- 关键字 `top`、`left`、`bottom`、`right` 中的一个。如果这里给出 `left` 或 `right`，那么这个值定义 x 轴位置，另一个值定义 y 轴位置。如果这里给出 `top` 或 `bottom`，那么这个值定义 y 轴位置，另一个值定义 x 轴位置。
+- `<length>` 或 `<percentage>`。如果另一个值是 `left` 或 `right` ，则该值定义相对于顶部边界的 Y。如果另一个值是 `top` 或 `bottom`，则该值定义相对于左边界的 X。如果两个值都是 `<length>` 或 `<percentage>` 值，则第一个定义 X，第二个定义 Y。
+
+注意：如果一个值是 `top` 或 `bottom`，那么另一个值不可能是 `top` 或 `bottom`。如果一个值是 `left` 或 `right`，那么另一个值不可能是 `left` 或 `right`。也就是说，例如，`top top` 和 `left right` 是无效的。
+
+排序：配对关键字时，位置并不重要，因为浏览器可以重新排序，写成 `top left` 或 `left top` 其产生的效果是相同的。使用 `<length>` 或 `<percentage>` 与关键字配对时顺序非常重要，定义 X 的值放在前面，然后是定义 Y 的值， `right 20px` 和 `20px right`的效果是不相同的，前者有效但后者无效。`left 20%` 或 `20% bottom` 是有效的，因为 X 和 Y 值已明确定义且位置正确。
+
+默认值是 `left top` 或者 `0% 0%`。
+
+**三个值的语法：** 两个值是关键字值，第三个是前面值的偏移量：
+
+- 第一个值是关键字 `top`、`left`、`bottom`、`right`，或者 `center`。如果设置为 `left`或 `right`，则定义了 X。如果设置为 `top` 或 `bottom`，则定义了 Y，另一个关键字值定义了 X。
+- `<length>` 或 `<percentage>`，如果是第二个值，则是第一个值的偏移量。如果是第三个值，则是第二个值的偏移量。
+- 单个长度或百分比值是其前面的关键字值的偏移量。一个关键字与两个 `length` 或 `<percentage>` 值的组合无效。
+
+**四个值的语法：** 第一个和第三个值是定义 X 和 Y 的关键字值。第二个和第四个值是前面 X 和 Y 关键字值的偏移量：
+
+- 第一个值和第三个值是关键字值 `top`、`left`、`bottom`、 `right` 之一。如果设置为 `left` 或 `right`，则定义了 X。如果设置为 `top` 或 `bottom`，则定义了 Y，另一个关键字值定义了 X。
+- 第二个和第四个值是 `<length>` 或 `<percentage>`。第二个值是第一个关键字的偏移量。第四个值是第二个关键字的偏移量。
+
+摘自：[MDN - `background-position`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-position)
 
 #### background-origin
 
-background-origin <font color=FF0000>规定了指定背景图片background-image 属性的**原点位置的背景相对区域**</font>
+`background-origin` <font color=red>指定背景图片`background-image` 属性的原点位置的背景相对区域</font>。
 
-注意：当使用 background-attachment 为fixed时，该属性将被忽略不起作用。
+⚠️ 注意：<font color=red>**当使用 `background-attachment` 为 fixed 时，该属性将被忽略不起作用**</font>。
 
-**属性值**
+##### 语法
 
-- **border-box：**背景图片的摆放以border区域为参考
-- **padding-box：**背景图片的摆放以padding区域为参考
-- **content-box：**背景图片的摆放以content区域为参考
+```css
+/* Keyword values */
+background-origin: border-box;
+background-origin: padding-box;
+background-origin: content-box;
 
-摘自：[MDN - background-origin](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-origin)
+/* Global values */
+background-origin: inherit;
+background-origin: initial;
+background-origin: revert;
+background-origin: revert-layer;
+background-origin: unset;
+```
+
+###### 属性值
+
+- **`border-box`** ：背景图片的摆放以 border 区域为参考
+- **`padding-box`** ：背景图片的摆放以 padding 区域为参考
+- **`content-box`** ：背景图片的摆放以 content 区域为参考
+
+| 属性                          | 值                                                           |
+| :---------------------------- | ------------------------------------------------------------ |
+| <font color=red>初始值</font> | `padding-box`                                                |
+| 适用元素                      | all elements. It also applies to `::first-letter` and `::first-line`. |
+| 是否是继承属性                | 否                                                           |
+| 计算值                        | as specified                                                 |
+| Animation type                | a repeatable list of                                         |
+
+摘自：[MDN - `background-origin`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-origin)
+
+#### background-clip
+
+> 👀 感觉 background-clip 属性有点类似于 box-sizing 的作用。不过，text 属性不一样，需要注意下，在某些场景下很有用。
+
+`background-clip` 设置元素的背景（背景图片或颜色）是否延伸到边框、内边距盒子、内容盒子下面。
+
+> 👀 原文有各属性的效果展示，由于没法搬过来；详见 原文。
+
+如果没有设置背景图片( `background-image` ) 或背景颜色 ( `background-color` )，那么这个属性只有在边框 ( `border` ) 被设置为非固实 ( soild )、透明或半透明时才能看到视觉效果（与 `border-style` 或 `border-image` 有关），否则，本属性产生的样式变化会被边框覆盖。
+
+##### 语法
+
+```css
+/* Keyword values */
+background-clip: border-box;
+background-clip: padding-box;
+background-clip: content-box;
+background-clip: text;
+
+/* Global values */
+background-clip: inherit;
+background-clip: initial;
+background-clip: unset;
+```
+
+###### 值
+
+- `border-box` ：背景延伸至边框外沿（但是在边框下层）。
+
+  > 💡 经过实验，`border-box` 是默认值
+
+- `padding-box` ：背景延伸至内边距 ( `padding` ) 外沿。不会绘制到边框处。
+
+- `content-box` ：背景被裁剪至内容区 ( content box ) 外沿。
+
+- `text` ：🧪 背景被裁剪成文字的前景色。
+
+  > 👀 这个要注意下 ⚠️
+
+摘自：[MDN - background-clip](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-clip)
 
 #### background-blend-mode
 
-// TODO
+##### 概述
+
+`background-blend-mode` CSS 属性 <font color=red>定义该元素的 **背景图片以及背景色 如何混合**</font>。
+
+混合模式应该按 `background-image` CSS 属性同样的顺序定义。如果混合模式数量与背景图像的数量不相等，它会被截取至相等的数量。
+
+> 👀 这里的意思是如果 `background-image` 对应的值有图片值有多个，那么 ``background-blend-mode` 的值也 “应该”（不强制） 有多个
+
+| 初始值         | `normal`                                                     |
+| :------------- | ------------------------------------------------------------ |
+| 适用元素       | All elements. In SVG, it applies to container elements, graphics elements, and graphics referencing elements.. It also applies to `::first-letter` and `::first-line`. |
+| 是否是继承属性 | 否                                                           |
+| 计算值         | as specified                                                 |
+| Animation type | Not animatable                                               |
+
+##### 语法
+
+```css
+/* One value */
+background-blend-mode: normal;
+
+/* Two values, one per background */
+background-blend-mode: darken, luminosity;
+
+/* Global values */
+background-blend-mode: inherit;
+background-blend-mode: initial;
+background-blend-mode: revert;
+background-blend-mode: revert-layer;
+background-blend-mode: unset;
+```
+
+###### 值
+
+`<blend-mode>` ：一个定义混合的模式，可以有多个值，用逗号间隔。
+
+> 💡 这里的 `<blend-mode>` 见 [[#`<blend-mode>`]] 或 [MDN - `<blend-mode>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
+
+摘自：[MDN - background-blend-mode](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-blend-mode)
+
+
+
+#### mix-blend-mode
+
+> 👀 感觉 [MDN - `mix-blend-mode`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/mix-blend-mode) 对于 `mix-blend-mode` 各个可选值并没有详细的讲解，不过可选值就是 `<blend-mode>` ，MDN 是有专门的页面的 [MDN - `<blend-mode>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)；可见 [[#`blend-mode`]]
+
+**`mix-blend-mode`** CSS 属性<font color=red>描述了元素的内容应该与元素的直系父元素的内容和元素的背景如何混合</font>。
+
+##### 语法
+
+```css
+mix-blend-mode: <blend-mode>;
+
+mix-blend-mode: initial;
+mix-blend-mode: inherit;
+mix-blend-mode: unset;
+```
+
+###### 值
+
+`<blend-mode>` ：表示应该应用的混合模式。
+
+##### 形式定义
+
+| 初始值                                                       | `normal`       |
+| :----------------------------------------------------------- | -------------- |
+| 适用元素                                                     | all elements   |
+| 是否是继承属性                                               | 否             |
+| 计算值                                                       | as specified   |
+| Animation type                                               | Not animatable |
+| Creates [stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_context) | yes            |
+
+摘自：[MDN - `mix-blend-mode`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/mix-blend-mode)
+
+
+
+#### `<blend-mode>`
+
+`<blend-mode>` <font color=fuchisa>**是一种 CSS 数据类型**</font>，<font color=FF0000>用于描述当元素重叠时，颜色应当如何呈现</font>。它<font color=FF0000>被用于 `background-blend-mode` 和 `mix-blend-mode` 属性</font>。
+
+> 💡 `<blend-mode>` 不是一种标签，而是一个数据类型，类似于 `<length>`，具体介绍见：[MDN - CSS 基本数据类型](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Types) 
+
+当层重叠时，混合模式是计算像素最终颜色值的方法，每种混合模式采用前景和背景的颜色值，执行其计算并返回最终的颜色值。最终的可见层是对混合层中的每个重叠像素执行混合模式计算的结果。
+
+##### 属性值
+
+- `normal` ：最终颜色永远是顶层颜色，无论底层颜色是什么。 其效果类似于两张不透明的纸重叠 ( overlapping ) 在一起
+- `multiply` ：最终颜色为顶层颜色与底层颜色相乘的结果。 如果叠加黑色层，则最终层必为黑色层，叠加白色层不会造成变化。 其效果类似于在透明薄膜上重叠印刷的两个图像。
+- `screen` ：最终的颜色是**反转顶层颜色和底层颜色，将反转后的两个颜色相乘，再反转相加得到的和**得到的结果。 黑色层不会造成变化，白色层导致白色最终层。 其效果类似于（被投影仪）投射到投影屏幕上的两个图像。
+- `overlay` ：如果底层颜色比顶层颜色深，则最终颜色是 `multiply` 的结果，如果底层颜色比顶层颜色浅，则最终颜色是 `screen` 的结果。 此混合模式相当于顶层与底层互换后的 `hard-light`。
+- `darken` ：最终颜色是由每个颜色通道下，顶底两层颜色中的最暗值所组成的颜色。
+- `lighten` ：最终颜色是每个颜色通道下，顶底两层颜色中的最亮值所组成的颜色。
+- `color-dodge` ：最终颜色是将底部颜色除以顶部颜色的反色的结果。 黑色前景不会造成变化。前景如果是背景的反色，会得到白色（fully lit color，完全亮起的颜色，应当为白色）。 此混合模式类似于 `screen`，但是，前景只需要和背景的反色一样亮，最终图像就会变为全白。
+- `color-burn` ：最终颜色是**反转底部颜色，将反转后的值除以顶部颜色，再反转除以后的值**得到的结果。 白色的前景不会导致变化，前景如果是背景的反色，会得到黑色。 此混合模式类似于 `multiply`，但是，前景只需要和背景的反色一样暗，最终图像就会变为全黑。
+- `hard-light` ：如果顶层颜色比底层颜色深，则最终颜色是 `multiply` 的结果，如果顶层颜色比底层颜色浅，则最终颜色是 `screen` 的结果。 此混合模式相当于顶层与底层互换后的 `overlay`。 其效果类似于在背景层上（用前景层）打出一片_刺眼_的聚光灯。
+- `soft-light` ：最终颜色类似于 `hard-light` 的结果，但更加柔和一些。 此混合模式的表现类似 `hard-light`。 其效果类似于在背景层上（用前景层）打出一片_发散_的聚光灯。
+- ``difference`` ：最终颜色是 两种颜色中较浅的颜色 减去 两种颜色中较深的颜色 得到的结果。 黑色层不会造成变化，而白色层会反转另一层的颜色。
+- `exclusion` ：最终颜色类似于 `difference`，但对比度更低一些。 和 `difference` 相同，黑色层不会造成变化，而而白色层会反转另一层的颜色。
+- `hue` ：最终颜色由顶部颜色的_色调_和底部颜色的_饱和度_与_亮度_组成。
+- `saturation` ：最终颜色由顶部颜色的_色调_和底部颜色的_饱和度_与_发光度_组成。 饱和度为零的纯灰色背景层不会造成变化。
+- `color` ：最终颜色由顶部颜色的_色调_ 与_饱和度_和底部颜色的_亮度_组成。 此效果保留了灰度级别，可用于为前景着色。（The effect preserves gray levels and can be used to colorize the foreground.）
+- `luminosity` ：最终颜色由顶部颜色的亮度和底部颜色的色调和饱和度组成。此混合模式相当于顶层与底层互换后的 `color`。
+
+摘自：[MDN - `<blend-mode>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
 
 
 
@@ -3555,7 +4104,7 @@ font-style: unset;
 - `normal` ：选择 `font-family` 的常规字体。
 - `italic` ：选择斜体，如果当前字体没有可用的斜体版本，会选用倾斜体 ( `oblique` ) 替代。
 
-- `oblique` [`<angle>`](https://developer.mozilla.org/en-US/docs/Web/CSS/angle) ：Selects a font classified as `oblique` , and additionally specifies an angle for the slant of the text. If one or more oblique faces are available in the chosen font family, the one that most closely matches the specified angle is chosen. If no oblique faces are available, the browser will synthesize an oblique version of the font by slanting a normal face by the specified amount. Valid values are degree values of `-90deg` to `90deg` inclusive. If an angle is not specified, an angle of 14 degrees is used. Positive values are slanted to the end of the line, while negative values are slanted towards the beginning.
+- `oblique` `<angle>` ：Selects a font classified as `oblique` , and additionally specifies an angle for the slant of the text. If one or more oblique faces are available in the chosen font family, the one that most closely matches the specified angle is chosen. If no oblique faces are available, the browser will synthesize an oblique version of the font by slanting a normal face by the specified amount. Valid values are degree values of `-90deg` to `90deg` inclusive. If an angle is not specified, an angle of 14 degrees is used. Positive values are slanted to the end of the line, while negative values are slanted towards the beginning.
 
   In general, for a requested angle of 14 degrees or greater, larger angles are preferred; otherwise, smaller angles are preferred (see the spec's [font matching section](https://drafts.csswg.org/css-fonts-4/#font-matching-algorithm) for the precise algorithm).
 
@@ -3800,24 +4349,6 @@ div {
 #### **重叠的元素**
 
 元素的定位与文档流无关，所以它们可以覆盖页面上的其它元素。<font color=red>z-index 属性指定了一个元素的堆叠顺序（哪个元素应该放在前面，或后面）</font>。一个元素可以有正数或负数的堆叠顺序，<font color=lightSeaGreen>具有更高堆叠顺序的元素总是在较低的堆叠顺序元素的前面</font>。
-
-
-
-#### CSS 布局 - Overflow
-
-CSS `overflow` 属性<mark>可以控制内容溢出元素框时在对应的元素区间内添加滚动条</mark>。
-
-##### overflow 属性有以下值
-
-| 值      | 描述                                                         |
-| :------ | :----------------------------------------------------------- |
-| visible | 默认值。内容不会被修剪，会呈现在元素框之外。                 |
-| hidden  | 内容会被修剪，并且其余内容是不可见的。                       |
-| scroll  | <mark>内容会被修剪，但是浏览器会显示滚动条以便查看其余的内容</mark>。 |
-| auto    | 如果内容被修剪，则浏览器会显示滚动条以便查看其余的内容。     |
-| inherit | 规定应该从父元素继承 overflow 属性的值。                     |
-
-**注意：**overflow 属性只工作于指定高度的块元素上。
 
 
 
@@ -4126,6 +4657,8 @@ filter: url(file.svg#filter-element-id)
 
 摘自：[CSS filter 有哪些神奇用途](https://segmentfault.com/a/1190000040058430) 另外，该博客中还有相关使用示例的介绍，这里由于篇幅省略；可以看看，讲得很清楚。
 
+
+
 ####  backdrop-filter
 
 backdrop-filter CSS 属性可以让你 <font color=FF0000>为一个 元素 <font size=4>**后面区域**</font> 添加图形效果</font>（如模糊或颜色偏移）。因为它适用于元素背后的所有元素，为了看到效果，必须使元素或其背景至少部分透明。
@@ -4416,169 +4949,6 @@ border-collapse: unset;
 - `separate`：默认值。每个单元格拥有独立的边框（采用 separated-border 表格渲染模型）。
 
 摘自：[MDN - border-collapse](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-collapse)
-
-
-
-#### CSS3 背景
-
-##### 背景属性
-
-- **background-image**
-
-- **background-size**
-
-  background-size 设置背景图片大小。图片可以保有其原有的尺寸，或者拉伸到新的尺寸，或者在保持其原有比例的同时缩放到元素的可用空间的尺寸。
-
-  单张图片的背景大小可以使用以下三种方法中的一种来规定：
-
-  - 使用关键词 contain（以可满足的一边满足，另一边<font color=FF0000>空出</font>）
-  - 使用关键词 cover（以短的一边满足，长的一边<font color=FF0000>裁剪</font>）
-  - 设定宽度和高度值，可以是\<length>, 是 \<percentage>, 或者 auto.
-
-  摘自：[MDN - background-size](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-size)
-
-- **background-position**
-
-  background-position 为每一个背景图片设置初始位置。 这个位置是相对于由 background-origin 定义的位置图层的。
-
-  摘自：[MDN - background-position](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-position)
-
-- **background-origin**
-
-- **background-clip**
-
-
-> 👀 下面是一点补充：
-
-#### background-clip
-
-> 👀 感觉 background-clip 属性有点类似于 box-sizing 的作用。不过，text 属性不一样，需要注意下，在某些场景下很有用。
-
-`background-clip` 设置元素的背景（背景图片或颜色）是否延伸到边框、内边距盒子、内容盒子下面。
-
-> 👀 原文有各属性的效果展示，由于没法搬过来；详见 原文。
-
-如果没有设置背景图片( `background-image` ) 或背景颜色 ( `background-color` )，那么这个属性只有在边框 ( `border` ) 被设置为非固实 ( soild )、透明或半透明时才能看到视觉效果（与 `border-style` 或 `border-image` 有关），否则，本属性产生的样式变化会被边框覆盖。
-
-##### 语法
-
-```css
-/* Keyword values */
-background-clip: border-box;
-background-clip: padding-box;
-background-clip: content-box;
-background-clip: text;
-
-/* Global values */
-background-clip: inherit;
-background-clip: initial;
-background-clip: unset;
-```
-
-###### 值
-
-- `border-box` ：背景延伸至边框外沿（但是在边框下层）。
-- `padding-box` ：背景延伸至内边距（`padding`）外沿。不会绘制到边框处。
-- `content-box` ：背景被裁剪至内容区 ( content box ) 外沿。
-- `text` ：🧪 背景被裁剪成文字的前景色。👀 这个要注意下 ⚠️
-
-摘自：[MDN - background-clip](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-clip)
-
-
-
-#### background-blend-mode
-
-##### MDN 的解释
-
-background-blend-mode CSS属性<font color=FF0000>定义该元素的背景图片，以及背景色如何混合</font>。
-
-混合模式应该按background-image CSS属性同样的顺序定义。如果混合模式数量与背景图像的数量不相等，它会被截取至相等的数量。
-
-##### RUNOOB 的解释
-
-background-blend-mode 属性<font color=FF0000>定义了背景层的混合模式（图片与颜色）</font>。
-
-| 值          | 描述                         |
-| :---------- | :--------------------------- |
-| normal      | 默认值。设置正常的混合模式。 |
-| multiply    | 正片叠底模式。               |
-| screen      | 滤色模式。                   |
-| overlay     | 叠加模式。                   |
-| darken      | 变暗模式。                   |
-| lighten     | 变亮模式。                   |
-| color-dodge | 颜色减淡模式。               |
-| saturation  | 饱和度模式。                 |
-| color       | 颜色模式。                   |
-| luminosity  | 亮度模式。                   |
-
-摘自：[MDN - background-blend-mode](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-blend-mode)、 [RUNOOB - CSS background-blend-mode 属性](https://www.runoob.com/cssref/pr-background-blend-mode.html)
-
-> 👀 上面的属性值对应的效果，参见 [MDN - `<blend-mode>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
-
-
-
-#### mix-blend-mode
-
-> 👀 感觉 [MDN - `mix-blend-mode`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/mix-blend-mode) 对于 `mix-blend-mode` 各个可选值并没有详细的讲解，不过可选值就是 `<blend-mode>` ，MDN 是有专门的页面的 [MDN - `<blend-mode>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)；可见 [[#`blend-mode`]]
-
-**`mix-blend-mode`** CSS 属性<font color=red>描述了元素的内容应该与元素的直系父元素的内容和元素的背景如何混合</font>。
-
-##### 语法
-
-```css
-mix-blend-mode: <blend-mode>;
-
-mix-blend-mode: initial;
-mix-blend-mode: inherit;
-mix-blend-mode: unset;
-```
-
-###### 值
-
-- `<blend-mode>` ：表示应该应用的混合模式。
-
-##### 形式定义
-
-| 初始值                                                       | `normal`       |
-| :----------------------------------------------------------- | -------------- |
-| 适用元素                                                     | all elements   |
-| 是否是继承属性                                               | 否             |
-| 计算值                                                       | as specified   |
-| Animation type                                               | Not animatable |
-| Creates [stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_context) | yes            |
-
-摘自：[MDN - `mix-blend-mode`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/mix-blend-mode)
-
-
-
-#### `<blend-mode>`
-
-`<blend-mode>` <font color=fuchisa>**是一种 CSS 数据类型**</font>，<font color=FF0000>用于描述当元素重叠时，颜色应当如何呈现</font>。它<font color=FF0000>被用于 `background-blend-mode` 和 `mix-blend-mode` 属性</font>。
-
-> 💡 `<blend-mode>` 不是一种标签，而是一个数据类型，类似于 `<length>`，具体介绍见：[MDN - CSS 基本数据类型](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Types) 
-
-当层重叠时，混合模式是计算像素最终颜色值的方法，每种混合模式采用前景和背景的颜色值，执行其计算并返回最终的颜色值。最终的可见层是对混合层中的每个重叠像素执行混合模式计算的结果。
-
-##### 属性值
-
-- `normal` ：最终颜色永远是顶层颜色，无论底层颜色是什么。 其效果类似于两张不透明的纸重叠 ( overlapping ) 在一起
-- `multiply` ：最终颜色为顶层颜色与底层颜色相乘的结果。 如果叠加黑色层，则最终层必为黑色层，叠加白色层不会造成变化。 其效果类似于在透明薄膜上重叠印刷的两个图像。
-- `screen` ：最终的颜色是**反转顶层颜色和底层颜色，将反转后的两个颜色相乘，再反转相加得到的和**得到的结果。 黑色层不会造成变化，白色层导致白色最终层。 其效果类似于（被投影仪）投射到投影屏幕上的两个图像。
-- `overlay` ：如果底层颜色比顶层颜色深，则最终颜色是 `multiply` 的结果，如果底层颜色比顶层颜色浅，则最终颜色是 `screen` 的结果。 此混合模式相当于顶层与底层互换后的 `hard-light`。
-- `darken` ：最终颜色是由每个颜色通道下，顶底两层颜色中的最暗值所组成的颜色。
-- `lighten` ：最终颜色是每个颜色通道下，顶底两层颜色中的最亮值所组成的颜色。
-- `color-dodge` ：最终颜色是将底部颜色除以顶部颜色的反色的结果。 黑色前景不会造成变化。前景如果是背景的反色，会得到白色（fully lit color，完全亮起的颜色，应当为白色）。 此混合模式类似于 `screen`，但是，前景只需要和背景的反色一样亮，最终图像就会变为全白。
-- `color-burn` ：最终颜色是**反转底部颜色，将反转后的值除以顶部颜色，再反转除以后的值**得到的结果。 白色的前景不会导致变化，前景如果是背景的反色，会得到黑色。 此混合模式类似于 `multiply`，但是，前景只需要和背景的反色一样暗，最终图像就会变为全黑。
-- `hard-light` ：如果顶层颜色比底层颜色深，则最终颜色是 `multiply` 的结果，如果顶层颜色比底层颜色浅，则最终颜色是 `screen` 的结果。 此混合模式相当于顶层与底层互换后的 `overlay`。 其效果类似于在背景层上（用前景层）打出一片_刺眼_的聚光灯。
-- `soft-light` ：最终颜色类似于 `hard-light` 的结果，但更加柔和一些。 此混合模式的表现类似 `hard-light`。 其效果类似于在背景层上（用前景层）打出一片_发散_的聚光灯。
-- ``difference`` ：最终颜色是 两种颜色中较浅的颜色 减去 两种颜色中较深的颜色 得到的结果。 黑色层不会造成变化，而白色层会反转另一层的颜色。
-- `exclusion` ：最终颜色类似于 `difference`，但对比度更低一些。 和 `difference` 相同，黑色层不会造成变化，而而白色层会反转另一层的颜色。
-- `hue` ：最终颜色由顶部颜色的_色调_和底部颜色的_饱和度_与_亮度_组成。
-- `saturation` ：最终颜色由顶部颜色的_色调_和底部颜色的_饱和度_与_发光度_组成。 饱和度为零的纯灰色背景层不会造成变化。
-- `color` ：最终颜色由顶部颜色的_色调_ 与_饱和度_和底部颜色的_亮度_组成。 此效果保留了灰度级别，可用于为前景着色。（The effect preserves gray levels and can be used to colorize the foreground.）
-- `luminosity` ：最终颜色由顶部颜色的亮度和底部颜色的色调和饱和度组成。此混合模式相当于顶层与底层互换后的 `color`。
-
-摘自：[MDN - `<blend-mode>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/blend-mode)
 
 
 
@@ -6294,7 +6664,7 @@ CSS 中有关于 “像素密度” 的媒体查询，如下示例：
 
 // TODO 
 
-和 @media 使用一样，不过使用场景不同。入门参考：[最新：CSS Container Queries 容器查询，响应式布局利器](https://www.bilibili.com/video/BV1oo4y1C7nJ)
+和 `@media` 使用一样，不过使用场景不同。入门参考：[最新：CSS Container Queries 容器查询，响应式布局利器](https://www.bilibili.com/video/BV1oo4y1C7nJ)
 
 
 
@@ -6407,7 +6777,7 @@ orientation：portrait | landscape
 
 #### prefers-color-scheme
 
-prefers-color-scheme CSS <font color=FF0000 size=4>**媒体特性 **</font> 用于<font color=FF0000>检测用户是否有将系统的主题色设置为亮色或者暗色</font>。
+`prefers-color-scheme` CSS <font color=FF0000>**媒体特性 **</font> 用于<font color=FF0000>检测用户是否有将系统的主题色设置为亮色或者暗色</font>。
 
 **语法**
 
@@ -6435,42 +6805,6 @@ prefers-color-scheme CSS <font color=FF0000 size=4>**媒体特性 **</font> 用
 ```
 
 摘自：[MDN - prefers-color-scheme](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media/prefers-color-scheme)
-
-
-
-#### 响应式 Web 设计 - 图片
-
-##### 图片
-
-- **width：**如果 width 属性设置为 100%，图片会根据上下范围实现响应式功能。但是在大屏幕下，图片会比它的原始图片大
-
-- **max-width**：如果 max-width 属性设置为 100%, 图片永远不会大于其原始大小：
-
-##### 背景图片
-
-背景图片可以响应调整大小或缩放。以下是三个不同的方法：
-
-- 如果 background-size 属性设置为 <font color=FF0000>"contain"</font>, 背景图片将<font color=FF0000>按比例自适应内容区域</font>。
-
-- 如果 background-size 属性设置为 <font color=FF0000>"100% 100%"</font> ，背景图片将<font color=FF0000>延展覆盖整个区域</font>
-
-- 如果 background-size 属性设置为 <font color=FF0000>"cover"</font>，则会把背景图像扩展至足够大，以使<font color=FF0000>背景图像完全覆盖背景区域</font>。注意该属性保持了图片的比例因此<font color=FF0000>背景图像的某些部分无法显示在背景定位区域中</font>。
-
-##### HTML5 \<picture> 元素
-
-HTML5 的 \<picture> 元素<font color=FF0000>可以设置多张图片</font>。
-
-\<picture> 元素类似于 \<video> 和 \<audio> 元素。可以设备不同的资源，第一个设置的资源为首选使用的，示例：
-
-```css
-<picture>
-  <source srcset="img_smallflower.jpg" media="(max-width: 400px)">
-  <source srcset="img_flowers.jpg">
-  <img src="img_flowers.jpg" alt="Flowers">
-</picture>
-```
-
-srcset 属性的必须的，定义了图片资源。
 
 
 

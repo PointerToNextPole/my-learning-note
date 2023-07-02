@@ -420,6 +420,25 @@ addTask(400, '4')
 
 
 
+#### Sleep 函数实现
+
+即实现强制阻塞
+
+```js
+const sleep = async msCount => new Promise((resolve) => setTimeout(resolve, msCount))
+```
+
+##### 测试
+
+```js
+;(async () => {
+  await sleep(5000)
+  console.log('sleep ending')
+})()
+```
+
+
+
 ### 函数高阶函数实现
 
 > 👀 这些函数编程的实现有点难度了。不过，很多东西是共通的，就像有个模版。
@@ -583,7 +602,7 @@ const flat = arr => arr.reduce(
   (pre, cur) => pre.concat(Array.isArray(cur) ? flat(cur) : cur), [])
 ```
 
-👀 这里用了递归。另外，兼容性方面，Array.prototype.reduce() 是 ES5 甚至更早 的方法（兼容 IE9），Array.isArray() 是 ES5 的方法
+👀 这里用了递归。另外，兼容性方面，`Array.prototype.reduce()` 是 ES5 甚至更早 的方法（兼容 IE9），`Array.isArray()` 是 ES5 的方法
 
 ##### 使用递归
 
@@ -624,10 +643,36 @@ const unique = arr => arr.filter((e, index) => arr.indexOf(e) === index)
 ##### 使用 reduce
 
 ```js
-const unique = arr => arr.reduce((acc, cur) => acc.includes(cur) ? acc : acc.concat(cur), [])
+const unique = arr => arr.reduce(
+  (acc, cur) => acc.includes(cur) 
+    ? acc
+    : acc.concat(cur), []
+)
 ```
 
 > ⚠️ 开始时没有对 `acc.includes(cur) === true` 的情况进行返回 ( `acc` )，这是会报错的；因为没有返回 acc 的话，默认返回 undefined，而 undefined 没有 includes 方法，将会报错。所以，无论如何都要返回 acc，哪怕本次操作没有对其进行任何操作。
+
+
+
+#### 数组转置
+
+##### 使用 Array.prototype.map
+
+```js
+const transpose = matrix => matrix[0].map((col, i) => matrix.map(row => row[i]))
+```
+
+摘自：[js小众且好用的技巧【一行代码】](https://juejin.cn/post/7228449980108423224)
+
+##### 使用 Array.from
+
+```ts
+export const transpose = (arr: number[][]): number[][] => {
+  return Array.from({length: arr[0].length}, (_: never, i) => arr.map(k => k[i]))
+}
+```
+
+
 
 #### 多数组取交集
 
@@ -691,7 +736,7 @@ const ret = curry(1)(2)
 console.log(ret)
 ```
 
-更进一步，实现：add(1)(2)(3)(4) = 10 甚至 add(1)(1, 2, 3)(2) = 9
+更进一步，实现：`add(1)(2)(3)(4) = 10` 甚至 `add(1)(1, 2, 3)(2) = 9`
 
 ```js
 function add() {
@@ -897,6 +942,38 @@ function _render(vnode) {
   return dom
 }
 ```
+
+
+
+#### 检测当前 UA 是否为 IE
+
+```js
+const isIE = () => !!document.documentMode
+```
+
+
+
+#### 检测函数是否为异步函数
+
+```js
+function isAsyncFn = fn => return Object.prototype.toString.call(fn) === '[object AsyncFunction]'
+```
+
+
+
+#### 生成 UUID
+
+虽然可以是通过调用 [`Crypto.randomUUID()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Crypto/randomUUID) 来实现，不过，除了兼容性不够好之外；必须在 https 环境下使用
+
+##### 实现
+
+```js
+const genUUID = seed => seed
+  ? (seed ^ ((Math.random() * 16) >> (seed / 4))).toString(16)
+  : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, uuid)
+```
+
+摘自：[js小众且好用的技巧【一行代码】](https://juejin.cn/post/7228449980108423224)
 
 
 
