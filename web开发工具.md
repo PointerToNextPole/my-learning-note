@@ -1150,3 +1150,9 @@ html2canvas(element[, options]).then(function(canvas) {
 >
 > <img src="https://s2.loli.net/2023/02/20/t61pQD5WqHLJkyr.png" alt="image-20230220180752377" style="zoom:50%;" />
 
+#### Leaflet
+
+> 👀 接触到 Leaflet 是因为有群友要做一个“可交互园区示意地图“，没有想到解决方法，我也是；讨论后，听说 Leaflet 可以解决该类问题。另外，开源的原神第三方大世界地图 [Github - yuan-shen-map](https://github.com/kongying-tavern/yuan-shen-map) 也是在用 Leaflet
+
+简略看了下官方的 [Tutorials](https://leafletjs.com/examples.html) ，感觉和一般的地图服务提供商（高德）的使用方法上没太大区别。不过，因为有些底层，没有 地图服务提供商 给的 SDK 那般封装好，开箱即用。甚至有些不熟悉的概念，再配合上英文文档，看的有点懵...
+

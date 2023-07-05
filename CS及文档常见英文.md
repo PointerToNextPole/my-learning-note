@@ -34,6 +34,10 @@
 
 - **pros and cons**：利弊
 
+- **pan and zoom** ：平移和缩放
+
+   > 👀 之所以会放到这里，是因为搜了一下 pan 在这里有“平移” 的含义，但是一般字典中没有记录；可能是香港领域内约定俗成的说法吧
+
 - **downside** ：缺点
 
 - **overhead**：<font color=red>**开销**</font>（和性能相关）
@@ -843,6 +847,14 @@
   > 摘自：[Practical Guide To Not Blocking The Event Loop](https://www.bbss.dev/posts/eventloop/)
   
 - **monolithic** ：庞大而单一的，单体化的。monorepo 即 Monolithic Repository
+
+- **geometry** ：几何学
+
+- **spatial** ：adj. 空间的
+
+  **spatially** ：adv. 空间上
+
+- **viscosity** ：粘度
 ***
 
 
