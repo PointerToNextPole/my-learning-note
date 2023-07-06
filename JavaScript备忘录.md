@@ -9480,13 +9480,13 @@ Performance 接口<font color=FF0000>**可以获取到当前页面中与性能�
 
 #### PerformanceTiming
 
-PerformanceTiming 接口是 <font color=FF0000>**为保持向后兼容性而保留的传统接口**</font>（**注：**即 PerformanceTiming 接口 已经被废弃，现在因为兼容而保存），并且<font color=FF0000>提供 **在加载和使用当前页面期间发生的各种事件的性能计时信息**</font>。可以通过 **只读属性** window.performance.timing 获得实现该接口的一个对象。
+PerformanceTiming 接口是 <font color=FF0000>**为保持向后兼容性而保留的传统接口**</font>（ 👀 即 PerformanceTiming 接口 已经被废弃，现在因为兼容而保存），并且<font color=FF0000>提供 **在加载和使用当前页面期间发生的各种事件的性能计时信息**</font>。可以通过 **只读属性** `window.performance.timing` 获得实现该接口的一个对象。
 
 ##### 属性
 
 PerformanceTiming 接口不包含任何继承属性
 
-- **PerformanceTiming.navigationStart**：只读，是一个无符号 long long 型的毫秒数。表征了<font color=FF0000>从 **同一个浏览器上下文** 的上一个文档卸载 ( unload ) 结束时的 UNIX 时间戳</font>。<mark>如果没有上一个文档，这个值会和 PerformanceTiming.fetchStart 相同</mark>。
+- **PerformanceTiming.navigationStart**：只读，是一个无符号 long long 型的毫秒数。表征了<font color=FF0000>从 **同一个浏览器上下文** 的上一个文档卸载 ( unload ) 结束时的 UNIX 时间戳</font>。<font color=lightSeaGreen>如果没有上一个文档，这个值会和 `PerformanceTiming.fetchStart` 相同</font>。
 
 - **PerformanceTiming.unloadEventStart**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>unload 事件抛出时的 UNIX 时间戳</font>。如果没有上一个文档，或者 之前的文档或所需的重定向之一不是同一来源，这个值会返回 0
 
@@ -9498,7 +9498,9 @@ PerformanceTiming 接口不包含任何继承属性
 
 - **PerformanceTiming.fetchStart**：只读，是一个无符号 long long 型的毫秒数。表征了 浏览器 <font color=FF0000>**准备好 使用 HTTP 请求** 来获取 ( fetch ) 文档的 UNIX 时间戳</font>。这个时间点会在检查任何应用缓存之前。
 
-- **PerformanceTiming.domainLookupStart**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**域名查询开始的 UNIX 时间戳**</font>。如果使用了持续连接 ( persistent connection，**注：**感觉可以理解为 “长连接” Connection: Keep-Alive )，或者这个信息存储到了缓存或者本地资源上，这个值将和 PerformanceTiming.fetchStart 一致
+- **PerformanceTiming.domainLookupStart**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**域名查询开始的 UNIX 时间戳**</font>。如果使用了持续连接 ( persistent connection，
+
+  > 👀 感觉可以理解为 “长连接” `Connection: Keep-Alive`，或者这个信息存储到了缓存或者本地资源上，这个值将和 PerformanceTiming.fetchStart 一致
 
 - **PerformanceTiming.domainLookupEnd**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**域名查询结束的 UNIX 时间戳**</font>。如果使用了持续连接 ( persistent connection )，或者这个信息存储到了缓存或者本地资源上，这个值将和 PerformanceTiming.fetchStart 一致
 
@@ -9506,7 +9508,7 @@ PerformanceTiming 接口不包含任何继承属性
 
 - **PerformanceTiming.connectEnd**：只读，是一个无符号 long long 型的毫秒数。返回浏览器与服务器之间的连接建立时的 Unix 毫秒时间戳。如果建立的是持久连接，则返回值等同于 fetchStart 属性的值。连接建立指的是所有握手和认证过程全部结束
 
-  - **PerformanceTiming.secureConnectionStart**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>浏览器与服务器开始 **安全链接**（**注：**即 https ） 的握手时的 Unix 毫秒时间戳</font>。如果当前网页不要求安全连接，则返回 0
+  - **PerformanceTiming.secureConnectionStart**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>浏览器与服务器开始 **安全链接**（👀 即 https ） 的握手时的 Unix 毫秒时间戳</font>。如果当前网页不要求安全连接，则返回 0
 
   关于 https 的说法来自：
 
@@ -9569,7 +9571,7 @@ PerformanceEntry 对象代表了 performance 时间列表中的单个 metric 数
 
 #### Performance.measure()
 
-measure() 方法在浏览器性能记录缓存中创建了 DOMHighResTimeStamp 来记录两个特殊标志位（通常称为 ***开始标志*** 和 ***结束标志*** ）。 被命名的 DOMHighResTimeStamp 称为一次测量 ( measure )
+measure() 方法在浏览器性能记录缓存中创建了 DOMHighResTimeStamp 来记录两个特殊标志位（通常称为 **开始标志** 和 **结束标志** ）。 被命名的 DOMHighResTimeStamp 称为一次测量 ( measure )
 
 ##### 语法
 
@@ -13161,9 +13163,9 @@ DocumentFragment，<font color=FF0000>文档片段 **接口**</font>，一个<f
 
 最常用的方法是使用文档片段作为参数（例如，任何 Node 接口类似 Node.appendChild 和 Node.insertBefore 的方法），这种情况下被添加（append）或被插入（inserted）的是片段的所有子节点, 而非片段本身。<font color=FF0000>因为所有的节点会被一次插入到文档中，而这个操作仅发生一个重渲染的操作，而不是每个节点分别被插入到文档中，因为后者会发生多次重渲染的操作。</font>
 
-该接口在 Web 组件（Web components）中也非常有用：\<template> 元素在其 HTMLTemplateElement.content 属性中包含了一个 DocumentFragment。
+该接口在 Web 组件 ( Web components ) 中也非常有用：`<template>` 元素在其 `HTMLTemplateElement.content` 属性中包含了一个 DocumentFragment。
 
-<font color=FF0000>可以使用document.createDocumentFragment 方法或者构造函数来创建一个空的 DocumentFragment。</font>
+<font color=FF0000>可以使用 `document.createDocumentFragment` 方法或者构造函数来创建一个空的 DocumentFragment。</font>
 
 **属性：**该接口没有特殊的属性，其<font color=FF0000 size=4>**属性都继承自 Node**</font>。并补充了 Node 接口中的属性。原文这里下面列举了几个属性，这里略。
 
