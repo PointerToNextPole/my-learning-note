@@ -694,7 +694,7 @@
   > 💡 spawn 是 Linux 的一个系统调用，也是 Node 中 child_process 模块的方法。理所当然的： [zx](https://github.com/google/zx) 中也有使用。
   >
   > <img src="https://s2.loli.net/2023/05/04/AE6BML3iJSTtoCc.png" style="zoom:47%;" />
-  
+
 - **daemon** ：守护进程，后台进程。
 
   > 💡 ChatGPT 的解释：
@@ -727,7 +727,7 @@
 - **lone** ：单独的，独自的，孤零零的。
 
   > 👀 见到这个单词是在读 [MDN - String.prototype.isWellFormed()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed) 中提及的 “lone surrogate” 。之前似乎从没有见过这个单词，查了下意思，想到了 alone 和 lonely；但 lone 确实没有半点印象，有点神奇...
-  
+
 - **counterpart** ：对应的人或物
 
 - **ad-hoc** ：临时的，特别的
@@ -787,7 +787,7 @@
 - **generalize** ：v. 概括，归纳
 
   **generalization** ：n. 泛化
-  
+
 - **flaw** ：缺陷
 
 - **cascade** ：级联
@@ -807,13 +807,13 @@
 - **sequential** ：连续的，顺序的
 
   **sequent** ：adj. 继续的，连续的。n. 后果，接着发生的事，结果
-  
+
 - **strip** ：n. 带、条 v. **剥去**，除去
 
   > Things like `userState` and `useEffect` get stripped out.
   >
   > 摘自：[What Even Are React Server Components](https://www.viget.com/articles/what-even-are-react-server-components/)
-  
+
 - **portable** ：<font color=red>可移植的</font>，便携的
 
 - **carousel** ：旋转木马。**image carousel** ：图片轮播
@@ -845,7 +845,7 @@
   > In server contexts, one such request can block all others indefinitely.
   >
   > 摘自：[Practical Guide To Not Blocking The Event Loop](https://www.bbss.dev/posts/eventloop/)
-  
+
 - **monolithic** ：庞大而单一的，单体化的。monorepo 即 Monolithic Repository
 
 - **geometry** ：几何学
@@ -855,6 +855,8 @@
   **spatially** ：adv. 空间上
 
 - **viscosity** ：粘度
+
+- **gamut** ：全范围
 ***
 
 

@@ -14416,9 +14416,71 @@ var decodedData = scope.atob(encodedData);
 
 
 
+#### Document.referrer
+
+**`Document.referrer`** <font color=lightSeaGreen>返回的是一个 URI</font>，<font color=red>当前页面就是从这个 URI 所代表的页面跳转或打开的</font>。
+
+> 👀 有点类似于 http 中的 referer 请求头，另外，referer 实际上是 "referrer" 误拼写；详见 [wikipedia - HTTP referer](https://en.wikipedia.org/wiki/HTTP_referer)
+
+##### 值
+
+<font color=dodgerBlue>如果用户直接打开了这个页面</font>（不是通过页面跳转，而是通过地址栏或者书签等打开的），<font color=red>则该属性为空字符串</font>。由于该属性只是返回一个字符串，所以不能够通过该属性引用页面的 DOM。
+
+<font color=dodgerBlue>在 `<iframe>` 中</font>，<font color=red>`Document.referrer` 会初始化为父窗口 `Window.location` 的 `href`</font>。
+
+摘自：[MDN - Document.referrer](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/referrer)
+
+##### 哪些场景下无法获得上一页 referrer 信息
+
+1. 直接在浏览器地址栏中输入地址；
+
+2. <font color=red>使用 `location.reload()` 刷新</font>（ `location.href` 或者 `location.replace()` 刷新有信息）；
+
+3. <font color=lightSeaGreen>在微信对话框中，点击链接进入微信自身的浏览器</font>；
+
+4. 扫码进入QQ或者微信的浏览器；
+
+5. ~~直接新窗口打开一个页面；~~ **2017.8.3更新** 新版本 Chrome 测试，新窗口页面依然有`document.referrer`
+
+6. <font color=red>从 https 的网站直接进入一个 http 协议的网站</font>（Chrome下亲测）；
+
+7. <font color=red>`a` 标签设置 `rel="noreferrer"`</font>（兼容IE7+）；
+
+8. <font color=lightSeaGreen>`meta` 标签来控制不让浏览器发送`referer`</font>；
+
+   例如：
+
+   ```html
+   <meta content="never" name="referrer">
+   ```
+
+   兼容性如下图：
+
+   <img src="https://s2.loli.net/2023/07/07/I3xYTp1aADXlGjQ.png" alt="image-20230707100408039" style="zoom:70%;" />
+
+9. 等等
+
+摘自：[JS获取上一访问页面URL地址document.referrer实践](https://www.zhangxinxu.com/wordpress/2017/02/js-page-url-document-referrer/)
+
+> 💡 一点额外的补充
+>
+> 写笔记时候才发现：Document 和 document 是两个不同的东西，之前甚至都没怎么注意 Document；没注意的原因可能是 MDN 在搜索时也没有很好的区分这两者...
+>
+> Document 是接口描述了任何类型的文档的通用属性与方法，也是构造函数。
+>
+> ```mermaid
+> classDiagram
+> EventTarget <|-- Node
+> Node <|-- Document
+> ```
+>
+> 而 document 是当前文档的实例
+
+
+
 #### Document.forms
 
-forms <font color=FF0000>返回当前文档中的 \<form> 元素的一个集合 ( HTMLCollection )</font>。
+forms <font color=FF0000>返回当前文档中的 `<form>` 元素的一个集合 ( HTMLCollection )</font>。
 
 摘自：[MDN - Document.forms](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/forms)
 
@@ -15373,11 +15435,11 @@ if (document.currentScript.async) { // 👀 注：这要注意，async
 
 #### document.documentElement
 
-Document.documentElement 是一个会返回文档对象（document）的<font color=FF0000>根元素的只读属性</font>（<font color=FF0000>如HTML文档的 \<html> 元素</font>）。
+Document.documentElement 是一个会返回文档对象 ( document ) 的<font color=FF0000>根元素的只读属性</font>（<font color=FF0000>如HTML文档的 `<html>` 元素</font>）。
 
-对于任何非空 HTML 文档，调用 document.documentElement 总是会返回一个 \<html> 元素，且它一定是该文档的根元素。借助这个只读属性，能方便地获取到任意文档的根元素。
+对于任何非空 HTML 文档，调用 `document.documentElement` 总是会返回一个 `<html>` 元素，且它一定是该文档的根元素。借助这个只读属性，能方便地获取到任意文档的根元素。
 
-摘自：[MDN - document.documentElement](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/documentElement)
+摘自：[MDN - `document.documentElement`](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/documentElement)
 
 #### Element.firstElementChild
 
