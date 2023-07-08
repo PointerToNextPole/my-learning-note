@@ -2133,37 +2133,37 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 #### HTML 属性 `rel`
 
-**`rel`** 属性<font color=red>**定义了所链接的资源与当前文档的关系**</font>，<font color=red>在 `<a>`、`<area>` 和 `<link>` 元素上有效</font>。支持的值取决于拥有该属性的元素。
+**`rel`** 属性<font color=red>**定义了所链接的资源与当前文档的关系**</font>，<font color=fuchsia>在 `<a>`、`<area>` 和 `<link>` 元素上有效</font>。支持的值取决于拥有该属性的元素。
 
-关系的类型是由 `rel` 属性的值给出的，<font color=dodgerBlue>如果存在的话</font>，<font color=red>它的值必须是一组无序的、唯一的、用空格隔开的关键字</font>。与不表达语义的 `class` 名称不同，<font color=lightSeaGreen>**`rel` 属性必须使用对机器和人类都有语义的标记**</font>。目前关于 `rel` 属性的可能值的注册表是 [IANA 链接关系注册表](https://www.iana.org/assignments/link-relations/link-relations.xhtml)、[HTML 现行标准](https://html.spec.whatwg.org/multipage/links.html#linkTypes)和 microformats wiki 中可自由编辑的 [existing-rel-values 页面](https://microformats.org/wiki/existing-rel-values)（根据现行标准的[建议](https://html.spec.whatwg.org/multipage/links.html#other-link-types)）。<font color=dodgerBlue>如果使用一个不存在于上述三个来源之一的 `rel` 属性</font>，一些 HTML 验证器（如 [W3C Markup Validation Service](https://validator.w3.org/)）会产生一个警告。
+关系的类型是由 `rel` 属性的值给出的，<font color=dodgerBlue>如果存在的话</font>，<font color=red>它的值必须是一组无序的、唯一的、用空格隔开的关键字</font>。与不表达语义的 `class` 名称不同，<font color=lightSeaGreen>**`rel` 属性必须使用对机器和人类都有语义的标记**</font>。目前关于 `rel` 属性的可能值的注册表是 [IANA 链接关系注册表](https://www.iana.org/assignments/link-relations/link-relations.xhtml)、[HTML 现行标准](https://html.spec.whatwg.org/multipage/links.html#linkTypes) 和 microformats wiki 中可自由编辑的 [existing-rel-values 页面](https://microformats.org/wiki/existing-rel-values)（根据现行标准的[建议](https://html.spec.whatwg.org/multipage/links.html#other-link-types)）。<font color=dodgerBlue>如果使用一个不存在于上述三个来源之一的 `rel` 属性</font>，一些 HTML 验证器（如 [W3C Markup Validation Service](https://validator.w3.org/)）会产生一个警告。
 
 下表列出了一些最重要的现有关键词。在一个以空格分隔的值内的每个关键词在该值内都应该是唯一的。
 
 | `rel` 值        | 描述                                                         | `<link>` | `a` 和 `<area>` | `<form>` |
 | :-------------- | :----------------------------------------------------------- | :------- | :-------------- | :------- |
-| `alternate`     | 当前文档的替代描述                                           | 链接     | 链接            | 不允许   |
+| `alternate`     | <font color=red>当前文档的替代描述</font>                    | 链接     | 链接            | 不允许   |
 | `author`        | 当前文档或文章的作者。                                       | 链接     | 链接            | 不允许   |
-| `bookmark`      | 到最近祖先章节的永久链接。                                   | 不允许   | 链接            | 不允许   |
-| `canonical`     | 当前文档的首要 URL。                                         | 链接     | 不允许          | 不允许   |
+| `bookmark`      | <font color=lightSeaGreen>到最近祖先章节的永久链接</font>    | 不允许   | 链接            | 不允许   |
+| `canonical`     | <font color=red>当前文档的首要 URL</font>                    | 链接     | 不允许          | 不允许   |
 | `dns-prefetch`  | 告知浏览器为目标资源的来源预先执行 DNS 解析。                | 外部资源 | 不允许          | 不允许   |
 | `external`      | <font color=red>引用的文档与当前的文档不属于同一个站点</font> | 不允许   | 注解            | 注解     |
 | `help`          | 链接到上下文相关的帮助。                                     | 链接     | 链接            | 链接     |
 | `icon`          | 代表当前文档的图标。                                         | 外部资源 | 不允许          | 不允许   |
 | `license`       | 表示当前文档的主要内容由被引用文件描述的版权许可所涵盖。     | 链接     | 链接            | 链接     |
 | `manifest`      | Web 应用清单                                                 | 链接     | 不允许          | 不允许   |
-| `me`            | 表示当前文档代表拥有链接内容的人。                           | 链接     | 链接            | 不允许   |
-| `modulepreload` | 告知浏览器预先获取该脚本，并将其存储在文档的模块映射中，以便稍后评估。也可以一同获取该模块的依赖关系。 | 外部资源 | 不允许          | 不允许   |
-| `next`          | 表示当前文档是一个系列的一部分，被引用的文档是该系列中的下一个文档。 | 链接     | 链接            | 链接     |
-| `nofollow`      | 表示当前文档的原作者或出版商不认可被引用的文件。             | 不允许   | 注解            | 注解     |
-| `noopener`      | 创建一个顶级浏览上下文。如果该超链接一开始就会创建其中之一，则该浏览上下文不是一个辅助浏览上下文（即有一个适当的 `target` 属性值）。 | 不允许   | 不允许          | 注解     |
-| `noreferrer`    | 不会包含 `Referer` 标头。和 `noopener` 效果类似。            | 不允许   | 注解            | 注解     |
+| `me`            | <font color=lightSeaGreen>表示当前文档代表拥有链接内容的人</font> | 链接     | 链接            | 不允许   |
+| `modulepreload` | <font color=lightSeaGreen>**告知浏览器预先获取该脚本，并将其存储在文档的模块映射中，以便稍后评估**</font>。也可以一同获取该模块的依赖关系。 | 外部资源 | 不允许          | 不允许   |
+| `next`          | <font color=red>表示当前文档是一个系列的一部分，被引用的文档是该系列中的下一个文档</font>。 👀 后面还有 `prev` | 链接     | 链接            | 链接     |
+| `nofollow`      | 表示当前文档的原作者或出版商不认可被引用的文件               | 不允许   | 注解            | 注解     |
+| `noopener`      | <font color=red>创建一个顶级浏览上下文</font>。如果该超链接一开始就会创建其中之一，则该浏览上下文不是一个辅助浏览上下文（即有一个适当的 `target` 属性值）。 | 不允许   | 不允许          | 注解     |
+| `noreferrer`    | <font color=red>不会包含 `Referer` 标头</font>。和 `noopener` 效果类似。 | 不允许   | 注解            | 注解     |
 | `opener`        | 如果超链接会创建一个非辅助浏览上下文的顶级浏览上下文（即以“`_blank`”作为 `target` 属性值），则创建一个辅助浏览上下文。 | 不允许   | 注解            | 注解     |
 | `pingback`      | 给出处理当前文档 pingback 的 pingback 服务器的地址。         | 外部资源 | 不允许          | 不允许   |
-| `preconnect`    | 指定用户代理应预先连接到目标资源的来源。                     | 外部资源 | 不允许          | 不允许   |
+| `preconnect`    | <font color=red>指定用户代理应 **预先连接** 到目标资源的来源</font>。 | 外部资源 | 不允许          | 不允许   |
 | `prefetch`      | 指定用户代理应预先获取并缓存目标资源，因为后续的导航可能需要它。 | 外部资源 | 不允许          | 不允许   |
 | `preload`       | 指定用户代理必须根据 [`as`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/link#attr-as) 属性给出的潜在目的地（以及与相应目的地相关的优先级），为当前导航预先获取和缓存目标资源。 | 外部资源 | 不允许          | 不允许   |
 | `prerender`     | 指定用户代理应预先获取目标资源，并以有助于在未来提供更快的响应的方式处理它。 | 外部资源 | 不允许          | 不允许   |
-| `prev`          | 表示当前文档是系列的一部分，被引用的文档是该系列中的上一个文档。 | 链接     | 链接            | 链接     |
+| `prev`          | 表示当前文档是系列的一部分，被引用的文档是该系列中的上一个文档。👀 前面还有 `next` | 链接     | 链接            | 链接     |
 | `search`        | 给出一个资源的链接，可以用来搜索当前文件及其相关页面。       | 链接     | 链接            | 链接     |
 | `stylesheet`    | 导入样式表。                                                 | 外部资源 | 不允许          | 不允许   |
 | `tag`           | 给出一个适用于当前文档的标签（由给定地址识别）。             | 不允许   | 链接            | 链接     |
@@ -2176,7 +2176,7 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 ###### `alternate`
 
-表示当前文档的另一种方式。对 `<link>`、`<a>` 和 `<area>` 有效，其含义取决于其他属性的值。
+表示当前文档的另一种方式。对 `<link>`、`<a>` 和 `<area>` 有效，<font color=red>其含义取决于其他属性的值</font>。
 
 - 在 `<link>` 上使用 `stylesheet` 关键字，会创建一个替代样式表。
 
@@ -2191,7 +2191,9 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
   />
   ```
 
-- `hreflang` 属性与文档所使用语言不同时，表示该页面的一个翻译。
+- <font color=dodgerBlue>`hreflang` 属性与文档所使用语言不同时</font>，<font color=lightSeaGreen>表示该页面的一个翻译</font>。
+
+  > 👀 当 hreflang 与当前文档使用的语言不同时，用另一个翻译的页面来 `alternate`
 
 - `type` 属性值为 `"application/rss+xml"` 或 `"application/atom+xml"` 会创建一个 syndication feed 的参照链接。
 
@@ -2244,7 +2246,7 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 ###### `canonical`
 
-对 `<link>` 元素有效，它定义了当前文档的首选 URL，这有助于搜索引擎减少重复内容。
+对 `<link>` 元素有效，它<font color=red>定义了当前文档的首选 URL，这**有助于搜索引擎减少重复内容**</font>。
 
 ###### `dns-prefetch`
 
@@ -2252,7 +2254,7 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 ###### `external`
 
-与 `<form>`、`<a>` 和 `<area>` 元素相关，它表示引用的文档不是当前网站的一部分。这可以与属性选择器一起使用，使外部链接的样式向用户表明他们将离开当前网站。
+与 `<form>`、`<a>` 和 `<area>` 元素相关，它<font color=red>表示引用的文档不是当前网站的一部分</font>。这可以与属性选择器一起使用，使外部链接的样式向用户表明他们将离开当前网站。
 
 ###### `help`
 
@@ -2268,7 +2270,7 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 <link rel="icon" href="favicon.ico" />
 ```
 
-如果有多个 `<link rel="icon">`，浏览器会使用它们的 `media`、`type` 和 `sizes` 属性来选择最合适的图标。如果几个图标同样合适，则使用最后一个。如果后来发现最合适的图标不合适，例如使用了不支持的格式，浏览器就会继续选择下一个最合适的，以此类推。
+<font color=dodgerBlue>**如果有多个 `<link rel="icon">`**</font>，<font color=red>浏览器会使用它们的 `media`、`type` 和 `sizes` 属性来选择最合适的图标</font>。<font color=dodgerBlue>如果几个图标同样合适</font>，则<font color=red>使用最后一个</font>。如果后来发现最合适的图标不合适，例如使用了不支持的格式，浏览器就会继续选择下一个最合适的，以此类推。
 
 ###### `license`
 
@@ -2284,7 +2286,7 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 ###### `modulepreload`
 
-对于提高性能很有用，并且与文档中的 `<link>` 元素相关，设置 `rel="modulepreload"` 告诉浏览器预先获取脚本（和依赖关系）并存储在文档的模块映射中，以便以后评估。 `modulepreload` 链接可以确保网络抓取时，模块映射中的模块已经准备好（但没有评估），然后才一定需要它。参见 [`modulepreload` (en-US)](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload)。
+<font color=red>对于提高性能很有用</font>，并且<font color=red>与文档中的 `<link>` 元素相关</font>，设置 `rel="modulepreload"` 告诉浏览器预先获取脚本（和依赖关系）并存储在文档的模块映射中，以便以后评估。 <font color=red>`modulepreload` 链接可以确保网络抓取时，模块映射中的模块已经准备好（但没有评估）</font>，然后才一定需要它。参见 [`modulepreload`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload)。
 
 ###### `next`
 
@@ -2314,7 +2316,7 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 ###### `preconnect`
 
-向浏览器提供提示，建议它提前打开与链接网站的连接，而不透露任何私人信息或下载任何内容，以便在跟踪链接时能更快地获取链接内容。
+向浏览器提供提示，<font color=red>建议它提前打开与链接网站的连接，而不透露任何私人信息或下载任何内容</font>，以便在跟踪链接时能更快地获取链接内容。
 
 ###### `prefetch`
 
@@ -2338,11 +2340,11 @@ HTML 外部资源链接元素 ( `<link>` ) <font color=red>**规定了当前文�
 
 与 `<form>`、`<link>`、`<a>` 和 `<area>` 元素相关，`search` 关键字表示该超链接引用一个文档，其界面是专门为在当前文档、站点和相关资源中搜索而设计的，提供一个可以用来搜索的资源链接。
 
-如果 `type` 属性被设置为 `application/opensearchdescription+xml`，则该资源是一个 [OpenSearch (en-US)](https://developer.mozilla.org/en-US/docs/Web/OpenSearch) 插件，可以很容易地添加到一些浏览器（如 Firefox 或 Internet Explorer）的界面中。
+如果 `type` 属性被设置为 `application/opensearchdescription+xml`，则该资源是一个 [OpenSearch](https://developer.mozilla.org/en-US/docs/Web/OpenSearch) 插件，可以很容易地添加到一些浏览器（如 Firefox 或 Internet Explorer）的界面中。
 
 ###### `stylesheet`
 
-对 `<link>` 元素有效，它导入一个外部资源作为样式表使用。`text/css` 的样式表不需要 `type` 属性，因为这是该属性的默认值。如果它不是 `text/css` 类型的样式表，最好是声明这个类型。
+<font color=red>对 `<link>` 元素有效，它导入一个外部资源作为样式表使用</font>。<font color=red>`text/css` 的样式表不需要 `type` 属性，因为这是该属性的默认值</font>。如果它不是 `text/css` 类型的样式表，最好是声明这个类型。
 
 虽然这个属性将链接定义为一个样式表，但与其他属性的交互以及 rel 值中的其他关键术语会影响样式表是否被下载和/或使用。
 
@@ -8101,21 +8103,160 @@ width 属性用于设置元素的宽度。width 默认设置内容区域的宽�
 
 参考：[理解CSS3 max/min-content及fit-content等width值](https://www.zhangxinxu.com/wordpress/2016/05/css3-width-max-contnet-min-content-fit-content/)
 
-#### \<length>
+#### `<length>`
 
-长度 \<length> 是用于表示距离尺寸的 CSS 数据类型。许多 CSS 属性会用到长度，比如 width、margin、padding、font-size、border-width 和 text-shadow。
+长度 `<length>` 是用于表示距离尺寸的 CSS 数据类型。许多 CSS 属性会用到长度，比如 `width` 、`margin`、`padding` 、`font-size` 、`border-width` 和 `text-shadow` 。
 
-**语法**
-\<length> 数据类型由一个 \<number> 和一个长度单位构成。 与所有 CSS 维度一样，单位的字面值与数字之间没有空格。 数字为 0 时，长度单位是可选的。
+##### 语法
 
-> 👀 注：由于这里单位较多，这里略；只摘录有必要的，其他见引用的链接
+`<length>` 数据类型由一个 `<number>` 和一个长度单位构成。 与所有 CSS 维度一样，单位的字面值与数字之间没有空格。 数字为 0 时，长度单位是可选的。
+
+> 👀 由于这里单位较多，这里略；只摘录有必要的，其他见引用的链接
 
 - vmin：视口高度 vw 和宽度 vh 两者之间的最小值。
 - vmax：视口高度 vw 和宽度 vh 两者之间的最大值。
 
-摘自：[MDN - \<length>](https://developer.mozilla.org/zh-CN/docs/Web/CSS/length)
+摘自：[MDN - `<length>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/length)
 
-> 👀 补充：知乎上有这样一个问题：[css样式的百分比都相对于谁？ - 知乎](https://www.zhihu.com/question/36079531) 感觉很有价值，推荐阅读
+> 💡 知乎上有这样一个问题：[css样式的百分比都相对于谁？ - 知乎](https://www.zhihu.com/question/36079531) 感觉很有价值，推荐阅读
+
+#### `<color>`
+
+CSS 数据类型 `<color>` 表示一种 [标准 RGB 色彩空间 ( sRGB color space )](http://en.wikipedia.org/wiki/SRGB)的颜色。一个颜色可以包括一个 alpha  通道透明度值，来表明颜色如何与它的背景色[混合 ( composite )](https://www.w3.org/TR/2003/REC-SVG11-20030114/masking.html#SimpleAlphaBlending)。
+
+<font color=dodgerBlue>一个 `<color>` 可以以如下方式定义：</font>
+
+- 使用一个关键字（比如 `blue` 或 `transparent` ）
+- 使用 [RGB 立体坐标 ( RGB cubic-coordinate )](http://en.wikipedia.org/wiki/RGB_color_model#Geometric_representation)系统（以“#”加十六进制或者 `rgb()` 和 `rgba()` 函数表达式的形式）
+- 使用 [HSL  圆柱坐标 ( HSL cylindrical-coordinate )](http://en.wikipedia.org/wiki/HSL_and_HSV)系统（以 `hsl()` 和 `hsla()` 函数表达式的形式）
+
+> 💡 **备注：** 本文章详细描述了`<color>`数据类型。如要了解更多关于在 HTML 中使用颜色的信息，请参阅[使用 CSS 为 HTML 元素应用颜色](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_colors/Applying_color)。
+
+##### 语法
+
+`<color>` 可以以以下方式指定
+
+###### 颜色关键字
+
+颜色关键字 ( color keywords ) 是不区分大小写的标识符，它表示一个具体的颜色，例如 `red`、`blue`、`brown` 或者 `lightseagreen` 。尽管名称或多或少描述了分别的颜色，但必定是人工的，其后没有严格的标准。
+
+<font color=dodgerBlue>在使用关键字时有几个需要留意的注意事项：</font>
+
+- <font color=red>除了通常的 16 个 HTML 基本颜色，其他的不能被用于 HTML</font>。HTML 将通过一个特定的计算程序转换这些未知的值，这将导致成为完全不同的颜色。这些关键字应只被用于 SVG 和 CSS。
+- 未知的关键字会让 CSS 属性无效。无效的属性将被忽略，该颜色将没有作用。这是一个和 HTML 相比不同的行为。
+- 未使用关键字定义的颜色在 CSS 中有任意的透明度，它们是单实色。
+- <font color=dodgerBlue>一些关键字表示同样的颜色：</font>
+  - `darkgray` / `darkgrey`
+  - `darkslategray` / `darkslategrey`
+  - `dimgray` / `dimgrey`
+  - `lightgray` / `lightgrey`
+  - `lightslategray` / `lightslategrey`
+  - `gray` / `grey`
+  - `slategray` / `slategrey`
+- 虽然关键字的名称取自常见的 X11 颜色名，然而由于生产商为具体的硬件所做的定制，颜色可能与 X11 系统上相应的颜色有所偏差。
+
+###### `transparent` 关键字
+
+`transparent` 关键字表示一个完全透明的颜色，即该颜色看上去将是背景色。从技术上说，它是带有阿尔法通道为最小值的黑色，<font color=red>**是 `rgba(0, 0, 0, 0)` 的简写**</font>。
+
+###### `currentColor` 关键字
+
+`currentColor` 关键字<font color=red>代表**原始的 `color` 属性的计算值**</font>。它<font color=red>允许让 **继承自属性** 或 **子元素的属性** 颜色属性以默认值不再继承</font>。
+
+> 👀 没太看懂这句话，不过结合下面示例，有点明白了：currentColor 不仅可以在 ( 设置 color 的元素）的子元素中使用，也可以在元素自身中使用；具体结合下面示例。
+
+它也能用于那些继承了元素的 `color` 属性计算值的属性，相当于在这些元素上使用 `inherit` 关键字，如果这些元素有该关键字的话。
+
+**示例如下**
+
+```html
+<!-- 👀 注意这里的 border 的 curentcolor -->
+<div style="color: blue; border: 1px dashed currentcolor;">
+  The color of this text is blue.
+  <div style="background: currentcolor; height: 9px;"></div>
+  This block is surrounded by a blue border.
+</div>
+```
+
+<img src="https://s2.loli.net/2023/07/08/jAJHmSMKck1Y4tp.png" alt="image-20230708142627482" style="zoom:50%;" />
+
+> 💡 有点好奇的发现一个问题，对上面的代码做了如下修改：
+>
+> ```diff
+> - <div style="color: blue; border: 1px dashed currentcolor;">
+> + <div style="color: currentcolor; border: 1px dashed blue;">
+>     The color of this text is blue.
+>     <div style="background: currentcolor; height: 9px;"></div>
+>     This block is surrounded by a blue border.
+>   </div>
+> ```
+>
+> 样式变成了如下，也就是说：元素本身 currentColor 生效了，但是子元素没有生效
+>
+> <img src="https://s2.loli.net/2023/07/08/N5trRmQAFxyv3qZ.png" alt="image-20230708143328104" style="zoom:50%;" />
+
+###### RGB 颜色
+
+颜色可以使用红 - 绿 - 蓝 ( red-green-blue (RGB) ) 模式的两种方式被定义：
+
+**语法**
+
+RGB 颜色可以通过以`#`为前缀的十六进制字符和函数 ( `rgb()`、`rgba()` ) 标记表示。
+
+> 💡 **备注：** 在 CSS 颜色标准 4 中，`rgba()` 是 `rgb()` 的别称。在实行第 4 级标准的浏览器中，它们接受相同的参数，作用效果也相同。
+
+- 十六进制符号：`#RRGGBB[AA]` 。`R`（红）、`G`（绿）、`B` （蓝）和`A` （alpha）是十六进制字符（0–9、A–F）。`A` 是可选的。比如，`#ff0000` 等价于 `#ff0000ff` 。
+- 十六进制符号：`#RGB[A]` 。`R`（红）、`G`（绿）、`B` （蓝）和 `A`  ( alpha ) 是十六进制字符（0–9、A–F）。`A`是可选的。三位数符号 ( `#RGB` )是六位数形式 ( `#RRGGBB` ) 的减缩版。比如，<font color=lightSeaGreen>**`#f09` 和 `#ff0099`表示同一颜色**</font>。类似地，<font color=red>四位数符号 ( `#RGBA` ) 是八位数形式 ( `#RRGGBBAA` ) 的减缩版</font>。比如，`#0f38` 和 `#00ff3388` 表示相同颜色。
+- 函数符： `rgb[a](R, G, B[, A])` 。`R`（红）、`G`（绿）、`B` （蓝）可以是 `<number>`（数字），或者`<percentage>`（百分比），255 相当于 100%。`A` ( alpha ) 可以是 `0` 到 `1` 之间的数字，或者百分比，数字`1`相当于`100%`（完全不透明）。
+- 函数符：`rgb[a](R G B[ / A])` 。CSS 颜色级别 4 支持用空格分开的值。
+
+###### HSL 颜色
+
+颜色也可以使用 `hsl()` 函数符被定义为色相 - 饱和度 - 亮度 ( Hue-saturation-lightness ) 模式。<font color=lightSeaGreen>HSL 相比 RGB 的优点是更加直观</font>：你可以估算你想要的颜色，然后微调。它也更易于创建相称的颜色集合。（通过保持相同的色相并改变亮度/暗度和饱和度）。
+
+Many designers find HSL more intuitive than RGB, since it allows hue, saturation, and lightness to each be adjusted independently. HSL can also make it easier to create a set of matching colors (such as when you want multiple shades of a single hue).
+
+**语法**
+
+HSL colors are expressed through the functional `hsl()` and `hsla()` notations.
+
+> 💡 **备注：** As of CSS Colors Level 4, `hsla()` is an alias for `hsl()`. In browsers that implement the Level 4 standard, they accept the same parameters and behave the same way.
+
+- Functional notation: `hsl[a](H, S, L[, A])`
+
+  `H` (hue) is an `<angle>` of the color circle given in `deg`s, `rad`s, `grad`s, or `turn`s in [CSS Color Module Level 4](https://drafts.csswg.org/css-color/#the-hsl-notation). When written as a unitless `<number>`, it is interpreted as degrees, as specified in [CSS Color Module Level 3](https://drafts.csswg.org/css-color-3/#hsl-color). By definition, red=0deg=360deg, with the other colors spread around the circle, so green=120deg, blue=240deg, etc. As an `<angle>`, it implicitly wraps around such that -120deg=240deg, 480deg=120deg, -1turn=1turn, etc. `S` (saturation) and `L`(lightness) are percentages. `100%` **saturation** is completely saturated, while `0%` is completely unsaturated (gray). `100%` **lightness** is white, `0%` lightness is black, and `50%` lightness is “normal.” `A` (alpha) can be a `<number>` between `0` and `1`, or a `<percentage>`, where the number `1` corresponds to `100%` (full opacity).
+
+- Functional notation: `hsl[a](H S L[ / A])`
+
+  CSS Colors Level 4 adds support for space-separated values in the functional notation.
+
+> 👀 这里下面还有内容，由于没怎么看懂，所以略。
+
+##### 校验某段字符串是否是有效的颜色
+
+> 👀 这串代码来自 [MDN - `<color>` # 颜色值检测器](https://developer.mozilla.org/zh-CN/docs/Web/CSS/color_value#颜色值检测器) 中的 playground
+
+```js
+function validTextColor(stringToTest) {
+  if (stringToTest === "") return false;
+  if (stringToTest === "inherit") return false;
+  if (stringToTest === "transparent") return false;
+
+  const image = document.createElement("img");
+  
+  image.style.color = "rgb(0, 0, 0)";
+  image.style.color = stringToTest;
+  if (image.style.color !== "rgb(0, 0, 0)") return true;
+  
+  image.style.color = "rgb(255, 255, 255)";
+  image.style.color = stringToTest;
+  return image.style.color !== "rgb(255, 255, 255)";
+}
+```
+
+感觉主要是在通过检测 “给 img 实例添加 color 是否生效” 来判断该 color 是否为有效的颜色。有种“爱迪生用水测量电灯泡体积”的感觉。
+
+摘自：[MDN - `<color>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/color_value)
 
 
 
@@ -8124,7 +8265,7 @@ width 属性用于设置元素的宽度。width 默认设置内容区域的宽�
 <font color=FF0000>object-fit CSS 属性**指定 <font size=4>可替换元素</font>**</font>（这个名词，隔壁的《CSS权威指南阅读笔记》有解释）<font color=FF0000>的内容应该如何适应到其使用的高度和宽度确定的框。</font>
 <font color=dodgerBlue>您可以通过使用 object-position 属性来切换被替换元素的内容对象在元素框内的对齐方式。</font>
 
-**取值**
+##### 取值
 
 - **contain：**<font color=FF0000>被替换的内容将被缩放，以在填充元素的内容框时保持其宽高比</font>。 整个对象在填充盒子的同时保留其长宽比，因此如果宽高比与框的宽高比不匹配，该对象将被添加“黑边”。
 - **cover：**被替换的内容在<font color=FF0000>保持其宽高比的同时填充元素的整个内容框</font>。如果对象的宽高比与内容框不相匹配，该对象将被剪裁以适应内容框。
@@ -8134,7 +8275,7 @@ width 属性用于设置元素的宽度。width 默认设置内容区域的宽�
 
 摘自：[MDN - object-fit](https://developer.mozilla.org/zh-CN/docs/Web/CSS/object-fit)
 
-> 👀 注：经过实践发现，object-fit 可以设置图片的展示效果。这在之前是使用 background-image + background-size 去实现的，现在发现 object-fit 同样可以。
+> 💡 经过实践发现：`object-fit` 可以设置图片的展示效果。这在之前是使用 `background-image` + `background-size` 去实现的，现在发现 `object-fit` 同样可以。
 
 另外，参考文章：[张鑫旭 - 半深入理解CSS3 object-position/object-fit属性](https://www.zhangxinxu.com/wordpress/2015/03/css3-object-position-object-fit/)
 
@@ -8148,7 +8289,7 @@ CSS 属性 object-position 规定了 <font color=FF0000 size=4>**可替换元素
 
 #### pointer-events
 
-pointer-events 是 CSS 3 的一个属性，<font color=FF0000>指定在什么情况下元素可以成为鼠标事件的 target</font>（包括鼠标的样式）
+pointer-events 是 CSS3 的一个属性，<font color=FF0000>指定在什么情况下元素可以成为鼠标事件的 target</font>（包括鼠标的样式）
 
 <font color=dodgerblue>pointer-events 属性有很多值</font>，但是<font color=FF0000>对于浏览器来说，只有 auto 和 none 两个值可用</font>，<font color=lightSeaGreen>其它的几个是针对 SVG 的（本身这个属性就来自于 SVG 技术）</font>。
 

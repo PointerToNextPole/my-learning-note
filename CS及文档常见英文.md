@@ -857,6 +857,8 @@
 - **viscosity** ：粘度
 
 - **gamut** ：全范围
+
+- **error-tolerant** ：容错的
 ***
 
 
@@ -1058,3 +1060,5 @@
 - **budget** ：预算
 
 - **exempt** ：豁免
+
+- **scape** ：景观。Netscape 也就是网景

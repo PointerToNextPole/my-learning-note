@@ -2494,30 +2494,34 @@ var patt = /runoob/i
 
 ##### ES2018 再次进行了补充
 
-- **dotAll（s修饰符）：**正则表达式中的`.`用于匹配任意单个字符，但是不能用于匹配 多字符的unicode 和 行终结符、行分隔符（\n，\r、\u{2028}、\u{2029}）、段终结符。ES9中加入了dotAll，即s修饰符，`.`加上`s`即可匹配所有的单个字符
+###### dotAll（s 修饰符）
 
-  **RegExp.prototype.dotAll**
+> **dot** can match **all**
 
-  dotAll 属性<font color=FF0000>表明是否在正则表达式中一起使用"s"修饰符</font>（<mark>引入/s修饰符，使得.可以匹配任意单个字符</mark>）。dotAll 是一个<font color=FF0000>只读的属性</font>，属于单个正则表达式实例。
+正则表达式中的`.`用于匹配任意单个字符，但是不能用于匹配 多字符的unicode 和 行终结符、行分隔符（`\n` ，`\r`、`\u{2028}`、`\u{2029}` ）、段终结符。ES2018 中加入了dotAll，即 s修饰符，`. `加上 `s` 即可匹配所有的单个字符
 
-  | RegExp.prototype.dotAll 属性的属性特性： | 值    |
-  | :--------------------------------------- | ----- |
-  | writable                                 | false |
-  | enumerable                               | false |
-  | configurable                             | true  |
+###### RegExp.prototype.dotAll
 
-  **描述**
+dotAll 属性<font color=FF0000>表明是否在正则表达式中一起使用"s"修饰符</font>（<mark>引入/s修饰符，使得.可以匹配任意单个字符</mark>）。dotAll 是一个<font color=FF0000>只读的属性</font>，属于单个正则表达式实例。
 
-  <font color=FF0000 size=4>**如果使用了"s"修饰符，dotAll 的值将返回Boolean类型的true，否则将返回false**</font>。<mark>"s"修饰符表示，特殊字符"."应另外匹配字符串中的下述行终结符</mark>（line terminator characters），否则将会失配：
+| RegExp.prototype.dotAll 属性的属性特性： | 值    |
+| :--------------------------------------- | ----- |
+| writable                                 | false |
+| enumerable                               | false |
+| configurable                             | true  |
 
-  - U+000A 换行符（"\n"）
-  - U+000D 回车符（"\r"）
-  - U+2028 行分隔符（line separator）
-  - U+2029 段分隔符（paragraph separator）
+**描述**
 
-  这实际上意味着"."将会匹配任意的单个Unicode Basic Multilingual Plane (BMP)字符。若要使其与astral字符（大于\uFFFF的Unicode字符）匹配，你应当使用"u"（Unicode）修饰符。一起使用这两个修饰符，"."将无一例外地匹配任意Unicode字符。
+<font color=FF0000 size=4>**如果使用了"s"修饰符，dotAll 的值将返回Boolean类型的true，否则将返回false**</font>。<mark>"s"修饰符表示，特殊字符"."应另外匹配字符串中的下述行终结符</mark>（line terminator characters），否则将会失配：
 
-  摘自：[MDN - RegExp.prototype.dotAll](https://developer.mozilla.org/zh-CN/docs/orphaned/Web/JavaScript/Reference/Global_Objects/RegExp/dotAll)
+- U+000A 换行符（"\n"）
+- U+000D 回车符（"\r"）
+- U+2028 行分隔符（line separator）
+- U+2029 段分隔符（paragraph separator）
+
+这实际上意味着"."将会匹配任意的单个Unicode Basic Multilingual Plane (BMP)字符。若要使其与astral字符（大于\uFFFF的Unicode字符）匹配，你应当使用"u"（Unicode）修饰符。一起使用这两个修饰符，"."将无一例外地匹配任意Unicode字符。
+
+摘自：[MDN - RegExp.prototype.dotAll](https://developer.mozilla.org/zh-CN/docs/orphaned/Web/JavaScript/Reference/Global_Objects/RegExp/dotAll)
 
 - **具名组匹配：**
 
@@ -13157,31 +13161,50 @@ weakset 不可遍历
 
 
 
-#### DocumentFragment 文档片段 / 文档碎片
+#### DocumentFragment
 
-DocumentFragment，<font color=FF0000>文档片段 **接口**</font>，一个<font color=FF0000>没有父对象的最小文档对象</font>。它被作为一个轻量版的 Document 使用，就像标准的document 一样，存储由节点（nodes）组成的文档结构。<font color=FF0000>与 document 相比，最大的区别是DocumentFragment **不是真实 DOM 树的一部分，它的变化不会触发 DOM 树的重新渲染，且不会导致性能等问题**。</font>
+**`DocumentFragment`**，文档片段接口，表示一个没有父对象的最小文档对象。
 
-最常用的方法是使用文档片段作为参数（例如，任何 Node 接口类似 Node.appendChild 和 Node.insertBefore 的方法），这种情况下被添加（append）或被插入（inserted）的是片段的所有子节点, 而非片段本身。<font color=FF0000>因为所有的节点会被一次插入到文档中，而这个操作仅发生一个重渲染的操作，而不是每个节点分别被插入到文档中，因为后者会发生多次重渲染的操作。</font>
+它被作为一个轻量版的 `Document` 使用，就像标准的 document 一样，存储由节点（nodes）组成的文档结构。与 document 相比，最大的区别是它不是真实 DOM 树的一部分，它的变化不会触发 DOM 树的重新渲染，且不会对性能产生影响。
 
-该接口在 Web 组件 ( Web components ) 中也非常有用：`<template>` 元素在其 `HTMLTemplateElement.content` 属性中包含了一个 DocumentFragment。
-
-<font color=FF0000>可以使用 `document.createDocumentFragment` 方法或者构造函数来创建一个空的 DocumentFragment。</font>
-
-**属性：**该接口没有特殊的属性，其<font color=FF0000 size=4>**属性都继承自 Node**</font>。并补充了 Node 接口中的属性。原文这里下面列举了几个属性，这里略。
+```mermaid
+classDiagram
+EventTarget <|-- Node
+Node <|-- DocumentFragment
+```
 
 ##### 构造函数
 
-**DocumentFragment()** 返回一个空的 DocumentFragment 对象。
+- `DocumentFragment()` ：创建并返回一个新的 `DocumentFragment` 对象。
+
+##### 属性
+
+该接口没有特殊的属性，其属性都继承自 `Node`。
+
+- `DocumentFragment.childElementCount` ：只读，返回所有属于 `DocumentFragment` 的 `Element` 类型的子对象
+- `DocumentFragment.children` ：只读，返回一个实时的 `HTMLCollection`，其中包含了所有属于 `DocumentFragment` 的 `Element` 类型的子对象。
+- `ParentNode.firstElementChild` ：只读，返回 `DocumentFragment` 的第一个 `Element` 类型的子对象，如果没有则返回 `null`。
+- `ParentNode.lastElementChild` ：只读，返回 `DocumentFragment` 的最后一个 `Element` 类型的子对象，如果没有则返回 `null`。
 
 ##### 方法
 
-<font color=FF0000>该接口继承 Node 的全部方法</font>，并实现了 ParentNode 接口中的方法。
+该接口继承 `Node` 的全部方法。
 
-- **DocumentFragment.querySelector()**：返回在DocumentFragment中以文档顺序排列的第一个符合指定选择器的Element节点。
-- **DocumentFragment.querySelectorAll()**：返回在DocumentFragment中所有的符合指定选择器的Element节点组成的NodeList数组。
-- **DocumentFragment.getElementById()**：返回在DocumentFragment中以文档顺序排列的第一个符合指定ID选择器的Element节点。与Document.getElementById()作用相同。
+- `DocumentFragment.append()` ：在文档片段的最后一个子对象后插入一组 `Node` 或字符串对象。
+- `DocumentFragment.prepend()` ：在文档片段的第一个元素前插入一组 `Node` 或字符串对象。
+- `DocumentFragment.querySelector()` ：返回在 `DocumentFragment` 中以文档顺序排列的第一个符合指定选择器的 `Element` 节点。
+- `DocumentFragment.querySelectorAll()` ：返回在 `DocumentFragment` 中所有的符合指定选择器的 `Element` 节点组成的 `NodeList` 数组。
+- `DocumentFragment.getElementById()` ：返回在 `DocumentFragment` 中以文档顺序排列的第一个符合指定 ID 选择器的 `Element` 节点。与 `Document.getElementById()` 作用相同。
 
-##### 示例如下
+##### 使用说明
+
+最常用的方法是使用 `DocumentFragment` 创建并组成一个 DOM 子树，然后使用 `Node` 接口方法（如：`appendChild()` 或 `insertBefore()` ）将其插入到 DOM 中。这种情况下会插入片段的所有子节点，并留下一个空的 `DocumentFragment`。因为所有的节点会被一次插入到文档中，所以仅会发生一个重渲染的操作，而不是每个节点分别被插入到文档中从而发生多次重渲染的操作。
+
+该接口在 Web 组件( Web components ) 中也非常有用：`<template>` 元素在其 `HTMLTemplateElement.content` 属性中包含了一个 `DocumentFragment`
+
+<font color=FF0000>可以使用 `document.createDocumentFragment` 方法或者构造函数来创建一个空的 DocumentFragment。</font>
+
+##### 示例
 
 ```html
 <ul id="list"></ul>
