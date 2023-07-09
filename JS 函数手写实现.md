@@ -2,6 +2,20 @@
 
 
 
+#### 参考资料
+
+[测试一下前端基本功--简单的源码重写？](https://www.bilibili.com/video/BV1dS4y1X7pn) 
+
+[前端面试常见的手写功能](https://juejin.cn/post/6873513007037546510)
+
+[56 个 JavaScript 实用工具函数助你提升开发效率！](https://mp.weixin.qq.com/s/oK--hjpAscsvyT1U4rZHKw) 虽然其中多数是没什么用的，但是深拷贝、正则判断、浏览器操作，还是值得借鉴的；有时间了，摘抄下
+
+有了这32个手写js技巧，让你面试不凉凉！(上中下)：https://www.bilibili.com/video/BV1v341167fi / https://www.bilibili.com/video/BV1gb4y1z736 / https://www.bilibili.com/video/BV16q4y1U7GD 👀 “下”中省略了 “打印当前网页使用了多少种 html 元素”
+
+[GitHub - Organizations - ECMAScript Shims](https://github.com/es-shims) 的主页有很多 shims repo，每一个 repo 都是一个方法的 shim 实现。
+
+
+
 #### bind 函数
 
 这里可以参考下 [[JS 机制与原理#bind 模拟实现]]
@@ -974,15 +988,3 @@ const genUUID = seed => seed
 ```
 
 摘自：[js小众且好用的技巧【一行代码】](https://juejin.cn/post/7228449980108423224)
-
-
-
-#### 参考资料
-
-[测试一下前端基本功--简单的源码重写？](https://www.bilibili.com/video/BV1dS4y1X7pn) 
-
-[前端面试常见的手写功能](https://juejin.cn/post/6873513007037546510)
-
-[56 个 JavaScript 实用工具函数助你提升开发效率！](https://mp.weixin.qq.com/s/oK--hjpAscsvyT1U4rZHKw) 虽然其中多数是没什么用的，但是深拷贝、正则判断、浏览器操作，还是值得借鉴的；有时间了，摘抄下
-
-有了这32个手写js技巧，让你面试不凉凉！(上中下)：https://www.bilibili.com/video/BV1v341167fi / https://www.bilibili.com/video/BV1gb4y1z736 / https://www.bilibili.com/video/BV16q4y1U7GD 注：“下”中省略了 “打印当前网页使用了多少种 html 元素”、
