@@ -10134,21 +10134,23 @@ let age = parseInt(params.get('age')); // is the number 18
 
 #### encodeURI()
 
-encodeURI()  函数通过将特定字符的每个实例替换为一个、两个、三或四转义序列来对统一资源标识符 (URI) 进行编码 (该字符的 UTF-8 编码仅为四转义序列)由两个 "代理" 字符组成)。
+`encodeURI()` 函数通过将特定字符的每个实例替换为一个、两个、三或四转义序列来对统一资源标识符 ( URI ) 进行编码 （该字符的 UTF-8 编码仅为四转义序列)由两个 "代理" 字符组成）。
 
-**语法**
+##### 语法
 
 ```js
 encodeURI(URI)
 ```
 
-**参数**
+###### 参数
 
 - **URI：**一个完整的URI.
 
-**返回值：** 一个新字符串, 表示提供的字符串编码为统一资源标识符 (URI)。
+###### 返回值
 
-##### **描述**
+一个新字符串, 表示提供的字符串编码为统一资源标识符 (URI)。
+
+##### 描述
 
 假定一个URI 是完整的 URI，那么无需对那些保留的并且在 URI 中有特殊意思的字符进行编码。
 
@@ -10164,7 +10166,7 @@ http://username:password@www.example.com:80/path/to/file.php?foo=316&bar=this+ha
 | 非转义的字符 | 字母 数字 `-` `_` `.` `!` `~` `*` `'` `(` `)` |
 | 数字符号     | `#`                                           |
 
-请注意，<font color=FF0000>encodeURI 自身无法产生能适用于HTTP GET 或 POST 请求的URI</font>，例如对于 XMLHTTPRequests，<font color=FF0000>因为 "&", "+", 和 "=" 不会被编码，然而在 GET 和 POST 请求中它们是特殊字符</font>。然而<font color=FF0000>encodeURIComponent这个方法会对这些字符编码</font>。
+⚠️ 请注意，<font color=FF0000>encodeURI 自身无法产生能适用于 HTTP GET 或 POST 请求的 URI</font>，例如对于 XMLHTTPRequests，<font color=fuchsia>因为 "&", "+", 和 "=" 不会被编码，然而在 GET 和 POST 请求中它们是特殊字符</font>。然而 <font color=FF0000>encodeURIComponent 这个方法会对这些字符编码</font>。
 
 另外，<font color=FF0000>**如果试图编码一个非高-低位完整的代理字符，将会抛出一个 URIError 错误**</font>，例如：
 
@@ -10191,7 +10193,7 @@ function fixedEncodeURI (str) {
 
 #### encodeURIComponent()
 
-encodeURIComponent()函数通过将一个，两个，三个或四个表示字符的UTF-8编码的转义序列替换某些字符的每个实例来编码 URI （对于由两个“代理”字符组成的字符而言，将仅是四个转义序列） 。
+encodeURIComponent()函数通过将一个，两个，三个或四个表示字符的UTF-8编码的转义序列替换某些字符的每个实例来编码 URI（对于由两个“代理”字符组成的字符而言，将仅是四个转义序列） 。
 
 ##### 语法
 
@@ -10199,11 +10201,13 @@ encodeURIComponent()函数通过将一个，两个，三个或四个表示字符
 encodeURIComponent(str);
 ```
 
-##### 参数
+###### 参数
 
 - str：String. URI 的组成部分。
 
-**返回值：**原字串作为URI组成部分被被编码后的新字符串。
+###### 返回值
+
+原字串作为URI组成部分被被编码后的新字符串。
 
 ##### 描述
 
