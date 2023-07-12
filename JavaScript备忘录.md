@@ -10193,7 +10193,7 @@ function fixedEncodeURI (str) {
 
 #### encodeURIComponent()
 
-encodeURIComponent()函数通过将一个，两个，三个或四个表示字符的UTF-8编码的转义序列替换某些字符的每个实例来编码 URI（对于由两个“代理”字符组成的字符而言，将仅是四个转义序列） 。
+encodeURIComponent() 函数通过将一个，两个，三个或四个表示字符的UTF-8编码的转义序列替换某些字符的每个实例来编码 URI（对于由两个“代理”字符组成的字符而言，将仅是四个转义序列） 。
 
 ##### 语法
 
@@ -13245,7 +13245,7 @@ DOM window 对象通过 history 对象提供了对浏览器的会话历史的访
   - **window.history.go(-1)：**向后移动一个页面，等同于调用 back()
   - **window.history.go(1)：**向前移动一个页面, 等同于调用了 forward()
 
-HTML5引入了 <mark style="background: fuchsia">**history.pushState()** </mark>和<mark style="background: aqua"> **history.replaceState()**</mark> 方法，它们分别可以<mark style="background: fuchsia">**添加**</mark>和<mark style="background: aqua">修改</mark>历史记录条目。<mark>这些方法通常与window.onpopstate 配合使用</mark>。
+HTML5 引入了 <mark style="background: fuchsia">**history.pushState()** </mark>和<mark style="background: aqua"> **history.replaceState()**</mark> 方法，它们分别可以<mark style="background: fuchsia">**添加**</mark>和<mark style="background: aqua">修改</mark>历史记录条目。<mark>这些方法通常与window.onpopstate 配合使用</mark>。
 使用 history.pushState() 可以改变referrer，它在用户发送 XMLHttpRequest 请求时在HTTP头部使用，改变state后创建的 XMLHttpRequest 对象的referrer都会被改变。因为referrer是标识创建  XMLHttpRequest 对象时 this 所代表的window对象中document的URL。
 
 #### history.pushState()

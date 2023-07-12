@@ -3268,7 +3268,30 @@ body { padding: 36px 24px 18px 12px; } /* 上、右、下、左补丁边距分�
 > }
 > ```
 >
-> 实现。在这里，为了实现正方形， `aspect-ratio-val` 为 100%
+> 实现。在这里，为了实现正方形， `aspect-ratio-val` 为 100%。
+>
+> ⚠️ 这的注意的是：如果上面的 `.aspect-ratio-realize` 是作为 `img` 标签直接使用的话 ( `img.aspect-ratio-realize` )，图片将只会按照原尺寸展示，无论是否加上 `object-fit: contain` 。这时候，需要将 `.aspect-ratio-realize` 元素作为 `img` 标签的外层使用。示例如下：
+>
+> ```scss
+> .img-wrap { // 原本的 `.aspect-ratio-realize`
+>   position: relative;
+>   width: width-val;
+>   height: 0;
+>   padding-bottom: aspect-ratio-val;
+>   
+>   .img {
+>      position: absolute;
+>      width: 100%;
+>      height: 100%;
+>      top: 0;
+>      left: 0;
+>      object-fit: cover;
+>      object-position: center;
+>   }
+> }
+> ```
+>
+> 参考自 [2023年CSS自适应正方形必须拿下🏆](https://juejin.cn/post/7204485623461691450)
 
 ##### cheatsheet
 
