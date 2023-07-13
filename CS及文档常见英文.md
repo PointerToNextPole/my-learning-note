@@ -938,11 +938,15 @@
   >
   > 摘自：[The End of Front-End Development](https://www.joshwcomeau.com/blog/the-end-of-frontend-development/)
   
-- `co-` 前缀，协同的、共同的...
+- `co-` 前缀：协同的、共同的...
 
   > Remote plugins run as **co-processes**, safely and asynchronously.
   >
   > 摘自：[neovim 官网](https://neovim.io/)
+  
+- `inter` 前缀：相互的
+
+  > interop ：互操作
 
 
 

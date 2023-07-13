@@ -6317,7 +6317,7 @@ console.log(addOne.num) // 3
 
 ##### 第一点差异
 
-CJS 输出的是值的拷贝。换句话说：<font color=LightSeaGreen>一旦输出了某个值，如果模块内部后续的变化，影响不了外部对这个值的使用</font>。
+CJS 输出的是值的拷贝。换句话说：<font color=LightSeaGreen>一旦输出了某个值，如果模块内部后续的变化，影响不了外部对这个值的使用</font>
 
 ###### 示例如下
 
@@ -6345,7 +6345,7 @@ console.log(mod.counter); // 3
 
 上面的例子说明：<font color=LightSeaGreen>如果对外输出了 `counter` 变量，就算后续调用模块内部的 `incCounter` 方法去修改它的值，它的值依旧没有变化</font>
 
-<font color=dodgerBlue>**ES6 Module 运行机制完全不一样**</font>：<font color=fuchsia>**JS 引擎 对脚本静态分析的时候，遇到模块加载命令 import，就会 <font size=4>生成一个只读引用</font>**</font>；<font color=red size=4>**等到脚本真正执行的时候，再根据这个只读引用，到被加载的那个模块里去取值**</font>。
+<font color=dodgerBlue>**ES6 Module 运行机制完全不一样**</font>：<font color=fuchsia>**JS 引擎 对脚本静态分析的时候，遇到模块加载命令 `import`，就会 <font size=4>生成一个只读引用</font>**</font>；<font color=red size=4>**等到脚本真正执行的时候，再根据这个只读引用，到被加载的那个模块里去取值**</font>。
 
 ```js
 // lib.js
@@ -6375,7 +6375,7 @@ console.log(counter) // 4
 
 ##### CJS 的 循环依赖
 
-CJS 的一个模块，一般就是一个文件；<font color=fuchsia>使用 reqiure 第一次加载一个模块时，就会**在内存中生成一个对象**</font>。大概长这个样子：
+CJS 的一个模块，一般就是一个文件；<font color=fuchsia>使用 reqiure **第一次加载** 一个模块时，就会**在内存中生成一个对象**</font>。大概长这个样子：
 
 ```js
 {
@@ -6390,7 +6390,7 @@ CJS 的一个模块，一般就是一个文件；<font color=fuchsia>使用 reqi
 >
 > <img src="https://s2.loli.net/2022/05/31/qhbVEg12LkxZote.png" alt="image-20220531004437463" style="zoom:55%;" />
 
-上面的例子我们只列出了关键的几个属性：<font color=FF0000>id 就是 ***模块名***，exports 是 ***模块输出的各个接口*** ，loaded 表示 ***模块是否执行完毕*** </font>。<font color=FF0000>**以后再用到这个模块的时候，会直接从这个对象的 exports 属性里面取值**</font>。<font color=fuchsia><font size=4>**即使多次执行一个模块的 require 命令，它都只会在第一次加载时运行一次**</font>，后面都会从缓存中读取，**除非手动清除缓存**</font>。
+上面的例子我们只列出了关键的几个属性：<font color=FF0000>`id` 就是 **模块名**，`exports` 是 **模块输出的各个接口** ，`loaded` 表示 **模块是否执行完毕** </font>。<font color=FF0000>**以后再用到这个模块的时候，会直接从这个对象的 `exports` 属性里面取值**</font>。<font color=fuchsia><font size=4>**即使多次执行一个模块的 `require` 命令，它都只会在第一次加载时运行一次**</font>，后面都会从缓存中读取，**除非手动清除缓存**</font>
 
 > 💡 CJS 清除缓存和 `require.cache` 相关，参考：[stack overflow - Clearing require cache](https://stackoverflow.com/questions/23685930/clearing-require-cache)
 
@@ -6422,7 +6422,7 @@ exports.done = true;
 console.log('b.js 执行完毕');
 ```
 
-与 `a.js` 类似：<font color=dodgerBlue>`b.js` 导出一个变量后，在第二行就开始加载 `a.js` ，发生了循环依赖</font>。然后，系统就会去内存对象的 exports 中取 `done` 变量的值，可<font color=fuchsia>因为 `a.js` 没有执行完，所以只取到刚开始输出的值 `false`</font> 。接着，<font color=red size=4>**`b.js` 继续执行后面的代码，执行完毕后，再把执行权交还给 `a.js`**</font> ，执行完后面剩下的代码。为了验证这个过程，新建一个 `main.js` ：
+与 `a.js` 类似：<font color=dodgerBlue>`b.js` 导出一个变量后，在第二行就开始加载 `a.js` ，发生了循环依赖</font>。然后，系统就会去内存对象的 exports 中取 `done` 变量的值，可<font color=fuchsia>因为 `a.js` 没有执行完，所以只取到刚开始输出的值 `false`</font> 。接着，<font color=fuchsia size=4>**`b.js` 继续执行后面的代码，执行完毕后，再把执行权交还给 `a.js`**</font> ，执行完后面剩下的代码。为了验证这个过程，新建一个 `main.js` ：
 
 ```js
 // main.js
@@ -6462,7 +6462,7 @@ export function odd(n) {
 }
 ```
 
-上面代码中，`even.js` 里面的函数 even 有一个参数 n，只要不等于 0 ，就会减去 1，传入加载的 `odd()` 。`odd.js` 也会做类似操作
+上面代码中，`even.js` 里面的函数 `even` 有一个参数 `n`，只要不等于 0 ，就会减去 1，传入加载的 `odd()` 。`odd.js` 也会做类似操作
 
 运行上面这段代码，结果如下：
 
@@ -6500,7 +6500,7 @@ import { method } from 'commonjs-package';
 >
 > 摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1)
 
-<font color=FF0000>Node 对 ES6 Module 的处理比较麻烦，因为它有自己的 CommonJS 模块规范，**与 ES6 Module 格式不兼容**</font>。目前两个模块方案是分开处理的，<font color=dodgerBlue>从 v13.2 版本开始，Node 已经默认打开了 ES6 Module 支持</font>：<font color=red>**Node 要求 ES6 Module 使用 `.mjs` 后缀文件名，只要 Node 遇到 `.mjs` 结尾的文件，就认定是 ES6 Module**</font>。除了修改文件后缀，也<font color=FF0000>可以在项目的 package.json 文件中，指定 type 字段为 module</font> ：
+<font color=FF0000>Node 对 ES6 Module 的处理比较麻烦，因为它有自己（默认的）的 CommonJS 模块规范，**与 ES6 Module 格式不兼容**</font>。目前两个模块方案是分开处理的，<font color=dodgerBlue>从 v13.2 版本开始，Node 已经默认打开了 ES6 Module 支持</font>：<font color=red>**Node 要求 ES6 Module 使用 `.mjs` 后缀文件名，只要 Node 遇到 `.mjs` 结尾的文件，就认定是 ES6 Module**</font>。除了修改文件后缀，也<font color=FF0000>可以在项目的 package.json 文件中，指定 type 字段为 ：`"module"`</font> ：
 
 ```js
 // package.json
@@ -6510,7 +6510,7 @@ import { method } from 'commonjs-package';
 }
 ```
 
-尽管如此，<font color=FF0000>require 命令不能加载 `.mjs` 文件，会报错</font>；<font color=FF0000>**只有 import 命令才可以加载 `.mjs` 文件**</font>。反过来，<font color=FF0000>**`.mjs` 文件里面也不能使用require 命令，必须使用 import**</font> ；所以在平时开发当中，<font color=FF0000>ES6 Module 与 CommonJS 模块尽量不要混用</font>。
+尽管如此，<font color=FF0000>require 命令不能加载 `.mjs` 文件，会报错</font>；<font color=FF0000>**只有 import 命令才可以加载 `.mjs` 文件**</font>。反过来，<font color=FF0000>**`.mjs` 文件里面也不能使用 require 命令，必须使用 import**</font> ；所以在平时开发当中，<font color=FF0000>ES6 Module 与 CommonJS 模块尽量不要混用</font>。
 
 ##### 补充：为什么 CJS 不能加载 ESM
 
@@ -6521,6 +6521,8 @@ The simplest reason that <font color=fuchsia>CJS can’t require() ESM is that *
 > 👀 关于 top-level await 的内容，还有更多，这里略。详见原文，以及 V8 团队博客 [Top-level `await`](https://v8.dev/features/top-level-await)
 
 If you dive in , you’ll find that <font color=dodgerBlue>top-level await isn’t even the only problematic case</font>… <font color=FF0000>what do you think happens if you synchronously require ESM which can asynchronously import some CJS which can synchronously require some ESM</font>? What you get is a sync/async zebra stripe of death, that’s what! <font color=LightSeaGreen>Top-level await is just the last nail in the coffin, and the easiest to explain</font>.)
+
+> 👀 按照上面所述，所以本质上还是 CJS 同步，而 ESM 异步所导致的，top-level await 不是根本原因
 
 摘自：[Node Modules at War: Why CommonJS and ES Modules Can’t Get Along](https://redfin.engineering/node-modules-at-war-why-commonjs-and-es-modules-cant-get-along-9617135eeca1)
 
@@ -6547,7 +6549,9 @@ If you dive in , you’ll find that <font color=dodgerBlue>top-level await isn�
 
 Brendan Eich 发明浏览器事件机制是从苹果当年的低代码开发工具 Hypercard 找的灵感，事件处理器的名称用 on 加上一个事件名称的命名方式是继承了 Hypercard 的脚本语言 Hypertalk 。
 
-因为 <font color=fuchsia size=4>**HTML 的标签和属性名是不区分大小写的**</font>（👀 之所以这点加上高亮，是因为这句话有点重要，也听过，不过几乎没什么印象了... 之后回想起来是在 Vue 文档中，见 [Vue3 官方文档 - 组件基础 # DOM 模板解析注意事项](https://cn.vuejs.org/guide/essentials/component-basics.html#case-insensitivity) ）。
+因为 <font color=fuchsia size=4>**HTML 的标签和属性名是不区分大小写的**</font>
+
+> 👀 之所以这点加上高亮，是因为这句话有点重要，也听过，不过几乎没什么印象了... 之后回想起来是在 Vue 文档中，见 [Vue3 官方文档 - 组件基础 # DOM 模板解析注意事项](https://cn.vuejs.org/guide/essentials/component-basics.html#case-insensitivity) ）。
 
 在当年，从网景的 JS 文档里到人们真实写的 HTML 里，都是用的驼峰写法（Hypertalk 就是用驼峰的），比如 onClick：
 
@@ -6569,7 +6573,7 @@ Brendan Eich 发明浏览器事件机制是从苹果当年的低代码开发工�
 
 - XHR
 - fetch
-- \<script> 发起的 jsonp
+- `<script>` 发起的 jsonp
 - 老式的 `new Image()` 发起的请求
 - sendBeacon 请求
 
