@@ -2623,9 +2623,9 @@ Function.prototype.bind2 = function (context) {
 
 #### JSON.parse( JSON.stringify() ) 实现深拷贝的问题
 
-- JSON.parse( JSON.stringify() ) <font color=FF0000>无法拷贝函数</font>。
+- `JSON.parse( JSON.stringify() )` <font color=FF0000>无法拷贝函数</font>。
 
-- 另外，根据 issue 评论区 naihe138 的评论，了解到《你不知道的 JavaScript 中卷》 中有关于 JSON.stringify 有如下说法：
+- 另外，根据 issue 评论区 naihe138 的评论，了解到《你不知道的 JavaScript 中卷》 中有关于 `JSON.stringify` 有如下说法：
 
   > ##### JSON 字符串化
   >
@@ -2644,7 +2644,7 @@ Function.prototype.bind2 = function (context) {
   >
   > <font color=FF0000>**所有安全的 JSON 值 ( JSON-safe ) 都可以使用 JSON.stringify(..) 字符串化**</font>。<font color=FF0000>安全的 JSON 值是指能够呈现为有效 JSON 格式的值</font>。
   >
-  > 为了简单起见， 我们来看看 <font color=FF0000>什么是 不安全的 JSON 值</font>。 <font color=FF0000>**undefined**、**function**、**symbol** ( ES6+ ) 和 **包含循环引用**（对象之间相互引用，形成一个无限循环）**的对象** 都不符合 JSON 结构标准，支持 JSON 的语言无法处理它们</font>。<font color=FF0000>**JSON.stringify(..) 在 <font size=4>对象</font> 中遇到 undefined 、 function 和 symbol 时会自动将其忽略**</font>， <font color=FF0000>**在 <font size=4>数组</font> 中则会返回 null（以保证单元位置不变）**</font>。例如：
+  > 为了简单起见， 我们<font color=dodgerBlue>来看看 什么是 **不安全的 JSON 值**</font>。 <font color=FF0000>**undefined**、**function**、**symbol** ( ES6+ ) 和 **包含循环引用**（对象之间相互引用，形成一个无限循环）**的对象** 都不符合 JSON 结构标准，支持 JSON 的语言无法处理它们</font>。<font color=FF0000>**`JSON.stringify(..)` 在 <font size=4>对象</font> 中遇到 undefined 、 function 和 symbol 时会自动将其忽略**</font>， <font color=FF0000>**在 <font size=4>数组</font> 中则会返回 null（以保证单元位置不变）**</font>。例如：
   >
   > ```js
   > JSON.stringify( undefined );                    // undefined
@@ -2658,8 +2658,8 @@ Function.prototype.bind2 = function (context) {
   >
   > 摘自：《你不知道的 JavaScript 中卷》P48 - P49
 
-  > 👀 以上总结：对于“不安全的 JSON 值”，包含：undefined、function、symbol 和 包含循环引用的对象，在 stringify 时，如果在对象中会被忽略；在数组中，则返回 null。
->2022/5/19 补充： 在 [MDN - JSON.stringify()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) 中也有类似的讲解，在 [[JavaScript备忘录#JSON.stringify()#JSON stringify 将值转换为相应的 JSON 格式]] 中有做笔记。
+  > 💡 以上总结：对于“不安全的 JSON 值”，包含：undefined、function、symbol 和 包含循环引用的对象，在 stringify 时，如果在对象中会被忽略；在数组中，则返回 null。
+>💡 2022/5/19 补充： 在 [MDN - JSON.stringify()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) 中也有类似的讲解，在 [[JavaScript备忘录#JSON.stringify()#JSON stringify 将值转换为相应的 JSON 格式]] 中有做笔记。
 
 - 文章 [JSON.stringify深拷贝的缺点](https://www.jianshu.com/p/52db1d0c1780) 中 还有其他上面没有说到的：
   - 如果深拷贝的对象 / 数组 里有 <font color=FF0000>**时间对象**</font>，则 JSON.stringify( JSON.parse ) 的结果，将只是<font color=FF0000>字符串</font>的形式，而不是对象的形式
@@ -2689,8 +2689,8 @@ if (target === copy) {
 
 深度克隆就是为了解决引用数据类型不能被通过赋值的方式复制的问题。不妨来罗列一下引用数据类型都有哪些：
 
-- ES6之前： Object, Array, Date, RegExp, Error
-- ES6之后： Map, Set, WeakMap, WeakSet
+- ES6 之前： Object, Array, Date, RegExp, Error
+- ES6 之后： Map, Set, WeakMap, WeakSet
 
 所以，我们要深度克隆，就需要对数据进行遍历并根据类型采取相应的克隆方式。当然因为数据会存在多层嵌套的情况，采用「递归」
 
@@ -2888,7 +2888,7 @@ getType(Promise.resolve('foo')) // Promise
 
 2. 如果 this 的值是 null，就返回 [object Null]
 
-   **注：**上面是两种异常情况 undefined 和 null 的处理
+   > 👀 上面是两种异常情况 undefined 和 null 的处理
 
 3. <font color=FF0000>让 O 成为 ToObject(this) 的结果</font>
 
@@ -2896,9 +2896,9 @@ getType(Promise.resolve('foo')) // Promise
 
 5. 最后返回由 "[object " 和 class 和 "]" 三个部分组成的字符串
 
-通过规范，我们至少知道了调用 Object.prototype.toString 会返回一个由 "[object " 和 class 和 "]" 组成的字符串，而 class 是要判断的对象的内部属性。
+通过规范，我们至少知道了调用 `Object.prototype.toString` 会返回一个由 "[object " 和 "class" 和 "]" 组成的字符串，而 class 是要判断的对象的内部属性。
 
-经过实验（代码略，见原文），Object.prototyep.toString.call() 可以识别 Number、String、Boolean、Undefined、 Null、Object、Array、Date、Error、EegExp、Function 这 11 种类型之外，还可以识别 Math、JSON、arguments
+经过实验（代码略，见原文），`Object.prototyep.toString.call()` 可以识别 Number、String、Boolean、Undefined、 Null、Object、Array、Date、Error、EegExp、Function 这 11 种类型之外，还可以识别 Math、JSON、arguments
 
 ```js
 console.log(Object.prototype.toString.call(Math)); // [object Math]
@@ -2907,11 +2907,11 @@ console.log(Object.prototype.toString.call(JSON)); // [object JSON]
 
 所以我们可以识别至少 14 种类型，当然我们也可以算出来，`[[class]]` 属性至少有 12 个。
 
-**注：**还有上面提及的 Symbol 和 BigInt。另外，还有 Promise、Set、Map、weakSet、weakMap、location、history、window（只在浏览器下生效，结果为 '[object Window]' ）、 globalThis（ globalThis 在不同宿主环境的值不同，浏览器下的值为 '[object Window]'，在 Node 中为 '[object global]' ）
+> 👀 还有上面提及的 Symbol 和 BigInt。另外，还有 Promise、Set、Map、weakSet、weakMap、location、history、window（只在浏览器下生效，结果为 '[object Window]' ）、 globalThis（ globalThis 在不同宿主环境的值不同，浏览器下的值为 '[object Window]'，在 Node 中为 '[object global]' ），以及 Generator
 
 #### 实现 type 方法
 
-需要注意的是<font color=FF0000>边界情况</font>：在 IE6 中，null 和 undefined 会被 Object.prototype.toString 识别成 [object Object]
+需要注意的是<font color=FF0000>边界情况</font>：在 IE6 中，null 和 undefined 会被 `Object.prototype.toString` 识别成 `[object Object]`
 
 ```js
 var class2type = {};
@@ -2958,6 +2958,9 @@ function type(obj) {
    console.log(testNum.constructor === Number); // true
    ```
 
+   > 💡 参考 [[JavaScript备忘录#整数自面量的解析]] 中的内容，感觉上面的写法，类似于 `2..constructor === Number` ；感觉没什么... 属于初次见好奇，懂了之后就没什么的东西
+   >
+   
 3. **instanceof**
 
 4. **Object.prototype.toString**
@@ -3128,7 +3131,7 @@ isElement = function(obj) {
 };
 ```
 
-> 👀 注：只读属性 Node.nodeType 表示的是该节点的类型。详见：[MDN - Node.nodeType](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/nodeType)
+> 💡 只读属性 Node.nodeType 表示的是该节点的类型。详见：[MDN - Node.nodeType](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/nodeType)
 
 摘自：[JavaScript专题之类型判断(上)  ](https://github.com/mqyqingfeng/Blog/issues/28) 和  [JavaScript专题之类型判断(下)](https://github.com/mqyqingfeng/Blog/issues/30)
 
@@ -3136,7 +3139,7 @@ isElement = function(obj) {
 
 ### 类数组对象
 
-所谓的类数组对象：拥有一个 length 属性和若干索引属性的对象。
+所谓的类数组对象：拥有一个 `length` 属性和若干索引属性的对象。
 
 ##### 举个例子
 
@@ -3179,7 +3182,7 @@ for(var i = 0, len = arrayLike.length; i < len; i++) { …… }
 
 是不是很像？
 
-那类数组对象可以使用数组的方法吗？比如：`arrayLike.push('4');` 然而上述代码会报错：arrayLike.push is not a function。
+那类数组对象可以使用数组的方法吗？比如：`arrayLike.push('4');` 然而上述代码会报错："arrayLike.push is not a function" 。
 
 #### 调用数组方法
 

@@ -6526,6 +6526,8 @@ isNaN() 方法是 ES5 的方法，实际上是 `window.isNaN()` 的简写；而�
 
 > 以下内容摘自：[面试题：关于 1toString()、1.toString()、1..toString()、1.0.toString()、(1.).toString()等结果](https://blog.csdn.net/NewAir1798/article/details/88207671)
 
+###### 解释 
+
 > 💡 总结：之所以会报错，是：JS 引擎无法确定 `.` 是小数点还是点运算符，因为歧义导致的报错；消除歧义，即可正常运行。
 
 - `1toString()` ：报错。语法错误

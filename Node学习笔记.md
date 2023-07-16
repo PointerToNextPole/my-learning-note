@@ -1647,6 +1647,8 @@ libuv 是一个跨平台 的专注于 异步IO 的库
 - **check 队列：** setImmediate 
 - **close 队列：** close 事件
 
+> 💡 这部分的内容可以参考 [[前端面试点总结#宏任务和微任务#《浏览器和 Node.js 的 EventLoop 为什么这么设计？》笔记|《浏览器和 Node.js 的 EventLoop 为什么这么设计？》笔记]] Node 环境下宏任务间的优先级。顺带一提：该文也介绍了微任务间的优先级。
+
 ```js
 async function async1() {
   console.log('async1 start')
