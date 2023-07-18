@@ -1047,7 +1047,7 @@ console.log(keys)
 ]
 ```
 
-学习自：[# [科普] JS中Object的keys是无序的吗](https://mp.weixin.qq.com/s/qyyrQNC6q6p496OdZIQ6ew)
+学习自：[[科普] JS中Object的keys是无序的吗](https://mp.weixin.qq.com/s/qyyrQNC6q6p496OdZIQ6ew)
 
 
 #### for ... of 和 for ... in 的区别
