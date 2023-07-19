@@ -699,7 +699,7 @@ normal 模式键入 `:wq!`，显示如下：
 
 #### Lesson 2.15
 
-<font color=FF0000 size=4>使用 .gitignore文件</font>，一般格式为：
+<font color=FF0000 size=4>使用 `.gitignore` 文件</font>，一般格式为：
 
 - **`[*]<file>[.ext]`** ：忽略的文件，其中 `[*]` 表示：可选的文件名通配符；`[.ext]` 表示：可选的文件扩展名
 - **`*folder/`** ：忽略文件夹

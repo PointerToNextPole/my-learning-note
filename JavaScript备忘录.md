@@ -1401,7 +1401,7 @@ reduce 中的 reducer 函数，return 的值是作为下一次操作的 accelera
 
 reduceRight() 方法接受一个函数作为累加器（accumulator）和数组的每个值（<font color=FF0000>从右到左</font>）将其减少为单个值。
 
-**异常使用**
+##### 异常使用
 
 - 如果数组为空，但提供了 initialValue 参数，或如果数组中只有一个元素，且没有提供 initialValue 参数，将会直接返回 initialValue 参数或数组中的那一个元素。这两种情况下，都不会调用 callback 函数。
 
@@ -1436,7 +1436,7 @@ reduceRight() 方法接受一个函数作为累加器（accumulator）和数组�
 
 #### Array.prototype.filter()
 
-**filter()** 方法创建一个新数组, 其包含通过所提供函数实现的测试（即满足条件）的所有元素。 
+filter() 方法创建一个新数组, 其包含通过所提供函数实现的测试（即满足条件）的所有元素。 
 
 ##### 示例
 
@@ -1477,7 +1477,7 @@ filter 遍历的元素范围在第一次调用 callback 之前就已经确定了
 
 #### Array.prototype.map()
 
-**map()** 方法创建一个新数组，其结果是该数组中的每个元素是调用一次提供的函数后的返回值。
+map() 方法创建一个新数组，其结果是该数组中的每个元素是调用一次提供的函数后的返回值。
 
 ```js
 const array1 = [1, 4, 9, 16];
@@ -1488,7 +1488,7 @@ const map1 = array1.map(x => x * 2);
 
 `Array.prototype.map()` 可以起到和 forEach 类似的作用。
 
-> 💡 map方法 在编程中一个常用的场景是：“挑出对象数组中的部分属性形成一个新的数组，甚至是对跳出的属性进行属性名修改”；不过，在编程中发现：map 这种形成新数组的方法，对其中引用类型的属性只是拷贝了引用，不是深拷贝。
+> 💡 map 方法在编程中一个常用的场景是：“挑出对象数组中的部分属性形成一个新的数组，甚至是对挑出的属性进行属性名修改”；另外，在编程中发现：map 这种形成新数组的方法，对其中引用类型的属性只是拷贝了引用，不是深拷贝。
 
 ##### 语法
 
@@ -1498,13 +1498,14 @@ var new_array = arr.map(callback(currentValue[, index[, array]])[, thisArg])
 
 ###### 参数
 
-callback：生成新数组元素的函数，使用三个参数：
-- currentValue：callback 数组中正在处理的当前元素。
-- index可选：callback 数组中正在处理的当前元素的索引。
-- array可选：map 方法调用的数组。
-- thisArg可选：执行 callback 函数时值被用作this。
+`callback`：生成新数组元素的函数，使用三个参数：
 
-##### 返回值
+- `currentValue` ：callback 数组中正在处理的当前元素。
+- `index` ： 可选，callback 数组中正在处理的当前元素的索引。
+- `array` ：可选，map 方法调用的数组。
+- `thisArg` ：可选，执行 callback 函数时值被用作 this。
+
+###### 返回值
 
 一个由原数组每个元素执行回调函数的结果组成的新数组。
 
@@ -1582,7 +1583,7 @@ compareFunction： 可选，用来指定按某种顺序进行排列的函数。�
 
 > 💡 即：切片
 
-slice() 方法<font color=FF0000>**返回一个新的数组对象**</font>，这一对象是一个<font color=FF0000>由 begin 和 end 决定的原数组的**浅拷贝**</font>（包括 begin，不包括end）。<font color=FF0000>原始数组不会被改变</font>。
+slice() 方法<font color=FF0000>**返回一个新的数组对象**</font>，这一对象是一个<font color=FF0000>由 begin 和 end 决定的原数组的**浅拷贝**</font>（包括 begin，不包括 end ）。<font color=FF0000>原始数组不会被改变</font>。
 
 ##### 语法
 
@@ -2548,7 +2549,7 @@ let regexpObj2 = new RegExp(/ab+c/, 'i'); // 首个参数为常规字面量的�
 
 当表达式被赋值时，<font color=FF0000><font size=4>**字面量形式提供**</font>正则表达式的编译（compilation）状态</font>，当正则表达式保持为常量时使用字面量。<font color=FF0000>例如当你在循环中使用字面量构造一个正则表达式时，**正则表达式不会在每一次迭代中都被重新编译**（recompiled）</font>。
 
-而正则表达式对象的<font color=FF0000><font size=4>**构造函数**</font>，如 new RegExp('ab+c') 提供了正则表达式运行时编译（runtime compilation）</font>。<mark style=background-color:hotpink>**如果你知道正则表达式模式将会改变，或者你事先不知道什么模式，而是从另一个来源获取，如用户输入，这些情况都可以使用构造函数**</mark>。
+而正则表达式对象的<font color=FF0000><font size=4>**构造函数**</font>，如 new RegExp('ab+c') 提供了正则表达式运行时编译（runtime compilation）</font>。<font color=fuchsia>**如果你知道正则表达式模式将会改变，或者你事先不知道什么模式，而是从另一个来源获取，如用户输入，这些情况都可以使用构造函数**</font>。
 
 **Perl-like RegExp 属性**
 请注意，RegExp属性有长名称和短名称（类似Perl）。两个名称总是引用同一个值（<font color=FF0000>**Perl是JavaScript为其正则表达式建模的编程语言**</font>）
@@ -2576,7 +2577,7 @@ let regexpObj2 = new RegExp(/ab+c/, 'i'); // 首个参数为常规字面量的�
   - **RegExp.prototype\[@@replace]()：**给定新的子串，替换所有匹配结果。
   - **RegExp.prototype\[@@arch]()：**在给定字符串中搜索匹配项，并返回在字符串中找到字符索引。
   - **RegExp.prototype\[@@split]()：**通过<font color=FF0000> 将给定字符串拆分为子字符串</font>，<font color=FF0000> 并返回字符串形成的数组</font>。
-  - **RegExp.prototype.toString()：**返回表示指定对象的字符串。<font color=FF0000> **重写Object.prototype.toString()方法**</font>。
+  - **RegExp.prototype.toString()：**返回表示指定对象的字符串。<font color=FF0000> **重写 Object.prototype.toString() 方法**</font>
 
 摘自：[MDN - RegExp(正则表达式)](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
 
@@ -2590,11 +2591,11 @@ match() 方法<font color=FF0000> 检索返回一个字符串匹配正则表达�
 str.match(regexp)
 ```
 
-##### 参数
+###### 参数
 
 - **regexp：**一个正则表达式对象。<font color=FF0000> 如果传入一个**非正则表达式对象**，则会隐式地使用 new RegExp(obj) 将其转换为一个 RegExp</font>。<mark>如果你<font color=FF0000> 没有给出任何参数并直接使用match() 方法</font> ，你将会得到一 个包含空字符串的 Array ：[""] </mark>。
 
-##### 返回值
+###### 返回值
 
 - **如果<font color=FF0000> 使用g</font>标志**，则将<font color=FF0000> 返回与完整正则表达式匹配的所有结果</font>，但<font color=FF0000> 不会返回捕获组</font>。
 
@@ -2636,7 +2637,7 @@ throw 出去的异常将会被 catch 捕捉到，放（拼接）在 catch 的参
 new Error([message[, fileName[,lineNumber]]])
 ```
 
-**参数**
+###### 参数
 
 - **message：**可选。人类可阅读的错误描述信息。
 - **fileName：**⚠️可选。被创建的Error对象的fileName属性值。默认是调用Error构造器代码所在的文件 的名字。
@@ -5014,7 +5015,7 @@ fn(1, 2, 3, 4)
 
 - **arguments.callee：**指向参数所属的当前执行的函数。
 
-  > **注：**在严格模式下，第5版 ECMAScript (ES5) 禁止使用 arguments.callee()
+  > 💡 在严格模式下，第5版 ECMAScript ( ES5 ) 禁止使用 `arguments.callee()`
   >
   > 详见：[MDN - arguments.callee](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/arguments/callee)
 
@@ -5082,7 +5083,7 @@ myObject = myFunction.call(myObject, 10, 2);     // 返回 20
 
 在 JavaScript <font color=FF0000>严格模式(strict mode)下</font>, 在<font color=FF0000>调用函数时第一个参数会成为 **this** 的值</font>， 即使该参数不是一个对象。
 
-在 JavaScript <font color=FF0000>非严格模式(non-strict mode)下</font>, <font color=FF0000>如果第一个参数的值是 null 或 undefined</font>, 它<font color=FF0000>将使用全局对象替代</font>。
+在 JavaScript <font color=FF0000>非严格模式(non-strict mode)下</font>, <font color=FF0000>如果第一个参数的值是 null 或 undefined</font>, 它<font color=FF0000>将使用全局对象替代</font>
 
 注意：通过 call() 或 apply() 方法你可以设置 **this** 的值, 且作为已存在对象的新方法调用。
 
@@ -11917,7 +11918,7 @@ class AbstractClass {
 
 > 💡 一点补充
 >
-> 在看 [在vue中为什么不推荐用 index 做 key](http://zoo.zhengcaiyun.cn/blog/article/vue-index) （笔记见 [[Vue原理与实现#《在vue中为什么不推荐用 index 做 key》笔记]]）时，最后推荐可以使用 UUID 或者 symbol 作为 key；确实让人耳目一新；不过不确定是否可行，就去问了群友；群友在说 symbol 不合适的原因（symbol 正常情况下无法被遍历到）时，说了这样一句话：
+> 在看 [在vue中为什么不推荐用 index 做 key](http://zoo.zhengcaiyun.cn/blog/article/vue-index) （笔记见 [[Vue原理与实现#《在vue中为什么不推荐用 index 做 key》笔记]]）时，最后推荐可以使用 UUID 或者 symbol 作为 key；思路有点新奇，确实让人耳目一新...不过不确定是否可行，就去问了群友；群友在说 symbol 不合适的原因（symbol 正常情况下无法被遍历到）时，说了这样一句话：
 >
 > > 印象里 symbol 本来设计的时候是打算实现私有属性的
 >
@@ -11927,9 +11928,9 @@ class AbstractClass {
 > >
 > > 摘自：[现代JS教程 - symbol 类型 # “隐藏”属性](https://zh.javascript.info/symbol#yin-cang-shu-xing)
 
-<font color=FF0000>**symbol 是一种基本数据类型**</font> ( primitive data type )（ 👀 这里翻译成 “原始数据类型” 更好些）。<font color=red>`Symbol()` 函数会返回 symbol 类型的值，该类型具有静态属性和静态方法</font>。它的静态属性会暴露几个内建的成员对象；它的静态方法会暴露全局的 symbol 注册，且类似于内建对象类，但<font color=FF0000>**作为构造函数来说它并不完整，因为它不支持语法：`new Symbol()`**</font>（ 👀 下面有示例代码）。
+<font color=FF0000>**symbol 是一种基本数据类型**</font> ( primitive data type )（ 💡 这里翻译成 “原始数据类型” 更好些）。<font color=red>`Symbol()` 函数会返回 symbol 类型的值，该类型具有静态属性和静态方法</font>。它的静态属性会暴露几个内建的成员对象，它的静态方法会暴露全局的 symbol 注册，且类似于内建对象类，但<font color=FF0000>**作为构造函数来说它并不完整，因为它不支持语法：`new Symbol()`**</font>（ 💡 因为 Symbol 不能使用 `new` 生成，下面 [[#带有 new 运算符的语法将抛出 TypeError 错误]] 有示例代码）。
 
-每个从 `Symbol()` 返回的 symbol值都是唯一的。<font color=FF0000>**一个 symbol值能作为对象属性的标识符**</font>（ 👀 示例如下）；这是该数据类型仅有的目的。
+每个从 `Symbol()` 返回的 symbol 值都是唯一的。<font color=FF0000>**一个 symbol 值能作为对象属性的标识符**</font>（ 👀 示例如下）；这是该数据类型仅有的目的。
 > 💡 **补充**
 >
 > > ```js
@@ -11964,9 +11965,9 @@ Symbol([description])
 
 ###### 参数
 
-**description：**可选，字符串类型。对 symbol 的描述，可用于调试但不是访问 symbol 本身。
+**`description`：**可选，字符串类型。对 symbol 的描述，可用于调试但不是访问 symbol 本身。
 
-**描述**
+##### 描述
 
 直接使用 `Symbol()` 创建新的 symbol 类型，并<font color=FF0000>用一个可选的字符串作为其描述</font>。
 
@@ -11976,29 +11977,29 @@ var sym2 = Symbol('foo');
 var sym3 = Symbol('foo');
 ```
 
-上面的代码创建了三个新的 symbol 类型。 注意，`Symbol("foo")` 不会强制将字符串 “foo” 转换成 symbol 类型。它每次都会创建一个新的 symbol 类型：
+上面的代码创建了三个新的 symbol 类型。 ⚠️ 注意，`Symbol("foo")` 不会强制将字符串 “foo” 转换成 symbol 类型。它每次都会创建一个新的 symbol 类型：
 
 ```js
 Symbol("foo") === Symbol("foo"); // false
 ```
 
-###### 下面带有 new 运算符的语法将抛出 TypeError 错误
+###### 带有 new 运算符的语法将抛出 TypeError 错误
 
 ```js
 var sym = new Symbol(); // TypeError
 ```
 
-这会阻止创建一个显式的 Symbol 包装器对象而不是一个 Symbol 值。<font color=FF0000>**围绕原始数据类型创建一个显式包装器对象从 ECMAScript 6 开始不再被支持**</font>。 然而，<font color=LightSeaGreen>现有的原始包装器对象，如 `new Boolean`、`new String` 以及 `new Number`，因为遗留原因仍可被创建</font>。
+这会阻止创建一个显式的 Symbol 包装器对象而不是一个 Symbol 值。<font color=fuchsia>**围绕原始数据类型创建一个显式包装器对象从 ECMAScript 6 开始不再被支持**</font>。 然而，<font color=LightSeaGreen>现有的原始包装器对象，如 `new Boolean`、`new String` 以及 `new Number`，因为遗留原因仍可被创建</font>。
 
 ###### 全局共享的 Symbol
 
 > 💡 在 [现代 JS 教程 - symbol 类型 # 全局 symbol](https://zh.javascript.info/symbol#quan-ju-symbol) 中， 被直接成为 “全局 symbol”
 
-上面<font color=LightSeaGreen>使用 `Symbol()` 函数的语法</font>，<font color=FF0000 size=4>**不会**</font> <font color=LightSeaGreen>在你的整个代码库中创建一个可用的全局的 symbol 类型</font>。 <font color=fuchsia>要创建跨文件可用的 symbol，甚至跨域（每个都有它自己的全局作用域）</font>，<font color=fuchsia>**使用 `Symbol.for()` 方法和 `Symbol.keyFor()` 方法从 <font size=4>全局的 symbol注册表</font> 设置和取得 symbol**</font>。
+上面<font color=LightSeaGreen>使用 `Symbol()` 函数的语法</font>，<font color=FF0000 size=4>**不会**</font> <font color=LightSeaGreen>在你的整个代码库中创建一个可用的全局的 symbol 类型</font>。 <font color=dodgerBlue>**要创建跨文件可用的 symbol，甚至跨域（每个都有它自己的全局作用域）**</font>，<font color=fuchsia>**使用 `Symbol.for()` 方法和 `Symbol.keyFor()` 方法从 <font size=4>全局的 symbol注册表</font> 设置和取得 symbol**</font>。
 
 ###### 在对象中查找 Symbol 属性
 
-`Object.getOwnPropertySymbols()` 方法让你在查找一个给定对象的符号属性时返回一个 symbol 类型的数组。注意，每个初始化的对象都是没有自己的 symbol 属性的，因此这个数组可能为空，除非你已经在对象上设置了 symbol 属性。
+`Object.getOwnPropertySymbols()` 方法让你在查找一个给定对象的符号属性时返回一个（元素属性为） symbol 类型的数组。⚠️ 注意，每个初始化的对象都是没有自己的 symbol 属性的，因此这个数组可能为空，除非你已经在对象上设置了 symbol 属性。
 
 ##### 属性
 
@@ -12020,30 +12021,31 @@ var sym = new Symbol(); // TypeError
 
 ###### 实例方法
 
-- **`Symbol.prototype.toSource`**：返回该 Symbol 对象的源代码。该方法重写了 `Object.prototype.toSource` 方法
 - **`Symbol.prototype.toString`** ：返回一个包含着该 Symbol 对象描述的字符串。该方法重写了 `Object.prototype.toString` 方法
 - **`Symbol.prototype.valueOf`**：返回该 Symbol 对象。该方法重写了 `Symbol.prototype.valueOf` 方法
 - **`Symbol.prototype[@@toPrimitive]`**：返回该 Symbol 对象。
 
 ##### 其他细节
 
-- well-known symbols 的类型
-  
-  ```js
-  typeof Symbol.iterator === 'symbol'
-  typeof Symbol.asyncIterator === 'symbol'
-  // 其他的略
-  ```
-  
-- **Symbols 与 `JSON.stringify()`**
+###### well-known symbols 的类型
 
-  当 <font color=FF0000 size=4>**使用 `JSON.stringify()` 时，以 symbol 值作为键的属性会被完全忽略**</font>：
+```js
+typeof Symbol.iterator === 'symbol'
+typeof Symbol.asyncIterator === 'symbol'
+// 其他的略
+```
 
-  ```js
-  JSON.stringify({[Symbol("foo")]: "foo"}); // '{}'
-  ```
-  
-  > 💡也可以参考 [MDN - JSON.stringify() # 描述](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#%E6%8F%8F%E8%BF%B0) 中的内容
+###### Symbols 与 `JSON.stringify()`
+
+当 <font color=fuchsia>**使用 `JSON.stringify()` 时，以 symbol 值作为键的属性会被完全忽略**</font>：
+
+```js
+JSON.stringify({[Symbol("foo")]: "foo"}); // '{}'
+```
+
+> 💡 按照 《你不知道的 JavaScript》中卷 - 4.2.1 ToString # JSON 字符串化 的说法：symbol 不是 json-safe 的，即：不是 “安全的 JSON 值”
+>
+> 也可以参考 [MDN - `JSON.stringify()` # 描述](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#%E6%8F%8F%E8%BF%B0) 中的内容
 
 摘自：[MDN - Symbol](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
 
@@ -12105,19 +12107,20 @@ var sym = new Symbol(); // TypeError
 >
 >  摘自：[阮一峰 ECMAScript 6 (ES6) 标准入门教程 第三版 - Symbol - 8. 内置的 Symbol 值](https://es6.ruanyifeng.com/#docs/symbol#内置的-Symbol-值)
 >
->  > 👀 看了下 [EMCA262 doc # well-known symbols](https://tc39.es/ecma262/#sec-well-known-symbols) 部分的文档，是13个 symbol；不知道是不是写书时比较早？
+>  > 💡 看了下 [EMCA262 doc # well-known symbols](https://tc39.es/ecma262/#sec-well-known-symbols) 部分的文档，是13个 symbol；不知道是不是写书时比较早？
 >
->  > 这些内置的 Symbol 值被称为 well-known symbols（常用内置符号）。另外，<font color=FF0000 size=4>**`Symbol.` 可以简写为 `@@`**</font>
+>  > 这些内置的 Symbol 值被称为 well-known symbols（常用内置符号）。另外，<font color=fuchsia>**`Symbol.` 可以简写为 `@@`**</font>
+>  >
+>  > 学习自：[Detailed Overview of Well-known Symbols](https://dmitripavlutin.com/detailed-overview-of-well-known-symbols/)
 >
->  摘自：[Detailed Overview of Well-known Symbols](https://dmitripavlutin.com/detailed-overview-of-well-known-symbols/)
 
-在 说明 Symbol 各值之前，说一些共性：Symbol 值的对象属性描述符 (writable、enumerable、configurable) 均为 false：
+在 说明 Symbol 各值之前，说一些共性：<font color=fuchsia>Symbol 值的对象属性描述符 ( `writable`、`enumerable`、`configurable` ) 均为 false</font>：
 
-| Symbol值的属性特性： | 值    |
-| :------------------- | ----- |
-| writable             | false |
-| enumerable           | false |
-| configurable         | false |
+| Symbol 值的属性特性： | 值    |
+| :-------------------- | ----- |
+| writable              | false |
+| enumerable            | false |
+| configurable          | false |
 
 ##### Symbol.iterator
 
@@ -12125,7 +12128,7 @@ var sym = new Symbol(); // TypeError
 
 当需要对一个对象进行迭代时（比如开始用于一个 `for...of` 循环中），它的 `@@iterator` 方法都会在不传参情况下被调用，返回的迭代器用于获取要迭代的值。
 
-<font color=FF0000>一些内置类型拥有默认的迭代器行为，其他类型（如 Object）则没有</font>。下表中的内置类型拥有默认的 `@@iterator` 方法：`Array.prototype[@@iterator]()` 、`TypedArray.prototype[@@iterator]()`、`String.prototype[@@iterator]()` 、`Map.prototype[@@iterator]()` 、`Set.prototype[@@iterator]()`
+<font color=FF0000>一些内置类型拥有默认的迭代器行为，其他类型（如 Object）则没有</font>。<font color=dodgerBlue>下表中的内置类型拥有默认的 `@@iterator` 方法</font>：`Array.prototype[@@iterator]()` 、`TypedArray.prototype[@@iterator]()`、`String.prototype[@@iterator]()` 、`Map.prototype[@@iterator]()` 、`Set.prototype[@@iterator]()`
 
 摘自：[MDN - Symbol.iterator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/iterator)
 
@@ -12137,17 +12140,33 @@ var sym = new Symbol(); // TypeError
 
 `Symbol.asyncIterator` 是一个用于访问对象的 `@@asyncIterator` 方法的 <font color=FF0000>内建符号</font>。<font color=FF0000>一个异步可迭代对象 <font size=4>**必须**</font> 要有 `Symbol.asyncIterator` 属性</font>。
 
-**内建异步可迭代对象：**<font color=FF0000>目前没有默认设定了 `[Symbol.asyncIterator]` 属性的JavaScript内建的对象</font>。不过，<font color=LightSeaGreen>WHATWG（网页超文本应用技术工作小组）Streams会被设定为第一批异步可迭代对象，`[Symbol.asyncIterator]` 最近已在设计规范中落地</font>。
+**内建异步可迭代对象：**<font color=FF0000>目前没有默认设定了 `[Symbol.asyncIterator]` 属性的 JavaScript 内建的对象</font>。不过，<font color=LightSeaGreen>WHATWG（网页超文本应用技术工作小组）Streams会被设定为第一批异步可迭代对象，`[Symbol.asyncIterator]` 最近已在设计规范中落地</font>。
 
 摘自：[MDN - Symbol.asyncIterator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/asyncIterator)
 
 ##### Symbol.species
 
-Symbol.species 是个 “函数值属性” ，其被构造函数用以创建派生对象。
+`Symbol.species` 是个 “函数值属性” ，其被构造函数用以创建派生对象。
 
 ###### 描述
 
-species 访问器属性 <font color=FF0000 size=4>**允许 子类覆盖对象的默认构造函数**</font>。
+species 访问器属性 <font color=fuchsia size=4>**允许 子类覆盖对象的默认构造函数**</font>。
+
+###### 示例
+
+你可能想在扩展数组类 `MyArray` 上返回 `Array` 对象。例如，当使用例如 `map()` 这样的方法返回默认的构造函数时，你希望这些方法能够返回父级的 Array 对象，以取代 `MyArray` 对象。`Symbol.species` 允许你这么做：
+
+```js
+class MyArray extends Array {
+  // 覆盖 species 到父级的 Array 构造函数上
+  static get [Symbol.species]() { return Array; /* ⚠️ 重点 */ }
+}
+var a = new MyArray(1,2,3);
+var mapped = a.map(x => x * x);
+
+console.log(mapped instanceof MyArray); // false
+console.log(mapped instanceof Array);   // true
+```
 
 > 👀 具体使用参见补充的 [[#`get Array[@@species]`]]
 
@@ -12167,21 +12186,39 @@ Array[Symbol.species]
 
 ###### 返回值
 
-<font color=FF0000>Array 的构造函数</font>。
+`get @@species` 被调用的构造函数 (`this`) 的值。该返回值用于构造创建新数组的数组方法的返回值。
 
 ###### 描述
 
-species 访问器属性返回 Array 对象的默认构造函数。<font color=FF0000>子类的构造函数可能会覆盖并改变构造函数的赋值</font>。
+`@@species` 访问器属性返回 Array 对象的默认构造函数。<font color=FF0000>子类的构造函数可能会覆盖并改变构造函数的赋值</font>。默认实现基本上是这样的：
+
+```js
+// 以下是一个用于说明的假设底层实现
+class Array {
+  static get [Symbol.species]() {
+    return this;
+  }
+}
+```
+
+由于这种多态实现，派生子类的 `@@species` 默认情况下也会返回构造函数本身。
+
+````js
+class SubArray extends Array {}
+SubArray[Symbol.species] === SubArray; // true
+````
 
 ###### 示例
 
-species 属性返回默认构造函数，它用于 Array 对象的构造函数 Array：
+`@@species` 属性返回默认构造函数，它用于 Array 对象的构造函数 Array：
 
 ```js
 Array[Symbol.species]; // function Array()
 ```
 
-在继承类的对象中（例如你自定义的数组 MyArray ），MyArray 的 species 属性返回的是 MyArray 这个构造函数. 然而你可能想要覆盖它，以便在你继承的对象 MyArray 中返回父类的构造函数 Array :
+> 💡 `Array[Symbol.species] === Array` 为 `true`
+
+在继承类的对象中（例如你自定义的数组 `MyArray` ），`MyArray` 的 `species` 属性返回的是 `MyArray` 这个构造函数. 然而你可能想要覆盖它，以便在你继承的对象 MyArray 中返回父类的构造函数 Array :
 
 ```js
 class MyArray extends Array {
@@ -12192,13 +12229,13 @@ class MyArray extends Array {
 
 > 👀 这里的示例使用场景，参看 [现代JS教程 - 扩展内建类](https://zh.javascript.info/extend-natives)
 
-摘自：[MDN - get Array[@@species]](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/@@species)
+摘自：[MDN - `Array[@@species]`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/@@species)
 
 **类似的还有：**`get Map[@@species] `、`get Set[@@species]` 、`get TypedArray[@@species]` 、`get ArrayBuffer[@@species]` 、`get RegExp[@@species]`
 
 ##### Symbol.match
 
-`Symbol.match` <font color=FF0000>指定了 匹配的是 正则表达式 而不是 字符串</font>。<font color=FF0000>**`String.prototype.match()` 方法会调用此函数**</font>。示例如下：
+`Symbol.match` <font color=fuchsia>指定了 匹配的是 **正则表达式** 而不是 字符串</font>。<font color=FF0000>**`String.prototype.match()` 方法会调用此函数**</font>。示例如下：
 
 ```js
 const regexp1 = /foo/;
@@ -12207,7 +12244,7 @@ const regexp1 = /foo/;
 // expected output (Firefox): Error: Invalid type: first can't be a Regular Expression
 // expected output (Safari): Error: Argument to String.prototype.startsWith cannot be a RegExp
 
-regexp1[Symbol.match] = false; // 注：经过测试发现，如果regexp1[Symbol.match]不设置为false（默认值 或 设置为true），下面运行时均会报错
+regexp1[Symbol.match] = false; // 👀 经过测试发现，如果 regexp1[Symbol.match] 不设置为 false（默认值 或 设置为true），下面运行时均会报错
 
 console.log('/foo/'.startsWith(regexp1)); // expected output: true
 console.log('/baz/'.endsWith(regexp1)); // expected output: false
@@ -12437,7 +12474,7 @@ console.log(alphaNumeric); // expected output: Array ["a", "b", "c", Array [1, 2
 
 `@@isConcatSpreadable` 符号 ( `Symbol.isConcatSpreadable` ) <font color=FF0000>可以直接定义为 对象属性 或 继承而来，它是 **布尔类型**</font>。它 <font color=FF0000>可以控制 数组 或 类似数组 (array-like) 的对象的行为</font>：
 
-- 对于数组对象，默认情况下：用于concat时，会按数组元素展开然后进行连接（数组元素作为新数组的元素）。重置`Symbol.isConcatSpreadable` 可以改变默认行为。
+- 对于数组对象，默认情况下：用于 concat 时，会按数组元素展开然后进行连接（数组元素作为新数组的元素）。重置`Symbol.isConcatSpreadable` 可以改变默认行为。
 
 - 对于类似数组的对象，用于 concat 时，该对象整体作为新数组的元素，重置 `Symbol.isConcatSpreadable` 可改变默认行为。如下
 
@@ -12503,17 +12540,17 @@ Object.keys(Array.prototype[Symbol.unscopables]);
 >
 > ```js
 > [Object: null prototype] {
->   copyWithin: true,
->   entries: true,
->   fill: true,
->   find: true,
->   findIndex: true,
->   flat: true,
->   flatMap: true,
->   includes: true,
->   keys: true,
->   values: true,
->   at: true
+>     copyWithin: true,
+>     entries: true,
+>     fill: true,
+>     find: true,
+>     findIndex: true,
+>     flat: true,
+>     flatMap: true,
+>     includes: true,
+>     keys: true,
+>     values: true,
+>     at: true
 > }
 > ```
 >
