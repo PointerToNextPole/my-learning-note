@@ -1766,7 +1766,23 @@ arr.fill(value[, start[, end]])
 
 #### Array.prototype.copyWithin()
 
-copyWithin() 方法<font color=FF0000>浅复制</font>数组的一部分到同一数组中的另一个位置，并返回它，<font color=FF0000>不会改变原数组的长度</font>。
+copyWithin() 方法 <font color=FF0000>**浅复制**</font>数组的一部分到同一数组中的另一个位置，并返回它，<font color=FF0000>不会改变原数组的长度</font>。
+
+##### 简单示例
+
+> 👀 太久不用该方法也不好久没看相关文档，有点不明所以，很容易懵的；建议下看下下面代码注释与结果
+
+````js
+const array1 = ['a', 'b', 'c', 'd', 'e'];
+
+// Copy to index 0 the element at index 3
+console.log(array1.copyWithin(0, 3, 4));
+// Expected output: Array ["d", "b", "c", "d", "e"]
+
+// Copy to index 1 all elements from index 3 to the end
+console.log(array1.copyWithin(1, 3));
+// Expected output: Array ["d", "d", "e", "d", "e"]
+````
 
 ##### 语法
 
@@ -1776,19 +1792,19 @@ arr.copyWithin(target[, start[, end]])
 
 ###### 参数
 
-- **target：**0 为基底的索引，复制序列到该位置。<font color=FF0000>如果是负数，target 将从末尾开始计算</font>
+- **target** ：0 为基底的索引，复制序列到该位置。<font color=FF0000>如果是负数，target 将从末尾开始计算</font>
 
-  > 💡 自我补充
+  > 💡 补充
   >
-  > <font color=dodgerBlue>**经过实验**</font>，如果target为负数，且范围在 `[-arr.length, -1] `，target 会变成 target + arr.length；而如果 target 为负数，且小于 -arr.length，则不作任何操作）。
+  > <font color=dodgerBlue>**经过实验**</font>，如果 `target` 为负数，且范围在 `[-arr.length, -1] `，target 会变成 target + arr.length；而如果 `target` 为负数，且小于 `-arr.length` ，则不作任何操作）。
 
   <font color=FF0000>如果 target 大于等于 arr.length，将会不发生拷贝</font>。如果 target 在 start 之后，复制的序列将被修改以符合 `arr.length` 。
 
-- **start：**0 为基底的索引，开始复制元素的起始位置。如果是负数，start 将从末尾开始计算。如果 start 被忽略，copyWithin 将会从0开始复制。<font color=FF0000>即：默认为0</font>。而如果start为负数，且小于 `-arr.length`，则不作任何操作
+- **start** ：0 为基底的索引，开始复制元素的起始位置。如果是负数，start 将从末尾开始计算。如果 start 被忽略，copyWithin 将会从0开始复制。<font color=FF0000>即：默认为0</font>。而如果start为负数，且小于 `-arr.length`，则不作任何操作
 
-- **end：**0 为基底的索引，开始复制元素的结束位置。copyWithin 将会拷贝到该位置，但<font color=FF0000>不包括 end 这个位置的元素</font>。如果是负数， end 将从末尾开始计算。如果 end 被忽略，copyWithin 方法将会一直复制至数组结尾（默认为 `arr.length` ）。<font color=FF0000>即：默认为arr.length</font>。而如果end为负数，且小于 `-arr.length` ，则不作任何操作
+- **end** ：0 为基底的索引，开始复制元素的结束位置。copyWithin 将会拷贝到该位置，但<font color=FF0000>不包括 end 这个位置的元素</font>。如果是负数， end 将从末尾开始计算。如果 end 被忽略，copyWithin 方法将会一直复制至数组结尾（默认为 `arr.length` ）。<font color=FF0000>即：默认为 `arr.length`</font>。而如果 `end` 为负数，且小于 `-arr.length` ，则不作任何操作
 
-> 💡 自我补充
+> 💡 补充
 >
 > <font color=FF0000>经过实验</font>，[start, end)  是左闭右开。同时，会将索引从 target 开始到 `target + ( end - start - 1)` 的值，变成 `arr[start]` 到`arr[end]` 的值。如果 start >= end，则不进行操作
 
@@ -12235,24 +12251,31 @@ class MyArray extends Array {
 
 ##### Symbol.match
 
-`Symbol.match` <font color=fuchsia>指定了 匹配的是 **正则表达式** 而不是 字符串</font>。<font color=FF0000>**`String.prototype.match()` 方法会调用此函数**</font>。示例如下：
+`Symbol.match` <font color=fuchsia>指定了 匹配的是 **正则表达式** 而不是 字符串</font>。<font color=FF0000>**`String.prototype.match()` 方法会调用此函数**</font>。
 
-```js
-const regexp1 = /foo/;
-// console.log('/foo/'.startsWith(regexp1));
-// expected output (Chrome): Error: First argument to String.prototype.startsWith must not be a regular expression
-// expected output (Firefox): Error: Invalid type: first can't be a Regular Expression
-// expected output (Safari): Error: Argument to String.prototype.startsWith cannot be a RegExp
 
-regexp1[Symbol.match] = false; // 👀 经过测试发现，如果 regexp1[Symbol.match] 不设置为 false（默认值 或 设置为true），下面运行时均会报错
-
-console.log('/foo/'.startsWith(regexp1)); // expected output: true
-console.log('/baz/'.endsWith(regexp1)); // expected output: false
-```
 
 ###### 描述
 
-此函数还用于标识对象是否具有正则表达式的行为。<font color=FF0000>比如，`String.prototype.startsWith()` ，`String.prototype.endsWith()` 和 `String.prototype.includes()` **这些方法会检查其第一个参数是否是正则表达式，是正则表达式就抛出一个 TypeError**</font>。现在，<font color=FF0000>如果 match symbol 设置为 false（ <font size=4>**或者一个 假值 falsy**</font> ）</font>，就表示该对象不打算用作正则表达式对象。
+此函数还用于标识对象是否具有正则表达式的行为。<font color=lightSeaGreen>比如，`String.prototype.startsWith()` ，`String.prototype.endsWith()` 和 `String.prototype.includes()` 这些方法</font> <font color=red>**会检查其第一个参数是否是正则表达式**</font>，<font color=fuchsia>**是正则表达式就抛出一个 TypeError**</font>。现在，<font color=FF0000>如果 `match` symbol 设置为 false（**或者一个 假值 falsy** ）</font>，就表示该对象不打算用作正则表达式对象。
+
+###### 示例如下
+
+下面代码会抛出一个 `TypeError`：
+
+```js
+"/bar/".startsWith(/bar/); // Throws TypeError
+// 因为 /bar/ 是一个正则表达式，且 Symbol.match 没有修改。
+```
+
+但是，如果你将 `Symbol.match` 置为 `false`，使用 `match` 属性的表达式检查会认为该对象不是正则表达式对象。`startsWith` 和 `endsWith` 方法将不会抛出 `TypeError`。
+
+```js
+var re = /foo/;
+re[Symbol.match] = false;
+"/foo/".startsWith(re); // true
+"/baz/".endsWith(re);   // false
+```
 
 摘自：[MDN - Symbol.match](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/match)
 
@@ -12573,7 +12596,7 @@ with(obj) {
 
 #### Symbol.for()
 
-Symbol.for(key) 方法会根据给定的键 key，来从运行时的 symbol 注册表中找到对应的 symbol，<font color=FF0000>如果找到了，则返回它</font>，<font color=FF0000>否则，新建一个与该键关联的 symbol，并放入全局 symbol 注册表中</font>。
+`Symbol.for(key)` 方法会根据给定的键 key，来从运行时的 symbol 注册表中找到对应的 symbol，<font color=FF0000>如果找到了，则返回它</font>，<font color=FF0000>否则，新建一个与该键关联的 symbol，并放入全局 symbol 注册表中</font>。
 
 ##### 语法
 
@@ -12587,11 +12610,11 @@ Symbol.for(key);
 
 ###### 返回值
 
-<font color=FF0000>返回由给定的 key 找到的 symbol，否则就是返回新创建的 symbol</font>。
+<font color=red>返回由 <font size=4>**给定的 key 找到的 symbol**</font></font>，<font color=dodgerBlue>否则</font> 就是 <font color=red size=4>返回新创建的 symbol</font>。
 
 ##### 描述
 
-和 <font color=FF0000>`Symbol()` 不同的是，（ `Symbol()` ）用 `Symbol.for()` 方法创建的的 symbol 会被放入一个全局 symbol 注册表中</font>。<font color=LightSeaGreen>`Symbol.for()` 并不是每次都会创建一个新的 symbol，它会首先检查给定的 key 是否已经在注册表中了。假如是，则会直接返回上次存储的那个。否则，它会再新建一个</font>。
+和 <font color=FF0000>`Symbol()` 不同的是，用 `Symbol.for()` 方法创建的的 symbol 会被放入一个全局 symbol 注册表中</font>。<font color=LightSeaGreen>`Symbol.for()` 并不是每次都会创建一个新的 symbol</font>，它<font color=red>**会首先检查给定的 key 是否已经在注册表中了**</font>。<font color=lightSeaGreen>假如是，则会直接返回上次存储的那个。否则，它会再新建一个</font>。
 
 ##### 全局 symbol 注册表
 
@@ -12626,7 +12649,9 @@ Symbol.for("mdn.bar");
 
 #### Symbol.keyFor()
 
-Symbol.keyFor(sym) 方法用来获取全局symbol 注册表中与某个 symbol 关联的键。
+`Symbol.keyFor(sym)` 方法用来获取 <font color=fuchsia>**全局 symbol**</font> 注册表中与某个 symbol 关联的键。
+
+> 👀 因为是 “全局 symbol”，所以 `Symbol(desc)` 生成的 symbol 作为参数传入 `Symbol.keyFor()` 只会是 undefined；而通过 `Symbol.for(desc)`  生成的 symbol 则可以
 
 ##### 语法
 
@@ -12642,21 +12667,27 @@ sym：必选参数，需要查找键值的某个 Symbol 。
 
 <font color=LightSeaGreen>如果全局注册表中查找到该 symbol，则返回该 symbol 的 key 值，返回值为字符串类型。否则返回 undefined</font>
 
-摘自：[MDN - Symbol.keyFor()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/keyFor)
-
-#### Symbol.prototype.description
-
-> 💡 ES2019
-
-description 是一个<font color=FF0000>只读属性</font>，它会返回 Symbol 对象的可选描述的字符串。
-
 ##### 示例
 
 ```js
-console.log(Symbol('desc').description); // expected output: "desc"
-console.log(Symbol.iterator.description); // expected output: "Symbol.iterator"
-console.log(Symbol.for('foo').description); // expected output: "foo"
+// 创建一个全局 Symbol
+var globalSym = Symbol.for("foo");
+Symbol.keyFor(globalSym); // "foo"
+
+var localSym = Symbol();
+Symbol.keyFor(localSym); // undefined，
+
+// 以下 Symbol 不是保存在全局 Symbol 注册表中
+Symbol.keyFor(Symbol.iterator) // undefined
 ```
+
+摘自：[MDN - `Symbol.keyFor()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/keyFor)
+
+#### Symbol.prototype.description
+
+> 💡 ES2019 feat
+
+description 是一个<font color=FF0000>只读属性</font>，它会返回 Symbol 对象的 <font color=lightSeaGreen>**可选描述** 的字符串</font>。
 
 ##### 语法
 
@@ -12668,7 +12699,26 @@ Symbol.for('foo').description;
 
 ##### 描述
 
-Symbol 对象可以通过一个可选的描述创建，可用于调试，但不能用于访问 symbol 本身。Symbol.prototype.description 属性可以用于读取该描述。与 Symbol.prototype.toString() 不同的是它不会包含 "Symbol()" 的字符串。
+Symbol 对象可以通过一个可选的描述创建，可用于调试，但不能用于访问 symbol 本身。
+
+`Symbol.prototype.description` 属性可以用于读取该描述。<font color=red>与 `Symbol.prototype.toString()` 不同的是它不会包含 "Symbol()" 的字符串</font>。
+
+##### 示例
+
+```js
+Symbol('desc').toString();   // "Symbol(desc)"
+Symbol('desc').description;  // "desc"
+Symbol('').description;      // ""
+Symbol().description;        // undefined
+
+// 内置通用（well-known）symbol
+Symbol.iterator.toString();  // "Symbol(Symbol.iterator)"
+Symbol.iterator.description; // "Symbol.iterator"
+
+// global symbols
+Symbol.for('foo').toString();  // "Symbol(foo)"
+Symbol.for('foo').description; // "foo"
+```
 
 摘自：[MDN - Symbol.prototype.description](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/description)
 
