@@ -12596,7 +12596,7 @@ with(obj) {
 
 #### Symbol.for()
 
-`Symbol.for(key)` 方法会根据给定的键 key，来从运行时的 symbol 注册表中找到对应的 symbol，<font color=FF0000>如果找到了，则返回它</font>，<font color=FF0000>否则，新建一个与该键关联的 symbol，并放入全局 symbol 注册表中</font>。
+`Symbol.for(key)` 方法会<font color=red>根据给定的键 key，来从运行时的 symbol 注册表中找到对应的 symbol</font>，<font color=dodgerBlue>如果找到了</font>，<font color=red>**则返回它**</font>，<font color=dodgerBlue>否则</font>，<font color=red>新建一个与该键关联的 symbol，**并放入全局 symbol 注册表中**</font>。
 
 ##### 语法
 
@@ -12614,7 +12614,7 @@ Symbol.for(key);
 
 ##### 描述
 
-和 <font color=FF0000>`Symbol()` 不同的是，用 `Symbol.for()` 方法创建的的 symbol 会被放入一个全局 symbol 注册表中</font>。<font color=LightSeaGreen>`Symbol.for()` 并不是每次都会创建一个新的 symbol</font>，它<font color=red>**会首先检查给定的 key 是否已经在注册表中了**</font>。<font color=lightSeaGreen>假如是，则会直接返回上次存储的那个。否则，它会再新建一个</font>。
+和 <font color=dodgerBlue>`Symbol()` 不同的是</font>，用 <font color=red>`Symbol.for()` 方法创建的的 symbol 会被放入一个全局 symbol 注册表中</font>。<font color=LightSeaGreen>`Symbol.for()` 并不是每次都会创建一个新的 symbol</font>，它 <font color=red>会首先检查给定的 key 是否已经在注册表中了</font>。<font color=lightSeaGreen>假如是，则会直接返回上次存储的那个。否则，它会再新建一个</font>。
 
 ##### 全局 symbol 注册表
 
