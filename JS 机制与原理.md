@@ -2792,18 +2792,18 @@ function deepClone(obj) {
 
 ```js
 function deepClone(obj, hash = new WeakMap()) {
-    if (hash.has(obj)) { return obj; } // 注：hash 中存在的，则直接返回
+    if (hash.has(obj)) { return obj; } // 👀 hash 中存在的，则直接返回
     let res = null;
   
     const reference = [Date, RegExp, Set, WeakSet, Map, WeakMap, Error];
-    if (reference.includes(obj?.constructor)) { // 注：属于 reference 的，都返回构造的对象
+    if (reference.includes(obj?.constructor)) { // 👀 属于 reference 的，都返回构造的对象
         res = new obj.constructor(obj);
-    } else if (Array.isArray(obj)) { // 注：数组处理
+    } else if (Array.isArray(obj)) { // 👀 数组处理
         res = [];
         obj.forEach((e, i) => {
             res[i] = deepClone(e);
         });
-    } else if (typeof obj === "object" && obj !== null) { // 注：object 处理
+    } else if (typeof obj === "object" && obj !== null) { // 👀 object 处理
         hash.set(obj);
         res = {};
         for (const key in obj) {
@@ -2971,9 +2971,9 @@ function type(obj) {
 
 ##### plainObject
 
-plainObject 来自于 jQuery，可以翻译成<font color=lightSeaGreen>纯粹的对象，所谓“纯粹的对象”</font>，就是<font color=FF0000>该对象是 **通过 `{}` 或 `new Object` 创建的**，该对象含有零个或者多个键值对</font>。
+plainObject（ 👀 也被称为 plain object ）来自于 jQuery，可以翻译成<font color=lightSeaGreen>纯粹的对象，所谓“纯粹的对象”</font>，就是<font color=FF0000>该对象是 **通过 `{}` 或 `new Object` 创建的**，该对象含有零个或者多个键值对</font>。
 
-之所以要判断是不是 plainObject，是为了跟其他的 JavaScript对象如 null，数组，宿主对象（documents）等作区分，因为这些用 typeof 都会返回object。
+之所以要判断是不是 plainObject，是为了跟其他的 JavaScript 对象如 null，数组，宿主对象（documents）等作区分，因为这些用 typeof 都会返回 object。
 
 jQuery 提供了 isPlainObject 方法进行判断，先让我们看看使用的效果：
 
@@ -2990,11 +2990,74 @@ console.log( $.isPlainObject( new Person('yayu') ))              // false
 console.log( $.isPlainObject( Object.create({}) ))               // false
 ```
 
-由此我们可以看到，除了 {} 和 new Object 创建的之外，jQuery 认为 <font color=FF0000>**一个没有原型的对象也是一个纯粹的对象**</font>。
+> 💡或者 `{ __proto__: null }`
+
+由此我们可以看到，除了 `{}` 和 `new Object` 创建的之外，jQuery 认为 <font color=FF0000>**一个没有原型的对象也是一个纯粹的对象**</font>
+
+> 💡 如下示例：
+>
+> ```js
+> let obj = {};
+> 
+> let key = prompt("What's the key?", "__proto__"); // 如果用户输入的是 "__proto__"，或直接使用默认值，第四行的赋值会被忽略
+> obj[key] = "some value";
+> 
+> alert(obj[key]); // [object Object]，并不是 "some value"！
+> ```
+>
+> 出现上面情况的原因是：<font color=fuchsia>`__proto__` 属性很特殊：它 <font size=4>**必须是一个对象或者 `null`**</font></font>。
+>
+> 解决方法有两种：
+>
+> ###### 使用 Map 来替代普通对象
+>
+> ```js
+> let map = new Map();
+> 
+> let key = prompt("What's the key?", "__proto__");
+> map.set(key, "some value");
+> 
+> alert(map.get(key)); // "some value"（符合预期）
+> ```
+>
+> 但 `Object` 语法通常更吸引人，因为它更简洁。这就引出下面的方法
+>
+> ##### 使用 plain object
+>
+> ```js
+> let obj = Object.create(null);
+> // 或者：obj = { __proto__: null }
+> 
+> let key = prompt("What's the key?", "__proto__");
+> obj[key] = "some value";
+> 
+> alert(obj[key]); // "some value"
+> ```
+>
+> `Object.create(null)` 创建了一个空对象，这个对象没有原型（`[[Prototype]]` 是 `null`）：
+>
+> ```mermaid
+> classDiagram
+> null <|-- obj : [[prototype]]
+> ```
+>
+> 因此，它没有继承 `__proto__` 的 getter/setter 方法。现在，它被作为正常的数据属性进行处理，因此上面的这个示例能够正常工作。
+>
+> 我们可以把这样的对象称为 “very plain” 或 “pure dictionary” 对象，因为它们甚至比通常的普通对象（plain object）`{...}` 还要简单。
+>
+> <font color=dodgerBlue>缺点</font>是 <font color=red>这样的对象没有任何内建的对象的方法</font>，例如 `toString`：
+>
+> ```js
+> let obj = Object.create(null);
+> 
+> alert(obj); // Error (no toString)
+> ```
+>
+> 摘自：[现代 JS 教程 - 原型方法，没有 `__proto__` 的对象 # "Very plain" objects](https://zh.javascript.info/prototype-methods#very-plain)
 
 源码实现，有些复杂，略。// TODO 有空还是要看下
 
->💡 不过，看 Vue2 的源码，发现 Vue 2.7.14 中 `src/shared/util.ts` 的 `isPlainObject` 实现就是：判断 `Object.prototype.toString.call(obj) === '[object Object]'` 为 true 还是 false
+>💡 看 Vue2 的源码，发现 Vue 2.7.14 中 `src/shared/util.ts` 的 `isPlainObject` 实现就是：判断 `Object.prototype.toString.call(obj) === '[object Object]'` 为 true 还是 false
 
 ##### EmptyObject
 

@@ -12156,7 +12156,9 @@ JSON.stringify({[Symbol("foo")]: "foo"}); // '{}'
 
 `Symbol.asyncIterator` 是一个用于访问对象的 `@@asyncIterator` 方法的 <font color=FF0000>内建符号</font>。<font color=FF0000>一个异步可迭代对象 <font size=4>**必须**</font> 要有 `Symbol.asyncIterator` 属性</font>。
 
-**内建异步可迭代对象：**<font color=FF0000>目前没有默认设定了 `[Symbol.asyncIterator]` 属性的 JavaScript 内建的对象</font>。不过，<font color=LightSeaGreen>WHATWG（网页超文本应用技术工作小组）Streams会被设定为第一批异步可迭代对象，`[Symbol.asyncIterator]` 最近已在设计规范中落地</font>。
+###### 内建异步可迭代对象
+
+<font color=FF0000>目前没有默认设定了 `[Symbol.asyncIterator]` 属性的 JavaScript 内建的对象</font>。不过，<font color=LightSeaGreen>WHATWG（网页超文本应用技术工作小组）Streams会被设定为第一批异步可迭代对象，`[Symbol.asyncIterator]` 最近已在设计规范中落地</font>。
 
 摘自：[MDN - Symbol.asyncIterator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/asyncIterator)
 
@@ -12202,7 +12204,11 @@ Array[Symbol.species]
 
 ###### 返回值
 
-`get @@species` 被调用的构造函数 (`this`) 的值。该返回值用于构造创建新数组的数组方法的返回值。
+`get @@species` 被调用的构造函数 ( `this` ) 的值。该返回值用于构造创建新数组的数组方法的返回值。
+
+> 💡 原文
+>
+> The value of the constructor (`this`) on which `get @@species` was called. The return value is used to construct return values from array methods that create new arrays.
 
 ###### 描述
 
@@ -12232,7 +12238,7 @@ SubArray[Symbol.species] === SubArray; // true
 Array[Symbol.species]; // function Array()
 ```
 
-> 💡 `Array[Symbol.species] === Array` 为 `true`
+> 👀 即：`Array[Symbol.species] === Array` 为 `true`
 
 在继承类的对象中（例如你自定义的数组 `MyArray` ），`MyArray` 的 `species` 属性返回的是 `MyArray` 这个构造函数. 然而你可能想要覆盖它，以便在你继承的对象 MyArray 中返回父类的构造函数 Array :
 
@@ -12252,8 +12258,6 @@ class MyArray extends Array {
 ##### Symbol.match
 
 `Symbol.match` <font color=fuchsia>指定了 匹配的是 **正则表达式** 而不是 字符串</font>。<font color=FF0000>**`String.prototype.match()` 方法会调用此函数**</font>。
-
-
 
 ###### 描述
 
