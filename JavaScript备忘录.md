@@ -5045,7 +5045,7 @@ fn(1, 2, 3, 4)
 
 
 
-### JavaScript 函数调用
+#### JavaScript 函数调用
 
 <font color=FF0000>JavaScript 函数有 **4 种**调用方式</font>。每种方式的不同在于 **this** 的初始化。
 
@@ -12138,7 +12138,7 @@ JSON.stringify({[Symbol("foo")]: "foo"}); // '{}'
 | enumerable            | false |
 | configurable          | false |
 
-##### Symbol.iterator
+#### Symbol.iterator
 
 `Symbol.iterator` 为每一个对象定义了默认的迭代器。该迭代器可以被 `for...of` 循环使用。
 
@@ -12148,29 +12148,29 @@ JSON.stringify({[Symbol("foo")]: "foo"}); // '{}'
 
 摘自：[MDN - Symbol.iterator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/iterator)
 
-##### Symbol.asyncIterator
+#### Symbol.asyncIterator
 
 `Symbol.asyncIterator` 符号指定了一个对象的默认异步迭代器。<font color=FF0000>如果一个对象设置了这个属性，它就是异步可迭代对象，可用于 `for await ... of` 循环</font>。
 
-###### 描述
+##### 描述
 
 `Symbol.asyncIterator` 是一个用于访问对象的 `@@asyncIterator` 方法的 <font color=FF0000>内建符号</font>。<font color=FF0000>一个异步可迭代对象 <font size=4>**必须**</font> 要有 `Symbol.asyncIterator` 属性</font>。
 
-###### 内建异步可迭代对象
+##### 内建异步可迭代对象
 
 <font color=FF0000>目前没有默认设定了 `[Symbol.asyncIterator]` 属性的 JavaScript 内建的对象</font>。不过，<font color=LightSeaGreen>WHATWG（网页超文本应用技术工作小组）Streams会被设定为第一批异步可迭代对象，`[Symbol.asyncIterator]` 最近已在设计规范中落地</font>。
 
 摘自：[MDN - Symbol.asyncIterator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/asyncIterator)
 
-##### Symbol.species
+#### Symbol.species
 
 `Symbol.species` 是个 “函数值属性” ，其被构造函数用以创建派生对象。
 
-###### 描述
+##### 描述
 
 species 访问器属性 <font color=fuchsia size=4>**允许 子类覆盖对象的默认构造函数**</font>。
 
-###### 示例
+##### 示例
 
 你可能想在扩展数组类 `MyArray` 上返回 `Array` 对象。例如，当使用例如 `map()` 这样的方法返回默认的构造函数时，你希望这些方法能够返回父级的 Array 对象，以取代 `MyArray` 对象。`Symbol.species` 允许你这么做：
 
@@ -12192,11 +12192,11 @@ console.log(mapped instanceof Array);   // true
 
 > 💡 补充
 
-##### `get Array[@@species]`
+#### `get Array[@@species]`
 
 <font color=FF0000>**`Array[@@species]` 访问器属性**</font> <font color=FF0000>返回 Array 的 **构造函数**</font>。
 
-###### 语法
+##### 语法
 
 ```js
 Array[Symbol.species]
@@ -12210,7 +12210,7 @@ Array[Symbol.species]
 >
 > The value of the constructor (`this`) on which `get @@species` was called. The return value is used to construct return values from array methods that create new arrays.
 
-###### 描述
+##### 描述
 
 `@@species` 访问器属性返回 Array 对象的默认构造函数。<font color=FF0000>子类的构造函数可能会覆盖并改变构造函数的赋值</font>。默认实现基本上是这样的：
 
@@ -12230,7 +12230,7 @@ class SubArray extends Array {}
 SubArray[Symbol.species] === SubArray; // true
 ````
 
-###### 示例
+##### 示例
 
 `@@species` 属性返回默认构造函数，它用于 Array 对象的构造函数 Array：
 
@@ -12253,17 +12253,23 @@ class MyArray extends Array {
 
 摘自：[MDN - `Array[@@species]`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/@@species)
 
-**类似的还有：**`get Map[@@species] `、`get Set[@@species]` 、`get TypedArray[@@species]` 、`get ArrayBuffer[@@species]` 、`get RegExp[@@species]`
+##### 类似的还有
 
-##### Symbol.match
+`get Map[@@species] `、`get Set[@@species]` 、`get TypedArray[@@species]` 、`get ArrayBuffer[@@species]` 、`get RegExp[@@species]`
 
-`Symbol.match` <font color=fuchsia>指定了 匹配的是 **正则表达式** 而不是 字符串</font>。<font color=FF0000>**`String.prototype.match()` 方法会调用此函数**</font>。
+#### Symbol.match
 
-###### 描述
+The **`Symbol.match`** static data property represents the [well-known symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#well-known_symbols) `@@match`. The `String.prototype.match()` method <font color=red>looks up this symbol on its first argument</font> for the method used to match an input string against the current object. <font color=red>This symbol is also used to determine if an object should be [treated as a regex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#special_handling_for_regexes)</font>.
 
-此函数还用于标识对象是否具有正则表达式的行为。<font color=lightSeaGreen>比如，`String.prototype.startsWith()` ，`String.prototype.endsWith()` 和 `String.prototype.includes()` 这些方法</font> <font color=red>**会检查其第一个参数是否是正则表达式**</font>，<font color=fuchsia>**是正则表达式就抛出一个 TypeError**</font>。现在，<font color=FF0000>如果 `match` symbol 设置为 false（**或者一个 假值 falsy** ）</font>，就表示该对象不打算用作正则表达式对象。
+> 👀 上面所说的 “object” 就是在指第一个参数
 
-###### 示例如下
+For more information, see [`RegExp.prototype[@@match]()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@match) and [`String.prototype.match()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match).
+
+##### 描述
+
+This function is <font color=red>also used to identify [if objects have the behavior of regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#special_handling_for_regexes)</font>. For example, the methods `String.prototype.startsWith()`, `String.prototype.endsWith()` and `String.prototype.includes()`, check if their first argument is a regular expression and will throw a `TypeError` if they are. Now, if the `match` symbol is set to `false` (<font color=lightSeaGreen>or a Falsy value except `undefined`</font>), it indicates that the object is not intended to be used as a regular expression object.
+
+##### 示例如下
 
 下面代码会抛出一个 `TypeError`：
 
@@ -12283,9 +12289,13 @@ re[Symbol.match] = false;
 
 摘自：[MDN - Symbol.match](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/match)
 
-##### Symbol.replace
+#### Symbol.replace
 
-`Symbol.replace` 这个属性 <font color=FF0000>指定了当一个字符串替换所匹配字符串时所调用的方法</font>。`String.prototype.replace()` 方法会调用此方法。示例如下：
+The **`Symbol.replace`** static data property represents the well-known symbol `@@replace`. The <font color=red>`String.prototype.replace()` method **looks up this symbol**</font> on its first argument for the method that <font color=red>replaces substrings matched by the current object</font>.
+
+For more information, see [`RegExp.prototype[@@replace]()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@replace) and [`String.prototype.replace()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace).
+
+##### 尝试示例
 
 ```js
 class Replace1 {
@@ -12293,18 +12303,30 @@ class Replace1 {
   [Symbol.replace](string) { return `s/${string}/${this.value}/g`; }
 }
 
-console.log('foo'.replace(new Replace1('bar'))); // expected output: "s/foo/bar/g" 注：'bar'外面封装了一层new Replace1
+console.log('foo'.replace(new Replace1('bar'))); // expected output: "s/foo/bar/g"
+// 👀 'bar' 也就是参数 string，外面封装了一层 new Replace1
 ```
 
-更多信息， 详见 `RegExp.prototype[@@replace]()` 和 `String.prototype.replace()` 。
+##### 示例
+
+```js
+class CustomReplacer {
+  constructor(value) { this.value = value; }
+  [Symbol.replace](string) { return string.replace(this.value, "#!@?"); }
+}
+
+console.log("football".replace(new CustomReplacer("foo"))); // "#!@?tball"
+```
 
 摘自：[MDN - Symbol.replace](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/replace)
 
-##### Symbol.split
+#### Symbol.split
 
-`Symbol.split` <font color=FF0000>指向 一个 <font size=4>**正则表达式的索引处**</font> 分割字符串的方法</font>。 这个方法<font color=FF0000>通过 `String.prototype.split()` 调用</font>。
+The **`Symbol.split`** static data property represents the well-known symbol `@@split`. The <font color=red>`String.prototype.split()` method **looks up this symbol**</font> on its first argument for the method that splits a string at the indices that match the current object.
 
-> 👀 这里表达有点问题，感觉应该是 `String.prototype.split()` 会调用 `Symbol.split`
+For more information, see[`RegExp.prototype[@@split]()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@split) and [`String.prototype.split()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split).
+
+##### 尝试示例
 
 ```js
 class Split1 {
@@ -12318,19 +12340,29 @@ class Split1 {
 console.log('foobar'.split(new Split1('foo'))); // expected output: "foo/bar"
 ```
 
-详情请参阅 `RegExp.prototype[@@split]()` 和 `String.prototype.split()` 
+##### 示例
+
+```js
+class ReverseSplit {
+  [Symbol.split](string) {
+    const array = string.split(" ");
+    return array.reverse();
+  }
+}
+
+console.log("Another one bites the dust".split(new ReverseSplit()));
+// [ "dust", "the", "bites", "one", "Another" ]
+```
 
 摘自：[MDN - Symbol.split](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/split)
 
-##### Symbol.toStringTag
+#### Symbol.toStringTag
 
-`Symbol.toStringTag` 是一个内置 symbol，它 <font color=FF0000>通常作为对象的属性键使用</font>，<font color=FF0000>对应的属性值应该为字符串类型</font>，<font color=FF0000>这个字符串用来表示该对象的自定义类型标签</font>，通常只有内置的 `Object.prototype.toString()` 方法会去读取这个标签并把它包含在自己的返回值里。
+The **`Symbol.toStringTag`** static data property represents the well-known symbol `@@toStringTag`. <font color=red>`Object.prototype.toString()` looks up this symbol on the `this` value</font> for the property containing a string that represents the type of the object.
 
-> 👀  这里说成：使用 `Object.prototype.toString()` 方法时，会自动调用 `Symbol.toStringTag` ，似乎更好；否则太让人费解了...
+##### 描述
 
-###### 描述
-
-<font color=FF0000 size=4>**许多内置的 JavaScript 对象类型即便没有 `toStringTag` 属性，也能被 `toString()` 方法识别并返回特定的类型标签**</font>，比如，另外，注意下面的用法，使用 call 确实很巧妙
+<font color=red>许多内置的 JavaScript 对象类型即便没有 `toStringTag` 属性，也能被 `toString()` 方法识别并返回特定的类型标签</font>，比如：
 
 ```js
 Object.prototype.toString.call('foo');     // "[object String]"
@@ -12342,7 +12374,7 @@ Object.prototype.toString.call(null);      // "[object Null]"
 // ... and more
 ```
 
-<font color=FF0000>另外一些对象类型则不然，`toString()` 方法能识别它们是因为引擎为它们设置好了 `toStringTag` 标签</font>：
+<font color=dodgerBlue>另外一些对象类型则不然</font>，<font color=fuchsia>**`toString()` 方法能识别它们是因为引擎为它们设置好了 `toStringTag` 标签**</font>：
 
 ```js
 Object.prototype.toString.call(new Map());         // "[object Map]"
@@ -12351,7 +12383,7 @@ Object.prototype.toString.call(Promise.resolve()); // "[object Promise]"
 // ... and more
 ```
 
-但你自己创建的类（👀 不是内建类）不会有这份特殊待遇，`toString()` 找不到 `toStringTag` 属性时只好返回默认的 Object 标签：
+但你自己创建的类（👀 不是内建类）不会有这份特殊待遇，<font color=red>`toString()` 找不到 `toStringTag` 属性时只好返回默认的 Object 标签</font>：
 
 ```js
 class ValidatorClass {}
@@ -12371,9 +12403,9 @@ Object.prototype.toString.call(new ValidatorClass()); // "[object Validator]"
 
 摘自：[MDN - Symbol.toStringTag](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag)
 
-> 💡 这里说的不太清楚，可以参见 [阮一峰的 ECMAScript 6 入门 - Symbol - Symbol.toStringTag](https://es6.ruanyifeng.com/#docs/symbol#Symbol-toStringTag)
+> 💡 这里开始看的时候，不太理解，感觉说的不太清楚，可以参见 [阮一峰的 ECMAScript 6 入门 - Symbol - Symbol.toStringTag](https://es6.ruanyifeng.com/#docs/symbol#Symbol-toStringTag) 。现在回头来看，其实还好
 
-对象的 `Symbol.toStringTag` 属性，指向一个方法。在该对象上面调用 `Object.prototype.toString` 方法时，如果这个属性存在，它的返回值会出现在 toString 方法返回的字符串之中，表示对象的类型。也就是说，这个属性可以用来定制 `[object Object]` 或 `[object Array]` 中 object 后面的那个字符串。
+对象的 `Symbol.toStringTag` 属性，指向一个方法。在该对象上面调用 `Object.prototype.toString` 方法时，如果这个属性存在，它的返回值会出现在 `toString` 方法返回的字符串之中，表示对象的类型。也就是说，这个属性可以用来定制 `[object Object]` 或 `[object Array]` 中 object 后面的那个字符串。
 
 ```javascript
 // 例一
@@ -12413,7 +12445,7 @@ ES6 新增内置对象的 `Symbol.toStringTag` 属性值如下。
 > - **`window[Symbol.toStringTag]`**  ：'window'
 > - **`XMLHttpRequest.prototype[Symbol.toStringTag]`** ：'XMLHttpRequest'
 
-摘自： [阮一峰的 ECMAScript 6 入门 - Symbol - Symbol.toStringTag](https://es6.ruanyifeng.com/#docs/symbol#Symbol-toStringTag)
+摘自： [阮一峰的 ECMAScript 6 入门 - Symbol # Symbol.toStringTag](https://es6.ruanyifeng.com/#docs/symbol#Symbol-toStringTag)
 
 > 💡 补充
 >
@@ -12431,9 +12463,11 @@ ES6 新增内置对象的 `Symbol.toStringTag` 属性值如下。
 >
 > 摘自：[现代JS教程 - 类检查："instanceof"](https://zh.javascript.info/instanceof)
 
-##### Symbol.toPrimitive
+#### Symbol.toPrimitive
 
-`Symbol.toPrimitive` 是一个内置的 Symbol 值，它是作为对象的函数值属性存在的，<font color=FF0000 size=4>**当一个对象转换为对应的原始值时，会调用此函数**</font>。示例如下：
+The **`Symbol.toPrimitive`** static data property represents the well-known symbol `@@toPrimitive`. All [type coercion](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#type_coercion) （👀 强制类型转换）algorithms <font color=red>look up this symbol **on objects**</font> <font color=fuchsia>for the method that accepts a **preferred** type and returns a primitive representation of the object</font>, <font color=fuchsia>**before** falling back to **using the object's `valueOf()` and `toString()` methods**</font>.
+
+##### 尝试示例
 
 ```js
 const object1 = {
@@ -12445,7 +12479,9 @@ const object1 = {
 console.log(+object1); // expected output: 42
 ```
 
-**描述：**<font color=FF0000 size=4>**在 `Symbol.toPrimitive` 属性（用作函数值）的帮助下，一个对象可被转换为原始值**</font>。<font color=FF0000>**该函数被调用时，会被传递一个字符串参数 hint ，表示要转换到的原始值的预期类型**</font>。<font color=FF0000>hint 参数的取值是 "number"、"string" 和 "default" 中的任意一个</font>。
+##### 描述
+
+With the help of the `Symbol.toPrimitive` property (used as a function value), an object can be converted to a primitive value. <font color=red>The function is called with a string argument `hint`</font>, which specifies the preferred type of the result primitive value. <font color=lightSeaGreen>The `hint` argument can be one of `"number"`, `"string"`, and `"default"`</font>.
 
 > 💡 这里的 hint 是：
 >
@@ -12453,9 +12489,13 @@ console.log(+object1); // expected output: 42
 > >
 > > 摘自：[Understanding JavaScript type conversions](https://dev.to/antonmelnyk/understanding-javascript-type-conversions-43n)
 
-更多的，可以参见上面 `Object.prototype.valueOf()` 和 `Object.prototype.toString()` 的内容。
+The <font color=dodgerBlue>`"number"` hint</font> is used by [numeric coercion](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#numeric_coercion) algorithms. The <font color=dodgerBlue>`"string"` hint</font> is used by the [string coercion](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion) algorithm. The <font color=dodgerBlue>`"default"` hint</font> is used by the [primitive coercion](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#primitive_coercion) algorithm. <font color=red>The `hint` only acts as a weak signal of preference</font>, and the <font color=lightSeaGreen>implementation is free to ignore it</font> (as `Symbol.prototype[@@toPrimitive]()` does). The language does not enforce alignment between the `hint` and the result type, although <font color=red>`[@@toPrimitive]()` must return a primitive, or a `TypeError` is thrown</font>.
 
-###### 示例
+Objects without the `@@toPrimitive` property are converted to primitives by calling the `valueOf()` and `toString()` methods in different orders, which is explained in more detail in the [type coercion](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#type_coercion) section. `@@toPrimitive` allows full control over the primitive conversion process. For example, `Date.prototype[@@toPrimitive]` treats `"default"` as if it's `"string"` and calls `toString()` instead of `valueOf()`. <font color=dodgerBlue>`Symbol.prototype[@@toPrimitive]` **ignores the hint** and **always returns a symbol**</font>, which means even in string contexts, `Symbol.prototype.toString()` won't be called, and <font color=red>**`Symbol` objects must always be explicitly converted to strings through `String()`**</font>.
+
+> 👀 上面所说，应该是指 `String()` 原始值包装类 强制类型转换
+
+##### 示例
 
 下面的例子展示了， `Symbol.toPrimitive` 属性是如何干扰一个对象转换为原始值时输出的结果的。
 
@@ -12480,9 +12520,13 @@ console.log(obj2 + ""); // "true"  -- hint 参数值是 "default"
 
 摘自：[MDN - Symbol.toPrimitive](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toPrimitive) 另外，关于对象的初始值转换可以参看：[现代JS教程 - 对象 — 原始值转换](https://zh.javascript.info/object-toprimitive)，另外，其中也有关于 hint 的三种类型（number、string、default）使用更易懂的解释
 
-##### Symbol.isConcatSpreadable
+#### Symbol.isConcatSpreadable
 
-内置的 `Symbol.isConcatSpreadable` 符号<font color=FF0000>用于配置某对象作为 `Array.prototype.concat()` 方法的参数时是否展开其数组元素</font>。示例如下，注意下面 numeric 的 `Symbol.isConcatSpreadable` 属性值 被设置为 false 后，再使用 concat 的效果。
+内置的 `Symbol.isConcatSpreadable` 符号<font color=FF0000>用于配置某对象作为 `Array.prototype.concat()` 方法的参数时是否展开其数组元素</font>。
+
+> 👀 返回 false 表示不展开
+
+##### 示例
 
 ```js
 const alpha = ['a', 'b', 'c'];
@@ -12497,13 +12541,13 @@ alphaNumeric = alpha.concat(numeric);
 console.log(alphaNumeric); // expected output: Array ["a", "b", "c", Array [1, 2, 3]]
 ```
 
-###### 描述
+##### 描述
 
-`@@isConcatSpreadable` 符号 ( `Symbol.isConcatSpreadable` ) <font color=FF0000>可以直接定义为 对象属性 或 继承而来，它是 **布尔类型**</font>。它 <font color=FF0000>可以控制 数组 或 类似数组 (array-like) 的对象的行为</font>：
+`@@isConcatSpreadable` symbol ( `Symbol.isConcatSpreadable` ) <font color=FF0000>可以直接定义为 对象属性 或 继承而来，它是 **布尔类型**</font>。它 <font color=FF0000>可以控制 数组 或 类似数组 (array-like) 的对象的行为</font>：
 
-- 对于数组对象，默认情况下：用于 concat 时，会按数组元素展开然后进行连接（数组元素作为新数组的元素）。重置`Symbol.isConcatSpreadable` 可以改变默认行为。
+- 对于数组对象，默认情况下：用于 concat 时，会按数组元素展开然后进行连接（数组元素作为新数组的元素）。修改 `Symbol.isConcatSpreadable` 可以改变默认行为。
 
-- 对于类似数组的对象，用于 concat 时，该对象整体作为新数组的元素，重置 `Symbol.isConcatSpreadable` 可改变默认行为。如下
+- 对于类似数组的对象，用于 concat 时，该对象整体作为新数组的元素，修改 `Symbol.isConcatSpreadable` 可改变默认行为。如下
 
   ```js
   var x = [1, 2, 3];
@@ -12519,11 +12563,24 @@ console.log(alphaNumeric); // expected output: Array ["a", "b", "c", Array [1, 2
 
 摘自：[MDN - Symbol.isConcatSpreadable](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/isConcatSpreadable)
 
-##### Symbol.hasInstance
+#### Symbol.hasInstance
 
 `Symbol.hasInstance` <font color=FF0000>用于判断某对象是否为某构造器的实例</font>。因此你可以用它自定义 `instanceof` 操作符在某个类上的行为。
 
-> 👀 自己的理解，`Symbol.hasInstance` 可以用来自定义 `instanceof` 运算符的行为。
+> 👀 自己的理解，`Symbol.hasInstance` 可以用来自定义 `instanceof` 运算符的行为，以及非内置类定义中，`instanceof` 运算的逻辑
+
+##### 尝试示例
+
+```js
+class Array1 {
+  static [Symbol.hasInstance](instance) {
+    return Array.isArray(instance);
+  }
+}
+
+console.log([] instanceof Array1);
+// Expected output: true
+```
 
 摘自：[MDN - Symbol.hasInstance](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/hasInstance)
 
@@ -12531,69 +12588,152 @@ console.log(alphaNumeric); // expected output: Array ["a", "b", "c", Array [1, 2
 
 摘自：[JavaScript ES6 Symbol.hasInstance的理解](https://www.cnblogs.com/waitforyou/p/7080591.html)
 
-##### Symbol.unscopables
+#### Symbol.unscopables
 
-`Symbol.unscopables` 指 <font color=FF0000>用于指定对象值，其对象自身和继承的从关联对象的 with 环境绑定中排除的属性名称</font>。示例如下：
+The **`Symbol.unscopables`** static data property represents the well-known symbol `@@unscopables`. The <font color=red>`with` statement looks up this symbol on the scope object</font> for a property containing a collection of properties that should not become bindings within the `with` environment.
+
+##### 尝试示例
 
 ```js
-const object1 = { property1: 42 };
-
-object1[Symbol.unscopables] = { property1: true }; // 注：经测试，当property1的值为真值(truthy)时，下面with的运行会报错
+const object1 = {
+  property1: 42,
+  [Symbol.unscopables] = { property1: true }; // 👀 经测试， @@unscopables 的值为真值(truthy)时，下面with的运行会报错
+};
 
 with (object1) {
   console.log(property1); // expected output: Error: property1 is not defined
 }
 ```
 
-###### 描述
+##### 描述
 
-可以在任何对象上定义 `@@unscopables symbol` ( `Symbol.unscopables` )，用于排除属性名称并与 with 环境绑定在一起作为词法变量公开。 请注意，如果使用 Strict mode，语句将不可用，并且可能也不需要 symbol。
+The `@@unscopables` symbol (accessed via `Symbol.unscopables`) can be defined on any object to <font color=red>exclude property names from being exposed as lexical variables in `with` environment bindings</font>. Note that <font color=dodgerBlue>when using strict mode</font>, <font color=fuchsia>**`with` statements are not available**</font>, and this symbol is likely not needed.
 
-在 unscopables 对象上设置属性为 true（👀 根据 `Symbol.match` 中的特性，如果值为 falsy，则表示该对象不打算用作正则表达式对象。类似的，也经过测试，发现这里属性值为 truthy，则... ），将使其 `unscopable` 并且因此该属性也将不会在词法环境变量中出现。 如果设置属性为 false ，则将使其可 scopable 并且该属性会出现在词法环境变量中。
+<font color=dodgerBlue>Setting a property of the `@@unscopables` object to `true`</font> (<font color=red>**or any truthy value**</font>) will make the corresponding property of the `with` scope object <font color=lightSeaGreen>*unscopable*</font> and therefore <font color=red>won't be introduced to the `with` body scope</font>. <font color=dodgerBlue>Setting a property to `false`</font> (<font color=red>**or any falsy value**</font>) will make it *scopable* and thus appear as lexical scope variables.
 
-###### 示例
+<font color=dodgerBlue>When deciding whether `x` is unscopable</font>, <font color=red>the entire prototype chain of the `@@unscopables` property is looked up for a property called `x`</font>. This means if you declared `@@unscopables` as a plain object, `Object.prototype` properties like `toString` would become unscopable as well, which may cause backward incompatibility for legacy code assuming those properties are normally scoped. You are advised to make your custom `@@unscopables` property have `null` as its prototype, like `Array.prototype[@@unscopables]` does.
 
-下列的代码可兼容 ES5 及以下版本。然而，在 ES6 或其后续版本中，`Array.prototype.keys()` 方法才会出现。意味着内部 with 环境“关键字” 存在该方法，但变量中不会存在。 也就是说，当 unscopables symbol 被展示时，内置的 `unscopables` 设置是由 `Array.prototype[@@unscopables]` 展示并实现的， 一些 Array 的方法 将作为 scoped 放入 with语句中。
+This protocol is also utilized by DOM APIs, such as `Element.prototype.append()`.
 
-```js
+##### 示例
+
+###### Scoping in with statements
+
+The following code works fine in ES5 and below. However, in ECMAScript 2015 and later, the `Array.prototype.keys()` method was introduced. <font color=dodgerBlue>That means that inside a `with` environment</font>, <font color=red>"keys" would now be the method and not the variable</font>. That's why the `@@unscopables` symbol was introduced. A built-in `@@unscopables` setting is implemented as `Array.prototype[@@unscopables]` to prevent some of the Array methods being scoped into the `with` statement.
+
+````js
 var keys = [];
-with(Array.prototype) { keys.push("something"); } // 👀 如果不加上这行代码，似乎代码也可以运行...
 
-Object.keys(Array.prototype[Symbol.unscopables]);
-// ['copyWithin', 'entries', 'fill', 'find', 'findIndex', 'flat', 'flatMap', 'includes', 'keys', 'values', 'at']
-```
+with (Array.prototype) {
+  keys.push("something"); // keys 不会被认为是一个 Array 类下的方法
+}
+````
 
-> 👀 可以尝试下打印 `Array.prototype[Symbol.unscopables]` 的结果：
->
-> ```js
-> [Object: null prototype] {
->     copyWithin: true,
->     entries: true,
->     fill: true,
->     find: true,
->     findIndex: true,
->     flat: true,
->     flatMap: true,
->     includes: true,
->     keys: true,
->     values: true,
->     at: true
-> }
-> ```
->
-> 所以上面的 `Object.keys(Array.prototype[Symbol.unscopables])` 的结果，也不意外。
->
+###### Unscopables in objects
 
-**也可以为你自己的对象设置 unscopables：**
+You can also set `@@unscopables` for your own objects.
 
 ```js
-var obj = { foo: 1, bar: 2 };
-obj[Symbol.unscopables] = { foo: false, bar: true }; // 👀 即在这里设置
+const obj = {
+  foo: 1,
+  bar: 2,
+  baz: 3,
+};
 
-with(obj) {
+obj[Symbol.unscopables] = {
+  // Make the object have `null` prototype to prevent
+  // `Object.prototype` methods from being unscopable
+  __proto__: null,
+  foo: false, // `foo` will be scopable
+  bar: true,  // `bar` will be unscopable
+  // `baz` is omitted; because `undefined` is falsy, it is also scopable (default)
+};
+
+with (obj) {
   console.log(foo); // 1
   console.log(bar); // ReferenceError: bar is not defined
+  console.log(baz); // 3
 }
+```
+
+###### Avoid using a non-null-prototype object as @@unscopables
+
+Declaring `@@unscopables` as a plain object without eliminating its prototype <font color=dodgerBlue>may cause subtle bugs</font>. Consider the following code working before `@@unscopables` :
+
+```js
+const character = {
+  name: "Yoda",
+  toString: function () {
+    return "Use with statements, you must not";
+  },
+};
+
+with (character) {
+  console.log(name + ' says: "' + toString() + '"'); // Yoda says: "Use with statements, you must not"
+}
+```
+
+<font color=dodgerBlue>To preserve backward compatibility</font>, you decided to add an `@@unscopables` property when adding more properties to `character`. <font color=dodgerBlue>You may naïvely do it like</font>:
+
+```js
+// ❌
+const character = {
+  name: "Yoda",
+  toString: function () {
+    return "Use with statements, you must not";
+  },
+  student: "Luke",
+  [Symbol.unscopables]: {
+    student: true, // Make `student` unscopable
+  },
+};
+```
+
+However, <font color=dodgerBlue>**the code above now *breaks***</font>:
+
+```js
+with (character) {
+  console.log(name + ' says: "' + toString() + '"'); // Yoda says: "[object Undefined]"
+}
+```
+
+<font color=dodgerBlue>This is because</font> when looking up `character[Symbol.unscopables].toString`, it returns `Object.prototype.toString()`, which is a truthy value, thus making the `toString()` call in the `with()` statement reference `globalThis.toString()` instead — and because it's called without a `this`, `this`is `undefined`, making it return `[object Undefined]`.
+
+Even when the method is not overridden by `character`, making it unscopable will change the value of `this`.
+
+```js
+const proto = {};
+const obj = { __proto__: proto };
+
+with (proto) {
+  console.log(isPrototypeOf(obj)); // true; `isPrototypeOf` is scoped and `this` is `proto`
+}
+
+proto[Symbol.unscopables] = {};
+
+with (proto) {
+  console.log(isPrototypeOf(obj)); // TypeError: Cannot convert undefined or null to object
+  // `isPrototypeOf` is unscoped and `this` is undefined
+}
+```
+
+To fix this, always make sure `@@unscopables` only contains properties you wish to be unscopable, without `Object.prototype` properties.
+
+```js
+// ✅
+const character = {
+  name: "Yoda",
+  toString: function () {
+    return "Use with statements, you must not";
+  },
+  student: "Luke",
+  [Symbol.unscopables]: {
+    // Make the object have `null` prototype to prevent
+    // `Object.prototype` methods from being unscopable
+    __proto__: null,
+    student: true, // Make `student` unscopable
+  },
+};
 ```
 
 摘自：[MDN - Symbol.unscopables](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/unscopables)

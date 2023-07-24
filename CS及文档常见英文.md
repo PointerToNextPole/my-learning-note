@@ -859,6 +859,10 @@
 - **gamut** ：全范围
 
 - **error-tolerant** ：容错的
+
+- **coercion** ：强制，胁迫
+
+  **type coercion** ：强制类型转换
 ***
 
 
@@ -1066,3 +1070,5 @@
 - **exempt** ：豁免
 
 - **scape** ：景观。Netscape 也就是网景
+
+- **subtle** ：细微的，不易察觉的 ( subtle bug )
