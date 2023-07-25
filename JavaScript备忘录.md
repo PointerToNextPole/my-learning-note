@@ -11396,17 +11396,22 @@ console.log(Object.getPrototypeOf(reg).constructor.name) // 'RegExp'
 
 方法 toString 和 valueOf 来自上古时代（ 💡 根据 MDN 相关页面的规范，这两个方法最早均来自 ES1）。它们不是 symbol（那时候还没有 symbol 这个概念），而是 “常规的” 字符串命名的方法。它们提供了一种可选的“老派”的实现转换的方法。
 
-<font color=dodgerBlue>**如果没有 Symbol.toPrimitive**</font>，那么 JavaScript 将尝试找寻找 toString 和 valueOf 方法，并且按照下面的顺序进行尝试：
+<font color=dodgerBlue>**如果没有 Symbol.toPrimitive**</font>，那么 <font color=red>JavaScript 将尝试寻找 toString 和 valueOf 方法</font>，并且按照下面的顺序进行尝试：
 
-- **对于 "string" hint：**<font color=red>**调用 `toString` 方法**</font>，<font color=dodgerBlue>如果它不存在</font>，则<font color=red>调用 `valueOf` 方法</font>（因此，对于字符串转换，优先调用 `toString` ）
-- **其他 hint**（👀 即 “number” / “defalut” ）：<font color=red>**调用 `valueOf` 方法**</font>，<font color=dodgerBlue>如果它不存在</font>，则<font color=red>调用 `toString` 方法</font>（因此，对于数学运算，优先调用 `valueOf` 方法）。
+> 👀 上面所说：尝试寻找 toString 和 valueOf 方法，是指在“目标对象”的定义中寻找 toString 和 valueOf 方法的定义，参见下面的 user 对象中 toString 的定义
+
+- **对于 "string" hint：**<font color=fuchsia>**调用 `toString` 方法**</font>，<font color=dodgerBlue>如果它不存在</font>，则 <font color=red>**调用 `valueOf` 方法**</font>（因此，<font color=red>对于字符串转换，优先调用 `toString`</font> ）
+- **其他 hint**（👀 即 “number” / “defalut” ）：<font color=fuchsia>**调用 `valueOf` 方法**</font>，<font color=dodgerBlue>如果它不存在</font>，则 <font color=red>**调用 `toString` 方法**</font>（因此，<font color=red>对于数学运算，优先调用 `valueOf` 方法</font>）。
 
 <font color=fuchsia>**这些方法必须返回一个原始值**</font> ( 👀 primitive value )。<font color=red>如果 `toString` 或 `valueOf` 返回了一个对象，那么返回值会被忽略</font>（和这里没有方法的时候相同）。
 
 **默认情况下，普通对象具有 toString 和 valueOf 方法：**
 
 - <font color=FF0000>`toString` 方法返回一个字符串 `"[object Object]"`</font>。
-- <font color=FF0000>`valueOf` 方法返回对象自身</font>。
+
+- <font color=fuchsia>`valueOf` 方法返回对象自身</font>。
+
+  > 👀 这点还是有必要注意下，之前认识一只都很含糊
 
 ###### 示例如下
 
@@ -12289,6 +12294,40 @@ re[Symbol.match] = false;
 
 摘自：[MDN - Symbol.match](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/match)
 
+#### Symbol.matchAll
+
+The **`Symbol.matchAll`** static data property represents the well-known symbol `@@matchAll`. The `String.prototype.matchAll()` method <font color=red>looks up this symbol on its first argument</font> for the method that returns an iterator, that yields matches of the current object against a string.
+
+For more information, see [`RegExp.prototype[@@matchAll]()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@matchAll) and [`String.prototype.matchAll()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/matchAll).
+
+##### 尝试示例
+
+```js
+const re = /[0-9]+/g;
+const str = '2016-01-02|2019-03-07';
+const result = re[Symbol.matchAll](str);
+
+console.log(Array.from(result, x => x[0]));
+// Expected output: Array ["2016", "01", "02", "2019", "03", "07"]
+```
+
+##### 示例
+
+```js
+const str = "2016-01-02|2019-03-07";
+
+const numbers = {
+  *[Symbol.matchAll](str) {
+    for (const n of str.matchAll(/[0-9]+/g)) yield n[0];
+  },
+};
+
+console.log(Array.from(str.matchAll(numbers)));
+// ["2016", "01", "02", "2019", "03", "07"]
+```
+
+摘自：[MDN US - Symbol.matchAll](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/matchAll)
+
 #### Symbol.replace
 
 The **`Symbol.replace`** static data property represents the well-known symbol `@@replace`. The <font color=red>`String.prototype.replace()` method **looks up this symbol**</font> on its first argument for the method that <font color=red>replaces substrings matched by the current object</font>.
@@ -12491,7 +12530,7 @@ With the help of the `Symbol.toPrimitive` property (used as a function value), a
 
 The <font color=dodgerBlue>`"number"` hint</font> is used by [numeric coercion](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#numeric_coercion) algorithms. The <font color=dodgerBlue>`"string"` hint</font> is used by the [string coercion](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion) algorithm. The <font color=dodgerBlue>`"default"` hint</font> is used by the [primitive coercion](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#primitive_coercion) algorithm. <font color=red>The `hint` only acts as a weak signal of preference</font>, and the <font color=lightSeaGreen>implementation is free to ignore it</font> (as `Symbol.prototype[@@toPrimitive]()` does). The language does not enforce alignment between the `hint` and the result type, although <font color=red>`[@@toPrimitive]()` must return a primitive, or a `TypeError` is thrown</font>.
 
-Objects without the `@@toPrimitive` property are converted to primitives by calling the `valueOf()` and `toString()` methods in different orders, which is explained in more detail in the [type coercion](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#type_coercion) section. `@@toPrimitive` allows full control over the primitive conversion process. For example, `Date.prototype[@@toPrimitive]` treats `"default"` as if it's `"string"` and calls `toString()` instead of `valueOf()`. <font color=dodgerBlue>`Symbol.prototype[@@toPrimitive]` **ignores the hint** and **always returns a symbol**</font>, which means even in string contexts, `Symbol.prototype.toString()` won't be called, and <font color=red>**`Symbol` objects must always be explicitly converted to strings through `String()`**</font>.
+Objects without the `@@toPrimitive` property are converted to primitives by calling the `valueOf()` and `toString()` methods in different orders, which is explained in more detail in the [type coercion](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#type_coercion) section. `@@toPrimitive` allows full control over the primitive conversion process. For example, `Date.prototype[@@toPrimitive]` treats `"default"` as if it's `"string"` and calls `toString()` instead of `valueOf()`. <font color=red>`Symbol.prototype[@@toPrimitive]` **ignores the hint** and **always returns a symbol**</font>, which means even in string contexts, `Symbol.prototype.toString()` won't be called, and <font color=red>**`Symbol` objects must always be explicitly converted to strings through `String()`**</font>.
 
 > 👀 上面所说，应该是指 `String()` 原始值包装类 强制类型转换
 
