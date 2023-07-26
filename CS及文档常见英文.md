@@ -1074,3 +1074,5 @@
 - **scape** ：景观。Netscape 也就是网景
 
 - **subtle** ：细微的，不易察觉的 ( subtle bug )
+
+- **coupon** ：优惠券

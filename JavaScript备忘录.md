@@ -2567,33 +2567,41 @@ let regexpObj2 = new RegExp(/ab+c/, 'i'); // 首个参数为常规字面量的�
 
 而正则表达式对象的<font color=FF0000><font size=4>**构造函数**</font>，如 new RegExp('ab+c') 提供了正则表达式运行时编译（runtime compilation）</font>。<font color=fuchsia>**如果你知道正则表达式模式将会改变，或者你事先不知道什么模式，而是从另一个来源获取，如用户输入，这些情况都可以使用构造函数**</font>。
 
-**Perl-like RegExp 属性**
+###### Perl-like RegExp 属性
+
 请注意，RegExp属性有长名称和短名称（类似Perl）。两个名称总是引用同一个值（<font color=FF0000>**Perl是JavaScript为其正则表达式建模的编程语言**</font>）
 
-- **构造函数**
-  - **RegExp()：**创建一个新的 RegExp 对象。
-- **静态属性**
-  - **get RegExp[@@species]：**该构造函数<font color=FF0000>用于创建派生对象</font>。
-  - **RegExp.lastIndex：**<font color=FF0000>该**索引**表示从哪里开始下一个匹配</font>
-- **实例属性**
-  - **RegExp.prototype.flags：**含有 RegExp 对象 <font color=FF0000>flags 的字符串</font>。（即修饰符）
-  - **RegExp.prototype.dotAll：**<font color=FF0000>"."是否要匹配新行（newlines）</font>。
-  - **RegExp.prototype.global：**针对字符串中所有可能的匹配项测试正则表达式，还是仅针对第一个匹配项。
-  - **RegExp.prototype.ignoreCase：**匹配文本的时候是否忽略大小写。
-  - **RegExp.prototype.multiline：**是否进行多行搜索。
-  - **RegExp.prototype.source：**正则表达式的文本。
-  - **RegExp.prototype.sticky：**搜索是否是 sticky。
-  - **RegExp.prototype.unicode：**Unicode 功能是否开启。
-- **实例方法**
-  - **RegExp.prototype.compile()：**🗑<font color=FF0000> 运行脚本的期间（重新）编译正则表达式</font>。（已废除）
-  - **RegExp.prototype.exec()：**<font color=FF0000>在该字符串中执行匹配项的搜索</font>。
-  - **RegExp.prototype.test()：**该正则<font color=FF0000>在字符串里是否有匹配</font>。
-  - **RegExp.prototype\[@@match]()：**对给定字符串执行匹配并返回匹配结果。
-  - **RegExp.prototype\[@@matchAll]()：**对给定字符串执行匹配，返回所有匹配结果。
-  - **RegExp.prototype\[@@replace]()：**给定新的子串，替换所有匹配结果。
-  - **RegExp.prototype\[@@arch]()：**在给定字符串中搜索匹配项，并返回在字符串中找到字符索引。
-  - **RegExp.prototype\[@@split]()：**通过<font color=FF0000> 将给定字符串拆分为子字符串</font>，<font color=FF0000> 并返回字符串形成的数组</font>。
-  - **RegExp.prototype.toString()：**返回表示指定对象的字符串。<font color=FF0000> **重写 Object.prototype.toString() 方法**</font>
+##### 构造函数
+
+- **`RegExp()`** ：创建一个新的 RegExp 对象。
+
+##### 静态属性
+
+- **`get RegExp[@@species]`** ：该构造函数<font color=FF0000>用于创建派生对象</font>。
+- **`RegExp.lastIndex`** ：<font color=FF0000>该**索引**表示从哪里开始下一个匹配</font>
+
+##### 实例属性
+
+- **`RegExp.prototype.flags`** ：含有 RegExp 对象 <font color=FF0000>flags 的字符串</font>。（即修饰符）
+- **`RegExp.prototype.dotAll`** ：<font color=FF0000>"."是否要匹配新行（newlines）</font>。
+- **`RegExp.prototype.global`** ：针对字符串中所有可能的匹配项测试正则表达式，还是仅针对第一个匹配项。
+- **`RegExp.prototype.ignoreCase`** ：匹配文本的时候是否忽略大小写。
+- **`RegExp.prototype.multiline`** ：是否进行多行搜索。
+- **`RegExp.prototype.source`** ：正则表达式的文本。
+- **`RegExp.prototype.sticky`** ：搜索是否是 sticky。
+- **`RegExp.prototype.unicode`** ：Unicode 功能是否开启。
+
+##### 实例方法
+
+- **`RegExp.prototype.compile()`** ：🗑<font color=FF0000> 运行脚本的期间（重新）编译正则表达式</font>。（已废除）
+- **`RegExp.prototype.exec()`** ：<font color=FF0000>在该字符串中执行匹配项的搜索</font>。
+- **`RegExp.prototype.test()`** ：该正则<font color=FF0000>在字符串里是否有匹配</font>。
+- **`RegExp.prototype[@@match]()`** ：对给定字符串执行匹配并返回匹配结果。
+- **`RegExp.prototype[@@matchAll]()`** ：对给定字符串执行匹配，返回所有匹配结果。
+- **`RegExp.prototype[@@replace]()`** ：给定新的子串，替换所有匹配结果。
+- **`RegExp.prototype[@@search]()`** ：在给定字符串中搜索匹配项，并返回在字符串中找到字符索引。
+- **`RegExp.prototype[@@split]()`** ：通过<font color=FF0000> 将给定字符串拆分为子字符串</font>，<font color=FF0000> 并返回字符串形成的数组</font>。
+- **`RegExp.prototype.toString()`** ：返回表示指定对象的字符串。<font color=FF0000> **重写 Object.prototype.toString() 方法**</font>
 
 摘自：[MDN - RegExp(正则表达式)](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
 
@@ -12107,9 +12115,9 @@ JSON.stringify({[Symbol("foo")]: "foo"}); // '{}'
 > const sym = Symbol('sym')
 > 
 > const obj = {
->   a: 1,
->   2: '2',
->   [sym]: 3
+>     a: 1,
+>     2: '2',
+>     [sym]: 3
 > }
 > 
 > Reflect.ownKeys(obj).forEach(key => console.log(key, typeof key))
