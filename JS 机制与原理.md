@@ -733,19 +733,19 @@ foo();  // foo2
 
 打印的结果却是两个 `foo2`。因为 <font color=fuchsia>JavaScript 引擎 **并非一行一行地分析和执行程序**，而是**一段一段地分析执行**</font>。<font color=FF0000>当执行一段代码的时候，会进行一个“准备工作”</font>，比如第一个例子中的变量提升，和第二个例子中的函数提升。
 
-但是本文真正想让大家思考的是：<font color=FF0000>这个 “一段一段”中的 **“段” 究竟是怎么划分的** 呢？到底 JavaScript引擎 **遇到一段怎样的代码** 时**才会做“准备工作”**呢？</font>
+但是本文真正想让大家思考的是：<font color=dodgerBlue>这个 “一段一段”中的 **“段” 究竟是怎么划分的** 呢？到底 JavaScript引擎 **遇到一段怎样的代码** 时**才会做“准备工作”**呢？</font>
 
 ##### 可执行代码
 
 这就要说到 <font color=FF0000>**JavaScript 的可执行代码 ( executable code ) 的类型**</font> 有哪些了？
 
-其实很简单，就<font color=FF0000>**三种，1) 全局代码、2) 函数代码、3) eval代码**</font>。
+其实很简单，就<font color=FF0000>**三种，1) 全局代码、2) 函数代码、3) eval 代码**</font>。
 
 > 💡 **执行上下文总共有三种类型：**
 >
 > - **全局执行上下文：** <font color=LightSeaGreen>这是默认的、最基础的执行上下文</font>。<font color=FF0000>不在任何函数中的代码都位于全局执行上下文中</font>。**它做了两件事**：1. <font color=FF0000>创建一个全局对象</font>，在浏览器中这个全局对象就是 window 对象。2. <font color=FF0000>将 this 指针指向这个全局对象</font>。一个程序中只能存在一个全局执行上下文。
 >
->   另外，<font color=FF0000 size=4>**一旦所有代码执行完毕，Javascript 引擎把「全局执行上下文」从「执行栈」中移除**</font>。
+>   另外，<font color=fuchsia>**一旦所有代码执行完毕，JavaScript 引擎把「全局执行上下文」从「执行栈」中移除**</font>。
 >
 > - **函数执行上下文：** <font color=LightSeaGreen>每次调用函数时，都会为该函数创建一个新的执行上下文。每个函数都拥有自己的执行上下文</font>，<font color=FF0000>**但是只有在函数被调用的时候才会被创建**</font>。一个程序中可以存在任意数量的函数执行上下文。每当一个新的执行上下文被创建，它都会按照特定的顺序执行一系列步骤，具体过程将在本文后面讨论。
 >
@@ -753,15 +753,15 @@ foo();  // foo2
 >
 > 摘自：[【译】理解 Javascript 执行上下文和执行栈](https://juejin.cn/post/6844903704466833421)
 
-举个例子，当执行到一个函数的时候，就会进行准备工作，这里的“准备工作”，让我们用个更专业一点的说法，就叫做"执行上下文 ( execution context )"。
+举个例子，当执行到一个函数的时候，就会进行准备工作，这里的 “准备工作”，让我们用个更专业一点的说法，就叫做"执行上下文 ( execution context )"。
 
 ##### 执行上下文栈
 
-接下来问题来了，我们写的函数多了去了，<font color=FF0000>如何管理创建的那么多执行上下文</font>呢？
+接下来问题来了，我们写的函数多了去了，<font color=dodgerBlue>如何管理创建的那么多执行上下文</font>呢？
 
 所以 JavaScript 引擎创建了 <font color=FF0000>执行上下文**栈**</font> ( Execution context stack , ECS ) 来<font color=FF0000>管理执行上下文</font>
 
-<font color=dodgerBlue>为了**模拟**执行上下文栈的行为，让我们定义执行上下文栈是一个数组</font>：
+<font color=dodgerBlue>为了 **模拟** 执行上下文栈的行为，让我们 **定义** 执行上下文栈是一个数组</font>：
 
 ```js
 ECStack = [];
@@ -784,7 +784,7 @@ function fun1() { fun2(); }
 fun1();
 ```
 
-<font color=FF0000>当 <font size=4>**执行** 一个函数的时候</font></font>（⚠️ 注意是 **执行**，不是初始化。可以看下面 push 的顺序，是执行的 fun1 最先被 push），<font color=FF0000>就会创建一个执行上下文，并且压入执行上下文栈</font>，<font color=FF0000>当函数执行完毕的时候，就会将函数的执行上下文从栈中弹出</font>。知道了这样的工作原理，让我们来看看如何处理上面这段代码：
+<font color=FF0000>当 <font size=4>**执行** 一个函数的时候</font></font>（⚠️ 注意是 **执行**，不是初始化。可以看下面 push 的顺序，是执行的 `fun1` 最先被 push），<font color=FF0000>就会创建一个执行上下文，并且压入执行上下文栈</font>，<font color=FF0000>当函数执行完毕的时候，就会将函数的执行上下文从栈中弹出</font>。知道了这样的工作原理，<font color=dodgerBlue>让我们来看看如何处理上面这段代码</font>：
 
 ```js
 /* 伪代码 */
@@ -868,13 +868,21 @@ ECStack.pop();
 
 ##### 对于每个执行上下文，都有三个重要属性
 
-- 变量对象 ( Variable object，VO )
-- 作用域<font color=FF0000 size=4>**链**</font> ( Scope chain ) 👀 注意有个「链」字
+- 变量对象 ( Variable Object，VO )
+
+- 作用域<font color=FF0000 size=4>**链**</font> ( Scope chain )
+
+  > ⚠️ 注意有个「链」字
+
 - this
+
+> ⚠️ 注意这里的 ES3 “执行上下文” 和 ES6+ 中的 “词法环境”，组成有些类似，建议做对比。
 
 > 👀 本文就作者的博客顺序而言，应该放在变量对象（[[#JS 变量对象 （词法环境）]]）、作用域链（[[#JS 作用域链]]）、this 的后面，不过感觉「执行上下文」放在「执行上下文栈」的后面并不坏；同时，先父后子的结构，能让结构清晰些。有遗忘的再到后面查找即可。
 
-在[《JavaScript深入之词法作用域和动态作用域》](https://github.com/mqyqingfeng/Blog/issues/3)中，提出这样一道思考题（👀 由于源链接中并没有做太多讲解，所以下面的 [[#JS 词法作用域]] 中没有做摘抄；具体参见 [[#《JavaScript深入之词法作用域和动态作用域》思考题解惑]] ；另外，下面有以“执行上下文”为角度，更详细的讲解）
+在[《JavaScript深入之词法作用域和动态作用域》](https://github.com/mqyqingfeng/Blog/issues/3)中，提出这样一道思考题
+
+> 👀 由于源链接中并没有做太多讲解，所以下面的 [[#JS 词法作用域]] 中没有做摘抄；具体参见 [[#《JavaScript深入之词法作用域和动态作用域》思考题解惑]] ；另外，下面有以“执行上下文”为角度，更详细的讲解
 
 #### 具体执行分析
 
@@ -935,7 +943,7 @@ checkscope();
 
    2. 用 arguments 创建活动对象 AO
 
-   3. 初始化活动对象，即加入形参、函数声明、变量声明
+   3. 初始化 活动对象 AO，即加入形参、函数声明、变量声明
 
       > 👀 这里初始化 VO 的内容，可以看 [[#JS 变量对象 （词法环境）]] 部分，那里有详细的讲述
 
@@ -1021,13 +1029,13 @@ checkscope();
 
 #### 执行上下文的类型
 
-执行上下文总共有三种类型：
+##### 执行上下文总共有三种类型
 
-- **全局执行上下文：** 这<mark>是默认的、最基础的执行上下文</mark>。不在任何函数中的代码都位于全局执行上下文中。<font color=FF0000>**它做了两件事**</font>：1. <font color=FF0000>**创建一个全局对象**</font>，在浏览器中这个全局对象就是 window 对象。2. <font color=FF0000>**将 this 指针指向这个全局对象**</font>。<font color=FF0000 size=4>**一个程序 中只能存在 一个全局执行上下文**</font>。
+- **全局执行上下文：** 这<font color=lightSeaGreen>是默认的、最基础的执行上下文</font>。不在任何函数中的代码都位于全局执行上下文中。<font color=FF0000>**它做了两件事**</font>：1. <font color=FF0000>**创建一个全局对象**</font>，在浏览器中这个全局对象就是 window 对象。2. <font color=FF0000>**将 this 指针指向这个全局对象**</font>。<font color=FF0000 size=4>**一个程序 中只能存在 一个全局执行上下文**</font>。
 
   另外，<font color=FF0000>一旦所有代码执行完毕，Javascript 引擎把全局执行上下文从执行栈中移除</font>。
 
-- **函数执行上下文：** <mark>每次调用函数时，都会为该函数创建一个新的执行上下文</mark>。每个函数都拥有自己的执行上下文，但是只有在函数被调用的时候才会被创建。一个程序中可以存在任意数量的函数执行上下文。每当一个新的执行上下文被创建，它都会按照特定的顺序执行一系列步骤，具体过程将在本文后面讨论。
+- **函数执行上下文：** <font color=lightSeaGreen>每次调用函数时，都会为该函数创建一个新的执行上下文</font>。每个函数都拥有自己的执行上下文，但是只有在函数被调用的时候才会被创建。一个程序中可以存在任意数量的函数执行上下文。每当一个新的执行上下文被创建，它都会按照特定的顺序执行一系列步骤，具体过程将在本文后面讨论。
 
 - **Eval 函数执行上下文：** 运行在 eval 函数中的代码也获得了自己的执行上下文，但由于 Javascript 开发人员不常用 eval 函数，所以在这里不再讨论。
 
@@ -1051,15 +1059,15 @@ ExecutionContext = {
 }
 ```
 
-> 👀 这里相当于变相的说明了：<font color=FF0000 size=4>**「执行上下文」是由「词法环境」和「变量环境」所组成的**</font>（<font color=FF0000>至于有没有 this binding 不确定</font>，不过下面的[[#文章《【译】理解 Javascript 执行上下文和执行栈 》的评论区补充]] 中摘抄的第一条评论给出支持的观点；另外，这个不确定，要看 ES 官方文档了）。另外，为什么要划分「词法环境 」和 「变量环境」可参见 [[#文章《JS：深入理解JavaScript-执行上下文》的补充#为什么要有两个词法环境：LexicalEnvironment 和 VariableEnvironment]] 
+> 👀 这里相当于变相的说明了：<font color=fuchsia size=4>**在 ES6 中「执行上下文」是由「词法环境」和「变量环境」所组成的**</font>（<font color=FF0000>至于有没有 this binding 不确定</font>，不过下面的[[#文章《【译】理解 Javascript 执行上下文和执行栈 》的评论区补充]] 中摘抄的第一条评论给出支持的观点；另外，这个不确定，要看 ES 官方文档了）。另外，为什么要划分「词法环境 」和 「变量环境」可参见 [[#文章《JS：深入理解JavaScript-执行上下文》的补充#为什么要有两个词法环境：LexicalEnvironment 和 VariableEnvironment]] 
 
 #### 词法环境 LexicalEnvironment
 
 [官方 ES6 文档](http://ecma-international.org/ecma-262/6.0/) 将词法环境定义为：
 
-> 「词法环境」是一种<font color=FF0000>规范类型</font>，基于 ECMAScript 代码的词法嵌套结构来定义标识符与特定变量和函数的关联关系。<font color=FF0000 size=4>「词法环境」由环境记录 ( environment record ) 和可能为空引用 ( null ) 的「外部词法环境」组成</font>。
+> 「词法环境」是一种<font color=FF0000>规范类型</font>，基于 ECMAScript 代码的词法嵌套结构来定义标识符与特定变量和函数的关联关系。<font color=fuchsia>**「词法环境」由环境记录 ( environment record ) 和可能为空引用 ( null ) 的「外部词法环境」组成**</font>
 
-简而言之，<font color=FF0000>词法环境是一个包含 **「标识符 变量 <font size=4>映射</font>」** 的结构</font>。（这里的<font color=FF0000>**「标识符」**表示 变量 / 函数 的 **名称**</font>，**「变量」**是对 实际对象【包括函数类型对象、数组对象】或原始值的 引用）。
+简而言之，<font color=FF0000>词法环境是一个包含 **「标识符 - 变量 」<font size=4>映射</font>** 的结构</font>。（这里的<font color=FF0000>**「标识符」**表示 变量 / 函数 的 **名称**</font>，**「变量」**是对 实际对象【包括函数类型对象、数组对象】或原始值的 引用）。
 
 > 👀 变量是 实际对象 和 原始值 的引用。这里有点不太好断句，附上原文：
 >
@@ -1085,7 +1093,7 @@ lexicalEnvironment = {
 }
 ```
 
-每一个「词法环境」由三个组件（ 原文是 components，不过翻译成 “部分“ 更容易理解些）组成
+每一个「词法环境」由三个组件（👀 原文是 components，不过翻译成 “部分“ 更容易理解些）组成
 
 1. **环境记录** ( Environment Record )
 2. **对外部环境的引用** ( Reference to the outer environment )
@@ -1110,17 +1118,17 @@ lexicalEnvironment = {
 >
 > 学习自：[鉴定一下网络热门面试题：如何理解闭包的概念？10m8s](https://www.bilibili.com/video/BV1b3411w7rX?t=10m8s)
 
-**环境记录同样有两种类型：**
+###### 环境记录同样有两种类型
 
 - **声明性环境记录 Declarative environment record：**正如它的名字所表明的，它是用来存储 变量 和 函数声明的；一个函数的词法环境包含一个「声明性环境记录」
 
-  **译文中的总结：**「声明性环境记录」存储 变量、函数和参数。一个<font color=FF0000 size=4>**函数环境包含声明性环境记录**</font>。
+  **译文中的总结：**「声明性环境记录」存储 变量、函数和参数。一个 <font color=FF0000 size=4>**函数环境包含声明性环境记录**</font>。
 
-- **对象环境记录 Object environment record：** 全局代码的「词法环境」包含 一个「对象环境记录」。除了变量和函数声明外，对象环境记录还存储全局绑定对象（浏览器环境下是 window 对象）。因此，每有一个绑定对象的属性（在浏览器环境下，「对象环境记录」包含浏览器向 window 对象提供的 属性 和 方法），就会在「对象环境记录」中创建一个新条目。
+- **对象环境记录 Object environment record：** 全局代码的「词法环境」包含 一个「对象环境记录」。除了变量和函数声明外，<font color=red>对象环境记录还存储全局绑定对象</font>（浏览器环境下是 window 对象）。因此，每有一个绑定对象的属性（在浏览器环境下，「对象环境记录」包含浏览器向 window 对象提供的 属性 和 方法），就会在「对象环境记录」中创建一个新条目。
 
-  **译文中的总结：**「对象环境记录」用于<font color=FF0000>定义在「全局执行上下文」中出现的 变量 和 函数 的**关联**</font>，<font color=FF0000 size=4>**「全局环境」包含「对象环境记录」**</font>（ 👀 注意和上面「声明性环境记录」的对比）。
+  **译文中的总结：**「对象环境记录」用于<font color=fuchsia>**定义在「全局执行上下文」中出现的 变量 和 函数 的关联**</font>，<font color=FF0000 size=4>**「全局环境」包含「对象环境记录」**</font>（ 👀 注意和上面「声明性环境记录」的对比）。
 
-> 💡补充：
+> 💡补充
 >
 > 在下面 [[#文章《JS：深入理解JavaScript-词法环境》的补充#词法环境有两个组成部分]] 还提及了 「对象式环境记录」用于 with 和 global 词法环境。
 >
@@ -1147,7 +1155,7 @@ Arguments: {0: 2, 1: 3, length: 2},
 - 在「全局执行上下文」中，this 的值指向全局对象（在浏览器环境下，this 的值指向 window 对象）。
 - 在「函数执行上下文」中，this 的值取决于函数的调用方式。如果它被一个对象引用调用，那么 this 的值被设置为该对象，否则 this 的值被设置为全局对象或 undefined（严格模式下）
 
-示例如下：
+###### 示例如下
 
 ```js
 const person = {
@@ -1203,7 +1211,7 @@ FunctionExectionContext = { // 函数执行上下文
 
 **译文中的补充：**
 
-> 💡 在执行阶段，如果 Javascript 引擎在源代码中声明的实际位置找不到 let 变量的值，那么将为其分配 undefined 值。
+> 💡 在执行阶段，如果 JavaScript 引擎在源代码中声明的实际位置找不到 let 变量的值，那么将为其分配 undefined 值。
 
 #### 执行上下文的示例
 
@@ -1253,51 +1261,51 @@ GlobalExectionContext = {
 
 ```js
 GlobalExectionContext = {
-LexicalEnvironment: {
-    EnvironmentRecord: {
-      Type: "Object",
-      // 标识符绑定在这里 
-      a: 20,
-      b: 30,
-      multiply: < func >
+  LexicalEnvironment: {
+      EnvironmentRecord: {
+        Type: "Object",
+        // 标识符绑定在这里 
+        a: 20,
+        b: 30,
+        multiply: < func >
+      }
+      outer: <null>,
+      ThisBinding: <Global Object>
+    },
+  VariableEnvironment: {
+      EnvironmentRecord: {
+        Type: "Object",
+        // 标识符绑定在这里 
+        c: undefined,
+      }
+      outer: <null>,
+      ThisBinding: <Global Object>
     }
-    outer: <null>,
-    ThisBinding: <Global Object>
-  },
-VariableEnvironment: {
-    EnvironmentRecord: {
-      Type: "Object",
-      // 标识符绑定在这里 
-      c: undefined,
-    }
-    outer: <null>,
-    ThisBinding: <Global Object>
-  }
 }
 ```
 
-当遇到 函数 multiply(20, 30) 被调用时，一个新的「函数执行上下文」会被创建来执行函数代码。因此：在创建阶段，函数执行上下文看起来会像这样：
+当遇到函数 `multiply(20, 30)` 被调用时，一个新的「函数执行上下文」会被创建来执行函数代码。因此，在创建阶段，函数执行上下文看起来会像这样：
 
 ```js
 FunctionExectionContext = {
-LexicalEnvironment: {
-    EnvironmentRecord: {
-      Type: "Declarative",
-      // 标识符绑定在这里
-      Arguments: {0: 20, 1: 30, length: 2},
+  LexicalEnvironment: {
+      EnvironmentRecord: {
+        Type: "Declarative",
+        // 标识符绑定在这里
+        Arguments: {0: 20, 1: 30, length: 2},
+      },
+      outer: <GlobalLexicalEnvironment>,
+      ThisBinding: <Global Object or undefined>,
     },
-    outer: <GlobalLexicalEnvironment>,
-    ThisBinding: <Global Object or undefined>,
-  },
-VariableEnvironment: {
-    EnvironmentRecord: {
-      Type: "Declarative",
-      // 标识符绑定在这里 
-      g: undefined
-    },
-    outer: <GlobalLexicalEnvironment>,
-    ThisBinding: <Global Object or undefined>
-  }
+  VariableEnvironment: {
+      EnvironmentRecord: {
+        Type: "Declarative",
+        // 标识符绑定在这里 
+        g: undefined
+      },
+      outer: <GlobalLexicalEnvironment>,
+      ThisBinding: <Global Object or undefined>
+    }
 }
 ```
 
@@ -1305,24 +1313,24 @@ VariableEnvironment: {
 
 ```js
 FunctionExectionContext = {
-LexicalEnvironment: {
-    EnvironmentRecord: {
-      Type: "Declarative",
-      // Identifier bindings go here
-      Arguments: {0: 20, 1: 30, length: 2},
+  LexicalEnvironment: {
+      EnvironmentRecord: {
+        Type: "Declarative",
+        // Identifier bindings go here
+        Arguments: {0: 20, 1: 30, length: 2},
+      },
+      outer: <GlobalLexicalEnvironment>,
+      ThisBinding: <Global Object or undefined>,
     },
-    outer: <GlobalLexicalEnvironment>,
-    ThisBinding: <Global Object or undefined>,
-  },
-VariableEnvironment: {
-    EnvironmentRecord: {
-      Type: "Declarative",
-      // Identifier bindings go here
-      g: 20
-    },
-    outer: <GlobalLexicalEnvironment>,
-    ThisBinding: <Global Object or undefined>
-  }
+  VariableEnvironment: {
+      EnvironmentRecord: {
+        Type: "Declarative",
+        // Identifier bindings go here
+        g: 20
+      },
+      outer: <GlobalLexicalEnvironment>,
+      ThisBinding: <Global Object or undefined>
+    }
 }
 ```
 
@@ -1332,7 +1340,7 @@ VariableEnvironment: {
 
 **注意：**你或许注意到 let 和 const 定义的变量 在「创建阶段」没有任何关联的值。但是，var 定义的变量被设置为 undefined。
 
-**这是因为：**<font color=FF0000>在「创建阶段」，代码会被扫描并解析 变量 和 函数声明</font>，其中函数声明存储在环境中，而变量会被设置为 undefined（在 var 的情况下）或 保持未初始化 uninitialized（在 let 和 const 的情况下）。
+**这是因为：**<font color=FF0000>在「创建阶段」，代码会被扫描并解析 变量 和 函数声明</font>，其中函数声明存储在环境中，而变量会被设置为 undefined（在 var 的情况下）或 保持未初始化 `<uninitialized>`（在 let 和 const 的情况下）。
 
 这就是为什么你可以在声明之前访问 var 定义的变量（尽管是 undefined ），但如果在声明之前访问 let 和 const 定义的变量就会提示引用错误的原因。
 
@@ -1344,9 +1352,11 @@ VariableEnvironment: {
 
 #### 文章《【译】理解 Javascript 执行上下文和执行栈 》的评论区补充
 
-在评论区看见了这个评论，解答了我为什么 原文和 译文 的内容不一致：
+在评论区看见了这个评论，解答了我“为什么 原文和 译文 的内容不一致”的疑惑：
 
-> ES2018 里把 this 划分到 语法环境 里了，并且不仅仅有词法环境和变量环境，还有 code evaluation state，Function，ScriptOrModule，Realm，Generator
+> ES2018 里把 this 划分到 词法环境 里了，并且不仅仅有词法环境和变量环境，还有 code evaluation state，Function，ScriptOrModule，Realm，Generator
+
+因为是原文跟随标准改变而改变了，而译文没有
 
 另外，评论区有人在问 “为什么没有看见 变量对象 概念了”，评论回复如下：
 
@@ -1363,11 +1373,11 @@ VariableEnvironment: {
 - module：模块代码
 - eval code：放在 eval 的代码
 
-> 👀 这里说明的是有几种执行上下文，在 [[#JS 执行上下文栈#可执行代码]] 中的说法是 三种 global、function、eval；没有 module；另外，[[#ES6 中的执行上下文#执行上下文的类型]] 中是三种。
-
 ##### 为什么要有两个词法环境：LexicalEnvironment 和 VariableEnvironment
 
-<font color=FF0000>变量环境组件 ( VariableEnvironment ) 是用来 **登记 `var` `function` 变量声明**</font>，<font color=FF0000>词法环境组件 ( LexicalEnvironment ) 是用来 **登记 `let` `const` `class` 等变量声明**</font>。⚠️ 注意其中的 function 和 class
+<font color=FF0000>变量环境组件 ( VariableEnvironment ) 是用来 **登记 `var` `function` 变量声明**</font>，<font color=FF0000>词法环境组件 ( LexicalEnvironment ) 是用来 **登记 `let` `const` `class` 等变量声明**</font>。
+
+> ⚠️ 注意其中的 function 和 class 所属
 
 在 ES6 之前都没有块级作用域，ES6 之后我们可以用 `let` `const` 来声明块级作用域，<font color=FF0000>**有这两个词法环境是为了实现块级作用域的同时不影响 `var` 变量声明 和 函数声明**</font>，具体如下：
 
@@ -1383,7 +1393,7 @@ VariableEnvironment: {
 
 在介绍 Lexical Environment 之前，我们先看下<font color=FF0000>**在 V8 里 JS 的编译执行过程**</font>，<font color=dodgerBlue>大致上可以分为三个阶段</font>：
 
-- **第一步：**V8 引擎刚拿到「执行上下文」的时候（👀 这里是 V8 引擎拿到 执行上下文？执行上下文不是 JS 引擎生成的？**这里持怀疑态度** ），会把代码从上到下一行一行的先做 分词 / 词法分析 ( Tokenizing / Lexing )。分词是指：比如 `var a = 2;` 这段代码，会被分词为：`var`  `a`  `2` 和 `;` 这样的原子符号 ( atomic token )；词法分析是指：登记变量声明、函数声明、函数声明的形参。
+- **第一步：**V8 引擎刚拿到「执行上下文」的时候（👀 这里是 V8 引擎拿到 执行上下文？执行上下文不是 JS 引擎生成的么？感觉这里没说清楚 ），会把代码从上到下一行一行的先做 分词 / 词法分析 ( Tokenizing / Lexing )。分词是指：比如 `var a = 2;` 这段代码，会被分词为：`var`  `a`  `2` 和 `;` 这样的原子符号 ( atomic token )；词法分析是指：登记变量声明、函数声明、函数声明的形参。
 - **第二步：**<font color=LightSeaGreen>在分词结束以后，会做代码解析，引擎将 token 解析翻译成一个 AST（抽象语法树）</font>， 在这一步的时候，如果发现语法错误，就会直接报错不会再往下执行。
 - **第三步：**引擎生成 CPU 可以执行的机器码。
 
@@ -1393,7 +1403,11 @@ VariableEnvironment: {
 
 - **环境记录 ( Environment Record )**，这个就是真正登记变量的地方。
   - **声明式环境记录 ( Declarative Environment Record )**：用来记录直接有标识符定义的元素，<font color=FF0000>比如变量、常量、let、class、module、import以及函数声明</font>。
+  
   - **对象式环境记录（Object Environment Record）**：<font color=FF0000>**主要用于 with 和 global 的词法环境**</font>。
+  
+    > 👀 还有全局对象
+  
 - **对外部词法环境的引用 ( outer )**，它是作用域链能够连起来的关键。
 
 ##### 声明式环境记录的两种类型
@@ -1411,11 +1425,11 @@ VariableEnvironment: {
 
 ##### `[[environment]]` 相关
 
-在《现代JS教程》中有说：
+《现代JS教程》中有说：
 
 > 所有的函数在“诞生”时都会记住创建它们的词法环境。从技术上讲，这里没有什么魔法：<font color=FF0000>**<font size=4>所有函数</font> 都有名为 `[[Environment]]` 的隐藏属性**</font>，<font color=FF0000>**该属性 <font size=4>保存了对创建该函数的「词法环境」的 引用</font>**</font>。
 
-在 《JS 忍者秘籍》（第二版）5.4.2 中：
+《JS 忍者秘籍》（第二版）5.4.2 中：
 
 > 无论何时创建函数，都会创建一个与之相关联的词法环境，并存储在名为 `[[Environment]]` 的内部属性上（也就是说无法直接访问或操作）。
 >
@@ -1467,9 +1481,9 @@ VariableEnvironment: {
 
 > ```js
 > executionContext：{
->     variable object：vars, functions, arguments,        // 注意，这里的成员
->     scope chain: variable object + all parents scopes   // 注意：all parents scope，重要
->     thisValue: context object
+>      variable object：vars, functions, arguments,        // 注意，这里的成员
+>      scope chain: variable object + all parents scopes   // 注意：all parents scope，重要
+>      thisValue: context object
 > }
 > ```
 >
@@ -1485,15 +1499,17 @@ VariableEnvironment: {
 
 ##### 补充
 
-> 变量对象对于程序而言是不可读的，只有编译器才有权访问变量对象。
+> 变量对象 VO 对于程序而言是不可读的，只有编译器才有权访问变量对象。
 >
 > 摘自：[一道js面试题引发的思考](https://github.com/kuitos/kuitos.github.io/issues/18)
+>
+> 👀 **感觉** 类似于 内部属性，VO 也是属于规范类型
 
 #### 全局上下文
 
 我们先了解一个概念，叫全局对象。在 [W3School](http://www.w3school.com.cn/jsref/jsref_obj_global.asp) 中也有介绍：
 
-> <mark>「全局对象」是预定义的对象，作为 JavaScript 的 「全局函数」 和 「全局属性」 的占位符</mark>。通过使用全局对象，可以访问所有其他所有预定义的对象、函数和属性。
+> <font color=lightSeaGreen>「全局对象」是预定义的对象，作为 JavaScript 的 「全局函数」 和 「全局属性」 的占位符</font>。通过使用全局对象，可以访问所有其他所有预定义的对象、函数和属性。
 
 > 在顶层 JavaScript 代码中，可以用关键字 this 引用全局对象。因为 <font color=FF0000>**全局对象是作用域链的头**</font>，这意味着所有非限定性的变量和函数名都会作为该对象的属性来查询。
 
@@ -1795,7 +1811,7 @@ bar(); // 1
 
 这是因为 <font color=FF0000>**函数有一个 内部属性 `[[scope]]` ，当函数创建的时候，就会 <font size=4>保存所有父「变量对象」到其中</font>**</font>（ 👀 会保存 父变量对象（即：父「执行上下文环境」的 VO ）到 `[[scope]]` 中，这点要注意！！ 另外，下面有 testScope 函数的 `[[scope]]` 内部属性截图），你 <font color=FF0000 size=4>**可以理解 `[[scope]]` 就是所有父变量对象的层级链**</font>，但是 <font color=FF0000>**注意 ⚠️：`[[scope]]` 并不代表 完整的作用域链**</font>！
 
-<img src="https://s2.loli.net/2022/04/05/vT5iDzLo4cqYWPy.png" alt="image-20220405214215002" style="zoom:60%;" />
+<img src="https://s2.loli.net/2022/04/05/vT5iDzLo4cqYWPy.png" alt="image-20220405214215002" style="zoom:55%;" />
 
 > 👀 Scope 本来也有 “作用域” 的含义，如下图 Chrome 调试中的 Scope。图片摘自：[现代JS方法 - 在浏览器中调试 - Debugger 命令](https://zh.javascript.info/debugging-chrome#debugger-ming-ling)
 >
