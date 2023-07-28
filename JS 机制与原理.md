@@ -14,7 +14,7 @@
 
 ##### 标记-清除法
 
-标记-清除法由 John McCarthy（ 👀 即那位“约翰·麦肯锡”） 于 1960 年发表的一篇论文提出，其主要分两个阶段：
+标记-清除法由 John McCarthy（ 👀 就是那位“约翰·麦肯锡”） 于 1960 年发表的一篇论文提出，其主要分两个阶段：
 
 1. 第一阶段是标记，从一个 GC root 集合出发，沿着「指针」找到所有对象，将其标记为活动对象。
 2. 第二阶段是清除，将内存中未被标记的对象删除，释放内存空间。
@@ -35,7 +35,7 @@
 
 2. <font color=FF0000>先在 ***from 空间*** 进行内存分配，当空间被占满时，标记活动对象，并将其复制到 ***to 空间***</font>。
 
-   > 👀 注：感觉是先在 ***from 空间*** 中随意使用空间，当空间不足（无法放下一个新的任务）时，再进行整理并放入 ***to 空间*** 
+   > 👀 感觉是先在 ***from 空间*** 中随意使用空间，当空间不足（无法放下一个新的任务）时，再进行整理并放入 ***to 空间*** 
 
 3. 复制完成后，<font color=fuchsia>将 ***from*** 和 ***to*** 空间互换</font>。
 
@@ -43,7 +43,7 @@
 
 由于直接将活动对象复制到另一半空间，没有了清除阶段的开销，所以能在较短时间内完成回收操作，并且每次复制的时候，对象都会集中到一起，相当于同时做了整理操作，避免了内存碎片的产生。
 
-虽然复制算法有吞吐量高、没有碎片的优点，但其缺点也非常明显。<font color=dodgerBlue>**首先**</font>，<font color=FF0000>复制操作也是需要时间成本的，若堆空间很大且活动对象很多，则每次清理时间会很久</font>。<font color=dodgerBlue>**其次**</font>，<font color=fuchsia>将空间二等分的操作，让可用的内存空间直接减少了一半</font>。
+虽然复制算法有吞吐量高、没有碎片的优点，但其缺点也非常明显：<font color=dodgerBlue>**首先**</font>，<font color=FF0000>复制操作也是需要时间成本的，若堆空间很大且活动对象很多，则每次清理时间会很久</font>。<font color=dodgerBlue>**其次**</font>，<font color=fuchsia>将空间二等分的操作，让可用的内存空间直接减少了一半</font>
 
 ##### 引用计数
 
@@ -55,7 +55,7 @@
 
 <img src="https://s2.loli.net/2022/04/01/UfDnaNpCo6YXGrJ.png" alt="图片" style="zoom:75%;" />
 
-该算法可以即时回收垃圾数据，（**优点**）<font color=FF0000>对程序的影响时间很短，效率很高。高性能、实时回收</font>，看似完美的方案其实<font color=dodgerBlue>也有个**问题**</font>，<font color=fuchsia>当对象中存在循环引用时，由于引用数不会降到 0，所以对象不会被回收</font>。
+该算法可以即时回收垃圾数据，（**优点**）<font color=FF0000>对程序的影响时间很短，效率很高。高性能、实时回收</font>，看似完美的方案其实<font color=dodgerBlue>也有个**问题**</font>：<font color=fuchsia>当对象中存在循环引用时，由于引用数不会降到 0，所以对象不会被回收</font>。
 
 <img src="https://s2.loli.net/2022/04/15/2HEmQgS4JpBVwlR.png" alt="图片" style="zoom:75%;" />
 
@@ -68,11 +68,16 @@
 1. 从一个 GC root 集合出发，<font color=fuchsia>标记所有活动对象</font>。
 
 2. <font color=fuchsia>将所有活动对象移到内存的一端，集中到一起</font>。
-3. 直接清理掉边界以外的内存，释放连续空间。（ 👀 直接移动指针即可）
+
+   > 👀 类似于磁盘整理
+
+3. <font color=fuchsia>直接清理掉边界以外的内存</font>，释放连续空间
+
+   > 👀 直接移动指针即可，届时新的数据直接覆盖即可
 
 <img src="https://s2.loli.net/2022/04/01/6Qi9fNKctTHpPn3.png" alt="图片" style="zoom:70%;" />
 
-可以发现，该算法既避免了 “标记-清除法” 产生内存碎片的问题，又避免了复制算法导致可用内存空间减少的问题。当然，<font color=LightSeaGreen>该算法也不是没有缺点的</font>，<font color=fuchsia>由于其清除和整理的操作很麻烦，甚至需要对整个堆做多次搜索，故而堆越大，耗时越多</font>。
+可以发现，该算法既避免了 “标记-清除法” 产生内存碎片的问题，又避免了复制算法导致可用内存空间减少的问题。当然，<font color=LightSeaGreen>该算法也不是没有缺点的</font>：<font color=fuchsia>由于其清除和整理的操作很麻烦，甚至需要对整个堆做多次搜索，故而堆越大，耗时越多</font>。
 
 ##### 代际假设和分代收集
 
@@ -93,7 +98,7 @@
 
 #### JavaScript 垃圾回收
 
-JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，引用数据类型存在 *堆* 中**</font>（ 👀 引用类型存在「堆」中，同时，<font color=FF0000>***栈*** 中存储堆内的地址的引用</font>），所以 **讨论 JavaScript 的垃圾回收，即讨论其 *栈* 中数据的回收，以及 *堆* 中数据的回收**。
+JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，引用数据类型存在 *堆* 中**</font>（ 👀 引用类型的内容 存在「堆」中，同时，<font color=FF0000>***栈*** 中存储堆内的地址的引用</font>），所以 **讨论 JavaScript 的垃圾回收，即讨论其 *栈* 中数据的回收，以及 *堆* 中数据的回收**。
 
 ##### 栈中垃圾回收
 
@@ -111,30 +116,40 @@ JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，
 
 <font color=fuchsia>JavaScript **<font size=4>堆</font> 中垃圾数据回收就使用到了 *分代收集* 的思想**</font>，<font color=fuchsia>引擎将 **堆空间** 分为**「新生代 ( young-space ) 」**和**「老生代 ( old-space ) 」**</font> ；并且，<font color=FF0000>**对两个区域实施不同的垃圾回收策略**</font>
 
-> 👀 搜了一下 ***分代收集*** 相关内容，发现：JVM 也是使用该思想
+> 💡 搜了一下 ***分代收集*** 相关内容，发现：JVM 也是使用该思想
 
 ###### 新生代
 
 <font color=FF0000>***新生代*** 用于 **存放生存时间短的对象**，大多数新创建的小的对象都会被分配到该区域，该区域的垃圾回收会比较频繁</font>。
 
-在 ***新生代*** 中，引擎使用 Scavenge 算法 ( https://v8.dev/blog/trash-talk ) 进行垃圾回收，<font color=FF0000>即上面提到的 ***复制算法***</font>。参见 [[#V8 GC#新生代]]
+<font color=dodgerBlue>在 ***新生代*** 中</font>，引擎使用 Scavenge 算法 ( https://v8.dev/blog/trash-talk ) 进行垃圾回收，<font color=fuchsia>即上面提到的 ***复制算法***</font>。参见 [[#V8 GC#新生代]]
 
-<font color=LightSeaGreen>其将 ***新生代*** 空间对半分为 ***from-space*** 和 ***to-space*** 两个区域</font>。新创建的对象都被存放到 ***from-space*** ，<font color=red>当空间快被写满时触发垃圾回收</font>。先对 ***from-space*** 中的对象进行标记，完成后将标记对象复制到 ***to-space*** 的一端，然后将两个区域角色反转，就完成了回收操作
+<font color=fuchsia>其将 ***新生代*** 空间对半分为 ***from-space*** 和 ***to-space*** 两个区域</font>。新创建的对象都被存放到 ***from-space*** ，<font color=red>当空间快被写满时触发垃圾回收</font>。先对 ***from-space*** 中的对象进行标记，完成后将标记对象复制到 ***to-space*** 的一端，然后将两个区域角色反转，就完成了回收操作
 
-<font color=FF0000>**由于每次执行清理操作都需要复制对象，而复制对象需要时间成本，所以「新生代」空间会设置得比较小 ( 1~8M )**</font>。
+<font color=FF0000>**由于每次执行清理操作都需要复制对象，而复制对象需要时间成本，所以「新生代」空间会设置得比较小 ( 1~8M )**</font>
 
 ###### 老生代
 
 老生代被用于<font color=FF0000>存放生存 “时间长的对象” 和 “大的对象”</font>：
 
 - 即<font color=FF0000>一些 **大的对象** 会被直接分配到老生代空间</font>
-- <font color=fuchsia>**新生代中经过 两次垃圾回收后**</font>（👀 即一次循环，一次 Scavenge 算法？） <font color=fuchsia>**仍然存活的对象，会晋升到老生代空间**</font>
+- <font color=fuchsia>**新生代中经过 两次垃圾回收后**</font> <font color=fuchsia>**仍然存活的对象，会晋升到老生代空间**</font>
 
-引擎在该（老生代）空间主要使用上面提到的 ***标记-压缩算法*** 。首先对活动对象进行标记，标记完成后，将所有存活对象移到内存的一段，然后清理掉边界外的内存。
+<font color=fuchsia>引擎在该（老生代）空间主要使用上面提到的 ***标记-压缩算法*** </font>。首先对活动对象进行标记，<font color=dodgerBlue>标记完成后</font>，<font color=fuchsia>将所有存活对象移到内存的一段，然后清理掉边界外的内存</font>。
+
+> 💡 根据 [ChatGPT 对问题 “Scavenge 算法 和 Cheney 算法 有什么关联？”的回答](https://chat.openai.com/share/e8282bd3-5ab1-41e6-b669-a990497252ad) ，老生代 的 垃圾回收 主要使用的是： Cheney 算法
+>
+> > Cheney 算法也是一种用于垃圾回收的算法，但它是用于标记-复制（Mark-Sweep-Compact）垃圾回收算法的一部分。
 
 由于 JavaScript 是单线程运行的，意味着<font color=LightSeaGreen>垃圾回收算法和脚本任务在同一线程内运行，在执行垃圾回收逻辑时，后续的脚本任务需要等垃圾回收完成后才能继续执行</font>。<font color=FF0000>若堆中的数据量非常大，一次完整垃圾回收的时间会非常长，将导致应用的性能和响应能力都直线下降</font>。
 
-<font color=FF0000>为了避免垃圾回收影响应用的性能，V8 将标记的过程拆分成多个子标记</font>，<font color=LightSeaGreen>让垃圾回收标记和应用逻辑交替执行，避免脚本任务等待较长时间</font>。
+<font color=FF0000>为了避免垃圾回收影响应用的性能，**V8 将标记的过程拆分成多个子标记**</font>，<font color=LightSeaGreen>让垃圾回收标记和应用逻辑交替执行，避免脚本任务等待较长时间</font>。
+
+> 为了确保 JS 的正常执行，GC 和 JS 执行不能并行执行，因此选择了类似于共享 CPU 时间片的执行方式，将 GC 和 JS 交替执行。
+>
+> ![这里写图片描述](https://s2.loli.net/2022/10/26/EXnhHmrfR6YAxTy.png)
+>
+> 摘自：[v8 GC机制](https://www.cnblogs.com/coderL/p/7941914.html)
 
 摘自：[科普文：常见垃圾回收算法与 JS GC 原理](https://mp.weixin.qq.com/s/KZsgQxlrsfYMvJejbZqGHw)
 
@@ -162,16 +177,6 @@ GC 与 JS 互斥
 
 新生代内存是 <font color=red>**由两个 semispace（ 半空间 ）构成**</font>的，内存最大值在 64位系统 和 32位系统 上分别为 32MB 和 16MB。<font color=red>在新生代的垃圾回收过程中主要采用了 Scavenge 算法</font>。Scavenge 算法是一种典型的牺牲空间换取时间的算法。
 
-> 💡 **原文部分摘抄**
->
-> <font color=red>在 Scavenge 算法的具体实现中，主要采用了 Cheney 算法</font>。它将新生代内存一分为二，每一个部分的空间称为 semispace ，也就是上图中 new_space 中划分的两个区域，其中处于激活状态的区域我们称为 From 空间，未激活 ( inactive new space ) 的区域我们称为 To 空间。这两个空间中，始终只有一个处于使用状态，另一个处于闲置状态。我们的程序中声明的对象首先会被分配到 From 空间，当进行垃圾回收时，如果 From 空间中尚有存活对象，则会被复制到 To 空间进行保存，非存活的对象会被自动回收。当复制完成后，From 空间和 To 空间完成一次角色互换，To 空间会变为新的 From 空间，原来的 From 空间则变为 To 空间。
->
-> 为了确保 JS 的正常执行，GC 和 JS 执行不能并行执行，因此选择了类似于共享 CPU 时间片的执行方式，将 GC 和 JS 交替执行。
->
-> ![这里写图片描述](https://s2.loli.net/2022/10/26/EXnhHmrfR6YAxTy.png)
->
-> 摘自：[v8 GC机制](https://www.cnblogs.com/coderL/p/7941914.html)
-
 Scavenge 算法的垃圾回收过程主要就是将存活对象在 From 空间和 To 空间之间进行复制，同时完成两个空间之间的角色互换，因此该算法的缺点也比较明显，浪费了一半的内存用于复制。
 
 ##### 对象晋升
@@ -182,8 +187,10 @@ Scavenge 算法的垃圾回收过程主要就是将存活对象在 From 空间�
 
 - 对象是否经历过一次 Scavenge 算法
 
-- <font color=fuchsia>To 空间的内存占比是否已经超过 25%</font>（👀 这里的 25% 是内存占用达到的阈值）
+- <font color=fuchsia>To 空间的内存占比是否已经超过 25%</font>
 
+  > 👀 这里的 25% 是内存占用达到的阈值
+  
   > 💡 To 空间的内存占比超过 25% 会引发晋升 的原因：
   >
   > > 当这次 Scavenge 回收完成后，这个 To 空间将变成 From 空间，接下来的内存分配将在这个空间中进行，<font color=red>如果占比过高，会影响后续的内存分配</font>
@@ -1550,9 +1557,9 @@ FunctionExectionContext = {
 
 <font color=fuchsia size=4>在**「函数上下文」**中，我们 **用「活动对象」**( activation object , AO ) 来**表示「变量对象」**</font>。
 
-<font color=fuchsia>「活动对象」和「变量对象」其实是一个东西</font>，只是<font color=fuchsia>**「变量对象」是「规范上的」或者说是「引擎实现上」的，不可在 JavaScript 环境中访问**</font>。<font color=fuchsia>**只有到当进入一个「执行上下文」中，这个「执行上下文」的「变量对象」才会被 <font size=4>激活</font>**</font>；所以<font color=fuchsia>才叫 Activation Object</font>，而 <font color=FF0000>只有被激活的变量对象、也就是活动对象上的各种属性，**才能被访问**</font>。
+<font color=fuchsia>「活动对象」和「变量对象」其实是一个东西</font>，只是<font color=fuchsia>**「变量对象」是「规范上的」或者说是「引擎实现上」的，不可在 JavaScript 环境中访问**</font>。<font color=fuchsia size=4>**只有到当进入一个「执行上下文」中，这个「执行上下文」的「变量对象」才会被 <font size=4>激活</font>**</font>；所以<font color=fuchsia>才叫 Activation Object</font>，而 <font color=FF0000>只有被激活的变量对象、也就是活动对象上的各种属性，**才能被访问**</font>。
 
-<font color=fuchsia>「活动对象」是在进入「函数上下文」时刻被创建的</font>（ 👀 根据下面 [[#关于「函数上下文」Kuitos 博文中的补充]] 的说法，“进入”的意思就是“被调用”、”执行到“），<font color=FF0000>**它（AO）通过函数的 arguments 属性初始化**</font>。arguments 属性值是 Arguments 对象。
+<font color=fuchsia size=4>**「活动对象」是在进入「函数上下文」时刻被创建的**</font>（ 👀 根据下面 [[#关于「函数上下文」Kuitos 博文中的补充]] 的说法，“进入”的意思就是“被调用”、”执行到“），<font color=FF0000>**它 ( AO ) 通过函数的 arguments 属性初始化**</font>。arguments 属性值是 Arguments 对象。
 
 ##### 关于「函数上下文」Kuitos 博文中的补充
 
@@ -1561,14 +1568,16 @@ FunctionExectionContext = {
 > 用代码来说明就是：
 >
 > ```js
-> function a(name, age){
->     var gender = "male";
->     function b(){}
+> function a(name, age) {
+>   var gender = "male";
+>   function b() {}
 > }
 > a(“k”,10);
 > ```
 >
-> <font color=FF0000 size=4>**a 被调用时**</font>（ 👀 这里说的很明白了，是 a 被调用之后，创建 AO），<font color=FF0000>**在 a 的执行上下文会创建一个 活动对象 AO，并且被初始化为 AO = [arguments]**</font>。随后 AO 又被当做变量对象 ( variable object ) VO进行变量初始化，此时 VO = `[arguments].concat([name,age,gender,b])` 。
+> <font color=FF0000 size=4>**a 被调用时**</font>（ 👀 这里说的很明白了，是 a 被调用之后，创建 AO），<font color=FF0000>**在 a 的执行上下文会创建一个 活动对象 AO，并且被初始化为 AO = [arguments]**</font>。<font color=lightSeaGreen>随后 AO 又被当做变量对象 ( variable object ) VO进行变量初始化</font>，<font color=red>此时 VO = `[arguments].concat([name, age, gender, b])` </font>。
+>
+> > 👀 参考 [[#执行过程#举个例子]] 中的示例： `[arguments].concat([name, age, gender, b])`  这里的 arguments 表示一定会有但可能只包含 `length: 0` 这一个属性的<font color=fuchsia>实参对象</font>（如果实参为空），而 name 和 age 是一定会有的形参（虽然对应的值可能是 undefined）。
 >
 > 摘自：[一道js面试题引发的思考](https://github.com/kuitos/kuitos.github.io/issues/18)
 
@@ -1583,19 +1592,26 @@ FunctionExectionContext = {
 
 <font color=FF0000>当进入「执行上下文」时，这时候还没有执行代码</font>，**变量对象 VO 会包括**：
 
-- <font color=FF0000>函数的**所有形参**</font>（如果是「函数上下文」）。👀 这个应该对应下面例子中的 有实参的 “ 形参a “
+- <font color=FF0000>函数的**所有形参**</font>（如果是「函数上下文」）。
+
+  > 👀 这个应该对应下面示例中的 有实参的 “ 形参a ”
 
   - 由名称和对应值组成的一个变量对象的属性被创建
 
-  - 没有实参（ 👀 可以理解为：调用时没有实参），属性值设为 undefined
+  - 没有实参（ 👀 调用时没有实参），属性值设为 undefined
 
 - 函数声明
 
   - <font color=FF0000>由“名称”和“对应值”（**函数对象** ( function-object ) ）组成一个变量对象的属性被创建</font>
-  - 如果变量对象 VO 已经存在相同名称的属性，则完全替换这个属性（ 👀 用“覆盖”似乎更好些？另外，这也说明了函数的优先级最高，一等公民）
 
-- 变量声明。👀 这里对应下面的变量 b 和 d（ d 是变量声明）
+  - 如果变量对象 VO 已经存在相同名称的属性，则完全替换这个属性
 
+    > 👀 用“覆盖”似乎更好些？另外，这也说明了函数的优先级最高，毕竟是一等公民
+
+- 变量声明
+
+  > 👀 这里对应下面示例的变量 b 和 d（ d 是变量声明）
+  
   - 由名称和对应值 ( undefined ) 组成一个「变量对象」的属性被创建（👀 如下面的）
   
   - <font color=FF0000 size=4>**如果「变量名称」跟 “已经声明的形式参数”或函数相同，则变量声明不会干扰已经存在的这类属性**</font>。
@@ -1604,7 +1620,7 @@ FunctionExectionContext = {
   
   ###### 补充
   
-  > 这里有一点特殊就是只有 函数声明 ( function declaration ) 会被加入到「变量对象」中，而 <font color=FF0000>**函数表达式 ( function expression )** 则不会</font>。看代码：
+  > 这里有一点特殊就是只有 函数声明 ( function declaration ) 会被加入到「变量对象」中，而 <font color=fuchsia>**函数表达式 ( function expression )** 则不会</font>。看代码：
   >
   > ```js
   > // 函数声明
@@ -1612,20 +1628,20 @@ FunctionExectionContext = {
   > console.log(typeof a); // "function"
   > 
   > // 函数表达式
-  > var a = function _a(){};
+  > var a = function _a() {};
   > console.log(typeof a); // "function"
-  > console.log(typeof _a); // "undefined"
+  > console.log(typeof _a); // **"undefined"** ⚠️
   > ```
   >
-  > **函数声明** 的方式下，a 会被加入到变量对象中，故当前作用域能打印出 a。
-  > **函数表达式** 情况下，a 作为变量会加入到变量对象中，\_a 作为函数表达式则不会加入，故 a 在当前作用域能被正确找到，\_a 则不会。
+  > <font color=dodgerBlue>**函数声明** 的方式下</font>，`a` 会被加入到变量对象中，故当前作用域能打印出 `a` 。
+  > <font color=dodgerBlue>**函数表达式** 情况下</font>，`a` 作为变量会加入到变量对象中，`_a` 作为函数表达式则不会加入，故 a 在当前作用域能被正确找到，`_a` 则不会。
   >
   > 另外，关于变量如何初始化，看这里：
   > ![https://github.com/kuitos/kuitos.github.io/blob/assets/images/image2015-3-10%2013-20-41.png](https://s2.loli.net/2022/04/06/7FsKhj6BX9OWpNY.png)
   >
   > 摘自：[一道js面试题引发的思考](https://github.com/kuitos/kuitos.github.io/issues/18)
 
-举个例子：
+##### 举个例子
 
 ```js
 function foo(a) {
@@ -1639,7 +1655,7 @@ function foo(a) {
 foo(1);
 ```
 
-在进入执行上下文后，这时候的 AO 是：
+###### 在进入执行上下文后，这时候的 AO 是
 
 ```js
 AO = {
@@ -1700,7 +1716,7 @@ bar(); // ???
 
 第一段会报错：`Uncaught ReferenceError: a is not defined`。第二段会打印：`1`。
 
-这是因为：<font color=FF0000 size=4>**函数中的 “a” 并没有通过 var 关键字声明，所以不会被存放在 AO 中**</font>。
+这是因为：<font color=fuchsia size=4>**函数中的 `a` 并没有通过 var 关键字声明，所以不会被存放在 AO 中**</font>。
 
 第一段执行 console 的时候， AO 的值是：
 
@@ -1714,14 +1730,14 @@ AO = {
 
 没有 a 的值，然后就会到全局去找，全局也没有，所以会报错。
 
-当第二段执行 console 的时候，全局对象已经被赋予了 a 属性，这时候就可以从全局找到 a 的值，所以会打印 1。
+当第二段执行 console 的时候，全局对象已经被赋予了 a 属性，这时候就可以从全局找到 a 的值，所以会打印 1
 
 ##### 变量对象的思考题 第二题
 
 ```js
 console.log(foo);
-function foo(){
-    console.log("foo");
+function foo() {
+  console.log("foo");
 }
 var foo = 1;
 ```
@@ -1738,13 +1754,13 @@ var foo = 1;
 
 **「作用域」是指：<font color=FF0000>程序源代码中定义变量的区域</font>**。
 
-<font color=FF0000 size=4>**「作用域」规定了如何查找变量**</font>，也就是确定当前执行代码对变量的访问权限。
+<font color=fuchsia>**「作用域」规定了如何查找变量**</font>，也就是确定当前执行代码对变量的访问权限。
 
-<font color=FF0000 size=4>JavaScript 采用词法作用域 ( lexical scoping)，也就是 **静态作用域**</font>。
+<font color=fuchsia size=4>JavaScript 采用词法作用域 ( lexical scoping)，也就是 **静态作用域**</font>。
 
 ##### 静态作用域 和 动态作用域
 
-因为 JavaScript 采用的是词法作用域，<font color=FF0000 size=4>**函数的作用域 在函数定义的时候就决定了**</font>。
+因为 JavaScript 采用的是词法作用域，<font color=fuchsia size=4>**函数的作用域 在函数定义的时候就决定了**</font>⚠️
 
 与词法作用域相对的是 <font color=FF0000>**动态作用域**，函数的作用域是在 **函数调用** 的时候才决定的</font>。动态作用域的语言有：lisp、bash
 
@@ -1752,7 +1768,9 @@ var foo = 1;
 
 ```js
 var value = 1;
-function foo() { console.log(value); }
+function foo() {
+  console.log(value);
+}
 
 function bar() {
     var value = 2;
@@ -1765,7 +1783,7 @@ bar(); // 1
 - **如果是静态作用域：**执行 foo 函数，先从 foo 函数内部查找是否有局部变量 value，如果没有，就根据书写的位置，查找上面一层的代码，也就是 value 等于 1，所以结果会打印 1。
 - **如果是动态作用域：**执行 foo 函数，依然是从 foo 函数内部查找是否有局部变量 value。如果没有，就从调用函数的作用域，也就是 bar 函数内部查找 value 变量，所以结果会打印 2。
 
-但结果为1
+但结果为 1
 
 摘自：[JavaScript深入之词法作用域和动态作用域](https://github.com/mqyqingfeng/Blog/issues/3)
 
@@ -1773,9 +1791,9 @@ bar(); // 1
 
 此条评论链接：https://github.com/mqyqingfeng/Blog/issues/3#issuecomment-308667350
 
-> 和大多数的现代化编程语言一样，JavaScript 是采用词法作用域的，这就意味着<font color=FF0000>函数的执行依赖于函数定义的时候所产生（而不是函数调用的时候产生的）的变量作用域</font>。<mark style=background:aqua>**为了去实现这种词法作用域**</mark>，<font color=FF0000>JavaScript 函数对象的内部状态不仅包含函数逻辑的代码</font>，除此之外<font color=FF0000>还包含当前作用域链的引用</font>。函数对象可以通过这个作用域链相互关联起来，<mark>如此，函数体内部的变量都可以保存在函数的作用域内，这在计算机的文献中被称之为「闭包」</mark>。
+> 和大多数的现代化编程语言一样，JavaScript 是采用词法作用域的，这就意味着<font color=FF0000>函数的执行依赖于函数定义的时候所产生（而不是函数调用的时候产生的）的变量作用域</font>。<font color=dodgerBlue>**为了去实现这种词法作用域**</font>，<font color=FF0000>JavaScript 函数对象的内部状态不仅包含函数逻辑的代码</font>，除此之外<font color=FF0000>还包含当前作用域链的引用</font>。函数对象可以通过这个作用域链相互关联起来，<font color=lightSeaGreen>如此，函数体内部的变量都可以保存在函数的作用域内，这在计算机的文献中被称之为「闭包」</font>。
 >
-> <mark>从技术的角度去将，所有 JavaScript 函数都是「闭包」</mark>：他们都是对象，他们都有一个关联到他们的作用域链。绝大多数函数在调用的时候使用的作用域链和他们在定义的时候的作用域链是相同的，但是这并不影响闭包。当调用函数的时候闭包所指向的作用域链和定义函数时的作用域链不是同一个作用域链的时候，闭包 become interesting。这种 interesting 的事情往往发生在这样的情况下： <mark>当一个函数嵌套了另外的一个函数，外部的函数将内部嵌套的这个函数作为对象返回</mark>。一大批强大的编程技术都利用了这类嵌套的函数闭包，当然，Javascript 也是这样。可能你第一次碰见闭包觉得比较难以理解，但是去明白闭包然后去非常自如的使用它是非常重要的。
+> <font color=dodgerBlue>从技术的角度去将，所有 JavaScript 函数都是「闭包」</font>：他们都是对象，他们都有一个关联到他们的作用域链。绝大多数函数在调用的时候使用的作用域链和他们在定义的时候的作用域链是相同的，但是这并不影响闭包。当调用函数的时候闭包所指向的作用域链和定义函数时的作用域链不是同一个作用域链的时候，闭包 become interesting。这种 interesting 的事情往往发生在这样的情况下： <font color=lightSeaGreen>当一个函数嵌套了另外的一个函数，外部的函数将内部嵌套的这个函数作为对象返回</font>。一大批强大的编程技术都利用了这类嵌套的函数闭包，当然，JavaScript 也是这样。可能你第一次碰见闭包觉得比较难以理解，但是去明白闭包然后去非常自如的使用它是非常重要的。
 >
 > 通俗点说，在程序语言范畴内的闭包是指函数把其的变量作用域也包含在这个函数的作用域内，形成一个所谓的“闭包”，这样的话外部的函数就无法去访问内部变量。所以按照第二段所说的，严格意义上所有的函数都是闭包。
 >
@@ -1803,13 +1821,15 @@ bar(); // 1
 
 在[《JavaScript深入之变量对象》](https://github.com/mqyqingfeng/Blog/issues/5)中讲到，<font color=FF0000>当查找变量的时候，会先从当前上下文的变量对象中查找，**如果没有找到，就会从父级（词法层面上的父级）执行上下文的变量对象中查找**，一直找到全局上下文的变量对象，也就是全局对象</font>。<font size=4>**这样由多个执行上下文的变量对象构成的链表就叫做<font color=FF0000>「作用域链」</font>**</font>。
 
-下面，让我们以一个<font color=FF0000>函数的 <font size=4>**创建**</font> 和 <font size=4>**激活**</font> 两个时期</font>来讲解作用域链是如何创建和变化的（ 👀 函数创建是指函数定义，函数激活是指函数被调用？）：
+下面，让我们以一个<font color=FF0000>函数的 <font size=4>**创建**</font> 和 <font size=4>**激活**</font> 两个时期</font>来讲解作用域链是如何创建和变化的：
+
+> 👀 函数创建是指函数定义，函数激活是指函数被调用？
 
 ##### 函数创建
 
-在[《JavaScript深入之词法作用域和动态作用域》](https://github.com/mqyqingfeng/Blog/issues/3)中讲到，<font color=FF0000 size=4>**函数的作用域在函数定义的时候就决定了**</font>（静态作用域）。
+在[《JavaScript深入之词法作用域和动态作用域》](https://github.com/mqyqingfeng/Blog/issues/3)中讲到，<font color=fuchsia size=4>**函数的作用域在函数定义的时候就决定了**</font>（静态作用域）。
 
-这是因为 <font color=FF0000>**函数有一个 内部属性 `[[scope]]` ，当函数创建的时候，就会 <font size=4>保存所有父「变量对象」到其中</font>**</font>（ 👀 会保存 父变量对象（即：父「执行上下文环境」的 VO ）到 `[[scope]]` 中，这点要注意！！ 另外，下面有 testScope 函数的 `[[scope]]` 内部属性截图），你 <font color=FF0000 size=4>**可以理解 `[[scope]]` 就是所有父变量对象的层级链**</font>，但是 <font color=FF0000>**注意 ⚠️：`[[scope]]` 并不代表 完整的作用域链**</font>！
+这是因为 <font color=FF0000>**函数有一个 内部属性 `[[scope]]` ，当函数创建的时候，就会 <font size=4>保存所有父「变量对象」到其中</font>**</font>（ 👀 会保存 父变量对象（即：父「执行上下文环境」的 VO ）到 `[[scope]]` 中，这点要注意！！ 另外，下面有 `testScope` 函数的 `[[scope]]` 内部属性截图），你 <font color=FF0000 size=4>**可以理解 `[[scope]]` 就是所有父变量对象的层级链**</font>，但是 <font color=FF0000>**注意 ⚠️：`[[scope]]` 并不代表 完整的作用域链**</font>！
 
 <img src="https://s2.loli.net/2022/04/05/vT5iDzLo4cqYWPy.png" alt="image-20220405214215002" style="zoom:55%;" />
 
@@ -1817,7 +1837,7 @@ bar(); // 1
 >
 > <img src="https://s2.loli.net/2022/04/05/ATwHPeGcvMKgQnu.png" alt="image-20220405215320848" style="zoom:60%;" />
 
-**举个例子：**
+###### 举个例子
 
 ```js
 function foo() { // 👀 虽然文中没说，但是要注意：foo 函数是在全局作用域下
@@ -1842,7 +1862,9 @@ bar.[[scope]] = [
 
 ##### 函数激活
 
-当函数激活时，进入函数上下文，创建 VO/AO 后，就会将「活动对象」添加到作用链的前端。（ 👀 添加到作用链的前端，也就是下面写的操作：`[AO].concat([[Scope]])` 。<font color=FF0000>另外，添加到作用链（一个数组）的最前端，是方便依次查找</font>）
+当函数激活时，进入函数上下文，创建 VO / AO 后，就会将「活动对象」添加到作用链的前端。
+
+> 👀 添加到作用链的前端，也就是下面写的操作：`[AO].concat([[Scope]])` 。<font color=FF0000>另外，添加到作用链（一个数组）的最前端，是方便依次查找</font>
 
 这时候执行上下文的作用域链，我们命名为 Scope：
 
@@ -1858,7 +1880,7 @@ Scope = [AO].concat([[Scope]]);
 
 ```js
 var scope = "global scope";
-function checkscope(){
+function checkscope() {
     var scope2 = 'local scope';
     return scope2;
 }
@@ -1892,7 +1914,9 @@ checkscope();
    }
    ```
 
-4. <font color=dodgerBlue>第二步</font>：<font color=FF0000>**用 arguments 创建活动对象**</font>，<font color=FF0000>随后初始化活动对象，加入形参、函数声明、变量声明</font>。（ 👀 这里创建 VO 的内容，可以看 [[# JS 变量对象 （词法环境）]] 部分，那里有详细的讲述）
+4. <font color=dodgerBlue>第二步</font>：<font color=FF0000>**用 arguments 创建活动对象 AO**</font>，<font color=FF0000>随后初始化活动对象，加入形参、函数声明、变量声明</font>。
+
+   > 👀 这里创建 VO 的内容，可以看 [[# JS 变量对象 （词法环境）]] 部分，那里有详细的讲述
 
    ```js
    checkscopeContext = {
@@ -1920,7 +1944,7 @@ checkscope();
    }
    ```
 
-6. <font color=FF0000 size=4>准备工作做完，开始执行函数</font>，随着函数的执行，修改 AO 的属性值
+6. <font color=red>准备工作做完，开始执行函数</font>，随着函数的执行，修改 AO 的属性值
 
    ```js
    checkscopeContext = {
@@ -1934,7 +1958,9 @@ checkscope();
    }
    ```
 
-7. 查找到 scope2 的值，<font color=FF0000>返回后函数执行完毕，<font size=4>**函数上下文从执行上下文栈中弹出**</font></font>（ 👀 即 checkscopeContext 被弹出、销毁）
+7. 查找到 scope2 的值，<font color=FF0000>返回后函数执行完毕，<font size=4>**函数上下文从执行上下文栈中弹出**</font></font>
+
+   > 👀 即 checkscopeContext 被弹出、销毁）
 
    ```js
    ECStack = [
