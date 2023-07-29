@@ -865,6 +865,8 @@
   **type coercion** ：强制类型转换
   
 - **tamper** ：篡改
+
+- **optical** ：视觉的
 ***
 
 
