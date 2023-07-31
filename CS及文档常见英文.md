@@ -867,6 +867,8 @@
 - **tamper** ：篡改
 
 - **optical** ：视觉的
+
+- **congest** ：拥挤。 TCP 中 cwnd 即 congestion window
 ***
 
 
