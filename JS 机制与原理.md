@@ -5485,31 +5485,37 @@ ES6 尾调用优化 是 ecma 的规范，但是根据 Hax贺师俊 和 死月 �
 <html lang="zh-cmn-Hans">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
-    <title>debounce</title>
-    <style>
-        #container{
-            width: 100%; height: 200px; line-height: 200px; text-align: center; color: #fff; background-color: #444; font-size: 30px;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+  <title>debounce</title>
+  <style>
+    #container {
+      width: 100%;
+      height: 200px;
+      line-height: 200px;
+      text-align: center;
+      color: #fff;
+      background-color: #444;
+      font-size: 30px;
+    }
+  </style>
 </head>
 
 <body>
-    <div id="container"></div>
+  <div id="container"></div>
 </body>
 
 <script>
-var count = 1;
-var container = document.getElementById('container');
+  var count = 1;
+  var container = document.getElementById('container');
 
-function getUserAction() {
+  function getUserAction() {
     container.innerHTML = count++;
-};
+  };
 
-container.onmousemove = getUserAction;  
+  container.onmousemove = getUserAction;  
 </script>
-  
+
 </html>
 ```
 
@@ -5519,16 +5525,16 @@ container.onmousemove = getUserAction;
 
 从左边滑到右边就触发了 165 次 getUserAction 函数！
 
-因为这个例子很简单，所以浏览器完全反应的过来，可是如果是复杂的回调函数或是 ajax 请求呢？假设 1 秒触发了 60 次，每个回调就必须在 1000 / 60 = 16.67ms 内完成，否则就会有卡顿出现。
+<font color=dodgerBlue>因为这个例子很简单，所以浏览器完全反应的过来，可是如果是复杂的回调函数或是 ajax 请求呢</font>？假设 1 秒触发了 60 次，每个回调就必须在 1000 / 60 = 16.67ms 内完成，否则就会有卡顿出现。
 
-**为了解决这个问题，一般有两种解决方案**
+##### 为了解决这个问题，一般有两种解决方案
 
 1. debounce 防抖
 2. throttle 节流
 
 #### 防抖
 
-防抖的原理就是：你<font color=FF0000>尽管触发事件</font>，但是我 <font color=FF0000>**一定 <font size=4>在事件触发 n 秒后</font> 才执行**</font>，如果你<font color=FF0000>在一个事件触发的 n 秒内又触发了这个事件</font>，那我就 <font color=fuchsia size=4>**以新的事件的时间为准，n 秒后才执行**</font>，总之，<font color=fuchsia size=4>**就是要等你触发完事件 n 秒内不再触发事件，我才执行**</font>，真是任性呐!
+<font color=dodgerBlue>**防抖的原理** 就是</font>：你<font color=FF0000>尽管触发事件</font>，但是我 <font color=FF0000>**一定 <font size=4>在事件触发 n 秒后</font> 才执行**</font>，如果你<font color=FF0000>在一个事件触发的 n 秒内又触发了这个事件</font>，那我就 <font color=fuchsia size=4>**以新的事件的时间为准，n 秒后才执行**</font>，总之，<font color=fuchsia size=4>**就是要等你触发完事件 n 秒内不再触发事件，我才执行**</font>，真是任性呐!
 
 ##### 第一版
 
@@ -5538,7 +5544,7 @@ container.onmousemove = getUserAction;
 // 第一版
 function debounce(func, wait) {
     var timeout;
-    // 注：返回的函数（在 wait 时间范围内）每调用一次，就会被清空掉；如果在 wait 范围之外，则按照 setTimeout 执行
+    // 👀 返回的函数（在 wait 时间范围内）每调用一次，就会被清空掉；如果在 wait 范围之外，则按照 setTimeout 执行
     return function () {
         clearTimeout(timeout)
         timeout = setTimeout(func, wait);
@@ -5560,23 +5566,23 @@ container.onmousemove = debounce(getUserAction, 1000);
 
 ##### this
 
-如果我们在 `getUserAction` 函数中 `console.log(this)`，在不使用 `debounce` 函数的时候，`this` 的值为：`<div id="container"></div>`。但是如果使用我们的 debounce 函数，this 就会指向 Window 对象（**注：**这是 setTimeout 的机制）。所以我们需要将 this 指向正确的对象。修改下代码：
+如果我们在 `getUserAction` 函数中 `console.log(this)`，在不使用 `debounce` 函数的时候，`this` 的值为：`<div id="container"></div>`。但是如果使用我们的 debounce 函数，this 就会指向 Window 对象（👀 这是 setTimeout 的机制）。所以我们需要将 this 指向正确的对象。修改下代码：
 
 ##### 第二版
 
 ```js
 // 第二版
 function debounce(func, wait) {
-    var timeout;
+  var timeout;
 
-    return function () {
-        var context = this; // 注：如果下面 setTimeout 用“箭头函数”，就不需要用 context 暂存 this
+  return function () {
+    var context = this; // 👀 setTimeout 内使用“箭头函数”，就不需要用 context 暂存 this
 
-        clearTimeout(timeout)
-        timeout = setTimeout(function(){
-            func.apply(context)
-        }, wait);
-    }
+    clearTimeout(timeout)
+    timeout = setTimeout(function () {
+      func.apply(context)
+    }, wait);
+  }
 }
 ```
 
@@ -5604,18 +5610,18 @@ function getUserAction(e) {
 ```js
 // 第三版
 function debounce(func, wait) {
-    var timeout;
+  var timeout;
 
-    return function () {
-        var context = this;
-        // 注：保存 arguments，防止丢失。另外，下面用箭头函数，不会出现 arguments 丢失的情况；因为 箭头函数没有 arguments。
-        var args = arguments;
+  return function () {
+    var context = this;
+    // 👀 保存 arguments，防止丢失。另外，下面用箭头函数，不会出现 arguments 丢失的情况；因为 箭头函数没有 arguments。
+    var args = arguments;
 
-        clearTimeout(timeout)
-        timeout = setTimeout(function(){
-            func.apply(context, args)
-        }, wait);
-    }
+    clearTimeout(timeout)
+    timeout = setTimeout(function () {
+      func.apply(context, args)
+    }, wait);
+  }
 }
 ```
 
@@ -5630,7 +5636,7 @@ function debounce(func, wait) {
 
 **这个需求就是：**我<font color=FF0000>不希望非要等到事件停止触发后才执行，我希望立刻执行函数，然后等到停止触发 n 秒后，才可以重新触发执行</font>。
 
-想想这个需求也是很有道理的嘛，那我们加个 immediate 参数判断是否是立刻执行。
+想想这个需求也是很有道理的嘛，那我们加个 `immediate` 参数判断是否是立刻执行。
 
 ##### 第四版
 
@@ -5638,65 +5644,65 @@ function debounce(func, wait) {
 // 第四版
 function debounce(func, wait, immediate) {
 
-    var timeout;
+  var timeout;
 
-    return function () {
-        var context = this;
-        var args = arguments;
+  return function () {
+    var context = this;
+    var args = arguments;
 
-        if (timeout) clearTimeout(timeout);
-        if (immediate) {
-            // 如果已经执行过，不再执行
-            var callNow = !timeout; // timeout 不为 null，则 callnow（立即执行）；感觉 callnow 是一个语义化变量，可去掉
-            timeout = setTimeout(function(){
-                timeout = null; // 时间到了，timeout 设置为 null；可以继续执行（callnow 为 true），执行 func.apply()
-            }, wait)
-            if (callNow) func.apply(context, args)
-        }
-        else { // 注：else 的情况，和之前一样
-            timeout = setTimeout(function(){
-                func.apply(context, args)
-            }, wait);
-        }
+    if (timeout) clearTimeout(timeout);
+    if (immediate) {
+      // 如果已经执行过，不再执行
+      var callNow = !timeout; // timeout 不为 null，则 callnow（立即执行）；感觉 callnow 是一个语义化变量，可去掉
+      timeout = setTimeout(function () {
+        timeout = null; // 时间到了，timeout 设置为 null；可以继续执行（callnow 为 true），执行 func.apply()
+      }, wait)
+      if (callNow) func.apply(context, args)
     }
+    else { // 👀 非 immediate 的情况，和之前一样
+      timeout = setTimeout(function () {
+        func.apply(context, args)
+      }, wait);
+    }
+  }
 }
 ```
 
 ##### 返回值
 
-此时注意一点，就是 getUserAction <font color=FF0000>**函数可能是有返回值的**</font>，所以我们也要返回函数的执行结果，但是当 immediate 为 false 的时候，因为使用了 setTimeout ，我们将 func.apply(context, args) 的返回值赋给变量，最后再 return 的时候，值将会一直是 undefined，所以我们只在 immediate 为 true 的时候返回函数的执行结果。
+此时注意一点，就是 getUserAction <font color=FF0000>**函数可能是有返回值的**</font>，<font color=dodgerBlue>所以我们也要返回函数的执行结果</font>，但是当 `immediate` 为 false 的时候，因为使用了 setTimeout ，我们将 `func.apply(context, args)` 的返回值赋给变量，最后再 return 的时候，值将会一直是 undefined，所以我们只在 `immediate` 为 true 的时候返回函数的执行结果。
 
 ```js
 // 第五版
 function debounce(func, wait, immediate) {
-    var timeout, result;
+  var timeout, result;
 
-    return function () {
-        var context = this;
-        var args = arguments;
+  return function () {
+    var context = this;
+    var args = arguments;
 
-        if (timeout) clearTimeout(timeout);
-        if (immediate) {
-            // 如果已经执行过，不再执行
-            var callNow = !timeout;
-            timeout = setTimeout(function(){
-                timeout = null;
-            }, wait)
-            if (callNow) result = func.apply(context, args) // 注：result
-        }
-        else {
-            timeout = setTimeout(function(){
-                func.apply(context, args)
-            }, wait);
-        }
-        return result;
+    if (timeout) clearTimeout(timeout);
+    if (immediate) {
+      // 如果已经执行过，不再执行
+      var callNow = !timeout;
+      timeout = setTimeout(function () {
+        timeout = null;
+      }, wait)
+      if (callNow) result = func.apply(context, args) // 👀注意 result
     }
+    else {
+      timeout = setTimeout(function () {
+        func.apply(context, args)
+      }, wait);
+    }
+    return result;
+  }
 }
 ```
 
 ##### 取消
 
-最后我们再思考一个小需求，我希望能取消 debounce 函数，比如说我 debounce 的时间间隔是 10 秒钟，immediate 为 true，这样的话，我只有等 10 秒后才能重新触发事件，现在<font color=FF0000>我希望有一个按钮，点击后，取消防抖，这样我再去触发，就可以又立刻执行</font>啦，是不是很开心？
+最后我们再思考一个小需求，我希望能取消 debounce 函数，比如说我 debounce 的时间间隔是 10 秒钟，`immediate` 为 true，这样的话，我只有等 10 秒后才能重新触发事件，现在<font color=FF0000>我希望有一个按钮，点击后，取消防抖，这样我再去触发，就可以又立刻执行</font>啦，是不是很开心？
 
 为了这个需求，我们写最后一版的代码：
 
@@ -5704,36 +5710,36 @@ function debounce(func, wait, immediate) {
 // 第六版
 function debounce(func, wait, immediate) {
 
-    var timeout, result;
+  var timeout, result;
 
-    var debounced = function () {
-        var context = this;
-        var args = arguments;
+  var debounced = function () {
+    var context = this;
+    var args = arguments;
 
-        if (timeout) clearTimeout(timeout);
-        if (immediate) {
-            // 如果已经执行过，不再执行
-            var callNow = !timeout;
-            timeout = setTimeout(function(){
-                timeout = null;
-            }, wait)
-            if (callNow) result = func.apply(context, args)
-        }
-        else {
-            timeout = setTimeout(function(){
-                func.apply(context, args)
-            }, wait);
-        }
-        return result;
-    };
-
-    // 注：取消按钮相关
-    debounced.cancel = function() {
-        clearTimeout(timeout);
+    if (timeout) clearTimeout(timeout);
+    if (immediate) {
+      // 如果已经执行过，不再执行
+      var callNow = !timeout;
+      timeout = setTimeout(function () {
         timeout = null;
-    };
+      }, wait)
+      if (callNow) result = func.apply(context, args)
+    }
+    else {
+      timeout = setTimeout(function () {
+        func.apply(context, args)
+      }, wait);
+    }
+    return result;
+  };
 
-    return debounced;
+  // 注：取消按钮相关
+  debounced.cancel = function () {
+    clearTimeout(timeout);
+    timeout = null;
+  };
+
+  return debounced;
 }
 ```
 
@@ -5768,33 +5774,39 @@ document.getElementById("button").addEventListener('click', function(){
 
 #### 节流
 
-<font color=dodgerBlue>节流的原理</font>很简单：如果你<font color=fuchsia>持续触发事件，每隔一段时间，只执行一次事件</font>。
+<font color=dodgerBlue>节流的原理</font>很简单：如果你<font color=fuchsia>**持续触发事件，每隔一段时间，只执行一次事件**</font>。
 
-<font color=FF0000>根据首次是否执行以及结束后是否执行，效果有所不同，实现的方式也有所不同</font>。我们用 leading 代表首次是否执行，trailing 代表结束后是否再执行一次。
+> 💡 补充记忆
+>
+> 有群友把 防抖 比作 “公交车”，每有一个乘客上车则多等待几秒；如果几秒内一直没有用户乘车，则出发（运行）。类似的，把 节流 比作 “地铁”，地铁之后停留固定的时间，停留时间到了，不管有没有用户要乘车，都会出发（运行）
+>
+> 如上，显然很贴切和形象
 
-关于 **节流的实现，有两种主流的实现方式**，<font color=FF0000 size=4>**一种是使用时间戳，一种是设置定时器**</font>。
+<font color=FF0000>**根据首次是否执行以及结束后是否执行**，效果有所不同，实现的方式也有所不同</font>。我们<font color=lightSeaGreen>**用 `leading` 代表首次是否执行，`trailing` 代表结束后是否再执行一次**</font>。
+
+<font color=dodgerBlue>关于 **节流的实现，有两种主流的实现方式**</font>：<font color=FF0000 size=4>**一种是使用时间戳，一种是设置定时器**</font>。
 
 ##### 使用时间戳
 
-让我们来看 **第一种方法：使用时间戳**，<font color=FF0000>当触发事件的时候，我们取出当前的时间戳</font>，<font color=FF0000>然后减去之前的时间戳（最一开始值设为 0 ）</font>，<mark style=background:aqua>如果大于设置的时间周期，就执行函数，然后更新时间戳为当前的时间戳</mark>，<mark>如果小于，就不执行</mark>。
+让我们来看 **第一种方法：使用时间戳**。<font color=FF0000>当触发事件的时候，我们取出当前的时间戳</font>，<font color=FF0000>然后减去之前的时间戳（最一开始值设为 0 ）</font>，<font color=lightSeaGreen>如果大于设置的时间周期，就执行函数，然后更新时间戳为当前的时间戳</font>（ 👀 有点 cur 和 prev 频繁迭代的意味），<font color=lightSeaGreen>如果小于，就不执行</font>。
 
 看了这个表述，是不是感觉已经可以写出代码了…… 让我们来写第一版的代码：
 
 ```js
 // 第一版
 function throttle(func, wait) {
-    var context, args;
-    var previous = 0;
+  var context, args;
+  var previous = 0;
 
-    return function() {
-        var now = +new Date(); // 注：加号操作符将 new Date() 转化为 number 类型
-        context = this;
-        args = arguments;
-        if (now - previous > wait) {
-            func.apply(context, args);
-            previous = now; // 注：以本次的时间戳，作为下一次的 previous
-        }
+  return function () {
+    var now = +new Date(); // 👀 加号操作符将 new Date() 转化为 number 类型
+    context = this;
+    args = arguments;
+    if (now - previous > wait) { // 👀 第一次 previos 为 0，显然立即执行； 对应 leading: false
+      func.apply(context, args); // 👀 只有手动调用返回的函数，才会执行；而通过定时器实现是由定时器托管，所以最后一次会自动执行
+      previous = now; // 👀 执行 func 之后，保存本次的时间戳，作为下一次的 previous
     }
+  }
 }
 ```
 
@@ -5810,92 +5822,94 @@ container.onmousemove = throttle(getUserAction, 1000);
 
 ##### 使用定时器
 
-接下来，我们讲讲第二种实现方式，使用定时器。<font color=FF0000>当触发事件的时候，我们设置一个定时器</font>，<mark style=background:aqua>再触发事件的时候，如果定时器存在，就不执行</mark>，<mark>直到定时器执行，然后执行函数，清空定时器，这样就可以设置下个定时器</mark>。
+接下来，我们讲讲第二种实现方式，使用定时器。<font color=FF0000>当触发事件的时候，我们设置一个定时器</font>，<font color=lightSeaGreen>再触发事件的时候，如果定时器存在，就不执行</font>，<font color=lightSeaGreen>直到定时器执行，然后执行函数</font>，<font color=red>清空定时器，这样就可以设置下个定时器</font>。
 
 ```js
 // 第二版
 function throttle(func, wait) {
-    var timeout;
-    var previous = 0;
+  var timeout;
+  var previous = 0;
 
-    return function() {
-        context = this;
-        args = arguments; // 注：保存 arguments，使用“闭包”防止其在 setTimeout 中的函数内丢失。
-        if (!timeout) { // 注：在定时器任务生效执行前，不允许再创建定时器任务
-            timeout = setTimeout(function(){
-                timeout = null; // 注：执行后，将timeout 赋值为 null，让下一次 if 内的判断为“真”
-                func.apply(context, args)
-            }, wait)
-        }
+  return function () {
+    context = this;
+    args = arguments; // 👀 保存 arguments，防止其在 setTimeout 回调函数中被覆盖而丢失
+    if (!timeout) {   // 👀 在定时器任务生效执行前，不允许再创建定时器任务
+      timeout = setTimeout(function () { // 👀 timeout 托管运行，所以最后一次即使不再触发也仍会执行，对应 trailing: false
+        timeout = null; // 👀 执行后，将 timeout 赋值为 null，让下一次 if 内的判断为“真”
+        func.apply(context, args)
+      }, wait)
     }
+  }
 }
 ```
 
 为了让效果更加明显，我们设置 wait 的时间为 3s，效果演示如下：
 
-![https://camo.githubusercontent.com/07970f9ed563d93d960931d6249d6f44565740c641f570e499e18dcd4aefedf2/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f6d717971696e6766656e672f426c6f672f496d616765732f7468726f74746c652f7468726f74746c65322e676966](https://s2.loli.net/2022/04/15/wg73bicBMCAVnxu.gif)
+![https://camo.githubusercontent.com/07970f9ed563d93d960931d6249d6f44565740c641f570e499e18dcd4aefedf2/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f6d717971696e6766656e672f426c6f672f496d616765732f7468726f74746c652f7468726f74746c65322e676966](https://s2.loli.net/2023/08/01/OI2GyqZrHQbNKCT.gif)
 
-我们可以看到：当鼠标移入的时候，事件不会立刻执行，晃了 3s 后终于执行了一次，此后每 3s 执行一次，当数字显示为 3 的时候，立刻移出鼠标，<font color=FF0000>相当于大约 9.2s 的时候停止触发，**但是依然会在第 12s 的时候执行一次事件**</font>。
+我们可以看到：当鼠标移入的时候，事件不会立刻执行，晃了 3s 后终于执行了一次，此后每 3s 执行一次，当数字显示为 3 的时候，立刻移出鼠标，<font color=FF0000>相当于大约 9.2s 的时候停止触发，**但是依然会在第 12s 的时候执行一次事件**</font>
+
+> 👀 因为函数的执行托管给了定时器
 
 ##### 所以比较两个方法（时间戳 和 定时器 两种方法）：
 
-1. <mark>第一种 事件会立刻执行</mark>，<mark style="background: aqua">第二种 事件会在 n 秒后第一次执行</mark>
-2. <mark>第一种 事件**停止触发后没有办法再执行事件**</mark>，<mark style="background: aqua">第二种 **事件停止触发后依然会再执行一次事件**</mark>
+1. 第一种 事件会立刻执行，第二种 事件会在 n 秒后第一次执行
+2. 第一种 事件停止触发后没有办法再执行事件，第二种 事件停止触发后依然会再执行一次事件
 
 ##### 双剑合璧
 
 那我们想要一个什么样的呢？
 
-有人就说了：我想要一个 <mark>有头有尾的</mark>！就是 <mark>鼠标移入能立刻执行，停止触发的时候还能再执行一次</mark>。
+有人就说了：我<font color=dodgerBlue>想要一个 有头有尾的！就是 鼠标移入能立刻执行，停止触发的时候还能再执行一次</font>。
 
-所以我们综合两者的优势，然后双剑合璧，写一版代码：
+所以我们<font color=dodgerBlue>综合两者的优势，然后双剑合璧，写一版代码</font>：
 
 ```js
 // 第三版
 function throttle(func, wait) {
-    var timeout, context, args, result;
-    var previous = 0;
+  var timeout, context, args, result;
+  var previous = 0;
 
-    var later = function() {
-        previous = +new Date();
+  var later = function () {
+    previous = +new Date();
+    timeout = null;
+    func.apply(context, args)
+  };
+
+  var throttled = function () {
+    var now = +new Date(); // 👀 获取当前时间，以便判断时间是否超过 wait，可以再次执行
+    // 下次触发 func 剩余的时间
+    var remaining = wait - (now - previous);
+    context = this;
+    args = arguments;
+    // 如果没有剩余的时间了，或者你改了系统时间
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout); // 👀 clearTimeout 只会修改 timeout 对象中的属性，timeout 对象依然存在
         timeout = null;
-        func.apply(context, args)
-    };
-
-    var throttled = function() {
-        var now = +new Date(); // 注：获取当前时间，以便判断时间是否超过 wait，可以再次执行
-        // 下次触发 func 剩余的时间
-        var remaining = wait - (now - previous);
-        context = this;
-        args = arguments;
-         // 如果没有剩余的时间了，或者你改了系统时间
-        if (remaining <= 0 || remaining > wait) {
-            if (timeout) {
-                clearTimeout(timeout); // 注：clearTimeout 只会修改 timeout 对象中的属性，timeout 对象依然存在。
-                timeout = null;
-            }
-            previous = now;
-            func.apply(context, args);
-        } else if (!timeout) {
-            // 注：如果时间还有剩余( remaining > 0 )，且 timeout 已经不为“真值”了（比如为 null 了），则重新 setTimeout。另外，这里执行的是上面定义的 later 函数
-            timeout = setTimeout(later, remaining);
-        }
-    };
-    return throttled;
+      }
+      previous = now;
+      func.apply(context, args);
+    } else if (!timeout) {
+      // 👀 如果时间还有剩余( remaining > 0 )，且 timeout 已经不为“真值”了（比如为 null 了），则重新 setTimeout。另外，这里执行的是上面定义的 later 函数
+      timeout = setTimeout(later, remaining);
+    }
+  };
+  return throttled;
 }
 ```
 
 效果演示如下：
 
-![https://camo.githubusercontent.com/778b1f8836deef32ae3f91f2595fa1f198247d18d6a37ecbd69d2d4c92887079/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f6d717971696e6766656e672f426c6f672f496d616765732f7468726f74746c652f7468726f74746c65332e676966](https://camo.githubusercontent.com/778b1f8836deef32ae3f91f2595fa1f198247d18d6a37ecbd69d2d4c92887079/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f6d717971696e6766656e672f426c6f672f496d616765732f7468726f74746c652f7468726f74746c65332e676966)
+![https://camo.githubusercontent.com/778b1f8836deef32ae3f91f2595fa1f198247d18d6a37ecbd69d2d4c92887079/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f6d717971696e6766656e672f426c6f672f496d616765732f7468726f74746c652f7468726f74746c65332e676966](https://s2.loli.net/2023/08/01/4gRUDCsPyNomJSc.gif)
 
 我们可以看到：鼠标移入，事件立刻执行，晃了 3s，事件再一次执行，当数字变成 3 的时候，也就是 6s 后，我们立刻移出鼠标，停止触发事件，9s 的时候，依然会再执行一次事件。
 
 ##### 优化
 
-但是我有时也希望无头有尾，或者有头无尾，这个咋办？
+但是我<font color=dodgerBlue>有时也希望无头有尾，或者有头无尾，这个咋办</font>？
 
-那我们<font color=FF0000>设置个 options 作为第三个参数，然后根据传的值判断到底哪种效果</font>；我们<font color=FF0000>约定：leading: false 表示禁用第一次执行；trailing: false 表示禁用停止触发的回调</font>
+那我们<font color=FF0000>设置个 `options` 作为第三个参数，然后根据传的值判断到底哪种效果</font>；我们<font color=FF0000>约定：`leading: false` 表示禁用第一次执行；`trailing: false` 表示禁用停止触发的回调</font>
 
 ```js
 // 第四版
@@ -5945,11 +5959,11 @@ throttled.cancel = function() {
 }
 ```
 
-##### 注意
+注意
 
-我们要注意 underscore 的实现中有这样一个问题：那就是 <font color=FF0000>`leading：false` 和 `trailing: false` 不能同时设置</font>。
+我们要注意 underscore 的实现中有这样一个问题：那就是 <font color=FF0000>`leading：false` 和 `trailing: false` 不能同时设置</font>
 
-如果同时设置的话，比如当你将鼠标移出的时候，因为 trailing 设置为 false，停止触发的时候不会设置定时器，所以只要再过了设置的时间，再移入的话，就会立刻执行，就违反了 leading: false，bug 就出来了。所以，<font color=FF0000>这个 throttle 只有三种用法</font>：
+如果同时设置的话，比如当你将鼠标移出的时候，因为 `trailing` 设置为 false，停止触发的时候不会设置定时器，所以只要再过了设置的时间，再移入的话，就会立刻执行，就违反了 `leading: false` ，bug 就出来了。所以，<font color=FF0000>这个 throttle 只有三种用法</font>：
 
 ```js
 container.onmousemove = throttle(getUserAction, 1000);

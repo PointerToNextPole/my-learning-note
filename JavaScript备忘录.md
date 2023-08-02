@@ -3169,7 +3169,7 @@ JSON.stringify(value[, replacer [, space]])
 - **undefined、任意的函数 以及 symbol 值**，在序列化过程中会被忽略（出现在非数组对象的属性值中时）或 被转换成 null（出现在数组中时）。函数、undefined 被 **单独转换** 时，会返回 undefined。
 - 对 **包含循环引用的对象** 执行此方法，会抛出错误。
 - <font color=FF0000>所有**以 symbol 为属性键的属性** 都会被完全忽略掉</font>，**即便 replacer 参数中强制指定包含了它们**。
-- <font color=FF0000>Date 日期调用了 toJSON() 将其转换为了 string 字符串</font>（ 同 Date.toISOString() ），因此<font color=FF0000>会被当做字符串处理</font>
+- <font color=FF0000>Date 日期调用了 toJSON() 将其转换为了 string 字符串</font>（ 同 `Date.toISOString()` ），因此<font color=FF0000>会被当做字符串处理</font>
 - <font color=FF0000>NaN 和 Infinity 格式的数值 及 null 都会被当做 null</font>
 - 其他类型的对象，包括 Map / Set / WeakMap / WeakSet，仅<font color=FF0000>会序列化可枚举的属性</font>。
 
@@ -3185,12 +3185,12 @@ JSON.stringify(value[, replacer [, space]])
 JSON.parse(text[, reviver])
 ```
 
-##### 参数
+###### 参数
 
 - **text**：要被解析成 JavaScript 值的字符串，关于 JSON 的语法格式，请参考：[`JSON`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON)。
 - **reviver**：可选，转换器，如果传入该参数 (函数)，可以用来修改解析生成的原始值，调用时机在 parse 函数返回之前。
 
-##### 返回值
+###### 返回值
 
 `Object` 类型，对应给定 JSON 文本的对象/值。
 
@@ -6702,37 +6702,37 @@ myDate.setDate(myDate.getDate()+5);
 
 #### JS时间戳与日期之间的转换
 
-- **将时间戳转换成日期格式**
+##### 将时间戳转换成日期格式
 
-  ```js
-  var date = new Date(timeStamp); //获取一个时间对象
-  
-  date.getFullYear();  // 获取完整的年份(4位,1970)
-  date.getMonth();  // 获取月份(0-11,0代表1月,用的时候记得加上1)
-  date.getDate();  // 获取日(1-31)
-  date.getTime();  // 获取时间(从1970.1.1开始的毫秒数)
-  date.getHours();  // 获取小时数(0-23)
-  date.getMinutes();  // 获取分钟数(0-59)
-  date.getSeconds();  // 获取秒数(0-59)
-  ```
+```js
+var date = new Date(timeStamp); //获取一个时间对象
 
-- **将日期格式转换成时间戳**
+date.getFullYear();  // 获取完整的年份(4位,1970)
+date.getMonth();  // 获取月份(0-11,0代表1月,用的时候记得加上1)
+date.getDate();  // 获取日(1-31)
+date.getTime();  // 获取时间(从1970.1.1开始的毫秒数)
+date.getHours();  // 获取小时数(0-23)
+date.getMinutes();  // 获取分钟数(0-59)
+date.getSeconds();  // 获取秒数(0-59)
+```
 
-  ```js
-  var timeStr = '2014-04-23 18:55:49:123';
-  var date = new Date(timeStr); //传入一个时间格式，如果不传入就是获取现在的时间了，这样做不兼容火狐。
-  // 可以这样做
-  var date = new Date(timeStr.replace(/-/g, '/'));
-  
-  // 有三种方式获取
-  time1 = date.getTime();  // 1398250549123
-  time2 = date.valueOf(); // 1398250549123
-  time3 = Date.parse(date); // 1398250549000 
-  ```
+##### 将日期格式转换成时间戳
 
-  **三种获取的区别：**
+```js
+var timeStr = '2014-04-23 18:55:49:123';
+var date = new Date(timeStr); //传入一个时间格式，如果不传入就是获取现在的时间了，这样做不兼容火狐。
+// 可以这样做
+var date = new Date(timeStr.replace(/-/g, '/'));
 
-  第一、第二种：会精确到毫秒；第三种：只能精确到秒，毫秒将用0来代替。比如上面代码输出的结果(一眼就能看出区别)：
+// 有三种方式获取
+time1 = date.getTime();  // 1398250549123
+time2 = date.valueOf(); // 1398250549123
+time3 = Date.parse(date); // 1398250549000 
+```
+
+**三种获取的区别：**
+
+第一、第二种：会精确到毫秒；第三种：只能精确到秒，毫秒将用0来代替。比如上面代码输出的结果(一眼就能看出区别)：
 
 
 摘自：[js时间戳与日期格式之间的互转](https://segmentfault.com/a/1190000000481753)
