@@ -869,6 +869,20 @@
 - **optical** ：视觉的
 
 - **congest** ：拥挤。 TCP 中 cwnd 即 congestion window
+
+- **intrinsic** ：内在的，固有的，本身的
+
+  **intrinsics** ：内部函数。
+
+  > 💡 另外，Google 搜索 “intrinsics in js”，可以搜到如下内容：
+  >
+  > > **“Intrinsic”** is the way some authors refer to what other authors call **“built-in”**.
+  > >
+  > > Those data types/objects/classes are always there regardless of what environment you’re running in.
+  > >
+  > > JavaScript provides intrinsic (or “built-in”) objects. They are the Array, Boolean, Date, Error, Function, Global, JSON, Math, Number, Object, RegExp, and String objects.
+  > >
+  > > 摘自：[Develop a webpage using Intrinsic Java Functions]()
 ***
 
 
