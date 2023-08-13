@@ -882,7 +882,13 @@
   > >
   > > JavaScript provides intrinsic (or “built-in”) objects. They are the Array, Boolean, Date, Error, Function, Global, JSON, Math, Number, Object, RegExp, and String objects.
   > >
-  > > 摘自：[Develop a webpage using Intrinsic Java Functions]()
+  > > 摘自：[Develop a webpage using Intrinsic Java Functions](https://rahultamkhane.medium.com/develop-a-webpage-using-intrinsic-java-functions-36cb3b84826c)
+  
+- MVP ："Minimum Viable Product"，即“最小可行产品”
+
+  > This product is in an early stage, approximately 80% to MVP as of July 2023.
+  >
+  > 摘自：[GitHub - PythonMonkey](https://github.com/Distributive-Network/PythonMonkey/)
 ***
 
 
