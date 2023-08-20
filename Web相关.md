@@ -575,6 +575,18 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
     >
     > > 新的 [TCP](https://hpbn.co/building-blocks-of-tcp/) 连接无法立即利用客户端和服务器之间的全部可用带宽，这些连接会经过[慢启动](https://hpbn.co/building-blocks-of-tcp/#slow-start)以避免数据量超过连接的承载能力。在这个过程中，服务器会先开始传输少量数据，如果数据以完美的状态到达客户端，那么下一次往返中数据量会加倍。<font color=FF0000>对于大多数服务器，第一次往返最多可以传输 10 个数据包或大约 14 KB</font>。
     > >
+    > > > 💡 关于 TCP 数据包的大小：
+    > > >
+    > > > > TCP 数据包的最大大小为`1500 byte` 这个最大值不是由 TCP 规范设置的，它来自[以太网标准](https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Ethernet_frame)）
+    > > > >
+    > > > > 每个 TCP 数据包在其标头中使用 40 个字节，16 个字节用于 IP，另外 24 个字节用于 TCP
+    > > > >
+    > > > > 每个 TCP 数据包剩下1460 字节，`10 x 1460 = 14600 bytes` ( 👀 14.25kB )或大约 14kB
+    > > > >
+    > > > > 摘自：[为什么开发的网页不应该大于 14KB？ - 艾康麦icon-meh的回答 - 知乎](https://www.zhihu.com/question/597403140/answer/3004518358) 
+    > > >
+    > > > 另外，文章中提及了 14kB 可以是压缩后（比如 gzip）的数据，原数据可能有 50kB。另外，[为什么开发的网页不应该大于 14KB？ - NaHCO3的回答 - 知乎](https://www.zhihu.com/question/597403140/answer/3009158641) 的评论区还提及：考虑缓存策略，减少请求数据，也是一种对 14kB 的优化
+    > >
     > > 摘自：[提取关键 CSS (Critical CSS)](https://web.dev/i18n/zh/extract-critical-css/)
 
 - 在收到 html 文件之后，浏览器开始渲染网页，共有五个步骤，被称为：<font color=FF0000 size=4> **关键渲染路径**</font>
