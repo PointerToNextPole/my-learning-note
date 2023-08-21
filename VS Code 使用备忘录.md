@@ -36,7 +36,7 @@
 ##### “粘性滚动” 设置
 
 ```json
-"editor.experimental.stickyScroll.enabled": true
+"editor.stickyScroll.enabled": true
 ```
 
 样式如下：

@@ -889,6 +889,12 @@
   > This product is in an early stage, approximately 80% to MVP as of July 2023.
   >
   > 摘自：[GitHub - PythonMonkey](https://github.com/Distributive-Network/PythonMonkey/)
+  
+- **preemptive** ：先发制人的，抢先的
+
+  >  Server Push is a performance technique aimed at reducing latency by loading resources **preemptively**, even before the client knows they will be needed.
+  >
+  > 摘自：[wikipedia - HTTP/2 Server Push](https://en.wikipedia.org/wiki/HTTP/2_Server_Push)
 ***
 
 
