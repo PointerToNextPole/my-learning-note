@@ -2227,7 +2227,7 @@ Headless CMS is similar to but distinct from the use of widgets or plugins on a 
 
 数据存储到 阿里云OSS 以后，您<font color=FF0000>可以选择 *标准存储 ( Standard )* 作为移动应用、大型网站、图片分享 或 热点音视频的主要存储方式</font>；也可以选择成本更低、存储期限更长的 低频访问存储 ( Infrequent Access) 、归档存储 ( Archive )、冷归档存储 ( Cold Archive ) 作为不经常访问数据的存储方式。
 
-<font size=4>**OSS 相关概念**</font>
+##### OSS 相关概念
 
 - **存储类型 ( Storage Class )**：<font color=FF0000>OSS 提供标准、低频访问、归档、冷归档四种存储类型</font>，全面覆盖从热到冷的各种数据存储场景。其中<mark>**标准存储类型**</mark> 提供高持久、高可用、高性能的对象存储服务，能够支持频繁的数据访问；**低频访问存储类型** 适合长期保存不经常访问的数据（平均每月访问频率 1 到 2 次），存储单价低于标准类型；**归档存储类型** 适合需要长期保存（建议半年以上）的归档数据；**冷归档存储** 适合需要超长时间存放的极冷数据。更多信息，请参见[存储类型介绍](https://help.aliyun.com/document_detail/51374.htm#concept-fcn-3xt-tdb)。
 - <font color=FF0000>**存储空间 ( Bucket )**</font>：存储空间是您 <font color=FF0000>**用于存储对象 ( Object ) 的容器**</font>，<font color=FF0000>所有的对象都必须隶属于某个存储空间</font>。存储空间具有各种配置属性，包括：地域、访问权限、存储类型等。您可以根据实际需求，创建不同类型的存储空间来存储不同的数据。
@@ -2236,7 +2236,7 @@ Headless CMS is similar to but distinct from the use of widgets or plugins on a 
 - **访问域名 ( Endpoint )**：Endpoint <font color=FF0000>**表示 OSS 对外服务的访问域名**</font>。OSS 以 HTTP RESTful API 的形式对外提供服务，当访问不同地域的时候，需要不同的域名。通过内网和外网访问同一个地域所需要的域名也是不同的。更多信息，请参见[各个Region对应的Endpoint](https://help.aliyun.com/document_detail/31837.htm#concept-zt4-cvy-5db)。
 - <font color=FF0000>**访问密钥 ( AccessKey )**</font>：AccessKey <font color=FF0000>**简称 AK**</font> ，指的<font color=FF0000>是 **访问身份验证中用到的 AccessKey ID 和 AccessKey Secret**</font> 。<font color=FF0000>OSS 通过使用 AccessKey ID 和 AccessKey Secret 对称加密的方法来 **验证某个请求的发送者身份**</font>。<font color=fuchsia>**AccessKey ID 用于标识用户**</font>；<font color=fuchsia>**AccessKey Secret 是用户用于 加密签名字符串 和 OSS 用来验证签名字符串的密钥，必须保密**</font>。关于获取 AccessKey 的方法，请参见 [获取AccessKey](https://help.aliyun.com/document_detail/53045.htm#task968)。
 
-<font size=4>**OSS 常见操作**</font>
+##### OSS 常见操作
 
 - **创建 Bucket**：<font color=FF0000>在上传文件 ( Object ) 到 OSS 之前，您需要创建一个用于存储文件的 Bucket</font>。<font color=FF0000>Bucket 具有各种配置属性，包括地域、访问权限以及其他元数据</font>。创建 Bucket 的具体操作，请参见 [创建存储空间](https://help.aliyun.com/document_detail/31842.htm#concept-ntj-wx1-5db)。
 - **上传文件**：Bucket 创建完成后，您可以通过多种方式上传不同大小的文件。有关上传文件的具体操作，请参见[上传文件](https://help.aliyun.com/document_detail/31886.htm#concept-zx1-4p4-tdb)。
@@ -2244,7 +2244,7 @@ Headless CMS is similar to but distinct from the use of widgets or plugins on a 
 - **列举文件**：当您的 Bucket 内存储了大量的文件后，您可以选择列举 Bucket 内的全部或部分文件。有关列举文件的具体操作，请参见[列举文件](https://help.aliyun.com/document_detail/31860.htm#concept-uzd-syy-5db)。
 - **删除文件**：当您不再需要保留上传的文件时，您可以手动删除单个或多个文件，也可以通过配置生命周期规则自动删除单个或多个文件。有关删除文件的具体操作，请参见[删除文件](https://help.aliyun.com/document_detail/31862.htm#concept-g42-bhd-5db)。
 
-<font size=4>**OSS 重要特性**</font>
+##### OSS 重要特性
 
 - **版本控制**：版本控制是 <font color=FF0000>针对存储空间 ( Bucket ) 级别的数据保护功能</font>。开启版本控制后，<font color=FF0000>针对数据的覆盖和删除操作将会以历史版本的形式保存下来</font>。您在错误覆盖或者删除文件 ( Object ) 后，<font color=FF0000>能够将 Bucket 中存储的 Object 恢复至任意时刻的历史版本</font>。有关版本控制的更多信息，请参见[版本控制介绍](https://help.aliyun.com/document_detail/109695.htm#concept-jdg-4rx-bgb)。
 
@@ -2258,9 +2258,9 @@ Headless CMS is similar to but distinct from the use of widgets or plugins on a 
 
   - **客户端加密**：<font color=FF0000>将文件上传到 OSS 之前在本地进行加密</font>。有关客户端加密的更多信息，请参见 [客户端加密](https://help.aliyun.com/document_detail/73332.htm#concept-2323737)。
 
-<font size=4>**OSS 使用方式**</font>
+##### OSS 使用方式
 
-**OSS 提供多种灵活的上传、下载和管理方式：**
+###### OSS 提供多种灵活的上传、下载和管理方式
 
 - **通过<font color=FF0000>控制台管理</font> OSS**：OSS 提供了 Web 服务页面，您可以登录[OSS控制台](https://oss.console.aliyun.com/overview)管理您的 OSS 资源。更多信息，请参见 [控制台用户指南](https://help.aliyun.com/document_detail/31893.htm#task-zx1-4p4-tdb)
 - **通过 <font color=FF0000>API 或 SDK 管理</font> OSS**：OSS 提供 RESTful API 和各种语言的 SDK 开发包，方便您快速进行二次开发。更多信息，请参见[OSS API参考](https://help.aliyun.com/document_detail/31948.htm#reference-wrz-l2q-tdb)和[OSS SDK参考](https://help.aliyun.com/document_detail/52834.htm#concept-dcn-tp1-kfb)。
@@ -2273,7 +2273,7 @@ Headless CMS is similar to but distinct from the use of widgets or plugins on a 
 
 #### CDN 加速 VS OSS 传输加速 
 
-阿里云 对象存储 OSS 以 <font color=FF0000>海量、安全、低成本、高可靠 等特点</font> 已经 <font color=FF0000>成为**用户存储 静态资源** 和 **文件** 的首要选择</font>，实际使用中 <mark>面向全球 各地用户访问 OSS 资源时，**访问速度会受到 客户端网络、OSS 的下行带宽、Bucket 地域、访问链路长 等限制出现访问慢的情况</mark>。<mark style="background: lightskyblue">以下主要介绍 CDN 加速 OSS 和 OSS 传输加速的加速方式</mark>：
+阿里云 对象存储 OSS 以 海量、安全、低成本、高可靠 等特点 已经 成为用户存储 静态资源 和 文件 的首要选择，实际使用中 面向全球 各地用户访问 OSS 资源时，访问速度会受到 客户端网络、OSS 的下行带宽、Bucket 地域、访问链路长 等限制出现访问慢的情况。<font color=dodgerBlue>以下主要介绍 CDN 加速 OSS 和 OSS 传输加速的加速方式</font>：
 
 ##### 实现原理
 

@@ -5914,7 +5914,7 @@ vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫
 
 使用前端路由，<font color=FF0000>当切换到新路由时，想要页面滚到顶部，或者是保持原先的滚动位置，就像重新加载页面那样</font>。 vue-router 能做到，而且更好，它让你可以自定义路由切换时页面如何滚动。
 
-<mark>**注意: 这个功能只在支持 history.pushState 的浏览器中可用。**</mark>
+<font color=lightSeaGreen>**注意：这个功能只在支持 history.pushState 的浏览器中可用。**</font>
 
 当创建一个 Router 实例，你可以提供一个 scrollBehavior 方法：
 
@@ -5950,7 +5950,7 @@ scrollBehavior (to, from, savedPosition) {
 
 #### 补充内容
 
-**CDN方式引入Vue-Router**
+##### CDN 方式引入Vue-Router
 
 ```html
 <script src="/static/js/vue-router.js"></script>
@@ -5968,6 +5968,14 @@ scrollBehavior (to, from, savedPosition) {
 
 摘自：[JS：CDN方式引入Vue-Router](https://blog.csdn.net/mouday/article/details/106772721)
 
+##### CDN 形式引入其他 lib
+
+在使用 html `<script>` 标签使用 CDN 引入一些 lib 的项目中，会出现有些 lib 在官方文档中不提供 CDN 地址，这就需要自己去寻找（比如 [qrcodejs](https://github.com/davidshimjs/qrcodejs) ），但是因为类似名称的 lib 太多，可能无法确认当前找到的 CDN url 是否就是预期的 lib 的 CDN url，这就有些麻烦。
+
+发现 jsdelivr 给出了公式化的 url 有点方便：`https://cdn.jsdelivr.net/gh/{github用户名}/{仓库名称}/{具体路径}` ，以 qrcodejs 为例，CDN 地址即：`https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js`
+
+参考自：[GitHub仓库当图床,免费使用cdn加速](https://blog.csdn.net/weixin_46171419/article/details/124125236)
+
 
 
 ## Vue CLI
@@ -5976,11 +5984,11 @@ Vue CLI 是一种脚手架，是一个基于 Vue.js 进行快速开发的<font c
 
 **Vue CLI的优势**
 
-- 通过 @vue/cli 实现的交互式的项目脚手架。
+- 通过 `@vue/cli` 实现的交互式的项目脚手架。
 
-- 通过 @vue/cli + @vue/cli-service-global 实现的零配置原型开发。
+- 通过 `@vue/cli` + `@vue/cli-service-global` 实现的零配置原型开发。
 
-- 一个运行时依赖 (@vue/cli-service)，该依赖：
+- 一个运行时依赖 ( `@vue/cli-service` )，该依赖：
   
   - 可升级
   - 基于 webpack 构建，并带有合理的默认配置；
@@ -6050,7 +6058,7 @@ npm run dev
 vue add eslint
 ```
 
-<mark>这个命令将 `@vue/eslint` 解析为完整的包名 `@vue/cli-plugin-eslint`，然后从 npm 安装它，调用它的生成器</mark>。<font color=FF0000>这个和之前的用法等价</font>
+<font color=lightSeaGreen>这个命令将 `@vue/eslint` 解析为完整的包名 `@vue/cli-plugin-eslint`，然后从 npm 安装它，调用它的生成器</font>。<font color=FF0000>这个和之前的用法等价</font>
 
 ```sh
 vue add cli-plugin-eslint
@@ -6060,13 +6068,13 @@ vue add cli-plugin-eslint
 
 **vue add 插件名解析**
 
-| Vue add 语法          | 等价于                       | 解析的npm包                 |
-|:------------------- |:------------------------- |:----------------------- |
-| vue add @vue/eslint | vue add cli-plugin-eslint | @vue/cli-plugin-eslint  |
-| vue add apollo      | -                         | vue-cli-plugin-apollo   |
-| vue add @foo/bar    | -                         | @foo/vue-cli-plugin-bar |
+| Vue add 语法          | 等价于                      | 解析的npm包               |
+| :-------------------- | :-------------------------- | :------------------------ |
+| `vue add @vue/eslint` | `vue add cli-plugin-eslint` | `@vue/cli-plugin-eslint`  |
+| `vue add apollo`      | -                           | `vue-cli-plugin-apollo`   |
+| `vue add @foo/bar`    | -                           | `@foo/vue-cli-plugin-bar` |
 
-**另外：**vue add命令接受两个参数：
+另外，`vue add` 命令接受两个参数：
 
 - plugin： 插件名称，必填。
 - registry： 安装插件指定的安装源，只针对于 npm 包管理器，选填。

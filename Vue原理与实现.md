@@ -51,7 +51,7 @@ Vue2 render 有点啰嗦 verbose：第二个参数，需要指明传递给节点
 
 ##### Vue3 render 函数
 
-Vue3 做了一些简化：对 第二个参数 props 对象做了扁平化处理。按照惯例，监听器以 on 开头，任何以 on 为前缀的都会自动绑定为一个监听器。另外，将 h 函数全局引入，这使得在同一个文件中拆分大的 render 函数，变得很方便（不需要多次传递）
+Vue3 做了一些简化：对 第二个参数 props 对象做了扁平化处理。<font color=dodgerBlue>按照惯例</font>，监听器以 on 开头，任何以 on 为前缀的都会自动绑定为一个监听器。另外，将 h 函数全局引入，这使得在同一个文件中拆分大的 render 函数，变得很方便（不需要多次传递）
 
 ```js
 import { h } from 'vue'
@@ -228,7 +228,7 @@ const setState = newState => {
 }
 
 // 用户需要手动调用 setState，来告诉框架，数据发生了变化，需要做相应的响应。
-setState({a: 5})
+setState({ a: 5 })
 ```
 
 上面 `setState` 的操作 和 React 的工作原理很相似。而在 Vue 中是使用 `state.a = 5` ，要追踪依赖变得更加复杂
@@ -237,13 +237,13 @@ setState({a: 5})
 
 ##### 依赖追踪的数据粒度
 
-依赖追踪有好处也有坏处 ( pros and cons )，但是相较其他的解决方案，其最大的好处是：允许我们做非常细粒度的追踪实际状态的变化，只会在需要的部分触发变化。当然，依赖追踪本身也会在记录状态时产生运行时开销，所以需要找到一个好的依赖追踪关系的粒度。在实践中发现：在组件级别进行依赖追踪更加有效。
+依赖追踪有好处也有坏处 ( pros and cons )，但是相较其他的解决方案，其最大的好处是：允许我们做非常细粒度的追踪实际状态的变化，只会在需要的部分触发变化。当然，依赖追踪本身也会在记录状态时产生运行时开销，所以需要找到一个好的依赖追踪关系的粒度。<font color=lightSeaGreen>在实践中发现：在组件级别进行依赖追踪更加有效</font>。
 
 
 
 ##### watchEffect API
 
-watchEffect API 就是依赖追踪的实现函数（就如同上面 [[#响应式示例]] 的 `onStateChanged` ）。不像 Vue2 中的 watch 是监听某个属性，当属性发生变化，便执行回调；watchEffect 会监听整个函数，直接运行它；并追踪该函数执行时 所有使用过的响应式属性。示例如下：
+watchEffect API 就是依赖追踪的实现函数（就如同上面 [[#响应式示例]] 的 `onStateChanged` ）。不像 Vue2 中的 watch 是监听某个属性，当属性发生变化，便执行回调；<font color=lightSeaGreen>watchEffect 会监听整个函数</font>，直接运行它；并<font color=red>追踪该函数执行时 所有使用过的响应式属性</font>。示例如下：
 
 ```js
 import { reactive, watchEffect } from 'vue'
@@ -269,7 +269,7 @@ let activeEffect; // 保存添加哪一个函数作为订阅，另外这里没�
 class Dep {
   constructor(value) {
     this.subscribers = new Set(); // 订阅者
-    this._value = value // 将 dep 和一个值相关联
+    this._value = value           // 将 dep 和一个值相关联
   }
   get value() {
     this.depend() // ⭐️
@@ -295,7 +295,7 @@ class Dep {
 // 类似代码可见 https://cn.vuejs.org/guide/extras/reactivity-in-depth.html#how-reactivity-works-in-vue
 function watchEffect(effect) {
   activeEffect = effect;
-  /* 这是为了访问 dep.value，以触发 getter，从而收集依赖添加入 subscribers 中。否则 subscribers 为空 */
+  /* 这里访问 dep.value，导致触发 getter，从而可以进行依赖收集，将其添加入 subscribers 中；否则 subscribers 为空 */
   effect(); // console.log -> 'hello'
   activeEffect = null; // 👀 因为每次调用 effect 后都会重置 activeEffect，所以 activeEffect 是一个单一变量是可以的
 }
@@ -309,7 +309,7 @@ watchEffect(() => {
 dep.value = 'changed' // console.log -> 'changed'
 ```
 
-> 👀 关于 activeEffect 的作用，简单来说就是 “ 正在运行的 effect ，避免对一个依赖进行多次/重复收集 ”（也因此，上面 watchEffect 中最后的赋为 null，也得到了解释）；具体见 [[#activeEffect]]。另外，在源码中，也是有这个变量。
+> 👀 关于 activeEffect 的作用，简单来说就是 “ 正在运行的 effect ，避免对一个依赖进行多次/重复收集 ”（也因此，上面 watchEffect 中最后时赋为 null，也得到了解释）；具体见 [[#activeEffect]]。另外，在源码中，也是有这个变量。
 >
 > <img src="https://s2.loli.net/2022/11/24/68mgj3DGoMdWzOs.png" alt="image-20221124233057515" style="zoom:60%;" />
 >
@@ -317,9 +317,9 @@ dep.value = 'changed' // console.log -> 'changed'
 
 这里的 Dep 实现，和 composition API 中的 ref 非常相似。
 
-> ⚠️ 注意：这里使用的是 depend 和 notify，而不是 Vue3 源码中的 [track](https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L213) 和 [trigger](https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L259)，尤雨溪的说法是：为了减少其中与响应式原理不相关的优化，从而更好的理解工作原理。而我个人的感觉是：这里定义的是 Dep 类，这是 Vue2 特有的，Vue3 取消了 Dep 类的设计，所以自然使用 Dep 类相关的 depend 和 notify
+> ⚠️ 注意：这里使用的是 `depend` 和 `notify`，而不是 Vue3 源码中的 [track](https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L213) 和 [trigger](https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L259)，尤雨溪的说法是：为了减少其中与响应式原理不相关的优化，从而更好的理解工作原理。而我个人的感觉是：这里定义的是 Dep 类，这是 Vue2 特有的，<font color=red>Vue3 取消了 Dep 类的设计</font>，所以自然使用 Dep 类相关的 depend 和 notify
 >
-> 👀 另外，关于 depend notify 和 track trigger ，建议去看下 [[#尤雨溪源码解读#depend notify v.s. track trigger]]
+> 👀 另外，关于 depend / notify 和 track / trigger ，建议去看下 [[#尤雨溪源码解读#depend notify v.s. track trigger]]
 
 
 
@@ -366,7 +366,7 @@ function reactive(raw) {
     Object.defineProperty(raw, key, {
       get() {
         dep.depend();
-        return value; // ⚠️ 这里形成了闭包，存储了属性关联的 Dep，即：value 变量保存了 raw[key]
+        return value; // ⚠️ 使用并返回了外部变量 value，形成了闭包，存储了属性关联的 Dep，即：value 变量保存了 raw[key]
       },
       set(newValue) {
         value = newValue;
@@ -472,9 +472,11 @@ state.count++;
 
 上面的实现还有一些边界情况，比如：用户可能在同一个对象中调用 reactive 两次，在 reactive 过的 state 上再次调用 reactive；所以，需要跟踪以确保对同一个对象调用 reactive ，原始对象 ( raw object ) 将会返回相同的代理实例
 
-使用 Proxy 一个非常棒的好处是：Proxy 和它的 handler（ 在这里是 reactiveHandler ） 也可以用于数组。这相当于使用 JS 内置的功能监听数组，而不是在 Vue2 中手动实现、进行处理 ( hack array prototype to override some of the array of the array built-in methods, like push and pop )。👀 具体哪些方法会被重写（劫持）参见 [[#Vue2 监听数组的原理]]
+使用 Proxy 一个非常棒的好处是：Proxy 和它的 handler（ 在这里是 reactiveHandler ） 也可以用于数组。这相当于使用 JS 内置的功能监听数组，而不是在 Vue2 中手动实现、进行处理 ( hack array prototype to override some of the array of the array built-in methods, like push and pop )。
 
-> 👀 来自弹幕：
+> 👀 具体哪些方法会被重写（劫持）参见 [[#Vue2 监听数组的原理]]
+
+> 💡 来自弹幕：
 >
 > > Proxy 在数组 push 时会读取数组的 length，同样会触发 get 和 set。
 >
