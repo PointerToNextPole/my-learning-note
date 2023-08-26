@@ -895,6 +895,18 @@
   >  Server Push is a performance technique aimed at reducing latency by loading resources **preemptively**, even before the client knows they will be needed.
   >
   > 摘自：[wikipedia - HTTP/2 Server Push](https://en.wikipedia.org/wiki/HTTP/2_Server_Push)
+  
+- **arity** ：表示一个函数或操作的参数数量，也称为参数个数或元数
+
+  > 👀 这个词是在 lodash 官方文档的 [`_.curry`](https://lodash.com/docs/4.17.15#curry) 部分看到（如下），当然它是一个编程的通用概念
+  >
+  > ```js
+  > _.curry(func, [arity=func.length])
+  > ```
+
+  如下是询问 ChatGPT 的结果：
+
+  <img src="https://s2.loli.net/2023/08/26/e16lFatTNHkiOpm.png" alt="image-20230826145857953" style="zoom: 48%;" />
 ***
 
 

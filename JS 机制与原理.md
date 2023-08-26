@@ -4510,7 +4510,13 @@ var name = person.map(prop('name'))
 
 `person.map(prop('name'))` 就好像直白的告诉你：person 对象遍历 ( map ) 获取 ( prop ) name 属性。是不是感觉有点意思了呢？
 
-> 👀 一直没有读懂，上面为什么要这样写；直到看到了 阮一峰的 Pointfree 文章 [Pointfree 编程风格指南](https://www.ruanyifeng.com/blog/2017/03/pointfree.html) 中 “四、Pointfree 的本质”，有点懂了。这部分做了笔记 [[函数式编程笔记#Pointfree 风格]] 👀 // TODO 链接做笔记，并且这里Bi-Directional links 精确些
+> 👀 关于上面的 `person.map(prop('name'))` ，开始时有点没懂。想了下明白了；它等价于：
+>
+> ```js
+> person.map(p => prop('name')(p))
+> ```
+
+> 💡 一直没有读懂，上面为什么要这样写；直到看到了 阮一峰的 Pointfree 文章 [Pointfree 编程风格指南](https://www.ruanyifeng.com/blog/2017/03/pointfree.html) 中 “四、Pointfree 的本质”，有点懂了。这部分做了笔记 [[函数式编程笔记#Pointfree 风格]] 👀 // TODO 链接做笔记，并且这里Bi-Directional links 精确些
 >
 > 根据例子上面 Pointfree 的文章，可以发现：Pointfree 中使用了相当多的 Currying。另外 Pointfree 中使用很多的 [ramda](https://github.com/ramda/ramda) 库中，所有方法都支持柯里化。
 >
@@ -4559,26 +4565,26 @@ addCurry(1, 2) // 3
 ```js
 // 第二版
 function sub_curry(fn) { // 👀 第一版的代码，作为辅助函数；作用是：返回一个只可调用一次的函数
-    var args = [].slice.call(arguments, 1);
-    return function() {
-        return fn.apply(this, args.concat([].slice.call(arguments)));
-    };
+  var args = [].slice.call(arguments, 1);
+  return function () {
+    return fn.apply(this, args.concat([].slice.call(arguments))); //👀这里的 this 就是 window
+  };
 }
 
 function curry(fn, length) {
-    // 👀 function.length 表示形参个数，第一次调用 curry，没传递 length，所以 length 为 fn.length。因为下面有递归调用 curry，所以“可能”会有第二次调用 curry。递归调用时，会传递 length；所以这时 length 是传来的实参，不是 fn.length。另外，这里传来的 length 也会影响是否继续递归的判断
-    length = length || fn.length;
+  // 👀 function.length 表示形参个数，第一次调用 curry，没传递 length，所以 length 为 fn.length。因为下面有递归调用 curry，所以“可能”会有第二次调用 curry。递归调用时，会传递 length；所以这时 length 是传来的实参，不是 fn.length。另外，这里传来的 length 也会影响是否继续递归的判断
+  length = length || fn.length;
 
-    return function() {
-        if (arguments.length < length) { // 👀 这里 length 表示：还能传递多少实参
-            // 👀 调用 sub_curry 第一个参数就是 fn，所以放在第一个，后面的参数作为“默认参数”
-            var combined = [fn].concat([].slice.call(arguments));
-            // 👀 递归调用 curry 函数。length - arguments.length 作为 curry 函数的形参 length 对应的实参，表示还可以传递多少实参
-            return curry( sub_curry.apply( this, combined), length - arguments.length ); // 👀 调用 sub_curry。这里应该是 递归形成多层闭包了
-        } else { // 👀 传递了足够的参数，则停止递归；调用 fn
-            return fn.apply(this, arguments);
-        }
-    };
+  return function () {
+    if (arguments.length < length) { // 👀 调用外部变量 length，并返回函数，形成闭包；下面的 fn 也是
+      // 👀 调用 sub_curry 第一个参数就是 fn，所以放在第一个，后面的参数作为“默认参数”
+      var combined = [fn].concat([].slice.call(arguments));
+      // 👀 递归调用 curry 函数。length - arguments.length 作为 curry 函数的形参 length 对应的实参，表示还可以传递多少实参
+      return curry(sub_curry.apply(this, combined), length - arguments.length);
+    } else { // 👀 传递了足够的参数，则停止递归；调用 fn
+      return fn.apply(this, arguments);
+    }
+  };
 }
 ```
 
@@ -4599,26 +4605,28 @@ fn("a")("b", "c") // ["a", "b", "c"]
 
 当然了，如果你觉得无法理解，你可以选择下面这种实现方式，可以实现同样的效果：
 
+> 👀 这一版要简单很多
+
 ```js
 function curry(fn, args) {
-    var length = fn.length;
-    args = args || [];
+  var length = fn.length;
+  args = args || [];
 
-    return function() {
-        var _args = args.slice(0), // 👀 这里 slice 的作用是浅拷贝，不做浅拷贝的话 push 会影响到前面的逻辑
-            arg, i;
+  return function () {
+    var _args = args.slice(0), // 👀 slice 的作用是浅拷贝，不做浅拷贝的话 push 会影响到前面的逻辑
+      arg, i;
 
-        for (i = 0; i < arguments.length; i++) {
-            arg = arguments[i];
-            _args.push(arg);
-        }
-        if (_args.length < length) {
-            return curry.call(this, fn, _args);
-        }
-        else {
-            return fn.apply(this, _args);
-        }
+    for (i = 0; i < arguments.length; i++) { // 👀 这里用解构也是可以的，不过，解构是 ES6 的特性
+      arg = arguments[i];
+      _args.push(arg);
     }
+    if (_args.length < length) {
+      return curry.call(this, fn, _args);
+    }
+    else {
+      return fn.apply(this, _args);
+    }
+  }
 }
 ```
 
@@ -4627,8 +4635,8 @@ function curry(fn, args) {
 curry 函数写到这里其实已经很完善了，但是注意这个函数的传参顺序必须是从左到右，根据形参的顺序依次传入，如果我不想根据这个顺序传呢？我们<font color=FF0000>可以创建一个占位符</font>，比如这样（ 👀 偏函数中有类似操作）：
 
 ```js
-var fn = curry(function(a, b, c) {
-    console.log([a, b, c]);
+var fn = curry(function (a, b, c) {
+  console.log([a, b, c]);
 });
 fn("a", _, "c")("b") // ["a", "b", "c"]
 ```
@@ -4638,60 +4646,60 @@ fn("a", _, "c")("b") // ["a", "b", "c"]
 ```js
 // 第三版
 function curry(fn, args, holes) {
-    length = fn.length;
-    args = args || [];
-    holes = holes || [];
+  length = fn.length;
+  args = args || [];
+  holes = holes || [];
 
-    return function() {
-        var _args = args.slice(0),
-            _holes = holes.slice(0),
-            argsLen = args.length,
-            holesLen = holes.length,
-            arg, i, index = 0;
+  return function () {
+    var _args = args.slice(0),
+      _holes = holes.slice(0),
+      argsLen = args.length,
+      holesLen = holes.length,
+      arg, i, index = 0;
 
-        for (i = 0; i < arguments.length; i++) {
-            arg = arguments[i];
-            // 处理类似 fn(1, _, _, 4)(_, 3) 这种情况，index 需要指向 holes 正确的下标
-            if (arg === _ && holesLen) {
-                index++
-                if (index > holesLen) {
-                    _args.push(arg);
-                    _holes.push(argsLen - 1 + index - holesLen)
-                }
-            }
-            // 处理类似 fn(1)(_) 这种情况
-            else if (arg === _) {
-                _args.push(arg);
-                _holes.push(argsLen + i);
-            }
-            // 处理类似 fn(_, 2)(1) 这种情况
-            else if (holesLen) {
-                // fn(_, 2)(_, 3)
-                if (index >= holesLen) {
-                    _args.push(arg);
-                }
-                // fn(_, 2)(1) 用参数 1 替换占位符
-                else {
-                    _args.splice(_holes[index], 1, arg);
-                    _holes.splice(index, 1)
-                }
-            }
-            else {
-                _args.push(arg);
-            }
+    for (i = 0; i < arguments.length; i++) {
+      arg = arguments[i];
+      // 处理类似 fn(1, _, _, 4)(_, 3) 这种情况，index 需要指向 holes 正确的下标
+      if (arg === _ && holesLen) {
+        index++
+        if (index > holesLen) {
+          _args.push(arg);
+          _holes.push(argsLen - 1 + index - holesLen)
         }
-        if (_holes.length || _args.length < length) {
-            return curry.call(this, fn, _args, _holes);
+      }
+      // 处理类似 fn(1)(_) 这种情况
+      else if (arg === _) {
+        _args.push(arg);
+        _holes.push(argsLen + i);
+      }
+      // 处理类似 fn(_, 2)(1) 这种情况
+      else if (holesLen) {
+        // fn(_, 2)(_, 3)
+        if (index >= holesLen) {
+          _args.push(arg);
         }
+        // fn(_, 2)(1) 用参数 1 替换占位符
         else {
-            return fn.apply(this, _args);
+          _args.splice(_holes[index], 1, arg);
+          _holes.splice(index, 1)
         }
+      }
+      else {
+        _args.push(arg);
+      }
     }
+    if (_holes.length || _args.length < length) {
+      return curry.call(this, fn, _args, _holes);
+    }
+    else {
+      return fn.apply(this, _args);
+    }
+  }
 }
 
 var _ = {}; // 👀 和偏函数中实现类似
-var fn = curry(function(a, b, c, d, e) {
-    console.log([a, b, c, d, e]);
+var fn = curry(function (a, b, c, d, e) {
+  console.log([a, b, c, d, e]);
 });
 
 // 验证 输出全部都是 [1, 2, 3, 4, 5]
@@ -4707,12 +4715,14 @@ fn(_, 2)(_, _, 4)(1)(3)(5)
 
 ##### 柯里化的高颜值写法
 
+>👀 下面的代码和原代码相比做了三处修改，因为原代码有问题；详见注释中的“修改”
+
 ```js
-var curry = fn =>
-    judge = (...args) =>
-        args.length === fn.length
-            ? fn(...args)
-            : (arg) => judge(...args, arg)
+const curry = fn =>
+  judge = (...args) =>
+    args.length >= fn.length // 修改：因为可能总共传入的参数可能大于 fn.length，所以等于换成了大于等于
+      ? fn(...Array.prototype.slice.call(args, 0, fn.length)) // 直接返回结果。修改：还是因为可能总共传入的参数可能大于 fn.length，所以要做切片
+      : (...arg) => judge(...args, ...arg) // 继续返回函数。修改：因为新传入的 arg 可能有多个参数，所以解构了
 ```
 
 ##### 柯里化的原理总结
