@@ -16866,14 +16866,17 @@ AbortController.abort()：中止一个尚未完成的 Web（网络）请求。�
 
 ### Worker
 
-#### worker 总述
+##### Worker 类型
 
-除了专用 worker 之外，还有一些其他种类的 worker ：
+有许多不同类型的 worker：
 
-- **Shared Workers** 可被不同的窗体的多个脚本运行，例如 IFrames 等，只要这些 workers 处于同一主域。共享worker 比专用 worker 稍微复杂一点 — 脚本必须通过活动端口进行通讯。
-- **Service Workers** 一般作为web应用程序、浏览器和网络（如果可用）之间的代理服务。他们旨在（除开其他方面）创建有效的离线体验，拦截网络请求，以及根据网络是否可用采取合适的行动，更新驻留在服务器上的资源。他们还将允许访问推送通知和后台同步API。
-- **Chrome Workers** 是一种仅适用于firefox的worker。如果您正在开发附加组件，希望在扩展程序中使用worker且可以访问 js-ctypes，那么可以使用Chrome Workers。
-- **音频 Workers** 可以在网络worker上下文中直接完成脚本化音频处理
+- 专用 worker 是由单个脚本使用的 worker。该上下文由 [`DedicatedWorkerGlobalScope`](https://developer.mozilla.org/zh-CN/docs/Web/API/DedicatedWorkerGlobalScope) 对象表示。
+
+- <font color=red>`Shared worker` 是可以由在不同窗口、IFrame 等中运行的 **多个脚本使用的 worker**</font>，只要它们与 worker 在同一域中。它们比专用的 worker 稍微复杂一点——脚本必须通过活动端口进行通信。
+
+- <font color=red>Service Worker 基本上是作为 **代理服务器**，位于 web 应用程序、浏览器和网络（如果可用）之间</font>。它们的目的是（除开其他方面）创建有效的离线体验、拦截网络请求，以及根据网络是否可用采取合适的行动并更新驻留在服务器上的资源。它们还将允许访问推送通知和后台同步 API。
+
+  > 👀 即：PWA 的原理
 
 摘自：[MDN - Web Workers API](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API)
 
@@ -16885,70 +16888,85 @@ Worker 接口是 Web Workers API 的一部分，指的是一种可由脚本创�
 
 需要注意的是，<font color=FF0000>不是所有函数和构造函数（或者说…类）都可以在 Worker 中使用</font>。具体参考页面 [Worker 所支持的函数和类](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API/Functions_and_classes_available_to_workers)。Worker 可以使用 XMLHttpRequest 发送请求，但是请求的 responseXML 与 channel 两个属性值始终返回 null （fetch 仍可正常使用，没有类似的限制）。 
 
-- **构造函数**
-  Worker()：创建一个专用Web worker，它只执行URL指定的脚本。<font color=FF0000> Blob URL 作为参数亦可</font>。
+##### 构造函数
 
-  > 如果 此URL有一个无效的语句，或者违反同源策略，一个 SECURITY_ERR 类型的DOMException被抛出。
-  >
-  > **语法**
-  >
-  > ```js
-  > const myWorker = new Worker(aURL[, options]);
-  > ```
-  >
-  > **参数**
-  >
-  > - **aURL：**是一个DOMString 表示worker 将执行的脚本的URL。它必须遵守同源策略。
-  > - **options：** 可选，包含可在创建对象实例时设置的选项属性的对象。可用属性如下:
-  >   - **type：**用以指定 worker 类型的  DOMString 值. 该值可以是 classic 或 module. 如果未指定，将使用默认值 classic.
-  >   - **credentials：**用以指定 worker 凭证的 DOMString 值.该值可以是 omit, same-origin，或 include.。如果未指定，或者 type 是 classic，将使用默认值 omit (不要求凭证)。
-  >   - **name：**在 DedicatedWorkerGlobalScope 的情况下，用来表示 worker 的 scope 的一个 DOMString 值，主要用于调试目的。
-  >
-  > **异常**
-  >
-  > - 当 document 不被允许启动 worker 的时候，将抛出一个 SecurityError 异常。例如：如果提供的 aURL 有语法错误，或者与同源策略相冲突（跨域访问）。
-  > - 如果 worker 的 MIME 类型不正确，将抛出一个 NetworkError 异常。<font color=FF0000>worker 的 MIME 类型必须是 text/javascript</font>。
-  > - 如果 aURL 无法被解析（格式错误），将抛出一个 SyntaxError 异常。
-  >
-  > 摘自：[MDN - Worker()](https://developer.mozilla.org/zh-CN/docs/Web/API/Worker/Worker)
+`Worker()` ：创建一个专用 Web worker，它只执行URL指定的脚本。<font color=FF0000> Blob URL 作为参数亦可</font>。
 
-- **属性：**<font color=FF0000>继承父对象EventTarget 的属性，以及实现对象 AbstractWorker 的属性</font>。
+> 如果此 URL 有一个无效的语句，或者违反同源策略，一个 SECURITY_ERR 类型的DOMException被抛出。
+>
+> ##### 语法
+>
+> ```js
+> const myWorker = new Worker(aURL[, options]);
+> ```
+>
+> **参数**
+>
+> - **aURL** ：是一个 DOMString 表示worker 将执行的脚本的 URL 。它<font color=red>必须遵守同源策略</font>。
+> - **options** ：可选，包含可在创建对象实例时设置的选项属性的对象。可用属性如下:
+>   - **type** ：用以指定 worker 类型的  `DOMString` 值. 该值可以是 `classic` 或 `module`。如果未指定，将使用默认值 `classic`
+>   - **credentials** ：用以指定 worker 凭证的 `DOMString` 值。该值可以是 `omit` , `same-origin`，或 `include` 。如果未指定，或者 type 是 `classic`，将使用默认值 `omit` (不要求凭证)。
+>   - **name** ：在 DedicatedWorkerGlobalScope 的情况下，用来表示 worker 的 scope 的一个 DOMString 值，主要用于调试目的。
+>
+> ##### 异常
+>
+> - 当 document 不被允许启动 worker 的时候，将抛出一个 SecurityError 异常。例如：如果提供的 aURL 有语法错误，或者与同源策略相冲突（跨域访问）。
+> - 如果 worker 的 MIME 类型不正确，将抛出一个 NetworkError 异常。<font color=FF0000>worker 的 MIME 类型必须是 text/javascript</font>。
+> - 如果 aURL 无法被解析（格式错误），将抛出一个 SyntaxError 异常。
+>
+> 摘自：[MDN - Worker()](https://developer.mozilla.org/zh-CN/docs/Web/API/Worker/Worker)
 
-- **事件句柄：**
-  - **AbstractWorker.onerror：**当 ErrorEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用。它继承于 AbstractWorker
-  - **Worker.onmessage：**当 MessageEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用.  例如，一个消息通过 DedicatedWorkerGlobalScope.postMessage，从执行者发送到父页面对象，消息保存在事件对象的 data 属性中.
-  - **Worker.onmessageerror：**当messageerror 类型的事件发生时，对应的 event handler 代码被调用。
-  
-- **方法：**<font color=FF0000>继承父对象EventTarget 的方法，以及实现对象 AbstractWorker 的方法</font>。
-  - **Worker.postMessage()：**<font color=FF0000>发送一条消息到最近的外层对象</font>，消息可由任何 JavaScript 对象组成。
-  
-    > **注：**需要指出的是，要将 Worker.postMessage 和 window.postMessage 区分开；同时，在 Worker 中使用 postMessage，应该都是 Worker.postMessage。
-  
-  - **Worker.terminate()：**<font color=FF0000>立即终止 worker</font>。<mark>该方法不会给 worker 留下任何完成操作的机会；就是简单的立即停止</mark>。Service Woker 不支持这个方法。
+**属性：**<font color=FF0000>继承父对象EventTarget 的属性，以及实现对象 AbstractWorker 的属性</font>。
+
+##### 事件句柄
+
+- **AbstractWorker.onerror** ：当 ErrorEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用。它继承于 AbstractWorker
+- **Worker.onmessage** ：当 MessageEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用.  例如，一个消息通过 DedicatedWorkerGlobalScope.postMessage，从执行者发送到父页面对象，消息保存在事件对象的 data 属性中.
+- **Worker.onmessageerror** ：当 messageerror 类型的事件发生时，对应的 event handler 代码被调用。
+
+##### 方法
+
+<font color=FF0000>继承父对象EventTarget 的方法，以及实现对象 AbstractWorker 的方法</font>。
+
+- **`Worker.postMessage()`** ：<font color=FF0000>发送一条消息到最近的外层对象</font>，消息可由任何 JavaScript 对象组成。
+
+  > 👀 需要指出的是，要将 `Worker.postMessage` 和 `window.postMessage` 区分开；同时，在 Worker 中使用 `postMessage`，应该都是 `Worker.postMessage` 。
+
+- **Worker.terminate()：**<font color=FF0000>立即终止 worker</font>。<font color=lightSeaGreen>该方法不会给 worker 留下任何完成操作的机会；就是简单的立即停止</font>。Service Woker 不支持这个方法。
 
 摘自：[MDN - Worker](https://developer.mozilla.org/zh-CN/docs/Web/API/Worker)
 
 ##### worker上下文对象 补充
 
-在专用workers的情况下，DedicatedWorkerGlobalScope 对象代表了worker的上下文（专用workers是指标准worker仅在单一脚本中被使用；共享worker的上下文是 SharedWorkerGlobalScope对象）。一个专用worker仅仅能被首次生成它的脚本使用，而共享worker可以同时被多个脚本使用。
+在专用 workers 的情况下，DedicatedWorkerGlobalScope 对象代表了 worker 的上下文（专用 workers 是指标准 worker 仅在单一脚本中被使用；共享 worker 的上下文是 SharedWorkerGlobalScope 对象）。一个专用 worker 仅仅能被首次生成它的脚本使用，而共享 worker 可以同时被多个脚本使用。
 
 摘自：[MDN - 使用 Web Workers](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API/Using_web_workers) 由于该文章内容很多，且还有很多细节的东西暂时用不到，所以这里略。
 
 #### service worker
 
-Service workers <font color=FF0000>本质上充当 Web 应用程序、浏览器与网络（可用时）之间的代理服务器</font>（<mark> **注：** 即 Proxy，感觉也可以理解为拦截层？ </mark>）。<font color=FF0000>这个 API 旨在创建有效的离线体验</font>（**注：** 读到这里想到了 PWA，查了下便搜到了这篇文章：[通过 Service workers 让 PWA 离线工作](https://developer.mozilla.org/zh-CN/docs/Web/Progressive_web_apps/Offline_Service_workers) 另外，自己的笔记 [[webpack学习笔记#PWA打包]] 部分也有提及：server work 是 pwa 实现的原理。另外，下面也有对这篇文章做摘抄：[[#service worker 补充]] ），<font color=FF0000>它**会拦截网络请求并根据网络是否可用来采取适当的动作、更新来自服务器的的资源**</font>。它还提供入口以推送通知和访问后台同步 API。
+Service workers <font color=FF0000>本质上充当 Web 应用程序、浏览器与网络（可用时）之间的代理服务器</font>（ 👀 即 Proxy，感觉也可以理解为拦截器 Interceptor ？）。<font color=FF0000>这个 API 旨在创建有效的离线体验</font>，<font color=FF0000>它 **会拦截网络请求并根据网络是否可用来采取适当的动作、更新来自服务器的的资源**</font>。它还提供入口以推送通知和访问后台同步 API。
 
-<font size=4>**Service worker 的概念和用法**</font>
+> 💡 读到这里想到了 PWA，查了下便搜到了这篇文章：[通过 Service workers 让 PWA 离线工作](https://developer.mozilla.org/zh-CN/docs/Web/Progressive_web_apps/Offline_Service_workers) 另外，自己的笔记 [[webpack学习笔记#PWA打包]] 部分也有提及：service worker 是 pwa 实现的原理。另外，下面也有对这篇文章做摘抄：[[#service worker 补充]]
 
-Service worker 是一个<font color=FF0000>注册在 **指定源和路径下** 的事件驱动worker</font>。它<font color=FF0000>采用 JavaScript 控制关联的页面或者网站，<font size=4> **拦截并修改访问和资源请求，细粒度地缓存资源** </font> </font>。你<font color=FF0000>可以完全控制应用在特定情形（最常见的情形是网络不可用）下的表现</font>（ **注：** <mark>根据语义，service worker 可以控制“在线和离线”两种情况下的“网络请求和资源获取”</mark>）。
+##### Service worker 的概念和用法
 
-<font color=FF0000>Service worker 运行在worker上下文，因此它<font size=4> 不能访问DOM</font></font>。相对于驱动应用的 主JavaScript线程，它运行在其他线程中，所以不会造成阻塞。<font color=FF0000> **它设计为完全异步** ，同步API（如 XHR 和localStorage ）不能在service worker中使用</font>（**注：**xhr 存在同步模式，虽然默认是异步；但是这样说没有错...）。
+Service worker 是一个<font color=FF0000>注册在 **指定源和路径下** 的事件驱动 worker</font>。它<font color=FF0000>采用 JavaScript 控制关联的页面或者网站</font>，<font color=fuchsia size=4> **拦截并修改访问和资源请求，细粒度地缓存资源** </font>。你<font color=FF0000>可以完全控制应用在特定情形（最常见的情形是网络不可用）下的表现</font>
 
-<font color=FF0000>**出于安全考量，Service workers 只能由 HTTPS 承载**</font>，毕竟修改网络请求的能力暴露给中间人攻击会非常危险
+> 👀 根据语义，service worker 可以控制“在线和离线”两种情况下的“网络请求和资源获取”。
 
-**注意：**
+<font color=fuchsia>Service worker 运行在 **worker上下文**，因此它<font size=4> 不能访问DOM</font></font>。相对于驱动应用的 主JavaScript线程，它运行在其他线程中，所以不会造成阻塞。<font color=FF0000> **它设计为完全异步** ，同步API（如 XHR 和 localStorage ）不能在 service worker 中使用</font>（ 👀 xhr 存在同步模式，虽然默认是异步；但是这样说没有错...）。
 
-- Service workers 之所以优于以前同类尝试（如 AppCache ），是因为它们（ **注：** 即 AppCache 之类的同类尝试 ）无法支持当操作出错时终止操作（ **注：** 即 Service worker 可以）。<font color=FF0000>Service workers可以更细致地控制每一件事情</font>。
+> 💡 上面提到了 “worker上下文”，而之前只听过 global / fn / eval 这三种上下文。便去问 Claude，Claude 也说 JS 中 ***主要*** 有这三种上下文。于是有了下面的对话：
+>
+> <img src="https://s2.loli.net/2023/08/27/bezP2ABOivxqtyY.png" alt="image-20230827164841168" style="zoom:48%;" />
+>
+> <img src="https://s2.loli.net/2023/08/27/uL6tHFKRDodG1Tj.png" alt="image-20230827165009276" style="zoom:48%;" />
+
+<font color=FF0000>**出于安全考量**</font>，<font color=fuchsia>**Service workers 只能由 HTTPS 承载**</font>，毕竟修改网络请求的能力暴露给中间人攻击会非常危险
+
+###### 注意
+
+- Service workers 之所以优于以前同类尝试（如 AppCache ），是因为它们（ 👀 即 AppCache 之类的同类尝试 ）无法支持当操作出错时终止操作（ 👀 即 Service worker 可以）。<font color=FF0000>Service workers 可以更细致地控制每一件事情</font>。
 - <font color=FF0000> **Service workers 大量使用 Promise** </font>，因为通常它们会等待响应后继续，并根据响应返回一个成功或者失败的操作。Promise 非常适合这种场景。
 
 下面还有 service worker 使用过相关的内容，如：注册、下载、安装和激活 还有相关接口，由于暂时用不到，这里略
@@ -16958,11 +16976,12 @@ Service worker 是一个<font color=FF0000>注册在 **指定源和路径下** �
 
 <font color=FF0000>Service Worker 是浏览器和网络之间的虚拟代理</font>。 它们终于解决了前端开发人员多年来一直在努力解决的一些问题，其中最值得关注的是，<font color=FF0000>解决了如何正确缓存网站资源并使其在离线时可用的问题</font>。
 
-<mark>Service Worker 运行在 一个与页面 JavaScript 主线程独立的 线程上（ **注：** 即与 js主线程 无关），并且无权访问 DOM 结构</mark>。这引入了一种与传统 Web 编程不同的方式：它的 API 是非阻塞的，并且可以在不同的上下文之间发送和接收信息。<font color=FF0000>您可分配给 Service Worker 一些任务，并通过 <font size=4>基于 Promise 的方法</font> 在任务完成时收到结果</font>。
+<font color=lightSeaGreen>Service Worker 运行在 一个与页面 JavaScript 主线程独立的 线程上</font>（ 👀 即与 js主线程 无关），<font color=lightSeaGreen>并且无权访问 DOM 结构</font>。这引入了一种与传统 Web 编程不同的方式：它的 API 是非阻塞的，并且可以在不同的上下文之间发送和接收信息。<font color=FF0000>您可分配给 Service Worker 一些任务</font>，<font color=fuchsia>并通过 <font size=4>**基于 Promise 的方法**</font> 在任务完成时收到结果</font>。
 
 它<font color=FF0000>不仅仅提供离线功能，还可以做包括处理通知、在单独的线程上执行繁重的计算等事务</font>。Service workers 非常强大，因为他们可以控制网络请求、修改网络请求、返回缓存的自定义响应，或者合成响应。
 
-**离线优先**
+###### 离线优先
+
 “离线优先”或“缓存优先”模式是向用户提供内容的最流行策略。如果资源已缓存且可脱机使用，就在尝试从服务器下载资源之前先将其返回；如果它已经不在缓存中，就下载并缓存以备将来使用。
 
 补充内容摘自：[MDN - 通过 Service workers 让 PWA 离线工作](https://developer.mozilla.org/zh-CN/docs/Web/Progressive_web_apps/Offline_Service_workers)
@@ -16975,26 +16994,28 @@ Service worker 是一个<font color=FF0000>注册在 **指定源和路径下** �
 
 #### SharedWorker
 
-SharedWorker 接口代表一种特定类型的 worker，可以从几个浏览上下文中访问，例如几个窗口、iframe 或其他 worker。它们实现一个不同于普通 worker 的接口，具有不同的全局作用域, SharedWorkerGlobalScope
+SharedWorker 接口代表一种特定类型的 worker，可以从几个浏览上下文中访问，例如几个窗口、iframe 或其他 worker。它们实现一个不同于普通 worker 的接口，具有不同的全局作用域，SharedWorkerGlobalScope
 
-**注意 ⚠️：**如果要使 SharedWorker 连接到多个不同的页面，这些页面必须是同源的（相同的协议、host 以及端口）。
+> ⚠️ 注意：如果要使 SharedWorker 连接到多个不同的页面，这些页面必须是同源的（相同的协议、host 以及端口）
 
 ##### 构造函数
 
-**SharedWorker()：**创建一个执行指定 url 脚本的共享 web worker。
+**`SharedWorker()`**：创建一个执行指定 url 脚本的共享 web worker。
 
 ##### 属性
 
 继承自其父类 EventTarget，并实现 AbstractWorker 中的属性 。
 
-- AbstractWorker.onerror：一个 EventListener，当 ErrorEvent 类型的 error 冒泡到 worker 时触发。
-- SharedWorker.port 只读，返回一个 MessagePort 对象，该对象可以用来进行通信和对共享 worker 进行控制。
+- `AbstractWorker.onerror` ：一个 EventListener，当 ErrorEvent 类型的 error 冒泡到 worker 时触发。
+- `SharedWorker.port` 只读，返回一个 MessagePort 对象，该对象可以用来进行通信和对共享 worker 进行控制。
 
 ##### 方法
 
 继承自其父类 EventTarget，并实现 AbstractWorker 中的方法 。
 
-##### 示例：略
+##### 示例
+
+> 👀 略
 
 摘自：[MDN - SharedWorker](https://developer.mozilla.org/zh-CN/docs/Web/API/SharedWorker)
 
