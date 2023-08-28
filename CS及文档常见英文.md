@@ -907,6 +907,12 @@
   如下是询问 ChatGPT 的结果：
 
   <img src="https://s2.loli.net/2023/08/26/e16lFatTNHkiOpm.png" alt="image-20230826145857953" style="zoom: 48%;" />
+  
+- **caret** ：插入符号
+
+  > A **caret** (sometimes called a "text cursor") is an indicator displayed on the screen to indicate where text input will be inserted.
+  >
+  > 摘自：[MDN - Caret](https://developer.mozilla.org/en-US/docs/Glossary/Caret)
 ***
 
 
