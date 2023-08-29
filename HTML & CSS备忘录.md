@@ -8283,6 +8283,61 @@ function validTextColor(stringToTest) {
 
 
 
+#### accent-color
+
+CSS 属性 **`accent-color`** 为某些元素所生成的用户界面控件设置了强调色。
+
+支持 `accent-color` 属性的浏览器目前将其应用于下列 HTML 元素：
+
+- `<input type="checkbox">`
+- `<input type="radio">`
+- `<input type="range">`
+- `<progress>`
+
+##### 效果示例
+
+> 👀 看一下效果示例，就知道这个属性是干什么的了。这个类似于 vant 中 radio 和 checkbox 中的 `color` prop，虽然这些组件是模拟的
+
+<img src="https://s2.loli.net/2023/08/29/3Em7C4RX9WBuMJF.png" alt="image-20230829100024460" style="zoom:40%;" />
+
+##### 语法
+
+```css
+/* 关键字值 */
+accent-color: auto;
+
+/* <color> 值 */
+accent-color: darkred;
+accent-color: #5729e9;
+accent-color: rgb(0 200 0);
+accent-color: hsl(228 4% 24%);
+
+/* 全局值 */
+accent-color: inherit;
+accent-color: initial;
+accent-color: revert;
+accent-color: revert-layer;
+accent-color: unset;
+```
+
+###### 取值
+
+- `auto` ：表示用户代理所选颜色，应匹配平台的强调色（若有）。
+- `<color>` ：指定用作强调色的颜色。
+
+##### 形式定义
+
+| 初始值         | `auto`                                                       |
+| :------------- | ------------------------------------------------------------ |
+| 适用元素       | all elements                                                 |
+| 是否是继承属性 | yes                                                          |
+| 计算值         | `auto` is computed as specified and `<color>` values are computed as defined for the `color` property. |
+| Animation type | by computed value type                                       |
+
+摘自：[MDN - accent-color](https://developer.mozilla.org/zh-CN/docs/Web/CSS/accent-color)
+
+
+
 #### object-fit
 
 <font color=FF0000>object-fit CSS 属性**指定 <font size=4>可替换元素</font>**</font>（这个名词，隔壁的《CSS权威指南阅读笔记》有解释）<font color=FF0000>的内容应该如何适应到其使用的高度和宽度确定的框。</font>
@@ -8319,7 +8374,7 @@ pointer-events 是 CSS3 的一个属性，<font color=FF0000>指定在什么情�
 - **auto（默认）：**效果和没有定义 pointer-events 属性相同（即默认），<font color=FF0000>鼠标不会穿透当前层</font>。在 SVG 中，该值和 visiblePainted 的效果相同
 - **none：**<font color=FF0000>元素永远不会成为鼠标事件的 target（目标）。但是，当其后代元素的 pointer-events 属性指定其他值时，鼠标事件可以指向后代元素，在这种情况下，鼠标事件将在捕获或冒泡阶段触发父元素的事件侦听器。</font>
 
-摘自：[非常有用的pointer-events属性](https://www.cnblogs.com/kunmomo/p/11752669.html)  👀 注：该博客还有一些 pointer-events 的使用示例，比如地图工具栏，很详细地说明了使用场景
+摘自：[非常有用的pointer-events属性](https://www.cnblogs.com/kunmomo/p/11752669.html)  👀 该博客还有一些 pointer-events 的使用示例，比如地图工具栏，很详细地说明了使用场景
 
 
 
@@ -8350,7 +8405,7 @@ where
 <animateable-feature> = scroll-position | contents | <custom-ident>
 ```
 
-##### 取值
+###### 取值
 
 - **auto：**表示没有特别指定哪些属性会变化，<font color=FF0000> **浏览器需要自己去猜**，然后使用浏览器经常使用的一些常规方法优化</font>。
 - **\<animateable-feature> 可以是以下值**：
@@ -8373,7 +8428,7 @@ will-change: inherit
 
 摘自：[MDN - will-change](https://developer.mozilla.org/zh-CN/docs/Web/CSS/will-change)
 
-> 👀 注：will-change 可以用于 防止 回流和重绘，相关见 [[前端面试点总结#减少 回流 和 重绘 的操作]] 中的 “使用硬件 ( GPU ) 加速”
+> 👀 will-change 可以用于 防止 回流和重绘，相关见 [[前端面试点总结#减少 回流 和 重绘 的操作]] 中的 “使用硬件 ( GPU ) 加速”
 
 
 
@@ -8383,7 +8438,7 @@ text-decoration 这个 CSS 属性是用于设置文本的修饰线外观的（�
 
 文本修饰属性会延伸到子元素。这意味着如果祖先元素指定了文本修饰属性，子元素则不能将其删除。
 
-**属性：**
+##### 属性
 
 - **text-decoration-line：**文本修饰的位置, 如下划线underline，删除线line-through
 - **text-decoration-color：**文本修饰的颜色
@@ -8398,7 +8453,7 @@ text-decoration 这个 CSS 属性是用于设置文本的修饰线外观的（�
 
 The **`text-transform`** CSS property <font color=red>specifies how to capitalize an element's text</font>. It can be <font color=LightSeaGreen>used to make text appear in all-uppercase or all-lowercase</font>, or <font color=LightSeaGreen>with each word capitalized</font>. It also can help improve legibility for ruby.
 
-> 👀 注：这里省略掉了一些 “考虑特定于语言的案例映射规则” 和 “在其他一些其他特定的情况下，映射规则不被任何浏览器考虑在内”，因为暂时用不到；这里略。详见原链接。
+> 👀 这里省略掉了一些 “考虑特定于语言的案例映射规则” 和 “在其他一些其他特定的情况下，映射规则不被任何浏览器考虑在内”，因为暂时用不到；这里略。详见原链接。
 
 | 值             | 属性                                                         |
 | :------------- | ------------------------------------------------------------ |
@@ -8424,7 +8479,7 @@ text-transform: initial;
 text-transform: unset;
 ```
 
-##### 值
+###### 值
 
 - `capitalize`：这个关键字<font color=red>强制每个单词的首字母转换为大写</font>。其他的字符保留不变（它们写在元素里的文本保留原始大小写）。字母是 Unicode 字符集或者数字里定义的字符 🧪；因此单词开头的任何标点符号或者特殊符号将会被忽略。
 
@@ -8444,7 +8499,7 @@ text-transform: unset;
 
 #### -webkit-text-stroke
 
->  👀 注：一般用来实现文字描边。参见 [49 个在工作中常用且容易遗忘的 CSS 样式清单整理 ](https://www.cnblogs.com/CIBud/p/15004924.html) 第41条
+>  👀 一般用来实现文字描边。参见 [49 个在工作中常用且容易遗忘的 CSS 样式清单整理 ](https://www.cnblogs.com/CIBud/p/15004924.html) 第41条
 
 ##### 摘要
 
@@ -8464,7 +8519,7 @@ text-transform: unset;
 
 ##### 值
 
-- `<length>` ：文本宽。
+- ###### `<length>` ：文本宽。
 - `<color>` ：文本颜色。
 
 ##### 常规用法
@@ -8516,7 +8571,7 @@ text-transform: unset;
 
 text-align CSS属性定义行内内容（例如文字）<font color=FF0000>如何相对它的块父元素对齐</font>。text-align 并不控制块元素自己的对齐，只控制它的行内内容的对齐。
 
-**可选值：**
+##### 可选值
 
 - **start：**如果内容方向是左至右（ltr），则等于left，反之（rtl）则为right。
 - **end：**如果内容方向是左至右（ltr），则等于right，反之（rtl）则为left。
