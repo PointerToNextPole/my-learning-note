@@ -3076,6 +3076,42 @@ HTML `<embed>` 元素将外部内容嵌入文档中的指定位置。此内容�
 
 
 
+#### `<ruby>`
+
+The **`<ruby>`** HTML element represents small annotations that are rendered above, below, or next to base text, <font color=lightSeaGreen>usually used for showing the pronunciation of East Asian characters</font>. It can also be used for annotating other kinds of text, but this usage is less common.
+
+The term *ruby* originated as [a unit of measurement used by typesetters](https://en.wikipedia.org/wiki/Agate_(typography)), representing the smallest size that text can be printed on newsprint while remaining legible.
+
+##### 效果如下
+
+<img src="https://s2.loli.net/2023/08/30/SaFyZj2CzvEVidw.png" alt="image-20230830175944284" style="zoom: 45%;" />
+
+> 💡 发现即使去掉 `<rp>` 也可以正常展示，便去搜了下 `<rp>` 的作用：
+>
+> > HTML `<rp>` 元素用于为那些不能使用 `<ruby>` 元素展示 ruby 注解的浏览器，提供随后的圆括号。
+> >
+> > 摘自：[MDN - `<rp>`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/rp)
+
+##### 属性
+
+| Property                                                     | Description                                                  |
+| :----------------------------------------------------------- | ------------------------------------------------------------ |
+| [Content categories](https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories) | [Flow content](https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories#flow_content), [phrasing content](https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories#phrasing_content), palpable content. |
+| Permitted content                                            | [Phrasing content](https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories#phrasing_content). |
+| Tag omission                                                 | None, both the starting and ending tag are mandatory.        |
+| Permitted parents                                            | Any element that accepts [phrasing content](https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories#phrasing_content). |
+| Implicit ARIA role                                           | [No corresponding role](https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role) |
+| Permitted ARIA roles                                         | Any                                                          |
+| DOM interface                                                | `HTMLElement`                                                |
+
+##### Attributes
+
+This element only includes the global attributes.
+
+摘自：[MDN - `<ruby>`: The Ruby Annotation element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ruby)
+
+
+
 #### `manifest`
 
 > ⚠️ <font color=FF0000>已从标准中移除</font>
