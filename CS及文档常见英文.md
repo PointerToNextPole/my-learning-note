@@ -86,8 +86,6 @@
    
 - **tackle**：解决
 
-- **yield**：产出
-
 - **mutation**：变异
 
 - **Imperative programming**：命令式编程

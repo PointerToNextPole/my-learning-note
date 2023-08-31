@@ -123,7 +123,7 @@ HTML `<button>` 元素表示一个可点击的按钮，可以用在表单或文�
 
 - **value：**<font color=FF0000>button 的初始值</font>。它定义的值与表单数据的提交按钮相关联。<font color=FF0000>当表单中的数据被提交时，这个值便以参数的形式被递送至服务器</font>。
 
-摘自：[MDN - \<button>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/button)
+摘自：[MDN - `<button>`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/button)
 
 
 
@@ -248,7 +248,13 @@ href 包含超链接指向的 URL 或 URL 片段。
 <a href="sms:"13764567708">13764567708</a>
 ```
 
-> 💡 发现这里的无论是 mailto 协议、tel 协议 以及 sms 协议 都和 url scheme 有些类似；可以说：URL Scheme 是一种自定义的协议
+> 💡 发现这里的无论是 mailto scheme（见下面的补充）、tel scheme 以及 sms scheme 都和 url scheme 有些类似；可以说：URL Scheme 是一种自定义的协议
+>
+> 关于 mailto scheme 这个说法的来源：
+>
+> > **mailto** <font color=red>is a Uniform Resource Identifier (URI) **scheme**</font> for email addresses. It is used to produce hyperlinks on websites that allow users to send an email to a specific address directly from an HTML document, without having to copy it and entering it into an email client.
+> >
+> > 摘自：[wikipedia - mailto](https://en.wikipedia.org/wiki/Mailto)
 
 ###### 使用 `download` 属性将 `<canvas>` 保存为 PNG 格式
 
