@@ -911,6 +911,12 @@
   > A **caret** (sometimes called a "text cursor") is an indicator displayed on the screen to indicate where text input will be inserted.
   >
   > 摘自：[MDN - Caret](https://developer.mozilla.org/en-US/docs/Glossary/Caret)
+  
+- **duplicated** ：重复的
+
+  **dedupe** ：去重。即 de-dupe，而 “dupe” 正是来源于 “duplicated”
+  
+  > 👀 这个词第一次看见是来自 vite 的一个配置 [`reslove.dedupe`](https://cn.vitejs.dev/config/shared-options.html#resolve-dedupe) 
 ***
 
 
@@ -1122,3 +1128,5 @@
 - **subtle** ：细微的，不易察觉的 ( subtle bug )
 
 - **coupon** ：优惠券
+
+- **acquisition** ：获得 。acquire 的名词

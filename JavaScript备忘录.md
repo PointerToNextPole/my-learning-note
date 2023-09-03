@@ -6,7 +6,7 @@
 
 #### JavaScript 基础
 
-DOM ( **D**ocument **O**bject **M**odel )（文档对象模型）是用于访问 HTML 元素的正式 W3C 标准。
+DOM ( Document Object Model )（文档对象模型）是用于访问 HTML 元素的正式 W3C 标准。
 
 ##### 直接写入 HTML 输出流
 

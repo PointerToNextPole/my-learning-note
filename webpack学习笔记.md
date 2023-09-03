@@ -10435,7 +10435,11 @@ devServer: {
 }
 ```
 
-devServer 使用了 [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)，可详细了解。另外，Vite 中使用的是 [http-proxy](https://github.com/http-party/node-http-proxy) ，设置在 https://github.com/vitejs/vite/blob/main/package.json 中
+devServer 使用了 [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)，可详细了解。另外，如 http-proxy-middleware 的 [readme](https://github.com/chimurai/http-proxy-middleware) 所说：
+
+> Powered by the popular Nodejitsu [`http-proxy`](https://github.com/http-party/node-http-proxy)
+
+另外，Vite 中使用的是 [http-proxy](https://github.com/http-party/node-http-proxy) ，参见源码 [vite.js - vite/packages/vite/pakage.json # L109](https://github.com/vitejs/vite/blob/cd6bf29ca4b677ff0d6e2bf36416a65b1a6ffa21/packages/vite/package.json#L109)
 
 关于使用 devServer 解决跨域的问题，还可以参考：[webpack开发配置API代理解决跨域问题-devServer](https://segmentfault.com/a/1190000016199721)
 
