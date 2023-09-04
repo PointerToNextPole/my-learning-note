@@ -250,17 +250,25 @@ href 包含超链接指向的 URL 或 URL 片段。
 
 > 💡 发现这里的无论是 mailto scheme（见下面的补充）、tel scheme 以及 sms scheme 都和 url scheme 有些类似；可以说：URL Scheme 是一种自定义的协议
 >
-> 关于 mailto scheme 这个说法的来源：
+> <font color=dodgerBlue>关于 mailto scheme 这个说法的来源：</font>
 >
 > > **mailto** <font color=red>is a Uniform Resource Identifier (URI) **scheme**</font> for email addresses. It is used to produce hyperlinks on websites that allow users to send an email to a specific address directly from an HTML document, without having to copy it and entering it into an email client.
 > >
 > > 摘自：[wikipedia - mailto](https://en.wikipedia.org/wiki/Mailto)
+>
+> 另外，可以看下 [MDN - Navigator.registerProtocolHandler()](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/registerProtocolHandler) 和 [一言难尽的registerProtocolHandler()方法](https://www.zhangxinxu.com/wordpress/2023/08/js-registerprotocolhandler/) 其中介绍了 浏览器内置的 scheme（如下），以及用使用 `Navigator.registerProtocolHandler()` 自定义 scheme（感觉和 URL Scheme 大差不差）
+>
+> **浏览器内置 scheme （白名单中的协议标记）：**
+>
+> > `bitcoin`、 `geo`、 `im`、 `irc`、 `ircs`、 `magnet`、 `mailto`、 `mms`、 `news`、 `nntp`、 `openpgp4fpr`、 `sip`、 `sms`、 `smsto`、 `ssh`、 `tel`、 `urn`、 `webcal`、 `wtai`、 `xmpp`
+> >
+> > 摘自：[MDN - `Navigator.registerProtocolHandler()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/registerProtocolHandler)
 
 ###### 使用 `download` 属性将 `<canvas>` 保存为 PNG 格式
 
 有点没搞懂，这里略，详见引用链接
 
-摘自：[MDN - \<a>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/a)
+摘自：[MDN - `<a>`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/a)
 
 
 
