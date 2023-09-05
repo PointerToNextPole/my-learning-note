@@ -917,6 +917,10 @@
   **dedupe** ：去重。即 de-dupe，而 “dupe” 正是来源于 “duplicated”
   
   > 👀 这个词第一次看见是来自 vite 的一个配置 [`reslove.dedupe`](https://cn.vitejs.dev/config/shared-options.html#resolve-dedupe) 
+  
+- **cumulative** ：累计的
+
+  > 👀 见到这个词是来自 “Cumulative Layout Shift” 即 CLS 。另外，[`Array.prototype.reduce`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce) 的第一个参数是 `accumulator` 也与之类似
 ***
 
 

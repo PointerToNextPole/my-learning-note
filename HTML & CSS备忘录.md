@@ -18,7 +18,7 @@ Lorem ipsum，简称为 Lipsum，是指一篇常用于排版设计领域的拉�
 
 #### HTML5 & CSS3
 
-2017年 看 Head First HTML 与 CSS，其中有说“即使 HTML5 随未来发展有添加新特性，HTML 也只会叫‘新 HTML5’ ”
+2017年看 《Head First HTML 与 CSS》，其中有说：“即使 HTML5 随未来发展有添加新特性，HTML 也只会叫‘新 HTML5’ ”
 
 另外，今天（2022/9/2）在 [http/4会是什么样的？ - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/536812181/answer/2521339835) 看到了类似的概念：
 
@@ -43,9 +43,9 @@ HTML `<label>` 元素（标签）表示用户界面中某个元素的说明。
 - 标签文本不仅与其相应的文本输入元素在视觉上相关联，程序中也是如此。 这意味着，当用户聚焦到这个表单输入元素时，屏幕阅读器可以:读出标签，让使用辅助技术的用户更容易理解应输入什么数据。
 - 你可以点击关联的标签来聚焦或者激活这个输入元素，就像直接点击输入元素一样。这扩大了元素的可点击区域，让包括使用触屏设备在内的用户更容易激活这个元素。
 
-<font color=FF0000>将一个 `<label>` 和一个 `<input>` 元素匹配在一起，你需要给 `<input>` 一个 id 属性。而 `<label>` 需要一个 `for` 属性，其值和 `<input>` 的 `id` 一样。</font>
+<font color=FF0000>将一个 `<label>` 和一个 `<input>` 元素匹配在一起，你需要给 `<input>` 一个 `id` 属性。而 `<label>` 需要一个 `for` 属性，其值和 `<input>` 的 `id` 一样。</font>
 
-<font color=LightSeaGreen>另外，你也可以将 `<input>` 直接放在 `<label>` 里，此时则不需要 for 和 id 属性，因为关联已隐含存在：</font>
+<font color=LightSeaGreen>另外，你也可以将 `<input>` 直接放在 `<label>` 里，此时则不需要 `for` 和 `id` 属性，因为关联已隐含存在：</font>
 
 ```html
 <label>Do you like peas?
@@ -67,7 +67,7 @@ HTML `<label>` 元素（标签）表示用户界面中某个元素的说明。
 
   > ⚠️ `<label>` 元素可同时有一个 `for` 属性和一个子代控件元素，只是 `for` 属性需要指向这个控件元素
 
-- **`form`** ：<font color=FF0000>表示与 `label` 元素关联的 `<form>` 元素（即它的表单拥有者）</font>。**如果声明了该属性，其值应是同一文档中 `<form>` 元素的 `id` 。因此你可以将 `label` 元素放在文档的任何位置，而不仅作为 `<form>` 元素的后代**。
+- **`form`** ：<font color=FF0000>表示与 `label` 元素关联的 `<form>` 元素（即它的表单拥有者）</font>。**如果声明了该属性，其值应是同一文档中 `<form>` 元素的 `id` 。因此你可以将 `label` 元素放在文档的任何位置，而不仅作为 `<form>` 元素的后代**
 
 摘自：[MDN - `<label>`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/label)
 
@@ -87,7 +87,7 @@ HTML `<button>` 元素表示一个可点击的按钮，可以用在表单或文�
 
   不像其它浏览器，Firefox 默认在页面加载时持续禁用 Button 的动态状态。使用 `autocomplete` 属性可控制此特性。
 
-- **form** ：**HTML5**，<font color=FF0000>表示 button 元素关联的 form 元素（它的表单拥有者）</font>。<font color=FF0000 size=4>**此属性值必须为同一文档中的一个 `<form>` 元素的 `id` 属性**</font>。如果此属性未指定，`<button>` 元素必须是 form元素的后代。利用此属性，你可以将 `<button>` 元素放置在文档内的任何位置，而不仅仅是作为他们 form 元素的后代。
+- **form** ：**HTML5**，<font color=FF0000>表示 button 元素关联的 form 元素（它的表单拥有者）</font>。<font color=fuchsia>**此属性值必须为同一文档中的一个 `<form>` 元素的 `id` 属性**</font>。如果此属性未指定，`<button>` 元素必须是 form元素的后代。利用此属性，你可以将 `<button>` 元素放置在文档内的任何位置，而不仅仅是作为他们 form 元素的后代。
 
 - **formaction** ：**HTML5**，<font color=FF0000>表示程序处理 button 提交信息的 URI</font>。<font color=LightSeaGreen>如果指定了，将重写 button 表单拥有者（即 form ）的 `action` 属性</font>。
 
@@ -100,7 +100,7 @@ HTML `<button>` 元素表示一个可点击的按钮，可以用在表单或文�
 - **formmethod** ：**HTML5**，<font color=FF0000>如果 button 是 **submit** 类型，**此属性指定浏览器提交表单使用的 HTTP 方法**</font>。可选值:
 
   - **post** ：来自表单的数据被包含在表单内容中，被发送到服务器。
-  - **get** ：来自表单的数据以 '?' 作为分隔符被附加到 form 的 URI 属性中，得到的 URI 被发送到服务器。当表单没有副作用，且仅包含 ASCII 字符时使用这种方法。
+  - **get** ：来自表单的数据以 `?` 作为分隔符被附加到 form 的 URI 属性中，得到的 URI 被发送到服务器。当表单没有副作用，且仅包含 ASCII 字符时使用这种方法。
 
   <font color=FF0000>如果指定了，此属性会重写 button 拥有者（即 form）的 `method` 属性</font>。
 
@@ -112,7 +112,7 @@ HTML `<button>` 元素表示一个可点击的按钮，可以用在表单或文�
   - **`_parent`** ：在当前浏览上下文父级中加载响应。如果没有父级的，此选项将按 `_self` 执行。
   - **`_top`** ：在顶级浏览上下文（即当前浏览上下文的祖先，且没有父级）中架加载响应。如果没有顶级的，此选项将按 `_self` 执行。
 
-- **name** ：<font color=FF0000>button 的名称</font>，<font color=FF0000 size=4>**与表单数据一起提交**</font>。
+- **name** ：<font color=FF0000>button 的名称</font>，<font color=fuchsia>**与表单数据一起提交**</font>。
 
 - **type** ：<font color=FF0000>button 的类型</font>。可选值：
 
@@ -256,7 +256,7 @@ href 包含超链接指向的 URL 或 URL 片段。
 > >
 > > 摘自：[wikipedia - mailto](https://en.wikipedia.org/wiki/Mailto)
 >
-> 另外，可以看下 [MDN - Navigator.registerProtocolHandler()](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/registerProtocolHandler) 和 [一言难尽的registerProtocolHandler()方法](https://www.zhangxinxu.com/wordpress/2023/08/js-registerprotocolhandler/) 其中介绍了 浏览器内置的 scheme（如下），以及用使用 `Navigator.registerProtocolHandler()` 自定义 scheme（感觉和 URL Scheme 大差不差）
+> 另外，可以看下 [MDN - `Navigator.registerProtocolHandler()`](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/registerProtocolHandler) 和 [一言难尽的registerProtocolHandler()方法](https://www.zhangxinxu.com/wordpress/2023/08/js-registerprotocolhandler/) 其中介绍了 浏览器内置的 scheme（如下），以及用使用 `Navigator.registerProtocolHandler()` 自定义 scheme（感觉和 URL Scheme 大差不差）
 >
 > **浏览器内置 scheme （白名单中的协议标记）：**
 >
@@ -346,7 +346,7 @@ iOS Safari 特有，略
 - **`get`** ：指的是 HTTP GET 方法；<font color=LightSeaGreen>表单数据会附加在 `action` 属性的 URL 中，并以 '?' 作为分隔符</font>，没有副作用 时使用这个方法。
 - **`dialog`** ：<font color=LightSeaGreen>如果表单在 `<dialog>` 元素中，提交时关闭对话框</font>。
 
-此值可以被 `<button>` 、`<input type="submit">` 或 `<input type="image">` 元素中的 `formmethod` 属性覆盖。
+此值可以被 `<button>` 、`<input type="submit">` 或 `<input type="image">` 元素中的 `formmethod` 属性覆盖
 
 ###### `novalidate`
 
@@ -382,7 +382,7 @@ iOS Safari 特有，略
 
 该伪类对于高亮正确字段是很有用的。
 
-摘自：[MDN - :valid](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:valid)
+摘自：[MDN - `:valid`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:valid)
 
 ##### `:invalid`
 
@@ -397,7 +397,7 @@ input:invalid {
 
 这个伪类对于突出显示用户的字段错误非常有用。
 
-摘自：[MDN - :invalid](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:invalid)
+摘自：[MDN - `:invalid`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:invalid)
 
 
 
@@ -409,14 +409,14 @@ HTML `<dialog>` 元素<font color=FF0000>表示一个对话框或其他交互式
 
 这个元素包含了全局属性。但是 `tabindex` 特性不能被使用在 `<dialog>` 元素上。
 
-- **open** ：<font color=FF0000>指示这个对话框是激活的和能互动的</font>。<font color=LightSeaGreen>当这个 open 特性没有被设置，对话框不应该显示给用户</font>。
+- **`open`** ：<font color=FF0000>指示这个对话框是激活的和能互动的</font>。<font color=LightSeaGreen>当这个 open 特性没有被设置，对话框不应该显示给用户</font>。
 
 ##### 使用备注
 
 - <font color=FF0000>`<form>` 元素可在此对话框中使用，但需要指定属性 `method="dialog"`</font>。当提交表单时，对话框的 returnValue 属性将会等于表单中被使用的提交按钮的 value 。
 - `::backdrop` CSS 伪元素可用于更改 `<dialog>` 背景元素样式，例如在对话框被打开激活时，调暗背景中不可访问的内容。仅当使用 `HTMLDialogElement.showModal()` 显示对话框时才会绘制 backdrop 背景。
 
-摘自：[MDN - \<dialog>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/dialog)
+摘自：[MDN - `<dialog>`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/dialog)
 
 
 
@@ -436,13 +436,13 @@ HTML `<fieldset>` 元素用于对表单中的控制元素<font color=FF0000>进�
 
 > ⚠️ fieldset 的标题由第一个 `<legend>` 子元素确定。
 
-摘自：[MDN - \<fieldset>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/fieldset)
+摘自：[MDN - `<fieldset>`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/fieldset)
 
 #### `<legend>`
 
 HTML `<legend>` 元素用于表示其父元素 `<fieldset>` 的内容标题。
 
-摘自：[MDN - \<legend>](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/legend)
+摘自：[MDN - `<legend>`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/legend)
 
 
 
@@ -464,7 +464,7 @@ HTML `<meta>` 元素表示那些不能由其它 HTML 元相关 ( meta-related ) 
 
 - 如果<font color=FF0000>设置了 `name` 属性</font>，meta 元素<font color=FF0000>提供的是文档级别 ( document-level ) 的元数据</font>，应用于整个页面。
 
-- 如果<font color=FF0000 size=4>**设置了 `http-equiv` 属性**</font>，**meta 元素则<font color=FF0000>是 <font size=4>编译指令</font></font>**，提供的信息与类似命名的 HTTP 头部相同。
+- 如果 <font color=dodgerBlue>**设置了 `http-equiv` 属性**</font>，**meta 元素则<font color=FF0000>是 <font color=fuchsia>编译指令</font></font>**，提供的信息与类似命名的 HTTP 头部相同。
 
 - 如果<font color=FF0000>设置了 `charset` 属性</font>，meta 元素<font color=FF0000>是一个字符集声明</font>，<font color=FF0000>告诉文档使用哪种字符编码</font>。
 
@@ -4192,6 +4192,96 @@ font-style: unset;
 // TODO
 
 摘自：[MDN - font-variant](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font-variant)
+
+
+
+#### font-display
+
+`font-display` 属性<font color=red>决定了一个 `@font-face` **在不同的下载时间和可用时间下** 是如何展示的</font>。
+
+##### 字体显示时间轴
+
+<font color=red>字体显示时间线基于一个计时器</font>，该计时器在用户代理尝试使用给定下载字体的那一刻开始。<font color=red>**时间线分为三个时间段**，在这三个时间段中指定使用字体的元素的渲染行为</font>。
+
+- 字体阻塞周期 ：如果未加载字体，任何试图使用它的元素都必须渲染不可见的后备字体。如果在此期间字体已成功加载，则正常使用它。
+- 字体交换周期 ：如果未加载字体，任何尝试使用它的元素都必须呈现后备字体。如果在此期间字体已成功加载，则正常使用它。
+- 字体失败周期 ：如果未加载字体，用户代理将其视为导致正常字体回退的失败加载。
+
+| 属性            | 值           |
+| :-------------- | ------------ |
+| Related at-rule | `@font-face` |
+| 初始值          | `auto`       |
+| 计算值          | as specified |
+
+##### 语法
+
+```css
+/* 关键字值 */
+font-display: auto;
+font-display: block;
+font-display: swap;
+font-display: fallback;
+font-display: optional;
+```
+
+###### 属性值
+
+- `auto` ：字体显示策略由用户代理定义。
+
+- `block` ：为字体提供一个短暂的阻塞周期和无限的交换周期。
+
+- `swap` ：为字体提供一个非常小的阻塞周期和无限的交换周期。
+
+  > 💡 **关于 `swap` 的补充：**
+  >
+  > <font color=dodgerBlue>字体通常是大文件，需要一段时间才能加载，一些浏览器直到下载完字体后才呈现文本</font>
+  >
+  > <font color=fuchsia>`font-display: swap` 告诉浏览器默认使用系统字体进行渲染，当自定义字体下载完成之后再进行替换</font>
+  >
+  > ```css
+  > @font-face {
+  > font-family: 'Pacifico';
+  > font-style: normal;
+  > font-weight: 400;
+  > src: local('Pacifico Regular'), local('Pacifico-Regular'), url(https://fonts.gstatic.com/xxx.woff2) format('woff2');
+  > font-display: swap;
+  > }
+  > ```
+  >
+  > > ⚠️ 这里的 [`src`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@font-face/src) CSS 属性中使用了 `local()` 函数，这是之前所忽略的，值得注意下；另外，`format()` 也是有印象，但是很不熟的。这里做下摘抄：
+  > >
+  > > > - `<url> [ format( <string># ) ]?` : Specifies an external reference consisting of a `<url>()`, followed by an optional hint using the 
+  > > >
+  > > >   **`format()`** function to describe the format of the font resource referenced by that URL. The format hint contains a comma-separated list of format strings that denote well-known font formats. If a user agent doesn't support the specified formats, it skips downloading the font resource. If no format hints are supplied, the font resource is always downloaded.
+  > > >
+  > > > - `<font-face-name>` : Specifies the name of a locally-installed font face using the 
+  > > >
+  > > >   **`local()`** function, which uniquely identifies a single font face within a larger family. The name can optionally be enclosed in quotes.
+  > > >
+  > > > 摘自：[MDN - `src`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@font-face/src)
+  >
+  > 另外，你<font color=red>可以使用 `<link rel="preload">` 更早的加载字体文件</font>。
+  >
+  > 摘自：[解读新一代 Web 性能体验和质量指标](https://mp.weixin.qq.com/s/L90rB5JmJAOhmn7E2m8EDg)
+
+- `fallback` ：为字体提供一个非常小的阻塞周期和短暂的交换周期。
+
+- `optional ` ：为字体提供一个非常小的阻塞周期，并且没有交换周期。
+
+##### 示例
+
+```css
+@ font-face {
+  font-family: ExampleFont;
+  src: url（/path/to/fonts/examplefont.woff）format（'woff'），
+       url（/path/to/fonts/examplefont.eot）format（'eot'）;
+  font-weight: 400;
+  font-style: normal;
+  font-display: fallback;
+}
+```
+
+摘自：[MDN - `font-display`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@font-face/font-display)
 
 
 
