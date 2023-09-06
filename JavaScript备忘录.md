@@ -16833,17 +16833,17 @@ AbortController.signal <font color=FF0000>只读</font>，返回一个 AbortSign
 
 ##### 方法
 
-AbortController.abort()：中止一个尚未完成的 Web（网络）请求。这<font color=FF0000>能够中止 fetch 请求及任何响应体的消费和流</font>。
+- AbortController.abort()：中止一个尚未完成的 Web（网络）请求。这<font color=FF0000>能够中止 fetch 请求及任何响应体的消费和流</font>
 
 > 当一个请求被终止，它的  readyState 将被置为 XMLHttpRequest.UNSENT (0)，并且请求的 status 置为 0。
 >
-> 摘自：[MDN - XMLHttpRequest.abort()](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/abort)
+> 摘自：[MDN - `XMLHttpRequest.abort()`](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/abort)
 
-摘自：[MDN - AbortController](https://developer.mozilla.org/zh-CN/docs/Web/API/AbortController)
+摘自：[MDN - `AbortController`](https://developer.mozilla.org/zh-CN/docs/Web/API/AbortController)
 
-> 👀 注：AbortController 的相关作用 在 [[web开发工具#请求已经发出去了，如何取消掉这个已经发出去的请求]] 中有详细说明。
+> 👀 AbortController 的相关作用 在 [[web开发工具#请求已经发出去了，如何取消掉这个已经发出去的请求]] 中有详细说明。
 
-> 👀 注：在看 [setTimeout 为什么还没有采用 AbortController 来取消? - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/545379005/answer/2593517694) 时知道：<font color=fuchsia>AbortController 也可以用来取消事件监听了</font>（参见 [Using AbortController as an Alternative for Removing Event Listeners](https://css-tricks.com/using-abortcontroller-as-an-alternative-for-removing-event-listeners/) ），同时 <font color=fuchsia>Node 里新版的 setTimeout 的确可以用 AbortController 取消</font>：
+> 💡 在看 [setTimeout 为什么还没有采用 AbortController 来取消? - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/545379005/answer/2593517694) 时知道：<font color=fuchsia>AbortController 也可以用来取消事件监听了</font>（参见 [Using AbortController as an Alternative for Removing Event Listeners](https://css-tricks.com/using-abortcontroller-as-an-alternative-for-removing-event-listeners/) ），同时 <font color=fuchsia>Node 里新版的 setTimeout 的确可以用 AbortController 取消</font>：
 >
 > ```js
 > const { setTimeout: setTimeoutPromise } = require('node:timers/promises'); // 👀
@@ -16854,12 +16854,14 @@ AbortController.abort()：中止一个尚未完成的 Web（网络）请求。�
 > setTimeoutPromise(1000, 'foobar', { signal })
 >   .then(console.log)
 >   .catch((err) => {
->     if (err.name === 'AbortError')
->       console.log('The timeout was aborted');
+>    if (err.name === 'AbortError')
+>      console.log('The timeout was aborted');
 >   });
 > 
 > ac.abort();
 > ```
+>
+> ⚠️ 2023/9/6 补充：使用 abortController 来清除事件监听这一概念属实是忘记了
 
 
 
