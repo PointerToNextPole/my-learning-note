@@ -1329,7 +1329,9 @@ findIndex(function(element, index, array) { /* … */ }, thisArg)
 
 #### Array.prototype.reduce()
 
-**reduce()** 方法 <font color=FF0000>对数组中的每个元素 **执行一个自定义的 reducer 函数（升序执行）**</font>，<font color=FF0000>每一次运行 **reducer** 会将先前元素的计算结果</font>（ 👀  说成“上一次的计算结果”，感觉更容易理解些）<font color=FF0000>作为参数传入</font>，<font color=FF0000>**最后将其结果汇总为单个返回值**（ 👀非常重要！**上一次的计算结果必须要返回**，否则会报错）</font>，真是因为要返回，如果写了没有 {} 包裹、也没有 return 的箭头函数时，不要用 push，使用 concat。
+**reduce()** 方法 <font color=FF0000>对数组中的每个元素 **执行一个自定义的 reducer 函数（升序执行）**</font>，<font color=FF0000>每一次运行 **reducer** 会将先前元素的计算结果</font>（ 👀  说成“上一次 acc 的计算结果”，感觉更容易理解些）<font color=FF0000>作为参数传入</font>，<font color=FF0000>**最后将其结果汇总为单个返回值**</font>（ 👀非常重要！**上一次的计算结果必须要返回**，否则会报错，因为 `acc` 会变成 `undefined` ），真是因为要返回，如果写了没有 `{}` 包裹、也没有 return 的箭头函数时，不能直接使用 push（ 可以先使用 push，再用逗号操作符返回 acc），推荐使用 解构运算符 或者 concat
+
+> 👀 2023/9/7 补充：在手写 flat 方法时（见 [[JS 函数手写实现#flat 实现#使用 reduce() 实现#带深度的 flat 实现]] ），发现 concat 会对函数参数进行一层解构；对 concat 不熟悉的话是容易出错的，所以使用解构是更值得推荐的
 
 第一次执行回调函数时，不存在 “上一次的计算结果”。如果需要回调函数从数组索引为 0 的元素开始执行，则需要传递初始值。<font color=LightSeaGreen>否则，数组索引为 0 的元素将被作为初始值 *initialValue*</font>，<font color=FF0000>**迭代器将从第二个元素开始执行（索引为 1 而不是 0）**</font>。
 
@@ -1350,9 +1352,9 @@ console.log(array1.reduce(reducer, 5));  // expected output: 15
 
 ##### reducer 函数接收4个参数
 
-1. Accumulator ( acc ) ：累计器（累加器）。**注：**2022 / 4 / 8 MDN 文档改变了，这个参数被称为 previousValue；不过，毕竟 reduce 不仅仅有 “累加的” 功能。
+1. Accumulator ( acc ) ：累计器（累加器）。
 
-   要看之前的版本可以看：https://web.archive.org/web/20220314073057/https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce ，可以发现 2022 / 3 / 14 这里还没改动...
+   > 👀 2022 / 4 / 8 MDN 文档改变了，这个参数被称为 previousValue；不过，毕竟 reduce 不仅仅有 “累加的” 功能。要看之前的版本可以看：https://web.archive.org/web/20220314073057/https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce ，可以发现 2022 / 3 / 14 这里还没改动...
 
 2. Current Value ( cur ) ：当前值
 
@@ -1731,6 +1733,20 @@ array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
 #### Array.prototype.concat()
 
  concat() 方法用于合并两个或多个数组。<font color=FF0000>此方法不会更改现有数组，而是返回一个新数组。</font>
+
+>  ⚠️ 注意：concat 的参数 <font color=fuchsia>**数组会多做一层解构**</font>，如下示例：
+>
+> ```js
+> const concated = [].concat([1, 2]) // [1, 2] ，而不是错误理解的 [[1, 2]]
+> ```
+>
+> 另外，concat 可以传入多个参数，这就导致了
+>
+> ```js
+> const concated = [].concat(1, 2) // [1, 2]
+> ```
+>
+> 和 `[].concat([1, 2])` 结果一样
 
 摘自：[MDN - Array.prototype.concat()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/concat)
 

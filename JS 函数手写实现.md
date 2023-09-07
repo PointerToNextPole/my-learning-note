@@ -254,7 +254,7 @@ const is = (x, y) => {
 
 #### isNaN() 的实现
 
-根据上面的实现，可以知道 isNaN() 的实现方法。另外，[MDN - isNaN()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/isNaN) 也有说实现方法。还有，isNaN('NaN') === true
+根据上面的实现，可以知道 isNaN() 的实现方法。另外，[MDN - isNaN()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/isNaN) 也有说实现方法。还有，`isNaN('NaN') === true`
 
 下面就摘抄的 MDN 的实现方法：
 
@@ -338,6 +338,70 @@ Promise.myAll = arr => {
   })
 }
 ```
+
+###### 测试用例1
+
+```js
+const p1 = () => new Promise((resolve, reject) => {
+  setTimeout(() => resolve(1), 1000)
+})
+const p2 = () => new Promise((resolve, reject) => {
+  setTimeout(() => resolve(2), 2000)
+})
+const p3 = () => new Promise((resolve, reject) => {
+  setTimeout(() => resolve(3), 3000)
+})
+
+Promise.myAll([p1(), p2(), p3()])
+  .then(res => console.log(res))
+  .catch(e => console.log(e)) // [1, 2, 3]
+```
+
+###### 测试用例2
+
+```js
+const p1 = () => new Promise((resolve, reject) => {
+  setTimeout(() => resolve(1), 1000)
+})
+const p2 = () => new Promise((resolve, reject) => {
+  setTimeout(() => reject(2), 2000)
+})
+const p3 = () => new Promise((resolve, reject) => {
+  setTimeout(() => resolve(3), 3000)
+})
+
+Promise.myAll([p1(), p2(), p3()])
+  .then(res => console.log(res))
+  .catch(e => console.log(e)) // 2
+```
+
+##### Promise.any() 实现
+
+```js
+Promise.any = arr => {
+  const errs = []
+  let count = 0
+  return new Promise((resolve, reject) => {
+    arr.forEach(p => {
+      Promise.resolve(p)
+        .then(
+          res => resolve(res),
+          err => {
+            errs[index] = err
+            count++
+            if(count === arr.length) {
+              reject(new AggregateError(errs))
+            }
+          }
+        )
+    })
+  })
+}
+```
+
+> 👀 感觉 Promise.any 和 Promise.all 的实现原理相当类似，所以在这里特意将他们的写法写成类似的
+
+代码修改自：[Promise.any 的作用，如何自己实现一个 Promise.any](https://juejin.cn/post/6965596525388890142)
 
 ##### Promise.allSettled() 实现
 
@@ -450,6 +514,38 @@ const sleep = async msCount => new Promise((resolve) => setTimeout(resolve, msCo
   console.log('sleep ending')
 })()
 ```
+
+
+
+### 排序实现
+
+在写排序前，先实现一个 `swap` 的工具函数
+
+```js
+function swap(arr, index, index2) {
+  [arr[index], arr[index2]] = [arr[index2], arr[index]]
+}
+```
+
+#### 冒泡排序
+
+```js
+function bubbleSort(arr) {
+  const last = arr.length - 1
+  for (let i = 0; i < last; i++) {
+    let flag = false
+    for (let j = last; j > i; j--) {
+      if (arr[j - 1] > arr[j]) {
+        swap(arr, j - 1, j)
+        flag = true
+      }
+    }
+    if (flag === false) return arr
+  }
+}
+```
+
+
 
 
 
@@ -612,11 +708,35 @@ Array.prototype.reduce = function(cb, initialValue) {
 ##### 使用 reduce() 实现
 
 ```js
-const flat = arr => arr.reduce(
-  (pre, cur) => pre.concat(Array.isArray(cur) ? flat(cur) : cur), [])
+const flat = arr => arr.reduce((acc, cur) =>
+  Array.isArray(cur)
+    ? [...acc, ...flat(cur)]
+    : [...acc, cur]
+  , [])
 ```
 
 👀 这里用了递归。另外，兼容性方面，`Array.prototype.reduce()` 是 ES5 甚至更早 的方法（兼容 IE9），`Array.isArray()` 是 ES5 的方法
+
+###### 带深度的 flat 实现
+
+```js
+const flat = (arr, depth = 1) => arr.reduce((acc, cur, index) =>
+  depth && Array.isArray(cur)
+    ? [...acc, ...flat(cur, depth - 1)]
+    : [...acc, cur]
+  , [])
+```
+
+这里也可以用 concat，但是鉴于 `[].concat([1, 2])` 的结果是 `[1, 2]` 而不是以为的 `[[1, 2]]` 所以，需要多加一个 `[]` ；如下：
+
+```js
+const flatten = (arr, depth = 1) => arr.reduce((acc, cur, index) =>
+  depth && Array.isArray(cur)
+    ? acc.concat(flatten(cur, depth - 1))
+    : acc.concat([cur]) // 这里多加一个 []
+    // 或者也可以使用 (acc.push(cur), acc)
+  , [])
+```
 
 ##### 使用递归
 
@@ -843,7 +963,7 @@ const jsonp = ({ url, params, callbackName }) => {
 
 #### 图片懒加载
 
-给 img 标签统一加上自定义属性 data-src="default.png"，当检测到图片出现在窗口之后再补充 src 属性，此时进行图片懒加载
+给 img 标签统一加上自定义属性 `data-src="default.png"` ，当检测到图片出现在窗口之后再补充 src 属性，此时进行图片懒加载
 
 ```js
 function lazyload() {
