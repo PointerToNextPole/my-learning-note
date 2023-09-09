@@ -34,7 +34,7 @@ Function.prototype.bind = function(context, ...args) {
     if (this instanceof F) {
       return new self(...args, ...arguments)
     }
-    return self.apply(context, [...args, ...arguments]) // 👀 这里也可以使用 args.concat(arguments)，兼容性更好些
+    return self.apply(context, [...args, ...arguments]) // 👀 也可使用 args.concat(arguments) ，兼容性更好些
   }
 }
 ```
@@ -500,6 +500,83 @@ addTask(300, '3')
 addTask(400, '4')
 ```
 
+##### 神说要有光的实现
+
+```js
+const pLimit = (concurrency) => {
+  const queue = [];
+  let activeCount = 0;
+
+  const next = () => {
+    activeCount--;
+
+    if (queue.length > 0) {
+      queue.shift()();
+    }
+  };
+
+  const run = async (fn, resolve, ...args) => {
+    activeCount++;
+
+    const result = (async () => fn(...args))();
+
+    resolve(result);
+
+    try {
+      await result;
+    } catch { }
+
+    next();
+  };
+
+  const enqueue = (fn, resolve, ...args) => {
+    queue.push(run.bind(null, fn, resolve, ...args));
+
+    if (activeCount < concurrency && queue.length > 0) {
+      queue.shift()();
+    }
+  };
+
+  const generator = (fn, ...args) =>
+    new Promise((resolve) => {
+      enqueue(fn, resolve, ...args);
+    });
+
+  return generator;
+};
+```
+
+摘自：[手写 p-limit，40 行代码实现并发控制](https://juejin.cn/post/7197246543208071205)
+
+##### 来自群友分享的实现
+
+```ts
+export const mapLimited = async <
+  T extends readonly (() => Promise<unknown>)[] | [],
+  R extends { -readonly [P in keyof T]: Awaited<ReturnType<T[P]>> }
+>(
+  list: T,
+  concurrency = list.length
+): Promise<R> => {
+  const result: any = [];
+  await Promise.all(
+    new Array(Math.min(concurrency, list.length))
+      .fill(list.entries())
+      .map(
+        async (
+          iteratee: IterableIterator<[number, () => Promise<unknown>]>
+        ) => {
+          for (const [index, executor] of iteratee) {
+            const res = await executor();
+            result[index] = res;
+          }
+        }
+      )
+  );
+  return result as R;
+};
+```
+
 
 
 #### Sleep 函数实现
@@ -551,7 +628,37 @@ function bubbleSort(arr) {
 
 #### 快速排序
 
+```js
+function quickSort(arr, low, high) {
+  if (low < high) {
+    const pivotPos = partition(arr, low, high)
+    quickSort(arr, low, pivotPos - 1)
+    quickSort(arr, pivotPos + 1, high)
+  }
+  return arr
+}
 
+function partition(arr, low, high) {
+  const pivot = arr[low]
+  while (low < high) {
+    while (low < high && arr[high] >= pivot) high--
+    arr[low] = arr[high]
+    while (low < high && arr[low] <= pivot) low++
+    arr[high] = arr[low]
+  }
+  arr[low] = pivot
+  return low
+}
+```
+
+##### 测试
+
+```js
+const arr = [1, 3, 2, 0, 4, -1]
+const sorted = quickSort(arr, 0, arr.length - 1)
+
+console.log(sorted) // [ -1, 0, 1, 2, 3, 4 ]
+```
 
 
 
