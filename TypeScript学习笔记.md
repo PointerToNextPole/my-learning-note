@@ -2458,9 +2458,11 @@ type GetFirst<Arr extends unknown[]> =
     Arr extends [infer First, ...unknown[]] ? First : never;
 ```
 
-类型参数 Arr 通过 extends 约束为只能是数组类型，数组元素是 unkown 也就是可以是任何值。
+类型参数 Arr 通过 extends 约束为只能是数组类型，数组元素是 unknown 也就是可以是任何值。
 
-> **any 和 unknown 的区别**： any 和 unknown 都代表任意类型，但是 unknown 只能接收任意类型的值，而 <font color=FF0000>any 除了可以接收任意类型的值，也可以赋值给任意类型（除了 never ）</font>。类型体操 中经常用 unknown 接受和匹配任何类型，而很少把任何类型赋值给某个类型变量。
+> **any 和 unknown 的区别**
+>
+> any 和 unknown 都代表任意类型，但是 unknown 只能接收任意类型的值，而 <font color=FF0000>any 除了可以接收任意类型的值，也可以赋值给任意类型（除了 never ）</font>。类型体操中<font color=red>**经常用 unknown 接受和匹配**</font> 任何类型，而很少把任何类型赋值给某个类型变量。
 
 对 Arr 做模式匹配，把我们要提取的第一个元素的类型放到通过 infer 声明的 First 局部变量里，后面的元素可以是任何类型，用 unknown 接收，然后把局部变量 First 返回。
 
@@ -2609,7 +2611,7 @@ type GetReturnType<Func extends Function> =
 
 Func 和模式类型做匹配，提取返回值到通过 infer 声明的局部变量 ReturnType 里返回。
 
-参数类型可以是任意类型，也就是 any[]（<font color=FF0000>**注意，这里不能用 unknown，因为参数类型是要赋值给别的类型的，而 unknown 只能用来接收类型，所以用 any**</font> ）。
+参数类型可以是任意类型，也就是 `any[]`（<font color=FF0000>**注意，这里不能用 unknown，因为参数类型是要赋值给别的类型的，而 unknown 只能用来接收类型，所以用 any**</font> ）。
 
 > 👀 这里在写的时候，使用 unknown 了
 
@@ -2913,7 +2915,9 @@ type Zip<One extends [unknown, unknown], Other extends [unknown, unknown]> =
 
 <img src="https://s2.loli.net/2022/05/03/C2Tm4inx5q6XUHa.png" alt="image-20220503141940873" style="zoom:50%;" />
 
-但是这样只能合并两个元素的元组，如果是任意个呢？那就得用递归了：
+但是这样
+
+只能合并两个元素的元组，如果是任意个呢？那就得用递归了：
 
 ```ts
 type Zip<One extends unknown[], Other extends unknown[]> = 
@@ -2925,7 +2929,7 @@ type Zip<One extends unknown[], Other extends unknown[]> =
 
 > 👀 自己尝试实现时，`...zip` 没写出，写的是 `Zip<oneRest, OtherRest>` ，显然是错的
 
-类型参数 One、Other 声明为 unknown[]，也就是元素个数任意，类型任意的数组。
+类型参数 One、Other 声明为 `unknown[]` ，也就是元素个数任意，类型任意的数组。
 
 每次提取 One 和 Other 的第一个元素 OneFirst、OtherFirst，剩余的放到 OneRest、OtherRest 里。用 OneFirst、OtherFirst 构造成新的元组的一个元素，剩余元素继续递归处理 OneRest、OtherRest。这样，就能处理任意个数元组的合并：
 
@@ -2938,19 +2942,19 @@ type Zip<One extends unknown[], Other extends unknown[]> =
 我们想把一个字符串字面量类型的 'guang' 转为首字母大写的 'Guang'。需要用到字符串类型的提取和重新构造：
 
 ```ts
-type CapitalizeStr<Str extends string> = Str extends `${infer First}${infer Rest}` ? // 注：Rest 变量接收剩余字符
-      `${Uppercase<First>}${Rest}` : Str // 注：注意这里的 Uppercase<>
+type CapitalizeStr<Str extends string> = Str extends `${infer First}${infer Rest}` ? // 👀 Rest 变量接收剩余字符
+      `${Uppercase<First>}${Rest}` : Str // 👀 注意这里的 Uppercase<>
 ```
 
 我们声明了类型参数 Str 是要处理的字符串类型，通过 extends 约束为 string。
 
-通过 infer 提取出首个字符到局部变量 First，<font color=FF0000>**提取后面的字符到局部变量 Rest**</font>。然后 <font color=FF0000 size=4>**使用 TypeScript 提供的内置高级类型 Uppercase 把首字母转为大写**</font>（**注：**这个没接触过），加上 Rest，构造成新的字符串类型返回。
+通过 infer 提取出首个字符到局部变量 First，<font color=FF0000>**提取后面的字符到局部变量 Rest**</font>。然后 <font color=FF0000>**使用 TypeScript 提供的内置高级类型 Uppercase 把首字母转为大写**</font>，加上 Rest，构造成新的字符串类型返回。
 
 <img src="https://s2.loli.net/2022/05/03/wvi3oPrcjmteg1O.png" alt="image-20220503145046293" style="zoom:50%;" />
 
 #### CamelCase
 
-我们再来实现 `dong_dong_dong` 到 dongDongDong 的变换。同样是提取和重新构造：
+我们再来实现 “dong_dong_dong” 到 “dongDongDong” 的变换。同样是提取和重新构造：
 
 ```typescript
 type CamelCase<Str extends string> = 
@@ -3135,7 +3139,9 @@ type FilterByValueType<
 
 类型参数 Obj 为要处理的索引类型，通过 extends 约束为索引为 string，值为任意类型的索引类型 `Record<string, any>` 。类型参数 ValueType 为要过滤出的值的类型。
 
-构造新的索引类型，索引为 Obj 的索引，也就是 `Key in keyof Obj` ；<font color=FF0000>**要做一些变换，也就是 as 之后的部分**</font>。如果原来索引的值 `Obj[Key]` 是 ValueType 类型，索引依然为之前的索引 Key；否则索引设置为 never，<font color=FF0000 size=4>**never 的索引会在生成新的索引类型时被去掉**</font>。值保持不变，依然为原来索引的值，也就是 `Obj[Key]` 。
+构造新的索引类型，索引为 Obj 的索引，也就是 `Key in keyof Obj` ；<font color=dodgerBlue>**要做一些变换，也就是 as 之后的部分**</font>。如果原来索引的值 `Obj[Key]` 是 ValueType 类型，索引依然为之前的索引 Key；否则索引设置为 never，<font color=fuchsia size=4>**never 的索引会在生成新的索引类型时被去掉**</font>。值保持不变，依然为原来索引的值，也就是 `Obj[Key]` 。
+
+> ⚠️ 上面 as 中返回 never 的索引类型会被去掉，这一点是没有听过的；而且，2023/9/11 回看也毫无印象...
 
 这样就达到了过滤索引类型的索引，产生新的索引类型的目的：
 
@@ -6036,7 +6042,7 @@ const abc = "Hello"
 
 Would <font color=red>add a **realtime inline annotation**</font> about what the type of `abc` is into the editor. This can make typing complex types easier, and make it much more obvious when sharing code what you think is important.
 
-> 💡 Twoslash Queries 是 TS playground 的 feat，vsc 不支持；不过，可以通过 vsc 插件 [vscode-twoslash-queries](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-twoslash-queries)，使 vsc 得到支持。
+> 💡 Twoslash Queries 是 TS playground 的 feat，vsc 不支持；不过，可以通过 vsc 插件 [Twoslash Query Comments](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-twoslash-queries)，使 vsc 得到支持。
 
 ##### Twoslash Compiler Flags
 
@@ -6150,9 +6156,12 @@ User 接口为 {
 <font color=dodgerBlue>**在类型系统设计中，有两种特别的类型**</font>：
 
 - Top type：被称为通用父类型，也就是能够包含所有值的类型。
+
 - Bottom type：代表没有值的类型，它也被称为**零**或**空**类型，是所有类型的子类型。
 
-按照类型系统的解释，<font color=dodgerBlue>在 TypeScript 3.0 中，有两个 top type</font>（any 和 unknown） 和<font color=dodgerBlue>一个 bottom type</font> ( never )。
+  > 👀 考虑到 TS 是鸭子类型，类似于空集的空类型是所有类型的子类型是很合理的
+
+按照类型系统的解释，<font color=dodgerBlue>在 TypeScript 3.0 中，有两个 top type</font>（any 和 unknown）和<font color=dodgerBlue>一个 bottom type</font> ( never )
 
 ##### unknown
 
@@ -6304,7 +6313,7 @@ function firstChar(msg: string | undefined) {
 }
 ```
 
-由于编译器不知道 throwError 是一个无返回的函数，所以 `throwError()` 之后的代码被认为在任意情况下都是可达的，让编译器误会 msg 的类型是 `string | undefined`。
+由于编译器不知道 throwError 是一个无返回的函数，所以 `throwError()` 之后的代码被认为在任意情况下都是可达的，让编译器误会 msg 的类型是 `string | undefined` 。
 
 <font color=red>**这时候如果标记上了 never 类型，那么 msg 的类型将会在空检查之后收窄为 string**</font>：
 
@@ -6364,7 +6373,7 @@ async function fetchNameWithTimeout(userId: string): Promise<string> {
 
 `Promise.race` 合并的多个 `Promise`，有时是无法确切知道时序和返回结果的。这里使用一个 `Promise.race` 将一个有网络请求返回值的 `Promise` 和另一个在给定时间之内就会被 `reject` 的 `Promise` 合并起来。
 
-timeout 函数的实现，如果超过指定时间，将会抛出一个 Error。<font color=fuchsia>由于它是无返回的，所以返回结果定义为了 `Promise<never>`</font>。
+timeout 函数的实现，如果超过指定时间，将会抛出一个 Error。<font color=fuchsia>由于它是无返回的，所以返回结果定义为了 `Promise<never>`</font> 。
 
 接下来编译器会去推断 `Promise.race` 的返回值，因为 race 会取最先完成的那个 `Promise` 的结果，所以在上面这个例子里，它的函数签名类似这样：
 
@@ -6372,7 +6381,7 @@ timeout 函数的实现，如果超过指定时间，将会抛出一个 Error。
 function race<A, B>(inputs: [Promise<A>, Promise<B>]): Promise<A | B>
 ```
 
-代入 fetchData 和 timeout 进来，A 则是 `{ userName: string }`，而 B 则是 `never`。因此，函数输出的 `promise` 返回值类型为 `{ userName: string } | never`。 又因为 `never` 是最小因子，可以消去。故返回值可简化为 `{ userName: string }`，这正是我们希望的。
+代入 `fetchData` 和 `timeout` 进来，A 则是 `{ userName : string }`，而 B 则是 `never`。因此，函数输出的 `promise` 返回值类型为 `{ userName: string } | never`。 又因为 `never` 是最小因子，可以消去。故返回值可简化为 `{ userName: string }`，这正是我们希望的。
 
 ###### 条件类型中使用
 

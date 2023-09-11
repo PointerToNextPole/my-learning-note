@@ -165,7 +165,7 @@ Functions starting with `use` are called *Hooks*. `useState` is a built-in Hook 
 
 使用 `crossorigin` 是为了防止跨域。
 
-相关可以参考文档 [React Doc - CDN Links](https://reactjs.org/docs/cdn-links.html)
+相关可以参考文档 [React Doc - CDN Links](https://reactjs.org/docs/cdn-links.html) 。另外，也可以参考 [react 文档给出的 GitHub Gist](https://gist.githubusercontent.com/gaearon/0275b1e1518599bbeafcde4722e79ed1/raw/db72dcbf3384ee1708c4a07d3be79860db04bff0/example.html)
 
 ###### 引入可选的 babel
 
