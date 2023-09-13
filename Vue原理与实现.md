@@ -3240,7 +3240,7 @@ if (patchFlag > 0) {
 }
 ```
 
-patchChildren 根据是否存在 key 进行真正的 diff 或者直接 patch。<font color=dodgerBlue>对于 key 不存在的情况我们就不做深入研究了</font>。
+patchChildren 根据是否存在 key 进行真正的 diff 或者直接 patch。<font color=dodgerBlue>对于 key 不存在的情况我们就不做深入研究了</font>
 
 > 💡 下面是对 patchKeyedChildren 方法进行分析
 
@@ -3258,22 +3258,22 @@ let e2 = l2 - 1        /* 新节点最后一个节点的索引 */
 >
 > ```ts
 > const patchKeyedChildren = (
->     c1: VNode[],  // 旧节点集合
->     c2: VNodeArrayChildren,  // 新节点集合
->     container: RendererElement, // 父容器
->     parentAnchor: RendererNode | null, // 锚点
->     parentComponent: ComponentInternalInstance | null, // 以下参数和diff无关
->     parentSuspense: SuspenseBoundary | null,
->     isSVG: boolean,
->     slotScopeIds: string[] | null,
->     optimized: boolean
+>      c1: VNode[],  // 旧节点集合
+>      c2: VNodeArrayChildren,  // 新节点集合
+>      container: RendererElement, // 父容器
+>      parentAnchor: RendererNode | null, // 锚点
+>      parentComponent: ComponentInternalInstance | null, // 以下参数和diff无关
+>      parentSuspense: SuspenseBoundary | null,
+>      isSVG: boolean,
+>      slotScopeIds: string[] | null,
+>      optimized: boolean
 > ) => {
->     let i = 0
->     const l2 = c2.length // 新子节点长度
->     let e1 = c1.length - 1 // prev ending index
->     let e2 = l2 - 1 // next ending index
+>      let i = 0
+>      const l2 = c2.length // 新子节点长度
+>      let e1 = c1.length - 1 // prev ending index
+>      let e2 = l2 - 1 // next ending index
 >     
->     // ...
+>      // ...
 > }
 > ```
 >
