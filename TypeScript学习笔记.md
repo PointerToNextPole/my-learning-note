@@ -3367,8 +3367,8 @@ type ReverseStr<
 > ```ts
 > type ReverseStr<Str extends string> = 
 >      Str extends `${infer First}${infer Rest}`
->      ? `${ReverseStr<Rest>}${First}`
->      : ''
+>        ? `${ReverseStr<Rest>}${First}`
+>        : ''
 > ```
 
 #### 对象类型的递归
@@ -5489,7 +5489,7 @@ module.exports = {
 
 此外，babel 会注入一些 helper 代码，可以通过 @babel/plugin-transform-runtime 插件抽离出来，从 @babel/runtime 包引入。（ transform runtime 顾名思义就是 transform to runtime，转换成从 runtime 包引入 helper 代码的方式）。
 
-所以一般babel 都会这么配：
+所以一般 babel 都会这么配：
 
 ```js
 module.exports = {
