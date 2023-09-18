@@ -664,7 +664,9 @@ console.log(sorted) // [ -1, 0, 1, 2, 3, 4 ]
 
 #### 数组转树
 
-##### 第一种数据结构与解法
+##### 第一种
+
+###### 测试数据与格式
 
 ```js
 const list = [
@@ -688,23 +690,66 @@ const list = [
 ###### 解法
 
 ```js
-function listToTree(list, parentId) {
-  const filtered = list.filter(item => parentId === undefined
-    ? item.parent === -1
-    : item.parent === parentId
-  )
+function listToTree(list, parentId = -1) {
+  const filtered = list.filter(({ parent }) => parent === parentId)
 
   filtered.forEach(item => item.childNode = listToTree(list, item.id))
 
   return filtered
 }
 
-listToTree(list)
+const tree = listToTree(list)
 ```
 
+结果自行运行，有点长，略
 
+##### 第二种
 
+###### 测试数据与格式
 
+```js
+const list = [
+  { value: '江苏', parent: null, id: '1' },
+  { value: '苏州', parent: '1', id: '1.1' },
+  { value: '吴中区', parent: '1.1', id: '1.1.1' },
+  { value: '浙江', parent: null, id: '2' },
+  { value: '杭州', parent: '2', id: '2.1' },
+  { value: '余杭区', parent: '2.1', id: '2.1.1' }
+]
+
+const tree = [
+  { value: '江苏', id: '1', children: [
+       { value: '苏州', id: '1.1', children: [
+            { value: '吴中区', id: '1.1.1' }
+        ]} 
+   ]},
+  { value: '浙江', id: '2', children: [
+     { value: '杭州',  id: '2.1', children: [
+        { value: '余杭区', id: '2.1.1' } 
+      ]}
+  ]}
+]
+```
+
+###### 解法
+
+```js
+function listToTree(list, parentId = null) {
+  const tree = list.filter(({ parent }) => parent === parentId)
+    .map(({ parent, ...rest }) => rest)
+
+  tree.forEach(item => {
+    const childTree = listToTree(list, item.id)
+    if (childTree.length) {
+      item.children = childTree
+    }
+  })
+
+  return tree
+}
+
+const tree = listToTree(list)
+```
 
 
 
