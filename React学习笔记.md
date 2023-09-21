@@ -95,6 +95,62 @@ Functions starting with `use` are called *Hooks*. `useState` is a built-in Hook 
 
 
 
+#### Thinking in React
+
+##### Step 1: Break the UI into a component hierarchy
+
+Depending on your background, you can think about splitting up a design into components in different ways:
+
+- **Programming**—use the same techniques for deciding if you should create a new function or object. <font color=red>One such technique is the **single responsibility principle**</font> , <font color=lightSeaGreen>that is, a component should ideally only do one thing</font>. If it ends up growing, it should be decomposed into smaller subcomponents.
+
+  > 💡single responsibility principle 即 “单一职责原则”
+
+- **CSS**—consider what you would make class selectors for. (However, components are a bit less granular.)
+
+- **Design**—consider how you would organize the design’s layers.
+
+##### Step 2: Build a static version in React
+
+To build a static version of your app that renders your data model, you’ll want to build [components](https://react.dev/learn/your-first-component) that reuse other components and pass data using [props.](https://react.dev/learn/passing-props-to-a-component) <font color=dodgerBlue>**Props are a way of passing data from parent to child**</font>. (If you’re familiar with the concept of [state](https://react.dev/learn/state-a-components-memory), <font color=red>don’t use state at all to build this **static version**</font>. <font color=fuchsia>**State is reserved only for interactivity**</font>, that is, <font color=red>data that changes over time</font>. Since this is a static version of the app, you don’t need it.)
+
+You can either build <font color=lightSeaGreen>**“top down”**</font> by starting with building the components higher up in the hierarchy (like `FilterableProductTable`) or <font color=lightSeaGreen>**“bottom up”**</font> by working from components lower down (like `ProductRow`). <font color=dodgerBlue>In simpler examples</font>, <font color=red>it’s usually easier to go top-down</font>, and <font color=dodgerBlue>on larger projects</font>, <font color=red>it’s easier to go bottom-up</font>.
+
+> 👀 这里 “top down” 是自顶向下，“bottom up” 是自底向上
+
+The component at the top of the hierarchy (`FilterableProductTable`) will take your data model as a prop. <font color=red>This is called ***one-way data flow*** because the data flows down from the top-level component to the ones at the bottom of the tree</font>.
+
+##### Step 3: Find the minimal but complete representation of UI state
+
+<font color=dodgerBlue>Which of these are state? **Identify the ones that are not**:</font>
+
+- Does it <font color=red>**remain unchanged** over time</font>? If so, it <font color=lightSeaGreen>isn’t state</font>.
+- Is it <font color=red>**passed in from a parent** via props</font>? If so, it <font color=lightSeaGreen>isn’t state</font>.
+- **Can you <font color=red>compute it</font>** <font color=red>based on existing state or props in your component</font>? If so, it *definitely* <font color=lightSeaGreen>isn’t state</font>!
+
+<font color=dodgerBlue>**What’s left is probably state.**</font>
+
+###### Props vs State
+
+There are two types of “model” data in React: props and state. <font color=dodgerBlue>The two are very different</font>:
+
+- [**Props** are like arguments you pass](https://react.dev/learn/passing-props-to-a-component) to a function. They let a parent component pass data to a child component and customize its appearance. For example, a `Form` can pass a `color` prop to a `Button`.
+- [**State** is like a component’s memory.](https://react.dev/learn/state-a-components-memory) It lets a component keep track of some information and change it in response to interactions. For example, a `Button` might keep track of `isHovered` state.
+
+##### Step 4: Identify where your state should live
+
+> 👀 这里的 “live” 是 “放置” 的意思
+
+<font color=dodgerBlue>**For each piece of state in your application:**</font>
+
+1. Identify *every* component that renders something based on that state.
+2. Find their closest common parent component—a component above them all in the hierarchy.
+3. Decide where the state should live:
+   1. Often, you can put the state directly into their common parent.
+   2. You can also put the state into some component above their common parent.
+   3. If you can’t find a component where it makes sense to own the state, create a new component solely for holding the state and add it somewhere in the hierarchy above the common parent component.
+
+
+
 #### Your First Component
 
 ##### Defining a component 
@@ -160,10 +216,12 @@ export default function Gallery() {
 
 ###### What the browser sees
 
-Notice the difference in casing:
+<font color=dodgerBlue>Notice the difference in casing:</font>
 
 - `<section>` is lowercase, so React knows we refer to an HTML tag.
 - `<Profile />` starts with a capital `P`, so React knows that we want to use our component called `Profile`.
+
+
 
 
 

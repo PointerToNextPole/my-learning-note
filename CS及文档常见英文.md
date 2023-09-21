@@ -36,7 +36,7 @@
 
 - **pan and zoom** ：平移和缩放
 
-   > 👀 之所以会放到这里，是因为搜了一下 pan 在这里有“平移” 的含义，但是一般字典中没有记录；可能是香港领域内约定俗成的说法吧
+   > 👀 之所以会放到这里，是因为搜了一下 pan 在这里有“平移” 的含义，但是一般字典中没有记录；可能是相关领域内约定俗成的说法吧
 
 - **downside** ：缺点
 
@@ -927,6 +927,16 @@
   >  If your tasks do not use any timers or perform any I/O, they will actually be executed **in series**
   >
   > 摘自：[async doc - parallel](http://caolan.github.io/async/v3/docs.html#parallel)
+  
+- **recap** ：回顾，扼要重述
+
+- **top down** ：自上而下
+
+  **bottom up** ：自下而上
+
+  > You can either build “top down” by starting with building the components higher up in the hierarchy (like `FilterableProductTable`) or “bottom up” by working from components lower down (like `ProductRow`)
+  >
+  > 摘自：[React doc - Thinking in React # Step 2: Build a static version in React](https://react.dev/learn/thinking-in-react#step-2-build-a-static-version-in-react)
 ***
 
 
@@ -1140,3 +1150,19 @@
 - **coupon** ：优惠券
 
 - **acquisition** ：获得 。acquire 的名词
+
+- **informed** ：明智的 👀 这个挺简单的，不该忘记的...
+
+  > Developers and Open Source authors now have a massive amount of services offering free tiers, but it can be hard to find them all to make informed decisions.
+  >
+  > 摘自：[GitHub - free-for-dev - readme](https://github.com/ripienaar/free-for-dev)
+
+- **reserve** ：v. 保留，留存，储备；n. 保留
+
+  > 👀 遇到的地方见下面 “over time”
+
+- **over time** ：随时间推移
+
+  > State is reserved only for interactivity, that is, data that changes over time. Since this is a static version of the app, you don’t need it.
+  >
+  > 摘自：[React doc - Thinking in React # Step 2: Build a static version in React](https://react.dev/learn/thinking-in-react#step-2-build-a-static-version-in-react)
