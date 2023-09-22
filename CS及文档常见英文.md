@@ -1166,3 +1166,11 @@
   > State is reserved only for interactivity, that is, data that changes over time. Since this is a static version of the app, you don’t need it.
   >
   > 摘自：[React doc - Thinking in React # Step 2: Build a static version in React](https://react.dev/learn/thinking-in-react#step-2-build-a-static-version-in-react)
+  
+- **conform** ：遵从，符合，符合
+
+- **suffice** ：足够，足以
+
+- **converse** ：adj. 相反的，逆的 vi. 谈话
+
+- 

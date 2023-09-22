@@ -151,6 +151,56 @@ There are two types of “model” data in React: props and state. <font color=d
 
 
 
+#### Using TypeScript
+
+Out of the box, TypeScript [supports JSX](https://react.dev/learn/writing-markup-with-jsx) and <font color=lightSeaGreen>you can get full React Web support by adding `@types/react` and `@types/react-dom` to your project</font>.
+
+###### Adding TypeScript to an existing React project 
+
+To install the latest version of React’s type definitions:
+
+```sh
+npm install @types/react @types/react-dom
+```
+
+<font color=dodgerBlue>**The following compiler options need to be set in your `tsconfig.json`:**</font>
+
+1. <font color=red>`dom` must be included in [`lib`](https://www.typescriptlang.org/tsconfig/#lib)</font> (Note: If no `lib` option is specified, `dom` is included by default).
+
+   > 👀 这里的 `lib` 是 `tsconfig.json` 中的字段
+
+2. [`jsx`](https://www.typescriptlang.org/tsconfig/#jsx) must be set to one of the valid options. `preserve` should suffice for most applications. If you’re publishing a library, consult the [`jsx` documentation](https://www.typescriptlang.org/tsconfig/#jsx) on what value to choose.
+
+##### TypeScript with React Components
+
+> 💡 Note
+>
+> Every file containing JSX <font color=red>must use the `.tsx` file extension</font>. This is a TypeScript-specific extension that tells TypeScript that this file contains JSX.
+
+Taking the [`MyButton` component](https://react.dev/learn#components) from the [Quick Start](https://react.dev/learn) guide, we can add a type describing the `title` for the button:
+
+```tsx
+/* App.tsx */
+function MyButton({ title }: { title: string }) { // 👀
+  return (
+    <button>{title}</button>
+  );
+}
+
+export default function MyApp() {
+  return (
+    <div>
+      <h1>Welcome to my app</h1>
+      <MyButton title="I'm a button" />
+    </div>
+  );
+}
+```
+
+The type describing your component’s props can be as simple or as complex as you need, <font color=red>though they should be an object type described with either a `type` or `interface`.</font>
+
+
+
 #### Your First Component
 
 ##### Defining a component 
@@ -168,7 +218,9 @@ export default function Profile() {
 }
 ```
 
-> ⚠️ React components are regular JavaScript functions, but <font color=fuchsia>**their names must start with a capital letter** or they won’t work!</font>
+> ⚠️ Pitfall
+>
+> React components are regular JavaScript functions, but <font color=fuchsia>**their names must start with a capital letter** or they won’t work!</font>
 
 <font color=dodgerBlue>**And here’s how to build a component:**</font>
 
@@ -188,7 +240,9 @@ return (
 );
 ```
 
-> ⚠️ Without parentheses, any code on the lines after `return` [will be ignored](https://stackoverflow.com/questions/2846283/what-are-the-rules-for-javascripts-automatic-semicolon-insertion-asi)!
+> ⚠️ Pitfall
+>
+> Without parentheses, any code on the lines after `return` [will be ignored](https://stackoverflow.com/questions/2846283/what-are-the-rules-for-javascripts-automatic-semicolon-insertion-asi)!
 
 ##### Using a component
 
@@ -220,6 +274,134 @@ export default function Gallery() {
 
 - `<section>` is lowercase, so React knows we refer to an HTML tag.
 - `<Profile />` starts with a capital `P`, so React knows that we want to use our component called `Profile`.
+
+
+
+#### Writing Markup with JSX
+
+*JSX* is a syntax extension for JavaScript that lets you write HTML-like markup inside a JavaScript file. <font color=lightSeaGreen>Although there are other ways to write components</font>, <font color=red>most React developers prefer the conciseness of JSX, and most codebases use it</font>.
+
+> 💡 关于 jsx 和 js
+>
+> > `.jsx` 表示这是一个 JavaScript XML 文件
+> >
+> > JavaScript 是能够被浏览器直接识别的，JavaScript XML 需要经过编译器（webpack 等 👀 babel ）转换成 JavaScript
+> >
+> > **但<font color=red>在正常使用上，两者没有什么区别</font>，<font color=fuchsia>`.js` 的语法和`.jsx` 的后缀可以互换，语法上也完全兼容</font>**
+> >
+> > `.ts` 的文件，内容上不支持 `<div>` 这种HTML语法，会报错，而且 VS Code 这类代码编辑器也不会提供相关代码提示和补全的功能。反之， `.tsx` 的文件，在遵循TypeScript的基础上，支持 JSX 语法。
+> >
+> > 所以我们在使用时，辅助的函数文件使用 `.ts` 即可；React 组件方面，还是必须使用`.tsx`
+> >
+> > 摘自：[JS 和 JSX 、TS 和 TSX 的区别](https://zhuanlan.zhihu.com/p/625039917)
+
+##### JSX: Putting markup into JavaScript
+
+<font color=red>Keeping a button’s rendering logic and markup together ensures that they stay in sync with each other on every edit</font>. Conversely, details that are unrelated, such as the button’s markup and a sidebar’s markup, <font color=lightSeaGreen>are isolated from each other</font>, <font color=red>making it safer to change either of them on their own</font>.
+
+Each React component is a JavaScript function that may contain some markup that React renders into the browser. <font color=lightSeaGreen>React components use a syntax extension called JSX to represent that markup</font>. JSX looks a lot like HTML, but <font color=red>it is a bit stricter and can display dynamic information</font>. The best way to understand this is to convert some HTML markup to JSX markup.
+
+> 💡 Note
+>
+> <font color=dodgerBlue>JSX and React are two separate things</font>. They’re often used together, but you *can* [use them independently](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#whats-a-jsx-transform) of each other. <font color=lightSeaGreen>**JSX is a syntax extension, while React is a JavaScript library**</font>.
+
+##### The Rules of JSX
+
+###### 1. Return a single root element
+
+To return multiple elements from a component, **wrap them with a single parent tag.**
+
+you can use a `<div>` , <font color=dodgerBlue>If you don’t want to add an extra `<div>` to your markup</font>, you can <font color=lightSeaGreen>write `<>` and `</>` instead</font>.
+
+This empty tag is called a [Fragment](https://react.dev/reference/react/Fragment) . <font color=red>Fragments let you group things without leaving any trace in the browser HTML tree</font>.
+
+> 💡 **Why do multiple JSX tags need to be wrapped?**
+>
+> <font color=dodgerBlue>JSX looks like HTML</font>, but <font color=fuchsia>under the hood it is **transformed into plain JavaScript objects**</font>. You can’t return two objects from a function without wrapping them into an array. This explains why you also can’t return two JSX tags without wrapping them into another tag or a Fragment.
+
+##### 2. Close all the tags
+
+JSX requires tags to be explicitly closed: self-closing tags like `<img>` must become `<img />`
+
+##### 3. camelCase ~~all~~ most of the things!
+
+<font color=red>JSX turns into JavaScript and attributes written in JSX **become keys of JavaScript objects**</font>. In your own components, you will often want to read those attributes into variables. But <font color=lightSeaGreen>JavaScript has limitations on variable names</font>. For example, their names can’t contain dashes or be reserved words like `class`.
+
+This is why, in React, many HTML and SVG attributes are written in camelCase. For example, <font color=red>instead of `stroke-width` you use `strokeWidth`</font>. <font color=fuchsia>Since `class` is a reserved word</font>, in React you write `className` instead, named after the [corresponding DOM property](https://developer.mozilla.org/en-US/docs/Web/API/Element/className)
+
+> 👀 因为 jsx 最后会转变为 js obj ，所以 jsx 中的 attr 也会变成 obj 中的属性；也正因此：因为 `class` 是 js 中的保留字，无法使用它作为一个变量/对象属性，所以使用 `className` 替代
+
+You can [find all these attributes in the list of DOM component props.](https://react.dev/reference/react-dom/components/common) If you get one wrong, don’t worry—React will print a message with a possible correction to the [browser console.](https://developer.mozilla.org/docs/Tools/Browser_Console)
+
+> ⚠️ Pitfall
+>
+> For historical reasons, <font color=red>`aria-*` and **`data-*`** attributes are written as in HTML with dashes</font>.
+
+
+
+#### JavaScript in JSX with Curly Braces
+
+##### Using curly braces: A window into the JavaScript world
+
+JSX is a special way of writing JavaScript. That means it’s possible to <font color=red>**use JavaScript inside it**—with curly braces `{ }`</font>. The example below first declares a name for the scientist, `name`, then embeds it with curly braces inside the `<h1>` :
+
+> 👀 上面说的是：可以在 `{}` 中使用 js，不过，没有说使用 js 中的什么；可以参考下 [[#JavaScript in JSX with Curly Braces#Recap]]
+>
+> 就下面的示例试了下，下面的示例初始只有 `<h1>{name}'s To Do List</h1>` ，这和 Vue template 插值表达式没什么差别；又试了一下 `{}` 中加入模版字符串，也是同样的效果
+
+<img src="https://s2.loli.net/2023/09/22/4EkbS9ZvLjGUT5g.png" alt="image-20230922161546833" style="zoom:40%;" />
+
+###### Where to use curly braces 
+
+You can only use curly braces in two ways inside JSX:
+
+1. **As text** directly inside a JSX tag: `<h1>{name}'s To Do List</h1>` works, but <font color=red>`<{tag}>Gregorio Y. Zara's To Do List</{tag}>` will not</font>.
+2. **As attributes** immediately following the `=` sign: `src={avatar}` will read the `avatar` variable, but `src="{avatar}"` will pass the string `"{avatar}"` .
+
+##### Using “double curlies”: CSS and other objects in JSX
+
+<font color=dodgerBlue>In addition to strings, numbers, and other JavaScript expressions</font>, you <font color=red>can even pass objects in JSX</font>. Objects are also denoted with curly braces, like `{ name: "Hedy Lamarr", inventions: 5 }`. Therefore, to pass a JS object in JSX, you <font color=red>**must wrap the object in another pair of curly braces: `person={{ name: "Hedy Lamarr", inventions: 5 }}`**</font>.
+
+You may see this with inline CSS styles in JSX. React does not require you to use inline styles (CSS classes work great for most cases). But <font color=lightSeaGreen>when you need an inline style, you **pass an object to the `style` attribute**</font>:
+
+```jsx
+export default function TodoList() {
+  return (
+    <ul style={{
+      backgroundColor: 'black',
+      color: 'pink'
+    }}>
+      <li>Improve the videophone</li>
+      <li>Prepare aeronautics lectures</li>
+      <li>Work on the alcohol-fuelled engine</li>
+    </ul>
+  );
+}
+```
+
+You can really see the JavaScript object inside the curly braces when you write it like this:
+
+```jsx
+<ul style={
+  {
+    backgroundColor: 'black',
+    color: 'pink'
+  }
+}>
+```
+
+> ⚠️ Pitfall
+>
+> Inline `style` properties are written in camelCase. For example, HTML `<ul style="background-color: black">` would be written as `<ul style={{ backgroundColor: 'black' }}>`  in your component.
+
+##### Recap
+
+<font color=dodgerBlue>Now you know almost everything about JSX:</font>
+
+- JSX attributes inside quotes are passed as strings.
+- Curly braces let you <font color=red>**bring JavaScript logic and variables into your markup**</font>.
+- They work inside the JSX tag content or immediately after `=` in attributes.
+- `{{` and `}}` is not special syntax: it’s a JavaScript object tucked inside JSX curly braces.
 
 
 
@@ -321,6 +503,8 @@ const app = ReactDOM.createRoot(document.querySelector('#app'))
 root.render(<h1>app</h1>)
 ```
 
+> 💡 这部分的代码可以参考下：[React doc - Add React to an Existing Project](https://react.dev/learn/add-react-to-an-existing-project) ，其中包含两种根的用法。除了包含 `index.js` 中的 `document.body.innerHTML = '<div id="app"></div>';` 作为根（没有 `index.html` ），也包含 `index.html` 中的 `<nav id="navigation"></nav>` 作为根，`createRoot` 在 `index.js` 中
+
 > 👀 下面是对上面示例代码的讲解和扩展
 
 ###### root 和 app
@@ -340,7 +524,9 @@ root.render((
 ))
 ```
 
-> ⚠️ 注意：render 方法中的 JSX 不允许有多个根
+> ⚠️ 注意：render 方法中的 JSX 不允许有多个根。
+>
+> 💡 另外，这里用于包裹的 `<div>` ，没有语意化，也是无意义的作为一个 wrapper。建议使用 `<React.Fragment></React.Fragment> ` 或缩写 `<></>` ；这有点类似于 Vue 的 template
 
 ###### 组件化
 
@@ -352,7 +538,7 @@ root.render(<App/>)
 
 这也让代码更易于封装、也更加简洁。具体见 [[#组件化封装]]
 
-###### \<script type="text/babel">
+###### `<script type="text/babel">`
 
 在没有脚手架的情况下，上面 [[#ReactDOM.createRoot#示例]] 中的代码需要写在 `<script>` 中。另外，需要注意 ⚠️ 的是：仅仅是 `<script> ... </script>` 浏览器将不会将通过 babel 进行编译，需要加上 `type="text/babel` ，即： `<script type="text/babel'>`
 
@@ -411,7 +597,7 @@ setState 方法是来自继承的 `React.Component` 类中，setState 在内部�
 [[#类组件#示例]] 中使用 bind 的部分原因：因为 JSX 被编译转变为 `React.createElement` 的处理过程，导致 this 的丢失，示例如下：
 
 ```react
-React.createElement('button', { onClick: this.btnClick} )
+React.createElement('button', { onClick: this.btnClick } )
 ```
 
 它的内部可以这样处理（示例代码）： `const click = config.onClick` ，这就导致了 this 的丢失；同时，因为 babel 默认使用了严格模式，丢失的 this 将会是 undefined ；所以需要使用 bind 方法进行绑定 this。
