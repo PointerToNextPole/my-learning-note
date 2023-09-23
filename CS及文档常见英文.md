@@ -918,6 +918,8 @@
   
   > 👀 这个词第一次看见是来自 vite 的一个配置 [`reslove.dedupe`](https://cn.vitejs.dev/config/shared-options.html#resolve-dedupe) 
   
+- **repetitive** ：重复的
+
 - **cumulative** ：累计的
 
   > 👀 见到这个词是来自 “Cumulative Layout Shift” 即 CLS 。另外，[`Array.prototype.reduce`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce) 的第一个参数是 `accumulator` 也与之类似
@@ -937,6 +939,14 @@
   > You can either build “top down” by starting with building the components higher up in the hierarchy (like `FilterableProductTable`) or “bottom up” by working from components lower down (like `ProductRow`)
   >
   > 摘自：[React doc - Thinking in React # Step 2: Build a static version in React](https://react.dev/learn/thinking-in-react#step-2-build-a-static-version-in-react)
+  
+- **forward** ：转发
+
+  > Some components forward all of their props to their children, like how this `Profile` does with `Avatar` .
+  >
+  > 摘自：[React doc - Passing Props to a Component # Forwarding props with the JSX spread syntax](https://react.dev/learn/passing-props-to-a-component#forwarding-props-with-the-jsx-spread-syntax)
+
+- **restraint** ：约束，限制，克制
 ***
 
 
@@ -1173,4 +1183,4 @@
 
 - **converse** ：adj. 相反的，逆的 vi. 谈话
 
-- 
+- **legible** ：清晰的，清澈的

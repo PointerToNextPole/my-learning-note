@@ -405,6 +405,257 @@ You can really see the JavaScript object inside the curly braces when you write 
 
 
 
+#### Passing Props to a Component
+
+##### Specifying a default value for a prop
+
+If you want to <font color=lightSeaGreen>give a prop a default value to fall back on when no value is specified</font>, you can do it with the destructuring by putting `=` and the default value right after the parameter:
+
+```react
+function Avatar({ person, size = 100 }) {
+  // ...
+}
+```
+
+Now, if `<Avatar person={...} />` is rendered with no `size` prop, the `size` will be set to `100`.
+
+The default value is only used if the `size` prop is missing or if you pass `size={undefined}`. But <font color=lightSeaGreen>if you pass `size={null}` or `size={0}`, the default value will **not** be used</font>.
+
+##### Forwarding props with the JSX spread syntax 
+
+Sometimes, passing props gets very repetitive:
+
+```jsx
+function Profile({ person, size, isSepia, thickBorder }) {
+  return (
+    <div className="card">
+      <Avatar
+        person={person}
+        size={size}
+        isSepia={isSepia}
+        thickBorder={thickBorder}
+      />
+    </div>
+  );
+}
+```
+
+There’s nothing wrong with repetitive code—<font color=lightSeaGreen>it can be more legible</font>. But at times you may value （👀 重视）conciseness. Some components forward（👀 转发） all of their props to their children, like how this `Profile` does with `Avatar`. <font color=dodgerBlue>**Because they don’t use any of their props directly**</font>, it <font color=red>can make sense to use a more concise “spread” syntax</font>:
+
+```jsx
+function Profile(props) {
+  return (
+    <div className="card">
+      <Avatar {...props} /> {/* 👀 */}
+    </div>
+  );
+}
+```
+
+> 👀 这样的写法有点类似于 Vue 中的 `v-bind="propObj"`
+
+This forwards all of `Profile`’s props to the `Avatar` <font color=lightSeaGreen>without listing each of their names</font>.
+
+<font color=red>**Use spread syntax with restraint.**</font> If you’re using it in every other component, something is wrong. Often, it indicates that you should split your components and pass children as JSX.
+
+> 👀 如上面所说 “Use spread syntax with restraint” ，确实有必要克制使用。
+>
+> 个人感觉：首先是，这相当于照单全收了父组件传来的所有 prop；其次，这会将子组件自身的依赖的 props 搞的很模糊，依赖的 props 对于子组件而言完全是黑箱（除非在 `return` 上方的代码就已经对 `props` 就开始改造的话，但这明显是没事找事）
+
+##### Passing JSX as children
+
+> 👀 感觉可以简单理解为插槽，虽然只能传递一个 child；这和 Vue 或者 webComponent 的 slot 定义还是有较大区别
+
+When you nest content inside a JSX tag, the parent component will receive that content in a prop called `children`. For example, the `Card` component below will receive a `children` prop set to `<Avatar />` and render it in a wrapper div:
+
+```jsx
+import Avatar from './Avatar.js';
+
+function Card({ children }) { { /* ⚠️ 注意：这里的 children 是要设置的！不要忘了*/}
+  return (
+    <div className="card">
+      {children}
+    </div>
+  );
+}
+
+export default function Profile() {
+  return (
+    <Card>
+      { /* 👀  */ }
+      <Avatar
+        size={100}
+        person={{ 
+          name: 'Katsuko Saruhashi',
+          imageId: 'YfeOqp2'
+        }}
+      />
+    </Card>
+  );
+}
+```
+
+> 👀 这里省去 Avatar.js 和 utils.js 的定义，这并不影响理解
+
+Try replacing the `<Avatar>` inside `<Card>` with some text to see how the <font color=lightSeaGreen>`Card` component can wrap any nested content</font>. <font color=red>**It doesn’t need to “know” what’s being rendered inside of it**</font>. You will see this flexible pattern in many places.
+
+You can think of <font color=fuchsia>a component with a `children` prop as having a “hole” that can be “filled in” by its parent components with arbitrary JSX</font>. You will often use the `children` prop for visual wrappers: panels, grids, etc.
+
+<img src="https://s2.loli.net/2023/09/23/SER7qUYL4diNfZ9.png" style="zoom:18%;" />
+
+##### How props change over time
+
+The `Clock` component below receives two props from its parent component: `color` and `time`. (The parent component’s code is omitted because it uses [state](https://react.dev/learn/state-a-components-memory), which we won’t dive into just yet.)
+
+<img src="https://s2.loli.net/2023/09/23/gKAW8dc7CPkEHDw.png" alt="image-20230923022026639" style="zoom:50%;" />
+
+This example illustrates that **a component <font color=red>may receive different props over time</font>.** <font color=fuchsia>Props are not always static!</font> Here, the <font color=lightSeaGreen>`time` prop changes every second</font>, and the <font color=lightSeaGreen>`color` prop changes when you select another color</font>. Props reflect a component’s data at any point in time, rather than only in the beginning.
+
+However, <font color=fuchsia>**props are [immutable](https://en.wikipedia.org/wiki/Immutable_object)** — a term from computer science meaning “unchangeable”</font>. <font color=dodgerBlue>**When a component needs to change its props**</font> (for example, in response to a user interaction or new data), <font color=fuchsia>**it will have to “ask” its parent component to pass it *different props*—a new object**!</font> Its old props will then be cast aside, and eventually the JavaScript engine will reclaim the memory taken by them.
+
+<font color=fuchsia>**Don’t try to “change props”.**</font> <font color=dodgerBlue>When you need to respond to the user input</font> (like changing the selected color), you will <font color=red>need to “set state”</font>, which you can learn about in [State: A Component’s Memory.](https://react.dev/learn/state-a-components-memory)
+
+##### Recap
+
+- To pass props, add them to the JSX, just like you would with HTML attributes.
+- To read props, use the `function Avatar({ person, size })` destructuring syntax.
+- You can specify a default value like `size = 100`, which is used for missing and `undefined` props.
+- You can forward all props with `<Avatar {...props} />` JSX spread syntax, but don’t overuse it!
+- Nested JSX like `<Card><Avatar /></Card>` will appear as `Card` component’s `children` prop.
+- Props are read-only snapshots in time: every render receives a new version of props.
+- You can’t change props. When you need interactivity, you’ll need to set state.
+
+
+
+#### Conditional Rendering
+
+Your components will often need to display different things depending on different conditions. In React, <font color=lightSeaGreen>you can conditionally render JSX using JavaScript syntax like `if` statements, `&&`, and `? :` operators</font>.
+
+##### Conditionally returning nothing with `null`
+
+<font color=dodgerBlue>In some situations, you won’t want to render anything at all</font>. For example, say you don’t want to show packed items at all. <font color=fuchsia>**A component must return something**</font>. In this case, you can return `null`:
+
+> 👀 一个组件的“工厂函数”必须要有返回内容，如果确实没有，返回 `null`
+
+```jsx
+if (isPacked) {
+  return null;
+}
+return <li className="item">{name}</li>;
+```
+
+If `isPacked` is true, the component will return nothing, `null`. Otherwise, it will return JSX to render.
+
+In practice, <font color=red>**returning `null` from a component isn’t common**</font> because it might surprise a developer trying to render it. <font color=dodgerBlue>**More often**</font>, you would <font color=fuchisa>**conditionally include or exclude the component in the parent component’s JSX**</font>.
+
+##### Conditional (ternary) operator (`? :`)
+
+```jsx
+if (isPacked) {
+  return <li className="item">{name} ✔</li>;
+}
+return <li className="item">{name}</li>;
+```
+
+You can write this:
+
+```jsx
+return (
+  <li className="item">
+    {isPacked ? name + ' ✔' : name}
+  </li>
+);
+```
+
+###### Are these two examples fully equivalent?
+
+<font color=dodgerBlue>If you’re coming from an object-oriented programming background</font>, you might assume that the two examples above are subtly different because one of them may create two different “instances” of `<li>`. But <font color=fuchsia>JSX elements aren’t “instances”</font> <font color=red>because they don’t hold any internal state and aren’t real DOM nodes</font>. They’re lightweight descriptions, like blueprints. <font color=fuchsia>So these two examples, in fact, *are* **completely equivalent**</font>. [Preserving and Resetting State](https://react.dev/learn/preserving-and-resetting-state) goes into detail about how this works.
+
+##### Logical AND operator (`&&`)
+
+<font color=dodgerBlue>Another common shortcut</font> you’ll encounter is the JavaScript logical AND (`&&`) operator. Inside React components, it often comes up when you want to render some JSX when the condition is true, **or render nothing otherwise.** With `&&`, you could conditionally render the checkmark only if `isPacked` is `true`:
+
+```jsx
+return (
+  <li className="item">
+    {name} {isPacked && '✔'}
+  </li>
+);
+```
+
+You can read this as *“if `isPacked`, then (`&&`) render the checkmark, otherwise, render nothing”*.
+
+> 👀 就这里的代码，感觉使用 `&&` 是一种更简洁的写法
+
+A JavaScript && expression <font color=red>**returns the value of its right side**</font> (in our case, the checkmark) <font color=dodgerBlue>if the left side (our condition) is `true`</font>. But if the condition is `false`, the whole expression becomes `false`. <font color=red>React considers `false` as a “hole” in the JSX tree, just like `null` or `undefined`, and doesn’t render anything in its place</font>.
+
+> ⚠️ Pitfall
+>
+> **Don’t put numbers on the left side of `&&`.**
+>
+> To test the condition, JavaScript converts the left side to a boolean automatically. However, if the left side is `0`, then the whole expression gets that value (`0`), and React will happily render `0` rather than nothing.
+>
+> For example, a common mistake is to write code like `messageCount && <p>New messages</p>`. It’s easy to assume that it renders nothing when `messageCount` is `0`, but it really renders the `0` itself!
+>
+> <font color=dodgerBlue>To fix it</font>, <font color=red>make the left side a boolean</font>: `messageCount > 0 && <p>New messages</p>`.
+
+##### Conditionally assigning JSX to a variable
+
+> 👀 除了上述的方法，还可以将逻辑从 jsx 中拎出来，放到 `return` 前面
+
+```jsx
+function Item({ name, isPacked }) {
+  let itemContent = name;
+  if (isPacked) {
+    itemContent = name + " ✔";
+  }
+  return (
+    <li className="item">
+      {itemContent}
+    </li>
+  );
+}
+```
+
+<font color=dodgerBlue>This style is the most verbose</font>, but <font color=red>it’s also the most flexible</font>.
+
+Like before, <font color=red>this works not only for text</font>, <font color=fuchsia>**but for arbitrary JSX too**</font>:
+
+```jsx
+function Item({ name, isPacked }) {
+  let itemContent = name;
+  if (isPacked) {
+    itemContent = ( { /* 👀 */ }
+      <del>
+        {name + " ✔"}
+      </del>
+    );
+  }
+  return (
+    <li className="item">
+      {itemContent}
+    </li>
+  );
+}
+```
+
+> 👀 这是之前没有想到的，不过这也和 “父组件将 jsx 传给子组件” 思路是一样的
+
+##### Recap
+
+- In React, you control branching logic with JavaScript.
+- You can return a JSX expression conditionally with an `if` statement.
+- You can conditionally save some JSX to a variable and then include it inside other JSX by using the curly braces.
+- In JSX, `{cond ? <A /> : <B />}` means *“if `cond`, render `<A />`, otherwise `<B />`”*.
+- In JSX, `{cond && <A />}` means *“if `cond`, render `<A />`, otherwise nothing”*.
+- The shortcuts are common, but you don’t have to use them if you prefer plain `if`.
+
+
+
+#### Rendering Lists
+
+You will often want to display multiple similar components from a collection of data. You can use the [JavaScript array methods](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array#) to manipulate an array of data.
+
 
 
 ## coderwhy React18 学习笔记
