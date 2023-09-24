@@ -1184,3 +1184,5 @@
 - **converse** ：adj. 相反的，逆的 vi. 谈话
 
 - **legible** ：清晰的，清澈的
+
+- **resort** ：求助
