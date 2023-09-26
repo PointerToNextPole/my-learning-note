@@ -199,6 +199,148 @@ export default function MyApp() {
 
 The type describing your component’s props can be as simple or as complex as you need, <font color=red>though they should be an object type described with either a `type` or `interface`.</font>
 
+##### Example Hooks
+
+The type definitions from `@types/react` include types for the built-in hooks, so <font color=red>you can use them in your components without any additional setup</font>. They are built to take into account the code you write in your component, so you will get [inferred types](https://www.typescriptlang.org/docs/handbook/type-inference.html) a lot of the time and ideally do not need to handle the minutiae of providing the types.
+
+###### `useState`
+
+The [`useState` hook](https://react.dev/reference/react/useState) will <font color=lightSeaGreen>re-use the value passed in</font> <font color=red>as the initial state to **determine what the type of the value should be**</font>. For example:
+
+```tsx
+// Infer the type as "boolean"
+const [enabled, setEnabled] = useState(false);
+```
+
+Will assign the type of `boolean` to `enabled`, and <font color=red>`setEnabled` will be a function accepting either a `boolean` argument, **or a function that returns a `boolean`**</font>. <font color=dodgerBlue>If you want to explicitly provide a type for the state</font>, you can do so by providing a type argument to the `useState` call:
+
+```tsx
+// Explicitly set the type to "boolean"
+const [enabled, setEnabled] = useState<boolean>(false);
+```
+
+<font color=lightSeaGreen>This isn’t very useful **in this case**</font>, but <font color=red>a common case where you may want to provide a type is when you **have a union type**</font>. For example, `status` here can be one of a few different strings:
+
+```tsx
+type Status = "idle" | "loading" | "success" | "error";
+
+const [status, setStatus] = useState<Status>("idle");
+```
+
+Or, as recommended in [Principles for structuring state](https://react.dev/learn/choosing-the-state-structure#principles-for-structuring-state), you can group related state as an object and describe the different possibilities via object types:
+
+```tsx
+type RequestState =
+  | { status: 'idle' }
+  | { status: 'loading' }
+  | { status: 'success', data: any }
+  | { status: 'error', error: Error };
+
+const [requestState, setRequestState] = useState<RequestState>({ status: 'idle' });
+```
+
+###### `useReducer`
+
+The [`useReducer` hook](https://react.dev/reference/react/useReducer) is a more complex hook that <font color=red>takes a reducer function and an initial state</font>. The types for the reducer function are inferred from the initial state. <font color=lightSeaGreen>You can optionally provide a type argument to the `useReducer` call to provide a type for the state</font>, but it is often better to set the type on the initial state instead:
+
+```tsx
+import {useReducer} from 'react';
+
+interface State {
+   count: number 
+};
+
+type CounterAction =
+  | { type: "reset" }
+  | { type: "setCount"; value: State["count"] }
+
+const initialState: State = { count: 0 };
+
+function stateReducer(state: State, action: CounterAction): State {
+  switch (action.type) {
+    case "reset":
+      return initialState;
+    case "setCount":
+      return { ...state, count: action.value };
+    default:
+      throw new Error("Unknown action");
+  }
+}
+
+export default function App() {
+  const [state, dispatch] = useReducer(stateReducer, initialState);
+
+  const addFive = () => dispatch({ type: "setCount", value: state.count + 5 });
+  const reset = () => dispatch({ type: "reset" });
+
+  return (
+    <div>
+      <h1>Welcome to my counter</h1>
+
+      <p>Count: {state.count}</p>
+      <button onClick={addFive}>Add 5</button>
+      <button onClick={reset}>Reset</button>
+    </div>
+  );
+}
+```
+
+We are using TypeScript in a few key places:
+
+- `interface State` describes the shape of the reducer’s state.
+- `type CounterAction` describes the different actions which can be dispatched to the reducer.
+- `const initialState: State` provides a type for the initial state, and also the type which is used by `useReducer` by default.
+- `stateReducer(state: State, action: CounterAction): State` sets the types for the reducer function’s arguments and return value.
+
+A more explicit alternative to setting the type on `initialState` is to provide a type argument to `useReducer`:
+
+```tsx
+import { stateReducer, State } from './your-reducer-implementation';
+
+const initialState = { count: 0 };
+
+export default function App() {
+  const [state, dispatch] = useReducer<State>(stateReducer, initialState);
+}
+```
+
+###### `useContext`
+
+The [`useContext` hook](https://react.dev/reference/react/useContext) is a technique for passing data down the component tree without having to pass props through components. It is used by creating a provider component and often by creating a hook to consume the value in a child component.
+
+The type of the value provided by the context is inferred from the value passed to the `createContext` call:
+
+```tsx
+import { createContext, useContext, useState } from 'react';
+
+type Theme = "light" | "dark" | "system";
+const ThemeContext = createContext<Theme>("system");
+
+const useGetTheme = () => useContext(ThemeContext);
+
+export default function MyApp() {
+  const [theme, setTheme] = useState<Theme>('light');
+
+  return (
+    <ThemeContext.Provider value={theme}>
+      <MyComponent />
+    </ThemeContext.Provider>
+  )
+}
+
+function MyComponent() {
+  const theme = useGetTheme();
+
+  return (
+    <div>
+      <p>Current theme: {theme}</p>
+    </div>
+  )
+}
+```
+
+
+
 
 
 #### Your First Component
@@ -871,6 +1013,158 @@ Writing pure functions takes some habit and discipline. But <font color=dodgerBl
 - You should not mutate any of the inputs that your components use for rendering. That includes props, state, and context. To update the screen, [“set” state](https://react.dev/learn/state-a-components-memory) instead of mutating preexisting objects.
 - Strive to express your component’s logic in the JSX you return. When you need to “change things”, you’ll usually want to do it in an event handler. As a last resort, you can `useEffect`.
 - Writing pure functions takes a bit of practice, but it unlocks the power of React’s paradigm.
+
+
+
+#### Responding to Events
+
+React <font color=dodgerBlue>lets you add *event handlers* to your JSX</font>. <font color=red>Event handlers are your own functions that will be triggered in response to interactions like clicking, hovering, focusing form inputs, and so on</font>.
+
+##### Adding event handlers
+
+You defined the `handleClick` function and then [passed it as a prop](https://react.dev/learn/passing-props-to-a-component) to `<button>`.  `handleClick` is an **event handler.** <font color=dodgerBlue>Event handler functions</font>:
+
+- Are <font color=red>usually defined *inside* your components</font>.
+- Have <font color=red>names that start with `handle`</font>, followed by the name of the event.
+
+<font color=dodgerBlue>**By convention**</font>, it is common to name event handlers as `handle` followed by the event name. You’ll often see `onClick={handleClick}`, `onMouseEnter={handleMouseEnter}`, and so on.
+
+Alternatively, you can define an event handler inline in the JSX:
+
+```jsx
+<button onClick={function handleClick() {
+  alert('You clicked me!');
+}}>
+```
+
+Or, more concisely, using an arrow function:
+
+```jsx
+<button onClick={() => {
+  alert('You clicked me!');
+}}>
+```
+
+All of these styles are equivalent. Inline event handlers are convenient for short functions.
+
+> ⚠️ Pitfall
+>
+> Functions passed to event handlers must be passed, not called. For example:
+>
+> | passing a function (correct)     | calling a function (incorrect)     |
+> | -------------------------------- | ---------------------------------- |
+> | `<button onClick={handleClick}>` | `<button onClick={handleClick()}>` |
+>
+> <font color=dodgerBlue>The difference is subtle</font>. In the first example, the `handleClick` function is passed as an `onClick` event handler. This tells React to remember it and only call your function when the user clicks the button.
+>
+> <font color=dodgerBlue>In the second example</font>, <font color=lightSeaGreen>the `()` at the end of `handleClick()` fires the function *immediately* during [rendering](https://react.dev/learn/render-and-commit), without any clicks</font>. This is because <font color=red>JavaScript inside the [JSX `{` and `}`](https://react.dev/learn/javascript-in-jsx-with-curly-braces) executes right away</font>.
+>
+> When you write code inline, the same pitfall presents itself in a different way:
+>
+> | passing a function (correct)            | calling a function (incorrect)    |
+> | --------------------------------------- | --------------------------------- |
+> | `<button onClick={() => alert('...')}>` | `<button onClick={alert('...')}>` |
+>
+> Passing inline code like this won’t fire on click—<font color=red>it fires every time the component renders</font>:
+>
+> ```jsx
+> // This alert fires when the component renders, not when clicked!
+> <button onClick={alert('You clicked me!')}>
+> ```
+>
+> If you want to define your event handler inline, wrap it in an anonymous function like so:
+>
+> ```jsx
+> <button onClick={() => alert('You clicked me!')}>
+> ```
+>
+> Rather than executing the code inside with every render, this creates a function to be called later.
+>
+> In both cases, what you want to pass is a function:
+>
+> - `<button onClick={handleClick}>` passes the `handleClick` function.
+> - `<button onClick={() => alert('...')}>` passes the `() => alert('...')` function.
+
+##### Passing event handlers as props
+
+<font color=dodgerBlue>**Often you’ll want the parent component to specify a child’s event handler**</font>. Consider buttons: depending on where you’re using a `Button` component, you might want to execute a different function — <font color=lightSeaGreen>perhaps one plays a movie and another uploads an image</font>.
+
+> 👀 感觉没什么东西，代码略
+
+##### Naming event handler props
+
+<font color=dodgerBlue>Built-in components like `<button>` and `<div>` only support [browser event names](https://react.dev/reference/react-dom/components/common#common-props) like `onClick`</font>. However, <font color=lightSeaGreen>**when you’re building your own components**</font>, <font color=red>**you can name their event handler props any way that you like**</font>.
+
+<font color=dodgerBlue>**By convention**</font>, event handler props should start with `on`, followed by a capital letter.
+
+For example, the `Button` component’s `onClick` prop could have been called `onSmash`:
+
+```jsx
+function Button({ onSmash, children }) {
+  return (
+    <button onClick={onSmash}> {/* 👀 */}
+      {children}
+    </button>
+  );
+}
+
+export default function App() {
+  return (
+    <div>
+      <Button onSmash={() => alert('Playing!')}>
+        Play Movie
+      </Button>
+      <Button onSmash={() => alert('Uploading!')}>
+        Upload Image
+      </Button>
+    </div>
+  );
+}
+```
+
+> 👀 React 中组件的自定义事件，感觉相较 Vue 要自然很多...
+
+In this example, `<button onClick={onSmash}>` shows that the browser `<button>` (lowercase) still needs a prop called `onClick`, but <font color=lightSeaGreen>the prop name received by your custom `Button` component is up to you</font>!
+
+#### Event propagation
+
+> ⚠️ Pitfall
+>
+> All events propagate in React <font color=red>except `onScroll`</font> , which only works on the JSX tag you attach it to.
+
+###### Stopping propagation
+
+```jsx
+function Button({ onClick, children }) {
+  return (
+    <button onClick={e => {
+      e.stopPropagation();
+      onClick();
+    }}>
+      {children}
+    </button>
+  );
+}
+```
+
+###### Capture phase events
+
+In rare cases, you might need to catch all events on child elements, *even if they stopped propagation*. For example, maybe you want to log every click to analytics, regardless of the propagation logic. You can do this by adding `Capture` at the end of the event name:
+
+```jsx
+<div onClickCapture={() => { /* this runs first */ }}>
+  <button onClick={e => e.stopPropagation()} />
+  <button onClick={e => e.stopPropagation()} />
+</div>
+```
+
+Each event propagates in three phases:
+
+1. It travels down, calling all `onClickCapture` handlers.
+2. It runs the clicked element’s `onClick` handler.
+3. It travels upwards, calling all `onClick` handlers.
+
+Capture events are useful for code like routers or analytics, but you probably won’t use them in app code.
 
 
 

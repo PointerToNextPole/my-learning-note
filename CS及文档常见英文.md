@@ -1186,3 +1186,9 @@
 - **legible** ：清晰的，清澈的
 
 - **resort** ：求助
+
+- **minutiae** ：细枝末节，细节
+
+  > They are built to take into account the code you write in your component, so you will get [inferred types](https://www.typescriptlang.org/docs/handbook/type-inference.html) a lot of the time and ideally do not need to handle the **minutiae** of providing the types.
+  >
+  > 摘自：[React doc - Using TypeScript # example hooks](https://react.dev/learn/typescript#example-hooks)
