@@ -306,7 +306,7 @@ export default function App() {
 
 ###### `useContext`
 
-The [`useContext` hook](https://react.dev/reference/react/useContext) is a technique for passing data down the component tree without having to pass props through components. It is used by creating a provider component and often by creating a hook to consume the value in a child component.
+The [`useContext` hook](https://react.dev/reference/react/useContext) is a technique for <font color=red>passing data down the component tree **without having to pass props through components**</font>. It is used by <font color=red>creating a **provider component**</font> （👀 见下面的 `<ThemeContext.Provider>` ）and <font color=dodgerBlue>**often**</font> <font color=lightSeaGreen>by creating a hook to consume the value in a child component</font>.
 
 The type of the value provided by the context is inferred from the value passed to the `createContext` call:
 
@@ -339,7 +339,161 @@ function MyComponent() {
 }
 ```
 
+This technique works when you have an default value which makes sense - <font color=dodgerBlue>but there are occasionally cases when you do not</font>, and <font color=red>in those cases `null` can feel reasonable as a default value</font>. However, <font color=dodgerBlue>**to allow the type-system to understand your code**</font>, you <font color=red>need to explicitly **set `ContextShape | null` on the `createContext`**</font>.
 
+<font color=dodgerBlue>This causes the issue that you **need to eliminate the `| null` in the type for context consumers**</font>. Our recommendation is to have the hook do a runtime check for it’s existence and throw an error when not present:
+
+```jsx
+import { createContext, useContext, useState, useMemo } from 'react';
+
+// This is a simpler example, but you can imagine a more complex object here
+type ComplexObject = {
+  kind: string
+};
+
+// The context is created with `| null` in the type, to accurately reflect the default value.
+const Context = createContext<ComplexObject | null>(null);
+
+// The `| null` will be removed via the check in the hook.
+const useGetComplexObject = () => {
+  const object = useContext(Context);
+  if (!object) { throw new Error("useGetComplexObject must be used within a Provider") }
+  return object;
+}
+
+export default function MyApp() {
+  const object = useMemo(() => ({ kind: "complex" }), []);
+
+  return (
+    <Context.Provider value={object}>
+      <MyComponent />
+    </Context.Provider>
+  )
+}
+
+function MyComponent() {
+  const object = useGetComplexObject();
+
+  return (
+    <div>
+      <p>Current object: {object.kind}</p>
+    </div>
+  )
+}
+```
+
+###### `useMemo`
+
+The [`useMemo`](https://react.dev/reference/react/useMemo) hooks will <font color=red>create/re-access a memorized value from a function call</font>, <font color=dodgerBlue>re-running the function only when</font> <font color=red>dependencies passed as the 2nd parameter are changed</font>. The result of calling the hook is inferred from the return value from the function in the first parameter. You can be more explicit by providing a type argument to the hook.
+
+```jsx
+// The type of visibleTodos is inferred from the return value of filterTodos
+const visibleTodos = useMemo(() => filterTodos(todos, tab), [todos, tab]);
+```
+
+> 💡 除了减少计算外，也可以减少 render 的次数
+
+###### `useCallback`
+
+The [`useCallback`](https://react.dev/reference/react/useCallback) <font color=red>provide a stable reference to a function **as long as the dependencies passed into the second parameter are the same**</font>. <font color=dodgerBlue>Like `useMemo`</font>, the function’s type is inferred from the return value of the function in the first parameter, and you can be more explicit by providing a type argument to the hook.
+
+```jsx
+const handleClick = useCallback(() => {
+  // ...
+}, [todos]);
+```
+
+<font color=dodgerBlue>When working in TypeScript **strict mode**</font> `useCallback` <font color=red>requires adding types for the parameters in your callback</font>. This is because the type of the callback is inferred from the return value of the function, and without parameters the type cannot be fully understood.
+
+Depending on your code-style preferences, you could use the `*EventHandler` functions from the React types to provide the type for the event handler at the same time as defining the callback:
+
+```jsx
+import { useState, useCallback } from 'react';
+
+export default function Form() {
+  const [value, setValue] = useState("Change me");
+
+  const handleChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>((event) => {
+    setValue(event.currentTarget.value);
+  }, [setValue])
+  
+  return (
+    <>
+      <input value={value} onChange={handleChange} />
+      <p>Value: {value}</p>
+    </>
+  );
+}
+```
+
+##### Useful Types
+
+There is quite an expansive set of types which come from the `@types/react` package, it is worth a read when you feel comfortable with how React and TypeScript interact. You can find them [in React’s folder in DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react/index.d.ts). We will cover a few of the more common types here.
+
+###### DOM Events 
+
+When working with DOM events in React, the type of the event can often be inferred from the event handler. However, <font color=dodgerBlue>when you want to extract a function to be passed to an event handler</font>, you will need to explicitly set the type of the event.
+
+```jsx
+import { useState } from 'react';
+
+export default function Form() {
+  const [value, setValue] = useState("Change me");
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) { {/*👀*/}
+    setValue(event.currentTarget.value);
+  }
+
+  return (
+    <>
+      <input value={value} onChange={handleChange} />
+      <p>Value: {value}</p>
+    </>
+  );
+}
+```
+
+There are many types of events provided in the React types - the full list can be found [here](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/b580df54c0819ec9df62b0835a315dd48b8594a9/types/react/index.d.ts#L1247C1-L1373) which is based on the [most popular events from the DOM](https://developer.mozilla.org/en-US/docs/Web/Events).
+
+<font color=dodgerBlue>If you need to use an event that is **not included in this list**</font>, you <font color=red>can use the `React.SyntheticEvent` type</font>, <font color=red>**which is the base type for all events**</font>.
+
+###### Children
+
+<font color=lightSeaGreen>There are two common paths to describing the children of a component</font>. <font color=dodgerBlue>The first</font> is to <font color=red>**use the `React.ReactNode` type**</font>, which <font color=red>is **a union of all the possible types** that can be passed as children in JSX</font>:
+
+```tsx
+interface ModalRendererProps {
+  title: string;
+  children: React.ReactNode;
+}
+```
+
+This is a very broad definition of children. <font color=dodgerBlue>The second</font> is to <font color=red>use the `React.ReactElement` type</font>, which is <font color=red>only JSX elements and not JavaScript primitives like strings or numbers</font>:
+
+```tsx
+interface ModalRendererProps {
+  title: string;
+  children: React.ReactElement;
+}
+```
+
+Note, that <font color=red>you cannot use TypeScript to describe that the children are a certain type of JSX elements</font>, so you cannot use the type-system to describe a component which only accepts `<li>` children.
+
+You can see all an example of both `React.ReactNode` and `React.ReactElement` with the type-checker in [this TypeScript playground](https://www.typescriptlang.org/play?#code/JYWwDg9gTgLgBAJQKYEMDG8BmUIjgIilQ3wChSB6CxYmAOmXRgDkIATJOdNJMGAZzgwAFpxAR+8YADswAVwGkZMJFEzpOjDKw4AFHGEEBvUnDhphwADZsi0gFw0mDWjqQBuUgF9yaCNMlENzgAXjgACjADfkctFnYkfQhDAEpQgD44AB42YAA3dKMo5P46C2tbJGkvLIpcgt9-QLi3AEEwMFCItJDMrPTTbIQ3dKywdIB5aU4kKyQQKpha8drhhIGzLLWODbNs3b3s8YAxKBQAcwXpAThMaGWDvbH0gFloGbmrgQfBzYpd1YjQZbEYARkB6zMwO2SHSAAlZlYIBCdtCRkZpHIrFYahQYQD8UYYFA5EhcfjyGYqHAXnJAsIUHlOOUbHYhMIIHJzsI0Qk4P9SLUBuRqXEXEwAKKfRZcNA8PiCfxWACecAAUgBlAAacFm80W-CU11U6h4TgwUv11yShjgJjMLMqDnN9Dilq+nh8pD8AXgCHdMrCkWisVoAet0R6fXqhWKhjKllZVVxMcavpd4Zg7U6Qaj+2hmdG4zeRF10uu-Aeq0LBfLMEe-V+T2L7zLVu+FBWLdLeq+lc7DYFf39deFVOotMCACNOCh1dq219a+30uC8YWoZsRyuEdjkevR8uvoVMdjyTWt4WiSSydXD4NqZP4AymeZE072ZzuUeZQKheQgA).
+
+###### Style Props
+
+<font color=dodgerBlue>When using inline styles in React</font>, you <font color=red>can use `React.CSSProperties`</font> to describe the object passed to the `style` prop. <font color=red>**This type is a union of all the possible CSS properties**</font>, and <font color=red>is a good way to ensure you are passing valid CSS properties to the `style` prop, and to get auto-complete in your editor</font>.
+
+```tsx
+interface MyComponentProps {
+  style: React.CSSProperties;
+}
+```
+
+
+
+### Describing the UI
 
 
 
@@ -1016,6 +1170,12 @@ Writing pure functions takes some habit and discipline. But <font color=dodgerBl
 
 
 
+### Adding Interactivity
+
+In React, data that changes over time is called *state.* 
+
+
+
 #### Responding to Events
 
 React <font color=dodgerBlue>lets you add *event handlers* to your JSX</font>. <font color=red>Event handlers are your own functions that will be triggered in response to interactions like clicking, hovering, focusing form inputs, and so on</font>.
@@ -1126,7 +1286,7 @@ export default function App() {
 
 In this example, `<button onClick={onSmash}>` shows that the browser `<button>` (lowercase) still needs a prop called `onClick`, but <font color=lightSeaGreen>the prop name received by your custom `Button` component is up to you</font>!
 
-#### Event propagation
+##### Event propagation
 
 > ⚠️ Pitfall
 >
@@ -1165,6 +1325,94 @@ Each event propagates in three phases:
 3. It travels upwards, calling all `onClick` handlers.
 
 Capture events are useful for code like routers or analytics, but you probably won’t use them in app code.
+
+
+
+#### State: A Component's Memory
+
+<font color=dodgerBlue>Components need to “remember” things</font>: the **current** input value, the **current** image, **the shopping cart**. In React, <font color=red>this kind of component-specific memory is called *state*</font>.
+
+##### When a regular variable isn’t enough
+
+> 👀 原文这里是有一个错误示例的，用来引出 setState；不过有点长且略去影响不算大，所以略。修正后的结果见 [[#Adding a state variable]]
+
+two things prevent that change from being visible:
+
+1. <font color=fuchsia>**Local variables don’t persist between renders.**</font> When React renders this component a second time, it renders it from scratch—it doesn’t consider any changes to the local variables.
+
+   > 🌎 **局部变量无法在多次渲染中持久保存**。当 React 再次渲染这个组件时，它会从头开始渲染——不会考虑之前对局部变量的任何更改。
+
+2. <font color=fuchsia>**Changes to local variables won’t trigger renders.**</font> React doesn’t realize it needs to render the component again with the new data.
+
+To update a component with new data, <font color=dodgerBlue>two things need to happen:</font>
+
+1. **Retain** the data between renders.
+2. <font color=fuchsia>**Trigger** React to render the component with new data (re-rendering)</font>.
+
+<font color=dodgerBlue>The `useState` Hook provides those two things:</font>
+
+1. A <font color=dodgerBlue>**state variable**</font> to <font color=red>retain the data between renders.</font>
+2. A <font color=dodgerBlue>**state setter function**</font> to <font color=red>update the variable</font> and <font color=red>trigger React to render the component again</font>.
+
+##### Adding a state variable
+
+```jsx
+import { useState } from 'react';
+
+const [index, setIndex] = useState(0);
+```
+
+`index` is a state variable and `setIndex` is the setter function.
+
+> 💡 The `[` and `]` syntax here is called [array destructuring](https://javascript.info/destructuring-assignment) and it lets you read values from an array. The array returned by `useState` always has exactly two items.
+
+```jsx
+import { useState } from 'react';
+import { sculptureList } from './data.js';
+
+export default function Gallery() {
+  const [index, setIndex] = useState(0);
+
+  function handleClick() {
+    setIndex(index + 1);
+  }
+
+  let sculpture = sculptureList[index];
+  return (
+    <>
+      <button onClick={handleClick}>
+        Next
+      </button>
+      <h2>
+        <i>{sculpture.name} </i> 
+        by {sculpture.artist}
+      </h2>
+      <h3>  
+        ({index + 1} of {sculptureList.length})
+      </h3>
+      <img 
+        src={sculpture.url} 
+        alt={sculpture.alt}
+      />
+      <p>
+        {sculpture.description}
+      </p>
+    </>
+  );
+}
+```
+
+###### Meet your first Hook
+
+<font color=dodgerBlue>In React</font>, <font color=red>`useState`, as well as **any other function starting with ”`use`”**, is **called a Hook**</font>.
+
+<font color=fuchsia>*Hooks* are special functions</font> that are only available while React is [rendering](https://react.dev/learn/render-and-commit#step-1-trigger-a-render) (which we’ll get into in more detail on the next page). They let you “hook into” different React features.
+
+State is just one of those features, but you will meet the other Hooks later.
+
+
+
+
 
 
 

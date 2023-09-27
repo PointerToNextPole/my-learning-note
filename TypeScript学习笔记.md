@@ -4,7 +4,13 @@
 
 #### 一些资料
 
-中文文档 / 手册：www.tslang.cn ，https://typescript.bootcss.com ，[冴羽的 TS 教程](https://yayujs.com/) 
+官方资料
+
+[The TypeScript release notes](https://devblogs.microsoft.com/typescript/) covers a each new features in-depth.
+
+##### 中文文档 / 手册
+
+www.tslang.cn ，https://typescript.bootcss.com ，[冴羽的 TS 教程](https://yayujs.com/)
 
 
 
