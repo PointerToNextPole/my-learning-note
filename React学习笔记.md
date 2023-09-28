@@ -1406,11 +1406,265 @@ export default function Gallery() {
 
 <font color=dodgerBlue>In React</font>, <font color=red>`useState`, as well as **any other function starting with ”`use`”**, is **called a Hook**</font>.
 
-<font color=fuchsia>*Hooks* are special functions</font> that are only available while React is [rendering](https://react.dev/learn/render-and-commit#step-1-trigger-a-render) (which we’ll get into in more detail on the next page). They let you “hook into” different React features.
+<font color=fuchsia>*Hooks* are special functions</font> that are <font color=fuchsia>only available while React is [rendering](https://react.dev/learn/render-and-commit#step-1-trigger-a-render)</font>. They let you “hook into” different React features.
 
 State is just one of those features, but you will meet the other Hooks later.
 
+> ⚠️ Pitfall
+>
+> **Hooks—functions starting with `use`—<font color=fuchsia>can only be called at the top level of your components or [your own Hooks](https://react.dev/learn/reusing-logic-with-custom-hooks)</font>.** You <font color=red>can’t call Hooks inside conditions, loops, or other nested functions</font>. Hooks are functions, but <font color=red>it’s helpful to think of them as unconditional declarations about your component’s needs</font>. You “use” React features at the top of your component similar to how you “import” modules at the top of your file.
 
+###### Anatomy of `useState`
+
+When you call [`useState`](https://react.dev/reference/react/useState), you are <font color=red>telling React that you want this component to remember something</font>:
+
+```jsx
+const [index, setIndex] = useState(0);
+```
+
+In this case, you want React to remember `index`.
+
+> 💡 Note
+>
+> The convention is to name this pair like `const [something, setSomething]`. <font color=lightSeaGreen>You could name it anything you like</font>, but conventions make things easier to understand across projects.
+
+<font color=dodgerBlue>**Every time your component renders**</font>, `useState` gives you an array containing two values:
+
+1. The **state variable** (`index`) with the value you stored.
+2. The **state setter function** (`setIndex`) which can <font color=red>update the state variable</font> and <font color=fuchsia>**trigger React to render the component again**</font>.
+
+<font color=dodgerBlue>Here’s how that happens in action:</font>
+
+1. **Your component renders the first time.** Because you passed `0` to `useState` as the initial value for `index`, it will return `[0, setIndex]`. React remembers `0` is the latest state value.
+2. **You update the state.** When a user clicks the button, it calls `setIndex(index + 1)`. `index` is `0`, so it’s `setIndex(1)`. This tells React to remember `index` is `1` now and <font color=red>triggers another render</font>.
+3. **Your component’s second render.** <font color=lightSeaGreen>React still sees `useState(0)`</font>, but because <font color=red>React *remembers* that you set `index` to `1`</font>, it <font color=fuchsia>returns `[1, setIndex]` instead</font>.
+4. And so on!
+
+##### Giving a component multiple state variables
+
+<font color=dodgerBlue>If you find that you often change two state variables together</font>, it might <font color=red>be easier to combine them into one</font>. For example, if you have a form with many fields, <font color=red>it’s more convenient to have a single state variable that **holds an object** than state variable per field</font>. Read [Choosing the State Structure](https://react.dev/learn/choosing-the-state-structure) for more tips.
+
+###### How does React know which state to return?
+
+You might have noticed that the `useState` call does not receive any information about *which* state variable it refers to. <font color=red>There is no “identifier” that is passed to `useState`</font>, so how does it know which of the state variables to return? Does it rely on some magic like parsing your functions? The answer is no.
+
+Instead, to enable their concise syntax, <font color=fuchsia>Hooks **rely on a stable call order on every render of the same component**</font>. This works well in practice because <font color=lightSeaGreen>if you **follow the rule above (“only call Hooks at the top level”)**</font>, <font color=fuchsia>**Hooks will always be called in the same order**</font>. Additionally, a [linter plugin](https://www.npmjs.com/package/eslint-plugin-react-hooks) catches most mistakes.
+
+<font color=fuchsia>Internally, React **holds an array of state pairs for every component**</font>. <font color=dodgerBlue>It also</font> <font color=fuchsia>maintains the current pair index</font>, which is set to `0` before rendering. Each time you call `useState`, React gives you the next state pair and increments the index. You can read more about this mechanism in [React Hooks: Not Magic, Just Arrays.](https://medium.com/@ryardley/react-hooks-not-magic-just-arrays-cd4f1857236e)
+
+> 🌎 在 React 内部，为每个组件保存了一个数组，其中每一项都是一个 state 对。它维护当前 state 对的索引值，在渲染之前将其设置为 “0”。每次调用 useState 时，React 都会为你提供一个 state 对并增加索引值。
+
+> 👀 这里有一段，不直接使用 react 实现页面可响应的代码，感觉很受启发；但是由于较长，只摘抄了部分：
+
+```js
+let componentHooks = [];
+let currentHookIndex = 0;
+
+// How useState works inside React (simplified).
+function useState(initialState) {
+  let pair = componentHooks[currentHookIndex];
+  if (pair) {
+    // This is not the first render, so the state pair already exists.
+    // Return it and prepare for next Hook call.
+    currentHookIndex++;
+    return pair;
+  }
+
+  // This is the first time we're rendering, so create a state pair and store it.
+  pair = [initialState, setState];
+
+  function setState(nextState) {
+    // When the user requests a state change, put the new value into the pair.
+    pair[0] = nextState;
+    updateDOM();
+  }
+
+  // Store the pair for future renders and prepare for the next Hook call.
+  componentHooks[currentHookIndex] = pair;
+  currentHookIndex++;
+  return pair;
+}
+
+function Gallery() {
+  // Each useState() call will get the next pair.
+  const [index, setIndex] = useState(0);
+  const [showMore, setShowMore] = useState(false);
+
+  function handleNextClick() {
+    setIndex(index + 1);
+  }
+
+  function handleMoreClick() {
+    setShowMore(!showMore);
+  }
+
+  let sculpture = sculptureList[index];
+  // This example doesn't use React, so return an output object instead of JSX.
+  return {
+    onNextClick: handleNextClick,
+    onMoreClick: handleMoreClick,
+    header: `${sculpture.name} by ${sculpture.artist}`,
+    counter: `${index + 1} of ${sculptureList.length}`,
+    more: `${showMore ? 'Hide' : 'Show'} details`,
+    description: showMore ? sculpture.description : null,
+    imageSrc: sculpture.url,
+    imageAlt: sculpture.alt
+  };
+}
+```
+
+##### State is isolated and private
+
+State is local to a component instance on the screen. In other words, **if you render the same component twice, each copy will have completely isolated state!** Changing one of them will not affect the other.
+
+notice how the `Page` ( 👀 parent ) component doesn’t “know” anything about the `Gallery` ( 👀 child ) state or even whether it has any. <font color=red>Unlike props, **state is fully private to the component declaring it**</font>. The parent component can’t change it. This lets you add state to any component or remove it without impacting the rest of the components.
+
+What if you wanted both galleries to keep their states in sync? The right way to do it in React is to *remove* state from child components and add it to their closest shared parent. The next few pages will focus on organizing state of a single component, but we will return to this topic in [Sharing State Between Components.](https://react.dev/learn/sharing-state-between-components)
+
+##### Recap
+
+- Use a state variable when a component needs to “remember” some information between renders.
+- State variables are declared by calling the `useState` Hook.
+- Hooks are special functions that start with `use`. They let you “hook into” React features like state.
+- Hooks might remind you of imports: they need to be called unconditionally. Calling Hooks, including `useState`, is only valid at the top level of a component or another Hook.
+- The `useState` Hook returns a pair of values: the current state and the function to update it.
+- You can have more than one state variable. Internally, React matches them up by their order.
+- State is private to the component. If you render it in two places, each copy gets its own state.
+
+
+
+#### Render and Commit
+
+<font color=dodgerBlue>Before your components are displayed on screen</font>, <font color=fuchsia>they must be rendered by React</font>.
+
+Imagine that your components are cooks in the kitchen, assembling tasty dishes from ingredients. <font color=lightSeaGreen>In this scenario</font>, <font color=red>React is the waiter who puts in requests from customers and brings them their orders</font>. <font color=lightSeaGreen>This process of requesting and serving UI has three steps</font>:
+
+1. <font color=fuchsia>**Triggering** a render</font> (delivering the guest’s order to the kitchen)
+2. <font color=fuchsia>**Rendering** the component</font> (preparing the order in the kitchen)
+3. <font color=red>**Committing** to the DOM</font> (placing the order on the table)
+
+> 👀 上面的内容也说明了：React 在使用虚拟 DOM，等待虚拟 DOM 渲染/生成完成后，再将其绘制到页面上；浏览器绘制的步骤见 [[#Epilogue: Browser paint]]
+
+<img src="https://s2.loli.net/2023/09/28/EzYotsbXrqmTnd2.png" alt="image-20230928112144925" style="zoom:45%;" />
+
+##### Step 1: Trigger a render 
+
+<font color=dodgerBlue>**There are two reasons for a component to render:**</font>
+
+1. It’s the component’s **initial render.**
+2. The component’s (or one of its ancestors’) **state has been updated.**
+
+###### Initial render
+
+<font color=dodgerBlue>**When your app starts**</font>, <font color=red>you need to trigger the initial render</font>. <font color=lightSeaGreen>Frameworks and sandboxes sometimes hide this code</font>, but <font color=fuchsia>it’s done by calling `createRoot` with the target DOM node</font>, and then calling its `render` method with your component:
+
+```js
+import Image from './Image.js';
+import { createRoot } from 'react-dom/client';
+
+const root = createRoot(document.getElementById('root'))
+root.render(<Image />);
+```
+
+###### Re-renders when state updates
+
+Once the component has been initially rendered, you can trigger further renders by updating its state with the [`set` function.](https://react.dev/reference/react/useState#setstate) <font color=red>Updating your component’s state **automatically queues a render**</font>. (You can imagine these as a restaurant guest ordering tea, dessert, and all sorts of things after putting in their first order, depending on the state of their thirst or hunger.)
+
+<img src="https://s2.loli.net/2023/09/28/NMemWdgOfkRLPDI.png" alt="image-20230928153109074" style="zoom:45%;" />
+
+##### Step 2: React renders your components
+
+After you trigger a render, React calls your components to figure out what to display on screen. **“Rendering” is React calling your components.**
+
+- **On initial render,** React will call the root component.
+- **For subsequent renders,** <font color=red>React will call the function component **whose state update triggered the render**</font>.
+
+<font color=red>This process is **recursive**</font>: if the updated component returns some other component, React will render *that* component next, and if that component also returns something, it will render *that* component next, and so on. <font color=red>The process will continue until there are no more nested components</font> and React knows exactly what should be displayed on screen.
+
+In the following example, React will call `Gallery()` and  `Image()` several times:
+
+> 👀 这里代码略
+
+- **During the initial render,** React will [create the DOM nodes](https://developer.mozilla.org/docs/Web/API/Document/createElement) for `<section>`, `<h1>`, and three `<img>` tags.
+- **During a re-render,** <font color=fuchsia>React will calculate which of their properties</font>, <font color=red>if any, have changed since the previous render</font>. It won’t do anything with that information until the next step, the commit phase.
+
+> ⚠️ Pitfall
+>
+> <font color=fuchsia>**Rendering must always be a [pure calculation](https://react.dev/learn/keeping-components-pure)**</font>:
+>
+> - **Same inputs, same output.** Given the same inputs, a component should always return the same JSX. (When someone orders a salad with tomatoes, they should not receive a salad with onions!)
+> - **It minds its own business.** It <font color=red>should not change any objects or variables that existed before rendering</font>. (One order should not change anyone else’s order.)
+>
+> <font color=dodgerBlue>Otherwise</font>, <font color=lightSeaGreen>you can encounter confusing bugs and unpredictable behavior</font> as your codebase grows in complexity. When developing in “Strict Mode”, React calls each component’s function twice, which can help surface mistakes caused by impure functions.
+
+###### Optimizing performance
+
+The default behavior of rendering all components nested within the updated component <font color=red>is **not optimal for performance**</font> <font color=dodgerBlue>if the updated component is very high in the tree</font>. If you run into a performance issue, there are several opt-in ways to solve it described in the [Performance](https://reactjs.org/docs/optimizing-performance.html) section. **Don’t optimize prematurely!**
+
+> 👀 不要过早优化
+
+##### Step 3: React commits changes to the DOM 
+
+After rendering (calling) your components, React will modify the DOM.
+
+- **For the initial render,** React will <font color=red>use the `appendChild()` DOM API</font> to put all the DOM nodes it has created on screen.
+- **For re-renders,** React will <font color=red>apply the minimal necessary operations</font> (calculated while rendering!) to make the DOM match the latest rendering output.
+
+**React only changes the DOM nodes if there’s a difference between renders.**
+
+##### Epilogue: Browser paint
+
+<font color=dodgerBlue>After rendering is done and React updated the DOM</font>, <font color=red>the browser will repaint the screen</font>. Although this process is known as “browser rendering”, we’ll refer to it as “painting” to avoid confusion throughout the docs.
+
+<img src="https://s2.loli.net/2023/09/28/4pcxYRwoU69ZAvB.png" style="zoom: 18%;" />
+
+
+
+#### State as a Snapshot
+
+State variables might look like regular JavaScript variables that you can read and write to. However, <font color=fuchsia>state behaves more like a snapshot</font>. <font color=fuchsia>Setting it **does not change the state variable you already have**</font>, but <font color=red>instead **triggers** a re-render</font>.
+
+> 👀 关于这里的 “setting it” 是指 `setState` ，而 “does not change the state” ，是因为要进行 diff，oldState 要和 newState 进行对比，所以自然不能覆盖掉；这里的标题也是解释的一部分 “ state 就像快照”，而快照是不可能覆盖或者修改的。另外，这里的 “trigger” 也是 trigger -> render -> commit 中的第一步。
+
+##### Setting state triggers renders
+
+In this example, when you press “send”, `setIsSent(true)` tells React to re-render the UI:
+
+```jsx
+import { useState } from 'react';
+
+export default function Form() {
+  const [isSent, setIsSent] = useState(false);
+  const [message, setMessage] = useState('Hi!');
+  if (isSent) {
+    return <h1>Your message is on its way!</h1>
+  }
+  return (
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      setIsSent(true);
+      sendMessage(message);
+    }}>
+      <textarea
+        placeholder="Message"
+        value={message}
+        onChange={e => setMessage(e.target.value)}
+      />
+      <button type="submit">Send</button>
+    </form>
+  );
+}
+
+function sendMessage(message) {
+  // ...
+}
+```
+
+<font color=dodgerBlue>Here’s what happens when you click the button:</font>
+
+1. The `onSubmit` event handler executes.
+2. `setIsSent(true)` sets `isSent` to `true` and <font color=fuchsia>queues a new render</font>.
+3. React re-renders the component according to the new `isSent` value.
 
 
 

@@ -78,6 +78,8 @@
 
 - **underlying**：内在的
 
+- **internal** ：里面的，内部的
+
 - **wildcard**：通配符
 
 - **spec**：规格，细则。abbr of specification
@@ -1192,3 +1194,9 @@
   > They are built to take into account the code you write in your component, so you will get [inferred types](https://www.typescriptlang.org/docs/handbook/type-inference.html) a lot of the time and ideally do not need to handle the **minutiae** of providing the types.
   >
   > 摘自：[React doc - Using TypeScript # example hooks](https://react.dev/learn/typescript#example-hooks)
+  
+- **anatomy** ：解剖
+
+- **premature** ：过早的
+
+  > Don’t optimize prematurely!
