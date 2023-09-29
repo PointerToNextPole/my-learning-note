@@ -1340,7 +1340,7 @@ two things prevent that change from being visible:
 
 1. <font color=fuchsia>**Local variables don’t persist between renders.**</font> When React renders this component a second time, it renders it from scratch—it doesn’t consider any changes to the local variables.
 
-   > 🌎 **局部变量无法在多次渲染中持久保存**。当 React 再次渲染这个组件时，它会从头开始渲染——不会考虑之前对局部变量的任何更改。
+   > 🌏 **局部变量无法在多次渲染中持久保存**。当 React 再次渲染这个组件时，它会从头开始渲染——不会考虑之前对局部变量的任何更改。
 
 2. <font color=fuchsia>**Changes to local variables won’t trigger renders.**</font> React doesn’t realize it needs to render the component again with the new data.
 
@@ -1452,7 +1452,7 @@ Instead, to enable their concise syntax, <font color=fuchsia>Hooks **rely on a s
 
 <font color=fuchsia>Internally, React **holds an array of state pairs for every component**</font>. <font color=dodgerBlue>It also</font> <font color=fuchsia>maintains the current pair index</font>, which is set to `0` before rendering. Each time you call `useState`, React gives you the next state pair and increments the index. You can read more about this mechanism in [React Hooks: Not Magic, Just Arrays.](https://medium.com/@ryardley/react-hooks-not-magic-just-arrays-cd4f1857236e)
 
-> 🌎 在 React 内部，为每个组件保存了一个数组，其中每一项都是一个 state 对。它维护当前 state 对的索引值，在渲染之前将其设置为 “0”。每次调用 useState 时，React 都会为你提供一个 state 对并增加索引值。
+> 🌏 在 React 内部，为每个组件保存了一个数组，其中每一项都是一个 state 对。它维护当前 state 对的索引值，在渲染之前将其设置为 “0”。每次调用 useState 时，React 都会为你提供一个 state 对并增加索引值。
 
 > 👀 这里有一段，不直接使用 react 实现页面可响应的代码，感觉很受启发；但是由于较长，只摘抄了部分：
 
@@ -1666,7 +1666,238 @@ function sendMessage(message) {
 2. `setIsSent(true)` sets `isSent` to `true` and <font color=fuchsia>queues a new render</font>.
 3. React re-renders the component according to the new `isSent` value.
 
+##### Rendering takes a snapshot in time
 
+[“Rendering”](https://react.dev/learn/render-and-commit#step-2-react-renders-your-components) means that React is calling your component, which is a function. <font color=dodgerBlue>The JSX you return from that function</font> is <font color=red>like a snapshot of the UI in time</font>. <font color=lightSeaGreen>Its props, event handlers, and local variables</font> were <font color=fuchsia>all calculated **using its state at the time of the render**</font>.
+
+> 🌏 它的 props、事件处理函数和内部变量都是 **根据当前渲染时的 state** 被计算出来的
+
+Unlike a photograph or a movie frame, <font color=red>the UI “snapshot” you return is **interactive**</font>. <font color=lightSeaGreen>**It**</font> includes logic like event handlers that specify what happens in response to inputs. <font color=lightSeaGreen>React updates the screen to match this snapshot and connects the event handlers</font>. As a result, pressing a button will trigger the click handler from your JSX.
+
+When React re-renders a component:
+
+1. React calls your function again.
+2. <font color=fuchsia>Your function **returns a new JSX snapshot**.</font>
+3. <font color=red>React then updates the screen to match the snapshot your function returned</font>.
+
+<img src="https://s2.loli.net/2023/09/29/qYKgMjWubXN8OeP.png" alt="image-20230929100326250" style="zoom: 45%;" />
+
+<font color=red>As a **component’s memory**</font>, state is not like a regular variable that disappears after your function returns. <font color=red>State actually “lives” in React itself</font>—as if on a shelf!—outside of your function. When React calls your component, <font color=red>it gives you a **snapshot of the state** for that particular render</font>. Your component returns a **snapshot of the UI** with a fresh set of props and event handlers in its JSX, all calculated **using the state values from that render!**
+
+<img src="https://s2.loli.net/2023/09/29/3o94vdXKErSfYUP.png" alt="image-20230929101521524" style="zoom: 45%;" />
+
+<font color=dodgerBlue>Here’s a little experiment to show you how this works</font>. In this example, you might expect that clicking the “+3” button would increment the counter three times because <font color=lightSeaGreen>it calls `setNumber(number + 1)` three times</font>.
+
+```jsx
+import { useState } from 'react';
+
+export default function Counter() {
+  const [number, setNumber] = useState(0);
+
+  return (
+    <>
+      <h1>{number}</h1>
+      <button onClick={() => {
+        setNumber(number + 1);
+        setNumber(number + 1);
+        setNumber(number + 1);
+      }}>+3</button>
+    </>
+  )
+}
+```
+
+Notice that <font color=dodgerBlue>**`number` only increments once per click**</font>!
+
+<font color=fuchsia>**Setting state only changes it for the *next* render.**</font> During the first render, `number` was `0`. This is why, in *that render’s* `onClick` handler, <font color=fuchsia>the value of `number` is still `0` even after `setNumber(number + 1)` was called</font>:
+
+```jsx
+<button onClick={() => {
+  setNumber(number + 1);
+  setNumber(number + 1);
+  setNumber(number + 1);
+}}>+3</button>
+```
+
+<font color=dodgerBlue>Here is what this button’s click handler tells React to do:</font>
+
+1. `setNumber(number + 1)` : `number` is `0` so `setNumber(0 + 1)`.
+
+   <font color=fuchsia>React prepares to change `number` to `1` on the next render.</font>
+
+2. `setNumber(number + 1)` : `number` is `0` so `setNumber(0 + 1)`.
+
+   React prepares to change `number` to `1` on the next render.
+
+3. `setNumber(number + 1)` : `number` is `0` so `setNumber(0 + 1)`.
+
+   React prepares to change `number` to `1` on the next render.
+
+<font color=dodgerBlue>Even though you called `setNumber(number + 1)` three times</font>, <font color=lightSeaGreen>**in *this render’s***</font> event handler `number` is always `0`, <font color=red>so you set the state to `1` three times</font>. This is why, after your event handler finishes, React re-renders the component with `number` equal to `1` rather than `3`.
+
+You can also visualize this by mentally substituting state variables with their values in your code. Since the `number` state variable is `0` for *this render*, its event handler looks like this:
+
+```jsx
+<button onClick={() => {
+  setNumber(0 + 1);
+  setNumber(0 + 1);
+  setNumber(0 + 1);
+}}>+3</button>
+```
+
+For the next render, `number` is `1`, so *that render’s* click handler looks like this:
+
+```jsx
+<button onClick={() => {
+  setNumber(1 + 1);
+  setNumber(1 + 1);
+  setNumber(1 + 1);
+}}>+3</button>
+```
+
+> 💡 虽然不建议在一次渲染中，多次调用同一个 state 的 `setState` ；如果非要这样做，可以参考 [[#Updating the same state multiple times before the next render]] 中在 `setState` 传入函数的写法，比如 `setState(state => state + 1)`
+
+##### State over time
+
+```jsx
+import { useState } from 'react';
+
+export default function Counter() {
+  const [number, setNumber] = useState(0);
+
+  return (
+    <>
+      <h1>{number}</h1>
+      <button onClick={() => {
+        setNumber(number + 5);
+        alert(number);
+      }}>+5</button>
+    </>
+  )
+}
+```
+
+If you use the substitution method from before, you can guess that the alert shows “0”:
+
+```jsx
+setNumber(0 + 5);
+alert(0);
+```
+
+what if you put a timer on the alert, so it only fires *after* the component re-rendered? Would it say “0” or “5”? 
+
+```jsx
+setNumber(number + 5);
+setTimeout(() => { alert(number); }, 3000);
+```
+
+<font color=lightSeaGreen>The state stored in React **may have changed** by the time the alert runs</font>, but <font color=red>it was scheduled using a snapshot of the state</font> at the time the user interacted with it!
+
+<font color=fuchsia>**A state variable’s value never changes within a render**</font> , even if its event handler’s code is asynchronous. Inside *that render’s* `onClick`, the value of `number` continues to be `0` even after `setNumber(number + 5)` was called. <font color=fuchsia>Its value was **“fixed”** when React “took the snapshot” of the UI by calling your component</font>.
+
+##### Recap
+
+- <font color=fuchsia>Setting state **requests a new render**</font>.
+
+  > 👀 感觉 “申请开启一个新的渲染” 似乎更好些？
+
+- React stores state outside of your component, as if on a shelf.
+
+- <font color=dodgerBlue>**When you call `useState`**</font>, <font color=red>React gives you a snapshot of the state *for that render*</font>.
+
+- <font color=fuchsia>Variables and event handlers don’t “survive” re-renders</font>. <font color=red>Every render has its own event handlers</font>.
+
+  > 🌏 变量和事件处理函数不会在重渲染中“存活”。
+  >
+  > 👀 上面这句话也说明了：state 可以看作 component’s memory。相关概念可参见 [[#Props vs State]]
+
+- Every render (and functions inside it) will always “see” the snapshot of the state that React gave to *that* render.
+
+- You can mentally substitute state in event handlers, similarly to how you think about the rendered JSX.
+
+- Event handlers created in the past have the state values from the render in which they were created.
+
+##### Try out some challenges
+
+Calling `setWalk` ( 👀 `setState` ) will only change it for the *next* render, but will not affect the event handler from the previous render.
+
+
+
+#### Queueing a Series of State Updates
+
+<font color=fuchsia>Setting a state variable will **queue another render**</font>. But <font color=dodgerBlue>sometimes you might want to perform multiple operations on the value</font> before queueing the next render. To do this, it helps to understand how React <font color=fuchsia>batches state updates</font>.
+
+##### React batches state updates
+
+there is one other factor at play here. <font color=fuchsia>**React waits until *all* code in the event handlers has run before processing your state updates**</font>. This is why the re-render only happens *after* all these `setNumber()` calls.
+
+> 🌏 **React 会等到事件处理函数中的** 所有 **代码都运行完毕再处理你的 state 更新。**
+
+This might remind you of a waiter taking an order at the restaurant. <font color=lightSeaGreen>A waiter doesn’t run to the kitchen at the mention of your first dish</font>! Instead, they let you finish your order, let you make changes to it, and even take orders from other people at the table.
+
+> 🌏 服务员不会在你说第一道菜的时候就跑到厨房！相反，他们会让你把菜点完，让你修改菜品，甚至会帮桌上的其他人点菜。
+
+<img src="https://s2.loli.net/2023/09/29/MG7uIzsUoDfbiHR.png" alt="An elegant cursor at a restaurant places and order multiple times with React, playing the part of the waiter. After she calls setState() multiple times, the waiter writes down the last one she requested as her final order." style="zoom: 18%;" />
+
+This lets you update multiple state variables—even from multiple components — <font color=red>without triggering too many [re-renders](https://react.dev/learn/render-and-commit#re-renders-when-state-updates)</font>. But this also means that the UI won’t be updated until *after* your event handler, and any code in it, completes. <font color=red>This behavior, also known as **batching**, makes your React app run much faster</font>. It also avoids dealing with confusing “half-finished” renders where only some of the variables have been updated.
+
+> 🌏 它还会帮你避免处理只更新了一部分 state 变量的令人困惑的“半成品”渲染。
+
+**React does not batch across *multiple* intentional events like clicks**—<font color=red>each click is handled separately</font>. <font color=dodgerBlue>Rest assured</font> ( 👀 请放心 ) that <font color=red>React only does batching when it’s generally safe to do</font>. This ensures that, for example, if the first button click disables a form, the second click would not submit it again.
+
+##### Updating the same state multiple times before the next render
+
+It is an uncommon use case, but <font color=dodgerBlue>if you would like to update the same state variable multiple times before the next render</font>, instead of passing the *next state value* like `setNumber(number + 1)`, <font color=red>you can pass a *function* that **calculates the next state based on the previous one in the queue**, like `setNumber(n => n + 1)`</font>. <font color=fuchsia>It is a way to tell React to **“do something with the state value” instead of just replacing it**</font>.
+
+```jsx
+import { useState } from 'react';
+
+export default function Counter() {
+  const [number, setNumber] = useState(0);
+
+  return (
+    <>
+      <h1>{number}</h1>
+      <button onClick={() => {
+        setNumber(n => n + 1); { /* 👀 */ }
+        setNumber(n => n + 1);
+        setNumber(n => n + 1);
+      }}>+3</button>
+    </>
+  )
+}
+```
+
+<font color=dodgerBlue>Here</font>, <font color=fuchsia>`n => n + 1` is called an **updater function**</font>. <font color=dodgerBlue>When you pass it to a state setter</font>:
+
+1. React <font color=fuchsia>queues this function to be processed **after all the other code in the event handler has run**</font>.
+2. <font color=fuchsia>**During the next render**</font>, <font color=red>React goes through the queue</font> and <font color=fuchsia>gives you the final updated state</font>.
+
+```jsx
+setNumber(n => n + 1);
+setNumber(n => n + 1);
+setNumber(n => n + 1);
+```
+
+Here’s how React works through these lines of code while executing the event handler:
+
+1. `setNumber(n => n + 1)` : `n => n + 1` is a function. React adds it to a queue.
+2. `setNumber(n => n + 1)` : `n => n + 1` is a function. React adds it to a queue.
+3. `setNumber(n => n + 1)` : `n => n + 1` is a function. React adds it to a queue.
+
+When you call `useState` during the next render, React goes through the queue. The previous `number` state was `0`, so that’s what React passes to the first updater function as the `n` argument. Then React takes the return value of your previous updater function and passes it to the next updater as `n`, and so on:
+
+| queued update | `n`  | returns     |
+| ------------- | ---- | ----------- |
+| `n => n + 1`  | `0`  | `0 + 1 = 1` |
+| `n => n + 1`  | `1`  | `1 + 1 = 2` |
+| `n => n + 1`  | `2`  | `2 + 1 = 3` |
+
+React stores `3` as the final result and returns it from `useState`.
+
+###### What happens if you update state after replacing it 
+
+What about this event handler? What do you think `number` will be in the next render?
 
 
 

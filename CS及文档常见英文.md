@@ -1048,6 +1048,7 @@
 - **Misc** ：杂项，其他。"Misc" 是 "miscellaneous" 的缩写
 - **spec** ：规格 specification
 - **ver** ：版本 version
+- **promo** ：推广/ 宣传片。 promotion 
 
 
 
@@ -1200,3 +1201,7 @@
 - **premature** ：过早的
 
   > Don’t optimize prematurely!
+  
+- **substitute** ：替代
+
+- **rest assured** ( that ) ：请放心
