@@ -1856,7 +1856,7 @@ onfocus ( focus )  -> 键盘输入 -> onkeydown ( keydown )  -> onkeypress ( key
 | min                                     | 数字 type                        | 最小值                                                       |
 | minlength                               | password, search, tel, text, url | value 的最小长度（最少字符数目）                             |
 | multiple                                | email, file                      | 布尔值。 是否允许多个值                                      |
-| name                                    | 所有                             | input表单控件的名字。以名字/值对的形式随表单一起提交         |
+| name                                    | 所有                             | input表单控件的名字。以名字/值对的形式随表单一起提交 <br />关于这个字段可以看下 [React doc - Updating Objects in State # Using a single event handler for multiple fields](https://react.dev/learn/updating-objects-in-state#using-a-single-event-handler-for-multiple-fields) 中 `name` 的使用 |
 | pattern                                 | password, text, tel              | 匹配有效 value 的模式 ( pattern )                            |
 | placeholder                             | password, search, tel, text, url | 当表单控件为空时，控件中显示的内容                           |
 | readonly                                | 绝大部分                         | 布尔值。存在时表示控件的值不可编辑                           |

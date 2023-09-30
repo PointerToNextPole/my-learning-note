@@ -4,11 +4,17 @@
 
 #### 一些资料
 
-官方资料
+###### 官方资料
 
 [The TypeScript release notes](https://devblogs.microsoft.com/typescript/) covers a each new features in-depth.
 
-##### 中文文档 / 手册
+###### 网络书籍
+
+- [阮一峰 - TypeScript 教程](https://wangdoc.com/typescript/)
+- [TypeScript入门教程](https://ts.xcatliu.com)
+- [深入理解 TypeScript](https://jkchao.github.io/typescript-book-chinese/)
+
+###### 中文文档 / 手册
 
 www.tslang.cn ，https://typescript.bootcss.com ，[冴羽的 TS 教程](https://yayujs.com/)
 

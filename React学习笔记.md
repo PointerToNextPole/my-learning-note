@@ -1879,13 +1879,15 @@ setNumber(n => n + 1);
 setNumber(n => n + 1);
 ```
 
-Here’s how React works through these lines of code while executing the event handler:
+<font color=dodgerBlue>Here’s how React works through these lines of code while executing the event handler</font>:
 
-1. `setNumber(n => n + 1)` : `n => n + 1` is a function. React adds it to a queue.
-2. `setNumber(n => n + 1)` : `n => n + 1` is a function. React adds it to a queue.
-3. `setNumber(n => n + 1)` : `n => n + 1` is a function. React adds it to a queue.
+1. `setNumber(n => n + 1)` : `n => n + 1` is a function. <font color=fuchsia>React adds it to a queue</font>.
+2. `setNumber(n => n + 1)` : `n => n + 1` is a function. <font color=fuchsia>React adds it to a queue</font>.
+3. `setNumber(n => n + 1)` : `n => n + 1` is a function. <font color=fuchsia>React adds it to a queue</font>.
 
-When you call `useState` during the next render, React goes through the queue. The previous `number` state was `0`, so that’s what React passes to the first updater function as the `n` argument. Then React takes the return value of your previous updater function and passes it to the next updater as `n`, and so on:
+> 👀 这里 React 三次把 `setState` 放入 queue 中。因为传入的是一个函数，而不是一个写死的数值，所以，state 的值可以多次变化。另外，按照 [[#What happens if you update state after replacing it]] 的说法，显然传入一个函数是 “update” ，而传入一个写死的值是 “replace”
+
+When you call `useState` during the next render, React goes through the queue. The previous `number` state was `0`, so that’s what React passes to the first updater function as the `n` argument. Then <font color=fuchsia>React takes the **return value of your previous updater function** and passes it to the next updater as `n`</font> , and so on:
 
 | queued update | `n`  | returns     |
 | ------------- | ---- | ----------- |
@@ -1895,9 +1897,551 @@ When you call `useState` during the next render, React goes through the queue. T
 
 React stores `3` as the final result and returns it from `useState`.
 
-###### What happens if you update state after replacing it 
+This is why clicking “+3” in the above example correctly increments the value by 3.
+
+###### What happens if you update state after replacing it
 
 What about this event handler? What do you think `number` will be in the next render?
+
+```jsx
+<button onClick={() => {
+  setNumber(number + 5);
+  setNumber(n => n + 1);
+}}> { /* 最后 n === 6*/ }
+```
+
+Here’s what this event handler tells React to do:
+
+1. `setNumber(number + 5)` : `number` is `0` , so `setNumber(0 + 5)` . React **adds *“<font color=fuchsia>replace</font> with `5`”* to its queue**.
+2. `setNumber(n => n + 1)` : `n => n + 1` is an <font color=fuchsia>updater</font> function. React **adds *that function* to its queue**.
+
+During the next render, React goes through the state queue:
+
+| queued update      | `n`          | <font color=fuchsia>returns</font> |
+| ------------------ | ------------ | ---------------------------------- |
+| “replace with `5`” | `0` (unused) | `5`                                |
+| `n => n + 1`       | `5`          | `5 + 1 = 6`                        |
+
+React stores `6` as the final result and returns it from `useState`.
+
+> 💡 Note
+>
+> You may have noticed that `setState(5)` actually works like `setState(n => 5)` , but `n` is unused!
+
+###### What happens if you replace state after updating it
+
+```jsx
+<button onClick={() => {
+  setNumber(number + 5);
+  setNumber(n => n + 1);
+  setNumber(42);
+}}> { /* 最后 n === 42 */ }
+```
+
+Here’s how React works through these lines of code while executing this event handler:
+
+1. `setNumber(number + 5)` : `number` is `0` , so `setNumber(0 + 5)`. React **adds *“replace with `5`”* to its queue**.
+2. `setNumber(n => n + 1) `: `n => n + 1` is an updater function. React **adds *that function* to its queue**.
+3. `setNumber(42)` : React **adds *“replace with `42`”* to its queue**.
+
+During the next render, React goes through the state queue:
+
+| queued update       | `n`          | returns     |
+| ------------------- | ------------ | ----------- |
+| “replace with `5`”  | `0` (unused) | `5`         |
+| `n => n + 1`        | `5`          | `5 + 1 = 6` |
+| “replace with `42`” | `6` (unused) | `42`        |
+
+Then React stores `42` as the final result and returns it from `useState`.
+
+<font color=dodgerBlue>To **summarize**</font>, here’s how you can think of what you’re passing to the `setNumber` state setter:
+
+- <font color=red>**An updater function**</font> ( e.g. `n => n + 1` ) gets added to the queue.
+- <font color=red>**Any other value**</font> ( e.g. number `5` ) adds “replace with `5`” to the queue, ignoring what’s already queued.
+
+After the event handler completes, React will trigger a re-render. During the re-render, React will process the queue. Updater functions run during rendering, so **updater functions must be [pure](https://react.dev/learn/keeping-components-pure)** and only *return* the result. Don’t try to set state from inside of them or run other side effects. In Strict Mode, React will run each updater function twice (but discard the second result) to help you find mistakes.
+
+##### Recap
+
+- <font color=fuchsia>Setting state does not change the variable in the **existing render**</font>, but <font color=red>it requests a new render</font>.
+- React <font color=red>processes state updates after event handler<font size=4>**s**</font> have finished running</font>. This is <font color=red>called batching</font>.
+- To update some state multiple times in one event, you can use `setNumber(n => n + 1)` updater function.
+
+
+
+#### Updating Objects in State
+
+<font color=dodgerBlue>State can hold any kind of JavaScript value, including objects</font>. But you <font color=red>shouldn’t change objects that you hold in the React state directly</font>. <font color=dodgerBlue>Instead</font>, when you want to update an object, you <font color=red>need to create a new one (or make a copy of an existing one)</font>, and <font color=dodgerBlue>then</font> <font color=red>set the state to use that copy</font>.
+
+##### What’s a mutation? 
+
+You can store any kind of JavaScript value in state.
+
+```jsx
+const [x, setX] = useState(0);
+```
+
+<font color=lightSeaGreen>So far you’ve been working with numbers, strings, and booleans</font>. <font color=red>These kinds of JavaScript values are “immutable”, meaning unchangeable or “read-only”</font>. You can trigger a re-render to *replace* a value:
+
+> ⚠️ 注意这里的说法： JS 值（比如说上面的初始值 `0` ）是不可变的，参考下面的说法：使用 `setState` 变的是 state，而非 `0`
+
+```jsx
+setX(5);
+```
+
+<font color=red>The `x` state changed from `0` to `5`</font> , but <font color=red>**the *number `0` itself* did not change**</font>. <font color=fuchsia>It’s **not possible to make any changes to the built-in primitive values** like numbers, strings, and booleans in JavaScript</font>.
+
+<font color=dodgerBlue>Now consider an object in state:</font>
+
+```jsx
+const [position, setPosition] = useState({ x: 0, y: 0 });
+```
+
+Technically, <font color=red>it is **possible** to change the contents of *the object itself*</font>. **This is called a mutation:**
+
+```jsx
+position.x = 5;
+```
+
+However, <font color=dodgerBlue>although objects in React state are technically mutable</font>, you should treat them **as if** they were immutable—like numbers, booleans, and strings. <font color=dodgerBlue>Instead of mutating them</font>, you <font color=red>should **always replace** them</font>.
+
+##### Treat state as read-only 
+
+In other words, <font color=red>you should **treat any JavaScript object that you put into state as read-only**</font>.
+
+This example holds an object in state to represent the current pointer position. The red dot is supposed to move when you touch or move the cursor over the preview area. <font color=dodgerBlue>But the dot stays in the initial position</font>:
+
+```jsx
+import { useState } from 'react';
+export default function MovingDot() {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  return (
+    <div
+      onPointerMove={e => {
+        position.x = e.clientX; { /*👀*/ }
+        position.y = e.clientY;
+      }}
+      style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100vh',
+      }}>
+      <div style={{
+        position: 'absolute',
+        backgroundColor: 'red',
+        borderRadius: '50%',
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        left: -10,
+        top: -10,
+        width: 20,
+        height: 20,
+      }} />
+    </div>
+  );
+}
+```
+
+The problem is with this bit of code.
+
+```jsx
+onPointerMove={e => {
+  position.x = e.clientX;
+  position.y = e.clientY;
+}}
+```
+
+<font color=red>This code **modifies the object assigned to `position` from [the previous render](https://react.dev/learn/state-as-a-snapshot#rendering-takes-a-snapshot-in-time)**</font>. But <font color=lightSeaGreen>without using the state setting function</font>, <font color=fuchsia>React has no idea that object has changed</font>. <font color=lightSeaGreen>So **React does not do anything in response**</font>. It’s like trying to change the order after you’ve already eaten the meal. <font color=lightSeaGreen>While mutating state can work in some cases, we **don’t recommend it**</font>. You should treat the state value you have access to in a render as read-only.
+
+To actually [trigger a re-render](https://react.dev/learn/state-as-a-snapshot#setting-state-triggers-renders) in this case, **create a *new* object and pass it to the state setting function:**
+
+```jsx
+onPointerMove={e => {
+  setPosition({
+    x: e.clientX,
+    y: e.clientY
+  });
+}}
+```
+
+With `setPosition`, you’re telling React:
+
+- Replace `position` with this new object
+- And render this component again
+
+###### Local mutation is fine
+
+> 👀 感觉这小节并没有什么关键点，除了 “modify existing object in state” 和 “local mutation”，这两个概念值得注意
+
+<font color=dodgerBlue>Code like this is a problem because</font> <font color=red>it modifies an *existing* object in state</font>:
+
+```jsx
+position.x = e.clientX;
+position.y = e.clientY;
+```
+
+But code like this is **absolutely fine** because you’re mutating a fresh object you have *just created*:
+
+```jsx
+const nextPosition = {};
+nextPosition.x = e.clientX;
+nextPosition.y = e.clientY;
+setPosition(nextPosition);
+```
+
+In fact, it is completely equivalent to writing this:
+
+```jsx
+setPosition({
+  x: e.clientX,
+  y: e.clientY
+});
+```
+
+Mutation is only a problem when you change *existing* objects that are already in state. Mutating an object you’ve just created is okay because *no other code references it yet.* <font color=lightSeaGreen>Changing it isn’t going to accidentally impact something that depends on it</font>. <font color=red>This is called a “local mutation”</font>. You can even do local mutation [while rendering](https://react.dev/learn/keeping-components-pure#local-mutation-your-components-little-secret). Very convenient and completely okay!
+
+##### Copying objects with the spread syntax 
+
+In the previous example, the `position` object is always created fresh from the current cursor position. <font color=dodgerBlue>But often</font>, you will <font color=red>want to include *existing* data as a part of the new object you’re creating</font>. For example, you may want to update *only one* field in a form, but keep the previous values for all other fields.
+
+You can use the `...` object spread syntax so that you don’t need to copy every property separately.
+
+> 👀 之前的思路是：使用 omit 提取出目标成员以外的剩余部分，比如 `const { tragetKey, ...rest } = obj` ，在 set 时再将其组装 `{ targetKey: targetNewValue, ...rest }` 。
+>
+> 显然这是不必要的，按照下面的示例，可以直接将其覆盖；比如： `{...obj, targetKey: targetNewValue}`  。不过，`targetKey: targetNewValue` **必须**放在 `...obj` 的后面，否则无法实现覆盖
+
+```jsx
+import { useState } from 'react';
+
+export default function Form() {
+  const [person, setPerson] = useState({
+    firstName: 'Barbara',
+    lastName: 'Hepworth',
+    email: 'bhepworth@sculpture.com'
+  });
+
+  function handleFirstNameChange(e) {
+    setPerson({
+      ...person,
+      firstName: e.target.value
+    });
+  }
+
+  function handleLastNameChange(e) {
+    setPerson({
+      ...person,
+      lastName: e.target.value
+    });
+  }
+
+  function handleEmailChange(e) {
+    setPerson({
+      ...person,
+      email: e.target.value
+    });
+  }
+
+  return (
+    <>
+      <label>
+        First name:
+        <input
+          value={person.firstName}
+          onChange={handleFirstNameChange}
+        />
+      </label>
+      <label>
+        Last name:
+        <input
+          value={person.lastName}
+          onChange={handleLastNameChange}
+        />
+      </label>
+      <label>
+        Email:
+        <input
+          value={person.email}
+          onChange={handleEmailChange}
+        />
+      </label>
+      <p>
+        {person.firstName}{' '}
+        {person.lastName}{' '}
+        ({person.email})
+      </p>
+    </>
+  );
+}
+```
+
+<font color=dodgerBlue>Note that</font> <font color=red>the `...` spread syntax is “shallow”</font>—it <font color=red>only copies things one level deep</font>. This makes it fast, but it also means that if you want to update a nested property, you’ll have to use it more than once.
+
+###### Using a single event handler for multiple fields
+
+>  👀 即使用 js 的 “计算属性”，这个方法思路确实巧妙。另外值得注意的是，这里每一个 `<input>` 中加上了 `name` prop ，这个属性之前写 
+
+You can also use the `[` and `]` braces inside your object definition to specify a property with dynamic name. Here is the same example, but with a single event handler instead of three different ones:
+
+```jsx
+import { useState } from 'react';
+
+export default function Form() {
+  const [person, setPerson] = useState({
+    firstName: 'Barbara',
+    lastName: 'Hepworth',
+    email: 'bhepworth@sculpture.com'
+  });
+
+  function handleChange(e) {
+    setPerson({
+      ...person,
+      [e.target.name] : e.target.value { /* 👀 */ }
+    })
+  }
+
+  return (
+    <>
+      <label>
+        First name:
+        { /* 👀 注意下面的 name prop */ }
+        <input
+          name="firstName"
+          value={person.firstName}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Last name:
+        <input
+          name="lastName"
+          value={person.lastName}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Email:
+        <input
+          name="email"
+          value={person.email}
+          onChange={handleChange}
+        />
+      </label>
+      <p>
+        {person.firstName}{' '}
+        {person.lastName}{' '}
+        ({person.email})
+      </p>
+    </>
+  );
+}
+```
+
+##### Updating a nested object
+
+Consider a nested object structure like this:
+
+```jsx
+const [person, setPerson] = useState({
+  name: 'Niki de Saint Phalle',
+  artwork: {
+    title: 'Blue Nana',
+    city: 'Hamburg',
+    image: 'https://i.imgur.com/Sd1AgUOm.jpg',
+  }
+});
+```
+
+> 👀 文档中并没有给出使用 js 计算属性 和 `name` prop 的代码，我自己实现了一下
+>
+> ```jsx
+> function handleChange(e) {
+>   const { name, value } = e.target;
+>   if (name === "name") {
+>     setPerson({
+>       ...person,
+>       [name]: value
+>     });
+>   } else {
+>     setPerson({
+>       ...person,
+>       artwork: { ...person.artwork, [name]: value }
+>     });
+>   }
+> }
+> ```
+>
+> 详细的代码见 [codesandbox : react doc - Updating Objects in State # Updating a nested object](https://codesandbox.io/s/react-doc-updating-objects-in-state-updating-a-nested-object-ydjh7q)
+
+##### Write concise update logic with Immer 
+
+<font color=dodgerBlue>If your state is deeply nested</font>, you might want to consider [flattening it.](https://react.dev/learn/choosing-the-state-structure#avoid-deeply-nested-state) But, <font color=dodgerBlue>if you don’t want to change your state structure</font>, you might prefer a shortcut to nested spreads. <font color=red>[Immer](https://github.com/immerjs/use-immer) is a popular library that lets you write using the convenient but mutating syntax and takes care of producing the copies for you</font>. <font color=dodgerBlue>With Immer</font>, the code you write <font color=lightSeaGreen>looks like you are “breaking the rules” and mutating an object</font>:
+
+```jsx
+updatePerson(draft => {
+  draft.artwork.city = 'Lagos';
+});
+```
+
+But unlike a regular mutation, it doesn’t overwrite the past state!
+
+> 💡 关于 immer 和 use-immer
+>
+> ##### immer
+>
+> > Immer (German for: always) is a tiny package that allows you to work with **immutable** state in a more convenient way.
+> >
+> > 摘自：[Immer doc - Introduction to Immer](https://immerjs.github.io/immer/)
+>
+> Immer 是 JS 生态下的工具，可以说它是框架无关的，在 Vue 中也可以使用；Vue3 官方文档中也介绍了 Immer：
+>
+> > 如果你正在实现一个撤销/重做的功能，你可能想要对用户编辑时应用的状态进行快照记录。然而，如果状态树很大的话，Vue 的可变响应性系统没法很好地处理这种情况，因为在每次更新时都序列化整个状态对象对 CPU 和内存开销来说都是非常昂贵的。
+> >
+> > [不可变数据结构](https://en.wikipedia.org/wiki/Persistent_data_structure)通过永不更改状态对象来解决这个问题。与 Vue 不同的是，它会创建一个新对象，保留旧的对象未发生改变的一部分。在 JavaScript 中有多种不同的方式来使用不可变数据，但我们推荐使用 [Immer](https://immerjs.github.io/immer/) 搭配 Vue，因为它使你可以在保持原有直观、可变的语法的同时，使用不可变数据。
+> >
+> > 我们可以通过一个简单的组合式函数来集成 Immer：
+> >
+> > ```js
+> > import produce from 'immer'
+> > import { shallowRef } from 'vue'
+> > 
+> > export function useImmer(baseState) {
+> >   const state = shallowRef(baseState)
+> >   const update = (updater) => {
+> >     state.value = produce(state.value, updater)
+> >   }
+> > 
+> >   return [state, update]
+> > }
+> > ```
+> >
+> > 摘自：[Vue doc - 深入响应式系统 # 不可变数据](https://cn.vuejs.org/guide/extras/reactivity-in-depth.html#immutable-data)
+>
+> 另外，等用到 Immutable.js，可以将 Immer 与 Immutable.js 做一下对比
+>
+> ###### use-immer
+>
+> > **About** : Use immer to drive state with a React hooks
+>
+> use-immer 是 Immer 专门适配 React hooks 的版本，让我们更方便地在 React 中使用 Immer。
+
+<font color=dodgerBlue>To try Immer:</font>
+
+1. Run `npm install use-immer` to add Immer as a dependency
+2. Then <font color=red>**replace `import { useState } from 'react'`** with `import { useImmer } from 'use-immer'`</font>
+
+> 👀 下面的代码是照着上面的 “统一 `handleChange` ” 改写的，通过测试是可行的；和原文中的不一样；不过很好的体现了 use-immer 的使用方法
+
+```jsx
+import { useImmer } from 'use-immer';
+
+export default function Form() {
+  const [person, updatePerson] = useImmer({ // 👀
+    name: 'Niki de Saint Phalle',
+    artwork: {
+      title: 'Blue Nana',
+      city: 'Hamburg',
+      image: 'https://i.imgur.com/Sd1AgUOm.jpg',
+    }
+  });
+
+  function handleChange(e) {
+    const { name, value } = e.target
+
+    updatePerson(draft => {
+      if(name === 'name') {
+        draft.name = value // 👀 “直接修改”
+      } else {
+        draft.artwork[name] = value
+      }
+    });
+  }
+
+  return (
+    <>
+      <label>
+        Name:
+        <input
+          name="name"
+          value={person.name}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Title:
+        <input
+          name="title"
+          value={person.artwork.title}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        City:
+        <input
+          name="city"
+          value={person.artwork.city}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Image:
+        <input
+          name="image"
+          value={person.artwork.image}
+          onChange={handleChange}
+        />
+      </label>
+      <p>
+        <i>{person.artwork.title}</i>
+        {' by '}
+        {person.name}
+        <br />
+        (located in {person.artwork.city})
+      </p>
+      <img 
+        src={person.artwork.image} 
+        alt={person.artwork.title}
+      />
+    </>
+  );
+}
+```
+
+Notice how much **more concise** the event handlers have become. <font color=lightSeaGreen>You can mix and match `useState` and `useImmer` in a single component as much as you like</font>. Immer is a great way to keep the update handlers concise, <font color=lightSeaGreen>**especially if there’s nesting in your state**</font>, and copying objects leads to repetitive code.
+
+###### How does Immer work?
+
+<font color=fuchsia>The `draft` provided by Immer is a special type of object, **called a Proxy**</font>, that <font color=red>“records” what you do with it</font>. This is why you can mutate it freely as much as you like! <font color=dodgerBlue>Under the hood</font>, <font color=red>Immer figures out which parts of the `draft` have been changed</font>, and <font color=red>**produces a completely new object that contains your edits**</font>.
+
+> 👀 看了下 immer 的 文档，感觉 `draft` 作为 immutable 变量的名称算是一种惯例
+
+##### Why is mutating state not recommended in React?
+
+There are a few reasons:
+
+- **Debugging:** If you use `console.log` and don’t mutate state, <font color=lightSeaGreen>your past logs won’t get clobbered by the more recent state changes</font>. So you can clearly see how state has changed between renders.
+
+  > 🌏 你之前日志中的 state 的值就不会被新的 state 变化所影响
+
+- **Optimizations:** <font color=red>Common React [optimization strategies](https://react.dev/reference/react/memo) rely on skipping work if previous props or state are the same as the next ones</font>（👀 即批处理）. If you never mutate state, it is very fast to check whether there were any changes. If `prevObj === obj` , you can be sure that nothing could have changed inside of it.
+
+- **New Features:** <font color=red>The new React features we’re building **rely on state being [treated like a snapshot](https://react.dev/learn/state-as-a-snapshot)**</font>. If you’re mutating past versions of state, that <font color=lightSeaGreen>may prevent you from using the new features</font>.
+
+- **Requirement Changes:** Some application features, <font color=lightSeaGreen>like implementing **Undo/Redo**, **showing a history of changes**, or letting the user reset a form to earlier values, are easier to do when nothing is mutated</font>. This is <font color=red>because you can keep past copies of state in memory, and reuse them when appropriate</font>. If you start with a mutative approach, features like this can be difficult to add later on.
+
+- **Simpler Implementation:** <font color=red>Because React **does not rely on mutation**</font>, it does not need to do anything special with your objects. <font color=fuchsia>It **does not need to hijack their properties**, always **wrap them into Proxies**, or do other work at initialization as many “reactive” solutions do</font>. This is also why React lets you put any object into state—no matter how large—<font color=red>**without additional performance** or correctness pitfalls</font>.
+
+  > 👀 这里变相的在阐述 React 没有使用响应式的原因，只能说各有各的设计考量
+
+In practice, you can often “get away” with mutating state in React, but we strongly advise you not to do that so that you can use new React features developed with this approach in mind. Future contributors and perhaps even your future self will thank you!
+
+##### Recap
+
+- Treat all state in React as immutable.
+- When you store objects in state, mutating them will not trigger renders and will change the state in previous render “snapshots”.
+- Instead of mutating an object, create a *new* version of it, and trigger a re-render by setting state to it.
+- You can use the `{...obj, something: 'newValue'}` object spread syntax to create copies of objects.
+- Spread syntax is shallow: it only copies one level deep.
+- To update a nested object, you need to create copies all the way up from the place you’re updating.
+- To reduce repetitive copying code, use Immer.
 
 
 
