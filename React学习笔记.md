@@ -2271,7 +2271,13 @@ const [person, setPerson] = useState({
 >
 > 详细的代码见 [codesandbox : react doc - Updating Objects in State # Updating a nested object](https://codesandbox.io/s/react-doc-updating-objects-in-state-updating-a-nested-object-ydjh7q)
 
-##### Write concise update logic with Immer 
+###### Objects are not really nested
+
+> 👀 开始时没有想把这部分放到笔记中，也感觉有点不知所云；看了 [[#Updating objects inside arrays]] 有点明白了：主要还是讲浅拷贝、深拷贝中的一些概念，即：对象（也包含数组）中的成员如果是对象，那么存储的是成员的索引（地址），而不是成员的内容，通过浅拷贝的方法获取到新对象，对新对象中的对象成员进行内容的修改也是会影响源对象的对应的对象成员的。
+>
+> 就是这样的意思，原文这里略
+
+##### Write concise update logic with Immer
 
 <font color=dodgerBlue>If your state is deeply nested</font>, you might want to consider [flattening it.](https://react.dev/learn/choosing-the-state-structure#avoid-deeply-nested-state) But, <font color=dodgerBlue>if you don’t want to change your state structure</font>, you might prefer a shortcut to nested spreads. <font color=red>[Immer](https://github.com/immerjs/use-immer) is a popular library that lets you write using the convenient but mutating syntax and takes care of producing the copies for you</font>. <font color=dodgerBlue>With Immer</font>, the code you write <font color=lightSeaGreen>looks like you are “breaking the rules” and mutating an object</font>:
 
@@ -2435,13 +2441,276 @@ In practice, you can often “get away” with mutating state in React, but we s
 
 ##### Recap
 
-- Treat all state in React as immutable.
+- <font color=red>Treat all state in React as immutable</font>.
 - When you store objects in state, mutating them will not trigger renders and will change the state in previous render “snapshots”.
 - Instead of mutating an object, create a *new* version of it, and trigger a re-render by setting state to it.
 - You can use the `{...obj, something: 'newValue'}` object spread syntax to create copies of objects.
 - Spread syntax is shallow: it only copies one level deep.
 - To update a nested object, you need to create copies all the way up from the place you’re updating.
 - To reduce repetitive copying code, use Immer.
+
+
+
+#### Updating Arrays in State
+
+Arrays are mutable in JavaScript, but <font color=red>you should treat them as immutable when you store them in state</font>. <font color=dodgerBlue>Just like with objects</font>, when you want to update an array stored in state, you need to create a new one (or make a copy of an existing one), and then set state to use the new array.
+
+##### Updating arrays without mutation 
+
+In JavaScript, arrays are just another kind of object. [Like with objects](https://react.dev/learn/updating-objects-in-state), **you should treat arrays in React state as read-only.** <font color=lightSeaGreen>This means that you shouldn’t reassign items inside an array like `arr[0] = 'bird'`</font> , and <font color=red>you also **shouldn’t use methods that mutate the array, such as `push()` and `pop()`** </font>.
+
+Instead, every time you want to update an array, you’ll want to pass a *new* array to your state setting function. <font color=dodgerBlue>To do that</font>, <font color=red>you can create a new array from the original array in your state by **calling its non-mutating methods like `filter()` and `map()`**</font>. Then you can set your state to the resulting new array.
+
+Here is a reference table of common array operations. When dealing with arrays inside React state, <font color=lightSeaGreen>you will need to avoid the methods in the left column</font>, and instead prefer the methods in the right column:
+
+|           | avoid (mutates the array)           | prefer (returns a new array)                                 |
+| --------- | ----------------------------------- | ------------------------------------------------------------ |
+| adding    | `push`, `unshift`                   | `concat`, `[...arr]` spread syntax ([example](https://react.dev/learn/updating-arrays-in-state#adding-to-an-array)) |
+| removing  | `pop`, `shift`, `splice`            | `filter`, `slice` ([example](https://react.dev/learn/updating-arrays-in-state#removing-from-an-array)) |
+| replacing | `splice`, `arr[i] = ...` assignment | `map` ([example](https://react.dev/learn/updating-arrays-in-state#replacing-items-in-an-array)) |
+| sorting   | `reverse`, `sort`                   | copy the array first ([example](https://react.dev/learn/updating-arrays-in-state#making-other-changes-to-an-array)) |
+
+Alternatively, you can [use Immer](https://react.dev/learn/updating-arrays-in-state#write-concise-update-logic-with-immer) which lets you use methods from both columns.
+
+###### Removing from an array
+
+The easiest way to remove an item from an array is to *filter it out*. In other words, you will produce a new array that will not contain that item. To do this, <font color=red>use the `filter` method</font>, for example:
+
+> 👀 用 filter 实现 “删除” 的效果，这是之前没有想到的
+
+> 👀 下面的代码，和文档中的不一致；把内联的函数提取出来了
+
+```jsx
+import { useState } from 'react';
+
+let initialArtists = [
+  { id: 0, name: 'Marta Colvin Andrade' },
+  { id: 1, name: 'Lamidi Olonade Fakeye'},
+  { id: 2, name: 'Louise Nevelson'},
+];
+
+export default function List() {
+  const [artists, setArtists] = useState(
+    initialArtists
+  );
+
+  function onDel(id) {
+    setArtists(
+      artists.filter(a => a.id !== id)
+    );
+  }
+
+  return (
+    <>
+      <h1>Inspiring sculptors:</h1>
+      <ul>
+        {artists.map(artist => (
+          <li key={artist.id}>
+            {artist.name}{' '}
+            <button onClick={() => onDel(artist.id)}>
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+```
+
+###### Transforming an array 
+
+<font color=dodgerBlue>If you want to change some or all items of the array</font>, you <font color=red>can use `map()` to create a **new** array</font>. The function you will pass to `map` can decide what to do with each item, based on its data or its index (or both).
+
+###### Replacing items in an array
+
+> 👀 这个场景可以使用  ES2023 语法 [`Array.prototype.toSpliced()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced)
+
+It is particularly common to want to replace one or more items in an array. Assignments like `arr[0] = 'bird'` are mutating the original array, so instead you’ll want to <font color=red>use `map` for this as well</font>.
+
+To replace an item, create a new array with `map`. Inside your `map` call, you will receive the item index as the second argument. Use it to decide whether to return the original item (the first argument) or something else:
+
+```jsx
+import { useState } from 'react';
+
+let initialCounters = [
+  0, 0, 0
+];
+
+export default function CounterList() {
+  const [counters, setCounters] = useState(
+    initialCounters
+  );
+
+  function handleIncrementClick(index) {
+    const nextCounters = counters.map((c, i) => {
+      if (i === index) { // Increment the clicked counter
+        return c + 1;
+      } else { // The rest haven't changed
+        return c;
+      }
+    });
+    setCounters(nextCounters);
+  }
+
+  return (
+    <ul>
+      {counters.map((counter, i) => (
+        <li key={i}>
+          {counter}
+          <button onClick={() => {
+            handleIncrementClick(i);
+          }}>+1</button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+###### Inserting into an array
+
+> 👀 这个场景可以使用  ES2023 语法 [`Array.prototype.toSpliced()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced)
+
+Sometimes, you may want to <font color=dodgerBlue>insert an item at a particular position that’s neither at the beginning nor at the end</font>. To do this, <font color=red>you can use the `...` array spread syntax together with the `slice()` method</font>. The `slice()` method lets you cut a “slice” of the array. To insert an item, you will create an array that spreads the slice *before* the insertion point, then the new item, and then the rest of the original array.
+
+> 👀 由于文档中示例的 jsx 有些繁琐，所以这里给出简化逻辑代码
+
+```jsx
+setState([
+  ...state.slice(0, insertAt),
+  insertValue,
+  ...state.slice(insertAt)
+])
+```
+
+###### Making other changes to an array
+
+> 👀 这个场景可以使用  ES2023 的语法 [`Array.prototype.toSorted()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted) 和 [`Array.prototype.toSpliced()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced)
+
+There are some things you can’t do with the spread syntax and non-mutating methods like `map()` and `filter()` alone. <font color=dodgerBlue>For example, you may want to reverse or sort an array</font>. The JavaScript `reverse()` and `sort()` methods are mutating the original array, so you can’t use them directly.
+
+**However, you can copy the array first, and then make changes to it.**
+
+##### Updating objects inside arrays
+
+<font color=red>Objects are not *really* located “inside” arrays</font>. <font color=lightSeaGreen>They might appear to be “inside” in code, but each object in an array is a separate value, to which the array “points”</font>. This is why you need to be careful when changing nested fields like `list[0]` . Another person’s artwork list may point to the same element of the array!
+
+**When updating nested state, you need to create copies from the point where you want to update, and all the way up to the top level.**
+
+> 👀 这里实际是在讲浅拷贝和深拷贝中的一些概念。
+>
+> 下面给出了示例：不过没有用深拷贝（无脑）解决，而是用 map，对应不同情况手动使用 `...` 浅拷贝
+
+```jsx
+import { useState } from 'react';
+
+let nextId = 3;
+const initialList = [
+  { id: 0, title: 'Big Bellies', seen: false },
+  { id: 1, title: 'Lunar Landscape', seen: false },
+  { id: 2, title: 'Terracotta Army', seen: true },
+];
+
+export default function BucketList() {
+  const [myList, setMyList] = useState(initialList);
+  const [yourList, setYourList] = useState(initialList);
+
+  function handleToggleMyList(artworkId, nextSeen) {
+    setMyList(myList.map(artwork => {
+      if (artwork.id === artworkId) { // Create a *new* object with changes
+        return { ...artwork, seen: nextSeen };
+      } else { 
+        return artwork;
+      }
+    }));
+  }
+
+  function handleToggleYourList(artworkId, nextSeen) {
+    setYourList(yourList.map(artwork => {
+      if (artwork.id === artworkId) { // Create a *new* object with changes
+        return { ...artwork, seen: nextSeen };
+      } else { // No changes
+        return artwork;
+      }
+    }));
+  }
+
+  return (
+    <>
+      <h1>Art Bucket List</h1>
+      <h2>My list of art to see:</h2>
+      <ItemList
+        artworks={myList}
+        onToggle={handleToggleMyList} />
+      <h2>Your list of art to see:</h2>
+      <ItemList
+        artworks={yourList}
+        onToggle={handleToggleYourList}
+      />
+    </>
+  );
+}
+
+function ItemList({ artworks, onToggle }) {
+  return (
+    <ul>
+      {artworks.map(artwork => (
+        <li key={artwork.id}>
+          <label>
+            <input
+              type="checkbox"
+              checked={artwork.seen}
+              onChange={e => {
+                onToggle(artwork.id, e.target.checked);
+              }}
+            />
+            {artwork.title}
+          </label>
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+##### Write concise update logic with Immer 
+
+Updating nested arrays without mutation can get a little bit repetitive. [Just as with objects](https://react.dev/learn/updating-objects-in-state#write-concise-update-logic-with-immer):
+
+- Generally, you shouldn’t need to update state more than a couple of levels deep. If your state objects are very deep, you might want to [restructure them differently](https://react.dev/learn/choosing-the-state-structure#avoid-deeply-nested-state) so that they are flat.
+- <font color=dodgerBlue>If you don’t want to change your state structure</font>, <font color=red>you might prefer to use [Immer](https://github.com/immerjs/use-immer)</font>, which lets you write using the convenient but mutating syntax and takes care of producing the copies for you.
+
+```jsx
+const [myList, updateMyList] = useImmer(initialList);
+const [yourList, updateYourList] = useImmer(initialList);
+
+function handleToggleMyList(id, nextSeen) {
+  updateMyList(draft => {
+    const artwork = draft.find(a => a.id === id);
+    artwork.seen = nextSeen;
+  });
+}
+
+function handleToggleYourList(artworkId, nextSeen) {
+  updateYourList(draft => {
+    const artwork = draft.find(a => a.id === artworkId);
+    artwork.seen = nextSeen;
+  });
+}
+```
+
+This is because you’re not mutating the *original* state, but you’re mutating a special `draft` object provided by Immer. <font color=dodgerBlue>Similarly</font>, <font color=red>you can apply mutating methods like `push()` and `pop()` to the content of the `draft`</font>.
+
+Behind the scenes, Immer always constructs the next state from scratch according to the changes that you’ve done to the `draft`. This keeps your event handlers very concise without ever mutating state.
+
+##### Recap
+
+- You can put arrays into state, but you can’t change them.
+- Instead of mutating an array, create a *new* version of it, and update the state to it.
+- You can use the `[...arr, newItem]` array spread syntax to create arrays with new items.
+- You can use `filter()` and `map()` to create new arrays with filtered or transformed items.
+- You can use Immer to keep your code concise.
 
 
 
