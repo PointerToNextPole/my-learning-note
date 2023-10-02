@@ -949,18 +949,26 @@
   > 摘自：[React doc - Passing Props to a Component # Forwarding props with the JSX spread syntax](https://react.dev/learn/passing-props-to-a-component#forwarding-props-with-the-jsx-spread-syntax)
 
 - **restraint** ：约束，限制，克制
+
+- **spinner** ：本意：旋转器。前端引申意：加载动画
+
+  > When you press “Submit”, both the form and the button **become disabled,** and a spinner **appears.**
+  >
+  > 摘自：[React doc - Reacting to Input with State # How declarative UI compares to imperative](https://react.dev/learn/reacting-to-input-with-state#how-declarative-ui-compares-to-imperative)
+  
+- **exponential** ：指数的
 ***
 
 
 
-#### 英文术语
+### 英文术语
 
 - **埋点**：Event Tracking
 
 
 
 
-#### 特殊字符
+### 特殊字符
 
 因为 Google 是不支持 特殊字符 搜索的，想要带上 特殊字符 进行搜索，就必须要加上 字符的英文；所以这些就非常有必要记录
 
@@ -1040,7 +1048,7 @@
 
 
 
-#### 单词缩写
+### 单词缩写
 
 > 💡 可以参考 [[linux与macOS备忘录#Linux 命令缩写由来|Linux 命令缩写由来]] 中的内容
 
@@ -1052,7 +1060,7 @@
 
 
 
-#### 常见单词
+### 常见单词
 
 - **knot** ：n.（用绳索等打的）结。v. 把…打成结（或扎牢）
 

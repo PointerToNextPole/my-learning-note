@@ -2254,18 +2254,18 @@ const [person, setPerson] = useState({
 >
 > ```jsx
 > function handleChange(e) {
->   const { name, value } = e.target;
->   if (name === "name") {
->     setPerson({
->       ...person,
->       [name]: value
->     });
->   } else {
->     setPerson({
->       ...person,
->       artwork: { ...person.artwork, [name]: value }
->     });
->   }
+>     const { name, value } = e.target;
+>     if (name === "name") {
+>       setPerson({
+>         ...person,
+>         [name]: value
+>       });
+>     } else {
+>       setPerson({
+>         ...person,
+>         artwork: { ...person.artwork, [name]: value }
+>       });
+>     }
 > }
 > ```
 >
@@ -2286,6 +2286,10 @@ updatePerson(draft => {
   draft.artwork.city = 'Lagos';
 });
 ```
+
+> 👀 看了下 immer 的 文档，感觉 `draft` 作为 immutable 变量的名称算是一种惯例。
+>
+> ⚠️ 经过实践，需要注意的是：`updateState(draft => {})` 的 `{}` 是必须要加上的，否则将会报错：`An immer producer returned a new value *and* modified its draft. Either return a new value *or* modify the draft.` 。参考 [Immer doc - Returning new data from producers # Inline shortcuts using `void`](https://immerjs.github.io/immer/return/#inline-shortcuts-using-void) 的内容，也可以使用 `updateState(draft => void statements)` 解决；不过为了代码可读性的考虑，还是更推荐使用  `{}` 
 
 But unlike a regular mutation, it doesn’t overwrite the past state!
 
@@ -2416,8 +2420,6 @@ Notice how much **more concise** the event handlers have become. <font color=lig
 ###### How does Immer work?
 
 <font color=fuchsia>The `draft` provided by Immer is a special type of object, **called a Proxy**</font>, that <font color=red>“records” what you do with it</font>. This is why you can mutate it freely as much as you like! <font color=dodgerBlue>Under the hood</font>, <font color=red>Immer figures out which parts of the `draft` have been changed</font>, and <font color=red>**produces a completely new object that contains your edits**</font>.
-
-> 👀 看了下 immer 的 文档，感觉 `draft` 作为 immutable 变量的名称算是一种惯例
 
 ##### Why is mutating state not recommended in React?
 
@@ -2586,7 +2588,7 @@ setState([
 
 ###### Making other changes to an array
 
-> 👀 这个场景可以使用  ES2023 的语法 [`Array.prototype.toSorted()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted) 和 [`Array.prototype.toSpliced()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced)
+> 👀 这个场景可以使用  ES2023 的语法 [`Array.prototype.toSorted()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted) 和 [`Array.prototype.toSpliced()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced) 以及 [`Array.prototype.with()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/with)
 
 There are some things you can’t do with the spread syntax and non-mutating methods like `map()` and `filter()` alone. <font color=dodgerBlue>For example, you may want to reverse or sort an array</font>. The JavaScript `reverse()` and `sort()` methods are mutating the original array, so you can’t use them directly.
 
@@ -2711,6 +2713,59 @@ Behind the scenes, Immer always constructs the next state from scratch according
 - You can use the `[...arr, newItem]` array spread syntax to create arrays with new items.
 - You can use `filter()` and `map()` to create new arrays with filtered or transformed items.
 - You can use Immer to keep your code concise.
+
+
+
+### Managing State
+
+<font color=dodgerBlue>As your application grows</font>, it <font color=red>helps to be more intentional about **how your state is organized** and **how the data flows between your components**</font>. <font color=fuchsia>Redundant or duplicate state is a **common source of bugs**</font>. In this chapter, you’ll learn how to structure your state well, how to keep your state update logic maintainable, and how to share state between distant components.
+
+#### Reacting to Input with State
+
+<font color=lightSeaGreen>React provides a declarative way to manipulate the UI</font>（🌏 React 控制 UI 的方式是声明式的）. Instead of manipulating individual pieces of the UI directly, you describe the different states that your component can be in, and switch between them in response to the user input. This is similar to how designers think about the UI.
+
+##### How declarative UI compares to imperative
+
+> 🌏 声明式 UI 与命令式 UI 的比较
+
+> 👀 这部分不少篇幅在讲 “命令式 UI” 的缺点，感觉不算是重点；在读完《Vue.js 设计与实现》 的第一章后，感觉很多部分都很熟悉，这里略，只保留 React 相关的部分。
+>
+> 另外，也可以看下 《Vue.js 设计与实现》 的第一章，感觉更加全面的比较了“声明式 UI” 与 “命令式 UI”
+
+<font color=dodgerBlue>In React, you don’t directly manipulate the UI</font>—meaning you don’t enable, disable, show, or hide components directly. Instead, <font color=red>you **declare what you want to show,** and React figures out how to update the UI</font>. Think of getting into a taxi and telling the driver where you want to go instead of telling them exactly where to turn. It’s the driver’s job to get you there, and they might even know some shortcuts you haven’t considered!
+
+<img src="https://s2.loli.net/2023/10/02/AvEnowyH15aWezB.png" alt="In a car driven by React, a passenger asks to be taken to a specific place on the map. React figures out how to do that." style="zoom:24%;" />
+
+##### Thinking about UI declaratively
+
+You’ve seen how to implement a form imperatively above. To better understand how to think in React, <font color=dodgerBlue>you’ll walk through reimplementing this UI in React below</font>:
+
+1. **Identify** your component’s different visual states
+2. **Determine** what triggers those state changes
+3. <font color=red>**Represent** the state in memory using `useState`</font>
+4. **Remove** any non-essential state variables
+5. <font color=red>**Connect** the event handlers to set the state</font>
+
+###### Step 1: Identify your component’s different visual states 
+
+In computer science, you may hear about a [“state machine”](https://en.wikipedia.org/wiki/Finite-state_machine) being in one of several “states”. If you work with a designer, you may have seen mockups for different “visual states”. <font color=lightSeaGreen>React stands at the intersection of design and computer science</font>, so both of these ideas are sources of inspiration.
+
+First, you need to visualize all the different “states” of the UI the user might see:
+
+- **Empty**: Form has a disabled “Submit” button.
+- **Typing**: Form has an enabled “Submit” button.
+- **Submitting**: Form is completely disabled. Spinner is shown.
+- **Success**: “Thank you” message is shown instead of a form.
+- **Error**: Same as Typing state, but with an extra error message.
+
+###### Step 2: Determine what triggers those state changes
+
+<font color=dodgerBlue>You can trigger state updates in response to two kinds of inputs:</font>
+
+- **Human inputs,** like clicking a button, typing in a field, navigating a link.
+- **Computer inputs,** like a network response arriving, a timeout completing, an image loading.
+
+
 
 
 
