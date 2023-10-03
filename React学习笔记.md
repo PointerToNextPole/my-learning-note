@@ -2765,6 +2765,48 @@ First, you need to visualize all the different “states” of the UI the user m
 - **Human inputs,** like clicking a button, typing in a field, navigating a link.
 - **Computer inputs,** like a network response arriving, a timeout completing, an image loading.
 
+<img src="https://s2.loli.net/2023/10/03/GQVHxMaTfDkLznX.png" alt="image-20231003090953865" style="zoom:45%;" />
+
+##### Step 3: Represent the state in memory with `useState`
+
+Next you’ll need to represent the visual states of your component in memory with [`useState`.](https://react.dev/reference/react/useState) <font color=red>Simplicity is key</font>: each piece of state is a “moving piece”, and **you want as few “moving pieces” as possible.** <font color=lightSeaGreen>More complexity leads to more bugs!</font>
+
+Your first idea likely won’t be the best, but that’s ok—refactoring state is a part of the process!
+
+##### Step 4: Remove any non-essential state variables
+
+You want to avoid duplication in the state content so you’re only tracking what is essential. Spending a little time on refactoring your state structure will make your components easier to understand, reduce duplication, and avoid unintended meanings. <font color=red>Your goal is to **prevent the cases where the state in memory doesn’t represent any valid UI that you’d want a user to see**</font>. (For example, you never want to show an error message and disable the input at the same time, or the user won’t be able to correct the error!)
+
+Here are some questions you can ask about your state variables:
+
+- **Does this state cause a paradox?** A paradox usually means that the state is not constrained enough.
+
+- **Is the same information available in another state variable already?**
+
+  > 👀 感觉可以理解为：找到元信息，而非衍生信息
+
+- **Can you get the same information from the inverse of another state variable?**
+
+###### Eliminating “impossible” states with a reducer
+
+These three variables are a good enough representation of this form’s state. <font color=dodgerBlue>However, there are still some intermediate states that don’t fully make sense</font>. For example, a non-null `error` doesn’t make sense when `status` is `'success'`. <font color=dodgerBlue>**To model the state more precisely**</font>, <font color=red>you can [extract it into a reducer](https://react.dev/learn/extracting-state-logic-into-a-reducer)</font>. <font color=fuchsia>Reducers let you **unify multiple state variables into a single object** and consolidate all the related logic!</font>
+
+##### Step 5: Connect the event handlers to set state
+
+(👀 和命令式编程比较，声明式编程) it is much less fragile. Expressing all interactions as state changes lets you later introduce new visual states without breaking existing ones. It also lets you change what should be displayed in each state without changing the logic of the interaction itself.
+
+##### Recap
+
+- Declarative programming means describing the UI for each visual state <font color=lightSeaGreen>rather than micromanaging the UI (imperative)</font>.
+- When developing a component:
+  1. Identify all its visual states.
+  2. Determine the human and computer triggers for state changes.
+  3. Model the state with `useState`.
+  4. <font color=red>Remove non-essential state to avoid bugs and paradoxes</font>.
+  5. Connect the event handlers to set state.
+
+
+
 
 
 
