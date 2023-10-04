@@ -1213,3 +1213,6 @@
 - **substitute** ：替代
 
 - **rest assured** ( that ) ：请放心
+
+- **paraphrase** ：释义
+

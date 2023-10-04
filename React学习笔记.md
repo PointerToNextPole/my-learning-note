@@ -2807,6 +2807,127 @@ These three variables are a good enough representation of this form’s state. <
 
 
 
+#### Choosing the State Structure
+
+<font color=dodgerBlue>Structuring state well</font> <font color=red>can make a difference between a component that is pleasant to modify and debug</font>, and one that is a constant source of bugs. Here are some tips you should consider when structuring state.
+
+##### Principles for structuring state 
+
+When you write a component that holds some state, you’ll have to make choices about how many state variables to use and what the shape of their data should be. While it’s possible to write correct programs even with a suboptimal state structure, <font color=dodgerBlue>there are a few principles that can guide you to make better choices</font>:
+
+1. **Group related state.** <font color=dodgerBlue>If you always update two or more state variables at the same time</font>, <font color=red>consider merging them into a single state variable</font>.
+2. **Avoid contradictions in state.** When the state is structured in a way that several pieces of state may contradict and “disagree” with each other, you leave room for mistakes. Try to avoid this.
+3. **Avoid redundant state.** If you can calculate some information from the component’s props or its existing state variables during rendering, you should not put that information into that component’s state.
+4. **Avoid duplication in state.** <font color=dodgerBlue>When the same data is duplicated between multiple state variables, or within nested objects</font>, <font color=red>it is difficult to keep them in sync</font>. Reduce duplication when you can.
+5. <font color=red>**Avoid deeply nested state**</font>. Deeply hierarchical state is not very convenient to update. When possible, prefer to structure state in a flat way.
+
+The goal behind these principles is to *make state easy to update without introducing mistakes*. Removing redundant and duplicate data from state helps ensure that all its pieces stay in sync. <font color=lightSeaGreen>This is similar to how a database engineer might want to [“normalize” the database structure](https://docs.microsoft.com/en-us/office/troubleshoot/access/database-normalization-description) to reduce the chance of bugs</font>. To paraphrase Albert Einstein, **“Make your state as simple as it can be—but no simpler.”**
+
+Now let’s see how these principles apply in action.
+
+##### Group related state 
+
+You might sometimes be unsure between using a single or multiple state variables.
+
+Should you do this?
+
+```jsx
+const [x, setX] = useState(0);
+const [y, setY] = useState(0);
+```
+
+Or this?
+
+```jsx
+const [position, setPosition] = useState({ x: 0, y: 0 });
+```
+
+Technically, you can use either of these approaches. But **if some two state variables always change together, it might be a good idea to unify them into a single state variable.** Then you won’t forget to always keep them in sync.
+
+Another case where you’ll <font color=red>group data into an object or an array</font> is <font color=dodgerBlue>when **you don’t know how many pieces of state you’ll need**</font>. For example, it’s helpful when you have a form where the user can add custom fields.
+
+##### Avoid contradictions in state
+
+**Since `isSending` and `isSent` should never be `true` at the same time, it is better to replace them with one `status` state variable that may take one of *three* valid states:** `'typing'` (initial), `'sending'`, and `'sent'` .
+
+##### Avoid redundant state 
+
+If you can calculate some information from the component’s props or its existing state variables during rendering, you **should not** put that information into that component’s state.
+
+For example, take this form. It works, but can you find any redundant state in it?
+
+> 👀 需要注意的是：加上 `fullName` 这个 state 之后，在连续输入时要比“不加上 `fullName` ” 要卡不少
+
+```jsx
+import { useState } from 'react';
+
+export default function Form() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [fullName, setFullName] = useState('');
+
+  function handleFirstNameChange(e) {
+    setFirstName(e.target.value);
+    setFullName(e.target.value + ' ' + lastName);
+  }
+
+  function handleLastNameChange(e) {
+    setLastName(e.target.value);
+    setFullName(firstName + ' ' + e.target.value);
+  }
+  
+  return ( { /* ... */ } )
+}
+```
+
+This form has three state variables: `firstName`, `lastName`, and `fullName`. However, `fullName` is redundant. **You can always calculate `fullName` from `firstName` and `lastName` during render, so remove it from state**.
+
+###### Don’t mirror props in state
+
+A common example of redundant state is code like this:
+
+```jsx
+function Message({ messageColor }) {
+  const [color, setColor] = useState(messageColor);
+}
+```
+
+Here, a `color` state variable is initialized to the `messageColor` prop. The problem is that <font color=red>**if the parent component passes a different value of `messageColor` later (for example, `'red'` instead of `'blue'`), the `color` *state variable* would not be updated!**</font> The state is only initialized during the first render.
+
+This is why “mirroring” some prop in a state variable can lead to confusion. Instead, use the `messageColor` prop directly in your code. If you want to give it a shorter name, use a constant:
+
+```jsx
+function Message({ messageColor }) {
+  const color = messageColor;
+}
+```
+
+This way it won’t get out of sync with the prop passed from the parent component.
+
+“Mirroring” props into state only makes sense when you *want* to ignore all updates for a specific prop. <font color=fuchsia>By convention, **start the prop name with `initial` or `default` to clarify** that its new values are ignored</font>:
+
+```jsx
+function Message({ initialColor }) {
+  // The `color` state variable holds the *first* value of `initialColor`.
+  // Further changes to the `initialColor` prop are ignored.
+  const [color, setColor] = useState(initialColor);
+}
+```
+
+##### Avoid duplication in state
+
+> 👀 感觉完全在讲例子，没有其他东西；略
+
+##### Avoid deeply nested state
+
+[Updating nested state](https://react.dev/learn/updating-objects-in-state#updating-a-nested-object) involves making copies of objects all the way up from the part that changed. Deleting a deeply nested place would involve copying its entire parent place chain. Such code can be very verbose.
+
+**If the state is too nested to update easily, consider making it “flat”.**
+
+> 👀 演示代码有点长，略。不过感觉很有价值，很受启发；见 [codesandbox.io - Avoid deeply nested state's demo](https://codesandbox.io/s/mlsd2f?file=/App.js&utm_medium=sandpack)
+
+Sometimes, you can also reduce state nesting by moving some of the nested state into the child components. This works well for ephemeral UI state that doesn’t need to be stored, like whether an item is hovered.
+
 
 
 
