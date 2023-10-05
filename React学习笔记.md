@@ -2987,6 +2987,208 @@ Your app will change as you work on it. It is common that you will move state do
 
 
 
+#### Preserving and Resetting State
+
+State is isolated between components. <font color=red>React keeps track of **which state belongs to which component** based on their place in the UI tree</font>. You can control when to preserve state and when to reset it between re-renders.
+
+##### The UI tree 
+
+<font color=lightSeaGreen>**Browsers use many tree structures to model UI**</font>. The [DOM](https://developer.mozilla.org/docs/Web/API/Document_Object_Model/Introduction) represents HTML elements, the [CSSOM](https://developer.mozilla.org/docs/Web/API/CSS_Object_Model) does the same for CSS. <font color=red>There’s even an [Accessibility tree](https://developer.mozilla.org/docs/Glossary/Accessibility_tree)</font>!
+
+<font color=lightSeaGreen>React also uses tree structures to manage and model the UI you make</font>. React makes **UI trees** from your JSX. Then <font color=red>React DOM updates the browser DOM elements to match that UI tree</font>. (React Native <font color=red>translates</font> these trees into elements specific to mobile platforms)
+
+![Diagram with three sections arranged horizontally. In the first section, there are three rectangles stacked vertically, with labels 'Component A', 'Component B', and 'Component C'. Transitioning to the next pane is an arrow with the React logo on top labeled 'React'. The middle section contains a tree of components, with the root labeled 'A' and two children labeled 'B' and 'C'. The next section is again transitioned using an arrow with the React logo on top labeled 'React'. The third and final section is a wireframe of a browser, containing a tree of 8 nodes, which has only a subset highlighted (indicating the subtree from the middle section).](https://s2.loli.net/2023/10/05/ctIgzjPepAR5yl3.png)
+
+<center>From components, <font color=red>React creates a UI tree which React DOM uses to render the DOM</font></center>
+
+##### State is tied to a position in the tree
+
+When you give a component state, <font color=dodgerBlue>you might think the state “lives” inside the component</font>. <font color=dodgerBlue>**But**</font> <font color=red>the state is actually held inside React</font>. React associates each piece of state it’s holding with the correct component by where that component sits in the UI tree.
+
+<font color=red>In React, each component on the screen has fully isolated state</font>. For example, if you render two `Counter` components side by side, <font color=lightSeaGreen>each of them will get its own, independent, `score` and `hover` states</font>.
+
+React will keep the state around for as long as you render the same component at the same position.
+
+<font color=fuchsia>**React preserves a component’s state for as long as it’s being rendered at its position in the UI tree**</font>. If it gets removed, or a different component gets rendered at the same position, React discards its state.
+
+##### Same component at the same position preserves state
+
+> ⚠️ Pitfall
+>
+> Remember that **it’s the position in the UI tree—not in the JSX markup—that matters to React!** This component has two `return` clauses with different `<Counter />` JSX tags inside and outside the `if` :
+>
+> ```jsx
+> import { useState } from 'react';
+> 
+> export default function App() {
+>   const [isFancy, setIsFancy] = useState(false);
+>   if (isFancy) {
+>     return (
+>       <div>
+>         <Counter isFancy={true} />
+>         <label>
+>           <input
+>             type="checkbox"
+>             checked={isFancy}
+>             onChange={ e => setIsFancy(e.target.checked) }
+>           />
+>           Use fancy styling
+>         </label>
+>       </div>
+>     );
+>   }
+>   return (
+>     <div>
+>       <Counter isFancy={false} />
+>       <label>
+>         <input
+>           type="checkbox"
+>           checked={isFancy}
+>           onChange={ e => setIsFancy(e.target.checked) }
+>         />
+>         Use fancy styling
+>       </label>
+>     </div>
+>   );
+> }
+> 
+> function Counter({ isFancy }) {
+>   const [score, setScore] = useState(0);
+>   const [hover, setHover] = useState(false);
+> 
+>   let className = 'counter';
+>   if (hover) { className += ' hover'; }
+>   if (isFancy) { className += ' fancy'; }
+> 
+>   return (
+>     <div
+>       className={className}
+>       onPointerEnter={() => setHover(true)}
+>       onPointerLeave={() => setHover(false)}
+>     >
+>       <h1>{score}</h1>
+>       <button onClick={() => setScore(score + 1)}>
+>         Add one
+>       </button>
+>     </div>
+>   );
+> }
+> ```
+>
+> <font color=dodgerBlue>You might expect the state to reset when you tick checkbox, **but it doesn’t!**</font> <font color=fuchsia>This is because **both of these `<Counter />` tags are rendered at the same position**</font>. <font color=red>React doesn’t know where you place the conditions in your function</font>. <font color=fuchsia>**All it “sees” is the tree you return**</font>.
+>
+> In both cases, the `App` component returns a `<div>` with `<Counter />` as a first child. <font color=red>To React, these two counters have the same “address”</font>: the first child of the first child of the root. <font color=red>This is how React matches them up between the previous and next renders, *regardless of how you structure your logic*</font>.
+
+##### Different components at the same position reset state
+
+**when you render a different component in the same position, it resets the state of its entire subtree**.
+
+<font color=dodgerBlue>As a rule of thumb</font>, <font color=red>**if you want to preserve the state between re-renders, the structure of your tree needs to “match up”**</font> from one render to another. <font color=dodgerBlue>**If the structure is different**</font>, <font color=red>the state gets destroyed because React destroys state when it removes a component from the tree</font>.
+
+> ⚠️ Pitfall
+>
+> <font color=dodgerBlue>This is why you should not nest component function definitions</font>.
+>
+> Here, the `MyTextField` component function is defined *inside* `MyComponent`:
+>
+> ```jsx
+> import { useState } from 'react';
+> 
+> export default function MyComponent() {
+>   const [counter, setCounter] = useState(0);
+> 
+>   function MyTextField() {
+>     const [text, setText] = useState('');
+> 
+>     return (
+>       <input
+>         value={text}
+>         onChange={e => setText(e.target.value)}
+>       />
+>     );
+>   }
+> 
+>   return (
+>     <>
+>       <MyTextField />
+>       <button onClick={() => {
+>         setCounter(counter + 1)
+>       }}>Clicked {counter} times</button>
+>     </>
+>   );
+> }
+> ```
+>
+> <font color=lightSeaGreen>Every time you click the button, the input state disappears!</font> This is <font color=fuchsia>because **a *different* `MyTextField` function is created for every render of `MyComponent`**</font>. <font color=red>**You’re rendering a *different* component in the same position**</font>, so React resets all state below. <font color=red>This leads to bugs and performance problems</font>. <font color=dodgerBlue>To avoid this problem</font>, <font color=lightSeaGreen>**always declare component functions at the top level, and don’t nest their definitions**</font>.
+
+##### Resetting state at the same position 
+
+By default, <font color=lightSeaGreen>React preserves state of a component while it stays at the same position</font>. <font color=lightSeaGreen>Usually, this is exactly what you want</font>, so it makes sense as the default behavior. <font color=dodgerBlue>But sometimes</font>, <font color=red>you may want to reset a component’s state</font>.
+
+<font color=dodgerBlue>There are two ways to reset state when switching between them:</font>
+
+1. Render components in different positions
+
+   > 👀 这里的不同地方，就是字面意思；如下示例：
+   >
+   > ```jsx
+   > { condition && <SatifyCondComponent /> }
+   > { !condition && <UnSatifyCondComponent /> }
+   > ```
+   >
+   > 而同个地方，是指通过三元运算
+   >
+   > ```jsx
+   > { condition ? <SatifyCondComponent /> : <UnSatifyCondComponent /> }
+   > ```
+
+2. Give each component an explicit identity with `key`
+
+   > 👀 如下示例
+   >
+   > ```jsx
+   > { 
+   >   condition
+   >     ? <SatifyCondComponent key="satify" />
+   >     : <UnSatifyCondComponent key="UnSatify" /> 
+   > }
+   > ```
+
+###### Option 1: Rendering a component in different positions
+
+> 👀 如上面解释的一样，略
+
+###### Option 2: Resetting state with a key 
+
+There is also another, <font color=red>more generic</font>, way to reset a component’s state.
+
+You might have seen `key`s when [rendering lists.](https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key) <font color=lightSeaGreen>Keys aren’t just for lists</font>! <font color=red>You can use keys to make React distinguish between any components</font>. By default, React uses order within the parent to discern between components.
+
+Specifying a `key` tells React to use the `key` itself as part of the position, instead of their order within the parent. This is why, <font color=lightSeaGreen>**even though you render them in the same place in JSX**</font>, <font color=red>React sees them as two different components</font>, and so they will never share state. Every time a counter appears on the screen, its state is created. <font color=red>Every time it is removed, its state is destroyed</font>. Toggling between them resets their state over and over.
+
+> 💡 Note
+>
+> Remember that <font color=red>keys are not globally unique</font>. <font color=fuchsia>They only specify the position *within the parent*</font>.
+
+###### Preserving state for removed components
+
+> 👀 因为 key 使得切换后，被切换的元素会被直接销毁；这也导致了一些副作用；比如如果你希望切换回来时，之前的输入依然存在
+
+In a real chat app, you’d probably want to recover the input state when the user selects the previous recipient again. <font color=dodgerBlue>There are a few ways to keep the state “alive” for a component that’s no longer visible</font>:
+
+- You could render *all* chats instead of just the current one, but hide all the others with CSS. The chats would not get removed from the tree, so their local state would be preserved. <font color=lightSeaGreen>This solution works great for simple UIs</font>. But <font color=red>it can get very slow if the hidden trees are large and contain a lot of DOM nodes</font>.
+- <font color=red>You could [lift the state up](https://react.dev/learn/sharing-state-between-components) and hold the pending message for each recipient in the parent component</font>. This way, when the child components get removed, it doesn’t matter, because it’s the parent that keeps the important information. This is the most common solution.
+- You might also use a different source in addition to React state. For example, you probably want a message draft to persist even if the user accidentally closes the page. To implement this, you could have the `Chat` component initialize its state by reading from the [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage), and save the drafts there too.
+
+No matter which strategy you pick, a chat *with Alice* is conceptually distinct from a chat *with Bob*, so it makes sense to give a `key` to the `<Chat>` tree based on the current recipient.
+
+##### Recap
+
+- React keeps state for as long as the same component is rendered at the same position.
+- State is not kept in JSX tags. It’s associated with the tree position in which you put that JSX.
+- You can force a subtree to reset its state by giving it a different key.
+- Don’t nest component definitions, or you’ll reset state by accident.
+
 
 
 ## coderwhy React18 学习笔记

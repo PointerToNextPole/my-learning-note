@@ -1216,3 +1216,7 @@
 
 - **paraphrase** ：释义
 
+- **as a rule of thumb** ：根据经验
+
+- **discern** ：鉴别
+
