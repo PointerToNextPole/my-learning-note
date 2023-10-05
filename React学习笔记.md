@@ -2930,6 +2930,63 @@ Sometimes, you can also reduce state nesting by moving some of the nested state 
 
 
 
+#### Sharing State Between Components
+
+<font color=dodgerBlue>Sometimes, you want the state of two components to always change together</font>. To do it, remove state from both of them, <font color=red>move it to their closest common parent, and then pass it down to them via props</font>. <font color=fuchsia>This is known as *lifting state up*</font>, and it’s one of the most common things you will do writing React code.
+
+##### Lifting state up by example
+
+you need to “lift their state up” to a parent component in three steps:
+
+1. **Remove** state from the child components.
+2. <font color=red>**Pass** hardcoded data from the common parent</font>.
+3. **Add** state to the common parent and pass it down together with the event handlers.
+
+###### Step 1: Remove state from the child components
+
+> 👀 这部分意思是：将子组件中的需要 “lifting up” 的 state 删去；通过参数传入子组件中。
+>
+> 由于完全照着示例在讲，这里总结一下略
+
+###### Step 2: Pass hardcoded data from the common parent
+
+To lift state up, you **must** locate the closest common parent component of *both* of the child components.
+
+Make the `Accordion` component <font color=red>pass a hardcoded value of `isActive`</font> <font color=lightSeaGreen>(for example, `true`)</font> to both panels.
+
+###### Step 3: Add state to the common parent
+
+Lifting state up often changes the nature of what you’re storing as state.
+
+##### Controlled and uncontrolled components
+
+It is common to call a component with some local state “uncontrolled”.
+
+In contrast, you might say a component is “controlled” when the important information in <font color=red>it is driven by props rather than its own local state</font>. This lets the parent component fully specify its behavior.
+
+<font color=lightSeaGreen>Uncontrolled components are easier to use within their parents because they require less configuration</font>. But <font color=red>they’re less flexible when you want to coordinate them together</font>. <font color=red>Controlled components are maximally flexible</font>, but they require the parent components to fully configure them with props.
+
+In practice, “controlled” and “uncontrolled” aren’t strict technical terms—each component usually has some mix of both local state and props. However, <font color=red>this is a useful way to talk about how components are designed and what capabilities they offer</font>.
+
+<font color=dodgerBlue>When writing a component</font>, <font color=red>consider which information in it should be controlled (via props)</font>, and <font color=red>which information should be uncontrolled (via state)</font>. But you can always change your mind and refactor later.
+
+##### A single source of truth for each state 
+
+In a React application, many components will have their own state. Some state may “live” close to the leaf components (components at the bottom of the tree) like inputs. Other state may “live” closer to the top of the app. For example, even client-side routing libraries are usually implemented by storing the current route in the React state, and passing it down by props!
+
+**For each unique piece of state, you will choose the component that “owns” it.** This principle is also known as having a [**“single source of truth”**](https://en.wikipedia.org/wiki/Single_source_of_truth). It doesn’t mean that all state lives in one place—but that for *each* piece of state, there is a *specific* component that holds that piece of information. Instead of duplicating shared state between components, *lift it up* to their common shared parent, and *pass it down* to the children that need it.
+
+Your app will change as you work on it. It is common that you will move state down or back up while you’re still figuring out where each piece of the state “lives”. This is all part of the process!
+
+##### Recap
+
+- When you want to coordinate two components, move their state to their common parent.
+- Then pass the information down through props from their common parent.
+- Finally, pass the event handlers down so that the children can change the parent’s state.
+- It’s useful to consider components as “controlled” (driven by props) or “uncontrolled” (driven by state).
+
+
+
 
 
 ## coderwhy React18 学习笔记
