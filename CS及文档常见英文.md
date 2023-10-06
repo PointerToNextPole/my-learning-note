@@ -957,6 +957,8 @@
   > 摘自：[React doc - Reacting to Input with State # How declarative UI compares to imperative](https://react.dev/learn/reacting-to-input-with-state#how-declarative-ui-compares-to-imperative)
   
 - **exponential** ：指数的
+
+- **name after** ：以...为名
 ***
 
 
@@ -1011,7 +1013,7 @@
 | "At" sign (@)           | Find social tags like [ @google ] or [ @ladygaga]            |
 | Ampersand (&)           | Find strongly connected ideas and phrases like [ Brothers & Sisters ] or [ A&E ] |
 | Percent (%)             | Search for a percent value like [ 40% of 80 ] or [ 10% of .1 ] |
-| Dollar sign (\$)        | Indicate prices, so [ nikon 400 ] and [ nikon \$400 ] give different results |
+| Dollar sign (`$`)       | Indicate prices, so [ nikon 400 ] and [ nikon `$400` ] give different results |
 | Hashtag/number sign (#) | Search for trending topics indicated by hashtags like [ \#lifewithoutgoogle ] |
 | Dash (-)                | Indicate that words around it are strongly connected as in [ twelve-year-old dog ] and [ cross-reference ] |
 | Underscore symbol (_)   | Connected two works like [ quick_sort ]. Your search results will find this pair of words either linked together (e.g., quicksort) or connected by an underscore (e.g., quick_sort). |
@@ -1219,4 +1221,18 @@
 - **as a rule of thumb** ：根据经验
 
 - **discern** ：鉴别
+
+- **consolidate** ：v. （使）结成一体，合并；（使）巩固；使加强
+
+  > For these cases, you can consolidate all the state update logic outside your component in a single function, called a *reducer.*
+  >
+  > 摘自：[react doc - Extracting State Logic into a Reducer](https://react.dev/learn/extracting-state-logic-into-a-reducer)
+
+- **upfront** ：预先，一开始（看了下字典没有 “一开始” 的意思，这个属于引申意）
+
+  > Generally, with `useState` you have to write less code upfront.
+  >
+  > 摘自：[react doc - Extracting State Logic into a Reducer # Comparing `useState` and `useReducer`](https://react.dev/learn/extracting-state-logic-into-a-reducer#comparing-usestate-and-usereducer)
+
+- **bloat** ：膨胀
 

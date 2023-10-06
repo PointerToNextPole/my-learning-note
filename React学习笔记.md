@@ -3189,6 +3189,544 @@ No matter which strategy you pick, a chat *with Alice* is conceptually distinct 
 - You can force a subtree to reset its state by giving it a different key.
 - Don’t nest component definitions, or you’ll reset state by accident.
 
+##### Try out some challenges
+
+> 👀 第一题 “Fix disappearing input text” 有必要好好看下；感觉文档正文有点没讲明白，在这里补充了一些内容
+
+
+
+#### Extracting State Logic into a Reducer
+
+<font color=dodgerBlue>Components **with many state updates spread across many event handlers** can get overwhelming</font>. For these cases, <font color=red>you can **consolidate all the state update logic outside your component in a single function**, called a *reducer*</font>.
+
+> 🌏 对于拥有许多状态更新逻辑的组件来说，过于分散的事件处理程序可能会令人不知所措。对于这种情况，你可以将组件的所有状态更新逻辑整合到一个外部函数中，这个函数叫作 **reducer**。
+
+##### Consolidate state logic with a reducer 
+
+<font color=dodgerBlue>As your components grow in complexity</font>, <font color=lightSeaGreen>it can **get harder to see at a glance all the different ways** in which a component’s state gets updated</font>. For example, the `TaskApp` component below holds an array of `tasks` in state and uses three different event handlers to add, remove, and edit tasks:
+
+```jsx
+import { useState } from 'react';
+import AddTask from './AddTask.js';
+import TaskList from './TaskList.js';
+
+export default function TaskApp() {
+  const [tasks, setTasks] = useState(initialTasks);
+
+  function handleAddTask(text) {
+    setTasks([
+      ...tasks,
+      {
+        id: nextId++,
+        text: text,
+        done: false,
+      },
+    ]);
+  }
+
+  function handleChangeTask(task) {
+    setTasks(
+      tasks.map((t) => {
+        if (t.id === task.id) {
+          return task;
+        } else {
+          return t;
+        }
+      })
+    );
+  }
+
+  function handleDeleteTask(taskId) {
+    setTasks(tasks.filter((t) => t.id !== taskId));
+  }
+
+  return (
+    <>
+      <h1>Prague itinerary</h1>
+      <AddTask onAddTask={handleAddTask} />
+      <TaskList
+        tasks={tasks}
+        onChangeTask={handleChangeTask}
+        onDeleteTask={handleDeleteTask}
+      />
+    </>
+  );
+}
+
+let nextId = 3;
+const initialTasks = [
+  {id: 0, text: 'Visit Kafka Museum', done: true},
+  {id: 1, text: 'Watch a puppet show', done: false},
+  {id: 2, text: 'Lennon Wall pic', done: false},
+];
+```
+
+<img src="https://s2.loli.net/2023/10/06/A6luhX7vTNdrBHn.png" alt="image-20231006161137251" style="zoom:50%;" />
+
+As component grows, so does the amount of state logic sprinkled throughout it. <font color=lightSeaGreen>To reduce this complexity and **keep all your logic in one easy-to-access place**</font>, <font color=red>you can move that state logic into a single function outside your component, **called a “reducer”**</font>.
+
+Reducers are a different way to handle state. <font color=dodgerBlue>You can **migrate from `useState` to `useReducer`** in three steps</font> :
+
+1. <font color=fuchsia>**Move** from setting state to dispatching actions</font>.
+2. **Write** a reducer function.
+3. **Use** the reducer from your component.
+
+###### Step 1: Move from setting state to dispatching actions
+
+Your event handlers currently specify *what to do* by setting state:
+
+```jsx
+function handleAddTask(text) {
+  setTasks([
+    ...tasks,
+    {
+      id: nextId++,
+      text: text,
+      done: false,
+    },
+  ]);
+}
+
+function handleChangeTask(task) {
+  setTasks(
+    tasks.map((t) => {
+      if (t.id === task.id) {
+        return task;
+      } else {
+        return t;
+      }
+    })
+  );
+}
+
+function handleDeleteTask(taskId) {
+  setTasks(tasks.filter((t) => t.id !== taskId));
+}
+```
+
+<font color=red>Remove all the state setting logic</font>. <font color=lightSeaGreen>What you are left with are three event handlers</font>:
+
+- `handleAddTask(text)` is called when the user presses “Add”.
+- `handleChangeTask(task)` is called when the user toggles a task or presses “Save”.
+- `handleDeleteTask(taskId)` is called when the user presses “Delete”.
+
+<font color=red>Managing state with reducers is slightly different from directly setting state</font>. <font color=lightSeaGreen>Instead of telling React “what to do” by setting state</font>, you <font color=red>specify “what the user just did” by **dispatching** “actions” from your event handlers</font>. (<font color=lightSeaGreen>The state update logic will live elsewhere</font>!) So instead of “setting `tasks`” via an event handler, you’re dispatching an “added/changed/deleted a task” action. <font color=lightSeaGreen>This is more descriptive of the user’s intent</font>.
+
+```jsx
+function handleAddTask(text) {
+  dispatch({
+    type: 'added',
+    id: nextId++,
+    text: text,
+  });
+}
+
+function handleChangeTask(task) {
+  dispatch({
+    type: 'changed',
+    task: task,
+  });
+}
+
+function handleDeleteTask(taskId) {
+  dispatch({
+    type: 'deleted',
+    id: taskId,
+  });
+}
+```
+
+<font color=fuchsia>The object you pass to `dispatch` is called an “action”</font>:
+
+> 👀 看到这里有点懵，vuex 里面叫 payload ...
+
+```jsx
+function handleDeleteTask(taskId) {
+  dispatch(
+    // "action" object:
+    {
+      type: 'deleted',
+      id: taskId,
+    }
+  );
+}
+```
+
+It is a regular JavaScript object. <font color=lightSeaGreen>You decide what to put in it</font>, but <font color=red>generally it should contain the minimal information about *what happened*</font>. (You will add the `dispatch` function itself in a later step.)
+
+> 👀 “contain the minimal information about what happened” 应该是在说 `type` 字段干的事情
+
+> 💡 Note
+>
+> An action object can have any shape.
+>
+> <font color=dodgerBlue>By convention</font>, <font color=red>it is common to give it a string `type` that describes what happened</font>, and pass any additional information in other fields. <font color=lightSeaGreen>The `type` is specific to a component</font>, so in this example either `'added'` or `'added_task'` would be fine. Choose a name that says what happened!
+>
+> ```jsx
+> dispatch({
+>   // specific to component
+>   type: 'what_happened',
+>   // other fields go here
+> });
+> ```
+
+###### Step 2: Write a reducer function
+
+A reducer function is where you will put your state logic. <font color=lightSeaGreen>It takes two arguments</font>, <font color=red>the **current state** and the **action object**</font>, and it <font color=red>returns the next state</font>:
+
+```jsx
+function yourReducer(state, action) {
+  // return next state for React to set
+}
+```
+
+React will set the state to what you return from the reducer.
+
+<font color=dodgerBlue>To move your state setting logic from your event handlers to a reducer function in this example, you will</font>:
+
+1. Declare the current state (`tasks`) as the first argument.
+2. Declare the `action` object as the second argument.
+3. Return the *next* state from the reducer (which React will set the state to).
+
+<font color=dodgerBlue>Here is all the state setting logic migrated to a reducer function</font>:
+
+> 👀 这里并没有原样摘抄文档中的代码（通过 if-else 判断 type，并在 if-else 中 return 返回的 state；而且个人感觉：既然 return，那没有必要继续嵌套 else 了，继续 if 就行了 ），而是摘抄的文档下面一些的 Note 部分的代码。
+>
+> 另外，这里将 Note 中的内容提前：
+>
+> > 💡 Note
+> > The code above uses if/else statements, but <font color=red>it’s a convention to use switch statements inside reducers</font>. The result is the same, but <font color=lightSeaGreen>it can be easier to read switch statements at a glance</font>.
+> >
+> > We recommend wrapping each `case` block into the `{` and `}` curly braces so that variables declared inside of different `case`s don’t clash with each other. Also, <font color=red>a `case` should usually end with a `return`</font>. <font color=lightSeaGreen>If you forget to `return`, the code will “fall through” to the next `case`</font> （👀 有点奇怪，不 return 也可以用 `break`，并不会导致匹配更多无用的 `case`s ）, which can lead to mistakes!
+> >
+> > If you’re not yet comfortable with switch statements, using if/else is completely fine.
+
+```jsx
+function tasksReducer(tasks, action) {
+  switch (action.type) {
+    case 'added': {
+      return [
+        ...tasks,
+        {
+          id: action.id,
+          text: action.text,
+          done: false,
+        },
+      ];
+    }
+    case 'changed': {
+      return tasks.map((t) => {
+        if (t.id === action.task.id) {
+          return action.task;
+        } else {
+          return t;
+        }
+      });
+    }
+    case 'deleted': {
+      return tasks.filter((t) => t.id !== action.id);
+    }
+    default: {
+      throw Error('Unknown action: ' + action.type);
+    }
+  }
+}
+```
+
+Because the reducer function takes state (`tasks`) as an argument, you can **declare it outside of your component**. This decreases the indentation level（👀 缩进层级） and can make your code easier to read.
+
+###### Why are reducers called this way?
+
+Although reducers can “reduce” the amount of code inside your component, <font color=red>they are actually **named after** the `Array.prototype.reduce()` operation</font> that you can perform on arrays.
+
+<font color=lightSeaGreen>The function you pass to `Array.prototype.reduce()` is known as a **“reducer”**</font>. It takes the *result so far* and the *current item,* then it returns the *next result.* <font color=dodgerBlue>React reducers are an example of the same idea</font>: <font color=fuchsia>they take the *state so far* and the *action*, and return the *next state*</font>. In this way, they accumulate actions over time into state.
+
+<font color=red>You could even use the `Array.prototype.reduce()` method with an `initialState`</font> and an array of `actions` to calculate the final state by passing your reducer function to it:
+
+```jsx
+// index.jsx
+import tasksReducer from './tasksReducer.jsx';
+
+let initialState = [];
+let actions = [
+  {type: 'added', id: 1, text: 'Visit Kafka Museum'},
+  {type: 'added', id: 2, text: 'Watch a puppet show'},
+  {type: 'deleted', id: 1},
+  {type: 'added', id: 3, text: 'Lennon Wall pic'},
+];
+
+let finalState = actions.reduce(tasksReducer, initialState); // 👀 这就是 arr.reduce
+
+const output = document.getElementById('output');
+output.textContent = JSON.stringify(finalState, null, 2);
+```
+
+```jsx
+// tasksReducer.jsx
+export default function tasksReducer(tasks, action) {
+  switch (action.type) {
+    case 'added': {
+      return [
+        ...tasks,
+        {
+          id: action.id,
+          text: action.text,
+          done: false,
+        },
+      ];
+    }
+    case 'changed': {
+      return tasks.map((t) => {
+        if (t.id === action.task.id) {
+          return action.task;
+        } else {
+          return t;
+        }
+      });
+    }
+    case 'deleted': {
+      return tasks.filter((t) => t.id !== action.id);
+    }
+    default: {
+      throw Error('Unknown action: ' + action.type);
+    }
+  }
+}
+```
+
+###### Step 3: Use the reducer from your component
+
+Finally, you need to hook up the `tasksReducer` to your component. Import the `useReducer` Hook from React:
+
+```jsx
+import { useReducer } from 'react';
+```
+
+Then you can <font color=fuchsia>**replace `useState`**</font> , with `useReducer` like so:
+
+```jsx
+const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+```
+
+<font color=dodgerBlue>**The `useReducer` Hook is similar to `useState`**</font> — you <font color=lightSeaGreen>must pass it **an initial state** and it returns a stateful value</font> and <font color=red>a way to set state</font> (in this case, the `dispatch` function). But it’s a little different.
+
+<font color=dodgerBlue>The `useReducer` Hook takes two arguments</font>:
+
+1. A reducer function
+2. <font color=red>**An** initial state</font>
+
+<font color=dodgerBlue>And it returns</font>:
+
+1. A stateful value
+2. A dispatch function (to “dispatch” user actions to the reducer)
+
+```jsx
+// App.js
+import { useReducer } from 'react';
+import AddTask from './AddTask.js';
+import TaskList from './TaskList.js';
+import tasksReducer from './tasksReducer.js';
+
+export default function TaskApp() {
+  const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+
+  function handleAddTask(text) {
+    dispatch({
+      type: 'added',
+      id: nextId++,
+      text: text,
+    });
+  }
+
+  function handleChangeTask(task) {
+    dispatch({
+      type: 'changed',
+      task: task,
+    });
+  }
+
+  function handleDeleteTask(taskId) {
+    dispatch({
+      type: 'deleted',
+      id: taskId,
+    });
+  }
+
+  return (
+    <>
+      <h1>Prague itinerary</h1>
+      <AddTask onAddTask={handleAddTask} />
+      <TaskList
+        tasks={tasks}
+        onChangeTask={handleChangeTask}
+        onDeleteTask={handleDeleteTask}
+      />
+    </>
+  );
+}
+
+let nextId = 3;
+const initialTasks = [
+  {id: 0, text: 'Visit Kafka Museum', done: true},
+  {id: 1, text: 'Watch a puppet show', done: false},
+  {id: 2, text: 'Lennon Wall pic', done: false},
+];
+```
+
+```jsx
+// taskReducer.jsx
+export default function tasksReducer(tasks, action) {
+  switch (action.type) {
+    case 'added': {
+      return [
+        ...tasks,
+        {
+          id: action.id,
+          text: action.text,
+          done: false,
+        },
+      ];
+    }
+    case 'changed': {
+      return tasks.map((t) => {
+        if (t.id === action.task.id) {
+          return action.task;
+        } else {
+          return t;
+        }
+      });
+    }
+    case 'deleted': {
+      return tasks.filter((t) => t.id !== action.id);
+    }
+    default: {
+      throw Error('Unknown action: ' + action.type);
+    }
+  }
+}
+```
+
+Component logic can be easier to read when you separate concerns like this. Now the event handlers only specify *what happened* by dispatching actions, and the reducer function determines *how the state updates* in response to them.
+
+##### Comparing `useState` and `useReducer` 
+
+<font color=red>**Reducers are not without downsides**</font>! <font color=dodgerBlue>Here’s a few ways you can **compare them**</font>:
+
+- **Code size:** Generally, <font color=dodgerBlue>with `useState`</font> you have to write less code upfront（👀 一开始）. <font color=dodgerBlue>With `useReducer`</font>, you have to write both a reducer function *and* dispatch actions. However, <font color=fuchsia>`useReducer` can help cut down on the code **if many event handlers modify state in a similar way**</font>.
+
+  > 👀 比如对一个 id 相关的数据进行增删改查
+
+- **Readability:** `useState` is very easy to read when the state updates are simple. <font color=dodgerBlue>When they get more complex</font>, they can bloat（🌏 膨胀） your component’s code and make it difficult to scan. In this case, <font color=red>`useReducer` lets you cleanly separate the *how* of update logic from the *what happened* of event handlers</font>.
+
+- **Debugging:** <font color=dodgerBlue>When you have a bug with `useState`</font> , it can be difficult to tell *where* the state was set incorrectly, and *why*. <font color=dodgerBlue>With `useReducer`</font> , <font color=red>you can add a console log into your reducer to see every state update, and *why* it happened (due to which `action` )</font>. If each `action` is correct, you’ll know that the mistake is in the reducer logic itself. However, you have to step through more code than with `useState`.
+
+- **Testing:** <font color=fuchsia>**A reducer is a pure function**</font> that <font color=red>doesn’t depend on your component</font>. This <font color=lightSeaGreen>means that you can export and test it separately in isolation</font>. While generally it’s best to test components in a more realistic environment, for complex state update logic it can be useful to assert that your reducer returns a particular state for a particular initial state and action.
+
+- **Personal preference:** Some people like reducers, others don’t. That’s okay. It’s a matter of preference. <font color=red>You can always convert between `useState` and `useReducer` back and forth</font>: <font color=fuchsia>**they are equivalent**</font>!
+
+  > 👀 useState 和 useReducer 是等价的，所以 useState 的特性 useReducer 也会有。于是，useReducer 必须是纯的，也很合理
+
+<font color=red>We recommend using a reducer if you often **encounter bugs** due to incorrect state updates in some component</font>, and want to introduce more structure to its code. You don’t have to use reducers for everything: feel free to mix and match! You can even `useState` and `useReducer` in the same component.
+
+##### Writing reducers well 
+
+<font color=dodgerBlue>Keep these **two tips** in mind when writing reducers</font>:
+
+- <font color=red>**Reducers must be pure**</font>. Similar to [state updater functions](https://react.dev/learn/queueing-a-series-of-state-updates), <font color=red>reducers run during rendering</font>! (Actions are queued until the next render.) This means that reducers [must be pure](https://react.dev/learn/keeping-components-pure)—same inputs always result in the same output. <font color=fuchsia>**They should not send requests, schedule timeouts, or perform any side effects**</font> (operations that impact things outside the component). They should update [objects](https://react.dev/learn/updating-objects-in-state) and [arrays](https://react.dev/learn/updating-arrays-in-state) without mutations.
+- **<font color=fuchsia>Each action describes a single user interaction</font>, <font color=red>even if that leads to multiple changes in the data</font>.** For example, <font color=dodgerBlue>if a user presses “Reset” on a form with five fields managed by a reducer</font>, <font color=red>it makes more sense to dispatch one `reset_form` action</font> <font color=lightSeaGreen>rather than five separate `set_field` actions</font>. If you log every action in a reducer, that log should be clear enough for you to reconstruct what interactions or responses happened in what order. This helps with debugging!
+
+##### Writing concise reducers with Immer 
+
+Just like with [updating objects](https://react.dev/learn/updating-objects-in-state#write-concise-update-logic-with-immer) and [arrays](https://react.dev/learn/updating-arrays-in-state#write-concise-update-logic-with-immer) in regular state, you can use the Immer library to make reducers more concise. Here, [`useImmerReducer`](https://github.com/immerjs/use-immer#useimmerreducer) lets you mutate the state with `push` or `arr[i] =` assignment:
+
+```jsx
+import { useImmerReducer } from 'use-immer';
+import AddTask from './AddTask.js';
+import TaskList from './TaskList.js';
+
+function tasksReducer(draft, action) { // 👀 draft
+  switch (action.type) {
+    case 'added': {
+      draft.push({ // 👀
+        id: action.id,
+        text: action.text,
+        done: false,
+      });
+      break;
+    }
+    case 'changed': {
+      const index = draft.findIndex((t) => t.id === action.task.id);
+      draft[index] = action.task;
+      break;
+    }
+    case 'deleted': {
+      return draft.filter((t) => t.id !== action.id);
+    }
+    default: {
+      throw Error('Unknown action: ' + action.type);
+    }
+  }
+}
+
+export default function TaskApp() {
+  const [tasks, dispatch] = useImmerReducer(tasksReducer, initialTasks);
+
+  function handleAddTask(text) {
+    dispatch({
+      type: 'added',
+      id: nextId++,
+      text: text,
+    });
+  }
+
+  function handleChangeTask(task) {
+    dispatch({
+      type: 'changed',
+      task: task,
+    });
+  }
+
+  function handleDeleteTask(taskId) {
+    dispatch({
+      type: 'deleted',
+      id: taskId,
+    });
+  }
+
+  return (
+    <>
+      <h1>Prague itinerary</h1>
+      <AddTask onAddTask={handleAddTask} />
+      <TaskList
+        tasks={tasks}
+        onChangeTask={handleChangeTask}
+        onDeleteTask={handleDeleteTask}
+      />
+    </>
+  );
+}
+
+let nextId = 3;
+const initialTasks = [
+  {id: 0, text: 'Visit Kafka Museum', done: true},
+  {id: 1, text: 'Watch a puppet show', done: false},
+  {id: 2, text: 'Lennon Wall pic', done: false},
+];
+```
+
+Reducers must be pure, so they shouldn’t mutate state. But Immer provides you with a special `draft` object which is safe to mutate. Under the hood, Immer will create a copy of your state with the changes you made to the `draft`. This is why reducers managed by `useImmerReducer` can mutate their first argument and don’t need to return state.
+
+##### Recap
+
+- To convert from `useState` to `useReducer` :
+  1. Dispatch actions from event handlers.
+  2. Write a reducer function that returns the next state for a given state and action.
+  3. Replace `useState` with `useReducer`.
+- Reducers require you to write a bit more code, but they help with debugging and testing.
+- Reducers must be pure.
+- Each action describes a single user interaction.
+- Use Immer if you want to write reducers in a mutating style.
+
 
 
 ## coderwhy React18 学习笔记
