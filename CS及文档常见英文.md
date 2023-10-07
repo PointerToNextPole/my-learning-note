@@ -1224,7 +1224,7 @@
 
 - **discern** ：鉴别
 
-- **consolidate** ：v. （使）结成一体，合并；（使）巩固；使加强
+- **consolidate** ：v. （使）结成一体，合并，整合；（使）巩固；使加强
 
   > For these cases, you can consolidate all the state update logic outside your component in a single function, called a *reducer.*
   >
@@ -1241,3 +1241,7 @@
 - **dozen** ：（一）打
 
 - **slog** ：埋头苦干
+
+- **declutter** ：清理
+
+  **clutter** ：n. 杂乱 vt. 凌乱地塞满;

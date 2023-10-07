@@ -3201,7 +3201,7 @@ No matter which strategy you pick, a chat *with Alice* is conceptually distinct 
 
 > 🌏 对于拥有许多状态更新逻辑的组件来说，过于分散的事件处理程序可能会令人不知所措。对于这种情况，你可以将组件的所有状态更新逻辑整合到一个外部函数中，这个函数叫作 **reducer**。
 
-##### Consolidate state logic with a reducer 
+##### Consolidate state logic with a reducer
 
 <font color=dodgerBlue>As your components grow in complexity</font>, <font color=lightSeaGreen>it can **get harder to see at a glance all the different ways** in which a component’s state gets updated</font>. For example, the `TaskApp` component below holds an array of `tasks` in state and uses three different event handlers to add, remove, and edit tasks:
 
@@ -4007,6 +4007,244 @@ Context is not limited to static values. If you pass a different value on the ne
 - Context passes through any components in the middle.
 - Context lets you write components that “adapt to their surroundings”.
 - Before you use context, try passing props or passing JSX as `children`.
+
+
+
+#### Scaling Up with Reducer and Context
+
+Reducers let you consolidate a component’s state update logic. Context lets you pass information deep down to other components. <font color=dodgerBlue>You can combine reducers and context together to manage state of a complex screen</font>.
+
+##### Combining a reducer with context
+
+> 👀 这里用了 [[#Consolidate state logic with a reducer]] 中的示例作为例子，所以下面会出现 `Task*` 组件 
+
+A reducer helps keep the event handlers short and concise. However, as your app grows, you might run into another difficulty. **Currently, <font color=fuchsia>the `tasks` state and the `dispatch` function are only available in the top-level `TaskApp` component</font>**（👀 也就是使用 `useReducer` 的那个组件）. <font color=dodgerBlue>To let other components read the list of tasks or change it</font>, <font color=red>you have to explicitly **[pass down](https://react.dev/learn/passing-props-to-a-component) the current state** and the event handlers that change it as props</font>.
+
+For example, `TaskApp` passes a list of tasks and the event handlers to `TaskList`:
+
+```jsx
+{ /* TaskApp.jsx */ }
+<TaskList
+  tasks={tasks}
+  onChangeTask={handleChangeTask}
+  onDeleteTask={handleDeleteTask}
+/>
+```
+
+And `TaskList` passes the event handlers to `Task`:
+
+```jsx
+{ /* TaskList.jsx */ }
+<Task
+  task={task}
+  onChange={onChangeTask}
+  onDelete={onDeleteTask}
+/>
+```
+
+In a small example like this, this works well, but <font color=dodgerBlue>if you have tens or hundreds of components in the middle</font>, passing down all state and functions can be quite frustrating!
+
+This is why, as an alternative to passing them through props, <font color=red>you might want to put both the `tasks` state and the `dispatch` function [into context](https://react.dev/learn/passing-data-deeply-with-context)</font>（👀 避免多次传递）. **This way, any component below `TaskApp` in the tree can read the tasks and dispatch actions without the repetitive “prop drilling”.**
+
+<font color=dodgerBlue>Here is how you can combine a reducer with context:</font>
+
+1. **Create** the context.
+2. **Put** state and dispatch into context.
+3. **Use** context anywhere in the tree.
+
+###### Step 1: Create the context
+
+The `useReducer` Hook returns the current `tasks` and the `dispatch` function that lets you update them:
+
+```jsx
+const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+```
+
+<font color=dodgerBlue>To pass them down the tree</font>, <font color=fuchsia>you will [create](https://react.dev/learn/passing-data-deeply-with-context#step-2-use-the-context) **two separate contexts**</font>:
+
+- `TasksContext` <font color=red>provides the current list of tasks</font>.
+- `TasksDispatchContext` <font color=fuchsia>provides the function that **lets components dispatch actions**</font>.
+
+<font color=lightSeaGreen>Export them from a separate file</font> so that you can later import them from other files:
+
+```jsx
+// TaskContext.jsx
+import { createContext } from 'react';
+
+export const TasksContext = createContext(null);
+export const TasksDispatchContext = createContext(null);
+```
+
+###### Step 2: Put state and dispatch into context 
+
+Now you can import both contexts in your `TaskApp` component. Take the `tasks` and `dispatch` returned by `useReducer()` and [provide them](https://react.dev/learn/passing-data-deeply-with-context#step-3-provide-the-context) to the entire tree below:
+
+```jsx
+import { TasksContext, TasksDispatchContext } from './TasksContext.js';
+
+export default function TaskApp() {
+  const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+  // ...
+  return (
+    <TasksContext.Provider value={tasks}>
+      <TasksDispatchContext.Provider value={dispatch}>
+        ... {/* 👀 见下面 */}
+      </TasksDispatchContext.Provider>
+    </TasksContext.Provider>
+  );
+}
+```
+
+###### Step 3: Use context anywhere in the tree 
+
+Now you don’t need to pass the list of tasks or the event handlers down the tree:
+
+```jsx
+{/* App.js */}
+<TasksContext.Provider value={tasks}>
+  <TasksDispatchContext.Provider value={dispatch}>
+    <h1>Day off in Kyoto</h1>
+    <AddTask />
+    <TaskList />
+  </TasksDispatchContext.Provider>
+</TasksContext.Provider>
+```
+
+Instead, any component that needs the task list can read it from the `TaskContext`:
+
+```diff
+// TaskList.jsx
+- export default function TaskList({ tasks, onChangeTask, onDeleteTask }) {
++ export default function TaskList() {
++   const tasks = useContext(TasksContext);
+    // ...
+```
+
+To update the task list, any component can read the `dispatch` function from context and call it:
+
+```jsx
+// AddTask.jsx
+export default function AddTask() {
+  const [text, setText] = useState('');
+  const dispatch = useContext(TasksDispatchContext);
+  // ...
+  return (
+    // ...
+    <button onClick={() => {
+      setText('');
+      dispatch({
+        type: 'added',
+        id: nextId++,
+        text: text,
+      });
+    }}>Add</button>
+    // ...
+```
+
+**The `TaskApp` component <font color=lightSeaGreen>does not pass any event handlers down</font>, and the `TaskList` <font color=lightSeaGreen>does not pass any event handlers to the `Task` component either</font>.**
+
+> 👀 当前完整代码见 https://codesandbox.io/s/3j4rf2?file=%2FAddTask.js&utm_medium=sandpack
+
+**The state still “lives” in the top-level `TaskApp` component, managed with `useReducer`.** <font color=lightSeaGreen>But its `tasks` and `dispatch` are now available to every component below in the tree</font> by importing and using these contexts.
+
+##### Moving all wiring into a single file
+
+You don’t have to do this, but <font color=dodgerBlue>you could further declutter</font>（清理） <font color=dodgerBlue>the components by moving both reducer and context into a single file</font>. Currently, `TasksContext.js` contains only two context declarations:
+
+```jsx
+import { createContext } from 'react';
+
+export const TasksContext = createContext(null);
+export const TasksDispatchContext = createContext(null);
+```
+
+This file is about to get crowded! You’ll move the reducer into that same file. Then you’ll <font color=lightSeaGreen>declare a new `TasksProvider` component in the same file</font>. This component will tie all the pieces together:
+
+1. It will manage the state with a reducer.
+2. It will provide both contexts to components below.
+3. It will [take `children` as a prop](https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children) so you can pass JSX to it.
+
+```jsx
+// TaskProvider.jsx
+...
+
+export function TasksProvider({ children }) {
+  const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
+
+  return (
+    <TasksContext.Provider value={tasks}>
+      <TasksDispatchContext.Provider value={dispatch}>
+        {children}
+      </TasksDispatchContext.Provider>
+    </TasksContext.Provider>
+  );
+}
+```
+
+**This removes all the complexity and wiring from your `TaskApp` component:**
+
+> 👀 这时的 App.jsx 变成了如下，复杂逻辑全部抽象出去了。完整代码示例见：https://codesandbox.io/s/zgrdzr?file=%2FTasksContext.js&utm_medium=sandpack
+
+```jsx
+import AddTask from './AddTask.js';
+import TaskList from './TaskList.js';
+import { TasksProvider } from './TasksContext.js';
+
+export default function TaskApp() {
+  return (
+    <TasksProvider>
+      <h1>Day off in Kyoto</h1>
+      <AddTask />
+      <TaskList />
+    </TasksProvider>
+  );
+}
+```
+
+<font color=dodgerBlue>You can also export functions that *use* the context from `TasksContext.js`</font> :
+
+```jsx
+// TaskContext.jsx
+export function useTasks() {
+  return useContext(TasksContext);
+}
+
+export function useTasksDispatch() {
+  return useContext(TasksDispatchContext);
+}
+```
+
+When a component needs to read context, it can do it through these functions:
+
+```jsx
+// TaskList.jsx
+const tasks = useTasks();
+const dispatch = useTasksDispatch();
+```
+
+This doesn’t change the behavior in any way, but it lets you later split these contexts further or add some logic to these functions. **Now all of the context and reducer wiring is in `TasksContext.js`. <font color=lightSeaGreen>This keeps the components clean and uncluttered</font>, focused on what they display rather than where they get the data:**
+
+> 👀 代码略，可见 https://codesandbox.io/s/2m7dc6?file=/TaskList.js&utm_medium=sandpack
+
+You can think of `TasksProvider` as a part of the screen that knows how to deal with tasks, `useTasks` as a way to read them, and `useTasksDispatch` as a way to update them from any component below in the tree.
+
+> 💡 Note
+>
+> <font color=red>Functions like `useTasks` and `useTasksDispatch` are called *[Custom Hooks](https://react.dev/learn/reusing-logic-with-custom-hooks)*</font>. <font color=fuchsia>Your function is considered a custom Hook if its name starts with `use`</font>. This lets you use other Hooks, like `useContext`, inside it.
+
+As your app grows, you may have many context-reducer pairs like this. <font color=dodgerBlue>This is a powerful way to scale your app and [lift state up](https://react.dev/learn/sharing-state-between-components) without too much work</font> whenever you want to access the data deep in the tree.
+
+##### Recap
+
+- You can combine reducer with context to let any component read and update state above it.
+- To provide state and the dispatch function to components below:
+  1. Create two contexts (for state and for dispatch functions).
+  2. Provide both contexts from the component that uses the reducer.
+  3. Use either context from components that need to read them.
+- You can further declutter the components by moving all wiring into one file.
+  - You can export a component like `TasksProvider` that provides context.
+  - You can also export custom Hooks like `useTasks` and `useTasksDispatch` to read it.
+- You can have many context-reducer pairs like this in your app.
 
 
 
