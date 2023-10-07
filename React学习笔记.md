@@ -4248,6 +4248,191 @@ As your app grows, you may have many context-reducer pairs like this. <font colo
 
 
 
+### Escape Hatches
+
+Some of your components may need to control and synchronize with systems outside of React. For example, you might need to focus an input using the browser API, play and pause a video player implemented without React, or connect and listen to messages from a remote server. <font color=lightSeaGreen>In this chapter, you’ll learn the escape hatches that let you “step outside” React and connect to external systems</font>. Most of your application logic and data flow should not rely on these features.
+
+
+
+#### Referencing Values with Refs
+
+When you <font color=red>want a component to “remember” some information</font>, but you <font color=dodgerBlue>don’t want that information to [trigger new renders](https://react.dev/learn/render-and-commit)</font>, <font color=red>you can use a *ref*</font>.
+
+##### Adding a ref to your component 
+
+You can add a ref to your component by importing the `useRef` Hook from React:
+
+```jsx
+import { useRef } from 'react';
+```
+
+Inside your component, call the `useRef` Hook and <font color=red>pass the initial value that you want to reference as the only argument</font>. For example, here is a ref to the value `0`:
+
+```jsx
+const ref = useRef(0);
+```
+
+`useRef` returns an object like this:
+
+```jsx
+{ 
+  current: 0 // The value you passed to useRef
+}
+```
+
+<img src="https://s2.loli.net/2023/10/07/TA5rJvQZWuDYiIb.png" alt="An arrow with 'current' written on it stuffed into a pocket with 'ref' written on it." style="zoom:21%;" />
+
+<font color=red>You can access the current value of that ref through the `ref.current` property</font>. <font color=fuchsia> This value is intentionally mutable</font>, meaning <font color=lightSeaGreen>you can both read and write to it</font>. It’s <font color=lightSeaGreen>like a secret pocket of your component</font>（👀 参考上图） that <font color=fuchsia>React doesn’t track</font>. (This is what makes it an “escape hatch” from React’s one-way data flow )
+
+Here, a button will increment `ref.current` on every click:
+
+```jsx
+import { useRef } from 'react';
+
+export default function Counter() {
+  let ref = useRef(0);
+
+  function handleClick() {
+    ref.current = ref.current + 1;
+    alert('You clicked ' + ref.current + ' times!');
+  }
+
+  return (
+    <button onClick={handleClick}>
+      Click me!
+    </button>
+  );
+}
+```
+
+> 👀 试了下：`useRef` 中的初始值是对象也需要通过 `ref.current` 才能拿到，这和 Vue3 ref 有点不一样。比如：`let ref = useRef({ num : 0 })` 想要拿到 `num` 的值需要使用 `ref.current.num` 。
+>
+> 另外，这里的 `ref` 也可以通过 const 来定义，无论初始值是原始类型，还是对象，上面的示例都可以按照预期运行
+
+The ref points to a number, but, like [state](https://react.dev/learn/state-a-components-memory), <font color=red>you could point to anything: a string, an object, or even a function</font>. Unlike state, <font color=fuchsia>ref is a **plain JavaScript object** with the `current` property</font> that you can read and modify.
+
+Note that **the component doesn’t re-render with every increment.** Like state, <font color=red>refs are retained by React between re-renders</font>. However, setting state re-renders a component. Changing a ref does not!
+
+##### Example: building a stopwatch
+
+You can combine refs and state in a single component.
+
+<font color=dodgerBlue>When a piece of information is used for rendering</font>, <font color=red>keep it in state</font>. <font color=dodgerBlue>When a piece of information **is only needed by event handlers and changing it doesn’t require a re-render**</font>, <font color=fuchsia>**using a ref may be more efficient**</font>.
+
+##### Differences between refs and state 
+
+Perhaps you’re thinking refs seem less “strict” than state — you can mutate them instead of always having to use a state setting function, for instance. But <font color=dodgerBlue>**in most cases**</font>, <font color=fuchsia>**you’ll want to use state**</font>. <font color=red>Refs are an “escape hatch” you won’t need often</font>.
+
+> 🌏 但在大多数情况下，我们建议你使用 state。ref 是一个“应急方案”，你并不会经常用到它
+
+<font color=dodgerBlue>Here’s how state and refs **compare**</font>:
+
+| refs                                                         | state                                                        |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `useRef(initialValue)` returns `{ current: initialValue }`   | `useState(initialValue)` returns the current value of a state variable and a state setter function ( `[value, setValue]`) |
+| Doesn’t trigger re-render when you change it.                | Triggers re-render when you change it.                       |
+| Mutable—you can modify and update `current`’s value outside of the rendering process. | “Immutable”—you must use the state setting function to modify state variables to queue a re-render. |
+| <font color=fuchsia>You **shouldn’t read (or write) the `current`value during rendering**</font>. | <font color=fuchsia>You can read state at any time</font>. However, <font color=red>each render has its own [snapshot](https://react.dev/learn/state-as-a-snapshot) of state which does not change</font>. |
+
+Here is a counter button that’s implemented with state:
+
+```jsx
+import { useState } from 'react';
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+
+  function handleClick() {
+    setCount(count + 1);
+  }
+
+  return (
+    <button onClick={handleClick}>
+      You clicked {count} times
+    </button>
+  );
+}
+```
+
+<font color=lightSeaGreen>Because the `count` value is displayed, it makes sense to use a state value for it</font>. <font color=dodgerBlue>When the counter’s value is set with `setCount()`</font> , <font color=red>React **re-renders the component** and the screen updates to reflect the new count</font>.
+
+<font color=dodgerBlue>If you tried to implement this with a ref</font>, <font color=red>React would never re-render the component</font>, so you’d never see the count change! See how clicking this button **does not update its text**:
+
+```jsx
+import { useRef } from 'react';
+
+export default function Counter() {
+  let countRef = useRef(0);
+
+  function handleClick() {
+    // This doesn't re-render the component!
+    countRef.current = countRef.current + 1;
+  }
+
+  return (
+    <button onClick={handleClick}>
+      You clicked {countRef.current} times
+    </button>
+  );
+}
+```
+
+This is why reading `ref.current` during render leads to unreliable code. If you need that, use state instead.
+
+###### How does useRef work inside?
+
+Although both `useState` and `useRef` are provided by React, <font color=lightSeaGreen>in principle `useRef` could be implemented *on top of* `useState`</font>. <font color=dodgerBlue>You can imagine that inside of React, `useRef` is implemented like this</font>:
+
+```jsx
+// Inside of React
+function useRef(initialValue) {
+  const [ref, unused] = useState({ current: initialValue });
+  return ref;
+}
+```
+
+<font color=dodgerBlue>During the first render</font>, `useRef` returns `{ current: initialValue }`. <font color=red>This object is stored by React</font>, <font color=fuchsia>**so during the next render the same object will be returned**</font>（👀 感觉可以加上 directly）. Note how the state setter is unused in this example. It is unnecessary because `useRef` always needs to return the same object!
+
+React provides a built-in version of `useRef` because it is common enough in practice. But <font color=lightSeaGreen>you can think of it as a regular state variable without a setter</font>. If you’re familiar with object-oriented programming, refs might remind you of instance fields—but instead of `this.something` you write `somethingRef.current`.
+
+##### When to use refs 
+
+<font color=dodgerBlue>Typically, you will use a ref when</font> <font color=fuchsia>your component needs to “step outside”</font>（ 👀 可以译为“跳出”） <font color=fuchsia>React and **communicate with external APIs**</font> — often a browser API that won’t impact the appearance of the component. <font color=dodgerBlue>Here are a few of these rare situations</font>:
+
+- **Storing [timeout IDs](https://developer.mozilla.org/docs/Web/API/setTimeout)**
+- **Storing and manipulating [DOM elements](https://developer.mozilla.org/docs/Web/API/Element)** , which we cover on [the next page](https://react.dev/learn/manipulating-the-dom-with-refs)
+- Storing other objects that aren’t necessary to calculate the JSX.
+
+<font color=red>If your **component needs to store some value**</font>, but <font color=red>it doesn’t impact the rendering logic, choose refs</font>.
+
+##### Best practices for refs
+
+<font color=dodgerBlue>Following these principles will make your components more predictable</font>:
+
+- <font color=red>**Treat refs as an escape hatch**</font>. <font color=fuchsia>Refs are useful **when you work with external systems or browser APIs**</font>. <font color=lightSeaGreen>If much of your application logic and data flow relies on refs, you might want to **rethink your approach**</font>.
+- <font color=fuchsia>**Don’t read or write `ref.current` during rendering**</font>. If some information is needed during rendering, use [state](https://react.dev/learn/state-a-components-memory) instead. Since <font color=red>React doesn’t know when `ref.current` changes</font>, even <font color=lightSeaGreen>reading it while rendering makes your component’s behavior difficult to predict</font>. (The only exception to this is code like `if (!ref.current) ref.current = new Thing()` which only sets the ref once during the first render.)
+
+Limitations of React state don’t apply to refs. For example, state acts like a [snapshot for every render](https://react.dev/learn/state-as-a-snapshot) and [doesn’t update synchronously](https://react.dev/learn/queueing-a-series-of-state-updates). But when you mutate the current value of a ref, it changes immediately:
+
+```jsx
+ref.current = 5;
+console.log(ref.current); // 5
+```
+
+This is because **the ref itself is a regular JavaScript object,** and so it behaves like one.
+
+You also don’t need to worry about [avoiding mutation](https://react.dev/learn/updating-objects-in-state) when you work with a ref. As long as the object you’re mutating isn’t used for rendering, React doesn’t care what you do with the ref or its contents.
+
+##### Refs and the DOM
+
+You can point a ref to any value. However, <font color=fuchsia>**the most common use case for a ref is to access a DOM element**</font>. For example, this is handy if you want to focus an input programmatically. <font color=red>When you pass a ref to a `ref` attribute in JSX, like `<div ref={myRef}>`</font> , <font color=red>React will put the corresponding DOM element into `myRef.current`</font>. Once the element is removed from the DOM, React will update `myRef.current` to be `null`. You can read more about this in [Manipulating the DOM with Refs.](https://react.dev/learn/manipulating-the-dom-with-refs)
+
+
+
+
+
+
+
 ## coderwhy React18 学习笔记
 
 
