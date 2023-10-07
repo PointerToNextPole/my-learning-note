@@ -3606,17 +3606,17 @@ export default function tasksReducer(tasks, action) {
 }
 ```
 
-Component logic can be easier to read when you separate concerns like this. Now the event handlers only specify *what happened* by dispatching actions, and the reducer function determines *how the state updates* in response to them.
+Component logic can be easier to read when you separate concerns（关注点分离） like this. Now the event handlers only specify *what happened* by dispatching actions, and the reducer function determines *how the state updates* in response to them.
 
 ##### Comparing `useState` and `useReducer` 
 
 <font color=red>**Reducers are not without downsides**</font>! <font color=dodgerBlue>Here’s a few ways you can **compare them**</font>:
 
-- **Code size:** Generally, <font color=dodgerBlue>with `useState`</font> you have to write less code upfront（👀 一开始）. <font color=dodgerBlue>With `useReducer`</font>, you have to write both a reducer function *and* dispatch actions. However, <font color=fuchsia>`useReducer` can help cut down on the code **if many event handlers modify state in a similar way**</font>.
+- **Code size:** Generally, <font color=dodgerBlue>with `useState`</font> you have to write less code upfront（ 一开始）. <font color=dodgerBlue>With `useReducer`</font>, you have to write both a reducer function *and* dispatch actions. However, <font color=fuchsia>`useReducer` can help cut down on the code **if many event handlers modify state in a similar way**</font>.
 
   > 👀 比如对一个 id 相关的数据进行增删改查
 
-- **Readability:** `useState` is very easy to read when the state updates are simple. <font color=dodgerBlue>When they get more complex</font>, they can bloat（🌏 膨胀） your component’s code and make it difficult to scan. In this case, <font color=red>`useReducer` lets you cleanly separate the *how* of update logic from the *what happened* of event handlers</font>.
+- **Readability:** `useState` is very easy to read when the state updates are simple. <font color=dodgerBlue>When they get more complex</font>, they can bloat（膨胀） your component’s code and make it difficult to scan. In this case, <font color=red>`useReducer` lets you cleanly separate the *how* of update logic from the *what happened* of event handlers</font>.
 
 - **Debugging:** <font color=dodgerBlue>When you have a bug with `useState`</font> , it can be difficult to tell *where* the state was set incorrectly, and *why*. <font color=dodgerBlue>With `useReducer`</font> , <font color=red>you can add a console log into your reducer to see every state update, and *why* it happened (due to which `action` )</font>. If each `action` is correct, you’ll know that the mistake is in the reducer logic itself. However, you have to step through more code than with `useState`.
 
@@ -3726,6 +3726,287 @@ Reducers must be pure, so they shouldn’t mutate state. But Immer provides you 
 - Reducers must be pure.
 - Each action describes a single user interaction.
 - Use Immer if you want to write reducers in a mutating style.
+
+
+
+#### Passing Data Deeply with Context
+
+Usually, you will pass information from a parent component to a child component via props. But <font color=dodgerBlue>passing props can become verbose and inconvenient</font> <font color=red>if you have to pass them through many components in the middle, or **if many components in your app need the same information**</font>. <font color=fuchsia>*Context* lets the parent component make some information available to any component in the tree **below it**</font> — <font color=lightSeaGreen>no matter how deep</font>—without passing it explicitly through props.
+
+##### The problem with passing props 
+
+[Passing props](https://react.dev/learn/passing-props-to-a-component) is a great way to explicitly pipe data through your UI tree to the components that use it.
+
+But <font color=lightSeaGreen>passing props can become verbose and inconvenient when you need to pass some prop **deeply** through the tree, or if many components need the same prop</font>. The nearest common ancestor could be far removed from the components that need data, and <font color=red>[lifting state up](https://react.dev/learn/sharing-state-between-components) that high can lead to a situation called “prop drilling”</font>.
+
+<img src="https://s2.loli.net/2023/10/06/QmRA8jW693e2MkH.png" alt="image-20231006232711861" style="zoom:44%;" />
+
+Wouldn’t it be great if there were a way to <font color=red>“teleport” data</font> to the components in the tree that need it without passing props? With React’s context feature, there is!
+
+##### Context: an alternative to passing props
+
+Context lets a parent component provide data to the entire tree below it.
+
+> 👀 这里省略了一段示例，只摘录了关键代码。现在重点是：`Section` 如何将 prop `level` 传入 `Heading` 
+
+```jsx
+<Section level={3}>
+  <Heading>About</Heading>
+  <Heading>Photos</Heading>
+  <Heading>Videos</Heading>
+</Section>
+```
+
+<font color=dodgerBlue>how can the `<Heading>` component know the level of **its closest `<Section>`** ?</font> **That would require some way for a child to “ask” for data from somewhere above in the tree** .
+
+You can’t do it with props alone. <font color=lightSeaGreen>This is where context comes into play</font>. <font color=dodgerBlue>You will do it in three steps</font>:
+
+1. **Create** a context. (<font color=lightSeaGreen>You can call it `LevelContext`</font> , since it’s for the heading level.)
+2. <font color=red>**Use** that context from the component that needs the data</font>. ( `Heading` will use `LevelContext` .)
+3. **Provide** that context from the component that specifies the data. (`Section` will provide `LevelContext`.)
+
+Context lets a parent—even a distant one!—provide some data to the entire tree inside of it.
+
+<img src="https://s2.loli.net/2023/10/07/qtHGLXjf35IeJzU.png" alt="image-20231007092036550" style="zoom:45%;" />
+
+###### Step 1: Create the context
+
+First, you need to create the context. You’ll need to **export it from a file** so that your components can use it:
+
+```jsx
+// LevalContext.jsx
+import { createContext } from 'react';
+
+export const LevelContext = createContext(1);
+```
+
+<font color=lightSeaGreen>The only argument to **`createContext`** is the *default* value</font>. Here, `1` refers to the biggest heading level, but <font color=lightSeaGreen>you could pass any kind of value (even an object)</font>. You will see the significance of the default value in the next step.
+
+###### Step 2: Use the context
+
+Import the **`useContext`** Hook from React and your context:
+
+```jsx
+// Heading.jsx
+import { useContext } from 'react';
+import { LevelContext } from './LevelContext.js';
+
+export default function Heading({ children }) {
+  const level = useContext(LevelContext);
+  // ...
+}
+```
+
+`useContext` is a Hook. Just like `useState` and `useReducer` , you can only call a Hook immediately inside a React component (not inside loops or conditions). <font color=red>**`useContext` tells React that the `Heading` component wants to read the `LevelContext`**</font>.
+
+<font color=dodgerBlue>**Notice this example doesn’t quite work, yet**</font>! All the headings have the same size because <font color=red>**even though you’re *using* the context, you have not *provided* it yet**</font>. React doesn’t know where to get it!
+
+<font color=dodgerBlue>**If you don’t provide the context**</font>, <font color=fuchsia>**React will use the default value you’ve specified**</font> in the previous step. In this example, you specified `1` as the argument to `createContext` , so `useContext(LevelContext)` returns `1` , setting all those headings to `<h1>`. Let’s fix this problem by having each `Section` provide its own context.
+
+###### Step 3: Provide the context
+
+The `Section` component currently renders its children:
+
+**Wrap them with a context provider** to provide the `LevelContext` to them:
+
+```jsx
+// Section.jsx
+import { LevelContext } from './LevelContext.js';
+
+export default function Section({ level, children }) {
+  return (
+    <section className="section">
+      <LevelContext.Provider value={level}> { /* 👀 provider */ }
+        {children}
+      </LevelContext.Provider>
+    </section>
+  );
+}
+```
+
+<font color=lightSeaGreen>This tells React: “if any component inside this `<Section>` asks for `LevelContext`, give them this `level`.”</font> <font color=fuchsia>The component will **use the value of the nearest `<LevelContext.Provider>`** in the UI tree above it</font>.
+
+##### Using and providing context from the same component 
+
+Currently, you still have to specify each section’s `level` manually:
+
+```jsx
+export default function Page() {
+  return (
+    <Section level={1}>
+      ...
+      <Section level={2}>
+        ...
+        <Section level={3}>
+          ...
+```
+
+Since context lets you read information from a component above, each `Section` could read the `level` from the `Section` above, and pass `level + 1` down automatically. Here is how you could do it:
+
+```jsx
+import { useContext } from 'react';
+import { LevelContext } from './LevelContext.js';
+
+export default function Section({ children }) {
+  const level = useContext(LevelContext);
+  
+  return (
+    <section className="section">
+      <LevelContext.Provider value={level + 1}>
+        {children}
+      </LevelContext.Provider>
+    </section>
+  );
+}
+```
+
+With this change, you don’t need to pass the `level` prop *either* to the `<Section>` or to the `<Heading>`:
+
+```jsx
+import Heading from './Heading.js';
+import Section from './Section.js';
+
+export default function Page() {
+  return (
+    <Section>
+      <Heading>Title</Heading>
+      <Section>
+        <Heading>Heading</Heading>
+        <Heading>Heading</Heading>
+        <Heading>Heading</Heading>
+        <Section>
+          <Heading>Sub-heading</Heading>
+          <Heading>Sub-heading</Heading>
+          <Heading>Sub-heading</Heading>
+          <Section>
+            <Heading>Sub-sub-heading</Heading>
+            <Heading>Sub-sub-heading</Heading>
+            <Heading>Sub-sub-heading</Heading>
+          </Section>
+        </Section>
+      </Section>
+    </Section>
+  );
+}
+```
+
+Now <font color=lightSeaGreen>both `Heading` and `Section` read the `LevelContext` to figure out how “deep” they are</font>. And the `Section` wraps its children into the `LevelContext` to specify that anything inside of it is at a “deeper” level.
+
+> 💡 Note
+>
+> This example uses heading levels because they show visually how nested components can override context. But context is useful for many other use cases too. You can pass down any information needed by the entire subtree: the current color theme, the currently logged in user, and so on.
+
+##### Context passes through intermediate components 
+
+<font color=lightSeaGreen>You can **insert as many components as you like between the component that provides context** and the one that uses it</font>. This includes both built-in components like `<div>` and components you might build yourself.
+
+In this example, the same `Post` component (with a dashed border) is rendered at two different nesting levels. Notice that the `<Heading>` inside of it gets its level automatically from the closest `<Section>` :
+
+```jsx
+import Heading from './Heading.js';
+import Section from './Section.js';
+
+export default function ProfilePage() {
+  return (
+    <Section>
+      <Heading>My Profile</Heading>
+      <Post
+        title="Hello traveller!"
+        body="Read about my adventures."
+      />
+      <AllPosts />
+    </Section>
+  );
+}
+
+function AllPosts() {
+  return (
+    <Section>
+      <Heading>Posts</Heading>
+      <RecentPosts />
+    </Section>
+  );
+}
+
+function RecentPosts() {
+  return (
+    <Section>
+      <Heading>Recent Posts</Heading>
+      <Post
+        title="Flavors of Lisbon"
+        body="...those pastéis de nata!"
+      />
+      <Post
+        title="Buenos Aires in the rhythm of tango"
+        body="I loved it!"
+      />
+    </Section>
+  );
+}
+
+function Post({ title, body }) {
+  return (
+    <Section isFancy={true}>
+      <Heading>
+        {title}
+      </Heading>
+      <p><i>{body}</i></p>
+    </Section>
+  );
+}
+```
+
+<img src="https://s2.loli.net/2023/10/07/7wY8sZHDTdVJbyz.png" alt="image-20231007102238036" style="zoom:45%;" />
+
+You didn’t do anything special for this to work. A `Section` specifies the context for the tree inside it, so you can insert a `<Heading>` anywhere, and it will have the correct size.
+
+**<font color=red>Context lets you write components that “adapt to their surroundings”</font> and <font color=lightSeaGreen>display themselves differently</font> <font color=red>depending on *where* (or, in other words, *in which context*) they are being rendered</font>.**
+
+<font color=lightSeaGreen>How context works might remind you of [CSS property inheritance](https://developer.mozilla.org/en-US/docs/Web/CSS/inheritance)</font>. In CSS, you can specify `color: blue` for a `<div>`, and any DOM node inside of it, no matter how deep, will inherit that color unless some other DOM node in the middle overrides it with `color: green`. <font color=dodgerBlue>Similarly</font>, in React, <font color=red>the only way to override some context coming from above is to wrap children into a context provider with a different value</font>.
+
+<font color=lightSeaGreen>In CSS, different properties like `color` and `background-color` don’t override each other</font>. You can set all  `<div>`’s `color` to red without impacting `background-color`. <font color=dodgerBlue>Similarly</font>, <font color=red>**different React contexts don’t override each other**</font>. <font color=red>Each context that you make with `createContext()` is completely separate from other ones</font>, and ties together components using and providing *that particular* context. One component may use or provide many different contexts without a problem.
+
+##### Before you use context
+
+Context is very tempting to use! However, this also means it’s too easy to overuse it. **Just because you need to pass some props several levels deep doesn’t mean you should put that information into context.**
+
+<font color=dodgerBlue>Here’s a few alternatives you should consider before using context:</font>
+
+1. **Start by [passing props](https://react.dev/learn/passing-props-to-a-component).** <font color=dodgerBlue>If your components are **not trivial**</font> （见下面“注”）, <font color=lightSeaGreen>it’s **not unusual** to pass a dozen props down through a dozen components</font>. It may feel like a slog, but <font color=red>it makes it very clear which components use which data</font>! The person maintaining your code will be glad you’ve made the data flow explicit with props.
+
+   > 👀 这里 trivial 是 “不重要的”， not trivial 是 “并非无关紧要” ，不过这就和 [中文文档中对应的内容](https://zh-hans.react.dev/learn/passing-data-deeply-with-context#before-you-use-context) 产生了冲突：
+   >
+   > > **从 [传递 props](https://zh-hans.react.dev/learn/passing-props-to-a-component) 开始。** 如果你的组件 <font color=lightSeaGreen>**看起来不起眼**</font>，那么通过十几个组件向下传递一堆 props 并不罕见
+   >
+   > 问下了 gpt，感觉是中文文档翻译错了；这里英文文档的说法是符合逻辑的
+
+2. **Extract components and [pass JSX as `children`](https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children) to them.** If you pass some data through many layers of intermediate components that don’t use that data (and only pass it further down), this often means that you forgot to extract some components along the way. For example, maybe you pass data props like `posts`to visual components that don’t use them directly, like `<Layout posts={posts} />`. <font color=dodgerBlue>**Instead**</font>, make `Layout` take `children` as a prop, and render `<Layout><Posts posts={posts} /></Layout>`. <font color=red>This reduces the number of layers between the component specifying the data and the one that needs it</font>.
+
+   > 👀 感觉可以理解为：尽可能减少无用的传播路径
+
+<font color=dodgerBlue>If neither of these approaches works well for you</font>, <font color=red>**consider context**</font>.
+
+##### Use cases for context
+
+- **Theming:** <font color=dodgerBlue>If your app lets the user change its appearance</font> (e.g. dark mode), <font color=red>you can put a context provider at the top of your app</font>, and <font color=red>use that context in components that need to adjust their visual look</font>.
+- **Current account:** <font color=dodgerBlue>Many components might need to know the currently logged in user</font>. Putting it in context makes it convenient to read it anywhere in the tree. Some apps also let you operate multiple accounts at the same time (e.g. to leave a comment as a different user). In those cases, it can be convenient to wrap a part of the UI into a nested provider with a different current account value.
+- **Routing:** <font color=fuchsia>Most routing solutions use context internally to hold the current route</font>. <font color=red>This is how every link “knows” whether it’s active or not</font>. If you build your own router, you might want to do it too.
+- **Managing state:** As your app grows, <font color=dodgerBlue>you might end up with a lot of state closer to the top of your app. **Many distant components below may want to change it**</font>. <font color=red>It is common to [use a reducer together with context](https://react.dev/learn/scaling-up-with-reducer-and-context) to manage complex state</font> and pass it down to distant components without too much hassle.
+
+Context is not limited to static values. If you pass a different value on the next render, React will update all the components reading it below! This is why context is often used in combination with state.
+
+<font color=dodgerBlue>In general</font>, <font color=lightSeaGreen>if some information is needed by distant components in different parts of the tree, it’s a good indication that context will help you</font>.
+
+##### Recap
+
+- Context lets a component provide some information to the entire tree below it.
+- To pass context:
+  1. Create and export it with `export const MyContext = createContext(defaultValue)`.
+  2. Pass it to the `useContext(MyContext)` Hook to read it in any child component, no matter how deep
+  3. <font color=red>Wrap children into `<MyContext.Provider value={...}>`</font> to provide it from a parent.
+- Context passes through any components in the middle.
+- Context lets you write components that “adapt to their surroundings”.
+- Before you use context, try passing props or passing JSX as `children`.
 
 
 

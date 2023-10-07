@@ -244,6 +244,8 @@
 
 - **trivial**：不重要的
 
+   **not trivial** ：并非微不足道
+
 - **deterministic**：确定性的
 
 - **pseudo**：伪的
@@ -1236,3 +1238,6 @@
 
 - **bloat** ：膨胀
 
+- **dozen** ：（一）打
+
+- **slog** ：埋头苦干
