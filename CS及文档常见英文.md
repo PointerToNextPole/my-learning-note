@@ -264,6 +264,8 @@
 
 - **opt out**：选择退出，选择排除
 
+   **opt in** ：选择加入
+
 - **subsequent**：随后的，后面的
 
 - **interfere**：干涉

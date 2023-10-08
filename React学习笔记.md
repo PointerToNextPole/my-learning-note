@@ -4429,7 +4429,415 @@ You can point a ref to any value. However, <font color=fuchsia>**the most common
 
 
 
+#### Manipulating the DOM with Refs
 
+<font color=lightSeaGreen>React automatically updates the DOM to match your render output</font>, so your components won’t often need to manipulate it. However, <font color=dodgerBlue>sometimes you might need access to the DOM elements managed by React</font>—for example, to focus a node, scroll to it, or measure its size and position. There is no built-in way to do those things in React, so you will need a *ref* to the DOM node.
+
+##### Getting a ref to the node 
+
+To access a DOM node managed by React, first, import the `useRef` Hook:
+
+```jsx
+import { useRef } from 'react';
+```
+
+Then, <font color=red>use it to declare a ref inside your component</font>:
+
+```jsx
+const myRef = useRef(null);
+```
+
+Finally, <font color=red>pass your ref as the `ref` attribute to the JSX tag for which you want to get the DOM node</font>:
+
+```jsx
+<div ref={myRef}>
+```
+
+The `useRef` Hook returns an object with a single property called `current`. Initially, `myRef.current` will be `null`. <font color=dodgerBlue>When React creates a DOM node for this `<div>`</font> , <font color=red>React will put a reference to this node into `myRef.current`</font>. You can then access this DOM node from your [event handlers](https://react.dev/learn/responding-to-events) and use the built-in [browser APIs](https://developer.mozilla.org/docs/Web/API/Element) defined on it.
+
+```jsx
+// You can use any browser APIs, for example:
+myRef.current.scrollIntoView();
+```
+
+###### Example: Focusing a text input
+
+```jsx
+import { useRef } from 'react';
+
+export default function Form() {
+  const inputRef = useRef(null);
+
+  function handleClick() {
+    inputRef.current.focus();
+  }
+
+  return (
+    <>
+      <input ref={inputRef} />
+      <button onClick={handleClick}>
+        Focus the input
+      </button>
+    </>
+  );
+}
+```
+
+###### Example: Scrolling to an element
+
+> 👀 这个例子感觉关于 `useRef` 就使用层面感觉没什么新意，这里略。不过，这里示例中有 `scrollIntoView()` API 的使用，感觉不错，有助于 `scrollIntoView` 的使用理解。可以看下 [[#How to manage a list of refs using a ref callback]] 中的代码示例
+
+###### How to manage a list of refs using a ref callback
+
+In the above examples, there is a predefined number of refs. However, <font color=dodgerBlue>sometimes you might need a ref to each item in the list</font>, and you don’t know how many you will have. Something like this **wouldn’t work**:
+
+```jsx
+<ul>
+  {items.map((item) => {
+    // Doesn't work!
+    const ref = useRef(null);
+    return <li ref={ref} />;
+  })}
+</ul>
+```
+
+<font color=dodgerBlue>This is because</font> <font color=fuchsia>**Hooks must only be called at the top-level of your component**</font>. You <font color=lightSeaGreen>can’t call `useRef` in a loop, in a condition, or inside a `map()` call</font>.
+
+<font color=dodgerBlue>One possible way around this</font> is to <font color=red>**get a single ref to their parent element**</font>, and then <font color=lightSeaGreen>use DOM manipulation methods like `querySelectorAll` to “find” the individual child nodes</font> from it. However, <font color=<font color=red>>**this is brittle and can break** if your DOM structure changes</font>.
+
+<font color=dodgerBlue>Another solution</font> is to <font color=red>**pass a function to the `ref` attribute**</font>. This is called a [`ref` callback](https://react.dev/reference/react-dom/components/common#ref-callback). React will call your ref callback with the DOM node when it’s time to set the ref, and with `null` when it’s time to clear it. This lets you maintain your own array or a Map, and access any ref by its index or some kind of ID.
+
+This example shows how you can use this approach to scroll to an arbitrary node in a long list:
+
+```jsx
+import { useRef } from 'react';
+
+export default function CatFriends() {
+  const itemsRef = useRef(null);
+
+  function scrollToId(itemId) {
+    const map = getMap();
+    const node = map.get(itemId);
+    node.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center'
+    });
+  }
+
+  function getMap() {
+    if (!itemsRef.current) {
+      // Initialize the Map on first usage.
+      itemsRef.current = new Map();
+    }
+    return itemsRef.current;
+  }
+
+  return (
+    <>
+      <nav>
+        <button onClick={() => scrollToId(0)}>
+          Tom
+        </button>
+        <button onClick={() => scrollToId(5)}>
+          Maru
+        </button>
+        <button onClick={() => scrollToId(9)}>
+          Jellylorum
+        </button>
+      </nav>
+      <div>
+        <ul>
+          {catList.map(cat => (
+            <li
+              key={cat.id}
+              ref={(node) => { // 👀
+                const map = getMap();
+                if (node) {
+                  map.set(cat.id, node);
+                } else {
+                  map.delete(cat.id);
+                }
+              }}
+            >
+              <img
+                src={cat.imageUrl}
+                alt={'Cat #' + cat.id}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
+  );
+}
+
+const catList = [];
+for (let i = 0; i < 10; i++) {
+  catList.push({
+    id: i,
+    imageUrl: 'https://placekitten.com/250/200?image=' + i
+  });
+}
+```
+
+In this example, `itemsRef` doesn’t hold a single DOM node. Instead, it holds a Map from item ID to a DOM node. ([Refs can hold any values!](https://react.dev/learn/referencing-values-with-refs))
+
+> 💡 其他实现方法
+>
+> 鉴于 dom 中的 ref 是可以传入函数的，所以可以定义一个 “数组 ref ” ，在 dom ref 中定义将 dom 放入 “数组 ref ” 的函数。示例如下：
+>
+> ```jsx
+> import { useRef } from 'react';
+> 
+> export default function Form() {
+>   const refs = useRef([]);
+> 
+>   const arr = [1, 2, 3]
+> 
+>   return (
+>     <>
+>       {arr.map((item, index) => 
+>         <p
+>           key={item}
+>           ref={el => refs.current[index] = el}
+>           onClick={ () => console.log(refs.current[index]) }
+>         >
+>           {item}
+>         </p>)
+>       }
+>     </>
+>   );
+> }
+> ```
+
+##### Accessing another component’s DOM nodes
+
+When you <font color=lightSeaGreen>put a ref on a **built-in component** that outputs a browser element like `<input />`</font>, React will set that ref’s `current` property to the corresponding DOM node (such as the actual `<input />` in the browser).
+
+However, <font color=dodgerBlue>if you try to put a ref on **your own** component, like `<MyInput />`</font> , <font color=fuchsia>by default you will get `null`</font>. Here is an example demonstrating it. Notice how clicking the button **does not** focus the input:
+
+```jsx
+import { useRef } from 'react';
+
+function MyInput(props) {
+  return <input {...props} />;
+}
+
+export default function MyForm() {
+  const inputRef = useRef(null);
+
+  function handleClick() {
+    // 👀 ref.current 为 null，所以 .focus 会失效，并报错
+    inputRef.current.focus();
+  }
+
+  return (
+    <>
+      <MyInput ref={inputRef} />
+      <button onClick={handleClick}>
+        Focus the input
+      </button>
+    </>
+  );
+}
+```
+
+To help you notice the issue, React also prints an error to the console:
+
+<img src="https://s2.loli.net/2023/10/08/zN72lCBEmq1RPyu.png" alt="image-20231008152754863" style="zoom:50%;" />
+
+<font color=dodgerBlue>This happens because</font> <font color=fuchsia>by default React **does not let a component access the DOM nodes of other components**</font>. <font color=fuchsia>**Not even for its own children!**</font> This is intentional. <font color=red>Refs are an escape hatch that should be used sparingly</font>. Manually manipulating *another* component’s DOM nodes makes your code even more fragile.
+
+> 👀 父组件无法访问子组件的 ref，这点之前完全没想到；这也和 Vue 完全不一样
+
+<font color=dodgerBlue>Instead</font>, <font color=red>components that *want* to expose their DOM nodes have to **opt in**</font>（选择加入）<font color=red>to that behavior</font>. <font color=fuchsia>A component can specify that it **“forwards” its ref to one of its children**</font>. Here’s how `MyInput` can <font color=red>use the `forwardRef` API</font>:
+
+```jsx
+const MyInput = forwardRef((props, ref) => {
+  return <input {...props} ref={ref} />;
+});
+```
+
+<font color=dodgerBlue>This is how it works:</font>
+
+1. `<MyInput ref={inputRef} />` tells React to put the corresponding DOM node into `inputRef.current`. However, it’s up to the `MyInput` component to opt into that—by default, it doesn’t.
+2. <font color=dodgerBlue>The `MyInput` component is declared using `forwardRef`</font>. <font color=red>**This opts it into receiving the `inputRef` from above as the second `ref` argument**</font> which is declared after `props`.
+3. `MyInput` itself passes the `ref` it received to the `<input>` inside of it.
+
+```jsx
+import { forwardRef, useRef } from 'react';
+
+const MyInput = forwardRef((props, ref) => {
+  return <input {...props} ref={ref} />;
+});
+
+export default function Form() {
+  const inputRef = useRef(null);
+
+  function handleClick() {
+    inputRef.current.focus();
+  }
+
+  return (
+    <>
+      <MyInput ref={inputRef} />
+      <button onClick={handleClick}>
+        Focus the input
+      </button>
+    </>
+  );
+}
+```
+
+<font color=dodgerBlue>**In design systems**</font>, it is a <font color=dodgerBlue>common pattern</font> for <font color=red>low-level components</font> like buttons, inputs, and so on, <font color=red>to forward their refs to their DOM nodes</font>. <font color=dodgerBlue>On the other hand</font>, <font color=red>high-level components</font> like forms, lists, or page sections <font color=red>usually won’t expose their DOM nodes to avoid accidental dependencies on the DOM structure</font>.
+
+###### Exposing a subset of the API with an imperative handle
+
+In the above example, `MyInput` exposes the original DOM input element. This lets the parent component call `focus()` on it. However, <font color=dodgerBlue>this also **lets the parent component do something else**</font>—for example, change its CSS styles. <font color=dodgerBlue>In uncommon cases</font>, <font color=red>you may want to restrict the exposed functionality</font>. You can do that with `useImperativeHandle` :
+
+> 👀 感觉 useImperativeHandle 和 Vue3 defineExpose 功能很类似
+
+```jsx
+import { forwardRef, useRef, useImperativeHandle} from 'react';
+
+const MyInput = forwardRef((props, ref) => {
+  const realInputRef = useRef(null);
+  useImperativeHandle(ref, () => ({
+    // Only expose focus and nothing else
+    focus() {
+      realInputRef.current.focus();
+    },
+  }));
+  return <input {...props} ref={realInputRef} />;
+});
+```
+
+Here, `realInputRef` inside `MyInput` holds the actual input DOM node. However, <font color=red> `useImperativeHandle` instructs React to provide your own special object as the value of a ref to the parent component</font>. <font color=lightSeaGreen>So `inputRef.current` inside the `Form` component will only have the `focus` method</font>. In this case, the ref “handle” is not the DOM node, but the custom object you create inside `useImperativeHandle` call.
+
+##### When React attaches the refs
+
+In React, every update is split in [two phases](https://react.dev/learn/render-and-commit#step-3-react-commits-changes-to-the-dom):
+
+- During **render**, React calls your components to figure out what should be on the screen.
+- During **commit**, React applies changes to the DOM.
+
+<font color=dodgerBlue>In general</font>, <font color=fuchsia>you [don’t want](https://react.dev/learn/referencing-values-with-refs#best-practices-for-refs) to access refs during rendering</font>. That goes for refs holding DOM nodes as well. <font color=red>During the first render, the DOM nodes have not yet been created</font>, so <font color=red>`ref.current` will be `null`</font> . And <font color=dodgerBlue>during the rendering of updates</font>, <font color=red>the DOM nodes haven’t been updated yet. So it’s too early to read them</font>.
+
+React sets `ref.current` during the commit. Before updating the DOM, React sets the affected `ref.current` values to `null`. After updating the DOM, React immediately sets them to the corresponding DOM nodes.
+
+**Usually, you will access refs from event handlers.** If you want to do something with a ref, but there is no particular event to do it in, you might need an Effect. We will discuss effects on the next pages.
+
+###### Flushing state updates synchronously with flushSync
+
+Consider code like this, which adds a new todo and <font color=dodgerBlue>scrolls the screen down to the last child of the list</font>. Notice how, <font color=red>for some reason, it always scrolls to the todo that was *just before* the last added one</font>:
+
+> 👀 如下代码存在问题，也就是：在点击添加待办事项后，在 DOM 渲染完成之前就已经滚动了。下面也会说哪里需要改动：
+
+```jsx
+import { useState, useRef } from 'react';
+
+export default function TodoList() {
+  const listRef = useRef(null);
+  const [text, setText] = useState('');
+  const [todos, setTodos] = useState(initialTodos);
+
+  function handleAdd() {
+    const newTodo = { id: nextId++, text: text };
+    setText('');
+    setTodos([ ...todos, newTodo]);
+    listRef.current.lastChild.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest'
+    });
+  }
+
+  return (
+    <>
+      <button onClick={handleAdd}>
+        Add
+      </button>
+      <input
+        value={text}
+        onChange={e => setText(e.target.value)}
+      />
+      <ul ref={listRef}>
+        {todos.map(todo => (
+          <li key={todo.id}>{todo.text}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+let nextId = 0;
+let initialTodos = [];
+for (let i = 0; i < 20; i++) {
+  initialTodos.push({
+    id: nextId++,
+    text: 'Todo #' + (i + 1)
+  });
+}
+```
+
+The issue is with these two lines:
+
+```jsx
+setTodos([ ...todos, newTodo]);
+listRef.current.lastChild.scrollIntoView();
+```
+
+<font color=red>In React, [state updates are queued](https://react.dev/learn/queueing-a-series-of-state-updates)</font>. Usually, this is what you want. However, here it causes a problem because <font color=fuchsia>`setTodos` does not immediately update the DOM</font>. So the time <font color=red>you scroll the list to its last element, the todo has not yet been added</font>. This is why scrolling always “lags behind” by one item.
+
+<font color=dodgerBlue>To fix this issue</font>, you <font color=red>can force React to update (“flush”) the DOM synchronously</font>. To do this, import `flushSync` from `react-dom` （👀 是 `react-dom` ，不是 `react` ）and <font color=fuchsia>**wrap the state update** into a `flushSync` call</font> :
+
+```jsx
+import { flushSync } from 'react-dom';
+
+// ...
+
+flushSync(() => {
+  setTodos([ ...todos, newTodo]);
+});
+listRef.current.lastChild.scrollIntoView();
+```
+
+> 👀 完整示例见 https://codesandbox.io/s/9n5tvp?file=/App.js&utm_medium=sandpack
+
+##### Best practices for DOM manipulation with refs 
+
+Refs are an escape hatch. You should only use them when you have to “step outside React”. Common examples of this include managing focus, scroll position, or calling browser APIs that React does not expose.
+
+If you stick to non-destructive（👀 非破坏性的）actions like focusing and scrolling, you shouldn’t encounter any problems. However, <font color=dodgerBlue>if you try to **modify** the DOM manually</font>, <font color=red>you can risk conflicting with the changes React is making</font>.
+
+To illustrate this problem, this example includes a welcome message and two buttons. The first button toggles its presence using [conditional rendering](https://react.dev/learn/conditional-rendering) and [state](https://react.dev/learn/state-a-components-memory), as you would usually do in React. The second button uses the `remove()` DOM API to forcefully remove it from the DOM outside of React’s control.
+
+```jsx
+import { useState, useRef } from 'react';
+
+export default function Counter() {
+  const [show, setShow] = useState(true);
+  const ref = useRef(null);
+
+  return (
+    <div>
+      <button onClick={() => setShow(!show);}>
+        Toggle with setState
+      </button>
+      <button onClick={() => ref.current.remove(); }>
+        Remove from the DOM
+      </button>
+      {show && <p ref={ref}>Hello world</p>}
+    </div>
+  );
+}
+```
+
+After you’ve manually removed the DOM element, <font color=lightSeaGreen>trying to use `setState` to show it again will **lead to a crash**</font>. This is <font color=lightSeaGreen> because you’ve changed the DOM</font>, and <font color=red>React doesn’t know how to continue managing it correctly</font>.
+
+**Avoid changing DOM nodes managed by React.** <font color=red>Modifying, adding children to, or removing children from elements that are managed by React can lead to inconsistent visual results or crashes like above</font>.
+
+However, this doesn’t mean that you can’t do it at all. It requires caution. <font color=red>**You can safely modify parts of the DOM that React has *no reason* to update.**</font> For example, <font color=lightSeaGreen>if some `<div>` is always empty in the JSX</font>, <font color=red>React won’t have a reason to touch its children list</font>. Therefore, <font color=red>it is safe to manually add or remove elements there</font>.
 
 
 
@@ -4522,6 +4930,7 @@ You can point a ref to any value. However, <font color=fuchsia>**the most common
 ###### 示例
 
 ```react
+// ⚠️ 这里的代码在 cdn 的依赖下，<script> 必须要加上 type="text/babel"，否则无法解析会报错
 const root = ReactDOM.createRoot(document.querySelector('#root'))
 root.render(<h1>root</h1>) // ⚠️ 这里的 jsx 不需要加引号，如果加上引号，将会被理解为字符串
 
