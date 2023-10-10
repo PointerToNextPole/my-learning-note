@@ -8504,7 +8504,8 @@ module.exports = {
       minSize: 20000,
       // 在 webpack 5 中引入了 splitChunks.minRemainingSize 选项，
       // 通过 **确保拆分后剩余的最小 chunk 体积超过限制来避免大小为零的模块**。 
-      // 'development' 模式 中默认为 0。对于其他情况，splitChunks.minRemainingSize 默认为 splitChunks.minSize 的值，
+      // 'development' 模式中默认为 0。
+      // 对于其他情况，splitChunks.minRemainingSize 默认为 splitChunks.minSize 的值，
       // 因此，除需要深度控制的极少数情况外，不需要手动指定它。
       minRemainingSize: 0,
       // 当一个代码，被使用了多少次时，我们对它进行代码分割。
@@ -8526,11 +8527,11 @@ module.exports = {
           // 设置如果同一个文件可以满足两个组，则被哪个组设置的优先级选项。
           // priority 越大优先级越高，则同时满足的文件被其处理。
           priority: -10,
-          // 如果可以模块已经被打包过了，再打包时该如何处理。设置为true，则忽略。
+          // 如果存在模块已经被打包过了，再打包时该如何处理。设置为 true，则忽略。
           reuseExistingChunk: true,
         },
-        // 对于不满足 defaultVendors 要求的文件的代码分割进行设置，这里同样可以设置filename
-        // 当前的这个default 组没有test，即：所有不满足defaultVendors的文件，都可以满足 default
+        // 对于不满足 defaultVendors 要求的文件的代码分割进行设置，这里同样可以设置 filename
+        // 当前的这个 default 组没有 test，即：所有不满足 defaultVendors 的文件，都可以满足 default
         default: {
           // 在 splitChunks 中有，见上
           minChunks: 2,
@@ -8543,7 +8544,7 @@ module.exports = {
 };
 ```
 
-这样生成的代码分割文件名为：vendors~entryFileName.js，其中vendors表示符合 defaultVendors组的要求，所以以vendors 为前缀；entryFileName 表示这段代码的入口文件为entryFileName.js（这里入口文件的配置需要webpack.common.conf.js 中的 entry 去配置）。
+这样生成的代码分割文件名为：`vendors~entryFileName.js` ，其中 vendors 表示符合 defaultVendors 组的要求，所以以 `vendors` 为前缀；`entryFileName` 表示这段代码的入口文件为 entryFileName.js（这里入口文件的配置需要 `webpack.common.conf.js` 中的 `entry` 去配置）。
 
 如何想要修改代码分割后的文件名，可以使用 filename 参数；比如这里的 vendors.js ：
 
@@ -8555,28 +8556,28 @@ defaultVendors: {
 }
 ```
 
-splitChunks的其他的配置（即：非默认配置）
+splitChunks 的其他的配置（即：非默认配置）
 
-- **maxSize：**对代码分割的代码，判断其大小（单位为字节），是否有必要做二次分割。依据就是 maxSize，如果大于 maxSize 则进行二次代码分割。
+- **`maxSize`** ：对代码分割的代码，判断其大小（单位为字节），是否有必要做二次分割。依据就是 maxSize，如果大于 maxSize 则进行二次代码分割。
 
-  不过，对于 lodash库之类的库，即使其大小为 1MB左右（可能会大于 maxSize），但还是 <font color=FF0000 size=4> **有可能**</font> 无法被分割
+  不过，对于 lodash 库之类的库，即使其大小为 1MB左右（可能会大于 maxSize），但还是<font color=red>**有可能**</font>无法被分割
 
-- **automaticNameDelimiter：**代码分割生成文件时，文件名中间的分割符。默认值是 '\~'，比如生成的文件名为：vendors\~main.js
+- **`automaticNameDelimiter`** ：代码分割生成文件时，文件名中间的分割符。默认值是 '\~'，比如生成的文件名为：vendors\~main.js
 
-- **name：**拆分 chunk 的名称。默认值为 false，设为 false 将保持 chunk 的相同名称，因此不会不必要地更改名称。这是生产环境下构建的建议值。
+- **`name`** ：拆分 chunk 的名称。默认值为 false，设为 false 将保持 chunk 的相同名称，因此不会不必要地更改名称。这是生产环境下构建的建议值。
 
 
 
 **Chunk：**在打包的代码分割之后，生成的每一个块都是一个chunk
 
-**chunkFileName**
+###### chunkFileName
 
 ```js
 // webpack.common.conf.js
 output: {
   // entry 中定义的入口文件会直接与 filename 相关，会影响 filename，作为打包后的入口文件
   filename: '[name].js'
-  // 异步加载、间接生成的文件，使用chunkFileName 作为命名方式 
+  // 异步加载、间接生成的文件，使用 chunkFileName 作为命名方式 
   chunkFileName: '[name].chunk.js'
 }
 ```
@@ -8585,9 +8586,9 @@ output: {
 
 ##### 总述
 
-<font color=lightSeaGreen>Code splitting is **one of the most compelling** （引人入胜的）**features** of webpack</font>. <font color=FF0000>This feature **allows you to split your code into various bundles** which can then **be loaded on demand or in parallel**</font> （按需加载 和 并行加载）. It can be used to achieve smaller bundles and <font color=FF0000>**control resource load prioritization**</font>（控制资源加载优先级）which, <font color=lightSeaGreen>if used correctly, can have a major impact on load time</font>.
+<font color=lightSeaGreen>Code splitting is **one of the most compelling**</font> （引人入胜的）<font color=lightSeaGreen>**features** of webpack</font>. <font color=FF0000>This feature **allows you to split your code into various bundles** which can then **be loaded on demand or in parallel**</font> （按需加载 和 并行加载）. It can be used to achieve smaller bundles and <font color=FF0000>**control resource load prioritization**</font>（控制资源加载优先级）which, <font color=lightSeaGreen>if used correctly, can have a major impact on load time</font>.
 
-**There are <font color=FF0000>three general approaches</font> to code splitting <font color=FF0000>available</font>:**
+**There are <font color=dodgerBlue>three general approaches</font> to code splitting <font color=dodgerBlue>available</font>:**
 
 - **Entry Points**: Manually split code using [`entry`](https://webpack.js.org/configuration/entry-context) configuration. 
 - **Prevent Duplication**: Use [Entry dependencies](https://webpack.js.org/configuration/entry-context/#dependencies) or [`SplitChunksPlugin`](https://webpack.js.org/plugins/split-chunks-plugin/) to dedupe （去重） and split chunks.
@@ -8595,7 +8596,7 @@ output: {
 
 ##### Entry Points
 
-This is <font color=FF0000>by far the easiest and most intuitive way to split code</font>. However, it is more manual and has some pitfalls（陷阱） we will go over.
+This is <font color=lightSeaGreen>by far the easiest and most intuitive way to split code</font>. However, <font color=red>it is more manual and has some pitfalls</font>（陷阱） we will go over.
 
 ```js
 const path = require('path');
@@ -8617,7 +8618,7 @@ module.exports = {
 
 - If there are any <font color=FF0000>duplicated modules between entry chunks</font>, they <font color=FF0000>will be included in both bundles</font>.
 
-  如上示例中 （代码略，详见原链接）：index.js 和 another-module.js 中都引入了 `lodash` ，那么，lodash 会引入两次；这显然是不应该的。解决办法见下面，即：使用 dependOn，写成：`dependOn: youDefinedSharedChunk`
+  > 👀 示例中 （代码略，详见原链接）：`index.js` 和 `another-module.js` 中都引入了 `lodash` ，那么，lodash 会引入两次；这显然是不应该的。解决办法见下面，即：使用 `dependOn` ，写成：`dependOn: youDefinedSharedChunk`
 
 - It isn't as flexible and <font color=FF0000>can't be used to dynamically split code **with the core application logic**</font>（不能动态地将核心应用程序逻辑中的代码拆分出来）.
 
@@ -8641,7 +8642,7 @@ module.exports = {
       import: './src/another-module.js',
       dependOn: 'shared', // dependOn 指向了下面定义的 shared: 'lodash'
     },
-    shared: 'lodash', // **注意这里**，定义 shared: 'lodash' 处
+    shared: 'lodash', // ⚠️ **注意这里**，定义 shared: 'lodash' 处
   },
   output: {
     filename: '[name].bundle.js',
@@ -8655,7 +8656,7 @@ module.exports = {
 
 如上配置，打包之后的结果：除了 `index.bundle.js` 、`another.bundle.js` 和 <font color=FF0000>**`shared.bundle.js`**</font> ，<font color=FF0000>**还会有 `runtime.bundle.js`**</font>
 
-As you can see there's another `runtime.bundle.js` file generated besides `shared.bundle.js`, `index.bundle.js` and `another.bundle.js`.
+As you can see <font color=lightSeaGreen>there's another `runtime.bundle.js` file generated</font> besides `shared.bundle.js`, `index.bundle.js` and `another.bundle.js`.
 
 <font color=lightSeaGreen>Although using multiple entry points per page is allowed in webpack</font>, it <font color=FF0000>should **be avoided** when possible in favor of an **entry point with multiple imports**</font>: `entry: { page: ['./analytics', './app'] }`. This <font color=FF0000>**results in** a better optimization and consistent execution order when using `async` script tags</font>.
 
@@ -8684,13 +8685,13 @@ The [**`SplitChunksPlugin`**](https://webpack.js.org/plugins/split-chunks-plugin
   };
 ```
 
-With the [`optimization.splitChunks`](https://webpack.js.org/plugins/split-chunks-plugin/#optimizationsplitchunks) configuration option in place, we should <font color=FF0000>now see **the duplicate dependency removed from our `index.bundle.js` and `another.bundle.js`**</font> （ **译：**`index.bundle.js` 和 `another.bundle.js` 中 <font color=FF0000>**已经移除了重复的依赖模块**</font>）. The plugin should notice that we've separated `lodash` out to a separate chunk and remove the dead weight from our main bundle（**译：** 需要注意的是，插件将 `lodash` 分离到单独的 chunk，并且将其从 main bundle 中移除，减轻了大小）.
+With the [`optimization.splitChunks`](https://webpack.js.org/plugins/split-chunks-plugin/#optimizationsplitchunks) configuration option in place, we should <font color=FF0000>now see **the duplicate dependency removed from our `index.bundle.js` and `another.bundle.js`**</font> （ 🌏 `index.bundle.js` 和 `another.bundle.js` 中 <font color=FF0000>**已经移除了重复的依赖模块**</font>）. The plugin should notice that we've separated `lodash` out to a separate chunk and remove the dead weight from our main bundle（ 🌏 需要注意的是，插件将 `lodash` 分离到单独的 chunk，并且将其从 main bundle 中移除，减轻了大小）.
 
 另外，还可以使用 [`mini-css-extract-plugin`](https://webpack.js.org/plugins/mini-css-extract-plugin)，Useful for <font color=FF0000>splitting CSS out from the main application</font>.
 
 ##### Dynamic Imports
 
-<font color=lightSeaGreen>**Two similar techniques** are supported by webpack when it comes to dynamic code splitting</font>. **The first and recommended approach** is to <font color=FF0000>use the `import()` syntax</font> that conforms（符合） to the [ECMAScript proposal](https://github.com/tc39/proposal-dynamic-import) for dynamic imports. The legacy, webpack-specific approach is to use [`require.ensure`](https://webpack.js.org/api/module-methods/#requireensure) （**译：**第二种，则是 webpack 的遗留功能，使用 webpack 特定的 require.ensure）. 
+<font color=lightSeaGreen>**Two similar techniques** are supported by webpack when it comes to dynamic code splitting</font>. <font color=dodgerBlue>**The first and recommended approach**</font> is to <font color=FF0000>use the `import()` syntax</font> that conforms（符合） to the [ECMAScript proposal](https://github.com/tc39/proposal-dynamic-import) for dynamic imports. The legacy, webpack-specific approach is to use [`require.ensure`](https://webpack.js.org/api/module-methods/#requireensure) （ 🌏 第二种，则是 webpack 的遗留功能，使用 webpack 特定的 `require.ensure` ）. 
 
 >  ⚠️ **Warning**：<font color=FF0000>**`import()` calls use [promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) internally**</font>. If you use `import()` with older browsers (e.g., IE 11), remember to shim `Promise` using a polyfill such as [es6-promise](https://github.com/stefanpenner/es6-promise) or [promise-polyfill](https://github.com/taylorhakes/promise-polyfill).
 
@@ -8735,7 +8736,7 @@ const lazyComp = () =>
   });
 ```
 
-If the script loading will fail before webpack starts loading of that script by itself (webpack just creates a script tag to load its code, if that script is not on a page), that catch handler won't start till [chunkLoadTimeout](https://webpack.js.org/configuration/output/#outputchunkloadtimeout) is not passed. This behavior can be unexpected. But it's explainable — webpack can not throw any error, cause webpack doesn't know, that script failed. Webpack will add onerror handler to the script right after the error has happen.
+If the script loading will fail before webpack starts loading of that script by itself (webpack just creates a script tag to load its code, if that script is not on a page), that catch handler won't start till [chunkLoadTimeout](https://webpack.js.org/configuration/output/#outputchunkloadtimeout) is not passed. This behavior can be unexpected. But it's explainable — <font color=red>webpack can not throw any error</font>, <font color=lightSeaGreen>cause webpack doesn't know, that script failed</font>. Webpack will add onerror handler to the script right after the error has happen.
 
 **<font color=dodgerBlue>To prevent such problem</font> you can add your own onerror handler**, which removes the script in case of any error:
 
