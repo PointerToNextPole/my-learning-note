@@ -494,8 +494,8 @@ String.prototype.trimRight.name === "trimEnd";
 
 #### String.prototype.localeCompare()
 
-localeCompare() 方法 <font color=FF0000>返回一个数字</font> 来 <font color=FF0000>指示一个**参考字符串是否在排序顺序前面或之后或与给定字符串相同**</font>。
-新的 locales 和 options 参数能让应用程序定制函数的行为，即指定用来排序的语言。 locales 和 options 参数完全取决于实现，在旧的实现中忽略这两个参数。
+`localeCompare()` 方法 <font color=FF0000>返回一个数字</font> 来 <font color=FF0000>指示一个**参考字符串是否在排序顺序前面或之后或与给定字符串相同**</font>。
+新的 `locales` 和 `options` 参数能让应用程序定制函数的行为，即指定用来排序的语言。 `locales` 和 `options` 参数完全取决于实现，在旧的实现中忽略这两个参数。
 
 ##### 语法
 
@@ -505,7 +505,21 @@ referenceStr.localeCompare(compareString[, locales[, options]])
 
 参数等内容由于过于庞杂，这里略；详见链接
 
-摘自：[MDN - String.prototype.localeCompare()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare)
+摘自：[MDN - `String.prototype.localeCompare()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare)
+
+##### 示例
+
+###### 中文字典排序
+
+```js
+const arr = ['上海', '北京', '杭州']
+
+const unsort = arr.toSorted((a, b) => a > b)
+const sorted = arr.toSorted((a, b) => a.localeCompare(b, 'zh-Hans-CN'))
+
+console.log(unsort) // ['上海', '北京', '杭州']
+console.log(sorted) // [ '北京', '杭州', '上海' ]
+```
 
 
 
