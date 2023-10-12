@@ -51,7 +51,7 @@ Vue2 render 有点啰嗦 verbose：第二个参数，需要指明传递给节点
 
 ##### Vue3 render 函数
 
-Vue3 做了一些简化：对 第二个参数 props 对象做了扁平化处理。<font color=dodgerBlue>按照惯例</font>，监听器以 on 开头，任何以 on 为前缀的都会自动绑定为一个监听器。另外，将 h 函数全局引入，这使得在同一个文件中拆分大的 render 函数，变得很方便（不需要多次传递）
+Vue3 做了一些简化：对 第二个参数 props 对象做了扁平化处理。<font color=dodgerBlue>按照惯例</font>，监听器以 “on” 开头，任何以 “on” 为前缀的都会自动绑定为一个监听器。另外，将 `h` 函数全局引入，这使得在同一个文件中拆分大的 render 函数，变得很方便（不需要多次传递）
 
 ```js
 import { h } from 'vue'
@@ -68,14 +68,14 @@ h 是 hyperscript 的缩写。
 
 ##### render 进一步用法
 
-在 render 中没有 v-if，可以用 三元运算符 `expr ? :` 替代。如下：
+在 render 中没有 `v-if` ，可以用 三元运算符 `expr ? :` 替代。如下：
 
 ```js
 import { h } from 'vue'
 
 const App = {
   render() {
-    // 这里可以添加逻辑，比如下面 return 中使用的内容。感觉和 React 的 render 很像...
+    // 这里可以添加逻辑，比如下面 return 中使用的内容。感觉和 jsx 有点类似
     
     return this.ok
       ? h('div', { id: 'hello' }, [h('span', 'world')])
@@ -84,11 +84,11 @@ const App = {
 }
 ```
 
-类似的，没有 v-for，可以使用 map 函数来替代。
+类似的，没有 `v-for`，可以使用 `map` 函数来替代。
 
 
 
-##### vdom 实现 ( h , mount , patch )
+##### vdom 实现 ( `h` , `mount` , `patch` )
 
 ```html
 <div id="app"></div>
@@ -231,7 +231,7 @@ const setState = newState => {
 setState({ a: 5 })
 ```
 
-上面 `setState` 的操作 和 React 的工作原理很相似。而在 Vue 中是使用 `state.a = 5` ，要追踪依赖变得更加复杂
+上面 `setState` 的操作 和 React 的工作原理很相似。而 Vue 中是使用 `state.a = 5` ，要追踪依赖变得更加复杂
 
 
 
@@ -241,9 +241,9 @@ setState({ a: 5 })
 
 
 
-##### watchEffect API
+##### `watchEffect` API
 
-watchEffect API 就是依赖追踪的实现函数（就如同上面 [[#响应式示例]] 的 `onStateChanged` ）。不像 Vue2 中的 watch 是监听某个属性，当属性发生变化，便执行回调；<font color=lightSeaGreen>watchEffect 会监听整个函数</font>，直接运行它；并<font color=red>追踪该函数执行时 所有使用过的响应式属性</font>。示例如下：
+`watchEffect` API 就是依赖追踪的实现函数（就如同上面 [[#响应式示例]] 的 `onStateChanged` ）。不像 Vue2 中的 watch 是监听某个属性，当属性发生变化，便执行回调；<font color=lightSeaGreen>`watchEffect` 会监听整个函数</font>，直接运行它；并<font color=red>追踪该函数执行时 所有使用过的响应式属性</font>。示例如下：
 
 ```js
 import { reactive, watchEffect } from 'vue'

@@ -905,6 +905,12 @@ Array.prototype.reduce = function(cb, initialValue) {
 
 
 
+
+
+### 其他实现
+
+
+
 #### flat 实现
 
 👀 可以参考下 [JavaScript专题之数组扁平化](https://github.com/mqyqingfeng/Blog/issues/36)
@@ -1059,7 +1065,7 @@ const arr = Array.prototype.concat.apply([], arrLike)
 
 ##### 理想情况下的简单实现
 
-如果是实现简单的 add(1)(2) = 3，则利用闭包，有如下代码：
+如果是实现简单的 `add(1)(2) = 3`，则利用闭包，有如下代码：
 
 ```js
 function curry(num) {
@@ -1093,18 +1099,11 @@ function add() {
 ##### 通用实现
 
 ```javascript
-function curry(fn, args) {
-  const { length } = fn;
-  const myArgs = args || [];
-  return function () {
-    // 这里的 arguments 是第二次及以后的入参
-    const newArgs = myArgs.concat(Array.prototype.slice.call(arguments));
-    if (newArgs.length < length) {
-      return curry.call(this, fn, newArgs);
-    }
-    return fn.apply(this, newArgs);
-  };
-}
+const curry = fn =>
+  judge = (...args) =>
+    args.length >= fn.length
+      ? fn(...Array.prototype.slice.call(args, 0, fn.length))
+      : (...arg) => judge(...args, ...arg)
 ```
 
 
