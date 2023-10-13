@@ -309,13 +309,13 @@ watchEffect(() => {
 dep.value = 'changed' // console.log -> 'changed'
 ```
 
-> 👀 关于 activeEffect 的作用，简单来说就是 “ 正在运行的 effect ，避免对一个依赖进行多次/重复收集 ”（也因此，上面 watchEffect 中最后时赋为 null，也得到了解释）；具体见 [[#activeEffect]]。另外，在源码中，也是有这个变量。
+> 👀 关于 `activeEffect` 的作用，简单来说就是 “ 正在运行的 effect ，避免对一个依赖进行多次/重复收集 ”（也因此，上面 `watchEffect` 中最后赋为 null，也得到了解释）；具体见 [[#activeEffect]]。另外，在源码中，也是有这个变量。
 >
 > <img src="https://s2.loli.net/2022/11/24/68mgj3DGoMdWzOs.png" alt="image-20221124233057515" style="zoom:60%;" />
 >
 > 见：https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L48 。
 
-这里的 Dep 实现，和 composition API 中的 ref 非常相似。
+这里的 `Dep` 实现，和 composition API 中的 `ref` 非常相似。
 
 > ⚠️ 注意：这里使用的是 `depend` 和 `notify`，而不是 Vue3 源码中的 [track](https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L213) 和 [trigger](https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L259)，尤雨溪的说法是：为了减少其中与响应式原理不相关的优化，从而更好的理解工作原理。而我个人的感觉是：这里定义的是 Dep 类，这是 Vue2 特有的，<font color=red>Vue3 取消了 Dep 类的设计</font>，所以自然使用 Dep 类相关的 depend 和 notify
 >
@@ -466,9 +466,8 @@ watchEffect(() => {
 state.count++;
 ```
 
-> 👀 **补充**
+> 💡 根据 Vue Mastery 《Vue 3 Reactivity》（ 👀 笔记见 [[#《Vue 3 Reactivity》笔记]]）中的说法：使用 receiver 和 Reflect 保证了当操作的对象有继承自其它对象的值或者函数时，this 能够指向正确的目标对象，这将避免一些 使用 Vue2 时出现的响应式警告
 >
-> 根据 Vue Mastery 《Vue 3 Reactivity》（ 👀 笔记见 [[#《Vue 3 Reactivity》笔记]]）中的说法：使用 receiver 和 Reflect 保证了当操作的对象有继承自其它对象的值或者函数时，this 能够指向正确的目标对象，这将避免一些 使用 Vue2 时出现的响应式警告
 
 上面的实现还有一些边界情况，比如：用户可能在同一个对象中调用 reactive 两次，在 reactive 过的 state 上再次调用 reactive；所以，需要跟踪以确保对同一个对象调用 reactive ，原始对象 ( raw object ) 将会返回相同的代理实例
 
@@ -699,7 +698,7 @@ Setup 会是新的第一个被调用的 hook ，甚至在 beforeCreate 之前。
 
 
 
-@vue/reactivity 是一个内部包，Vue 设计者只是碰巧暴露了它的一些 API，通过 Vue 接口 ( interface )；而一些 @vue/reactivity 的 API 被认为是底层或者进阶的 API；Vue 设计者甚至不通过 Vue 将其暴露。从技术上来讲，如果你是 Vue 的超级进阶用户，可以单独使用 响应式包，在它的基础上建立一个替代系统；但这不是 API 合同 ( API contract ) 的一部分。
+`@vue/reactivity` 是一个内部包，Vue 设计者只是碰巧暴露了它的一些 API，通过 Vue 接口 ( interface )；而一些 `@vue/reactivity` 的 API 被认为是底层或者进阶的 API；Vue 设计者甚至不通过 Vue 将其暴露。从技术上来讲，如果你是 Vue 的超级进阶用户，可以单独使用 响应式包，在它的基础上建立一个替代系统；但这不是 API 合同 ( API contract ) 的一部分。
 
 对于 Vue 来说，watchEffect 是一个建立在原始的 Effect 上的包装器。当建立了一个 watchEffect（这里我们称为 watcher ），这个 watcher 将自动和组件实例关联；当这个组件实例被卸载时，这个 effect 也会自动停止。
 
@@ -717,7 +716,7 @@ watchEffect(() => {
 
 
 
-在一个组件中的 setup 函数中，可以调用另一个组件的 setup 函数。这种 组合 ( composition ) 的方式相比传统的面向对象的扩展更为灵活（ 👀 弹幕有人总结：组合优于继承 ）
+在一个组件中的 `setup` 函数中，可以调用另一个组件的 `setup` 函数。这种 组合 ( composition ) 的方式相比传统的面向对象的扩展更为灵活（ 👀 弹幕有人总结：组合优于继承 ）
 
 
 
@@ -800,7 +799,7 @@ watchEffect(() => {
 </script>
 ```
 
-不过，HOC 并没有真正解决根本问题：这里有仍然有可能存在命名空间的冲突，比如多个高阶组件相互包装，再加上 props 中也有很多属性（分不清哪个属性来自哪个高阶组件），如下：
+不过，<font color=dodgerBlue>**HOC 并没有真正解决根本问题**</font>：这里有仍然有可能存在命名空间的冲突，比如多个高阶组件相互包装，再加上 props 中也有很多属性（分不清哪个属性来自哪个高阶组件），如下：
 
 ```js
 const App = withFoo(withBar(withMouse({
@@ -872,9 +871,9 @@ const App = {
 };
 ```
 
-props 的归属关系就很明显了：x，y 属于 Mouse，foo 属于 Foo。
+props 的归属关系就很明显了：`x`，`y` 属于 Mouse，`foo` 属于 Foo。
 
-即使出现 相同名称的 prop，也是可以利用 对象的 alias 重命名的。假设 Foo 中也有 名为 x 的 prop ，可以通过如下方法 `{ x: alias }` 避免冲突。如下：
+即使出现 相同名称的 prop，也是可以利用 对象的 alias 重命名的。假设 `Foo` 中也有 名为 `x` 的 prop ，可以通过如下方法 `{ x: alias }` 避免冲突。如下：
 
 ```js
 const App = {
@@ -905,8 +904,12 @@ const App = {
       x.value = e.pageX
       y.value = e.pageY
     }
-    onMounted(() => { window.addEventListener('mousemove', update) })
-    onUnmounted(() => { window.removeEventListener('mousemove', update) })
+    onMounted(() => {
+      window.addEventListener('mousemove', update)
+    })
+    onUnmounted(() => {
+      window.removeEventListener('mousemove', update)
+    })
     return { x, y }
   }
 
@@ -922,9 +925,9 @@ const App = {
 </script>
 ```
 
-> 👀 **补充**
+> 💡 **补充**
 >
-> 虽然上面 `const { x, y } = useMouse(); return { x, y }` 有点啰嗦，甚至可以直接写成
+> 虽然上面 `const { x, y } = useMouse(); return { x, y }` 有点啰嗦，可以直接写成
 >
 > ```js
 > return { ...useMouse() }
@@ -940,7 +943,7 @@ const App = {
 
 ###### 使用 Composition API 最后一个好处
 
-当你尝试将多个东西合并在一起的时候，在类型系统中很难正确的进行类型推导是很困难的；但是在 Composition API 中，一切都是函数调用，Vue 也提供了开箱即用正确的类型定义。在 90% 的情况下，一起都是自动推断出来的。当你（在 setup 中）调用 （封装的函数）时，所有的东西都会有类型，所以返回的（暴露）的数据将会返回到模版时，IDE、vetur 插件将可以接收到它们，然后推断模版进行自动补全。
+当你尝试将多个东西合并在一起的时候，在类型系统中很难正确的进行类型推导是很困难的；但是在 Composition API 中，一切都是函数调用，Vue 也提供了开箱即用正确的类型定义。在 90% 的情况下，一起都是自动推断出来的。当你（在 `setup` 中）调用 （封装的函数）时，所有的东西都会有类型，所以返回的（暴露）的数据将会返回到模版时，IDE、vetur 插件将可以接收到它们，然后推断模版进行自动补全。
 
 
 
@@ -964,7 +967,7 @@ const App = {
     const isPending = ref(true);
 
     watchEffect(() => { // watchEffect 会监听 props.id，一旦 id 发生变化，将会重新调用函数
-      // watchEffect 监听到变化，调用 fetch 前，重置数据，
+      // watchEffect 监听到变化，调用 fetch 前，重置数据
       isPending.value = true
       data.value = null
       error.value = null
@@ -1027,9 +1030,9 @@ const App = {
 
 ###### ref vs reactive
 
-使用 Composition API 时，尤雨溪个人倾向于使用 ref 。
+使用 Composition API 时，尤雨溪个人倾向于使用 `ref` 。
 
-<font color=fuchsia>当返回 ( return ) 一个包含 ref 的对象时</font>（ 👀 参见 [[#使用 fetch 代码示例]] ），<font color=fuchsia>允许使用者使用解构，解构之后数据依然有响应式</font>（ 👀 参见[[#使用 fetch 代码示例]] ）。但如果使用 reactive，当你返回 reactive 包裹的对象时，使用者无法在解构之后，仍保持响应式；因为当它们被解构，这些值将会变成原始值 ( primitive value )，不会和 Composition API 函数中的状态逻辑保持关联。解决方法是使用 toRefs ，示例如下；但是话说回来，与其再使用 toRefs 不如一开始使用 ref。
+<font color=fuchsia>当返回 ( return ) 一个包含 `ref` 的对象时</font>（ 👀 参见 [[#使用 fetch 代码示例]] ），<font color=fuchsia>**允许使用者使用解构，解构之后数据依然有响应式**</font>（ 👀 参见[[#使用 fetch 代码示例]] ）。但如果使用 reactive，<font color=fuchsia>**当你返回 reactive 包裹的对象时，使用者无法在解构之后，仍保持响应式**</font>；因为当它们被解构，这些值将会变成原始值 ( primitive value )，不会和 Composition API 函数中的状态逻辑保持关联。解决方法是使用 `toRefs` ，示例如下；但是话说回来，与其再使用 `toRefs` 不如一开始使用 `ref` 。
 
 <font color=dodgerBlue>使用 ref 的另一个好的副作用 ( nice side effect ) 是</font>：它可以让你更简单的移动这些逻辑代码，重新组织它们（解耦 & 可重用性强）；相反，如果将所有东西都放入一个巨大的 data 对象中，想要重新组织数据就会变的很麻烦。
 
@@ -1050,9 +1053,9 @@ return toRefs(state)
 
 <img src="https://s2.loli.net/2022/11/23/G6U89sMVCr7blDa.jpg" style="zoom: 33%;" />
 
-track 函数保存的是 effect，即上图所说的 Save this code。trigger 函数调用 effect，以及其他所有已经保存了的代码。
+<font color=fuchsia>`track` 函数保存的是 effect，即上图所说的 “Save this code”</font>（👀 通过 Set 保存）。`trigger` 函数（👀 从 Set 中获取 effect）调用 effect，以及其他所有已经保存了的代码。
 
-为了存储 effect<font color=red size=4>**s**</font> ，需要使用 dep 变量，表示依赖关系，它的数据结构是一个 Set（可避免重复）。在 track 函数中，使用 `dep.add(effect)` 来保存 effect 。
+为了存储 effect<font color=red size=4>**s**</font> ，需要使用 `dep` 变量，表示依赖关系，它的数据结构是一个 Set（可避免重复）。在 track 函数中，使用 `dep.add(effect)` 来保存 effect 。
 
 <img src="https://s2.loli.net/2022/11/23/5qeBxnjhzTDHUai.png" alt="image-20221123235212889" style="zoom:33%;" />
 
@@ -1062,9 +1065,9 @@ dep 其实就是一个 effect Set，这个 <font color=fuchsia>**effect Set 应�
 
 <img src="https://s2.loli.net/2022/11/24/PQ1Jrlv49US8CfD.jpg" alt="20221124_000713.jpeg" style="zoom:45%;" />
 
-Set 中的每一个值，都只是一个需要执行的 effect；就如上面的匿名函数  `() => { total = product.price * product.quantity}`
+Set 中的每一个值，都只是一个需要执行的 effect；就如上面的匿名函数  `() => { total = product.price * product.quantity }`
 
-而要把这些 deps 存储起来，并且<font color=fuchsia size=4>**方便以后再找到它们** </font>，需要创建一个 <font color=fuchsia size=4>**deps map**</font>（数据结构是 ES6 Map）；它是一张存储了每一个属性及其 dep 对象的 字典。结构如下图所示：
+而要把这些 deps 存储起来，并且 <font color=fuchsia size=4>**方便以后再找到它们** </font>，需要创建一个 <font color=fuchsia size=4>**deps map**</font>（数据结构是 ES6 Map）；它是一张存储了每一个属性及其 dep 对象的 字典。结构如下图所示：
 
 <img src="https://s2.loli.net/2022/11/24/fnCYwBA5apyhkde.jpg" alt="20221124_003042.jpeg" style="zoom: 40%;" />
 
