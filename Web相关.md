@@ -44,9 +44,9 @@ U+0000 = null
 
 <font color=LightSeaGreen>目前（2014年），Unicode 的最新版本是 7.0版，一共收入了 109449 个符号，其中的中日韩文字为 74500 个</font>。可以近似认为，全世界现有的符号当中，三分之二以上来自东亚文字。比如，中文"好"的码点是十六进制的 597D。
 
-<font color=FF0000>这么多符号，Unicode 不是一次性定义的，而是 <font size=4>**分区定义**</font></font>。<font color=FF0000>每个区可以存放 65536 个 ( 216 ) 字符，称为一个平面 ( plane ) </font>。<font color=FF0000>目前，一共有 17 个 ( 2^5^ ) 平面，也就是说，整个 Unicode 字符集的大小现在是 2^21^</font>。
+<font color=FF0000>这么多符号，Unicode 不是一次性定义的，而是 <font size=4>**分区定义**</font></font>。<font color=FF0000>每个区可以存放 65536 个 ( $2^{16}$ ) 字符，称为一个平面 ( plane ) </font>。<font color=FF0000>目前，一共有 17 个 ( $2^5$ ) 平面，也就是说，整个 Unicode 字符集的大小现在是 $2^{21}$</font>。
 
-<font color=FF0000><font size=4>**最前面的 65536 个字符位**</font>，称为<font size=4>**基本平面（Basic Multilingual Plane，缩写 BMP ）**</font></font>，<font color=FF0000>它的码点范围是从 0 一直到 2^16^-1 ，写成 16进制就是从 U+0000 到 U+FFFF </font>。<font color=LightSeaGreen>**所有最常见的字符都放在这个平面**，这是 Unicode 最先定义和公布的一个平面</font>。
+<font color=FF0000><font size=4>**最前面的 65536 个字符位**</font>，称为<font size=4>**基本平面（Basic Multilingual Plane，缩写 BMP ）**</font></font>，<font color=FF0000>它的码点范围是从 0 一直到 $2^{16}-1$ ，写成 16进制就是从 U+0000 到 U+FFFF </font>。<font color=LightSeaGreen>**所有最常见的字符都放在这个平面**，这是 Unicode 最先定义和公布的一个平面</font>。
 
 <font color=FF0000><font size=4>**剩下的字符**</font> 都放在 <font size=4>**辅助平面 ( Supplementary Multilingual Plane, SMP ) **</font></font>，<font color=LightSeaGreen>码点范围从 U+010000 一直到 U+10FFFF</font> 。
 
@@ -1809,17 +1809,17 @@ HTTP请求开始到结束这段时间。Request 的<font color=FF0000>范围是�
 
 ##### Session 认证流程
 
-- 用户<font color=FF0000>**第一次请求服务器**</font>的时候，服务器根据用户提交的相关信息，创建对应的 Session
+- 用户<font color=dodgerBlue>第一次请求服务器</font>的时候，服务器根据用户提交的相关信息，创建对应的 Session
 - 请求返回时将此 Session 的唯一标识信息 SessionID 返回给浏览器
-- <mark>浏览器接收到服务器返回的 SessionID 信息后，会将此信息存入到 Cookie 中，同时 Cookie 记录此 SessionID 属于哪个域名</mark>
-- 当用户<font color=FF0000>**第二次访问服务器**</font>的时候，<mark>请求会自动判断此域名下是否存在 Cookie 信息，如果存在自动将 Cookie 信息也发送给服务端，服务端会从 Cookie 中获取 SessionID，再根据 SessionID 查找对应的 Session 信息，如果没有找到说明用户没有登录或者登录失效，如果找到 Session 证明用户已经登录可执行后面操作</mark>。
+- <font color=lightSeaGreen>浏览器接收到服务器返回的 SessionID 信息后，会将此信息存入到 Cookie 中，同时 Cookie 记录此 SessionID 属于哪个域名</font>
+- 当用户<font color=dodgerBlue>第二次访问服务器</font>的时候，<font color=lightSeaGreen>请求会自动判断此域名下是否存在 Cookie 信息，如果存在自动将 Cookie 信息也发送给服务端，服务端会从 Cookie 中获取 SessionID，再根据 SessionID 查找对应的 Session 信息，如果没有找到说明用户没有登录或者登录失效，如果找到 Session 证明用户已经登录可执行后面操作</font>。
 
 根据以上流程可知，**SessionID 是连接 Cookie 和 Session 的一道桥梁**，大部分系统也是根据此原理来验证用户登录状态。
 
 ##### Cookie 和 Session 的区别
 
 - **安全性：** Session 比 Cookie 安全，Session 是存储在服务器端的，Cookie 是存储在客户端的。
-- **存取值的类型不同**：<mark>Cookie 只支持存字符串数据，想要设置其他类型的数据，需要将其转换成字符串，Session 可以存任意数据类型</mark>
+- **存取值的类型不同**：<font color=lightSeaGreen>Cookie 只支持存字符串数据，想要设置其他类型的数据，需要将其转换成字符串，Session 可以存任意数据类型</font>
 - **有效期不同：** Cookie 可设置为长时间保持，比如我们经常使用的默认登录功能，<font color=FF0000>Session 一般失效时间较短，客户端关闭（默认情况下）或者 Session 超时都会失效</font>。
 - **存储大小不同：** <font color=FF0000>单个 Cookie 保存的数据不能超过 4K</font>，<font color=FF0000>**Session 可存储数据远高于 Cookie**</font>，但是当访问量过多，会占用过多的服务器资源。
 
@@ -1828,9 +1828,17 @@ HTTP请求开始到结束这段时间。Request 的<font color=FF0000>范围是�
 
 
 
+#### JWT
+
+##### CheatSheet
+
+<img src="https://s2.loli.net/2023/10/15/XCgYSE3bIe6Mu2V.jpg" alt="" style="zoom:45%;" />
+
+
+
 #### redirect & forward
 
-**Forward**：直接转发方式。客户端和浏览器只发出一次请求，Servlet、HTML、JSP或其它信息资源，由第二个信息资源响应该请求，在请求对象request中，保存的对象对于每个信息资源是共享的。
+**Forward**：直接转发方式。客户端和浏览器只发出一次请求，Servlet、HTML、JSP 或其它信息资源，由第二个信息资源响应该请求，在请求对象request中，保存的对象对于每个信息资源是共享的。
 
 **Redirect**：间接转发方式。实际是两次HTTP请求，服务器端在响应第一次请求的时候，让浏览器再向另外一个URL发出请求，从而达到转发的目的。
 
@@ -1842,7 +1850,7 @@ HTTP请求开始到结束这段时间。Request 的<font color=FF0000>范围是�
 
 ##### **具体阐述：**
 
-- 间接转发方式，有时也叫<font color=FF0000>重定向</font>，它<font color=FF0000>一般用于避免用户的非正常访问</font>。<mark>例如：用户在没有登录的情况下访问后台资源，Servlet可以将该HTTP请求重定向到登录页面，让用户登录以后再访问</mark>。在Servlet中，通过调用response对象的SendRedirect()方法，告诉浏览器重定向访问指定的URL，示例代码如下：　
+- 间接转发方式，有时也叫<font color=FF0000>重定向</font>，它<font color=FF0000>一般用于避免用户的非正常访问</font>。<font color=lightSeaGreen>例如：用户在没有登录的情况下访问后台资源，Servlet可以将该HTTP请求重定向到登录页面，让用户登录以后再访问</font>。在Servlet中，通过调用response对象的SendRedirect()方法，告诉浏览器重定向访问指定的URL，示例代码如下：　
 
   ```java
   //Servlet中处理get请求的方法
