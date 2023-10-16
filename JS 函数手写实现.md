@@ -230,11 +230,27 @@ const cloneDeep = (target, hash = new WeakMap()) => {
 }
 ```
 
+##### 使用 `MessageChannel` API 的实现
+
+使用 `JSON.parse(JSON.stringify(target))` 实现深拷贝的不合适的，除了 JSON 不安全外，也有`JSON.stringify` 对于循环引用的对象操作会直接报错的原因。就这一问题，可以使用 `MessageChannel` API 自带的拷贝传值进行解决
+
+```js
+function deepClone(obj) {
+  return new Promise(resolve => {
+    const { port1, port2 } = new MessageChannel()
+    port1.postMessage(obj)
+    port2.onMessage = msg => resolve(msg.data)
+  })
+}
+```
+
+学习自：[惊呆面试官的深度克隆方式，我不说你一定不知道【渡一教育】](https://www.bilibili.com/video/BV1tu411M76h)
 
 
-#### Object.is() 实现
 
-Object.is() 主要解决的是如下两个不太合理的问题。
+#### `Object.is()` 实现
+
+`Object.is()` 主要解决的是如下两个不太合理的问题。
 
 ```js
 +0 === -0 // true
@@ -252,7 +268,7 @@ const is = (x, y) => {
 }
 ```
 
-#### isNaN() 的实现
+#### `isNaN()` 的实现
 
 根据上面的实现，可以知道 isNaN() 的实现方法。另外，[MDN - isNaN()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/isNaN) 也有说实现方法。还有，`isNaN('NaN') === true`
 
@@ -273,7 +289,7 @@ const isNaN(value) {
 
 ##### 防抖
 
-通过 setTimeout，在一定时间间隔内，将多次触发变成一次触发。
+通过 `setTimeout`，在一定时间间隔内，将多次触发变成一次触发。
 
 > 👀 这里的 `fn.apply(this, arguments)` 是正常的，虽然 arguments 是一个 arr-like 。参考 [MDN - Function.prototype.apply()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/apply) 的内容：
 >
@@ -322,7 +338,7 @@ https://www.bilibili.com/video/BV1gb4y1z736 最后有实现。另外，https://g
 
 
 
-##### Promise.all() 实现
+##### `Promise.all()` 实现
 
 ```js
 Promise.myAll = arr => {
@@ -379,7 +395,7 @@ Promise.myAll([p1(), p2(), p3()])
   .catch(e => console.log(e)) // 2
 ```
 
-##### Promise.any() 实现
+##### `Promise.any()` 实现
 
 ```js
 Promise.any = arr => {
@@ -407,7 +423,7 @@ Promise.any = arr => {
 
 代码修改自：[Promise.any 的作用，如何自己实现一个 Promise.any](https://juejin.cn/post/6965596525388890142)
 
-##### Promise.allSettled() 实现
+##### `Promise.allSettled()` 实现
 
 ```js
 Promise.myAllSettled = arr => {
@@ -430,7 +446,7 @@ Promise.myAllSettled = arr => {
 }
 ```
 
-##### Promise.race() 实现
+##### `Promise.race()` 实现
 
 ```js
 Promise.myRace = function(promiseArr) {
@@ -579,7 +595,7 @@ export const mapLimited = async <
 
 
 
-#### Sleep 函数实现
+#### sleep 函数实现
 
 即实现强制阻塞
 
