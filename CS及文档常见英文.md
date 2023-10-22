@@ -574,7 +574,7 @@
 
   > As we cover in [our section on classes](https://www.typescriptlang.org/docs/handbook/2/classes.html), a class has two sides to its type: the static side and the instance side. 
 
-- sort ：种类，类别，分类。在编程 sort 意为“排序”，但是他还有其他意思。
+- **sort** ：种类，类别，分类。在编程 sort 意为“排序”，但是他还有其他意思。
 
   > TypeScript intentionally limits the sorts of expressions you can use `typeof` on.
 
@@ -971,6 +971,12 @@
   > <img src="https://s2.loli.net/2023/10/07/oat8pKvWdgJYUiP.png" alt="image-20231007211051637" style="zoom:48%;" />
   
 - **delimiter** ：分隔符
+
+- **coordinator** ：协调员。
+
+  > 👀 显然这个词和 “coordinate” 坐标/协调 相关
+
+- **genesis** ：开端，初始
 ***
 
 

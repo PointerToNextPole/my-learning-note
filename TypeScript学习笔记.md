@@ -5983,7 +5983,42 @@ let z = <const>{ text: "hello" };
 
 
 
-#### // @ts-ignore
+#### Type-Only Imports and Export
+
+This feature is something most users may never have to think about; however, if you’ve hit issues under [`isolatedModules`](https://www.typescriptlang.org/tsconfig#isolatedModules), TypeScript’s `transpileModule` API, or Babel, this feature might be relevant.
+
+TypeScript 3.8 adds a new syntax for type-only imports and exports.
+
+```ts
+import type { SomeThing } from "./some-module.js";
+export type { SomeThing };
+```
+
+`import type` only imports declarations to be used for type annotations and declarations. It *always* gets fully erased, so there’s no remnant of it at runtime. Similarly, `export type` only provides an export that can be used for type contexts, and is also erased from TypeScript’s output.
+
+It’s important to note that classes have a value at runtime and a type at design-time, and the use is context-sensitive. When using `import type` to import a class, you can’t do things like extend from it.
+
+```ts
+import type { Component } from "react";
+interface ButtonProps {
+  // ...
+}
+class Button extends Component<ButtonProps> {
+  //               ~~~~~~~~~
+  // error! 'Component' only refers to a type, but is being used as a value here.
+  // ...
+}
+```
+
+If you’ve used Flow before, the syntax is fairly similar. One difference is that we’ve added a few restrictions to avoid code that might appear ambiguous.
+
+##### // TODO 没看完...
+
+摘自：[TS Doc - handbook - TypeScript 3.8 # Type-Only Imports and Export](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export)
+
+
+
+#### `// @ts-ignore`
 
 <font color=dodgerBlue>**TypeScript 2.6**</font> support <font color=fuchsia>suppressing</font>（镇压，翻译成 隐藏/忽略） <font color=fuchsia>errors</font> in .js files using `// @ts-ignore` comments <font color=fuchsia>placed above the offending</font>（惹麻烦的） <font color=fuchsia>lines</font>.
 
@@ -6011,7 +6046,7 @@ Please note that this comment <font color=red>only suppresses the error reportin
 
 
 
-#### // @ts-nocheck
+#### `// @ts-nocheck`
 
 <font color=dodgerBlue>**TypeScript 3.7**</font> allows us to <font color=red>add `// @ts-nocheck` comments to the **top of TypeScript files** to <font size=4>**disable semantic checks**</font></font>. <font color=dodgerBlue>**Historically**</font> this comment was only respected in **JavaScript source files** in the presence of [`checkJs`](https://www.typescriptlang.org/tsconfig#checkJs), but we’ve <font color=red>expanded support to TypeScript files to make migrations easier for all users</font>.
 
