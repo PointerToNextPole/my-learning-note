@@ -1007,56 +1007,64 @@ Cookie 的 Domin 属性设置为当前域的父域，并且父域的 Cookie 会�
 
 ##### 不同域名下实现单点登录
 
-- ***认证中心* ( CAS ) 实现**
+###### 认证中心 ( CAS ) 实现
 
-  <font color=FF0000>在不同域的情况下，Cookie 是不共享的，**可以部署一个 *认证中心* ，用于专门处理登录请求的独立的 Web 服务**</font>
+<font color=dodgerBlue>在不同域的情况下，Cookie 是不共享的</font>，<font color=fuchsia>**可以部署一个 认证中心 ，用于专门处理登录请求的独立的 Web 服务**</font>
 
-  用户统一在认证中心进行登录，登录成功后，<font color=FF0000>认证中心记录用户的登录状态，并将 Token 写入 Cookie</font>（注意 ⚠️：这个 Cookie 是认证中心的，应用系统是访问不到的）
+用户统一在认证中心进行登录，登录成功后，<font color=FF0000>认证中心记录用户的登录状态，并将 Token 写入 Cookie</font>
 
-  应用系统检查当前请求有没有 Token，如果没有，说明用户在当前系统中尚未登录，那么就将页面跳转至认证中心。
+> ⚠️ 这个 Cookie 是认证中心的，应用系统是访问不到的
 
-  由于这个操作会将认证中心的 Cookie 自动带过去，因此，认证中心能够根据 Cookie 知道用户是否已经登录过了。如果认证中心发现用户尚未登录，则返回登录页面，等待用户登录。如果发现用户已经登录过了，就不会让用户再次登录了；<font color=FF0000>会跳转回目标 URL ，并**在跳转前生成一个 Token，拼接在目标 URL 的后面**，回传给目标应用系统</font>。
+> 👀 下面的流程有点费解，这里摘抄一下易懂的版本：
+>
+> > 不同域名下的单点登录：CAS流程：用户登录子系统时未登录，跳转到 SSO 登录界面，成功登录后，SSO 生成一个 ST ( service ticket )。<font color=fuchsia>用户登录不同的域名时，都会跳转到 SSO</font>，然后 <font color=fuchsia>SSO 带着 ST 返回到不同的子域名</font>，<font color=red>**子域名中发出请求验证 ST 的正确性（防止篡改请求）**</font>。<font color=red>验证通过后即可完成不同的业务</font>。
+> >
+> > 摘自：[前端实现单点登录（SSO）](https://juejin.cn/post/7282692430117748755)
 
-  <font color=FF0000>应用系统拿到 Token 之后，还需要向认证中心确认下 Token 的合法性，防止用户伪造</font>。确认无误后，应用系统记录用户的登录状态，并将 Token 写入 Cookie，然后给本次访问放行。（注意这个 Cookie 是当前应用系统的）当用户再次访问当前应用系统时，就会自动带上这个 Token，应用系统验证 Token 发现用户已登录，于是就不会有认证中心什么事了。
+应用系统检查当前请求有没有 Token，如果没有，说明用户在当前系统中尚未登录，那么就将页面跳转至认证中心。
 
-  <font color=FF0000>此种实现方式相对复杂，**支持跨域，扩展性好，是单点登录的标准做法**</font>
+由于这个操作会将认证中心的 Cookie 自动带过去，因此，认证中心能够根据 Cookie 知道用户是否已经登录过了。如果认证中心发现用户尚未登录，则返回登录页面，等待用户登录。如果发现用户已经登录过了，就不会让用户再次登录了；<font color=FF0000>会跳转回目标 URL ，并**在跳转前生成一个 Token，拼接在目标 URL 的后面**，回传给目标应用系统</font>。
 
-- ***前端控制* 实现**
+<font color=FF0000>应用系统拿到 Token 之后，还需要向认证中心确认下 Token 的合法性，防止用户伪造</font>。确认无误后，应用系统记录用户的登录状态，并将 Token 写入 Cookie，然后给本次访问放行。（注意这个 Cookie 是当前应用系统的）当用户再次访问当前应用系统时，就会自动带上这个 Token，应用系统验证 Token 发现用户已登录，于是就不会有认证中心什么事了。
 
-  可以选择<font color=FF0000>将 Session ID （或 Token ）保存到浏览器的 LocalStorage 中</font>，让<font color=FF0000>前端在每次向后端发送请求时，主动将 LocalStorage 的数据 ( **注：**Session ID? ) 传递给服务端</font>。
+<font color=FF0000>此种实现方式相对复杂，**支持跨域，扩展性好，是单点登录的标准做法**</font>
 
-  这些都是由前端来控制的，后端需要做的仅仅是在用户登录成功后，将 Session ID （或 Token ）放在响应体中传递给前端
+###### 前端控制 实现
 
-  单点登录完全可以在前端实现。前端拿到 Session ID （或 Token ）后，除了将它写入自己的 LocalStorage 中之外，还可以通过特殊手段将它写入多个其他域下的 LocalStorage 中。
+可以选择<font color=FF0000>将 Session ID （或 Token ）保存到浏览器的 LocalStorage 中</font>，让<font color=FF0000>前端在每次向后端发送请求时，主动将 LocalStorage 的数据 ( 👀 Session ID? ) 传递给服务端</font>。
 
-  **关键代码如下：**
+这些都是由前端来控制的，后端需要做的仅仅是在用户登录成功后，将 Session ID （或 Token ）放在响应体中传递给前端
 
-  ```javascript
-  // 获取 token
-  var token = result.data.token;
-   
-  // 动态创建一个不可见的 iframe，在 iframe 中加载一个跨域 HTML
-  var iframe = document.createElement("iframe");
-  iframe.src = "http://app1.com/localstorage.html";
-  document.body.append(iframe);
-  
-  // 使用 postMessage() 方法将 token 传递给 iframe
-  setTimeout(function () {
-      iframe.contentWindow.postMessage(token, "http://app1.com");
-  }, 4000);
-  setTimeout(function () {
-      iframe.remove();
-  }, 6000);
-   
-  // 在这个iframe所加载的HTML中绑定一个事件监听器，当事件被触发时，把接收到的token数据写入localStorage
-  window.addEventListener('message', function (event) {
-      localStorage.setItem('token', event.data)
-  }, false);
-  ```
-  
-  前端通过 iframe + postMessage() 方式，将同一份 Token 写入到了多个域下的 LocalStorage 中，前端每次在向后端发送请求之前，都会主动从 LocalStorage 中读取 Token 并在请求中携带，这样就实现了同一份 Token 被多个域所共享
-  
-  <font color=FF0000>此种实现方式完全由前端控制，几乎不需要后端参与，同样支持跨域</font>
+单点登录完全可以在前端实现。前端拿到 Session ID （或 Token ）后，除了将它写入自己的 LocalStorage 中之外，还可以通过特殊手段将它写入多个其他域下的 LocalStorage 中。
+
+**关键代码如下：**
+
+```javascript
+// 获取 token
+var token = result.data.token;
+ 
+// 动态创建一个不可见的 iframe，在 iframe 中加载一个跨域 HTML
+var iframe = document.createElement("iframe");
+iframe.src = "http://app1.com/localstorage.html";
+document.body.append(iframe);
+
+// 使用 postMessage() 方法将 token 传递给 iframe
+setTimeout(function () {
+    iframe.contentWindow.postMessage(token, "http://app1.com");
+}, 4000);
+setTimeout(function () {
+    iframe.remove();
+}, 6000);
+ 
+// 在这个iframe所加载的HTML中绑定一个事件监听器，当事件被触发时，把接收到的token数据写入localStorage
+window.addEventListener('message', function (event) {
+    localStorage.setItem('token', event.data)
+}, false);
+```
+
+前端通过 iframe + postMessage() 方式，将同一份 Token 写入到了多个域下的 LocalStorage 中，前端每次在向后端发送请求之前，都会主动从 LocalStorage 中读取 Token 并在请求中携带，这样就实现了同一份 Token 被多个域所共享
+
+<font color=FF0000>此种实现方式完全由前端控制，几乎不需要后端参与，同样支持跨域</font>
 
 ##### 认证中心实现流程图
 
@@ -1081,7 +1089,7 @@ Cookie 的 Domin 属性设置为当前域的父域，并且父域的 Cookie 会�
 
 用户与各个子系统建立的会话称为局部会话，局部会话建立之后，用户访问子系统受保护资源将不再通过 SSO  认证中心
 
-**全局会话与局部会话有如下约束关系：**
+###### 全局会话与局部会话有如下约束关系
 
 - 局部会话存在，全局会话一定存在
 - 全局会话存在，局部会话不一定存在
