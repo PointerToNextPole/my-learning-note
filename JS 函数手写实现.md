@@ -1309,8 +1309,16 @@ const isIE = () => !!document.documentMode
 #### 检测函数是否为异步函数
 
 ```js
-function isAsyncFn = fn => return Object.prototype.toString.call(fn) === '[object AsyncFunction]'
+function isAsyncFn = fn => Object.prototype.toString.call(fn) === '[object AsyncFunction]'
 ```
+
+##### 通过 `@@toStringTag` 实现
+
+```js
+function isAsyncFn = fn => fn[Symbol.toStringTag] === 'AsyncFunction'
+```
+
+参考自：[判断函数是否标记为async【渡一教育】](https://www.bilibili.com/video/BV1oG41117RU)
 
 
 

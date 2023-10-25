@@ -2,6 +2,12 @@
 
 
 
+##### 一些资料
+
+关于简单的调试，可以看下 [使用sources进行断点调试【渡一教育】](https://www.bilibili.com/video/BV19N41147nS) 感觉相当易懂
+
+
+
 ## 神光调试小册笔记
 
 [前端调试通关秘籍](https://juejin.cn/book/7070324244772716556/section) // TODO 首发买的，有空一定看... 👀

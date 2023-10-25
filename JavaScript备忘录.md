@@ -12435,7 +12435,9 @@ console.log("Another one bites the dust".split(new ReverseSplit()));
 
 #### Symbol.toStringTag
 
-The **`Symbol.toStringTag`** static data property represents the well-known symbol `@@toStringTag`. <font color=red>`Object.prototype.toString()` looks up this symbol on the `this` value</font> for the property containing a string that represents the type of the object.
+The **`Symbol.toStringTag`** static data property represents the well-known symbol `@@toStringTag`. <font color=fuchsia>**`Object.prototype.toString()` looks up this symbol on the `this` value**</font> for the property containing a string that represents the type of the object.
+
+> ⚠️ 上面关于 `@@toStringTag` 和 `Object.prototype.toString`的关系有所遗忘。参考 [判断函数是否标记为async【渡一教育】](https://www.bilibili.com/video/BV1oG41117RU) 的内容，这也和 `[[Prototype]]` 是有关的。
 
 ##### 描述
 
