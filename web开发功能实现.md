@@ -14,6 +14,31 @@
 
 
 
+#### 视频自动播放
+
+```html
+<video src="srcUrl" autoplay></video>
+
+<script>
+  const video = document.querySelector('video')
+  video.play()
+</script>
+```
+
+如上两种方法：使用 `autoplay` 和 `video.play()` 都没有成功，甚至会出现如下错误：
+
+> Uncaught (in promise) DOMException: play() failed because the user didn't interact with the document first.
+
+这需要用户先与当前页面交互后，才能触发播放；这里便涉及到浏览器的“自动播放策略”（动机是改善用户体验，显然浏览器厂商不希望自动播放机制被网页开发者滥用 ），这里只说 Chrome 的，其他浏览器也差不多
+
+// TODO
+
+学习自：[自动播放策略【渡一教育】](https://www.bilibili.com/video/BV1Gw411C745)
+
+
+
+
+
 #### 全屏展示
 
 > 💡 关于全屏功能的实现，可以使用 [GitHub - screenfull](https://github.com/sindresorhus/screenfull#screenfull) 或者 [React use - `useFullscreen`](https://streamich.github.io/react-use/?path=/story/ui-usefullscreen--docs) 和 [VueUse - `useFullscreen`](https://vueuse.org/core/useFullscreen/#usefullscreen) ，不必自己实现

@@ -8,6 +8,8 @@
 
 有效果 gif 的快捷键教程：https://www.vscheatsheet.com
 
+[以 VSCode 为例，VSCode 团队成员吕鹏带你了解如何参与开源项目](https://www.bilibili.com/video/BV1dw411F7eR) 很有意思的介绍了编写和调试 vsc 的一些技巧
+
 
 
 #### 一些设置
