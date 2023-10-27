@@ -4841,6 +4841,33 @@ However, this doesn’t mean that you can’t do it at all. It requires caution.
 
 
 
+#### Synchronizing with Effects
+
+<font color=dodgerBlue>**Some components need to synchronize with external systems**</font>. For example, <font color=lightSeaGreen>you might want to control a non-React component based on the React state</font>, set up a server connection, or send an analytics log when a component appears on the screen. <font color=fuchsia>***Effects* let you run some code after rendering**</font> so that <font color=red>you can synchronize your component with some system outside of React</font>.
+
+##### What are Effects and how are they different from events? 
+
+Before getting to Effects, you need to be familiar with two types of logic inside React components:
+
+- **Rendering code** (introduced in [Describing the UI](https://react.dev/learn/describing-the-ui)) lives at the top level of your component. <font color=red>This is where you take the props and state, transform them, and return the JSX you want to see on the screen</font>. [Rendering code must be pure](https://react.dev/learn/keeping-components-pure). <font color=dodgerBlue>Like a math formula</font>, it <font color=red>should only *calculate* the result, but not do anything else</font>.
+- **Event handlers** (introduced in [Adding Interactivity](https://react.dev/learn/adding-interactivity)) are nested functions inside your components that <font color=lightSeaGreen>*do* things rather than just calculate them</font>. An event handler might update an input field, submit an HTTP POST request to buy a product, or navigate the user to another screen. <font color=red>Event handlers contain [“side effects”](https://en.wikipedia.org/wiki/Side_effect_(computer_science)) (they change the program’s state)</font> caused by a specific user action (for example, a button click or typing).
+
+<font color=dodgerBlue>Sometimes this isn’t enough</font>. Consider a `ChatRoom` component that must connect to the chat server whenever it’s visible on the screen. <font color=red>Connecting to a server is not a pure calculation (it’s a side effect) so it can’t happen during rendering</font>. However, there is no single particular event like a click that causes `ChatRoom` to be displayed.
+
+<font color=fuchsia>***Effects* let you specify side effects that are caused by rendering itself, rather than by a particular event**</font>. Sending a message in the chat is an *event* because it is directly caused by the user clicking a specific button. However, <font color=red>setting up a server connection is an *Effect*</font> because it should happen no matter which interaction caused the component to appear. <font color=fuchsia>Effects run **at the end of a [commit](https://react.dev/learn/render-and-commit) after the screen updates**</font>. <font color=red>**This is a good time to synchronize the React components with some external system**</font> (like network or a third-party library).
+
+> 💡 Note
+>
+> Here and later in this text, <font color=red>capitalized “Effect” refers to the React-specific definition above</font>, i.e. a side effect caused by rendering. <font color=lightSeaGreen>**To refer to the broader programming concept, we’ll say “side effect”**</font>.
+
+##### You might not need an Effect 
+
+<font color=lightSeaGreen>**Don’t rush to add Effects to your components**</font>. Keep in mind that Effects are typically used to “step out” of your React code and synchronize with some *external* system. This includes browser APIs, third-party widgets, network, and so on. If your Effect only adjusts some state based on other state, [you might not need an Effect.](https://react.dev/learn/you-might-not-need-an-effect)
+
+
+
+
+
 ## coderwhy React18 学习笔记
 
 
