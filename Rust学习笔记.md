@@ -189,7 +189,7 @@ fn main() {
        .map(|field| field.trim())
        .collect();
      if cfg!(debug_assertions) {
-         // 输出到标准错误输出
+       // 输出到标准错误输出
        eprintln!("debug: {:?} -> {:?}", record, fields);
      }
 
@@ -225,7 +225,17 @@ fn main() {
 
 - <font color=fuchsia>条件编译</font>：`if cfg!(debug_assertions)`，<font color=red>说明紧跟其后的输出（打印）只在 `debug` 模式下生效</font>。
 
-- 隐式返回：Rust 提供了 `return` 关键字用于函数返回，但是在很多时候，我们可以省略它。因为 Rust 是 [**基于表达式的语言**](https://course.rs/basic/base-type/statement-expression.html)。
+  > 👀 运行结果如下：多了 debug 相关的输出
+  >
+  > <img src="https://s2.loli.net/2023/10/28/Z3MwWGOEAmk4cCg.png" alt="image-20231028234229333" style="zoom:50%;" />
+  >
+  > 如果想要 debug 相关输出消失，可以使用 `--release` 参数。另外，以 `cargo run --release` 编译时间会很长，在当前的 Mac 上有 27.75s ...
+
+- 隐式返回：Rust 提供了 `return` 关键字用于函数返回，但<font color=lightSeaGreen>是在很多时候，我们可以省略它</font>。因为 Rust 是 [**基于表达式的语言**](https://course.rs/basic/base-type/statement-expression.html)。
+
+
+
+
 
 
 
