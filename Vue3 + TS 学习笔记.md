@@ -645,6 +645,12 @@ vm.a = 3 // => new: 3, old: 1
 
 - 如果我们<font color=FF0000>在 v-model 后加上 lazy 修饰符，那么会将绑定的事件切换为 change 事件</font>，<font color=FF0000>只有在提交时（比如回车）才会触发</font>
 
+> 💡 这里涉及到一个优化点：如果 v-model 的输入与动画相关，显然这会导致动画卡顿，因为默认的 input 事件，导致每一次输入都会导致 v-model 修改，从而导致渲染发生。
+>
+> 如果说给 v-model 加上 lazy 修饰符，每一次输入都不会导致 v-model 修改，则不会出现类似的问题。不过，也有小的弊病：如果不失焦，虽然 input 了，但是 v-model 始终不变，这也会导致潜在的问题（虽然，很少遇到类似的场景）
+
+学习自：[Vue常用指令V-model如何优化？【渡一教育】](https://www.bilibili.com/video/BV1284y127pn)
+
 
 
 #### SFC 顶层 template 下的顶层标签
