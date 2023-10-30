@@ -235,7 +235,88 @@ fn main() {
 
 
 
+#### 下载依赖很慢或卡住？
 
+在目前，大家还不需要自己搭建的镜像下载服务，因此只需知道下载依赖库的地址是 [crates.io](https://crates.io/)，是由 Rust 官方搭建的镜像下载和管理服务。
+
+##### 修改 Rust 的下载镜像为国内的镜像地址
+
+为了使用 `crates.io` 之外的注册服务，我们需要对 `$HOME/.cargo/config.toml` (`$CARGO_HOME` 下) 文件进行配置，添加新的服务提供商，<font color=dodgerBlue>有两种方式可以实现：增加新的镜像地址和覆盖默认的镜像地址</font>。
+
+###### 新增镜像地址
+
+**首先是在 `crates.io` 之外添加新的注册服务**，在 `$HOME/.cargo/config.toml` （如果文件不存在则手动创建一个）中添加以下内容：
+
+```toml
+[registries]
+ustc = { index = "https://mirrors.ustc.edu.cn/crates.io-index/" }
+```
+
+<font color=red>这种方式只会新增一个新的镜像地址</font>，因此在引入依赖的时候，需要指定该地址，例如在项目中引入 `time` 包，你需要在 `Cargo.toml` 中使用以下方式引入:
+
+```toml
+[dependencies]
+time = {  registry = "ustc" }
+```
+
+<font color=red>**在重新配置后，初次构建可能要较久的时间**</font>，因为要下载更新 `ustc` 注册服务的索引文件，由于文件比较大，需要等待较长的时间。
+
+此处有两点需要注意：
+
+1. cargo 1.68 版本开始支持稀疏索引，不再需要完整克隆 crates.io-index 仓库，可以加快获取包的速度，如：
+
+   ```toml
+   [source.ustc]
+   registry = "sparse+https://mirrors.ustc.edu.cn/crates.io-index/"
+   ```
+
+2. cargo search 无法使用镜像
+
+**科大镜像**
+
+上面使用的是科大提供的注册服务，也是 Rust 最早期的注册服务
+
+**字节跳动**
+
+最大的优点就是不限速，当然，你的网速如果能跑到 1000Gbps，我们也可以认为它无情的限制了你，咳咳。
+
+```toml
+[source.crates-io]
+replace-with = 'rsproxy'
+
+[source.rsproxy]
+registry = "https://rsproxy.cn/crates.io-index"
+
+# 稀疏索引，要求 cargo >= 1.68
+[source.rsproxy-sparse]
+registry = "sparse+https://rsproxy.cn/index/"
+
+[registries.rsproxy]
+index = "https://rsproxy.cn/crates.io-index"
+
+[net]
+git-fetch-with-cli = true
+```
+
+###### 覆盖默认的镜像地址
+
+<font color=red>我们更推荐第二种方式</font>，因为第一种方式在项目大了后，实在是很麻烦，全部修改后，万一以后不用这个镜像了，你又要全部修改成其它的。
+
+<font color=red>而第二种方式，则不需要修改 `Cargo.toml` 文件</font>，**因为它是直接使用新注册服务来替代默认的 `crates.io`**。
+
+在 `$HOME/.cargo/config.toml` 添加以下内容：
+
+```toml
+[source.crates-io]
+replace-with = 'ustc'
+
+[source.ustc]
+registry = "git://mirrors.ustc.edu.cn/crates.io-index"
+```
+
+首先，创建一个新的镜像源 `[source.ustc]`，然后将默认的 `crates-io` 替换成新的镜像源: `replace-with = 'ustc'`。
+
+只要这样配置后，以往需要去 `crates.io` 下载的包，会全部从科大的镜像地址下载
 
 
 
