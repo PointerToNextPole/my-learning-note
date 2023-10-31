@@ -16,8 +16,8 @@ Mono：单个；Repo : repository：仓库。主要是将许多项目的代码�
 
 ###### 源码使用TypeScript来进行重写
 
-- 在Vue2.x的时候, Vue使用Flow来进行类型检测;
-- 在Vue3.x的时候, Vue的源码全部使用 TypeScript 来进行重构,并且Vue本身对TypeScript支持也更好了;
+- 在 Vue2.x 的时候，Vue使用 Flow 来进行类型检测;
+- 在 Vue3.x 的时候，Vue的源码全部使用 TypeScript 来进行重构，并且 Vue 本身对 TypeScript 支持也更好了;
 
 ##### 性能
 
@@ -25,7 +25,7 @@ Mono：单个；Repo : repository：仓库。主要是将许多项目的代码�
 
 - 在Vue2.x 的时候，Vue2 是使用 Object.defineProperty 来劫持数据的 getter和 setter 方法的
 - 这种方式一致存在一个缺陷就是当给对象添加或者删除属性时，是无法劫持和监听的
-- 所以在 Vue2.x 的时候，不得不提供一些特殊的 API，比如 \$set 或 $delete，事实上都是一些 hack 方法，也增加了开发者学习新的 API 的成本
+- 所以在 Vue2.x 的时候，不得不提供一些特殊的 API，比如 `$set` 或 `$delete`，事实上都是一些 hack 方法，也增加了开发者学习新的 API 的成本
 - 而在 Vue3.x 开始，Vue 使用 Proxy 来实现数据的劫持，这个 API 的用法和相关的原理我也会在后续讲到;
 
 ###### 删除了一些不必要的API
@@ -262,6 +262,12 @@ export default {
 同样，这个语法 也适用于 `<script setup>`
 
 如上摘自：[Vue3 成为默认版本后新文档 - SFC CSS Features - v-bind() in CSS](https://vuejs.org/api/sfc-css-features.html#v-bind-in-css)，另外，可以参考：[Vue3 \<style>状态驱动 CSS 变量](https://www.qiyuandi.com/zhanzhang/zonghe/17302.html)
+
+> 💡 在实际项目中，出现了 `<style>` 中 `v-bind` 中需要根据条件选择不同的值的情况，在 codeium 的帮助下写了出来；效果如下：
+>
+> ```css
+> min-width: v-bind("props.isChannel ? '250px' : '420px' ")
+> ```
 
 
 
