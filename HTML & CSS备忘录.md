@@ -4094,6 +4094,18 @@ mix-blend-mode: unset;
 
 摘自：[MDN - `mix-blend-mode`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/mix-blend-mode)
 
+> 💡 关于 `mix-blend-mode` 的使用，可以看下：[视频文字特效【渡一教育】](https://www.bilibili.com/video/BV1mQ4y1p7Dh) ，其中介绍了 `mix-blend-mode: screen` 的一个使用场景；下面做一些笔记
+
+##### 关于 `mix-blend-mode: screen`  的使用
+
+`mix-blend-mode` 可以理解为一种算法，针对每一个像素点，将其自身的颜色和背后的颜色混合以产生新的颜色，至于如何混合，就要看选择的混合算法（可以理解为 `f( color , color2 ) = new_color`），即 `mix-blend-mode` 对应的值。
+
+其中，`screen` 是滤色算法（滤色模式）。公式如下：
+
+$f(\ rgb(R_1, G_1, B_1),\quad rgb(R_2, G_2, B_2)\ ) = \\rgb(255-(255-R_1)*(255-R_2)/255,\quad 255-(255-G_1)*(255-G_2)/255,\quad 255-(255-B_1)*(255-B_2)/255)$
+
+根据如上公式：如果其中一个 RGB 为 白色 `rgb(255, 255, 255)` ，则最后的颜色一定为白色；如果其中一个 RGB 为黑色 `rgb(0, 0, 0)`  最后颜色一定为另一个颜色
+
 
 
 #### `<blend-mode>`

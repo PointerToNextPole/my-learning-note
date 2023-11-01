@@ -348,7 +348,7 @@ Promise.myAll = arr => {
     arr.forEach((p, index) => {
       Promise.resolve(p)
         .then(res => {
-          ret[index] = res
+          ret[index] = res // ⚠️ 这里不能用 push，是因为异步执行结果未必是有序返回的，如果使用 push：arr 和 return 的结果未必能一一对应
           count++
           if (count === arr.length) {
             resolve(ret)
@@ -358,6 +358,8 @@ Promise.myAll = arr => {
   })
 }
 ```
+
+> 💡 可以看下 [手写 Promise.all【渡一教育】](https://www.bilibili.com/video/BV1mG411178Y) ，其中提及了，arr 未必是数组，也有可能是可迭代对象，所以未必可以用 `arr.length` ；另外就是如果传入的是空的，那么一定是 resolve
 
 ###### 测试用例1
 
