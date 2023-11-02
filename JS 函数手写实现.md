@@ -1337,3 +1337,35 @@ const genUUID = seed => seed
 ```
 
 摘自：[js小众且好用的技巧【一行代码】](https://juejin.cn/post/7228449980108423224)
+
+
+
+#### 大数之和
+
+> 👀 虽然也可以用 BigInt，但是这显然不是本题本意
+
+```js
+function sum(a, b) {
+  let result = ''
+  
+  // 由于两数长度不一，所以需要将两数对其，即：短的数字前面补足零
+  const len = Math.max(a.length, b.length)
+  a = a.padStart(len, '0')
+  b = b.padStart(len, '0')
+  
+  // carry 用于记录进位，显然开始时为 0
+  let carry = 0
+  for (let i = len - 1; i >= 0; i--) {
+    const n = +a[i] + +b[i] + carry
+    carry = Math.floor(n / 10)
+    result = (n % 10) + result
+  }
+  
+  // 一个容易遗漏的点：如果最高位相加需要进位，需要单独处理
+  if ( carry ) {
+    result = '1' + result
+  }
+  return result
+}
+```
+
