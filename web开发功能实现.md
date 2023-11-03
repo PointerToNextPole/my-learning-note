@@ -60,17 +60,75 @@
    先尝试自动播放，若发生异常，则引导用户进行互动操作，然后在进行播放。示例如下：
 
    ```html
+   <div class="video-container">
+     <video src="./test.mp4" />
+     <div class="modal">
+       <button class="btn">开始播放</button>
+     </div>
+   </div>
+   
+   <script>
+     const video = document.querySelector('video')
+     const modal = document.querySelector('modal')
+     const btn = document.querySelector('.btn')
+   
+     async function play() {
+       try {
+         await video.play() // play() 返回一个 Promise
+         modal.style.display = 'none'
+         btn.removeEventListener('click', play)
+       } catch (err) { // 这里 err，可能有很多原因，这里假定就是自动播放失败
+         modal.style.display = 'flex'
+         btn.addEventListener('click', play)
+       }
+     }
+     
+     play()
+   </script>
    ```
 
+2. 方案二：互动后出声（这也是更推荐，企业使用最多的方案，比如抖音）
+
+   先静音播放，然后根据是否能自动播放来决定是否取消静音。如果
+
+   1. 能自动播放，则取消静音
+   2. 不能自动播放，引导用户进行互动操作后取消静音
+
+   代码示例如下：
+
+   ```html
+   <div class="video-container">
+     <video src="./test.mp4" />
+     <div class="modal">
+       <button class="btn">开始声音</button>
+     </div>
+   </div>
    
-
-2. 方案二：互动后出声
-
-   先静音播放，然后根据是否能自动播放来决定是否取消静音
+   <script>
+     const video = document.querySelector('video')
+     const modal = document.querySelector('modal')
+     const btn = document.querySelector('.btn')
+   
+     async function play() {
+       video.muted = true // 静音
+       video.play()
+       const ctx = new AudioContext()
+       const canAutoPaly = ctx.state === 'running'
+       ctx.close()
+       
+       if (canAutoPaly) {
+         video.muted = false
+         modal.style.display = 'none'
+         btn.removeEventListener('click', play)
+       } else {
+         modal.style.display = 'flex'
+         btn.addEventListener('click', play)
+       }
+     }
+   </script>
+   ```
 
 学习自：[自动播放策略【渡一教育】](https://www.bilibili.com/video/BV1Gw411C745)
-
-
 
 
 

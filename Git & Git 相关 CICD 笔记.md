@@ -94,6 +94,26 @@ git add -u # 对git已经跟踪了的文件，将其一起提交到暂存区；�
 
 另外，本讲 讲了“Git 的工作区、暂存区和版本库”；由于第一次没有记录，第二次重学时，下面已经记录了，这里略。
 
+> 💡 有这样一个场景：我需要 `git add` 几乎所有修改的文件，除了某（几）个文件，这时候改怎么做？
+>
+> 一种简单的方式是：
+>
+> ```bash
+> git add -u
+> git reset -- youTargetFile
+> ```
+>
+> 虽然也可以使用
+>
+> ```bash
+> git add --all -- :!path/to/file1 :!path/to/file2 :!path/to/folder1/*
+> git add -- . :!path/to/file1 :!path/to/file2 :!path/to/folder1/*
+> ```
+>
+> Now `git` supports `exclude certain paths and files` by pathspec magic `:(exclude)` and its short form `:!`. So you can easily achieve it as the following command.
+>
+> 学习自：[stack overflow - Add all files to a commit except a single file?](https://stackoverflow.com/questions/4475457/add-all-files-to-a-commit-except-a-single-file)
+
 #### Lesson 1.6
 
 ```bash
