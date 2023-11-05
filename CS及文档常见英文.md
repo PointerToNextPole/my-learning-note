@@ -977,6 +977,12 @@
   > 👀 显然这个词和 “coordinate” 坐标/协调 相关
 
 - **genesis** ：开端，初始
+
+- **supercharge** ：增强，提升
+
+  > Discover our [list of modules](https://nuxt.com/modules) to supercharge your Nuxt project, created by the Nuxt team and community.
+  >
+  > 摘自：[Nuxt Github repo - readme # Modules](https://github.com/nuxt/nuxt#modules)
 ***
 
 
@@ -1265,4 +1271,3 @@
 - **retain** ：保持。👀 这个有些过于基础了
 
 - **chronological** ：按时间先后顺序的
-
