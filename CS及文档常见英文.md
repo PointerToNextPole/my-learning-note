@@ -1271,3 +1271,5 @@
 - **retain** ：保持。👀 这个有些过于基础了
 
 - **chronological** ：按时间先后顺序的
+
+- **versatile** ：多才多艺
