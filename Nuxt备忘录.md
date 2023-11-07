@@ -95,10 +95,6 @@ We recommend reading each concept to have a full vision of Nuxt capabilities and
 
 
 
-
-
-
-
 #### Installation
 
 ##### New Project
@@ -155,11 +151,11 @@ export default defineNuxtConfig({
 })
 ```
 
-This file will often be mentioned in the documentation, <font color=dodgerBlue>for example</font> to <font color=red>add custom scripts, **register modules** or change rendering modes</font>.
+This file will often be mentioned in the documentation, <font color=dodgerBlue>for example</font> to <font color=red>add custom scripts, **register modules** or **change rendering modes**</font>.
 
 > 💡 Every option is described in the [**Configuration Reference**](https://nuxt.com/docs/api/configuration/nuxt-config).
 
-> 💡 <font color=lightSeaGreen>You don't have to use TypeScript to build an application with Nuxt</font>. However, it is <font color=red>strongly recommended to use the `.ts` extension for the `nuxt.config` file</font>. This way you can <font color=lightSeaGreen>**benefit from hints in your IDE to avoid typos and mistakes while editing your configuration**</font>.
+> 💡 You <font color=dodgerBlue>don't have to use TypeScript to build an application with Nuxt</font>. However, it is <font color=red>strongly recommended to use the `.ts` extension for the `nuxt.config` file</font>. This way you can <font color=lightSeaGreen>**benefit from hints in your IDE to avoid typos and mistakes while editing your configuration**</font>.
 
 ##### Environment overrides
 
@@ -179,7 +175,196 @@ export default defineNuxtConfig({
 })
 ```
 
-> 💡 If you're authoring layers, you can also <font color=red>use the `$meta` key to provide metadata</font> that you or the consumers of your layer might use.
+> 💡 If you're authoring layers（👀 见下面“注”）, you can also <font color=red>use the `$meta` key to provide metadata</font> that you or the consumers of your layer might use.
+>
+> 👀 上面的话没完全看懂，不过 “authoring layer” 的意思是“编写图层”
+
+##### Environment Variables and Private Tokens
+
+The `runtimeConfig` API  <font color=red>exposes values **like environment variables**</font>（👀 见下面 “注意”） to the rest of your application. <font color=dodgerBlue>By default</font>, <font color=red>**these keys are only available server-side**</font>. <font color=dodgerBlue>The keys within **`runtimeConfig.public`**</font> are <font color=red>also available client-side</font>.
+
+> ⚠️ 需要注意的是：上面所说：“通过 `runtimeConfg` API 暴露出的值” 是 “类似于环境变量”，只是像，也可以被环境变量覆盖；但是，并不是环境变量。另外，优先级也是环境变量（比如通过 `.env` 定义）更高
+
+<font color=red>Those values **should be defined in `nuxt.config`**</font> and can <font color=fuchsia>be overridden using environment variables</font>.
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  runtimeConfig: {
+    // The private keys which are only available server-side
+    apiSecret: '123',
+    // **Keys within** public are also exposed client-side // 👀
+    public: {
+      apiBase: '/api'
+    }
+  }
+})
+```
+
+```yml
+# .env
+# This will override the value of apiSecret
+NUXT_API_SECRET=api_secret_token
+```
+
+These variables are exposed to the rest of your application using the [`useRuntimeConfig()`](https://nuxt.com/docs/api/composables/use-runtime-config)composable.
+
+```vue
+<script setup lang="ts">
+const runtimeConfig = useRuntimeConfig()
+</script>
+```
+
+##### App Configuration
+
+<font color=dodgerBlue>The `app.config.ts` file</font>, located in the source directory (<font color=lightSeaGreen>by default the root of the project</font>), is <font color=red>used to **expose public variables**</font> that <font color=fuchsia>**can be determined at build time**</font>. Contrary to the `runtimeConfig` option, these <font color=fuchsia>**can not be overridden using environment variables**</font>.
+
+<font color=red>A minimal configuration file exports the `defineAppConfig` function</font> containing an object with your configuration. The <font color=lightSeaGreen>`defineAppConfig` helper is **globally available without import**</font>.
+
+```ts
+// app.config.ts
+export default defineAppConfig({
+  title: 'Hello Nuxt',
+  theme: {
+    dark: true,
+    colors: {
+      primary: '#ff0000'
+    }
+  }
+})
+```
+
+These variables are exposed to the rest of your application using the [`useAppConfig`](https://nuxt.com/docs/api/composables/use-app-config) composable.
+
+```vue
+<script setup lang="ts">
+const appConfig = useAppConfig()
+</script>
+```
+
+##### `runtimeConfig` vs `app.config`
+
+As stated above, `runtimeConfig` and `app.config` are both used to expose variables to the rest of your application. <font color=dodgerBlue>**To determine whether you should use one or the other**, here are some guidelines</font>:
+
+- `runtimeConfig` : Private or public tokens that <font color=red>need to be specified **after build using environment variables**</font>.
+- `app.config` : <font color=red>Public tokens that are determined at build time</font>, website configuration such as theme variant, title and any project config that are <font color=red>**not sensitive**</font>.
+
+| Feature                   | `runtimeConfig`       | `app.config` |
+| ------------------------- | --------------------- | ------------ |
+| Client Side               | Hydrated （🌏 水合的） | Bundled      |
+| Environment Variables     | ✅ Yes                 | ❌ No         |
+| Reactive                  | ✅ Yes                 | ✅ Yes        |
+| Types support             | ✅ Partial             | ✅ Yes        |
+| Configuration per Request | ❌ No                  | ✅ Yes        |
+| Hot Module Replacement    | ❌ No                  | ✅ Yes        |
+| Non primitive JS types    | ❌ No                  | ✅ Yes        |
+
+> ⚠️ 上面的表格中，有些东西上面讲解中没提到，但是直接总结出来了；需要注意下
+
+##### External Configuration Files
+
+Nuxt uses [`nuxt.config.ts`](https://nuxt.com/docs/guide/directory-structure/nuxt-config) file as the single source of trust for configurations and skips reading external configuration files. During the course of building your project, you may have a need to configure those. The following table highlights common configurations and, where applicable, how they can be configured with Nuxt.
+
+| Name                               | Config File             | How To Configure                                             |
+| ---------------------------------- | ----------------------- | ------------------------------------------------------------ |
+| [Nitro](https://nitro.unjs.io/)    | ~~`nitro.config.ts`~~   | Use [`nitro`](https://nuxt.com/docs/api/nuxt-config#nitro) key in `nuxt.config` |
+| [PostCSS](https://postcss.org/)    | ~~`postcss.config.js`~~ | Use [`postcss`](https://nuxt.com/docs/api/nuxt-config#postcss) key in `nuxt.config` |
+| [Vite](https://vitejs.dev/)        | ~~`vite.config.ts`~~    | <font color=red>Use [`vite`](https://nuxt.com/docs/api/nuxt-config#vite) key in `nuxt.config`</font> |
+| [webpack](https://webpack.js.org/) | ~~`webpack.config.ts`~~ | <font color=red>**Use [`webpack`](https://nuxt.com/docs/api/nuxt-config#webpack-1) key in `nuxt.config`**</font> |
+
+Here is a list of other common config files:
+
+| Name                                          | Config File          | How To Configure                                             |
+| --------------------------------------------- | -------------------- | ------------------------------------------------------------ |
+| [TypeScript](https://www.typescriptlang.org/) | `tsconfig.json`      | [More Info](https://nuxt.com/docs/guide/concepts/typescript#nuxttsconfigjson) |
+| [ESLint](https://eslint.org/)                 | `.eslintrc.js`       | [More Info](https://eslint.org/docs/latest/user-guide/configuring/configuration-files) |
+| [Prettier](https://prettier.io/)              | `.prettierrc.json`   | [More Info](https://prettier.io/docs/en/configuration.html)  |
+| [Stylelint](https://stylelint.io/)            | `.stylelintrc.json`  | [More Info](https://stylelint.io/user-guide/configure)       |
+| [TailwindCSS](https://tailwindcss.com/)       | `tailwind.config.js` | [More Info](https://tailwindcss.nuxtjs.org/tailwind/config)  |
+| [Vitest](https://vitest.dev/)                 | `vitest.config.ts`   | [More Info](https://vitest.dev/config)                       |
+
+##### Vue Configuration
+
+###### With Vite
+
+If you need to pass options to `@vitejs/plugin-vue` or `@vitejs/plugin-vue-jsx` , you can do this in your `nuxt.config` file.
+
+- `vite.vue` for `@vitejs/plugin-vue`. Check available options [here](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue).
+- `vite.vueJsx` for `@vitejs/plugin-vue-jsx`. Check available options [here](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue-jsx).
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  vite: {
+    vue: {                // 👀 vite.vue
+      customElement: true
+    },
+    vueJsx: {             // 👀 vite.vueJsx
+      mergeProps: true
+    }
+  }
+})
+```
+
+###### With webpack
+
+If you use webpack and need to configure `vue-loader` , you can do this using `webpack.loaders.vue` key inside your `nuxt.config` file. The available options are [defined here](https://github.com/vuejs/vue-loader/blob/main/src/index.ts#L32-L62).
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  webpack: { // 👀 感觉这里的配置和 webpack.config.js 中的内容没什么区别？
+    loaders: {
+      vue: {
+        hotReload: true,
+      }
+    }
+  }
+})
+```
+
+###### Enabling Experimental Vue Features
+
+You may need to enable experimental features in Vue, such as `defineModel` or `propsDestructure`. <font color=dodgerBlue>Nuxt provides an easy way to do that in `nuxt.config.ts`</font> , no matter which builder you are using:
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  webpack: {
+    loaders: {
+      vue: {
+        hotReload: true,
+      }
+    }
+  }
+})
+```
+
+
+
+#### Views
+
+##### `app.vue`
+
+By default, Nuxt will treat this file as the **entrypoint** and render its content for every route of the application.
+
+> 💡 If you are familiar with Vue, <font color=dodgerBlue>you might wonder where `main.js` is</font> (the file that normally creates a Vue app). <font color=red>Nuxt does this behind the scene</font>.
+
+##### Components
+
+Most components are reusable pieces of the user interface, like buttons and menus. In Nuxt, <font color=red>you can create these components in the [`components/`](https://nuxt.com/docs/guide/directory-structure/components) directory</font>, and <font color=fuchsia>they will be **automatically available across your application without having to explicitly import them**</font>.
+
+##### Pages
+
+Pages represent views for each specific route pattern. <font color=dodgerBlue>Every file in the [`pages/`](https://nuxt.com/docs/guide/directory-structure/pages) directory</font> <font color=red>**represents a different route** displaying its content</font>.
+
+To use pages, create `pages/index.vue` file and add `<NuxtPage />` component to the [`app.vue`](https://nuxt.com/docs/guide/directory-structure/app) (or remove `app.vue` for default entry). You can now create more pages and their corresponding routes by adding new files in the [`pages/`](https://nuxt.com/docs/guide/directory-structure/pages) directory.
+
+##### Layouts
+
+Layouts are wrappers around pages that contain a common User Interface for several pages, such as a header and footer display. Layouts are Vue files using `<slot />` components to display the **page**content. The `layouts/default.vue` file will be used by default. Custom layouts can be set as part of your page metadata.
+
+> 💡 If you only have a single layout in your application, we recommend using [`app.vue`](https://nuxt.com/docs/guide/directory-structure/app) with [`<NuxtPage />`](https://nuxt.com/docs/api/components/nuxt-page) instead.
 
 
 

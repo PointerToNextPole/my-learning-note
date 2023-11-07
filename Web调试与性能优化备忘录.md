@@ -5,7 +5,10 @@
 ##### 一些资料
 
 - 关于简单的调试，可以看下 [使用sources进行断点调试【渡一教育】](https://www.bilibili.com/video/BV19N41147nS) 感觉相当易懂
-- 关于 performance 选项卡的使用，可以看下 [如何发现前端性能瓶颈【渡一教育】](https://www.bilibili.com/video/BV1aP41147FA) ，感觉视频的教程形式，要比神光调试小册相关部分更易理解些。// TODO 看神光调试小册做笔记时，记得重看一遍，做好笔记
+
+- 关于 performance 选项卡的使用，可以看下 [如何发现前端性能瓶颈【渡一教育】](https://www.bilibili.com/video/BV1aP41147FA) ，感觉视频的教程形式，要比神光调试小册相关部分更易理解些。// TODO 看神光调试小册做笔记时，记得重看一遍，做好笔记。
+
+  另外，还有 [network选项卡【渡一教育】](https://www.bilibili.com/video/BV1Dy4y1N734) ，虽然新学到的东西并不多，但是还是感觉 Initator 和 Timing 选项卡中的内容是之前完全没注意到的，而且有点意思；尤其是 Timing
 
 
 
