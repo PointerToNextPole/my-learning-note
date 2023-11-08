@@ -715,6 +715,12 @@ normal 模式键入 `:wq!`，显示如下：
   
 - **`git stash push`** ：在看[[中文] 这才是真正的 Git——Git 内部原理揭秘！（freeCodeConf 2019 深圳站）](https://www.bilibili.com/video/av77252063) 时候，发现这样一条命令：`git stash push [-u | --include-untracked]` ，可以让你获得一个干净的工作区间。
 
+  > 💡 之前没有好好了解过 `git stash push` 命令，直到自己有这样一个需求：如何 stash 指定的文件。于是问了下 Claude，得到如下结果：
+  >
+  > <img src="/Users/yan/Library/Application Support/typora-user-images/image-20231108001343681.png" alt="image-20231108001343681" style="zoom:40%;" />
+  >
+  > 简单来说，就是使用 `git stash push -m <msg> <path/file> ...`
+
 
 
 #### Lesson 2.15

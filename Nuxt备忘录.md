@@ -6,6 +6,10 @@
 
 
 
+### Get Started
+
+
+
 #### Introduction
 
 ##### Automation and Conventions
@@ -362,9 +366,126 @@ To use pages, create `pages/index.vue` file and add `<NuxtPage />` component to 
 
 ##### Layouts
 
-Layouts are wrappers around pages that contain a common User Interface for several pages, such as a header and footer display. Layouts are Vue files using `<slot />` components to display the **page**content. The `layouts/default.vue` file will be used by default. Custom layouts can be set as part of your page metadata.
+<font color=red>Layouts are wrappers around pages</font> that <font color=fuchsia>contain a common User Interface for several pages</font>, such as a header and footer display. <font color=red>Layouts are Vue files using `<slot />` components to display the **page** content</font>. The `layouts/default.vue` file will be used by default. Custom layouts can be set as part of your page metadata.
 
 > 💡 If you only have a single layout in your application, we recommend using [`app.vue`](https://nuxt.com/docs/guide/directory-structure/app) with [`<NuxtPage />`](https://nuxt.com/docs/api/components/nuxt-page) instead.
+
+>  👀 还有点没搞懂 Layouts 在 Nuxt 中的作用和实际用途...
+
+##### Advanced: Extending the HTML template
+
+> 💡 If you only need to modify the `<head>`, you can refer to the [SEO and meta section](https://nuxt.com/docs/getting-started/seo-meta).
+
+You can have full control over the HTML template by adding a Nitro plugin that registers a hook. <font color=dodgerBlue>The callback function of the `render:html` hook</font> <font color=red>allows you to mutate the HTML before it is sent to the client</font>.
+
+> 👀 感觉有点像 axios 的拦截器
+
+```ts
+// server/plugins/extend-html.ts
+export default defineNitroPlugin((nitroApp) => {
+  nitroApp.hooks.hook('render:html', (html, { event }) => { 
+    // This will be an object representation of the html template.
+    console.log(html)
+    html.head.push(`<meta name="description" content="My custom description" />`)
+  })
+  // You can also intercept the response here.
+  nitroApp.hooks.hook('render:response', (response, { event }) => { console.log(response) })
+})
+```
+
+
+
+#### Assets
+
+<font color=red>Nuxt offers two options for your assets</font>.
+
+Nuxt uses two directories to handle assets like stylesheets, fonts or images.
+
+- The <font color=dodgerBlue>[`public/`](https://nuxt.com/docs/guide/directory-structure/public) directory content</font> is <font color=red>served at the server root as-is</font>.
+
+  > 👀 感觉这里 `public/` 文件夹是把 Nuxt 当静态服务器来看待。另外，这个想法也得到了 [[#Assets#Public Directory]] 中内容的证实
+
+- The <font color=dodgerBlue>[`assets/`](https://nuxt.com/docs/guide/directory-structure/assets) directory</font> contains by <font color=red>convention every asset that **you want the build tool (Vite or webpack) to process**</font>.
+
+##### Public Directory
+
+The [`public/`](https://nuxt.com/docs/guide/directory-structure/public) directory <font color=red>**is used as a public server**</font> for static assets publicly available at a defined URL of your application.
+
+<font color=lightSeaGreen>You can get a file in the [`public/`](https://nuxt.com/docs/guide/directory-structure/public) directory from your application's code or from a browser by the root URL `/`</font> .
+
+> 👀 即：可以 `public` 的路径可以省略
+
+###### Example
+
+For example, referencing an image file in the `public/img/` directory, available at the static URL `/img/nuxt.png `:
+
+```vue
+<template>
+  <img src="/img/nuxt.png" alt="Discover Nuxt 3" />
+</template>
+```
+
+##### Assets Directory
+
+<font color=red>Nuxt uses [Vite](https://vitejs.dev/guide/assets.html) (**default**)</font> or [webpack](https://webpack.js.org/guides/asset-management) to build and bundle your application. The main function of these build tools is to process JavaScript files, but they can be extended through [plugins](https://vitejs.dev/plugins) (for Vite) or [loaders](https://webpack.js.org/loaders)(for webpack) to process other kind of assets, like stylesheets, fonts or SVG. This step transforms the original file mainly for performance or caching purposes (such as stylesheets minification or browser cache invalidation).
+
+By convention, Nuxt uses the [`assets/`](https://nuxt.com/docs/guide/directory-structure/assets) directory to store these files but <font color=red>there is **no** auto-scan functionality for this directory</font>, and you can use any other name for it.
+
+In your application's code, you can reference a file located in the [`assets/`](https://nuxt.com/docs/guide/directory-structure/assets) directory by using the `~/assets/` path.
+
+> 👀 这点和 `public/` 就完全不一样
+
+###### Example
+
+For example, referencing an image file that will be processed if a build tool is configured to handle this file extension:
+
+```vue
+<template>
+  <img src="~/assets/img/nuxt.png" alt="Discover Nuxt 3" />
+</template>
+```
+
+> 💡 Nuxt won't serve files in the [`assets/`](https://nuxt.com/docs/guide/directory-structure/assets) directory at a static URL like `/assets/my-file.png`. If you need a static URL, use the [`public/`](https://nuxt.com/docs/getting-started/assets#public-directory) directory.
+
+##### Global Styles Imports
+
+To globally insert statements in your Nuxt components styles, you can use the [`Vite`](https://nuxt.com/docs/api/nuxt-config#vite) option at your [`nuxt.config`](https://nuxt.com/docs/api/nuxt-config) file.
+
+###### Example
+
+In this example, there is a [sass partial](https://sass-lang.com/documentation/at-rules/use#partials) file containing color variables to be used by your Nuxt [pages](https://nuxt.com/docs/guide/directory-structure/pages) and [components](https://nuxt.com/docs/guide/directory-structure/components)
+
+```scss
+// assets/colors.scss
+$primary: #49240F;
+$secondary: #E4A79D;
+```
+
+```scss
+// assets/colors.sass
+$primary: #49240F
+$secondary: #E4A79D
+```
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@use "@/assets/_colors.scss" as *;'
+        },
+        sass: {
+          additionalData: '@use "@/assets/_colors.sass" as *\n'
+        }
+      }
+    }
+  }
+})
+```
+
+
 
 
 
