@@ -487,6 +487,20 @@ export default defineNuxtConfig({
 
 
 
+#### Styling
+
+Learn how to style your Nuxt application.
+
+Nuxt is highly flexible when it comes to styling. Write your own styles, or reference local and external stylesheets. You can use CSS preprocessors, CSS frameworks, UI libraries and Nuxt modules to style your application.
+
+##### Local Stylesheets
+
+If you're writing local stylesheets, the natural place to put them is the [`assets/` directory](https://nuxt.com/docs/guide/directory-structure/assets).
+
+###### Importing Within Components
+
+You can import stylesheets in your pages, layouts and components directly. You can use a javascript import, or a css [`@import` statement](https://developer.mozilla.org/en-US/docs/Web/CSS/@import).
+
 
 
 ## 工作经验
