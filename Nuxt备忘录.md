@@ -501,6 +501,36 @@ If you're writing local stylesheets, the natural place to put them is the [`asse
 
 You can import stylesheets in your pages, layouts and components directly. You can use a javascript import, or a css [`@import` statement](https://developer.mozilla.org/en-US/docs/Web/CSS/@import).
 
+```html
+<!-- pages/index.vue -->
+<script>
+// Use a static import for server-side compatibility
+import '~/assets/css/first.css'
+
+// Caution: Dynamic imports are not server-side compatible
+import('~/assets/css/first.css')
+</script>
+
+<style>
+@import url("~/assets/css/second.css");
+</style>
+```
+
+> 💡 The stylesheets will be inlined in the HTML rendered by Nuxt.
+
+##### The CSS Property
+
+You can also use the `css` property in the Nuxt configuration. The natural place for your stylesheets is the [`assets/` directory](https://nuxt.com/docs/guide/directory-structure/assets). You can then reference its path and Nuxt will include it to all the pages of your application.
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  css: ['~/assets/css/main.css']
+})
+```
+
+> 💡 The stylesheets will be inlined in the HTML rendered by Nuxt, injected globally and present in all pages.
+
 
 
 ## 工作经验
