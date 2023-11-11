@@ -531,6 +531,33 @@ export default defineNuxtConfig({
 
 > 💡 The stylesheets will be inlined in the HTML rendered by Nuxt, injected globally and present in all pages.
 
+##### Working With Fonts
+
+Place your local fonts files in your `~/public/` directory, for example in `~/public/fonts`. You can then reference them in your stylesheets using `url()`.
+
+```css
+// assets/css/main.css
+@font-face {
+  font-family: 'FarAwayGalaxy';
+  src: url('/fonts/FarAwayGalaxy.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+```
+
+Then reference your fonts by name in your stylesheets, pages or components:
+
+```html
+<style>
+h1 {
+  font-family: 'FarAwayGalaxy', sans-serif;
+}
+</style>
+```
+
+
+
 
 
 ## 工作经验
