@@ -413,11 +413,11 @@ The [`public/`](https://nuxt.com/docs/guide/directory-structure/public) director
 
 <font color=lightSeaGreen>You can get a file in the [`public/`](https://nuxt.com/docs/guide/directory-structure/public) directory from your application's code or from a browser by the root URL `/`</font> .
 
-> 👀 即：可以 `public` 的路径可以省略
+> 👀 即：**路径中，`public` 可以被省略**
 
 ###### Example
 
-For example, referencing an image file in the `public/img/` directory, available at the static URL `/img/nuxt.png `:
+For example, referencing an image file in the `public/img/` directory, available at the static URL `/img/nuxt.png ` :
 
 ```vue
 <template>
@@ -449,7 +449,7 @@ For example, referencing an image file that will be processed if a build tool is
 
 ##### Global Styles Imports
 
-To globally insert statements in your Nuxt components styles, you can use the [`Vite`](https://nuxt.com/docs/api/nuxt-config#vite) option at your [`nuxt.config`](https://nuxt.com/docs/api/nuxt-config) file.
+To globally insert statements in your Nuxt components styles, you can use the [`Vite`](https://nuxt.com/docs/api/nuxt-config#vite) option（👀 见下面示例） at your [`nuxt.config`](https://nuxt.com/docs/api/nuxt-config) file.
 
 ###### Example
 
@@ -485,17 +485,21 @@ export default defineNuxtConfig({
 })
 ```
 
+> 👀 这个配置和 Vue CLI 中的 `css.loaderOptions` 有点类似，详见 [Vue CLI Doc - CSS 相关 # 向预处理器 Loader 传递选项](https://cli.vuejs.org/zh/guide/css.html#%E5%90%91%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8-loader-%E4%BC%A0%E9%80%92%E9%80%89%E9%A1%B9)
+
 
 
 #### Styling
 
 Learn how to style your Nuxt application.
 
-Nuxt is highly flexible when it comes to styling. Write your own styles, or reference local and external stylesheets. You can use CSS preprocessors, CSS frameworks, UI libraries and Nuxt modules to style your application.
+***
+
+<font color=lightSeaGreen>Nuxt is highly flexible when it comes to styling</font>. Write your own styles, or reference local and external stylesheets. You can use CSS preprocessors, CSS frameworks, UI libraries and Nuxt modules to style your application.
 
 ##### Local Stylesheets
 
-If you're writing local stylesheets, the natural place to put them is the [`assets/` directory](https://nuxt.com/docs/guide/directory-structure/assets).
+<font color=dodgerBlue>If you're writing local stylesheets</font>, <font color=red>the natural place to put them is the [`assets/` directory](https://nuxt.com/docs/guide/directory-structure/assets)</font>.
 
 ###### Importing Within Components
 
@@ -507,7 +511,7 @@ You can import stylesheets in your pages, layouts and components directly. You c
 // Use a static import for server-side compatibility
 import '~/assets/css/first.css'
 
-// Caution: Dynamic imports are not server-side compatible
+// Caution: Dynamic imports are not server-side compatible // ⚠️
 import('~/assets/css/first.css')
 </script>
 
@@ -518,9 +522,9 @@ import('~/assets/css/first.css')
 
 > 💡 The stylesheets will be inlined in the HTML rendered by Nuxt.
 
-##### The CSS Property
+###### The CSS Property
 
-You can also use the `css` property in the Nuxt configuration. The natural place for your stylesheets is the [`assets/` directory](https://nuxt.com/docs/guide/directory-structure/assets). You can then reference its path and Nuxt will include it to all the pages of your application.
+You can also <font color=dodgerBlue>use the **`css` property** in the Nuxt configuration</font>. The natural place for your stylesheets is the [`assets/` directory](https://nuxt.com/docs/guide/directory-structure/assets). You can then reference its path and Nuxt will include it to all the pages of your application.
 
 ```ts
 // nuxt.config.ts
@@ -531,9 +535,9 @@ export default defineNuxtConfig({
 
 > 💡 The stylesheets will be inlined in the HTML rendered by Nuxt, injected globally and present in all pages.
 
-##### Working With Fonts
+###### Working With Fonts
 
-Place your local fonts files in your `~/public/` directory, for example in `~/public/fonts`. You can then reference them in your stylesheets using `url()`.
+<font color=red>Place your local fonts files in your `~/public/` directory</font>, for example in `~/public/fonts` . You can then reference them in your stylesheets using `url()`.
 
 ```css
 // assets/css/main.css
@@ -553,6 +557,96 @@ Then reference your fonts by name in your stylesheets, pages or components:
 h1 {
   font-family: 'FarAwayGalaxy', sans-serif;
 }
+</style>
+```
+
+###### Stylesheets Distributed Through NPM
+
+You can also reference stylesheets that are distributed through npm. Let's use the popular `animate.css` library as an example.
+
+```bash
+npm install animate.css
+```
+
+Then you can <font color=red>reference it directly in your **pages, layouts and components**</font>:
+
+```html
+<script>
+import 'animate.css'
+</script>
+
+<style>
+@import url("animate.css");
+</style>
+```
+
+The package can also be referenced as a string in the css property of your Nuxt configuration.
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  css: ['animate.css']
+})
+```
+
+##### External Stylesheets
+
+You can include external stylesheets in your application by adding a link element in the head section of your nuxt.config file. <font color=dodgerBlue>You can achieve this result using different methods</font>. <font color=red>Note that local stylesheets can also be included like this</font>.
+
+You can manipulate the head with the [`app.head`](https://nuxt.com/docs/api/nuxt-config#head) property of your Nuxt configuration:
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  app: {
+    head: {
+      link: [{ rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css' }]
+    }
+}})
+```
+
+###### Dynamically Adding Stylesheets
+
+You can use the [`useHead`](https://nuxt.com/docs/api/composables/use-head) composable to <font color=red>**dynamically set a value**</font> in your head in your code.
+
+```ts
+useHead({
+  link: [{ rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css' }]
+})
+```
+
+Nuxt uses `unhead` under the hood, and you can refer to its full documentation [here](https://unhead.unjs.io/).
+
+###### Modifying The Rendered Head With A Nitro Plugin
+
+<font color=dodgerBlue>If you need **more advanced control**</font>, you <font color=red>can **intercept the rendered html with a hook** and modify the head programmatically</font>.
+
+Create a plugin in `~/server/plugins/my-plugin.ts` like this:
+
+```ts
+// server/plugins/my-plugin.ts
+export default defineNitroPlugin((nitro) => {
+  nitro.hooks.hook('render:html', (html) => {
+    html.head.push('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">')
+  })
+})
+```
+
+<font color=dodgerBlue>External stylesheets are render-blocking resources</font>: they <font color=red>must be loaded and processed **before the browser renders the page**</font>. Web pages that contain unnecessarily large styles take longer to render. You can read more about it on [web.dev](https://web.dev/defer-non-critical-css) .
+
+##### Using Preprocessors
+
+To use a preprocessor like SCSS, Sass, Less or Stylus, install it first.
+
+```bash
+npm install sass
+```
+
+The natural place to write your stylesheets is the `assets` directory. You can then import your source files in your `app.vue` (or layouts files) using your preprocessor's syntax.
+
+```vue
+<style lang="scss">
+@use "~/assets/scss/main.scss";
 </style>
 ```
 

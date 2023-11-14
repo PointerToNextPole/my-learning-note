@@ -14911,7 +14911,7 @@ FormData() // 创建一个新的 FormData 对象
 
 ##### 在 FormData 中添加数组，并传到后端
 
-因为，直接在 FormData 中添加数组，会发现传递的数组变成 “没有 `[]` 包裹的字符串“，显然不是我们想要的；经过阅读博客，并测试发现：可以通过 对数组进行遍历，进行 append；并在 key 最后加上 `[]` （如下面的 `arrayKey[]` ）
+因为，直接在 FormData 中添加数组，会发现传递的数组变成 “没有 `[]` 包裹的字符串“，显然不是我们想要的；经过阅读博客，并测试发现：可以通过 对数组进行遍历，进行 append；并在 key 最后加上 `[]` （如下面的 `arrayKey[]` ）；
 
 ```js
 const data = FormData()
@@ -14920,6 +14920,29 @@ const targetArr = [ ... ]
                    
 targetArr.forEach(_ => data.append('arrayKey[]', _))
 ```
+
+> 👀 不过，加上 `[]` 应该只是一种习惯，而非强制。
+>
+> 另外，[MDN - `FormData.append()`](https://developer.mozilla.org/zh-CN/docs/Web/API/FormData/append) 中也有类似表述：
+>
+> > 跟常规`表单数据一样，你可以使用同一个名称添加多个值` 。例如 (为了与 PHP 命名习惯一致在名称中添加了 [])：
+> >
+> > ```js
+> > formData.append("userpic[]", myFileInput1.files[0], "chris1.jpg");
+> > formData.append("userpic[]", myFileInput2.files[0], "chris2.jpg");
+> > ```
+> >
+> > 这项技术<font color=red>使得多文件上传的处理更加简单</font>，因为所得数据结构更有利于循环。
+>
+> 如上面所说：FormData 中用这种多次 append 同一个 key 的键值对的方式，使得上传多文件非常方便。另外，不能在 FormData 中 append 一个文件数组的值：在 Chrome DevTools Network 面板中，Preview 中会表现出 `key: [Object File] [Object File]  ...` ，而使用 多次 append ，将会表现出：
+>
+> ```
+> key: binary,
+> key: binary,
+> ....
+> ```
+>
+> 这才是正常的样子。
 
 学习自：[【JS】FormData的使用以及提交数组的方法](https://blog.csdn.net/NAMECZ/article/details/84585709)
 
