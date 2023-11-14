@@ -399,6 +399,8 @@ export default defineNitroPlugin((nitroApp) => {
 
 <font color=red>Nuxt offers two options for your assets</font>.
 
+***
+
 Nuxt uses two directories to handle assets like stylesheets, fonts or images.
 
 - The <font color=dodgerBlue>[`public/`](https://nuxt.com/docs/guide/directory-structure/public) directory content</font> is <font color=red>served at the server root as-is</font>.
@@ -642,12 +644,323 @@ To use a preprocessor like SCSS, Sass, Less or Stylus, install it first.
 npm install sass
 ```
 
-The natural place to write your stylesheets is the `assets` directory. You can then import your source files in your `app.vue` (or layouts files) using your preprocessor's syntax.
+<font color=red>The natural place to write your stylesheets is the **`assets` directory**</font>. You can <font color=lightSeaGreen>then import your source files in your `app.vue`</font> (or layouts files) using your preprocessor's syntax.
 
 ```vue
 <style lang="scss">
 @use "~/assets/scss/main.scss";
 </style>
+```
+
+<font color=dodgerBlue>**Alternatively**</font>, you can use the `css` property of your Nuxt configuration.
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  css: ['~/assets/scss/main.scss']
+})
+```
+
+> 💡 In both cases, the compiled stylesheets will be inlined in the HTML rendered by Nuxt.
+
+If you need to inject code in pre-processed files, like a [sass partial](https://sass-lang.com/documentation/at-rules/use#partials) with color variables, you can do so with the vite [preprocessors options](https://vitejs.dev/config/shared-options.html#css-preprocessoroptions) .
+
+Create some partials in your `assets` directory:
+
+```scss
+$primary: #49240F;
+$secondary: #E4A79D;
+```
+
+> 👀 这里略去了 SASS 的变量示例
+
+Then in your `nuxt.config` :
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@use "@/assets/_colors.scss" as *;'
+        },
+        sass: {
+          additionalData: '@use "@/assets/_colors.sass" as *\n'
+        }
+      }
+    }
+  }
+})
+```
+
+Nuxt uses Vite by default. If you wish to use webpack instead, refer to each preprocessor loader [documentation](https://webpack.js.org/loaders/sass-loader).
+
+##### Single File Components (SFC) Styling
+
+One of the best thing about Vue and SFC is how great it is at naturally dealing with styling. <font color=lightSeaGreen>You can directly write CSS or preprocessor code in the style block of your components file</font>, therefore you will have fantastic developer experience without having to use something like CSS-in-JS. However <font color=dodgerBlue>if you wish to use CSS-in-JS</font>, you can find 3rd party libraries and modules that support it, such as [pinceau](https://pinceau.dev/).
+
+> 👀 这里省略去了 Class And Style Bindings、Dynamic Styles With `v-bind`、Scoped Styles 感觉比较熟悉了
+
+###### CSS Modules
+
+You can use [CSS Modules](https://github.com/css-modules/css-modules) with the module attribute. <font color=red>Access it with the injected `$style` variable</font>.
+
+```vue
+<template>
+  <p :class="$style.red">This should be red</p>
+</template>
+
+<style module>
+.red {
+  color: red;
+}
+</style>
+```
+
+###### Preprocessors Support
+
+SFC style blocks support preprocessors syntax. Vite come with built-in support for .scss, .sass, .less, .styl and .stylus files without configuration. You just need to install them first, and they will be available directly in SFC with the lang attribute.
+
+You can refer to the Vite CSS docs and the @vitejs/plugin-vue docs. For webpack users, refer to the vue loader docs.
+
+##### Using PostCSS
+
+<font color=red>Nuxt comes with **postcss built-in**</font>. You can configure it in your `nuxt.config` file.
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  postcss: {
+    plugins: {
+      'postcss-nested': {}
+      "postcss-custom-media": {}
+    }
+  }
+})
+```
+
+For proper syntax highlighting in SFC, <font color=fuchsia>you can use the postcss lang attribute</font>.
+
+> 👀 如下写法完全没见过
+
+```vue
+<style lang="postcss">
+  /* Write stylus here */
+</style>
+```
+
+<font color=red>**By default**</font>, Nuxt comes with the following plugins already pre-configured:
+
+- [postcss-import](https://github.com/postcss/postcss-import): Improves the `@import` rule
+- [postcss-url](https://github.com/postcss/postcss-url): Transforms `url()` statements
+- [autoprefixer](https://github.com/postcss/autoprefixer): Automatically adds vendor prefixes
+- [cssnano](https://cssnano.co/): Minification and purge
+
+###### Leveraging Layouts For Multiple Styles
+
+If you need to style different parts of your application completely differently, you can use layouts. Use different styles for different layouts.
+
+```vue
+<template>
+  <div class="default-layout">
+    <h1>Default Layout</h1>
+    <slot />
+  </div>
+</template>
+
+<style>
+.default-layout {
+  color: red;
+}
+</style>
+```
+
+##### Third Party Libraries And Modules
+
+Nuxt isn't opinionated when it comes to styling and provides you with a wide variety of options. <font color=lightSeaGreen>You can use any styling tool that you want</font>, such as popular libraries like [UnoCSS](https://unocss.dev/) or [Tailwind CSS](https://tailwindcss.com/).
+
+The community and the Nuxt team have developed plenty of Nuxt modules to makes the integration easier. You can discover them on the [modules section](https://nuxt.com/modules) of the website. Here are a few modules to help you get started:
+
+- [UnoCSS](https://nuxt.com/modules/unocss): Instant on-demand atomic CSS engine
+- [Tailwind CSS](https://nuxt.com/modules/tailwindcss): Utility-first CSS framework
+- [Fontaine](https://github.com/nuxt-modules/fontaine): Font metric fallback
+- [Pinceau](https://pinceau.dev/): Adaptable styling framework
+- [Nuxt UI](https://ui.nuxt.com/): A UI Library for Modern Web Apps
+
+<font color=lightSeaGreen>Nuxt modules provide you with a good developer experience out of the box</font>, but remember that if your favorite tool doesn't have a module, it doesn't mean that you can't use it with Nuxt! You can configure it yourself for your own project. <font color=red>Depending on the tool, you might need to use a [Nuxt plugin](https://nuxt.com/docs/guide/directory-structure/plugins) and/or [make your own module](https://nuxt.com/docs/guide/going-further/modules)</font>. Share them with the [community](https://nuxt.com/modules) if you do!
+
+###### Easily Load Webfonts
+
+You can use [the Nuxt Google Fonts module](https://github.com/nuxt-modules/google-fonts) to load Google Fonts.
+
+<font color=dodgerBlue>If you are using [UnoCSS](https://unocss.dev/integrations/nuxt)</font>, note that <font color=red>it comes with a [web fonts presets](https://unocss.dev/presets/web-fonts)</font> to conveniently load fonts from common providers, including Google Fonts and more.
+
+#####  Advanced
+
+###### Transitions
+
+Nuxt comes with the same `<Transition>` element that Vue has, and also has support for the experimental [View Transitions API](https://nuxt.com/docs/getting-started/transitions#view-transitions-api-experimental).
+
+###### Font Advanced Optimization
+
+We would recommend using [Fontaine](https://github.com/nuxt-modules/fontaine) to reduce your [CLS](https://web.dev/cls). If you need something more advanced, consider creating a Nuxt module to extend the build process or the Nuxt runtime.
+
+> 💡 Always remember to take advantage of the various tools and techniques available in the Web ecosystem at large to make styling your application easier and more efficient. Whether you're using native CSS, a preprocessor, postcss, a UI library or a module, Nuxt has got you covered. Happy styling!
+
+###### LCP Advanced optimizations
+
+You can do the following to speed-up the download of your global CSS files:
+
+- Use a CDN so the files are physically closer to your users
+- Compress your assets, ideally using Brotli
+- Use HTTP2/HTTP3 for delivery
+- Host your assets on the same domain (do not use a different subdomain)
+
+Most of these things should be done for you automatically if you're using modern platforms like Cloudflare, Netlify or Vercel. You can find an LCP optimization guide on [web.dev](https://web.dev/optimize-lcp).
+
+If all of your CSS is inlined by Nuxt, you can (experimentally) completely stop external CSS files from being referenced in your rendered HTML. You can achieve that with a hook, that you can place in a module, or in your Nuxt configuration file.
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  hooks: {
+    'build:manifest': (manifest) => {
+      // find the app entry, css list
+      const css = manifest['node_modules/nuxt/dist/app/entry.js']?.css
+      if (css) {
+        // start from the end of the array and go to the beginning
+        for (let i = css.length - 1; i >= 0; i--) {
+          // if it starts with 'entry', remove it from the list
+          if (css[i].startsWith('entry')) css.splice(i, 1)
+        }
+      }
+    },
+  },
+})
+```
+
+
+
+#### Routing
+
+Nuxt <font color=red>file-system routing</font> creates a route for every file in the `pages/` directory.
+
+***
+
+One core feature of Nuxt is the file system router. <font color=fuchsia>Every Vue file inside the [`pages/`](https://nuxt.com/docs/guide/directory-structure/pages) directory **creates a corresponding URL** (or route) that displays the contents of the file</font>. By using dynamic imports for each page, Nuxt leverages code-splitting to ship the minimum amount of JavaScript for the requested route.
+
+##### Pages
+
+Nuxt routing is based on [vue-router](https://router.vuejs.org/) and <font color=fuchsia>**generates the routes** from every component created in the [`pages/` directory](https://nuxt.com/docs/guide/directory-structure/pages), **based on their filename**</font>.
+
+This file system routing uses naming conventions to create dynamic and nested routes:
+
+```js
+// Directory Structure
+| pages/
+---| about.vue
+---| index.vue
+---| posts/
+-----| [id].vue // 👀 注意这里的文件名
+```
+
+```js
+// Generated Router File
+{
+  "routes": [
+    {
+      "path": "/about",
+      "component": "pages/about.vue"
+    },
+    {
+      "path": "/",
+      "component": "pages/index.vue"
+    },
+    {
+      "path": "/posts/:id",
+      "component": "pages/posts/[id].vue"
+    }
+  ]
+}
+```
+
+##### Navigation
+
+<font color=fuchsia>The [`<NuxtLink>`](https://nuxt.com/docs/api/components/nuxt-link) component links pages between them</font>. <font color=red>It renders an `<a>` tag with the `href` attribute set to the route of the page</font>. <font color=dodgerBlue>Once the application is hydrated</font>, page transitions are performed in JavaScript by updating the browser URL. This prevents full-page refreshes and allows for animated transitions.
+
+<font color=dodgerBlue>When a [`<NuxtLink>`](https://nuxt.com/docs/api/components/nuxt-link) enters the viewport on the client side</font>, <font color=red>Nuxt will **automatically prefetch** components and **payload (generated pages) of the linked pages** ahead of time</font>, resulting in faster navigation.
+
+```vue
+<!-- pages/app.vue -->
+<template>
+  <header>
+    <nav>
+      <ul>
+        <li><NuxtLink to="/about">About</NuxtLink></li>
+        <li><NuxtLink to="/posts/1">Post 1</NuxtLink></li>
+        <li><NuxtLink to="/posts/2">Post 2</NuxtLink></li>
+      </ul>
+    </nav>
+  </header>
+</template>
+```
+
+##### Route Middleware
+
+Nuxt provides a customizable route middleware framework you can use throughout your application, ideal for extracting code that you want to run before navigating to a particular route.
+
+> <font color=lightSeaGreen>**Route middleware runs within the Vue part of your Nuxt app**</font>. Despite the similar name, <font color=red>they are completely different from server middleware</font>, which are run in the Nitro server part of your app.
+
+<font color=dodgerBlue>There are **three kinds of route middleware**:</font>
+
+1. <font color=dodgerBlue>Anonymous (or inline) route middleware</font>, which are <font color=red>defined directly in the pages where they are used</font>.
+2. <font color=dodgerBlue>Named route middleware</font>, which are <font color=red>**placed in the [`middleware/`](https://nuxt.com/docs/guide/directory-structure/middleware) directory**</font> and will <font color=red>be automatically loaded via asynchronous import</font> when used on a page. (**Note**: The route middleware name is normalized to kebab-case, so `someMiddleware` becomes `some-middleware`.)
+3. <font color=dodgerBlue>Global route middleware</font>, which are <font color=red>placed in the [`middleware/` directory](https://nuxt.com/docs/guide/directory-structure/middleware) (with a `.global` suffix)</font> and will be automatically run on every route change.
+
+<font color=dodgerBlue>Example of an **`auth` middleware protecting the `/dashboard` page**:</font>
+
+```ts
+//  middleware/auth.ts
+export default defineNuxtRouteMiddleware((to, from) => {
+  // isAuthenticated() is an example method verifying if a user is authenticated
+  if (isAuthenticated() === false) {
+    return navigateTo('/login')
+  }
+})
+```
+
+```vue
+<!-- pages/dashboard.vue -->
+<script setup lang="ts">
+definePageMeta({
+  middleware: 'auth'
+})
+</script>
+
+<template>
+  <h1>Welcome to your dashboard</h1>
+</template>
+```
+
+##### Route Validation
+
+<font color=red>Nuxt **offers route validation** via the `validate` property in [`definePageMeta()`](https://nuxt.com/docs/api/utils/define-page-meta)</font> in each page you wish to validate.
+
+The <font color=red>`validate` property accepts the `route` as an argument</font>. You can <font color=lightSeaGreen>return a boolean value to determine whether or not this is a valid route to be rendered with this page</font>. If you return `false` , and another match can't be found, <font color=red>this will cause a **404 error**</font>. You <font color=red>can also **directly return an object with `statusCode` / `statusMessage` to respond immediately with an error**</font> (other matches will not be checked).
+
+If you have a more complex use case, then you can use anonymous route middleware instead.
+
+```vue
+<!-- pages/posts/[id].vue -->
+<script setup lang="ts">
+definePageMeta({
+  validate: async (route) => {
+    // Check if the id is made up of digits
+    return /^\d+$/.test(route.params.id)
+  }
+})
+</script>
 ```
 
 
