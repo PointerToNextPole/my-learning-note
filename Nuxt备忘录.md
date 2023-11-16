@@ -965,6 +965,135 @@ definePageMeta({
 
 
 
+#### SEO and Meta
+
+Improve your Nuxt app's SEO with powerful head config, composables and components.
+
+***
+
+##### Defaults
+
+<font color=dodgerBlue>**Out-of-the-box**</font>, <font color=red>Nuxt provides sane defaults</font>, which you can override if needed.
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  app: {
+    head: {
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+    }
+  }
+})
+```
+
+Providing an [`app.head`](https://nuxt.com/docs/api/nuxt-config#head) property in your [`nuxt.config.ts`](https://nuxt.com/docs/guide/directory-structure/nuxt-config) allows you to customize the head for your entire app.
+
+> 💡 This method does not allow you to provide reactive data. We recommend to use `useHead()` in `app.vue`.
+
+Shortcuts are available to make configuration easier: `charset` and `viewport`. You can also provide any of the keys listed below in [Types](https://nuxt.com/docs/getting-started/seo-meta#types).
+
+##### `useHead`
+
+The [`useHead`](https://nuxt.com/docs/api/composables/use-head) composable function allows you to manage your head tags in a programmatic and reactive way, powered by [Unhead](https://unhead.unjs.io/).
+
+As with all composables, it can only be used with a components `setup` and lifecycle hooks.
+
+```vue
+<!-- app.vue -->
+<script setup lang="ts">
+useHead({
+  title: 'My App',
+  meta: [
+    { name: 'description', content: 'My amazing site.' }
+  ],
+  bodyAttrs: {
+    class: 'test'
+  },
+  script: [ { innerHTML: 'console.log(\'Hello world\')' } ]
+})
+</script>
+```
+
+We recommend to take a look at the [`useHead`](https://nuxt.com/docs/api/composables/use-head) and [`useHeadSafe`](https://nuxt.com/docs/api/composables/use-head-safe) composables.
+
+##### `useSeoMeta`
+
+The [`useSeoMeta`](https://nuxt.com/docs/api/composables/use-seo-meta) composable lets you define your site's SEO meta tags as a flat object with full TypeScript support.
+
+This helps you avoid typos and common mistakes, such as using `name` instead of `property`.
+
+```vue
+<!-- app.vue -->
+<script setup lang="ts">
+useSeoMeta({
+  title: 'My Amazing Site',
+  ogTitle: 'My Amazing Site',
+  description: 'This is my amazing site, let me tell you all about it.',
+  ogDescription: 'This is my amazing site, let me tell you all about it.',
+  ogImage: 'https://example.com/image.png',
+  twitterCard: 'summary_large_image',
+})
+</script>
+```
+
+##### Components
+
+Nuxt provides `<Title>`, `<Base>`, `<NoScript>`, `<Style>`, `<Meta>`, `<Link>`, `<Body>`, `<Html>`and `<Head>` components so that you can interact directly with your metadata within your component's template.
+
+Because these component names match native HTML elements, it is very important that they are capitalized in the template.
+
+`<Head>` and `<Body>` can accept nested meta tags (for aesthetic reasons) but this has no effect on *where* the nested meta tags are rendered in the final HTML.
+
+```vue
+<!-- app.vue -->
+<script setup lang="ts">
+const title = ref('Hello World')
+</script>
+
+<template>
+  <div>
+    <Head>
+      <Title>{{ title }}</Title>
+      <Meta name="description" :content="title" />
+      <Style type="text/css" children="body { background-color: green; }" />
+    </Head>
+
+    <h1>{{ title }}</h1>
+  </div>
+</template>
+```
+
+##### Types
+
+Below are the non-reactive types used for [`useHead`](https://nuxt.com/docs/api/composables/use-head), [`app.head`](https://nuxt.com/docs/api/nuxt-config#head) and components.
+
+```ts
+interface MetaObject {
+  title?: string
+  titleTemplate?: string | ((title?: string) => string)
+  templateParams?: Record<string, string | Record<string, string>>
+  base?: Base
+  link?: Link[]
+  meta?: Meta[]
+  style?: Style[]
+  script?: Script[]
+  noscript?: Noscript[];
+  htmlAttrs?: HtmlAttributes;
+  bodyAttrs?: BodyAttributes;
+}
+```
+
+See [@unhead/schema](https://github.com/unjs/unhead/blob/main/packages/schema/src/schema.ts) for more detailed types.
+
+##### Features
+
+###### Reactivity
+
+Reactivity is supported on all properties, as computed, getters and reactive.
+
+It's recommended to use getters (`() => value`) over computed (`computed(() => value)`).
+
 
 
 ## 工作经验
