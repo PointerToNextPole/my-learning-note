@@ -987,9 +987,11 @@ export default defineNuxtConfig({
 })
 ```
 
-Providing an [`app.head`](https://nuxt.com/docs/api/nuxt-config#head) property in your [`nuxt.config.ts`](https://nuxt.com/docs/guide/directory-structure/nuxt-config) allows you to customize the head for your entire app.
+<font color=red>Providing an [`app.head`](https://nuxt.com/docs/api/nuxt-config#head) property in your [`nuxt.config.ts`](https://nuxt.com/docs/guide/directory-structure/nuxt-config)</font> <font color=lightSeaGreen>allows you to customize the head for your entire app</font>.
 
-> 💡 This method does not allow you to provide reactive data. We recommend to use `useHead()` in `app.vue`.
+> 💡 This method does not allow you to provide reactive data. We recommend to use `useHead()` in `app.vue `.
+>
+> > 👀 相当于在 nuxt.config.ts 中的是静态配置，而通过 `useHead()` 可以通过编程方式动态实现配置；另外，这里只说了 `app.vue` ，没说其他 `.vue` 文件，应该是唯一的，类似于 `index.html`
 
 Shortcuts are available to make configuration easier: `charset` and `viewport`. You can also provide any of the keys listed below in [Types](https://nuxt.com/docs/getting-started/seo-meta#types).
 
@@ -1010,7 +1012,7 @@ useHead({
   bodyAttrs: {
     class: 'test'
   },
-  script: [ { innerHTML: 'console.log(\'Hello world\')' } ]
+  script: [ { innerHTML: 'console.log(\'Hello world\')' } ] // 👀
 })
 </script>
 ```
@@ -1019,7 +1021,7 @@ We recommend to take a look at the [`useHead`](https://nuxt.com/docs/api/composa
 
 ##### `useSeoMeta`
 
-The [`useSeoMeta`](https://nuxt.com/docs/api/composables/use-seo-meta) composable lets you define your site's SEO meta tags as a flat object with full TypeScript support.
+<font color=red>The [`useSeoMeta`](https://nuxt.com/docs/api/composables/use-seo-meta) composable lets you **define your site's SEO meta tags**</font> as a flat object with full TypeScript support.
 
 This helps you avoid typos and common mistakes, such as using `name` instead of `property`.
 
@@ -1039,7 +1041,7 @@ useSeoMeta({
 
 ##### Components
 
-Nuxt provides `<Title>`, `<Base>`, `<NoScript>`, `<Style>`, `<Meta>`, `<Link>`, `<Body>`, `<Html>`and `<Head>` components so that you can interact directly with your metadata within your component's template.
+<font color=red>Nuxt provides `<Title>`, `<Base>`, `<NoScript>`, `<Style>`, `<Meta>`, `<Link>`, `<Body>`, `<Html>`and `<Head>` components</font> so that you can interact directly with your metadata within your component's template.
 
 Because these component names match native HTML elements, it is very important that they are capitalized in the template.
 
@@ -1092,7 +1094,170 @@ See [@unhead/schema](https://github.com/unjs/unhead/blob/main/packages/schema/sr
 
 Reactivity is supported on all properties, as computed, getters and reactive.
 
-It's recommended to use getters (`() => value`) over computed (`computed(() => value)`).
+It's recommended to use getters (`() => value`) over computed ( `computed(() => value)` ).
+
+```vue
+<!-- useHead -->
+<script setup lang="ts">
+const description = ref('My amazing site.')
+
+useHead({
+  meta: [
+    { name: 'description', content: description }
+  ],
+})
+</script>
+```
+
+```vue
+<!-- useSeoMeta -->
+<script setup lang="ts">
+const description = ref('My amazing site.')
+
+useSeoMeta({
+  description
+})
+</script>
+```
+
+```vue
+<!-- Component -->
+<script setup lang="ts">
+const description = ref('My amazing site.')
+</script>
+
+<template>
+  <div>
+    <Meta name="description" :content="description" />
+  </div>
+</template>
+```
+
+###### Title Template
+
+You can use the `titleTemplate` option to provide a dynamic template for customizing the title of your site. for example, by adding the name of your site to the title of every page.
+
+The `titleTemplate` can either be a string, where `%s` is replaced with the title, or a function.
+
+If you want to use a function (for full control), then this cannot be set in your `nuxt.config`, and it is recommended instead to set it within your `app.vue` file, where it will apply to all pages on your site:
+
+```vue
+<script setup lang="ts">
+useHead({
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} - Site Title` : 'Site Title';
+  }
+})
+</script>
+```
+
+Now, if you set the title to `My Page` with [`useHead`](https://nuxt.com/docs/api/composables/use-head) on another page of your site, the title would appear as 'My Page - Site Title' in the browser tab. You could also pass `null` to default to the site title.
+
+###### Body Tags
+
+You can use the `tagPosition: 'bodyClose'` option on applicable tags to append them to the end of the `<body>` tag.
+
+```vue
+<script setup lang="ts">
+useHead({
+  script: [
+    {
+      src: 'https://third-party-script.com',
+      // valid options are: 'head' | 'bodyClose' | 'bodyOpen'
+      tagPosition: 'bodyClose'
+    }
+  ]
+})
+</script>
+```
+
+##### Examples
+
+###### With `definePageMeta`
+
+Within your [`pages/` directory](https://nuxt.com/docs/guide/directory-structure/pages), you can use `definePageMeta` along with [`useHead`](https://nuxt.com/docs/api/composables/use-head) to set metadata based on the current route.
+
+For example, you can first set the current page title (this is extracted at build time via a macro, so it can't be set dynamically):
+
+```vue
+<!-- pages/some-page.vue -->
+<script setup lang="ts">
+definePageMeta({
+  title: 'Some Page'
+})
+</script>
+```
+
+And then in your layout file, you might use the route's metadata you have previously set:
+
+```vue
+<!-- layouts/default.vue -->
+<script setup lang="ts">
+const route = useRoute()
+
+useHead({
+  meta: [{ property: 'og:title', content: `App Name - ${route.meta.title}` }]
+})
+</script>
+```
+
+##### Dynamic Title
+
+In the example below, `titleTemplate` is set either as a string with the `%s` placeholder or as a `function`, which allows greater flexibility in setting the page title dynamically for each route of your Nuxt app:
+
+```vue
+<!-- app.vue -->
+<script setup lang="ts">
+useHead({
+  // as a string,
+  // where `%s` is replaced with the title
+  titleTemplate: '%s - Site Title',
+  // ... or as a function
+  titleTemplate: (productCategory) => {
+    return productCategory
+      ? `${productCategory} - Site Title`
+      : 'Site Title'
+  }
+})
+</script>
+```
+
+`nuxt.config` is also used as an alternative way of setting the page title. However, `nuxt.config` does not allow the page title to be dynamic. Therefore, it is recommended to use `titleTemplate` in the `app.vue` file to add a dynamic title, which is then applied to all routes of your Nuxt app.
+
+###### External CSS
+
+The example below shows how you might enable Google Fonts using either the `link` property of the [`useHead`](https://nuxt.com/docs/api/composables/use-head) composable or using the `<Link>` component:
+
+```vue
+<!-- useHead -->
+<script setup lang="ts">
+useHead({
+  link: [
+    {
+      rel: 'preconnect',
+      href: 'https://fonts.googleapis.com'
+    },
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Roboto&display=swap',
+      crossorigin: ''
+    }
+  ]
+})
+</script>
+```
+
+```vue
+<!-- Components -->
+<template>
+  <div>
+    <Link rel="preconnect" href="https://fonts.googleapis.com" />
+    <Link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" crossorigin="" />
+  </div>
+</template>
+```
+
+
 
 
 
