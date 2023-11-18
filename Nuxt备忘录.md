@@ -1135,11 +1135,11 @@ const description = ref('My amazing site.')
 
 ###### Title Template
 
-You can use the `titleTemplate` option to provide a dynamic template for customizing the title of your site. for example, by adding the name of your site to the title of every page.
+You can <font color=lightSeaGreen>use the `titleTemplate` option to provide a dynamic template for customizing the title of your site</font>. for example, by adding the name of your site to the title of every page.
 
 The `titleTemplate` can either be a string, where `%s` is replaced with the title, or a function.
 
-If you want to use a function (for full control), then this cannot be set in your `nuxt.config`, and it is recommended instead to set it within your `app.vue` file, where it will apply to all pages on your site:
+If you want to use a function (<font color=lightSeaGreen>for full control</font>), then <font color=lightSeaGreen>this cannot be set in your `nuxt.config`</font>, and <font color=red>it is recommended instead to set it within your `app.vue`</font> file, where it will apply to all pages on your site:
 
 ```vue
 <script setup lang="ts">
@@ -1155,7 +1155,7 @@ Now, if you set the title to `My Page` with [`useHead`](https://nuxt.com/docs/ap
 
 ###### Body Tags
 
-You can use the `tagPosition: 'bodyClose'` option on applicable tags to append them to the end of the `<body>` tag.
+You can <font color=dodgerBlue>use the `tagPosition: 'bodyClose'` option on applicable tags</font> to <font color=red>**append them to the end of the `<body>` tag**</font>.
 
 ```vue
 <script setup lang="ts">
@@ -1163,7 +1163,7 @@ useHead({
   script: [
     {
       src: 'https://third-party-script.com',
-      // valid options are: 'head' | 'bodyClose' | 'bodyOpen'
+      // valid options are: 'head' | 'bodyClose' | 'bodyOpen' // ⭐️
       tagPosition: 'bodyClose'
     }
   ]
@@ -1175,7 +1175,7 @@ useHead({
 
 ###### With `definePageMeta`
 
-Within your [`pages/` directory](https://nuxt.com/docs/guide/directory-structure/pages), you can use `definePageMeta` along with [`useHead`](https://nuxt.com/docs/api/composables/use-head) to set metadata based on the current route.
+<font color=dodgerBlue>Within your [`pages/` directory](https://nuxt.com/docs/guide/directory-structure/pages)</font>, you can <font color=red>use `definePageMeta` along with [`useHead`](https://nuxt.com/docs/api/composables/use-head) to set metadata based on the current route</font>.
 
 For example, you can first set the current page title (this is extracted at build time via a macro, so it can't be set dynamically):
 
@@ -1203,7 +1203,7 @@ useHead({
 
 ##### Dynamic Title
 
-In the example below, `titleTemplate` is set either as a string with the `%s` placeholder or as a `function`, which allows greater flexibility in setting the page title dynamically for each route of your Nuxt app:
+In the example below, `titleTemplate` is <font color=red>set either as a string with the `%s` placeholder</font> <font color=dodgerBlue>**or**</font> <font color=red>as a `function`</font>, which allows greater flexibility in setting the page title dynamically for each route of your Nuxt app:
 
 ```vue
 <!-- app.vue -->
@@ -1222,11 +1222,11 @@ useHead({
 </script>
 ```
 
-`nuxt.config` is also used as an alternative way of setting the page title. However, `nuxt.config` does not allow the page title to be dynamic. Therefore, it is recommended to use `titleTemplate` in the `app.vue` file to add a dynamic title, which is then applied to all routes of your Nuxt app.
+`nuxt.config` is also used as an alternative way of setting the page title. However, <font color=lightSeaGreen>`nuxt.config` does not allow the page title to be dynamic</font>. Therefore, it is <font color=red>recommended to use `titleTemplate` in the `app.vue` file to add a dynamic title</font>, which is then applied to all routes of your Nuxt app.
 
 ###### External CSS
 
-The example below shows how you might enable Google Fonts using either the `link` property of the [`useHead`](https://nuxt.com/docs/api/composables/use-head) composable or using the `<Link>` component:
+<font color=dodgerBlue>The example below **shows how you might enable Google Fonts**</font> using either the `link` property of the [`useHead`](https://nuxt.com/docs/api/composables/use-head) composable or using the `<Link>` component:
 
 ```vue
 <!-- useHead -->
@@ -1265,11 +1265,11 @@ Apply transitions between pages and layouts with Vue or native browser View Tran
 
 ***
 
-> 💡 Nuxt leverages Vue's [`<Transition>`](https://vuejs.org/guide/built-ins/transition.html#the-transition-component) component to apply transitions between pages and layouts.
+> 💡 <font color=dodgerBlue>Nuxt leverages Vue's [`<Transition>`](https://vuejs.org/guide/built-ins/transition.html#the-transition-component) component to apply transitions between pages and layouts</font>.
 
 ##### Page transitions
 
-You can enable page transitions to apply an automatic transition for all your [pages](https://nuxt.com/docs/guide/directory-structure/pages).
+You <font color=red>can enable page transitions to apply an **automatic transition for all your [pages](https://nuxt.com/docs/guide/directory-structure/pages)**</font>.
 
 ```ts
 // nuxt.config.ts
@@ -1280,9 +1280,30 @@ export default defineNuxtConfig({
 })
 ```
 
-> 💡 If you are changing layouts as well as page, the page transition you set here will not run. Instead, you should set a [layout transition](https://nuxt.com/docs/getting-started/transitions#layout-transitions).
+> 💡 <font color=dodgerBlue>If you are changing layouts as well as page, the **page transition** you set here will not run</font>. Instead, you should set a [layout transition](https://nuxt.com/docs/getting-started/transitions#layout-transitions).
 
 To start adding transition between your pages, add the following CSS to your [`app.vue`](https://nuxt.com/docs/guide/directory-structure/app):
+
+```vue
+<!-- app.vue -->
+<template>
+  <NuxtPage />
+</template>
+
+<style>
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+}
+</style>
+```
+
+> 👀 这里有个示例，
 
 
 
