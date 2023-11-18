@@ -1041,11 +1041,11 @@ useSeoMeta({
 
 ##### Components
 
-<font color=red>Nuxt provides `<Title>`, `<Base>`, `<NoScript>`, `<Style>`, `<Meta>`, `<Link>`, `<Body>`, `<Html>`and `<Head>` components</font> so that you can interact directly with your metadata within your component's template.
+<font color=red>Nuxt provides `<Title>`, `<Base>`, `<NoScript>`, `<Style>`, `<Meta>`, `<Link>`, `<Body>`, `<Html>` and `<Head>` components</font> so that <font color=dodgerBlue>you can interact directly with your metadata within your component's template</font>.
 
-Because these component names match native HTML elements, it is very important that they are capitalized in the template.
+Because these component names match native HTML elements, it is <font color=lightSeaGreen>very important that they are **capitalized in the template**</font>.
 
-`<Head>` and `<Body>` can accept nested meta tags (for aesthetic reasons) but this has no effect on *where* the nested meta tags are rendered in the final HTML.
+`<Head>` and `<Body>` can accept nested meta tags (<font color=lightSeaGreen>for aesthetic reasons</font>) but this <font color=red>has no effect on *where* the nested meta tags are rendered in the final HTML</font>.
 
 ```vue
 <!-- app.vue -->
@@ -1094,7 +1094,7 @@ See [@unhead/schema](https://github.com/unjs/unhead/blob/main/packages/schema/sr
 
 Reactivity is supported on all properties, as computed, getters and reactive.
 
-It's recommended to use getters (`() => value`) over computed ( `computed(() => value)` ).
+<font color=red>It's recommended to use getters ( `() => value` ) over computed ( `computed(() => value)` )</font>.
 
 ```vue
 <!-- useHead -->
@@ -1256,6 +1256,33 @@ useHead({
   </div>
 </template>
 ```
+
+
+
+#### Transitions
+
+Apply transitions between pages and layouts with Vue or native browser View Transitions.
+
+***
+
+> 💡 Nuxt leverages Vue's [`<Transition>`](https://vuejs.org/guide/built-ins/transition.html#the-transition-component) component to apply transitions between pages and layouts.
+
+##### Page transitions
+
+You can enable page transitions to apply an automatic transition for all your [pages](https://nuxt.com/docs/guide/directory-structure/pages).
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' }
+  },
+})
+```
+
+> 💡 If you are changing layouts as well as page, the page transition you set here will not run. Instead, you should set a [layout transition](https://nuxt.com/docs/getting-started/transitions#layout-transitions).
+
+To start adding transition between your pages, add the following CSS to your [`app.vue`](https://nuxt.com/docs/guide/directory-structure/app):
 
 
 

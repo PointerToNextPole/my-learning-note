@@ -1273,3 +1273,5 @@
 - **chronological** ：按时间先后顺序的
 
 - **versatile** ：多才多艺
+
+- **aesthetic** ：美学的
