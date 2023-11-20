@@ -4843,7 +4843,9 @@ function myFunction(y) {
 
 #### Function.length
 
-length 属性<font color=FF0000>指明函数的形参个数</font>。示例如下：
+`Function` 实例的 **`length`** 数据属性表示 <font color=fuchsia>函数**期望**</font> 的参数数量。
+
+##### 尝试一下
 
 ```js
 function func1() {}
@@ -4859,108 +4861,39 @@ function argFn = function(...args) {}
 console.log(argFn.length) // 0
 ```
 
-| Function.length 属性的属性特性： |       |
-| :------------------------------- | ----- |
-| writable                         | false |
-| enumerable                       | false |
-| configurable                     | true  |
+###### 其他补充示例
 
-**描述**
+> ```js
+> function A(a, b = 1) {}
+> console.log(A.length) // 1
+> 
+> function B(a, b, ...args) {}
+> console.log(B.length) // 2
+> ```
+>
+> 学习自：[函数的length属性【渡一教育】](https://www.bilibili.com/video/BV1uN411G7XG)
 
-length 是函数对象的一个属性值，指该函数期望传入的参数数量，即形参的个数。<font color=FF0000>形参的数量不包括剩余参数个数</font>，仅包括第一个具有默认值之前的参数个数。与之对比的是，arguments.length 是函数被调用时实际传参的个数（**注：**即 Function.length 和 arguments。length 对应）。
+##### 值
 
-**Function 构造器的属性：**<font color=FF0000>Function 构造器本身也是个 Function。他的 length 属性值为 1</font> 。该属性 Writable: false, Enumerable: false, Configurable: true
+一个数字
 
-**Function.prototype 对象的属性：** <mark>Function.prototype 对象的 length 属性值为 0 </mark>。
+| Function.length 属性的属性特性 | 值    |
+| :----------------------------- | ----- |
+| writable                       | false |
+| enumerable                     | false |
+| configurable                   | true  |
+
+##### 描述
+
+一个 `Function` 对象的 `length` 属性表示函数期望的参数个数，即形参的个数。<font color=fuchsia>这个数字不包括 [剩余参数](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/rest_parameters)，**只包括在第一个具有默认值的参数之前的参数**</font>。相比之下，`arguments.length` 是局限于函数内部的，它提供了实际传递给函数的参数个数。
+
+`Function` 构造函数本身就是一个 `Function` 对象。它的 `length` 数据属性的值为 `1`。
+
+由于历史原因，`Function.prototype` 本身是可调用的。`Function.prototype` 的 `length` 属性的值为 `0`。
 
 摘自：[MDN - Function.length](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/length)
 
-**自调用函数**
 
-- **函数表达式可以 "自调用"。自调用表达式会自动调用。**
-
-- <font color=FF0000>如果表达式后面紧跟 () ，则会自动调用。</font>
-
-- <font color=FF0000>不能自调用声明的函数。</font>
-
-通过添加括号，来说明它是一个函数表达式：
-
-```js
-(function () {
-  var x = "Hello!!";   // 我将调用自己
-})();
-```
-
-**函数是对象**
-
-在 JavaScript 中使用 **typeof** 操作符判断函数类型将返回 "function" 。
-
-但是JavaScript 函数描述为一个对象更加准确。<font color=FF0000>JavaScript 函数有 **属性** 和 **方法**</font>。<font color=FF0000>arguments.length 属性返回函数调用过程接收到的参数个数</font>：
-
-```js
-function myFunction(a, b) {
-  return arguments.length;
-}
-```
-
-toString() 方法将函数作为一个字符串返回:
-
-```js
-function myFunction(a, b) {
-    return a * b;
-}
-var txt = myFunction.toString();
-```
-
-**箭头函数**
-
-ES6 新增了箭头函数。箭头函数表达式的语法比普通函数表达式更简洁。
-
-```js
-(param1, param2, …, paramN) => { expression }
-
-(param1, param2, …, paramN) => expression(单一)
-//相当于：(param1, param2, …, paramN) =>{ return expression; }
-```
-
-当<font color=FF0000>只有一个参数</font>时，圆括号是可选的：
-
-```js
-(单一参数) => {expression}
-单一参数 => {expression}
-```
-
-<font color=FF0000>没有参数</font>的函数应该写成一对圆括号:
-
-```js
-() => {expression}
-```
-
-示例：
-
-```js
-const x = (x, y) => x * y;
-```
-
-另外：箭头函数是不能提升的，所以需要在使用之前定义。
-
-**补充：**
-
-- <font color=FF0000>**箭头函数中的this指向的是它外层对象的this**</font>。this指向定义时所在的对象，而不是调用时所在的对象
-
-- 箭头函数不能作为构造函数
-
-- 箭头函数不能使用arguments对象，但是可以使用rest运算符
-
-- 对于对象中方法的定义，如果使用箭头函数，this的指向会有问题。不过ES6中可以这样定义
-
-  ```js
-  let obj = {
-    fnName() { ... }
-  }
-  ```
-
-  
 
 #### JavaScript 函数参数
 

@@ -389,7 +389,7 @@ iOS Safari 特有，略
 `:invalid` CSS 伪类 <font color=FF0000>表示任意内容未通过验证的 `<input>` 或其他 `<form>` 元素 </font>
 
 ```css
-/* 可选定任意无效的<input> */
+/* 可选定任意无效的 <input> */
 input:invalid {
   background-color: pink;
 }
