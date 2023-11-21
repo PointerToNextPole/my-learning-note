@@ -1868,6 +1868,48 @@ onfocus ( focus )  -> 键盘输入 -> onkeydown ( keydown )  -> onkeypress ( key
 | value                                   | 所有                             | 表单控件的值。以名字/值对的形式随表单一起提交                |
 | width                                   | image                            | 与 `<img>` 的 width 属性一样                                 |
 
+> 💡  还有非标准属性 `webkitdirectory`
+>
+> > ###### `webkitdirectory`
+> >
+> > 如果出现布尔属性 `webkitdirectory`，表示在文件选择器界面中用户只能选择目录。更多细节和示例见 [`HTMLInputElement.webkitdirectory`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLInputElement/webkitdirectory)。
+> >
+> > 尽管 `webkitdirectory` 最初仅为基于 Webkit 的浏览器实现，它还在 Microsoft Edge 和 Firefox 50 及其后版本中可用。然而，尽管它有相对广泛的支持，它仍然是非标准的。除非别无选择，否则不要使用它。
+>
+> 摘自：[MDN - `<input type="file">`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/input/file)
+>
+> 更详细的见下面：
+
+##### HTMLInputElement：webkitdirectory 属性
+
+**`HTMLInputElement.webkitdirectory`** 是一个反应了 HTML 属性 [`webkitdirectory`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/input/file#webkitdirectory) 的属性，<font color=red>其指示 `<input>` 元素应该让用户选择文件目录而非文件</font>。在选择文件目录后，该目录及其整个内容层次结构将包含在所选项目集内。可以使用 [`webkitEntries` (en-US)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitEntries) 属性获取选定的文件系统条目。
+
+###### 示例
+
+这个示例提供了一个目录选择器，它允许用户选择一个或多个目录。当触发 [`change`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/change_event) 事件时，将生成并显示所选目录层次结构中包含的所有文件的列表。
+
+```html
+<input type="file" id="filepicker" name="fileList" webkitdirectory multiple />
+<ul id="listing"></ul>
+```
+
+```js
+document.getElementById("filepicker").addEventListener(
+  "change",
+  (event) => {
+    let output = document.getElementById("listing");
+    for (const file of event.target.files) {
+      let item = document.createElement("li");
+      item.textContent = file.webkitRelativePath;
+      output.appendChild(item);
+    }
+  },
+  false,
+);
+```
+
+摘自：[MDN - HTMLInputElement：webkitdirectory 属性](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLInputElement/webkitdirectory)
+
 ##### `<textarea>` 完全去除边框
 
 ```css
@@ -3205,6 +3247,60 @@ user agent stylesheet 是 UA（一般理解为 浏览器）内置的 基本元�
 <img src="https://s2.loli.net/2022/02/12/OaGd6fB15TqovE2.png" alt="image-20220212162137972" style="zoom: 48%;" />
 
 学习自：[stack overflow - How to show CSS Styles of Shadow Dom in Chrome DevTools](https://stackoverflow.com/questions/19316610/how-to-show-css-styles-of-shadow-dom-in-chrome-devtools)
+
+
+
+#### width
+
+**`width`** 属性用于设置元素的宽度。`width` 默认设置[内容区域](https://developer.mozilla.org/zh-CN/docs/CSS/CSS_box_model/Introduction_to_the_CSS_box_model#content-area)的宽度，但如果 `box-sizing` 属性被设置为 `border-box`，就转而设置[边框区域](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_box_model/Introduction_to_the_CSS_box_model#border-area)的宽度。
+
+<font color=fuchsia>**`min-width` 和 `max-width` 属性的优先级高于 `width`**</font>。
+
+##### 语法
+
+```css
+/* <length> values */
+width: 300px;
+width: 25em;
+
+/* <percentage> value */
+width: 75%;
+
+/* Keyword values */
+width: max-content;
+width: min-content;
+width: fit-content(20em); /* ⭐️ */
+width: auto;
+
+/* Global values */
+width: inherit;
+width: initial;
+width: unset;
+```
+
+`width` 属性也指定为：
+
+- 下面关键字值之一：`min-content`，`max-content`，`fit-content`，`auto`。
+- 一个长度值 `<length>` 或者百分比值 `<percentage>`。
+
+###### 值
+
+- `<length>` ：使用绝对值定义宽度。
+- `<percentage>` ：使用外层元素的容纳区块宽度（the containing block's width）的百分比定义宽度。
+- `auto` ：浏览器将会为指定的元素计算并选择一个宽度。
+- `max-content` 🧪 ：元素内容固有的（intrinsic）合适宽度。
+- `min-content` 🧪 ：元素内容固有的最小宽度。
+
+- <font color=fuchsia>**`fit-content`**</font> 🧪
+
+  取以下两种值中的较大值：
+
+  - 固有的最小宽度
+  - 固有首选宽度（max-content）和可用宽度（available）两者中的较小值
+
+  可表示为：`min(max-content, max(min-content, <length-percentage>))`
+
+摘自：[MDN - width](https://developer.mozilla.org/zh-CN/docs/Web/CSS/width#max-content)
 
 
 
@@ -4741,15 +4837,21 @@ selector::pseudo-element {
 | `::first-child`     | `p::first-child`  | 选择器匹配属于任意元素的第一个子元素的 `<p>` 元素 |
 | `::before`          | `p::before`       | 在每个 `<p>`元素之前插入内容                      |
 | `::after`           | `p::after`        | 在每个 `<p>`元素之后插入内容                      |
-| `:lang(*language*)` | `p:lang(it)`      | 为\<p>元素的 `lang` 属性选择一个开始值            |
+| `:lang(*language*)` | `p:lang(it)`      | 为 `<p>` 元素的 `lang` 属性选择一个开始值         |
 
-以上部分摘自：[MDN - 伪元素](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Pseudo-elements)
+以上部分摘自：[MDN - 伪元素](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Pseudo-elements) ，不过上面的摘录很不全面。在前面 [MDN 的链接](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Pseudo-elements) 中，可以找到更多被整理好的伪类，不过 MDN 并没有将其展示在文档中，而是排列在文档左边的目录中...（我也是在搜索 `:focus-within` 时找到的，可以通过搜索该伪类，其找到所在位置） 
 
 > 💡 相当值得⚠️注意的点是：
 >
 > `input` 元素是不支持 `::before` 和 `::after` 的，加上了也不会按照预期显示。
 >
 > 另外，可以参考 [为什么input不支持伪元素(:after,:before)？ - 知乎](https://www.zhihu.com/question/21296044)
+
+##### `:focus-within`
+
+<font color=red>**`:focus-within`** CSS 伪类表示当元素或其任意后代元素被聚焦时，将匹配该元素</font>。换言之，它表示 `:focus` 伪类匹配到该元素自身或它的后代时，该伪类生效（这也包括 shadow 树中的后代元素）。
+
+摘自：[MDN - `:focus-within`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:focus-within)
 
 
 
@@ -4758,7 +4860,7 @@ selector::pseudo-element {
 CSS3中属性的透明度是 `opacity`，示例：
 
 ```css
-opacity:0.4;
+opacity: .4;
 ```
 
 
@@ -7557,10 +7659,10 @@ if (isSupported) {
 }
 ```
 
-<font color=FF0000 size=4>**JavaScript 操作 CSS 变量的写法如下：**</font>
+###### JavaScript 操作 CSS 变量的写法如下
 
 ```js
-// **设置变量**
+// ⭐️ 设置变量
 document.body.style.setProperty('--primary', '#7F583F');
 
 // 读取变量
@@ -7590,7 +7692,7 @@ document.addEventListener('mousemove', (e) => {
 --foo: if(x > 5) this.width = 10;
 ```
 
-<font color=FF0000>上面代码中，--foo 的值在 CSS 里面是无效语句，但是可以被 JavaScript 读取。这意味着，可以把样式设置写在 CSS 变量中，让 JavaScript 读取</font>。
+<font color=FF0000>上面代码中，`--foo` 的值在 CSS 里面是无效语句，但是可以被 JavaScript 读取。这意味着，可以把样式设置写在 CSS 变量中，让 JavaScript 读取</font>。
 
 所以，CSS 变量提供了 JavaScript 与 CSS 通信的一种途径。
 
