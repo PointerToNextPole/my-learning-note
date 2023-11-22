@@ -1303,7 +1303,42 @@ To start adding transition between your pages, add the following CSS to your [`a
 </style>
 ```
 
-> 👀 这里有个示例，
+> 👀 这里有个示例效果视频，另外，除了上面的 `app.vue` （主要是 transition 效果实现），还有其他页面 `pages/index.vue` 和 `pages/about.vue` ，不过没什么东西，这里略
+
+To set a different transition for a page, set the `pageTransition` key in [`definePageMeta`](https://nuxt.com/docs/api/utils/define-page-meta) of the page:
+
+```vue
+<!-- pages/about.vue -->
+<script setup lang="ts">
+definePageMeta({
+  pageTransition: {
+    name: 'rotate'
+  }
+})
+</script>
+```
+
+```vue
+<!-- app.vue -->
+<template>
+  <NuxtPage />
+</template>
+
+<style>
+/* ... */
+.rotate-enter-active,
+.rotate-leave-active {
+  transition: all 0.4s;
+}
+.rotate-enter-from,
+.rotate-leave-to {
+  opacity: 0;
+  transform: rotate3d(1, 1, 1, 15deg);
+}
+</style>
+```
+
+> 👀 感觉这里还是使用了 Vue 中 `<transition>` 组件的 CSS class
 
 
 
