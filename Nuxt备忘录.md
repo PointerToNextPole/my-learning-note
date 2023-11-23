@@ -1340,7 +1340,54 @@ definePageMeta({
 
 > 👀 感觉这里还是使用了 Vue 中 `<transition>` 组件的 CSS class
 
+##### Layout transitions
 
+You can <font color=red>enable layout transitions to apply an automatic transition for all your [layouts](https://nuxt.com/docs/guide/directory-structure/layouts)</font>.
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  app: {
+    layoutTransition: { name: 'layout', mode: 'out-in' }
+  },
+})
+```
+
+// TODO
+
+
+
+#### Data fetching
+
+Nuxt provides composables to handle data fetching within your application.
+
+***
+
+<font color=red>Nuxt comes with two composables and a built-in library</font> to perform data-fetching in browser or server environments: `useFetch`, [`useAsyncData`](https://nuxt.com/docs/api/composables/use-async-data) and `$fetch`.
+
+In a nutshell:
+
+- [`useFetch`](https://nuxt.com/docs/api/composables/use-fetch) is the <font color=lightSeaGreen>**most straightforward way**</font> to handle data fetching <font color=red>in a component setup function</font>.
+- [`$fetch`](https://nuxt.com/docs/api/utils/dollarfetch) is great to make network requests based on user interaction.
+- [`useAsyncData`](https://nuxt.com/docs/api/composables/use-async-data), combined with `$fetch`, offers more fine-grained control.
+
+<font color=red>Both `useFetch` and `useAsyncData` share a common set of options and patterns</font> that we will detail in the last sections.
+
+Before that, it's imperative to know why these composables exist in the first place.
+
+##### Why using specific composables?
+
+When using a framework like Nuxt that <font color=red>**can perform calls and render pages on both client and server environments**</font>, <font color=dodgerBlue>some challenges must be addressed</font>. This is why Nuxt provides composables to wrap your queries, instead of letting the developer rely on [`$fetch`](https://nuxt.com/docs/api/utils/dollarfetch) calls alone.
+
+###### Network calls duplication
+
+<font color=lightSeaGreen>The [`useFetch`](https://nuxt.com/docs/api/composables/use-fetch) and [`useAsyncData`](https://nuxt.com/docs/api/composables/use-async-data) composables ensure</font> that <font color=red>**once an API call is made on the server**, the data is properly forwarded to the client in the payload</font>.
+
+The payload is a JavaScript object accessible through [`useNuxtApp().payload`](https://nuxt.com/docs/api/composables/use-nuxt-app#payload). It is used on the client to avoid refetching the same data when the code is executed in the browser.
+
+###### Suspense
+
+<font color=fuchsia>Nuxt uses Vue’s `<Suspense>` component under the hood to prevent navigation before every async data is available to the view</font>. The data fetching composables can help you leverage this feature and use what suits best on a per-calls basis.
 
 
 
