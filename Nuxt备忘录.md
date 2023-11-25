@@ -1391,6 +1391,77 @@ The payload is a JavaScript object accessible through [`useNuxtApp().payload`](h
 
 
 
+## Codewhy 体系课 SSR 部分笔记
+
+
+
+#### SSR 原理
+
+SSR 应用的页面是在服务端渲染的，用户每请求一个 SSR 页面都会先在服务端进行渲染，然后将渲染好的页面返回给浏览器呈现。 
+
+<img src="https://s2.loli.net/2023/11/25/JGEFzw3qTfhAp2I.png" alt="image-20231125164417268" style="zoom:50%;" />
+
+这里会产生两个产物：`server_bundle.js` 和 `client_bundle.js` 。前者和静态页面相关，后者和页面的可交互性相关。另外，这里也有两个函数值得注意 [`createSSRApp`](https://cn.vuejs.org/api/application.html#createssrapp) 和 [`renderToString`](https://cn.vuejs.org/api/ssr.html#rendertostring) 。
+
+在 Vue 中创建SSR应用，需要调用 createSSRApp 函数，而不是 createApp。
+
+- `createApp` ：创建应用,直接挂载到页面上
+- `createSSRApp` ：创建应用，是在激活的模式下挂载应用
+
+ 服务端用 `@vue/server-renderer` 包中的 `renderToString` 来进行渲染。
+
+> `createSSRApp()` ：以 [SSR 激活](https://cn.vuejs.org/guide/scaling-up/ssr.html#client-hydration)模式创建一个应用实例。<font color=red>用法与 `createApp()` 完全相同</font>。
+>
+> 摘自：[Vue3 doc - 应用实例 API # `createSSRApp()`](https://cn.vuejs.org/api/application.html#createssrapp)
+
+> [`renderToString()`](https://cn.vuejs.org/api/ssr.html#rendertostring) <font color=red>接收一个 **Vue 应用实例** 作为参数</font>，返回一个 Promise，当 Promise resolve 时得到应用渲染的 HTML。当然你也可以使用 [Node.js Stream API](https://nodejs.org/api/stream.html) 或者 [Web Streams API](https://developer.mozilla.org/zh-CN/docs/Web/API/Streams_API) 来执行流式渲染。
+>
+> 摘自：[Vue3 doc - 服务端渲染 (SSR) # 渲染一个应用](https://cn.vuejs.org/guide/scaling-up/ssr.html#rendering-an-app)
+
+
+
+#### SSR 优缺点
+
+##### 优点
+
+###### 更快的首屏渲染速度
+
+浏览器显示静态页面的内容要比 JavaScript 动态生成的内容快得多。<font color=red>当用户访问首页时可立即返回 **静态页面内容**</font>，而<font color=red>不需要等待浏览器先加载完整个应用程序</font>。
+
+###### 更好的 SEO
+
+<font color=red>**爬虫是最擅长爬取静态的 HTML 页面**</font>，服务器端直接返回一个静态的 HTML 给浏览器。这样有利于爬虫快速抓取网页内容，并编入索引，有利于 SEO。SSR 应用程序<font color=red>在 Hydration 之后依然可以保留 Web 应用程序的交互性</font>。比如：前端路由、响应式数据、虚拟DOM等。
+
+#####  缺点
+
+- SSR 通常需要对服务器进行更多 API 调用，以及在服务器端渲染需要消耗更多的服务器资源，成本高。
+- 增加了一定的开发成本，用户需要关心哪些代码是运行在服务器端，哪些代码是运行在浏览器端。
+- SSR 配置站点的缓存通常会比 SPA 站点要复杂一点。
+
+
+
+#### SSR 的实现方案
+
+1. 模版引擎：php、jsp...
+2. 从零搭建 SSR 项目 ( Node + webpack/Vite + Vue/React )
+3. 直接使用流行的框架（推荐）
+   - React : Next.js
+   -  Vue3 : Nuxt
+   -  Angular : Anglular Universal
+   - Svelte : Sapper
+
+
+
+#### SSR 使用场景
+
+- SaaS 产品：电子邮件网站、在线游戏、客户关系管理系统 ( CRM )、采购系统等
+- 门户网站、电子商务、零售网站
+- 单个页面、静态网站、文档类网站
+
+
+
+
+
 ## 工作经验
 
 
