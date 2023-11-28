@@ -1460,6 +1460,183 @@ SSR 应用的页面是在服务端渲染的，用户每请求一个 SSR 页面�
 
 
 
+#### 跨请求状态污染
+
+<font color=dodgerBlue>在 SPA 中</font>，整个生命周期中只有一个 App 对象实例或一个 Router 对象实例或一个 Store 对象实例都是可以的，<font color=red>因为每个用户在使用浏览器访问 SPA 应用时，应用模块都会重新初始化</font>，这也是一种单例模式。
+
+然而，<font color=dodgerBlue>**在 SSR 环境下**</font>，<font color=red>App 应用模块通常只在服务器启动时初始化一次</font>。同一个应用模块会在多个服务器请求之间被复用，而我们的单例状态对象也一样，也会在多个请求之间被复用，比如：当某个用户对共享的单例状态进行修改，那么这个状态可能会意外地泄露给另一个在请求的用户。<font color=red>这种情况称为：跨请求状态污染</font>。
+
+<font color=dodgerBlue>为了避免这种跨请求转台污染，SSR 的解决方案是：</font>
+
+<font color=red>在 **每个请求** 中为整个应用 **创建一个全新的实例**</font>，包括 Router 和全局 Store 实例。所以在创建 App、Router 或 Store 对象时都是使用一个函数来创建，保证每个请求都会创建一个全新的实例。这样也会有缺点：需要消耗更多的服务器的资源。
+
+> 👀 有点类似于 Vue 组件 data 是一个函数
+
+
+
+#### 现代 web 应用程序所需技术与 Nuxt 的选择
+
+- 支持数据双向绑定 和 组件化（Nuxt 选择了 Vue.js）。
+
+- 处理客户端的导航（Nuxt 选择了 vue-router）。
+
+- 支持开发中热模块替换和生产环境代码打包（Nuxt 支持 webpack 5 和 Vite）。
+
+- 兼容旧版浏览器，支持最新的 JavaScript 语法转译（Nuxt 使用 esbuild ）。
+
+- 应用程序支持开发环境服务器，也支持服务器端渲染 或 API 接口开发。
+
+- Nuxt 使用 [h3](https://github.com/unjs/h3) 来实现部署可移植性（ h3 是一个极小的高性能的 http 框架）
+
+  > 👀 准确的说是：[Nitro](https://github.com/unjs/nitro)（ Nuxt 的服务引擎 ）基于 h3 开发。另外，Nitro 是 Nuxt3 才引入的
+
+  如：支持在 Serverless、Workers 和 Node.js 环境中运行。
+
+> 💡 补充
+>
+> h3 是一种 http 框架，这么说并不直观：类似的有 express。
+>
+> > 使用示例如下：
+> >
+> > ```js
+> > import { createServer } from "node:http";
+> > import { createApp, eventHandler, toNodeListener } from "h3";
+> > 
+> > const app = createApp();
+> > app.use("/", eventHandler(() => "Hello world!"));
+> > 
+> > createServer(toNodeListener(app)).listen(process.env.PORT || 3000);
+> > ```
+> >
+> > 摘自：[GitHub - h3 - readme](https://github.com/unjs/h3)
+>
+> Serverless 是指 vercel 和 netlify 之类的自动部署服务
+>
+> Worker 有 Cloudflare Workers
+
+自 2016年10月以来，Nuxt 专门负责集成上述所描述的事情,并提供前端和后端的功能。Nuxt 框架可以用来快速构建下一个 Vue.js 应用程序，如支持 CSR、SSR、SSG 渲染模式的应用等。
+
+
+
+#### Nuxt3 的特点
+
+- Vue技术栈： Nuxt3 是基于 Vue3 + Vue Router + Vite 等技术栈，全程 Vue3+Vite 开发体验（Fast) 。
+- 自动导包
+  - Nuxt 会自动导入辅助函数、Composition API 和 Vue API，无需手动导入。
+  - 基于规范的目录结构，Nuxt 还可以对自己的组件、插件使用自动导入。
+- <font color=fuchsia>约定式路由</font>（目录结构即路由）：Nuxt 路由基于 vue-router，在 `pages/` 目录中创建的每个页面，都会根据目录结构和文件名来自动生成
+- 渲染模式：Nuxt 支持多种渲染模式（SSR、CSR、SSG等）。具体来说包含：
+  - 通用渲染（服务器端渲染和水合）
+  - 仅客户端渲染
+  - 全静态站点生成
+  - <font color=red>混合渲染</font>（每条路由（自定义）缓存策略）
+- 利于搜索引擎优化：服务器端渲染模式，不但可以提高首屏渲染速度，还利于 SEO
+- 服务器引擎
+  - 在开发环境中，它使用 Rollup 和 Node.js
+  - <font color=dodgerBlue>在生产环境中</font>，使用 <font color=red>Nitro 将您的应用程序和服务器构建到一个通用 `.output` 目录中</font>。Nitro 服务引擎提供了跨平台部署的支持，包括 Node、Deno、 Serverless、Workers 等平台上部署。
+
+
+
+#### Nuxt3 项目搭建
+
+##### 环境配置
+
+- Node 18 及以上
+
+  > **Node.js** - [`v18.0.0`](https://nodejs.org/en) or newer
+  >
+  > **Node.js**: Make sure to use an even numbered version (18, 20, etc)
+  >
+  > 摘自：[Nuxt3 doc - Get Started - Installation # New Project](https://nuxt.com/docs/getting-started/installation#new-project)
+
+- VS Code : Volar、ESLint、Prettier
+
+##### 新建项目的方法
+
+如下三种方法均可
+
+- 使用 `npx` ：`npx nuxi init hello-nuxt` 
+- 使用 `pnpm dlx` ：`pnpm dlx nuxi init hello-nuxt `
+- 全局安装 nuxi ，并使用 `nuxt init hello-nuxt`
+
+##### Nuxt 项目介绍
+
+###### 自带 npm scripts 介绍
+
+```json
+"scripts": {
+  "build": "nuxt build", // 打包正式版本，通过 nitro 将会生成 .output 文件夹
+  "dev": "nuxt dev", // 开发环境运行
+  "generate": "nuxt generate", // 正式版本项目打包，另外，会提前预渲染每个路由。功能类似于 nuxt build --prerender
+  "preview": "nuxt preview", // 打包项目之后的预览
+  "postinstall": "nuxt prepare" // npm install 运行后运行。作用是：生成 .nuxt 文件夹和 ts 类型等
+},
+```
+
+###### 目录结构
+
+- `app.config.ts` ：应用程序的配置，比如可以放置一些常量
+- `nuxt.config.ts` ：可定制的 Nuxt 框架的配置，比如 css、ssr、vite、app、modules 等
+- `app.vue` ：整个应用程序
+- `components/` ：组件目录
+- `plugins/` ：插件目录
+- `composables/ ` ：composition api 目录
+- `aseets/` ：资源目录
+- `public/` ：静态资源目录，不参与打包
+- `pages/` ：定义页面文件
+  - `pages/index.vue` ：项目的首页
+
+##### 应用入口 app.vue
+
+默认情况下，Nuxt 会将此文件视为入口点，并为应用程序的每个路由呈现其内容，常用于: 
+
+- 定义页面布局 Layout 或 自定义布局，如：NuxtLayout
+- 定义路由的占位，如：NuxtPage
+- 编写全局样式
+- 全局监听路由 等等
+
+
+
+#### Nuxt 配置
+
+`nuxt.config.ts` 配置文件位于项目的根目录，可对 Nuxt 进行自定义配置。比如，可以进行如下配置：
+
+##### `runtimeConfig`
+
+运行时配置，即定义<font color=red>环境变量</font>。 不过，`runtimeConfig` 也算是有限制的，因为它在打完包之后，`runtimeConfig` 的内容将无法修改
+
+`.env` 一般用于某些终端启动应用时动态指定配置，同时支持 dev 和 prod 。可通过 `.env` 文件中的环境变量来覆盖，<font color=red>`.env`  优先级大于 `runtimeConfig`</font> 。`.env` 的变量可以通过 `process.env` 获取，符合规则的会覆盖 `runtimeConfig` 的变量。示例如下：
+
+`.env` 中定义的 `NUXT_APP_KEY` （通过 `process.env.NUXT_APP_KEY` 获取），可以覆盖 `defineNuxtConfig` 中定义的 `runtimeConfig.apiKey` ；类似的： `NUXT_PUBLIC_BASE_URL` 可以覆盖 `runtimeConfig.public.baseURL`
+
+###### 如下方法可以修改运行时配置
+
+- `"dev": "nuxt dev --port 3456"` 
+
+- `"dev": "PORT=3456 nuxt dev"`
+- 在 `.env` 定义 `PORT=3456` ，在执行 npm scripts 前将会自动找到
+
+###### 判断当前环境（在 server 还是 client 中）
+
+- 通过 `process.server` 和 `process.client` 来判断是否在 server 或 client 中
+- 通过 `typeof window === 'object'` 来判断是否在 client 中（虽然感觉非常不严谨）
+
+###### 示例
+
+```ts
+export default defineNuxtConfig({
+  devtools: { enabled: true },
+  runtimeConfig: {
+    apiKey: 'foo', // 非 public 只有 server 可以访问。打包时，会被注入 server 的产物中
+    public: { // public 中的定义，server 和 client 均可以访问。打包时，会被注入 server 和 client 的产物中
+      baseURL: 'bar'
+    }
+  },
+  appConfig: {
+  }
+})
+```
+
 
 
 ## 工作经验
