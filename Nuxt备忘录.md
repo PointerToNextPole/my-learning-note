@@ -1597,7 +1597,7 @@ SSR 应用的页面是在服务端渲染的，用户每请求一个 SSR 页面�
 
 
 
-#### Nuxt 配置
+#### `nuxt.config.ts`
 
 `nuxt.config.ts` 配置文件位于项目的根目录，可对 Nuxt 进行自定义配置。比如，可以进行如下配置：
 
@@ -1605,9 +1605,11 @@ SSR 应用的页面是在服务端渲染的，用户每请求一个 SSR 页面�
 
 运行时配置，即定义<font color=red>环境变量</font>。 不过，`runtimeConfig` 也算是有限制的，因为它在打完包之后，`runtimeConfig` 的内容将无法修改
 
-`.env` 一般用于某些终端启动应用时动态指定配置，同时支持 dev 和 prod 。可通过 `.env` 文件中的环境变量来覆盖，<font color=red>`.env`  优先级大于 `runtimeConfig`</font> 。`.env` 的变量可以通过 `process.env` 获取，符合规则的会覆盖 `runtimeConfig` 的变量。示例如下：
+`.env` 一般用于某些终端 <font color=red>**启动应用**</font> 时 <font color=red>**动态指定**</font> 配置，同时支持 dev 和 prod 。可通过 `.env` 文件中的环境变量来覆盖，<font color=red>`.env`  优先级大于 `runtimeConfig`</font> 。`.env` 的变量可以通过 `process.env` 获取，符合规则的会覆盖 `runtimeConfig` 的变量。示例如下：
 
 `.env` 中定义的 `NUXT_APP_KEY` （通过 `process.env.NUXT_APP_KEY` 获取），可以覆盖 `defineNuxtConfig` 中定义的 `runtimeConfig.apiKey` ；类似的： `NUXT_PUBLIC_BASE_URL` 可以覆盖 `runtimeConfig.public.baseURL`
+
+> 💡 如下是相关的一点补充
 
 ###### 如下方法可以修改运行时配置
 
@@ -1636,6 +1638,79 @@ export default defineNuxtConfig({
   }
 })
 ```
+
+##### `appConfig`
+
+`appConfig` 是应用配置，定义在 构建时确定的公共变量，如：theme。`appConfig` 不仅可以在 `nuxt.config.js` 中定义，还可以抽离出来：用单独的文件 `app.config.ts` 定义。
+
+`nuxt.config.ts` 中 `appConfig` 的配置会和 `app.config.ts` 中的配置合并。但合并时，难免会出现同名的配置，此时：`app.config.ts` 的优先级 大于 `nuxt.config.ts` 的 `appConfig`  。
+
+另外，<font color=dodgerBlue>**和 `runtimeConfig` 不一致的是**</font>：`appConfig` 中的配置，默认在 server 和 client 两端都可以拿到
+
+##### `app`
+
+ app 配置。常见的用法是在 `app` 中 定义 `head` 。
+
+###### `head`
+
+给每个页面上设置 head 信息，也支持 `useHead` 函数配置和 内置组件 `<Head>` 的配置，优先级依次为 `<Head>` 大于 `useHead` 函数 大于 `head`。
+
+###### 示例
+
+关于 `nuxt.config.ts` 中 `head` 的使用：
+
+```ts
+export default defineNuxtConfig({
+  app: {
+    head: {
+      title: 'title',
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+      meta: [
+        { name: 'keyword', content: 'content' }
+        { name: 'description', content: 'content' }
+      ],
+      link: [
+        { rel: 'shortcut icon' href='favicon.ico' type: 'image/x-icon' }
+      ],
+      style: [
+        children: `body { background-color: green; }`                          
+      ],
+      script: [
+        { script: 'scriptUrl' }  
+      ],
+    }
+  }
+})
+```
+
+关于 
+
+
+
+##### `ssr`
+
+指定应用渲染模式。通过布尔值来确定是 使用 SSR 还是 SPA
+
+##### `router`
+
+配置路由相关的信息，比如在客户端渲染可以配置hash路由
+
+##### `alias`
+
+路径的别名，默认已配好
+
+##### `modules`
+
+配置 Nuxt 扩展的模块，比如: `@pinia/nuxt`、 `@nuxt/image`
+
+##### `routeRules`
+
+定义路由规则，可更改路由的渲染模式或分配基于路由缓存策略
+
+##### `builder`
+
+可指定用 vite 还是 webpack 来构建应用，默认是 vite。如切换为 webpack 还需要安装额外的依赖。
 
 
 
