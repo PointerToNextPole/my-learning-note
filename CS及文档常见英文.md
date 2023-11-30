@@ -324,6 +324,8 @@
 
 - **terminology** ：术语
 
+   **term** ：vt. 把…称为，把…叫做
+
 - **coin**：创造（新词语） ( verb )
 
 - **interchangeable**：可交换的

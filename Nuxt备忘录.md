@@ -250,8 +250,8 @@ const appConfig = useAppConfig()
 
 As stated above, `runtimeConfig` and `app.config` are both used to expose variables to the rest of your application. <font color=dodgerBlue>**To determine whether you should use one or the other**, here are some guidelines</font>:
 
-- `runtimeConfig` : Private or public tokens that <font color=red>need to be specified **after build using environment variables**</font>.
-- `app.config` : <font color=red>Public tokens that are determined at build time</font>, website configuration such as theme variant, title and any project config that are <font color=red>**not sensitive**</font>.
+- `runtimeConfig` : Private or public tokens that <font color=red>need to be specified **<font size=4>after build</font> using environment variables**</font>.
+- `app.config` : <font color=red>Public tokens that are <font size=4>**determined at build time**</font></font>, website configuration such as theme variant, title and any project config that are <font color=red>**not sensitive**</font>.
 
 | Feature                   | `runtimeConfig`       | `app.config` |
 | ------------------------- | --------------------- | ------------ |
@@ -1559,6 +1559,8 @@ SSR 应用的页面是在服务端渲染的，用户每请求一个 SSR 页面�
 - 使用 `pnpm dlx` ：`pnpm dlx nuxi init hello-nuxt `
 - 全局安装 nuxi ，并使用 `nuxt init hello-nuxt`
 
+> 💡补充：在项目创建好了之后，可以通过 `npx nuxi add page pagePath/pageName` 来新建页面（这和 Nest CLI 有点类似）
+
 ##### Nuxt 项目介绍
 
 ###### 自带 npm scripts 介绍
@@ -1647,6 +1649,15 @@ export default defineNuxtConfig({
 
 另外，<font color=dodgerBlue>**和 `runtimeConfig` 不一致的是**</font>：`appConfig` 中的配置，默认在 server 和 client 两端都可以拿到
 
+> 💡`runtimeConfig` 和 `app.config` 的区别
+>
+> runtimeConfig 和 app.config 都用于向应用程序公开变量。要确定是否应该使用其中一种，以下是一些指导原则:
+>
+> - runtimeConfig ：定义环境变量,比如：<font color=fuchsia>**运行时需要指定**</font>的 私有或 公共 token
+> - app.config：定义公共变量，比如：在<font color=fuchsia>**构建时确定**</font>的公共 token、网站配置。
+>
+> 除此之外，还可以看下 [[#`runtimeConfig` vs `app.config`]]
+
 ##### `app`
 
  app 配置。常见的用法是在 `app` 中 定义 `head` 。
@@ -1667,8 +1678,8 @@ export default defineNuxtConfig({
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
       meta: [
-        { name: 'keyword', content: 'content' }
-        { name: 'description', content: 'content' }
+        { name: 'keyword', content: 'keyword' }
+        { name: 'description', content: 'description' }
       ],
       link: [
         { rel: 'shortcut icon' href='favicon.ico' type: 'image/x-icon' }
@@ -1684,9 +1695,36 @@ export default defineNuxtConfig({
 })
 ```
 
-关于 
+关于 `.vue` 中 `useHead` 的使用：
 
+```ts
+useHead({
+  meta: [
+    { name: 'description', content: 'description' },
+    // 甚至这里可以用一些常见的表达式，比如三目运算
+    // 除此之外，如下有一个 body 选项，用来控制位置；比如这个 script 标签将会出现在 body 中，而不是 head 中
+    script: [
+      { src: 'srcUrl', body: true }
+    ]
+  ],
+})
+```
 
+关于 `.vue` 中 `<Head>` 的使用：
+
+```vue
+<template>
+  <div>
+    <Head>
+      <Title>{{ title }}</Title>
+      <Meta name="description" :content="title" />
+      <Style type="text/css" children="body { background-color: green; }" />
+    </Head>
+
+    <h1>{{ title }}</h1>
+  </div>
+</template>
+```
 
 ##### `ssr`
 
@@ -1694,7 +1732,18 @@ export default defineNuxtConfig({
 
 ##### `router`
 
-配置路由相关的信息，比如在客户端渲染可以配置hash路由
+配置路由相关的信息，比如在客户端渲染可以配置 hash 路由
+
+```ts
+export default defineNuxtConfig({
+  ssr: false, // 注意：ssr 为 true，只能用 history mode
+  router: {
+    options: {
+      hashMode: true
+    }
+  }
+})
+```
 
 ##### `alias`
 
@@ -1711,6 +1760,66 @@ export default defineNuxtConfig({
 ##### `builder`
 
 可指定用 vite 还是 webpack 来构建应用，默认是 vite。如切换为 webpack 还需要安装额外的依赖。
+
+##### `css`
+
+可用于设置全局样式
+
+###### 全局样式
+
+```ts
+export default defineNuxtConfig({
+  app: {
+    css: ['cssPath', 'scssPath'], // 关于 scss 需要安装 scss，less 和 stylus 应该是类似的
+  }
+})
+```
+
+###### 自动导入
+
+```ts
+export default defineNuxtConfig({
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@use "@/assets/_colors.scss" as *;'
+        }
+      }
+    }
+  }
+})
+```
+
+这相当于在每一个 scss 模块（包含 `.scss` 文件 和 `<style lang="scss">` 等 ） 中添加 `@use "@/assets/_colors.scss" as *` 这个代码。另外，值得注意的是 `as *` 相当于是省略了命名空间，`as foo` 相当于给这个模块起了一个名为 `foo` 的命名空间（用于避免多个模块之间变量和 mixin 重复，出现相互覆盖的问题。比如 `foo.$color` 和 `bar.$color` ）；以上 `@use` 和 `as *` 都是 scss 的语法
+
+
+
+#### Nuxt3 内置组件
+
+Nuxt3 框架也提供一些内置的组件（无需导入，直接使用），常用的如下：
+
+- SEO 组件：Html、Body、Head、Title、 Meta、 Style、 Link、 NoScript、 Base
+
+- NuxtWelcome：欢迎页面组件，该组件是 `@nuxt/ui` 的一部分
+
+- NuxtLayout：是 Nuxt自带的页面布局组件
+
+- NuxtPage：是 Nuxt 自带的页面占位组件（ `<NuxtPage>` 是对 `<router-view>` 的封装 ）
+  - 需要显示位于目录中的顶级或嵌套页面 `pages/`
+  -  是对 router-view 的封装
+
+- NuxtLink ：和 NuxtPage 类似，是对 `<router-link>` 的封装
+
+  ```vue
+  <NuxtLink to="/somePage">
+    <button>
+      to some page
+    </button>
+  </NuxtLink>
+  ```
+
+- ClientOnly：该组件中的默认插槽的内容只在客户端渲染。指定哪些组件在客户端渲染，哪些组件在服务端渲染
 
 
 
