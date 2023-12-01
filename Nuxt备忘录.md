@@ -1800,26 +1800,123 @@ export default defineNuxtConfig({
 Nuxt3 框架也提供一些内置的组件（无需导入，直接使用），常用的如下：
 
 - SEO 组件：Html、Body、Head、Title、 Meta、 Style、 Link、 NoScript、 Base
-
 - NuxtWelcome：欢迎页面组件，该组件是 `@nuxt/ui` 的一部分
-
 - NuxtLayout：是 Nuxt自带的页面布局组件
-
 - NuxtPage：是 Nuxt 自带的页面占位组件（ `<NuxtPage>` 是对 `<router-view>` 的封装 ）
   - 需要显示位于目录中的顶级或嵌套页面 `pages/`
   -  是对 router-view 的封装
-
 - NuxtLink ：和 NuxtPage 类似，是对 `<router-link>` 的封装
+- ClientOnly：该组件中的默认插槽的内容只在客户端渲染。指定哪些组件在客户端渲染，哪些组件在服务端渲染
+
+##### NuxtLink
+
+`<NuxtLink>` 是 Nuxt 内置组件，用来实现页面导航，是对 RouterLink 的扩展；比如：进入视口的链接启用预取资源（通过 `prefetch` 属性）等。
+
+底层是一个 `<a>` 标签，因此使用 `<a>` + `href` 属性也支持路由导航；但用 `a` 标签导航会有触发浏览器默认刷新事件，而NuxtLink 不会；NuxtLink 还扩展了其它的属性和功能
+
+应用 Hydration 后（已激活，可交互），页面导航会通过前端路由来实现。这可以防止整页刷新。当然，手动输入 URL 后，点击刷新浏览器也可导航，这会导致整个页面刷新
+
+######  NuxtLink 组件属性
+
+- `to` ：支持路由路径、<font color=fuchsia>**路由对象**</font>（👀 见下面示例）、URL
 
   ```vue
-  <NuxtLink to="/somePage">
-    <button>
-      to some page
-    </button>
-  </NuxtLink>
+  <NuxtLink :to="{ path: '/foo' , query: { bar: 'quz'} }"></NuxtLink>
   ```
 
-- ClientOnly：该组件中的默认插槽的内容只在客户端渲染。指定哪些组件在客户端渲染，哪些组件在服务端渲染
+- `href` ：`to` 的别名
+
+- `replace` ：默认为 `false` ，<font color=red>是否替换当前路由</font>
+
+- `activeClass` ：激活链接的类名
+
+- `target` ：和 `a` 标签的 `target` 一样，指定何种方式显示新页面
+
+- 等等
+
+> 💡 更多属性可以看下 [Nuxt doc - components - nuxt-link # Props](https://nuxt.com/docs/api/components/nuxt-link#props)
+
+
+
+#### 编程导航
+
+Nuxt3 除了可以通过 `<NuxtLink>` 内置组件来实现导航，同时也支持编程导航：`navigateTo` 。<font color=dodgerBlue>通过编程导航，在应用程序中就可以轻松实现动态导航</font>，但是<font color=fuchsia>**编程导航不利于 SEO**</font>（ 👀 这是之前完全没有想到的）。
+
+`navigateTo` 函数在服务器端和客户端都可用，也可以在插件、中间件 中使用，也可以直接调用以执行页面导航，例如：当用户触发该 `goToProfile()` 方法时，我们通过 `navigateTo` 函数来实现动态导航。建议：`goToProfile` 方法总是返回 `navigateTo` 函数（该函数不需要导入）或返回异步函数
+
+##### `navigateTo(to, options)` 函数
+
+- `to` ：可以是纯字符串或 外部URL 或 路由对象
+
+- `options` ： 导航配置，可选
+
+  - `replace` ：默认为 `false` ，为 `true` 时会替换当前路由页面
+  - `external` ：默认为 `false` ，不允许导航到外部连接，`true` 则允许
+  - 等等。
+
+  > 💡 更多属性可以看下 [Nuxt doc - api - `navigateTo`](https://nuxt.com/docs/api/utils/navigate-to)
+
+##### useRouter
+
+ Nuxt3 的编程导航除了可以通过 `navigateTo` 实现，也支持 `useRouter`（或 Options API 的 `this.$router` )
+
+###### `useRouter` 常用的 API
+
+- `back` ：页面返回，功能同 `router.go(-1)`
+
+- `forward` ：页面前进，功能同 `router.go(1)`
+
+- `go` ：页面返回或前进，功能同 `router.go(-1)` 或 `router.go(1)`
+
+- `push` ：以编程方式导航到新页面。建议改用 `navigateTo` ，支持性更好
+
+- `replace` ：以编程方式导航到新页面，但会替换当前路由。建议改用 `navigateTo` ，支持性更好
+
+  > 💡 关于上面所说的 “支持性更好” 或者兼容性更好，因为 `navigateTo` 在 server 和 client 两端都可用，而 `useRouter` 不会
+
+- `beforeEach` ：路由守卫钩子，每次导航前执行（用于全局监听）
+
+- `afterEach` ：路由守卫钩子，每次导航后执行（用于全局监听）
+
+- 等等
+
+> 💡 更多 API 详见 [Nuxt doc - api - `use-router`](https://nuxt.com/docs/api/composables/use-router)
+
+
+
+#### 动态路由
+
+Nuxt3 和 Vue一样，也支持动态路由，不过在 Nuxt3 中，动态路由也是根据目录结构和文件的名称自动生成。
+
+##### 动态路由语法
+
+页面组件目录 或 页面组件文件都支持 `[]` 方括号语法，方括号里编写动态路由的参数
+
+```
+pages/
+--| about.vue
+--| posts.vue
+----| [id].vue
+```
+
+如上文件结构等价于：
+
+```js
+{
+  "routers": [
+    {
+      "path": "/about",
+      "components": "pages/about.vue"
+    },
+    {
+      "path": "/posts/:id",
+      "components": "pages/posts/[id].vue"
+    },
+  ]
+}
+```
+
+
 
 
 
