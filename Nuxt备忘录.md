@@ -1916,6 +1916,17 @@ pages/
 }
 ```
 
+##### 动态路由支持的写法
+
+- `pages/detail/[id].vue`               -> `/detail/:id`
+- `pages/detail/user-[id].vue`     -> `/detail/user-:id`
+- `pages/detail/[role]/[id].vue` -> `/detail/:role/:id`
+- `pages/detail-[role]/[id].vue` -> `/detail-:role/:id`
+
+##### 注意事项
+
+在 Nuxt 中，动态路由和 `index.vue` 不能共存；而 Next.js 中可以
+
 
 
 
