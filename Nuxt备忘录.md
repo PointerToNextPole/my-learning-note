@@ -908,15 +908,15 @@ This file system routing uses naming conventions to create dynamic and nested ro
 
 ##### Route Middleware
 
-Nuxt provides a customizable route middleware framework you can use throughout your application, ideal for extracting code that you want to run before navigating to a particular route.
+Nuxt provides a customizable route middleware framework you can use throughout your application, ideal for extracting code that <font color=lightSeaGreen>you want to run before navigating to a particular route</font>.
 
-> <font color=lightSeaGreen>**Route middleware runs within the Vue part of your Nuxt app**</font>. Despite the similar name, <font color=red>they are completely different from server middleware</font>, which are run in the Nitro server part of your app.
+> <font color=lightSeaGreen>**Route middleware runs within the Vue part of your Nuxt app**</font>. Despite the similar name, <font color=red>they are **completely different from server middleware**</font>, which are <font color=lightSeaGreen>run in the Nitro server part of your app</font>.
 
 <font color=dodgerBlue>There are **three kinds of route middleware**:</font>
 
-1. <font color=dodgerBlue>Anonymous (or inline) route middleware</font>, which are <font color=red>defined directly in the pages where they are used</font>.
-2. <font color=dodgerBlue>Named route middleware</font>, which are <font color=red>**placed in the [`middleware/`](https://nuxt.com/docs/guide/directory-structure/middleware) directory**</font> and will <font color=red>be automatically loaded via asynchronous import</font> when used on a page. (**Note**: The route middleware name is normalized to kebab-case, so `someMiddleware` becomes `some-middleware`.)
-3. <font color=dodgerBlue>Global route middleware</font>, which are <font color=red>placed in the [`middleware/` directory](https://nuxt.com/docs/guide/directory-structure/middleware) (with a `.global` suffix)</font> and will be automatically run on every route change.
+1. <font color=dodgerBlue>**Anonymous (or inline)** route middleware</font>, which are <font color=red>defined directly in the pages where they are used</font>.
+2. <font color=dodgerBlue>**Named** route middleware</font>, which are <font color=red>**placed in the `middleware/` directory**</font> and will <font color=red>be automatically loaded via asynchronous import</font> when used on a page. (**Note**: The route middleware name is normalized to kebab-case, so `someMiddleware` becomes `some-middleware`.)
+3. <font color=dodgerBlue>**Global** route middleware</font>, which are <font color=red>placed in the `middleware/` directory (with a `.global` suffix)</font> and will be automatically run on every route change.
 
 <font color=dodgerBlue>Example of an **`auth` middleware protecting the `/dashboard` page**:</font>
 
@@ -1856,6 +1856,12 @@ Nuxt3 除了可以通过 `<NuxtLink>` 内置组件来实现导航，同时也支
 
   > 💡 更多属性可以看下 [Nuxt doc - api - `navigateTo`](https://nuxt.com/docs/api/utils/navigate-to)
 
+> 💡 与 `navigateTo` 对应的有 [`abortNavigation`](https://nuxt.com/docs/api/utils/abort-navigation)
+>
+> > abortNavigation is a helper function that <font color=red>prevents navigation from taking place</font> and <font color=red>**throws an error** if one is set as a parameter</font>.
+> >
+> > 摘自：[Nuxt3 doc - api - utils - `abortNavigation`](https://nuxt.com/docs/api/utils/abort-navigation)
+
 ##### useRouter
 
  Nuxt3 的编程导航除了可以通过 `navigateTo` 实现，也支持 `useRouter`（或 Options API 的 `this.$router` )
@@ -1923,9 +1929,124 @@ pages/
 - `pages/detail/[role]/[id].vue` -> `/detail/:role/:id`
 - `pages/detail-[role]/[id].vue` -> `/detail-:role/:id`
 
-##### 注意事项
+在 Nuxt 中，动态路由和 `index.vue` 可以共存；另外，Next.js 中也可以
 
-在 Nuxt 中，动态路由和 `index.vue` 不能共存；而 Next.js 中可以
+###### 动态路由 `params` 的获取
+
+动态路由参数 `params` 可以通过 `useRoute().params` 获取，示例如下
+
+```ts
+const route = useRoute()
+const { param, param2, ... } = route.params
+```
+
+如上面代码所示：<font color=red>**`route.params` 是一个对象**</font>，其中包含路径中所有的 params。以 `prefix-[foo]/[bar]-suffix` 为例，`params` 的结构就是 `{ foo, bar }` 。
+
+另外，值得注意的是，一般 params 对象中的属性是字符串；也有特殊情况，对于 `[...slug].vue` 中 `params` 一般是 `{ slug: [ ... ] }` ，以 `/foo/bar/quz` 为例，`params` 会是 `{ slug: ['foo', 'bar', 'quz'] }`
+
+类似的， `query` 也可以通过 `useRoute().query` 获取：
+
+```ts
+const route = useRoute()
+const { queryId } = route.query
+```
+
+##### 404 页面
+
+可以通过定义 404 not found 页面来捕获所有不配路由，可以通过定义 `[...slug].vue` 文件来匹配所有无法匹配的路由；其中 `slug` 可以是其它字符串，比如 `[...foo].vue`
+
+`[...slug].vue` 文件除了支持在 `pages/` 根目录下创建，也支持在其子目录中创建。
+
+> 👀 感觉就是和作用域有点像？
+
+Nuxt3 正式版不支持 `404.vue` 页面了（被 `[...slug].vue` 替代），开始的候选版是支持的 ；但 Next.js 支持。
+
+404 页面( `[...slug].vue` ) 也可以通过 `useRoute().param.xxx` 来获取路由参数。
+
+
+
+#### 路由中间件
+
+Nuxt 提供了一个可定制的路由中间件，用来监听路由的导航，包括：局部和全局监听（支持再服务器和客户端执行）
+
+##### 路由中间件分为三种
+
+###### 匿名（或内联）路由中间件
+
+在页面中使用 `definePageMeta` 函数定义，可监听局部路由。当注册多个中间件时，会按照注册顺序来执行。
+
+```vue
+<script setup lang="ts">
+  definePageMeta({
+    middleware: [
+      function(to, from) {
+        // do sth ...
+        // return navigateTo('/prefix-11-suffix')
+        // return abortNavigation()
+      },
+      function(to, from) { ... },
+      /* ... */
+    ]
+  })
+</script>
+```
+
+如果返回的是 `""` 、`null` ，或没有返回语句，name就会执行下一个路由中间件。如果返回的是 `navigateTo`  或者 `abortNavigation`，直接导航到新的页面，不会执行后面的路由中间件。注意，必须是 `return navigateTo()` 或者 `return abortNavigation()` ，没有 `return` 后面的路由中间件依然会执行
+
+###### 命名路由中间件
+
+在 `middleware/` 目录下定义，并会自动加载中间件（无需手动 import 导入），直接在 `definePageMeta.middleware` 中注册。在定义和使用时，需要遵循 kebab-case 命名规范
+
+```ts
+// middleware/named-middleware.ts
+export default defineNuxtRouteMiddleware((to, from) => {
+  console.log('named middleware')
+})
+```
+
+```vue
+<script setup lang="ts">
+  definePageMeta({
+    middleware: [
+      'named-middleware',
+      function (to, from) { ... },
+      // ...
+    ]
+  })
+</script>
+```
+
+###### 全局路由中间件
+
+在 `middleware/` 目录下定义，名称需要加上 `.global` 后缀；比如 `glob-middleware.global.ts` 。定义相较命名路由中间件没什么区别，不过，因为是全局的，不需要在 `definePageMeta.middleware` 中注册即可全局生效，自动运行；<font color=fuchsia>所以 **每次路由跳转都会执行**</font>。
+
+全局路由中间件的优先级是最高的，所以也会比其他两种中间件先执行。
+
+另外，全局路由中间件是 <font color=red>client 和 server 端都支持</font>
+
+
+
+#### 路由校验
+
+Nuxt 支持对每个页面路由进行验证，可以通过 `definePageMeta` 中的 `validate` 属性对路由进行验证。
+
+validate属性接受一个回调函数，回调函数中以 route 作为参数回调函数的返回值支持：
+
+- 返回 bool 值来确定是否放行路由：`true` 放行路由，`false` 默认重定向到内置的 404 页面 。即，相当于 `{ stautsCode: 404 }` ）
+
+- 返回对象：`{ statusCode: 401 }` ，即：返回自定义的 401 页面，验证失败。
+
+  另外，这个返回对象中，还可以加上 `statusMessage` 属性，表示 401 的更多信息
+
+路由验证失败，可以自定义错误页面：在项目根目录（不是 `pages/` 目录）新建 `error.vue` 。
+
+在 `error.vue` 中，可以通过 `defineProp` 来接收抛出的 error 对象，并使用
+
+```ts
+const prop = defineProp({
+  error: Object
+})
+```
 
 
 
