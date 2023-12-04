@@ -2040,13 +2040,25 @@ validate属性接受一个回调函数，回调函数中以 route 作为参数�
 
 路由验证失败，可以自定义错误页面：在项目根目录（不是 `pages/` 目录）新建 `error.vue` 。
 
-在 `error.vue` 中，可以通过 `defineProp` 来接收抛出的 error 对象，并使用
+在 `error.vue` 中，可以通过 `defineProp` 来接收抛出的 error 对象，并使用；示例如下
 
 ```ts
 const prop = defineProp({
   error: Object
 })
 ```
+
+
+
+#### Layout
+
+Layout 布局 是页面的包装器，可以将多个页面共性东西抽取到 Layout 中。例如：每个页面的页眉和页脚组件，这些具有共性的组件我们是可以写到一个 Layout 中。
+
+Layout布局是使用 `<slot>` 组件来显示页面中的内容
+
+##### Layout 有两种使用方式
+
+###### 默认布局
 
 
 
