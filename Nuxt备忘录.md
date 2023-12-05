@@ -2058,9 +2058,137 @@ Layout布局是使用 `<slot>` 组件来显示页面中的内容
 
 ##### Layout 有两种使用方式
 
-###### 默认布局
+- 默认布局： 在 `layouts/` 目录下新建默认的布局组件，比如：`layouts/default.vue` 然后在 `app.vue` 中通过 `<NuxtLayout>` 内置组件来使用
+
+  ###### 定义示例
+
+  ```vue
+  <!-- layouts/default.vue -->
+  <template>
+    <div>
+      <p>Some default layout content shared across all pages</p>
+      <slot />
+    </div>
+  </template>
+  ```
+
+  ###### 使用示例
+
+  ```vue
+  <template>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </template>
+  ```
+
+- 自定义布局 ( Custom Layout ) ：在 `layouts/` 文件夹下新建 Layout 组件，比如：`layouts/custom-layout.vue` 然后在 `app.vue` 中给 `<NuxtLayout>` 内置组件指定 `name` 属性的值 `custom-layout` ；也支持在页面中使用 `definePageMeta` 宏函数来指定 layout 布局
+
+  ```vue
+  <!-- pages/about.vue -->
+  <script setup lang="ts">
+  definePageMeta({
+    layout: 'custom'
+  })
+  </script>
+  ```
+
+  ```vue
+  <script setup lang="ts">
+  // You might choose this based on an API call or logged-in status
+  const layout = "custom";
+  </script>
+  
+  <template>
+    <NuxtLayout :name="layout">
+      <NuxtPage />
+    </NuxtLayout>
+  </template>
+  ```
 
 
+
+#### 渲染模式
+
+浏览器和服务器都可以解释 JavaScript 代码，都可将 Vue.js 组件呈现为 HTML 元素，此过程称为渲染。
+
+在客户端将 Vue.js 组件呈现为 HTML 元素，称为：客户端渲染模式。在服务器将 Vue.js 组件呈现为 HTML 元素，称为：服务器渲染模式
+
+Nuxt3 支持多种渲染模式，比如：
+
+- 客户端渲染模式 ( CSR )：只需将 `ssr` 设置为 false
+
+- 服务器端渲染模式 ( SSR ) ：只需将 `ssr` 设置为 true
+
+-  混合渲染模式 ( SSR / CSR / SSG / SWR ) ：需在 `routeRules` 根据每个路由动态配置渲染模式。示例如下：
+
+  ```js
+  export default defineNuxtConfig({
+    routeRules: {
+      // Homepage pre-rendered at build time
+      '/': { prerender: true },
+      // Product page generated on-demand, revalidates in background
+      '/products/**': { swr: 3600 },
+      // Blog post generated on-demand once until next deploy
+      '/blog/**': { isr: true },
+      // Admin dashboard renders only on client-side
+      '/admin/**': { ssr: false },
+      // Add cors headers on API routes
+      '/api/**': { cors: true },
+      // Redirects legacy urls
+      '/old-page': { redirect: '/new-page' }
+    }
+  })
+  ```
+
+
+
+#### Nuxt 插件
+
+Nuxt3 支持自定义插件进行扩展，创建插件有两种方式：
+
+- 直接使用 `useNuxtApp()` 中的 `provide(name, vlaue)` 方法直接创建，比如：可在 `App.vue` 中创建
+  `useNuxtApp` 提供了访问 Nuxt 共享运行时上下文的方法和属性（两端可用） ： provide, hooks, callhook, vueApp 等。示例如下：
+
+  ```vue
+  <!-- app.vue -->
+  <script setup lang="ts">
+    const nuxtApp = useNuxtApp()
+    // 定义
+    nuxtApp.provide('version', '1.0.0')
+    
+    // 使用
+    console.log(nuxtApp.$version)
+  </script>
+  ```
+
+  一般是在 app.vue 中定义。虽然也可以在一般的页面中定义，但只有访问这个页面时该插件才会被加载和注册，这显然限制过大，不方便使用。
+
+- 在 `plugins/` 目录中创建插件（推荐）
+
+  顶级和子目录index文件写的插件会在创建Vue应用程序时会自动加载和注册。
+
+  `.server` 或 `.client` 后缀名插件（比如： `plugin.client.ts`），可区分服务器端或客户端，用时需区分环境，设置只能在哪一端使用
+
+  因为插件之间可能会有顺序依赖，所以插件注册顺序可以通过在文件名前加上一个数字前缀来控制插件注册的顺序；比如 `1.plugin.ts`
+
+  ###### 示例如下
+
+  ```ts
+  // plugins/plugin.ts
+  export default defineNuxtPlugin(nuxtApp => {
+    return {
+      provide: {
+        formatPrice: (price: number) => {
+          return price.toFixed(2)
+        },
+        // ... 更多插件定义
+      }
+    }
+  })
+  ```
+
+  
 
 
 
