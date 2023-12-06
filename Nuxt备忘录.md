@@ -2190,6 +2190,20 @@ Nuxt3 支持自定义插件进行扩展，创建插件有两种方式：
 
   
 
+#### App lifecycle hooks
+
+#####  监听App的生命周期的Hooks
+
+ App Hooks 主要可由 Nuxt 插件 使用 hooks 来监听 生命周期，也可用于 Vue 组合 API。但是，如在组件中编写hooks来监听，那create和setup hooks就监听不了，因为这些hooks已经触发完了监听。
+
+##### 语法
+
+```js
+nuxtApp.hook(app:lifecycleName, func)
+```
+
+
+
 
 
 ## 工作经验

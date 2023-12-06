@@ -717,7 +717,7 @@ normal 模式键入 `:wq!`，显示如下：
 
   > 💡 之前没有好好了解过 `git stash push` 命令，直到自己有这样一个需求：如何 stash 指定的文件。于是问了下 Claude，得到如下结果：
   >
-  > <img src="/Users/yan/Library/Application Support/typora-user-images/image-20231108001343681.png" alt="image-20231108001343681" style="zoom:40%;" />
+  > <img src="https://s2.loli.net/2023/12/06/BJD1PXpTYxh6QOz.png" alt="image-20231108001343681" style="zoom:40%;" />
   >
   > 简单来说，就是使用 `git stash push -m <msg> <path/file> ...`
 
