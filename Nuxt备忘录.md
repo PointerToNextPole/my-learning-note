@@ -2233,6 +2233,16 @@ Check the [app source code](https://github.com/nuxt/nuxt/blob/main/packages/nuxt
 因为没有任何动态更新，所以像 `mounted` 或者 `updated` 这样的生命周期钩子不会在 SSR 期间被调用，而只会在客户端运行。只有 `beforeCreate` 和 `created`  这两个钩子会在 SSR 期间被调用。
 应该避免在 `beforeCreate` 和 `created` 中使用会产生副作用且需要被清理的代码。这类副作用的常见例子是使 `setInterval` 设置定时器。可能会在客户端特有的代码中设置定时器，然后在 `beforeUnmount` 或 `unmounted` 中清除。然而，由于 `unmount` 钩子不会在 SSR 期间被调用，所以定时器会永远存在。为了避免这种情况，请将含有副作用的代码放到 mounted 中。
 
+##### 服务器端渲染的生命周期
+
+只支持 beforeCreate， created ，如果使用 compostion api 还要加上 setup
+
+
+
+#### 获取数据
+
+
+
 
 
 ## 工作经验
