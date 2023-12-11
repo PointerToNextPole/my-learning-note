@@ -985,6 +985,14 @@
   > Discover our [list of modules](https://nuxt.com/modules) to supercharge your Nuxt project, created by the Nuxt team and community.
   >
   > 摘自：[Nuxt Github repo - readme # Modules](https://github.com/nuxt/nuxt#modules)
+  
+- **clockwise** ：顺时针的
+
+  **counterclockwise** ：逆时针的
+
+  **counterclock** ：逆时针
+  
+- **polar coordinates** ：极坐标
 ***
 
 

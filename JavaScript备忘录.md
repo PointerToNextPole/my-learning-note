@@ -756,9 +756,9 @@ String.fromCodePoint(num1[, ...[, numN]])
 
 该方法返回一个字符串，而不是一个 String 对象。因为 `fromCodePoint()` 是 String 的一个静态方法，所以只能通过 `String.fromCodePoint()` 这样的方式来使用，不能在你创建的 String 对象实例上直接调用。
 
-摘自：[MDN - String.fromCodePoint()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint)
+摘自：[MDN - `String.fromCodePoint()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint)
 
-> ECMAScript 通常会面向同一个操作提供正反两种方法。你可以使用 codePointAt() 方法在字符串中检索一个字符的码位，也可以使用 String.fromCodePoint() 方法根据指定的码位生成一个字符（串）（👀 <font color=LightSeaGreen>即 **`codePointAt()` 和 `fromCodePoint()` 是一对相反的方法**。另外，类似的还有 `Object.entries()` 和 `Object.fromEntries()`</font> ）。举个例子：
+> ECMAScript 通常会面向同一个操作提供正反两种方法。你可以使用 codePointAt() 方法在字符串中检索一个字符的码位，也可以使用 `String.fromCodePoint()` 方法根据指定的码位生成一个字符（串）（👀 <font color=LightSeaGreen>即 **`codePointAt()` 和 `fromCodePoint()` 是一对相反的方法**。另外，类似的还有 `Object.entries()` 和 `Object.fromEntries()`</font> ）。举个例子：
 >
 > ```js
 > console.log( String.fromCodePoint(134071) ) // 𠮷
@@ -10402,9 +10402,11 @@ Event 接口的只读属性 currentTarget 表示的，<font color=FF0000 size=4>
 
 
 
-#### JS获取div高度
+#### JS 获取元素高度
 
-对于一个元素而言，<font color=FF0000>默认的style对象是没有高度的（style.height=""）。可以说style是它的外部属性，但一个对象应该有一个高度（自身属性）</font>。补充：style属性只能获取元素标签 style 属性里的值
+对于一个元素而言，（如果没有显式定义元素的高度）<font color=fuchsia>默认的 style 对象是没有高度的</font>。<font color=fuchsia>可以说 style 是它的外部属性，但一个对象应该有一个高度（自身属性）</font>。也可以说：style 属性只能获取元素标签 style 属性里的值 
+
+> 💡更准确的说法是：CSS 属性值是计算出来的，无论是通过 特指度、继承、将百分比转化为像素值、使用默认值 等方式，确定样式实际的展示效果。具体内容，可以参考 [# CSS属性值的计算过程【渡一教育】](https://www.bilibili.com/video/BV1Gb4y1L7CV)
 
 如果这时想要获取该元素的高度，可以使用如下方法
 
