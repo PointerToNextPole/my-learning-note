@@ -2244,7 +2244,96 @@ Check the [app source code](https://github.com/nuxt/nuxt/blob/main/packages/nuxt
 
 在 Nuxt 中数据的获取主要是通过四种函数来实现（支持 Server 和 Client ）：
 
-- `$fetch`
+- `useAsyncData(key, func)` ：专门解决异步获取数据的函数,会阻止页面导航。
+
+  发起异步请求需用到 `$fetch` 全局函数（类似 Fetch API），`$fetch(url, opts)`基于 [ofetch](https://github.com/unjs/ofetch)，一个类原生fetch 的跨平台请求库。另外，在刷新页面时，`useAsyncData` 可以减少客户端发起的网络请求
+
+  ```ts
+  const { data : count } = await useAsyncData('count', () => $fetch('/api/count') )
+  ```
+
+- `useFetch(url, options)` ：用于获取任意的URL地址的数据，会阻止页面导航
+
+  本质是 `useAsyncData(key, () => $fetch(url, options) )` 的语法糖。
+
+  默认会阻塞页面的导航（ `lazy` 默认为 `false` ），直到获取到数据，才会停止阻塞；如果要改变默认行为，阻止默认的阻塞，需要修改 `lazy` 为 `true` 。此外，还有一个简写为 `useLazyFetch` ，`lazy` 为 `true`
+
+  ```ts
+  const { data : count } = await useFetch('/api/count')
+  ```
+
+- `useLazyFetch(url, options)` ：用于获取任意 URL 数据，不会阻止页面导航。本质和 `useFetch` 的 `lazy` 属性设置为 `true` 一样
+
+  ```ts
+  const { pending, data : posts } = useLazyFetch('/api/posts')
+  ```
+
+- `useLazyAsyncData(key, func)` ：专门解决异步获取数据的函数。不会阻止页面导航
+
+  本质和 `useAsyncData` 的 `lazy` 属性设置为 `true` 一样
+
+###### 注意事项
+
+这些函数只能用在 setup or Lifecycle Hooks 中
+
+##### `useFetch` v.s. axios
+
+获取数据的方法， Nuxt 推荐使用 `useFetch` 函数，而不是 axios
+
+`useFetch` 底层调用的是 `$fetch` 函数，该函数基于 [unjs/ofetch](https://github.com/unjs/ofetch) 请求库，并与原生的 Fetch API 有者相同 API 
+
+ofetch 是一个跨端请求库：
+
+> GitHub repo About: 😱 A better fetch API. Works on node, browser and workers.
+
+- 如果运行在服务器上，它可以智能的处理对 API 接口的直接调用。
+- 如果运行在客户端行，它可以对后台提供的API接口正常的调用（类似 axios） ，也支持第三方接口的调用
+- 会自动解析响应和对数据进行字符串化
+
+`useFetch` 支持智能的类型提示和智能的推断 API 响应类型。
+
+在 `setup` 中用 `useFetch` 获取数据，刷新页面时会减去客户端重复发起的请求。
+
+
+
+#### Server API
+
+可以在 Nuxt 项目中的 `server/api` 文件夹下（这是 Nuxt 约定的文件夹），写接口（如 `userInfoApi.ts` ），以供页面使用（比如作为 mock ）
+
+```ts
+// server/api/userApi.ts
+export default defineEventHandler(event => {
+  return {
+    code: 200,
+    data: { name: 'foo', age: 18 }
+  }
+})
+```
+
+调用接口也很简单，以下面的 `userInfoApi.ts` 为例：
+
+```ts
+const { code, userInfo } = await useFetch('api/userInfoApi')
+```
+
+就会返回 `ref` 响应式的 `userInfo` ， 
+
+##### api 名称后面的 method 后缀
+
+可以在 api 名称后面加上 http method 后缀，来约束请求的 http方法，比如 `userInfo.get.ts` ；如果对 `api/userInfo` 接口使用 post 方法，将会抛出 405 Method Not Allowed 状态码
+
+##### event.node
+
+`event.node` 对象和 一般的 node http 服务器类似，包含 `req` 和 `res` 两个属性对象，可以开始进行一般 node http 服务器的操作；比如获取：`req.method` 和 `req.url` 
+
+##### 辅助函数
+
+- `getQuery()` 可以获得 query
+- `getMethod()` 可以获得 method
+- `await readBody(event)` 可以获得 body
+- `await readRawBody(event)` 可以获得原始的 body
+
+- `useCookie(name, options)` 可以用来对 cookie 进行操作，看起来和 [js-cookie](https://github.com/js-cookie/js-cookie) 作用相同
 
 
 
