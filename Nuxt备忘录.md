@@ -2337,6 +2337,182 @@ const { code, userInfo } = await useFetch('api/userInfoApi')
 
 
 
+#### 全局状态共享
+
+Nuxt 跨页面、跨组件全局状态共享可使用 `useState`（支持 Server 和 Client ）
+
+```ts
+useState<T>(init?: () => T | Ref<T>): Ref<T>
+useState<T>(key: string, init?: () => T | Ref<T>): Ref<T>
+```
+
+###### 参数
+
+- `init` ：为状态提供初始值的函数，该函数也支持返回一个Ref类型
+- `key` ：唯一key，确保在跨请求获取该数据时，保证数据的唯一性。为空时会根据文件和行号自动生成唯一key
+
+###### 返回值
+
+Ref 响应式对象
+
+##### 使用步骤
+
+一般放在 `composables/` 文件夹下，`composables/` 文件夹一般用于存放编写 hooks 模块，同时在 `composables/` 文件夹下定义的 hooks，会被自动导入；即：在使用时，无需手动导入
+
+###### 定义
+
+```ts
+// composables/useCounter.ts
+// 注意这里是匿名的函数，在使用时，名称参考文件名
+export default function() {
+  return useState('counter', () => 100)
+}
+
+// 另一种写法，这里是具名的；在使用时，名称按照定义的函数名
+export const useCounter = () => {
+  return useState('counter', () => 100)
+}
+```
+
+###### 使用
+
+```ts
+const counter = useCounter()
+counter.value ++
+```
+
+> ⚠️ 注意：这里 `counter.value ++` 执行完成之后，是所有使用 counter 的地方都会变化。所以，不要以为 counter 中的 `() => T` 是工厂函数，所以只有此处的 counter 会变，其他的不会；不是这样！！
+
+##### 注意事项
+
+`useState` 只能用在 `setup` 函数 和 Lifecycle Hooks 中。
+
+`useState` 不支持 classes、functions 或者 symbols 类型，因为这些类型不支持序列化
+
+
+
+#### Nuxt3 集成 Pinia
+
+##### 安装
+
+###### 安装 `@pinia/nuxt`
+
+```sh
+npm install @pinia/nuxt --save
+```
+
+`@pinia/nuxt` 会处理 state 同步问题，比如不需要关心序列化 或 XSS 攻击等问题
+
+###### 安装 `pinia`
+
+```sh
+npm install pinia --save
+```
+
+> ⚠️ `@pinia/nuxt` 和 `pinia` 两个都要安装
+
+如有遇到 pinia 安装失败，可以添加 `--legacy-peer-deps` 告诉 npm 忽略对等依赖并继续安装；或者使用 yarn 进行安装
+
+##### 配置 pinia
+
+在 nuxt.config.ts 中配置
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['@pinia/nuxt']
+})
+```
+
+在 `store/` 中写一般 pinia 的代码
+
+```ts
+import { defineStore } from 'pinia'
+
+export const useUserStore = defineStore('user', {
+  store: () => {
+    return { ... }
+  },
+  actions: { ... }
+})
+```
+
+
+
+#### useState v.s. Pinia
+
+Nuxt 跨页面、跨组件全局状态共享，既可以使用 useState，也可以使用 Pinia，它们的异同如下：
+
+##### 共同点
+
+- 都支持全局状态共享，共享的数据
+
+- 都是响应式数据都支持服务器端和客户端共享
+
+##### Pinia 的优势
+
+Pinia 比 useState 有更多的优势，比如:
+
+- 开发工具支持 ( Devtools )
+  - 跟踪动作，更容易调试
+  - store 可以出现在使用它的组件中
+- 模块热更换
+  - 无需重新加载页面即可修改 store 数据
+  - 在开发时保持任何现有状态
+- 插件：可以使用插件扩展 Pinia 功能
+- 提供适当的 TypeScript 支持或自动完成
+
+
+
+#### 集成 Element Plus
+
+步骤如下
+
+##### 安装依赖
+
+```sh
+npm install element-plus --save
+npm install unplugin-element-plus --save-dev
+```
+
+##### 配置
+
+- 配置Babel对EP的转译
+- 配置自动导入样式
+
+```ts
+import ElementPlus from 'unplugin-element-plus/vite'
+
+export default defineNuxtcConfig({
+  build: {
+    // 使用 babel 进行语法转换
+    transpile: ['element-plus/es']
+  },
+  vite: {
+    // 自动导入样式
+    plugins: [ElementPlus()]
+  }
+})
+```
+
+##### 在组件中导入并使用
+
+> 👀 似乎还不支持自动导入，只能通过手动导入
+
+```vue
+<template>
+  <el-button type="primary">button</el-button>
+</template>
+
+<script setup lang="ts">
+import { ElButton } from 'element-plus'
+</script>
+```
+
+
+
+
+
 ## 工作经验
 
 
