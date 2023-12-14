@@ -90,7 +90,7 @@
 
 - **mutation**：变异
 
-- **Imperative programming**：命令式编程
+- **imperative programming**：命令式编程
 
 - **arithmetic**：算术
 
