@@ -1285,3 +1285,9 @@
 - **versatile** ：多才多艺
 
 - **aesthetic** ：美学的
+
+- **curricula** ：课程
+
+- **proficient** ：精通的
+
+- **clandestine** ：秘密的
