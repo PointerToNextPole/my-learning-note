@@ -1391,6 +1391,39 @@ The payload is a JavaScript object accessible through [`useNuxtApp().payload`](h
 
 
 
+#### Server
+
+##### Hybrid Rendering
+
+<font color=dodgerBlue>Nitro has a powerful feature called `routeRules`</font> which <font color=red>allows you to define a set of rules to **customize how each route of your Nuxt app is rendered**</font> (and more).
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  routeRules: {
+    // Generated at build time for SEO purpose
+    '/': { prerender: true },
+    // Cached for 1 hour
+    '/api/*': { cache: { maxAge: 60 * 60 } },
+    // Redirection to avoid 404
+    '/old-page': {
+      redirect: { to: { '/new-page', statusCode: 302 }
+    }
+    // ...
+  }
+})
+```
+
+> 💡 [Learn about all available route rules are available to customize the rendering mode of your routes.](https://nuxt.com/docs/guide/concepts/rendering#hybrid-rendering)
+
+In addition, there are some route rules (for example, `ssr` and `experimentalNoScripts`) that are Nuxt specific to change the behavior when rendering your pages to HTML.
+
+Some route rules (`redirect` and `prerender`) also affect client-side behavior.
+
+Nitro is used to build the app for server side rendering, as well as pre-rendering.
+
+
+
 
 
 ## Codewhy 体系课 SSR 部分笔记

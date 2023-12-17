@@ -472,6 +472,10 @@
 
 - **proportion** ：比例
 
+   **portion** ：部分
+
+   <img src="https://s2.loli.net/2023/12/17/5f9SMEh2snbzFt7.png" alt="image-20231217190626456" style="zoom:45%;" />
+
 - **come in handy** ：派上用场
 
 - **calibrate** ：校准

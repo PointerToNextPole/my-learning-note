@@ -4577,9 +4577,11 @@ text-indent: unset;
   
   <font color=dodgerBlue>sticky **生效的前提**是：</font><font color=FF0000>必须搭配 top、bottom、left、right 这四个属性一起使用，不能省略</font>，否则等同于 relative 定位，不产生 “动态固定” 的效果。原因是这四个属性用来定义"偏移距离"，浏览器把它当作 sticky 的生效门槛。
   
-  <font color=dodgerBlue>运行的具体规则是：</font><font color=fuchsia>当页面滚动，父元素开始脱离视口时（即部分不可见），只要与 sticky 元素的距离达到生效门槛，relative定位自动切换为 fixed 定位</font>；<font color=FF0000>等到父元素完全脱离视口时（即完全不可见），fixed 定位自动切换回 relative 定位。</font>
+  <font color=dodgerBlue>运行的具体规则是：</font><font color=fuchsia>当页面滚动，父元素开始脱离视口时（即部分不可见），只要与 sticky 元素的距离达到生效门槛，relative 定位自动切换为 fixed 定位</font>；<font color=FF0000>等到父元素完全脱离视口时（即完全不可见），fixed 定位自动切换回 relative 定位。</font>
   
   > ⚠️ 注意：除了已被淘汰的 IE 以外，其他浏览器目前都支持 sticky。但是，<font color=red>Safari 浏览器需要加上浏览器前缀 `-webkit-`</font>
+  
+  > 补充：可以看下
 
 部分摘自：[阮一峰的网络日志 - CSS 定位详解](https://www.ruanyifeng.com/blog/2019/11/css-position.html)
 
