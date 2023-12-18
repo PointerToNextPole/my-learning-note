@@ -4202,6 +4202,12 @@ $f(\ rgb(R_1, G_1, B_1),\quad rgb(R_2, G_2, B_2)\ ) = \\rgb(255-(255-R_1)*(255-R
 
 根据如上公式：如果其中一个 RGB 为 白色 `rgb(255, 255, 255)` ，则最后的颜色一定为白色；如果其中一个 RGB 为黑色 `rgb(0, 0, 0)`  最后颜色一定为另一个颜色
 
+##### 关于 `mix-blend-mode: difference` 的使用
+
+`difference` 即是将当前元素的颜色的 R、G、B 与父元素的颜色的 R、G、B 分别作差，产生新的颜色，作为颜色展示效果
+
+学习自：[实现文字智能适配背景【渡一教育】](https://www.bilibili.com/video/BV11N4y1e7Lc)
+
 
 
 #### `<blend-mode>`
@@ -4581,7 +4587,11 @@ text-indent: unset;
   
   > ⚠️ 注意：除了已被淘汰的 IE 以外，其他浏览器目前都支持 sticky。但是，<font color=red>Safari 浏览器需要加上浏览器前缀 `-webkit-`</font>
   
-  > 补充：可以看下
+  > 补充：可以看下 [黏性定位【渡一教育】](https://www.bilibili.com/video/BV1gG411v7n5)，如下是做的笔记
+
+    一个元素的黏性布局位置会受到如下两个东西的影响：
+    - 该元素的包含块 containing block，一般是它父元素的内容盒（可以简单理解为父元素），虽然也有其他情况
+    - 该元素的 **最近可滚动祖先**，向上层寻找 `overflow` 属性为 `scroll` 或者为 `auto` 的祖先，如果找不到即可能为视口 viewport 。一般情况下，该元素和一般元素没什么区别，但是，一旦该元素和它 “最近可滚动祖先” 的位置达到了设置的位置的时候，它的位置将会被固定下来；同时，这种位置的固定不会影响其他元素的排列
 
 部分摘自：[阮一峰的网络日志 - CSS 定位详解](https://www.ruanyifeng.com/blog/2019/11/css-position.html)
 

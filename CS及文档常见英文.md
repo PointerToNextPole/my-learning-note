@@ -997,6 +997,8 @@
   **counterclock** ：逆时针
   
 - **polar coordinates** ：极坐标
+
+- **metric** ：指标
 ***
 
 
