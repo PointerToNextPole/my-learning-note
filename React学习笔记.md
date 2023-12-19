@@ -155,7 +155,7 @@ There are two types of “model” data in React: props and state. <font color=d
 
 Out of the box, TypeScript [supports JSX](https://react.dev/learn/writing-markup-with-jsx) and <font color=lightSeaGreen>you can get full React Web support by adding `@types/react` and `@types/react-dom` to your project</font>.
 
-###### Adding TypeScript to an existing React project 
+###### Adding TypeScript to an existing React project
 
 To install the latest version of React’s type definitions:
 
