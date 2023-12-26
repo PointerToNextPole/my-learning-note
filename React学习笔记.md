@@ -5167,8 +5167,12 @@ JSX 是一种 JavaScript 的语法扩展 ( eXtension ) ，也在很多地方称�
 ##### JSX 书写规范
 
 - JSX 顶层只能有一个根元素，所以很多时候会在外层包裹一个 div 原生（或者使用 Fragment ）
+
 - 为了方便阅读，通常在 JSX 外层包裹一个小括号 `()` ，这样可以方便阅读；将整个 JSX 当做一个整体，并且 JSX 可以进行换行书写
-- JSX 中的标签可以是单标签，也可以是双标签。⚠️ 注意：如果是单标签，必须以 `/>` 结尾
+
+- JSX 中的标签可以是单标签，也可以是双标签。
+
+  > ⚠️ 注意：如果是单标签，必须以 `/>` 结尾
 
 ##### JSX 中的注释
 
@@ -5179,67 +5183,73 @@ JSX 是一种 JavaScript 的语法扩展 ( eXtension ) ，也在很多地方称�
 <div>other tags ...</div>
 ```
 
-##### JSX 嵌入变量
+##### JSX 嵌入变量的展示
 
 - 当变量是 Number、String、Array 类型时，可以直接显示
 
-- 当变量是 null、undefined、Boolean类型时，内容为空。
+- 当变量是 null、undefined、<font color=fuchsia>**Boolean**</font>（包括真值的 true ） 类型时，内容为空。
 
-  如果希望可以显示 null、undefined、Boolean，那么需要转成字符串；转换的方式有很多，比如 toString 方法、空字符串拼接，`String(myVariable)` 等方式
+  如果希望可以显示 null、undefined、Boolean，那么<font color=red>需要转成字符串</font>；转换的方式有很多，比如 toString 方法、空字符串拼接，`String(myVariable)` 等方式
 
-- 对象类型不能作为子元素显示 ( Uncaught Error: Object are not valid as a React child )
+- <font color=fuchsia>对象 Object 类型不能作为子元素显示</font> ( Uncaught Error: Object are not valid as a React child )
 
 ##### JSX 嵌入表达式
 
-1) 运算表达式，也包含 JS 的计算属性
-2) 三元运算符
-3) 执行一个函数（ 函数有返回值即可）。👀 感觉类似于 Vue 的计算属性
+1. 运算表达式，也包含 JS 的计算属性
+
+2. 三元运算符
+
+3. 执行一个函数（ 函数有返回值即可）。
+
+   > 👀 感觉类似于 Vue 的计算属性
 
 ##### JSX 绑定属性
 
-- 比如元素都会有 title 属性，img 元素会有 src 属性，a 元素会有 href 属性
+比如元素都会有 title 属性，img 元素会有 src 属性，a 元素会有 href 属性
 
-  ```jsx
-  <p title={ titleCnt }>paragraph</p>
-  <img src={ srcURL } />
-  <a href={ hrefLink }>link</a>
-  ```
+```jsx
+<p title={ titleCnt }>paragraph</p>
+<img src={ srcURL } />
+<a href={ hrefLink }>link</a>
+```
 
-- 元素可能需要绑定 class，有三种方法
+###### JSX 绑定 class
 
-  ###### 方法一
+元素可能需要绑定 class，有三种方法
 
-  ```jsx
-  {/* classNameStr = `foo bar` */}
-  <h2 className={classNameStr}>h2 cnt</h2>
-  ```
+方法一
 
-  ###### 方法二
+```jsx
+{/* classNameStr = `foo bar` */}
+<h2 className={classNameStr}>h2 cnt</h2>
+```
 
-  ```jsx
-  {/* classList = ['foo', 'bar'] */}
-  {/* 如果不加上 join，className 将会编译为 class="foo,bar"，显然不是我们想要的 */}
-  <h2 className={classList.join(' ')}>h2 cnt</h2>
-  ```
+方法二
 
-  ###### 方法三
+```jsx
+{/* classList = ['foo', 'bar'] */}
+{/* 如果不加上 join，className 将会编译为 class="foo,bar"，显然不是我们想要的 */}
+<h2 className={classList.join(' ')}>h2 cnt</h2>
+```
 
-  使用第三方库 [classnames](https://github.com/JedWatson/classnames) ，这里暂时略
+方法三
 
-- 原生使用内联样式 style
+使用第三方库 [classnames](https://github.com/JedWatson/classnames) ，这里暂时略
 
-  ###### 方法一
+##### 原生使用内联样式 style
 
-  ```jsx
-  <h2 style={ {color: 'red', fontSize: '30px'} }>h2 cnt</h2>
-  ```
+###### 方法一
 
-  ###### 方法二
+```jsx
+<h2 style={ {color: 'red', fontSize: '30px'} }>h2 cnt</h2>
+```
 
-  ```jsx
-  {/* styleObj: {color: 'red', fontSize: '30px'} */}
-  <h2 style={styleObj}>h2 cnt</h2>
-  ```
+###### 方法二
+
+```jsx
+{/* styleObj: {color: 'red', fontSize: '30px'} */}
+<h2 style={styleObj}>h2 cnt</h2>
+```
 
 ##### JSX 中 this 丢失的解决方法
 
@@ -5272,6 +5282,8 @@ class App extends React.component {
 ```jsx
 <button onClick={ () => onBtnClick() }>click me</button>
 ```
+
+
 
 
 
