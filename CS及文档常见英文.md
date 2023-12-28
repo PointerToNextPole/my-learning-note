@@ -58,7 +58,7 @@
 
 - **i.e.** : *i.e.* is an abbreviation for the phrase ***id est***, which means **"that is"** .
 
-- **retrieve**：检索，获取
+- **retrieve**：检索，获取；所谓 CRUD 的 “R” 就是 retrieve
 
 - **decoupled**：解耦的，decouple ( verb )。coupled 耦合的
 

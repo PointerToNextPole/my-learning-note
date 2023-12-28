@@ -2573,3 +2573,12 @@ module.exports = {
 ```
 
 摘自：[nuxtjs.cn - 常见问题 - Webpack 插件 # 如何添加 Webpack 插件？](https://www.nuxtjs.cn/faq/webpack-plugins) 。另外，在  Nuxt v2 的文档中找到了对应的部分：[Nuxt 2 - Learn - Configuration # Add webpack plugins](https://v2.nuxt.com/docs/features/configuration/#add-webpack-plugins) ；不过，在 Nuxt v3 的 [Docs - Configuration]() 部分并没有找到相应内容...
+
+
+
+#### Layout 相关
+
+##### Layout 命名的限制
+
+经过实践发现：Nuxt 的 Layout 文件名必须为小写字母，如果使用驼峰命名，在注册后将无法生效；类似的，如果使用下划线的 Snake case，在注册后同样不会生效。
+
