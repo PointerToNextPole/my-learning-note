@@ -4919,9 +4919,9 @@ Before getting to Effects, you need to be familiar with two types of logic insid
   > 
   > // Display a "Like" <button>
   > return e(
-  >   'button',
-  >   { onClick: () => this.setState({ liked: true }) },
-  >   'Like'
+  >     'button',
+  >     { onClick: () => this.setState({ liked: true }) },
+  >     'Like'
   > );
   > ```
   >
@@ -5003,6 +5003,8 @@ root.render(<App/>)
 ###### `<script type="text/babel">`
 
 在没有脚手架的情况下，上面 [[#ReactDOM.createRoot#示例]] 中的代码需要写在 `<script>` 中。另外，需要注意 ⚠️ 的是：仅仅是 `<script> ... </script>` 浏览器将不会将通过 babel 进行编译，需要加上 `type="text/babel` ，即： `<script type="text/babel'>`
+
+另外，也可以通过 [Babel REPL - presets React](https://babeljs.io/repl/#?presets=react) ，将 jsx 转化为 `React.createElement` 的 JS 代码，将其替换掉 jsx，同时并删除 `<script type="text/babel">` ，页面同样可以正常展示
 
 ###### 多实例
 
