@@ -5189,6 +5189,25 @@ JSX 是一种 JavaScript 的语法扩展 ( eXtension ) ，也在很多地方称�
 
 - 当变量是 Number、String、Array 类型时，可以直接显示
 
+  > 👀 这里之所以支持 Array 类型，感觉更多的是因为 Array 可能是 react 元素的数组，如下：
+  >
+  > ```jsx
+  > const elArr = [
+  >   <h2>h2</h2>,
+  >   <h3>h3</h3>,
+  >   <h4>h4</h4>
+  > ]
+  > 
+  > return (
+  >   <>
+  >     <h1>title</h1>
+  >     { elArr }
+  >   </>
+  > )
+  > ```
+  >
+  > 另外，也可以参考下 [[#render 函数的返回值]]
+
 - 当变量是 null、undefined、<font color=fuchsia>**Boolean**</font>（包括真值的 true ） 类型时，内容为空。
 
   如果希望可以显示 null、undefined、Boolean，那么<font color=red>需要转成字符串</font>；转换的方式有很多，比如 toString 方法、空字符串拼接，`String(myVariable)` 等方式
@@ -5286,6 +5305,206 @@ class App extends React.component {
 ```
 
 
+
+#### React 组件化
+
+##### React 组件的分类
+
+- 根据<font color=red>组件的定义方式</font>，可以分为：函数组件 ( Functional Component ) 和 类组件 ( Class Component )
+
+- 根据 <font color=red>**组件内部是否有状态需要维护**</font>，可以分成：无状态组件 ( Stateless Component ) 和 有状态组件 ( Stateful Component )
+
+  可以简单认为：函数组件一般是无状态组件（不过，如果在 `useState()` 中给出默认值，则是有状态组件），类组件一般是有状态组件
+
+- 根据<font color=red>组件的不同职责</font>，可以分成：展示型组件 ( Presentational Component ) 和 容器型组件 ( Container Component )
+
+  展示型组件用户呈现内容。容器型组件则功能更多，比如：维护自身状态，或者发送网络请求（感觉和 [VueUse](https://vueuse.org/) 中一些 hooks 的组件用法非常类似）
+
+这些概念有很多重叠，但是 <font color=dodgerBlue>他们最主要是关注数据逻辑和UI展示的分离</font>：
+
+- 函数组件、无状态组件、展示型组件 主要关注 UI 的展示
+- 类组件、有状态组件、容器型组件 主要关注数据逻辑
+
+###### 其他组件分类
+
+除了上面所说，还有 异步组件、高阶组件
+
+##### 类组件
+
+###### 类组件的定义有如下要求
+
+- 组件的名称是大写字符开头（无论类组件还是函数组件）
+- 类组件需要继承自 `React.Component`
+- 类组件必须实现 render 函数
+
+<font color=dodgerblue>在 ES6 之前</font>，<font color=red>可以通过 create-react-class 模块来定义类组件</font>，但是目前官网建议我们使用 ES6 的 class 类定义。
+
+###### 使用 class 定义一个组件
+
+- `constructor` 是可选的，通常在 `constructor` 中初始化一些数据
+- `this.state` 中维护的是组件内部的数据
+- `render()` 方法是 class 组件中唯一必须实现的方法
+
+###### render 函数的返回值
+
+当 render 被调用时，它会检查 this.props 和 this.state 的变化并返回以下类型之一
+
+- React 元素：通常通过 JSX 创建。 例如，`<div />` 会被 React 渲染为 DOM 节点，`<MyComponent />` 会被 React 渲染为自定义组件；无论 `<div />` 还是 `<MyComponent />` 均为 React 元素。
+- 数组或 fragments：使得 render 方法可以返回多个元素。
+- <font color=red>Portals：可以渲染子节点到不同的 DOM 子树中</font>
+- 字符串或数值类型：它们在 DOM 中会被渲染为文本节点
+- 布尔类型或 null ：什么都不渲染。
+
+###### 类组件生命周期
+
+![https://miro.medium.com/v2/resize:fit:1400/1*hSO--5BPT1K_YK6VqRy4vg.png](https://s2.loli.net/2023/12/31/9jqIgJcbPty81U7.png)
+
+另外，还有一些不常用的生命周期
+
+![https://user-images.githubusercontent.com/29204799/50041507-0b382e80-0091-11e9-81a4-62dd2675cd63.png](https://s2.loli.net/2023/12/31/oPN4Qw5KpmTXCHU.png)
+
+- `getDerivedStateFromProps` ：state 的值在任何时候都依赖于 props 时使用，该方法返回一个对象来更新state
+- `getSnapshotBeforeUpdate` ：在 React 更新 DOM 之前回调的一个函数，可以获取 DOM 更新前的一些信息（比如说滚动位置），并通过 return 的方式保存下来。保存下来的数据，可以通过 componentDidUpdate 中的参数 `prevProps`、`prevState`、`snapshot` 中的 `snapshot` 拿到
+- `shouldComponentUpdate` ：询问是否需要更新组件视图，通过返回 boolean 来控制；如果返回 false，表示不更新。虽然这个生命周期在文档中的介绍是不常用，但是实际上还是很常用的。另外，这个和 `React.pureComponent` 有关
+
+##### 函数组件
+
+###### 函数组件的特点
+
+- <font color=fuchsia>没有生命周期</font>，也会被更新并挂载，但是<font color=red>没有生命周期函数</font>
+- `this` 关键字不能指向组件实例（ 因为没有组件实例 ）
+- 没有内部状态 ( state )
+
+##### 
+
+#### React 的父子组件通信
+
+父组件通过 “属性=值” ( `propName = valVarible` ) 的形式来传递给子组件数据，子组件通过 props 参数获取父组件传递过来的数据。
+
+##### 类组件的父子组件通信
+
+类组件父组件传递 props 和函数式的看起来没什么区别，重点在子组件的接收；下面写一下子组件的定义
+
+```jsx
+class Child extends React.component {
+  // 甚至下面的 ctor 可以直接省略掉，一样可以在 render 中使用 this.props，react 会自动处理；甚至，如果 ctor 中没有 state 的定义，react 会发出警告 ，推荐删除 ctor
+  constructor(props) {
+    super(props)
+    
+    this.state = { /* ... */ }
+  }
+  
+  render() {
+    console.log(this.props)
+  }
+}
+```
+
+###### Props 类型校验
+
+如果项⽬中默认继承了 Flow 或者 TypeScript，那么直接就可以进⾏类型验证；否则，可以通过 [prop-types](https://github.com/facebook/prop-types) 库来进⾏参数验证。另外，从 React v15.5 开始，`React.PropTypes` 已移⼊⼀个独立的包中：prop-types（即：在这之前，React 是将 PropTypes 集成的）
+
+关于 prop-types 类型校验的具体用法，因为使用的并不多，所以这里不做笔记，详见 [prop-types](https://github.com/facebook/prop-types) 的 GitHub readme。另外，在 TypeScript 的情况下，可以使用 type 或 interface 对 prop 进行约束，可参见如下截图
+
+<img src="https://s2.loli.net/2023/12/31/G4ObmiEptDrCguM.png" alt="image-20231231192706253" style="zoom:50%;" />
+
+使用 `React.FC<PropType>`  这种方式更加标准。也可以通过 `function Component(props: PropType) { ... }` 进行约束，这样写更简单些
+
+###### props 的默认值
+
+可以使用 `static defaultProps` 语法（这是 ES2022 的新特性，可以将 React 类定义中的 defaultProps 作为静态属性声明），即 `static defaultProps = { ...propName :  propDefaultVal }` ，或者 `myComponent.defaultProps = { ... }` （这是 ES2022 之前的写法）。另外，值得注意的是：在当前的 [react.dev - reference # static-defaultProps](https://react.dev/reference/react/Component#static-defaultprops) 文档中，已经把 `static defaultProps` 作为 “LEGACY REACT APIS” 了
+
+
+
+#### React 实现插槽
+
+React 实现插槽有两种方法
+
+##### 使用 children 实现插槽
+
+###### 使用处
+
+```jsx
+render() {
+  <NavBar>
+    <button>btn</button>
+    <input />
+    <i>icon</i>
+  </NavBar>
+}
+```
+
+###### 定义处
+
+```jsx
+class NavBar extends React.Component {
+  render() {
+    const { children } = this.props
+
+    return (
+      <div className='nav-bar'>
+        <div className="left">
+          {children[0]}
+        </div>
+        <div className="center">
+          {children[1]}
+        </div>
+        <div className="right">
+          {children[2]}
+        </div>
+      </div>
+    )
+  }
+}
+```
+
+这种方法存在弊端：通过索引值获取传⼊的元素很容易出错，不能精准的获取传⼊的元素。
+
+另外，有一点值得注意：如果传入的 react 元素只有一个，那么 children 将会是一个 element 对象（包含这一个 react 元素）；如果传入多个，则 children 将会是一个数组。对应到上面的代码，如果父组件确实只传入了一个 react 元素，这种取索引的行为将会报错。可以通过 prop-types 进行约束：约定传入多个 react 元素，则为 `PropTypes.array` ，约定传入一个 react 元素则为 `PropTypes.element`。
+
+所以使用方法二，“使用 props 实现插槽” 更好
+
+##### 使用 props 实现插槽
+
+###### 使用处
+
+```jsx
+render() {
+  const leftSlot = <button>btn</btn>
+  const centerSlot = <input />
+  const rightSlot = <i>icon</i>
+         
+  return (
+    <div>
+      <NavBar
+        leftSlot={leftSlot} 
+        centerSlot={centerSlot} 
+        rightSlot={rightSlot}
+      />
+    </div>
+  )
+}
+```
+
+###### 定义处
+
+```jsx
+export class NavBar extends Component {
+  render() {
+    const { leftSlot, centerSlot, rightSlot } = this.props
+
+    return (
+      <div className='nav-bar'>
+        <div className="left">{leftSlot}</div>
+        <div className="center">{centerSlot}</div>
+        <div className="right">{rightSlot}</div>
+      </div>
+    )
+  }
+}
+```
+
+相较于上面通过索引获得 react 元素，这里通过对象的 key 获得，这样显然可以准确的和想要放入的位置对应起来。
 
 
 
