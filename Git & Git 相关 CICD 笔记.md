@@ -59,6 +59,16 @@ git config --system --list
 
 这时使用命令 `git config --global --unset user.mail` 即可将其删除（在 `git config --list`中查不到）。
 
+git 在输出时（比如 git status ）往往无法正常输出中文，只能通过转义编码输出中文，可以通过如下方式使之可以输出中文：
+
+```sh
+git config --global core.quotepath false
+git config --global i18n.logoutputencoding utf-8
+git config --global gui.encoding utf-8
+```
+
+学习自：[Git实用小技巧：git status 中文文件名编码问题解决](https://blog.csdn.net/MLQ8087/article/details/52174834)
+
 > 💡 相关的配置，可以在 `~/.gitconfig` 文件中找到
 
 #### From  1.4

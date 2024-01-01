@@ -2314,12 +2314,12 @@ But unlike a regular mutation, it doesn’t overwrite the past state!
 > > import { shallowRef } from 'vue'
 > > 
 > > export function useImmer(baseState) {
-> >   const state = shallowRef(baseState)
-> >   const update = (updater) => {
-> >     state.value = produce(state.value, updater)
-> >   }
+> >     const state = shallowRef(baseState)
+> >     const update = (updater) => {
+> >       state.value = produce(state.value, updater)
+> >     }
 > > 
-> >   return [state, update]
+> >     return [state, update]
 > > }
 > > ```
 > >
@@ -4890,9 +4890,9 @@ Before getting to Effects, you need to be familiar with two types of logic insid
 
 > 👀 上图摘自 https://docs.flutter.dev/development/data-and-backend/state-mgmt/declarative
 
-##### render 函数
+##### render 方法
 
-不论在 Vue 还是在 React 中都包含一个 render 函数。
+不论在 Vue 还是在 React 中都包含一个 render 方法，这是 template 和 jsx 最后编译的结果
 
 
 
@@ -4975,7 +4975,7 @@ root.render(<h1>app</h1>)
 
 ###### 多元素换行
 
-上面 render 函数中的 jsx，如果根元素下有多个元素，想要分多行写的话，可以通过 `()` 将这些 jsx 包裹，如下示例：
+上面 render 方法中的 jsx，如果根元素下有多个元素，想要分多行写的话，可以通过 `()` 将这些 jsx 包裹，如下示例：
 
 ```react
 root.render((
@@ -4992,7 +4992,7 @@ root.render((
 
 ###### 组件化
 
-另外，由于 React 采用了组件化的编程思想，所以 render 函数中除了传入一个 html 元素，也是可以传入一个组件的；如下示例：
+另外，由于 React 采用了组件化的编程思想，所以 render 方法中除了传入一个 html 元素，也是可以传入一个组件的；如下示例：
 
 ```react
 root.render(<App/>)
@@ -5056,7 +5056,7 @@ root.render(<App/>)
 
 ###### 示例代码解释
 
-setState 方法是来自继承的 `React.Component` 类中，setState 在内部做了两件事：1) 修改 state 中的值 2) 自动重新执行 render 函数
+setState 方法是来自继承的 `React.Component` 类中，setState 在内部做了两件事：1) 修改 state 中的值 2) 自动重新执行 render 方法
 
 [[#类组件#示例]] 中使用 bind 的部分原因：因为 JSX 被编译转变为 `React.createElement` 的处理过程，导致 this 的丢失，示例如下：
 
@@ -5102,7 +5102,7 @@ render() {
 ###### 使用类组件注意点
 
 - 定义一个类（类名大写。组件的名称是必须大写的，小写会被认为是 HTML 元素），继承自 React.Component
-- 必须要实现当前组件的 render 函数
+- 必须要实现当前组件的 render 方法
 
 ##### React 其他示例注意点
 
@@ -5206,7 +5206,7 @@ JSX 是一种 JavaScript 的语法扩展 ( eXtension ) ，也在很多地方称�
   > )
   > ```
   >
-  > 另外，也可以参考下 [[#render 函数的返回值]]
+  > 另外，也可以参考下 [[#render 方法的返回值]]
 
 - 当变量是 null、undefined、<font color=fuchsia>**Boolean**</font>（包括真值的 true ） 类型时，内容为空。
 
@@ -5335,7 +5335,7 @@ class App extends React.component {
 
 - 组件的名称是大写字符开头（无论类组件还是函数组件）
 - 类组件需要继承自 `React.Component`
-- 类组件必须实现 render 函数
+- 类组件必须实现 render 方法
 
 <font color=dodgerblue>在 ES6 之前</font>，<font color=red>可以通过 create-react-class 模块来定义类组件</font>，但是目前官网建议我们使用 ES6 的 class 类定义。
 
@@ -5345,7 +5345,7 @@ class App extends React.component {
 - `this.state` 中维护的是组件内部的数据
 - `render()` 方法是 class 组件中唯一必须实现的方法
 
-###### render 函数的返回值
+###### render 方法的返回值
 
 当 render 被调用时，它会检查 this.props 和 this.state 的变化并返回以下类型之一
 
@@ -5364,8 +5364,30 @@ class App extends React.component {
 ![https://user-images.githubusercontent.com/29204799/50041507-0b382e80-0091-11e9-81a4-62dd2675cd63.png](https://s2.loli.net/2023/12/31/oPN4Qw5KpmTXCHU.png)
 
 - `getDerivedStateFromProps` ：state 的值在任何时候都依赖于 props 时使用，该方法返回一个对象来更新state
+
 - `getSnapshotBeforeUpdate` ：在 React 更新 DOM 之前回调的一个函数，可以获取 DOM 更新前的一些信息（比如说滚动位置），并通过 return 的方式保存下来。保存下来的数据，可以通过 componentDidUpdate 中的参数 `prevProps`、`prevState`、`snapshot` 中的 `snapshot` 拿到
-- `shouldComponentUpdate` ：询问是否需要更新组件视图，通过返回 boolean 来控制；如果返回 false，表示不更新。虽然这个生命周期在文档中的介绍是不常用，但是实际上还是很常用的。另外，这个和 `React.pureComponent` 有关
+
+- `shouldComponentUpdate` ：（有时也被简称为 SCU ）询问是否需要更新组件视图，通过返回 boolean 来控制；如果返回 false，表示不更新。虽然这个生命周期在文档中的介绍是不常用，但是实际上还是很常用的。
+
+  其中一个使用场景是：用于控制，如果调用 `this.setState()` 前后的数据是一样的，那么还有没有必要进行更新；默认情况下，依然会更新，只相当于 React 将视图更新策略交给了开发者，开发者可以通过参数 `nextProps` （修改之后，最新的 props 属性）和 `nextState`（修改之后，最新的 state 属性）与当前的 props 和 state 做比较，从而 返回布尔值 以便对是否更新进行控制。
+
+  通过 SCU 还是过于麻烦，这个场景可以通过 `React.PureComponent` 实现，即将 `class MyComponent extends React.component` 改成 `extends React.PureComponent` （虽然从原理上来看，`React.PureComponent` 也是在使用 SCU 作为依据）。在大多数情况下，类组件的定义将会使用 `extends React.PureComponent` 。不过，这就涉及该组件必须要遵守 immutable 了，不遵循的话，页面无法更新（如果 `extends React.component` ，(虽然不推荐)哪怕违反了，页面也会更新）。
+
+  不过，`React.PureComponent` 也是只对 props 和 state 做浅层比较，即调用 `!shallowEqual(oldProps, newProps) || !shallowEqual(oldState, newState)`
+
+  以上解决方案是只针对于类组件的，对于函数组件不适用；<font color=red>函数组件可以使用 `memo` 解决</font>。示例如下：
+
+  ```jsx
+  import { memo } from 'react'
+  
+  const FnComponent = memo(function(props) {
+    return <h1>{ props.foo }</h1>
+  })
+  
+  export default FnComponent
+  ```
+
+  
 
 ##### 函数组件
 
@@ -5505,6 +5527,359 @@ export class NavBar extends Component {
 ```
 
 相较于上面通过索引获得 react 元素，这里通过对象的 key 获得，这样显然可以准确的和想要放入的位置对应起来。
+
+##### 作用域插槽实现
+
+
+
+#### Context
+
+##### Context 的应用场景
+
+###### ⾮⽗⼦组件数据的共享
+
+在开发中，<font color=dodgerBlue>⽐较常⻅的数据传递⽅式 </font>是 <font color=lightSeaGreen>**通过 props 属性⾃上⽽下（由⽗到⼦）进⾏传递**</font>。
+
+但是对于有⼀些场景：⽐如⼀些数据需要在多个组件中进⾏共享（地区偏好、UI主题、⽤户登录状态、⽤户信息等）。 如果我们在顶层的 App 中定义这些信息，之后⼀层层传递下去，那么对于⼀些中间层不需要数据的组件来说，是⼀种冗余的操作。如果层级更多的话，⼀层层传递是⾮常麻烦，并且代码是⾮常冗余的：
+
+React 提供了⼀个 API ：Context。Context 提供了⼀种在组件之间共享此类值的⽅式，⽽不必显式地通过组件树的逐层传递 props；Context 设计⽬的是为了共享那些对于⼀个组件树⽽⾔是“全局”的数据，例如当前认证的⽤户、主题或⾸选语⾔
+
+##### 类组件的 context 定义
+
+```jsx
+// context/MyCtx.jsx 一般放在单独的文件下，方便导出
+import React from 'react'
+
+const MyCtx = React.createContext(defaultObj)
+
+export default MyCtx
+```
+
+```jsx
+// Parent.jsx
+import MyCtx from 'context/MyCtx'
+
+render() {
+  <MyCtx.Provider value={passObj}>
+    <Child />
+  </MyCtx.Provider>
+}
+```
+
+```jsx
+// Child.jsx
+class Child extends React.Components {
+  render() {
+    console.log(this.context)
+  }
+}
+
+Child.contextType = MyCtx
+```
+
+###### 函数式组件如何使用（类组件传递来的）context
+
+```jsx
+function FpChild() {
+  return (
+    <MyCtx.Consumer>
+      { value => { return <p>{ value.color }</p> }}
+    </MyCtx.Consumer>
+  )
+}
+```
+
+另外，在 FpChild 中显然就不需要 `FpChild.contextType = MyCtx` 了
+
+另外，使用 `<Context.Consumer>` 语法，可以解决一个类组件无法使用多个 context 的问题，因为无法绑定多个 `contextType` 的问题。使用 `<Context.Consumer>` ，因为不需要绑定了，所以直接使用即可。
+
+##### Context 相关 API
+
+###### React.createContext
+
+创建⼀个需要共享的 Context 对象： 如果⼀个组件订阅了Context，那么这个组件会从离⾃身最近的那个匹配的 Provider 中读取到当前的context值。defaultValue 是组件在顶层查找过程中没有找到对应的 Provider，那么就使⽤默认值
+
+```jsx
+const myCtx = React.createElement(defaultVal)
+```
+
+###### Context.Provider
+
+每个 Context 对象都会返回⼀个 Provider React 组件，它允许消费组件订阅 context 的变化： 
+
+Provider 接收⼀个 value 属性，传递给消费组件。
+
+⼀个 Provider 可以和多个消费组件有对应关系。
+
+多个 Provider 也可以嵌套使⽤，⾥层的会覆盖外层的数据。
+
+当 Provider 的 value 值发⽣变化时，它内部的所有消费组件都会重新渲染。
+
+```jsx
+<MyCtx.Provider value={passObj}></MyCtx.Provider>
+```
+
+###### Class.contextType
+
+挂载在 class 上的 `contextType` 属性会被重赋值为⼀个由 `React.createContext()` 创建的 Context 对象：能让你使⽤ `this.context` 来消费最近 Context 上的那个值； 可以在任何⽣命周期中访问到它，包括 render 方法中
+
+```jsx
+MyClass.contextType = MyCtx
+```
+
+###### Context.Consumer
+
+React 组件也可以订阅到 context 变更。这能让你在函数式组件中完成订阅 context。 这⾥需要函数作为⼦元素 ( function as child ) 这种做法；这个函数接收当前的 context 值，返回⼀个 React 节点
+
+```jsx
+<MyCtx.Consumer>
+  { value => { ... }}
+</MyCtx.Consumer>
+```
+
+
+
+#### setState
+
+##### 为什么需要使用 setState
+
+因为 React 并没有使用 Vue 那种数据劫持的响应式方案，通过直接赋值的方式修改了 state 后，React并不知道数据发⽣了变化。所以，必须通过 setState 来告知 React 数据已经发⽣了变化
+
+##### 类组件 setState 的原理
+
+`this.setState` 只会传入要修改 state 组成的对象，而不是所有 state 组成的对象；为什么没有把所有的 state 都替换掉，从原理上来说：react 使用 `Object.assign` ，对于修改的 state 成功进行替换，而不修改的 state 不做任何操作
+
+##### setState 可以传入一个回调函数
+
+除了传入一个对象之外，setState 还可以传入一个回调函数，该回调函数要求返回一个对象。
+
+###### 传入回调函数有两个好处
+
+1. 可以编写一些对新 state 的处理逻辑
+2. 当前的回调函数，可以将之前的 state 和 props 传递进来
+
+##### setState 在 React 事件处理中是一个异步函数
+
+证明方式如下
+
+```jsx
+// this.state = { foo: 'foo' }
+this.setState(() => { foo: 'bar' })
+console.log(this.state.foo) // 依然为 foo
+```
+
+类似的：[[#Queueing a Series of State Updates]] 中的内容，也说明了 setState 是异步函数
+
+如果想要拿到修改后的结果，可以在 setState 中传入第二个参数，为一个回调函数：
+
+```jsx
+this.setState(
+  () => { foo: 'bar' },
+  () => { console.log(this.state.foo) }
+) // bar
+```
+
+###### 为什么 setState 是一个异步函数
+
+Dan 在 [GitHub issue](https://github.com/facebook/react/issues/11527#issuecomment-360199710) 中给出了回答，<font color=dodgerBlue>总结如下：</font>
+
+- setState 设计为异步，<font color=red>可以显著提升性能</font>：如果每次调⽤ setState 都进⾏⼀次更新（即：render），<font color=red>**意味着 render 方法会被频繁调⽤，界⾯重新渲染**，这样效率很低</font>。最好的办法应该是获取到多个更新，之后进⾏批量更新（即：render）。
+
+  > 👀 类似于 Vue 的异步事件队列，按照 Tick <font color=red>批量处理</font>事件
+
+- 如果同步更新了 state，但是还没有执⾏ render 方法，那么 state 和 props 不能保持同步：如果 state 和 props 不能保持⼀致性，会在开发中产⽣很多的问题
+
+###### React 18 之前，setState 可以是同步函数
+
+在 React18 之前，setTimeout 、原生 DOM 事件、Promise 中的 setState 操作（因为不属于 React 事件处理了），都是同步操作；实例代码如下：
+
+setTimeout 中使用 setState
+
+```jsx
+setTimeout(() => {
+  // foo: 'foo'
+  this.setState({ foo: 'bar' })
+  console.log(this.state.foo) // 'bar'
+}, 0)
+```
+
+原生 DOM 事件中使用 setState
+
+```jsx
+componentDidMount() {
+  const btnEl = document.getElementById('btn')
+  btnEl.addEventListener('click', () => {
+    this.setState({ foo: 'bar' })
+    console.log(this.state.foo) // 'bar'
+  })
+}
+```
+
+更多的说明，可以参考一下 react blog：
+
+> **New Feature: Automatic Batching**
+>
+> <font color=red>Batching is when React groups multiple state updates into a single re-render for better performance</font>. <font color=dodgerBlue>Without automatic batching</font>, we <font color=red>**only batched updates inside React event handlers**</font>. <font color=fuchsia>Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default</font>. With automatic batching, these updates will be batched automatically:
+>
+> ```jsx
+> // Before: only React events were batched.
+> setTimeout(() => {
+>   setCount(c => c + 1);
+>   setFlag(f => !f);
+>   // React will render twice, once for each state update (no batching)
+> }, 1000);
+> 
+> // After: updates inside of timeouts, promises,
+> // native event handlers or any other event are batched.
+> setTimeout(() => {
+>   setCount(c => c + 1);
+>   setFlag(f => !f);
+>   // React will only re-render once at the end (that's batching!)
+> }, 1000);
+> ```
+>
+> 摘自：[react.dev - blog - react-v18 # What’s New in React 18](https://react.dev/blog/2022/03/29/react-v18#new-feature-automatic-batching)
+
+参考上面 blog 的说明：在 React18 之后，setTimeout 和 原生 DOM 事件中的 setState 也变成了异步了，也就是批量处理。
+
+在 React 18 的环境下，如果还想要同步的 setState ，可以通过 `flushSync( () => { setState() } ) ` 的方式，使它们同步执行。
+
+
+
+#### React 的更新机制
+
+##### React 的更新流程
+
+```mermaid
+flowchart LR
+    props/state改变 --> render函数重新执行 --> 产生新的DOM树 --> 新旧DOM树进行diff --> 计算出差异进行更新 --> 更新到真实的DOM
+```
+
+React 在 props 或 state 发生改变时，会调用 React 的 render 方法，会创建一颗不同的树。
+
+###### React 的 diff 算法
+
+- 同层节点之间相互比较，不会跨节点比较
+
+- 不同类型的节点，产生不同的树结构（相当于销毁并重新创建）
+- 开发中，可以通过 key 来指定哪些节点在不同的渲染下保持稳定
+
+##### 类组件 render 方法机制问题与解决
+
+在 App 组件中，有发现一个问题：只要 App 中的 state 发生改变，就会调用 App 中所有 render 方法；而当 App 的 render 方法被调用时，所有子组件的 render 方法都会被重新调用。在这种情况下，所有的组件都需要重新render，进行 diff 算法，性能必然是很低的。
+
+事实上，很多的组件没有必须要重新render；它们重新调用 render 方法应该有一个前提：依赖的数据 ( state / props )  发生改变时，才会调用自己的 render方法。于是这时可以通过 shouldComponentUpdate 来判断和控制 render 是否应该执行。
+
+关于 shouldComponentUpdate ，可以看下 [[#类组件生命周期]] 的最后 shouldComponentUpdate 中的内容，另外，还有函数组件对应的 `React.memo`
+
+
+
+#### Ref 的使用
+
+在 React 的开发模式中，通常情况下不需要、也不建议直接操作DOM原生；但某些特殊的情况，确实需要获取到 DOM 进行某些操作：
+
+- 管理焦点，文本选择或媒体播放
+- 触发强制动画
+- 集成第三方 DOM 库
+
+这时，可以通过 refs 获取 DOM
+
+##### 获取 refs 的方式
+
+1. 传入字符串（已经被废弃）。使用时通过 `this.refs.` 传入的字符串格式获取对应的元素
+
+   ```jsx
+   import { PureComponent } from 'react'
+   
+   class MyComponent extends PureComponent {
+     console.log(this.refs.myRef)
+   
+     render() {
+       return (
+         <div ref="myRef">ref</div>
+       )
+     }
+   }
+   ```
+
+2. 传入一个对象，对象是通过 `React.createRef()` 方式创建出来的；使用时获取到创建的对象其中有一个`current` 属性就是对应的元素
+
+   ```jsx
+   import { PureComponent, createRef } from 'react'
+   
+   class MyComponent extends PureComponent {
+     this.myRef = createRef()
+     console.log(this.myRef.current)
+   
+     render() {
+       return (
+         <div ref={this.myRef}>ref</div>
+       )
+     }
+   }
+   ```
+
+3. 传入一个函数，该函数会在 DOM 被挂载时进行回调，该函数会传入一个元素对象，可以自己保存
+
+   ```jsx
+   import { PureComponent, createRef } from 'react'
+   
+   class MyComponent extends PureComponent {
+     this.divEl = null
+   
+     render() {
+       return (
+         <div ref={ el => this.divEl = el }>ref</div>
+       )
+     }
+   }
+   ```
+
+4. 使用 useRef 和 useRef 的 `.current` ，这里就不过多介绍了
+
+##### ref 的转发
+
+因为函数式组件没有实例，所以不能获取到对应的组件对象。如果想要获取函数式组件中某个元素的 DOM，可以通过 forwardRef 获得（当然这里的前提依然是：在类组件开发为主的环境下，其中的一个组件为函数组件），示例如下：
+
+```jsx
+const Home = forwardRef(function(prop, ref) {
+  return (
+    <div>
+      <h2 ref={ref}>Home</h2>
+    </div>
+  )
+})
+```
+
+
+
+#### 受控组件与非受控组件
+
+###### 直接给出示例
+
+```jsx
+{/* 受控组件 */}
+<input type="text" value={val} onChange={e => this.onInputChange(e) } />
+{/* 非受控组件 */}
+<input type="text" />
+```
+
+如果，上面 `<input type="text" />` 的 `value` （如果 type="checked"/type="radio"，则是 checked）绑定了 state，却没有绑定 onChange 事件处理函数，则会报错：提示要绑定 onChange
+
+##### 受控组件定义
+
+在 HTML 中，表单元素（如 `<input>`、 `<textarea>` 和 `<select>` ）之类的表单元素通常自己维护 state，并根据用户输入进 行更新。
+
+而在 React 中，可变状态 ( mutable state ) 通常保存在组件的 state 属性中，并且只能通过使用 `setState()` 来更新。将两者结合起来，使 React 的 state 成为“唯一数据源”；渲染表单的 React 组件还控制着用户输入过程中表单发生的操作；被 React 以这种方式控制取值的表单输入元素就叫做“受控组件”。
+
+##### 非受控组件定义
+
+React 推荐大多数情况下使用受控组件来处理表单数据： 
+
+- 一个受控组件中，表单数据是由 React 组件来管理的
+- 另一种替代方案是使用非受控组件，这时表单数据将交由 DOM 节点来处理
+
+<font color=dodgerBlue>如果要使用非受控组件中的数据</font>，那么需要使用 ref 来从 DOM 节点中获取表单数据。在非受控组件中通常使用defaultValue 来设置默认值
 
 
 
