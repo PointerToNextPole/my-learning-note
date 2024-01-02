@@ -55,11 +55,15 @@ git config --system --list
 
 ##### 💡 自己的补充
 
-在配置 `git config --global user.**` 时出现将 `user.email ` 写成（配制成）`user.mail` ，这时 git 并不会报错，且会记录到 git list（可通过`git config --list` ）查到
+###### 如何重置错误的配置
+
+在配置 `git config --global user.**` 时出现将 `user.email ` 写成（拼成）`user.mail` ，这时 git 并不会报错，且会记录到 git list（可通过`git config --list` ）查到
 
 这时使用命令 `git config --global --unset user.mail` 即可将其删除（在 `git config --list`中查不到）。
 
-git 在输出时（比如 git status ）往往无法正常输出中文，只能通过转义编码输出中文，可以通过如下方式使之可以输出中文：
+###### git 文件名输出问题的解决
+
+git 在输出文件名时（比如 `git status` 的输出 ）往往无法正常输出中文，只能通过转义编码输出中文，可以通过如下方式使之可以输出中文：
 
 ```sh
 git config --global core.quotepath false

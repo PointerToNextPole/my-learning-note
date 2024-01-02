@@ -5387,6 +5387,8 @@ class App extends React.component {
   export default FnComponent
   ```
 
+  顺带一提：`React.memo` 也就是一个高阶组件
+  
   
 
 ##### 函数组件
@@ -5397,7 +5399,7 @@ class App extends React.component {
 - `this` 关键字不能指向组件实例（ 因为没有组件实例 ）
 - 没有内部状态 ( state )
 
-##### 
+
 
 #### React 的父子组件通信
 
@@ -5839,7 +5841,7 @@ React 在 props 或 state 发生改变时，会调用 React 的 render 方法，
 
 ##### ref 的转发
 
-因为函数式组件没有实例，所以不能获取到对应的组件对象。如果想要获取函数式组件中某个元素的 DOM，可以通过 forwardRef 获得（当然这里的前提依然是：在类组件开发为主的环境下，其中的一个组件为函数组件），示例如下：
+因为函数式组件没有实例，所以不能获取到对应的组件对象。如果想要获取函数式组件中某个元素的 DOM，可以通过 高阶组件 `React.forwardRef` 获得（当然这里的前提依然是：在类组件开发为主的环境下，其中的一个组件为函数组件），示例如下：
 
 ```jsx
 const Home = forwardRef(function(prop, ref) {
@@ -5874,12 +5876,23 @@ const Home = forwardRef(function(prop, ref) {
 
 ##### 非受控组件定义
 
-React 推荐大多数情况下使用受控组件来处理表单数据： 
+<font color=red>React **推荐大多数情况下使用受控组件**来处理表单数据</font>： 一个受控组件中，表单数据是由 React 组件来管理的。
 
-- 一个受控组件中，表单数据是由 React 组件来管理的
-- 另一种替代方案是使用非受控组件，这时表单数据将交由 DOM 节点来处理
+<font color=red>另一种替代方案是使用非受控组件</font>，这时表单数据将交由 DOM 节点来处理（相当于直接操控 DOM ）
 
-<font color=dodgerBlue>如果要使用非受控组件中的数据</font>，那么需要使用 ref 来从 DOM 节点中获取表单数据。在非受控组件中通常使用defaultValue 来设置默认值
+<font color=dodgerBlue>如果要使用非受控组件中的数据</font>，那么<font color=fuchsia>**需要使用 ref 来从 DOM 节点中获取表单数据**</font>。在非受控组件中通常使用`defaultValue` / `defaultChecked` 来设置默认值
+
+
+
+#### 高阶组件 HOC
+
+
+
+#### StrictMode
+
+严格模式检查仅在开发模式下运行；它们不会影响生产构建；
+
+在 React 严格模式的情况下，声明周期会执行两次；同时，如果在 React 18下，安装了 React Devtools，第二次执行相关打印颜色会是灰色的
 
 
 
