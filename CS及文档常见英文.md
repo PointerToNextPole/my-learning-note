@@ -966,6 +966,8 @@
   >
   > 摘自：[React doc - Reacting to Input with State # How declarative UI compares to imperative](https://react.dev/learn/reacting-to-input-with-state#how-declarative-ui-compares-to-imperative)
   
+- **spin-off** ：拆分的
+
 - **exponential** ：指数的
 
 - **name after** ：以...为名

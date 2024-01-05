@@ -1645,9 +1645,15 @@ Git 可执行两种类型的合并：fast-forward 和 no-fast-forward。
 
 学习自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
+###### 撤销合并
+
+除了可以使用 `git reset --hard commitHash | HEAD_ptr` 以撤销不符合预期的 merge 之外，Git 还提供了撤消合并更好的方法：`git reset --merge commitHash | HEAD_ptr`
+
+学习自：[Git 撤销合并——如何在 Git 中恢复之前的合并提交](https://www.freecodecamp.org/chinese/news/git-undo-merge-how-to-revert-the-last-merge-commit-in-git/)
+
 ##### rebase
 
-跟merge的例子一样，如下图所示，bugfix分支是从master分支分叉出来的。
+跟merge的例子一样，如下图所示，bugfix 分支是从 master 分支分叉出来的。
 
 ![分支](https://s2.loli.net/2022/02/22/W5J98HkwNEpRZor.png)
 
