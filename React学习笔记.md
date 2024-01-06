@@ -5772,7 +5772,7 @@ React 在 props 或 state 发生改变时，会调用 React 的 render 方法，
 
 事实上，很多的组件没有必须要重新render；它们重新调用 render 方法应该有一个前提：依赖的数据 ( state / props )  发生改变时，才会调用自己的 render方法。于是这时可以通过 shouldComponentUpdate 来判断和控制 render 是否应该执行。
 
-关于 shouldComponentUpdate ，可以看下 [[#类组件生命周期]] 的最后 shouldComponentUpdate 中的内容，另外，还有函数组件对应的 `React.memo`
+关于 shouldComponentUpdate ，可以看下 [[#类组件生命周期]] 最后 shouldComponentUpdate 中的内容，另外，还有函数组件对应的高阶组件 `React.memo`
 
 
 
@@ -5890,9 +5890,23 @@ const Home = forwardRef(function(prop, ref) {
 
 #### StrictMode
 
-严格模式检查仅在开发模式下运行；它们不会影响生产构建；
+StrictMode 是一个用来突出显示应用程序中潜在问题的工具。与 Fragment 一样，StrictMode 不会渲染任何可见的 UI； 它为其后代元素触发额外的检查和警告。严格模式检查仅在开发模式下运行；它们不会影响生产构建。
 
-在 React 严格模式的情况下，声明周期会执行两次；同时，如果在 React 18下，安装了 React Devtools，第二次执行相关打印颜色会是灰色的
+在 React 严格模式的情况下，声明周期会执行两次；同时，在 React 18 环境下，安装 React Devtools 后，第二次执行，相关的打印颜色会是灰色的
+
+##### 严格模式检查的是什么
+
+1. 识别不安全的生命周期：
+
+2. 使用过时的ref API
+
+3. 检查意外的副作用
+
+   StrictMode 内部的组件 constructor 会被调用两次，这是严格模式下故意进行的操作：以供查看在这里写的一些逻辑代码被调用多次时，是否会产生一些副作用。因为只作用于开发时，在生产环境中，是不会被调用两次的；
+
+4. 使用废弃的findDOMNode方法  在之前的React API中，可以通过findDOMNode来获取DOM，不过已经不推荐使用了
+
+5. 检测过时的context API 。早期的Context是通过static属性声明Context对象属性，通过getChildContext返回Context对象等方式来使用Context的；目前这种方式已经不推荐使用
 
 
 
