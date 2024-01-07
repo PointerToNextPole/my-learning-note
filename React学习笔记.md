@@ -5898,15 +5898,15 @@ StrictMode 是一个用来突出显示应用程序中潜在问题的工具。与
 
 1. 识别不安全的生命周期：
 
-2. 使用过时的ref API
+2. 使用过时的 ref API
 
 3. 检查意外的副作用
 
    StrictMode 内部的组件 constructor 会被调用两次，这是严格模式下故意进行的操作：以供查看在这里写的一些逻辑代码被调用多次时，是否会产生一些副作用。因为只作用于开发时，在生产环境中，是不会被调用两次的；
 
-4. 使用废弃的findDOMNode方法  在之前的React API中，可以通过findDOMNode来获取DOM，不过已经不推荐使用了
+4. 使用废弃的findDOMNode方法。在之前的React API中，可以通过findDOMNode来获取DOM，不过已经不推荐使用了
 
-5. 检测过时的context API 。早期的Context是通过static属性声明Context对象属性，通过getChildContext返回Context对象等方式来使用Context的；目前这种方式已经不推荐使用
+5. 检测过时的 Context API 。早期的 Context 是通过 static 属性声明Context对象属性，通过getChildContext返回Context对象等方式来使用Context的；目前这种方式已经不推荐使用
 
 
 

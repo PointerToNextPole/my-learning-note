@@ -35,7 +35,7 @@
 
 
 
-##### “粘性滚动” 设置
+##### 编辑器的 “粘性滚动” 设置
 
 ```json
 "editor.stickyScroll.enabled": true
@@ -48,6 +48,16 @@
 另外，发现用来写 markdown 效果出奇的好：
 
 <img src="https://s2.loli.net/2022/09/05/1I2spWkfXBeZ4VH.png" alt="image-20220905005539528" style="zoom:50%;" />
+
+##### 工作台的粘性滚动
+
+```json
+"workbench.tree.enableStickyScroll": true,
+```
+
+效果如下：
+
+<img src="https://s2.loli.net/2024/01/07/GJFDMsvkpX74bHm.png" alt="image-20240107234054700" style="zoom:50%;" />
 
 
 
