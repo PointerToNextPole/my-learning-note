@@ -1003,6 +1003,8 @@
 - **metric** ：指标
 
 - **workbench** ：工作台，在开发领域一般和代码编辑器相关
+
+- **autowire** ：自动装配。一般见于 Spring Boot 的注解 `@autowired`
 ***
 
 
@@ -1307,3 +1309,11 @@
 - **prevalent** ：流行的
 
 - **substantial** ：可观的、大量的
+
+- **degraded** ：退化的
+
+- **permissive** ：宽松的、放任的
+
+  > Atuin is open source with a permissive license, and has a growing community.
+  >
+  > 摘自：[Atuin 管网](https://atuin.sh/)
