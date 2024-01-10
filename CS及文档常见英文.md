@@ -1317,3 +1317,5 @@
   > Atuin is open source with a permissive license, and has a growing community.
   >
   > 摘自：[Atuin 管网](https://atuin.sh/)
+  
+- **comprehensive** ：全面的，综合的
