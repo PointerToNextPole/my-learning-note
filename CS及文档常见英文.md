@@ -1318,4 +1318,4 @@
   >
   > 摘自：[Atuin 管网](https://atuin.sh/)
   
-- **comprehensive** ：全面的，综合的
+- **leading-edge** ：前沿
