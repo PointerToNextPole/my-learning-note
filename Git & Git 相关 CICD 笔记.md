@@ -316,7 +316,7 @@ cat .git/objects/58/c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
 xKOR0a044K%
 ```
 
-怎么是一串乱码？这是因为Git将信息压缩成二进制文件。但是不用担心，因为Git也提供了一个能够帮助你探索它的api `git cat-file [-t] [-p]`， `-t`可以查看object的类型，`-p`可以查看object储存的具体内容。
+怎么是一串乱码？这是因为Git将信息压缩成二进制文件。但是不用担心，因为Git也提供了一个能够帮助你探索它的api `git cat-file [-t] [-p]`， `-t` 可以查看 object 的类型，`-p` 可以查看object储存的具体内容。
 
 ```shell
 $ git cat-file -t 58c9

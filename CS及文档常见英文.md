@@ -1005,6 +1005,10 @@
 - **workbench** ：工作台，在开发领域一般和代码编辑器相关
 
 - **autowire** ：自动装配。一般见于 Spring Boot 的注解 `@autowired`
+
+- **roam** ：漫游
+
+- **demonstrate** ：演示（亦即 “demo” 的全称），证明
 ***
 
 
