@@ -1337,3 +1337,9 @@
 - **synthesizes** ：合成
 
 - **grind** ：磨碎
+
+- **plow** ：犁
+
+  > “The only other way to obtain the information you'll find in this handbook would be to **plow through** a mountain of books and a few hundred technical journals and then add a significant amount of real-world experience.”
+  >
+  > 摘自：Code Complete 2nd Edition
