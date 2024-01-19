@@ -1340,6 +1340,16 @@
 
 - **plow** ：犁
 
-  > “The only other way to obtain the information you'll find in this handbook would be to **plow through** a mountain of books and a few hundred technical journals and then add a significant amount of real-world experience.”
+  > The only other way to obtain the information you'll find in this handbook would be to **plow through** a mountain of books and a few hundred technical journals and then add a significant amount of real-world experience.
   >
   > 摘自：Code Complete 2nd Edition
+  
+- **nitty-gritty** ：细节
+
+  > It gets into nitty-gritty construction details such as steps in building classes, ins and outs of using data and control structures, debugging, refactoring, and code-tuning techniques and strategies.
+  >
+  > 摘自：Code Complete 2nd Edition
+
+- **fray** ：磨损
+
+- **distilled** ：蒸馏的
