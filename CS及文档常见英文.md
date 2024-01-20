@@ -1326,7 +1326,7 @@
 
   > Atuin is open source with a permissive license, and has a growing community.
   >
-  > 摘自：[Atuin 管网](https://atuin.sh/)
+  > 摘自：[Atuin 官网](https://atuin.sh/)
   
 - **leading-edge** ：前沿
 
