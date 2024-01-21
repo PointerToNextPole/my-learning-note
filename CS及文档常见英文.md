@@ -1013,6 +1013,12 @@
 - **demonstrate** ：演示（亦即 “demo” 的全称），证明
 
 - **counterpoint** ：对位法
+
+- **stimulate** ：促进，刺激
+
+- **strength** ：优势
+
+  > 👀 虽然但是，过于基础... 不过还是忘记了...
 ***
 
 
