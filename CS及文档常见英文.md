@@ -1036,10 +1036,10 @@
 
 ##### 括号 Bracket
 
-- **() / 圆括号**：Round brackets / parentheses
-- **\[] / 方括号**：Square brackets / brackets
-- **{} / 花括号 / 大括号** ：Curly brackets / braces
-- **<> / 尖括号**：Angle brackets / chevrons
+- **`()` / 圆括号**：Round brackets / parentheses
+- **`[]` / 方括号**：Square brackets / brackets
+- **`{}` / 花括号 / 大括号** ：Curly brackets / braces
+- **`<>` / 尖括号**：Angle brackets / chevrons
 
 参考自：[wikipedia - Bracket](https://en.wikipedia.org/wiki/Bracket)
 
@@ -1069,10 +1069,10 @@
 
 | Symbol                  | How it is helpful                                            |
 | :---------------------- | :----------------------------------------------------------- |
-| Plus sign (+)           | Search for things like blood type [ AB+ ] or for a Google+ page like [ +Chrome ] |
-| "At" sign (@)           | Find social tags like [ @google ] or [ @ladygaga]            |
+| Plus sign (`+`)         | Search for things like blood type [ AB+ ] or for a Google+ page like [ +Chrome ] |
+| "At" sign (@)           | Find social tags like [ `@google` ] or [ `@ladygaga`]        |
 | Ampersand (&)           | Find strongly connected ideas and phrases like [ Brothers & Sisters ] or [ A&E ] |
-| Percent (%)             | Search for a percent value like [ 40% of 80 ] or [ 10% of .1 ] |
+| Percent (`%`)           | Search for a percent value like [ 40% of 80 ] or [ 10% of .1 ] |
 | Dollar sign (`$`)       | Indicate prices, so [ nikon 400 ] and [ nikon `$400` ] give different results |
 | Hashtag/number sign (#) | Search for trending topics indicated by hashtags like [ \#lifewithoutgoogle ] |
 | Dash (-)                | Indicate that words around it are strongly connected as in [ twelve-year-old dog ] and [ cross-reference ] |
@@ -1359,3 +1359,17 @@
 - **fray** ：磨损
 
 - **distilled** ：蒸馏的
+
+- **swathe** ：捆、包裹
+
+- **circumstance** ：条件、情况
+
+- **applicable** ：恰当的，适用的
+
+- **watershed** ：流域、转折点、分水岭
+
+- **transcend** ：超越
+
+- **esoteric** ：难懂的
+
+- **nuance** ：细微差别
