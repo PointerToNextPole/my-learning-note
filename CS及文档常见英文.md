@@ -386,7 +386,7 @@
 
 - **react** ：反应 ( verb ) 👀 这个不应该忘记的...
 
-- **deviate** ：偏离。一般使用：deviate from
+- **deviate** ：偏离。一般搭配：deviate from
 
 - **canonical** ：权威性的。比较常见的用在 `<link rel="canonical">` 和 CNAME record ( Canonical Name Record )
 
@@ -1021,6 +1021,10 @@
   > 👀 虽然但是，过于基础... 不过还是忘记了...
   
 - **clickbait** ：点击诱饵
+
+- **adhere** ：遵守
+
+  > 👀 挺基础的，不该遗忘
 ***
 
 
@@ -1382,4 +1386,14 @@
 
 - **hobble** ：蹒跚
 
-- 
+- **comfy** ：舒适的
+
+- **guardrail** ：护栏
+
+- **brittle** ：易碎的
+
+- **sparing** ：adj. 慎用、节俭的。
+
+  > Refs are an escape hatch that should be used sparingly
+  >
+  > 摘自：[react.dev - Manipulating the DOM with Refs # Accessing another component’s DOM nodes](https://react.dev/learn/manipulating-the-dom-with-refs#accessing-another-components-dom-nodes)

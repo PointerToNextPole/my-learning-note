@@ -4583,31 +4583,31 @@ for (let i = 0; i < 10; i++) {
 
 In this example, `itemsRef` doesn’t hold a single DOM node. Instead, it holds a Map from item ID to a DOM node. ([Refs can hold any values!](https://react.dev/learn/referencing-values-with-refs))
 
-> 💡 其他实现方法
+> 💡 上面的实现，是将所有的 ref 存入一个 Map 中，而 Map 存在一个 ref 中；这种方案可以说是一种比较通用的方法。但是在当前场景下，使用 ref 数组（该 ref 数组也存在一个 ref 中）来存储 ref 是更好的选择。实现思路和方法如下：
 >
 > 鉴于 dom 中的 ref 是可以传入函数的，所以可以定义一个 “数组 ref ” ，在 dom ref 中定义将 dom 放入 “数组 ref ” 的函数。示例如下：
 >
 > ```jsx
 > import { useRef } from 'react';
 > 
-> export default function Form() {
->   const refs = useRef([]);
+> export default function ArrRefComponent() {
+>     const refs = useRef([]);
 > 
->   const arr = [1, 2, 3]
+>     const arr = [1, 2, 3]
 > 
->   return (
->     <>
->       {arr.map((item, index) => 
->         <p
->           key={item}
->           ref={el => refs.current[index] = el}
->           onClick={ () => console.log(refs.current[index]) }
->         >
->           {item}
->         </p>)
->       }
->     </>
->   );
+>     return (
+>       <>
+>         {arr.map((item, index) => 
+>           <p
+>             key={item}
+>             ref={el => refs.current[index] = el}
+>             onClick={ () => console.log(refs.current[index]) }
+>           >
+>             { item }
+>           </p>)
+>         }
+>       </>
+>     );
 > }
 > ```
 
@@ -4647,9 +4647,11 @@ To help you notice the issue, React also prints an error to the console:
 
 <img src="https://s2.loli.net/2023/10/08/zN72lCBEmq1RPyu.png" alt="image-20231008152754863" style="zoom:50%;" />
 
-<font color=dodgerBlue>This happens because</font> <font color=fuchsia>by default React **does not let a component access the DOM nodes of other components**</font>. <font color=fuchsia>**Not even for its own children!**</font> This is intentional. <font color=red>Refs are an escape hatch that should be used sparingly</font>. Manually manipulating *another* component’s DOM nodes makes your code even more fragile.
+<font color=dodgerBlue>This happens because</font> <font color=fuchsia>by default React **does not let a component access the DOM nodes of other components**</font>. <font color=fuchsia>**Not even for its own children!**</font> This is intentional. <font color=red>Refs are an escape hatch that should be used sparingly</font>. <font color=fuchsia>Manually manipulating *another* component’s DOM nodes **makes your code even more fragile**</font>.
 
-> 👀 父组件无法访问子组件的 ref，这点之前完全没想到；这也和 Vue 完全不一样
+> 👀 父组件无法访问子组件的 ref，这点之前完全没想到；这也和 Vue 默认的（除了 script setup ）不一样。
+>
+> 在 Vue3 script setup 同样默认不暴露 ( expose ) 组件自身的内容，除非通过 `expose()` （ `setup` 函数中）或者 `defineExpose()` （ script setup 中）去暴露。具体可以看下 [script setup到底做了什么【渡一教育】](https://www.bilibili.com/video/BV1Pw411c7Dn)
 
 <font color=dodgerBlue>Instead</font>, <font color=red>components that *want* to expose their DOM nodes have to **opt in**</font>（选择加入）<font color=red>to that behavior</font>. <font color=fuchsia>A component can specify that it **“forwards” its ref to one of its children**</font>. Here’s how `MyInput` can <font color=red>use the `forwardRef` API</font>:
 
