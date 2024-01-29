@@ -92,6 +92,8 @@
 
 - **imperative programming**：命令式编程
 
+   > 💡 另外，React 也有 `useImperativeHandle` 的 hooks
+
 - **arithmetic**：算术
 
 - **in lieu of**：替代
