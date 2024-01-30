@@ -1399,3 +1399,7 @@
   > Refs are an escape hatch that should be used sparingly
   >
   > 摘自：[react.dev - Manipulating the DOM with Refs # Accessing another component’s DOM nodes](https://react.dev/learn/manipulating-the-dom-with-refs#accessing-another-components-dom-nodes)
+  
+- **shortchanged** ：短缺，变短
+
+- **irony** ：讽刺
