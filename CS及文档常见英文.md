@@ -1394,7 +1394,7 @@
 
 - **brittle** ：易碎的
 
-- **sparing** ：adj. 慎用、节俭的。
+- **sparing** ：adj. 慎用、节俭的
 
   > Refs are an escape hatch that should be used sparingly
   >
@@ -1403,3 +1403,7 @@
 - **shortchanged** ：短缺，变短
 
 - **irony** ：讽刺
+
+- **in light of** ：鉴于
+
+- **conceive** ：想出，构思
