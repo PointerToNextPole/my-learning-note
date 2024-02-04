@@ -1407,3 +1407,5 @@
 - **in light of** ：鉴于
 
 - **conceive** ：想出，构思
+
+- **trumpet** ：鼓吹
