@@ -1409,3 +1409,7 @@
 - **conceive** ：想出，构思
 
 - **trumpet** ：鼓吹
+
+- **oversee** ：监督、监视
+
+- **inquiry** ：调查、询问、查询
