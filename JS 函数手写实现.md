@@ -614,6 +614,18 @@ const sleep = async msCount => new Promise((resolve) => setTimeout(resolve, msCo
 })()
 ```
 
+##### 其他补充
+
+```js
+const isb = new Int32Array(new SharedArrayBuffer(4))
+function sleep (ms) {
+  Atomics.wait(isb, 0, 0, ms)
+}
+```
+
+摘自：[为什么JavaScript中没有sleep方法？ - justjavac的回答 - 知乎](
+https://www.zhihu.com/question/22578576/answer/3387064599)
+
 
 
 ### 排序实现

@@ -1413,3 +1413,7 @@
 - **oversee** ：监督、监视
 
 - **inquiry** ：调查、询问、查询
+
+- **mobilize** ：动员
+
+- **resilience** ：韧性、恢复力
