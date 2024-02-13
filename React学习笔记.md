@@ -4866,6 +4866,14 @@ Before getting to Effects, you need to be familiar with two types of logic insid
 
 <font color=lightSeaGreen>**Don’t rush to add Effects to your components**</font>. Keep in mind that Effects are typically used to “step out” of your React code and synchronize with some *external* system. This includes browser APIs, third-party widgets, network, and so on. If your Effect only adjusts some state based on other state, [you might not need an Effect.](https://react.dev/learn/you-might-not-need-an-effect)
 
+##### How to write an Effect 
+
+To write an Effect, follow these three steps:
+
+1. **Declare an Effect.** <font color=dodgerBlue>By default</font>, <font color=red>**your Effect will run after every render**</font>.
+2. **Specify the Effect dependencies.** <font color=red>**Most Effects should only re-run *when needed* rather than after every render**</font>. For example, a fade-in animation should only trigger when a component appears. Connecting and disconnecting to a chat room should only happen when the component appears and disappears, or when the chat room changes. <font color=lightSeaGreen>You will learn how to control this **by specifying *dependencies***.</font>
+3. <font color=fuchsia>**Add cleanup if needed**</font>. <font color=red>Some Effects need to specify how to stop, undo, or clean up whatever they were doing</font>. For example, “connect” needs “disconnect”, “subscribe” needs “unsubscribe”, and “fetch” needs either “cancel” or “ignore”. <font color=red>**You will learn how to do this by returning a *cleanup function***</font>.
+
 
 
 
