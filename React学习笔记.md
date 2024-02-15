@@ -4874,7 +4874,35 @@ To write an Effect, follow these three steps:
 2. **Specify the Effect dependencies.** <font color=red>**Most Effects should only re-run *when needed* rather than after every render**</font>. For example, a fade-in animation should only trigger when a component appears. Connecting and disconnecting to a chat room should only happen when the component appears and disappears, or when the chat room changes. <font color=lightSeaGreen>You will learn how to control this **by specifying *dependencies***.</font>
 3. <font color=fuchsia>**Add cleanup if needed**</font>. <font color=red>Some Effects need to specify how to stop, undo, or clean up whatever they were doing</font>. For example, “connect” needs “disconnect”, “subscribe” needs “unsubscribe”, and “fetch” needs either “cancel” or “ignore”. <font color=red>**You will learn how to do this by returning a *cleanup function***</font>.
 
+> 👀 这里省去了一个示例
 
+In React, [rendering should be a pure calculation](https://react.dev/learn/keeping-components-pure) of JSX and <font color=red>should not contain side effects like modifying the DOM</font>.
+
+Moreover, when `VideoPlayer` is called for the first time, its DOM does not exist yet! There isn’t a DOM node yet to call `play()` or `pause()` on, because React doesn’t know what DOM to create until you return the JSX.
+
+The solution here is to **wrap the side effect with `useEffect` to move it out of the rendering calculation** :
+
+```jsx
+import { useEffect, useRef } from 'react';
+
+function VideoPlayer({ src, isPlaying }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (isPlaying) {
+      ref.current.play();
+    } else {
+      ref.current.pause();
+    }
+  });
+
+  return <video ref={ref} src={src} loop playsInline />;
+}
+```
+
+<font color=dodgerBlue>By wrapping the DOM update in an Effect</font>, you <font color=fuchsia>**let React update the screen first**</font>. <font color=dodgerBlue>**Then**</font> <font color=fuchsia>**your Effect runs**</font>.
+
+When your `VideoPlayer` component renders (either the first time or if it re-renders), a few things will happen. First, React will update the screen, ensuring the `<video>` tag is in the DOM with the right props. Then React will run your Effect. Finally, your Effect will call `play()` or `pause()` depending on the value of `isPlaying` .
 
 
 
