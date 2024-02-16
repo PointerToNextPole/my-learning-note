@@ -4904,6 +4904,25 @@ function VideoPlayer({ src, isPlaying }) {
 
 When your `VideoPlayer` component renders (either the first time or if it re-renders), a few things will happen. First, React will update the screen, ensuring the `<video>` tag is in the DOM with the right props. Then React will run your Effect. Finally, your Effect will call `play()` or `pause()` depending on the value of `isPlaying` .
 
+In this example, the “external system” you synchronized to React state was the browser media API. You can use a similar approach to wrap legacy non-React code (like jQuery plugins) into declarative React components.
+
+Note that controlling a video player is much more complex in practice. Calling `play()` may fail, the user might play or pause using the built-in browser controls, and so on. This example is very simplified and incomplete.
+
+> ⚠️ Pitfall
+>
+> <font color=dodgerBlue>By default</font>, <font color=red>Effects run after *every* render</font>. <font color=lightSeaGreen>This is why code like this will **produce an infinite loop:**</font>
+>
+> ```jsx
+> const [count, setCount] = useState(0);
+> useEffect(() => {
+>   setCount(count + 1);
+> });
+> ```
+>
+> Effects run as a *result* of rendering. Setting state *triggers* rendering. Setting state immediately in an Effect is like plugging a power outlet into itself. The Effect runs, it sets the state, which causes a re-render, which causes the Effect to run, it sets the state again, this causes another re-render, and so on.
+>
+> Effects should usually synchronize your components with an *external* system. If there’s no external system and you only want to adjust some state based on other state, [you might not need an Effect.](https://react.dev/learn/you-might-not-need-an-effect)
+
 
 
 ## coderwhy React18 学习笔记
