@@ -4866,7 +4866,7 @@ Before getting to Effects, you need to be familiar with two types of logic insid
 
 <font color=lightSeaGreen>**Don’t rush to add Effects to your components**</font>. Keep in mind that Effects are typically used to “step out” of your React code and synchronize with some *external* system. This includes browser APIs, third-party widgets, network, and so on. If your Effect only adjusts some state based on other state, [you might not need an Effect.](https://react.dev/learn/you-might-not-need-an-effect)
 
-##### How to write an Effect 
+##### How to write an Effect
 
 To write an Effect, follow these three steps:
 
@@ -4874,7 +4874,11 @@ To write an Effect, follow these three steps:
 2. **Specify the Effect dependencies.** <font color=red>**Most Effects should only re-run *when needed* rather than after every render**</font>. For example, a fade-in animation should only trigger when a component appears. Connecting and disconnecting to a chat room should only happen when the component appears and disappears, or when the chat room changes. <font color=lightSeaGreen>You will learn how to control this **by specifying *dependencies***.</font>
 3. <font color=fuchsia>**Add cleanup if needed**</font>. <font color=red>Some Effects need to specify how to stop, undo, or clean up whatever they were doing</font>. For example, “connect” needs “disconnect”, “subscribe” needs “unsubscribe”, and “fetch” needs either “cancel” or “ignore”. <font color=red>**You will learn how to do this by returning a *cleanup function***</font>.
 
-> 👀 这里省去了一个示例
+> 💡 下面的 Step 和 上面的 [[#How to write an Effect]] 中每一项一一对应
+
+##### Step 1: Declare an Effect
+
+> 👀 这里省去了一个示例，因为感觉没什么特别之处
 
 In React, [rendering should be a pure calculation](https://react.dev/learn/keeping-components-pure) of JSX and <font color=red>should not contain side effects like modifying the DOM</font>.
 
@@ -4919,9 +4923,18 @@ Note that controlling a video player is much more complex in practice. Calling `
 > });
 > ```
 >
+> > 👀 有点类似于 Vue 中，在 watch 中修改响应式数据、使其加一
+>
 > Effects run as a *result* of rendering. Setting state *triggers* rendering. Setting state immediately in an Effect is like plugging a power outlet into itself. The Effect runs, it sets the state, which causes a re-render, which causes the Effect to run, it sets the state again, this causes another re-render, and so on.
 >
 > Effects should usually synchronize your components with an *external* system. If there’s no external system and you only want to adjust some state based on other state, [you might not need an Effect.](https://react.dev/learn/you-might-not-need-an-effect)
+
+##### Step 2: Specify the Effect dependencies 
+
+By default, Effects run after *every* render. Often, this is **not what you want:**
+
+- Sometimes, it’s slow. Synchronizing with an external system is not always instant, so you might want to skip doing it unless it’s necessary. For example, you don’t want to reconnect to the chat server on every keystroke.
+- Sometimes, it’s wrong. For example, you don’t want to trigger a component fade-in animation on every keystroke. The animation should only play once when the component appears for the first time.
 
 
 
