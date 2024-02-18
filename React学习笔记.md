@@ -4925,16 +4925,28 @@ Note that controlling a video player is much more complex in practice. Calling `
 >
 > > 👀 有点类似于 Vue 中，在 watch 中修改响应式数据、使其加一
 >
-> Effects run as a *result* of rendering. Setting state *triggers* rendering. Setting state immediately in an Effect is like plugging a power outlet into itself. The Effect runs, it sets the state, which causes a re-render, which causes the Effect to run, it sets the state again, this causes another re-render, and so on.
+> Effects run as a *result* of rendering. <font color=lightSeaGreen>Setting state *triggers* rendering</font>. <font color=red>**Setting state immediately in an Effect is like plugging a power outlet into itself**</font>（🌏 在 Effect 中立即设置状态就像将电源插座插入自身）. The Effect runs, it sets the state, which causes a re-render, which causes the Effect to run, it sets the state again, this causes another re-render, and so on.
 >
 > Effects should usually synchronize your components with an *external* system. If there’s no external system and you only want to adjust some state based on other state, [you might not need an Effect.](https://react.dev/learn/you-might-not-need-an-effect)
 
 ##### Step 2: Specify the Effect dependencies 
 
-By default, Effects run after *every* render. Often, this is **not what you want:**
+By default, Effects run after *every* render. Often, <font color=dodgerBlue>this is **not what you want**</font>:
 
-- Sometimes, it’s slow. Synchronizing with an external system is not always instant, so you might want to skip doing it unless it’s necessary. For example, you don’t want to reconnect to the chat server on every keystroke.
+- Sometimes, it’s slow. <font color=red>Synchronizing with an external system is not always instant</font>, so you might want to skip doing it unless it’s necessary. For example, you don’t want to reconnect to the chat server on every keystroke.
 - Sometimes, it’s wrong. For example, you don’t want to trigger a component fade-in animation on every keystroke. The animation should only play once when the component appears for the first time.
+
+> 👀 这里依然省去了一个实例
+
+You can tell React to **skip unnecessarily re-running the Effect** by specifying an array of *dependencies* as the second argument to the `useEffect` call. Start by adding an empty `[]` array
+
+```jsx
+useEffect(() => {
+  // ...
+}, [...]);
+```
+
+
 
 
 
