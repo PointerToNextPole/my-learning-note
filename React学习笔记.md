@@ -4936,17 +4936,93 @@ By default, Effects run after *every* render. Often, <font color=dodgerBlue>this
 - Sometimes, it’s slow. <font color=red>Synchronizing with an external system is not always instant</font>, so you might want to skip doing it unless it’s necessary. For example, you don’t want to reconnect to the chat server on every keystroke.
 - Sometimes, it’s wrong. For example, you don’t want to trigger a component fade-in animation on every keystroke. The animation should only play once when the component appears for the first time.
 
-> 👀 这里依然省去了一个实例
+> 👀 感觉意义不大，这里省去了一个示例
 
 You can tell React to **skip unnecessarily re-running the Effect** by specifying an array of *dependencies* as the second argument to the `useEffect` call. Start by adding an empty `[]` array
 
 ```jsx
 useEffect(() => {
   // ...
-}, [...]);
+}, []);
 ```
 
+You should see an error saying `React Hook useEffect has a missing dependency: 'isPlaying'`:
 
+<img src="https://s2.loli.net/2024/02/19/nuMqV6s4XWQ7jcL.png" alt="image-20240219181201644" style="zoom:50%;" />
+
+> ⚠️ 这里并不是代码报错，至少文档对应的 codesandbox 中没有报错，只是 lint 在报错，代码可以正常运行
+
+The problem is that the code inside of your Effect *depends on* the `isPlaying` prop to decide what to do, but this dependency was not explicitly declared. To fix this issue, add `isPlaying` to the dependency array:
+
+```jsx
+useEffect(() => {
+  if (isPlaying) { // It's used here...
+    // ...
+  } else {
+    // ...
+  }
+}, [isPlaying]); // ...so it must be declared here!
+```
+
+Now all dependencies are declared, so there is no error. <font color=dodgerBlue>Specifying `[isPlaying]` as the dependency array tells React</font> that <font color=red>it should skip re-running your Effect if `isPlaying` is the same as it was during the previous render</font>.
+
+The dependency array can contain multiple dependencies. React will only skip re-running the Effect if *all* of the dependencies you specify have exactly the same values as they had during the previous render. <font color=red>**React compares the dependency values using the `Object.is` comparison**</font>. See the [`useEffect` reference](https://react.dev/reference/react/useEffect#reference) for details.
+
+<font color=red>**Notice that you can’t “choose” your dependencies**</font>. You <font color=lightSeaGreen>will get a lint error</font> if <font color=red>the dependencies you specified don’t match what React expects based on the code inside your Effect</font>. This helps catch many bugs in your code. If you don’t want some code to re-run, [*edit the Effect code itself* to not “need” that dependency.](https://react.dev/learn/lifecycle-of-reactive-effects#what-to-do-when-you-dont-want-to-re-synchronize)
+
+> ⚠️ Pitfall
+>
+> The behaviors without the dependency array and with an *empty* `[]` dependency array are different:
+>
+> ```jsx
+> useEffect(() => {
+>   // This runs after every render
+> });
+> 
+> useEffect(() => {
+>   // This runs only on mount (when the component appears)
+> }, []);
+> 
+> useEffect(() => {
+>   // This runs on mount *and also* if either a or b have changed since the last render
+> }, [a, b]);
+> ```
+
+> 💡 DEEP DIVE
+>
+> ###### Why was the ref omitted from the dependency array?
+>
+> This Effect uses *both* `ref` and `isPlaying`, but only `isPlaying` is declared as a dependency:
+>
+> ```jsx
+> function VideoPlayer({ src, isPlaying }) {
+>   const ref = useRef(null);
+>   useEffect(() => {
+>     if (isPlaying) {
+>       ref.current.play();
+>     } else {
+>       ref.current.pause();
+>     }
+>   }, [isPlaying]);
+> ```
+>
+> This is because the `ref` object has a *stable identity:* React guarantees [you’ll always get the same object](https://react.dev/reference/react/useRef#returns) from the same `useRef` call on every render. It never changes, so it will never by itself cause the Effect to re-run. Therefore, it does not matter whether you include it or not. Including it is fine too:
+>
+> ```jsx
+> function VideoPlayer({ src, isPlaying }) {
+>   const ref = useRef(null);
+>   useEffect(() => {
+>     if (isPlaying) {
+>       ref.current.play();
+>     } else {
+>       ref.current.pause();
+>     }
+>   }, [isPlaying, ref]);
+> ```
+>
+> The [`set` functions](https://react.dev/reference/react/useState#setstate) returned by `useState` also have stable identity, so you will often see them omitted from the dependencies too. If the linter lets you omit a dependency without errors, it is safe to do.
+>
+> Omitting always-stable dependencies only works when the linter can “see” that the object is stable. For example, if `ref` was passed from a parent component, you would have to specify it in the dependency array. However, this is good because you can’t know whether the parent component always passes the same ref, or passes one of several refs conditionally. So your Effect *would* depend on which ref is passed.
 
 
 
