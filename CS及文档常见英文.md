@@ -1417,3 +1417,5 @@
 - **mobilize** ：动员
 
 - **resilience** ：韧性、恢复力
+
+- **pill up** ：堆积
