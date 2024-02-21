@@ -5026,7 +5026,7 @@ The dependency array can contain multiple dependencies. React will only skip re-
 
 ##### Step 3: Add cleanup if needed 
 
-Consider a different example. You’re writing a `ChatRoom` component that needs to connect to the chat server when it appears. You are given a `createConnection()` API that returns an object with `connect()` and `disconnect()` methods. How do you keep the component connected while it is displayed to the user?
+<font color=dodgerBlue>Consider a different example</font>. You’re writing a `ChatRoom` component that needs to connect to the chat server when it appears. You are given a `createConnection()` API that returns an object with `connect()` and `disconnect()` methods. How do you keep the component connected while it is displayed to the user?
 
 Start by writing the Effect logic:
 
@@ -5046,7 +5046,7 @@ useEffect(() => {
 }, []);
 ```
 
-**The code inside the Effect does not use any props or state, so your dependency array is `[]` (empty). This tells React to only run this code when the component “mounts”, i.e. appears on the screen for the first time.**
+**<font color=red>The code inside the Effect does not use any props or state, so your dependency array is `[]` (empty)</font>. This tells React to only run this code when the component “mounts”, i.e. appears on the screen for the first time.**
 
 Let’s try running this code:
 
@@ -5081,15 +5081,17 @@ export function createConnection() {
 
 <img src="https://s2.loli.net/2024/02/20/FWyX4A6qBInQzR8.png" alt="image-20240220235800521" style="zoom:50%;" />
 
-This Effect only runs on mount, so you might expect `"✅ Connecting..."` to be printed once in the console. **However, if you check the console, `"✅ Connecting..."` gets printed twice. Why does it happen?**
+This Effect only runs on mount, so <font color=dodgerBlue>you might expect `"✅ Connecting..."` to be printed once in the console</font>. **However, if you check the console, `"✅ Connecting..."` gets printed twice. Why does it happen?**
 
-Imagine the `ChatRoom` component is a part of a larger app with many different screens. The user starts their journey on the `ChatRoom` page. The component mounts and calls `connection.connect()`. Then imagine the user navigates to another screen—for example, to the Settings page. The `ChatRoom` component unmounts. Finally, the user clicks Back and `ChatRoom` mounts again. This would set up a second connection—but the first connection was never destroyed! As the user navigates across the app, the connections would keep piling up.
+<font color=dodgerBlue>Imagine the `ChatRoom` component is a part of a larger app with many different screens</font>. The user starts their journey on the `ChatRoom` page. The component mounts and calls `connection.connect()`. Then imagine the user navigates to another screen—for example, to the Settings page. The `ChatRoom` component unmounts. Finally, <font color=lightSeaGreen>the user clicks Back and `ChatRoom` mounts again</font>. <font color=red>This would set up a second connection—**but the first connection was never destroyed**</font>! As the user navigates across the app, the connections would keep piling up（🌏 堆积）.
 
-Bugs like this are easy to miss without extensive manual testing. To help you spot them quickly, in development React remounts every component once immediately after its initial mount.
+Bugs like this are easy to miss without extensive manual testing. <font color=dodgerBlue>**To help you spot them quickly**</font>, <font color=dodgerBlue>**in development**</font> <font color=fuchsia>React **remounts every component once immediately** after its initial mount</font>.
 
-Seeing the `"✅ Connecting..."` log twice helps you notice the real issue: your code doesn’t close the connection when the component unmounts.
+> 💡 这里是是由严格模式 `<StrictMode>` 引起的
 
-To fix the issue, return a *cleanup function* from your Effect:
+<font color=dodgerBlue>Seeing the `"✅ Connecting..."` log twice helps you notice the real issue</font>: your code doesn’t close the connection when the component unmounts.
+
+<font color=dodgerBlue>**To fix the issue**</font>, <font color=red>**return a *cleanup function* from your Effect**</font>:
 
 ```jsx
 useEffect(() => {

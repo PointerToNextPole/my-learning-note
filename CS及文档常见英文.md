@@ -1419,3 +1419,11 @@
 - **resilience** ：韧性、恢复力
 
 - **pill up** ：堆积
+
+- **allergy** ：过敏
+
+- **informal** ：轻松友好的
+
+- **red tape** ：繁文缛节
+
+- **bachelor** ：学士学位，单身汉
