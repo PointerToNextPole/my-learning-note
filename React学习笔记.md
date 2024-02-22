@@ -865,7 +865,7 @@ return (
 
 ###### Are these two examples fully equivalent?
 
-<font color=dodgerBlue>If you’re coming from an object-oriented programming background</font>, you might assume that the two examples above are subtly different because one of them may create two different “instances” of `<li>`. But <font color=fuchsia>JSX elements aren’t “instances”</font> <font color=red>because they don’t hold any internal state and aren’t real DOM nodes</font>. They’re lightweight descriptions, like blueprints. <font color=fuchsia>So these two examples, in fact, *are* **completely equivalent**</font>. [Preserving and Resetting State](https://react.dev/learn/preserving-and-resetting-state) goes into detail about how this works.
+<font color=dodgerBlue>If you’re coming from an object-oriented programming background</font>, you might assume that the two examples above are subtly different because one of them may create two different “instances” of `<li>`. But <font color=fuchsia>JSX elements aren’t “instances”</font> <font color=red>because they don’t hold any internal state and aren’t real DOM nodes</font>. They’re lightweight descriptions, like blueprints. <font color=fuchsia>So these two examples, in fact, *are* **completely equivalent**</font>. [Preserving and Resetting State](https://react.dev/learn/preserving-and-resetting-state) goes into detail about how this works.
 
 ##### Logical AND operator (`&&`)
 
@@ -1001,10 +1001,10 @@ You need to give each array item a `key` — a string or a number that uniquely 
 > // ...
 > 
 > const listItems = people.map(person =>
->   <Fragment key={person.id}>
->     <h1>{person.name}</h1>
->     <p>{person.bio}</p>
->   </Fragment>
+> <Fragment key={person.id}>
+>  <h1>{person.name}</h1>
+>  <p>{person.bio}</p>
+> </Fragment>
 > );
 > ```
 
@@ -2254,18 +2254,18 @@ const [person, setPerson] = useState({
 >
 > ```jsx
 > function handleChange(e) {
->     const { name, value } = e.target;
->     if (name === "name") {
->       setPerson({
->         ...person,
->         [name]: value
->       });
->     } else {
->       setPerson({
->         ...person,
->         artwork: { ...person.artwork, [name]: value }
->       });
->     }
+>  const { name, value } = e.target;
+>  if (name === "name") {
+>    setPerson({
+>      ...person,
+>      [name]: value
+>    });
+>  } else {
+>    setPerson({
+>      ...person,
+>      artwork: { ...person.artwork, [name]: value }
+>    });
+>  }
 > }
 > ```
 >
@@ -2314,12 +2314,12 @@ But unlike a regular mutation, it doesn’t overwrite the past state!
 > > import { shallowRef } from 'vue'
 > > 
 > > export function useImmer(baseState) {
-> >     const state = shallowRef(baseState)
-> >     const update = (updater) => {
-> >       state.value = produce(state.value, updater)
-> >     }
+> >  const state = shallowRef(baseState)
+> >  const update = (updater) => {
+> >    state.value = produce(state.value, updater)
+> >  }
 > > 
-> >     return [state, update]
+> >  return [state, update]
 > > }
 > > ```
 > >
@@ -3021,57 +3021,57 @@ React will keep the state around for as long as you render the same component at
 > import { useState } from 'react';
 > 
 > export default function App() {
->   const [isFancy, setIsFancy] = useState(false);
->   if (isFancy) {
->     return (
->       <div>
->         <Counter isFancy={true} />
->         <label>
->           <input
->             type="checkbox"
->             checked={isFancy}
->             onChange={ e => setIsFancy(e.target.checked) }
->           />
->           Use fancy styling
->         </label>
->       </div>
->     );
->   }
->   return (
->     <div>
->       <Counter isFancy={false} />
->       <label>
->         <input
->           type="checkbox"
->           checked={isFancy}
->           onChange={ e => setIsFancy(e.target.checked) }
->         />
->         Use fancy styling
->       </label>
->     </div>
->   );
+> const [isFancy, setIsFancy] = useState(false);
+> if (isFancy) {
+>  return (
+>    <div>
+>      <Counter isFancy={true} />
+>      <label>
+>        <input
+>          type="checkbox"
+>          checked={isFancy}
+>          onChange={ e => setIsFancy(e.target.checked) }
+>        />
+>        Use fancy styling
+>      </label>
+>    </div>
+>  );
+> }
+> return (
+>  <div>
+>    <Counter isFancy={false} />
+>    <label>
+>      <input
+>        type="checkbox"
+>        checked={isFancy}
+>        onChange={ e => setIsFancy(e.target.checked) }
+>      />
+>      Use fancy styling
+>    </label>
+>  </div>
+> );
 > }
 > 
 > function Counter({ isFancy }) {
->   const [score, setScore] = useState(0);
->   const [hover, setHover] = useState(false);
+> const [score, setScore] = useState(0);
+> const [hover, setHover] = useState(false);
 > 
->   let className = 'counter';
->   if (hover) { className += ' hover'; }
->   if (isFancy) { className += ' fancy'; }
+> let className = 'counter';
+> if (hover) { className += ' hover'; }
+> if (isFancy) { className += ' fancy'; }
 > 
->   return (
->     <div
->       className={className}
->       onPointerEnter={() => setHover(true)}
->       onPointerLeave={() => setHover(false)}
->     >
->       <h1>{score}</h1>
->       <button onClick={() => setScore(score + 1)}>
->         Add one
->       </button>
->     </div>
->   );
+> return (
+>  <div
+>    className={className}
+>    onPointerEnter={() => setHover(true)}
+>    onPointerLeave={() => setHover(false)}
+>  >
+>    <h1>{score}</h1>
+>    <button onClick={() => setScore(score + 1)}>
+>      Add one
+>    </button>
+>  </div>
+> );
 > }
 > ```
 >
@@ -3095,27 +3095,27 @@ React will keep the state around for as long as you render the same component at
 > import { useState } from 'react';
 > 
 > export default function MyComponent() {
->   const [counter, setCounter] = useState(0);
+> const [counter, setCounter] = useState(0);
 > 
->   function MyTextField() {
->     const [text, setText] = useState('');
+> function MyTextField() {
+>  const [text, setText] = useState('');
 > 
->     return (
->       <input
->         value={text}
->         onChange={e => setText(e.target.value)}
->       />
->     );
->   }
+>  return (
+>    <input
+>      value={text}
+>      onChange={e => setText(e.target.value)}
+>    />
+>  );
+> }
 > 
->   return (
->     <>
->       <MyTextField />
->       <button onClick={() => {
->         setCounter(counter + 1)
->       }}>Clicked {counter} times</button>
->     </>
->   );
+> return (
+>  <>
+>    <MyTextField />
+>    <button onClick={() => {
+>      setCounter(counter + 1)
+>    }}>Clicked {counter} times</button>
+>  </>
+> );
 > }
 > ```
 >
@@ -3148,9 +3148,9 @@ By default, <font color=lightSeaGreen>React preserves state of a component while
    >
    > ```jsx
    > { 
-   >   condition
-   >     ? <SatifyCondComponent key="satify" />
-   >     : <UnSatifyCondComponent key="UnSatify" /> 
+   > condition
+   >  ? <SatifyCondComponent key="satify" />
+   >  : <UnSatifyCondComponent key="UnSatify" /> 
    > }
    > ```
 
@@ -3364,9 +3364,9 @@ It is a regular JavaScript object. <font color=lightSeaGreen>You decide what to 
 >
 > ```jsx
 > dispatch({
->   // specific to component
->   type: 'what_happened',
->   // other fields go here
+> // specific to component
+> type: 'what_happened',
+> // other fields go here
 > });
 > ```
 
@@ -4060,7 +4060,7 @@ The `useReducer` Hook returns the current `tasks` and the `dispatch` function th
 const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
 ```
 
-<font color=dodgerBlue>To pass them down the tree</font>, <font color=fuchsia>you will [create](https://react.dev/learn/passing-data-deeply-with-context#step-2-use-the-context) **two separate contexts**</font>:
+<font color=dodgerBlue>To pass them down the tree</font>, <font color=fuchsia>you will [create](https://react.dev/learn/passing-data-deeply-with-context#step-2-use-the-context) **two separate contexts**</font>:
 
 - `TasksContext` <font color=red>provides the current list of tasks</font>.
 - `TasksDispatchContext` <font color=fuchsia>provides the function that **lets components dispatch actions**</font>.
@@ -4591,23 +4591,23 @@ In this example, `itemsRef` doesn’t hold a single DOM node. Instead, it holds 
 > import { useRef } from 'react';
 > 
 > export default function ArrRefComponent() {
->     const refs = useRef([]);
+>  const refs = useRef([]);
 > 
->     const arr = [1, 2, 3]
+>  const arr = [1, 2, 3]
 > 
->     return (
->       <>
->         {arr.map((item, index) => 
->           <p
->             key={item}
->             ref={el => refs.current[index] = el}
->             onClick={ () => console.log(refs.current[index]) }
->           >
->             { item }
->           </p>)
->         }
->       </>
->     );
+>  return (
+>    <>
+>      {arr.map((item, index) => 
+>        <p
+>          key={item}
+>          ref={el => refs.current[index] = el}
+>          onClick={ () => console.log(refs.current[index]) }
+>        >
+>          { item }
+>        </p>)
+>      }
+>    </>
+>  );
 > }
 > ```
 
@@ -4919,7 +4919,7 @@ Note that controlling a video player is much more complex in practice. Calling `
 > ```jsx
 > const [count, setCount] = useState(0);
 > useEffect(() => {
->   setCount(count + 1);
+> setCount(count + 1);
 > });
 > ```
 >
@@ -4976,15 +4976,15 @@ The dependency array can contain multiple dependencies. React will only skip re-
 >
 > ```jsx
 > useEffect(() => {
->   // This runs after every render
+> // This runs after every render
 > });
 > 
 > useEffect(() => {
->   // This runs only on mount (when the component appears)
+> // This runs only on mount (when the component appears)
 > }, []);
 > 
 > useEffect(() => {
->   // This runs on mount *and also* if either a or b have changed since the last render
+> // This runs on mount *and also* if either a or b have changed since the last render
 > }, [a, b]);
 > ```
 
@@ -4996,28 +4996,28 @@ The dependency array can contain multiple dependencies. React will only skip re-
 >
 > ```jsx
 > function VideoPlayer({ src, isPlaying }) {
->   const ref = useRef(null);
->   useEffect(() => {
->     if (isPlaying) {
->       ref.current.play();
->     } else {
->       ref.current.pause();
->     }
->   }, [isPlaying]);
+> const ref = useRef(null);
+> useEffect(() => {
+>  if (isPlaying) {
+>    ref.current.play();
+>  } else {
+>    ref.current.pause();
+>  }
+> }, [isPlaying]);
 > ```
 >
 > This is because the `ref` object has a *stable identity:* React guarantees [you’ll always get the same object](https://react.dev/reference/react/useRef#returns) from the same `useRef` call on every render. It never changes, so it will never by itself cause the Effect to re-run. Therefore, it does not matter whether you include it or not. Including it is fine too:
 >
 > ```jsx
 > function VideoPlayer({ src, isPlaying }) {
->   const ref = useRef(null);
->   useEffect(() => {
->     if (isPlaying) {
->       ref.current.play();
->     } else {
->       ref.current.pause();
->     }
->   }, [isPlaying, ref]);
+> const ref = useRef(null);
+> useEffect(() => {
+>  if (isPlaying) {
+>    ref.current.play();
+>  } else {
+>    ref.current.pause();
+>  }
+> }, [isPlaying, ref]);
 > ```
 >
 > <font color=fuchsia>The [`set` functions](https://react.dev/reference/react/useState#setstate) returned by `useState` also have stable identity</font>, so you will often see them omitted from the dependencies too. <font color=red>If the linter lets you omit a dependency without errors, it is safe to do</font>. I 
@@ -5105,6 +5105,119 @@ useEffect(() => {
 
 React will call your cleanup function each time before the Effect runs again, and one final time when the component unmounts (gets removed).
 
+<font color=dodgerBlue>Now you get three console logs in development:</font>
+
+1. `"✅ Connecting..."`
+2. `"❌ Disconnected."`
+3. `"✅ Connecting..."`
+
+**This is the correct behavior in development.** By remounting your component, React verifies that navigating away and back would not break your code. Disconnecting and then connecting again is exactly what should happen! <font color=dodgerBlue>When you implement the cleanup well</font>, <font color=lightSeaGreen>there should be no user-visible difference between running the Effect once vs running it, cleaning it up, and running it again</font>. There’s an extra connect/disconnect call pair because React is probing（🌏 探测） your code for bugs in development. This is normal—don’t try to make it go away!
+
+<font color=red>**In production, you would only see `"✅ Connecting..."` printed once.**</font> <font color=lightSeaGreen>Remounting components only happens in development to help you find Effects that need cleanup</font>. You can turn off [Strict Mode](https://react.dev/reference/react/StrictMode) to opt out of the development behavior, but we <font color=red>recommend keeping it on</font>. <font color=red>This lets you find many bugs like the one above</font>.
+
+##### How to handle the Effect firing twice in development? 
+
+React intentionally remounts your components in development to find bugs like in the last example. **<font color=dodgerBlue>The right question isn’t “how to run an Effect once”</font>, but <font color=red>“how to fix my Effect so that it works after remounting”</font>.**
+
+Usually, <font color=red>the answer is to implement the cleanup function</font>.  <font color=fuchsia>The cleanup function should **stop or undo whatever the Effect was doing**</font>. <font color=dodgerBlue>The rule of thumb</font>（🌏 经验法则） is that the <font color=red>user shouldn’t be able to distinguish between the Effect running once</font> (as in production) and a *setup → cleanup → setup* sequence (as you’d see in development).
+
+> 👀 无法分辨 Effect running once 和 a *setup → cleanup → setup* sequence 的区别
+
+Most of the Effects you’ll write will fit into one of the common patterns below.
+
+###### Controlling non-React widgets 
+
+Sometimes you need to add UI widgets that aren’t written to React. For example, let’s say you’re adding a map component to your page. It has a `setZoomLevel()` method, and <font color=dodgerBlue>you’d like to keep the zoom level in sync with a `zoomLevel` state variable in your React code</font>. Your Effect would look similar to this:
+
+```jsx
+useEffect(() => {
+  const map = mapRef.current;
+  map.setZoomLevel(zoomLevel);
+}, [zoomLevel]);
+```
+
+Note that there is no cleanup needed in this case. In development, React will call the Effect twice, but <font color=lightSeaGreen>this is not a problem because calling `setZoomLevel` twice with the same value does not do anything</font>. It may be slightly slower, but <font color=lightSeaGreen>**this doesn’t matter because it won’t remount needlessly in production**</font>.
+
+<font color=red>**Some APIs may not allow you to call them twice in a row**</font>. <font color=dodgerBlue>For example</font>, <font color=red>the [`showModal`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) method of the built-in `<dialog>` element throws if you call it twice</font>. Implement the cleanup function and make it close the dialog:
+
+```jsx
+useEffect(() => {
+  const dialog = dialogRef.current;
+  dialog.showModal();
+  return () => dialog.close();
+}, []);
+```
+
+In development, your Effect will call `showModal()`, then immediately `close()`, and then `showModal()` again. This has the same user-visible behavior as calling `showModal()` once, as you would see in production.
+
+###### Subscribing to events 
+
+<font color=dodgerBlue>If your Effect **subscribes to something**</font>, the <font color=red>cleanup function should **unsubscribe**</font>:
+
+```jsx
+useEffect(() => {
+  function handleScroll(e) {
+    console.log(window.scrollX, window.scrollY);
+  }
+  window.addEventListener('scroll', handleScroll);
+  return () => window.removeEventListener('scroll', handleScroll);
+}, []);
+```
+
+In development, your Effect will call `addEventListener()`, then immediately `removeEventListener()`, and then `addEventListener()` again with the same handler. So <font color=lightSeaGreen>there would be only one active subscription at a time</font>. This has the same user-visible behavior as calling `addEventListener()` once, as in production.
+
+###### Triggering animations 
+
+<font color=dodgerBlue>If your Effect animates something in</font>, the <font color=red>cleanup function should **reset the animation to the initial values**</font>:
+
+```jsx
+useEffect(() => {
+  const node = ref.current;
+  node.style.opacity = 1; // Trigger the animation
+  return () => {
+    node.style.opacity = 0; // Reset to the initial value
+  };
+}, []);
+```
+
+In development, opacity will be set to `1` , then to `0` , and then to `1` again. <font color=lightSeaGreen> This should have the same user-visible behavior as setting it to `1` directly</font>, which is what would happen in production. If you use a third-party animation library with support for tweening, your cleanup function should reset the timeline to its initial state.
+
+###### Fetching data
+
+<font color=dodgerBlue>If your Effect **fetches something**</font>, <font color=red>the cleanup function should either [abort the fetch](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) or ignore its result</font>:
+
+> 👀 如上面的链接所示：可以用 AbortController 实现 “abort the fetch”
+
+```jsx
+useEffect(() => {
+  let ignore = false;
+
+  async function startFetching() {
+    const json = await fetchTodos(userId);
+    if (!ignore) { setTodos(json); }
+  }
+
+  startFetching();
+
+  return () => { ignore = true; };
+}, [userId]);
+```
+
+You can’t “undo” a network request that already happened, but your cleanup function should ensure that the fetch that’s *not relevant anymore* does not keep affecting your application. If the `userId` changes from `'Alice'` to `'Bob'`, cleanup ensures that the `'Alice'` response is ignored even if it arrives after `'Bob'`.
+
+**In development, you will see two fetches in the Network tab.** There is nothing wrong with that. With the approach above, the first Effect will immediately get cleaned up so its copy of the `ignore` variable will be set to `true`. So even though there is an extra request, it won’t affect the state thanks to the `if (!ignore)` check.
+
+**In production, there will only be one request.** If the second request in development is bothering you, the best approach is to use a solution that deduplicates requests and caches their responses between components:
+
+```jsx
+function TodoList() {
+  const todos = useSomeDataLibrary(`/api/user/${userId}/todos`);
+  // ...
+}
+```
+
+This will not only improve the development experience, but also make your application feel faster. For example, the user pressing the Back button won’t have to wait for some data to load again because it will be cached. You can either build such a cache yourself or use one of the many alternatives to manual fetching in Effects.
+
 
 
 ## coderwhy React18 学习笔记
@@ -5158,9 +5271,9 @@ React will call your cleanup function each time before the Effect runs again, an
   > 
   > // Display a "Like" <button>
   > return e(
-  >     'button',
-  >     { onClick: () => this.setState({ liked: true }) },
-  >     'Like'
+  >  'button',
+  >  { onClick: () => this.setState({ liked: true }) },
+  >  'Like'
   > );
   > ```
   >
@@ -5432,16 +5545,16 @@ JSX 是一种 JavaScript 的语法扩展 ( eXtension ) ，也在很多地方称�
   >
   > ```jsx
   > const elArr = [
-  >   <h2>h2</h2>,
-  >   <h3>h3</h3>,
-  >   <h4>h4</h4>
+  > <h2>h2</h2>,
+  > <h3>h3</h3>,
+  > <h4>h4</h4>
   > ]
   > 
   > return (
-  >   <>
-  >     <h1>title</h1>
-  >     { elArr }
-  >   </>
+  > <>
+  >  <h1>title</h1>
+  >  { elArr }
+  > </>
   > )
   > ```
   >
@@ -5779,7 +5892,7 @@ export class NavBar extends Component {
 
 ###### ⾮⽗⼦组件数据的共享
 
-在开发中，<font color=dodgerBlue>⽐较常⻅的数据传递⽅式 </font>是 <font color=lightSeaGreen>**通过 props 属性⾃上⽽下（由⽗到⼦）进⾏传递**</font>。
+在开发中，<font color=dodgerBlue>⽐较常⻅的数据传递⽅式 </font>是 <font color=lightSeaGreen>**通过 props 属性⾃上⽽下（由⽗到⼦）进⾏传递**</font>。
 
 但是对于有⼀些场景：⽐如⼀些数据需要在多个组件中进⾏共享（地区偏好、UI主题、⽤户登录状态、⽤户信息等）。 如果我们在顶层的 App 中定义这些信息，之后⼀层层传递下去，那么对于⼀些中间层不需要数据的组件来说，是⼀种冗余的操作。如果层级更多的话，⼀层层传递是⾮常麻烦，并且代码是⾮常冗余的：
 
@@ -5965,17 +6078,17 @@ componentDidMount() {
 > ```jsx
 > // Before: only React events were batched.
 > setTimeout(() => {
->   setCount(c => c + 1);
->   setFlag(f => !f);
->   // React will render twice, once for each state update (no batching)
+> setCount(c => c + 1);
+> setFlag(f => !f);
+> // React will render twice, once for each state update (no batching)
 > }, 1000);
 > 
 > // After: updates inside of timeouts, promises,
 > // native event handlers or any other event are batched.
 > setTimeout(() => {
->   setCount(c => c + 1);
->   setFlag(f => !f);
->   // React will only re-render once at the end (that's batching!)
+> setCount(c => c + 1);
+> setFlag(f => !f);
+> // React will only re-render once at the end (that's batching!)
 > }, 1000);
 > ```
 >
