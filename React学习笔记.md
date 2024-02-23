@@ -5203,6 +5203,12 @@ useEffect(() => {
 }, [userId]);
 ```
 
+> 💡关于上面的示例，没有使用 `useEffect(async () => { await fn() })` 的写法，有点好奇，为什么不能这样写？问了下 Copilot Chat 得到如下回复：
+>
+> <img src="https://s2.loli.net/2024/02/23/zKHFg72f58vtQBb.png" alt="Snipaste_2024-01-30_01-07-47" style="zoom:50%;" />
+>
+> 另外，回复中也说的很清楚：useEffect 期待回复一个 cleanup fn 或者 null，而不是 async 的 promise；返回一个 promise，这显然不符合 useEffect 的预期，也会使其功能错乱。
+
 You can’t “undo” a network request that already happened, but your cleanup function should ensure that the fetch that’s *not relevant anymore* does not keep affecting your application. If the `userId` changes from `'Alice'` to `'Bob'`, cleanup ensures that the `'Alice'` response is ignored even if it arrives after `'Bob'`.
 
 **In development, you will see two fetches in the Network tab.** There is nothing wrong with that. With the approach above, the first Effect will immediately get cleaned up so its copy of the `ignore` variable will be set to `true`. So even though there is an extra request, it won’t affect the state thanks to the `if (!ignore)` check.
