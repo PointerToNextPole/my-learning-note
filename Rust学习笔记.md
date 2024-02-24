@@ -344,6 +344,178 @@ $ cargo build
 
 
 
+### Rust 基础入门
+
+#### 变量绑定与解构
+
+##### 为何要手动设置变量的可变性？
+
+<font color=dodgerBlue>在其它大多数语言中，要么只支持声明可变的变量，要么只支持声明不可变的变量( 例如函数式语言 )</font>，前者为编程提供了灵活性，后者为编程提供了安全性，而 <font color=red>Rust 比较野，选择了两者我都要，既要灵活性又要安全性</font>。
+
+**一切选择皆是权衡**，那么两者都要的权衡是什么呢？这就是 Rust 开发团队为我们做出的贡献，两者都要意味着 Rust 语言底层代码的实现复杂度大幅提升，因此 Salute to The Rust Team!
+
+除了以上两个优点，<font color=dodgerBlue>还有一个很大的优点</font>，那就是运行性能上的提升，因为将本身无需改变的变量声明为不可变在运行期会避免一些多余的 `runtime` 检查。
+
+##### 变量命名
+
+在命名方面，和其它语言没有区别，不过当给变量命名时，需要遵循 [Rust 命名规范](https://course.rs/practice/naming.html)。
+
+> Rust 语言有一些**关键字**（*keywords*），和其他语言一样，这些关键字都是被保留给 Rust 语言使用的，因此，它们不能被用作变量或函数的名称。在 [附录 A](https://course.rs/appendix/keywords.html) 中可找到关键字列表。
+
+##### 变量绑定
+
+在其它语言中，我们用 `var a = "hello world"` 的方式给 `a` 赋值，也就是把等式右边的 `"hello world"` 字符串赋值给变量 `a` ，而在 <font color=red>Rust 中，我们这样写： `let a = "hello world"`</font> ，同时<font color=fuchsia>给这个过程起了另一个名字：**变量绑定**</font>。
+
+<font color=dodgerBlue>为何不用赋值而用绑定呢</font>（其实你<font color=lightSeaGreen>*也可以称之为赋值*</font>，<font color=fuchsia>但是绑定的含义更清晰准确</font>）？<font color=fuchsia>这里就涉及 Rust 最核心的原则——**所有权**</font>，<font color=dodgerBlue>简单来讲</font>，<font color=fuchsia>任何内存对象都是有主人的，而且一般情况下完全属于它的主人，绑定就是把这个对象绑定给一个变量，让这个变量成为它的主人</font>（聪明的读者应该能猜到，在这种情况下，<font color=fuchsia>**该对象之前的主人就会丧失对该对象的所有权**</font>），像极了我们的现实世界，不是吗？
+
+##### 变量可变性
+
+<font color=red>Rust 的变量在默认情况下是**不可变的**</font>。前文提到，这是 Rust 团队为我们精心设计的语言特性之一，让我们编写的代码更安全，性能也更好。当然你<font color=red>可以通过 `mut` 关键字让变量变为**可变的**</font>，让设计更灵活。
+
+如果变量 `a` 不可变，那么一旦为它绑定值，就不能再修改 `a` 。比如如下代码：
+
+```rust
+fn main() {
+    let x = 5;
+    println!("The value of x is: {}", x);
+    x = 6;
+    println!("The value of x is: {}", x);
+}
+```
+
+使用 `cargo run` 运行它，迎面而来的是一条错误提示：
+
+```console
+$ cargo run
+   Compiling variables v0.1.0 (file:///projects/variables)
+error[E0384]: cannot assign twice to immutable variable `x`
+ --> src/main.rs:4:5
+  |
+2 |     let x = 5;
+  |         -
+  |         |
+  |         first assignment to `x`
+  |         help: consider making this binding mutable: `mut x`
+3 |     println!("The value of x is: {}", x);
+4 |     x = 6;
+  |     ^^^^^ cannot assign twice to immutable variable
+
+error: aborting due to previous error
+```
+
+具体的错误原因是 `cannot assign twice to immutable variable x`（无法对不可变的变量进行重复赋值），因为我们想为不可变的 `x` 变量再次赋值。
+
+这种错误是为了避免无法预期的错误发生在我们的变量上：<font color=red>一个变量往往被多处代码所使用，其中一部分代码假定该变量的值永远不会改变，而另外一部分代码却无情的改变了这个值</font>，<font color=lightSeaGreen>在实际开发过程中，这个错误是很难被发现的，**特别是在多线程编程中**</font>。
+
+这种规则让我们的代码变得非常清晰，只有你想让你的变量改变时，它才能改变，这样就不会造成心智上的负担，也给别人阅读代码带来便利。
+
+但是<font color=dodgerBlue>可变性也非常重要</font>，否则我们就要<font color=lightSeaGreen>像 ClojureScript 那样，每次要改变，就要重新生成一个对象，**在拥有大量对象的场景，性能会变得非常低下，内存拷贝的成本异常的高**</font>。
+
+在 Rust 中，可变性很简单，只要在变量名前加一个 `mut` 即可，而且这种显式的声明方式还会给后来人传达这样的信息：嗯，这个变量在后面代码部分会发生改变。
+
+> 💡 关于 `mut` 关键字，是否是修饰符
+>
+> <img src="https://s2.loli.net/2024/02/24/z1p9Vrq6YtLTMxK.png" alt="Snipaste_2024-02-24_16-26-59" style="zoom: 55%;" />
+
+```rust
+fn main() {
+    let mut x = 5;
+    println!("The value of x is: {}", x);
+    x = 6;
+    println!("The value of x is: {}", x);
+}
+```
+
+运行程序将得到下面结果：
+
+```console
+$ cargo run
+   Compiling variables v0.1.0 (file:///projects/variables)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.30s
+     Running `target/debug/variables`
+The value of x is: 5
+The value of x is: 6
+```
+
+选择可变还是不可变，更多的还是取决于使用场景，例如<font color=fuchsia>不可变可以带来安全性，但是丧失了灵活性和性能</font>（<font color=red>如果你要改变，就要重新创建一个新的变量，这里涉及到内存对象的再分配</font>）。而<font color=fuchsia>可变变量最大的好处就是使用上的灵活性和性能上的提升</font>。
+
+例如，<font color=dodgerBlue>在使用大型数据结构或者热点代码路径（被大量频繁调用）的情形下</font>，<font color=red>在同一内存位置更新实例可能比复制并返回新分配的实例要更快</font>。<font color=dodgerBlue>使用较小的数据结构时</font>，<font color=red>通常创建新的实例并以更具函数式的风格来编写程序，可能会更容易理解，所以值得以较低的性能开销来确保代码清晰</font>。
+
+##### 使用下划线开头忽略未使用的变量
+
+如果你创建了一个变量却不在任何地方使用它，Rust 通常会给你一个警告，因为这可能会是个 BUG。但是有时创建一个不会被使用的变量是有用的，比如你正在设计原型或刚刚开始一个项目。这时**你希望告诉 Rust 不要警告未使用的变量，为此可以用下划线 `_` 作为变量名的开头**：
+
+```rust
+fn main() {
+    let _x = 5;
+    let y = 10;
+}
+```
+
+使用 `cargo run` 运行下试试:
+
+```shell
+warning: unused variable: `y`
+ --> src/main.rs:3:9
+  |
+3 |     let y = 10;
+  |         ^ help: 如果 y 故意不被使用，请添加一个下划线前缀: `_y`
+  |
+  = note: `#[warn(unused_variables)]` on by default
+```
+
+可以看到，两个变量都是只有声明，没有使用，但是编译器却独独给出了 `y` 未被使用的警告，充分说明了 `_` 变量名前缀在这里发挥的作用。
+
+<font color=dodgerBlue>值得注意的是</font>，<font color=red>这里编译器还很善意的给出了提示</font>（ Rust 的编译器非常强大，这里的提示只是小意思）: <font color=red>将 `y` 修改 `_y` 即可</font>。
+
+更多关于 `_x` 的使用信息，请阅读后面的[模式匹配章节](https://course.rs/basic/match-pattern/all-patterns.html?highlight=_#使用下划线开头忽略未使用的变量)。
+
+##### 变量解构
+
+`let` 表达式不仅仅用于变量的绑定，还能进行复杂变量的解构：从一个相对复杂的变量中，匹配出该变量的一部分内容：
+
+```rust
+fn main() {
+    let (a, mut b): (bool, bool) = (true, false);
+    // a = true，不可变; b = false，可变
+    println!("a = {:?}, b = {:?}", a, b);
+
+    b = true;
+    assert_eq!(a, b);
+}
+```
+
+> 👀 注意这里类型标注的写法
+
+###### 解构式赋值
+
+在 [Rust 1.59](https://course.rs/appendix/rust-versions/1.59.html) 版本后，我们可以在赋值语句的左式中使用元组、切片和结构体模式了。
+
+```rust
+struct Struct {
+    e: i32
+}
+
+fn main() {
+    let (a, b, c, d, e);
+
+    (a, b) = (1, 2);
+    // _ 代表匹配一个值，但是我们不关心具体的值是什么，因此没有使用一个变量名而是使用了 _
+    [c, .., d, _] = [1, 2, 3, 4, 5];
+    Struct { e, .. } = Struct { e: 5 };
+
+    assert_eq!([1, 2, 1, 4, 5], [a, b, c, d, e]);
+}
+```
+
+这种使用方式跟之前的 `let` 保持了一致性，但是 `let` 会重新绑定，而这里仅仅是对之前绑定的变量进行再赋值。
+
+需要注意的是，使用 `+=` 的赋值语句还不支持解构式赋值。
+
+> 这里用到了模式匹配的一些语法，如果大家看不懂没关系，可以在学完模式匹配章节后，再回头来看。
+
+
+
 ## 其他笔记
 
 
@@ -351,4 +523,3 @@ $ cargo build
 #### 智能指针
 
 可以参考：[如何理解智能指针？ - 胡昊的回答 - 知乎](https://www.zhihu.com/question/20368881/answer/14918675) ，相当易懂。另外，需要注意的是 由于是 2012 年的文章，里面还在使用 boost 库的版本，尤其是没有提到 `unique_ptr` 。所以可以看下 C++ Primer 的 第 12 章“动态内存”。
-

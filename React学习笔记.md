@@ -5207,7 +5207,7 @@ useEffect(() => {
 >
 > <img src="https://s2.loli.net/2024/02/23/zKHFg72f58vtQBb.png" alt="Snipaste_2024-01-30_01-07-47" style="zoom:50%;" />
 >
-> 另外，回复中也说的很清楚：useEffect 期待回复一个 cleanup fn 或者 null，而不是 async 的 promise；返回一个 promise，这显然不符合 useEffect 的预期，也会使其功能错乱。
+> 回复中说的很清楚：useEffect 期待返回一个 cleanup fn 或者 null，而不是 async 的 promise；返回一个 promise，显然不符合 useEffect 的预期，感觉也会使其功能错乱。
 
 You can’t “undo” a network request that already happened, but your cleanup function should ensure that the fetch that’s *not relevant anymore* does not keep affecting your application. If the `userId` changes from `'Alice'` to `'Bob'`, cleanup ensures that the `'Alice'` response is ignored even if it arrives after `'Bob'`.
 

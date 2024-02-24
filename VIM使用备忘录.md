@@ -227,9 +227,19 @@ visual 模式一般用于<font color=FF0000>块状选择文本，从而进行批
 #### 查找
 
 - 使用 `/` 或者 `?` 进行前向或者反向搜索
+
 - 使用 `n` / `N` 跳转到<font color=FF0000>下</font>一个或者<font color=FF0000>上</font>一个匹配
+
 - 使用`*` / `#` 进行当前单词的<font color=FF0000>前向</font>/ <font color=FF0000>后向</font>匹配
+
 - 在搜索过程中，键入 `:set hls` ( set highlight search ) ，以使得搜索结果高亮
+
+  > 💡 值得补充的是：搜索结果的高亮如果不设置的话，将会一直存在，相当影响阅读，可以使用 `:noh` 或 `nohls`，再或者 `:nohlsearch` 使得高亮消除
+  >
+  > 学习自 Copilot Chat ，截图如下：
+  >
+  > <img src="https://s2.loli.net/2024/02/24/rBfNTzmuIECZDVH.png" alt="image-20240224153548696" style="zoom:50%;" />
+
 - 键入 `:set incsearch` ，进行增量搜索（在输入搜索字符的<font color=FF0000>字符输入过程中</font>，只要找到匹配的，就高亮）
 
 #### 搜索替换

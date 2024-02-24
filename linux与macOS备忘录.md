@@ -716,11 +716,11 @@ command1 && command2 [&& command3 ...]
 command1 || command2 [|| command3 ...]
 ```
 
-- 命令之间使用 || 连接，实现逻辑或的功能。
+- 命令之间使用 `||` 连接，实现逻辑或的功能。
 
-- 只有在 || 左边的命令返回假（命令返回值 $? == 1），|| 右边的命令才会被执行。这和 c 语言中的逻辑或语法功能相同，即实现短路逻辑或操作。
+- 只有在 `||` 左边的命令返回假（命令返回值 `$? == 1`），`||` 右边的命令才会被执行。这和 c 语言中的逻辑或语法功能相同，即实现短路逻辑或操作。
 
-- 只要有一个命令返回真（命令返回值 $? == 0），后面的命令就不会被执行。
+- 只要有一个命令返回真（命令返回值 `$? == 0`），后面的命令就不会被执行。
 
 <font size=4>**`()`**</font>  为了在当前shell中执行一组命令，可以用命令分隔符(即",")隔开每一个命令，并把所有的命令用圆括号()括起来。
 
@@ -765,24 +765,24 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
 
 变量名只能包含数字、字母和下划线，因为<font color=FF0000>某些包含其他字符的变量有特殊含义，这样的变量被称为**特殊变量**</font>。
 
-- **\$0 ：** <font color=FF0000>**获取**</font>当前执行<font color=FF0000>脚本的**文件名**包括**路径**</font>
+- **`$0` ：** <font color=FF0000>**获取**</font>当前执行<font color=FF0000>脚本的**文件名**包括**路径**</font>
   
   - **dirname \$0 ：**  <font color=FF0000>只取</font>当前执行脚本的<font color=FF0000>路径</font>
   - **basename \$0 ：**  <font color=FF0000>只取</font>当前执行脚本<font color=FF0000>文件名</font>
   
-- **\$# ：**获取执行命令行(脚本)<font color=FF0000>参数的总个数</font>
+- **`$#` ：**获取执行命令行(脚本)<font color=FF0000>参数的总个数</font>
 
-- **\$@ ：** 获取这个执行程序的<font color=FF0000>所有参数</font>
+- **`$@` ：** 获取这个执行程序的<font color=FF0000>所有参数</font>
 
-- **\$* ：** 获取当前shell 的所有参数（注意与\$\$@区别）
+- **`$*` ：** 获取当前shell 的所有参数（注意与\$\$@区别）
 
-- **\$! ：** 获取<font color=FF0000>**上一个**执行命令的**PID**</font>
+- **`$!` ：** 获取<font color=FF0000>**上一个**执行命令的**PID**</font>
 
-- **\$\$ ：** 获取<font color=FF0000>**当前**shell的**PID**</font>
+- **`$$` ：** 获取<font color=FF0000>**当前**shell的**PID**</font>
 
-- **\$\_ ：** 获取<font color=FF0000>在此**之前执行**的命令或者脚本的**最后一个参数**</font>
+- **`$_` ：** 获取<font color=FF0000>在此**之前执行**的命令或者脚本的**最后一个参数**</font>
 
-- **\$? ：** 获取<font color=FF0000>**上一个**命令的**退出状态**</font>
+- **`$?` ：** 获取<font color=FF0000>**上一个**命令的**退出状态**</font>
 
   所谓<font color=FF0000>退出状态</font>，就是<font color=FF0000>上一个命令执行后的返回结果</font>。退出时**返回值的表示含义如下**：
 
@@ -793,7 +793,7 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
   - **127** ：未找到要运行的命令
   - **128** ：命令被系统强制结束
 
-- **\$n ：** <font color=FF0000>传递给脚本或函数的参数</font>。n 是一个数字，表示第几个参数。例如，第一个参数是 `$1` ，第二个参数是 `$2` 。
+- **`$n` ：** <font color=FF0000>传递给脚本或函数的参数</font>。n 是一个数字，表示第几个参数。例如，第一个参数是 `$1` ，第二个参数是 `$2` 。
 
 ##### `$*` 和 `$@` 的区别
 
@@ -807,9 +807,31 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
 
 >  `!$` refers to the last argument from the previous bash command.  	
 >
-> **翻译：!$表示：上一条bash命令的最后一个参数**
+> **翻译：`!$` 表示：上一条bash命令的最后一个参数**
 
 摘自：[stack overflow - What does ./!\$ mean in Linux?](https://stackoverflow.com/questions/38515790/what-does-mean-in-linux)
+
+
+
+#### 如何获知当前终端使用的 shell 种类是什么
+
+可以通过运行 `echo $0` 或者 `echo $SHELL` 以获知，参考如下：
+
+<img src="https://s2.loli.net/2024/02/24/vXcSLJhGOakjoUY.png" alt="image-20240224170329289" style="zoom:50%;" />
+
+就当前使用的机器而言，运行结果如下：
+
+<img src="https://s2.loli.net/2024/02/24/MkNs23Q6F8q7CPA.png" alt="image-20240224170616497" style="zoom:50%;" />
+
+这时了解到当前的 shell 种类是 zsh，可以通过 `~/.zshrc` 去修改配置，而不是通过 `~/.bash_profile`
+
+另外，看了下 zsh 的 wikipedia，看到了如下信息：
+
+> **Z shell**（**Zsh**）是一款可用作交互式登录的 shell 及脚本编写的命令解释器。Zsh 对 Bourne shell 做出了大量改进，同时加入了 Bash、ksh 及 tcsh 的某些功能。
+>
+> 自 2019 年起，macOS 的默认 Shell 已从 Bash 改为 Zsh
+>
+> 摘自：[wikipedia - Z shell](https://zh.wikipedia.org/zh-cn/Z_shell)
 
 
 
