@@ -613,6 +613,12 @@ Rust 每个值都有其确切的数据类型，<font color=dodgerBlue>总的来�
 
 - 字符串：字符串字面量和<font color=red>字符串切片 `&str`</font>
 
+  > 💡 看完了这一整节，才发现：本节几乎没有介绍字符串类型，这里做一下补充：
+  >
+  > <img src="https://s2.loli.net/2024/02/26/cDkYfazgIX1rLRv.png" alt="image-20240226165302892" style="zoom:60%;" />
+  >
+  > <img src="https://s2.loli.net/2024/02/26/IuF8G6CDdq4mica.png" alt="image-20240226165346266" style="zoom:50%;" />
+
 - 布尔类型： `true` 和 `false`
 
 - 字符类型：<font color=red>表示**单个 Unicode 字符，存储为 4 个字节**</font>
@@ -1381,6 +1387,39 @@ fn forever() -> ! {
 ```
 
 
+
+#### 所有权和借用
+
+Rust 之所以能成为万众瞩目的语言，就是因为其<font color=red>内存安全性</font>。<font color=dodgerBlue>在以往</font>，<font color=red>内存安全几乎都是通过 GC 的方式实现</font>，但是 <font color=red>**GC 会引来性能、内存占用以及 Stop the world 等问题**，在高性能场景和系统编程上是不可接受的</font>，因此 Rust 采用了与 ( 不 ) 众 ( 咋 ) 不 ( 好 ) 同 ( 学 )的方式：**所有权系统**。
+
+#### 所有权
+
+所有的程序都必须和计算机内存打交道，<font color=lightSeaGreen>如何从内存中申请空间来存放程序的运行内容，如何在不需要的时候释放这些空间，成了重中之重</font>，也是所有编程语言设计的难点之一。在计算机语言不断演变过程中，<font color=dodgerBlue>出现了三种流派</font>：
+
+- **垃圾回收机制 ( GC )**，在程序运行时不断寻找不再使用的内存，典型代表：Java、Go
+- **手动管理内存的分配和释放**，在程序中，<font color=red>通过函数调用的方式来申请和释放内存</font>，典型代表：C++
+- **通过所有权来管理内存**，<font color=red>编译器在编译时会根据一系列规则进行检查</font>
+
+其中 Rust 选择了第三种，最妙的是，<font color=fuchsia>这种检查只发生在编译期</font>，因此<font color=red>对于程序运行期，不会有任何性能上的损失</font>
+
+##### 一段不安全的代码
+
+先来看看一段来自 C 语言的糟糕代码：
+
+```c
+int* foo() {
+    int a;          // 变量 a 的作用域开始
+    a = 100;
+    char *c = "xyz"; // 变量 c 的作用域开始
+    return &a;
+}                   // 变量 a 和 c 的作用域结束
+```
+
+<font color=dodgerBlue>这段代码虽然可以编译通过，但是其实非常糟糕</font>；变量 `a` 和 `c` 都是局部变量，函数结束后将局部变量 `a` 的地址返回，但<font color=red>局部变量 `a` 存在栈中</font>，在离开作用域后，`a` 所申请的栈上内存都会被系统回收，从而造成了 “悬空指针” ( Dangling Pointer ) 的问题。这是一个非常典型的内存安全问题，虽然编译可以通过，但是运行的时候会出现错误, 很多编程语言都存在。
+
+再来看变量 `c`，`c` 的值是常量字符串，<font color=red>存储于常量区</font>，可能这个函数我们只调用了一次，也可能我们不再会使用这个字符串，<font color=red>但 `"xyz"` 只有当整个程序结束后系统才能回收这片内存</font>。
+
+所以内存安全问题，一直都是程序员非常头疼的问题，好在，在 Rust 中这些问题即将成为历史，因为 Rust 在编译的时候就可以帮助我们发现内存不安全的问题。
 
 
 
