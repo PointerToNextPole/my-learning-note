@@ -613,7 +613,7 @@ Rust 每个值都有其确切的数据类型，<font color=dodgerBlue>总的来�
 
 - 字符串：字符串字面量和<font color=red>字符串切片 `&str`</font>
 
-  > 💡 看完了这一整节，才发现：本节几乎没有介绍字符串类型，这里做一下补充：
+  > 💡 看完了这一整节，才发现：本节几乎没有介绍字符串类型（在 [[#复合类型#字符串与切片]] 中有介绍），这里做一下补充：
   >
   > <img src="https://s2.loli.net/2024/02/26/cDkYfazgIX1rLRv.png" alt="image-20240226165302892" style="zoom:60%;" />
   >
@@ -1394,6 +1394,8 @@ Rust 之所以能成为万众瞩目的语言，就是因为其<font color=red>�
 
 #### 所有权
 
+> 💡 Rust 中 “所有权” 对应的英文是 ownership
+
 所有的程序都必须和计算机内存打交道，<font color=lightSeaGreen>如何从内存中申请空间来存放程序的运行内容，如何在不需要的时候释放这些空间，成了重中之重</font>，也是所有编程语言设计的难点之一。在计算机语言不断演变过程中，<font color=dodgerBlue>出现了三种流派</font>：
 
 - **垃圾回收机制 ( GC )**，在程序运行时不断寻找不再使用的内存，典型代表：Java、Go
@@ -1466,12 +1468,12 @@ int* foo() {
 理解了堆栈，接下来看一下 *关于所有权的规则* ，<font color=dodgerBlue>首先请谨记以下规则</font>：
 
 > 1. Rust 中每一个值都被一个变量所拥有，该变量被称为值的所有者
-> 2. 一个值同时只能被一个变量所拥有，或者说一个值只能拥有一个所有者
-> 3. 当所有者（变量）离开作用域范围时，这个值将被丢弃(drop)
+> 2. <font color=fuchsia>一个值同时只能被一个变量所拥有</font>，或者说一个值只能拥有一个所有者
+> 3. <font color=fuchsia>当所有者（变量）离开作用域范围时，这个值将被丢弃 ( drop )</font>
 
 ###### 变量作用域
 
-作用域是一个变量在程序中有效的范围, 假如有这样一个变量：
+作用域是一个变量在程序中有效的范围，假如有这样一个变量：
 
 ```rust
 let s = "hello";
@@ -1484,21 +1486,21 @@ let s = "hello";
     let s = "hello";   // 从此处起，s 是有效的
 
     // 使用 s
-}                      // 此作用域已结束，s不再有效
+}                      // 此作用域已结束，s 不再有效
 ```
 
-简而言之，`s` 从创建开始就有效，然后有效期持续到它离开作用域为止，可以看出，就作用域来说，Rust 语言跟其他编程语言没有区别。
+简而言之，`s` 从创建开始就有效，然后有效期持续到它离开作用域为止；<font color=red>可以看出，就作用域来说，Rust 语言跟其他编程语言没有区别</font>。
 
 ###### 简单介绍 String 类型
 
 之前提到过，本章会用 `String` 作为例子，因此这里会进行一下简单的介绍，具体的 `String` 学习请参见 [String 类型](https://course.rs/basic/compound-type/string-slice.html)。
 
-我们已经见过字符串字面值 `let s ="hello"`，`s` 是被硬编码进程序里的字符串值（类型为 `&str` ）。字符串字面值是很方便的，但是它并不适用于所有场景。原因有二：
+我们已经见过字符串字面值 `let s = "hello"` ，<font color=fuchsia>`s` 是被硬编码进程序里的字符串值（ **类型为 `&str`** ）</font>。字符串字面值是很方便的，但是它并不适用于所有场景。<font color=dodgerBlue>原因有二</font>：
 
-- **字符串字面值是不可变的**，因为被硬编码到程序代码中
+- <font color=fuchsia>**字符串字面值是不可变的**，因为被硬编码到程序代码中</font>
 - 并非所有字符串的值都能在编写代码时得知
 
-例如，字符串是需要程序运行时，通过用户动态输入然后存储在内存中的，这种情况，字符串字面值就完全无用武之地。 为此，Rust 为我们提供动态字符串类型: `String`, 该类型被分配到堆上，因此可以动态伸缩，也就能存储在编译时大小未知的文本。
+<font color=lightSeaGreen>例如，字符串是需要程序运行时，**通过用户动态输入然后存储在内存中**的</font>，这种情况，字符串字面值就完全无用武之地。 为此，<font color=fuchsia>Rust 为我们提供 **动态字符串类型：`String`** ，该类型被分配到堆上，因此可以动态伸缩，也就能存储在编译时大小未知的文本</font>。
 
 可以使用下面的方法基于字符串字面量来创建 `String` 类型：
 
@@ -1506,7 +1508,7 @@ let s = "hello";
 let s = String::from("hello");
 ```
 
-`::` 是一种调用操作符，这里表示调用 `String` 模块中的 `from` 方法，由于 `String` 类型存储在堆上，因此它是动态的，你可以这样修改：
+`::` 是一种调用操作符，这里表示调用 `String` 模块中的 `from` 方法，由于 <font color=red>`String` 类型存储在堆上</font>，因此它是动态的，你可以这样修改：
 
 ```rust
 let mut s = String::from("hello");
@@ -1517,6 +1519,542 @@ println!("{}", s); // 将打印 `hello, world!`
 ```
 
 言归正传，了解 `String` 后，一起来看看关于所有权的交互。
+
+##### 变量绑定背后的数据交互
+
+###### 转移所有权
+
+先来看一段代码：
+
+```rust
+let x = 5;
+let y = x;
+```
+
+这段代码并没有发生所有权的转移，原因很简单： 代码首先将 `5` 绑定到变量 `x`，接着**拷贝** `x` 的值赋给 `y`，最终 `x` 和 `y` 都等于 `5`，<font color=red>因为整数是 Rust 基本数据类型</font> ( 💡 primitive types )，是固定大小的简单值，因此这两个值都是通过**自动拷贝**的方式来赋值的，都被存在栈中，完全无需在堆上分配内存。
+
+<font color=red>整个过程中的赋值都是通过值拷贝的方式完成（发生在栈中），因此并不需要所有权转移</font>。
+
+> 可能有同学会有疑问：这种拷贝不消耗性能吗？实际上，这种栈上的数据足够简单，而且拷贝非常非常快，只需要复制一个整数大小（ `i32`，4 个字节）的内存即可，因此在这种情况下，拷贝的速度远比在堆上创建内存来得快的多。实际上，上一章我们讲到的 Rust 基本类型都是通过自动拷贝的方式来赋值的，就像上面代码一样。
+
+然后再来看一段代码：
+
+```rust
+let s1 = String::from("hello");
+let s2 = s1;
+```
+
+此时，可能某个大聪明( 善意昵称 )已经想到了：嗯，上面一样，把 `s1` 的内容拷贝一份赋值给 `s2`，实际上，并不是这样。之前也提到了，<font color=lightSeaGreen>对于基本类型（存储在栈上），Rust 会自动拷贝</font>，但是 <font color=fuchsia>**`String` 不是基本类型**，而且是存储在堆上的，因此不能自动拷贝</font>。
+
+实际上， <font color=fuchsia>`String` 类型是一个复杂类型，由存储在栈中的 **堆指针**、**字符串长度**、**字符串容量** 共同组成</font>，其中**堆指针**是最重要的，它指向了真实存储字符串内容的堆内存，至于长度和容量，如果你有 Go 语言的经验，这里就很好理解：容量是堆内存分配空间的大小（👀 可以理解为 “capacity” ），长度是目前已经使用的大小（👀 可以理解为 “size” ）。
+
+总之 `String` 类型指向了一个堆上的空间，这里存储着它的真实数据，<font color=dodgerBlue>**下面对上面代码中的 `let s2 = s1` 分成两种情况讨论**</font>：
+
+1. 拷贝 `String` 和存储在堆上的字节数组 如果该语句是拷贝所有数据（<font color=red>深拷贝</font>），那么无论是 `String` 本身还是底层的堆上数据，都会被全部拷贝，这对于性能而言会造成非常大的影响
+2. 只拷贝 `String` 本身 这样的拷贝非常快，因为<font color=dodgerBlue>在 64 位机器上</font>就拷贝了 “8字节的指针” （ 👀 Pointer address ）、“8字节的长度”（👀 Size ）、8字节的容量（👀 Capacity ），<font color=red>**总计 24 字节**</font>，但是带来了新的问题，还记得我们之前提到的所有权规则吧？其中有一条就是：**一个值只允许有一个所有者**，而<font color=red>现在这个值（堆上的真实字符串数据）有了两个所有者：`s1` 和 `s2`</font>。
+
+好吧，就<font color=dodgerBlue>假定一个值可以拥有两个所有者，会发生什么呢</font>？
+
+<font color=fuchsia>当变量离开作用域后，Rust **会自动调用 `drop` 函数并清理变量的堆内存**</font>。不过由于两个 `String` 变量指向了同一位置。这就有了一个问题：<font color=red>当 `s1` 和 `s2` 离开作用域，它们都会尝试释放相同的内存</font>。<font color=fuchsia>这是一个叫做 **二次释放（double free）** 的错误</font>，也是之前提到过的内存安全性 BUG 之一。两次释放（相同）内存会导致内存污染，它可能会导致潜在的安全漏洞。
+
+<font color=dodgerBlue>因此，Rust 这样解决问题</font>：**<font color=fuchsia>当 `s1` 被赋予 `s2` 后，Rust 认为 `s1` 不再有效，因此也无需在 `s1` 离开作用域后 `drop` 任何东西</font>，这就是把所有权从 `s1` 转移给了 `s2`，`s1` 在被赋予 `s2` 后就马上失效了**。
+
+再来看看，在所有权转移后再来使用旧的所有者，会发生什么：
+
+```rust
+let s1 = String::from("hello");
+let s2 = s1;
+
+println!("{}, world!", s1);
+```
+
+由于 Rust 禁止你使用无效的引用，你会看到以下的错误：
+
+```rust
+error[E0382]: borrow of moved value: `s1`
+ --> src/main.rs:5:28
+  |
+2 |     let s1 = String::from("hello");
+  |         -- move occurs because `s1` has type `String`, which does not implement the `Copy` trait
+3 |     let s2 = s1;
+  |              -- value moved here
+4 |
+5 |     println!("{}, world!", s1);
+  |                            ^^ value borrowed here after move
+  |
+  = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider cloning the value if the performance cost is acceptable
+  |
+3 |     let s2 = s1.clone();
+  |                ++++++++
+
+For more information about this error, try `rustc --explain E0382`.
+```
+
+如果你在其他语言中听说过术语 **浅拷贝( shallow copy )** 和 **深拷贝( deep copy )**，那么拷贝指针、长度和容量而不拷贝数据听起来就像浅拷贝，但是又因为 Rust 同时使第一个变量 `s1` 无效了，因此这个操作被称为 **移动 ( move )**，而不是浅拷贝。<font color=red>上面的例子可以解读为 `s1` 被**移动**到了 `s2` 中</font>。具体发生了什么，用一张图简单说明：
+
+<img src="https://s2.loli.net/2024/02/28/YPUrfdgL4t7h2R1.jpg" alt="s1 moved to s2" style="zoom:25%;" />
+
+这样就解决了我们之前的问题，`s1` 不再指向任何数据，只有 `s2` 是有效的，当 `s2` 离开作用域，它就会释放内存。 相信此刻，你应该明白了，为什么 Rust 称呼 `let a = b` 为**变量绑定**了吧？
+
+> 💡 关于上面的 “移动 ( move )” ，想起 C++ 中也有类似的 `move` 函数，这里做下补充：
+>
+> <img src="https://s2.loli.net/2024/02/28/OuyM49RFQX2EGZV.png" alt="image-20240228171022562" style="zoom:50%;" />
+>
+> 就介绍而言，C++ 中 `std::move` 的功能和 rust 中的所有权转移是一样的。
+
+再来看一段代码:
+
+```rust
+fn main() {
+    let x: &str = "hello, world";
+    let y = x;
+    println!("{},{}", x, y);
+}
+```
+
+这段代码，大家觉得会否报错？如果参考之前的 `String` 所有权转移的例子，那这段代码也应该报错才是，但是实际上呢？
+
+这段代码和之前的 `String` 有一个本质上的区别：在 `String` 的例子中 `s1` 持有了通过 `String::from("hello")` 创建的值的所有权，而这个例子中，`x` 只是引用了存储在二进制中的字符串 `"hello, world"`，并没有持有所有权。
+
+> 👀 感觉可以理解为：`String` 类型实例具有“所有权”这一概念，`&str` 是基础类型，没有“所有权”这一概念
+
+因此 `let y = x` 中，<font color=red>仅仅是对该引用进行了拷贝，此时 `y` 和 `x` 都引用了同一个字符串</font>。
+
+###### 克隆（深拷贝）
+
+首先，**Rust 永远也不会自动创建数据的 “深拷贝”**。因此，任何**自动**的复制都不是深拷贝，可以被认为对运行时性能影响较小。
+
+<font color=dodgerBlue>如果我们**确实**需要深度复制 `String` 中堆上的数据</font>，而不仅仅是栈上的数据，<font color=red>**可以使用一个叫做 `clone` 的方法**</font>。
+
+```rust
+let s1 = String::from("hello");
+let s2 = s1.clone();
+
+println!("s1 = {}, s2 = {}", s1, s2);
+```
+
+这段代码能够正常运行，说明 `s2` 确实完整的复制了 `s1` 的数据。
+
+如果代码性能无关紧要，例如初始化程序时或者在某段时间只会执行寥寥数次时，你可以使用 `clone` 来简化编程。但是<font color=lightSeaGreen>对于执行较为频繁的代码（热点路径），使用 `clone` 会极大的降低程序性能</font>，需要小心使用！
+
+###### 拷贝（浅拷贝）
+
+<font color=fuchsia>**浅拷贝只发生在栈上**，因此性能很高</font>，在日常编程中，浅拷贝无处不在。
+
+再回到之前看过的例子:
+
+```rust
+let x = 5;
+let y = x;
+
+println!("x = {}, y = {}", x, y);
+```
+
+但这段代码似乎与我们刚刚学到的内容相矛盾：没有调用 `clone`，不过依然实现了类似深拷贝的效果 —— 没有报所有权的错误。
+
+<font color=red>原因是像整型这样的 **基本类型** 在编译时是已知大小的，会被存储在栈上，所以拷贝其实际的值是快速的</font>。这意味着没有理由在创建变量 `y` 后使 `x` 无效（`x`、`y` 都仍然有效）。换句话说，这里没有深浅拷贝的区别，因此这里调用 `clone` 并不会与通常的浅拷贝有什么不同，我们可以不用管它（<font color=lightSeaGreen>可以理解成在栈上做了深拷贝</font>）。
+
+<font color=fuchsia>Rust 有一个叫做 `Copy` 的特征，可以用在类似整型这样在栈中存储的类型</font>。<font color=dodgerBlue>如果一个类型拥有 `Copy` 特征</font>，<font color=red>一个旧的变量在被赋值给其他变量后仍然可用</font>，也就是赋值的过程即是拷贝的过程。
+
+<font color=dodgerBlue>那么什么类型是可 `Copy` 的呢</font>？可以查看给定类型的文档来确认，这里可以给出一个通用的规则： <font color=fuchsia>**任何基本类型的组合可以 `Copy` ，不需要分配内存或某种形式资源的类型是可以 `Copy` 的**</font>。<font color=dodgerBlue>如下是一些 `Copy` 的类型</font>：
+
+- 所有整数类型，比如 `u32`
+- 布尔类型，`bool`，它的值是 `true` 和 `false`
+- 所有浮点数类型，比如 `f64`
+- 字符类型，`char`
+- 元组，<font color=red>**当且仅当**其包含的类型也都是 `Copy` 的时候</font>。比如，`(i32, i32)` 是 `Copy` 的，`(i32, String)` 不是
+- <font color=fuchsia>不可变引用 `&T`</font> ，例如[[#转移所有权]]中的最后一个例子，**但是<font color=fuchsia>注意：可变引用 `&mut T` 是不可以 Copy 的</font>**
+
+##### 函数传值与返回
+
+将值传递给函数，一样会发生 `移动` 或者 `复制`，就跟 `let` 语句一样，下面的代码展示了所有权、作用域的规则：
+
+```rust
+fn main() {
+    let s = String::from("hello"); // s 进入作用域
+
+    takes_ownership(s);            // s 的值移动到函数里 ...
+                                   // ... 所以到这里不再有效
+
+    let x = 5;                     // x 进入作用域
+
+    makes_copy(x);  // x 应该移动函数里，⭐️ **但 i32 是 Copy 的，所以在后面可继续使用 x**
+} // 这里, x 先移出了作用域，然后是 s。但因为 s 的值已被移走，所以不会有特殊操作
+
+fn takes_ownership(some_string: String) { // some_string 进入作用域
+    println!("{}", some_string);
+} // 这里，some_string 移出作用域并调用 `drop` 方法。占用的内存被释放
+
+fn makes_copy(some_integer: i32) { // some_integer 进入作用域
+    println!("{}", some_integer);
+} // 这里，some_integer 移出作用域。不会有特殊操作
+```
+
+你可以尝试在 `takes_ownership` 之后，再使用 `s`，看看如何报错？例如添加一行 `println!("在move进函数后继续使用s: {}",s);`。
+
+同样的，<font color=fuchsia>**函数返回值也有所有权**</font>，例如:
+
+```rust
+fn main() {
+    let s1 = gives_ownership();         // gives_ownership 将返回值移给 s1
+
+    let s2 = String::from("hello");     // s2 进入作用域
+
+    let s3 = takes_and_gives_back(s2);  // s2 被移动到 takes_and_gives_back 中，它也将返回值移给 s3
+} // 这里，s3 移出作用域并被丢弃。s2 也移出作用域，但已被移走，所以什么也不会发生。s1 移出作用域并被丢弃
+
+fn gives_ownership() -> String {             // gives_ownership 将返回值移动给调用它的函数
+
+    let some_string = String::from("hello"); // some_string 进入作用域.
+
+    some_string                              // 返回 some_string 并移出给调用的函数
+}
+
+// takes_and_gives_back 将传入字符串并返回该值
+fn takes_and_gives_back(a_string: String) -> String { // a_string 进入作用域
+
+    a_string  // 返回 a_string 并移出给调用的函数
+}
+```
+
+所有权很强大，避免了内存的不安全性，但是<font color=dodgerBlue>也带来了一个新麻烦： **总是把一个值传来传去来使用它**</font>。<font color=lightSeaGreen>传入一个函数，很可能还要从该函数传出去，结果就是语言表达变得非常啰嗦</font>；幸运的是，Rust 提供了新功能解决这个问题，这就是“借用” ( Borrowing )
+
+#### 引用与借用
+
+上节中提到，如果仅仅支持通过转移所有权的方式获取一个值，那会让程序变得复杂。 <font color=dodgerBlue>Rust 能否像其它编程语言一样，**使用某个变量的指针或者引用呢**</font>？答案是可以。
+
+Rust 通过 借用 ( Borrowing ) 这个概念来达成上述的目的，<font color=red>获取变量的引用，称之为借用</font> ( borrowing )。<font color=lightSeaGreen>正如现实生活中，如果一个人拥有某样东西，你可以从他那里借来，当使用完毕后，也必须要物归原主</font>。
+
+##### 引用与解引用
+
+常规引用是一个指针类型，指向了对象存储的内存地址。在下面代码中，我们<font color=red>创建一个 `i32` 值的引用 `y`</font>，然后<font color=red>使用解引用运算符来解出 `y` 所使用的值</font>：
+
+```rust
+fn main() {
+    let x = 5;
+    let y = &x;
+
+    assert_eq!(5, x);
+    assert_eq!(5, *y);
+}
+```
+
+变量 `x` 存放了一个 `i32` 值 `5`。<font color=fuchsia>**`y` 是 `x` 的一个引用**</font>。可以断言 `x` 等于 `5`。然而，如果希望对 `y` 的值做出断言，必须使用 `*y` 来解出引用所指向的值（也就是**解引用**）。一旦解引用了 `y`，就可以访问 `y` 所指向的整型值并可以与 `5` 做比较。
+
+相反，如果尝试编写 `assert_eq!(5, y);`，则会得到如下编译错误：
+
+```rust
+error[E0277]: can't compare `{integer}` with `&{integer}`
+ --> src/main.rs:6:5
+  |
+6 |     assert_eq!(5, y);
+  |     ^^^^^^^^^^^^^^^^^ no implementation for `{integer} == &{integer}` // 无法比较整数类型和引用类型
+  |
+  = help: the trait `std::cmp::PartialEq<&{integer}>` is not implemented for
+  `{integer}
+```
+
+<font color=red>不允许比较整数与引用，因为它们是不同的类型</font>。必须使用解引用运算符解出引用所指向的值。
+
+##### 不可变引用
+
+下面的代码，<font color=red>用 **`s1` 的引用** 作为参数传递给 `calculate_length` 函数</font>，而不是把 `s1` 的所有权转移给该函数：
+
+```rust
+fn main() {
+    let s1 = String::from("hello");
+    let len = calculate_length(&s1);
+  
+    println!("The length of '{}' is {}.", s1, len);
+}
+
+fn calculate_length(s: &String) -> usize {
+    s.len()
+}
+```
+
+<font color=dodgerBlue>能注意到两点：</font>
+
+1. 无需像上章一样：先通过函数参数传入所有权，然后再通过函数返回来传出所有权，代码更加简洁
+2. <font color=red>`calculate_length` 的参数 `s` 类型从 `String` 变为 **`&String`**</font>
+
+这里，`&` 符号即是引用，它们允许你使用值，但是不获取所有权，如图所示：
+
+> 👀 感觉有点类似于 可读，但不可写
+
+<img src="https://s2.loli.net/2024/02/28/C85Kkj3VlbSZpq2.jpg" alt="&String s pointing at String s1" style="zoom:30%;" />
+
+通过 `&s1` 语法，我们创建了一个**指向 `s1` 的引用**，但是并不拥有它。因为并不拥有这个值，当引用离开作用域后，其指向的值也不会被丢弃。
+
+同理，函数 `calculate_length` 使用 `&` 来表明参数 `s` 的类型是一个引用：
+
+```rust
+fn calculate_length(s: &String) -> usize { // s 是对 String 的引用
+    s.len()
+} // 这里，s 离开了作用域。但因为它并不拥有引用值的所有权，所以什么也不会发生
+```
+
+<font color=dodgerBlue>如果尝试修改借用的变量呢？</font>
+
+```rust
+fn main() {
+    let s = String::from("hello");
+
+    change(&s);
+}
+
+fn change(some_string: &String) {
+    some_string.push_str(", world");
+}
+```
+
+将会报出如下错误提示：
+
+```rust
+error[E0596]: cannot borrow `*some_string` as mutable, as it is behind a `&` reference
+ --> src/main.rs:8:5
+  |
+7 | fn change(some_string: &String) {
+  |                        ------- help: consider changing this to be a mutable reference: `&mut String`
+                           ------- 帮助：考虑将该参数类型修改为可变的引用: `&mut String`
+8 |     some_string.push_str(", world");
+  |     ^^^^^^^^^^^ `some_string` is a `&` reference, so the data it refers to cannot be borrowed as mutable
+                     `some_string`是一个`&`类型的引用，因此它指向的数据无法进行修改
+```
+
+正如变量默认不可变一样，引用指向的值默认也是不可变的。这一需求，可以通过 “可变引用” 解决
+
+##### 可变引用
+
+只需要一个小调整，即可修复上面代码的错误：
+
+```rust
+fn main() {
+    let mut s = String::from("hello");
+
+    change(&mut s);
+}
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
+}
+```
+
+<font color=dodgerBlue>首先</font>，<font color=fuchsia>声明 `s` 是可变类型</font>，<font color=dodgerBlue>其次</font> <font color=fuchsia>创建一个**可变的引用 `&mut s`** 和 **接受可变引用参数 `some_string: &mut String`** 的函数</font>。
+
+###### 可变引用同时只能存在一个
+
+不过可变引用并不是随心所欲、想用就用的，<font color=dodgerBlue>它有一个很大的限制</font>：<font color=fuchsia>**同一作用域，特定数据只能有一个可变引用**</font>：
+
+> 💡 上面所说 “特定数据” 这一描述有点模糊，经过下面手写的实验和下面教程中的代码示例，意思就是 “同一个数据”。实验如下：
+>
+> ```rust
+> fn mutable_diff_refs() {
+>   let mut s1 = String::from("hello");
+>   let mut s2 = String::from("world");
+>   
+>   let r1 = &mut s1;
+>   let r2 = &mut s2;
+>   
+>   println!("{}, {}", r1, r2);
+> }
+> 
+> mutable_diff_refs();
+> ```
+>
+> 在 jupyter 中的运行结果如下：
+>
+> <img src="https://s2.loli.net/2024/02/28/ksP1F7CB9WAlodZ.png" alt="image-20240228232928323" style="zoom:55%;" />
+
+```rust
+let mut s = String::from("hello");
+
+let r1 = &mut s;
+let r2 = &mut s;
+
+println!("{}, {}", r1, r2);
+```
+
+以上代码会报错：
+
+```rust
+error[E0499]: cannot borrow `s` as mutable more than once at a time 同一时间无法对 `s` 进行两次可变借用
+ --> src/main.rs:5:14
+  |
+4 |     let r1 = &mut s;
+  |              ------ first mutable borrow occurs here 首个可变引用在这里借用
+5 |     let r2 = &mut s;
+  |              ^^^^^^ second mutable borrow occurs here 第二个可变引用在这里借用
+6 |
+7 |     println!("{}, {}", r1, r2);
+  |                        -- first borrow later used here 第一个借用在这里使用
+```
+
+这段代码出错的原因在于，<font color=red>第一个可变借用 `r1` 必须要持续到最后一次使用的位置 `println!`</font>，<font color=fuchsia>在 `r1` 创建和最后一次使用之间，我们又</font>（👀 可以）<font color=fuchsia>尝试创建第二个可变借用 `r2`</font> 。
+
+对于新手来说，这个特性绝对是一大拦路虎，也是新人们谈之色变的编译器 `borrow checker` 特性之一，不过各行各业都一样，限制往往是出于安全的考虑，Rust 也一样。
+
+这种限制的好处就是使 Rust 在编译期就避免数据竞争，数据竞争可由以下行为造成：
+
+- 两个或更多的指针同时访问同一数据
+- 至少有一个指针被用来写入数据
+- 没有同步数据访问的机制
+
+数据竞争会导致未定义行为，这种行为很可能超出我们的预期，难以在运行时追踪，并且难以诊断和修复。而 Rust 避免了这种情况的发生，因为它甚至不会编译存在数据竞争的代码！
+
+很多时候，大括号可以帮我们解决一些编译不通过的问题，通过手动限制变量的作用域：
+
+```rust
+let mut s = String::from("hello");
+
+{
+    let r1 = &mut s;
+
+} // r1 在这里离开了作用域，所以我们完全可以创建一个新的引用
+
+let r2 = &mut s;
+```
+
+#### [可变引用与不可变引用不能同时存在](https://course.rs/basic/ownership/borrowing.html#可变引用与不可变引用不能同时存在)
+
+下面的代码会导致一个错误：
+
+```rust
+let mut s = String::from("hello");
+
+let r1 = &s; // 没问题
+let r2 = &s; // 没问题
+let r3 = &mut s; // 大问题
+
+println!("{}, {}, and {}", r1, r2, r3);
+```
+
+错误如下：
+
+```console
+error[E0502]: cannot borrow `s` as mutable because it is also borrowed as immutable
+        // 无法借用可变 `s` 因为它已经被借用了不可变
+ --> src/main.rs:6:14
+  |
+4 |     let r1 = &s; // 没问题
+  |              -- immutable borrow occurs here 不可变借用发生在这里
+5 |     let r2 = &s; // 没问题
+6 |     let r3 = &mut s; // 大问题
+  |              ^^^^^^ mutable borrow occurs here 可变借用发生在这里
+7 |
+8 |     println!("{}, {}, and {}", r1, r2, r3);
+  |                                -- immutable borrow later used here 不可变借用在这里使用
+```
+
+其实这个也很好理解，正在借用不可变引用的用户，肯定不希望他借用的东西，被另外一个人莫名其妙改变了。多个不可变借用被允许是因为没有人会去试图修改数据，每个人都只读这一份数据而不做修改，因此不用担心数据被污染。
+
+> 注意，引用的作用域 `s` 从创建开始，一直持续到它最后一次使用的地方，这个跟变量的作用域有所不同，变量的作用域从创建持续到某一个花括号 `}`
+
+Rust 的编译器一直在优化，早期的时候，引用的作用域跟变量作用域是一致的，这对日常使用带来了很大的困扰，你必须非常小心的去安排可变、不可变变量的借用，免得无法通过编译，例如以下代码：
+
+```rust
+fn main() {
+   let mut s = String::from("hello");
+
+    let r1 = &s;
+    let r2 = &s;
+    println!("{} and {}", r1, r2);
+    // 新编译器中，r1,r2作用域在这里结束
+
+    let r3 = &mut s;
+    println!("{}", r3);
+} // 老编译器中，r1、r2、r3作用域在这里结束
+  // 新编译器中，r3作用域在这里结束
+```
+
+在老版本的编译器中（Rust 1.31 前），将会报错，因为 `r1` 和 `r2` 的作用域在花括号 `}` 处结束，那么 `r3` 的借用就会触发 **无法同时借用可变和不可变**的规则。
+
+但是在新的编译器中，该代码将顺利通过，因为 **引用作用域的结束位置从花括号变成最后一次使用的位置**，因此 `r1` 借用和 `r2` 借用在 `println!` 后，就结束了，此时 `r3` 可以顺利借用到可变引用。
+
+###### NLL
+
+对于这种编译器优化行为，Rust 专门起了一个名字 —— **Non-Lexical Lifetimes ( NLL )**，专门用于找到某个引用在作用域(`}`)结束前就不再被使用的代码位置。
+
+虽然这种借用错误有的时候会让我们很郁闷，但是你只要想想这是 Rust 提前帮你发现了潜在的 BUG，其实就开心了，虽然减慢了开发速度，但是从长期来看，大幅减少了后续开发和运维成本。
+
+##### 悬垂引用 ( Dangling References )
+
+悬垂引用也叫做悬垂指针，意思为指针指向某个值后，这个值被释放掉了，而指针仍然存在，其指向的内存可能不存在任何值或已被其它变量重新使用。在 Rust 中编译器可以确保引用永远也不会变成悬垂状态：当你获取数据的引用后，编译器可以确保数据不会在引用结束前被释放，要想释放数据，必须先停止其引用的使用。
+
+让我们尝试创建一个悬垂引用，Rust 会抛出一个编译时错误：
+
+```rust
+fn main() {
+    let reference_to_nothing = dangle();
+}
+
+fn dangle() -> &String {
+    let s = String::from("hello");
+
+    &s
+}
+```
+
+这里是错误：
+
+```rust
+error[E0106]: missing lifetime specifier
+ --> src/main.rs:5:16
+  |
+5 | fn dangle() -> &String {
+  |                ^ expected named lifetime parameter
+  |
+  = help: this function's return type contains a borrowed value, but there is no value for it to be borrowed from
+help: consider using the `'static` lifetime
+  |
+5 | fn dangle() -> &'static String {
+  |                ~~~~~~~~
+```
+
+错误信息引用了一个我们还未介绍的功能：生命周期 ( lifetimes )。不过，即使你不理解生命周期，也可以通过错误信息知道这段代码错误的关键信息：
+
+```rust
+this function's return type contains a borrowed value, but there is no value for it to be borrowed from.
+该函数返回了一个借用的值，但是已经找不到它所借用值的来源
+```
+
+仔细看看 `dangle` 代码的每一步到底发生了什么：
+
+```rust
+fn dangle() -> &String { // dangle 返回一个字符串的引用
+
+    let s = String::from("hello"); // s 是一个新字符串
+
+    &s // 返回字符串 s 的引用
+} // 这里 s 离开作用域并被丢弃。其内存被释放。
+  // 危险！
+```
+
+因为 `s` 是在 `dangle` 函数内创建的，当 `dangle` 的代码执行完毕后，`s` 将被释放，但是此时我们又尝试去返回它的引用。这意味着这个引用会指向一个无效的 `String`，这可不对！
+
+其中一个很好的解决方法是直接返回 `String`：
+
+```rust
+fn no_dangle() -> String {
+    let s = String::from("hello");
+
+    s
+}
+```
+
+这样就没有任何错误了，最终 `String` 的 **所有权被转移给外面的调用者**。
+
+##### 借用规则总结
+
+总的来说，借用规则如下：
+
+- 同一时刻，你只能拥有要么一个可变引用, 要么任意多个不可变引用
+- 引用必须总是有效的
+
+#### 复合类型
+
+##### 字符串与切片
 
 
 
