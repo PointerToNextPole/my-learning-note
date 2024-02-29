@@ -1893,30 +1893,33 @@ error[E0499]: cannot borrow `s` as mutable more than once at a time 同一时间
 
 这段代码出错的原因在于，<font color=red>第一个可变借用 `r1` 必须要持续到最后一次使用的位置 `println!`</font>，<font color=fuchsia>在 `r1` 创建和最后一次使用之间，我们又</font>（👀 可以）<font color=fuchsia>尝试创建第二个可变借用 `r2`</font> 。
 
-对于新手来说，这个特性绝对是一大拦路虎，也是新人们谈之色变的编译器 `borrow checker` 特性之一，不过各行各业都一样，限制往往是出于安全的考虑，Rust 也一样。
+对于新手来说，这个特性绝对是一大拦路虎，也是新人们谈之色变的编译器 <font color=red>`borrow checker` 特性之一</font>，不过各行各业都一样，限制往往是出于安全的考虑，Rust 也一样。
 
-这种限制的好处就是使 Rust 在编译期就避免数据竞争，数据竞争可由以下行为造成：
+<font color=fuchsia>这种限制的好处就是使 Rust **在编译期就避免数据竞争**</font>，<font color=dodgerBlue>数据竞争可由以下行为造成</font>：
 
-- 两个或更多的指针同时访问同一数据
-- 至少有一个指针被用来写入数据
+- <font color=red>两个或更多的指针同时访问同一数据</font>
+
+- <font color=fuchsia>至少有一个指针被用来写入数据</font>
+
+  > 👀 可能会出现脏数据
+
 - 没有同步数据访问的机制
 
-数据竞争会导致未定义行为，这种行为很可能超出我们的预期，难以在运行时追踪，并且难以诊断和修复。而 Rust 避免了这种情况的发生，因为它甚至不会编译存在数据竞争的代码！
+<font color=red>数据竞争会导致未定义行为，这种行为很可能超出我们的预期，难以在运行时追踪，并且难以诊断和修复</font>。而 Rust 避免了这种情况的发生，因为它<font color=red>甚至不会编译存在数据竞争的代码</font>！
 
-很多时候，大括号可以帮我们解决一些编译不通过的问题，通过手动限制变量的作用域：
+<font color=fuchsia>很多时候，**大括号可以帮我们解决一些编译不通过的问题**，通过手动限制变量的作用域</font>：
 
 ```rust
 let mut s = String::from("hello");
 
 {
     let r1 = &mut s;
-
 } // r1 在这里离开了作用域，所以我们完全可以创建一个新的引用
 
 let r2 = &mut s;
 ```
 
-#### [可变引用与不可变引用不能同时存在](https://course.rs/basic/ownership/borrowing.html#可变引用与不可变引用不能同时存在)
+###### 可变引用与不可变引用不能同时存在
 
 下面的代码会导致一个错误：
 
@@ -1932,7 +1935,7 @@ println!("{}, {}, and {}", r1, r2, r3);
 
 错误如下：
 
-```console
+```rust
 error[E0502]: cannot borrow `s` as mutable because it is also borrowed as immutable
         // 无法借用可变 `s` 因为它已经被借用了不可变
  --> src/main.rs:6:14
@@ -1951,7 +1954,7 @@ error[E0502]: cannot borrow `s` as mutable because it is also borrowed as immuta
 
 > 注意，引用的作用域 `s` 从创建开始，一直持续到它最后一次使用的地方，这个跟变量的作用域有所不同，变量的作用域从创建持续到某一个花括号 `}`
 
-Rust 的编译器一直在优化，早期的时候，引用的作用域跟变量作用域是一致的，这对日常使用带来了很大的困扰，你必须非常小心的去安排可变、不可变变量的借用，免得无法通过编译，例如以下代码：
+Rust 的编译器一直在优化，<font color=lightSeaGreen>早期的时候，引用的作用域跟变量作用域是一致的</font>，这对日常使用带来了很大的困扰，你必须非常小心的去安排可变、不可变变量的借用，免得无法通过编译，例如以下代码：
 
 ```rust
 fn main() {
@@ -1964,8 +1967,7 @@ fn main() {
 
     let r3 = &mut s;
     println!("{}", r3);
-} // 老编译器中，r1、r2、r3作用域在这里结束
-  // 新编译器中，r3作用域在这里结束
+} // 老编译器中，r1、r2、r3作用域在这里结束；新编译器中，r3作用域在这里结束
 ```
 
 在老版本的编译器中（Rust 1.31 前），将会报错，因为 `r1` 和 `r2` 的作用域在花括号 `}` 处结束，那么 `r3` 的借用就会触发 **无法同时借用可变和不可变**的规则。
@@ -1974,13 +1976,19 @@ fn main() {
 
 ###### NLL
 
-对于这种编译器优化行为，Rust 专门起了一个名字 —— **Non-Lexical Lifetimes ( NLL )**，专门用于找到某个引用在作用域(`}`)结束前就不再被使用的代码位置。
+对于这种编译器优化行为，<font color=dodgerBlue>Rust 专门起了一个名字 —— **Non-Lexical Lifetimes ( NLL )**</font>，<font color=fuchsia>专门用于找到某个引用在作用域 ( `}` ) 结束前就不再被使用的代码位置</font>。
+
+> 💡 这里的描述让人有点摸不着头脑，这里做一下补充：
+>
+> <img src="https://s2.loli.net/2024/02/29/l7SN4tpRMA1DOyz.png" alt="image-20240229092526690" style="zoom:50%;" />
 
 虽然这种借用错误有的时候会让我们很郁闷，但是你只要想想这是 Rust 提前帮你发现了潜在的 BUG，其实就开心了，虽然减慢了开发速度，但是从长期来看，大幅减少了后续开发和运维成本。
 
 ##### 悬垂引用 ( Dangling References )
 
-悬垂引用也叫做悬垂指针，意思为指针指向某个值后，这个值被释放掉了，而指针仍然存在，其指向的内存可能不存在任何值或已被其它变量重新使用。在 Rust 中编译器可以确保引用永远也不会变成悬垂状态：当你获取数据的引用后，编译器可以确保数据不会在引用结束前被释放，要想释放数据，必须先停止其引用的使用。
+> 👀 这一部分，总结一下就是 “引用必须总是有效的”；但是当前小节说的有点模糊
+
+悬垂引用也叫做悬垂指针，意思为<font color=lightSeaGreen>指针指向某个值后，这个值被释放掉了，而指针仍然存在</font>，<font color=red>其指向的内存可能不存在任何值或已被其它变量重新使用</font>。<font color=fuchsia>在 Rust 中编译器可以确保引用永远也不会变成悬垂状态：当你获取数据的引用后，编译器可以确保数据不会在引用结束前被释放，要想释放数据，必须先停止其引用的使用</font>。
 
 让我们尝试创建一个悬垂引用，Rust 会抛出一个编译时错误：
 
@@ -2012,7 +2020,7 @@ help: consider using the `'static` lifetime
   |                ~~~~~~~~
 ```
 
-错误信息引用了一个我们还未介绍的功能：生命周期 ( lifetimes )。不过，即使你不理解生命周期，也可以通过错误信息知道这段代码错误的关键信息：
+<font color=dodgerBlue>错误信息引用了一个我们还未介绍的功能：生命周期 ( lifetimes )</font>。不过，即使你不理解生命周期，也可以通过错误信息知道这段代码错误的关键信息：
 
 ```rust
 this function's return type contains a borrowed value, but there is no value for it to be borrowed from.
@@ -2027,8 +2035,7 @@ fn dangle() -> &String { // dangle 返回一个字符串的引用
     let s = String::from("hello"); // s 是一个新字符串
 
     &s // 返回字符串 s 的引用
-} // 这里 s 离开作用域并被丢弃。其内存被释放。
-  // 危险！
+} // 这里 s 离开作用域并被丢弃。其内存被释放。危险！
 ```
 
 因为 `s` 是在 `dangle` 函数内创建的，当 `dangle` 的代码执行完毕后，`s` 将被释放，但是此时我们又尝试去返回它的引用。这意味着这个引用会指向一个无效的 `String`，这可不对！
@@ -2054,9 +2061,71 @@ fn no_dangle() -> String {
 
 #### 复合类型
 
+来看一段代码，它使用我们之前学过的内容来构建文件操作：
+
+```rust
+#![allow(unused_variables)]
+type File = String;
+
+fn open(f: &mut File) -> bool {
+    true
+}
+fn close(f: &mut File) -> bool {
+    true
+}
+
+#[allow(dead_code)]
+fn read(f: &mut File, save_to: &mut Vec<u8>) -> ! {
+    unimplemented!()
+}
+
+fn main() {
+    let mut f1 = File::from("f1.txt");
+    open(&mut f1);
+    //read(&mut f1, &mut vec![]);
+    close(&mut f1);
+}
+```
+
+接下来我们的学习非常类似原型设计：<font color=red>有的方法只提供 API 接口，但是不提供具体实现</font>。此外，有的变量在声明之后并未使用，因此在这个阶段我们需要排除一些编译器噪音（Rust 在编译的时候会扫描代码，变量声明后未使用会以 `warning` 警告的形式进行提示），<font color=red>引入 `#![allow(unused_variables)]` 属性标记，该标记会告诉编译器忽略未使用的变量，不要抛出 `warning` 警告</font>，具体的常见编译器属性你可以在这里查阅：[编译器属性标记](https://course.rs/profiling/compiler/attributes.html) 。
+
+<font color=dodgerBlue>`read` 函数也非常有趣，它返回一个 `!` 类型</font>，<font color=red>这个表明该函数是一个发散函数，不会返回任何值，包括 `()`</font>。<font color=red>`unimplemented!()` 告诉编译器该函数尚未实现</font>，`unimplemented!()` 标记通常意味着我们期望快速完成主要代码，回头再通过搜索这些标记来完成次要代码，<font color=red>类似的标记还有 `todo!()`</font>，当代码执行到这种未实现的地方时，程序会直接报错。你可以反注释 `read(&mut f1, &mut vec![]);` 这行，然后再观察下结果。
+
+同时，<font color=red>从代码设计角度来看，关于文件操作的类型和函数应该组织在一起，散落得到处都是，是难以管理和使用的</font>。而且通过 `open(&mut f1)` 进行调用，也远没有使用 `f1.open()` 来调用好，<font color=lightSeaGreen>这就体现出了只使用基本类型的局限性：**无法从更高的抽象层次去简化代码**</font>。
+
 ##### 字符串与切片
 
+在其他语言中，字符串往往是送分题，因为实在是太简单了，例如 `"hello, world"` 就是字符串章节的几乎全部内容了，但是如果你带着同样的想法来学 Rust，我保证，绝对会栽跟头，**因此这一章大家一定要重视，仔细阅读，这里有很多其它 Rust 书籍中没有的内容**。
 
+首先来看段很简单的代码：
+
+```rust
+fn main() {
+  let my_name = "Pascal";
+  greet(my_name);
+}
+
+fn greet(name: String) {
+  println!("Hello, {}!", name);
+}
+```
+
+`greet` 函数接受一个字符串类型的 `name` 参数，然后打印到终端控制台中，非常好理解，你们猜猜，这段代码能否通过编译？
+
+```rust
+error[E0308]: mismatched types
+ --> src/main.rs:3:11
+  |
+3 |     greet(my_name);
+  |           ^^^^^^^
+  |           |
+  |           expected struct `std::string::String`, found `&str`
+  |           help: try using a conversion method: `my_name.to_string()`
+
+error: aborting due to previous error
+```
+
+编译器提示 `greet` 函数需要一个 `String` 类型的字符串，却传入了一个 `&str` 类型的字符串。
 
 ## 其他笔记
 
