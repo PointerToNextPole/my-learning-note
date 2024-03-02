@@ -1033,6 +1033,8 @@
 - **dangling** ：v. 悬挂，悬垂，悬荡 adj. 悬挂的，摇摆的。是 dangle 的现在分词
 
   > 💡 dangling pointer ：悬空指针
+  
+- **coexit** ：共存
 ***
 
 
@@ -1433,3 +1435,17 @@
 - **red tape** ：繁文缛节
 
 - **bachelor** ：学士学位，单身汉
+
+- **sucessor** ：继任者
+
+- **from the ground of** ：从头开始
+
+  > Since UnoCSS is built from the ground up, we are able to have a great overview of how atomic CSS has been designed with prior arts and abstracted into an elegant and powerful API.
+  >
+  > 摘自：[UnoCSS doc - Why UnoCSS? # Tailwind CSS](https://unocss.dev/guide/why#tailwind-css)
+
+- **apples-to-apples** ：公平的比较
+
+  > With quite different design goals, it's not really an apples-to-apples comparison with Tailwind CSS. But we will try to list a few differences.
+  >
+  > 摘自：[UnoCSS doc - Why UnoCSS? # Tailwind CSS](https://unocss.dev/guide/why#tailwind-css)
