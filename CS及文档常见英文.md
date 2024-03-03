@@ -160,6 +160,8 @@
 
 - **dedicated**：专门的（来自：“ In such cases, you'll have to move the public path assignment to its own **dedicated** module and then import it on top of your entry.js ” )。更普遍的意思是：投入的
 
+   **dedication** ：
+
 - **misconception**：误解 ( noun )，错误观念。
 
 - **overlap**：重叠
@@ -1035,6 +1037,8 @@
   > 💡 dangling pointer ：悬空指针
   
 - **coexit** ：共存
+
+- **hands-on** ：实践的。hands-on experience 实践经验
 ***
 
 
@@ -1449,3 +1453,11 @@
   > With quite different design goals, it's not really an apples-to-apples comparison with Tailwind CSS. But we will try to list a few differences.
   >
   > 摘自：[UnoCSS doc - Why UnoCSS? # Tailwind CSS](https://unocss.dev/guide/why#tailwind-css)
+  
+- **tragedy** ：悲剧
+
+- **befall** ：降临，发生在（某人）身上
+
+- **mandatory** ：强制的
+
+- **exhaustive** ：彻底的
