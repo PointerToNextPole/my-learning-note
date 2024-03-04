@@ -1461,3 +1461,9 @@
 - **mandatory** ：强制的
 
 - **exhaustive** ：彻底的
+
+- **drastically** ：极大地、彻底地、剧烈地
+
+  > The `DllPlugin` and `DllReferencePlugin` provide means to split bundles in a way that can drastically improve build time performance.
+  >
+  > 摘自：[webpack doc - plugin - dllplugin](https://webpack.js.org/plugins/dll-plugin)

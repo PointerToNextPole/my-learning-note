@@ -205,7 +205,9 @@ git checkout -b branchName commitHash # 创建一个新的分支，并 **切换�
 
   <img src="https://s2.loli.net/2022/02/20/bfuyoDw4k8izSvM.png" alt="image-20220220133215591" style="zoom:50%;" />
 
-  输入 `git config core.repositoryFormatVersion` 即可显示：0；类似的：在 `git config core.repositoryFormatVersion` 后面再加一个参数，作为repositoryFormatVersion 的值，即可修改 config 文件中 repositoryFormatVersion 对应的内容。
+  输入 `git config core.repositoryFormatVersion` 即可显示：0；类似的：在 `git config core.repositoryFormatVersion` 后面再加一个参数，作为`repositoryFormatVersion` 的值，即可修改 config 文件中 `repositoryFormatVersion` 对应的内容。
+
+  另外，值得注意的是 `ignorecase` 这个配置项，相当重要；毕竟 git 默认忽略大消息，往往修改大小写之后，会造成本地和远端代码的不一致，从而引发 bug；所以推荐将 `ignorecase` 设置为 `false` ；命令为：`git config core.ignorecase false`。可以看下 [git大小写规则造成的问题【渡一教育】](https://www.bilibili.com/video/BV1vS421A7F3)
 
 - **ref 文件夹：**包含 heads 和 tags 两个文件夹
 
