@@ -1467,3 +1467,5 @@
   > The `DllPlugin` and `DllReferencePlugin` provide means to split bundles in a way that can drastically improve build time performance.
   >
   > 摘自：[webpack doc - plugin - dllplugin](https://webpack.js.org/plugins/dll-plugin)
+  
+- **adverse** ：不利的
