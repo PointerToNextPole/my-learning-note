@@ -887,7 +887,7 @@ where git # 👀 类似的，可以通过 type git 起到类似的效果
 
   - 出现：
 
-    ```
+    ```bash
     remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
     remote: Please see https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/ for more information.
     fatal: Authentication failed for 'https://github.com/github-user-name/proj-name.git/'

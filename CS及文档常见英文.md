@@ -832,6 +832,12 @@
 
 - **portable** ：<font color=red>可移植的</font>，便携的
 
+  **port** ：v. 移植（软件）
+
+  > We started with the intention of a JS to Rust *port*, but soon realized that in order to achieve the best possible performance, we have to prioritize writing code in a way that aligns with how Rust works.
+  >
+  > 摘自：[Rolldown - About Rolldown](https://rolldown.rs/about) 。另外，毕竟 Rolldown 还在早期阶段，文档变化的可能性很大，这里给出 [wayback machine 的当前( 2024/3/8 ) 的版本](https://web.archive.org/web/20240308083647/https://rolldown.rs/about)
+
 - **carousel** ：旋转木马。**image carousel** ：图片轮播
 
 - **standby** ：待机
@@ -1039,6 +1045,8 @@
 - **coexit** ：共存
 
 - **hands-on** ：实践的。hands-on experience 实践经验
+
+- **suboptimal** ：次优的
 ***
 
 
