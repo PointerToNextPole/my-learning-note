@@ -1477,3 +1477,19 @@
   > 摘自：[webpack doc - plugin - dllplugin](https://webpack.js.org/plugins/dll-plugin)
   
 - **adverse** ：不利的
+
+- **monopoly** ：垄断
+
+- **stagnation** ：停滞
+
+  > We might run into a **monopoly** and **stagnation** situation, as we had with Internet Explorer 6. Please use this setting with caution.
+  >
+  > 摘自：[GitHub - browserslist - readme](https://github.com/browserslist/browserslist)
+
+- **market share** ：市场份额，市场占有率
+
+  > Chinese QQ Browsers has more **market share** than Firefox and desktop Safari combined.
+  >
+  > 摘自：[GitHub - browserslist - readme # Best Practices](https://github.com/browserslist/browserslist?tab=readme-ov-file#best-practices)
+
+- **depict** ：描述
