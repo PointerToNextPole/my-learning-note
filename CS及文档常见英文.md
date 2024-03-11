@@ -8,7 +8,9 @@
 
 - **asynchronous**：异步
 
-- **compatibility**：兼容性。**forwards compatibility**：向后兼容性
+- **compatibility**：兼容性。
+
+  **forwards compatibility**：向后兼容性
 
   **compat**：兼容 ( verb )
 
@@ -50,7 +52,7 @@
 
 - **semantical** ：语义的
 
-- **instantiate**：实例化 ( verb )
+- **instantiate** ：实例化 ( verb )
 
 - **nest**：嵌套，一般用形容词 nested ，嵌套的
 
@@ -60,7 +62,9 @@
 
 - **retrieve**：检索，获取；所谓 CRUD 的 “R” 就是 retrieve
 
-- **decoupled**：解耦的，decouple ( verb )。coupled 耦合的
+- **decoupled**：解耦的，decouple ( verb )。
+
+   **coupled** ：耦合的
 
 - **critical**：关键的。一般见：关键渲染路径 ( Critical Rendering Path ) 。虽然更常见的翻译是 “批评性的”
 
@@ -83,9 +87,9 @@
 - **wildcard**：通配符
 
 - **spec**：规格，细则。abbr of specification
-  
+
    **specific** ：特性。👀 虽然但是，这个不应该遗忘
-   
+
 - **tackle**：解决
 
 - **mutation**：变异
@@ -608,7 +612,7 @@
 
   > A more arcane, but very ***ergonomic*** way to set a compiler setting is via compiler flag which are comments starting with `// @`.
   > 摘自：[TS play handbook - Twoslash Annotations](https://www.typescriptlang.org/play?#handbook-14)
-  
+
 - **clause** ：条款
 
 - **hypothesis** ：假设
@@ -630,7 +634,7 @@
   > <img src="https://s2.loli.net/2023/04/03/FMxgbdEVJ3OuBNK.png" alt="image-20230403213515134" style="zoom:47%;" />
 
   **leap** ：跳跃
-  
+
 - **tweak** ：微调
 
 - **hallucination** ：幻觉
@@ -643,7 +647,7 @@
 
 - **amplify** ：v. 增加，增强。
   > 👀 chatgpt 说：和 ample （充足的，足够的）有关系，自己感觉也是有关系的；不过语意上没太看出来...
-  
+
 - **speculate** ：v. 推测。speculation ：n.
 
 - **fait accompli** ：既成事实
@@ -664,7 +668,7 @@
 
 - **assume** ：假设，假定。类似的有 presume。
 
-  <img src="https://s2.loli.net/2023/04/05/iET3t1bdynUZNDO.png" alt="image-20230405171953947" style="zoom:50%;" />
+  <img src="https://s2.loli.net/2023/04/05/iET3t1bdynUZNDO.png" alt="image-20230405171953947" style="zoom:47%;" />
 
 
 - **resume** ：v. 重新开始，继续。 n. 简历
@@ -1047,6 +1051,22 @@
 - **hands-on** ：实践的。hands-on experience 实践经验
 
 - **suboptimal** ：次优的
+
+- **fidelity** ：n. 保真度、准确性、忠诚
+
+  > Cloud environments at large scale can now be as high **fidelity** as you need them to be.
+  >
+  > 摘自：[Daytona 管网](https://www.daytona.io/)
+
+- **premise** ：前提，假定
+
+  **on-premise** ：本地部署
+
+  > Stay locked behind firewalls and custom **on-premise** infrastructure.
+  >
+  > 摘自：[Daytona 管网](https://www.daytona.io/)
+
+- **accommdate** ：容纳，为...提供住宿
 ***
 
 
@@ -1239,8 +1259,6 @@
 - **workload** ：工作量
 
 - **semester** ：学期
-
-- **fidelity** ：n. 忠诚
 
 - **hype** ：n. 炒作。来自 hyperbole，但是似乎不是缩写？
 
@@ -1493,3 +1511,4 @@
   > 摘自：[GitHub - browserslist - readme # Best Practices](https://github.com/browserslist/browserslist?tab=readme-ov-file#best-practices)
 
 - **depict** ：描述
+
