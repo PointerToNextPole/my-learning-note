@@ -154,17 +154,25 @@
 
 - **setup**：设置 ( noun ) 。**set up**：设置 ( verb )
 
-- **granular**：颗粒状的。more granular：更细粒度的。granul：颗粒。
+- **granular**：颗粒状的
+
+   **more granular** ：更细粒度的
+
+   **granul** ：颗粒。
 
 - **fine-grained**：细粒度的
 
-- **scenario**：场景。来自：” The `publicPath` configuration option can be quite useful in a variety of **scenarios** ” 。更普遍的意思是：脚本，假想
+- **scenario**：**场景**。更普遍的意思是：脚本，假想
 
-- **neat**：整洁的。引申为：**简单的**。来自：“ There are a few use cases in real applications where this feature becomes especially **neat** ”
+   > The `publicPath` configuration option can be quite useful in a variety of **scenarios** ” 。
 
-- **dedicated**：专门的（来自：“ In such cases, you'll have to move the public path assignment to its own **dedicated** module and then import it on top of your entry.js ” )。更普遍的意思是：投入的
+- **neat** ：整洁的。引申为：**简单的**。来自：“ There are a few use cases in real applications where this feature becomes especially **neat** ”
 
-   **dedication** ：
+- **dedicated**：**专门的**。虽然，更普遍的意思是：投入的
+
+   > In such cases, you'll have to move the public path assignment to its own **dedicated** module and then import it on top of your entry.js ”
+
+   **dedication** ：奉献
 
 - **misconception**：误解 ( noun )，错误观念。
 
@@ -186,13 +194,25 @@
 
 - **interface** <font size=4>*vs*</font> **port**：interface 接口，比如 后端接口；port 端口，80 端口
 
-- **ship**：提供 ( verb ) 。来自：“ This is an example for a package that has optimizations for production and development usage with runtime detection for `process.env` and also **ships** a CommonJs and ESM version ”
+- **ship**：提供 ( verb ) 
 
-- **address**：关联 ( verb )，来自 “Each module available addresses a specific aspect of service worker development.” ，查阅谷歌翻译和百度翻译 都找不到相关的意思，应该是当前语境的引申义。另外，说一下快遗忘的含义：尝试解决
+   > This is an example for a package that has optimizations for production and development usage with runtime detection for `process.env` and also **ships** a CommonJs and ESM version
 
-- **accommodate**：为 ... 提供住宿，这也是高中学习时普遍的含义。这里要强调的是，也可以翻译为：**顾及、适应、兼容**；如下： “ Workbox aims to make using service workers as easy as possible, while allowing the flexibility to **accommodate** complex application requirements where needed.”
+- **address**：关联 ( verb )
 
-- **house**：收容 ( verb )。来自：“ This repo **houses** two bundling libraries: a *modern Vite plugin* and a *legacy Rollup plugin* . ” ，这里翻译成“包含”更妥帖些。
+   > Each module available addresses a specific aspect of service worker development.” ，
+
+   查阅谷歌翻译和百度翻译 都找不到相关的意思，应该是当前语境的引申义。另外，说一下快遗忘的含义：尝试解决
+
+- **accommodate**：为 ... 提供住宿，这也是高中学习时普遍的含义。这里要强调的是，也可以翻译为：**顾及、适应、兼容**
+
+   > Workbox aims to make using service workers as easy as possible, while allowing the flexibility to **accommodate** complex application requirements where needed.
+
+- **house**：收容 ( verb )。
+
+   > This repo **houses** two bundling libraries: a *modern Vite plugin* and a *legacy Rollup plugin* .
+   >
+   > 这里翻译成“包含”更妥帖些。
 
 - **anonymous**：匿名的。anonymity：匿名 ( noun )。deanonymize：匿名化
 
@@ -202,9 +222,13 @@
 
 - **stale**：陈旧的，不过这里要说的“不新鲜的”，用于 HTTP 的 Cache-Control 中，比如 max-stale 选项
 
-- **latency**：延时。high-latency 高延时。
+- **latency**：延时。
 
-- **underpin**：支撑，构成 … 的基础。来自： “ Because promises also **underpin** async and await , ... ”
+   **high-latency** ： 高延时。
+
+- **underpin**：支撑，构成 … 的基础。
+
+   > Because promises also **underpin** async and await , ...
 
 - **as-is**：照原样
 
@@ -216,11 +240,13 @@
 
 - **[prefix]-prone** ：有 ... 倾向的。
 
-  > Uno makes heavy use of regex for dynamic utilities, which feels error-<font color=LightSeaGreen>prone</font>. 
+  > Uno makes heavy use of regex for dynamic utilities, which feels error**-prone**. 
   >
   > 摘自：[TailwindCSS vs. UnoCSS](https://dev.to/mapleleaf/tailwindcss-vs-unocss-2a53)
 
-- **profile**：剖析 ( verb )。来自 “ It is especially useful in the case of early prototyping and **profiling**.  ”
+- **profile**：剖析 ( verb )。
+
+   > It is especially useful in the case of early prototyping and **profiling**.
 
 - **scaffold**：脚手架
 
@@ -246,9 +272,13 @@
 
 - **idle**：空闲的，闲置的
 
-- **invocate**：调用 ( verb) -> **invocation** ( noun )
+- **invocate**：调用 ( verb) 
 
-- **conjunct**：结合 ( verb ) -> **conjunction** ( noun )
+   **invocation** ( noun )
+
+- **conjunct**：结合 ( verb )
+
+   **conjunction** ( noun )
 
 - **trivial**：不重要的
 
@@ -322,7 +352,13 @@
 
 - **function**：**运转**，运行 ( verb )
 
-- **story**：**需求**。了解自 “The moral of the **story** is that there are a variety of ways to `hook` into the `compiler`, each one allowing your plugin to run as it sees fit.” 。扩展阅读：[敏捷模式中“故事”和“需求”的关系是什么？ - 知乎](https://www.zhihu.com/question/26996772)
+- **story**：**需求**。
+
+   > The moral of the **story** is that there are a variety of ways to `hook` into the `compiler`, each one allowing your plugin to run as it sees fit.
+   >
+   > 摘自：[webpack doc - api - plugins # plugin-types](https://webpack.js.org/api/plugins/#plugin-types)
+
+   扩展阅读：[敏捷模式中“故事”和“需求”的关系是什么？ - 知乎](https://www.zhihu.com/question/26996772)
 
 - **mangle**：碾碎，撕裂。引申 -> mangler：碾碎器？（代码压缩相关）
 
@@ -338,7 +374,11 @@
 
 - **interchangeable**：可交换的
 
-- **variation**：变化 ( noun ) 。**variate**：变量，变数 ( noun )。**vary**：变化( verb )
+- **variation**：变化 ( noun ) 。
+
+   **variate**：变量，变数 ( noun )
+
+   **vary**：变化( verb )
 
 - **longhand**：手写
 
@@ -746,7 +786,7 @@
 
 - **lone** ：单独的，独自的，孤零零的。
 
-  > 👀 见到这个单词是在读 [MDN - String.prototype.isWellFormed()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed) 中提及的 “lone surrogate” 。之前似乎从没有见过这个单词，查了下意思，想到了 alone 和 lonely；但 lone 确实没有半点印象，有点神奇...
+  > 👀 见到这个单词是在读 [MDN - `String.prototype.isWellFormed()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed) 中提及的 “lone surrogate” 。之前似乎从没有见过这个单词，查了下意思，想到了 alone 和 lonely；但 lone 确实没有半点印象，有点神奇...
 
 - **counterpart** ：对应的人或物
 
