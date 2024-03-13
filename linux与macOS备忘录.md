@@ -404,7 +404,7 @@ Homebrew 安装软件时将会<font color=FF0000>自动下载各种依赖</font>
 
 ##### 关于 taps ( third-party-repositories )，相关命令：`brew tap`
 
-brew tap可以为brew的软件的 跟踪, 更新, 安装添加更多的的`tap formulae`
+`brew tap` 可以为 brew 的软件 跟踪、更新、安装添加更多的 `tap formulae`
 
 如果你在核心仓库没有找到你需要的软件,那么你就需要安装第三方的仓库去安装你需要的软件
 
@@ -455,6 +455,10 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 ##### brew service
 
 // TODO 可以参考下 [使用brew services管理服务](https://www.jianshu.com/p/6c3b26490861) ，其中提及了 Mac 的 `launchctl` 加载开机自动运行的服务的命令
+
+##### `brew cleanup --prune=all; brew autoremove`
+
+
 
 
 
