@@ -510,7 +510,8 @@ module.exports = {
 
 #### Package exports
 
-> 👀 注：本章节讲的是 <font size=4>**`package.json`**</font> 中的 `exports` 属性，以及其他属性。另外，由于这部分完全没有接触过，没找到中文翻译；同时也是库开发相关的内容，不太容易用到，所以这里会省略大量内容。
+> 👀 本章节讲的是 <font size=4>**`package.json`**</font> 中的 `exports` 属性，以及其他属性。另外，由于这部分完全没有接触过，没找到中文翻译；同时也是库开发相关的内容，不太容易用到，所以这里会省略大量内容。
+> 💡 另外，本节可以参考下 [[前端工程化笔记#Vite#`exports` 导入]] 中的内容；比较清楚地说明了 `exports` 字段的作用和场景
 
 <font color=dodgerBlue>The `exports` field in the `package.json` of a package</font> allows to <font color=fuchsia>**declare which module should be used** when using module requests like `import "package"` or `import "package/sub/path"`</font> . <font color=red>It replaces the default implementation that returns `main` field resp</font>. `index.js` files for `"package"` and the file system lookup for `"package/sub/path"` .
 
