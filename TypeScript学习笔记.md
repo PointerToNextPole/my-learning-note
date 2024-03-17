@@ -5399,7 +5399,7 @@ Guang 和 Person 有 extends 的关系么？没有呀。
 
 那是怎么确定父子关系的？<font color=FF0000>**通过结构**</font>，<font color=FF0000>**更具体的那个是子类型**</font>。<font color=FF0000>这里的 Guang 有 Person 的所有属性，并且还多了一些属性，所以 Guang 是 Person 的子类型</font>。<font color=FF0000>注意，**这里用的是更具体，而不是更多**</font>。
 
-判断联合类型父子关系的时候， 'a' | 'b' 和 'a' | 'b' | 'c' 哪个更具体？ 'a' | 'b' 更具体，所以 'a' | 'b' 是 'a' | 'b' | 'c' 的子类型。
+判断联合类型父子关系的时候， `'a' | 'b'` 和 `'a' | 'b' | 'c'` 哪个更具体？ `'a' | 'b'` 更具体，所以 `'a' | 'b'` 是 `'a' | 'b' | 'c'` 的子类型。
 
 <img src="https://s2.loli.net/2022/05/06/mIF48AVt7LcwkTg.png" alt="image-20220506160308699" style="zoom:50%;" />
 
@@ -5985,18 +5985,22 @@ let z = <const>{ text: "hello" };
 
 #### Type-Only Imports and Export
 
-This feature is something most users may never have to think about; however, if you’ve hit issues under [`isolatedModules`](https://www.typescriptlang.org/tsconfig#isolatedModules), TypeScript’s `transpileModule` API, or Babel, this feature might be relevant.
+This feature is something most users may never have to think about; however, <font color=lightSeaGreen>if you’ve hit issues under [`isolatedModules`](https://www.typescriptlang.org/tsconfig#isolatedModules), TypeScript’s `transpileModule` API, or Babel</font>, this feature might be relevant.
 
-TypeScript 3.8 adds a new syntax for type-only imports and exports.
+> 💡关于 `isolatedModules` ：
+>
+> <img src="https://s2.loli.net/2024/03/17/A18EDMCzijxvXZQ.png" alt="image-20240317145618908" style="zoom:50%;" />
+
+<font color=dodgerBlue>**TypeScript 3.8** adds a new syntax for type-only imports and exports</font>.
 
 ```ts
 import type { SomeThing } from "./some-module.js";
 export type { SomeThing };
 ```
 
-`import type` only imports declarations to be used for type annotations and declarations. It *always* gets fully erased, so there’s no remnant of it at runtime. Similarly, `export type` only provides an export that can be used for type contexts, and is also erased from TypeScript’s output.
+`import type` only imports declarations to be used for type annotations and declarations. <font color=red>**It *always* gets fully erased**, so there’s no remnant of it at runtime</font>. Similarly, `export type` only provides an export that can be used for type contexts, and <font color=red>is also erased from TypeScript’s output</font>.
 
-It’s important to note that classes have a value at runtime and a type at design-time, and the use is context-sensitive. When using `import type` to import a class, you can’t do things like extend from it.
+<font color=dodgerBlue>It’s important to note that</font> <font color=fuchsia>classes have a value at runtime and a type at design-time</font>, and the use is context-sensitive. When using `import type` to import a class, you can’t do things like extend from it.
 
 ```ts
 import type { Component } from "react";
@@ -6012,7 +6016,23 @@ class Button extends Component<ButtonProps> {
 
 If you’ve used Flow before, the syntax is fairly similar. One difference is that we’ve added a few restrictions to avoid code that might appear ambiguous.
 
-##### // TODO 没看完...
+```ts
+// Is only 'Foo' a type? Or every declaration in the import?
+// We just give an error because it's not clear.
+import type Foo, { Bar, Baz } from "some-module";
+//     ~~~~~~~~~~~~~~~~~~~~~~
+// error! A type-only import can specify a default import or named bindings, but not both.
+```
+
+> ⚠️ 上面的注释可以注意下
+
+<font color=dodgerBlue>In conjunction with `import type`</font> , <font color=red>TypeScript 3.8 also **adds a new compiler flag** to control what happens with imports that won’t be utilized at runtime: [`importsNotUsedAsValues`](https://www.typescriptlang.org/tsconfig#importsNotUsedAsValues)</font> . <font color=dodgerBlue>This flag takes 3 different values</font>:
+
+- `remove` : this is today’s behavior of dropping these imports. It’s going to continue to be the default, and is a non-breaking change.
+- `preserve` : this *preserves* all imports whose values are never used. This <font color=red>can cause imports/side-effects to be preserved</font>.
+- `error` : this preserves all imports (the same as the `preserve` option), but <font color=red>will error when a value import is only used as a type</font>. This might be useful if you want to ensure no values are being accidentally imported, but still make side-effect imports explicit.
+
+For more information about the feature, you can [take a look at the pull request](https://github.com/microsoft/TypeScript/pull/35200), and [relevant changes](https://github.com/microsoft/TypeScript/pull/36092/) around broadening where imports from an `import type` declaration can be used.
 
 摘自：[TS Doc - handbook - TypeScript 3.8 # Type-Only Imports and Export](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export)
 
@@ -6052,9 +6072,11 @@ Please note that this comment <font color=red>only suppresses the error reportin
 
 摘自：[TS doc - handbook - TS 3.7 - // @ts-nocheck in TypeScript Files](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)
 
-TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类型检查并提示错误的模式。
+<font color=red>TypeScript 2.3 以后的版本支持使用 `--checkJs` 对 `.js` 文件进行类型检查并提示错误的模式</font>。
 
-你可以通过添加 `// @ts-nocheck` 注释来忽略类型检查；相反你可以通过去掉 `--checkJs` 设置并添加 `// @ts-check` 注释来选则检查某些 `.js` 文件。 你还可以使用 `// @ts-ignore` 来忽略本行的错误。
+你可以通过添加 `// @ts-nocheck` 注释来忽略类型检查；相反你<font color=red>可以通过去掉 `--checkJs` 设置并添加 `// @ts-check` 注释来选择检查某些 `.js` 文件</font>。 你还可以使用 `// @ts-ignore` 来忽略本行的错误。
+
+> 💡关于 `// @ts-check` 的简单原理，可以看下 [[VS Code 使用备忘录#Type checking JavaScript]]
 
 摘自：[TypeScript 中文手册 - JavaScript文件里的类型检查](https://typescript.bootcss.com/type-checking-javascript-files.html)
 
@@ -7129,3 +7151,6 @@ The <font color=LightSeaGreen>code that doesn't belong in the main function or l
 #### json schema 和 TypeScript
 
 <img src="https://s2.loli.net/2023/05/30/gJHwcuLI5B3l4S1.png" alt="image-20230530225419605" style="zoom:46%;" />
+
+
+

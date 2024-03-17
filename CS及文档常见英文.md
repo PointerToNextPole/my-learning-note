@@ -1552,3 +1552,7 @@
 
 - **depict** ：描述
 
+- **conjuction** ：连词，结合
+
+  **in conjuction with** ：与...相结合
+

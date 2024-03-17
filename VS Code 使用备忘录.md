@@ -14,7 +14,7 @@
 
 #### 一些设置
 
-##### 进入 settings.json 方法
+##### 进入 `settings.json` 的方法
 
 按下 ⇧ + ⌘ + P ，会显示搜索框；在输入框中输入 `settings.json` ，会显示如下结果：
 
@@ -278,11 +278,316 @@ Configurations can be overridden at multiple levels by the different setting sco
 
 If you are using multiple language-specific settings, <font color=dodgerBlue>be aware that</font> language-specific settings are merged and <font color=fuchsia>precedence is set based on the full language string</font> (for example `"[typescript][javascript]"`) and <font color=fuchsia>not the individual language IDs</font> (`typescript` and `javascript`). This means that for example, a <font color=red>**`"[typescript][javascript]"` workspace setting will not override a `"[javascript]"` user setting**</font>.
 
-
-
-
+##### 
 
 #### VS Code 工具
 
 https://github.com/viatsko/awesome-vscode
 
+
+
+#### VS Code 中 GitHub Copilot 使用
+
+[Github Copilot 备忘清单 & github-copilot cheatsheet & Quick Reference](https://wangchujiang.com/reference/docs/github-copilot.html)
+
+
+
+## VS Code 语言配置
+
+
+
+### JavaScript
+
+
+
+#### Working with JavaScript
+
+This topic describes some of the advanced JavaScript features supported by Visual Studio Code. <font color=dodgerBlue>Using the **TypeScript language service**</font>, <font color=red>VS Code can **provide smart completions (IntelliSense) as well as type checking for JavaScript**</font>.
+
+##### IntelliSense
+
+Visual Studio Code's JavaScript [IntelliSense](https://code.visualstudio.com/docs/editor/intellisense) <font color=red>provides intelligent code completion, parameter info, references search, and many other advanced language features</font>. <font color=lightSeaGreen>Our JavaScript IntelliSense is powered by the [JavaScript language service](https://github.com/microsoft/TypeScript/wiki/JavaScript-Language-Service-in-Visual-Studio) **developed by the TypeScript team**</font>. While IntelliSense should just work for most JavaScript projects without any configuration, <font color=lightSeaGreen>you can make IntelliSense even more useful with [JSDoc](https://code.visualstudio.com/docs/languages/javascript#_jsdoc-support) or by configuring a `jsconfig.json` project</font>.
+
+For the details of how JavaScript IntelliSense works, including being based on type inference, JSDoc annotations, TypeScript declarations, and mixing JavaScript and TypeScript projects, see the [JavaScript language service documentation](https://github.com/microsoft/TypeScript/wiki/JavaScript-Language-Service-in-Visual-Studio).
+
+When type inference does not provide the desired information, type information may be provided explicitly with JSDoc annotations. This document describes the [JSDoc annotations](https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html#supported-jsdoc) currently supported.
+
+In addition to objects, methods, and properties, the JavaScript IntelliSense window also provides basic word completion for the symbols in your file.
+
+##### JavaScript projects (jsconfig.json)
+
+> 👀 这里不少的内容，和 [[#jsconfig.json]] 中的内容有所重复，所以，这里只摘抄不重复且值得摘抄的部分
+
+For common setups, a `jsconfig.json` file is not required, however, <font color=dodgerBlue>there are situations when you will want to add a `jsconfig.json`</font>.
+
+- Not all files should be in your JavaScript project (for example, you want to exclude some files from showing IntelliSense). <font color=lightSeaGreen>This situation is common with front-end and back-end code</font>.
+- <font color=lightSeaGreen>**Your workspace contains more than one project context**</font>. In this situation, you should add a `jsconfig.json` file at the root folder for each project.
+- <font color=red>You are using the TypeScript compiler to down-level compile JavaScript source code</font>.
+
+###### Migrating to TypeScript
+
+<font color=lightSeaGreen>It is possible to have mixed TypeScript and JavaScript projects</font>. <font color=dodgerBlue>To start migrating to TypeScript</font>, <font color=red>rename your `jsconfig.json` file to `tsconfig.json`</font> and <font color=red>set the `allowJs` property to `true`</font>. For more information, see [Migrating from JavaScript](https://www.typescriptlang.org/docs/handbook/migrating-from-javascript.html) .
+
+##### Type checking JavaScript
+
+<font color=red>VS Code allows you to leverage some of TypeScript's advanced type checking and error reporting functionality in regular JavaScript files</font>. This is a great way to catch common programming mistakes. These type checks also enable some exciting Quick Fixes for JavaScript, including **Add missing import** and **Add missing property**.
+
+<img src="https://code.visualstudio.com/assets/docs/nodejs/working-with-javascript/checkjs-example.gif" alt="Using type checking and Quick Fixes in a JavaScript file" style="zoom:85%;" />
+
+TypeScript can infer types in `.js` files same as in `.ts` files. When types cannot be inferred, they can be specified using JSDoc comments. You can read more about how TypeScript uses JSDoc for JavaScript type checking in [Type Checking JavaScript Files](https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html) .
+
+Type checking of JavaScript is optional and opt-in. Existing JavaScript validation tools such as ESLint can be used alongside the new built-in type checking functionality.
+
+<font color=dodgerBlue>You can get started with type checking a few different ways depending on your needs</font>.
+
+###### Per file
+
+<font color=red>The easiest way</font> to enable type checking in a JavaScript file is by adding `// @ts-check` to the top of a file.
+
+```ts
+// @ts-check
+let itsAsEasyAs = 'abc';
+itsAsEasyAs = 123; // Error: Type '123' is not assignable to type 'string'
+```
+
+Using `// @ts-check` is a good approach <font color=red>if you just want to try **type checking in a few files** but not yet enable it for an entire codebase</font>.
+
+###### Using a setting
+
+To enable type checking for all JavaScript files without changing any code, just add `"js/ts.implicitProjectConfig.checkJs": true` to your workspace or user settings. This enables type checking for any JavaScript file that is not part of a `jsconfig.json` or `tsconfig.json` project.
+
+<font color=red>You can opt individual files out of type checking with a `// @ts-nocheck` comment at the top of the file</font>:
+
+> 👀 相当于加了一个逃生舱
+
+```ts
+// @ts-nocheck
+let easy = 'abc';
+easy = 123; // no error
+```
+
+You can <font color=dodgerBlue>also</font> disable individual errors in a JavaScript file using a `// @ts-ignore` comment on the line before the error:
+
+```
+let easy = 'abc';
+// @ts-ignore
+easy = 123; // no error
+```
+
+###### Using jsconfig or tsconfig
+
+To enable type checking for JavaScript files that are part of a `jsconfig.json` or `tsconfig.json`, <font color=red>add `"checkJs": true` to the project's compiler options</font>:
+
+`jsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "checkJs": true
+  },
+  "exclude": ["node_modules", "**/node_modules/*"]
+}
+```
+
+`tsconfig.json`:
+
+```
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true
+  },
+  "exclude": ["node_modules", "**/node_modules/*"]
+}
+```
+
+This enables type checking for all JavaScript files in the project. You can use `// @ts-nocheck` to disable type checking per file.
+
+<font color=lightSeaGreen>JavaScript type checking requires TypeScript 2.3</font>. If you are unsure what version of TypeScript is currently active in your workspace, run the **TypeScript: Select TypeScript Version** command to check. You must have a `.js/.ts` file open in the editor to run this command. If you open a TypeScript file, the version appears in the lower right corner.
+
+##### Global variables and type checking
+
+Let's say that you are working in legacy JavaScript code that uses global variables or non-standard DOM APIs:
+
+```js
+window.onload = function() {
+  if (window.webkitNotifications.requestPermission() === CAN_NOTIFY) {
+    window.webkitNotifications.createNotification(null, 'Woof!', '🐶').show();
+  } else {
+    alert('Could not notify');
+  }
+};
+```
+
+<font color=dodgerBlue>If you try to use `// @ts-check` with the above code</font>, you'll <font color=dodgerBlue>see a number of errors about the use of global variables</font>:
+
+1. `Line 2` - `Property 'webkitNotifications' does not exist on type 'Window'.`
+2. `Line 2` - `Cannot find name 'CAN_NOTIFY'.`
+3. `Line 3` - `Property 'webkitNotifications' does not exist on type 'Window'.`
+
+<font color=dodgerBlue>If you want to continue using `// @ts-check` but are confident that these are not actual issues with your application</font>, <font color=red>you have to **let TypeScript know about these global variables**</font>.
+
+To start, [create a `jsconfig.json`](https://code.visualstudio.com/docs/nodejs/working-with-javascript#_javascript-projects-jsconfigjson) at the root of your project:
+
+```
+{
+  "compilerOptions": {},
+  "exclude": ["node_modules", "**/node_modules/*"]
+}
+```
+
+Then reload VS Code to make sure the change is applied. The presence of a `jsconfig.json` lets TypeScript know that your Javascript files are part of a larger project.
+
+<font color=dodgerBlue>Now create a `globals.d.ts` file somewhere your workspace:</font>
+
+```ts
+interface Window {
+  webkitNotifications: any;
+}
+
+declare var CAN_NOTIFY: number;
+```
+
+`d.ts` files are type declarations. In this case, <font color=red>`globals.d.ts` lets TypeScript know that a global `CAN_NOTIFY` exists and that a `webkitNotifications` property exists on `window`</font>. You can read more about writing `d.ts` in the [TypeScript documentation](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html). `d.ts` files do not change how JavaScript is evaluated, they are used only for providing better JavaScript language support.
+
+##### Using tasks
+
+###### Using the TypeScript compiler
+
+<font color=lightSeaGreen>One of the key features of TypeScript is the ability to use the latest JavaScript language features, and emit code that can execute in JavaScript runtimes that don't yet understand those newer features</font>. With JavaScript using the same language service, it too can now take advantage of this same feature.
+
+The TypeScript compiler `tsc` can down-level compile JavaScript files from ES6 to another language level. <font color=red>Configure the `jsconfig.json` with the desired options and then use the `–p` argument to make `tsc` use your `jsconfig.json` file</font>, for example `tsc -p jsconfig.json` to down-level compile.
+
+Read more about the compiler options for down level compilation in the [jsconfig documentation](https://code.visualstudio.com/docs/languages/jsconfig#_jsconfig-options).
+
+###### Running Babel
+
+The Babel transpiler turns ES6 files into readable ES5 JavaScript with Source Maps. <font color=red>You can easily integrate **Babel** into your workflow by adding the configuration below to your `tasks.json` file</font> (<font color=lightSeaGreen>located under the workspace's `.vscode`folder</font>). The `group` setting makes this task the default **Task: Run Build Task** gesture. `isBackground` tells VS Code to keep running this task in the background. To learn more, go to [Tasks](https://code.visualstudio.com/docs/editor/tasks).
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "watch",
+      "command": "${workspaceFolder}/node_modules/.bin/babel",
+      "args": ["src", "--out-dir", "lib", "-w", "--source-maps"],
+      "type": "shell",
+      "group": { "kind": "build", "isDefault": true },
+      "isBackground": true
+    }
+  ]
+}
+```
+
+Once you have added this, you can start **Babel** with the ⇧⌘B (**Run Build Task**) command and it will compile all files from the `src` directory into the `lib` directory.
+
+> **Tip:** For help with Babel CLI, see the instructions in [Using Babel](https://babeljs.io/docs/setup/#installation). The example above uses the CLI option.
+
+##### Disable JavaScript support
+
+If you prefer to use JavaScript language features supported by other JavaScript language tools such as [Flow](https://flow.org/), <font color=dodgerBlue>you can disable VS Code's built-in JavaScript support</font>. <font color=red>You do this by disabling the built-in TypeScript language extension **TypeScript and JavaScript Language Features** (vscode.typescript-language-features) which also provides the JavaScript language support</font>.
+
+To disable JavaScript/TypeScript support, go to the Extensions view (⇧⌘X) and filter on built-in extensions (**Show Built-in Extensions** in the **...** **More Actions** dropdown), then type 'typescript'. Select the **TypeScript and JavaScript Language Features** extension and press the **Disable** button. VS Code built-in extensions cannot be uninstalled, only disabled, and can be re-enabled at any time.
+
+> 👀 注意下图的筛选条件 `@builtin typescript`
+
+![TypeScript and JavaScript Language Features extension](https://s2.loli.net/2024/03/17/BbH1x3NIWdPfye2.png)
+
+
+
+#### jsconfig.json
+
+##### What is jsconfig.json?
+
+<font color=lightSeaGreen>The presence of `jsconfig.json` file in a directory indicates that the directory is the root of a JavaScript Project</font>. The `jsconfig.json` file <font color=fuchsia>specifies the root files and **the options for the features provided by the [JavaScript language service](https://github.com/microsoft/TypeScript/wiki/JavaScript-Language-Service-in-Visual-Studio)**</font> （⭐️ 这里说明了 `jsconfig.json` 配置的意义，即配置 JS LSP service 的行为）.
+
+> **Tip:** <font color=red>`jsconfig.json` **is a descendant of [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)**</font> , which is a configuration file for TypeScript. <font color=fuchsia>`jsconfig.json` is `tsconfig.json` with `"allowJs"` attribute set to `true`</font>.
+
+> 💡 上面说了 `jsconfig.json` 和 `tsconfig.json` 的关系，下面是补充：
+>
+> ![image-20240317154454259](https://s2.loli.net/2024/03/17/JizYKmnvua9hIrO.png)
+
+##### Why do I need a jsconfig.json file?
+
+Visual Studio Code's JavaScript support can <font color=dodgerBlue>run in two different modes</font>:
+
+- **File Scope - no jsconfig.json**: <font color=dodgerBlue>In this mode</font>, <font color=red>JavaScript files opened in Visual Studio Code are treated as independent units</font>. As long as a file `a.js` doesn't reference a file `b.ts` explicitly (either using `import` or **CommonJS** [modules](https://wiki.commonjs.org/wiki/Modules/1.0)), there is no common project context between the two files.
+- **Explicit Project - with jsconfig.json**: A JavaScript project is defined via a `jsconfig.json` file. The presence of such a file in a directory indicates that the directory is the root of a JavaScript project. The file itself can optionally list the files belonging to the project, the files to be excluded from the project, as well as compiler options (see below).
+
+<font color=red>The JavaScript experience is improved</font> <font color=lightSeaGreen>when you have a `jsconfig.json` file in your workspace</font> that defines the project context. For this reason, we offer a hint to create a `jsconfig.json` file when you open a JavaScript file in a fresh workspace.
+
+###### Location of jsconfig.json
+
+We define this part of our code, the client side of our website, as a JavaScript project by creating a `jsconfig.json` file. <font color=lightSeaGreen>Place the file at the root of your JavaScript code as shown below</font>.
+
+![jsconfig setup](https://s2.loli.net/2024/03/17/4sRK2MZFbScQGDX.png)
+
+<font color=dodgerBlue>In more complex projects</font>, you may have more than one `jsconfig.json` file defined inside a workspace. You will want to <font color=dodgerBlue>do this so that the code in one project is not suggested</font> as IntelliSense to code in another project. Illustrated below is a project with a `client` and `server` folder, showing two separate JavaScript projects.
+
+> 👀 上面提了一下 IntelliSense ，可以看下 [[#Working with JavaScript#IntelliSense]] ，里面有说 “<font color=lightSeaGreen>you can make IntelliSense even more useful with JSDoc or **by configuring a `jsconfig.json`** project</font>”
+
+![multiple jsconfigs](https://s2.loli.net/2024/03/17/dFJDpQAg2nLhM97.png)
+
+##### jsconfig Options
+
+Below are `jsconfig` `"compilerOptions"` to configure the JavaScript language support.
+
+> **Tip:** <font color=lightSeaGreen>Do not be confused by `compilerOptions`</font> , since <font color=red>no actual compilation is required for JavaScript</font>. <font color=lightSeaGreen>This attribute **exists because `jsconfig.json` is a descendant of `tsconfig.json`** , which is used for compiling TypeScript</font>.
+
+| Option                         | Description                                                  |
+| :----------------------------- | :----------------------------------------------------------- |
+| `noLib`                        | Do not include the default library file (lib.d.ts)           |
+| `target`                       | Specifies which default library (lib.d.ts) to use. The values are "ES3", "ES5", "ES6", "ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "ES2020", "ES2021", "ES2022", "ES2023", "ESNext". |
+| `module`                       | Specifies the module system, when generating module code. The values are "AMD", "CommonJS", "ES2015", "ES2020", "ES2022", "ES6", "Node16", "NodeNext", "ESNext", "None", "System", "UMD". |
+| `moduleResolution`             | Specifies how modules are resolved for imports. The values are "Node", "Classic", "Node16", "NodeNext", "Bundler". |
+| `checkJs`                      | Enable type checking on JavaScript files.                    |
+| `experimentalDecorators`       | Enables experimental support for proposed ES decorators.     |
+| `allowSyntheticDefaultImports` | Allow default imports from modules with no default export. This does not affect code emit, just type checking. |
+| `baseUrl`                      | Base directory to resolve non-relative module names.         |
+| `paths`                        | Specify path mapping to be computed relative to baseUrl option. |
+
+You can read more about the available `compilerOptions` in the [TypeScript compilerOptions documentation](https://www.typescriptlang.org/tsconfig#compilerOptions).
+
+##### Using webpack aliases
+
+For IntelliSense to work with webpack aliases, you need to specify the `paths` keys with a [glob pattern](https://code.visualstudio.com/docs/editor/glob-patterns).
+
+<font color=dodgerBlue>For example, for alias 'ClientApp':</font>
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "ClientApp/*": ["./ClientApp/*"]
+    }
+  }
+}
+```
+
+and then to use the alias
+
+```js
+import Something from 'ClientApp/foo';
+```
+
+##### Best Practices
+
+<font color=dodgerBlue>**Whenever possible**</font>, <font color=red>you should **exclude folders with JavaScript files that are not part of the source code for your project**</font>.
+
+> **Tip:** <font color=dodgerBlue>If you do **not** have a `jsconfig.json` in your workspace</font>, <font color=red>VS Code will by default exclude the `node_modules` folder</font>.
+
+<font color=dodgerBlue>Below is a table</font>, mapping common project components to their installation folders that <font color=dodgerBlue>are recommended to exclude</font>:
+
+| Component                       | folder to exclude                               |
+| :------------------------------ | :---------------------------------------------- |
+| `node`                          | exclude the `node_modules` folder               |
+| `webpack`, `webpack-dev-server` | exclude the content folder, for example `dist`. |
+| `bower`                         | exclude the `bower_components` folder           |
+| `ember`                         | exclude the `tmp` and `temp` folders            |
+| `jspm`                          | exclude the `jspm_packages` folder              |
+
+When your JavaScript project is growing too large and performance slows, it is often because of library folders like `node_modules`. <font color=lightSeaGreen>If VS Code detects that your project is growing too large, it will prompt you to edit the `exclude` list</font>.
+
+摘自：[VS Code doc - languages - jsconfig.json](https://code.visualstudio.com/docs/languages/jsconfig)
