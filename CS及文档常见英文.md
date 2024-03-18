@@ -650,7 +650,7 @@
 
 - **ergonomic** ：（符合）人体工程学的
 
-  > A more arcane, but very ***ergonomic*** way to set a compiler setting is via compiler flag which are comments starting with `// @`.
+  > A more arcane, but very ***ergonomic*** way to set a compiler setting is via compiler flag which are comments starting with `// @` .`
   > 摘自：[TS play handbook - Twoslash Annotations](https://www.typescriptlang.org/play?#handbook-14)
 
 - **clause** ：条款
@@ -1556,3 +1556,6 @@
 
   **in conjuction with** ：与...相结合
 
+- **trove** ：宝库
+
+- **analogous** ：相似的
