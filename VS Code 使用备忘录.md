@@ -2,7 +2,7 @@
 
 
 
-#### 一些资料
+#### 资料
 
 官方文档：https://code.visualstudio.com/docs
 
@@ -278,17 +278,97 @@ Configurations can be overridden at multiple levels by the different setting sco
 
 If you are using multiple language-specific settings, <font color=dodgerBlue>be aware that</font> language-specific settings are merged and <font color=fuchsia>precedence is set based on the full language string</font> (for example `"[typescript][javascript]"`) and <font color=fuchsia>not the individual language IDs</font> (`typescript` and `javascript`). This means that for example, a <font color=red>**`"[typescript][javascript]"` workspace setting will not override a `"[javascript]"` user setting**</font>.
 
-##### 
 
-#### VS Code 工具
+
+### VS Code 工具
 
 https://github.com/viatsko/awesome-vscode
 
 
 
-#### VS Code 中 GitHub Copilot 使用
+### VS Code 中 GitHub Copilot 使用
 
 [Github Copilot 备忘清单 & github-copilot cheatsheet & Quick Reference](https://wangchujiang.com/reference/docs/github-copilot.html)
+
+##### 快捷键
+
+- **⌃ + ⌘ + I** ：调出 Copilot Chat 页面
+
+- **⇧ + ⌘ + I** ：调出编辑器顶部的快捷 Copilot Chat 弹窗
+
+  <img src="https://s2.loli.net/2024/03/20/G9jgOWypDI5NVZa.png" alt="image-20240320101701473" style="zoom:50%;" />
+
+  > If you want to ask Copilot a quick question and don't want to start a full Chat view session or open inline chat in your editor, you can use the Quick Chat dropdown. To open Quick Chat, you can run **Chat: Open Quick Chat** in the Command Palette, or <font color=red>use the ⇧⌘I keyboard shortcut</font>.
+  >
+  > 摘自：[Quick Chat](https://code.visualstudio.com/docs/copilot/overview#_quick-chat)
+
+- **⌘ + I** ：在文件中，调出行内 Copilot Chat 弹窗
+
+  <img src="https://s2.loli.net/2024/03/20/2TD7p9zJ3GWgaiw.png" alt="image-20240320103036665" style="zoom: 45%;" />
+
+  > In any file, you can press ⌘I on your keyboard to bring up Copilot inline chat.
+  >
+  > If you have code selected in the editor, Copilot scopes your question to the selection.
+  >
+  > 摘自：[vs code doc - copilot # inline chat](https://code.visualstudio.com/docs/copilot/overview#_inline-chat)
+
+##### Copilot Chat 页面中的指令
+
+To make your interactions more efficient, you can use *slash commands* as a shorthand for common questions. For example, use the `/help` to get help about GitHub Copilot. Have you started working on a new code base, then try <font color=fuchsia>entering `/explain` to let Copilot help you understand the code</font>.
+
+> 💡 补充
+>
+> <img src="https://s2.loli.net/2024/03/20/X8VpIWtnRPyuHTc.png" alt="image-20240320095705061" style="zoom:50%;" />
+
+
+
+##### Chat smart actions
+
+To make it easier to use Copilot Chat features, <font color=dodgerBlue>there is a Copilot menu group **in the editor context menu**</font>. <font color=red>**Right-click in the editor** and navigate to Copilot to see the available options</font>:
+
+<img src="/Users/yan/Library/Application Support/typora-user-images/image-20240320104704108.png" alt="image-20240320104704108" style="zoom:45%;" />
+
+You can apply these smart actions on the current file or a selection in the file. Choosing an action brings up the Chat view or inline chat, depending on the action. For example, <font color=red>selecting **Generate Docs** for a function opens the inline chat</font> with a proposed documentation comment:
+
+<img src="https://s2.loli.net/2024/03/20/dLzsrZWK51wftgb.png" alt="Inline chat /doc results adding JSDoc comment for a TypeScript function" style="zoom:45%;" />
+
+##### Improving your developer experience
+
+In addition to inline completions and chat, GitHub Copilot can help with other development tasks and workflows. For example, Copilot can help with writing commit messages, fixing errors, and finding commands.
+
+When Copilot can help with a task or workflow, VS Code displays a **sparkle** icon. Hovering over the sparkle icon describes the Copilot action.
+
+<img src="https://s2.loli.net/2024/03/20/ZX3QVxr2EaUsqjd.png" alt="Sparkle icon in an input box" style="zoom:60%;" />
+
+###### Generate Git commit messages
+
+Copilot can help you write GitHub commit messages. In the Source Control message input box, select the sparkle button at the right and Copilot creates a commit message based on your pending changes.
+
+<img src="https://s2.loli.net/2024/03/20/Ys7k1nKEZcNUFbi.png" alt="Hover over Source Control input box sparkle buttons shows Generate Commit Message" style="zoom:48%;" />
+
+If you're using the [GitHub Pull Request and Issues](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github) extension, there is a sparkle button to fill in both the title and description in the Pull Request **Create** view.
+
+###### Terminal Quick Fixes
+
+When a command fails to run in the terminal, Copilot displays a sparkle in the gutter that offers a Quick Fix to explain what happened.
+
+<img src="https://s2.loli.net/2024/03/20/5FSejkAnWvwU8f6.png" alt="Terminal command failure shows sparkle with Explain using Copilot Quick Fix" style="zoom:45%;" />
+
+Selecting **Explain using Copilot** populates Quick Chat with the `@terminal #terminalLastCommand`agent and variable to help correct the last terminal command error.
+
+<img src="https://s2.loli.net/2024/03/20/ihoYFIJvx4zjSnG.png" alt="Quick Chat with @terminal #terminalLastCommand and Copilot's answer" style="zoom:48%;" />
+
+###### Command Palette help
+
+When you're looking for a command in the Command Palette (⇧⌘P), you can run **Ask GitHub Copilot**with your search term to help you find the relevant command.
+
+<img src="https://s2.loli.net/2024/03/20/5xtHekQYLCJ1zTj.png" alt="Command Palette with Ask GitHub Copilot selected to search for &quot;hide editor overview&quot;" style="zoom:50%;" />
+
+The **Ask GitHub Copilot** command opens the Chat view and input your search term.
+
+<img src="https://s2.loli.net/2024/03/20/JCSaqD3Q4wnhurH.png" alt="Chat view with answer to &quot;hide editor overview&quot;" style="zoom:50%;" />
+
+摘自：[VS Code doc - GitHub Copilot in VS Code](https://code.visualstudio.com/docs/copilot/overview#_inline-chat)
 
 
 
