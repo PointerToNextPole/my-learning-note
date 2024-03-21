@@ -1107,6 +1107,10 @@
   > 摘自：[Daytona 管网](https://www.daytona.io/)
 
 - **accommdate** ：容纳，为...提供住宿
+
+- **tarball** ：压缩包
+
+  <img src="https://s2.loli.net/2024/03/21/tcJDaEgofMYVGxI.png" alt="image-20240321233430412" style="zoom:50%;" />
 ***
 
 
@@ -1378,7 +1382,7 @@
   >
   > 摘自：[react doc - Extracting State Logic into a Reducer](https://react.dev/learn/extracting-state-logic-into-a-reducer)
 
-- **upfront** ：预先，一开始（看了下字典没有 “一开始” 的意思，这个属于引申意）
+- **upfront** ：提前，预先，一开始（看了下字典没有 “一开始” 的意思，这个属于引申意）
 
   > Generally, with `useState` you have to write less code upfront.
   >
@@ -1559,3 +1563,13 @@
 - **trove** ：宝库
 
 - **analogous** ：相似的
+
+- **incentivize** ：vt. 激励，奖励
+
+  **incentive** ：n. 激励，奖励
+
+- **peddle** ：兜售
+
+- **demystify** ：揭秘，使明白易懂
+
+  <img src="https://s2.loli.net/2024/03/21/biaoU63cEM7pkqO.png" alt="image-20240321231852217" style="zoom:50%;" />
