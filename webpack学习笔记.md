@@ -289,11 +289,11 @@ A **context module** <font color=FF0000>**exports a ( require ) function** that 
 
 <font color=dodgerBlue>**The exported function has 3 properties : `resolve` , `keys` , `id`**</font> .
 
-> 👀 这里有点费解，不过想到 函数（ JS 中函数是一个对象）有 name、length 等属性，也就理解了...
+> 👀 这里有点费解，不过想到函数（ JS 中函数也是一个对象）有 name、length 等属性，也就理解了...
 
-- `resolve` is a **function** and <font color=FF0000>returns the **module id** of the parsed request</font>（**译**：返回 request 被解析后得到的模块 id ）.
+- `resolve` is a **function** and <font color=FF0000>returns the **module id** of the parsed request</font>.
 
-- `keys` is a **function** that <font color=FF0000>returns **an array of all possible requests** that the context module can handle</font>（**译**：所有可能被此 context module 处理的请求的数组）.
+- `keys` is a **function** that <font color=FF0000>returns **an array of all possible requests** that the context module can handle</font>.
 
   This can <font color=FF0000>be useful if you want to require all files in a directory or matching a pattern</font> , Example :
 
@@ -320,7 +320,7 @@ A **context module** <font color=FF0000>**exports a ( require ) function** that 
 
 摘自：[webpack 文档 - Guides - Dependency Management](https://webpack.js.org/guides/dependency-management/)
 
-##### require.context() 在实际项目中的使用
+##### `require.context()` 在实际项目中的使用
 
 ###### 用来在组件内引入多个组件
 
@@ -340,7 +340,7 @@ export default {
 }
 ```
 
-> 👀 类似的，可以参考 [Bilibili - 我是哈默 - 用来在组件内引入多个组件](https://www.bilibili.com/video/BV1TW4y1t7qH) 其中设置了一个场景，更容易理解。
+> 💡 类似的，可以参考 [Bilibili - 我是哈默 - 用来在组件内引入多个组件](https://www.bilibili.com/video/BV1TW4y1t7qH) 讲解了通过 `require.context()` 在 Vue 中全局注册一个文件夹中的多个组件，更容易理解。
 
 ###### 在 main.js 中引入大量公共组件
 
@@ -3046,7 +3046,7 @@ require.ensure(
 )
 ```
 
-<font color=red>**Split out** the given `dependencies` to a separate bundle</font> that <font color=red>**will be loaded asynchronously**</font>. <font color=fuchsia>When using CommonJS module syntax, **this is the only way to dynamically load dependencies**</font>（👀 类似于 ESM 中的 `import()`；这一点，上面的注意也说到了）. Meaning , <font color=red>this code can be run within execution</font>（执行过程）, only loading the `dependencies` if certain conditions are met.
+<font color=red>**Split out** the given `dependencies` to a separate bundle</font> that <font color=red>**will be loaded asynchronously**</font>. <font color=dodgerBlue>When using CommonJS module syntax</font>, <font color=fuchsia>**this is the only way to dynamically load dependencies**</font>（👀 类似于 ESM 中的 `import()` ）. Meaning , <font color=red>this code can be run within execution</font>（执行过程）, only loading the `dependencies` if certain conditions are met.
 
 > ⚠️ **Warning** : This feature relies on `Promise` internally. If you use `require.ensure` with older browsers, remember to shim `Promise` using a polyfill such as [es6-promise](https://github.com/stefanpenner/es6-promise) or [promise-polyfill](https://github.com/taylorhakes/promise-polyfill).
 
@@ -3054,7 +3054,7 @@ require.ensure(
 var a = require('normal-dep');
 
 if (module.hot) {
-  require.ensure(['b'], function (require) { // require.ensures 的用法
+  require.ensure(['b'], function (require) { // require.ensure 的用法
     var c = require('c');
     // Do something special...
   });
@@ -3063,10 +3063,10 @@ if (module.hot) {
 
 <font color=dodgerBlue>The following parameters are supported in the order specified above:</font>
 
-- **dependencies** : <font color=red>An array of strings declaring all modules required for the code in the `callback` to execute</font>（🌏 译：声明 callback 中所需要的所有模块）.
+- **dependencies** : <font color=red>An array of strings declaring all modules required for the code in the `callback` to execute</font>（🌏 声明 callback 中所需要的所有模块）.
 - **callback** : <font color=red>A function that webpack will execute once the dependencies are loaded</font>. An implementation of the `require` function is sent as a parameter to this function. The function body can use this to further `require()` modules it needs for execution.
 - **errorCallback** : A function that is <font color=red>executed when **webpack fails** to load the dependencies</font>.
-- **chunkName** : <font color=red>A name given to the chunk created by this particular `require.ensure()`</font>（👀 类似于 `import()` 中的 `webpackChunkName` magic comments 选项） . By passing the same `chunkName` to various `require.ensure()` calls , we can combine their code into a single chunk , <font color=red>resulting in only one bundle that the browser must load</font> （🌏 译：通过将相同 chunkName 传递给不同的 require.ensure 调用，我们可以将其代码合并到一个单独的 chunk 中，从而只产生一个浏览器必须加载的 bundle）.
+- **chunkName** : <font color=red>A name given to the chunk created by this particular `require.ensure()`</font>（👀 类似于 `import()` 中的 `webpackChunkName` magic comments 选项） . By passing the same `chunkName` to various `require.ensure()` calls , we can combine their code into a single chunk , <font color=red>resulting in only one bundle that the browser must load</font> （🌏 通过将相同 chunkName 传递给不同的 `require.ensure` 调用，我们可以将其代码合并到一个单独的 chunk 中，从而只产生一个浏览器必须加载的 bundle）.
 
 > ⚠️ **Warning** : Although the implementation of `require` is passed as an argument to the `callback` function , using an arbitrary（任意的） name e.g. `require.ensure([], function(request) { request('someModule'); })` <font color=red>isn't handled by webpack's static parser</font>. <font color=red>**Use `require` instead**</font> , e.g. `require.ensure([], function(require) { require('someModule'); })`
 
@@ -3120,12 +3120,12 @@ method(...);
 require.context(
   (directory: String),
   (includeSubdirs: Boolean) /* optional, default true */,
-  (filter: RegExp) /* optional, default /^\.\/.*$/, any file */,                                  //  👀 可选
-  (mode: String) /* optional, 'sync' | 'eager' | 'weak' | 'lazy' | 'lazy-once', default 'sync' */ //  👀 可选
+  (filter: RegExp) /* optional, default /^\.\/.*$/, any file */,                           
+  (mode: String) /* optional, 'sync' | 'eager' | 'weak' | 'lazy' | 'lazy-once', default 'sync' */
 );
 ```
 
-<font color=red>Specify a whole group of dependencies using a path to the `directory`</font> （👀 因为是 文件夹路径，所以会有多个依赖）, an option to `includeSubdirs ` , <font color=red>a `filter` for more fine grained control of the modules included</font>, and a <font color=red>`mode` to define the way how loading will work</font>. Underlying modules can then be easily resolved later on（🌏 译：随后，可以轻松解析底层模块）:
+<font color=red>Specify a whole group of dependencies using a path to the `directory`</font> , an option to `includeSubdirs`  , <font color=red>a `filter` for more fine grained control of the modules included</font>, and a <font color=red>`mode` to define the way how loading will work</font>. Underlying modules can then be easily resolved later on :
 
 ```javascript
 var context = require.context('components', true, /\.html$/);
@@ -11647,13 +11647,15 @@ module.exports 中的 bail 配置的作用是，一旦打包出现错误，则�
 
 ###### 背景：微前端概念（与不足）
 
-Multiple separate builds should form a single application（**译**：多个独立的构建（子程序）可以组成一个（作为整体的）应用程序）. <font color=FF0000>These separate builds should not have dependencies between each other</font>, so <font color=FF0000>they can be developed and deployed individually</font>.
+Multiple separate builds should form a single application. <font color=FF0000>These separate builds should not have dependencies between each other</font>, so <font color=FF0000>they can be developed and deployed individually</font>.
 
-<font color=FF0000>This is often known as <font size=4>**Micro-Frontends**</font>, **but is not limited to that**</font>. 👀 **注**：照这么说有点后端“微服务”的意思了
+<font color=FF0000>This is often known as <font size=4>**Micro-Frontends**</font>, **but is not limited to that**</font>. 
+
+>  👀 照这么说有点 “微服务”的意思了
 
 ###### 模块联邦底层概念
 
-We distinguish between <font color=FF0000>**local**</font>（**译**：本地模块） <font color=FF0000>**and remote modules**</font>. Local modules are normal modules which are part of the current build. <font color=FF0000>Remote modules are modules that are</font> <font color=fuchsia>**not part of the current build**</font> and <font color=fuchsia>**loaded from a so-called <font size=4>*container*</font> at the runtime**</font>.
+We distinguish between <font color=FF0000>**local and remote modules**</font>. Local modules are normal modules which are part of the current build. <font color=FF0000>Remote modules are modules that are</font> <font color=fuchsia>**not part of the current build**</font> and <font color=fuchsia>**loaded from a so-called <font size=4>*container*</font> at the runtime**</font>.
 
 <font color=FF0000>**Loading remote modules** is considered an **asynchronous operation**</font>. When using a remote module these asynchronous operations will <font color=FF0000>be placed in the next chunk loading operation(s) that is between the remote module and the entrypoint</font>（**译**：当使用远程模块时，这些异步操作将被放置在远程模块和入口之间的下一个 chunk 的加载操作中）. It's not possible to use a remote module without a chunk loading operation（**译**：如果没有 chunk 加载操作，就不能使用远程模块）.
 
