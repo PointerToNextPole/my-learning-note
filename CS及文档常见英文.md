@@ -1362,6 +1362,8 @@
   
 - **anatomy** ：解剖
 
+  **dissect** ：解剖
+
 - **premature** ：过早的
 
   > Don’t optimize prematurely!

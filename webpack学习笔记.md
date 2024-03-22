@@ -254,11 +254,11 @@ This means dynamic requires are supported but will cause all matching modules to
 
 You <font color=FF0000>can **create your own context with the `require.context()` function**</font>.
 
-It allows you to pass in <mark>a directory to search</mark> , <mark style="background: aqua">a flag indicating whether subdirectories should be searched too</mark>, and <mark style="background: lightpink">a regular expression to match files against</mark>.
+It <font color=lightSeaGreen>allows you to **pass in a directory to search**</font> , <font color=lightSeaGreen>**a flag indicating whether subdirectories should be searched too**</font>, and <font color=red>a regular expression to match files against</font>.
 
-Webpack parses for `require.context()` in the code while building（👀 注：即 compile time）.
+Webpack parses for `require.context()` in the code while building（👀 即 compile time）.
 
-<font color=dodgerBlue>**The syntax is as follows:**</font>
+<font color=dodgerBlue>The syntax is as follows:</font>
 
 ```js
 require.context(
@@ -281,13 +281,15 @@ require.context('../', true, /\.stories\.js$/);
 // a context with all files in the parent folder and descending folders ending with `.stories.js`.
 ```
 
-> 👀 注：require.context 在 [[#Module Methods#webpack#require.context]] 中也有详细介绍
+> 👀 `require.context` 在 [[#Module Methods#webpack#require.context]] 中也有详细介绍
 
 ##### context module API
 
 A **context module** <font color=FF0000>**exports a ( require ) function** that **takes one argument : the request**</font>.
 
-<font color=dodgerBlue>**The exported function has 3 properties : `resolve` , `keys` , `id`**</font> .（👀 **注**：这里有点费解，不过想到 函数（ JS 中函数是一个对象）有 name、length 等属性，也就理解了...）
+<font color=dodgerBlue>**The exported function has 3 properties : `resolve` , `keys` , `id`**</font> .
+
+> 👀 这里有点费解，不过想到 函数（ JS 中函数是一个对象）有 name、length 等属性，也就理解了...
 
 - `resolve` is a **function** and <font color=FF0000>returns the **module id** of the parsed request</font>（**译**：返回 request 被解析后得到的模块 id ）.
 
@@ -338,7 +340,7 @@ export default {
 }
 ```
 
-> 👀 注：类似的，可以参考 [Bilibili - 我是哈默 - 用来在组件内引入多个组件](https://www.bilibili.com/video/BV1TW4y1t7qH) 其中设置了一个场景，更容易理解。
+> 👀 类似的，可以参考 [Bilibili - 我是哈默 - 用来在组件内引入多个组件](https://www.bilibili.com/video/BV1TW4y1t7qH) 其中设置了一个场景，更容易理解。
 
 ###### 在 main.js 中引入大量公共组件
 
@@ -383,7 +385,7 @@ export default modules
 
 Let's start by <font color=dodgerBlue>clearing up a common **misconception**</font>（错误观念）. <font color=red>Webpack is a **module bundler** like *Browserify* or *Brunch*</font>. <font color=fuchsia>It is <font size=4>***not a task runner***</font> like ***Make***, ***Grunt***, or ***Gulp***</font>. Task runners handle automation of common development tasks such as linting, building, or testing your project. <font color=red>Compared to bundlers, **task runners** have a **higher level focus**</font>. You can still benefit from their higher level tooling while leaving the problem of bundling to webpack.
 
-<mark style="background: lightpink">Bundlers help you get your JavaScript and stylesheets ready for deployment, transforming them into a format that's suitable for the browser</mark> . For example, <font size=4>**JavaScript can be [minified](https://webpack.js.org/plugins/terser-webpack-plugin/) or [split into chunks](https://webpack.js.org/guides/code-splitting) and [lazy-loaded](https://webpack.js.org/guides/lazy-loading) to improve performance**</font>. Bundling is one of the most important challenges in web development, and solving it well can remove a lot of pain from the process.
+<font color=lightSeaGreen>Bundlers help you get your JavaScript and stylesheets ready for deployment, transforming them into a format that's suitable for the browser</font> . For example, <font size=4>**JavaScript can be [minified](https://webpack.js.org/plugins/terser-webpack-plugin/) or [split into chunks](https://webpack.js.org/guides/code-splitting) and [lazy-loaded](https://webpack.js.org/guides/lazy-loading) to improve performance**</font>. Bundling is one of the most important challenges in web development, and solving it well can remove a lot of pain from the process.
 
 The good news is that, while there is some overlap（重叠）, <font color=dodgerBlue>**task runners and bundlers can play well together** if approached in the right way</font>. This guide provides a high-level overview of <font color=dodgerBlue>**how webpack can be integrated into some of the more popular task runners**</font> .
 
