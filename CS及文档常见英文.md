@@ -1111,6 +1111,14 @@
 - **tarball** ：压缩包
 
   <img src="https://s2.loli.net/2024/03/21/tcJDaEgofMYVGxI.png" alt="image-20240321233430412" style="zoom:50%;" />
+  
+- **pivot** ：支点，中心轴
+
+  > 💡 提到这个词，一般想到“快排” 中的变量名 `pivot`
+  
+  **pivotal point** ：中心点
+  
+  
 ***
 
 
@@ -1313,7 +1321,7 @@
 - **dread** ：v. 恐惧 n. 恐惧
 
   **dreaded** ：令人害怕的，可怕的
-  
+
 - **budget** ：预算
 
   > 👀 过于基础，不该忘的
@@ -1343,7 +1351,7 @@
   > State is reserved only for interactivity, that is, data that changes over time. Since this is a static version of the app, you don’t need it.
   >
   > 摘自：[React doc - Thinking in React # Step 2: Build a static version in React](https://react.dev/learn/thinking-in-react#step-2-build-a-static-version-in-react)
-  
+
 - **conform** ：遵从，符合，符合
 
 - **suffice** ：足够，足以
@@ -1359,7 +1367,7 @@
   > They are built to take into account the code you write in your component, so you will get [inferred types](https://www.typescriptlang.org/docs/handbook/type-inference.html) a lot of the time and ideally do not need to handle the **minutiae** of providing the types.
   >
   > 摘自：[React doc - Using TypeScript # example hooks](https://react.dev/learn/typescript#example-hooks)
-  
+
 - **anatomy** ：解剖
 
   **dissect** ：解剖
@@ -1367,7 +1375,7 @@
 - **premature** ：过早的
 
   > Don’t optimize prematurely!
-  
+
 - **substitute** ：替代
 
 - **rest assured** ( that ) ：请放心
@@ -1399,7 +1407,7 @@
 - **declutter** ：清理
 
   **clutter** ：n. 杂乱 vt. 凌乱地塞满
-  
+
 - **retain** ：保持。👀 这个有些过于基础了
 
 - **chronological** ：按时间先后顺序的
@@ -1425,7 +1433,7 @@
   > Atuin is open source with a permissive license, and has a growing community.
   >
   > 摘自：[Atuin 官网](https://atuin.sh/)
-  
+
 - **leading-edge** ：前沿
 
 - **lore** ：**学问**，传说
@@ -1441,7 +1449,7 @@
   > The only other way to obtain the information you'll find in this handbook would be to **plow through** a mountain of books and a few hundred technical journals and then add a significant amount of real-world experience.
   >
   > 摘自：Code Complete 2nd Edition
-  
+
 - **nitty-gritty** ：细节
 
   > It gets into nitty-gritty construction details such as steps in building classes, ins and outs of using data and control structures, debugging, refactoring, and code-tuning techniques and strategies.
@@ -1483,7 +1491,7 @@
   > Refs are an escape hatch that should be used sparingly
   >
   > 摘自：[react.dev - Manipulating the DOM with Refs # Accessing another component’s DOM nodes](https://react.dev/learn/manipulating-the-dom-with-refs#accessing-another-components-dom-nodes)
-  
+
 - **shortchanged** ：短缺，变短
 
 - **irony** ：讽刺
@@ -1525,7 +1533,7 @@
   > With quite different design goals, it's not really an apples-to-apples comparison with Tailwind CSS. But we will try to list a few differences.
   >
   > 摘自：[UnoCSS doc - Why UnoCSS? # Tailwind CSS](https://unocss.dev/guide/why#tailwind-css)
-  
+
 - **tragedy** ：悲剧
 
 - **befall** ：降临，发生在（某人）身上
@@ -1539,7 +1547,7 @@
   > The `DllPlugin` and `DllReferencePlugin` provide means to split bundles in a way that can drastically improve build time performance.
   >
   > 摘自：[webpack doc - plugin - dllplugin](https://webpack.js.org/plugins/dll-plugin)
-  
+
 - **adverse** ：不利的
 
 - **monopoly** ：垄断
@@ -1575,3 +1583,17 @@
 - **demystify** ：揭秘，使明白易懂
 
   <img src="https://s2.loli.net/2024/03/21/biaoU63cEM7pkqO.png" alt="image-20240321231852217" style="zoom:50%;" />
+
+- **spoiler** ：**剧透**，阻流板
+
+- **introverted** ：内向的
+
+  > 💡 一下说法来自 GPT-4：
+  >
+  > 词源：来自拉丁语“intro-”（意为“向内”）和“vertere”（意为“转向”），字面上的意思是“转向内部”。
+
+  **extroverted** ：外向的，introveted 的反义词
+  
+- **fright** ：n. 恐惧 -> v. frighten
+
+- **overly** ：过于，过度
