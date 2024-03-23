@@ -2,125 +2,9 @@
 
 
 
-## 《从零开发Web Server博客项目  前端晋升全栈工程师必备》笔记
-
-
-
-##### nvm 使用命令
-
-- **`nvm list`** ：查看当前所有的 Node 版本
-- **`nvm install v10.13.0`** ：安装指定的版本
-- **`nvm use-delete-prefix 10.13.0`** ：切换到指定的版本
-
-
-
-##### common.js 中的导出和导入
-
-```js
-// 导出 foo.js
-foo() { ... }
-bar() { ... }
-// 单个
-module.exports = foo
-// 多个的情况，要用对象导出
-module.exports = {
-  foo,
-  bar
-}
-       
-// 导入 foo.js
-// 单个
-const foo = require('foo.js')
-// 多个导入
-const {foo, bar} = require('foo.js')
-```
-
-
-
-##### Node 代码调试
-
-在 `package.json` 中，默认（使用 `npm init -y ` ）`main` 属性对应的值为 `index.js`，表示：主文件是 `index.js` 。如果要在 VSCode 中调试 ( debug ) 项目时，必须要有 `index.js` 这个文件（当然，这个名字可以自定义，当然实际文件名也要跟着变化）
-
-###### 补充
-
-模块引入方法 `require()` 在引入包时，会优先检查这个字段，并将其作为包中其余模块的入口。如果不存在这个字段，`require()` 方法会查找包目录下的index.js、index.node、index.json文件作为默认入口
-
-摘自：《深入浅出Node.js》P35
-
-
-
-#### Node 处理 http 请求
-
-##### get 请求 和 querystring（所有的 url参数）
-
-- get 请求，即客户端要向 server 端获取数据，如查询博客列表 
-- 通过 querystring 来传递数据，如 `a.html?a=100&b=200`
-- 浏览器直接访问，就发送 get 请求
-
-
-###### 代码示例
-
-```js
-const http = require('http')
-const querystring = require('querystring')
-
-const server = http.createServer((req, res) => {
-  console.log(req.method) // GET
-  const url = req.url // 获取请求的完整 url
-  req.query = querystring.parse(url.split('?')[1]) // 解析querystring
-  console.log('query: ', req.query) // 控制台打印 query
-  res.end(JSON.stringify(req.query)) // 将querystring 返回
-})
-
-server.listen(8000)
-console.log("OK")
-```
-
-##### post 请求 和 post-data
-
-- post 请求，即客户端要向服务端传递数据，如新建博客
-
-- 通过 post data 传递数据
-
-- 浏览器无法直接模拟，需要手写 js，或者使用 postman
-
-
-###### 示例代码
-
-另外，需要在 postman 中去模拟 post 请求
-
-```js
-const http = require('http')
-
-const server = http.createServer((req, res) => {
-  if(req.method === 'POST') {
-    console.log('content-type: ', req.headers['content-type'])
-    
-    // 接收数据，采用数据流的方式接收
-    let postData = ''
-    req.on('data', chunk => {
-      postData += chunk.toString()
-    })
-    req.on('end', () => {
-      console.log('postData: ', postData)
-      res.end('hello world!')
-    })
-  }
-})
-
-server.listen(8000)
-console.log('OK!')
-```
-
-##### 路由（接口地址 api/foo/bar ）
-
-
-
-可以使用 nodemon 来监控你项目中文件的变动，并自动重启服务。即：热部署工具
-
-
-
 ## coderwhy Node.js 学习笔记
+
+
 
 ##### 浏览器引擎
 
@@ -1026,52 +910,78 @@ ES Module加载 js文件的过程是编译（解析）时加载的,并且是异�
 - 这个配置文件会<font color=FF0000>记录着你项目的名称、版本号、项目描述等</font>
 - 也会<font color=FF0000>记录着你项目所依赖的其他库的信息和依赖库的版本号</font>
 
-package.json 中 main属性是 程序的入口，
+<font color=red>`package.json` 中 `main` 属性是 程序的入口</font>
 
 在 npm scripts 中，npm run start 和 npm start 是等价的，同样的还有：test、stop、restart 命令。
 
-##### dependencies 属性
+##### `dependencies` 属性
 
 - dependencies属性是指定<font color=FF0000>无论开发环境还是生成环境都需要依赖的包</font>
 - 通常是我们项目实际开发用到的一些库模块;
 
-##### devDependencies 属性
+##### `devDependencies` 属性
 
-<font color=FF0000>一些包在生成环境是不需要的，比如webpack、babel 等</font>。这个时候我们会通过 npm install webpack --save-dev，将它安装到 devDependencies 属性中。
+<font color=FF0000>一些包在生成环境是不需要的，比如 webpack、babel 等</font>。这个时候我们会通过 npm install webpack --save-dev，将它安装到 `devDependencies` 属性中。
 
-即使有的包只在devDependencies定义，但是在生产环境打包时，如果要用到，还是会被引入、打包。devDependencies 属性的意义是：开发共享出去的工具时，对方需不需要安装 该依赖，取决于 devDependencies。
+即使有的包只在 `devDependencies` 定义，但是在生产环境打包时，如果要用到，还是会被引入、打包。`devDependencies` 属性的意义是：开发共享出去的工具时，对方需不需要安装 该依赖，取决于 `devDependencies` 。
 
-另外，<mark>在开发服务器时，打包生产环境，可以通过 npm install --production 来安装项目依赖；这时，devDependencies 中的依赖将不会安装</mark>。而<font color=FF0000> npm install 是会安装 package.json 中**所有的依赖**</font>。
+另外，<font color=lightSeaGreen>在开发服务器时，打包生产环境，可以通过 `npm install --production` 来安装项目依赖；这时，`devDependencies` 中的依赖将不会安装</font>。而 <font color=FF0000>`npm install` 是会安装 `package.json` 中**所有的依赖**</font>。
 
-**package.json 安装依赖版本中出现类似于：^2.0.3 或者 ~2.0.3，这是什么意思？**
+##### `peerDependencies` 属性
 
-npm包 通常要遵从 semver 的版本规范（[官方文档](https://semver.org/lang/zh-CN/)）
+表示对等依赖，即：没有直接的依赖关系，身份是对等的，但是主项目在使用我的时候，需要有一个对等的版本。如果版本对不上（发生了冲突）就会报错，比如 `npm install` 安装报错，或者运行的时候报错。这种问题，没有彻底的解决方案。
 
-- **版本格式：主版本号.次版本号.修订号，版本号递增规则如下：**
-  - **主版本号( major )：**当你<font color=FF0000>做了不兼容的 API 修改</font>
-  - **次版本号( minor )：**当你<font color=FF0000>做了向下兼容的**功能性新增**</font>
-  - **修订号( patch )：**当你<font color=FF0000>做了向下兼容的问题修正</font>
+###### 解决方法
 
-- **^ 和 ~ 的含义：**
-  - **^major.minor.patch：**表示 major 是保持不变的，minor 和 patch 永远安装最新的版本
-  - **~major.minor.patch：**表示major 和 minor 保持不变，patch 永远安装最新的版本
+- 可以给作者提 issue
+- 在 npm V3 ~ V6 之间，npm 会忽略版本冲突；在 V7 以及之后，将不会忽略错误。所以遇到 `peerDependencies` 无法匹配从而报错的问题，可以使用 `npm install` 的 `--legacy-peer-deps` 选项，从而忽略版本冲突
 
-**package.json 中其他常见的属性：**
+<font color=dodgerBlue>GitHub Copilot Chat 给出的解决方案：</font>
 
-- **engines属性**
-  - engines 属性用于<font color=FF0000>指定Node和NPM的版本号</font>
-  - 在安装的过程中，会先检查对应的引擎版本，如果不符合就会报错
-  - 事实上也可以指定所在的操作系统 "os" : ["darwin", "linux"] ,只是很少用到
-- **browserslist属性**
-  - 用于<font color=FF0000>配置打包后的 JavaScript 浏览器的兼容情况</font>
-  - 否则我们需要手动的添加 polyfills 来让支持某些语法
-  - 也就是说它是为 webpack 等打包工具服务的一个属性（这里不是详细讲解webpack等工具的工作原理，所以不再给出详情）
+<img src="https://s2.loli.net/2024/03/24/9f8iXKuUqlZvJEP.png" alt="image-20240324003313107" style="zoom:50%;" />
+
+<font color=dodgerBlue>关于上面所说 `resolution` 字段</font>
+
+<img src="https://s2.loli.net/2024/03/24/Uw2rx4OqQpZBgRu.png" alt="image-20240324003839767" style="zoom:50%;" />
+
+###### 其他补充
+
+<img src="https://s2.loli.net/2024/03/24/57UoXrcnCFYLtxI.png" alt="image-20240324002757174" style="zoom:50%;" />
+
+##### `package.json` 安装依赖版本中出现类似于：`^2.0.3` 或者 `~2.0.3`，是什么意思？
+
+npm 包 通常要遵从 semver 的版本规范（[官方文档](https://semver.org/lang/zh-CN/)）
+
+**版本格式：`主版本号.次版本号.修订号`，版本号递增规则如下：**
+
+- **主版本号 ( major )：**当你<font color=FF0000>做了不兼容的 API 修改</font>
+- **次版本号 ( minor )：**当你<font color=FF0000>做了向下兼容的**功能性新增**</font>
+- **修订号 ( patch )：**当你<font color=FF0000>做了向下兼容的问题修正</font>
+
+##### `^` 和 `~` 的含义
+
+- **`^major.minor.patch`** ：表示 major 是保持不变的，minor 和 patch 永远安装最新的版本
+- **`~major.minor.patch`** ：表示 major 和 minor 保持不变，patch 永远安装最新的版本
+
+##### `package.json` 中其他常见的属性
+
+###### `engines` 属性
+
+- engines 属性用于<font color=FF0000>指定Node和NPM的版本号</font>
+- 在安装的过程中，会先检查对应的引擎版本，如果不符合就会报错
+- 事实上也可以指定所在的操作系统 `"os" : ["darwin", "linux"]` ，只是很少用到
+
+###### `browserslist` 属性
+
+- 用于<font color=FF0000>配置打包后的 JavaScript 浏览器的兼容情况</font>
+- 否则我们需要手动的添加 polyfills 来让支持某些语法
+- 也就是说它是为 webpack 等打包工具服务的一个属性（这里不是详细讲解webpack等工具的工作原理，所以不再给出详情）
 
 
 
-**npm install 分为两种：**全局安装( global ) 和 局部安装( local )
+**npm install 分为两种：**全局安装 ( global ) 和 局部安装 ( local )
 
-npm全局安装的包都是一些工具包，比如：yarn、webpack等。<font color=FF0000>全局安装 类似 axios 的包 是没有意义的；如果在项目中没有本店安装 axios，而想 `const axios = require('axios')` 是拿不到 axios 的，因为 全局安装的路径 不在 module.path 的数组中</font>。
+npm全局安装的包都是一些工具包，比如：yarn、webpack 等。<font color=FF0000>全局安装 类似 axios 的包 是没有意义的；如果在项目中没有本店安装 axios，而想 `const axios = require('axios')` 是拿不到 axios 的，因为 全局安装的路径 不在 module.path 的数组中</font>。
 
 
 
@@ -1087,21 +997,24 @@ package-lock.json 会优先从 缓存文件中获取 依赖包；如果找不到
 
 ##### 更多详解
 
-npm install会检测是有package-lock.json文件:
+`npm install` 会检测是有 `package-lock.json` 文件：
 
-- **没有lock文件**
-  - 分析依赖关系，这是因为我们可能包会依赖其他的包，并且多个包之间会产生相同依赖的情况
-  - 从registry仓库中下载压缩包（如果我们设置了镜像，那么会从镜像服务器下载压缩包）
-  - 获取到压缩包后会对压缩包进行缓存（从npm5开始有的）
-  - 将压缩包解压到项目的 node-modules 文件夹中（前面我们讲过，require的查找顺序会在该包下面查找）
-- **有lock文件**
-  - 检测lock中包的版本是否和 package.json 中一致（会按照semver版本规范检测）
-  - 不一致，那么会重新构建依赖关系,直接会走顶层的流程
-  - 一致的情况下，会去优先查找缓存
-  - 没有找到，会从registry仓库下载，直接走顶层流程;
-  - 查找到,会获取缓存中的压缩文件，并且将压缩文件解压到node_modules文件夹中
+###### 没有 lock 文件
 
-**package-lock.json 文件中的内容介绍：**
+- 分析依赖关系，这是因为我们可能包会依赖其他的包，并且多个包之间会产生相同依赖的情况
+- 从 registry 仓库中下载压缩包（如果我们设置了镜像，那么会从镜像服务器下载压缩包）
+- 获取到压缩包后会对压缩包进行缓存（从 npm5 开始有的）
+- 将压缩包解压到项目的 `node-modules` 文件夹中（前面我们讲过，require 的查找顺序会在该包下面查找）
+
+###### 有 lock 文件
+
+- 检测 lock 中包的版本是否和 package.json 中一致（会按照 semver 版本规范检测）
+- 不一致，那么会重新构建依赖关系,直接会走顶层的流程
+- 一致的情况下，会去优先查找缓存
+- 没有找到，会从 registry 仓库下载，直接走顶层流程;
+- 查找到,会获取缓存中的压缩文件，并且将压缩文件解压到 `node_modules` 文件夹中
+
+##### `package-lock.json` 文件中的内容介绍
 
 ```json
 {
@@ -1162,18 +1075,18 @@ npm install会检测是有package-lock.json文件:
 
 ##### 安装工具包附带的依赖
 
-在安装 axios 时，axios 也会将自己的依赖 follow-redirectives 在项目中下载下来，打开node_modules中axios 文件夹中的 package.json，可以看到 devDependencies 中有大量的依赖，这是它开发时所使用的依赖，而这不是我们需要关心的。dependencies 中只有一个 follow-redirectives，需要被下载。所以，在安装包时，如果它的 package.json 中 dependencies 中有依赖，npm 会将其下载下来。
+在安装 axios 时，axios 也会将自己的依赖 follow-redirectives 在项目中下载下来，打开 `node_modules` 中axios 文件夹中的 `package.json` ，可以看到 `devDependencies` 中有大量的依赖，这是它开发时所使用的依赖，而这不是我们需要关心的。`dependencies` 中只有一个 follow-redirectives，需要被下载。所以，在安装包时，如果它的 `package.json` 中 `dependencies` 中有依赖，npm 会将其下载下来。
 
 
 
-##### npm 的其他命令
+##### npm 其他命令
 
-- **npm rebuild：**强制重新 build，比如将项目从 windows 拷贝到macOS 上，依赖需要重新编译，这时就要使用 npm rebuild。另外，切换 node 版本时，也最好执行一下。
-- **npm cache clean：**清除缓存
+- **`npm rebuild`** ：强制重新 build，比如将项目从 windows 拷贝到 macOS 上，依赖需要重新编译，这时就要使用 `npm rebuild` 。另外，切换 node 版本时，也最好执行一下。
+- **`npm cache clean`** ：清除缓存
 
 
 
-##### yarn的使用
+##### yarn 的使用
 
 | npm                                     | Yarn                          |
 | --------------------------------------- | ----------------------------- |
@@ -1193,9 +1106,9 @@ npm install会检测是有package-lock.json文件:
 
 ##### npx 工具
 
-如果全局安装 webpack，且在项目中本地安装webpack，在项目根目录使用 webpack，依然使用的是全局安装的 webpack，如果要使用本地安装的 webpack，需要输入 `./node_modules/.bin/webpack --version`，这是非常麻烦的，所以这时可以使用 npx webpack
+如果全局安装 webpack，且在项目中本地安装 webpack，在项目根目录使用 webpack，依然使用的是全局安装的 webpack ，如果要使用本地安装的 webpack，需要输入 `./node_modules/.bin/webpack --version`，这是非常麻烦的，所以这时可以使用 `npx webpack`
 
-另外，在 npm scripts 中 设置的script，会优先调用局部安装的 工具，比如 webpack，比如：
+另外，在 npm scripts 中 设置的 script ，会优先调用局部安装的 工具，比如 webpack，比如：
 
 ```json
 "scripts": {
@@ -1203,17 +1116,17 @@ npm install会检测是有package-lock.json文件:
 }
 ```
 
-npm run webpackVersion 时，会优先查找局部安装的 webpack，并调用。
+`npm run webpackVersion` 时，会优先查找局部安装的 webpack，并调用。
 
 
 
 ##### 自定义终端指令
 
-步骤：
+###### 步骤
 
-- npm init 创建一个 package.json，其中必须要有 main作为入口文件；比如入口文件为：index.js
+- `npm init` 创建一个 `package.json` ，其中必须要有 `main` 作为入口文件；比如入口文件为：`index.js`
 
-- 创建 index.js 文件，并写代码
+- 创建 `index.js` 文件，并写代码
 
   ```js
   #!/usr/bin/env node
@@ -1221,10 +1134,10 @@ npm run webpackVersion 时，会优先查找局部安装的 webpack，并调用�
   console.log('why')
   ```
 
-  **第一行的代码表示：**<font size=4>**#!**</font> <font color=FF0000>是一个固定写法，也是一个指令，被叫做 hashbang / shebang；可以在 hashbang 后面配置一个环境，以执行当前的文件</font>；后面的是让系统去 /user/bin/env 文件中，去找node去执行。
+  **第一行的代码表示：**<font size=4>**`#!`**</font> <font color=FF0000>是一个固定写法，也是一个指令，被叫做 hashbang / shebang；可以在 hashbang 后面配置一个环境，以执行当前的文件</font>；后面的是让系统去 /user/bin/env 文件中，去找node去执行。
   另外，上面也可以写绝对路径找到 node，但是为了跨系统间兼容，还是写上面的代码比较好。
 
-- 在package.json 中加上 bin，以给指令命名，并指定 指令对应的执行文件。
+- 在 `package.json` 中加上 `bin` ，以给指令命名，并指定 指令对应的执行文件。
 
   ```json
   "bin": {
@@ -1232,13 +1145,13 @@ npm run webpackVersion 时，会优先查找局部安装的 webpack，并调用�
   }
   ```
 
-- 键入命令：`npm link`，将package.json 中的 bin 和 系统的环境变量 生成一个 “**软链接**”，将 `why` 作为终端命令配置到环境变量中
+- 键入命令：`npm link`，将 `package.json` 中的 `bin` 和 系统的环境变量 生成一个 “**软链接**”，将 `why` 作为终端命令配置到环境变量中
 
-这时，可以输入命令 why，即可打印出 ‘why’。<font color=FF0000>**另外，这个字定义的指令，是全局可以调用的；尤其是在当前项目的外层**</font>。
+这时，可以输入命令 `why` ，即可打印出 `‘why’` 。<font color=FF0000>**另外，这个字定义的指令，是全局可以调用的；尤其是在当前项目的外层**</font>。
 
 除了可以键入命令 why，打印出 'why' 之外，一般而言还应该可以传递其他参数（命令选项），比如 `why --version` 。这时，需要（可以）使用 [commander](https://github.com/tj/commander.js) 这个工具库。
 
-npm install commander 之后，在 入口文件 index.js 写入：
+`npm install` commander 之后，在 入口文件 index.js 写入：
 
 ```js
 #!/usr/bin/env node
@@ -1251,9 +1164,9 @@ program.version('1.0.0')
 program.parse(process.agrv)
 ```
 
-此时，键入 why --version 将会打印出 1.0.0。
+此时，键入 `why --version` 将会打印出 1.0.0。
 
-另外，此时键入 why --help，有打印结果：
+另外，此时键入 `why --help` ，有打印结果：
 
 ```js
 Usage: why [options]
@@ -1279,7 +1192,7 @@ program.parse( process.agrv )
 
 上面的命令是可以自定义的。
 
-- **比如：添加 why -v，以实现 why --version 一样的效果。**
+- **比如：添加 `why -v` ，以实现 `why --version` 一样的效果。**
 
   两种方法：
 
