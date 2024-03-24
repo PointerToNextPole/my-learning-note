@@ -63,15 +63,22 @@
 
 #### 快捷键
 
+这里只说笔者在用的 Mac 版
+
+官方给出的 [Mac 版快捷键 CheatSheet](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf) ，且该文档可搜索
+
 - **⇧ + ⌥ + F** ：代码格式化。注意：如果代码检测有错误，将不会执行格式化
 
-- **⇧ + ⌘ + L** ：批量重命名
+- **fn + F2** ：重命名
 
-  > 👀 不知道为什么这个方法偶尔会失灵... 😳 
+  光标聚焦使用 `F2` 会出现如下效果：
+
+  <img src="https://s2.loli.net/2022/09/16/j9Dd7elL3YZg4vc.png" alt="image-20220916203504239" style="zoom:50%;" />
+
+  另外，使用 `F2` 也是 VS Code 文档中指定的重命名的方法，详见 [VS Code - LANGUAGES - JavaScript # rename](https://code.visualstudio.com/Docs/languages/javascript#_rename)
+
+  > 👀 似乎也可以使用 ⇧ + ⌘ + L ，但是不知道为什么这个方法偶尔会失灵... 😳 
   >
-  > 💡 不过，在 www.vscheatsheet.com 中找到了更好的解决方案：光标聚焦使用 `F2` 会出现如下效果：
-  >
-  > <img src="https://s2.loli.net/2022/09/16/j9Dd7elL3YZg4vc.png" alt="image-20220916203504239" style="zoom:50%;" />
 
 - **⌃ + Space** ：智能建议（只能是短按，长按和 Mac 自带切切换输入法相冲突），光标悬浮也可以产生同样的效果
 
@@ -104,6 +111,20 @@
   如下示例是：输入 “activity”，筛选配置，以修改 “活动栏” 显示配置（下面第一个选项）
 
   <img src="https://s2.loli.net/2023/03/01/hVgvbAmTul3UCco.png" alt="image-20230301014242242" style="zoom:55%;" />
+  
+- **fn + F12** ：前往定义处
+
+- **⇧ + ⌥ + fn + F12** ：在边栏 ( sidebar ) 中查看所有该变量、函数 被使用（引用 reference ）的地方
+
+  <img src="https://s2.loli.net/2024/03/24/m3pLzEdDy6ocZxR.png" alt="image-20240324152723589" style="zoom:40%;" />
+  
+- **⌥ + fn + F12** ：以弹窗形式查看所有该变量、函数被引用的地方。和上面一条、在边栏显示，功能一样
+
+  <img src="https://s2.loli.net/2024/03/24/ti5gw319rlAfJCE.png" alt="image-20240324165233811" style="zoom:50%;" />
+
+- **⇧ + ⌘ + Space** ：对光标处的代码，手动触发 Signature help
+
+  
 
 
 
@@ -377,6 +398,38 @@ The **Ask GitHub Copilot** command opens the Chat view and input your search ter
 
 
 ### JavaScript
+
+
+
+#### JavaScript in Visual Studio Code
+
+##### JavaScript projects (jsconfig.json)
+
+A [jsconfig.json](https://code.visualstudio.com/docs/languages/jsconfig) file defines a JavaScript project in VS Code. <font color=lightSeaGreen>While `jsconfig.json` files are not required</font>, <font color=dodgerBlue>you will want to create one in cases such as</font>:
+
+- <font color=red>If not all JavaScript files in your workspace should be considered part of a single JavaScript project</font>. `jsconfig.json` files let you exclude some files from showing up in IntelliSense.
+
+  <img src="https://s2.loli.net/2024/03/24/V6L9MBTlyedJvKc.png" alt="image-20240324155030326" style="zoom:50%;" />
+
+- <font color=red>To ensure that a **subset of JavaScript files in your workspace** is treated as a single project</font>. This is useful if you are working with legacy code that uses implicit globals dependencies instead of `imports` for dependencies.
+
+- <font color=dodgerBlue>If your workspace contains more than one project context</font>, <font color=lightSeaGreen>such as front-end and back-end JavaScript code</font>. For multi-project workspaces, <font color=red>create a `jsconfig.json` at the root folder of each project</font>.
+
+- You are using the TypeScript compiler to down-level compile JavaScript source code.
+
+To define a basic JavaScript project, <font color=red>add a `jsconfig.json` at the root of your **workspace**</font>:
+
+> ⚠️ 注意这里的用词，是 “root of your workspace”
+
+```json
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES6"
+  },
+  "exclude": ["node_modules"]
+}
+```
 
 
 

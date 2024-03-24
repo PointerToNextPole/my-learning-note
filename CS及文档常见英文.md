@@ -1597,3 +1597,15 @@
 - **fright** ：n. 恐惧 -> v. frighten
 
 - **overly** ：过于，过度
+
+- **inlay** ：嵌入
+
+- **analogy** ：类比
+
+- **strain out** ：过滤掉
+
+- **toss out** ：扔掉
+
+- **denote** ：表示
+
+- **bullseye** ：靶心
