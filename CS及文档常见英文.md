@@ -110,6 +110,10 @@
 
 - **precedent**：先例
 
+   **precedence** ：优先地位，优先级
+
+   **preced** ：先于
+
 - **walkthrough**：演练
 
 - **casting function**：转型函数。👀 关于翻译，在 [[JavaScript备忘录#包装类#JS 中的“原始值包装类型” ( Primitive wrapper types )]] 中有过说明
@@ -609,8 +613,6 @@
 - **trait** ：特征，特点
 
 - **segregation** ：隔离。read / write segregation 读写隔离
-
-- **precedence** ：优先地位，优先级
 
 - **squiggles** ：波浪线，波形
 
@@ -1114,11 +1116,19 @@
   
 - **pivot** ：支点，中心轴
 
-  > 💡 提到这个词，一般想到“快排” 中的变量名 `pivot`
+  > 💡 提到这个词，一般想到 “快排” 中的变量名 `pivot`
   
   **pivotal point** ：中心点
-  
-  
+- **cherry pick** ：择优挑选
+
+  > 💡 虽说 Git 中有 `git cherry-pick` 这个命令，但是这个词并不是 Git 生造的；所以，没必要遇到这个词时，必将其与 Git 相关联；它也有本来的”择优挑选“的意思。比如如下句子：
+  >
+  > > You’ll see later that this allows us to **cherry-pick** only the bits we want to keep from `build` and toss the rest.
+  > >
+  > > 摘自：[Demystifying Docker for JavaScript](https://fly.io/javascript-journal/demystify-docker-js/)
+
+
+
 ***
 
 
