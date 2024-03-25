@@ -12,7 +12,7 @@
 
 2. `Build once, Run anywhere`（一次搭建，处处运行）
 
-   > 👀 注：类似于 Java 的 JVM
+   > 👀 类似于 Java 的 JVM
 
 3. `Docker` 本身并不是容器，它是创建容器的工具，是应用容器引擎
 
@@ -100,7 +100,7 @@ Docker 需要用户具有 sudo 权限，为了避免每次命令都输入`sudo`�
 sudo usermod -aG docker $USER
 ```
 
-> 👀 注：对于 必须要使用 sudo 权限才能使用的 工具，似乎也可以使用该方法？
+> 👀 对于 必须要使用 sudo 权限才能使用的 工具，似乎也可以使用该方法？
 
 ##### image 文件
 
@@ -150,11 +150,11 @@ $ docker image ls
 $ docker container run hello-world
 ```
 
-> 👀 注：这里的 container 可以省略，即：`docker run hello-world` 。类似的也有：`docker kill` 、`docker stop` 、`docker start` 、`docker exec` 、`docker logs` 、`docker cp` 、`docker rm` 等，这种写法也更常见的。
+> 👀 这里的 container 可以省略，即：`docker run hello-world` 。类似的也有：`docker kill` 、`docker stop` 、`docker start` 、`docker exec` 、`docker logs` 、`docker cp` 、`docker rm` 等，这种写法也更常见的。
 
 `docker container run` 命令会从 image 文件，生成一个正在运行的容器实例。
 
-> 👀 补充：`docker run` 如果没有制定名称，则 docker 会给他一个名字；另外，可以通过 `--name` 选项给 当前 container 自定义一个名字：`--name targetName`
+> 💡 补充：`docker run` 如果没有制定名称，则 docker 会给他一个名字；另外，可以通过 `--name` 选项给 当前 container 自定义一个名字：`--name targetName`
 
 注意：<font color=red>`docker container run` 命令具有自动抓取 image 文件的功能</font>。<font color=LightSeaGreen>如果发现本地没有指定的 image 文件，就会从仓库自动抓取</font>。因此，前面的 `docker image pull`命令并不是必需的步骤。
 
@@ -210,11 +210,11 @@ $ docker container rm [containerID]
 
 ##### 制作自己的 Docker 容器
 
-> 👀 注：下面的内容有部分省略，有不理解的地方见原文
+> 👀 下面的内容有部分省略，有不理解的地方见原文
 
 以阮一峰写的 [koa-demos](https://www.ruanyifeng.com/blog/2017/08/koa.html) 为例。
 
-###### 编写 .dockerignore 文件
+###### 编写 `.dockerignore` 文件
 
 <font color=dodgerBlue>在项目的根目录下，新建文本文件 `.dockerignore`</font> （和 `.gitignore` 类似），标识 文件/路径 “不要打包进入 image 文件”：
 
@@ -465,7 +465,7 @@ Dockerfile 指令说明 **简洁版**：
 
 - RUN ：构建镜像时运行的指令
 
-- CMD ：运行容器时执行的shell环境
+- CMD ：运行容器时执行的 shell 环境
 
 - VOLUME ：指定容器挂载点到宿主机自动生成的目录或其他容器
 
@@ -481,11 +481,11 @@ Dockerfile 指令说明 **简洁版**：
 
 - ENV ：设置容器环境变量
 
-- ADD ：拷贝文件或目录到容器中，如果是URL或压缩包便会自动下载或自动解压
+- ADD ：拷贝文件或目录到容器中，如果是 URL 或压缩包便会自动下载或自动解压
 
-- COPY ：拷贝文件或目录到容器中，跟ADD类似，但不具备自动下载或解压的功能
+- COPY ：拷贝文件或目录到容器中，跟 ADD 类似，但不具备自动下载或解压的功能
 
-- ENTRYPOINT ：运行容器时执行的shell命令
+- ENTRYPOINT ：运行容器时执行的 shell 命令
 
 摘自：[runoob - Docker Dockerfile](https://www.runoob.com/docker/docker-dockerfile.html)
 
@@ -493,7 +493,7 @@ Dockerfile 指令说明 **简洁版**：
 
 ### docker 命令
 
-> 👀 注：具体参考 [Docker Doc - Docker CLI](https://docs.docker.com/engine/reference/commandline/docker/) ，不过并没有深度使用 docker，且官方文档不够简洁，所以选择摘抄 [runoob](https://www.runoob.com/) 中的内容
+> 👀 具体参考 [Docker Doc - Docker CLI](https://docs.docker.com/engine/reference/commandline/docker/) ，不过并没有深度使用 docker，且官方文档不够简洁，所以选择摘抄 [runoob](https://www.runoob.com/) 中的内容
 
 
 
@@ -509,7 +509,7 @@ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 
 ###### OPTIONS 说明
 
-> 👀 注：更多 选项参见：[Docker Doc - docker run # options](https://docs.docker.com/engine/reference/commandline/run/#options)
+> 👀 更多 选项参见：[Docker Doc - docker run # options](https://docs.docker.com/engine/reference/commandline/run/#options)
 
 - **`-a stdin`** ：指定标准输入输出内容类型，可选 STDIN/STDOUT/STDERR 三项；
 
