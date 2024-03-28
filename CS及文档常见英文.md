@@ -1619,3 +1619,9 @@
 - **denote** ：表示
 
 - **bullseye** ：靶心
+
+- **nuance** ：细微差别
+
+- **pertain** ：涉及、相关
+
+  **pertaining** ：相关的
