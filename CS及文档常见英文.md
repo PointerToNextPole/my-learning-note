@@ -4,27 +4,27 @@
 
 ### 通用
 
-- **synchronous**： 同步
+- **synchronous** ： 同步
 
-- **asynchronous**：异步
+   **asynchronous** ：异步
 
-- **compatibility**：兼容性。
+- **compatibility** ：兼容性
 
-  **forwards compatibility**：向后兼容性
+  **forwards compatibility** ：向后兼容性
 
   **compat**：兼容 ( verb )
 
-- **shortcut**：快捷方式，近道
+- **shortcut** ：快捷方式，近道
 
-- **out of the box**：开箱即用
+- **out of the box** ：开箱即用
 
-- **built-in**：内置
+- **built-in** ：内置
 
-- **addon**：插件
+- **addon** ：插件
 
    > node-gyp is a cross-platform command-line tool written in Node.js for compiling native addon modules for Node.js
 
-- **on the fly**：即时，在运行时（热更新）
+- **on the fly** ：即时，在运行时（热更新）
 
   > 💡 参考：[如何优雅的翻译 on the fly ？ - 知乎](https://www.zhihu.com/question/21136587)
 
@@ -34,7 +34,7 @@
 
 - **day-to-day** ：日常
 
-- **pros and cons**：利弊
+- **pros and cons** ：利弊
 
 - **pan and zoom** ：平移和缩放
 
@@ -46,23 +46,25 @@
 
 - **vice versa** ：反之亦然
 
-- **preflight**：预检。一般情况下的含义：预检请求 ( preflight request )。不过，在 antfu 的 UnoCSS 相关博客 [Reimagine Atomic CSS](https://antfu.me/posts/reimagine-atomic-css#scoping) 中 [scoping](https://antfu.me/posts/reimagine-atomic-css#scoping) 部分 发现了有 “样式预检” 的含义，翻译在 [重新构想原子化 CSS - CSS 作用域](https://antfu.me/posts/reimagine-atomic-css-zh#css-%E4%BD%9C%E7%94%A8%E5%9F%9F) 中
+- **preflight**：预检。
 
-- **semver**：( semantic version ) 语义化版本控制规范
+   > 💡 一般情况下的含义：预检请求 ( preflight request )。不过，在 antfu 的 UnoCSS 相关博客 [Reimagine Atomic CSS](https://antfu.me/posts/reimagine-atomic-css#scoping) 中 [scoping](https://antfu.me/posts/reimagine-atomic-css#scoping) 部分 发现了有 “样式预检” 的含义，翻译在 [重新构想原子化 CSS - CSS 作用域](https://antfu.me/posts/reimagine-atomic-css-zh#css-%E4%BD%9C%E7%94%A8%E5%9F%9F) 中
+
+- **semver** ：( semantic version ) 语义化版本控制规范
 
 - **semantical** ：语义的
 
 - **instantiate** ：实例化 ( verb )
 
-- **nest**：嵌套，一般用形容词 nested ，嵌套的
+- **nest** ：嵌套，一般用形容词 nested ，嵌套的
 
 - **recursion**：递归。**recursive**：递归的
 
 - **i.e.** : *i.e.* is an abbreviation for the phrase ***id est***, which means **"that is"** .
 
-- **retrieve**：检索，获取；所谓 CRUD 的 “R” 就是 retrieve
+- **retrieve** ：检索，获取；所谓 CRUD 的 “R” 就是 retrieve
 
-- **decoupled**：解耦的，decouple ( verb )。
+- **decoupled** ：解耦的，decouple ( verb )。
 
    **coupled** ：耦合的
 
