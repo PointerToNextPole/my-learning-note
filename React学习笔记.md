@@ -4862,7 +4862,7 @@ Before getting to Effects, you need to be familiar with two types of logic insid
 >
 > Here and later in this text, <font color=red>capitalized “Effect” refers to the React-specific definition above</font>, i.e. a side effect caused by rendering. <font color=lightSeaGreen>**To refer to the broader programming concept, we’ll say “side effect”**</font>.
 
-##### You might not need an Effect 
+##### You might not need an Effect
 
 <font color=lightSeaGreen>**Don’t rush to add Effects to your components**</font>. Keep in mind that Effects are typically used to “step out” of your React code and synchronize with some *external* system. This includes browser APIs, third-party widgets, network, and so on. If your Effect only adjusts some state based on other state, [you might not need an Effect.](https://react.dev/learn/you-might-not-need-an-effect)
 
@@ -4919,7 +4919,7 @@ Note that controlling a video player is much more complex in practice. Calling `
 > ```jsx
 > const [count, setCount] = useState(0);
 > useEffect(() => {
-> setCount(count + 1);
+>   setCount(count + 1);
 > });
 > ```
 >
@@ -5024,7 +5024,11 @@ The dependency array can contain multiple dependencies. React will only skip re-
 >
 > <font color=fuchsia>Omitting always-stable dependencies only works when the linter can “see” that the object is stable</font>.（🌏 仅在 linter 可以“看到”对象稳定时，忽略稳定依赖项的规则才会起作用） <font color=dodgerBlue>For example</font>, <font color=red>if `ref` was passed from a parent component, you would have to specify it in the dependency array</font>. However, this is good because you can’t know whether the parent component always passes the same ref, or passes one of several refs conditionally. So your Effect *would* depend on which ref is passed.
 
-##### Step 3: Add cleanup if needed 
+##### Step 3: Add cleanup if needed
+
+> 💡 关于 cleanup fn 和 side effect ：
+>
+> <img src="https://s2.loli.net/2024/03/30/3xEf8bMYzWI62gG.png" alt="image-20240330151244356" style="zoom:50%;" />
 
 <font color=dodgerBlue>Consider a different example</font>. You’re writing a `ChatRoom` component that needs to connect to the chat server when it appears. You are given a `createConnection()` API that returns an object with `connect()` and `disconnect()` methods. How do you keep the component connected while it is displayed to the user?
 
@@ -5103,9 +5107,9 @@ useEffect(() => {
 }, []);
 ```
 
-React will call your cleanup function each time before the Effect runs again, and one final time when the component unmounts (gets removed).
+<font color=lightSeaGreen>React will call your cleanup function each time before the Effect runs again</font>, and one final time when the component unmounts (gets removed).
 
-<font color=dodgerBlue>Now you get three console logs in development:</font>
+<font color=dodgerBlue>Now you get three console logs **in development**:</font>
 
 1. `"✅ Connecting..."`
 2. `"❌ Disconnected."`
@@ -5113,17 +5117,17 @@ React will call your cleanup function each time before the Effect runs again, an
 
 **This is the correct behavior in development.** By remounting your component, React verifies that navigating away and back would not break your code. Disconnecting and then connecting again is exactly what should happen! <font color=dodgerBlue>When you implement the cleanup well</font>, <font color=lightSeaGreen>there should be no user-visible difference between running the Effect once vs running it, cleaning it up, and running it again</font>. There’s an extra connect/disconnect call pair because React is probing（🌏 探测） your code for bugs in development. This is normal—don’t try to make it go away!
 
-<font color=red>**In production, you would only see `"✅ Connecting..."` printed once.**</font> <font color=lightSeaGreen>Remounting components only happens in development to help you find Effects that need cleanup</font>. You can turn off [Strict Mode](https://react.dev/reference/react/StrictMode) to opt out of the development behavior, but we <font color=red>recommend keeping it on</font>. <font color=red>This lets you find many bugs like the one above</font>.
+<font color=red>**In production, you would only see `"✅ Connecting..."` printed once.**</font> <font color=lightSeaGreen>Remounting components only happens in development to help you find Effects that need cleanup</font>. You can turn off [Strict Mode](https://react.dev/reference/react/StrictMode) to opt out of the development behavior, but we <font color=red>recommend keeping it on</font>. <font color=lightSeaGreen>This lets you find many bugs like the one above</font>.
 
 ##### How to handle the Effect firing twice in development? 
 
-React intentionally remounts your components in development to find bugs like in the last example. **<font color=dodgerBlue>The right question isn’t “how to run an Effect once”</font>, but <font color=red>“how to fix my Effect so that it works after remounting”</font>.**
+React <font color=lightSeaGreen>intentionally</font> remounts your components in development to find bugs like in the last example. **<font color=dodgerBlue>The right question isn’t “how to run an Effect once”</font>, but <font color=red>“how to fix my Effect so that it works after remounting”</font>.**
 
 Usually, <font color=red>the answer is to implement the cleanup function</font>.  <font color=fuchsia>The cleanup function should **stop or undo whatever the Effect was doing**</font>. <font color=dodgerBlue>The rule of thumb</font>（🌏 经验法则） is that the <font color=red>user shouldn’t be able to distinguish between the Effect running once</font> (as in production) and a *setup → cleanup → setup* sequence (as you’d see in development).
 
-> 👀 无法分辨 Effect running once 和 a *setup → cleanup → setup* sequence 的区别
+> 👀 即，用户无法分辨 Effect running once 和 a *setup → cleanup → setup* sequence 的区别
 
-Most of the Effects you’ll write will fit into one of the common patterns below.
+<font color=dodgerBlue>Most of the Effects you’ll write will fit into one of the common patterns **below**.</font>
 
 ###### Controlling non-React widgets 
 
@@ -5138,7 +5142,7 @@ useEffect(() => {
 
 Note that there is no cleanup needed in this case. In development, React will call the Effect twice, but <font color=lightSeaGreen>this is not a problem because calling `setZoomLevel` twice with the same value does not do anything</font>. It may be slightly slower, but <font color=lightSeaGreen>**this doesn’t matter because it won’t remount needlessly in production**</font>.
 
-<font color=red>**Some APIs may not allow you to call them twice in a row**</font>. <font color=dodgerBlue>For example</font>, <font color=red>the [`showModal`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) method of the built-in `<dialog>` element throws if you call it twice</font>. Implement the cleanup function and make it close the dialog:
+<font color=red>**Some APIs may not allow you to call them twice in a row**</font>. <font color=dodgerBlue>For example</font>, <font color=lightSeaGreen>the [`showModal`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) method of the built-in `<dialog>` element throws if you call it twice</font>. Implement the cleanup function and make it close the dialog:
 
 ```jsx
 useEffect(() => {
@@ -5148,7 +5152,7 @@ useEffect(() => {
 }, []);
 ```
 
-In development, your Effect will call `showModal()`, then immediately `close()`, and then `showModal()` again. This has the same user-visible behavior as calling `showModal()` once, as you would see in production.
+In development, your Effect will call `showModal()` , then immediately `close()`, and then `showModal()` again. This has the same user-visible behavior as calling `showModal()` once, as you would see in production.
 
 ###### Subscribing to events 
 
@@ -5166,7 +5170,7 @@ useEffect(() => {
 
 In development, your Effect will call `addEventListener()`, then immediately `removeEventListener()`, and then `addEventListener()` again with the same handler. So <font color=lightSeaGreen>there would be only one active subscription at a time</font>. This has the same user-visible behavior as calling `addEventListener()` once, as in production.
 
-###### Triggering animations 
+###### Triggering animations
 
 <font color=dodgerBlue>If your Effect animates something in</font>, the <font color=red>cleanup function should **reset the animation to the initial values**</font>:
 
@@ -5180,7 +5184,7 @@ useEffect(() => {
 }, []);
 ```
 
-In development, opacity will be set to `1` , then to `0` , and then to `1` again. <font color=lightSeaGreen> This should have the same user-visible behavior as setting it to `1` directly</font>, which is what would happen in production. If you use a third-party animation library with support for tweening, your cleanup function should reset the timeline to its initial state.
+In development, opacity will be set to `1` , then to `0` , and then to `1` again. <font color=lightSeaGreen> This should have the same user-visible behavior as setting it to `1` directly</font>, which is what would happen in production. If you use a third-party animation library with support for tweening（🌏 补间动画）, your cleanup function should reset the timeline to its initial state.
 
 ###### Fetching data
 
@@ -5207,13 +5211,13 @@ useEffect(() => {
 >
 > <img src="https://s2.loli.net/2024/02/23/zKHFg72f58vtQBb.png" alt="Snipaste_2024-01-30_01-07-47" style="zoom:50%;" />
 >
-> 回复中说的很清楚：useEffect 期待返回一个 cleanup fn 或者 null，而不是 async 的 promise；返回一个 promise，显然不符合 useEffect 的预期，感觉也会使其功能错乱。
+> 回复中说的很清楚：`useEffect` 期待返回一个 cleanup fn 或者 null，而不是 async 的 Promise 。返回一个 Promise，显然不符合 `useEffect` 的预期，感觉也会使其功能错乱。
 
 You can’t “undo” a network request that already happened, but your cleanup function should ensure that the fetch that’s *not relevant anymore* does not keep affecting your application. If the `userId` changes from `'Alice'` to `'Bob'`, cleanup ensures that the `'Alice'` response is ignored even if it arrives after `'Bob'`.
 
 **In development, you will see two fetches in the Network tab.** There is nothing wrong with that. With the approach above, the first Effect will immediately get cleaned up so its copy of the `ignore` variable will be set to `true`. So even though there is an extra request, it won’t affect the state thanks to the `if (!ignore)` check.
 
-**In production, there will only be one request.** If the second request in development is bothering you, the best approach is to use a solution that deduplicates requests and caches their responses between components:
+**In production, there will only be one request.** <font color=dodgerBlue>If the second request in development is bothering you</font>, <font color=dodgerBlue>the best approach is</font> to use a solution that deduplicates requests and caches their responses between components:
 
 ```jsx
 function TodoList() {
@@ -5223,6 +5227,275 @@ function TodoList() {
 ```
 
 This will not only improve the development experience, but also make your application feel faster. For example, the user pressing the Back button won’t have to wait for some data to load again because it will be cached. You can either build such a cache yourself or use one of the many alternatives to manual fetching in Effects.
+
+> 💡DEEP DIVE
+>
+> ##### What are good alternatives to data fetching in Effects?
+>
+> Writing `fetch` calls inside Effects is a [popular way to fetch data](https://www.robinwieruch.de/react-hooks-fetch-data/) , especially in fully client-side apps. This is, however, <font color=dodgerBlue>a very manual approach and it has significant downsides</font>:
+>
+> - **Effects don’t run on the server.** This means that the <font color=lightSeaGreen>initial server-rendered HTML</font> will only include a loading state with no data. The client computer will have to download all JavaScript and render your app only to discover that now it needs to load the data. This is not very efficient.
+>
+> - <font color=red>**Fetching directly in Effects makes it easy to create “network waterfalls”.**</font> You render the parent component, it fetches some data, renders the child components, and then they start fetching their data. <font color=dodgerBlue>If the network is not very fast</font>, <font color=lightSeaGreen>this is significantly slower than fetching all data in parallel</font>.
+>
+> - **Fetching directly in Effects usually means you don’t preload or cache data.** For example, if the component unmounts and then mounts again, it would have to fetch the data again.
+>
+>   > 👀 这点是先前没有想到的，不过想来也很正常。
+>
+> - **It’s not very ergonomic.** There’s quite a bit of boilerplate code involved when writing `fetch` calls in a way that doesn’t suffer from bugs like [race conditions](https://maxrozen.com/race-conditions-fetching-data-react-with-useeffect) .
+>
+>   > 💡 关于 React 中的 “竞态” ：
+>   >
+>   > <img src="https://s2.loli.net/2024/03/30/BCr7X85qOPm61Lw.png" alt="image-20240330153942279" style="zoom:50%;" />
+>   >
+>   > 另外，文档本章节的 [挑战](https://react.dev/learn/synchronizing-with-effects#challenges) 第四题就是“竞态”相关，由于之前没接触过，所以自然写错了。
+>
+> This list of downsides is not specific to React. It applies to fetching data on mount with any library. Like with routing, data fetching is not trivial to do well, so <font color=dodgerBlue>we recommend the following approaches</font>:
+>
+> - **If you use a [framework](https://react.dev/learn/start-a-new-react-project#production-grade-react-frameworks), use its built-in data fetching mechanism.** Modern React frameworks have integrated data fetching mechanisms that are efficient and don’t suffer from the above pitfalls.
+> - **Otherwise, <font color=red>consider using or building a client-side cache</font>.** <font color=red>Popular open source solutions include [React Query](https://tanstack.com/query/latest) , [useSWR](https://swr.vercel.app/) , and [React Router 6.4+](https://beta.reactrouter.com/en/main/start/overview)</font>. You can build your own solution too, in which case you would use Effects under the hood, but add logic for deduplicating requests, caching responses, and avoiding network waterfalls (by preloading data or hoisting data requirements to routes).
+>
+> You can continue fetching data directly in Effects if neither of these approaches suit you.
+
+##### Sending analytics
+
+Consider this code that sends an analytics event on the page visit:
+
+```js
+useEffect(() => {
+  logVisit(url); // Sends a POST request
+}, [url]);
+```
+
+<font color=dodgerBlue>In development, `logVisit` will be called twice for every URL</font>, so you might be tempted to try to fix that. <font color=red>**We recommend keeping this code as is**</font>. Like with earlier examples, there is no *user-visible* behavior difference between running it once and running it twice. From a practical point of view, `logVisit` should not do anything in development because you don’t want the logs from the development machines to skew the production metrics. Your component remounts every time you save its file, so it logs extra visits in development anyway.
+
+**In production, there will be no duplicate visit logs.**
+
+To debug the analytics events you’re sending, you can deploy your app to a staging environment (which runs in production mode) or temporarily opt out of Strict Mode and its development-only remounting checks. You may also send analytics from the route change event handlers instead of Effects. For more precise analytics, intersection observers can help track which components are in the viewport and how long they remain visible.
+
+##### Not an Effect: Initializing the application
+
+Some logic should only run once when the application starts. You can put it outside your components:
+
+```jsx
+if (typeof window !== 'undefined') { // Check if we're running in the browser.
+  checkAuthToken();
+  loadDataFromLocalStorage();
+}
+
+function App() {
+  // ...
+}
+```
+
+This guarantees that such logic only runs once after the browser loads the page.
+
+##### Not an Effect: Buying a product
+
+Sometimes, <font color=dodgerBlue>even if you write a cleanup function, **there’s no way to prevent user-visible consequences of running the Effect twice**</font>. For example, maybe your <font color=red>Effect sends a POST request like buying a product</font>:
+
+```jsx
+useEffect(() => {
+  // 🔴 Wrong: This Effect fires twice in development, exposing a problem in the code.
+  fetch('/api/buy', { method: 'POST' });
+}, []);
+```
+
+You wouldn’t want to buy the product twice. However, this is also why you shouldn’t put this logic in an Effect. What if the user goes to another page and then presses Back? Your Effect would run again. You don’t want to buy the product when the user *visits* a page; you want to buy it when the user *clicks* the Buy button.
+
+<font color=lightSeaGreen>Buying is not caused by rendering</font>; it’s caused by a specific interaction. It should run only when the user presses the button. **Delete the Effect and move your `/api/buy` request into the Buy button event handler:**
+
+```jsx
+function handleClick() {
+  // ✅ Buying is an event because it is caused by a particular interaction.
+  fetch('/api/buy', { method: 'POST' });
+}
+```
+
+**This illustrates that if remounting breaks the logic of your application, this usually uncovers existing bugs.** From a user’s perspective, visiting a page shouldn’t be different from visiting it, clicking a link, then pressing Back to view the page again. React verifies that your components abide by this principle by remounting them once in development.
+
+##### Putting it all together
+
+This playground can help you “get a feel” for how Effects work in practice.
+
+This example uses `setTimeout` to schedule a console log with the input text to appear three seconds after the Effect runs. The cleanup function cancels the pending timeout. Start by pressing “Mount the component”:
+
+> 👀 下面的代码是从互动示例中复制来的，这个示例还是有点意思的，建议复习的时候去原文试一下
+
+```jsx
+import { useState, useEffect } from 'react';
+
+function Playground() {
+  const [text, setText] = useState('a');
+
+  useEffect(() => {
+    function onTimeout() {
+      console.log('⏰ ' + text);
+    }
+
+    console.log('🔵 Schedule "' + text + '" log');
+    const timeoutId = setTimeout(onTimeout, 3000);
+
+    return () => {
+      console.log('🟡 Cancel "' + text + '" log');
+      clearTimeout(timeoutId);
+    };
+  }, [text]);
+
+  return (
+    <>
+      <label>
+        What to log:{' '}
+        <input
+          value={text}
+          onChange={e => setText(e.target.value)}
+        />
+      </label>
+      <h1>{text}</h1>
+    </>
+  );
+}
+
+export default function App() {
+  const [show, setShow] = useState(false);
+  return (
+    <>
+      <button onClick={() => setShow(!show)}>
+        {show ? 'Unmount' : 'Mount'} the component
+      </button>
+      {show && <hr />}
+      {show && <Playground />}
+    </>
+  );
+}
+```
+
+| <img src="https://s2.loli.net/2024/03/30/Dx6UmHNT197L3ZO.png" alt="image-20240330175337406" style="zoom:45%;" /> | <img src="https://s2.loli.net/2024/03/30/r2Ys5cUn6xwkAJu.png" alt="image-20240330175443170" style="zoom:45%;" /> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+
+You will see three logs at first: `Schedule "a" log`, `Cancel "a" log`, and `Schedule "a" log` again. Three second later there will also be a log saying `a`. <font color=dodgerBlue>As you learned earlier</font>, the extra schedule/cancel pair is because <font color=lightSeaGreen>React remounts the component once in development to verify that you’ve implemented cleanup well</font>.
+
+Now <font color=dodgerBlue>edit the input to say `abc`</font>. If you do it fast enough, you’ll see `Schedule "ab" log` immediately followed by `Cancel "ab" log` and `Schedule "abc" log`. <font color=red>**React always cleans up the previous render’s Effect before the next render’s Effect**</font>. This is why even if you type into the input fast, there is at most one timeout scheduled at a time. Edit the input a few times and watch the console to get a feel for how Effects get cleaned up.
+
+<font color=dodgerBlue>Type something into the input and then immediately press “Unmount the component”</font>. Notice how unmounting cleans up the last render’s Effect. Here, <font color=red>it clears the last timeout before it has a chance to fire</font>.
+
+Finally, <font color=dodgerBlue>edit the component above and **comment out the cleanup function**</font> so that the timeouts don’t get cancelled. Try typing `abcde` fast. What do you expect to happen in three seconds? Will `console.log(text)` inside the timeout print the *latest* `text` and produce five `abcde` logs? 
+
+<font color=red>Three seconds later, you should see a sequence of logs ( `a` , `ab` , `abc` , `abcd` , and `abcde` ) rather than five `abcde` logs</font>. **Each Effect “captures” the `text` value from its corresponding render.**  <font color=red>It doesn’t matter that the `text` state changed</font>: an Effect from the render with `text = 'ab'` will always see `'ab'`. In other words, Effects from each render are isolated from each other. If you’re curious how this works, you can read about closures.
+
+> 💡 关于 react 渲染与闭包
+>
+> <img src="https://s2.loli.net/2024/03/30/hTAdM3tlsOBDHkQ.png" alt="image-20240330205125299" style="zoom:45%;" />
+
+> 💡 DEEP DIVE
+>
+> ##### Each render has its own Effects
+>
+> <font color=red>You can think of **`useEffect` as “attaching” a piece of behavior to the render output**</font>. Consider this Effect:
+>
+> ```jsx
+> export default function ChatRoom({ roomId }) {
+>   useEffect(() => {
+>     const connection = createConnection(roomId);
+>     connection.connect();
+>     return () => connection.disconnect();
+>   }, [roomId]);
+> 
+>   return <h1>Welcome to {roomId}!</h1>;
+> }
+> ```
+>
+> Let’s see what exactly happens as the user navigates around the app.
+>
+> ###### Initial render
+>
+> The user visits `<ChatRoom roomId="general" />`. Let’s [mentally substitute](https://react.dev/learn/state-as-a-snapshot#rendering-takes-a-snapshot-in-time) `roomId` with `'general'` :
+>
+> ```jsx
+> // JSX for the first render (roomId = "general")
+> return <h1>Welcome to general!</h1>;
+> ```
+>
+> **The Effect is *also* a part of the rendering output.** The first render’s Effect becomes:
+>
+> ```jsx
+> // Effect for the first render (roomId = "general")
+> () => {
+>   const connection = createConnection('general');
+>   connection.connect();
+>   return () => connection.disconnect();
+> },
+> // Dependencies for the first render (roomId = "general")
+> ['general']
+> ```
+>
+> React runs this Effect, which connects to the `'general'` chat room.
+>
+> ###### Re-render with same dependencies 
+>
+> Let’s say `<ChatRoom roomId="general" />` re-renders. The JSX output is the same:
+>
+> ```jsx
+> // JSX for the second render (roomId = "general")
+> return <h1>Welcome to general!</h1>;
+> ```
+>
+> React sees that the rendering output has not changed, so it doesn’t update the DOM.
+>
+> The Effect from the second render looks like this:
+>
+> ```jsx
+> // Effect for the second render (roomId = "general")
+> () => {
+>   const connection = createConnection('general');
+>   connection.connect();
+>   return () => connection.disconnect();
+> },
+> // Dependencies for the second render (roomId = "general")
+> ['general']
+> ```
+>
+> React compares `['travel']` from the third render with `['general']` from the second render. One dependency is different: `Object.is('travel', 'general')` is `false`. The Effect can’t be skipped.
+>
+> **Before React can apply the Effect from the third render, it needs to clean up the last Effect that *did* run.** The second render’s Effect was skipped, so React needs to clean up the first render’s Effect. If you scroll up to the first render, you’ll see that its cleanup calls `disconnect()` on the connection that was created with `createConnection('general')`. This disconnects the app from the `'general'` chat room.
+>
+> After that, React runs the third render’s Effect. It connects to the `'travel'` chat room.
+>
+> ###### Unmount
+>
+> Finally, let’s say the user navigates away, and the `ChatRoom` component unmounts. React runs the last Effect’s cleanup function. The last Effect was from the third render. The third render’s cleanup destroys the `createConnection('travel')` connection. So the app disconnects from the `'travel'` room.
+>
+> ###### Development-only behaviors
+>
+> When [Strict Mode](https://react.dev/reference/react/StrictMode) is on, React remounts every component once after mount (state and DOM are preserved). This [helps you find Effects that need cleanup](https://react.dev/learn/synchronizing-with-effects#step-3-add-cleanup-if-needed) and <font color=red>exposes bugs like race conditions early</font>. Additionally, React will remount the Effects whenever you save a file in development. Both of these behaviors are development-only.
+
+##### Recap
+
+- Unlike events, <font color=fuchsia>Effects are caused by rendering</font> itself rather than a particular interaction.
+
+- <font color=fuchsia>Effects let you synchronize a component with some external system</font> (third-party API, network, etc).
+
+- <font color=dodgerBlue>By default</font>, <font color=red>Effects run after every render</font> (including the initial one).
+
+- <font color=fuchsia>React will skip the Effect if all of its dependencies have the same values as during the last render</font>.
+
+  > 👀 上面两条可以合并总结为：Effect 每次渲染都“检查”一下依赖，如果发生变化，则执行；否则，不执行
+
+- You can’t “choose” your dependencies. They are determined by the code inside the Effect.
+
+- Empty dependency array (`[]`) corresponds to the component “mounting”, i.e. being added to the screen.
+
+- In Strict Mode, React mounts components twice (in development only!) to stress-test your Effects.
+
+- If your Effect breaks because of remounting, you need to implement a cleanup function.
+
+- <font color=dodgerBlue>React will call your cleanup function</font> <font color=red>before the Effect runs next time, and **during the unmount**</font>.
+
+
+
+
+
+
 
 
 

@@ -1129,7 +1129,17 @@
   > >
   > > 摘自：[Demystifying Docker for JavaScript](https://fly.io/javascript-journal/demystify-docker-js/)
 
+- **tweening** ：补间动画
 
+- **wrangle** ：操纵、处理
+
+  > Fetch, cache, update, and **wrangle** all forms of async data in your TS/JS, React, Vue, Solid, Svelte & Angular applications all without touching any "global state".
+  >
+  > 摘自：[TanStack 官网](https://tanstack.com)
+  >
+  > <img src="https://s2.loli.net/2024/03/30/3DZQAdsoHhuLOyU.png" alt="image-20240330165133045" style="zoom: 45%;" />
+
+  > 👀 搜了下词典软件，基本上都只说 “wrangle” 的意思是 “争吵”，并没有找到“操纵、处理”的含义。所以特此补充
 
 ***
 
@@ -1627,3 +1637,7 @@
 - **pertain** ：涉及、相关
 
   **pertaining** ：相关的
+  
+- **popularize** ：使普及
+
+- **abide** ：遵守
