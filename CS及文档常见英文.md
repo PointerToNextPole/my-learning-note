@@ -687,7 +687,13 @@
 
 - **liable** ：有责任的
 
-- **self-contained** ：自给自足的
+- **self-contained** ：自包含、自给自足的
+
+   > **Self contained:** KaTeX has no dependencies and can easily be bundled with your website resources.
+   >
+   > 摘自：[GitHub - KaTex - readme](https://github.com/KaTeX/KaTeX)
+   >
+   > <img src="https://s2.loli.net/2024/03/31/MpZmh753flQEIdB.png" alt="image-20240331172014784" style="zoom:50%;" />
 
 - **amplify** ：v. 增加，增强。
   > 👀 chatgpt 说：和 ample （充足的，足够的）有关系，自己感觉也是有关系的；不过语意上没太看出来...
@@ -1641,3 +1647,13 @@
 - **popularize** ：使普及
 
 - **abide** ：遵守
+
+- **idiom** ：成语
+
+- **groundbreaking** ：开创性的
+
+- **foster** ：促进
+
+- **culminate** ：达到顶点
+
+  <img src="https://s2.loli.net/2024/03/31/TNoLK7waycv3Pzx.png" alt="image-20240331211658667" style="zoom:50%;" />

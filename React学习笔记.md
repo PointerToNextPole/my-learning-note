@@ -5493,7 +5493,143 @@ Finally, <font color=dodgerBlue>edit the component above and **comment out the c
 
 
 
+#### You Might Not Need an Effect
 
+Effects are an escape hatch from the React paradigm. They let you “step outside” of React and <font color=lightSeaGreen>synchronize your components with some external system like a non-React widget, network, or the browser DOM</font>. <font color=dodgerBlue>**If there is no external system involved**</font> (for example, if you want to update a component’s state when some props or state change), <font color=red>**you shouldn’t need an Effect**</font>. Removing unnecessary Effects will make your code easier to follow, faster to run, and less error-prone.
+
+##### How to remove unnecessary Effects 
+
+<font color=dodgerBlue>There are two common cases in which you don’t need Effects:</font>
+
+- **You don’t need Effects to transform data for rendering.** For example, <font color=lightSeaGreen>let’s say you want to filter a list before displaying it</font>. You might feel tempted to write an Effect that updates a state variable when the list changes. However, this is inefficient. <font color=dodgerBlue>When you update the state</font>, React will <font color=dodgerBlue>**first**</font> call your component functions to calculate what should be on the screen. <font color=dodgerBlue>**Then**</font> React will [“commit”](https://react.dev/learn/render-and-commit) these changes to the DOM, updating the screen. Then React will run your Effects. <font color=dodgerBlue>**If your Effect *also* immediately updates the state**</font>, <font color=red>**this restarts the whole process from scratch**</font>! <font color=dodgerBlue>To avoid the unnecessary render passes</font>, <font color=fuchsia>transform all the data at the top level of your components</font>. That code will automatically re-run whenever your props or state change.
+- **You don’t need Effects to handle user events.** For example, let’s say you want to send an `/api/buy` POST request and show a notification when the user buys a product. <font color=dodgerBlue>In the Buy button click event handler</font>, <font color=lightSeaGreen>you know exactly what happened</font>. <font color=dodgerBlue>**By the time an Effect runs**</font>, <font color=red>**you don’t know *what* the user did**</font> (for example, which button was clicked). This is why you’ll usually handle user events in the corresponding event handlers.
+
+You *do* need Effects to [synchronize](https://react.dev/learn/synchronizing-with-effects#what-are-effects-and-how-are-they-different-from-events) with external systems. For example, you can write an Effect that keeps a jQuery widget synchronized with the React state. You can also fetch data with Effects: for example, you can synchronize the search results with the current search query. <font color=dodgerBlue>Keep in mind that</font> <font color=red>modern [frameworks](https://react.dev/learn/start-a-new-react-project#production-grade-react-frameworks) provide more efficient built-in data fetching mechanisms than writing Effects directly in your components</font>.
+
+To help you gain the right intuition, let’s look at some common concrete examples!
+
+###### Updating state based on props or state
+
+Suppose you have a component with two state variables: `firstName` and `lastName`. You want to calculate a `fullName` from them by concatenating them. Moreover, you’d like `fullName` to update whenever `firstName` or `lastName` change. Your first instinct might be to add a `fullName` state variable and update it in an Effect:
+
+```jsx
+function Form() {
+  const [firstName, setFirstName] = useState('Taylor');
+  const [lastName, setLastName] = useState('Swift');
+
+  // 🔴 Avoid: redundant state and unnecessary Effect
+  const [fullName, setFullName] = useState('');
+  useEffect(() => {
+    setFullName(firstName + ' ' + lastName);
+  }, [firstName, lastName]);
+  // ...
+}
+```
+
+This is more complicated than necessary. It is inefficient too: it does an entire render pass with a stale value for `fullName`, then immediately re-renders with the updated value. Remove the state variable and the Effect:
+
+```jsx
+function Form() {
+  const [firstName, setFirstName] = useState('Taylor');
+  const [lastName, setLastName] = useState('Swift');
+  // ✅ Good: calculated during rendering
+  const fullName = firstName + ' ' + lastName;
+  // ...
+}
+```
+
+**<font color=dodgerBlue>When something can be calculated from the existing props or state</font>, [don’t put it in state](https://react.dev/learn/choosing-the-state-structure#avoid-redundant-state). Instead, <font color=red>calculate it during rendering</font>.** This makes your code faster (you <font color=lightSeaGreen>**avoid the extra “cascading” updates**</font>), simpler (you remove some code), and less error-prone (you avoid bugs caused by different state variables getting out of sync with each other). If this approach feels new to you, [Thinking in React](https://react.dev/learn/thinking-in-react#step-3-find-the-minimal-but-complete-representation-of-ui-state) explains what should go into state.
+
+###### Caching expensive calculations 
+
+This component computes `visibleTodos` by taking the `todos` it receives by props and filtering them according to the `filter` prop. You might feel tempted to store the result in state and update it from an Effect:
+
+```jsx
+function TodoList({ todos, filter }) {
+  const [newTodo, setNewTodo] = useState('');
+
+  // 🔴 Avoid: redundant state and unnecessary Effect
+  const [visibleTodos, setVisibleTodos] = useState([]);
+  useEffect(() => {
+    setVisibleTodos(getFilteredTodos(todos, filter));
+  }, [todos, filter]);
+
+  // ...
+}
+```
+
+Like in the earlier example, this is both unnecessary and inefficient. First, remove the state and the Effect:
+
+```jsx
+function TodoList({ todos, filter }) {
+  const [newTodo, setNewTodo] = useState('');
+  // ✅ This is fine if getFilteredTodos() is not slow.
+  const visibleTodos = getFilteredTodos(todos, filter);
+  // ...
+}
+```
+
+Usually, this code is fine! But maybe `getFilteredTodos()` is slow or you have a lot of `todos`. In that case you don’t want to recalculate `getFilteredTodos()` if some unrelated state variable like `newTodo` has changed.
+
+You can cache (or [“memoize”](https://en.wikipedia.org/wiki/Memoization)) an expensive calculation by wrapping it in a [`useMemo`](https://react.dev/reference/react/useMemo) Hook:
+
+```jsx
+import { useMemo, useState } from 'react';
+
+function TodoList({ todos, filter }) {
+  const [newTodo, setNewTodo] = useState('');
+  const visibleTodos = useMemo(() => {
+    // ✅ Does not re-run unless todos or filter change
+    return getFilteredTodos(todos, filter);
+  }, [todos, filter]);
+  // ...
+}
+```
+
+Or, written as a single line:
+
+```jsx
+import { useMemo, useState } from 'react';
+
+function TodoList({ todos, filter }) {
+  const [newTodo, setNewTodo] = useState('');
+  // ✅ Does not re-run getFilteredTodos() unless todos or filter change
+  const visibleTodos = useMemo(() => getFilteredTodos(todos, filter), [todos, filter]);
+  // ...
+}
+```
+
+**This tells React that you don’t want the inner function to re-run unless either `todos` or `filter` have changed.** React will remember the return value of `getFilteredTodos()` during the initial render. During the next renders, it will check if `todos` or `filter` are different. If they’re the same as last time, `useMemo` will return the last result it has stored. But if they are different, React will call the inner function again (and store its result).
+
+The function you wrap in [`useMemo`](https://react.dev/reference/react/useMemo) runs during rendering, so this only works for [pure calculations](https://react.dev/learn/keeping-components-pure) .
+
+> 💡 DEEP DIVE
+>
+> ###### How to tell if a calculation is expensive?
+>
+> In general, unless you’re creating or looping over thousands of objects, it’s probably not expensive. If you want to get more confidence, you can add a console log to measure the time spent in a piece of code:
+>
+> ```jsx
+> console.time('filter array');
+> const visibleTodos = getFilteredTodos(todos, filter);
+> console.timeEnd('filter array');
+> ```
+>
+> Perform the interaction you’re measuring (for example, typing into the input). You will then see logs like `filter array: 0.15ms` in your console. If the overall logged time adds up to a significant amount (say, `1ms` or more), it might make sense to memoize that calculation. As an experiment, you can then wrap the calculation in `useMemo` to verify whether the total logged time has decreased for that interaction or not:
+>
+> ```jsx
+> console.time('filter array');
+> const visibleTodos = useMemo(() => {
+>   return getFilteredTodos(todos, filter); // Skipped if todos and filter haven't changed
+> }, [todos, filter]);
+> console.timeEnd('filter array');
+> ```
+>
+> `useMemo` won’t make the *first* render faster. It only helps you skip unnecessary work on updates.
+>
+> Keep in mind that your machine is probably faster than your users’ so it’s a good idea to test the performance with an artificial slowdown. For example, Chrome offers a [CPU Throttling](https://developer.chrome.com/blog/new-in-devtools-61/#throttling) option for this.
+>
+> Also note that measuring performance in development will not give you the most accurate results. (For example, when [Strict Mode](https://react.dev/reference/react/StrictMode) is on, you will see each component render twice rather than once.) To get the most accurate timings, build your app for production and test it on a device like your users have.
 
 
 

@@ -2,6 +2,14 @@
 
 
 
+#### 一些资料
+
+- https://programming-idioms.org/cheatsheet/JS/Rust ：一些 JS 和 Rust 实现同一种功能的语法对比，也可以切换成其他语言的对比。在熟悉一种语言后再入门另一种语言，有对比的查看，事半功倍。
+
+
+
+
+
 ## 《Rust 语言圣经》笔记
 
 
