@@ -1127,6 +1127,7 @@
   > 💡 提到这个词，一般想到 “快排” 中的变量名 `pivot`
   
   **pivotal point** ：中心点
+  
 - **cherry pick** ：择优挑选
 
   > 💡 虽说 Git 中有 `git cherry-pick` 这个命令，但是这个词并不是 Git 生造的；所以，没必要遇到这个词时，必将其与 Git 相关联；它也有本来的”择优挑选“的意思。比如如下句子：
@@ -1146,6 +1147,10 @@
   > <img src="https://s2.loli.net/2024/03/30/3DZQAdsoHhuLOyU.png" alt="image-20240330165133045" style="zoom: 45%;" />
 
   > 👀 搜了下词典软件，基本上都只说 “wrangle” 的意思是 “争吵”，并没有找到“操纵、处理”的含义。所以特此补充
+  
+- **thumbnail** ：缩略图
+
+  
 
 ***
 
