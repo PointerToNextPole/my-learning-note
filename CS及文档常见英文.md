@@ -602,7 +602,9 @@
 
 - **Palette** ：调色板
 
-- **criteria** ：标准
+- **criterion** ：标准，准则
+
+   **criteria** ：criterion 的复数
 
 - **funnel** ：漏斗
 
@@ -753,6 +755,14 @@
   **consequently** ：因此
 
 - **derive** ：起源于...
+
+- **evolve** ：演化
+
+  > Even if it weren’t slow, as your code evolves, you will run into cases where the “chain” you wrote doesn’t fit the new requirements.
+  >
+  > 摘自：[React 文档 - You Might Not Need an Effect # Chains of computations](https://react.dev/learn/you-might-not-need-an-effect#chains-of-computations)
+
+  > 👀 虽然但是，这词有点过于基础了
 
 - **ambient** ：周围的
 
@@ -997,6 +1007,8 @@
   > 👀 这个词第一次看见是来自 vite 的一个配置 [`reslove.dedupe`](https://cn.vitejs.dev/config/shared-options.html#resolve-dedupe) 
   
 - **repetitive** ：重复的
+
+  <img src="https://s2.loli.net/2024/04/04/8tcbBKAv9ryLEYN.png" alt="image-20240404132006707" style="zoom:48%;" />
 
 - **cumulative** ：累计的
 
@@ -1662,3 +1674,13 @@
 - **culminate** ：达到顶点
 
   <img src="https://s2.loli.net/2024/03/31/TNoLK7waycv3Pzx.png" alt="image-20240331211658667" style="zoom:50%;" />
+  
+- **clock in** ：打卡
+
+- **arguable** ：可争论的
+
+  **arguably** ：可以说
+
+  <img src="https://s2.loli.net/2024/04/04/hUqm2tlJWLxkCQw.png" alt="image-20240404131636176" style="zoom:48%;" />
+
+- **kick off** ：开始
