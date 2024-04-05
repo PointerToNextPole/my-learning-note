@@ -457,6 +457,18 @@ Google 了下 “Marshal json” ，发现主要和 Go 相关，主要是因为 
 
 
 
+#### 竞态
+
+<img src="https://s2.loli.net/2024/04/05/G6BjliXquYzIcVF.png" alt="image-20240405142127407" style="zoom:50%;" />
+
+> 👀 个人感觉：竞态主要和 OS 以及 分布式 相关。另外，在《Designing Data-Intensive Application》中搜索 “race conditions” 可以搜索到相当多的关联项，有空可以看下这本名著
+
+// TODO
+
+
+
+
+
 #### 规格继承和实现继承
 
 // TODO
@@ -811,7 +823,7 @@ In computer science, <font color=fuchsia>**an operation, function or expression*
 
 Side effects play an important role in the design and analysis of programming languages. The degree to which side effects are used depends on the programming paradigm. For example, imperative programming（命令式编程） is commonly used to produce side effects, to update a system's state. By contrast, declarative programming is commonly used to report on the state of system, without side effects.
 
-<font color=dodgerBlue>**Functional programming aims to minimize or eliminate side effects**</font>. <font color=fuchsia>The lack of side effects makes it easier to do formal verification of a program</font>. The functional language *Haskell* eliminates side effects such as I/O and other stateful computations by replacing them with [monadic](https://en.wikipedia.org/wiki/Monad_(functional_programming)) actions. <mark>Functional languages such as *Standard ML*, *Scheme* and *Scala* do not restrict side effects, but it is customary for programmers to avoid them</mark>.
+<font color=dodgerBlue>**Functional programming aims to minimize or eliminate side effects**</font>. <font color=fuchsia>The lack of side effects makes it easier to do formal verification of a program</font>. The functional language *Haskell* eliminates side effects such as I/O and other stateful computations by replacing them with [monadic](https://en.wikipedia.org/wiki/Monad_(functional_programming)) actions. <font color=lightSeaGreen>Functional languages such as *Standard ML*, *Scheme* and *Scala* do not restrict side effects, but it is customary for programmers to avoid them</font>.
 
 摘自：[wikipedia - Side effect (computer science)](https://en.wikipedia.org/wiki/Side_effect_(computer_science))
 
@@ -841,11 +853,17 @@ console.log(lowerCaseChar_z) // z
 
 #### 银行家舍入
 
-银行家舍入法 是由 IEEE 754 标准规定的浮点数取整算法，大部分的编程软件都使用的是这种方法。 所谓银行家舍入法，其实质是一种<font color=FF0000>四舍六入五取偶</font>（又称 四舍六入五留双）<font color=FF0000>法</font>。
+银行家舍入法 是由 IEEE-754 标准规定的浮点数取整算法，大部分的编程软件都使用的是这种方法。 所谓银行家舍入法，其实质是一种<font color=FF0000>四舍六入五取偶</font>（又称 四舍六入五留双）<font color=FF0000>法</font>。
 
 “四舍六入五成双”，也即“4舍 6入 5凑偶”，这里 “四”是指 ≤4 时舍去，"六"是指 ≥6 时进上。<font color=dodgerBlue>“五”指的是 根据 5 后面的数字来定</font>：当 <font color=FF0000>5 后有数时，舍 5 入 1</font>；<font color=dodgerBlue>当 5 后无有效数字时，需要分两种情况来讲</font>：<font color=fuchsia>**5 前为奇数，舍 5 入 1**</font> ；<font color=fuchsia>**5 前为偶数，舍 5 不进（ 0 是偶数）**</font>。
 
 摘自：[百度百科 - 银行家舍入](https://baike.baidu.com/item/%E9%93%B6%E8%A1%8C%E5%AE%B6%E8%88%8D%E5%85%A5/4781630)
+
+> 💡 补充
+>
+> 另外，根据 [toFixed的结果可能会欺骗你【渡一教育】](https://www.bilibili.com/video/BV14r421b759) 的说法，JS 中 `Number.prototype.toFixed` 并没有完全使用 “银行家舍入”。另外，问 Copilot Chat 二次确认了下，得到如下回复：
+>
+> <img src="https://s2.loli.net/2024/04/05/QBjczlh6KeWOZ8A.png" alt="image-20240405162832728" style="zoom:50%;" />
 
 
 
@@ -874,3 +892,4 @@ number once // TODO https://en.wikipedia.org/wiki/Cryptographic_nonce
 2 = double , 3 = triple , 4 = quadruple , 5 = quintuple , 6 = sextuple , 7 = septuple , 8 = octuple
 
 学习自：[2=double,3=triple,what's for 4,5,6,e.t.c.](https://www.proz.com/kudoz/english/other/526192-2%3Ddouble3%3Dtriplewhats-for-456etc.html)
+

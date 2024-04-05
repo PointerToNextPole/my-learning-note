@@ -6210,11 +6210,15 @@ function SearchResults({ query }) {
 
 <font color=dodgerBlue>You *don’t* need to move this fetch to an event handler</font>.
 
-This might seem like a contradiction with the earlier examples where you needed to put the logic into the event handlers! However, consider that it’s not *the typing event* that’s the main reason to fetch. Search inputs are often prepopulated from the URL, and the user might navigate Back and Forward without touching the input.
+This might seem like a contradiction with the earlier examples where you needed to put the logic into the event handlers! However, <font color=lightSeaGreen>consider that it’s not *the typing event* that’s the main reason to fetch</font>. <font color=red>Search inputs are often prepopulated from the URL</font>, and the user might navigate Back and Forward without touching the input.
 
 It doesn’t matter where `page` and `query` come from. While this component is visible, you want to keep `results` [synchronized](https://react.dev/learn/synchronizing-with-effects) with data from the network for the current `page` and `query`. This is why it’s an Effect.
 
-However, the code above has a bug. Imagine you type `"hello"` fast. Then the `query` will change from `"h"`, to `"he"`, `"hel"`, `"hell"`, and `"hello"`. This will kick off separate fetches, but there is no guarantee about which order the responses will arrive in. For example, the `"hell"` response may arrive *after* the `"hello"` response. Since it will call `setResults()` last, you will be displaying the wrong search results. This is called a [“race condition”](https://en.wikipedia.org/wiki/Race_condition): two different requests “raced” against each other and came in a different order than you expected.
+<font color=dodgerBlue>However, the code above has a bug</font>. <font color=lightSeaGreen>Imagine you type `"hello"` fast. Then the `query` will change from `"h"`, to `"he"`, `"hel"`, `"hell"`, and `"hello"`</font>. This will kick off separate fetches, but there is no guarantee about which order the responses will arrive in. For example, the `"hell"` response may arrive *after* the `"hello"` response. Since it will call `setResults()` last, you will be displaying the wrong search results. This is called a [“race condition”](https://en.wikipedia.org/wiki/Race_condition): two different requests “raced” against each other and came in a different order than you expected.
+
+> 💡 上面又提到了“竞态”，感觉上面的问题可以通过“防抖”、“截流”解决。另外，补充一下：
+>
+> <img src="https://s2.loli.net/2024/04/05/qbvA6zOsgjTD9an.png" alt="image-20240405163008936" style="zoom:50%;" />
 
 **To fix the race condition, you need to [add a cleanup function](https://react.dev/learn/synchronizing-with-effects#fetching-data) to ignore stale responses:**
 
@@ -6241,13 +6245,13 @@ function SearchResults({ query }) {
 }
 ```
 
-This ensures that when your Effect fetches data, all responses except the last requested one will be ignored.
+<font color=fuchsia>This ensures that when your Effect fetches data, **all responses except the last requested one will be ignored**</font>.
 
 Handling race conditions is not the only difficulty with implementing data fetching. You might also want to think about caching responses (so that the user can click Back and see the previous screen instantly), how to fetch data on the server (so that the initial server-rendered HTML contains the fetched content instead of a spinner), and how to avoid network waterfalls (so that a child can fetch data without waiting for every parent).
 
-**These issues apply to any UI library, not just React. Solving them is not trivial, which is why modern [frameworks](https://react.dev/learn/start-a-new-react-project#production-grade-react-frameworks) provide more efficient built-in data fetching mechanisms than fetching data in Effects.**
+**<font color=lightSeaGreen>These issues apply to any UI library, not just React</font>. Solving them is not trivial, which is why modern [frameworks](https://react.dev/learn/start-a-new-react-project#production-grade-react-frameworks) provide more efficient built-in data fetching mechanisms than fetching data in Effects.**
 
-If you don’t use a framework (and don’t want to build your own) but would like to make data fetching from Effects more ergonomic, consider extracting your fetching logic into a custom Hook like in this example:
+<font color=dodgerBlue>If you don’t use a framework</font> (and don’t want to build your own) <font color=dodgerBlue>but would like to make data fetching from Effects more ergonomic</font>, <font color=red>consider extracting your fetching logic into a custom Hook</font> like in this example:
 
 ```jsx
 function SearchResults({ query }) {
@@ -6282,7 +6286,20 @@ function useData(url) {
 
 You’ll likely also want to add some logic for error handling and to track whether the content is loading. You can build a Hook like this yourself or use one of the many solutions already available in the React ecosystem. **Although this alone won’t be as efficient as using a framework’s built-in data fetching mechanism, moving the data fetching logic into a custom Hook will make it easier to adopt an efficient data fetching strategy later.**
 
-In general, whenever you have to resort to writing Effects, keep an eye out for when you can extract a piece of functionality into a custom Hook with a more declarative and purpose-built API like `useData` above. The fewer raw `useEffect` calls you have in your components, the easier you will find to maintain your application.
+In general, whenever you have to **resort** to writing Effects, keep an eye out for when you can extract a piece of functionality into a custom Hook with a more declarative and purpose-built API like `useData` above. <font color=lightSeaGreen>**The fewer raw `useEffect` calls you have** in your components, the easier you will find to maintain your application</font>.
+
+##### Recap
+
+- <font color=red>If you can calculate something during render, you don’t need an Effect</font>.
+- To cache expensive calculations, add `useMemo` instead of `useEffect`.
+- To reset the state of an entire component tree, pass a different `key` to it.
+- To reset a particular bit of state in response to a prop change, set it during rendering.
+- <font color=red>**Code that runs because a component was *displayed* should be in Effects**</font>, <font color=lightSeaGreen>the rest should be in events</font>.
+- If you need to update the state of several components, it’s better to do it during a single event.
+- Whenever you try to synchronize state variables in different components, consider lifting state up.
+- <font color=dodgerBlue>You can fetch data with Effects</font>, <font color=red>but you need to implement cleanup to avoid race conditions</font>.
+
+
 
 
 

@@ -296,6 +296,10 @@
 
 - **resort**：求助
 
+   > In general, whenever you have to **resort** to writing Effects, keep an eye out for when you can extract a piece of functionality into a custom Hook with a more declarative and purpose-built API like `useData` above.
+   >
+   > 摘自：[React doc - You Might Not Need an Effect # Fetching data](https://react.dev/learn/you-might-not-need-an-effect#fetching-data)
+
 - **process**：一般理解为 “过程” ( noun )，这里强调的是“**处理**“ ( verb ) 的意思
 
 - **proceed**：继续
@@ -466,9 +470,7 @@
 
   **scratch** ：划痕
 
-- **territory** ：领域。
-
-- **resort** ：采取
+- **territory** ：领域
 
 - **explicit** ：明确的。cpp 关键字
 
@@ -1162,7 +1164,11 @@
   
 - **thumbnail** ：缩略图
 
-  
+- **prepopulated** ：预先填充，预先加载
+
+  > Search inputs are often prepopulated from the URL, and the user might navigate Back and Forward without touching the input.
+  >
+  > 摘自：[React doc - You Might Not Need an Effect # Fetching data](https://react.dev/learn/you-might-not-need-an-effect#fetching-data)
 
 ***
 
@@ -1260,9 +1266,9 @@
 > 💡 可以参考 [[linux与macOS备忘录#Linux 命令缩写由来|Linux 命令缩写由来]] 中的内容
 
 - **pt. n** ：第 n 部分
-- **Misc** ：杂项，其他。"Misc" 是 "miscellaneous" 的缩写
+- **Misc** ：杂项，其他。"Misc" 是 “miscellaneous” 的缩写
 - **spec** ：规格 specification
-- **ver** ：版本 version
+- **ver.** ：版本 version
 - **promo** ：推广/ 宣传片。 promotion 
 
 
@@ -1404,8 +1410,6 @@
 - **converse** ：adj. 相反的，逆的 vi. 谈话
 
 - **legible** ：清晰的，清澈的
-
-- **resort** ：求助
 
 - **minutiae** ：细枝末节，细节
 
