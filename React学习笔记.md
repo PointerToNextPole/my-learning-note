@@ -83,7 +83,7 @@ function MyButton() {
 }
 ```
 
-> ⚠️ 值得注意的是：不可以直接修改 `count` 的值 ，比如 `setCount(count ++)` ，首先 count 是 const 定义的；另外，也是会报错的
+> ⚠️ 值得注意的是：不可以直接修改 `count` 的值 ，比如 `setCount(count ++)` ，首先 `count` 是 const 定义的；另外，也是会报错的
 
 ##### Using Hooks
 
@@ -6298,6 +6298,118 @@ In general, whenever you have to **resort** to writing Effects, keep an eye out 
 - If you need to update the state of several components, it’s better to do it during a single event.
 - Whenever you try to synchronize state variables in different components, consider lifting state up.
 - <font color=dodgerBlue>You can fetch data with Effects</font>, <font color=red>but you need to implement cleanup to avoid race conditions</font>.
+
+
+
+#### Lifecycle of Reactive Effects
+
+Effects have a different lifecycle from components. Components may mount, update, or unmount. <font color=dodgerBlue>An Effect can only do two things</font>: <font color=red>to start synchronizing something, and later to stop synchronizing it</font>. This cycle can happen multiple times if your Effect depends on props and state that change over time. <font color=dodgerBlue>React provides a **linter rule to check that you’ve specified your Effect’s dependencies correctly**</font>. <font color=red>This keeps your Effect synchronized to the latest props and state</font>.
+
+##### The lifecycle of an Effect 
+
+<font color=dodgerBlue>**Every** React component goes through the same lifecycle</font>:
+
+- A component *mounts* when it’s added to the screen.
+- <font color=lightSeaGreen>A component *updates* when it receives new props or state</font>, usually in response to an interaction.
+- A component *unmounts* when it’s removed from the screen.
+
+It’s a good way to think about components, <font color=dodgerBlue>**but *not* about Effects**</font>. Instead, <font color=lightSeaGreen>try to think about each Effect independently from your component’s lifecycle</font>. An Effect describes how to [synchronize an external system](https://react.dev/learn/synchronizing-with-effects) to the current props and state. As your code changes, synchronization will need to happen more or less often.
+
+<font color=dodgerBlue>To illustrate this point, consider this Effect connecting your component to a chat server</font>:
+
+```jsx
+const serverUrl = 'https://localhost:1234';
+
+function ChatRoom({ roomId }) {
+  useEffect(() => {
+    const connection = createConnection(serverUrl, roomId);
+    connection.connect();
+    return () => {
+      connection.disconnect();
+    };
+  }, [roomId]);
+  // ...
+}
+```
+
+Your Effect’s body specifies how to **start synchronizing:**
+
+```jsx
+    // ...
+    const connection = createConnection(serverUrl, roomId);
+    connection.connect();
+    return () => {
+      connection.disconnect();
+    };
+    // ...
+```
+
+The cleanup function returned by your Effect specifies how to **stop synchronizing:**
+
+```jsx
+    // ...
+    const connection = createConnection(serverUrl, roomId);
+    connection.connect();
+    return () => {
+      connection.disconnect();
+    };
+    // ...
+```
+
+Intuitively, you might think that <font color=lightSeaGreen>React would **start synchronizing** when your component mounts and **stop synchronizing** when your component unmounts</font>. <font color=dodgerBlue>However, this is not the end of the story</font>! <font color=red>Sometimes, it may also be necessary to **start and stop synchronizing multiple times** while the component remains mounted</font>.
+
+Let’s look at *why* this is necessary, *when* it happens, and *how* you can control this behavior.
+
+> 💡 **Note**
+>
+> <font color=red>Some Effects don’t return a cleanup function at all</font>. [More often than not,](https://react.dev/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development) you’ll want to return one—but if you don’t, React will behave as if you returned an empty cleanup function.
+
+##### Why synchronization may need to happen more than once 
+
+Imagine this `ChatRoom` component receives a `roomId` prop that the user picks in a dropdown. Let’s say that initially the user picks the `"general"` room as the `roomId`. Your app displays the `"general"` chat room:
+
+```jsx
+const serverUrl = 'https://localhost:1234';
+
+function ChatRoom({ roomId /* "general" */ }) {
+  // ...
+  return <h1>Welcome to the {roomId} room!</h1>;
+}
+```
+
+After the UI is displayed, React will run your Effect to **start synchronizing.** It connects to the `"general"` room:
+
+```jsx
+function ChatRoom({ roomId /* "general" */ }) {
+  useEffect(() => {
+    const connection = createConnection(serverUrl, roomId); // Connects to the "general" room
+    connection.connect();
+    return () => {
+      connection.disconnect(); // Disconnects from the "general" room
+    };
+  }, [roomId]);
+  // ...
+```
+
+So far, so good.
+
+Later, the user picks a different room in the dropdown (for example, `"travel"`). First, React will update the UI:
+
+```jsx
+function ChatRoom({ roomId /* "travel" */ }) {
+  // ...
+  return <h1>Welcome to the {roomId} room!</h1>;
+}
+```
+
+Think about what should happen next. The user sees that `"travel"` is the selected chat room in the UI. However, the Effect that ran the last time is still connected to the `"general"` room. **The `roomId` prop has changed, so what your Effect did back then (connecting to the `"general"` room) no longer matches the UI.**
+
+At this point, you want React to do two things:
+
+1. Stop synchronizing with the old `roomId` (disconnect from the `"general"` room)
+2. Start synchronizing with the new `roomId` (connect to the `"travel"` room)
+
+**Luckily, you’ve already taught React how to do both of these things!** Your Effect’s body specifies how to start synchronizing, and your cleanup function specifies how to stop synchronizing. All that React needs to do now is to call them in the correct order and with the correct props and state. Let’s see how exactly that happens.
 
 
 
