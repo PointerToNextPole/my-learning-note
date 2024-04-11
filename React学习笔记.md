@@ -6362,11 +6362,11 @@ Let’s look at *why* this is necessary, *when* it happens, and *how* you can co
 
 > 💡 **Note**
 >
-> <font color=red>Some Effects don’t return a cleanup function at all</font>. [More often than not,](https://react.dev/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development) you’ll want to return one—but if you don’t, React will behave as if you returned an empty cleanup function.
+> <font color=red>Some Effects don’t return a cleanup function at all</font>. [More often than not](https://react.dev/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development) , you’ll want to return one—but if you don’t, React will behave as if you returned an empty cleanup function.
 
 ##### Why synchronization may need to happen more than once 
 
-Imagine this `ChatRoom` component receives a `roomId` prop that the user picks in a dropdown. Let’s say that initially the user picks the `"general"` room as the `roomId`. Your app displays the `"general"` chat room:
+Imagine this `ChatRoom` component receives a `roomId` prop that the user picks in a dropdown. Let’s say that initially the user picks the `"general"` room as the `roomId` . Your app displays the `"general"` chat room:
 
 ```jsx
 const serverUrl = 'https://localhost:1234';
