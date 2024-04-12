@@ -6305,7 +6305,7 @@ In general, whenever you have to **resort** to writing Effects, keep an eye out 
 
 Effects have a different lifecycle from components. Components may mount, update, or unmount. <font color=dodgerBlue>An Effect can only do two things</font>: <font color=red>to start synchronizing something, and later to stop synchronizing it</font>. This cycle can happen multiple times if your Effect depends on props and state that change over time. <font color=dodgerBlue>React provides a **linter rule to check that you’ve specified your Effect’s dependencies correctly**</font>. <font color=red>This keeps your Effect synchronized to the latest props and state</font>.
 
-##### The lifecycle of an Effect 
+##### The lifecycle of an Effect
 
 <font color=dodgerBlue>**Every** React component goes through the same lifecycle</font>:
 
@@ -6364,7 +6364,7 @@ Let’s look at *why* this is necessary, *when* it happens, and *how* you can co
 >
 > <font color=red>Some Effects don’t return a cleanup function at all</font>. [More often than not](https://react.dev/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development) , you’ll want to return one—but if you don’t, React will behave as if you returned an empty cleanup function.
 
-##### Why synchronization may need to happen more than once 
+###### Why synchronization may need to happen more than once 
 
 Imagine this `ChatRoom` component receives a `roomId` prop that the user picks in a dropdown. Let’s say that initially the user picks the `"general"` room as the `roomId` . Your app displays the `"general"` chat room:
 
@@ -6411,7 +6411,84 @@ At this point, you want React to do two things:
 
 **Luckily, you’ve already taught React how to do both of these things!** Your Effect’s body specifies how to start synchronizing, and your cleanup function specifies how to stop synchronizing. All that React needs to do now is to call them in the correct order and with the correct props and state. Let’s see how exactly that happens.
 
+###### How React re-synchronizes your Effect 
 
+Recall that your `ChatRoom` component has received a new value for its `roomId` prop. It used to be `"general"`, and now it is `"travel"`. React needs to re-synchronize your Effect to re-connect you to a different room.
+
+To **stop synchronizing,** React will call the cleanup function that your Effect returned after connecting to the `"general"` room. Since `roomId` was `"general"`, the cleanup function disconnects from the `"general"` room:
+
+```jsx
+function ChatRoom({ roomId /* "general" */ }) {
+  useEffect(() => {
+    const connection = createConnection(serverUrl, roomId); // Connects to the "general" room
+    connection.connect();
+    return () => {
+      connection.disconnect(); // Disconnects from the "general" room
+    };
+    // ...
+```
+
+Then React will run the Effect that you’ve provided during this render. This time, `roomId` is `"travel"` so it will **start synchronizing** to the `"travel"` chat room (until its cleanup function is eventually called too):
+
+```jsx
+function ChatRoom({ roomId /* "travel" */ }) {
+  useEffect(() => {
+    const connection = createConnection(serverUrl, roomId); // Connects to the "travel" room
+    connection.connect();
+    // ...
+```
+
+Thanks to this, you’re now connected to the same room that the user chose in the UI. Disaster averted!
+
+Every time after your component re-renders with a different `roomId`, your Effect will re-synchronize. For example, let’s say the user changes `roomId` from `"travel"` to `"music"`. React will again **stop synchronizing** your Effect by calling its cleanup function (disconnecting you from the `"travel"` room). Then it will **start synchronizing** again by running its body with the new `roomId` prop (connecting you to the `"music"` room).
+
+Finally, when the user goes to a different screen, `ChatRoom` unmounts. Now there is no need to stay connected at all. React will **stop synchronizing** your Effect one last time and disconnect you from the `"music"` chat room.
+
+###### Thinking from the Effect’s perspective
+
+Let’s recap everything that’s happened from the `ChatRoom` component’s perspective:
+
+1. `ChatRoom` mounted with `roomId` set to `"general"`
+2. `ChatRoom` updated with `roomId` set to `"travel"`
+3. `ChatRoom` updated with `roomId` set to `"music"`
+4. `ChatRoom` unmounted
+
+During each of these points in the component’s lifecycle, your Effect did different things:
+
+1. Your Effect connected to the `"general"` room
+2. Your Effect disconnected from the `"general"` room and connected to the `"travel"` room
+3. Your Effect disconnected from the `"travel"` room and connected to the `"music"` room
+4. Your Effect disconnected from the `"music"` room
+
+Now let’s think about what happened from the perspective of the Effect itself:
+
+```jsx
+useEffect(() => {
+    // Your Effect connected to the room specified with roomId...
+    const connection = createConnection(serverUrl, roomId);
+    connection.connect();
+    return () => {
+      // ...until it disconnected
+      connection.disconnect();
+    };
+  }, [roomId]);
+```
+
+This code’s structure might inspire you to see what happened as a sequence of non-overlapping time periods:
+
+1. Your Effect connected to the `"general"` room (until it disconnected)
+2. Your Effect connected to the `"travel"` room (until it disconnected)
+3. Your Effect connected to the `"music"` room (until it disconnected)
+
+Previously, you were thinking from the component’s perspective. When you looked from the component’s perspective, it was tempting to think of Effects as “callbacks” or “lifecycle events” that fire at a specific time like “after a render” or “before unmount”. This way of thinking gets complicated very fast, so it’s best to avoid.
+
+**Instead, always focus on a single start/stop cycle at a time. It shouldn’t matter whether a component is mounting, updating, or unmounting. All you need to do is to describe how to start synchronization and how to stop it. If you do it well, your Effect will be resilient to being started and stopped as many times as it’s needed.**
+
+This might remind you how you don’t think whether a component is mounting or updating when you write the rendering logic that creates JSX. You describe what should be on the screen, and React [figures out the rest.](https://react.dev/learn/reacting-to-input-with-state)
+
+###### How React verifies that your Effect can re-synchronize
+
+Here is a live example that you can play with. Press “Open chat” to mount the `ChatRoom` component:
 
 
 
