@@ -1024,6 +1024,8 @@
   
 - **recap** ：回顾，扼要重述
 
+  > 💡 它是 recapitulate 的缩写
+
 - **top down** ：自上而下
 
   **bottom up** ：自下而上
@@ -1169,6 +1171,12 @@
   > Search inputs are often prepopulated from the URL, and the user might navigate Back and Forward without touching the input.
   >
   > 摘自：[React doc - You Might Not Need an Effect # Fetching data](https://react.dev/learn/you-might-not-need-an-effect#fetching-data)
+  
+- **footprint** ：**(某物所占的)空间量，面积** ；足迹；脚印
+
+  > HotKeys.js is an input capture library with some very special features, it is easy to pick up and use, has a reasonable **footprint** ([~6kB](https://bundlephobia.com/result?p=hotkeys-js)) (gzipped: **`2.8kB`**), and has no dependencies. It should not interfere with any JavaScript libraries or frameworks.
+  >
+  > 摘自：[Github - Hotkeys # readme](https://github.com/jaywcjlove/hotkeys-js)
 
 ***
 
@@ -1688,3 +1696,17 @@
   <img src="https://s2.loli.net/2024/04/04/hUqm2tlJWLxkCQw.png" alt="image-20240404131636176" style="zoom:48%;" />
 
 - **kick off** ：开始
+
+- **avert** ：避免
+
+- **opaque** ：不透明的
+
+- **thence** ：从那里
+
+  ![image-20240413171033582](https://s2.loli.net/2024/04/13/9chERBmHLP8AJy3.png)
+
+- **cohesive** ：有结合力的、有凝聚力的
+
+  > On the other hand, if you split up a cohesive piece of logic into separate Effects, the code may look “cleaner” but will be more difficult to maintain.
+  >
+  > 摘自：[React doc - Lifecycle of Reactive Effects # Each Effect represents a separate synchronization process](https://react.dev/learn/lifecycle-of-reactive-effects#each-effect-represents-a-separate-synchronization-process)

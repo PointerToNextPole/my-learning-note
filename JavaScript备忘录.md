@@ -6738,11 +6738,12 @@ time3 = Date.parse(date); // 1398250549000
   Array.isArray(undefined);  // false
   ```
   
-  - **语法：**Array.isArray(obj)
-  - **参数：**obj 需要检测的值。
-  - **返回值：**如果值是 Array，则为true; 否则为false。
+  - **语法：** Array.isArray(obj)
+  - **参数：** obj 需要检测的值。
+  - **返回值：** 如果值是 Array，则为true; 否则为false。
   
-  另外，Array.isArray() 是 ES6的语法，如果在ES5中，可以用 `arrVariable instanceof Array`  替代。
+  另外，`Array.isArray()` 是 ES5 的语法，虽然兼容性已经非常好；需要更好的兼容性，可以用  `arrVariable instanceof Array`  替代。
+  
 
 
 
