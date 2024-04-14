@@ -1419,6 +1419,12 @@
 
 - **legible** ：清晰的，清澈的
 
+- **legitimate** ：合法的，**正当合理的**
+
+  > All errors flagged by the linter are legitimate. There’s always a way to fix the code to not break the rules.
+  >
+  > 摘自：[react doc - Lifecycle of Reactive Effects # Recap](https://react.dev/learn/lifecycle-of-reactive-effects#recap)
+
 - **minutiae** ：细枝末节，细节
 
   > They are built to take into account the code you write in your component, so you will get [inferred types](https://www.typescriptlang.org/docs/handbook/type-inference.html) a lot of the time and ideally do not need to handle the **minutiae** of providing the types.
@@ -1710,3 +1716,9 @@
   > On the other hand, if you split up a cohesive piece of logic into separate Effects, the code may look “cleaner” but will be more difficult to maintain.
   >
   > 摘自：[React doc - Lifecycle of Reactive Effects # Each Effect represents a separate synchronization process](https://react.dev/learn/lifecycle-of-reactive-effects#each-effect-represents-a-separate-synchronization-process)
+
+- **rather** ：相当的
+
+  > The user will get rather upset if you send their message at any other time or for any other reason.
+  >
+  > 摘自：[React doc - Separating Events from Effects # Event handlers run in response to specific interactions](https://react.dev/learn/separating-events-from-effects#event-handlers-run-in-response-to-specific-interactions)
