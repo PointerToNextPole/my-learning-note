@@ -735,7 +735,7 @@ normal 模式键入 `:wq!`，显示如下：
   >
   > <img src="https://s2.loli.net/2023/12/06/BJD1PXpTYxh6QOz.png" alt="image-20231108001343681" style="zoom:40%;" />
   >
-  > 简单来说，就是使用 `git stash push -m <msg> <path/file> ...`
+  > 简单来说，就是使用 `git stash push -m <msg> <path/file> ...` 。这里之所以加上省略号是因为 `<path/file>` 可以是一个列表，即：可以不止一个
 
 
 
