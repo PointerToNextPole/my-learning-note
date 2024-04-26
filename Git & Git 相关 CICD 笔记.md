@@ -708,7 +708,7 @@ normal 模式键入 `:wq!`，显示如下：
   >
   > <img src="https://s2.loli.net/2023/06/27/cVs8CN5BYSaIQmW.png" alt="image-20230627222208403" style="zoom:47%;" />
   >
-  > 这里的"dangling commit ..." 可以理解为你 stash 的 id。经原文作者测试，该 id 不是按时间顺序排列（不过，我在恢复数据时，发现就是最后一条 id ）；所以，需要通过对每一个 id 进行 `git show id` ，从而查看该 id 的具体内容。如下示例：
+  > 这里的 "dangling commit ..." 可以理解为你 stash 的 id。经原文作者测试，该 id 不是按时间顺序排列（不过，我在恢复数据时，发现就是最后一条 id ）；所以，需要通过对每一个 id 进行 `git show id` ，从而查看该 id 的具体内容。如下示例：
   >
   > <img src="https://s2.loli.net/2023/06/27/FQ4r7KbWwyUdkpC.png" alt="image-20230627223125756" style="zoom:45%;" />
   >
@@ -1026,6 +1026,14 @@ git config -e [--global]
   
 - **`git show`** ：此命令可以用于显示各种类型对象的相关信息
 
+  使用 `tldr` 查看 `git show` 的简单使用：
+
+  ![image-20240426235609971](https://s2.loli.net/2024/04/26/8QtBeUVaOGJDNlc.png)
+
+  其中值得注意的是 `git show --summary commit` ，可以显示当前提交记录中，变更的文件记录。就当前笔记而言：
+
+  <img src="/Users/yan/Library/Application Support/typora-user-images/image-20240426235948836.png" alt="image-20240426235948836" style="zoom:50%;" />
+
 
 
 #### Git 设置添加一个新的远程 Git 仓库
@@ -1335,9 +1343,9 @@ The `git prune` command is an internal housekeeping（家务） utility that <fo
 - **`git branch <new_branch>`** ：创建新的分支
 - **`git branch -v`** ：<font color=FF0000>查看各个分支最后提交信息</font>
 - **`git branch --merged`** ：查看已经被合并到当前分支的分支
-- **`git branch --no-merged`** ：查看尚未被合并到当前分支的分支
+- **`git branch --no-merged`** ：查看尚未被合并到当前分支的分支	
 
-​	摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
 
 
