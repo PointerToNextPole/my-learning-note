@@ -494,7 +494,8 @@ String.prototype.trimRight.name === "trimEnd";
 
 #### String.prototype.localeCompare()
 
-`localeCompare()` 方法 <font color=FF0000>返回一个数字</font> 来 <font color=FF0000>指示一个**参考字符串是否在排序顺序前面或之后或与给定字符串相同**</font>。
+`localeCompare()` 方法 <font color=FF0000>返回一个数字</font> 来 <font color=FF0000>指示一个**参考字符串是否在排序顺序前面或之后或与给定字符串相同**</font>。在支持 [`Intl.Collator` API](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator) 的实现中，该方法仅是调用了 `Intl.Collator` 方法。
+
 新的 `locales` 和 `options` 参数能让应用程序定制函数的行为，即指定用来排序的语言。 `locales` 和 `options` 参数完全取决于实现，在旧的实现中忽略这两个参数。
 
 ##### 语法
@@ -503,7 +504,17 @@ String.prototype.trimRight.name === "trimEnd";
 referenceStr.localeCompare(compareString[, locales[, options]])
 ```
 
-参数等内容由于过于庞杂，这里略；详见链接
+###### 参数
+
+`locales` 和 `options` 参数可以自定义函数的行为，并让应用程序指定应使用哪种语言的格式约定。
+
+在支持 [`Intl.Collator` API](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator) 的实现中，这些参数与 [`Intl.Collator()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator) 构造函数的参数完全对应。而对于不支持 `Intl.Collator` 的实现，应忽略这两个参数，使得返回的比较结果完全依赖于实现——只要求其保持*一致*。
+
+- `compareString` ：与 `referenceStr` 进行比较的字符串。所有值都会[被强制转换为字符串](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String#字符串强制转换)，因此省略该参数或传入 `undefined` 会导致 `localeCompare()` 与字符串 `"undefined"` 进行比较，这通常不是你想要的。
+- `locales` 可选: 表示缩写语言代码（BCP 47 language tag）的字符串，或由此类字符串组成的数组。对应于 `Intl.Collator()` 构造函数的 [`locales`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator#locales) 参数。 在不支持 `Intl.Collator` 的实现中，该参数会被忽略，并且通常会使用主机的区域设置。
+- `options` 可选： 一个调整输出格式的对象。对应于 `Intl.Collator()` 构造函数的 [`options`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator#参数) 参数。 在不支持 `Intl.Collator` 的实现中，该参数会被忽略。
+
+参见 [`Intl.Collator()` 构造函数](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator)以详细了解 `locales` 和 `options` 参数以及如何使用它们。
 
 摘自：[MDN - `String.prototype.localeCompare()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare)
 

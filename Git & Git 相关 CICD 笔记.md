@@ -1028,11 +1028,11 @@ git config -e [--global]
 
   使用 `tldr` 查看 `git show` 的简单使用：
 
-  ![image-20240426235609971](https://s2.loli.net/2024/04/26/8QtBeUVaOGJDNlc.png)
+  <img src="https://s2.loli.net/2024/04/26/8QtBeUVaOGJDNlc.png" alt="image-20240426235609971" style="zoom:50%;" />
 
   其中值得注意的是 `git show --summary commit` ，可以显示当前提交记录中，变更的文件记录。就当前笔记而言：
 
-  <img src="/Users/yan/Library/Application Support/typora-user-images/image-20240426235948836.png" alt="image-20240426235948836" style="zoom:50%;" />
+  <img src="https://s2.loli.net/2024/04/26/P1HYleE9JA8jKFL.png" alt="image-20240426235948836" style="zoom:50%;" />
 
 
 
