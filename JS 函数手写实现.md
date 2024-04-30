@@ -464,6 +464,16 @@ Promise.myRace = function(promiseArr) {
 }
 ```
 
+##### `Promise.prototype.catch` 实现
+
+```js
+Promise.prototype.catch = function (onRejected) {
+  return this.then(undefined, onRejected)
+}
+```
+
+
+
 #### Promise 并行调度器
 
 > 💡 该功能对应的专业术语是 “p-limit”，chatgpt 的介绍如下：

@@ -529,14 +529,14 @@ const unsort = arr.toSorted((a, b) => a > b)
 const sorted = arr.toSorted((a, b) => a.localeCompare(b, 'zh-Hans-CN'))
 
 console.log(unsort) // ['上海', '北京', '杭州']
-console.log(sorted) // [ '北京', '杭州', '上海' ]
+console.log(sorted) // ['北京', '杭州', '上海']
 ```
 
 
 
 #### String.prototype.isWellFormed()
 
-The **`isWellFormed()`** method of `String` values <font color=red>returns a boolean indicating whether this string contains any [lone surrogates](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters)</font>. 
+The **`isWellFormed()`** method of `String` values <font color=red>returns a boolean indicating whether this string contains any [lone surrogates](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters)</font> . 
 
 > 💡 lone surrogates，与之相对应的是 surrogate pair（代理对）
 
