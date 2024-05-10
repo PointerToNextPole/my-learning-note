@@ -14772,7 +14772,7 @@ forms <font color=FF0000>返回当前文档中的 `<form>` 元素的一个集合
 
 #### HTML<font color=FF0000>Form</font>Element.elements
 
-elements 返回一个 HTMLFormControlsCollection其中包含FORM的所有控件。需要注意的是，其中不包括type等于image的input 元素。
+elements 返回一个 HTMLFormControlsCollection 其中包含FORM的所有控件。需要注意的是，其中不包括type等于image的input 元素。
 
 你可以通过 name 或 id来访问对应的控件。
 
@@ -14782,7 +14782,7 @@ elements 返回一个 HTMLFormControlsCollection其中包含FORM的所有控件�
 
 #### KeyboardEvent.repeat
 
-KeyboardEvent.repeat是一个只读属性，返回一个布尔值Boolean，如果按键被一直按住，返回值为true。
+`KeyboardEvent.repeat` 是一个只读属性，返回一个布尔值 Boolean，如果按键被一直按住，返回值为 true。
 
 摘自：[MDN - KeyboardEvent.repeat](https://developer.mozilla.org/zh-CN/docs/Web/API/KeyboardEvent/repeat)
 
