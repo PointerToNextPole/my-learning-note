@@ -14672,15 +14672,17 @@ WindowOrWorkerGlobalScope.btoa() <font color=FF0000>从 String 对象中创建�
 let encodedData = window.btoa(stringToEncode);
 ```
 
-##### 参数
+###### 参数
 
-- **stringToEncode：**一个字符串，<font color=FF0000>其字符分别表示要编码为 **ASCII 的二进制数据的单个字节**</font>。
+- **stringToEncode** ：一个字符串，<font color=FF0000>其字符分别表示要编码为 **ASCII 的二进制数据的单个字节**</font>。
 
-**返回值：**<font color=FF0000>一个包含 stringToEncode 的 <font size=4>**Base64**</font> 表示的字符串</font>。
+###### 返回值
+
+<font color=FF0000>一个包含 stringToEncode 的 <font size=4>**Base64**</font> 表示的字符串</font>。
 
 ##### 备注
 
-<mark>你可以使用此方法对可能导致通信问题的数据进行编码，传输，然后使用 atob() 方法再次解码数据</mark>。例如，可以编码控制字符，包括 ASCII 值为 0 到 31 的字符。
+<font color=lightSeaGreen>你可以使用此方法对可能导致通信问题的数据进行编码，传输，然后使用 `atob()` 方法再次解码数据</font>。例如，可以编码控制字符，包括 ASCII 值为 0 到 31 的字符。
 
 摘自：[MDN - WindowOrWorkerGlobalScope.btoa()](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/btoa)
 
@@ -14696,7 +14698,7 @@ var decodedData = scope.atob(encodedData);
 
 ##### 异常
 
-<font color=FF0000>如果传入字符串不是有效的 base64 字符串，比如其长度不是 4 的倍数，则抛出DOMException</font>。
+<font color=FF0000>如果传入字符串不是有效的 base64 字符串，比如其长度不是 4 的倍数，则抛出 DOMException</font>。
 
 摘自：[MDN - WindowOrWorkerGlobalScope.atob()](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/atob)
 
@@ -14706,7 +14708,7 @@ var decodedData = scope.atob(encodedData);
 
 **`Document.referrer`** <font color=lightSeaGreen>返回的是一个 URI</font>，<font color=red>当前页面就是从这个 URI 所代表的页面跳转或打开的</font>。
 
-> 👀 有点类似于 http 中的 referer 请求头，另外，referer 实际上是 "referrer" 误拼写；详见 [wikipedia - HTTP referer](https://en.wikipedia.org/wiki/HTTP_referer)
+> 👀 有点类似于 http 中的 `referer` 请求头，另外，referer 实际上是 "referrer" 误拼写；详见 [wikipedia - HTTP referer](https://en.wikipedia.org/wiki/HTTP_referer)
 
 ##### 值
 
@@ -14714,7 +14716,7 @@ var decodedData = scope.atob(encodedData);
 
 <font color=dodgerBlue>在 `<iframe>` 中</font>，<font color=red>`Document.referrer` 会初始化为父窗口 `Window.location` 的 `href`</font>。
 
-摘自：[MDN - Document.referrer](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/referrer)
+摘自：[MDN - `Document.referrer`](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/referrer)
 
 ##### 哪些场景下无法获得上一页 referrer 信息
 
@@ -14800,7 +14802,7 @@ Document.readyState 属性描述了document 的加载状态。
 var string = document.readyState;
 ```
 
-##### 值
+###### 值
 
 一个文档的 readyState 可以是以下之一
 
