@@ -46,7 +46,7 @@
 
 - **vice versa** ：反之亦然
 
-- **preflight**：预检。
+- **preflight**：预检
 
    > 💡 一般情况下的含义：预检请求 ( preflight request )。不过，在 antfu 的 UnoCSS 相关博客 [Reimagine Atomic CSS](https://antfu.me/posts/reimagine-atomic-css#scoping) 中 [scoping](https://antfu.me/posts/reimagine-atomic-css#scoping) 部分 发现了有 “样式预检” 的含义，翻译在 [重新构想原子化 CSS - CSS 作用域](https://antfu.me/posts/reimagine-atomic-css-zh#css-%E4%BD%9C%E7%94%A8%E5%9F%9F) 中
 
@@ -194,7 +194,9 @@
 
 - **schema**：设计，架构，概要
 
-- **fallback**：后退，注意和 rollback（回滚）的区别
+- **fallback**：后退
+
+   > ⚠️ 注意和 rollback（回滚）的区别
 
 - **recipient**：收件人（在 网络 http 场景中出现），来自：https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.7
 
@@ -226,7 +228,7 @@
 
 - **directive**：指令，命令
 
-- **stale**：陈旧的，不过这里要说的“不新鲜的”，用于 HTTP 的 Cache-Control 中，比如 max-stale 选项
+- **stale**：陈旧的，不过这里要说的“不新鲜的”，用于 HTTP 的 `Cache-Control` 中，比如 `max-stale` 选项
 
 - **latency**：延时。
 
@@ -358,7 +360,9 @@
 
 - **factorize**：分解
 
-- **correspond**：相一致，相当于，通信。**corresponding**：**相应的**，对应的，符合的
+- **correspond**：相一致，相当于，通信。
+
+   **corresponding**：**相应的**，对应的，符合的
 
 - **function**：**运转**，运行 ( verb )
 
@@ -389,6 +393,8 @@
    **variate**：变量，变数 ( noun )
 
    **vary**：变化( verb )
+
+   **variant** ：变体
 
 - **longhand**：手写
 
@@ -1596,6 +1602,12 @@
   > With quite different design goals, it's not really an apples-to-apples comparison with Tailwind CSS. But we will try to list a few differences.
   >
   > 摘自：[UnoCSS doc - Why UnoCSS? # Tailwind CSS](https://unocss.dev/guide/why#tailwind-css)
+
+- **work around** ：解决方法
+
+  > Another ways to **work around** the limitation of dynamically constructed utilities is that you can use an object that list all the combinations **statically**.
+  >
+  > 摘自：[UnoCSS doc - Extracting # Static List Combinations](https://unocss.dev/guide/extracting#static-list-combinations)
 
 - **tragedy** ：悲剧
 
