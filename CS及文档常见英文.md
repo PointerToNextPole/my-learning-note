@@ -396,6 +396,10 @@
 
    **variant** ：变体
 
+   > [Variants](https://windicss.org/utilities/general/variants.html) allow you to apply some variations to your existing rules, like the `hover:` variant from Tailwind CSS.
+   >
+   > 摘自：[UnoCSS doc - config - Variants](https://unocss.dev/config/variants)
+
 - **longhand**：手写
 
 - **shorthand**：速记
