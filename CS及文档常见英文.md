@@ -1738,3 +1738,9 @@
   > The user will get rather upset if you send their message at any other time or for any other reason.
   >
   > 摘自：[React doc - Separating Events from Effects # Event handlers run in response to specific interactions](https://react.dev/learn/separating-events-from-effects#event-handlers-run-in-response-to-specific-interactions)
+  
+- **resign** ：辞职
+
+- **veil** ：面纱
+
+  **unveil** ：揭示，揭幕
