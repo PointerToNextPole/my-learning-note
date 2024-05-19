@@ -7431,64 +7431,43 @@ navigator.permissions.query({name:'geolocation'}).then(function(result) {
 
 
 
-#### JavaScript 计时事件
-
-我们可以<font color=FF0000>在一个设定的时间间隔之后来执行代码</font>。我们称之为计时事件。
-
-##### setInterval()
-
-<font color=FF0000>间隔指定的毫秒数**不停地**执行指定的代码</font>。另外：**window.setInterval()** 方法可以不使用 window 前缀，直接使用函数 **setInterval()**。
-
-###### 语法
-
-```js
-window.setInterval(function, milliseconds);
-```
-
-- 第一个参数是函数（function）
-
-- 第二个参数<font color=FF0000>间隔的**毫秒数**</font>
-
-###### 示例
-
-```js
-// 每三秒弹出 "hello" 
-setInterval(function(){alert("Hello")},3000);
-```
-
-##### 补充
-
-> 如下内容摘自 [MDN - window.setInterval](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/setInterval)
+#### setInterval()
 
 WindowOrWorkerGlobalScope 的 setInterval() 方法重复调用一个函数或执行一个代码段，在每次调用之间具有固定的时间延迟。
 
 在窗口和工作接口上提供的setInterval()方法重复调用函数或执行代码片段，每次调用之间有固定的时间延迟。<font color=FF0000>它**返回一个时间间隔ID**，**该ID唯一地标识时间间隔**，因此您可以稍后通过调用 clearInterval() 来删除它</font>。这个方法是由 WindowOrWorkerGlobalScope mixin 定义的。
 
-###### 语法
+##### 语法
 
 ```js
 var intervalID = scope.setInterval(func, delay, [arg1, arg2, ...]);
 var intervalID = scope.setInterval(code, delay);
 ```
 
-> 👀 **注：值得注意的是，由上面的语法可知：<font color=FF0000>setInterval() 除了接收两个参数外，是可以接收更多参数的</font>。**
+> 👀 值得注意的是，由上面的语法可知：<font color=FF0000>`setInterval()` 除了接收两个参数外，是可以接收更多参数的</font>。
 
 ###### 参数
 
-- **func：**要重复调用的函数。 每经过指定 延迟 毫秒后执行的函数 。<font color=FF0000>该函数不接受任何参数，也没有返回值</font>。
-- <font color=FF0000>**code：**</font><mark>这个语法是<font color=FF0000>**可选**</font>的，你可以传递一个字符串来代替一个函数对象，你传递的字符串会被编译然后每个delay毫秒时间内执行一次。<font color=FF0000>这个语法因为存在安全风险所以不被推荐使用</font></mark>。
-- **delay：**是每次延迟的毫秒数（一秒等于1000毫秒），函数的每次调用会在该延迟之后发生。<font color=FF0000>和setTimeout一样，实际的延迟时间可能会稍长一点</font>。这个时间计算单位是毫秒（千分之一秒），这个定时器会使指定方法或者代码段执行的时候进行时间延迟。<font color=FF0000>如果这个参数值小于10，则默认使用值为10。请注意，真正延迟时间或许更长</font>
-- <font color=FF0000>**arg1, ..., argN：**</font><font color=FF0000>可选</font>，**当定时器过期的时候，将被传递给func指定函数的附加参数。**
+- **func** ：要重复调用的函数。 每经过指定 延迟 毫秒后执行的函数 。<font color=FF0000>该函数不接受任何参数，也没有返回值</font>。
+- <font color=FF0000>**code**</font> ：这个语法是<font color=lightSeaGreen>可选</font>的，你可以<font color=red>传递一个字符串来代替一个函数对象</font>，你传递的字符串会被编译然后每个delay 毫秒时间内执行一次。<font color=FF0000>这个语法因为存在安全风险所以不被推荐使用</font>。
+- **delay** ：是每次延迟的毫秒数（一秒等于1000 毫秒），函数的每次调用会在该延迟之后发生。<font color=FF0000>和 setTimeout一样，实际的延迟时间可能会稍长一点</font>。这个时间计算单位是毫秒（千分之一秒），这个定时器会使指定方法或者代码段执行的时候进行时间延迟。<font color=FF0000>如果这个参数值小于 10，则默认使用值为10。请注意，真正延迟时间或许更长</font>
+- <font color=FF0000>**arg1, ..., argN：**</font><font color=FF0000>可选</font>，**当定时器过期的时候，将被传递给 func 指定函数的附加参数。**
 
-**返回值：**<font color=FF0000>此返回值 intervalID 是一个非零数值，用来标识通过 setInterval() 创建的计时器，这个值可以用来作为clearInterval()的参数来清除对应的计时器 </font>。
+###### 返回值
 
-<font color=FF0000>值得注意的是</font>，<font color=FF0000 size=4>**setInterval() 和 setTimeout() 共享同一个 ID池，并且 clearInterval() 和 clearTimeout() 在技术上是可互换使用的**</font>。但是，我们必须去匹配 clearInterval() 和 clearTimeout() 对应的 id，以避免代码杂乱无章，增强代码的可维护性。
+<font color=FF0000>此返回值 `intervalID` 是一个非零数值，用来标识通过 `setInterval()` 创建的计时器，这个值可以用来作为 `clearInterval()` 的参数来清除对应的计时器 </font>。
 
-> **补充：**经过测试，setInterval(function, intervalTime) 第一次执行function是在intervalTime之后。另外，返回的id是一个 对象。
+<font color=dodgerBlue>值得注意的是</font>，<font color=fuchsia>**`setInterval()` 和 `setTimeout()` 共享同一个 ID池，并且 `clearInterval()` 和 `clearTimeout()` 在技术上是可互换使用的**</font>。但是，我们必须去匹配 `clearInterval()` 和 `clearTimeout()` 对应的 id，以避免代码杂乱无章，增强代码的可维护性。
 
-##### clearInterval()
+摘自： [MDN - window.setInterval](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/setInterval)
 
-用于停止 setInterval() 方法执行的函数代码
+> 💡 补充
+>
+> 经过测试，`setInterval(function, intervalTime)` 第一次执行 function 是在 intervalTime 之后。另外，返回的 id 是一个 对象。
+
+###### clearInterval()
+
+用于停止 `setInterval()` 方法执行的函数代码
 
 ##### 语法
 
@@ -7496,28 +7475,143 @@ var intervalID = scope.setInterval(code, delay);
 window.clearInterval(intervalVariable)
 ```
 
-window.clearInterval()方法可以不使用window前缀，直接使用函数**clearInterval()**。
+`window.clearInterval()` 方法可以不使用 `window` 前缀，直接使用函数 `clearInterval()` 。
 
-<mark>要使用clearTimeout() 方法, 你<font color=FF0000>必须在创建超时方法中（setTimeout）使用全局变量</font></mark>
+要使用 `clearTimeout()` 方法, 你<font color=FF0000>必须在创建超时方法中 ( `setTimeout` ) 使用全局变量</font>
 
-##### setTimeout()
+#### setTimeout()
 
  <font color=FF0000>在指定的毫秒数后执行指定代码</font>。
 
-###### 语法
+##### 语法
 
 ```js
-myVar = window.setTimeout(function, milliseconds);
+setTimeout(code)
+setTimeout(code, delay)
+
+setTimeout(functionRef)
+setTimeout(functionRef, delay)
+setTimeout(functionRef, delay, param1)
+setTimeout(functionRef, delay, param1, param2)
+setTimeout(functionRef, delay, param1, param2, /* … ,*/ paramN)
 ```
 
-> 👀 注：setTimeout 有部分内容还是挺重要 和 易错的，还是要看下；不过，由于setTimeout 的内容和 setInterval 过于相似，所以省略；<font color=FF0000>这里只说重点摘要</font>，详见上面 setInterval 中的内容，或者直接看 [MDN - window.setTimeout](https://developer.mozilla.org/zh-CN/docs/Web/API/setTimeout)
+###### 参数
 
-- setTimeout 可以传入超过两个参数，多于两个参数是：可选的附加参数，一旦定时器到期，它们会作为参数传递给function
-- setTimeout()和setInterval()共用一个编号池，技术上，clearTimeout()和 clearInterval() 可以互换。但是，为了避免混淆，不要混用取消定时函数
+- `functionRef` ：当定时器到期后，将要执行的 `function`。
+
+- `code` ：这是一个可选语法，<font color=red>允许你包含在定时器到期后编译和执行的字符串而非函数</font>。使用该语法是**不推荐的**，原因和使用 `eval()` 一样，有安全风险。
+
+- `delay` ：可选。定时器在执行指定的函数或代码之前应该等待的时间，单位是毫秒。如果省略该参数，则使用值 0，意味着“立即”执行，或者更准确地说，在下一个事件循环执行。注意，无论是哪种情况，实际延迟可能会比预期长一些，参见下方[延时比指定值更长的原因](https://developer.mozilla.org/zh-CN/docs/Web/API/setTimeout#延时比指定值更长的原因)一节的叙述。
+
+  <font color=dodgerBlue>还要注意的是，如果值不是数字</font>，<font color=red>隐含的类型强制转换会静默地对该值进行转换，使其成为一个数字</font>——这可能导致意想不到的、令人惊讶的结果；见 [[非数字延迟值被静默地强制转化为数字]] 以了解一个示例。
+
+- `param1`, …, `paramN` ：可选。附加参数，一旦定时器到期，它们会作为参数传递给 `functionRef` 指定的函数。
+
+###### 返回值
+
+返回值 `timeoutID` 是一个正整数，表示由 `setTimeout()` 调用创建的定时器的编号。这个值可以传递给 `clearTimeout()` 来取消该定时器。
+
+保证 `timeoutID` 值不会被同一对象（window 或 worker）的后续调用 `setTimeout()` 或 `setInterval()` 重复使用。然而，不同的对象使用不同的 ID 池。
+
+##### 非数字延迟值被静默地强制转化为数字
+
+<font color=dodgerBlue>如果调用 `setTimeout()` 的 `delay` 值不是数字</font>，<font color=red>隐含的类型强制转换会静默地对该值进行转换，使其成为数字</font>。例如，下面的代码在 `delay` 值中错误地使用了字符串 `"1000"`，而不是数字 `1000`——但它仍然有效，因为当代码运行时，字符串被强制转换成数字 `1000`，所以代码在 1 秒后执行
+
+```js
+setTimeout(() => {
+  console.log("延迟了 1 秒。");
+}, "1000");
+```
+
+但在许多情况下，隐式类型强制转换会导致意想不到的、令人惊讶的结果。例如，当下面的代码运行时，字符串 `"1 秒"` 最终被强制转换为数字 `0`——因此，代码立即执行，没有延迟。
+
+```js
+setTimeout(() => {
+  console.log("延迟了 1 秒。");
+}, "1 秒");
+```
+
+##### 传递字符串字面量
+
+将字符串而不是函数传递给 `setTimeout()` 与使用 `eval()` 具有相同的问题。
+
+```js
+// 不要这样做
+setTimeout("console.log('Hello World!');", 500);
+
+// 这样做
+setTimeout(() => {
+  console.log("Hello World!");
+}, 500);
+```
+
+<font color=fuchsia>传递给 `setTimeout()` 的字符串是在全局上下文中求值的</font>，因此<font color=dodgerBlue>当字符串被求值为代码时</font>，<font color=red>`setTimeout()` 被调用的上下文中的局部符号将不可用</font>。
+
+##### 延时比指定值更长的原因
+
+有很多因素会导致 setTimeout 的回调函数执行比设定的预期值更久，本节将讨论最常见的原因。
+
+###### 嵌套超时
+
+正如 [HTML 标准](https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timers)中规定的那样，<font color=red>一旦对 `setTimeout` 的嵌套调用被安排了 5 次，浏览器将强制执行 4 毫秒的最小超时</font>。
+
+###### 非活动标签的超时
+
+为了优化后台标签的加载损耗（以及降低耗电量），浏览器会在非活动标签中强制执行一个最小的超时延迟。如果一个页面正在使用网络音频 API `AudioContext` 播放声音，也可以不执行该延迟。
+
+这方面的具体情况与浏览器有关：
+
+- Firefox 桌面版和 Chrome 针对不活动标签都有一个 1 秒的最小超时值。
+- 安卓版 Firefox 浏览器对不活动的标签有一个至少 15 分钟的超时，并可能完全卸载它们。
+- 如果标签中包含 `AudioContext`，Firefox 不会对非活动标签进行节流。
+
+###### 追踪型脚本的节流
+
+Firefox 对它识别为追踪型脚本的脚本实施额外的节流。当在前台运行时，节流的最小延迟仍然是 4ms 。然而，在后台标签中，节流的最小延迟是 10000 毫秒，即 10 秒，在文档首次加载后 30 秒开始生效。
+
+###### 超时延迟
+
+如果页面（或操作系统/浏览器）正忙于其他任务，超时也可能比预期的晚。需要注意的一个重要情况是，在调用 `setTimeout()` 的线程结束之前，函数或代码片段不能被执行。例如：
+
+```js
+function foo() {
+  console.log("foo 被调用");
+}
+setTimeout(foo, 0);
+console.log("setTimeout 之后");
+```
+
+会在控制台输出：
+
+```
+setTimeout 之后
+foo 被调用
+```
+
+出现这个结果的原因是，尽管 `setTimeout` 以 0ms 的延迟来调用函数，但这个任务已经被放入了队列中并且等待下一次执行；并不是立即执行；队列中的等待函数被调用之前，当前代码必须全部运行完毕，因此这里运行结果并非预想的那样。
+
+##### 在加载页面时推迟超时
+
+<font color=dodgerBlue>当前标签页正在加载时</font>，<font color=red>Firefox 将推迟触发 `setTimeout()` 计时器，直到主线程被认为是空闲的</font>（类似于 `window.requestIdleCallback()` ），<font color=red>或者直到加载事件触发完毕，才开始触发</font>。
+
+##### WebExtension 背景页面和定时器
+
+在 [WebExtension](https://developer.mozilla.org/zh-CN/docs/Mozilla/Add-ons/WebExtensions) 中，`setTimeout()` 不会可靠工作。扩展开发者应当使用 [`alarms`](https://developer.mozilla.org/zh-CN/docs/Mozilla/Add-ons/WebExtensions/API/alarms) API 作为替代。
+
+##### 最大延时值
+
+<font color=red>浏览器内部以 32 位带符号整数存储延时</font>。这就会导致<font color=dodgerBlue>如果一个延时大于 2147483647 毫秒（大约 24.8 天）</font>时就<font color=red>会溢出，导致定时器将会被立即执行</font>。
+
+>  💡 再次强调
+>
+> `setTimeout()` 和 `setInterval()` 共用一个编号池，技术上，`clearTimeout()` 和 `clearInterval()` 可以互换。但是，为了避免混淆，不要混用取消定时函数
+
+摘自：[MDN - setTimeout() 全局函数](https://developer.mozilla.org/zh-CN/docs/Web/API/setTimeout)
 
 ##### clearTimeout()
 
-用于<font color=FF0000>停止执行setTimeout()方法的函数代码</font>。
+用于<font color=FF0000>停止执行 `setTimeout()` 方法的函数代码</font>。
 
 ###### 语法
 
@@ -7525,7 +7619,9 @@ myVar = window.setTimeout(function, milliseconds);
 window.clearTimeout(timeoutVariable)
 ```
 
-类似clearInterval()，使用clearTimeout() 方法, 你必须在创建超时方法中（setTimeout）使用全局变量
+类似 `clearInterval()` ，使用 `clearTimeout()` 方法, 必须在创建超时方法中 ( `setTimeout` ) 使用全局变量
+
+摘自：[MDN - clearTimeout()](https://developer.mozilla.org/zh-CN/docs/Web/API/clearTimeout)
 
 
 
@@ -7535,23 +7631,23 @@ JavaScript 可以使用<font color=FF0000> **document.cookie** 属性来创建 �
 
 ###### 使用 JavaScript 创建Cookie
 
-- JavaScript 中，创建 cookie 如下所示：
-  
-  ```js
-  document.cookie="username=John Doe";
-  ```
+JavaScript 中，创建 cookie 如下所示：
 
-- 您还<font color=FF0000>可以用expires参数，为 cookie 添加一个过期时间（以 UTC 或 GMT 时间）</font>。**<font color=FF0000>默认情况下，cookie 在浏览器关闭时删除</font>**：
-  
-  ```js
-  document.cookie="username=John Doe; expires=Thu, 18 Dec 2043 12:00:00 GMT";
-  ```
+```js
+document.cookie="username=John Doe";
+```
 
-- 您可以<font color=FF0000>使用 path 参数</font><font color=FF0000>告诉浏览器 cookie 的路径</font>。默认情况下，cookie 属于当前页面。
-  
-  ```js
-  document.cookie="username=John Doe; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
-  ```
+您还<font color=FF0000>可以用expires参数，为 cookie 添加一个过期时间（以 UTC 或 GMT 时间）</font>。**<font color=FF0000>默认情况下，cookie 在浏览器关闭时删除</font>**：
+
+```js
+document.cookie="username=John Doe; expires=Thu, 18 Dec 2043 12:00:00 GMT";
+```
+
+您可以<font color=FF0000>使用 path 参数</font><font color=FF0000>告诉浏览器 cookie 的路径</font>。默认情况下，cookie 属于当前页面。
+
+```js
+document.cookie="username=John Doe; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
+```
 
 ###### 使用 JavaScript 使用 Cookie
 
@@ -10452,7 +10548,7 @@ console.log(window.getComputedStyle(div).getPropertyValue('height')); // 200px
 
 #### Window.getComputedStyle() 
 
-Window.getComputedStyle() 方法<font color=FF0000>返回一个对象</font>，<font color=FF0000>该对象在应用活动样式表并解析这些值可能包含的任何基本计算后报告元素的所有 CSS 属性的值</font>。 私有的 CSS 属性值可以通过对象提供的 API 或通过简单地使用 CSS 属性名称进行索引来访问。
+`Window.getComputedStyle()` 方法<font color=FF0000>返回一个对象</font>，<font color=FF0000>该对象在应用活动样式表并解析这些值可能包含的任何基本计算后报告元素的所有 CSS 属性的值</font>。 私有的 CSS 属性值可以通过对象提供的 API 或通过简单地使用 CSS 属性名称进行索引来访问。
 
 **语法**
 
@@ -10460,14 +10556,20 @@ Window.getComputedStyle() 方法<font color=FF0000>返回一个对象</font>，<
 let style = window.getComputedStyle(element, [pseudoElt]);
 ```
 
-- **element：**用于获取计算样式的 Element。
-- **pseudoElt：** 可选，指定一个要匹配的伪元素的字符串。必须对普通元素省略（或 null ）。
+- **`element`** ：用于获取计算样式的 Element。
+- **`pseudoElt`** ：可选，指定一个要匹配的伪元素的字符串。必须对普通元素省略（或 null ）。
 
 返回的 style 是一个实时的 CSSStyleDeclaration 对象，当元素的样式更改时，它会自动更新本身。
 
-从 getComputedStyle 返回的对象是只读的，可以用于检查元素的样式
+从 `getComputedStyle` 返回的对象是只读的，可以用于检查元素的样式
 
 摘自：[MDN - Window.getComputedStyle()](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/getComputedStyle)
+
+方法名 `getComputedStyle` 感觉也是有些内在含义的，在 DevTools 的 Elements 中也有 Computed 选项（如下图），显然 `getComputedStyle` 获取到的样式对象，就是 Computed 选项中的内容
+
+<img src="https://s2.loli.net/2024/05/18/NfPWInqDi5Me6gr.png" alt="image-20240518173824276" style="zoom:50%;" />
+
+学习自：[CSS属性值的计算过程【渡一教育】](https://www.bilibili.com/video/BV1rJ4m1P7X7)
 
 
 
@@ -16856,11 +16958,11 @@ AbortController.signal <font color=FF0000>只读</font>，返回一个 AbortSign
 > const signal = ac.signal;
 > 
 > setTimeoutPromise(1000, 'foobar', { signal })
->   .then(console.log)
->   .catch((err) => {
->    if (err.name === 'AbortError')
->      console.log('The timeout was aborted');
->   });
+>     .then(console.log)
+>     .catch((err) => {
+>        if (err.name === 'AbortError')
+>          console.log('The timeout was aborted');
+>       });
 > 
 > ac.abort();
 > ```

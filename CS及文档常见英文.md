@@ -1744,3 +1744,9 @@
 - **veil** ：面纱
 
   **unveil** ：揭示，揭幕
+  
+- **one-off** ：一次性的
+
+  > You can create **one-off** `group-*` modifiers on the fly by providing your own selector as an [arbitrary value](https://tailwindcss.com/docs/adding-custom-styles#using-arbitrary-values) between square brackets:
+  >
+  > 摘自：[TailwindCSS - doc - Handling Hover, Focus, and Other States # Arbitrary groups](https://tailwindcss.com/docs/hover-focus-and-other-states#arbitrary-groups)
