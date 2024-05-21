@@ -1187,6 +1187,8 @@
   > HotKeys.js is an input capture library with some very special features, it is easy to pick up and use, has a reasonable **footprint** ([~6kB](https://bundlephobia.com/result?p=hotkeys-js)) (gzipped: **`2.8kB`**), and has no dependencies. It should not interfere with any JavaScript libraries or frameworks.
   >
   > 摘自：[Github - Hotkeys # readme](https://github.com/jaywcjlove/hotkeys-js)
+  
+- **infix** ：中缀
 
 ***
 
@@ -1749,4 +1751,14 @@
 
   > You can create **one-off** `group-*` modifiers on the fly by providing your own selector as an [arbitrary value](https://tailwindcss.com/docs/adding-custom-styles#using-arbitrary-values) between square brackets:
   >
-  > 摘自：[TailwindCSS - doc - Handling Hover, Focus, and Other States # Arbitrary groups](https://tailwindcss.com/docs/hover-focus-and-other-states#arbitrary-groups)
+  > 摘自：[TailwindCSS doc - Handling Hover, Focus, and Other States # Arbitrary groups](https://tailwindcss.com/docs/hover-focus-and-other-states#arbitrary-groups)
+  
+- **premature** ：过早的
+
+  > This is a powerful way to avoid **<font color=lightSeaGreen>pre</font>mature** abstraction and the pain points that come with it.
+  >
+  > 摘自：[TailwindCSS doc - Reusing Styles](https://tailwindcss.com/docs/reusing-styles)
+
+- **evit** ：避免
+
+  **in<font color=lightSeaGreen>evit</font>ably** ：不可避免地
