@@ -1197,6 +1197,14 @@
   > DuckDB supports arbitrary and nested correlated subqueries, window functions, **collations**, complex types (arrays, structs), and more.
   >
   > 摘自：[duckdb github repo - readme](https://github.com/duckdb/duckdb)
+  
+- **cat's pyjamas** ：令人赞叹的人或物
+
+  > Requires Node 8 or above, because async and await are the **cat's pyjamas**.
+  >
+  > 摘自：[GitHub - degit - readme](https://github.com/Rich-Harris/degit)
+
+  <img src="https://s2.loli.net/2024/05/24/Bf8hC6dLDzoM94T.png" alt="image-20240524133441772" style="zoom:50%;" />
 
 ***
 
