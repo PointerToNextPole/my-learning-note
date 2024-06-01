@@ -9,7 +9,7 @@
 #### 一些资料
 
 - Git 官方文档：https://git-scm.com/docs 
-- 官方中文书籍：https://git-scm.com/book/zh/v2。
+- 官方中文书籍：https://git-scm.com/book/zh/v2
 - [atlassian 公司出的 git 教程](https://www.atlassian.com/git/tutorials) 要比 Git 官方文档易读很多
 - [猴子都能懂的GIT入门](https://backlog.com/git-tutorial/cn/) 适合入门，及建立知识框架
 - [工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100) 画了一些动图，便于理解

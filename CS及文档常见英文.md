@@ -604,7 +604,9 @@
 
   > It also provides the functionality to create "detached" effects from the component's `setup()` scope or user-defined scope.
 
-  另外，docker 中也有 detached mode。
+  另外，docker 中有 detached mode ，Git 中有 detached HEAD 分离头指针
+
+  <img src="https://s2.loli.net/2024/06/01/mrfWn68x9a4dghI.png" alt="image-20240601150716505" style="zoom:45%;" />
 
 - **pitfall** ：陷阱
 
@@ -1275,7 +1277,7 @@
 
 
 
-#### 前后缀
+### 前后缀
 
 ##### 后缀
 

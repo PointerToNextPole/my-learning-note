@@ -1877,16 +1877,16 @@ function doStuff(arg: Foo | Bar) {
 
 ##### 使用定义的类型保护
 
-JavaScript 并没有内置非常丰富的、运行时的自我检查机制。<font color=LightSeaGreen>当你在使用普通的 JavaScript 对象时</font>（使用结构类型，更有益处），你甚至无法访问 `instanceof` 和 `typeof` 。<font color=fuchsia>在这种情景下，你可以创建 ***用户自定义的类型保护函数***</font>，这仅仅<font color=fuchsia>是一个返回值为类似于`someArgumentName is SomeType` 的函数</font>，如下：
+JavaScript 并没有内置非常丰富的、运行时的自我检查机制。<font color=LightSeaGreen>当你在使用普通的 JavaScript 对象时</font>（使用结构类型，更有益处），你甚至无法访问 `instanceof` 和 `typeof` 。<font color=fuchsia>在这种情景下，你可以创建 ***用户自定义的类型保护函数***</font>，这仅仅<font color=fuchsia>是一个返回值为类似于 `someArgumentName is SomeType` 的函数</font>，如下：
 
-> 👀 注： `is` 有点类似于 Py 中的 `is` 。另外，根据 [TypeScript类型系统（5/5）-类型编程篇 - Ethan Ruan的文章 - 知乎](https://zhuanlan.zhihu.com/p/145679056) 中的说法：`is` 是“断言返回布尔类型”；参考下面的使用，确实是这样。
+> 👀  `is` 有点类似于 Py 中的 `is` 关键字。另外，根据 [TypeScript类型系统（5/5）-类型编程篇 - Ethan Ruan的文章 - 知乎](https://zhuanlan.zhihu.com/p/145679056) 中的说法：`is` 是 “断言返回布尔类型”；参考下面的使用，确实是这样。
 
 ```ts
 // 仅仅是一个 interface
 interface Foo { foo: number; common: string; }
 interface Bar { bar: number; common: string; }
 
-// 用户自己定义的类型保护！👀
+// **用户自己定义的类型保护！**
 function isFoo(arg: Foo | Bar): arg is Foo { // 👀 arg is Foo，返回值是布尔类型
   return (arg as Foo).foo !== undefined;
 }
@@ -1912,7 +1912,7 @@ doStuff({ bar: 123, common: '123' });
 
 🔗 链接：[TypeScript 类型体操通关秘籍](https://juejin.cn/book/7047524421182947366/section)
 
-> 👀 注：除了本小册的内容，神光还写了一些文章比如 [这几个 TypeScript 类型，90% 的人说不出原因](https://juejin.cn/post/7066745410194243597) 、[我读 Typescript 源码的秘诀都在这里了](https://juejin.cn/post/7015567717876908063) 也很不错，且并 **不记得** 小册上包含这些这些内容（也可能是自己还没有读到... ），建议阅读和做笔记。
+> 👀 除了本小册的内容，神光还写了一些文章比如 [这几个 TypeScript 类型，90% 的人说不出原因](https://juejin.cn/post/7066745410194243597) 、[我读 Typescript 源码的秘诀都在这里了](https://juejin.cn/post/7015567717876908063) 也很不错，且并 **不记得** 小册上包含这些这些内容（也可能是自己还没有读到... ），建议阅读和做笔记。
 
 
 
