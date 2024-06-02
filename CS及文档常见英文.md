@@ -366,7 +366,7 @@
 
 - **function**：**运转**，运行 ( verb )
 
-- **story**：**需求**。
+- **story**：需求
 
    > The moral of the **story** is that there are a variety of ways to `hook` into the `compiler`, each one allowing your plugin to run as it sees fit.
    >
@@ -380,23 +380,25 @@
 
 - **predicate**：谓词，比如 TS 中的 “type predicates”（ 类型谓词 ）
 
+   > 👀 另外值得注意的是：不要和 predict 混淆了
+
 - **terminology** ：术语
 
    **term** ：vt. 把…称为，把…叫做
 
-- **coin**：创造（新词语） ( verb )
+- **coin**：verb 创造（新词语）
 
 - **interchangeable**：可交换的
 
-- **variation**：变化 ( noun ) 。
+- **variation**：noun 变化
 
-   **variate**：变量，变数 ( noun )
+   **variate**：noun 变量，变数
 
-   **vary**：变化( verb )
+   **vary**：verb 变化
 
    **variant** ：变体
 
-   > [Variants](https://windicss.org/utilities/general/variants.html) allow you to apply some variations to your existing rules, like the `hover:` variant from Tailwind CSS.
+   > **[Variants](https://windicss.org/utilities/general/variants.html)** allow you to apply some variations to your existing rules, like the `hover:` variant from Tailwind CSS.
    >
    > 摘自：[UnoCSS doc - config - Variants](https://unocss.dev/config/variants)
 
@@ -500,7 +502,9 @@
 
 - **coverage** ：覆盖率
 
-- **revoke** ：撤销。
+- **revoke** ：撤销
+
+   **provoke** ：激怒，激起、引起
 
 - **facilitate** ：促进
 
@@ -1207,6 +1211,10 @@
   > 摘自：[GitHub - degit - readme](https://github.com/Rich-Harris/degit)
 
   <img src="https://s2.loli.net/2024/05/24/Bf8hC6dLDzoM94T.png" alt="image-20240524133441772" style="zoom:50%;" />
+  
+- **exponential** ：指数的
+
+  **exponent** ：指数，幂
 
 ***
 
@@ -1780,3 +1788,17 @@
 - **evit** ：避免
 
   **in<font color=lightSeaGreen>evit</font>ably** ：不可避免地
+  
+- **dialogue** ：对话
+
+- **craft** ：手艺
+
+  **crafted** ：精心制作的
+
+  > ⚠️ 注意不要和 draft “草稿” 混淆
+
+- **breakage** ：破损
+
+  > If it detects **breakages** of the rules, it will automatically skip over just those components or hooks, and continue safely compiling other code.
+  >
+  > 摘自：[React doc - React Compiler # What does the compiler do?](https://react.dev/learn/react-compiler#what-does-the-compiler-do)

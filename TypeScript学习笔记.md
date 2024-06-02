@@ -360,7 +360,7 @@ let fibonacci: number[] = [1, '1', 2, 3, 5];
 
 ##### 数组泛型
 
-我们也<font color=FF0000> 可以使用数组泛型（Array Generic） Array\<elemType> 来表示数组</font>
+我们也<font color=FF0000> 可以使用数组泛型 ( Array Generic ) `Array<elemType>` 来表示数组</font>
 
 ```ts
 let fibonacci: Array<number> = [1, 1, 2, 3, 5];
@@ -379,7 +379,7 @@ let fibonacci: NumberArray = [1, 1, 2, 3, 5];
 
 ##### 类数组
 
-类数组（Array-like Object）不是数组类型
+类数组 ( Array-like Object ) 不是数组类型
 
 ##### any 在数组中的应用
 
@@ -1905,6 +1905,14 @@ function doStuff(arg: Foo | Bar) {
 doStuff({ foo: 123, common: '123' });
 doStuff({ bar: 123, common: '123' });
 ```
+
+关于上面这段代码有点没看懂，于是问了下 GPT，得到如下回复：
+
+<img src="https://s2.loli.net/2024/06/02/jEAK4VOeauhnHoT.png" alt="image-20240602134907863" style="zoom:48%;" />
+
+其中第二段，很好的解答了这个问题：
+
+> `arg is Foo` 告诉 TypeScript 编译器：“如果函数 `isFoo` 返回 `true`，则参数 `arg` 应被视为 `Foo` 类型；如果返回 `false`，则 `arg` 不应被视为 `Foo` 类型”。这样<font color=red>**在编译期间** TypeScript 就能根据 `isFoo` 函数的返回结果，推断出 `arg` 的确切类型，从而能在代码中安全地访问 `arg` 的相应属性和方法</font>。
 
 
 
@@ -6541,17 +6549,19 @@ function handleValue(val: All) {
 
 <font color=fuchsia>TypeScript 的类型系统是 “结构类型系统”</font> ( Structural type system )，任两个以相同结构所描述的值的类型都是等价的（👀 这句话没完全看懂）。<font color=dodgerBlue>与之相反的是</font>，<font color=fuchsia>“标明类型系统” Nominative type system：表示类型若要相等，就必须具有相同的“名字”</font>。
 
-`is` 的作用是：断言返回布尔类型
-
 摘自：[TypeScript类型系统（5/5）-类型编程篇 - Ethan Ruan的文章 - 知乎](https://zhuanlan.zhihu.com/p/145679056)
 
 > 👀 看了下 [关于 TS ，你必须知道的鸭子?类型](https://jishuin.proginn.com/p/763bfbd6f46f) 其中结合 Py 和 JS 再引入 TS 的鸭子类型，（以我当前的水平）没完全看懂... 有空再看下。另外，还提到了 TS 的 `is` 关键字及 类型谓词 ”type predicates“  ，还有“类型保护”
 
 
 
-#### is 关键字
+#### `is` 关键字
+
+>  👀 可以参考下：[[#使用定义的类型保护]] 中 GPT 给出的回复，很好的说明了 `is` 以及类型谓词 type predicate 所起到的作用
 
 // TODO 参见 [TS handbook V2 - narrowing # Using type predicates](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates) 以及 [StackOverflow - What does the `is` keyword do in typescript?](https://stackoverflow.com/questions/40081332/what-does-the-is-keyword-do-in-typescript)
+
+
 
 
 
