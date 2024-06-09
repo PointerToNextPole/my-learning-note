@@ -222,7 +222,11 @@
    >
    > 这里翻译成“包含”更妥帖些。
 
-- **anonymous**：匿名的。anonymity：匿名 ( noun )。deanonymize：匿名化
+- **anonymous**：匿名的
+
+   **anonymity**：匿名 ( noun )
+
+   deanonymize：匿名化
 
 - **boilerplate**：样板
 
@@ -1802,3 +1806,11 @@
   > If it detects **breakages** of the rules, it will automatically skip over just those components or hooks, and continue safely compiling other code.
   >
   > 摘自：[React doc - React Compiler # What does the compiler do?](https://react.dev/learn/react-compiler#what-does-the-compiler-do)
+  
+- **sore** ：痛
+
+  **sore point** ：痛点
+  
+- **overhaul** ：彻底检修
+
+- **punctuation** ：标点符号
