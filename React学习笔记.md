@@ -426,6 +426,8 @@ export default function Form() {
 }
 ```
 
+> 💡memo + useCallback & useMemo 是搭配使用的，少了任何一方，都会使优化失效。
+
 ##### Useful Types
 
 There is quite an expansive set of types which come from the `@types/react` package, it is worth a read when you feel comfortable with how React and TypeScript interact. You can find them [in React’s folder in DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/react/index.d.ts). We will cover a few of the more common types here.
