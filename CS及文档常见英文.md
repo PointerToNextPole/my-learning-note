@@ -58,7 +58,9 @@
 
 - **nest** ：嵌套，一般用形容词 nested ，嵌套的
 
-- **recursion**：递归。**recursive**：递归的
+- **recursion** ：递归
+
+   **recursive** ：递归的
 
 - **i.e.** : *i.e.* is an abbreviation for the phrase ***id est***, which means **"that is"** .
 
@@ -100,17 +102,17 @@
 
    > 💡 另外，React 也有 `useImperativeHandle` 的 hooks
 
-- **arithmetic**：算术
+- **arithmetic** ：算术
 
-- **in lieu of**：替代
+- **in lieu of** ：替代
 
-- **omit**：删除、省略
+- **omit** ：删除、省略
 
 - **summation**：总和。sum 的完整形式？
 
-- **interchangable**：可交换的
+- **interchangable** ：可交换的
 
-- **precedent**：先例
+- **precedent** ：先例
 
    **precedence** ：优先地位，优先级
 
@@ -1814,3 +1816,27 @@
 - **overhaul** ：彻底检修
 
 - **punctuation** ：标点符号
+
+- **take this with a grain of salt** ：对此持谨慎态度
+
+  > Note: At scale, there are performance reasons to prefer interfaces ([see official Microsoft notes on this](https://github.com/microsoft/TypeScript/wiki/Performance#preferring-interfaces-over-intersections)) but [**take this with a grain of salt**](https://news.ycombinator.com/item?id=25201887)
+  >
+  > 摘自：[React TypeScript Cheatsheet - Typing Component Props # More Advice](https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/basic_type_example/#more-advice)
+
+- **nuanced** ：微妙，细微
+
+  > It's a **nuanced** topic, don't get too hung up on it.
+  >
+  > 摘自：[React TypeScript Cheatsheet - Typing Component Props # More Advice](https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/basic_type_example/#more-advice)
+
+- **grunt work** ：苦活
+
+- **streamlined** ：简化的，流线型的
+
+- **swell** ：膨胀
+
+- **pile on** ：堆积
+
+- **entangle** ：纠缠，缠住
+
+- **overwhelm** ：压倒
