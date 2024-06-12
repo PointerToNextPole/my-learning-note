@@ -1624,6 +1624,8 @@ After rendering (calling) your components, React will modify the DOM.
 
 #### State as a Snapshot
 
+> 💡 相较 snapshot 的比喻，更接近原理的说法是：因为 `setState(newState)` 这里形成了闭包；而如果使用 `setState(state => stateProcess)` 则不会产生闭包
+
 State variables might look like regular JavaScript variables that you can read and write to. However, <font color=fuchsia>state behaves more like a snapshot</font>. <font color=fuchsia>Setting it **does not change the state variable you already have**</font>, but <font color=red>instead **triggers** a re-render</font>.
 
 > 👀 关于这里的 “setting it” 是指 `setState` ，而 “does not change the state” ，是因为要进行 diff，oldState 要和 newState 进行对比，所以自然不能覆盖掉；这里的标题也是解释的一部分 “ state 就像快照”，而快照是不可能覆盖或者修改的。另外，这里的 “trigger” 也是 trigger -> render -> commit 中的第一步。
