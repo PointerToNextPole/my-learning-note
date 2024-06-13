@@ -1624,7 +1624,13 @@ After rendering (calling) your components, React will modify the DOM.
 
 #### State as a Snapshot
 
-> 💡 相较 snapshot 的比喻，更接近原理的说法是：因为 `setState(newState)` 这里形成了闭包；而如果使用 `setState(state => stateProcess)` 则不会产生闭包
+> 💡 补充
+>
+> 相较 snapshot 的比喻，更接近原理的说法是：因为 `setState(newState)` 这里形成了闭包；而如果使用 `setState(state => stateProcess)` 则不会产生闭包
+>
+> 另外，问了下 Copilot Chat ，关于为什么前者会产生闭包，而后者不会：
+>
+> <img src="https://s2.loli.net/2024/06/13/1zljgYh5oprfVs3.png" alt="image-20240613235330037" style="zoom:50%;" />
 
 State variables might look like regular JavaScript variables that you can read and write to. However, <font color=fuchsia>state behaves more like a snapshot</font>. <font color=fuchsia>Setting it **does not change the state variable you already have**</font>, but <font color=red>instead **triggers** a re-render</font>.
 
