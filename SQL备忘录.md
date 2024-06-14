@@ -2,6 +2,12 @@
 
 
 
+#### cheat sheet
+
+![](https://s2.loli.net/2024/06/14/otczfC3An5vL8GN.jpg)
+
+
+
 #### **SQL通配符**
 
 | 通配符                           |            描述            |
