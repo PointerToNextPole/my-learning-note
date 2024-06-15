@@ -1046,7 +1046,7 @@ In computer science (and especially the world of functional programming), <font 
 
 - **Same inputs, same output.** Given the same inputs, a pure function should always return the same result.
 
-  > 👀 幂等
+  > 👀 即：幂等
 
 You might already be familiar with one example of pure functions: formulas in math.
 

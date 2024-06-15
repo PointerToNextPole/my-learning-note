@@ -6,6 +6,8 @@
 
 ![](https://s2.loli.net/2024/06/14/otczfC3An5vL8GN.jpg)
 
+<img src="https://s2.loli.net/2024/06/15/qyiB4hrfIwNoRHE.jpg" style="zoom:60%;" />
+
 
 
 #### **SQL通配符**
