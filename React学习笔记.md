@@ -7565,6 +7565,42 @@ StrictMode 是一个用来突出显示应用程序中潜在问题的工具。与
 
 
 
+## 《React 通关秘籍》笔记
+
+React 函数组件默认返回值就是 `JSX.Element` 。
+
+看下 JSX.Element 的类型定义：
+
+```react
+const content: JSX.Element = <div>aaa</div>
+```
+
+<img src="https://s2.loli.net/2024/06/22/aVvW5wGhB4JKofe.png" style="zoom:60%;" />
+
+可见，就是 `React.ReactElement` 。
+
+`ReactElement` 就是 jsx 类型，但如果传入 null、number 等就报错了：
+
+<img src="https://s2.loli.net/2024/06/22/Z59Hebpk3m21Fd8.png" alt="img" style="zoom:50%;" />
+
+<img src="https://s2.loli.net/2024/06/22/NghUmRixMtA58nB.png" alt="img" style="zoom:55%;" />
+
+如果有的时候就是 number、null ，换成 `ReactNode` 即可。
+
+看下它的类型定义：
+
+<img src="https://s2.loli.net/2024/06/22/Xa7Dlsf9ReBFZPG.png" alt="img" style="zoom:55%;" />
+
+ReactNode 包含 `ReactElement`、或者 number、string、null、boolean 等可以写在 JSX 里的类型。
+
+**这三个类型的关系 ReactNode > ReactElement > JSX.Element**。
+
+> 👀 这里的关系有点类似于 DOM 中，Element 继承自 Node
+
+所以，一般情况下，如果你想描述一个参数接收 JSX 类型，就用 ReactNode 就行。
+
+
+
 ## 其他笔记
 
 
