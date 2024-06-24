@@ -7595,7 +7595,7 @@ ReactNode 包含 `ReactElement`、或者 number、string、null、boolean 等可
 
 **这三个类型的关系 ReactNode > ReactElement > JSX.Element**。
 
-> 👀 这里的关系有点类似于 DOM 中，Element 继承自 Node
+> 👀 这里的关系有点类似于 DOM 中，Element 继承自 Node （ Node 继承自 EventTarget ）
 
 所以，一般情况下，如果你想描述一个参数接收 JSX 类型，就用 ReactNode 就行。
 

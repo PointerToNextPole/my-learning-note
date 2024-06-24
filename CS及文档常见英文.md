@@ -1403,7 +1403,7 @@
 
 - **necessitate** ：vt. 使成为必要
 
-- **embark** ：v. 上船;装船;开始
+- **embark** ：v. 上船，装船，开始
 
 - **nod** ：点头
 
@@ -1482,6 +1482,10 @@
 - **premature** ：过早的
 
   > Don’t optimize prematurely!
+
+  > This is a powerful way to avoid **<font color=lightSeaGreen>pre</font>mature** abstraction and the pain points that come with it.
+  >
+  > 摘自：[TailwindCSS doc - Reusing Styles](https://tailwindcss.com/docs/reusing-styles)
 
 - **substitute** ：替代
 
@@ -1785,12 +1789,6 @@
   >
   > 摘自：[TailwindCSS doc - Handling Hover, Focus, and Other States # Arbitrary groups](https://tailwindcss.com/docs/hover-focus-and-other-states#arbitrary-groups)
   
-- **premature** ：过早的
-
-  > This is a powerful way to avoid **<font color=lightSeaGreen>pre</font>mature** abstraction and the pain points that come with it.
-  >
-  > 摘自：[TailwindCSS doc - Reusing Styles](https://tailwindcss.com/docs/reusing-styles)
-
 - **evit** ：避免
 
   **in<font color=lightSeaGreen>evit</font>ably** ：不可避免地
@@ -1840,3 +1838,5 @@
 - **entangle** ：纠缠，缠住
 
 - **overwhelm** ：压倒
+
+- **unwieldy** ：笨手笨脚的
