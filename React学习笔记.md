@@ -7715,3 +7715,21 @@ We can also use [`react-intersection-observer`](https://www.npmjs.com/package/re
 // TODO
 
 [React Best Practices – Tips for Writing Better React Code in 2022](https://freecodecamp.org/news/best-practices-for-react/)
+
+
+
+#### 合成事件
+
+> Your event handlers will <font color=lightSeaGreen>**receive a *React event object***</font>. <font color=red>It is also sometimes known as a “synthetic event”</font>.
+>
+> ```react
+> <button onClick={e => {
+>   console.log(e); // React event object
+> }} />
+> ```
+>
+> It <font color=red>conforms to the same standard as the underlying DOM events</font>, but <font color=lightSeaGreen>**fixes some browser inconsistencies**</font>.
+>
+> 摘自：[react.dev - Common components (e.g. `<div>`) # React event object](https://react.dev/reference/react-dom/components/common#react-event-object)
+
+<img src="https://s2.loli.net/2024/06/25/FjP6YnWzbI7ax8h.png" alt="image-20240625180718093" style="zoom:50%;" />
