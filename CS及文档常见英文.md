@@ -1840,3 +1840,5 @@
 - **overwhelm** ：压倒
 
 - **unwieldy** ：笨手笨脚的
+
+- **schematic** ：示意图
