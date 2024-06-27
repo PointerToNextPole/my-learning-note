@@ -762,13 +762,17 @@ V8 引擎诞生的使命就是要在速度和内存回收上进行革命。JavaS
 
 <font color=dodgerBlue>**副作用 ( side-effect ) 是指让一个函数变得不再纯净 ( pure ) 的东西**</font>。
 
-<font color=fuchsia size=4>**一个纯净的函数，无论何时何地 ( any time any wherer ) 执行，都会得到稳定的结果**</font>（👀 即，是“幂等”的），这对保障程序的稳定性和性能都有极大的帮助。<font color=FF0000>反过来：如果一个函数不能 any time any wherer 得到稳定的结果，那这个函数就不是纯净的，就是有副作用了</font>。
+<font color=fuchsia>**一个纯净的函数，无论何时何地 ( any time any wherer ) 执行，都会得到稳定的结果**</font>（👀 即，是 “幂等” 的），这对保障程序的稳定性和性能都有极大的帮助。<font color=FF0000>反过来：如果一个函数不能 any time any wherer 得到稳定的结果，那这个函数就不是纯净的，就是有副作用了</font>。
 
-<font color=dodgerBlue>**常见副作用包括**</font>：<mark style="background: lightpink">对外部可变数据或变量的修改</mark>，<mark>外部接口的调用尤其是IO</mark>，<mark style="background: Aquamarine">异常的抛出</mark>。因为<font color=FF0000>它们都会让函数的执行不再稳定，要么会导致函数输出变化，要么导致函数报错</font>。 <font color=dodgerBlue>**举一些例子**</font>：
+<font color=dodgerBlue>常见副作用包括</font>：<font color=red>**对外部可变数据或变量的修改，外部接口的调用尤其是IO ，异常的抛出**</font>。因为<font color=FF0000>它们都会让函数的执行不再稳定，要么会导致函数输出变化，要么导致函数报错</font>。 <font color=dodgerBlue>举一些例子</font>：
 
-- <mark style="background: lightpink">对外部可变数据或变量的修改</mark>：全局变量 / 闭包变量 / dom对象 / bom对象 的读写操作
-- <mark>外部接口的调用尤其是 IO</mark> ：dom对象 / bom对象的方法调用，xhr / fetch这样的网络IO，console / LocalStorage这样的 磁盘IO
-- <mark style="background: Aquamarine">异常的抛出</mark>：函数中的某些代码可能会抛出异常或者执行出错
+- **对外部可变数据或变量的修改** ：全局变量 / 闭包变量 / dom对象 / bom对象 的读写操作
+
+- **外部接口的调用尤其是 IO** ：dom对象 / bom对象的方法调用，xhr / fetch这样的网络IO，console / LocalStorage 这样的 磁盘IO
+
+  > 👀 关于 console 为什么是不纯的，可以参考下 [WeakSet的垃圾回收问题【渡一教育】](https://www.bilibili.com/video/BV1Ux4y147nx) ，从 GC 的方面说明了 console 为什么会带来异常：DevTool 的 Console 存在引用，会影响回收
+
+- **异常的抛出** ：函数中的某些代码可能会抛出异常或者执行出错
 
 通俗的来讲就是：不能相信除了自己以外的任何人。
 
@@ -796,7 +800,7 @@ function doWork() {
 - 稳定 -> 纯 ❌
 - 不稳定 -> 不纯 ✅
 
-<font color=dodgerBlue>稳定不一定是纯的，但是不纯一定是不稳定的</font>。<font color=red>因此，判定我们的前端程序是否真的稳定，它的依据不是表面上是否稳定，而是内在是否纯净</font>。<font color=fuchsia>**根据 FP 的定义，纯净的函数只适合用来做计算**</font>；<font color=red>但是计算密集型工作正好不是前端程序擅长的工作</font>。相反，<font color=fuchsia><font size=4>**前端程序几乎都是不纯净的**</font>，因为像 IO、DOM、BOM等我们极度依赖的平台接口，全部都是具有副作用的</font>。
+<font color=dodgerBlue>稳定不一定是纯的，但是不纯一定是不稳定的</font>。<font color=red>因此，判定我们的前端程序是否真的稳定，它的依据不是表面上是否稳定，而是内在是否纯净</font>。<font color=fuchsia>**根据 FP 的定义，纯净的函数只适合用来做计算**</font>；<font color=red>但是计算密集型工作正好不是前端程序擅长的工作</font>。相反，<font color=fuchsia>**前端程序几乎都是不纯净的**，因为像 IO、DOM、BOM等我们极度依赖的平台接口，全部都是具有副作用的</font>。
 
 所以，前端程序或者说任何具有实际应用价值的程序几乎都是不稳定的，我们一定要认识到这一点，只有这样我们才能理解 RxJS / Redux-saga / Redux-thunk 这些东西存在的意义。
 

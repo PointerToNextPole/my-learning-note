@@ -4944,7 +4944,7 @@ Here is a list of web platform APIs Deno implements:
 
 此外，还有数据库链接对象 DataSource，配置对象 Config 等等。
 
-这些对象有着错综复杂的关系：
+###### 这些对象有着错综复杂的关系
 
 Controller 依赖了 Service 实现业务逻辑，Service 依赖了 Repository 来做增删改查，Repository 依赖 DataSource 来建立连接，DataSource 又需要从 Config 对象拿到用户名密码等信息。
 
@@ -4962,9 +4962,41 @@ const controller = new Controller(service);
 
 在应用初始化的时候，需要理清依赖的先后关系，创建一大堆对象组合起来，还要保证不要多次 new，很麻烦；这是一个后端系统都有的痛点问题。
 
-解决这个痛点的方式就是 IoC（Inverse of Control）。
+解决这个痛点的方式就是 IoC ( Inverse of Control )。
 
 // TODO
+
+##### `@Injectable` 和 `@Controller`
+
+###### `@Injectable`
+
+声明 `@Injectable` 代表对应的 class 可注入，<font color=fuchsia>nest 就会把 **它的对象** 放到 IoC 容器里</font>。另外 `@Injectable` 也表示可以注入，因为 Service 是可以被注入也是可以注入到别的对象的，所以用 `@Injectable` 声明。
+
+示例如下：
+
+<img src="https://s2.loli.net/2024/06/27/nsRjQ68T4MALDdv.png" alt="image-20240627005148133" style="zoom:48%;" />
+
+###### `@Controller`
+
+声明 `@Controller` 代表对应的 class 可以被注入，<font color=red>nest 会把它放到 IoC 容器里</font>
+
+示例如下：
+
+这里是 `AppController` 的构造器参数依赖了 `AppService` 。
+
+<img src="https://s2.loli.net/2024/06/27/3qY75ug98XThzxl.png" alt="image-20240627005232272" style="zoom:48%;" />
+
+另外也可以使用 `@Inject()` 通过属性的方式声明依赖
+
+> ⚠️ 注意是 `@Inject()` 不是 `@Injectable()`
+
+<img src="https://s2.loli.net/2024/06/27/SCJz6WsFl2p4Lwq.png" alt="image-20240627005939007" style="zoom:48%;" />
+
+<font color=fuchsia>**前者是构造器注入，后者是属性注入，两种都可以**</font>。
+
+Controller 只需要被注入，所以 nest 单独给它加了 `@Controller` 的装饰器
+
+> 👀 关于 Service 既可以注入，也可以被注入；Controller 只能被注入。我的理解是，可以参考 [[#这些对象有着错综复杂的关系]] 中的依赖关系：Controller 依赖于 Service，而 Service 除了被 Controller 依赖，也依赖于 Repository
 
 ##### Nest IoC 总结
 
@@ -4989,6 +5021,8 @@ Nest 实现了 IOC 容器，会从入口模块开始扫描，分析 Module 之�
 #### Nest 包含的生命周期
 
 ![lifecycle-events](https://s2.loli.net/2023/05/28/9QfLudtqEwJ2WhN.jpg)
+
+图片来自：[Nest doc - Lifecycle Events # Lifecycle sequence](https://docs.nestjs.com/fundamentals/lifecycle-events#lifecycle-sequence)
 
 Nest 在启动的时候，会递归解析 Module 依赖，扫描其中的 provider、controller，注入它的依赖。全部解析完后，会监听网络端口，开始处理请求。这个过程中，Nest 暴露了一些生命周期方法
 

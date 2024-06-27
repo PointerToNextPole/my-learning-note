@@ -2,11 +2,13 @@
 
 
 
-## <font color=FF0000>**@Deprecated**</font>
+#### @Deprecated
 
 标注在某个函数上方表示该代码将要过时（比如在下个版本将会被删掉），如果调用该方法将会出现<mark>中划线和警告</mark>，这时如果一定要用且不希望其产生警告，需要在使用时在上`@SuppressWarnings("deprecation")`表示希望忽略`deprecated`这个警告，当然前提是必须有一个被注解`@Deprecated`的函数
 
-## <font color=FF0000>Java注解的分类</font>
+
+
+#### Java注解的分类
 
 按照运行机制划分
 
@@ -22,9 +24,11 @@
 
 关于元注解可以参考下面的讲解，以及博文：[**JAVA核心知识点--元注解详解**](https://blog.csdn.net/pengjunlee/article/details/79683621)
 
-## <font color=FF0000>自定义注解的语法要求</font>
 
-<mark>**使用`@interface`关键字以定义注解**</mark>，示例如下：
+
+#### 自定义注解的语法要求
+
+使用 `@interface` 关键字以定义注解，示例如下：
 
 ```java
 /**
@@ -51,7 +55,9 @@ public @interface Description{  //@interface表示当前定义的时注解
 }
 ```
 
-## <font color=FF0000>使用自定义注解</font>
+
+
+#### 使用自定义注解
 
 使用自定义注解语法：
 
@@ -64,17 +70,19 @@ public String eyeColor(){
 }
 ```
 
-## <font color=FF0000>**解析注解**</font>
+
+
+#### 解析注解
 
 **概念：**通过反射获取类，函数或成员上的<font color=FF0000>运行时</font>注解信息，从而实现动态控制程序运行的逻辑
 
 
 
-## <font color=FF0000>**Spring MVC三层架构注解详解@Controller、@Service和@Repository**</font>
+#### Spring MVC三层架构注解详解@Controller、@Service和@Repository
 
 <mark>Spring MVC采用经典的三层分层控制结构</mark>，在<mark style=background-color:red>持久层</mark>，<mark style=background-color:lime>业务层</mark>和<mark style=background-color:aqua>控制层</mark>分别采用<mark style=background-color:red>@Repository</mark>、<mark style=background-color:lime>@Service</mark>、<mark style=background-color:aqua>@Controller</mark>对分层中的类进行注解，而@Component对那些比较中立的类进行注解
 
-以上摘取自：[**Spring MVC三层架构注解详解@Controller、@Service和@Repository**](https://blog.csdn.net/qq_41357573/article/details/84454502)，<font color=FF0000>**下面还有详细讲解，由于事件原因未仔细钻研**</font>。</font>
+以上摘取自：[**Spring MVC三层架构注解详解@Controller、@Service和@Repository**](https://blog.csdn.net/qq_41357573/article/details/84454502)，<font color=FF0000>**下面还有详细讲解，由于事件原因未仔细钻研**</font>。
 
 #### <font color=FF0000>补充（相当重要）：</font>
 
@@ -88,16 +96,23 @@ public String eyeColor(){
 
 摘自：[SpringFramework5.0 @Indexed注解 简单解析](https://www.jianshu.com/p/f61f2e020a2f)
 
-## <font color=FF0000>**组件（@Component）**</font>
-**什么是组件**
 
-个人的理解，<mark>组件是为了实现某个功能而整合在一起的方法及数据的集合</mark>，为了描述组件的特征组件中还包含一些描述信息，诸如组件的名称或ID，提供哪些接口，版本信息等。<mark>通常组件是以二进制文件提供的</mark>，但也可以以源代码的形式提供，只是这种情况不多见。</br>
-**组件和类的关系**
+
+#### 组件（@Component）
+
+##### 什么是组件
+
+个人的理解，<mark>组件是为了实现某个功能而整合在一起的方法及数据的集合</mark>，为了描述组件的特征组件中还包含一些描述信息，诸如组件的名称或ID，提供哪些接口，版本信息等。<mark>通常组件是以二进制文件提供的</mark>，但也可以以源代码的形式提供，只是这种情况不多见。
+
+##### 组件和类的关系
+
 <mark>组件可以理解为类的超集，它可能包含若干个类，当然也可以只有一个类；此外组件往往需要提供一些额外的描述信息，供组件管理器管理，而类缺乏这些信息。类加上这些必要的信息，基本上就差不多等同于组件了。</mark>不过，通常组件是以二进制形式发布，而<mark>类是源代码层面的东西</mark>。
 以上摘取自：[**组件、接口、类、对象之间的关系**](http://www.cppblog.com/cforce/archive/2012/07/06/181972.aspx)
 
 
-## <font color=FF0000>**@Autowired**</font>
+
+#### @Autowired
+
 @Autowired 注释，<mark>它可以对<font color=FF0000>**类成员变量、方法及构造函数**</font>进行标注，完成<font color=FF0000>**自动装配**</font>的工作</mark>。 <font color=FF0000>**通过 @Autowired的使用来消除 set ，get方法**</font>。<mark>在使用@Autowired之前，我们对一个**bean**配置起属性时，是这时用的</mark>
 
 ```xml
@@ -116,7 +131,9 @@ public String eyeColor(){
 
 关于的区别详见[**知乎 - @Autowired和@Resource的区别是什么？**](https://www.zhihu.com/question/39356740)
 
-## <font color=FF0000>**@RunWith**</font>
+
+
+#### @RunWith
 
 **@RunWith的<font color=FF0000>作用</font>就是一个运行器**，它是JUnit的注解，提供一个测试运行器来指导JUnit如何运行。
 
@@ -126,13 +143,13 @@ public String eyeColor(){
 @RunWith(JUnit4.class)  //就是指用JUnit4来运行
 ```
 
-## <font color=FF0000>**@Bean**</font>
+#### @Bean
 
 @Bean是一个<mark>方法级别上的注解</mark>，<mark>主要用在@Configuration注解的类里，也可以用在@Component注解的类里</mark>。添加的bean的id为方法名
 
 
 
-## <font color=FF0000>**@Qualifier**</font>
+#### @Qualifier
 
 @Qualifier作用为限定描述符，用于细粒度选择候选者，也就是注入的时候可能发现有多个可注入对象。
 
@@ -140,7 +157,7 @@ public String eyeColor(){
 
 
 
-## <font color=FF0000>**@Configuration**</font>
+#### @Configuration
 
 @Configuration用于定义<font color=FF0000>**配置类**</font>，**<mark style=background-color:fuchsia>可用于替换xml配置文件</mark>**，被注解的类内部包含有一个或多个被@Bean注解的方法。这些方法将会被**AnnotationConfigApplicationContext**或**AnnotationConfigWebApplicationContext**类进行扫描，并用于构建bean定义，初始化Spring容器。
  @Configuration相当于`<beans></beans>`
@@ -152,7 +169,7 @@ public String eyeColor(){
 
 摘自：[Spring注解 @Configuration](https://www.cnblogs.com/lvbinbin2yujie/p/10279416.html)
 
-#### @Configuration注解的配置类有如下要求：
+##### @Configuration注解的配置类有如下要求
 
 - @Configuration不可以是final类型；
 - @Configuration不可以是匿名类；
@@ -160,7 +177,7 @@ public String eyeColor(){
 
 摘自：[@Configuration的使用和作用](https://blog.csdn.net/BinshaoNo_1/article/details/85005935)
 
-#### 与@Component区别
+##### 与@Component区别
 
 `@Component`注解也会当做配置类，但是并<mark>不会为其生成CGLIB代理Class</mark>，所以<mark>执行了两次new操作</mark>，所以<mark>是不同的对象</mark>。
 
@@ -170,11 +187,11 @@ public String eyeColor(){
 
 
 
-## <font color=FF0000>@Value</font>
+#### @Value
 
 `@Value`用于不通过配置文件的注入属性
 
-#### 通过@Value将外部的值动态注入到Bean中，使用的情况有：
+##### 通过@Value将外部的值动态注入到Bean中，使用的情况有：
 
 - 注入普通字符串
 
@@ -218,7 +235,7 @@ public String eyeColor(){
   private Resource testUrl; // 注入URL资源
   ```
 
-#### 通过配置文件的注入属性的情况
+##### 通过配置文件的注入属性的情况
 
 通过@Value将外部配置文件的值动态注入到Bean中。配置文件主要有两类：
 
@@ -229,7 +246,7 @@ public String eyeColor(){
 
 
 
-## <font color=FF0000>@Indexed</font>
+#### @Indexed
 
 SpringFramework5.0引入了一个注解`@Indexed` ，它可以为Spring的**模式注解**添加索引，以提升应用启动性能。
 
@@ -266,7 +283,7 @@ public class HelloController {}
 
 
 
-## <font color=FF0000>**@Param**</font>
+#### @Param
 
 @Param是<font color=FF0000>**MyBatis**</font>所<font color=FF0000>**提供**</font>的(org.apache.ibatis.annotations.Param)，作为<font color=FF0000>**Dao层的注解**</font>，<mark>作用是用于传递参数，从而可以与SQL中的的字段名相对应</mark>，一般在2<=参数数<=5时使用最佳。
 
@@ -274,7 +291,7 @@ public class HelloController {}
 
 
 
-## <font color=FF0000>**Properties文件**</font>
+#### Properties文件
 
 - properties文件是一个文本文件
 - properties文件的语法有两种，一种是注释，一种是配置属性
@@ -287,7 +304,9 @@ public class HelloController {}
 
 
 
-## <font color=FF0000>**Spring AOP**</font>
+## Spring AOP
+
+
 
 #### Spring AOP的几个概念
 
@@ -315,7 +334,9 @@ public class HelloController {}
 
 摘自：[Spring AOP详解一文搞懂@Aspect、@Pointcut、@Before、@Around、@After、@AfterReturning、@AfterThrowing](https://blog.csdn.net/u011047968/article/details/104402079)
 
-#### **实现AOP的切面主要有以下几个要素：**
+
+
+#### 实现AOP的切面主要有以下几个要素
 
 - <font color=FF0000>**使用**</font>`@Aspect`<font color=FF0000>**注解将一个java类定义为切面类**</font>
 
@@ -346,11 +367,11 @@ public class HelloController {}
 
   摘自：[理解AOP@Before,@After,@AfterReturning,@AfterThrowing执行顺序](https://www.iteye.com/blog/jaychang-2350743)
 
-#### 特别补充：
+#### 补充
 
 #### @Around
 
-**@Around的作用**
+##### @Around的作用
 
 - 既可以<mark>在目标方法<font color=FF0000>之前</font>织入</mark>增强动作，也可以<mark>在执行目标方法<font color=FF0000>之后</font>织入</mark>增强动作；
 - <mark>可以决定目标方法在<font color=FF0000>什么时候执行</font>，<font color=FF0000>如何执行</font>，甚至<font color=FF0000>可以完全阻止目标目标方法的执行</font></mark>；
@@ -362,7 +383,7 @@ public class HelloController {}
 
 #### @Pointcut
 
-**表达式标签**
+##### 表达式标签
 
 - execution()：用于<mark>匹配<font color=FF0000>**方法**</font></mark>执行的连接点
 
@@ -475,7 +496,7 @@ public class HelloController {}
 
 
 
-## <font color=FF0000>@ConfigurationProperties</font>
+#### @ConfigurationProperties
 
 在编写项目代码时，我们要求更灵活的配置，更好的模块化整合。在 Spring Boot 项目中，为满足以上要求，我们将大量的参数配置在 application.properties 或 application.yml 文件中，通过 `@ConfigurationProperties` 注解，我们可以方便的获取这些参数值
 
@@ -507,7 +528,7 @@ public class MailModuleProperties {
 
 #### 激活@ConfigurationProperties
 
-**目的：**
+##### 目的
 
 我们需要让 Spring 知道我们的 @ConfigurationProperties 类存在，以便将其加载到应用程序上下文中。有如下方法：
 
@@ -543,7 +564,7 @@ public class MailModuleProperties {
   }
   ```
 
-**激活一个 `@ConfigurationProperties` 类的最佳方式是什么？**
+##### 激活一个 @ConfigurationProperties 类的最佳方式是什么？
 
 所有上述方法都同样有效。然而，<mark>我建议模块化你的应用程序，并让每个模块提供自己的`@ConfigurationProperties` 类，只提供它需要的属性</mark>，就像我们在上面的代码中对邮件模块所做的那样。这使得在不影响其他模块的情况下重构一个模块中的属性变得容易。
 
@@ -555,7 +576,7 @@ public class MailModuleProperties {
 
 
 
-## <font color=FF0000>Spring容器</font>
+#### Spring 容器
 
 <mark>Spring容器可以理解为生产对象（Object）的地方</mark>，在这里容器不只是帮我们创建了对象那么简单，<mark>它负责了对象的整个生命周期--创建、装配、销毁</mark>。而这里<mark>对象的创建管理的控制权都交给了Spring容器，所以这是一种控制权的反转，称为IOC容器</mark>，而这里IOC容器不只是Spring才有，很多框架也都有该技术。
 
@@ -563,11 +584,11 @@ public class MailModuleProperties {
 
 
 
-## <font color=FF0000>BeanFactory和ApplicationContext的区别</font>
+#### BeanFactory和ApplicationContext的区别
 
-<mark>**BeanFactory和ApplicationContext是Spring的两大核心接口**</mark>
+##### BeanFactory和ApplicationContext是Spring的两大核心接口
 
-**BeanFactory：**
+###### BeanFactory
 
 是Spring里面最低层的接口，提供了最简单的容器的功能，只提供了实例化对象和拿对象的功能；
 
@@ -575,7 +596,7 @@ public class MailModuleProperties {
 
 <img src="https://s1.ax1x.com/2020/08/16/dV2XQA.jpg" alt="img" style="zoom:75%;" />
 
-**ApplicationContext：**
+###### ApplicationContext
 
 应用上下文，<mark>**ApplicationContext是BeanFactory的子接口**</mark>，它是Spring的更高级的容器，提供了更多的有用的功能：
 
@@ -605,94 +626,94 @@ public class MailModuleProperties {
 | AnnotationConfigWebApplicationContext |            专门为web应用准备的，适用于注解方式。             |
 |       XmlWebApplicationContext        | 从web应用下的一个或多个xml配置文件加载上下文定义，适用于xml配置方式。 |
 
-**Spring具有非常大的灵活性，它提供了三种主要的装配机制：**
+##### Spring具有非常大的灵活性，它提供了三种主要的装配机制
 
-- 在XML中进行显示配置
+###### 在XML中进行显示配置
 
-  ```xml
-  <?xml version="1.0" encoding="UTF-8"?>
-  <beans xmlns="http://www.springframework.org/schema/beans"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-       <!--若没写id，则默认为com.test.Man#0,#0为一个计数形式-->
-      <bean id="man" class="com.test.Man"></bean>
-  </beans>
-  ```
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+     <!--若没写id，则默认为com.test.Man#0,#0为一个计数形式-->
+    <bean id="man" class="com.test.Man"></bean>
+</beans>
+```
 
-  ```java
-  public class Test {
-      public static void main(String[] args) {
-          //加载项目中的spring配置文件到容器
-          ApplicationContext context = new ClassPathXmlApplicationContext("resouces/applicationContext.xml");
-          //加载系统盘中的配置文件到容器
-          //ApplicationContext context = new FileSystemXmlApplicationContext("E:/Spring/applicationContext.xml");
-          //从容器中获取对象实例
-          Man man = context.getBean(Man.class);
-          man.driveCar();
-      }
-  }
-  ```
+```java
+public class Test {
+    public static void main(String[] args) {
+        //加载项目中的spring配置文件到容器
+        ApplicationContext context = new ClassPathXmlApplicationContext("resouces/applicationContext.xml");
+        //加载系统盘中的配置文件到容器
+        //ApplicationContext context = new FileSystemXmlApplicationContext("E:/Spring/applicationContext.xml");
+        //从容器中获取对象实例
+        Man man = context.getBean(Man.class);
+        man.driveCar();
+    }
+}
+```
 
-- 在Java中进行显示配置
+###### 在Java中进行显示配置
 
-  ```java
-  //同xml一样描述bean以及bean之间的依赖关系
-  @Configuration
-  public class ManConfig {
-      @Bean
-      public Man man() {
-          return new Man(car());
-      }
-      @Bean
-      public Car car() {
-          return new QQCar();
-      }
-  }
-  ```
+```java
+//同xml一样描述bean以及bean之间的依赖关系
+@Configuration
+public class ManConfig {
+    @Bean
+    public Man man() {
+        return new Man(car());
+    }
+    @Bean
+    public Car car() {
+        return new QQCar();
+    }
+}
+```
 
-  ```java
-  public class Test {
-      public static void main(String[] args) {
-          //从java注解的配置中加载配置到容器
-          ApplicationContext context = new AnnotationConfigApplicationContext(ManConfig.class);
-          //从容器中获取对象实例
-          Man man = context.getBean(Man.class);
-          man.driveCar();
-      }
-  }
-  ```
+```java
+public class Test {
+    public static void main(String[] args) {
+        //从java注解的配置中加载配置到容器
+        ApplicationContext context = new AnnotationConfigApplicationContext(ManConfig.class);
+        //从容器中获取对象实例
+        Man man = context.getBean(Man.class);
+        man.driveCar();
+    }
+}
+```
 
-- 隐式的bean发现机制和自动装配
+###### 隐式的bean发现机制和自动装配
 
-  - 组件扫描（component scanning）：Spring会自动发现应用上下文中所创建的bean。
-  - 自动装配（autowiring）：Spring自动满足bean之间的依赖。
+- 组件扫描（component scanning）：Spring会自动发现应用上下文中所创建的bean。
+- 自动装配（autowiring）：Spring自动满足bean之间的依赖。
 
-  ```java
-  //这个简单的注解表明该类回作为组件类，并告知Spring要为这个创建bean。
-  @Component
-  public class GameDisc implements Disc{
-      @Override
-      public void play() {
-          System.out.println("我是马里奥游戏光盘。");
-      }
-  }
-  ```
+```java
+//这个简单的注解表明该类回作为组件类，并告知Spring要为这个创建bean。
+@Component
+public class GameDisc implements Disc{
+    @Override
+    public void play() {
+        System.out.println("我是马里奥游戏光盘。");
+    }
+}
+```
 
-  <mark>**不过，组件扫描默认是不启用的。我们还需要显示配置一下Spring，从而命令它去寻找@Component注解的类，并为其创建bean。**</mark>
+<mark>**不过，组件扫描默认是不启用的。我们还需要显示配置一下Spring，从而命令它去寻找@Component注解的类，并为其创建bean。**</mark>
 
-  ```java
-  @Configuration
-  @ComponentScan
-  public class DiscConfig {
-      //...
-  }
-  ```
+```java
+@Configuration
+@ComponentScan
+public class DiscConfig {
+    //...
+}
+```
 
-  <mark>**我们在DiscConfig上加了一个@ComponentScan注解表示在Spring中开启了组件扫描，默认扫描与配置类相同的包，就可以扫描到这个GameDisc的Bean了。这就是Spring的自动装配机制。**</mark>
+<mark>**我们在DiscConfig上加了一个@ComponentScan注解表示在Spring中开启了组件扫描，默认扫描与配置类相同的包，就可以扫描到这个GameDisc的Bean了。这就是Spring的自动装配机制。**</mark>
 
 <mark>（使用的优先性: **3 > 2 > 1**）尽可能地使用自动配置的机制，显示配置越少越好</mark>。当必须使用显示配置bean的时候（如：有些源码不是由你来维护的，而当你需要为这些代码配置bean的时候），推荐使用类型安全比XML更加强大的JavaConfig。最后只有当你想要使用便利的XML命名空间，并且在JavaConfig中没有同样的实现时，才使用XML。
 
-#### **除了提供BeanFactory所支持的所有功能外ApplicationContext还有额外的功能**
+##### 除了提供BeanFactory所支持的所有功能外ApplicationContext还有额外的功能
 
 - 默认初始化所有的Singleton，也可以通过配置取消预初始化。
 - 继承MessageSource，因此支持国际化。
@@ -703,17 +724,13 @@ public class MailModuleProperties {
 
 摘自：[理解Spring容器、BeanFactory和ApplicationContext](https://www.jianshu.com/p/2854d8984dfc)
 
-#### **两者装载bean的区别**
+##### 两者装载bean的区别
 
-- **BeanFactory：**
+- BeanFactory：BeanFactory在启动的时候不会去实例化Bean，只有从容器中拿Bean的时候才会去实例化
 
-  <mark>BeanFactory在启动的时候不会去实例化Bean，只有从容器中拿Bean的时候才会去实例化</mark>
+- **ApplicationContext：**ApplicationContext在启动的时候就把所有的Bean全部实例化了。它还可以为Bean配置lazy-init=true来让Bean延迟实例化；
 
-- **ApplicationContext：**
-
-  <mark>ApplicationContext在启动的时候就把所有的Bean全部实例化了。它还可以为Bean配置lazy-init=true来让Bean延迟实例化；</mark>
-
-#### **我们该用BeanFactory还是ApplicationContent** 
+##### 该用BeanFactory还是ApplicationContent 
 
 **延迟实例化的优点（BeanFactory）：**应用启动的时候占用资源很少；对资源要求较高的应用，比较有优势； 
 
