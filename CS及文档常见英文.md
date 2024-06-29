@@ -1842,3 +1842,7 @@
 - **unwieldy** ：笨手笨脚的
 
 - **schematic** ：示意图
+
+- **landscape** ：景观
+
+- 
