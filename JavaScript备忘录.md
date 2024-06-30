@@ -1,4 +1,4 @@
-# JavaScript 备忘录
+****# JavaScript 备忘录
 
 
 
@@ -1026,6 +1026,8 @@ Reflect.ownKeys(obj).forEach(key => {
 > 💡 先说结论：ES5 及之前，key 是无序的；ES6 及之后，规则修改了，key 是有序的
 
 > ⚠️ 同样值得注意的是：<font color=fuchsia>Map 实例会维护键值对的插入顺序</font>。
+
+> ⚠️  2024/6/30 补充：关于 “ key 是有序的” 这一知识点在看 [一道高端的面试题【渡一教育】](https://www.bilibili.com/video/BV1dw4m1e7Pk) 时，发现有所遗忘。具体表现在 `obj[++obj.a] = obj.a++` 这行代码执行时，新的属性 `[++obj.a]` 因为 key 是有序的，且是数字；所以会排在 `['a']` 之前，而不是顺着排在后面
 
 ##### 排序规则
 
