@@ -1845,4 +1845,10 @@
 
 - **landscape** ：景观
 
-- 
+- **myriad** ：无数，大量
+
+- **inbound** ：传入，到达
+
+  > In the `main.ts` example above, we simply start up our HTTP listener, which lets the application await **inbound** HTTP requests.
+  >
+  > 摘自：[nest doc - First steps # Setup](https://docs.nestjs.com/first-steps#setup)

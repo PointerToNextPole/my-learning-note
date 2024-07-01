@@ -1,4 +1,4 @@
-****# JavaScript 备忘录
+# JavaScript 备忘录
 
 
 
