@@ -940,7 +940,7 @@ ES Module加载 js文件的过程是编译（解析）时加载的,并且是异�
 
 <img src="https://s2.loli.net/2024/03/24/9f8iXKuUqlZvJEP.png" alt="image-20240324003313107" style="zoom:50%;" />
 
-<font color=dodgerBlue>关于上面所说 `resolution` 字段</font>
+<font color=dodgerBlue>关于上面所说 `resolutions` 字段</font>
 
 <img src="https://s2.loli.net/2024/03/24/Uw2rx4OqQpZBgRu.png" alt="image-20240324003839767" style="zoom:50%;" />
 
