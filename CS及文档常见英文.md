@@ -1852,3 +1852,5 @@
   > In the `main.ts` example above, we simply start up our HTTP listener, which lets the application await **inbound** HTTP requests.
   >
   > 摘自：[nest doc - First steps # Setup](https://docs.nestjs.com/first-steps#setup)
+  
+- **enormous** ：巨大的
