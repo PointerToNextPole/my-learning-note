@@ -1076,8 +1076,9 @@ console.log(keys)
 
 学习自：[[科普] JS中Object的keys是无序的吗](https://mp.weixin.qq.com/s/qyyrQNC6q6p496OdZIQ6ew)
 
+#### 迭代方法注意点
 
-#### for ... of 和 for ... in 的区别
+##### for ... of 和 for ... in 的区别
 
 无论是 `for...in` 还是 `for...of` 语句都是迭代一些东西。它们之间的主要区别在于它们的迭代方式。
 
@@ -1086,39 +1087,39 @@ console.log(keys)
 
 摘自：[MDN - for ... of](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...of)
 
-##### 补充
+###### 补充
 
 - 推荐<font color=FF0000>在循环对象属性的时候，使用 for...in </font>，<font color=0000FF>在遍历数组的时候的时候使用 for...of</font>。
 - **<font color=FF0000>for...in 循环出的是 key</font>，<font color=0000FF>for...of 循环出的是 value</font>（ <font color=FF0000>for in 是遍历键名</font>，<font color=0000FF>for of 是遍历键值</font>）**
 - 注意，<font color=0000FF>for...of 是 ES6 新引入的特性</font>。修复了 ES5 引入的 for...in 的不足
-- <font color=FF0000>for...of 不能循环普通的对象，需要通过和 Object.keys() 搭配使用</font>
+- <font color=FF0000>for...of 不能循环普通的对象，需要通过和 `Object.keys()` 搭配使用</font>
 - for...of 兼容性还不够，移动端安卓微信浏览器貌似不支持，苹果的可以；web端 IE 支持也不够，chrome 可以。
 
 摘自：[javascript中for of和for in的区别？](https://segmentfault.com/q/1010000006658882)
 
-- `for...of` <font color=red>**遍历的是拥有 iterator 属性（即 Symbol.iterator ）的对象**</font>，出来的是属性值；
+- `for...of` <font color=red>**遍历的是拥有 `iterator` 属性（即 `Symbol.iterator` ）的对象**</font>，出来的是属性值；
 
-- `for...in` 遍历对象的属性，出来的是属性名，<font color=FF0000 size=4>**包括继承的属性**</font>，<font color=FF0000>**可枚举的属性**</font>（ enumerable 为 true 的属性），<font color=FF0000>**不包括 symbol**</font>
+- `for...in` 遍历对象的属性，出来的是属性名，<font color=FF0000 size=4>**包括继承的属性**</font>，<font color=FF0000>**可枚举的属性**</font>（ `enumerable` 为 true 的属性），<font color=FF0000>**不包括 symbol**</font>
 
-  > 💡 如果不想要 for...in 打印出 父类的属性，可以用 `Object.hasOwnProperty` 方法，判断是否为本对象的属性。
+  > 💡 如果不想要 for...in 打印出 父类的属性，可以用 `Object.hasOwn` 方法，判断是否为本对象的属性。
 
 摘自：[峰华前端工程师动态 的 评论区 -PILOT- 的评论](https://t.bilibili.com/524677482676016409)
 
-#### forEach 和 map 方法的区别
+##### forEach 和 map 方法的区别
 
-这方法都是用来遍历数组的，两者区别如下：
+都是用来遍历数组的，两者区别如下：
 
-- **forEach()：**会针对每一个元素执行提供的函数，对数据的操作<font color=fuchsia size=4>**不会改变原数组**</font>（见下面的示例代码），<font color=red>该方法**没有返回值**</font>
+- **forEach()：**会针对每一个元素执行提供的函数，对数据的操作 <font color=fuchsia>**不会改变原数组**</font>（见下面的示例代码），<font color=red>该方法**没有返回值**</font>
 
   ```js
   const arr = ['1', '2', '3']
   arr.forEach(e => e = +e)
-  console.log(arr) // ['1', '2', '3'] 👀 ⚠️
+  console.log(arr) // ['1', '2', '3'] ⚠️
   ```
 
-  所以：forEach 无法修改原数组的 原始类型元素 / 元素的引用地址，但可以修改对象元素中的成员内容
+  由上示例可知：forEach 无法修改原数组的 原始类型元素 / 元素的引用地址，但可以修改对象元素中的成员内容
 
-- **map()：**<font color=FF0000>**不会改变原数组的值**，**返回一个新数组**</font>，新数组中的值为原数组调用函数处理之后的值
+- **map()：**<font color=FF0000>**不会改变原数组的值**，**返回一个新数组**</font>，新数组中的值为原数组调用函数处理之后的值（感觉可以立即为：map 方法本身是纯函数、无副作用）
 
 
 摘自：[「2021」高频前端面试题汇总之JavaScript篇（上）](https://juejin.cn/post/6940945178899251230)
@@ -1159,8 +1160,8 @@ arr.keys()
 var arr = ["a", , "c"];
 var sparseKeys = Object.keys(arr);
 var denseKeys = [...arr.keys()];
-console.log(sparseKeys); // ['0', '2'] 注：使用 Object.keys() 不包含
-console.log(denseKeys);  // [0, 1, 2] 注：使用 Array.prototype.keys() 是包含的
+console.log(sparseKeys); // ['0', '2'] 👀 使用 Object.keys() 不包含
+console.log(denseKeys);  // [0, 1, 2] 👀 使用 Array.prototype.keys() 是包含的
 ```
 
 摘自：[MDN - Array.prototype.keys()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/keys)
@@ -7796,7 +7797,7 @@ js以原型链的形式，保证函数或对象中的方法、属性可以让向
 
 ![image-20211230145726601](https://s2.loli.net/2021/12/30/ka9luJN7sgcw68f.png)
 
-#### \__proto__
+#### `__proto__`
 
 <font color=FF0000>`__proto__` 被认为是过时且不推荐使用的（deprecated）</font>，这里的不推荐使用是指 JavaScript 规范中规定，proto 必须仅在浏览器环境下才能得到支持。
 
@@ -7806,11 +7807,11 @@ js以原型链的形式，保证函数或对象中的方法、属性可以让向
 - **Object.getPrototypeOf(obj) ：**<font color=FF0000>返回对象 obj 的 `[[Prototype]]`</font>
 - **Object.setPrototypeOf(obj, proto) **：<font color=FF0000>将对象 obj 的 `[[Prototype]]` 设置为 proto</font>
 
-应该使用这些方法来代替 \__proto__。
+应该使用这些方法来代替 `__proto__` 。
 
-###### 为什么不建议使用 \__proto__ ？
+###### 为什么不建议使用 `__proto__` ？
 
-如果我们尝试在其中存储 用户提供的 键（例如：一个用户输入的字典），我们可以发现一个有趣的小故障：所有的键都正常工作，除了 "\__proto__"。如下示例：
+如果我们尝试在其中存储 用户提供的 键（例如：一个用户输入的字典），我们可以发现一个有趣的小故障：所有的键都正常工作，除了 `__proto__` 。如下示例：
 
 ```js
 let obj = {};

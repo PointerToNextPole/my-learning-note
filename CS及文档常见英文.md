@@ -950,6 +950,8 @@
   >
   > 摘自：[Practical Guide To Not Blocking The Event Loop](https://www.bbss.dev/posts/eventloop/)
 
+  **outgoing** ：传出的
+
 - **indefinite** ：adj. **无限期的**，模糊不清的，不明确的
 
   > In server contexts, one such request can block all others indefinitely.
@@ -1221,6 +1223,10 @@
 - **exponential** ：指数的
 
   **exponent** ：指数，幂
+  
+- **sharding upload** ：分片上传
+
+  **sharde** ：碎片
 
 ***
 
@@ -1854,3 +1860,13 @@
   > 摘自：[nest doc - First steps # Setup](https://docs.nestjs.com/first-steps#setup)
   
 - **enormous** ：巨大的
+
+- **arduous** ：艰苦
+
+- **nee** ：原名
+
+  > Metadata-producing decorators (**nee.** "Annotations") need to be generally composable with mutating decorators.
+  >
+  > 摘自：[GitHub - reflect-metadata - readme](https://github.com/rbuckton/reflect-metadata)
+  >
+  > <img src="https://s2.loli.net/2024/07/04/sVglmCRcKNI64FW.png" alt="image-20240704164136762" style="zoom:50%;" />
