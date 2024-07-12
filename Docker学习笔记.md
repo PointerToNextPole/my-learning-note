@@ -254,7 +254,7 @@ $ docker image build -t koa-demo .
 $ docker image build -t koa-demo:0.0.1 .
 ```
 
-上面代码中，<font color=red>**`-t` 参数用来指定 image 文件的名字**</font>，<font color=LightSeaGreen>后面还可以用冒号指定标签</font>。如果不指定，默认的标签就是`latest`。<font color=fuchsia>最后的 `.` 表示 Dockerfile 文件所在的路径</font>（ 👀 路径是必填的（没有默认值），注意下，不要漏掉），上例是当前路径，所以是一个点。
+上面代码中，<font color=red>**`-t` 参数用来指定 image 文件的名字**</font>，<font color=LightSeaGreen>后面还可以用冒号指定标签</font>。**如果不指定，默认的标签就是`latest` **。<font color=fuchsia>最后的 `.` 表示 Dockerfile 文件所在的路径</font>（ 👀 路径是必填的（没有默认值），注意下，不要漏掉），上例是当前路径，所以是一个点。
 
 <font color=red>**如果运行成功，运行 `docker ps` 就可以看到新生成的 image 文件 `koa-demo` 了**</font>。
 
