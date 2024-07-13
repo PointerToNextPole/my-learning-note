@@ -455,7 +455,9 @@ $ docker container cp [containID]:[/path/to/file] .
 
 
 
-#### Dockerfile
+### Dockerfile
+
+##### 指令说明
 
 Dockerfile 指令说明 **简洁版**：
 
@@ -488,6 +490,97 @@ Dockerfile 指令说明 **简洁版**：
 - ENTRYPOINT ：运行容器时执行的 shell 命令
 
 摘自：[runoob - Docker Dockerfile](https://www.runoob.com/docker/docker-dockerfile.html)
+
+
+
+#### Dockerfile 优化方法
+
+##### 使用 alpine 镜像，而不是默认的 linux 镜像
+
+docker 容器内跑的是 linux 系统，各种镜像的 dockerfile 都会继承 linux 镜像作为基础镜像，该基础镜像实际上是继承 debian 的 Linux 镜像。其实可以换成更小的版本，也就是 alpine ：它裁剪了很多不必要的 linux 功能，使得镜像体积大幅减小了。经过实验可以发现：相较 debian，使用 alpine build 生成的镜像大小可以缩小 900M。
+
+##### 使用多阶段构建
+
+如下 dockerfile ：
+
+```dockerfile
+FROM node:18-alpine3.14
+
+WORKDIR /app
+
+COPY package.json .
+
+RUN npm config set registry https://registry.npmmirror.com/
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD [ "node", "./dist/main.js" ]
+```
+
+<font color=dodgerBlue>可能会存在如下疑问</font>：<font color=lightSeaGreen>为什么先复制 `package.json` 进去，安装依赖之后再复制其他文件；**直接全部复制进去不就行了**？</font><font color=red>**不行，这两种写法的效果不同**</font>。
+
+<font color=fuchsia>docker 是分层存储的，**dockerfile 里的每一行指令是一层，会做缓存**</font>。<font color=red>每次 `docker build` 的时候，只会从变化的层开始重新构建，没变的层会直接复用</font>。也就说：现在这种写法，如果 `package.json` 没变，那么就不会执行 `npm install` ，直接复用之前的。
+
+如果一开始就把所有文件复制进去呢？那不管 `package.json` 变没变，任何一个文件变了，都会重新 `npm install` ，这样没法充分利用缓存，性能不好。
+
+> 👀 关于这里的内容，想了下才搞懂这里在说什么：`npm install` 的执行，应该只和 `package.json` 中内容的变化有关，不应该受到其他文件（比如 `/src/` 中的文件）变化的影响。所以，先复制 `package.json` ，并运行 `npm install` 将变化范围缩小到只有 `package.json` ，有变化，则运行；无变化，则不运行。等 install 完成后，再复制其他文件
+
+> 💡另外，看上面存在执行步骤的问题，便想到一个问题 “在 dockerfile 中，每一行指令的执行是否是同步的？”，问了 gpt，得到如下回复：
+>
+> <img src="https://s2.loli.net/2024/07/13/YOmi7TNZ8ntFyP3.png" alt="image-20240713164408216" style="zoom:50%;" />
+
+<font color=dodgerBlue>另一个问题是</font>：源码和很多构建的依赖是不需要的，但是现在都保存在了镜像里。实际上只需要构建出来的 `./dist` 目录下的文件还有运行时的依赖。
+
+这时可以用多阶段构建：
+
+```dockerfile
+FROM node:18-alpine3.14 as build-stage
+
+WORKDIR /app
+
+COPY package.json .
+
+RUN npm config set registry https://registry.npmmirror.com/
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+# production stage
+FROM node:18-alpine3.14 as production-stage
+
+COPY --from=build-stage /app/dist /app
+COPY --from=build-stage /app/package.json /app/package.json
+
+WORKDIR /app
+
+RUN npm config set registry https://registry.npmmirror.com/
+
+RUN npm install --production
+
+EXPOSE 3000
+
+CMD ["node", "/app/main.js"]
+```
+
+> 💡 这里指令与指令之间 “空一行” 和 “没空行” 引起了我的好奇：
+>
+> <img src="/Users/yan/Library/Application Support/typora-user-images/image-20240713164929309.png" alt="image-20240713164929309" style="zoom:50%;" />
+
+`FROM` 后面添加一个 `as` 来指定当前构建阶段的名字。
+
+通过 `COPY --from=xxx` 可以从上个阶段复制文件过来。
+
+`npm install` 的时候添加 `--production` ，这样只会安装 dependencies 的依赖。
+
+`docker build` 之后，只会留下最后一个阶段的镜像。也就是说，最终构建出来的镜像里是没有源码的，有的只是 `dist` 的文件和运行时依赖。这样镜像就会小很多。
 
 
 
@@ -527,7 +620,7 @@ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 
   > 👀 补充：除了上面的 `--name="targetName"` ，也可以使用 `--name targetName` ；这两个都可以在 [Docker Doc - Docker run reference](https://docs.docker.com/engine/reference/run/#docker-run-reference) 中找到的
 
-- **`--dns 8.8.8.8`** ：指定容器使用的DNS服务器，默认和宿主一致；
+- **`--dns 8.8.8.8`** ：指定容器使用的 DNS 服务器，默认和宿主一致；
 
 - **`--dns-search example.com`** ：指定容器DNS搜索域名，默认和宿主一致；
 
