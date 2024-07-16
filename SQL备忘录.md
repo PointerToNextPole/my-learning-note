@@ -6,7 +6,7 @@
 
 ![](https://s2.loli.net/2024/06/14/otczfC3An5vL8GN.jpg)
 
-<img src="https://s2.loli.net/2024/06/15/qyiB4hrfIwNoRHE.jpg" style="zoom:60%;" />
+<img src="https://s2.loli.net/2024/06/15/qyiB4hrfIwNoRHE.jpg" style="zoom:55%;" />
 
 
 
@@ -84,7 +84,7 @@ ALTER COLUMN column_name datatype
 
 ##### SQL 中 ALTER 和 UPDATE 的区别
 
-ALTER 是DDL（Data Definition Language 数据定义语言）语句，是修改数据库中对象（表，数据库，视图...）的语句
+ALTER 是 DDL（Data Definition Language 数据定义语言）语句，是修改数据库中对象（表，数据库，视图...）的语句
 
 UPDATE 是DML（Data Manipulation Language 数据操控语言）语句，是修改表中数据的语句
 
@@ -153,19 +153,21 @@ insert into student2 values ('李四','女');
 
 
 
-#### DDL / DML / DCL 区别
+#### DDL / DML / DCL
 
-##### DDL
+##### 三者区别
+
+###### DDL
 
 Data Definition Language 数据定义语言，用于<font color=red>**操作对象和对象的属性，这种对象包括数据库本身，以及数据库对象，像：表、视图等等**</font>，DDL 对这些对象和属性的管理和定义具体表现在 <font color=LightSeaGreen>**create、drop 和 alter**</font>上。特别注意：DDL 操作的“对象”的概念，”对象“包括对象及对象的属性，而且对象最小也比记录大个层次。
 
-**DML** 
+###### DML
 
 Data Manipulation Language 数据操控语言，用于操作数据库对象中包含的数据，也就是说<font color=red>**操作的单位是记录**</font>。
 
 DML 的主要语句（ 操作）：insert、delete、update
 
-**DCL**
+###### DCL
 
 Data Control Language 数据控制语句 的操作是数据库对象的权限，这些操作的确定使数据更加的安全。DCL 的操作对象是用户，这里的用户指的是数据库用户。DCL 的主要语句（操作）有：
 
@@ -196,7 +198,123 @@ limit 是属于 mysql 的语法，<font color=LightSeaGreen>用来从某个值�
 
 
 
-#### SQL NOW() 函数
+#### SQL 函数
+
+##### 聚合函数
+
+聚合函数是<font color=LightSeaGreen>对一组值执行计算并返回单一的值的函数</font>，它经常与 SELECT 语句的 GROUP BY 子句一同使用；包含：
+
+###### AVG
+
+返回指定组中的平均值，空值被忽略。
+
+```sql
+select prd_no, avg(qty) from sales group by prd_no
+```
+
+###### COUNT
+
+返回指定组中项目的数量。
+
+```sql
+select count(prd_no) from sales 
+```
+
+###### MAX
+
+返回指定数据的最大值。
+
+```sql
+select prd_no, max(qty) from sales group by prd_no 
+```
+
+###### MIN
+
+返回指定数据的最小值。
+
+```sql
+select prd_no, min(qty) from sales group by prd_no
+```
+
+###### SUM
+
+返回指定数据的和，只能用于数字列，空值被忽略。
+
+```sql
+select prd_no, sum(qty) from sales group by prd_no
+```
+
+###### COUNT_BIG
+
+返回指定组中的项目数量，与 COUNT 函数不同的是 COUNT_BIG 返回 bigint 值，而 COUNT 返回的是 int 值。
+
+```sql
+select count_big(prd_no) from sales
+```
+
+###### GROUPING
+
+产生一个附加的列，当用CUBE或ROLLUP运算符添加行时，输出值为1；当所添加的行不是由CUBE或ROLLUP产生时，输出值为0
+
+```sql
+select prd_no, sum(qty),grouping(prd_no) from sales group by prd_no with rollup
+```
+
+###### BINARY_CHECKSUM
+
+返回对表中的行或表达式列表计算的二进制校验值，用于检测表中行的更改。
+
+```sql
+select prd_no, binary_checksum(qty) from sales group by prd_no
+```
+
+###### CHECKSUM_AGG
+
+返回指定数据的校验值，空值被忽略。
+
+```sql
+select prd_no, checksum_agg(binary_checksum(*)) from sales group by prd_no
+```
+
+###### CHECKSUM
+
+返回在表的行上或在表达式列表上计算的校验值，用于生成哈希索引。
+
+###### STDEV
+
+返回给定表达式中所有值的统计标准偏差。
+
+```sql
+select stdev(prd_no) from sales
+```
+
+###### STDEVP
+
+返回给定表达式中的所有值的填充统计标准偏差。
+
+```sql
+select stdevp(prd_no) from sales
+```
+
+###### VAR
+
+返回给定表达式中所有值的统计方差。
+
+```sql
+select var(prd_no) from sales
+```
+
+###### VARP
+
+返回给定表达式中所有值的填充的统计方差。
+
+```sql
+select varp(prd_no) from sales
+```
+
+摘自：[sql中的聚合函数](https://blog.csdn.net/qq_39209045/article/details/81093734)
+
+##### NOW() 函数
 
 NOW 函数返回当前的日期和时间。示例如下：
 
@@ -205,6 +323,21 @@ SELECT NOW() FROM table_name
 ```
 
 摘自：[SQL NOW() 函数](https://www.w3school.com.cn/sql/sql_func_now.asp)
+
+##### 总结
+
+sql 还可以用很多内置函数：
+
+- 聚合函数：avg、count、sum、min、max
+- 字符串函数：concat、substr、length、upper、lower
+- 数值函数：round、ceil、floor、abs、mod
+- 日期函数：year、month、day、date、time
+- 条件函数：if、case
+- 系统函数：version、datebase、user
+- 类型转换函数：convert、cast、date_format、str_to_date
+- 其他函数：nullif、coalesce、greatest、least
+
+摘自：[Nest 通关秘籍  - SQL 查询语句的所有语法和函数](https://juejin.cn/book/7226988578700525605/section/7238472325102829629)
 
 
 
@@ -276,14 +409,14 @@ select m.Province,S.Name from member m full join ShippingArea s on m.Province=s.
 
 以下说法存在异议，与上面百度百科定义矛盾：
 
-###### 不带where
+###### 不带 where
 
 ```sql
 select *from T_student cross join T_class  -- cross join 可以省略不写，等于如下：
 select *from T_student, T_class
 ```
 
-###### 带where
+###### 带 where
 
 往往会先生成两个表行数乘积的数据表，然后才根据where条件从中选择；和等值连接一样。
 
@@ -315,7 +448,7 @@ where FIRST.Cpno = SECOND.Cno
 
 #### constraints（约束）
 
-##### SQL 中，我们有如下约束
+##### SQL 中有如下约束
 
 - **NOT NULL** - 指示某列不能存储 NULL 值。
 - **UNIQUE** - 保证某列的每行必须有唯一的值。
@@ -337,6 +470,8 @@ create table tbl_name(
     )
 ```
 
+> 👀 与“表级约束”对应的是“列级约束”
+
 ##### 使用 constraint 关键字的目的
 
 使用 `constraint constraint_name` 就是为 `constraint_type(column字段名[, more column])` 建立一个名字，这样我们就能删除这个约束或者修改这个约束。
@@ -345,7 +480,7 @@ create table tbl_name(
 
 
 
-#### distinct关键字
+#### distinct 关键字
 
 在表中，一个列可能会包含多个重复值，有时您也许希望仅仅列出不同（distinct）的值。
 
@@ -362,7 +497,7 @@ FROM table_name;
 
 
 
-#### having关键字
+#### having 关键字
 
 在 SQL 中增加 HAVING 子句原因是，WHERE 关键字无法与聚合函数一起使用。
 
@@ -382,7 +517,7 @@ HAVING aggregate_function(column_name) operator value;
 
 
 
-#### union关键字
+#### union 关键字
 
 SQL UNION 操作符合并两个或多个 SELECT 语句的结果。
 
@@ -410,7 +545,7 @@ SELECT column_name(s) FROM table2;
 
 [RUNOOB - SQL UNION 操作符](https://www.runoob.com/sql/sql-union.html)
 
-> 💡其他类似的运算符还有：except（差集）、intersect（交集），但是mysql似乎只支持 uion
+> 💡其他类似的运算符还有：except（差集）、intersect（交集），但是 mysql 似乎只支持 union
 
 
 
@@ -437,122 +572,6 @@ TRUNCATE TABLE table_name;
 - <font color=FF0000>TRUNCATE TABLE 与 DELETE 相比，它更快并且使用的系统资源更少</font>，<font color=LightSeaGreen>因为 DELETE 扫描表以生成受影响的行数，然后逐行删除行，并为每个删除的行在数据库日志中记录一个条目，而 TRUNCATE TABLE 只删除所有行而不提供任何其他信息。</font>
 
 摘自：[SQL 清空表(TRUNCATE TABLE 语句)](https://www.nhooo.com/sql/sql-truncate-table-statement.html)
-
-
-
-#### SQL聚合函数
-
-聚合函数是<font color=LightSeaGreen>对一组值执行计算并返回单一的值的函数</font>，它经常与SELECT语句的GROUP BY子句一同使用；包含：
-
-##### AVG
-
-返回指定组中的平均值，空值被忽略。
-
-```sql
-select prd_no, avg(qty) from sales group by prd_no
-```
-
-##### COUNT
-
-返回指定组中项目的数量。
-
-```sql
-select count(prd_no) from sales 
-```
-
-##### MAX
-
-返回指定数据的最大值。
-
-```sql
-select prd_no, max(qty) from sales group by prd_no 
-```
-
-##### MIN
-
-返回指定数据的最小值。
-
-```sql
-select prd_no, min(qty) from sales group by prd_no
-```
-
-##### SUM
-
-返回指定数据的和，只能用于数字列，空值被忽略。
-
-```sql
-select prd_no, sum(qty) from sales group by prd_no
-```
-
-##### COUNT_BIG
-
-返回指定组中的项目数量，与 COUNT 函数不同的是 COUNT_BIG 返回 bigint 值，而 COUNT 返回的是 int 值。
-
-```sql
-select count_big(prd_no) from sales
-```
-
-##### GROUPING
-
-产生一个附加的列，当用CUBE或ROLLUP运算符添加行时，输出值为1；当所添加的行不是由CUBE或ROLLUP产生时，输出值为0.
-
-```sql
-select prd_no, sum(qty),grouping(prd_no) from sales group by prd_no with rollup
-```
-
-##### BINARY_CHECKSUM
-
-返回对表中的行或表达式列表计算的二进制校验值，用于检测表中行的更改。
-
-```sql
-select prd_no, binary_checksum(qty) from sales group by prd_no
-```
-
-##### CHECKSUM_AGG
-
-返回指定数据的校验值，空值被忽略。
-
-```sql
-select prd_no, checksum_agg(binary_checksum(*)) from sales group by prd_no
-```
-
-##### CHECKSUM
-
-返回在表的行上或在表达式列表上计算的校验值，用于生成哈希索引。
-
-##### STDEV
-
-返回给定表达式中所有值的统计标准偏差。
-
-```sql
-select stdev(prd_no) from sales
-```
-
-##### STDEVP
-
-返回给定表达式中的所有值的填充统计标准偏差。
-
-```sql
-select stdevp(prd_no) from sales
-```
-
-##### VAR
-
-返回给定表达式中所有值的统计方差。
-
-```sql
-select var(prd_no) from sales
-```
-
-##### VARP
-
-返回给定表达式中所有值的填充的统计方差。
-
-```sql
-select varp(prd_no) from sales
-```
-
-摘自：[sql中的聚合函数](https://blog.csdn.net/qq_39209045/article/details/81093734)
 
 
 
@@ -583,3 +602,63 @@ select varp(prd_no) from sales
 //TODO
 
 https://blog.csdn.net/u010429286/article/details/79022484
+
+
+
+#### SQL 中的类型
+
+##### DECIMAL、NUMARIC
+
+> 在 SQL 中，DECIMAL 和 NUMERIC 类型都用于表示固定精度的数字。它们在大多数数据库系统中是可互换的，并可以用来存储非整数数字，如货币金额。
+>
+> DECIMAL 和 NUMERIC 都需要两个参数来定义：
+>
+> 1. 精度（precision）：表示数字总共可以有多少位数。
+> 2. 刻度（scale）：表示小数点后的位数。
+>
+> 例如，DECIMAL(10, 2) 表示这个数字总共有 10 位，其中 2 位在小数点后面，因此可以存储从 -99999999.99 至 99999999.99 的数字。
+>
+> 它们非常适合用于需要高精度计算的场景，例如金融领域，因为它们可以避免在存储和计算时出现浮点误差。数据库在存储这些类型的数据时会精确保持其值，不会进行四舍五入或截断。
+>
+> 使用 DECIMAL 或 NUMERIC 类型时，需要根据实际使用场景谨慎选择合适的精度和刻度，以优化存储效率并防止数据溢出。
+>
+> 总结，DECIMAL 和 NUMERIC 类型在 SQL 中用于存储需要精确计算的固定精度数值，适用于财务等精确度要求高的领域。
+>
+> <img src="https://s2.loli.net/2024/07/16/gY2Xt8u3Ky5mCGV.png" alt="image-20240716100500617" style="zoom:50%;" />
+
+##### TEXT、BLOB
+
+> 在 SQL 中，TEXT 和 BLOB 是两种用于存储大量数据的数据类型，但它们各自有不同的用途和特性。
+>
+> 1. TEXT：TEXT 类型用于存储大量的文本数据。它比 VARCHAR 类型可以存储更多的字符，因此更适合存储如全篇文章或者很长的字符串等。TEXT 类型通常包含几个不同的类型，如 TINYTEXT, TEXT, MEDIUMTEXT 和 LONGTEXT，这些类型主要在存储容量上有所区别：
+>
+> ​	• TINYTEXT 最大存储长度为 255 字符。
+>
+> ​	• TEXT 最大存储长度为 65,535 字符。
+>
+> ​	• MEDIUMTEXT 最大存储长度为 16,777,215 字符。
+>
+> ​	• LONGTEXT 最大存储长度为 4,294,967,295 字符。
+>
+> 在使用 TEXT 类型时，要注意它可以消耗大量内存和存储空间，可能会影响查询性能。此外，某些数据库系统在 TEXT 字段上不支持索引的整个内容。
+>
+> 2. BLOB：BLOB（Binary Large Object），即二进制大对象，是用来存储大量的二进制数据，比如图片、音频、视频等二进制文件。与 TEXT 类型类似，BLOB 也有不同的存储级别：
+>
+> ​	• TINYBLOB 最大存储长度为 255 字节。
+>
+> ​	• BLOB 最大存储长度为 65,535 字节。
+>
+> ​	• MEDIUMBLOB 最大存储长度为 16,777,215 字节。
+>
+> ​	• LONGBLOB 最大存储长度为 4,294,967,295 字节。
+>
+> BLOB 类型存储的是二进制数据，因此对于数据的处理和检索会与处理文本数据不同。在数据库中，BLOB数据通常不直接显示和编辑，它们通常通过应用程序进行处理。
+>
+> 总结：
+>
+> • TEXT 类型适用于大量文本数据的存储，如文章或邮件。
+>
+> • BLOB 类型适用于存储二进制数据，如多媒体文件。这两种类型都应考虑查询性能和存储效率，并慎重设计表结构。在处理非常大的数据时，也可能需要额外的存储和优化措施。
+>
+> <img src="https://s2.loli.net/2024/07/16/h9OfknAqFYc3Z8v.png" alt="image-20240716101244152" style="zoom:48%;" />
+
