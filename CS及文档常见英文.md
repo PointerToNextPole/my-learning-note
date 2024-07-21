@@ -1870,3 +1870,9 @@
   > 摘自：[GitHub - reflect-metadata - readme](https://github.com/rbuckton/reflect-metadata)
   >
   > <img src="https://s2.loli.net/2024/07/04/sVglmCRcKNI64FW.png" alt="image-20240704164136762" style="zoom:50%;" />
+  
+- **sanitize** ：消毒、使卫生
+
+  > You may wish to **sanitize** user input instead of testing for whitespace, see [transform](https://github.com/yiminghe/async-validator#transform) for an example that would allow you to strip whitespace.
+  >
+  > 摘自：[GitHub - async-validator - readme # whitespace](https://github.com/yiminghe/async-validator#whitespace)

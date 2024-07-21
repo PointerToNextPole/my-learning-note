@@ -5259,7 +5259,9 @@ UnionToIntersection 的实现在 [[#特殊特性要记清#UnionToIntersection]] 
 
 #### 类型安全和型变
 
-<mark style="background: aqua">**TypeScript 给 JavaScript 添加了一套静态类型系统，是为了保证类型安全的**</mark>；也就是：<font color=FF0000>**保证变量只能赋同类型的值，对象只能访问它有的属性、方法**</font>。比如：<mark>number 类型的值不能赋值给 boolean 类型的变量，Date 类型的对象就不能调用 exec 方法</mark>。
+// TODO：关于这个可以看下 [协变和逆变【渡一教育】](https://www.bilibili.com/video/BV1p4421U77L) ，做下笔记
+
+<font color=dodgerBlue>**TypeScript 给 JavaScript 添加了一套静态类型系统，是为了保证类型安全的**</font>；也就是：<font color=FF0000>**保证变量只能赋同类型的值，对象只能访问它有的属性、方法**</font>。比如：<font color=lightSeaGreen>number 类型的值不能赋值给 boolean 类型的变量，Date 类型的对象就不能调用 exec 方法</font>。
 
 这是类型检查做的事情，<font color=FF0000>遇到类型安全问题会在编译时报错</font>。但是<font color=FF0000>**这种类型安全的限制也不能太死板，有的时候需要一些变通**，比如子类型是可以赋值给父类型的变量的，可以完全当成父类型来使用，也就是 “型变 ( variant ) ”（类型改变）</font>。
 
