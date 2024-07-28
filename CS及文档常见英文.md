@@ -1876,3 +1876,9 @@
   > You may wish to **sanitize** user input instead of testing for whitespace, see [transform](https://github.com/yiminghe/async-validator#transform) for an example that would allow you to strip whitespace.
   >
   > 摘自：[GitHub - async-validator - readme # whitespace](https://github.com/yiminghe/async-validator#whitespace)
+  
+- **cardinality** ：基数
+
+  >  [`SCARD`](https://redis.io/docs/latest/commands/scard/) returns the size (a.k.a. cardinality) of a set.
+  >
+  > 摘自：[redis doc - Redis sets](https://redis.io/docs/latest/develop/data-types/sets/)
