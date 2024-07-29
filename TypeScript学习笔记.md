@@ -6171,6 +6171,55 @@ Writing a twoslash command will set the compiler flag as you type, and will be s
 
 
 
+## TS 类型工具实现
+
+##### Curry 实现
+
+```ts
+/** 
+ * A 为参数类型，R 为返回类型
+ * curry 的参数类型很好写，any[] 即可；但返回值类型不好写，因为它是受到参数类型影响的，参数类型和返回值类型之间是存在关联的。
+ * 关联如下，A 和 R 可能有如下关系：
+ * 1. () => R ：A 为空数组，即没有参数；返回值为 R
+ * 2. (A) => R ：A 只有一项，返回值为 R
+ * 3. (第一个参数类型) => 新的函数 ：A 存在多项，R 为除了第一个参数，剩余参数生成的数组
+ */
+
+type Curried<A extends any[], R> =
+  A extends []
+    ? () => R :
+      A extends [infer P]
+        ? (x: P) => R :
+          A extends [infer P, ...infer Rest]
+            ? (x: P) => Curried<Rest, R>
+            : never
+
+declare function curry<A extends any[], R>(
+  fn: (...args: A) => R
+): Curried<A, R>
+```
+
+###### 测试代码
+
+```ts
+function sum(a: number, b: number, c: number) {
+  return a + b + c
+}
+
+const curried = curry(sum)
+const aCurried = curried(34)
+const bCurried = aCurried(12)
+const cCurried = bCurried(3)
+```
+
+###### 最终效果
+
+<img src="https://s2.loli.net/2024/07/29/BRKTxjX93i4PuSM.png" alt="image-20240729232515628" style="zoom:50%;" />
+
+学习自：[对柯里化进行类型标注【渡一教育】](https://www.bilibili.com/video/BV1dT421r7dL)
+
+
+
 ## 其他笔记
 
 #### interface VS type
