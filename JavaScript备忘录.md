@@ -536,6 +536,10 @@ console.log(sorted) // ['北京', '杭州', '上海']
 
 #### String.prototype.isWellFormed()
 
+> 💡 `String.prototype.isWellFormed()` 和 `String.prototype.toWellFormed()` 都是 ES2024 的语法。了解自 [ECMAScript 2024 正式发布，新特性一览！](https://mp.weixin.qq.com/s/vqnCTEacNhuae_Xz9UfOTw) ，不过看了下 Can I Use，支持率没那么低
+>
+> ![image-20240730234156629](https://s2.loli.net/2024/07/30/SvE2dzeKhGMcspO.png)
+
 The **`isWellFormed()`** method of `String` values <font color=red>returns a boolean indicating whether this string contains any [lone surrogates](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_code_points_and_grapheme_clusters)</font> . 
 
 > 💡 lone surrogates，与之相对应的是 surrogate pair（代理对）
