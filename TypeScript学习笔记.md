@@ -6218,6 +6218,45 @@ const cCurried = bCurried(3)
 
 学习自：[对柯里化进行类型标注【渡一教育】](https://www.bilibili.com/video/BV1dT421r7dL)
 
+##### 前置不定量参数
+
+```ts
+type JSTypeMap = {
+  'string': string,
+  'number': number,
+  'boolean': boolean,
+  'symbol': symbol,
+  'bigint': bigint,
+  'undefined': undefined,
+  'object': object,
+  'function': Function
+}
+
+type JSTypes = keyof JSTypeMap
+
+type ArgsType<T extends JSTypes[]> = {
+  [I in keyof T]: JSTypeMap[T[I]]
+}
+
+declare function addImpl<T extends JSTypes[]>(...args: [
+  ...T,
+  (...args: ArgsType<T>)=>any
+]): any
+
+
+addImpl('boolean', 'string', 'number', (a, b, c) => {})
+```
+
+###### 最终效果
+
+<img src="https://s2.loli.net/2024/07/31/HjJW4v9CNUksYG2.png" alt="image-20240731234929104" style="zoom:45%;" />
+
+<img src="https://s2.loli.net/2024/07/31/Aen5L9EgjJwMlmk.png" alt="image-20240731235014472" style="zoom:45%;" />
+
+<img src="https://s2.loli.net/2024/07/31/fdLvShIEmC9VPHD.png" alt="image-20240731235055331" style="zoom:45%;" />
+
+学习自：[前置的不定量参数【渡一教育】](https://www.bilibili.com/video/BV14M4m117zR)
+
 
 
 ## 其他笔记
