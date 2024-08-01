@@ -150,7 +150,7 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 
 摘自：[wiki - ABI](https://en.wikipedia.org/wiki/Application_binary_interface)
 
-##### routine 例程
+#### 例程 routine
 
 > 什么是 “子程序 ( routine ) ” ？子程序 是为实现一个特定的目的而编写的一个可被调用的 方法 ( method ) 或 过程 ( procedure )。例如 C++ 中的函数 ( function )， Java 中的方法 ( method )，或 Microsoft Visual Basic 中的函数过程 ( function procedure ) 或 子过程 ( sub procedure )。对于某些使用方式，C 和 C++ 中的 宏 ( macro ) 也可认为是子程序。
 >
@@ -160,9 +160,42 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 
 摘自：[CC2e 术语：把 routine 译为“子程序”的理由](https://blog.csdn.net/techcrunch/article/details/1961970)
 
-##### 协程 coroutine
+#### 协程 coroutine
 
-// TODO
+##### 概念
+
+> 协程 ( Coroutine ) 是一种程序组件，它<font color=red>比线程更为轻量级</font>，<font color=red>**用于处理并发编程**，特别典型的应用场景为异步编程</font>。<font color=dodgerBlue>与传统的线程相比</font>，协程<font color=red>主要运行在单个线程内</font>，但<font color=red>能在特定的时刻挂起和恢复执行</font>，这种特性使得协程非常适合进行I/O密集型和高并发的任务。
+>
+> ###### 协程的工作原理
+>
+> 协程的关键点在于它的执行可以被挂起并在稍后某个时刻从挂起处继续执行，而<font color=red>这种挂起并不会阻塞程序中的其它协程</font>。这是通过异步编程实现的，当一个协程在等待I/O操作（如网络请求、文件读写等）完成时，它会被挂起，而程序的控制权返回到事件循环中，事件循环继续处理其他协程的执行，直到I/O操作完成，原来的协程再恢复执行。
+>
+> ###### 与线程的区别
+>
+> - **资源消耗**：<font color=dodgerBlue>创建和销毁线程的代价相对较高</font>，<font color=red>协程因为是在单线程内切换，所以资源消耗更低</font>。
+> - **切换开销**：<font color=dodgerBlue>**线程的切换涉及到操作系统的调度，上下文切换的成本相对较高**</font>。<font color=red>**协程的切换是由程序自身控制**，而不是操作系统，因此切换开销小</font>。
+> - **数据共享**：<font color=dodgerBlue>线程间的数据共享需要考虑同步问题，可能涉及锁，这可能带来死锁等问题</font>。协程由于运行在单线程中，自然避免了这些问题，但数据共享的管理需用户自行控制。
+>
+> ###### 编程语言的支持
+>
+> 许多现代编程语言都内置了对协程的支持，或通过库的形式提供支持。例如：
+>
+> - **Python**：通过 asyncio 库和 async/await 语法提供对协程的支持。
+> - **JavaScript**：在 ES6 中，通过 Generator函数及 Promise对象支持异步编程，而 async/await 在 ES2017被正式引入。
+> - **Go**：语言层面支持轻量级线程( goroutine )；虽然不是传统意义上的协程，但具有类似的使用场景和优点
+> - **C#**：通过 async 和 await 关键字支持异步编程模式。
+>
+> ###### 实际应用
+>
+> 协程在网络编程、多任务异步处理、并发任务等领域有广泛应用。例如，协程可以用于 Web 服务器来处理数万个并发连接，对于爬虫程序来进行高效的数据抓取等场景也非常适合使用协程。
+>
+> ###### 总结
+>
+> 协程提供了一种高效的方法来执行多任务，尤其是I/O密集型任务。它<font color=red>允许单线程中的多个任务交错执行，通过任务之间的合理切换，大幅提高应用程序的性能与资源利用率</font>。理解并正确使用协程，能在开发高效和响应迅速的程序中发挥重要作用。
+>
+> <img src="https://s2.loli.net/2024/08/01/fZPUQxJzO5itYXF.png" alt="image-20240801122639745" style="zoom:50%;" />
+
+
 
 #### 不同语言间互相调用 & SharedMemory & FFI & RPC
 

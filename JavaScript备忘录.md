@@ -10551,7 +10551,36 @@ console.log(window.getComputedStyle(div).getPropertyValue('height')); // 200px
 
 摘自：[JS获取div高度的方法](https://www.jianshu.com/p/58c12245c2cc)
 
-> 👀 下面是一些补充
+> 💡 **一些补充**
+>
+> 通过 <font color=fuchsia>`dom.style` 获取的样式是从 DOM Tree 中读取的内容</font>，往往不够准确；<font color=fuchsia>通过 `getComputedStyle` 获取样式是从 CSSOM Tree 中读取的内容</font>。如果用来获取其他内容还好，<font color=dodgerBlue>**如果是用来获取元素的尺寸**</font>，哪怕通过 `getComputedStyle` 获取也往往会存在如下问题：
+>
+> 1. 如果加上 padding 和 border，元素的可视区域将和 width / height 不一致
+> 2. 弹性盒可能会拉伸和收缩，取 width / height 未必准确
+>
+> 所以建议<font color=fuchsia>通过 Layout Tree</font> 从而更加准确地获取<font color=fuchsia>元素的几何信息</font>。有好几种方法，如下：
+>
+> 1. 使用 client 家族，包含 `clientWidth` 和 `clientHeight` ，它读取的是 <font color=red>元素的内容区域和 padding 区域</font>
+>
+>    <img src="https://s2.loli.net/2024/08/01/uqp7AezSHCPZ64n.png" alt="image-20240801232624332" style="zoom:40%;" />
+>
+> 2. 使用 offset 家族，包含 `offsetWidth` 、`offsetHeight` （还有不常见的 `offsetLeft`、`offsetTop`、`offsetParent` ），是指除了内容和 padding 区域外，还加上了边框和滚动条
+>
+>    <img src="https://s2.loli.net/2024/08/01/tVbpyvO8HjNU9LR.png" alt="image-20240801233156277" style="zoom:40%;" />
+>
+>    3. 使用 scroll 家族，包含 `scrollWidth`、`scrollHeight` （还有不常见的 `scrollLeft`、`scrollLeftMax`、`scrollTop`、`scrollTopMax`），它读的是元素的可滚动区域
+>
+>       <img src="https://s2.loli.net/2024/08/01/EYrfpB3JdeRA4t5.png" alt="image-20240801233715863" style="zoom:40%;" />
+>
+>    4. 另外，还有 `getBoundingClientRect` ，返回的 rect 对象中的 `width`、`height` 等属性<font color=fuchsia>才是真正的可见尺寸</font>。哪怕是通过 Layout Tree 中获取的尺寸也未必是准确的，有一种特例：通过 `transform: scale()` 之类转换过的元素，通过 Layout Tree 得到的也未必是可见尺寸。而通过 `getBoundingClientRect` 获得的是 Layout Tree 再叠加上各种变换后的尺寸。
+>
+>       <img src="https://s2.loli.net/2024/08/01/fs4K26SWxANkFPM.png" alt="image-20240801234723198" style="zoom:40%;" />
+>
+>       另外，在一个元素旋转之后，rect 的长宽，是通过最小矩形将该元素包住得到的
+>
+>       <img src="https://s2.loli.net/2024/08/01/WeUs9IvdyjaRiLH.png" alt="image-20240801235026248" style="zoom:35%;" />
+>
+> 学习自：[元素的尺寸【渡一教育】](https://www.bilibili.com/video/BV1yJ4m1T79a)
 
 #### Window.getComputedStyle() 
 

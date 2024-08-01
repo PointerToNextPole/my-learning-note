@@ -3230,6 +3230,8 @@ manifest 文件是简单的文本文件，它告知浏览器被缓存的内容�
 
 user agent stylesheet 是 UA（一般理解为 浏览器）内置的 基本元素样式，不同的 UA 有不同的设计。
 
+以 div 和 span 为例，看起来它们分别是 `display: block` 和 `display: inline` 的，但是，如果给他们都加上 `display: initial` ，即将其变成原始（未受到 user agent stylesheet 影响的 `display` 属性），可以发现它们在浏览器 DevTools - Element - Computed 中都变成了 `display: inline`  ，所以从纯粹 CSS 的角度（不受 浏览器 / user agent stylesheet 影响）来讲，它们是相同的；而在浏览器的角度来讲，它们是不同的
+
 **不同浏览器的 user agent stylesheet 链接如下：**
 
 - Gecko (Firefox): https://searchfox.org/mozilla-central/source/layout/style/res/html.css
