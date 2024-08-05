@@ -139,6 +139,8 @@ onfocus ( focus ) -> 键盘输入 -> onkeydown ( keydown )  -> onkeypress ( keyp
 
 摘自：[input输入框事件](https://www.jianshu.com/p/4517117abd8e)
 
+另外，对于中文输入法，或者其他非英文的输入法，可以关注下 [`compositionstart`](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/compositionstart_event) 、[`compositionend`](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/compositionend_event)、[`compositionupdate`](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/compositionupdate_event) 这三个事件
+
 
 
 #### JavaScript 字符串
