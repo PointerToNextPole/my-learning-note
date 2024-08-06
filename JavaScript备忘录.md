@@ -139,7 +139,7 @@ onfocus ( focus ) -> 键盘输入 -> onkeydown ( keydown )  -> onkeypress ( keyp
 
 摘自：[input输入框事件](https://www.jianshu.com/p/4517117abd8e)
 
-另外，对于中文输入法，或者其他非英文的输入法，可以关注下 [`compositionstart`](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/compositionstart_event) 、[`compositionend`](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/compositionend_event)、[`compositionupdate`](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/compositionupdate_event) 这三个事件
+另外，对于中文输入法，或者其他非英文的输入法，可以关注下 [`compositionstart`](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/compositionstart_event) 、[`compositionend`](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/compositionend_event)、[`compositionupdate`](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/compositionupdate_event) 这三个事件。当然重要的是前两个，可以解决实时搜索功能中输入中文导致搜索错乱的情况。
 
 
 
@@ -200,9 +200,9 @@ onfocus ( focus ) -> 键盘输入 -> onkeydown ( keydown )  -> onkeypress ( keyp
 
 ##### 标签函数
 
-> 👀 **2022/8/23** **注**
+> 👀 补充
 >
-> 当时读 “模板字符串” 中文版 MDN，没有找到“标签函数”相关内容。今天正好碰见 “TaggedTemplateExpression” 这个 ECMAScript Spec 的概念，搜索其含义时，才发现英文版 MDN 是有这部分内容的：见 [MDN - Template literals (Template strings) # Tagged templates](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates)
+> 2022/8/23 当时读 “模板字符串” 中文版 MDN，没有找到“标签函数”相关内容。今天正好碰见 “TaggedTemplateExpression” 这个 ECMAScript Spec 的概念，搜索其含义时，才发现英文版 MDN 是有这部分内容的：见 [MDN - Template literals (Template strings) # Tagged templates](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates)
 
 标签函数的语法是函数名后面直接带一个模板字符串，并从模板字符串中的插值表达式中获取参数，举个例子。
 

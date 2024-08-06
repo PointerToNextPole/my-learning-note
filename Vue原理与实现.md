@@ -313,7 +313,11 @@ dep.value = 'changed' // console.log -> 'changed'
 >
 > <img src="https://s2.loli.net/2022/11/24/68mgj3DGoMdWzOs.png" alt="image-20221124233057515" style="zoom:60%;" />
 >
-> 见：https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L48 。
+> 见：https://github.dev/vuejs/core/blob/main/packages/reactivity/src/effect.ts#L48
+>
+> 另外，activeEffect 也用于存储依赖函数，这样 effect 就不会依赖函数的名字。
+>
+> 学习自：[🔥细说Vue响应式原理的10个细节！ - Vue3响应式原理](https://juejin.cn/post/7187285219257352250)
 
 这里的 `Dep` 实现，和 composition API 中的 `ref` 非常相似。
 
