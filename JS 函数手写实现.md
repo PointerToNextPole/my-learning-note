@@ -464,13 +464,60 @@ Promise.myRace = function(promiseArr) {
 }
 ```
 
-##### `Promise.prototype.catch` 实现
+##### `Promise.prototype.catch()` 实现
 
 ```js
 Promise.prototype.catch = function (onRejected) {
   return this.then(undefined, onRejected)
 }
 ```
+
+之所以写成这样，是因为 [MDN - `Promise.prototype.catch()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch) 给出了如下介绍
+
+> ( `Promise.prototype.catch()` ) 此方法是 `Promise.prototype.then(undefined, onRejected)` 的一种简写形式。
+
+也因为 this 为 `Promise.prototype` ，所以直接写为 `return this.then(undefined, onRejected)`
+
+##### `Promise.prototype.finally()` 实现
+
+```js
+Promise.prototype.finally = function (onFinally) {
+  return this.then(
+    value => Promise.resolve(onFinally()).then(() => value),
+    err => Promise.resolve(onFinally()).then(() => { throw err })
+  );
+}
+```
+
+与 `Promise.prototype.catch()` 类似，之所以写成这样是因为 [MDN - `Promise.prototype.finally()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally) 给出了如下介绍：
+
+> 立即返回一个新的 Promise。<font color=dodgerBlue>无论当前 promise 的状态如何</font>，此新的 promise 在返回时始终处于待定 ( pending ) 状态。<font color=dodgerBlue>如果 `onFinally` **抛出错误或返回被拒绝的 promise**</font>，则<font color=red>新的 promise 将使用该值进行拒绝</font>。<font color=dodgerBlue>**否则**</font>，<font color=red>新的 promise 将以与当前 promise 相同的状态敲定 ( settled )</font>。
+
+##### `Promise.resolve` 实现
+
+```js
+Promise.resolve = function (value) {
+  if (value instanceof Promise) return value;
+  if (isPromiseLike(value)) {
+    return new Promise((resolve, reject) => value.then(resolve, reject));
+  }
+  return new Promise((resolve) => resolve(value))
+}
+
+function isPromiseLike(obj) => {
+  return obj && typeof obj.then === 'function';
+}
+```
+
+##### `Promise.reject` 实现
+
+```js
+Promise.reject = function (reason) {
+  return new Promise((resolve, reject) => reject(reason))
+}
+```
+
+
 
 
 

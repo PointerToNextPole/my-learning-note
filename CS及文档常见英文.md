@@ -1227,6 +1227,12 @@
 - **sharding upload** ：分片上传
 
   **sharde** ：碎片
+  
+- **span** ：跨度，**跨越**
+
+  > The top layer is a specific layer that **spans** the entire width and height of the viewport and sits on top of all other layers displayed in a web document.
+  >
+  > 摘自：[MDN US - Top layer](https://developer.mozilla.org/en-US/docs/Glossary/Top_layer)
 
 ***
 

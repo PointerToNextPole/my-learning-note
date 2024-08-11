@@ -934,7 +934,10 @@ ES Module加载 js文件的过程是编译（解析）时加载的,并且是异�
 ###### 解决方法
 
 - 可以给作者提 issue
-- 在 npm V3 ~ V6 之间，npm 会忽略版本冲突；在 V7 以及之后，将不会忽略错误。所以遇到 `peerDependencies` 无法匹配从而报错的问题，可以使用 `npm install` 的 `--legacy-peer-deps` 选项，从而忽略版本冲突
+
+- 在 npm V3 ~ V6 之间，npm 会忽略版本冲突；在 V7 以及之后，将不会忽略错误。所以遇到 `peerDependencies` 无法匹配从而报错的问题，可以使用 `npm install` 的 `--legacy-peer-deps` 选项，从而忽略版本冲突。当然前提是：虽然依赖在 `peerDependencies` 上是冲突的，但是实际上依然是可以用的；所以，强行忽略掉 `peerDependencies` 之后，依然是可用的；否则，依然无法正常运行。
+
+  >  👀 这里可以参考下 [对等依赖报错问题【渡一教育】](https://www.bilibili.com/video/BV1wb421J7CL)
 
 <font color=dodgerBlue>GitHub Copilot Chat 给出的解决方案：</font>
 
