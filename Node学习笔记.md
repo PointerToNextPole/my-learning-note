@@ -257,7 +257,7 @@ console.log(foo, bar)
 
 ###### module.exports = foo
 
-<font color=FF0000>**module.exports 和 exports有什么关系或者区别呢？**</font>
+<font color=dodgerBlue>**module.exports 和 exports 有什么关系或者区别呢？**</font>
 
 追根溯源，通过维基百科中对CommonJS规范的解析：CommonJS中是没有module.exports的概念的。但是<font color=FF0000>为了实现模块的导出, Node中使用的是 **Module的类**，**每一个模块都是Module的一个实例**，也就是 module</font>（即：每一个模块都有这个 module 属性）。（module 是一个“特殊的”全局对象）
 
@@ -265,9 +265,9 @@ console.log(foo, bar)
 
 - 因为module才是导出的真正实现者;
 
-如果 <font color=FF0000 size=4>**不手动**</font>给module.exports 赋值，则node帮用户做了 module.exports = exports，也就是说：被导出的对象、exports、module.exports 这三个对象是一样的（引用赋值）
+如果 <font color=FF0000 size=4>**不手动**</font> 给module.exports 赋值，则 node 帮用户做了 module.exports = exports，也就是说：被导出的对象、exports、module.exports 这三个对象是一样的（引用赋值）
 
-<font color=FF0000 size=4>**如果手动给 module.exports 赋值，module.exports 将重新开辟一个空间，将赋的值放入（深拷贝），调用者使用新开辟的空间中的数据，将不会影响被调用者的数据**</font>
+<font color=FF0000>**如果手动给 module.exports 赋值，module.exports 将重新开辟一个空间，将赋的值放入（深拷贝），调用者使用新开辟的空间中的数据，将不会影响被调用者的数据**</font>
 
 
 
@@ -277,9 +277,9 @@ console.log(foo, bar)
 require(X)
 ```
 
-- **如果，X是一个核心模块：**比如 path、http，则直接返回核心模块，并且停止查找
+- <font color=dodgerBlue>如果，X 是一个核心模块</font>，比如 path、http，则直接返回核心模块，并且停止查找
 
-- **如果：X是以 `./` 或 `../` 或 `/` (根目录) 开头的**
+- <font color=dodgerBlue>如果，X是以 `./` 或 `../` 或 `/` (根目录) 开头的</font>
 
   - 第一步：将当做一个文件在对应的目录下查找;
     - 如果有后缀名，按照后缀名的格式查找对应的文件
@@ -305,6 +305,10 @@ require(X)
   ![image-20211029100330552](https://i.loli.net/2021/10/29/7fRgNsjvSGEcrz5.png)
   
   也就是 module.path （数组）中的路径，按先后顺序一一查找，如果都找不到，则报错。
+
+
+
+
 
 
 
@@ -4131,15 +4135,13 @@ npm seach package-name
 
 #### 命令解释
 
-- `npm version` ：除了返回 npm 的版本外，还返回其他关于包的信息，比如：你正在使用的node.js的版本，openSSL或者V8的版本
-- `npm list` ：显示当前npm所有的安装的包及其相关信息（比如：版本号）
-
+- `npm version` ：除了返回 npm 的版本外，还返回其他关于包的信息，比如：你正在使用的 node.js 的版本，openSSL 或者 V8 的版本
+- `npm list` ：显示当前 npm 所有的安装的包及其相关信息（比如：版本号）
 - `npm install` 系列
-  - **npm install** **<font color=FF0000>=</font>** **npm i**。在git clone项目的时候，项目文件中并没有 node_modules文件夹，项目的依赖文件可能很大。直接执行，<font color=FF0000>npm会根据package.json配置文件中的依赖配置下载安装</font>。
-  
-  - **-global** **<font color=FF0000>=</font>** **-g**，全局安装，安装后的包位于系统预设目录下
-  - **--save** **<font color=FF0000>=</font>** **-S**，<font color=FF0000>安装的包将写入package.json里面的dependencies</font>，<font color=LightSeaGreen>dependencies：生产环境需要依赖的库</font>
-  - **--save-dev** **<font color=FF0000>=</font>** **-D**，<font color=FF0000>安装的包将写入packege.json里面的devDependencies</font>，<font color=LightSeaGreen>devdependencies：只有开发环境下需要依赖的库</font>
+  - **`npm install` = `npm i`**。在 `git clone` 项目的时候，项目文件中并没有 node_modules文件夹，项目的依赖文件可能很大。直接执行，<font color=FF0000>npm 会根据 package.json 配置文件中的依赖配置下载安装</font>。
+  - **`-global` = `-g`** ，全局安装，安装后的包位于系统预设目录下
+  - **`--save` = `-S`** ，<font color=FF0000>安装的包将写入 package.json 里面的 `dependencies`</font> ，<font color=LightSeaGreen>`dependencies` ：生产环境需要依赖的库</font>
+  - **`--save-dev` = `-D`** ，<font color=FF0000>安装的包将写入 packege.json 里面的 `devDependencies`</font> ，<font color=LightSeaGreen>`devdependencies` ：只有开发环境下需要依赖的库</font>
 
 另外：在 package name 后面添加 @版本号，可以安装指定版本号的包
 
@@ -4267,7 +4269,7 @@ npm root -g
 
 运行结果：
 
-<img src="https://s1.ax1x.com/2020/10/28/B1tKUO.png" style="zoom:75%;" />
+<img src="https://s1.ax1x.com/2020/10/28/B1tKUO.png" style="zoom:65%;" />
 
 
 
@@ -4371,7 +4373,7 @@ npm --registry https://registry.npm.taobao.org install express
 
 **分析包**
 
-在使用 NPM 的过程中，或许你不能确认当前目录下能否通过 require() 顺利引入想要的包，<font color=FF0000>这时可以执行 npm ls 分析包</font>。
+在使用 NPM 的过程中，或许你不能确认当前目录下能否通过 `require()` 顺利引入想要的包，<font color=FF0000>这时可以执行 `npm ls` 分析包</font>。
 
 这个命令可以为你分析出当前路径下能够通过模块路径找到的所有包，并生成依赖树，如下：
 
@@ -4750,7 +4752,7 @@ Github地址：https://github.com/nodejs/node-gyp
 
 ## Express.js
 
-**Express.js产生前的痛点：**
+##### Express.js 产生前的痛点
 
 - 直接用内置的 http 模块去开发服务器有以下明显的弊端：需要写很多底层代码——例如手动指定 HTTP 状态码和头部字段，最终返回内容。如果我们需要开发更复杂的功能，涉及到多种状态码和头部信息（例如用户鉴权），这样的手动管理模式非常不方便
 - 没有专门的路由机制——路由是服务器最重要的功能之一，通过路由才能根据客户端的不同请求 URL 及 HTTP 方法来返回相应内容。但是上面这段代码只能在 http.createServer 的回调函数中通过判断请求 req 的内容才能实现路由功能，搭建大型应用时力不从心
@@ -4762,7 +4764,7 @@ Github地址：https://github.com/nodejs/node-gyp
 
 
 
-#### **Request和Require对象**
+#### Request 和 Require对象
 
 -  **Request 请求对象：**通常我们习惯用 req 变量来表示。下面列举一些 req 上比较重要的成员
 
@@ -4795,7 +4797,7 @@ Github地址：https://github.com/nodejs/node-gyp
 
 #### 路由机制
 
-<mark>客户端（包括 Web 前端、移动端等等）向服务器发起请求时包括两个元素：**路径**（URI）以及 **HTTP 请求方法**（包括 GET、POST 等等）</mark>。<font color=FF0000>路径和请求方法合起来一般被称为 API 端点（Endpoint）</font>。而<font color=FF0000>服务器根据客户端访问的端点选择相应处理逻辑的机制就叫做路由</font>。
+<font color=lightSeaGreen>客户端（包括 Web 前端、移动端等等）向服务器发起请求时包括两个元素：**路径**（URI）以及 **HTTP 请求方法**（包括 GET、POST 等等）</font>。<font color=FF0000>路径和请求方法合起来一般被称为 API 端点（Endpoint）</font>。而<font color=FF0000>服务器根据客户端访问的端点选择相应处理逻辑的机制就叫做路由</font>。
 
 在 Express 中，定义路由只需按下面这样的形式：
 

@@ -504,7 +504,7 @@ Promise.resolve = function (value) {
   return new Promise((resolve) => resolve(value))
 }
 
-function isPromiseLike(obj) => {
+function isPromiseLike(obj) {
   return obj && typeof obj.then === 'function';
 }
 ```

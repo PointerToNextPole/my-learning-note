@@ -1803,7 +1803,7 @@ HTTP请求开始到结束这段时间。Request 的<font color=FF0000>范围是�
 
 **<font color=FF0000>如果客户端的浏览器禁用了 Cookie 怎么办？</font>**一般这种情况下，会使用一种叫做<font color=FF0000>URL重写</font>的技术来<font color=FF0000>进行会话跟踪</font>，即每次HTTP交互，<font color=FF0000>URL后面都会被附加上一个诸如 sid=xxxxx 这样的参数，服务端据此来识别用户</font>。
 
-##### **补充：cookie的重要属性**
+##### cookie的重要属性
 
 | 属性       | 说明                                                         |
 | ---------- | ------------------------------------------------------------ |
