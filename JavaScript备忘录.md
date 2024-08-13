@@ -10523,7 +10523,7 @@ Event 接口的只读属性 currentTarget 表示的，<font color=FF0000 size=4>
 
 对于一个元素而言，（如果没有显式定义元素的高度）<font color=fuchsia>默认的 style 对象是没有高度的</font>。<font color=fuchsia>可以说 style 是它的外部属性，但一个对象应该有一个高度（自身属性）</font>。也可以说：style 属性只能获取元素标签 style 属性里的值 
 
-> 💡更准确的说法是：CSS 属性值是计算出来的，无论是通过 特指度、继承、将百分比转化为像素值、使用默认值 等方式，确定样式实际的展示效果。具体内容，可以参考 [# CSS属性值的计算过程【渡一教育】](https://www.bilibili.com/video/BV1Gb4y1L7CV)
+> 💡更准确的说法是：CSS 属性值是计算出来的，无论是通过 特指度、继承、将百分比转化为像素值、使用默认值 等方式，确定样式实际的展示效果。具体内容，可以参考 [CSS属性值的计算过程【渡一教育】](https://www.bilibili.com/video/BV1Gb4y1L7CV)
 
 如果这时想要获取该元素的高度，可以使用如下方法
 
