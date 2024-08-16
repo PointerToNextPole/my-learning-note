@@ -520,7 +520,7 @@ axios 依赖原生的ES6 Promise实现而被支持。 如果你的环境不支�
 
 - **xhr 取消请求：** 使用 xhr.abort() 方法
 - **fetch 取消请求：** 使用 abortController.abort() 方法。示例参见链接
-- **axios 取消请求：** 在V0.22.0版本之前（不包含V0.22.0），使用 cancelToken （详见官方文档，这里略；在V0.22.0版本 cancelToken 废弃，详见官方文档：[axios - 取消请求](https://axios-http.com/zh/docs/cancellation)）。<font color=FF0000>在 V0.22.0 版本及之后，<font size=4>**推荐使用 abortController**</font></font>
+- **axios 取消请求：** <font color=dodgerBlue>在 V0.22.0版本之前（不包含V0.22.0）</font>，使用 cancelToken （详见官方文档，这里略；在V0.22.0版本 cancelToken 废弃，详见官方文档：[axios - 取消请求](https://axios-http.com/zh/docs/cancellation)）。<font color=dodgerBlue>在 V0.22.0 版本及之后</font>，**推荐使用 abortController**
 
 - **umi-request 中断请求：**略，详见链接
 

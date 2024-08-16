@@ -2087,7 +2087,7 @@ doStuff({ bar: 123, common: '123' });
 type Tuple = [number, string];
 ```
 
-> 👀 **注：**初次接触「元组」这个名词是在 Py，而 TS 中「元组」概念和 Py 不一样。另外，TS 的元组的写法和 JS 中的数组一样；而 TS 对数组的定义是：数组类型是指任意多个同一类型的元素构成的（这个说法下面有说 [[#重新构造做变换#Push]] ）
+> 👀 初次接触「元组」这个名词是在 Py，而 TS 中「元组」概念和 Py 不一样。另外，TS 的元组的写法和 JS 中的数组一样；而 TS 对数组的定义是：数组类型是指任意多个同一类型的元素构成的（这个说法下面有说 [[#重新构造做变换#Push]] ）
 
 ##### 接口
 
@@ -2291,7 +2291,7 @@ type tuple = [string, number?];
 
 我们知道了 TypeScript 类型系统里有哪些类型，那么 <font color=FF0000>可以对这些类型做什么类型运算呢？</font>
 
-##### 条件：extends ? :
+##### 条件：`extends ? :`
 
 TypeScript 里的条件判断是 `extends ? :`  ，叫做条件类型 ( Conditional Type ) 。比如：
 
