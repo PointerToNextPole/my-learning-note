@@ -1333,7 +1333,8 @@
 - **Misc** ：杂项，其他。"Misc" 是 “miscellaneous” 的缩写
 - **spec** ：规格 specification
 - **ver.** ：版本 version
-- **promo** ：推广/ 宣传片。 promotion 
+- **promo** ：推广/ 宣传片 promotion 
+- **IMHO** ：依我拙见 In My Humble Opinion
 
 
 
