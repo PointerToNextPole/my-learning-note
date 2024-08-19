@@ -1,4 +1,4 @@
-# **Web**相关备忘录
+# Web 相关备忘录
 
 
 
@@ -745,9 +745,9 @@ HTML中 尖括号 里的文本，具有特殊含义，属于标记。<font color
 - 在令牌生成的同时，另一个流程会同时消耗这些令牌并转换成 HTML head 这些节点对象，起始和结束令牌表明了节点之间的关系
 - 当所有的令牌消耗完以后就转换成了DOM（文档对象模型）
 
-<img src="https://codertw.com/wp-content/uploads/img/95mZC7G291.jpg" style="zoom:80%;" />
+<img src="https://s2.loli.net/2024/08/19/56aF8GoOmdilftk.png" alt="ToDOM" style="zoom:80%;" />
 
-摘自：[详解 CRP：如何最大化提升首屏渲染速度](https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/677333/)
+摘自：[详解 CRP：如何最大化提升首屏渲染速度](https://juejin.cn/post/6844903757038223367)
 
 #### 渲染树 其他补充
 

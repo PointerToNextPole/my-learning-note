@@ -44,8 +44,7 @@ element.setAttribute(attributeName, attributeValue);
 ##### outerHTML 的补充
 
 除了 innerHTML 外，还有 outerHTML ：element  DOM 接口的 outerHTML 属性获取描述元素（包括其后代）的序列化 HTML 片段。它也可以设置为用从给定字符串解析的节点替换元素。
-
-**语法**
+###### 语法
 
 ```js
 let content = element.outerHTML;

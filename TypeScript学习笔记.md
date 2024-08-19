@@ -6259,6 +6259,18 @@ addImpl('boolean', 'string', 'number', (a, b, c) => {})
 
 
 
+##### 联合类型转交叉类型
+
+```ts
+type UnionToIntersection<T> = 
+  (T extends any ? (x: T) => any : never) extends 
+    ( x: infer R) => void ? R : never
+```
+
+学习自：[联合类型转交叉类型【渡一教育】](https://www.bilibili.com/video/BV1tC4y1k7cK)
+
+
+
 ## 其他笔记
 
 #### interface VS type
