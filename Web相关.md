@@ -650,11 +650,11 @@ CSSOM树 是 CSS 在浏览器中的对象表示，也是树状结构
 
 #### 关键渲染路径 (Critical Rendering Path / CRP)
 
-关键渲染路径<font color=FF0000> 是浏览器将 HTML，CSS 和 JavaScript 转换为屏幕上的像素所经历的**步骤序列**</font>。优化关键渲染路径可提高渲染性能。<font color=FF0000>关键渲染路径 **包含了 文档对象模型 (DOM)，CSS 对象模型 (CSSOM)，渲染树和布局**</font>。
+关键渲染路径<font color=FF0000> 是浏览器将 HTML，CSS 和 JavaScript 转换为屏幕上的像素所经历的**步骤序列**</font>。优化关键渲染路径可提高渲染性能。<font color=FF0000>关键渲染路径 **包含了 文档对象模型 ( DOM )，CSS 对象模型 ( CSSOM )，渲染树和布局**</font>。
 
 #####  概述如下
 
-- 在解析 HTML 时会创建文档对象模型 (DOM)。HTML 可以请求 JavaScript，而 JavaScript  反过来，又可以更改 DOM。
+- 在解析 HTML 时会创建文档对象模型 ( DOM )。HTML 可以请求 JavaScript，而 JavaScript  反过来，又可以更改 DOM。
 
 - HTML 包含（样式）或请求样式，依次来构建 CSS 对象模型。
 - 浏览器引擎将两者结合起来以创建 渲染树。
@@ -665,11 +665,11 @@ CSSOM树 是 CSS 在浏览器中的对象表示，也是树状结构
 
 Web 性能包含了服务器请求和响应、加载、执行脚本、渲染、布局和绘制每个像素到屏幕上。
 
-网页请求从 HTML 文件请求开始。服务器返回 HTML -- 响应头和数据。然后浏览器开始解析 HTML，转换收到的数据为 DOM 树。<font color=FF0000> 浏览器<font size=4>**每次发现外部资源就初始化请求**</font>，无论是样式、脚本或者嵌入的图片引用。<font size=4>**有时请求会阻塞，这意味着解析剩下的 HTML 会被终止直到重要的资源被处理**</font></font>。浏览器接着解析 HTML，发请求和构造 DOM 直到文件结尾 ，这时开始构造 CSS对象模型。等到 DOM 和 CSSOM 完成之后，浏览器构造渲染树，计算所有可见内容的样式。一旦渲染树完成布局开始，定义所有渲染树元素的位置和大小。完成之后，页面被渲染完成，或者说是绘制到屏幕上。
+网页请求从 HTML 文件请求开始。服务器返回 HTML -- 响应头和数据。然后浏览器开始解析 HTML，转换收到的数据为 DOM 树。<font color=FF0000> 浏览器 <font size=4>**每次发现外部资源就初始化请求**</font>，无论是样式、脚本或者嵌入的图片引用。<font size=4>**有时请求会阻塞，这意味着解析剩下的 HTML 会被终止直到重要的资源被处理**</font></font>。浏览器接着解析 HTML，发请求和构造 DOM 直到文件结尾 ，这时开始构造 CSS对象模型。等到 DOM 和 CSSOM 完成之后，浏览器构造渲染树，计算所有可见内容的样式。一旦渲染树完成布局开始，定义所有渲染树元素的位置和大小。完成之后，页面被渲染完成，或者说是绘制到屏幕上。                                                                                                         
 
 ##### 文本对象模型 ( DOM )
 
-<font color=FF0000> DOM构建是增量的</font>。 <font color=fuchsia>**HTML响应变成令牌 ( token )**</font>（ 👀 这里的 token 和 鉴权的 Token 没有关系，与编译原理中的分词 ( Tokenization ) 概念相关），<font color=red>**令牌变成节点**</font>，而节点又变成 DOM 树。<font color=FF0000>  单个 DOM节点以 **startTag令牌 开始，以 endTag令牌 结束**。 **节点包含有关 HTML 元素的所有相关信息。 该信息是使用令牌描述的**</font>。 节点根据令牌层次结构连接到 DOM树中。 如果另一组 startTag 和 endTag 令牌位于一组 startTag 和 endTag 之间，则您在节点内有一个节点，这就是我们定义DOM树层次结构的方式。
+<font color=FF0000> DOM构建是增量的</font>。 <font color=fuchsia>**HTML 响应变成令牌 ( token )**</font>（ 👀 这里的 token 和 鉴权的 Token 没有关系，与编译原理中的分词 ( Tokenization ) 概念相关），<font color=red>**令牌变成节点**</font>，而节点又变成 DOM 树。<font color=FF0000>  单个 DOM节点以 **startTag令牌 开始，以 endTag令牌 结束**。 **节点包含有关 HTML 元素的所有相关信息。 该信息是使用令牌描述的**</font>。 节点根据令牌层次结构连接到 DOM树中。 如果另一组 startTag 和 endTag 令牌位于一组 startTag 和 endTag 之间，则您在节点内有一个节点，这就是我们定义DOM树层次结构的方式。
 
 节点数量越多，关键渲染路径中的后续事件将花费的时间就越长。 测一下吧！ 几个额外的节点不会有什么区别，但“DIV癖”（divitis）可能会导致问题。
 
@@ -677,9 +677,9 @@ Web 性能包含了服务器请求和响应、加载、执行脚本、渲染、�
 
 DOM 包含页面所有的内容。CSSOM 包含了页面所有的样式，也就是如何展示 DOM 的信息。 CSSOM 跟 DOM 很像，但是不同。 <font color=red>DOM 构造是增量的，CSSOM 却不是</font>。 <font color=fuchsia>CSS 是渲染阻塞的：浏览器会阻塞页面渲染直到它接收和执行了所有的 CSS</font>。CSS 是渲染阻塞是因为规则可以被覆盖，所以内容不能被渲染直到 CSSOM 的完成。
 
-CSS 有其自身的规则集合用来定义标识。注意 CSS 中的 C 代表的是“层叠” ( Cascading )。CSS 规则是级联的。随着解析器转换标识为节点，节点的后代继承了样式。像处理 HTML 那样的增量处理功能没有被应用到 CSS 上，因为后续规则可能被之前的所覆盖。CSS 对象模型随着 CSS 的解析而被构建，但是直到完成都不能被用来构建渲染树，因为样式将会被之后的解析所覆盖而不应该被渲染到屏幕上。
+CSS 有其自身的规则集合用来定义标识。注意 CSS 中的 C 代表的是 “层叠” ( Cascading )。CSS 规则是级联的。随着解析器转换标识为节点，节点的后代继承了样式。像处理 HTML 那样的增量处理功能没有被应用到 CSS 上，因为后续规则可能被之前的所覆盖。CSS 对象模型随着 CSS 的解析而被构建，但是直到完成都不能被用来构建渲染树，因为样式将会被之后的解析所覆盖而不应该被渲染到屏幕上。
 
-<font color=dodgerblue>从选择器性能的角度，更少的特定选择器是比更多的要快</font>。例如，`.foo {}` 是比 `.bar .foo {}` 更快的因为当浏览器发现  `.foo` ，接下来必须沿着 DOM 向上走来检查 `.foo` 是不是有一个祖先 `.bar`。越是具体的标签浏览器就需要更多的工作，但这样的弊端未必值得优化
+<font color=dodgerblue>从选择器性能的角度，更少的特定选择器是比更多的要快</font>。例如，`.foo {}` 是比 `.bar .foo {}` 更快的因为当浏览器发现  `.foo` ，接下来必须沿着 DOM 向上走来（👀 自底向上）检查 `.foo` 是不是有一个祖先 `.bar`。越是具体的标签浏览器就需要更多的工作，但这样的弊端未必值得优化
 
 如果你测量过解析 CSS 的时间，你将会被浏览器实在地快所震惊。更具体的规则更昂贵因为它必须遍历更多的 DOM 树节点，但这所带来的额外的消耗通常很小。先测量一下。然后按需优化。特定化或许不是你的低垂的果实。在 CSS 中选择器的性能优化，提升仅仅是毫秒级的。有其他一些方式来优化 CSS，例如压缩和使用媒体查询来异步处理 CSS 为非阻塞的请求。
 
@@ -734,7 +734,7 @@ HTML中 尖括号 里的文本，具有特殊含义，属于标记。<font color
 
 <font color=fuchsia> 整个流程都由令牌解析器来完成，当令牌解析器在执行这一流程时，有另一个流程正在消耗这些令牌。并按照某种规则将它们转换为节点对象。</font>
 
-<font color=FF0000> 令牌解析器发出了 **起始令牌** 和 **结束令牌**，这样就可以显示节点之间的关系</font>，比如StartTag：head令牌出现在EndTag：HTML令牌前面，表示head令牌是HTML令牌的子级。
+<font color=FF0000> 令牌解析器发出了 **起始令牌** 和 **结束令牌**，这样就可以显示节点之间的关系</font>，比如 StartTag：head 令牌出现在EndTag：HTML令牌前面，表示  head令牌是HTML令牌的子级。
 
 摘自：[笔记](https://www.jianshu.com/p/219a9462ff90)
 
@@ -761,13 +761,13 @@ HTML中 尖括号 里的文本，具有特殊含义，属于标记。<font color
 
 ##### RenderObject 渲染对象
 
-RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对应，RenderObject 也构成了一颗树。但是RenderObject 的树与 DOM 节点并不是一一对应关系（ 👀 注：比如 `display: none` 的节点，不会生成渲染对象）。《Webkit 技术内幕》指出，如果满足下列条件，则会创建一个 RenderObject ：
+RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对应，RenderObject 也构成了一颗树。但是RenderObject 的树与 DOM 节点并不是一一对应关系（ 👀 比如 `display: none` 的节点，不会生成渲染对象）。《Webkit 技术内幕》指出，如果满足下列条件，则会创建一个 RenderObject ：
 
 - DOM 树中的 document 节点
-- DOM 树中的可见节点（webkit 不会为非可视节点创建 RenderObject 节点）
+- DOM 树中的可见节点（ Webkit 不会为非可视节点创建 RenderObject 节点）
 - 为了处理需要，Webkit 建立匿名的 RenderObject 节点，如表示块元素的 RenderBlock（ RenderObject 的子类）节点
 
-<font color=FF0000>将 DOM 节点绘制在页面上，除了要知道渲染节点的信息外，**还需要各渲染节点的层级**</font>（ 👀 注：可参考 composite ）。浏览器提供了 RenderLayer 来定义渲染层级
+<font color=FF0000>将 DOM 节点绘制在页面上，除了要知道渲染节点的信息外，**还需要各渲染节点的层级**</font>（ 👀 可参考 composite ）。浏览器提供了 RenderLayer 来定义渲染层级
 
 ##### RenderLayer 渲染层级
 
@@ -792,13 +792,13 @@ RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对
 
 ##### GraphicsLayer
 
-<font color=FF0000>为了节省 GPU 的内存资源，Webkit 并不会为每个 RenderLayer 分配一个对应的后端存储。而是，**按照一定的规则，将一些 RenderLayer 组合在一起，形成一个有后端存储的新层，用于之后的合成，称之为 *合成层***</font>。
+<font color=FF0000>为了节省 GPU 的内存资源，Webkit 并不会为每个 RenderLayer 分配一个对应的后端存储。而是，**按照一定的规则，将一些 RenderLayer 组合在一起，形成一个有后端存储的新层，用于之后的合成，称之为 合成层**</font>。
 
-<font color=FF0000>**合成层中，存储空间使用 GraphicsLayer 表示**</font>。对于<font color=FF0000>一个 RenderLayer 对象，**如果没有单独提升为合成层，则使用其父对象的合成层**</font>。如果一个 <font color=FF0000>RenderLayer 具有以下几个特征之一</font> （ [GPU Accelerated Compositing in Chrome](https://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome/)），<font color=FF0000>则其 **具有自己的合成层**</font>：
+<font color=FF0000>**合成层中，存储空间使用 GraphicsLayer 表示**</font>。对于<font color=FF0000>一个 RenderLayer 对象，**如果没有单独提升为合成层，则使用其父对象的合成层**</font>。如果一个 <font color=dodgerBlue>RenderLayer 具有以下几个特征之一</font> ( [GPU Accelerated Compositing in Chrome](https://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome/) ) ，<font color=dodgerBlue>则其 **具有自己的合成层**</font>：
 
 - 有 3D 或者透视变换的 CSS 属性
 - 包含使用硬件加速的视频加码技术的 Video 元素
-- 有 3D Contex 或者加速的 2D Context 的 Canvas 元素（**注：**普通的 2D Context 不会提升为合成层）
+- 有 3D Contex 或者加速的 2D Context 的 Canvas 元素（ 👀 普通的 2D Context 不会提升为合成层）
 - 有 opacity、transform 改变的动画
 - 使用了硬件加速的 CSS filter 技术
 - 后代包含一个合成层
