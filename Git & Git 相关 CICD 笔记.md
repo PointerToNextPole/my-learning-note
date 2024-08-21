@@ -812,6 +812,10 @@ normal 模式键入 `:wq!`，显示如下：
 
 
 
+## 其他笔记
+
+
+
 #### 使用 https url clone 项目
 
 很多朋友在用github管理项目的时候，都是直接使用https url克隆到本地，当然也有有些人使用 SSH url 克隆到本地。然而，为什么绝大多数人会使用https url克隆呢？
@@ -934,8 +938,6 @@ where git # 👀 类似的，可以通过 type git 起到类似的效果
 
   学习自：[解决Git中fatal: refusing to merge unrelated histories](https://blog.csdn.net/wd2014610/article/details/80854807)
 
-***
-
 
 
 #### 用户名和邮箱
@@ -1006,6 +1008,45 @@ git config -e [--global]
 ```
 
 以上内容摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+
+
+
+#### git 内置文件
+
+##### `.gitignore` 文件
+
+###### `.gitignore` 文件配置规则
+
+- **直接书写一个单词**：可以<font color=red>匹配当前工程</font>中所有为该单词的文件或<font color=fuchsia>文件夹</font> 
+
+  > ⚠️ 也会包含文件夹的，这和先前的记忆理解有偏差
+
+- **带斜杠的**：<font color=dodgerBlue>分两种情况</font>
+
+  - **斜杠在前面 `/foo` ，在中间 `foo/bar` ，在前面和中间 `/baz/`** ：<font color=fuchsia>将会从 `.gitignore` 这个文件位置出发，做匹配</font>（而不是匹配当前工程中所有的），这也说明了：<font color=fuchsia>`.gitignore` 文件未必一定要放在项目的根目录中</font>
+  - **斜杠在末尾** ：
+    - **斜杠只在末尾** ：和 “直接书写一个单词” 差不多，不过**只匹配文件夹**
+    - **除了末尾，前面也有斜杠**：从 `.gitignore` 这个文件位置出发，且只匹配文件夹
+
+- **带 `*` 的** ：匹配除了 `/` 以外的任意<font color=red>零个或多个</font>字符，规则与上面是否带斜杠的平行。另外，可以使用路径匹配中的 `**` 表示递归文件夹搜索
+
+- **带 `?` 的** ：匹配除了 `/` 以外的任意一个字符
+
+- **类似于正则的范围 `[0-9]` 以及集合 `[abc]`** ：功能与正则类似
+
+  > 👀 原教程中只说了范围，没有说集合，问了下 gpt 得到了肯定的回复
+  >
+  > <img src="https://s2.loli.net/2024/08/21/QyDaXsvKphkoUME.png" alt="image-20240821232227870" style="zoom:50%;" />
+
+- **感叹号 `!` 加路径** ：不做匹配
+
+##### `.gitkeep` 文件
+
+###### 作用
+
+用于让 git 去跟踪 `.gitkeep` 所在的目录
+
+学习自：[gitignore的匹配规则【渡一教育】](https://www.bilibili.com/video/BV1PMYsenEXs)
 
 
 
@@ -1156,11 +1197,11 @@ Be quiet, only report errors, but not the files that are successfully removed.
 
 ###### -e \<pattern> / --exclude=\<pattern>
 
-Use the given exclude pattern in addition to the standard ignore rules (see [gitignore[5\]](https://git-scm.com/docs/gitignore)).
+Use the given exclude pattern in addition to the standard ignore rules (see [gitignore[5]](https://git-scm.com/docs/gitignore)).
 
 ###### -x
 
-Don’t use the standard ignore rules (see [gitignore[5\]](https://git-scm.com/docs/gitignore)), but still use the ignore rules given with `-e` options from the command line. This allows removing all untracked files, including build products. This can be used (possibly in conjunction with *git restore* or *git reset*) to create a pristine working directory to test a clean build.
+Don’t use the standard ignore rules (see [gitignore[5]](https://git-scm.com/docs/gitignore)), but still use the ignore rules given with `-e` options from the command line. This allows removing all untracked files, including build products. This can be used (possibly in conjunction with *git restore* or *git reset*) to create a pristine working directory to test a clean build.
 
 ###### -X
 

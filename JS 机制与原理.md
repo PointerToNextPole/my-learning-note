@@ -5544,7 +5544,7 @@ ES6 尾调用优化 是 ecma 的规范，但是根据 Hax贺师俊 和 死月 �
 
 #### 防抖
 
-<font color=dodgerBlue>**防抖的原理** 就是</font>：你<font color=FF0000>尽管触发事件</font>，但是我 <font color=FF0000>**一定 <font size=4>在事件触发 n 秒后</font> 才执行**</font>，如果你<font color=FF0000>在一个事件触发的 n 秒内又触发了这个事件</font>，那我就 <font color=fuchsia size=4>**以新的事件的时间为准，n 秒后才执行**</font>，总之，<font color=fuchsia size=4>**就是要等你触发完事件 n 秒内不再触发事件，我才执行**</font>，真是任性呐!
+<font color=dodgerBlue>**防抖的原理** 就是</font>：你<font color=FF0000>尽管触发事件</font>，但是我 <font color=FF0000>**一定 <font size=4>在事件触发 n 秒后</font> 才执行**</font>，如果你<font color=FF0000>在一个事件触发的 n 秒内又触发了这个事件</font>，那我就 <font color=fuchsia size=4>**以新的事件的时间为准，n 秒后才执行**</font>，总之，<font color=fuchsia size=4>**就是要等你触发完事件 n 秒内不再触发事件，我才执行**</font>
 
 ##### 第一版
 
@@ -5790,7 +5790,7 @@ document.getElementById("button").addEventListener('click', function(){
 >
 > 有群友把 防抖 比作 “公交车”，每有一个乘客上车则多等待几秒；如果几秒内一直没有用户乘车，则出发（运行）。类似的，把 节流 比作 “地铁”，地铁之后停留固定的时间，停留时间到了，不管有没有用户要乘车，都会出发（运行）
 >
-> 如上，显然很贴切和形象
+> 如上，很贴切和形象
 
 <font color=FF0000>**根据首次是否执行以及结束后是否执行**，效果有所不同，实现的方式也有所不同</font>。我们<font color=lightSeaGreen>**用 `leading` 代表首次是否执行，`trailing` 代表结束后是否再执行一次**</font>。
 
