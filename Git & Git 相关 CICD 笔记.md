@@ -816,9 +816,11 @@ normal 模式键入 `:wq!`，显示如下：
 
 
 
-#### 使用 https url clone 项目
+#### clone 项目
 
-很多朋友在用github管理项目的时候，都是直接使用https url克隆到本地，当然也有有些人使用 SSH url 克隆到本地。然而，为什么绝大多数人会使用https url克隆呢？
+##### 使用 https url clone 项目
+
+很多朋友在用 github 管理项目的时候，都是直接使用https url克隆到本地，当然也有有些人使用 SSH url 克隆到本地。然而，为什么绝大多数人会使用https url克隆呢？
 
 这是因为，使用https url克隆对初学者来说会比较方便，复制https url 然后到 git Bash 里面直接用clone命令克隆到本地就好了。而使用 SSH url 克隆却需要在克隆之前先配置和添加好 SSH key 。
 
@@ -826,11 +828,19 @@ normal 模式键入 `:wq!`，显示如下：
 
 
 
-#### https 和 SSH clone的区别
+##### https 和 SSH clone的区别
 
 https可以随意克隆github上的项目，而不管是谁的；而SSH是你必须是你要克隆的项目的拥有者或管理员，且需要先添加 SSH key ，否则无法克隆。
 
 摘自：[github设置添加SSH](https://www.cnblogs.com/ayseeing/p/3572582.html)
+
+
+
+##### 查看一个项目是通过哪种方式 clone 到本地的
+
+可以使用 `git remote -v` 查看响应结果：如果是 `git@` 前缀，则是 ssh 克隆的；如果是 `http[s]://` 前缀，是 http 克隆的
+
+<img src="https://s2.loli.net/2024/08/22/89PrEbHdiXWAxFR.png" alt="image-20240822105302559" style="zoom:50%;" />
 
 
 
@@ -857,86 +867,86 @@ where git # 👀 类似的，可以通过 type git 起到类似的效果
 
 #### 问题汇总 & 解决方案
 
-- `git clone git@github.com:***.git` ，出现：
+##### `git clone git@github.com:***.git` ，出现：
 
-  ```
-  Warning: Permanently added the RSA host key for IP address '13.229.188.59' to the list of known hosts.
-  git@github.com: Permission denied (publickey).
-  fatal: Could not read from remote repository.
+```
+Warning: Permanently added the RSA host key for IP address '13.229.188.59' to the list of known hosts.
+git@github.com: Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+```
+
+参考：[Permanently added the RSA host key for IP address '13.250.177.223' to t he list of known hosts.](https://blog.csdn.net/yushuangping/article/details/84240863) 或者见官方教程：[用户头像  ==>  Setting  ==>  SSH and GPG keys  ==>  generate a GPG key and add it to your account  ==>  Adding a new GPG key to your GitHub account](https://help.github.com/en/github/authenticating-to-github/adding-a-new-gpg-key-to-your-github-account)
+
+##### `git push`
+
+###### 出现
+
+```bash
+To github.com:userName/projName.git
+ ! [rejected]        master -> master (non-fast-forward)
+error: 推送一些引用到 'github.com:userName/projName.git' 失败
+提示：更新被拒绝，因为您当前分支的最新提交落后于其对应的远程分支。
+提示：再次推送前，先与远程变更合并（如 'git pull ...'）。详见
+提示：'git push --help' 中的 'Note about fast-forwards' 小节。
+```
+
+解决方法：使用如下命令
+
+```bash
+git push -u origin +master
+```
+
+###### 出现
+
+```bash
+remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
+remote: Please see https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/ for more information.
+fatal: Authentication failed for 'https://github.com/github-user-name/proj-name.git/'
+```
+
+这是由于 Github 更新了提交策略导致（具体说明，详见上面的链接：[Token authentication requirements for Git operations](https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/)）。解决方法如下：
+
+- **生成 Token：**具体步骤详见 [Creating a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)。另外，GitHub 的 Docs 中也有中文译文，这篇同样，页面上设置即可。
+
+- **在命令行中使用 Token：**这里主要讨论 “策略生效之前就已经在本地“ 的老项目 更新后无法提交的问题
+
+  - **已经有仓库：**为仓库添加token
+
+    ```sh
+    git remote set-url origin https://<your-token>@github.com/<GitHub-user-name>/<repo-name>.git
+    ```
+
+    > 👀 这个命令和“迁移一个已有项目到云端”是一样的
+
+  - **原本没有仓库：**`git clone` 添加 token
   
-  Please make sure you have the correct access rights
-  and the repository exists.
-  ```
-
-  参考：[Permanently added the RSA host key for IP address '13.250.177.223' to t he list of known hosts.](https://blog.csdn.net/yushuangping/article/details/84240863) 或者见官方教程：[用户头像  ==>  Setting  ==>  SSH and GPG keys  ==>  generate a GPG key and add it to your account  ==>  Adding a new GPG key to your GitHub account](https://help.github.com/en/github/authenticating-to-github/adding-a-new-gpg-key-to-your-github-account)
-
-- `git push`
-
-  - 出现：
-
-    ```bash
-    To github.com:userName/projName.git
-     ! [rejected]        master -> master (non-fast-forward)
-    error: 推送一些引用到 'github.com:userName/projName.git' 失败
-    提示：更新被拒绝，因为您当前分支的最新提交落后于其对应的远程分支。
-    提示：再次推送前，先与远程变更合并（如 'git pull ...'）。详见
-    提示：'git push --help' 中的 'Note about fast-forwards' 小节。
+    ```sh
+    git clone https://<your-token>@github.com/<GitHub-user-name>/<repo-name>.git
     ```
+  
+  「在命令行中使用 Token」这部分摘自：[GitHub改为token验证后,如何提交代码?](https://python.iitter.com/other/39385.html)
+  
+  > 👀 上面的命令，`<your-token>` 可以通过 `git remote -v` 命令查看。
+  > > 💡 `git remote -v` 是 `git remote` 的进阶用法。 “v” 表示 “verbose”， `git remote` 只会显示远端 repo 的名称，而 `-v` 是在 repo 的名称之后，还会显示示远端 repo 的 url 
+  > >
+  > > 详见 [Git doc - git remote](https://git-scm.com/docs/git-remote)
+  >
+  > 👀 参见 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 的 “1、设置错误的远程库怎么办？”，所以，`git remote set-url` 只是一个“设置远程仓库地址”的命令（参考 [[#其他 git 命令]]）
 
-    解决方法：使用如下命令
+###### 出现：`error: src refspec master does not match any`
 
-    ```bash
-    git push -u origin +master
-    ```
+遇到的原因是（将一个已有的项目推到云端时） git init 时主分支名为 main，而某代码管理平台的仓库的主分支名为 master；分支名不同自然也就推不上去。
 
-  - 出现：
+##### `git pull` 出现：`fatal: refusing to merge unrelated histories`
 
-    ```bash
-    remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
-    remote: Please see https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/ for more information.
-    fatal: Authentication failed for 'https://github.com/github-user-name/proj-name.git/'
-    ```
+这是因为两个分支没有取得关系（👀 所以检查下 git pull / git push 的是否在不同一个分支上，是否要对不同分支的做该操作）
 
-    这是由于 Github 更新了提交策略导致（具体说明，详见上面的链接：[Token authentication requirements for Git operations](https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/)）。解决方法如下：
+解决方法：在你操作命令后面加`--allow-unrelated-histories` 选项，即：`git pull --allow-unrelated-histories`
 
-    - **生成 Token：**具体步骤详见 [Creating a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)。另外，GitHub 的 Docs 中也有中文译文，这篇同样，页面上设置即可。
-
-    - **在命令行中使用 Token：**这里主要讨论 “策略生效之前就已经在本地“ 的老项目 更新后无法提交的问题
-
-      - **已经有仓库：**为仓库添加token
-
-        ```sh
-        git remote set-url origin https://<your-token>@github.com/<GitHub-user-name>/<repo-name>.git
-        ```
-
-        > 👀 这个命令和“迁移一个已有项目到云端”是一样的
-
-      - **原本没有仓库：**`git clone` 添加 token
-      
-        ```sh
-        git clone https://<your-token>@github.com/<GitHub-user-name>/<repo-name>.git
-        ```
-      
-      「在命令行中使用 Token」这部分摘自：[GitHub改为token验证后,如何提交代码?](https://python.iitter.com/other/39385.html)
-      
-      > 👀 上面的命令，`<your-token>` 可以通过 `git remote -v` 命令查看。
-      > > 💡 `git remote -v` 是 `git remote` 的进阶用法。 “v” 表示 “verbose”， `git remote` 只会显示远端 repo 的名称，而 `-v` 是在 repo 的名称之后，还会显示示远端 repo 的 url 
-      > >
-      > > 详见 [Git doc - git remote](https://git-scm.com/docs/git-remote)
-      >
-      > 👀 参见 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 的 “1、设置错误的远程库怎么办？”，所以，`git remote set-url` 只是一个“设置远程仓库地址”的命令（参考 [[#其他 git 命令]]）
-
-  - 出现：`error: src refspec master does not match any`
-
-    遇到的原因是（将一个已有的项目推到云端时） git init 时主分支名为 main，而某代码管理平台的仓库的主分支名为 master；分支名不同自然也就推不上去。
-
-- `git pull` 出现：`fatal: refusing to merge unrelated histories`
-
-  这是因为两个分支没有取得关系（👀 所以检查下 git pull / git push 的是否在不同一个分支上，是否要对不同分支的做该操作）
-
-  解决方法：在你操作命令后面加`--allow-unrelated-histories` 选项，即：`git pull --allow-unrelated-histories`
-
-  学习自：[解决Git中fatal: refusing to merge unrelated histories](https://blog.csdn.net/wd2014610/article/details/80854807)
+学习自：[解决Git中fatal: refusing to merge unrelated histories](https://blog.csdn.net/wd2014610/article/details/80854807)
 
 
 
@@ -1044,7 +1054,9 @@ git config -e [--global]
 
 ###### 作用
 
-用于让 git 去跟踪 `.gitkeep` 所在的目录
+用于让 git 去跟踪 `.gitkeep` 所在的目录，哪怕目录是空的
+
+<img src="https://s2.loli.net/2024/08/22/eMEL4GAJ6HVdb9R.png" alt="image-20240822102936017" style="zoom:50%;" />
 
 学习自：[gitignore的匹配规则【渡一教育】](https://www.bilibili.com/video/BV1PMYsenEXs)
 
@@ -1052,8 +1064,8 @@ git config -e [--global]
 
 #### Git 工作区、暂存区和版本库
 
-- **工作区：**就是你<font color=LightSeaGreen>在电脑里能看到的目录</font>>
-- **暂存区：**英文叫 stage 或 index （💡 vue3 作为 vue 默认版时，vue的官网也重写了；而当前 ( 2022/2/23 ) vue 新官网中文版还没正式上线，目前的网站为：https://staging-cn.vuejs.org ，其中 staging 就是 “暂存” 之意 ）。<font color=LightSeaGreen>一般存放在 .git目录下" 下的index文件（.git/index）中</font>>，所以我们把暂存区有时也叫作索引（index）。（👀 将文件从工作区到暂存区，通过 `git add` ）
+- **工作区：**就是你<font color=LightSeaGreen>在电脑里能看到的目录</font>
+- **暂存区：**英文叫 stage 或 index （💡 vue3 作为 vue 默认版时，vue的官网也重写了；而当前 ( 2022/2/23 ) vue 新官网中文版还没正式上线，目前的网站为：https://staging-cn.vuejs.org ，其中 staging 就是 “暂存” 之意 ）。<font color=LightSeaGreen>一般存放在 `.git` 目录下" 下的index文件 ( `.git/index` ) 中</font>>，所以我们把暂存区有时也叫作索引（index）。（👀 将文件从工作区到暂存区，通过 `git add` ）
 - **版本库：**工作区有一个隐藏目录 `.git` ，这个不算工作区，而是 Git 的版本库。（👀 从暂存区到版本区，通过 `git commit` )
 
 ![工作区、版本库中的暂存区和版本库之间的关系](https://www.runoob.com/wp-content/uploads/2015/02/1352126739_7909.jpg)

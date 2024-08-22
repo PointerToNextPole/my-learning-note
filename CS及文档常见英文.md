@@ -1889,3 +1889,5 @@
   >  [`SCARD`](https://redis.io/docs/latest/commands/scard/) returns the size (a.k.a. cardinality) of a set.
   >
   > 摘自：[redis doc - Redis sets](https://redis.io/docs/latest/develop/data-types/sets/)
+  
+- **tenant** ：租户

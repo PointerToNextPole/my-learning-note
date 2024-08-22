@@ -13408,15 +13408,21 @@ get(target, prop, receiver) {
 Reflect.ownKeys(target)
 ```
 
-##### 参数
+###### 参数
 
 **target：**获取自身属性键的目标对象。
 
-返回值：由目标对象的自身属性键组成的 Array。 
+###### 返回值
 
-异常：<font color=FF0000>如果目标不是 Object，抛出一个 TypeError</font>。
+由目标对象的自身属性键组成的 Array。 
 
-**描述：**<font color=red>Reflect.ownKeys 方法返回一个由目标对象自身的属性键组成的数组</font>。它的<font color=LightSeaGreen>返回值等同于Object.getOwnPropertyNames(target).concat(Object.getOwnPropertySymbols(target))</font>
+###### 异常
+
+<font color=FF0000>如果目标不是 Object，抛出一个 TypeError</font>。
+
+##### 描述
+
+<font color=red>Reflect.ownKeys 方法返回一个由目标对象自身的属性键组成的数组</font>。它的<font color=LightSeaGreen>返回值等同于Object.getOwnPropertyNames(target).concat(Object.getOwnPropertySymbols(target))</font>
 
 ##### 示例
 
