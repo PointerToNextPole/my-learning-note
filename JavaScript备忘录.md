@@ -7512,7 +7512,7 @@ setTimeout(functionRef, delay, param1, param2, /* … ,*/ paramN)
 
 - `delay` ：可选。定时器在执行指定的函数或代码之前应该等待的时间，单位是毫秒。如果省略该参数，则使用值 0，意味着“立即”执行，或者更准确地说，在下一个事件循环执行。注意，无论是哪种情况，实际延迟可能会比预期长一些，参见下方[延时比指定值更长的原因](https://developer.mozilla.org/zh-CN/docs/Web/API/setTimeout#延时比指定值更长的原因)一节的叙述。
 
-  <font color=dodgerBlue>还要注意的是，如果值不是数字</font>，<font color=red>隐含的类型强制转换会静默地对该值进行转换，使其成为一个数字</font>——这可能导致意想不到的、令人惊讶的结果；见 [[非数字延迟值被静默地强制转化为数字]] 以了解一个示例。
+  <font color=dodgerBlue>还要注意的是，如果值不是数字</font>，<font color=red>隐含的类型强制转换会静默地对该值进行转换，使其成为一个数字</font>——这可能导致意想不到的、令人惊讶的结果；见 [[#非数字延迟值被静默地强制转化为数字]] 以了解一个示例。
 
 - `param1`, …, `paramN` ：可选。附加参数，一旦定时器到期，它们会作为参数传递给 `functionRef` 指定的函数。
 
