@@ -3416,7 +3416,7 @@ type obj = {
 }
 ```
 
-> **注：**⚠️ 需要注意的是： <font size=4>**`Function extends object ? true : false` 结果为 <font color=FF0000>true</font> **</font> ， <font size=4>**`string extends object ? true : false` 结果为 <font color=FF0000>false</font>**</font>  
+> ⚠️ 需要注意的是： <font size=4>**`Function extends object ? true : false` 结果为 <font color=FF0000>true</font> **</font> ， <font size=4>**`string extends object ? true : false` 结果为 <font color=FF0000>false</font>**</font>  
 
 另外，一开始写的时候，写的代码和原文错误代码差不多；不过没考虑到 `Function extends object ? true : false` 为 true 的情况。加上这种情况后，代码（也是原文中代码）如下：
 
@@ -3437,7 +3437,7 @@ type DeepReadonly<Obj extends Record<string, any>> = {
 
 原因是： <font color=FF0000 size=4>**TS 只有类型被用到的时候才会做类型计算**</font>。
 
-所以，<font size=4><font color=FF0000>可以在前面加上一段</font> `Obj extends never ? never` <font color=FF0000>或者</font> `Obj extends any` ，<font color=FF0000>让它触发计算</font></font>；另外，<font size=4>写 `Obj extends any` 还有额外的好处，就是<font color=FF0000>能 **处理联合类型**</font></font>，（注：形成 “分布式条件类型” ）相关讲解见 [[#联合分散可简化]] 
+所以，<font size=4><font color=FF0000>可以在前面加上一段</font> `Obj extends never ? never` <font color=FF0000>或者</font> `Obj extends any` ，<font color=FF0000>让它触发计算</font></font>；另外，<font size=4>写 `Obj extends any` 还有额外的好处，就是<font color=FF0000>能 **处理联合类型**</font></font>，（👀 形成 “分布式条件类型” ）相关讲解见 [[#联合分散可简化]] 
 
 最终代码如下：
 
@@ -3653,7 +3653,7 @@ type Fibonacci<Num extends number> = FibonacciLoop<[1], [], [], Num>;
 
 > 💡 分布式条件类型在官方文档中也有介绍，也做了笔记，见 [[#Conditional Types#Distributive Conditional Types]]
 
-当 <font color=FF0000>类型参数为联合类型</font>，并且在 <font color=FF0000 size=4>条件类型</font> （ 👀 即 `extends ? :` 。另外，这个很重要，下面 [[#IsUnion]] 中会用到这个特性 ）左边直接引用该类型参数的时候：<font color=FF0000>TypeScript 会把 <font size=4>每一个元素单独传入来做类型运算，最后再合并成联合类型</font></font>，这种语法叫做「分布式条件类型」。
+当 <font color=FF0000>类型参数为联合类型</font>，并且在 <font color=fuchsia>**条件类型**</font> （ 👀 即 `extends ? :` 。另外，这个很重要，下面 [[#IsUnion]] 中会用到这个特性 ）左边直接引用该类型参数的时候：<font color=FF0000>TypeScript 会把 <font size=4>每一个元素单独传入来做类型运算，最后再合并成联合类型</font></font>，这种语法叫做「分布式条件类型」。
 
 比如这样一个联合类型：
 
@@ -4012,7 +4012,9 @@ A 是 B 类型，并且 B 也是 A 类型，那么就是同一个类型，返回
 
 <font color=FF0000>**如果允许父类型赋值给子类型，就叫做<font size=4>「逆变」</font>。如果允许子类型赋值给父类型，就叫做<font size=4>「协变」</font>**</font>。详细概念见  [[#逆变、协变、双向协变、不变]]
 
-在 TypeScript 中 <font color=FF0000><font size=4>**「函数参数」是有「逆变」的性质**</font> 的，也就是：如果参数可能是多个类型，参数类型会变成它们的交叉类型</font>。注：这部分内容下面有讲到 [[#逆变 ( contravariant )]]
+在 TypeScript 中 <font color=fuchsia><font size=4>**「函数参数」是有「逆变」的性质**</font> 的</font>，<font color=dodgerBlue>也就是</font>：<font color=fuchsia>如果参数可能是多个类型，参数类型会变成它们的交叉类型</font>。
+
+> 👀 这部分内容下面有讲到 [[#逆变 ( contravariant )]]
 
 所以联合转交叉可以这样实现 ：
 
@@ -4031,7 +4033,7 @@ type UnionToIntersection<U> =
 
 ##### GetOptional
 
-如何提取索引类型中的可选索引呢？
+<font color=dodgerBlue>如何提取索引类型中的可选索引呢？</font>
 
 这也要利用可选索引的特性：**可选索引的值为 undefined 和 值类型 的联合类型**。
 
@@ -4062,7 +4064,7 @@ type Pick<T, K extends keyof T> = { [P in K]: T[P] }
 
 <img src="https://s2.loli.net/2022/05/04/TOiut6sRFq94xLv.png" alt="img" style="zoom:75%;" />
 
-<font color=FF0000 size=4>**因为 age 可能为 undefined，也就是索引类型可能是 {}** </font>；所以 `{} extends Pick<Obj, Key>` 就能过滤出可选索引。（<font color=FF0000>可选的意思就是有或者没有，<font size=4>**没有的时候就是空的索引类型**</font></font>）。值的类型依然是之前的，也就是 Obj[Key]。
+<font color=FF0000 size=4>**因为 age 可能为 undefined，也就是索引类型可能是 {}** </font>；所以 `{} extends Pick<Obj, Key>` 就能过滤出可选索引。（<font color=FF0000>可选的意思就是有或者没有，<font size=4>**没有的时候就是空的索引类型**</font></font>）。值的类型依然是之前的，也就是 `Obj[Key]` 。
 
 这样，就能过滤出所有可选索引，构造成新的索引类型：
 
@@ -6266,6 +6268,8 @@ type UnionToIntersection<T> =
   (T extends any ? (x: T) => any : never) extends 
     ( x: infer R) => void ? R : never
 ```
+
+这里可以参见 [[#UnionToIntersection]] 部分的内容，另外，其中除了讲解外，还有另一种差不多的实现
 
 学习自：[联合类型转交叉类型【渡一教育】](https://www.bilibili.com/video/BV1tC4y1k7cK)
 

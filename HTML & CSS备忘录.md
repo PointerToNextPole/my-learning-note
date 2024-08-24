@@ -24,7 +24,7 @@ Lorem ipsum，简称为 Lipsum，是指一篇常用于排版设计领域的拉�
 
 > 多年以来，“HTML5” 这个词更多是一个非规范的叫法，尤其是现在都已经 2022 年了，基本上我只能在国内的招聘 JD 里看到（不够专业）。现在的 HTML 规范早已经没有版本号了，更加不会有 HTML6 。
 >
-> CSS 也同样早已没有版本号，CSS3 也是个非规范叫法，基本只能在招聘 JD 里看到，十年前我翻译的文章：[[译\]根本没有"CSS4" - 紫云飞 - 博客园](https://www.cnblogs.com/ziyunfei/archive/2012/12/11/2813263.html)
+> CSS 也同样早已没有版本号，CSS3 也是个非规范叫法，基本只能在招聘 JD 里看到，十年前我翻译的文章：[\[译\]根本没有"CSS4" - 紫云飞 - 博客园](https://www.cnblogs.com/ziyunfei/archive/2012/12/11/2813263.html)
 
 
 
@@ -8616,16 +8616,16 @@ accent-color: unset;
 
 #### object-fit
 
-<font color=FF0000>object-fit CSS 属性**指定 <font size=4>可替换元素</font>**</font>（这个名词，隔壁的《CSS权威指南阅读笔记》有解释）<font color=FF0000>的内容应该如何适应到其使用的高度和宽度确定的框。</font>
+<font color=FF0000>object-fit CSS 属性**指定 <font size=4>可替换元素</font>**</font>（这个名词，隔壁的《CSS权威指南阅读笔记》有解释，见 [[CSS权威指南（第四版）阅读笔记#置换元素]] 。另外，值得补充的是：可替换元素的外观是 CSS 所难以控制的，比如 `<img>` 的内容是有 `src` 控制的）<font color=FF0000>的内容应该如何适应到其使用的高度和宽度确定的框。</font>
 <font color=dodgerBlue>您可以通过使用 object-position 属性来切换被替换元素的内容对象在元素框内的对齐方式。</font>
 
 ##### 取值
 
-- **contain：**<font color=FF0000>被替换的内容将被缩放，以在填充元素的内容框时保持其宽高比</font>。 整个对象在填充盒子的同时保留其长宽比，因此如果宽高比与框的宽高比不匹配，该对象将被添加“黑边”。
-- **cover：**被替换的内容在<font color=FF0000>保持其宽高比的同时填充元素的整个内容框</font>。如果对象的宽高比与内容框不相匹配，该对象将被剪裁以适应内容框。
-- **fill<font color=FF0000>（默认）：</font>**<font color=FF0000>被替换的内容正好填充元素的内容框</font>。整个对象将完全填充此框。<font color=FF0000>如果对象的宽高比与内容框不相匹配，那么 <font size=4>**该对象将被拉伸以适应内容框**</font></font>。
-- **none：**被替换的内容将<font color=FF0000>保持其原有的尺寸</font>。
-- **scale-down：**<font color=FF0000>内容的尺寸与 none 或 contain 中的一个相同，取决于它们两个之间谁得到的对象尺寸会更小一些</font>。
+- **`contain`** ：<font color=FF0000>被替换的内容将被缩放，以在填充元素的内容框时保持其宽高比</font>。 整个对象在填充盒子的同时保留其长宽比，因此如果宽高比与框的宽高比不匹配，该对象将被添加“黑边”。
+- **`cover`** ：被替换的内容在<font color=FF0000>保持其宽高比的同时填充元素的整个内容框</font>。如果对象的宽高比与内容框不相匹配，该对象将被剪裁以适应内容框。
+- **`fill`** ：<font color=FF0000>（默认）</font><font color=FF0000>被替换的内容正好填充元素的内容框</font>。整个对象将完全填充此框。<font color=FF0000>如果对象的宽高比与内容框不相匹配，那么 <font size=4>**该对象将被拉伸以适应内容框**</font></font>。
+- **`none`** ：被替换的内容将<font color=FF0000>保持其原有的尺寸</font>。
+- **`scale-down`** ：<font color=FF0000>内容的尺寸与 `none` 或 `contain` 中的一个相同，取决于它们两个之间谁得到的对象尺寸会更小一些</font>。
 
 摘自：[MDN - object-fit](https://developer.mozilla.org/zh-CN/docs/Web/CSS/object-fit)
 

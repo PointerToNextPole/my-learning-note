@@ -6951,7 +6951,7 @@ console.log(a); // 10
 
 #### Element.getBoundingClientRect()
 
-Element.getBoundingClientRect() 方法<font color=FF0000>返回元素的 大小 及其 相对于视口 ( viewport ) 的位置</font>（ 👀 **注：**视口即页面窗口）。
+Element.getBoundingClientRect() 方法<font color=FF0000>返回元素的 大小 及其 相对于视口 ( viewport ) 的位置</font>（ 👀 视口即页面窗口）。
 
 如果是 <font color=FF0000>**标准盒子模型**</font>，<font color=FF0000>元素的尺寸等于 `width/height` + `padding` + `border-width` 的总和</font>。如果 <font color=fuchsia>**`box-sizing: border-box`**</font> ，<font color=fuchsia>元素的的尺寸等于 `width/height` </font>。
 
