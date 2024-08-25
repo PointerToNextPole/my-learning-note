@@ -2790,7 +2790,7 @@ Indicates which [referrer](https://developer.mozilla.org/en-US/docs/Web/API/Docu
 
 ```html
 <script>
-	window.callback = functino(data) {
+  window.callback = function (data) {
     console.log(data)
   }
 </script>
