@@ -2067,7 +2067,7 @@ This means that if your application is server-side rendered, the content is fetc
 
 ##### CSR 客户端渲染概念
 
-解释一：客户端渲染模式下，<font color=FF0000>**服务端把渲染的静态文件给到客户端**</font>，<font color=FF0000>客户端拿到服务端发送过来的文件自己跑一遍 js，根据 JS 运行结果，生成相应 DOM，然后渲染给用户</font>。
+解释一：客户端渲染模式下，<font color=FF0000>**服务端把渲染的静态文件给到客户端**</font>，<font color=FF0000>客户端拿到服务端发送过来的文件自己跑一遍 JS ，根据 JS 运行结果，生成相应 DOM，然后渲染给用户</font>。
 
 解释二：html 仅仅作为静态文件，客户端在请求时，服务端不做任何处理，<font color=FF0000>直接以原文件的形式返回给客户端客户端</font>，然后根据 html 上的 JavaScript，生成 DOM 插入 html。
 
@@ -2075,9 +2075,9 @@ This means that if your application is server-side rendered, the content is fetc
 
 ###### 利弊
 
-- **好处：** 网络传输数据量小、减少了服务器压力、前后端分离、局部刷新，无需每次请求完整页面、交互好可实现各种效果
+- **好处** ： 网络传输数据量小、减少了服务器压力、前后端分离、局部刷新，无需每次请求完整页面、交互好可实现各种效果
 
-- **坏处：**<font color=FF0000>**不利于 SEO**</font>。<font color=FF0000>爬虫看不到完整的程序源码、首屏渲染慢</font>（渲染前需要下载一堆 js 和 css 等）
+- **坏处** ：<font color=FF0000>**不利于 SEO**</font>。<font color=FF0000>爬虫看不到完整的程序源码、首屏渲染慢</font>（渲染前需要下载一堆 js 和 css 等）
 
 ##### SSR 服务端渲染概念
 
@@ -2087,9 +2087,9 @@ This means that if your application is server-side rendered, the content is fetc
 
 ###### 利弊
 
-- **好处:**  <font color=FF0000 size=4>**首屏渲染快**</font>（ FCP 优化）、<font color=FF0000>**利于 SEO**</font>、可以生成缓存片段，生成静态化文件、节能（对比客户端渲染的耗电）
+- **好处** ：<font color=FF0000 size=4>**首屏渲染快**</font>（ FCP 优化）、<font color=FF0000>**利于 SEO**</font>、可以生成缓存片段，生成静态化文件、节能（对比客户端渲染的耗电）
 
-- **坏处:**  用户体验较差、不容易维护，通常前端改了部分 html 或者 css，后端也需要修改。
+- **坏处** ：用户体验较差、不容易维护，通常前端改了部分 html 或者 css，后端也需要修改。
 
 摘自：[服务端渲染（SSR)](https://juejin.im/post/6844903731075481608)
 

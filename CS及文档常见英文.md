@@ -892,7 +892,7 @@
 
   **generalization** ：n. 泛化
 
-- **flaw** ：缺陷
+- **flaw** ：缺陷。design flaw 设计缺陷
 
 - **cascade** ：级联
 
@@ -1233,6 +1233,8 @@
   > The top layer is a specific layer that **spans** the entire width and height of the viewport and sits on top of all other layers displayed in a web document.
   >
   > 摘自：[MDN US - Top layer](https://developer.mozilla.org/en-US/docs/Glossary/Top_layer)
+  
+- **on-premises** ：就地，在现场
 
 ***
 
@@ -1891,3 +1893,5 @@
   > 摘自：[redis doc - Redis sets](https://redis.io/docs/latest/develop/data-types/sets/)
   
 - **tenant** ：租户
+
+- **distract** ：分散，分散注意力，使分心

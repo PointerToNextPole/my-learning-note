@@ -6275,6 +6275,16 @@ type UnionToIntersection<T> =
 
 
 
+##### Optional 实现
+
+```ts
+type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
+```
+
+学习自：[实现Optional【渡一教育】](https://www.bilibili.com/video/BV1fHWGeSEPf)
+
+
+
 ## 其他笔记
 
 #### interface VS type
