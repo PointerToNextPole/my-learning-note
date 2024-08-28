@@ -6798,7 +6798,7 @@ rules: [
 ]
 ```
 
-现在，所有 .svg 文件都将通过 mini-svg-data-uri 包进行编码。
+现在，所有 `.svg` 文件都将通过 mini-svg-data-uri 包进行编码。
 
 ##### asset/source
 
@@ -9213,7 +9213,7 @@ The `webpack` compiler can understand modules written as ES2015 modules, CommonJ
 
 ##### 全局引入
 
-we wanted to instead <font color=red>provide this</font>（前面有省略，根据上下文 this 是指 lodash ） <font color=red>**as a global** throughout our application</font> . **To do this , we can use [`ProvidePlugin`](https://webpack.js.org/plugins/provide-plugin)** . 👀 注：ProvidePlugin 相关的内容参考 [[#ProvidePlugin 文档笔记]]
+we wanted to instead <font color=red>provide this</font>（前面有省略，根据上下文 this 是指 lodash ） <font color=red>**as a global** throughout our application</font> . **To do this , we can use [`ProvidePlugin`](https://webpack.js.org/plugins/provide-plugin)** .（ 👀 ProvidePlugin 相关的内容参考 [[#ProvidePlugin 文档笔记]] ）
 
 <font color=dodgerblue>The `ProvidePlugin` **makes a package available as a variable in every module** compiled through webpack</font>. <font color=fuchsia>If webpack sees that variable used , it will **include the given package in the final bundle**</font>. Let's go ahead by removing the `import` statement for `lodash` and instead provide it via the plugin:
 
@@ -9310,7 +9310,7 @@ module.exports = {
 }
 ```
 
-> 👀 注：上面的 require.resolve 方法是 Node module 的方法：
+> 👀 上面的 require.resolve 方法是 Node module 的方法：
 >
 > > ```js
 > > require.resolve(request[, options])
@@ -9331,7 +9331,7 @@ module.exports = {
 >
 > 根据 [require.resolve和path.resolve](https://blog.csdn.net/wu_xianqiang/article/details/121783008) 中的说法：在“相对路径” 下这两者基本没什么区别。
 >
-> >  👀 注：自己实践时发现三点区别：
+> >  👀 自己实践时发现三点区别：
 > >
 > > 1. 如果 `require.resolve` 中的 `request` 参数是一个文件夹，比如 `./` ，则会搜索当前文件夹下的 index.js 等文件，找到则返回结果，找不到则报错；而 path.resolve 只会返回文件夹路径字符串
 > > 2. path.resolve 找不到不会报错，而是把路径（哪怕是不存在的）返回
@@ -9343,9 +9343,9 @@ module.exports = {
 
 ##### Global Exports
 
-Let's say <mark>a library creates a global variable</mark> that <mark>it expects its consumers to use</mark>. （👀 注：这里省略一些内容，包括下面的前半句）
+Let's say <mark>a library creates a global variable</mark> that <mark>it expects its consumers to use</mark>. （👀 这里省略一些内容，包括下面的前半句）
 
-you may encounter a dated library you'd like to use that contains similar code to what's shown above（ 👀 注：“above” 的内容被省略，见原文）. In this case, <mark>we can use</mark> [`exports-loader`](https://webpack.js.org/loaders/exports-loader/) , <mark>to export that global variable as a normal module export</mark>. For instance, in order to export `file` as `file` and `helpers.parse` as `parse` :
+you may encounter a dated library you'd like to use that contains similar code to what's shown above（ 👀 “above” 的内容被省略，见原文）. In this case, <font color=lightSeaGreen>we can use</font> [`exports-loader`](https://webpack.js.org/loaders/exports-loader/) , <font color=lightSeaGreen>to export that global variable as a normal module export</font>. For instance, in order to export `file` as `file` and `helpers.parse` as `parse` :
 
 ```diff
  module.exports = {
@@ -9365,7 +9365,9 @@ you may encounter a dated library you'd like to use that contains similar code t
  };
 ```
 
-> 👀 注：上面的写法应该是 resourceQuery，相关的内容可以参考 [webpack doc - cfg - module # Rule.resourceQuery](https://webpack.js.org/configuration/module/#ruleresourcequery) ；另外，[webpack doc - guides - asset modules # Replacing Inline Loader Syntax](https://webpack.js.org/guides/asset-modules/#replacing-inline-loader-syntax) 中也有提及（也更详细点）
+> 👀 上面的写法应该是 resource query，相关的内容可以参考 [webpack doc - cfg - module # Rule.resourceQuery](https://webpack.js.org/configuration/module/#ruleresourcequery) ；另外，[webpack doc - guides - asset modules # Replacing Inline Loader Syntax](https://webpack.js.org/guides/asset-modules/#replacing-inline-loader-syntax) 中也有提及（也更详细点）
+>
+> 另外，关于 “resource query” 可以看下 [[前端工程化笔记#webpack#resource query]] 中的内容
 
 Now from within our entry script (i.e. `src/index.js` ) , <font color=red>**we could use `const { file, parse } = require('./globals.js');` and all should work smoothly**</font>.
 
@@ -9384,7 +9386,7 @@ import 'babel-import'
 >
 > 译：注意，我们没有将 `import` 绑定到某个变量。这是因为 polyfill 直接基于自身执行，并且是在基础代码执行之前，这样通过这些预置，我们就可以假定已经具有某些原生功能。
 
-Note that <font color=fuchsia>this approach **prioritizes correctness over bundle size**</font>（👀 注：即 bundle 体积很大）. <font color=fuchsia size=4>**To be safe and robust**, polyfills/shims must run **before all other code**</font>, and <font color=red>thus either need to load synchronously</font>（ 👀 注：同步是为了保证先执行？）, **or**, <font color=red>all app code needs to load after all polyfills/shims load</font>. <font color=dodgerBlue>There are many **misconceptions** in the community</font>, as well, <mark>that modern browsers "don't need" polyfills, or that polyfills/shims merely serve to add missing features</mark>（👀 注：为保证之后阅读断章取义，前面高亮的内容是错的） - in fact, <font color=fuchsia>they often *repair broken implementations*, **even in the most modern of browsers**</font>. <mark style="background: lightpink">The **best practice** thus remains to unconditionally and synchronously load all polyfills/shims, despite the bundle size cost this incurs</mark>（👀 注：这是总结）.
+Note that <font color=fuchsia>this approach **prioritizes correctness over bundle size**</font>（👀 注：即 bundle 体积很大）. <font color=fuchsia size=4>**To be safe and robust**, polyfills/shims must run **before all other code**</font>, and <font color=red>thus either need to load synchronously</font>（ 👀 注：同步是为了保证先执行？）, **or**, <font color=red>all app code needs to load after all polyfills/shims load</font>. <font color=dodgerBlue>There are many **misconceptions** in the community</font>, as well, <mark>that modern browsers "don't need" polyfills, or that polyfills/shims merely serve to add missing features</mark>（👀 为避免之后阅读断章取义，前面高亮的内容是错的） - in fact, <font color=fuchsia>they often *repair broken implementations*, **even in the most modern of browsers**</font>. <mark style="background: lightpink">The **best practice** thus remains to unconditionally and synchronously load all polyfills/shims, despite the bundle size cost this incurs</mark>（👀 这是总结）.
 
 If you feel that you have mitigated（减轻，这里理解为“打消”） these concerns（顾虑） and wish to incur the risk of brokenness（希望承受损坏的风险）, <font color=dodgerBlue>here's one way you might do it</font> : Let's move our `import` to a new file and add the [`whatwg-fetch`](https://github.com/github/fetch) polyfill: `npm install --save whatwg-fetch` :
 
@@ -9452,7 +9454,7 @@ With that in place, <font color=red>we can add the logic to conditionally load o
 </body>
 ```
 
-> 👀 注：上面代码之所以这样放置，是因为 polyfill 相关代码必须要要 其他代码之前执行。
+> 👀 上面代码之所以这样放置，是因为 polyfill 相关代码必须要要 其他代码之前执行。
 
 Now we can `fetch` some data within our entry script:
 
