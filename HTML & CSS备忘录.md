@@ -3475,7 +3475,7 @@ body { padding: 36px 24px 18px 12px; } /* 上、右、下、左补丁边距分�
 - 表格单元格（元素的 display 为 table-cell，HTML表格单元格默认为该值）
 - 表格标题（元素的 display 为 table-caption，HTML表格标题默认为该值）
 - 匿名表格单元格元素（元素的 display 为 table、table-row、 table-row-group、table-header-group、table-footer-group（分别是HTML table、row、tbody、thead、tfoot 的默认属性）或 inline-table）
-- <font color=FF0000>overflow 计算值(Computed)不为 visible 的块元素</font>
+- <font color=FF0000>overflow 计算值( Computed )不为 visible 的块元素</font>
 - display 值为 flow-root 的元素
 - contain 值为 layout、content 或 paint 的元素
 - 弹性元素（display 为 flex 或 inline-flex 元素的直接子元素）
@@ -3527,16 +3527,16 @@ box model 不完全适用于参与内联格式上下文。在水平书写模式�
 现在开发 web 应用并不会直接基于 dom api，而是会选择某一个前端框架，比如 vue、react、angular 等。<font color=FF0000>这些框架实现了组件的功能，也就是对页面做的逻辑的拆分，把相同功能的 html、css、js 聚合在一起，使之可以复用</font>。并且<font color=FF0000>提供了 mvvm 的功能，自动做数据到具体 dom 的映射，而不再需要开发者手动操作 dom</font>。
 <font color=FF0000>前端框架做的事情相当于是 web 应用的逻辑层，最终的渲染和交互还是通过 dom api</font>，但是 <font color=FF0000>用户不需要直接操作，而是在逻辑层描述组件和数据，由前端框架完成数据到 dom 的自动映射</font>。
 
-（盒子模型）盒与盒之间也是有区别的，有的盒可以在同一行显示，有的则是独占一行，而且对内容的位置的计算方式也不一样。于是<font color=FF0000><font size=4>**提供了 display 样式来设置盒类型**</font></font>（注：这种说法，之前没听说过），比如 block、inline、inline-block、flex、table-cell、grid 等，分别<font size=4>设置成不同的盒类型，就会使用不同的计算规则</font>。
+（盒子模型）盒与盒之间也是有区别的，有的盒可以在同一行显示，有的则是独占一行，而且对内容的位置的计算方式也不一样。于是 <font color=fuchsia>**提供了 display 样式来设置盒类型**</font>（👀 这种说法，之前没听说过；虽然感觉就是 formatting context 概念那一套），比如 block、inline、inline-block、flex、table-cell、grid 等，分别<font size=4>设置成不同的盒类型，就会使用不同的计算规则</font>。
 
 - **block** 的元素会独占一行、可以设置内容的宽高，具体计算规则叫做 BFC。
 - **inline** 的元素宽高由内容撑开不可设置，不会独占一行，具体计算规则叫做 IFC。
-- **flex** 的子元素可以自动计算空白部分，由 flex 样式指定分配比例，具体计算规则叫做 <font color=FF0000 size=4>**FFC**</font>。
-- **grid** 的子元素则是可以拆分成多个行列来计算位置，具体计算规则叫 <font color=FF0000 size=4>**GFC**</font>。
+- **flex** 的子元素可以自动计算空白部分，由 flex 样式指定分配比例，具体计算规则叫做 <font color=FF0000>**FFC**</font>。
+- **grid** 的子元素则是可以拆分成多个行列来计算位置，具体计算规则叫 <font color=FF0000>**GFC**</font>。
 
 这些都是不同盒类型的布局计算规则。
 
-> 👀 在 stack overflow 有这样一个问题：[How many CSS formatting contexts are there?](https://stackoverflow.com/questions/16908438/how-many-css-formatting-contexts-are-there) 同样解释了这个问题：
+> 💡 在 stack overflow 有这样一个问题：[How many CSS formatting contexts are there?](https://stackoverflow.com/questions/16908438/how-many-css-formatting-contexts-are-there) 同样解释了这个问题：
 >
 > In general, a "formatting context" is simply an area in which descendant boxes of a certain kind (e.g. block, inline, flex-item) are laid out (or formatted) in normal flow.
 >
@@ -4487,10 +4487,10 @@ text-indent: unset;
 
 在下面的例子设置了三个样式：
 
-- **p{ }**: 为所有 **p** 元素指定一个样式。
-- **.marked{ }**: 为所有 **class="marked"** 的元素指定一个样式。
-- <mark>**.marked p{ }**: 为所有 **class="marked"** 元素内的 **p** 元素指定一个样式</mark>。
-- <mark>**p.marked{ }**: 为所有 **class="marked"** 的 **p** 元素指定一个样式</mark>。
+- **`p{ }`** : 为所有 `p` 元素指定一个样式。
+- **`.marked{ }`** : 为所有 `class="marked"` 的元素指定一个样式。
+- **`.marked p{ }`** : 为所有 `class="marked"` 元素内的 `p` 元素指定一个样式。
+- **`p.marked{ }`** : 为所有 `class="marked"` 的 `p` 元素指定一个样式。
 
 
 
@@ -4533,17 +4533,17 @@ text-indent: unset;
 
 ##### 补充：inline-block
 
-**简单来说：**就是<mark>将<font color=FF0000>**对象**呈现为 **inline** 对象</font>，但是<font color=FF0000>**对象的内容**作为 **block** 对象</font>呈现</mark>。之后的内联对象会被排列在同一行内。比如我们可以给一个 link（ a 元素）inline-block 属性值，使其既具有 block 的宽度高度特性又具有 inline 的同行特性。
+<font color=dodgerBlue>简单来说</font>：就是将<font color=FF0000>**对象**呈现为 **inline** 对象</font>，但是<font color=FF0000>**对象的内容**作为 **block** 对象</font>呈现。之后的内联对象会被排列在同一行内。比如我们可以给一个 link（ a 元素）inline-block 属性值，使其既具有 block 的宽度高度特性又具有 inline 的同行特性。
 
 内联块状元素 ( inline-block ) 就是同时具备内联元素、块状元素的特点。
 
-**inline-block 元素特点**
+<font color=dodgerBlue>inline-block 元素特点：</font>
 
 1、和其他元素都在一行上
 
 2、<font color=FF0000>元素的高度、宽度、行高以及顶和底边距都可设置</font>。
 
-**另外：**IE（低版本 IE ）本来是不支持 inline-block 的，所以在 IE 中对内联元素使用 display: inline-block，理论上 IE 是不识别的，但使用 display: inline-block 在 IE 下会触发 layout，从而使内联元素拥有了 display: inline-block 属性的表象。
+<font color=dodgerBlue> 另外</font>：IE（低版本 IE ）本来是不支持 inline-block 的，所以在 IE 中对内联元素使用 display: inline-block，理论上 IE 是不识别的，但使用 display: inline-block 在 IE 下会触发 layout，从而使内联元素拥有了 display: inline-block 属性的表象。
 
 摘自：[block，inline和inline-block概念和区别](https://www.cnblogs.com/KeithWang/p/3139517.html)  [CSS： inline、block和inline-block的区别](https://www.cnblogs.com/adongyo/p/11290826.html)
 
@@ -4633,7 +4633,7 @@ div {
 
 
 
-#### **重叠的元素**
+#### 重叠的元素
 
 元素的定位与文档流无关，所以它们可以覆盖页面上的其它元素。<font color=red>z-index 属性指定了一个元素的堆叠顺序（哪个元素应该放在前面，或后面）</font>。一个元素可以有正数或负数的堆叠顺序，<font color=lightSeaGreen>具有更高堆叠顺序的元素总是在较低的堆叠顺序元素的前面</font>。
 
@@ -4829,7 +4829,7 @@ p::first-line {
 }
 ```
 
-**语法**
+##### 语法
 
 ```css
 selector::pseudo-element {
@@ -5145,7 +5145,7 @@ CSS计数器对创建有序列表特别有用，因为在子元素中会自动�
 
 
 
-#### **CSS3 模块**
+#### CSS3 模块
 
 - 选择器
 - 盒模型

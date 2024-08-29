@@ -8337,7 +8337,7 @@ console.log("This is %cMy stylish message", "color: yellow; font-style: italic; 
 - word-spacing 和 word-break
 - writing-mode
 
-> ⚠️ 控制台信息的默认行为与行内元素相似。为了应用 padding, margin 这类效果，你应当这样设置display: inline-block.。
+> ⚠️ 控制台信息的默认行为与行内元素相似。为了应用 padding, margin 这类效果，你应当这样设置 `display: inline-block` 。
 
 摘自：[MDN - Console](https://developer.mozilla.org/zh-CN/docs/Web/API/Console)
 
