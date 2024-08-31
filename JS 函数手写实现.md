@@ -248,6 +248,31 @@ function deepClone(obj) {
 
 
 
+#### 判断两个对象是否相等
+
+```js
+const isObj = obj => typeof obj === 'object' && obj !== null
+
+const objEq = (val, val2) => {
+  if (!isObj(val) || !isObj(val2)) return Object.is(val, val2)
+  if (val === val2) return true
+  const valKeys = Object.keys(val)
+  const val2Keys = Object.keys(val2)
+  if (valKeys.length !== val2Keys.length) return false
+  for (const key of valKeys) {
+    if (!val2Keys.includes(key)) return false
+    const res = objEq(val[key], val2[key])
+    if (!res) return false
+  }
+
+  return true
+}
+```
+
+学习自：[对象数组去重【渡一教育】](https://www.bilibili.com/video/BV1NNeMeGE7N)
+
+
+
 #### `Object.is()` 实现
 
 `Object.is()` 主要解决的是如下两个不太合理的问题。
