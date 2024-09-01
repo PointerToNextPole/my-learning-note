@@ -2418,7 +2418,9 @@ type MapTypeRes = MapType<{a: 1, b: 2}>;
 
 <img src="https://s2.loli.net/2022/05/01/fdso7akByRzTD8m.png" alt="img" style="zoom:70%;" />
 
-<font color=FF0000 size=4>**除了值可以变化，索引也可以做变化**</font>；用 `as` 运算符，叫做「重映射」。
+<font color=FF0000 size=4>**除了值可以变化，索引也可以做变化**</font>；<font color=red>用 `as` 运算符，叫做「重映射」</font>。
+
+> 👀 `as` 不仅仅可以用作断言，<font color=red>也可以用作重映射</font>，一般用在 `key in keyof T as ...` 中。这点有所遗忘，值得注意 ⚠️
 
 > 💡 TS 文档中也对 `as` 运算符做了介绍，这里也做了笔记；见 [[#Mapped Types#Key Remapping via `as`]]
 
@@ -6282,6 +6284,24 @@ type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 ```
 
 学习自：[实现Optional【渡一教育】](https://www.bilibili.com/video/BV1fHWGeSEPf)
+
+
+
+##### GetOptionals 实现
+
+```ts
+type GetOptionals<T> = {
+  [P in keyof T as T[P] extends Required<T>[P] ? never : P]: T[P]
+}
+```
+
+> ⚠️ 这里用到了 `as` 运算符做重映射，这个有所遗忘，但是 `as` 还是挺重要的，值得注意。
+
+###### 最终效果
+
+<img src="https://s2.loli.net/2024/09/01/9ESUD4uyRqcdZQF.png" alt="image-20240901194434421" style="zoom:50%;" />
+
+学习自：[实现GetOptionals【渡一教育】](https://www.bilibili.com/video/BV1x2WGeYE9J)
 
 
 
