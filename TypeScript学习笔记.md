@@ -6305,6 +6305,22 @@ type GetOptionals<T> = {
 
 
 
+##### 获取数组/元组的类型
+
+```ts
+type ArrayType<T> = T extends (infer I)[] ? I : T
+```
+
+> 💡 这里相当值得注意的是：`(infer I)[]` ，表示 `infer` 出的 `I` 形成的数组；不加上括号显然是错的。
+
+###### 最终效果
+
+<img src="https://s2.loli.net/2024/09/02/shcM9eYvP4ASHwL.png" alt="image-20240902221652949" style="zoom:50%;" />
+
+学习自：[使用infer封装通用类型工具【渡一教育】](https://www.bilibili.com/video/BV142WGeYECk/)
+
+
+
 ## 其他笔记
 
 #### interface VS type

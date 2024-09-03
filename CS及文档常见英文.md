@@ -1895,3 +1895,21 @@
 - **tenant** ：租户
 
 - **distract** ：分散，分散注意力，使分心
+
+- **conformant** ：符合要求，符合标准的
+
+  > Oxc maintains its own AST and parser, which is by far the fastest and most **conformant** JavaScript and TypeScript (including JSX and TSX) parser written in Rust.
+  >
+  > 摘自：[GitHub - Oxc readme](https://github.com/oxc-project/oxc)
+
+- **abundance** ：丰富
+
+  > While many existing JavaScript tools rely on [estree](https://github.com/estree/estree) as their AST specification, a notable drawback is its **abundance** of ambiguous nodes.
+  >
+  > 摘自：[GitHub - Oxc readme](https://github.com/oxc-project/oxc)
+
+- **ambiguity** ：模棱两可
+
+  > This **ambiguity** often leads to confusion during development with estree.
+  >
+  > 摘自：[GitHub - Oxc readme](https://github.com/oxc-project/oxc)

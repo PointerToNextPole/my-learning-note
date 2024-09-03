@@ -384,7 +384,7 @@ Promise.myAll = arr => {
 }
 ```
 
-> 💡 可以看下 [手写 Promise.all【渡一教育】](https://www.bilibili.com/video/BV1mG411178Y) ，其中提及了，arr 未必是数组，也有可能是可迭代对象，所以未必可以用 `arr.length` ；另外就是如果传入的是空的，那么一定是 resolve
+> 💡 可以看下 [手写 Promise.all【渡一教育】](https://www.bilibili.com/video/BV1mG411178Y) ，其中提及了，arr 未必是数组，也有可能是可迭代对象，所以未必可以用 `arr.length` ，可以先迭代统计 count 为长度 ；另外就是<font color=red>如果传入的是空的迭代对象，那么一定是 resolve</font>
 
 ###### 测试用例1
 
