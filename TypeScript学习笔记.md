@@ -6268,7 +6268,7 @@ addImpl('boolean', 'string', 'number', (a, b, c) => {})
 ```ts
 type UnionToIntersection<T> = 
   (T extends any ? (x: T) => any : never) extends 
-    ( x: infer R) => void ? R : never
+    (x: infer R) => void ? R : never
 ```
 
 这里可以参见 [[#UnionToIntersection]] 部分的内容，另外，其中除了讲解外，还有另一种差不多的实现

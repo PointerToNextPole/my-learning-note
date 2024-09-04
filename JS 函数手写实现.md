@@ -190,7 +190,7 @@ Object.defineProperty(Object, 'assign', {
 
 #### 深拷贝实现
 
-该实现考虑到了 Symbol 属性
+该实现考虑到了 Symbol 为键的属性
 
 ```js
 const cloneDeep = (target, hash = new WeakMap()) => {
@@ -1051,7 +1051,7 @@ const flat = (arr, depth = 1) => arr.reduce((acc, cur, index) =>
   , [])
 ```
 
-这里也可以用 concat，但是鉴于 `[].concat([1, 2])` 的结果是 `[1, 2]` 而不是以为的 `[[1, 2]]` 所以，需要多加一个 `[]` ；如下：
+这里也可以用 concat，但是鉴于，concat 默认做一层解构（  `[].concat([1, 2])` 的结果是 `[1, 2]` 而不是以为的 `[[1, 2]]` ）；所以，需要多加一个 `[]` ；如下：
 
 ```js
 const flatten = (arr, depth = 1) => arr.reduce((acc, cur, index) =>
@@ -1158,8 +1158,6 @@ const arr = Array.prototype.slice.call(arrLike)
 ```
 
 ##### 扩展运算符
-
-> 👀 这个挺巧妙，但没想到
 
 ```js
 const arr = [ ...arrLike ]
