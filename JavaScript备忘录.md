@@ -7827,7 +7827,7 @@ obj[key] = "some value";
 alert(obj[key]); // 如果对于 默认值 __proto__ 不做修改，则打印：[object Object]，并不是 "some value"！
 ```
 
-这里如果用户输入 __proto__，那么赋值会被忽略！因为：<font color=fuchsia>**`__proto__` 属性很特别：它必须是对象或者 null；字符串不能成为 prototype**</font>
+这里如果用户输入 `"__proto__"`，那么赋值会被忽略！因为：<font color=fuchsia>**`__proto__` 属性很特别：它必须是对象或者 null；字符串不能成为 prototype**</font>
 
 在这里，后果并没有很严重。但是在其他情况下，我们可能会对对象进行赋值操作，然后原型可能就被更改了。结果，可能会导致完全意想不到的结果。最可怕的是：通常开发者完全不会考虑到这一点。这让此类 bug 很难被发现，甚至变成漏洞，尤其是在 JavaScript 被用在服务端的时候。另外，上述的字典可以使用 Map来实现，这样就不会出现上述的 `__proto__` 的问题。
 

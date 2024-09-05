@@ -316,7 +316,7 @@ const isNaN(value) {
 
 通过 `setTimeout`，在一定时间间隔内，将多次触发变成一次触发。
 
-> 👀 这里的 `fn.apply(this, arguments)` 是正常的，虽然 arguments 是一个 arr-like 。参考 [MDN - Function.prototype.apply()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/apply) 的内容：
+> 👀 这里的 `fn.apply(this, arguments)` 是正常的，虽然 arguments 是一个 arr-like 。参考 [MDN - `Function.prototype.apply()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/apply) 的内容：
 >
 > > `Function` 实例的 **`apply()`** 方法会以给定的 `this` 值和作为数组（或<font color=fuchsia>**类数组对象**</font>）提供的 `arguments` 调用该函数。
 
@@ -354,10 +354,6 @@ const throttle = (fn, time) => {
 
 
 #### promise 实现
-
-```js
-
-```
 
 https://www.bilibili.com/video/BV1gb4y1z736 最后有实现。另外，https://github.com/ractivejs/ractive/blob/dev/src/polyfills/Promise.js 的实现也非常值得借鉴
 
@@ -546,11 +542,9 @@ Promise.reject = function (reason) {
 
 
 
-
-
 #### Promise 并行调度器
 
-> 💡 该功能对应的专业术语是 “p-limit”，chatgpt 的介绍如下：
+> 💡 该功能对应的专业术语是 “p-limit” ，chatgpt 的介绍如下：
 >
 > <img src="https://s2.loli.net/2023/04/03/qpfRs4FATjMQYSW.png" alt="image-20230403160136690" style="zoom:48%;" />
 
@@ -650,7 +644,7 @@ const pLimit = (concurrency) => {
 
 摘自：[手写 p-limit，40 行代码实现并发控制](https://juejin.cn/post/7197246543208071205)
 
-##### 来自群友分享的实现
+##### 群友分享的实现
 
 ```ts
 export const mapLimited = async <
@@ -712,7 +706,7 @@ https://www.zhihu.com/question/22578576/answer/3387064599)
 
 
 
-### 排序实现
+#### 排序实现
 
 在写排序前，先实现一个 `swap` 的工具函数
 
@@ -722,25 +716,29 @@ function swap(arr, index, index2) {
 }
 ```
 
-#### 冒泡排序
+##### 冒泡排序
 
 ```js
 function bubbleSort(arr) {
   const last = arr.length - 1
   for (let i = 0; i < last; i++) {
-    let flag = false
+    let flag = false // 表示是否发生交换
     for (let j = last; j > i; j--) {
       if (arr[j - 1] > arr[j]) {
         swap(arr, j - 1, j)
         flag = true
       }
     }
-    if (flag === false) return arr
+    if (!flag) return arr
   }
 }
 ```
 
-#### 快速排序
+##### 插入排序
+
+
+
+##### 快速排序
 
 ```js
 function quickSort(arr, low, high) {
@@ -1165,7 +1163,7 @@ const arr = [ ...arrLike ]
 
 ##### 使用 concat
 
-> 👀 没想到。另外，这里 只能用 apply，不可用 call
+> 👀 没想到
 
 ```js
 const arr = Array.prototype.concat.apply([], arrLike)

@@ -2459,9 +2459,9 @@ Function.prototype.apply = function (context, arr) {
 
 ### bind 模拟实现
 
-**一句话介绍 bind：**bind() 方法会创建一个新函数。当这个新函数被调用时，bind() 的第一个参数将作为它运行时的 this，之后的一序列参数将会在传递的实参前传入作为它的参数。（来自于 MDN )
+<font color=dodgerBlue>一句话介绍 bind：</font>bind() 方法会创建一个新函数。当这个新函数被调用时，bind() 的第一个参数将作为它运行时的 this，之后的一序列参数将会在传递的实参前传入作为它的参数。（来自于 MDN )
 
-**由此我们可以首先得出 bind 函数的两个特点：**
+<font color=dodgerBlue>由此我们可以首先得出 bind 函数的两个特点：</font>
 
 1. 返回一个函数
 2. 可以传入参数
