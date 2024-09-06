@@ -1915,3 +1915,5 @@
   > This **ambiguity** often leads to confusion during development with estree.
   >
   > 摘自：[GitHub - Oxc readme](https://github.com/oxc-project/oxc)
+  
+- **perceptions** ：感知

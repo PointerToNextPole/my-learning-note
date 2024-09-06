@@ -3463,7 +3463,7 @@ type DeepReadonly<Obj extends Record<string, any>> =
 
 ### 数组长度做计数
 
-TS 类型系统 <font color=FF0000>**可以实现**</font> “数值相关的逻辑”
+TS 类型系统 <font color=dodgerBlue>**可以实现**</font> “数值相关的逻辑”
 
 #### 数组长度做计数
 
@@ -3473,7 +3473,7 @@ TypeScript 类型系统没有加减乘除运算符，怎么做数值运算呢？
 
 <img src="https://s2.loli.net/2022/05/04/3OfnzTmt8H5pGRS.png" alt="image-20220504005055617" style="zoom:50%;" />
 
-<font color=FF0000>**TypeScript 类型系统中 <font size=4>没有加减乘除运算符</font>，但是 <font size=4>可以通过构造不同的数组然后取 length 的方式来完成数值计算</font>，<font size=4>把数值的加减乘除转化为对数组的提取和构造</font>。**</font>（严格来说构造的是元组，大家知道数组和元组的区别就行）
+<font color=dodgerBlue>**TypeScript 类型系统中 没有加减乘除运算符**</font>，但是 <font color=red>可以通过构造不同的数组然后取 `length` 的方式来完成数值计算，把数值的加减乘除转化为对数组的提取和构造</font>（严格来说构造的是元组，大家知道数组和元组的区别就行）
 
 这点可以说是类型体操中最麻烦的一个点，需要思维做一些转换，绕过这个弯来。
 
@@ -3495,7 +3495,7 @@ type BuildArray<
         : BuildArray<Length, Ele, [...Arr, Ele]>;
 ```
 
-**注：**这里的讲解代码略，略。
+> 👀 这里的讲解代码略，略。
 
 构造数组实现了，那么基于它就能实现加法：
 
@@ -6321,6 +6321,22 @@ type ArrayType<T> = T extends (infer I)[] ? I : T
 
 
 
+##### DeepReadonly 实现
+
+```ts
+type DeepReadonly<T extends Record<string | symbol, any>> = {
+  readonly [k in keyof T]: DeepReadonly<T[k]>;
+};
+```
+
+###### 最终效果
+
+<img src="https://s2.loli.net/2024/09/06/TFkGUVOnKPQuhYa.png" alt="image-20240906215702544" style="zoom:50%;" />
+
+学习自：[不可变类型【渡一教育】](https://www.bilibili.com/video/BV1NesHe4Eyf/)
+
+
+
 ## 其他笔记
 
 #### interface VS type
@@ -6387,7 +6403,7 @@ User 接口为 {
 */
 ```
 
-摘自：[TypeScript真香系列——接口篇](https://mp.weixin.qq.com/s?__biz=Mzg4MTYwMzY1Mw==&mid=2247496256&idx=1&sn=427a5bf509546ee1ba349c70d7095aa1&source=41#wechat_redirect)
+摘自：[TypeScript真香系列——接口篇](https://juejin.cn/post/7038447161813499912)
 
 
 
