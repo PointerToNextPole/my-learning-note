@@ -47,7 +47,7 @@ render(h) {
 
 h 函数的第一个参数是“类型”（👀 尤雨溪的说法），第二个参数对象，包含 vnode 上所有的数据或者属性。第三个参数，可以是字符串，表示是一个文本子节点；也可以是数组，以包含多个字节点
 
-Vue2 render 有点啰嗦 verbose：第二个参数，需要指明传递给节点的绑定类型。比如，绑定属性，需要嵌套在 attrs 下；绑定事件侦听器，需要嵌套在 on 下。
+Vue2 render 有点啰嗦 verbose：第二个参数，需要指明传递给节点的绑定类型。比如，绑定属性，需要嵌套在 `attrs` 下；绑定事件侦听器，需要嵌套在 `on` 下。
 
 ##### Vue3 render 函数
 
@@ -194,7 +194,7 @@ const App = {
 
 
 
-可以使用 https://vue-next-template-explorer.netlify.app 来将 Vue3 的模板 按照一定的自定义的选项配置（比如静态提升）转化成 render 函数的版本。
+可以使用 [Vue 3 Template Explorer](https://template-explorer.vuejs.org/) 来将 Vue3 的模板 按照一定的自定义的选项配置（比如静态提升）转化成 render 函数的版本。
 
 
 
@@ -696,7 +696,7 @@ Setup 会是新的第一个被调用的 hook ，甚至在 beforeCreate 之前。
 
 因为大部分暴露在 this 上面的功能，使用 Compostion API 的函数 同样可以做到；所以 setup 内部并没有太多 this 的用例 ( use case )。
 
-另外，<font color=fuchsia>**因为 setup 是在其他的所有 options**</font> ( 👀 Options API ) <font color=fuchsia>**被处理之前调用的；比如 data 和 computed ，它们都是在 setup 之后处理的，所以不能在 setup 中使用它们**</font>。所以，在同时使用这两者时，知道它们谁先被处理很重要。
+另外，<font color=fuchsia>**因为 setup 是在其他的所有 options**</font> <font color=fuchsia>**被处理之前调用的；比如 data 和 computed ，它们都是在 setup 之后处理的，所以不能在 setup 中使用它们**</font>。所以，在同时使用这两者时，知道它们谁先被处理很重要。
 
 一般的经验时：在 setup 内部，假设不会知道其他 Options 的内容；它有它自己的世界。但是，<font color=fuchsia>**当所有东西都从 setup 中返回，它们将在其他 Options 中可用**</font>
 

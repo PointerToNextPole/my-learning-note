@@ -1917,3 +1917,7 @@
   > 摘自：[GitHub - Oxc readme](https://github.com/oxc-project/oxc)
   
 - **perceptions** ：感知
+
+- **coalesce** ：合并
+
+  > Nullish **coalescing** operator
