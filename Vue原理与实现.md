@@ -1069,7 +1069,7 @@ dep 其实就是一个 effect Set，这个 <font color=fuchsia>**effect Set 应�
 
 <img src="https://s2.loli.net/2022/11/24/PQ1Jrlv49US8CfD.jpg" alt="20221124_000713.jpeg" style="zoom:45%;" />
 
-Set 中的每一个值，都只是一个需要执行的 effect；就如上面的匿名函数  `() => { total = product.price * product.quantity }`
+<font color=fuchsia>Set 中的每一个值，都只是一个需要执行的 effect</font>；就如上面的匿名函数  `() => { total = product.price * product.quantity }`
 
 而要把这些 deps 存储起来，并且 <font color=fuchsia size=4>**方便以后再找到它们** </font>，需要创建一个 <font color=fuchsia size=4>**deps map**</font>（数据结构是 ES6 Map）；它是一张存储了每一个属性及其 dep 对象的 字典。结构如下图所示：
 
@@ -1091,9 +1091,11 @@ Set 中的每一个值，都只是一个需要执行的 effect；就如上面的
 
 TargetMap 的类型是 WeakMap（ 👀 为什么选择 WeakMap ，[[#reactive 实现#Vue3 风格实现]] 中有说）。那么，现在 TargetMap 的结构就是 `WeakMap<any, Map<any, Set>>` 。
 
-> 👀 除了上面的 TargetMap，另外值得注意的是： `depsMap` ，以及 dep 指向的 “Effect to re-run”
+> 👀 上面关于 `TargetMap` 的类型约束好像有点问题，WeakMap 的键只能是 iterable 和 nullish ( nul / undefined )，不能为 any ；另外，看下目前 ( 2024/9/8 ) 的 Vue3 源码， `targetMap` 的类型是 `WeakMap<object, Map<any, Dep>>` 
 
-<font color=dodgerBlue>看了下 Vue3 源码也确实如此：</font>  
+> 👀 除了上面的 `TargetMap` ，另外值得注意的是： `depsMap` ，以及 `dep` 指向的 “Effect to re-run”
+
+<font color=dodgerBlue>看了下 Vue3 源码也确实如此</font>  （⚠️ 参考上面的内容，现在 ( 2024/9/8 )  Vue3 把 `targetMap` 和 `Dep` 的类型都改了）：
 
 <img src="https://s2.loli.net/2022/11/24/4ScDHJTghuGnIor.png" alt="image-20221124143602125" style="zoom:50%;" />
 
@@ -1150,11 +1152,11 @@ function trigger(target, key) {
 
 ##### 使用 Reflect 和 handler
 
-代理是另一个对象的占位符，默认情况下对该对象进行委托 ( Proxy is a placeholder for another object , which by default delegates to that object)。如下图：在访问 `proxiedProduct.quantity` 时，<font color=fuchsia>会先调用 proxy，然后再调用 `product` ，<font size=4>**之后再返回 proxy**</font></font> ⚠️ 前面的调用顺序是之前所不知道的。
+代理是另一个对象的占位符，默认情况下对该对象进行委托 ( Proxy is a placeholder for another object , which by default delegates to that object )。如下图：在访问 `proxiedProduct.quantity` 时，<font color=fuchsia>会先调用 proxy，然后再调用 `product` ，<font size=4>**之后再返回 proxy**</font></font>
 
 ![image-20221205214516621](https://s2.loli.net/2022/12/05/E7MovZ68dimlT5p.png)
 
-> 👀 注：除了使用 `obj.prop` 和 `obj['prop']` 访问对象的属性，<font color=fuchsia>**还可以使用 `Reflect.get('prop')`**</font> ，这是之前没有想到的。
+> 👀 除了使用 `obj.prop` 和 `obj['prop']` 访问对象的属性，<font color=fuchsia>**还可以使用 `Reflect.get(obj, 'prop')`**</font> ，这是之前没有想到的。
 
 ###### 代码实现
 
@@ -1188,10 +1190,10 @@ let effect = () => {
 }
 
 effect()
-console.log('total',total)
+console.log('total', total)
 
 product.quantity = 3
-console.log('total',total)
+console.log('total', total)
 ```
 
 ###### 示例图示与变化
@@ -1336,12 +1338,12 @@ Vue2 中，Get 和 Set 的钩子，是添加在（响应式对象的）各个属
 
 ##### Vue3 响应式实现文件结构
 
-实现响应式的代码，在 packages/reactivity/src/ 目录下；作用包含如下：
+实现响应式的代码，在 `packages/reactivity/src/` 目录下；作用包含如下：
 
-- effect.ts ：定义 `effect` ，`track` 和 `trigger`
-- baseHandlers.ts ：定义 proxy handlers ( `get` ，`set` 等 )
-- reactive.ts ：定义 `reactive` ，其创建了一个 ES6 Proxy
-- ref.ts ：定义了响应式的引用，使用对象访问器。
+- `effect.ts` ：定义 `effect` ，`track` 和 `trigger`
+- `baseHandlers.ts` ：定义 proxy handlers ( `get` ，`set` 等 )
+- `reactive.ts` ：定义 `reactive` ，其创建了一个 ES6 Proxy
+- `ref.ts` ：定义了响应式的引用，使用对象访问器。
 
 ###### 文件间的关系
 
@@ -1393,7 +1395,7 @@ Vue2 中依赖收集过程中，包含在 forEach 内的 `Object.defineProperty(
 
 #### 尤雨溪源码解读
 
-> 👀 注：由于视频录制时还是 Vue3 早期版本，所以在做笔记时，会按照当前（2022/12）的 Vue3 实现去阅读与笔记。
+> 👀 由于视频录制时还是 Vue3 早期版本，所以在做笔记时，会按照当前（2022/12）的 Vue3 实现去阅读与笔记。
 
 ##### reactivity/baseHandlers.ts
 

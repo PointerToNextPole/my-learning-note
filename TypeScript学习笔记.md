@@ -6190,6 +6190,12 @@ Writing a twoslash command will set the compiler flag as you type, and will be s
 
 
 
+#### unique symbol
+
+// TODO : https://www.typescriptlang.org/docs/handbook/symbols.html#unique-symbol
+
+
+
 ## TS 类型工具实现
 
 ##### Curry 实现
@@ -7373,6 +7379,3 @@ The <font color=LightSeaGreen>code that doesn't belong in the main function or l
 #### json schema 和 TypeScript
 
 <img src="https://s2.loli.net/2023/05/30/gJHwcuLI5B3l4S1.png" alt="image-20230530225419605" style="zoom:46%;" />
-
-
-

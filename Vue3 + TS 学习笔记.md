@@ -2879,7 +2879,7 @@ const changeName = () => {
 >
 > **coderwhy读源码的补充：**说是这么说，但是setup还是要在beforeCreate和created生命周期函数之前执行的
 
-另外，<font color=FF0000 size=4>**在一个setup中，可以写多个同样的生命周期函数，比如onMounted 可以写多个。作用：如果两个相同生命周期函数干了不同的事情，可以写两个进行逻辑区分**</font>
+另外，<font color=red>**在一个setup中，可以写多个同样的生命周期函数，比如onMounted 可以写多个。作用：如果两个相同生命周期函数干了不同的事情，可以写两个进行逻辑区分**</font>
 
 
 
@@ -3002,7 +3002,7 @@ emit("incr", { params })
 
 另外，还有 `defineExpose` 以设置需要暴露出去的值（ 类似于 `setup()` 中的 return ）
 
-> 👀 注：上面说的不容易理解，参考 [Vue3 官方文档 - 模板引用 # 组件上的 ref](https://cn.vuejs.org/guide/essentials/template-refs.html#ref-on-component) 中的内容：
+> 👀 上面说的不容易理解，参考 [Vue3 官方文档 - 模板引用 # 组件上的 ref](https://cn.vuejs.org/guide/essentials/template-refs.html#ref-on-component) 中的内容：
 >
 > > <font color=dodgerBlue>如果一个子组件使用的是 **选项式 API**</font> ，<font color=fuchsia>被引用的组件实例和该子组件的 this 完全一致</font>，<font color=red>这意味着父组件对子组件的每一个属性和方法都有完全的访问权</font>。<font color=lightSeaGreen>这使得在父组件和子组件之间创建紧密耦合的实现细节变得很容易</font>，<font color=fuchsia>当然也因此，应该只在绝对需要时才使用组件引用</font>。大多数情况下，你应该首先使用标准的 props 和 emit 接口来实现父子组件交互。
 > >

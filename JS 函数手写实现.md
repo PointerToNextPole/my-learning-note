@@ -729,14 +729,26 @@ function bubbleSort(arr) {
         flag = true
       }
     }
-    if (!flag) return arr
+    if (!flag) return
   }
 }
 ```
 
 ##### 插入排序
 
+```js
+const selectSort = (arr) => {
+  const len = arr.length;
 
+  for (let i = 0; i < len - 1; i++) {
+    let min = i;
+    for (let j = i + 1; j < len; j++) {
+      if (arr[j] < arr[min]) min = j;
+    }
+    if (min != i) swap(arr, i, min);
+  }
+}
+```
 
 ##### 快速排序
 
@@ -747,7 +759,6 @@ function quickSort(arr, low, high) {
     quickSort(arr, low, pivotPos - 1)
     quickSort(arr, pivotPos + 1, high)
   }
-  return arr
 }
 
 function partition(arr, low, high) {
@@ -767,9 +778,9 @@ function partition(arr, low, high) {
 
 ```js
 const arr = [1, 3, 2, 0, 4, -1]
-const sorted = quickSort(arr, 0, arr.length - 1)
+quickSort(arr, 0, arr.length - 1)
 
-console.log(sorted) // [ -1, 0, 1, 2, 3, 4 ]
+console.log(arr) // [ -1, 0, 1, 2, 3, 4 ]
 ```
 
 
