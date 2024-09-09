@@ -1703,7 +1703,7 @@ onTrack 和 onTrigger 就是对应 track 和 trigger，另外，onTrack 和 onTr
 </script>
 ```
 
-会发现：“Render” 显示，去掉 render 函数后，“Template” 显示，去掉 template 后，“Outer HTML” 显示；即从优先级上： <font color=fuchsia>render 函数 > template  > outer HTML</font>。因为无论是 outer HTML 还是 template 最后都会编译成 render 函数；所以，如果提供 render 了，则不会再使用 outer HTML 和 template。
+会发现：“Render” 显示，去掉 render 函数后，“Template” 显示，去掉 template 后，“Outer HTML” 显示；即从优先级上： <font color=fuchsia>render 函数 > template  > outer HTML</font>。因为<font color=red>不论是 outer HTML 还是 template 最后都会编译成 render 函数</font>；所以，<font color=red>如果提供 render 了，则不会再使用 outer HTML 和 template</font>。
 
 以上的优先级 对应着 [[#Vue2 实例生命周期示意图]] 图中 “created 生命周期” 下方 “是否有 el 选项” ( Has “el” option? ) 的判断：如果有的话，还会判断 “是否有 template 选项” ( Has “template” option?  ) 。如果有的话，会直接使用 template 中的内容 ( Compile template into render function )；没有则退而求其次，使用 el 选项对应的 outer HTML ( Compile el’s outer HTML as template )
 
@@ -1727,7 +1727,7 @@ onTrack 和 onTrigger 就是对应 track 和 trigger，另外，onTrack 和 onTr
 >
 > 预编译的模板，例如单文件组件中的模板，会在构建时被编译为 `render` 选项。如果一个组件中同时存在 `render` 和 `template`，则 `render` 将具有更高的优先级。
 
-摘自：[Vue3 Doc - API - 渲染选项]()
+摘自：[Vue3 Doc - API - 渲染选项](https://cn.vuejs.org/api/options-rendering.html)
 
 
 
@@ -1758,10 +1758,14 @@ onTrack 和 onTrigger 就是对应 track 和 trigger，另外，onTrack 和 onTr
 export default {
   name: 'App',
   data() {
-    return { msg: 'msg' }
+    return {
+      msg: 'msg
+    }
   },
   methods: {
-    onBtnClick() { this.msg = 'msg is changed' }
+    onBtnClick() {
+      this.msg = 'msg is changed'
+    }
   }
 }
 </script>
@@ -1952,9 +1956,9 @@ var Dep = function Dep() {
 }
 ```
 
-Dep 的含义，自然就是 dependency（也就是**依赖**，一个计算机领域的名词）。
+Dep 的含义，自然就是 dependency（也就是<font color=lightSeaGreen>**依赖**</font>，一个计算机领域的名词）。
 
-就像编写 node.js 程序，常会使用 npm 仓库的依赖。<font color=red>在 Vue 中，依赖具体指的是**经过响应式处理的数据**</font>。后面会提到，<font color=red>响应式处理的关键函数之一是</font>在很多 Vue 原理文章都会提到的 <font color=red>`defineReactive`</font> 。
+就像编写 node.js 程序，常会使用 npm 仓库的依赖。<font color=red>在 Vue 中，依赖具体指的是**经过响应式处理的数据**</font>。后面会提到，<font color=dodgerBlue>响应式处理的关键函数之一是</font>在很多 Vue 原理文章都会提到的 <font color=red>`defineReactive`</font> 。
 
 <font color=fuchsia>Dep 与每个响应式数据绑定后，该响应式数据就会成为一个依赖</font>（名词），下面介绍 Watcher 时会提到，<font color=red>**响应式数据 可能被 watch、computed、渲染模板 3 种函数依赖**</font>（动词）。
 
