@@ -2020,7 +2020,7 @@ Observer 是观察者，它 <font color=red>**负责递归地观察（或者说�
 >
 > 至于为什么要设置两种 handler ，这是由 Proxy 对于 “内置对象” 的缺陷导致的；[Vue3 源码解析 06下篇--响应式 collectionHandler](https://juejin.cn/post/6912031278850113544) 中有提及：
 >
-> > 具体原因我们可以参考一下 [Proxy 的局限性](https://zh.javascript.info/proxy#proxy-de-ju-xian-xing)，这跟内置对象（例如 Map、Set、Date、Promise）的内部机制有关，他们的内部所有的数据存储在一个“internal slots”中。当我们访问 Set.prototype.add 其实就是通过内部的 this 来访问该方法的，但是数据代理的时候 **this=proxy**，但是 proxy 并没有相应的“internal slots”这个东西，所以会报错。 所以，可以用另一种方式来实现代理：
+> > 具体原因我们可以参考一下 [Proxy 的局限性](https://zh.javascript.info/proxy#proxy-de-ju-xian-xing)，<font color=red>这跟内置对象（例如 Map、Set、Date、Promise）的内部机制有关，他们的内部所有的数据存储在一个“internal slots”中</font>。当我们访问 Set.prototype.add 其实就是通过内部的 this 来访问该方法的，但是数据代理的时候 **this=proxy**，但是 proxy 并没有相应的“internal slots”这个东西，所以会报错。 所以，可以用另一种方式来实现代理：
 > >
 > > ```JavaScript
 > > let map = new Map();
@@ -2050,17 +2050,17 @@ Observer 是观察者，它 <font color=red>**负责递归地观察（或者说�
 
 Vue 采用了一个很有意思的方法：
 
-- 在<font color=red>**运行 Watcher 的回调函数前，先记下当前 Watcher 是什么**</font>（<font color=fuchsia>通过 Dep.target</font>）
+- 在<font color=red>**运行 Watcher 的回调函数前，先记下当前 Watcher 是什么**</font>（<font color=fuchsia>通过 `Dep.target` </font>）
 
-  > 👀 下面的都有听过，上面的这个没有。另外，Dep.target 和 activeEffect 作用类似，Vue2 收集 watcher，Vue3 中收集 effect
+  > 👀 下面的都有听过，上面的这个没有。另外，`Dep.target` 和 activeEffect 作用类似，Vue2 收集 watcher，Vue3 中收集 effect
 
-- 运行回调函数中用到响应式数据，那么**必然会调用响应式数据的 getter 函数**。<font color=red>在响应式数据的 **getter 函数中就能记下当前的 Watcher**，建立 Dep 和 Watcher 的关系</font>
+- 运行回调函数中用到响应式数据，那么<font color=lightSeaGreen>**必然会调用响应式数据的 getter 函数**</font>。<font color=fuchsia>在响应式数据的 **getter 函数中就能记下当前的 Watcher**，建立 Dep 和 Watcher 的关系</font>
 
 - 之后，在响应式数据更新时，必然会**调用响应式数据的 setter 函数**。基于之前建立的关系，在 setter 函数中就能触发对应 Watcher 的回调函数了
 
 ##### 代码
 
-<font color=fuchsia>上面的逻辑就在 `defineReactive` 函数中</font>。👀 代码略，总之 defineReactive 就是 实现依赖收集。
+<font color=fuchsia>上面的逻辑就在 `defineReactive` 函数中</font>。👀 代码略，总之 `defineReactive` 就是 实现依赖收集。
 
 响应式对象的每个属性都是一个“依赖”，所以借闭包的能力给每个值造一个 Dep（ 👀 get / set 中使用了 自由变量 dep，所以形成了闭包）。 Vue 3 就不需要闭包了
 
@@ -2205,7 +2205,7 @@ Vue源码中实现依赖收集，实现了三个类
   > Dep 实际上就是对 Watcher 的管理，Dep 脱离 Watcher 单独存在是没有意义的。
   >
   > - Dep 是一个发布者，可以订阅多个观察者，依赖收集之后 Dep 中会有一个 <font color=fuchsia>subs 存放一个或多个观察者</font>，在<font color=red>数据变更时通知所有的 watcher</font>。
-  > - Dep 和 Observer 的关系就是 Observer 监听整个 data，遍历 data 的每个属性给每个属性绑定defineReactive 方法劫持 getter 和 setter，<font color=red>在 getter 的时候往 Dep 类里塞依赖 ( dep.depend )</font>，在<font color=fuchsia>setter 的时候通知</font> ( 👀 notify ) <font color=fuchsia>所有 watcher 进行 `update(dep.notify)`</font> 。
+  > - Dep 和 Observer 的关系就是 Observer 监听整个 data，遍历 data 的每个属性给每个属性绑定 defineReactive 方法劫持 getter 和 setter，<font color=red>在 getter 的时候往 Dep 类里塞依赖 ( `dep.depend` )</font>，在 <font color=fuchsia>setter 的时候通知</font> ( 👀 notify ) <font color=fuchsia>所有 watcher 进行 `update(dep.notify)`</font> 。
   >
   > 摘自：[【Vue源码学习】依赖收集](https://juejin.cn/post/7058444984432721957)
 
@@ -2268,19 +2268,19 @@ notify() {
 
 总结起来，就是：
 
-- <font color=fuchsia>将 Observer类 的实例挂载在 `__ob__` 属性上</font> ( 代码：`def(value, '__ob__', this)` ) ，提供后续观测数据使用，以及避免被重复实例化。然后，实例化 Dep 类实例，并且 <font color=red>将 对象/数组 作为 value 属性保存下来</font>
-- 如果 <font color=dodgerBlue>value 是个对象</font>，就执行 `walk()` 过程，<font color=red>遍历对象把每一项数据都变为可观测数据</font>（<font color=red>调用 defineReactive 方法</font>处理）
+- <font color=fuchsia>**将 Observer类 的实例挂载在 `__ob__` 属性上**</font> ( 代码：`def(value, '__ob__', this)` ) ，提供后续观测数据使用，以及避免被重复实例化。然后，实例化 Dep 类实例，并且 <font color=red>将 对象/数组 作为 value 属性保存下来</font>
+- 如果 <font color=dodgerBlue>value 是个对象</font>，就执行 `walk()` 过程，<font color=red>遍历对象把每一项数据都变为可观测数据</font>（<font color=red>调用 `defineReactive` 方法</font>处理）
 - 如果 <font color=dodgerBlue>value 是个数组</font>，<font color=red>就执行 `observeArray()` 过程，递归地对数组元素调用 `observe()`</font> ，以便能够对元素还是数组的情况进行处理
 
 ##### watcher
 
 在 Watcher 类里做的事情，概括起来则是：
 
-1. 传入 组件实例、观察者函数、回调函数、选项。<font color=dodgerBlue>先解释4个变量：`deps` 、`depIds` 、`newDeps` 、 `newDepIds`</font> ，它们的作用如下：
-   - deps：缓存 <font color=red>**上一轮**执行观察者函数用到的 dep 实例</font>
-   - depIds：Hash表，用于快速查找
-   - newDeps：存储 <font color=red>**本轮**执行观察者函数用到的 dep 实例</font>
-   - newDepIds：Hash表，用于快速查找
+1. 传入 组件实例、观察者函数、回调函数、选项。<font color=dodgerBlue>先解释4个变量：`deps` 、`depIds` 、`newDeps` 、 `newDepIds` ，它们的作用如下</font>：
+   - `deps` ：缓存 <font color=dodgerBlue>**上一轮**</font> <font color=red>执行观察者函数用到的 dep 实例</font>
+   - `depIds` ：Hash表，用于快速查找
+   - `newDeps` ：存储 <font color=dodgerBlue>**本轮**</font> <font color=red>执行观察者函数用到的 dep 实例</font>
+   - `newDepIds` ：Hash表，用于快速查找
 2. 进行初始求值，<font color=red>初始求值时，会调用 `watcher.get()` 方法</font>； `watcher.get()` 会做以下处理：初始准备工作、调用 “观察者函数” 计算、事后清理工作
 4. 在初始准备工作里，会<font color=red>将当前 Watcher 实例赋给 `Dep.target`</font>，<font color=red>清空数组 `newDeps`、`newDepIds`</font>
 5. 执行 “观察者函数” ，进行计算。由于数据观测阶段执行了 `defineReactive()` ，所以计算过程用到的数据会得以访问，从而触发数据的 `getter`，从而执行 `watcher.addDep()` 方法，将特定的数据记为依赖
@@ -2341,7 +2341,7 @@ function defineReactive (obj, key, val) {
 }
 ```
 
-Object.defineProperty 中的 get / set 使用了 “自由变量 dep”，形成了闭包。👀 更直观的理解是：使用了 dep 的 get / set 被挂载到了其他对象上，自然是形成了闭包。
+`Object.defineProperty` 中的 get / set 使用了 “自由变量 dep”，形成了闭包。👀 更直观的理解是：使用了 dep 的 get / set 被挂载到了其他对象上，自然是形成了闭包。
 
 ###### getter 依赖收集
 
