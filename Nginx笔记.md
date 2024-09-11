@@ -47,16 +47,14 @@
 
 
 
-
-
 #### nginx 常用命令
 
 ```bash
-$ nginx                                  # 启动 nginx
-$ nginx -s quit  												 # 快速停止 nginx
-$ nginx -V   														 # 查看版本，以及配置文件地址
-$ nginx -v   														 # 查看版本
-$ nginx -t                               # 测试 nginx 配置，并离开（命令行中将会显示 ngnix 所在配置路径 ）
+$ nginx         # 启动 nginx
+$ nginx -s quit # 快速停止 nginx
+$ nginx -V   		# 查看版本，以及配置文件地址
+$ nginx -v   		# 查看版本
+$ nginx -t      # 测试 nginx 配置，并离开（命令行中将会显示 ngnix 所在配置路径 ）
 $ nginx -s reload | reopen | stop | quit # 重新加载配置 ⭐️ | 重启 | 快速停止 | 安全关闭 ⭐️ nginx 
 ```
 
@@ -82,7 +80,7 @@ Options:
 
 摘自：[mac下nginx的安装和配置](https://www.jianshu.com/p/026d67cc6cb1)
 
-##### ngnix -t
+##### `ngnix -t`
 
 ```bash
 $ nginx -t
@@ -94,7 +92,7 @@ nginx: configuration file /usr/local/etc/nginx/nginx.conf test is successful
 
 #### nginx 配置文件
 
-nginx 配置文件（`/usr/local/etc/nginx/nginx.conf`）由三部分组成：
+nginx 配置文件( `/usr/local/etc/nginx/nginx.conf` ) 由三部分组成：
 
 ##### 全局块
 
@@ -123,27 +121,28 @@ events {
 
 ##### http 块
 
-- 这里是<font color=FF0000>nginx服务器中配置最为频繁的部分</font>，代理、缓存和日志定义等绝大多数功能和第三方配置都在这里。
+这里是<font color=FF0000>nginx服务器中配置最为频繁的部分</font>，代理、缓存和日志定义等绝大多数功能和第三方配置都在这里。
 
-- 需要注意的是，<font color=FF0000>**http块也可以包括：http全局块、server块**</font>
+需要注意的是，<font color=FF0000>**http块也可以包括：http全局块、server块**</font>
 
-  - http全局块包括文件引入、MIME-TYPE 定义、日志自定义、连接超时时间、单连接请求数上限等
+- http全局块包括文件引入、MIME-TYPE 定义、日志自定义、连接超时时间、单连接请求数上限等
 
-  - 这块和虚拟主机有密切关系，虚拟主机从用户角度看，和一台独立的硬件主机是完全一样的，该技术的产生是为了节省互联网服务器硬件成本。 
+- 这块和虚拟主机有密切关系，虚拟主机从用户角度看，和一台独立的硬件主机是完全一样的，该技术的产生是为了节省互联网服务器硬件成本。 
 
-    每个 http 块可以包括多个 server 块，而每个 server 块就相当于一个虚拟主机。 
 
-    而每个 server 块也分为全局 server 块，以及可以同时包含多个 locaton 块。 
+每个 http 块可以包括多个 server 块，而每个 server 块就相当于一个虚拟主机。 
 
-    **1、全局 server 块** 
+而每个 server 块也分为全局 server 块，以及可以同时包含多个 locaton 块。 
 
-    最常见的配置是本虚拟机主机的监听配置和本虚拟主机的名称或IP配置。 
+###### 全局 server 块 
 
-    **2、location 块** 
+最常见的配置是本虚拟机主机的监听配置和本虚拟主机的名称或IP配置。 
 
-    一个 server 块可以配置多个 location 块。 
+###### location 块 
 
-    这块的主要作用是基于 Nginx 服务器接收到的请求字符串（例如 server_name/uri-string），对虚拟主机名称（也可以是IP别名）之外的字符串（例如 前面的 /uri-string）进行匹配，对特定的请求进行处理。地址定向、数据缓存和应答控制等功能，还有许多第三方模块的配置也在这里进行。 
+一个 server 块可以配置多个 location 块。 
+
+这块的主要作用是基于 Nginx 服务器接收到的请求字符串（例如 `server_name/uri-string` ），对虚拟主机名称（也可以是IP别名）之外的字符串（例如 前面的 `/uri-string` ）进行匹配，对特定的请求进行处理。地址定向、数据缓存和应答控制等功能，还有许多第三方模块的配置也在这里进行。 
 
 
 
