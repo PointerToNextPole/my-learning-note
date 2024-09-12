@@ -7291,44 +7291,46 @@ https://github.com/jantimon/html-webpack-plugin
 
 #### SourceMap 配置
 
-sourceMap 是一个<font color=FF0000>映射关系</font>。它知道 <font color=FF0000> 打包输出的文件的代码行</font> 与对应的 <font color=FF0000> 被打包的源代码中代码行</font> 的映射关系；**便于在打包代码出现错误时候，可以指向源代码的<font color=FF0000>某一行某一列（即精确到字符）</font>出现的问题**。<font color=FF0000>使用sourceMap打包速度会变慢（尤其是大型项目）</font>。
+> 👀 2024/9/12 补充：在维护 vue2 + vue cli 项目时，发现 debugger 失效了，chrome devtools source 的代码也变成编译后的了；问了下 GPT，知道加上 `configWebpack.devtool: 'source-map'` 即可。不过，确实发现自己这个概念，已经几乎忘光了...
 
-如何启用sourceMap？只需要使用 **`devtool: source-map`** 即可。同时，启用sourceMap后，在dist文件夹下会出现一个 main.js.map 的映射对应关系文件，这个文件实际上是一个<mark>VLQ的编码集合</mark>
+sourceMap 是一个<font color=FF0000>映射关系</font>。它知道 <font color=FF0000> 打包输出的文件的代码行</font> 与对应的 <font color=FF0000> 被打包的源代码中代码行</font> 的映射关系；**便于在打包代码出现错误时候，可以指向源代码的<font color=FF0000>某一行某一列（即精确到字符）</font>出现的问题**。<font color=FF0000>使用sourceMap 打包速度会变慢（尤其是大型项目）</font>。
 
-**devtool的选项中包含各种修饰符，比如 inline、cheap、module**，说明如下：
+如何启用 `sourceMap` ？只需要使用 **`devtool: source-map`** 即可。同时，启用 sourceMap 后，在dist文件夹下会出现一个 `main.js.map` 的映射对应关系文件，这个文件实际上是一个<font color=lightSeaGreen>VLQ的编码集合</font>
 
-- **devtool: 'inline-source-map'**：main.js.map文件将不会存在在dist文件夹中，main.js.map的内容实际上会被包含在打包输出的js文件中。
+**devtool的选项中包含各种修饰符，比如 `inline`、`cheap`、`module`**，说明如下：
 
-  > map文件不会出现在打包之后的文件夹中，<font color=FF0000>这实际上是 inline 起到的作用</font>。另外，该映射关系（即 map 文件中的内容）会以 base64 的格式 存放在打包后的 js 文件中。
+- **`devtool: 'inline-source-map'` **：`main.js.map` 文件将不会存在在 `dist` 文件夹中，`main.js.map` 的内容实际上会被包含在打包输出的 js 文件中。
+
+  > map文件不会出现在打包之后的文件夹中，<font color=FF0000>这实际上是 `inline` 起到的作用</font>。另外，该映射关系（即 map 文件中的内容）会以 base64 的格式 存放在打包后的 js 文件中。
   >
   > 学习自：[配置SourceMap【Webpack】](https://www.bilibili.com/video/BV1h5411G7tm)
 
-- **devtool: cheap-source-map**：如果不加 cheap，将会精确到源码的<font color=FF0000>某一行某一列（即精确到字符）</font>，而使用cheap，将会精确到代码的某一行，不会精确到某个字符，这样大大提高了打包效率。
+- **`devtool: cheap-source-map`** ：如果不加 `cheap` ，将会精确到源码的<font color=FF0000>某一行某一列（即精确到字符）</font>，而使用cheap，将会精确到代码的某一行，不会精确到某个字符，这样大大提高了打包效率。
 
-  同时，cheap还有一个功能：<font color=FF0000>**如果添加了cheap，那么打包时只会管业务代码的映射**</font>，<font color=FF0000>对于其他的代码（比如 loader、第三方模块）将不会关心</font>。（和下面的 module 形成了对照）
+  同时，cheap还有一个功能：<font color=FF0000>**如果添加了 `cheap` ，那么打包时只会管业务代码的映射**</font>，<font color=FF0000>对于其他的代码（比如 loader、第三方模块）将不会关心</font>。（和下面的 module 形成了对照）
 
-- **devtool: cheap-module-source-map**： 如果想要对于上面所说的<font color=FF0000> 其他的非业务代码（比如loader、第三方模块）也会做映射</font>，监控其中的错误，<font color=FF0000>可以加上 **module**</font>
+- **`devtool: cheap-module-source-map`**： 如果想要对于上面所说的<font color=FF0000> 其他的非业务代码（比如loader、第三方模块）也会做映射</font>，监控其中的错误，<font color=FF0000>可以加上 **module**</font>
 
-- **detvool: 'eval'**：<font color=FF0000>是打包执行效率最快的</font>（除了为 'none' 外），使用 eval() 函数来生成。虽然它同样可以定位错误的源代码；不过，不是记录对应关系；而是将错误直接记录在打包输出的js文件中，不过对于复杂的项目，使用 eval 可能提示错误并不全面 / 不准确。
+- **`detvool: 'eval'`**：<font color=FF0000>是打包执行效率最快的</font>（除了为 `'none'` 外），使用 `eval()` 函数来生成。虽然它同样可以定位错误的源代码；不过，不是记录对应关系；而是将错误直接记录在打包输出的js文件中，不过对于复杂的项目，使用 eval 可能提示错误并不全面 / 不准确。
 
-- **devtool: 'none'** ：表示省略 devtool 选项 - 不生成 sourceMap。
+- **`devtool: 'none'`** ：表示省略 devtool 选项，不生成 sourceMap。
 
 **总结：**
 
-| 关键字     | 含义                                            |
-| ---------- | ----------------------------------------------- |
-| eval       | 使用 eval 包裹代码                              |
-| source-map | 生成.map文件                                    |
-| cheap      | 不包含列信息，也不包括loader的sourcemap         |
-| module     | <font color=FF0000>包括loader的sourcemap</font> |
-| inline     | 将 .map 作为 DataURL 嵌入，不单独生成 .map文件  |
+| 关键字     | 含义                                               |
+| ---------- | -------------------------------------------------- |
+| eval       | 使用 `eval` 包裹代码                               |
+| source-map | 生成 `.map` 文件                                   |
+| cheap      | 不包含列信息，也不包括 loader 的 sourcemap         |
+| module     | <font color=FF0000>包括 loader 的 sourcemap</font> |
+| inline     | 将 `.map` 作为 DataURL 嵌入，不单独生成 .map文件   |
 
 摘自：[webpack——devtool配置及sourceMap的选择](https://blog.csdn.net/zwkkkk1/article/details/88758726)
 
 ##### 最佳实践
 
 - 在<font color=FF0000>开发环境</font>中，建议使用 **cheap-module-eval-source-map** ，这样提示出的错误是比较全的，同时打包速度也很快
-- 在<font color=FF0000>生产环境</font>中，一般是没有必要使用devtool的。但是如果还是想要查看错误，建议使用 **cheap-module-source-map**，这样提示效果会更好一些
+- 在<font color=FF0000>生产环境</font>中，一般是没有必要使用 devtool 的。但是如果还是想要查看错误，建议使用 **cheap-module-source-map**，这样提示效果会更好一些
 
 ##### 浏览器中使用 source map 的补充
 
@@ -8867,7 +8869,7 @@ CSS在打包时默认被添加到JS文件中，可以使用 MiniCssExtractPlugin
 
 > <font color=FF0000>**代码分割，只是把 CSS 代码提取出来，不是压缩 CSS 代码**</font>；压缩 CSS 代码还是需要使用 [optimize-css-assets-webpack-plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin)。另外，根据下面文章的说法：使用 optimize-css-assets-webpack-plugin 会导致压缩 JS 失效，所以需要额外引入一个压缩 JS 的插件，比如：uglifyjs-webpack-plugin
 >
-> **注：**再次强调 ⚠️ ，optimize-css-assets-webpack-plugin 是 webpack@4 压缩 CSS 代码的方案，webpack@5 中推荐使用 [css-minimizer-webpack-plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin) ，这也是 optimize-css-assets-webpack-plugin GitHub readme 中的说法
+> 👀 再次强调 ⚠️ ，optimize-css-assets-webpack-plugin 是 webpack@4 压缩 CSS 代码的方案，webpack@5 中推荐使用 [css-minimizer-webpack-plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin) ，这也是 optimize-css-assets-webpack-plugin GitHub readme 中的说法
 >
 > 学习自：[重构之路：webpack打包体积优化（超详细）](https://juejin.cn/post/6844903781377785863)
 
@@ -10668,7 +10670,7 @@ In some setups, watching falls back to polling mode. With many watched files , t
 
 ###### stats.toJson speed
 
-<font color=LightSeaGreen>Webpack 4 outputs a large amount of data with its `stats.toJson()` by default</font>（ 👀 注：stats 是 statistics 的简写 ）. Avoid retrieving portions of the `stats` object unless necessary in the incremental step. `webpack-dev-server` after v3.1.3 contained a substantial performance fix to minimize the amount of data retrieved from the `stats` object per incremental build step.
+<font color=LightSeaGreen>Webpack 4 outputs a large amount of data with its `stats.toJson()` by default</font>（ 👀 stats 是 statistics 的简写 ）. Avoid retrieving portions of the `stats` object unless necessary in the incremental step. `webpack-dev-server` after v3.1.3 contained a substantial performance fix to minimize the amount of data retrieved from the `stats` object per incremental build step.
 
 ###### Devtool
 
