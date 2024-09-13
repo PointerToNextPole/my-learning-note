@@ -14623,7 +14623,7 @@ requestIdleCallback <font color=FF0000>会在每次 check 结束发现距离下�
 总之，浏览器里有 JS 引擎做 JS 代码的执行，利用注入的浏览器 API 完成功能，有渲染引擎做页面渲染，两者都比较纯粹，需要一个调度的方式，就是 event loop。
 event loop 实现了 task 和 急事处理机制 microtask，而且每次 loop 结束会 check 是否要渲染，渲染前会有 requestAnimationFrames 生命周期。
 帧刷新不能被拖延否则会卡顿甚至掉帧，所以就需要 JS 代码里面不要做过多计算，于是有了 requestIdleCallback 的 api，希望在每次 check 完发现还有时间就执行，没时间就不执行（这个deadline的时间也作为参数让 js 代码自己判断），为了避免一直没时间，还提供了 timeout 参数强制执行。
-<font color=LightSeaGreen>防止计算时间过长导致渲染掉帧是 ui 框架一直关注的问题，就是怎么不阻塞渲染，让逻辑能够拆成帧间隔时间内能够执行完的小块</font>。浏览器提供了 idelcallback 的 api，<font color=red>很多 ui 框架也通过递归改循环然后记录状态等方式实现了计算量的拆分，目的只有一个：loop 内的逻辑执行不能阻塞 check，也就是不能阻塞渲染引擎做帧刷新</font>。所以不管是 JS 代码宏微任务、 requestAnimationCallback、requestIdleCallback 都不能计算时间太长。这个问题是前端开发的持续性阵痛。
+<font color=LightSeaGreen>防止计算时间过长导致渲染掉帧是 ui 框架一直关注的问题，就是怎么不阻塞渲染，让逻辑能够拆成帧间隔时间内能够执行完的小块</font>。浏览器提供了 idlecallback 的 api，<font color=red>很多 ui 框架也通过递归改循环然后记录状态等方式实现了计算量的拆分，目的只有一个：loop 内的逻辑执行不能阻塞 check，也就是不能阻塞渲染引擎做帧刷新</font>。所以不管是 JS 代码宏微任务、 requestAnimationCallback、requestIdleCallback 都不能计算时间太长。这个问题是前端开发的持续性阵痛。
 
 摘自：[Event Loop 和 JS 引擎、渲染引擎的关系](https://mp.weixin.qq.com/s/1PCQMgrXt4bPYtW-uVZgHQ)
 
@@ -14669,7 +14669,9 @@ window.requestAnimationFrame(callback);
 
 #### window.requestIdleCallback
 
-> 🧪 ：这是一个实验中的功能
+> ⚠️ 值得注意的是：这个 API 在 Safari 中目前还不支持
+>
+> ![image-20240913235310483](https://s2.loli.net/2024/09/13/Lgmlk17y2uJvosY.png)
 
 > 👀 这个函数的作用，老是忘记，可以看下 [[#Event Loop 和 JS 引擎、渲染引擎的关系#requestIdleCallback]] 及它上面的内容，作为背景介绍；有助记忆。
 
@@ -15988,43 +15990,45 @@ element.insertAdjacentHTML(position, text);
 - \<section>
 - \<span>
 
-**语法**
+##### 语法
 
 ```js
 var shadowroot = element.attachShadow(shadowRootInit);
 ```
 
-**参数**
+###### 参数
 
-- **shadowRootInit** ：一个 ShadowRootInit 字典，包括下列字段：
+**shadowRootInit** ：一个 ShadowRootInit 字典，包括下列字段：
 
-  - **mode 模式**：指定 Shadow DOM 树封装模式的字符串，可以是以下值：
+- **mode 模式**：指定 Shadow DOM 树封装模式的字符串，可以是以下值：
 
-    - **open**：shadow root元素允许<font color=FF0000>从js外部访问根节点</font>，例如使用 Element.shadowRoot:
+  - **open**：shadow root元素允许<font color=FF0000>从js外部访问根节点</font>，例如使用 Element.shadowRoot:
 
-      ```js
-      element.shadowRoot; // 返回一个ShadowRoot对象
-      ```
+    ```js
+    element.shadowRoot; // 返回一个ShadowRoot对象
+    ```
 
-    - **closed**：<font color=FF0000>拒绝从js外部访问关闭的shadow root节点</font>
+  - **closed**：<font color=FF0000>拒绝从js外部访问关闭的shadow root节点</font>
 
-      ```js
-      element.shadowRoot; // 返回null
-      ```
+    ```js
+    element.shadowRoot; // 返回null
+    ```
 
-  - **delegatesFocus** ：焦点委托
+- **delegatesFocus** ：焦点委托
 
-    一个布尔值，当设置为 true 时, 指定减轻自定义元素的聚焦性能问题行为</font>.
-    当shadow DOM中不可聚焦的部分被点击时, 让第一个可聚焦的部分成为焦点, 并且shadow host（影子主机）将提供所有可用的 :focus 样式.
+  一个布尔值，当设置为 true 时, 指定减轻自定义元素的聚焦性能问题行为</font>.
+  当shadow DOM中不可聚焦的部分被点击时, 让第一个可聚焦的部分成为焦点, 并且shadow host（影子主机）将提供所有可用的 :focus 样式.
 
-**返回值：**<font color=FF0000>返回一个 ShadowRoot 对象或者 **null**</font>。
+###### 返回值
 
-**异常**
+<font color=FF0000>返回一个 ShadowRoot 对象或者 **null**</font>。
+
+###### **异常**
 
 | 异常                          | 说明                                                         |
 | :---------------------------- | :----------------------------------------------------------- |
-| InvalidStateError无效状态错误 | 您添加的元素已经是一个shadow host（影子主机）.               |
-| NotSupportedError不被支持错误 | 您应该添加 HTML 元素的命名空间之外的shadow root, 或者这个元素不能有其他shadow挂载到它上面 (见上). |
+| InvalidStateError无效状态错误 | 您添加的元素已经是一个shadow host                            |
+| NotSupportedError不被支持错误 | 您应该添加 HTML 元素的命名空间之外的shadow root, 或者这个元素不能有其他shadow挂载到它上面 (见上) |
 
 摘自：[MDN - Element.attachShadow()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/attachShadow)
 
@@ -16032,15 +16036,17 @@ var shadowroot = element.attachShadow(shadowRootInit);
 
 ShadowRoot的host属性是只读的，它返回一个对 ShadowRoot 附加到的 DOM 元素的引用
 
-**语法：**
+##### 语法
 
 ```js
 const someElement = shadowRoot.host
 ```
 
-**返回值：**一个DOM元素
+###### 返回值
 
-**示例：**
+一个DOM元素
+
+##### 示例
 
 ```js
 let customElem = document.querySelector('my-shadow-dom-element');
@@ -16057,13 +16063,13 @@ let hostElem = shadow.host;
 
 #### Notifications API
 
-Notifications API <font color=FF0000>允许网页控制 向最终用户显示系统通知，**这些（通知）在顶级浏览上下文视口之外**</font>；因此：<font color=FF0000>**即使用户已经切换标签页或移动到不同的应用程序，也可以显示**</font>。<font color=FF0000>该 API 被设计成与 **不同平台** 上的现有通知系统兼容</font>（**注：**感觉可以理解为方便 ***跨端*** 开发）。
+Notifications API <font color=FF0000>允许网页控制 向最终用户显示系统通知，**这些（通知）在顶级浏览上下文视口之外**</font>；因此：<font color=FF0000>**即使用户已经切换标签页或移动到不同的应用程序，也可以显示**</font>。<font color=FF0000>该 API 被设计成与 **不同平台** 上的现有通知系统兼容</font>（👀 感觉可以理解为方便 ***跨端*** 开发）。
 
-> **注：**上面说的有点不明白，这里摘抄下 [MDN - 使用 Web Notifications](https://developer.mozilla.org/zh-CN/docs/Web/API/Notifications_API/Using_the_Notifications_API) 中的内容：
+> 💡 上面说的有点不明白，这里摘抄下 [MDN - 使用 Web Notifications](https://developer.mozilla.org/zh-CN/docs/Web/API/Notifications_API/Using_the_Notifications_API) 中的内容：
 >
 > 通常，系统通知是指操作系统的标准通知机制。
 >
-> <mark>系统通知系统当然会因平台和浏览器而异，但无需担心，Notification API 被编写为通用的，足以与大多数系统通知系统兼容</mark>。
+> <font color=lightSeaGreen>系统通知系统当然会因平台和浏览器而异，但无需担心，Notification API 被编写为通用的，足以与大多数系统通知系统兼容</font>。
 >
 > <font color=FF0000>Web Notifications API 使页面可以发出通知，通知将被显示在页面之外的系统层面上</font>（通常使用操作系统的标准通知机制，但是在不同的平台和浏览器上的表现会有差异）。这个功能使 web 应用可以向用户发送信息，即使应用处于空闲状态。最明显的用例之一是一个网页版电子邮件应用程序，每当用户收到了一封新的电子邮件都需要通知用户，即使用户正在使用另一个应用程序。
 >
@@ -16088,7 +16094,7 @@ btn.addEventListener('click', function() {
 
 从这里，用户可以选择允许来自此来源的通知，阻止来自此来源的通知，或不选择此点。一旦做出选择，该设置通常将持续用于当前会话。
 
-> #### 一些额外的补充
+> ##### 一些额外的补充
 >
 > 你可以通过检查只读属性 `Notification.permission` 的值来查看你是否已经有权限。该属性的值将会是下列三个之一：
 >
@@ -16096,7 +16102,7 @@ btn.addEventListener('click', function() {
 > - granted：表示之前已经询问过用户，并且用户已经授予了显示通知的权限。
 > - denied：用户已经明确的拒绝了显示通知的权限。
 >
-> ##### 获得权限
+> ###### 获得权限
 >
 > 如果权限尚未被授予，那么应用不得不通过 `Notification.requestPermission()` 方法让用户进行选择。这个方法接受一个回调函数，一旦用户回应了显示通知的请求，将会调用这个函数。通常你应在你的应用首次初始化的时候请求显示通知的权限：
 >
@@ -16192,7 +16198,7 @@ The `permissions` property has been made available on the [`Navigator`](https://
 
 #### Intl
 
-**Intl 对象** 是 ECMAScript <font color=FF0000>**国际化 API 的一个 <font size=4>命名空间</font>**</font>（👀 注：这里命名空间的说法，值得注意），它<font color=FF0000>**提供了精确的字符串对比、数字格式化，和日期时间格式化**</font>。Collator、NumberFormat 和 DateTimeFormat 对象的 **构造函数** 是 Intl 对象的属性。
+**Intl 对象** 是 ECMAScript <font color=FF0000>**国际化 API 的一个 <font size=4>命名空间</font>**</font>（👀 这里命名空间的说法，值得注意），它<font color=FF0000>**提供了精确的字符串对比、数字格式化，和日期时间格式化**</font>。Collator、NumberFormat 和 DateTimeFormat 对象的 **构造函数** 是 Intl 对象的属性。
 
 ##### 属性
 
