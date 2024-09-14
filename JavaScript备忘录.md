@@ -14669,22 +14669,22 @@ window.requestAnimationFrame(callback);
 
 #### window.requestIdleCallback
 
-> ⚠️ 值得注意的是：这个 API 在 Safari 中目前还不支持
+> ⚠️ 值得注意的是：这个 API 在 Safari 中目前还不支持，从兼容性考虑，可以使用 raf 兼容 Safari，思路就是：通过记录一个开始时间 `const start = Date.now()`，在 raf 内部使用 `Date.now() - start < 16.67` ，则执行；具体代码见 [大量任务执行的调度【渡一教育】](https://www.bilibili.com/video/BV12MHpepEom)
 >
-> ![image-20240913235310483](https://s2.loli.net/2024/09/13/Lgmlk17y2uJvosY.png)
+> ![](https://s2.loli.net/2024/09/13/Lgmlk17y2uJvosY.png)
 
 > 👀 这个函数的作用，老是忘记，可以看下 [[#Event Loop 和 JS 引擎、渲染引擎的关系#requestIdleCallback]] 及它上面的内容，作为背景介绍；有助记忆。
 
-window.requestIdleCallback() 方法<font color=FF0000>插入一个函数</font>，<font color=fuchsia>这个函数将在浏览器空闲时期被调用</font>。这<font color=FF0000>使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件</font>，如动画和输入响应。函数一般会按先进先调用的顺序执行，然而，如果回调函数指定了执行超时时间 timeout，则有可能为了在超时前执行函数而打乱执行顺序。
+`window.requestIdleCallback()` 方法<font color=FF0000>插入一个函数</font>，<font color=fuchsia>这个函数将在浏览器空闲时期被调用</font>。这<font color=FF0000>使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件</font>，如动画和输入响应。函数一般会按先进先调用的顺序执行，然而，如果回调函数指定了执行超时时间 `timeout` ，则有可能为了在超时前执行函数而打乱执行顺序
 
 你可以在空闲回调函数中调用 `requestIdleCallback()` ，以便在下一次通过事件循环之前调度另一个回调。
 
-> 💡备注：强烈建议使用 timeout 选项进行必要的工作，否则可能会在触发回调之前经过几秒钟。
+> 💡备注：<font color=red>强烈建议使用 `timeout` 选项进行必要的工作，否则可能会在触发回调之前经过几秒钟</font>。
 
 ##### 语法
 
 ```js
-var handle = window.requestIdleCallback(callback[, options])
+window.requestIdleCallback(callback[, options])
 ```
 
 ###### 返回值
@@ -14693,13 +14693,33 @@ var handle = window.requestIdleCallback(callback[, options])
 
 ###### 参数
 
-- **callback：**<font color=FF0000>一个在事件循环空闲时即将被调用的函数的引用</font>。<font color=FF0000>函数会接收到一个名为 IdleDeadline 的参数</font>，<font color=LightSeaGreen>这个参数可以获取当前空闲时间以及回调是否在超时时间前已经执行的状态</font>
-- **options：**可选，包括可选的配置参数。具有如下属性：
-  - **timeout：**<font color=FF0000>如果指定了 timeout，并且有一个正值，而回调在 timeout 毫秒过后还没有被调用，那么回调任务将放入事件循环中排队</font>，即使这样做有可能对性能产生负面影响
+- **`callback`** ：<font color=FF0000>一个在事件循环空闲时即将被调用的函数的引用</font>。<font color=FF0000>函数会接收到一个名为 `IdleDeadline` 的参数</font>，<font color=LightSeaGreen>这个参数可以获取当前空闲时间以及回调是否在超时时间前已经执行的状态</font>
+- **`options`** ：可选，包括可选的配置参数。具有如下属性：
+  - **`timeout`** ：<font color=FF0000>如果指定了 `timeout` ，并且有一个正值，而回调在 `timeout` 毫秒过后还没有被调用，那么回调任务将放入事件循环中排队</font>，即使这样做有可能对性能产生负面影响
 
-摘自：[MDN - requestIdleCallback](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)
+摘自：[MDN - `requestIdleCallback`](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback)
 
-> 💡 关于垃圾回收的补充
+##### IdleDeadline
+
+> 👀 这个接口在看 MDN - `requestIdleCallback` 文档时完全没注意，看 [大量任务执行的调度【渡一教育】](https://www.bilibili.com/video/BV12MHpepEom) 才发现：对于 `requestIdleCallback` 还是有点重要的
+
+`IdleDeadline` 接口是在调用 `Window.requestIdleCallback()` 时创建的闲置回调的输入参数的数据类型。它<font color=red>提供了 `timeRemaining()` 方法，用来判断用户代理预计还剩余多少闲置时间</font>；<font color=dodgerBlue>以及</font> <font color=red>`didTimeout` 属性，用来判断当前的回调函数是否因超时而被执行</font>。
+
+###### 实例属性
+
+- `IdleDeadline.didTimeout` 只读
+
+  一个布尔值，如果回调是因为超过了设置的超时时间而被执行的，则其值为 `true`。
+
+###### 实例方法
+
+- `IdleDeadline.timeRemaining()`
+
+  返回一个 `DOMHighResTimeStamp`，其为浮点数，用来表示当前闲置周期的预估剩余毫秒数。如果闲置期已经结束，则其值为 0。你的回调函数可以重复调用该函数，以判断目前是否有足够的时间来执行更多的任务。
+
+摘自：[MDN - `IdleDeadline`](https://developer.mozilla.org/zh-CN/docs/Web/API/IdleDeadline)
+
+
 
 #### FinalizationRegistry
 

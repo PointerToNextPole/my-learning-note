@@ -2192,7 +2192,10 @@ console.log(Animal[Animal.Cat]) // Cat
 
 此外，TypeScript 还支持字面量类型，也就是<font color=FF0000>类似</font> `1111`、`'aaaa'`、`{ a: 1 }` <font color=FF0000>这种值也可以作为类型</font>
 
-其中，<font color=FF0000>**字符串的字面量类型有两种**</font>：一种是普通的字符串字面量，比如 `'aaa'`；<font color=FF0000>**另一种是模版字面量**，比如</font> `aaa${string}` ，<font color=FF0000>它的意思是以 “aaa” 开头，后面是任意 string 的字符串字面量类型</font>。
+> 💡 发现这里几乎没有介绍“字面量类型”的作用，另外，2024/9/14 发现对于“字面量类型”的作用几乎遗忘，所以在此补充。
+> 可以看下 [[Vue3 + TS 学习笔记#字面量类型]] 中的内容，简单而言一句话概括：<font color=red>**字面量类型必须类型和值一样**</font>
+
+其中，<font color=dodgerBlue>**字符串的字面量类型有两种**</font>：一种是普通的字符串字面量，比如 `'aaa'`；<font color=dodgerBlue>**另一种是模版字面量**</font>，比如 `aaa${string}` ，<font color=FF0000>它的意思是以 “aaa” 开头，后面是任意 string 的字符串字面量类型</font>。
 
 所以想要约束以某个字符串开头的字符串字面量类型时可以这样写：
 
