@@ -8949,7 +8949,7 @@ function selectText() {
 
 ##### 浏览器的观察器有哪些
 
-<font color=FF0000>**浏览器的观察器共有 5 种**</font> ：IntersectionObserver（交叉观察器）、MutationObserver（变化观察器）、ResizeObserver（大小观察器）、PerformanceObserver（性能观察器）、ReportingObserver（报告观察器） 
+<font color=dodgerBlue>**浏览器的观察器共有 5 种**</font> ：IntersectionObserver（交叉观察器）、MutationObserver（变化观察器）、ResizeObserver（大小观察器）、PerformanceObserver（性能观察器）、ReportingObserver（报告观察器） 
 
 摘自：[一起认识下浏览器的5种观察器](https://mp.weixin.qq.com/s/0Kj0cUYrQtx7Bh2VuZ-pGQ)
 
@@ -9278,11 +9278,11 @@ document.querySelectorAll('mark').forEach(mark => { observer.observe(mark) })
 
 - **图片的懒加载**
 
-  **注：**应该也包含上面 codingstartup 的 示例：当动画可见（在 视口 viewport 中）时，才会触发。对于定时触发的动画也可以通过 intersection observer 可见时运行，不可见时停止。
+  > 👀 应该也包含上面 codingstartup 的 示例：当动画可见（在 视口 viewport 中）时，才会触发。对于定时触发的动画也可以通过 intersection observer 可见时运行，不可见时停止。
 
 - 无限滚动
 
-- <font color=FF0000>**网页广告的曝光量统计**</font>
+- <font color=FF0000>网页广告的曝光量统计</font>
 
   > 很多时候，广告图片不一定需要全部展示才算被用户看到，有时候图片只展示了 60% 时，主要信息已经被用户看到，这种情况其实是可以算作一次曝光量的统计。为了实现这种广告的曝光量的精确统计，我们可以创建交叉管理器，观察到广告目标元素的交叉比例 intersectionRatio 达到 0.6 时，判定广告的 曝光量 +1
   >
@@ -9292,43 +9292,45 @@ document.querySelectorAll('mark').forEach(mark => { observer.observe(mark) })
 
 #### ResizeObserver
 
-🧪
-
 > ##### Resize Observer API
 >
-> Resize Observer API 提供了一种 <font color=FF0000>**高性能的机制**</font>，通过该机制，<font color=FF0000>代码可以监视元素的大小更改，并且 **每次大小更改** 时都会向观察者传递通知</font>
+> Resize Observer API 提供了一种 <font color=FF0000>高性能的机制</font>，通过该机制，<font color=FF0000>代码可以监视元素的大小更改，并且 **每次大小更改** 时都会向观察者传递通知</font>
 >
-> ##### 背景 / 痛点
+> ###### 概念和使用
 >
 > 存在大量的<font color=FF0000>响应式设计</font>（以及其他相关）技术，它们<font color=FF0000>可以响应元素大小的变化</font>；但是以前，它们的实现常常很笨拙或者说生硬。
 >
-> 举个例子：当视口更改大小时， 媒介查询 / window.matchMedia 非常适合在特定点更新布局，但是如果要响应于特定元素的大小更改而更改布局，该元素又不是外部容器时，该怎么办？
+> 举个例子：当视口更改大小时， 媒介查询 / `window.matchMedia` 非常适合在特定点更新布局，但是如果要响应于特定元素的大小更改而更改布局，该元素又不是外部容器时，该怎么办？
 >
-> 为此，<mark>一种 **有限的解决方案** 是监听对适当事件的更改，该事件会提示您对更改大小感兴趣的元素</mark>（例如 window resize event ），<mark>然后找出该元素之后新的尺寸或其他功能</mark>；例如，使用 Element.getBoundingClientRect 或者 Window.getComputedStyle 来调整大小。 <font color=FF0000>**这样的解决方案仅适用于有限的场景，对性能不利**（不断调用上述方法会导致性能严重下降），并且在不更改浏览器窗口大小的情况下通常不起作用</font>。
+> 为此，<font color=lightSeaGreen>一种 **有限的解决方案** 是监听对适当事件的更改，该事件会提示您对更改大小感兴趣的元素</font>（例如 window resize event ），<font color=lightSeaGreen>然后找出该元素之后新的尺寸或其他功能</font>；例如，使用 `Element.getBoundingClientRect` 或者 `Window.getComputedStyle` 来调整大小。 <font color=FF0000>**这样的解决方案仅适用于有限的场景，对性能不利**（不断调用上述方法会导致性能严重下降），并且在不更改浏览器窗口大小的情况下通常不起作用</font>。
 >
-> <font color=FF0000>Resize Observer API 提供了一种解决此类问题的解决方案，此外，它还**使您能够轻松观察和响应元素内容或边框的大小变化**，并 **以高效的方式做出响应**</font>。 它为 Web 平台中经常讨论的缺少 element queries 提供了 JavaScript 解决方案。
+> > 👀 即：频繁触发回流
 >
-> 用法很简单，并且与其他观察者（例如 Performance Observer 或者 Intersection Observer ）几乎相同，您可以使用 ResizeObserver() 构造函数创建一个新的 ResizeObserver ，然后使用 ResizeObserver.observe() 使其寻找特定元素大小的更改。 <font color=FF0000>**每次更改大小时，构造函数中设置的回调函数便会运行**，从而提供对新维度的访问权限，并允许您根据需要执行任何操作</font>。
+> <font color=FF0000>Resize Observer API 提供了一种解决此类问题的解决方案，此外，它还**使您能够轻松观察和响应元素内容或边框的大小变化**，并 **以高效的方式做出响应**</font>。 它为 Web 平台中经常讨论的缺少元素查询 ( element queries ) 提供了 JavaScript 解决方案。
+>
+> 用法很简单，并且与其他观察者（例如 Performance Observer 或者 Intersection Observer ）几乎相同，您可以使用 `ResizeObserver()` 构造函数创建一个新的 `ResizeObserver` ，然后使用 `ResizeObserver.observe()` 使其寻找特定元素大小的更改。 <font color=FF0000>**每次更改大小时，构造函数中设置的回调函数便会运行**，从而提供对新维度的访问权限，并允许您根据需要执行任何操作</font>。
 >
 > 摘自：[MDN - Resize Observer API](https://developer.mozilla.org/zh-CN/docs/Web/API/Resize_Observer_API)
 
-ResizeObserver 接口 <font color=FF0000>可以监听到 Element 的 <font size=4>**内容区域**</font>（👀 Mutation observer 是监听 DOM树 的改变）</font> **或** <font color=0000FF>SVGElement的边界框</font> <font size=4>**改变**</font>。<font color=FF0000>内容区域则需要减去内边距 padding</font>。（有关内容区域、内边距资料见 [盒子模型](https://developer.mozilla.org/docs/Learn/CSS/Introduction_to_CSS/Box_model)）
+ResizeObserver 接口 <font color=FF0000>可以监听到 `Element` 的 **内容盒**</font> **或** <font color=lightSeaGreen>`SVGElement` 的边界框改变</font>。
 
-<font color=FF0000>ResizeObserver **避免了在自身回调中调整大小，从而触发的无限回调和循环依赖**</font>。它 <font color=FF0000>仅通过在后续帧中处理DOM中更深层次的元素来实现这一点</font>。<mark>如果（浏览器）遵循规范，**只会在 绘制前或布局后触发调用**</mark>。
+`ResizeObserver` <font color=lightSeaGreen>避免了通过回调函数调整大小时，通常创建的无限回调循环和循环依赖项</font>。它只能通过在后续的帧中处理 DOM 中更深层次的元素来做到这一点。如果它的实现遵循规范，则应在绘制前和布局后调用 resize 事件。
 
 ##### 构造器
 
-**ResizeObserver()：**创建并返回一个 ResizeObserver 对象。
+**`ResizeObserver()`** ：创建并返回一个 ResizeObserver 对象。
 
 ##### 方法
 
-- **ResizeObserver.disconnect()：**<font color=FF0000>取消和结束 目标**对象上所有 **对 Element 或 SVGElement 观察</font>
-- **ResizeObserver.observe()：**<font color=FF0000>开始观察</font>指定的 Element 或 SVGElement
-- **ResizeObserver.unobserve()：**<font color=FF0000>结束观察</font>指定的 Element 或 SVGElement
+- **`ResizeObserver.disconnect()`** ：<font color=FF0000>取消和结束 目标**对象上所有 **对 Element 或 SVGElement 观察</font>
+- **`ResizeObserver.observe()`** ：<font color=FF0000>开始观察</font>指定的 Element 或 SVGElement
+- **`ResizeObserver.unobserve()`** ：<font color=FF0000>结束观察</font>指定的 Element 或 SVGElement
 
 ##### 示例
 
-以下示例通过观察 box 的宽度变化从而改变其边框圆角半径。**注：**相关使用和 上面的 intersectionObserver 相当类似
+以下示例通过观察 box 的宽度变化从而改变其边框圆角半径。
+
+> 👀 相关使用和 上面的 intersectionObserver 相当类似，可能是 Observer 家族的使用的设计是保持一致的
 
 ```js
 const resizeObserver = new ResizeObserver(entries => {
@@ -9407,11 +9409,63 @@ observer2.observe( { entryTypes: ["measure"] } )
 
 #### ReportingObserver
 
-// TODO
+The `ReportingObserver` interface of the [Reporting API](https://developer.mozilla.org/en-US/docs/Web/API/Reporting_API) allows you to <font color=red>collect and access reports</font>.
 
-摘自：[MDN - ReportingObserver](https://developer.mozilla.org/en-US/docs/Web/API/ReportingObserver)
+##### Constructor
 
-另外，「神说要有光」的文章 [浏览器的 5 种 Observer，你用过几种？](https://mp.weixin.qq.com/s/-fLZe164aWAaPJ55iZ_m2w) 推荐阅读。// TODO
+- `ReportingObserver()` ：Creates a new `ReportingObserver` object instance, which can be used to collect and access reports.
+
+##### Instance properties
+
+*This interface has no properties defined on it.*
+
+##### Instance methods
+
+- `ReportingObserver.disconnect()` : <font color=red>Stops a reporting observer</font> that had previously started observing from collecting reports.
+- `ReportingObserver.observe()` : <font color=red>Instructs a reporting observer</font> to start collecting reports in its report queue.
+- `ReportingObserver.takeRecords()` : <font color=red>Returns the current list of reports</font> contained in the observer's report queue, and <font color=<font color=red>>**empties the queue**</font>.
+
+##### Events
+
+*This interface has no events that fire on it.*
+
+摘自：[MDN US - ReportingObserver](https://developer.mozilla.org/en-US/docs/Web/API/ReportingObserver)
+
+##### 神说要有光《浏览器的 5 种 Observer，你用过几种？》ReportingObserver 笔记
+
+当浏览器运行到过时 ( deprecation ) 的 api 的时候，会在控制台打印一个过时的报告:
+
+![](https://s2.loli.net/2024/09/15/9MG7C6WmApP34fH.webp)
+
+浏览器还会在一些情况下对网页行为做一些干预 ( intervention )
+
+> 👀 浏览器会对网页行为做一些干预，这个可以理解，也符合常识，毕竟网页可能会做一些危害用户的微信。但是下面所说的是之前完全没有听过
+
+比如<font color=red>会把占用 cpu 太多的广告的 iframe 删掉</font>：
+
+![img](https://s2.loli.net/2024/09/15/Zg4H5OPwqvueSnx.jpg)
+
+会在网络比较慢的时候把图片替换为占位图片，点击才会加载：
+
+![img](https://s2.loli.net/2024/09/15/JiFLqux5e4WAykD.jpg)
+
+这些干预都是浏览器做的，会在控制台打印一个报告：
+
+![](https://s2.loli.net/2024/09/15/JATw5fiuP49eLcV.jpg)
+
+<font color=dodgerBlue>这些干预或者过时的 api 并不是报错，所以不能用错误监听的方式来拿到</font>，但这些情况对网页 app 来说可能也是很重要的：
+
+- 比如我这个网页就是为了展示广告的，但浏览器一干预给我把广告删掉了，我却不知道。如果我知道的话或许可以优化下 iframe。
+
+- 比如我这个网页的图片很重要，结果浏览器一干预给我换成占位图了，我却不知道。如果我知道的话可能会优化下图片大小。
+
+所以自然也要监听，所以<font color=red>浏览器提供了 `ReportingObserver` 的 api 用来监听这些报告的打印</font>，<font color=lightSeaGreen>我们可以拿到这些报告然后上传</font>。
+
+> 👀 上面所说说明了 `ReportingObserver` 是实现“前端监控”一个有些重要的 API
+>
+> <img src="https://s2.loli.net/2024/09/15/6Jjq8OMthdcmTAG.png" alt="image-20240915170732910" style="zoom:50%;" />
+
+摘自：[浏览器的 5 种 Observer，你用过几种？](https://juejin.cn/post/7064557881492209678)
 
 
 
@@ -14627,15 +14681,19 @@ event loop 实现了 task 和 急事处理机制 microtask，而且每次 loop �
 
 摘自：[Event Loop 和 JS 引擎、渲染引擎的关系](https://mp.weixin.qq.com/s/1PCQMgrXt4bPYtW-uVZgHQ)
 
-#### window.requestAnimationFrame
+#### `window.requestAnimationFrame`
 
-`window.requestAnimationFrame()` <font color=FF0000>告诉浏览器</font>：你<font color=FF0000>希望执行一个动画，并且**要求浏览器在下次 <font size=4>*重绘*</font> 之前，调用指定的回调函数更新动画**</font>。该方法<font color=FF0000>需要传入一个 <font size=4>**回调函数**</font> 作为参数，该 <font size=4>**回调函数会在浏览器下一次重绘之前执行**</font></font>
+`window.requestAnimationFrame()` <font color=FF0000>告诉浏览器</font>：你<font color=FF0000>希望执行一个动画，并且**要求浏览器在下次 <font size=4>重绘</font> 之前，调用指定的回调函数更新动画**</font>。该方法<font color=FF0000>需要传入一个 <font size=4>**回调函数**</font> 作为参数，该 <font size=4>**回调函数会在浏览器下一次重绘之前执行**</font></font>
 
-> ⚠️ 注意：<font color=FF0000>若你想在浏览器下次重绘之前继续更新下一帧动画，那么 **回调函数自身必须再次调用 window.requestAnimationFrame()**</font>
+> 💡 <font color=FF0000>若你想在浏览器下次重绘之前继续更新下一帧动画</font>，那么 <font color=fuchsia>**回调函数自身必须再次调用 `window.requestAnimationFrame()`**</font>。<font color=fuchsia size=4>**`requestAnimationFrame()` 是一次性的**</font>。
+>
+> > 👀 上面 MDN 中的补充，说明 `requestAnimationFrame()` 是一次性的，很多情况下需要递归调用的。问了下 GPT ，得到了肯定的答复：
+> >
+> > <img src="https://s2.loli.net/2024/09/15/gtKpfH3rczkV6LD.png" alt="image-20240915150056859" style="zoom:50%;" />
 
-当你准备更新动画时你应该调用此方法。这将使浏览器在下一次重绘之前 调用你传入给该方法的动画函数（即你的回调函数）。<font color=FF0000>回调函数执行次数通常是 每秒 60 次</font>，但<font color=FF0000>在大多数遵循 W3C 建议的浏览器中，回调函数执行次数通常与浏览器屏幕刷新次数相匹配</font>。<font color=LightSeaGreen>为了提高性能和电池寿命，因此在大多数浏览器里，当 `requestAnimationFrame()` 运行在后台标签页 或者 隐藏的 `<iframe>` 里时，`requestAnimationFrame()` 会被暂停调用以提升性能和电池寿命</font>。
+当你准备更新动画时你应该调用此方法。这将使浏览器在下一次重绘之前 调用你传入给该方法的动画函数（即你的回调函数）。<font color=FF0000>回调函数执行次数通常是 每秒 60 次</font>，但<font color=FF0000>在大多数遵循 W3C 建议的浏览器中，回调函数执行次数通常与浏览器屏幕刷新次数相匹配</font>。<font color=LightSeaGreen>为了提高性能和电池寿命，因此在大多数浏览器里</font>，<font color=dodgerBlue>**当 `requestAnimationFrame()` 运行在后台标签页 或者 隐藏的 `<iframe>` 里时**</font>，<font color=lightSeaGreen>`requestAnimationFrame()` 会被暂停调用以提升性能和电池寿命</font>。
 
-回调函数会被传入 DOMHighResTimeStamp 参数，DOMHighResTimeStamp 指示当前被 `requestAnimationFrame()` 排序的回调函数被触发的时间。在同一个帧中的多个回调函数，它们每一个都会接受到一个相同的时间戳，即使在计算上一个回调函数的工作负载期间已经消耗了一些时间。该时间戳是一个十进制数，单位毫秒，最小精度为 1ms。
+回调函数会被传入 `DOMHighResTimeStamp` 参数，`DOMHighResTimeStamp` 指示当前被 `requestAnimationFrame()` 排序的回调函数被触发的时间。在同一个帧中的多个回调函数，它们每一个都会接受到一个相同的时间戳，即使在计算上一个回调函数的工作负载期间已经消耗了一些时间。该时间戳是一个十进制数，单位毫秒，最小精度为 1ms。
 
 **语法**
 
@@ -14645,31 +14703,35 @@ window.requestAnimationFrame(callback);
 
 ###### 参数
 
-- **callback：**下一次重绘之前更新动画帧所调用的函数（即上面所说的回调函数）。该回调函数会被传入 DOMHighResTimeStamp 参数，该参数与 `performance.now()` 的返回值相同，它表示 `requestAnimationFrame()` 开始去执行回调函数的时刻。
+**`callback`** ：
+
+- 该函数会在下一次重绘更新你的动画时被调用到。这个回调函数只会传递一个参数：一个 `DOMHighResTimeStamp` 参数，用于表示上一帧渲染的结束时间（基于 [time origin](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/timeOrigin) 的毫秒数）
+- 时间戳是一个以毫秒为单位的十进制数字，<font color=lightSeaGreen>最小精度为 1 毫秒</font>。对于 `Window` 对象（而非 `workers`）来说，它等同于 `document.timeline.currentTime`。<font color=fuchsia>此时间戳在同一代理上（所有同源的 `window`，更重要的是同源的 `iframe`）运行的所有窗口之间共享</font>——它允许在多个 `requestAnimationFrame` 回调函数中执行同步动画。此时间戳值也近似于在回调函数开始时调用 `performance.now()`，但它们永远都不会是相同的值。
+- <font color=fuchsia>当 `requestAnimationFrame()` 队列中的多个回调开始在同一帧中触发时，它们都会收到相同的时间戳，即便在计算前一个回调函数工作量时这一帧的时间已经过去</font>。
 
 ###### 返回值
 
-<font color=FF0000>一个 long 整数，请求 ID ，是回调列表中唯一的标识</font>。是个非零值，没别的意义。你<font color=FF0000>可以传这个值给 `window.cancelAnimationFrame()` 以取消回调函数</font>。
+<font color=FF0000>一个 long 整数，请求 ID ，是回调列表中唯一的标识</font>。是个非零值，没别的意义。你<font color=FF0000>可以传这个值给 **`window.cancelAnimationFrame()`** 以取消回调函数</font>。
 
 摘自：[MDN - window.requestAnimationFrame](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestAnimationFrame)
 
 > **使用 requesAnimationFrame 比 setTimeout / setInterval 好在哪里？**
 >
-> - **CPU 节能：**
+> - **CPU 节能** ：
 >
->   使用 setInterval 实现的动画，<font color=red>当页面被隐藏或最小化时，setInterval 仍然在后台执行动画任务</font>，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费 CPU 资源。
+>   使用 `setInterval` 实现的动画，<font color=red>当页面被隐藏或最小化时，`setInterval` 仍然在后台执行动画任务</font>，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费 CPU 资源。
 >
->   而 <font color=dodgerBlue>RequestAnimationFrame 则完全不同</font>：<font color=red>当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停</font>，因此跟着系统走的 RequestAnimationFrame 也会停止渲染，<font color=red>当页面被激活时，动画就从上次停留的地方继续执行，有效节省了 CPU 开销</font>。
+>   而 <font color=dodgerBlue>`RequestAnimationFrame` 则完全不同</font>：<font color=red>当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停</font>，因此跟着系统走的 `RequestAnimationFrame` 也会停止渲染，<font color=red>当页面被激活时，动画就从上次停留的地方继续执行，有效节省了 CPU 开销</font>。
 >
-> - **函数<font color=FF0000>节流</font>**：在高频率事件（ resize , scroll 等）中，为了防止在一个刷新间隔内发生多次函数执行，<font color=FF0000>RequestAnimationFrame 可保证每个刷新间隔内，函数只被执行一次</font>。
+> - **函数<font color=FF0000>节流</font>**：在高频率事件（ `resize` , `scroll` 等）中，为了防止在一个刷新间隔内发生多次函数执行，<font color=FF0000>`RequestAnimationFrame` 可保证每个刷新间隔内，函数只被执行一次</font>。
 >
-> - **减少 DOM 操作**：<font color=FF0000>requestAnimationFrame **会把每一帧中的所有 DOM 操作集中起来**，**在一次重绘或回流中完成**</font>；并且重绘或回流的时间间隔会紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒 60 帧。
+> - **减少 DOM 操作**：<font color=FF0000>`requestAnimationFrame` **会把每一帧中的所有 DOM 操作集中起来**，**在一次重绘或回流中完成**</font>；并且重绘或回流的时间间隔会紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒 60 帧。
 >
 > 摘自：[「2021」高频前端面试题汇总之CSS篇](https://juejin.cn/post/6905539198107942919)
 
 #### window.requestIdleCallback
 
-> ⚠️ 值得注意的是：这个 API 在 Safari 中目前还不支持，从兼容性考虑，可以使用 raf 兼容 Safari，思路就是：通过记录一个开始时间 `const start = Date.now()`，在 raf 内部使用 `Date.now() - start < 16.67` ，则执行；具体代码见 [大量任务执行的调度【渡一教育】](https://www.bilibili.com/video/BV12MHpepEom)
+> ⚠️ 值得注意的是：这个 API 在 Safari 中目前还不支持，从兼容性考虑，可以使用 raf 兼容 Safari，思路就是：通过记录一个开始时间 `const start = Date.now()`，在 raf 内部使用 `Date.now() - start < 16.67` 进行判断和执行；具体代码见 [大量任务执行的调度【渡一教育】](https://www.bilibili.com/video/BV12MHpepEom)
 >
 > ![](https://s2.loli.net/2024/09/13/Lgmlk17y2uJvosY.png)
 
@@ -14689,7 +14751,7 @@ window.requestIdleCallback(callback[, options])
 
 ###### 返回值
 
-一个 ID，可以把它传入 `Window.cancelIdleCallback()` 方法来结束回调。
+一个 ID，可以把它传入 <font color=red>**`Window.cancelIdleCallback()`**</font> 方法来结束回调。
 
 ###### 参数
 

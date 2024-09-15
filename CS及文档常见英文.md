@@ -1921,3 +1921,5 @@
 - **coalesce** ：合并
 
   > Nullish **coalescing** operator
+  
+- **intervent** ：干预
