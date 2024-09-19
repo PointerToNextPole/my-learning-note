@@ -4829,8 +4829,6 @@ let u: undefined = undefined
 
 ###### any 类型
 
-> 👀 TS 特有
-
 在某些情况下，确实无法确定一个变量的类型，并且可能它会发生一些变化，这时可以使用any类型（类似 于Dart语言中的dynamic类型）。
 
 **any 类型有点像一种讨巧的TypeScript手段：**
@@ -4839,8 +4837,6 @@ let u: undefined = undefined
 - 我们给一个any类型的变量赋值任何的值，比如数字、字符串的值
 
 ###### unknown类型
-
-> 👀 TS 特有
 
 unknown是TypeScript中比较特殊的一种类型，它用于描述类型不确定的变量
 
@@ -4867,6 +4863,8 @@ export {}
 
 void通常用来指定一个函数是没有返回值的，那么它的返回值就是void类型
 
+<font color=red>可以将 null 和 undefined 赋值给 void 类型</font>，也就是函数可以返回 null 或者 undefined
+
 ```typescript
 function sum(num1: number, num2: number): void {
   console.log( num1 + num2 )
@@ -4875,15 +4873,11 @@ function sum(num1: number, num2: number): void {
 
 ###### never 类型
 
-> 👀 TS 特有
-
 never 表示永远不会发生值的类型，比如一个函数：
 
 <font color=FF0000>**如果一个函数中是一个死循环或者抛出一个异常，那么这个函数不会返回东西；那么写void类型或者其他类型作为返回值类型都不合适，我们就可以使用never类型**</font>。
 
-##### tuple类型
-
-> 👀 TS 特有
+##### tuple 类型 
 
 tuple是元组类型。tuple和数组的区别：
 
@@ -4916,8 +4910,6 @@ const [counter, setCounter] = useState(10)
 ```
 
 ###### 函数的参数类型
-
-> 👀 TS 特有
 
 函数是JavaScript非常重要的组成部分，<font color=FF0000>TypeScript允许我们指定函数的参数和返回值的类型</font>
 
@@ -5361,7 +5353,7 @@ function printMsg(msg?: string) {
   }
   ```
 
-- 平等缩小（比如 \===、!\==；还有 \=\==、!=、switch）
+- 平等缩小（比如 `===`、`!==`；还有 `=` 、`==`、`!=`、`switch`）
 
   ```ts
   type Direction = 'left' | 'right' | 'center'
