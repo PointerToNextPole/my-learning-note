@@ -5844,7 +5844,7 @@ interface IPerson {
 const p: IPerson = {
   name: 'foo',
   age: 18,
-  eating: function() { ...}
+  eating: function() { ... }
 }
 ```
 
@@ -5859,7 +5859,7 @@ interface IPerson {
 const p: IPerson = {
   name: 'foo',
   age: 18,
-  eating: function() { ...}
+  eating: function() { ... }
 }
 
 // 添加了这行代码
