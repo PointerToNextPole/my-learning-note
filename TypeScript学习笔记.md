@@ -2407,7 +2407,7 @@ type MapTypeRes = MapType<{a: 1, b: 2}>
 
 <img src="https://s2.loli.net/2022/05/01/E9Rny15MuiXbjNC.png" alt="image-20220501212209184" style="zoom:50%;" />
 
-`keyof T` 是查询索引类型中所有的索引，叫做「索引查询」（**注：**根据后面的内容 [[#TS 内置的高级类型#Record]] ，可知： `keyof T` 返回的是一个联合类型 ）。
+`keyof T` 是查询索引类型中所有的索引，叫做「索引查询」（👀 根据后面的内容 [[#TS 内置的高级类型#Record]] ，可知： `keyof T` 返回的是一个联合类型 ）。
 
 `T[Key]` 是取索引类型某个索引的值，叫做「索引访问」。
 
@@ -2787,7 +2787,7 @@ type GetRefProps<Props> =
 
 <img src="https://s2.loli.net/2022/05/03/yFtbjW4i58GfBDs.png" alt="img" style="zoom:55%;" />
 
-在 ts3.0 里面如果没有对应的索引，Obj[Key] 返回的是 {} 而不是 never，所以这样做向下兼容处理。如果有 ref 这个索引的话，就通过 infer 提取 Value 的类型返回，否则返回 never。
+在 ts3.0 里面如果没有对应的索引，`Obj[Key]` 返回的是 `{}` 而不是 `never`，所以这样做向下兼容处理。如果有 ref 这个索引的话，就通过 `infer` 提取 Value 的类型返回，否则返回 never。
 
 <img src="https://s2.loli.net/2022/05/03/jV81pD4QqSUIs7n.png" alt="image-20220503023006564" style="zoom:50%;" />
 
@@ -5740,7 +5740,7 @@ Another example of indexing with an arbitrary type is <font color=fuchsia>**usin
 
 > 👀 上面 `type Age = typeof MyArray[number]["age"]` 的写法，之前完全没有见过；值得注意。
 
-> 💡 上面神光的教程中，`[number]` 有这样的用法，这里并没有讲到；这里做下补充：
+> 💡 上面神光的教程中，有提过 `[number]` 这种用法，但这里并没有讲到；这里做下补充：
 >
 > <font color=fuchsia>**数组转联合类型可以这样写：**</font>
 >

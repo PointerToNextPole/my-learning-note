@@ -12302,11 +12302,11 @@ JSON.stringify({[Symbol("foo")]: "foo"}); // '{}'
 
 #### symbol 的 内置值
 
->  > 除了定义自己使用的 Symbol 值以外，ES6 还提供了 11 个内置的 Symbol 值，指向语言内部使用的方法。
+>  > 除了定义自己使用的 Symbol 值以外，ES6 还提供了 13 个内置的 Symbol 值，指向语言内部使用的方法。
 >
->  摘自：[阮一峰 ECMAScript 6 (ES6) 标准入门教程 第三版 - Symbol - 8. 内置的 Symbol 值](https://es6.ruanyifeng.com/#docs/symbol#内置的-Symbol-值)
+>  摘自：[阮一峰 ECMAScript 6 (ES6) 标准入门教程 第三版 - Symbol - 8. 内置的 Symbol 值](https://es6.ruanyifeng.com/#docs/symbol#%E5%86%85%E7%BD%AE%E7%9A%84-Symbol-%E5%80%BC)
 >
->  > 💡 看了下 [EMCA262 doc # well-known symbols](https://tc39.es/ecma262/#sec-well-known-symbols) 部分的文档，是13个 symbol；不知道是不是写书时比较早？
+>  > 💡 看了下 [EMCA262 doc # well-known symbols](https://tc39.es/ecma262/#sec-well-known-symbols) 部分的文档，是13个 symbol；上面原文是 11 个，这里已经改了，不知道是不是写书时比较早？
 >
 >  > 这些内置的 Symbol 值被称为 well-known symbols（常用内置符号）。另外，<font color=fuchsia>**`Symbol.` 可以简写为 `@@`**</font>
 >  >
