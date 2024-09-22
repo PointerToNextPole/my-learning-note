@@ -5734,7 +5734,7 @@ You’ll even see an error if you try to index a property that doesn’t exist:
 
 <img src="https://s2.loli.net/2023/03/31/eLJNkq5hIHC1PXo.png" alt="image-20230331014809650" style="zoom:50%;" />
 
-Another example of indexing with an arbitrary type is <font color=fuchsia>**using `number` to get the type of an array’s elements**</font>（ 👀 见下面的神光教程的补充 💡）. We can combine this with `typeof` to conveniently capture the element type of an array literal:
+Another example of indexing with an arbitrary type is <font color=fuchsia size=4>**using `number` to get the type of an array’s elements**</font>（ 👀 见下面的神光教程的补充 💡）. We can combine this with `typeof` to conveniently capture the element type of an array literal:
 
 <img src="https://s2.loli.net/2023/03/31/KGbgVdmDe5OPHhv.png" alt="image-20230331014934299" style="zoom:48%;" />
 
