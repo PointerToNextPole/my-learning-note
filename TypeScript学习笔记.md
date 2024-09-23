@@ -5987,8 +5987,12 @@ There’s one more kind of literal type: boolean literals. There are only two bo
 <font color=red>TypeScript 3.4</font> introduces a new construct for literal values called *`const`* assertions. Its syntax <font color=red>is a type assertion with `const`</font> in place of the type name (e.g. `123 as const` ). When we construct new literal expressions with `const` assertions, we can signal to the language that
 
 - no literal types（字面量类型） in that expression should be widened (e.g. no going from `"hello"` to `string`)
+
 - object literals <font color=red>get `readonly` properties</font>
-- array literals <font color=red>become `readonly` tuples</font>
+
+- array literals <font color=fuchsia>**become `readonly` tuples**</font>
+
+  > 👀 这个说法，在 [使用元祖生成联合类型【渡一教育】](https://www.bilibili.com/video/BV1VNt3e7E4r) 中也有提及，这点是之前完全没注意到的；甚至这里摘抄文档时，也没注意。不过，视频中只说了将其转换为元组，但是没说将其转换为 “readonly” 的元组
 
 ```ts
 // Type '"hello"'
