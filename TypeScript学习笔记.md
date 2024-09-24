@@ -5993,6 +5993,8 @@ There’s one more kind of literal type: boolean literals. There are only two bo
 - array literals <font color=fuchsia>**become `readonly` tuples**</font>
 
   > 👀 这个说法，在 [使用元祖生成联合类型【渡一教育】](https://www.bilibili.com/video/BV1VNt3e7E4r) 中也有提及，这点是之前完全没注意到的；甚至这里摘抄文档时，也没注意。不过，视频中只说了将其转换为元组，但是没说将其转换为 “readonly” 的元组
+  >
+  > <img src="https://s2.loli.net/2024/09/24/BEaPfyZHvUoGhpN.png" alt="image-20240924001631007" style="zoom:50%;" />
 
 ```ts
 // Type '"hello"'
