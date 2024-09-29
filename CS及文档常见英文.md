@@ -1923,3 +1923,5 @@
   > Nullish **coalescing** operator
   
 - **intervent** ：干预
+
+- **deception** ：欺骗
