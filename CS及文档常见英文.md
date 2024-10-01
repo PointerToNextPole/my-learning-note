@@ -1933,3 +1933,5 @@
 - **diminish** ：减少
 
 - **veto** ：否决
+
+- **take it with a grain of salt** ：将信将疑
