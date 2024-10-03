@@ -1263,25 +1263,41 @@
 参考自：[wikipedia - Bracket](https://en.wikipedia.org/wiki/Bracket)
 
 - **星号 `*`**：asterisk。在非正式的交流中也会被称为 “star” （比如 [stack overflow - Meaning of a double star (**) in a file path](https://stackoverflow.com/questions/46547540/meaning-of-a-double-star-in-a-file-path) ），不过，在 Google 搜索中 还是要使用 asterisk，star 没有用
+
 - **连接号**：dash，是一种统称。详见：[wikipedia - 连接号](https://zh.wikipedia.org/wiki/%E8%BF%9E%E6%8E%A5%E5%8F%B7)
   - en dash：表示范围
   - em dash：表示预期转折
+  
 - **连字符 `-`**：hyphen。用于连接单词，将不同单词连接变成一个单词。
+
 - **分号 `;`** ：semicolon
+
 - **斜杠**
-  - 正斜杠  `/`：forward slash 👀 其中 w/ 的意思是 with
+  - 正斜杠  `/`：forward slash
+  
+    >  👀 另外，和 `/` 相关的缩写中：w/ 的意思是 with，A/C 是空调
+  
   - 反斜杠  `\ ` ：backslash 
+  
 - **竖杠 `|`** ：一般称为 “Vertical bar”，但是在 CS 中更多称为 “pipe symbol”
+
 - **引号**
   - 反引号 ``	`：backquote
   - 单引号 `'` ：single quote
   - 双引号 `"` ：double quote
+  
 - **下划线 `_`** ：underline，CS 中更倾向使用 **underscore**
+
 - **逗号 `,`** ：comma
+
 - **问号 `?`** ：question mark
+
 - **冒号 `:`** ：colon
+
 - **点号 `.`** ：dot
+
 - **间隔号 `·`** ：interpunct
+
 - **波浪号 `~`** ：tilde
 
 ##### Google 特殊字符搜索方法
