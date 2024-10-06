@@ -1952,4 +1952,4 @@
 
 - **take it with a grain of salt** ：将信将疑
 
-- stance ：立场
+- **stance** ：立场
