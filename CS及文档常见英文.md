@@ -1238,6 +1238,12 @@
 
 - **aggregate** ：聚合
 
+- **idiomatic** ：惯用语的
+
+- **interpreter** ：口译员、解释器
+
+  > Python interpreter
+
 ***
 
 
@@ -1953,3 +1959,13 @@
 - **take it with a grain of salt** ：将信将疑
 
 - **stance** ：立场
+
+- **malice** ：恶意
+
+- **benevolent** ：仁慈的
+
+- **divine** ：神圣的
+
+- **ruthless** ：无情的
+
+  **ruth** ：怜悯，悲哀
