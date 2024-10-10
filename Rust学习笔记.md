@@ -2135,6 +2135,18 @@ error: aborting due to previous error
 
 编译器提示 `greet` 函数需要一个 `String` 类型的字符串，却传入了一个 `&str` 类型的字符串。
 
+
+
+#### 全模式列表
+
+序列只允许用于数字或字符类型，原因是：它们可以连续，<font color=dodgerBlue>同时</font> <font color=fuchsia>编译器在编译期可以检查该序列是否为空</font>，<font color=fuchsia>**字符和数字值是 Rust 中仅有的可以用于判断是否为空的类型**</font>。
+
+> 💡 上面 “空” 的概念没搞懂，毕竟 Rust 中不存在 Null 的概念；问了下 GPT，结果是 `\0`
+>
+> <img src="https://s2.loli.net/2024/10/10/Vl9pOnt8dCW1esf.png" alt="image-20241010000514011" style="zoom:50%;" />
+
+
+
 ## 其他笔记
 
 
