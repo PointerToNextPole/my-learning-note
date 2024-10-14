@@ -1971,3 +1971,5 @@
 - **ruthless** ：无情的
 
   **ruth** ：怜悯，悲哀
+  
+- **groundbreaking** ：开创性的
