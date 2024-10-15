@@ -1973,3 +1973,5 @@
   **ruth** ：怜悯，悲哀
   
 - **groundbreaking** ：开创性的
+
+- **uncharted** ：未知的
