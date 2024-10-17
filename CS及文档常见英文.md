@@ -1975,3 +1975,5 @@
 - **groundbreaking** ：开创性的
 
 - **uncharted** ：未知的
+
+- **intensity** ：强度
