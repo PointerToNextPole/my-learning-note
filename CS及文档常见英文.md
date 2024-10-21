@@ -1977,3 +1977,15 @@
 - **uncharted** ：未知的
 
 - **intensity** ：强度
+
+- **malform** ：畸形
+
+  **malformed code** ：格式错误的代码
+
+- **sophisticated** ：精致的
+
+- **top-notch** ：一流的
+
+- **fatigue** ：疲劳，乏力
+
+- **skitch** ：涂鸦
