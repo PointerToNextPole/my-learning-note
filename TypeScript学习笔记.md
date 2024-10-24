@@ -1697,6 +1697,16 @@ let foo = <string>bar;</string>;
 
 因此，<font color=fuchsia>为了一致性，我们建议你使用 `as foo` 的语法来为类型断言</font>。
 
+> 💡 这的注意的是：在 TSX 中也是可以使用泛型的，`<T>` 的语法同样与 TSX 语法会引发歧义，所以可以使用 `<T,>` 来纠正泛型（转义？）。代码示例如下：
+>
+> ```tsx
+> const fn = <T,>(param: T) => {
+>   console.log(params)
+> }
+> ```
+>
+> 学习自：学习自：[小满zs - react最新教程 - React基础篇(tsx语法全解)](https://www.bilibili.com/video/BV1mcpPeMETt&p=3&t=406)
+
 ##### 类型断言与类型转换
 
 <font color=dodgerBlue>它之所以不被称为「类型转换」</font>，是因为<font color=red>转换通常意味着某种 **运行时** 的支持</font>（👀 这个概念没有听过 ... ）。但是，<font color=fuchsia>类型断言 **纯粹是一个编译时语法**</font>，同时，<font color=red>它也是一种为编译器提供关于如何分析代码的方法</font>。
