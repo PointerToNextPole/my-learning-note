@@ -7724,7 +7724,7 @@ We can also use [`react-intersection-observer`](https://www.npmjs.com/package/re
 >
 > ```react
 > <button onClick={e => {
->   console.log(e); // React event object
+>     console.log(e); // React event object
 > }} />
 > ```
 >

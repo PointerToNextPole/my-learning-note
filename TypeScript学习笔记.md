@@ -1705,6 +1705,10 @@ let foo = <string>bar;</string>;
 > }
 > ```
 >
+> 不过，经过实验发现：通过这种方法依然不能在 tsx 文件中 “纠正断言”
+>
+> <img src="https://s2.loli.net/2024/10/25/nBxur8LmVOtIeEH.png" alt="image-20241025100744069" style="zoom:50%;" />
+>
 > 学习自：学习自：[小满zs - react最新教程 - React基础篇(tsx语法全解)](https://www.bilibili.com/video/BV1mcpPeMETt&p=3&t=406)
 
 ##### 类型断言与类型转换
