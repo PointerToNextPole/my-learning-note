@@ -2056,9 +2056,9 @@ doStuff({ bar: 123, common: '123' });
 
   <font color=LightSeaGreen>在 Java 里面，**拿到了对象的类型就能找到它的类，进一步拿到各种信息**，所以类型系统支持泛型就足够了</font>。但 <font color=FF0000>在 JavaScript 里面，对象可以字面量的方式创建，还可以灵活的增删属性，**拿到对象并不能确定什么，所以要支持对传入的类型参数做进一步的处理**</font>。
 
-  <font color=FF0000 size=4>**对传入的类型参数（泛型）做各种逻辑运算，产生新的类型，这就是类型编程。**</font>
+  <font color=red>**对传入的类型参数（泛型）做各种逻辑运算，产生新的类型，这就是类型编程。**</font>
 
-  比如上面那个 getProps 的函数，类型可以这样写：
+  比如上面那个 `getProps` 的函数，类型可以这样写：
 
   ```ts
   function getPropValue<
@@ -2075,11 +2075,33 @@ doStuff({ bar: 123, common: '123' });
   >
   > 学习自：[TypeScript 类型编程](https://segmentfault.com/a/1190000040247980)
   >
+  > 💡 另外，相当值得注意的是：在很多情况下，在 vscode 中 `keyof MyType`  的类型预览也只是 `keyof MyType` ，<font color=red>**需要加上 `& {}` 才能在预览中见到真正的类型**</font>。示例如下：
+  >
+  > <img src="https://s2.loli.net/2024/10/26/8EI1Qrjv5z2ZcGb.png" alt="image-20241026235154113" style="zoom:50%;" />
+  >
+  > 上面的代码的含义是：取类型中所有属性名字，获得对应字面量类型的联合类型
+  >
+  > 除了上面的用法，还有另一个种用法，虽然看起没什么，但是确实第一次见...
+  >
+  > ```ts
+  > interface Foo {
+  >   propA: number;
+  >   propB: boolean;
+  >   propC: string;
+  > }
+  > 
+  > type PropTypeUnion = Foo[keyof Foo];
+  > ```
+  >
+  > 作用是：取所有属性的类型联合，效果如下：
+  >
+  > <img src="https://s2.loli.net/2024/10/26/OM1AoGE4yhUwdna.png" alt="image-20241026235915983" style="zoom:50%;" />
+  >
   > **官网文档截图**
   >
   > <img src="https://s2.loli.net/2023/03/15/82OxcZy5wQvmUYf.png" alt="image-20230315153748488" style="zoom:45%;" />
-  > 
-  >   文档地址：[TS Doc - Keyof Type Operator](https://www.typescriptlang.org/docs/handbook/2/keyof-types.html)
+  >
+  > 文档地址：[TS Doc - Keyof Type Operator](https://www.typescriptlang.org/docs/handbook/2/keyof-types.html)
   
   <font color=LightSeaGreen>TypeScript 的类型系统就是第三种，支持对类型参数做各种逻辑处理，可以写很复杂的类型逻辑</font>。
 
