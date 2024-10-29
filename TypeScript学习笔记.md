@@ -500,7 +500,7 @@ let tom = buildName('Tom');
 
 **剩余参数**
 
-ES6 中，<font color=FF0000> 可以使用 `...rest` 的方式获取函数中的剩余参数（rest 参数）</font>。items 是一个数组。所以我们可以用数组的类型来定义它：
+ES6 中，<font color=FF0000> 可以使用 `...rest` 的方式获取函数中的剩余参数（ rest 参数）</font>。items 是一个数组。所以我们可以用数组的类型来定义它：
 
 ```ts
 function push(array: any[], ...items: any[]) {
@@ -3932,7 +3932,7 @@ TypeScript 类型系统中有些类型比较特殊：比如 any、never、联合
 
 ##### IsAny
 
-如何判断一个类型是 any 类型呢？要根据它的特性来：**<font color=FF0000>any 类型与任何类型的交叉都是 any</font> ，也就是 `1 & any` 结果是 any**（**注：**有点“粘性” ( sticky ) 的意味？）。所以，可以这样写：
+如何判断一个类型是 any 类型呢？要根据它的特性来：**<font color=FF0000>any 类型与任何类型的交叉都是 any</font> ，也就是 `1 & any` 结果是 any**（👀 有点“粘性” ( sticky ) 的意味？）。所以，可以这样写：
 
 ```typescript
 type IsAny<T> = 'foo' extends ('bar' & T) ? true : false
@@ -3942,7 +3942,7 @@ type IsAny<T> = 'foo' extends ('bar' & T) ? true : false
 
 <img src="https://s2.loli.net/2022/05/04/IjWPzOXD1SAcqkN.png" alt="image-20220504202335587" style="zoom:50%;" />
 
-> 👀 下面 [[#IsNever]] 还提及了为什么 any 不能直接使用 `extends ? :` 去判断（简单来说，会返回 `extends ? :` 设定的 trueVal 和 falseVal 的联合 ( Union) ）
+> 👀 下面 [[#IsNever]] 还提及了为什么 any 不能直接使用 `extends ? :` 去判断（简单来说，会返回 `extends ? :` 设定的 trueVal 和 falseVal 的联合 ( Union ) ）
 
 ##### IsEqual
 
@@ -4018,6 +4018,12 @@ type TestAny<T> = T extends number ? 1 : 2;
 ```
 
 <img src="https://s2.loli.net/2022/05/04/EGy3OoDaPwuBk7Z.png" alt="image-20220504214930961" style="zoom:50%;" />
+
+> 💡 补充
+>
+> <font color=red>any 代表了任何可能的类型</font>，当使用 `any extends` 时，它包含了“**让条件成立的一部分**”，以及“**让条件不成立的一部分**”。
+>
+> 摘自：[重新认识 TypeScript类型系统 # 顶层类型](https://juejin.cn/post/7374614838008774656#heading-18)
 
 联合类型、never、any 在作为条件类型的类型参数时的这些特殊情况，也会在后面的原理篇来解释原因。
 
@@ -5319,11 +5325,11 @@ UnionToIntersection 的实现在 [[#特殊特性要记清#UnionToIntersection]] 
 
 // TODO：关于这个可以看下 [协变和逆变【渡一教育】](https://www.bilibili.com/video/BV1p4421U77L) ，做下笔记
 
-<font color=dodgerBlue>**TypeScript 给 JavaScript 添加了一套静态类型系统，是为了保证类型安全的**</font>；也就是：<font color=FF0000>**保证变量只能赋同类型的值，对象只能访问它有的属性、方法**</font>。比如：<font color=lightSeaGreen>number 类型的值不能赋值给 boolean 类型的变量，Date 类型的对象就不能调用 exec 方法</font>。
+<font color=dodgerBlue>TypeScript 给 JavaScript 添加了一套静态类型系统，是为了保证类型安全的</font>；也就是：<font color=FF0000>保证变量只能赋同类型的值，对象只能访问它有的属性、方法</font>。比如：<font color=lightSeaGreen>number 类型的值不能赋值给 boolean 类型的变量，Date 类型的对象就不能调用 exec 方法</font>。
 
-这是类型检查做的事情，<font color=FF0000>遇到类型安全问题会在编译时报错</font>。但是<font color=FF0000>**这种类型安全的限制也不能太死板，有的时候需要一些变通**，比如子类型是可以赋值给父类型的变量的，可以完全当成父类型来使用，也就是 “型变 ( variant ) ”（类型改变）</font>。
+这是类型检查做的事情，<font color=FF0000>遇到类型安全问题会在编译时报错</font>。但是<font color=FF0000>**这种类型安全的限制也不能太死板，有的时候需要一些变通**</font>，<font color=dodgerBlue>比如</font> <font color=red>**子类型是可以赋值给父类型的变量的**，可以完全当成父类型来使用，也就是 “型变 ( variant ) ”（类型改变）</font>。
 
-**这种 “型变” 分为两种：**<font color=FF0000>一种是 **子类型可以赋值给父类型**，叫做 **协变** ( covariant )</font> ；<font color=FF0000>一种是 **父类型可以赋值给子类型** ，叫做 **逆变** ( contravariant ) </font>。
+<font color=dodgerBlue>**这种 “型变” 分为两种**</font>：<font color=dodgerBlue>一种是</font> <font color=red>**子类型可以赋值给父类型**，叫做 **协变** ( covariant )</font> ；<font color=dodgerBlue>一种是</font> <font color=red>**父类型可以赋值给子类型** ，叫做 **逆变** ( contravariant ) </font>。
 
 > 型变有四种方式：协变、逆变、双变、不变
 >
@@ -5365,7 +5371,7 @@ person = guang
 
 这并不会报错，虽然这俩类型不一样，但是依然是类型安全的。这种 <font color=FF0000>子类型可以赋值给父类型的情况就叫做**「协变」**</font>。
 
-**为什么要支持协变很容易理解：**类型系统支持了父子类型，那如果子类型还不能赋值给父类型，还叫父子类型么（**注：**OOP 的多态？）？所以型变是实现类型父子关系必须的，它在保证类型安全的基础上，增加了类型系统的灵活性。
+**为什么要支持协变很容易理解：**类型系统支持了父子类型，那如果子类型还不能赋值给父类型，还叫父子类型么（👀 OOP 的多态？）？所以型变是实现类型父子关系必须的，它在保证类型安全的基础上，增加了类型系统的灵活性。
 
 #### 逆变 ( contravariant )
 
@@ -5554,13 +5560,13 @@ import "core-js";
 Promise.resolve;
 ```
 
-babel 的 @babel/preset-env 可以根据 targets 的配置来自动引入需要的插件，引入需要用到的 core-js 模块。
+babel 的 `@babel/preset-env` 可以根据 targets 的配置来自动引入需要的插件，引入需要用到的 core-js 模块。
 
 引入方式可以通过 useBuiltIns 参数 来配置：
 
-- **entry** 是在入口引入根据 targets 过滤出的所有需要用的 core-js。
+- **`entry`** 是在入口引入根据 targets 过滤出的所有需要用的 core-js。
 
-- **usage** 则是每个模块按照使用到了哪些来按需引入。
+- **`usage`** 则是每个模块按照使用到了哪些来按需引入。
 
 ```js
 // babel.config.js
@@ -6477,6 +6483,49 @@ User 接口为 {
 
 
 
+#### 装箱类型
+
+> 👀 虽然知道 JS 中存在包装类型，但是确实没想到 TS 中也有；想了下，JS 中存在，那么作为超集 TS 有也是顺理成章的事情了
+
+原始类型是其装箱类型的子类型，比如 <font color=red>**string 类型会是 String 类型的子类型**</font>，同时 <font color=red>String 类型会是 Object 类型的子类型</font>。
+
+<font color=dodgerBlue>看个比较特殊的例子：</font>
+
+```ts
+type Result = String extends {} ? 1 : 2; // 1
+```
+
+<font color=red>**`{}` 是 object 的字面量类型**</font>（👀 这点之前完全没有听过的），<font color=dodgerBlue>为什么 String 会是他的子类型</font>？在 TypeScript 中<font color=red>可以把 String 看作一个普通的对象（继承了 `{}` 这个空对象）</font>，同时有着一些独特的方法，那么在结构化类型系统的比较下，**String 会被认为是** **`{}`** **的子类型**。
+
+从前文可知 `{}` 是 objcet 的子类型，看起来这就构建起了 `string < {} < object` 这个类型链，但实际上 `string extends object` 并不成立：
+
+```ts
+type Result = string extends object ? 1 : 2; // 2
+```
+
+<font color=red>由于结构化类型系统的存在</font>，<font color=dodgerBlue>TypeScript 中存在着一些看着不符合直觉的类型关系</font>：
+
+```ts
+type Result1 = {} extends object ? 1 : 2; // 1
+type Result2 = object extends {} ? 1 : 2; // 1
+
+type Result3 = object extends Object ? 1 : 2; // 1
+type Result4 = Object extends object ? 1 : 2; // 1
+
+type Result5 = Object extends {} ? 1 : 2; // 1
+type Result6 = {} extends Object ? 1 : 2; // 1
+```
+
+- `{} extends object` 和 `{} extends Object` 意味着：`{}` 是 object 和 Object 的字面量类型，是从**类型信息的层面**出发的，即**字面量类型在基础类型之上提供了更详细的类型信息**。
+- `object extends {}` 和 `Object extends {}` 则是从**结构化类型系统的比较**出发的，即 `{}` 作为一个一无所有的空对象，几乎可以被视作是所有类型的基类，万物的起源。
+- 而 `object extends Object` 和 `Object extends object` 这两者的情况就要特殊一些，它们是因为“系统设定”的问题，Object 包含了所有除 Top Type 以外的类型（基础类型、函数类型等），object 包含了所有非原始类型的类型，即数组、对象与函数类型，<font color=lightSeaGreen>**这就导致了你中有我、我中有你的神奇现象**</font>。
+
+<font color=dodgerBlue>结论</font>：只关注从类型信息层面出发部分的话，即 **原始类型 < 原始类型对应的装箱类型 < Object 类型**
+
+学习自：[重新认识 TypeScript类型系统 # 装箱类型](https://juejin.cn/post/7374614838008774656#heading-17)
+
+
+
 #### unknown vs never
 ##### TypeScript 中的 top type、bottom type
 <font color=dodgerBlue>**在类型系统设计中，有两种特别的类型**</font>：
@@ -7256,7 +7305,7 @@ Let us learn more about transform parameters with the help of an example:
 
 ```ts
 function CoolFunc(SomeFunc: (arg: any) => any): ParameterDecorator {
-  return (target: any, propertyKey: any, parameterIndex:any) => {
+  return (target: any, propertyKey: any, parameterIndex: any) => {
     const originalMethod = target[propertyKey];
 
     target[propertyKey] = function (...args: any[]) {

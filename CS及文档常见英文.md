@@ -556,7 +556,9 @@
 
 - **calibrate** ：校准
 
-- **in time** ：及时。 **on time** ：准时
+- **in time** ：及时
+
+   **on time** ：准时
 
 - **triage** ：分类诊断
 
@@ -1991,3 +1993,11 @@
 - **skitch** ：涂鸦
 
 - **slang** ：俚语
+
+- **soundness** ：健全、可靠（性）
+
+  > **A Note on Soundness**
+  >
+  > TypeScript’s type system allows certain operations that can’t be known at compile-time to be safe. When a type system has this property, it is said to not be “sound”. The places where TypeScript allows unsound behavior were carefully considered, and throughout this document we’ll explain where these happen and the motivating scenarios behind them.
+  >
+  > 摘自：[typescript doc - Type Compatibility # A Note on Soundness](https://www.typescriptlang.org/docs/handbook/type-compatibility.html#a-note-on-soundness)
