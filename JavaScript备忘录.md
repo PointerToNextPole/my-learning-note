@@ -17062,15 +17062,15 @@ AbortController 接口表示一个控制器对象，<font color=FF0000>允许你
 
 ##### 构造函数
 
-AbortController.AbortController()：创建一个新的 AbortController 对象实例。
+`AbortController()` ：创建一个新的 AbortController 对象实例。
 
-##### 属性
+##### 实例属性
 
-AbortController.signal <font color=FF0000>只读</font>，返回一个 AbortSignal 对象实例，它可以用来 with/abort 一个 Web(网络)请求。
+`AbortController.signal` ：<font color=FF0000>只读</font>，返回一个 AbortSignal 对象实例，它可以用来 with/abort 一个 Web(网络)请求。
 
-##### 方法
+##### 实例方法
 
-- AbortController.abort()：中止一个尚未完成的 Web（网络）请求。这<font color=FF0000>能够中止 fetch 请求及任何响应体的消费和流</font>
+`AbortController.abort()` ：中止一个尚未完成的 Web（网络）请求。这<font color=FF0000>能够中止 fetch 请求及任何响应体的消费和流</font>
 
 > 当一个请求被终止，它的  readyState 将被置为 XMLHttpRequest.UNSENT (0)，并且请求的 status 置为 0。
 >
@@ -17089,16 +17089,61 @@ AbortController.signal <font color=FF0000>只读</font>，返回一个 AbortSign
 > const signal = ac.signal;
 > 
 > setTimeoutPromise(1000, 'foobar', { signal })
->     .then(console.log)
->     .catch((err) => {
->        if (err.name === 'AbortError')
->          console.log('The timeout was aborted');
->       });
+>  .then(console.log)
+>  .catch((err) => {
+>     if (err.name === 'AbortError')
+>       console.log('The timeout was aborted');
+>    });
 > 
 > ac.abort();
 > ```
 >
 > ⚠️ 2023/9/6 补充：使用 abortController 来清除事件监听这一概念属实是忘记了
+>
+> 💡 也可以看下 [JavaScript 已经强大到什么程度了？ - 骑毛驴的猴哥的回答 - 知乎](
+> https://www.zhihu.com/question/330302506/answer/16201451696) 作为补充
+
+#### AbortSignal
+
+The **`AbortSignal`** interface represents a signal object that allows you to communicate with an asynchronous operation (such as a fetch request) and abort it if required via an `AbortController` object.
+
+```mermaid
+classDiagram
+  EventTarget<|--AbortSignal
+```
+
+##### Instance properties
+
+*Also inherits properties from its parent interface, [`EventTarget`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget).*
+
+- [`AbortSignal.aborted`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/aborted) : Read only, A Boolean that indicates whether the request(s) the signal is communicating with is/are aborted (`true`) or not (`false`).
+- [`AbortSignal.reason`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/reason) : Read only, A JavaScript value providing the abort reason, once the signal has aborted.
+
+##### Static methods
+
+*Also inherits methods from its parent interface, `EventTarget`.*
+
+- [`AbortSignal.abort()`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/abort_static) : Returns an `AbortSignal` instance that is already set as aborted.
+- [`AbortSignal.any()`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/any_static) : Returns an `AbortSignal` that aborts when any of the given abort signals abort.
+- [`AbortSignal.timeout()`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/timeout_static) : Returns an `AbortSignal` instance that will automatically abort after a specified time.
+
+##### Instance methods
+
+*Also inherits methods from its parent interface, [`EventTarget`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget).*
+
+- [`AbortSignal.throwIfAborted()`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/throwIfAborted) : Throws the signal's abort [`reason`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/reason) if the signal has been aborted; otherwise it does nothing.
+
+##### Events
+
+*Also inherits events from its parent interface, `EventTarget`.*
+
+Listen to this event using `addEventListener()` or by assigning an event listener to the `oneventname` property of this interface.
+
+- [`abort`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/abort_event) : Invoked when the asynchronous operations the signal is communicating with is/are aborted. Also available via the `onabort` property.
+
+> 👀 后面还有示例，这里略
+
+摘自：[MDN EN - AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal)
 
 
 
