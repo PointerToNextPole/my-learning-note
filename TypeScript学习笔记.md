@@ -79,7 +79,7 @@ function alertName(): void {
 }
 ```
 
-声明一个 void 类型的变量没有什么用，因为你只能将它赋值为 undefined 和 null（只在 tsconfig中 `--strictNullChecks` 未指定时）：
+声明一个 void 类型的变量没有什么用，因为你只能将它赋值为 undefined 和 null（只在 tsconfig中  `--strictNullChecks` 未指定时）：
 
 ```ts
 let unusable: void = undefined;
@@ -2034,7 +2034,7 @@ doStuff({ bar: 123, common: '123' });
       return a + b;
   }
   
-  add(1,2);
+  add(1, 2);
   add(1.111, 2.2222);
   ```
 
@@ -2085,9 +2085,9 @@ doStuff({ bar: 123, common: '123' });
   >
   > ```ts
   > interface Foo {
-  >   propA: number;
-  >   propB: boolean;
-  >   propC: string;
+  >     propA: number;
+  >     propB: boolean;
+  >     propC: string;
   > }
   > 
   > type PropTypeUnion = Foo[keyof Foo];
@@ -3702,7 +3702,21 @@ type Fibonacci<Num extends number> = FibonacciLoop<[1], [], [], Num>;
 
 > 💡 分布式条件类型在官方文档中也有介绍，也做了笔记，见 [[#Conditional Types#Distributive Conditional Types]]
 
-当 <font color=FF0000>类型参数为联合类型</font>，并且在 <font color=fuchsia>**条件类型**</font> （ 👀 即 `extends ? :` 。另外，这个很重要，下面 [[#IsUnion]] 中会用到这个特性 ）左边直接引用该类型参数的时候：<font color=FF0000>TypeScript 会把 <font size=4>每一个元素单独传入来做类型运算，最后再合并成联合类型</font></font>，这种语法叫做「分布式条件类型」。
+当 <font color=FF0000>类型参数为联合类型</font>，并且在 <font color=fuchsia>**条件类型**</font> （ 👀 即 `extends ? :` 。另外，这个很重要，下面 [[#IsUnion]] 中会用到这个特性 ）左边直接引用该类型参数的时候：<font color=FF0000>TypeScript 会把 **每一个元素单独传入来做类型运算，最后再合并成联合类型**</font>，这种语法叫做「分布式条件类型」。
+
+> 💡 补充
+>
+> > TS 的这种分配条件规则，<font color=dodgerBlue>可以用集合的分配率来很好地解释</font>：$(B\cup C)\cap A = (B\cap A)\cup (C\cap A)$。我们可以把传入的联合类型看成是公式中的 $(B \cup C)$ ，$A$ 为 `extends` 后面的类型，根据分配率扩展后，最终的结果是 `B extends A ? X : Y | C extends A ？X : Y` 。
+> >
+> > <font color=dodgerBlue>如果想要打破 TS 这种默认分配规则</font>，可以使用元组类型将泛型看成一个整体，也就是单独一个集合。
+> >
+> > ```ts
+> > type isTwo<T> = T extends 2 ? true: false;
+> > 
+> > type res3 = isTwo<[1 | 2]>; // false
+> > ```
+> >
+> > 摘自：[从集合论的角度理解 TypeScript # 理解TS类型运算](https://juejin.cn/post/7264549320362934309#heading-8)
 
 比如这样一个联合类型：
 
@@ -3824,9 +3838,9 @@ type IsUnion<A, B = A> =
 
 类型参数 A、B 是待判断的联合类型，B 默认值为 A，也就是同一个类型。
 
-`A extends A` 这段看似没啥意义，主要是为了触发「分布式条件类型」，让 A 的每个类型单独传入。`[B] extends [A]` 这样<font color=FF0000 size=4>**不直接写 B 就可以避免触发「分布式条件类型」**</font>（**注：**这里的避免的原理见 [[#分布式条件类型]] 开头的定义 ），<font color=FF0000>那么 B 就是 整个联合类型</font>。B 是联合类型整体，而 A 是单个类型，自然不成立，而其它类型没有这种特殊处理，A 和 B 都是同一个，怎么判断都成立。
+`A extends A` 这段看似没啥意义，主要是为了触发「分布式条件类型」，让 A 的每个类型单独传入。`[B] extends [A]` 这样 <font color=FF0000>**不直接写 B 就可以避免触发「分布式条件类型」**</font>（**注：**这里的避免的原理见 [[#分布式条件类型]] 开头的定义 ），<font color=FF0000>那么 B 就是 整个联合类型</font>。B 是联合类型整体，而 A 是单个类型，自然不成立，而其它类型没有这种特殊处理，A 和 B 都是同一个，怎么判断都成立。
 
-> 👀 上面最后一句没看懂。不过，经过实验：`'a' extends ['a' | 'b' | 'c'] ? true : false`  结果为 false，而 `['a'] extends ['a' | 'b' | 'c'] ? true : false` 结果为 true。
+> 👀 上面最后一句没看懂。不过，经过实验：`'a' extends ['a' | 'b' | 'c'] ? true : false`  结果为 false，而 `['a'] extends ['a' | 'b' | 'c'] ? true : false` 结果为 true 。
 
 利用这个特点就可以判断出是否是联合类型。
 
@@ -6526,6 +6540,66 @@ type Result6 = {} extends Object ? 1 : 2; // 1
 
 
 
+#### 类型匹配
+
+在 TS 中，<font color=dodgerBlue>定义一个有具体属性的对象类型有三种写法</font>：接口( `interface` )、类型别名( `type` )、对象类型( `let person: { name: string, age: number }` )，<font color=lightSeaGreen>三种写法本质都一样</font>。<font color=red>如果用一个 **字面量** 的值赋值，该值所具有的属性不能多不能少，否则 TS 会报错</font>
+
+```ts
+interface IPerson {
+  name: string;
+  age: number;
+}
+ 
+type TPerson = {
+  name: string;
+  age: number;
+};
+
+const person1: { name: string; age: number } = { name: '1',age: 1, gender: 'male' };
+// error: 'gender' does not exist in type '{ name: string; age: number; }'
+
+const person2: IPerson = { name: '1',age: 1, gender: 'male' }
+// error: 'gender' does not exist in type 'IPerson'
+
+const person3: TPerson = { name: '1',age: 1, gender: 'male' }
+// error: 'gender' does not exist in type 'TPerson'
+```
+
+但是如果用一个变量赋值，该变量的值就不再遵循“不多不少”的原则，而是”只多不少”。
+
+```ts
+// 结构式类型匹配 shape
+const more_person = { name: '1', age: 1, gender: 'male' }
+const m_person1: IPerson = more_person;
+const m_person2: TPerson = more_person;
+const m_person3: { name: string; age: number } = more_person;
+
+const less_person = { name: '1' }
+
+const l_person1: IPerson = less_person;
+// Property 'age' is missing in type '{ name: string; }' but required in type 'IPerson'.
+
+const l_person2: TPerson = less_person;
+// Property 'age' is missing in type '{ name: string; }' but required in type 'TPerson'
+
+const l_person3: { name: string; age: number } = less_person;
+// Property 'age' is missing in type '{ name: string; }' but required in type '{ name: string; age: number; }
+```
+
+这种现象是与 TS 核心特性有关，TS 类型系统做的是 [结构式匹配](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html#structural-type-system) ，这意味着做类型检查的时候，只要有相同的`shape`，就能匹配成功。光一句定义以及简单的几个示例真的很难理解 TS 的结构式匹配，让我们来用集合论理解试试。
+
+我们来分析上面代码中蕴含的集合间的关系。`more_person`的类型是 `{ name: string; age: number; gender: string }`，该类型是 `IPerson`、`TPerson` 以及 `{ name: string; age: number }` 的子集，所以`more_person` 可以赋值给 `m_person1` ，`m_person2` ，`m_person3` 。
+
+`less_person` 的类型是 `{ name: string }`，该类型是 `IPerson`、`TPerson` 以及 `{ name: string; age: number }` 的超集，所以 `less_person` 无法赋值给 `l_person1`，`l_person2`，`l_person3`。
+
+<font color=dodgerBlue>**为什么每增加一个属性，类型集合的空间就缩小，可赋值的元素就越少？**</font>
+
+这是因为 <font color=fuchsia>每增加一个属性，该类型可以匹配的值必然得包含这个属性，这样就使得符合该 `shape` 的值越来越少</font>。我们用**极限**的思想可以进一步理解，如果一个接口类型没有任何属性，也就是 `{}` 类型，<font color=lightSeaGreen>根据 “只多不少” 原则，所有的对象结构都可以赋值给这个类型</font>；<font color=red>如果一个接口类型包含了所有可能的属性，那可以和这个类型匹配的对象，必然要包含所有这些可能的属性，不能少一个，无法多一个</font>。可以看到，这两个极限条件下对应的集合，前者包含了后者，说明在可比的情况下，属性越少，集合越大，元素越多。
+
+摘自：[从集合论的角度理解 TypeScript # 理解结构式类型匹配](https://juejin.cn/post/7264549320362934309#heading-7)
+
+
+
 #### unknown vs never
 ##### TypeScript 中的 top type、bottom type
 <font color=dodgerBlue>**在类型系统设计中，有两种特别的类型**</font>：
@@ -6541,6 +6615,24 @@ type Result6 = {} extends Object ? 1 : 2; // 1
 ##### unknown
 
 参考 [[#TS 类型结构关系图]] ：unknown 是所有类型的“通用父类型” ( Top type )。
+
+> 💡 补充
+>
+> > 下表给出了 [TS官方文档](https://www.typescriptlang.org/docs/handbook/type-compatibility.html#any-unknown-object-void-undefined-null-and-never-assignability) 中给出的常见类型的赋值特性（assignability）。
+> >
+> > |           | any  | unknown | object | void | undefined | null | never |
+> > | --------- | ---- | ------- | ------ | ---- | --------- | ---- | ----- |
+> > | any       |      | ✓       | ✓      | ✓    | ✓         | ✓    | ✕     |
+> > | unknown   | ✓    |         | ✕      | ✕    | ✕         | ✕    | ✕     |
+> > | object    | ✓    | ✓       |        | ✕    | ✕         | ✕    | ✕     |
+> > | void      | ✓    | ✓       | ✕      |      | ✕         | ✕    | ✕     |
+> > | undefined | ✓    | ✓       | ✓      | ✓    |           | ✓    | ✕     |
+> > | null      | ✓    | ✓       | ✓      | ✓    | ✓         |      | ✕     |
+> > | never     | ✓    | ✓       | ✓      | ✓    | ✓         | ✓    |       |
+> >
+> > 从上面这张表中，我们还可以看出 `unknown` 类型可以被所有类型赋值，但是除了 `any` 外，不能被任何类型赋值，所以 <font color=red>**`unknown` 类型是一个全集**</font>，与数学上的所有自然数集合 `N` 类似。
+> >
+> > 摘自：[从集合论的角度理解 TypeScript # 理解`never`和`unknown`](https://juejin.cn/post/7264549320362934309#heading-4)
 
 <font color=fuchsia>unknown 是安全版本的 any 类型</font>。unknown 调用特定类型的方法时，代码会飘红（因为不确定）；而 any 不会飘红（使用 any ，意味着放弃类型检查了，因为它不是用来描述具体类型的）。如下示例：
 

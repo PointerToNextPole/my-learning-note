@@ -1764,7 +1764,7 @@
 
 - **strain out** ：过滤掉
 
-- **toss out** ：扔掉
+- **toss out** ：扔掉，摆脱
 
 - **denote** ：表示
 
@@ -2003,3 +2003,5 @@
   > 摘自：[typescript doc - Type Compatibility # A Note on Soundness](https://www.typescriptlang.org/docs/handbook/type-compatibility.html#a-note-on-soundness)
   
 - **colloquial** ：口语的
+
+- **knob** ：旋钮
