@@ -2085,9 +2085,9 @@ doStuff({ bar: 123, common: '123' });
   >
   > ```ts
   > interface Foo {
-  >     propA: number;
-  >     propB: boolean;
-  >     propC: string;
+  >      propA: number;
+  >      propB: boolean;
+  >      propC: string;
   > }
   > 
   > type PropTypeUnion = Foo[keyof Foo];
@@ -6495,6 +6495,10 @@ User 接口为 {
 
 摘自：[TypeScript真香系列——接口篇](https://juejin.cn/post/7038447161813499912)
 
+> You should prefer `interface`. Use `type` when you need specific features.
+>
+> 摘自：[ts doc - TypeScript for JavaScript Programmers # Defining Types](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html#defining-types)
+
 
 
 #### 装箱类型
@@ -7251,7 +7255,7 @@ export { foo, bar }
 
 #### tsconfig.json
 
-> 💡 ts 官方有 tsconfig.json 各种配置选项的介绍，见：[Intro to the TSConfig Reference](https://www.typescriptlang.org/tsconfig)
+> 💡 ts 官方有 tsconfig.json 各种配置选项的介绍，见：[ts doc - Intro to the TSConfig Reference](https://www.typescriptlang.org/tsconfig)
 
 
 
