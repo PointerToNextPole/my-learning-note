@@ -2005,3 +2005,9 @@
 - **colloquial** ：口语的
 
 - **knob** ：旋钮
+
+- **absurd** ：荒谬的
+
+- **gymnastics** ：体操
+
+  > type gymnastics
