@@ -685,7 +685,11 @@
   > A more arcane, but very ***ergonomic*** way to set a compiler setting is via compiler flag which are comments starting with `// @` .`
   > 摘自：[TS play handbook - Twoslash Annotations](https://www.typescriptlang.org/play?#handbook-14)
 
-- **clause** ：条款
+- **clause** ：**子句**，条款
+
+   > You can use an `implements` clause to check that a class satisfies a particular `interface`.
+   >
+   > 摘自：[TS doc - Classes # `implements` Clauses](https://www.typescriptlang.org/docs/handbook/2/classes.html#implements-clauses)
 
 - **hypothesis** ：假设
 
@@ -1247,6 +1251,15 @@
   > Python interpreter
   
 - **wildcard** ：通配符
+
+- **soundness** ：健全、可靠（性）
+
+  > **A Note on Soundness**
+  >
+  > TypeScript’s type system allows certain operations that can’t be known at compile-time to be safe. When a type system has this property, it is said to not be “sound”. The places where TypeScript allows unsound behavior were carefully considered, and throughout this document we’ll explain where these happen and the motivating scenarios behind them.
+  >
+  > 摘自：[typescript doc - Type Compatibility # A Note on Soundness](https://www.typescriptlang.org/docs/handbook/type-compatibility.html#a-note-on-soundness)
+
 
 ***
 
@@ -1994,14 +2007,6 @@
 
 - **slang** ：俚语
 
-- **soundness** ：健全、可靠（性）
-
-  > **A Note on Soundness**
-  >
-  > TypeScript’s type system allows certain operations that can’t be known at compile-time to be safe. When a type system has this property, it is said to not be “sound”. The places where TypeScript allows unsound behavior were carefully considered, and throughout this document we’ll explain where these happen and the motivating scenarios behind them.
-  >
-  > 摘自：[typescript doc - Type Compatibility # A Note on Soundness](https://www.typescriptlang.org/docs/handbook/type-compatibility.html#a-note-on-soundness)
-  
 - **colloquial** ：口语的
 
 - **knob** ：旋钮
@@ -2011,3 +2016,11 @@
 - **gymnastics** ：体操
 
   > type gymnastics
+  
+- **holistic** ：固定的、整体的
+
+  > Most core web frameworks do not come with an opinionated way of fetching or updating data in a **holistic** way.
+  >
+  > 摘自：[TanStack Query doc - overview # Motivation](https://tanstack.com/query/latest/docs/framework/react/overview#motivation)
+  
+- **heritage** ：遗产

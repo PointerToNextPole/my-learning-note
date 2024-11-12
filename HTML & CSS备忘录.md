@@ -9159,7 +9159,7 @@ ARIA 是一组特殊的易用性属性，可以添加到任意标签上，尤其
 
 ## CSS 样式 实现经验
 
-**实现 自定义的复选框：**
+#### 实现 自定义的复选框
 
 ```html
 <input class="switch" type="checkbox" id="connect" />
@@ -9199,7 +9199,7 @@ ARIA 是一组特殊的易用性属性，可以添加到任意标签上，尤其
 </style>
 ```
 
-效果如下：
+##### 效果如下
 
 <img src="https://i.loli.net/2021/09/22/WQNPyUenGYwxcvu.png" style="zoom:50%;" />
 
@@ -9208,9 +9208,101 @@ ARIA 是一组特殊的易用性属性，可以添加到任意标签上，尤其
 
 
 
-**给 SVG 图片添加颜色**
+#### 给 SVG 图片添加颜色
 
 参考：https://codepen.io/chriscoyier/pen/lcDBd
+
+
+
+#### 纯 CSS 实现优惠券透明圆形镂空打孔效果
+
+学习自：[纯 CSS 实现优惠券透明圆形镂空打孔效果](https://www.lervor.com/archives/72/) ，不过感觉原文中代码
+
+```html
+<body>
+  <div class="coupon">
+    <div class="coupon-top"></div>
+    <div class="coupon-middle">
+      <div></div>
+    </div>
+    <div class="coupon-bottom"></div>
+  </div>
+</body>
+```
+
+```css
+html {
+  --gap-radius: 30;
+  --cross-fill-radius: 300;
+  --gap-add-cross-fill: calc(var(--gap-radius) + var(--cross-fill-radius));
+}
+
+body {
+  background: #939393;
+}
+
+.coupon {
+  width: 590px;
+  height: 370px;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.coupon-top,
+.coupon-bottom {
+  background: #FFFFFF;
+}
+
+.coupon-top {
+  flex: 1;
+}
+
+.coupon-bottom {
+  height: 120px;
+  padding: 0 38px;
+}
+
+.coupon-middle {
+  height: 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.coupon-middle div {
+  /* 中间虚线 */
+  position: absolute;
+  left: 36px;
+  right: 36px;
+  top: 29px;
+  border-top: 1px dashed #E6E6E6;
+  z-index: 9;
+}
+
+
+.coupon-middle::before,
+.coupon-middle::after {
+  content: '';
+  border: calc(var(--cross-fill-radius) * 1px) solid #FFFFFF;
+  position: absolute;
+  width: calc(var(--gap-radius) * 2px);
+  height: calc(var(--gap-radius) * 2px);
+  border-radius: 50%;
+  top: 50%;
+  margin-top: calc(var(--gap-add-cross-fill) * -1px);
+}
+
+.coupon-middle::before {
+  left: calc(var(--gap-add-cross-fill) * -1px);
+}
+
+.coupon-middle::after {
+  right: calc(var(--gap-add-cross-fill) * -1px);
+}
+```
+
+
 
 
 
