@@ -2085,9 +2085,9 @@ doStuff({ bar: 123, common: '123' });
   >
   > ```ts
   > interface Foo {
-  >      propA: number;
-  >      propB: boolean;
-  >      propC: string;
+  >   propA: number;
+  >   propB: boolean;
+  >   propC: string;
   > }
   > 
   > type PropTypeUnion = Foo[keyof Foo];
@@ -2096,6 +2096,16 @@ doStuff({ bar: 123, common: '123' });
   > 作用是：取所有属性的类型联合，效果如下：
   >
   > <img src="https://s2.loli.net/2024/10/26/OM1AoGE4yhUwdna.png" alt="image-20241026235915983" style="zoom:50%;" />
+  >
+  > > ⚠️ 24/11/17 补充：这个场景在工作中遇到了，但是一点印象都没有...
+  > >
+  > > 另外，对上面的写法做一个扩展：
+  > >
+  > > ```ts
+  > > type GetKeysUnion<T> = T[keyof T]
+  > > ```
+  > >
+  > > 美中不足的是：这里没有做 T 的类型约束
   >
   > **官网文档截图**
   >
@@ -2193,11 +2203,11 @@ obj.name = 'guang';
 obj.age = 18;
 ```
 
-总之，<font color=FF0000 size=4>**接口可以用来描述函数、构造器、索引类型（对象、class、数组）等复合类型**</font>。
+总之，<font color=red>**接口可以用来描述函数、构造器、索引类型（对象、class、数组）等复合类型**</font>。
 
 ##### 枚举
 
-枚举 ( Enum) 是一系列值的复合：
+枚举 ( Enum ) 是一系列值的复合：
 
 ```typescript
 enum Transpiler {
@@ -5423,17 +5433,17 @@ printName = (person) => {
 
 但是，<font color=FF0000>**在 ts2.x 之前** 支持这种赋值，也就是父类型可以赋值给子类型，子类型可以赋值给父类型，**既逆变又协变，叫做「双向协变」**</font>。
 
-但是<font color=FF0000>**这明显是有问题的，不能保证类型安全**</font>；所以之后 ts 加了一个编译选项 "strictFunctionTypes" ，设置为 true 就只支持函数参数的逆变，设置为 false 则是双向协变。
+但是<font color=FF0000>**这明显是有问题的，不能保证类型安全**</font>；所以之后 ts 加了一个编译选项 `"strictFunctionTypes"` ，设置为 true 就只支持函数参数的逆变，设置为 false 则是双向协变。
 
 <img src="https://s2.loli.net/2022/05/06/Td1s2iyHBvKeCac.png" alt="image-20220506152355755" style="zoom:50%;" />
 
-**注：**上面的截图是 [TS Playground](https://www.typescriptlang.org/play) 中的设置。
+> 👀 上面的截图是 [TS Playground](https://www.typescriptlang.org/play) 中的设置。
 
 我们把 strictFunctionTypes 关掉之后，就会发现两种赋值都可以了：
 
 <img src="https://s2.loli.net/2022/05/06/r1uc8yL62ZBoqWt.png" alt="image-20220506151142094" style="zoom:48%;" />
 
-这样 ( "strictFunctionTypes" 为 false ) 就支持函数参数的双向协变，类型检查不会报错，但不能严格保证类型安全。开启（"strictFunctionTypes" 为 true ）之后，函数参数就只支持逆变，子类型赋值给父类型就会报错（如上，报错的图）
+这样 ( `"strictFunctionTypes"` 为 false ) 就支持函数参数的双向协变，类型检查不会报错，但不能严格保证类型安全。开启（ `"strictFunctionTypes"` 为 true ）之后，函数参数就只支持逆变，子类型赋值给父类型就会报错（如上，报错的图）
 
 #### 逆变性质有什么用
 
@@ -5522,7 +5532,7 @@ typescript compiler 的编译流程是这样的：
 
 <font color=FF0000>类型检查通过后，就会用 **Emmiter** 把 AST 打印成目标代码，**生成类型声明文件 d.ts** ，还有 **sourcemap**</font>。
 
-> sourcemap 的作用是<mark>映射源码和目标代码的代码位置</mark>，这样调试的时候打断点可以定位到相应的源码，线上报错的时候也能根据 sourcemap 定位到源码报错的位置。
+> sourcemap 的作用是<font color=lightSeaGreen>映射源码和目标代码的代码位置</font>，这样调试的时候打断点可以定位到相应的源码，线上报错的时候也能根据 sourcemap 定位到源码报错的位置。
 
 tsc 生成的 AST 可以用 [astexplorer.net](https://link.juejin.cn/?target=https%3A%2F%2Fastexplorer.net%2F) 可视化的查看
 
@@ -5598,7 +5608,7 @@ module.exports = {
 }
 ```
 
-此外，babel 会注入一些 helper 代码，可以通过 @babel/plugin-transform-runtime 插件抽离出来，从 @babel/runtime 包引入。（ transform runtime 顾名思义就是 transform to runtime，转换成从 runtime 包引入 helper 代码的方式）。
+此外，babel 会注入一些 helper 代码，可以通过 `@babel/plugin-transform-runtime` 插件抽离出来，从 `@babel/runtime` 包引入。（ transform runtime 顾名思义就是 transform to runtime，转换成从 runtime 包引入 helper 代码的方式）。
 
 所以一般 babel 都会这么配：
 
@@ -5620,7 +5630,7 @@ module.exports = {
 
 **总结：**Babel 和 TSC 生成代码的区别
 
-**TSC 生成的代码没有做 polyfill 的处理，<font color=FF0000>需要全量引入 core-js</font> ；而 <font color=FF0000>Babel 则可以用 @babel/preset-env 根据 targets 的配置来 <font size=4>按需引入</font> core-js 的部分模块</font>，所以<font color=FF0000>生成的代码体积更小</font>。**
+**TSC 生成的代码没有做 polyfill 的处理，<font color=FF0000>需要全量引入 core-js</font> ；而 <font color=FF0000>Babel 则可以用 `@babel/preset-env` 根据 targets 的配置来 <font size=4>按需引入</font> core-js 的部分模块</font>，所以<font color=FF0000>生成的代码体积更小</font>。**
 
 看起来用 Babel 编译 TS 代码全是优点？也不全是：<font color=FF0000 size=4>**Babel 有一些 TS 语法并不支持**</font>
 
@@ -5632,7 +5642,45 @@ module.exports = {
 
 ##### const enum 不支持
 
-TS 中 const enum 编译之后是直接替换用到 enum 的地方为对应的值。<font color=FF0000>const enum 是在编译期间把 enum 的引用替换成具体的值，需要解析类型信息</font>；而 <font color=FF0000>**Babel 并不会解析**，所以**它会把 const enum 转成 enum 来处理**</font>：
+TS 中 const enum 编译之后是直接替换用到 enum 的地方为对应的值。<font color=FF0000>const enum 是在编译期间把 enum 的引用替换成具体的值，需要解析类型信息</font>；而 <font color=FF0000>**Babel 并不会解析**，所以**它会把 const enum 转成 enum 来处理**</font>。
+
+> 💡 这里提到了 `const enum` ，这是之前完全没有介绍的，这里做下介绍，以及和 `enum` 的区别：
+>
+> > `enum` 在编译后会生成额外的 js 的的代码，例如：
+> >
+> > ```ts
+> > enum LogLevel {
+> >   ERROR,
+> >   WARN,
+> >   INFO,
+> >   DEBUG,
+> > }
+> > 
+> > console.log(LogLevel.ERROR)
+> > ```
+> >
+> > 经过 `tsc` 编译，生成如下 js ：
+> >
+> > ```ts
+> > var LogLevel;
+> > (function (LogLevel) {
+> >     LogLevel[LogLevel["ERROR"] = 0] = "ERROR";
+> >     LogLevel[LogLevel["WARN"] = 1] = "WARN";
+> >     LogLevel[LogLevel["INFO"] = 2] = "INFO";
+> >     LogLevel[LogLevel["DEBUG"] = 3] = "DEBUG";
+> > })(LogLevel || (LogLevel = {}));
+> > console.log(LogLevel.ERROR);
+> > ```
+> >
+> > 如果改成 `const enum` ，经过 `tsc` 编译，则不会有 `LogLevel` 的定义与 “Reverse mappings”；代码如下：
+> >
+> > ```js
+> > console.log(0 /* LogLevel.ERROR */);
+> > ```
+> >
+> > 可以看到：编译后，enum 的代码完全没有了，对 js 的侵入没有了。
+> >
+> > 摘自：[Typescript有什么冷门但是很好用的特性？ - 稳定的强酸的回答 - 知乎](https://www.zhihu.com/question/276172039/answer/3068655031)
 
 ##### namespace 部分支持：不支持 namespace 的合并，不支持导出非 const 的值
 
