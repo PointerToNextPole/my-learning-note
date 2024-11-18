@@ -2079,15 +2079,21 @@ doStuff({ bar: 123, common: '123' });
   >
   > <img src="https://s2.loli.net/2024/10/26/8EI1Qrjv5z2ZcGb.png" alt="image-20241026235154113" style="zoom:50%;" />
   >
-  > 上面的代码的含义是：取类型中所有属性名字，获得对应字面量类型的联合类型
+  > 上面的代码的含义是：取类型中所有属性名字，获得对应字面量类型的联合类型。
+  >
+  > > ⚠️ 24/11/18 补充：在工作中发现把 `keyof` 的语法忘得一干二净，以至于在有对应场景的时候，完全想不起来。另外，对上面的内容做一下扩展：
+  > >
+  > > ```ts
+  > > type GetKeysUnion<T extends Record<string, any>> = keyof T & {}
+  > > ```
   >
   > 除了上面的用法，还有另一个种用法，虽然看起没什么，但是确实第一次见...
   >
   > ```ts
   > interface Foo {
-  >   propA: number;
-  >   propB: boolean;
-  >   propC: string;
+  >  propA: number;
+  >  propB: boolean;
+  >  propC: string;
   > }
   > 
   > type PropTypeUnion = Foo[keyof Foo];
@@ -2097,15 +2103,11 @@ doStuff({ bar: 123, common: '123' });
   >
   > <img src="https://s2.loli.net/2024/10/26/OM1AoGE4yhUwdna.png" alt="image-20241026235915983" style="zoom:50%;" />
   >
-  > > ⚠️ 24/11/17 补充：这个场景在工作中遇到了，但是一点印象都没有...
-  > >
-  > > 另外，对上面的写法做一个扩展：
-  > >
-  > > ```ts
-  > > type GetKeysUnion<T> = T[keyof T]
-  > > ```
-  > >
-  > > 美中不足的是：这里没有做 T 的类型约束
+  > 对上面的写法做一个扩展：
+  >
+  > ```ts
+  > type GetKeysUnion<T extends Record<string, any>> = T[keyof T]
+  > ```
   >
   > **官网文档截图**
   >
@@ -6036,6 +6038,95 @@ To help with string manipulation, <font color=dodgerBlue>TypeScript includes a s
 
 
 
+#### The `satisfies` Operator
+
+<font color=dodgerBlue>TypeScript developers are often faced with a dilemma</font>: we <font color=red>want to ensure that some expression *matches* some type</font>, <font color=dodgerBlue>**but also**</font> <font color=red>want to keep the *most specific* type of that expression **for inference purposes**</font>.
+
+```ts
+// Each property can be a string or an RGB tuple.
+const palette = {
+    red: [255, 0, 0],
+    green: "#00ff00",
+    bleu: [0, 0, 255] // 👀 这里没有报错，但下面会
+//  ^^^^ sacrebleu - we've made a typo!
+};
+// We want to be able to use string methods on 'green'...
+const greenNormalized = palette.green.toUpperCase();
+```
+
+Notice that we’ve written `bleu`, whereas we probably should have written `blue`. We could try to catch that `bleu` typo by using a type annotation on `palette`, but we’d lose the information about each property.
+
+```ts
+type Colors = "red" | "green" | "blue";
+type RGB = [red: number, green: number, blue: number];
+const palette: Record<Colors, string | RGB> = {
+    red: [255, 0, 0],
+    green: "#00ff00",
+    bleu: [0, 0, 255]
+//  ~~~~ The typo is **now correctly detected**
+};
+/*
+  But we now **have an undesirable error** here - 'palette.green' "could" be of type RGB and property 'toUpperCase' does not exist on type 'string | RGB'.
+*/
+const greenNormalized = palette.green.toUpperCase();
+```
+
+<img src="https://s2.loli.net/2024/11/18/OxtDZceholkUafL.png" alt="image-20241118235500784" style="zoom:50%;" />
+
+The new `satisfies` operator lets us validate that the type of an expression matches some type, without changing the resulting type of that expression. As an example, we could use `satisfies` to validate that all the properties of `palette` are compatible with `string | number[]`:
+
+```ts
+type Colors = "red" | "green" | "blue";
+type RGB = [red: number, green: number, blue: number];
+const palette = {
+    red: [255, 0, 0],
+    green: "#00ff00",
+    bleu: [0, 0, 255]
+//  ~~~~ The typo is now caught!
+} satisfies Record<Colors, string | RGB>;
+// toUpperCase() method is still accessible!
+const greenNormalized = palette.green.toUpperCase();
+```
+
+<img src="https://s2.loli.net/2024/11/18/8eQ6WXtga7mNdUO.png" alt="image-20241118235708428" style="zoom:50%;" />
+
+`satisfies` can be used to catch lots of possible errors. For example, we could ensure that an object has *all* the keys of some type, but no more:
+
+```ts
+type Colors = "red" | "green" | "blue";
+// Ensure that we have exactly the keys from 'Colors'.
+const favoriteColors = {
+    "red": "yes",
+    "green": false,
+    "blue": "kinda",
+    "platypus": false
+//  ~~~~~~~~~~ error - "platypus" was never listed in 'Colors'.
+} satisfies Record<Colors, unknown>;
+// All the information about the 'red', 'green', and 'blue' properties are retained.
+const g: boolean = favoriteColors.green;
+```
+
+Maybe we don’t care about if the property names match up somehow, but we do care about the types of each property. In that case, we can also ensure that all of an object’s property values conform to some type.
+
+```ts
+type RGB = [red: number, green: number, blue: number];
+const palette = {
+    red: [255, 0, 0],
+    green: "#00ff00",
+    blue: [0, 0]
+    //    ~~~~~~ error!
+} satisfies Record<string, string | RGB>;
+// Information about each property is still maintained.
+const redComponent = palette.red.at(0);
+const greenNormalized = palette.green.toUpperCase();
+```
+
+摘自：[TS doc - handbook - release-notes - ts4.9 # The `satisfies` Operator](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator)
+
+
+
+
+
 #### literal types 字面量类型
 
 In addition to the general types `string` and `number` , <font color=red>we can refer to *specific* strings and numbers in type positions</font>.
@@ -6211,7 +6302,7 @@ if (false) {
 > console.logg('hello')
 > ```
 
-A `// @ts-ignore` comment <font color=fuchsia>suppresses **all errors**</font> that originate on the <font color=fuchsia>**following line**</font>（ 👀 注：接下来的**一行**，即无法作用于代码块）. It is <font color=red>recommended practice to **have the remainder of the comment following `@ts-ignore` explain which error is being suppressed**</font> （译：建议实践中在 `@ts-ignore ` 之后添加相关提示，解释忽略了什么错误。👀 如上示例代码）.
+A `// @ts-ignore` comment <font color=fuchsia>suppresses **all errors**</font> that originate on the <font color=fuchsia>**following line**</font>（ 👀 接下来的**一行**，即无法作用于代码块）. It is <font color=red>recommended practice to **have the remainder of the comment following `@ts-ignore` explain which error is being suppressed**</font> （译：建议实践中在 `@ts-ignore ` 之后添加相关提示，解释忽略了什么错误。👀 如上示例代码）.
 
 Please note that this comment <font color=red>only suppresses the error reporting</font>（译：仅会隐藏报错）, and we <font color=red>recommend you use this comments *very sparingly*</font>.
 
@@ -7307,7 +7398,7 @@ export { foo, bar }
 
 
 
-##### files、include 和 exclude
+##### `files`、`include` 和 `exclude`
 files、include 和 exclude 都是用于指定（设置）需要被编译的文件的：其中 files 是直接指定文件路径，include 和 exclude 是一对，用匹配模式 包含和排除一些文件。
 
 > 💡 以下是 new bing 的回答：
@@ -7321,6 +7412,10 @@ files、include 和 exclude 都是用于指定（设置）需要被编译的文�
 > 💡 以下是 new bing 的解答：
 
 <img src="https://s2.loli.net/2023/03/14/1HutaoNlv8PzJQA.png" alt="image-20230314223200401" style="zoom:45%;" />
+
+##### `paths`
+
+和 [[Vue2 学习笔记#在 `vue.config.js` 中实现 `resolve.alias`]] 中的内容没太大区别，这里不做赘述；另外，可以看下 [Say Goodbye to ‘../../../..’ in your TypeScript Imports](https://decembersoft.com/posts/say-goodbye-to-relative-paths-in-typescript-imports/)
 
 
 

@@ -6250,7 +6250,7 @@ Vue CLI 是对 webpack 的封装，可以通过 `vue inspect` 命令，输出对
 
 
 
-#### 在 vue.config.js 中实现 `resolve.alias`
+#### 在 `vue.config.js` 中实现 `resolve.alias`
 
 在 vue cli 中默认是实现了 `@` 是 `/src` 的别名，如果想要自己定义别名，配置如下：
 
@@ -6294,7 +6294,7 @@ module.exports = defineConfig({
 
 ##### jsconfig.json
 
-使用 @vue/cli 5 创建项目，会发现：多了一个 jsconfig.json 的文件（ ⚠️ 注意不是 tsconfig.json ）
+使用 @vue/cli 5 创建项目，会发现：多了一个 `jsconfig.json` 的文件（ ⚠️ 注意不是 `tsconfig.json` ）
 
 > ##### What is jsconfig.json?
 >
@@ -6308,8 +6308,8 @@ module.exports = defineConfig({
 >
 > Visual Studio Code's JavaScript support can run in two different modes:
 >
-> - **File Scope - <mark style="background: Aquamarine">no jsconfig.json</mark>**: <font color=fuchsia>In this mode, JavaScript files opened in Visual Studio Code are **treated as independent units**</font>. <font color=red>As long as a file `a.js` doesn't reference a file `b.ts` explicitly</font> (either using `import` or **CommonJS** [modules](http://www.commonjs.org/specs/modules/1.0) ), <font color=fuchsia>there is **no common project context**</font>（共同的项目上下文） <font color=fuchsia>**between the two files**</font>.
-> - **Explicit Project - <mark style="background: lightpink">with jsconfig.json</mark>**: <font color=fuchsia size=4>**A JavaScript project is defined via a `jsconfig.json` file**</font>. The presence of such a file in a directory indicates that the directory is the root of a JavaScript project. <font color=fuchsia>The file itself can optionally **list the files belonging to the project**, **the files to be excluded from the project**, as well as compiler options</font> (see below).
+> - **File Scope - <font color=lightSeaGreen>no jsconfig.json</font>**: <font color=fuchsia>In this mode, JavaScript files opened in Visual Studio Code are **treated as independent units**</font>. <font color=red>As long as a file `a.js` doesn't reference a file `b.ts` explicitly</font> (either using `import` or **CommonJS** [modules](http://www.commonjs.org/specs/modules/1.0) ), <font color=fuchsia>there is **no common project context**</font>（共同的项目上下文） <font color=fuchsia>**between the two files**</font>.
+> - **Explicit Project - <font color=lightSeaGreen>with jsconfig.json</font>**: <font color=fuchsia size=4>**A JavaScript project is defined via a `jsconfig.json` file**</font>. The presence of such a file in a directory indicates that the directory is the root of a JavaScript project. <font color=fuchsia>The file itself can optionally **list the files belonging to the project**, **the files to be excluded from the project**, as well as compiler options</font> (see below).
 >
 > The JavaScript experience is improved when you have a `jsconfig.json` file in your workspace that defines the project context. For this reason, we offer a hint to create a `jsconfig.json` file when you open a JavaScript file in a fresh workspace.
 >
