@@ -6054,6 +6054,8 @@ const palette = {
 const greenNormalized = palette.green.toUpperCase();
 ```
 
+<img src="https://s2.loli.net/2024/11/19/LQsEZSOuxz9gGaA.png" alt="image-20241119000038787" style="zoom:50%;" />
+
 Notice that we’ve written `bleu`, whereas we probably should have written `blue`. We could try to catch that `bleu` typo by using a type annotation on `palette`, but we’d lose the information about each property.
 
 ```ts
@@ -6073,7 +6075,7 @@ const greenNormalized = palette.green.toUpperCase();
 
 <img src="https://s2.loli.net/2024/11/18/OxtDZceholkUafL.png" alt="image-20241118235500784" style="zoom:50%;" />
 
-The new `satisfies` operator lets us validate that the type of an expression matches some type, without changing the resulting type of that expression. As an example, we could use `satisfies` to validate that all the properties of `palette` are compatible with `string | number[]`:
+<font color=dodgerBlue>The new `satisfies` operator</font> <font color=red>**lets us validate that the type of an expression matches some type**</font>, <font color=dodgerBlue>without changing the resulting type of that expression</font>. As an example, we could use `satisfies` to validate that all the properties of `palette` are compatible with `string | number[]` :
 
 ```ts
 type Colors = "red" | "green" | "blue";
@@ -6090,7 +6092,7 @@ const greenNormalized = palette.green.toUpperCase();
 
 <img src="https://s2.loli.net/2024/11/18/8eQ6WXtga7mNdUO.png" alt="image-20241118235708428" style="zoom:50%;" />
 
-`satisfies` can be used to catch lots of possible errors. For example, we could ensure that an object has *all* the keys of some type, but no more:
+<font color=red>`satisfies` can be used to catch lots of possible errors</font>. For example, we could ensure that an object has *all* the keys of some type, but no more:
 
 ```ts
 type Colors = "red" | "green" | "blue";
@@ -6121,9 +6123,9 @@ const redComponent = palette.red.at(0);
 const greenNormalized = palette.green.toUpperCase();
 ```
 
+<img src="https://s2.loli.net/2024/11/19/qa5CXf1jdSzoYOG.png" alt="image-20241119003334374" style="zoom:50%;" />
+
 摘自：[TS doc - handbook - release-notes - ts4.9 # The `satisfies` Operator](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator)
-
-
 
 
 

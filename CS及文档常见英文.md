@@ -723,7 +723,7 @@
 
    > **Self contained:** KaTeX has no dependencies and can easily be bundled with your website resources.
    >
-   > 摘自：[GitHub - KaTex - readme](https://github.com/KaTeX/KaTeX)
+   > 摘自：[GitHub - KaTex - README](https://github.com/KaTeX/KaTeX)
    >
    > <img src="https://s2.loli.net/2024/03/31/MpZmh753flQEIdB.png" alt="image-20240331172014784" style="zoom:50%;" />
 
@@ -1102,7 +1102,7 @@
 
   > Discover our [list of modules](https://nuxt.com/modules) to supercharge your Nuxt project, created by the Nuxt team and community.
   >
-  > 摘自：[Nuxt Github repo - readme # Modules](https://github.com/nuxt/nuxt#modules)
+  > 摘自：[Nuxt Github repo - README # Modules](https://github.com/nuxt/nuxt#modules)
   
 - **clockwise** ：顺时针的
 
@@ -1206,7 +1206,7 @@
 
   > HotKeys.js is an input capture library with some very special features, it is easy to pick up and use, has a reasonable **footprint** ([~6kB](https://bundlephobia.com/result?p=hotkeys-js)) (gzipped: **`2.8kB`**), and has no dependencies. It should not interfere with any JavaScript libraries or frameworks.
   >
-  > 摘自：[Github - Hotkeys # readme](https://github.com/jaywcjlove/hotkeys-js)
+  > 摘自：[Github - Hotkeys # README](https://github.com/jaywcjlove/hotkeys-js)
   
 - **infix** ：中缀
 
@@ -1216,13 +1216,13 @@
 
   > DuckDB supports arbitrary and nested correlated subqueries, window functions, **collations**, complex types (arrays, structs), and more.
   >
-  > 摘自：[duckdb github repo - readme](https://github.com/duckdb/duckdb)
+  > 摘自：[duckdb github repo - README](https://github.com/duckdb/duckdb)
   
 - **cat's pyjamas** ：令人赞叹的人或物
 
   > Requires Node 8 or above, because async and await are the **cat's pyjamas**.
   >
-  > 摘自：[GitHub - degit - readme](https://github.com/Rich-Harris/degit)
+  > 摘自：[GitHub - degit - README](https://github.com/Rich-Harris/degit)
 
   <img src="https://s2.loli.net/2024/05/24/Bf8hC6dLDzoM94T.png" alt="image-20240524133441772" style="zoom:50%;" />
   
@@ -1259,6 +1259,14 @@
   > TypeScript’s type system allows certain operations that can’t be known at compile-time to be safe. When a type system has this property, it is said to not be “sound”. The places where TypeScript allows unsound behavior were carefully considered, and throughout this document we’ll explain where these happen and the motivating scenarios behind them.
   >
   > 摘自：[typescript doc - Type Compatibility # A Note on Soundness](https://www.typescriptlang.org/docs/handbook/type-compatibility.html#a-note-on-soundness)
+  
+- **on-prem** ：本地
+
+  > The examples here use Llama locally, in the cloud, and **on-prem**.
+  >
+  > 摘自：[GitHub - llama-recipes - README](https://github.com/meta-llama/llama-recipes)
+  >
+  > <img src="https://s2.loli.net/2024/11/19/D97RW3tUYXmAcNZ.png" alt="image-20241119094059569" style="zoom:50%;" />
 
 
 ***
@@ -1499,7 +1507,7 @@
 
   > Developers and Open Source authors now have a massive amount of services offering free tiers, but it can be hard to find them all to make informed decisions.
   >
-  > 摘自：[GitHub - free-for-dev - readme](https://github.com/ripienaar/free-for-dev)
+  > 摘自：[GitHub - free-for-dev - README](https://github.com/ripienaar/free-for-dev)
 
 - **reserve** ：v. 保留，留存，储备；n. 保留
 
@@ -1516,6 +1524,10 @@
 - **suffice** ：足够，足以
 
 - **converse** ：adj. 相反的，逆的 vi. 谈话
+
+- **conversion** ：转换
+
+  > 👀 convert 的名词形式
 
 - **legible** ：清晰的，清澈的
 
@@ -1729,13 +1741,13 @@
 
   > We might run into a **monopoly** and **stagnation** situation, as we had with Internet Explorer 6. Please use this setting with caution.
   >
-  > 摘自：[GitHub - browserslist - readme](https://github.com/browserslist/browserslist)
+  > 摘自：[GitHub - browserslist - README](https://github.com/browserslist/browserslist)
 
 - **market share** ：市场份额，市场占有率
 
   > Chinese QQ Browsers has more **market share** than Firefox and desktop Safari combined.
   >
-  > 摘自：[GitHub - browserslist - readme # Best Practices](https://github.com/browserslist/browserslist?tab=readme-ov-file#best-practices)
+  > 摘自：[GitHub - browserslist - README # Best Practices](https://github.com/browserslist/browserslist?tab=README-ov-file#best-practices)
 
 - **depict** ：描述
 
@@ -1917,7 +1929,7 @@
 
   > Metadata-producing decorators (**nee.** "Annotations") need to be generally composable with mutating decorators.
   >
-  > 摘自：[GitHub - reflect-metadata - readme](https://github.com/rbuckton/reflect-metadata)
+  > 摘自：[GitHub - reflect-metadata - README](https://github.com/rbuckton/reflect-metadata)
   >
   > <img src="https://s2.loli.net/2024/07/04/sVglmCRcKNI64FW.png" alt="image-20240704164136762" style="zoom:50%;" />
   
@@ -1925,7 +1937,7 @@
 
   > You may wish to **sanitize** user input instead of testing for whitespace, see [transform](https://github.com/yiminghe/async-validator#transform) for an example that would allow you to strip whitespace.
   >
-  > 摘自：[GitHub - async-validator - readme # whitespace](https://github.com/yiminghe/async-validator#whitespace)
+  > 摘自：[GitHub - async-validator - README # whitespace](https://github.com/yiminghe/async-validator#whitespace)
   
 - **cardinality** ：基数
 
@@ -1941,19 +1953,19 @@
 
   > Oxc maintains its own AST and parser, which is by far the fastest and most **conformant** JavaScript and TypeScript (including JSX and TSX) parser written in Rust.
   >
-  > 摘自：[GitHub - Oxc readme](https://github.com/oxc-project/oxc)
+  > 摘自：[GitHub - Oxc README](https://github.com/oxc-project/oxc)
 
 - **abundance** ：丰富
 
   > While many existing JavaScript tools rely on [estree](https://github.com/estree/estree) as their AST specification, a notable drawback is its **abundance** of ambiguous nodes.
   >
-  > 摘自：[GitHub - Oxc readme](https://github.com/oxc-project/oxc)
+  > 摘自：[GitHub - Oxc README](https://github.com/oxc-project/oxc)
 
 - **ambiguity** ：模棱两可
 
   > This **ambiguity** often leads to confusion during development with estree.
   >
-  > 摘自：[GitHub - Oxc readme](https://github.com/oxc-project/oxc)
+  > 摘自：[GitHub - Oxc README](https://github.com/oxc-project/oxc)
   
 - **perceptions** ：感知
 
@@ -2024,3 +2036,9 @@
   > 摘自：[TanStack Query doc - overview # Motivation](https://tanstack.com/query/latest/docs/framework/react/overview#motivation)
   
 - **heritage** ：遗产
+
+- **candid** ：坦率的、率直的
+
+- **hatchle** ：孵化
+
+- **reconcile** ：调和
