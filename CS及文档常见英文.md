@@ -2042,3 +2042,5 @@
 - **hatchle** ：孵化
 
 - **reconcile** ：调和
+
+- **identical** ：完全相同的
