@@ -20,6 +20,130 @@
 
 
 
+#### Chrome DevTools 小功能集锦
+
+##### 定位到源码
+
+想知道某个请求是从哪里发出的，可以打开 Network 面板，在每个网络请求的 initiator 部分可以看到发请求代码的调用栈，点击可以快速定位到对应代码。
+
+<img src="https://s2.loli.net/2024/11/26/iyLWnzqHcowtkYA.png" style="zoom:40%;" />
+
+##### 元素定位到创建的源码
+
+想知道某个元素的创建流程，可以通过 Elements 面板选中某个元素，点击 Stack Trace，就会展示出元素创建流程的调用栈；<font color=red>这可以帮你理清前端框架的运行流程</font>
+
+<img src="https://s2.loli.net/2024/11/26/ouI6daQw2XWxfsE.png" alt="img" style="zoom:40%;" />
+
+<font color=dodgerBlue>这个功能是实验性的，需要手动开启</font>：在 settings 的 expriments 功能里，勾选 “Capture node creation stacks”
+
+<img src="https://s2.loli.net/2024/11/26/duBH8fEm7CvyNhW.png" alt="img" style="zoom:50%;" />
+
+##### group by folder
+
+<font color=dodgerBlue>网页加载的文件 **默认是按照域名和目录组织的**</font>，找文件时一层层找起来比较麻烦。可以切换为平铺的，会按照 js、css、图片的顺序列出来，找某个文件就容易多了：
+
+<img src="https://s2.loli.net/2024/11/26/bJnNV341EHL8sAG.png" alt="img" style="zoom:45%;" />
+
+##### Network 自定义展示列
+
+Network 是可以修改展示的列的
+
+<img src="https://s2.loli.net/2024/11/26/vZlEABOVCxe9PD1.png" alt="img" style="zoom:45%;" />
+
+除此以外，还可以自定义展示的响应 header：
+
+<img src="https://s2.loli.net/2024/11/26/bCM3fDqdJxe5Yz2.png" style="zoom:45%;" />
+
+<img src="https://s2.loli.net/2024/11/26/QkzJ8KOWXc7A2Sp.png" alt="img" style="zoom:50%;" />
+
+比较常用的有 Cache-Control ，可以快速查看每个文件的缓存策略：
+
+<img src="https://s2.loli.net/2024/11/26/LFWgPnk79lUoRJ1.png" style="zoom:50%;" />
+
+##### 代码手动关联 sourcemap
+
+sources 面板可以右键点击 “add soruce map”，输入 sourcemap 的 url 就可以关联上 sourcemap，<font color=red>当调试 **线上代码** 的时候可以用这种方式关联源码</font>。
+
+<img src="https://s2.loli.net/2024/11/26/YxzecUKpBVfDLau.png" style="zoom:45%;" />
+
+##### filter 筛选器筛选内容
+
+> 💡 虽然这里在说 Network 面板，但是这里的部分规则对于 Console 也是适用的，比如 url
+
+<font color=dodgerBlue>输入 **`mime-type:`**</font>（👀 注意冒号），<font color=lightSeaGreen>**Chrome DevTools 就会列出当前网页的请求的所有 mime type**</font>，选择某一种，就会过滤出那种 mime type 的请求。
+
+比如过滤 mp4 请求：
+
+<img src="https://s2.loli.net/2024/11/26/WKdH29uVPgiFCEO.png" style="zoom:45%;" />
+
+过滤 webp 请求：
+
+<img src="https://s2.loli.net/2024/11/26/EgCSGlwThDB2HNJ.png" style="zoom:45%;" />
+
+或者<font color=red>不根据 mime-type，根据资源的大致分类来过滤</font>：
+
+输入 `resource-type:`，会展示出所有的资源分类，包括 document、stylesheet、image 等：
+
+<img src="https://s2.loli.net/2024/11/26/5RPIOiYeBTgnzLG.png" style="zoom:50%;" />
+
+其实这就是 Network 的这部分：
+
+<img src="https://s2.loli.net/2024/11/26/SLp5U3rK8nhmHCo.png" style="zoom:50%;" />
+
+值得注意的是：<font color=red>上面的选项按钮是可以通过 **按住 command 键实现多选** 的</font>
+
+<font color=dodgerBlue>除了资源类型外，**还可以根据状态码过滤**：</font>
+
+<img src="https://s2.loli.net/2024/11/26/xOv3FMKHYLNTwGi.png" style="zoom:50%;" />
+
+<font color=red>**状态码 0 代表被删除或取消的请求**</font>，网络请求是可以被取消的，这种就可以通过状态码 0 来过滤。
+
+此外还可以<font color=dodgerBlue>**根据资源的大小来过滤**</font>：
+
+通过 larger-than 指定 100、300k、2M 等大小的限制，就可以过滤出大小大于这个值的请求。
+
+<img src="https://s2.loli.net/2024/11/26/hvWyAbHP1g36eEX.png" style="zoom:50%;" />
+
+还可以根据请求方式，是 GET、POST 等来过滤：
+
+<img src="https://s2.loli.net/2024/11/26/bqmnFfa3TP7gD5N.png" style="zoom:50%;" />
+
+根据是否包含某个响应 header 来过滤：
+
+<img src="https://s2.loli.net/2024/11/26/WpRPigr6zOsCFxB.png" alt="img" style="zoom:50%;" />
+
+`has-response-header:Set-Cookie` 过滤出来的就是有设置 cookie 的响应的请求
+
+`has-response-header:access-control-allow-origin` 过滤出来的就是支持跨域的请求
+
+根据<font color=dodgerBlue>**是否包含某个 cookie 来过滤**</font>：
+
+<img src="https://s2.loli.net/2024/11/26/uV4grCZAO3oM85U.png" style="zoom:50%;" />
+
+##### 常用的过滤器主要有这些
+
+- has-response-header：过滤响应包含某个 header 的请求
+- method：根据 GET、POST 等请求方式过滤请求
+- domain: 根据域名过滤
+- status-code：过滤响应码是 xxx 的请求，比如 404、500 等
+- larger-than：过滤大小超过多少的请求，比如 100k，1M
+- mime-type：过滤某种 mime 类型的请求，比如 png、mp4、json、html 等
+- is：过滤某种状态的请求，比如 from cache 从缓存拿的，比如 running 还在运行的
+- resource-type：根据请求分类来过滤，比如 document 文档请求，stylesheet 样式请求、fetch 请求，xhr 请求，preflight 预检请求
+- cookie-name：过滤带有某个名字的 cookie 的请求
+
+当然，这些不需要记，输入一个 `-` 就会提示所有的过滤器：
+
+<img src="https://s2.loli.net/2024/11/26/QOWDcgeoXfFTHaV.png" style="zoom:50%;" />
+
+但是<font color=red>这个减号之后要去掉，它**是非的意思**</font>，这和右边的 invert 选项功能一样。
+
+> 👀 辅助记忆：`git invert`
+
+而且，<font color=red>**这些过滤器都可以组合，只要中间加个空格就行**</font>。
+
+
+
 ## devTools 使用
 
 
