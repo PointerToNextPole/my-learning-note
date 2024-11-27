@@ -2003,7 +2003,7 @@ doStuff({ bar: 123, common: '123' });
 
 <font color=FF0000 size=4>**类型系统**</font> 不止 TypeScript 有，别的语言 Java、C++ 等都有，<font color=FF0000>为什么 TypeScript 的类型编程被叫做「类型体操」，而其他语言没有呢？</font>
 
-<font color=FF0000>TypeScript 给 JavaScript 增加了一套静态类型系统，**通过 TS Compiler 编译为 JS**</font> （**注：**即 TSC ），<font color=FF0000 size=4>**编译的过程做类型检查**</font>。它并没有改变 JavaScript 的语法，只是在 JS 的基础上添加了类型语法，所以被叫做 JavaScript 的超集。
+<font color=FF0000>TypeScript 给 JavaScript 增加了一套静态类型系统，**通过 TS Compiler 编译为 JS**</font> （ 👀 即 TSC ），<font color=FF0000 size=4>**编译的过程做类型检查**</font>。它并没有改变 JavaScript 的语法，只是在 JS 的基础上添加了类型语法，所以被叫做 JavaScript 的超集。
 
 ##### 类型系统的分类
 
@@ -2025,7 +2025,7 @@ doStuff({ bar: 123, common: '123' });
 
   这个问题的解决思路很容易想到：<font color=FF0000>如果 **类型能传参数** 就好了，传入 int 就是整数加法，传入 double 就是浮点数加法</font>。所以，就有了第二种类型系统。
 
-- **<font color=FF0000>支持泛型</font>的类型系统**：泛型的英文是 Generic Type，通用的类型；它可以代表任何一种类型，也叫做<font color=FF0000 size=4>**「类型参数」**</font>（**注：**这个说法下面有更多提到）
+- **<font color=FF0000>支持泛型</font>的类型系统**：泛型的英文是 Generic Type，通用的类型；它可以代表任何一种类型，也叫做<font color=FF0000 size=4>**「类型参数」**</font>（👀 这个说法下面有更多提到）
 
   它给类型系统增加了一些灵活性，在整体比较固定，部分变量的类型有变化的情况下，可以减少很多重复代码。比如上面的 add 函数，有了泛型之后就可以这样写：
 
@@ -2091,9 +2091,9 @@ doStuff({ bar: 123, common: '123' });
   >
   > ```ts
   > interface Foo {
-  >  propA: number;
-  >  propB: boolean;
-  >  propC: string;
+  >   propA: number;
+  >   propB: boolean;
+  >   propC: string;
   > }
   > 
   > type PropTypeUnion = Foo[keyof Foo];
@@ -2124,6 +2124,12 @@ doStuff({ bar: 123, common: '123' });
 “对类型参数的编程” 是 TypeScript 类型系统最强大的部分，可以实现各种复杂的类型计算逻辑，是它的优点。但同时也被认为是它的缺点，因为除了业务逻辑外还要写很多类型逻辑。不过，我倒是觉得这种复杂度是不可避免的，因为 JS 本身足够灵活，要准确定义类型那类型系统必然也要设计的足够灵活。
 
 <font color=FF0000>是不是感觉 TypeScript 类型系统挺复杂的？确实，不然大家也不会把 TS 的类型编程戏称为「**类型体操**」了</font>。
+
+> ##### 💡 补充
+>
+> > TypeScript 的类型系统乍一看挺唬人的，东西贼多，但是你往深了看，其实最主要就是<font color=red>在标注一段代码在运行时的行为，然后让一段代码推导另一段代码</font>。
+> >
+> > 摘自：[TypeScript 的类型系统是否太过复杂？ - Hugo的回答 - 知乎](https://www.zhihu.com/question/348443486/answer/2949821107)
 
 
 

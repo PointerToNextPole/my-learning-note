@@ -32,23 +32,23 @@
 
 想知道某个元素的创建流程，可以通过 Elements 面板选中某个元素，点击 Stack Trace，就会展示出元素创建流程的调用栈；<font color=red>这可以帮你理清前端框架的运行流程</font>
 
-<img src="https://s2.loli.net/2024/11/26/ouI6daQw2XWxfsE.png" alt="img" style="zoom:40%;" />
+<img src="https://s2.loli.net/2024/11/26/ouI6daQw2XWxfsE.png" style="zoom:40%;" />
 
 <font color=dodgerBlue>这个功能是实验性的，需要手动开启</font>：在 settings 的 expriments 功能里，勾选 “Capture node creation stacks”
 
-<img src="https://s2.loli.net/2024/11/26/duBH8fEm7CvyNhW.png" alt="img" style="zoom:50%;" />
+<img src="https://s2.loli.net/2024/11/26/duBH8fEm7CvyNhW.png" style="zoom:50%;" />
 
 ##### group by folder
 
 <font color=dodgerBlue>网页加载的文件 **默认是按照域名和目录组织的**</font>，找文件时一层层找起来比较麻烦。可以切换为平铺的，会按照 js、css、图片的顺序列出来，找某个文件就容易多了：
 
-<img src="https://s2.loli.net/2024/11/26/bJnNV341EHL8sAG.png" alt="img" style="zoom:45%;" />
+<img src="https://s2.loli.net/2024/11/26/bJnNV341EHL8sAG.png" style="zoom:45%;" />
 
 ##### Network 自定义展示列
 
 Network 是可以修改展示的列的
 
-<img src="https://s2.loli.net/2024/11/26/vZlEABOVCxe9PD1.png" alt="img" style="zoom:45%;" />
+<img src="https://s2.loli.net/2024/11/26/vZlEABOVCxe9PD1.png" style="zoom:45%;" />
 
 除此以外，还可以自定义展示的响应 header：
 
@@ -104,6 +104,14 @@ sources 面板可以右键点击 “add soruce map”，输入 sourcemap 的 url
 
 <img src="https://s2.loli.net/2024/11/26/hvWyAbHP1g36eEX.png" style="zoom:50%;" />
 
+> 👀 这里 100 的默认单位是 字节 bytes
+>
+> <img src="https://s2.loli.net/2024/11/27/IOrbHFuD4MBYvpE.png" alt="image-20241127001712015" style="zoom:48%;" />
+>
+> 另外，没有类似 smaller-than 的选项
+>
+> <img src="https://s2.loli.net/2024/11/27/TqGlhYHs9uL5wXx.png" alt="image-20241127002009335" style="zoom:48%;" />
+
 还可以根据请求方式，是 GET、POST 等来过滤：
 
 <img src="https://s2.loli.net/2024/11/26/bqmnFfa3TP7gD5N.png" style="zoom:50%;" />
@@ -141,6 +149,36 @@ sources 面板可以右键点击 “add soruce map”，输入 sourcemap 的 url
 > 👀 辅助记忆：`git invert`
 
 而且，<font color=red>**这些过滤器都可以组合，只要中间加个空格就行**</font>。
+
+> ##### 💡 补充
+>
+> 除了上面所说，还有一个 More filters 的选项，其中 “Hide extension URLs” 的选项，感觉不错
+>
+> <img src="https://s2.loli.net/2024/11/27/WRrUmBMiLo6wGyV.png" alt="image-20241127001221545" style="zoom:50%;" />
+
+##### 这些过滤器不支持根据内容过滤
+
+确实，过滤器不支持这个，但是可以自己搜：
+
+<img src="https://s2.loli.net/2024/11/27/J8wEpOzBceb6gTo.png" style="zoom:50%;" />
+
+##### remove event listeners
+
+Element 面板选中元素可以看到这个元素和它的父元素的所有事件监听器：
+
+<img src="https://s2.loli.net/2024/11/27/WCXymhda15SeH7R.png" style="zoom:45%;" />
+
+可以手动 remove。
+
+比如你想看下拉菜单的样式，但是鼠标一移开就消失了
+
+<img src="https://s2.loli.net/2024/11/27/BXOJD64VKbZpFqy.png" alt="image-20241127091708371" style="zoom:50%;" />
+
+这时候你可以删掉这个按钮的 mouseleave 事件的监听器：
+
+<img src="https://s2.loli.net/2024/11/27/4pwjTbiQDm7aCcl.png" alt="image-20241127091940616" style="zoom:50%;" />
+
+这样移开鼠标也不会消失了。
 
 
 
@@ -229,7 +267,7 @@ This function also supports a second parameter, <font color=fuchsia>`startNode`<
 
 > ⚠️ Note : Press `Shift` + `Enter` in the **Console** to <font color=red>start a new line without running the script</font>.
 >
-> 👀 注：这条不重要，但是有点实用。
+> 👀 这条不重要，但是有点实用。
 
 ##### XPath
 
@@ -429,7 +467,7 @@ queryObjects(Constructor)
 
 摘自：[MS Edge - Dev Tools Guide Chromium - Console tool utility functions and selectors](https://docs.microsoft.com/en-us/microsoft-edge/devtools-guide-chromium/console/utilities)
 
-> 👀 注：另外，也可以参考 [Chrome Developers - Console Utilities API reference](https://developer.chrome.com/docs/devtools/console/utilities/) ，因为 MS Edge 的有一个总结的表格，所以摘抄的 MS Edge 的文档。
+> 👀 另外，也可以参考 [Chrome Developers - Console Utilities API reference](https://developer.chrome.com/docs/devtools/console/utilities/) ，因为 MS Edge 的有一个总结的表格，所以摘抄的 MS Edge 的文档。
 
 ##### Copy
 
@@ -475,13 +513,13 @@ console.log({height})
 
 `console.log()` 的正确使用方式，当然是放置在代码中希望获取信息的位置；但我们也可以使用它深入了解自己无法访问或变更的代码。<font color=fuchsia>Live Expressions 就是一种无需变更代码即可记录信息的好办法</font>。<font color=red>它们能够以惊人的速度记录不断变化的值，但又不会给 Console 带来太大压力、拖慢运行速度</font>。
 
-> 👀 注：具体使用参见 [Chrome Developments - Watch JavaScript values in real-time with Live Expressions](https://developer.chrome.com/docs/devtools/console/live-expressions/)
+> 👀 具体使用参见 [Chrome Developments - Watch JavaScript values in real-time with Live Expressions](https://developer.chrome.com/docs/devtools/console/live-expressions/)
 >
 > <img src="https://s2.loli.net/2022/08/27/5QLiXdD7vseaEH2.png" alt="Typing document.activeElement into the Live Expression text box." style="zoom:30%;" />
 
 Logpoints 则是一种特殊的断点。我们可以在开发者工具的 Sources tool 中右键点击 JavaScript 中的任意一行并设置 logpoint。系统会提示我们输入想要记录表达式，之后即可在该代码行运行时通过 console 获取它的值。所以从技术上讲，我们完全可以在 web 的任意位置上插入 `console.log()` 。
 
-> 👀 注：具体使用参见 [Chrome Developments - What's New In DevTools (Chrome 73) # Logpoints](https://developer.chrome.com/blog/new-in-devtools-73/#logpoints)
+> 👀 具体使用参见 [Chrome Developments - What's New In DevTools (Chrome 73) # Logpoints](https://developer.chrome.com/blog/new-in-devtools-73/#logpoints)
 >
 > <img src="https://s2.loli.net/2022/08/27/CrJMBcVseOSY3KN.png" alt="Adding a Logpoint" style="zoom:33%;" />
 

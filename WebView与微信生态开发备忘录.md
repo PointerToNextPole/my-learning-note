@@ -160,13 +160,44 @@ import wx from 'weixin-js-sdk'
 | 路由方式   | 触发时机                                                     | 路由前页面 | 路由后页面         |
 | :--------- | :----------------------------------------------------------- | :--------- | :----------------- |
 | 初始化     | 小程序打开的第一个页面                                       |            | onLoad, onShow     |
-| 打开新页面 | 调用 API [wx.navigateTo](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.navigateTo.html) 使用组件 [`<navigator open-type="navigateTo"/>`](https://developers.weixin.qq.com/miniprogram/dev/component/navigator.html) | onHide     | onLoad, onShow     |
-| 页面重定向 | 调用 API [wx.redirectTo](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.redirectTo.html) 使用组件 [`<navigator open-type="redirectTo"/>`](https://developers.weixin.qq.com/miniprogram/dev/component/navigator.html) | onUnload   | onLoad, onShow     |
-| 页面返回   | 调用 API [wx.navigateBack](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.navigateBack.html) 使用组件[`<navigator open-type="navigateBack">`](https://developers.weixin.qq.com/miniprogram/dev/component/navigator.html) 用户按左上角返回按钮 | onUnload   | onShow             |
-| Tab 切换   | 调用 API [wx.switchTab](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.switchTab.html) 使用组件 [`<navigator open-type="switchTab"/>`](https://developers.weixin.qq.com/miniprogram/dev/component/navigator.html) 用户切换 Tab |            | 各种情况请参考下表 |
-| 重启动     | 调用 API [wx.reLaunch](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.reLaunch.html) 使用组件 [`<navigator open-type="reLaunch"/>`](https://developers.weixin.qq.com/miniprogram/dev/component/navigator.html) | onUnload   | onLoad, onShow     |
+| 打开新页面 | 调用 API `wx.navigateTo` 使用组件 `<navigator open-type="navigateTo"/>` | onHide     | onLoad, onShow     |
+| 页面重定向 | 调用 API `wx.redirectTo` 使用组件 `<navigator open-type="redirectTo"/>` | onUnload   | onLoad, onShow     |
+| 页面返回   | 调用 API `wx.navigateBack` 使用组件`<navigator open-type="navigateBack">` 用户按左上角返回按钮 | onUnload   | onShow             |
+| Tab 切换   | 调用 API [wx.switchTab](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.switchTab.html) 使用组件 `<navigator open-type="switchTab"/>` 用户切换 Tab |            | 各种情况请参考下表 |
+| 重启动     | 调用 API `wx.reLaunch` 使用组件 `<navigator open-type="reLaunch"/>` | onUnload   | onLoad, onShow     |
 
 摘自：[微信官方文档 - 小程序 - 框架接口 / 页面 / 页面路由](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/route.html)
+
+
+
+#### 导航栏 API
+
+##### `wx.setNavigationBarTitle(Object object)`
+
+###### 功能描述
+
+动态设置当前页面的标题
+
+###### 参数
+
+`Object object`
+
+| 属性     | 类型     | 默认值 | 必填 | 说明                                             |
+| :------- | :------- | :----- | :--- | :----------------------------------------------- |
+| title    | string   |        | 是   | 页面标题                                         |
+| success  | function |        | 否   | 接口调用成功的回调函数                           |
+| fail     | function |        | 否   | 接口调用失败的回调函数                           |
+| complete | function |        | 否   | 接口调用结束的回调函数（调用成功、失败都会执行） |
+
+###### 示例代码
+
+```js
+wx.setNavigationBarTitle({
+  title: '当前页面'
+})
+```
+
+摘自：[微信官方文档 - 小程序 - API - 导航栏 - `wx.setNavigationBarTitle`](https://developers.weixin.qq.com/miniprogram/dev/api/ui/navigation-bar/wx.setNavigationBarTitle.html)
 
 
 
@@ -209,11 +240,11 @@ vConsole.destroy();
 
 ##### 其他替代品
 
-背景：在公司的 iOS 12 系统的 iPhone 6S 测试机上使用 vconsole 时，发现 Network 无法良好的工作，访问接口的请求没有展示出（可能是 CDN 安装的原因？👀 事后似乎是找到了原因，见 [[#vConsole 问题与解决]] ），感觉不对劲；便搜索 vconsole 的替代品，找到了 [eruda](https://github.com/liriliri/eruda) ，最后确实 eruda 是正常的。
+背景：在公司的 iOS 12 系统的 iPhone 6S 测试机上使用 VConsole 时，发现 Network 无法良好的工作，访问接口的请求没有展示出（可能是 CDN 安装的原因？👀 事后似乎是找到了原因，见 [[#VConsole 问题与解决]] ），感觉不对劲；便搜索 VConsole 的替代品，找到了 [eruda](https://github.com/liriliri/eruda) ，最后确实 eruda 是正常的。
 
 类似的还有：[weinre](http://people.apache.org/~pmuellr/weinre/) ⚠️ 相当有名，但是废弃了... ，[spy-debugger](https://github.com/wuchangming/spy-debugger)
 
-##### vConsole 问题与解决
+##### VConsole 问题与解决
 
 在微信小程序中使用 web-view 组件时，由于无法在开发者工具中看见接口请求，所以需要使用 vConsole；却发现两个月前还可以的 vconsole 始终无法展示 log 和 network 的内容，虽然代码逻辑确实是执行了；也试了 eruda，还是不行。结果发现，cdn 引入 vconsole 的代码放在 `<body>` 下面了；把代码放在 `<head>` 中，就有效果了。
 
@@ -349,9 +380,9 @@ async onImgAfterRead(event) {
 
 ### 问题与解决方法
 
-##### ios端微信h5页面上下滑动时卡顿、页面缺失
+##### iOS 端微信 h5 页面上下滑动时卡顿、页面缺失
 
-**问题详情描述：**在ios端，上下滑动页面时，如果页面高度超出了一屏，就会出现明显的卡顿，页面有部分内容显示不全的情况，例如下图，右图是正常页面，边是ios上下滑动后，卡顿导致如左图下面部分丢失。
+**问题详情描述：**在 iOS 端，上下滑动页面时，如果页面高度超出了一屏，就会出现明显的卡顿，页面有部分内容显示不全的情况，例如下图，右图是正常页面，边是 iOS 上下滑动后，卡顿导致如左图下面部分丢失。
 
 <img src="https://s2.loli.net/2022/07/15/f1GU59VgKhwxJnW.webp" alt="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/8/6/16c649f7c602c727~tplv-t2oaga2asx-zoom-in-crop-mark:3024:0:0:0.awebp" style="zoom:30%;" />
 
@@ -362,7 +393,7 @@ Safari 对于 `overflow-scrolling` 用了原生控件来实现。对于有 `-web
 **解决办法：**只需要在公共样式加入下面这行代码
 
 ```css
-*{
+* {
   -webkit-overflow-scrolling: touch;
 }
 ```
@@ -381,10 +412,10 @@ Safari 对于 `overflow-scrolling` 用了原生控件来实现。对于有 `-web
 changefocus() {
   let u = navigator.userAgent, app = navigator.appVersion;
   let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1;
-  if(isAndroid){
+  if (isAndroid){
     setTimeout(function() {
-     document.activeElement.scrollIntoViewIfNeeded();
-     document.activeElement.scrollIntoView();
+      document.activeElement.scrollIntoViewIfNeeded();
+      document.activeElement.scrollIntoView();
     }, 500);       
   }
 },
