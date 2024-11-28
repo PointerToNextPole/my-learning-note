@@ -465,6 +465,7 @@
 - **deviate** ：偏离。一般搭配：deviate from
 
 - **canonical** ：权威性的。比较常见的用在 `<link rel="canonical">` 和 CNAME record ( Canonical Name Record )
+   **canonialization** ：规范化
 
 - **typo** ：打字错误
 
