@@ -300,9 +300,9 @@ private static final int $var1$ = $var2$ //$var1$和$var2$都是占位符，对�
 
 ![](https://s1.ax1x.com/2020/06/25/NDdSHI.jpg)
 
-### 补充：
+### 补充
 
-#### Mac键盘符号和修饰键说明
+##### Mac 键盘符号和修饰键说明
 
 -  `⌘` Command
 - `⇧` Shift
@@ -323,7 +323,7 @@ private static final int $var1$ = $var2$ //$var1$和$var2$都是占位符，对�
 - `⇤` 左制表符（Shift+Tab）
 - `⎋` Escape (Esc)
 
-#### 一、Editing（编辑）
+##### Editing（编辑）
 
 - `⌃Space` 基本的代码补全（补全任何类、方法、变量）
 - `⌃⇧Space` 智能代码补全（过滤器方法列表和变量的预期类型）
@@ -365,7 +365,7 @@ private static final int $var1$ = $var2$ //$var1$和$var2$都是占位符，对�
 - `⌘⇧-` 折叠所有代码块
 - `⌘W` 关闭活动的编辑器选项卡
 
-#### 二、Search/Replace（查询/替换）
+##### Search/Replace（查询/替换）
 
 - `Double ⇧` 查询任何东西
 - `⌘F` 文件内查找
@@ -377,14 +377,14 @@ private static final int $var1$ = $var2$ //$var1$和$var2$都是占位符，对�
 - `⌘⇧S` 查询结构（Ultimate Edition 版专用，需要在Keymap中设置）
 - `⌘⇧M` 替换结构（Ultimate Edition 版专用，需要在Keymap中设置）
 
-#### 三、Usage Search（使用查询）
+##### Usage Search（使用查询）
 
 - `⌥F7 / ⌘F7` 在文件中查找用法 / 在类中查找用法
 - `⌘⇧F7` 在文件中突出显示的用法
 - `⌘⌥F7` 显示用法
 - `⌘⇧I` 查看定义的类,快速查看
 
-#### 四、Compile and Run（编译和运行）
+##### Compile and Run（编译和运行）
 
 - `⌘F9` 编译Project
 - `⌘⇧F9` 编译选择的文件、包或模块
@@ -394,7 +394,7 @@ private static final int $var1$ = $var2$ //$var1$和$var2$都是占位符，对�
 - `⌃D` 调试
 - `⌃⇧R, ⌃⇧D` 从编辑器运行上下文环境配置
 
-#### 五、Debugging（调试）
+##### Debugging（调试）
 
 - `F8` 进入下一步，如果当前行断点是一个方法，则不进入当前方法体内
 - `F7` 进入下一步，如果当前行断点是一个方法，则进入当前方法体内，如果该方法体还有方法，则不会进入该内嵌的方法中
@@ -406,7 +406,7 @@ private static final int $var1$ = $var2$ //$var1$和$var2$都是占位符，对�
 - `⌘F8` 切换断点（若光标当前行有断点则取消断点，没有则加上断点）
 - `⌘⇧F8` 查看断点信息
 
-#### 六、Navigation（导航）
+##### Navigation（导航）
 
 - `⌘O` 查找类文件
 - `⌘⇧O` 查找所有类型文件、打开文件、打开目录，打开目录需要在输入的内容前面或后面加一个反斜杠`/`
@@ -440,7 +440,7 @@ private static final int $var1$ = $var2$ //$var1$和$var2$都是占位符，对�
 - `⌃0...⌃9` 定位到对应数值的书签位置
 - `⌘F3` 显示所有书签
 
-#### 七、Refactoring（重构）
+##### Refactoring（重构）
 
 - `F5` 复制文件到指定目录
 - `F6` 移动文件到指定目录
@@ -454,19 +454,19 @@ private static final int $var1$ = $var2$ //$var1$和$var2$都是占位符，对�
 - `⌘⌥C` 提取常量
 - `⌘⌥P` 提取参数
 
-#### 八、VCS/Local History（版本控制/本地历史记录）
+##### VCS/Local History（版本控制/本地历史记录）
 
 - `⌘K` 提交代码到版本控制器
 - `⌘T` 从版本控制器更新代码
 - `⌥⇧C` 查看最近的变更记录
 - `⌃C` 快速弹出版本控制器操作面板
 
-#### 九、Live Templates（动态代码模板）
+##### Live Templates（动态代码模板）
 
 - `⌘⌥J` 弹出模板选择窗口，将选定的代码使用动态模板包住
 - `⌘J` 插入自定义动态代码模板
 
-#### 十、General（通用）
+##### General（通用）
 
 - `⌘1...⌘9` 打开相应编号的工具窗口
 - `⌘S` 保存所有
