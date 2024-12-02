@@ -1,6 +1,8 @@
 # IDEA使用技巧
 
-#### <font color=FF0000>idea官方使用文档：</font>
+
+
+#### IDEA 官方使用文档
 
 https://www.jetbrains.com/help/idea/getting-started.html
 
@@ -26,7 +28,9 @@ https://www.jetbrains.com/help/idea/getting-started.html
 **⇤ : 左制表符（Shift+Tab）**
 **⏏︎ : eject 介质推出键**
 
-#### <font color=FF0000>快捷键</font>
+
+
+#### 快捷键
 
 - **←**  <font size=4 color=FF0000>**/**</font> **→**：光标在文件夹上时，<font color=FF0000>收起或展开文件</font>
 
@@ -48,7 +52,7 @@ https://www.jetbrains.com/help/idea/getting-started.html
   - **⌘ + +** ：展开
   - **⌘ + -** ： 折叠
 
-- idea**<font color=FF0000>不同项目间</font>**的切换
+- idea **<font color=FF0000>不同项目间</font>** 的切换
 
   - **⌥ + ⌘ + `**：切换到上一个idea窗口
   - **⌥ + ⇧ + ⌘ + `**：切换到下一个idea窗口
@@ -173,7 +177,7 @@ https://www.jetbrains.com/help/idea/getting-started.html
 
   <img src="https://resources.jetbrains.com/help/img/idea/2020.1/search_all_window.png" style="zoom:50%;" />
 
-  <mark>（使用 ⇥（制表键）以切换标签）</mark>
+  <font color=lightSeaGreen>**（使用 ⇥（制表键）以切换标签）**</font>
 
   - **两次⇧**：搜索全部（All）
   - **⌘ + O**：搜索类（Class）
@@ -181,7 +185,7 @@ https://www.jetbrains.com/help/idea/getting-started.html
   - **⌥ + ⌘ + O**：搜索符号（Symbols），包含<font color=FF0000>**函数和属性**</font>
   - `Ctrl + Shift + A ` <font size=4 color=FF0000>**/ **</font>**⇧ + ⌘ + A**：搜索动作（Actions）
 
-- `Ctrl + W` <font size=4 color=FF0000>**/ **</font>**⌥ + ↑** ：选中当前选中的外层（尤其适合用于编写html代码）
+- `Ctrl + W` <font size=4 color=FF0000>**/ **</font>**⌥ + ↑** ：选中当前选中的外层（尤其适合用于编写 html 代码）
 
 - `Home` / `End`：移动到行头 / 行尾
 
@@ -226,7 +230,7 @@ https://www.jetbrains.com/help/idea/getting-started.html
     - show history：显示修改
     - put label：加上标签的修改，以显示最近的修改之处
 
-- **idea的关联一切**
+- **idea 的关联一切**
 
   - 与spring关联，明悉项目结构之间的关系
   - 与数据库关联
@@ -246,9 +250,9 @@ https://www.jetbrains.com/help/idea/getting-started.html
 
 
 
-#### <font color=FF0000>Live template</font>（可自定义）
+#### Live template（可自定义）
 
-<font color=FF0000>**自带Live template**</font>
+##### 自带 Live template
 
 - `psvm`：`public static void main(){}`
 - `prsf`：`private static final`
@@ -256,25 +260,27 @@ https://www.jetbrains.com/help/idea/getting-started.html
 - `psfi`：`public static final int`
 - `psfs`：``public static final String`
 
-<font color=FF0000>**自定义的Live template**</font>，示例：
+##### 自定义的 Live template
+
+示例：
 
 ```java
-//Live template name: main1
+// Live template name: main1
 public static void main1(){
   $END$  //形成后，光标停留处
 }
 ```
 
 ```java
-//Live template name: psfi
+// Live template name: psfi
 private static final int $var1$ = $var2$ //$var1$和$var2$都是占位符，对于idea而言是变量，等待使用者自定义
 ```
 
 
 
-#### <font color=FF0000>postfix</font>（不可自定义）
+#### postfix（不可自定义）
 
-- 对一个数组/容器进行for循环，可使用`arrayName.for `的postfix，可对其进行foreach遍历
+- 对一个数组/容器进行 for 循环，可使用 `arrayName.for` 的postfix，可对其进行 foreach 遍历
 
 - `num.fori` ==> `for(int i = 0; i < num; i++){}`，对于容器一样
 
@@ -300,7 +306,9 @@ private static final int $var1$ = $var2$ //$var1$和$var2$都是占位符，对�
 
 ![](https://s1.ax1x.com/2020/06/25/NDdSHI.jpg)
 
-### 补充
+
+
+#### 补充
 
 ##### Mac 键盘符号和修饰键说明
 
