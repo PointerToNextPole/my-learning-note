@@ -2045,3 +2045,5 @@
 - **reconcile** ：调和
 
 - **identical** ：完全相同的
+
+- **martial** ：军事的
