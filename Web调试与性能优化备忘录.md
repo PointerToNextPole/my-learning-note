@@ -14,6 +14,56 @@
 
 
 
+#### VS Code 调试单个 TS 文件
+
+##### 预先准备
+
+- 配置好 ts、node、ts-node 等环境
+
+- 安装好 vsc 的 [TypeScript Debugger](https://marketplace.visualstudio.com/items?itemName=kakumei.ts-debug) 调试插件
+
+  <img src="https://s2.loli.net/2024/12/04/76qluPm8wQi3e5U.png" alt="image-20241204235107085" style="zoom:40%;" />
+
+##### 创建 `launch.json`
+
+<img src="/Users/yan/Library/Application Support/typora-user-images/image-20241204235316143.png" alt="image-20241204235316143" style="zoom:50%;" />
+
+在 “Run and Debug” 面板下，点击 “create a launch.json file”，并选择 debugger 中的 “TS Debug”
+
+<img src="https://s2.loli.net/2024/12/04/OXUxNikFd32VnIr.png" alt="image-20241204235457289" style="zoom:50%;" />
+
+##### 修改 `launch.json`
+
+```json
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ts-node",
+      "type": "node",
+      "request": "launch",
+      "args": ["${relativeFile}"],
+      "runtimeArgs": ["-r", "/usr/local/lib/node_modules/ts-node/register"],
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector",
+      "internalConsoleOptions": "openOnSessionStart",
+      "program": "${workspaceFolder}/target.ts"
+    }
+  ]
+}
+```
+
+##### 打断点与开始 debug
+
+<img src="https://s2.loli.net/2024/12/04/vOmkZBxDYhrltjS.png" alt="image-20241204235946478" style="zoom:50%;" />
+
+学习自：[Mac上vscode调试typescript(单文件)](https://blog.csdn.net/qq_43478653/article/details/138563080)
+
+
+
 ## 神光调试小册笔记
 
 [前端调试通关秘籍](https://juejin.cn/book/7070324244772716556/section) // TODO 看了些，有空体系性地做下笔记

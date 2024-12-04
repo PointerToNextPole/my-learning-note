@@ -2047,3 +2047,5 @@
 - **identical** ：完全相同的
 
 - **martial** ：军事的
+
+- **laurels** ：桂冠、荣誉
