@@ -50,17 +50,33 @@
       "cwd": "${workspaceRoot}",
       "protocol": "inspector",
       "internalConsoleOptions": "openOnSessionStart",
-      "program": "${workspaceFolder}/target.ts"
+      "program": "${workspaceFolder}/debugTarget.ts"
     }
   ]
 }
 ```
+
+其中值得注意的是：`runtimeArgs` 中的 `ts-node/register` 路径是绝对路径，并且随着电脑的不同而不同。可以考虑通过 `which ts-node` 找到找到 “alias” （软链接？），并通过查看文件信息找到源文件地址，再定位到对应 `ts-node` 文件夹下的 `register` 文件夹
+
+<img src="https://s2.loli.net/2024/12/05/odpQUCwfmGrPRtv.png" alt="image-20241205001811653" style="zoom:50%;" />
 
 ##### 打断点与开始 debug
 
 <img src="https://s2.loli.net/2024/12/04/vOmkZBxDYhrltjS.png" alt="image-20241204235946478" style="zoom:50%;" />
 
 学习自：[Mac上vscode调试typescript(单文件)](https://blog.csdn.net/qq_43478653/article/details/138563080)
+
+##### VS Code 调试单个 `.mts` 文件
+
+在一个 `lc` 文件夹中统一存放和编写 leetcode 题目时，发现不同 ts 文件会共用一个上下文，当不同的 `.ts` 文件中出现同名变量时，将会报错。这时候不得不使用 `.mts` 扩展名，不过，再 debug 会发现无法解析，无法理解类型标注了，会对哪怕最简单的类型标注报错。
+
+搜了下解决方案，找到了 [Debugging mts file in VSCode (Typescript 4.5)](https://stackoverflow.com/questions/70661161/debugging-mts-file-in-vscode-typescript-4-5) ，在 `.vscode/launch.json` 的 `configuration` 下加上 `"pauseForSourceMap": true` 即可正常 debug `.mts` 文件
+
+> 💡**补充**
+>
+> ###### `.mts` 和 `.module.ts` 之间的关系
+>
+> <img src="https://s2.loli.net/2024/12/05/sZemj2IVCAFgPOo.png" alt="image-20241205163217638" style="zoom: 50%;" />
 
 
 

@@ -1374,6 +1374,12 @@
 - `inter` 前缀：相互的
 
   > interop ：互操作
+  
+- `semi` 前缀：半
+
+- `quasi` ：准的，类似的
+
+  <img src="https://s2.loli.net/2024/12/06/YDhadEMJRs4SWrT.png" alt="image-20241206135114843" style="zoom:50%;" />
 
 
 
@@ -2049,3 +2055,5 @@
 - **martial** ：军事的
 
 - **laurels** ：桂冠、荣誉
+
+- **retroactive** ：追溯的
