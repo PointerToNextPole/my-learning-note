@@ -70,7 +70,18 @@
 
 在一个 `lc` 文件夹中统一存放和编写 leetcode 题目时，发现不同 ts 文件会共用一个上下文，当不同的 `.ts` 文件中出现同名变量时，将会报错。这时候不得不使用 `.mts` 扩展名，不过，再 debug 会发现无法解析，无法理解类型标注了，会对哪怕最简单的类型标注报错。
 
-搜了下解决方案，找到了 [Debugging mts file in VSCode (Typescript 4.5)](https://stackoverflow.com/questions/70661161/debugging-mts-file-in-vscode-typescript-4-5) ，在 `.vscode/launch.json` 的 `configuration` 下加上 `"pauseForSourceMap": true` 即可正常 debug `.mts` 文件
+搜了下解决方案，找到了 [Debugging mts file in VSCode (Typescript 4.5)](https://stackoverflow.com/questions/70661161/debugging-mts-file-in-vscode-typescript-4-5) ，按照其说法：在 `.vscode/launch.json` 的 `configuration` 下加上 `"pauseForSourceMap": true` 即可正常 debug `.mts` 文件；但是，加上之后，还是不行。于是按照问题的描述，借鉴问题提出者的配置，做了配置；在 `tsconfig.json` 的基础上，加上了 `tsconfig.debug.json` ，结果可以了，代码如下：
+
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "sourceMap": true,
+    "outDir": "lib"
+  }
+}
+```
 
 > 💡**补充**
 >
