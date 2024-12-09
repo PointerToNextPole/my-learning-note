@@ -462,7 +462,9 @@
 
 - **react** ：反应 ( verb ) 👀 这个不应该忘记的...
 
-- **deviate** ：偏离。一般搭配：deviate from
+- **deviate** ：偏离。
+
+   > 👀 一般搭配：deviate from
 
 - **canonical** ：权威性的。比较常见的用在 `<link rel="canonical">` 和 CNAME record ( Canonical Name Record )
    **canonialization** ：规范化
@@ -649,7 +651,9 @@
 
 - **succinct** ：简明的
 
-- **curved** ：弯曲的，curved line 曲线
+- **curved** ：弯曲的
+
+   **curved line** ：曲线
 
 - **latency** ：延迟
 
@@ -1268,6 +1272,10 @@
   > 摘自：[GitHub - llama-recipes - README](https://github.com/meta-llama/llama-recipes)
   >
   > <img src="https://s2.loli.net/2024/11/19/D97RW3tUYXmAcNZ.png" alt="image-20241119094059569" style="zoom:50%;" />
+  
+- **columnar** ：柱状的
+
+  > 👀 明显是 column 的变体
 
 
 ***
@@ -2057,3 +2065,43 @@
 - **laurels** ：桂冠、荣誉
 
 - **retroactive** ：追溯的
+
+- **meticulous** ：细致的，一丝不苟的
+
+- **synonyms** ：同义词
+
+- **curation** ：策展
+
+- **merchandize** / **merchandise** ：v. 销或销售商品的行为。n. 商品、货物
+
+- **abreast** ：并排
+
+  **keep abreast of** ：跟上
+
+- **preamble** ：序言
+
+- **backlog** ：积压
+
+- **pinnacle** ：顶峰
+
+- **detour** ：绕道
+
+- **devise** ：设计
+
+- **advent** ：出现、到来、降临
+
+  > <img src="https://s2.loli.net/2024/12/09/TfmrPu6HUznFsD4.png" alt="image-20241209165938332" style="zoom:50%;" />
+
+- **sharded** ：分片
+
+- **ingest** ：摄入
+
+  > ClickHouse specialises in analytics workloads, and can support very high ingest rates through horizontal scaling and sharded storage.
+  >
+  > 摘自：[7 Databases in 7 Weeks for 2025](https://matt.blwt.io/post/7-databases-in-7-weeks-for-2025/)
+
+- **semantics** ：语义学
+
+- **mold** ：模具
+
+- **commodity** ：商品
