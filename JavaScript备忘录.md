@@ -1353,20 +1353,20 @@ findIndex(function(element, index, array) { /* … */ }, thisArg)
 
 ###### 返回值
 
-数组中通过提供测试函数的第一个元素的**索引**。否则，返回 -1
+数组中通过提供测试函数的第一个元素的**索引**。否则，返回 `-1`
 
-摘自：[MDN - Array.prototype.findIndex()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex)
+摘自：[MDN - `Array.prototype.findIndex()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex)
 
-> 💡 类似的，JS 提供了 [Array.prototype.findLastIndex()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex)
+> 💡 类似的，JS 提供了 [`Array.prototype.findLastIndex()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex)
 
 
 #### Array.prototype.reduce()
 
-**reduce()** 方法 <font color=FF0000>对数组中的每个元素 **执行一个自定义的 reducer 函数（升序执行）**</font>，<font color=FF0000>每一次运行 **reducer** 会将先前元素的计算结果</font>（ 👀  说成“上一次 acc 的计算结果”，感觉更容易理解些）<font color=FF0000>作为参数传入</font>，<font color=FF0000>**最后将其结果汇总为单个返回值**</font>（ 👀非常重要！**上一次的计算结果必须要返回**，否则会报错，因为 `acc` 会变成 `undefined` ），真是因为要返回，如果写了没有 `{}` 包裹、也没有 return 的箭头函数时，不能直接使用 push（ 可以先使用 push，再用逗号操作符返回 acc），推荐使用 解构运算符 或者 concat
+**reduce()** 方法 <font color=FF0000>对数组中的每个元素 **执行一个自定义的 reducer 函数（升序执行）**</font>，<font color=FF0000>每一次运行 **reducer** 会将先前元素的计算结果</font>（ 👀 说成“上一次 acc 的计算结果”，感觉更容易理解些）<font color=FF0000>作为参数传入</font>，<font color=FF0000>**最后将其结果汇总为单个返回值**</font>（ ⚠️ **上一次的计算结果必须要返回**，否则会报错，因为 `acc` 会变成 `undefined` ），真是因为要返回，如果写了没有 `{}` 包裹、也没有 return 的箭头函数时，不能直接使用 push（ 可以先使用 push，再用逗号操作符返回 acc），推荐使用 解构运算符 或者 `concat`
 
-> 👀 2023/9/7 补充：在手写 flat 方法时（见 [[JS 函数手写实现#flat 实现#使用 reduce() 实现#带深度的 flat 实现]] ），发现 concat 会对函数参数进行一层解构；对 concat 不熟悉的话是容易出错的，所以使用解构是更值得推荐的
+> 👀 2023/9/7 补充：在手写 flat 方法时（见 [[JS 函数手写实现#flat 实现#使用 reduce() 实现#带深度的 flat 实现]] ），发现 `concat` 会对函数参数进行一层解构；对 `concat` 不熟悉的话是容易出错的，所以使用解构是更值得推荐的
 
-第一次执行回调函数时，不存在 “上一次的计算结果”。如果需要回调函数从数组索引为 0 的元素开始执行，则需要传递初始值。<font color=LightSeaGreen>否则，数组索引为 0 的元素将被作为初始值 *initialValue*</font>，<font color=FF0000>**迭代器将从第二个元素开始执行（索引为 1 而不是 0）**</font>。
+第一次执行回调函数时，不存在 “上一次的计算结果”。如果需要回调函数从数组索引为 0 的元素开始执行，则需要传递初始值。<font color=LightSeaGreen>否则，数组索引为 0 的元素将被作为初始值 `initialValue`</font>，<font color=FF0000>**迭代器将从第二个元素开始执行（索引为 1 而不是 0）**</font>。
 
 ##### 示例
 
@@ -1763,9 +1763,9 @@ array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
 
 
 
-#### Array.prototype.concat()
+#### `Array.prototype.concat()`
 
- concat() 方法用于合并两个或多个数组。<font color=FF0000>此方法不会更改现有数组，而是返回一个新数组。</font>
+ `concat()` 方法用于合并两个或多个数组。<font color=FF0000>此方法不会更改现有数组，而是返回一个新数组。</font>
 
 >  ⚠️ 注意：concat 的参数 <font color=fuchsia>**数组会多做一层解构**</font>，如下示例：
 >
@@ -1781,13 +1781,37 @@ array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
 >
 > 和 `[].concat([1, 2])` 结果一样
 
-摘自：[MDN - Array.prototype.concat()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/concat)
+摘自：[MDN - `Array.prototype.concat()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/concat)
+
+##### `concat` 的运行原理
+
+在看 [JS中若干相似特性的区别，你知道几个？](https://www.bilibili.com/video/BV14CioYqEJJ) 时，看到这样一个问题 “ `concat` 方法 和 直接使用 `+` 有什么区别？”
+
+解答如下：
+
+- 加法 `+` <font color=red>**强制**</font> 将表达式转为基本类型，优先调用 `valueOf()`
+- `concat()`方法（<font color=red>模板字符串亦然</font>）则 <font color=red>**强制**</font> 转为字符串,优先调用 `toString()`
+
+所以，有如下示例：
+
+```js
+const { log } = console
+
+const obj = {
+  valueOf: () => 4,
+  toString: () => 5,
+}
+
+log('' + obj)       // 4
+log(''.concat(obj)) // 5
+```
 
 
 
-#### Array.prototype.fill()
 
-fill() 方法用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。不包括终止索引。
+#### `Array.prototype.fill()`
+
+`fill()` 方法用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。不包括终止索引。
 
 ##### 语法
 
@@ -1797,9 +1821,9 @@ arr.fill(value[, start[, end]])
 
 ###### 参数
 
-- value：用来填充数组元素的值。
-- start：可选，起始索引，<font color=FF0000>默认值为0</font>。
-- end 可选，终止索引，<font color=FF0000>默认值为 this.length</font>。
+- `value` ：用来填充数组元素的值。
+- `start` ：可选，起始索引，<font color=FF0000>默认值为 0 </font>。
+- `end` 可选，终止索引，<font color=FF0000>默认值为 `this.length`</font>。
 
 ###### 返回值
 

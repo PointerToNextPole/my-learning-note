@@ -1276,6 +1276,12 @@
 - **columnar** ：柱状的
 
   > 👀 明显是 column 的变体
+  
+- **delta** ：**增量**（数学符号 $\Delta$），三角洲
+
+  > The other new configuration option being added will further ensure that the right types of deltas are generated at `git push` time...
+  >
+  > 摘自：[How we shrunk our Javascript monorepo git size by 94%](https://www.jonathancreamer.com/how-we-shrunk-our-git-repo-size-by-94-percent/)
 
 
 ***
@@ -2105,3 +2111,14 @@
 - **mold** ：模具
 
 - **commodity** ：商品
+
+- **prelude** ：前奏
+
+- **digress** ：离题、偏题
+
+- **dispensable** ：非必需的、可有可无的
+
+  **dispense** ：分配、分发
+
+  **indispensable** ：不可或缺
+
