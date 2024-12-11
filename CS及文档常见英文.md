@@ -2122,3 +2122,4 @@
 
   **indispensable** ：不可或缺
 
+- **unmet** ：未满足

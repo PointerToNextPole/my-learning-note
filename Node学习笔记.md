@@ -1074,9 +1074,9 @@ package-lock.json 会优先从 缓存文件中获取 依赖包；如果找不到
 }
 ```
 
-键入命令 `npm config get cache` 可查看 缓存所在位置（一般在 /Users/userName/.npm ），进入 .npm 文件夹，会发现 有一个 _cacache 文件夹，其中有 content-v2、index-v5、tmp 三个文件夹，index-v5 是索引，content-v2 是内容；根据索引，去取内容中的东西。
+键入命令 `npm config get cache` 可查看 缓存所在位置（一般在 `/Users/userName/.npm` ），进入 `.npm` 文件夹，会发现 有一个 `_cacache` 文件夹，其中有 content-v2、index-v5、tmp 三个文件夹，index-v5 是索引，content-v2 是内容；根据索引，去取内容中的东西。
 
-另外，无论是团队中协作，还是将代码上传到 GitHub中，最后将 package-lock.json 和 package.json 一起上传。
+另外，无论是团队中协作，还是将代码上传到 GitHub中，最后将 `package-lock.json` 和 `package.json` 一起上传。
 
 
 

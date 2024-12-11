@@ -21,7 +21,7 @@
 <font size=3>Maven找jar包的过程是这样的：<mark>先在本地仓库找，找不到再去私服（如果配置了的话），再找不到去中央仓库</mark>（http://repo1.maven.org/maven2/，maven团队负责维护）
 </font>
 
-**以上节选自博文：**[**maven仓库详解**](https://blog.csdn.net/weixin_41325595/article/details/93617821)
+摘自：[maven仓库详解](https://blog.csdn.net/weixin_41325595/article/details/93617821)
 
 
 
