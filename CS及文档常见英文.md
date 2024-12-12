@@ -2123,3 +2123,9 @@
   **indispensable** ：不可或缺
 
 - **unmet** ：未满足
+
+- **piecemeal** ：**逐步的**，零碎的
+
+  > This might be useful in a large multi-package repo that's migrating to a newer version of a dependency **piecemeal**.
+  >
+  > 摘自：[pnpm doc - Feature - Catalogs # Named Catalogs](https://pnpm.io/catalogs#named-catalogs)
