@@ -2129,3 +2129,7 @@
   > This might be useful in a large multi-package repo that's migrating to a newer version of a dependency **piecemeal**.
   >
   > 摘自：[pnpm doc - Feature - Catalogs # Named Catalogs](https://pnpm.io/catalogs#named-catalogs)
+  
+- **proactive** ：积极主动的
+
+- **sluggish** ：迟缓的、行动迟缓的
