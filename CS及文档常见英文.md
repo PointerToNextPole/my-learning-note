@@ -1407,6 +1407,7 @@
 - **ver.** ：版本 version
 - **promo** ：推广/ 宣传片 promotion 
 - **IMHO** ：依我拙见 In My Humble Opinion
+- **biz** ：business
 
 
 
