@@ -934,7 +934,7 @@ fatal: Authentication failed for 'https://github.com/github-user-name/proj-name.
   > >
   > > 详见 [Git doc - git remote](https://git-scm.com/docs/git-remote)
   >
-  > 👀 参见 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 的 “1、设置错误的远程库怎么办？”，所以，`git remote set-url` 只是一个“设置远程仓库地址”的命令（参考 [[#其他 git 命令]]）
+  > 👀 参见 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 的 “1、设置错误的远程库怎么办？”，所以，`git remote set-url` 只是一个“设置远程仓库地址”的命令（参考 [[#其他 git 命令]]）。另外，虽然说出来顺理成章，但容易忽略的是：将通过 ssh 链接管理的 git repo，切换为通过 http 管理；或者反过来，都可以通过 `git remote set-url repo-url-with-protocol-prefix` 来实现。
 
 ###### 出现：`error: src refspec master does not match any`
 

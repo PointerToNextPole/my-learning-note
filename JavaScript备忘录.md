@@ -5133,8 +5133,8 @@ function.call(thisArg, arg1, arg2, ...)
 
 ###### 参数
 
-- **thisArg：**<font color=FF0000>**可选的**</font>。在 function 函数运行时使用的 this 值。请注意，this可能不是该方法看到的实际值：<font color=FF0000>如果这个函数处于非严格模式下，则指定为 null 或 undefined 时会自动替换为指向全局对象</font>，原始值会被包装。
-- **arg1, arg2, ...：**指定的参数列表。
+- **`thisArg`** ：<font color=FF0000>**可选的**</font>。在 function 函数运行时使用的 this 值。请注意，this可能不是该方法看到的实际值：<font color=FF0000>如果这个函数处于非严格模式下，则指定为 null 或 undefined 时会自动替换为指向全局对象</font>，原始值会被包装。
+- **`arg1, arg2, ...`** ：指定的参数列表。
 
 ###### 返回值
 
@@ -5212,7 +5212,7 @@ function test(argArr) { console.log(argArr) }
 test.apply({}, [1, 2, 3]) // 1。结果只打印了 1
 
 // 示例2
-functionn test2() { console.log(arguments) }
+function test2() { console.log(arguments) }
 test2.apply({}, [1, 2, 3]) // { '0': 1, '1': 2, '2': 3 }。如果传入的整个数组，则应该打印 { '0': [1, 2, 3] }
 ```
 
