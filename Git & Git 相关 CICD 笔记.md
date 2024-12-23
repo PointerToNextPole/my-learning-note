@@ -138,15 +138,17 @@ git mv orgin_file_name target_file_name # 使用 git 将原始文件改名为目
 # 还有 git mv -f origin_file existing_file 命令：强制重命名或移动，这个文件已经存在，将要覆盖掉
 ```
 
-**补充：**关于 **git rm**：
-
-> **summary:** The git rm command is used to remove files from a Git repository.
+> ##### 💡 补充
 >
-> The primary function of `git rm` is to remove tracked files from the Git index. Additionally, `git rm` can be used to remove files from both the staging index and the working directory 即：git rm 可以从「工作区」和「缓存区」中移除文件
+> 关于 **git rm**：
 >
-> There is no option to remove a file from only the working directory. The files being operated on must be identical to the files in the current `HEAD`  即：git rm 无法只移除工作区的文件（可用 rm 命令实现），同时，git rm 只能删除 当前 HEAD 的文件
->
-> 详见：[Atlassian git tutorials - git rm](https://www.atlassian.com/git/tutorials/undoing-changes/git-rm)
+> > **summary:** The git rm command is used to remove files from a Git repository.
+> >
+> > The primary function of `git rm` is to remove tracked files from the Git index. Additionally, `git rm` can be used to remove files from both the staging index and the working directory 即：git rm 可以从「工作区」和「缓存区」中移除文件
+> >
+> > There is no option to remove a file from only the working directory. The files being operated on must be identical to the files in the current `HEAD`  即：git rm 无法只移除工作区的文件（可用 rm 命令实现），同时，git rm 只能删除 当前 HEAD 的文件
+> >
+> > 详见：[Atlassian git tutorials - git rm](https://www.atlassian.com/git/tutorials/undoing-changes/git-rm)
 
 **git 还原**
 
@@ -171,11 +173,11 @@ git checkout -b branchName commitHash # 创建一个新的分支，并 **切换�
 # 上面 hash 相关的内容了解自：careerkarma.com/blog/git-log
 ```
 
-可以使用 git log branchName，查看某一个分支的日志。同样，也可以使用 git log --all 命令，查看所有分支的信日志。如下所示，输入 git log --all，会输出所有的（共两个）分支，master 和 testBranch：
+可以使用 `git log branchName` ，查看某一个分支的日志。同样，也可以使用 `git log --all` 命令，查看所有分支的信日志。如下所示，输入 `git log --all` ，会输出所有的（共两个）分支，master 和 testBranch：
 
 <img src="https://s2.loli.net/2022/02/19/DaPWZ8uFi7B5voy.png" alt="image-20220219222624280" style="zoom:50%;" />
 
-另外，由于上面的 git log --all 在很多分支的情况下，看起来很累，可以加上 --graph 选项，使得以图形化的方式展现；可以看出分支之间的关系：
+另外，由于上面的 `git log --all` 在很多分支的情况下，看起来很累，可以加上 `--graph` 选项，使得以图形化的方式展现；可以看出分支之间的关系：
 
 <img src="https://s2.loli.net/2022/02/19/OHIW6UoYeGTDabV.png" alt="image-20220219223318357" style="zoom:50%;" />
 
@@ -187,25 +189,25 @@ git checkout -b branchName commitHash # 创建一个新的分支，并 **切换�
 
 #### Lesson 1.9
 
-.git 文件夹中的内容包含：
+`.git` 文件夹中的内容包含：
 
 <img src="https://s2.loli.net/2022/02/19/WVTbQfr8nypC9ig.png" alt="image-20220219234827964" style="zoom:50%;" />
 
-- **HEAD 文件：**cat 一下，会发现打印的是：
+- **HEAD 文件：**`cat` 一下，会发现打印的是：
 
   ```
   ref: refs/heads/testBranch
   ```
 
-  它当前指向的分支。即：<font color=FF0000 size=4>**HEAD 文件记录的是：当前工作在哪一个分支上**</font>。
+  它当前指向的分支。即：<font color=FF0000 size=4>**`HEAD` 文件记录的是：当前工作在哪一个分支上**</font>。
 
-  另外，这里 refs/heads/testBranch 在 .git 文件夹中确实存在该文件。具体关于 refs 文件夹，下面有说。
+  另外，这里 `refs/heads/testBranch` 在 `.git` 文件夹中确实存在该文件。具体关于 `refs` 文件夹，下面有说。
 
 - **config 文件：**存放配置信息。也就是 `git config` 命令输出相关的内容（比如 `git config user.name`），下图是输出 `cat config` 的结果：
 
   <img src="https://s2.loli.net/2022/02/20/bfuyoDw4k8izSvM.png" alt="image-20220220133215591" style="zoom:50%;" />
 
-  输入 `git config core.repositoryFormatVersion` 即可显示：0；类似的：在 `git config core.repositoryFormatVersion` 后面再加一个参数，作为`repositoryFormatVersion` 的值，即可修改 config 文件中 `repositoryFormatVersion` 对应的内容。
+  输入 `git config core.repositoryFormatVersion` 即可显示：0 ；类似的：在 `git config core.repositoryFormatVersion` 后面再加一个参数，作为`repositoryFormatVersion` 的值，即可修改 config 文件中 `repositoryFormatVersion` 对应的内容。
 
   另外，值得注意的是 `ignorecase` 这个配置项，相当重要；毕竟 git 默认忽略大消息，往往修改大小写之后，会造成本地和远端代码的不一致，从而引发 bug；所以推荐将 `ignorecase` 设置为 `false` ；命令为：`git config core.ignorecase false`。可以看下 [git大小写规则造成的问题【渡一教育】](https://www.bilibili.com/video/BV1vS421A7F3)
 
@@ -227,9 +229,9 @@ git checkout -b branchName commitHash # 创建一个新的分支，并 **切换�
 
     类似的，运行 `git cat-file -t hashVal` 输出的结果为 tag。
 
-    运行命令 `git cat-file -p hashVal` 可以打印出对应的内容（-p 选项就是查看对应内容的），这些信息包含 tag 的指向（指向的是 object）。
+    运行命令 `git cat-file -p hashVal` 可以打印出对应的内容（ `-p` 选项就是查看对应内容的），这些信息包含 tag 的指向（指向的是 object ）。
 
-    // 这里图床丢了一张图片...
+    > 👀 这里图床丢了一张图片...
 
     对这个对象运行 `git cat-file -t 198010a`（198010a 是上面 object 对应的 hash 值），可以发现他是一个 commit
 
@@ -249,13 +251,13 @@ git checkout -b branchName commitHash # 创建一个新的分支，并 **切换�
 
   <img src="https://s2.loli.net/2022/02/20/EPvgTcuMs8YVQwZ.png" alt="image-20220220171941181" style="zoom:50%;" />
 
-  它是一个 blob，并且对应的文件是 test.txt
+  它是一个 blob，并且对应的文件是 `test.txt`
 
 由上面总结，git 中有三种类型（通过 `git cat-file -t` 显示出来），为：commit、tree、blob。
 
 另外，上面没搞懂为什么一会儿用 `git cat-file -t`，一会儿用 `git cat-file -p` 很懵，看到下面“commit、tree、blob 三者之间的关系” 就会明白。
 
-**补充：** git cat-file 还有 -s 选项，表示显示 对象 (\<object>) 的大小。其他选项和参数详见：[Pro Git - git cat-file - options](https://git-scm.com/docs/git-cat-file#_options)
+> 💡 `git cat-file` 还有 `-s` 选项，表示显示 对象 ( `<object>` ) 的大小。其他选项和参数详见：[Pro Git - git cat-file - options](https://git-scm.com/docs/git-cat-file#_options)
 
 #### Lesson 1.10
 
@@ -327,15 +329,15 @@ $ git cat-file -p 58c9
 111
 ```
 
-可以发现这个 object 是一个 blob 类型的节点，他的内容是111，也就是说这个 object 储存着 a.txt 文件的内容。
+可以发现这个 object 是一个 blob 类型的节点，他的内容是 111，也就是说这个 object 储存着 `a.txt` 文件的内容。
 
-这里我们遇到第一种Git object，blob类型，它只储存的是一个文件的内容，不包括文件名等其他信息。然后将这些信息经过SHA1哈希算法得到对应的哈希值 58c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c，作为这个object在Git仓库中的唯一身份证。
+这里我们遇到第一种 Git object，blob类型，它只储存的是一个文件的内容，不包括文件名等其他信息。然后将这些信息经过SHA1哈希算法得到对应的哈希值 58c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c，作为这个object在Git仓库中的唯一身份证。
 
-也就是说，我们此时的Git仓库是这样子的：
+也就是说，我们此时的 Git 仓库是这样子的：
 
 <img src="https://www.lzane.com/tech/git-internal/p1s1.png" alt="https://www.lzane.com/tech/git-internal/p1s1.png" style="zoom:80%;" />
 
-我们继续探索，我们创建一个commit。
+我们继续探索，我们创建一个 commit 。
 
 ```shell
 $ git commit -am '[+] init'
@@ -348,7 +350,7 @@ $ tree .git/objects
 ...
 ```
 
-我们会发现当我们 commit 完成之后，Git 仓库里面多出来两个object。同样使用`cat-file`命令，我们看看它们分别是什么类型以及具体的内容是什么。
+我们会发现当我们 commit 完成之后，Git 仓库里面多出来两个 object 。同样使用 `cat-file` 命令，我们看看它们分别是什么类型以及具体的内容是什么。
 
 ```sh
 $ git cat-file -t 4caaa1
@@ -2037,7 +2039,7 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 
 > 👀 类似的见 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 中的 “9、不小心删除了分支怎么办？”
 
-我们知道 Git 的出现就是为了尽量保证我们的操作不被丢失，在 [Git内部原理](https://www.lzane.com/tech/git-internal/) 中我们讲过，<font color=FF0000>git object ( commit、tree、blob ) 一旦被创建，就不可变更 ( immutable )</font>；所以只要找到它对应的哈希值，就能找回。但是 <font color=FF0000>ref</font> 呢？在 [Git内部原理](https://www.lzane.com/tech/git-internal/) 中我们也讲过，<font color=FF0000>它是一个可变的指针</font>，比如说你在 master 中提交了一个 commit，那当前的 master 这个 ref 就会指向新的 commit object 的哈希值。reflog 就是将这些可变指针的历史给记录下来，可以理解成 **ref的log**，也可以理解成 **版本控制的版本控制**。
+我们知道 Git 的出现就是为了尽量保证我们的操作不被丢失，在 [Git内部原理](https://www.lzane.com/tech/git-internal/) 中我们讲过，<font color=FF0000>git object ( commit、tree、blob ) 一旦被创建，就不可变更 ( immutable )</font>；所以只要找到它对应的哈希值，就能找回。但是 <font color=FF0000>ref</font> 呢？在 [Git内部原理](https://www.lzane.com/tech/git-internal/) 中我们也讲过，<font color=FF0000>它是一个可变的指针</font>，比如说你在 master 中提交了一个 commit，那当前的 master 这个 ref 就会指向新的 commit object 的哈希值。reflog 就是将这些可变指针的历史给记录下来，可以理解成 **ref 的 log**，也可以理解成 **版本控制的版本控制**。
 
 ##### 提交一个文件中的部分修改
 
@@ -2101,13 +2103,13 @@ git bisect
 - **`git commit files`** ：进行一次包含最后一次提交加上工作目录中文件快照的提交，并且文件被添加到暂存区域。
 - **`git checkout HEAD -- files`** ：回滚到复制最后一次提交。
 
-<font size=4>**git diff**</font>
+##### git diff
 
 <img src="https://marklodato.github.io/visual-git-guide/diff.svg" alt="img" style="zoom: 65%;"/>
 
 > 👀 注意上图，git diff 的默认值，和不同参数之间 效果的区别。
 
-<font size=4>**git commit**</font>
+##### git commit
 
 提交时，git 用暂存区域的文件创建一个新的提交，并把此时的节点设为父节点。然后把当前分支指向新的提交节点。下图中，当前分支是 main。 在运行命令之前，main 指向 ed489，提交后，main 指向新的节点 f0cec 并以 ed489 作为父节点。
 
@@ -2121,7 +2123,7 @@ git bisect
 
 <img src="https://marklodato.github.io/visual-git-guide/commit-amend.svg" alt="img" style="zoom:67%;" />
 
-<font size=4>**git checkout**</font>
+##### git checkout
 
 <font color=FF0000>**checkout 命令 用于从历史提交（或者暂存区域）中拷贝文件到工作目录**</font>，<font color=FF0000>也可用于切换分支</font>。
 
@@ -2133,7 +2135,7 @@ git bisect
 
 <img src="https://marklodato.github.io/visual-git-guide/checkout-detached.svg" alt="img" style="zoom:67%;" />
 
-<font size=4>**HEAD 标识处于分离状态时的提交操作**</font>
+##### HEAD 标识处于分离状态时的提交操作
 
 <font color=FF0000>**当 *HEAD* 处于分离状态（不依附于任一分支）时，提交操作可以正常进行，但是不会更新任何已命名的分支**</font>（你可以认为这是在更新一个匿名分支）
 
@@ -2147,7 +2149,7 @@ git bisect
 
 <img src="https://marklodato.github.io/visual-git-guide/checkout-b-detached.svg" alt="img" style="zoom:67%;" />
 
-<font size=4>**git reset**</font>
+##### git reset
 
 <font color=FF0000>**reset命令 把当前分支指向另一个位置，并且有选择的变动工作目录和索引**</font>（👀 有选择的即 通过选项）。<font color=FF0000>也用来在从历史仓库中复制文件到索引，而不动工作目录</font>。
 
@@ -2163,7 +2165,7 @@ git bisect
 
 <img src="https://marklodato.github.io/visual-git-guide/reset-files.svg" alt="img" style="zoom:67%;" />
 
-<font size=4>**git merge**</font>
+##### git merge
 
 merge 命令把不同分支合并起来。合并前，索引必须和当前提交相同。如果另一个分支是当前提交的祖父节点，那么合并命令将什么也不做。 另一种情况是如果当前提交是另一个分支的祖父节点，就导致 *fast-forward* 合并。指向只是简单的移动，并生成一个新的提交。
 
@@ -2173,13 +2175,13 @@ merge 命令把不同分支合并起来。合并前，索引必须和当前提�
 
 <img src="https://marklodato.github.io/visual-git-guide/merge.svg" alt="img" style="zoom:67%;" />
 
-<font size=4>**Cherry Pick**</font>
+##### Cherry Pick
 
 cherry-pick命令 "复制"一个提交节点并在当前分支做一次完全一样的新提交。
 
 <img src="https://marklodato.github.io/visual-git-guide/cherry-pick.svg" alt="img" style="zoom:67%;" />
 
-<font size=4>**Rebase**</font>
+##### Rebase
 
 衍合（**即：**变基）是合并命令的另一种选择。合并把两个父分支合并进行一次提交，提交历史不是线性的。衍合在当前分支上重演另一个分支的历史，提交历史是线性的。 本质上，这是线性化的自动的 cherry-pick
 

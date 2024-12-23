@@ -2134,3 +2134,11 @@
 - **proactive** ：积极主动的
 
 - **sluggish** ：迟缓的、行动迟缓的
+
+- **motto** ：座右铭
+
+- **deposit** ：存款、押金
+
+- **plenary** ：全体的
+
+  **plenary meeting** ：全体会议
