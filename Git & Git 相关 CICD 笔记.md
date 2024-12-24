@@ -158,14 +158,14 @@ git reset --hard  # 暂存区工作路径下的所有变更都会清理掉，相
 
 #### Lesson 1.7
 
-**git log 命令**
+##### `git log` 命令
 
 ```bash
 git log --oneline  # 以精简模式显示
 git log -n4  # 查看最近的几个commit，这里是4
 ```
 
-为了更好的讲解 git log，这里创建下分支：
+为了更好的讲解 `git log` ，这里创建下分支：
 
 ```bash
 git branch -v # 查看各个分支，以及最后提交的信息。另外，-a 选项时查看本地和远端有多少分支(-a 等价于 --all)；同时，这两个选项可以连起来写，即 -av

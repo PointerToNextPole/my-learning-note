@@ -61,7 +61,7 @@ function MyButton() {
 
 <font color=fuchsia>Notice how `onClick={handleClick}` has no parentheses at the end</font>! Do not *call* the event handler function: you only need to *pass it down*. React will call your event handler when the user clicks the button.
 
-##### Updating the screen 
+##### Updating the screen
 
 You’ll get two things from `useState`: the current state (`count`), and the function that lets you update it (`setCount`). You can give them any names, but the convention is to write `[something, setSomething]`.
 
@@ -1454,9 +1454,31 @@ Instead, to enable their concise syntax, <font color=fuchsia>Hooks **rely on a s
 
 <font color=fuchsia>Internally, React **holds an array of state pairs for every component**</font>. <font color=dodgerBlue>It also</font> <font color=fuchsia>maintains the current pair index</font>, which is set to `0` before rendering. Each time you call `useState`, React gives you the next state pair and increments the index. You can read more about this mechanism in [React Hooks: Not Magic, Just Arrays.](https://medium.com/@ryardley/react-hooks-not-magic-just-arrays-cd4f1857236e)
 
-> 🌏 在 React 内部，为每个组件保存了一个数组，其中每一项都是一个 state 对。它维护当前 state 对的索引值，在渲染之前将其设置为 “0”。每次调用 useState 时，React 都会为你提供一个 state 对并增加索引值。
+> 🌏 在 React 内部，为每个组件保存了一个数组，其中每一项都是一个 state 对。它维护当前 state 对的索引值，在渲染之前将其设置为 “0”。每次调用 `useState` 时，React 都会为你提供一个 state 对并增加索引值。
 
-> 👀 这里有一段，不直接使用 react 实现页面可响应的代码，感觉很受启发；但是由于较长，只摘抄了部分：
+> 💡`useState` 与 React 机制补充
+>
+> ```jsx
+> const [name, setName] = useState('xiaoming')
+> console.log('some sentences')
+> const [age, setAge] = useState(18)
+> ```
+>
+> 如上代码，两次 `useState` 只有参数 ( `initialState` ) 上的区别，没有语义上的区分（仅仅是给返回值赋予了语义），<font color=dodgerBlue>站在 `useState` 的视角</font>，React 怎么知道什么时候想要使用 `name` ，什么时候又想要使用 `age` ？
+>
+> > 👀 确实，从 js 函数的角度来讲，`useState` 只接收了 `initialState` ，并没有接收任何 stateKey 之类的标识做绑定，在内部自然也是无从得知当前使用的 state 是哪一个
+>
+> <font color=fuchsia>答案是**「时序」**，`useState` 的**调用时序**决定了结果</font>。
+>
+> > 👀 个人在没有看 `useState` 源码情况下的理解：
+> >
+> > 虽然 `useState` 没有接收 stateKey ，但是其内部应该生成了唯一的“ 时序 id”，做了绑定。
+>
+> React 用「时序」决定了这一切（<font color=fuchsia>背后的数据结构是链表</font>），这也导致 Hooks 对调用时序的严格要求。也就是要避免所有的分支结构，不能让 Hooks 「时有时无」；所以，`useState` 必须放在组件定义的顶层。
+>
+> 学习自：[不优雅的 React Hooks - 蚂蚁 RichLab 前端团队的文章 - 知乎](https://zhuanlan.zhihu.com/p/455317250) 。另外，虽然文章有些观点未必合适，但是还是感觉有些内容很不错。
+
+> 👀 这里有一段，不直接使用 react 实现页面可响应的代码，很受启发；但是由于较长，只摘抄了部分：
 
 ```js
 let componentHooks = [];
@@ -3119,13 +3141,13 @@ React will keep the state around for as long as you render the same component at
 > }
 > 
 > return (
->  <>
->    <MyTextField />
->    <button onClick={() => {
->      setCounter(counter + 1)
->    }}>Clicked {counter} times</button>
->  </>
-> );
+>    <>
+>        <MyTextField />
+>        <button onClick={() => {
+>          setCounter(counter + 1)
+>        }}>Clicked {counter} times</button>
+>    </>
+>   );
 > }
 > ```
 >

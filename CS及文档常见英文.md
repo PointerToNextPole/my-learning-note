@@ -2142,3 +2142,5 @@
 - **plenary** ：全体的
 
   **plenary meeting** ：全体会议
+  
+- 
