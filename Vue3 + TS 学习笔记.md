@@ -268,6 +268,12 @@ export default {
 > ```css
 > min-width: v-bind("props.isChannel ? '250px' : '420px' ")
 > ```
+> 
+> 另外，值得注意的是，虽然这个 feat 只在 Vue3 中可用，但是如果在 Options API 的情况下，响应式数据是不需要加 `this` 的；代码示例如下：
+> 
+> ```css
+> top: v-bind("isLegendCollapse ? '50%' : '30%'");
+> ```
 
 
 
