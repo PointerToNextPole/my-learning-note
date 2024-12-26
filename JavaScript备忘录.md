@@ -4554,53 +4554,47 @@ fetch('http://example.com/movies.json')
 
 <font color=FF0000>也可以传一个可选的第二个参数 init</font>
 
-**fetch 语法如下：**
-
-**语法**
+##### 语法
 
 ```js
 Promise<Response> fetch(input[, init]);
 ```
 
-**参数**
+###### 参数
 
-- **?input**
+- **`?input`** ：定义要获取的资源。这可能是：一个 USVString 字符串，包含要获取资源的 URL。一些浏览器会接受 `blob:` 和 `data:` 作为 schemes.一个 Request 对象。
 
-  定义要获取的资源。这可能是：一个 USVString 字符串，包含要获取资源的 URL。一些浏览器会接受 blob: 和 data: 作为 schemes.一个 Request 对象。
+- **`init`** ：可选，一个配置项对象，包括所有对请求的设置。可选的参数有：
 
-- **init 可选**
-
-  一个配置项对象，包括所有对请求的设置。可选的参数有：
-
-  - **method：** 请求使用的方法，如 GET、POST。
+  - `method` ：请求使用的方法，如 GET、POST。
   
-  - **headers：** <font color=FF0000>请求的头信息</font>，形式为 Headers 的对象或包含 ByteString 值的对象字面量。
+  - `headers` ：<font color=FF0000>请求的头信息</font>，形式为 Headers 的对象或包含 ByteString 值的对象字面量。
   
-  - **body：**<font color=FF0000>**请求的 body 信息**，可能是 一个 Blob、BufferSource、FormData、URLSearchParams 或者 USVString 对象</font>。注意 GET 或 HEAD 方法的请求不能包含 body 信息。
+  - `body` ：<font color=FF0000>**请求的 body 信息**，可能是 一个 Blob、BufferSource、FormData、URLSearchParams 或者 USVString 对象</font>。注意 GET 或 HEAD 方法的请求不能包含 body 信息。
   
-  - **mode：** 请求的模式，如 cors、 no-cors 或者 same-origin。
+  - `mode` ：请求的模式，如 `cors` 、 `no-cors` 或者 `same-origin` 。
   
-    > mode 选项是一种安全措施，可以防止偶发的跨源请求：
+    > `mode` 选项是一种安全措施，可以防止偶发的跨源请求：
     >
-    > - **"cors"：**默认值，允许跨源请求，如 [Fetch：跨源请求](https://zh.javascript.info/fetch-crossorigin) 一章所述，
-    > - **"same-origin"：**禁止跨源请求，
-    > - **"no-cors" ：**只允许简单的跨源请求。
+    > - **`"cors"`** ：默认值，允许跨源请求，如 [Fetch：跨源请求](https://zh.javascript.info/fetch-crossorigin) 一章所述，
+    > - **`"same-origin"`** ：禁止跨源请求，
+    > - **`"no-cors"`** ：只允许简单的跨源请求。
     >
     > 当 fetch 的 URL 来自于第三方，并且我们想要一个“断电开关”来限制跨源能力时，此选项可能很有用。
     >
     > 摘自：[现代JS教程 - Fetch API - mode](https://zh.javascript.info/fetch-api#mode)
   
-  - **credentials：** 请求的 credentials，如 omit、same-origin 或者 include。为了在当前域名内自动发送 cookie ， 必须提供这个选项， 从 Chrome 50 开始， 这个属性也可以接受 FederatedCredential 实例或是一个 PasswordCredential 实例。
+  - **`credentials`** ：请求的 credentials，如 omit、same-origin 或者 include。为了在当前域名内自动发送 cookie ， 必须提供这个选项， 从 Chrome 50 开始， 这个属性也可以接受 FederatedCredential 实例或是一个 PasswordCredential 实例。
   
     > credentials 选项<font color=FF0000>指定 fetch 是否应该 **随请求发送 cookie** 和 HTTP-Authorization header</font>。
     >
-    > - **"same-origin"**：<font color=FF0000>默认值</font>，<font color=FF0000>对于跨源请求不发送</font>，
-    > - **"include"：**<font color=FF0000>总是发送</font>，需要来自跨源服务器的 Accept-Control-Allow-Credentials，才能使 JavaScript 能够访问响应，详细内容在 [Fetch：跨源请求](https://zh.javascript.info/fetch-crossorigin) 一章有详细介绍
-    > - **"omit"**：<font color=FF0000>不发送</font>，即使对于同源请求。
+    > - **`"same-origin"`** ：<font color=FF0000>默认值</font>，<font color=FF0000>对于跨源请求不发送</font>，
+    > - **`"include"`** ：<font color=FF0000>总是发送</font>，需要来自跨源服务器的 `Accept-Control-Allow-Credentials` ，才能使 JavaScript 能够访问响应，详细内容在 [Fetch：跨源请求](https://zh.javascript.info/fetch-crossorigin) 一章有详细介绍
+    > - **`"omit"`** ：<font color=FF0000>不发送</font>，即使对于同源请求。
     >
     > 摘自：[现代JS教程 - Fetch API - credentials](https://zh.javascript.info/fetch-api#credentials)
   
-  - **cache：**  请求的 cache 模式: default、 no-store、 reload 、 no-cache、 force-cache或者 only-if-cached 。
+  - **`cache`** ：请求的 cache 模式: default、 no-store、 reload 、 no-cache、 force-cache或者 only-if-cached 。
   
     > 默认情况下，fetch 请求使用标准的 HTTP 缓存。就是说，它遵从 Expires，Cache-Control header，发送 If-Modified-Since，等。就像常规的 HTTP 请求那样。
     >
@@ -4608,26 +4602,26 @@ Promise<Response> fetch(input[, init]);
     >
     > 摘自：[现代JS教程 - Fetch API - cache](https://zh.javascript.info/fetch-api#cache)
   
-  - **redirect：** 可用的 redirect 模式： follow （自动重定向），error （如果产生重定向将自动终止并且抛出一个错误）, 或者 manual （手动处理重定向）。 在Chrome中默认使用follow（Chrome 47之前的默认值是manual）。
+  - **`redirect`** ：可用的 redirect 模式： follow （自动重定向），error （如果产生重定向将自动终止并且抛出一个错误）, 或者 manual （手动处理重定向）。 在Chrome中默认使用 follow（Chrome 47之前的默认值是manual）。
   
-  - **referrer：** 一个 USVString 可以是 no-referrer、client或一个 URL。默认是 client。
+  - **`referrer`** ：一个 USVString 可以是 no-referrer、client或一个 URL。默认是 client。
   
-  - **referrerPolicy：** 指定了 HTTP 头部 referer 字段的值。可能为以下值之一： no-referrer、 no-referrer-when-downgrade、 origin、 origin-when-cross-origin、 unsafe-url 。
+  - **`referrerPolicy`** ：指定了 HTTP 头部 referer 字段的值。可能为以下值之一： no-referrer、 no-referrer-when-downgrade、 origin、 origin-when-cross-origin、 unsafe-url 。
   
-  - **integrity：** 包括请求的  subresource integrity 值 （ 例如： sha256-BpfBw7ivV8q2jLiT13fxDYAe2tJllusRSZ273h2nFSE=）。
+  - **`integrity`** ：包括请求的  subresource integrity 值 （ 例如： sha256-BpfBw7ivV8q2jLiT13fxDYAe2tJllusRSZ273h2nFSE=）。
 
-**返回值**
+###### 返回值
 
 一个 Promise，resolve 时回传 Response 对象。
 
 摘自：[MDN - Fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API)  [MDN - 使用 Fetch](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch#%E6%94%AF%E6%8C%81%E7%9A%84%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0)  [WorkerOrGlobalScope.fetch()](https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/fetch)
 
-##### Fetch 的补充：
+##### Fetch 的补充
 
-**请注意，fetch 规范与 jQuery.ajax() 主要有以下的不同：**
+**请注意，fetch 规范与 `jQuery.ajax()` 主要有以下的不同：**
 
-- <font color=FF0000>**当接收到一个代表错误的 HTTP 状态码时，从 fetch() 返回的 Promise 不会被标记为 reject**</font> ，<font color=FF0000>即使响应的 HTTP 状态码是 404 或 500 。相反，它会将 Promise 状态标记为 resolve</font>（如果响应的 HTTP 状态码不在 200 - 299 的范围内，则设置 resolve 返回值的 ok 属性为 false ），<font color=FF0000 size=4>**仅当网络故障时或请求被阻止时，才会标记为 reject**</font>。
-- <font color=FF0000>**fetch 不会发送跨域 cookies，除非你使用了 credentials 的初始化选项**</font>。（自2018 年 8 月以后，默认的 credentials 政策变更为 same-origin ）
+- <font color=FF0000>**当接收到一个代表错误的 HTTP 状态码时，从 `fetch()` 返回的 Promise 不会被标记为 reject**</font> ，<font color=FF0000>即使响应的 HTTP 状态码是 404 或 500 。相反，它会将 Promise 状态标记为 resolve</font>（如果响应的 HTTP 状态码不在 200 - 299 的范围内，则设置 resolve 返回值的 ok 属性为 false ），<font color=FF0000 size=4>**仅当网络故障时或请求被阻止时，才会标记为 reject**</font>。
+- <font color=FF0000>**fetch 不会发送跨域 cookies，除非你使用了 `credentials` 的初始化选项**</font>。（自2018 年 8 月以后，默认的 `credentials` 政策变更为 `same-origin` ）
 
 **自定义请求对象**
 
@@ -4695,12 +4689,12 @@ console.log(myHeaders.get('X-Custom-Header')); // null
 
 **Response 对象**
 
-如上所述，Response 实例是在 fetch() 处理完 promise 之后返回的。
+如上所述，Response 实例是在 `fetch()` 处理完 promise 之后返回的。
 
 **会用到的最常见的 response 属性有：**
-- **Response.status：**整数（默认值为 200）为response的状态码。
-- **Response.statusText：**字符串（默认值为 ""），该值与 HTTP 状态码消息对应。 注意：HTTP/2 不支持状态消息
-- **Response.ok：**该属性是来检查 response 的状态是否在 200 - 299（包括200 和 299）这个范围内。该属性返回一个布尔值。
+- **`Response.status`** ：整数（默认值为 200）为response的状态码。
+- **`Response.statusText`** ：字符串（默认值为 ""），该值与 HTTP 状态码消息对应。 注意：HTTP/2 不支持状态消息
+- **`Response.ok`** ：该属性是来检查 response 的状态是否在 200 - 299（包括200 和 299）这个范围内。该属性返回一个布尔值。
 
 ##### Body
 
@@ -4733,7 +4727,7 @@ console.log(myHeaders.get('X-Custom-Header')); // null
 >
 > > task 和 microtask 是 HTML 规范里的
 > >
-> > jobs是 ECMAScript 规范里的
+> > jobs 是 ECMAScript 规范里的
 > >
 > > macrotask 是 Promise/A+ 规范里的
 > >
@@ -4741,16 +4735,16 @@ console.log(myHeaders.get('X-Custom-Header')); // null
 
 ##### 宏任务有哪些
 
-- \<script> 标签中的运行代码（注：<font color=FF0000 size=4>**整个script标签是个宏任务**</font>）
+- `<script>` 标签中的运行代码（👀 <font color=FF0000 size=4>**整个script标签是个宏任务**</font>）
 - 事件触发的回调函数，例如 DOM Events、I/O、requestAnimationFrame
 - setTimeout、setInterval 的回调函数
 
 ##### 微任务有哪些
 
-- **promises：**Promise.then、Promise.catch、Promise.finally
+- **promises** ：Promise.then、Promise.catch、Promise.finally
 - **MutationObserver**
 - **queueMicrotask**
-- **process.nextTick**：Node独有
+- **process.nextTick** ：Node独有
 
 摘自：[执行机制 - 宏任务和微任务分别有哪些 #34](https://github.com/logan70/Blog/issues/34)
 
@@ -9505,7 +9499,7 @@ High Resolution Time 标准定义了 Performance 接口，该接口支持应用�
 >
 > 摘自：《 JS 高级程序设计》第四版 P644 ：20.10 计时 API
 
-> 👀 注：在 codingstartup 微信群群友出现了 “他的开发环境不支持 performance” 的情况。事后，我看到了这样的文章 [SharedArrayBuffer与幽灵漏洞（Spectre） - 李银城的文章 - 知乎](https://zhuanlan.zhihu.com/p/556051833) 其中有提及 “利用 SharedArrayBuffer 可以获取高精度时间”（详见原文。有空也有必要看下文章，学习下 sharedArrayBuffer // TODO ），也算是在 “不支持 Performance 的环境“ 下获取高精度时间 的一种补救方法了
+> 👀 在 codingstartup 微信群群友出现了 “他的开发环境不支持 performance” 的情况。事后，我看到了这样的文章 [SharedArrayBuffer与幽灵漏洞（Spectre） - 李银城的文章 - 知乎](https://zhuanlan.zhihu.com/p/556051833) 其中有提及 “利用 SharedArrayBuffer 可以获取高精度时间”（详见原文。有空也有必要看下文章，学习下 sharedArrayBuffer // TODO ），也算是在 “不支持 Performance 的环境“ 下获取高精度时间 的一种补救方法了
 
 ##### DOMHighResTimeStamp
 
@@ -9895,7 +9889,7 @@ The ReportingObserver interface of the Reporting API <font color=FF0000>allows y
 > new ReportingObserver(callback, options)
 > ```
 >
-> ##### 参数
+> ###### 参数
 >
 > - **callback**: A callback function that runs when the observer starts to collect reports (i.e. via `ReportingObserver.observe()` ). The callback function is given two parameters:
 >
@@ -9944,83 +9938,50 @@ The ReportingObserver interface of the Reporting API <font color=FF0000>allows y
 
 
 
-#### js判断数组中是否存在某值
-
-- **array.indexOf(el)：**判断数组中是否存在某个值，如果存在返回数组元素的下标，否则返回-1
-
-- **array.includes(searchElement[, startIndex])：**判断一个数组是否包含一个指定的值，如果存在返回 true，否则返回false。
-  
-  **参数如下：**
-  
-  - **searchElement：**需要查找的元素值
-  - **startIndex：**从该索引处开始查找 searchElement。<font color=FF0000>如果为负值，则按升序从 array.length + startIndex 的索引开始搜索</font>。默认为 0
-
-- **array.find(callback[, thisArg])：**<font color=FF0000>返回数组中满足条件的第一个元素的值</font>，如果没有，返回undefined
-  
-  **参数如下：**
-  
-  - **callback**
-    - element 当前遍历到的元素。
-    - index 当前遍历到的索引。
-    - array 数组本身
-  - **thisArg**（可选）：指定 callback 的 this 参数
-
-- **array.findIndex(callback[, thisArg])：**<font color=FF0000>返回数组中满足条件的第一个元素的索引（下标）, 如果没有找到，返回-1</font>
-  
-  **参数如下：**
-  
-  - **callback**
-    - element 当前遍历到的元素。
-    - index 当前遍历到的索引。
-    - array 数组本身。
-  - **thisArg（可选）：**指定 callback 的 this 参数。
-
-摘自：[js判断数组中是否存在某个值](https://segmentfault.com/a/1190000014202195)
-
 
 
 #### Blob
 
 <font color=FF0000>**Blob 对象表示一个不可变、原始数据的类文件对象**</font>。<font color=FF0000>它的数据可以按 **文本** 或 **二进制** 的格式进行 **读取**，也可以转换成 **ReadableStream** 来用于数据 **操作**</font>。 
 
-Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000>**File 接口基于Blob**，继承了 blob 的功能并将其扩展使其支持用户系统上的文件</font>。
+Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000>**File 接口基于 Blob**，继承了 blob 的功能并将其扩展使其支持用户系统上的文件</font>。
 
-要从其他非blob对象和数据构造一个 Blob，请使用 Blob() 构造函数。要创建一个 blob 数据的子集 blob，请使用 slice() 方法（**注：**类似于切片）。要获取用户文件系统上的文件对应的 Blob 对象，请参阅 File 文档。
+要从其他非 blob 对象和数据构造一个 Blob，请使用 `Blob()` 构造函数。要创建一个 blob 数据的子集 blob，请使用 `slice()` 方法（👀 类似于切片）。要获取用户文件系统上的文件对应的 Blob 对象，请参阅 File 文档。
 
 ##### 构造函数
 
-**Blob(blobParts[, options])**：返回一个新创建的 Blob 对象，其内容由参数中给定的数组串联组成。
+**`Blob(blobParts[, options])`** ：返回一个新创建的 Blob 对象，其内容由参数中给定的数组串联组成。
 
-> **参数**
+> ###### 参数
 >
-> - **array**（即上面的 blobParts，这里的 blobParts 必须是数组） <font color=FF0000>是一个由 **ArrayBuffer、ArrayBufferView、Blob、DOMString** 等对象构成的 Array</font> ，<font color=FF0000>或者其他类似对象的混合体</font>，它将会被放进 Blob。<font color=FF0000>**DOMStrings 会被编码为 UTF-8**</font>。
-> - **options** 是一个 <font color=FF0000>**可选的 BlobPropertyBag 字典**</font>，它可能会指定如下两个属性：
->   - **type：**<font color=FF0000>**默认值为 ""**</font>，它代表了将会被放入到 blob 中的<font color=FF0000>**数组内容**</font>（注：即对应了上面的Array） 的 <font color=FF0000 size=4>**MIME 类型**</font>。
->   - **endings：👎 ** <font color=FF0000>默认值为 "transparent"，用于指定包含行结束符\n的字符串如何被写入</font>。 它是以下两个值中的一个："native"，代表行结束符会被更改为适合宿主操作系统文件系统的换行符，或者 "transparent"，代表会保持blob中保存的结束符不变
+> - **`array`**（即上面的 blobParts，这里的 blobParts 必须是数组） <font color=FF0000>是一个由 **ArrayBuffer、ArrayBufferView、Blob、DOMString** 等对象构成的 Array</font> ，<font color=FF0000>或者其他类似对象的混合体</font>，它将会被放进 Blob。<font color=FF0000>**DOMStrings 会被编码为 UTF-8**</font>。
+> - **`options`** 是一个 <font color=FF0000>**可选的 BlobPropertyBag 字典**</font>，它可能会指定如下两个属性：
+>   - **`type`** ：<font color=FF0000>**默认值为 ""**</font>，它代表了将会被放入到 blob 中的<font color=FF0000>**数组内容**</font>（注：即对应了上面的Array） 的 <font color=FF0000 size=4>**MIME 类型**</font>。
+>   - **`endings`** ：👎  <font color=FF0000>默认值为 "transparent"，用于指定包含行结束符 `\n` 的字符串如何被写入</font>。 它是以下两个值中的一个："native"，代表行结束符会被更改为适合宿主操作系统文件系统的换行符，或者 "transparent"，代表会保持blob中保存的结束符不变
 >
 > 摘自：[MDN - Blob()](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob/Blob)
 
 ###### 属性
 
-- **Blob.size：**<font color=FF0000>只读</font>，Blob 对象中所包含数据的大小（字节）。
-- **Blob.type：**<font color=FF0000>只读</font>，一个字符串，<font color=FF0000>表明该 Blob 对象所包含数据的 MIME 类型</font>。如果类型未知，则该值为空字符串。
+- **`Blob.size`** ：<font color=FF0000>只读</font>，Blob 对象中所包含数据的大小（字节）。
+- **`Blob.type`** ：<font color=FF0000>只读</font>，一个字符串，<font color=FF0000>表明该 Blob 对象所包含数据的 MIME 类型</font>。如果类型未知，则该值为空字符串。
 
 ###### 方法
 
-- **Blob.slice([start[, end[, contentType]]])**：返回一个新的 Blob 对象，包含了源 Blob 对象中指定范围内的数据。
+- **`Blob.slice([start[, end[, contentType]]])`**：返回一个新的 Blob 对象，包含了源 Blob 对象中指定范围内的数据。
 
   > **参数**
   >
-  > - **start：**可选，这个参数代表 Blob 里的下标，表示第一个会被会被拷贝进新的 Blob 的字节的起始位置。如果你传入的是一个负数，那么这个偏移量将会从数据的末尾从后到前开始计算。举例来说，-10 将会是  Blob 的倒数第十个字节。它的<font color=FF0000>**默认值是0**</font>， <mark>如果你传入的start的长度大于源 Blob 的长度，那么返回的将会是一个长度为 0 并且不包含任何数据的一个 Blob 对象</mark>
-  > - **end：**可选，这个参数代表的是 Blob 的一个下标，这个下标 -1 的对应的字节将会是被拷贝进新的Blob 的最后一个字节。如果你传入了一个负数，那么这个偏移量将会从数据的末尾从后到前开始计算。举例来说， -10 将会是 Blob 的倒数第十个字节。它的<font color=FF0000>默认值就是它的原始长度 ( size )</font>
-  > - **contentType：**可选，<font color=FF0000>**给新的 Blob 赋予一个新的文档类型**</font>。这将会把它的 type 属性设为被传入的值。它的<font color=FF0000>默认值是一个空的字符串</font>。
+  > - **`start`** ：可选，这个参数代表 Blob 里的下标，表示第一个会被会被拷贝进新的 Blob 的字节的起始位置。如果你传入的是一个负数，那么这个偏移量将会从数据的末尾从后到前开始计算。举例来说，-10 将会是  Blob 的倒数第十个字节。它的<font color=FF0000>**默认值是0**</font>， <font color=lightSeaGreen>如果你传入的start的长度大于源 Blob 的长度，那么返回的将会是一个长度为 0 并且不包含任何数据的一个 Blob 对象</font>
+  > - **`end`** ：可选，这个参数代表的是 Blob 的一个下标，这个下标 -1 的对应的字节将会是被拷贝进新的Blob 的最后一个字节。如果你传入了一个负数，那么这个偏移量将会从数据的末尾从后到前开始计算。举例来说， -10 将会是 Blob 的倒数第十个字节。它的<font color=FF0000>默认值就是它的原始长度 ( size )</font>
+  > - **`contentType`** ：可选，<font color=FF0000>**给新的 Blob 赋予一个新的文档类型**</font>。这将会把它的 type 属性设为被传入的值。它的<font color=FF0000>默认值是一个空的字符串</font>。
   >
   > 摘自：[MDN - Blob.slice](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob/slice)
 
-- **Blob.stream()**：<font color=FF0000>返回一个能读取 blob 内容的 **ReadableStream**</font>。
+- **`Blob.stream()`** ：<font color=FF0000>返回一个能读取 blob 内容的 **ReadableStream**</font>。
 
-- **Blob.text()**：<font color=FF0000>返回一个 **Promise**</font> 且<font color=FF0000>包含 blob 所有内容的 **UTF-8 格式**的 USVString</font>。
-- **Blob.arrayBuffer()**：<font color=FF0000>返回一个 **Promise**</font> 且<font color=FF0000>包含 blob 所有内容的**二进制格式**的 ArrayBuffer</font>
+- **`Blob.text()`** ：<font color=FF0000>返回一个 **Promise**</font> 且<font color=FF0000>包含 blob 所有内容的 **UTF-8 格式**的 USVString</font>。
+- **`Blob.arrayBuffer()`** ：<font color=FF0000>返回一个 **Promise**</font> 且<font color=FF0000>包含 blob 所有内容的**二进制格式**的 ArrayBuffer</font>
 
 摘自：[MDN - Blob](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob) 
 
@@ -10038,21 +9999,22 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 
 <font color=FF0000>FileReader 对象</font>允许Web应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，<font color=FF0000>使用 File 或 Blob 对象指定要读取的文件或数据</font>。
 
-其中File对象<font color=FF0000>可以是来自用户在一个`<input>`元素上选择文件后返回的FileList对象</font>，也可以来自拖放操作生成的 DataTransfer对象，还可以是来自在一个HTMLCanvasElement上执行mozGetAsFile()方法后返回结果。
+其中File对象<font color=FF0000>可以是来自用户在一个`<input>`元素上选择文件后返回的FileList对象</font>，也可以来自拖放操作生成的 DataTransfer对象，还可以是来自在一个 `HTMLCanvasElement` 上执行 `mozGetAsFile()` 方法后返回结果。
 
-> ⚠️ **重要提示：**<font color=LightSeaGreen>FileReader 仅用于以安全的方式从用户（远程）系统读取文件内容，它**不能用于从文件系统中按路径名简单地读取文件**</font>。 <font color=FF0000>要在 JavaScript 中按路径名读取文件，应使用标准Ajax解决方案进行服务器端文件读取，如果读取跨域，则使用CORS权限。</font>
+> [!WARNING]
+> <font color=LightSeaGreen>FileReader 仅用于以安全的方式从用户（远程）系统读取文件内容，它**不能用于从文件系统中按路径名简单地读取文件**</font>。 <font color=FF0000>要在 JavaScript 中按路径名读取文件，应使用标准Ajax解决方案进行服务器端文件读取，如果读取跨域，则使用CORS权限。</font>
 
 ##### 构造函数
 
-- **FileReader()：**返回一个新构造的 FileReader
+- **`FileReader()`** ：返回一个新构造的 FileReader
 
 有关详细信息和示例，请参阅[如何在web应用程序中使用文件](https://developer.mozilla.org/zh-CN/Using_files_from_web_applications)。
 
 ##### 属性
 
-- **FileReader.error：** 只读，一个DOMException，表示在读取文件时发生的错误 。
+- **`FileReader.error`** ：只读，一个 DOMException，表示在读取文件时发生的错误 。
 
-- <font color=FF0000>**FileReader.readyState：** </font>只读，<font color=FF0000>表示FileReader状态的数字</font>。取值如下：
+- <font color=FF0000>**`FileReader.readyState`** ：</font>只读，<font color=FF0000>表示 FileReader 状态的数字</font>。取值如下：
   
   | 常量名     | 值   | 描述          |
   | ------- | --- | ----------- |
@@ -10060,24 +10022,24 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
   | LOADING | 1   | 数据正在被加载.    |
   | DONE    | 2   | 已完成全部的读取请求. |
 
-- <font color=FF0000>**FileReader.result：**</font>只读，<font color=FF0000>文件的内容</font>。该属性仅在读取操作完成后才有效，数据的格式取决于使用哪个方法来启动读取操作。
+- <font color=FF0000>**`FileReader.result`** ：</font>只读，<font color=FF0000>文件的内容</font>。该属性仅在读取操作完成后才有效，数据的格式取决于使用哪个方法来启动读取操作。
 
 ##### 事件处理
 
-- FileReader.onabort：处理abort事件。该事件在读取操作被中断时触发。
-- FileReader.onerror：处理error事件。该事件在读取操作发生错误时触发。
-- FileReader.onload：<font color=FF0000>处理load事件</font>。该事件<font color=FF0000>在读取操作完成时触发</font>。
-- FileReader.onloadstart：<font color=FF0000>处理loadstart事件</font>。该事件<font color=FF0000>在读取操作开始时触发</font>。
-- FileReader.onloadend：处理loadend事件。该事件在读取操作结束时（要么成功，要么失败）触发。
-- FileReader.onprogress：处理progress事件。该事件在读取Blob时触发。
+- `FileReader.onabort` ：处理 abort 事件。该事件在读取操作被中断时触发。
+- `FileReader.onerror` ：处理 error 事件。该事件在读取操作发生错误时触发。
+- `FileReader.onload` ：<font color=FF0000>处理 load 事件</font>。该事件<font color=FF0000>在读取操作完成时触发</font>。
+- `FileReader.onloadstart` ：<font color=FF0000>处理 loadstart 事件</font>。该事件<font color=FF0000>在读取操作开始时触发</font>。
+- `FileReader.onloadend` ：处理 loadend 事件。该事件在读取操作结束时（要么成功，要么失败）触发。
+- `FileReader.onprogress` ：处理 progress 事件。该事件在读取 Blob 时触发。
 
 ##### 方法
 
-- FileReader.abort()：中止读取操作。在返回时，readyState属性为DONE。
-- FileReader.readAsArrayBuffer()：开始读取指定的 Blob中的内容, 一旦完成（👀 load 事件触发），result 属性中保存的将是被读取文件的 ArrayBuffer 数据对象
-- FileReader.readAsBinaryString()：开始读取指定的Blob中的内容。一旦完成，result属性中将包含所读取文件的原始二进制数据。
-- FileReader.readAsDataURL()：开始读取指定的Blob中的内容。一旦完成，result 属性中将包含一个 data: URL 格式的 Base64 字符串以表示所读取文件的内容。
-- FileReader.readAsText()：开始读取指定的Blob中的内容。一旦完成，result属性中将包含一个字符串以表示所读取的文件内容。
+- `FileReader.abort()` ：中止读取操作。在返回时，`readyState` 属性为 `DONE` 。
+- `FileReader.readAsArrayBuffer()` ：开始读取指定的 Blob 中的内容, 一旦完成（👀 load 事件触发），result 属性中保存的将是被读取文件的 ArrayBuffer 数据对象
+- `FileReader.readAsBinaryString()` ：开始读取指定的 Blob 中的内容。一旦完成，result属性中将包含所读取文件的原始二进制数据。
+- `FileReader.readAsDataURL()` ：开始读取指定的 Blob 中的内容。一旦完成，result 属性中将包含一个 `data:` URL 格式的 Base64 字符串以表示所读取文件的内容。
+- `FileReader.readAsText()` ：开始读取指定的 Blob 中的内容。一旦完成，result属性中将包含一个字符串以表示所读取的文件内容。
 
 摘自：[MDN - FileReader](https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader)
 
@@ -10117,8 +10079,7 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 <font color=dodgerBlue>我们可以使用它将 blob 转换为其他格式：</font>
 
 - `readAsArrayBuffer(blob)` ：转换为 `ArrayBuffer`
-- `readAsText(blob, [encoding])` 
-- ：转换为字符串（ `TextDecoder` 的一个替代方案）
+- `readAsText(blob, [encoding])` ：转换为字符串（ `TextDecoder` 的一个替代方案）
 - `readAsDataURL(blob)` ：转换为 base64 的 data url
 
 ###### 在 Web Workers 中可以使用 FileReaderSync
@@ -10132,6 +10093,19 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 摘自：[现代 JS 教程 - File 和 FileReader # FileeReader](https://zh.javascript.info/file#filereader)
 
 
+#### SourceBuffer
+
+`SourceBuffer` 接口表示通过 [`MediaSource`](https://developer.mozilla.org/zh-CN/docs/Web/API/MediaSource) 对象传递到 [`HTMLMediaElement`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement) 并播放的媒体分块。它可以由一个或者多个媒体片段组成。
+
+```mermaid
+classDiagram
+class EventTarget
+class SourceBuffer
+EventTarget<|--SourceBuffer
+```
+
+
+
 
 #### URL
 
@@ -10141,51 +10115,51 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 
 ##### 构造器
 
-**new URL()：**创建并返回一个URL对象，该URL对象引用使用绝对URL字符串，相对URL字符串和基本URL字符串指定的URL。
+**`new URL()`** ：创建并返回一个URL对象，该URL对象引用使用绝对URL字符串，相对URL字符串和基本URL字符串指定的URL。
 
 ##### 属性
 
-- **hash：**<font color=FF0000>包含'#'的USVString</font>，后跟URL的片段标识符。
-- **host：**一个USVString，其中包含域（即主机名），后跟（如果指定了端口）“：”和URL的端口。
-- **hostname：**包含 URL 域名的 USVString。
-- **href：**包含完整 URL 的 USVString。
-- **origin：**只读，<font color=LightSeaGreen>返回一个包含协议名、域名和端口号</font>的 USVString。
-- **password：**包含在域名前面指定的密码的  USVString 。
-- **pathname：**以 '/' 起头紧跟着 URL 文件路径的 DOMString。
-- **port：**<font color=LightSeaGreen>包含 URL 端口号的 USVString</font>。
-- **protocol：**包含 URL 协议名的 USVString，<font color=FF0000>末尾带 ':'</font>。
-- **search：**一个USVString ，指示URL的参数字符串； 如果提供了任何参数，则<font color=FF0000>此字符串包括所有参数，并**以开头的“？”开头 字符**</font>
-- <font color=FF0000>**searchParams：**</font>只读，
-  - <font color=FF0000>**URLSearchParams：**</font>对象，可用于访问search中找到的各个查询参数。
-- **username：**包含在域名前面指定的用户名的 USVString。
+- **`hash`** ：<font color=FF0000>包含'#'的USVString</font>，后跟URL的片段标识符。
+- **`host`** ：一个USVString，其中包含域（即主机名），后跟（如果指定了端口）“：”和URL的端口。
+- **`hostname`** ：包含 URL 域名的 USVString。
+- **`href`** ：包含完整 URL 的 USVString。
+- **`origin`** ：只读，<font color=LightSeaGreen>返回一个包含协议名、域名和端口号</font>的 USVString。
+- **`password`** ：包含在域名前面指定的密码的  USVString 。
+- **`pathname`** ：以 `'/'` 起头紧跟着 URL 文件路径的 DOMString。
+- **`port`** ：<font color=LightSeaGreen>包含 URL 端口号的 USVString</font>。
+- **`protocol`** ：包含 URL 协议名的 USVString，<font color=FF0000>末尾带 ':'</font>。
+- **`search`** ：一个USVString ，指示URL的参数字符串； 如果提供了任何参数，则<font color=FF0000>此字符串包括所有参数，并**以开头的“？”开头 字符**</font>
+- <font color=FF0000>**`searchParams`** ：</font>只读，`URLSearchParams` 对象，可用于访问 search 中找到的各个查询参数。
+- **`username`** ：包含在域名前面指定的用户名的 USVString。
 
 ##### 方法
 
-- **toString()：**返回包含整个 URL 的 USVString。 它是 URL.href 的同义词，尽管它不能用于修改值。
-- **toJSON()：**返回包含整个 URL 的 USVString。 它返回与 href 属性相同的字符串。
+- **`toString()`** ：返回包含整个 URL 的 USVString。 它是 URL.href 的同义词，尽管它不能用于修改值。
+- **`toJSON()`** ：返回包含整个 URL 的 USVString。 它返回与 href 属性相同的字符串。
 
 ##### 静态方法
 
-###### createObjectURL()
+###### `createObjectURL()`
 
 返回一个 DOMString ，包含一个唯一的 blob 链接（该链接协议为以 `blob:` ，后跟唯一标识浏览器中的对象的掩码）。
 
 > 👀 详见 [[#URL.createObjectURL()]]
 
-###### revokeObjectURL()
+###### `revokeObjectURL()`
 
-销毁之前使用 URL.createObjectURL() 方法创建的URL实例。
+销毁之前使用 `URL.createObjectURL()` 方法创建的URL实例。
 
-> 👀 详见 [[#URL.revokeObjectURL()]]
+> 👀 详见 [[#`URL.revokeObjectURL()`]]
 
 摘自：[MDN - URL](https://developer.mozilla.org/zh-CN/docs/Web/API/URL)
 
-#### URL.createObjectURL()
+#### `URL.createObjectURL()`
 
-URL.createObjectURL() 静态方法 <font color=FF0000>会创建一个 DOMString</font>，<font color=FF0000>其中包含一个表示参数中给出的对象的 URL</font>。**这个 URL 的<font color=FF0000>生命周期和创建它的窗口中的 document 绑定</font>**。这个新的 URL 对象表示指定的 File 对象或 Blob 对象。
+`URL.createObjectURL()` 静态方法 <font color=FF0000>会创建一个 DOMString</font>，<font color=FF0000>其中包含一个表示参数中给出的对象的 URL</font>。**这个 URL 的<font color=FF0000>生命周期和创建它的窗口中的 document 绑定</font>**。这个新的 URL 对象表示指定的 File 对象或 Blob 对象。
 
-> ⚠️ **注意：**此特性<font color=FF0000>在 Web Worker 中可用</font>。<font color=FF0000>在 Service Worker 中**不可用**</font>，因为它有可能导致内存泄漏。
->
+> [!WARNING]
+> 此特性<font color=FF0000>在 Web Worker 中可用</font>。<font color=FF0000>在 Service Worker 中**不可用**</font>，因为它有可能导致内存泄漏。
+
 
 ##### 语法
 
@@ -10195,7 +10169,7 @@ objectURL = URL.createObjectURL(object);
 
 ###### 参数
 
-**object：**<font color=FF0000>用于创建 URL 的 File 对象、Blob 对象或者 MediaSource 对象</font>。
+**`object`** ：<font color=FF0000>用于创建 URL 的 File 对象、Blob 对象或者 MediaSource 对象</font>。
 
 ###### 返回值
 
@@ -10205,13 +10179,13 @@ objectURL = URL.createObjectURL(object);
 
 ###### 内存管理
 
-在每次调用 createObjectURL() 方法时，都会创建一个新的 URL 对象，即使你已经用相同的对象作为参数创建过。<font color=FF0000>当不再需要这些 URL 对象时，每个对象必须通过调用 URL.revokeObjectURL() 方法来释放</font>。<font color=FF0000>浏览器在 document 卸载的时候，会自动释放它们</font>；**但为了获得最佳性能和内存使用状况，你应该在安全的时机主动释放掉它们**
+在每次调用 `createObjectURL()` 方法时，都会创建一个新的 URL 对象，即使你已经用相同的对象作为参数创建过。<font color=FF0000>当不再需要这些 URL 对象时，每个对象必须通过调用 `URL.revokeObjectURL()` 方法来释放</font>。<font color=FF0000>浏览器在 document 卸载的时候，会自动释放它们</font>；**但为了获得最佳性能和内存使用状况，你应该在安全的时机主动释放掉它们**
 
 ###### 使用相对URLs 作为媒体流
 
-在旧版本的媒体资源规范中，添加流作为 \<video> 元素需要创建一个关于 MediaStream的对象URL。<font color=LightSeaGreen>现已没必要这样做了，浏览器已经移除了该操作的支持</font>。
+在旧版本的媒体资源规范中，添加流作为 `<video>` 元素需要创建一个关于 `MediaStream` 的对象URL。<font color=LightSeaGreen>现已没必要这样做了，浏览器已经移除了该操作的支持</font>。
 
-摘自：[MDN - URL.createObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/createObjectURL)
+摘自：[MDN - `URL.createObjectURL()`](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/createObjectURL)
 
 ##### 《现代JS教程》补充
 
@@ -10233,9 +10207,9 @@ objectURL = URL.createObjectURL(object);
 >
 > 摘自：[《现代 JS 教程 - Blob # Blob 用作 URL》](https://zh.javascript.info/blob#blob-yong-zuo-url)
 
-#### URL.revokeObjectURL()
+#### `URL.revokeObjectURL()`
 
-URL.revokeObjectURL() 静态方法用来<font color=FF0000>释放一个之前已经存在的、通过调用 URL.createObjectURL() 创建的 URL 对象</font>。当你结束使用某个 URL 对象之后，应该通过调用这个方法来让浏览器知道不用在内存中继续保留对这个文件的引用了。
+`URL.revokeObjectURL()` 静态方法用来<font color=FF0000>释放一个之前已经存在的、通过调用 `URL.createObjectURL()` 创建的 URL 对象</font>。当你结束使用某个 URL 对象之后，应该通过调用这个方法来让浏览器知道不用在内存中继续保留对这个文件的引用了。
 
 ##### 语法
 
@@ -10245,50 +10219,51 @@ window.URL.revokeObjectURL(objectURL);
 
 ###### 参数
 
-**objectURL：**一个 DOMString，表示通过调用 URL.createObjectURL() 方法产生的 URL 对象。
+**`objectURL`** ：一个 DOMString，表示通过调用 `URL.createObjectURL()` 方法产生的 URL 对象。
 
 ###### 返回值
 
 undefined
 
-摘自：[MDN - URL.revokeObjectURL()](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/revokeObjectURL)
+摘自：[MDN - `URL.revokeObjectURL()`](https://developer.mozilla.org/zh-CN/docs/Web/API/URL/revokeObjectURL)
 
 
 
-#### URLSearchParams
+#### `URLSearchParams`
 
 URLSearchParams <font color=FF0000>**接口** **定义了一些实用的方法**来处理 URL 的查询字符串</font>。
 
-一个实现了 URLSearchParams 的对象可以直接用在 for...of 结构中，例如下面两行是相等的：
+一个实现了 `URLSearchParams` 的对象可以直接用在 `for...of` 结构中，例如下面两行是相等的：
 
 ```js
 for (const [key, value] of mySearchParams) {}
 for (const [key, value] of mySearchParams.entries()) {}
 ```
 
-> ⚠️ 注意：此特性在 Web Worker 中可用
+> [!WARNING]
+> 此特性在 Web Worker 中可用
 
 ##### 构造函数
 
-**URLSearchParams()：**返回一个 URLSearchParams 对象。
+**`URLSearchParams()`** ：返回一个 `URLSearchParams` 对象。
 
 ##### 方法
 
 该接口不继承任何属性。
 
-- **URLSearchParams.append()：**插入一个指定的键/值对作为新的搜索参数。
-- **URLSearchParams.delete()：**从搜索参数列表里删除指定的搜索参数及其对应的值。
-- **URLSearchParams.entries()：**返回一个iterator可以遍历所有键/值对的对象。
-- **URLSearchParams.get()：**获取指定搜索参数的第一个值。
-- **URLSearchParams.getAll()：**获取指定搜索参数的所有值，返回是一个数组。
-- **URLSearchParams.has()：**返回 Boolean 判断是否存在此搜索参数。
-- **URLSearchParams.keys()：**返回iterator 此对象包含了键/值对的所有键名。
-- **URLSearchParams.set()：**设置一个搜索参数的新值，假如原来有多个值将删除其他所有的值。
-- **URLSearchParams.sort()：**按键名排序。
-- **URLSearchParams.toString()：**返回搜索参数组成的字符串，可直接使用在URL上。
-- **URLSearchParams.values()：**返回iterator 此对象包含了键/值对的所有值。
+- **`URLSearchParams.append()` ** ：插入一个指定的键/值对作为新的搜索参数。
+- **`URLSearchParams.delete()` ** ：从搜索参数列表里删除指定的搜索参数及其对应的值。
+- **`URLSearchParams.entries()` ** ：返回一个 iterator 可以遍历所有键/值对的对象。
+- **`URLSearchParams.get()` ** ：获取指定搜索参数的第一个值。
+- **`URLSearchParams.getAll()` ** ：获取指定搜索参数的所有值，返回是一个数组。
+- **`URLSearchParams.has()` ** ：返回 Boolean 判断是否存在此搜索参数。
+- **`URLSearchParams.keys()` ** ：返回 iterator 此对象包含了键/值对的所有键名。
+- **`URLSearchParams.set()` ** ：设置一个搜索参数的新值，假如原来有多个值将删除其他所有的值。
+- **`URLSearchParams.sort()` ** ：按键名排序。
+- **`URLSearchParams.toString()` ** ：返回搜索参数组成的字符串，可直接使用在 URL 上。
+- **`URLSearchParams.values()` ** ：返回 iterator 此对象包含了键/值对的所有值。
 
-摘自：[MDN - URLSearchParams](https://developer.mozilla.org/zh-CN/docs/Web/API/URLSearchParams)
+摘自：[MDN - `URLSearchParams`](https://developer.mozilla.org/zh-CN/docs/Web/API/URLSearchParams)
 
 
 
@@ -10302,7 +10277,9 @@ URL 接口的 searchParams 属性<font color=FF0000>返回一个 URLSearchParams
 const urlSearchParams = url.searchParams
 ```
 
-**属性值：**一个 URLSearchParams 对象。
+###### 属性值
+
+一个 URLSearchParams 对象。
 
 ##### 示例
 
@@ -10328,7 +10305,7 @@ encodeURI(URI)
 
 ###### 参数
 
-- **URI：**一个完整的URI.
+- **`URI`** ：一个完整的URI.
 
 ###### 返回值
 
@@ -10373,11 +10350,11 @@ function fixedEncodeURI (str) {
 }
 ```
 
-摘自：[MDN - encodeURI()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/encodeURI)
+摘自：[MDN - `encodeURI()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/encodeURI)
 
-#### encodeURIComponent()
+#### `encodeURIComponent()`
 
-encodeURIComponent() 函数通过将一个，两个，三个或四个表示字符的UTF-8编码的转义序列替换某些字符的每个实例来编码 URI（对于由两个“代理”字符组成的字符而言，将仅是四个转义序列） 。
+`encodeURIComponent()` 函数通过将一个，两个，三个或四个表示字符的 UTF-8 编码的转义序列替换某些字符的每个实例来编码 URI（对于由两个“代理”字符组成的字符而言，将仅是四个转义序列） 。
 
 ##### 语法
 
@@ -10387,21 +10364,21 @@ encodeURIComponent(str);
 
 ###### 参数
 
-- str：String. URI 的组成部分。
+- `str` ：String. URI 的组成部分。
 
 ###### 返回值
 
-原字串作为URI组成部分被被编码后的新字符串。
+原字串作为 URI 组成部分被被编码后的新字符串。
 
 ##### 描述
 
-<font color=FF0000>encodeURIComponent 转义除了如下所示外的所有字符</font>：A-Z a-z 0-9 - _ . ! ~ * ' ( )
+<font color=FF0000>`encodeURIComponent` 转义除了如下所示外的所有字符</font>：`A-Z a-z 0-9 - _ . ! ~ * ' ( )`
 
-摘自：[MDN - encodeURIComponent()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)
+摘自：[MDN - `encodeURIComponent()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)
 
-#### decodeURI()
+#### `decodeURI()`
 
-decodeURI() 函数能解码由encodeURI 创建或其它流程得到的统一资源标识符（URI）。
+`decodeURI()` 函数能解码由 `encodeURI` 创建或其它流程得到的统一资源标识符（URI）。
 
 ##### 语法
 
@@ -10411,7 +10388,7 @@ decodeURI(encodedURI)
 
 ###### 参数
 
-- **encodedURI：**一个完整的编码过的 URI
+- **`encodedURI`** ：一个完整的编码过的 URI
 
 ###### 返回值
 
@@ -10439,7 +10416,7 @@ decodeURIComponent(encodedURI)
 
 ###### 参数
 
-- encodedURI：编码后的部分 URI
+- `encodedURI` ：编码后的部分 URI
 
 ###### 返回值
 
@@ -10481,7 +10458,7 @@ try {
 
 #### TextEncoder
 
-TextEncoder <font color=FF0000>接受代码点流作为输入</font>，<font color=FF0000>并提供 UTF-8 字节流作为输出</font>。
+`TextEncoder` <font color=FF0000>接受代码点流作为输入</font>，<font color=FF0000>并提供 UTF-8 字节流作为输出</font>。
 
 ##### 示例
 
@@ -10493,20 +10470,20 @@ console.log(view); // Uint8Array(3) [226, 130, 172]
 
 ##### 构造器
 
-**TextEncoder()：**返回一个新构造的 TextEncoder，<font color=FF0000>它默认使用 UTF-8 编码将代码点流转换成字节<流</font>。
+**`TextEncoder()`** ：返回一个新构造的 TextEncoder，<font color=FF0000>它默认使用 UTF-8 编码将代码点流转换成字节流</font>。
 
 ##### 属性
 
 TextEncoder 接口不继承任何属性。
 
-**TextEncoder.encoding：**<font color=FF0000>**只读**</font>，<font color=FF0000>**总是**返回 "utf-8"</font>。
+**`TextEncoder.encoding`** ：<font color=FF0000>**只读**</font>，<font color=FF0000>**总是**返回 "utf-8"</font>。
 
 ##### 方法
 
 TextEncoder 接口不继承任何方法。
 
-- **TextEncoder.encode()：**接受一个 USVString 作为输入，<font color=FF0000>返回一个包含文本的 **Uint8Array**，其中的文本使用 UTF-8 编码</font>。
-- **TextEncoder.prototype.encodeInto()：**接受一个 USVString 作为输入、一个Uint8Array 作为输出目标，<font color=FF0000>**返回一个指示编码进度的目录（dictionary）对象**</font>。此方法的性能可能会比更早出现的 encode() 方法好一些。
+- **`TextEncoder.encode()`** ：接受一个 USVString 作为输入，<font color=FF0000>返回一个包含文本的 **Uint8Array**，其中的文本使用 UTF-8 编码</font>。
+- **`TextEncoder.prototype.encodeInto()`** ：接受一个 USVString 作为输入、一个Uint8Array 作为输出目标，<font color=FF0000>**返回一个指示编码进度的目录（dictionary）对象**</font>。此方法的性能可能会比更早出现的 encode() 方法好一些。
 
 摘自：[MDN - TextEncoder](https://developer.mozilla.org/zh-CN/docs/Web/API/TextEncoder)
 
@@ -10514,9 +10491,9 @@ TextEncoder 接口不继承任何方法。
 
 TextDecoder 接口<font color=FF0000>表示一个文本解码器</font>，<font color=FF0000>**一个解码器只支持一种特定文本编码**</font>，例如 utf-8、iso-8859-2、koi8、cp1261，gbk 等等。解码器将字节流作为输入，并提供代码点流作为输出。
 
-**构造函数**
+###### 构造函数
 
-**TextDecoder()：**返回一个新构造的 TextDecoder，它使用参数中指定的解码方法生成代码点流。
+**`TextDecoder()`** ：返回一个新构造的 TextDecoder，它使用参数中指定的解码方法生成代码点流。
 
 ##### 语法
 
@@ -10524,24 +10501,26 @@ TextDecoder 接口<font color=FF0000>表示一个文本解码器</font>，<font 
 decoder = new TextDecoder(utfLabel, options);
 ```
 
-##### 参数
+###### 参数
 
-- utfLabel：选填，是一个DOMString包含编码名称，默认为utf-8；可以是任意合法的编码名称
-- options：选填，是带有属性的TextDecoderOptions字典
-  - fatal：一个布尔标志，表明 TextDecoder.decode() 方法在发现编码错误时是否必须抛出带有“EncodingError”值的 DOMException。 默认为false。
+- `utfLabel` ：选填，是一个DOMString包含编码名称，默认为utf-8；可以是任意合法的编码名称
+- `options` ：选填，是带有属性的TextDecoderOptions字典
+  - `fatal` ：一个布尔标志，表明 `TextDecoder.decode()` 方法在发现编码错误时是否必须抛出带有 “EncodingError” 值的 DOMException。 默认为 false。
 
 摘自：[MDN - TextDecoder()](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/TextDecoder)
 
-**属性**
+###### 属性
 
-- **TextDecoder：**接口不继承任何属性。
-- **TextDecoder.prototype.encoding：**只读，<font color=FF0000>DOMString所包含的解码器的名称</font>，表示TextDecoder所使用的解码方法的字符串。
-- **TextDecoder.prototype.fatal：**只读，布尔值，Boolean，<font color=FF0000>是否显示致命错误</font>。
-- **TextDecoder.prototype.ignoreBOM：**只读，布尔值，Boolean，<font color=FF0000>是否忽略 BOM（byte order marker）标记</font>。
+- **`TextDecoder`** ：接口不继承任何属性。
+- **`TextDecoder.prototype.encoding`** ：只读，<font color=FF0000>DOMString所包含的解码器的名称</font>，表示TextDecoder所使用的解码方法的字符串。
+- **`TextDecoder.prototype.fatal`** ：只读，布尔值，Boolean，<font color=FF0000>是否显示致命错误</font>。
+- **`TextDecoder.prototype.ignoreBOM`** ：只读，布尔值，Boolean，<font color=FF0000>是否忽略 BOM（byte order marker）标记</font>。
 
-**方法：**TextDecoder 接口不继承任何方法。
+###### 方法
 
-- **TextDecoder.prototype.decode()：**<font color=FF0000>返回一个DOMString，其中包含使用特定 TextDecoder 对象的方法解码的文本</font>。
+TextDecoder 接口不继承任何方法。
+
+- **`TextDecoder.prototype.decode()`** ：<font color=FF0000>返回一个 DOMString，其中包含使用特定 TextDecoder 对象的方法解码的文本</font>。
 
 摘自：[MDN - TextDecoder](https://developer.mozilla.org/zh-CN/docs/Web/API/TextDecoder)
 
@@ -10665,7 +10644,7 @@ console.log(window.getComputedStyle(div).getPropertyValue('height')); // 200px
 
 `Window.getComputedStyle()` 方法<font color=FF0000>返回一个对象</font>，<font color=FF0000>该对象在应用活动样式表并解析这些值可能包含的任何基本计算后报告元素的所有 CSS 属性的值</font>。 私有的 CSS 属性值可以通过对象提供的 API 或通过简单地使用 CSS 属性名称进行索引来访问。
 
-**语法**
+##### 语法
 
 ```js
 let style = window.getComputedStyle(element, [pseudoElt]);
@@ -10718,9 +10697,9 @@ Object.create(proto，[propertiesObject])
 
 ###### 参数
 
-- **proto：**新创建对象的原型对象。
+- **`proto`** ：新创建对象的原型对象。
 
-- **propertiesObject：**可选。需要传入一个对象（注意：也可以是多个对象），<font color=FF0000>该对象的属性类型参照 **Object.defineProperties()** 的第二个参数</font>。如果该参数被指定且不为 undefined，该传入对象的自有可枚举属性(即其自身定义的属性，而不是其原型链上的枚举属性)将为新创建的对象添加指定的属性值和对应的属性描述符。
+- **`propertiesObject`** ：可选。需要传入一个对象（注意：也可以是多个对象），<font color=FF0000>该对象的属性类型参照 `Object.defineProperties()` 的第二个参数</font>。如果该参数被指定且不为 undefined，该传入对象的自有可枚举属性(即其自身定义的属性，而不是其原型链上的枚举属性)将为新创建的对象添加指定的属性值和对应的属性描述符。
 
   相关示例参见：[MDN - Object.create - 使用 Object.create 的 propertyObject参数](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create#使用_object.create_的_propertyobject参数) 另外，关于Object.create()的最后也有摘录部分
 
@@ -10784,7 +10763,7 @@ MyClass.prototype.constructor = MyClass; // 这里的构造函数还是上面使
 MyClass.prototype.myMethod = function() { // do a thing };
 ```
 
-<font color=FF0000 size=4>**Object.assign 会把  OtherSuperClass 原型上的函数拷贝到 MyClass原型上**</font>，使 MyClass 的所有实例都可用 OtherSuperClass 的方法。Object.assign 是在 ES2015 引入的，且可用 polyfilled。要支持旧浏览器的话，可用使用 jQuery.extend() 或者 \_.assign()。
+<font color=fuchsia>**Object.assign 会把  OtherSuperClass 原型上的函数拷贝到 MyClass原型上**</font>，使 MyClass 的所有实例都可用 OtherSuperClass 的方法。Object.assign 是在 ES2015 引入的，且可用 polyfilled。要支持旧浏览器的话，可用使用 jQuery.extend() 或者 \_.assign()。
 
 **使用 Object.create 的 propertyObject 参数（这里只摘录了一部分）**
 
@@ -10907,16 +10886,18 @@ Object.defineProperty(o, "a", {
 对象里目前存在的属性描述符**有两种主要形式**：<mark>**数据描述符**</mark> 和 <mark style="background:aqua">**存取描述符**</mark>。<mark>数据描述符</mark>是一个具有值的属性，该值可以是可写的，也可以是不可写的。<mark style="background:aqua">存取描述符</mark>是由 getter 函数和 setter 函数所描述的属性。<font color=FF0000>一个描述符只能是这两者其中之一；不能同时是两者。</font>
 这两种描述符都是对象。它们共享以下可选键值（默认值是指在使用 Object.defineProperty() 定义属性时的默认值）
 
-- **configurable：**<font color=FF0000>当且仅当该属性的 configurable 键值为 true 时，该属性的**描述符才能够被改变**</font>，同时该属性也能从对应的对象上被删除。<font color=FF0000 size=4>**默认为 false**</font>。(补充：<font color=FF0000>configurable 特性表示对象的属性是否可以被删除</font>，以及除 value 和 writable 特性外的其他特性是否可以被修改。)
-- **enumerable：**<font color=FF0000>当且仅当该属性的 enumerable 键值为 true 时，该属性**才会出现在对象的枚举属性中**</font>。<font color=FF0000 size=4>**默认为 false**</font>。(补充：<font color=fuchsia size=4>**enumerable 定义了对象的属性是否可以在 for...in 循环和 Object.keys() 中被枚举**</font>)
+- **`configurable`** ：<font color=FF0000>当且仅当该属性的 configurable 键值为 true 时，该属性的**描述符才能够被改变**</font>，同时该属性也能从对应的对象上被删除。<font color=fuchsia>**默认为 false**</font>。
+   > 👀 <font color=FF0000>configurable 特性表示对象的属性是否可以被删除</font>，以及除 value 和 writable 特性外的其他特性是否可以被修改。
+- **`enumerable`** ：<font color=FF0000>当且仅当该属性的 enumerable 键值为 true 时，该属性**才会出现在对象的枚举属性中**</font>。<font color=fuchsia>**默认为 false**</font>。
+   > 👀 <font color=red>enumerable 定义了对象的属性是否可以在 `for...in` 循环和 `Object.keys()` 中被枚举</font>
 
-- **value：**该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。<font color=FF0000 size=4>**默认为 undefined**</font>
-- **writable：**<font color=FF0000>当且仅当该属性的 writable 键值为 true 时，**属性的值**，也就是上面的 value，**才能被赋值运算符改变**</font>。<font color=FF0000 size=4>**默认为 false**</font>。
+- **`value`** ：该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。<font color=FF0000 size=4>**默认为 undefined**</font>
+- **`writable`** ：<font color=FF0000>当且仅当该属性的 writable 键值为 true 时，**属性的值**，也就是上面的 value，**才能被赋值运算符改变**</font>。<font color=fuchsia>**默认为 false**</font>。
 
-<mark style="background:aqua">存取描述符</mark>还具有以下可选键值
+<font color=dodgerBlue>**存取描述符** 还具有以下可选键值</font>
 
-- **get：**属性的 getter 函数，如果没有 getter，则为 undefined。<font color=FF0000>**当访问该属性时，会调用此函数**</font>。<font color=fuchsia>**执行时不传入任何参数，但是会传入 this 对象（由于继承关系，这里的this并不一定是定义该属性的对象）**</font>。该函数的返回值会被用作属性的值。<font color=FF0000>默认为 undefined</font>。
-- **set：**属性的 setter 函数，如果没有 setter，则为 undefined。<font color=FF0000>**当属性值被修改时，会调用此函数**</font>。<font color=fuchsia>**该方法接受一个参数（也就是被赋予的新值），会传入赋值时的 this 对象**</font>。<font color=FF0000>默认为 undefined</font>。
+- **`get`** ：属性的 getter 函数，如果没有 getter，则为 undefined。<font color=FF0000>**当访问该属性时，会调用此函数**</font>。<font color=fuchsia>**执行时不传入任何参数，但是会传入 this 对象（由于继承关系，这里的 this 并不一定是定义该属性的对象）**</font>。该函数的返回值会被用作属性的值。<font color=FF0000>默认为 undefined</font>。
+- **`set`** ：属性的 setter 函数，如果没有 setter，则为 undefined。<font color=FF0000>**当属性值被修改时，会调用此函数**</font>。<font color=fuchsia>**该方法接受一个参数（也就是被赋予的新值），会传入赋值时的 this 对象**</font>。<font color=FF0000>默认为 undefined</font>。
 
 |            | configurable | enumerable | value  | writable | get    | set    |
 | ---------- | ------------ | ---------- | ------ | -------- | ------ | ------ |
@@ -10952,7 +10933,7 @@ console.log(b.x); // 1
 
 #### Object.defineProperties()
 
-**Object.defineProperties()** 方法直接在一个对象上定义新的属性或修改现有属性，并返回该对象。
+`Object.defineProperties()` 方法直接在一个对象上定义新的属性或修改现有属性，并返回该对象。
 
 ##### 语法
 
@@ -10962,17 +10943,18 @@ Object.defineProperties(obj, props)
 
 ##### 参数
 
-- **obj：**在其上定义或修改属性的对象。
-- **props：**要定义其可枚举属性或修改的属性描述符的对象。对象中存在的属性描述符主要有两种：数据描述符和访问器描述符（更多详情，请参阅Object.defineProperty()）。描述符具有以下键：
-  - **configurable：**true 只有该属性描述符的类型可以被改变并且该属性可以从对应对象中删除。默认为 false
-  - **enumerable：**true 只有在枚举相应对象上的属性时该属性显现。默认为 false
-  - **value：**与属性关联的值。可以是任何有效的JavaScript值（数字，对象，函数等）。默认为 undefined.
-  - **writable：**true只有与该属性相关联的值被assignment operator改变时。默认为 false
-  - **get：**作为该属性的 getter 函数，如果没有 getter 则为undefined。函数返回值将被用作属性的值。默认为 undefined
-  - **set：**作为属性的 setter 函数，如果没有 setter 则为undefined。函数将仅接受参数赋值给该属性的新值。默认为 
-  - **undefined**
+- **`obj`** ：在其上定义或修改属性的对象。
+- **`props`** ：要定义其可枚举属性或修改的属性描述符的对象。对象中存在的属性描述符主要有两种：数据描述符和访问器描述符（更多详情，请参阅 `Object.defineProperty()`）。描述符具有以下键：
+  - **`configurable`** ：true 只有该属性描述符的类型可以被改变并且该属性可以从对应对象中删除。默认为 false
+  - **`enumerable`** ：true 只有在枚举相应对象上的属性时该属性显现。默认为 false
+  - **`value`** ：与属性关联的值。可以是任何有效的JavaScript值（数字，对象，函数等）。默认为 undefined.
+  - **`writable`** ：true只有与该属性相关联的值被assignment operator改变时。默认为 false
+  - **`get`** ：作为该属性的 getter 函数，如果没有 getter 则为undefined。函数返回值将被用作属性的值。默认为 undefined
+  - **`set`** ：作为属性的 setter 函数，如果没有 setter 则为undefined。函数将仅接受参数赋值给该属性的新值。默认为 undefined
 
-**返回值：**传递给函数的对象。
+##### 返回值
+
+传递给函数的对象。
 
 摘自：[MDN - Object.defineProperties()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties)
 
@@ -10988,13 +10970,13 @@ Object.preventExtensions()方法让一个对象变的不可扩展，也就是永
 Object.preventExtensions(obj)
 ```
 
-##### 参数
+###### 参数
 
 obj：将要变得不可扩展的对象。
 
 **返回值：**已经不可扩展的对象。
 
-##### 描述
+###### 描述
 
 <font color=FF0000>如果一个对象可以添加新的属性，则这个对象是可扩展的</font>。<font color=FF0000>Object.preventExtensions() 将对象标记为不再可扩展</font>，这样它将永远不会具有它被标记为不可扩展时持有的属性之外的属性。注意，<font color=FF0000>一般来说，不可扩展对象的属性可能仍然可被删除</font>。<font color=FF0000>**尝试将新属性添加到不可扩展对象将静默失败或抛出 TypeError**</font>（最常见的情况是 strict mode 中，但不排除其他情况）。 
 
@@ -11007,17 +10989,19 @@ Object.preventExtensions()仅阻止添加自身的属性。但其对象类型的
 
 Object.isExtensible() 方法判断一个对象是否是可扩展的（是否可以在它上面添加新的属性）。
 
-##### **语法**
+##### 语法
 
 ```js
 Object.isExtensible(obj)
 ```
 
-##### 参数
+###### 参数
 
-obj：需要检测的对象
+`obj` ：需要检测的对象
 
-**返回值：**表示给定对象是否可扩展的一个Boolean 。
+###### 返回值
+
+表示给定对象是否可扩展的一个Boolean 。
 
 ##### 描述
 
@@ -11257,14 +11241,16 @@ Object.is() 方法判断两个值是否为同一个值。
 Object.is(value1, value2);
 ```
 
-##### 参数
+###### 参数
 
 - value1：被比较的第一个值。
 - value2：被比较的第二个值。
 
-**返回值：**一个 Boolean 类型标示两个参数是否是同一个值。
+###### 返回值
 
-**描述**
+一个 Boolean 类型标示两个参数是否是同一个值。
+
+##### 描述
 
 Object.is() 方法判断两个值是否为同一个值。<font color=FF0000>如果满足以下条件则两个值相等</font>：
 
@@ -11272,16 +11258,16 @@ Object.is() 方法判断两个值是否为同一个值。<font color=FF0000>如�
 - 都是 null <font color=FF0000>（null === null 本身就成立）</font>
 - 都是 true 或 false
 - 都是相同长度的字符串且相同字符按相同顺序排列
-- 都是相同对象（意味着每个对象有同一个引用），<font color=FF0000>注：这里两个本来也全等( === )</font>
+- 都是相同对象（意味着每个对象有同一个引用），<font color=FF0000>👀 这里两个本来也全等( === )</font>
 - 都是数字且
   - 都是 +0
   - 都是 -0
-  - <font color=FF0000>都是 NaN（注：NaN != NaN，但是Object.is(NaN, NaN) == true ）</font>
+  - <font color=FF0000>都是 NaN（👀 NaN != NaN，但是 `Object.is(NaN, NaN) == true` ）</font>
   - 或都是非零而且非 NaN 且为同一个值
 
-与== 运算不同。  <font color=FF0000>== 运算符在判断相等前对两边的变量（如果它们不是同一类型）进行强制转换（这种行为的结果会将 "" == false 判断为 true）</font>， <font color=FF0000>而 **Object.is不会强制转换两边的值**</font>。
+与 `==` 运算不同。  <font color=FF0000>`==` 运算符在判断相等前对两边的变量（如果它们不是同一类型）进行强制转换（这种行为的结果会将 `"" == false` 判断为 true）</font>， <font color=FF0000>而 **`Object.is` 不会强制转换两边的值**</font>。
 
-与 `===` 运算也不相同， <font color=FF0000>`===` 运算符 (也包括 `==` 运算符) 将数字 `-0` 和 `+0` 视为相等</font>（👀 **根据上面的判断规则，Object.is(+0, -0) 是 false** ），<font color=red>而将 Number.NaN 与 NaN 视为不相等</font>
+与 `===` 运算也不相同， <font color=FF0000>`===` 运算符 (也包括 `==` 运算符) 将数字 `-0` 和 `+0` 视为相等</font>（👀 **根据上面的判断规则，`Object.is(+0, -0)` 是 false** ），<font color=red>而将 Number.NaN 与 NaN 视为不相等</font>
 
 摘自：[MDN - Object.is()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is)
 
@@ -11297,7 +11283,9 @@ valueOf() 方法返回指定对象的原始值。
 object.valueOf()
 ```
 
-**返回值：**返回值为该对象的原始值。
+###### 返回值
+
+返回值为该对象的原始值。
 
 ##### 描述
 
@@ -11309,7 +11297,7 @@ JavaScript 调用 valueOf 方法将对象转换为原始值。你很少需要自
 
 ##### 不同类型对象的 valueOf() 方法的返回值
 
-| **对象** | **返回值**                                                   |
+| 对象 | 返回值                                                   |
 | :------- | :----------------------------------------------------------- |
 | Array    | 返回数组对象本身                                             |
 | Boolean  | 布尔值                                                       |
@@ -11480,7 +11468,7 @@ console.log(Object.getPrototypeOf(reg).constructor.name) // 'RegExp'
 
 ##### Object.prototype.toString 执行步骤的补充
 
-<font color=FF0000 size=4>**在 ECMAScript 5 中，Object.prototype.toString() 被调用时，会进行如下步骤：**</font>
+<font color=dodgerBlue>**在 ECMAScript 5 中**，Object.prototype.toString() 被调用时，会进行如下步骤：</font>
 
 - 如果 this 是 undefined ，返回 `[object Undefined]` ；
 - 如果 this 是 null ， 返回 `[object Null]` ；
@@ -11490,7 +11478,7 @@ console.log(Object.getPrototypeOf(reg).constructor.name) // 'RegExp'
 
 注，也就是说，在 ES5 中，toString 是通过 内部属性 `[[class]]` 获取的结果
 
-<font color=FF0000 size=4>**在 ES6，调用 Object.prototype.toString 时，会进行如下步骤：**</font>
+<font color=dodgerBlue>**在 ES6**，调用 Object.prototype.toString 时，会进行如下步骤：</font>
 
 - 如果 this 是 undefined ，返回 '[object Undefined]' ;
 - 如果 this 是 null , 返回 '[object Null]' ；
@@ -11589,8 +11577,8 @@ console.log(Object.getPrototypeOf(reg).constructor.name) // 'RegExp'
    **为了进行转换，JavaScript 尝试查找并调用三个对象方法：**
 
    1. 调用 `obj[Symbol.toPrimitive](hint) `—— 带有 `symbol` 键 `Symbol.toPrimitive`（系统 symbol）的方法，如果这个方法存在的话。
-   2. 否则，如果 hint 是 "string" —— <font color=FF0000>尝试 obj.toString() 和 obj.valueOf()</font>，无论哪个存在。
-   3. 否则，如果 hint 是 "number" 或 "default" —— <font color=FF0000>尝试 obj.valueOf() 和 obj.toString()</font>，无论哪个存在。
+   2. 否则，如果 hint 是 "string" —— <font color=FF0000>尝试 `obj.toString()` 和 `obj.valueOf()`</font>，无论哪个存在。
+   3. 否则，如果 hint 是 "number" 或 "default" —— <font color=FF0000>尝试 `obj.valueOf()` 和 `obj.toString()`</font>，无论哪个存在。
 
    > ⚠️ hint 是 "string" 和 "number" / "default" 这两种情况下 toString() valueOf() 的顺序，下面也会说到。
 
@@ -11689,22 +11677,6 @@ alert(obj + 2); // 22（"2" + 2）被转换为原始值字符串 => 级联
 摘自：[现代JS教程 - 对象 - 原始值转换](https://zh.javascript.info/object-toprimitive#symboltoprimitive)
 
 
-
-#### JS判断对象是否为空
-
-判断 `Object.keys(obj).length` 是否等于 0
-
-#### JS判断对象是否包含某个key
-
-有两种方法：
-
-- 'key' in obj：返回一个bool值（这是类似于Python的写法）
-- **obj.hasOwnProperty("key")：**返回一个bool值
-
-摘自：[JS中判断对象是否包含某个key的方法](https://blog.csdn.net/sinat_34241861/article/details/107347288)
-
-
-
 #### Object.prototype.hasOwnProperty()
 
 hasOwnProperty() 方法会返回一个布尔值，指示 ( indicating ) <font color=fuchsia>**对象自身属性中**</font> <font color=red>是否具有指定的属性</font>
@@ -11725,7 +11697,7 @@ hasOwnProperty() 方法会返回一个布尔值，指示 ( indicating ) <font co
 > >
 > > 摘自：P231 8.2.4 原型模式
 
-**语法**
+##### 语法
 
 ```js
 obj.hasOwnProperty(prop)

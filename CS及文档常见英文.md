@@ -2143,4 +2143,4 @@
 
   **plenary meeting** ：全体会议
   
-- 
+- **quirk** ：怪癖
