@@ -2870,14 +2870,14 @@ var y = "10";
 if (x === y)
 ```
 
-**数组易错点：**
+###### 数组易错点
 
 - JavaScript 不支持使用名字来索引数组，只允许使用数字索引。
 
 
 - 在 JavaScript 中, **对象** 使用 **名字作为索引**。
 
-<font size=4>**补充：**</font>
+###### 补充
 
 在定义类时，如果想要定义的属性为变量（即属性名可以修改），可以使用中括号包裹（即计算属性）
 
@@ -5512,8 +5512,8 @@ new Function ([arg1[, arg2[, ...argN]],] functionBody)
 
 ###### 参数
 
-- **arg1, arg2, ... argN：**被函数使用的参数的名称必须是合法命名的。参数名称是一个有效的JavaScript标识符的字符串，或者一个用逗号分隔的有效字符串的列表；例如 “×”，“theValue”，或 “a,b”。
-- **functionBody：**一个含有包括函数定义的 JavaScript 语句的字符串。
+- `arg1, arg2, ... argN` ：被函数使用的参数的名称必须是合法命名的。参数名称是一个有效的JavaScript标识符的字符串，或者一个用逗号分隔的有效字符串的列表；例如 “×”，“theValue”，或 “a,b”。
+- `functionBody` ：一个含有包括函数定义的 JavaScript 语句的字符串。
 
 ##### 描述
 
@@ -5541,7 +5541,7 @@ new Function('a , b', 'return a + b'); // 逗号和空格分隔
 
 #### 内部属性 ( internal property )
 
-ECMA-262 定义了内部才用的特性是为了实现 JavaScript 引擎用的，因此在 JS 中不能直接访问它们。内部属性的特征是 通过 \[[]] 包裹。
+ECMA-262 定义了内部才用的特性是为了实现 JavaScript 引擎用的，因此在 JS 中不能直接访问它们。内部属性的特征是 通过 `[[]]` 包裹。
 
 描述符对象就是一种内部属性，包含数据描述符 和 存取描述符： `[[Configurable]]` 、`[[Enumerable]]` 、`[[writable]]` 、`[[value]]`  、`[[Get]]` 、`[[Set]]`
 
@@ -5617,7 +5617,7 @@ var x = document.getElementsByClassName("intro");
 
 
 
-#### **Element.classList**
+#### Element.classList
 
 <font color=FF0000>Element.classList 是一个只读属性，返回一个元素的类属性的实时 DOMTokenList 集合</font>。
 相比将 element.className 作为以空格分隔的字符串来使用，classList 是一种更方便的访问元素的类列表的方法。
@@ -5634,7 +5634,7 @@ elementClasses 是一个 DOMTokenList 表示  elementNodeReference 的类属性 
 
 ##### 方法
 
-- **add(className) /  remove(className)：**甚至其中的add() / remove()可以放多组类值，甚至可以通过使用展开语法添加或移除多个类值。示例如下：
+- `add(className)` /  `remove(className)` ：甚至其中的 add() / remove() 可以放多组类值，甚至可以通过使用展开语法添加或移除多个类值。示例如下：
 
   ```js
   // 添加或移除多个类值
@@ -5647,9 +5647,9 @@ elementClasses 是一个 DOMTokenList 表示  elementNodeReference 的类属性 
   div.classList.remove(...cls);
   ```
 
-- **item(index)：**返回元素中索引值对应的类名。索引值从 0 开始。如果索引值在区间范围外则返回 null
+- `item(index)` ：返回元素中索引值对应的类名。索引值从 0 开始。如果索引值在区间范围外则返回 null
 
-- **toggle(className)：**如果该类值已存在，则移除它（并返回 true），否则添加它（并返回 false ）。另外，该函数还可添加触发条件：`toggle(className, conditionExpression)` 若条件满足则添加/ 移除该类值。
+- `toggle(className)` ：如果该类值已存在，则移除它（并返回 true），否则添加它（并返回 false ）。另外，该函数还可添加触发条件：`toggle(className, conditionExpression)` 若条件满足则添加/ 移除该类值。
 
   ```js
   // 如果 visible 类值已存在，则移除它，否则添加它
@@ -5659,7 +5659,7 @@ elementClasses 是一个 DOMTokenList 表示  elementNodeReference 的类属性 
   div.classList.toggle("visible", i < 10 );
   ```
 
-  > ##### DOMTokenList.toggle()
+> ##### DOMTokenList.toggle()
   >
   > DOMTokenList 接口的 toggle()  方法<font color=red>从列表中删除一个给定的标记 并返回 false 。如果标记 不存在，则添加并且函数返回 true</font>
   >
@@ -5669,18 +5669,20 @@ elementClasses 是一个 DOMTokenList 表示  elementNodeReference 的类属性 
   > tokenList.toggle(token, force);
   > ```
   >
-  > ###### 参数列表
+  > ###### 参数
   >
-  > - **token：**标记列表中你想探查并切换的 DOMString
-  > - **force：**可选，一个 Boolean 值, 设置后会将方法变成单向操作. 如设置为false, 则会删除标记列表中匹配的给定标记，且不会再度添加. 如设置为 true, 则将在标记列表中添加给定标记，且不会再度删除。
+  > - `token` ：标记列表中你想探查并切换的 DOMString
+  > - `force` ：可选，一个 Boolean 值, 设置后会将方法变成单向操作. 如设置为false, 则会删除标记列表中匹配的给定标记，且不会再度添加. 如设置为 true, 则将在标记列表中添加给定标记，且不会再度删除。
   >
-  > **返回值：**该方法返回一个Boolean 值 — 如给定标记不存在于列表中返回 false , 标记存在则返回 true
+  > ###### 返回值
+  > 
+  > 该方法返回一个Boolean 值 — 如给定标记不存在于列表中返回 false , 标记存在则返回 true
   >
   > 摘自：[MDN - DOMTokenList.toggle()](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMTokenList/toggle)
 
-- **contains(className)：**判断是否存在该类值
+- `contains(className)` ：判断是否存在该类值
 
-- **replace(replacedClassName, replacingClassName)：**将replacedClassName替换为replacingClassName。
+- `replace(replacedClassName, replacingClassName)` ：将replacedClassName替换为replacingClassName。
 
   ```js
   // 将类值 "foo" 替换成 "bar"
@@ -8719,13 +8721,13 @@ someOtherNode.textContent = string;
 
 ##### 与 innerText 的区别
 
-不要被 Node.textContent 和 HTMLElement.innerText 的区别搞混了。虽然名字看起来很相似，但有重要的不同之处：
+不要被 `Node.textContent` 和 `HTMLElement.innerText` 的区别搞混了。虽然名字看起来很相似，但有重要的不同之处：
 
-- <font color=FF0000>**textContent 会获取所有元素的内容，包括 \<script> 和 \<style> 元素**</font>，然而 <font color=0000FF>**innerText 只展示给人看的元素**</font>。
+- <font color=lightSeaGreen>**textContent 会获取所有元素的内容，包括 `<script>` 和 `<style>` 元素**</font>，然而 <font color=red>**innerText 只展示给人看的元素**</font>。
 
-- <font color=FF0000>textContent 会返回节点中的每一个元素</font>。相反，<font color=0000FF>innerText 受 CSS 样式的影响，并且不会返回隐藏元素的文本</font>。
+- <font color=lightSeaGreen>textContent 会返回节点中的每一个元素</font>。相反，<font color=red>innerText 受 CSS 样式的影响，并且不会返回隐藏元素的文本</font>。
 
-  此外，<font color=0000FF>由于 **innerText 受 CSS 样式的影响，它会触发回流**（ reflow ）去确保是最新的计算样式</font>（回流在计算上可能会非常昂贵，因此应尽可能避免）
+  此外，<font color=red>由于 **innerText 受 CSS 样式的影响，它会触发回流**（ reflow ）去确保是最新的计算样式</font>（回流在计算上可能会非常昂贵，因此应尽可能避免）
 
 - 与 textContent 不同的是， 在 Internet Explorer (小于和等于 11 的版本) 中对 innerText 进行修改， 不仅会移除当前元素的子节点，而且还会永久性地破坏所有后代文本节点。在之后不可能再次将节点再次插入到任何其他元素或同一元素中。
 
@@ -8749,7 +8751,7 @@ someOtherNode.textContent = string;
 nextNode = node.nextSibling
 ```
 
-摘自：[MDN - Node.nextSibling](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/nextSibling) ，类似的有 Node.previousSibling，参见 [MDN - Node.previousSibling](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/previousSibling)
+摘自：[MDN - `Node.nextSibling`](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/nextSibling) ，类似的有 `Node.previousSibling` ，参见 [MDN - `Node.previousSibling`](https://developer.mozilla.org/zh-CN/docs/Web/API/Node/previousSibling)
 
 ##### 实践中的发现
 
@@ -8809,17 +8811,17 @@ Element，document 和 window 是最常见的 event targets ，但是其他对�
 
 ##### 构造函数
 
-**EventTarget()：**创建一个新的 EventTarget 对象实例。
+`EventTarget()` ：创建一个新的 EventTarget 对象实例。
 
 ##### 方法
 
-- **EventTarget.addEventListener()：**在EventTarget上注册特定事件类型的事件处理程序。
-- **EventTarget.removeEventListener()：**EventTarget中删除事件侦听器。
-- **EventTarget.dispatchEvent()：**将事件分派到此EventTarget。
+- `EventTarget.addEventListener()` ：在EventTarget 上注册特定事件类型的事件处理程序。
+- `EventTarget.removeEventListener()` ：EventTarget 中删除事件侦听器。
+- `EventTarget.dispatchEvent()` ：将事件分派到此 EventTarget。
 
 摘自：[MDN - EventTarget](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget)
 
-**Node**
+##### Node
 
 Node 是一个接口，各种类型的 DOM API 对象会从这个接口继承。它允许我们使用相似的方式对待这些不同类型的对象；比如, 继承同一组方法，或者用同样的方式测试。
 
@@ -8832,7 +8834,7 @@ Node从其父类型 EventTarget继承属性。
 
 摘自：[MDN - Node](https://developer.mozilla.org/zh-CN/docs/Web/API/Node)
 
-**Element**
+##### Element
 
 <font color=FF0000>**Element 是一个通用性非常强的基类，所有 Document 对象下的对象都继承自它**</font>。<font color=FF0000>这个接口描述了所有相同种类的元素所普遍具有的方法和属性。一些接口继承自 Element 并且增加了一些额外功能的接口描述了具体的行为</font>。例如， HTMLElement 接口是所有 HTML 元素的基本接口，而 SVGElement 接口是所有 SVG 元素的基础。大多数功能是在这个类的更深层级（hierarchy）的接口中被进一步制定的。
 
@@ -8840,29 +8842,33 @@ Node从其父类型 EventTarget继承属性。
 
 摘自：[MDN - Element](https://developer.mozilla.org/zh-CN/docs/Web/API/Element)
 
-**HTMLElement**
+##### HTMLElement
 
 HTMLElement 接口表示所有的 HTML 元素。一些HTML元素直接实现了HTMLElement接口，其它的间接实现HTMLElement接口。
 
-**属性：**略，见摘抄网页
+###### 属性
 
-**方法：**从父元素继承的方法, Element。略，见摘抄网页
+略，见摘抄网页
+
+###### 方法
+
+从父元素继承的方法，Element。略，见摘抄网页
 
 摘自：[MDN - HTMLElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement)
 
-<font size=4>**补充：**</font>
+##### 补充
 
 <img src="https://i.loli.net/2021/07/27/WKpYb5TPe4xjCfR.png" alt="image-20210727084849123" style="zoom: 33%;" />
 
-我们考虑一下 \<input> 元素的 DOM 对象。它属于 HTMLInputElement 类。
+我们考虑一下 `<input>` 元素的 DOM 对象。它属于 HTMLInputElement 类。
 
 它获取属性和方法，并将其作为下列类（按继承顺序列出）的叠加：
 
-- **HTMLInputElement** — 该类提供特定于输入的属性，
-- **HTMLElement** — 它提供了通用（common）的 HTML 元素方法（以及 getter 和 setter）
-- **Element** — 提供通用（generic）元素方法，
-- **Node** — 提供通用 DOM 节点属性，
-- **EventTarget** — 为事件（包括事件本身）提供支持，
+- `HTMLInputElement` ：该类提供特定于输入的属性，
+- `HTMLElement` ：它提供了通用（common）的 HTML 元素方法（以及 getter 和 setter）
+- `Element` ：提供通用（generic）元素方法，
+- `Node` ：提供通用 DOM 节点属性，
+- `EventTarget` ：为事件（包括事件本身）提供支持，
 - ……最后，它继承自 Object，因为像 hasOwnProperty 这样的“普通对象”方法也是可用的。
 
 摘自：[现代JavaScript教程 - 节点属性：type，tag 和 content](https://zh.javascript.info/basic-dom-node-properties)
@@ -8873,11 +8879,11 @@ HTMLElement 接口表示所有的 HTML 元素。一些HTML元素直接实现了H
 
 #### HTMLInputElement.setSelectionRange()
 
-HTMLInputElement.setSelectionRange 方法<font color=FF0000>用于设定 \<input> 或 \<textarea> 元素中当前选中文本的起始和结束位置</font>。
+`HTMLInputElement.setSelectionRange` 方法<font color=FF0000>用于设定 `<input>` 或 `<textarea>` 元素中当前选中文本的起始和结束位置</font>。
 
-<mark style="background: lightskyblue">**在较新的浏览器中**</mark>，你<font color=FF0000>可以通过一个可选的 selectionDirection 来指定文本选中的方向</font>。比如通过点击和拖动从结束位置往起始位置选中一个字符串。
+<font color=dodgerBlue>**在较新的浏览器中**</font>，你<font color=FF0000>可以通过一个可选的 selectionDirection 来指定文本选中的方向</font>。比如通过点击和拖动从结束位置往起始位置选中一个字符串。
 
-每次调用这个这个方法都会更新 HTMLInputElement 的 <font size=4>**selectionStart**</font>，<font size=4>**selectionEnd**</font> 和 selectionDirection 属性。
+每次调用这个这个方法都会更新 HTMLInputElement 的 **`selectionStart`** ，**`selectionEnd`** 和 selectionDirection 属性。
 
 要注意的是，在 [WHATWG forms spec](https://html.spec.whatwg.org/multipage/forms.html#concept-input-apply) 中，`selectionStart` , `selectionEnd` 属性和 `setSelectionRange` 方法只能应用于类型为文本、搜索、链接、电话号码和密码的输入。Chrome 从版本 33 开始会在访问其余类型的这些属性和方法时抛出异常。例如，输入类型为数字时会抛出：“不能从'HTMLInputElement'中读取'selectionStart'属性：输入元素的类型('number')不支持选择（Failed to read the 'selectionStart' property from 'HTMLInputElement': The input element's type ('number') does not support selection）”。
 
@@ -8889,21 +8895,21 @@ HTMLInputElement.setSelectionRange 方法<font color=FF0000>用于设定 \<input
 element.setSelectionRange(selectionStart, selectionEnd [, selectionDirection]);
 ```
 
-##### 参数
+###### 参数
 
-如果 selectionEnd 小于 selectionStart，则二者都会被看作 selectionEnd。
+如果 `selectionEnd` 小于 `selectionStart` ，则二者都会被看作 `selectionEnd` 。
 
-- **selectionStart**：被选中的第一个字符的位置索引，从0开始。如果这个值比元素的 `value` 长度还大，则会被看作 `value` 最后一个位置的索引。
+- `selectionStart` ：被选中的第一个字符的位置索引，从0开始。如果这个值比元素的 `value` 长度还大，则会被看作 `value` 最后一个位置的索引。
 
-- **selectionEnd**：被选中的最后一个字符的 *下一个* 位置索引。如果这个值比元素的value长度还大，则会被看作value最后一个位置的索引。
+- `selectionEnd` ：被选中的最后一个字符的 *下一个* 位置索引。如果这个值比元素的value长度还大，则会被看作value最后一个位置的索引。
 
-- **selectionDirection**：可选，一个表示选择方向的字符串，可能的值有：
+- `selectionDirection` ：可选，一个表示选择方向的字符串，可能的值有：
 
-  - "forward"
+  - `"forward"`
 
-  - "backward"
+  - `"backward"`
 
-  - "none"。默认值，表示方向未知或不相关。
+  - `"none"`。默认值，表示方向未知或不相关。
 
 ##### 示例
 
@@ -8930,21 +8936,21 @@ function selectText() {
 
 ##### 属性
 
-- **input.selectionStart**：选择的起始位置（可写）
-- **input.selectionEnd**：选择的结束位置（可写）
-- **input.selectionDirection**：选择方向，其中之一：“forward”，“backward” 或 “none”（例如使用鼠标双击进行的选择）
+- `input.selectionStart` ：选择的起始位置（可写）
+- `input.selectionEnd` ：选择的结束位置（可写）
+- `input.selectionDirection` ：选择方向，其中之一：“forward”，“backward” 或 “none”（例如使用鼠标双击进行的选择）
 
 ##### 事件
 
-- **input.onselect**：当某个东西被选择时触发。
+- `input.onselect` ：当某个东西被选择时触发。
 
 ##### 方法
 
-- **input.select()** ：选择文本控件中的所有内容（可以是 textarea 而不是 input），
+- `input.select()` ：选择文本控件中的所有内容（可以是 textarea 而不是 input），
 
-- **input.setSelectionRange(start, end, [direction])** ：在给定方向上（可选），从 start 一直选择到 end。
+- `input.setSelectionRange(start, end, [direction])` ：在给定方向上（可选），从 start 一直选择到 end。
 
-- **input.setRangeText(replacement, [start], [end], [selectionMode])** ：用新文本替换范围中的文本。
+- `input.setRangeText(replacement, [start], [end], [selectionMode])` ：用新文本替换范围中的文本。
 
   可选参数 start 和 end，如果提供的话，则设置范围的起点和终点，否则使用用户的选择。
 
@@ -8973,7 +8979,7 @@ function selectText() {
 
 #### MutationObserver
 
-<font color=FF0000>**MutationObserver 接口提供了监视对 *DOM 树* 所做更改的能力**</font>。它被设计为旧的Mutation Events功能的替代品，**该功能是DOM3 Events规范的一部分**。
+<font color=FF0000>**MutationObserver 接口提供了监视对 DOM 树 所做更改的能力**</font>。它被设计为旧的 Mutation Events 功能的替代品，**该功能是 DOM3 Events 规范的一部分**。
 
 ##### 构造函数
 
@@ -8981,9 +8987,9 @@ function selectText() {
 
 ##### 方法
 
-- **disconnect()：**<font color=FF0000>阻止 MutationObserver 实例继续接收的通知，直到再次调用其observe()方法</font>，该观察者对象包含的回调函数都不会再被调用。
-- **observe()：**<font color=FF0000>配置MutationObserver在DOM更改匹配给定选项时</font>，通过其回调函数开始接收通知。
-- **takeRecords()：**<font color=FF0000>从MutationObserver的通知队列中删除所有待处理的通知</font>，并将它们返回到MutationRecord对象的新Array中。
+- `disconnect()` ：<font color=FF0000>阻止 MutationObserver 实例继续接收的通知，直到再次调用其observe()方法</font>，该观察者对象包含的回调函数都不会再被调用。
+- `observe()` ：<font color=FF0000>配置 MutationObserver 在 DOM 更改匹配给定选项时</font>，通过其回调函数开始接收通知。
+- `takeRecords()` ：<font color=FF0000>从MutationObserver 的通知队列中删除所有待处理的通知</font>，并将它们返回到 MutationRecord 对象的新 Array 中。
 
 ##### 使用示例
 
@@ -9019,9 +9025,9 @@ observer.disconnect();
 
 摘自：[MDN - MutationObserver](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver)
 
-#### MutationObserver.MutationObserver()
+#### `MutationObserver.MutationObserver()`
 
-<font color=FF0000>DOM 规范中的 MutationObserver() 构造函数</font>——是 MutationObserver 接口内容的一部分——<font color=FF0000>**创建并返回一个新的观察器**</font>，它会在触发指定 DOM 事件时，调用指定的回调函数。<font color=LightSeaGreen>MutationObserver 对 DOM 的观察不会立即启动；而必须先调用 observe() 方法来确定，要监听哪一部分的 DOM 以及要响应哪些更改</font>。
+<font color=FF0000>DOM 规范中的 `MutationObserver()` 构造函数</font>——是 MutationObserver 接口内容的一部分——<font color=FF0000>**创建并返回一个新的观察器**</font>，它会在触发指定 DOM 事件时，调用指定的回调函数。<font color=LightSeaGreen>MutationObserver 对 DOM 的观察不会立即启动；而必须先调用 `observe()` 方法来确定，要监听哪一部分的 DOM 以及要响应哪些更改</font>。
 
 ##### 语法
 
@@ -9029,19 +9035,21 @@ observer.disconnect();
 var observer = new MutationObserver(callback);
 ```
 
-##### 参数
+###### 参数
 
-**callback：**一个回调函数，<font color=FF0000>每当被指定的节点或子树以及配置项有Dom变动时会被调用</font>。<font color=FF0000>**回调函数拥有两个参数**</font>：一个是<font color=FF0000>**描述所有被触发改动的 MutationRecord 对象数组**</font>，另一个是<font color=FF0000>**调用该函数的MutationObserver 对象**</font>。
+`callback` ：一个回调函数，<font color=FF0000>每当被指定的节点或子树以及配置项有Dom变动时会被调用</font>。<font color=dodgerBlue>回调函数拥有两个参数</font>：一个是<font color=FF0000>**描述所有被触发改动的 MutationRecord 对象数组**</font>，另一个是<font color=FF0000>**调用该函数的MutationObserver 对象**</font>。
 
-**返回值：**一个新的、包含监听 DOM 变化回调函数的 MutationObserver 对象。
+###### 返回值
 
-MutationObserver() 的具体示例：可以看上面的MutationObserver中的使用示例
+一个新的、包含监听 DOM 变化回调函数的 MutationObserver 对象。
+
+`MutationObserver()` 的具体示例：可以看上面的 MutationObserver 中的使用示例
 
 摘自：[MDN - MutationObserver.MutationObserver()](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver/MutationObserver)
 
 #### MutationObserver.observe()
 
-MutationObserver的 observe() 方法<font color=FF0000>**配置**</font>了 MutationObserver 对象的回调方法以开始接收与给定选项匹配的DOM变化的通知。根据配置，观察者会观察 DOM 树中的单个 Node，也可能会观察被指定节点的部分或者所有的子孙节点。
+MutationObserver 的 `observe()` 方法<font color=FF0000>**配置**</font>了 MutationObserver 对象的回调方法以开始接收与给定选项匹配的DOM变化的通知。根据配置，观察者会观察 DOM 树中的单个 Node，也可能会观察被指定节点的部分或者所有的子孙节点。
 
 ##### 语法
 
@@ -9049,20 +9057,22 @@ MutationObserver的 observe() 方法<font color=FF0000>**配置**</font>了 Muta
 mutationObserver.observe(target[, options])
 ```
 
-##### 参数
+###### 参数
 
-- **target：**<font color=FF0000>DOM树中的一个要观察变化的DOM Node</font> (可能是一个Element) , 或者是被观察的子节点树的根节点。
-- **options：**<font color=FF0000>**可选**</font>，<font color=FF0000>一个可选的**MutationObserverInit** 对象</font>（<font size=4>**详见下面**</font>），此对象的配置项描述了DOM的哪些变化应该提供给当前观察者的callback。
+- `target` ：<font color=FF0000>DOM树中的一个要观察变化的DOM Node</font> (可能是一个Element) , 或者是被观察的子节点树的根节点。
+- `options` ：<font color=FF0000>**可选**</font>，<font color=FF0000>一个可选的**MutationObserverInit** 对象</font>（<font size=4>**详见下面**</font>），此对象的配置项描述了DOM的哪些变化应该提供给当前观察者的callback。
 
-**返回值：**undefined。
+###### 返回值
 
-##### 异常
+undefined。
 
-**TypeError：**以下任一情况都会抛出异常:
+###### 异常
 
-- **配置选项使得实际上不会监视任何内容**（例如，如果 MutationObserverInit.childList，MutationObserverInit.attributes 和 MutationObserverInit.characterData 都为 false）。
-- attributes 选项为 false（表示不监视属性更改）但是attributeOldValue 为 true 并且/或者 attributeFilter 配置存在。
-- characterDataOldValue 选项为 true 但是 MutationObserverInit.characterData 为 false（表示不跟踪字符更改）。
+`TypeError` ：以下任一情况都会抛出异常:
+
+- **配置选项使得实际上不会监视任何内容**（例如，如果 `MutationObserverInit.childList` ，`MutationObserverInit.attributes` 和 `MutationObserverInit.characterData` 都为 false）。
+- `attributes` 选项为 false（表示不监视属性更改）但是 `attributeOldValue` 为 true 并且/或者 attributeFilter 配置存在。
+- `characterDataOldValue` 选项为 true 但是 `MutationObserverInit.characterData` 为 false（表示不跟踪字符更改）。
 
 摘自：[MDN - MutationObserver.observe()](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver/observe)
 
@@ -9072,29 +9082,29 @@ MutationObserverInit 字典描述了 MutationObserver 的配置。因此，它�
 
 ##### 属性
 
-当调用 observe() 方法时，**<font color=FF0000 size=4>childList，attributes 或者 characterData 三个属性之中，至少有一个必须为 true</font>，否则会抛出 TypeError 异常**。
+当调用 `observe()` 方法时，<font color=fuchsia>**childList，attributes 或者 characterData 三个属性之中，至少有一个必须为 true**</font>，<font color=red>否则会抛出 TypeError 异常</font>。
 
-- **attributeFilter：可选**，<font color=FF0000>要监视的特定属性名称的数组</font>。<font color=LightSeaGreen>如果未包含此属性，则对所有属性的更改都会触发变动通知</font>。<font color=FF0000>无默认值</font>。
+- `attributeFilter` ：可选，<font color=FF0000>要监视的特定属性名称的数组</font>。<font color=LightSeaGreen>如果未包含此属性，则对所有属性的更改都会触发变动通知</font>。<font color=FF0000>无默认值</font>。
 
-- **attributeOldValue：可选**，当监视节点的属性改动时，将此属性设为 true 将记录任何有改动的属性的上一个值。有关观察属性更改和值记录的详细信息。<font color=FF0000>无默认值</font>。
+- `attributeOldValue` ：可选，当监视节点的属性改动时，将此属性设为 true 将记录任何有改动的属性的上一个值。有关观察属性更改和值记录的详细信息。<font color=FF0000>无默认值</font>。
 
   **即：如果为 true，则将特性的旧值和新值都传递给回调，否则只传新值（需要 attributes 选项）**
 
-- **attributes：可选**，设为 true 以观察受监视元素的属性值变更。<font color=FF0000>默认值为 false</font>。
+- `attributes` ：可选，设为 true 以观察受监视元素的属性值变更。<font color=FF0000>默认值为 false</font>。
 
-- **characterData：可选**，设为 true 以监视指定目标节点或子节点树中节点所包含的字符数据的变化。<font color=FF0000>无默认值</font>。
+- `characterData` ：可选，设为 true 以监视指定目标节点或子节点树中节点所包含的字符数据的变化。<font color=FF0000>无默认值</font>。
 
-- **characterDataOldValue：可选**，设为 true 以在文本在受监视节点上发生更改时记录节点文本的先前值。<font color=FF0000>无默认值</font>。
+- `characterDataOldValue` ：可选，设为 true 以在文本在受监视节点上发生更改时记录节点文本的先前值。<font color=FF0000>无默认值</font>。
 
-- **childList：可选**，设为 true 以监视目标节点（如果 subtree 为 true，则包含子孙节点）添加或删除新的子节点。<font color=FF0000>默认值为 false</font>。
+- `childList` ：可选，设为 true 以监视目标节点（如果 subtree 为 true，则包含子孙节点）添加或删除新的子节点。<font color=FF0000>默认值为 false</font>。
 
-- **subtree：可选**，设为 true 以将监视范围扩展至目标节点整个节点树中的所有节点。MutationObserverInit 的其他值也会作用于此子树下的所有节点，而不仅仅只作用于目标节点。<font color=FF0000>默认值为 false</font>。
+- `subtree` ：可选，设为 true 以将监视范围扩展至目标节点整个节点树中的所有节点。MutationObserverInit 的其他值也会作用于此子树下的所有节点，而不仅仅只作用于目标节点。<font color=FF0000>默认值为 false</font>。
 
 摘自：[MDN - MutationObserverInit](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserverInit)
 
 #### MutationObserver.disconnect()
 
-MutationObserver 的 <font color=FF0000>disconnect() 方法告诉观察者停止观察变动</font>。<font color=FF0000> **可以通过调用其observe()方法来重用观察者**</font>。
+MutationObserver 的 <font color=FF0000>`disconnect()` 方法告诉观察者停止观察变动</font>。<font color=FF0000> **可以通过调用其 `observe()` 方法来重用观察者**</font>。
 
 ##### 语法
 
@@ -9102,19 +9112,21 @@ MutationObserver 的 <font color=FF0000>disconnect() 方法告诉观察者停止
 mutationObserver.disconnect()
 ```
 
-**参数：**无
+###### 参数
+无
 
-**返回值：**undefined
+###### 返回值
+undefined
 
 ##### 使用说明
 
-<font color=FF0000>如果被观察的元素被从DOM中移除，然后被浏览器的垃圾回收机制释放，此MutationObserver将同样被删除</font>。
+<font color=FF0000>如果被观察的元素被从 DOM 中移除，然后被浏览器的垃圾回收机制释放，此 MutationObserver 将同样被删除</font>。
 
-摘自：[MDN - MutationObserver.disconnect()](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver/disconnect)
+摘自：[MDN - `MutationObserver.disconnect()`](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver/disconnect)
 
 #### MutationObserver.takeRecords()
 
-MutationObserver 的 takeRecords() 方法<font color=FF0000>**返回已检测到但尚未由观察者的回调函数处理的所有匹配DOM更改的列表，使变更队列保持为空**</font>。 此方法<font color=FF0000>**最常见的使用场景**是<font size=4>**在断开观察者之前立即获取所有未处理的更改记录**</font>，以便在停止观察者时可以处理任何未处理的更改</font>。
+MutationObserver 的 `takeRecords()` 方法<font color=FF0000>**返回已检测到但尚未由观察者的回调函数处理的所有匹配DOM更改的列表，使变更队列保持为空**</font>。 此方法 <font color=dodgerBlue>最常见的使用场景</font> 是 <font color=fuchsia>**在断开观察者之前立即获取所有未处理的更改记录**</font>，以便在停止观察者时可以处理任何未处理的更改</font>。
 
 ##### 语法
 
@@ -9122,13 +9134,15 @@ MutationObserver 的 takeRecords() 方法<font color=FF0000>**返回已检测到
 mutationRecords = mutationObserver.takeRecords()
 ```
 
-**参数：**无
+###### 参数
+无
 
-**返回值：**<font color=FF0000>返回一个MutationRecord 对象列表</font>，<font color=LightSeaGreen>每个对象都描述了应用于DOM树某部分的一次改动</font>。
+###### 返回值
+<font color=FF0000>返回一个 `MutationRecord` 对象列表</font>，<font color=LightSeaGreen>每个对象都描述了应用于DOM树某部分的一次改动</font>。
 
-> ⚠️ **注意：**<font color=FF0000>调用 takeRecords() 后，已发生但未传递给回调的变更队列将保留为空</font>。
+> ⚠️ **注意：**<font color=FF0000>调用 `takeRecords()` 后，已发生但未传递给回调的变更队列将保留为空</font>。
 
-摘自：[MDN - MutationObserver.takeRecords()](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver/takeRecords)
+摘自：[MDN - `MutationObserver.takeRecords()`](https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver/takeRecords)
 
 #### MutationRecord
 
@@ -9138,15 +9152,15 @@ mutationRecords = mutationObserver.takeRecords()
 
 ##### MutationRecord 对象具有以下属性
 
-- **type：**变动类型，以下类型之一：
-  - "attributes"：特性被修改了，
-  - "characterData"：数据被修改了，用于文本节点，
-  - "childList"：添加/删除了子元素。
-- **target：**更改发生在何处："attributes" 所在的元素，或 "characterData" 所在的文本节点，或 "childList" 变动所在的元素，
-- **addedNodes / removedNodes：**添加/删除的节点，
-- **previousSibling / nextSibling：**添加/删除的节点的上一个/下一个兄弟节点，
-- **attributeName / attributeNamespace：**被更改的特性的名称/命名空间（用于 XML），
-- **oldValue：**之前的值，仅适用于特性或文本更改，如果设置了相应选项 attributeOldValue/characterDataOldValue。
+- `type` ：变动类型，以下类型之一：
+  - `"attributes"` ：特性被修改了，
+  - `"characterData"` ：数据被修改了，用于文本节点，
+  - `"childList"` ：添加/删除了子元素。
+- `target` ：更改发生在何处："attributes" 所在的元素，或 "characterData" 所在的文本节点，或 "childList" 变动所在的元素，
+- `addedNodes` / `removedNodes`：添加/删除的节点，
+- `previousSibling` / `nextSibling`：添加/删除的节点的上一个/下一个兄弟节点，
+- `attributeName` / `attributeNamespace`：被更改的特性的名称/命名空间（用于 XML），
+- `oldValue` ：之前的值，仅适用于特性或文本更改，如果设置了相应选项 `attributeOldValue`  / `characterDataOldValue` 。
 
 摘自：[现代 JavaScript 教程 - DOM 变动观察器（Mutation observer）](https://zh.javascript.info/mutation-observer)
 
@@ -9156,9 +9170,9 @@ mutationRecords = mutationObserver.takeRecords()
 >
 > <font color=LightSeaGreen>概念上，它很接近事件，可以理解为 DOM 发生变动就会触发 Mutation Observer 事件</font>。但是，<font color=FF0000>它与事件有一个本质不同</font>：<font color=FF0000>**事件是同步触发**</font>，也就是说，<font color=FF0000>**DOM 的变动立刻会触发相应的事件**</font>；而 <font color=FF0000>Mutation Observer 则是 <font size=4>**异步触发**</font></font>，<font color=FF0000>DOM 发生变化并不会马上触发</font>，而是<font color=FF0000 size=4>**要等到当前所有 DOM 操作都结束才触发**</font>，执行时机有点类似于宏任务。
 >
-> <font color=red>这样设计是为了应对 DOM 变动频繁的特点</font>。<font color=LightSeaGreen>如果不这么做，当文档中连续插入 1000 个 \<p> 元素，就会连续触发 1000 个插入事件并执行每个事件的回调函数，这很可能造成浏览器的卡顿</font>。而 Mutation Observer 完全不同，只在 1000 个段落都插入结束后才会触发，而且只触发一次。
+> <font color=red>这样设计是为了应对 DOM 变动频繁的特点</font>。<font color=LightSeaGreen>如果不这么做，当文档中连续插入 1000 个 `<p>` 元素，就会连续触发 1000 个插入事件并执行每个事件的回调函数，这很可能造成浏览器的卡顿</font>。而 Mutation Observer 完全不同，只在 1000 个段落都插入结束后才会触发，而且只触发一次。
 >
-> **综上所述，Mutation Observer 有以下特点：**
+> <font color=dodgerBlue>综上所述，Mutation Observer 有以下特点：</font>
 >
 > - 它等待所有脚本任务完成后，才会触发（宏任务）。
 > - 它把所有 DOM 变动记录封装成一个数组进行处理，而不是单独处理每个 DOM 变动。
@@ -9172,15 +9186,15 @@ mutationRecords = mutationObserver.takeRecords()
 
 > 💡 intersection 译为 交叉、相交，这可用于辅助记忆。
 
-IntersectionObserver 接口（<mark>从属于 Intersection Observer API </mark>）<font color=FF0000>提供了一种 <font size=4>**异步 观察 目标元素 与 其祖先元素 或 顶级文档视窗 ( viewport ) 交叉状态 的方法**</font></font>。<mark>祖先元素与视窗 ( viewport ) 被称为根 ( root ) </mark> 
+IntersectionObserver 接口（<font color=lightSeaGreen>从属于 Intersection Observer API </font>）<font color=fuchsia>提供了一种 **异步 观察 目标元素 与 其祖先元素 或 顶级文档视窗 ( viewport ) 交叉状态 的方法**</font>。<font color=lightSeaGreen>祖先元素与视窗 ( viewport ) 被称为根 ( root ) </font> 
 
 > 👀 这里 root 使用 下面有提及；另外，这里的 root 是一个相对概念，只表示祖先节点，不是绝对的根节点。
 
-<font color=FF0000>当一个 IntersectionObserver 对象被创建时，其被配置为监听根中一段给定比例的可见区域</font>。<font color=FF0000 size=4>**一旦 IntersectionObserver 被创建，则无法更改其配置**</font>，所以 **一个给定的观察者对象** 只能用来监听可见区域的  **特定变化值**；然而，你 <font color=FF0000>可以在同一个观察者对象中配置监听多个目标元素</font>。
+<font color=FF0000>当一个 IntersectionObserver 对象被创建时，其被配置为监听根中一段给定比例的可见区域</font>。<font color=fuchsia>**一旦 IntersectionObserver 被创建，则无法更改其配置**</font>，所以 **一个给定的观察者对象** 只能用来监听可见区域的  **特定变化值**；然而，你 <font color=FF0000>可以在同一个观察者对象中配置监听多个目标元素</font>。
 
 ##### 构造器
 
-**IntersectionObserver.IntersectionObserver()：**创建一个新的 IntersectionObserver 对象，<font color=FF0000>当其监听到 **目标元素的可见部分穿过了一个或多个阈** ( thresholds ) 时，**会执行指定的回调函数**</font>。
+`IntersectionObserver.IntersectionObserver()` ：创建一个新的 IntersectionObserver 对象，<font color=FF0000>当其监听到 **目标元素的可见部分穿过了一个或多个阈** ( thresholds ) 时，**会执行指定的回调函数**</font>。
 
 > #### IntersectionObserver.IntersectionObserver()
 >
@@ -9192,15 +9206,15 @@ IntersectionObserver 接口（<mark>从属于 Intersection Observer API </mark>
 > var observer = new IntersectionObserver(callback[, options]);
 > ```
 >
-> ##### 参数
+> ###### 参数
 >
-> - **callback**：<font color=FF0000>当元素可见比例超过指定阈值后，会调用一个回调函数</font>，此回调函数接受两个参数：
->   - **entries**：<font color=FF0000>一个 IntersectionObserverEntry 对象的 **数组**</font>，每个被触发的阈值，都或多或少与指定阈值有偏差。
->   - **observer**：被调用的 IntersectionObserver 实例
-> - **options**：可选，一个可以用来配置 observer 实例的对象。如果 options 未指定，observer 实例默认使用文档视口作为 root，并且没有 margin，阈值为 0%（意味着即使一像素的改变都会触发回调函数）。你可以指定以下配置：
->   - **root**：<font color=FF0000>监听元素的祖先元素 Element 对象，其边界盒将被视作视口</font>。目标在根的可见区域的的任何不可见部分都会被视为不可见
->   - **rootMargin**：一个<font color=FF0000>在计算交叉值时添加至根的边界盒 ( [bounding_box](https://developer.mozilla.org/en-US/docs/Glossary/bounding_box) ) 中的一组偏移量</font>，类型为字符串 ( string ) ，可以有效的缩小或扩大根的判定范围从而满足计算需要。语法大致和 CSS 中的 margin 属性等同。默认值是 "0px 0px 0px 0px"
->   - **threshold**：<font color=FF0000>规定了一个监听目标与边界盒交叉区域的比例值，可以是 **一个具体的数值** 或是 **一组 0.0 到 1.0 之间的数组**</font>。若指定值为 0.0，则意味着监听元素即使与根有 1 像素交叉，此元素也会被视为可见。若指定值为 1.0，则意味着整个元素都在可见范围内时才算可见。阈值的默认值为 0.0
+> - `callback`：<font color=FF0000>当元素可见比例超过指定阈值后，会调用一个回调函数</font>，此回调函数接受两个参数：
+>   - `entries` ：<font color=FF0000>一个 IntersectionObserverEntry 对象的 **数组**</font>，每个被触发的阈值，都或多或少与指定阈值有偏差。
+>   - `observer` ：被调用的 IntersectionObserver 实例
+> - `options` ：可选，一个可以用来配置 observer 实例的对象。如果 options 未指定，observer 实例默认使用文档视口作为 root，并且没有 margin，阈值为 0%（意味着即使一像素的改变都会触发回调函数）。你可以指定以下配置：
+>   - `root` ：<font color=FF0000>监听元素的祖先元素 Element 对象，其边界盒将被视作视口</font>。目标在根的可见区域的的任何不可见部分都会被视为不可见
+>   - `rootMargin` ：一个<font color=FF0000>在计算交叉值时添加至根的边界盒 ( [bounding_box](https://developer.mozilla.org/en-US/docs/Glossary/bounding_box) ) 中的一组偏移量</font>，类型为字符串 ( string ) ，可以有效的缩小或扩大根的判定范围从而满足计算需要。语法大致和 CSS 中的 margin 属性等同。默认值是 "0px 0px 0px 0px"
+>   - `threshold` ：<font color=FF0000>规定了一个监听目标与边界盒交叉区域的比例值，可以是 **一个具体的数值** 或是 **一组 0.0 到 1.0 之间的数组**</font>。若指定值为 0.0，则意味着监听元素即使与根有 1 像素交叉，此元素也会被视为可见。若指定值为 1.0，则意味着整个元素都在可见范围内时才算可见。阈值的默认值为 0.0
 >
 > ##### 返回值
 >
@@ -9208,23 +9222,23 @@ IntersectionObserver 接口（<mark>从属于 Intersection Observer API </mark>
 >
 > ##### 异常
 >
-> - **SyntaxError**：指定的 rootMargin 不存在。
-> - **RangeError**：一个或多个阈值超出了 0.0 到 1.0 的范围。
+> - `SyntaxError` ：指定的 rootMargin 不存在。
+> - `RangeError` ：一个或多个阈值超出了 0.0 到 1.0 的范围。
 >
 > 摘自：[MDN - IntersectionObserver.IntersectionObserver()](https://developer.mozilla.org/zh-CN/docs/Web/API/IntersectionObserver/IntersectionObserver)
 
 ##### 属性
 
-- **IntersectionObserver.root：**<font color=FF0000>只读</font>，<font color=FF0000>所 **监听对象的具体祖先元素** ( element )</font>。<font color=FF0000>如果 **未传入值 或 值为 null**，则 **默认使用顶级文档的视窗**</font>
-- **IntersectionObserver.rootMargin：**<font color=FF0000>只读</font>，计算交叉时 添加到根 ( root ) 边界盒 bounding box 的 矩形<font color=FF0000>偏移量</font>， <font color=FF0000>可以有效的缩小 或 扩大根的判定范围从而满足计算需要</font>。此属性返回的值可能与调用构造函数时指定的值不同，因此可能需要更改该值，以匹配内部要求。<font color=FF0000>所有的偏移量均可用像素 ( pixel / px ) 或百分比 ( percentage / % ) 来表达</font>，<mark>默认值为 "0px 0px 0px 0px"</mark>。
-- **IntersectionObserver.thresholds：**<font color=FF0000>只读</font>，<font color=FF0000>一个包含阈值的列表，按升序排列，**列表中的每个阈值都是监听对象的交叉区域与边界区域的比率**</font>。<font color=FF0000 size=4>**当监听对象的任何阈值被越过时，*都* 会生成一个通知 ( Notification )**</font>。<mark>如果构造器未传入值, 则默认值为 0</mark>。
+- `IntersectionObserver.root` ：<font color=FF0000>只读</font>，<font color=FF0000>所 **监听对象的具体祖先元素** ( element )</font>。<font color=FF0000>如果 **未传入值 或 值为 null**，则 **默认使用顶级文档的视窗**</font>
+- `IntersectionObserver.rootMargin` ：<font color=FF0000>只读</font>，计算交叉时 添加到根 ( root ) 边界盒 bounding box 的 矩形<font color=FF0000>偏移量</font>， <font color=FF0000>可以有效的缩小 或 扩大根的判定范围从而满足计算需要</font>。此属性返回的值可能与调用构造函数时指定的值不同，因此可能需要更改该值，以匹配内部要求。<font color=FF0000>所有的偏移量均可用像素 ( pixel / px ) 或百分比 ( percentage / % ) 来表达</font>，<font color=lightSeaGreen>默认值为 "0px 0px 0px 0px"</font>。
+- `IntersectionObserver.thresholds` ：<font color=FF0000>只读</font>，<font color=FF0000>一个包含阈值的列表，按升序排列，**列表中的每个阈值都是监听对象的交叉区域与边界区域的比率**</font>。<font color=fuchsia>**当监听对象的任何阈值被越过时，*都* 会生成一个通知 ( Notification )**</font>。<font color=lightSeaGreen>如果构造器未传入值, 则默认值为 0</mark>。
 
 ##### 方法
 
-- **IntersectionObserver.disconnect()：**使 IntersectionObserver 对象 <font color=FF0000>停止监听</font>工作。
-- **IntersectionObserver.observe()：**使 IntersectionObserver <font color=FF0000>开始监听</font>一个目标元素。
-- **IntersectionObserver.takeRecords()：**<font color=FF0000>返回所有观察目标的 IntersectionObserverEntry 对象数组</font>。
-- **IntersectionObserver.unobserve()：**使 IntersectionObserver <font color=FF0000>停止监听特定目标元素</font>。
+- `IntersectionObserver.disconnect()` ：使 IntersectionObserver 对象 <font color=FF0000>停止监听</font>工作。
+- `IntersectionObserver.observe()` ：使 IntersectionObserver <font color=FF0000>开始监听</font>一个目标元素。
+- `IntersectionObserver.takeRecords()` ：<font color=FF0000>返回所有观察目标的 IntersectionObserverEntry 对象数组</font>。
+- `IntersectionObserver.unobserve()` ：使 IntersectionObserver <font color=FF0000>停止监听特定目标元素</font>。
 
 ##### 示例
 
@@ -9340,9 +9354,9 @@ ResizeObserver 接口 <font color=FF0000>可以监听到 `Element` 的 **内容�
 
 ##### 方法
 
-- **`ResizeObserver.disconnect()`** ：<font color=FF0000>取消和结束 目标**对象上所有 **对 Element 或 SVGElement 观察</font>
-- **`ResizeObserver.observe()`** ：<font color=FF0000>开始观察</font>指定的 Element 或 SVGElement
-- **`ResizeObserver.unobserve()`** ：<font color=FF0000>结束观察</font>指定的 Element 或 SVGElement
+- `ResizeObserver.disconnect()` ：<font color=FF0000>取消和结束 目标**对象上所有 **对 Element 或 SVGElement 观察</font>
+- `ResizeObserver.observe()` ：<font color=FF0000>开始观察</font>指定的 Element 或 SVGElement
+- `ResizeObserver.unobserve()` ：<font color=FF0000>结束观察</font>指定的 Element 或 SVGElement
 
 ##### 示例
 
@@ -9370,19 +9384,19 @@ The `ResizeObserverEntry` interface represents the object passed to the `ResizeO
 
 ##### Properties
 
-- **ResizeObserverEntry.borderBoxSize**: <mark>只读</mark>，An object containing the  <font color=FF0000>new **border box** size</font> of the observed element when the callback is run. 
+- `ResizeObserverEntry.borderBoxSize` : 只读，An object containing the  <font color=FF0000>new **border box** size</font> of the observed element when the callback is run. 
 
   > 👀 注意 和 contentBoxSize 的区别
 
-- **ResizeObserverEntry.contentBoxSize**: <mark>只读</mark>，An object containing the <font color=FF0000>new **content box** size</font> of the observed element when the callback is run.
+- `ResizeObserverEntry.contentBoxSize` : 只读，An object containing the <font color=FF0000>new **content box** size</font> of the observed element when the callback is run.
 
-- **ResizeObserverEntry.devicePixelContentBoxSize**: <mark>只读</mark>，An object containing the <font color=FF0000>new content box size in device pixels</font> of the observed element when the callback is run.
+- `ResizeObserverEntry.devicePixelContentBoxSize` : 只读，An object containing the <font color=FF0000>new content box size in device pixels</font> of the observed element when the callback is run.
 
-- **ResizeObserverEntry.contentRect**: <mark>只读</mark>，<font color=FF0000>**A `DOMRectReadOnly` object**</font> （👀  `getBoundingClientRect` 返回值就是一个 `DOMRect` ，而 `DOMRect` 继承自 `DOMRectReadOnly` ，上面有做笔记 [[#DOMRect]] / [[#DOMRectReadOnly]]）<font color=FF0000>**containing the new size of the observed element**</font> when the callback is run. 
+- `ResizeObserverEntry.contentRect` : 只读，<font color=FF0000>**A `DOMRectReadOnly` object**</font> （👀  `getBoundingClientRect` 返回值就是一个 `DOMRect` ，而 `DOMRect` 继承自 `DOMRectReadOnly` ，上面有做笔记 [[#DOMRect]] / [[#DOMRectReadOnly]]）<font color=FF0000>**containing the new size of the observed element**</font> when the callback is run. 
 
-  Note that <mark>this is better supported than the above two properties</mark>, but it is left over from an earlier implementation of the Resize Observer API, is still included in the spec for web compat reasons, and may be deprecated in future versions.
+  Note that <font color=lightSeaGreen>this is better supported than the above two properties</font>, but it is left over from an earlier implementation of the Resize Observer API, is still included in the spec for web compat reasons, and may be deprecated in future versions.
 
-- **ResizeObserverEntry.target**: <mark>只读</mark>，<font color=FF0000>A reference to the `Element` or `SVGElement` being observed</font>.
+- `ResizeObserverEntry.target` : 只读，<font color=FF0000>A reference to the `Element` or `SVGElement` being observed</font>.
 
 ##### Methods
 
@@ -9394,24 +9408,26 @@ The `ResizeObserverEntry` interface represents the object passed to the `ResizeO
 
 #### PerformanceObserver 性能监测对象
 
-PerformanceObserver <font color=FF0000>用于监测性能度量事件</font>，<mark>在浏览器的性能时间轴记录下一个新的 performance entries  的时候将会被通知</mark> 。
-注意：<mark>此特性在 <font color=FF0000>**Web Worker**</font> 中可用</mark>。
+PerformanceObserver <font color=FF0000>用于监测性能度量事件</font>，<font color=lightSeaGreen>在浏览器的性能时间轴记录下一个新的 performance entries  的时候将会被通知</font> 。
+
+>[!WARNING]
+>此特性在 <font color=FF0000>**Web Worker**</font> 中可用。
 
 > 👀 performance entries 是 Performance API 中的内容，详见下面 [[#Performance API]]
 
 ##### 构造函数
 
-**PerformanceObserver()：**<font color=FF0000>创建并返回一个新的 PerformanceObserver 对象</font>。
+`PerformanceObserver()` ：<font color=FF0000>创建并返回一个新的 PerformanceObserver 对象</font>。
 
 ##### 方法
 
-- **PerformanceObserver.observe()：**指定监测的 entry types 的集合（**注：**即，数组）。 当 performance entry 被记录并且是指定的 entryTypes 之一的时候，性能观察者对象的回调函数会被调用。
+- `PerformanceObserver.observe()` ：指定监测的 entry types 的集合（👀 即，数组）。 当 performance entry 被记录并且是指定的 entryTypes 之一的时候，性能观察者对象的回调函数会被调用。
 
   > entry types 即：PerformanceEntry.entryType。包含 frame/navigation、resource、mark、measure、paint。
   >
   > 参考自：[MDN - PerformanceEntry.entryType](https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceEntry/entryType)
 
-- **PerformanceObserver.disconnect()：**性能监测回调 <font color=FF0000>停止接收 性能条目</font>。
+- `PerformanceObserver.disconnect()` ：性能监测回调 <font color=FF0000>停止接收 性能条目</font>。
 
 ##### 示例
 
@@ -9505,43 +9521,47 @@ High Resolution Time 标准定义了 Performance 接口，该接口支持应用�
 
 DOMHighResTimeStamp 类型，顾名思义，表示高采样率的时间戳。 此类型是 double ，由性能接口使用。 该值可以是离散时间戳，也可以是两个离散时间戳之间的时间间隔。
 
-DOMHighResTimeStamp 的单位是毫秒，应精确到 5 µs（微秒）（**注：**单位是毫秒，但是有小数）。 但是，如果浏览器无法提供精确到 5 微秒的时间数值（例如由于硬件或软件限制），则浏览器可以将该值表示为精确到毫秒的时间（以毫秒为单位）。
+DOMHighResTimeStamp 的单位是毫秒，应精确到 5 µs（微秒）（👀 单位是毫秒，但是有小数）。 但是，如果浏览器无法提供精确到 5 微秒的时间数值（例如由于硬件或软件限制），则浏览器可以将该值表示为精确到毫秒的时间（以毫秒为单位）。
 
 ##### 方法
 
-**Performance 接口具有两个方法**（**注：**感觉有点不对，毕竟下面 [[#Performance#方法]] 有很多方法...）
+<font color=dodgerBlue>Performance 接口具有两个方法</font>
 
-- **now() 方法**：返回一个 DOMHighResTimeStamp，其值取决于 navigation start 和 作用域。如果作用域是 window ，则值是创建 ***浏览器上下文*** 的时间；如果作用域是 worker，则值是创建 worker 的时间。
+> 感觉有点不对，毕竟下面 [[#Performance#方法]] 有很多方法...
 
-  > 👀 在 Chrome 和 Safari 中测试，now 方法返回的均是当前标签页 ( Tab ) 打开的时间（单位是毫秒）。所以，这里所说的 ***浏览器上下文***  <mark>**感觉应该**</mark> 和 ***标签页*** 一一对应，即：打开一个 ***标签页***，生成一个 ***浏览器上下文***
+- `now()` ：返回一个 DOMHighResTimeStamp，其值取决于 navigation start 和 作用域。如果作用域是 window ，则值是创建 ***浏览器上下文*** 的时间；如果作用域是 worker，则值是创建 worker 的时间。
 
-- **toJSON() 方法**：返回 Performance 对象的序列化结果，包含可以被序列化的属性。
+  > 👀 在 Chrome 和 Safari 中测试，now 方法返回的均是当前标签页 ( Tab ) 打开的时间（单位是毫秒）。所以，这里所说的 ***浏览器上下文***  <font color=lightSeaGreen>**感觉应该**</font> 和 ***标签页*** 一一对应，即：打开一个 ***标签页***，生成一个 ***浏览器上下文***
+
+- `toJSON()` ：返回 Performance 对象的序列化结果，包含可以被序列化的属性。
 
 ##### 属性
 
-**Performance 接口具有两个属性**（**注：**还是感觉有点不对，毕竟下面 [[#Performance#属性]] 有很多属性...）
+<font color=dodgerBlue>Performance 接口具有两个属性</font>
 
-- **timing 属性**：返回一个 PerformanceTiming 对象，其中包含与延时相关的性能信息，例如导航开始的时间，重定向的开始时间和结束时间，响应的开始时间和结束时间等。
+> 👀 还是感觉有点不对，毕竟下面 [[#Performance#属性]] 有很多属性...
 
-- **navigation 属性**：返回一个 PerformanceNavigation 对象，该对象表示在给定浏览上下文中发生的导航类型，例如从历史记录导航到的页面，通过跟随链接导航到的页面等
+- **`timing` 属性**：返回一个 PerformanceTiming 对象，其中包含与延时相关的性能信息，例如导航开始的时间，重定向的开始时间和结束时间，响应的开始时间和结束时间等。
+
+- **`navigation` 属性**：返回一个 PerformanceNavigation 对象，该对象表示在给定浏览上下文中发生的导航类型，例如从历史记录导航到的页面，通过跟随链接导航到的页面等
 
 ##### 接口
 
-- **Performance**：提供方法和属性，包含给定页面与计时相关的性能信息
+- `Performance` ：提供方法和属性，包含给定页面与计时相关的性能信息
 
-- **PerformanceEntry**：提供方法和属性，将单个性能指标封装为性能时间轴的一部分
+- `PerformanceEntry` ：提供方法和属性，将单个性能指标封装为性能时间轴的一部分
 
-- **PerformanceFrameTiming**：提供方法和属性，包含有关<font color=FF0000>浏览器事件循环的 帧计时数据</font>
+- `PerformanceFrameTiming` ：提供方法和属性，包含有关<font color=FF0000>浏览器事件循环的 帧计时数据</font>
 
-- **PerformanceMark**：条目类型为 "mark" 的 PerformanceEntry 抽象接口，该类型的条目通过调用 mark() 将命名的DOMHighResTimeStamp mark 添加到浏览器的性能时间轴来创建
+- `PerformanceMark`：条目类型为 "mark" 的 `PerformanceEntry` 抽象接口，该类型的条目通过调用 mark() 将命名的 DOMHighResTimeStamp mark 添加到浏览器的性能时间轴来创建
 
-  > 👀 这里的 mark() ，即 Performance.mark()
+  > 👀 这里的 mark() ，即 `Performance.mark()`
 
-- **PerformanceMeasure**：条目类型为 "measure" 的 PerformanceEntry 抽象接口，该类型的条目通过调用 measure() 在浏览器的性能时间轴的两个标记之间添加一个命名的 DOMHighResTimeStamp measure 来创建
+- `PerformanceMeasure` ：条目类型为 "measure" 的 `PerformanceEntry` 抽象接口，该类型的条目通过调用 `measure()` 在浏览器的性能时间轴的两个标记之间添加一个命名的 DOMHighResTimeStamp measure 来创建
 
-  > 👀 这里的 measure() ，即 Performance.measure()
+  > 👀 这里的 measure() ，即 `Performance.measure()`
 
-- **PerformanceNavigationTiming**：提供方法和属性，用于 <font color=FF0000>存储和检索</font> 有关 <font color=FF0000>浏览器文档导航事件 的高采样率时间戳或其他指标</font>。
+- `PerformanceNavigationTiming` ：提供方法和属性，用于 <font color=FF0000>存储和检索</font> 有关 <font color=FF0000>浏览器文档导航事件 的高采样率时间戳或其他指标</font>。
 
   > 👀 即 Navigation Timing API
   >
@@ -9555,13 +9575,13 @@ DOMHighResTimeStamp 的单位是毫秒，应精确到 5 µs（微秒）（**注�
   >
   > 摘自：[MDN - PerformanceResourceTiming](https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceResourceTiming)
 
-- **PerformanceObserver**：提供方法和属性，用于观察性能测量事件，并在浏览器的性能时间轴中记录新的 PerformanceEntry 时进行通知
+- `PerformanceObserver` ：提供方法和属性，用于观察性能测量事件，并在浏览器的性能时间轴中记录新的 PerformanceEntry 时进行通知
 
-  > **注：**可以参考上面的 [[#PerformanceObserver 性能监测对象]]
+  > 👀 可以参考上面的 [[#PerformanceObserver 性能监测对象]]
 
-- **PerformanceResourceTiming**：提供方法和属性，用于<font color=FF0000>检索和分析</font> 有关 <font color=FF0000>应用程序 **资源加载** 的详细网络计时数据</font>
+- `PerformanceResourceTiming` ：提供方法和属性，用于<font color=FF0000>检索和分析</font> 有关 <font color=FF0000>应用程序 **资源加载** 的详细网络计时数据</font>
 
-  > **注：**即 Resource Timing API
+  > 👀 即 Resource Timing API
 
 摘自：[MDN - Performance API](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance_API)
 
@@ -9569,7 +9589,7 @@ DOMHighResTimeStamp 的单位是毫秒，应精确到 5 µs（微秒）（**注�
 
 Performance 接口<font color=FF0000>**可以获取到当前页面中与性能相关的信息**</font>。它<font color=FF0000>是 High Resolution Time API 的一部分</font>，同时也融合了 Performance Timeline API、Navigation Timing API、 User Timing API 和 Resource Timing API。
 
-> ##### Performance 接口由多个 API 构成
+> ###### Performance 接口由多个 API 构成
 >
 > - High Resolution Time API
 >
@@ -9583,41 +9603,42 @@ Performance 接口<font color=FF0000>**可以获取到当前页面中与性能�
 
 <font color=FF0000>该类型的对象可以通过调用只读属性 Window.performance 来获得</font>。
 
-> **注意 ⚠️：**除了以下指出的情况外，<font color=FF0000>该接口及其成员在 Web Worker 中可用</font>。此外，还需注意：performance 的创建和衡量都是同一环境下的。即，<mark>如果你在主线程（或者其他 worker ）中创建了一个 performance ，那么它在另外的 worker 线程中是不可用的；反之亦然</mark>。
+> [!WARNING]
+> 除了以下指出的情况外，<font color=FF0000>该接口及其成员在 Web Worker 中可用</font>。此外，还需注意：performance 的创建和衡量都是同一环境下的。即，<font color=lightSeaGreen>如果你在主线程（或者其他 worker ）中创建了一个 performance ，那么它在另外的 worker 线程中是不可用的；反之亦然</font>。
 
 ##### 属性
 
-**Performance 接口没有继承任何属性**
+**`Performance` 接口没有继承任何属性**
 
-- **Performance.navigation：**🗑 已废弃， 只读。PerformanceNavigation 对象<font color=FF0000>提供了在指定的时间段里发生的操作相关信息</font>。包括页面是加载还是刷新、发生了多少次重定向等等。<font color=FF0000>**workers 中不可用**</font>
+- `Performance.navigation` ：🗑 已废弃， 只读。PerformanceNavigation 对象<font color=FF0000>提供了在指定的时间段里发生的操作相关信息</font>。包括页面是加载还是刷新、发生了多少次重定向等等。<font color=FF0000>**workers 中不可用**</font>
 
-- **Performance.timing**：🗑 已废弃，只读。PerformanceTiming 对象<font color=FF0000>**包含延迟相关的性能信息**</font>。<font color=FF0000>**workers 中不可用**</font>。
+- `Performance.timing` ：🗑 已废弃，只读。PerformanceTiming 对象<font color=FF0000>**包含延迟相关的性能信息**</font>。<font color=FF0000>**workers 中不可用**</font>。
 
   > 在 Navigation Timing Level 2 specification 中已经被废弃，请<font color=FF0000>使用 Performance.timeOrigin 替代</font>。
   >
   > 摘自：[MDN - Performance.timing](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/timing)
 
-- **performance.memory**：⚠️ 非标准。是 Chrome 添加的一个非标准扩展，这个属性<font color=FF0000>提供了一个可以获取到基本内存使用情况的对象</font>。**不应该**使用这个非标准的 API 。
+- `performance.memory` ：⚠️ 非标准。是 Chrome 添加的一个非标准扩展，这个属性<font color=FF0000>提供了一个可以获取到基本内存使用情况的对象</font>。**不应该**使用这个非标准的 API 。
 
-- **Performance.timeOrigin**：⚠️ 非标准，只读。返回性能测量开始时的时间的<font color=FF0000>高精度时间戳</font>。
+- `Performance.timeOrigin` ：⚠️ 非标准，只读。返回性能测量开始时的时间的<font color=FF0000>高精度时间戳</font>。
 
-  > **注：**经测试，返回的 *时间戳* 精确到毫秒，和 Date.now() 同一个层级。另外，既然是 *时间戳*，所以必然是绝对时间，而不是相对时间。
+  > 👀 经测试，返回的 *时间戳* 精确到毫秒，和 Date.now() 同一个层级。另外，既然是 *时间戳*，所以必然是绝对时间，而不是相对时间。
 
 ##### 事件处理程序
 
-- **Performance.onresourcetimingbufferfull**：一个回调的 EventTarget ，当触发 resourcetimingbufferfull 事件的时候会被调用
+- `Performance.onresourcetimingbufferfull` ：一个回调的 EventTarget ，当触发 resourcetimingbufferfull 事件的时候会被调用
 
 ##### 方法
 
-**Performance 接口没有继承任何方法**
+<font color=dodgerBlue>Performance 接口没有继承任何方法</font>
 
-- **Performance.clearMarks()**：将给定的 mark 从浏览器的性能输入缓冲区中移除。
+- `Performance.clearMarks()` ：将给定的 mark 从浏览器的性能输入缓冲区中移除。
 
-- **Performance.clearMeasures()**：将给定的 measure 从浏览器的性能输入缓冲区中移除。
+- `Performance.clearMeasures()` ：将给定的 measure 从浏览器的性能输入缓冲区中移除。
 
-- **Performance.clearResourceTimings()**：从浏览器的 *性能数据缓冲区* 中移除所有 entryType 是 "resource" 的 performance entries
+- `Performance.clearResourceTimings()` ：从浏览器的 *性能数据缓冲区* 中移除所有 entryType 是 "resource" 的 performance entries
 
-- <font color=FF0000>**Performance.getEntries()**</font>：基于给定的 filter 返回一个 PerformanceEntry 对象的列表。
+- <font color=FF0000>`Performance.getEntries()`</font> ：基于给定的 filter 返回一个 PerformanceEntry 对象的列表。
 
   > 💡 补充
   >
@@ -9634,11 +9655,11 @@ Performance 接口<font color=FF0000>**可以获取到当前页面中与性能�
   >
   > 摘自：[MDN - Performance.getEntries()](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/getEntries)
 
-- <font color=FF0000>**Performance.getEntriesByName()**</font>：基于给定的 name 和 entry type 返回一个 PerformanceEntry 对象的列表。
+- <font color=FF0000>`Performance.getEntriesByName()`</font> ：基于给定的 name 和 entry type 返回一个 PerformanceEntry 对象的列表。
 
-- <font color=FF0000>**Performance.getEntriesByType()**</font>：基于给定的 entry type 返回一个 PerformanceEntry 对象的列表
+- <font color=FF0000>`Performance.getEntriesByType()`</font> ：基于给定的 entry type 返回一个 PerformanceEntry 对象的列表
 
-- <font color=FF0000>**Performance.mark()**</font>：根据给出 name 值，<font color=FF0000>在 ***浏览器的性能输入缓冲区*** 中创建一个相关的 timestamp</font>
+- <font color=FF0000>`Performance.mark()`</font> ：根据给出 name 值，<font color=FF0000>在 ***浏览器的性能输入缓冲区*** 中创建一个相关的 timestamp</font>
 
   > 💡 name 是 mark 方法中指定的参数
   >
@@ -9650,13 +9671,13 @@ Performance 接口<font color=FF0000>**可以获取到当前页面中与性能�
   >
   > 摘自：[MDN - Performance.mark()](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance/mark)
 
-- **Performance.measure()**：在浏览器的指定 start mark 和 end mark 间的性能输入缓冲区中创建一个指定的 timestamp
+- `Performance.measure()` ：在浏览器的指定 start mark 和 end mark 间的性能输入缓冲区中创建一个指定的 timestamp
 
-- <font color=FF0000>**Performance.now()**</font>：<font color=FF0000>返回一个表示 **从性能测量时刻开始经过的毫秒数** DOMHighResTimeStamp</font>
+- <font color=FF0000>`Performance.now()`</font>：<font color=FF0000>返回一个表示 **从性能测量时刻开始经过的毫秒数** DOMHighResTimeStamp</font>
 
-- **Performance.setResourceTimingBufferSize()**：将浏览器的资源 timing 缓冲区的大小设置为 "resource" type performance entry 对象的指定数量
+- `Performance.setResourceTimingBufferSize()` ：将浏览器的资源 timing 缓冲区的大小设置为 "resource" type performance entry 对象的指定数量
 
-- **Performance.toJSON()**：其是一个 JSON 格式转化器，返回 Performance 对象的 JSON 对象
+- `Performance.toJSON()` ：其是一个 JSON 格式转化器，返回 Performance 对象的 JSON 对象
 
 摘自：[MDN - Performance](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance)
 
@@ -9668,29 +9689,29 @@ PerformanceTiming 接口是 <font color=FF0000>**为保持向后兼容性而保�
 
 PerformanceTiming 接口不包含任何继承属性
 
-- **PerformanceTiming.navigationStart**：只读，是一个无符号 long long 型的毫秒数。表征了<font color=FF0000>从 **同一个浏览器上下文** 的上一个文档卸载 ( unload ) 结束时的 UNIX 时间戳</font>。<font color=lightSeaGreen>如果没有上一个文档，这个值会和 `PerformanceTiming.fetchStart` 相同</font>。
+- `PerformanceTiming.navigationStart` ：只读，是一个无符号 long long 型的毫秒数。表征了<font color=FF0000>从 **同一个浏览器上下文** 的上一个文档卸载 ( unload ) 结束时的 UNIX 时间戳</font>。<font color=lightSeaGreen>如果没有上一个文档，这个值会和 `PerformanceTiming.fetchStart` 相同</font>。
 
-- **PerformanceTiming.unloadEventStart**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>unload 事件抛出时的 UNIX 时间戳</font>。如果没有上一个文档，或者 之前的文档或所需的重定向之一不是同一来源，这个值会返回 0
+- `PerformanceTiming.unloadEventStart` ：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>unload 事件抛出时的 UNIX 时间戳</font>。如果没有上一个文档，或者 之前的文档或所需的重定向之一不是同一来源，这个值会返回 0
 
-- **PerformanceTiming.unloadEventEnd**：只读，是一个无符号long long 型的毫秒数。表征了 <font color=FF0000>unload 事件处理完成时的 UNIX 时间戳</font>。如果没有上一个文档，或者 之前的文档或所需的重定向之一不是同一来源，这个值会返回 0
+- `PerformanceTiming.unloadEventEnd` ：只读，是一个无符号long long 型的毫秒数。表征了 <font color=FF0000>unload 事件处理完成时的 UNIX 时间戳</font>。如果没有上一个文档，或者 之前的文档或所需的重定向之一不是同一来源，这个值会返回 0
 
-- **PerformanceTiming.redirectStart**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**第一个 HTTP *重定向开始* 时** 的 UNIX 时间戳</font>。如果没有重定向，或者重定向中的一个不同源，这个值会返回 0
+- `PerformanceTiming.redirectStart` ：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**第一个 HTTP *重定向开始* 时** 的 UNIX 时间戳</font>。如果没有重定向，或者重定向中的一个不同源，这个值会返回 0
 
-- **PerformanceTiming.redirectEnd**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**最后一个 HTTP *重定向完成* 时**（也就是说是 HTTP 响应的最后一个比特直接被收到的时间）的 UNIX 时间戳</font>。如果没有重定向，或者重定向中的一个不同源，这个值会返回 0
+- `PerformanceTiming.redirectEnd` ：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**最后一个 HTTP *重定向完成* 时**（也就是说是 HTTP 响应的最后一个比特直接被收到的时间）的 UNIX 时间戳</font>。如果没有重定向，或者重定向中的一个不同源，这个值会返回 0
 
-- **PerformanceTiming.fetchStart**：只读，是一个无符号 long long 型的毫秒数。表征了 浏览器 <font color=FF0000>**准备好 使用 HTTP 请求** 来获取 ( fetch ) 文档的 UNIX 时间戳</font>。这个时间点会在检查任何应用缓存之前。
+- `PerformanceTiming.fetchStart` ：只读，是一个无符号 long long 型的毫秒数。表征了 浏览器 <font color=FF0000>**准备好 使用 HTTP 请求** 来获取 ( fetch ) 文档的 UNIX 时间戳</font>。这个时间点会在检查任何应用缓存之前。
 
-- **PerformanceTiming.domainLookupStart**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**域名查询开始的 UNIX 时间戳**</font>。如果使用了持续连接 ( persistent connection，
+- `PerformanceTiming.domainLookupStart` ：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**域名查询开始的 UNIX 时间戳**</font>。如果使用了持续连接 ( persistent connection，
 
   > 👀 感觉可以理解为 “长连接” `Connection: Keep-Alive`，或者这个信息存储到了缓存或者本地资源上，这个值将和 PerformanceTiming.fetchStart 一致
 
-- **PerformanceTiming.domainLookupEnd**：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**域名查询结束的 UNIX 时间戳**</font>。如果使用了持续连接 ( persistent connection )，或者这个信息存储到了缓存或者本地资源上，这个值将和 PerformanceTiming.fetchStart 一致
+- `PerformanceTiming.domainLookupEnd` ：只读，是一个无符号 long long 型的毫秒数。表征了 <font color=FF0000>**域名查询结束的 UNIX 时间戳**</font>。如果使用了持续连接 ( persistent connection )，或者这个信息存储到了缓存或者本地资源上，这个值将和 PerformanceTiming.fetchStart 一致
 
-- **PerformanceTiming.connectStart**：只读，是一个无符号 long long 型的毫秒数。返回HTTP请求开始向服务器发送时的Unix毫秒时间戳。如果使用持久连接 ( persistent connection )，则返回值等同于 fetchStart 属性的值
+- `PerformanceTiming.connectStart` ：只读，是一个无符号 long long 型的毫秒数。返回HTTP请求开始向服务器发送时的Unix毫秒时间戳。如果使用持久连接 ( persistent connection )，则返回值等同于 fetchStart 属性的值
 
-- **PerformanceTiming.connectEnd**：只读，是一个无符号 long long 型的毫秒数。返回浏览器与服务器之间的连接建立时的 Unix 毫秒时间戳。如果建立的是持久连接，则返回值等同于 fetchStart 属性的值。连接建立指的是所有握手和认证过程全部结束
+- `PerformanceTiming.connectEnd` ：只读，是一个无符号 long long 型的毫秒数。返回浏览器与服务器之间的连接建立时的 Unix 毫秒时间戳。如果建立的是持久连接，则返回值等同于 fetchStart 属性的值。连接建立指的是所有握手和认证过程全部结束
 
-  - **PerformanceTiming.secureConnectionStart**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>浏览器与服务器开始 **安全链接**（👀 即 https ） 的握手时的 Unix 毫秒时间戳</font>。如果当前网页不要求安全连接，则返回 0
+- `PerformanceTiming.secureConnectionStart` ：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>浏览器与服务器开始 **安全链接**（👀 即 https ） 的握手时的 Unix 毫秒时间戳</font>。如果当前网页不要求安全连接，则返回 0
 
   关于 https 的说法来自：
 
@@ -9700,25 +9721,25 @@ PerformanceTiming 接口不包含任何继承属性
   >
   > 摘自：[w3.org - Navigation Timing Level 2 - 8. Obsolete - 8.1 The PerformanceTiming interface - secureConnectionStart](https://www.w3.org/TR/navigation-timing-2/#dom-performancetiming-secureconnectionstart)
 
-- **PerformanceTiming.requestStart**：只读，是一个无符号 long long 型的毫秒数。返回浏览器向服务器发出 HTTP 请求时（或开始读取本地缓存时）的 Unix 毫秒时间戳
+- `PerformanceTiming.requestStart` ：只读，是一个无符号 long long 型的毫秒数。返回浏览器向服务器发出 HTTP 请求时（或开始读取本地缓存时）的 Unix 毫秒时间戳
 
-- **PerformanceTiming.responseStart**：只读，是一个无符号 long long 型的毫秒数。返回浏览器从服务器收到（或从本地缓存读取）第一个字节时的 Unix 毫秒时间戳。如果传输层在开始请求之后失败并且连接被重开，该属性将会被数制成新的请求的相对应的发起时间。
+- `PerformanceTiming.responseStart` ：只读，是一个无符号 long long 型的毫秒数。返回浏览器从服务器收到（或从本地缓存读取）第一个字节时的 Unix 毫秒时间戳。如果传输层在开始请求之后失败并且连接被重开，该属性将会被数制成新的请求的相对应的发起时间。
 
-- **PerformanceTiming.responseEnd**：只读，是一个无符号 long long 型的毫秒数。返回浏览器从服务器收到（或从本地缓存读取，或从本地资源读取）最后一个字节时（如果在此之前 HTTP 连接已经关闭，则返回关闭时）的 Unix 毫秒时间戳
+- `PerformanceTiming.responseEnd` ：只读，是一个无符号 long long 型的毫秒数。返回浏览器从服务器收到（或从本地缓存读取，或从本地资源读取）最后一个字节时（如果在此之前 HTTP 连接已经关闭，则返回关闭时）的 Unix 毫秒时间戳
 
-- **PerformanceTiming.domLoading**：只读，是一个无符号long long 型的毫秒数。返回 <font color=FF0000>当前网页 DOM 结构开始解析</font>时（即 <mark style="background: aqua"><font size=4>**Document.readyState 属性变为 “loading”**</font></mark>、相应的 readystatechange 事件触发时）的 Unix 毫秒时间戳
+- `PerformanceTiming.domLoading` ：只读，是一个无符号long long 型的毫秒数。返回 <font color=FF0000>当前网页 DOM 结构开始解析</font>时（即<font color=lightSeaGreen size=4>**`Document.readyState` 属性变为 “loading”**</font>、相应的 readystatechange 事件触发时）的 Unix 毫秒时间戳
 
-- **PerformanceTiming.domInteractive**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>**当前网页 DOM 结构结束解析、开始加载内嵌资源时**</font>（即 <mark style="background: aqua"><font  size=4>**Document.readyState 属性变为 “interactive”**</font></mark>、相应的 readystatechange 事件触发时）的 Unix 毫秒时间戳
+- `PerformanceTiming.domInteractive` ：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>**当前网页 DOM 结构结束解析、开始加载内嵌资源时**</font>（即 <font color=lightSeaGreen size=4>**Document.readyState 属性变为 “interactive”**</font>、相应的 `readystatechange` 事件触发时）的 Unix 毫秒时间戳
 
-- **PerformanceTiming.domContentLoadedEventStart**：只读，是一个无符号 long long 型的毫秒数。返回当解析器发送 DOMContentLoaded 事件，即所有需要被执行的脚本已经被解析时的 Unix 毫秒时间戳
+- `PerformanceTiming.domContentLoadedEventStart` ：只读，是一个无符号 long long 型的毫秒数。返回当解析器发送 DOMContentLoaded 事件，即所有需要被执行的脚本已经被解析时的 Unix 毫秒时间戳
 
-- **PerformanceTiming.domContentLoadedEventEnd**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>当所有需要立即执行的脚本已经被执行</font>（不论执行顺序。👀 即， 非 async 的脚本 ）时的 Unix 毫秒时间戳
+- `PerformanceTiming.domContentLoadedEventEnd` ：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>当所有需要立即执行的脚本已经被执行</font>（不论执行顺序。👀 即， 非 async 的脚本 ）时的 Unix 毫秒时间戳
 
-- **PerformanceTiming.domComplete**：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>**当前文档解析完成**</font>，即 <mark style="background: aqua"><font size=4>**Document.readyState 变为 ”complete“**</font></mark> ，且相对应的 readystatechange 被触发时的 Unix 毫秒时间戳
+- `PerformanceTiming.domComplete` ：只读，是一个无符号 long long 型的毫秒数。返回 <font color=FF0000>**当前文档解析完成**</font>，即 <font color=lightSeaGreen size=4>**`Document.readyState` 变为 ”complete“**</font></mark> ，且相对应的 `readystatechange` 被触发时的 Unix 毫秒时间戳
 
-- **PerformanceTiming.loadEventStart**：只读，是一个无符号 long long 型的毫秒数。返回该文档下，<font color=FF0000>load 事件 **被发送** 时的 Unix 毫秒时间戳</font>。如果这个事件还未被发送，它的值将会是 0
+- `PerformanceTiming.loadEventStart` ：只读，是一个无符号 long long 型的毫秒数。返回该文档下，<font color=FF0000>load 事件 **被发送** 时的 Unix 毫秒时间戳</font>。如果这个事件还未被发送，它的值将会是 0
 
-- **PerformanceTiming.loadEventEnd**：只读，是一个无符号 long long 型的毫秒数。返回当 load 事件结束，即 <font color=FF0000>**加载事件完成时** 的 Unix 毫秒时间戳</font>。如果这个事件还未被发送，或者尚未完成，它的值将会是 0
+- `PerformanceTiming.loadEventEnd` ：只读，是一个无符号 long long 型的毫秒数。返回当 load 事件结束，即 <font color=FF0000>**加载事件完成时** 的 Unix 毫秒时间戳</font>。如果这个事件还未被发送，或者尚未完成，它的值将会是 0
 
 ##### 辅助记忆图
 
@@ -9744,10 +9765,10 @@ PerformanceEntry 对象代表了 performance 时间列表中的单个 metric 数
 
 ##### 属性
 
-- **PerformanceEntry.name**：只读，DOMString 该 performance entry 的名字
-- **PerformanceEntry.entryType**：只读，DOMString 代表所上报的 performance metric 的 entryType 类型，例如 "mark"。可通过 [entryType](https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceEntry/entryType) 查阅完整的 entryType type 类型
-- **PerformanceEntry.startTime**：只读，DOMHighResTimeStamp  此为 metric 上报时的时间
-- **PerformanceEntry.duration**：只读，DOMHighResTimeStamp 该事件的耗时
+- `PerformanceEntry.name` ：只读，DOMString 该 performance entry 的名字
+- `PerformanceEntry.entryType` ：只读，DOMString 代表所上报的 performance metric 的 entryType 类型，例如 "mark"。可通过 [entryType](https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceEntry/entryType) 查阅完整的 entryType type 类型
+- `PerformanceEntry.startTime` ：只读，DOMHighResTimeStamp  此为 metric 上报时的时间
+- `PerformanceEntry.duration` ：只读，DOMHighResTimeStamp 该事件的耗时
 
 摘自：[MDN - PerformanceEntry](https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceEntry)
 
@@ -9764,7 +9785,9 @@ measure(measureName, startMark)
 measure(measureName, startMark, endMark)
 ```
 
-参数：略，详见：[MDN - performance.measure() - en-US](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 。不过，值得说一下的是：startMark 和 endMark 也是可以 performance.timing 中的值，详见： [[#PerformanceTiming]]
+###### 参数
+
+略，详见：[MDN - en-US - `performance.measure()`](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 。不过，值得说一下的是：`startMark` 和 `endMark` 也是可以 `performance.timing` 中的值，详见： [[#PerformanceTiming]]
 
 摘自：[MDN - performance.measure()](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 不过，中文版的内容和美版不一样，少了很多内容，建议看：[MDN US - performance.measure()](https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure) 
 
@@ -9876,7 +9899,7 @@ The ReportingObserver interface of the Reporting API <font color=FF0000>allows y
 
 ##### 构造函数
 
-**ReportingObserver()**: Creates a new ReportingObserver object instance, which can be used to collect and access reports.
+**`ReportingObserver()`** : Creates a new ReportingObserver object instance, which can be used to collect and access reports.
 
 > ##### ReportingObserver()
 >
@@ -9891,16 +9914,16 @@ The ReportingObserver interface of the Reporting API <font color=FF0000>allows y
 >
 > ###### 参数
 >
-> - **callback**: A callback function that runs when the observer starts to collect reports (i.e. via `ReportingObserver.observe()` ). The callback function is given two parameters:
+> - **`callback`**: A callback function that runs when the observer starts to collect reports (i.e. via `ReportingObserver.observe()` ). The callback function is given two parameters:
 >
->   - **reports**: A sequence of `Report` objects representing the reports collected in the observer's report queue. This is probably the most common way to retrieve the reports.
->   - **observer**: A reference to the same `ReportingObserver` object, allowing for recursive report collection, etc.
+>   - **`reports`** : A sequence of `Report` objects representing the reports collected in the observer's report queue. This is probably the most common way to retrieve the reports.
+>   - **`observer`** : A reference to the same `ReportingObserver` object, allowing for recursive report collection, etc.
 >
-> - **options**: 可选，An `ReportingObserverOptions` object <font color=FF0000>allowing you to set the options for creating the object</font>. The available options are:
+> - **`options`** : 可选，An `ReportingObserverOptions` object <font color=FF0000>allowing you to set the options for creating the object</font>. The available options are:
 >
->   - **types**: An array of strings representing the types of report to be collected by this observer. Available types include `deprecation`, `intervention`, and `crash` (although this last type usually isn't retrievable via a `ReportingObserver`).
+>   - **`types`** : An array of strings representing the types of report to be collected by this observer. Available types include `deprecation`, `intervention`, and `crash` (although this last type usually isn't retrievable via a `ReportingObserver`).
 >
->   - **buffered**: a boolean that defines whether the reports that were generated before the observer was able to be created should be observable ( `true` ) or not ( `false` ).
+>   - **`buffered`** : a boolean that defines whether the reports that were generated before the observer was able to be created should be observable ( `true` ) or not ( `false` ).
 >
 > 摘自：[MDN US - ReportingObserver()](https://developer.mozilla.org/en-US/docs/Web/API/ReportingObserver/ReportingObserver)
 
@@ -9910,11 +9933,11 @@ The ReportingObserver interface of the Reporting API <font color=FF0000>allows y
 
 ##### 方法
 
-- **ReportingObserver.disconnect()**: 实验性，Stops a reporting observer that had previously started observing from collecting reports.
+- **`ReportingObserver.disconnect()`** : 🧪 Stops a reporting observer that had previously started observing from collecting reports.
 
-- **ReportingObserver.observe()**: 实验性，Instructs a reporting observer to start collecting reports in its report queue.
+- **`ReportingObserver.observe()`** : 🧪 Instructs a reporting observer to start collecting reports in its report queue.
 
-- **ReportingObserver.takeRecords()**: 实验性，<font color=FF0000>Returns the current list of reports contained in the observer's report queue, and empties the queue</font>.
+- **`ReportingObserver.takeRecords()`** : 🧪 <font color=FF0000>Returns the current list of reports contained in the observer's report queue, and empties the queue</font>.
 
 ##### 事件
 
@@ -10018,9 +10041,9 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
   
   | 常量名     | 值   | 描述          |
   | ------- | --- | ----------- |
-  | EMPTY   | 0   | 还没有加载任何数据.  |
-  | LOADING | 1   | 数据正在被加载.    |
-  | DONE    | 2   | 已完成全部的读取请求. |
+  | `EMPTY`   | 0   | 还没有加载任何数据.  |
+  | `LOADING` | 1   | 数据正在被加载.    |
+  | `DONE`    | 2   | 已完成全部的读取请求. |
 
 - <font color=FF0000>**`FileReader.result`** ：</font>只读，<font color=FF0000>文件的内容</font>。该属性仅在读取操作完成后才有效，数据的格式取决于使用哪个方法来启动读取操作。
 
@@ -10101,9 +10124,28 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 classDiagram
 class EventTarget
 class SourceBuffer
-EventTarget<|--SourceBuffer
+ SourceBuffer  --|> EventTarget
 ```
 
+##### 属性
+
+- [`SourceBuffer.appendWindowEnd`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/appendWindowEnd) ：控制 append window 结束的时间戳。
+
+- [`SourceBuffer.appendWindowStart`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/appendWindowStart) ：控制 [append window](https://w3c.github.io/media-source/#append-window) 开始的时间戳。这是一个时间戳范围，可以用于过滤附加到 `SourceBuffer` 的媒体数据。此时间戳范围的编码媒体帧将被附加，而超出此范围的将被忽略。
+
+- [`SourceBuffer.audioTracks`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/audioTracks) ：只读，当前包含在 `SourceBuffer` 中的音轨列表。
+
+- [`SourceBuffer.buffered`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/buffered) ：只读，返回当前在 `SourceBuffer` 中缓冲的时间范围。
+
+- [`SourceBuffer.mode`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/mode) ：控制如何处理 `SourceBuffer` 中媒体片段的顺序，即它们是否可以按任何顺序被加载，或者他们必须保持一个严格的顺序。
+
+- [`SourceBuffer.textTracks`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/textTracks) ：只读，当前包含在 `SourceBuffer` 中的文本轨列表。
+
+- [`SourceBuffer.timestampOffset`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/timestampOffset) ：控制应用于随后附加到 `SourceBuffer` 的媒体片段内的时间戳偏移量。
+
+- [`SourceBuffer.updating`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/updating) ：只读，一个布尔值，表示 `SourceBuffer` 当前是否正在更新——即当前是否正在进行 [`SourceBuffer.appendBuffer()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/appendBuffer)、[`SourceBuffer.appendStream()`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer) 或 [`SourceBuffer.remove()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/remove) 操作。
+
+- [`SourceBuffer.videoTracks`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/videoTracks) ：只读，当前包含在 `SourceBuffer` 中的视频轨列表。
 
 
 
@@ -15483,25 +15525,29 @@ ArrayBuffer 对象用来表示<font color=FF0000>通用的、固定长度</font>
 new ArrayBuffer(length)
 ```
 
-##### 参数
+###### 参数
 
 length：要创建的 ArrayBuffer 的大小，单位为字节。
 
-**返回值：**一个指定大小的 ArrayBuffer 对象，其内容被初始化为 0。
+###### 返回值
 
-**异常：**如果 length 大于 Number.MAX_SAFE_INTEGER（>= 2 ** 53）或为负数，则抛出一个  RangeError  异常。
+一个指定大小的 ArrayBuffer 对象，其内容被初始化为 0。
 
-##### 属性
+###### 异常
 
-- **ArrayBuffer.length：**ArrayBuffer 构造函数的 length 属性，其值为1。
-- **ArrayBuffer.prototype.byteLength：**只读属性，表示 ArrayBuffer 的byte的大小，在ArrayBuffer构造完成时生成，不可改变。
-- **get ArrayBuffer[@@species]：**返回 ArrayBuffer 的构造函数。
-- **ArrayBuffer.prototype：**通过 ArrayBuffer 的原型对象可以为所有 ArrayBuffer 对象添加属性。
+如果 length 大于 `Number.MAX_SAFE_INTEGER`（>= 2 ** 53）或为负数，则抛出一个  RangeError  异常。
+
+###### 属性
+
+- `ArrayBuffer.length` ：ArrayBuffer 构造函数的 length 属性，其值为1。
+- `ArrayBuffer.prototype.byteLength` ：只读属性，表示 ArrayBuffer 的byte的大小，在ArrayBuffer构造完成时生成，不可改变。
+- `get ArrayBuffer[@@species]` ：返回 ArrayBuffer 的构造函数。
+- `ArrayBuffer.prototype` ：通过 ArrayBuffer 的原型对象可以为所有 ArrayBuffer 对象添加属性。
 
 ##### 方法
 
-- **ArrayBuffer.isView(arg)：**如果参数是 ArrayBuffer 的视图实例则返回 true，例如 类型数组对象 或 DataView 对象；否则返回 false。
-- **ArrayBuffer.transfer(oldBuffer [, newByteLength]) ：**返回一个新的 ArrayBuffer 对象，其内容取自 oldBuffer 中的数据，并且根据 newByteLength 的大小对数据进行截取或补 0。
+- `ArrayBuffer.isView(arg)` ：如果参数是 ArrayBuffer 的视图实例则返回 true，例如 类型数组对象 或 DataView 对象；否则返回 false。
+- `ArrayBuffer.transfer(oldBuffer [, newByteLength])` ：返回一个新的 ArrayBuffer 对象，其内容取自 oldBuffer 中的数据，并且根据 newByteLength 的大小对数据进行截取或补 0。
 
 摘自：[MDN - ArrayBuffer](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
@@ -15538,10 +15584,10 @@ Float64Array();
 
 ##### 参数
 
-- **length** ：当传入 length 参数时，一个内部的数组缓冲区会被创建在内存中，该缓存区的大小（类型化数组中 byteLength 属性的值）是传入的 length 乘以数组中每个元素的字节数（BYTES_PER_ELEMENT），每个元素的值都为0。(译者注：每个元素的字节数是由具体的构造函数决定的，比如 Int16Array() 的每个元素的字节数为 2，Int32Array() 的每个元素的字节数为 4)
-- **typedArray** ：当传入一个任意类型化数组对象作为 typedArray 参数时（比如 Int32Array ），typedArray 会被复制到一个新的类型数组中。typedArray 中的每个值在被复制到新的数组之前，会被转化为相应类型的构造函数。新的生成的类型化数组对象将会有跟传入的数组相同的长度（译者注：比如原来的类型化数组的 length==2，那么新生成的数组的 length 也是 2，只是数组中的每一项进行了转化）。
-- **object** ：当传入一个 object 作为参数时，就像通过 TypedArray.from() 方法创建一个新的类型化数组一样。
-- **buffer, byteOffset, length** ：当传入一个 buffer 参数，或者再另外加上可选参数 byteOffset 和 length 时，一个新的类型化数组视图将会被创建，并可用于呈现传入的 ArrayBuffer 实例。byteOffset 和length 参数指定了类型化数组视图将要暴露的内存范围。如果两者都未传入，那么整个 buffer 都会被呈现；如果仅仅忽略 length，那么 buffer 中偏移了 byteOffset 后剩下的 buffer 将会被呈现
+- `length` ：当传入 length 参数时，一个内部的数组缓冲区会被创建在内存中，该缓存区的大小（类型化数组中 byteLength 属性的值）是传入的 length 乘以数组中每个元素的字节数（BYTES_PER_ELEMENT），每个元素的值都为0。(译者注：每个元素的字节数是由具体的构造函数决定的，比如 Int16Array() 的每个元素的字节数为 2，Int32Array() 的每个元素的字节数为 4)
+- `typedArray` ：当传入一个任意类型化数组对象作为 typedArray 参数时（比如 Int32Array ），typedArray 会被复制到一个新的类型数组中。typedArray 中的每个值在被复制到新的数组之前，会被转化为相应类型的构造函数。新的生成的类型化数组对象将会有跟传入的数组相同的长度（译者注：比如原来的类型化数组的 length==2，那么新生成的数组的 length 也是 2，只是数组中的每一项进行了转化）。
+- `object` ：当传入一个 object 作为参数时，就像通过 TypedArray.from() 方法创建一个新的类型化数组一样。
+- `buffer, byteOffset, length` ：当传入一个 buffer 参数，或者再另外加上可选参数 byteOffset 和 length 时，一个新的类型化数组视图将会被创建，并可用于呈现传入的 ArrayBuffer 实例。byteOffset 和length 参数指定了类型化数组视图将要暴露的内存范围。如果两者都未传入，那么整个 buffer 都会被呈现；如果仅仅忽略 length，那么 buffer 中偏移了 byteOffset 后剩下的 buffer 将会被呈现
 
 摘自：[MDN - TypedArray](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) 👀 注：22/8/27 原链接中的内容已经完全修改，摘抄内容不可见，原链接的内容见 [archive.org - MDN - TypedArray](https://web.archive.org/web/20220407042514/https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
 
@@ -15854,7 +15900,7 @@ export {
 };
 ```
 
-> 👀 注：在实践中发现，如下写法是不可以的
+> 👀 在实践中发现，如下写法是不可以的
 >
 > ```js
 > export default [var | let | const] varName = initVal;
@@ -16005,17 +16051,21 @@ Node --|> EventTarget : Inheritance
 
 Element.closest() 方法用来获取：<font color=FF0000>匹配特定选择器且离当前元素最近的祖先元素（也可以是当前元素本身）。如果匹配不到，则返回 null</font>
 
-**语法**
+##### 语法
 
 ```js
 var closestElement = targetElement.closest(selectors);
 ```
 
-- **参数**
-  selectors 是指定的选择器，比如 "p:hover, .toto + q"。
-- **返回值**
+###### 参数
+  selectors 是指定的选择器，比如 `"p:hover, .toto + q"`。
+
+###### 返回值
   elt 是查询到的祖先元素，也可能是 null。
-- **异常：**如果传入的选择器不合法，则抛出 SyntaxError 异常。
+
+###### 异常
+
+如果传入的选择器不合法，则抛出 SyntaxError 异常。
 
 示例见下面链接
 
@@ -16025,20 +16075,20 @@ var closestElement = targetElement.closest(selectors);
 
 #### element.insertAdjacentHTML
 
-insertAdjacentHTML() 方法<font color=FF0000>将指定的文本解析为 Element 元素</font>，并<font color=FF0000>将结果节点插入到DOM树中的指定位置</font>。<mark style=background-color:hotpink>它不会重新解析它正在使用的元素，因此它不会破坏元素内的现有元素。这避免了额外的序列化步骤，**使其比直接使用innerHTML操作更快**</mark>。
+`insertAdjacentHTML()` 方法<font color=FF0000>将指定的文本解析为 Element 元素</font>，并<font color=FF0000>将结果节点插入到DOM树中的指定位置</font>。它不会重新解析它正在使用的元素，因此它不会破坏元素内的现有元素。这避免了额外的序列化步骤，**使其比直接使用 `innerHTML` 操作更快**。
 
-**语法**
+##### 语法
 
 ```js
 element.insertAdjacentHTML(position, text);
 ```
 
-- **position：**一个 DOMString，表示插入内容相对于元素的位置，并且必须是以下字符串之一：
-  - **beforebegin：**<font color=FF0000>元素自身的前面</font>。
-  - **afterbegin：**插入元素<font color=FF0000>内部</font>的<font color=FF0000>第一个子节点之前</font>。
-  - **beforeend：**插入元素<font color=FF0000>内部</font>的<font color=FF0000>最后一个子节点之后</font>。
-  - **afterend：**<font color=FF0000>元素自身的后面</font>。
-- **text：**是<font color=FF0000>**要被解析为 HTML 或 XML 元素**</font>，并插入到DOM树中的 DOMString。
+- `position` ：一个 DOMString，表示插入内容相对于元素的位置，并且必须是以下字符串之一：
+  - `beforebegin` ：<font color=FF0000>元素自身的前面</font>。
+  - `afterbegin` ：插入元素<font color=FF0000>内部</font>的<font color=FF0000>第一个子节点之前</font>。
+  - `beforeend` ：插入元素<font color=FF0000>内部</font>的<font color=FF0000>最后一个子节点之后</font>。
+  - `afterend` ：<font color=FF0000>元素自身的后面</font>。
+- `text` ：是<font color=FF0000>**要被解析为 HTML 或 XML 元素**</font>，并插入到 DOM树中的 DOMString。
 
 摘自：[MDN - element.insertAdjacentHTML](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/insertAdjacentHTML)
 
@@ -16048,25 +16098,25 @@ element.insertAdjacentHTML(position, text);
 
 <font color=FF0000>Element.attachShadow() 方法**给指定的元素挂载一个Shadow DOM**，并且**返回对 ShadowRoot 的引用**</font>。
 
-**可以被挂载的shadow DOM元素**
+##### 可以被挂载的shadow DOM元素
 
-要注意的是，<font color=FF0000>不是每一种类型的元素都可以附加到shadow root（影子根）下面</font>。出于安全考虑，一些元素不能使用 shadow DOM（例如\<a>），以及许多其他的元素。下面是一个可以挂载 shadow root 的元素列表：
+要注意的是，<font color=FF0000>不是每一种类型的元素都可以附加到shadow root（影子根）下面</font>。出于安全考虑，一些元素不能使用 shadow DOM（例如 `<a>` ），以及许多其他的元素。下面是一个可以挂载 shadow root 的元素列表：
 
 **任何带有有效的名称且可独立存在的（autonomous）自定义元素**
 
-- \<article>
-- \<aside>
-- \<blockquote>
-- \<body>
-- \<div>
-- \<footer>
-- \<h1> \<h2> \<h3> \<h4> \<h5> \<h6>
-- \<header>
-- \<main>
-- \<nav>
-- \<p>
-- \<section>
-- \<span>
+- `<article>`
+- `<aside>`
+- `<blockquote>`
+- `<body>`
+- `<div>`
+- `<footer>`
+- `<h1>` `<h2>` `<h3>` `<h4>` `<h5>` `<h6>`
+- `<header>`
+- `<main>`
+- `<nav>`
+- `<p>`
+- `<section>`
+- `<span>`
 
 ##### 语法
 
@@ -16076,23 +16126,23 @@ var shadowroot = element.attachShadow(shadowRootInit);
 
 ###### 参数
 
-**shadowRootInit** ：一个 ShadowRootInit 字典，包括下列字段：
+`shadowRootInit` ：一个 ShadowRootInit 字典，包括下列字段：
 
-- **mode 模式**：指定 Shadow DOM 树封装模式的字符串，可以是以下值：
+- `mode` 模式：指定 Shadow DOM 树封装模式的字符串，可以是以下值：
 
-  - **open**：shadow root元素允许<font color=FF0000>从js外部访问根节点</font>，例如使用 Element.shadowRoot:
+  - `open` ：shadow root元素允许<font color=FF0000>从 js 外部访问根节点</font>，例如使用 `Element.shadowRoot` :
 
     ```js
     element.shadowRoot; // 返回一个ShadowRoot对象
     ```
 
-  - **closed**：<font color=FF0000>拒绝从js外部访问关闭的shadow root节点</font>
+  - `closed` ：<font color=FF0000>拒绝从js外部访问关闭的shadow root节点</font>
 
     ```js
     element.shadowRoot; // 返回null
     ```
 
-- **delegatesFocus** ：焦点委托
+- `delegatesFocus` ：焦点委托
 
   一个布尔值，当设置为 true 时, 指定减轻自定义元素的聚焦性能问题行为</font>.
   当shadow DOM中不可聚焦的部分被点击时, 让第一个可聚焦的部分成为焦点, 并且shadow host（影子主机）将提供所有可用的 :focus 样式.
@@ -16101,7 +16151,7 @@ var shadowroot = element.attachShadow(shadowRootInit);
 
 <font color=FF0000>返回一个 ShadowRoot 对象或者 **null**</font>。
 
-###### **异常**
+###### 异常
 
 | 异常                          | 说明                                                         |
 | :---------------------------- | :----------------------------------------------------------- |
@@ -16224,9 +16274,9 @@ Notification：定义的通知对象
 
 ##### 附加参数 ( Service worker additions )
 
-- **ServiceWorkerRegistration**：该对象包含 ServiceWorkerRegistration.showNotification() 和ServiceWorkerRegistration.getNotifications() 方法，用于控制通知的显示。
-- **ServiceWorkerGlobalScope**：该对象包含 ServiceWorkerGlobalScope.onnotificationclick 事件处理函数，用于通知被点击的时候触发绑定的事件处理函数。
-- **NotificationEvent**：该对象是功能明确的事件对象，表示一个通知事件被触发了，继承自 ExtendableEvent。
+- `ServiceWorkerRegistration` ：该对象包含 `ServiceWorkerRegistration.showNotification()` 和`ServiceWorkerRegistration.getNotifications()` 方法，用于控制通知的显示。
+- `ServiceWorkerGlobalScope` ：该对象包含 `ServiceWorkerGlobalScope.onnotificationclick` 事件处理函数，用于通知被点击的时候触发绑定的事件处理函数。
+- `NotificationEvent` ：该对象是功能明确的事件对象，表示一个通知事件被触发了，继承自 ExtendableEvent。
 
 摘自：[MDN - Notifications API](https://developer.mozilla.org/zh-CN/docs/Web/API/Notifications_API)
 
@@ -16238,11 +16288,11 @@ Notification：定义的通知对象
 
 ##### Push 的概念及用法
 
-<font color=FF0000>对于一个应用来说，**要想要接收到推送消息，需要有一个被激活的 service worker**</font>（注：感觉可以理解为 Push API 依赖于 Service  Worker。另外，在 [web下的 Notification 、Push 和 service worker 的区别？ - 知乎](https://www.zhihu.com/question/39258380) 中也有类似说法）。当 <font color=FF0000>service worker 处于激活状态时，可以 **使用 PushManager.subscribe() 来订阅推送通知**</font>。
+<font color=FF0000>对于一个应用来说，**要想要接收到推送消息，需要有一个被激活的 service worker**</font>（👀 感觉可以理解为 Push API 依赖于 Service  Worker。另外，在 [web下的 Notification 、Push 和 service worker 的区别？ - 知乎](https://www.zhihu.com/question/39258380) 中也有类似说法）。当 <font color=FF0000>service worker 处于激活状态时，可以 **使用 `PushManager.subscribe()` 来订阅推送通知**</font>。
 
 PushSubscription 的结果包含了应用需要发送的推送消息的所有信息：端点及发送数据需要的加密密钥。
 
-Service worker 会在必要的时候启动并接收接下来的推送消息，传递给 ServiceWorkerGlobalScope.onpush 事件句柄。该方法允许将接收到的推送消息使用在应用上，例如通过显示一条通知（使用 ServiceWorkerRegistration.showNotification() ）
+Service worker 会在必要的时候启动并接收接下来的推送消息，传递给 `ServiceWorkerGlobalScope.onpush` 事件句柄。该方法允许将接收到的推送消息使用在应用上，例如通过显示一条通知（使用 `ServiceWorkerRegistration.showNotification()` ）
 
 每一个订阅对 service worker 来说都是唯一的。同时订阅的端点也是一个唯一的 功能性 URL：端点的信息是给应用发送信息的全部必要条件。所以端点地址需要保证隐私，否则其他应用也可以向你的应用发送消息。
 
@@ -16280,16 +16330,16 @@ The `permissions` property has been made available on the [`Navigator`](https://
 
 ##### 属性
 
-- **Intl.Collator**：collators 的 <font color=FF0000>构造函数</font>，用于启用对语言敏感的字符串比较的对象。
-- **Intl.DateTimeFormat**：用于启用语言敏感的日期和时间格式的对象的构造函数。
-- **Intl.ListFormat**：Constructor for objects that enable language-sensitive list formatting.
-- **Intl.NumberFormat**：用于启用语言敏感数字格式的对象的构造函数。
-- **Intl.PluralRules**：用于启用多种敏感格式和多种语言语言规则的对象的构造函数。
-- **Intl.RelativeTimeFormat**：Constructor for objects that enable language-sensitive relative time formatting
+- `Intl.Collator` ：collators 的 <font color=FF0000>构造函数</font>，用于启用对语言敏感的字符串比较的对象。
+- `Intl.DateTimeFormat` ：用于启用语言敏感的日期和时间格式的对象的构造函数。
+- `Intl.ListFormat` ：Constructor for objects that enable language-sensitive list formatting.
+- `Intl.NumberFormat` ：用于启用语言敏感数字格式的对象的构造函数。
+- `Intl.PluralRules` ：用于启用多种敏感格式和多种语言语言规则的对象的构造函数。
+- `Intl.RelativeTimeFormat` ：Constructor for objects that enable language-sensitive relative time formatting
 
 ##### 方法
 
-- **Intl.getCanonicalLocales()**：返回规范区域名称 ( canonical locale name )
+- `Intl.getCanonicalLocales` **：返回规范区域名称 ( canonical locale name )
 
 // TODO 后面还有更多内容，没有细究。
 
@@ -16297,274 +16347,7 @@ The `permissions` property has been made available on the [`Navigator`](https://
 
 
 
-### JSON
-
-JSON: **J**ava**S**cript **O**bject **N**otation(JavaScript 对象表示法)
-
-JSON 独立于语言：JSON 使用 Javascript语法来描述数据对象，但是 JSON 仍然独立于语言和平台。JSON 解析器和 JSON 库支持许多不同的编程语言。 目前非常多的动态（PHP，JSP，.NET）编程语言都支持JSON。
-
-**与 XML 相同之处**
-
-- JSON 是纯文本
-- JSON 具有"自我描述性"（人类可读）
-- JSON 具有层级结构（值中存在值）
-- JSON 可通过 JavaScript 进行解析
-- JSON 数据可使用 AJAX 进行传输
-
-**与 XML 不同之处**
-
-- 没有结束标签
-- 更短
-- 读写的速度更快
-- 能够使用内建的 JavaScript eval() 方法进行解析
-- 使用数组
-- 不使用保留字
-
-#### JSON 语法
-
-**JSON 语法规则**
-
-JSON 语法是 JavaScript 对象表示语法的子集。
-
-- 数据在名称/值对中
-- 数据由逗号分隔
-- 大括号保存对象
-- 中括号保存数组
-
-**JSON 名称/值对**
-
-JSON 数据的书写格式是：名称/值对。名称/值对包括字段名称（在双引号中），后面写一个冒号，然后是值。
-
-示例：
-
-```json
-"name" : "菜鸟教程"
-```
-
-**另外：JSON 文件**
-
-- JSON 文件的文件类型是 ".json"
-- JSON 文本的 MIME 类型是 "application/json"
-
-#### JSON 值
-
-JSON 值可以是：
-
-- 数字（整数或浮点数）
-- 字符串（在双引号中）
-- 逻辑值（true 或 false）
-- 数组（在中括号`[]`中）
-- 对象（在大括号中）
-- null
-
-#### JSON 对象
-
-示例：
-
-```json
-{ "name":"runoob", "alexa":10000, "site":null }
-```
-
-**访问对象值**
-
-- 你可以使用点号<font color=FF0000 size=5>**`.`**</font>来访问对象的值：
-
-  ```js
-  var myObj = { "name":"runoob", "alexa":10000, "site":null };
-  var x = myObj.name;
-  ```
-
-- 你也可以使用中括号<font color=FF0000 size=5>**`[]`**</font>来访问对象的值：
-
-  ```js
-  var myObj = { "name":"runoob", "alexa":10000, "site":null };
-  var x = myObj["name"];
-  ```
-
-- 你可以使用 for-in 来循环对象的属性：
-
-  **实例**
-
-  ```js
-  var myObj = { "name":"runoob", "alexa":10000, "site":null }; 
-  for (x in myObj) {
-    document.getElementById("demo").innerHTML += x + "<br>"; 
-  }
-  ```
-
-- 循环对象
-
-  - 可以使用 for-in 来循环对象的属性
-
-    ```js
-    var myObj = { "name":"runoob", "alexa":10000, "site":null };
-    for (x in myObj) {
-        document.getElementById("demo").innerHTML += x + "<br>";
-    }
-    //name alexa site
-    ```
-
-  - 在 for-in 循环对象的属性时，使用中括号（[]）来访问属性的值：
-
-    ```js
-    var myObj = { "name":"runoob", "alexa":10000, "site":null };
-    for (x in myObj) {
-        document.getElementById("demo").innerHTML += myObj[x] + "<br>";
-    }
-    ```
-
-**嵌套 JSON 对象**
-
-JSON 对象中可以包含另外一个 JSON 对象：
-
-**实例**
-
-```json
-myObj = {    
-  "name":"runoob",    
-  "alexa":10000,    
-  "sites": {        
-    "site1":"www.runoob.com",        
-    "site2":"m.runoob.com",        
-    "site3":"c.runoob.com"    
-  } 
-}
-```
-
-你可以使用点号<font color=FF0000 size=5>**`.`**</font>或者中括号<font color=FF0000 size=5>**`[]`**</font>来访问嵌套的 JSON 对象。
-
-```js
-x = myObj.sites.site1;
-// 或者
-x = myObj.sites["site1"];
-```
-
-**修改值**
-
-- 你可以使用点号<font color=FF0000 size=5>**`.`**</font>来修改 JSON 对象的值
-
-  ```js
-  myObj.sites.site1 = "www.google.com";
-  ```
-
-- 你可以使用中括号<font color=FF0000 size=5>**`[]`**</font>来修改 JSON 对象的值：
-
-  ```js
-  myObj.sites["site1"] = "www.google.com";
-  ```
-
-**删除对象属性**
-
-我们可以使用 **delete** 关键字来删除 JSON 对象的属性
-
-- 使用点号<font color=FF0000 size=4>**`.`**</font>
-
-  ```js
-  delete myObj.sites.site1;
-  ```
-
-- 使用中括号<font color=FF0000 size=4>**`[]`**</font>
-
-  ```js
-  delete myObj.sites["site1"]
-  ```
-
-
-
-#### JSON.parse()
-
-JSON 通常用于与服务端交换数据。在接收服务器数据时一般是字符串。
-
-**<font color=FF0000>我们可以使用 JSON.parse() 方法将数据转换为 JavaScript 对象。</font>**
-
-**语法**
-
-```js
-JSON.parse(text[, reviver])
-```
-
-##### 参数说明
-
-- **text：**<font color=FF0000>必需</font>， 一个有效的<font color=FF0000> JSON</font> 字符串。
-- **reviver：** <font color=FF0000>可选</font>，一个<font color=FF0000>转换结果的函数</font>， <font color=FF0000>将为对象的每个成员调用此函数</font>。
-
-**解析“函数”（解析字符串形式的函数）**
-
-<font color=FF0000>JSON 不允许包含函数，但你可以将函数作为字符串存储，之后再将字符串转换为函数</font>。
-
-示例：
-
-```js
-var text = '{ "name":"Runoob", "alexa":"function () {return 10000;}", "site":"www.runoob.com"}'; 
-var obj = JSON.parse(text);
-obj.alexa = eval("(" + obj.alexa + ")");  
-
-document.getElementById("demo").innerHTML = obj.name + " Alexa 排名：" + obj.alexa();
-```
-
-
-
-
-
-#### JSON.stringify()
-
-JSON 通常用于与服务端交换数据。在向服务器发送数据时一般是字符串。
-
-我们<font color=FF0000>可以使用 JSON.stringify() 方法将 JavaScript 对象转换为字符串</font>。
-
-**语法**
-
-```js
-JSON.stringify(value[, replacer[, space]])
-```
-
-**参数说明：**
-
-- **value：**<font color=FF0000>必需</font>， 要转换的 JavaScript 值（<font color=FF0000>通常为对象或数组</font>）。
-
-- **replacer：**<font color=FF0000>可选</font>。用于转换结果的函数或数组。
-
-  如果 replacer 为<font color=FF0000>函数</font>，则 JSON.stringify 将调用该函数，并传入每个成员的键和值。使用返回值而不是原始值。如果此函数返回 undefined，则排除成员。根对象的键是一个空字符串：""。
-
-  如果 replacer 是一个<font color=FF0000>数组</font>，则仅转换该数组中具有键值的成员。成员的转换顺序与键在数组中的顺序一样。当 value 参数也为数组时，将忽略 replacer 数组。
-
-- **space：**<font color=FF0000>可选</font>，文本添加缩进、空格和换行符，如果 space 是一个数字，则返回值文本在每个级别缩进指定数目的空格，如果 space 大于 10，则文本缩进 10 个空格。space 也可以使用非数字，如：\t。
-
-**解析<font color=FF0000>“函数”</font>**
-
-JSON 不允许包含函数，JSON.stringify() 会删除 JavaScript 对象的函数，包括 key 和 value。
-
-我们可以<font color=FF0000>在执行 JSON.stringify() 函数前将函数转换为字符串</font>来避免以上问题的发生：
-
-**示例：**
-
-```js
-var obj = { "name":"Runoob", "alexa":function () {return 10000;}, "site":"www.runoob.com"}; 
-obj.alexa = obj.alexa.toString(); 
-var myJSON = JSON.stringify(obj);  
-
-document.getElementById("demo").innerHTML = myJSON;
-```
-
-
-
-#### JSON 使用
-
-**把 JSON 文本转换为 JavaScript 对象**
-
-JSON<font color=FF0000> 最常见的用法</font>之一，是<font color=FF0000>从 web 服务器上读取 JSON 数据（作为文件或作为 HttpRequest）</font>，将 JSON 数据转换为 JavaScript 对象，然后在网页中使用该数据。
-
-由于 JSON 语法是 JavaScript 语法的子集，<font color=FF0000>JavaScript 函数 eval() 可用于将 JSON 文本转换为 JavaScript 对象</font>。
-
-eval() 函数使用的是 JavaScript 编译器，可解析 JSON 文本，然后生成 JavaScript 对象。<font color=FF0000>必须把文本包围在括号中，这样才能避免语法错误</font>，示例：
-
-```js
-var obj = eval ("(" + txt + ")");
-```
-
-
-
-#### JSONP 教程
+#### JSONP
 
 <font color=FF0000>JSONP ( JSON with Padding )</font> 是 <font color=FF0000>json 的一种"使用模式"</font>，<font color=FF0000>可以让网页从**别的域名**（网站）那获取资料，即跨域读取数据。</font>
 
@@ -16572,406 +16355,35 @@ var obj = eval ("(" + txt + ")");
 
 同源策略，它是由 Netscape 提出的一个著名的安全策略，现在所有支持 JavaScript 的浏览器都会使用这个策略。
 
-**补充：**
+##### 补充
 
-<font color=FF0000 size=4>**jsonp是一种借助于\<script>标签发送跨域请求的方式**</font>
+**jsonp 是一种借助于 `<script>` 标签发送跨域请求的方式**
 
 关于 jsonp 使用的示例，可以参考 [[HTML & CSS备忘录#关于 JSONP 的补充]]
 
-
-
 ### AJAX
 
-AJAX（Asynchronous JavaScript and XML <font color=fuchsia><font size=4>**异步的**</font> JavaScript 和 XML</font>）是一种使用现有标准的新方法，用于创建快速动态网页的技术。
-
-> 👀 注：还有同步的网络请求，这也是 AJAX 和它的区别。AJAX 是一个技术方案，不仅仅是 jQuery 的方法
-
-AJAX 最大的优点是在<font color=FF0000>不重新加载整个页面的情况下，可以与服务器交换数据并更新部分网页内容</font>。即：<font color=FF0000>通过在后台与服务器进行少量数据交换，AJAX 可以使网页实现异步更新</font>；而传统的网页（不使用 AJAX）如果需要更新内容，必需重载整个网页面。
-
-**AJAX 工作原理**
-
-<img src="https://i.loli.net/2020/08/28/zmGg7KVBkWH5Zj2.png" style="zoom:85%;" />
-
-AJAX是基于现有的Internet标准，并且联合使用它们：
-
-- **XMLHttpRequest对象** (异步的与服务器交换数据)
-- **JavaScript / DOM** (信息显示/交互)
-- **CSS** (给数据定义样式)
-- **XML** (作为转换数据的格式)
-
-#### AJAX - XMLHttpRequest 对象
-
-**XMLHttpRequest 对象**：所有现代浏览器（IE7+、Firefox、Chrome、Safari 以及 Opera）均支持 XMLHttpRequest 对象（IE5 和 IE6 使用 ActiveXObject）。<font color=FF0000>XMLHttpRequest 用于在后台与服务器交换数据</font>。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。
-
-**创建 XMLHttpRequest 对象**
-
-**语法：**
-
-```js
-variable = new XMLHttpRequest();
-```
-
-老版本的 Internet Explorer （IE5 和 IE6）使用 ActiveX 对象：
-
-```js
-variable=new ActiveXObject("Microsoft.XMLHTTP");
-```
-
-为了应对所有的现代浏览器，包括 IE5 和 IE6，请<font color=FF0000>检查浏览器是否支持 XMLHttpRequest 对象</font>。如果支持，则创建 XMLHttpRequest 对象。如果不支持，则创建 ActiveXObject。代码示例如下：
-
-```js
-var xmlhttp;
-if (window.XMLHttpRequest) {    
-  //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
-  xmlhttp=new XMLHttpRequest();
-} else {
-  // IE6, IE5 浏览器执行代码
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); 
-}
-```
-
-#### AJAX - 向服务器发送请求请求
-
-如需将请求发送到服务器，<font color=FF0000>使用 XMLHttpRequest 对象的 open() 和 send() 方法</font>：
-
-- **open(method, url, async)**：规定<font color=FF0000>请求的类型</font>、<font color=FF0000>URL</font> 以及<font color=FF0000>是否异步处理请求</font>。
-  - **method**：请求的类型；GET 或 POST
-  - **url**：文件在服务器上的位置
-  - **async**：<font color=FF0000>true（异步）</font>或 <font color=FF0000>false（同步）</font>
-- **send(string)**：将请求发送到服务器。
-  - **string**：<font color=FF0000>仅用于 POST 请求</font>
-
-**GET 还是 POST？**
-
-<font color=FF0000>与 POST 相比，GET 更简单也更快</font>，并且在大部分情况下都能用。
-
-然而，<font color=FF0000>在以下情况中，请使用 POST 请求</font>：
-
-- 无法使用缓存文件（更新服务器上的文件或数据库）
-- **向服务器发送大量数据**（<font color=FF0000>POST 没有数据量限制</font>）
-- <font color=FF0000>**发送包含未知字符的用户输入时**</font>，POST 比 GET 更稳定也更可靠
-
-**使用GET请求**
-
-通过 GET 方法发送信息，请向 URL 添加信息，可以使用？，示例：
-
-```js
-xmlhttp.open("GET","/try/ajax/demo_get2.php?fname=Henry&lname=Ford",true); 
-xmlhttp.send();
-```
-
-**使用POST请求**
-
-如果<font color=FF0000>需要像 HTML 表单那样 POST 数据，请**使用 setRequestHeader() 来添加 HTTP 头**</font>。然后在 send() 方法中规定您希望发送的数据。示例如下：
-
-```js
-xmlhttp.open("POST","/try/ajax/demo_post2.php",true); 
-xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded"); 
-xmlhttp.send("fname=Henry&lname=Ford");
-```
-
-setRequestHeader(header,value)：向请求添加 HTTP 头
-
-- header: 规定头的名称
-- value: 规定头的值
-
-**异步 - True 或 False？**
-
-<font color=FF0000>**XMLHttpRequest 对象如果要用于 AJAX 的话，其 open() 方法的 async 参数必须设置为 true**</font>：
-
-```js
-xmlhttp.open("GET","ajax_test.html",true);
-```
-
-<mark>对于 web 开发人员来说，发送异步请求是一个巨大的进步。很多在服务器执行的任务都相当费时。AJAX 出现之前，这可能会引起应用程序挂起或停止</mark>。**<font color=FF0000>通过 AJAX，JavaScript 无需等待服务器的响应</font>**，而是：
-
-- 在等待服务器响应时执行其他脚本
-- 当响应就绪后对响应进行处理
-
-<font color=FF0000>当使用 async=true 时，请规定在响应处于 onreadystatechange 事件中的就绪状态时执行的函数</font>，如下示例：
-
-```js
-xmlhttp.onreadystatechange=function()
-{
-    if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-        document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
-    }
-}
-xmlhttp.open("GET","/try/ajax/ajax_info.txt",true);
-xmlhttp.send();
-```
-
-<mark><font color=FF0000>不推荐使用</font> async=false，但是对于一些小型的请求，也是可以的。</mark>
-
-请记住，JavaScript 会等到服务器响应就绪才继续执行。如果服务器繁忙或缓慢，应用程序会挂起或停止。
-
-注意：当您使用 async=false 时，请不要编写 onreadystatechange 函数 - 把代码放到 send() 语句后面即可
-
-#### AJAX - 服务器 响应
-
-如<font color=FF0000>需获得来自服务器的响应</font>，<font color=FF0000>请使用 XMLHttpRequest 对象的 responseText 或 responseXML 属性</font>。
-
-- **response<font color=FF0000>Text</font>**：获得<font color=FF0000>字符串</font>形式的响应数据。
-
-  如果来自服务器的响应<font color=FF0000>并非 XML</font>，请<font color=FF0000>使用 responseText </font>属性。
-
-  responseText 属性返回字符串形式的响应，示例：
-
-  ```js
-  document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
-  ```
-
-- **response<font color=FF0000>XML</font>**：获得 <font color=FF0000>XML</font> 形式的响应数据。
-
-  如果来自服务器的响应是 XML，而且需要作为 XML 对象进行解析，请使用 responseXML 属性
-
-#### AJAX - onreadystatechange 事件
-
-当请求被发送到服务器时，我们需要执行一些基于响应的任务。
-
-每当 readyState 改变时（readyState 属性存有 XMLHttpRequest 的状态信息），就会触发 onreadystatechange 事件。
-
-**XMLHttpRequest 对象的三个重要的属性：**
-
-- **onreadystatechange**：存储函数（或函数名），<font color=FF0000>**每当 readyState 属性改变时，就会调用该函数**</font>。另外，<font color=FF0000>onreadystatechange 事件被触发 4 次（0 - 4）, 分别是： 0-1、1-2、2-3、3-4，对应着 readyState 的每个变化。</font>
-- **readyState：**<font color=FF0000>**存有 XMLHttpRequest 的状态**</font>。从 0 到 4 发生变化。
-  - 0: 请求未初始化
-  - 1: 服务器连接已建立
-  - 2: 请求已接收
-  - 3: 请求处理中
-  - 4: 请求已完成，且响应已就绪
-- **status：**HTTP状态码
-  - 200: "OK"
-  - 404: 未找到页面
-
-总结：[AJAX 实例](https://www.runoob.com/ajax/ajax-examples.html)，其中包含许多场景的实例，对于实际使用有帮助。
-
-#### **XMLHttpRequest**
-
-XMLHttpRequest（XHR）对象用于与服务器交互。通过 XMLHttpRequest 可以在不刷新页面的情况下请求特定 URL，获取数据。这允许网页在不影响用户操作的情况下，更新页面的局部内容。XMLHttpRequest 在 AJAX 编程中被大量使用。
-
-```mermaid
-classDiagram
-XMLHttpRequest --|> XMLHttpRequestEventTarget : Inheritance
-XMLHttpRequestEventTarget --|> EventTarget : Inheritance
-```
-
-尽管名称如此，XMLHttpRequest 可以用于获取任何类型的数据，而不仅仅是 XML。<font color=FF0000>它甚至支持 HTTP 以外的协议（包括 file:// 和 FTP），尽管可能受到更多出于安全等原因的限制</font>。
-
-**构造函数：**XMLHttpRequest()
-
-该构造函数用于初始化一个 XMLHttpRequest 实例对象。在调用下列任何其他方法之前，必须先调用该构造函数，或通过其他方式，得到一个实例对象。
-
-摘自：[MDN - XMLHttpRequest](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest)
-
-<font size=4>**补充：**</font>
-
-**老版本（Level 1）的XMLHttpRequest对象有以下几个缺点：**
-
-  * <font color=FF0000>只支持文本数据的传送，无法用来读取和上传二进制文件</font>。
-  * <font color=FF0000>传送和接收数据时，没有进度信息，只能提示有没有完成。</font>
-  * <font color=FF0000>受到"同域限制"（Same Origin Policy），只能向同一域名的服务器请求数据</font>。
-
-**新版本（Level 2）的XMLHttpRequest对象，针对老版本的缺点，做出了大幅改进。**
-
-  * **可以设置HTTP请求的时限**
-
-    有时，ajax操作很耗时，而且无法预知要花多少时间。如果网速很慢，用户可能要等很久。
-
-    新版本的XMLHttpRequest对象，增加了timeout属性，可以设置HTTP请求的时限。
-
-    ```js
-    xhr.timeout = 3000;
-    ```
-
-    上面的语句，将最长等待时间设为3000毫秒。过了这个时限，就自动停止HTTP请求。与之配套的还有一个timeout事件，用来指定回调函数。
-
-    ```js
-    xhr.ontimeout = function(event){
-    　　alert('请求超时！');
-    }
-    ```
-
-  * **可以使用FormData对象管理表单数据**
-
-    ajax操作往往用来传递表单数据。为了方便表单处理，HTML 5新增了一个FormData对象，可以模拟表单。
-
-  * <font color=FF0000>**可以上传文件**</font>
-
-    新版XMLHttpRequest对象，不仅可以发送文本信息，还可以上传文件。
-
-  * <font color=FF0000>**可以请求不同域名下的数据（跨域请求）**</font>
-
-  * <font color=FF0000>**可以获取服务器端的二进制数据**</font>
-
-    老版本的XMLHttpRequest对象，只能从服务器取回文本数据（<mark>否则它的名字就不用XML起首了</mark>），新版则可以取回二进制数据。
-
-    这里又分成两种做法：
-
-    - **改写数据的MIMEType（较老）：**
-
-      将服务器返回的二进制数据伪装成文本数据，并且告诉浏览器这是用户自定义的字符集。
-
-      ```js
-      xhr.overrideMimeType("text/plain; charset=x-user-defined");
-      ```
-
-      然后，用responseText属性接收服务器返回的二进制数据。
-
-      ```js
-      var binStr = xhr.responseText;
-      ```
-
-      由于这时，浏览器把它当做文本数据，所以还必须再一个个字节地还原成二进制数据。
-
-      ```js
-      for (var i = 0, len = binStr.length; i < len; ++i) {
-      　　var c = binStr.charCodeAt(i);
-      　　var byte = c & 0xff;
-      }
-      ```
-
-      最后一行的位运算"c & 0xff"，表示在每个字符的两个字节之中，只保留后一个字节，将前一个字节扔掉。原因是浏览器解读字符的时候，会把字符自动解读成Unicode的0xF700-0xF7ff区段。
-
-    - **responseType属性（较新）：**
-
-      从服务器取回二进制数据，较新的方法是使用新增的responseType属性。如果服务器返回文本数据，这个属性的值是"TEXT"，这是默认值。较新的浏览器还支持其他值，也就是说，可以接收其他格式的数据。
-
-      你可以把responseType设为blob，表示服务器传回的是二进制对象。
-
-      ```js
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/path/to/image.png');
-      xhr.responseType = 'blob';
-      ```
-
-      接收数据的时候，用浏览器自带的Blob对象即可。
-
-      ```js
-      var blob = new Blob([xhr.response], {type: 'image/png'});
-      ```
-
-      注意，是读取xhr.response，而不是xhr.responseText。
-
-      你还可以将responseType设为arraybuffer，把二进制数据装在一个数组里。
-
-      ```js
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/path/to/image.png');
-      xhr.responseType = "arraybuffer";
-      ```
-
-      接收数据的时候，需要遍历这个数组。
-
-      ```js
-      var arrayBuffer = xhr.response;
-      if (arrayBuffer) {
-      　　var byteArray = new Uint8Array(arrayBuffer);
-      　　for (var i = 0; i < byteArray.byteLength; i++) {
-      　　　　// do something
-      　　}
-      }
-      ```
-
-      **补充：**
-
-      XMLHttpRequest 属性 responseType <font color=FF0000>是一个枚举字符串值</font>，<font color=FF0000>用于**指定响应中包含的数据类型**</font>。它还<font color=FF0000>允许更改响应类型</font>。如果<mark>将 responseType 的值设置为空字符串</mark>，则<font color=FF0000>会使用 text 作为默认值</font>。
-
-      **可选值**
-
-      - **""：**空的 responseType 字符串 <font color=FF0000 size=4>与默认类型 "text" 相同</font>。
-      - **"arraybuffer"：**response 是一个包含二进制数据的 JavaScript ArrayBuffer。
-      - **"blob"：**response 是一个包含二进制数据的 Blob 对象。
-      - **"document"：**response 是一个 HTML Document 或 XML XMLDocument，根据接收到的数据的 MIME 类型而定。
-      - **"json"：**response 是通过将接收到的数据内容解析为 JSON 而创建的 JavaScript 对象。
-      - **"text"：**response 是 <font color=FF0000>DOMString 对象中的文本</font>。
-      - **"ms-stream"：**👎 略
-
-      以上内容摘自：[MDN - XMLHttpRequest.responseType](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/responseType)
-
-  * **可以获得数据传输的进度信息**
-
-    新版本的XMLHttpRequest对象，传送数据的时候，有一个progress事件，用来返回进度信息。
-    它分成上传和下载两种情况。下载的progress事件属于XMLHttpRequest对象，上传的progress事件属于XMLHttpRequest.upload对象。
-    我们先定义progress事件的回调函数：
-
-    ```js
-    xhr.onprogress = updateProgress;
-    xhr.upload.onprogress = updateProgress;
-    ```
-
-    然后，在回调函数里面，使用这个事件的一些属性。
-
-    ```js
-    function updateProgress(event) {
-    　　if (event.lengthComputable) {
-    　　　　var percentComplete = event.loaded / event.total;
-    　　}
-    }
-    ```
-
-    上面的代码中，event.total是需要传输的总字节，event.loaded是已经传输的字节。如果event.lengthComputable不为真，则event.total等于0。
-
-    与progress事件相关的，还有其他五个事件，可以分别指定回调函数：
-
-    - **load事件：**传输成功完成。
-    - **abort事件：**传输被用户取消。
-    - **error事件：**传输中出现错误。
-    - **loadstart事件：**传输开始。
-    - **loadEnd事件：**传输结束，但是不知道成功还是失败。
-
-**摘自：**[XMLHttpRequest Level 2 使用指南](http://www.ruanyifeng.com/blog/2012/09/xmlhttprequest_level_2.html)
-
-XMLHttpRequest一开始只是微软浏览器提供的一个接口，后来各大浏览器纷纷效仿也提供了这个接口，再后来W3C对它进行了标准化，提出了XMLHttpRequest标准。<font color=FF0000>XMLHttpRequest标准又分为Level 1和Level 2</font>。
-
-从上面的解释中可以知道：<font color=FF0000>ajax是一种技术方案，但并不是一种新技术。它依赖的是现有的CSS/HTML/Javascript，而其中最核心的依赖是浏览器提供的XMLHttpRequest对象</font>，是这个对象使得浏览器可以发出HTTP请求与接收HTTP响应。
-
-**一些知识点**
-
-- **如何设置request header：**
-
-  在发送Ajax请求（实质是一个HTTP请求）时，我们可能需要设置一些请求头部信息，比如content-type、connection、cookie、accept-xxx等。xhr提供了setRequestHeader来允许我们修改请求 header。
-
-  ```js
-  void setRequestHeader(DOMString header, DOMString value);
-  ```
-
-  **注意点：**
-
-  - 方法的第一个参数 header 大小写不敏感，即可以写成content-type，也可以写成Content-Type，甚至写成content-Type;
-
-  - <font color=FF0000>Content-Type的默认值与具体发送的数据类型有关</font>
-
-  - <font color=FF0000>**setRequestHeader必须在open()方法之后，send()方法之前调用，否则会抛错**</font>
-
-  - <font color=FF0000>setRequestHeader可以调用多次，最终的值不会采用覆盖override的方式，而是采用追加append的方式</font>
-
-- **如何获取response header：**
-  xhr提供了2个用来获取响应头部的方法：getAllResponseHeaders和getResponseHeader。前者是获取 response 中的所有header 字段，后者只是获取某个指定 header 字段的值。另外，getResponseHeader(header)的header参数不区分大小写。
-
-<font color=FF0000>**// TODO 未看完**</font>
-
-**摘自：**[你真的会使用XMLHttpRequest吗？](https://segmentfault.com/a/1190000004322487)
+> 👀 这里删了不少 xhr 的内容，一方面是感觉当时摘抄的内容过于教程化，不够深入；另外，xhr 现在很少直接接触，过多啰嗦的内容没有必要
 
 #### XMLHttpRequest.statusText
 
-<mark>只读属性</mark> XMLHttpRequest.statusText 返回了XMLHttpRequest 请求中由服务器返回的一个DOMString 类型的文本信息，这则信息中也<font color=FF0000>包含了响应的数字状态码</font>。
+<font color=lightSeaGreen>只读属性</font> `XMLHttpRequest.statusText` 返回了XMLHttpRequest 请求中由服务器返回的一个 DOMString 类型的文本信息，这则信息中也<font color=FF0000>包含了响应的数字状态码</font>。
 
-不同于使用一个数字来指示的状态码 <font color=FF0000>XMLHTTPRequest.status</font>，这个属性<font color=FF0000>包含了返回状态对应的文本信息</font>，<font color=FF0000>例如"OK"或是"Not Found"</font>。如果请求的状态readyState的值为"UNSENT"或者"OPENED"，则这个属性的值将会是一个空字符串。
-如果服务器未明确指定一个状态文本信息，则statusText的值将会被自动赋值为"OK"。
+不同于使用一个数字来指示的状态码 <font color=FF0000>`XMLHTTPRequest.status`</font>，这个属性<font color=FF0000>包含了返回状态对应的文本信息</font>，<font color=FF0000>例如 `"OK"` 或是 `"Not Found"`</font>。如果请求的状态 `readyState` 的值为 `"UNSENT"` 或者 `"OPENED"` ，则这个属性的值将会是一个空字符串。
+如果服务器未明确指定一个状态文本信息，则 `statusText` 的值将会被自动赋值为 `"OK"` 。
 
 摘自：[MDN - XMLHttpRequest.statusText](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/statusText)
 
 #### XMLHttpRequest.withCredentials
 
-XMLHttpRequest.withCredentials  属性<font color=FF0000>是一个Boolean类型</font>，它<font color=FF0000>指示了是否该使用类似cookies,authorization headers(头部授权)或者TLS客户端证书这一类资格证书来<font size=4>**创建一个跨站点访问控制**</font>（cross-site Access-Control）请求</font>。<font color=FF0000>在**同一个站点**下使用withCredentials属性是**无效的**</font>。
+`XMLHttpRequest.withCredentials`  属性<font color=FF0000>是一个 Boolean 类型</font>，它<font color=FF0000>指示了是否该使用类似 cookies, authorization headers（头部授权）或者 TLS 客户端证书这一类资格证书来 **创建一个跨站点访问控制**（cross-site Access-Control）请求</font>。<font color=FF0000>在**同一个站点**下使用 `withCredentials` 属性是**无效的**</font>。
 
-此外，这个指示<font color=FF0000>也会被用做响应中cookies 被忽视的标示。**默认值是false**</font>。
+此外，这个指示<font color=FF0000>也会被用做响应中 cookies 被忽视的标示。**默认值是 false**</font>。
 
-如果在发送来自其他域的XMLHttpRequest请求之前，未设置withCredentials 为true，那么就不能为它自己的域设置cookie值。而通过设置withCredentials 为true获得的第三方cookies，将会依旧享受同源策略，因此不能被通过document.cookie或者从头部相应请求的脚本等访问。
+如果在发送来自其他域的 XMLHttpRequest 请求之前，未设置 `withCredentials` 为true，那么就不能为它自己的域设置 cookie 值。而通过设置 `withCredentials` 为true获得的第三方 cookies，将会依旧享受同源策略，因此不能被通过 `document.cookie` 或者从头部相应请求的脚本等访问。
 
-**注意：**同域下的XmlHttpRequest 响应，不论其Access-Control- header 设置什么值，都无法为它自身站点设置cookie值，<font color=FF0000>除非它在请求之前将withCredentials 设为true</font>。
+> [!WARNING]
+> 不同域下的 `XmlHttpRequest` 响应，不论其 `Access-Control-` 标头设置什么值，都无法为它自身站点设置 Cookie 值，除非它在请求之前将 `withCredentials` 设为 true。
 
 摘自：[MDN - XMLHttpRequest.withCredentials](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/withCredentials)
 
@@ -16997,20 +16409,20 @@ XMLHttpRequest.upload 属性<font color=FF0000>返回一个 XMLHttpRequestUpload
 
 XMLHttpRequestEventTarget.onprogress 是<font color=FF0000>在 XMLHttpRequest 完成之前周期性调用的函数</font>。
 
-- **语法**
+##### 语法
 
-  ```js
-  XMLHttpRequest.onprogress = callback;
-  ```
+```js
+XMLHttpRequest.onprogress = callback;
+```
 
-- **值**
+##### 值
 
-  - **callback：**在请求完成之前周期性调用的函数。
+- `callback` ：在请求完成之前周期性调用的函数。
 
-- **事件**
+##### 事件
 
-  - **event.loaded：**<font color=FF0000>已传输的数据量</font>
-  - **event.total：**<font color=FF0000>总共的数据量</font>
+- `event.loaded` ：<font color=FF0000>已传输的数据量</font>
+- `event.total` ：<font color=FF0000>总共的数据量</font>
 
 ```js
 XMLHttpRequest.onprogress = function (event) {
@@ -17023,7 +16435,7 @@ XMLHttpRequest.onprogress = function (event) {
 
 #### ProgressEvent
 
-ProgressEvent 接口是<font color=FF0000>测量如 HTTP 请求</font>（一个XMLHttpRequest，<mark>或者一个 \<img>，\<audio>，\<video>，\<style> 或 \<link> 等底层资源的加载</mark>）<font color=FF0000>等底层流程进度的事件</font>。
+ProgressEvent 接口是<font color=FF0000>测量如 HTTP 请求</font>（一个XMLHttpRequest，<font color=lightSeaGreen>或者一个 `<img>` ，`<audio>`，`<video>`，`<style>` 或 `<link>` 等底层资源的加载</font>）<font color=FF0000>等底层流程进度的事件</font>。
 
 ```mermaid
 classDiagram
@@ -17032,21 +16444,21 @@ ProgressEvent --|> Event : Inheritance
 
 ##### 构造方法
 
-- **ProgressEvent()：**用给定的参数<font color=FF0000>创建一个 ProgressEvent 事件</font>。
+- `ProgressEvent()` ：用给定的参数<font color=FF0000>创建一个 ProgressEvent 事件</font>。
 
 ##### 属性
 
 **同时继承它的父元素 Event 的属性。**
 
-- **ProgressEvent.lengthComputable：**只读，是一个 Boolean标志，<mark>表示底层流程将需要完成的总工作量和已经完成的工作量是否可以计算</mark>。换句话说，<font color=FF0000>它告诉我们进度是否可以被测量</font>。
-- **ProgressEvent.loaded：**只读，是一个 <font color=FF0000>unsigned long long 类型数据</font>，<font color=FF0000>表示底层流程已经执行的工作总量</font>。<mark>可以用这个属性和 ProgressEvent.total 计算工作完成比例</mark>。当使用 HTTP 下载资源，它只表示内容本身的部分，不包括首部和其它开销。
-- **ProgressEvent.total：**只读，是一个 <font color=FF0000>unsigned long long 类型数据</font>，<font color=FF0000>表示正在执行的底层流程的工作总量</font>。当使用 HTTP 下载资源，它只表示内容本身的部分，a不包括首部和其它开销。
+- `ProgressEvent.lengthComputable`：只读，是一个 Boolean标志，<font color=lightSeaGreen> 表示底层流程将需要完成的总工作量和已经完成的工作量是否可以计算</font>。换句话说，<font color=FF0000>它告诉我们进度是否可以被测量</font>。
+- `ProgressEvent.loaded` ：只读，是一个 <font color=FF0000>unsigned long long 类型数据</font>，<font color=FF0000>表示底层流程已经执行的工作总量</font>。<font color=lightSeaGreen>可以用这个属性和 `ProgressEvent.total` 计算工作完成比例</font>。当使用 HTTP 下载资源，它只表示内容本身的部分，不包括首部和其它开销。
+- `ProgressEvent.total` ：只读，是一个 <font color=FF0000>unsigned long long 类型数据</font>，<font color=FF0000>表示正在执行的底层流程的工作总量</font>。当使用 HTTP 下载资源，它只表示内容本身的部分，a不包括首部和其它开销。
 
 ##### 方法
 
 同时继承它的父元素 Event 的方法。
 
-- **ProgressEvent.initProgressEvent()：**🗑👎使用被弃用的 Document.createEvent("ProgressEvent") 方法，来初始化一个已经创建好的 ProgressEvent。
+- `ProgressEvent.initProgressEvent()` ：🗑👎使用被弃用的 Document.createEvent("ProgressEvent") 方法，来初始化一个已经创建好的 ProgressEvent。
 
 摘自：[MDN - ProgressEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/ProgressEvent)
 
@@ -17054,7 +16466,7 @@ ProgressEvent --|> Event : Inheritance
 
 AbortController 接口表示一个控制器对象，<font color=FF0000>允许你根据需要 **中止一个或多个 Web 请求**</font>。
 
-你可以使用 AbortController.AbortController() 构造函数创建一个新的 AbortController。使用 AbortSignal 对象可以完成与 DOM 请求的通信。
+你可以使用 `AbortController.AbortController()` 构造函数创建一个新的 AbortController。使用 AbortSignal 对象可以完成与 DOM 请求的通信。
 
 ##### 构造函数
 
@@ -17068,7 +16480,7 @@ AbortController 接口表示一个控制器对象，<font color=FF0000>允许你
 
 `AbortController.abort()` ：中止一个尚未完成的 Web（网络）请求。这<font color=FF0000>能够中止 fetch 请求及任何响应体的消费和流</font>
 
-> 当一个请求被终止，它的  readyState 将被置为 XMLHttpRequest.UNSENT (0)，并且请求的 status 置为 0。
+> 当一个请求被终止，它的  `readyState` 将被置为 `XMLHttpRequest.UNSENT` (0)，并且请求的 status 置为 0。
 >
 > 摘自：[MDN - `XMLHttpRequest.abort()`](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/abort)
 
@@ -17162,7 +16574,7 @@ Listen to this event using `addEventListener()` or by assigning an event listene
 
 #### web worker
 
-Worker 接口是 Web Workers API 的一部分，指的是一种可由脚本创建的后台任务，任务执行中可以向其创建者收发信息。<font color=FF0000>要创建一个 Worker ，只须调用 Worker( URL ) 构造函数，函数参数 URL 为指定的脚本</font>。
+Worker 接口是 Web Workers API 的一部分，指的是一种可由脚本创建的后台任务，任务执行中可以向其创建者收发信息。<font color=FF0000>要创建一个 Worker ，只须调用 Worker ( URL ) 构造函数，函数参数 URL 为指定的脚本</font>。
 
 <font color=FF0000>Worker 也可以创建新的 Worker，当然，所有 Worker 必须与其创建者<font size=4>**同源**</font></font>。
 
@@ -17180,18 +16592,18 @@ Worker 接口是 Web Workers API 的一部分，指的是一种可由脚本创�
 > const myWorker = new Worker(aURL[, options]);
 > ```
 >
-> **参数**
+> ###### 参数
 >
-> - **aURL** ：是一个 DOMString 表示worker 将执行的脚本的 URL 。它<font color=red>必须遵守同源策略</font>。
-> - **options** ：可选，包含可在创建对象实例时设置的选项属性的对象。可用属性如下:
->   - **type** ：用以指定 worker 类型的  `DOMString` 值. 该值可以是 `classic` 或 `module`。如果未指定，将使用默认值 `classic`
->   - **credentials** ：用以指定 worker 凭证的 `DOMString` 值。该值可以是 `omit` , `same-origin`，或 `include` 。如果未指定，或者 type 是 `classic`，将使用默认值 `omit` (不要求凭证)。
->   - **name** ：在 DedicatedWorkerGlobalScope 的情况下，用来表示 worker 的 scope 的一个 DOMString 值，主要用于调试目的。
+> - `aURL` ：是一个 DOMString 表示worker 将执行的脚本的 URL 。它<font color=red>必须遵守同源策略</font>。
+> - `options` ：可选，包含可在创建对象实例时设置的选项属性的对象。可用属性如下:
+>   - `type` ：用以指定 worker 类型的  `DOMString` 值. 该值可以是 `classic` 或 `module`。如果未指定，将使用默认值 `classic`
+>   - `credentials` ：用以指定 worker 凭证的 `DOMString` 值。该值可以是 `omit` , `same-origin`，或 `include` 。如果未指定，或者 type 是 `classic`，将使用默认值 `omit` (不要求凭证)。
+>   - `name` ：在 DedicatedWorkerGlobalScope 的情况下，用来表示 worker 的 scope 的一个 DOMString 值，主要用于调试目的。
 >
 > ##### 异常
 >
 > - 当 document 不被允许启动 worker 的时候，将抛出一个 SecurityError 异常。例如：如果提供的 aURL 有语法错误，或者与同源策略相冲突（跨域访问）。
-> - 如果 worker 的 MIME 类型不正确，将抛出一个 NetworkError 异常。<font color=FF0000>worker 的 MIME 类型必须是 text/javascript</font>。
+> - 如果 worker 的 MIME 类型不正确，将抛出一个 NetworkError 异常。<font color=FF0000>worker 的 MIME 类型必须是 `text/javascript`</font>。
 > - 如果 aURL 无法被解析（格式错误），将抛出一个 SyntaxError 异常。
 >
 > 摘自：[MDN - Worker()](https://developer.mozilla.org/zh-CN/docs/Web/API/Worker/Worker)
@@ -17200,13 +16612,13 @@ Worker 接口是 Web Workers API 的一部分，指的是一种可由脚本创�
 
 ##### 事件句柄
 
-- **AbstractWorker.onerror** ：当 ErrorEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用。它继承于 AbstractWorker
-- **Worker.onmessage** ：当 MessageEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用.  例如，一个消息通过 DedicatedWorkerGlobalScope.postMessage，从执行者发送到父页面对象，消息保存在事件对象的 data 属性中.
-- **Worker.onmessageerror** ：当 messageerror 类型的事件发生时，对应的 event handler 代码被调用。
+- `AbstractWorker.onerror` ：当 ErrorEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用。它继承于 AbstractWorker
+- `Worker.onmessage` ：当 MessageEvent 类型的事件冒泡到 worker 时，事件监听函数 EventListener 被调用.  例如，一个消息通过 `DedicatedWorkerGlobalScope.postMessage` ，从执行者发送到父页面对象，消息保存在事件对象的 data 属性中.
+- `Worker.onmessageerror` ：当 `messageerror` 类型的事件发生时，对应的 event handler 代码被调用。
 
 ##### 方法
 
-<font color=FF0000>继承父对象EventTarget 的方法，以及实现对象 AbstractWorker 的方法</font>。
+<font color=FF0000>继承父对象 EventTarget 的方法，以及实现对象 AbstractWorker 的方法</font>。
 
 - **`Worker.postMessage()`** ：<font color=FF0000>发送一条消息到最近的外层对象</font>，消息可由任何 JavaScript 对象组成。
 
@@ -17276,7 +16688,8 @@ Service worker 是一个<font color=FF0000>注册在 **指定源和路径下** �
 
 SharedWorker 接口代表一种特定类型的 worker，可以从几个浏览上下文中访问，例如几个窗口、iframe 或其他 worker。它们实现一个不同于普通 worker 的接口，具有不同的全局作用域，SharedWorkerGlobalScope
 
-> ⚠️ 注意：如果要使 SharedWorker 连接到多个不同的页面，这些页面必须是同源的（相同的协议、host 以及端口）
+> [!WARNING]
+> 如果要使 SharedWorker 连接到多个不同的页面，这些页面必须是同源的（相同的协议、host 以及端口）
 
 ##### 构造函数
 
@@ -17317,7 +16730,7 @@ SharedWorker 接口代表一种特定类型的 worker，可以从几个浏览上
 
 ##### 属性
 
-从其父项`HTMLElement`继承属性。
+从其父项 `HTMLElement` 继承属性。
 
 - `HTMLCanvasElement.height` 是一个正整数，反映了`<canvas>` 元素的`height` HTML 属性，以 CSS 像素表示。如果未指定属性，或者将其设置为无效值（例如负数），则使用默认值 150。
 - `HTMLCanvasElement.width` 是一个正整数，反映了`<canvas>` 元素的 `width` HTML 属性，以 CSS 像素表示。如果未指定属性，或者将其设置为无效值（例如负数），则使用默认值 300。
@@ -17352,7 +16765,8 @@ SharedWorker 接口代表一种特定类型的 worker，可以从几个浏览上
   > - `type` ：<font color=LightSeaGreen>可选</font>，`DOMString` 类型，<font color=red>指定图片格式</font>，<font color=LightSeaGreen>默认格式</font>（未指定或不支持）<font color=LightSeaGreen>为 `image/png`</font>。
   > - `quality` ：<font color=LightSeaGreen>可选</font>，`Number` 类型，<font color=LightSeaGreen>值在 0 与 1 之间</font>，当请求图片格式为 `image/jpeg` 或者 `image/webp` 时用来指定图片展示质量。如果这个参数的值不在指定类型与范围之内，则使用默认值，其余参数将被忽略。
   >
-  > **返回值** ：无。
+  > ###### 返回值
+  > 无。
   >
   > ###### 异常
   >
@@ -17360,7 +16774,7 @@ SharedWorker 接口代表一种特定类型的 worker，可以从几个浏览上
   >
   > 摘自：[MDN - HTMLCanvasElement.toBlob()](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement/toBlob)
 
-  >  👀 注：toBlob 方法对于将 canvas 保存为图片是很有用的，具体见下面 [[#Canvas 使用场景与代码#图片添加水印]]
+  >  👀 `toBlob` 方法对于将 canvas 保存为图片是很有用的，具体见下面 [[#Canvas 使用场景与代码#图片添加水印]]
 
 - `HTMLCanvasElement.transferControlToOffscreen()` 🧪：将控制权转移到主线程或辅助线程上的 `OffscreenCanvas`对象。
 
@@ -17380,134 +16794,134 @@ SharedWorker 接口代表一种特定类型的 worker，可以从几个浏览上
 
 ##### 绘制矩形
 
-- **CanvasRenderingContext2D.clearRect()**：设置指定矩形区域内（以 ***点 ( x, y )*** 为起点，范围是 ( width, height ) ）<font color=FF0000>所有像素变成透明，并擦除之前绘制的所有内容</font>。
-- **CanvasRenderingContext2D.fillRect()：**绘制填充矩形，矩形的起点在 (x, y) 位置，矩形的尺寸是 width 和 height。<font color=FF0000>填充样式由当前的 fillStyle 决定</font>
-- **CanvasRenderingContext2D.strokeRect()**：在 canvas 中，<font color=FF0000>**使用当前的笔触样式**，描绘一个起点在 (x, y) 、宽度为 w 、高度为 h 的矩形</font>
+- `CanvasRenderingContext2D.clearRect()` ：设置指定矩形区域内（以 ***点 ( x, y )*** 为起点，范围是 ( width, height ) ）<font color=FF0000>所有像素变成透明，并擦除之前绘制的所有内容</font>。
+- `CanvasRenderingContext2D.fillRect()` ：绘制填充矩形，矩形的起点在 (x, y) 位置，矩形的尺寸是 width 和 height。<font color=FF0000>填充样式由当前的 fillStyle 决定</font>
+- `CanvasRenderingContext2D.strokeRect()` ：在 canvas 中，<font color=FF0000>**使用当前的笔触样式**，描绘一个起点在 (x, y) 、宽度为 w 、高度为 h 的矩形</font>
 
 ##### 绘制文本
 
-- **CanvasRenderingContext2D.fillText()**：<font color=FF0000>在 ( x, y ) 位置绘制 ***填充文本***</font>。详见 [[#CanvasRenderingContext2D.fillText()]]
-- **CanvasRenderingContext2D.strokeText()**：<font color=FF0000>在 ( x, y ) 位置绘制 ***描边文本***</font>。详见 [[#CanvasRenderingContext2D.strokeText()]]
-- **CanvasRenderingContext2D.measureText()**：返回 TextMetrics 对象。
+- `CanvasRenderingContext2D.fillText()` ：<font color=FF0000>在 ( x, y ) 位置绘制 ***填充文本***</font>。详见 [[#CanvasRenderingContext2D.fillText()]]
+- `CanvasRenderingContext2D.strokeText()` ：<font color=FF0000>在 ( x, y ) 位置绘制 ***描边文本***</font>。详见 [[#CanvasRenderingContext2D.strokeText()]]
+- `CanvasRenderingContext2D.measureText()` ：返回 TextMetrics 对象。
 
 ##### 线型
 
  ***方法*** 和 ***属性*** 控制如何绘制线
 
-- **CanvasRenderingContext2D.lineWidth**：<font color=FF0000>线的 **宽度**</font>。默认 1.0
-- **CanvasRenderingContext2D.lineCap**：<font color=FF0000>***线末端*** 的类型</font>。 允许的值： butt（默认），round，square.
-- **CanvasRenderingContext2D.lineJoin**：定义<font color=FF0000>两线相交 ***拐点*** 的类型</font>。允许的值：round，bevel，miter（默认）
-- **CanvasRenderingContext2D.miterLimit**：斜接面限制比例。默认 10。**注：**有点没看懂，详见：[MDN - CanvasRenderingContext2D.miterLimit](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/miterLimit)
-- **CanvasRenderingContext2D.getLineDash()**：<font color=FF0000>返回当前线段样式的数组</font>，数组包含一组数量为偶数的非负数数字
-- **CanvasRenderingContext2D.setLineDash()**：<font color=FF0000>设置当前的线段样式</font>
-- **CanvasRenderingContext2D.lineDashOffset**：<font color=FF0000>描述在哪里开始绘制线段</font>
+- `CanvasRenderingContext2D.lineWidth` ：<font color=FF0000>线的 **宽度**</font>。默认 1.0
+- `CanvasRenderingContext2D.lineCap` ：<font color=FF0000>***线末端*** 的类型</font>。 允许的值： butt（默认），round，square.
+- `CanvasRenderingContext2D.lineJoin` ：定义<font color=FF0000>两线相交 ***拐点*** 的类型</font>。允许的值：round，bevel，miter（默认）
+- `CanvasRenderingContext2D.miterLimit` ：斜接面限制比例。默认 10。**注：**有点没看懂，详见：[MDN - CanvasRenderingContext2D.miterLimit](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/miterLimit)
+- `CanvasRenderingContext2D.getLineDash` ：<font color=FF0000>返回当前线段样式的数组</font>，数组包含一组数量为偶数的非负数数字
+- `CanvasRenderingContext2D.setLineDash` ：<font color=FF0000>设置当前的线段样式</font>
+- `CanvasRenderingContext2D.lineDashOffset` ：<font color=FF0000>描述在哪里开始绘制线段</font>
 
 ##### 文本样式
 
 属性控制如何设计文本
 
-- **CanvasRenderingContext2D.font**：字体设置。 默认值 10px sans-serif。
-- **CanvasRenderingContext2D.textAlign**：<font color=FF0000>***文本对齐*** 设置</font>。 允许的值： start（默认），end，left，right 或 center
-- **CanvasRenderingContext2D.textBaseline**：<font color=FF0000>***基线对齐*** 设置</font>。 允许的值： top，hanging，middle，alphabetic（默认），ideographic，bottom
-- **CanvasRenderingContext2D.direction**：<font color=FF0000>文本的 ***方向***</font>。 允许的值： ltr， rtl，inherit（默认）
+- `CanvasRenderingContext2D.font` ：字体设置。 默认值 10px sans-serif。
+- `CanvasRenderingContext2D.textAlign` ：<font color=FF0000>***文本对齐*** 设置</font>。 允许的值： start（默认），end，left，right 或 center
+- `CanvasRenderingContext2D.textBaseline` ：<font color=FF0000>***基线对齐*** 设置</font>。 允许的值： top，hanging，middle，alphabetic（默认），ideographic，bottom
+- `CanvasRenderingContext2D.direction` ：<font color=FF0000>文本的 ***方向***</font>。 允许的值： ltr， rtl，inherit（默认）
 
 ##### 填充和描边样式
 
 填充设计用于图形内部的颜色和样式，描边设计用于图形的边线。
 
-- **CanvasRenderingContext2D.fillStyle**：<font color=FF0000>图形 **内部**</font> 的颜色和样式。 默认 `#000` （黑色）
-- **CanvasRenderingContext2D.strokeStyle**：<font color=FF0000>图形 **边线**</font> 的颜色和样式。 默认 `#000`（黑色）
+- `CanvasRenderingContext2D.fillStyle` ：<font color=FF0000>图形 **内部**</font> 的颜色和样式。 默认 `#000` （黑色）
+- `CanvasRenderingContext2D.strokeStyle` ：<font color=FF0000>图形 **边线**</font> 的颜色和样式。 默认 `#000`（黑色）
 
 ##### 渐变和图案
 
-- **CanvasRenderingContext2D.createLinearGradient()**：创建一个沿着参数坐标指定的线的 ***线性渐变***。
-- **CanvasRenderingContext2D.createRadialGradient()**：创建一个沿着参数坐标指定的线的 ***放射性性渐变***。
-- **CanvasRenderingContext2D.createPattern()**：使用指定的图片 ( CanvasImageSource ) 创建图案。通过 repetition 变量指定的方向上重复源图片。此方法返回 CanvasPattern对象。
+- `CanvasRenderingContext2D.createLinearGradient` ：创建一个沿着参数坐标指定的线的 ***线性渐变***。
+- `CanvasRenderingContext2D.createRadialGradient` ：创建一个沿着参数坐标指定的线的 ***放射性性渐变***。
+- `CanvasRenderingContext2D.createPattern` ：使用指定的图片 ( CanvasImageSource ) 创建图案。通过 repetition 变量指定的方向上重复源图片。此方法返回 CanvasPattern对象。
 
 ##### 阴影
 
-- **CanvasRenderingContext2D.shadowBlur**：描述模糊效果。 默认 0
-- **CanvasRenderingContext2D.shadowColor**：阴影的颜色。 默认 fully-transparent black
-- **CanvasRenderingContext2D.shadowOffsetX**：阴影水平方向的偏移量。 默认 0
-- **CanvasRenderingContext2D.shadowOffsetY**：阴影垂直方向的偏移量。 默认 0
+- `CanvasRenderingContext2D.shadowBlur` ：描述模糊效果。 默认 0
+- `CanvasRenderingContext2D.shadowColor` ：阴影的颜色。 默认 fully-transparent black
+- `CanvasRenderingContext2D.shadowOffsetX` ：阴影水平方向的偏移量。 默认 0
+- `CanvasRenderingContext2D.shadowOffsetY` ：阴影垂直方向的偏移量。 默认 0
 
 ##### 路径
 
 用来操作对象的路径
 
-- **CanvasRenderingContext2D.beginPath()**：<font color=FF0000>清空子路径列表开始一个新的路径</font>。当你想创建一个新的路径时，调用此方法。
-- **CanvasRenderingContext2D.closePath()**：使笔点返回到当前子路径的起始点。它尝试从当前点到起始点绘制一条直线。如果图形已经是封闭的或者只有一个点，那么此方法不会做任何操作。
-- **CanvasRenderingContext2D.moveTo()**：<font color=FF0000>将一个新的子路径的起始点移动到 (x，y) 坐标</font>
-- **CanvasRenderingContext2D.lineTo()**：<font color=FF0000>使用直线连接子路径的最后的点到 ( x, y ) 坐标</font>
-- **CanvasRenderingContext2D.bezierCurveTo()**：添加一个3次贝赛尔曲线路径。该方法需要三个点。 第一、第二个点是控制点，第三个点是结束点。起始点是当前路径的最后一个点，绘制贝赛尔曲线前，可以通过调用 moveTo() 进行修改。
-- **CanvasRenderingContext2D.quadraticCurveTo()**：添加一个2次贝赛尔曲线路径。
-- **CanvasRenderingContext2D.arc()**：绘制一段圆弧路径， 圆弧路径的圆心在 (x, y) 位置，半径为 r ，根据anticlockwise （默认为顺时针）指定的方向从 startAngle 开始绘制，到 endAngle 结束。
-- **CanvasRenderingContext2D.arcTo()**：根据控制点和半径绘制圆弧路径，使用当前的描点(前一个moveTo或lineTo等函数的止点)。根据当前描点与给定的控制点1连接的直线，和控制点1与控制点2连接的直线，作为使用指定半径的圆的切线，画出两条切线之间的弧线路径。
-- **CanvasRenderingContext2D.ellipse()**：🧪实验性，添加一个椭圆路径，椭圆的圆心在 ( x, y ) 位置，半径分别是 radiusX 和 radiusY ，按照 anticlockwise （默认顺时针）指定的方向，从 startAngle  开始绘制，到 endAngle 结束。
-- **CanvasRenderingContext2D.rect()**：创建一个矩形路径，矩形的起点位置是 ( x, y ) ，尺寸为 width 和 height。
+- `CanvasRenderingContext2D.beginPath()` ：<font color=FF0000>清空子路径列表开始一个新的路径</font>。当你想创建一个新的路径时，调用此方法。
+- `CanvasRenderingContext2D.closePath()` ：使笔点返回到当前子路径的起始点。它尝试从当前点到起始点绘制一条直线。如果图形已经是封闭的或者只有一个点，那么此方法不会做任何操作。
+- `CanvasRenderingContext2D.moveTo()` ：<font color=FF0000>将一个新的子路径的起始点移动到 $(x, y)$ 坐标</font>
+- `CanvasRenderingContext2D.lineTo()` ：<font color=FF0000>使用直线连接子路径的最后的点到 $(x, y)$ 坐标</font>
+- `CanvasRenderingContext2D.bezierCurveTo()` ：添加一个 3 次贝赛尔曲线路径。该方法需要三个点。 第一、第二个点是控制点，第三个点是结束点。起始点是当前路径的最后一个点，绘制贝赛尔曲线前，可以通过调用 moveTo() 进行修改。
+- `CanvasRenderingContext2D.quadraticCurveTo()` ：添加一个 2 次贝赛尔曲线路径。
+- `CanvasRenderingContext2D.arc()` ：绘制一段圆弧路径， 圆弧路径的圆心在 $(x, y)$ 位置，半径为 r ，根据 anticlockwise （默认为顺时针）指定的方向从 startAngle 开始绘制，到 endAngle 结束。
+- `CanvasRenderingContext2D.arcTo()` ：根据控制点和半径绘制圆弧路径，使用当前的描点(前一个moveTo 或 lineTo 等函数的止点)。根据当前描点与给定的控制点1连接的直线，和控制点1与控制点2连接的直线，作为使用指定半径的圆的切线，画出两条切线之间的弧线路径。
+- `CanvasRenderingContext2D.ellipse()` ：🧪 添加一个椭圆路径，椭圆的圆心在 $(x, y)$ 位置，半径分别是 radiusX 和 radiusY ，按照 anticlockwise （默认顺时针）指定的方向，从 startAngle  开始绘制，到 endAngle 结束。
+- `CanvasRenderingContext2D.rect()` ：创建一个矩形路径，矩形的起点位置是 $(x, y)$ ，尺寸为 width 和 height。
 
 ##### 绘制路径
 
-- CanvasRenderingContext2D.fill()：使用当前的样式填充子路径。
-- CanvasRenderingContext2D.stroke()：使用当前的样式描边子路径。
-- CanvasRenderingContext2D.drawFocusIfNeeded()：如果给定的元素获取了焦点，那么此方法会在当前的路径绘制一个焦点。
-- CanvasRenderingContext2D.scrollPathIntoView()：将当前或给定的路径滚动到窗口。
-- CanvasRenderingContext2D.clip()：从当前路径创建一个剪切路径。在  clip() 调用之后，绘制的所有信息只会出现在剪切路径内部。例如： 参见 Canvas教程中的 剪切路径 。
-- CanvasRenderingContext2D.isPointInPath()：判断当前路径是否包含检测点。
-- CanvasRenderingContext2D.isPointInStroke()：判断检测点是否在路径的描边线上。
+- `CanvasRenderingContext2D.fill()` ：使用当前的样式填充子路径。
+- `CanvasRenderingContext2D.stroke()` ：使用当前的样式描边子路径。
+- `CanvasRenderingContext2D.drawFocusIfNeeded()` ：如果给定的元素获取了焦点，那么此方法会在当前的路径绘制一个焦点。
+- `CanvasRenderingContext2D.scrollPathIntoView()` ：将当前或给定的路径滚动到窗口。
+- `CanvasRenderingContext2D.clip()` ：从当前路径创建一个剪切路径。在 `clip()` 调用之后，绘制的所有信息只会出现在剪切路径内部。例如： 参见 Canvas 教程中的 剪切路径 。
+- `CanvasRenderingContext2D.isPointInPath()` ：判断当前路径是否包含检测点。
+- `CanvasRenderingContext2D.isPointInStroke()` ：判断检测点是否在路径的描边线上。
 
 ##### 变换
 
 在 CanvasRenderingContext2D 渲染背景中的对象会有一个当前的变换矩阵，一些方法可以对其进行控制。当创建当前的默认路径，绘制文本、图形和Path2D对象的时候，会应用此变换矩阵。下面列出的方法保持历史和兼容性的原因，是为了SVGMatrix对象现在能够应用于大部分 API ，将来会被替换。
 
-- **CanvasRenderingContext2D.currentTransform**：<font color=FF0000>当前的变换矩阵</font> ( SVGMatrix 对象)
-- **CanvasRenderingContext2D.rotate()**：在变换矩阵中增加 <font color=FF0000>***旋转***</font>，角度变量表示一个顺时针旋转角度并且用弧度表示。
-- **CanvasRenderingContext2D.scale()**：根据 x 水平方向和 y 垂直方向，为canvas 单位添加 <font color=FF0000>***缩放***</font> 变换。
-- **CanvasRenderingContext2D.translate()**：通过在网格中移动 canvas 和 canvas 原点 x 水平方向、原点 y 垂直方向，添加 <font color=FF0000>***平移***</font> 变换
-- **CanvasRenderingContext2D.transform()**：使用方法参数描述的矩阵多次叠加当前的变换矩阵。
-- **CanvasRenderingContext2D.setTransform()**：重新设置当前的变换为单位矩阵，并使用同样的变量调用 transform() 方法。
-- **CanvasRenderingContext2D.resetTransform()**：🧪实验性，使用单位矩阵重新设置当前的变换。
+- `CanvasRenderingContext2D.currentTransform()` ：<font color=FF0000>当前的变换矩阵</font> ( SVGMatrix 对象)
+- `CanvasRenderingContext2D.rotate()` ：在变换矩阵中增加 <font color=FF0000>***旋转***</font>，角度变量表示一个顺时针旋转角度并且用弧度表示。
+- `CanvasRenderingContext2D.scale()` ：根据 x 水平方向和 y 垂直方向，为canvas 单位添加 <font color=FF0000>***缩放***</font> 变换。
+- `CanvasRenderingContext2D.translate()` ：通过在网格中移动 canvas 和 canvas 原点 x 水平方向、原点 y 垂直方向，添加 <font color=FF0000>***平移***</font> 变换
+- `CanvasRenderingContext2D.transform()` ：使用方法参数描述的矩阵多次叠加当前的变换矩阵。
+- `CanvasRenderingContext2D.setTransform()` ：重新设置当前的变换为单位矩阵，并使用同样的变量调用 transform() 方法。
+- `CanvasRenderingContext2D.resetTransform()` ：🧪 使用单位矩阵重新设置当前的变换。
 
 ##### 合成
 
-- CanvasRenderingContext2D.globalAlpha：在合成到 canvas 之前，设置图形和图像透明度的值。默认 1.0 (不透明)。
-- CanvasRenderingContext2D.globalCompositeOperation：通过 globalAlpha 应用，设置如何在已经存在的位图上绘制图形和图像
+- `CanvasRenderingContext2D.globalAlpha` ：在合成到 canvas 之前，设置图形和图像透明度的值。默认 1.0 (不透明)。
+- `CanvasRenderingContext2D.globalCompositeOperation` ：通过 globalAlpha 应用，设置如何在已经存在的位图上绘制图形和图像
 
 ##### 绘制图像
 
-- **CanvasRenderingContext2D.drawImage()**：<font color=FF0000>绘制指定的图片</font>。该方法有多种格式，提供了很大的使用灵活性。详见 [[#CanvasRenderingContext2D.drawImage()]]
+- `CanvasRenderingContext2D.drawImage()` ：<font color=FF0000>绘制指定的图片</font>。该方法有多种格式，提供了很大的使用灵活性。详见 [[#CanvasRenderingContext2D.drawImage()]]
 
 ##### 像素控制
 
 参见 ImageData 对象
 
-- **CanvasRenderingContext2D.createImageData()**：<font color=FF0000>使用指定的尺寸，创建一个新的、空白的 ImageData 对象</font>。所有的像素在新对象中都是透明的。
-- **CanvasRenderingContext2D.getImageData()**：<font color=FF0000>返回一个 ImageData 对象</font>，用来描述 canvas 区域隐含的像素数据，这个区域通过矩形表示，起始点为 ( sx, sy) 、宽为 sw、高为 sh
-- **CanvasRenderingContext2D.putImageData()**：<font color=FF0000>将数据从已有的 ImageData 绘制到位图上</font>。 如果提供了脏矩形，只能绘制矩形的像素
+- `CanvasRenderingContext2D.createImageData()` ：<font color=FF0000>使用指定的尺寸，创建一个新的、空白的 ImageData 对象</font>。所有的像素在新对象中都是透明的。
+- `CanvasRenderingContext2D.getImageData()` ：<font color=FF0000>返回一个 ImageData 对象</font>，用来描述 canvas 区域隐含的像素数据，这个区域通过矩形表示，起始点为 $(sx, sy)$ 、宽为 $sw$、高为 $sh$
+- `CanvasRenderingContext2D.putImageData()` ：<font color=FF0000>将数据从已有的 ImageData 绘制到位图上</font>。 如果提供了脏矩形，只能绘制矩形的像素
 
 ##### 图像平滑
 
-- CanvasRenderingContext2D.imageSmoothingEnabled：🧪实验性，图像平滑的方式；如果禁用，缩放时，图像不会被平滑处理
+- `CanvasRenderingContext2D.imageSmoothingEnabled` ：🧪实验性，图像平滑的方式；如果禁用，缩放时，图像不会被平滑处理
 
 ##### canvas 状态
 
-CanvasRenderingContext2D渲染环境包含了多种绘图的样式状态（属性有线的样式、填充样式、阴影样式、文本样式）。下面的方法会帮助你使用这些状态：
+CanvasRenderingContext2D 渲染环境包含了多种绘图的样式状态（属性有线的样式、填充样式、阴影样式、文本样式）。下面的方法会帮助你使用这些状态：
 
-- CanvasRenderingContext2D.save()：使用栈保存当前的绘画样式状态，你可以使用 restore() 恢复任何改变。
-- CanvasRenderingContext2D.restore()：恢复到最近的绘制样式状态，此状态是通过 save() 保存到”状态栈“中最新的元素。
-- CanvasRenderingContext2D.canvas：对 HTMLCanvasElement 只读的反向引用。如果和 \<canvas> 元素没有联系，可能为null。
+- `CanvasRenderingContext2D.save()` ：使用栈保存当前的绘画样式状态，你可以使用 `restore()` 恢复任何改变。
+- `CanvasRenderingContext2D.restore()` ：恢复到最近的绘制样式状态，此状态是通过 `save()` 保存到”状态栈“中最新的元素。
+- `CanvasRenderingContext2D.canvas` ：对 HTMLCanvasElement 只读的反向引用。如果和 `<canvas>` 元素没有联系，可能为 null 。
 
 ##### 点击区域
 
-- CanvasRenderingContext2D.addHitRegion()：🧪实验性，给 canvas 添加点击区域。
-- CanvasRenderingContext2D.removeHitRegion()：🧪实验性，从 canvas 中删除指定 id  的点击区域。
-- CanvasRenderingContext2D.clearHitRegions()：🧪实验性，从 canvas 中删除所有的点击区域。
+- `CanvasRenderingContext2D.addHitRegion()` ：🧪 给 canvas 添加点击区域。
+- `CanvasRenderingContext2D.removeHitRegion()` ：🧪 从 canvas 中删除指定 id  的点击区域。
+- `CanvasRenderingContext2D.clearHitRegions()` ：🧪 从 canvas 中删除所有的点击区域。
 
 摘自：[MDN - CanvasRenderingContext2D](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D)
 
 #### CanvasRenderingContext2D.fillText()
 
-CanvasRenderingContext2D.fillText() 是 <font color=FF0000>Canvas 2D API 在 (x, y) 位置填充文本的方法</font>。如果选项的第四个参数提供了最大宽度，文本会进行缩放以适应最大宽度
+`CanvasRenderingContext2D.fillText()` 是 <font color=FF0000>Canvas 2D API 在 $(x, y)$ 位置填充文本的方法</font>。如果选项的第四个参数提供了最大宽度，文本会进行缩放以适应最大宽度
 
 ##### 语法
 
@@ -17515,12 +16929,12 @@ CanvasRenderingContext2D.fillText() 是 <font color=FF0000>Canvas 2D API 在 (x,
 void ctx.fillText( text, x, y, [maxWidth] )
 ```
 
-##### 参数
+###### 参数
 
-- **text：**使用当前的 font, textAlign, textBaseline 和 direction 值对文本进行渲染。
-- **x：**文本起点的 x 轴坐标。
-- **y：**文本起点的 y 轴坐标。
-- **maxWidth：**可选，<font color=FF0000>绘制的最大宽度</font>。如果指定了值，并且经过计算字符串的值比最大宽度还要宽；字体为了适应会水平缩放（如果通过水平缩放当前字体，可以进行有效的或者合理可读的处理）或者使用小号的字体。
+- `text` ：使用当前的 font, textAlign, textBaseline 和 direction 值对文本进行渲染。
+- `x` ：文本起点的 x 轴坐标。
+- `y` ：文本起点的 y 轴坐标。
+- `maxWidth` ：可选，<font color=FF0000>绘制的最大宽度</font>。如果指定了值，并且经过计算字符串的值比最大宽度还要宽；字体为了适应会水平缩放（如果通过水平缩放当前字体，可以进行有效的或者合理可读的处理）或者使用小号的字体。
 
 ##### 示例
 
@@ -17540,13 +16954,13 @@ ctx.fillText("Hello world", 50, 100);
 
 #### CanvasRenderingContext2D.strokeText()
 
-CanvasRenderingContext2D.strokeText() 是 Canvas 2D API 在给定的 (x, y) 位置绘制文本的方法
+`CanvasRenderingContext2D.strokeText()` 是 Canvas 2D API 在给定的 (x, y) 位置绘制文本的方法
 
-> 👀 注：该方法详细内容略。因为无论 ***参数*** 还是 ***效果*** 都和 CanvasRenderingContext2D.fillText() 没大的区别。唯一的区别是 <font color=FF0000>**fillText() 是填充文本**</font>（和一般见到的文本的一样，详见 [MDN - CanvasRenderingContext2D.fillText()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/fillText) 中的示例），而 <font color=FF0000>**strokeText() 是 描边文本**</font>；效果见 [MDN - CanvasRenderingContext2D.strokeText()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/strokeText)
+> 👀 该方法详细内容略。因为无论 ***参数*** 还是 ***效果*** 都和 `CanvasRenderingContext2D.fillText()` 没大的区别。唯一的区别是 <font color=FF0000>**`fillText()` 是填充文本**</font>（和一般见到的文本的一样，详见 [MDN - `CanvasRenderingContext2D.fillText()`](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/fillText) 中的示例），而 <font color=FF0000>**`strokeText()` 是 描边文本**</font>；效果见 [MDN - `CanvasRenderingContext2D.strokeText()`](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/strokeText)
 
 #### CanvasRenderingContext2D.drawImage()
 
-Canvas 2D API 中的 CanvasRenderingContext2D.drawImage() 方法提供了多种方式在Canvas上绘制图像。
+Canvas 2D API 中的 `CanvasRenderingContext2D.drawImage()` 方法提供了多种方式在 Canvas 上绘制图像。
 
 ##### 语法
 
@@ -17556,26 +16970,26 @@ void ctx.drawImage(image, dx, dy, dWidth, dHeight);
 void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 ```
 
-##### 参数
+###### 参数
 
 ![](https://s2.loli.net/2022/05/30/Yy71La3VtzRehrN.jpg)
 
-- **image**：<font color=FF0000>绘制到上下文的元素</font>。允许任何的 canvas 图像源 ( CanvasImageSource )，例如：CSSImageValue，HTMLImageElement，SVGImageElement，HTMLVideoElement，HTMLCanvasElement，ImageBitmap 或者 OffscreenCanvas
-- **sx**：( source ) 可选，需要绘制到目标上下文中的，image 的矩形（裁剪）选择框的左上角 X 轴坐标。
-- **sy**：( source ) 可选，需要绘制到目标上下文中的，image 的矩形（裁剪）选择框的左上角 Y 轴坐标。
-- **sWidth**：可选，需要绘制到目标上下文中的，image 的矩形（裁剪）选择框的宽度。如果不说明，整个矩形（裁剪）从坐标的 sx 和 sy 开始，到 image 的右下角结束。
-- **sHeight**：可选，需要绘制到目标上下文中的，image 的矩形（裁剪）选择框的高度。
-- **dx**：( destination ) image 的左上角在目标 canvas上 X 轴坐标。
-- **dy**：( destination ) image 的左上角在目标 canvas上 Y 轴坐标。
-- **dWidth**：可选，image 在目标 canvas 上绘制的宽度。 允许对绘制的 image 进行缩放。如果不说明， 在绘制时，image 宽度不会缩放
-- **dHeight**：可选，image 在目标 canvas 上绘制的高度。 允许对绘制的 image 进行缩放。 如果不说明， 在绘制时，image 高度不会缩放
+- `image` ：<font color=FF0000>绘制到上下文的元素</font>。允许任何的 canvas 图像源 ( CanvasImageSource )，例如：CSSImageValue，HTMLImageElement，SVGImageElement，HTMLVideoElement，HTMLCanvasElement，ImageBitmap 或者 OffscreenCanvas
+- `sx` ：( source ) 可选，需要绘制到目标上下文中的，image 的矩形（裁剪）选择框的左上角 X 轴坐标。
+- `sy` ：( source ) 可选，需要绘制到目标上下文中的，image 的矩形（裁剪）选择框的左上角 Y 轴坐标。
+- `sWidth` ：可选，需要绘制到目标上下文中的，image 的矩形（裁剪）选择框的宽度。如果不说明，整个矩形（裁剪）从坐标的 sx 和 sy 开始，到 image 的右下角结束。
+- `sHeight` ：可选，需要绘制到目标上下文中的，image 的矩形（裁剪）选择框的高度。
+- `dx` ：( destination ) image 的左上角在目标 canvas上 X 轴坐标。
+- `dy` ：( destination ) image 的左上角在目标 canvas上 Y 轴坐标。
+- `dWidth` ：可选，image 在目标 canvas 上绘制的宽度。 允许对绘制的 image 进行缩放。如果不说明， 在绘制时，image 宽度不会缩放
+- `dHeight` ：可选，image 在目标 canvas 上绘制的高度。 允许对绘制的 image 进行缩放。 如果不说明， 在绘制时，image 高度不会缩放
 
 ##### 抛出异常
 
-- INDEX_SIZE_ERR：如果 canvas 或者图像矩形区域的宽度或高度为0
-- INVALID_STATE_ERR：图像没有数据。
-- TYPE_MISMATCH_ERR：提供的原始元素不支持。
-- NS_ERROR_NOT_AVAILABLE：图像尚未加载。使用 .complete === true 和 .onload确定何时准备就绪
+- `INDEX_SIZE_ERR` ：如果 canvas 或者图像矩形区域的宽度或高度为0
+- `INVALID_STATE_ERR` ：图像没有数据。
+- `TYPE_MISMATCH_ERR` ：提供的原始元素不支持。
+- `NS_ERROR_NOT_AVAILABLE` ：图像尚未加载。使用 `.complete === true` 和 `.onload` 确定何时准备就绪
 
 摘自：[MDN - CanvasRenderingContext2D.drawImage()](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/drawImage)
 
@@ -17626,13 +17040,13 @@ JSX 是 Javascript 和 XML 结合的一种格式。React 发明了 JSX ，利用
 
 看了下 TC39 的 [GitHub 主页](https://github.com/tc39) ，发现 除了 [ecma262](https://github.com/tc39/ecma262) 之外，还有其他 [ecma402](https://github.com/tc39/ecma402) 之类的项目；便好奇：除了 ecma262，TC39 其他的 ecma项目 在做什么。便搜到了如下内容：
 
-> - **ECMA-262**: 定义了ECMAScript支持的一套关键字，这些关键字标识了ECMAScript语句的开头和结尾，根据规定，关键字是保留的，不能用作变量名或函数名。
+> - **ECMA-262** : 定义了 ECMAScript 支持的一套关键字，这些关键字标识了 ECMAScript 语句的开头和结尾，根据规定，关键字是保留的，不能用作变量名或函数名。
 >
-> - **ECMA 402**： 制定一些基于 ECMAScript 5 或者之后版本的一些国际化 API 标准。
+> - **ECMA 402** ： 制定一些基于 ECMAScript 5 或者之后版本的一些国际化 API 标准。
 >
-> - **ECMA 404**：JSON 规范。
+> - **ECMA 404** ：JSON 规范。
 >
-> - **ECMA 414**：规定了哪些规范是和 ECMAScript 有关的。目前内部就包含了 262，402和404。
+> - **ECMA 414** ：规定了哪些规范是和 ECMAScript 有关的。目前内部就包含了 262，402 和 404。
 >
 > 摘自：[ECMAScript（ES）版本介绍](https://www.jianshu.com/p/7dda47907512)
 
