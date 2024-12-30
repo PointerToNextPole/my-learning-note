@@ -15338,18 +15338,20 @@ BigInt.asIntN(width, bigint);
 
 将一个 BigInt 值转换为 0 与 2^width^-1 之间的无符号整数。
 
-**语法**
+##### 语法
 
 ```js
 BigInt.asUintN(width, bigint);
 ```
 
-**参数**
+###### 参数
 
 - width：可存储整数的位数。
 - bigint： 要存储在指定位数上的整数。
 
-**返回值：**bigint 模(modulo) 2^width^ 作为无符号整数的值。
+###### 返回值
+
+bigint 模(modulo) `2^width` 作为无符号整数的值。
 
 摘自：[MDN - BigInt.asUintN()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt/asUintN)
 
