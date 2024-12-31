@@ -131,6 +131,30 @@
 
 
 
+### 通用
+
+#### `.zprofile` 和 `.zshrc`
+
+> 👀 背景
+>
+> `.zshrc` 是比较常见的 zsh 配置文件，但是 `.zprofile` 我完全没有印象。直到最近我配置我的新 Mac 时遇到，当时我的 Mac 上甚至没有 `.zshrc`  ，只找到了 `.zprofile` 文件。另外，当我想把 homebrew 的源切换为官方源，且按照网上以及 AI 给出的方案没有一个生效的，但是 `brew config` 中对应的 ` HOMEBREW_PIP_INDEX_URL` 、`HOMEBREW_API_DOMAIN` 、`HOMEBREW_BOTTLE_DOMAIN` 却实打实的出现在我的 `.zprofile` 文件中，于是便引起了我的好奇。
+
+##### `.zprofile` AI 的介绍
+
+<img src="https://s2.loli.net/2024/12/31/e7RAas9b4IK3E1B.png" alt="image-20241231224012846" style="zoom:50%;" />
+
+<img src="https://s2.loli.net/2024/12/31/RdWBsno8av5MIKm.png" alt="image-20241231224139278" style="zoom:50%;" />
+
+<img src="https://s2.loli.net/2024/12/31/sC8oWuiq2JMjgtZ.png" alt="image-20241231224203171" style="zoom:50%;" />
+
+##### `.zshrc`  和 `.zprofile` 自己的理解
+
+`.zprofile` 是用来存放各种不变的 env 的。相对的，`.zshrc` 则是用来存放各种会变的 env 的。
+
+`.zprofile` 的机制是在登录时用 hook 加载的，它不会重复加载。`.zshrc` 是在每个 session 都会重复加载，这是生命周期，shell 机制的作用。
+
+
+
 ### Mac 使用
 
 
