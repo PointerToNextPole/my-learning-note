@@ -480,7 +480,10 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 
 // TODO 可以参考下 [使用brew services管理服务](https://www.jianshu.com/p/6c3b26490861) ，其中提及了 Mac 的 `launchctl` 加载开机自动运行的服务的命令
 
-##### `brew cleanup --prune=all; brew autoremove`
+##### 一些有用的命令
+###### `brew cleanup --prune=all; brew autoremove`
+
+比较干净地将缓存清除
 
 
 

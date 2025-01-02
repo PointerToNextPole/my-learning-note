@@ -810,7 +810,7 @@ V8 引擎诞生的使命就是要在速度和内存回收上进行革命。JavaS
 
 ##### 什么是副作用
 
-<font color=dodgerBlue>**副作用 ( side-effect ) 是指让一个函数变得不再纯净 ( pure ) 的东西**</font>。
+<font color=red>**副作用 ( side-effect ) 是指让一个函数变得不再纯净 ( pure ) 的东西**</font>。
 
 <font color=fuchsia>**一个纯净的函数，无论何时何地 ( any time any wherer ) 执行，都会得到稳定的结果**</font>（👀 即，是 “幂等” 的），这对保障程序的稳定性和性能都有极大的帮助。<font color=FF0000>反过来：如果一个函数不能 any time any wherer 得到稳定的结果，那这个函数就不是纯净的，就是有副作用了</font>。
 
@@ -820,13 +820,13 @@ V8 引擎诞生的使命就是要在速度和内存回收上进行革命。JavaS
 
 - **外部接口的调用尤其是 IO** ：dom对象 / bom对象的方法调用，xhr / fetch这样的网络IO，console / LocalStorage 这样的 磁盘IO
 
-  > 👀 关于 console 为什么是不纯的，可以参考下 [WeakSet的垃圾回收问题【渡一教育】](https://www.bilibili.com/video/BV1Ux4y147nx) ，从 GC 的方面说明了 console 为什么会带来异常：DevTool 的 Console 存在引用，会影响回收
+  > 👀 关于 console 为什么是不纯的，可以参考下 [WeakSet的垃圾回收问题【渡一教育】](https://www.bilibili.com/video/BV1Ux4y147nx) ，从 GC 的角度说明了 console 为什么会带来异常：DevTool 的 Console 存在引用，会影响回收
 
 - **异常的抛出** ：函数中的某些代码可能会抛出异常或者执行出错
 
 通俗的来讲就是：不能相信除了自己以外的任何人。
 
-> 💡 <font color=FF0000>实际上，在 FP中 function 指的是纯净的函数，对于有副作用的函数称之为 procedure</font>。👀 注：关于 function 和 producer 参见 [[#routine 例程]]
+> 💡 <font color=red>实际上，在 FP 中 function 指的是纯净的函数，对于有副作用的函数称之为 procedure</font>。👀 关于 function 和 producer 参见 [[#routine 例程]]
 
 ##### 副作用是有害的
 
