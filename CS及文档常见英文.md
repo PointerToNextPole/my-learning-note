@@ -1284,6 +1284,8 @@
   > The other new configuration option being added will further ensure that the right types of deltas are generated at `git push` time...
   >
   > 摘自：[How we shrunk our Javascript monorepo git size by 94%](https://www.jonathancreamer.com/how-we-shrunk-our-git-repo-size-by-94-percent/)
+  
+- **idempotency** ：幂等性
 
 
 ***
@@ -2152,3 +2154,11 @@
 - **rhetoric** ：修辞学
 
 - **tackle** ：对付
+
+- **toxic** ：有毒的
+
+  **toxicity** ：毒性
+
+- **takeaway** ：外卖
+
+  **key takeaway** ：重要信息、关键要点

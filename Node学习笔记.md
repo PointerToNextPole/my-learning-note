@@ -4123,7 +4123,7 @@ npm update package-name
 ##### 顺序
 
 先到npm模块仓库查询最新版本（提供registry查询服务）==> 返回json对象(包含该模块所有版本信息；含有dist.tarball属性，属性值为该压缩包网址，访问下载源码) ==> 查询本地版本（若本地版本不存在或远程版本较新，则安装更新）
-npm install和npm update都是以此方式安装模块
+`npm install` 和 `npm update` 都是以此方式安装模块
 
 ##### 搜索安装包
 
@@ -4277,19 +4277,21 @@ npm root -g
 
 #### 镜像设置
 
-##### 查看npm默认镜像地址
+##### 查看 npm 默认镜像地址
 
 ```sh
 npm config get registry
 ```
 
-##### 将npm默认镜像地址修改为淘宝
+##### 将 npm 默认镜像地址修改为阿里镜像
 
 ```sh
-npm config set registry https://registry.npm.taobao.org
+npm config set registry https://npmmirror.com
 ```
 
-> 👀 这时打开 `~/.npmrc` ，会发现：多了 `registry=https://registry.npm.taobao.org/`
+> 👀 这时打开 `~/.npmrc` ，会发现：多了 `registry=https://npmmirror.com`
+>
+> 注意：`https://registry.npm.taobao.org` 已经废弃了，现在使用 npmmirror 作为替代
 
 ##### 使用官方镜像
 
@@ -4300,16 +4302,16 @@ npm config set registry https://registry.npmjs.org
 ##### 通过 cnpm
 
 ```sh
-npm install -g cnpm --registry=https://registry.npm.taobao.org
+npm install -g cnpm --registry=https://npmmirror.com/
 ```
 
-##### 临时使用淘宝镜像
+##### 临时使用阿里镜像
 
 ```sh
-npm --registry https://registry.npm.taobao.org install express
+npm --registry https://npmmirror.com/ install express
 ```
 
-摘自：[npm换源](https://www.jianshu.com/p/f311a3a155ff)
+摘自：[npm换源](https://www.jianshu.com/p/f311a3a155ff) 。另外，值得注意的是：文章还在使用 `https://registry.npm.taobao.org` 的淘宝镜像，而现在已经废弃，所以笔记使用 `https://npmmirror.com/` 替代
 
 
 

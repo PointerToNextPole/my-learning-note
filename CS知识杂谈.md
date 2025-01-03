@@ -731,8 +731,17 @@ A <font color=FF0000>**wrapper**</font> instead is something that <font color=FF
 **在 SICP 中也有提到 *一等公民* ：**
 
 - <font color=FF0000> 可以用变量命名</font>。即：函数表达式
+
 - <font color=FF0000> 可以作为参数传递给过程</font>。即：高阶函数
+
+  > 💡 关于 “高阶函数” 的补充
+  >
+  > A higher-order function is a function that **takes one or more functions as arguments**, <font color=red>returns a function as its result</font>, or both.
+  >
+  > 摘自：[What Is Functional Programming?](https://www.sitepoint.com/what-is-functional-programming/)
+
 - <font color=FF0000> 可以作为程序的结果返回</font>。即：闭包
+
 - <font color=FF0000> 可以包含在数据结构中</font>。即：嵌套声明，可以放在对象和数组中
 
 > 原文：
@@ -794,13 +803,17 @@ V8 引擎诞生的使命就是要在速度和内存回收上进行革命。JavaS
 摘自：[字节码和机器码的区别](https://blog.51cto.com/zhangchiworkos/4941089)
 
 > 💡 补充
-> 影响 Bun 性能的第二个因素是使用了 Apple 的 JavaScriptCore 引擎。事实证明，JavaScriptCore 比 V8 更快。差异相对较小，但绝对存在。
-> 摘自：[TS、Vue、React、SSR、Node、Deno、Bun：回顾2022，展望2023](https://mp.weixin.qq.com/s/wC9Wq7FJ_sKg1I-z8AozCQ)
+>
+> > 影响 Bun 性能的第二个因素是使用了 Apple 的 JavaScriptCore 引擎。事实证明，JavaScriptCore 比 V8 更快。差异相对较小，但绝对存在。
+> > 摘自：[TS、Vue、React、SSR、Node、Deno、Bun：回顾2022，展望2023](https://mp.weixin.qq.com/s/wC9Wq7FJ_sKg1I-z8AozCQ)
+>
 > 👀 似乎也验证了 wwdc 上说 Safari 是最快的。
 
 #### 闭包 ( Closure ) 
 
-<font color=FF0000 size=4>**// TODO 下面的链接包含大量的知识（不仅仅是 js 中的闭包，凡是实现 FP 的语言应该都有闭包），建议阅读与记录。**</font>
+> **// TODO**
+>
+> 下面的链接包含大量的知识（不仅仅是 js 中的闭包，凡是实现 FP 的语言应该都有闭包），建议阅读与记录
 
 摘自：[设计闭包（Closure）的初衷是为了解决什么问题？ - 知乎](https://www.zhihu.com/question/51402215)
 

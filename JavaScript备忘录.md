@@ -159,37 +159,37 @@ onfocus ( focus ) -> 键盘输入 -> onkeydown ( keydown )  -> onkeypress ( keyp
 
 ##### 字符串属性
 
-| 属性                                   | 描述                                              |
-|:------------------------------------:|:-----------------------------------------------:|
-| constructor                          | 返回创建<font color=FF0000>字符串</font>属性的函数（下面有更多解释） |
-| <font color=FF0000>**length**</font> | **返回字符串的长度**                                    |
-| **prototype**                        | 允许您向对象添加属性和方法                                   |
+|     属性      |                             描述                             |
+| :-----------: | :----------------------------------------------------------: |
+|  constructor  | 返回创建<font color=FF0000>字符串</font>属性的函数（下面有更多解释） |
+|    length     |                     **返回字符串的长度**                     |
+| **prototype** |                  允许您向对象添加属性和方法                  |
 
 **字符串方法**
 
-| 方法                                        | 描述                                                         |
-| :------------------------------------------ | :----------------------------------------------------------- |
-| charAt()                                    | 返回指定索引位置的字符                                       |
-| charCodeAt()                                | 返回指定索引位置字符的 Unicode 值                            |
-| <font color=FF0000>**concat()**</font>      | 连接（合并）两个或多个字符串，返回连接后的字符串             |
-| fromCharCode()                              | 将 Unicode 转换为字符串                                      |
-| <font color=FF0000>indexOf()</font>         | 返回字符串中检索指定字符第一次出现的位置                     |
-| <font color=FF0000>**lastIndexOf()**</font> | 返回字符串中检索指定字符最后一次出现的位置                   |
-| localeCompare()                             | 用本地特定的顺序来比较两个字符串                             |
-| <font color=FF0000>match()</font>           | 找到一个或多个正则表达式的匹配                               |
-| <font color=FF0000>replace()</font>         | 替换与正则表达式匹配的子串                                   |
-| <font color=FF0000>search()</font>          | 检索与正则表达式相匹配的值                                   |
-| slice()                                     | 提取字符串的片断，并在新的字符串中返回被提取的部分           |
-| split()                                     | 把字符串分割为子字符串数组                                   |
-| substr()                                    | 从起始索引号提取字符串中指定数目的字符                       |
-| substring()                                 | 提取字符串中两个指定的索引号之间的字符                       |
-| toLocaleLowerCase()                         | 根据主机的语言环境把字符串转换为小写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
-| toLocaleUpperCase()                         | 根据主机的语言环境把字符串转换为大写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
-| toLowerCase()                               | 把字符串转换为小写                                           |
-| toString()                                  | 返回字符串对象值                                             |
-| toUpperCase()                               | 把字符串转换为大写                                           |
-| trim()                                      | 移除字符串首尾空白                                           |
-| valueOf()                                   | 返回某个字符串对象的原始值                                   |
+| 方法                | 描述                                                         |
+| :------------------ | :----------------------------------------------------------- |
+| charAt()            | 返回指定索引位置的字符                                       |
+| charCodeAt()        | 返回指定索引位置字符的 Unicode 值                            |
+| concat()            | 连接（合并）两个或多个字符串，返回连接后的字符串             |
+| fromCharCode()      | 将 Unicode 转换为字符串                                      |
+| indexOf()           | 返回字符串中检索指定字符第一次出现的位置                     |
+| lastIndexOf()       | 返回字符串中检索指定字符最后一次出现的位置                   |
+| localeCompare()     | 用本地特定的顺序来比较两个字符串                             |
+| match()             | 找到一个或多个正则表达式的匹配                               |
+| replace()           | 替换与正则表达式匹配的子串                                   |
+| search()            | 检索与正则表达式相匹配的值                                   |
+| slice()             | 提取字符串的片断，并在新的字符串中返回被提取的部分           |
+| split()             | 把字符串分割为子字符串数组                                   |
+| substr()            | 从起始索引号提取字符串中指定数目的字符                       |
+| substring()         | 提取字符串中两个指定的索引号之间的字符                       |
+| toLocaleLowerCase() | 根据主机的语言环境把字符串转换为小写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
+| toLocaleUpperCase() | 根据主机的语言环境把字符串转换为大写，只有几种语言（如土耳其语）具有地方特有的大小写映射 |
+| toLowerCase()       | 把字符串转换为小写                                           |
+| toString()          | 返回字符串对象值                                             |
+| toUpperCase()       | 把字符串转换为大写                                           |
+| trim()              | 移除字符串首尾空白                                           |
+| valueOf()           | 返回某个字符串对象的原始值                                   |
 
 更多方法实例可以参见：[JavaScript String 对象](https://www.runoob.com/jsref/jsref-obj-string.html)。
 
@@ -242,7 +242,7 @@ Alfred
 
 摘自：[MDN - 模板字符串](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Template_literals)
 
-String.raw() 是一个模板字符串的标签函数，<font color=FF0000>是用来获取一个模板字符串的原始字符串的</font>，比如说：占位符（例如 ${foo}）会被处理为它所代表的其他字符串，而转义字符（例如 \n）不会。
+String.raw() 是一个模板字符串的标签函数，<font color=FF0000>是用来获取一个模板字符串的原始字符串的</font>，比如说：占位符（例如 `${foo}` ）会被处理为它所代表的其他字符串，而转义字符（例如 `\n` ）不会。
 
 ```js
 String.raw(callSite, ...substitutions)
@@ -251,9 +251,9 @@ String.raw`templateString`
 
 ###### 参数
 
-- **callSite** ：一个模板字符串的“调用点对象”。类似{ raw: ['foo', 'bar', 'baz'] }。
-- **...substitutions** ：任意个可选的参数，表示任意个内插表达式对应的值。
-- **templateString** ：模板字符串，可包含占位符（${...}）。
+- `callSite` ：一个模板字符串的“调用点对象”。类似 `{ raw: ['foo', 'bar', 'baz'] }` 。
+- `...substitutions` ：任意个可选的参数，表示任意个内插表达式对应的值。
+- `templateString` ：模板字符串，可包含占位符（`${...}` ）。
 
 ###### 返回值
 
@@ -10131,7 +10131,7 @@ class SourceBuffer
 
 - [`SourceBuffer.appendWindowEnd`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/appendWindowEnd) ：控制 append window 结束的时间戳。
 
-- [`SourceBuffer.appendWindowStart`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/appendWindowStart) ：控制 [append window](https://w3c.github.io/media-source/#append-window) 开始的时间戳。这是一个时间戳范围，可以用于过滤附加到 `SourceBuffer` 的媒体数据。此时间戳范围的编码媒体帧将被附加，而超出此范围的将被忽略。
+- [`SourceBuffer.appendWindowStart`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/appendWindowStart) ：控制 [append window](https://w3c.github.io/media-source/#append-window) 开始的时间戳。这是一个时间戳范围，可以用于过滤附加到 `SourceBuffer` 的媒体数据。此时间戳范围的编码媒体帧将被附加，而超出此范围的将被忽略
 
 - [`SourceBuffer.audioTracks`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/audioTracks) ：只读，当前包含在 `SourceBuffer` 中的音轨列表。
 
@@ -10146,6 +10146,28 @@ class SourceBuffer
 - [`SourceBuffer.updating`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/updating) ：只读，一个布尔值，表示 `SourceBuffer` 当前是否正在更新——即当前是否正在进行 [`SourceBuffer.appendBuffer()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/appendBuffer)、[`SourceBuffer.appendStream()`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer) 或 [`SourceBuffer.remove()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/remove) 操作。
 
 - [`SourceBuffer.videoTracks`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/videoTracks) ：只读，当前包含在 `SourceBuffer` 中的视频轨列表。
+
+##### 方法
+
+从它的父接口 `EventTarget` 继承方法。
+
+- [`SourceBuffer.abort()`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/abort) ：中止当前片段并且重置片段解析器。
+- [`SourceBuffer.appendBuffer()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/appendBuffer) ：将来自 `ArrayBuffer`、`TypedArray` 或 `DataView` 对象的媒体片段数据附加到 `SourceBuffer`。
+- [`SourceBuffer.appendBufferAsync()`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/appendBufferAsync) ：🧪 启动异步进程，将指定缓冲数据附加到 `SourceBuffer`。返回一个 `Promise`，一旦添加了缓冲数据，该 promise 将会兑现。
+- [`SourceBuffer.appendStream()`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer) ：将来自 `ReadableStream` 对象的媒体片段数据附加到 `SourceBuffer`。
+- [`SourceBuffer.changeType()`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/changeType) ：更改 MIME 类型，使其符合将来调用 [`appendBuffer()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/appendBuffer) 附加的新数据的类型。
+- [`SourceBuffer.remove()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/remove) ：从 `SourceBuffer` 移除指定时间范围内的媒体片段。
+- [`SourceBuffer.removeAsync()`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/removeAsync) ：🧪 启动异步进程，从 `SourceBuffer` 移除指定时间范围的媒体片段。返回一个 `Promise`，一旦所有匹配的片段被删除，该 promise 将会兑现。
+
+##### 事件
+
+- `abort` ：当 [`SourceBuffer.appendBuffer()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/appendBuffer) 或 [`SourceBuffer.appendStream()`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer) 结束时通过调用 [`SourceBuffer.abort()`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/abort) 触发。[`SourceBuffer.updating`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/updating) 从 `true` 改变为 `false`。
+- `error` ：在 [`SourceBuffer.appendBuffer()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/appendBuffer) 或 [`SourceBuffer.appendStream()`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer) 期间发生错误时触发。[`SourceBuffer.updating`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/updating) 从 `true` 改变为 `false`。
+- `update` ：在 [`SourceBuffer.appendBuffer()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/appendBuffer) 或 [`SourceBuffer.remove()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/remove) 完成时触发。[`SourceBuffer.updating`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/updating) 从 `true` 改变为 `false`。这个事件在 `updateend` 之前触发。
+- `updateend` ：在 [`SourceBuffer.appendBuffer()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/appendBuffer) 或 [`SourceBuffer.remove()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/remove) 结束后触发。这个事件在 `update` 后触发。
+- `updatestart` ：当 [`SourceBuffer.updating`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/updating) 从 `false` 改变为 `true` 时触发。
+
+摘自：[MDN - SourceBuffer](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer)
 
 
 
