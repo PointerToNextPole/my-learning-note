@@ -238,11 +238,11 @@ Alfred
 
 在标签函数的第一个参数中，存在一个特殊的属性raw ，我们可以通过它来访问模板字符串的原始字符串，而不经过特殊字符的替换。
 
-另外，使用String.raw() 方法创建原始字符串和使用默认模板函数和字符串连接创建是一样的。
+另外，使用 `String.raw()` 方法创建原始字符串和使用默认模板函数和字符串连接创建是一样的。
 
 摘自：[MDN - 模板字符串](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Template_literals)
 
-String.raw() 是一个模板字符串的标签函数，<font color=FF0000>是用来获取一个模板字符串的原始字符串的</font>，比如说：占位符（例如 `${foo}` ）会被处理为它所代表的其他字符串，而转义字符（例如 `\n` ）不会。
+`String.raw()` 是一个模板字符串的标签函数，<font color=FF0000>是用来获取一个模板字符串的原始字符串的</font>，比如说：占位符（例如 `${foo}` ）会被处理为它所代表的其他字符串，而转义字符（例如 `\n` ）不会。
 
 ```js
 String.raw(callSite, ...substitutions)
@@ -366,7 +366,7 @@ str.startsWith(searchString[, position])
 
 这个方法能够让你确定一个字符串是否以另一个字符串开头。<font color=FF0000>这个方法区分大小写</font>。
 
-摘自：[MDN - tring.prototype.startsWith()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)
+摘自：[MDN - String.prototype.startsWith()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)
 
 > 💡 和正则中的 `^` 符号一致
 
@@ -10152,7 +10152,7 @@ class SourceBuffer
 从它的父接口 `EventTarget` 继承方法。
 
 - [`SourceBuffer.abort()`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/abort) ：中止当前片段并且重置片段解析器。
-- [`SourceBuffer.appendBuffer()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/appendBuffer) ：将来自 `ArrayBuffer`、`TypedArray` 或 `DataView` 对象的媒体片段数据附加到 `SourceBuffer`。
+- [`SourceBuffer.appendBuffer()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/appendBuffer) ：将来自 `ArrayBuffer`、`TypedArray` 或 `DataView` 对象的媒体片段数据附加到 `SourceBuffer` 。
 - [`SourceBuffer.appendBufferAsync()`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/appendBufferAsync) ：🧪 启动异步进程，将指定缓冲数据附加到 `SourceBuffer`。返回一个 `Promise`，一旦添加了缓冲数据，该 promise 将会兑现。
 - [`SourceBuffer.appendStream()`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer) ：将来自 `ReadableStream` 对象的媒体片段数据附加到 `SourceBuffer`。
 - [`SourceBuffer.changeType()`](https://developer.mozilla.org/en-US/docs/Web/API/SourceBuffer/changeType) ：更改 MIME 类型，使其符合将来调用 [`appendBuffer()`](https://developer.mozilla.org/zh-CN/docs/Web/API/SourceBuffer/appendBuffer) 附加的新数据的类型。
