@@ -129,6 +129,11 @@
 
 <img src="https://s1.ax1x.com/2020/09/02/wpQmKP.png" style="zoom:45%;" />
 
+##### finder 相关
+
+- **⇧ + ⌘ + .** : 显示隐藏文件
+- **⇧ + ⌘ + G** ：显示输入框，输入路径以跳转到对应的文件夹中
+
 
 
 ### 通用
@@ -346,19 +351,19 @@ mdfind 命令是 Spotlight 的终端界面，所以如果 Spotlight 被禁用的
 
 mdfind 命令查找文件比 Spotlight 还要快，其基本用法如下：
 
-```bash
+```sh
 mdfind -name queryFileName
 ```
 
 如果要查找包含某些文本的文件，则可以输入如下命令；这样就会查找所有包含 John 的文件。
 
-```text
+```sh
 mdfind "John"
 ```
 
 mdfind 命令还可以通过 `-onlyin` 参数搜索特定文件夹的内容，比如
 
-```bash
+```sh
 mdfind -onlyin ~/Library queryTxt
 ```
 
@@ -434,29 +439,29 @@ Homebrew 安装软件时将会<font color=FF0000>自动下载各种依赖</font>
 
 tap命令的仓库源默认来至于Github，但是这个命令也不限制于这一个地方
 
-- **brew tap** 
+###### `brew tap`
 
-  没有参数会自动更新已经存在的`tap`并列出当前已经`tapped`的仓库
+没有参数会自动更新已经存在的`tap`并列出当前已经`tapped`的仓库
 
-- **brew tap \<user>/\<repo>** 
+###### `brew tap <user>/<repo>`
 
-  在本地对这个 `https://github.com/user/repo` 仓库上做了一个浅度的克隆，完成之后 `brew` 就可以在这个仓库包含的 `formulae`上工作，好比就在 `Homebrew` 规范的仓库，你可使用 `brew install` 或者 `brew uninstall `安装或者卸载这个仓库上的软件。当你执行 `brew update` 这个命令时，`tap` 和 `formulae` 就会自定更新
+在本地对这个 `https://github.com/user/repo` 仓库上做了一个浅度的克隆，完成之后 `brew` 就可以在这个仓库包含的 `formulae`上工作，好比就在 `Homebrew` 规范的仓库，你可使用 `brew install` 或者 `brew uninstall `安装或者卸载这个仓库上的软件。当你执行 `brew update` 这个命令时，`tap` 和 `formulae` 就会自定更新
 
-- **brew tap \<user>/\<repo> URL** 
+###### `brew tap <user>/<repo> URL`
 
-  在本地对这个 `URL` 仓库上做了一个浅度的克隆,和上面一个参数命令是不一样的,`URL`没有默认关联到`Github`,这个`URL`没有要求必须是 `HTTP` 协议，任何位置和任何协议而且**Git**也是能很好的处理的
+在本地对这个 `URL` 仓库上做了一个浅度的克隆,和上面一个参数命令是不一样的,`URL`没有默认关联到`Github`,这个`URL`没有要求必须是 `HTTP` 协议，任何位置和任何协议而且**Git**也是能很好的处理的
 
-- **brew untap \<user>/\<repo> [\<user>/\<repo> \<user>/\<repo> ...]**
+###### `brew untap <user>/<repo> [<user>/<repo> <user>/<repo> ...]`
 
-  移除已经安装的`tap`。这个仓库被删除，`brew` 就不在可用在这个仓库的 `formulae`。可以同时删除几个仓库
+移除已经安装的`tap`。这个仓库被删除，`brew` 就不在可用在这个仓库的 `formulae`。可以同时删除几个仓库
 
-**仓库命名的规范**
+##### 仓库命名的规范
 
-- 在 `Github`上,你的仓库名称必须是`homebrew-something`,为了使用一个参数的`brew tap`命令,`homebrew-`这个前缀不是可选的,是必须的。
-  对于两个参数的`brew tap`命令没有这个限制,但是必须给出明确的全部的`URL`地址
-- 当你在命令行使用`brew tap`时，你可以省略 `homebrew-` 这个前缀的
+- 在 `Github`上,你的仓库名称必须是`homebrew-something` ，为了使用一个参数的 `brew tap` 命令，`homebrew-` 这个前缀不是可选的,是必须的。
+  对于两个参数的 `brew tap` 命令没有这个限制,但是必须给出明确的全部的`URL`地址
+- 当你在命令行使用 `brew tap` 时，你可以省略 `homebrew-` 这个前缀的
 
-也就是说:`brew tap username/foobar `是作为长版本 `brew tap username/homebrew-foobar` 使用的一个简写。**`brew` 可以自己添加 `homebrew-` 前缀的在需要的时候**
+也就是说： `brew tap username/foobar ` 是作为长版本 `brew tap username/homebrew-foobar` 使用的一个简写。**`brew` 可以自己添加 `homebrew-` 前缀的在需要的时候**
 
 摘自： [homebrew的tap功能详解](https://segmentfault.com/a/1190000012826983)
 
@@ -772,7 +777,7 @@ command1 || command2 [|| command3 ...]
 { command1; command2; command3 [; ...] }
 ```
 
-<font color=FF0000>**注意：**在使用{}时，{}与命令之间必须使用一个空格</font>
+<font color=FF0000>**注意：**在使用 `{}` 时，`{}` 与命令之间必须使用一个空格</font>
 
 摘自：[Linux 命令行 &&与||](https://www.jianshu.com/p/25b0d6c9dc9f)
 
