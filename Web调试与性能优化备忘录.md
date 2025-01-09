@@ -26,7 +26,7 @@
 
 ##### 创建 `launch.json`
 
-<img src="/Users/yan/Library/Application Support/typora-user-images/image-20241204235316143.png" alt="image-20241204235316143" style="zoom:50%;" />
+<img src="https://s2.loli.net/2025/01/09/zfi8JjSt6bOHnUW.png" alt="image-20241204235316143" style="zoom:50%;" />
 
 在 “Run and Debug” 面板下，点击 “create a launch.json file”，并选择 debugger 中的 “TS Debug”
 
@@ -88,6 +88,28 @@
 > ###### `.mts` 和 `.module.ts` 之间的关系
 >
 > <img src="https://s2.loli.net/2024/12/05/sZemj2IVCAFgPOo.png" alt="image-20241205163217638" style="zoom: 50%;" />
+
+
+
+#### Debug 技巧
+
+##### 断点回溯
+
+在之前的调试中，经常出现 “不小心将某个自己想要调试的代码（断点）遗漏了、错过调试了”，这时候往往只能重新开启调试，最多将一些已经确认无误的断点清理掉。实际上：DevTools 是可以通过 “将当前执行代码所在的执行栈中某一个帧 ( Frame ) 代码” 重新执行的方式，实现重新调试目标代码的功能。
+
+具体实现方式是：在 DevTools 的 Sources 选项的 Call Stack 下选择目标代码所在、且最近的 Frame，右键选择 “Restart frame” ，即可。
+
+<img src="https://s2.loli.net/2025/01/09/3jznkJbGpPZ8vUh.png" alt="image-20250109231205133" style="zoom:50%;" />
+
+不过，这种方法并不是无脑执行的，如上代码，如果每次 **执行完** L9 `val++` 之后，重新对 `called` 这个 Frame 运行 “Restart frame” ，此时会发现作为入参对 val 会一直 +1 ，而不是开始时的等于 1。
+
+帧重启不会重置参数。换句话说，重启不会在调用函数时恢复初始状态。而只是将执行指针移到函数的开头。
+
+至于解决方式是：在 Scope 下双击相应值以进行修改，并设置所需的值。
+
+![](https://s2.loli.net/2025/01/09/dx7G6PiVD3YSp8Q.png)
+
+学习自：[JavaScript 调试参考文档](https://blog.csdn.net/gtlbtnq9mr3/article/details/140811875)
 
 
 
@@ -259,7 +281,7 @@ Element 面板选中元素可以看到这个元素和它的父元素的所有事
 
 
 
-## devTools 使用
+## DevTools 使用
 
 
 

@@ -322,8 +322,8 @@ count ：介于 0 和 +Infinity 之间的整数。表示在新构造的字符串
 
 ###### 异常
 
-- RangeError : 重复次数不能为负数。
-- RangeError : 重复次数必须小于 infinity，且长度不会大于最长的字符串。
+- `RangeError` : 重复次数不能为负数。
+- `RangeError` : 重复次数必须小于 infinity，且长度不会大于最长的字符串。
 
 ##### 示例
 
@@ -355,8 +355,8 @@ str.startsWith(searchString[, position])
 
 ###### 参数
 
-- **searchString** ：要搜索的子字符串。
-- **position** ：<font color=FF0000>可选</font>，在 str 中搜索 searchString 的开始位置。<font color=FF0000>默认值为 0</font>。
+- `searchString` ：要搜索的子字符串。
+- `position` ：<font color=FF0000>可选</font>，在 str 中搜索 searchString 的开始位置。<font color=FF0000>默认值为 0</font>。
 
 ###### 返回值
 
@@ -382,8 +382,8 @@ str.endsWith(searchString[, length])
 
 ###### 参数
 
-- **searchString** ：要搜索的子字符串。
-- **length** ：<font color=FF0000>可选</font>，作为 str 的长度。<font color=FF0000>默认值为 `str.length`</font>。
+- `searchString` ：要搜索的子字符串。
+- `length` ：<font color=FF0000>可选</font>，作为 str 的长度。<font color=FF0000>默认值为 `str.length`</font>。
 
 ###### 返回值
 
@@ -411,8 +411,8 @@ str.padStart(targetLength [, padString])
 
 ###### 参数
 
-- **targetLength** ：当前字符串需要填充到的目标长度。<font color=FF0000>如果这个数值小于当前字符串的长度，则返回当前字符串本身</font>。
-- **padString** ：<font color=FF0000>可选</font>，填充字符串。<font color=FF0000>如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留（padString的）最左侧的部分，其他部分会被截断</font>。<font color=FF0000>**此参数的默认值为 " "**</font>（U+0020）。
+- `targetLength` ：当前字符串需要填充到的目标长度。<font color=FF0000>如果这个数值小于当前字符串的长度，则返回当前字符串本身</font>。
+- `padString` ：<font color=FF0000>可选</font>，填充字符串。<font color=FF0000>如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留（ padString 的）最左侧的部分，其他部分会被截断</font>。<font color=FF0000>**此参数的默认值为 " "**</font>（U+0020）。
 
 ###### 返回值
 
@@ -424,7 +424,7 @@ str.padStart(targetLength [, padString])
 
 padEnd()  方法会用一个字符串填充当前字符串（如果需要的话则重复填充），返回填充后达到指定长度的字符串。从当前字符串的末尾（右侧）开始填充。
 
-**语法**
+##### 语法
 
 ```js
 str.padEnd(targetLength [, padString])
@@ -432,8 +432,8 @@ str.padEnd(targetLength [, padString])
 
 ###### 参数
 
-- **targetLength**：当前字符串需要填充到的目标长度。<font color=FF0000>如果这个数值小于当前字符串的长度，则返回当前字符串本身</font>。
-- **padString**：<font color=FF0000>可选</font>，填充字符串。<font color=FF0000>如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留（padString的）最左侧的部分，其他部分会被截断。**此参数的缺省值为 " "（U+0020）**</font>。
+- `targetLength` ：当前字符串需要填充到的目标长度。<font color=FF0000>如果这个数值小于当前字符串的长度，则返回当前字符串本身</font>。
+- `padString` ：<font color=FF0000>可选</font>，填充字符串。<font color=FF0000>如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留（ padString 的）最左侧的部分，其他部分会被截断。**此参数的缺省值为 " "（U+0020）**</font>。
 
 ###### 返回值
 
@@ -532,7 +532,6 @@ const sorted = arr.toSorted((a, b) => a.localeCompare(b, 'zh-Hans-CN'))
 console.log(unsort) // ['上海', '北京', '杭州']
 console.log(sorted) // ['北京', '杭州', '上海']
 ```
-
 
 
 #### String.prototype.isWellFormed()
@@ -713,7 +712,7 @@ str.codePointAt(pos)
 
 ###### 参数
 
-- **pos** ：这个字符串中需要转码的元素的位置。
+- `pos` ：这个字符串中需要转码的元素的位置。
 
 ###### 返回值
 返回值是在字符串中的给定索引的编码单元体现的数字，<font color=FF0000>如果在索引处没找到元素则返回 undefined</font> 。
@@ -758,7 +757,7 @@ String.fromCodePoint(num1[, ...[, numN]])
 
 ###### 参数
 
-- **num1, ... , num*N*** ：一串 Unicode 编码位置，即“代码点”。
+- `num1, ... , numN` ：一串 Unicode 编码位置，即“代码点”。
 
 ###### 返回值
 
@@ -766,7 +765,7 @@ String.fromCodePoint(num1[, ...[, numN]])
 
 ###### 异常
 
-- **RangeError：**如果传入无效的 Unicode 编码，将会抛出一个 RangeError（例如："RangeError: NaN is not a valid code point"）。
+- `RangeError` ：如果传入无效的 Unicode 编码，将会抛出一个 RangeError（例如："RangeError: NaN is not a valid code point"）。
 
 ##### 说明
 
@@ -798,12 +797,12 @@ str.normalize( [form] )
 
 ###### 参数
 
-- **form：**<font color=FF0000>可选</font>。四种 Unicode 正规形式 ( Unicode Normalization Form ) "NFC"、"NFD"、"NFKC"，或 "NFKD" 其中的一个，默认值为 "NFC"。
+- `form` ：**<font color=FF0000>可选</font>。四种 Unicode 正规形式 ( Unicode Normalization Form ) "NFC"、"NFD"、"NFKC"，或 "NFKD" 其中的一个，默认值为 "NFC"。
 
-  > - **"NFC"：**默认选项，以标准等价方式分解,然后以标准等价方式重组。
-  > - **"NFD"：**以标准等价方式分解
-  > - **"NFKC"：**以兼容等价方式分解
-  > - **"NFKD"：**以兼容等价方式分解,然后以标准等价方式重组
+  > - "NFC"：默认选项，以标准等价方式分解,然后以标准等价方式重组。
+  > - "NFD"：以标准等价方式分解
+  > - "NFKC"：以兼容等价方式分解
+  > - "NFKD"：以兼容等价方式分解,然后以标准等价方式重组
   >
   > 摘自：深入理解ES6 - 字符串和正则表达式 P17
 
@@ -813,7 +812,7 @@ str.normalize( [form] )
 
 ###### 可能出现的异常
 
-- **RangeError** ：如果给 form 传入了上述四个字符串以外的参数，则会抛出 RangeError 异常。
+- `RangeError` ：如果给 form 传入了上述四个字符串以外的参数，则会抛出 RangeError 异常。
 
 摘自：[MDN - String.prototype.normalize()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/normalize)
 
@@ -857,9 +856,9 @@ str.normalize( [form] )
 
 ##### 其他关于 UTF-16代理对字符串的补充
 
-**字符串迭代器能够识别代理对**
+##### 字符串迭代器能够识别代理对
 
-> ##### for...of
+> ###### for...of
 >
 > 数组和字符串是使用最广泛的内建可迭代对象。对于一个字符串，`for..of` 遍历它的每个字符；<font color=FF0000>对于代理对 ( surrogate pairs )，它也能正常工作</font>！
 >
@@ -870,7 +869,7 @@ str.normalize( [form] )
 > }
 > ```
 >
-> ##### Array.from()
+> ###### Array.from()
 >
 > 全局方法 Array.from 可以接受一个可迭代或类数组的值，并从中获取一个“真正的”数组。然后我们就可以对其调用数组方法了。<font color=FF0000>**Array.from() 对于代理对也是支持的**</font>：
 >
@@ -1212,7 +1211,7 @@ iterator.next().value;         // undefined
 
 #### Array.prototoype.entries()
 
-entries() 方法 <font color=FF0000 size=4>**返回一个新的Array Iterator对象**</font>（不是一个数组，`Array.isArray() === false` ），该对象包含数组中每个索引的键/值对。示例如下：
+entries() 方法 <font color=fuchsia>**返回一个新的Array Iterator对象**</font>（不是一个数组，`Array.isArray() === false` ），该对象包含数组中每个索引的键/值对。示例如下：
 
 ```js
 const array1 = ['a', 'b', 'c'];
@@ -1295,7 +1294,7 @@ console.log(a); // {0: 3, 1: 2, 2: 1, length: 3}
 
 find() 方法<font color=FF0000>返回数组中满足提供的测试函数的第一个元素的值，否则返回 undefined</font>。
 
-**语法**
+##### 语法
 
 ```js
 arr.find(callback[, thisArg])
@@ -1303,11 +1302,11 @@ arr.find(callback[, thisArg])
 
 ###### 参数
 
-- **callback：**在数组每一项上执行的函数，接收 3 个参数：
-  - element：当前遍历到的元素。
-  - index：可选，当前遍历到的索引。
-  - array：可选，数组本身。
-- thisArg：可选，执行回调时用作this 的对象。
+- `callback` ：在数组每一项上执行的函数，接收 3 个参数：
+  - `element`：当前遍历到的元素。
+  - `index` ：可选，当前遍历到的索引。
+  - `array` ：可选，数组本身。
+- `thisArg` ：可选，执行回调时用作this 的对象。
 
 ###### 返回值
 
@@ -1321,7 +1320,7 @@ const found = array1.find(element => element > 10);
 console.log(found); // expected output: 12
 ```
 
-而 indIndex() 方法，它返回数组中找到的元素的索引，而不是其值。
+而 findIndex() 方法，它返回数组中找到的元素的索引，而不是其值。
 
 摘自：[MDN - Array.prototype.find()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
 
@@ -1403,16 +1402,16 @@ array.reduce( callback( accumulator, currentValue [, index [, array]]) [, initia
 
 ###### 参数
 
-- **callback：**执行数组中每个值（如果没有提供 initialValue，则第一个值除外）的函数，包含四个参数：
-  - **accumulator：**累计器累计回调的返回值；它是上一次调用回调时返回的累积值，或 initialValue（见于下方）。
+- `callback` ：执行数组中每个值（如果没有提供 initialValue，则第一个值除外）的函数，包含四个参数：
+  - `accumulator` ：累计器累计回调的返回值；它是上一次调用回调时返回的累积值，或 initialValue（见于下方）。
   
-  - **currentValue：**数组中正在处理的元素。在第一次调用时，若指定了初始值 `initialValue`，其值则为数组索引为 0 的元素 `array[0]` ，否则为 `array[1]` 。
+  - `currentValue` ：数组中正在处理的元素。在第一次调用时，若指定了初始值 `initialValue`，其值则为数组索引为 0 的元素 `array[0]` ，否则为 `array[1]` 。
   
-  - **index：** <font color=FF0000>可选</font>，数组中正在处理的当前元素的索引。 如果提供了 initialValue，则起始索引号为0，否则从索引1起始。
+  - `index` ：<font color=FF0000>可选</font>，数组中正在处理的当前元素的索引。 如果提供了 initialValue，则起始索引号为0，否则从索引1起始。
   
-  - **array：**<font color=FF0000>可选</font>，调用 `reduce()` 的数组
+  - `array` ：<font color=FF0000>可选</font>，调用 `reduce()` 的数组
   
-- **initialValue：**<font color=FF0000>可选</font>，作为第一次调用 callback 函数时的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。
+- `initialValue` ：<font color=FF0000>可选</font>，作为第一次调用 callback 函数时的第一个参数的值。 如果没有提供初始值，则将使用数组中的第一个元素。 在没有初始值的空数组上调用 reduce 将报错。
 
 ###### 返回值
 
@@ -1420,7 +1419,7 @@ array.reduce( callback( accumulator, currentValue [, index [, array]]) [, initia
 
 ###### 异常
 
-**TypeError：**数组为空且初始值 initialValue 未提供。
+`TypeError` ：数组为空且初始值 initialValue 未提供。
 
 摘自：[MDN - Array.prototype.reduce()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
 
@@ -1666,8 +1665,8 @@ str.substring(indexStart[, indexEnd])
 
 ###### 参数
 
-- **indexStart** ：需要截取的第一个字符的索引，该索引位置的字符作为返回的字符串的首字母。
-- **indexEnd** ：<font color=red>**可选**</font>。一个 0 到字符串长度之间的整数，以该数字为索引的字符不包含在截取的字符串内。
+- `indexStart` ：需要截取的第一个字符的索引，该索引位置的字符作为返回的字符串的首字母。
+- `indexEnd` ：<font color=red>**可选**</font>。一个 0 到字符串长度之间的整数，以该数字为索引的字符不包含在截取的字符串内。
 
 ###### 返回值
 
@@ -1701,8 +1700,8 @@ str.substr(start[, length])
 
 ###### 参数
 
-- **start：**开始提取字符的位置。<font color=FF0000>如果为负值，则被看作 strLength + start</font>，其中 strLength 为字符串的长度（例如，如果 start 为 -3，则被看作 strLength + (-3) ）。
-- **length：**<font color=FF0000>**可选**</font>。<font color=FF0000>提取的字符数</font>。
+- `start` ：开始提取字符的位置。<font color=FF0000>如果为负值，则被看作 strLength + start</font>，其中 strLength 为字符串的长度（例如，如果 start 为 -3，则被看作 strLength + (-3) ）。
+- `length` ：<font color=FF0000>**可选**</font>。<font color=FF0000>提取的字符数</font>。
 
 ##### 描述
 
@@ -1742,12 +1741,12 @@ array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
 
 ###### 参数
 
-- <font color=FF0000>**start：**指定修改的开始位置（从0计数）</font>。如果超出了数组的长度，则从数组末尾开始添加内容；如果是负值，则表示从数组末位开始的第几位（从-1计数，这意味着-n是倒数第n个元素并且等价于array.length-n）；如果负数的绝对值大于数组的长度，则表示开始位置为第0位。
-- <font color=FF0000>**deleteCount ：**（可选）整数，表示**要移除的数组元素的个数**</font>。
+- `start` ：指定修改的开始位置（从0计数）。如果超出了数组的长度，则从数组末尾开始添加内容；如果是负值，则表示从数组末位开始的第几位（从-1计数，这意味着-n是倒数第n个元素并且等价于array.length-n）；如果负数的绝对值大于数组的长度，则表示开始位置为第0位。
+- <font color=FF0000>`deleteCount`  ：（可选）整数，表示**要移除的数组元素的个数**</font>。
   - 如果 deleteCount 大于 start 之后的元素的总数，则从 start 后面的元素都将被删除（含第 start 位）。
-  - 如果 deleteCount 被省略了，或者它的值大于等于array.length - start(也就是说，如果它大于或者等于start之后的所有元素的数量)，那么start之后数组的所有元素都会被删除。
+  - 如果 deleteCount 被省略了，或者它的值大于等于 array.length - start（ 也就是说，如果它大于或者等于start之后的所有元素的数量)，那么 start 之后数组的所有元素都会被删除。
   - 如果 deleteCount 是 0 或者负数，则不移除元素。这种情况下，至少应添加一个新元素。
-- **item1, item2, ... ：**（可选）要添加进数组的元素,从start 位置开始。如果不指定，则 splice() 将只删除数组元素。
+- `item1, item2, ...` ：（可选）要添加进数组的元素，从 start 位置开始。如果不指定，则 splice() 将只删除数组元素。
 
 ###### 返回值
 
@@ -1865,7 +1864,7 @@ arr.copyWithin(target[, start[, end]])
 
 ###### 参数
 
-- **target** ：0 为基底的索引，复制序列到该位置。<font color=FF0000>如果是负数，target 将从末尾开始计算</font>
+- `target` ：0 为基底的索引，复制序列到该位置。<font color=FF0000>如果是负数，target 将从末尾开始计算</font>
 
   > 💡 补充
   >
@@ -1873,9 +1872,9 @@ arr.copyWithin(target[, start[, end]])
 
   <font color=FF0000>如果 target 大于等于 arr.length，将会不发生拷贝</font>。如果 target 在 start 之后，复制的序列将被修改以符合 `arr.length` 。
 
-- **start** ：0 为基底的索引，开始复制元素的起始位置。如果是负数，start 将从末尾开始计算。如果 start 被忽略，copyWithin 将会从0开始复制。<font color=FF0000>即：默认为0</font>。而如果start为负数，且小于 `-arr.length`，则不作任何操作
+- `start` ：0 为基底的索引，开始复制元素的起始位置。如果是负数，start 将从末尾开始计算。如果 start 被忽略，copyWithin 将会从0开始复制。<font color=FF0000>即：默认为0</font>。而如果start为负数，且小于 `-arr.length`，则不作任何操作
 
-- **end** ：0 为基底的索引，开始复制元素的结束位置。copyWithin 将会拷贝到该位置，但<font color=FF0000>不包括 end 这个位置的元素</font>。如果是负数， end 将从末尾开始计算。如果 end 被忽略，copyWithin 方法将会一直复制至数组结尾（默认为 `arr.length` ）。<font color=FF0000>即：默认为 `arr.length`</font>。而如果 `end` 为负数，且小于 `-arr.length` ，则不作任何操作
+- `end` ：0 为基底的索引，开始复制元素的结束位置。copyWithin 将会拷贝到该位置，但<font color=FF0000>不包括 end 这个位置的元素</font>。如果是负数， end 将从末尾开始计算。如果 end 被忽略，copyWithin 方法将会一直复制至数组结尾（默认为 `arr.length` ）。<font color=FF0000>即：默认为 `arr.length`</font>。而如果 `end` 为负数，且小于 `-arr.length` ，则不作任何操作
 
 > 💡 补充
 >
@@ -1906,8 +1905,8 @@ arr.includes(valueToFind[, fromIndex])
 
 ###### 参数
 
-- valueToFind：需要查找的元素值。**注意：**使用 includes()比较字符串和字符时是<font color=FF0000>区分大小写</font>。
-- fromIndex：<font color=FF0000>**可选**</font>，<font color=FF0000>从fromIndex 索引处开始查找 valueToFind</font>。<mark>如果为负值，则按升序从 array.length + fromIndex 的索引开始搜</mark> （即使从末尾开始往前跳 fromIndex 的绝对值个索引，然后往后搜寻）。<font color=FF0000>默认为 0</font>。
+- `valueToFind` ：需要查找的元素值。**注意：**使用 includes()比较字符串和字符时是<font color=FF0000>区分大小写</font>。
+- `fromIndex` ：<font color=FF0000>**可选**</font>，<font color=FF0000>从fromIndex 索引处开始查找 valueToFind</font>。<font color=lightSeaGreen>如果为负值，则按升序从 array.length + fromIndex 的索引开始搜</font> （即使从末尾开始往前跳 fromIndex 的绝对值个索引，然后往后搜寻）。<font color=FF0000>默认为 0</font>。
 
 ##### 注意
 
@@ -1933,9 +1932,9 @@ Array.from(arrayLike[, mapFn[, thisArg]])
 
 ###### 参数
 
-- arrayLike：想要转换成数组的<font color=FF0000>**伪数组对象** 或 **可迭代对象**</font>。
-- mapFn： <font color=FF0000>可选</font>，如果指定了该参数，新数组中的每个元素会执行该回调函数。
-- thisArg：<font color=FF0000>可选</font>，可选参数，执行回调函数 mapFn 时 this 对象。
+- `arrayLike` ：想要转换成数组的<font color=FF0000>**伪数组对象** 或 **可迭代对象**</font>。
+- `mapFn` ： <font color=FF0000>可选</font>，如果指定了该参数，新数组中的每个元素会执行该回调函数。
+- `thisArg` ：<font color=FF0000>可选</font>，可选参数，执行回调函数 mapFn 时 this 对象。
 
 ###### 返回值
 
@@ -2037,7 +2036,7 @@ Array.of(element0[, element1[, ...[, elementN]]])
 
 ###### 参数
 
-elementN：任意个参数，将按顺序成为返回数组中的元素。
+`elementN` ：任意个参数，将按顺序成为返回数组中的元素。
 
 ###### 返回值
 
@@ -2059,7 +2058,7 @@ var newArray = arr.flat([depth])
 
 ###### 参数
 
-- depth 可选，指定要提取嵌套数组的结构深度，默认值为 1。
+- `depth` ：可选，指定要提取嵌套数组的结构深度，默认值为 1。
 
 ###### 返回值
 
@@ -2328,7 +2327,7 @@ function () {}.constructor         // 返回函数 Function(){ [native code] }
 
 ##### 转换为字符串
 
-**<font color=FF0000>全局方法</font>** **String()** 可以将数字转换为字符串，<font color=FF0000>该方法（全局方法）可用于任何类型的数字，字母，变量，表达式</font>。示例：
+**<font color=FF0000>全局方法</font>** `String()` 可以将数字转换为字符串，<font color=FF0000>该方法（全局方法）可用于任何类型的数字，字母，变量，表达式</font>。示例：
 
 ```js
 String(x)         // 将变量 x 转换为字符串并返回
@@ -2336,7 +2335,7 @@ String(123)       // 将数字 123 转换为字符串并返回
 String(100 + 23)  // 将数字表达式转换为字符串并返回
 ```
 
-Number / Boolean / Date 的方法 **toString()** 也是有同样的效果，示例：
+Number / Boolean / Date 的方法 `toString()` 也是有同样的效果，示例：
 
 ```js
 x.toString()
@@ -2370,7 +2369,7 @@ x.toString()
 
 ##### 补充
 
-**将时间戳转换为‘YYYY-MM-DD HH:mm:ss’形式：**
+###### 将时间戳转换为 `YYYY-MM-DD HH:mm:ss` 形式
 
 ```js
 function time(time = +new Date()) {
@@ -2592,17 +2591,17 @@ var patt = /runoob/i
 
 ###### RegExp.prototype.dotAll
 
-dotAll 属性<font color=FF0000>表明是否在正则表达式中一起使用"s"修饰符</font>（<mark>引入/s修饰符，使得.可以匹配任意单个字符</mark>）。dotAll 是一个<font color=FF0000>只读的属性</font>，属于单个正则表达式实例。
+dotAll 属性<font color=FF0000>表明是否在正则表达式中一起使用"s"修饰符</font>（<font color=lightSeaGreen>引入/s修饰符，使得.可以匹配任意单个字符</font>）。dotAll 是一个<font color=FF0000>只读的属性</font>，属于单个正则表达式实例。
 
-| RegExp.prototype.dotAll 属性的属性特性： | 值    |
-| :--------------------------------------- | ----- |
-| writable                                 | false |
-| enumerable                               | false |
-| configurable                             | true  |
+| RegExp.prototype.dotAll 属性的属性特性 | 值     |
+| :------------------------------ | ----- |
+| writable                        | false |
+| enumerable                      | false |
+| configurable                    | true  |
 
 **描述**
 
-<font color=FF0000 size=4>**如果使用了"s"修饰符，dotAll 的值将返回Boolean类型的true，否则将返回false**</font>。<mark>"s"修饰符表示，特殊字符"."应另外匹配字符串中的下述行终结符</mark>（line terminator characters），否则将会失配：
+<font color=fuchsia>**如果使用了 "s" 修饰符，dotAll 的值将返回 Boolean 类型的 true ，否则将返回false**</font>。<font color=lightSeaGreen>"s"修饰符表示，特殊字符"."应另外匹配字符串中的下述行终结符</font>（line terminator characters），否则将会失配：
 
 - U+000A 换行符（"\n"）
 - U+000D 回车符（"\r"）
@@ -2690,7 +2689,7 @@ str.match(regexp)
 
 ###### 参数
 
-- **regexp：**一个正则表达式对象。<font color=FF0000> 如果传入一个**非正则表达式对象**，则会隐式地使用 new RegExp(obj) 将其转换为一个 RegExp</font>。<mark>如果你<font color=FF0000> 没有给出任何参数并直接使用match() 方法</font> ，你将会得到一 个包含空字符串的 Array ：[""] </mark>。
+- `regexp` ：一个正则表达式对象。<font color=FF0000> 如果传入一个**非正则表达式对象**，则会隐式地使用 `new RegExp(obj)` 将其转换为一个 RegExp</font>。如果你<font color=FF0000> 没有给出任何参数并直接使用match() 方法</font> ，你将会得到一 个包含空字符串的 Array ：`[""]`。
 
 ###### 返回值
 
@@ -2700,9 +2699,9 @@ str.match(regexp)
 
   **附加属性：**如上所述，匹配的结果包含如下所述的附加特性。
 
-  - **groups:** <font color=FF0000> 一个捕获组数组</font> 或 <font color=FF0000> undefined（如果没有定义命名捕获组）</font>。
-  - **index:** <font color=FF0000> 匹配的结果的开始位置</font>
-  - **input:** <font color=FF0000> 搜索的字符串</font>.
+  - `groups` ：<font color=FF0000> 一个捕获组数组</font> 或 <font color=FF0000> undefined（如果没有定义命名捕获组）</font>。
+  - `index` ：<font color=FF0000> 匹配的结果的开始位置</font>
+  - `input` ： <font color=FF0000> 搜索的字符串</font>.
 
 一个 Array，其内容取决于 global ( g ) 标志的存在与否，如果未找到匹配则为 null 。
 
@@ -2736,9 +2735,9 @@ new Error([message[, fileName[,lineNumber]]])
 
 ###### 参数
 
-- **message：**可选。人类可阅读的错误描述信息。
-- **fileName：**⚠️可选。被创建的Error对象的fileName属性值。默认是调用Error构造器代码所在的文件 的名字。
-- **lineNumber：**⚠️可选。被创建的Error对象的lineNumber属性值。默认是调用Error构造器代码所在的文件的行号。
+- `message` ：可选。人类可阅读的错误描述信息。
+- `fileName` ：可选。被创建的 Error 对象的 fileName 属性值。默认是调用 Error 构造器代码所在的文件 的名字。
+- `lineNumber` ：可选。被创建的 Error 对象的 lineNumber 属性值。默认是调用 Error 构造器代码所在的文件的行号。
 
 ##### 作为函数使用
 
@@ -2755,17 +2754,17 @@ const y = new Error('I was constructed via the "new" keyword!');
 
 除了通用的 Error 构造函数外，<font color=FF0000>JavaScript 还有 6 个其他类型的错误构造函数</font>。
 
-- **EvalError：**创建一个 error 实例，表示错误的原因：与 eval()  有关。
-- **InternalError⚠️：**创建一个代表 Javascript 引擎内部错误的异常抛出的实例。 如: "递归太多".
-- **RangeError：**创建一个 error 实例，表示错误的原因：数值变量或参数超出其有效范围。
-- **ReferenceError：**创建一个 error 实例，表示错误的原因：无效引用。
-- **SyntaxError：**创建一个 error 实例，表示错误的原因：eval() 在解析代码的过程中发生的语法错误。
-- **TypeError：**创建一个error 实例，表示错误的原因：变量或参数不属于有效类型。
-- **URIError：**创建一个error 实例，表示错误的原因：给 encodeURI() 或  decodeURI() 传递的参数无效。
+- `EvalError` ：创建一个 error 实例，表示错误的原因：与 eval()  有关。
+- `InternalError` ：创建一个代表 Javascript 引擎内部错误的异常抛出的实例。 如: "递归太多".
+- `RangeError` ：创建一个 error 实例，表示错误的原因：数值变量或参数超出其有效范围。
+- `ReferenceError` ：创建一个 error 实例，表示错误的原因：无效引用。
+- `SyntaxError` ：创建一个 error 实例，表示错误的原因：eval() 在解析代码的过程中发生的语法错误。
+- `TypeError` ：创建一个error 实例，表示错误的原因：变量或参数不属于有效类型。
+- `URIError` ：创建一个error 实例，表示错误的原因：给 encodeURI() 或  decodeURI() 传递的参数无效。
 
 另外，稳重还提到了 **AggregateError**：
 
-> **AggregateError** 当多个错误需要包装在一个错误中时，该对象表示一个错误。
+> `AggregateError` 当多个错误需要包装在一个错误中时，该对象表示一个错误。
 >
 > ##### 语法
 >
@@ -2773,10 +2772,10 @@ const y = new Error('I was constructed via the "new" keyword!');
 > new AggregateError(errors[, message])
 > ```
 >
-> **参数**
+> ###### 参数
 >
-> - **errors：**错误的描述，默认为空。
-> - **message：**可选，AggregateError 错误的提示信息。
+> - `errors` ：错误的描述，默认为空。
+> - `message` ：可选，AggregateError 错误的提示信息。
 >
 > 摘自：[MDN - AggregateError](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/AggregateError)
 
@@ -2960,14 +2959,14 @@ function myFunction() {
 </script>
 ```
 
-**约束验证 DOM 方法**
+##### 约束验证 DOM 方法
 
 | Property            | Description                                                  |
 | :------------------ | :----------------------------------------------------------- |
 | checkValidity()     | 如果 input 元素中的数据是合法的返回 true，否则返回 false。   |
 | setCustomValidity() | 设置 input 元素的 validationMessage 属性，用于自定义错误提示信息的方法。使用 setCustomValidity 设置了自定义提示后，validity.customError 就会变成true，则 checkValidity 总是会返回false。如果要重新判断需要取消自定义提示，方式如下：<br>setCustomValidity('')<br>setCustomValidity(null)<br>setCustomValidity(undefined) |
 
-**约束验证 DOM 属性**
+##### 约束验证 DOM 属性
 
 | 属性                | 描述                     |
 |:----------------- |:---------------------- |
@@ -2975,7 +2974,7 @@ function myFunction() {
 | validationMessage | 浏览器错误提示信息              |
 | willValidate      | 指定 input 是否需要验证        |
 
-**Validity 属性**
+##### Validity 属性
 
 input 元素的 **validity 属性**包含一系列关于 validity 数据属性:
 
@@ -3215,7 +3214,7 @@ JSON.stringify() 方法将一个 JavaScript 对象或值转换为 JSON 字符串
 JSON.stringify(value[, replacer [, space]])
 ```
 
-**参数**
+###### 参数
 
 - **value**：将要序列化成 一个 JSON 字符串的值。
 - **replacer**：<mark>可选</mark>
@@ -3227,9 +3226,11 @@ JSON.stringify(value[, replacer [, space]])
   - 如果该参数为<font color=FF0000>字符串</font>（当字符串长度超过 10 个字母，取其前 10 个字母），该字符串将被作为空格
   - 如果该参数 <font color=FF0000>为 null 或 没有提供</font>，将没有空格。
 
-**返回值**：一个表示给定值的 JSON 字符串。
+###### 返回值
 
-**异常**
+一个表示给定值的 JSON 字符串。
+
+###### 异常
 
 - 当在循环引用时会抛出异常 `TypeError ("cyclic object value")`（循环对象值）
 - 当尝试去转换 BigInt 类型的值会抛出 `TypeError ("BigInt value can't be serialized in JSON")` <font color=FF0000>**BigInt 值不能 JSON 序列化**</font>
@@ -3260,8 +3261,8 @@ JSON.parse(text[, reviver])
 
 ###### 参数
 
-- **text**：要被解析成 JavaScript 值的字符串，关于 JSON 的语法格式，请参考：[`JSON`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON)。
-- **reviver**：可选，转换器，如果传入该参数 (函数)，可以用来修改解析生成的原始值，调用时机在 parse 函数返回之前。
+- `text` ：要被解析成 JavaScript 值的字符串，关于 JSON 的语法格式，请参考：[`JSON`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON)。
+- `reviver` ：可选，转换器，如果传入该参数 (函数)，可以用来修改解析生成的原始值，调用时机在 parse 函数返回之前。
 
 ###### 返回值
 
@@ -3563,22 +3564,23 @@ Promise.all([func1(), func2(), func3()])
 
 <mark>相比之下，Promise.all() 更适合彼此相互依赖或者在其中任何一个reject时立即结束。</mark>
 
-- **语法**
+语法
 
   ```js
   Promise.allSettled(iterable);
   ```
 
-- **参数**
+参数
 
   **iterable：**一个可迭代的对象，例如Array，其中<font color=FF0000>每个成员都是 Promise</font>。
 
-- **返回值**
+返回值
+
   一旦所指定的 promises 集合中每一个 promise 已经完成，<font color=FF0000>无论是成功的达成或被拒绝，未决议的 Promise将被异步完成</font>。那时，所返回的 promise 的处理器将传入一个数组作为输入，该数组包含原始 promises 集中每个 promise 的结果。
 
   <mark>对于每个结果对象，都有一个 status 字符串。如果它的值为 fulfilled，则结果对象上存在一个 value 。如果值为 rejected，则存在一个 reason 。value（或 reason ）反映了每个 promise 决议（或拒绝）的值</mark>。
 
-- **示例：**
+示例
 
   ```js
   const promise1 = Promise.resolve(3);
@@ -3592,7 +3594,7 @@ Promise.all([func1(), func2(), func3()])
   // "rejected"
   ```
   
-- **群友写的简单实现：**
+群友写的简单实现：
 
   ```js
   const promiseAllSettled = (arr) => {
