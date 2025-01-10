@@ -538,7 +538,7 @@ HTML `<meta>` 元素表示那些不能由其它 HTML 元相关 ( meta-related ) 
 
 ###### 什么是权威内容标签
 
-<font color=red>权威内容标签是一种 HTML 代码片段，主要用于定义重复、近似重复或类似页面的主要版本</font>。换句话说，<font color=fuchsia>如果不同的网址上出现了相同或相似的内容，则可以使用权威内容标签去指定一个应该被索引的主要版本</font>。
+<font color=lightSeaGreen>权威内容标签是一种 HTML 代码片段</font>，主要<font color=red>用于定义重复、近似重复或类似页面的主要版本</font>。换句话说，<font color=fuchsia>如果不同的网址上出现了相同或相似的内容，则可以使用权威内容标签去指定一个应该被索引的主要版本</font>。
 
 ###### 权威内容标签长的形式
 

@@ -3431,12 +3431,12 @@ Promise 是一个 ECMAScript 6 提供的类，目的是更加优雅地书写复�
 > ##### 一个 Promise 必然 处于以下几种状态之一
 >
 > - **待定（pending）：**<font color=FF0000>初始状态</font>，<font color=FF0000>既没有被兑现，也没有被拒绝</font>。
-> - **已兑现（fulfilled）：**意味着<font color=FF0000>操作成功完成</font>。
+> - **已兑现（fulfilled）：** 意味着<font color=FF0000>操作成功完成</font>。
 > - **已拒绝（rejected）：** 意味着<font color=FF0000>操作失败</font>。
 >
 > 摘自：[MDN - Promise](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
-<font color=FF0000>待定（pending）状态的 Promise 对象 **要么** 会通过一个值被兑现（fulfilled），**要么** 会通过一个原因（错误）被拒绝（rejected）</font>。
+<font color=FF0000>待定（pending）状态的 Promise 对象**要么**会通过一个值被兑现（fulfilled），**要么** 会通过一个原因（错误）被拒绝（rejected）</font>。
 
 **另外：** 如果一个 promise 已经被兑现（fulfilled）或被拒绝（rejected），那么我们也可以说它处于已敲定（settled）状态
 
