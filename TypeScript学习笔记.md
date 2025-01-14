@@ -2500,7 +2500,7 @@ type MapType<T> = {
 
 <img src="https://s2.loli.net/2022/05/01/a6jQCHfwO41G2vi.png" alt="image-20220501213009300" style="zoom:50%;" />
 
-<font size=4>**这里为什么 Key 后面跟着 `& string`：**</font>因为 <font color=FF0000>**索引类型（对象、class 等）可以用 string、number 和 symbol 作为 key** ，这里 `keyof T` 取出的索引就是 `string | number | symbol` 的联合类型，**和 string 取交叉，结果就只剩下 string 了**</font>。就像前面所说，交叉类型会把同一类型做合并，不同类型舍弃。
+<font color=dodgerBlue>**这里为什么 Key 后面跟着 `& string`：**</font>因为 <font color=FF0000>**索引类型（对象、class 等）可以用 string、number 和 symbol 作为 key** ，这里 `keyof T` 取出的索引就是 `string | number | symbol` 的联合类型，**和 string 取交叉，结果就只剩下 string 了**</font>。就像前面所说，交叉类型会把同一类型做合并，不同类型舍弃。
 
 
 
@@ -6571,6 +6571,40 @@ type DeepReadonly<T extends Record<string | symbol, any>> = {
 这里可以看下同样的实现 [[#DeepReadonly]] ，不过这里的写法更加简洁，同时上面所说的“对函数进行 readonly 限制”，好像也没问题？
 
 学习自：[不可变类型【渡一教育】](https://www.bilibili.com/video/BV1NesHe4Eyf/)
+
+
+
+##### 构建长属性列表
+
+```typescript
+type FieldUnion<
+  Count extends number,
+  Prefix extends string,
+  UnionResult extends string[] = [],
+> = UnionResult["length"] extends Count
+  ? UnionResult[number]
+  : FieldUnion<Count, Prefix, [...UnionResult, `${Prefix}${UnionResult['length']}`]>
+
+type GeneratedObj<
+  Num extends number,
+  Key extends string
+> = {
+  [key in FieldUnion<Num, `${Key}`>]: string
+}
+
+type GeneratedObjOmitted<
+  Num extends number,
+  Key extends string
+> = Omit<GeneratedObj<Num, Key>, `${Key}0`>
+
+type genObj = GeneratedObjOmitted<100, 'key'>
+```
+
+> 👀 这里在原有教程的基础上，加上了 `Prefix` 作为生成对象的 key 前缀。
+
+这里的原理并不复杂：首先生成 `` `${Prefix}0` | `${Prefix}1` | ... ｜ `${Prefix}${Count - 1}` `` 键的联合类型( `FieldUnion` ) ，之后再根据 “分布式条件类型” 的特性，生成对象类型 ( `GeneratedObj` ) ；最后再去除 `` `${Key}0` `` ，即可实现。
+
+学习自：[用TS构建长属性列表【渡一教育】](https://www.bilibili.com/video/BV18cU5YJEgM)
 
 
 
