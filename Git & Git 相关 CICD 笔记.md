@@ -1068,12 +1068,14 @@ git config -e [--global]
 
 学习自：[gitignore的匹配规则【渡一教育】](https://www.bilibili.com/video/BV1PMYsenEXs)
 
+> 💡 可以看下 [git-scm - 2.2 Git Basics - Recording Changes to the Repository # Ignoring Files](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring) 其中也有规则
+
 
 
 #### Git 工作区、暂存区和版本库
 
 - **工作区：**就是你<font color=LightSeaGreen>在电脑里能看到的目录</font>
-- **暂存区：**英文叫 stage 或 index （💡 vue3 作为 vue 默认版时，vue的官网也重写了；而当前 ( 2022/2/23 ) vue 新官网中文版还没正式上线，目前的网站为：https://staging-cn.vuejs.org ，其中 staging 就是 “暂存” 之意 ）。<font color=LightSeaGreen>一般存放在 `.git` 目录下" 下的index文件 ( `.git/index` ) 中</font>>，所以我们把暂存区有时也叫作索引（index）。（👀 将文件从工作区到暂存区，通过 `git add` ）
+- **暂存区：**英文叫 stage 或 index （💡 vue3 作为 vue 默认版时，vue 的官网也重写了；而当前 ( 2022/2/23 ) vue 新官网中文版还没正式上线，目前的网站为：https://staging-cn.vuejs.org ，其中 staging 就是 “暂存” 之意 ）。<font color=LightSeaGreen>一般存放在 `.git` 目录下" 下的index文件 ( `.git/index` ) 中</font>，所以我们把暂存区有时也叫作索引（index）。（👀 将文件从工作区到暂存区，通过 `git add` ）
 - **版本库：**工作区有一个隐藏目录 `.git` ，这个不算工作区，而是 Git 的版本库。（👀 从暂存区到版本区，通过 `git commit` )
 
 ![工作区、版本库中的暂存区和版本库之间的关系](https://www.runoob.com/wp-content/uploads/2015/02/1352126739_7909.jpg)
