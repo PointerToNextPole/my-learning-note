@@ -16877,14 +16877,14 @@ SharedWorker 接口代表一种特定类型的 worker，可以从几个浏览上
 
 - `CanvasRenderingContext2D.beginPath()` ：<font color=FF0000>清空子路径列表开始一个新的路径</font>。当你想创建一个新的路径时，调用此方法。
 - `CanvasRenderingContext2D.closePath()` ：使笔点返回到当前子路径的起始点。它尝试从当前点到起始点绘制一条直线。如果图形已经是封闭的或者只有一个点，那么此方法不会做任何操作。
-- `CanvasRenderingContext2D.moveTo()` ：<font color=FF0000>将一个新的子路径的起始点移动到 $(x, y)$ 坐标</font>
-- `CanvasRenderingContext2D.lineTo()` ：<font color=FF0000>使用直线连接子路径的最后的点到 $(x, y)$ 坐标</font>
+- `CanvasRenderingContext2D.moveTo()` ：<font color=FF0000>将一个新的子路径的起始点移动到 (x, y) 坐标</font>
+- `CanvasRenderingContext2D.lineTo()` ：<font color=FF0000>使用直线连接子路径的最后的点到 (x, y) 坐标</font>
 - `CanvasRenderingContext2D.bezierCurveTo()` ：添加一个 3 次贝赛尔曲线路径。该方法需要三个点。 第一、第二个点是控制点，第三个点是结束点。起始点是当前路径的最后一个点，绘制贝赛尔曲线前，可以通过调用 moveTo() 进行修改。
 - `CanvasRenderingContext2D.quadraticCurveTo()` ：添加一个 2 次贝赛尔曲线路径。
-- `CanvasRenderingContext2D.arc()` ：绘制一段圆弧路径， 圆弧路径的圆心在 $(x, y)$ 位置，半径为 r ，根据 anticlockwise （默认为顺时针）指定的方向从 startAngle 开始绘制，到 endAngle 结束。
+- `CanvasRenderingContext2D.arc()` ：绘制一段圆弧路径， 圆弧路径的圆心在 (x, y) 位置，半径为 r ，根据 anticlockwise （默认为顺时针）指定的方向从 startAngle 开始绘制，到 endAngle 结束。
 - `CanvasRenderingContext2D.arcTo()` ：根据控制点和半径绘制圆弧路径，使用当前的描点(前一个moveTo 或 lineTo 等函数的止点)。根据当前描点与给定的控制点1连接的直线，和控制点1与控制点2连接的直线，作为使用指定半径的圆的切线，画出两条切线之间的弧线路径。
-- `CanvasRenderingContext2D.ellipse()` ：🧪 添加一个椭圆路径，椭圆的圆心在 $(x, y)$ 位置，半径分别是 radiusX 和 radiusY ，按照 anticlockwise （默认顺时针）指定的方向，从 startAngle  开始绘制，到 endAngle 结束。
-- `CanvasRenderingContext2D.rect()` ：创建一个矩形路径，矩形的起点位置是 $(x, y)$ ，尺寸为 width 和 height。
+- `CanvasRenderingContext2D.ellipse()` ：🧪 添加一个椭圆路径，椭圆的圆心在 (x, y) 位置，半径分别是 radiusX 和 radiusY ，按照 anticlockwise （默认顺时针）指定的方向，从 startAngle  开始绘制，到 endAngle 结束。
+- `CanvasRenderingContext2D.rect()` ：创建一个矩形路径，矩形的起点位置是 (x, y) ，尺寸为 width 和 height。
 
 ##### 绘制路径
 
@@ -16922,7 +16922,7 @@ SharedWorker 接口代表一种特定类型的 worker，可以从几个浏览上
 参见 ImageData 对象
 
 - `CanvasRenderingContext2D.createImageData()` ：<font color=FF0000>使用指定的尺寸，创建一个新的、空白的 ImageData 对象</font>。所有的像素在新对象中都是透明的。
-- `CanvasRenderingContext2D.getImageData()` ：<font color=FF0000>返回一个 ImageData 对象</font>，用来描述 canvas 区域隐含的像素数据，这个区域通过矩形表示，起始点为 $(sx, sy)$ 、宽为 $sw$、高为 $sh$
+- `CanvasRenderingContext2D.getImageData()` ：<font color=FF0000>返回一个 ImageData 对象</font>，用来描述 canvas 区域隐含的像素数据，这个区域通过矩形表示，起始点为 (sx, sy) 、宽为 sw、高为 sh
 - `CanvasRenderingContext2D.putImageData()` ：<font color=FF0000>将数据从已有的 ImageData 绘制到位图上</font>。 如果提供了脏矩形，只能绘制矩形的像素
 
 ##### 图像平滑
@@ -16947,7 +16947,7 @@ CanvasRenderingContext2D 渲染环境包含了多种绘图的样式状态（属�
 
 #### CanvasRenderingContext2D.fillText()
 
-`CanvasRenderingContext2D.fillText()` 是 <font color=FF0000>Canvas 2D API 在 $(x, y)$ 位置填充文本的方法</font>。如果选项的第四个参数提供了最大宽度，文本会进行缩放以适应最大宽度
+`CanvasRenderingContext2D.fillText()` 是 <font color=FF0000>Canvas 2D API 在 (x, y) 位置填充文本的方法</font>。如果选项的第四个参数提供了最大宽度，文本会进行缩放以适应最大宽度
 
 ##### 语法
 
