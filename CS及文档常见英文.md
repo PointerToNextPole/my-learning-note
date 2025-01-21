@@ -226,31 +226,31 @@
 
 - **anonymous**：匿名的
 
-   **anonymity**：匿名 ( noun )
+   **anonymity** ：匿名 ( noun )
 
-   deanonymize：匿名化
+   **deanonymize** ：匿名化
 
-- **boilerplate**：样板
+- **boilerplate** ：样板
 
-- **directive**：指令，命令
+- **directive** ：指令，命令
 
-- **stale**：陈旧的，不过这里要说的“不新鲜的”，用于 HTTP 的 `Cache-Control` 中，比如 `max-stale` 选项
+- **stale** ：陈旧的，不过这里要说的“不新鲜的”，用于 HTTP 的 `Cache-Control` 中，比如 `max-stale` 选项
 
-- **latency**：延时。
+- **latency** ：延时。
 
    **high-latency** ： 高延时。
 
-- **underpin**：支撑，构成 … 的基础。
+- **underpin** ：支撑，构成 … 的基础。
 
    > Because promises also **underpin** async and await , ...
 
-- **as-is**：照原样
+- **as-is** ：照原样
 
-- **at the cost of**：以什么为代价。
+- **at the cost of** ：以什么为代价。
 
-- **fine tune**：微调
+- **fine tune** ：微调
 
-- **[prefix]-agnostic**：... 无关的。比如 framework-agnostic 译为 “框架无关的”。
+- **[prefix]-agnostic** ：... 无关的。比如 framework-agnostic 译为 “框架无关的”。
 
 - **[prefix]-prone** ：有 ... 倾向的。
 
@@ -258,23 +258,23 @@
   >
   > 摘自：[TailwindCSS vs. UnoCSS](https://dev.to/mapleleaf/tailwindcss-vs-unocss-2a53)
 
-- **profile**：剖析 ( verb )。
+- **profile **：剖析 ( verb )。
 
    > It is especially useful in the case of early prototyping and **profiling**.
 
-- **scaffold**：脚手架
+- **scaffold** ：脚手架
 
-- **negate**：否定。**negated**：否定的。参考记忆，可以根据 negative
+- **negate** ：否定。**negated**：否定的。参考记忆，可以根据 negative
 
-- **as of**：截止，从 ... 开始
+- **as of** ：截止，从 ... 开始
 
-- **histogram**：直方图
+- **histogram** ：直方图
 
-- **omnibox**：地址栏。
+- **omnibox** ：地址栏。
 
   > 👀 百度翻译的结果是 “地址栏”，但 苹果和谷歌的翻译 都给出的都不是 “地址栏”，原因参见 [[Web相关#关于 Omnibox]]
 
-- **ultimate**：一般的含义是 “最终的，最后的”。不过这里要注意的是，还有 “基本的” 的意思。来自：“The `Compiler` is **ultimately** a function which performs bare minimum functionality to keep a lifecycle running.”
+- **ultimate** ：一般的含义是 “最终的，最后的”。不过这里要注意的是，还有 “基本的” 的意思。来自：“The `Compiler` is **ultimately** a function which performs bare minimum functionality to keep a lifecycle running.”
 
 - **kickstart** ：启动
 
@@ -1292,6 +1292,18 @@
   > 💡 在编程范式和软件架构领域存在 proactive 和 reactive 两种**异步处理**方式
   > - **Proactive （主动）** ：通常指系统主动执行某些操作，比如预先加载数据、主动发起计算等等。
   > - **Reactive（响应式）** ：通常指系统对外部事件或变化做出响应，比如用户点击、数据更新、消息到达等等。
+  
+- **introspection** ：内省
+
+  > Playwright waits for elements to be actionable prior to performing actions. It also has a rich set of **introspection** events.
+  >
+  > 摘自：[playwright 官网](https://playwright.dev/)
+
+- **flaky**：不可靠的
+
+  > The combination of the two eliminates the need for artificial timeouts - the primary cause of flaky tests.
+  >
+  > 摘自：[playwright 官网](https://playwright.dev/)
 
 
 ***
@@ -2176,3 +2188,9 @@
 - **on par with** ：与...相当
 
 - **stealth** ：隐形
+
+- **pierce** ：刺穿
+
+  > Playwright selectors pierce shadow DOM and allow entering frames seamlessly.
+  >
+  > 摘自：[playwright 官网](https://playwright.dev/)

@@ -842,7 +842,7 @@ Transition 是过渡方式，它的值为 0 到 23 ，分别对应 24 种过渡�
 
 
 
-#### **HTML5 新属性**
+#### HTML5 新属性
 
 | 属性         | 值                                                     | 描述                                                |
 | :----------- | :----------------------------------------------------- | :-------------------------------------------------- |
@@ -878,7 +878,7 @@ HTML5 是具有扩展性的设计，它初衷是数据应与特定的元素相�
 
 ##### JavaScript 访问
 
-在外部使用 JavaScript 去访问这些属性的值同样非常简单。你<font color=FF0000>可以使用 `getAttribute()` 配合它们完整的 HTML 名称去读取它们</font>，<font color=FF0000>但**标准定义了一个更简单的方法：DOMStringMap 你可以使用 dataset读取到数据**</font>。
+在外部使用 JavaScript 去访问这些属性的值同样非常简单。你<font color=FF0000>可以使用 `getAttribute()` 配合它们完整的 HTML 名称去读取它们</font>，<font color=FF0000>但**标准定义了一个更简单的方法：DOMStringMap 你可以使用 dataset 读取到数据**</font>。
 
 为了使用 dataset 对象去获取到数据属性，需要获取属性名中 **`data-`** 之后的部分(要注意的是：<font color=FF0000>破折号连接的名称需要改写为骆驼拼写法</font>（如 "index-number" 转换为 "indexNumber" )。
 

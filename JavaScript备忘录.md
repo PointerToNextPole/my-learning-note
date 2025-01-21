@@ -3593,7 +3593,7 @@ Promise.all([func1(), func2(), func3()])
   // "fulfilled"
   // "rejected"
   ```
-  
+
 群友写的简单实现：
 
   ```js
@@ -9459,7 +9459,7 @@ The `ReportingObserver` interface of the [Reporting API](https://developer.mozil
 
 - `ReportingObserver.disconnect()` : <font color=red>Stops a reporting observer</font> that had previously started observing from collecting reports.
 - `ReportingObserver.observe()` : <font color=red>Instructs a reporting observer</font> to start collecting reports in its report queue.
-- `ReportingObserver.takeRecords()` : <font color=red>Returns the current list of reports</font> contained in the observer's report queue, and <font color=<font color=red>>**empties the queue**</font>.
+- `ReportingObserver.takeRecords()` : <font color=red>Returns the current list of reports</font> contained in the observer's report queue, and <font color=red>**empties the queue**</font>.
 
 ##### Events
 
@@ -9467,7 +9467,32 @@ The `ReportingObserver` interface of the [Reporting API](https://developer.mozil
 
 摘自：[MDN US - ReportingObserver](https://developer.mozilla.org/en-US/docs/Web/API/ReportingObserver)
 
-##### 神说要有光《浏览器的 5 种 Observer，你用过几种？》ReportingObserver 笔记
+#### ReportingObserver() constructor
+
+The `ReportingObserver()` constructor of the Reporting API <font color=FF0000>creates a new `ReportingObserver` object instance</font>, which can be used to collect and access reports.
+
+##### 语法
+
+```js
+new ReportingObserver(callback)
+new ReportingObserver(callback, options)
+```
+
+###### 参数
+
+ - **`callback`** : A callback function that runs when the observer starts to collect reports (i.e. via `ReportingObserver.observe()` ). <font color=dodgerBlue>The callback function is given two parameters</font>:
+   - **`reports`** : A sequence of `Report` objects representing the reports collected in the observer's report queue. This is probably the most common way to retrieve the reports.
+   - **`observer`** : A reference to the same `ReportingObserver` object, allowing for recursive report collection, etc.
+
+ - **`options`** : 可选，An `ReportingObserverOptions` object <font color=FF0000>allowing you to set the options for creating the object</font>. <font color=dodgerBlue>The available options are</font>:
+
+   - **`types`** : An array of strings representing the types of report to be collected by this observer. Available types include `deprecation`, `intervention`, and `crash` (although this last type usually isn't retrievable via a `ReportingObserver`).
+
+   - **`buffered`** : a boolean that defines whether the reports that were generated before the observer was able to be created should be observable ( `true` ) or not ( `false` ). 
+
+摘自：[MDN US - `ReportingObserver()`](https://developer.mozilla.org/en-US/docs/Web/API/ReportingObserver/ReportingObserver)
+
+#### 神说要有光《浏览器的 5 种 Observer，你用过几种？》ReportingObserver 笔记
 
 当浏览器运行到过时 ( deprecation ) 的 api 的时候，会在控制台打印一个过时的报告:
 
@@ -9475,7 +9500,7 @@ The `ReportingObserver` interface of the [Reporting API](https://developer.mozil
 
 浏览器还会在一些情况下对网页行为做一些干预 ( intervention )
 
-> 👀 浏览器会对网页行为做一些干预，这个可以理解，也符合常识，毕竟网页可能会做一些危害用户的微信。但是下面所说的是之前完全没有听过
+> 👀 浏览器会对网页行为做一些干预，这个可以理解，也符合常识，毕竟网页可能会做一些危害用户的行为；但是下面所说的是之前完全没有听过
 
 比如<font color=red>会把占用 cpu 太多的广告的 iframe 删掉</font>：
 
@@ -9485,7 +9510,7 @@ The `ReportingObserver` interface of the [Reporting API](https://developer.mozil
 
 ![img](https://s2.loli.net/2024/09/15/JiFLqux5e4WAykD.jpg)
 
-这些干预都是浏览器做的，会在控制台打印一个报告：
+<font color=red>这些干预都是浏览器做的，会在控制台打印一个报告</font>：
 
 ![](https://s2.loli.net/2024/09/15/JATw5fiuP49eLcV.jpg)
 
@@ -9497,7 +9522,7 @@ The `ReportingObserver` interface of the [Reporting API](https://developer.mozil
 
 所以自然也要监听，所以<font color=red>浏览器提供了 `ReportingObserver` 的 api 用来监听这些报告的打印</font>，<font color=lightSeaGreen>我们可以拿到这些报告然后上传</font>。
 
-> 👀 上面所说说明了 `ReportingObserver` 是实现“前端监控”一个有些重要的 API
+> 👀 上面所说说明了 <font color=fuchsia>`ReportingObserver` 是实现“前端监控”一个有些重要的 API</font>
 >
 > <img src="https://s2.loli.net/2024/09/15/6Jjq8OMthdcmTAG.png" alt="image-20240915170732910" style="zoom:50%;" />
 
@@ -9507,31 +9532,31 @@ The `ReportingObserver` interface of the [Reporting API](https://developer.mozil
 
 #### Performance API
 
-> 👀 当时注意到 Performance API，是因为“首屏渲染优化”，就按习惯搜起了 MDN ...看到后面发现， 自己不应该在不了解背景的情况下，一上来就看 API，这样很容易看懵，而且看了没怎么用也就忘了；所以，如果之后想要复习这部分的内容，可以先看看后面的 [[#Performance Timeline 介绍]] 了解下背景。
+> 👀 当时注意到 Performance API，是因为 “首屏渲染优化”，就按习惯搜起了 MDN ...看到后面发现， 自己不应该在不了解背景的情况下，一上来就看 API，这样很容易看懵，而且看了没怎么用也就忘了；所以，如果未来想要复习这部分的内容，可以先看看后面的 [[#Performance Timeline 介绍]] 了解下背景。
 
-High Resolution Time 标准定义了 Performance 接口，该接口支持应用程序中客户端的延时测量。<font color=FF0000>Performance 接口被认为是高采样率的</font>，因为其<font color=FF0000>精确度可达千分之一毫秒</font>（受硬件或软件限制）。这些接口支持许多使用情形，包括计算帧速率（在动画中可能很重要）和基准测试（例如加载资源的时间）。
+High Resolution Time 标准定义了 `Performance` 接口，该接口支持应用程序中客户端的延时测量。<font color=FF0000>Performance 接口被认为是高采样率的</font>，因为其<font color=FF0000>精确度可达千分之一毫秒</font>（受硬件或软件限制）。这些接口支持许多使用情形，包括计算帧速率（在动画中可能很重要）和基准测试（例如加载资源的时间）。
 
-由于平台的系统时钟会受到各种时滞（例如 NTP 调整）的影响，该接口支持单调时钟，即一直增加的时钟。 鉴于这个原因， <font color=FF0000>**Performance API 定义了 DOMHighResTimeStamp 类型**</font>，而不是使用 Date.now() 接口。
+由于平台的系统时钟会受到各种时滞（例如 NTP 调整）的影响，该接口支持单调时钟，即一直增加的时钟。 鉴于这个原因， <font color=FF0000>**Performance API 定义了 `DOMHighResTimeStamp` 类型**</font>，而不是使用 `Date.now()` 接口。
 
-> Date.now() 方法只适用于日期时间相关操作，而且是不要求计时精度的操作
+> `Date.now()` 方法只适用于日期时间相关操作，而且是不要求计时精度的操作
 >
 > 摘自：《 JS 高级程序设计》第四版 P644 ：20.10 计时 API
 
 > 👀 在 codingstartup 微信群群友出现了 “他的开发环境不支持 performance” 的情况。事后，我看到了这样的文章 [SharedArrayBuffer与幽灵漏洞（Spectre） - 李银城的文章 - 知乎](https://zhuanlan.zhihu.com/p/556051833) 其中有提及 “利用 SharedArrayBuffer 可以获取高精度时间”（详见原文。有空也有必要看下文章，学习下 sharedArrayBuffer // TODO ），也算是在 “不支持 Performance 的环境“ 下获取高精度时间 的一种补救方法了
 
-##### DOMHighResTimeStamp
+##### `DOMHighResTimeStamp`
 
-DOMHighResTimeStamp 类型，顾名思义，表示高采样率的时间戳。 此类型是 double ，由性能接口使用。 该值可以是离散时间戳，也可以是两个离散时间戳之间的时间间隔。
+`DOMHighResTimeStamp` 类型，顾名思义，表示高采样率的时间戳。 此类型是 double ，由性能接口使用。 该值可以是离散时间戳，也可以是两个离散时间戳之间的时间间隔。
 
-DOMHighResTimeStamp 的单位是毫秒，应精确到 5 µs（微秒）（👀 单位是毫秒，但是有小数）。 但是，如果浏览器无法提供精确到 5 微秒的时间数值（例如由于硬件或软件限制），则浏览器可以将该值表示为精确到毫秒的时间（以毫秒为单位）。
+`DOMHighResTimeStamp` 的单位是毫秒，应精确到 5 µs（微秒）（👀 单位是毫秒，但是有小数）。 但是，如果浏览器无法提供精确到 5 微秒的时间数值（例如由于硬件或软件限制），则浏览器可以将该值表示为精确到毫秒的时间（以毫秒为单位）。
 
 ##### 方法
 
 <font color=dodgerBlue>Performance 接口具有两个方法</font>
 
-> 感觉有点不对，毕竟下面 [[#Performance#方法]] 有很多方法...
+> 👀 感觉有点不对，毕竟下面 [[#Performance#方法]] 有很多方法...
 
-- `now()` ：返回一个 DOMHighResTimeStamp，其值取决于 navigation start 和 作用域。如果作用域是 window ，则值是创建 ***浏览器上下文*** 的时间；如果作用域是 worker，则值是创建 worker 的时间。
+- `now()` ：返回一个 `DOMHighResTimeStamp` ，其值取决于 navigation start 和 作用域。<font color=dodgerBlue>如果作用域是 window</font> ，则值是创建 ***浏览器上下文*** 的时间；<font color=dodgerBlue>如果作用域是 worker</font>，则值是创建 worker 的时间。
 
   > 👀 在 Chrome 和 Safari 中测试，now 方法返回的均是当前标签页 ( Tab ) 打开的时间（单位是毫秒）。所以，这里所说的 ***浏览器上下文***  <font color=lightSeaGreen>**感觉应该**</font> 和 ***标签页*** 一一对应，即：打开一个 ***标签页***，生成一个 ***浏览器上下文***
 
@@ -9543,15 +9568,15 @@ DOMHighResTimeStamp 的单位是毫秒，应精确到 5 µs（微秒）（👀 �
 
 > 👀 还是感觉有点不对，毕竟下面 [[#Performance#属性]] 有很多属性...
 
-- **`timing` 属性**：返回一个 PerformanceTiming 对象，其中包含与延时相关的性能信息，例如导航开始的时间，重定向的开始时间和结束时间，响应的开始时间和结束时间等。
+- **`timing` 属性**：返回一个 `PerformanceTiming` 对象，其中包含与延时相关的性能信息，例如导航开始的时间，重定向的开始时间和结束时间，响应的开始时间和结束时间等。
 
-- **`navigation` 属性**：返回一个 PerformanceNavigation 对象，该对象表示在给定浏览上下文中发生的导航类型，例如从历史记录导航到的页面，通过跟随链接导航到的页面等
+- **`navigation` 属性**：返回一个 `PerformanceNavigation` 对象，该对象表示在给定浏览上下文中发生的导航类型，例如从历史记录导航到的页面，通过跟随链接导航到的页面等
 
 ##### 接口
 
 - `Performance` ：提供方法和属性，包含给定页面与计时相关的性能信息
 
-- `PerformanceEntry` ：提供方法和属性，将单个性能指标封装为性能时间轴的一部分
+- `PerformanceEntry` ：提供方法和属性，将<font color=red>单个性能指标</font>封装为性能时间轴的一部分
 
 - `PerformanceFrameTiming` ：提供方法和属性，包含有关<font color=FF0000>浏览器事件循环的 帧计时数据</font>
 
@@ -9894,61 +9919,6 @@ console.log('onload 时间 ：' + ( t.loadEventEnd - t.navigationStart).toFixed(
 摘自：[你的页面为什么慢，Performance Timeline 简介](https://juejin.cn/post/6844904020109164552)
 
 
-
-#### ReportingObserver
-
-The ReportingObserver interface of the Reporting API <font color=FF0000>allows you to collect and access reports</font>.
-
-##### 构造函数
-
-**`ReportingObserver()`** : Creates a new ReportingObserver object instance, which can be used to collect and access reports.
-
-> ##### ReportingObserver()
->
-> The `ReportingObserver()` constructor of the Reporting API <font color=FF0000>creates a new `ReportingObserver` object instance</font>, which can be used to collect and access reports.
->
-> ##### 语法
->
-> ```js
-> new ReportingObserver(callback)
-> new ReportingObserver(callback, options)
-> ```
->
-> ###### 参数
->
-> - **`callback`**: A callback function that runs when the observer starts to collect reports (i.e. via `ReportingObserver.observe()` ). The callback function is given two parameters:
->
->   - **`reports`** : A sequence of `Report` objects representing the reports collected in the observer's report queue. This is probably the most common way to retrieve the reports.
->   - **`observer`** : A reference to the same `ReportingObserver` object, allowing for recursive report collection, etc.
->
-> - **`options`** : 可选，An `ReportingObserverOptions` object <font color=FF0000>allowing you to set the options for creating the object</font>. The available options are:
->
->   - **`types`** : An array of strings representing the types of report to be collected by this observer. Available types include `deprecation`, `intervention`, and `crash` (although this last type usually isn't retrievable via a `ReportingObserver`).
->
->   - **`buffered`** : a boolean that defines whether the reports that were generated before the observer was able to be created should be observable ( `true` ) or not ( `false` ).
->
-> 摘自：[MDN US - ReportingObserver()](https://developer.mozilla.org/en-US/docs/Web/API/ReportingObserver/ReportingObserver)
-
-##### 属性
-
-无
-
-##### 方法
-
-- **`ReportingObserver.disconnect()`** : 🧪 Stops a reporting observer that had previously started observing from collecting reports.
-
-- **`ReportingObserver.observe()`** : 🧪 Instructs a reporting observer to start collecting reports in its report queue.
-
-- **`ReportingObserver.takeRecords()`** : 🧪 <font color=FF0000>Returns the current list of reports contained in the observer's report queue, and empties the queue</font>.
-
-##### 事件
-
-无
-
-摘自：[MDN en-US - ReportingObserver](https://developer.mozilla.org/en-US/docs/Web/API/ReportingObserver)
-
-
-
 #### JS 表达式
 
 如果一个“字符串”可以被赋值给一个变量（类似于“右值”），便可以称为 ***JS 表达式***
@@ -9957,7 +9927,7 @@ The ReportingObserver interface of the Reporting API <font color=FF0000>allows y
 
 #### 栈内存和堆内存
 
-对于JS中的基本数据类型，如 String、Number、Boolean、Undefined、Null 是存在于栈内存中的，在栈内存中储存变量名及相应的值。而Object、Array、Function 存在于堆内存中，在堆内存中储存变量名及引用位置。
+对于JS中的基本数据类型，如 String、Number、Boolean、Undefined、Null 是存在于栈内存中的，在栈内存中储存变量名及相应的值。而 Object、Array、Function 存在于堆内存中，在堆内存中储存变量名及引用位置。
 
 > 👀 这部分的内容可以参考 [[JS 机制与原理#JS 中变量的存储]] 以及 [[JS 机制与原理#常见垃圾回收算法与 JavaScript 中垃圾回收原理#JavaScript 垃圾回收]] 中的相关内容。
 
@@ -9967,7 +9937,7 @@ The ReportingObserver interface of the Reporting API <font color=FF0000>allows y
 
 #### Blob
 
-<font color=FF0000>**Blob 对象表示一个不可变、原始数据的类文件对象**</font>。<font color=FF0000>它的数据可以按 **文本** 或 **二进制** 的格式进行 **读取**，也可以转换成 **ReadableStream** 来用于数据 **操作**</font>。 
+<font color=FF0000>**Blob 对象表示一个不可变、原始数据的类文件对象**</font>。<font color=lightSeaGreen>它的数据可以按 **文本** 或 **二进制** 的格式进行 **读取**</font>，<font color=red>也可以转换成 **ReadableStream** 来用于数据 **操作**</font>。 
 
 Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000>**File 接口基于 Blob**，继承了 blob 的功能并将其扩展使其支持用户系统上的文件</font>。
 
@@ -9981,7 +9951,7 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 >
 > - **`array`**（即上面的 blobParts，这里的 blobParts 必须是数组） <font color=FF0000>是一个由 **ArrayBuffer、ArrayBufferView、Blob、DOMString** 等对象构成的 Array</font> ，<font color=FF0000>或者其他类似对象的混合体</font>，它将会被放进 Blob。<font color=FF0000>**DOMStrings 会被编码为 UTF-8**</font>。
 > - **`options`** 是一个 <font color=FF0000>**可选的 BlobPropertyBag 字典**</font>，它可能会指定如下两个属性：
->   - **`type`** ：<font color=FF0000>**默认值为 ""**</font>，它代表了将会被放入到 blob 中的<font color=FF0000>**数组内容**</font>（注：即对应了上面的Array） 的 <font color=FF0000 size=4>**MIME 类型**</font>。
+>   - **`type`** ：<font color=FF0000>**默认值为 ""**</font>，它代表了将会被放入到 blob 中的<font color=FF0000>**数组内容**</font>（👀 即对应了上面的 Array） 的 <font color=FF0000 size=4>**MIME 类型**</font>。
 >   - **`endings`** ：👎  <font color=FF0000>默认值为 "transparent"，用于指定包含行结束符 `\n` 的字符串如何被写入</font>。 它是以下两个值中的一个："native"，代表行结束符会被更改为适合宿主操作系统文件系统的换行符，或者 "transparent"，代表会保持blob中保存的结束符不变
 >
 > 摘自：[MDN - Blob()](https://developer.mozilla.org/zh-CN/docs/Web/API/Blob/Blob)
@@ -9995,7 +9965,7 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 
 - **`Blob.slice([start[, end[, contentType]]])`**：返回一个新的 Blob 对象，包含了源 Blob 对象中指定范围内的数据。
 
-  > **参数**
+  > ###### 参数
   >
   > - **`start`** ：可选，这个参数代表 Blob 里的下标，表示第一个会被会被拷贝进新的 Blob 的字节的起始位置。如果你传入的是一个负数，那么这个偏移量将会从数据的末尾从后到前开始计算。举例来说，-10 将会是  Blob 的倒数第十个字节。它的<font color=FF0000>**默认值是0**</font>， <font color=lightSeaGreen>如果你传入的start的长度大于源 Blob 的长度，那么返回的将会是一个长度为 0 并且不包含任何数据的一个 Blob 对象</font>
   > - **`end`** ：可选，这个参数代表的是 Blob 的一个下标，这个下标 -1 的对应的字节将会是被拷贝进新的Blob 的最后一个字节。如果你传入了一个负数，那么这个偏移量将会从数据的末尾从后到前开始计算。举例来说， -10 将会是 Blob 的倒数第十个字节。它的<font color=FF0000>默认值就是它的原始长度 ( size )</font>
@@ -10024,10 +9994,10 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 
 <font color=FF0000>FileReader 对象</font>允许Web应用程序异步读取存储在用户计算机上的文件（或原始数据缓冲区）的内容，<font color=FF0000>使用 File 或 Blob 对象指定要读取的文件或数据</font>。
 
-其中File对象<font color=FF0000>可以是来自用户在一个`<input>`元素上选择文件后返回的FileList对象</font>，也可以来自拖放操作生成的 DataTransfer对象，还可以是来自在一个 `HTMLCanvasElement` 上执行 `mozGetAsFile()` 方法后返回结果。
+其中 File 对象<font color=FF0000>可以是来自用户在一个`<input>`元素上选择文件后返回的 FileList 对象</font>，也可以来自拖放操作生成的 DataTransfer对象，还可以是来自在一个 `HTMLCanvasElement` 上执行 `mozGetAsFile()` 方法后返回结果。
 
 > [!WARNING]
-> <font color=LightSeaGreen>FileReader 仅用于以安全的方式从用户（远程）系统读取文件内容，它**不能用于从文件系统中按路径名简单地读取文件**</font>。 <font color=FF0000>要在 JavaScript 中按路径名读取文件，应使用标准Ajax解决方案进行服务器端文件读取，如果读取跨域，则使用CORS权限。</font>
+> <font color=LightSeaGreen>FileReader 仅用于以安全的方式从用户（远程）系统读取文件内容，它**不能用于从文件系统中按路径名简单地读取文件**</font>。 <font color=FF0000>要在 JavaScript 中按路径名读取文件，应使用标准Ajax 解决方案进行服务器端文件读取，如果读取跨域，则使用 CORS 权限。</font>
 
 ##### 构造函数
 
@@ -10062,7 +10032,7 @@ Blob 表示的不一定是 JavaScript 原生格式的数据。<font color=FF0000
 
 - `FileReader.abort()` ：中止读取操作。在返回时，`readyState` 属性为 `DONE` 。
 - `FileReader.readAsArrayBuffer()` ：开始读取指定的 Blob 中的内容, 一旦完成（👀 load 事件触发），result 属性中保存的将是被读取文件的 ArrayBuffer 数据对象
-- `FileReader.readAsBinaryString()` ：开始读取指定的 Blob 中的内容。一旦完成，result属性中将包含所读取文件的原始二进制数据。
+- `FileReader.readAsBinaryString()` ：开始读取指定的 Blob 中的内容。一旦完成，result 属性中将包含所读取文件的原始二进制数据。
 - `FileReader.readAsDataURL()` ：开始读取指定的 Blob 中的内容。一旦完成，result 属性中将包含一个 `data:` URL 格式的 Base64 字符串以表示所读取文件的内容。
 - `FileReader.readAsText()` ：开始读取指定的 Blob 中的内容。一旦完成，result属性中将包含一个字符串以表示所读取的文件内容。
 

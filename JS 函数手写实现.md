@@ -353,6 +353,54 @@ const throttle = (fn, time) => {
 
 
 
+#### 单例模式实现
+
+##### 一些前置的细节
+
+在同一个文件中，定义一个 class ，创建一个实例，并导出，这样并不能规避使用者无法创建另一个实例。代码示例如下：
+
+```js
+// foo.js
+class Foo {
+  constructor() {}
+}
+
+export default new Foo
+
+// call.js
+import foo from './Foo.js'
+const fooIns = foo
+const fooIns2 = new foo.constructor()
+console.log(fooIns === fooIns2) // false
+```
+
+这时候可以使用代理实现单例
+
+##### 具体实现
+
+```js
+function singleton(className) {
+  let ins = null
+  cosnt proxy new Proxy(className, {
+    constructor(target, args) {
+      if (!ins) {
+        ins = Reflect.constructor(target, args)
+      }
+      return ins
+    }
+  })
+  className.prototype.constructor = proxy // 如果不加上这个，依然防不住 new foo.constructor()
+  return proxy
+}
+
+const singletonFoo = singleton(Foo)
+export default singletonFoo
+```
+
+学习自：[使用代理实现单例【渡一教育】](https://www.bilibili.com/video/BV1qxwgeXE5m)
+
+
+
 #### promise 实现
 
 https://www.bilibili.com/video/BV1gb4y1z736 最后有实现。另外，https://github.com/ractivejs/ractive/blob/dev/src/polyfills/Promise.js 的实现也非常值得借鉴
