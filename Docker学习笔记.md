@@ -572,7 +572,7 @@ CMD ["node", "/app/main.js"]
 
 > 💡 这里指令与指令之间 “空一行” 和 “没空行” 引起了我的好奇：
 >
-> <img src="/Users/yan/Library/Application Support/typora-user-images/image-20240713164929309.png" alt="image-20240713164929309" style="zoom:50%;" />
+> <img src="https://s2.loli.net/2025/01/23/Pjatz5xc9AlYrQu.png" alt="image-20240713164929309" style="zoom:50%;" />
 
 `FROM` 后面添加一个 `as` 来指定当前构建阶段的名字。
 

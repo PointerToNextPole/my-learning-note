@@ -347,7 +347,7 @@ To make your interactions more efficient, you can use *slash commands* as a shor
 
 To make it easier to use Copilot Chat features, <font color=dodgerBlue>there is a Copilot menu group **in the editor context menu**</font>. <font color=red>**Right-click in the editor** and navigate to Copilot to see the available options</font>:
 
-<img src="/Users/yan/Library/Application Support/typora-user-images/image-20240320104704108.png" alt="image-20240320104704108" style="zoom:45%;" />
+<img src="https://s2.loli.net/2025/01/23/7ElI1ei4nGkRqzQ.png" alt="image-20240320104704108" style="zoom:45%;" />
 
 You can apply these smart actions on the current file or a selection in the file. Choosing an action brings up the Chat view or inline chat, depending on the action. For example, <font color=red>selecting **Generate Docs** for a function opens the inline chat</font> with a proposed documentation comment:
 
