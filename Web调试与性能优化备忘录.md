@@ -230,13 +230,29 @@ sources 面板可以右键点击 “add soruce map”，输入 sourcemap 的 url
 ##### 常用的过滤器主要有这些
 
 - has-response-header：过滤响应包含某个 header 的请求
+
 - method：根据 GET、POST 等请求方式过滤请求
+
 - domain: 根据域名过滤
+
 - status-code：过滤响应码是 xxx 的请求，比如 404、500 等
+
 - larger-than：过滤大小超过多少的请求，比如 100k，1M
+
 - mime-type：过滤某种 mime 类型的请求，比如 png、mp4、json、html 等
-- is：过滤某种状态的请求，比如 from cache 从缓存拿的，比如 running 还在运行的
+
+- is：<font color=red>过滤某种状态的请求，比如 from cache 从缓存拿的，比如 running 还在运行的</font>
+
+  > 👀 这个有点意思，另外，在神光的另一篇文章 [面试官：你懂 HTTP 缓存，那说下浏览器强制刷新是怎么实现的？](https://juejin.cn/post/7163506251304239135) 中也有提及：
+  >
+  > > 可以通过 is 过滤器来过滤 from-cache 的请求，也就是所有直接拿了强缓存的请求。
+  >
+  > 不过，感觉这里侧重点是“强缓存”的判定方法。
+  >
+  > 另外，在 Network 面板的搜索框试了下 `is:` 能带出的可选项只有四个，分别是： `form-cache` 、 `running` 、`service-worker-initiated` 、`service-worker-intercepted`
+
 - resource-type：根据请求分类来过滤，比如 document 文档请求，stylesheet 样式请求、fetch 请求，xhr 请求，preflight 预检请求
+
 - cookie-name：过滤带有某个名字的 cookie 的请求
 
 当然，这些不需要记，输入一个 `-` 就会提示所有的过滤器：
