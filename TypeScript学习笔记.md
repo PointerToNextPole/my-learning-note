@@ -7461,6 +7461,28 @@ files、include 和 exclude 都是用于指定（设置）需要被编译的文�
 
 
 
+##### `skipLibCheck`
+
+> Skip Lib Check
+
+Skip type checking of declaration files.
+
+**This can save time during compilation at the expense of type-system accuracy**. <font color=dodgerBlue>For example</font>, <font color=lightSeaGreen>two libraries could **define two copies of the same `type`** in an inconsistent way</font>. <font color=dodgerBlue>Rather than doing a full check of all `d.ts` files</font>, TypeScript will type check the code you specifically refer to in your app’s source code.
+
+<font color=dodgerBlue>A common case where you might think</font> to use `skipLibCheck` is when there are two copies of a library’s types in your `node_modules`. In these cases, you should consider using a feature like [yarn’s resolutions](https://yarnpkg.com/lang/en/docs/selective-version-resolutions/) to ensure there is only one copy of that dependency in your tree or investigate how to ensure there is only one copy by understanding the dependency resolution to fix the issue without additional tooling.
+
+<font color=dodgerBlue>Another possibility is</font> when you are <font color=lightSeaGreen>migrating between TypeScript releases</font> and **the changes cause breakages in node_modules and the JS standard libraries** which you do not want to deal with during the TypeScript update.
+
+Note, that if these issues come from the TypeScript standard library you can replace the library using [TypeScript 4.5’s lib replacement](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#supporting-lib-from-node_modules) technique.
+
+摘自：[ts doc - tsconfig # skipLibCheck](https://www.typescriptlang.org/tsconfig/#skipLibCheck)
+
+###### 其他补充
+
+> 在大多数项目中，<font color=lightSeaGreen>开发者会在 TypeScript 的配置文件 ( `tsconfig.json` ) 中将 `skipLibCheck` 选项设置为 `true`</font> 。`skipLibCheck` 的作用是跳过对库文件（包括 `.d.ts` 文件）的类型检查。当设置为 true 时，<font color=lightSeaGreen>TypeScript 编译器不会对这些库文件进行严格的类型检查，从而加快编译速度</font>。但<font color=red>这也会影响项目中自己编写的 `.d.ts` 文件</font>。<font color=dodgerBlue>这意味着</font>，<font color=red>即使 `.d.ts` 文件中定义的类型存在错误，TypeScript 编译器也不会报错，从而失去了类型安全性的保障</font>。
+
+
+
 #### TS Decorators
 
 ##### What are TypeScript Decorators?

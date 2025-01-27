@@ -2194,3 +2194,9 @@
   > Playwright selectors pierce shadow DOM and allow entering frames seamlessly.
   >
   > 摘自：[playwright 官网](https://playwright.dev/)
+  
+- **outright** ：完全
+
+- **sneak** ：v. 偷偷摸摸、潜行
+
+  **sneakily** ：adv. 偷偷的。形容词形式是：sneaky
