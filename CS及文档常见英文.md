@@ -2200,3 +2200,9 @@
 - **sneak** ：v. 偷偷摸摸、潜行
 
   **sneakily** ：adv. 偷偷的。形容词形式是：sneaky
+  
+- **notorious** ：臭名昭著的
+
+  > There are other problems like calculations across Daylight Saving Time (DST) and historical calendar changes, which are notoriously difficult to work with.
+  >
+  > 摘自：[MDN - JavaScript Temporal is coming](https://developer.mozilla.org/en-US/blog/javascript-temporal-is-coming/)
