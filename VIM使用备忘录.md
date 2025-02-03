@@ -445,6 +445,20 @@ visual 模式一般用于<font color=FF0000>块状选择文本，从而进行批
 
 - 自定义的 vimscript 函数 和 插件的配置
 
+##### `.vimrc` 配置参考
+
+```vimscript
+syntax on	" 自动语法高亮
+set number " 显示行号
+set cindent
+set smartindent " 开启新行时使用智能自动缩进
+set showmatch " 插入括号时，短暂地跳转到匹配的对应括号
+set ruler " 打开状态栏标尺
+:set mouse=a "在vim所有模式下开鼠标，复制文档就可以不包含行号，但是复制到剪切板功能失效
+```
+
+学习自：[让MacOS的终端靓起来，给MacOS终端CLI添加颜色](https://zhuanlan.zhihu.com/p/60880207)
+
 
 
 ### VIM插件

@@ -2206,3 +2206,9 @@
   > There are other problems like calculations across Daylight Saving Time (DST) and historical calendar changes, which are notoriously difficult to work with.
   >
   > 摘自：[MDN - JavaScript Temporal is coming](https://developer.mozilla.org/en-US/blog/javascript-temporal-is-coming/)
+
+- **approachable** ：**平易近人的**，和蔼可亲的
+
+- **inclusive** ：包容的
+
+- **steward** ：管家

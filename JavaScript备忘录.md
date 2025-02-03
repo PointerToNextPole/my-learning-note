@@ -14763,7 +14763,7 @@ window.requestAnimationFrame(callback);
 
 #### window.requestIdleCallback
 
-> ⚠️ 值得注意的是：这个 API 在 Safari 中目前还不支持，从兼容性考虑，可以使用 raf 兼容 Safari，思路就是：通过记录一个开始时间 `const start = Date.now()`，在 raf 内部使用 `Date.now() - start < 16.67` 进行判断和执行；具体代码见 [大量任务执行的调度【渡一教育】](https://www.bilibili.com/video/BV12MHpepEom)
+> ⚠️ 值得注意的是：这个 API 在 Safari 中目前还不支持，可以使用 rAF 实现类似的效果，从而兼容 Safari，思路就是：手动计时，并判断是否执行；即：通过记录开始时间 `const start = Date.now()`，在 rAF 内部通过 `Date.now() - start < 16.67` 进行判断是否执行；具体代码见 [大量任务执行的调度【渡一教育】](https://www.bilibili.com/video/BV12MHpepEom)
 >
 > ![](https://s2.loli.net/2024/09/13/Lgmlk17y2uJvosY.png)
 
