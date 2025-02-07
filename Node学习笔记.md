@@ -967,8 +967,12 @@ npm 包 通常要遵从 semver 的版本规范（[官方文档](https://semver.o
 
 ##### `^` 和 `~` 的含义
 
-- **`^major.minor.patch`** ：表示 major 是保持不变的，minor 和 patch 永远安装最新的版本
-- **`~major.minor.patch`** ：表示 major 和 minor 保持不变，patch 永远安装最新的版本
+- **`^major.minor.patch`** ：锁定 主版本号 major ，允许向上更新 次版本号 minor  和 修订版本号 patch
+
+  比如 `^1.2.3` 的范围是 `>=1.2.3 && < 2.0.0`
+- **`~major.minor.patch`** ：锁定 主版本号 major 和 次版本号 minor ，允许向上更新 修订版本号 patch
+
+  比如 `~1.2.3` 的范围是 `>=1.2.3 && < 1.3.0`
 
 ##### `package.json` 中其他常见的属性
 
