@@ -188,7 +188,9 @@
 
 - **workaround**：解决方法，变通方法
 
-- **concurrency**：并发，并发数。**concurrent**：并发的
+- **concurrency**：并发，并发数。
+
+   **concurrent**：并发的
 
 - **simultaneous**：同时（发生）的
 
@@ -1445,6 +1447,8 @@
 
 - **top-notch** ：一流的
 
+  **notch** ：缺口
+
 - **motivate** ：v. 激励，成为…的动机，是…的原因
 
   **motivated** ：adj. 有积极性的，充满热情的，**有动机的**，**有目的的**
@@ -2054,8 +2058,6 @@
   **malformed code** ：格式错误的代码
 
 - **sophisticated** ：精致的
-
-- **top-notch** ：一流的
 
 - **fatigue** ：疲劳，乏力
 

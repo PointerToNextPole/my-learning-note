@@ -7581,9 +7581,9 @@ StrictMode 是一个用来突出显示应用程序中潜在问题的工具。与
 
    StrictMode 内部的组件 constructor 会被调用两次，这是严格模式下故意进行的操作：以供查看在这里写的一些逻辑代码被调用多次时，是否会产生一些副作用。因为只作用于开发时，在生产环境中，是不会被调用两次的；
 
-4. 使用废弃的findDOMNode方法。在之前的React API中，可以通过findDOMNode来获取DOM，不过已经不推荐使用了
+4. 使用废弃的 findDOMNode 方法。在之前的React API中，可以通过 findDOMNode来获取 DOM，不过已经不推荐使用了
 
-5. 检测过时的 Context API 。早期的 Context 是通过 static 属性声明Context对象属性，通过getChildContext返回Context对象等方式来使用Context的；目前这种方式已经不推荐使用
+5. 检测过时的 Context API 。早期的 Context 是通过 static 属性声明 Context 对象属性，通过 getChildContext 返回 Context 对象等方式来使用 Context 的；目前这种方式已经不推荐使用
 
 
 
@@ -7626,6 +7626,20 @@ ReactNode 包含 `ReactElement`、或者 number、string、null、boolean 等可
 ## 小满《react最新教程》笔记
 
 #### Fiber
+
+> 💡 关于 Vue 3 为什么没有采用时间分片（实际上早期 vue-next 开发时采用，不过，在正式版取消了），可以看下文章 [为什么 Vue 3 里没有时间分片？](https://mp.weixin.qq.com/s/wclLaG4dTjlWjqvmiMMEXg) ，尤雨溪在其中分析了 “时间分片” 恰当的使用场景与 React 为什么需要采用，相当值得一看。其中值得摘录的是：
+>
+> > 在 Web 应用中，「可中断式更新」主要是由大量 CPU 计算加上复杂 DOM 操作引起的。时间分片旨在让应用在 CPU 进行大量计算时也能与用户交互，但<font color=red>时间分片只能对大量 CPU 计算进行优化</font>，<font color=fuchsia>无法优化复杂 DOM 操作，**因为要确保用户正在操作的界面是最新的状态才行**</font>。
+> >
+> > 因此，我们<font color=dodgerBlue>可以考虑两种不同的可中断式更新的场景</font>：
+> >
+> > 1. CPU 计算量不大，但 DOM 操作非常复杂（比如说你向页面中插入了十万个节点）。这种场景下不管你做不做时间分片，页面都会很卡。
+> >
+> >    > 👀 “不管你做不做时间分片，页面都会很卡” 这句话存疑
+> >
+> > 2. CPU 计算量非常大。理论上时间分片在这种场景里会有较大收益，但是人机交互研究表明，除了动画之外，大部分用户不会觉得 10 毫秒和 100 毫秒有很大区别。
+>
+> 这点是之前完全没有想到的。不过，***个人感觉*** 这话并不绝对：对于一进入就需要大量列表渲染的页面，使用时间分片可以很大缓解进入页面由于渲染导致的卡顿情况，大幅优化 TBT 和 FID。不过，可能由于上述缺陷，似的 Vue 作为框架，不能将其作为默认、通用的机制吧
 
 ##### Fiber 的作用
 
