@@ -1412,6 +1412,8 @@
 - `inter` 前缀：相互的
 
   > interop ：互操作
+  >
+  > interoperable ：互操作性
   
 - `semi` 前缀：半
 
