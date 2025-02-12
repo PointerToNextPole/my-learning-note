@@ -472,6 +472,41 @@ state.count++;
 
 > 💡 根据 Vue Mastery 《Vue 3 Reactivity》（ 👀 笔记见 [[#《Vue 3 Reactivity》笔记]]）中的说法：使用 receiver 和 Reflect 保证了当操作的对象有继承自其它对象的值或者函数时，this 能够指向正确的目标对象，这将避免一些 使用 Vue2 时出现的响应式警告
 >
+> ⚠️ 2025/2/12 补充：在看 [什么是Reflect?有什么作用？【渡一教育】](https://www.bilibili.com/video/BV167NbeQExD) 时，发现了和之前理解相冲突的东西；它也说明了：为什么在 Proxy 中要使用 Reflect，而不是 `obj[key]` 。示例如下：
+>
+> ```js
+> const obj = {
+>   a: 1,
+>   b: 2,
+>   get c() {
+>     console.log(this)
+>     return this.a + this.b
+>   }
+> }
+> 
+> const handler = new Proxy(obj, {
+>   get(target, key, receiver) {
+>     console.log(key)
+>     return target[key]
+>   }
+> })
+> 
+> handler.c // c
+> ```
+>
+> 注意上面只打印了 c，相关联的 a 和 b （读了 c 就一定会读 a 和 b ）没有打印，也就是没有被监听。但是这里 a 和 b 确实需要被监听，做如下修改：
+>
+> ```diff
+>  const handler = new Proxy(obj, {
+>    get(target, key, receiver) {
+>      console.log(key)
+> -    return target[key]
+> +    return Reflect.get(target, key, handler)
+>    }
+>  })
+> ```
+>
+> 这样修改的原因是：通过 `handler.c` 读取 c 时，this 是 obj ，而不是代理，所以拦截不到，需要通过 `Reflect.get` 获取，同时：第三个参数不能传 `target` ，需要传 `handler`
 
 上面的实现还有一些边界情况，比如：用户可能在同一个对象中调用 reactive 两次，在 reactive 过的 state 上再次调用 reactive；所以，需要跟踪以确保对同一个对象调用 reactive ，原始对象 ( raw object ) 将会返回相同的代理实例
 
