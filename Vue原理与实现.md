@@ -494,7 +494,7 @@ state.count++;
 > handler.c // c
 > ```
 >
-> 注意上面只打印了 c，相关联的 a 和 b （读了 c 就一定会读 a 和 b ）没有打印，也就是没有被监听。但是这里 a 和 b 确实需要被监听，做如下修改：
+> 注意上面只打印了 c，相关联的 a 和 b （读了 c 就一定会读 a 和 b ）没有打印，也就是没有被拦截。但是这里 a 和 b 确实需要被拦截，做如下修改：
 >
 > ```diff
 >  const handler = new Proxy(obj, {
@@ -506,7 +506,7 @@ state.count++;
 >  })
 > ```
 >
-> 这样修改的原因是：通过 `handler.c` 读取 c 时，this 是 obj ，而不是代理，所以拦截不到，需要通过 `Reflect.get` 获取，同时：第三个参数不能传 `target` ，需要传 `handler`
+> 这样修改的原因是：通过 `handler.c` 读取 c 时，this 是 obj ，而不是代理，所以拦截不到，需要通过 `Reflect.get` 获取，同时：第三个参数 `receiver` （可以理解为 this，比如 `Reflect.get(obj, 'c', { a: 3, b: 4 })` 结果为 7 ）不能传变量 `target` ，需要传 `handler`
 
 上面的实现还有一些边界情况，比如：用户可能在同一个对象中调用 reactive 两次，在 reactive 过的 state 上再次调用 reactive；所以，需要跟踪以确保对同一个对象调用 reactive ，原始对象 ( raw object ) 将会返回相同的代理实例
 
