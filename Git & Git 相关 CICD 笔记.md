@@ -140,7 +140,7 @@ git mv orgin_file_name target_file_name # 使用 git 将原始文件改名为目
 
 > ##### 💡 补充
 >
-> 关于 **git rm**：
+> 关于 `git rm` ：
 >
 > > **summary:** The git rm command is used to remove files from a Git repository.
 > >

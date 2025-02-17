@@ -100,6 +100,10 @@
 
 JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，引用数据类型存在 *堆* 中**</font>（ 👀 引用类型的内容 存在「堆」中，同时，<font color=FF0000>***栈*** 中存储堆内的地址的引用</font>），所以 **讨论 JavaScript 的垃圾回收，即讨论其 *栈* 中数据的回收，以及 *堆* 中数据的回收**。
 
+> 💡 根据 [哪些数据在堆上，哪些数据在栈上？【渡一教育】](https://www.bilibili.com/video/BV1aTcdezEd5) 中的说法：
+>
+> 栈中保存的是：变量（包含原始类型和（对象的）地址）、参数，堆上保存的是对象的内容
+
 ##### 栈中垃圾回收
 
 > **ESP ( Extended <font color=FF0000>Stack</font> Pointer )：**扩展栈指针寄存器，用于存放函数栈顶指针。
