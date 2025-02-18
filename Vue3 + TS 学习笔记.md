@@ -2049,7 +2049,7 @@ visitElement() {
 
 #### 组件的v-model
 
-在\<input> 中可以使用 v-model 来完成双向绑定，这往往非常方便，因为 <font color=FF0000>v-model 默认帮助我们完成了两件事</font>：v-bind:value 的数据绑定和 @input的事件监听。即：
+在 `<input>` 中可以使用 v-model 来完成双向绑定，这往往非常方便，因为 <font color=FF0000>v-model 默认帮助我们完成了两件事</font>：v-bind:value 的数据绑定和 @input的事件监听。即：
 
 ```html
 <input v-model="searchText" />
