@@ -9212,6 +9212,8 @@ ARIA 是一组特殊的易用性属性，可以添加到任意标签上，尤其
 
 ##### 给 SVG 图片添加颜色
 
+主要就是使用 `fill` 属性。
+
 参考：https://codepen.io/chriscoyier/pen/lcDBd
 
 

@@ -7101,7 +7101,7 @@ function handleValue(val: All) {
       break;
     default:   // val 此时是 Baz
       // ❌ Type 'Baz' is not assignable to type 'never'.(2322)
-      const exhaustiveCheck: never = val;
+      const exhaustiveCheck: never = val; // 👀 另外，注意这里的写法。
       break;
   }
 }
@@ -7109,7 +7109,7 @@ function handleValue(val: All) {
 
 <font color=red>在 default branch 里面 val 会被收窄为 `Baz`，导致无法赋值给 never，产生一个编译错误</font>；开发者能够意识到 handleValue 里面需要加上针对 Baz 的处理逻辑。通过这个办法，可以确保 handleValue 总是穷尽 ( exhaust ) 了 All 所有可能的类型。
 
-> 👀 上面这个示例来自：[TypeScript中的never类型具体有什么用？ - 尤雨溪的回答 - 知乎](https://www.zhihu.com/question/354601204/answer/888551021)。
+> 👀 上面这个示例来自：[TypeScript中的never类型具体有什么用？ - 尤雨溪的回答 - 知乎](https://www.zhihu.com/question/354601204/answer/888551021)。类似的， [never类型的妙用【渡一教育】](https://www.bilibili.com/video/BV1pGPCebE7H) 也讲了类似的东西
 >
 > 另外，看了下这个问题的更多回答，感觉这篇文章就是这个知乎问题回答整理做的笔记。
 
