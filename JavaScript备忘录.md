@@ -14,6 +14,7 @@ DOM ( Document Object Model )（文档对象模型）是用于访问 HTML 元素
 document.write("<h1>这是一个标题</h1>");
 ```
 
+> 💡 在 [脚本加载失败如何重试【渡一教育】](https://www.bilibili.com/video/BV1fF411U7zB) 中学习到：当浏览器在解析期间，当遇到 `document.write()` 将会阻塞后面代码的执行
 ##### 改变 HTML 内容
 
 ```js

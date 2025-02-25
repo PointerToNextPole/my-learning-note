@@ -532,7 +532,48 @@ HTML `<meta>` 元素表示那些不能由其它 HTML 元相关 ( meta-related ) 
 
 <font color=FF0000>`name` 和 `content` 属性可以一起使用，以名-值对的方式给文档提供元数据</font>，其中 `name` 作为元数据的名称，`content` 作为元数据的值。
 
-摘自：[MDN - `<meta>`：文档级元数据元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/meta)
+> 💡 补充：
+>
+> ###### 主题颜色控制
+>
+> ```html
+> <meta name="theme-color" content="#4285f4">
+> ```
+>
+> `<meta name="theme-color">` 可以用作 “主题颜色控制”。
+>
+> > ###### theme-color
+> >
+> > `<meta>` 中 `name` 属性的值为 `theme-color` 时，用户的浏览器将根据所设定的建议颜色来改变用户界面。倘若设置了该值，则 `content` 属性必须包含有效的 CSS `<color>` 值。
+> >
+> > 下图展示了上方所示的 `<meta>` 元素对于 Android 端 Chrome 浏览器造成的影响。
+> >
+> > <img src="https://s2.loli.net/2025/02/25/z628P9v3IsQ5ExH.png" alt="示 theme-color 对浏览器的影响" style="zoom:60%;" />
+> >
+> > 你可以用 media 来查询一个媒体类型，如果条件符合则使用对应颜色。比如：
+> >
+> > ```html
+> > <meta name="theme-color" media="(prefers-color-scheme: light)" content="white" />
+> > <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black" />
+> > ```
+> >
+> > 摘自：[MDN - `theme-color`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/meta/name/theme-color)
+>
+> ###### iOS 全屏模式
+>
+> ```html
+> <meta name="apple-mobile-web-app-capable" content="yes">
+> ```
+>
+> 学习自：[HTML中不为人知的细节小知识](https://juejin.cn/post/7469992360517271603)
+
+###### `media`
+
+The `media` attribute defines which media the theme color defined in the `content` attribute should be applied to. Its value is a [media query](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries), which defaults to `all` if the attribute is missing. This attribute is only relevant when the element's [`name`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name) attribute is set to [`theme-color`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name/theme-color). Otherwise, it has no effect, and should not be included.
+
+See [standard metadata names](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name) for details about the set of standard metadata names defined in the HTML specification.
+
+摘自：[MDN - `<meta>`：文档级元数据元素](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/meta) 、[MDN en - `<meta>`: The metadata element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta)
 
 ##### `<link rel="canonical">`
 
@@ -729,18 +770,16 @@ Transition 是过渡方式，它的值为 0 到 23 ，分别对应 24 种过渡�
 
 ###### 解释
 
-- **telephone：**你明明写的一串数字没加链接样式，而 iPhone 会自动把你这个文字加链接样式、并且点击这个数字还会自动拨号！想去掉这个拨号链接该如何操作呢？这时 meta 又该大显神通了，代码如下：
+- `telephone` ：你明明写的一串数字没加链接样式，而 iPhone 会自动把你这个文字加链接样式、并且点击这个数字还会自动拨号！想去掉这个拨号链接该如何操作呢？这时 meta 又该大显神通了，代码如下：
   - **`telephone=no`** ：就<font color=FF0000> 禁止</font>了把数字转化为拨号链接
   - **`telephone=yes`** ：就<font color=FF0000> 开启</font>了把数字转化为拨号链接，要开启转化功能，这个 meta 就不用写了，在默认是情况下就是开启
   
-- **email：**告诉设备不识别邮箱，点击之后不自动发送
-
+- `email` ：告诉设备不识别邮箱，点击之后不自动发送
   - **`email=no`** ：禁止作为邮箱地址
-
+  
   - **`email=yes`** ：就开启了把文字默认为邮箱地址，这个 meta 就不用写了,在默认是情况下就是开启！
-
-- **adress**
-
+  
+- `adress`
   - `adress=no` ：禁止跳转至地图
   - `adress=yes` ：就开启了点击地址直接跳转至地图的功能,在默认是情况下就是开启
 

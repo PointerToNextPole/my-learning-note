@@ -1257,7 +1257,7 @@ console.log(4);
 
 > 讲解见 [[前端面试点总结#async / await#await 后接内容等待时间 总结|await 后接内容等待时间 总结]] 的 “await 后接” 总结。
 
-##### 事件队列第7题 变体1
+###### 事件队列第7题 变体1
 
 ```js
 function func() {
@@ -1291,7 +1291,7 @@ console.log(4);
   这题给出的启示是：`await func()` 如果这里的 `func()` 返回值为一个 Promise，如果该 Promise 不运行完毕，`await func()` 将会始终被阻塞。这也是 `log(3)` 最后才知性的原因
 </details>
 
-##### 事件队列第7题 变体2
+###### 事件队列第7题 变体2
 
 ```js
 function func() {
@@ -1336,7 +1336,7 @@ new Promise((resolve) => {
   和上一题原理一样，不过多了其他 promise。这题给出的启示是：上面的 `await func()` 中的 `func()` 返回值是 Promise，这里返回的 Promise 只会阻塞（同一个代码块中） `await` 后面的逻辑，其他部分的微任务依然会执行，甚至可以和这个 Promise 共用微任务队列（也就是上面穿插着运行）
 </details>
 
-##### 事件队列第7题 变体3
+###### 事件队列第7题 变体3
 
 ```js
 async function test() {
@@ -1373,7 +1373,7 @@ new Promise((resolve) => {
   至于错的原因，参考原文中的解释：“await 一定要等到右侧的表达式有确切的值才会放行，否则将一直等待（阻塞当前async 函数内的后续代码）”。所以 [[#事件队列第7题 变体1]] 中确定 `fūn()` return 的是 undefined，所以会在规定的轮数后停止阻塞；但这里不确定 Promise 的结果是什么，所以会一直阻塞
 </details>
 
-##### 事件队列第7题 变体4
+###### 事件队列第7题 变体4
 
 > 👀 这是上一题 [[#事件队列第7题 变体3]] 解析中给出的论证 相关的题目，这题做错了；
 >
@@ -1409,7 +1409,7 @@ console.log(4);
 
 摘自：[📢 你不知道的 async、await 魔鬼细节](https://juejin.cn/post/7194744938276323384)
 
-##### 事件队列第7题 变体5
+###### 事件队列第7题 变体5
 
 > 👀 这题是 “托尼带水” 微信群群友分享的，重点还是 `return` ；虽然做对了，但对结果不确定
 
@@ -1430,3 +1430,43 @@ Promise.resolve()
   .then(() => log(5))
   .then(() => log(6))
 ```
+
+##### 事件队列第8题
+
+学习自：[thenable的执行时机【渡一教育】](https://www.bilibili.com/video/BV1hSftYJENZ)
+
+```js
+const { log } = console
+
+new Promise((resolve, reject) => {
+  resolve(2);
+  new Promise((resolve, reject) => {
+    resolve(5);
+  }).then(v => log(v));
+}).then(v => log(v))
+```
+
+<details>
+  <summary>查看结果</summary>
+  5 2<br/>
+  这题的考察的是回调 thenable / onFulfilled 的执行时机，关键在于 thenable 什么时候执行（什么时候将其放入微队列），它会受到两个因素的影响：1. Promise 的完成时机，即：调用 resolve 2. 注册时机，即：调用 `then` 函数的时候。有的时候会先完成后注册，比如 `resolve(2)` ，有的时候会先注册后完成，比如下面的题目。规则是：“完成”和“注册”两者，后做完的，只看你后做完的那个步骤；比如：先完成后注册，注册时进微队列；先注册后完成，完成时再进微队列
+</details>
+
+```js
+const { log } = console
+
+new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve(2)
+    new Promise((resolve, reject) => {
+      resolve(5)
+    }).then(v => log(v))
+  })
+}).then(v => log(v))
+```
+
+<details>
+  <summary>查看结果</summary>
+  2 5<br />
+  这题还是同样的道理
+</details>
