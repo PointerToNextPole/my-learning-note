@@ -492,6 +492,32 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 
 
 
+#### 数码测色计 digital color meter 使用
+
+###### 锁住定位
+
+- **⌘ + L** ：锁定当前位置
+- **⌘ + X** ：锁定 X 轴
+- **⌘ + Y** ：锁定 Y 轴
+
+###### 将表示从默认的十进制切换为十六进制
+
+选择顶部菜单栏的 View 选项，选择 “Display Values” 中的 “as Hexadecimal” 即可
+
+<img src="https://s2.loli.net/2025/02/27/q8sFdRc4ueoZ5Jw.png" alt="image-20250227095914954" style="zoom:50%;" />
+
+此时的 UI 如下图所示
+
+<img src="https://s2.loli.net/2025/02/27/TuZGk2WdcFOMw9Y.png" alt="image-20250227100200730" style="zoom:50%;" />
+
+###### 快速复制颜色
+
+使用 **⇧ + ⌘ + C** ，即可快速复制出颜色，如果设置颜色格式为十六进制，则复制出 `#RRGGBB` ；如果设置颜色格式为十进制，则复制出 `RRR GGG BBB`
+
+ 使用 **⌥ + ⌘ + C** ，可复制出当前颜色的纯色图片
+
+学习自：[使用macOS自带的数码测色计直接获取十六进制颜色码（HEX Color）](https://vae.life/archives/%E4%BD%BF%E7%94%A8macos%E8%87%AA%E5%B8%A6%E7%9A%84%E6%95%B0%E7%A0%81%E6%B5%8B%E8%89%B2%E8%AE%A1%E7%9B%B4%E6%8E%A5%E8%8E%B7%E5%8F%96%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E9%A2%9C%E8%89%B2%E7%A0%81hexcolor)
+
 
 
 #### 场景与解决方法

@@ -143,7 +143,7 @@ HTML5，<font color=FF0000>此属性指示**浏览器下载 URL** 而不是导�
 
 - 此属性<font color=FF0000>**仅适用于同源 URL**</font>。
 - <font color=LightSeaGreen>尽管 HTTP URL 需要位于同一源中</font>，<font color=FF0000>但是**可以使用 `blob: URL` 和 `data: URL`** ，以方便用户下载使用 JavaScript 生成的内容</font>（例如使用在线绘图 Web 应用程序创建的照片）。
-- 如果 HTTP 头中的 Content-Disposition 属性赋予了一个不同于此属性的文件名，HTTP 头属性优先于此属性。
+- 如果 HTTP 头中的 Content-Disposition 属性赋予了一个不同于此属性的文件名，HTTP 头属性优先于此属性
 - 如果 HTTP 头属性 Content-Disposition 被设置为 inline（即 Content-Disposition='inline' ），那么 Firefox 优先考虑 HTTP 头 Content-Dispositiondownload 属性。
 
 ###### href
