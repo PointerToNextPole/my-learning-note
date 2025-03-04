@@ -1234,7 +1234,7 @@ const arr = Array.prototype.concat.apply([], arrLike)
 
 ##### 理想情况下的简单实现
 
-如果是实现简单的 `add(1)(2) = 3`，则利用闭包，有如下代码：
+如果是实现简单的 `add(1)(2) = 3` ，则利用闭包，有如下代码：
 
 ```js
 function curry(num) {
@@ -1264,6 +1264,46 @@ function add() {
   return fn
 }
 ```
+
+> 💡 一点补充
+>
+> 如果要求是实现如下效果：
+>
+> ```js
+> const r1 = add[1][2][3] + 4    // 10
+> const r2 = add[10][20] + 30    // 60
+> const r3 = add[100][200] + 300 // 600
+> ```
+>
+> 可以通过代理实现：
+>
+> ```js
+> function createProxy(value = 0) {
+>   const valueGetter = () => value
+>   
+>   return new Proxy({}, {
+>     get(target, prop) {
+>       if (prop === Symbol.toPrimitive) {
+>         // 为了处理 add[1][2][3] 的值为**代理**和 4 相加的错误
+>         return valueGetter
+>       }
+>       return createProxy(value + Number(prop))
+>     }
+>   })
+> }
+> ```
+>
+> 测试如下：
+>
+> ```js
+> const add = createProxy()
+> 
+> const r1 = add[1][2][3] + 4    // 10
+> const r2 = add[10][20] + 30    // 60
+> const r3 = add[100][200] + 300 // 600
+> ```
+>
+> 学习自：[一道promise的社招面试题【渡一教育】](https://www.bilibili.com/video/BV1sqP5eUEFc)
 
 ##### 通用实现
 

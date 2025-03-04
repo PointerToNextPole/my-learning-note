@@ -1036,13 +1036,13 @@ Reflect.ownKeys(obj).forEach(key => {
 
 ##### 排序规则
 
-1. Key 都为自然数（正整数或 0），按照自然数的大小进行升序排序。如果是其他类的 Number —— 浮点数或者负数 —— 都会走到下一组类型里，像 `NaN` 或者 `Infinity` 这种也自然归到下一个类型里；另外，科学计数法的数字会被转换为直接表示的数字，作为 key，并按照这里的规则进行排序
+1. Key 都为自然数（正整数或 0），按照自然数的大小进行升序排序。如果是其他类的 Number —— 浮点数或者负数 —— 都会走到下一组类型里（⚠️ 这里下一组的意思是：放在自然数的后面，字符串的前面；不要误解，详细见实践结果），像 `NaN` 或者 `Infinity` 这种也自然归到下一个类型里；另外，科学计数法的数字会被转换为直接表示的数字，作为 key，并按照这里的规则进行排序
 
-2. 如果 <font color=fuchsia>key 是不为自然数的 String（Number 也会转为 String ）处理</font>，则按照加入的时间顺序进行排序。
+2. 如果 <font color=fuchsia>key 是不为自然数的 String（ Number 也会转为 String ）处理</font>，则按照加入的时间顺序进行排序。
 
    > 无论是存在 小数点 还是存在 正负号，都会作为 string 处理
 
-3. Key 都为 Symbol，顺序和 String 一样，也是按照添加的顺序进行排序的。
+3. Key 都为 Symbol，顺序和 String 一样，也是按照添加的顺序进行排序的（⚠️ 还是要排在字符串后面）。
 
 ##### 排列示例
 
@@ -1078,6 +1078,8 @@ console.log(keys)
   Symbol(first), Symbol(second)
 ]
 ```
+
+> 👀 这里顺序是从左到右，从上到下
 
 学习自：[[科普] JS中Object的keys是无序的吗](https://mp.weixin.qq.com/s/qyyrQNC6q6p496OdZIQ6ew)
 

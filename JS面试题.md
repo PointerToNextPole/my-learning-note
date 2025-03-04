@@ -1433,7 +1433,7 @@ Promise.resolve()
 
 ##### 事件队列第8题
 
-学习自：[thenable的执行时机【渡一教育】](https://www.bilibili.com/video/BV1hSftYJENZ)
+学习自：[thenable的执行时机【渡一教育】](https://www.bilibili.com/video/BV1hSftYJENZ) ，类似的问题见 [一道promise的社招面试题【渡一教育】](https://www.bilibili.com/video/BV1cSP8edEXP)
 
 ```js
 const { log } = console
@@ -1449,8 +1449,16 @@ new Promise((resolve, reject) => {
 <details>
   <summary>查看结果</summary>
   5 2<br/>
-  这题的考察的是回调 thenable / onFulfilled 的执行时机，关键在于 thenable 什么时候执行（什么时候将其放入微队列），它会受到两个因素的影响：1. Promise 的完成时机，即：调用 resolve 2. 注册时机，即：调用 `then` 函数的时候。有的时候会先完成后注册，比如 `resolve(2)` ，有的时候会先注册后完成，比如下面的题目。规则是：“完成”和“注册”两者，后做完的，只看你后做完的那个步骤；比如：先完成后注册，注册时进微队列；先注册后完成，完成时再进微队列
+  这题的考察的是回调 thenable / onFulfilled 的执行时机，关键在于 thenable 什么时候执行（什么时候将其放入微队列），它会受到两个因素的影响：1. Promise 的完成时机，即：调用 resolve 2. 注册时机，即：调用 `then` 函数的时候。有的时候会先完成后注册，比如 `resolve(2)` ，有的时候会先注册后完成，比如下面的题目。规则是：“完成”和“注册”两者，后做完的，只看你后做完的那个步骤；比如：先完成后注册，注册时进微队列；先注册后完成，完成时再进微队列。<br/>
+  新的总结：来自 [一道promise的社招面试题【渡一教育】](https://www.bilibili.com/video/BV1cSP8edEXP) ，Promise 中的 onFulfilled 什么时候进入微队列？
+  <ul>
+    <li>resolve 时，如果有注册的 onFulfilled，则进微队列。代码类似于 `new Promise((resolve) => { setTimeout(() => resolve(3), 1000) }).then(onFulfilledFn)` ，onFulfilledFn 等到 1s 后 resolve 了，进微队列</li>
+    <li>调用 then 方法是，如果 Promise 已经完成，其回调进微队列；也就是上面 resolve(2) 对应的 then 方法</li>
+  </ul>
+  <br />
+  再回到题目，执行完 `resolve(2)` ，`resolve` 只是改变了 Promise 的状态，后面的代码还是需要继续执行。所以 `then(2 => log(2))` 这时候需要等待当前 Promise 中所有的代码执行完了之后再执行，所以如微队列的时候要比 `then(5 => log(5))` 入微队列还要晚
 </details>
+
 
 ```js
 const { log } = console
