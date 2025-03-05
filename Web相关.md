@@ -1110,61 +1110,61 @@ window.addEventListener('message', function (event) {
 
 摘自：[2020年了，不学jsp后学什么代替？ - Java3y的回答 - 知乎 ](https://www.zhihu.com/question/382065572/answer/1102140696)
 
-**JSP九大内置对象**
+##### JSP九大内置对象
 
-- **输出输入对象**
+###### 输出输入对象
 
-  - **request对象：** 向客户端请求数据
+- **request对象：** 向客户端请求数据
 
-    **所在包：**请求信息 javax.servlet.http.HttpServletrequest
+  **所在包：**请求信息 javax.servlet.http.HttpServletrequest
 
-    | 方法名               | 说明                                                         |
-    | -------------------- | ------------------------------------------------------------ |
-    | isUserInRole         | 判断认证后的用户是否属于某一成员组                           |
-    | getAttribute         | 获取指定属性的值,如该属性值不存在返回Null                    |
-    | getAttributeNames    | 获取所有属性名的集合                                         |
-    | getCookies           | 获取所有Cookie对象                                           |
-    | getCharacterEncoding | 获取请求的字符编码方式                                       |
-    | getContentLength     | 返回请求正文的长度,如不确定返回-1                            |
-    | getHeader            | 获取指定名字报头值                                           |
-    | getHeaders           | 获取指定名字报头的所有值,一个枚举                            |
-    | getHeaderNames       | 获取所有报头的名字,一个枚举                                  |
-    | getInputStream       | 返回请求输入流,获取请求中的数据                              |
-    | getMethod            | 获取客户端向[服务器](http://www.23book.net/Server/Index.htm)端传送数据的方法 |
-    | getParameter         | 获取指定名字参数值                                           |
-    | getParameterNames    | 获取所有参数的名字,一个枚举                                  |
-    | getParameterValues   | 获取指定名字参数的所有值                                     |
-    | getProtocol          | 获取客户端向[服务器](http://www.23book.net/Server/Index.htm)端传送数据的协议名称 |
-    | getQueryString       | 获取以get方法向[服务器](http://www.23book.net/Server/Index.htm)传送的查询字符串 |
-    | getRequestURI        | 获取发出请求字符串的客户端地址                               |
-    | getRemoteAddr        | 获取客户端的IP地址                                           |
-    | getRemoteHost        | 获取客户端的名字                                             |
-    | getSession           | 获取和请求相关的会话                                         |
-    | getServerName        | 获取[服务器](http://www.23book.net/Server/Index.htm)的名字   |
-    | getServerPath        | 获取客户端请求文件的路径                                     |
-    | getServerPort        | 获取[服务器](http://www.23book.net/Server/Index.htm)的端口号 |
-    | removeAttribute      | 删除请求中的一个属性                                         |
-    | setAttribute         | 设置指定名字参数值                                           |
+  | 方法名               | 说明                                                         |
+  | -------------------- | ------------------------------------------------------------ |
+  | isUserInRole         | 判断认证后的用户是否属于某一成员组                           |
+  | getAttribute         | 获取指定属性的值,如该属性值不存在返回Null                    |
+  | getAttributeNames    | 获取所有属性名的集合                                         |
+  | getCookies           | 获取所有Cookie对象                                           |
+  | getCharacterEncoding | 获取请求的字符编码方式                                       |
+  | getContentLength     | 返回请求正文的长度,如不确定返回-1                            |
+  | getHeader            | 获取指定名字报头值                                           |
+  | getHeaders           | 获取指定名字报头的所有值,一个枚举                            |
+  | getHeaderNames       | 获取所有报头的名字,一个枚举                                  |
+  | getInputStream       | 返回请求输入流,获取请求中的数据                              |
+  | getMethod            | 获取客户端向[服务器](http://www.23book.net/Server/Index.htm)端传送数据的方法 |
+  | getParameter         | 获取指定名字参数值                                           |
+  | getParameterNames    | 获取所有参数的名字,一个枚举                                  |
+  | getParameterValues   | 获取指定名字参数的所有值                                     |
+  | getProtocol          | 获取客户端向[服务器](http://www.23book.net/Server/Index.htm)端传送数据的协议名称 |
+  | getQueryString       | 获取以get方法向[服务器](http://www.23book.net/Server/Index.htm)传送的查询字符串 |
+  | getRequestURI        | 获取发出请求字符串的客户端地址                               |
+  | getRemoteAddr        | 获取客户端的IP地址                                           |
+  | getRemoteHost        | 获取客户端的名字                                             |
+  | getSession           | 获取和请求相关的会话                                         |
+  | getServerName        | 获取[服务器](http://www.23book.net/Server/Index.htm)的名字   |
+  | getServerPath        | 获取客户端请求文件的路径                                     |
+  | getServerPort        | 获取[服务器](http://www.23book.net/Server/Index.htm)的端口号 |
+  | removeAttribute      | 删除请求中的一个属性                                         |
+  | setAttribute         | 设置指定名字参数值                                           |
 
-  - **response对象：**封装了jsp产生的响应,然后被发送到客户端以响应客户的请求
+- **response对象：**封装了jsp产生的响应,然后被发送到客户端以响应客户的请求
 
-    **所在包：**响应 javax.servlet.http.HttpServletResponse
+  **所在包：**响应 javax.servlet.http.HttpServletResponse
 
-    | 方法名          | 说明                               |
-    | --------------- | ---------------------------------- |
-    | addCookie       | 添加一个Cookie对象                 |
-    | addHeader       | 添加Http文件指定名字头信息         |
-    | containsHeader  | 判断指定名字Http文件头信息是否存在 |
-    | encodeURL       | 使用sessionid封装URL               |
-    | flushBuffer     | 强制把当前缓冲区内容发送到客户端   |
-    | getBufferSize   | 返回缓冲区大小                     |
-    | getOutputStream | 返回到客户端的输出流对象           |
-    | sendError       | 向客户端发送错误信息               |
-    | sendRedirect    | 把响应发送到另一个位置进行处理     |
-    | setContentType  | 设置响应的MIME类型                 |
-    | setHeader       | 设置指定名字的Http文件头信息       |
+  | 方法名          | 说明                               |
+  | --------------- | ---------------------------------- |
+  | addCookie       | 添加一个Cookie对象                 |
+  | addHeader       | 添加Http文件指定名字头信息         |
+  | containsHeader  | 判断指定名字Http文件头信息是否存在 |
+  | encodeURL       | 使用sessionid封装URL               |
+  | flushBuffer     | 强制把当前缓冲区内容发送到客户端   |
+  | getBufferSize   | 返回缓冲区大小                     |
+  | getOutputStream | 返回到客户端的输出流对象           |
+  | sendError       | 向客户端发送错误信息               |
+  | sendRedirect    | 把响应发送到另一个位置进行处理     |
+  | setContentType  | 设置响应的MIME类型                 |
+  | setHeader       | 设置指定名字的Http文件头信息       |
 
-  - **out对象：**向客户端输出数据
+- **out对象：**向客户端输出数据
 
   **所在包：**数据流 javax.servlet.jsp.jspWriter
 
@@ -1180,54 +1180,54 @@ window.addEventListener('message', function (event) {
   | getRemaining   | 获得缓冲区中没有被占用的空间      |
   | isAutoFlush    | 是否为自动输出                    |
 
-- **通信控制对象**
+###### 通信控制对象
 
-  - **pageContext对象：**
+- **pageContext对象：**
 
-    **所在包：**页面上下文 javax.servlet.jsp.PageContext)
+  **所在包：**页面上下文 javax.servlet.jsp.PageContext)
 
-    | 方法名            | 说明                                 |
-    | ----------------- | ------------------------------------ |
-    | forward           | 重定向到另一页面或Servlet组件        |
-    | getAttribute      | 获取某范围中指定名字的属性值         |
-    | findAttribute     | 按范围搜索指定名字的属性             |
-    | removeAttribute   | 删除某范围中指定名字的属性           |
-    | setAttribute      | 设定某范围中指定名字的属性值         |
-    | getException      | 返回当前异常对象                     |
-    | getRequest        | 返回当前请求对象                     |
-    | getResponse       | 返回当前响应对象                     |
-    | getServletConfig  | 返回当前页面的ServletConfig对象      |
-    | getServletContext | 返回所有页面共享的ServletContext对象 |
-    | getSession        | 返回当前页面的会话对象               |
+  | 方法名            | 说明                                 |
+  | ----------------- | ------------------------------------ |
+  | forward           | 重定向到另一页面或Servlet组件        |
+  | getAttribute      | 获取某范围中指定名字的属性值         |
+  | findAttribute     | 按范围搜索指定名字的属性             |
+  | removeAttribute   | 删除某范围中指定名字的属性           |
+  | setAttribute      | 设定某范围中指定名字的属性值         |
+  | getException      | 返回当前异常对象                     |
+  | getRequest        | 返回当前请求对象                     |
+  | getResponse       | 返回当前响应对象                     |
+  | getServletConfig  | 返回当前页面的ServletConfig对象      |
+  | getServletContext | 返回所有页面共享的ServletContext对象 |
+  | getSession        | 返回当前页面的会话对象               |
 
-  - **session对象：**
+- **session对象：**
 
-    **所在包：**会话 javax.servlet.http.HttpSession
+  **所在包：**会话 javax.servlet.http.HttpSession
 
-    | 方法名                 | 说明                                    |
-    | ---------------------- | --------------------------------------- |
-    | getAttribute           | 获取指定名字的属性                      |
-    | getAttributeNames      | 获取session中全部属性名字,一个枚举      |
-    | getCreationTime        | 返回session的创建时间                   |
-    | getId                  | 获取会话标识符                          |
-    | getLastAccessedTime    | 返回最后发送请求的时间                  |
-    | getMaxInactiveInterval | 返回session对象的生存时间单位千分之一秒 |
-    | invalidate             | 销毁session对象                         |
-    | isNew                  | 每个请求是否会产生新的session对象       |
-    | removeAttribute        | 删除指定名字的属性                      |
-    | setAttribute           | 设定指定名字的属性值                    |
+  | 方法名                 | 说明                                    |
+  | ---------------------- | --------------------------------------- |
+  | getAttribute           | 获取指定名字的属性                      |
+  | getAttributeNames      | 获取session中全部属性名字,一个枚举      |
+  | getCreationTime        | 返回session的创建时间                   |
+  | getId                  | 获取会话标识符                          |
+  | getLastAccessedTime    | 返回最后发送请求的时间                  |
+  | getMaxInactiveInterval | 返回session对象的生存时间单位千分之一秒 |
+  | invalidate             | 销毁session对象                         |
+  | isNew                  | 每个请求是否会产生新的session对象       |
+  | removeAttribute        | 删除指定名字的属性                      |
+  | setAttribute           | 设定指定名字的属性值                    |
 
-  - **application对象：**
+- **application对象：**
 
-    **所在包：**应用程序 javax.servlet.ServletContext)
+  **所在包：**应用程序 javax.servlet.ServletContext)
 
-    | 方法名            | 说明                                  |
-    | ----------------- | ------------------------------------- |
-    | getAttribute      | 获取应用对象中指定名字的属性值        |
-    | getAttributeNames | 获取应用对象中所有属性的名字,一个枚举 |
-    | getInitParameter  | 返回应用对象中指定名字的初始参数值    |
-    | getServletInfo    | 返回Servlet编译器中当前版本信息       |
-    | setAttribute      | 设置应用对象中指定名字的属性值        |
+  | 方法名            | 说明                                  |
+  | ----------------- | ------------------------------------- |
+  | getAttribute      | 获取应用对象中指定名字的属性值        |
+  | getAttributeNames | 获取应用对象中所有属性的名字,一个枚举 |
+  | getInitParameter  | 返回应用对象中指定名字的初始参数值    |
+  | getServletInfo    | 返回Servlet编译器中当前版本信息       |
+  | setAttribute      | 设置应用对象中指定名字的属性值        |
 
 - **Servlet对象：**
 
@@ -1248,15 +1248,16 @@ window.addEventListener('message', function (event) {
     | getInitParameter      | 返回指定名字的初始参数值             |
     | getInitParameterNames | 返回该JSP中所有的初始参数名,一个枚举 |
 
-- **错误处理对象**
 
-  - **exception对象**
+###### 错误处理对象
 
-    **所在包：**运行时的异常,java.lang.Throwable
+- **exception对象**
 
-    被调用的错误页面的结果,只有在错误页面中才可使用,
+  **所在包：**运行时的异常,java.lang.Throwable
 
-    即在页面指令中设置:<%@page isErrorPage=“true”%>
+  被调用的错误页面的结果,只有在错误页面中才可使用,
+
+  即在页面指令中设置：`<%@page isErrorPage=“true”%>`
 
 摘自：[JSP 9 大内置对象详解](https://www.cnblogs.com/kelin1314/archive/2011/03/03/1969578.html)
 
