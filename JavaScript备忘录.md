@@ -13995,7 +13995,7 @@ history.replaceState(stateObj, title[, url]);
   > <img onerror="this.src='url; this.onerror=null'" />
   > ```
   >
-  > 👀 注：这里的 “死循环” 是指 “defaultImgUrl 失败，却依然请求 defaultImgUrl；无限循环下去（ 浏览器 dev Tools 也会报错），无法退出”
+  > 👀 这里的 “死循环” 是指 “defaultImgUrl 失败，却依然请求 defaultImgUrl；无限循环下去（ 浏览器 dev Tools 也会报错），无法退出”
 
   所以上面代码可以改成：
 
@@ -14003,7 +14003,7 @@ history.replaceState(stateObj, title[, url]);
   <img src="unavailableImgUrl" alt="" onerror="this.src='defaultImgUrl'; this.onerror=null" />
   ```
 
-  无论 defaultImgUrl 是否成功，只会请求（被赋值）一次；然后 `onerror` 就被清除了；即使 defaultImgUrl 图片加载成功，`onerror` 的清除，也不会影响 defaultImgUrl 的图片。
+  无论 `defaultImgUrl` 是否获取成功，只会请求（被赋值）一次；然后 `onerror` 就被清除了；即使 defaultImgUrl 图片加载成功，`onerror` 的清除，也不会影响 defaultImgUrl 的图片。
 
 - <font size=4>**resize：**</font>文档视图调整大小时会触发 **resize** 事件。
 
