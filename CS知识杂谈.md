@@ -938,9 +938,11 @@ console.log(lowerCaseChar_z) // z
 
 > 💡 补充
 >
-> 另外，根据 [toFixed的结果可能会欺骗你【渡一教育】](https://www.bilibili.com/video/BV14r421b759) 的说法，JS 中 `Number.prototype.toFixed` 并没有完全使用 “银行家舍入”。另外，问 Copilot Chat 二次确认了下，得到如下回复：
+> 另外，根据 [toFixed的结果可能会欺骗你【渡一教育】](https://www.bilibili.com/video/BV14r421b759) 的说法，JS 中 `Number.prototype.toFixed` 并没有完全使用 “银行家舍入” / “银行家算法”。另外，问 Copilot Chat 二次确认了下，得到如下回复：
 >
 > <img src="https://s2.loli.net/2024/04/05/QBjczlh6KeWOZ8A.png" alt="image-20240405162832728" style="zoom:50%;" />
+> 
+> 另外，视频中也给出了 `toFixed` 的运行结果在小数点最后一位为 5 的情况下，行为不符合预期；比如 `1.45.toFixed(1) === '1.4'` ，而 `2.45.toFixed(1) === '2.5'` 的原因：由于二进制的表示存在误差，1.45 在二进制的表示时，相比 1.5 更接近 1.4 (`1.45.toPrecision(20) === '1.4499999999999999556'`) ；而 2.45 在二进制的表示时，相比 2.4 更接近 2.5 ( `2.45.toPrecision(20) === '2.4500000000000001776'` )
 
 
 
