@@ -5751,8 +5751,8 @@ all: revert;
 
 #### initial、unset 和 revert
 
-- `initial` ：将某一个 CSS 属性 变 / 恢复 为它（W3C 标准中）的默认值（各种 CSS 属性的默认值有很多，靠记忆是记不住的，也是没必要的；可以通过 `initial` 使它恢复为默认值）
-- `unset` ：清除浏览器默认样式 ( UA stylesheet )，让 CSS 属性可以继承的继承，不能继承的使用默认值
+- `initial` ：将某一个 CSS 属性 变 / 恢复 为它（W3C 标准中）的默认值（各种 CSS 属性的默认值有很多，靠记忆是记不住的，也是没必要的；可以通过 `initial` 使它恢复为默认值）；注意不是 UA StyleSheet 中的默认直
+- `unset` ：清除浏览器默认样式 ( UA Stylesheet )，让 CSS 属性可以继承的继承，不能继承的使用默认值
 - `revert` ：让属性恢复为浏览器的默认样式
 
 > ⚠️ 注意区分 W3C 的默认值和 UA 默认样式 的区别
