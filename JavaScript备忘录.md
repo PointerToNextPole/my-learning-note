@@ -373,7 +373,7 @@ str.startsWith(searchString[, position])
 
 #### String.prototype.endsWith()
 
-endsWith() 方法用来判断当前字符串是否是以另外一个给定的子字符串“结尾”的，根据判断结果返回 true 或 false。
+endsWith() 方法用来判断当前字符串是否是以另外一个给定的子字符串“结尾”的，根据判断结果返回 true 或 false 。
 
 ##### 语法
 
@@ -388,7 +388,7 @@ str.endsWith(searchString[, length])
 
 ###### 返回值
 
-如果传入的子字符串在搜索字符串的末尾则返回true；否则将返回 false。
+如果传入的子字符串在搜索字符串的末尾则返回 true ；否则将返回 false。
 
 ##### 描述
 
@@ -6850,13 +6850,13 @@ console.log(a); // 10
 
 #### JavaScript Window - 浏览器对象模型
 
-浏览器对象模型（**B**rowser **O**bject **M**odel (BOM)）尚无正式标准。但所有浏览器都支持 window 对象。它表示浏览器窗口。
+浏览器对象模型（**B**rowser **O**bject **M**odel ( BOM )）尚无正式标准。但所有浏览器都支持 window 对象。它表示浏览器窗口。
 
 由于现代浏览器已经（几乎）实现了 JavaScript 交互性方面的相同方法和属性，因此常被认为是 BOM 的方法和属性。
 
 <font color=FF0000>所有 JavaScript 全局对象、函数以及变量均自动成为 window 对象的成员</font>。全局变量是 window 对象的属性，全局函数是 window 对象的方法；甚至 HTML DOM 的 document 也是 window 对象的属性之一
 
-**其他一些 Window 方法**
+###### 其他一些 Window 方法
 
 - window.open() ：打开新窗口
 - window.close() ：关闭当前窗口
@@ -6864,33 +6864,31 @@ console.log(a); // 10
 - window.resizeTo() ：调整当前窗口的尺寸，设置绝对尺寸
 - window.resizeBy()：调整当前窗口的尺寸，改变相对尺寸
 
-> 💡 补充
+
 
 #### 屏幕 / 窗口 / 元素  的  高度 / 宽度
 
-**<font color=FF0000>整个屏幕</font> 逻辑分辨率上的 宽高度**
+###### 电脑屏幕逻辑分辨率的宽高度
 
-- **window.screen.height：**屏幕高度 （整个屏幕 逻辑分辨率上的 高度）
-- **window.screen.width：**屏幕宽度（整个屏幕 逻辑分辨率上的 宽度）
+> 👀 只要逻辑分辨率不变，这个应该是一个固定值
 
-**获取屏幕<font color=FF0000>可工作区域的</font>高度和宽度（<font color=FF0000>去掉状态栏</font>）**
+- `window.screen.height` ：电脑屏幕逻辑分辨率的高度 
+- `window.screen.width` ：电脑屏幕逻辑分辨率的宽度
 
-​	<font color=FF0000>**只去除了上面的状态栏，打开控制台不受影响**</font>。<font color=FF0000>**是一个固定值，不受浏览器窗口大小而改变**</font>
+###### 电脑屏幕工作区域的高度和宽度（去掉状态栏）
 
-​	即：<mark>window.screen.availHeight = window.screen.height - 浏览器上面状态栏的高度</mark>
+只去除上面的状态栏，打开控制台不受影响。是一个固定值，不受浏览器窗口大小而改变
 
-- **window.screen.availHeight：**可视区域<font color=FF0000>去除状态栏高度 </font>
-- **window.screen.availWidth：**可视区域<font color=FF0000>去除状态栏宽度</font>
+即：`window.screen.availHeight = window.screen.height - 浏览器上面状态栏的高度`
 
-上面的window.screen.availHeight / window.screen.availWidth不受浏览器窗口大小而改变，而<font color=FF0000>window.outerHeight / window.outerWidth**受影响**</font>
+- `window.screen.availHeight` ：可视区域去除状态栏高度 
+- `window.screen.availWidth` ：可视区域去除状态栏宽度
 
-- <mark style="background: aqua">**window.outerHeight ：**</mark>浏览器<font color=FF0000>**当前可见区域**（<font size=4>**包含**</font>上方工具栏 / 下方的控制台）</font>的高度
-- <mark style="background: fuchsia">**window.outerWidth ：**</mark>浏览器<font color=FF0000>**当前可见区域**（<font size=4>**包含**</font>控制台）</font>的宽度
+上面的 `window.screen.availHeight` / `window.screen.availWidth` 不受浏览器窗口大小的改变而改变，而`window.outerHeight` / `window.outerWidth` 会受影响
 
-- **滚动条卷上去的高度和向右卷的宽度**
+- `window.outerHeight`  ：浏览器当前可见区域（包含上方工具栏 / 下方的控制台）的高度
+- `window.outerWidth`  ：浏览器当前可见区域（包含控制台）的宽度
 
-  - document.body.scrollTop
-  - document.body.scrollLeft
 
 
 ##### 网页可见区域的高度和宽度
@@ -6899,84 +6897,86 @@ console.log(a); // 10
 
 ###### 不加边线
 
-- <mark style="background: lime">**document.body.clientHeight：**</mark> 可见高度，包括被滚动条隐藏的部分；如果页面长到有滚动条，则clientHeight值会比screen.height长
-- <mark style="background: DodgerBlue">**document.body.clientWidth：**</mark> 同上，不过把高度换成宽度
+- `document.body.clientHeight` ：可见高度，包括被滚动条隐藏的部分；如果页面长到有滚动条，则`clientHeight` 会比 `screen.height` 长
+- `document.body.clientWidth` ：同理，不过把高度换成宽度
 
 ###### 网页可见区域的高度和宽度（加边线）
 
-- **document.body.offsetHeight：**body总高度；该属性和<mark style="background: lime">document.body.clientHeight</mark>相对应。
+- `document.body.offsetHeight` ：body 总高度，该属性和 `document.body.clientHeight` 相等
 
-- **document.body.offsetWidth：**body总宽度；该属性和<mark style="background: DodgerBlue">document.body.clientWidth</mark>相对应：
+- `document.body.offsetWidth` ：body 总宽度，该属性和 `document.body.clientWidth` 相等
 
-- **window.innerHeight：**包含滚动条的高度，浏览器<font color=FF0000>**当前可见区域**、<font size=4>**不包含**</font>上方工具栏 / 下方控制台</font>的高度
+- `window.innerHeight` ：包含滚动条的高度，浏览器当前可见区域、不包含上方工具栏 / 下方控制台的高度
 
-  该属性和<mark style="background: aqua">window.outerHeight</mark>相对应：工具栏高度 [ + 控制台高度]  = <mark style="background: aqua">window.outerHeight</mark> - window.innerHeight
+  该属性和 `window.outerHeight` 相对应：`顶部工具栏高度 + 控制台高度（如果存在） = window.outerHeight - window.innerHeight`
 
-- **window.innerWidth：**包含滚动条的宽度，浏览器<font color=FF0000>**当前可见区域**、<font size=4>**不包含**</font>可能存在的控制台</font>的宽度
+- `window.innerWidth` ：包含滚动条的宽度，浏览器当前可见区域、不包含可能存在的控制台的宽度
 
-  该属性和<mark style="background: fuchsia">window.outerWidth</mark>相对应： 控制台宽度 = <mark style="background: fuchsia">window.outerHeight</mark> - window.innerHeight
+  该属性和 `window.outerWidth` 相对应： `控制台宽度 = window.outerWidth - window.innerWidth`
 
-- document.documentElement.clientHeight
+- `document.documentElement.clientHeight`
 
-- document.documentElement.clientWidth    //去除滚动条的宽度
+- `document.documentElement.clientWidth` ：去除滚动条的宽度
 
 ##### 一般元素
 
-上面 **`document.body.*`** 有的，一般元素也会有；而**`window.*`** 有的，一般元素没有
-
-- **Element.clientHeight：**<font color=FF0000>只读属性</font>，<font color=FF0000>对于没有定义CSS或者内联布局盒子的元素为0</font>，否则，它是元素内部的高度（单位像素）；<font color=FF0000>Element.clientHeight包含内边距</font>，但不包括水平滚动条、边框和外边距。
-
-  clientHeight 可以通过 CSS height + CSS padding - 水平滚动条高度 (如果存在)来计算。
-
-  <mark>Element.clientHeight<font color=FF0000>会将获取的值四舍五入取整数</font></mark>。 如果你需要小数结果, 请使用 element.getBoundingClientRect().
-
-- **Element.clientWidth：**<font color=FF0000>只读属性</font>，<font color=FF0000>内联元素以及没有 CSS 样式的元素的 clientWidth 属性值为 0</font>。Element.clientWidth 属性表示元素的内部宽度，以像素计。<font color=FF0000>Element.clientWidth包括内边距 padding</font>，但不包括边框 border、外边距 margin 和垂直滚动条（如果有的话）。
-
-  <mark>该属性值<font color=FF0000>会被四舍五入为一个整数</font></mark>。如果你需要一个小数值，可使用 element.getBoundingClientRect()。
-
-- **HTMLElement.offsetHeight：**<font color=FF0000>只读属性</font>，它返回该元素的像素高度，<font color=FF0000>高度包含该元素的垂直内边距和<font size=4>**边框**</font></font>，<mark>且是一个整数</mark>。
-
-  通常，元素的 offsetHeight 是一种元素CSS高度的衡量标准，<font color=FF0000>包括元素的**边框**、内边距和**元素的水平滚动条**（如果存在且渲染的话），不包含 `:before` 或 `:after` 等伪类元素的高度</font>。
-
-  如果元素被隐藏（例如 元素或者元素的祖先之一的元素的style.display被设置为none），则返回0
-
-- **HTMLElement.offsetWidth：**<font color=FF0000>只读属性</font>，返回一个元素的布局宽度。一个典型的（译者注：各浏览器的offsetWidth可能有所不同）offsetWidth是测量<font color=FF0000>包含元素的边框（border）、水平线上的内边距（padding）、竖直方向滚动条（scrollbar）（如果存在的话）、以及CSS设置的宽度(width)的值</font>。
-
-- **Element.scrollHeight：**
-
-- **Element.scrollWidth：**
-
-- **Element.scrollTop：**Element.scrollTop 属性可以<font color=FF0000>**获取或设置**</font>一个元素的内容垂直滚动的像素数。
-
-  一个元素的 <font color=FF0000>scrollTop 值是这个元素的内容顶部（卷起来的）到它的视口可见内容（的顶部）的距离的度量</font>。当一个元素的内容没有产生垂直方向的滚动条，那么它的 scrollTop 值为0。
-
-  **scrollTop <font color=FF0000>可以被设置为任何整数值</font>，同时注意：**
-
-  - 如果一个元素不能被滚动（例如，它没有溢出，或者这个元素有一个"non-scrollable"属性）， scrollTop将被设置为0。
-  - 设置scrollTop的值小于0，scrollTop 被设为0
-  - 如果设置了超出这个容器可滚动的值, scrollTop 会被设为最大值。
-
-- **Element.scrollLeft：**可以<font color=FF0000>**读取或设置**</font>元素滚动条到元素左边的距离。
-
-  注意<mark>如果这个元素的内容排列方向（direction） 是rtl (right-to-left) ，那么滚动条会位于最右侧（内容开始处），并且scrollLeft值为0</mark>。<font color=FF0000>此时，当你从右到左拖动滚动条时，scrollLeft会从0变为负数</font>。
-
-  **（和scrollTop一样）<font color=FF0000>scrollLeft 可以是任意整数，然而：</font>**
-
-  - 如果元素不能滚动（比如：元素没有溢出），那么 scrollLeft 的值是 0。
-  - 如果给 scrollLeft 设置的值小于0，那么 scrollLeft 的值将变为 0。
-  - 如果给 scrollLeft 设置的值大于元素内容最大宽度，那么 scrollLeft 的值将被设为元素最大宽度。
-
-摘自：[js获取各种高度](https://juejin.cn/post/6844904112111239176) / [JS 获取屏幕、浏览器、页面的高度宽度](https://segmentfault.com/a/1190000010443608) / [MDN - Element.clientHeight](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/clientHeight) / [MDN - Element.clientWidth](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/clientWidth) / [MDN - HTMLElement.offsetHeight](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetHeight) / 
-
-##### 补充
+> cheatsheet
 
 <img src="https://i.loli.net/2021/08/01/klzN3KsWC4niVAg.png" alt="image-20210801191948841" style="zoom:50%;" />
 
 摘自：[现代JS教程 - 元素大小和滚动- 几何](https://zh.javascript.info/size-and-scroll#ji-he)
 
+<font color=red>上面 **`document.body.*`** 有的，一般元素也会有；而 **`window.*` 有的，一般元素没有**</font>
+
+- `Element.clientHeight` ：只读属性，对于没有定义 CSS 或者内联布局盒子的元素为 0；否则，它是元素内部的高度（单位像素）；<font color=red>`Element.clientHeight` **只包含内边距 padding**</font>，不包括水平滚动条（如果有的话）、边框 border 和外边距 margin 。
+
+  `clientHeight` 可以通过 `height + paddingHeight - 水平滚动条高度（如果存在）` 来计算。
+
+  > 💡 因为 scrollbar 是在 content + padding 这一侧的
+
+  `Element.clientHeight` 会将获取的值四舍五入取整数。 如果需要小数结果，请使用 `element.getBoundingClientRect()`
+
+- `Element.clientWidth` ：只读属性，内联元素以及没有 CSS 样式的元素的 `clientWidth` 属性值为 0。`Element.clientWidth` 属性表示元素的内部宽度，以像素计。<font color=red>`Element.clientWidth` **只包括内边距 padding**</font>，不包括垂直滚动条（如果有的话）、边框 border、外边距 margin 。
+
+  该属性值会被四舍五入为一个整数。如果需要一个小数值，可使用 `Element.getBoundingClientRect()`
+
+- `HTMLElement.offsetHeight` ：只读属性，它返回该元素的像素高度，高度包含该元素的垂直内边距和边框，且是一个整数。
+
+  通常，元素的 `offsetHeight` 是一种元素 CSS 高度的衡量标准，包括元素的**边框**、内边距和**元素的水平滚动条**（如果存在且渲染的话），不包含 `::before` 或 `::after` 等伪元素的高度。
+
+  如果元素被隐藏（例如 元素或者元素的祖先之一的元素的 `style.display` 被设置为 `none`），则返回 `0`
+
+- `HTMLElement.offsetWidth` ：只读属性，返回一个元素的布局宽度。一个典型的（译者注：各浏览器的offsetWidth可能有所不同）`offsetWidth` 是测量包含元素的边框 ( border )、水平线上的内边距( padding )、竖直方向滚动条 ( scrollbar )（如果存在的话）、以及 CSS 设置的宽度 ( width ) 的值。
+
+- `Element.scrollHeight`
+
+- `Element.scrollWidth`
+
+- `Element.scrollTop` ：`Element.scrollTop` 属性可以获取或设置一个元素的内容垂直滚动的像素数。
+
+  一个元素的 `scrollTop` 值是这个元素的内容顶部（卷起来的）到它的视口可见内容（的顶部）的距离的度量。当一个元素的内容没有产生垂直方向的滚动条，那么它的 `scrollTop` 值为 0。
+
+  scrollTop 可以被设置为任何整数值，同时注意：
+
+  - 如果一个元素不能被滚动（例如，它没有溢出，或者这个元素有一个 `"non-scrollable"` 属性）， `scrollTop` 将被设置为 `0`。
+  - 设置 `scrollTop` 的值小于 `0` ，`scrollTop` 被设为0
+  - 如果设置了超出这个容器可滚动的值，`scrollTop` 会被设为最大值。
+
+- `Element.scrollLeft` ：可以读取或设置元素滚动条到元素左边的距离。
+
+  注意如果这个元素的内容排列方向 ( direction ) 是 rtl ( right-to-left ) ，那么滚动条会位于最右侧（内容开始处），并且 `scrollLeft` 值为 `0` 。此时，当你从右到左拖动滚动条时，`scrollLeft` 会从0变为负数。
+
+  和 `scrollTop` 一样，`scrollLeft` 可以是任意整数，然而：
+
+  - 如果元素不能滚动（比如：元素没有溢出），那么 `scrollLeft` 的值是 0。
+  - 如果给 `scrollLeft` 设置的值小于0，那么 `scrollLeft` 的值将变为 0。
+  - 如果给 `scrollLeft` 设置的值大于元素内容最大宽度，那么 `scrollLeft` 的值将被设为元素最大宽度。
+
+摘自：[js获取各种高度](https://juejin.cn/post/6844904112111239176) / [JS 获取屏幕、浏览器、页面的高度宽度](https://segmentfault.com/a/1190000010443608) / [MDN - Element.clientHeight](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/clientHeight) / [MDN - Element.clientWidth](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/clientWidth) / [MDN - HTMLElement.offsetHeight](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetHeight) / 
+
 #### Element.getBoundingClientRect()
 
-Element.getBoundingClientRect() 方法<font color=FF0000>返回元素的 大小 及其 相对于视口 ( viewport ) 的位置</font>（ 👀 视口即页面窗口）。
+`Element.getBoundingClientRect()` 方法<font color=FF0000>返回元素的 大小 及其 相对于视口 ( viewport ) 的位置</font>（ 👀 视口即页面窗口）。
 
 如果是 <font color=FF0000>**标准盒子模型**</font>，<font color=FF0000>元素的尺寸等于 `width/height` + `padding` + `border-width` 的总和</font>。如果 <font color=fuchsia>**`box-sizing: border-box`**</font> ，<font color=fuchsia>元素的的尺寸等于 `width/height` </font>。
 
@@ -6986,11 +6986,11 @@ Element.getBoundingClientRect() 方法<font color=FF0000>返回元素的 大小 
 domRect = element.getBoundingClientRect();
 ```
 
-返回值是一个 DOMRect 对象，这个对象是由该元素的 getClientRects() 方法返回的一组矩形的集合，就是该元素的 CSS 边框大小。<font color=FF0000>返回的结果是包含完整元素的最小矩形，并且拥有 <font size=4>**left、top、right、bottom、x、y、width 和 height**</font> 这几个以像素为单位的 **只读属性** 用于描述整个边框</font>。**除了 width 和 height 以外的属性是<font color=FF0000>相对于视图窗口的左上角来计算的</font>**。
+返回值是一个 DOMRect 对象，这个对象是由该元素的 getClientRects() 方法返回的一组矩形的集合，就是该元素的 CSS 边框大小。<font color=FF0000>返回的结果是包含完整元素的最小矩形，并且拥有 left、top、right、bottom、x、y、width 和 height 这几个以像素为单位的 **只读属性** 用于描述整个边框</font>。**除了 width 和 height 以外的属性是<font color=FF0000>相对于视图窗口的左上角来计算的</font>**。
 
-> 👀 需要注意的是 ⚠️：经过实验发现，这里<font color=FF0000>计算 top 和 bottom 值的 ***上界*** 是 ***整个页面（文档）*** 的最上面，而不是 ***当前可视区域*** 的最上面。所以，y 和 height 的值是可以大于 100vh 的</font>。
+> ⚠️ 需要注意的是：经过实验发现，这里<font color=FF0000>计算 top 和 bottom 值的 ***上界*** 是 ***整个页面（文档）*** 的最上面，而不是 ***当前可视区域*** 的最上面。所以，y 和 height 的值是可以大于 100vh 的</font>。
 >
-> 上面说的都是 ***竖向滚动*** 的情况，类似的，如果是 <font color=FF0000>***横向滚动*** 的话，x 和 width 的值也是可以大于 100vw 的</font>（TODO，竖向滚动的情况经过了代码测试，但横向滚动的情况没有经过代码测试；不知道为什么 onscroll 和 addEventListener('scroll', ...) 都不能监听到 横向滚动的事件；应该是我代码写的有问题？）
+> 上面说的都是 ***竖向滚动*** 的情况，类似的，如果是 <font color=FF0000>***横向滚动*** 的话，x 和 width 的值也是可以大于 100vw 的</font>（TODO，竖向滚动的情况经过了代码测试，但横向滚动的情况没有经过代码测试；不知道为什么 onscroll 和 `addEventListener('scroll', ...)` 都不能监听到 横向滚动的事件；应该是我代码写的有问题？）
 
 摘自：[MDN - Element.getBoundingClientRect()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/getBoundingClientRect)
 
