@@ -6920,7 +6920,7 @@ console.log(a); // 10
 
 ##### 一般元素
 
-> cheatsheet
+> 💡 cheatsheet
 
 <img src="https://i.loli.net/2021/08/01/klzN3KsWC4niVAg.png" alt="image-20210801191948841" style="zoom:50%;" />
 
@@ -6940,13 +6940,15 @@ console.log(a); // 10
 
   该属性值会被四舍五入为一个整数。如果需要一个小数值，可使用 `Element.getBoundingClientRect()`
 
-- `HTMLElement.offsetHeight` ：只读属性，它返回该元素的像素高度，高度包含该元素的垂直内边距和边框，且是一个整数。
+- `HTMLElement.offsetHeight` ：只读属性，它返回该元素的像素高度，高度<font color=red>包含该元素的垂直内边距和**边框**</font>，且是一个整数。
 
-  通常，元素的 `offsetHeight` 是一种元素 CSS 高度的衡量标准，包括元素的**边框**、内边距和**元素的水平滚动条**（如果存在且渲染的话），不包含 `::before` 或 `::after` 等伪元素的高度。
+  通常，元素的 `offsetHeight` 是一种元素 CSS 高度的衡量标准，包括元素的**边框**、内边距和**元素的水平滚动条**（如果存在且渲染的话），<font color=red>不包含 `::before` 或 `::after` 等伪元素的高度</font>。
 
   如果元素被隐藏（例如 元素或者元素的祖先之一的元素的 `style.display` 被设置为 `none`），则返回 `0`
 
-- `HTMLElement.offsetWidth` ：只读属性，返回一个元素的布局宽度。一个典型的（译者注：各浏览器的offsetWidth可能有所不同）`offsetWidth` 是测量包含元素的边框 ( border )、水平线上的内边距( padding )、竖直方向滚动条 ( scrollbar )（如果存在的话）、以及 CSS 设置的宽度 ( width ) 的值。
+- `HTMLElement.offsetWidth` ：只读属性，返回一个元素的布局宽度。一个典型的（译者注：各浏览器的`offsetWidth` 可能有所不同）`offsetWidth` 是测量包含元素的边框 border、水平线上的内边距 padding、竖直方向滚动条 scrollbar（如果存在的话）、以及 CSS 设置的宽度 width 的值。
+
+  > 👀 scrollbar 是在 content + padding 这一侧的，所以这里加不加 scrollbar 都无所谓吧？
 
 - `Element.scrollHeight`
 
@@ -6956,7 +6958,7 @@ console.log(a); // 10
 
   一个元素的 `scrollTop` 值是这个元素的内容顶部（卷起来的）到它的视口可见内容（的顶部）的距离的度量。当一个元素的内容没有产生垂直方向的滚动条，那么它的 `scrollTop` 值为 0。
 
-  scrollTop 可以被设置为任何整数值，同时注意：
+  `scrollTop` 可以被设置为任何整数值，同时注意：
 
   - 如果一个元素不能被滚动（例如，它没有溢出，或者这个元素有一个 `"non-scrollable"` 属性）， `scrollTop` 将被设置为 `0`。
   - 设置 `scrollTop` 的值小于 `0` ，`scrollTop` 被设为0
