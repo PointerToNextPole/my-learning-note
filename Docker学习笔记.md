@@ -76,7 +76,7 @@ Linux 容器<font color=fuchsia>不是模拟一个完整的操作系统，而是
 
 ##### Docker 的用途
 
-**Docker 的主要用途，目前有三大类：**
+<font color=dodgerBlue>Docker 的主要用途，目前有三大类：</font>
 
 - <font color=FF0000> **提供一次性的环境**</font>。比如，本地测试他人的软件、持续集成的时候提供单元测试和构建的环境。
 
@@ -272,19 +272,19 @@ $ docker container run -p 8000:3000 -it koa-demo:0.0.1 /bin/bash # 👀 多了�
 
 - `-p` 参数 ：<font color=red>容器的 3000 端口映射</font>（ 👀 影响 ）<font color=red>到本机的 8000 端口</font>
 
-  > 👀 注：<font color=LightSeaGreen>因为本机是无法访问 docker 的端口的，必须要做映射</font>
+  > 👀 <font color=LightSeaGreen>因为本机是无法访问 docker 的端口的，必须要做映射</font>
 
 - `-it` 参数 ：容器的 Shell 映射到当前的 Shell，然后你在本机窗口输入的命令，就会传入容器
 
-  > 👀 注：`-i` 意为 interactive 交互，表示：以 “交互模式” 运行容器；`-t` 意为 terminal 命令行，表示：为容器重新分配一个伪输入终端。
+  > 👀 `-i` 意为 interactive 交互，表示：以 “交互模式” 运行容器；`-t` 意为 terminal 命令行，表示：为容器重新分配一个伪输入终端。
   >
-  > 👀 补充：除了上面所说的 “交互模式”，还有 “detached mode”，即 “分离模式”，用 `-d` 来启用。作用是：后台运行容器，并返回 “容器ID”；类似于 `docker start [containerID]` 的效果。
+  > 💡 除了上面所说的 “交互模式”，还有 “detached mode”，即 “分离模式”，用 `-d` 来启用。作用是：后台运行容器，并返回 “容器ID”；类似于 `docker start [containerID]` 的效果。
 
 - `koa-demo:0.0.1` ：image 文件的名字（如果有标签，还需要提供标签，默认是 latest 标签）
 
 - `/bin/bash` ：<font color=fuchsia>**容器启动以后，内部第一个执行的命令**</font>。这里是启动 Bash，保证用户可以使用 Shell
 
-  > 👀 注：之所以 启用 bash、使用 shell， 是为了后面使用 node 等命令行工具。
+  > 👀 之所以 启用 bash、使用 shell， 是为了后面使用 node 等命令行工具。
 
 如果一切正常，运行上面的命令以后，就会返回一个命令行提示符：
 
@@ -298,7 +298,7 @@ root@66d80f4aaf1e:/app#
 root@66d80f4aaf1e:/app# node demos/01.js
 ```
 
-这时，（ 👀 image 内置的）Koa 框架已经运行起来了。打开本机的浏览器，访问 http://127.0.0.1:8000，网页显示"Not Found"，这是因为这个 [demo](https://github.com/ruanyf/koa-demos/blob/master/demos/01.js) 没有写路由。
+这时，（ 👀 image 内置的）Koa 框架已经运行起来了。打开本机的浏览器，访问 http://127.0.0.1:8000 ，网页显示"Not Found"，这是因为这个 [demo](https://github.com/ruanyf/koa-demos/blob/master/demos/01.js) 没有写路由。
 
 这个例子中，<font color=red>Node 进程运行在 Docker 容器的虚拟环境里面</font>，<font color=fuchsia>进程接触到的文件系统和网络接口都是虚拟的，与本机的文件系统和网络接口是隔离的，因此需要定义容器与物理机的端口映射 ( map )</font>
 
@@ -406,7 +406,7 @@ $ docker image push [username]/[repository]:[tag]
 
 ###### docker container start
 
-> 👀 注：根据 [stack overflow - Is there any difference between docker start and docker container start?](https://stackoverflow.com/questions/51023407/is-there-any-difference-between-docker-start-and-docker-container-start) 的说法：`docker start` 和 `docker container start` 没有区别。也是更常见的写法。
+> 👀 根据 [stack overflow - Is there any difference between docker start and docker container start?](https://stackoverflow.com/questions/51023407/is-there-any-difference-between-docker-start-and-docker-container-start) 的说法：`docker start` 和 `docker container start` 没有区别。也是更常见的写法。
 
 前面的 `docker container run` 命令是新建容器，<font color=LightSeaGreen>每运行一次，就会新建一个容器</font>。同样的命令<font color=LightSeaGreen>运行两次，就会生成两个一模一样的容器文件</font>。<font color=red>如果希望重复使用容器，就要使用 `docker container start` 命令，它用来启动已经生成、已经停止运行的容器文件</font>。
 
@@ -823,3 +823,12 @@ $ docker-compose rm
 ```
 
 摘自：[阮一峰 - Docker 微服务教程](https://www.ruanyifeng.com/blog/2018/02/docker-wordpress-tutorial.html)
+
+
+
+### OrbStack 使用
+
+##### docker context
+
+- `docker context use orbstack`
+- `docker context show`

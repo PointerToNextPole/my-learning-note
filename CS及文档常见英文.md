@@ -1310,6 +1310,13 @@
   > The combination of the two eliminates the need for artificial timeouts - the primary cause of flaky tests.
   >
   > 摘自：[playwright 官网](https://playwright.dev/)
+  
+- **distro** ：发行版
+
+- **sparse** ：稀疏的
+
+  - **sparse matrix** ：稀疏矩阵
+  - **sparse file** ：稀疏文件
 
 
 ***
@@ -2238,3 +2245,5 @@
 - **viewpoint** ：观点
 - **masonry** ：砖石工艺
   > 👀 CSS 中 `grid-template-rows` 有属性 `masonry` ，虽然兼容性非常差... Chrome 直至现在 25/3/16 完全不支持，Safari 还在 TP 阶段，Firefox 属于 Flag 功能
+  
+- **feasible** ：可行

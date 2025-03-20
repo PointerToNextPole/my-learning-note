@@ -1080,7 +1080,9 @@ killall [参数] [进程名]
 
 摘自：[Linux 命令详解（三）./configure、make、make install 命令](https://www.cnblogs.com/tinywan/p/7230039.html)
 
-> 👀 注：关于 make、makefile、cmake 等的区别，可以参考：[make makefile cmake qmake都是什么，有什么区别？ - 知乎](https://www.zhihu.com/question/27455963) 这里暂时不做笔记。
+> 👀 
+>
+> 关于 make、makefile、cmake 等的区别，可以参考：[make makefile cmake qmake都是什么，有什么区别？ - 知乎](https://www.zhihu.com/question/27455963) 这里暂时不做笔记。
 
 
 
@@ -1105,6 +1107,14 @@ killall [参数] [进程名]
   ```
 
 摘自：[ssh用法及命令](https://blog.csdn.net/pipisorry/article/details/52269785)（后面还有更深层次的内容，有空看完）
+
+
+
+#### zsh 命令
+
+##### history
+
+- `history 0` ：zsh 查看命令记录
 
 
 
