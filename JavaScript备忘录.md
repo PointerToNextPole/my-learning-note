@@ -4784,8 +4784,6 @@ asyncFn() // 1 比 queueMicrotask fn 先打印
 
 
 
-
-
 #### JavaScript 代码规范
 
 代码规范通常包括以下几个方面:
@@ -15514,6 +15512,301 @@ expr1 &&= expr2
 
 
 
+#### 运算符优先级汇总表
+
+下面的表格将所有运算符按照优先级的不同从高（19）到低（1）排列。
+
+请注意，下表中故意不包含[展开语法](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Spread_syntax)——原因可以引用 [Stack Overflow 上的一个回答](https://stackoverflow.com/a/48656377)，“[展开语法不是一个运算符](https://stackoverflow.com/q/44934828/1048572)，因此没有优先级。它是数组字面量和函数调用（和对象字面量）语法的一部分。”
+
+<table class="fullwidth-table">
+    <tbody>
+        <tr>
+            <th>优先级</th>
+            <th>运算符类型</th>
+            <th>结合性</th>
+            <th>运算符</th>
+        </tr>
+        <tr>
+            <td>19</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Grouping">分组</a></td>
+            <td>n/a（不相关）</td>
+            <td><code>( … )</code></td>
+        </tr>
+        <tr>
+            <td rowspan="5">18</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Property_accessors#点号表示法">成员访问</a></td>
+            <td>从左到右</td>
+            <td><code>… . …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Property_accessors#方括号表示法">需计算的成员访问</a></td>
+            <td>从左到右</td>
+            <td><code>… [ … ]</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/new"><code>new</code></a>（带参数列表）</td>
+            <td>n/a</td>
+            <td><code>new … ( … )</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Guide/Functions">函数调用</a></td>
+            <td>从左到右</td>
+            <td><code>… ( <var>… </var>)</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Optional_chaining">可选链（Optional chaining）</a></td>
+            <td>从左到右</td>
+            <td><code>?.</code></td>
+        </tr>
+        <tr>
+            <td>17</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/new"><code>new</code></a>（无参数列表）</td>
+            <td>从右到左</td>
+            <td><code>new …</code></td>
+        </tr>
+        <tr>
+            <td rowspan="2">16</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators#自增和自减">后置递增</a></td>
+            <td rowspan="2">n/a</td>
+            <td><code>… ++</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators#自增和自减">后置递减</a></td>
+            <td><code>… --</code></td>
+        </tr>
+        <tr>
+            <td rowspan="10">15</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Logical_NOT">逻辑非 (!)</a></td>
+            <td rowspan="10">从右到左</td>
+            <td><code>! …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Bitwise_NOT">按位非 (~)</a></td>
+            <td><code>~ …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Unary_plus">一元加法 (+)</a></td>
+            <td><code>+ …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Unary_negation">一元减法 (-)</a></td>
+            <td><code>- …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators#自增和自减">前置递增</a></td>
+            <td><code>++ …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators#自增和自减">前置递减</a></td>
+            <td><code>-- …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/typeof"><code>typeof</code></a></td>
+            <td><code>typeof …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/void"><code>void</code></a></td>
+            <td><code>void …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/delete"><code>delete</code></a></td>
+            <td><code>delete …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/await"><code>await</code></a></td>
+            <td><code>await …</code></td>
+        </tr>
+        <tr>
+            <td>14</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Exponentiation">幂 (**)</a></td>
+            <td>从右到左</td>
+            <td><code>… ** …</code></td>
+        </tr>
+        <tr>
+            <td rowspan="3">13</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Multiplication">乘法 (*)</a></td>
+            <td rowspan="3">从左到右</td>
+            <td><code>… * …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Division">除法 (/)</a></td>
+            <td><code>… / …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Remainder">取余 (%)</a></td>
+            <td><code>… % …</code></td>
+        </tr>
+        <tr>
+            <td rowspan="2">12</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Addition">加法 (+)</a></td>
+            <td rowspan="2">从左到右</td>
+            <td><code>… + …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Subtraction">减法 (-)</a></td>
+            <td><code>… - …</code></td>
+        </tr>
+        <tr>
+            <td rowspan="3">11</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Left_shift">按位左移 (&lt;&lt;)</a></td>
+            <td rowspan="3">从左到右</td>
+            <td><code>… &lt;&lt; …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Right_shift">按位右移 (&gt;&gt;)</a></td>
+            <td><code>… &gt;&gt; …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Unsigned_right_shift">无符号右移 (&gt;&gt;&gt;)</a></td>
+            <td><code>… &gt;&gt;&gt; …</code></td>
+        </tr>
+        <tr>
+            <td rowspan="6">10</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Less_than">小于 (&lt;)</a></td>
+            <td rowspan="6">从左到右</td>
+            <td><code>… &lt; …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Less_than_or_equal">小于等于 (&lt;=)</a></td>
+            <td><code>… &lt;= …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Greater_than">大于 (&gt;)</a></td>
+            <td><code>… &gt; …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Greater_than_or_equal">大于等于 (&gt;=)</a></td>
+            <td><code>… &gt;= …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/in"><code>in</code></a></td>
+            <td><code>… in …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/instanceof"><code>instanceof</code></a></td>
+            <td><code>… instanceof …</code></td>
+        </tr>
+        <tr>
+            <td rowspan="4">9</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Equality">相等 (==)</a></td>
+            <td rowspan="4">从左到右</td>
+            <td><code>… == …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Inequality">不相等 (!=)</a></td>
+            <td><code>… != …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Strict_equality">一致/严格相等 (===)</a></td>
+            <td><code>… === …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Strict_inequality">不一致/严格不相等 (!==)</a></td>
+            <td><code>… !== …</code></td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Bitwise_AND">按位与 (&amp;)</a></td>
+            <td>从左到右</td>
+            <td><code>… &amp; …</code></td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Bitwise_XOR">按位异或 (^)</a></td>
+            <td>从左到右</td>
+            <td><code>… ^ …</code></td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Bitwise_OR">按位或 (|)</a></td>
+            <td>从左到右</td>
+            <td><code>… | …</code></td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Logical_AND">逻辑与 (&amp;&amp;)</a></td>
+            <td>从左到右</td>
+            <td><code>… &amp;&amp; …</code></td>
+        </tr>
+        <tr>
+            <td rowspan="2">4</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Logical_OR">逻辑或 (||)</a></td>
+            <td>从左到右</td>
+            <td><code>… || …</code></td>
+        </tr>
+        <tr>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing">空值合并 (??)</a></td>
+            <td>从左到右</td>
+            <td><code>… ?? …</code></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Conditional_operator">条件（三元）运算符</a></td>
+            <td>从右到左</td>
+            <td><code>… ? … : …</code></td>
+        </tr>
+        <tr>
+            <td rowspan="16">2</td>
+            <td rowspan="16"><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators#赋值运算符">赋值</a></td>
+            <td rowspan="16">从右到左</td>
+            <td><code>… = …</code></td>
+        </tr>
+        <tr>
+            <td><code>… += …</code></td>
+        </tr>
+        <tr>
+            <td><code>… -= …</code></td>
+        </tr>
+        <tr>
+            <td><code>… **= …</code></td>
+        </tr>
+        <tr>
+            <td><code>… *= …</code></td>
+        </tr>
+        <tr>
+            <td><code>… /= …</code></td>
+        </tr>
+        <tr>
+            <td><code>… %= …</code></td>
+        </tr>
+        <tr>
+            <td><code>… &lt;&lt;= …</code></td>
+        </tr>
+        <tr>
+            <td><code>… &gt;&gt;= …</code></td>
+        </tr>
+        <tr>
+            <td><code>… &gt;&gt;&gt;= …</code></td>
+        </tr>
+        <tr>
+            <td><code>… &amp;= …</code></td>
+        </tr>
+        <tr>
+            <td><code>… ^= …</code></td>
+        </tr>
+        <tr>
+            <td><code>… |= …</code></td>
+        </tr>
+        <tr>
+            <td><code>… &amp;&amp;= …</code></td>
+        </tr>
+        <tr>
+            <td><code>… ||= …</code></td>
+        </tr>
+        <tr>
+            <td><code>… ??= …</code></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td><a href="/zh-CN/docs/Web/JavaScript/Reference/Operators/Comma_operator">逗号 / 序列</a></td>
+            <td>从左到右</td>
+            <td><code>… , …</code></td>
+        </tr>
+    </tbody>
+</table>
+
+
+
 #### ArrayBuffer
 
 ArrayBuffer 对象用来表示<font color=FF0000>通用的、固定长度</font>的<font color=FF0000>原始二进制数据缓冲区</font>。
@@ -15590,7 +15883,9 @@ Float64Array();
 - `object` ：当传入一个 object 作为参数时，就像通过 TypedArray.from() 方法创建一个新的类型化数组一样。
 - `buffer, byteOffset, length` ：当传入一个 buffer 参数，或者再另外加上可选参数 byteOffset 和 length 时，一个新的类型化数组视图将会被创建，并可用于呈现传入的 ArrayBuffer 实例。byteOffset 和length 参数指定了类型化数组视图将要暴露的内存范围。如果两者都未传入，那么整个 buffer 都会被呈现；如果仅仅忽略 length，那么 buffer 中偏移了 byteOffset 后剩下的 buffer 将会被呈现
 
-摘自：[MDN - TypedArray](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) 👀 注：22/8/27 原链接中的内容已经完全修改，摘抄内容不可见，原链接的内容见 [archive.org - MDN - TypedArray](https://web.archive.org/web/20220407042514/https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
+摘自：[MDN - TypedArray](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) 
+
+> 👀 22/8/27 原链接中的内容已经完全修改，摘抄内容不可见，原链接的内容见 [archive.org - MDN - TypedArray](https://web.archive.org/web/20220407042514/https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
 
 
 

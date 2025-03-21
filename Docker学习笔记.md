@@ -618,7 +618,9 @@ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 
 - **`--name="nginx-lb"`** ：为容器指定一个名称
 
-  > 👀 补充：除了上面的 `--name="targetName"` ，也可以使用 `--name targetName` ；这两个都可以在 [Docker Doc - Docker run reference](https://docs.docker.com/engine/reference/run/#docker-run-reference) 中找到的
+  > 💡 补充
+  >
+  > 除了上面的 `--name="targetName"` ，也可以使用 `--name targetName` ；这两个都可以在 [Docker Doc - Docker run reference](https://docs.docker.com/engine/reference/run/#docker-run-reference) 中找到的
 
 - **`--dns 8.8.8.8`** ：指定容器使用的 DNS 服务器，默认和宿主一致；
 
@@ -628,7 +630,7 @@ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 
 - **`[--env | -e] username="ritchie"`** ：设置环境变量
 
-  > 👀 补充：
+  > 💡补充
   >
   > `-e` / `--env` 使用示例：`--env MYSQL_ROOT_PASSWORD=123456`：向容器进程传入一个环境变量 `MYSQL_ROOT_PASSWORD`，该变量会被用作 MySQL 的根密码。
   >
@@ -747,7 +749,7 @@ docker diff [OPTIONS] CONTAINER
 docker attach [OPTIONS] CONTAINER
 ```
 
-要 attach 上去的容器必须正在运行，可以同时连接上同一个container来共享屏幕（与 screen 命令的attach类似）。
+要 attach 上去的容器必须正在运行，可以同时连接上同一个container来共享屏幕（与 screen 命令的 `attach` 类似）。
 
 官方文档中说 attach 后可以通过 CTRL-C 来 detach，但实际上经过我的测试，如果 container 当前在运行 bash，CTRL-C 自然是当前行的输入，没有退出；如果 container 当前正在前台运行进程，如输出 nginx 的 access.log 日志，CTRL-C 不仅会导致退出容器，而且还stop 了。这不是我们想要的，detach 的意思按理应该是脱离容器终端，但容器依然运行。好在 attach 是可以带上`--sig-proxy=false` 来确保 CTRL-D 或 CTRL-C 不会关闭容器。
 
@@ -800,7 +802,7 @@ web:
 
 上面代码中，两个顶层标签表示有两个容器 `mysql `和  `web` 。每个容器的具体设置，前面都已经讲解过了，还是挺容易理解的。
 
-> 👀 注：这里的 `docker-compose.yml` 是老版本的，在 当前 `Docker Compose version v2.10.2` 环境下无法运行，尝试在顶层加上 `services:` 也还是有问题，暂时没时间仔细研究，这里略。
+> 👀 这里的 `docker-compose.yml` 是老版本的，在 当前 `Docker Compose version v2.10.2` 环境下无法运行，尝试在顶层加上 `services:` 也还是有问题，暂时没时间仔细研究，这里略。
 
 启动两个容器：
 
