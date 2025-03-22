@@ -6,7 +6,7 @@
 
 在传统的开发模式中，开发的整个过程是按部就班就行：
 
-<img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtt2wf9lezj60xc0b40u102.jpg" alt="早期的开发模式" style="zoom:67%;" />
+<img src="https://s2.loli.net/2025/03/23/VjkB6pdHelsTgQq.jpg" alt="早期的开发模式" style="zoom:67%;" />
 
 但是这种模式存在很大的弊端：
 
@@ -19,9 +19,9 @@
 
 DevOps是Development和Operations两个词的结合，将开发和运维结合起来的模式：
 
-![打开格局](https://tva1.sinaimg.cn/large/008i3skNgy1gtt32mnaj8j60k007ngmc02.jpg)
+![打开格局](https://s2.loli.net/2025/03/23/tqWRx5uzP3yEFne.jpg)
 
-<img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtt33f78kdj60fk0fkgmc02.jpg" alt="DevOps模式" style="zoom:67%;" />
+<img src="https://s2.loli.net/2025/03/23/z72bprFALVmUeu8.jpg" alt="DevOps模式" style="zoom:67%;" />
 
 ### 1.3. 持续集成和持续交付
 
@@ -70,27 +70,21 @@ DevOps是Development和Operations两个词的结合，将开发和运维结合�
 
 购买云服务器其实是购买一个实例。
 
-1.来到控制台：
+1. 来到控制台：
 
-![image-20201204152032769](https://tva1.sinaimg.cn/large/0081Kckwgy1glbumqekwhj31ct0p8grl.jpg)
-
-
-
-2.创建实例，选择类型和配置
-
-![image-20201204152133800](https://tva1.sinaimg.cn/large/008i3skNgy1guar9m17gwj60qk06mq3j02.jpg)
-
-![image-20201203103047329](https://tva1.sinaimg.cn/large/008i3skNgy1guar9qg1rhj61b00p7whx02.jpg)
-
-3.配置网络安全组
-
-![image-20201203103725892](https://tva1.sinaimg.cn/large/0081Kckwgy1glagts0xxuj31at0nyq87.jpg)
+![image-20201204152032769](https://s2.loli.net/2025/03/23/qPnxwuS3N9D1zQV.jpg)
 
 
 
-4.创建实例
+2. 创建实例，选择类型和配置
 
-![image-20201203104249296](https://tva1.sinaimg.cn/large/0081Kckwgy1glagzdiwnpj31bk0o5433.jpg)
+3. 配置网络安全组
+
+![image-20201203103725892](https://s2.loli.net/2025/03/23/mdgSs2hAw4RolLK.jpg)
+
+4. 创建实例
+
+![image-20201203104249296](https://s2.loli.net/2025/03/23/6SWikcZzfHp4sUu.jpg)
 
 
 
@@ -127,7 +121,7 @@ rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
 rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
 ```
 
-编辑一下文件/etc/yum.repos.d/jenkins.repo
+编辑一下文件 `/etc/yum.repos.d/jenkins.repo`
 
 * 可以通过vim编辑
 
@@ -155,9 +149,9 @@ systemctl status jenkins
 systemctl enable jenkins
 ```
 
-Jenkins默认使用8080端口提供服务，所以需要加入到安全组中：
+Jenkins 默认使用8080端口提供服务，所以需要加入到安全组中：
 
-![image-20201204173117359](https://tva1.sinaimg.cn/large/0081Kckwgy1glbyeoz6tqj315w0bzmzj.jpg)
+![image-20201204173117359](https://s2.loli.net/2025/03/23/XQ5AMUPDZsWldCn.jpg)
 
 
 
@@ -189,11 +183,11 @@ systemctl restart jenkins
 
 * 在下面的地址中 `cat /var/lib/jenkins/secrets/initialAdminPassword`
 
-![image-20201203173047824](/Users/coderwhy/Library/Application Support/typora-user-images/image-20201203173047824.png)
+![image-20201203173047824](https://s2.loli.net/2025/03/23/Vz36k5ZNfa8wSpv.png)
 
 可以安装推荐的插件：
 
-![安装推荐的插件](https://tva1.sinaimg.cn/large/0081Kckwgy1glbylb26ouj30fb082js7.jpg)
+![安装推荐的插件](https://s2.loli.net/2025/03/23/Xwv8tlxe2dKnUmW.jpg)
 
 
 
@@ -201,17 +195,17 @@ systemctl restart jenkins
 
 **新建任务：**
 
-![新建任务](https://tva1.sinaimg.cn/large/0081Kckwgy1glc0uinjzej30pa0fet9z.jpg)
+![新建任务](https://s2.loli.net/2025/03/23/SCxjtXuPq1yifJR.jpg)
 
-![image-20201204185613061](https://tva1.sinaimg.cn/large/0081Kckwgy1glc0v225vaj30wl0hkn05.jpg)
+![image-20201204185613061](https://s2.loli.net/2025/03/23/QjwqlKIbYUzrPuS.jpg)
 
 **配置项目和保留策略：**
 
-![image-20210825160744119](https://tva1.sinaimg.cn/large/008i3skNgy1gtt3l4fjm6j614p0d2dgl02.jpg)
+![image-20210825160744119](https://s2.loli.net/2025/03/23/5HnFcrbZXGIuy1m.jpg)
 
 **源码管理：**
 
-![image-20210825160818122](https://tva1.sinaimg.cn/large/008i3skNgy1gtt3lpcvtgj614k0j8jsn02.jpg)
+![image-20210825160818122](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/aba21574b5b84649a7f044126f590822~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.jpg)
 
 **构建触发器：**
 
@@ -241,7 +235,7 @@ H/30 8-20/4 * * 1,3,5
 
 
 
-![触发器](https://tva1.sinaimg.cn/large/008i3skNgy1gtt419gw6tj614g0agmy402.jpg)
+![触发器](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/16611d134a5042d2b5d9ac488f94dfdb~tplv-k3u1fbpfcp-jj-mark:3024:0:0:0:q75.jpg)
 
 **构建环境：**
 
@@ -250,17 +244,17 @@ H/30 8-20/4 * * 1,3,5
 * 第一步：配置Node的环境；
 * 第二步：安装Node的插件；
 
-![image-20201204190055096](https://tva1.sinaimg.cn/large/0081Kckwgy1glc0zyecd4j31ar0ecjuz.jpg)
+![image-20201204190055096](https://s2.loli.net/2025/03/23/Z1CkNEchlm2wbqf.jpg)
 
 第一步：配置Node的环境
 
-![node环境](https://tva1.sinaimg.cn/large/008i3skNgy1gtt42elwduj614h0elwfq02.jpg)
+![node环境](https://s2.loli.net/2025/03/23/BfvGxO8PAoJqUSF.jpg)
 
 第二步：安装Node的插件
 
 * 这里因为我已经安装过了，所以没有搜索到；
 
-![image-20201204185949452](https://tva1.sinaimg.cn/large/0081Kckwgy1glc0yta64bj30r907caam.jpg)
+![image-20201204185949452](https://s2.loli.net/2025/03/23/86HmhjZkfNBtEor.jpg)
 
 
 
@@ -293,7 +287,7 @@ cp -rf ./dist/* /root/mall_cms/
 
 
 
-![执行构建任务](https://tva1.sinaimg.cn/large/008i3skNgy1gtt43sz933j614o0dy0tk02.jpg)
+![执行构建任务](https://s2.loli.net/2025/03/23/9SKFMV1hnG4CfQa.jpg)
 
 
 
@@ -323,7 +317,7 @@ systemctl enable nginx
 
 配置用户：
 
-![image-20210825163329209](https://tva1.sinaimg.cn/large/008i3skNgy1gtt4bwvxc4j60f30453yk02.jpg)
+![image-20210825163329209](https://s2.loli.net/2025/03/23/HE7tjNGTvezVU6s.jpg)
 
 
 
@@ -341,7 +335,7 @@ vi index.html
 
 配置访问目录：
 
-![image-20210825163406566](https://tva1.sinaimg.cn/large/008i3skNgy1gtt4cka6hgj60n00bwgmc02.jpg)
+![image-20210825163406566](https://s2.loli.net/2025/03/23/L3rkEWCXTx48sYU.jpg)
 
 
 
