@@ -1317,6 +1317,9 @@
 
   - **sparse matrix** ：稀疏矩阵
   - **sparse file** ：稀疏文件
+  
+- **capacitor** ：电容
+- **facet** ：方面
 
 
 ***
@@ -2247,3 +2250,4 @@
   > 👀 CSS 中 `grid-template-rows` 有属性 `masonry` ，虽然兼容性非常差... Chrome 直至现在 25/3/16 完全不支持，Safari 还在 TP 阶段，Firefox 属于 Flag 功能
   
 - **feasible** ：可行
+- **whereby** ：凭此，以此方式
