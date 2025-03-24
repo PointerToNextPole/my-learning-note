@@ -6947,6 +6947,8 @@ console.log(a); // 10
 - `HTMLElement.offsetWidth` ：只读属性，返回一个元素的布局宽度。一个典型的（译者注：各浏览器的`offsetWidth` 可能有所不同）`offsetWidth` 是测量包含元素的边框 border、水平线上的内边距 padding、竖直方向滚动条 scrollbar（如果存在的话）、以及 CSS 设置的宽度 width 的值。
 
   > 👀 scrollbar 是在 content + padding 这一侧的，所以这里加不加 scrollbar 都无所谓吧？
+  
+- `HTMLElement.offsetTop` ：返回当前元素相对于其 [`offsetParent`](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetParent "offsetParent") 元素的顶部内边距的距离
 
 - `Element.scrollHeight`
 
@@ -6954,22 +6956,22 @@ console.log(a); // 10
 
 - `Element.scrollTop` ：`Element.scrollTop` 属性可以获取或设置一个元素的内容垂直滚动的像素数。
 
-  一个元素的 `scrollTop` 值是这个元素的内容顶部（卷起来的）到它的视口可见内容（的顶部）的距离的度量。当一个元素的内容没有产生垂直方向的滚动条，那么它的 `scrollTop` 值为 0。
+  一个元素的 `scrollTop` 值是这个元素的内容顶部（卷起来的）到它的视口可见内容（的顶部）的距离的度量。当一个元素的内容没有产生垂直方向的滚动条，那么它的 `scrollTop` 值为 `0`。
 
   `scrollTop` 可以被设置为任何整数值，同时注意：
 
   - 如果一个元素不能被滚动（例如，它没有溢出，或者这个元素有一个 `"non-scrollable"` 属性）， `scrollTop` 将被设置为 `0`。
-  - 设置 `scrollTop` 的值小于 `0` ，`scrollTop` 被设为0
+  - 设置 `scrollTop` 的值小于 `0` ，`scrollTop` 被设为 `0`
   - 如果设置了超出这个容器可滚动的值，`scrollTop` 会被设为最大值。
 
 - `Element.scrollLeft` ：可以读取或设置元素滚动条到元素左边的距离。
 
-  注意如果这个元素的内容排列方向 ( direction ) 是 rtl ( right-to-left ) ，那么滚动条会位于最右侧（内容开始处），并且 `scrollLeft` 值为 `0` 。此时，当你从右到左拖动滚动条时，`scrollLeft` 会从0变为负数。
+  注意如果这个元素的内容排列方向 ( direction ) 是 rtl ( right-to-left ) ，那么滚动条会位于最右侧（内容开始处），并且 `scrollLeft` 值为 `0` 。此时，当你从右到左拖动滚动条时，`scrollLeft` 会从 `0` 变为负数。
 
   和 `scrollTop` 一样，`scrollLeft` 可以是任意整数，然而：
 
-  - 如果元素不能滚动（比如：元素没有溢出），那么 `scrollLeft` 的值是 0。
-  - 如果给 `scrollLeft` 设置的值小于0，那么 `scrollLeft` 的值将变为 0。
+  - 如果元素不能滚动（比如：元素没有溢出），那么 `scrollLeft` 的值是 `0`。
+  - 如果给 `scrollLeft` 设置的值小于 `0` ，那么 `scrollLeft` 的值将变为 `0`。
   - 如果给 `scrollLeft` 设置的值大于元素内容最大宽度，那么 `scrollLeft` 的值将被设为元素最大宽度。
 
 摘自：[js获取各种高度](https://juejin.cn/post/6844904112111239176) / [JS 获取屏幕、浏览器、页面的高度宽度](https://segmentfault.com/a/1190000010443608) / [MDN - Element.clientHeight](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/clientHeight) / [MDN - Element.clientWidth](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/clientWidth) / [MDN - HTMLElement.offsetHeight](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetHeight) / 

@@ -765,9 +765,9 @@ docker attach [OPTIONS] CONTAINER
 
 ```sh
 # 启动所有服务
-$ docker-compose up
+$ docker compose up
 # 关闭所有服务
-$ docker-compose stop
+$ docker compose stop
 ```
 
 Mac 和 Windows 在安装 docker 的时候，会一起安装 docker compose。Linux 系统下的安装参考[官方文档](https://docs.docker.com/compose/install/#install-compose)。
@@ -775,7 +775,7 @@ Mac 和 Windows 在安装 docker 的时候，会一起安装 docker compose。Li
 安装完成后，运行下面的命令：
 
 ```sh
-$ docker-compose --version
+$ docker compose --version
 ```
 
 ##### 示例
@@ -807,21 +807,21 @@ web:
 启动两个容器：
 
 ```sh
-$ docker-compose up
+$ docker compose up
 ```
 
-浏览器访问 http://127.0.0.3:8080，应该就能看到 WordPress 的安装界面。
+浏览器访问 http://127.0.0.3:8080 ，应该就能看到 WordPress 的安装界面。
 
 现在关闭两个容器：
 
 ```sh
-$ docker-compose stop
+$ docker compose stop
 ```
 
 <font color=red>关闭以后，这两个容器文件还是存在的，写在里面的数据不会丢失；下次启动的时候，还可以复用</font>。下面的命令可以把这两个容器文件删除（容器必须已经停止运行）。
 
 ```sh
-$ docker-compose rm
+$ docker compose rm
 ```
 
 摘自：[阮一峰 - Docker 微服务教程](https://www.ruanyifeng.com/blog/2018/02/docker-wordpress-tutorial.html)
