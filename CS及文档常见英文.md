@@ -2251,3 +2251,8 @@
   
 - **feasible** ：可行
 - **whereby** ：凭此，以此方式
+- **tinker** ：修补者、修补工
+- **slate** ：石板
+- **discrepancy** ：差异
+- **by and large** ：总的来说
+- **without further ado** ：不必多说、毋庸置疑
