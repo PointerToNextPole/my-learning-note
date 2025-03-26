@@ -1320,6 +1320,7 @@
   
 - **capacitor** ：电容
 - **facet** ：方面
+- **entropy** ：熵
 
 
 ***

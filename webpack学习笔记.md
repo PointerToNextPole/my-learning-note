@@ -95,7 +95,12 @@ In the example above, we use the <font color=FF0000>`output.filename`</font> and
 
 ##### Loaders
 
-<mark style="background: lightpink">**Out of the box**</mark> , <font color=FF0000 size=4>webpack **only understands JavaScript and JSON** files</font>（译文：webpack 只能理解 JavaScript 和 JSON 文件，<mark style="background: lightpink">**这是 webpack 开箱可用的自带能力**</mark>）. <font color=FF0000 size=4>**Loaders** allow webpack to **process other types of files** and **convert them into valid [modules](https://webpack.js.org/concepts/modules)** that **can be consumed by your application** and **added to the dependency graph**</font>.
+> [!TIP]
+> Loader 本质是文件处理管道
+> 
+> 摘自：[面试问题：前端哪个页面最难写？ - Code Nymph的文章 - 知乎](https://zhuanlan.zhihu.com/p/30974333827)
+
+Out of the box , <font color=FF0000 size=4>webpack **only understands JavaScript and JSON** files</font>（译文：webpack 只能理解 JavaScript 和 JSON 文件，这是 webpack 开箱可用的自带能力）. <font color=FF0000 size=4>**Loaders** allow webpack to **process other types of files** and **convert them into valid [modules](https://webpack.js.org/concepts/modules)** that **can be consumed by your application** and **added to the dependency graph**</font>.
 
 At a high level, **loaders** have two properties in your webpack configuration:
 
@@ -8012,7 +8017,7 @@ function bar() {
 >
 > 学习自：[Webpack 中的 sideEffects 到底该怎么用？ - kuitos的文章 - 知乎](https://zhuanlan.zhihu.com/p/40052192)
 
-*Tree shaking* is a term commonly used in the JavaScript context for dead-code elimination（消除）. <font color=FF0000>**It relies on the [static structure](http://exploringjs.com/es6/ch_modules.html#static-module-structure) of ES2015 module syntax , i.e. `import` and `export`**</font> . The name and concept have <font color=FF0000>**been popularized by the ES2015 module bundler [rollup](https://github.com/rollup/rollup)**</font> .
+*Tree shaking* is a term commonly used in the JavaScript context for dead-code elimination（消除）. <font color=FF0000>**It relies on the [static structure](http://exploringjs.com/es6/ch_modules.html#static-module-structure) of ES2015 module syntax , i.e. `import` and `export`**</font> . <font color=lightSeaGreen>The name and concept have **been popularized by the ES2015 module bundler [rollup](https://github.com/rollup/rollup)**</font> .
 
 The **webpack 2** release came with built-in support for ES2015 modules (alias *harmony modules*) as well as <font color=FF0000>unused module export detection</font> . The new **webpack 4** release expands on this capability with <font color=fuchsia>a way to **provide hints to the compiler via the `"sideEffects"` `package.json` property** to denote</font>（表示） which files in your project are "pure" and therefore safe to prune（剪枝） if unused.
 
@@ -9193,7 +9198,7 @@ _join: ['lodash', 'join']
 rules: [{
   test: /\.js$/,
   exclude: /node_modules/,
-  user: [{
+  use: [{
     loader: 'babel-loader'
   }, {
     loader: 'imports-loader?this=>window'
@@ -10220,7 +10225,7 @@ module.exports = {
     rules: [{
       test: [{
         test: /\.tsx?$/,
-        user: 'ts-loader',
+        use: 'ts-loader',
         exclude: /node_modules/
       }]
     }]
@@ -11412,7 +11417,7 @@ module.exports = {
   module: {
     rules: [{
       test: /.\js/,
-      user: [{
+      use: [{
         // 这里即可以不使用 path.resolve 了
         loader: 'replaceLoader'
       }]
@@ -11860,9 +11865,9 @@ CSS代码分割，在打包时，将css代码分为多个文件；并给出生�
 - Code Splitting: 将代码按路由维度或者组件分块(chunk),这样做到按需加载,同时可以充分利⽤浏览器缓存
   提取公共第三⽅库: SplitChunksPlugin插件来进⾏公共模块抽取,利⽤浏览器缓存可以⻓期缓存这些⽆需频繁变动的公共代码
 
-#### webpack treeShaking机制的原理
+#### webpack Tree-Shaking机制的原理
 
-- treeShaking 也叫摇树优化，是一种通过移除多于代码，来优化打包体积的，生产环境默认开启。
+- Tree-Shaking 也叫摇树优化，是一种通过移除多于代码，来优化打包体积的，生产环境默认开启。
 
 - 可以在代码不运行的状态下，分析出不需要的代码；
 
