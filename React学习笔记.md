@@ -91,6 +91,14 @@ Functions starting with `use` are called *Hooks*. `useState` is a built-in Hook 
 
 <font color=red>**Hooks are more restrictive than other functions**</font>. You <font color=fuchsia>**can only**</font> <font color=red>call Hooks *at the top* of your components (or other Hooks)</font>. <font color=dodgerBlue>If you want to use `useState` in a condition or a loop</font>, <font color=fuchsia>**extract a new component and put it there**</font>.
 
+> 💡 关于为什么 Hooks 只能在 组件 或其他 hooks 的顶层使用，文章 [React 实现自动上报 pv/click 的埋点 hooks](https://juejin.cn/post/7175914445057556539) 给出了解释：
+> 
+> > 自定义 hooks 内部至少要有一个 React Hooks，那么自定义 hooks 也同样要遵循 React Hooks 的规则，**不能放在条件语句中，而且要保持执行顺序的一致性。** 这是为什么呢？
+> > > 这是因为在更新过程中，如果通过 if 条件语句，增加或者删除 hooks，那么在复用 hooks 的过程中，会产生复用 hooks 状态和当前 hooks 不一致的问题。所以在开发时一定要注意 hooks 顺序的一致性。
+> 
+> 看起来应该是为了保证 Hooks 的幂等性
+
+
 摘自：[React doc - Quick Start](https://react.dev/learn)
 
 

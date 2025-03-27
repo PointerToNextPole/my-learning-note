@@ -1321,7 +1321,11 @@
 - **capacitor** ：电容
 - **facet** ：方面
 - **entropy** ：熵
+- **cohesive** ：内聚的，有结合力的、有凝聚力的
 
+  > On the other hand, if you split up a cohesive piece of logic into separate Effects, the code may look “cleaner” but will be more difficult to maintain.
+  >
+  > 摘自：[React doc - Lifecycle of Reactive Effects # Each Effect represents a separate synchronization process](https://react.dev/learn/lifecycle-of-reactive-effects#each-effect-represents-a-separate-synchronization-process)
 
 ***
 
@@ -1898,12 +1902,6 @@
 
   ![image-20240413171033582](https://s2.loli.net/2024/04/13/9chERBmHLP8AJy3.png)
 
-- **cohesive** ：有结合力的、有凝聚力的
-
-  > On the other hand, if you split up a cohesive piece of logic into separate Effects, the code may look “cleaner” but will be more difficult to maintain.
-  >
-  > 摘自：[React doc - Lifecycle of Reactive Effects # Each Effect represents a separate synchronization process](https://react.dev/learn/lifecycle-of-reactive-effects#each-effect-represents-a-separate-synchronization-process)
-
 - **rather** ：相当的
 
   > The user will get rather upset if you send their message at any other time or for any other reason.
@@ -2257,3 +2255,4 @@
 - **discrepancy** ：差异
 - **by and large** ：总的来说
 - **without further ado** ：不必多说、毋庸置疑
+- **manifesto** ：宣言
