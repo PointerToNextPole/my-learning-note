@@ -1410,6 +1410,11 @@
 
 摘自：[Google搜索特殊字符的方法](https://blog.csdn.net/LongZh_CN/article/details/14453317)
 
+##### 希腊字符
+
+可以参考 [[Latex使用笔记#希腊字符]] 中的内容
+
+
 
 
 ### 前后缀

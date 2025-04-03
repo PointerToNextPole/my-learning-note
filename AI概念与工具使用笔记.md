@@ -130,11 +130,11 @@ RAG 更底层的逻辑，也是我们对待 llm 正确的态度：<font color=re
 
 #### 一些技巧
 
-##### 带有权限的通过 npx 运行
+##### 带有权限地使用 npx 执行
 
 当用 npx 执行任意 npm 包时，你实际上给予了它在你的电脑上执行任意 nodejs 代码的权限，潜在风险包括但不限于读取文件系统（比如读取私钥）；这是非常危险的。
 
-permissions 是 Node.js 的一个新近特性，当传入 `--permission` flag 时，Node 会默认禁用读写文件系统、派生进程等权限，使用这些权限需要手动声明。
+permissions 是 Node.js 的一个新特性，当传入 `--permission` flag 时，Node 会默认禁用读写文件系统、派生进程等权限，使用这些权限需要手动声明。
 
 所以，可以使用如下命令：
 
@@ -144,5 +144,5 @@ npx --node-options="--permission --allow-fs-read=$(npm config get cache)" packag
 
 `--allow-fs-read` 声明了仅可以访问 npm cache 目录（如果不加这个的话 npx 本身执行脚本会报错），但同时把权限限定在了这一个目录，防止了 npm 包读取文件系统任意文件的风险
 
-学习自：[]
+学习自：[twitter - @wong2_x 的帖子](https://x.com/wong2_x/status/1907331129809723862)
 

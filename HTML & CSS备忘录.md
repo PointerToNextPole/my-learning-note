@@ -5598,7 +5598,7 @@ text-orientation CSS 属性<font color=FF0000>设定行中字符的方向</font>
 > 👀 `text-orientation` 一般与 `writing-mode` 配合使用，同时一般使用 `writing-mode` 大概率要使用 `text-orientation`。如下示例：
 
 ```html
-<p class="text">foo 123 你好</p>
+<p class="text">foo 123 你好！</p>
 <style>
 .text {
   writing-mode: vertical-rl;
