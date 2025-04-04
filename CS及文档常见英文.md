@@ -1326,6 +1326,10 @@
   > On the other hand, if you split up a cohesive piece of logic into separate Effects, the code may look “cleaner” but will be more difficult to maintain.
   >
   > 摘自：[React doc - Lifecycle of Reactive Effects # Each Effect represents a separate synchronization process](https://react.dev/learn/lifecycle-of-reactive-effects#each-effect-represents-a-separate-synchronization-process)
+  
+- **numerator** ：（分数中的）分子
+
+- **denominator** ：分母
 
 ***
 

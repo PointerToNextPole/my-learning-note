@@ -4,6 +4,22 @@
 
 #### 数学表示
 
+##### 运算符号
+
+###### 乘法
+
+点乘：`\cdot` $a \cdot b$
+
+叉乘：`\times` $a \times b$
+
+###### 除法
+
+`\div` $a \div b$
+
+###### 分数
+
+`\frac{numerator}{denominator}` $\frac{numerator}{denominator}$
+
 
 
 
