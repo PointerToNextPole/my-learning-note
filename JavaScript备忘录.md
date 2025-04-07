@@ -904,12 +904,23 @@ str.normalize( [form] )
 for-in 循环，<font color=FF0000>for-in 循环是为遍历 `enumerable` 数据描述符 为 `true` 的对象设计的</font>。示例：
 
 ```js
-for ( elem in elems ){ /* code */ 
+for ( elem in elems ){ /* code */ }
 ```
 
 > 👀 for-in 是用来遍历对象中 `enumerable` 数据描述符 为 `true` 的属性，`Object.keys()` 同样受到 `enumerable` 的影响。详见 [[#Object.defineProperty#属性描述符]] 中的 enumerable
 
-<font color=FF0000>不推荐用 for-in 来循环一个**数组**，因为，不像对象，数组的 `index` 跟普通的对象属性不一样，是重要的数值序列指标</font>。
+不推荐用 for-in 来循环一个数组，因为，不像对象，数组的 `index` 跟普通的对象属性不一样，是重要的数值序列指标。
+
+> 💡 JS 数组实现的补充
+> > Brendan Eich 在 1995 年发明 JS 的时候还没有受 Python 的影响（👀 这里缺失的上下文见链接），他<font color=red>学的是 AWK</font> 。<font color=fuchsia>JS 里的数组和对象其实本质上是一个东西，叫**关联数组**，属性名都是字符串</font>。in / for-in 就是用来检测和遍历关联数组的 index / key 的。
+> >
+> > ![img](https://s2.loli.net/2025/04/07/r8p9TQ4eoMPzlN6.png)
+> >
+> > JS 的 `in`、`for-in`、`delete` 都是从 AWK 来的，BE 也解释过：
+> >
+> > <img src="https://s2.loli.net/2025/04/07/rgM6YXI9hel3xbO.jpg" alt="img" style="zoom:40%;" />
+> >
+> > 摘自：[JS中的in运算符的奇怪现象，只有0是true为什么啊？所以是指向同一块地址吗？ - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/664541046/answer/3598239123)
 
 ##### forEach
 
@@ -2158,7 +2169,7 @@ console.log(arr.flatMap(x => x.split(" ")));
 
 #### 数组的空位
 
-数组的空位指的是：<font color=red>数组的某一个位置没有任何值</font>，比如 `Array()` 构造函数返回的数组都是空位。
+数组的空位 ( hole ) 指的是：<font color=red>数组的某一个位置没有任何值</font>，比如 `Array()` 构造函数返回的数组都是空位。
 
 ```javascript
 Array(3) // [, , ,]
@@ -2179,7 +2190,7 @@ Array(3) // [, , ,]
 
 - `forEach()` , `filter()` , `reduce()` , `every()` 和 `some()` 都会跳过空位。
 - <font color=red>`map()` 会跳过空位，但会保留这个值</font>
-- `join()` 和 `toString()`会将空位视为`undefined`，而`undefined`和`null`会被处理成空字符串。
+- `join()` 和 `toString()` 会将空位视为 `undefined`，而 `undefined` 和`null` 会被处理成空字符串。
 
 ```js
 // forEach方法
@@ -2209,7 +2220,7 @@ Array(3) // [, , ,]
 
 <font color=dodgerBlue>**ES6 则是明确将空位转为 `undefined`**</font> 。
 
-`Array.from()`方法会将数组的空位，转为`undefined`，也就是说，这个方法不会忽略空位。
+`Array.from()` 方法会将数组的空位，转为 `undefined`，也就是说，这个方法不会忽略空位。
 
 ```javascript
 Array.from(['a',,'b']) // [ "a", undefined, "b" ]
@@ -2267,6 +2278,17 @@ for (let i of arr) {
 由于空位的处理规则非常不统一，所以建议避免出现空位。
 
 摘自：[ECMAScript 6 入门 - 数组的扩展 # 数组的空位](https://es6.ruanyifeng.com/#docs/array#%E6%95%B0%E7%BB%84%E7%9A%84%E7%A9%BA%E4%BD%8D)
+
+> 💡 知乎问题 [js中数组空槽有什么用？ - 紫云飞的回答 ](https://www.zhihu.com/question/666117064/answer/3615014289) 补充
+>
+> > `Array()` 有两种用法签名：
+> >
+> > 1. `arrayObjectName = new Array([arrayLength])`
+> > 2. `arrayObjectName = new Array([element0, element1, ..., elementn])`
+> >
+> > 其中第一种用法就是其它语言来的新手爱用的，初始化时指定元素个数，比如 `new Array(5)` ，期望得到一个包含 5 个元素的数组。但是在 JS 里，它是得到一个包含 5 个 <font color=fuchsia>**hole**</font> 的空数组。
+> >
+> > 那么当时这个设计是好的设计吗？显然不是，之后很多年也证明了，<font color=red>`new Array(1)` 和 `new Array("foo")` 的表现不一样是个坑，**最终在 ES6 里被用 `Array.of()` 来修复**</font>。而且 JS 里的数组也压根不需要和其他语言一样在初始化时申请固定内存空间。
 
 
 

@@ -520,6 +520,16 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 
 
 
+#### Mac 内置图片处理工具 sips
+
+###### tldr 介绍如下
+
+![image-20250407153220011](https://s2.loli.net/2025/04/07/vcMUI7QoiPzjkre.png)
+
+
+
+
+
 #### 场景与解决方法
 
 

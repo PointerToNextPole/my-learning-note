@@ -62,7 +62,7 @@ Apache Commons 是对 JDK 的拓展，包含了很多开源的工具，用于解
 
 #### log4j
 
-##### **Logging 级别**
+##### Logging 级别
 
 `org.apache.Log4j.Level` 类定义了日志级别，您可通过继承 `Level` 类定制自己的级别。
 

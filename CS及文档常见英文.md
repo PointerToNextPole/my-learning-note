@@ -2265,3 +2265,4 @@
 - **by and large** ：总的来说
 - **without further ado** ：不必多说、毋庸置疑
 - **manifesto** ：宣言
+- **vibe** ：气氛
