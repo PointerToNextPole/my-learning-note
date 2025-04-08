@@ -1263,8 +1263,6 @@
 
   > Python interpreter
   
-- **wildcard** ：通配符
-
 - **soundness** ：健全、可靠（性）
 
   > **A Note on Soundness**
@@ -1319,8 +1317,11 @@
   - **sparse file** ：稀疏文件
   
 - **capacitor** ：电容
+
 - **facet** ：方面
+
 - **entropy** ：熵
+
 - **cohesive** ：内聚的，有结合力的、有凝聚力的
 
   > On the other hand, if you split up a cohesive piece of logic into separate Effects, the code may look “cleaner” but will be more difficult to maintain.
@@ -1330,6 +1331,10 @@
 - **numerator** ：（分数中的）分子
 
 - **denominator** ：分母
+
+- **stochastic** ：随机的
+
+  > SGD 即 随机梯度下降 Stochastic Gradient Descent 
 
 ***
 
@@ -1395,16 +1400,16 @@
 
 ##### Google 特殊字符搜索方法
 
-| Symbol                  | How it is helpful                                            |
-| :---------------------- | :----------------------------------------------------------- |
-| Plus sign (`+`)         | Search for things like blood type [ AB+ ] or for a Google+ page like [ +Chrome ] |
-| "At" sign (@)           | Find social tags like [ `@google` ] or [ `@ladygaga`]        |
-| Ampersand (&)           | Find strongly connected ideas and phrases like [ Brothers & Sisters ] or [ A&E ] |
-| Percent (`%`)           | Search for a percent value like [ 40% of 80 ] or [ 10% of .1 ] |
-| Dollar sign (`$`)       | Indicate prices, so [ nikon 400 ] and [ nikon `$400` ] give different results |
-| Hashtag/number sign (#) | Search for trending topics indicated by hashtags like [ \#lifewithoutgoogle ] |
-| Dash (-)                | Indicate that words around it are strongly connected as in [ twelve-year-old dog ] and [ cross-reference ] |
-| Underscore symbol (_)   | Connected two works like [ quick_sort ]. Your search results will find this pair of words either linked together (e.g., quicksort) or connected by an underscore (e.g., quick_sort). |
+| Symbol                               | How it is helpful                                            |
+| :----------------------------------- | :----------------------------------------------------------- |
+| Plus sign (`+`)                      | Search for things like blood type [ AB+ ] or for a Google+ page like [ +Chrome ] |
+| "At" sign (@)                        | Find social tags like [ `@google` ] or [ `@ladygaga`]        |
+| <font color=red>Ampersand</font> (&) | Find strongly connected ideas and phrases like [ Brothers & Sisters ] or [ A&E ] |
+| Percent (`%`)                        | Search for a percent value like [ 40% of 80 ] or [ 10% of .1 ] |
+| Dollar sign (`$`)                    | Indicate prices, so [ nikon 400 ] and [ nikon `$400` ] give different results |
+| Hashtag/number sign (#)              | Search for trending topics indicated by hashtags like [ \#lifewithoutgoogle ] |
+| Dash (-)                             | Indicate that words around it are strongly connected as in [ twelve-year-old dog ] and [ cross-reference ] |
+| Underscore symbol (_)                | Connected two works like [ quick_sort ]. Your search results will find this pair of words either linked together (e.g., quicksort) or connected by an underscore (e.g., quick_sort). |
 
 > 👀 关于 `#` 的 number sign 的含义，一直没注意，直到见到这个句子：
 >
@@ -2249,20 +2254,36 @@
   
 - **intake** ：摄入
    > 👀 类似含义的还有：ingest 表示摄入
+   
 - **obstruct** ：阻挡
+
 - **metabolism** ：新陈代谢
+
 - **likelihood** ：可能性
+
 - **rejuvenation** ：复兴
+
 - **viewpoint** ：观点
+
 - **masonry** ：砖石工艺
   > 👀 CSS 中 `grid-template-rows` 有属性 `masonry` ，虽然兼容性非常差... Chrome 直至现在 25/3/16 完全不支持，Safari 还在 TP 阶段，Firefox 属于 Flag 功能
   
 - **feasible** ：可行
+
 - **whereby** ：凭此，以此方式
+
 - **tinker** ：修补者、修补工
+
 - **slate** ：石板
+
 - **discrepancy** ：差异
+
 - **by and large** ：总的来说
+
 - **without further ado** ：不必多说、毋庸置疑
+
 - **manifesto** ：宣言
+
 - **vibe** ：气氛
+
+- **autonomous** ：自主的

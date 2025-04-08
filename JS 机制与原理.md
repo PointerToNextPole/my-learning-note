@@ -585,6 +585,18 @@ function test () {
 
 > 👀 这里还是很重要，第一次见到 <font color=FF0000>内部属性 `[[scope]]` 中的 Closure 元素，且其中保存着闭包内使用的所有的「自由变量」</font>。另外，这里打印使用的是 `console.dir()`，自行尝试了下：如果使用 `console.log()` 只能看到最外层的函数定义
 
+###### V8 debug 中的 Local 和 Closure
+
+> V8 的 debug 里<font color=red>把当前的函数作用域叫做 Local</font>，<font color=red>上层的函数作用域叫做 Closure</font>，比如：
+>
+> <img src="https://s2.loli.net/2025/04/08/Ga7Xe3yFMim5Ovo.png" alt="img" style="zoom:75%;" />
+>
+> 它仅仅是个称呼而已，这里的 Closure 和 Local 也完全可以都换成 Function 字样，比如：
+>
+> <img src="https://s2.loli.net/2025/04/08/zbsYJX9qEm3VjhQ.png" alt="img" style="zoom:70%;" />
+>
+> 摘自：[前端初学js萌新，想问关于let的问题? - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/663627652/answer/3588547851)
+
 #### JS 中变量有三种类型
 
 - 局部变量（ [[#局部变量]] ）

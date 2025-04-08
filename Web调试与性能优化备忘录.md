@@ -91,28 +91,6 @@
 
 
 
-#### Debug 技巧
-
-##### 断点回溯
-
-在之前的调试中，经常出现 “不小心将某个自己想要调试的代码（断点）遗漏了、错过调试了”，这时候往往只能重新开启调试，最多将一些已经确认无误的断点清理掉。实际上：DevTools 是可以通过 “将当前执行代码所在的执行栈中某一个帧 ( Frame ) 代码” 重新执行的方式，实现重新调试目标代码的功能。
-
-具体实现方式是：在 DevTools 的 Sources 选项的 Call Stack 下选择目标代码所在、且最近的 Frame，右键选择 “Restart frame” ，即可。
-
-<img src="https://s2.loli.net/2025/01/09/3jznkJbGpPZ8vUh.png" alt="image-20250109231205133" style="zoom:50%;" />
-
-不过，这种方法并不是无脑执行的，如上代码，如果每次 **执行完** L9 `val++` 之后，重新对 `called` 这个 Frame 运行 “Restart frame” ，此时会发现作为入参对 val 会一直 +1 ，而不是开始时的等于 1。
-
-帧重启不会重置参数。换句话说，重启不会在调用函数时恢复初始状态。而只是将执行指针移到函数的开头。
-
-至于解决方式是：在 Scope 下双击相应值以进行修改，并设置所需的值。
-
-![](https://s2.loli.net/2025/01/09/dx7G6PiVD3YSp8Q.png)
-
-学习自：[JavaScript 调试参考文档](https://blog.csdn.net/gtlbtnq9mr3/article/details/140811875)
-
-
-
 ## 神光调试小册笔记
 
 [前端调试通关秘籍](https://juejin.cn/book/7070324244772716556/section) // TODO 看了些，有空体系性地做下笔记
@@ -297,11 +275,51 @@ Element 面板选中元素可以看到这个元素和它的父元素的所有事
 
 
 
-## DevTools 使用
+## DevTools 与 Debug
 
 
 
-##### Cheat Sheet
+#### DevTools 组成
+
+##### Sources 面板
+
+V8 的 debug 里把当前的函数作用域叫做 Local，上层的函数作用域叫做 Closure，比如：
+
+<img src="https://s2.loli.net/2025/04/08/Ga7Xe3yFMim5Ovo.png" alt="img" style="zoom:75%;" />
+
+它仅仅是个称呼而已，这里的 Closure 和 Local 也完全可以都换成 Function 字样，比如：
+
+<img src="https://s2.loli.net/2025/04/08/zbsYJX9qEm3VjhQ.png" alt="img" style="zoom:70%;" />
+
+这里的内容在 [[JS 机制与原理#V8 debug 中的 Local 和 Closure]] 中有也摘抄
+
+摘自：[前端初学js萌新，想问关于let的问题? - 紫云飞的回答 - 知乎](https://www.zhihu.com/question/663627652/answer/3588547851)
+
+
+
+#### Debug 技巧
+
+##### 断点回溯
+
+在之前的调试中，经常出现 “不小心将某个自己想要调试的代码（断点）遗漏了、错过调试了”，这时候往往只能重新开启调试，最多将一些已经确认无误的断点清理掉。实际上：DevTools 是可以通过 “将当前执行代码所在的执行栈中某一个帧 ( Frame ) 代码” 重新执行的方式，实现重新调试目标代码的功能。
+
+具体实现方式是：在 DevTools 的 Sources 选项的 Call Stack 下选择目标代码所在、且最近的 Frame，右键选择 “Restart frame” ，即可。
+
+<img src="https://s2.loli.net/2025/01/09/3jznkJbGpPZ8vUh.png" alt="image-20250109231205133" style="zoom:50%;" />
+
+不过，这种方法并不是无脑执行的，如上代码，如果每次 **执行完** L9 `val++` 之后，重新对 `called` 这个 Frame 运行 “Restart frame” ，此时会发现作为入参对 val 会一直 +1 ，而不是开始时的等于 1。
+
+帧重启不会重置参数。换句话说，重启不会在调用函数时恢复初始状态。而只是将执行指针移到函数的开头。
+
+至于解决方式是：在 Scope 下双击相应值以进行修改，并设置所需的值。
+
+![](https://s2.loli.net/2025/01/09/dx7G6PiVD3YSp8Q.png)
+
+学习自：[JavaScript 调试参考文档](https://blog.csdn.net/gtlbtnq9mr3/article/details/140811875)
+
+
+
+#### Cheat Sheet
 
 ![console](https://s2.loli.net/2022/09/26/KtPYa862LcXqs4k.png)
 
