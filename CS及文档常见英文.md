@@ -1586,6 +1586,8 @@
 
 - **acquisition** ：获得 。acquire 的名词
 
+   > RAII ：资源获取即初始化 ( Resource Acquisition Is Initialization )
+
 - **informed** ：明智的 👀 这个挺简单的，不该忘记的...
 
   > Developers and Open Source authors now have a massive amount of services offering free tiers, but it can be hard to find them all to make informed decisions.

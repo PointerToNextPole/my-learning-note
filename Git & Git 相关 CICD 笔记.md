@@ -765,7 +765,7 @@ normal 模式键入 `:wq!`，显示如下：
 | http / https协议 | http://git-server.com:port/path/to/repo.git<br>https://git-server.com:port/path/to/repo.git | 平时接触到的 都是智能协议 |
 | ssh协议          | user@git-server.com:path/to/repo.git                         | ⼯作中最常⽤ 的智能协议   |
 
-##### **哑协议与智能协议之间的区别**
+##### 哑协议与智能协议之间的区别
 
 - 直观区别：哑协议传输进度不可⻅见，智能协议传输可见。
 - 传输速度：智能协议⽐哑协议传输速度快。
