@@ -1334,7 +1334,9 @@
 
 - **stochastic** ：随机的
 
-  > SGD 即 随机梯度下降 Stochastic Gradient Descent 
+  > SGD 即 随机梯度下降 Stochastic Gradient Descent
+  
+- **nexus** ：联结
 
 ***
 

@@ -260,15 +260,17 @@ Adhering to an ABI (which may or may not be officially standardized) is usually 
 
 ##### RPC ( Remote Procedure Call )
 
-那我不管别人怎么规定了，我就按自己的规定来，你们都给我转成这个格式交互（👀 **注：**适配器模式，中间层？）。
+那我不管别人怎么规定了，我就按自己的规定来，你们都给我转成这个格式交互（👀 适配器模式，中间层？）。
 
 比如我用 javascript，那你们和我交互都发 json，岂不美哉？
 
-**缺点**：只有一点点微小的代价：<font color=FF0000>发出时有一个序列化开销，收到时还有一个反序列化开销，对面也有这两个开销</font>。
+<font color=dodgerBlue>缺点：</font>只有一点点微小的代价：<font color=FF0000>发出时有一个序列化开销，收到时还有一个反序列化开销，对面也有这两个开销</font>。
 
 虽然名义上是远程调用，但是也常常开两个端口本地往本地发。比如 LSP 就基于 JSON-RPC ，本地往本地发（💡 LSP 即，语言服务协议，这也是 VS Code 可以支持编写多语言的技术原理）。
 
-当然 json 的 serde（👀 进行 “序列化” 和“反序列化”操作的程序，似乎是 [GitHub - serde-rs/json](https://github.com/serde-rs/json) ） 太慢了，计算机就该用二进制说话，所以 <font color=FF0000>谷歌的 **grpc** 使用 **Protocol Buffers** 这种二进制格式作为交换格式</font>。👀 **注**：ProtoBuf 是一种 IDL ( Interactive Data Language ) 接口描述语言。
+当然 json 的 serde（👀 进行 “序列化” 和“反序列化”操作的程序，似乎是 [GitHub - serde-rs/json](https://github.com/serde-rs/json) ） 太慢了，计算机就该用二进制说话，所以 <font color=FF0000>谷歌的 **grpc** 使用 **Protocol Buffers** 这种二进制格式作为交换格式</font>。
+
+> 💡 ProtoBuf 是一种 IDL ( Interactive Data Language ) 接口描述语言。
 
 一般的应用远远达不到要优化掉 serde 开销这个地步，所以现在就慢慢演变到传 json 搞定一切了。
 
