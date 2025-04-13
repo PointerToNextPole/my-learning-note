@@ -2269,6 +2269,25 @@ console.log(Animal[Animal.Cat]) // Cat
   
    > 💡 [[#unknown vs never#unknown]] 中做了一些补充
    >
+   > 另外，根据 [any和unknown的区别？【渡一教育】](https://www.bilibili.com/video/BV12YdJY7EyJ) 中的说法：unknown 增加了 “显式编程范式” 的应用，参考如下代码：
+   >
+   > ```ts
+   > import getSomething from 'some.js'
+   > 
+   > const data = getSomething()
+   > const user: User = data
+   > user.sayHello()
+   > ```
+   >
+   > 当页面中，出现了一些不可控的数据获取，比如从某个 js 文件中引入并使用了 `getSomething`  ，默认情况下 `data` 会是 `any` 类型，一切都可以通过隐式转换形成；这显然会造成风险，因为 any 的存在绕过了 TS 的类型检察，如果 data 的数据类型不符合 User 的类型约束，那么将会造成错误。
+   >
+   > 所以可以通过 “`unknown` 不可以直接给其他类型的变量直接赋值”的特性，将 `data` 设置为 `unknown` 类型，是隐式转换没法正常运转，从而让开发者认识到自己的代码是有风险的，让开发者自主决定是否要进行这种存在风险的赋值。代码如下：
+   >
+   > ```ts
+   > const data: unknown = getSomething()
+   > const user: User = data as User // 这里是必须要加上 as 的，不加会出现警告
+   > user.sayHello()
+   > ```
    
 - **never** <font color=FF0000>**代表不可达，比如函数抛异常的时候，返回值就是 never**</font> 
 
@@ -2285,7 +2304,7 @@ console.log(Animal[Animal.Cat]) // Cat
 
 **这些就是 TypeScript 类型系统中的全部类型了**，<font color=LightSeaGreen>大部分是从 JS 中迁移过来的</font>，比如基础类型、Array、class 等；<font color=LightSeaGreen>也添加了一些类型</font>，比如 枚举 ( enum ) 、接口 ( interface ) 、元组等，<font color=LightSeaGreen>还支持了字面量类型和 void、never、any、unknown 的特殊类型</font>。
 
-> 👀 下面是一点补充
+> 👀 下面是一点补
 
 ##### 神光《这几个 TypeScript 类型，90% 的人说不出原因》文章的笔记
 

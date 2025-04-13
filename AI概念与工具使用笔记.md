@@ -144,7 +144,7 @@ RAG 更底层的逻辑，也是我们对待 llm 正确的态度：<font color=re
 
 
 
-### A2A
+### A2A / Agent2Agent
 
 ###### 文档
 
