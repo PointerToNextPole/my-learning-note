@@ -5315,7 +5315,7 @@ type Func = (
 
 没思路很正常，因为这里用到了一些特殊的特性。我们先来过一下用到的特性：
 
-我们知道 <mark>ReturnType 是 TS 内置的一个高级类型，它可以取到函数返回值的类型</mark>。但<font color=FF0000>如果这个函数有多个重载呢？</font>
+我们知道 <font color=lightSeaGreen>ReturnType 是 TS 内置的一个高级类型，它可以取到函数返回值的类型</font>。但<font color=FF0000>如果这个函数有多个重载呢？</font>
 
 ##### 第一种重载方式
 
