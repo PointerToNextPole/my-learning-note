@@ -444,9 +444,9 @@ process.memoryUsage(); // heapUsed: 4800792 ≈ 4.6M
 
 总结这个弱引用的特性，就是 WeakMaps 保持了对键名所引用的对象的弱引用，即垃圾回收机制不将该引用考虑在内。<font color=FF0000>只要所引用的对象的其他引用都被清除，垃圾回收机制就会释放该对象所占用的内存</font>。也就是说，一旦不再需要，WeakMap 里面的键名对象和所对应的键值对会自动消失，不用手动删除引用。
 
-也正是因为这样的特性，WeakMap 内部有多少个成员，取决于垃圾回收机制有没有运行，运行前后很可能成员个数是不一样的，而 <font color=FF0000 size=4>**垃圾回收机制何时运行是不可预测的**，**因此 ES6 规定 WeakMap 不可遍历**</font>。
+也正是因为这样的特性，WeakMap 内部有多少个成员，取决于垃圾回收机制有没有运行，运行前后很可能成员个数是不一样的，而 <font color=fuchsia>**垃圾回收机制何时运行是不可预测的**，**因此 ES6 规定 WeakMap 不可遍历**</font>。
 
-所以 <font color=FF0000>WeakMap 不像 Map，一是没有遍历操作（即没有 keys()、values() 和 entries() 方法），也没有 size 属性，也不支持 clear 方法</font>；所以 <font color=FF0000>**WeakMap 只有四个方法可用**：get()、set()、has()、delete()</font>。
+所以 <font color=FF0000>WeakMap 不像 Map，一是没有遍历操作（即没有 `keys()`、`values()` 和 `entries()` 方法），也没有 `size` 属性，也不支持 `clear` 方法</font>；所以 <font color=FF0000>**WeakMap 只有四个方法可用**：`get()`、`set()`、`has()`、`delete()`</font>。
 
 #### 应用
 
