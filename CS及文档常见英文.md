@@ -2293,3 +2293,7 @@
 - **vibe** ：气氛
 
 - **autonomous** ：自主的
+
+- **emerge** ：出现
+
+   > 👀 相关词语 emergency 突发事件

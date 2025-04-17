@@ -666,9 +666,9 @@ exit
 
 
 
-#### bc命令（Basic Calculator）
+#### bc命令 ( Basic Calculator )
 
-开启一个CLI下的计算器，同时：按下quit以退出。如下示图：
+开启一个 CLI 下的计算器，同时：按下 quit 以退出。如下示图：
 
 <img src="https://i.loli.net/2020/10/26/z8nFIPWBCyDaef9.png" alt="BuATWn.png" style="zoom:50%;" />
 
@@ -706,11 +706,11 @@ rm -rf folderName # -r表示递归，-f表示强行删除
 
 使用 `fiel -I fileName.ext` 命令，可以查看文件的 MIME 格式 和 编码格式。示例如下：
 
-<img src="https://s2.loli.net/2022/03/24/eKQnYp4H2c3PGqd.png" style="zoom:65%;" />
+<img src="https://s2.loli.net/2022/03/24/eKQnYp4H2c3PGqd.png" style="zoom:60%;" />
 
 
 
-#### 管道 与 |
+#### 管道 与 `|`
 
 ##### Pipeline 定义
 
@@ -1055,7 +1055,7 @@ killall [参数] [进程名]
 
 ##### 命令参数
 
-- `-Z`        ：只杀死拥有scontext 的进程
+- `-Z`        ：只杀死拥有 scontext 的进程
 - `-e`        ：要求匹配进程名称
 - `-I`        ：忽略小写
 - `-g`        ：杀死进程组而不是进程
@@ -1391,11 +1391,11 @@ type [Options] command-names
 
 ##### Options
 
-- **-a :** This option <font color=red>is used to find out whether it is an alias, keyword or a function</font> and it <font color=red>**also displays the path of an executable, if available**</font>.
+- `-a` : This option <font color=red>is used to find out whether it is an alias, keyword or a function</font> and it <font color=red>**also displays the path of an executable, if available**</font>.
 
   <img src="https://s2.loli.net/2022/08/28/1DVvR2otaBlAzbL.png" alt="img" style="zoom:95%;" />
 
-- **-t :** This option will <font color=red>display a single word as an output</font>.
+- `-t` : This option will <font color=red>display a single word as an output</font>.
 
   - `alias` : if command is a shell alias
   - `keyword` : if command is a shell reserved word
@@ -1405,9 +1405,9 @@ type [Options] command-names
 
   ![img](https://s2.loli.net/2022/08/28/9Wm8Tyd34XbZpuI.png)
 
-  > 👀 注：需要注意的是：经过测试，`-t` 选项在 zsh 环境下无法使用，在 bash 环境下是可以的。
+  > 👀 需要注意的是：经过测试，`-t` 选项在 zsh 环境下无法使用，在 bash 环境下是可以的。
 
-- **-p :** This option <font color=red>displays the name of the disk file</font> which would be executed by the shell. <font color=red>It will return nothing if the command is not a disk file</font>.
+- `-p` : This option <font color=red>displays the name of the disk file</font> which would be executed by the shell. <font color=red>It will return nothing if the command is not a disk file</font>.
 
   ![img](https://s2.loli.net/2022/08/28/Ub17scxIHXZwtTL.png)
 
@@ -1625,6 +1625,76 @@ Linux 文件系统中，有所谓的<font color=red>链接 ( link )</font>，我
 - `--version` ：显示版本信息
 
 摘自：[RUNOOB - Linux ln 命令](https://www.runoob.com/linux/linux-comm-ln.html)
+
+
+
+#### 查看机器信息
+
+##### `uname`
+
+###### `tldr uname` 的结果
+
+> uname
+>
+> Print details about the current machine and the operating system running on it.
+> Note: for additional information about the operating system, try the `sw_vers` command.
+> More information: `<https://keith.github.io/xcode-man-pages/uname.1.html>`.
+>
+> - Print kernel name:
+>     `uname`
+>
+> - Print system architecture and processor information:
+>     `uname -mp`
+>
+> - Print kernel name, kernel release and kernel version:
+>     `uname -srv`
+>
+> - Print system hostname:
+>     `uname -n`
+>
+> - Print all available system information:
+>     `uname -a`
+
+##### 查看 linux 发行版本号
+
+```sh
+cat /etc/os-release
+```
+
+输入示例如下：
+
+```sh
+NAME="Ubuntu"
+VERSION="20.04.6 LTS (Focal Fossa)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 20.04.6 LTS"
+VERSION_ID="20.04"
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+VERSION_CODENAME=focal
+UBUNTU_CODENAME=focal
+```
+
+##### 查看 CPU 信息
+
+###### `lscpu`
+
+##### 查看内存信息
+
+###### `free`
+
+显示系统总内存、已用内存、可用内存以及交换空间 ( Swap ) 的使用情况。`-h` 选项使其更易读。
+
+##### 查看存储信息
+
+`df` ( Disk Free ) ：显示已挂载文件系统的磁盘空间使用情况。`-h` 选项使其更易读。
+
+> 👀 该命令在 macOS 中也适用
+
+更多信息可以参考 https://g.co/gemini/share/974746e518eb ，另外，上面记录的命令只是是在一台 Ubuntu 未必具有普适性
 
 
 
