@@ -1340,6 +1340,18 @@
 
 - **dichotomy** ：二分法
 
+- **upsert** ：更新或插入、提升
+
+  > 👀 和 insert 很像。在 [Github - tc39 - proposal-upsert](https://github.com/tc39/proposal-upsert) 中看到，用来描述 `getOrInsert` 这一行为
+  
+- **proberen** ：尝试
+
+  **verhogen** ：增加、提高
+
+  > 👀 这两个词就是 OS 领域中 PV 操作的缩写
+
+- **semaphore** ：信号量
+
 ***
 
 

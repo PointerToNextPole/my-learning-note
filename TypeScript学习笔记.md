@@ -13,6 +13,7 @@
 - [阮一峰 - TypeScript 教程](https://wangdoc.com/typescript/)
 - [TypeScript入门教程](https://ts.xcatliu.com)
 - [深入理解 TypeScript](https://jkchao.github.io/typescript-book-chinese/)
+- [Exploring TypeScript (TS 5.8 Edition) ](https://exploringjs.com/ts/book/index.html) 以及 “前作” Tackling TypeScript
 
 ###### 中文文档 / 手册
 
