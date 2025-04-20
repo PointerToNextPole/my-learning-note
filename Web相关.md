@@ -2790,7 +2790,8 @@ WebDAV 扩展了 request 方法所允许的标准 HTTP谓词 和 HTTP头。增�
 
 在现有 SDK 的基础上我们可以发现，目前的埋点 SDK 只上报了一些用户的基础信息数据，在性能数据和异常数据的上报上还存在可拓展的空间。
 
-- **性能数据上报：**在获取用户基础数据的同时，后续可以通过 `window.performance` API 获取前端性能数据，在第一次进入页面时随 pageIn 一起将页面初始性能数据进行上报。👀 **注**：这也是 **性能优化** 获得相关数据，最普遍的方法了
+- **性能数据上报：**在获取用户基础数据的同时，后续可以通过 `window.performance` API 获取前端性能数据，在第一次进入页面时随 pageIn 一起将页面初始性能数据进行上报。
+  > 👀 这也是 **性能优化** 获得相关数据，最普遍的方法了
 
 - **接口数据上报**：除了上报性能数据外，我们也 <font color=FF0000>可将页面内所发的所有请求通过重写 `XMLHttpRequest` 进行劫持打标上报，即在当前页面下的所有请求 header 上默认加上当前页面 ID，将各个请求与当前页面的 pageId 进行绑定</font>。
 
@@ -2818,11 +2819,11 @@ WebDAV 扩展了 request 方法所允许的标准 HTTP谓词 和 HTTP头。增�
 
 ###### 无埋点
 
-无埋点则是 <font color=fuchsia>前端自动**采集全部事件**，上报埋点数据</font>，由<font color=red>后端来过滤和计算出有用的数据</font>。<font color=dodgerBlue>**优点**</font>是 前端只要一次加载埋点脚本，<font color=dodgerBlue>**缺点**</font>是 <font color=red>流量和采集的数据过于庞大，服务器性能压力山大</font>。
+无埋点则是 <font color=fuchsia>前端自动**采集全部事件**，上报埋点数据</font>，由<font color=red>后端来过滤和计算出有用的数据</font>。<font color=dodgerBlue>**优点**</font>是 前端只要一次加载埋点脚本，<font color=dodgerBlue>**缺点**</font>是 <font color=red>流量和采集的数据过于庞大，服务器性能压力大</font>。
 
 ###### 使用 GIF 上报的原因
 
-向服务器端上报数据，<font color=LightSeaGreen>可以通过请求接口</font>，<font color=fuchsia>**请求**普通文件</font>，或者 <font color=fuchsia>**请求** 图片资源</font>的方式进行。<font color=lightSeaGreen>只要能上报数据，无论是请求 GIF 文件还是请求 js文件 或者是 调用页面接口，服务器端其实并不关心具体的上报方式</font>。那为什么使用了请求 GIF 图片的方式上报数据呢（👀 准确的说是 “借用图片的src属性来发起请求”，至于 src 指向的图片是否存在是无所谓的）？
+向服务器端上报数据，<font color=LightSeaGreen>可以通过请求接口</font>，<font color=fuchsia>**请求**普通文件</font>，或者 <font color=fuchsia>**请求** 图片资源</font>的方式进行。<font color=lightSeaGreen>只要能上报数据，无论是请求 GIF 文件还是请求 js文件 或者是 调用页面接口，服务器端其实并不关心具体的上报方式</font>。那为什么使用了请求 GIF 图片的方式上报数据呢（👀 准确的说是 “借用图片的 `src` 属性来发起请求”，至于 src 指向的图片是否存在是无所谓的）？
 
 - **防止跨域**
 
@@ -2830,7 +2831,7 @@ WebDAV 扩展了 request 方法所允许的标准 HTTP谓词 和 HTTP头。增�
 
 - **防止阻塞页面加载，影响用户体验**
 
-  <font color=dodgerblue>通常，**创建资源节点后只有将对象注入到浏览器 DOM树 后，浏览器才会实际发送资源请求**</font>。反复操作 DOM 不仅会引发性能问题，而且载入 js/css 资源还会阻塞页面渲染，影响用户体验。
+  <font color=lightSeaGreen>通常，**创建资源节点后只有将对象注入到浏览器 DOM树 后，浏览器才会实际发送资源请求**</font>。反复操作 DOM 不仅会引发性能问题，而且载入 js/css 资源还会阻塞页面渲染，影响用户体验。
 
   <font color=dodgerblue>但**图片请求例外**</font>。<font color=fuchsia>构造图片打点不仅不用插入 DOM，只要在 js 中 new Image 对象就能发起请求</font>，<font color=fuchsia>还没有阻塞问题</font>，<font color=fuchsia>**在没有 js 的浏览器环境中也能通过 img 标签正常打点**</font>，这是其他类型的资源请求所做不到的。（排除文件方式）
 
