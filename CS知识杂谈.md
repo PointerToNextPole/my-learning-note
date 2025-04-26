@@ -481,6 +481,28 @@ RPC 指的是远程调用，也就是说，调用的函数不在同一内存空�
 
 
 
+#### 并发编程
+
+##### 并发编程一些实践方案
+
+- 加锁
+
+- 通信优于同步 源于 CSP ( Communicating Sequential Processes )
+
+  Golang 语言内的 Channel 是这一思想的典型体现
+
+- Actor
+
+- 无锁编程
+
+- 函数式编程：利用了 FP 数据不可变性特性
+
+  > 👀 难怪《黑客与画家》作者在书中提了一堆 LISP 实现 Web应用的优点...
+
+学习自：[计算机核心思想系列【2】| 高性能程序的关键：并发](https://mp.weixin.qq.com/s/PywoV8cFzNmqCPpT8hFAng) 及其视频 [计算机核心思想系列【2】| 高性能&高复杂度程序的关键：并发](https://mp.weixin.qq.com/s/PywoV8cFzNmqCPpT8hFAng)
+
+
+
 #### Pattern Matching
 
 <img src="https://s2.loli.net/2024/04/09/5QltTeEnd2CSrx4.png" alt="image-20240409235143301" style="zoom:50%;" />

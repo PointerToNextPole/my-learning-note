@@ -996,7 +996,7 @@
 - **coercion** ：强制，胁迫
 
   **type coercion** ：强制类型转换
-  
+
 - **tamper** ：篡改
 
 - **optical** ：视觉的
@@ -1016,19 +1016,21 @@
   > > JavaScript provides intrinsic (or “built-in”) objects. They are the Array, Boolean, Date, Error, Function, Global, JSON, Math, Number, Object, RegExp, and String objects.
   > >
   > > 摘自：[Develop a webpage using Intrinsic Java Functions](https://rahultamkhane.medium.com/develop-a-webpage-using-intrinsic-java-functions-36cb3b84826c)
-  
+  >
+  > 另外，CSS 也有 [`contain-intrinsic-size`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/contain-intrinsic-size) 属性
+
 - **MVP** ："Minimum Viable Product"，即 “最小可行产品”
 
   > This product is in an early stage, approximately 80% to MVP as of July 2023.
   >
   > 摘自：[GitHub - PythonMonkey](https://github.com/Distributive-Network/PythonMonkey/)
-  
+
 - **preemptive** ：先发制人的，抢先的
 
   >  Server Push is a performance technique aimed at reducing latency by loading resources **preemptively**, even before the client knows they will be needed.
   >
   > 摘自：[wikipedia - HTTP/2 Server Push](https://en.wikipedia.org/wiki/HTTP/2_Server_Push)
-  
+
 - **arity** ：表示一个函数或操作的参数数量，也称为参数个数或元数
 
   > 👀 这个词是在 lodash 官方文档的 [`_.curry`](https://lodash.com/docs/4.17.15#curry) 部分看到（如下），当然它是一个编程的通用概念
@@ -1040,19 +1042,19 @@
   如下是询问 ChatGPT 的结果：
 
   <img src="https://s2.loli.net/2023/08/26/e16lFatTNHkiOpm.png" alt="image-20230826145857953" style="zoom: 48%;" />
-  
+
 - **caret** ：插入符号
 
   > A **caret** (sometimes called a "text cursor") is an indicator displayed on the screen to indicate where text input will be inserted.
   >
   > 摘自：[MDN - Caret](https://developer.mozilla.org/en-US/docs/Glossary/Caret)
-  
+
 - **duplicated** ：重复的
 
   **dedupe** ：去重。即 de-dupe，而 “dupe” 正是来源于 “duplicated”
-  
+
   > 👀 这个词第一次看见是来自 vite 的一个配置 [`reslove.dedupe`](https://cn.vitejs.dev/config/shared-options.html#resolve-dedupe) 
-  
+
 - **repetitive** ：重复的
 
   <img src="https://s2.loli.net/2024/04/04/8tcbBKAv9ryLEYN.png" alt="image-20240404132006707" style="zoom:48%;" />
@@ -1060,13 +1062,13 @@
 - **cumulative** ：累计的
 
   > 👀 见到这个词是来自 “Cumulative Layout Shift” 即 CLS 。另外，[`Array.prototype.reduce`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce) 的第一个参数是 `accumulator` 也与之类似
-  
+
 - **in series** ：串联
 
   >  If your tasks do not use any timers or perform any I/O, they will actually be executed **in series**
   >
   > 摘自：[async doc - parallel](http://caolan.github.io/async/v3/docs.html#parallel)
-  
+
 - **recap** ：回顾，扼要重述
 
   > 💡 它是 recapitulate 的缩写
@@ -1078,7 +1080,7 @@
   > You can either build “top down” by starting with building the components higher up in the hierarchy (like `FilterableProductTable`) or “bottom up” by working from components lower down (like `ProductRow`)
   >
   > 摘自：[React doc - Thinking in React # Step 2: Build a static version in React](https://react.dev/learn/thinking-in-react#step-2-build-a-static-version-in-react)
-  
+
 - **forward** ：转发
 
   > Some components forward all of their props to their children, like how this `Profile` does with `Avatar` .
@@ -1092,7 +1094,7 @@
   > When you press “Submit”, both the form and the button **become disabled,** and a spinner **appears.**
   >
   > 摘自：[React doc - Reacting to Input with State # How declarative UI compares to imperative](https://react.dev/learn/reacting-to-input-with-state#how-declarative-ui-compares-to-imperative)
-  
+
 - **spin-off** ：拆分的
 
 - **exponential** ：指数的
@@ -1104,7 +1106,7 @@
   > 👀 开始以为这个词没有那么特别，不过，还是问了下 Claude，得到如下回复：
   >
   > <img src="https://s2.loli.net/2023/10/07/oat8pKvWdgJYUiP.png" alt="image-20231007211051637" style="zoom:48%;" />
-  
+
 - **delimiter** ：分隔符
 
 - **coordinator** ：协调员。
@@ -1118,13 +1120,13 @@
   > Discover our [list of modules](https://nuxt.com/modules) to supercharge your Nuxt project, created by the Nuxt team and community.
   >
   > 摘自：[Nuxt Github repo - README # Modules](https://github.com/nuxt/nuxt#modules)
-  
+
 - **clockwise** ：顺时针的
 
   **counterclockwise** ：逆时针的
 
   **counterclock** ：逆时针
-  
+
 - **polar coordinates** ：极坐标
 
 - **metric** ：指标
@@ -1144,19 +1146,19 @@
 - **strength** ：优势
 
   > 👀 虽然但是，过于基础... 不过还是忘记了...
-  
+
 - **clickbait** ：点击诱饵
 
 - **adhere** ：遵守
 
   > 👀 挺基础的，不该遗忘
-  
+
 - **the rule of thumb** ：经验法则
 
 - **dangling** ：v. 悬挂，悬垂，悬荡 adj. 悬挂的，摇摆的。是 dangle 的现在分词
 
   > 💡 dangling pointer ：悬空指针
-  
+
 - **coexit** ：共存
 
 - **hands-on** ：实践的。hands-on experience 实践经验
@@ -1182,13 +1184,13 @@
 - **tarball** ：压缩包
 
   <img src="https://s2.loli.net/2024/03/21/tcJDaEgofMYVGxI.png" alt="image-20240321233430412" style="zoom:50%;" />
-  
+
 - **pivot** ：支点，中心轴
 
   > 💡 提到这个词，一般想到 “快排” 中的变量名 `pivot`
-  
+
   **pivotal point** ：中心点
-  
+
 - **cherry pick** ：择优挑选
 
   > 💡 虽说 Git 中有 `git cherry-pick` 这个命令，但是这个词并不是 Git 生造的；所以，没必要遇到这个词时，必将其与 Git 相关联；它也有本来的”择优挑选“的意思。比如如下句子：
@@ -1208,7 +1210,7 @@
   > <img src="https://s2.loli.net/2024/03/30/3DZQAdsoHhuLOyU.png" alt="image-20240330165133045" style="zoom: 45%;" />
 
   > 👀 搜了下词典软件，基本上都只说 “wrangle” 的意思是 “争吵”，并没有找到“操纵、处理”的含义。所以特此补充
-  
+
 - **thumbnail** ：缩略图
 
 - **prepopulated** ：预先填充，预先加载
@@ -1216,13 +1218,13 @@
   > Search inputs are often prepopulated from the URL, and the user might navigate Back and Forward without touching the input.
   >
   > 摘自：[React doc - You Might Not Need an Effect # Fetching data](https://react.dev/learn/you-might-not-need-an-effect#fetching-data)
-  
+
 - **footprint** ：**(某物所占的)空间量，面积** ；足迹；脚印
 
   > HotKeys.js is an input capture library with some very special features, it is easy to pick up and use, has a reasonable **footprint** ([~6kB](https://bundlephobia.com/result?p=hotkeys-js)) (gzipped: **`2.8kB`**), and has no dependencies. It should not interfere with any JavaScript libraries or frameworks.
   >
   > 摘自：[Github - Hotkeys # README](https://github.com/jaywcjlove/hotkeys-js)
-  
+
 - **infix** ：中缀
 
 - **dialect** ：方言
@@ -1232,7 +1234,7 @@
   > DuckDB supports arbitrary and nested correlated subqueries, window functions, **collations**, complex types (arrays, structs), and more.
   >
   > 摘自：[duckdb github repo - README](https://github.com/duckdb/duckdb)
-  
+
 - **cat's pyjamas** ：令人赞叹的人或物
 
   > Requires Node 8 or above, because async and await are the **cat's pyjamas**.
@@ -1240,21 +1242,21 @@
   > 摘自：[GitHub - degit - README](https://github.com/Rich-Harris/degit)
 
   <img src="https://s2.loli.net/2024/05/24/Bf8hC6dLDzoM94T.png" alt="image-20240524133441772" style="zoom:50%;" />
-  
+
 - **exponential** ：指数的
 
   **exponent** ：指数，幂
-  
+
 - **sharding upload** ：分片上传
 
   **sharde** ：碎片
-  
+
 - **span** ：跨度，**跨越**
 
   > The top layer is a specific layer that **spans** the entire width and height of the viewport and sits on top of all other layers displayed in a web document.
   >
   > 摘自：[MDN US - Top layer](https://developer.mozilla.org/en-US/docs/Glossary/Top_layer)
-  
+
 - **on-premises** ：就地，在现场
 
 - **aggregate** ：聚合
@@ -1264,7 +1266,7 @@
 - **interpreter** ：口译员、解释器
 
   > Python interpreter
-  
+
 - **soundness** ：健全、可靠（性）
 
   > **A Note on Soundness**
@@ -1272,7 +1274,7 @@
   > TypeScript’s type system allows certain operations that can’t be known at compile-time to be safe. When a type system has this property, it is said to not be “sound”. The places where TypeScript allows unsound behavior were carefully considered, and throughout this document we’ll explain where these happen and the motivating scenarios behind them.
   >
   > 摘自：[typescript doc - Type Compatibility # A Note on Soundness](https://www.typescriptlang.org/docs/handbook/type-compatibility.html#a-note-on-soundness)
-  
+
 - **on-prem** ：本地
 
   > The examples here use Llama locally, in the cloud, and **on-prem**.
@@ -1280,17 +1282,17 @@
   > 摘自：[GitHub - llama-recipes - README](https://github.com/meta-llama/llama-recipes)
   >
   > <img src="https://s2.loli.net/2024/11/19/D97RW3tUYXmAcNZ.png" alt="image-20241119094059569" style="zoom:50%;" />
-  
+
 - **columnar** ：柱状的
 
   > 👀 明显是 column 的变体
-  
+
 - **delta** ：**增量**（数学符号 $\Delta$），三角洲
 
   > The other new configuration option being added will further ensure that the right types of deltas are generated at `git push` time...
   >
   > 摘自：[How we shrunk our Javascript monorepo git size by 94%](https://www.jonathancreamer.com/how-we-shrunk-our-git-repo-size-by-94-percent/)
-  
+
 - **idempotency** ：幂等性
 
 - **proactive** ：主动的
@@ -1298,7 +1300,7 @@
   > 💡 在编程范式和软件架构领域存在 proactive 和 reactive 两种**异步处理**方式
   > - **Proactive （主动）** ：通常指系统主动执行某些操作，比如预先加载数据、主动发起计算等等。
   > - **Reactive（响应式）** ：通常指系统对外部事件或变化做出响应，比如用户点击、数据更新、消息到达等等。
-  
+
 - **introspection** ：内省
 
   > Playwright waits for elements to be actionable prior to performing actions. It also has a rich set of **introspection** events.
@@ -1310,14 +1312,14 @@
   > The combination of the two eliminates the need for artificial timeouts - the primary cause of flaky tests.
   >
   > 摘自：[playwright 官网](https://playwright.dev/)
-  
+
 - **distro** ：发行版
 
 - **sparse** ：稀疏的
 
   - **sparse matrix** ：稀疏矩阵
   - **sparse file** ：稀疏文件
-  
+
 - **capacitor** ：电容
 
 - **facet** ：方面
@@ -1329,7 +1331,7 @@
   > On the other hand, if you split up a cohesive piece of logic into separate Effects, the code may look “cleaner” but will be more difficult to maintain.
   >
   > 摘自：[React doc - Lifecycle of Reactive Effects # Each Effect represents a separate synchronization process](https://react.dev/learn/lifecycle-of-reactive-effects#each-effect-represents-a-separate-synchronization-process)
-  
+
 - **numerator** ：（分数中的）分子
 
 - **denominator** ：分母
@@ -1337,7 +1339,7 @@
 - **stochastic** ：随机的
 
   > SGD 即 随机梯度下降 Stochastic Gradient Descent
-  
+
 - **nexus** ：联结
 
 - **dichotomy** ：二分法
@@ -1345,7 +1347,7 @@
 - **upsert** ：更新或插入、提升
 
   > 👀 和 insert 很像。在 [Github - tc39 - proposal-upsert](https://github.com/tc39/proposal-upsert) 中看到，用来描述 `getOrInsert` 这一行为
-  
+
 - **proberen** ：尝试
 
   **verhogen** ：增加、提高
@@ -1357,6 +1359,20 @@
 - **invent the wheel** ：造轮子
 
   > 👀 一直都不知道 “造轮子” 是翻译过来的...
+
+- **exhaustive** ：穷尽的、彻底的、详尽的
+
+  > exhaustive 在模式匹配 ( Pattern Matching ) 中，具有非常特殊且重要的含义。
+  >
+  > 它指的是 **模式匹配中的所有分支（cases/patterns）必须完全覆盖（cover）被匹配的那个值（或类型）的所有可能情况**。
+  >
+  > 它<font color=red>是一种**编译时保证**</font>，确保你的模式覆盖了被匹配类型的所有可能情况，从而**消除**因遗漏某些情况而导致的**运行时错误**。这是函数式编程语言和一些现代命令式语言中一个强大的安全特性。
+
+- **bulk** ：**批量**，大部分
+
+  > 在计算机科学和信息技术领域，“bulk” 通常用来形容**大规模、批量**的数据、操作或处理过程。它强调的是**数量多**、**整体性**，而不是针对单个、孤立的元素进行操作。使用 “bulk” 的主要目的通常是为了**提高效率、减少开销 (overhead) 和简化管理**。
+
+  **a bulk of**
 
 ***
 

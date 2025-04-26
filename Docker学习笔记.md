@@ -279,6 +279,10 @@ $ docker container run -p 8000:3000 -it koa-demo:0.0.1 /bin/bash # 👀 多了�
   > 👀 `-i` 意为 interactive 交互，表示：以 “交互模式” 运行容器；`-t` 意为 terminal 命令行，表示：为容器重新分配一个伪输入终端。
   >
   > 💡 除了上面所说的 “交互模式”，还有 “detached mode”，即 “分离模式”，用 `-d` 来启用。作用是：后台运行容器，并返回 “容器ID”；类似于 `docker start [containerID]` 的效果。
+  >
+  > > 容器将在后台运行，而不会占用当前终端。
+  > >
+  > > 摘自：[前端开发必会的Nginx知识及结合Docker的项目部署实战](https://mp.weixin.qq.com/s/Xj_kqT4BFytZA7LvJQvAXQ)
 
 - `koa-demo:0.0.1` ：image 文件的名字（如果有标签，还需要提供标签，默认是 latest 标签）
 
