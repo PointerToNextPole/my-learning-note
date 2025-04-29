@@ -1044,6 +1044,18 @@ Side effects play an important role in the design and analysis of programming la
 
 
 
+#### Docstring
+
+##### wiki 介绍
+
+In programming, a **docstring** is a <font color=lightSeaGreen>string literal specified in source code that is used, like a comment, to document a specific segment of code</font>. <font color=dodgerBlue>Unlike conventional source code comments, or even specifically formatted comments like docblocks</font>, <font color=red>docstrings are **not stripped from the source tree** when it is parsed</font> and are <font color=red>**retained throughout the runtime of the program**</font>. This allows the programmer to inspect these comments at run time, for instance as an interactive help system, or as metadata.
+
+Languages that support docstrings include Python, Lisp, Elixir, Clojure, Gherkin, Julia and Haskell.
+
+摘自：[wikipedia - Docstring](https://en.wikipedia.org/wiki/Docstring)
+
+
+
 #### ASCII 码知识补充
 
 ASCII 编码只用了 128 位（2 的 7 次方），为什么 ASCII 编码不使用 8 位呢？可以收纳更多字符？

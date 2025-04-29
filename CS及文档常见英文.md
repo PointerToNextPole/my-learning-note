@@ -1386,6 +1386,8 @@
   > | 例子     | `BULK INSERT`, Bulk API, Bulk Data               | Batch Processing, Batch Job, a Batch of Records   |
   >
   > 在某些非正式的场合，或者当两者含义重叠时（例如，“批量更新” 可以说 Bulk Update 或 Batch Update），它们有时可以互换使用。但是，在描述系统架构（Batch Processing vs. Real-time Processing）或特定的数据库优化操作（BULK INSERT）时，使用正确的术语更为精确。
+  
+- **artifact** ：人工制品、工件
 
 ***
 
