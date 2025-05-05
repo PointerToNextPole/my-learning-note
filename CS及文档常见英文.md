@@ -1428,6 +1428,10 @@
   > 详见 🔗 https://g.co/gemini/share/074cdf8ee75a
   >
   > <img src="https://s2.loli.net/2025/05/03/8VJLrtHKszSxvYT.png" alt="image-20250503101248798" style="zoom:33%;" />
+  
+- **benevolent** ：仁慈
+
+  **BDFL** ：Benevolent Dictator For Life
 
 ***
 

@@ -842,6 +842,8 @@ RenderObject 保存了绘制 DOM 节点所需要的各种信息，与 DOM 树对
 
 ##### SOAP
 
+> 👀 该 **API 协议** 已经基本被淘汰，类似的应该还有 WSDL；可见[让你的职业生涯少走弯路【让编程再次伟大#4】- 11:52](https://youtu.be/CLnsE0E3cXo?t=712)
+
 SOAP：简单对象访问协议（Simple Object Access Protocol）是一种<mark>基于 XML 的协议</mark>，可以和现存的许多因特网协议和格式结合使用，包括超文本传输协议（HTTP），简单邮件传输协议（SMTP），多用途网际邮件扩充协议（MIME），基于“通用”传输协议是 SOAP的一个优点。它还支持从消息系统到远程过程调用（Remote Procedure Call，RPC）等大量的应用程序。SOAP提供了一系列的标准，如WSRM（WS-Reliable Messaging）形式化契约确保可靠性与安全性，确保异步处理与调用；WS-Security、WS-Transactions和WS-Coordination等标准提供了上下文信息与对话状态管理
 
 ##### REST
