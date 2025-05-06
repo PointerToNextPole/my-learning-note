@@ -1432,6 +1432,16 @@
 - **benevolent** ：仁慈
 
   **BDFL** ：Benevolent Dictator For Life
+  
+- **project** ：投射
+
+  > **Projects** each source value to an Observable which is merged in the output Observable, emitting values only from the most recently projected Observable.
+  >
+  > 摘自：[RxJS - switchMap](https://rxjs.dev/api/operators/switchMap)
+
+- **subscript** ：下标
+
+  > 👀 根据 [那些无解的计算机问题【让编程再次伟大#16】](https://www.youtube.com/watch?v=xPbhRDaWODg) 的说法：Dennis Ritchie 的 《The C Programming Language》以及直到最新的 C语言标准委员会的标准稿中都没有引入索引 “index” 的概念，而在数组中括号中的是 “subscript”，因为C语言中 数组和地址的关系（数组的地址指向第一个元素），可以理解为 offset ( `array[subscript] = (*((array) + (subscript * type_size)))` )。
 
 ***
 
