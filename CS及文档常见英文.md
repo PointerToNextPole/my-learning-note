@@ -1441,7 +1441,7 @@
 
 - **subscript** ：下标
 
-  > 👀 根据 [那些无解的计算机问题【让编程再次伟大#16】](https://www.youtube.com/watch?v=xPbhRDaWODg) 的说法：Dennis Ritchie 的 《The C Programming Language》以及直到最新的 C语言标准委员会的标准稿中都没有引入索引 “index” 的概念，而在数组中括号中的是 “subscript”，因为C语言中 数组和地址的关系（数组的地址指向第一个元素），可以理解为 offset ( `array[subscript] = (*((array) + (subscript * type_size)))` )。
+  > 👀 根据 [那些无解的计算机问题【让编程再次伟大#16】](https://www.youtube.com/watch?v=xPbhRDaWODg) 的说法：Dennis Ritchie 的 《The C Programming Language》以及直到最新的 C语言标准委员会的标准稿中都没有引入索引 “index” 的概念，而在数组中括号中的是 “subscript”，因为 C语言中 数组和地址的关系（数组的地址指向第一个元素），subscript 可以理解为 offset 内存地址偏移量 ( `array[subscript] = (*((array) + (subscript * type_size)))` )，这也方便将 C 语言编译为汇编。而现在一些新语言，会在数组开头塞入各种 metadata，导致数组的地址不再指向第一个元素；此时 subscript 不再适用，所以选择了索引 “index”，同时这种表达也更符合人的直觉，不过和机器底层偏离更大了。1·
 
 ***
 
@@ -2406,3 +2406,7 @@
    > 👀 可以引申出 multi-tenant ：多租户
    
 - **vibrate** ：震动
+
+- **setback** ：挫折
+
+   > 👀 过于基础了...
