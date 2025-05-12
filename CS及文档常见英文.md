@@ -1445,6 +1445,10 @@
   
 - **marginal** ：边缘的
 
+- **SOTA / SotA** ：State of the Art 指在特定任务中目前表现最好的方法或模型
+
+  > 关于 SOTA 和 最佳事件的区别询问 Gemini 2.5Pro 的回答 🔗 https://g.co/gemini/share/57d5bfc67e81
+
 ***
 
 
@@ -2418,3 +2422,13 @@
 - **unagentic** ：无目的、**缺乏主动性**
 
    > this fact is a trap for competent but unagentic engineers.
+   
+- **fully fledged** ：羽衣丰满的
+
+- **grasp** ：把握，掌握
+
+- **iffy** ：不确定的
+
+   > Some LLMs are a bit **iffy** when it comes to returning well formed JSON data, sometimes they skip a parentheses and sometimes they add some words in it, because that's what an LLM does.
+   >
+   > 摘自：[GitHub - json_repair](https://github.com/mangiucugna/json_repair)
