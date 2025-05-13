@@ -64,7 +64,7 @@ TypeScript 是完全兼容 JavaScript 的，它不会修改 JavaScript 运行时
 
 TypeScript 编译的时候即使报错了，还是会生成编译结果，我们仍然可以使用这个编译之后的文件。
 
-如果要在报错的时候终止 js 文件的生成，可以在 tsconfig.json 中配置 noEmitOnError 即可
+如果要在报错的时候终止 js 文件的生成，可以在 `tsconfig.json` 中配置 `noEmitOnError` 即可
 
 
 
@@ -2256,6 +2256,32 @@ console.log(Animal[Animal.Cat]) // Cat
 
 <img src="https://s2.loli.net/2022/05/01/2ajXHbDgC13WLik.png" alt="image-20220501181210720" style="zoom:50%;" />
 
+> 👀 2025/5/13 补充：自己对于 `${string}` 的用法一点印象也没有了...能想到的都是 `${GenericVariable}`。 以如下代码为例：
+>
+> ```ts
+> const nonImageExtMap: Record<string, string> = {
+>   '.doc': 'application/msword',
+>   '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+>   '.xls': 'application/vnd.ms-excel',
+>   '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+>   '.pdf': 'application/pdf',
+> }
+> ```
+>
+> 想对属性名进行约束，使其属性名一定以 `.` 开头，一直在想 `.${ infer ... }` ，结果写了半天也没写出...
+>
+> 还是问了 AI，才找到解决方法 🔗 https://g.co/gemini/share/00b457aefd4d ，然后还发现上面笔记早就做了... 解决方案如下：
+>
+> ```ts
+> const nonImageExtMap: Record<`.${string}`, string> = {
+>   '.doc': 'application/msword',
+>   '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+>   '.xls': 'application/vnd.ms-excel',
+>   '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+>   '.pdf': 'application/pdf',
+> }
+> ```
+
 ##### 四种特殊类型
 
 还有<font color=dodgerBlue>**四种特殊的类型：void、never、any、unknown**</font>：
@@ -2761,7 +2787,7 @@ class Dong {
 }
 ```
 
-这样，当 call / apply 调用的时候，就能检查出 this 指向的对象是否是对的（**注：**这里 tsconfig.json 要加上 `"strictBindCallApply": true` ，否则不会报错 ）：
+这样，当 call / apply 调用的时候，就能检查出 this 指向的对象是否是对的（👀 这里 `tsconfig.json` 要加上 `"strictBindCallApply": true` ，否则不会报错 ）：
 
 <img src="https://s2.loli.net/2022/05/03/J9IsuvlEmdkQpFt.png" alt="img" style="zoom:67%;" />
 
@@ -5443,11 +5469,11 @@ printName = (person) => {
 }
 ```
 
-<mark>printHobbies 的参数 Guang 是 printName 参数 Person 的子类型</mark>。那么问题来了：<font color=FF0000>printName 能赋值给 printHobbies 么？printHobbies 能赋值给 printName 么？</font>测试一下发现是这样的：
+<font color=lightSeaGreen>printHobbies 的参数 Guang 是 printName 参数 Person 的子类型</font>。那么问题来了：<font color=FF0000>printName 能赋值给 printHobbies 么？printHobbies 能赋值给 printName 么？</font>测试一下发现是这样的：
 
 <img src="https://s2.loli.net/2022/05/06/xzCZB25DoOHPvAF.png" alt="image-20220506151111699" style="zoom:48%;" />
 
-> **注：**这张图上的报错，是在 tsconfig.json 中 "strictFunctionTypes" 属性被设置为 true 时的报错；而默认情况（ tsconfig.json 中不设置 "strictFunctionTypes" ）下，值为 false ，是不会报错的。另外，下面也会说到 「双向协变」。
+> 👀 这张图上的报错，是在 `tsconfig.json` 中 `strictFunctionTypes` 属性被设置为 true 时的报错；而默认情况（ `tsconfig.json` 中不设置 `strictFunctionTypes` ）下，值为 false ，是不会报错的。另外，下面也会说到 「双向协变」。
 
 <font color=FF0000>printName 的参数 Person 不是 printHobbies 的参数 Guang 的 **父类型** 么，**为啥能赋值给子类型**？</font>
 
@@ -7500,6 +7526,20 @@ Note, that if these issues come from the TypeScript standard library you can rep
 ###### 其他补充
 
 > 在大多数项目中，<font color=lightSeaGreen>开发者会在 TypeScript 的配置文件 ( `tsconfig.json` ) 中将 `skipLibCheck` 选项设置为 `true`</font> 。`skipLibCheck` 的作用是跳过对库文件（包括 `.d.ts` 文件）的类型检查。当设置为 true 时，<font color=lightSeaGreen>TypeScript 编译器不会对这些库文件进行严格的类型检查，从而加快编译速度</font>。但<font color=red>这也会影响项目中自己编写的 `.d.ts` 文件</font>。<font color=dodgerBlue>这意味着</font>，<font color=red>即使 `.d.ts` 文件中定义的类型存在错误，TypeScript 编译器也不会报错，从而失去了类型安全性的保障</font>。
+
+
+
+##### `lib`
+
+TypeScript <font color=red>**includes a default set of type definitions for built-in JS APIs**</font> (like `Math`), as well as type definitions for things found in browser environments (like `document`). <font color=lightSeaGreen>TypeScript also includes APIs for newer JS features matching the [`target`](https://www.typescriptlang.org/tsconfig/#target) you specify</font>; for example the definition for `Map` is available if [`target`](https://www.typescriptlang.org/tsconfig/#target) is `ES6` or newer.
+
+<font color=dodgerBlue>You may want to change these for a few reasons:</font>
+
+- Your program doesn’t run in a browser, so you don’t want the `"dom"` type definitions
+- Your runtime platform provides certain JavaScript API objects (maybe through polyfills), but doesn’t yet support the full syntax of a given ECMAScript version
+- You have polyfills or native implementations for some, but not all, of a higher level ECMAScript version
+
+In TypeScript 4.5, lib files can be overridden by npm modules, find out more [in the blog](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#supporting-lib-from-node_modules).
 
 
 

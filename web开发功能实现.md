@@ -1,10 +1,38 @@
-# web开发功能实现
+# Web开发功能实现
 
 
 
 #### 文件上传
 
+##### 问题注意点
 
+###### `accept` 和 `file.type` 是不同的东西
+
+`accept` 在一般场景下，可以简单理解为是文件扩展名。
+
+> 💡 虽然在 [MDN - `accept`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/accept) 中有说明 `accept` 的定义：
+>
+> > The **`accept`** attribute takes as its value a comma-separated list of one or more file types, or [unique file type specifiers](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/accept#unique_file_type_specifiers), describing which file types to allow.
+> >
+> > A **unique file type specifier** is a string that describes a type of file that may be selected by the user in an `<input>` element of type `file`. Each unique file type specifier may take one of the following forms:
+> >
+> > - A valid case-insensitive filename extension, starting with a period (".") character. For example: `.jpg`, `.pdf`, or `.doc`.
+> > - A valid MIME type string, with no extensions.
+> > - The string `audio/*` meaning "any audio file".
+> > - The string `video/*` meaning "any video file".
+> > - The string `image/*` meaning "any image file".
+> >
+> > The `accept` attribute takes as its value a string containing one or more of these unique file type specifiers, separated by commas. For example, a file picker that needs content that can be presented as an image, including both standard image formats and PDF files, might look like this:
+> >
+> > ```html
+> > <input type="file" accept="image/*,.pdf" />
+> > ```
+>
+> 另外，感觉还是自己理解片面了：重新看了下各种组件库上传文件组件的文档，发现都有将 [MDN - `<input>`: The HTML Input element # attr-accept](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input#attr-accept) 作为引用
+
+`file.type` 经过代码实践发现是 MIME type
+
+另外，列一下各种文档类型的 MIME type
 
 
 
