@@ -2432,3 +2432,10 @@
    > Some LLMs are a bit **iffy** when it comes to returning well formed JSON data, sometimes they skip a parentheses and sometimes they add some words in it, because that's what an LLM does.
    >
    > 摘自：[GitHub - json_repair](https://github.com/mangiucugna/json_repair)
+   
+- **intact** ：完整、完好无损的
+   **left intact** ：保持不变
+   
+   > The `target` setting changes which JS features are downleveled and which are left intact.
+   >
+   > 摘自：[ts doc - tsconfig # target](https://www.typescriptlang.org/tsconfig/#target)

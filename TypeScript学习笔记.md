@@ -7537,9 +7537,48 @@ TypeScript <font color=red>**includes a default set of type definitions for buil
 
 - Your program doesn’t run in a browser, so you don’t want the `"dom"` type definitions
 - Your runtime platform provides certain JavaScript API objects (maybe through polyfills), but doesn’t yet support the full syntax of a given ECMAScript version
-- You have polyfills or native implementations for some, but not all, of a higher level ECMAScript version
+- <font color=red>You have polyfills or native implementations for some, *but not all*, of a higher level ECMAScript version</font>
 
 In TypeScript 4.5, lib files can be overridden by npm modules, find out more [in the blog](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#supporting-lib-from-node_modules).
+
+##### High Level libraries
+
+| Name         | Contents                                                     |
+| :----------- | :----------------------------------------------------------- |
+| `ES5`        | Core definitions for all ES5 functionality                   |
+| `ES2015`     | Additional APIs available in ES2015 (also known as ES6) - `array.find`, `Promise`, `Proxy`, `Symbol`, `Map`, `Set`, `Reflect`, etc. |
+| `ES6`        | Alias for “ES2015”                                           |
+| `ES2016`     | Additional APIs available in ES2016 - `array.include`, etc.  |
+| `ES7`        | Alias for “ES2016”                                           |
+| `ES2017`     | Additional APIs available in ES2017 - `Object.entries`, `Object.values`, `Atomics`, `SharedArrayBuffer`, `date.formatToParts`, typed arrays, etc. |
+| `ES2018`     | Additional APIs available in ES2018 - `async` iterables, `promise.finally`, `Intl.PluralRules`, `regexp.groups`, etc. |
+| `ES2019`     | Additional APIs available in ES2019 - `array.flat`, `array.flatMap`, `Object.fromEntries`, `string.trimStart`, `string.trimEnd`, etc. |
+| `ES2020`     | Additional APIs available in ES2020 - `string.matchAll`, etc. |
+| `ES2021`     | Additional APIs available in ES2021 - `promise.any`, `string.replaceAll` etc. |
+| `ES2022`     | Additional APIs available in ES2022 - `array.at`, `RegExp.hasIndices`, etc. |
+| `ES2023`     | Additional APIs available in ES2023 - `array.with`, `array.findLast`, `array.findLastIndex`, `array.toSorted`, `array.toReversed`, etc. |
+| `ESNext`     | Additional APIs available in ESNext - <font color=red>This changes as the JavaScript specification evolves</font> |
+| `DOM`        | [DOM](https://developer.mozilla.org/docs/Glossary/DOM) definitions - `window`, `document`, etc. |
+| `WebWorker`  | APIs available in [WebWorker](https://developer.mozilla.org/docs/Web/API/Web_Workers_API/Using_web_workers) contexts |
+| `ScriptHost` | APIs for the [Windows Script Hosting System](https://wikipedia.org/wiki/Windows_Script_Host) |
+
+##### `target`
+
+Modern browsers support all ES6 features, so `ES6` is a good choice. You might choose to set a lower target if your code is deployed to older environments, or a higher target if your code is guaranteed to run in newer environments.
+
+The `target` setting changes which JS features are downleveled and which are left intact. For example, an arrow function `() => this` will be turned into an equivalent `function` expression if `target` is ES5 or lower.
+
+<font color=red>**Changing `target` also changes the default value of `lib`**</font>. You may “mix and match” `target` and `lib` settings as desired, but you could just set `target` for convenience.
+
+For developer platforms like Node there are baselines for the `target`, depending on the type of platform and its version. You can find a set of community organized TSConfigs at [tsconfig/bases](https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases), which has configurations for common platforms and their versions.
+
+<font color=red>The special `ESNext` value refers to the highest version your version of TypeScript supports</font>. <font color=red>**This setting should be used with caution**</font>, since <font color=lightSeaGreen>it doesn’t mean the same thing between different TypeScript versions and can make upgrades less predictable</font>.
+
+> 💡如上面所说：修改 `target` 将会修改 `lib` 的默认值。
+>
+> 另外，我也有点好奇 `lib` 的默认值是什么，于是问了下 Gemini ，得到如下结果：
+>
+> 
 
 
 

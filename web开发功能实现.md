@@ -6,33 +6,58 @@
 
 ##### 问题注意点
 
-###### `accept` 和 `file.type` 是不同的东西
+###### `accept` 和 `file.type` 不能混为一谈
 
-`accept` 在一般场景下，可以简单理解为是文件扩展名。
+`accept` 在一般场景下，可以简单理解为是文件扩展名，不过也可以说 MIME type 以及其他通配，比如 `image/*` ，详见下面引用：
 
-> 💡 虽然在 [MDN - `accept`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/accept) 中有说明 `accept` 的定义：
+> The **`accept`** attribute takes as its value a comma-separated list of one or more file types, or [unique file type specifiers](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/accept#unique_file_type_specifiers), describing which file types to allow.
 >
-> > The **`accept`** attribute takes as its value a comma-separated list of one or more file types, or [unique file type specifiers](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/accept#unique_file_type_specifiers), describing which file types to allow.
-> >
-> > A **unique file type specifier** is a string that describes a type of file that may be selected by the user in an `<input>` element of type `file`. Each unique file type specifier may take one of the following forms:
-> >
-> > - A valid case-insensitive filename extension, starting with a period (".") character. For example: `.jpg`, `.pdf`, or `.doc`.
-> > - A valid MIME type string, with no extensions.
-> > - The string `audio/*` meaning "any audio file".
-> > - The string `video/*` meaning "any video file".
-> > - The string `image/*` meaning "any image file".
-> >
-> > The `accept` attribute takes as its value a string containing one or more of these unique file type specifiers, separated by commas. For example, a file picker that needs content that can be presented as an image, including both standard image formats and PDF files, might look like this:
-> >
-> > ```html
-> > <input type="file" accept="image/*,.pdf" />
-> > ```
+> A **unique file type specifier** is a string that describes a type of file that may be selected by the user in an `<input>` element of type `file`. Each unique file type specifier may take one of the following forms:
 >
-> 另外，感觉还是自己理解片面了：重新看了下各种组件库上传文件组件的文档，发现都有将 [MDN - `<input>`: The HTML Input element # attr-accept](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input#attr-accept) 作为引用
+> - <font color=red>A valid case-insensitive filename extension</font>, <font color=dodgerBlue>starting with a period (".") character</font>. For example: `.jpg`, `.pdf`, or `.doc`.
+> - <font color=red>A valid **MIME type string**</font> , with no extensions.
+> - The string `audio/*` meaning "any audio file".
+> - The string `video/*` meaning "any video file".
+> - The string `image/*` meaning "any image file".
+>
+> <font color=red>The `accept` attribute **takes as its value a string containing one or more of these unique file type specifiers**, separated by commas</font>. <font color=dodgerBlue>For example</font>, a file picker that needs content that can be presented as an image, including both standard image formats and PDF files, might look like this:
+>
+> ```html
+> <input type="file" accept="image/*,.pdf" />
+> ```
+>
+> 摘自：[MDN - `accept`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/accept) 
+
+另外，感觉还是自己理解片面了：重新看了下各种组件库上传文件组件的文档，发现都有将 [MDN - `<input>`: The HTML Input element # attr-accept](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input#attr-accept) 作为引用
 
 `file.type` 经过代码实践发现是 MIME type
 
-另外，列一下各种文档类型的 MIME type
+另外，<font color=dodgerBlue>列一下各种文档类型的 MIME type：</font>
+
+```ts
+const nonImageExtMap: Record<`.${string}`, string> = {
+  '.doc': 'application/msword',
+  '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  '.xls': 'application/vnd.ms-excel',
+  '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  '.ppt': 'application/vnd.ms-powerpoint',
+  '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  '.pdf': 'application/pdf',
+  '.md': 'text/markdown',
+  '.txt': 'text/plain',
+  '.rtf': 'application/rtf',
+  '.odt': 'application/vnd.oasis.opendocument.text',
+  '.ods': 'application/vnd.oasis.opendocument.spreadsheet',
+  '.odp': 'application/vnd.oasis.opendocument.presentation',
+  '.csv': 'text/csv',
+  '.html': 'text/html',
+  '.htm': 'text/html',
+  '.xml': 'application/xml',
+  '.epub': 'application/epub+zip',
+}
+```
+
+整理自：https://g.co/gemini/share/a37ff60db964 
 
 
 
