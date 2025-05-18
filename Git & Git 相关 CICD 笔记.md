@@ -814,7 +814,29 @@ normal 模式键入 `:wq!`，显示如下：
 
 
 
-## 其他笔记
+## Git 工具使用
+
+#### git-filter-repo
+
+> 🔗 [git-filter-repo](https://github.com/newren/git-filter-repo)
+
+##### 官方仓库介绍
+
+###### About
+
+Quickly rewrite git repository history (filter-branch replacement)
+
+###### Readme
+
+git filter-repo is a versatile tool for rewriting history, which includes [capabilities I have not found anywhere else](https://github.com/newren/git-filter-repo#design-rationale-behind-filter-repo). It roughly falls into the same space of tool as [git filter-branch](https://git-scm.com/docs/git-filter-branch) but without the capitulation-inducing poor [performance](https://public-inbox.org/git/CABPp-BGOz8nks0+Tdw5GyGqxeYR-3FF6FT5JcgVqZDYVRQ6qog@mail.gmail.com/), with far more capabilities, and with a design that scales usability-wise beyond trivial rewriting cases. <font color=lightSeaGreen>[git filter-repo is now recommended by the git project](https://git-scm.com/docs/git-filter-branch#_warning) instead of git filter-branch</font>.
+
+While most users will probably just use filter-repo as a simple command line tool (and likely only use a few of its flags), at <font color=red>**its core filter-repo contains a library for creating history rewriting tools**</font>. As such, users with specialized needs can leverage it to quickly create [entirely new history rewriting tools](https://github.com/newren/git-filter-repo/blob/main/contrib/filter-repo-demos).
+
+摘自：[GitHub - git-filter-repo](https://github.com/newren/git-filter-repo)
+
+
+
+## 补充笔记
 
 
 
