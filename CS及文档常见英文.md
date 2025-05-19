@@ -1448,6 +1448,16 @@
 - **SOTA / SotA** ：State of the Art 指在特定任务中目前表现最好的方法或模型
 
   > 关于 SOTA 和 最佳事件的区别询问 Gemini 2.5Pro 的回答 🔗 https://g.co/gemini/share/57d5bfc67e81
+  
+- **footer-gun** ：地雷、陷阱
+
+  > There are also other **foot-guns** we can run into if we start adding more clean-up logic to our finally block — for example, exceptions preventing other resources from being disposed.
+  >
+  > 摘自：[TS doc - handbook - release note -  TypeScript 5.2 # `using` Declarations and Explicit Resource Management](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-2.html#using-declarations-and-explicit-resource-management)
+
+  > 按照 [Gemini](https://g.co/gemini/share/1bb60ade9ae7) 的说法：
+  >
+  > >  "foot-gun" 特指那些**设计上或功能上本身可能没有问题，但却极易被用户（尤其是经验不足的用户）错误使用，从而导致严重负面后果的功能、特性或工具**。它强调的是一种“自我伤害”的可能性——这个工具给了你伤害自己的能力
 
 ***
 

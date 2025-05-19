@@ -6454,7 +6454,165 @@ Writing a twoslash command will set the compiler flag as you type, and will be s
 
 
 
-#### using & using
+#### using & using await
+
+##### `using` Declarations and Explicit Resource Management
+
+TypeScript 5.2 adds support for the upcoming [Explicit Resource Management](https://github.com/tc39/proposal-explicit-resource-management) feature in ECMAScript. Let’s explore some of the motivations and understand what the feature brings us.
+
+> 💡 点进链接看了下：是一个 TC39 提案的 GitHub 仓库，且已经进入了 Stage 3
+
+<font color=dodgerBlue>It’s common to need to do some sort of “clean-up” after creating an object</font>. For example, <font color=lightSeaGreen>you might need to close network connections, delete temporary files, or just free up some memory</font>.
+
+Let’s imagine a function that creates a temporary file, reads and writes to it for various operations, and then closes and deletes it.
+
+```ts
+import * as fs from "fs";
+export function doSomeWork() {
+    const path = ".some_temp_file";
+    const file = fs.openSync(path, "w+");
+    // use file...
+    // Close the file and delete it.
+    fs.closeSync(file);
+    fs.unlinkSync(path);
+}
+```
+
+This is fine, but <font color=dodgerBlue>what happens if we need to perform an early exit?</font>
+
+```ts
+export function doSomeWork() {
+    const path = ".some_temp_file";
+    const file = fs.openSync(path, "w+");
+    // use file...
+    if (someCondition()) {
+        // do some more work...
+        // Close the file and delete it.
+        fs.closeSync(file);
+        fs.unlinkSync(path);
+        return;
+    }
+    // Close the file and delete it.
+    fs.closeSync(file);
+    fs.unlinkSync(path);
+}
+```
+
+We’re starting to see some duplication of clean-up which can be easy to forget. We’re also not guaranteed to close and delete the file if an error gets thrown. This could be solved by wrapping this all in a `try`/`finally` block.
+
+```ts
+export function doSomeWork() {
+    const path = ".some_temp_file";
+    const file = fs.openSync(path, "w+");
+    try {
+        // use file...
+        if (someCondition()) {
+            // do some more work...
+            return;
+        }
+    }
+    finally {
+        // Close the file and delete it.
+        fs.closeSync(file);
+        fs.unlinkSync(path);
+    }
+}
+```
+
+While this is more robust, <font color=lightSeaGreen>it’s added quite a bit of “noise” to our code</font>. There are also other foot-guns we can run into if we start adding more clean-up logic to our `finally` block — for example, exceptions preventing other resources from being disposed. This is what the [explicit resource management](https://github.com/tc39/proposal-explicit-resource-management) proposal aims to solve. The key idea of the proposal is to support resource disposal — this clean-up work we’re trying to deal with — as a first class idea in JavaScript.
+
+<font color=red>This **starts by adding a new built-in `symbol` called `Symbol.dispose`** </font>, and we can create objects with methods named by `Symbol.dispose`. <font color=dodgerBlue>For convenience</font>, <font color=red>**TypeScript defines a new global type called `Disposable` which describes these**</font>.
+
+> 👀 第一遍看的时候，以为 `Symbol.dispose` 是一个实现 “Explicit Resource Management” 的方案之一，实际上它就是 一个新增的 well-known Symbol。Chrome125 和 Edge 已经支持
+
+```ts
+class TempFile implements Disposable {
+    #path: string;
+    #handle: number;
+    constructor(path: string) {
+        this.#path = path;
+        this.#handle = fs.openSync(path, "w+");
+    }
+    // other methods
+    [Symbol.dispose]() {
+        // Close the file and delete it.
+        fs.closeSync(this.#handle);
+        fs.unlinkSync(this.#path);
+    }
+}
+```
+
+Later on we can call those methods.
+
+```ts
+export function doSomeWork() {
+    const file = new TempFile(".some_temp_file");
+    try { /* ... */ }
+    finally {
+        file[Symbol.dispose]();
+    }
+}
+```
+
+Moving the clean-up logic to `TempFile` itself doesn’t buy us much; we’ve basically just moved all the clean-up work from the `finally` block into a method, and that’s always been possible. But having a well-known “name” for this method means that JavaScript can build other features on top of it.
+
+That brings us to the first star of the feature: `using` declarations! `using` is a new keyword that lets us declare new fixed bindings, kind of like `const`. The key difference is that variables declared with `using` get their `Symbol.dispose` method called at the end of the scope!
+
+So we could simply have written our code like this:
+
+```ts
+export function doSomeWork() {
+    using file = new TempFile(".some_temp_file");
+    // use file...
+    if (someCondition()) {
+        // do some more work...
+        return;
+    }
+}
+```
+
+Check it out — no `try`/`finally` blocks! At least, none that we see. Functionally, that’s exactly what `using` declarations will do for us, but we don’t have to deal with that.
+
+You might be familiar with [`using` declarations in C#](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-8.0/using), [`with` statements in Python](https://docs.python.org/3/reference/compound_stmts.html#the-with-statement), or [`try`-with-resource declarations in Java](https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html). These are all similar to JavaScript’s new `using` keyword, and provide a similar explicit way to perform a “tear-down” of an object at the end of a scope.
+
+`using` declarations do this clean-up at the very end of their containing scope or right before an “early return” like a `return` or a `throw`n error. They also dispose in a first-in-last-out order like a stack.
+
+```ts
+function loggy(id: string): Disposable {
+    console.log(`Creating ${id}`);
+    return {
+        [Symbol.dispose]() {
+            console.log(`Disposing ${id}`);
+        }
+    }
+}
+function func() {
+    using a = loggy("a");
+    using b = loggy("b");
+    {
+        using c = loggy("c");
+        using d = loggy("d");
+    }
+    using e = loggy("e");
+    return;
+    // Unreachable.
+    // Never created, never disposed.
+    using f = loggy("f");
+}
+func();
+// Creating a
+// Creating b
+// Creating c
+// Creating d
+// Disposing d
+// Disposing c
+// Creating e
+// Disposing e
+// Disposing b
+// Disposing a
+```
+
+`using` declarations are supposed to be resilient to exceptions; if an error is thrown, it’s rethrown after disposal. On the other hand, the body of your function might execute as expected, but the `Symbol.dispose` might throw. In that case, that exception is rethrown as well.
 
 
 
