@@ -49,6 +49,18 @@ Python 中 Future 的概念主要是通过两个标准库模块引入的：
 
 
 
+#### `with` 关键字
+
+with 语句实现原理建立在上下文管理器之上。
+
+上下文管理器是一个实现 **`__enter__`** 和 **`__exit__`** 方法的类。
+
+使用 with 语句确保在嵌套块的末尾调用 `__exit__` 方法。
+
+摘自：[菜鸟教程 - Python3 教程 - Python with 关键字](https://www.runoob.com/python3/python-with.html)
+
+
+
 ## 工程化相关
 
 #### 包管理器
