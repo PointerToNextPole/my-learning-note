@@ -6616,7 +6616,7 @@ func();
 // Disposing a
 ```
 
-<font color=dodgerBlue>`using` declarations are supposed to be resilient to exceptions</font>; <font color=red>if an error is thrown, it’s **rethrown after disposal**</font>. <font color=dodgerBlue>**On the other hand**</font>, the body of your function might execute as expected</font>, but the `Symbol.dispose` might throw. In that case, that exception is rethrown as well.
+<font color=dodgerBlue>`using` declarations are supposed to be resilient to exceptions</font>; <font color=red>if an error is thrown, it’s **rethrown after disposal**</font>. <font color=dodgerBlue>**On the other hand**</font>, <font color=lightSeaGreen>the body of your function might execute as expected</font>, but <font color=red>the `Symbol.dispose` might throw</font>. <font color=dodgerBlue>In that case</font>, <font color=red>that exception is rethrown **as well**</font>.
 
 But what happens if both the logic before and during disposal throws an error? For those cases, `SuppressedError` has been introduced as a new subtype of `Error`. It features a `suppressed` property that holds the last-thrown error, and an `error` property for the most-recently thrown error.
 
