@@ -2455,4 +2455,8 @@
    > It roughly falls into the same space of tool as [git filter-branch](https://git-scm.com/docs/git-filter-branch) but without the **capitulation**-inducing poor [performance](https://public-inbox.org/git/CABPp-BGOz8nks0+Tdw5GyGqxeYR-3FF6FT5JcgVqZDYVRQ6qog@mail.gmail.com/), with far more capabilities, and with a design that scales usability-wise beyond trivial rewriting cases.
    >
    > 摘自：[GitHub - git-filter-repo](https://github.com/newren/git-filter-repo)
+   
+- **deport** ：驱逐
+
+- **graveryard** ：墓地
 
