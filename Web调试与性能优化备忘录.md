@@ -311,11 +311,15 @@ V8 的 debug 里把当前的函数作用域叫做 Local，上层的函数作用�
 
 帧重启不会重置参数。换句话说，重启不会在调用函数时恢复初始状态。而只是将执行指针移到函数的开头。
 
-至于解决方式是：在 Scope 下双击相应值以进行修改，并设置所需的值。
+至于<font color=dodgerBlue>解决方式是</font>：在 Scope 下双击相应值以进行修改，并设置所需的值。
 
 ![](https://s2.loli.net/2025/01/09/dx7G6PiVD3YSp8Q.png)
 
 学习自：[JavaScript 调试参考文档](https://blog.csdn.net/gtlbtnq9mr3/article/details/140811875)
+
+
+
+
 
 
 
@@ -356,31 +360,31 @@ These commands only work by entering them directly into the DevTools **Console**
 
 #####  Summary
 
-| Function                                             | Description                                                  |
-| :--------------------------------------------------- | :----------------------------------------------------------- |
-| <font color=red>**\$_**</font>                       | Returns the value of the most recently evaluated expression. |
-| <font color=fuchsia>**\$0 - \$4**</font>             | <font color=fuchsia>Returns a recently selected element or JavaScript object</font>. |
-| <font color=red>$(selector)</font>                   | <font color=red>Query selector</font>; returns the reference to the <font color=red>first DOM element</font> with the specified CSS selector, <font color=red>like `document.querySelector()`</font> . 👀 下面有补充 [[#Query selector]] |
-| <font color=red>\$\$(selector, **startNode**)</font> | <font color=red>Query selector all</font>; returns an <font color=red>array of elements</font> that match the specified CSS selector, <font color=red>like `document.querySelectorAll() `</font> . |
-| $x(path, startNode)                                  | Returns an <font color=red>array of DOM elements</font> that <font color=red>match the specified XPath expression</font>. |
-| clear()                                              | Clears the console of its history.                           |
-| <font color=fuchsia>copy(object)</font>              | <font color=fuchsia>Copies a string</font> representation of the specified object <font color=fuchsia>to the clipboard</font>. |
-| debug(function)                                      | When the specified function is called, the debugger is invoked and breaks inside the function on the Sources panel. |
-| dir(object)                                          | Displays an object-style listing of all of the properties for the specified object, <font color=red>like `console.dir()`</font>. |
-| dirxml(object)                                       | <font color=red>Prints an XML representation of the specified object</font>, as displayed in the **Elements** tool, <font color=red>like `console.dirxml()`</font> . |
-| inspect(object/function)                             | <font color=red>Opens and selects</font> the <font color=fuchsia>specified DOM element in the **Elements** tool</font>, <font color=fuchsia>or the specified JavaScript heap object in the **Memory** tool</font>. |
-| <font color=red>getEventListeners(object)</font>     | <font color=red>Returns the event listeners</font> that are <font color=fuchsia>registered on the specified object</font>. 👀[[#getEventListeners]] |
-| <font color=red>keys(object)</font>                  | Returns an <font color=red>array containing the names of the properties belonging to the specified object</font>. 👀 和 `Object.keys()` 作用一样 |
-| monitor(function)                                    | Logs a message to the console that indicates the function name, along with the arguments passed to the function as part of a request. |
-| monitorEvents(object, events)                        | When one of the specified events occurs on the specified object, the event object is logged to the console. |
-| profile(name)                                        | <font color=red>Starts a JavaScript CPU **profiling session** with an optional name</font>. |
-| profileEnd(name)                                     | <font color=red>Completes a JavaScript CPU profiling session and displays the results in the **Memory** tool</font>. |
-| queryObjects(Constructor)                            | Returns an array of the objects that were created by the specified constructor. |
-| table(data, columns)                                 | Logs object data, formatted as a table with column headings, for the specified data object. |
-| undebug(function)                                    | <font color=red>Stops the debug</font> of the specified function, so that when the function is requested, the debugger is no longer invoked. |
-| unmonitor(function)                                  | Stops the monitoring of the specified function.              |
-| unmonitorEvents(object, events)                      | Stops monitoring events for the specified object and events. |
-| values(object)                                       | Returns an array containing the values of all properties belonging to the specified object. 👀 和 `Object.values()` 作用一样 |
+| Function                                           | Description                                                  |
+| :------------------------------------------------- | :----------------------------------------------------------- |
+| <font color=red>**\$_**</font>                     | Returns the value of the most recently evaluated expression. |
+| <font color=fuchsia>**`$0` - `$4`**</font>         | <font color=fuchsia>Returns a recently selected element or JavaScript object</font>. |
+| <font color=red>`$(selector)`</font>               | <font color=red>Query selector</font>; returns the reference to the <font color=red>first DOM element</font> with the specified CSS selector, <font color=red>like `document.querySelector()`</font> . 👀 下面有补充 [[#Query selector]] |
+| <font color=red>`$(selector, startNode)`</font>    | <font color=red>Query selector all</font>; returns an <font color=red>array of elements</font> that match the specified CSS selector, <font color=red>like `document.querySelectorAll() `</font> . |
+| `$x(path, startNode)`                              | Returns an <font color=red>array of DOM elements</font> that <font color=red>match the specified XPath expression</font>. |
+| `clear()`                                          | Clears the console of its history.                           |
+| <font color=fuchsia>`copy(object)`</font>          | <font color=fuchsia>Copies a string</font> representation of the specified object <font color=fuchsia>to the clipboard</font>. |
+| <font color=fuchsia>`debug(function)`</font>       | When the specified function is called, the debugger is invoked and breaks inside the function on the Sources panel. |
+| `dir(object)`                                      | Displays an object-style listing of all of the properties for the specified object, <font color=red>like `console.dir()`</font>. |
+| `dirxml(object)`                                   | <font color=red>Prints an XML representation of the specified object</font>, as displayed in the **Elements** tool, <font color=red>like `console.dirxml()`</font> . |
+| `inspect(object/function)`                         | <font color=red>Opens and selects</font> the <font color=fuchsia>specified DOM element in the **Elements** tool</font>, <font color=fuchsia>or the specified JavaScript heap object in the **Memory** tool</font>. |
+| <font color=red>`getEventListeners(object)`</font> | <font color=red>Returns the event listeners</font> that are <font color=fuchsia>registered on the specified object</font>. 👀[[#getEventListeners]] |
+| <font color=red>`keys(object)`</font>              | Returns an <font color=red>array containing the names of the properties belonging to the specified object</font>. 👀 和 `Object.keys()` 作用一样 |
+| `monitor(function)`                                | Logs a message to the console that indicates the function name, along with the arguments passed to the function as part of a request. |
+| `monitorEvents(object, events)`                    | When one of the specified events occurs on the specified object, the event object is logged to the console. |
+| `profile(name)`                                    | <font color=red>Starts a JavaScript CPU **profiling session** with an optional name</font>. |
+| `profileEnd(name)`                                 | <font color=red>Completes a JavaScript CPU profiling session and displays the results in the **Memory** tool</font>. |
+| `queryObjects(Constructor)`                        | Returns an array of the objects that were created by the specified constructor. |
+| `table(data, columns)`                             | Logs object data, formatted as a table with column headings, for the specified data object. |
+| `undebug(function)`                                | <font color=red>Stops the debug</font> of the specified function, so that when the function is requested, the debugger is no longer invoked. |
+| `unmonitor(function)`                              | Stops the monitoring of the specified function.              |
+| `unmonitorEvents(object, events)`                  | Stops monitoring events for the specified object and events. |
+| `values(object)`                                   | Returns an array containing the values of all properties belonging to the specified object. 👀 和 `Object.values()` 作用一样 |
 
 ##### Query selector
 
@@ -607,6 +611,27 @@ queryObjects(Constructor)
 > 👀 在写上面笔记的时候，没注意注意到 `copy` 函数，直到看到文章 [11+ chrome 高级调试技巧，学会效率直接提升 666%](https://juejin.cn/post/7085135692568723492) 
 
 要将控制台中打印的对象发给别人，可以通过 `JSON.stringify(target, null, 2)` 实现（ 👀 这也是上文中说的），但是更简单的方法是使用 `copy(target)` 。
+
+另外，可以使用 `copy` 记录 DOM 的快照
+
+> 获取当前状态下 DOM 的快照：
+>
+> ```js
+> copy(document.documentElement.outerHTML);
+> ```
+>
+> 每秒记录一次 DOM 快照，并打印到控制台：
+>
+> ```js
+> doms = [];
+> setInterval(() => {
+>   const domStr = document.documentElement.outerHTML;
+>   console.log("snapshotting DOM: ", domStr);
+>   doms.push(domStr);
+> }, 1000);
+> ```
+>
+> 摘自：[一些你可能不知道的奇葩调试技巧](https://mp.weixin.qq.com/s/tSHlKQ62bzhYlESbZjieIQ)
 
 
 

@@ -15060,9 +15060,9 @@ forms <font color=FF0000>返回当前文档中的 `<form>` 元素的一个集合
 
 摘自：[MDN - Document.forms](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/forms)
 
-#### HTML<font color=FF0000>Form</font>Element.elements
+#### HTMLFormElement.elements
 
-elements 返回一个 HTMLFormControlsCollection 其中包含FORM的所有控件。需要注意的是，其中不包括type等于image的input 元素。
+elements 返回一个 HTMLFormControlsCollection 其中包含 FORM 的所有控件。需要注意的是，其中不包括 type 等于 image 的 input 元素。
 
 你可以通过 name 或 id来访问对应的控件。
 
@@ -15084,7 +15084,7 @@ Document.readyState 属性描述了document 的加载状态。
 
 当该属性值发生变化时，会在 document 对象上触发 readystatechange  事件。
 
-**语法**
+##### 语法
 
 ```js
 var string = document.readyState;
@@ -15094,19 +15094,43 @@ var string = document.readyState;
 
 一个文档的 readyState 可以是以下之一
 
-- **loading（正在加载）：**document 仍在加载。
-- **interactive（可交互）：**文档已被解析，"正在加载"状态结束（DOMElementLoaded），但是诸如图像，样式表和框架之类的子资源仍在加载。
-- **complete（完成）：**文档和所有子资源已完成加载。表示 load 状态的事件即将被触发。
+- **loading（正在加载）** ：document 仍在加载。
+- **interactive（可交互）** ：文档已被解析，"正在加载"状态结束 ( DOMElementLoaded )，但是诸如图像，样式表和框架之类的子资源仍在加载。
+- **complete（完成）** ：文档和所有子资源已完成加载。表示 load 状态的事件即将被触发。
 
 摘自：[MDN - document.readyState](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/readyState)
 
 
 
-#### PageTransitionEvent.persisted
+#### Document：activeElement 属性
 
-只读属性persisted代表一个页面是否从缓存中加载的，<font color=FF0000>**类型：boolean**</font>
+The **`activeElement`** <font color=lightSeaGreen>**read-only** property of the `Document` interface</font> <font color=red>returns the `Element` within the DOM that is **receiving keyboard events such as `keydown` and `keyup`**</font>. This is usually analogous to the focused element.
 
-**示例：**
+Which elements are focusable varies <font color=red>depending on the platform and the browser's current configuration</font>. <font color=dodgerBlue>For example</font>, on Safari, following the behavior of macOS, elements that aren't text input elements are not focusable by default, unless the "Full Keyboard Access" setting is enabled in System Preferences.
+
+<font color=dodgerBlue>Typically</font> a user can press the `Tab` key to move the focus around the page among focusable elements, and use keyboard gestures such as `Space` or `Enter` to simulate clicks on the focused element.
+
+> [!NOTE]
+>
+> Focus (which element is receiving user input events) is not the same thing as selection (the currently highlighted part of the document). You can get the current selection using [`window.getSelection()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/getSelection).
+
+##### Value
+
+<font color=lightSeaGreen>The **deepest `Element`** which currently has focus.</font>
+
+- If the focused element is <font color=dodgerBlue>within a shadow tree within the current document</font> ( <font color=dodgerBlue>for example</font>, <font color=lightSeaGreen>the focused element is inside an `iframe`</font>, and the invoking `document` contains that iframe), then <font color=red>this will be the **root element** of that tree</font> (in this example, that `iframe`).
+- If the focused element is within a document tree that's not descended from the current document (for example, the focused element is in the main document, and the invoking `document` is an embedded iframe), then this will be `null`.
+- <font color=dodgerBlue>If there's no focused element</font>, <font color=red>this is the `Document.body` or `Document.documentElement`</font>.
+
+摘自：[MDN - Document: activeElement property](https://developer.mozilla.org/en-US/docs/Web/API/Document/activeElement)
+
+
+
+#### `PageTransitionEvent.persisted`
+
+只读属性 `persisted` 代表一个页面是否从缓存中加载的，<font color=FF0000>**类型：boolean**</font>
+
+##### 示例
 
 ```js
 window.addEventListener('pageshow', function(event) {
@@ -15126,13 +15150,13 @@ window.addEventListener('pageshow', function(event) {
 
 实现了 FormData 接口的对象可以直接在for...of结构中使用，而不需要调用entries() : for (var p of myFormData) 的作用和 for (var p of myFormData.entries()) 是相同的。
 
-**构造函数**
+##### 构造函数
 
 ```js
 FormData() // 创建一个新的 FormData 对象
 ```
 
-**方法**
+##### 方法
 
 - **FormData.append()：**<font color=FF0000>向 FormData 中添加新的属性值</font>，FormData 对应的属性值存在也不会覆盖原值，而是新增一个值，如果属性不存在则新增一项属性值。
 - **FormData.delete()：**<font color=FF0000>从 FormData 对象里面删除一个键值对</font>。
@@ -15204,7 +15228,7 @@ console.log(x); // expected output: 3
 expr1, expr2, expr3...
 ```
 
-##### 参数
+###### 参数
 
 **expr1, expr2, expr3...：**任一表达式
 

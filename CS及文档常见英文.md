@@ -1548,34 +1548,41 @@
 
 
 
-
 ### 前后缀
 
-##### 后缀
+##### 前缀
 
-- `-ish` 后缀：用于表达数量或时间的近似值。以 "10ish" 为例， 它是一个口语化的用法，表示数量大约为10。 
-
-  > This is an over-generalization, but over the past 10ish years, a lot of complexity has been moving from the server to the client.
-  >
-  > 摘自：[The End of Front-End Development](https://www.joshwcomeau.com/blog/the-end-of-frontend-development/)
-  
-- `co-` 前缀：协同的、共同的...
+- `co-` ：协同的、共同的...
 
   > Remote plugins run as **co-processes**, safely and asynchronously.
   >
   > 摘自：[neovim 官网](https://neovim.io/)
-  
-- `inter` 前缀：相互的
+
+- `inter-` ：相互的
 
   > interop ：互操作
   >
   > interoperable ：互操作性
-  
-- `semi` 前缀：半
 
-- `quasi` ：准的，类似的
+- `semi-` ：半
+
+- `quasi-` ：准的，类似的
 
   <img src="https://s2.loli.net/2024/12/06/YDhadEMJRs4SWrT.png" alt="image-20241206135114843" style="zoom:50%;" />
+
+##### 后缀
+
+- `-ish` ：用于表达数量或时间的近似值。以 "10ish" 为例， 它是一个口语化的用法，表示数量大约为10。 
+
+  > This is an over-generalization, but over the past 10**ish** years, a lot of complexity has been moving from the server to the client.
+  >
+  > 摘自：[The End of Front-End Development](https://www.joshwcomeau.com/blog/the-end-of-frontend-development/)
+  
+- `-wise` ：在…方面
+
+  > In particular, this is not a good idea, **performance-wise**, for hosting a site on a normal web server.
+  >
+  > 摘自：[GitHub - vite-plugin-singlefile](https://github.com/richardtallent/vite-plugin-singlefile)
 
 
 
