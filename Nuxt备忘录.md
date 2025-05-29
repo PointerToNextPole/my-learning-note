@@ -1589,7 +1589,15 @@ SSR 应用的页面是在服务端渲染的，用户每请求一个 SSR 页面�
 如下三种方法均可
 
 - 使用 `npx` ：`npx nuxi init hello-nuxt` 
-- 使用 `pnpm dlx` ：`pnpm dlx nuxi init hello-nuxt `
+
+- 使用 `pnpm dlx` ：`pnpm dlx nuxi init hello-nuxt`
+
+  > 💡 值得注意的是，`pnpm dlx` 存在别名 `pnpx`
+  >
+  > > Aliases: `pnpx` is an alias for `pnpm dlx`
+  > >
+  > > 摘自：[pnpm doc - `pnpm dlx`](https://pnpm.io/cli/dlx)
+
 - 全局安装 nuxi ，并使用 `nuxt init hello-nuxt`
 
 > 💡补充：在项目创建好了之后，可以通过 `npx nuxi add page pagePath/pageName` 来新建页面（这和 Nest CLI 有点类似）

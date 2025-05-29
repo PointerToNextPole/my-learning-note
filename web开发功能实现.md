@@ -59,6 +59,23 @@ const nonImageExtMap: Record<`.${string}`, string> = {
 
 整理自：https://g.co/gemini/share/a37ff60db964 
 
+另外，额外补充下压缩文件的 MIME type ：
+
+```ts
+const compressedFileMimeTypes = [
+  'application/zip',
+  'application/vnd.rar',
+  'application/x-rar-compressed',
+  'application/x-7z-compressed',
+  'application/gzip',
+  'application/x-gzip',
+  'application/x-tar',
+  'application/x-bzip2',
+]
+```
+
+参考自：https://g.co/gemini/share/208b2627b1a4
+
 
 
 #### 虚拟列表
