@@ -5900,13 +5900,37 @@ Another example of indexing with an arbitrary type is <font color=fuchsia size=4
 
 > 💡 上面神光的教程中，有提过 `[number]` 这种用法，但这里并没有讲到；这里做下补充：
 >
-> <font color=fuchsia>**数组转联合类型可以这样写：**</font>
+> <font color=dodgerBlue>**数组转联合类型可以这样写：**</font>
 >
 > ```ts
 > type union = ['foo', 'bar'][number]
 > ```
 >
 > <img src="https://s2.loli.net/2022/05/07/mozrZSqcPNkYMDh.png" alt="image-20220504183301073" style="zoom:50%;" />
+>
+> ```ts
+> const arr = ['foo', 'bar'] as const
+> type union = (typeof arr)[number]
+> ```
+>
+> <img src="https://s2.loli.net/2025/05/30/Fog8atQNubCIqdf.png" alt="image-20250530150123128" style="zoom:50%;" />
+>
+> 获取对象 键的联合 与 值的联合
+>
+> ```ts
+> const obj = {
+>   1: 'foo',
+>   2: 'bar',
+>   3: 'baz',
+> } as const
+> 
+> type ObjKeyType = keyof typeof obj
+> type ObjValType = (typeof obj)[keyof typeof obj]
+> ```
+>
+> <img src="https://s2.loli.net/2025/05/30/Ioie8BC7f1XmAx5.png" alt="image-20250530150440119" style="zoom:50%;" />
+>
+> 上面的 “获取对象 键的联合 与 值的联合” 学习自：[as const: the most underrated TypeScript feature](https://www.youtube.com/watch?v=6M9aZzm-kEc)
 
 <font color=fuchsia>You **can only use types when indexing**</font> , meaning you can’t use a `const` to make a variable reference:
 

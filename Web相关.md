@@ -2451,9 +2451,9 @@ CORS 是一个 W3C 标准，全称是 “跨域资源共享” ( Cross-origin re
 
 **子资源完整性** ( SRI ) 是允许<font color=FF0000>浏览器检查其获得的资源（例如从 CDN 获得的）是否被篡改</font>的一项安全特性。它<font color=FF0000>通过验证 **获取文件的哈希值是否和你提供的哈希值一样** 来判断资源是否被篡改</font>。
 
-<mark>使用 ***内容分发网络*** ( CDNs ) 在多个站点之间共享脚本和样式表等文件可以提高站点性能并节省带宽。然而，使用 CDN 也存在风险，如果攻击者获得对 CDN 的控制权，则可以将任意恶意内容注入到 CDN 上的文件中（或完全替换掉文件），因此可能潜在地攻击所有从该 CDN 获取文件的站点</mark>。子资源完整性通过确保 Web 应用程序获得的文件未经第三方注入或其他任何形式的修改来降低这种攻击的风险。
+<font color=lightSeaGreen>使用 **内容分发网络** ( CDNs ) 在多个站点之间共享脚本和样式表等文件可以提高站点性能并节省带宽。然而，使用 CDN 也存在风险，如果攻击者获得对 CDN 的控制权，则可以将任意恶意内容注入到 CDN 上的文件中（或完全替换掉文件），因此可能潜在地攻击所有从该 CDN 获取文件的站点</font>。子资源完整性通过确保 Web 应用程序获得的文件未经第三方注入或其他任何形式的修改来降低这种攻击的风险。
 
-**需要注意的是：**SRI 并不能规避所有的风险
+<font color=dodgerBlue>需要注意的是</font>：SRI 并不能规避所有的风险
 
 ##### 如何使用 SRI
 
@@ -2461,7 +2461,7 @@ CORS 是一个 W3C 标准，全称是 “跨域资源共享” ( Cross-origin re
 
 integrity 值分成两个部分，第一部分指定哈希值的生成算法（目前支持 sha256、sha384 及 sha512），第二部分是经过 base64 编码的实际哈希值，两者之间通过一个短横（-）分割。
 
-**生成 SRI 哈希的工具**
+###### 生成 SRI 哈希的工具
 
 你可以用 openssl 在命令行中执行如下命令来生成 SRI 哈希值：
 
@@ -2475,7 +2475,7 @@ cat FILENAME.js | openssl dgst -sha384 -binary | openssl enc -base64 -A
 shasum -b -a 384 FILENAME.js | xxd -r -p | base64
 ```
 
-**内容安全策略及子资源完整性**
+###### 内容安全策略及子资源完整性
 
 你可以根据内容安全策略来配置你的服务器使得指定类型的文件遵守 SRI。这是通过在 CSP 头部添加 require-sri-for 指令实现的：
 
@@ -2499,15 +2499,15 @@ Content-Security-Policy: require-sri-for style;
 
 #### MIME
 
-**MIME 简介**
+##### MIME 简介
 
 <font color=FF0000>MIME, Mutipurpose Internet Mail Extensions，多用途 Internet 邮箱扩展</font>。<font color=FF0000>MIME 是描述消息内容类型的 internet 标准</font>。<mark>在创建之初，是为了在发送电子邮件时附加多媒体数据，让邮件客户程序根据其类型进行处理</mark>。<font color=FF0000>现在 MIME TYPE 被 HTTP 协议支持后，使得HTTP能够传输各种各样的文件</font>。
 
-**浏览器与 MIME-TYPE**
+##### 浏览器与 MIME-TYPE
 
-浏览器通过 MIME TYE,也就是该资源的媒体类型，来决定以什么形式显示数据。
+浏览器通过 MIME TYPE,也就是该资源的媒体类型，来决定以什么形式显示数据。
 
-<mark>媒体类型通常是通过 HTTP 协议，由 Web 服务器请求头中的 Content-Type 来告知浏览器数据类型的</mark>，比如：
+<font color=lightSeaGreen>媒体类型通常是通过 HTTP 协议，由 Web 服务器请求头中的 Content-Type 来告知浏览器数据类型的</font>，比如：
 
 ```http
 Content-Type: text/HTML
@@ -2515,7 +2515,7 @@ Content-Type: text/HTML
 
 表示内容是 text/HTML 类型，也就是超文本文件。注意，必须是 "text/HTML" 而不是 "HTML/text".因为 MIME 是经过 ietf 组织协商，以 RFC 的形式发布在网上的。
 
-**自定义的类型**
+##### 自定义的类型
 
 需要注意的是：<font color=FF0000>**只有一些在互联网上获得广泛应用的格式才会获得一个 MIME Type**</font>，<font color=FF0000>如果是某个客户端**自己定义的格式**，**一般只能以 application/x- 开头**</font>。
 
@@ -2531,11 +2531,13 @@ Context-type: text/html
 
 注意，第二行为一个空格，这是必须的，使用这个空行的目的是将 MIME 信息与真正的数据内容分离开。
 
-**MIME TYPE语法 及常见分类**
+##### MIME TYPE语法 及常见分类
 
 <font color=FF0000>通用结构：`type/subtype`</font>
+
 <font color=FF0000>MIME 类型对大小写不敏感，但是通常传统写法是小写。</font>
- *分类*
+ 
+ ###### 分类
 
 | 分类                                  | 描述                                           | 典型类型                                                     |
 | ------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------ |
@@ -2557,7 +2559,7 @@ Context-type: text/html
 
 摘自：[网络：什么是 MIME TYPE?](https://www.jianshu.com/p/24c5433ce31b)
 
-<font size=4>**补充：**</font>
+##### MDN 补充
 
 互联网号码分配机构（IANA）是负责跟踪所有官方MIME类型的官方机构
 

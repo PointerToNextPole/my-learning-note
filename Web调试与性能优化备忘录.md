@@ -319,10 +319,6 @@ V8 的 debug 里把当前的函数作用域叫做 Local，上层的函数作用�
 
 
 
-
-
-
-
 #### Cheat Sheet
 
 ![console](https://s2.loli.net/2022/09/26/KtPYa862LcXqs4k.png)
@@ -362,7 +358,7 @@ These commands only work by entering them directly into the DevTools **Console**
 
 | Function                                           | Description                                                  |
 | :------------------------------------------------- | :----------------------------------------------------------- |
-| <font color=red>**\$_**</font>                     | Returns the value of the most recently evaluated expression. |
+| <font color=red>`$_`</font>                        | Returns the value of the most recently evaluated expression. |
 | <font color=fuchsia>**`$0` - `$4`**</font>         | <font color=fuchsia>Returns a recently selected element or JavaScript object</font>. |
 | <font color=red>`$(selector)`</font>               | <font color=red>Query selector</font>; returns the reference to the <font color=red>first DOM element</font> with the specified CSS selector, <font color=red>like `document.querySelector()`</font> . 👀 下面有补充 [[#Query selector]] |
 | <font color=red>`$(selector, startNode)`</font>    | <font color=red>Query selector all</font>; returns an <font color=red>array of elements</font> that match the specified CSS selector, <font color=red>like `document.querySelectorAll() `</font> . |
@@ -719,7 +715,7 @@ Overrides 的作用是为远程脚本存储一份本地副本，并在页面加�
 
 按下 ⌘ + ⇧ + P 可以唤出 DevTools 的 Command 搜索框，输入与 DevTools 的自动联想，选择想要的命令。
 
-> ⚠️ 值得注意的是：对于内容较长的网页，会出现截图无法截全的问题，问了 Gemini 2.5 Pro 🔗 https://g.co/gemini/share/48984f0f7c12 ，并没有直接解决方案方案；只能通过第三方插件或自动化测试的工具来实现截图。我优先选择了 OneNote 的插件
+> ⚠️ 值得注意的是：对于内容较长的网页，会出现截图无法截全的问题，问了 Gemini 2.5 Pro 🔗 https://g.co/gemini/share/48984f0f7c12 ，并没有直接解决方案方案；只能通过第三方插件或自动化测试的工具来实现截图。我优先选择了 OneNote Web Clipper 导出到 OneNote 中，至于缺点就是清晰度稍差些
 
 下面是一些常见的命令：
 
@@ -760,6 +756,60 @@ Overrides 的作用是为远程脚本存储一份本地副本，并在页面加�
 
 
 摘自：[Chrome DevTools 的 Network 还能这么用？](https://juejin.cn/post/7159519090229887013)
+
+
+
+#### 使用 HTTP proxy
+
+##### DevTools Network 存在的问题
+
+###### 重定向前的请求细节看不到
+
+很多实现 OAuth 相关服务的网站在登录完成后，会跳转到 redirect url 并且带着一个 code，而这时有些网站会拿 code 去交换 access_token，然后再带着 access_token 跳转到下一个页面。如果 code 交换 access_token 这一步有问题，该怎么 debug 呢？
+
+<font color=red>Chrome DevTools 在跳转到其他页面时，默认会把 console 和 network 的东西都清空</font>。<font color=lightSeaGreen>有一个选项叫做“Preserve log” ，把它勾起来以后看似问题就解决了</font>，<font color=red>**但其实没有**</font>。
+
+可以随便找一个网页，打开 DevTools 并且把保留 log 勾起来，然后执行以下代码：
+
+```js
+fetch('https://httpbin.org/user-agent')
+  .then(()=> window.location ='https://example.com')
+```
+
+当跳转完成以后，<font color=red>**虽然 Network 那边确实可以看到这个请求，但点进去以后只会看到 “Failed to load response data” **</font>：
+
+<img src="https://s2.loli.net/2025/05/30/DFaoGd3CEpzlZg2.png" alt="看不到請求" style="zoom:75%;" />
+
+这个问题从 2012 年就有人反馈了，好不容易等了十几年，2023 年底时说这个在 2024 的 roadmap 上，但目前依然没有任何动静：DevTools: XHR (and other resources) content not available after navigation。
+
+<font color=dodgerBlue>这个问题的本质是</font>：<font color=red>**一旦页面跳转，旧页面的 Network 请求数据就会被浏览器丢弃。因此即使请求已经发送，DevTools 也无法保留或查看 Response**</font>。
+
+总之呢，在这个情境之下，看不到 response 基本上没办法 debug，很不方便。
+
+###### WebSocket 连接握手失败找不到原因
+
+虽然我们平常在用 WebSocket 时，只需要一行代码就可以建立连接，但背后其实是分了两步。
+
+第一步会发出一个 HTTP Upgrade 请求，完成以后才切换到 WebSocket 连接。虽然大多数情况下第一步都会成功，那如果第一步失败会怎样呢？
+
+我们可以请 AI 写一个很简单的 demo 出来：
+
+- 写一个 nodejs websocket server，然后用一个 nginx 挡在前面
+- nginx 的作用是当 url 含有？debug 的时候要返回 500 错误
+- 当 websocket 连接后会往 client 自动发送 hello 的 message
+- 最后要包装成可以用 docker compose 跑起来
+
+等 AI 生成完之后用 docker 跑起来，一样随便开个网页建立连接，会发现带有 debug 的那个连接请求，你只知道失败了，却完全不知道原因：
+
+<img src="https://s2.loli.net/2025/05/30/bhDlvZ3gGeMkIcz.png" alt="看不到原因" style="zoom:75%;" />
+
+这个错误信息甚至跟你随便连一个没开的端口一样，完全不知道为什么会失败，这样也很难跟后端说问题在哪里。
+
+其实遇到 WebSocket 握手失败，也可以尝试用其他方式辅助调试，比如用 `curl -i --include` 手动模拟 HTTP Upgrade 请求，检查是不是被后端或代理服务器拦截。这在无法获取浏览器详细错误信息时，是个不错的替代方案。
+
+以上是两个我有印象的范例，但实际开发中应该碰过更多更多，基本上都是只靠 DevTools 来看 Network 没办法解决的问题，要么是看不到，要么看到的东西不太对。
+
+摘自：[人人都需要一個 HTTP proxy 來 debug](https://blog.huli.tw/2025/04/23/everyone-need-a-http-proxy-to-debug/) ，以及简中版本 [人人都需要一个 HTTP proxy 来 debug](https://mp.weixin.qq.com/s/8c9mbxnGxyUcmVzO7zicVw)
 
 
 
