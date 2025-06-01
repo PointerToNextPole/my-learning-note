@@ -14,6 +14,8 @@
 
 
 
+## 调试方法与技巧
+
 #### VS Code 调试单个 TS 文件
 
 ##### 预先准备
@@ -91,9 +93,105 @@
 
 
 
+#### 《一些你可能不知道的奇葩调试技巧》笔记
+
+##### 条件断点
+
+条件断点是一种高级的调试技巧，它允许我们为某个特定的代码行设置断点，但这个断点只有在满足某个特定条件时才会触发。
+
+我们可以在想要调试的地方右键，选择 `Add conditional breakpoint`
+
+<img src="https://s2.loli.net/2025/06/01/tsbgK4LxmYZ1lH5.png" alt="图片" style="zoom: 50%;" />
+
+然后在条件中输入断点的生效条件，例如我们可以让它在这个位置只打印日志不进行暂停：
+
+<img src="https://s2.loli.net/2025/06/01/G4t165kBpjxf8Rd.png" alt="图片" style="zoom:60%;" />
+
+<font color=dodgerBlue>还有一些你可能会使用到的调试条件：</font>
+
+仅在使用 2 个参数调用当前函数时断点：`arguments.callee.length === 2` ，如果这个函数有多个可选的重载的时候会很有用。
+
+<font color=red>页面加载后 7 秒才断点：`performance.now() > 7000`</font>，当你想要设置断点，但只想在初始页面加载后断点执行时会很有用。
+
+> 👀 这点没想到，不过想了下：Sources 面板中监听的变量是响应式的，所以虽然出人意料，但是也是细想之下合理的。
+
+同理，我们还可以实现更精准一点的时间控制：如果在接下来的 7 秒内命中断点，则不要断点执行，而是在之后随时断点：
+
+```js
+window.baseline = window.baseline || Date.now(), (Date.now() - window.baseline) > 7000
+```
+
+>  👀 这个表达式还是挺风骚的：用到了自定义全局变量、赋值返回、或运算短路，逗号运算符 ...
+
+也可以根据计算的 `CSS` 值断点，例如，仅当文档正文具有红色背景色时才暂停执行：
+
+```js
+window.getComputedStyle(document.body).backgroundColor === "rgb(255, 0, 0)"
+```
+
+> 👀 试了下，这里的代码还是有点问题的：虽然 `getComputedStyle` 返回的样式 `backgroundColor` 确实是使用 `rgb()` 函数的，但是本质上还是字符串，甚至按照原文的 `rgb(255,0,0)` 都不能使其相等并进入断点，必须要使用空格，更不用说如果使用 `red` 做比较
+
+我们还可以用它来追踪函数的调用堆栈：比如说，你有一个函数用于显示加载动画，还有一个函数用于隐藏它，但在你的代码中的某个地方，你调用了展示动画的方法，但没有相应的隐藏动画的调用。你要如何找到这个没有配对的展示动画方法的调用源头呢？你可以在展示动画方法的条件断点中使用 `console.trace` 来运行代码，找到对应展示动画方法的最后一个栈追踪，点击调用源就可以跳转到对应的代码位置：
+
+<img src="https://s2.loli.net/2025/06/01/PJOmkLrVbcCoKgx.gif" style="zoom:70%;" />
+
+甚至我们还可以利用条件断点来帮助我们对函数进行性能分析，我们只需要在函数前后插入：`console.time` 和 `console.timeend`：
+
+<img src="https://s2.loli.net/2025/06/01/dMA9Ba3ER5HLzQO.gif" alt="图片" style="zoom:70%;" />
+
+
+
+
+
+
+
+
+
 ## 神光调试小册笔记
 
 [前端调试通关秘籍](https://juejin.cn/book/7070324244772716556/section) // TODO 看了些，有空体系性地做下笔记
+
+
+
+#### 打断点的 7 种方式
+
+##### 背景
+
+有的时候，我们并不知道应该在哪里打断点：
+
+- 比如代码抛了异常，你想打个断点看看异常出现的原因，但你并不知道异常在哪里发生的。
+
+  > 👀 对应异常断点
+
+- 比如 dom 被某个地方修改了，你想打个断点看看怎么修改的，但你并不知道是哪段代码修改了它。
+
+  > 👀 对应 DOM 断点
+
+- 比如有的断点你想只在满足某个条件的时候断住，不满足条件就不需要断住。
+
+  > 👀 对应条件断点
+
+##### TL;DR
+
+这里提前做下总结，除了一般的打断点，文中提到的断点一共 6 种，如下：
+
+- 异常断点
+- 条件断点
+- LogPoint
+- DOM 断点
+- Event Listener 断点
+- url 请求断点
+
+##### 异常断点
+
+
+
+##### 条件断点
+
+> 👀 讲的有点基础了，这里略。不过可以看下 [[#《一些你可能不知道的奇葩调试技巧》笔记#条件断点]] 中的内容，其中介绍了一些让人感觉 “这也行？” 的用法
+>
+
+
 
 
 
@@ -621,9 +719,9 @@ queryObjects(Constructor)
 > ```js
 > doms = [];
 > setInterval(() => {
->   const domStr = document.documentElement.outerHTML;
->   console.log("snapshotting DOM: ", domStr);
->   doms.push(domStr);
+>     const domStr = document.documentElement.outerHTML;
+>     console.log("snapshotting DOM: ", domStr);
+>     doms.push(domStr);
 > }, 1000);
 > ```
 >
