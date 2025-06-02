@@ -923,6 +923,8 @@
 
 - **synthetic** ：合成的
 
+  > 👀 synthetic event 合成事件
+
 - **violate** ：vt. 违反，违规
 
   **violation** ：n. 违反

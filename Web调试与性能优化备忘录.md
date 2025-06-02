@@ -135,13 +135,187 @@ window.getComputedStyle(document.body).backgroundColor === "rgb(255, 0, 0)"
 
 <img src="https://s2.loli.net/2025/06/01/PJOmkLrVbcCoKgx.gif" style="zoom:70%;" />
 
-甚至我们还可以利用条件断点来帮助我们对函数进行性能分析，我们只需要在函数前后插入：`console.time` 和 `console.timeend`：
+甚至可以利用条件断点来帮助我们对函数进行性能分析，我们只需要在函数前后插入：`console.time` 和 `console.timeend`：
 
 <img src="https://s2.loli.net/2025/06/01/dMA9Ba3ER5HLzQO.gif" alt="图片" style="zoom:70%;" />
 
+##### 记录 DOM 的快照
 
+> 👀 个人感觉：除了使用 `copy` 这个 Console API 的 函数 外，“记录快照” 这个功能没什么作用？
 
+获取当前状态下 DOM 的快照：
 
+```js
+copy(document.documentElement.outerHTML);
+```
+
+每秒记录一次 DOM 快照，并打印到控制台：
+
+```js
+doms = [];
+setInterval(() => {
+  const domStr = document.documentElement.outerHTML;
+  console.log("snapshotting DOM: ", domStr);
+  doms.push(domStr);
+}, 1000);
+```
+
+##### 监控网页中获得焦点的元素
+
+```js
+(function () {
+  let last = document.activeElement;
+  setInterval(() => {
+    if (document.activeElement !== last) {
+      last = document.activeElement;
+      console.log("Focus changed to: ", last);
+    }
+  }, 1700);
+})();
+```
+
+<img src="https://s2.loli.net/2025/06/02/RyCrdOv9BF2lzoI.gif" alt="图片" style="zoom:65%;" />
+
+##### 找到所有加粗的元素
+
+```js
+const isBold = (e) => {
+  let w = window.getComputedStyle(e).fontWeight;
+  return w === "bold" || w === "700";
+};
+Array.from(document.querySelectorAll("*")).filter(isBold);
+```
+
+##### 调试当前选择的元素
+
+`$0` 控制台中的内容是对元素检查器中当前选定元素的自动引用。
+
+例如 ，我们可以检查当前所选元素的事件侦听器：`getEventListeners($0)`：
+
+<img src="https://s2.loli.net/2025/06/02/r4WFy7ZkQPub1K3.png" style="zoom:70%;" />
+
+> 👀 这个函数也是 Console API 的
+
+调试所选元素的所有事件：`monitorEvents($0)`
+
+调试所选元素的特定事件：`monitorEvents($0, ["control", "key"])`
+
+##### 调用并调试函数
+
+> ⚠️ 这个用法感觉很不错，也是之前几乎没听过的
+
+在想要查找问题并进行详细调试时，一个简单的技巧就是先调用一下 `debugger` 命令。例如，假设我们有以下形式的函数：
+
+```js
+function fn() {
+  /* 某些代码 */
+}
+```
+
+<font color=red>**可以在自己的控制台里这样操作：**</font>
+
+```js
+debugger; fn(1);
+```
+
+<font color=red>然后点击 `Step into next function call`，就能对 `fn` 函数的具体实现进行调试了。</font>
+
+<font color=lightSeaGreen>**这个技巧在你不想找到函数 `fn` 的详细定义并手动设置断点，或者当这个 `fn` 函数是动态绑定到某个函数上，你又不清楚具体源头在哪里时，尤其好用**</font>。
+
+在 `Chrome` 浏览器里，<font color=red>甚至可以在命令行里直接使用 `debug(fn)` 命令</font>，这样每次运行 `fn` 函数时，调试器都会暂停在这个函数的执行过程中，方便你查看和排查问题。
+
+> 👀 `debug` 函数，也是 Console API，另外，感觉有点像是 watch函数的意味了。另外，可以发现的是这个用法和 `monitor` 函数的功能类似（见 [[#使用 `monitor()` 函数]]），不过，`debug` 用来 <font color=red>**监听**</font> 函数的执行，`monitor` 用来 <font color=red>**记录**</font> 变量的变化（因为<font color=red>它并不会产生断点</font>）
+
+##### 在 URL 更改时暂停执行
+
+> 👀 虽然也可以使用路由守卫实现？不过，这个思路还是很有启发性质
+
+想要在单页应用改变 `URL`（比如发生路由跳转）之前暂停执行，你可以使用以下代码：
+
+```js
+const dbg = () => {
+  debugger;
+};
+history.pushState = dbg;
+history.replaceState = dbg;
+window.onhashchange = dbg;
+window.onpopstate = dbg;
+```
+
+但是<font color=red>这个方法不能处理当代码直接调用 `window.location.replace/assign` 的情况</font>，因为页面会在赋值后立即卸载，所以没有什么可以调试的。<font color=dodgerBlue>如果你仍然想要看到这些重定向的来源</font>（并在重定向时调试你的状态），<font color=dodgerBlue>在 `Chrome` 中，你可以这样调试相关的方法：</font>
+
+```js
+debug(window.location.replace);
+debug(window.location.assign);
+```
+
+##### 调试属性读取
+
+如果你有一个对象，想知道它的属性什么时候会被读取，可以在对象的 `getter` 中调用 `debugger`。例如，将 `{ configOption : true }` 转换为
+
+```js
+{ 
+  get configOption() { 
+    debugger; return true; 
+  }
+}
+```
+
+当你将一些配置选项传递给某个地方，并且想要看到它们如何被使用时，这个技巧非常有用。
+
+##### 使用 `copy()` 函数
+
+`Chrome` 和 `Firefox` 浏览器都支持使用 `console API` 的 `copy()` 函数，<font color=red>可以**直接将浏览器中的有趣信息复制到你的剪贴板，且不会有任何字符串截断**</font>，<font color=dodgerBlue>下面是一些你可能想要复制的有趣信息</font>：
+
+- 当前 `DOM` 的快照： `copy(document.documentElement.outerHTML)`
+- 资源的元数据（例如：图像）： `copy(performance.getEntriesByType("resource"))`
+- 大型格式化的 `JSON` 块： `copy(JSON.parse(blob))`
+- 你的 `localStorage` 的数据转储： `copy(localStorage)`
+- 等等
+
+这个技巧可以在你需要将一些数据信息复制到剪贴板，以便你在其他地方使用或者进行分析的时候使用。
+
+##### 使用 `monitor()` 函数
+
+你可以使用 `Chrome` 的 `monitor` 命令行方法来轻松追踪所有对类方法的调用。比如，给定一个 `People`类：
+
+```js
+class People {
+  eat(count) {
+    /* ... */
+  }
+}
+```
+
+如果我们想要知道所有对 `People` 类所有实例的调用，将以下代码粘贴到命令行：
+
+```js
+var p = People.prototype;
+Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
+```
+
+然后你将在控制台获得输出：`function eat called with arguments: 2`
+
+<font color=red>如果你希望在任何方法调用时暂停执行，而不仅仅是打印到控制台，可以使用 `debug` 而不是 `monitor`</font>。
+
+<font color=dodgerBlue>如果你不知道类名，但你有一个实例，可以这样操作：</font>
+
+```js
+var p = instance.constructor.prototype;
+Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
+```
+
+##### 绕过反调试
+
+有时打开网页的 `Devtools` 你会发现可能会一直循环进入到一个 `debugger` 中，导致没法正常调试。
+
+这可能就是网站给是增加的一点反调试的手段：
+
+<img src="https://s2.loli.net/2025/06/02/P42Jt3wOYqNxhcZ.png" alt="图片" style="zoom:60%;" />
+
+但这个绕过非常简单， 你只需要右键 `debugger` 的位置，点击 `Never pause here` ，就不会在这里进入断点了：
+
+<img src="https://s2.loli.net/2025/06/02/4BebSDArm537wCc.png" alt="图片" style="zoom:55%;" />
 
 
 
@@ -150,6 +324,131 @@ window.getComputedStyle(document.body).backgroundColor === "rgb(255, 0, 0)"
 ## 神光调试小册笔记
 
 [前端调试通关秘籍](https://juejin.cn/book/7070324244772716556/section) // TODO 看了些，有空体系性地做下笔记
+
+
+
+#### 调试代码会遇到的 9 种 JS 作用域
+
+> 👀 基本都是理论知识，主体内容略，这里只摘抄了总结部分，并做了点补充，感觉也够了
+
+JS 总共有 9 种作用域，我们通过调试的方式来分析了下：
+
+- **Global 作用域**： 全局作用域，在浏览器环境下就是 window，在 node 环境下是 global
+
+- **Local 作用域**：本地作用域，<font color=red>或者叫 **函数作用域**</font>
+
+  <img src="https://s2.loli.net/2025/06/02/39O8UqmjK15ARwW.png" alt="" style="zoom:40%;" />
+
+  > 👀 另外，自己试了下：除了 `function` 定义的函数中的变量（哪怕是 ES6 新增的 let 和 const ），使用箭头函数定义的函数，也一样
+  >
+  > <img src="https://s2.loli.net/2025/06/02/Hw9Z4AzsNOjo578.png" alt="image-20250602201956049" style="zoom:45%;" />
+
+- **Block 作用域**：块级作用域，ES6 新增。<font color=red>**if、while、for 等语句都会生成 Block 作用域**</font>
+
+  <img src="https://s2.loli.net/2025/06/02/fgVZY4GDJIOoybs.png" style="zoom:45%;" />
+
+  > 👀 另外，注意到：和上面的 Local 作用域一样，在 Block 作用域中，let 和 const 定义的变量都在 Block 作用域中（而不是 Script 作用域中）
+
+- **Script 作用域**：let、const 声明的全局变量会保存在 Script 作用域，这些变量可以直接访问，但却不能通过 `window.xx` 访问
+
+  > 👀 同样符合常识的是：直接使用的变量 和 var 声明的变量在 global 作用域中
+
+- **Module 作用域**：ES Module 模块运行的时候会生成 Module 作用域，而 CommonJS 模块运行时严格来说也是函数作用域，因为 Node 执行它的时候会包一层函数，算是比较特殊的函数作用域，有 module、exports、require 等变量
+
+  > 同样的代码，在 node 环境下就没有了 Script 作用域，但是多了一个 Local 作用域：
+  >
+  > <img src="https://s2.loli.net/2025/06/02/GDTYP1mK6Cc8ur4.png" style="zoom:45%;" />
+  >
+  > 这个 Local 作用域还有 module、exports、require 等变量，这个叫做模块作用域。
+
+- **Catch Block 作用域**： catch 语句的作用域可以访问错误对象
+
+  > Catch 语句也会生成一个特殊的作用域，Catch Block 作用域，特点是能访问错误对象：
+  >
+  > <img src="https://s2.loli.net/2025/06/02/bFi9DCj6QOzMTYZ.png" style="zoom: 45%;" />
+  >
+  > 在 node 里也是一样，只不过还有一层模块作用域：
+  >
+  > <img src="https://s2.loli.net/2025/06/02/2ICHdyK4l5iVBQN.png" style="zoom:45%;" />
+  >
+  > <font color=dodgerBlue>那 finally 语句呢？</font>这个就没啥特殊的了，就是 Block 作用域：
+  >
+  > <img src="https://s2.loli.net/2025/06/02/H5tzN8yxvXeSbcL.png" alt="" style="zoom:45%;" />
+  >
+  > <img src="https://s2.loli.net/2025/06/02/i1CEaf6TAPbhvXL.png" style="zoom:45%;" />
+
+- **With Block 作用域**：with 语句会把传入的对象的值放到单独的作用域里，这样 with 语句里就可以直接访问了
+
+  > <img src="https://s2.loli.net/2025/06/02/4r1M72cpUaIluen.png" style="zoom:50%;" />
+  >
+  > 这个 with 语句里的作用是什么？with 语句里的作用域就是这个对象：
+  >
+  > <img src="https://s2.loli.net/2025/06/02/XuCefbVKxPT6pRv.png" style="zoom:45%;" />
+  >
+  > 换成普通的对象更明显一些：
+  >
+  > <img src="https://s2.loli.net/2025/06/02/PfrcqFhBvG6ZLkA.png" style="zoom:50%;" />
+  >
+  > 可以直接访问 with 对象的值，就是因为形成了一个 With Block 作用域；当然，<font color=red>里面再声明的变量还是在 Block 作用域里</font>。
+
+- **Closure 作用域**：函数返回函数的时候，会把用到的外部变量保存在 Closure 作用域里，这样再执行的时候该有的变量都有，这就是闭包。eval 的闭包比较特殊，会把所有变量都保存到 Closure 作用域
+
+  > ```js
+  > function fun() {
+  >     const a = 1;
+  >     const b = 2;
+  >     return function () {
+  >         const c = 2;
+  > 
+  >         console.log(a, c);
+  >         debugger;
+  >     };
+  > }
+  > 
+  > const f = fun();
+  > f();
+  > ```
+  >
+  > 那闭包的变量怎么保存的？通过 node 可以看到：
+  >
+  > <img src="https://s2.loli.net/2025/06/02/OP92Xq6abKFl7wL.png" style="zoom:45%;" />
+  >
+  > 通过 Closure 作用域保存了变量 a 的值（👀 原因和闭包概念有关，这里略）
+  >
+  > 然后执行的时候就会恢复这个 Closure 作用域：
+  >
+  > <img src="https://s2.loli.net/2025/06/02/AVL4GeN5jEw3ztX.png" alt="20250602_205622.png" style="zoom:45%;" />
+  >
+  > <font color=dodgerBlue>Closure 作用域也可以多层</font>，比如这样：
+  >
+  > ```js
+  > function fun() {
+  >     const a = 1;
+  >     const b = 2;
+  >     return function () {
+  >         const c = 2;
+  >         const d = 4;
+  > 
+  >         return function () {
+  >             const e = 5;
+  >             console.log(a, c, e);
+  >         };
+  >     };
+  > }
+  > 
+  > const f = fun()();
+  > f();
+  > ```
+  >
+  > 用到的外部变量分别在两个作用域里，那就会生成两个 Closure 作用域：
+  >
+  > <img src="https://s2.loli.net/2025/06/02/LVhElGFozIyCTWn.png" style="zoom:45%;" />
+  >
+  > 只留下用到的作用域的变量 a、c
+
+- **Eval 作用域**：eval 代码声明的变量会保存在 Eval 作用域
+
+上面这些都是调试得出的，是 JS 引擎执行代码时的真实作用域。
 
 
 
@@ -184,14 +483,122 @@ window.getComputedStyle(document.body).backgroundColor === "rgb(255, 0, 0)"
 
 ##### 异常断点
 
+代码抛了异常，你想知道在哪抛的，这时候就可以用异常断点。
 
+比如这样一段代码：
+
+```js
+function add(a, b) {
+    throw Error('add');
+    return a + b;    
+}
+
+console.log(add(1, 2));
+```
+
+add 函数里抛了个异常，你想在异常处断住，这时候就可以加个异常断点：
+
+用 node 的调试来跑：
+
+<img src="https://s2.loli.net/2025/06/02/GBrEIyvMWkohXnS.png" alt="img" style="zoom:45%;" />
+
+勾选 Uncaught Exceptions：
+
+<img src="https://s2.loli.net/2025/06/02/BabVDtSprIR9215.png" alt="img" style="zoom:50%;" />
+
+它可以在没有被处理的错误或者 Promise 的 reject 处断住。
+
+上面那个 Caught Exception 是在被 catch 处理的异常出断住。
+
+Uncaught Exceptions 更常用一些。
+
+<img src="https://s2.loli.net/2025/06/02/bGrwEZFLY3vOscI.webp" style="zoom: 40%;" />
+
+当然，网页调试也可以用异常断点：
+
+<img src="https://s2.loli.net/2025/06/02/blCQfwmU4KYNMjV.webp" alt="" style="zoom:40%;" >
 
 ##### 条件断点
 
 > 👀 讲的有点基础了，这里略。不过可以看下 [[#《一些你可能不知道的奇葩调试技巧》笔记#条件断点]] 中的内容，其中介绍了一些让人感觉 “这也行？” 的用法
->
 
+##### LogPoint
 
+略
+
+##### DOM 断点
+
+<font color=dodgerBlue>后面几种断点是网页里专用的，也是在特定场景下很有用的断点类型。</font>
+
+用 create-react-app 创建的 react 项目，有这样一个组件：
+
+<img src="https://s2.loli.net/2025/06/02/NGIy34TYiQadE9j.png" style="zoom:53%;" />
+
+如果想知道 setState 之后是怎么修改 DOM 的，想在 DOM 被修改的时候断住，应该怎么做呢？
+
+找到源码打断点么？不熟悉源码的话，你根本不知道在哪里打断点。
+
+<font color=dodgerBlue>这时候就可以用 DOM 断点了：</font>
+
+先创建一个 chrome 调试配置，把网页跑起来：
+
+<img src="https://s2.loli.net/2025/06/02/kHe1XlwCrD6pibg.png" alt="" style="zoom:45%;" >
+
+然后打开 Chrome DevTools，在 root 的节点上加一个 DOM 断点：
+
+<img src="https://s2.loli.net/2025/06/02/7rP5z96QecZmb32.png" style="zoom:45%;" />
+
+<font color=dodgerBlue>有三种类型：</font>子树修改的时候断住、属性修改的时候断住、节点删除的时候断住。
+
+我们选择第一种，然后刷新页面。
+
+<img src="https://s2.loli.net/2025/06/02/slKPnhMrJ8w24ey.webp" style="zoom:40%;" />
+
+这时候你会发现代码在修改 DOM 的地方断住了，<font color=lightSeaGreen>这就是 React 源码里最终操作 DOM 的地方</font>，看下调用栈就知道 setState 之后是如何更新 DOM 的了。
+
+当然这只是一种用途，特定场景下，DOM 断点是很有用的。
+
+##### Event Listener 断点
+
+之前我们想调试事件发生之后的处理逻辑，需要找到事件监听器，然后打个断点。
+
+但<font color=dodgerBlue>如果你不知道哪里处理的这个事件呢？</font>这时候就可以用事件断点了
+
+打开 sources 面板，就可以找到事件断点，有各种类型的事件：
+
+<img src="https://s2.loli.net/2025/06/02/mjJWo7a4XUhwlK2.png" style="zoom:45%;" />
+
+比如这样一段代码：
+
+<img src="https://s2.loli.net/2025/06/02/qkEQ8nm3aNWPM6H.png" alt="" style="zoom:45%;" />
+
+你找不到哪里处理的点击事件，那就可以加一个 click 的事件断点：
+
+<img src="https://s2.loli.net/2025/06/02/nSugBTszhaIW7td.png" alt="" style="zoom:60%;" />
+
+这时当你点击元素的时候，代码就会在事件处理器断住：
+
+<img src="https://s2.loli.net/2025/06/02/wdrzPTAfQKy6BUk.webp" style="zoom:50%;" />
+
+当然，<font color=dodgerBlue>因为 React 是合成事件</font>，也就是事件绑定在某个元素上自己做的分发，<font color=lightSeaGreen>所以这里是在源码处理事件的地方断住的</font>。<font color=red>用 Vue 就可以直接在事件处理函数处断住</font>。
+
+##### url 请求断点
+
+当你想在某个请求发送的时候断住，但你不知道在哪里发的，这时候就可以用 url 请求断点
+
+比如这样一段代码，你想在发送 url 包含 guang 的请求的时候断住，就可以使用 url 请求断点：
+
+<img src="https://s2.loli.net/2025/06/02/N2aIumJsGyCe4j5.png" alt="" style="zoom:70%;" />
+
+不输入内容就是在任何请求处断住，你可以可以输入内容，那会在 url 包含该内容的请求处断住：
+
+<img src="https://s2.loli.net/2025/06/02/Fkm9LT4Jg5zqGae.png" alt="PNG_image.png" style="zoom:70%;" />
+
+效果如下：
+
+<img src="https://s2.loli.net/2025/06/02/btD32CLMPhUBwuE.png" alt="PNG_image.png" style="zoom:30%;" />
+
+这在调试网络请求的代码的时候，是很有用的。
 
 
 
@@ -706,26 +1113,7 @@ queryObjects(Constructor)
 
 要将控制台中打印的对象发给别人，可以通过 `JSON.stringify(target, null, 2)` 实现（ 👀 这也是上文中说的），但是更简单的方法是使用 `copy(target)` 。
 
-另外，可以使用 `copy` 记录 DOM 的快照
-
-> 获取当前状态下 DOM 的快照：
->
-> ```js
-> copy(document.documentElement.outerHTML);
-> ```
->
-> 每秒记录一次 DOM 快照，并打印到控制台：
->
-> ```js
-> doms = [];
-> setInterval(() => {
->     const domStr = document.documentElement.outerHTML;
->     console.log("snapshotting DOM: ", domStr);
->     doms.push(domStr);
-> }, 1000);
-> ```
->
-> 摘自：[一些你可能不知道的奇葩调试技巧](https://mp.weixin.qq.com/s/tSHlKQ62bzhYlESbZjieIQ)
+> 👀 另外，可以使用 `copy` 记录 DOM 的快照；这个可以看下 [[#记录 DOM 的快照]]
 
 
 
@@ -753,7 +1141,7 @@ console.log({height})
 
 <img src="https://s2.loli.net/2022/08/26/ZT5iLaI1DResEcN.png" alt="图片" style="zoom: 60%;" />
 
-##### 使用 console.assert()
+##### 使用 `console.assert()`
 
 `console.assert()` 它只会在满足特定条件时记录一条消息（👀 `console.assert(assertion, obj1[, obj2, ... ])` ，只在 `assertion` 为 `false` 的情况下，打印后面的内容 ）。对于这类需求，以往大家可能更习惯于编写包含 `console.log()` 的 “ if 语句”；但这里推荐大家直接使用 `assert()` ，这样更有利于后续清理调试代码。
 
@@ -768,6 +1156,8 @@ console.log({height})
 > 👀 具体使用参见 [Chrome Developments - Watch JavaScript values in real-time with Live Expressions](https://developer.chrome.com/docs/devtools/console/live-expressions/)
 >
 > <img src="https://s2.loli.net/2022/08/27/5QLiXdD7vseaEH2.png" alt="Typing document.activeElement into the Live Expression text box." style="zoom:30%;" />
+>
+> 另外，可以注意下这里的 `document.activeElement` 属性
 
 Logpoints 则是一种特殊的断点。我们可以在开发者工具的 Sources tool 中右键点击 JavaScript 中的任意一行并设置 logpoint。系统会提示我们输入想要记录表达式，之后即可在该代码行运行时通过 console 获取它的值。所以从技术上讲，我们完全可以在 web 的任意位置上插入 `console.log()` 。
 
