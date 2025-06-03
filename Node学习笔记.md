@@ -990,19 +990,21 @@ npm 包 通常要遵从 semver 的版本规范（[官方文档](https://semver.o
 
 
 
+##### npm 两种安装
+
 **npm install 分为两种：**全局安装 ( global ) 和 局部安装 ( local )
 
-npm全局安装的包都是一些工具包，比如：yarn、webpack 等。<font color=FF0000>全局安装 类似 axios 的包 是没有意义的；如果在项目中没有本店安装 axios，而想 `const axios = require('axios')` 是拿不到 axios 的，因为 全局安装的路径 不在 module.path 的数组中</font>。
+npm 全局安装的包都是一些工具包，比如：yarn、webpack 等。<font color=FF0000>全局安装 类似 axios 的包 是没有意义的；如果在项目中没有本地安装 axios，而想 `const axios = require('axios')` 是拿不到 axios 的，因为 全局安装的路径 不在 `module.path` 的数组中</font>。
 
 
 
-#### npm install 的原理
+#### `npm install` 的原理
 
 ![image-20211101175159270](https://i.loli.net/2021/11/01/LhPGwR6UC1poWXZ.png)
 
-由上图可知：npm install 从仓库中取得的包是压缩包，需要解压到 node_modules文件夹中。
+由上图可知：`npm install` 从仓库中取得的包是压缩包，需要解压到 `node_modules` 文件夹中。
 
-在流程图的最上面一行（没有 lock文件的情况），在包文件被解压到 node_modules 文件夹之后，会生成 package-lock.json 文件。package-lock.json 是检查依赖一致性的，比如：axios依赖了一个东西（package-lock.json中有记录），如果和package-lock.json 中该依赖的版本不一致，则表示不一致，这时会重新构建依赖关系（走第一行的流程）
+在流程图的最上面一行（没有 lock 文件的情况），在包文件被解压到 `node_modules` 文件夹之后，会生成 `package-lock.json` 文件。`package-lock.json` 是检查依赖一致性的，比如：axios 依赖了一个东西（ `package-lock.json` 中有记录），如果和 `package-lock.json` 中该依赖的版本不一致，则表示不一致，这时会重新构建依赖关系（走第一行的流程）
 
 package-lock.json 会优先从 缓存文件中获取 依赖包；如果找不到，则先下载，在把下载好的依赖包放入缓存文件
 
@@ -1019,7 +1021,7 @@ package-lock.json 会优先从 缓存文件中获取 依赖包；如果找不到
 
 ###### 有 lock 文件
 
-- 检测 lock 中包的版本是否和 package.json 中一致（会按照 semver 版本规范检测）
+- 检测 lock 中包的版本是否和 `package.json` 中一致（会按照 semver 版本规范检测）
 - 不一致，那么会重新构建依赖关系,直接会走顶层的流程
 - 一致的情况下，会去优先查找缓存
 - 没有找到，会从 registry 仓库下载，直接走顶层流程;

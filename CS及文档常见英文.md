@@ -2469,3 +2469,4 @@
 
 - **graveryard** ：墓地
 
+- **routine** ：常规的
