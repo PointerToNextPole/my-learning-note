@@ -925,7 +925,7 @@ ES Module加载 js文件的过程是编译（解析）时加载的,并且是异�
 
 ##### `devDependencies` 属性
 
-<font color=FF0000>一些包在生成环境是不需要的，比如 webpack、babel 等</font>。这个时候我们会通过 npm install webpack --save-dev，将它安装到 `devDependencies` 属性中。
+<font color=FF0000>一些包在生成环境是不需要的，比如 webpack、babel 等</font>。这个时候我们会通过 `npm install webpack --save-dev` ，将它安装到 `devDependencies` 属性中。
 
 即使有的包只在 `devDependencies` 定义，但是在生产环境打包时，如果要用到，还是会被引入、打包。`devDependencies` 属性的意义是：开发共享出去的工具时，对方需不需要安装 该依赖，取决于 `devDependencies` 。
 
@@ -951,7 +951,7 @@ ES Module加载 js文件的过程是编译（解析）时加载的,并且是异�
 
 <img src="https://s2.loli.net/2024/03/24/Uw2rx4OqQpZBgRu.png" alt="image-20240324003839767" style="zoom:50%;" />
 
-###### 其他补充
+###### `peerDependencies` Copilot 介绍
 
 <img src="https://s2.loli.net/2024/03/24/57UoXrcnCFYLtxI.png" alt="image-20240324002757174" style="zoom:50%;" />
 

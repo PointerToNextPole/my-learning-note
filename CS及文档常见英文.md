@@ -116,6 +116,8 @@
 
    **precedence** ：优先地位，优先级
 
+   > take precedence over
+
    **preced** ：先于
 
 - **walkthrough**：演练
@@ -2470,3 +2472,4 @@
 - **graveryard** ：墓地
 
 - **routine** ：常规的
+- **vague** ：模糊的
