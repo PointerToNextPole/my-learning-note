@@ -1122,3 +1122,10 @@ number once // TODO https://en.wikipedia.org/wiki/Cryptographic_nonce
 
 学习自：[2=double,3=triple,what's for 4,5,6,e.t.c.](https://www.proz.com/kudoz/english/other/526192-2%3Ddouble3%3Dtriplewhats-for-456etc.html)
 
+
+
+#### CVE & CWE
+
+// TODO
+
+可参考 https://g.co/gemini/share/01d70c01a371

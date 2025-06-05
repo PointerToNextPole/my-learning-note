@@ -2473,3 +2473,4 @@
 
 - **routine** ：常规的
 - **vague** ：模糊的
+- **coordinated** ：协调的、组织有序的

@@ -6482,6 +6482,21 @@ Writing a twoslash command will set the compiler flag as you type, and will be s
 
 ##### `using` Declarations and Explicit Resource Management
 
+> 💡 背景
+>
+> 做这个笔记很大程度上是因为 2025/5/9 V8 的 Posts 发了 [JavaScript's New Superpower: Explicit Resource Management](https://v8.dev/features/explicit-resource-management) 的文章。另外，在这里摘录下中文翻译 [【第3514期】JavaScript 的新超能力：显式资源管理](https://mp.weixin.qq.com/s/W9T3KGD2AUlEeTRCdB1unQ) 的内容作为摘要介绍：
+>
+> > 显式资源管理 ( Explicit Resource Management ) 提案为管理诸如文件句柄、网络连接等资源的生命周期引入了一种确定性的方式。该提案为语言带来了以下新能力：
+> >
+> > - `using` 和 `await using` 声明，它们会在资源作用域结束时自动调用资源的 `dispose` 方法
+> > - 用于清理操作的两个新 symbol ：`[Symbol.dispose]()` 和 `[Symbol.asyncDispose]()`
+> > - 两个新的全局对象 `DisposableStack` 和 `AsyncDisposableStack`，可以用作聚合可释放资源的容器
+> > - 一个新的错误类型 `SuppressedError` ，用于处理资源释放过程中发生错误的情况，同时保留原始错误信息和释放时产生的错误
+> >
+> > 这些新增特性为开发者提供了更细粒度的资源释放控制能力，使代码更加健壮、高效且易于维护。
+>
+> 另外，看了下 V8 的这篇 Post ，发现 V8 的 using 用法和 TS 5.2 的还是存在不少区别的；所以只能从概念方面参考，用法方面还是不行的
+
 TypeScript 5.2 adds support for the upcoming [Explicit Resource Management](https://github.com/tc39/proposal-explicit-resource-management) feature in ECMAScript. Let’s explore some of the motivations and understand what the feature brings us.
 
 > 💡 点进链接看了下：是一个 TC39 提案的 GitHub 仓库，且已经进入了 Stage 3
