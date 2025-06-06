@@ -1462,6 +1462,12 @@
   > 按照 [Gemini](https://g.co/gemini/share/1bb60ade9ae7) 的说法：
   >
   > >  "foot-gun" 特指那些**设计上或功能上本身可能没有问题，但却极易被用户（尤其是经验不足的用户）错误使用，从而导致严重负面后果的功能、特性或工具**。它强调的是一种“自我伤害”的可能性——这个工具给了你伤害自己的能力
+  
+- **backport** ：回溯
+
+  > This is useful to enforce all your packages to use a single version of a dependency, or **backport** a fix.
+  >
+  > 摘自：[yarn doc - configuration - manifest # resolutions](https://yarnpkg.com/configuration/manifest#resolutions)
 
 ***
 

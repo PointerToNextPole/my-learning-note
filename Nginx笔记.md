@@ -279,8 +279,49 @@ upstream backserver{
 
 > 👀 感觉这个文章写的很不清楚，不过优点是把场景与对应配置都列了出来，这里便把配置摘抄下来；未来如果有补充，或有更好的选择，也可以修改或删除。另外，可以看下 [[计算机网络#Nginx 与配置]] 互为补充。
 
+
+
 ## 配置与解释
 
 ##### location
+
+> 💡 一开始看到 “server block” 和 “location block” 感觉有点懵，看到更多配置才知道 `server { ... }` 块 和 `location { ... }` 块
+
+The location directive within NGINX server block <font color=red>allows to route request to correct location within the file system</font>. The directive is <font color=red>used to tell NGINX **where to look for a resource** by including files and folders while **matching a location block against an URL**</font>. In this tutorial, we will look at NGINX location directives in details.
+
+###### NGINX location directive syntax
+
+The NGINX <font color=red>location block can be placed inside a server block or inside another location block with some restrictions</font>. <font color=dodgerBlue>The syntax for constructing a location block is</font>:
+
+```nginx
+location [modifier] [URI] {
+  ...
+  ...
+}
+```
+
+The <font color=red>**modifier in the location block is optional**</font>. Having a modifier in the location block will allow NGINX to treat a URL differently. <font color=dodgerBlue>Few most common modifiers are</font>:
+
+- none : If <font color=dodgerBlue>**no modifiers**</font> are present in a location block then <font color=red>the requested URI will be matched against the beginning of the requested URI</font>.
+- `=` : The equal sign is used to match a location block exactly against a requested URI.
+- `~` : The tilde sign is used for <font color=red>case-sensitive regular expression match</font> against a requested URI.
+- `~*` : The tilde followed by asterisk sign is used for <font color=red>case insensitive regular expression match</font> against a requested URI.
+- `^~` : The carat followed by tilde sign is used to <font color=red>perform longest nonregular expression match</font> against the requested URI. <font color=red>**If the requested URI hits such a location block, no further matching will takes place**</font>.
+
+> 💡 这里没完全说明白，问了下 Gemini ，这里做下摘抄：
+>
+> 🔗 https://g.co/gemini/share/1ffc5b9ee594
+
+###### How NGINX choose a location block
+
+A location can be defined by using a prefix string or by using a regular expression. Case-insensitive regular expressions are specified with preceding `~*` modifier and for a case-insensitive regular expression, the `~` modifier is used. To find a location match for an URI, NGINX first scans the locations that is defined using the prefix strings (without regular expression). Thereafter, the location with regular expressions are checked in order of their declaration in the configuration file. NGINX will run through the following steps to select a location block against a requested URI.
+
+- NGINX starts with looking for an exact match specified with `location = /some/path/` and if a match is found then this block is served right away.
+- If there are no such exact location blocks then NGINX proceed with matching longest non-exact prefixes and if a match is found where `^~` modifier have been used then NGINX will stop searching further and this location block is selected to serve the request.
+- If the matched longest prefix location does not contain `^~` modifier then the match is stored temporarily and proceed with following steps.
+  - NGINX now shifts the search to the location block containing `~` and `~*` modifier and selects the first location block that matches the request URI and is immediately selected to serve the request.
+  - If no locations are found in the above step that can be matched against the requested URI then the previously stored prefix location is used to serve the request.
+
+
 
 ##### proxy_pass
