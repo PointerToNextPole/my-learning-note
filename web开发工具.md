@@ -55,7 +55,7 @@ Axios是一个 **异步请求** 技术，即：基于XMLHttpRequest对象发起�
 
 如果想让后端接收到参数header的格式必须是 application/www-x-form-urlencoded 才可以，如果是application/json不行。
 
-<font color=FF0000>**Axios的post请求传递参数的两种方式**</font>
+###### Axios 的 post 请求传递参数的两种方式
 
 - 使用字符串直接传递（即键值对的拼接），示例：`fooKey=fooVal&barKey=barVal`。使用 URLSearchParams / `qs.stringify()`
 

@@ -10314,19 +10314,64 @@ for (const [key, value] of mySearchParams.entries()) {}
 
 该接口不继承任何属性。
 
-- **`URLSearchParams.append()` ** ：插入一个指定的键/值对作为新的搜索参数。
-- **`URLSearchParams.delete()` ** ：从搜索参数列表里删除指定的搜索参数及其对应的值。
-- **`URLSearchParams.entries()` ** ：返回一个 iterator 可以遍历所有键/值对的对象。
-- **`URLSearchParams.get()` ** ：获取指定搜索参数的第一个值。
-- **`URLSearchParams.getAll()` ** ：获取指定搜索参数的所有值，返回是一个数组。
-- **`URLSearchParams.has()` ** ：返回 Boolean 判断是否存在此搜索参数。
-- **`URLSearchParams.keys()` ** ：返回 iterator 此对象包含了键/值对的所有键名。
-- **`URLSearchParams.set()` ** ：设置一个搜索参数的新值，假如原来有多个值将删除其他所有的值。
-- **`URLSearchParams.sort()` ** ：按键名排序。
-- **`URLSearchParams.toString()` ** ：返回搜索参数组成的字符串，可直接使用在 URL 上。
-- **`URLSearchParams.values()` ** ：返回 iterator 此对象包含了键/值对的所有值。
+- `URLSearchParams.append()`  ：插入一个指定的键/值对作为新的搜索参数。
+- `URLSearchParams.delete()`  ：从搜索参数列表里删除指定的搜索参数及其对应的值。
+- `URLSearchParams.entries()`  ：返回一个 iterator 可以遍历所有键/值对的对象。
+- `URLSearchParams.get()`  ：获取指定搜索参数的第一个值。
+- `URLSearchParams.getAll()`  ：获取指定搜索参数的所有值，返回是一个数组。
+- `URLSearchParams.has()`  ：返回 Boolean 判断是否存在此搜索参数。
+- `URLSearchParams.keys()`  ：返回 iterator 此对象包含了键/值对的所有键名。
+- `URLSearchParams.set()`  ：设置一个搜索参数的新值，假如原来有多个值将删除其他所有的值。
+- `URLSearchParams.sort()`  ：按键名排序。
+- `URLSearchParams.toString()`  ：返回搜索参数组成的字符串，可直接使用在 URL 上。
+- `URLSearchParams.values()`  ：返回 iterator 此对象包含了键/值对的所有值。
 
 摘自：[MDN - `URLSearchParams`](https://developer.mozilla.org/zh-CN/docs/Web/API/URLSearchParams)
+
+
+
+#### `URLSearchParams()` 构造函数
+
+**`URLSearchParams()`** 构造函数创建并返回一个新的 `URLSearchParams` 对象。
+
+##### 语法
+
+```js
+new URLSearchParams()
+new URLSearchParams(options)
+```
+
+###### 参数
+
+- `options` 可选
+
+  <font color=dodgerBlue>可以是以下之一：</font>
+
+  - 一个字符串，会按 `application/x-www-form-urlencoded` 的格式进行解析。开头的 `'?'` 字符会被忽略。
+
+    > ⚠️ 上面这个是先前一直忽略的，可以看下如下示例：
+    >
+    > ```js
+    > const url = 'https://www.bilibili.com/video/BV1AMTKzoE6z/?share_source=copy_web&vd_source=f9a0b729177a6e70fcf194a8c2315eca'
+    > 
+    > const urlParams = new URLSearchParams(url.split('?')[1])
+    > const obj = Object.fromEntries(urlParams.entries())
+    > console.log(obj)
+    > // { share_source: 'copy_web', vd_source: 'f9a0b729177a6e70fcf194a8c2315eca' }
+    > ```
+    >
+    > 感觉很好用
+
+  - 一系列基于字面量的字符串键值对，或者任何对象（例如 `FormData` 对象），能提供一系列字符串对的迭代器对象。需要注意，`File` 将被序列化为 `[object File]`，而不是它们的文件名（就像 `application/x-www-form-urlencoded` 格式中的那样）。
+
+  - 一个由字符串键和字符串值组成的键值对对象。请注意，不支持嵌套。
+
+    > 👀 这个在 [[web开发工具#Axios 的 post 请求传递参数的两种方式]] 的补充中有示例。
+    > 另外，这个和上面的那个示例是逆过程，可以看作 `qs.parse` 和 `qs.stringify` 的简单实现？
+
+###### 返回值
+
+一个 `URLSearchParams` 实例。
 
 
 
