@@ -2475,7 +2475,7 @@
    
 - **deport** ：驱逐
 
-- **graveryard** ：墓地
+- **graveyard** ：墓地
 
 - **routine** ：常规的
 - **vague** ：模糊的
