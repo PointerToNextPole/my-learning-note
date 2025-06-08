@@ -9961,6 +9961,285 @@ console.log('onload 时间 ：' + ( t.loadEventEnd - t.navigationStart).toFixed(
 
 
 
+#### Stream API
+
+Stream API 允许 JavaScript <font color=red>**以编程方式访问** 从网络接收的数据流</font>，并且允许开发人员根据需要处理它们。
+
+> [!NOTE]
+>
+> 备注： 此特性在 Web Worker 中可用。
+
+##### 概念和用法
+
+流会将你想要从网络接受的资源分成一个个小的分块，然后<font color=red>按位处理它</font>。这正是浏览器在接收用于显示 web 页面的资源时做的事情——视频缓冲区和更多的内容可以逐渐播放，有时候随着内容的加载，你可以看到图像逐渐地显示。
+
+但曾经这些对于 JavaScript 是不可用的。以前，如果我们想要处理某种资源（如视频、文本文件等），我们必须下载完整的文件，<font color=lightSeaGreen>等待它反序列化成适当的格式</font>，然后在完整地接收到所有的内容后再进行处理。
+
+随着流在 JavaScript 中的使用，一切发生了改变——只要原始数据在客户端可用，你就可以使用 JavaScript 按位处理它，而<font color=lightSeaGreen>**不再需要缓冲区、字符串或 blob**</font>。
+
+<img src="https://s2.loli.net/2025/06/08/prL6zc3BQhkUmbl.png" alt="image.png" style="zoom: 65%;" />
+
+<font color=dodgerBlue>还有更多的优点</font>——你可以检测流何时开始或结束，将流链接在一起，根据需要处理错误和取消流，并对流的读取速度做出反应。
+
+流的基础应用围绕着使响应可以被流处理展开。例如，<font color=red>一个成功的 fetch 请求返回的响应体可以暴露为 `ReadableStream`</font> ，之后你可以使用 `ReadableStream.getReader()` 创建一个 reader 读取它，使用 `ReadableStream.cancel()` 取消它等等。
+
+更复杂的应用包括使用 `ReadableStream()` 构造函数创建你自己的流，例如进入 service worker 去处理流。
+
+你也可以使用 `WritableStream` 将数据写入流。
+
+##### Stream 接口
+
+###### 可读流
+
+- `ReadableStream` ：表示数据的可读流。用于处理 Fetch API 返回的响应，或者开发者自定义的流（例如通过 `ReadableStream()` 构造的流）。
+
+- `ReadableStreamDefaultReader` ：表示默认 reader，用于读取来自网络的数据流（例如 fetch 请求）。
+
+  > 👀 一开始没看懂这个是干什么的，直到看到了 MDN `ReadableStream.getReader()` 的 [“参数”](https://developer.mozilla.org/zh-CN/docs/Web/API/ReadableStream/getReader#%E5%8F%82%E6%95%B0) 部分
+  > > ###### 参数
+  > > 
+  > > `mode` 可选
+  > >
+  > > 具有 `mode` 参数的对象，值为`DOMString` 类型，用来指定要创建的 reader 的类型。<font color=dodgerBlue>其值可以是</font>：
+  > >
+  > > - `"byob"` ，结果为 `ReadableStreamBYOBReader` 类型，可读取可读字节流。
+  > >
+  > > - `undefined`（或不指定——<font color=red>**缺省值**</font>），<font color=red>**返回 `ReadableStreamDefaultReader`**</font> ，可以从流中返回单个分块。
+  > 介绍了 直接调用 `ReadableStream.getReader()` 不加参数返回一个 `ReadableStreamDefaultReader` 实例。
+  >
+  > 同时，[MDN - `ReadableStreamDefaultReader()`](https://developer.mozilla.org/zh-CN/docs/Web/API/ReadableStreamDefaultReader/ReadableStreamDefaultReader) 中也有说明：
+  > > `ReadableStreamDefaultReader()` 构造函数创建并返回一个 `ReadableStreamDefaultReader` 实例对象。
+  > >
+  > > > [!NOTE]
+  > > >
+  > > > **备注：** 你<font color=red>通常不需要手动创建</font>，<font color=lightSeaGreen>可以使用 `ReadableStream.getReader()` 方法代替</font>。
+  > 
+  > 另外，类似的 [`WritableStreamDefaultWriter`](https://developer.mozilla.org/zh-CN/docs/Web/API/WritableStreamDefaultWriter) 应该也是同样的情况
+
+- `ReadableStreamDefaultController` ：表示一个 controller，<font color=red>用于控制 `ReadableStream` 的状态及内部队列</font>。<font color=lightSeaGreen>**默认的 controller 用于处理非字节流**</font>。
+
+  > ###### 构造函数
+  >
+  > 无。`ReadableStreamDefaultController` 实例会在构造 `ReadableStream` 时被自动创造。
+  >
+  > 摘自：[MDN - `ReadableStreamDefaultController`](https://developer.mozilla.org/zh-CN/docs/Web/API/ReadableStreamDefaultController)
+
+###### 可写流
+
+> 👀 可以参考上面的 [[#可读流]]
+
+- `WritableStream` ：为将流写入目的地（称为接收器）的过程，提供了一个标准抽象。内置了背压和队列机制。
+- `WritableStreamDefaultWriter` ：表示默认 writer，用于将分块的数据写入可写流中
+- `WritableStreamDefaultController` ：表示一个 controller，用于控制 `WritableStream` 的状态。当创建一个 `WritableStream` 时，对应的 `WritableStreamDefaultController` 实例会被提供给底层的接收器供其操作。
+
+###### 转换流
+
+- `TransformStream` ：表示一组可转化的数据。
+
+  > 👀 内容有点多，见 [[#TransformStream]]
+
+- `TransformStreamDefaultController` ：提供操作和转换流关联的 `ReadableStream` 和 `WritableStream` 的方法。
+
+###### 流相关的 API 和操作
+
+- `ByteLengthQueuingStrategy` ：当构建流时，提供建立流时所需的内置字节队列策略。
+- `CountQueuingStrategy` ：当构建流时，提供建立流时所需的块计数队列策略。
+
+###### 其他 API 扩展
+
+- `Request` ：当构造一个新的 `Request` 对象后，你可以给它的 `RequestInit` 中的 `body` 属性传入一个 `ReadableStream`。这个 `Request` 对象就可以被传入 `fetch()` 中，开始接收流。
+- `Response.body` ：一个成功的 fetch request 响应体会默认暴露为 `ReadableStream`，从而可以采用相应的 reader 来处理等。
+
+###### 字节流相关的接口
+
+- `ReadableStreamBYOBReader` ：表示一个 BYOB（<font color=lightSeaGreen>“带你自己的缓冲区”</font>）reader，它可以用于读取由开发人员提供的流数据（例如一个自定义的 `ReadableStream()`）。
+- `ReadableByteStreamController` ：表示一个 controller，用于控制 `ReadableStream` 的状态及内部队列。字节流 controller 用于处理字节流。
+- `ReadableStreamBYOBRequest` ：表示 `ReadableByteStreamController` 中的 BYOB 拉取请求。
+
+摘自：[MDN - Stream API](https://developer.mozilla.org/zh-CN/docs/Web/API/Streams_API)
+
+#### `TransformStream`
+
+Stream API 的 **`TransformStream`** 接口表示[链式管道传输 (pipe chain)](https://developer.mozilla.org/zh-CN/docs/Web/API/Streams_API/Concepts#链式管道传输) 转换流 ( transform stream ) 概念的具体实现。
+
+它可以传递给 `ReadableStream.pipeThrough()` 方法，以便将流数据从一种格式转换成另一种。例如，它可以用于解码（或者编码）视频帧，解压缩数据或者将流从 XML 转换到 JSON。
+
+<font color=red>**转换算法可以作为构造函数对象的可选参数提供**</font>。如果没有提供，数据在通过管道传输流时，不会被修改。
+
+> 👀 有点好奇这里说的 “转换算法” 具体内容，所以
+
+`TransformStream` 是一个 [可转移对象](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API/Transferable_objects)。
+
+> 💡 这里的 “可转移对象” 和 “所有权” 概念还是存在很大区别的。详见 🔗 https://g.co/gemini/share/749f0d16a037
+
+###### 构造函数
+
+- `TransformStream()` ：从给定的处理程序中创建并且返回一个转换流对象
+
+###### 实例属性
+
+- `TransformStream.readable` ：只读，转换流的 `readable` 端。
+- `TransformStream.writable` ：只读，转换流的 `writable` 端。
+
+###### 实例方法
+
+无
+
+摘自：[MDN - `TransformStream`](https://developer.mozilla.org/zh-CN/docs/Web/API/TransformStream)
+
+#### `TransformStream()`
+
+**`TransformStream()`** 构造函数创建一个新的 `TransformStream` 对象，<font color=dodgerBlue>该对象表示一对流</font>：一个 `WritableStream` 表示可写端，和一个 `ReadableStream` 表示可读端。
+
+##### 语法
+
+```js
+new TransformStream()
+new TransformStream(transformer)
+new TransformStream(transformer, writableStrategy)
+new TransformStream(transformer, writableStrategy, readableStrategy)
+```
+
+###### 参数
+
+- `transformer` ：<font color=lightSeaGreen>可选</font>。一个表示 `transformer` 的对象。<font color=dodgerBlue>如果未提供</font>，则<font color=red>生成的流将是一个**恒等变换流**</font>，它将所有写入可写端的分块转发到可读端，不会有任何改变。<font color=dodgerBlue>transformer 对象可以包含以下任何方法</font>。每个方法的 `controller` 都是一个 [`TransformStreamDefaultController`](https://developer.mozilla.org/zh-CN/docs/Web/API/TransformStreamDefaultController) 实例。
+  - `start(controller)` 当 `TransformStream` 被构造时调用。它通常用于使用 [`TransformStreamDefaultController.enqueue()`](https://developer.mozilla.org/zh-CN/docs/Web/API/TransformStreamDefaultController/enqueue) 对分块进行排队。
+  - `transform(chunk, controller)` 当一个写入可写端的分块准备好转换时调用，并且执行转换流的工作。如果没有提供 `transform()` 方法，则使用恒等变换，并且分块将在没有更改的情况下排队。
+  - [`flush(controller)`](https://developer.mozilla.org/zh-CN/docs/Web/API/TransformStream/TransformStream#flushcontroller) 当所有写入可写端的分块成功转换后被调用，并且可写端将会关闭。
+- `writableStrategy` ：<font color=lightSeaGreen>可选</font>。一个定义了队列策略的可选对象。<font color=dodgerBlue>它需要两个参数</font>：
+  - `highWaterMark` 一个非负整数。它定义了在应用背压之前内部队列包含的分块的总数。
+  - `size(chunk)` 一个包含参数 `chunk` 的方法。它表示用于每一个块的大小，以字节为单位。
+- `readableStrategy` ：<font color=lightSeaGreen>可选</font>。一个定义了队列策略的可选对象。<font color=dodgerBlue>它需要两个参数</font>：
+  - [`highWaterMark`](https://developer.mozilla.org/zh-CN/docs/Web/API/TransformStream/TransformStream#highwatermark_2) 一个非负整数。它定义了在应用背压之前内部队列包含的分块的总数。
+  - [`size(chunk)`](https://developer.mozilla.org/zh-CN/docs/Web/API/TransformStream/TransformStream#sizechunk_2) 一个包含参数 `chunk` 的方法。它表示用于每一个块的大小，以字节为单位。
+
+##### 示例
+
+###### 将文本转换为大写
+
+以下示例将文本逐块转换为大写。这个示例来自[数据流——权威指南](https://web.developers.google.cn/articles/streams)，它有关于不同类型流的一些示例。
+
+```js
+function upperCaseStream() {
+  return new TransformStream({
+    transform(chunk, controller) {
+      controller.enqueue(chunk.toUpperCase());
+    },
+  });
+}
+
+function appendToDOMStream(el) {
+  return new WritableStream({
+    write(chunk) {
+      el.append(chunk);
+    },
+  });
+}
+
+fetch("./lorem-ipsum.txt").then((response) =>
+  response.body
+    .pipeThrough(new TextDecoderStream())
+    .pipeThrough(upperCaseStream())
+    .pipeTo(appendToDOMStream(document.body)),
+);
+```
+
+###### 创建一个恒等变换流
+
+如果没有提供 `transformer` 参数，那么结果将是一个恒等流，它将所有写入可写端的分块转发到可读端，并且不做任何改变。在以下示例中，一个恒等转换流被用于向一个管道添加缓冲。
+
+```js
+const writableStrategy = new ByteLengthQueuingStrategy({
+  highWaterMark: 1024 * 1024,
+});
+readableStream
+  .pipeThrough(new TransformStream(undefined, writableStrategy))
+  .pipeTo(writableStream);
+```
+
+摘自：[MDN - `TransformStream()`](https://developer.mozilla.org/zh-CN/docs/Web/API/TransformStream/TransformStream)
+
+
+
+#### 可转移对象
+
+**可转移的对象**（Transferable object）是拥有属于自己的资源的对象，这些资源可以从一个上下文*转移*到另一个，确保资源一次仅在一个上下文可用。传输后，原始对象不再可用；它不再指向转移后的资源，并且任何读取或者写入该对象的尝试都将抛出异常。
+
+*可转移对象*通常用于共享资源，该资源一次仅能安全地暴露在一个 JavaScript 线程中。例如，`ArrayBuffer` 是一个拥有内存块的可转移对象。当此类缓冲区（buffer）在线程之间传输时，相关联的内存资源将从原始的缓冲区分离出来，并且附加到新线程创建的缓冲区对象中。原始线程中的缓冲区对象不再可用，因为它不再拥有属于自己的内存资源了。
+
+使用 `structuredClone()` 创建对象的深层拷贝时，也可以使用转移。克隆操作后，传输的资源将被移动到克隆的对象，而不是复制。
+
+使用转移对象资源的机制取决于对象自身。例如，当 `ArrayBuffer` 在线程之间转移时，它指向的内存资源*实际上*以快速且高效的零拷贝操作在上下文之间移动。其他对象可以通过拷贝关联的资源，然后将它从旧的上下文中删除来转移它。
+
+并不是所有的对象都是可转移的。下面提供了可转移对象的列表，见 [[#支持的对象]]
+
+##### 在线程之间传输对象
+
+以下代码演示了当消息从主线程发送到 web worker 线程时，传输是如何工作的。`Uint8Array` 在其缓冲区被转移时，被拷贝到 worker 中。传输后，任何尝试从主线程读或者写 `uInt8Array` 都将抛出错误，但是你仍然可以检查 `byteLength` 以确定它现在是 0 。
+
+```js
+// Create an 8MB "file" and fill it. 8MB = 1024 * 1024 * 8 B
+const uInt8Array = new Uint8Array(1024 * 1024 * 8).map((v, i) => i);
+console.log(uInt8Array.byteLength); // 8388608
+
+// Transfer the underlying buffer to a worker
+worker.postMessage(uInt8Array, [uInt8Array.buffer]);
+console.log(uInt8Array.byteLength); // 0
+```
+
+> [!NOTE]
+>
+> **备注：** 像 `Int32Array` 和 `Uint8Array` 等类型化数组是可序列化的，但是不能转移。然而，它们的底层缓冲区是一个 `ArrayBuffer`，它是一个可转移对象。我们可以在数据参数中发送 `uInt8Array.buffer`，但是不能在传输数组中发送 `uInt8Array`。
+
+##### 在进行克隆操作时转移
+
+以下代码展示了 `structuredClone()` 操作，将底层缓冲区从原始对象复制到克隆对象（`clone`）。
+
+```js
+const original = new Uint8Array(1024);
+const clone = structuredClone(original);
+console.log(original.byteLength); // 1024
+console.log(clone.byteLength); // 1024
+
+original[0] = 1;
+console.log(clone[0]); // 0
+
+// Transferring the Uint8Array would throw an exception as it is not a transferable object
+// const transferred = structuredClone(original, {transfer: [original]});
+
+// We can transfer Uint8Array.buffer.
+const transferred = structuredClone(original, { transfer: [original.buffer] });
+console.log(transferred.byteLength); // 1024
+console.log(transferred[0]); // 1
+
+// After transferring Uint8Array.buffer cannot be used.
+console.log(original.byteLength); // 0
+```
+
+##### 支持的对象
+
+以下是 可以被转移 的不同规范的对象：
+
+- `ArrayBuffer`
+- `MessagePort`
+- `ReadableStream`
+- `WritableStream`
+- `TransformStream`
+- `AudioData`
+- `ImageBitmap`
+- `VideoFrame`
+- `OffscreenCanvas`
+- `RTCDataChannel`
+
+在各自对象的兼容性信息中，如果拥有 `transferable` 子特性，浏览器的支持应该被展示（示例请参阅 [`RTCDataChannel`](https://developer.mozilla.org/zh-CN/docs/Web/API/RTCDataChannel#浏览器兼容性)）。在撰写本文时，并非所有可转移对象都已更新此信息。
+
+> [!NOTE]
+>
+> 备注： 可转移的对象在 [Web IDL 文件](https://github.com/w3c/webref/tree/main/ed/idl)中用属性 `[Transferable]` 标记。
+
+摘自：[MDN - 可转移对象](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API/Transferable_objects)
+
+
 
 #### Blob
 
@@ -15984,7 +16263,7 @@ Float64Array();
 
 #### SharedArrayBuffer
 
-`SharedArrayBuffer` 对象用来<font color=red>表示一个通用的、固定长度的原始二进制数据缓冲区</font>，<font color=dodgerBlue>类似于 `ArrayBuffer` 对象</font>，<font color=red>它们都可以用来在共享内存 ( shared memory ) 上创建视图</font>。<font color=fuchsia>与 `ArrayBuffer` 不同的是，`SharedArrayBuffer` 不能被转移</font>（👀 这里说的是 [Transferable Object](https://developer.mozilla.org/en-US/docs/Glossary/Transferable_objects) ）
+`SharedArrayBuffer` 对象用来<font color=red>表示一个通用的、固定长度的原始二进制数据缓冲区</font>，<font color=dodgerBlue>类似于 `ArrayBuffer` 对象</font>，<font color=red>它们都可以用来在共享内存 ( shared memory ) 上创建视图</font>。<font color=fuchsia>与 `ArrayBuffer` 不同的是，`SharedArrayBuffer` 不能被转移</font>（👀 这里说的是 [可转移对象](https://developer.mozilla.org/zh-CN/docs/Glossary/Transferable_objects) ）
 
 ##### 描述
 
