@@ -491,6 +491,11 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 
 比较干净地将缓存清除
 
+###### `brew uses --installed dep-name`
+
+搜索所有 “已经通过 brew 安装的、且使用 `dep-name` ” 的软件。另外，`brew uses` 应该还有更多配置，等以后再探索
+
+另外，这个命令也是 Gemini 的问答中学到的，详见 🔗 https://g.co/gemini/share/37c4d0a65e21
 
 
 #### 数码测色计 digital color meter 使用
