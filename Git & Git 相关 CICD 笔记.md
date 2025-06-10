@@ -2133,7 +2133,8 @@ git bisect
 - <font color=FF0000 size=4>**`git checkout -- files`**</font> ：<font color=FF0000>把文件从暂存区域复制到工作目录，用来丢弃本地修改</font>。
 
   > 💡 如果是修改消除所有的修改，则直接 `git checkout .` ；不过，新增的文件，不会被删除
-  > ⚠️ 2025/6/10 补充：`git checkout` 甚至可以用来恢复之前提交中被删除的（此删除操作已经被提交，甚至推送）文件。具体的命令是 `git checkout <last-commit-hash-before-you-delete> — <deleted-file-original-location>` 。具体见 https://g.co/gemini/share/b25fe162dfc8
+  > 
+  > ⭐️ 2025/6/10 补充：`git checkout` 甚至可以用来恢复之前提交中被删除的（此删除操作已经被提交，甚至推送）文件。具体的命令是 `git checkout <last-commit-hash-before-you-delete> — <deleted-file-original-location>` 。具体见 🔗 https://g.co/gemini/share/b25fe162dfc8 ，事情也可以引申到那个有点老生常谈的问题：如何回滚一个已经被提交并推送的修改
 
 **也可以跳过暂存区域直接从仓库取出文件或者直接提交代码：**
 
