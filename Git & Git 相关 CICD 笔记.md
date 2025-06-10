@@ -937,7 +937,7 @@ fatal: Authentication failed for 'https://github.com/github-user-name/proj-name.
 
 - **在命令行中使用 Token：**这里主要讨论 “策略生效之前就已经在本地“ 的老项目 更新后无法提交的问题
 
-  - **已经有仓库：** 为仓库添加 token ，另外，经过测试：两种 Token (Fine-grained personal access tokens & Personal access tokens (classic) ) 都是可以的。不过，不知道为什么：更推荐的前一种，提交记录无法显示到个人的活动位视图中... 可能是粒度过细？且默认关闭，让人不知道如何选择？
+  - **已经有仓库：** 为仓库添加 token ，另外，经过测试：两种 Token (Fine-grained personal access tokens & Personal access tokens (classic) ) 都是可以的。
 
     ```sh
     git remote set-url origin https://<your-token>@github.com/<GitHub-user-name>/<repo-name>.git
