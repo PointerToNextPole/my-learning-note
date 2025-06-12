@@ -144,7 +144,7 @@ visual 模式一般用于<font color=FF0000>块状选择文本，从而进行批
 
 ##### VIM 在normal模式下的光标移动
 
-<img src="https://s1.ax1x.com/2020/06/20/NlEYBq.png" style="zoom:50%;" />
+<img src="https://s2.loli.net/2025/06/11/bk6DZ3CIK7dWO1S.png" style="zoom:50%;" />
 
 ##### 在单词之间移动
 
@@ -266,13 +266,13 @@ visual 模式一般用于<font color=FF0000>块状选择文本，从而进行批
 - window  Buffer 的可视化的分割区域，一个缓冲区可以分割成多个窗口，每个窗口也可以打开不同的缓冲区
 - Tab         可以组织窗口的一个工作区，可以容纳一系列窗口的
 
-<img src="https://s1.ax1x.com/2020/06/20/NlBTQe.png" style="zoom:70%;" />
+<img src="https://s2.loli.net/2025/06/11/qdA4Y1BIPl9xake.png" style="zoom:70%;" />
 
 ##### Buffer 间切换
 
-- `:ls`   列出当前所有缓冲区（显示打开的文件）
+- `:ls`  列出当前所有缓冲区（显示打开的文件）
 - `:e file_name` 打开 ( edit ) 文件
-- `:b`家族
+- `:b` 家族
   - `:b n` 跳转到第n个缓冲区
   - `:bprevious`
   - `:bnext`

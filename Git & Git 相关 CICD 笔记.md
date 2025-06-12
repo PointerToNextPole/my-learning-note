@@ -43,7 +43,7 @@ git config --unset --global user.name
 git config --unset --system user.name
 ```
 
-类似的，显示config的配置，`--list` 可以添加上三个作用域，示例如下：
+类似的，显示 config 的配置，`--list` 可以添加上三个作用域，示例如下：
 
 ```bash
 git config --local --list
@@ -772,9 +772,9 @@ normal 模式键入 `:wq!`，显示如下：
 
 所以更推荐智能协议
 
-在使用 `git clone` 命令时，可以加上 `--bare` 选项，表示clone的仓库不带工作区；以后在 push 时可以方便些
+在使用 `git clone` 命令时，可以加上 `--bare` 选项，表示clone 的仓库不带工作区；以后在 push 时可以方便些
 
-这里还提及了 `git remote` 相关的 命令，是将本地 git 和 远端的 git 仓库建立联系的命令。其中至关重要是的是 `git remote add remoteName remoteUrl`（在 GitHub 上新建立一个项目，可以不使用 git clone，而是使用 git remote add + git fetch + git merge ( git fetch + git merge == git pull )）。其他相关的命令，下面有说，这里略
+这里还提及了 `git remote` 相关的 命令，是将本地 git 和 远端的 git 仓库建立联系的命令。其中至关重要是的是 `git remote add remoteName remoteUrl`（在 GitHub 上新建立一个项目，可以不使用 git clone，而是使用 `git remote add` + `git fetch` + `git merge` ( `git fetch` + `git merge` == `git pull` )）。其他相关的命令，下面有说，这里略
 
 #### Lesson 4
 
@@ -937,13 +937,17 @@ fatal: Authentication failed for 'https://github.com/github-user-name/proj-name.
 
 - **在命令行中使用 Token：**这里主要讨论 “策略生效之前就已经在本地“ 的老项目 更新后无法提交的问题
 
-  - **已经有仓库：** 为仓库添加 token ，另外，经过测试：两种 Token (Fine-grained personal access tokens & Personal access tokens (classic) ) 都是可以的。
+  - **已经有仓库：** 为仓库添加 token ，另外，经过测试：两种 Token (Fine-grained personal access tokens & Personal access tokens (classic) ) 都是可以的（可以看下下面的 ⚠️，算是一些踩坑经验）。
 
     ```sh
     git remote set-url origin https://<your-token>@github.com/<GitHub-user-name>/<repo-name>.git
     ```
 
     > 👀 这个命令和“迁移一个已有项目到云端”是一样的
+    > 
+    > ⚠️ 值得注意的是：将 token 作为前缀设置 upstream url 的方式( `https://<your-token>@github.com/<GitHub-user-name>/<repo-name>.git` )，在 Gemini 2.5 Pro 看来是不被推荐的，更推荐的方式是：设置不带 token 的 upstream url (`https://github.com/<GitHub-user-name>/<repo-name>.git`) ，在<font color=red>**确保删除凭证的情况下**</font>，执行 `git push` ，git 将会让你输入用户名和密码，不过，这里的 “密码” 并非是 GitHub 的密码，而是 Fine-grained personal access tokens 或 Personal access tokens (classic)。详见 🔗 https://g.co/gemini/share/eaf8fe254db5 。
+    > 
+    > 另外，这里也说一下当时询问 Gemini 的场景：Token 过期，无法成功推送，也准备试试 GitHub 官方更推荐的 Fine-grained personal access tokens （之前一直在用 Personal access tokens ），便设置 `git remote set-url origin https://<fine-grained-personal-access-token>@github.com/<GitHub-user-name>/<repo-name>.git` ，发现还是推送失败；便开始问 Gemini，按照 Gemini 推荐的：删掉 “钥匙串访问” ( Keychain Access ) 中的凭证，发现 `git push` 还是失败的，也没有出现 Gemini 回答中提及的 “要求输入用户名和密码” 的验证（这里的问题是 upstream url 是带 token 的）。也没找到问题所在，只能回退使用 Personal access tokens 的设置 upstream url ，结果发现，虽然可以推送成功，远端也确实有了 commit 记录，但是 GitHub 个人主页中没有这次提交的活动记录（这个直到现在都没找到原因，怀疑是 GitHub 自身的问题？），只能继续尝试（比如修改 Token 对应的权限范围）与询问 Gemini ，询问了多轮之后，找到了原因，也换回了 Fine-grained personal access tokens ，结果还是没注意到密码应该是 token，改正之后，可以正常推送了；但还是看不到活动记录，又一次停滞了。不过，过了一会，发现可以看到了，这就让人感觉很奇怪...
 
   - **原本没有仓库：**`git clone` 添加 token
   
@@ -1132,7 +1136,11 @@ git init
 git remote add <shortname> <repo-url>
 ```
 
-> 👀 或者用 `git remote set-url origin repo-url`
+> ###### 关于 git remote 是什么
+>
+> 在 Git 中，一个 “Remote” 并不是远程仓库本身，而是**一个指向远程仓库 URL 的别名（或书签）**。这让你不必每次都输入完整的、冗长的 URL，而是可以使用一个简短、好记的名称（如 origin）来与远程仓库交互。
+>
+> 摘自：https://aistudio.google.com/prompts/1-xwDas42jDHfjF_ERZ1PrMN3DBlysT_y
 
 ##### 示例
 
@@ -1160,7 +1168,7 @@ git commit --amend
 
 这时候会通过 vim 打开「提交」的相关信息（如下），只需要对其进行修改即可
 
-<img src="https://s1.ax1x.com/2020/06/26/NrRojI.png" style="zoom: 40%;" />
+<img src="https://s2.loli.net/2025/06/11/sh4cTtX2AyPkD3u.png" style="zoom: 40%;" />
 
 另外：使用 如下命令，相当于预设了 git push 的参数（比如：远端仓库 和 分支名），之后直接使用 `git push` 命令即可，无需使用参数( 如：`git push <repo> <branch>` ， 比如 `git push -u origin master` )了（因为已经预设了）。另外，在 GitHub 创建项目的提示中也有这个（不知道为什么现在找不到了...）.
 
@@ -1183,25 +1191,25 @@ git push -u origin master
 
 
 
-##### 其他 git remote 命令
+##### 其他 `git remote` 命令
 
-- **`git remove -v`** ：显示所有远程仓库的详细 ( verbose ) 信息
+- `git remote` ：列出当前仓库中已配置的远程仓库。
 
-- **`git remote show [remote]`** ：显示某个远程仓库的信息
+- `git remove -v` ：列出当前仓库中已配置的远程仓库，并显示它们的 URL。v 表示 verbose
 
-- **`git remote rm repoName`** ：删除远程仓库
+- `git remote show <remote-name>` ：显示指定远程仓库的详细信息，包括 URL 和跟踪分支
 
-- **`git remote rename oldName newName`** ：修改仓库名
+- `git remote rm <remote-name>` ：从当前仓库中删除指定的远程仓库
 
-  摘自：[RUNOOB - git remote 命令](https://www.runoob.com/git/git-remote.html)
+  > 👀 `git remote rm` 是 `git remote remove` 的别名，可见 [git-scm - docs - git-remote # remove](https://git-scm.com/docs/git-remote#Documentation/git-remote.txt-emremoveem)
 
-- **`git remote add [shortname] [url]`** ：增加一个新的远程仓库，并命名
+- `git remote rename <remote-name> <new-mame>` ：将已配置的远程仓库重命名
 
-- **`git remote set-url repoRename remoteUrl`** ：设置远程仓库地址（用于修改远程仓库地址）
+- `git remote add <remote-name> <remote-url>` ：添加一个新的远程仓库。指定一个远程仓库的名称和 URL，将其添加到当前仓库中
 
-摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
+- `git remote set-url <remote-name> <remote-url>` ：设置远程仓库地址（用于修改远程仓库地址）
 
-> 💡 补充： **`git remote remove <name>`** ：`git remote add` 的逆操作
+摘自：[runoob - git - git-remote](https://www.runoob.com/git/git-remote.html)
 
 
 

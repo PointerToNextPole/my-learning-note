@@ -6305,6 +6305,181 @@ let z = <const>{ text: "hello" };
 
 
 
+##### `skipLibCheck`
+
+> Skip Lib Check
+
+Skip type checking of declaration files.
+
+**This can save time during compilation at the expense of type-system accuracy**. <font color=dodgerBlue>For example</font>, <font color=lightSeaGreen>two libraries could **define two copies of the same `type`** in an inconsistent way</font>. <font color=dodgerBlue>Rather than doing a full check of all `d.ts` files</font>, TypeScript will type check the code you specifically refer to in your app’s source code.
+
+<font color=dodgerBlue>A common case where you might think</font> to use `skipLibCheck` is when there are two copies of a library’s types in your `node_modules`. In these cases, you should consider using a feature like [yarn’s resolutions](https://yarnpkg.com/lang/en/docs/selective-version-resolutions/) to ensure there is only one copy of that dependency in your tree or investigate how to ensure there is only one copy by understanding the dependency resolution to fix the issue without additional tooling.
+
+<font color=dodgerBlue>Another possibility is</font> when you are <font color=lightSeaGreen>migrating between TypeScript releases</font> and **the changes cause breakages in node_modules and the JS standard libraries** which you do not want to deal with during the TypeScript update.
+
+Note, that if these issues come from the TypeScript standard library you can replace the library using [TypeScript 4.5’s lib replacement](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#supporting-lib-from-node_modules) technique.
+
+摘自：[ts doc - tsconfig # skipLibCheck](https://www.typescriptlang.org/tsconfig/#skipLibCheck)
+
+###### 其他补充
+
+> 在大多数项目中，<font color=lightSeaGreen>开发者会在 TypeScript 的配置文件 ( `tsconfig.json` ) 中将 `skipLibCheck` 选项设置为 `true`</font> 。`skipLibCheck` 的作用是跳过对库文件（包括 `.d.ts` 文件）的类型检查。当设置为 true 时，<font color=lightSeaGreen>TypeScript 编译器不会对这些库文件进行严格的类型检查，从而加快编译速度</font>。但<font color=red>这也会影响项目中自己编写的 `.d.ts` 文件</font>。<font color=dodgerBlue>这意味着</font>，<font color=red>即使 `.d.ts` 文件中定义的类型存在错误，TypeScript 编译器也不会报错，从而失去了类型安全性的保障</font>。
+
+
+
+#### `tsconfig.json`
+
+##### `include`
+
+> 👀 25/06/12 补充：
+>
+> `include` 相关的内容在 [[#其他笔记#`files`、`include` 和 `exclude`]] 中有做笔记，不过在 WebStorm 中存在类型错误提示，研究了下，也问了下 Gemini，发现还是一知半解。
+>
+> 情况是这样的：在 WebStorm 2025 中发现：我在一个 ts 文件中导出一个响应式变量 ( `export const isEditCustomer = ref<boolean>(false)` )，并在另一个 vue 文件的模板中使用，出现了类型错误提示 ``Vue: property `isEditCustomer` does not exist on type `{}`.`` 。问了下 Gemini 发现是 WebStorm 环境下 `tsconfig.json` 的 `include` 配置不具体导致的（VS Code 没这个问题）原本是 `"include": ["src/"]` 改成 `"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts", "src/**/*.vue"]` 就好了
+
+<font color=red>Specifies an array of filenames or **patterns** to include in the program</font>. These filenames are resolved relative to the directory containing the `tsconfig.json` file.
+
+```json
+{
+  "include": ["src/**/*", "tests/**/*"]
+}
+```
+
+<font color=dodgerBlue>Which would include:</font>
+
+```
+.
+├── scripts                ⨯
+│   ├── lint.ts            ⨯
+│   ├── update_deps.ts     ⨯
+│   └── utils.ts           ⨯
+├── src                    ✓
+│   ├── client             ✓
+│   │    ├── index.ts      ✓
+│   │    └── utils.ts      ✓
+│   ├── server             ✓
+│   │    └── index.ts      ✓
+├── tests                  ✓
+│   ├── app.test.ts        ✓
+│   ├── utils.ts           ✓
+│   └── tests.d.ts         ✓
+├── package.json
+├── tsconfig.json
+└── yarn.lock
+```
+
+`include` and `exclude` support <font color=dodgerBlue>wildcard characters to make glob patterns</font>:
+
+- `*` <font color=red>matches **zero** or more characters</font> (excluding directory separators)
+- `?` matches any one character (excluding directory separators)
+- `**/` matches any directory nested to any level
+
+<font color=dodgerBlue>If the last path segment in a pattern does not contain a file extension or wildcard character</font>, <font color=dodgerBlue>then</font> it is <font color=red>treated as a directory</font>, and files with supported extensions inside that directory are included (e.g. `.ts`, `.tsx`, and `.d.ts` by default, <font color=lightSeaGreen>with `.js` and `.jsx` if `allowJs` is set to true</font>).
+
+
+
+##### `exclude`
+
+<font color=red>Specifies an array of filenames or **patterns** that should be skipped when resolving `include`</font>.
+
+**Important**: <font color=red>`exclude` **only** changes which files are included as a result of the `include` setting</font>. <font color=dodgerBlue>A file specified by `exclude` can **still become part of your codebase** due to</font> <font color=red>an `import` statement in your code, a `types` inclusion, a `/// <reference` directive, or being specified in the `files` list</font>.
+
+It is not a mechanism that **prevents** a file from being included in the codebase - it simply changes what the `include` setting finds.
+
+
+
+##### `lib`
+
+TypeScript <font color=red>**includes a default set of type definitions for built-in JS APIs**</font> (like `Math`), as well as type definitions for things found in browser environments (like `document`). <font color=lightSeaGreen>TypeScript also includes APIs for newer JS features matching the [`target`](https://www.typescriptlang.org/tsconfig/#target) you specify</font>; for example the definition for `Map` is available if [`target`](https://www.typescriptlang.org/tsconfig/#target) is `ES6` or newer.
+
+<font color=dodgerBlue>You may want to change these for a few reasons:</font>
+
+- Your program doesn’t run in a browser, so you don’t want the `"dom"` type definitions
+- Your runtime platform provides certain JavaScript API objects (maybe through polyfills), but doesn’t yet support the full syntax of a given ECMAScript version
+- <font color=red>You have polyfills or native implementations for some, *but not all*, of a higher level ECMAScript version</font>
+
+In TypeScript 4.5, lib files can be overridden by npm modules, find out more [in the blog](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#supporting-lib-from-node_modules).
+
+##### High Level libraries
+
+| Name         | Contents                                                     |
+| :----------- | :----------------------------------------------------------- |
+| `ES5`        | Core definitions for all ES5 functionality                   |
+| `ES2015`     | Additional APIs available in ES2015 (also known as ES6) - `array.find`, `Promise`, `Proxy`, `Symbol`, `Map`, `Set`, `Reflect`, etc. |
+| `ES6`        | Alias for “ES2015”                                           |
+| `ES2016`     | Additional APIs available in ES2016 - `array.include`, etc.  |
+| `ES7`        | Alias for “ES2016”                                           |
+| `ES2017`     | Additional APIs available in ES2017 - `Object.entries`, `Object.values`, `Atomics`, `SharedArrayBuffer`, `date.formatToParts`, typed arrays, etc. |
+| `ES2018`     | Additional APIs available in ES2018 - `async` iterables, `promise.finally`, `Intl.PluralRules`, `regexp.groups`, etc. |
+| `ES2019`     | Additional APIs available in ES2019 - `array.flat`, `array.flatMap`, `Object.fromEntries`, `string.trimStart`, `string.trimEnd`, etc. |
+| `ES2020`     | Additional APIs available in ES2020 - `string.matchAll`, etc. |
+| `ES2021`     | Additional APIs available in ES2021 - `promise.any`, `string.replaceAll` etc. |
+| `ES2022`     | Additional APIs available in ES2022 - `array.at`, `RegExp.hasIndices`, etc. |
+| `ES2023`     | Additional APIs available in ES2023 - `array.with`, `array.findLast`, `array.findLastIndex`, `array.toSorted`, `array.toReversed`, etc. |
+| `ESNext`     | Additional APIs available in ESNext - <font color=red>This changes as the JavaScript specification evolves</font> |
+| `DOM`        | [DOM](https://developer.mozilla.org/docs/Glossary/DOM) definitions - `window`, `document`, etc. |
+| `WebWorker`  | APIs available in [WebWorker](https://developer.mozilla.org/docs/Web/API/Web_Workers_API/Using_web_workers) contexts |
+| `ScriptHost` | APIs for the [Windows Script Hosting System](https://wikipedia.org/wiki/Windows_Script_Host) |
+
+##### `target`
+
+Modern browsers support all ES6 features, so `ES6` is a good choice. You might choose to set a lower target if your code is deployed to older environments, or a higher target if your code is guaranteed to run in newer environments.
+
+The `target` setting changes which JS features are downleveled and which are left intact. For example, an arrow function `() => this` will be turned into an equivalent `function` expression if `target` is ES5 or lower.
+
+<font color=red>**Changing `target` also changes the default value of `lib`**</font>. You may “mix and match” `target` and `lib` settings as desired, but you could just set `target` for convenience.
+
+For developer platforms like Node there are baselines for the `target`, depending on the type of platform and its version. You can find a set of community organized TSConfigs at [tsconfig/bases](https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases), which has configurations for common platforms and their versions.
+
+<font color=red>The special `ESNext` value refers to the highest version your version of TypeScript supports</font>. <font color=red>**This setting should be used with caution**</font>, since <font color=lightSeaGreen>it doesn’t mean the same thing between different TypeScript versions and can make upgrades less predictable</font>.
+
+> 💡如上面所说：修改 `target` 将会修改 `lib` 的默认值。
+>
+> 另外，我也有点好奇 `lib` 的默认值是什么，于是问了下 Gemini ，得到如下结果：
+>
+> > [!TIP]
+> >
+> > **TL;DR** ：`lib` 存在默认值，且会受到 `target` 的值的影响（如果 `lib` 选项存在指定值，则不受影响）。另外，因为 `target` 也存在默认值，所以哪怕 `target` 没有被指定，`lib` 的默认值也存在，并按照规则被赋值
+>
+> > 在 `tsconfig.json` 文件中，`lib` 配置选项具有默认值。
+> >
+> > <font color=dodgerBlue>**默认值取决于 `target` 选项的设置：**</font>
+> >
+> > - **如果 `target` 是 `ES3`：** `lib` 默认为 `["lib.d.ts"]`。
+> > - **如果 `target` 是 `ES5`：** `lib` 默认为 `["dom", "es5", "scripthost"]`。
+> > - **如果 `target` 是 `ES6` (或 `ES2015`)：** `lib` 默认为 `["dom", "es6", "dom.iterable", "scripthost"]`。
+> > - **对于更高的 `target` 值（例如 `ES2016`、`ES2017`、 ... 、`ESNext`）：** `lib` 的默认值会相应地包含该 ECMAScript 版本以及 `dom` 、 `dom.iterable`、和 `scripthost`。例如，如果 `target` 是 `ES2017`，默认的 `lib` 数组会包含 `es2017` 相关的类型定义。
+> >
+> > **重要提示：**
+> >
+> > - <font color=dodgerBlue>如果您在 `tsconfig.json` 中**显式设置了 `lib` 选项**</font>，那么您<font color=red>指定的库将覆盖默认值</font>。这意味着如果您想添加额外的库，您需要同时包含您想要的基本库（例如，`esnext`）和您添加的库（例如，`dom`）。
+> > - <font color=dodgerBlue>如果您**不指定 `lib` 选项**</font>，<font color=red>TypeScript 编译器将根据您的 `target` 设置自动包含一组默认的库</font>。
+> >
+> > 因此，虽然 `lib` 有一个基于 `target` 的默认行为，但在很多情况下，开发者会根据项目需求明确指定 `lib` 选项，以确保所需的类型定义可用。
+>
+> 然后又提了另一个问题 “ 如果未显式设置 `target` ，那么 `lib` 是否还存在默认值？”，得到如下回答：
+>
+> > 是的，即使未显式设置 `target`，`lib` 选项仍然存在默认值。这是因为 `target` 本身也有一个默认值。
+> >
+> > **`target` 的默认值：**
+> >
+> > 如果 `tsconfig.json` 文件中没有显式设置 `target`，TypeScript 编译器会将其**默认为 `"ES3"`** 。
+> >
+> > **`lib` 的默认值（当 `target` 未显式设置时）：**
+> >
+> > 由于 `target` 默认为 `"ES3"`，因此 `lib` 的默认值将与 `target: "ES3"` 时的默认值相同，即：**`["lib.d.ts"]`**
+> >
+> > **总结一下：**
+> >
+> > 1. 如果 `target` 未在 `tsconfig.json` 中设置，它默认为 `"ES3"` 。
+> > 2. 基于这个默认的 `target: "ES3"`，`lib` 会默认为 `["lib.d.ts"]`。
+> >
+> > 因此，即使您没有在 `tsconfig.json` 文件中指定 `target` 或 `lib`，TypeScript 编译器也会使用这些默认设置来编译您的代码。不过，在现代 JavaScript 开发中，`"ES3"` 是一个非常旧的标准，通常建议显式设置一个更新的 `target`（例如 `"ES2015"` 或更高版本），并相应地调整 `lib` 设置以匹配您的项目需求和运行环境。
+>
+> 具体内容见 🔗 https://g.co/gemini/share/dfc1cd270270
+
+
+
 #### Type-Only Imports and Export
 
 This feature is something most users may never have to think about; however, <font color=lightSeaGreen>if you’ve hit issues under [`isolatedModules`](https://www.typescriptlang.org/tsconfig#isolatedModules), TypeScript’s `transpileModule` API, or Babel</font>, this feature might be relevant.
@@ -7797,8 +7972,6 @@ export { foo, bar }
 
 > 💡 ts 官方有 tsconfig.json 各种配置选项的介绍，见：[ts doc - Intro to the TSConfig Reference](https://www.typescriptlang.org/tsconfig)
 
-
-
 ##### `files`、`include` 和 `exclude`
 files、include 和 exclude 都是用于指定（设置）需要被编译的文件的：其中 files 是直接指定文件路径，include 和 exclude 是一对，用匹配模式 包含和排除一些文件。
 
@@ -7808,7 +7981,7 @@ files、include 和 exclude 都是用于指定（设置）需要被编译的文�
 
 如果 files 和 exclude 设置了同时一个文件，则以 files 为准。
 
-> 👀 显然这也是解释得通的：iles 是直接指定，exclude 是匹配，直接指定更具体，所以优先级更高。
+> 👀 显然这也是解释得通的：files 是直接指定，exclude 是匹配，直接指定更具体，所以优先级更高。
 
 > 💡 以下是 new bing 的解答：
 
@@ -7819,79 +7992,6 @@ files、include 和 exclude 都是用于指定（设置）需要被编译的文�
 和 [[Vue2 学习笔记#在 `vue.config.js` 中实现 `resolve.alias`]] 中的内容没太大区别，这里不做赘述；另外，可以看下 [Say Goodbye to ‘../../../..’ in your TypeScript Imports](https://decembersoft.com/posts/say-goodbye-to-relative-paths-in-typescript-imports/)
 
 
-
-##### `skipLibCheck`
-
-> Skip Lib Check
-
-Skip type checking of declaration files.
-
-**This can save time during compilation at the expense of type-system accuracy**. <font color=dodgerBlue>For example</font>, <font color=lightSeaGreen>two libraries could **define two copies of the same `type`** in an inconsistent way</font>. <font color=dodgerBlue>Rather than doing a full check of all `d.ts` files</font>, TypeScript will type check the code you specifically refer to in your app’s source code.
-
-<font color=dodgerBlue>A common case where you might think</font> to use `skipLibCheck` is when there are two copies of a library’s types in your `node_modules`. In these cases, you should consider using a feature like [yarn’s resolutions](https://yarnpkg.com/lang/en/docs/selective-version-resolutions/) to ensure there is only one copy of that dependency in your tree or investigate how to ensure there is only one copy by understanding the dependency resolution to fix the issue without additional tooling.
-
-<font color=dodgerBlue>Another possibility is</font> when you are <font color=lightSeaGreen>migrating between TypeScript releases</font> and **the changes cause breakages in node_modules and the JS standard libraries** which you do not want to deal with during the TypeScript update.
-
-Note, that if these issues come from the TypeScript standard library you can replace the library using [TypeScript 4.5’s lib replacement](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#supporting-lib-from-node_modules) technique.
-
-摘自：[ts doc - tsconfig # skipLibCheck](https://www.typescriptlang.org/tsconfig/#skipLibCheck)
-
-###### 其他补充
-
-> 在大多数项目中，<font color=lightSeaGreen>开发者会在 TypeScript 的配置文件 ( `tsconfig.json` ) 中将 `skipLibCheck` 选项设置为 `true`</font> 。`skipLibCheck` 的作用是跳过对库文件（包括 `.d.ts` 文件）的类型检查。当设置为 true 时，<font color=lightSeaGreen>TypeScript 编译器不会对这些库文件进行严格的类型检查，从而加快编译速度</font>。但<font color=red>这也会影响项目中自己编写的 `.d.ts` 文件</font>。<font color=dodgerBlue>这意味着</font>，<font color=red>即使 `.d.ts` 文件中定义的类型存在错误，TypeScript 编译器也不会报错，从而失去了类型安全性的保障</font>。
-
-
-
-##### `lib`
-
-TypeScript <font color=red>**includes a default set of type definitions for built-in JS APIs**</font> (like `Math`), as well as type definitions for things found in browser environments (like `document`). <font color=lightSeaGreen>TypeScript also includes APIs for newer JS features matching the [`target`](https://www.typescriptlang.org/tsconfig/#target) you specify</font>; for example the definition for `Map` is available if [`target`](https://www.typescriptlang.org/tsconfig/#target) is `ES6` or newer.
-
-<font color=dodgerBlue>You may want to change these for a few reasons:</font>
-
-- Your program doesn’t run in a browser, so you don’t want the `"dom"` type definitions
-- Your runtime platform provides certain JavaScript API objects (maybe through polyfills), but doesn’t yet support the full syntax of a given ECMAScript version
-- <font color=red>You have polyfills or native implementations for some, *but not all*, of a higher level ECMAScript version</font>
-
-In TypeScript 4.5, lib files can be overridden by npm modules, find out more [in the blog](https://devblogs.microsoft.com/typescript/announcing-typescript-4-5-beta/#supporting-lib-from-node_modules).
-
-##### High Level libraries
-
-| Name         | Contents                                                     |
-| :----------- | :----------------------------------------------------------- |
-| `ES5`        | Core definitions for all ES5 functionality                   |
-| `ES2015`     | Additional APIs available in ES2015 (also known as ES6) - `array.find`, `Promise`, `Proxy`, `Symbol`, `Map`, `Set`, `Reflect`, etc. |
-| `ES6`        | Alias for “ES2015”                                           |
-| `ES2016`     | Additional APIs available in ES2016 - `array.include`, etc.  |
-| `ES7`        | Alias for “ES2016”                                           |
-| `ES2017`     | Additional APIs available in ES2017 - `Object.entries`, `Object.values`, `Atomics`, `SharedArrayBuffer`, `date.formatToParts`, typed arrays, etc. |
-| `ES2018`     | Additional APIs available in ES2018 - `async` iterables, `promise.finally`, `Intl.PluralRules`, `regexp.groups`, etc. |
-| `ES2019`     | Additional APIs available in ES2019 - `array.flat`, `array.flatMap`, `Object.fromEntries`, `string.trimStart`, `string.trimEnd`, etc. |
-| `ES2020`     | Additional APIs available in ES2020 - `string.matchAll`, etc. |
-| `ES2021`     | Additional APIs available in ES2021 - `promise.any`, `string.replaceAll` etc. |
-| `ES2022`     | Additional APIs available in ES2022 - `array.at`, `RegExp.hasIndices`, etc. |
-| `ES2023`     | Additional APIs available in ES2023 - `array.with`, `array.findLast`, `array.findLastIndex`, `array.toSorted`, `array.toReversed`, etc. |
-| `ESNext`     | Additional APIs available in ESNext - <font color=red>This changes as the JavaScript specification evolves</font> |
-| `DOM`        | [DOM](https://developer.mozilla.org/docs/Glossary/DOM) definitions - `window`, `document`, etc. |
-| `WebWorker`  | APIs available in [WebWorker](https://developer.mozilla.org/docs/Web/API/Web_Workers_API/Using_web_workers) contexts |
-| `ScriptHost` | APIs for the [Windows Script Hosting System](https://wikipedia.org/wiki/Windows_Script_Host) |
-
-##### `target`
-
-Modern browsers support all ES6 features, so `ES6` is a good choice. You might choose to set a lower target if your code is deployed to older environments, or a higher target if your code is guaranteed to run in newer environments.
-
-The `target` setting changes which JS features are downleveled and which are left intact. For example, an arrow function `() => this` will be turned into an equivalent `function` expression if `target` is ES5 or lower.
-
-<font color=red>**Changing `target` also changes the default value of `lib`**</font>. You may “mix and match” `target` and `lib` settings as desired, but you could just set `target` for convenience.
-
-For developer platforms like Node there are baselines for the `target`, depending on the type of platform and its version. You can find a set of community organized TSConfigs at [tsconfig/bases](https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases), which has configurations for common platforms and their versions.
-
-<font color=red>The special `ESNext` value refers to the highest version your version of TypeScript supports</font>. <font color=red>**This setting should be used with caution**</font>, since <font color=lightSeaGreen>it doesn’t mean the same thing between different TypeScript versions and can make upgrades less predictable</font>.
-
-> 💡如上面所说：修改 `target` 将会修改 `lib` 的默认值。
->
-> 另外，我也有点好奇 `lib` 的默认值是什么，于是问了下 Gemini ，得到如下结果：
->
-> 
 
 
 
