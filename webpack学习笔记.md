@@ -9534,9 +9534,11 @@ new webpack.ProvidePlugin({
 })
 ```
 
-> 👀 注：上面是细粒度的引入，引入的属性为 module1.property ；下面 [[#Lodash Map 中的用法]] 有使用
+> 👀 上面是细粒度的引入，引入的属性为 module1.property ；下面 [[#Lodash Map 中的用法]] 有使用
 
-<font color=dodgerBlue>By default</font>, <font color=fuchsia>module resolution path is current folder (`./**)` and `node_modules`</font> . 👀 注：关于 `**` 的内容参见 [[#自我补充：`*` 和 `**` 通配符]]
+<font color=dodgerBlue>By default</font>, <font color=fuchsia>module resolution path is current folder ( `./**` ) and `node_modules` </font> .
+
+> 👀 关于 `**` 的内容参见 [[#自我补充：`*` 和 `**` 通配符]]
 
 It is also possible to <font color=dodgerBlue>specify full path</font>:
 
@@ -11278,7 +11280,7 @@ If you <font color=FF0000>have a more advanced project</font> and <font color=FF
 
 >💡 Vagrant 是一个开发的虚拟环境，类似于 docker。由于目前没有使用到，所以一扫而过，暂时略。不过，下面说了 webpack-dev-server 的部分原理：
 
-`webpack-dev-server` will <font color=FF0000>**include a script**</font> in your bundle that <font color=FF0000 size=4>**connects to a WebSocket** to **reload when a change in any of your files occurs**</font>
+`webpack-dev-server` will <font color=FF0000>**include a script**</font> in your bundle that <font color=fuchsia>**connects to a WebSocket** to **reload when a change in any of your files occurs**</font>
 
 摘自：[webpack doc - Guides - Development Vagrant](https://webpack.js.org/guides/development-vagrant/)
 

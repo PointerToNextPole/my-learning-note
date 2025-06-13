@@ -6334,8 +6334,6 @@ Note, that if these issues come from the TypeScript standard library you can rep
 > 👀 25/06/12 补充：
 >
 > `include` 相关的内容在 [[#其他笔记#`files`、`include` 和 `exclude`]] 中有做笔记，不过在 WebStorm 中存在类型错误提示，研究了下，也问了下 Gemini，发现还是一知半解。
->
-> 情况是这样的：在 WebStorm 2025 中发现：我在一个 ts 文件中导出一个响应式变量 ( `export const isEditCustomer = ref<boolean>(false)` )，并在另一个 vue 文件的模板中使用，出现了类型错误提示 ``Vue: property `isEditCustomer` does not exist on type `{}`.`` 。问了下 Gemini 发现是 WebStorm 环境下 `tsconfig.json` 的 `include` 配置不具体导致的（VS Code 没这个问题）原本是 `"include": ["src/"]` 改成 `"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts", "src/**/*.vue"]` 就好了
 
 <font color=red>Specifies an array of filenames or **patterns** to include in the program</font>. These filenames are resolved relative to the directory containing the `tsconfig.json` file.
 

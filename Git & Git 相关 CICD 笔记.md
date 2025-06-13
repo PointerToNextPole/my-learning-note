@@ -17,6 +17,8 @@
 - [这才是真正的GIT——GIT内部原理](https://www.lzane.com/tech/git-internal) 一共有三篇，这是第一篇。说明了一些 Git 原理性的东西，配合动图，清晰易懂
 - [给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960) 一些补充的命令
 - [GitHub - Docs](https://docs.github.com/cn) GitHub 官方文档（中文）
+  - [Github - Docs - GitHub 词汇表](https://docs.github.com/zh/get-started/learning-about-github/github-glossary)
+
 - [十分钟学会正确的github工作流，和开源作者们使用同一套流程](https://www.bilibili.com/video/BV19e4y1q7JJ) 挺基础的教程，不过鉴于我只用 merge，完全不用 rebase；再加上之前没有在 remote 合并过分支 🥬，所以还是有些收获
 
 
@@ -682,11 +684,27 @@ normal 模式键入 `:wq!`，显示如下：
 
 #### Lesson 2.14
 
-<font color=FF0000 size=4>开发中临时加塞了紧急任务，该如何处理？</font>即，对代码做了修改；但是突然来的任务不需要这里的修改，需要切出去；这时候需要使用 `git stash` 命令，将修改的内容存储到堆栈区。在使用 `git stash` 命令之后，可以使用 `git stash list` 查看 stash 列表。如下：
+<font color=dodgerBlue>**开发中临时加塞了紧急任务，该如何处理？**</font>即，对代码做了修改；但是突然来的任务不需要这里的修改，需要切出去；这时候需要使用 `git stash` 命令，将修改的内容存储到堆栈区。在使用 `git stash` 命令之后，可以使用 `git stash list` 查看 stash 列表。如下：
 
 <img src="https://s2.loli.net/2022/02/21/Ohz13RoFg9fqUVs.png" alt="image-20220221210139366" style="zoom:50%;" />
 
-在处理完任务后，可以使用 `git stash pop` 或者 `git stash apply` 命令进行恢复 stash（注，补充：暂存的内容可以恢复到其他任意指定的分支上）。相关命令如下：
+在处理完任务后，可以使用 `git stash pop` 或者 `git stash apply` 命令进行恢复 stash。
+
+> 💡 补充
+>
+> <font color=fuchsia>暂存的内容可以恢复到其他任意指定的分支上的</font>。基于这一特性，可以实现处理 “在错误的分支上做了修改但未提交” 的情况。
+>
+> ```sh
+> git stash
+> git checkout correct_branch
+> git stash pop
+> ```
+>
+> 另外，在 WebStorm 中，因为存在 “Smart Checkout” 功能，所以不需要做这样的处理
+>
+> 学习自：[百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw)
+
+相关命令如下：
 
 - **`git stash apply`** ：环境将会恢复，stash 中的数据，将不会被清除。
 
@@ -694,13 +712,13 @@ normal 模式键入 `:wq!`，显示如下：
 
 - **`git stash pop`** ：将当前 stash 中的内容弹出，并应用到当前分支对应的工作目录上。环境会恢复，stash 中的数据将会被清理。
 
-  如果从stash中恢复的内容和当前目录中的内容发生了冲突，也就是说，恢复的内容和当前目录修改了同一行的数据，那么会提示报错，需要解决冲突，可以通过创建新的分支来解决冲突。
+  如果从 stash 中恢复的内容和当前目录中的内容发生了冲突，也就是说，恢复的内容和当前目录修改了同一行的数据，那么会提示报错，需要解决冲突，可以通过创建新的分支来解决冲突。
 
-- **`git stash save <msg>`** ：作用等同于git stash，区别是可以加一些注释
+- **`git stash save <msg>`** ：作用等同于 `git stash` ，区别是可以加一些注释
 
 - **`git stash list`** ：查看当前stash中的内容
 
-- **`git stash drop [stashName]`** ：从堆栈中移除某个指定的 stash，stashName 即：类似 stash@{1}；如果不加上 stashName，则默认为：最近的一次stash
+- **`git stash drop [stashName]`** ：从堆栈中移除某个指定的 stash，stashName 即：类似 `stash@{1}` ；如果不加上 stashName，则默认为：最近的一次 stash
 
 - **`git stash clear`** ：清除堆栈中的所有内容
 
@@ -962,7 +980,7 @@ fatal: Authentication failed for 'https://github.com/github-user-name/proj-name.
   > >
   > > 详见 [Git doc - git remote](https://git-scm.com/docs/git-remote)
   >
-  > 👀 参见 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 的 “1、设置错误的远程库怎么办？”，所以，`git remote set-url` 只是一个“设置远程仓库地址”的命令（参考 [[#其他 git 命令]]）。另外，虽然说出来顺理成章，但容易忽略的是：将通过 ssh 链接管理的 git repo，切换为通过 http 管理；或者反过来，都可以通过 `git remote set-url repo-url-with-protocol-prefix` 来实现。
+  > 👀 参见 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 的 “1、设置错误的远程库怎么办？”：`git remote set-url` 只是一个 “设置远程仓库地址” 的命令（参考 [[#其他 git 命令]]）。另外，虽然说出来顺理成章，但容易忽略的是：将通过 ssh 链接管理的 git repo，切换为通过 http 管理，或者反过来，都可以通过 `git remote set-url repo-url-with-protocol-prefix` 来实现。
 
 ###### 出现：`error: src refspec master does not match any`
 
@@ -1227,35 +1245,37 @@ Cleans the working tree by <font color=red>**recursively**</font> removing files
 
 ##### OPTIONS
 
-###### -d
+###### `-d`
 
 Normally, when no `<pathspec>` is specified, git clean will not recurse into untracked directories to avoid removing too much. Specify `-d` to have it recurse into such directories as well. If a `<pathspec>` is specified, `-d` is irrelevant; all untracked files matching the specified paths (with exceptions for nested git directories mentioned under `--force`) will be removed.
 
-###### -f/ --force
+###### `-f` / `--force`
 
 If the Git configuration variable `clean.requireForce` is not set to false, `git clean` will refuse to delete files or directories unless given `-f` or `-i`. Git will refuse to modify untracked nested git repositories (directories with a .git subdirectory) unless a second `-f` is given.
 
-###### -i / --interactive
+###### `-i` / `--interactive`
 
-Show what would be done and clean files interactively. See “[Interactive mode](https://git-scm.com/docs/git-clean#_interactive_mode)” for details. 👀 Interactive mode 这里略
+Show what would be done and clean files interactively. See “[Interactive mode](https://git-scm.com/docs/git-clean#_interactive_mode)” for details. 
 
-###### -n / --dry-run
+> 👀 Interactive mode 这里略
+
+###### `-n` / `--dry-run`
 
 Don’t actually remove anything, just show what would be done.
 
-###### -q / --quiet
+###### `-q` / `--quiet`
 
 Be quiet, only report errors, but not the files that are successfully removed.
 
-###### -e \<pattern> / --exclude=\<pattern>
+###### `-e <pattern>` / `--exclude=<pattern>`
 
 Use the given exclude pattern in addition to the standard ignore rules (see [gitignore[5]](https://git-scm.com/docs/gitignore)).
 
-###### -x
+###### `-x`
 
 Don’t use the standard ignore rules (see [gitignore[5]](https://git-scm.com/docs/gitignore)), but still use the ignore rules given with `-e` options from the command line. This allows removing all untracked files, including build products. This can be used (possibly in conjunction with *git restore* or *git reset*) to create a pristine working directory to test a clean build.
 
-###### -X
+###### `-X`
 
 Remove only files ignored by Git. This may be useful to rebuild everything from scratch, but keep manually created files.
 
@@ -1999,21 +2019,21 @@ git pull 有 `--no-ff` 选项，表示：抓取远程仓库所有分支更新并
 
 
 
-#### git <font color=FF0000>ref</font>log
+#### git reflog
 
-注意上面的红色的字体，即 reflog 的意思为 ref + log。
+reflog 的意思为 ref + log。
 
-键入 git reflog 显示的效果图示例如下：
+键入 `git reflog` 显示的效果图示例如下：
 
 <img src="https://s2.loli.net/2022/02/24/wU4PkXDcx2ftbaQ.png" alt="image-20220224200700730" style="zoom:45%;" />
 
-git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **展示已经执行过的所有动作的日志**</font>。<font color=FF0000>包括合并、重置、还原，基本上包含你对你的分支所做的任何修改</font>。
+`git reflog` 是一个非常有用的命令，<font color=fuchsia>可以 **展示已经执行过的所有动作的日志**</font>。<font color=FF0000>包括合并、重置、还原，基本上包含你对你的分支所做的任何修改</font>。
 
 ![https://pic1.zhimg.com/v2-cda251045d9d8b2d5b65db533b6ba3cc_b.gif](https://s2.loli.net/2022/02/24/9jVnWPaielUhvuL.gif)
 
 如果你犯了错，你<font color=FF0000>可以根据 reflog 提供的信息通过重置 HEAD 来轻松地重做</font>！
 
-假设我们实际上并不需要合并原有分支。当我们执行 git reflog 命令时，我们可以看到这个 repo 的状态在合并前位于 HEAD@{1}。那我们就执行一次 git reset，将 HEAD 重新指向在 HEAD@{1} 的位置。
+假设我们实际上并不需要合并原有分支。当我们执行 `git reflog` 命令时，我们可以看到这个 repo 的状态在合并前位于 `HEAD@{1}` 。那我们就执行一次 `git reset` ，将 HEAD 重新指向在 `HEAD@{1}` 的位置。
 
 ![https://pic3.zhimg.com/v2-4131550e150396f1dfc6a8242c6d103a_b.gif](https://s2.loli.net/2022/02/24/KeGSCd8XDB4EmhW.gif)
 
@@ -2041,11 +2061,12 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 
 - **`git checkout -`** ：切换到上一个分支。
 
-  > 💡 `-` 在 *nix 中表示上一个，
+  > 💡 `-` 在 *nix 中表示上一个，这是一种常见用法
 
 - `git branch --set-upstream [branch] [remote-branch]` ：建立追踪关系，在现有分支与指定的远程分支之间
 
 - **删除远程分支：**
+  
   - `git push origin --delete [branch-name]`
   - `git branch -dr [remote/branch]`
 
@@ -2068,7 +2089,7 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 - **`git archive`** ：生成一个可供发布的压缩包
 - **`git apply ../sync.patch` **：打补丁
 - **`git apply --check ../sync.patch`**：测试补丁能否成功
-- **`git --version`：**查看Git的版本
+- **`git --version`：**查看 Git 的版本
 
 摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
@@ -2082,7 +2103,7 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 
 <img src="https://www.lzane.com/tech/git-tips/git_reflog.gif" alt="https://www.lzane.com/tech/git-tips/git_reflog.gif" style="zoom:80%;" />
 
-主要思路为：**找到要返回的commit object的哈希值，然后执行`git reset`恢复**。
+主要思路为：**找到要返回的 commit object 的哈希值，然后执行`git reset`恢复**。
 
 > 👀 类似的见 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 中的 “9、不小心删除了分支怎么办？”
 
@@ -2096,15 +2117,17 @@ git reflog 是一个非常有用的命令，<font color=FF0000 size=4>可以 **
 
 ##### 从整个历史中删除一个文件
 
-代码要开源了，但发现其中包括密钥文件或内网ip怎么办？
+代码要开源了，但发现其中包括密钥文件或内网 ip 怎么办？
 
 ```bash
 git filter-branch --tree-filter 'rm -f passwords.txt' HEAD
 ```
 
-可以使用 `filter-branch` 命令，它的实现原理是将每个 commit checkout出来，然后执行你给它的命令，像上面的 `rm -f passwords.txt` ，然后重新 commit 回去。
+可以使用 `filter-branch` 命令，它的实现原理是将每个 commit checkout 出来，然后执行你给它的命令，像上面的 `rm -f passwords.txt` ，然后重新 commit 回去。
 
-⚠️ 这个操作属于高危操作，会修改历史变更记录链，产生全新的 commit object。所以执行前请通知仓库的所有开发者，执行后所有开发者从新的分支继续开发，弃用以前的所有分支。
+> [!WARNING]
+>
+> 这个操作属于高危操作，会修改历史变更记录链，产生全新的 commit object。所以执行前请通知仓库的所有开发者，执行后所有开发者从新的分支继续开发，弃用以前的所有分支。
 
 ##### 查看 git 分支之间的区别
 
@@ -2141,8 +2164,27 @@ git bisect
 - <font color=FF0000 size=4>**`git checkout -- files`**</font> ：<font color=FF0000>把文件从暂存区域复制到工作目录，用来丢弃本地修改</font>。
 
   > 💡 如果是修改消除所有的修改，则直接 `git checkout .` ；不过，新增的文件，不会被删除
-  > 
-  > ⭐️ 2025/6/10 补充：`git checkout` 甚至可以用来恢复之前提交中被删除的（此删除操作已经被提交，甚至推送）文件。具体的命令是 `git checkout <last-commit-hash-before-you-delete> — <deleted-file-original-location>` 。具体见 🔗 https://g.co/gemini/share/b25fe162dfc8 ，事情也可以引申到那个有点老生常谈的问题：如何回滚一个已经被提交并推送的修改
+  
+  > 💡 2025/6/10 补充
+  >
+  > `git checkout` 甚至可以用来恢复之前提交中被删除的（此删除操作已经被提交，甚至推送）文件。具体的命令是 `git checkout <last-commit-hash-before-you-delete> — <deleted-file-original-location>` 。
+  >
+  > 具体见 🔗 https://g.co/gemini/share/b25fe162dfc8
+  >
+  > 💡 2025/6/13 补充
+  >
+  > 在 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 中还看到了处理 “在错误的分支上做了修改同时已提交？（比如错误地提交到了主干）” 的方案：
+  >
+  > ```sh
+  > # 新建分支
+  > git branch xxx
+  > # 删除 master 分支的最后一次 commit
+  > git reset HEAD~ --hard
+  > # 删除的 commit 会切换到 xxx 分支上
+  > git checkout xxx
+  > ```
+  >
+  > 之前的话，我应该只会通过 `git diff > diff.patch` 将修改结果导出到一个文件中，在 reset 后根据 patch 文件的对比结果，来做对应的恢复 
 
 **也可以跳过暂存区域直接从仓库取出文件或者直接提交代码：**
 
@@ -2267,19 +2309,19 @@ cherry-pick命令 "复制"一个提交节点并在当前分支做一次完全一
 
 ##### 合并策略
 
-Git会有很多合并策略，其中常见的是 Fast-forward、Recursive 、Ours、Theirs、Octopus。<font color=FF0000 size=4>**默认Git会帮你自动挑选合适的合并策略**</font>  ，如果你需要强制指定，使用 `git merge -s <strategyName>`
+Git会有很多合并策略，其中常见的是 Fast-forward、Recursive 、Ours、Theirs、Octopus。<font color=red>**默认情况下 Git 会帮你自动挑选合适的合并策略**</font>  ，如果你需要强制指定，使用 `git merge -s <strategyName>`
 
-- **Fast-forward：**<font color=FF0000>Fast-forward 是最简单的一种合并策略</font>，Git 只需要将 master 分支的指向移动到最后一个 commit 节点上。Fast-forward 是 Git 在合并两个没有分叉的分支时的默认行为，<font color=FF0000>如果不想要这种表现，想明确记录下每次的合并，可以使用 `git merge --no-ff`</font>。
+- **Fast-forward** ：<font color=FF0000>Fast-forward 是最简单的一种合并策略</font>，Git 只需要将 master 分支的指向移动到最后一个 commit 节点上。Fast-forward 是 Git 在合并两个没有分叉的分支时的默认行为，<font color=FF0000>如果不想要这种表现，想明确记录下每次的合并，可以使用 `git merge --no-ff`</font>。
 
-- **Recursive：**<font color=FF0000 size=4>Recursive 是 Git 分支合并策略中 **最重要** 也是 **最常用** 的策略，是 Git 在 **合并两个有分叉的分支时** 的 **默认行为**</font>。其算法可以简单描述为：<font color=FF0000 size=4>递归寻找路径最短的唯一共同祖先节点，然后以其为 base节点进行递归三向合并</font>
+- **Recursive** ：<font color=dodgerBlue>Recursive 是 Git 分支合并策略中 **最重要** 也是 **最常用** 的策略</font>，<font color=fuchsia>是 Git 在 **合并两个有分叉的分支时** 的 **默认行为**</font>。其算法可以简单描述为：<font color=red>**递归寻找路径最短的唯一共同祖先节点，然后以其为 base节点进行递归三向合并**</font>
 
-  当 Git 在寻找路径最短的共同祖先节点的时候，是可能找到多个最短的共同祖先节点的；这样会带来：以哪一个节点作为 base，而使用不同的base 带来不同的结果（甚至是冲突）。<font color=FF0000>怎么保证Git能够找到正确的合并 base 节点，尽可能的减少冲突呢</font>？答案就是，<font color=FF0000 size=4>Git 在寻找路径最短的共同祖先节点时，**如果满足条件的祖先节点不唯一，那么 Git 会继续递归往下寻找直至唯一**</font>。Recursive 策略已经被大量的场景证明它是一个尽量减少冲突的合并策略。
+  当 Git 在寻找路径最短的共同祖先节点的时候，是可能找到多个最短的共同祖先节点的；这样会带来：以哪一个节点作为 base，而使用不同的 base 带来不同的结果（甚至是冲突）。<font color=FF0000>怎么保证Git能够找到正确的合并 base 节点，尽可能的减少冲突呢</font>？答案就是，<font color=FF0000 size=4>Git 在寻找路径最短的共同祖先节点时，**如果满足条件的祖先节点不唯一，那么 Git 会继续递归往下寻找直至唯一**</font>。Recursive 策略已经被大量的场景证明它是一个尽量减少冲突的合并策略。
 
   需要注意 Git 只是使用这些策略尽量的去帮你减少冲突，如果冲突不可避免，那 Git 就会提示冲突，需要手工解决。（也就是真正意义上的冲突）。
 
-- **Ours & Theirs：**Ours 和 Theirs这两种合并策略也是比较简单的，简单来说就是保留双方的历史记录，但<font color=FF0000>完全忽略掉这一方的文件变更</font>（👀 “这一方”是谁，是根据策略是 Our，还是 Theirs 决定的）。使用 Our，则抛弃被合并的分支，使用 Theirs 则抛弃当前（可以立即为 master）分支
+- **Ours & Theirs** ：Ours 和 Theirs 这两种合并策略也是比较简单的，简单来说就是保留双方的历史记录，但<font color=FF0000>完全忽略掉这一方的文件变更</font>（ 👀 “这一方”是谁，是根据策略是 Our，还是 Theirs 决定的）。使用 Our，则抛弃被合并的分支，使用 Theirs 则抛弃当前（可以立即为 master）分支
 
-- **Octopus：**一般来说我们的合并节点都只有两个parent（即合并两条分支），而这种合并策略可以做两个以上分支的合并，这也是git merge两个以上分支时的默认行为。
+- **Octopus** ：一般来说我们的合并节点都只有两个parent（即合并两条分支），而这种合并策略可以做两个以上分支的合并，这也是 `git merge` 两个以上分支时的默认行为。
 
 > 👀 以上内容经过一定的省略和整理，存在不理解的可以参见原文
 
@@ -2289,7 +2331,7 @@ Git会有很多合并策略，其中常见的是 Fast-forward、Recursive 、Our
 
 #### 更新一个文件的内容这个过程会发生什么事
 
-原本的git状态：
+原本的 git 状态：
 
 <img src="https://s2.loli.net/2022/02/25/56tHkLrMvQ13JdG.png" alt="https://www.lzane.com/tech/git-internal/3area.png" style="zoom: 67%;" />
 
