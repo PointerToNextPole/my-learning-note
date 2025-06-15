@@ -1468,6 +1468,14 @@
   > This is useful to enforce all your packages to use a single version of a dependency, or **backport** a fix.
   >
   > 摘自：[yarn doc - configuration - manifest # resolutions](https://yarnpkg.com/configuration/manifest#resolutions)
+  
+- **ciphertext** ：密文
+
+- **cipher**：密码 / 密码算法
+
+- **glossary** ：术语表
+
+- **checksums** ：校验和
 
 ***
 
