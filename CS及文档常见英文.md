@@ -1477,6 +1477,18 @@
 
 - **checksums** ：校验和
 
+- **parity** ：一致性、对等
+
+  > When the native codebase has reached sufficient **parity** with the current TypeScript, we’ll be releasing it as **TypeScript 7.0**.
+  >
+  > 摘自：[ms devlog - ts - typescript native port # Versioning Roadmap](https://devblogs.microsoft.com/typescript/typescript-native-port/#versioning-roadmap)
+
+- **nomenclature** ：命名法、命名系统
+
+  > For the sake of clarity, we’ll refer to them simply as TypeScript 6 (JS) and TypeScript 7 (native), since this will be the nomenclature for the foreseeable future.
+  >
+  > 摘自：[ms devlog - ts - typescript native port # Versioning Roadmap](https://devblogs.microsoft.com/typescript/typescript-native-port/#versioning-roadmap)
+
 ***
 
 
@@ -2488,3 +2500,6 @@
 - **routine** ：常规的
 - **vague** ：模糊的
 - **coordinated** ：协调的、组织有序的
+- **magnitude** ：大小
+- **guideline** ：准则、指南
+- **necessitate** ：使成为必要、需要
