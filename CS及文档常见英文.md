@@ -2498,8 +2498,23 @@
 - **graveyard** ：墓地
 
 - **routine** ：常规的
+
 - **vague** ：模糊的
+
 - **coordinated** ：协调的、组织有序的
+
 - **magnitude** ：大小
+
 - **guideline** ：准则、指南
+
 - **necessitate** ：使成为必要、需要
+
+- **quota** ：限额
+
+- **backoff** ：回退
+
+   > exponential backoff ：指数回退
+
+- **backlog** ：积压、积压的工作
+
+- **excel (at)** ：突出、擅长...
