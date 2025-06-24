@@ -6,12 +6,35 @@
 
 - [Understand Django](https://www.mattlayman.com/understand-django) ：[@100gle](https://twitter.com/1oogle) [推荐](https://x.com/1oogle/status/1773376213731668129) 的开源免费电子书
 - Fluent Python / Python Cookbook 这些名声在外的书，自然不用多提
+- [怎样才能写出 Pythonic 的代码？ - 知乎](https://www.zhihu.com/question/21408921)
 
 
 
 #### 海象表达式
 
 // TODO
+
+
+
+#### 生成器表达式
+
+#### 列表推导
+
+
+
+#### enumerate
+
+> 参考 [怎样才能写出 Pythonic 的代码？ - Snowflyt的回答 - 知乎](https://www.zhihu.com/question/21408921/answer/2557328805) 中的 “使用 emumerate 取代range(len(...))”
+
+
+
+#### 函数式 API
+
+##### takewhile
+
+
+
+##### dropwhile
 
 
 
