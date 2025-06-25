@@ -1488,6 +1488,8 @@
   > For the sake of clarity, we’ll refer to them simply as TypeScript 6 (JS) and TypeScript 7 (native), since this will be the nomenclature for the foreseeable future.
   >
   > 摘自：[ms devlog - ts - typescript native port # Versioning Roadmap](https://devblogs.microsoft.com/typescript/typescript-native-port/#versioning-roadmap)
+  
+- **ordinal** ：序数
 
 ***
 
@@ -2518,3 +2520,7 @@
 - **backlog** ：积压、积压的工作
 
 - **excel (at)** ：突出、擅长...
+
+- **radial** ：放射状的、径向
+
+   > 👀 半径 radius 的形容词形式

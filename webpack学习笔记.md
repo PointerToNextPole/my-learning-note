@@ -56,7 +56,7 @@ css-loader 用于加载 css 文件并生成 commonjs 对象，style-loader 用�
 
 At its core, **webpack** is a *static module bundler* for modern JavaScript applications. When webpack processes your application, <font color=FF0000>**it internally <font size=4>builds a [dependency graph](https://webpack.js.org/concepts/dependency-graph/)</font> from one or more *entry points***</font> and **then** <font color=FF0000>**combines every module your project needs into one or more *bundles***</font>, which are static assets to serve your content from.
 
-<mark>Since version 4.0.0, **webpack does not require a configuration file** to bundle your project</mark>. <font size=4>**Nevertheless**</font>, <font color=FF0000>**it is [incredibly configurable](https://webpack.js.org/configuration) to better fit your needs**</font>.
+<font color=dodgerBlue>Since version 4.0.0</font>, **webpack does not require a configuration file** to bundle your project. <font size=4>**Nevertheless**</font>, <font color=FF0000>**it is [incredibly configurable](https://webpack.js.org/configuration) to better fit your needs**</font>.
 
 ##### Entry
 
@@ -6034,9 +6034,9 @@ module.exports = {
 
 这样做的原因是： <font color=FF0000>**可以在 `vendor.js` 中存入 未做修改的 必要 “库”( library ) 或文件**</font>（例如 Bootstrap， jQuery， 图片等），然后<font color=FF0000>**将它们打包在一起成为单独的 chunk**</font>。内容哈希保持不变，这使浏览器可以独立地缓存它们，从而减少了加载时间。
 
-> ##### 注意
+> [!CAUTION]
 >
-> 在 webpack < 4 的版本中，<mark>通常将 **vendor 作为一个单独的入口起点** 添加到 entry 选项中</mark>，以将其编译为一个单独的文件（与 `CommonsChunkPlugin` 结合使用）。
+> 在 webpack < 4 的版本中，通常将 **vendor 作为一个单独的入口起点** 添加到 entry 选项中，以将其编译为一个单独的文件（与 `CommonsChunkPlugin` 结合使用）。
 >
 > 而<font color=FF0000>在 webpack 4 中不鼓励这样做</font>。而是<font color=FF0000>使用 `optimization.splitChunks` 选项，将 vendor 和 app （应用程序） 模块分开，并为其创建一个单独的文件</font>。不要 为 vendor 或其他不是执行起点创建 entry。
 
@@ -6154,7 +6154,7 @@ export default {
 };
 ```
 
-> 👀 注：⚠️ 注意区分 DefinePlugin 和 ProvidePlugin：DefinePlugin 是在编译阶段，自动替换变量的，ProvidePlugin 是自动导入 module 的
+> ⚠️ 注意区分 DefinePlugin 和 ProvidePlugin：DefinePlugin 是在编译阶段，自动替换变量的，ProvidePlugin 是自动导入 module 的
 
 ###### 在运行时设置
 
