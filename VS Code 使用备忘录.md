@@ -59,7 +59,15 @@
 
 <img src="https://s2.loli.net/2024/01/07/GJFDMsvkpX74bHm.png" alt="image-20240107234054700" style="zoom:50%;" />
 
+##### 设置 gitlens 的日期格式
 
+```json
+{
+  "gitlens.defaultDateFormat": "YYYY-MM-DD HH:mm:ss"
+}
+```
+
+学习自：https://x.com/wyh236/status/1930535877035360291
 
 #### 快捷键
 

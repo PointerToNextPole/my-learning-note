@@ -1035,6 +1035,8 @@ git config --global --replace-all user.name "输入你的用户名"
 
 #### 一些其他 git config 配置
 
+> 💡 首先，值得说明的是 git 配置定义在 `.gitconfig` 文件中。
+
 ##### 让 Git 以彩色显示：
 
 ```sh
@@ -1063,9 +1065,26 @@ git config --list
 git config -e [--global]
 ```
 
+> 👀 这里会发现，打开了 `~/.gitconfig` 文件
+
 以上内容摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
+##### 设置 git 日期格式
 
+```
+[log]
+        date = iso
+```
+
+另外，也可以在 vscode 配置中设置 gitlens 显示 git 日期的格式：
+
+```json
+{
+  "gitlens.defaultDateFormat": "YYYY-MM-DD HH:mm:ss"
+}
+```
+
+学习自：https://x.com/rxliuli/status/1930431773068145083 以及评论区中的 https://x.com/wyh236/status/1930535877035360291 
 
 #### git 内置文件
 
