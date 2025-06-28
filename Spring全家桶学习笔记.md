@@ -1510,7 +1510,7 @@ SpringMVC 处理方法（Controller）提供了以下几种返回方式：ModelA
 
   部分摘自：[RequestMapping 中produces 和 consumes](https://www.jianshu.com/p/f78b43f048e6) 和 [produces在@requestMapping中的使用方式和作用](https://blog.csdn.net/jaryle/article/details/72965885)
 
-##### **一些快捷方式**（相当于组合注解）
+##### 一些快捷方式（相当于组合注解）
 
 - **@RestController**：相当于@Controller+@ResponseBody
 
@@ -1537,7 +1537,9 @@ SpringMVC 处理方法（Controller）提供了以下几种返回方式：ModelA
 
 以上可以参考：[spring文档中的1.3.3 Handler Methods](https://docs.spring.io/spring/docs/5.1.5.RELEASE/spring-framework-reference/web.html#mvc-ann-methods)
 
-##### **@RequestBody**
+> 👀 25/06/28 补充：偶然看了下 [Spring Boot中的 6 种API请求参数读取方式](https://juejin.cn/post/7371720794979172393) ，虽然上面的内容当时学的时候就很懵，现在也几乎完全遗忘，但是现在看了文章之后，还是感觉听容易理解的
+
+##### @RequestBody
 
  **@RequestBody**主要用来<font style=color:red size=4>**接收前端传递给后端**</font>的<font style=color:red>**json字符串**</font>中的<font style=color:red size=4>**数据**</font>并<font color=FF0000>**将其封装为对应的JavaBean**</font>(**<font size=4><font color=FF0000>请求体</font>中的数据</font>**)。封装时使用到的一个对象是系统默认配置的 HttpMessageConverter进行解析，然后封装到形参上。
 
@@ -1576,7 +1578,7 @@ public String myTestController(@RequestBody String jsonString){}
 
 摘自：[@ResponseBody详解](https://blog.csdn.net/originations/article/details/89492884)
 
-##### **@ResponseStatus**
+##### @ResponseStatus
 
 @ResponseStatus注解有两种用法，一种是加载自定义异常类上，一种是加在目标方法中
 
@@ -3094,7 +3096,7 @@ Web 应用条件
 
 ##### 如何在低版本 Spring 中快速实现类似自动配置的功能
 
-##### **需求与问题**
+##### 需求与问题
 
 **核心的诉求**
 
@@ -3152,7 +3154,7 @@ Web 应用条件
 
 
 
-##### **一些常用操作**
+##### 一些常用操作
 
 判断类是否存在
 
@@ -3252,7 +3254,7 @@ Web 应用条件
 - <font color=FF0000>操作系统环境变量</font>
 - random.* 涉及到的 RandomValuePropertySource
 
-##### **外化配置加载顺序**
+##### 外化配置加载顺序
 
 - jar 包外部的 application-{profile}.properties 或 .yml
 - jar 包内部的 application-{profile}.properties 或 .yml
@@ -3262,7 +3264,7 @@ Web 应用条件
 - @Configuration 类上的 @PropertySource
 - SpringApplication.setDefaultProperties() 设置的默认属性
 
-##### **application.properties可以放在哪里**
+##### application.properties可以放在哪里
 **默认位置**
 
 - ./config
@@ -3306,7 +3308,7 @@ Web 应用条件
 - 支持安全的类型转换
 - @EnableConfigurationProperties
 
-##### **定制 PropertySource**
+##### 定制 PropertySource
 
 **主要步骤**
 

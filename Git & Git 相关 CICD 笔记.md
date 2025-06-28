@@ -2427,3 +2427,9 @@ Git会有很多合并策略，其中常见的是 Fast-forward、Recursive 、Our
 > > 为了能够拉取原始仓库的变更到你的复刻仓库中，需要将原始仓库添加为 upstream 仓库
 >
 > 之前没有听过，很有必要了解下。
+
+
+
+#### `git notes`
+
+> 👀 可以看下 [Git Notes: git's coolest, most unloved­ feature](https://tylercipriani.com/blog/2022/11/19/git-notes-gits-coolest-most-unloved-feature/)

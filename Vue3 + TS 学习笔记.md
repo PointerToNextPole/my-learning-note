@@ -661,7 +661,7 @@ vm.a = 3 // => new: 3, old: 1
 >
 > 如果说给 v-model 加上 lazy 修饰符，每一次输入都不会导致 v-model 修改，则不会出现类似的问题。不过，也有小的弊病：如果不失焦，虽然 input 了，但是 v-model 始终不变，这也会导致潜在的问题（虽然，很少遇到类似的场景）
 
-学习自：[Vue常用指令V-model如何优化？【渡一教育】](https://www.bilibili.com/video/BV1284y127pn)
+学习自：[Vue常用指令v-model如何优化？【渡一教育】](https://www.bilibili.com/video/BV1284y127pn)
 
 
 

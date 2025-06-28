@@ -1263,6 +1263,8 @@
   >
   > 摘自：[MDN US - Top layer](https://developer.mozilla.org/en-US/docs/Glossary/Top_layer)
 
+  **timespan** ：时间跨度
+
 - **on-premises** ：就地，在现场
 
 - **aggregate** ：聚合
@@ -1490,6 +1492,12 @@
   > 摘自：[ms devlog - ts - typescript native port # Versioning Roadmap](https://devblogs.microsoft.com/typescript/typescript-native-port/#versioning-roadmap)
   
 - **ordinal** ：序数
+
+- **Human in the Loop (HiTL)** ：人机协同
+
+  > Gemini Code Assist pairs developers with AI agents capable of performing a wide range of actions across the software development life cycle, with support for multiple file edits, full project context, built-in tools and integration with ecosystem tools following Model Context Protocol (MCP), all while incorporating **Human in the Loop (HiTL)** for needed oversight.
+  >
+  > 摘自：[Gemini Code Assist: AI-first coding in your natural language](https://codeassist.google/)
 
 ***
 
@@ -2526,3 +2534,9 @@
    > 👀 半径 radius 的形容词形式
    
 - **symmetric** ：对称的
+
+- **emulate** ：模仿
+
+- **paralysis** ：瘫痪
+
+- **offload** ：卸下、卸载
