@@ -1609,6 +1609,14 @@
 - `quasi-` ：准的，类似的
 
   <img src="https://s2.loli.net/2024/12/06/YDhadEMJRs4SWrT.png" alt="image-20241206135114843" style="zoom:50%;" />
+  
+- `sur-` ：在...之上、超越
+
+  > 具体可见 Gemini 的介绍 https://aistudio.google.com/prompts/1SIcZZlg4cieytfvpYaAU8lNBnE93EsiN
+
+  surreal ：超现实
+
+  
 
 ##### 后缀
 
