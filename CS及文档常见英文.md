@@ -106,7 +106,9 @@
 
 - **in lieu of** ：替代
 
-- **omit** ：删除、省略
+- **omit** ：删除、省略、遗漏
+
+   **omission** ：omit 的名词形式
 
 - **summation**：总和。sum 的完整形式？
 
