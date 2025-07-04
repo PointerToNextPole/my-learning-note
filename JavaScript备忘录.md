@@ -17711,11 +17711,11 @@ JSX 是 Javascript 和 XML 结合的一种格式。React 发明了 JSX ，利用
 
 > - **ECMA-262** : 定义了 ECMAScript 支持的一套关键字，这些关键字标识了 ECMAScript 语句的开头和结尾，根据规定，关键字是保留的，不能用作变量名或函数名。
 >
-> - **ECMA 402** ： 制定一些基于 ECMAScript 5 或者之后版本的一些国际化 API 标准。
+> - **ECMA-402** ： 制定一些基于 ECMAScript 5 或者之后版本的一些国际化 API 标准。
 >
-> - **ECMA 404** ：JSON 规范。
+> - **ECMA-404** ：JSON 规范。
 >
-> - **ECMA 414** ：规定了哪些规范是和 ECMAScript 有关的。目前内部就包含了 262，402 和 404。
+> - **ECMA-414** ：规定了哪些规范是和 ECMAScript 有关的。目前内部就包含了 262，402 和 404。
 >
 > 摘自：[ECMAScript（ES）版本介绍](https://www.jianshu.com/p/7dda47907512)
 

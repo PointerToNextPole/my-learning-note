@@ -7690,7 +7690,7 @@ function handleValue(val: All) {
 
 在实际应用开发时有一种场景，当前作用域下可以访问某个变量，但这个变量并不由开发者控制。例如通过 Script 标签直接引入的第三方库 CDN、一些宿主环境的 API 等。这个时候可以利用 TS 的环境声明功能，来告诉 TS 当前作用域可以访问这些变量，以获得类型提醒。
 
-具体有两种方式，declare 和三斜线指令。
+<font color=dodgerBlue>具体有两种方式</font>，<font color=red>declare 和三斜线指令</font>。
 
 ###### 声明文件
 
@@ -7855,7 +7855,7 @@ interface JQueryVariable {
 > > declare function $2(s:string): void
 > > 
 > > declare namespace $2{
-> >     let aaa: number
+> >      let aaa: number
 > > }
 > > ```
 > >

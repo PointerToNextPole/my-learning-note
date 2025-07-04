@@ -2663,7 +2663,7 @@ const name = toRef(state, 'name')
 
 **watchEffect的特性如下：**
 
-- <font color=FF0000>watchEffect 传入的函数 <font size=4>**会被立即执行一次**</font>，并且 <font size=4>**在执行的过程中会收集依赖（只要在函数中使用了，就添加到依赖，开始监听）**</font></font>（可以没有参数，根据执行结果，了解需要侦听哪些东西）
+- <font color=FF0000>watchEffect 传入的函数 **会被立即执行一次**，并且 **在执行的过程中会收集依赖（只要在函数中使用了，就添加到依赖，开始监听）**</font>（可以没有参数，根据执行结果，了解需要侦听哪些东西）
 - <font color=FF0000>只有收集的依赖发生变化时，watchEffect传入的函数才会再次执行</font>
 - watchEffect传入的函数，可以没有参数。
 
@@ -2671,9 +2671,13 @@ const name = toRef(state, 'name')
 
 ##### 使用watchEffect清除副作用
 
-**什么是清除副作用？**比如在<mark>开发中需要在侦听函数中执行网络请求</mark>，但是<font color=FF0000>**在网络请求还没有达到的时候，停止了侦听器、或者侦听器侦听函数被再次执行了：那么上一次的网络请求应该被取消掉**（因为请求失去意义了），这时就可以清除上一次的副作用</font>
+<font color=dodgerBlue>什么是清除副作用？</font> 比如在<font color=lightSeaGreen>开发中需要在侦听函数中执行网络请求</font>，但是<font color=FF0000>**在网络请求还没有达到的时候，停止了侦听器、或者侦听器侦听函数被再次执行了：那么上一次的网络请求应该被取消掉**（因为请求失去意义了），这时就可以清除上一次的副作用</font>
 
 **给watchEffect传入的函数被回调时，其实可以获取到一个参数：onInvalidate：**当 副作用即将重新执行 或者 侦听器被停止 时会执行该函数传入的回调函数。我们可以在传入的回调函数中，执行一些清除工作。
+
+> [!WARNING]
+>
+> 值得注意的是：这里 `onInvalidate` 参数的用法已经被废弃了，至少现在 25/07/04 的 Vue3.5 版本中，已经找不到 `onInvalidate` 相关的任何内容。在 Vue3 正式版中，已经出现了新的 `onCleanup` 参数（看起来是用来替代 `onInvalidate` ），`onCleanup` 的命名也更接近于 React 中 `useEffect` 的 `cleanup`
 
 示例如下：
 

@@ -1500,6 +1500,8 @@
   > Gemini Code Assist pairs developers with AI agents capable of performing a wide range of actions across the software development life cycle, with support for multiple file edits, full project context, built-in tools and integration with ecosystem tools following Model Context Protocol (MCP), all while incorporating **Human in the Loop (HiTL)** for needed oversight.
   >
   > 摘自：[Gemini Code Assist: AI-first coding in your natural language](https://codeassist.google/)
+  
+- **dongle** ：（电子）适配器
 
 ***
 

@@ -7,6 +7,7 @@
 - [Understand Django](https://www.mattlayman.com/understand-django) ：[@100gle](https://twitter.com/1oogle) [推荐](https://x.com/1oogle/status/1773376213731668129) 的开源免费电子书
 - Fluent Python / Python Cookbook 这些名声在外的书，自然不用多提
 - [怎样才能写出 Pythonic 的代码？ - 知乎](https://www.zhihu.com/question/21408921)
+- [Python语言从2.7到3.14的能力变化与演进逻辑](https://mp.weixin.qq.com/s/iRVqDjvfsilxRugG65fJNw)
 
 
 
@@ -81,6 +82,10 @@ with 语句实现原理建立在上下文管理器之上。
 使用 with 语句确保在嵌套块的末尾调用 `__exit__` 方法。
 
 摘自：[菜鸟教程 - Python3 教程 - Python with 关键字](https://www.runoob.com/python3/python-with.html)
+
+
+
+#### GIL
 
 
 
