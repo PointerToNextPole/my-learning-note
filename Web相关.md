@@ -549,7 +549,7 @@ URL经常包含ASCII 码之外的字符，所以必须将 URL 转换为有效的
 
 ### 其他补充
 
-#### # 前端开发中的大小写敏感问题
+#### 前端开发中的大小写敏感问题
 
 // TODO
 
@@ -2536,7 +2536,7 @@ Context-type: text/html
 <font color=FF0000>通用结构：`type/subtype`</font>
 
 <font color=FF0000>MIME 类型对大小写不敏感，但是通常传统写法是小写。</font>
- 
+
  ###### 分类
 
 | 分类                                  | 描述                                           | 典型类型                                                     |

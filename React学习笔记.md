@@ -6610,6 +6610,10 @@ Let’s say you’ve already implemented the code for them, but you’re not sur
 ##### 声明式编程
 
 > 👀 这里还提了一下 “命令式” 和 “声明式”，不过只是一笔带过；相关内容可以看下《Vue.js 设计与实现》§1.1 命令式和声明式
+>
+> > **声明式编程 Declarative Programming** ：即描述“做什么”而不是“怎么做”，如 React 只需要描述组件的 UI 应该是什么样的，而不需要直接操作 DOM。
+> >
+> > 摘自：[【万字总结】2025 前端+大前端+全栈 知识体系（上）](https://juejin.cn/post/7477025419418730532)
 
 声明式编程是目前整个大前端开发的模式：Vue、React、Flutter、SwiftUI 。它允许我们只需要维护自己的状态，当状态改变时，React 可以根据最新的状态去渲染我们的 UI 界面。
 

@@ -3568,6 +3568,8 @@ box model 不完全适用于参与内联格式上下文。在水平书写模式�
 现在开发 web 应用并不会直接基于 dom api，而是会选择某一个前端框架，比如 vue、react、angular 等。<font color=FF0000>这些框架实现了组件的功能，也就是对页面做的逻辑的拆分，把相同功能的 html、css、js 聚合在一起，使之可以复用</font>。并且<font color=FF0000>提供了 mvvm 的功能，自动做数据到具体 dom 的映射，而不再需要开发者手动操作 dom</font>。
 <font color=FF0000>前端框架做的事情相当于是 web 应用的逻辑层，最终的渲染和交互还是通过 dom api</font>，但是 <font color=FF0000>用户不需要直接操作，而是在逻辑层描述组件和数据，由前端框架完成数据到 dom 的自动映射</font>。
 
+> 👀 这里存在一个 “声明式编程” 的概念，相关可见 [[React学习笔记#coderwhy React18 学习笔记#声明式编程]]
+
 （盒子模型）盒与盒之间也是有区别的，有的盒可以在同一行显示，有的则是独占一行，而且对内容的位置的计算方式也不一样。于是 <font color=fuchsia>**提供了 display 样式来设置盒类型**</font>（👀 这种说法，之前没听说过；虽然感觉就是 formatting context 概念那一套），比如 block、inline、inline-block、flex、table-cell、grid 等，分别<font size=4>设置成不同的盒类型，就会使用不同的计算规则</font>。
 
 - **block** 的元素会独占一行、可以设置内容的宽高，具体计算规则叫做 BFC。

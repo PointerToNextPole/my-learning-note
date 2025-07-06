@@ -1129,3 +1129,9 @@ number once // TODO https://en.wikipedia.org/wiki/Cryptographic_nonce
 // TODO
 
 可参考 https://g.co/gemini/share/01d70c01a371
+
+
+
+#### 抽象与架构设计
+
+可以看下 [程序或架构设计的抽象能力 - RMosaicDCFan的文章 - 知乎](https://zhuanlan.zhihu.com/p/1919853703936082787)

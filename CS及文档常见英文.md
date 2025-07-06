@@ -2552,3 +2552,17 @@
 - **paralysis** ：瘫痪
 
 - **offload** ：卸下、卸载
+
+- **ovan** ：烤箱
+
+- **metaphor** ：隐喻
+
+- **dominate** ：主导、支配、统治
+
+   > 👀 有点基础了...
+
+- **sophisticated** ：精致、老于世故的、复杂的
+
+   > But the modern approach goes beyond just replacing your HTTP library. You get **sophisticated** timeout and cancellation support built-in:
+   >
+   > 摘自：[Modern Node.js Patterns for 2025](https://kashw1n.com/blog/nodejs-2025/)
