@@ -642,17 +642,21 @@ Google 了下 “Marshal json” ，发现主要和 Go 相关，主要是因为 
 
 There are many naming styles to use. I would suggest <font color=FF0000>**Utils** just because its **more common**</font>.
 
-A <font size=4>**Utility**</font> class is understood to <font color=FF0000>**only have static methods and be stateless**</font>. You <font color=FF0000>would not create an instance of such a class</font>.
+A **Utility** class is understood to <font color=FF0000>**only have static methods and be stateless**</font>. You <font color=FF0000>would not create an instance of such a class</font>.
 
-A <font size=4>**Helper**</font> <font color=FF0000>can be a **utility** class</font> or <font color=FF0000>it can be **stateful** or **require an instance be created**</font>. I would avoid this if possible.
+A **Helper** <font color=FF0000>can be a **utility** class</font> or <font color=FF0000>it can be **stateful** or **require an instance be created**</font>. I would avoid this if possible.
 
 摘自：[What are the differences between Helper and Utility classes?](https://stackoverflow.com/questions/12192050/what-are-the-differences-between-helper-and-utility-classes)
-
-
 
 ##### expression VS statement
 
 // TODO 虽然这比较明显，不过还是建议做下笔记 https://stackoverflow.com/questions/4728073/what-is-the-difference-between-an-expression-and-a-statement-in-python
+
+##### status vs state
+
+state 一般表示可以互相转换的状态，status 一般表示不会互相转换的状态
+
+学习自：https://x.com/changwei1006/status/1885987370958495869 。另外，知乎问题 [程序代码中，怎么区分status和state？ - 知乎](https://www.zhihu.com/question/21994784) 可作参考
 
 
 

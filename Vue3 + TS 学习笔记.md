@@ -3328,13 +3328,13 @@ Vue 也允许我们来自定义自己的指令。 注意：在Vue中，代码的
 
 组件化开发中，封装一个组件A，在另外一个组件B中使用：那么组件A中 template 的元素，会被挂载到组件B中 template 的某个位置；最终我们的应用程序会形成一颗DOM树结构。
 
-但在某些情况下，<mark>希望组件不是挂载在这个组件树上，需要移动到Vue app之外的其他位置：比如移动到body元素上，或者我们有其他的div#app 之外的元素上</mark>；这时就可以通过teleport来完成。
+但在某些情况下，<font color=lightSeaGreen>希望组件不是挂载在这个组件树上，需要移动到 Vue app 之外的其他位置：比如移动到 `<body>` 元素上，或者我们有其他的 `div#app` 之外的元素上</font>；这时就可以通过teleport来完成。
 
 ##### Teleport 是什么
 
-它是一个Vue提供的内置组件，类似于react的Portals。
+它是一个Vue提供的内置组件，类似于 React 的 Portals。
 
-teleport翻译过来是心灵传输、远距离运输的意思。**teleport有两个属性**：
+`<teleport>` 翻译过来是心灵传输、远距离运输的意思。`<teleport>` 有两个属性：
 
 - **to：**<font color=FF0000>指定将其中的内容移动到的目标元素，可以使用选择器</font>
 - **disabled：** 是否禁用 teleport 的功能
