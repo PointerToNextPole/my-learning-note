@@ -1126,7 +1126,7 @@ dep 其实就是一个 effect Set，这个 <font color=fuchsia>**effect Set 应�
 
 TargetMap 的类型是 WeakMap（ 👀 为什么选择 WeakMap ，[[#reactive 实现#Vue3 风格实现]] 中有说）。那么，现在 TargetMap 的结构就是 `WeakMap<any, Map<any, Set>>` 。
 
-> 👀 上面关于 `TargetMap` 的类型约束好像有点问题，WeakMap 的键只能是 iterable 和 nullish ( nul / undefined )，不能为 any ；另外，看下目前 ( 2024/9/8 ) 的 Vue3 源码， `targetMap` 的类型是 `WeakMap<object, Map<any, Dep>>` 
+> 👀 上面关于 `TargetMap` 的类型约束好像有点问题，WeakMap 的键只能是 iterable 和 nullish ( null / undefined )，不能为 any ；另外，看下目前 ( 2024/9/8 ) 的 Vue3 源码， `targetMap` 的类型是 `WeakMap<object, Map<any, Dep>>` 
 
 > 👀 除了上面的 `TargetMap` ，另外值得注意的是： `depsMap` ，以及 `dep` 指向的 “Effect to re-run”
 
@@ -1297,8 +1297,6 @@ user.fullName = 'Adam Jahr'
 console.log(`Name is ${user.fullName}`)
 ```
 
-
-
 ###### Ref 实现
 
 ```js
@@ -1320,6 +1318,48 @@ function ref(raw) {
 ```
 
 以上，实际就是 Vue3 中 `refImpl` 的实现原理；不过，Vue3 实际实现要复杂不少，比如 `refImpl` 是一个 class ，也有自己的构造函数...
+
+###### 《深入Vue3响应式：手写实现reactive与ref》 中的 ref 实现
+
+```ts
+import { track, trigger } from './effect'
+import  reactive  from './reactive'
+
+const ref = (v) => {
+  return new RefImpl(v)
+}
+
+class RefImpl {
+  _value
+  constructor(v) {
+    this._value = convert(v)
+  }
+
+  get value() {
+    track(this, 'value')
+    return this._value
+  }
+
+  set value(val) {
+    if(val === this._value) return
+    this._value = convert(val)
+    console.log('触发更新')
+    trigger(this, 'value')
+  }
+}
+
+const convert = (v) => {
+  return isObject(v) ? reactive(v) : v
+}
+
+const isObject = (v) => {
+  return typeof v === 'object' && v !== null
+}
+
+export default ref
+```
+
+摘自：[深入Vue3响应式：手写实现reactive与ref](https://juejin.cn/post/7516369217768898600)
 
 
 
