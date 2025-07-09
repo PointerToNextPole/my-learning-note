@@ -1139,3 +1139,11 @@ number once // TODO https://en.wikipedia.org/wiki/Cryptographic_nonce
 #### 抽象与架构设计
 
 可以看下 [程序或架构设计的抽象能力 - RMosaicDCFan的文章 - 知乎](https://zhuanlan.zhihu.com/p/1919853703936082787)
+
+
+
+#### 领域驱动设计 (DDD)
+
+可以通过 https://g.co/gemini/share/5e7798fc640b 了解下 DDD，以及 Golang 在 DDD 下的项目结构
+
+另外，可以看下 [想给面试官吹DDD吗？项目像搭积木一样运行：领域驱动设计（DDD）让复杂业务变简单](https://juejin.cn/post/7519812174899478582) ，介绍了一些概念，感觉作为入门还不错
