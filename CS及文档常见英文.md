@@ -158,6 +158,8 @@
 
 - **hierarchy**：层级
 
+   **hierarchical** ：分登记的
+
 - **Let's say**：比如说... ，一般用于开头开始话题
 
 - **incur**：招致，发生
