@@ -6663,11 +6663,9 @@ ref是有类型的，如果没有指定，则是any类型；如果想要指定�
 const refName = ref<Type>()
 ```
 
-但是，这里的Type是什么？这就涉及到组件的类型了。<font color=FF0000 size=4>**一个SFC文件中的内容只是组件的描述，而调用这个组件则是产生一个组件实例；这两者的关系类似于类和对象**</font>
+但是，这里的Type是什么？这就涉及到组件的类型了。<font color=fuchsia>**一个SFC文件中的内容只是组件的描述，而调用这个组件则是产生一个组件实例；这两者的关系类似于类和对象**</font>
 
-上面的 InstanceType\<typeof componet> （这里的component实际上是组件的实例）返回的是一个type，即：type componentType = InstanceType\<typeof componetInstance> 。那么conponentInstance是组件的实例，而componentType是组件的类型；上面的
-
-
+上面的 `InstanceType<typeof componet>` （这里的 component 实际上是组件的实例）返回的是一个type，即：`type componentType` = `InstanceType<typeof componetInstance>` 。那么 conponentInstance 是组件的实例，而 componentType 是组件的类型
 
 vuex中保存的数据是放置在内容中的，一旦刷新页面，那么就会消失。所以需要对vuex中的内容做持久化，可以选择的方案是存入localStorage中。并且在 mian.js（即：调用createApp的文件），调用一个将localStorage中的对应数据存入vuex的Action
 
