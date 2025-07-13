@@ -4646,7 +4646,10 @@ type InstanceType<
     : any;
 ```
 
-> 👀 讲解略
+> 👀 实现原理讲解略。
+
+> [!WARNING]
+> 值得补充的是：这个 `InstanceType` 在偏函数式编程的 Hook 时代用的比较少，不过 Vue3 中用于获得组件类型 `InstanceType<typeof Component>` ，不过值得注意的是：这是 TS 的 API，不是 Vue3 的 API。此外，经过实验 Element Plus `<el-form>` 中的内置类型 `FormInstance` 和 `InstanceType<typeof ElForm>` 是等价的，算是语法糖吧
 
 #### ThisParameterType
 
@@ -7056,6 +7059,8 @@ type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 ##### GetOptionals 实现
 
+> 👀 根据视频的说法：这个类型体操非常经典，且在面试中考过不少次
+
 ```ts
 type GetOptionals<T> = {
   [P in keyof T as T[P] extends Required<T>[P] ? never : P]: T[P]
@@ -7063,6 +7068,7 @@ type GetOptionals<T> = {
 ```
 
 > ⚠️ 这里用到了 `as` 运算符做重映射，这个有所遗忘，但是 `as` 还是挺重要的，值得注意。
+> 这里除了使用 `as` 重映射，从而开启筛选，也利用了 可选成员 `OptionalT` 类型为 `T | undefined` 的特性，导致 ` OptionalT extends Required<OptionalT>` 一定不成立，从而将非可选成员映射为 `never` ，从而起到筛选作用
 
 ###### 最终效果
 
