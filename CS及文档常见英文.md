@@ -1615,12 +1615,44 @@
 - `quasi-` ：准的，类似的
 
   <img src="https://s2.loli.net/2024/12/06/YDhadEMJRs4SWrT.png" alt="image-20241206135114843" style="zoom:50%;" />
-  
+
 - `sur-` ：在...之上、超越
 
   > 具体可见 Gemini 的介绍 https://aistudio.google.com/prompts/1SIcZZlg4cieytfvpYaAU8lNBnE93EsiN
 
   surreal ：超现实
+
+- `con-` ：
+
+  > ###### “con-”前缀的主要含义
+  >
+  > <font color=dodgerBlue>“con-”前缀在单词中主要有两种功能：</font>
+  >
+  > 1. **表示“共同、一起” (with, together)**：<font color=red>这是最常见的意思</font>
+  >    - **Connect** （连接）：将事物联系**在一起**。
+  >    - **Congregate** （聚集）：人群聚集**在一起**。
+  >    - **Combine**（结合）：将多个事物组合**在一起**。
+  >    - **Convene**（召集）：为了某个目的走到**一起**。
+  > 2. **表示 “彻底、完全”（作为强调）**: <font color=dodgerBlue>有时</font>，<font color=lightSeaGreen>“con-” 不直接表示 “一起” ，而是用来加强词根的语气</font>，可以理解为 “彻底地” ( thoroughly )。
+  >    - **Consolidate** （巩固）：**彻底**变得坚固。
+  >    - **Confirm** （确认）：**彻底**使其坚定，即证实。
+  >    - **Conclude** （结束、断定）：**彻底**地关闭或了结一件事。
+  >    - **Convince** （说服）：**彻底**地征服（思想上），即使人信服。
+  >
+  > ###### “con-”前缀的拼写变体
+  >
+  > 为了使发音更加顺畅，“con-” 在与不同的字母开头的词根结合时，其拼写会发生相应的变化，这种现象被称为 “同化” ( assimilation )。
+  >
+  > - **com-**: 通常用在字母 **b, m, p** 前。
+  >   - **Combine** (结合)，**Commit** (承诺)，**Compose** (组成)。
+  > - **col-**: 用在字母 **l** 前。
+  >   - **Collect** (收集)，**Collaborate** (合作)。
+  > - **cor-**: 用在字母 **r** 前。
+  >   - **Correct** (纠正)，**Correlate** (相互关联)。
+  > - **co-**: 通常用在元音字母 (**a, e, i, o, u**) 或 **h** 前。
+  >   - **Coexist** (共存)，**Cooperate** (合作)，**Cohere** (连贯)。
+  >
+  > 摘自：https://aistudio.google.com/prompts/1Krl_Wf1iOKHYQnvogj-6fwGP5FayUpSv
 
   
 
@@ -1637,6 +1669,16 @@
   > In particular, this is not a good idea, **performance-wise**, for hosting a site on a normal web server.
   >
   > 摘自：[GitHub - vite-plugin-singlefile](https://github.com/richardtallent/vite-plugin-singlefile)
+  
+- `-ate` ：
+
+  > “-ate” 后缀主要有三种功能：构成动词、构成形容词，以及构成名词。
+  >
+  > - 构成动词 ( Verb-forming Suffix ) ：这是 "-ate" 最主要、最核心的功能。它通常加在名词或形容词之后，表示 “使成为…” 、“引起…活动” 或 “做…动作”。
+  > - 构成形容词 (Adjective-forming Suffix) ：表示 “具有…性质的” 或 “充满…的” 。
+  > - 构成名词 (Noun-forming Suffix) ：指代一类人或事物，或者表示某种职位、身份、化学物质等
+  >
+  > 摘自：https://aistudio.google.com/prompts/1Krl_Wf1iOKHYQnvogj-6fwGP5FayUpSv
 
 
 

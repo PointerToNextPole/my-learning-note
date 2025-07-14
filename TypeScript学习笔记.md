@@ -4648,8 +4648,12 @@ type InstanceType<
 
 > 👀 实现原理讲解略。
 
-> [!WARNING]
-> 值得补充的是：这个 `InstanceType` 在偏函数式编程的 Hook 时代用的比较少，不过 Vue3 中用于获得组件类型 `InstanceType<typeof Component>` ，不过值得注意的是：这是 TS 的 API，不是 Vue3 的 API。此外，经过实验 Element Plus `<el-form>` 中的内置类型 `FormInstance` 和 `InstanceType<typeof ElForm>` 是等价的，算是语法糖吧
+> [!NOTE]
+> 值得补充的是：这个 `InstanceType` 在偏函数式编程的 Hook 时代用的比较少，不过 Vue3 中用于获得组件类型 `InstanceType<typeof Component>` ，不过值得注意的是：这是 TS 的 API，不是 Vue3 的 API。
+> 
+> 看 [如何获取组件的类型【渡一教育】](https://www.bilibili.com/video/BV1AKNWzNEuF) 可以获知：`typeof Component` 获得的是 “组件配置对象的类型”，而 `InstanceType<typeof Component>` 获得的是才是 “组件实例的类型”，在 Vue 中 “组件配置对象” 是用来生成 ”组件实例“ 的
+> 
+> 此外，经过实验 Element Plus `<el-form>` 中的内置类型 `FormInstance` 和 `InstanceType<typeof ElForm>` 是等价的，算是语法糖吧
 
 #### ThisParameterType
 
