@@ -2060,6 +2060,10 @@ reflog 的意思为 ref + log。
 
 摘自：[工作流一目了然，看小姐姐用动图展示10大Git命令](https://zhuanlan.zhihu.com/p/132573100)
 
+> 👀 通过 `git reflog show branchName` 可以获知一个分支是从哪个分支 fork 出来的，只需要看它最下面一条记录即可知道，一般会写着 `branch: Created from ...`
+>
+> 学习自：https://g.co/gemini/share/aab6784ce6dc 。另外，感觉 Gemini 回答的 “通过图形化日志工具” ，感觉并不靠谱，不论是使用 `git log --graph` ，还是使用 Webstorm 的 Git GUI 和 GitLens 都不是很直观的一下子知道结果，个人感觉还是 `git reflog` 更好
+
 
 
 #### git read-tree
