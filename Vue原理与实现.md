@@ -3621,3 +3621,27 @@ function updateChildren(parentElm, oldCh, newCh) {
 ```
 
 摘自：[15张图，20分钟吃透Diff算法核心原理，我说的！！！](https://juejin.cn/post/6994959998283907102)
+
+
+
+### Vapor
+
+##### 《Vue Vapor真的没有diff算法了吗？》笔记
+
+**Vapor并不是简单粗暴地抛弃了所有diff算法，而是做了精细化的场景区分。**
+
+- 在90%的常规场景下，通过编译时优化实现了 “无diff ” 更新
+- 在复杂的列表场景下，保留了成熟稳定的 diff 算法
+
+###### 对比总结
+
+用一个表格来总结：
+
+| 更新场景 | Vue 3.5        | Vapor 模式     |
+| -------- | -------------- | -------------- |
+| 文本绑定 | 虚拟DOM + diff | 直接 DOM 更新  |
+| 属性绑定 | 虚拟DOM + diff | 直接 DOM 更新  |
+| 条件渲染 | 虚拟DOM + diff | 简单替换       |
+| 列表渲染 | 虚拟DOM + diff | **依然是diff** |
+
+摘自：[Vue Vapor真的没有diff算法了吗？](https://juejin.cn/post/7527202467608887338)
