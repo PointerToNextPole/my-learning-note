@@ -2610,3 +2610,11 @@
    > But the modern approach goes beyond just replacing your HTTP library. You get **sophisticated** timeout and cancellation support built-in:
    >
    > 摘自：[Modern Node.js Patterns for 2025](https://kashw1n.com/blog/nodejs-2025/)
+   
+- **tribal** ：部落
+   **tribal knowledge** ：部落知识
+   > Tribal knowledge refers to **the undocumented, informal expertise and insights that exist within a specific group or organization**. It's often passed down through word-of-mouth, observation, or shared experiences, rather than through formal documentation or training. This knowledge can be valuable but also poses risks if not properly captured and shared.
+   > 来源：Google 搜索自带 AI 概览
+   > 
+   > 这个问题组成 tribal knowledge（部落知识）问题，也就是每一个部落都拥有自己的知识，都不写下来，只能通过口口相传，基本上不可能被传播到部落以外。每一个部落都跟其它部落不一样，你不能举一反三。这是很多公司在快速增长过程中会遇到的痛点。
+   > 摘自：[如何看待著名程序员 DHH 宣布不再使用 TypeScript 改回 JavaScript？ - Cat Chen的回答 - 知乎](https://www.zhihu.com/question/623259697/answer/3222950408)

@@ -11016,7 +11016,7 @@ console.log(window.getComputedStyle(div).getPropertyValue('height')); // 200px
 >
 >       <img src="https://s2.loli.net/2024/08/01/EYrfpB3JdeRA4t5.png" alt="image-20240801233715863" style="zoom:40%;" />
 >
->    4. 另外，还有 `getBoundingClientRect` ，返回的 rect 对象中的 `width`、`height` 等属性<font color=fuchsia>才是真正的可见尺寸</font>。哪怕是通过 Layout Tree 中获取的尺寸也未必是准确的，有一种特例：通过 `transform: scale()` 之类转换过的元素，通过 Layout Tree 得到的也未必是可见尺寸。而通过 `getBoundingClientRect` 获得的是 Layout Tree 再叠加上各种变换后的尺寸。
+>    4. 另外，还有 `getBoundingClientRect` ，返回的 rect 对象中的 `width`、`height` 等属性<font color=fuchsia>才是真正的可见尺寸</font>。<font color=fuchsia>**因为，哪怕是通过 Layout Tree 中获取的尺寸也未必是准确的**</font>，有一种特例：通过 `transform: scale()` 之类转换过的元素，通过 Layout Tree 得到的也未必是可见尺寸。而通过 `getBoundingClientRect` 获得的是 Layout Tree 再叠加上各种变换后的尺寸。
 >
 >       <img src="https://s2.loli.net/2024/08/01/fs4K26SWxANkFPM.png" alt="image-20240801234723198" style="zoom:40%;" />
 >

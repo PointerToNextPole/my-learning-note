@@ -4653,7 +4653,7 @@ type InstanceType<
 >
 > 看 [如何获取组件的类型【渡一教育】](https://www.bilibili.com/video/BV1AKNWzNEuF) 可以获知：`typeof Component` 获得的是 “组件配置对象的类型”，而 `InstanceType<typeof Component>` 获得的是才是 “组件实例的类型”，在 Vue 中 “组件配置对象” 是用来生成 ”组件实例“ 的
 >
-> > 💡 关于 “组件配置对象” 之前并没有听过，便问了下 Gemini，到的如下回复 https://g.co/gemini/share/1ebdfbe49704 ，这里做下总结：
+> > 💡 关于 “组件配置对象” 概念有点遗忘，没什么印象了（👀 现在想起来这个算是 Vue 的基础了，就是在写 Vue 组件时的定义就是 “组件配置对象” ，通过它可以生成 “组件实例”，类似于 “类” 和 “对象”。另外，值得注意的是：比如 Options API 中，`data` 、`methods` 与之相关的也是 “组件配置对象” ，和 “组件实例” 没有直接联系，所以 `this.a = 1` ，改的是 “组件实例” 的数据，而不是 `data` 里面的 `a` ，这个要注意区分），便问了下 Gemini，到的如下回复 https://g.co/gemini/share/1ebdfbe49704 ，这里做下总结：
 > >
 > > > **组件配置对象**是一个<font color=red>纯粹的 JavaScript 对象</font>，它的作用是<font color=red>**定义**一个组件应该如何工作</font>。它就<font color=lightSeaGreen>像一份详细的建筑蓝图，描述了组件的方方面面</font>。
 > > >

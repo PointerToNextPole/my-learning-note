@@ -10,6 +10,8 @@
 
   另外，还有 [network选项卡【渡一教育】](https://www.bilibili.com/video/BV1Dy4y1N734) ，虽然新学到的东西并不多，但是还是感觉 Initator 和 Timing 选项卡中的内容是之前完全没注意到的，而且有点意思；尤其是 Timing
   
+  > 👀  25/07/20 [使用chrome调试工具解决问题【渡一教育】](https://www.bilibili.com/video/BV18tM7ziEYv) 感觉也不错，其中有些选项卡比如 Layout 、DOM Breakpoints 之前几乎没什么用过，也不清楚怎么使用，有必要重新看下
+  
 - [67 Weird Debugging Tricks Your Browser Doesn't Want You to Know](https://alan.norbauer.com/articles/browser-debugging-tricks)
 
 
