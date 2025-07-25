@@ -1,6 +1,9 @@
 # React 学习笔记
 
+#### 一些资料
 
+- react.dev 官方文档
+- [The History of React Through Code](https://playfulprogramming.com/posts/react-history-through-code) 如题目所述，介绍了 React 的历史与演进；另外看的翻译版 [前端早读课 - 通过代码看 React 的历史](https://mp.weixin.qq.com/s/_iYlKg36UyhFPJDbmBdX_A)
 
 ## 官方文档阅读笔记
 
