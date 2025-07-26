@@ -4250,6 +4250,9 @@ type RemoveIndexSignature<Obj extends Record<string, any>> = {
 
 也同样是根据它的特性：<font color=FF0000 size=4>**keyof 只能拿到 class 的 public 索引，private 和 protected 的索引会被忽略**</font>。
 
+> [!NOTE]
+> 该问题在 [Vue中的类型问题【渡一教育】](https://bilibili.com/video/BV1xpuBzsEUc) 中也有提及。这也说明了 OOP 范式在 Vue + TS 的项目中并不完全兼容，要慎重使用
+
 比如这样一个 class：
 
 ```typescript
