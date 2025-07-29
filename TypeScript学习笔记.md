@@ -6257,6 +6257,36 @@ const greenNormalized = palette.green.toUpperCase();
 
 摘自：[TS doc - handbook - release-notes - ts4.9 # The `satisfies` Operator](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator)
 
+##### 《别再乱用 as 了，TypeScript 的 satisfies 更香！》笔记
+
+` satisfies` 只在编译期检查，运行时没有任何影响。
+
+###### satisfies 背后的原理
+
+- 检查对象结构是否完全匹配目标类型
+- 保留最窄的类型推断（比如字面量）
+- 检查多余属性
+- 只在必要时才宽泛类型
+
+总之：比 as 更智能、更安全！
+
+###### satisfies vs as，什么时候用？
+
+- as：你100%确定类型，TS 实在推断不出来时用
+- satisfies：想要类型校验 + 推断双保险时用
+
+###### 更多使用场景
+
+`satisfies` 可以用于函数和联合交叉类型
+
+```ts
+const greet = (name: string) => `Hello, ${name}` satisfies (name: string) => string;
+
+type Color = "red" | "blue";  
+const fav = "red" satisfies Color; // ✅
+```
+
+摘自：[别再乱用 as 了，TypeScript 的 satisfies 更香！](https://mp.weixin.qq.com/s/qXqWGc72K92PU-gwmQeX2g)
 
 
 #### literal types 字面量类型
