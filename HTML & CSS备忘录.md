@@ -8460,7 +8460,18 @@ width 属性用于设置元素的宽度。width 默认设置内容区域的宽�
 
 摘自：[MDN - `<length>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/length)
 
-> 💡 知乎上有这样一个问题：[css样式的百分比都相对于谁？ - 知乎](https://www.zhihu.com/question/36079531) 感觉很有价值，推荐阅读
+> 💡 补充
+> 
+> 知乎上有这样一个问题：[css样式的百分比都相对于谁？ - 知乎](https://www.zhihu.com/question/36079531) 感觉很有价值，推荐阅读
+> 
+> 另外，只看到这里有介绍 vh 的地方，所以在这里补充下：
+> > - `svh` ( Small Viewport Height ) ：**最小视口高度**。对应于地址栏和工具栏完全展开时的可见高度。
+> > - `lvh` ( Large Viewport Height )：**最大视口高度**。对应于地址栏和工具栏完全收起时的高度（这其实就等同于旧的 `100vh`）。
+> > - `dvh` (Dynamic Viewport Height) ：**动态视口高度**。这是最智能、最实用的单位！它的值会随着浏览器UI元素（地址栏）的出现和消失而动态改变。
+>> 
+>> 摘自：[别再用 100vh 了！移动端视口高度的终极解决方案](https://juejin.cn/post/7520548278338322483)
+>
+> 这里主要是 dvh 先前似乎没怎么听过
 
 #### `<color>`
 

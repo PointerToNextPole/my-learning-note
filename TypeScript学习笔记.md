@@ -7771,6 +7771,47 @@ function handleValue(val: All) {
 
 
 
+#### `import def`
+
+TS 5.9 引入的特性，基于 ECMAScript 的 [defer-import-eval 提案](https://github.com/tc39/proposal-defer-import-eval/) 实现了一种 “懒加载模块” 的方式。
+
+```ts
+import defer * as logger from './logger.js';
+
+console.log('程序开始');
+
+// logger.js 在这一刻才真正加载并执行
+logger.log('这是一条日志');
+```
+
+这意味着：模块的副作用代码（比如在顶层输出日志、读取文件等）不会立即执行，只有在访问它的某个成员时才触发。这对「有副作用但不一定用到」的工具模块尤其友好。
+
+###### 使用限制
+
+- 只能在 `--module esnext` 下启用
+- <font color=red>仅支持命名空间形式</font>：`import defer * as foo`，不支持默认导入
+
+###### 示例
+
+```ts
+if (process.env.NODE_ENV === 'development') {
+  const { inspect } = await import('./debug-tools.js');
+  inspect(data);
+}
+```
+
+可以换成更清爽的写法：
+
+```ts
+import defer * as debugTools from './debug-tools.js';
+
+if (process.env.NODE_ENV === 'development') {
+  debugTools.inspect(data);
+}
+```
+
+学习自：[TypeScript 超实用的新功能来了！](https://mp.weixin.qq.com/s/ARu57KR9ulS0h0-zLtzy2w)
+
 
 
 #### Tripe-slash Directives
