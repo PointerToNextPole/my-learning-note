@@ -836,7 +836,9 @@ normal 模式键入 `:wq!`，显示如下：
 
 #### git-filter-repo
 
-> 🔗 [git-filter-repo](https://github.com/newren/git-filter-repo)
+> 🔗 仓库地址 [git-filter-repo](https://github.com/newren/git-filter-repo)
+> 
+> 👀 相关实践，可以看下 [🚀🚀🚀 pnpm 实践：挑战将前后端项目合并在 monorepo 项目并保留历史提交信息](https://juejin.cn/post/7504498842211139638) 
 
 ##### 官方仓库介绍
 

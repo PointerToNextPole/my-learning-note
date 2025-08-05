@@ -3262,7 +3262,30 @@ JSON.stringify(value[, replacer [, space]])
 
 ##### JSON.stringify() 将值转换为相应的 JSON 格式
 
-- <font color=FF0000>转换值如果有 toJSON() 方法，该方法定义什么值将被序列化</font>
+- <font color=fuchsia>转换值如果有 toJSON() 方法，该方法定义什么值将被序列化</font>
+  > 💡 25/08/05 这个一点印象都没有了。另外，可以看下相关的代码：
+  >
+  > ```js
+  > const target = {
+  >   toJSON() {
+  >     return 'hello'
+  >   }
+  > }
+  > const proxy = new Proxy(
+  >   target,
+  >   {
+  >     get(target, prop) {
+  >       console.log('get called');
+  >       return Reflect.get(target, prop);
+  >     }
+  >   }
+  > )
+  > 
+  > const res = JSON.stringify(proxy); // get called
+  > console.log(res); // "hello"
+  > ```
+  >
+  > 学习自：[Proxy 有哪些东西是无法拦截的？深入解释 Reflect 与陷阱盲区](https://juejin.cn/post/7519356060715270194)
 - **非数组对象的属性** <font color=FF0000>不能保证以特定的顺序</font>出现在序列化后的字符串中。
 - **布尔值、数字、字符串的包装对象** 在序列化过程中会自动转换成对应的原始值。
 - **undefined、任意的函数 以及 symbol 值**，在序列化过程中会被忽略（出现在非数组对象的属性值中时）或 被转换成 null（出现在数组中时）。函数、undefined 被 **单独转换** 时，会返回 undefined。
@@ -11002,7 +11025,7 @@ console.log(window.getComputedStyle(div).getPropertyValue('height')); // 200px
 > 1. 如果加上 padding 和 border，元素的可视区域将和 width / height 不一致
 > 2. 弹性盒可能会拉伸和收缩，取 width / height 未必准确
 >
-> 所以建议<font color=fuchsia>通过 Layout Tree</font> 从而更加准确地获取<font color=fuchsia>元素的几何信息</font>。有好几种方法，如下：
+> 所以建议<font color=fuchsia>通过 Layout Tree</font>（布局树） 从而更加准确地获取<font color=fuchsia>元素的几何信息</font>。有好几种方法，如下：
 >
 > 1. 使用 client 家族，包含 `clientWidth` 和 `clientHeight` ，它读取的是 <font color=red>元素的内容区域和 padding 区域</font>
 >
