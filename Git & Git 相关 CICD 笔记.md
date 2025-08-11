@@ -1328,6 +1328,78 @@ Remove only files ignored by Git. This may be useful to rebuild everything from 
 
 // TODO 可以参考： [Git Worktree：解决分支依赖冲突的问题](https://zhuanlan.zhihu.com/p/41006726)
 
+##### 《【第3568期】使用 Git Worktree 进行开发》笔记
+
+经常会遇到这样的情况：一边要开发新功能，一边还要修复一个 bug。这种情况下管理代码会变得比较棘手，尤其是当功能开发和 bug 修复的代码有所重叠时；这时候可以使用 Git Worktree。
+
+Git Worktree 是 Git 的一个不太为人所知的功能，<font color=red>它允许你同时 checkout 同一个仓库的多个分支</font>。也就是说，<font color=red>**可以同时处理一个功能分支和一个 bug 修复分支**</font>，无需暂存改动或创建临时提交。
+
+###### Git Worktree 使用
+
+```sh
+git worktree add ../bugfix-branch bugfix-branch
+```
+
+这条命令会在 `../bugfix-branch` 目录下创建一个新的工作区，并检出 `bugfix-branch` 分支。你可以在这个新目录里独立工作，互不影响当前分支。
+
+也可以基于某个特定的提交 ( commit ) 或标签 ( tag ) 创建工作区，而不仅限于已有分支：
+
+```sh
+git worktree add ../hotfix v1.2.3
+```
+
+这会在一个新的工作区中 checkout 标签 `v1.2.3`，可以查看或修改文件，而不必切换主工作目录里的分支。
+
+如果想移除一个工作区，可以用：
+
+```sh
+git worktree remove ../bugfix-branch
+```
+
+你也可以手动删除该文件夹：
+
+```sh
+rm -rf ../bugfix-branch
+```
+
+但如果是手动删除的，Git 还是会把它记作一个存在的 worktree，这时你需要执行清理：
+
+```sh
+git worktree prune
+```
+
+或者配置 Git 自动清理无效的工作区：
+
+```sh
+git config worktree.prune true
+```
+
+如果你喜欢使用图形界面，macOS 上的 Fork 这类工具也支持 Git Worktree。你可以通过界面方便地管理多个工作区，无需打开终端。
+
+###### 注意事项
+
+虽然 Git Worktree 功能强大，但在使用时也有一些限制和风险：
+
+1、不能在多个 worktree 中同时切换到相同的分支：Git 不允许你在两个工作区中同时检出同一个分支，这样做容易引起混乱。
+
+2、修改同一个文件时需小心冲突：如果在不同工作区同时修改了相同文件，合并时可能产生冲突。因此建议尽量避免在多个工作区中编辑同一文件。
+
+3、手动删除目录后需显式清理引用：如果你只是用 `rm -rf` 删除目录而没有运行 `git worktree prune`，Git 仍会认为这个工作区存在，可能导致状态异常。
+
+4、部分 Git 工具对 Worktree 支持不佳：一些图形化工具（例如旧版本的 SourceTree）可能不完全支持 Worktree，使用时需注意。推荐使用如 Fork 等工具。
+
+##### 进阶应用场景
+
+Git Worktree 不只是用来切换分支这么简单，它在更复杂的工作流中也非常实用：
+
+1、与 Monorepo 架构结合：对于使用 Monorepo 的团队，可以通过多个 Worktree 分别检出各模块分支，独立构建与测试，避免干扰。
+
+2、CI/CD 构建并行优化：在持续集成环境中，可以通过 Worktree 检出多个分支并并行执行构建、测试任务，提高资源利用率。
+
+3、与 Git Hooks 联动：配合 post-checkout、post-merge 等 Git Hook，可以在新建 Worktree 时自动运行初始化任务，比如安装依赖或运行 Linter。
+
+学习自：[【第3568期】使用 Git Worktree 进行开发](https://mp.weixin.qq.com/s/uW11gfTOSk_Q5783NcXhXQ)
+
 
 
 #### git add
