@@ -23,6 +23,8 @@
 - **addon** ：插件
 
    > node-gyp is a cross-platform command-line tool written in Node.js for compiling native addon modules for Node.js
+   >
+   > 摘自：[GitHub - node-gyp - README](https://github.com/nodejs/node-gyp)
 
 - **on the fly** ：即时，在运行时（热更新）
 
@@ -1504,6 +1506,14 @@
   > 摘自：[Gemini Code Assist: AI-first coding in your natural language](https://codeassist.google/)
   
 - **dongle** ：（电子）适配器
+
+- **raster** ：光栅、栅格
+
+  **rasterization** ：光栅化
+
+- **compositor** ：合成器
+
+  **compositor thread** ：合成线程、合成器线程
 
 ***
 
