@@ -2443,12 +2443,18 @@ type res2 = isTwo<2>
 
 <font color=fuchsia>**如何提取类型的一部分呢？答案是 infer**</font>
 
-> 💡 补充
+> [!TIP]
 >
-> infer 关键字，可以<font color=FF0000>推断一个类型变量</font>，<font color=FF0000>高效地**对类型进行「模式匹配」**</font> 。但是，这个（模式匹配出的）<font color=FF0000>**类型变量只能在 true 的分支中使用**</font>。
+> > `infer` 关键字，可以<font color=FF0000>推断一个类型变量</font>，<font color=FF0000>高效地**对类型进行「模式匹配」**</font> 。但是，这个（模式匹配出的）<font color=FF0000>**类型变量只能在 true 的分支中使用**</font>。
+> >
+> > 学习自：[白话typescript中的【extends】和【infer】](https://juejin.cn/post/6844904146877808653)
 > 
-> 学习自：[白话typescript中的【extends】和【infer】](https://juejin.cn/post/6844904146877808653)
-> 
+> > infer = 类型模式匹配 + 提取
+> >
+> > `infer` 的意思是：我不知道这个类型具体是什么，但 TypeScript 你帮我推断出来，并把它存到一个变量里。
+> > 
+> > 摘自：[3 条规则，带你吃透 TypeScript 高级类型](https://mp.weixin.qq.com/s/Zh2YJIdeH4uV1h0YrCtZXw)
+>
 > 另外，infer 在官方文档中也有介绍，也做了笔记；见：[[#Conditional Types#infer]]
 
 比如提取元组类型的第一个元素：
@@ -3768,7 +3774,7 @@ type Fibonacci<Num extends number> = FibonacciLoop<[1], [], [], Num>;
 
 当 <font color=FF0000>类型参数为联合类型</font>，并且在 <font color=fuchsia>**条件类型**</font> （ 👀 即 `extends ? :` 。另外，这个很重要，下面 [[#IsUnion]] 中会用到这个特性 ）左边直接引用该类型参数的时候：<font color=FF0000>TypeScript 会把 **每一个元素单独传入来做类型运算，最后再合并成联合类型**</font>，这种语法叫做「分布式条件类型」。
 
-> 💡 补充
+> [!TIP]
 >
 > > TS 的这种分配条件规则，<font color=dodgerBlue>可以用集合的分配率来很好地解释</font>：$(B\cup C)\cap A = (B\cap A)\cup (C\cap A)$。我们可以把传入的联合类型看成是公式中的 $(B \cup C)$ ，$A$ 为 `extends` 后面的类型，根据分配率扩展后，最终的结果是 `B extends A ? X : Y | C extends A ？X : Y` 。
 > >
@@ -3781,6 +3787,8 @@ type Fibonacci<Num extends number> = FibonacciLoop<[1], [], [], Num>;
 > > ```
 > >
 > > 摘自：[从集合论的角度理解 TypeScript # 理解TS类型运算](https://juejin.cn/post/7264549320362934309#heading-8)
+> 
+> 👀 上面这种具有分发特性的类型被称为 “裸类型”，相关可见 [[#裸类型]]，如果不想要分发的特性，只需要打破它的 “裸” 状态即可，这也就是上面 `isTwo<[1 | 2]>`所做的
 
 比如这样一个联合类型：
 
@@ -6045,7 +6053,35 @@ Typically, distributivity is the desired behavior（期望的行为）. <font co
 
 摘自：[TS handbook - Conditional Types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html)
 
+###### 裸类型
 
+此外，在文章 [3 条规则，带你吃透 TypeScript 高级类型](https://mp.weixin.qq.com/s/Zh2YJIdeH4uV1h0YrCtZXw) 中出现了 “裸类型” ( naked type ) 概念，
+
+> 当条件类型的参数是裸类型 ( naked type ) 时，TypeScript 会对联合类型逐个分发处理。
+
+并没有听过 naked type ，便搜了下 TS 官方文档，仅在 [TS doc - handbook - release note - ts 2.8 # Distributive conditional types](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html#distributive-conditional-types) 中找到这段话：
+
+> Conditional types in which the checked type is a <font color=red>naked type</font> parameter are called _distributive conditional types_. Distributive conditional types are automatically distributed over union types during instantiation. For example, an instantiation of `T extends U ? X : Y` with the type argument `A | B | C` for `T` is resolved as `(A extends U ? X : Y) | (B extends U ? X : Y) | (C extends U ? X : Y)`.
+
+此外，根据 https://g.co/gemini/share/da19fc271e64 中的说法，裸类型并非是术语：
+
+> 需要明确的是，**“裸类型”并不是 TypeScript 官方文档中的术语**，而是社区中为了方便描述一种特定现象而产生的俗称。它专门用于描述在 **条件类型 (Conditional Types)** 中的一种行为。
+> 
+> ***
+> 
+> ###### 核心概念：什么是“裸类型”？
+>
+> 在 TypeScript 的条件类型 `T extends U ? X : Y` 中，如果 `extends` 关键字左边的检查类型 `T` **是一个纯粹的、没有被任何其他类型（如数组、元组、对象、函数等）包裹的泛型参数**，那么我们就称这个 `T` 是一个“裸类型参数” (Naked Type Parameter)。
+>
+> 当一个条件类型中使用了裸类型参数时，该条件类型就会变成 **分发条件类型 (Distributive Conditional Type)**。
+>
+> ***
+> 
+> ###### 如何阻止分发行为？
+>
+> 如果我们不希望这种分发行为发生，该怎么办？答案很简单：**让泛型参数不再“裸露”。**
+>
+> 我们只需要用其他类型（通常是元组 `[]`）将 `extends` 两边的泛型参数包裹起来即可
 
 #### Mapped Types
 
