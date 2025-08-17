@@ -1514,6 +1514,10 @@
 - **compositor** ：合成器
 
   **compositor thread** ：合成线程、合成器线程
+  
+- **scavenge** ：搜寻
+
+  > 👀 V8 Scavenger GC 算法
 
 ***
 

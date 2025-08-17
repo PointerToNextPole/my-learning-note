@@ -100,7 +100,8 @@
 
 JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，引用数据类型存在 *堆* 中**</font>（ 👀 引用类型的内容 存在「堆」中，同时，<font color=FF0000>***栈*** 中存储堆内的地址的引用</font>），所以 **讨论 JavaScript 的垃圾回收，即讨论其 *栈* 中数据的回收，以及 *堆* 中数据的回收**。
 
-> 💡 根据 [哪些数据在堆上，哪些数据在栈上？【渡一教育】](https://www.bilibili.com/video/BV1aTcdezEd5) 中的说法：
+>[!TIP] 
+> 根据 [哪些数据在堆上，哪些数据在栈上？【渡一教育】](https://www.bilibili.com/video/BV1aTcdezEd5) 中的说法：
 >
 > 栈中保存的是：变量（包含原始类型和（对象的）地址）、参数（与“变量”类似），堆上保存的是对象的内容
 
@@ -126,7 +127,7 @@ JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，
 
 <font color=FF0000>***新生代*** 用于 **存放生存时间短的对象**，大多数新创建的小的对象都会被分配到该区域，该区域的垃圾回收会比较频繁</font>。
 
-<font color=dodgerBlue>在 ***新生代*** 中</font>，引擎使用 Scavenge 算法 ( https://v8.dev/blog/trash-talk ) 进行垃圾回收，<font color=fuchsia>即上面提到的 ***复制算法***</font>。参见 [[#V8 GC#新生代]]
+<font color=dodgerBlue>在 ***新生代*** 中</font>，引擎使用 Scavenger 算法 ( https://v8.dev/blog/trash-talk ) 进行垃圾回收，<font color=fuchsia>即上面提到的 ***复制算法***</font>。参见 [[#V8 GC#新生代]]
 
 <font color=fuchsia>其将 ***新生代*** 空间对半分为 ***from-space*** 和 ***to-space*** 两个区域</font>。新创建的对象都被存放到 ***from-space*** ，<font color=red>当空间快被写满时触发垃圾回收</font>。先对 ***from-space*** 中的对象进行标记，完成后将标记对象复制到 ***to-space*** 的一端，然后将两个区域角色反转，就完成了回收操作
 
@@ -138,6 +139,7 @@ JavaScript 的 <font color=FF0000 size=4>**原始数据类型存在 *栈* 中，
 
 - 即<font color=FF0000>一些 **大的对象** 会被直接分配到老生代空间</font>
 - <font color=fuchsia>**新生代中经过 两次垃圾回收后**</font> <font color=fuchsia>**仍然存活的对象，会晋升到老生代空间**</font>
+  > 👀  该观点得到了 [Gemini 的确认](https://g.co/gemini/share/a13c57f8cd32)
 
 <font color=fuchsia>引擎在该（老生代）空间主要使用上面提到的 ***标记-压缩算法*** </font>。首先对活动对象进行标记，<font color=dodgerBlue>标记完成后</font>，<font color=fuchsia>将所有存活对象移到内存的一段，然后清理掉边界外的内存</font>。
 
