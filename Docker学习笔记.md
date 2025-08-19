@@ -652,21 +652,20 @@ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 
 - **`--link=[]`** ：添加链接到另一个容器
 
-  > 👀 补充：
-  >
+  > [!TIP]
   > `--link` 使用示例：`--link wordpressdb:mysql` 表示 WordPress 容器（ `docker run` 的最后一个参数）要连到 `wordpressdb` 容器，冒号表示该容器的别名是`mysql` 。
 
 - **`--expose=[]`** ：开放一个端口或一组端口；
 
 - **`--volume` /  `-v`** ：绑定一个卷
 
-  > 👀 补充：
+  > [!TIP]
   >
   > `-v` 使用示例：`--volume "$PWD/":/var/www/html` ，意思是：将当前目录 `$PWD` <font color=fuchsia>**映射到**</font> 容器的 `/var/www/html`（ Apache 对外访问的默认目录）。因此，<font color=fuchsia>**当前目录的任何修改，都会反映到容器里面，进而被外部访问到**</font>。
   >
   > 摘自：[阮一峰 - Docker 微服务教程](https://www.ruanyifeng.com/blog/2018/02/docker-wordpress-tutorial.html)
   >
-  > 👀 其他补充：
+  > 其他补充：
   >
   > `-v` 选项，可以将 本地代码和 docker 容器绑定起来，在本地编写项目，修改同样会反映在 docker 容器中；相当方便 ⭐️
   >
