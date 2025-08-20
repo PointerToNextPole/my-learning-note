@@ -86,7 +86,7 @@
 
 
 
-#### **markdown插入图片**
+#### markdown插入图片
 
 ##### 有两种方法
 
@@ -103,7 +103,7 @@
 
 
 
-#### **markdown插入表格**
+#### markdown插入表格
 
 <font color=FF0000>**模板如下：**</font>
 <font color=FF0000 size=4>\|</font>title1<font color=FF0000 size=4>\|</font>title2<font color=FF0000 size=4>\|</font>...<font color=FF0000 size=4>\|</font>
@@ -121,7 +121,7 @@
 
 
 
-#### **Markdown插入分割线**
+#### Markdown插入分割线
 
 使用 `***` 以产生分割线，如下：
 

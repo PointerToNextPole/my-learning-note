@@ -140,8 +140,7 @@ git mv orgin_file_name target_file_name # 使用 git 将原始文件改名为目
 # 还有 git mv -f origin_file existing_file 命令：强制重命名或移动，这个文件已经存在，将要覆盖掉
 ```
 
-> ##### 💡 补充
->
+> [!TIP]
 > 关于 `git rm` ：
 >
 > > **summary:** The git rm command is used to remove files from a Git repository.
