@@ -2649,7 +2649,7 @@ Link: <https://fonts.gstatic.com/>; rel=dns-prefetch
 <link rel="dns-prefetch" href="https://fonts.gstatic.com/">
 ```
 
-> ⚠️ 不过需要注意：<font color=FF0000>如果页面需要建立与许多第三方域的连接，则将它们 ***预先连接*** 会适得其反</font>。<font size=4>**`preconnect` 提示最好仅用于最关键的连接**</font>。对于其他的，只需使用 `<link rel="dns-prefetch">` 即可节省 ***第一步的时间** ~ **DNS 查找***
+> ⚠️ 不过需要注意：<font color=FF0000>如果页面需要建立与许多第三方域的连接，则将它们 ***预先连接*** 会适得其反</font>。<font size=4>**`preconnect` 提示最好仅用于最关键的连接**</font>。对于其他的，只需使用 `<link rel="dns-prefetch">` 即可节省 **第一步的时间** ~ **DNS 查找**
 
 摘自：[MDN - dns-prefetch](https://developer.mozilla.org/zh-CN/docs/Web/Performance/dns-prefetch)
 
