@@ -1596,7 +1596,9 @@
 | Dash (-)                             | Indicate that words around it are strongly connected as in [ twelve-year-old dog ] and [ cross-reference ] |
 | Underscore symbol (_)                | Connected two works like [ quick_sort ]. Your search results will find this pair of words either linked together (e.g., quicksort) or connected by an underscore (e.g., quick_sort). |
 
-> 👀 关于 `#` 的 number sign 的含义，一直没注意，直到见到这个句子：
+> [!TIP]
+> 
+> 关于 `#` 的 number sign 的含义，一直没注意，直到见到这个句子：
 >
 > > I actually think that this could increase the total # of developer jobs.
 > >
