@@ -852,7 +852,7 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
 
 - **`$@` ：** 获取这个执行程序的<font color=FF0000>所有参数</font>
 
-- **`$*` ：** 获取当前shell 的所有参数（注意与\$\$@区别）
+- **`$*` ：** 获取当前 shell 的所有参数（注意与 `$@` 区别）
 
 - **`$!` ：** 获取<font color=FF0000>**上一个**执行命令的**PID**</font>
 
@@ -885,7 +885,7 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
 
 >  `!$` refers to the last argument from the previous bash command.  	
 >
-> **翻译：`!$` 表示：上一条bash命令的最后一个参数**
+> 🌏 `!$` 表示：上一条bash命令的最后一个参数**
 
 摘自：[stack overflow - What does ./!\$ mean in Linux?](https://stackoverflow.com/questions/38515790/what-does-mean-in-linux)
 
