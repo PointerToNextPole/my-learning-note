@@ -316,13 +316,16 @@ const isNaN(value) {
 
 通过 `setTimeout`，在一定时间间隔内，将多次触发变成一次触发。
 
-> 👀 这里的 `fn.apply(this, arguments)` 是正常的，虽然 arguments 是一个 arr-like 。参考 [MDN - `Function.prototype.apply()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/apply) 的内容：
+> [!NOTE]
+> 
+> 这里的 `fn.apply(this, arguments)` 是正常的，虽然 `arguments` 是一个 arr-like 。参考 [MDN - `Function.prototype.apply()`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/apply) 的内容：
 >
 > > `Function` 实例的 **`apply()`** 方法会以给定的 `this` 值和作为数组（或<font color=fuchsia>**类数组对象**</font>）提供的 `arguments` 调用该函数。
 
 ```js
 const debounce = (fn, time) => {
   let timeout = null
+  /* 必须要返回一个 function 而不是箭头函数，因为箭头函数没法用 arguments */
   return function() {
     clearTimeout(timeout)
     timeout = setTimeout(() => {
