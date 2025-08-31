@@ -59,7 +59,9 @@ Axios是一个 **异步请求** 技术，即：基于XMLHttpRequest对象发起�
 
 - 使用字符串直接传递（即键值对的拼接），示例：`fooKey=fooVal&barKey=barVal`。使用 URLSearchParams / `qs.stringify()`
 
-  > 💡 使用 URLSearchParams 实现 `qs.stringify()` 
+  > [!TIP]
+  >  
+  > 使用 URLSearchParams 实现 `qs.stringify()` 
   >
   > **问了下 new Bing，截图如下：**
   >
