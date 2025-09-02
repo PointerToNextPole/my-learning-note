@@ -3263,7 +3263,8 @@ JSON.stringify(value[, replacer [, space]])
 ##### JSON.stringify() 将值转换为相应的 JSON 格式
 
 - <font color=fuchsia>转换值如果有 toJSON() 方法，该方法定义什么值将被序列化</font>
-  > 💡 25/08/05 这个一点印象都没有了。另外，可以看下相关的代码：
+  > [!TIP]
+  > 25/08/05 这个一点印象都没有了。另外，可以看下相关的代码：
   >
   > ```js
   > const target = {

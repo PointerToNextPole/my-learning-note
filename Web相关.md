@@ -334,7 +334,7 @@ HTML 为了解决上面这些问题，<font color=FF0000> **允许使用 Unicode
 | \&emsp;     |          | 一个空白位             |
 | \&nbsp;     |          | 不断行的空白           |
 
-| 符号               | 源代码     | 符号               | 源代码    | 符号               | 源代码     | 符号               | 源代码    | 符号               | 源代码     |
+| 符号                 | 源代码        | 符号                 | 源代码       | 符号                 | 源代码        | 符号                 | 源代码       | 符号                 | 源代码        |
 | ------------------ | ---------- | ------------------ | --------- | ------------------ | ---------- | ------------------ | --------- | ------------------ | ---------- |
 | <mark>**´**</mark> | \&acute;   | <mark>**©**</mark> | \&copy;   | <mark>**>**</mark> | \&gt;      | <mark>**µ**</mark> | \&micro;  | <mark>**®**</mark> | \&reg;     |
 | <mark>**&**</mark> | \&amp;     | <mark>**°**</mark> | \&deg;    | <mark>**¡**</mark> | \&iexcl;   | <mark>** **</mark> | \&nbsp;   | <mark>**»**</mark> | \&raquo;   |
@@ -350,8 +350,8 @@ HTML 为了解决上面这些问题，<font color=FF0000> **允许使用 Unicode
 | <mark>**≈**</mark> | \&asymp;   | <mark>**⁄**</mark> | \&frasl;  | <mark>**←**</mark> | \&larr;    | <mark>**∂**</mark> | \&part;   | <mark>**♠**</mark> | \&spades;  |
 | <mark>**∩**</mark> | \&cap;     | <mark>**≥**</mark> | \&ge;     | <mark>**≤**</mark> | \&le;      | <mark>**″**</mark> | \&Prime;  | <mark>**∑**</mark> | \&sum;     |
 | <mark>**♣**</mark> | \&clubs;   | <mark>**↔**</mark> | \&harr;   | <mark>**◊**</mark> | \&loz;     | <mark>**′**</mark> | \&prime;  | <mark>**↑**</mark> | \&uarr;    |
-| <mark>**↓**</mark> | \&darr;    | <mark>**♥**</mark> | \&hearts; | <mark>**−**</mark> | \&minus;   | <mark>**∏**</mark> | \&prod;   | <mark>**‍**</mark>  | \&zwj;     |
-| <mark>**♦**</mark> | \&diams;   | <mark>**∞**</mark> | \&infin;  | <mark>**≠**</mark> | \&ne;      | <mark>**√**</mark> | \&radic;  | <mark>**‌**</mark>  | \&zwnj;    |
+| <mark>**↓**</mark> | \&darr;    | <mark>**♥**</mark> | \&hearts; | <mark>**−**</mark> | \&minus;   | <mark>**∏**</mark> | \&prod;   | <mark>**‍**</mark> | \&zwj;     |
+| <mark>**♦**</mark> | \&diams;   | <mark>**∞**</mark> | \&infin;  | <mark>**≠**</mark> | \&ne;      | <mark>**√**</mark> | \&radic;  | <mark>**‌**</mark> | \&zwnj;    |
 | <mark>**≡**</mark> | \&equiv;   | <mark>**∫**</mark> | \&int;    | <mark>**‾**</mark> | \&oline;   | <mark>**→**</mark> | \&rarr;   |                    |            |
 | <mark>**α**</mark> | \&alpha;   | <mark>**η**</mark> | \&eta;    | <mark>**μ**</mark> | \&mu;      | <mark>**π**</mark> | \&pi;     | <mark>**θ**</mark> | \&theta;   |
 | <mark>**β**</mark> | \&beta;    | <mark>**γ**</mark> | \&gamma;  | <mark>**ν**</mark> | \&nu;      | <mark>**ψ**</mark> | \&psi;    | <mark>**υ**</mark> | \&upsilon; |
@@ -392,7 +392,7 @@ RFC 3986 section 2.3 <font color=dodgerBlue>未保留字符</font> (2005年1月)
 
 ##### 对保留字符的百分号编码
 
-如果一个 保留字符 在特定上下文中具有特殊含义（ 称作 "reserved purpose" ），且 URI 中必须使用该字符用于其它目的，那么该字符必须百分号编码。<font color=red>百分号编码一个保留字符</font>，<font color=dodgerBlue>**首先**</font> 需要 <font color=fuchsia>把该字符的 ASCII 的值表示为 <font size=4>**两个16进制的数字**</font></font>，<font color=dodgerBlue>**然后**</font> <font color=red>在其前面放置转义字符 ("`%`")</font> ，置入 URI 中的相应位置。（ 对于 非ASCII 字符，需要转换为 UTF-8 字节序，然后每个字节按照上述方式表示）
+如果一个 保留字符 在特定上下文中具有特殊含义（ 称作 "reserved purpose" ），且 URI 中必须使用该字符用于其它目的，那么该字符必须百分号编码。<font color=red>百分号编码一个保留字符</font>，<font color=dodgerBlue>**首先**</font> 需要 <font color=fuchsia>把该字符的 ASCII 的值表示为 <font size=4>**两个16进制的数字**</font></font>，<font color=dodgerBlue>**然后**</font> <font color=red>在其前面放置转义字符 ("`%`")</font> ，置入 URI 中的相应位置。（ <font color=red>对于 非ASCII 字符，**需要转换为 UTF-8 字节序**</font>，然后每个字节按照上述方式表示）
 
 例如，"`/`" ， 如果用作 URI 的路径成份的分界符，则是具有特殊含义的保留字符。如果该字符需要出现在 URI 一个路径成分的内部，则三字符序列 "`%2F`" 或 "`%2f`" 就用于代替原本的 "`/`" 出现在该 URI 路径成分的内部.
 
