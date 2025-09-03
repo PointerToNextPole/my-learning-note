@@ -2598,7 +2598,11 @@ The `preconnect` keyword for the **`rel` attribute of the `<link>` element** is 
 
 #### Link prerender
 
-The `prerender` keyword for the `rel` attribute of the \<link> element is a <font color=FF0000>hint to browsers that the user might need the target resource for the next navigation</font>, and <font color=FF0000>therefore the browser can likely improve the user experience by **preemptively**</font>（预先） <font color=FF0000>**fetching and processing the resource**</font> — for example, by <font color=lightSeaGreen>fetching its subresources or **performing some rendering in the background offscreen**</font>.
+> [!Warning]
+> 
+> 值得强调的是 [`rel="prerender"`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference/Attributes/rel/prerender) 已经被废弃，对应地使用 [Speculation Rules API / 推测规则 API](https://developer.mozilla.org/zh-CN/docs/Web/API/Speculation_Rules_API) 替代
+
+The `prerender` keyword for the `rel` attribute of the `<link>` element is a <font color=FF0000>hint to browsers that the user might need the target resource for the next navigation</font>, and <font color=FF0000>therefore the browser can likely improve the user experience by **preemptively**</font>（预先） <font color=FF0000>**fetching and processing the resource**</font> — for example, by <font color=lightSeaGreen>fetching its subresources or **performing some rendering in the background offscreen**</font>.
 
 摘自：[MDN US - Link types: prerender](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/prerender)
 
