@@ -13,6 +13,7 @@
   > 👀  25/07/20 [使用chrome调试工具解决问题【渡一教育】](https://www.bilibili.com/video/BV18tM7ziEYv) 感觉也不错，其中有些选项卡比如 Layout 、DOM Breakpoints 之前几乎没什么用过，也不清楚怎么使用，有必要重新看下
   
 - [67 Weird Debugging Tricks Your Browser Doesn't Want You to Know](https://alan.norbauer.com/articles/browser-debugging-tricks)
+- [面试官：一个接口使用postman这些测试很快，但是页面加载很慢怎么回事 😤😤😤](https://juejin.cn/post/7539817416609382427)
 
 
 

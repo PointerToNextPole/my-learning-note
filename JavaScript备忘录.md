@@ -13848,9 +13848,11 @@ get(target, prop, receiver) {
 
 ##### Vue3 官方文档中的补充
 
-使用 Proxy 的一个难点是 this 绑定。我们希望任何方法都绑定到这个 Proxy，而不是目标对象，这样我们也可以拦截它们。值得庆幸的是，ES6 引入了另一个名为 Reflect 的新特性，它允许我们以最小的代价消除了这个问题。
+<font color=dodgerBlue>使用 Proxy 的一个难点是 this 绑定</font>。我们<font color=red>希望任何方法都绑定到这个 Proxy，而不是目标对象</font>，这样我们也可以拦截它们。值得庆幸的是，ES6 引入了另一个名为 Reflect 的新特性，它允许我们以最小的代价消除了这个问题。
 
-摘自：[Vue3 官方文档 - 深入响应性原理](https://v3.cn.vuejs.org/guide/reactivity.html)
+> 👀 这个才是 Vue3 响应式中使用 Reflect 的最重要的原因。此外，要分清楚 代理对象 和 原始对象
+
+摘自：[Vue3 官方文档 - 深入响应性原理](https://web.archive.org/web/20220625173412/https:/v3.cn.vuejs.org/guide/reactivity.html#vue-%E5%A6%82%E4%BD%95%E8%B7%9F%E8%B8%AA%E5%8F%98%E5%8C%96)
 
 ##### CodingStartup 群群友关于 Proxy 和 Reflect 的补充
 
