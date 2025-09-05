@@ -506,8 +506,8 @@ Promise.myAllSettled = arr => {
   return new Promise((resolve, reject) => {
     arr.forEach((p, index) => {
       Promise.resolve(p)
-        .then(res => Promise.resolve(res))
-        .catch(err => Promise.resolve(err))
+        .then(res => Promise.resolve({ status: 'fulfilled', value: res }))
+        .catch(err => Promise.resolve({ status: 'rejected', reson: err }))
         .then(res => {
           ret[index] = res
           count ++

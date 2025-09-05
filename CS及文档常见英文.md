@@ -2638,3 +2638,5 @@
    > 摘自：[如何看待著名程序员 DHH 宣布不再使用 TypeScript 改回 JavaScript？ - Cat Chen的回答 - 知乎](https://www.zhihu.com/question/623259697/answer/3222950408)
    
 - **surname** ：姓氏
+- **de facto** ：事实上的
+  **de jure** ：法律上的
