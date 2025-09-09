@@ -2072,17 +2072,21 @@ doStuff({ bar: 123, common: '123' });
 
   这里的 `keyof T`、`T[Key]` 就是对 “ 类型参数 T ” 的类型运算。
 
-  > 💡 这里 `keyof` 操作符 会 <font color=FF0000>**提取出 “对象类型” 里的所有 key** 然后 <font size=4>**得到一个「联合类型」**</font></font>。
+  > [!TIP]
+  > 
+  > 这里 `keyof` 操作符 会 <font color=FF0000>**提取出 “对象类型” 里的所有 key** 然后 <font size=4>**得到一个「联合类型」**</font></font>。
   >
   > 学习自：[TypeScript 类型编程](https://segmentfault.com/a/1190000040247980)
   >
-  > 💡 另外，相当值得注意的是：在很多情况下，在 vscode 中 `keyof MyType`  的类型预览也只是 `keyof MyType` ，<font color=red>**需要加上 `& {}` 才能在预览中见到真正的类型**</font>。示例如下：
+  > 另外，相当值得注意的是：在很多情况下，在 vscode 中 `keyof MyType`  的类型预览也只是 `keyof MyType` ，<font color=red>**需要加上 `& {}` 才能在预览中见到真正的类型**</font>。示例如下：
   >
   > <img src="https://s2.loli.net/2024/10/26/8EI1Qrjv5z2ZcGb.png" alt="image-20241026235154113" style="zoom:50%;" />
   >
   > 上面的代码的含义是：取类型中所有属性名字，获得对应字面量类型的联合类型。
   >
-  > > ⚠️ 24/11/18 补充：在工作中发现把 `keyof` 的语法忘得一干二净，以至于在有对应场景的时候，完全想不起来。另外，对上面的内容做一下扩展：
+  > > [!Warning]
+  > > 
+  > > 24/11/18 补充：在工作中发现把 `keyof` 的语法忘得一干二净，以至于在有对应场景的时候，完全想不起来。另外，对上面的内容做一下扩展：
   > >
   > > ```ts
   > > type GetKeysUnion<T extends Record<string, any>> = keyof T & {}
@@ -7350,6 +7354,14 @@ type Result = String extends {} ? 1 : 2; // 1
 ```
 
 <font color=red>**`{}` 是 object 的字面量类型**</font>（👀 这点之前完全没有听过的），<font color=dodgerBlue>为什么 String 会是他的子类型</font>？在 TypeScript 中<font color=red>可以把 String 看作一个普通的对象（继承了 `{}` 这个空对象）</font>，同时有着一些独特的方法，那么在结构化类型系统的比较下，**String 会被认为是** **`{}`** **的子类型**。
+
+> [!TIP]
+> 根据 [TypeScript 有哪些值得吐槽的设计/特性/不足？ - SSUG的回答 - 知乎](
+https://www.zhihu.com/question/661605508/answer/3578350464) 的说法：
+>
+> >类型 `{}` 表示的不是没有任何属性的对象（也就是值 `{}` 的类型），它实际表示任意非空（不是 null 或 undefined） 值（也就是 `NonNullable<unknown>`）。
+> 
+> 经过实验，`({} extends NonNullable<unknown> ? true : false) & (NonNullable<unknown> extends {} ? true : false)` 为 `true` ，说明确实是
 
 从前文可知 `{}` 是 objcet 的子类型，看起来这就构建起了 `string < {} < object` 这个类型链，但实际上 `string extends object` 并不成立：
 

@@ -2640,3 +2640,4 @@
 - **surname** ：姓氏
 - **de facto** ：事实上的
   **de jure** ：法律上的
+- **escalate** ：逐步上升 / 增强 / 恶化
