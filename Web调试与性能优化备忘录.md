@@ -17,6 +17,14 @@
 
 
 
+##### 一些工具
+
+- [webpagetest](https://www.webpagetest.org/) ：模拟不同地区、网络条件下的页面加载，查看瀑布图、渲染时间线
+- [Gtmetrix](https://gtmetrix.com/) ：类似 Lighthouse，但报告更细，可看首屏截图、视频回放，方便对比优化前后效果
+- [PageSpeed Insights](https://pagespeed.web.dev/) ：网站 Web Vitals 分析工具
+
+
+
 ## 调试方法与技巧
 
 #### VS Code 调试单个 TS 文件

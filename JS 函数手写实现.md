@@ -593,9 +593,49 @@ Promise.reject = function (reason) {
 
 
 
+#### Promise 工具函数
+
+##### 顺序执行
+
+```js
+const sequencePromises = promises =>
+  promises.reduce(
+    (prev, next) => prev.then(() => next()),
+    Promise.resolve()
+  );
+```
+
+经过测试：
+
+```js
+const p1 = () => new Promise((resolve, reject) => {
+  setTimeout(() => resolve(1), 1000)
+})
+const p2 = () => new Promise((resolve, reject) => {
+  setTimeout(() => resolve(2), 2000)
+})
+const p3 = () => new Promise((resolve, reject) => {
+  setTimeout(() => resolve(3), 3000)
+})
+const promiseArr = [p1, p2, p3]
+
+console.time('test')
+sequencePromises(promiseArr)
+  .then(res => {
+    console.log(res)
+    console.timeEnd('test')
+  }).catch(e => console.log(e))
+```
+
+
+
+
+
 #### Promise 并行调度器
 
-> 💡 该功能对应的专业术语是 “p-limit” ，chatgpt 的介绍如下：
+> [!TIP]
+>
+> 该功能对应的专业术语是 “p-limit” ，chatgpt 的介绍如下：
 >
 > <img src="https://s2.loli.net/2023/04/03/qpfRs4FATjMQYSW.png" alt="image-20230403160136690" style="zoom:48%;" />
 
