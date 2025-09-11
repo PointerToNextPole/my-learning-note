@@ -1,8 +1,14 @@
-# Nginx 笔记
+# nginx 笔记
 
 
 
-### 基本概念
+##### 一些资料
+
+- [什么？2025年了发版后还要手动清浏览器缓存？](https://juejin.cn/post/7527977068417957939) ：介绍了 nginx 配置对前端浏览器缓存机制的影响，此外，给出了一份 “经过实战检验的、可以安全用于生产环境的“ Nginx 配置方案
+
+
+
+#### 基本概念
 
 ##### 反向代理
 
@@ -40,21 +46,36 @@
 
 #### macOS 环境 nginx 文件的目录
 
-- nginx安装文件目录： `/usr/local/Cellar/nginx`
-- nginx配置文件目录：  `/usr/local/etc/nginx`
-- config文件目录：  `/usr/local/etc/nginx/nginx.conf`
-- 系统hosts位置：  `/private/etc/hosts`
+- nginx 安装文件目录： `/usr/local/Cellar/nginx`
+
+  这个可以通过 `which nginx` 或者 `where nginx` 找到
+
+- nginx 配置文件目录：  `/usr/local/etc/nginx`
+  - config 文件：  `/usr/local/etc/nginx/nginx.conf`
+
+    > 这个不熟悉的情况下有点难找，在问 Gemini 2.5Pro 后得到了 [答案](https://g.co/gemini/share/e724786464dc)，不过这个不一定非要记住，在回答给了 “通过 `nginx -t` 获取配置文件” 的方法，感觉相当好用
+  
+- 系统 hosts 位置：  `/private/etc/hosts`
+
+> [!NOTE]
+>
+> 值得注意的是：Apple Silicon 芯片 Mac 的 HomeBrew 很多规则已经改了，在我现在手头这台 M4 的 Mac 上：
+>
+> - nginx 的安装地址是 `/opt/homebrew/bin/nginx`
+>
+> - nginx 配置文件夹的地址是 `/opt/homebrew/etc/nginx` 
+>   -  conf 文件的地址是 `/opt/homebrew/etc/nginx/nginx.conf`
 
 
 
 #### nginx 常用命令
 
-```bash
+```sh
 $ nginx         # 启动 nginx
 $ nginx -s quit # 快速停止 nginx
-$ nginx -V   		# 查看版本，以及配置文件地址
-$ nginx -v   		# 查看版本
-$ nginx -t      # 测试 nginx 配置，并离开（命令行中将会显示 ngnix 所在配置路径 ）
+$ nginx -V   	  # 查看版本，以及配置文件地址
+$ nginx -v   	  # 查看版本
+$ nginx -t      # 测试 nginx 配置，并离开（命令行中将会显示 ngnix 所在配置路径 ），因此可以通过该命令找到当前机器上的 nginx 配置的位置
 $ nginx -s reload | reopen | stop | quit # 重新加载配置 ⭐️ | 重启 | 快速停止 | 安全关闭 ⭐️ nginx 
 ```
 
@@ -79,14 +100,6 @@ Options:
 ```
 
 摘自：[mac下nginx的安装和配置](https://www.jianshu.com/p/026d67cc6cb1)
-
-##### `ngnix -t`
-
-```bash
-$ nginx -t
-nginx: the configuration file /usr/local/etc/nginx/nginx.conf syntax is ok
-nginx: configuration file /usr/local/etc/nginx/nginx.conf test is successful
-```
 
 
 

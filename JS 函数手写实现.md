@@ -600,12 +600,12 @@ Promise.reject = function (reason) {
 ```js
 const sequencePromises = promises =>
   promises.reduce(
-    (prev, next) => prev.then(() => next()),
+    (prev, curTask) => prev.then(curTask),
     Promise.resolve()
   );
 ```
 
-经过测试：
+###### 测试验证
 
 ```js
 const p1 = () => new Promise((resolve, reject) => {
@@ -622,12 +622,11 @@ const promiseArr = [p1, p2, p3]
 console.time('test')
 sequencePromises(promiseArr)
   .then(res => {
-    console.log(res)
     console.timeEnd('test')
   }).catch(e => console.log(e))
 ```
 
-
+经过测试：结果为 “test: 6.004s” ，约等于 1 + 2 + 3 的 6s
 
 
 
