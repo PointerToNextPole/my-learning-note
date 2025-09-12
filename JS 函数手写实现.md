@@ -630,6 +630,33 @@ sequencePromises(promiseArr)
 
 
 
+##### 可重试的 Promise
+
+```js
+const retryPromise = (promiseFn, maxAttempts, interval) => {
+  return new Promise((resolve, reject) => {
+    const attempt = (attemptNumber) => {
+      if (!attemptNumber) {
+        reject(new Error("Max attempts reached"));
+        return;
+      }
+      promiseFn()
+        .then(resolve)
+        .catch(() => {
+          setTimeout(() => {
+            attempt(attemptNumber - 1);
+          }, interval);
+        });
+    };
+    attempt(maxAttempts);
+  });
+};
+```
+
+摘自：[9 Must-Know Advanced Uses of Promises](https://blog.stackademic.com/9-must-know-advanced-uses-of-promises-a6d1ab195dfc) ，这里看的译文 [分享 9个 使用promises的技巧](https://mp.weixin.qq.com/s/MUr29XUJjAouaYrwmXvrOg)
+
+
+
 #### Promise 并行调度器
 
 > [!TIP]
