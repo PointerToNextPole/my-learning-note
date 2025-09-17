@@ -7,6 +7,8 @@
 - [Understand Django](https://www.mattlayman.com/understand-django) ：[@100gle](https://twitter.com/1oogle) [推荐](https://x.com/1oogle/status/1773376213731668129) 的开源免费电子书
 - Fluent Python / Python Cookbook 这些名声在外的书，自然不用多提
 - [怎样才能写出 Pythonic 的代码？ - 知乎](https://www.zhihu.com/question/21408921)
+- [你见过哪些令你瞠目结舌的 Python 代码技巧？ - 知乎](
+https://www.zhihu.com/question/37904398)
 - [Python语言从2.7到3.14的能力变化与演进逻辑](https://mp.weixin.qq.com/s/iRVqDjvfsilxRugG65fJNw)
 
 
