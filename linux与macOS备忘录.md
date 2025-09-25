@@ -534,6 +534,23 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 
 
 
+#### Mac 自带小工具
+
+##### Speedtest CLI 的替代品 networkQuality
+
+<img src="https://s2.loli.net/2025/09/25/3odfQG4FImBxZ9T.png" style="zoom:50%;" />
+
+学习自：https://x.com/HiTw93/status/1958323164338962491
+
+
+
+##### amphetamine 的替代品 caffeinate
+
+<img src="https://s2.loli.net/2025/09/25/bAmyM3sud8qvhZU.png" alt="image-20250925235112125" style="zoom:50%;" />
+
+学习自：https://x.com/HiTw93/status/1967371534248316961
+
+
 
 
 #### 场景与解决方法

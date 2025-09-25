@@ -194,7 +194,7 @@ Object.defineProperty(Object, 'assign', {
 
 ```js
 const cloneDeep = (target, hash = new WeakMap()) => {
-  // 对如果是基本类型，且不是 null
+  // 如果是基本类型
   if (typeof target !== 'object' || target === null) return target
   // hash 中存在的，直接返回。避免循环引用
   if (hash.has(target)) return hash.get(target)
@@ -585,6 +585,8 @@ function isPromiseLike(obj) {
 
 ##### `Promise.reject` 实现
 
+> 👀  `Promise.reject` 的实现，可以和 `Promise.resolve` 的最后一种情况（不符合 Promise 定义的）的实现作参照，辅助记忆
+
 ```js
 Promise.reject = function (reason) {
   return new Promise((resolve, reject) => reject(reason))
@@ -851,7 +853,7 @@ function bubbleSort(arr) {
 }
 ```
 
-##### 插入排序
+##### 选择排序
 
 ```js
 const selectSort = (arr) => {
@@ -864,6 +866,13 @@ const selectSort = (arr) => {
     }
     if (min != i) swap(arr, i, min);
   }
+}
+```
+
+##### 插入排序
+
+```js
+const insertionSort = arr => {
 }
 ```
 
@@ -899,7 +908,6 @@ quickSort(arr, 0, arr.length - 1)
 
 console.log(arr) // [ -1, 0, 1, 2, 3, 4 ]
 ```
-
 
 
 #### 数组转树
