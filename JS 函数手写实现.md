@@ -869,12 +869,6 @@ const selectSort = (arr) => {
 }
 ```
 
-##### 插入排序
-
-```js
-const insertionSort = arr => {
-}
-```
 
 ##### 快速排序
 
