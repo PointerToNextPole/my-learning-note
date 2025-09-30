@@ -759,7 +759,7 @@ sources 面板可以右键点击 “add soruce map”，输入 sourcemap 的 url
 
 而且，<font color=red>**这些过滤器都可以组合，只要中间加个空格就行**</font>。
 
-> ##### 💡 补充
+> [!TIP]
 >
 > 除了上面所说，还有一个 More filters 的选项，其中 “Hide extension URLs” 的选项，感觉不错
 >
@@ -776,6 +776,10 @@ sources 面板可以右键点击 “add soruce map”，输入 sourcemap 的 url
 Element 面板选中元素可以看到这个元素和它的父元素的所有事件监听器：
 
 <img src="https://s2.loli.net/2024/11/27/WCXymhda15SeH7R.png" style="zoom:45%;" />
+
+> [!warning]
+> 
+> 注意：上图中有一个 “Ancestors” 的 CheckBox ，作用是 “控制是否需要显示祖先元素监听的事件”，可以关闭它以缩小查找范围
 
 可以手动 remove。
 

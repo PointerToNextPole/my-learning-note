@@ -212,7 +212,7 @@
 
 - **recipient**：收件人（在 网络 http 场景中出现），来自：https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.7
 
-- **interface** <font size=4>*vs*</font> **port**：interface 接口，比如 后端接口；port 端口，80 端口
+- **interface** <font size=4>*vs*</font> **port**：interface 接口，port 端口，80 端口
 
 - **ship**：提供 ( verb ) 
 
