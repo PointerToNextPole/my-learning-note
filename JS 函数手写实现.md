@@ -52,7 +52,7 @@ Function.prototype.myCall = function(context, ...args) {
   }
 
   if(context === undefined || context === null) {
-    context = window
+    context = globalThis
   } else {
     context = Object(context)
   }
@@ -77,7 +77,7 @@ Function.prototype.myApply = function(context, args) {
   }
 
   if(context === undefined || context === null) {
-    context = window
+    context = globalThis
   } else {
     context = Object(context)
   }
@@ -193,41 +193,30 @@ Object.defineProperty(Object, 'assign', {
 该实现考虑到了 Symbol 为键的属性
 
 ```js
-const cloneDeep = (target, hash = new WeakMap()) => {
-  // 如果是基本类型
-  if (typeof target !== 'object' || target === null) return target
-  // hash 中存在的，直接返回。避免循环引用
-  if (hash.has(target)) return hash.get(target)
-  
-  // 对数组类型进行处理
-  const cloneTarget = Array.isArray(target) ? [] : {}
-  hash.set(target, cloneTarget)
+const isObj = (val) => val !== null && typeof val === "object";
 
-  // 对 symbol 属性处理
-  const symKeys = Object.getOwnPropertySymbols(target)
-  if (symKeys.length) {
-    symKeys.forEach(symKey => {
-      // 	由于 typeof null === 'object'，排除这种情况。
-      if (typeof target[symKey] === 'object' && target[symKey] !== null) {
-        cloneTarget[symKey] = cloneDeep(target[symKey])
-      } else {
-        cloneTarget[symKey] = target[symKey]
-      }
-    })
-  }
+const deepClone = (target, hash = new WeakMap()) => {
+  if (!isObj(target)) return target;
+  if (hash.has(target)) return hash.get(target);
+
+  const cloneTarget = Array.isArray(target) ? [] : {};
+  hash.set(target, cloneTarget);
+
+  const symKeys = Object.getOwnPropertySymbols(target);
+  symKeys.forEach((s) => {
+    cloneTarget[s] = isObj(s) ? deepClone(target[s]) : target[s];
+  });
 
   for (const i in target) {
-    // 是obj的属性才拷贝。对象原型上的属性，不进行拷贝
     if (Object.prototype.hasOwnProperty.call(target, i)) {
-      cloneTarget[i] =
-        typeof target[i] === 'object' && target[i] !== null
-        ? cloneDeep(target[i], hash)
-        : target[i]
+      cloneTarget[i] = isObj(target[i])
+        ? deepClone(target[i], hash)
+        : target[i];
     }
   }
-
+  
   return cloneTarget
-}
+};
 ```
 
 ##### 使用 `MessageChannel` API 的实现
