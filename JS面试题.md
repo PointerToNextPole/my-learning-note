@@ -759,7 +759,7 @@ new Promise(function(resolve) {
 console.log(5)
 ```
 
-这题做对了，但是 对于 3要不要打印，不清楚。也就是 Promise 在 `resolve()` 之后后 是不是直接返回不确定。
+这题做对了，但是不确定 3 要不要打印；也就是 Promise 在 `resolve()` 后，后面的代码是否还会继续执行
 
 <details>
   <summary>点击查看答案</summary>
@@ -815,7 +815,7 @@ setTimeout(function() {
 
 > 👀 这题文章的答案 和 实际运行的结果有出入；应该按实际运行结果为准。这里就不放答案了，自行运行即可。
 >
-> 另外，2022/5/9 又做了一遍，对了。2022/10/13 也对了。
+> 另外，2022/5/9 又做了一遍，对了。2022/10/13 也对了。2025/10/7 错了，原因见 [[前端面试点总结#宏任务和微任务#事件循环]] 中的补充
 
 ##### 事件队列第3题
 
@@ -834,19 +834,21 @@ setTimeout(function(){
 console.log('script end')
 ```
 
-> 👀 注：这题错了，有点意外；但是说明还是存在知识盲点：promise 中 resolve() 之后的函数是会执行的，也是同步的；reject 之后的函数就不会执行了
+> 👀 这题错了，有点意外；但是说明还是存在知识盲点：promise 中 resolve() 之后的函数是会执行的，也是同步的
 >
 > 2022/10/13 重做了一边，对了
 
 ##### 《promise的前世今生 + 应用 + 面试 + 源码》中的题目
 
+> 🔗 https://www.bilibili.com/video/BV1tM4y1F7he
+
 ###### 第一题
 
 ```js
 Promise.resolve()
-       .then(() => new Error('errr!!!') )
-       .then(res => console.log('then', res))
-       .catch(err => console.log('catch', err))
+  .then(() => new Error("errr!!!"))
+  .then((res) => console.log("then", res))
+  .catch((err) => console.log("catch", err));
 ```
 
 <details>
@@ -856,7 +858,7 @@ Promise.resolve()
 
 <details>
   <summary>查看解析</summary>
-  ⚠️ 注意：这里是 then，而不是 catch；因为这里还是 new 了一个 Error 并返回，还是相当于 Promise.resolve(new Error('errr!!!')) ；而不是抛出 ( throw ) 一个 Error。如果是 throw new Error('errr!!!')，则打印 catch
+  ⚠️ 注意：这里是 then，而不是 catch；因为这里还是 new 了一个 Error 并返回，<font color=red>相当于 `Promise.resolve(new Error('errr!!!'))`</font> ；而不是抛出 ( throw ) 一个 Error。如果是 throw new Error('errr!!!')，则打印 catch
 </details>
 
 > 👀 2022/10/13 重新做了一遍，错了
@@ -865,23 +867,23 @@ Promise.resolve()
 
 ```js
 Promise.resolve()
-       .then(() => {
-         Promise.resolve().
-                 then(() => {
-                   console.log(1)
-                 })
-                 .then(() => {
-                   console.log(2)
-                 })
-       })
-       .then(() => {
-         console.log(3)
-       })
+  .then(() => {
+    Promise.resolve()
+      .then(() => {
+        console.log(1);
+      })
+      .then(() => {
+        console.log(2);
+      });
+  })
+  .then(() => {
+    console.log(3);
+  });
 ```
 
 <details>
   <summary>查看答案</summary>
-  1 3 2
+  1<br /> 3<br /> 2<br />
 </details>
 
 <details>
@@ -889,25 +891,25 @@ Promise.resolve()
   这里 1 和 3 的 then 是同一层的，所以先后进入微任务队列，3 的 promise最后进入微任务队列
 </details>
 
-> 👀 2022/10/13 重新做了一遍，错了
+> 👀 2022/10/13 重新做了一遍，错了；2025/10/7 有点纠结，最后还是做错了
 
 想要上面的结果改为 1 2 3：
 
 ```js
 Promise.resolve()
-       .then(() => {
-  			 // ⭐️ 在这里加上 return，形成依赖
-         return Promise.resolve().
-                 then(() => {
-                   console.log(1)
-                 })
-                 .then(() => {
-                   console.log(2)
-                 })
-       })
-       .then(() => {
-         console.log(3)
-       })
+  .then(() => {
+    // ⭐️ 在这里加上 return，形成依赖
+    return Promise.resolve()
+      .then(() => {
+        console.log(1);
+      })
+      .then(() => {
+        console.log(2);
+      });
+  })
+  .then(() => {
+    console.log(3);
+  });
 ```
 
 ###### 第三题
@@ -928,9 +930,9 @@ console.log(10)
 
 <details>
   <summary>查看答案</summary>
-  async2 end
-  10
-  async1 end
+  async2 end<br />
+  10<br />
+  async1 end<br />
 </details>
 
 <details>
