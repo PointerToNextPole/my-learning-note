@@ -1,6 +1,8 @@
 # Node 学习笔记
 
+##### 一些资料
 
+- [15 Recent Node.js Features that Replace Popular npm Packages](https://nodesource.com/blog/nodejs-features-replacing-npm-packages) ：通过 Node 的新特性，避免使用第三方 npm 包
 
 ## coderwhy Node.js 学习笔记
 
