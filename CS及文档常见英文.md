@@ -1520,9 +1520,13 @@
   > 👀 V8 Scavenger GC 算法
 
 - **misalign** ：错位
+- **middle-click** ：中键点击
+  **command-click** ：按住 command 键点击
+  > There’s a lot of awesome functionality built into linking elements like `<a>` and `<button>`. If you middle click or command-click on them they’ll open in new windows.
+  > 
+    > 摘自：[URL Design](https://warpspire.com/posts/url-design)
 
 ***
-
 
 
 ### 英文术语
@@ -2642,3 +2646,4 @@
   **de jure** ：法律上的
 - **escalate** ：逐步上升 / 增强 / 恶化
 - **sphere** ：球体
+- **vanity** ：虚荣、虚荣心
