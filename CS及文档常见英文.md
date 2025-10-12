@@ -2647,3 +2647,5 @@
 - **escalate** ：逐步上升 / 增强 / 恶化
 - **sphere** ：球体
 - **vanity** ：虚荣、虚荣心
+- **alpine** ：高山的
+  > Alpine Linux
