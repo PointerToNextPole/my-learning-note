@@ -2649,3 +2649,4 @@
 - **vanity** ：虚荣、虚荣心
 - **alpine** ：高山的
   > Alpine Linux
+- **prelude** ：序曲、前奏
