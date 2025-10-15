@@ -2650,3 +2650,5 @@
 - **alpine** ：高山的
   > Alpine Linux
 - **prelude** ：序曲、前奏
+- **density** ：密度
+  **dense** ：密集的
