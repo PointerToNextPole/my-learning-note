@@ -2184,6 +2184,8 @@ Array(3) // [, , ,]
 0 in [, , ,] // false
 ```
 
+> 👀 2025/10/20 补充：这一特性有所遗忘，此外根据 [判断稀疏数组【渡一教育】](https://www.bilibili.com/video/BV15a4XzxEdK) 中所述：可以通过遍历数组，通过 `Object.hasOwn(targetArr, index)` 来判断数组中是否存在一个空位，来判定数组是否是稀疏数组
+
 上面代码说明，第一个数组的 0 号位置是有值的，第二个数组的 0 号位置没有值。
 
 <font color=dodgerBlue>**ES5 对空位的处理，已经很不一致了，大多数情况下会忽略空位**</font>。

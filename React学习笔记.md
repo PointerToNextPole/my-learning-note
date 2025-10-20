@@ -94,12 +94,17 @@ Functions starting with `use` are called *Hooks*. `useState` is a built-in Hook 
 
 <font color=red>**Hooks are more restrictive than other functions**</font>. You <font color=fuchsia>**can only**</font> <font color=red>call Hooks *at the top* of your components (or other Hooks)</font>. <font color=dodgerBlue>If you want to use `useState` in a condition or a loop</font>, <font color=fuchsia>**extract a new component and put it there**</font>.
 
-> 💡 关于为什么 Hooks 只能在 组件 或其他 hooks 的顶层使用，文章 [React 实现自动上报 pv/click 的埋点 hooks](https://juejin.cn/post/7175914445057556539) 给出了解释：
+> [!TIP]
+> 
+> 关于为什么 Hooks 只能在 组件 或其他 hooks 的顶层使用，文章 [React 实现自动上报 pv/click 的埋点 hooks](https://juejin.cn/post/7175914445057556539) 给出了解释：
 >
 > > 自定义 hooks 内部至少要有一个 React Hooks，那么自定义 hooks 也同样要遵循 React Hooks 的规则，**不能放在条件语句中，而且要保持执行顺序的一致性。** 这是为什么呢？
 > > > 这是因为在更新过程中，如果通过 if 条件语句，增加或者删除 hooks，那么在复用 hooks 的过程中，会产生复用 hooks 状态和当前 hooks 不一致的问题。所以在开发时一定要注意 hooks 顺序的一致性。
+> 
 >
 > 看起来应该是为了保证 Hooks 纯函数的特性。
+> 
+> > 在 [一道React Hook的面试题【渡一教育】](https://www.bilibili.com/video/BV177xkzwE5P) 中也有说明：`<StrictMode />` 运行两次，判断结果是否一致，也算是监测 hooks 没有放到顶层的判断机制。其次，每次调用 hook，都会放到链表中，后续重新执行时，去链表中依次取，如果不放在顶层，则会出现多或少的情况，显然会出错；这是为什么 hook 为什么必须放到顶层
 >
 > <font color=dodgerBlue>另外感觉文章中关于 hooks 的介绍和总结很不错，这里做下摘抄：</font>
 >
