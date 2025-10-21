@@ -239,5 +239,23 @@ function exitScreen() {
 
 摘自：[js小众且好用的技巧【api】](https://juejin.cn/post/7229515080487370812)
 
+##### 获取当前全屏的元素
 
+```js
+function getFullElement() {
+  return (
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.msFullscreenElement ||
+    null
+  );
+}
+```
+
+##### 判断当前页面是否处于全屏状态
+
+只需要判断 `getFullElement()` 运行结果是否为 `null` 即可，即： `!!getFullElement()`
+
+学习自：[封装全屏功能【渡一教育】](https://www.bilibili.com/video/BV1ndWEzcEGh)
 
