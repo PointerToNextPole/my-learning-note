@@ -2652,3 +2652,4 @@
 - **prelude** ：序曲、前奏
 - **density** ：密度
   **dense** ：密集的
+- **condescending** ：傲慢的、居高岭下的

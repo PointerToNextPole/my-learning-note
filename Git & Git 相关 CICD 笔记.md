@@ -735,11 +735,21 @@ normal 模式键入 `:wq!`，显示如下：
   >
   > 找到符合需求的 id 后，通过 `git merge commitId` 即可恢复 stash 的数据
 
-- **`git stash show`** ：查看堆栈中最新保存的stash和当前目录的差异
+- **`git stash show`** ：查看堆栈中最新保存的stash和当前目录的差异。
+
+  > [!TIP]
+  >
+  > 输出的是项目层级的统计：有几个文件变动、各个文件多少行增加、多少行删除
+  >
+  > <img src="https://s2.loli.net/2025/10/22/OqvipZDyLeCMjbU.png" alt="image-20251022164515566" style="zoom:50%;" />
 
   可以通过 `git stash show <stashName>` 的方式，指定某一个 stash 与当前目录的差异
 
   通过 `git stash show [<stashName>] -p` 查看详细的不同
+
+  > [!TIP]
+  >
+  > 输出的是：文件层级的 diff 
 
 - **`git stash branch`** ：从最新的 stash 创建分支。
 
