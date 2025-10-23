@@ -689,7 +689,7 @@ normal 模式键入 `:wq!`，显示如下：
 
 在处理完任务后，可以使用 `git stash pop` 或者 `git stash apply` 命令进行恢复 stash。
 
-> 💡 补充
+> [!TIP]
 >
 > <font color=fuchsia>暂存的内容可以恢复到其他任意指定的分支上的</font>。基于这一特性，可以实现处理 “在错误的分支上做了修改但未提交” 的情况。
 >
@@ -2269,15 +2269,17 @@ git bisect
 
 - <font color=FF0000 size=4>**`git checkout -- files`**</font> ：<font color=FF0000>把文件从暂存区域复制到工作目录，用来丢弃本地修改</font>。
 
-  > 💡 如果是修改消除所有的修改，则直接 `git checkout .` ；不过，新增的文件，不会被删除
-  
-  > 💡 2025/6/10 补充
+  > [!TIP]
+  > 
+  > 如果是修改消除所有的修改，则直接 `git checkout .` ；不过，新增的文件，不会被删除
+  >
+  > 2025/6/10 补充：
   >
   > `git checkout` 甚至可以用来恢复之前提交中被删除的（此删除操作已经被提交，甚至推送）文件。具体的命令是 `git checkout <last-commit-hash-before-you-delete> — <deleted-file-original-location>` 。
   >
   > 具体见 🔗 https://g.co/gemini/share/b25fe162dfc8
   >
-  > 💡 2025/6/13 补充
+  > 2025/6/13 补充：
   >
   > 在 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 中还看到了处理 “在错误的分支上做了修改同时已提交？（比如错误地提交到了主干）” 的方案：
   >
@@ -2322,6 +2324,15 @@ git bisect
 <img src="https://marklodato.github.io/visual-git-guide/commit-amend.svg" alt="img" style="zoom:67%;" />
 
 ##### git checkout
+
+> [!TIP]
+> 
+> 在 Git 2.23 之前，`git checkout` 既用于切换分支，也用于还原文件内容，很容易引起混淆。通过将 `git checkout` 的功能拆分，Git 团队创建了两个新的、更专业的命令：
+>
+> - `git switch`：专门用于在分支之间进行切换。
+> - `git restore`：专门用于还原文件内容。
+> 
+> 摘自：[这 7 个 Git 新命令，很实用！](https://mp.weixin.qq.com/s/xUDeSEqDhoeEfFOfwBOagw)
 
 <font color=FF0000>**checkout 命令 用于从历史提交（或者暂存区域）中拷贝文件到工作目录**</font>，<font color=FF0000>也可用于切换分支</font>。
 
