@@ -5684,19 +5684,23 @@ Generator 做目标代码和 SourceMap 的生成，对应 TSC 的 Emitter。**�
 
 #### Babel 和 TSC 的区别
 
-抛开 **类型检查** 和 **生成 d.ts** 这两个 Babel 不支持的功能不谈，我们看下其他功能的对比。分别对比下 **语法支持** 和 **代码生成** 两方面：
+抛开 **类型检查** 和 **生成 `d.ts`** 这两个 Babel 不支持的功能不谈，我们看下其他功能的对比。分别对比下 **语法支持** 和 **代码生成** 两方面：
 
 ##### 语法支持
 
 TSC 默认支持最新的 ES 规范的语法和一些还在草案阶段的语法（比如 decorators ），想支持新语法就要升级 TSC 的版本。
 
-<font color=FF0000>Babel 是 **通过 @babel/preset-env 按照目标环境 targets 的配置自动引入需要用到的插件来支持标准语法**，对于还在草案阶段的语法需要单独引入 @babel/proposal-xx 的插件来支持</font>。
+<font color=FF0000>Babel 是 **通过 `@babel/preset-env` 按照目标环境 targets 的配置自动引入需要用到的插件来支持标准语法**，对于还在草案阶段的语法需要单独引入 `@babel/proposal-xx` 的插件来支持</font>。
 
-所以<font color=FF0000>**如果你只用标准语法，那用 TSC 或者 Babel 都行**</font>；但是<font color=FF0000>如果你**想用一些草案阶段的语法**，**TSC 可能很多都不支持**，而 **Babel 却可以通过引入 @babel/poposal-xx 的插件来支持**</font>。从支持的语法特性上来说，Babel 更多一些。
+所以<font color=FF0000>**如果你只用标准语法，那用 TSC 或者 Babel 都行**</font>；但是<font color=FF0000>如果你**想用一些草案阶段的语法**，**TSC 可能很多都不支持**，而 **Babel 却可以通过引入 `@babel/poposal-xx` 的插件来支持**</font>。从支持的语法特性上来说，Babel 更多一些。
 
 ##### 代码生成
 
-<font color=FF0000>**TSC 生成的代码没有做 polyfill 的处理**，想做兼容处理就需要在入口处引入 core-js</font> <font color=FF0000>（ polyfill 的实现 ）</font>[GitHub - core-js](https://github.com/zloirock/core-js)。**注：**入口处的意思是 “at the top of your entry point” ，摘抄自 [GitHub - core-js](https://github.com/zloirock/core-js) 的 README.md
+<font color=FF0000>**TSC 生成的代码没有做 polyfill 的处理**，想做兼容处理就需要在入口处引入 core-js</font> <font color=FF0000>（ polyfill 的实现 ）</font>[GitHub - core-js](https://github.com/zloirock/core-js)。
+
+> [!TIP]
+> 
+> 入口处的意思是 “at the top of your entry point” ，摘抄自 [GitHub - core-js](https://github.com/zloirock/core-js) 的 README.md
 
 ```typescript
 import "core-js";
@@ -5704,9 +5708,9 @@ import "core-js";
 Promise.resolve;
 ```
 
-babel 的 `@babel/preset-env` 可以根据 targets 的配置来自动引入需要的插件，引入需要用到的 core-js 模块。
+babel 的 `@babel/preset-env` 可以根据 targets 的配置来自动引入需要的插件，引入需要用到的 `core-js` 模块。
 
-引入方式可以通过 useBuiltIns 参数 来配置：
+引入方式可以通过 `useBuiltIns` 参数 来配置：
 
 - **`entry`** 是在入口引入根据 targets 过滤出的所有需要用的 core-js。
 
@@ -5764,7 +5768,9 @@ module.exports = {
 
 TS 中 const enum 编译之后是直接替换用到 enum 的地方为对应的值。<font color=FF0000>const enum 是在编译期间把 enum 的引用替换成具体的值，需要解析类型信息</font>；而 <font color=FF0000>**Babel 并不会解析**，所以**它会把 const enum 转成 enum 来处理**</font>。
 
-> 💡 这里提到了 `const enum` ，这是之前完全没有介绍的，这里做下介绍，以及和 `enum` 的区别：
+> [!TIP]
+> 
+> 这里提到了 `const enum` ，这是之前完全没有介绍的，这里做下介绍，以及和 `enum` 的区别：
 >
 > > `enum` 在编译后会生成额外的 js 的的代码，例如：
 > >
@@ -7921,6 +7927,58 @@ interface Array<T> {
 `lib.d.ts` 中定义了 `Array` 类型拥有的属性和方法。
 
 <font color=dodgerBlue>**`lib.d.ts` 是被 TSC 默认包含的**</font>，它<font color=red>里面定义了 JavaScript 的公共库</font>，如 Array、Math、RegExp 等。 除了 JS 公共库，它里面<font color=red>还包含了 HTML DOM 的类型定义</font>，比如 `window`、`document`、`DOMParser`等等。这样的默认设定 可以满足大部分 TS 开发的需求。
+
+> [!TIP]
+>
+> ###### `env.d.ts` 的补充
+>
+> 在工作时，存在如下问题：在开发一个 Vue3 + TS 的项目时，需要使用一个第三方 SDK，此 SDK 只提供了 JS 版本，且将一个对象（假定为 `foo` ）挂载到了全局对象 window 上。在使用该 SDK 时候，必定要使用挂载在到全局对象上的对象，调用 `window.foo` ，Vue 会通过编辑器给出提示 “Vue: Property foo does not exist on type Window & typeof globalThis”；不确定该如何处理，问了 [Gemini](https://aistudio.google.com/prompts/1Cj9wP08ZYWRUt2UoLqbi7uUgdI2m_8BZ) ，Gemini 给出如下方案，步骤如下：
+>
+> 1. **创建类型声明文件**：在的项目根目录或 src 目录下，创建一个名为 `global.d.ts` 或 `env.d.ts` 的文件。
+>
+> 2. **声明全局模块**：在该文件中，使用 `declare global` 来扩展全局命名空间，并重新打开 Window 接口来添加自定义属性。
+>
+>    ```ts
+>    // global.d.ts
+>    
+>    declare global {
+>      interface Window {
+>        foo: any; // 或者更具体的类型，例如 { bar: () => void; }
+>      }
+>    }
+>    
+>    export {}; // 💡 确保该文件被视为一个模块
+>    ```
+>
+>    **注意**
+>
+>    - 将 any 替换为第三方库对象的具体类型可以获得更好的类型安全和代码提示。
+>    - <font color=fuchsia>文件末尾的 `export {};` 是必需的，它能确保该文件被 TypeScript 编译器当作一个模块来处理，从而正确应用全局声明</font>。
+>
+> 3. **确保 TypeScript 编译器能够识别**：通常情况下，只要 `tsconfig.json` 文件中的 `include` 字段包含了这个 `.d.ts` 文件所在的目录，TypeScript 就会自动加载它。
+>
+>    ```json
+>    // tsconfig.json
+>    
+>    {
+>      "compilerOptions": {
+>        // ...
+>      },
+>      "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+>    }
+>    ```
+>
+> ###### 此外
+>
+> 经过测试：通过 `window.foo` 访问 `foo` 是正常、不会给出报错提示的；但省略 `window.` 直接使用 `foo` ，仍会报错。
+>
+> 另外，Gemini 还给出了其他方案：比如 “类型断言” ：`(window as any).foo;`  和 “在文件中声明 foo”；显然还是使用 `env.d.ts` 更好
+>
+> | 方法                 | 优点                                           | 缺点                                 |
+> | -------------------- | ---------------------------------------------- | ------------------------------------ |
+> | **扩展 Window 接口** | 全局生效，一次性配置，提供类型安全和代码提示。 | 需要创建额外的 `.d.ts` 文件。        |
+> | **类型断言**         | 简单快捷，无需额外配置。                       | 牺牲了类型安全，容易隐藏潜在的 bug。 |
+> | **在文件中声明**     | 作用域限定在单个文件，清晰明了。               | 需要在每个使用的文件中重复声明。     |
 
 ##### 指定项目需要的公共库
 
