@@ -551,7 +551,7 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 学习自：https://x.com/HiTw93/status/1967371534248316961
 
 
-
+##### 剪切板工具 pbcopy 和 pbpaste
 
 #### 场景与解决方法
 
@@ -1180,7 +1180,7 @@ tail [ -f ] [ -c Number | -n Number | -m Number| -b Number | -k Number ] [ File 
 
 #### more 命令
 
-more 命令，<mark>功能类似 cat</mark> ，cat 命令是整个文件的内容从上到下显示在屏幕上。 <mark>more会以<font color=FF0000>一页一页的显示</font>方便使用者逐页阅读，而最基本的指令就是<font color=FF0000>按空白键（space）就往下一页显示</font></mark>，<font color=FF0000>按 b 键就会往回（back）一页显示</font>，而且还有搜寻字串的功能 。more命令从前向后读取文件，因此在启动时就加载整个文件。
+more 命令，<font color=lightSeaGreen>功能类似 cat</font> ，cat 命令是整个文件的内容从上到下显示在屏幕上。 more会以<font color=FF0000>一页一页的显示</font>方便使用者逐页阅读，而最基本的指令就是<font color=FF0000>按空白键（space）就往下一页显示</font>，<font color=FF0000>按 b 键就会往回（back）一页显示</font>，而且还有搜寻字串的功能 。more命令从前向后读取文件，因此在启动时就加载整个文件。
 
 <font color=FF0000>另外，值得注意的是：space显示下一页，b显示上一页是在linux中一个较为常见的用法，比如man命令也是这样</font>
 
@@ -1391,7 +1391,7 @@ chown [-cfhvR] [--help] [--version] user[:group] file...
 
 which 指令会在环境变量 `$PATH` 设置的目录里查找符合条件的文件
 
-**参数：**
+##### 参数
 
 - `n<文件名长度>` ：指定文件名长度，指定的长度必须大于或等于所有文件中最长的文件名。
 - `-p<文件名长度>` ：与 `-n` 参数相同，但此处的 `<文件名长度>` 包括了文件的路径。
