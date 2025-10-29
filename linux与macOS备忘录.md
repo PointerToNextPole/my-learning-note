@@ -553,6 +553,10 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 
 ##### 剪切板工具 pbcopy 和 pbpaste
 
+```sh
+pbcopy < some_file.ext
+```
+
 #### 场景与解决方法
 
 
