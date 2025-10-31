@@ -12537,7 +12537,7 @@ class AbstractClass {
 > >
 > > 摘自：[现代JS教程 - symbol 类型 # “隐藏”属性](https://zh.javascript.info/symbol#yin-cang-shu-xing)
 > 
-> 不过，使用 Symbol 作为对象的私有属性依然是不合适的，毕竟：可以通过 `Object.getOwnPropertySymbols()` 获取到所有的 symbol，再通过对象去取 symbol 对应的值是完全可以被突破的。
+> 尽管这样，使用 Symbol 作为对象的私有属性依然是不合适的，毕竟：可以通过 `Object.getOwnPropertySymbols()` 获取到所有的 symbol，再通过对象去取 symbol 对应的值是完全可以被突破的。
 
 <font color=FF0000>**symbol 是一种基本数据类型**</font> ( primitive data type )（ 💡 这里翻译成 “原始数据类型” 更好些）。<font color=red>`Symbol()` 函数会返回 symbol 类型的值，该类型具有静态属性和静态方法</font>。它的静态属性会暴露几个内建的成员对象，它的静态方法会暴露全局的 symbol 注册，且类似于内建对象类，但<font color=FF0000>**作为构造函数来说它并不完整，因为它不支持语法：`new Symbol()`**</font>（ 💡 因为 Symbol 不能使用 `new` 生成，下面 [[#带有 new 运算符的语法将抛出 TypeError 错误]] 有示例代码）。
 

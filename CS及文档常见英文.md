@@ -2654,3 +2654,4 @@
   **dense** ：密集的
 - **condescending** ：傲慢的、居高岭下的
 - **freed up** ：腾出、释放出
+- **ditto** ：同上
