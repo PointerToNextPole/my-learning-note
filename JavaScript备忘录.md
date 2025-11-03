@@ -12524,8 +12524,6 @@ class AbstractClass {
 #### Symbol
 
 > [!TIP]
-> 
-> 一点补充
 >
 > 在看 [在vue中为什么不推荐用 index 做 key](http://zoo.zhengcaiyun.cn/blog/article/vue-index) （笔记见 [[Vue原理与实现#《在vue中为什么不推荐用 index 做 key》笔记]]）时，最后推荐可以使用 UUID 或者 symbol 作为 key；思路有点新奇，确实让人耳目一新...不过不确定是否可行，就去问了群友；群友在说 symbol 不合适的原因（symbol 正常情况下无法被遍历到）时，说了这样一句话：
 >
@@ -12536,8 +12534,32 @@ class AbstractClass {
 > > symbol 允许我们创建对象的“隐藏”属性，代码的任何其他部分都不能意外访问或重写这些属性
 > >
 > > 摘自：[现代JS教程 - symbol 类型 # “隐藏”属性](https://zh.javascript.info/symbol#yin-cang-shu-xing)
-> 
+>
 > 尽管这样，使用 Symbol 作为对象的私有属性依然是不合适的，毕竟：可以通过 `Object.getOwnPropertySymbols()` 获取到所有的 symbol，再通过对象去取 symbol 对应的值是完全可以被突破的。
+>
+> 下面就根据 [实现私有字段【渡一教育】](https://www.bilibili.com/video/BV1W1421m7Mc) 中的讲述，总结一下 JS 中实现私有属性的方法
+> - 使用约定式的带 `_` / `__` 前缀的变量命名：显然只是约定，防君子不防小人
+>
+> - 使用 Symbol：缺点上面有说
+>
+> - 使用 TS 的 `private` 修饰符：由于 TS 的检查/验证只存在于编译时；同时，编译成 JS 时也没有做检查/ 防御；所以，一旦进入运行时，变成 JS 代码，还是防不住
+>
+> - 使用带 `#` 前缀的变量命名：确实有用，不过是 ES2022 推出的特性，可能存在兼容性问题。不过就 2025/11/2 的现在看来，[Can I Use](https://caniuse.com/mdn-javascript_classes_private_class_fields) 的兼容性为 94.97%，还不错
+>
+> - <font color=red>使用 WeakMap 管理私有属性</font>：这是 Babel 实现降级 `#` 私有属性的方法
+>
+>   ```js
+>   const weakMap = new WeakMap()
+>   
+>   export class Cls {
+>     constructor() {
+>       weakMap.set(this, { foo: 123 })
+>     },
+>     getFromKey(key) {
+>       return weakMap.get(this)['key']
+>     }
+>   }
+>   ```
 
 <font color=FF0000>**symbol 是一种基本数据类型**</font> ( primitive data type )（ 💡 这里翻译成 “原始数据类型” 更好些）。<font color=red>`Symbol()` 函数会返回 symbol 类型的值，该类型具有静态属性和静态方法</font>。它的静态属性会暴露几个内建的成员对象，它的静态方法会暴露全局的 symbol 注册，且类似于内建对象类，但<font color=FF0000>**作为构造函数来说它并不完整，因为它不支持语法：`new Symbol()`**</font>（ 💡 因为 Symbol 不能使用 `new` 生成，下面 [[#带有 new 运算符的语法将抛出 TypeError 错误]] 有示例代码）。
 

@@ -22,6 +22,7 @@
 - [webpagetest](https://www.webpagetest.org/) ：模拟不同地区、网络条件下的页面加载，查看瀑布图、渲染时间线
 - [Gtmetrix](https://gtmetrix.com/) ：类似 Lighthouse，但报告更细，可看首屏截图、视频回放，方便对比优化前后效果
 - [PageSpeed Insights](https://pagespeed.web.dev/) ：网站 Web Vitals 分析工具
+- [PageSpy](https://github.com/HuolalaTech/page-spy) ：货拉拉开源的工具，看起来不错。可以看下文章 [远程调试 利器！支持 Web、小程序、RN、鸿蒙！](https://mp.weixin.qq.com/s/1wV62VY4Gb9JhX2uJQngdQ)
 
 
 
