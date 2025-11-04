@@ -1750,13 +1750,13 @@ Git 丢弃了 9e78i 和 035cc 引入的修改，并将状态重置到了 ec5be �
 
 ###### 自己总结
 
-- **`git restore <file>...`** ：对于工作区中被修改的文件，<font color=red>**进行还原**</font>
+- **`git restore <file>...`** ：对于工作区中被修改的特定文件，<font color=red>**进行还原**</font>
 
 - **`git restore --staged <file>...`** ：将从工作区被添加到 暂存区中的文件，回滚到工作区中；但是<font color=fuchsia>修改的内容不变（不还原）</font>。即：`git add <file>...` 的逆操作。
 
 ###### 自己试验的示例如下
 
-对一个文件进行修改，这是运行 git status，会显示<font color=FF0000>类似</font>下面的内容：
+对一个文件进行修改，运行 `git status`，会显示<font color=dodgerBlue>类似</font>下面的内容：
 
 <img src="https://s2.loli.net/2022/02/23/IOZbsuxlwEPiRKk.png" alt="image-20220223200832317" style="zoom:50%;" />
 
@@ -1768,7 +1768,7 @@ Git 丢弃了 9e78i 和 035cc 引入的修改，并将状态重置到了 ec5be �
 
 这时候，运行 红框中的命令 `git restore --staged <file>...` ，刚刚添加到「暂存区」的文件将会被移出「暂存区」，回到「工作区」；同时，被修改的内容不变，还需要 `git restore <file>...` 将其复原。
 
-> 💡 补充
+> [!TIP]
 >
 > `git restore --staged [file]`  表示从暂存区将文件的状态修改成 unstage  状态。当然，也可以不指定确切的文件 ，例如：
 > `git restore --staged *.java` 表示将所有暂存区的 java 文件恢复状态；`git restore --staged .` 表示将当前目录所有暂存区文件恢复状态。
