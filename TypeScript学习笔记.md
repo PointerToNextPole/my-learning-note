@@ -6,8 +6,20 @@
 
 ###### 官方资料
 
-[The TypeScript release notes](https://devblogs.microsoft.com/typescript/) covers a each new features in-depth.
+- [The TypeScript release notes](https://devblogs.microsoft.com/typescript/) covers a each new features in-depth.
 
+###### 手册 / 教程
+
+- https://github.com/tsconfig/bases ：官方推荐的 tsconfig 文件模版工具
+  > ###### TSConfig Bases
+>
+>Depending on the JavaScript runtime environment which you intend to run your code in, there may be a base configuration which you can use at [github.com/tsconfig/bases](https://github.com/tsconfig/bases/). These are `tsconfig.json` files which your project extends from which simplifies your `tsconfig.json` by handling the runtime support.
+>
+>摘自：[TS doc - handbook - tsconfig-json # tsconfig-bases](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#tsconfig-bases)
+- [tsconfig helper](https://tsconfiger.netlify.app/)
+
+学习自：[【NodeJS-TS】TS配置文件](https://www.bilibili.com/video/BV1f5hXzrEny/?t=820)
+***
 ###### 网络书籍
 
 - [阮一峰 - TypeScript 教程](https://wangdoc.com/typescript/)
@@ -17,7 +29,7 @@
 
 ###### 中文文档 / 手册
 
-- www.tslang.cn
+- https://tslang.com.cn 看起来这个中文翻译站还是紧跟官方文档的更新而维护的
 
 - https://typescript.bootcss.com
 
