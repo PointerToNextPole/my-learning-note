@@ -79,11 +79,13 @@
 
 - **tricky**：困难的，棘手的
 
+- **utilize**：利用
+
 - **prune**：剪枝。这是一个一般性概念，可以用于 机器学习，数据库 以及  树形数据结构，也是前端构建 Tree Shaking 的概念。
 
-  >💡 git 有 prune 命令，用于清除 “不可达” 或 “孤儿 ( orphaned ) ” 的对象；详见：https://www.atlassian.com/git/tutorials/git-prune ；这里略。npm 也有 prune 命令：`npm prune [[<@scope>/]<pkg>...]` ，详见 [npm docs - npm-prune](https://docs.npmjs.com/cli/v8/commands/npm-prune)。同时 docker 也有，详见 [docker docs - Prune unused Docker objects](https://docs.docker.com/config/pruning/)
-
-- **utilize**：利用
+  >[!TIP]
+  >
+  >Git 有 `prune` 命令，用于清除 “不可达” 或 “孤儿 ( orphaned ) ” 的对象；详见：https://www.atlassian.com/git/tutorials/git-prune ；这里略。npm 也有 prune 命令：`npm prune [[<@scope>/]<pkg>...]` ，详见 [npm docs - npm-prune](https://docs.npmjs.com/cli/v8/commands/npm-prune)。同时 docker 也有，详见 [docker docs - Prune unused Docker objects](https://docs.docker.com/config/pruning/)
 
 - **under the hood**：在引擎盖下（指内部实现）
 
@@ -103,7 +105,9 @@
 
 - **imperative programming**：命令式编程
 
-   > 💡 另外，React 也有 `useImperativeHandle` 的 hooks
+   > [!TIP]
+   >
+   > 另外，React 也有 `useImperativeHandle` 的 hooks
 
 - **arithmetic** ：算术
 
@@ -751,14 +755,22 @@
    >
    > <img src="https://s2.loli.net/2024/03/31/MpZmh753flQEIdB.png" alt="image-20240331172014784" style="zoom:50%;" />
 
+   **self-hosted** ：自托管的
+
+   **self-lifting** ：自举。同样含义的还有 Bootstrapping
+
 - **amplify** ：v. 增加，增强。
   > 👀 chatgpt 说：和 ample （充足的，足够的）有关系，自己感觉也是有关系的；不过语意上没太看出来...
 
-- **speculate** ：v. 推测。speculation ：n.
+- **speculate** ：v. 推测
+
+   **speculation** ：n.
 
 - **fait accompli** ：既成事实
 
-- **illustration** ：插画。illustrate ：给 ... 加插图，阐述，说明。
+- **illustration** ：插画。
+
+   **illustrate** ：给 ... 加插图，阐述，说明。
 
 - **globble** ：狼吞虎咽，吞咽
 
@@ -2659,3 +2671,5 @@
 - **mesh** ：表格
 - **fast-forward** ：快进
   > 👀 此外，git 的 merge 操作也有 fast-forward 模式
+  
+- **merch** ：商品
