@@ -1538,7 +1538,7 @@
   > There’s a lot of awesome functionality built into linking elements like `<a>` and `<button>`. If you middle click or command-click on them they’ll open in new windows.
   > 
     > 摘自：[URL Design](https://warpspire.com/posts/url-design)
-
+- **sample** : 样本、样品、<font color=red>采样</font>
 ***
 
 
