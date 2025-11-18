@@ -298,7 +298,9 @@ upstream backserver{
 
 ##### location
 
-> 💡 一开始看到 “server block” 和 “location block” 感觉有点懵，看到更多配置才知道 `server { ... }` 块 和 `location { ... }` 块
+> [!NOTE]
+> 
+> 一开始看到 “server block” 和 “location block” 感觉有点懵，看到更多配置才知道 `server { ... }` 块 和 `location { ... }` 块
 
 The location directive within NGINX server block <font color=red>allows to route request to correct location within the file system</font>. The directive is <font color=red>used to tell NGINX **where to look for a resource** by including files and folders while **matching a location block against an URL**</font>. In this tutorial, we will look at NGINX location directives in details.
 
@@ -321,9 +323,18 @@ The <font color=red>**modifier in the location block is optional**</font>. Havin
 - `~*` : The tilde followed by asterisk sign is used for <font color=red>case insensitive regular expression match</font> against a requested URI.
 - `^~` : The carat followed by tilde sign is used to <font color=red>perform longest nonregular expression match</font> against the requested URI. <font color=red>**If the requested URI hits such a location block, no further matching will takes place**</font>.
 
-> 💡 这里没完全说明白，问了下 Gemini ，这里做下摘抄：
+> [!TIP]
+> 
+> 这里没完全说明白，问了下 Gemini ，这里做下摘抄：
 >
 > 🔗 https://g.co/gemini/share/1ffc5b9ee594
+> 
+> 此外，看了下 [前端到底用Nginx来做啥](https://juejin.cn/post/7064378702779891749) 中的总结，感觉很简单，感觉是想多了：
+> 
+> - `=` 表示精确匹配。只有请求的 url 路径与后面的字符串完全相等时，才会命中。
+> - `^~` 表示如果该符号后面的字符是最佳匹配，采用该规则，不再进行后续的查找。
+> - `~` 表示该规则是使用正则定义的，区分大小写。
+> - `~*` 表示该规则是使用正则定义的，不区分大小写。
 
 ###### How NGINX choose a location block
 
