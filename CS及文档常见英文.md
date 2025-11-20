@@ -67,7 +67,7 @@
 
 - **i.e.** : *i.e.* is an abbreviation for the phrase ***id est***, which means **"that is"** .
 
-- **retrieve** ：检索，获取；所谓 CRUD 的 “R” 就是 retrieve
+- **retrieve** ：检索，获取；所谓 CRUD 的 “R” 就是 retrieve，RAG ( Retrieval-Augmented Generation ) 的 R 也是
 
 - **decoupled** ：解耦的，decouple ( verb )。
 
@@ -2610,7 +2610,7 @@
 
 - **necessitate** ：使成为必要、需要
 
-- **quota** ：限额
+- **quota** ：配额、限额
 
 - **backoff** ：回退
 
