@@ -1409,7 +1409,9 @@ Git Worktree 不只是用来切换分支这么简单，它在更复杂的工作�
 
 学习自：[【第3568期】使用 Git Worktree 进行开发](https://mp.weixin.qq.com/s/uW11gfTOSk_Q5783NcXhXQ)
 
+#### git submodule
 
+##### `git submodule add <repo-url> [<path>]`
 
 #### git add
 
