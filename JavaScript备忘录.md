@@ -15221,13 +15221,15 @@ window.requestIdleCallback(callback[, options])
 
 #### FinalizationRegistry
 
+
+
 FinalizationRegistry 对象<font color=FF0000>可以让你在对象被垃圾回收时请求一个回调</font>。
 
 ##### 描述
 
 FinalizationRegistry 提供了这样的一种方法：<font color=FF0000>当一个在 **注册表中注册的对象被回收时**，请求在某个时间点上调用一个清理回调</font>。（清理回调有时被称为 finalizer ）。
 
-摘自：[MDN - FinalizationRegistry](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry)
+摘自：[Wayback Machine - MDN - FinalizationRegistry](https://web.archive.org/web/20230321180252/https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry)
 
 
 

@@ -986,12 +986,18 @@ fatal: Authentication failed for 'https://github.com/github-user-name/proj-name.
   
   「在命令行中使用 Token」这部分摘自：[GitHub改为token验证后,如何提交代码?](https://python.iitter.com/other/39385.html)
   
-  > 👀 上面的命令，`<your-token>` 可以通过 `git remote -v` 命令查看。
-  > > 💡 `git remote -v` 是 `git remote` 的进阶用法。 “v” 表示 “verbose”， `git remote` 只会显示远端 repo 的名称，而 `-v` 是在 repo 的名称之后，还会显示示远端 repo 的 url 
+> [!NOTE]
+  > 
+  > 上面的命令，`<your-token>` 可以通过 `git remote -v` 命令查看。
+  > 
+  > > [!TIP]
+  > > `git remote -v` 是 `git remote` 的进阶用法。 “v” 表示 “verbose”， `git remote` 只会显示远端 repo 的名称，而 `-v` 是在 repo 的名称之后，还会显示示远端 repo 的 url 
   > >
   > > 详见 [Git doc - git remote](https://git-scm.com/docs/git-remote)
   >
-  > 👀 参见 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 的 “1、设置错误的远程库怎么办？”：`git remote set-url` 只是一个 “设置远程仓库地址” 的命令（参考 [[#其他 git 命令]]）。另外，虽然说出来顺理成章，但容易忽略的是：将通过 ssh 链接管理的 git repo，切换为通过 http 管理，或者反过来，都可以通过 `git remote set-url repo-url-with-protocol-prefix` 来实现。
+  > 👀 参见 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 的 “1、设置错误的远程库怎么办？”：`git remote set-url` 只是一个 “设置远程仓库地址” 的命令（参考 [[#其他 git 命令]]）。另外，虽然说出来顺理成章，但容易忽略的是：将通过 ssh 链接管理的 git repo，切换为通过 http 管理，或者反过来，都可以通过 `git remote set-url <name> <repo-url-with-protocol-prefix>` 来实现。
+  > 
+  > 此外，除了 `git remote set-url <name> <new-url>` 外，还有 `git remote rename <old-name> <new-name>` 以修改 `<name>`，而对应的 `<url>` 不变。具体可以看下 🔗 https://gemini.google.com/share/de4a2ee0d70d
 
 ###### 出现：`error: src refspec master does not match any`
 
@@ -1317,21 +1323,11 @@ Remove only files ignored by Git. This may be useful to rebuild everything from 
 
 // TODO [git bisect 命令教程- 阮一峰的网络日志](https://www.ruanyifeng.com/blog/2018/12/git-bisect.html) 、https://git-scm.com/docs/git-bisect
 
-
-
 #### git lfs 使用
 
 // TODO
 
 参考 [Atlassian git tutorial - git lfs](https://www.atlassian.com/git/tutorials/git-lfs) 。中文翻译见 [详解 Git 大文件存储（Git LFS） - 腾讯技术工程的文章 - 知乎](https://zhuanlan.zhihu.com/p/146683392)
-
-
-
-#### Git Forks and Upstreams
-
-// TODO 可以参考 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 的 “2、Github Fork 的项目如何更新源项目更新？”
-
-
 
 #### Git worktree
 
@@ -2522,13 +2518,25 @@ Git会有很多合并策略，其中常见的是 Fast-forward、Recursive 、Our
 
 参见教程 [如何在 GitHub 提交第一个 pull request](https://chinese.freecodecamp.org/news/how-to-make-your-first-pull-request-on-github/) ，没有完全看懂，建议再读一遍。
 
-> 👀 另外，本文中提及了 `git remote add upstream [url]` ，这是
->
-> > 为了能够拉取原始仓库的变更到你的复刻仓库中，需要将原始仓库添加为 upstream 仓库
->
-> 之前没有听过，很有必要了解下。
-
-
+> [!TIP]
+> 此外，在阅读 https://aistudio.google.com/prompts/1-xwDas42jDHfjF_ERZ1PrMN3DBlysT_y 时，发现这段内容：
+> 
+> > **为 Fork 的项目添加“上游”仓库**
+> > 
+> > 你从一个开源项目 Fork 了一份代码到自己的 GitHub 账号。现在，你想在本地同时跟踪原始项目（通常称为 upstream）的更新。
+> > ```bash
+> > # 你的 Fork 仓库，通常在你 clone 时自动设为 origin
+> > # git clone https://github.com/your-username/some-project.git
+> >
+> > # cd some-project
+> > 
+> > # 添加原始项目的远程仓库别名，并命名为 upstream
+> > git remote add upstream https://github.com/original-owner/some-project.git
+> > 
+> > # 现在你可以从 upstream 拉取最新的代码，保持你的 Fork 更新
+> > git fetch upstream
+> > git merge upstream/main
+> > ```
 
 #### `git notes`
 
