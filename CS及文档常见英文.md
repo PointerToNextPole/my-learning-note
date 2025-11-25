@@ -2674,3 +2674,5 @@
   
 - **merch** ：商品
 - **epilogue** ：尾声
+- **latent** ：潜在的
+  > latent space ：潜空间
