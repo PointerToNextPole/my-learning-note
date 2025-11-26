@@ -15217,11 +15217,13 @@ window.requestIdleCallback(callback[, options])
 
 摘自：[MDN - `IdleDeadline`](https://developer.mozilla.org/zh-CN/docs/Web/API/IdleDeadline)
 
-
-
 #### FinalizationRegistry
 
-
+> [!TIP]
+> 
+> 值得指出的是：`FinalizationRegistry` 和 [`WeakRef`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/WeakRef) 是高度相关的，关联之处可以看下 https://aistudio.google.com/prompts/1F70HWbIyG0N86Xo8kDbNtjSZ__u5a0SX 。
+> 
+> 此外，在 [写稳大型项目的 JS/TS 技巧（下）—— 覆盖并发、缓存等](https://mp.weixin.qq.com/s/8SSLVb2B6EzFs4CBY4kYDw) 中的 “痛点7：缓存越来越占内存” 给出了使用 `FinalizationRegistry` 和 `WeakRef` 封装的缓存方案
 
 FinalizationRegistry 对象<font color=FF0000>可以让你在对象被垃圾回收时请求一个回调</font>。
 
