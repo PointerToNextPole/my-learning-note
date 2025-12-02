@@ -1132,7 +1132,7 @@ console.log(lowerCaseChar_z) // z
 
 摘自：[百度百科 - 银行家舍入](https://baike.baidu.com/item/%E9%93%B6%E8%A1%8C%E5%AE%B6%E8%88%8D%E5%85%A5/4781630)
 
-> 💡 补充
+> [!TIP]
 >
 > 另外，根据 [toFixed的结果可能会欺骗你【渡一教育】](https://www.bilibili.com/video/BV14r421b759) 的说法，JS 中 `Number.prototype.toFixed` 并没有完全使用 “银行家舍入” / “银行家算法”。另外，问 Copilot Chat 二次确认了下，得到如下回复：
 >
@@ -1189,3 +1189,15 @@ number once // TODO https://en.wikipedia.org/wiki/Cryptographic_nonce
 可以通过 https://g.co/gemini/share/5e7798fc640b 了解下 DDD，以及 Golang 在 DDD 下的项目结构
 
 另外，可以看下 [想给面试官吹DDD吗？项目像搭积木一样运行：领域驱动设计（DDD）让复杂业务变简单](https://juejin.cn/post/7519812174899478582) ，介绍了一些概念，感觉作为入门还不错
+
+##### 概念
+
+###### 领域&领域服务
+
+一个实体对象的完整的管理能力集合叫做一个领域；领域服务就是一个领域对外暴露的服务方法，领域服务和领域对象是一个系统核心要沉淀的可复用资产。
+
+###### 领域服务的扩展模板和扩展点
+
+一个领域服务可以通过泛型指定扩展模板，也就是这个领域服务所允许的扩展点的集合；一个领域服务在某些业务逻辑处理过程中，针对不同业务可能有不同逻辑，那么可以根据业务身份查找当前业务对应的扩展点实现；这就是对不同逻辑点上随处可见的策略模式的规范
+
+摘自：[浅谈团队代码风格/结构一致性](https://mp.weixin.qq.com/s/flLxY__pLo9p24X8yXp6Uw)
