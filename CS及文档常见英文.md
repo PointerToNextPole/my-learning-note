@@ -1539,6 +1539,7 @@
   > 
     > 摘自：[URL Design](https://warpspire.com/posts/url-design)
 - **sample** : 样本、样品、<font color=red>采样</font>
+- **orchestration** ：编排
 ***
 
 
@@ -2663,6 +2664,7 @@
 - **alpine** ：高山的
   > Alpine Linux
 - **prelude** ：序曲、前奏
+  **preliminary** ：初步
 - **density** ：密度
   **dense** ：密集的
 - **condescending** ：傲慢的、居高岭下的
@@ -2676,3 +2678,8 @@
 - **epilogue** ：尾声
 - **latent** ：潜在的
   > latent space ：潜空间
+  
+- **deliberate** ：深思熟虑的、蓄意的
+  > Therefore, our team took **deliberate** steps to implement it without sacrificing stability or ecosystem compatibility.
+  >
+  > 摘自：[Vite 8 Beta: The Rolldown-powered Vite](https://vite.dev/blog/announcing-vite8-beta)
