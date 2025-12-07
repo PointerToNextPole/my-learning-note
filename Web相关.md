@@ -3319,6 +3319,10 @@ Apple 官网喜欢用用户滚动页面 实现 播放视频（动画）效果，
 > 没有什么骚操作，Google推广的PWA就是为你准备的。
 >
 > 你有三个选项：HTTP Cache，Service Worker 和 Cache Storage API，Workbox。
+> 
+> > [!TIP]
+> > 
+> > 值得注意的是，Service Worker 和 Cache Storage 是高度相关的；所以它们并列为一项
 >
 > 如果你的网站支持HTTPS，推荐用Workbox。如果用的是前端三大框架之一，都有现成的方案。
 >

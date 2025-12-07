@@ -1540,6 +1540,7 @@
     > 摘自：[URL Design](https://warpspire.com/posts/url-design)
 - **sample** : 样本、样品、<font color=red>采样</font>
 - **orchestration** ：编排
+- **hybrid** ：混合
 ***
 
 
