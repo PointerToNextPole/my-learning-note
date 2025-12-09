@@ -453,16 +453,16 @@ $ cat .git/refs/heads/master
 
 `git diff commitHash1 comitHash2`：比较两个 commit 之间的区别。
 
-另外，这里的 commitHash 可以用 HEAD 进行指代，同时也可以用 HEAD 进行其他指代，比如：HEAD\^ 表示HEAD 的父亲，同理：HEAD\^\^1 可以表示为 HEAD 父亲的父亲  
+另外，这里的 commitHash 可以用 HEAD 进行指代，同时也可以用 HEAD 进行其他指代，比如：`HEAD^` 表示 `HEAD` 的父亲，同理：`HEAD^^1` 可以表示为 HEAD 父亲的父亲  
 
-##### 💡 补充： ^ / ~ 的用法
+######  `^` / `~` 的用法
 
 - `^`：表示第几个父/母亲 ——　git存在多个分支合并的情况，所以不只有1对父母亲
 - `~`：表示向上找第几代，相当于连续几个 `^`
 
-> 👀 这里稍微有点不理解，但是根据例子还是有规律可循的：默认垂直的那个分支是被优先选择的（即：^ / ^1 的情况）；^2 表示没有选择垂直的分支的另一个分支。~ 直接就是去垂直的那一个分支了。
+> 👀 这里稍微有点不理解，但是根据例子还是有规律可循的：默认垂直的那个分支是被优先选择的（即：`^` / `^1` 的情况）；`^2` 表示没有选择垂直的分支的另一个分支。`~` 直接就是去垂直的那一个分支了。
 
-学习自：[git 中 HEAD^ 和 HEAD~ 是啥](https://www.jianshu.com/p/624bf81a3290)
+学习自：[git 中 `HEAD^` 和 `HEAD~` 是啥](https://www.jianshu.com/p/624bf81a3290)
 
 
 
@@ -470,11 +470,11 @@ $ cat .git/refs/heads/master
 
 删除分支，使用 `git branch -d branchName`。
 
-##### 💡 git branch 的 -d 和 -D 选项 的区别
+##### `git branch` 的 `-d` 和 `-D` 选项 的区别
 
-- **git branch -d：**会<font color=FF0000>在删除前检查 merge 状态</font>（其与上游分支 或者 （其）与head）。
+- `git branch -d` ：会<font color=FF0000>在删除前检查 merge 状态</font>（其与上游分支 或者 （其）与head）。
 
-- **git branch -D：**是 `git branch --delete --force` 的简写，它<font color=FF0000>会直接删除</font>
+- `git branch -D` ：是 `git branch --delete --force` 的简写，它<font color=FF0000>会直接删除</font>
 
   > 👀 即，不会检查 merge 状态。总之：删除没有被合并的分支要用 `-D`
 
@@ -1458,8 +1458,6 @@ Git Worktree 不只是用来切换分支这么简单，它在更复杂的工作�
 2. 创建远程分支 origin / branch（指向 master 分支的指针）
 3. 创建名为 master 的本地分支
 
-删除远程分支以及追踪分支的命令： `git push origin --delete <branch>`
-
 摘自：[删除分支 git branch -d与git branch -D的区别](https://blog.csdn.net/qq_33592641/article/details/103871482)
 
 ##### `git clone --bare`
@@ -1468,9 +1466,9 @@ Git Worktree 不只是用来切换分支这么简单，它在更复杂的工作�
 
 摘自：[atlassian tutorials - git clone](https://www.atlassian.com/zh/git/tutorials/setting-up-a-repository/git-clone)
 
-创建一个 ‘裸’ Git 仓库。也就是说，<font color=red>**不要创建 `<目录>` 并将管理文件放在 `<目录>/.git`**</font>，而是将 `<目录>` 本身设为 `$GIT_DIR`。这显然暗含着 `--no-checkout` 选项，因为没有地方可以检出工作目录树。此外，远程的分支头直接复制到相应的本地分支头，而不将它们映射到 `refs/remotes/origin/`。使用此选项时，不会创建远程跟踪分支或相关配置变量。
+创建一个 “裸” Git 仓库。也就是说，<font color=red>**不要创建 `<目录>` 并将管理文件放在 `<目录>/.git`**</font>，而是将 `<目录>` 本身设为 `$GIT_DIR`。这显然暗含着 `--no-checkout` 选项，因为没有地方可以检出工作目录树。此外，远程的分支头直接复制到相应的本地分支头，而不将它们映射到 `refs/remotes/origin/`。使用此选项时，不会创建远程跟踪分支或相关配置变量。
 
-摘自：[git doc - Referebce  - git clone # --bare](https://git-scm.com/docs/git-clone/zh_HANS-CN#git-clone-code--barecode)
+摘自：[git doc - Referebce  - git clone # `--bare`](https://git-scm.com/docs/git-clone/zh_HANS-CN#git-clone-code--barecode)
 
 
 
@@ -2165,18 +2163,44 @@ reflog 的意思为 ref + log。
 
 - **`git checkout -`** ：切换到上一个分支。
 
-  > 💡 `-` 在 *nix 中表示上一个，这是一种常见用法
-
 - `git branch --set-upstream [branch] [remote-branch]` ：建立追踪关系，在现有分支与指定的远程分支之间
 
-- **删除远程分支：**
+- **删除远端分支**
   
-  - `git push origin --delete [branch-name]`
-  - `git branch -dr [remote/branch]`
+  - `git branch -d <local-branch>`
+    
+  - `git branch -dr <remote-branch>`
+  
+    使用场景：
+  
+    1. **清理过时的引用：** 远程服务器上的某个分支已经被删除了，但你的本地 Git 仍然保留着 origin/xxx 的缓存记录（僵尸分支）。你可以用这个命令手动清理它。
+    2. **修正错误的配置：** 某个远程引用的状态不对劲，你想删掉它重新 fetch。
+  
+    `-d` 和 `-dr` 的区别：
+  
+    | 特性                     | `git branch -d <name>`                               | `git branch -dr <origin/name>`                               |
+    | ------------------------ | ---------------------------------------------------- | ------------------------------------------------------------ |
+    | **操作对象**             | **本地分支** (Local Branch)                          | **远程追踪分支** (Remote-tracking Branch)                    |
+    | **引用位置**             | `refs/heads/xxx`                                     | `refs/remotes/origin/xxx`                                    |
+    | **你的代码还在吗？**     | 如果该分支没合并，代码会被删除（除非用 `-D` 强制）。 | 代码本身还在服务器上，或在其他本地分支里。你只是删除了指向它的“指针”。 |
+    | **是否影响远程服务器？** | **否**                                               | **否** (这是最大的误区，它**不**删服务器上的代码)            |
+    | **常见用途**             | 开发完成后，删除本地已经合并的功能分支。             | 清理本地缓存的、已经过期的远程分支引用。                     |
+  
+    学习自：https://aistudio.google.com/prompts/1qY6UbB-wWVNAm3EnrHhjlSfifRFQ0d38
+  
+  - `git push origin --delete <branch-name>`
+  
+  > [!TIP]
+  >
+  > 一般，想要删除本地的分支，并想将删除效果同步到远端，使用 `git branch -d` + `git push origin --delete` 即可。此外，在团队协作过程中，可以使用 `git fetch -p` 或 `git remote prune origin` 同步并清理其他协作者删除分支的引用。
+  >
+  > 此外，还可以通过 WebStorm 上 Git 相关的 GUI 删除分支，并点击有下家弹出的 “Delete tracked remote branch ...”
+  >
+  > 学习自：https://aistudio.google.com/prompts/1tYR9-7tsKKmWBGzBachAbYaVfEyLU5RB
 
 摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
 
-> 💡 补充
+> [!TIP]
 >
 > 批量删除分支
 >
