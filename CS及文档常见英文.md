@@ -2684,3 +2684,7 @@
   > Therefore, our team took **deliberate** steps to implement it without sacrificing stability or ecosystem compatibility.
   >
   > 摘自：[Vite 8 Beta: The Rolldown-powered Vite](https://vite.dev/blog/announcing-vite8-beta)
+  
+- **pinpoint** ：精准定位
+  > With real-time feedback during builds, pinpoint issues in the build log and utilize robust test reporting, keeping your team on top of the CI/CD process.
+  > 摘自：[JetBrains - TeamCity](https://www.jetbrains.com/teamcity/)

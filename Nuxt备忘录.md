@@ -1600,7 +1600,8 @@ SSR 应用的页面是在服务端渲染的，用户每请求一个 SSR 页面�
 
 - 全局安装 nuxi ，并使用 `nuxt init hello-nuxt`
 
-> 💡补充：在项目创建好了之后，可以通过 `npx nuxi add page pagePath/pageName` 来新建页面（这和 Nest CLI 有点类似）
+> [!TIP]
+> 在项目创建好了之后，可以通过 `npx nuxi add page pagePath/pageName` 来新建页面（这和 Nest CLI 有点类似）
 
 ##### Nuxt 项目介绍
 
@@ -1615,6 +1616,16 @@ SSR 应用的页面是在服务端渲染的，用户每请求一个 SSR 页面�
   "postinstall": "nuxt prepare" // npm install 运行后运行。作用是：生成 .nuxt 文件夹和 ts 类型等
 },
 ```
+
+> [!TIP]
+> 
+> `nuxt build` 和 `nuxt generate` 的区别：
+> 
+> > To leverage server-side rendering on the edge, set the build command to: `nuxt build`
+> > 
+> > To statically generate your website, set the build command to: `nuxt generate`
+> > 
+> > 摘自：[nuxt doc - deploy - cloudflare](https://nuxt.com/deploy/cloudflare)
 
 ###### 目录结构
 
