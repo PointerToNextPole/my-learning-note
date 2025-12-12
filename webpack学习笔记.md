@@ -7296,7 +7296,8 @@ https://github.com/jantimon/html-webpack-plugin
 
 #### SourceMap 配置
 
-> 👀 2024/9/12 补充：在维护 vue2 + vue cli 项目时，发现 debugger 失效了，chrome devtools source 的代码也变成编译后的了；问了下 GPT，知道加上 `configWebpack.devtool: 'source-map'` 即可。不过，确实发现自己这个概念，已经几乎忘光了...
+> [!NOTE]
+> 2024/9/12 补充：在维护 vue2 + vue cli 项目时，发现 debugger 失效了，chrome devtools source 的代码也变成编译后的了；问了下 GPT，知道加上 `configWebpack.devtool: 'source-map'` 即可。不过，确实发现自己这个概念，已经几乎忘光了...
 
 sourceMap 是一个<font color=FF0000>映射关系</font>。它知道 <font color=FF0000> 打包输出的文件的代码行</font> 与对应的 <font color=FF0000> 被打包的源代码中代码行</font> 的映射关系；**便于在打包代码出现错误时候，可以指向源代码的<font color=FF0000>某一行某一列（即精确到字符）</font>出现的问题**。<font color=FF0000>使用sourceMap 打包速度会变慢（尤其是大型项目）</font>。
 

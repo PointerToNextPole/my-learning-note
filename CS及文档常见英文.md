@@ -2688,3 +2688,5 @@
 - **pinpoint** ：精准定位
   > With real-time feedback during builds, pinpoint issues in the build log and utilize robust test reporting, keeping your team on top of the CI/CD process.
   > 摘自：[JetBrains - TeamCity](https://www.jetbrains.com/teamcity/)
+  
+- **sculpt** ：雕刻、使...成形
