@@ -1626,6 +1626,14 @@ SSR 应用的页面是在服务端渲染的，用户每请求一个 SSR 页面�
 > > To statically generate your website, set the build command to: `nuxt generate`
 > > 
 > > 摘自：[nuxt doc - deploy - cloudflare](https://nuxt.com/deploy/cloudflare)
+> > 
+> > `nuxt generate` creates static files that can be served statically on a CDN, without the need for a server running an application process
+> > <font color=lightSeaGreen>"generate" runs through the static-site-generation (SSG) process and outputs static html/css/js files</font>. There is no running server with this option.
+> > 
+> > `nuxt build` creates a node app that requires a server to run.
+> > "build" creates a server that runs and processes every request.
+> > 
+> > 摘自：[Nuxt build vs Nuxt Generate what is the difference?](https://dev.to/leamsigc/nuxt-build-vs-nuxt-generate-what-is-the-difference-759)
 
 ###### 目录结构
 
