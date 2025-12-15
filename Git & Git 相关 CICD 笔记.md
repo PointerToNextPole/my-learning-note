@@ -2516,9 +2516,9 @@ Git会有很多合并策略，其中常见的是 Fast-forward、Recursive 、Our
 
 摘自：[这才是真正的GIT——GIT内部原理](https://www.lzane.com/tech/git-internal/)
 
+#### Git 规范
 
-
-#### `@commitlint/config-conventional` type 说明
+##### `@commitlint/config-conventional` type 说明
 
 | type     | 含义                                   |
 | -------- | -------------------------------------- |
@@ -2536,7 +2536,37 @@ Git会有很多合并策略，其中常见的是 Fast-forward、Recursive 、Our
 
 摘自：[git 奇淫巧技](https://www.yuque.com/docs/share/946f5537-0539-451a-aa50-1a41c2c0f12f)
 
+##### 约定式分支
 
+###### 目的与益处
+
+1. **以目的为导向的分支名称**：每个分支名称都清楚地表明了其目的，使所有开发人员都能轻松了解该分支的用途。
+2. **与 CI/CD 集成**：通过使用一致的分支名称，它<font color=red>可以帮助自动化系统（如持续集成/持续部署管道）根据分支类型触发特定操作（例如，从发布分支自动部署）</font>。
+3. **团队协作**：它通过明确分支目的来鼓励团队内部的协作，减少误解并使团队成员更容易在任务之间切换而不会产生混淆。
+
+###### 分支命名前缀
+
+分支规范支持以下前缀，其结构应如下：
+
+```
+<type>/<description>
+```
+
+- **`main`**：主要开发分支（例如 `main`、`master` 或 `develop`）
+- **`feature/`** (或 **`feat/`**)：用于新功能（例如 `feature/add-login-page`, `feat/add-login-page`）
+- **`bugfix/`** (或 **`fix/`**)：用于错误修复（例如 `bugfix/fix-header-bug`, `fix/header-bug`）
+- **`hotfix/`**：用于紧急修复（例如 `hotfix/security-patch`）
+- **`release/`**：用于准备发布的分支（例如 `release/v1.2.0`）
+- **`chore/`**：用于非代码任务，如依赖项、文档更新（例如 `chore/update-dependencies`）
+
+###### 基本规则
+
+1. **使用小写字母、数字、连字符和点**：分支名称应全部使用小写字母 (`a-z`)、数字 (`0-9`) 及连字符 (`-`) 进行分隔。避免使用特殊字符、下划线或空格。对于 release 分支，可以在描述中使用点 (`.`) 来表示版本号（例如 `release/v1.2.0`）。
+2. **禁止连续、开头或结尾的连字符或点**：确保连字符和点不能连续出现（例如 `feature/new--login`, `release/v1.-2.0`），也不能出现在描述的开头或结尾（例如 `feature/-new-login`, `release/v1.2.0.`）。
+3. **保持清晰简洁**：分支名称应简明扼要，清楚表达工作的内容和目的。
+4. **包含工单编号**：如果适用，应包含项目管理工具中的工单编号，以便于追踪。例如，对于工单 `issue-123`，分支名称可以是 `feature/issue-123-new-login`。
+
+摘自：[约定式分支](https://conventional-branch.github.io/zh/)
 
 #### GitHub 提交 PR
 
