@@ -7455,6 +7455,15 @@ The Page Visibility API adds the following events to the `Document` interface:
 
 > ⚠️ **安全上下文:** 此项功能仅在一些 [支持的浏览器](https://developer.mozilla.org/zh-CN/docs/Web/API/Clipboard#浏览器兼容性) 的 [安全上下文 ](https://developer.mozilla.org/zh-CN/docs/Web/Security/Secure_Contexts) ( HTTPS ) 中可用。
 
+> [!TIP]
+> 该 API 只能在如下场景下使用：
+> 
+> - 域名为 localhost 
+> - ip 地址为 `127.0.0.1`
+> - 在 https 协议下
+> 
+> 学习自：[navigator.clipboard用不了？【渡一教育】](https://www.bilibili.com/video/BV1NJmsBYE2c)
+
 Clipboard 接口实现了 Clipboard API，如果用户授予了相应的权限，就能提供系统剪贴板的读写访问。在 Web 应用程序中，Clipboard API 可用于实现剪切、复制和粘贴功能。
 
 ```mermaid

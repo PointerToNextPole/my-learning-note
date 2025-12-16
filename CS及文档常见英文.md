@@ -179,7 +179,9 @@
 
    **more granular** ：更细粒度的
 
-   **granul** ：颗粒。
+   **granul** ：颗粒
+   
+   **granularity** ：粒度
 
 - **fine-grained**：细粒度的
 
@@ -1358,6 +1360,13 @@
   > On the other hand, if you split up a cohesive piece of logic into separate Effects, the code may look “cleaner” but will be more difficult to maintain.
   >
   > 摘自：[React doc - Lifecycle of Reactive Effects # Each Effect represents a separate synchronization process](https://react.dev/learn/lifecycle-of-reactive-effects#each-effect-represents-a-separate-synchronization-process)
+  
+  **cohesion** ：凝聚力、连贯性
+  > The entire suite of commands is built on a shared foundation to ensure cohesion and consistency.
+  > 
+  > 摘自：[Announcing Vite+](https://voidzero.dev/posts/announcing-vite-plus)
+
+  **cohere** ：vi. 凝聚，连贯、一致；团结一致
 
 - **numerator** ：（分数中的）分子
 
@@ -1541,6 +1550,8 @@
 - **sample** : 样本、样品、<font color=red>采样</font>
 - **orchestration** ：编排
 - **hybrid** ：混合
+- **regress** ：回归
+  **regression testing** ：回归测试
 ***
 
 
@@ -1774,12 +1785,6 @@
   **convict** ：n. 罪犯;已决犯;服刑囚犯 v. 定罪;宣判…有罪
 
   <img src="https://s2.loli.net/2023/05/07/Fi1pkIUHhQZjPYc.png" alt="image-20230507173533552" style="zoom:45%;" />
-
-- **cohesion** ：凝聚力
-
-  **cohere** ：vi. 凝聚，连贯、一致；团结一致
-
-- **surgery** ：手术
 
 - **drift** ：v. 漂流 n. 偏航，逐渐变化（尤指向坏的方面）
 
@@ -2690,3 +2695,4 @@
   > 摘自：[JetBrains - TeamCity](https://www.jetbrains.com/teamcity/)
   
 - **sculpt** ：雕刻、使...成形
+- **epoch** ：纪元、年代

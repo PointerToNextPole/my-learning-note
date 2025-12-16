@@ -182,3 +182,10 @@ npx --node-options="--permission --allow-fs-read=$(npm config get cache)" packag
 
 学习自：[twitter - @wong2_x 的帖子](https://x.com/wong2_x/status/1907331129809723862)
 
+
+## Prompt
+
+##### 一些资料
+
+- [让AI聪明45%的心理学Prompt技巧](https://mp.weixin.qq.com/s/rA1EzPK5Gk0yNNBUXNAlRg)
+- [RIPER-5](https://github.com/NeekChaw/RIPER-5)
