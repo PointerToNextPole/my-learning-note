@@ -1179,9 +1179,15 @@ git config -e [--global]
 
 
 
-#### Git 设置添加一个新的远程 Git 仓库
+#### git remote 相关
+##### Git 设置添加一个新的远程 Git 仓库
 
-##### 语法
+> [!TIP]
+> 注意这个 “新的” 也说明了：<font color=red>一个 Git 仓库是可以对应多个远端的</font>；此外，添加多个远端的语法也是 `git remote add`。如果添加了多个远端，那么此时推送代码需要指定 `<remote-name>` ，即 `git push <remote-name>`
+> 
+> 具体可参考 https://gemini.google.com/share/97f07f0c4c91
+
+###### 语法
 
 ```sh
 # 在目录中创建新的 Git 仓库
@@ -1190,13 +1196,15 @@ git init
 git remote add <shortname> <repo-url>
 ```
 
+> [!TIP]
+> 
 > ###### 关于 git remote 是什么
 >
 > 在 Git 中，一个 “Remote” 并不是远程仓库本身，而是**一个指向远程仓库 URL 的别名（或书签）**。这让你不必每次都输入完整的、冗长的 URL，而是可以使用一个简短、好记的名称（如 origin）来与远程仓库交互。
 >
 > 摘自：https://aistudio.google.com/prompts/1-xwDas42jDHfjF_ERZ1PrMN3DBlysT_y
 
-##### 示例
+###### 示例
 
 ```sh
 git remote add origin git@github.com:userName/projName.git
@@ -1214,7 +1222,9 @@ git commit --amend --no-edit
 git commit --amend
 ```
 
-> 💡 在 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 中给出了类似的方法：
+> [!TIP]
+> 
+> 在 [百里挑 15 个 Git 技巧](https://mp.weixin.qq.com/s/5Mmd51cpGKxmm7WULNvUyw) 中给出了类似的方法：
 >
 > ```sh
 > git commit --amend --only -m 'msg content'
@@ -1237,13 +1247,11 @@ git push -u origin master
 >
 > 摘自：[git push -u 的含义和用法](https://blog.csdn.net/chenzz444/article/details/104408607) 的评论区
 
-> 💡 **补充**
+> [!TIP]
 >
 > `git push [remote] --all` ：推送所有分支到远程仓库
 >
 > 摘自：[给自己点时间再记记这200条Git命令](https://zhuanlan.zhihu.com/p/137194960)
-
-
 
 ##### 其他 `git remote` 命令
 
@@ -1264,6 +1272,8 @@ git push -u origin master
 - `git remote set-url <remote-name> <remote-url>` ：设置远程仓库地址（用于修改远程仓库地址）
 
 摘自：[runoob - git - git-remote](https://www.runoob.com/git/git-remote.html)
+
+
 
 
 

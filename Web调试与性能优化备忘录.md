@@ -797,7 +797,7 @@ Element 面板选中元素可以看到这个元素和它的父元素的所有事
 
 
 
-## DevTools 与 Debug
+## 浏览器 DevTools 与 Debug
 
 
 
@@ -1151,7 +1151,6 @@ queryObjects(Constructor)
 
 
 ## 其他技巧
-
 
 
 #### 《微软产品经理：你不能不知道的6个Web开发者工具》笔记

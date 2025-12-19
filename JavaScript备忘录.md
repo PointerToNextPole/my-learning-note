@@ -17198,7 +17198,9 @@ ProgressEvent --|> Event : Inheritance
 
 #### AbortController
 
-> 💡 值得注意的是：AbortController 还存在一个子类：[TaskController](https://developer.mozilla.org/en-US/docs/Web/API/TaskController/TaskController)，可以通过 `TaskController.prototype.__proto__ === AbortController.prototype` 证明。另外，因为是比较新的 API，所以兼容性有点差，Safari 直到现在 (2025/3/12) 完全不支持，也不在实验 ( flag ) 特性中。它可以用于取消一个 [`scheduler.postTask`](https://developer.mozilla.org/en-US/docs/Web/API/Scheduler/postTask) 任务，可以看下 [postTask：React的杀手锏被浏览器原生实现了？](https://cloud.tencent.com/developer/article/1884331) 可以大致了解一下这个 API。此外，还可以看下 [优化耗时较长的任务](https://web.dev/articles/optimize-long-tasks?hl=zh-cn) 里面介绍了 `scheduler.yield` ，也提及了 `scheduler.postTask`
+> [!TIP]
+> 
+> 值得注意的是：AbortController 还存在一个子类：[TaskController](https://developer.mozilla.org/en-US/docs/Web/API/TaskController/TaskController)，可以通过 `TaskController.prototype.__proto__ === AbortController.prototype` 证明。另外，因为是比较新的 API，所以兼容性有点差，Safari 直到现在 (2025/3/12) 完全不支持，也不在实验 ( flag ) 特性中。它可以用于取消一个 [`scheduler.postTask`](https://developer.mozilla.org/en-US/docs/Web/API/Scheduler/postTask) 任务，可以看下 [postTask：React的杀手锏被浏览器原生实现了？](https://cloud.tencent.com/developer/article/1884331) 可以大致了解一下这个 API。此外，还可以看下 [优化耗时较长的任务](https://web.dev/articles/optimize-long-tasks?hl=zh-cn) 里面介绍了 `scheduler.yield` ，也提及了 `scheduler.postTask`
 
 AbortController 接口表示一个控制器对象，<font color=FF0000>允许你根据需要 **中止一个或多个 Web 请求**</font>。
 

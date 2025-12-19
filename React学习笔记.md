@@ -7513,8 +7513,6 @@ React 在 props 或 state 发生改变时，会调用 React 的 render 方法，
 
 关于 shouldComponentUpdate ，可以看下 [[#类组件生命周期]] 最后 shouldComponentUpdate 中的内容，另外，还有函数组件对应的高阶组件 `React.memo`
 
-
-
 #### Ref 的使用
 
 在 React 的开发模式中，通常情况下不需要、也不建议直接操作DOM原生；但某些特殊的情况，确实需要获取到 DOM 进行某些操作：
@@ -7722,6 +7720,12 @@ ReactNode 包含 `ReactElement`、或者 number、string、null、boolean 等可
 
 
 
+
+
+> [!TIP]
+> 
+> `pendingProps` 与 `memoizedProps`
+> 可见 https://gemini.google.com/share/6408333cc5ab
 
 ## 其他笔记
 
