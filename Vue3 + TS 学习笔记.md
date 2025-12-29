@@ -6289,6 +6289,8 @@ tsconfig.json是用于配置TypeScript编译时的配置选项：https://www.typ
      ```sh
      npx commitizen init cz-conventional-changelog --save-dev --save-exact
      ```
+     
+     > 关于 `--save-exact` ，可以看下 [[Node学习笔记#`--save` 系列 options]] 中的补充
 
   3. 在 package.json中进行配置（似乎是会自动被添加）：
 

@@ -1166,21 +1166,19 @@ package-lock.json 会优先从 缓存文件中获取 依赖包；如果找不到
 
 ##### yarn 的使用
 
-| npm                                     | Yarn                          |
-| --------------------------------------- | ----------------------------- |
-| npm install                             | yarn install                  |
-| npm install [package]                   | yarn add [package]            |
-| npm install --save [package]            | yarn add [package]            |
-| npm install --save-dev [package]        | yarn add [package] [--dev/-D] |
-| npm rebuild                             | yarn install --force          |
-| npm uninstall [package]                 | yarn remove [package]         |
-| npm uninstall --save [package]          | yarn remove [package]         |
-| npm uninstall --save-dev [package]      | yarn remove [package]         |
-| npm uninstall --save-optional [package] | yarn remove [package]         |
-| npm cache clean                         | yarn cache clean              |
-| rm -rf node_modules && npm install      | yarn upgrade                  |
-
-
+| npm                                       | Yarn                            |
+| ----------------------------------------- | ------------------------------- |
+| `npm install`                             | `yarn install`                  |
+| `npm install [package]`                   | `yarn add [package]`            |
+| `npm install --save [package]`            | `yarn add [package]`            |
+| `npm install --save-dev [package]`        | `yarn add [package] [--dev/-D]` |
+| `npm rebuild`                             | `yarn install --force`          |
+| `npm uninstall [package]`                 | `yarn remove [package]`         |
+| `npm uninstall --save [package]`          | `yarn remove [package]`         |
+| `npm uninstall --save-dev [package]`      | `yarn remove [package]`         |
+| `npm uninstall --save-optional [package]` | `yarn remove [package]`         |
+| `npm cache clean`                         | `yarn cache clean`              |
+| `rm -rf node_modules && npm install`      | `yarn upgrade`                  |
 
 ##### npx 工具
 
@@ -4205,7 +4203,6 @@ npm seach package-name
 摘自：[npm和gem](https://blog.csdn.net/u011099640/article/details/53083845)
 
 
-
 #### 命令解释
 
 - `npm version` ：除了返回 npm 的版本外，还返回其他关于包的信息，比如：你正在使用的 node.js 的版本，openSSL 或者 V8 的版本
@@ -4216,7 +4213,7 @@ npm seach package-name
   - **`--save` = `-S`** ，<font color=FF0000>安装的包将写入 package.json 里面的 `dependencies`</font> ，<font color=LightSeaGreen>`dependencies` ：生产环境需要依赖的库</font>
   - **`--save-dev` = `-D`** ，<font color=FF0000>安装的包将写入 packege.json 里面的 `devDependencies`</font> ，<font color=LightSeaGreen>`devdependencies` ：只有开发环境下需要依赖的库</font>
 
-另外：在 package name 后面添加 @版本号，可以安装指定版本号的包
+另外：在 package name 后面添加 `@版本号`，可以安装指定版本号的包
 
 摘自：[npm install说明](https://www.jianshu.com/p/b3e407942ac5)
 
@@ -4307,6 +4304,14 @@ npm install takes 3 exclusive, optional flags which save or update the package v
 - `-O` , `--save-optional` : Package will appear in your optionalDependencies.
 
   `-O` 是 `--save-optinal` 的缩写，package将会出现在你的optionalDependencies中
+
+> [!TIP]
+> 在 [Biome](https://github.com/biomejs/biome) 的 README 中，发现了 `npm install --save-dev --save-exact @biomejs/biome`，其中 `--save-exact` 是什么没什么印象。
+> > `--save-exact`的作用就是固定依赖包的版本，不要带`^`或`~`，避免出现小版本；有利于版本统一。
+> > 
+> > 摘自：[node安装依赖时带--save-exact是为什么？原因解答](https://blog.csdn.net/aaqingying/article/details/121209404)
+> 
+> 此外，也可参考 [What is the purpose of using --save-exact](https://stackoverflow.com/questions/58638817/what-is-the-purpose-of-using-save-exact)
 
 摘自：[npm 安装参数中的 --save-dev 是什么意思](https://segmentfault.com/q/1010000000403629)
 

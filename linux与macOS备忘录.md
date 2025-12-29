@@ -1727,6 +1727,73 @@ UBUNTU_CODENAME=focal
 
 
 
+
+#### rsync
+
+rsync 是一个常用的 Linux 应用程序，用于文件同步。
+
+它可以在本地计算机与远程计算机之间，或者两个本地目录之间同步文件（但不支持两台远程计算机之间的同步）。它也可以当作文件复制工具，替代`cp`和`mv`命令。
+
+它名称里面的 `r` 指的是 remote，rsync 其实就是 “远程同步” ( remote sync ) 的意思。与其他文件传输工具（如 FTP 或 scp）不同，rsync 的最大特点是会检查发送方和接收方已有的文件，仅传输有变动的部分（默认规则是文件大小或修改时间有变动）。
+
+##### 基本用法
+
+###### `-r` 参数
+
+本机使用 rsync 命令时，可以作为 `cp` 和 `mv` 命令的替代方法，将源目录同步到目标目录。
+
+```bash
+rsync -r source destination
+```
+
+上面命令中，<font color=red>`-r` 表示递归，即包含子目录</font>。注意，<font color=red>`-r` 是必须的</font>，否则 rsync 运行不会成功。`source` 目录表示源目录，`destination` 表示目标目录。
+
+如果有多个文件或目录需要同步，可以写成下面这样。
+
+```bash
+rsync -r source1 source2 destination
+```
+
+上面命令中，`source1`、`source2` 都会被同步到 `destination` 目录。
+
+###### `-a` 参数
+
+`-a` 参数可以替代 `-r` ，除了可以递归同步以外，还可以同步元信息（比如修改时间、权限等）。由于 rsync 默认使用文件大小和修改时间决定文件是否需要更新，所以 `-a` 比 `-r` 更有用。下面的用法才是常见的写法。
+
+```bash
+rsync -a source destination
+```
+
+目标目录`destination`如果不存在，rsync 会自动创建。执行上面的命令后，源目录`source`被完整地复制到了目标目录`destination`下面，即形成了`destination/source`的目录结构。
+
+如果只想同步源目录`source`里面的内容到目标目录`destination`，则需要在源目录后面加上斜杠。
+
+```bash
+rsync -a source/ destination
+```
+
+上面命令执行后，`source`目录里面的内容，就都被复制到了`destination`目录里面，并不会在`destination`下面创建一个`source`子目录。
+
+##### `-n` 参数
+
+如果不确定 rsync 执行后会产生什么结果，可以先用 `-n` 或 `--dry-run` 参数模拟执行的结果。
+
+```bash
+rsync -anv source/ destination
+```
+
+上面命令中，`-n` 参数模拟命令执行的结果，并不真的执行命令。`-v` 参数则是将结果输出到终端，这样就可以看到哪些内容会被同步。
+
+##### `--delete` 参数
+
+默认情况下，rsync 只确保源目录的所有内容（明确排除的文件除外）都复制到目标目录。它不会使两个目录保持相同，并且不会删除文件。如果要使得目标目录成为源目录的镜像副本，则必须使用 `--delete` 参数，这将删除只存在于目标目录、不存在于源目录的文件。
+
+```bash
+rsync -av --delete source/ destination
+```
+
+上面命令中，`--delete` 参数会使得 `destination` 成为 `source` 的一个镜像。
+
 ### Bash
 
 #### 变量类型
