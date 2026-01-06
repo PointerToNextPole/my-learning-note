@@ -1423,13 +1423,13 @@ Git Worktree 不只是用来切换分支这么简单，它在更复杂的工作�
 
 - **`git add .`** ：提交所有<font color=FF0000>修改的</font>和<font color=FF0000>新建的</font>数据暂存区
 
-- **`git add -u`** ：u 即 update，提交所有<font color=FF0000>被删除</font>和<font color=FF0000>修改</font>的文件到数据暂存区
+- **`git add -u`** ：u 即 update，提交所有<font color=FF0000>被删除</font>和<font color=FF0000>修改</font>的文件到数据暂存区（除了新建的）
 
-  **使用场景：**文件删除后，在用git add -u后，就能看见文件已经被提交到暂存区了。这个就可以以备不时之需，假如文件删错了，还能恢复回来
+  <font color=dodgerBlue>使用场景</font>：文件删除后，在用 `git add -u` 后，就能看见文件已经被提交到暂存区了。这个就可以以备不时之需，假如文件删错了，还能恢复回来
 
 - **`git add -A`** ：A 即 all，提交所有<font color=FF0000>被删除、被替换、被修改和新增的</font>文件到数据暂存区
 
-  **`git add -A` 与 `git add` . 和 `git add -u` 差异的地方：**具有替换的文件的功能，在 git 中，会将 内容相同的文件，视作是同一个文件；如果一个文件被删除，而一个文件被新增，且和被删除文件的内容一样；则会被认为是同一个文件，且是被替换了。在 `git add -A` 后，运行 `git status`，会有如下输出：
+  <font color=dodgerBlue>`git add -A` 与 `git add .` 和 `git add -u` 差异的地方</font>：具有替换的文件的功能，在 git 中，会将 内容相同的文件，视作是同一个文件；如果一个文件被删除，而一个文件被新增，且和被删除文件的内容一样；则会被认为是同一个文件，且是被替换了。在 `git add -A` 后，运行 `git status`，会有如下输出：
 
   <img src="https://s2.loli.net/2022/02/23/mfI6l51qQUZoLs9.png" alt="image-20220223161117243" style="zoom:50%;" />
 
@@ -2202,7 +2202,7 @@ reflog 的意思为 ref + log。
   
   > [!TIP]
   >
-  > 一般，想要删除本地的分支，并想将删除效果同步到远端，使用 `git branch -d` + `git push origin --delete` 即可。此外，在团队协作过程中，可以使用 `git fetch -p` 或 `git remote prune origin` 同步并清理其他协作者删除分支的引用。
+  > 一般，想要删除本地的分支，并想将删除效果同步到远端，使用 `git branch -d` + `git push origin --delete` 即可。此外，在团队协作过程中，可以使用 `git fetch -p` 或 `git remote prune origin` 同步并清理其他协作者删除分支的引用（👀 因为远端分支被删除，本地对应的分支并不会被自动清理；不过也算合理，因为谁也不希望自己本地的分支在自己什么都没干的情况下 莫名其妙地消失了）。
   >
   > 此外，还可以通过 WebStorm 上 Git 相关的 GUI 删除分支，并点击有下家弹出的 “Delete tracked remote branch ...”
   >
