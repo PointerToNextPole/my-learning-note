@@ -2696,3 +2696,5 @@
   
 - **sculpt** ：雕刻、使...成形
 - **epoch** ：纪元、年代
+- **chronic** ：慢性的
+  **chronic disease** ：慢性病
