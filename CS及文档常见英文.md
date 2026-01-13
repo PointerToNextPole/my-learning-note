@@ -12,6 +12,8 @@
 
   **forwards compatibility** ：向后兼容性
 
+  **backcompat** ：向后兼容
+
   **compat**：兼容 ( verb )
 
 - **shortcut** ：快捷方式，近道
@@ -1552,6 +1554,7 @@
 - **hybrid** ：混合
 - **regress** ：回归
   **regression testing** ：回归测试
+- **supervision** ：监督
 ***
 
 
