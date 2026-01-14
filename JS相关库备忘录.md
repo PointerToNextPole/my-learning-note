@@ -4,7 +4,7 @@
 
 ## jQuery
 
-#### **jQuery 语法**
+#### jQuery 语法
 
 jQuery 语法是通过选取 HTML 元素，并对选取的元素执行某些操作。
 

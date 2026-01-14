@@ -323,7 +323,7 @@ Mustache 标签将会被替代为对应数据对象上 `msg` property 的值。�
 {{ if (ok) { return message } }}
 ```
 
-#### **指令（用于自定义指令（以v-开头））**
+#### 指令（用于自定义指令（以v-开头））
 
 <font color=FF0000>指令</font> (Directives) 是<font color=FF0000>带有 `v-` 前缀的特殊 attribute</font>。指令 attribute 的值预期是**单个 JavaScript 表达式** (`v-for` 是例外情况，稍后我们再讨论)。<mark>指令的职责是，当表达式的值改变时，将其产生的连带影响，响应式地作用于 DOM</mark>。
 
@@ -868,7 +868,7 @@ var example1 = new Vue({
 
 因为它是 Vue 识别节点的一个通用机制，`key` 并不仅与 `v-for` 特别关联。后面我们将在指南中看到，它还具有其它用途。
 
-##### **数组更新检测**
+##### 数组更新检测
 
 - **变更方法：**Vue <mark>将被侦听的</mark><font color=FF0000>数组的变更方法</font><mark>进行了包裹</mark>，所以它们（的使用？？？）也将会触发视图更新。这些被包裹过的方法包括：
   
@@ -2836,7 +2836,7 @@ methods: {
 }
 ```
 
-#### **循环引用**
+#### 循环引用
 
 - **递归组件**
   
@@ -2950,7 +2950,7 @@ methods: {
   
   <mark>x-template 需要定义在 Vue 所属的 DOM 元素外</mark>（如上示例）。
 
-#### **控制更新**
+#### 控制更新
 
 感谢 <font color=FF0000>Vue 的响应式系统</font>，<font color=FF0000>它始终知道何时进行更新</font> (如果你用对了的话)。不过还是有一些边界情况，你想要强制更新，尽管表面上看响应式的数据没有发生改变。也有一些情况是你想阻止不必要的更新。
 
@@ -3135,7 +3135,7 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 </style>
 ```
 
-##### **自定义过渡的类名**
+##### 自定义过渡的类名
 
 我们<font color=FF0000>可以通过以下 attribute 来自定义过渡类名</font>：
 
@@ -3176,13 +3176,13 @@ Vue 提供了<font size=5> `transition`</font> （过渡）的封装组件，在
 </script>
 ```
 
-##### **同时使用过渡和动画**
+##### 同时使用过渡和动画
 
 <font color=FF0000>Vue 为了知道过渡的完成，**必须设置相应的事件监听器**</font>。<font color=FF0000>它可以是 <font size=4>`transitionend` </font>或<font size=4> `animationend`</font></font>，这取决于给元素应用的 CSS 规则。如果你使用其中任何一种，Vue 能自动识别类型并设置监听。
 
 但是，在一些场景中，你<font color=FF0000>需要给同一个元素同时设置两种过渡动效</font>，比如<mark> `animation` 很快的被触发并完成了，而 `transition` 效果还没结束</mark>。在这种情况中，你就<font color=FF0000>需要使用 `type` attribute 并设置 `animation` 或 `transition` 来明确声明你需要 Vue 监听的类型</font>。
 
-##### **显性的过渡持续时间**（2.2.0 新增）
+##### 显性的过渡持续时间（2.2.0 新增）
 
 在很多情况下，Vue 可以自动得出过渡效果的完成时机。默认情况下，Vue 会等待其在过渡效果的根元素的第一个 `transitionend` 或 `animationend` 事件。然而也可以不这样设定——比如，我们可以拥有一个精心编排的一系列过渡效果，其中一些嵌套的内部元素相比于过渡效果的根元素有延迟的或更长的过渡效果。
 
@@ -3855,7 +3855,7 @@ v-text：将数据解析为纯文本
 
 非Prop特性：指的是一个未被组件注册的特性。<font color=FF0000>当组件接收了一个非Prop特性时，**该特性会被添加到这个组件的根元素上**。</font>
 
-##### **props特性 与 非props特性的区别**
+##### props特性 与 非props特性的区别
 
 - **props特性：**
   
@@ -4127,7 +4127,7 @@ var Child = {
 vm.$mount( elementOrSelector] )
 ```
 
-##### **参数**
+##### 参数
 
 - {Element | string} [elementOrSelector]
 - {boolean} [hydrating]
@@ -5505,7 +5505,7 @@ listReset() {
 
 路由就是根据网址的不同，返回不同的内容给用户
 
-#### **路由的两种显示模式：**
+#### 路由的两种显示模式
 
 - hash模式（<font color=FF0000>vue-router 默认使用</font>）：地址栏包含`#`符号，`#`以后的内容不会被后台获取。可以减少到后台访问的次数；但需要参数传递时，将无法满足需求。出现404时，后台不会报错。<font color=FF0000>**另外，`#` 是特殊字符，在很多场合不被满足；所以使用较少**</font>
 
@@ -5561,9 +5561,9 @@ routers: [
 
 每个路由应该映射一个组件。 其中"component" 可以是通过 Vue.extend() 创建的组件构造器，或者，只是一个组件配置对象。
 
-#### **我们<font color=FF0000>可以在任何组件内通过 `this.$router` 访问路由器</font>，<font color=FF0000>也可以通过 `this.$route` 访问当前路由</font>**
+#### 我们<font color=FF0000>可以在任何组件内通过 `this.$router` 访问路由器</font>，<font color=FF0000>也可以通过 `this.$route` 访问当前路由</font>
 
-#### \<router-link>
+#### `<router-link>`
 
 **router-link组件的props：**
 
@@ -5592,9 +5592,9 @@ routers: [
 
 摘自：[Vue路由\<router-link>属性的使用](https://www.jianshu.com/p/d3f689309d7a) / [\<router-link>组件](https://www.jianshu.com/p/8b8616df24a6) / [vue学习笔记一之](https://www.cnblogs.com/wangpengfei8313/p/8074614.html)
 
-#### **\<router-view>**
+#### `<router-view>`
 
-**\<router-view>的作用是挂载路由**（更通俗的讲就是：显示的是当前路由地址所对应的内容）
+**`<router-view>` 的作用是挂载路由**（更通俗的讲就是：显示的是当前路由地址所对应的内容）
 
 **举例：**点击这个链接跳转到其他组件的情况，通常会跳转到新的页面，蛋是，我们不想跳转到新页面，只在当前页面切换着显示，那么就要涉及到路由的嵌套了，也可以说是子路由的使用。
 
@@ -6337,7 +6337,7 @@ Vuex 是一个专为 Vue.js 应用程序开发的<font color=FF0000>**状态管�
 
 > Flux 架构就像眼镜：您自会知道什么时候需要它。
 
-#### **补充使用场景：**
+#### 补充使用场景
 
 有什么状态时需要我们在多个组件间共享的呢？如果你做过大型开放，你一定遇到过多个状态，在多个界面间的共享问题。比如用户的登录状态、用户名称、头像、地理位置信息等等。比如商品的收藏、购物车中的物品等等。<font color=FF0000>这些状态信息，我们都可以放在统一的地方，对它进行保存和管理，而且它们还是响应式的</font>
 
@@ -6487,7 +6487,7 @@ computed: mapState([
 ])
 ```
 
-#### **对象展开运算符**
+#### 对象展开运算符
 
 <font color=FF0000>mapState 函数返回的是一个对象</font>。我们如何将它与局部计算属性混合使用呢？通常，我们需要使用一个工具函数将多个对象合并为一个，以使我们可以将最终对象传给 computed 属性。但是自从有了对象展开运算符，我们可以极大地简化写法：
 

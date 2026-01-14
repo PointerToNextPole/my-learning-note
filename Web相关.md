@@ -1859,7 +1859,7 @@ HTTP请求开始到结束这段时间。Request 的<font color=FF0000>范围是�
 
 间接转发就相当于："A找B借钱，B说没有，让A去找C借"。
 
-##### **具体阐述：**
+##### 具体阐述
 
 - 间接转发方式，有时也叫<font color=FF0000>重定向</font>，它<font color=FF0000>一般用于避免用户的非正常访问</font>。<font color=lightSeaGreen>例如：用户在没有登录的情况下访问后台资源，Servlet可以将该HTTP请求重定向到登录页面，让用户登录以后再访问</font>。在Servlet中，通过调用response对象的SendRedirect()方法，告诉浏览器重定向访问指定的URL，示例代码如下：　
 

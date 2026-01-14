@@ -4080,7 +4080,7 @@ promise.then(_ => console.log(_))  // 1
 
 
 
-#### **异步函数**
+#### 异步函数
 
 异步函数 ( async function ) 是 <font color=FF0000>ECMAScript 2017</font> ( ECMA-262 ) 标准的规范，几乎被所有浏览器所支持，除了 Internet Explorer。<mark>它们是基于promises的语法糖，使异步代码更易于编写和阅读</mark>；<font color=FF0000>**同时，<font size=4>async/await 也是 generator 的语法糖</font>**</font>，关于 generator 实现异步同步执行，可以参考 [[JS 机制与原理#Generator 的自动执行#关于 generator 实现异步原理的总结]]
 
@@ -4111,7 +4111,7 @@ async function asyncFunc() {
 asyncFunc();
 ```
 
-##### **更多补充：**
+##### 更多补充
 
 - **async关键字：**
   
@@ -8375,7 +8375,7 @@ Console 对象可以从任何全局对象中访问到，如 Window，WorkerGloba
 - **Console.trace()：**输出一个 stack trace。
 - **Console.warn()：**常用，打印一个警告信息，可以使用 string substitution 和额外的参数。
 
-##### **使用字符串替换**
+##### 使用字符串替换
 
 > 👀 标题感觉用“格式化输出“表述，似乎更好些?
 
@@ -14140,7 +14140,7 @@ Node <|-- DocumentFragment
 
 DOM window 对象通过 history 对象提供了对浏览器的会话历史的访问。<mark>它暴露了很多有用的方法和属性，允许你在用户浏览历史中向前和向后跳转</mark>，同时——从HTML5开始——提供了对<font color=FF0000>history栈</font>中内容的操作。
 
-##### **使用 back(),  forward()和  go() 方法来完成在用户历史记录中向后和向前的跳转。**
+##### 使用 back(),  forward()和  go() 方法来完成在用户历史记录中向后和向前的跳转
 
 - **window.history.back()：**在history中向后跳转，这和用户点击浏览器回退按钮的效果相同。
 - **window.history.forward()：**在history中向前跳转（如同用户点击了前进按钮）

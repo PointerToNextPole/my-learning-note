@@ -1,11 +1,8 @@
-# **Spring Boot学习笔记**
+# Spring Boot学习笔记
 > 尚硅谷Spring Boot教程
 
 
-
-## <font color=FF0000>**From 1**</font>
-
-
+## From 1
 
 Spring Boot简化Spring应用开发，整个Spring技术栈的一个大整合，约定大于配置，去繁从简，just run就能创建一个独立的产品级别的应用
 Spring Boot -> J2EE一站式解决方案

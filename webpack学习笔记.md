@@ -11612,7 +11612,7 @@ module.exports 中的 bail 配置的作用是，一旦打包出现错误，则�
 - 通过参数是否配置 exposes 来判断是否使用公开 ContainerPlugin 模块。
 - 通过参数是否配置 remotes 来判断是否使用 ContainerReferencePlugin 引用模块。
 
-###### **webpack5 模块联邦对异步模块加载的处理**
+###### webpack5 模块联邦对异步模块加载的处理
 
 - 下载并执行 remoteEntry.js，挂载入口点对象到 window.app-exposes，他有两个函数属性，init 和 get。init 方法用于初始化作用域对象 initScope，get 方法用于下载 moduleMap 中导出的远程模块。
 - 加载 app-exposes 到本地模块。

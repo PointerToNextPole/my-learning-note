@@ -318,7 +318,7 @@ public class HelloController {}
 - **织入(Weaving)：**织入是指将切面代码插入到目标对象的过程。代理的invoke方法完成的工作，可以称为织入。
 - **顾问(Advisor)：**顾问是切面的另一种实现，能够将通知以更为复杂的方式织入到目标对象中，是将通知包装为更复杂切面的装配器。
 
-#### **常用增强处理类型**
+#### 常用增强处理类型
 
 - Before
 - AfterReturning
@@ -488,7 +488,7 @@ public class HelloController {}
 
 
 
-#### **@EnableAspectJAutoProxy**
+#### @EnableAspectJAutoProxy
 
 `@EnableAspectJAutoProxy`表示开启AOP代理自动配置
 

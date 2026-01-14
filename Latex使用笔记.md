@@ -8,19 +8,27 @@
 
 ###### 乘法
 
-点乘：`\cdot` $a \cdot b$
+- 点乘：`\cdot` $a \cdot b$
 
-叉乘：`\times` $a \times b$
+- 叉乘：`\times` $a \times b$
 
 ###### 除法
 
-`\div` $a \div b$
+- `\div` $a \div b$
 
 ###### 分数
 
-`\frac{numerator}{denominator}` $\frac{numerator}{denominator}$
+- `\frac{numerator}{denominator}` $\frac{numerator}{denominator}$
 
+##### 关系运算符
 
+- 大于：`>` $a > b$
+
+- 大于等于：`\geq` $a \geq b$
+- 小于：`<` $a < b$
+
+- 小于等于：`\leq` $a \leq b$
+- 恒等 ：`\equiv` $a \equiv b$
 
 
 

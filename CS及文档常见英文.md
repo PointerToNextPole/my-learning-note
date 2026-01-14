@@ -1124,7 +1124,9 @@
   >
   > 摘自：[React doc - Reacting to Input with State # How declarative UI compares to imperative](https://react.dev/learn/reacting-to-input-with-state#how-declarative-ui-compares-to-imperative)
 
-- **spin-off** ：拆分的
+  **spin-off** ：拆分的
+
+  **spin** ：旋转
 
 - **exponential** ：指数的
 
@@ -2679,7 +2681,7 @@
 - **condescending** ：傲慢的、居高岭下的
 - **freed up** ：腾出、释放出
 - **ditto** ：同上
-- **mesh** ：表格
+- **mesh** ：表格、网格（ three.js 相关）
 - **fast-forward** ：快进
   > 👀 此外，git 的 merge 操作也有 fast-forward 模式
   
@@ -2701,3 +2703,5 @@
 - **epoch** ：纪元、年代
 - **chronic** ：慢性的
   **chronic disease** ：慢性病
+- **piecewise** ：分段的
+  > `visualMap.type` 的可选值之一 `"piecewise"`

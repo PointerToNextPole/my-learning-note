@@ -1749,7 +1749,7 @@ HTML `<figure>` 元素代表一段独立的内容，<font color=FF0000>经常与
 
 <img src="https://i.loli.net/2020/11/17/Y2VJ586S1XEKQkN.png" alt="DeAnsA.png" style="zoom:40%;" />
 
-##### **使用说明**
+##### 使用说明
 
 - 通常，`<figure>` 是图像，插图，图表，代码片段等，在文档的主流程中引用，但可以移动到文档的另一部分或附录而不影响主流程。
 - 作为 sectioning root，`<figure>` 元素的内容轮廓将从文档的主要轮廓中排除。
@@ -1763,7 +1763,7 @@ HTML `<figure>` 元素代表一段独立的内容，<font color=FF0000>经常与
 
 HTML `<section>` 元素<font color=FF0000>表示一个包含在 HTML 文档中的独立部分</font>，它没有更具体的语义元素来表示，一般来说会有包含一个标题。
 
-##### **使用说明**
+##### 使用说明
 
 - 一般通过是否包含一个标题 ( `<h1>`-`<h6>` element) 作为子节点 来 辨识每一个 `<section>` 。
 - 如果 `<section>` 元素的内容可以单独在多个媒体上发表，应该使用 `<article>` 而不是 `<section>`。
@@ -3030,17 +3030,17 @@ HTML 内联框架元素 ( `<iframe>` ) 表示嵌套的 浏览上下文 ( browsin
 
 该元素包含全局属性。
 
-###### **`allow`** 
+###### `allow`
 
 用于为 `<iframe>` 指定其特征策略。
 
-###### **`allowfullscreen`** 
+###### `allowfullscreen`
 
 设置为 true 时，可以通过调用 `<iframe>` 的 `requestFullscreen()` 方法激活全屏模式。
 
 > <font color=LightSeaGreen>这是一个历史遗留属性，已经被重新定义为 `allow="fullscreen"` 。</font>
 
-###### **`allowpaymentrequest`** 
+###### `allowpaymentrequest`
 
 设置为 true 时，跨域的 `<iframe>` 就可以调用 Payment Request API。
 
@@ -3050,7 +3050,7 @@ HTML 内联框架元素 ( `<iframe>` ) 表示嵌套的 浏览上下文 ( browsin
 
 🧪 对嵌入的资源配置内容安全策略。 
 
-###### **`width`** 
+###### `width`
 
 以 CSS 像素格式 HTML5，或以像素格式 HTML 4.01，或以百分比格式指定的 frame 的宽度。默认值是 300。
 
@@ -6854,7 +6854,7 @@ flex 属性是 flex-grow、 flex-shrink 和 flex-basis的简写，<font color=FF
 
 <font color=FF0000>允许单个项目有与其他项目不一样的对齐方式</font>，设置弹性元素自身在侧轴（纵轴）方向上的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
 
-###### **语法**
+###### 语法
 
 ```css
 .item {
@@ -9476,7 +9476,7 @@ BEM 规范试图将整个用户界面分解成一个个小的可重复使用的 
 
 条件注释<font color=FF0000>最初于微软的 Internet Explorer 5浏览器中出现，并且直至 Internet Explorer 9 均支持</font>。<mark>微软已宣布于 Internet Explorer 10 中以标准模式处理页面 - 如 HTML5 - 时停止支持，但是旧版网页使用这种技术（于兼容性视图）将继续有效</mark>。JScript 条件注释于 Internet Explorer 4 中被引进，而在 Internet Explorer 10 中继续受支持，无论于标准模式或者兼容性模式之中，但在 Windows 应用商店应用程序中不受支持。
 
-##### **语法：**
+##### 语法
 
 有两种“条件注释”：<font color=FF0000>**下层显示 (downlevel revealed)**</font>和<font color=FF0000>**下层隐藏(downlevel hidden)**</font>。
 
@@ -9720,7 +9720,7 @@ https://www.jianshu.com/p/654cd19da3e7
 
 ## Less
 
-#### **less的特点：**
+#### less的特点
 
 - 变量：就像写其他语言一样，免于多处修改。
 - 混合：class 之间的轻松引入和继承。
@@ -9762,14 +9762,14 @@ https://www.jianshu.com/p/654cd19da3e7
 
 以上摘自：[less的几种编译成css的方法](https://juejin.im/post/6844903891922845710)
 
-#### **注释**
+#### 注释
 
 ```less
 // 不会被编译到css文件中，相当于：给开发人员看的注释
 /* 会被编译到css文件中，相当于：给客户看的注释 */
 ```
 
-#### **声明**
+#### 声明
 
 - 声明变量，示例：
   
@@ -9881,7 +9881,7 @@ sass compiled_file.sass:output_file.css
 sass --watch comiled_file_folder:output_folder
 ```
 
-#### **输出css文件的样式**
+#### 输出css文件的样式
 
 - **nested**：嵌套<font color=FF0000>（默认）</font>
 - **compact**：紧凑
