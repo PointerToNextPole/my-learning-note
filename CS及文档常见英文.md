@@ -1557,6 +1557,8 @@
 - **regress** ：回归
   **regression testing** ：回归测试
 - **supervision** ：监督
+- **morph** ：变形、渐变
+- **vertex** ：顶点
 ***
 
 
