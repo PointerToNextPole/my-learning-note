@@ -478,6 +478,8 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 
 摘自：[stack overflow - What does “brew link” do?](https://stackoverflow.com/questions/33268389/what-does-brew-link-do)
 
+在 Apple Silicon 系列芯片的 Mac 上，通过 brew 安装的 Node 和通过 n 获取并控制版本的 Node 是冲突的，如果共存，n 的 Node 版本切换会失效；同时，通过 brew 安装如 TypeScript 等工具时，Node 作为依赖会被自动下载，这时，n 就会被动的失效。
+
 ##### brew 信息搜索
 
 可以使用 `brew search` 搜索 brew 中的软件，也可以使用 `brew info` 查看软件的信息。

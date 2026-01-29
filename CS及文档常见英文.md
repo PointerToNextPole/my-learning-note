@@ -1025,6 +1025,8 @@
 - **coercion** ：强制，胁迫
 
   **type coercion** ：强制类型转换
+  
+  **coerce** ：v
 
 - **tamper** ：篡改
 
