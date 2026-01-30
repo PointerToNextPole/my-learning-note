@@ -1711,6 +1711,10 @@
   >
   > 摘自：https://aistudio.google.com/prompts/1Krl_Wf1iOKHYQnvogj-6fwGP5FayUpSv
 
+- `du-` / `duel-` ：两个的
+  > The prefix _du-_ (found in "duel" and "dual") derives from Latin and means **"two"**. It implies a pairing, doubling, or, specifically in the case of "duel" (derived from _duellum_), a "one-on-one combat" or a fight between two parties.
+  > 
+  > 摘自：Google 搜索 “duel prefix meaning”
   
 
 ##### 后缀

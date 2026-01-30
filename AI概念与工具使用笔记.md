@@ -1,7 +1,6 @@
 # AI 概念与工具使用笔记
 
 
-
 ## RAG
 
 ##### LLM 是涌现性智能
@@ -124,8 +123,6 @@ RAG 更底层的逻辑，也是我们对待 llm 正确的态度：<font color=re
 
 ## 工具使用
 
-
-
 ### MCP
 
 
@@ -183,9 +180,189 @@ npx --node-options="--permission --allow-fs-read=$(npm config get cache)" packag
 学习自：[twitter - @wong2_x 的帖子](https://x.com/wong2_x/status/1907331129809723862)
 
 
+## Claude & Claude Code
+
+##### 资料
+
+- [Claude Code 官方中文文档](https://code.claude.com/docs/zh-CN/)
+
+#### AnyRouter 教程
+
+###### 使用方法
+
+```sh
+# 启动交互模式
+claude
+
+# 以初始查询启动
+claude "解释这个项目"
+
+# 运行单个命令并退出
+claude -p "这个函数做什么？"
+
+# 处理管道内容
+cat logs.txt | claude -p "分析这些错误"
+```
+
+###### 恢复对话
+
+```sh
+# 立即恢复最近的对话
+claude --continue
+
+# 选择特定对话
+claude --resume
+```
+
+###### 图像处理
+
+Claude Code 可以处理图像信息，支持多种输入方式：
+
+- 将图像拖放到 Claude Code 窗口中
+- 复制图像并使用 cmd+v 粘贴到 CLI 中
+- 提供图像路径
+
+###### 记忆系统
+
+Claude Code 通过 `CLAUDE.md` 文件存储重要的项目信息、约定和常用命令。
+
+```sh
+# 初始化记忆文件
+/init
+
+# 快速添加记忆
+# 始终使用描述性变量名
+```
+
+###### 压缩上下文
+
+使用压缩功能节省开销：
+
+```sh
+/compact [instructions]
+```
+
+###### Git 集成
+
+Claude Code 支持使用自然语言操作 Git：
+
+```sh
+> 提交我的更改
+> 创建一个 pr
+> 哪个提交在去年十二月添加了 markdown 测试？
+> 在 main 分支上变基并解决任何合并冲突
+```
+
+
+### 官方文档笔记
+
+#### 斜杠命令
+
+在交互式会话中使用斜杠命令控制 Claude 的行为。
+
+##### 内置斜杠命令
+
+|命令|用途|
+|---|---|
+|`/add-dir`|添加额外的工作目录|
+|`/agents`|管理用于专门任务的自定义 AI 子代理|
+|`/bashes`|列出和管理后台任务|
+|`/bug`|报告错误（将对话发送给 Anthropic）|
+|`/clear`|清除对话历史|
+|`/compact [instructions]`|压缩对话，可选择性地提供焦点说明|
+|`/config`|打开设置界面（配置选项卡）|
+|`/context`|将当前上下文使用情况可视化为彩色网格|
+|`/cost`|显示令牌使用统计。有关订阅特定的详细信息，请参阅[成本跟踪指南](https://code.claude.com/docs/zh-CN/costs#using-the-cost-command)。|
+|`/doctor`|检查您的 Claude Code 安装的健康状况|
+|`/exit`|退出 REPL|
+|`/export [filename]`|将当前对话导出到文件或剪贴板|
+|`/help`|获取使用帮助|
+|`/hooks`|管理工具事件的钩子配置|
+|`/ide`|管理 IDE 集成并显示状态|
+|`/init`|使用 `CLAUDE.md` 指南初始化项目|
+|`/install-github-app`|为存储库设置 Claude GitHub Actions|
+|`/login`|切换 Anthropic 账户|
+|`/logout`|从您的 Anthropic 账户登出|
+|`/mcp`|管理 MCP 服务器连接和 OAuth 身份验证|
+|`/memory`|编辑 `CLAUDE.md` 内存文件|
+|`/model`|选择或更改 AI 模型|
+|`/output-style [style]`|直接设置输出样式或从选择菜单中选择|
+|`/permissions`|查看或更新[权限](https://code.claude.com/docs/zh-CN/iam#configuring-permissions)|
+|`/plan`|直接从提示进入计划模式|
+|`/plugin`|管理 Claude Code 插件|
+|`/pr-comments`|查看拉取请求注释|
+|`/privacy-settings`|查看和更新您的隐私设置|
+|`/release-notes`|查看发布说明|
+|`/rename <name>`|重命名当前会话以便于识别|
+|`/remote-env`|配置远程会话环境（claude.ai 订阅者）|
+|`/resume [session]`|按 ID 或名称恢复对话，或打开会话选择器|
+|`/review`|请求代码审查|
+|`/rewind`|回退对话和/或代码|
+|`/sandbox`|启用沙箱化 bash 工具，具有文件系统和网络隔离，用于更安全、更自主的执行|
+|`/security-review`|对当前分支上的待处理更改完成安全审查|
+|`/stats`|可视化每日使用情况、会话历史、连胜记录和模型偏好|
+|`/status`|打开设置界面（状态选项卡），显示版本、模型、账户和连接性|
+|`/statusline`|设置 Claude Code 的状态行 UI|
+|`/teleport`|按会话 ID 从 claude.ai 恢复远程会话，或打开选择器（claude.ai 订阅者）|
+|`/terminal-setup`|为换行安装 Shift+Enter 键绑定（VS Code、Alacritty、Zed、Warp）|
+|`/theme`|更改颜色主题|
+|`/todos`|列出当前 TODO 项目|
+|`/usage`|仅适用于订阅计划：显示计划使用限制和速率限制状态|
+|`/vim`|进入 vim 模式以在插入和命令模式之间交替|
+
+##### 自定义斜杠命令
+
+自定义斜杠命令允许您将经常使用的提示定义为 Markdown 文件，Claude Code 可以执行这些文件。命令按范围（特定于项目或个人）组织，并通过目录结构支持命名空间。
+
+> [!TIP]
+> 斜杠命令自动完成在您的输入中的任何位置都有效，而不仅仅在开头。在任何位置键入 `/` 以查看可用命令。
+
+###### 语法
+
+```sh
+/<command-name> [arguments]
+```
+
+###### 参数
+
+|参数|描述|
+|---|---|
+|`<command-name>`|从 Markdown 文件名派生的名称（不包括 `.md` 扩展名）|
+|`[arguments]`|传递给命令的可选参数|
+
+
 ## Prompt
 
 ##### 一些资料
 
 - [让AI聪明45%的心理学Prompt技巧](https://mp.weixin.qq.com/s/rA1EzPK5Gk0yNNBUXNAlRg)
 - [RIPER-5](https://github.com/NeekChaw/RIPER-5)
+
+#### amp prompt 指南
+
+ For the best results, follow these guidelines:
+
+- <font color=red>**Be explicit with what you want**</font>. Instead of “can you do X?”, try “do X.”
+- Keep it short, keep it focused. Break very large tasks up into smaller sub-tasks, one per thread. <font color=red>Do not ask the agent to write database migrations in the same thread as it previously changed CSS for a documentation page</font>.
+- Don’t try to make the model guess. If you know something about how to achieve what you want the agent to do — which files to look at, which commands to run — put it in your prompt.
+- <font color=dodgerBlue>If you want the model to not write any code</font>, but only to research and plan, say so: “Only plan how to implement this. Do NOT write any code.”
+- Use [`AGENTS.md` files](https://ampcode.com/manual#AGENTS.md) to guide Amp on how to run your tests and build steps and to avoid common mistakes.
+- <font color=red>Abandon threads if they accumulated too much noise</font>. Sometimes things go wrong and failed attempts with error messages clutter up the context window. In those cases, it’s often best to start with a new thread and a clean context window.
+- Tell the agent how to best review its work: what command or test to run, what URL to open, which logs to read. Feedback helps agents as much as it helps us.
+
+<font color=red>**The first prompt in the thread carries a lot of weight**</font>. It sets the direction for the rest of the conversation. We encourage you to be deliberate with it. That’s why we use Cmd/Ctrl+Enter to submit a message in Amp — it’s a reminder to put effort into a prompt.
+
+<font color=dodgerBlue>Here are some examples of prompts we’ve used with Amp:</font>
+
+- “Make `observeThreadGuidanceFiles` return `Omit<ResolvedGuidanceFile, 'content'>[]` and remove that field from its return value, and update the tests. Note that it is omitted because this is used in places that do not need the file contents, and this saves on data transferred over the view API.” ([See Thread](https://ampcode.com/threads/T-9219191b-346b-418a-b521-7dc54fcf7f56))
+- “Run `<build command>` and fix all the errors”
+- “Look at `<local development server url>` to see this UI component. Then change it so that it looks more minimal. Frequently check your work by screenshotting the URL”
+- “Run git blame on the file I have open and figure out who added that new title”
+- “Convert these 5 files to use Tailwind, <font color=red>use one subagent per file</font>”
+- “Take a look at `git diff` — someone helped me build a debug tool to edit a Thread directly in JSON. Please analyze the code and see how it works and how it can be improved. […]” ([See Thread](https://ampcode.com/threads/T-39dc399d-08cc-4b10-ab17-e6bac8badea7))
+- “Check `git diff --staged` and remove the debug statements someone added” ([See Thread](https://ampcode.com/threads/T-66beb0de-7f02-4241-a25e-50c0dc811788))
+- “Find the commit that added this using git log, look at the whole commit, then help me change this feature”
+- “<font color=red>Explain the relationship between class AutoScroller and ViewUpdater using a diagram</font>”
+- “Run `psql` and rewire all the `threads` in the databaser to my user (email starts with thorsten)” ([See Thread](https://ampcode.com/threads/T-f810ef79-ba0e-4338-87c6-dbbb9085400a))
+
+摘自：[amp - manual # How to Prompt](https://ampcode.com/manual#how-to-prompt)
