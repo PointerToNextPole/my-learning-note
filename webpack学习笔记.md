@@ -3355,15 +3355,15 @@ require('file.js?test');
 __resourceQuery === '?test';
 ```
 
-##### \__webpack_public_path__ (webpack-specific)
+##### `__webpack_public_path__ (webpack-specific)`
 
 <font color=red>Equals the configuration option's `output.publicPath`</font> .
 
-##### \__webpack_require__ (webpack-specific)
+##### `__webpack_require__ (webpack-specific)`
 
 The <font color=red>raw require **function**</font>（ ⚠️ 注意这是一个函数，使用示例见 [[#Module Methods#require.resolve]]）. This expression isn't parsed by the Parser for dependencies.
 
-##### \__webpack_chunk_load__ (webpack-specific)
+##### `__webpack_chunk_load__ (webpack-specific)`
 
 The <font color=red>internal chunk loading function</font>. Takes one argument:
 
@@ -3388,27 +3388,27 @@ import('./module-a').then((moduleA) => {
 });
 ```
 
-##### \__webpack_module__ (webpack-specific)
+##### `__webpack_module__ (webpack-specific)`
 
 > 5.68.0+
 
 It <font color=red>**provides access to the the current `module`**</font> . <font color=red>`module` is not available in strict ESM</font> .
 
-##### \__webpack_module__.id (webpack-specific)
+##### `__webpack_module__.id (webpack-specific)`
 
 > 5.68.0+
 
 It <font color=red>provides access to the ID of current `module`</font> ( `module.id` ) . `module` is not available in strict ESM.
 
-##### \__webpack_modules__ (webpack-specific)
+##### `__webpack_modules__ (webpack-specific)`
 
 <font color=red>Access to the internal object of all modules</font>.
 
-##### \__webpack_hash__ (webpack-specific)
+##### `__webpack_hash__ (webpack-specific)`
 
 It <font color=red>provides access to the hash of the compilation</font>.
 
-##### \__webpack_get_script_filename__ (webpack-specific)
+##### `__webpack_get_script_filename__ (webpack-specific)`
 
 `function (chunkId)` : It <font color=red>provides filename of the chunk by its id</font>.
 
@@ -3423,11 +3423,11 @@ __webpack_get_script_filename__ = (chunkId) => {
 };
 ```
 
-##### \__non_webpack_require__ (webpack-specific)
+##### `__non_webpack_require__ (webpack-specific)`
 
 <font color=red>Generates a `require` function that **is not parsed by webpack**</font> . Can be used to do cool stuff with a global require function if available.
 
-##### \__webpack_exports_info__ (webpack-specific)
+##### `__webpack_exports_info__ (webpack-specific)`
 
 In modules , <font color=dodgerBlue>`__webpack_exports_info__` is available to **allow exports introspection**</font>（自我检查，内省）:
 
@@ -3446,7 +3446,7 @@ In modules , <font color=dodgerBlue>`__webpack_exports_info__` is available to *
 - <font color=red>Accessing the info from **nested exports is possible**</font> : <font color=dodgerBlue>i. e. `__webpack_exports_info__.<exportName>.<exportName>.<exportName>.used`</font>（ 👀 注意：这里是三个 `<exportName>` 嵌套 ）
 - <font color=red>Check whether exports can be mangled</font> with `__webpack_exports_info__.<name>.canMangle`
 
-##### \__webpack_is_included__ (webpack-specific)
+##### `__webpack_is_included__ (webpack-specific)`
 
 > 5.16.0+
 
@@ -3458,7 +3458,7 @@ if (__webpack_is_included__('./module-a.js')) {
 }
 ```
 
-##### \__webpack_base_uri__ (webpack-specific)
+##### `__webpack_base_uri__ (webpack-specific)`
 
 <font color=red>**Change base URI *at runtime***</font>.
 
@@ -3472,7 +3472,7 @@ Example:
 __webpack_base_uri__ = 'https://example.com';
 ```
 
-##### \__webpack_runtime_id__
+##### `__webpack_runtime_id__`
 
 <font color=red>Access the **[runtime](https://webpack.js.org/blog/2020-10-10-webpack-5-release/#entry-point-runtime) id of current *entry***</font>.
 
