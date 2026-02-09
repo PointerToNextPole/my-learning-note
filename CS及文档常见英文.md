@@ -1561,6 +1561,7 @@
 - **supervision** ：监督
 - **morph** ：变形、渐变
 - **vertex** ：顶点
+- **peripheral** ：周边的设备、周边的
 ***
 
 
@@ -2713,3 +2714,7 @@
   **chronic disease** ：慢性病
 - **piecewise** ：分段的
   > `visualMap.type` 的可选值之一 `"piecewise"`
+  
+- **graspable** ：可感知的、可理解的
+
+- **Aesthetics** ：美学
