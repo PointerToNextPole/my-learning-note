@@ -2713,8 +2713,11 @@
 - **chronic** ：慢性的
   **chronic disease** ：慢性病
 - **piecewise** ：分段的
+  
   > `visualMap.type` 的可选值之一 `"piecewise"`
   
 - **graspable** ：可感知的、可理解的
 
-- **Aesthetics** ：美学
+- **aesthetics** ：美学
+
+- **polyglot** ：通晓多种语言的、万用语言者
