@@ -11,7 +11,20 @@
 https://www.zhihu.com/question/37904398)
 - [Python语言从2.7到3.14的能力变化与演进逻辑](https://mp.weixin.qq.com/s/iRVqDjvfsilxRugG65fJNw)
 
+#### `python -m`
 
+`python3 -m` 是 Python 中一个非常强大且常用的命令行选项。简单来说，它的作用是 **将库中的模块（module）当作脚本（script）来运行**。其中的 `-m` 代表 **module**（模块）。
+
+ - JSON美化/校验：`python3 -m json.tool data.json`
+ - Base64编解码：`echo "Hi" | python3 -m base64` ；解码 `-d`
+ - 代码微基准：`python3-m timeit '[i for i in range(1000)]'`
+ - 性能分析：`python3-m cProfile -s time your_script.py`
+ - ZIP压缩/解压：`python3-m zfile -c out.zip a.txt b.txt` ；解压 `-e`
+ - Python之禅：`python3 -m this`
+ - 反重力彩蛋：`python3 -m antigravity`
+ - 终端日历：`python3 -m calendar 2026`
+
+学习自：[实用好玩的python](https://bilibili.com/video/BV1pnFdzjEa3)
 #### 元组
 
 元组和列表的设计目的是完全不同的。具体来说，列表表示一个同质 ( Homogeneous ) 的容器，而元组表示一个异质 ( Heterogeneous ) 的容器——简单来说，列表在设计上，元素的类型是相同的，而元组的每一个元素类型都是不同的。
