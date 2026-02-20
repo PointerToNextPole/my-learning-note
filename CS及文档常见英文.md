@@ -2673,6 +2673,7 @@
    > 来源：Google 搜索自带 AI 概览
    > 
    > 这个问题组成 tribal knowledge（部落知识）问题，也就是每一个部落都拥有自己的知识，都不写下来，只能通过口口相传，基本上不可能被传播到部落以外。每一个部落都跟其它部落不一样，你不能举一反三。这是很多公司在快速增长过程中会遇到的痛点。
+   > 
    > 摘自：[如何看待著名程序员 DHH 宣布不再使用 TypeScript 改回 JavaScript？ - Cat Chen的回答 - 知乎](https://www.zhihu.com/question/623259697/answer/3222950408)
    
 - **surname** ：姓氏
@@ -2697,7 +2698,10 @@
 - **merch** ：商品
 - **epilogue** ：尾声
 - **latent** ：潜在的
+  
   > latent space ：潜空间
+  >
+  > latent demand ：潜在需求
   
 - **deliberate** ：深思熟虑的、蓄意的
   > Therefore, our team took **deliberate** steps to implement it without sacrificing stability or ecosystem compatibility.
@@ -2713,11 +2717,11 @@
 - **chronic** ：慢性的
   **chronic disease** ：慢性病
 - **piecewise** ：分段的
-  
   > `visualMap.type` 的可选值之一 `"piecewise"`
-  
 - **graspable** ：可感知的、可理解的
-
 - **aesthetics** ：美学
-
 - **polyglot** ：通晓多种语言的、万用语言者
+- **sloppy** ：邋遢的
+  > sloppy mode ：宽松模式（相较于严格模式 strict mode ）
+- **overhang** ：悬垂
+- **mandate** ：授权

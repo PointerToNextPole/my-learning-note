@@ -159,7 +159,15 @@
 
 `.zprofile` 的机制是在登录时用 hook 加载的，它不会重复加载。`.zshrc` 是在每个 session 都会重复加载，这是生命周期，shell 机制的作用。
 
+##### `.zshrc` 和 `.bashrc` 的区别
 
+这两个文件分别是两种不同 Shell（命令行解释器）的配置文件：
+
+| **配置文件**        | **对应的 Shell**                 | **macOS 现状**                                                   |
+| --------------- | ----------------------------- | -------------------------------------------------------------- |
+| **`~/.zshrc`**  | **Zsh** (Z Shell)             | **这是 macOS 15 的默认 Shell**。当你打开终端时，系统默认读取这个文件。                  |
+| **`~/.bashrc`** | **Bash** (Bourne Again Shell) | 这是旧版 macOS（Catalina 之前）的默认 Shell。除非你手动切换回 Bash，否则**该文件不会被读取**。 |
+学习自：[Gemini 的回答 - 在一台系统为 macOS 15 的 Apple Silicon 的 MacBook Pro 上，同时存在 `~/.zshrc` 和 `~/.bashrc`， 这两者是否存在区别？](https://gemini.google.com/share/5ce70cc8867a)
 
 ### Mac 使用
 
