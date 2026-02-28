@@ -1562,6 +1562,8 @@
 - **morph** ：变形、渐变
 - **vertex** ：顶点
 - **peripheral** ：周边的设备、周边的
+- **modality** ：模态
+  **multimodality** ：多模态
 ***
 
 
@@ -2725,3 +2727,4 @@
   > sloppy mode ：宽松模式（相较于严格模式 strict mode ）
 - **overhang** ：悬垂
 - **mandate** ：授权
+- **steer** ：引导；操纵；方向盘

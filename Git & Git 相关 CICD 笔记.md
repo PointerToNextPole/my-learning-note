@@ -25,9 +25,9 @@
 
 #### Lesson 1.3
 
-##### config 的三个作用域：local，global，system
+##### config 的四个作用域：worktree / local / global / system
 
-**优先级：**<font color=FF0000>local > global > system</font>
+**优先级：**<font color=red>worktree > local > global > system</font>
 
 ##### 设置作用域
 
@@ -52,6 +52,9 @@ git config --local --list
 git config --global --list
 git config --system --list
 ```
+
+> [!TIP]
+> `--list` 可以简写为 `-l`
 
 其中，如果不指定作用域，将会显示所有的配置。
 
