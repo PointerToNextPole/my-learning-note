@@ -258,6 +258,14 @@ const objEq = (val, val2) => {
 }
 ```
 
+类似的实现是 [Lodash 的 `isEqual`](https://lodash.com/docs#isEqual) 。此外，如果想要实现一个获取内容各不相同的对象数组，按照 Opus 4.6 的说法，存在如下简易的方法：
+
+```ts
+import { uniqWith, isEqual } from 'lodash';
+
+const objectSet = <T extends object>(arr: T[]): T[] => uniqWith(arr, isEqual);
+```
+
 学习自：[对象数组去重【渡一教育】](https://www.bilibili.com/video/BV1NNeMeGE7N)
 
 
