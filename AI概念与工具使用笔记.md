@@ -185,6 +185,7 @@ npx --node-options="--permission --allow-fs-read=$(npm config get cache)" packag
 ##### 资料
 
 - [Claude Code 官方中文文档](https://code.claude.com/docs/zh-CN/)
+- [你不知道的 Claude Code：架构、治理与工程实践](https://x.com/hitw93/article/2032091246588518683)
 
 #### AnyRouter 教程
 
