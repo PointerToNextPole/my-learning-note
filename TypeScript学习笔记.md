@@ -7827,6 +7827,11 @@ function handleValue(val: All) {
 
 > 👀 看了下 [关于 TS ，你必须知道的鸭子?类型](https://jishuin.proginn.com/p/763bfbd6f46f) 其中结合 Py 和 JS 再引入 TS 的鸭子类型，（以我当前的水平）没完全看懂... 有空再看下。另外，还提到了 TS 的 `is` 关键字及 类型谓词 ”type predicates“  ，还有“类型保护”
 
+#### Branded Types
+
+> [!TIP]
+> 这一概念是在文章 [Improve Runtime Type Safety with Branded Types in TypeScript](https://egghead.io/blog/using-branded-types-in-typescript) 中看到的。开始以为是作者自创的概念，直到看到了 “A pattern evolved from the community that is commonly used for this case are Branded Types.”，搜了下 “TypeScript Branded Types”，发现这一模式确实在社区形成了共识。
+
 
 
 #### `is` 关键字
