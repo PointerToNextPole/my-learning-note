@@ -125,7 +125,7 @@
 - **⇧ + ⌥ + fn + F12** ：在边栏 ( sidebar ) 中查看所有该变量、函数 被使用（引用 reference ）的地方
 
   <img src="https://s2.loli.net/2024/03/24/m3pLzEdDy6ocZxR.png" alt="image-20240324152723589" style="zoom:40%;" />
-  
+
 - **⌥ + fn + F12** ：以弹窗形式查看所有该变量、函数被引用的地方。和上面一条、在边栏显示，功能一样
 
   <img src="https://s2.loli.net/2024/03/24/ti5gw319rlAfJCE.png" alt="image-20240324165233811" style="zoom:50%;" />
@@ -137,7 +137,9 @@
 
   > 👀 学习自：https://g.co/gemini/share/e07222bba6a1
 
-
+- **⌥ + ↑** / **⌥ + ↓** ：选中的代码行，上移和下移
+  **⇧ + ⌥ + ↑** / **⇧ + ⌥ + ↓**  ：复制并上移和下移
+  > 👀 值得注意的是：JetBrains 家的上移和下移就是 **⇧ + ⌥ + ↑** / **⇧ + ⌥ + ↓** ；只能说：可以用来辅助记忆，但是别记混了
 
 #### User and Workspace Settings
 
@@ -145,7 +147,8 @@ You can <font color=dodgerBlue>configure Visual Studio Code to your liking throu
 
 > 👀 之所以 “user interface” 加了重点，是因为 `git clone` 并用 vsc 打开 [ractive](https://github.com/ractivejs/ractive) 时，发现 UI 样式和日常使用的 vsc 样式不一样，于是找到了 `.vscode/settings.json` 文件，找到了修改 vsc UI 的相关配置。
 >
-> 💡**一些补充**
+
+> [!TIP]
 >
 >  `.vscode` 文件夹可以放置 `settings.json` 和 `launch.json` ，以及 [[#Workspace settings]] 中提及的 task 对应的 `tasks.json` 。
 >

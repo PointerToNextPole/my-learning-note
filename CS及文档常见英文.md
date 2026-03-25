@@ -2729,3 +2729,9 @@
 - **mandate** ：授权
 - **steer** ：引导；操纵；方向盘
 - **acme** ：顶点
+- **meander** ：蜿蜒、弯曲
+  > Don't use large mode for meandering conversations.
+  > 
+  >   摘自：[ampcode - news - large mode](https://ampcode.com/news/large-mode)
+
+- **overage** ：超额
