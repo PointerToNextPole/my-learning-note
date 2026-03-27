@@ -2735,3 +2735,5 @@
   >   摘自：[ampcode - news - large mode](https://ampcode.com/news/large-mode)
 
 - **overage** ：超额
+- **contrive** ：策划，设计
+  **contrived** ：人为的

@@ -19,6 +19,7 @@
 - [tsconfig helper](https://tsconfiger.netlify.app/)
 
 学习自：[【NodeJS-TS】TS配置文件](https://www.bilibili.com/video/BV1f5hXzrEny/?t=820)
+- [简洁的TypeScript之书](https://gibbok.github.io/typescript-book/zh-cn/book/the-concise-typescript-book/)
 ***
 ###### 网络书籍
 
