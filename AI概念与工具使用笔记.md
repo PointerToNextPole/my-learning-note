@@ -180,12 +180,23 @@ npx --node-options="--permission --allow-fs-read=$(npm config get cache)" packag
 学习自：[twitter - @wong2_x 的帖子](https://x.com/wong2_x/status/1907331129809723862)
 
 
+
 ## Claude & Claude Code
 
 ##### 资料
 
 - [Claude Code 官方中文文档](https://code.claude.com/docs/zh-CN/)
 - [你不知道的 Claude Code：架构、治理与工程实践](https://tw93.fun/2026-03-12/claude.html)
+
+###### Cheat Sheet
+
+<img src="https://files.seeusercontent.com/2026/03/29/3oEo/8u2gs9i7d8rg1.jpeg" alt="r/vibecoders_ - Useful Claude Code Cheat sheet!" style="zoom:55%;" />
+
+该内容随 Claude Code 更新而更新，所以查看最新的内容可查看 🔗：https://cc.storyfox.cz/
+
+
+
+
 
 #### AnyRouter 教程
 
@@ -545,13 +556,13 @@ Agent 输出有一个特点：**它永远都很自信。**
 对 Agent 的每个关键结论追问：
 
 - "这个方案在什么情况下会失败？"
-    
+  
 - "你搞的这个改动有没有什么潜在的风险？"
-    
+  
 - "有没有你没考虑到的边界情况？"
-    
+  
 - "如果数据量增长 10 倍，这个设计还 hold 得住吗？"
-    
+  
 
 这些问题的威力在于：它们强制 Agent 从另一个角度审视自己的输出。你会发现，<font color=dodgerBlue>同一个 Agent</font>，当<font color=red>你让它"论证这个方案好"的时候，它说得头头是道</font>；当<font color=red>你让它"找这个方案的问题"的时候，它也能找出一堆隐患</font>。
 
@@ -572,13 +583,13 @@ Agent 也一样。它给你的输出看起来"完整"，但你根本不知道它
 如果你经常 review Agent 的代码，你大概率会发现这些情况：
 
 - 明明一个现成的库几行代码就能搞定的事，它偏要从零造轮子，洋洋洒洒写了几百行
-    
+  
 - 同样的逻辑，它在不同地方重复写了好几遍，也不知道抽个公共函数
-    
+  
 - 为了一些根本不可能出现的边界情况，写了一大堆防御代码
-    
+  
 - 一个一次性操作，它也要给你封装成一个工具类，加配置项、加扩展点
-    
+  
 
 不要奇怪，AI Agent 天生就有这个毛病。
 
@@ -600,7 +611,7 @@ Brooks 在《人月神话》里讲过一个概念叫**第二系统效应**——
 
 ```markdown
 Avoid over-engineering. Only make changes that are directly requested or clearly necessary.  
-``` 
+```
 
 **第二，做完一个改动之后，让 Agent 自己清理。** 这个技巧我最近用得很多：
 
@@ -623,11 +634,11 @@ Goldratt 在《目标》这本书里讲了一个特别核心的思想：
 换句话说：
 
 - 整个系统的产出，只能在约束环节得到改善时才能提升
-    
+  
 - 花时间优化非约束环节，不会带来什么显著收益
-    
+  
 - 链条的强度由最弱的环节决定
-    
+  
 
 你现在想一想，你日常用 Agent 工作的时候，整个工作流的瓶颈在哪？
 
@@ -658,13 +669,13 @@ Goldratt 在《目标》里讲了一个特别好的例子。Alex 的工厂花大
 如果你的瓶颈是人的审查这一步，那就：
 
 - 不要让 Agent 产出超过你能审查的量——宁可 Agent 等你，不要你追不上 Agent
-    
+  
 - 用自动化测试减少人工审查的负担（CI/CD、lint、typecheck 这些配一次，永久生效）
-    
+  
 - 提升 prompt 质量，让 Agent 一次性输出更可靠的代码，减少返工
-    
+  
 - 高 TRM 任务直接跳过审查，中 TRM 任务只审关键节点，把精力留给低 TRM 任务
-    
+  
 
 如果你的瓶颈是 prompt 编写——每次都从零开始写 prompt，效率当然低。那就把常用的 prompt 封装成 Skill 或者模板，一次投入，反复使用。
 

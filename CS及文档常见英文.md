@@ -2737,3 +2737,4 @@
 - **overage** ：超额
 - **contrive** ：策划，设计
   **contrived** ：人为的
+- **duh** ：废话

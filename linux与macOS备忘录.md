@@ -670,6 +670,8 @@ sudo killall coreaudiod
 
 关于 zsh 的插件，可以看下 https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins ，这是一个 plugin 列表。
 
+另外，文章中的 Fig 工具，已经被 Amazon 收购，并重命名为 Kiro CLI
+
 
 ### 通用
 
