@@ -681,8 +681,11 @@ sudo killall coreaudiod
 
 - [Linux大神都是怎么记住这么多命令的？ - 知乎](https://www.zhihu.com/question/452895041)
 
-- RUNOOB Linux 命令总结：[Linux 命令大全](https://www.runoob.com/linux/linux-command-manual.html)
 - [Filesystem Hierarchy Standard](https://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.html) ： Linux 世界中被广泛遵循的《文件系统层次结构标准》（FHS）
+
+- [菜鸟教程 - Linux 命令导航](https://www.runoob.com/linux/linux-command-manual.html)
+
+- [Linux 命令搜索引擎](https://git.io/linux)
 
 #### Linux 命令缩写由来
 
@@ -1072,43 +1075,35 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
 
 **grep**（ **<font color=FF0000>global</font>** search **<font color=FF0000>regular expression(RE)</font>** and **<font color=FF0000>print</font>** out the line，全面搜索正则表达式并把行打印出来）是一种强大的<font color=FF0000>文本搜索工具</font>，它<font color=FF0000>能使用正则表达式搜索文本，并把匹配的行打印出来</font>。
 
-摘自：[linux命令大全 - grep命令](https://man.linuxde.net/grep)
+##### 选项
 
-##### 命令行参数
+- `-a` ：不要忽略二进制数据。
+- `-A<显示列数>` ：除了显示符合范本样式的那一行之外，并显示该行之后的内容。
+- `-b` ：在显示符合范本样式的那一行之外，并显示该行之前的内容。
+- `-c` ：计算符合范本样式的列数。
+- `-C<显示列数>` 或 `-<显示列数>` ： 除了显示符合范本样式的那一列之外，并显示该列之前后的内容。
+- `-d<进行动作>` ：<font color=red>当指定要查找的是目录而非文件时，必须使用这项参数</font>，否则grep命令将回报信息并停止动作。
+- `-e<范本样式>` ：指定字符串作为查找文件内容的范本样式。
+- `-E` ：将范本样式为延伸的普通表示法来使用，意味着使用能使用扩展正则表达式。
+- `-f<范本文件>` ：指定范本文件，其内容有一个或多个范本样式，让grep查找符合范本条件的文件内容，格式为每一列的范本样式。
+- `-F` ：将范本样式视为固定字符串的列表。
+- `-G` ：将范本样式视为普通的表示法来使用。
+- `-h` ：在显示符合范本样式的那一列之前，不标示该列所属的文件名称。
+- `-H` ：在显示符合范本样式的那一列之前，标示该列的文件名称。
+- `-i` ：忽略字符大小写的差别。
+- `-l` ：列出文件内容符合指定的范本样式的文件名称。
+- `-L` ：列出文件内容不符合指定的范本样式的文件名称。
+- `-n` ：在显示符合范本样式的那一列之前，标示出该列的编号。
+- `-q` ：不显示任何信息。
+- `-R` / `-r` ：此参数的效果和指定 “-d recurse” 参数相同。
+- `-s` ：不显示错误信息。
+- `-v` ：反转查找。
+- [`-w`](https://web.archive.org/web/20211023180455/http://man.linuxde.net/w "w命令") ：只显示全字符合的列。
+- `-x` ： 只显示全列符合的列。
+- `-y` ： 此参数效果跟“-i”相同。
+- `-o` ： 只输出文件中匹配到的部分。
 
-```bash
--a / --text                                   #不要忽略二进制的数据。
--A<显示行数> / --after-context=<显示行数>        #除了显示符合范本样式的那一列之外，并显示该行之后的内容。
--b / --byte-offset                            #在显示符合样式的那一行之前，标示出该行第一个字符的编号。
--B<显示行数> / --before-context=<显示行数>       #除了显示符合样式的那一行之外，并显示该行之前的内容。
--c / --count                                  #计算符合样式的列数。
--C<显示行数> / --context=<显示行数>/-<显示行数>   #除了显示符合样式的那一行之外，并显示该行之前后的内容。
--d <动作> / --directories=<动作>               #当指定要查找的是目录而非文件时，必须使用这项参数，否则grep指令将回报信息并停止动作。
--e<范本样式> / --regexp=<范本样式>               #指定字符串做为查找文件内容的样式。
--E / --extended-regexp                        #将样式为延伸的正则表达式来使用。
--f<规则文件> / --file=<规则文件>                 #指定规则文件，其内容含有一个或多个规则样式，让grep查找符合规则条件的文件内容，格式为每行一个规则样式。
--F / --fixed-regexp                           #将样式视为固定字符串的列表。
--G / --basic-regexp                           #将样式视为普通的表示法来使用。
--h / --no-filename                            #在显示符合样式的那一行之前，不标示该行所属的文件名称。
--H / --with-filename                          #在显示符合样式的那一行之前，表示该行所属的文件名称。
--i / --ignore-case                            #忽略字符大小写的差别。
--l / --file-with- matches                     #列出文件内容符合指定的样式的文件名称。
--L / --files-without-match                    #列出文件内容不符合指定的样式的文件名称。
--n / --line-number                            #在显示符合样式的那一行之前，标示出该行的列数编号。
--o / --only-matching                          #只显示匹配PATTERN 部分。
--q / --quiet/--silent                         #不显示任何信息。
--r / --recursive                              #此参数的效果和指定"-d recurse"参数相同。
--s / --no-messages                            #不显示错误信息。
--v / --revert-match                           #显示不包含匹配文本的所有行。
--V / --version                                #显示版本信息。                
--w / --word-regexp                            #只显示全字符合的列。
--x --line-regexp                              #只显示全列符合的列。
--y                                            #此参数的效果和指定"-i"参数相同。
-```
-
-摘自：[RUNOOB - Linux grep 命令](https://www.runoob.com/linux/linux-comm-grep.html)
-
-
+摘自：[linux命令大全 - grep命令](https://web.archive.org/web/20211023180455/https://man.linuxde.net/grep)
 
 #### ps 命令
 

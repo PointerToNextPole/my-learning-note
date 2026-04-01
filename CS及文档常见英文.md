@@ -2738,3 +2738,4 @@
 - **contrive** ：策划，设计
   **contrived** ：人为的
 - **duh** ：废话
+- **stub** ：存根
