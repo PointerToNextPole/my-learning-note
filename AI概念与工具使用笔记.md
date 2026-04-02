@@ -192,11 +192,7 @@ npx --node-options="--permission --allow-fs-read=$(npm config get cache)" packag
 
 <img src="https://files.seeusercontent.com/2026/03/29/3oEo/8u2gs9i7d8rg1.jpeg" alt="r/vibecoders_ - Useful Claude Code Cheat sheet!" style="zoom:55%;" />
 
-该内容随 Claude Code 更新而更新，所以查看最新的内容可查看 🔗：https://cc.storyfox.cz/
-
-
-
-
+该内容随 Claude Code 更新而更新，查看最新的内容可查看 🔗：[Claude Code Cheat Sheet](https://cc.storyfox.cz/)
 
 #### AnyRouter 教程
 
@@ -231,7 +227,7 @@ claude --resume
 Claude Code 可以处理图像信息，支持多种输入方式：
 
 - 将图像拖放到 Claude Code 窗口中
-- 复制图像并使用 cmd+v 粘贴到 CLI 中
+- 复制图像并使用 cmd + v 粘贴到 CLI 中
 - 提供图像路径
 
 ###### 记忆系统
@@ -266,7 +262,189 @@ Claude Code 支持使用自然语言操作 Git：
 ```
 
 
+
 ### 官方文档笔记
+
+#### 概述
+
+##### 你可以做什么
+
+以下是你可以使用 Claude Code 的一些方式：
+
+###### 自动化你一直在推迟的工作
+
+Claude Code 处理那些占用你一整天的繁琐任务：为未测试的代码编写测试、修复项目中的 lint 错误、解决合并冲突、更新依赖项和编写发布说明。
+
+```sh
+claude "write tests for the auth module, run them, and fix any failures"
+```
+
+> [!NOTE]
+>
+> 这里的 prompt ，是相当简洁而抽象的；没有指定路径，同时用简洁的语言让 Claude 去写测试，并修复。有种炫技的感觉？不过，作为一个 TUI 应用，相较于 GUI 没有那么方便，鼓励并能处理简洁的 prompt 也是合理的。
+
+###### 构建功能和修复错误
+
+用简单的语言描述你想要的内容。Claude Code 规划方法、跨多个文件编写代码，并验证其工作。
+
+对于错误，粘贴错误消息或描述症状。Claude Code 通过你的代码库追踪问题、识别根本原因并实施修复。查看[常见工作流](https://code.claude.com/docs/zh-CN/common-workflows)了解更多示例。
+
+###### 创建提交和拉取请求
+
+Claude Code 直接与 git 配合工作。它暂存更改、编写提交消息、创建分支并打开拉取请求。
+
+```sh
+claude "commit my changes with a descriptive message"
+```
+
+在 CI 中，你可以使用 [GitHub Actions](https://code.claude.com/docs/zh-CN/github-actions) 或 [GitLab CI/CD](https://code.claude.com/docs/zh-CN/gitlab-ci-cd) 自动化代码审查和问题分类。
+
+###### 使用 MCP 连接你的工具
+
+[Model Context Protocol (MCP)](https://code.claude.com/docs/zh-CN/mcp) 是一个开放标准，用于将 AI 工具连接到外部数据源。使用 MCP，Claude Code 可以读取 Google Drive 中的设计文档、更新 Jira 中的工单、从 Slack 拉取数据，或使用你自己的自定义工具。
+
+###### 使用说明、skills 和 hooks 进行自定义
+
+[`CLAUDE.md`](https://code.claude.com/docs/zh-CN/memory) 是一个 markdown 文件，你可以将其添加到项目根目录，<font color=red>Claude Code 会在每个会话开始时读取它</font>。使用它来<font color=red>**设置编码标准、架构决策、首选库和审查清单**</font>。Claude 还会在工作时构建[自动内存](https://code.claude.com/docs/zh-CN/memory#auto-memory)，保存学习内容，如构建命令和调试见解，跨会话使用，无需你编写任何内容。
+
+创建[自定义命令](https://code.claude.com/docs/zh-CN/skills)来打包你的团队可以共享的可重复工作流，如 `/review-pr` 或 `/deploy-staging`。
+
+<font color=red>[Hooks](https://code.claude.com/docs/zh-CN/hooks) 让你在 Claude Code 操作之前或之后运行 shell 命令</font>，如在每次文件编辑后自动格式化或在提交前运行 lint。
+
+###### 运行代理团队并构建自定义代理
+
+<font color=<font color=red>>**生成[多个 Claude Code 代理](https://code.claude.com/docs/zh-CN/sub-agents)，同时处理任务的不同部分**</font>。主导代理协调工作、分配子任务并合并结果。
+
+对于完全自定义的工作流，[Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) 让你构建由 Claude Code 的工具和功能驱动的自己的代理，完全控制编排、工具访问和权限。
+
+###### 使用 CLI 进行管道、脚本和自动化
+
+Claude Code 是可组合的，遵循 Unix 哲学。将日志管道传入其中、在 CI 中运行它，或将其与其他工具链接：
+
+```sh
+# 分析最近的日志输出
+tail -200 app.log | claude -p "Slack me if you see any anomalies"
+
+# 在 CI 中自动化翻译
+claude -p "translate new strings into French and raise a PR for review"
+
+# 跨文件的批量操作
+git diff main --name-only | claude -p "review these changed files for security issues"
+```
+
+查看 [CLI 参考](https://code.claude.com/docs/zh-CN/cli-reference)了解完整的命令和标志集。
+
+###### 安排定期任务
+
+<font color=red>按计划运行 Claude 以自动化重复的工作：早晨 PR 审查、夜间 CI 失败分析、每周依赖项审计或在 PR 合并后同步文档</font>。
+
+- [云计划任务](https://code.claude.com/docs/zh-CN/web-scheduled-tasks)在 Anthropic 管理的基础设施上运行，因此即使你的计算机关闭，它们也会继续运行。从网络、桌面应用或<font color=lightSeaGreen>通过在 CLI 中运行 `/schedule` 来创建它们</font>。
+- [桌面计划任务](https://code.claude.com/docs/zh-CN/desktop#schedule-recurring-tasks)在你的机器上运行，可直接访问你的本地文件和工具
+- [`/loop`](https://code.claude.com/docs/zh-CN/scheduled-tasks) 在 CLI 会话中重复提示以进行快速轮询
+
+###### 从任何地方工作
+
+会话不受限于单一界面。当你的上下文改变时，在环境之间移动工作：
+
+- 离开你的办公桌，使用[远程控制](https://code.claude.com/docs/zh-CN/remote-control)从你的手机或任何浏览器继续工作
+- <font color=<font color=red>>**向 [Dispatch](https://code.claude.com/docs/zh-CN/desktop#sessions-from-dispatch) 发送来自你手机的任务，并打开它创建的桌面会话**</font>
+- 在[网络](https://code.claude.com/docs/zh-CN/claude-code-on-the-web)或 [iOS 应用](https://apps.apple.com/app/claude-by-anthropic/id6473753684)上启动长时间运行的任务，然后使用 `/teleport` 将其拉入你的终端
+- 使用 `/desktop` 将终端会话交给[桌面应用](https://code.claude.com/docs/zh-CN/desktop)进行视觉差异审查
+- 从团队聊天路由任务：在 [Slack](https://code.claude.com/docs/zh-CN/slack) 中提及 `@Claude` 并附上错误报告，获得拉取请求
+
+
+
+#### 快速开始
+
+##### 在 Claude Code 中使用 Git
+
+Claude Code 使 Git 操作变得对话式：
+
+```md
+我更改了哪些文件？
+```
+
+```md
+用描述性消息提交我的更改
+```
+
+您也可以提示更复杂的 Git 操作：
+
+```md
+创建一个名为 feature/quickstart 的新分支
+```
+
+```md
+显示我最后的 5 次提交
+```
+
+```md
+帮我解决合并冲突
+```
+
+##### 修复错误或添加功能
+
+Claude 擅长调试和功能实现。用自然语言描述您想要的内容：
+
+```md
+向用户注册表单添加输入验证
+```
+
+或修复现有问题：
+
+```md
+有一个错误，用户可以提交空表单 - 修复它
+```
+
+Claude Code 将：
+
+- 定位相关代码
+- 理解上下文
+- 实现解决方案
+- 如果可用，运行测试
+
+> [!TIP]
+>
+> 像与有帮助的同事交谈一样与 Claude 交谈。描述您想要实现的目标，它将帮助您实现。
+
+#####  初学者专业提示
+
+有关更多信息，请参阅[最佳实践](https://code.claude.com/docs/zh-CN/best-practices)和[常见工作流](https://code.claude.com/docs/zh-CN/common-workflows)。
+
+###### 对您的请求要具体
+
+不要说：‘修复错误’尝试：‘修复登录错误，用户输入错误凭证后看到空白屏幕’
+
+###### 使用分步说明
+
+将复杂任务分解为步骤：
+
+```md
+1. 为用户配置文件创建新的数据库表
+2. 创建 API 端点以获取和更新用户配置文件
+3. 构建允许用户查看和编辑其信息的网页
+```
+
+###### 让 Claude 先探索
+
+在进行更改之前，让 Claude 理解您的代码：
+
+```md
+分析数据库架构
+```
+
+```md
+构建一个仪表板，显示英国客户最常退货的产品
+```
+
+###### 使用快捷方式节省时间
+
+- 按 `?` 查看所有可用的快捷键
+- 使用 Tab 进行命令补全
+- 按 ↑ 查看命令历史
+- 输入 `/` 查看所有命令和 skills
+
+
 
 #### 斜杠命令
 
