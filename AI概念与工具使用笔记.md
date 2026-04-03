@@ -263,6 +263,7 @@ Claude Code 支持使用自然语言操作 Git：
 
 
 
+
 ### 官方文档笔记
 
 #### 概述
@@ -313,7 +314,7 @@ claude "commit my changes with a descriptive message"
 
 ###### 运行代理团队并构建自定义代理
 
-<font color=<font color=red>>**生成[多个 Claude Code 代理](https://code.claude.com/docs/zh-CN/sub-agents)，同时处理任务的不同部分**</font>。主导代理协调工作、分配子任务并合并结果。
+<font color=red>**生成[多个 Claude Code 代理](https://code.claude.com/docs/zh-CN/sub-agents)，同时处理任务的不同部分**</font>。主导代理协调工作、分配子任务并合并结果。
 
 对于完全自定义的工作流，[Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) 让你构建由 Claude Code 的工具和功能驱动的自己的代理，完全控制编排、工具访问和权限。
 
@@ -347,7 +348,7 @@ git diff main --name-only | claude -p "review these changed files for security i
 会话不受限于单一界面。当你的上下文改变时，在环境之间移动工作：
 
 - 离开你的办公桌，使用[远程控制](https://code.claude.com/docs/zh-CN/remote-control)从你的手机或任何浏览器继续工作
-- <font color=<font color=red>>**向 [Dispatch](https://code.claude.com/docs/zh-CN/desktop#sessions-from-dispatch) 发送来自你手机的任务，并打开它创建的桌面会话**</font>
+- <font color=red>**向 [Dispatch](https://code.claude.com/docs/zh-CN/desktop#sessions-from-dispatch) 发送来自你手机的任务，并打开它创建的桌面会话**</font>
 - 在[网络](https://code.claude.com/docs/zh-CN/claude-code-on-the-web)或 [iOS 应用](https://apps.apple.com/app/claude-by-anthropic/id6473753684)上启动长时间运行的任务，然后使用 `/teleport` 将其拉入你的终端
 - 使用 `/desktop` 将终端会话交给[桌面应用](https://code.claude.com/docs/zh-CN/desktop)进行视觉差异审查
 - 从团队聊天路由任务：在 [Slack](https://code.claude.com/docs/zh-CN/slack) 中提及 `@Claude` 并附上错误报告，获得拉取请求
@@ -521,6 +522,33 @@ Claude Code 将：
 |`[arguments]`|传递给命令的可选参数|
 
 
+
+
+### 其他笔记
+
+#### 《CLAUDE.md 写不好，效率至少下降一半》笔记
+
+##### CLAUDE.md 是什么
+
+CLAUDE.md 是一个 Markdown 文件，Claude Code 在每次会话开始的时候会自动读取它。
+
+CLAUDE.md 是专门写给 Claude 看的——告诉它你的项目长什么样、代码风格是什么、常用命令有哪些、有哪些坑需要注意。
+
+**核心逻辑就一句话：Claude 每次启动都是失忆的，CLAUDE.md 是唯一能让它"记住"你的东西。**
+
+Claude 团队会把 CLAUDE.md 提交到 git 里，每次 Claude 犯了错就加一条，相当于一个不断进化的"错题本"。
+
+##### 四个存放的位置
+
+1. **全局级别** ：`~/.claude/CLAUDE.md`。
+
+2. **项目根目录** ：`./CLAUDE.md`。
+
+3. **子目录** ：`./src/api/CLAUDE.md`。适合 monorepo 场景。比如前端目录有自己的规范，后端目录有自己的规范，可以各自维护。
+
+4. **本地私有** ：`CLAUDE.local.md`。个人偏好，加到 `.gitignore` 里，不提交。
+
+这四个层级是可以叠加的。Claude 会按顺序全部读取，从全局到具体。
 
 ## Cursor
 

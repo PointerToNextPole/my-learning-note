@@ -1564,6 +1564,7 @@
 - **peripheral** ：周边的设备、周边的
 - **modality** ：模态
   **multimodality** ：多模态
+- **linkage** ：联动
 ***
 
 
@@ -1743,12 +1744,13 @@
   > - 构成名词 (Noun-forming Suffix) ：指代一类人或事物，或者表示某种职位、身份、化学物质等
   >
   > 摘自：https://aistudio.google.com/prompts/1Krl_Wf1iOKHYQnvogj-6fwGP5FayUpSv
-
+  
 
 
 ### 单词缩写
 
-> 💡 可以参考 [[linux与macOS备忘录#Linux 命令缩写由来|Linux 命令缩写由来]] 中的内容
+> [!TIP]
+> 可以参考 [[linux与macOS备忘录#Linux 命令缩写由来|Linux 命令缩写由来]] 中的内容
 
 - **pt. n** ：第 n 部分
 - **Misc** ：杂项，其他。"Misc" 是 “miscellaneous” 的缩写
@@ -2740,3 +2742,4 @@
 - **duh** ：废话
 - **stub** ：存根
 - **futile** ：徒劳的
+- **onboarding** ：入职、入职引导
