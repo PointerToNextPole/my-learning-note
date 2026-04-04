@@ -235,13 +235,31 @@ visual 模式一般用于<font color=FF0000>块状选择文本，从而进行批
 
 - 在搜索过程中，键入 `:set hls` ( set highlight search ) ，以使得搜索结果高亮
 
-  > 💡 值得补充的是：搜索结果的高亮如果不设置的话，将会一直存在，相当影响阅读，可以使用 `:noh` 或 `nohls`，再或者 `:nohlsearch` 使得高亮消除
+  > [!TIP]
+  > 
+  > 值得补充的是：搜索结果的高亮如果不设置的话，将会一直存在，相当影响阅读，可以使用 `:noh` 或 `nohls`，再或者 `:nohlsearch` 使得高亮消除
   >
   > 学习自 Copilot Chat ，截图如下：
   >
   > <img src="https://s2.loli.net/2024/02/24/rBfNTzmuIECZDVH.png" alt="image-20240224153548696" style="zoom:50%;" />
 
 - 键入 `:set incsearch` ，进行增量搜索（在输入搜索字符的<font color=FF0000>字符输入过程中</font>，只要找到匹配的，就高亮）
+
+- Vim 的搜索默认是大小写敏感的，所以在使用时，如果想要忽略大小写，可以在 `/search-schema` 的后面加上 ` \c`  （注意留一个空格），表示大小写不敏感。此外，“c” 的含义是 “case”；对应的，也可以使用 ` \C` 表示大小写敏感
+  
+  不过这个只是单次搜索的设置，Vim 还提供了更丰富的全局配置：智能大小写
+  
+  ```vim
+  # 智能大小写
+  set ignorecase
+  set smartcase
+  ```
+  也可以简写为 `:set ic` 和 `:set scs` 。
+  
+  此外，经过确认：` \c` 这种单次搜索的设置可以和”智能大小写“配置共存，且优先级更高
+  > 学习自：https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221aYABk-5zcgfr_t9v1jIcRbDIFHMgfc9d%22%5D,%22action%22:%22open%22,%22userId%22:%22113986502377656987379%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing
+
+
 
 #### 搜索替换
 
