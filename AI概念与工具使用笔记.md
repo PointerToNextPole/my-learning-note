@@ -819,6 +819,303 @@ Debug Mode 最适合用于：
 - **性能问题和内存泄漏**：需要运行时分析才能理解的问题
 - **曾经能用但现在失效的回归问题**：当你需要追踪到底改了什么时
 
+### 工具
+
+#### 浏览器
+
+##### 使用场景
+
+###### Web 开发工作流
+
+Browser 可以集成到 Web 开发工作流中，与 Figma、Linear 等工具协同使用。请查看 [Web 开发实用手册](https://cursor.com/for/web-development)，了解如何将 Browser 与设计系统、项目管理工具和组件库配合使用的完整指南。
+###### 无障碍改进
+
+Agent 可以审计并改进网页无障碍情况，以满足 WCAG 合规标准。
+
+```md
+@browser Check color contrast ratios, verify semantic HTML and ARIA labels, test keyboard navigation, and identify missing alt text
+```
+
+###### 自动化测试
+
+Agent 可以执行完整的测试套件，并捕获截图用于视觉回归测试。
+
+```md
+@browser 使用测试数据填写表单，依次点击完成各项工作流，测试响应式设计，验证错误信息，并监控控制台中的 JavaScript 错误
+```
+
+###### 从设计到代码
+
+Agent 可以将设计稿转换为可运行的代码，并支持响应式布局。
+
+```md
+@browser 分析这个设计稿，提取配色和字体，并生成像素级精确还原的 HTML 和 CSS 代码
+```
+
+###### 根据截图调整 UI 设计
+
+Agent 可以通过识别视觉差异并更新组件样式来优化现有界面。
+
+```md
+@browser 对比当前 UI 与这张设计截图，并调整间距、颜色和字体排版以使其匹配
+```
+
+
+#### 语义与 Agent 搜索
+
+查找代码最快的方法是精确匹配：函数名、变量名、错误字符串或正则表达式模式。当你引用特定符号时，<font color=red>Agent 会自动使用 grep</font>。
+##### 语义搜索
+
+当你不知道确切名称时，语义搜索会按含义查找代码。比如问 “where do we handle authentication?”，Agent 仍然可以定位到 `middleware/session.ts`，<font color=lightSeaGreen>即使文件里从未出现过单词 “authentication”</font>。
+
+这是因为 Cursor 会[为你的代码库建立索引](https://cursor.com/blog/secure-codebase-indexing)，<font color=red>使用自定义的嵌入模型把代码转成**可搜索向量**</font>。对 Cursor [语义搜索](https://cursor.com/blog/semsearch) 的研究表明，将它和 grep 结合使用，在回答代码库相关问题时，准确率比单独使用 grep 提升了 12.5%。这种提升在包含 1,000+ 文件的代码库中最为明显。
+###### 索引的工作原理
+
+Cursor 会将你的代码拆分为有意义的片段 (函数、类、逻辑块) ，将每个片段转换为捕捉其语义的向量嵌入，并将结果存储在向量数据库中。你进行搜索时，查询会使用相同的模型转换为向量，并与已存储的嵌入进行匹配。
+
+当你打开一个工作区时，会自动开始建立索引。索引完成 80% 后即可使用语义搜索。索引通过每 5 分钟自动同步一次保持最新状态，并且只处理已更改的文件。
+
+###### 配置
+
+在 **Cursor Settings > Indexing** 中检查索引状态或触发重新索引。
+
+<font color=red>Cursor 会为除 [忽略文件](https://cursor.com/docs/reference/ignore-file) (`.gitignore`、`.cursorignore`) 之外的所有文件建立索引</font>。忽略大型生成文件或内容文件有助于提升搜索准确性。
+##### 提升搜索结果的技巧
+
+- **先具体，再泛化。** 如果你知道函数名，就直接写出来。如果你在阅读不熟悉的代码，就描述它的行为。
+- **先了解，再改动。** 先让 Agent 展示现有模式，再让它添加新的逻辑。这样可以避免产生重复实现或破坏既有约定。
+- **引用具体代码。** 像“find all callers of `processOrder`”这样的指令会给 Agent 一个精确目标。像“find the order code”这样的指令会让 Agent 只能猜你的真实意图。
+
+
+#### 工作树
+
+使用 `/worktree` 进行一次隔离运行，使用 `/best-of-n` 在隔离工作树中对同一任务比较多个模型。
+
+工作树是一个独立的 Git 检出，位于主检出目录旁边。Cursor 用它来隔离本地智能体的工作，同时仍基于同一个代码仓库进行操作。
+
+##### 使用 `/worktree` 进行一次隔离运行
+
+当你希望 Cursor 在单独的检出副本中继续处理这段聊天的其余工作时，使用 `/worktree` 启动任务。
+
+- 让实验性修改远离主检出
+- <font color=red>在不影响当前分支的情况下运行安装、构建和测试</font>
+- <font color=red>进行高风险重构，并保留简单的清理路径</font>
+  
+```md
+/worktree fix the failing auth tests and update the login copy
+```
+
+在很多情况下，你应该可以直接在工作树中提交/推送。你可以直接让智能体来做：
+
+```md
+Commit and push these changes, then open a PR
+```
+
+不过，<font color=red>如果你想将更改带回主检出中进行测试，使用 `/apply-worktree`</font>。<font color=red>完成这个独立检出后，使用 `/delete-worktree`</font>。
+
+如果你想查看代码仓库中的所有工作树，请运行：
+
+```sh
+git worktree list
+```
+
+##### 使用 `/best-of-n` 比较多个模型
+
+`/best-of-n` 会同时在多个模型上运行同一个任务。每次运行都会获得各自的工作树，因此这些候选结果彼此隔离，也与您的主检出隔离。
+
+```md
+/best-of-n sonnet, gpt, composer fix the flaky logout test
+```
+
+<font color=dodgerBlue>在你想要执行以下操作时使用它：</font>
+
+- <font color=red>在同一个提示词上比较不同模型</font>
+- <font color=red>针对棘手的更改尝试多种方法</font>
+- 在应用任何内容之前选出最佳结果
+
+`/best-of-n` 只比较各次运行。它不会帮你将更改合并回你的主检出。<font color=lightSeaGreen>选出最佳结果后</font>，你可以直接在工作树中 commit/push，或使用 `/apply-worktree` 将更改带入你的主检出。
+
+##### worktree 设置如何运作？
+
+你可以使用 `.cursor/worktrees.json` 自定义工作树设置。Cursor 按以下顺序查找该文件：
+
+1. 在工作树路径中
+2. 在项目根路径中
+
+### 规则
+
+<font color=dodgerBlue>Cursor 支持四种类型的规则：</font>
+
+- **项目规则**：存储在 `.cursor/rules` 中，纳入版本控制，并限定在你的代码库范围内。
+- **用户规则**：在你的 Cursor 环境中全局生效。由 Agent (Chat) 使用。
+- **团队规则**：从仪表盘管理的团队范围规则。适用于 Team 和 [Enterprise](https://cursor.com/docs/enterprise) 方案。
+- **AGENTS.md**：采用 markdown 格式的 Agent 指令。是 `.cursor/rules` 的简单替代方案。
+
+###### 规则如何工作
+
+大语言模型在各次补全之间不会保留记忆。规则在提示层面提供持久、可复用的上下文。
+
+应用规则时，其<font color=red>内容会被加入到模型上下文的开头</font>。这为 AI 在生成代码、理解修改或协助处理工作流程时提供一致的指导。
+
+##### 项目规则
+
+项目规则存放在 `.cursor/rules` 目录中的 Markdown 文件里，并 <font color=red>**纳入版本控制**</font>。它们可以通过路径模式限定作用范围、手动触发，或按相关性自动应用。
+
+<font color=dodgerBlue>使用项目规则可以：</font>
+
+- 固化与你代码库相关的领域知识
+- 自动化项目特定的工作流或模板
+- 统一风格或架构决策
+
+###### 规则文件结构
+
+每条规则对应一个 Markdown 文件，文件名可自定义。Cursor 支持 `.md` 和 `.mdc` 扩展名。使用带有 frontmatter 的 `.mdc` 文件来指定 `description` 和 `globs`，以便更精细地控制规则的生效条件。
+
+> [!NOTE]
+> 这里的 frontmatter （前言）就是死 [[#规则结构]] 中的代码块最前面的部分，用于描述该文档的使用规则的标识，如下面所说是 “元数据”，也如 HTML 中的 TDK
+
+```txt
+.cursor/rules/
+  react-patterns.mdc       # 带有前置元数据的规则（description, globs）
+  api-guidelines.md        # 简单的 markdown 规则
+  frontend/                # 在文件夹中组织规则
+    components.md
+```
+
+###### 规则结构
+
+每条规则都是一个带有 frontmatter 元数据和内容的 markdown 文件。通过类型下拉菜单控制规则的应用方式，该菜单会更改 `description`、`globs`、`alwaysApply` 属性。
+
+| Rule Type                 | 描述                                                       |
+| ------------------------- | -------------------------------------------------------- |
+| `Always Apply`            | 应用于每个聊天会话                                                |
+| `Apply Intelligently`     | 当 Agent 根据描述判断其相关时应用                                     |
+| `Apply to Specific Files` | <font color=red>当文件匹配指定模式时应用</font>                      |
+| `Apply Manually`          | <font color=red>**在聊天中被 @ 提及时应用 (例如 `@my-rule`)**</font> |
+```md
+---
+globs:
+alwaysApply: false
+---
+
+- Use our internal RPC pattern when defining services
+- Always use snake_case for service names.
+
+@service-template.ts
+```
+
+###### 创建规则
+
+有两种方式可以创建规则：
+
+- **在对话中使用 `/create-rule`**：在 Agent 中输入 `/create-rule`，然后描述你的需求。Agent 会生成带有正确 frontmatter 的规则文件，并将其保存到 `.cursor/rules`。
+- **在设置中创建**：打开 `Cursor Settings > Rules, Commands`，然后点击 `+ Add Rule`。这会在 `.cursor/rules` 中创建一个新的规则文件。在设置中可以查看所有规则及其状态。
+
+##### 最佳实践
+
+好的规则应当聚焦、可操作且范围明确。
+
+- 将规则控制在 500 行以内
+- 将大型规则拆分为<font color=red>多个 **可组合的** 规则</font>
+- 提供具体示例或引用相关文件
+- 避免模糊的指导，像撰写清晰的内部文档那样来写规则
+- 在聊天中重复提示时复用规则
+- 引用文件而不是复制其内容——这样可以让规则更简短，并避免在代码变更后规则变得陈旧
+
+###### 编写规则时应避免的事项
+
+- **整份照搬风格指南**：请改用 linter。Agent 已经了解常见的风格规范。
+- **把每一个可能的命令都写进文档**：Agent 了解常用工具，比如 npm、git 和 pytest。
+- <font color=fuchsia>**为极少出现的边缘情况添加说明**：让规则只聚焦在你经常使用的模式上</font>。
+- **重复你代码库中已有的内容**：引用规范示例，而不是复制代码。
+
+把你的规则提交到 Git，这样整个团队都能受益。当你看到 Agent 出错时，就更新对应的规则。你甚至可以在 GitHub issue 或 PR 上标记 `@cursor`，让 Agent 帮你更新规则。
+
+##### 规则文件格式
+
+每条规则都是一个包含 frontmatter 元数据和正文内容的 Markdown 文件。frontmatter 元数据用于控制规则的应用方式，正文则定义规则本身。
+
+```md
+---
+description: "This rule provides standards for frontend components and API validation"
+alwaysApply: false
+---
+
+...rest of the rule content
+```
+
+如果 `alwaysApply` 为 true，则该规则会应用于每个聊天会话。否则，会将该规则的描述展示给 Cursor Agent，由其决定是否应当应用该规则。
+
+##### 导入规则
+
+可以从外部来源导入规则，以复用现有配置或引入其他工具的规则。
+
+###### 远程规则 (通过 GitHub)
+
+> [!WARNING]
+> 2026/4/7，在当前的 Cursor Version: 3.0.12，这里入口找不到，应该是文档更新不及时
+
+从你有访问权限的任何 GitHub 仓库 (公共或私有) 直接导入规则。
+
+1. 打开 **Cursor Settings → Rules, Commands**
+2. 点击 `+ Add Rule` (位于 `Project Rules` 旁) ，然后选择 Remote Rule (GitHub)
+3. 粘贴包含该规则的 GitHub 仓库 URL
+4. Cursor 会拉取该规则并将其同步到你的项目中
+
+导入的规则会与其源仓库保持同步，因此远程规则的更新会自动体现在你的项目中。
+
+##### AGENTS.md
+
+`AGENTS.md` 是一个用于定义 agent 指令的简单 markdown 文件。将它<font color=red>放在项目根目录中，可作为 `.cursor/rules` 的一种替代方式</font>，适用于简单直接的用例。
+
+与 Project Rules 不同，`AGENTS.md` 是不带元数据或复杂配置的纯 markdown 文件。对于只需要简单、易读指令且不想引入结构化规则开销的项目来说，它非常合适。
+
+Cursor 支持在项目根目录和子目录中使用 `AGENTS.md`。
+
+```md
+# Project Instructions
+
+## Code Style
+
+- Use TypeScript for all new files
+- Prefer functional components in React
+- Use snake_case for database columns
+
+## Architecture
+
+- Follow the repository pattern
+- Keep business logic in service layers
+```
+
+###### 改进
+
+嵌套 AGENTS.md 支持
+
+现在已支持在子目录中使用嵌套的 `AGENTS.md` 文件。你可以在项目的任意子目录下放置 `AGENTS.md` 文件，在处理该目录及其子目录中的文件时，这些文件会自动生效。
+
+这样可以根据你当前正在处理的代码库区域，对 agent 指令进行更精细的控制：
+
+```txt
+project/
+  AGENTS.md              # 全局指令
+  frontend/
+    AGENTS.md            # 前端专用指令
+    components/
+      AGENTS.md          # 组件专用指令
+  backend/
+    AGENTS.md            # 后端专用指令
+```
+
+来自嵌套 `AGENTS.md` 文件的指令会与父目录中的指令合并，更具体的指令具有更高的优先级。
+
+##### 用户规则
+
+用户规则是在 **Cursor Settings → Rules** 中定义的全局首选项，适用于所有项目。它们供 Agent (Chat) 使用，非常适合用来设定偏好的沟通风格或编码规范：
+
+```md
+Please reply in a concise style. Avoid unnecessary repetition or filler language.
+```
+
 ## Prompt
 
 ##### 一些资料
