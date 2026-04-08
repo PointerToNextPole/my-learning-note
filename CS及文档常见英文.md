@@ -1322,17 +1322,22 @@
 
   > 👀 明显是 column 的变体
 
-- **delta** ：**增量**（数学符号 $\Delta$），三角洲
+- **delta** ：**增量**（数学符号 $\Delta$），**差异**，三角洲
 
   > The other new configuration option being added will further ensure that the right types of deltas are generated at `git push` time...
   >
   > 摘自：[How we shrunk our Javascript monorepo git size by 94%](https://www.jonathancreamer.com/how-we-shrunk-our-git-repo-size-by-94-percent/)
+  > 
+  > **Delta** specs showing ADDED/MODIFIED/REMOVED requirements
+  > 
+  > 摘自：[GitHub - OpenSpec - Getting Started # Understanding Artifacts](https://github.com/Fission-AI/OpenSpec/blob/main/docs/getting-started.md#understanding-artifacts)
 
 - **idempotency** ：幂等性
 
 - **proactive** ：主动的
 
-  > 💡 在编程范式和软件架构领域存在 proactive 和 reactive 两种**异步处理**方式
+  > [!TIP]
+  > 在编程范式和软件架构领域存在 proactive 和 reactive 两种**异步处理**方式
   > - **Proactive （主动）** ：通常指系统主动执行某些操作，比如预先加载数据、主动发起计算等等。
   > - **Reactive（响应式）** ：通常指系统对外部事件或变化做出响应，比如用户点击、数据更新、消息到达等等。
 
@@ -1566,6 +1571,13 @@
   **multimodality** ：多模态
 - **linkage** ：联动
 - **frontmatter** ：前言
+- **hygiene** ：卫生
+  > **Context hygiene**: OpenSpec benefits from a clean context window.
+  > 
+  > 摘自：[GitHub - OpenSpec](https://github.com/Fission-AI/OpenSpec)
+  
+- **OTP** ：一次性密码 ( One-Time Password )
+- **enabler** ：促成者，促成因素
 ***
 
 
