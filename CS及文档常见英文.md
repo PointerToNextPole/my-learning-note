@@ -2755,3 +2755,5 @@
 - **stub** ：存根
 - **futile** ：徒劳的
 - **onboarding** ：入职、入职引导
+- **chamber** ：房间、腔室
+- **echo chamber** ：回声室
