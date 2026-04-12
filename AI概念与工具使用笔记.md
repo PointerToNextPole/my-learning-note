@@ -1579,16 +1579,178 @@ Create a subagent file at .cursor/agents/security-reviewer.md with YAML frontmat
 
 ##### FAQ
 
-- 子代理可以启动其他子代理吗？
-  可以。自 Cursor 2.5 起，子代理可以启动子级子代理，形成协调工作的树状结构。 嵌套启动需要当前模式下具有 Task 工具访问权限，并且 hooks 或工具策略可能会阻止生成。
-- 如何查看子代理在做什么？
+- **子代理可以启动其他子代理吗？**
+  可以。自 Cursor 2.5 起，<font color=red>子代理可以启动子级子代理</font>，形成协调工作的树状结构。 嵌套启动需要当前模式下具有 Task 工具访问权限，并且 hooks 或工具策略可能会阻止生成。
+  > [!NOTE]
+  > 有点类似于 子进程 fork
+- **如何查看子代理在做什么？**
   后台子代理会将输出写入 `~/.cursor/subagents/`。父代理 可以读取这些文件来检查进度。
-- 如果子代理失败会发生什么？
+- **如果子代理失败会发生什么？**
   子代理会向父代理返回错误状态。父代理可以 重试、在补充额外上下文后恢复，或以不同方式处理该失败。
-- 我可以在子代理中使用 MCP 工具吗？
-  是的。子代理会继承父代理的所有工具，包括来自已配置服务器的 MCP 工具。
-- 如何调试行为异常的子代理？
+- **我可以在子代理中使用 MCP 工具吗？**
+  是的。<font color=red>**子代理会继承父代理的所有工具**</font>，包括来自已配置服务器的 MCP 工具。
+- **如何调试行为异常的子代理？**
   检查子代理的 description 和提示。确保这些说明 具体且没有歧义。你也可以通过显式调用子代理并给它一个简单任务 来测试它。
+
+### 钩子
+
+钩子 <font color=red>让你能够使用自定义脚本来观察、控制和扩展 agent 循环</font>。钩子 <font color=red>**是生成的进程**，通过 stdio 使用 JSON 进行双向通信</font>。它们会在 agent 循环的定义阶段之前或之后运行，并且可以观察、阻止或修改行为。
+
+借助 钩子，你可以：
+
+- 在编辑后运行格式化工具
+- 为事件添加分析
+- 扫描 PII 或机密信息
+- 为高风险操作设置门禁 (例如 SQL 写入)
+- 控制 subagent (Task 工具) 的执行
+- 在会话开始时注入上下文
+
+#### Agent 和 Tab 支持
+
+钩子同时适用于 **Cursor Agent** (Cmd+K/Agent Chat) 和 **Cursor Tab** (行内补全) ，但它们使用不同的 钩子事件：
+
+**Agent (Cmd+K/Agent Chat)** 使用标准钩子：
+
+- `sessionStart` / `sessionEnd` - 会话生命周期管理
+- `preToolUse` / `postToolUse` / `postToolUseFailure` - 通用工具使用钩子 (对所有工具都会触发)
+- `subagentStart` / `subagentStop` - subagent (Task 工具) 生命周期
+- `beforeShellExecution` / `afterShellExecution` - 控制 shell 命令
+- `beforeMCPExecution` / `afterMCPExecution` - 控制 MCP 工具使用
+- `beforeReadFile` / `afterFileEdit` - 控制文件访问和编辑
+- `beforeSubmitPrompt` - 在提交前校验 prompt
+- `preCompact` - 监听上下文窗口压缩
+- `stop` - 处理 Agent 完成
+- `afterAgentResponse` / `afterAgentThought` - 跟踪 Agent 响应
+
+**Tab (行内补全)** 使用专门的钩子：
+
+- `beforeTabFileRead` - 控制 Tab 补全的文件访问
+- `afterTabFileEdit` - 对 Tab 编辑进行后处理
+
+这些独立的钩子允许为自动化的 Tab 操作和用户驱动的 Agent 操作配置不同策略。
+
+#### 快速开始
+
+先创建一个 `hooks.json` 文件。你可以在项目级路径 (`<project>/.cursor/hooks.json`) 或主目录 (`~/.cursor/hooks.json`) 下创建。项目级钩子只对该项目生效，主目录中的钩子全局生效。
+
+###### 用户 hooks (`~/.cursor/`)
+
+对于全局生效的用户级钩子，在 `~/.cursor/hooks.json` 中创建：
+
+```json
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [{ "command": "./hooks/format.sh" }]
+  }
+}
+```
+
+在 `~/.cursor/hooks/format.sh` 中创建你的钩子脚本：
+
+```sh
+#!/bin/bash
+# 读取输入，执行处理，然后以 0 退出
+cat > /dev/null
+exit 0
+```
+
+将脚本设为可执行：
+
+```sh
+chmod +x ~/.cursor/hooks/format.sh
+```
+
+Cursor 会监视钩子配置文件并自动重新加载。现在每次编辑文件后都会执行你的钩子。
+
+###### 项目 hooks (`.cursor/`)
+
+对于仅对某个代码仓库生效的项目级钩子，在 `<project>/.cursor/hooks.json` 中创建：
+
+```json
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [{ "command": ".cursor/hooks/format.sh" }]
+  }
+}
+```
+
+注意：项目级钩子从**项目根目录**运行，因此要使用 `.cursor/hooks/format.sh` (而不是 `./hooks/format.sh`) 。
+
+在 `<project>/.cursor/hooks/format.sh` 中创建你的钩子脚本：
+
+> [!NOTE]
+> 这部分内容和 [[#用户 hooks (`~/.cursor/`)]] 一样，略
+
+##### Hook 类型
+
+Hook 提供两种执行方式：命令驱动 (默认) 和 Prompt 驱动 (由 LLM 评估) 。
+
+> [!NOTE]
+> 即：默认的 “命令驱动” 无需指定 `type`
+
+###### 基于命令的 Hook
+
+命令类 Hook 会执行 Shell 脚本，这些脚本从 stdin 接收 JSON 输入，并向 stdout 输出 JSON。
+
+```json
+{
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": "./scripts/approve-network.sh",
+        "timeout": 30,
+        "matcher": "curl|wget|nc"
+      }
+    ]
+  }
+}
+```
+
+**退出码行为：**
+
+- 退出码 `0` - Hook 成功，使用 JSON 输出
+- 退出码 `2` - 阻止该操作 (等同于返回 `permission: "deny"`)
+- 其他退出码 - Hook 失败，但操作继续执行 (默认失败放行)
+
+###### 基于提示的 Hook
+
+提示 Hook 使用 LLM 来判断自然语言条件。它们适用于在不编写自定义脚本的情况下执行策略。
+
+```json
+{
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "type": "prompt",
+        "prompt": "Does this command look safe to execute? Only allow read-only operations.",
+        "timeout": 10
+      }
+    ]
+  }
+}
+```
+
+**功能：**
+
+- 返回结构化的 `{ ok: boolean, reason?: string }` 响应
+- 使用快速模型进行快速评估
+- `$ARGUMENTS` 占位符会自动替换为 hook 输入的 JSON
+- 如果缺少 `$ARGUMENTS`，会自动追加 hook 输入
+- 可选的 `model` 字段可用于覆盖默认的 LLM 模型
+
+##### 配置
+
+在 `hooks.json` 文件中定义 hooks。配置可以存在于多个级别。来自每个来源的所有匹配 hooks 都会运行；当响应发生冲突时，合并时优先采用优先级更高的配置源：
+
+```txt
+~/.cursor/
+├── hooks.json
+└── hooks/
+    ├── audit.sh
+    └── block-git.sh
+```
 
 ## Prompt
 
