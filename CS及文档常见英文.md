@@ -2757,3 +2757,4 @@
 - **onboarding** ：入职、入职引导
 - **chamber** ：房间、腔室
 - **echo chamber** ：回声室
+- **rewind** ：倒带
