@@ -445,6 +445,67 @@ Claude Code 将：
 - 按 ↑ 查看命令历史
 - 输入 `/` 查看所有命令和 skills
 
+#### Claude Code 如何工作
+
+##### 代理循环
+
+<font color=dodgerBlue>**当您给 Claude 一个任务时，它会经历三个阶段**</font>：<font color=fuchsia>**收集上下文**、**采取行动**和**验证结果**</font>。这些阶段相互融合。Claude 始终使用工具，无论是搜索文件以了解您的代码、编辑以进行更改，还是运行测试以检查其工作。
+
+![代理循环：您的提示导致 Claude 收集上下文、采取行动、验证结果，并重复直到任务完成。您可以在任何时刻中断。](https://files.seeusercontent.com/2026/04/15/n1hR/agentic-loop.svg)
+
+循环会根据您的要求进行调整。关于您代码库的问题可能只需要收集上下文。<font color=fuchsia>错误修复会循环通过所有三个阶段**多次**</font>。重构可能涉及广泛的验证。Claude 根据从前一步学到的内容决定每一步需要什么，将数十个操作链接在一起并沿途进行纠正。
+
+<font color=fuchsia>**您也是这个循环的一部分**。您可以在任何时刻中断以引导 Claude 朝不同的方向发展、提供额外的上下文或要求它尝试不同的方法</font>。Claude 自主工作但对您的输入保持响应。
+
+<font color=dodgerBlue>代理循环由两个组件驱动</font>：[模型](https://code.claude.com/docs/zh-CN/how-claude-code-works#models)进行推理和[工具](https://code.claude.com/docs/zh-CN/how-claude-code-works#tools)采取行动。<font color=red>Claude Code 充当 Claude 周围的**代理框架**：它提供工具、上下文管理和执行环境，将语言模型转变为能够进行编码的代理</font>。
+
+###### 工具
+
+工具是使 Claude Code 成为代理的原因。没有工具，Claude 只能用文本回应。有了工具，Claude 可以采取行动：读取您的代码、编辑文件、运行命令、搜索网络并与外部服务交互。每个工具使用都会返回信息，反馈到循环中，告知 Claude 的下一个决定。
+
+<font color=dodgerBlue>内置工具通常分为五个类别，每个类别代表不同类型的代理能力</font>。
+
+| 类别         | Claude 可以做什么                                            |
+| :----------- | :----------------------------------------------------------- |
+| **文件操作** | 读取文件、编辑代码、创建新文件、重命名和重新组织             |
+| **搜索**     | 按模式查找文件、使用正则表达式搜索内容、探索代码库           |
+| **执行**     | 运行 shell 命令、启动服务器、运行测试、使用 git              |
+| **网络**     | 搜索网络、获取文档、查找错误消息                             |
+| **代码智能** | 编辑后查看类型错误和警告、跳转到定义、查找引用（需要[代码智能插件](https://code.claude.com/docs/zh-CN/discover-plugins#code-intelligence)） |
+
+这些是主要功能。Claude 还有用于生成 subagents、询问您问题和其他编排任务的工具。
+
+Claude 根据您的提示和沿途学到的内容选择使用哪些工具。当您说”修复失败的测试”时，Claude 可能会：
+
+1. 运行测试套件以查看失败的内容
+2. 读取错误输出
+3. 搜索相关的源文件
+4. 读取这些文件以理解代码
+5. 编辑文件以修复问题
+6. 再次运行测试以验证
+
+每个工具使用都给 Claude 新的信息，告知下一步。这就是代理循环的实际应用。
+
+**扩展基本功能：** 内置工具是基础。您可以<font color=red>使用 **[skills](https://code.claude.com/docs/zh-CN/skills) 扩展 Claude 知道的内容**、使用 **[MCP](https://code.claude.com/docs/zh-CN/mcp) 连接到外部服务**、使用 [hooks](https://code.claude.com/docs/zh-CN/hooks) 自动化工作流，以及将任务卸载给 [subagents](https://code.claude.com/docs/zh-CN/sub-agents)</font>。这些扩展形成了核心代理循环之上的一层。
+
+###### Claude 可以访问什么
+
+本指南重点关注终端。当您在目录中运行 `claude` 时，Claude Code 可以访问：
+
+- **您的项目。** 您目录和子目录中的文件，以及其他地方有您许可的文件。
+- **您的终端。** <font color=red>您可以运行的任何命令：构建工具、git、包管理器、系统实用程序、脚本</font>。<font color=fuchsia>如果您可以从命令行做到，Claude 也可以</font>。
+- **您的 git 状态。** 当前分支、未提交的更改和最近的提交历史。
+- **您的 [CLAUDE.md](https://code.claude.com/docs/zh-CN/memory)。** 一个 markdown 文件，您可以在其中存储项目特定的说明、约定和 Claude 应该在每个会话中了解的上下文。
+- **[自动内存](https://code.claude.com/docs/zh-CN/memory#auto-memory)。** Claude 在您工作时自动保存的学习内容，如项目模式和您的偏好。<font color=fuchsia>MEMORY.md 的前 200 行或 25KB（以先到者为准）在每个会话开始时加载</font>。
+- **您配置的扩展。** 用于外部服务的 [MCP servers](https://code.claude.com/docs/zh-CN/mcp)、用于工作流的 [skills](https://code.claude.com/docs/zh-CN/skills)、用于委派工作的 [subagents](https://code.claude.com/docs/zh-CN/sub-agents) 和用于浏览器交互的 [Claude in Chrome](https://code.claude.com/docs/zh-CN/chrome)。
+
+因为 Claude 看到您的整个项目，它可以跨越它工作。当您要求 Claude “修复身份验证错误” 时，它搜索相关文件、读取多个文件以理解上下文、跨它们进行协调编辑、运行测试以验证修复，并在您要求时提交更改。这与只看到当前文件的内联代码助手不同。
+
+##### 使用会话
+
+Claude Code 在您工作时将您的对话保存在本地。每条消息、工具使用和结果都被存储，<font color=red>这使得[回退](https://code.claude.com/docs/zh-CN/how-claude-code-works#undo-changes-with-checkpoints)、[恢复和分叉](https://code.claude.com/docs/zh-CN/how-claude-code-works#resume-or-fork-sessions)会话成为可能</font>。在 Claude 进行代码更改之前，它还会对受影响的文件进行快照，以便您在需要时可以恢复。
+
+**会话是独立的。** 每个新会话都以新的上下文窗口开始，没有来自以前会话的对话历史。<font color=fuchsia>Claude 可以使用[自动内存](https://code.claude.com/docs/zh-CN/memory#auto-memory)跨会话保持学习</font>，您可以在 [CLAUDE.md](https://code.claude.com/docs/zh-CN/memory) 中添加您自己的持久说明。
 
 
 
