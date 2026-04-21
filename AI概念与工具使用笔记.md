@@ -531,6 +531,56 @@ claude --continue --fork-session
 
 **在多个终端中的相同会话**：如果您在多个终端中恢复相同的会话，两个终端都会写入相同的会话文件。来自两者的消息会交错，就像两个人在同一个笔记本中写字一样。没有任何内容损坏，但对话变得混乱。每个终端在会话期间只看到自己的消息，但如果您稍后恢复该会话，您会看到所有内容交错。对于从相同起点的并行工作，使用 `--fork-session` 为每个终端提供自己的干净会话。
 
+###### 上下文窗口
+
+Claude 的上下文窗口保存您的对话历史、文件内容、命令输出、[CLAUDE.md](https://code.claude.com/docs/zh-CN/memory)、[自动内存](https://code.claude.com/docs/zh-CN/memory#auto-memory)、加载的 skills 和系统说明。当您工作时，上下文填满。Claude 自动压缩，但对话早期的说明可能会丢失。将持久规则放在 CLAUDE.md 中，并 <font color=fuchsia>**运行 `/context` 以查看什么在占用空间**</font>。
+
+- **当上下文填满时**
+
+  Claude Code 在您接近限制时自动管理上下文。它首先清除较旧的工具输出，然后在需要时总结对话。您的请求和关键代码片段被保留；对话早期的详细说明可能会丢失。将持久规则放在 CLAUDE.md 中，而不是依赖对话历史。
+
+  要控制在压缩期间保留的内容，请在 CLAUDE.md 中添加 “Compact Instructions” 部分 <font color=dodgerBlue>**或**</font> <font color=<font color=red>>**使用焦点运行 `/compact`（如 `/compact focus on the API changes`）**</font>。
+
+  运行 `/context` 以查看什么在占用空间。MCP 工具定义默认被延迟，并通过[工具搜索](https://code.claude.com/docs/zh-CN/mcp#scale-with-mcp-tool-search)按需加载，因此只有工具名称消耗上下文，直到 Claude 使用特定工具。运行 `/mcp` 以检查每个服务器的成本。 
+
+- **使用 skills 和 subagents 管理上下文**
+
+  除了压缩，您可以使用其他功能来控制什么加载到上下文中。
+
+  [Skills](https://code.claude.com/docs/zh-CN/skills) 按需加载。Claude 在会话开始时看到 skill 描述，但完整内容仅在使用 skill 时加载。<font color=lightSeaGreen>对于您手动调用的 skills，设置 `disable-model-invocation: true` 以将描述保留在上下文之外，直到您需要它们</font>。
+
+  [Subagents](https://code.claude.com/docs/zh-CN/sub-agents) 获得自己的新上下文，完全独立于您的主对话。他们的工作不会使您的上下文膨胀。完成后，他们返回一个摘要。这种隔离是为什么 subagents 有助于长会话。
+
+##### 使用检查点和权限保持安全
+
+Claude 有两个安全机制：检查点让您撤销文件更改，权限控制 Claude 可以在不询问的情况下做什么。
+
+###### 使用检查点撤销更改
+
+**每个文件编辑都是可逆的。** <font color=red>**在 Claude 编辑任何文件之前，它会对当前内容进行快照**</font>。<font color=dodgerBlue>如果出现问题</font>，<font color=red>按两次 `Esc` 以回退到之前的状态，或要求 Claude 撤销</font>。
+
+检查点是会话本地的，独立于 git。它们仅涵盖文件更改。影响远程系统的操作（数据库、API、部署）无法进行检查点，这就是为什么 Claude 在运行具有外部副作用的命令之前询问。
+
+###### 控制 Claude 可以做什么
+
+按 `Shift+Tab` 循环通过权限模式：
+
+- **默认**：Claude 在文件编辑和 shell 命令之前询问
+
+- **自动接受编辑**：Claude edits files and runs <font color=red>common filesystem commands</font> like `mkdir` and `mv` without asking, still asks for other commands
+
+  > [!NOTE]
+  >
+  > 中文版有点差，这里放的是英文版
+
+- **Plan Mode**：Claude 仅使用只读工具，创建您可以在执行前批准的计划
+
+- **自动模式**：Claude 使用后台安全检查评估所有操作。目前是研究预览
+
+您也可以在 `.claude/settings.json` 中允许特定命令，以便 Claude 不会每次都询问。这对于受信任的命令（如 `npm test` 或 `git status`）很有用。设置可以从组织范围的策略范围到个人偏好。有关详细信息，请参阅[权限](https://code.claude.com/docs/zh-CN/permissions)。
+
+
+
 
 
 #### Claude Code 最佳实践
@@ -809,7 +859,6 @@ claude --permission-mode auto -p "fix all lint errors"
 ```
 
 对于使用 `-p` 标志的非交互运行，如果分类器重复阻止操作，auto mode 会中止，因为没有用户可以回退到。请参阅 [auto mode 何时回退](https://code.claude.com/docs/zh-CN/permission-modes#when-auto-mode-falls-back) 了解阈值。
-
 
 
 #### 斜杠命令
