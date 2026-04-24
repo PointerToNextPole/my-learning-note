@@ -653,6 +653,8 @@
 
 - **outline** ：轮廓。outline 是一种 CSS 属性
 
+- **outlier** ：离群值、异常值
+
 - **simulate** ：模拟。simulator 则是模拟器
 
 - **Palette** ：调色板
