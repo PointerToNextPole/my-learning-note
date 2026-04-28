@@ -1580,6 +1580,7 @@
 - **OTP** ：一次性密码 ( One-Time Password )
 - **enabler** ：促成者，促成因素
 - **audit** ：审计
+- **malleability** ：可塑性
 ***
 
 
