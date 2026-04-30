@@ -1554,33 +1554,55 @@
   > 👀 V8 Scavenger GC 算法
 
 - **misalign** ：错位
+
 - **middle-click** ：中键点击
   **command-click** ：按住 command 键点击
   > There’s a lot of awesome functionality built into linking elements like `<a>` and `<button>`. If you middle click or command-click on them they’ll open in new windows.
   > 
     > 摘自：[URL Design](https://warpspire.com/posts/url-design)
+  
 - **sample** : 样本、样品、<font color=red>采样</font>
+
 - **orchestration** ：编排
+
 - **hybrid** ：混合
+
 - **regress** ：回归
   **regression testing** ：回归测试
+  
 - **supervision** ：监督
+
 - **morph** ：变形、渐变
+
 - **vertex** ：顶点
+
 - **peripheral** ：周边的设备、周边的
+
 - **modality** ：模态
   **multimodality** ：多模态
+  
 - **linkage** ：联动
+
 - **frontmatter** ：前言
+
 - **hygiene** ：卫生
   > **Context hygiene**: OpenSpec benefits from a clean context window.
   > 
   > 摘自：[GitHub - OpenSpec](https://github.com/Fission-AI/OpenSpec)
   
 - **OTP** ：一次性密码 ( One-Time Password )
+
 - **enabler** ：促成者，促成因素
+
 - **audit** ：审计
+
 - **malleability** ：可塑性
+
+- **adherence** ：遵守、拥护
+
+  > Target under 200 lines. Longer files still load in full but may reduce **adherence**
+  >
+  > 摘自；[Claude Code Docs - 快速开始 - 探索 .claude 目录](https://code.claude.com/docs/zh-CN/claude-directory)
 ***
 
 
@@ -2512,7 +2534,7 @@
 
   **toxicity** ：毒性
 
-- **takeaway** ：外卖，要点
+- **takeaway** ：要点、外卖
 
   **key takeaway** ：重要信息、关键要点
   
