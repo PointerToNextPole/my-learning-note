@@ -1186,9 +1186,272 @@ Claude Code 从您的项目目录和主目录中的 `~/.claude` 读取指令、�
 
   - **`rules/`**
 
-    
+    > [!TIP]
+    >
+    > **When it loads**
+    >
+    > <font color=dodgerBlue>Rules without `paths:`</font> load at session start. <font color=dodgerBlue>Rules with `paths:`</font> <font color=red>load **when a matching file enters context**</font>
+
+    <font color=red>Project instructions split into topic files that can load conditionally based on file paths.</font> A rule without `paths:` frontmatter loads at session start like CLAUDE.md; a rule with `paths:` loads only when Claude reads a matching file.
+
+    > [!NOTE]
+    >
+    > 这段就是在复述 “when it loads” 处的内容。重点是第一句 “项目说明按主题拆分为多个文件，可根据文件路径有条件地加载。”
+
+    Like CLAUDE.md, rules are guidance Claude reads, not configuration Claude Code enforces. For guaranteed behavior use [hooks](https://code.claude.com/docs/en/hooks) or [permissions](https://code.claude.com/docs/en/permissions).
+
+    > [!TIP]
+    >
+    > - Use `paths:` frontmatter with globs to scope rules to directories or file types
+    >
+    > - Subdirectories work: `.claude/rules/frontend/react.md` is discovered automatically
+    >
+    > - <font color=dodgerBlue>When CLAUDE.md approaches 200 lines</font>, <font color=red>start splitting into rules</font>
+
+    - **`testing.md`**
+
+      > [!TIP]
+      >
+      > **When it loads**
+      >
+      > Loaded when Claude reads a file matching the `paths:` globs below
+
+      An example rule that only loads when Claude is working on test files. The `paths:` globs in the frontmatter define which files trigger it; here, anything ending in `.test.ts` or `.test.tsx`. <font color=dodgerBlue>For other files</font>, this rule is not loaded into context.
+
+      > [!NOTE]
+      >
+      > 参考下面的示例，感觉这里已经说的很清楚了。需要匹配的文件要通过 `paths:` 来配置
+
+      ```md
+      ---
+      paths:
+        - "**/*.test.ts"
+        - "**/*.test.tsx"
+      ---
+      
+      # Testing Rules
+      
+      - Use descriptive test names: "should [expected] when [condition]"
+      - Mock external dependencies, not internal modules
+      - Clean up side effects in afterEach
+      ```
+
+  - **`skills/`**
+
+    > [!TIP]
+    >
+    > **When it loads**
+    >
+    > Invoked with `/skill-name` or when Claude matches the task to a skill
+
+    Each skill is a folder with a SKILL.md file plus any supporting files it needs. <font color=dodgerBlue>By default</font>, <font color=lightSeaGreen>both you and Claude can invoke a skill</font>. Use frontmatter to control that: `disable-model-invocation: true` for user-only workflows like `/deploy`, or `user-invocable: false` to hide from the `/` menu while Claude can still invoke it.
+
+    > [!TIP]
+    >
+    > - <font color=red>Skills accept arguments</font>: `/deploy staging` passes "staging" as `$ARGUMENTS`. <font color=red>Use `$0`, `$1`, and so on for positional access</font>
+    >
+    > - The `description` frontmatter determines when Claude auto-invokes the skill
+    >
+    > - Bundle reference docs alongside SKILL.md. Claude knows the skill directory path and can read supporting files when you mention them
+
+  - **`commands/`**
+
+    > [!warning]
+    >
+    > Commands and skills are now the same mechanism. For new workflows, use [skills/](https://code.claude.com/docs/en/skills) instead: same `/name` invocation, plus you can bundle supporting files.
+
+  - **`output-styles/`**
+
+    > [!TIP]
+    >
+    > Project-scoped output styles, <font color=red>if your team shares any</font>
+
+    > [!TIP]
+    >
+    > **When it loads**
+    >
+    > Applied at session start when selected via the outputStyle setting
+
+    <font color=dodgerBlue>Output styles are usually personal</font>, so <font color=red>most live in `~/.claude/output-styles/`</font>. Put one here if your team shares a style, like a review mode everyone uses. See [the Global tab](https://code.claude.com/docs/zh-CN/claude-directory#ce-global-output-styles) for the full explanation and example.
+
+  - **`agents/`**
+
+    > [!TIP]
+    >
+    > Specialized subagents with their own context window
+
+    > [!TIP]
+    >
+    > **When it loads**
+    >
+    > Runs in its own context window when you or Claude invoke it
+
+    Each markdown file defines a subagent with its own system prompt, tool access, and optionally its own model. Subagents run in a fresh context window, keeping the main conversation clean. <font color=red>Useful for parallel work or isolated tasks</font>.
+
+    > [!TIP]
+    >
+    > - Each agent gets a fresh context window, separate from your main session
+    >
+    > - Restrict tool access per agent with the <font color=red>`tools:` frontmatter field</font>
+    >
+    > - Type @ and pick an agent from the autocomplete to delegate directly
+
+    - `code-reviewer.md`
+
+      > [!TIP]
+      >
+      > **When it loads**
+      >
+      > Claude spawns it for review tasks, or you @-mention it from the autocomplete
+
+      An example subagent restricted to read-only tools. The `description` frontmatter tells Claude when to delegate to it automatically; <font color=red>`tools:` limits it to Read, Grep, and Glob</font> so it can inspect code but never edit. The body becomes the subagent's system prompt.
+
+      ```md
+      ---
+      name: code-reviewer
+      description: Reviews code for correctness, security, and maintainability
+      tools: Read, Grep, Glob
+      ---
+      
+      You are a senior code reviewer. Review for:
+      
+      1. Correctness: logic errors, edge cases, null handling
+      2. Security: injection, auth bypass, data exposure
+      3. Maintainability: naming, complexity, duplication
+      
+      Every finding must include a concrete fix.
+      ```
+
+  - **`agent-memory/`**
+
+    > [!TIP]
+    >
+    > Subagent persistent memory, separate from your main session auto memory
+
+    > [!TIP]
+    >
+    > **When it loads**
+    >
+    > First 200 lines (capped at 25KB) of MEMORY.md loaded into the subagent system prompt when it runs
+
+    Subagents with `memory: project` in their frontmatter get a dedicated memory directory here. <font color=dodgerBlue>This is distinct from your [main session auto memory](https://code.claude.com/docs/en/memory#auto-memory) at `~/.claude/projects/`</font>: <font color=red>each subagent reads and writes its own MEMORY.md, not yours</font>.
+
+    > [!TIP]
+    >
+    > - Only created for subagents that set the `memory:` frontmatter field
+    >
+    > - This directory holds project-scoped subagent memory, meant to be shared with your team. <font color=red>To keep memory out of version control use `memory: local`</font>, which writes to `.claude/agent-memory-local/` instead. <font color=dodgerBlue>For cross-project</font> memory use `memory: user`, which writes to `~/.claude/agent-memory/`
+    >
+    > - The main session auto memory is a different feature; see `~/.claude/projects/` in the Global tab
+
+    - **`<agent-name>/MEMORY.md`**
+
+      > [!TIP]
+      >
+      > <font color=red>The subagent writes and maintains this file **automatically**</font>
+
+      > [!TIP]
+      >
+      > **When it loads**
+      >
+      > Loaded into the subagent system prompt when the subagent starts
+
+      Works the same as your [main auto memory](https://code.claude.com/docs/en/memory#auto-memory): <font color=red>the subagent creates and updates this file itself</font>. You do not write it. The subagent reads it at the start of each task and writes back what it learns.
+
+      ```md
+      # code-reviewer memory
+      
+      ## Patterns seen
+      - Project uses custom Result<T, E> type, not exceptions
+      - Auth middleware expects Bearer token in Authorization header
+      - Tests use factory functions in test/factories/
+      
+      ## Recurring issues
+      - Missing null checks on API responses (src/api/*)
+      - Unhandled promise rejections in background jobs
+      ```
 
 ###### Global
+
+- **`.claude.json`**
+
+  > [!TIP]
+  >
+  > App state and UI preferences
+
+  > [!TIP]
+  >
+  > **When it loads**
+  >
+  > Read at session start for your preferences and MCP servers. Claude Code writes back to it when you change settings in `/config` or approve trust prompts
+
+  <font color=red>Holds state that does not belong in `settings.json`</font> : theme, OAuth session, per-project trust decisions, your personal MCP servers, and UI toggles. Mostly managed through `/config` rather than editing directly.
+
+  > [!TIP]
+  >
+  > - IDE toggles like `autoConnectIde` and `externalEditorContext` live here, not in `settings.json`
+  >
+  > - The `projects` key tracks per-project state like trust-dialog acceptance and last-session metrics. Permission rules you approve in-session go to `.claude/settings.local.json` instead
+  >
+  > - MCP servers here are yours only: user scope applies across all projects, local scope is per-project but not committed. <font color=red>Team-shared servers go in `.mcp.json` at the project root instead</font>
+
+  ```json
+  {
+    "autoConnectIde": true,
+    "externalEditorContext": true,
+    "mcpServers": {
+      "my-tools": {
+        "command": "npx",
+        "args": ["-y", "@example/mcp-server"]
+      }
+    }
+  }
+  ```
+
+- **`.claude/`**
+
+  > [!TIP]
+  >
+  > Your personal configuration across all projects
+
+  The global counterpart to your project `.claude/` directory. Files here apply to every project you work in and are never committed to any repository.
+
+  - **`CLAUDE.md`**
+
+    Your global instruction file. Loaded alongside the project CLAUDE.md at session start, so both are in context together. <font color=dodgerBlue>When instructions conflict</font>, <font color=red>project-level instructions take priority</font>. <font color=dodgerBlue>Keep this to preferences that apply everywhere</font>: <font color=red>response style, commit format, personal conventions</font>.
+
+    > [!TIP]
+    >
+    > - <font color=red>**Keep it short since it loads into context for every project**</font>, alongside that project's own CLAUDE.md
+    > - <font color=red>Good for response style, commit format, and personal conventions</font>
+
+    ```md
+    # Global preferences
+    
+    - Keep explanations concise
+    - Use conventional commit format
+    - Show the terminal command to verify changes
+    - Prefer composition over inheritance
+    ```
+
+  - **`settings.json`**
+
+    <font color=red>Same keys as project `settings.json`</font>: permissions, hooks, model, environment variables, and the rest. <font color=dodgerBlue>Put settings here that you want in every project</font>, <font color=red>like permissions you always allow, a **preferred model**, or a notification hook that runs regardless of which project you're in</font>.
+
+    Settings follow a precedence order: <font color=lightSeaGreen>project `settings.json` overrides any matching keys you set here</font>. <font color=dodgerBlue>**This is different from CLAUDE.md**</font>, where global and project files are both loaded into context rather than merged key by key.
+
+    ```json
+    {
+      "permissions": {
+        "allow": [
+          "Bash(git log *)",
+          "Bash(git diff *)"
+        ]
+      }
+    }
+    ```
+
+  - **`keybindings.json`**
 
 
 
@@ -1241,27 +1504,29 @@ The session walks through a realistic flow with representative token counts:
 - **Before you type anything**: CLAUDE.md, auto memory, MCP tool names, and skill descriptions all load into context. Your own setup may add more here, like an [output style](https://code.claude.com/docs/en/output-styles) or text from [`--append-system-prompt`](https://code.claude.com/docs/en/cli-reference), which both go into the system prompt the same way.
 - **As Claude works**: each file read adds to context, [path-scoped rules](https://code.claude.com/docs/en/memory#path-specific-rules) load automatically alongside matching files, and a [PostToolUse hook](https://code.claude.com/docs/en/hooks-guide) fires after each edit.
 - **The follow-up prompt**: a [subagent](https://code.claude.com/docs/en/sub-agents) handles the research in its own separate context window, so the large file reads stay out of yours. Only the summary and a small metadata trailer come back.
-- **At the end**: `/compact` replaces the conversation with a structured summary. Most startup content reloads automatically; the table below shows what happens to each mechanism.
+- **At the end**: `/compact` replaces the conversation with a structured summary. Most startup content reloads automatically; <font color=dodgerBlue>the table below shows what happens to each mechanism</font>.
 
 ##### What survives compaction
 
 When a long session compacts, Claude Code summarizes the conversation history to fit the context window. What happens to your instructions depends on how they were loaded:
 
-| Mechanism                                 | After compaction                                             |
-| :---------------------------------------- | :----------------------------------------------------------- |
-| System prompt and output style            | Unchanged; not part of message history                       |
-| Project-root CLAUDE.md and unscoped rules | Re-injected from disk                                        |
-| Auto memory                               | Re-injected from disk                                        |
-| Rules with `paths:` frontmatter           | Lost until a matching file is read again                     |
-| Nested CLAUDE.md in subdirectories        | Lost until a file in that subdirectory is read again         |
-| Invoked skill bodies                      | Re-injected, capped at 5,000 tokens per skill and 25,000 tokens total; oldest dropped first |
-| Hooks                                     | Not applicable; hooks run as code, not context               |
+| Mechanism                                                    | After compaction                                             |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| System prompt and output style                               | Unchanged; not part of message history                       |
+| <font color=lightSeaGreen>Project-root CLAUDE.md</font> and unscoped rules | Re-injected from disk                                        |
+| Auto memory                                                  | Re-injected from disk                                        |
+| Rules with `paths:` frontmatter                              | Lost until a matching file is read again                     |
+| <font color=red>Nested CLAUDE.md</font> in subdirectories    | <font color=red>Lost until a file in that subdirectory is read again</font> |
+| Invoked skill bodies                                         | Re-injected, capped at 5,000 tokens per skill and 25,000 tokens total; oldest dropped first |
+| Hooks                                                        | Not applicable; <font color=red>hooks run as code, not context</font> |
 
-Path-scoped rules and nested CLAUDE.md files load into message history when their trigger file is read, so compaction summarizes them away with everything else. They reload the next time Claude reads a matching file. If a rule must persist across compaction, drop the `paths:` frontmatter or move it to the project-root CLAUDE.md.Skill bodies are re-injected after compaction, but large skills are truncated to fit the per-skill cap, and the oldest invoked skills are dropped once the total budget is exceeded. Truncation keeps the start of the file, so put the most important instructions near the top of `SKILL.md`.
+Path-scoped rules and nested CLAUDE.md files load into message history when their trigger file is read, so compaction summarizes them away with everything else. They reload the next time Claude reads a matching file. <font color=dodgerBlue>If a rule must persist across compaction</font>, <font color=red>drop the `paths:` frontmatter or move it to the project-root CLAUDE.md</font>.
+
+Skill bodies are re-injected after compaction, but <font color=red>large skills are truncated to fit the per-skill cap</font>, and the oldest invoked skills are dropped once the total budget is exceeded. <font color=red>**Truncation keeps the start of the file**, so put the most important instructions near the top of `SKILL.md`</font>.
 
 ##### Check your own session
 
-The visualization uses representative numbers. To see your actual context usage at any point, run `/context` for a live breakdown by category with optimization suggestions. Run `/memory` to check which CLAUDE.md and auto memory files loaded at startup.
+The visualization uses representative numbers. <font color=dodgerBlue>**To see your actual context usage at any point**</font>, <font color=red>run **`/context`** for a live breakdown by category with optimization suggestions</font>. Run **`/memory`** to check which CLAUDE.md and auto memory files loaded at startup.
 
 
 
