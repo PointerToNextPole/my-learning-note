@@ -8682,7 +8682,8 @@ accent-color: unset;
 #### object-fit
 
 <font color=FF0000>object-fit CSS 属性**指定 <font size=4>可替换元素</font>**</font>（这个名词，隔壁的《CSS权威指南阅读笔记》有解释，见 [[CSS权威指南（第四版）阅读笔记#置换元素]] 。另外，值得补充的是：可替换元素的外观是 CSS 所难以控制的，比如 `<img>` 的内容是有 `src` 控制的）<font color=FF0000>的内容应该如何适应到其使用的高度和宽度确定的框。</font>
-<font color=dodgerBlue>您可以通过使用 object-position 属性来切换被替换元素的内容对象在元素框内的对齐方式。</font>
+
+<font color=lightSeaGreen>您可以通过使用 object-position 属性来切换被替换元素的内容对象在元素框内的对齐方式。</font>
 
 ##### 取值
 
