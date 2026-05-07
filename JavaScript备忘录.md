@@ -1022,7 +1022,9 @@ Reflect.ownKeys(obj).forEach(key => {
 
 - <font color=fuchsia>`Object.getOwnPropertyNames()` 不能获取 对象中包含的 Symbol</font>，可以通过 `Object.getOwnPropertySymbols()` 获取；而 <font color=fuchsia>`Reflect.ownKeys()` 都可以拿到</font>。
 
- >💡 经 codingstartup 群友补充：`Reflect.ownKeys()` 的遍历是有序的，按照你添加的顺序：
+ >[!NOTE]
+ >
+ >经群友补充：`Reflect.ownKeys()` 的遍历是有序的，按照添加的顺序排列：
  >
  >-  首先遍历所有数值键，按照数值升序排列
  >- 其次遍历所有字符串键，按照加入时间升序排列
