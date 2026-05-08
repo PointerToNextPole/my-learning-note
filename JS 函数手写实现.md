@@ -96,7 +96,8 @@ Function.prototype.myApply = function(context, args) {
 
 #### new 运算符
 
-> 👀 可以参考下 [[JS 机制与原理#new 运算符实现]] 中的讲解。另外，其中还有另一种 new 的调用方法的源码实现 [[JS 机制与原理#视频《new实例化的重写--检测一下自己this 指向？？》的补充#new 的实现]]
+> [!NOTE]
+> 可以参考下 [[JS 机制与原理#new 运算符实现]] 中的讲解。另外，其中还有另一种 new 的调用方法的源码实现 [[JS 机制与原理#视频《new实例化的重写--检测一下自己this 指向？？》的补充#new 的实现]]
 
 ```js
 function myNew(fn, ...args) {
