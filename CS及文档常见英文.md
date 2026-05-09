@@ -2785,3 +2785,4 @@
 - **chamber** ：房间、腔室
 - **echo chamber** ：回声室
 - **rewind** ：倒带
+- **bounty** ：赏金

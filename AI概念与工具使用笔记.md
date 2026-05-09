@@ -1,7 +1,12 @@
 # AI 概念与工具使用笔记
 
+## 通用概念
 
-## RAG
+###### 资料
+
+- [【闪客】大模型已死？上帝视角拆解三年 LLM 架构演进！](https://www.bilibili.com/video/BV1mxR9BiEm8)
+
+### RAG
 
 ##### LLM 是涌现性智能
 
@@ -108,8 +113,6 @@ RAG 更底层的逻辑，也是我们对待 llm 正确的态度：<font color=re
 学习与摘抄自：[从前端到 AI：LangChain.js 入门和实战 - 5. 检索增强生成（RAG）原理和流程](https://juejin.cn/book/7347579913702293567/section/7351410645298135091)
 
 
-
-## 通用概念
 
 
 
@@ -3736,7 +3739,11 @@ Include:
 
 然后，把具体的内容全放到 `AGENT.md` 里面，这样就免得为不同的 Agent 维护不同的文档了。
 
+## OpenAI & Codex
 
+###### 资料
+
+- [Codex 配置文档](https://developers.openai.com/codex/config-reference)
 
 ## Cursor
 
