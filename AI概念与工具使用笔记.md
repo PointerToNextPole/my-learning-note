@@ -118,10 +118,13 @@ RAG 更底层的逻辑，也是我们对待 llm 正确的态度：<font color=re
 
 #### 召回率
 
-> 💡 这个概念涉及到 “混淆矩阵” ( confusion matrix ) 概念
+> [!NOTE]
+> 
+> 这个概念涉及到 “混淆矩阵” ( confusion matrix ) 概念
 
+#### KQV
 
-
+QKV 即 Query, Key, Value
 
 
 ## 工具使用
@@ -1868,6 +1871,12 @@ CLAUDE.md 文件可以使用 `@path/to/import` 语法导入其他文件。导入
 
 ###### AGENTS.md
 
+> [!TIP] 相关历史
+> 
+> 2025 年 5 月，Sourcegraph 旗下的 AMP 率先提议统一标准，建议用 `AGENT.md`（单数），并注册了 agent.md 域名。随后 OpenAI 宣布买下了 agents.md 域名，提议用 `AGENTS.md`（复数），理由是多个 Agent 会共用同一份配置。<font color=lightSeaGreen>AMP 随即主动让步对齐，将 agent.md 重定向到 agents.md</font>。
+> 
+> 摘自：[一个文件让 AI Coding 效率翻倍：AGENTS.md 实践指南](https://mp.weixin.qq.com/s/fBBBSfQajYjYtngZAitZCA)
+
 Claude Code 读取 `CLAUDE.md`，而不是 `AGENTS.md`。<font color=dodgerBlue>**如果你的存储库已经为其他编码代理使用 `AGENTS.md`**</font>，<font color=red>创建一个导入它的 `CLAUDE.md`</font>，<font color=red>这样两个工具都可以读取相同的指令而无需重复</font>。你也可以在导入下方添加 Claude 特定的指令。Claude 在会话开始时加载导入的文件，然后附加其余部分：
 
 ```md
@@ -1877,6 +1886,12 @@ Claude Code 读取 `CLAUDE.md`，而不是 `AGENTS.md`。<font color=dodgerBlue>
 
 对 `src/billing/` 下的更改使用 Plan Mode。
 ```
+
+> [!TIP]
+> 
+> Claude Code 虽然仍用 CLAUDE.md，但内容完全通用，一个软链接即可兼容：`ln -s AGENTS.md CLAUDE.md`。
+> 
+> 摘自：[一个文件让 AI Coding 效率翻倍：AGENTS.md 实践指南](https://mp.weixin.qq.com/s/fBBBSfQajYjYtngZAitZCA)
 
 ###### CLAUDE.md 文件如何加载
 
@@ -3744,6 +3759,38 @@ Include:
 ###### 资料
 
 - [Codex 配置文档](https://developers.openai.com/codex/config-reference)
+
+#### 一些配置
+
+###### 默认允许联网
+
+```toml
+[sandbox_workspace_write]
+network_access = true
+```
+
+###### 开启 goal 模式
+
+```toml
+[features]
+goals = true
+```
+
+此外，根据 [@Lonely__MH 的推特动态](https://x.com/Lonely__MH/status/2050601931165532632) 还可以使用如下命令：
+
+```sh
+codex features enable goals
+```
+
+###### 开启 vim 模式
+
+可以使用 `/vim` 切换 vim 模式开启状态
+
+#### Plugins
+
+##### Chrome 插件
+
+在 Codex 和 Chrome 插件连接完成后，在 Codex 输入框中输入 `@chrome`，触发插件的运行
 
 ## Cursor
 
