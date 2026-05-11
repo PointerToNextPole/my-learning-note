@@ -1128,6 +1128,26 @@ git config -e [--global]
 
 ##### `.gitignore` 文件
 
+###### 存放位置
+
+问了 Gemini 如下 [问题](https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221M50lqPz2fnrzJAVNVs8-xiBfrQkYtI4E%22%5D,%22action%22:%22open%22,%22userId%22:%22113986502377656987379%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing)：
+
+> 在 monorepo 架构中，假设存在 frontend 、backend 这两个 package；那么，除了根目录中存在 .gitignore 文件，在 package 中是否可以存在 .gitignore 文件？
+
+回答是可以。如下只摘抄必要内容：
+
+在 Git 的机制中，.gitignore 文件不仅仅只能放在根目录，它可以存在于项目树的**任何目录**下。
+
+**在实际的 Monorepo 工程中，这是一种非常常见且推荐的做法。**
+
+<font color=dodgerBlue>允许在 Package 中存在 .gitignore 的好处（为什么这么做？）</font>
+
+1. **关注点分离（Separation of Concerns）**：前端开发者不需要关心后端生成的特定编译文件，反之亦然。各自维护自己的忽略清单，逻辑更清晰。
+    
+2. **脚手架兼容性**：当我们使用 create-react-app、create-next-app 或 nest new 在 monorepo 中初始化子项目时，这些工具会自动生成带有 .gitignore 的文件夹。直接保留它们，可以省去手动将规则合并到根目录的麻烦。
+    
+3. **便于代码迁移（Portability）**：如果未来某一天，你需要将 frontend 剥离出去变成一个独立仓库（Multirepo），因为它自带了 .gitignore，你直接将其拆分出去即可，规则不会丢失。
+
 ###### `.gitignore` 文件配置规则
 
 - **直接书写一个单词**：可以<font color=red>匹配当前工程</font>中所有为该单词的文件或<font color=fuchsia>文件夹</font> 
