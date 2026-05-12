@@ -10,7 +10,12 @@
 
 [56 个 JavaScript 实用工具函数助你提升开发效率！](https://mp.weixin.qq.com/s/oK--hjpAscsvyT1U4rZHKw) 虽然其中多数是没什么用的，但是深拷贝、正则判断、浏览器操作，还是值得借鉴的；有时间了，摘抄下
 
-有了这32个手写js技巧，让你面试不凉凉！(上中下)：https://www.bilibili.com/video/BV1v341167fi / https://www.bilibili.com/video/BV1gb4y1z736 / https://www.bilibili.com/video/BV16q4y1U7GD 👀 “下”中省略了 “打印当前网页使用了多少种 html 元素”
+有了这32个手写js技巧，让你面试不凉凉！(上中下)：
+- https://www.bilibili.com/video/BV1v341167fi
+- https://www.bilibili.com/video/BV1gb4y1z736
+- https://www.bilibili.com/video/BV16q4y1U7GD 
+  > [!NOTE]
+  > 省略了 “打印当前网页使用了多少种 html 元素”
 
 [GitHub - Organizations - ECMAScript Shims](https://github.com/es-shims) 的主页有很多 shims repo，每一个 repo 都是一个方法的 shim 实现。
 
@@ -125,7 +130,9 @@ const instanceof = (left, right) => {
 }
 ```
 
-> 💡 补充：摘抄实现的代码版本的最上面，有一个判断
+> [!NOTE]
+> 
+> 补充：摘抄实现的代码版本的最上面，有一个判断
 >
 > ```js
 > if(typeof left !== 'object' || typeof right !== 'object') return false
@@ -429,7 +436,9 @@ Promise.myAll = arr => {
 }
 ```
 
-> 💡 可以看下 [手写 Promise.all【渡一教育】](https://www.bilibili.com/video/BV1mG411178Y) ，其中提及了，arr 未必是数组，也有可能是可迭代对象，所以未必可以用 `arr.length` ，可以先迭代统计 count 为长度 ；另外，<font color=red>如果传入的是空的迭代对象，那么一定是 resolve</font>
+> [!NOTE]
+> 
+> 可以看下 [手写 Promise.all【渡一教育】](https://www.bilibili.com/video/BV1mG411178Y) ，其中提及了，arr 未必是数组，也有可能是可迭代对象，所以未必可以用 `arr.length` ，可以先迭代统计 count 为长度 ；另外，<font color=red>如果传入的是空的迭代对象，那么一定是 resolve</font>
 
 ###### 测试用例1
 
@@ -491,7 +500,9 @@ Promise.any = arr => {
 }
 ```
 
-> 👀 感觉 Promise.any 和 Promise.all 的实现原理相当类似，所以在这里特意将他们的写法写成类似的
+> [!NOTE]
+> 
+> 感觉 Promise.any 和 Promise.all 的实现原理相当类似，所以在这里特意将他们的写法写成类似的
 
 代码修改自：[Promise.any 的作用，如何自己实现一个 Promise.any](https://juejin.cn/post/6965596525388890142)
 
@@ -505,7 +516,7 @@ Promise.myAllSettled = arr => {
     arr.forEach((p, index) => {
       Promise.resolve(p)
         .then(res => Promise.resolve({ status: 'fulfilled', value: res }))
-        .catch(err => Promise.resolve({ status: 'rejected', reson: err }))
+        .catch(err => Promise.resolve({ status: 'rejected', reason: err }))
         .then(res => {
           ret[index] = res
           count ++
@@ -534,7 +545,8 @@ Promise.myRace = function(promiseArr) {
 }
 ```
 
-> ⚠️ 对于 `Promise.race()` 的定义有所遗忘，以为是 fulfilled ，实际上是 settled
+> [!warning]
+> 对于 `Promise.race()` 的定义有所遗忘，以为是 fulfilled ，实际上是 settled
 
 ##### `Promise.prototype.catch()` 实现
 
@@ -583,7 +595,8 @@ function isPromiseLike(obj) {
 
 ##### `Promise.reject` 实现
 
-> 👀  `Promise.reject` 的实现，可以和 `Promise.resolve` 的最后一种情况（不符合 Promise 定义的）的实现作参照，辅助记忆
+> [!NOTE]
+> `Promise.reject` 的实现，可以和 `Promise.resolve` 的最后一种情况（不符合 Promise 定义的）的实现作参照，辅助记忆
 
 ```js
 Promise.reject = function (reason) {

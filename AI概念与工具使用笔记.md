@@ -5490,7 +5490,54 @@ while (true) {
 
 ![Agent Loop 控制流](https://cdn.tw93.fun/pic/react_loop_control_flow_en29.svg)
 
+看过不少 Agent 实现和官方 SDK，结构都差不多，循环本身相当稳定，从最小实现一路扩展到支持子 Agent、上下文压缩和 Skills 加载，主循环基本没有变化，新增能力通常都是叠加在循环外部，而不是改动循环内部。
 
+<font color=dodgerBlue>新能力基本只通过三种方式接入</font>：<font color=red>扩展工具集和 handler、调整系统提示结构、把状态外化</font>到文件或数据库，不应该让循环体本身变成一个巨大的状态机，模型负责推理，外部系统负责状态和边界，一旦这个分工确定下来，核心循环逻辑就很少需要频繁调整了。
+
+###### Workflow 和 Agent 有什么区别
+
+<font color=dodgerBlue>Anthropic 对这两类系统有一个直接区分</font>：**执行路径** <font color=red>由代码预先写死的是 Workflow</font>，<font color=red>由 LLM 动态决定下一步的是 Agent</font>，<font color=red>**核心区别在于控制权掌握在谁手里**</font>，现实中很多标着 Agent 的产品，深入看其实更接近 Workflow。
+
+| 维度       | Workflow                       | Agent                                         |
+| :--------- | :----------------------------- | :-------------------------------------------- |
+| 控制权     | 代码预定义，同输入必走同一路径 | LLM 动态决策，可能需要评测验证                |
+| 执行方式   | 工具顺序固定，错误走预设分支   | 工具按需选择，模型可尝试自我修复              |
+| 状态与记忆 | 显式状态机，节点跳转清晰       | 隐式上下文，状态在对话历史中累积              |
+| 维护成本   | 改流程需修改代码并重新部署     | 调整系统提示即可，无需重新部署                |
+| 可观测性   | 日志定位节点，延迟可预估       | 需完整执行记录理解决策链，轮数不固定          |
+| 人机协作   | 人在预设节点介入               | <font color=red>人在任意轮次介入或接管</font> |
+| 适用场景   | 流程固定、输入边界清晰         | 需要中间推理与灵活判断                        |
+
+放在一张图里看，会更直观：
+
+![Workflow 与 Agent 对比](https://gw.alipayobjects.com/zos/k/dh/workflow_vs_agent.svg)
+
+###### 五种常见控制模式
+
+<font color=dodgerBlue>大多数 AI 系统拆开看，其实都是这五种模式的组合</font>，很多场景并不需要完整的 Agent 自主权，把其中几种模式搭起来就够了。
+
+1. **提示链 Prompt Chaining**：任务拆成顺序步骤，每步 LLM 处理上一步的输出，中间可加代码检查点，适合生成后翻译、先写大纲再写正文这类线性流程。
+2. **路由 Routing**：<font color=red>对输入分类，定向到对应的专用处理流程</font>，简单问题走轻量模型，复杂问题走强模型，技术咨询和账单查询走不同逻辑。
+3. **并行 Parallelization**：两种变体：分段法把任务拆成独立子任务并发跑，投票法把同一任务跑多次取共识，适合高风险决策或需要多视角的场景。
+4. **编排器-工作者 Orchestrator-Workers**：中央 LLM 动态分解任务，委派给工作者 LLM，综合结果，nanobot 的 `spawn` 工具和 learn-claude-code 的子 Agent 模式都是这个原型。
+5. **评估器-优化器 Evaluator-Optimizer**：生成器产出，评估器给反馈，循环直到达标，适合翻译、创意写作这类质量标准难以用代码精确定义的任务。
+
+![五种常见控制模式](https://gw.alipayobjects.com/zos/k/dw/five_agent_patterns.svg)
+
+###### 什么场景选哪种模式
+
+选型主要看两件事：任务确定性和验证能不能自动化。
+
+| 场景                                   | 选什么                                    |
+| :------------------------------------- | :---------------------------------------- |
+| 流程固定 + 验收可代码判定              | Workflow / Prompt Chaining，不必上 Agent  |
+| 输入可分类到不同分支                   | Routing                                   |
+| 需要中间推理 + 验收清晰                | 单 Agent ReAct Loop                       |
+| 任务可拆 + 子任务可并行 + 结论只需摘要 | Orchestrator-Workers，主 ReAct + 子 Agent |
+| 质量标准难以代码化（翻译、创意）       | Evaluator-Optimizer                       |
+| 高风险决策 + 需要多视角                | Parallelization 投票                      |
+
+主 Agent 选 ReAct Loop，配上显式任务图；子 Agent 只带最小提示（Tooling、Workspace、Runtime），不带 Skills 和 Memory，避免权限外泄，也避免破坏隔离。多 Agent 不是默认选项，先把单 Agent 上限跑出来再扩展，协调开销经常超过并行收益。
 
 摘自：[你不知道的 Agent：原理、架构与工程实践](https://tw93.fun/2026-03-21/agent.html)
 
