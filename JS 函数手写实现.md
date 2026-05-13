@@ -30,7 +30,7 @@ Function.prototype.bind = function(context, ...args) {
   if (typeof this !== 'function') {
     throw new TypeError('Type Error')
   }
-  
+
   // 保存 this 的值
   var self = this
 
@@ -46,17 +46,19 @@ Function.prototype.bind = function(context, ...args) {
 
 #### call 和 apply 的实现
 
-> 👀 可以参考下 [[JS 机制与原理#call 和 apply 实现]] 中的内容。另外，call 和 apply 两者实现极为类似，可一起记忆。
+> [!NOTE]
+> 
+> 可以参考下 [[JS 机制与原理#call 和 apply 实现]] 中的内容。另外，call 和 apply 两者实现极为类似，可一起记忆。
 
 ##### call 实现
 
 ```js
 Function.prototype.myCall = function(context, ...args) {
-  if(typeof this !== 'function') {
+  if (typeof this !== 'function') {
     throw new TypeError('type error')
   }
 
-  if(context === undefined || context === null) {
+  if (context === undefined || context === null) {
     context = globalThis
   } else {
     context = Object(context)
@@ -77,11 +79,11 @@ Function.prototype.myCall = function(context, ...args) {
 
 ```js
 Function.prototype.myApply = function(context, args) {
-  if(typeof this !== 'function') {
+  if (typeof this !== 'function') {
     throw new TypeError('type error')
   }
 
-  if(context === undefined || context === null) {
+  if (context === undefined || context === null) {
     context = globalThis
   } else {
     context = Object(context)
@@ -90,7 +92,9 @@ Function.prototype.myApply = function(context, args) {
   const fnSym = Symbol('fn')
   context[fnSym] = this
 
-  const res = args === undefined ? context[fnSym]() : context[fnSym](...args)
+  const res = args === undefined
+    ? context[fnSym]()
+    : context[fnSym](...args)
   delete context[fnSym]
 
   return res
@@ -389,7 +393,7 @@ console.log(fooIns === fooIns2) // false
 ```js
 function singleton(className) {
   let ins = null
-  cosnt proxy new Proxy(className, {
+  cosnt proxy = new Proxy(className, {
     constructor(target, args) {
       if (!ins) {
         ins = Reflect.constructor(target, args)
@@ -1347,7 +1351,7 @@ function add() {
 }
 ```
 
-> 💡 一点补充
+> [!NOTE]
 >
 > 如果要求是实现如下效果：
 >
