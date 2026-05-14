@@ -1150,7 +1150,11 @@ console.log(lowerCaseChar_z) // z
 
 #### nonce
 
-number once // TODO https://en.wikipedia.org/wiki/Cryptographic_nonce
+In [cryptography](https://en.wikipedia.org/wiki/Cryptography "Cryptography"), a **nonce** is an arbitrary number that can be used just once in a cryptographic communication. <font color=red>It is often a [random](https://en.wikipedia.org/wiki/Randomness "Randomness") or [pseudo-random](https://en.wikipedia.org/wiki/Pseudorandomness "Pseudorandomness") number issued in an [authentication protocol](https://en.wikipedia.org/wiki/Authentication_protocol "Authentication protocol") to ensure that each communication session is unique</font>, and therefore that old communications cannot be reused in [replay attacks](https://en.wikipedia.org/wiki/Replay_attack "Replay attack"). Nonces can also be useful as [initialization vectors](https://en.wikipedia.org/wiki/Initialization_vector "Initialization vector") and in [cryptographic hash functions](https://en.wikipedia.org/wiki/Cryptographic_hash_functions "Cryptographic hash functions").
+
+A nonce is an arbitrary **number used only once** in a cryptographic communication, in the spirit of a [nonce word](https://en.wikipedia.org/wiki/Nonce_word "Nonce word").
+
+摘自：[Cryptographic nonce](https://en.wikipedia.org/wiki/Cryptographic_nonce)
 
 
 
