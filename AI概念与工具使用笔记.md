@@ -3390,6 +3390,32 @@ allowed-tools: Bash(git add *) Bash(git commit *) Bash(git status *)
 
 
 
+#### 交互模式
+
+###### 使用 `!` 前缀的 Bash 模式
+
+通过在输入前加上 `!` 来直接运行 bash 命令，无需通过 Claude：
+
+```txt
+! npm test
+! git status
+! ls -la
+```
+
+Bash 模式：
+
+- 将命令及其输出添加到对话上下文
+- 显示实时进度和输出
+- 支持相同的 `Ctrl+B` 后台运行长时间运行的命令
+- 不需要 Claude 解释或批准命令
+- 支持基于历史的自动完成：键入部分命令并按 **Tab** 以从当前项目中的上一个 `!` 命令完成
+- 使用 `Escape`、`Backspace` 或在空提示上使用 `Ctrl+U` 退出
+- 将以 `!` 开头的文本粘贴到空提示中会自动进入 bash 模式，与键入的 `!` 行为相匹配
+
+这对于快速 shell 操作同时保持对话上下文很有用。
+
+
+
 
 ### 其他笔记
 
@@ -4429,6 +4455,8 @@ codex features enable goals
 ##### Chrome 插件
 
 在 Codex 和 Chrome 插件连接完成后，在 Codex 输入框中输入 `@chrome`，触发插件的运行
+
+
 
 ## Cursor
 
