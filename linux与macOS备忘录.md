@@ -675,7 +675,7 @@ sudo killall coreaudiod
 
 ### 通用
 
-#### 相关资料
+###### 资料
 
 - [Linux commands chect sheet - pdf](https://phoenixnap.com/kb/wp-content/uploads/2021/11/linux-commands-cheat-sheet-by-pnap.pdf)
 
@@ -715,7 +715,9 @@ https://web.archive.org/web/20160812022408/https://www.zhihu.com/question/490738
 
 #### `.zprofile` 和 `.zshrc`
 
-> 👀 背景
+> [!NOTE]
+> 
+> 背景
 >
 > `.zshrc` 是比较常见的 zsh 配置文件，但是 `.zprofile` 我完全没有印象。直到最近我配置我的新 Mac 时遇到，当时我的 Mac 上甚至没有 `.zshrc`  ，只找到了 `.zprofile` 文件。另外，当我想把 homebrew 的源切换为官方源，且按照网上以及 AI 给出的方案没有一个生效的，但是 `brew config` 中对应的 ` HOMEBREW_PIP_INDEX_URL` 、`HOMEBREW_API_DOMAIN` 、`HOMEBREW_BOTTLE_DOMAIN` 却实打实的出现在我的 `.zprofile` 文件中，于是便引起了我的好奇。
 
@@ -792,9 +794,7 @@ exit
 
 #### 打开外接存储设备
 
-进入根目录，进入Volume文件夹，这里存放所有外接存储设备
-
-
+进入根目录，进入 Volume 文件夹，这里存放所有外接存储设备
 
 #### bc命令 ( Basic Calculator )
 
@@ -814,8 +814,6 @@ echo 'add content'>>filename
 echo 'add content'>filename
 ```
 
-
-
 #### rm 命令
 
 ##### 删除文件
@@ -830,15 +828,11 @@ rm -f fileName  # -f表示强行删除
 rm -rf folderName # -r表示递归，-f表示强行删除
 ```
 
-
-
 #### file 命令
 
 使用 `fiel -I fileName.ext` 命令，可以查看文件的 MIME 格式 和 编码格式。示例如下：
 
 <img src="https://s2.loli.net/2022/03/24/eKQnYp4H2c3PGqd.png" style="zoom:60%;" />
-
-
 
 #### 管道 与 `|`
 
@@ -1682,8 +1676,6 @@ lsof ( list open files ) 是一个查看当前系统文件的工具。在 linux 
 
 #### ifconfig
 
-
-
 #### ln 命令
 
 Linux `ln` ( link files ) 命令是一个非常重要命令，它的功能是<font color=fuchsia>为某一个文件在另外一个位置建立一个同步的链接</font>。
@@ -1924,6 +1916,8 @@ rsync -av --exclude-from='exclude-file.txt' source/ destination
 
 摘自：[rsync 用法教程](https://www.ruanyifeng.com/blog/2020/08/rsync.html)
 
+
+### tmux
 
 
 
