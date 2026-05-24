@@ -1,7 +1,6 @@
 # VS Code 使用备忘录
 
 
-
 #### 资料
 
 官方文档：https://code.visualstudio.com/docs
@@ -141,12 +140,22 @@
   **⇧ + ⌥ + ↑** / **⇧ + ⌥ + ↓**  ：复制并上移和下移
   > 👀 值得注意的是：JetBrains 家的上移和下移就是 **⇧ + ⌥ + ↑** / **⇧ + ⌥ + ↓** ；只能说：可以用来辅助记忆，但是别记混了
 
+
+#### `code` 命令
+
+在一次让 codex 帮我分析当前的 100+ 个 vs code 插件中是否存在过时、冗余插件时，codex 使用了 `code` 命令，让我发现 `code` 命令不仅仅能用于指定 vs code 打开文件，还有其他功能；比如：`code --list-extensions --show-versions` 和 `code --uninstall-extension <identifier>`
+作用分别是列出当前所安装的插件，和卸载指定到插件（对应安装的是 `--install-extension` ）
+###### `tldr code` 结果
+
+<img src="https://files.seeusercontent.com/2026/05/23/7Ayr/image-20260523190423563.png" style="zoom: 50%;" />
+
 #### User and Workspace Settings
 
 You can <font color=dodgerBlue>configure Visual Studio Code to your liking through its various settings</font>. Nearly every part of VS Code's editor, <font color=red>user interface</font>, and functional behavior has options you can modify.
 
-> 👀 之所以 “user interface” 加了重点，是因为 `git clone` 并用 vsc 打开 [ractive](https://github.com/ractivejs/ractive) 时，发现 UI 样式和日常使用的 vsc 样式不一样，于是找到了 `.vscode/settings.json` 文件，找到了修改 vsc UI 的相关配置。
->
+> [!NOTE]
+> 
+> 之所以 “user interface” 加了重点，是因为 `git clone` 并用 vsc 打开 [ractive](https://github.com/ractivejs/ractive) 时，发现 UI 样式和日常使用的 vsc 样式不一样，于是找到了 `.vscode/settings.json` 文件，找到了修改 vsc UI 的相关配置。
 
 > [!TIP]
 >

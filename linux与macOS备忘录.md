@@ -270,54 +270,54 @@ open folder/fileName.filetype     #打开默认的打开方式打开文件（如
 
 #### open 命令
 
-##### 使用默认应用打开<font color=FF0000>指定</font>文件
+- 使用默认应用打开<font color=FF0000>指定</font>文件
 
-```sh
-open fileName
-```
+  ```sh
+  open fileName
+  ```
 
-##### 使用默认应用打开<font color=FF0000>一批（对应规则的）</font>文件
+- 使用默认应用打开<font color=FF0000>一批（对应规则的）</font>文件
 
-```sh
-open *.fileType
-```
+  ```sh
+  open *.fileType
+  ```
 
-##### 用<font color=FF0000>指定的应用程序</font>来打开<font color=FF0000>指定</font>的文件
+- 用<font color=FF0000>指定的应用程序</font>来打开<font color=FF0000>指定</font>的文件
 
-```sh
-open -a appName fileName
-```
+  ```sh
+  open -a appName fileName
+  ```
 
-##### 用系统<font color=FF0000>默认的文本编辑器</font>来打开指定的<font color=FF0000>文本文件</font>
+- 用系统<font color=FF0000>默认的文本编辑器</font>来打开指定的<font color=FF0000>文本文件</font>
 
-```sh
-open -e txtFileName
-```
+  ```sh
+  open -e txtFileName
+  ```
 
-##### 使用<font color=FF0000>默认对应的文本编辑器</font>打开文件
+- 使用<font color=FF0000>默认对应的文本编辑器</font>打开文件
 
-```sh
-open -t fileName
-```
+  ```sh
+  open -t fileName
+  ```
 
-##### 打开文件， 如果是macOS则使用Finder打开文件夹
+- 打开文件， 如果是macOS则使用Finder打开文件夹
 
-```sh
-open foldName
-open .
-```
+  ```sh
+  open foldName
+  open .
+  ```
 
-##### 打开<font color=FF0000>文件所在文件夹</font>
+- 打开<font color=FF0000>文件所在文件夹</font>
 
-```sh
-open -R fileName
-```
+  ```sh
+  open -R fileName
+  ```
 
-##### 打开某个url，注意：要加上 `http://` 或 `https://`
+- 打开某个url，注意：要加上 `http://` 或 `https://`
 
-```sh
-open https://url
-```
+  ```sh
+  open https://url
+  ```
 
 摘自：[用open命令实现从终端到可视化界面的切换](https://www.jianshu.com/p/10395015ebc8)
 
@@ -1917,9 +1917,390 @@ rsync -av --exclude-from='exclude-file.txt' source/ destination
 摘自：[rsync 用法教程](https://www.ruanyifeng.com/blog/2020/08/rsync.html)
 
 
+
 ### tmux
 
+###### 资料
 
+- [tmux Cheatsheet](https://tmuxcheatsheet.com/)
+- [tmux 有哪些奇技淫巧？ - 知乎](https://www.zhihu.com/question/409729376)
+
+###### 生态
+
+- [awesome-tmux](https://github.com/rothgar/awesome-tmux)
+- [Oh my tmux!](https://github.com/gpakosz/.tmux)
+
+#### 阮一峰《Tmux 使用教程》笔记
+
+##### Tmux 是什么？
+
+Tmux 是一个终端复用器（terminal multiplexer）
+
+###### 会话与进程
+
+命令行的典型使用方式是，打开一个终端窗口（terminal window，以下简称"窗口"），在里面输入命令。**用户与计算机的这种临时的交互，称为一次"会话"（session）** 。
+
+会话的一个重要特点是，窗口与其中启动的进程是[连在一起](https://www.ruanyifeng.com/blog/2016/02/linux-daemon.html)的。<font color=red>打开窗口，会话开始；关闭窗口，会话结束，**会话内部的进程也会随之终止，不管有没有运行完**</font>。
+
+<font color=dodgerBlue>一个典型的例子</font>就是，[SSH 登录](https://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html)远程计算机，打开一个远程窗口执行命令。这时，网络突然断线，再次登录的时候，是找不回上一次执行的命令的。因为上一次 SSH 会话已经终止了，里面的进程也随之消失了。
+
+为了解决这个问题，会话与窗口可以"解绑"：窗口关闭时，会话并不终止，而是继续运行，等到以后需要的时候，再让会话"绑定"其他窗口。
+
+###### Tmux 的作用
+
+**Tmux 就是会话与窗口的"解绑"工具，将它们彻底分离。**
+
+1. 它允许在单个窗口中，同时访问多个会话。这对于同时运行多个命令行程序很有用。
+2. 它可以让新窗口"接入"已经存在的会话。
+3. 它允许每个会话有多个连接窗口，因此可以多人实时共享会话。
+4. 它还支持窗口任意的垂直和水平拆分。
+
+类似的终端复用器还有 GNU Screen。Tmux 与它功能相似，但是更易用，也更强大。
+
+> [!NOTE]
+> 
+>  macOS 内置了 `screen` 命令
+
+##### 基本用法
+
+###### 启动与退出
+
+安装完成后，键入`tmux`命令，就进入了 Tmux 窗口。
+
+<img src="https://files.seeusercontent.com/2026/05/23/P3pw/image-20260523211959083.png" style="zoom:75%;" />
+
+按下`Ctrl+d`或者显式输入`exit`命令，就可以退出 Tmux 窗口。
+
+###### 前缀键
+
+Tmux 窗口有大量的快捷键。所有快捷键都要通过前缀键唤起。默认的前缀键是`Ctrl+b`，即先按下`Ctrl+b`，快捷键才会生效。
+
+> [!NOTE]
+> 在 Mac 下也是 control `⌃` 健
+
+举例来说，帮助命令的快捷键是`Ctrl+b ?`。它的用法是，在 Tmux 窗口中，先按下`Ctrl+b`，再按下`?`，就会显示帮助信息。
+
+然后，按下 ESC 键或`q`键，就可以退出帮助。
+
+##### 会话管理
+
+###### 新建会话
+
+<font color=red>第一个启动的 Tmux 窗口，编号是`0`，第二个窗口的编号是`1`，以此类推</font>。这些窗口对应的会话，就是 0 号会话、1 号会话。
+
+使用编号区分会话，不太直观，更好的方法是为会话起名。
+
+```sh
+tmux new -s <session-name>
+```
+
+上面命令新建一个指定名称的会话。
+
+> [!NOTE]
+> 
+> `tmux new` 有一个等价的全称 `tmux new-session`
+
+###### 分离会话
+
+在 Tmux 窗口中，按下`Ctrl+b d`或者输入`tmux detach`命令，就会将当前会话与窗口分离。
+
+```sh
+tmux detach
+```
+
+上面命令执行后，就会退出当前 Tmux 窗口，但是会话和里面的进程仍然在后台运行。
+
+`tmux ls` / `tmux list-session` 命令可以查看当前所有的 Tmux 会话。
+
+###### 接入会话
+
+`tmux attach` /  `tmux a` 命令用于重新接入某个已存在的会话。
+
+```sh
+# 使用会话编号
+tmux attach -t 0
+
+# 使用会话名称
+tmux attach -t <session-name>
+```
+
+###### 杀死会话
+
+`tmux kill-session`命令用于杀死某个会话。
+
+```sh
+# 使用会话编号
+tmux kill-session -t 0
+
+# 使用会话名称
+tmux kill-session -t <session-name>
+```
+
+###### 切换会话
+
+`tmux switch`命令用于切换会话。
+
+```sh
+# 使用会话编号
+tmux switch -t 0
+
+# 使用会话名称
+tmux switch -t <session-name>
+```
+
+###### 重命名会话
+
+`tmux rename-session`命令用于重命名会话。
+
+```sh
+tmux rename-session -t 0 <new-name>
+```
+
+##### 会话快捷键
+
+下面是一些会话相关的快捷键。
+
+- `Ctrl+b d` ：分离当前会话。
+- `Ctrl+b s` ：列出所有会话。
+- `Ctrl+b $` ：重命名当前会话。
+
+##### 最简操作流程
+
+综上所述，以下是 Tmux 的最简操作流程。
+
+1. 新建会话`tmux new -s my_session`。
+2. 在 Tmux 窗口运行所需的程序。 
+3. 按下快捷键`Ctrl+b d`将会话分离。
+4. 下次使用时，重新连接到会话`tmux attach-session -t my_session`。
+
+##### 窗格操作
+
+Tmux 可以将窗口分成多个窗格（pane），每个窗格运行不同的命令。以下命令都是在 Tmux 窗口中执行。
+
+###### 划分窗格
+
+`tmux split-window`命令用来划分窗格。
+
+```sh
+# 划分上下两个窗格
+$ tmux split-window
+
+# 划分左右两个窗格
+$ tmux split-window -h
+```
+
+###### 移动光标
+
+`tmux select-pane`命令用来移动光标位置。
+
+```sh
+# 光标切换到上方窗格
+$ tmux select-pane -U
+
+# 光标切换到下方窗格
+$ tmux select-pane -D
+
+# 光标切换到左边窗格
+$ tmux select-pane -L
+
+# 光标切换到右边窗格
+$ tmux select-pane -R
+```
+
+###### 交换窗格位置
+
+`tmux swap-pane`命令用来交换窗格位置。
+
+```sh
+# 当前窗格上移
+$ tmux swap-pane -U
+
+# 当前窗格下移
+$ tmux swap-pane -D
+```
+
+> [!NOTE]
+> 
+> 没有 `-L` 和 `-R` 这两个选项
+
+###### 窗格快捷键
+
+下面是一些窗格操作的快捷键。
+
+- `Ctrl+b %`：划分左右两个窗格。
+- `Ctrl+b "`：划分上下两个窗格。
+- `Ctrl+b <arrow key>`：光标切换到其他窗格。`<arrow key>`是指向要切换到的窗格的方向键，比如切换到下方窗格，就按方向键`↓`。
+- `Ctrl+b ;`：光标切换到上一个窗格。
+- `Ctrl+b o`：光标切换到下一个窗格。
+- `Ctrl+b {`：当前窗格与上一个窗格交换位置。
+- `Ctrl+b }`：当前窗格与下一个窗格交换位置。
+- `Ctrl+b Ctrl+o`：所有窗格向前移动一个位置，第一个窗格变成最后一个窗格。
+- `Ctrl+b Alt+o`：所有窗格向后移动一个位置，最后一个窗格变成第一个窗格。
+- `Ctrl+b x`：关闭当前窗格。
+- `Ctrl+b !`：将当前窗格拆分为一个独立窗口。
+- `Ctrl+b z`：当前窗格全屏显示，再使用一次会变回原来大小。
+- `Ctrl+b Ctrl+<arrow key>`：按箭头方向调整窗格大小。
+- `Ctrl+b q`：显示窗格编号。
+
+##### 窗口管理
+
+除了将一个窗口划分成多个窗格，Tmux 也允许新建多个窗口。
+
+###### 新建窗口
+
+`tmux new-window` 命令用来创建新窗口。
+
+```sh
+tmux new-window
+
+# 新建一个指定名称的窗口
+tmux new-window -n <window-name>
+```
+
+###### 切换窗口
+
+`tmux select-window`命令用来切换窗口。
+
+```sh
+# 切换到指定编号的窗口
+tmux select-window -t <window-number>
+
+# 切换到指定名称的窗口
+tmux select-window -t <window-name>
+```
+
+###### 重命名窗口
+
+`tmux rename-window` 命令用于为当前窗口起名（或重命名）。
+
+```sh
+tmux rename-window <new-name>
+```
+
+###### 窗口快捷键
+
+下面是一些窗口操作的快捷键。
+
+- `Ctrl+b c`：创建一个新窗口，状态栏会显示多个窗口的信息。
+- `Ctrl+b p`：切换到上一个窗口（按照状态栏上的顺序）。
+- `Ctrl+b n`：切换到下一个窗口。
+- `Ctrl+b <number>`：切换到指定编号的窗口，其中的`<number>`是状态栏上的窗口编号。
+- `Ctrl+b w`：从列表中选择窗口。
+- `Ctrl+b ,`：窗口重命名。
+
+##### 其他命令
+
+下面是一些其他命令。
+
+```sh
+# 列出所有快捷键，及其对应的 Tmux 命令
+tmux list-keys
+
+# 列出所有 Tmux 命令及其参数
+tmux list-commands
+
+# 列出当前所有 Tmux 会话的信息
+tmux info
+
+# 重新加载当前的 Tmux 配置
+tmux source-file ~/.tmux.conf
+```
+
+摘自：[Tmux 使用教程](https://www.ruanyifeng.com/blog/2019/10/tmux.html)
+
+#### 其他笔记
+
+##### “tmux 有哪些奇技淫巧 - 知乎” 笔记
+
+###### 修改一些难用的默认配置
+
+tmux 默认的 `Ctrl+b` 太难按了，`b` 键离 `Ctrl` 太远。
+
+改成 `Ctrl+a`：
+
+```text
+# ~/.tmux.conf
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+```
+
+分屏的 `%` 和 `"` 也反直觉，改成 `|` 和 `-`：
+
+```text
+bind | split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+```
+
+`-c "#{pane_current_path}"` 是让新分出来的面板保持当前目录，不然每次都从~开始，还得cd。
+
+鼠标支持默认是关的，开了之后可以点击切换面板、拖拽调整大小、滚轮看历史：
+
+```text
+set -g mouse on
+```
+
+改完后 `tmux source-file ~/.tmux.conf` 生效
+
+###### vim键位移动
+
+如果你用vim，在tmux里也用vim键位会很爽：
+
+```text
+# ~/.tmux.conf
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+```
+
+这样 `Ctrl+a h/j/k/l` 就能上下左右切换面板，不用去够方向键。
+
+复制模式也改成vi键位：
+
+```text
+setw -g mode-keys vi
+```
+
+`Ctrl+a [` 进入复制模式后，用 j/k 上下移动，`/` 搜索，空格开始选择，回车复制。
+
+###### 会话持久化
+
+tmux的会话在服务器重启后会没。
+
+装 [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) 插件可以保存和恢复：
+
+```text
+# 装插件管理器
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+# ~/.tmux.conf 加上
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+run '~/.tmux/plugins/tpm/tpm'
+```
+
+重载配置，`Ctrl+a I` 安装插件。
+
+之后 `Ctrl+a Ctrl+s` 保存会话，`Ctrl+a Ctrl+r` 恢复。服务器重启了也能恢复到之前的布局。
+
+###### 共享终端
+
+两个人可以同时连同一个会话：
+
+```text
+# A创建
+tmux new -s pair
+
+# B连接
+tmux a -t pair
+```
+
+两个人看到的完全同步，A敲的B能看到，B敲的A也能看到。
+
+远程带人排查问题、pair programming 都能用。比共享屏幕流畅，因为只传文字不传画面。
+
+我带新人排查线上问题就用这个，他在他电脑上操作，我实时看着，随时能接手。如果服务器在内网连不上的话，可以用组网之类的工具先把网络打通，然后再共享tmux会话。
 
 ### Bash
 
@@ -1980,8 +2361,6 @@ echo ${string:1:4} # 输出 unoo
 string="runoob is a great site"
 echo `expr index "$string" io`  # 输出 4
 ```
-
-
 
 #### 获取数组的长度
 

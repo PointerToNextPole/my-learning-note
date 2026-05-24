@@ -1983,7 +1983,99 @@ Claude 在你的会话中读取和写入记忆文件。<font color=red>当你在
 
 当你要求 Claude 记住某些内容时，如 “总是使用 pnpm，而不是 npm” 或 ”记住 API 测试需要本地 Redis 实例”，Claude 将其保存到自动记忆。要改为添加指令到 CLAUDE.md，直接要求 Claude，如”将其添加到 CLAUDE.md”，或通过 `/memory` 自己编辑文件。
 
+#### 选择权限模式
 
+控制 Claude 在编辑文件或运行命令前是否询问。<font color=lightSeaGreen>在 CLI 中使用 Shift+Tab 循环切换模式</font>，或在 VS Code、Desktop 和 claude.ai 中使用模式选择器。
+
+当 Claude 想要编辑文件、运行 shell 命令或发出网络请求时，它会暂停并要求您批准该操作。<font color=lightSeaGreen>权限模式控制暂停发生的频率</font>。您选择的模式塑造了会话的流程：默认模式让您在操作进行时审查每个操作，而更宽松的模式让 Claude 在更长的不间断时间内工作，然后报告完成情况。为敏感工作选择更多监督，或在您信任方向时选择更少中断。
+
+##### 可用模式
+
+每种模式在便利性和监督之间做出不同的权衡。下表显示了在每种模式中 Claude 无需权限提示即可执行的操作。
+
+|模式|无需询问即可运行的操作|最适合|
+|---|---|---|
+|`default`|仅读取|入门、敏感工作|
+|[`acceptEdits`](https://code.claude.com/docs/zh-CN/permission-modes#auto-approve-file-edits-with-acceptedits-mode)|读取、文件编辑和常见文件系统命令（`mkdir`、`touch`、`mv`、`cp` 等）|迭代您正在审查的代码|
+|[`plan`](https://code.claude.com/docs/zh-CN/permission-modes#analyze-before-you-edit-with-plan-mode)|仅读取|在更改代码库前进行探索|
+|[`auto`](https://code.claude.com/docs/zh-CN/permission-modes#eliminate-prompts-with-auto-mode)|所有操作，带后台安全检查|长时间任务、减少提示疲劳|
+|[`dontAsk`](https://code.claude.com/docs/zh-CN/permission-modes#allow-only-pre-approved-tools-with-dontask-mode)|仅预先批准的工具|锁定的 CI 和脚本|
+|[`bypassPermissions`](https://code.claude.com/docs/zh-CN/permission-modes#skip-all-checks-with-bypasspermissions-mode)|所有操作，带后台安全检查|仅隔离容器和 VM|
+
+在除 `bypassPermissions` 外的每种模式中，对[受保护路径](https://code.claude.com/docs/zh-CN/permission-modes#protected-paths)的写入永远不会自动批准，保护仓库状态和 Claude 自己的配置免受意外破坏。模式设置基线。
+
+在顶部分层[权限规则](https://code.claude.com/docs/zh-CN/permissions#manage-permissions)以在除 `bypassPermissions` 外的任何模式中预先批准或阻止特定工具，`bypassPermissions` 完全跳过权限层。
+
+#####  使用 acceptEdits mode 自动批准文件编辑
+
+`acceptEdits` mode 让 Claude 在您的工作目录中创建和编辑文件而无需提示。状态栏显示 `⏵⏵ accept edits on` 当此模式处于活动状态时。
+
+除了文件编辑外，`acceptEdits` mode 自动批准常见的文件系统 Bash 命令：`mkdir`、`touch`、`rm`、`rmdir`、`mv`、`cp` 和 `sed`。这些命令在以安全环境变量（如 `LANG=C` 或 `NO_COLOR=1`）或进程包装器（如 `timeout`、`nice` 或 `nohup`）为前缀时也会自动批准。与文件编辑一样，自动批准仅适用于您的工作目录或 `additionalDirectories` 内的路径。该范围外的路径、对[受保护路径](https://code.claude.com/docs/zh-CN/permission-modes#protected-paths)的写入和所有其他 Bash 命令仍然会提示。
+
+当启用 [PowerShell tool](https://code.claude.com/docs/zh-CN/tools-reference#powershell-tool) 时，`acceptEdits` mode 也会自动批准 `Set-Content`、`Add-Content`、`Clear-Content` 和 `Remove-Item` 在范围内的路径上，以及它们的常见别名。相同的范围和受保护路径规则适用。
+
+当您想在编辑器中或通过 `git diff` 之后审查更改而不是逐个批准每个编辑时，使用 `acceptEdits`。从默认模式按 `Shift+Tab` 一次进入它，或直接启动它：
+
+```sh
+claude --permission-mode acceptEdits
+```
+
+再次按 `Shift+Tab` 离开 plan mode 而不批准计划。
+
+###### 审查并批准计划
+
+当计划准备好时，Claude 呈现它并询问如何继续。从该提示您可以：
+
+- 批准并在 auto mode 中启动
+- 批准并接受编辑
+- 批准并手动审查每个编辑
+- 继续规划并提供反馈
+- 使用 [Ultraplan](https://code.claude.com/docs/zh-CN/ultraplan) 进行基于浏览器的审查进行细化
+
+批准计划会退出 plan mode 并将会话切换到每个批准选项描述的权限模式，因此 Claude 开始编辑。要再次规划，使用 `Shift+Tab` 循环回到 plan mode，或在下一个提示前加上 `/plan`。
+
+按 `Ctrl+G` 在您的默认文本编辑器中打开提议的计划并在 Claude 继续之前直接编辑它。当启用 [`showClearContextOnPlanAccept`](https://code.claude.com/docs/zh-CN/settings#available-settings) 时，每个批准选项也提供首先清除规划上下文的选项。
+
+接受计划也会根据计划内容自动命名会话，除非您已经使用 `--name` 或 `/rename` 设置了名称。
+
+###### 将 plan mode 设置为默认值
+
+要使 plan mode 成为项目的默认值，请在 `.claude/settings.json` 中设置 `defaultMode`：
+
+```json
+{
+  "permissions": {
+    "defaultMode": "plan"
+  }
+}
+```
+
+#### 常见工作流程
+
+###### 按计划运行 Claude
+
+假设您想让 Claude 自动定期处理任务，如每天早上审查开放的 PR、每周审计依赖项或在夜间检查 CI 失败。根据您希望任务运行的位置选择调度选项：
+
+|选项|运行位置|最适合|
+|---|---|---|
+|[Routines](https://code.claude.com/docs/zh-CN/routines)|Anthropic 管理的基础设施|即使您的计算机关闭也应该运行的任务。也可以在 API 调用或 GitHub 事件上触发，除了计划。在 [claude.ai/code/routines](https://claude.ai/code/routines) 配置。|
+|[桌面计划任务](https://code.claude.com/docs/zh-CN/desktop-scheduled-tasks)|您的机器，通过桌面应用|需要直接访问本地文件、工具或未提交更改的任务。|
+|[GitHub Actions](https://code.claude.com/docs/zh-CN/github-actions)|您的 CI 管道|与存储库事件（如打开的 PR）相关的任务，或应该与工作流配置一起存在的 cron 计划。|
+|[`/loop`](https://code.claude.com/docs/zh-CN/scheduled-tasks)|当前 CLI 会话|会话打开时的快速轮询。任务在您开始新对话时停止；`--resume` 和 `--continue` 恢复未过期的任务。|
+
+> [!TIP]
+> 
+> 为计划任务编写提示时，明确说明成功是什么样的以及如何处理结果。任务自主运行，所以它不能提出澄清问题。例如：“审查标记为 `needs-review` 的开放 PR，对任何问题留下内联评论，并在 `#eng-reviews` Slack 频道中发布摘要。“
+
+###### 编辑前规划
+
+对于您想在接触磁盘前审查的更改，切换到 plan mode。Claude 读取文件并提出计划，但在您批准前不进行任何编辑。
+
+```sh
+claude --permission-mode plan
+```
+
+您也可以在会话中按 `Shift+Tab` 切换到 plan mode。有关批准流程和在文本编辑器中编辑计划，请参阅 [Plan Mode](https://code.claude.com/docs/zh-CN/permission-modes#analyze-before-you-edit-with-plan-mode)。
 
 #### Claude Code 最佳实践
 
