@@ -1001,11 +1001,13 @@ Shell 变量分为 环境变量（全局变量）和 普通变量（局部变量
 
 ##### `!$`
 
->  `!$` refers to the last argument from the previous bash command.  	
+> [!TIP]
+>  
+>  > `!$` refers to the last argument from the previous bash command.  	
 >
-> 🌏 `!$` 表示：上一条bash命令的最后一个参数**
-
-摘自：[stack overflow - What does ./!\$ mean in Linux?](https://stackoverflow.com/questions/38515790/what-does-mean-in-linux)
+> 译：`!$` 表示：上一条bash命令的最后一个参数
+> 
+> 摘自：[stack overflow - What does ./!\$ mean in Linux?](https://stackoverflow.com/questions/38515790/what-does-mean-in-linux)
 
 
 
