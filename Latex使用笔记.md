@@ -20,6 +20,12 @@
 
 - `\frac{numerator}{denominator}` $\frac{numerator}{denominator}$
 
+###### 累加
+
+`$\sum_{i=src}^{dest} expression$` $\sum_{i=src}^{dest} expression$
+
+
+
 ##### 关系运算符
 
 - 大于：`>` $a > b$
