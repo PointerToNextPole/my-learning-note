@@ -109,9 +109,7 @@ https://www.zhihu.com/question/1930753510372283154/answer/1930783103447700834)
 ##### takewhile
 
 
-
 ##### dropwhile
-
 
 
 #### Future
@@ -166,8 +164,14 @@ with 语句实现原理建立在上下文管理器之上。
 
 ## 工程化相关
 
-#### 包管理器
+### uv 
 
-###### uv / pipenv
+> 从前端的角度来看：感觉和 npm 有点相似，但是多了 venv 特性
 
-> 从一个前端的角度：感觉和 npm 有点相似，但是多了 venv 特性
+###### uv 和 npm 命令对比
+
+- `uv add --dev` 类似于 `npm add -D`
+- `uv tool install` 类似于 `npm add -g`
+- `uvx` 类似于 `npx`
+
+学习自：[AI Studio Gemini 回答](https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%2212OYmRGYJIgep89yHGAF2bnxMmXgUeffQ%22%5D,%22action%22:%22open%22,%22userId%22:%22113986502377656987379%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing)
