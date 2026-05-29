@@ -486,7 +486,9 @@
 
 - **deviate** ：偏离。
 
-   > 👀 一般搭配：deviate from
+   > [!NOTE]
+   >
+   >  一般搭配：deviate from
 
 - **canonical** ：权威性的。比较常见的用在 `<link rel="canonical">` 和 CNAME record ( Canonical Name Record )
    **canonialization** ：规范化
@@ -497,7 +499,9 @@
 
 - **eavesdrop** ：窃听。eaves 屋檐。eavesdropper 窃听者。
 
-  > 💡 在密码学领域，除了 Alice & Bob 这两个虚拟人物，还有 Eve，<font color=red>E</font>ve 就是 <font color=red>E</font>avesdropper
+  > [!TIP]
+  >
+  > 在密码学领域，除了 Alice & Bob 这两个虚拟人物，还有 Eve，<font color=red>E</font>ve 就是 <font color=red>E</font>avesdropper
   >
   > 学习自：[为什么计算机科学如密码学喜欢用 Alice 和 Bob 举栗子？ - 刘巍然-学酥的回答 - 知乎](https://www.zhihu.com/question/63306763/answer/255496822) ，另外文章中还提及了人物 Mallory ，指代 Malicious Adversary “恶意攻击者”
 
@@ -1603,6 +1607,30 @@
   > Target under 200 lines. Longer files still load in full but may reduce **adherence**
   >
   > 摘自；[Claude Code Docs - 快速开始 - 探索 .claude 目录](https://code.claude.com/docs/zh-CN/claude-directory)
+  
+- **drop-in** ：即插即用，无缝替换
+
+  > [!NOTE]
+  >
+  > 这句话来自 [GitHub - ruff](https://github.com/astral-sh/ruff) 的 readme
+  >
+  > > Drop-in parity with Flake8, isort, and Black
+  >
+  > 就问了下 Gemini in Chrome ，得到如下 [回复](https://gemini.google.com/share/e5f73bb3630c)
+  >
+  > > 在工程和软件开发中，它（ drop-in ）通常指一个组件或工具可以直接替换原有的组件，而不需要修改任何现有代码、配置文件或改变工作流。就像把一个零件直接“丢” 进机器里就能完美运转一样。
+  >
+  > 下面的 parity 也是一样
+  
+- **parity** ：对等
+
+  > [!NOTE]
+  >
+  > 和上面的 drop-in 一样：
+  >
+  > > 在软件领域，( parity ) 通常用来指两个软件在功能、规则或性能上达到了完全一致的水平。
+
+  
 ***
 
 
