@@ -7,8 +7,7 @@
 - [Understand Django](https://www.mattlayman.com/understand-django) ：[@100gle](https://twitter.com/1oogle) [推荐](https://x.com/1oogle/status/1773376213731668129) 的开源免费电子书
 - Fluent Python / Python Cookbook 这些名声在外的书，自然不用多提
 - [怎样才能写出 Pythonic 的代码？ - 知乎](https://www.zhihu.com/question/21408921)
-- [你见过哪些令你瞠目结舌的 Python 代码技巧？ - 知乎](
-https://www.zhihu.com/question/37904398)
+- [你见过哪些令你瞠目结舌的 Python 代码技巧？ - 知乎](https://www.zhihu.com/question/37904398)
 - [Python语言从2.7到3.14的能力变化与演进逻辑](https://mp.weixin.qq.com/s/iRVqDjvfsilxRugG65fJNw)
 
 #### `python -m`
@@ -260,8 +259,45 @@ Python 的类型提示（Type Hints）在运行时是保留在类属性里的（
 
 ##### Python 解释器（运行时）管理
 
+在前端，pnpm 只管装包，不管你电脑上装的是 Node 18 还是 Node 20（那是 nvm 或 fnm 的工作）。  
 
+但 **uv 直接接管了 Python 版本管理**。如果你的项目需要 Python 3.12，你<font color=red>甚至不需要提前安装 Python，直接运行</font>：
+
+```sh
+uv run script.py
+```
+
+`uv` 会在底层自动下载 Python 3.12，创建隔离环境并运行。这相当于 `pnpm` 发现你本地没装 Node，自动帮你下载一个 Node 运行项目。
 
 ##### 终结 Python 生态的“碎片化”
+
+前端的包管理虽然经历过 npm -> yarn -> pnpm 的演进，但核心一直比较统一（就是 package.json）。  
+而 Python 过去十年的包管理极其混乱：
+
+- 装包用 pip
+    
+- 锁定版本用 pip-tools
+    
+- 管理虚拟环境用 virtualenv
+    
+- 管理多版本 Python 用 pyenv
+    
+- 现代项目管理用 Poetry 或 Pipenv
+    
+- 全局安装命令行工具用 pipx
+    
+
+**uv 的出现是为了“大一统”。** 它的目标是用一个极速的 Rust 编译的单一二进制文件，替代上面所有的工具（类似 Rust 生态里的 Cargo）。
+
+###### 全局工具执行（类似 npx）
+
+前端有非常方便的 `npx` ，可以不安装包直接运行（比如 `npx create-react-app` ）。  
+Python 过去需要用 `pipx` ，而 `uv` 原生支持了 uvx（或者 `uv tool run` ）。
+
+##### 解决跨平台编译难题
+
+前端的依赖 95% 是纯 JavaScript 代码，最多包含一点 WebAssembly 或 node-gyp 编译的 C++ 扩展。  
+
+Python 的包（特别是 AI、数据科学领域的包如 PyTorch, NumPy）包含了大量复杂的 C/C++/Fortran 底层代码。uv 在处理这些预编译二进制包（Wheels）的解析树时，面临的图计算复杂度远超前端，但它的速度依然快得惊人。
 
 
