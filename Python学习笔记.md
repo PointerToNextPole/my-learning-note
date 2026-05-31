@@ -272,6 +272,7 @@ uv run script.py
 ##### 终结 Python 生态的“碎片化”
 
 前端的包管理虽然经历过 npm -> yarn -> pnpm 的演进，但核心一直比较统一（就是 package.json）。  
+
 而 Python 过去十年的包管理极其混乱：
 
 - 装包用 pip

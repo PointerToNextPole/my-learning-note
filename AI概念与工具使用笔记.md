@@ -320,6 +320,12 @@ npx --node-options="--permission --allow-fs-read=$(npm config get cache)" packag
 
 
 
+
+### 杂项工具
+
+- [edge-tts](https://github.com/rany2/edge-tts) ：免费的 tts 工具
+- [hyperframes](https://github.com/heygen-com/hyperframes) ：AI 视频生成工具
+
 ## Claude & Claude Code
 
 ##### 资料
