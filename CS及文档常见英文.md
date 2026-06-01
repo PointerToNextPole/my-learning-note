@@ -2814,3 +2814,4 @@
 - **echo chamber** ：回声室
 - **rewind** ：倒带
 - **bounty** ：赏金
+- **modest** ：谦逊的
