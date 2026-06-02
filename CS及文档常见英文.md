@@ -2815,3 +2815,4 @@
 - **rewind** ：倒带
 - **bounty** ：赏金
 - **modest** ：谦逊的
+- **synopsis** ：摘要、梗概
