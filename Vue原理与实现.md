@@ -3288,23 +3288,27 @@ Vue 的 Dom diff 一共 5 步，我们结合下图先看前三步：
 
 <img src="https://s2.loli.net/2023/01/09/lH8jSfoKBRE5m6V.png" alt="img" style="zoom:47%;" />
 
-如图所示，第一和第二步分别从首尾两头向中间逼近，尽可能跳过首位相同的元素，因为我们的<font color=fuchsia>目的是 **尽量保证不要发生 dom 位移**</font>。
+如图所示，<font color=dodgerBlue>第一和第二步</font>分别从首尾两头向中间逼近，尽可能跳过首位相同的元素，因为我们的<font color=fuchsia>目的是 **尽量保证不要发生 DOM 位移**</font>。
 
 > [!NOTE]
 >
 > 保证尽量不要发生 DOM 位移，这也是后面使用 LIS 算法最重要的原因
 
-这种算法一般采用双指针。如果前两步做完后，<font color=dodgerBlue>发现旧树指针重合了，新树还未重合</font>，说明什么？<font color=LightSeaGreen>说明新树剩下来的都是要新增的节点，批量插入即可</font>。很简单吧？那<font color=dodgerBlue>如果反过来呢？</font>如下图所示：
+这种算法一般采用双指针。如果前两步做完后，<font color=dodgerBlue>发现旧树指针重合了，新树还未重合</font>，说明什么？<font color=LightSeaGreen>说明新树剩下来的都是要新增的节点，**批量插入即可**</font>。很简单吧？那<font color=dodgerBlue>如果反过来呢？</font>如下图所示：
 
 <img src="https://s2.loli.net/2023/01/09/YxlmWIEzL7Okf9U.png" alt="img" style="zoom:47%;" />
 
 第一和第二步完成后，发现<font color=dodgerBlue>新树指针重合了，但旧树还未重合</font>，说明什么？<font color=LightSeaGreen>说明旧树剩下来的在新树都不存在了，批量删除即可</font>。
 
+> [!NOTE]
+>
+> 下面一行的 1、2、3、4 步，见图示
+
 当然，<font color=dodgerBlue>**如果 1、2、3、4 步走完之后，指针还未处理完**</font>，那么就进入一个小小算法时间了，我们需要在 $O(n)$  时间复杂度内把剩下节点处理完。熟悉算法的同学应该很快能反映出，<font color=dodgerBlue>**一个数组做一些检测操作，还得把时间复杂度控制在 $O(n)$** </font>，<font color=fuchsia>**得用一个 Map 空间换一下时间**</font>，实际上也是如此，我们看下图具体做法：
 
-<img src="https://s2.loli.net/2023/01/09/EwyupoCnLKsfZbO.png" alt="img" style="zoom:48%;" />
+<img src="https://files.seeusercontent.com/2026/06/03/yB0e/EwyupoCnLKsfZbO.png" alt="img" style="zoom:48%;" />
 
-如图所示，1、2、3、4 步走完后（👀 首尾指针对比结束，并判断与处理完 老旧指针相遇 相遇的情况），Old 和 New 都有剩余，因此走到第五步，<font color=dodgerBlue>第五步分为三小步</font>：
+如图所示，1、2、3、4 步走完后（👀 首尾指针对比结束，并判断与处理完 老旧指针 相遇的情况），Old 和 New 都有剩余，因此走到第五步，<font color=dodgerBlue>第五步分为三小步</font>：
 
 1. <font color=fuchsia>**遍历 Old 创建一个 Map**</font>，这个就是那个换时间的空间消耗，<font color=fuchsia>它记录了每个旧节点的 index 下标</font>（👀 如上图所示），一会好在 New 里查出来。
 2. 遍历 New，顺便<font color=red>利用上面的 Map 记录下下标</font>，同时 <font color=red>Old 在 New 中不存在的说明被删除了，直接删除</font>。
@@ -3313,8 +3317,10 @@ Vue 的 Dom diff 一共 5 步，我们结合下图先看前三步：
 > [!NOTE]
 >
 > 这里创建的 Map ，在源码中的名字是 `keyToNewIndexMap` 。
+
+> [!warning]
 >
-> 注意：这里的说法有点问题：如果进行到第五步时， i 还是等于 0，到时候遍历 New 生成的 Arr 数组中，必定会有一个下标为 0 的元素，而且它不是新增的。
+> 这里的说法有点问题：如果进行到第五步时， old_left_index 还是等于 0，到时候遍历 New 生成的 Arr 数组中，必定会有一个下标为 0 的元素，而且它不是新增的。
 
 最后一步的优化也很关键，我们不要看见不同就随便移动，<font color=red>**为了性能最优，要保证移动次数尽可能的少**</font>，那么怎么才能尽可能的少移动呢？假设我们随意移动，如下图所示：
 
@@ -3330,7 +3336,11 @@ Vue 的 Dom diff 一共 5 步，我们结合下图先看前三步：
 [b:1, d:3, a:0, c:2, e:4]
 ```
 
-肉眼看上去，<font color=red>连续自增的子串有 `b d` 和 `a c e`，由于 `a c e` 更长，所以选择后者</font>（⚠️ 值得注意的是：这里示例中 最长子序列 `a c e` 是连续且相邻的，但是实际上：最长子序列并没有要求是连续且相邻的 ）。
+肉眼看上去，<font color=red>连续自增的子串有 `b d` 和 `a c e`，由于 `a c e` 更长，所以选择后者</font>
+
+> [!warning]
+>
+> 值得注意的是：这里示例中 最长子序列 `a c e` 是连续且相邻的，但是实际上：最长子序列并没有要求是连续且相邻的
 
 换成程序去做，可以<font color=red>采用贪心 + 二分法进行查找</font>，详细可以看这道题 [最长递增子序列](https://leetcode-cn.com/problems/longest-increasing-subsequence/)，时间复杂度 $O(nlogn)$ （💡 使用 DP 的话，时间复杂度为 $O(n^2)$ ，显然：贪心+二分查找 的方法是更优的）。由于该算法得出的结果顺序是乱的，Vue 采用提前复制数组的方式辅助找到了正确序列。
 
@@ -3366,7 +3376,11 @@ if (patchFlag > 0) {
 
 patchChildren 根据是否存在 key 进行真正的 diff 或者直接 patch。<font color=dodgerBlue>对于 key 不存在的情况我们就不做深入研究了</font>
 
-> 💡 下面是对 patchKeyedChildren 方法进行分析
+---
+
+> [!NOTE]
+> 
+> 下面是对 patchKeyedChildren 方法进行分析
 
 ###### patchKeyedChildren 方法一些声明的变量
 
@@ -3467,7 +3481,7 @@ while (i <= e1 && i <= e2) {
 
 ##### 添加新的节点
 
-第三步如果老节点是否全部 patch，新节点没有被 patch 完,创建新的 vnode
+第三步如果老节点是否全部 patch，新节点没有被 patch 完，创建新的 vnode
 
 ```ts
 // (a b)

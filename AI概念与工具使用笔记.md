@@ -2086,6 +2086,38 @@ Claude 在你的会话中读取和写入记忆文件。<font color=red>当你在
 
 在顶部分层[权限规则](https://code.claude.com/docs/zh-CN/permissions#manage-permissions)以在除 `bypassPermissions` 外的任何模式中预先批准或阻止特定工具，`bypassPermissions` 完全跳过权限层。
 
+##### 切换权限模式
+
+您可以在会话期间、启动时或作为持久默认设置切换模式。模式通过这些控制设置，而不是通过在聊天中询问 Claude。选择下面的您的界面以查看如何更改它。
+
+###### CLI
+
+**在会话期间**：按 `Shift+Tab` 循环切换 `default` → `acceptEdits` → `plan`。当前模式显示在状态栏中。并非每种模式都在默认循环中：
+
+- `auto`：当您的账户满足 [auto mode 要求](https://code.claude.com/docs/zh-CN/permission-modes#eliminate-prompts-with-auto-mode)时出现；循环到 auto 会显示一个选择加入提示，直到您接受它，或选择**不，不再询问**以从循环中移除 auto
+- `bypassPermissions`：在您使用 `--permission-mode bypassPermissions`、`--dangerously-skip-permissions` 或 `--allow-dangerously-skip-permissions` 启动后出现；`--allow-` 变体将模式添加到循环中而不激活它
+- `dontAsk`：永远不会出现在循环中；使用 `--permission-mode dontAsk` 设置它
+
+启用的可选模式在 `plan` 之后插入，`bypassPermissions` 优先，`auto` 最后。如果您同时启用了两者，您将在前往 `auto` 的途中循环通过 `bypassPermissions`。
+
+**启动时**：将模式作为标志传递。
+
+```sh
+claude --permission-mode plan
+```
+
+**作为默认设置**：在[设置](https://code.claude.com/docs/zh-CN/settings#settings-files)中设置 `defaultMode`。
+
+```json
+{
+  "permissions": {
+    "defaultMode": "acceptEdits"
+  }
+}
+```
+
+相同的 `--permission-mode` 标志适用于 `-p` [非交互式运行](https://code.claude.com/docs/zh-CN/headless)。
+
 #####  使用 acceptEdits mode 自动批准文件编辑
 
 `acceptEdits` mode 让 Claude 在您的工作目录中创建和编辑文件而无需提示。状态栏显示 `⏵⏵ accept edits on` 当此模式处于活动状态时。

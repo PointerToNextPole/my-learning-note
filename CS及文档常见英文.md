@@ -2816,3 +2816,4 @@
 - **bounty** ：赏金
 - **modest** ：谦逊的
 - **synopsis** ：摘要、梗概
+- **overwhelm** ：压倒、吞没
