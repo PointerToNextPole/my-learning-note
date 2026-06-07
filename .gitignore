@@ -5,3 +5,7 @@
 Context/
 copilot/
 .alma-snapshots
+Untitled.md
+Untitled *.md
+!Untitled *[!0-9]*.md
+!Untitled .md
