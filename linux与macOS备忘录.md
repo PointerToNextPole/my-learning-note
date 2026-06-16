@@ -551,9 +551,9 @@ defaults write com.apple.screencapture disable-shadow -bool TRUE
 defaults write com.apple.screencapture disable-shadow -bool FALSE
 ```
 
-###### 更多的设置
+###### 更多设置
 
-更多的设置，参见：https://github.com/mathiasbynens/dotfiles/blob/main/.macos
+更多设置，参见：https://github.com/mathiasbynens/dotfiles/blob/main/.macos
 
 
 
@@ -1551,8 +1551,6 @@ lsof ( list open files ) 是一个查看当前系统文件的工具。在 linux 
 - `-u` ：列出UID号进程详情
 - `-h` ：显示帮助信息
 - `-v` ：显示版本信息
-
-
 
 #### Unix 信号
 
