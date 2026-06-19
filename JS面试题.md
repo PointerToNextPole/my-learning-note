@@ -515,7 +515,7 @@ console.log(getName()) // ?
 ##### 赋值第1题
 
 ```js
-let {a,b,c} = { c: 3, b: 2, a: 1 }
+let { a, b, c } = { c: 3, b: 2, a: 1 }
 console.log(a, b, c)
 ```
 
