@@ -44,7 +44,7 @@ function a (b = c, c = 1) {
 a()
 ```
 
-这题做的时候，<font color=FF0000>错了</font>。并且解析中加重点的部分，<font color=FF0000>非常重要</font>。⭐️⭐️
+这题做的时候，<font color=FF0000>错了</font>。并且解析中加重点的部分，<font color=FF0000>非常重要</font>。可以看下 [[前端面试点总结#参数默认值的暂时性死区]]
 
 <details>
   <summary>点击查看答案</summary>
@@ -68,7 +68,7 @@ console.log(['1','2','3'].map(parseInt));
 
 ##### 解析
 
-Array.prototype.map() 的 语法如下：
+`Array.prototype.map()` 的 语法如下：
 
 > ```js
 > var new_array = arr.map(function callback(currentValue[, index[, array]]) {
@@ -255,7 +255,7 @@ console.log(b)
   3. 和第二题类似，只是先后顺序换了一下，但是并不影响两者的提升顺序，仍是函数优先，同名的var声明提升忽略，所以打印出b还是函数。<br>
 </details>
 
-**补充：** [[JS 机制与原理#变量对象的思考题 第二题]]  中有这样的问题：
+补充： [[JS 机制与原理#变量对象的思考题 第二题]]  中有这样的问题：
 
 ```js
 console.log(foo);
@@ -337,8 +337,6 @@ console.log(a)
 ```
 
 // TODO 没搞懂，为什么是这个结果
-
-
 
 
 ### （隐式）类型转换
@@ -519,8 +517,6 @@ let { a, b, c } = { c: 3, b: 2, a: 1 }
 console.log(a, b, c)
 ```
 
-这题做对了，但并不是非常确定。
-
 <details>
   <summary>点击查看答案</summary>
   1, 2, 3
@@ -546,7 +542,7 @@ console.log( Object.assign([1, 2, 3], [4, 5]) )
 
 <details>
   <summary>点击查看解析</summary>
-  是不是从来没有用assign方法合并过数组？<font color=FF0000>assign方法可以用于处理数组，不过会把数组视为对象</font>，比如<font color=FF0000 size=4>这里会把目标数组视为是属性为0、1、2的对象</font>，<font color=FF0000>所以源数组的0、1属性的值覆盖了目标对象的值</font>。
+  是不是从来没有用 assign 方法合并过数组？<font color=FF0000>assign方法可以用于处理数组，不过会把数组视为对象</font>，比如<font color=FF0000 size=4>这里会把目标数组视为是属性为0、1、2的对象</font>，<font color=FF0000>所以源数组的0、1属性的值覆盖了目标对象的值</font>。
 </details>
 
 ##### 赋值第3题
@@ -578,7 +574,7 @@ console.log(Object.assign(obj, obj1))
 ```js
 let a = b = 10
 ;(function(){ 
-  let a = b = 20 
+  let a = b = 20
 })()
 console.log(a)
 console.log(b)
@@ -593,16 +589,38 @@ console.log(b)
 
 <details>
   <summary>点击查看解析</summary>
-  <font color=FF0000>连等操作是从右向左执行的</font> <mark>（注：联等？不是赋值操作么？应该是连续赋值吧？另外，”从右到左运行“有前提：优先级相等，以及结合性一致，才是从右到左。参考：juejin.cn/post/6844903928073568264 ）</mark>，<font color=FF0000 size=4>相当于b = 10、let a = b</font>，很明显b没有声明就直接赋值了，所以会隐式创建为一个全局变量，函数内的也是一样，并没有声明b，直接就对b赋值了，因为作用域链，会一层一层向上查找，找了到全局的b，所以全局的b就被修改为20了，而函数内的a因为重新声明了，所以只是局部变量，不影响全局的a，所以a还是10。
+  <font color=FF0000>连等操作是从右向左执行的</font> <font color=lightSeaGreen>（👀 联等？不是赋值操作么？应该是连续赋值吧？另外，”从右到左运行“有前提：优先级相等，以及结合性一致，才是从右到左。参考：juejin.cn/post/6844903928073568264 ）</font>，<font color=FF0000 size=4>相当于b = 10、let a = b</font>，很明显b没有声明就直接赋值了，所以会隐式创建为一个全局变量，函数内的也是一样，并没有声明b，直接就对b赋值了，因为作用域链，会一层一层向上查找，找了到全局的b，所以全局的b就被修改为20了，而函数内的a因为重新声明了，所以只是局部变量，不影响全局的a，所以a还是10。
 </details>
 
+##### 赋值第5题
+
+```js
+var a = { n: 1 };
+var b = a;
+a.x = a = { n: 2 };
+
+console.log(a.x)
+console.log(b.x)
+```
+
+<details>
+  <summary>点击查看答案</summary>
+  undefined, { n: 2 }
+</details>
+
+<details>
+  <summary>点击查看解析</summary>
+  赋值运算符是右结合，所以表达式按右结合来分组。所以：`a.x = a = { n: 2 };` 会被解析为 `a.x = (a = { n: 2 });` 。这题可以理解为：a 和 b 都指向 `{ n: 1 }` 对应的地址，然后 `a.x` 优先级高，先执行，现在 a 和 b 都指向了 `{ n: 1, x: <等后面的操作>}`；后面的 `a = { n: 2 }` 相当于 a 指向了新对象 `{ n: 2 }` 对应的地址，而 b 还指向原来的地址。这时候到 `a.x` 赋值了( `a.x =` )，相当于 `b.x` 即 `<等后面的操作>` 指向了  `{ n: 2 }` 对应的地址。最后打印 `a.x` 自然为 undefined，`b.x` 为 `"{ n: 2 }"`
+</details>
+
+学习自：[直播问题集锦15【渡一教育】](https://www.bilibili.com/video/BV1RREe6MEjQ)
 
 ### 运算问题
 
 ##### 运算第1题
 
 ```js
-var x=1
+var x = 1
 switch( x++ ) {
   case 0: ++x
   case 1: ++x

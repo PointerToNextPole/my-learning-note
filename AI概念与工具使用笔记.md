@@ -33,11 +33,11 @@ BM25 是一种用来**计算搜索词（Query）与文档（Document）之间相
 <font color=dodgerBlue>当你在搜索框输入一句话时，**BM25 会根据以下三个核心维度来打分**</font>：
 
 - **IDF（逆文档频率 - 词的重要性）** ：如果一个词在所有文档中都出现（比如“的”、“是”），它就不重要，得分很低；<font color=red>如果一个词很罕见</font>（比如“量子纠缠”、“奥本海默”），<font color=red>它就极其重要，得分很高</font>。
-    
+  
 - **TF（词频 - 且带有“饱和度”）** ：一个词在当前文档里出现的次数越多，文档越相关。但是！**BM25 引入了 “词频饱和” 概念**。在传统的 TF-IDF 中，词出现 100 次的权重是出现 10 次的 10 倍；而在 BM25 中，当词频达到一定程度后，得分的增长会逐渐趋于平缓（饱和）。因为一篇文章提到“苹果” 5 次和 10 次，都足以说明这是一篇关于苹果的文章，100 次并不会让它变得比 10 次相关 20 倍。
   > [!NOTE]
   > 有点类似于归一化
-    
+  
 - **文档长度归一化（Document Length Normalization）** ：长文章天然包含更多的词。如果一篇文章有一万字，里面刚好出现了几次你的搜索词，它不一定比一篇只有一百字但全篇都在讲你搜索词的文章更相关。BM25 会惩罚那些 “废话连篇” 的长文档，补偿精炼的短文档。
 
 ##### BM25 在 AI 与大模型时代的地位
@@ -49,24 +49,24 @@ BM25 是一种用来**计算搜索词（Query）与文档（Document）之间相
 在这个“检索”环节，目前有两大流派：
 
 1. **稠密检索（Dense Retrieval / 向量检索）** ：用 AI 模型把文字变成多维向量，计算语义相似度（比如知道“苹果手机”和“iPhone”是同一个东西）。
-    
+   
 2. **稀疏检索（Sparse Retrieval）** ：这就是 **BM25** 的地盘，基于字词的精确匹配。
-    
+   
 ###### 为什么 AI 时代离不开 BM25？（混合检索 Hybrid Search）
 
 纯粹的向量检索（AI Embeddings）存在致命弱点：**对专有名词、编号、特定术语的敏感度极低**。
 
 - 例子： 如果你搜索 报错代码 ERR_NETWORK_404，向量模型可能会给你返回关于 网络中断提示 ERR_SYS_502 的文档，因为它觉得这两句话“语义上很相似”。但这对于排查 Bug 是灾难性的。
-    
+  
 
 而 **BM25 是字面匹配的王者**。只要文档里有 ERR_NETWORK_404 这个精确的词，BM25 就能把它揪出来。
 
 因此，当今业界最顶级的 AI 检索方案是 **混合检索（Hybrid Search） = BM25 + 向量检索**。
 
 - 用向量检索兜底，理解用户的口语化提问和同义词（语义理解）。
-    
+  
 - 用 BM25 精确打击，确保关键的人名、地名、商品型号、代码不被遗漏（精确匹配）。
-    
+  
 - 最后使用一个重排模型（Reranker）将两者的结果融合。
 
 ##### BM25 的优缺点总结
@@ -74,21 +74,21 @@ BM25 是一种用来**计算搜索词（Query）与文档（Document）之间相
 ###### 优势 (Pros)
 
 1. **无需训练（Zero-shot）：** 向量检索需要庞大的算力去训练模型，而 BM25 是基于统计的，开箱即用，不需要任何训练数据，甚至不需要 GPU。
-    
+   
 2. **极度高效：** 基于底层的“倒排索引”技术（类似字典的目录），在亿级别的数据量下也能在几毫秒内返回结果（Elasticsearch 等搜索引擎的核心算法就是 BM25）。
-    
+   
 3. **精准打击：** 对特定的专有名词、长串数字、生僻字的匹配效果碾压现代 AI 模型。
-    
+   
 4. **可解释性强：** 如果一个文档被排在第一名，你能通过公式清晰地算出来是因为哪个词匹配上了，而神经网络/向量检索往往是个“黑盒”。
-    
+   
 ###### 劣势 (Cons)
 
 1. **没有语义理解能力：** 它是“字面派”。如果你搜“自行车”，文档里只有“单车”，BM25 就找不到它（即“词表不匹配”问题 Vocabulary Mismatch）。
-    
+   
 2. **无法理解语境：** 无法区分“苹果（水果）”和“苹果（公司）”。
-    
+   
 3. **对错别字敏感：** 搜“泰勒斯威夫特”，如果文档里写的是“泰勒斯韦夫特”，BM25 可能会错过，而 AI 向量通常能兼容这种错误。
-    
+   
 ##### 总结
 
 在 AI 时代，BM25 并没有过时。如果说现代的 AI 向量检索是一个能听懂你言外之意的**“聪明人”**，那么 BM25 就是一个过目不忘、极其严谨的**“档案管理员”**。在构建强大的 AI 应用（尤其是 RAG 系统）时，将两者结合才是当下的最佳实践。
@@ -4627,6 +4627,41 @@ claude plugin install health@waza
 ###### 资料
 
 - [Codex 配置文档](https://developers.openai.com/codex/config-reference)
+
+#### CLI 命令
+
+> [!NOTE]
+> 如下内容均是运行 `codex -h` 的输出，并截取了 Commands 一段的内容
+
+| 命令             | 描述                                                         |
+| :--------------- | :----------------------------------------------------------- |
+| `exec`           | Run Codex non-interactively [aliases: e]                     |
+| `review`         | Run a code review non-interactively                          |
+| `login`          | Manage login                                                 |
+| `logout`         | Remove stored authentication credentials                     |
+| `mcp`            | Manage external MCP servers for Codex                        |
+| `plugin`         | Manage Codex plugins                                         |
+| `mcp-server`     | Start Codex as an MCP server (stdio)                         |
+| `app-server`     | [experimental] Run the app server or related tooling         |
+| `remote-control` | [experimental] Manage the app-server daemon with remote control enabled |
+| `app`            | Launch the Codex desktop app (opens the app installer if missing) |
+| `completion`     | Generate shell completion scripts                            |
+| `update`         | Update Codex to the latest version                           |
+| `doctor`         | Diagnose local Codex installation, config, auth, and runtime health |
+| `sandbox`        | Run commands within a Codex-provided sandbox                 |
+| `debug`          | Debugging tools                                              |
+| `apply`          | Apply the latest diff produced by Codex agent as a `git apply` to your local working tree [aliases: a] |
+| `resume`         | Resume a previous interactive session (picker by default; use --last to continue the most recent) |
+| `archive`        | Archive a saved session by id or session name                |
+| `delete`         | Permanently delete a saved session by id or session name     |
+| `unarchive`      | Unarchive a saved session by id or session name              |
+| `fork`           | Fork a previous interactive session (picker by default; use --last to fork the most recent) |
+| `cloud`          | [EXPERIMENTAL] Browse tasks from Codex Cloud and apply changes locally |
+| `exec-server`    | [EXPERIMENTAL] Run the standalone exec-server service        |
+| `features`       | Inspect feature flags                                        |
+| `help`           | Print this message or the help of the given subcommand(s)    |
+
+
 
 #### 一些配置
 
