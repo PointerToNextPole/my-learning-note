@@ -4695,7 +4695,63 @@ codex features enable goals
 
 在 Codex 和 Chrome 插件连接完成后，在 Codex 输入框中输入 `@chrome`，触发插件的运行
 
+#### 使用经验
 
+##### 如何在一个 session 中引用另一个 session 中的内容
+
+> [!NOTE]
+> 这个问题，我是直接在 codex 中问的 gpt5.5xh，codex 告诉我不是叫会话 session，而是叫 thread；但是找不到要复制的 thread ID，只能找到 session ID ；但是会话的链接( deeplink ) 的格式是 `codex://threads/<thread-session-uuid>`；总感觉 codex 内部也将 session 和 thread 混淆了，所以将下面的 thread 都改成我认为更合适的 session
+
+###### 可以用自然语言来描述
+
+```md
+请找到标题/内容包含“登录重构”的那个 session，读取最近几轮，然后基于它继续分析当前问题。
+```
+
+###### 也可以通过 session ID 来描述
+
+```md
+请读取 session 0199... 的最近 20 轮，把关键结论总结成当前上下文，然后继续做 X。
+```
+
+***
+
+> [!NOTE]
+> 
+> 下面是 codex 回答中的补充
+
+找 thread 的方式：
+
+- 用 `Cmd+G` 搜索历史会话，按标题、内容片段或分支名找。
+- 打开目标会话后可用 `/status` 查看当前 thread ID。
+- 如果只是想打开另一个会话，可以用深链：`codex://threads/<thread-session-uuid>`。
+- 如果想“以另一个会话为基础开新会话”，用 fork：它会保留已完成的历史 transcript。
+- 如果想让当前会话操作另一个会话，也可以直接说“继续/发送消息到那个 thread”。
+
+##### 如何在不移动项目的情况下，让一个 workspace 读到另一个 workspace 中的内容
+
+关键是把“另一个项目目录”加入当前 thread 的可读边界。
+
+推荐做成 **项目 A 可写，项目 B 只读**。在项目 A 里放一个 `.codex/config.toml`，例如：
+
+```toml
+default_permissions = "project_a_with_b_read"
+
+[permissions.project_a_with_b_read]
+description = "Edit project A, read project B as reference."
+extends = ":workspace"
+
+[permissions.project_a_with_b_read.filesystem]
+"$HOME/path/to/project-b" = "read"
+```
+
+然后重开项目 A 的 thread，提示里直接写绝对路径或文件：
+
+```md
+请参考 `$HOME/yan/path/to/project-b/src/foo.ts` 的实现，修改当前项目里的对应逻辑。
+```
+
+如果只是偶尔看一次，也可以直接在当前 thread 里给绝对路径；Codex 可能会因为超出当前 workspace 而请求批准。长期使用就别靠一次性批准，配置 profile 更稳。
 
 ## Cursor
 
