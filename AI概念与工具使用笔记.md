@@ -4753,6 +4753,31 @@ extends = ":workspace"
 
 如果只是偶尔看一次，也可以直接在当前 thread 里给绝对路径；Codex 可能会因为超出当前 workspace 而请求批准。长期使用就别靠一次性批准，配置 profile 更稳。
 
+
+#### subagent
+
+###### Custom agents
+
+Codex ships with built-in agents:
+
+- `default`: general-purpose fallback agent.
+- `worker`: execution-focused agent for implementation and fixes.
+- `explorer`: read-heavy codebase exploration agent.
+
+To define your own custom agents, <font color=red>add standalone TOML files under `~/.codex/agents/` for personal agents</font> or <font color=red>`.codex/agents/` for project-scoped agents</font>.
+
+Each file defines one custom agent. Codex loads these files as configuration layers for spawned sessions, so custom agents can override the same settings as a normal Codex session config. That can feel heavier than a dedicated agent manifest, and the format may evolve as authoring and sharing mature.
+
+Every standalone custom agent file <font color=dodgerBlue>must define</font>:
+
+- `name`
+- `description`
+- `developer_instructions`
+
+Optional fields such as `nickname_candidates`, `model`, `model_reasoning_effort`, `sandbox_mode`, `mcp_servers`, and `skills.config` inherit from the parent session when you omit them.
+
+摘自：[OpenAI Developers - Subagents # Custom agents](https://developers.openai.com/codex/subagents#custom-agents)
+
 ## Cursor
 
 #### Debug Mode
