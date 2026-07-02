@@ -4748,7 +4748,7 @@ extends = ":workspace"
 然后重开项目 A 的 thread，提示里直接写绝对路径或文件：
 
 ```md
-请参考 `$HOME/yan/path/to/project-b/src/foo.ts` 的实现，修改当前项目里的对应逻辑。
+请参考 `$HOME/path/to/project-b/src/foo.ts` 的实现，修改当前项目里的对应逻辑。
 ```
 
 如果只是偶尔看一次，也可以直接在当前 thread 里给绝对路径；Codex 可能会因为超出当前 workspace 而请求批准。长期使用就别靠一次性批准，配置 profile 更稳。
