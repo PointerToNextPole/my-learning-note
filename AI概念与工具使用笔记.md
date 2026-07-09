@@ -5890,6 +5890,10 @@ while (true) {
 
 ### 三元 《吃透 AI Agent 开发》笔记
 
+> [!NOTE]
+> 
+> 🔗 https://sitor.ai/
+
 #### 搞定 Agent 六大支柱：今天出个 Manus 明天出个 OpenClaw，你到底应该学什么？
 
 ##### 一次 Agent 调用背后发生了什么

@@ -1196,6 +1196,85 @@ A nonce is an arbitrary **number used only once** in a cryptographic communicati
 
 ##### 概念
 
+###### 贫血模型与充血模型
+
+在 DDD 中，**贫血模型**（Anemic Domain Model）和 **充血模型**（Rich Domain Model）主要区别在于：<font color=red>业务逻辑到底放在哪里</font>。
+
+**贫血模型** 是指领域对象中基本只有属性和 getter / setter，业务逻辑主要放在 Service 中。也就是说，领域对象更像一个数据容器。
+
+```java
+public class Order {
+    private List<OrderItem> items;
+    private BigDecimal totalAmount;
+    private OrderStatus status;
+
+    // getter / setter
+}
+```
+
+业务逻辑一般写在 Service 中：
+
+```java
+public class OrderService {
+    public void cancel(Order order) {
+        if (order.getStatus() == OrderStatus.PAID) {
+            throw new BusinessException("已支付订单不能直接取消");
+        }
+        order.setStatus(OrderStatus.CANCELED);
+    }
+
+    public BigDecimal calculateTotal(Order order) {
+        return order.getItems().stream()
+            .map(OrderItem::subtotal)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+}
+```
+
+这种写法的特点是：<font color=lightSeaGreen>结构简单、容易上手，也很符合常见的 CRUD 分层习惯</font>；但是缺点也明显：<font color=red>业务规则容易散落在各个 Service 中，领域对象本身无法表达业务含义</font>。<font color=lightSeaGreen>**久而久之，Service 会越来越厚，领域对象会越来越像数据库表结构的映射**</font>。
+
+**充血模型** 是指领域对象不只是保存数据，还包含和自身状态强相关的业务行为。比如订单自己知道能不能取消、如何计算总价。
+
+```java
+public class Order {
+    private List<OrderItem> items;
+    private OrderStatus status;
+
+    public void cancel() {
+        if (status == OrderStatus.PAID) {
+            throw new BusinessException("已支付订单不能直接取消");
+        }
+        this.status = OrderStatus.CANCELED;
+    }
+
+    public BigDecimal calculateTotal() {
+        return items.stream()
+            .map(OrderItem::subtotal)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+}
+```
+
+这种写法的核心是：<font color=red>把业务规则尽量放回领域对象内部</font>。`Order` 不只是“订单数据”，而是一个能维护自身业务一致性的对象。
+
+简单来说：
+
+| 模型 | 数据 | 业务逻辑 | 常见表现 |
+| :-- | :-- | :-- | :-- |
+| 贫血模型 | 放在领域对象中 | 主要放在 Service 中 | Entity / DTO 像表结构，Service 很厚 |
+| 充血模型 | 放在领域对象中 | 尽量放在实体、值对象、聚合根、领域服务中 | 领域对象有行为，能表达业务规则 |
+
+DDD 更推崇充血模型，因为 DDD 的重点不是简单地把数据从数据库取出来再保存回去，而是<font color=lightSeaGreen>用模型表达业务概念、业务规则和业务不变量</font>。
+
+不过，充血模型并不代表 Service 没有价值。一般可以这样区分：
+
+- **应用服务**：负责流程编排，比如查数据库、开启事务、调用领域对象、保存结果、调用外部系统等。
+- **领域对象 / 聚合根**：负责自身相关的核心业务规则，比如订单取消、库存扣减、金额计算、状态流转等。
+- **领域服务**：负责那些不自然属于某个单一实体或值对象的领域逻辑。
+
+> [!note]
+> 可以粗略理解为：贫血模型更像“数据 + 过程”，充血模型更像“对象 + 行为”。DDD 不是为了让类里面多写几个方法，而是为了让代码结构更贴近业务语言和业务规则。
+
 ###### 领域&领域服务
 
 一个实体对象的完整的管理能力集合叫做一个领域；领域服务就是一个领域对外暴露的服务方法，领域服务和领域对象是一个系统核心要沉淀的可复用资产。
