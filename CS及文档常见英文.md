@@ -1539,11 +1539,14 @@
   
 - **ordinal** ：序数
 
-- **Human in the Loop (HiTL)** ：人机协同
+- **Human in the Loop (HITL)** ：人机协同
 
   > Gemini Code Assist pairs developers with AI agents capable of performing a wide range of actions across the software development life cycle, with support for multiple file edits, full project context, built-in tools and integration with ecosystem tools following Model Context Protocol (MCP), all while incorporating **Human in the Loop (HiTL)** for needed oversight.
   >
   > 摘自：[Gemini Code Assist: AI-first coding in your natural language](https://codeassist.google/)
+  
+  > [!NOTE]
+  > 除了 HITL 之外，还有 Away From Keyboard ( AFK )
   
 - **dongle** ：（电子）适配器
 

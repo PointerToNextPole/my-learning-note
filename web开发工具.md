@@ -10,6 +10,10 @@
 
 <font color=FF0000> Axios 是一个 <font size=4>**基于 promise**</font> 网络请求库，作用于node.js 和浏览器中</font>。 它是 isomorphic 的（即同一套代码可以运行在浏览器和node.js中）。<font color=FF0000> **在服务端它使用原生 node.js http 模块, 而在客户端 (浏览端) 则使用 XMLHttpRequests**</font>。
 
+> [!NOTE]
+> 
+> Axios 1.7 支持 fetch adapter 了
+
 ###### 特性
 
 - 从浏览器创建 XMLHttpRequests
