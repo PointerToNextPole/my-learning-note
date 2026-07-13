@@ -161,6 +161,176 @@ with 语句实现原理建立在上下文管理器之上。
 
 
 
+## Pandas
+
+#### 选列语法
+
+假设 `df` 是一个 `pandas.DataFrame`。可以把 `DataFrame` 理解为一张二维表，使用 `df[...]` 可以按列名选择其中的列。
+
+| 写法 | 作用 | 返回类型 |
+| --- | --- | --- |
+| `df["node_code"]` | 选择一列 | `pandas.Series` |
+| `df[["node_code"]]` | 选择一列，并保持二维表结构 | `pandas.DataFrame` |
+| `df[["node_code", "simulate_node_type"]]` | 选择多列 | `pandas.DataFrame` |
+
+看起来像“双层方括号”的写法，其实是两种语法嵌套在一起：
+
+- 内层 `[...]` 是普通的 Python 列表，用来保存列名。
+- 外层 `df[...]` 是 Pandas 的取列操作，把列名列表交给 `DataFrame`。
+
+因此，多列选择可以拆开写：
+
+```python
+columns = [
+    "area_divide_define_code",
+    "node_code",
+    "simulate_node_type",
+]
+
+selected = df[columns]
+```
+
+它等价于：
+
+```python
+selected = df[[
+    "area_divide_define_code",
+    "node_code",
+    "simulate_node_type",
+]]
+```
+
+选择单列时，两种写法最重要的区别是返回值的维度：
+
+```python
+series = df["node_code"]       # pandas.Series，一维
+table = df[["node_code"]]     # pandas.DataFrame，二维
+```
+
+用 SQL 类比：
+
+```python
+df[["node_code", "simulate_node_type"]]
+```
+
+大致相当于：
+
+```sql
+SELECT node_code, simulate_node_type
+FROM df;
+```
+
+#### 布尔索引筛选行
+
+布尔索引（Boolean Indexing）是指：先为每一行生成一个布尔值，再用这些布尔值筛选 `DataFrame`。
+
+假设 `area` 中的数据是：
+
+| 索引 | node_key | 区域 |
+| ---: | --- | --- |
+| 0 | C001 | 1 |
+| 1 |  | 2 |
+| 2 | C003 |  |
+| 3 | C004 | 3 |
+
+先判断 `node_key` 是否不为空字符串：
+
+```python
+mask = area["node_key"] != ""
+```
+
+Pandas 会对整列逐行比较，生成一个布尔 `Series`：
+
+```text
+0     True
+1    False
+2     True
+3     True
+```
+
+再把这个布尔 `Series` 传给 `DataFrame`：
+
+```python
+filtered = area[mask]
+```
+
+Pandas 会保留 `True` 对应的行，过滤 `False` 对应的行：
+
+| 索引 | node_key | 区域 |
+| ---: | --- | --- |
+| 0 | C001 | 1 |
+| 2 | C003 |  |
+| 3 | C004 | 3 |
+
+多个条件可以逐行组合：
+
+```python
+has_node = area["node_key"] != ""
+has_area = area["区域"] != ""
+valid_rows = has_node & has_area
+
+area = area.loc[valid_rows]
+```
+
+这表示只保留“节点编号不为空，并且区域不为空”的行。它等价于原来的紧凑写法：
+
+```python
+area = area[
+    (area["node_key"] != "")
+    & (area["区域"] != "")
+]
+```
+
+筛选会返回一个新的 `DataFrame`；重新赋值给 `area`，不等于在原对象上逐行删除。
+
+##### 布尔索引规则
+
+1. `True` 保留对应行，`False` 过滤对应行。
+2. `df[mask]` 可以筛选行，但 `df.loc[mask]` 的语义更明确，初学时更推荐。
+3. `df.loc[mask, :]` 中的 `:` 表示保留所有列。
+4. 布尔 `Series` 会按行索引标签与 `DataFrame` 对齐；最稳妥的做法是从同一个 `DataFrame` 派生掩码。
+
+组合多个条件时，使用 Pandas 的逐元素布尔运算符：
+
+| 运算符 | 含义 | 示例 |
+| --- | --- | --- |
+| `&` | 并且 | `(df["a"] > 0) & (df["b"] < 10)` |
+| `\|` | 或者 | `(df["a"] > 0) \| (df["b"] < 10)` |
+| `~` | 取反 | `~(df["a"] > 0)` |
+
+每个比较条件都要用括号包住，以避免运算符优先级造成错误。不能使用 Python 的 `and`、`or`、`not`，因为这里处理的是一整列布尔值，而不是单个布尔值。
+
+布尔掩码不是 Pandas 独有的概念，但不同数据结构的支持方式不同：
+
+| 数据结构 | 是否支持布尔掩码 | 规则 |
+| --- | --- | --- |
+| Python 原生 `list` | 不支持 | 不能直接用布尔列表作为索引 |
+| NumPy `ndarray` | 支持 | 主要按位置筛选 |
+| Pandas `Series` / `DataFrame` | 支持 | 支持布尔掩码，并结合索引标签对齐 |
+
+例如，Python 原生列表不能这样筛选：
+
+```python
+values = [10, 20, 30]
+mask = [True, False, True]
+
+values[mask]  # TypeError
+```
+
+NumPy 数组则支持布尔掩码：
+
+```python
+import numpy as np
+
+values = np.array([10, 20, 30])
+mask = np.array([True, False, True])
+
+values[mask]
+# array([10, 30])
+```
+
+
+
 ## 工程化相关
 
 #### venv

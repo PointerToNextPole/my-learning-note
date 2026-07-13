@@ -1,5 +1,24 @@
 # Nuxt 备忘录
 
+##### 介绍
+
+> [!abstract]
+> **Nuxt 是建立在 Vue 3 之上的应用级框架（meta-framework）**：Vue 主要解决组件与界面开发，Nuxt 则进一步提供路由、渲染、数据获取、服务端能力和部署约定，用一套“约定优于配置”的结构组织完整 Web 应用。
+
+- **约定式开发：** `pages/` 自动生成路由，`layouts/`、`middleware/`、`components/`、`composables/` 等目录各有明确职责；组件和 composable 通常可以自动导入。
+- **多种渲染策略：** 默认支持 SSR，也可以通过静态生成得到 SSG 站点、关闭 SSR 构建 CSR 单页应用，或用 `routeRules` 为不同路由设置混合渲染策略。
+- **服务端感知的数据与后端能力：** `useFetch`、`useAsyncData` 能配合 SSR 避免重复请求；`server/api/` 可直接定义接口，并由 Nitro 构建为可部署到 Node.js、Serverless、Edge 或静态托管环境的产物。
+- **收益与成本：** SSR 通常有利于首屏展示和 SEO，但需要理解 hydration、服务端与客户端运行环境差异，以及避免直接在服务端使用 `window`、`document`。
+
+| 维度 | Nuxt | `create-vue` 项目 |
+| --- | --- | --- |
+| 定位 | Vue 应用级框架 | 基于 Vite 的 Vue 项目脚手架 |
+| 渲染 | SSR、SSG、CSR 与混合渲染 | 默认是 CSR 单页应用 |
+| 路由 | 基于 `pages/` 自动生成 | 通常手动配置 Vue Router |
+| 后端 | 内置 Nitro，可编写 `server/api/` | 通常连接独立后端 |
+
+因此，公开网站、内容站、电商或其他重视 SEO、首屏和全栈一体化的项目更适合 Nuxt；后台管理系统、内部工具、已有独立后端的纯 SPA，或希望完全自行组织架构时，`create-vue` 往往更直接。二者并非替代关系：**Nuxt 内部仍然使用 Vue，只是提供了更多应用层约定与能力。**
+
 
 
 ## 文档笔记
@@ -18,7 +37,9 @@
 
 - <font color=fuchsia>**File-based routing:**</font> <font color=red>define routes based on the structure of your [**`pages/`** directory](https://nuxt.com/docs/guide/directory-structure/pages)</font>. This can make it easier to organize your application and avoid the need for manual route configuration.
 
-  > 💡 参照 UmiJS 的说法：这种路由也可以被理解为“约定式路由”
+  > [!NOTE]
+  > 
+  > 参照 UmiJS 的说法：这种路由也可以被理解为“约定式路由”
   >
   > > 除配置式路由外，Umi 也支持约定式路由。约定式路由也叫文件路由，就是不需要手写配置，文件系统即路由，通过目录和文件及其命名分析出路由配置。
   > >
