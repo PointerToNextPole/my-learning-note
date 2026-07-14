@@ -7301,7 +7301,7 @@ https://github.com/jantimon/html-webpack-plugin
 
 sourceMap 是一个<font color=FF0000>映射关系</font>。它知道 <font color=FF0000> 打包输出的文件的代码行</font> 与对应的 <font color=FF0000> 被打包的源代码中代码行</font> 的映射关系；**便于在打包代码出现错误时候，可以指向源代码的<font color=FF0000>某一行某一列（即精确到字符）</font>出现的问题**。<font color=FF0000>使用sourceMap 打包速度会变慢（尤其是大型项目）</font>。
 
-如何启用 `sourceMap` ？只需要使用 **`devtool: source-map`** 即可。同时，启用 sourceMap 后，在dist文件夹下会出现一个 `main.js.map` 的映射对应关系文件，这个文件实际上是一个<font color=lightSeaGreen>VLQ的编码集合</font>
+如何启用 `sourceMap` ？只需要使用 **`devtool: source-map`** 即可。同时，启用 sourceMap 后，在dist文件夹下会出现一个 `main.js.map` 的映射对应关系文件，这个文件实际上是一个<font color=lightSeaGreen>VLQ的编码集合</font>（Base64 VLQ (Variable-Length Quantity) 编码）
 
 **devtool的选项中包含各种修饰符，比如 `inline`、`cheap`、`module`**，说明如下：
 
