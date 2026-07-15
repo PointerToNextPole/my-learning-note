@@ -1637,6 +1637,10 @@
 
 - **workaround** ：变通方法
 - **telemetry** ：遥测
+  > [!NBOTE]
+  > 
+  > 可观测性的工具库 opentelemetry
+
 ***
 
 
