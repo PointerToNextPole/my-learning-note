@@ -52,6 +52,113 @@ public <T> T methodName(T paramName){
 }
 ```
 
+#### Java record
+
+Java `record` 是一种简化的数据类声明方式，于 Java 16 正式发布：
+
+```java
+public record User(String name, int age) {}
+```
+
+编译器会自动生成：
+
+- `private final` <font color=red>**字段**</font>
+- 构造方法
+- 访问方法 `name()`、`age()`
+- `equals()`
+- `hashCode()`
+- `toString()`
+
+##### `public` 与 `private final` 的作用对象
+
+下面定义中的 `public` 修饰的是 `User` 类型，表示这个类型可以被其他包访问：
+
+```java
+public record User(String name, int age) {}
+// ↑ public 修饰 User 类型
+```
+
+括号中的 `name` 和 `age` 称为 **record components（记录组件）**，它们不是 `public` 字段。编译器会根据记录组件生成 `private final` 字段，以及对应的 `public` 访问方法。上面的 record 在成员结构上大致等价于下面的概念代码（普通类不能在源码中直接继承 `java.lang.Record`）：
+
+```java
+public final class User extends Record {
+    private final String name;
+    private final int age;
+
+    public User(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public int age() {
+        return age;
+    }
+
+    // 还有自动生成的 equals()、hashCode() 和 toString()
+}
+```
+
+因此，外部可以通过访问方法读取记录组件，但不能直接访问或重新赋值内部字段：
+
+```java
+User user = new User("Alice", 20);
+
+user.name();   // 可以，通过 public 访问方法读取
+user.age();    // 可以
+user.name;     // 编译错误：字段是 private
+user.age = 21; // 编译错误：字段是 private final
+```
+
+如果去掉 record 声明开头的 `public`：
+
+```java
+record User(String name, int age) {}
+```
+
+变化的是 `User` 类型成为包级可见，内部字段仍然是 `private final`。
+
+使用方式：
+
+```java
+User user = new User("Alice", 20);
+
+System.out.println(user.name());
+System.out.println(user.age());
+System.out.println(user);
+// User[name=Alice, age=20]
+```
+
+它适合 DTO、接口返回值、值对象等以“承载数据”为主的类型。
+
+需要注意，record 只是**浅层不可变**：
+
+```java
+public record User(String name, List<String> roles) {}
+```
+
+`roles` 引用不能重新赋值，但其中的内容仍可能被修改。需要真正不可变时，可以进行防御性复制：
+
+```java
+public record User(String name, List<String> roles) {
+    public User {
+        roles = List.copyOf(roles);
+    }
+}
+```
+
+Java record 本质上仍是一个真正的类：
+
+- 运行时存在
+- 可以实现接口
+- 可以添加方法和校验逻辑
+- 不能继承其他类
+- record 类本身隐式为 `final`
+- 隐式继承 `java.lang.Record`
+
 
 
 #### Java iterator
