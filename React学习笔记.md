@@ -2049,6 +2049,14 @@ Then React stores `42` as the final result and returns it from `useState`.
 - <font color=red>**An updater function**</font> ( e.g. `n => n + 1` ) gets added to the queue.
 - <font color=red>**Any other value**</font> ( e.g. number `5` ) adds “replace with `5`” to the queue, ignoring what’s already queued.
 
+> [!TIP] 
+>
+> **`setCount` 的两种更新方式**
+>
+> - `setCount(value)` → 用这个值替换队列中的当前结果
+>
+> - `setCount(fn)` → 调用 `fn(队列中的当前结果)`，再保存返回值
+
 After the event handler completes, React will trigger a re-render. During the re-render, React will process the queue. Updater functions run during rendering, so **updater functions must be [pure](https://react.dev/learn/keeping-components-pure)** and only *return* the result. Don’t try to set state from inside of them or run other side effects. In Strict Mode, React will run each updater function twice (but discard the second result) to help you find mistakes.
 
 ##### Recap
