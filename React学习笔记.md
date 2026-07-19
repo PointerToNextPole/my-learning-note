@@ -5305,8 +5305,26 @@ useEffect(() => {
 }, [userId]);
 ```
 
-> 💡关于上面的示例，没有使用 `useEffect(async () => { await fn() })` 的写法，有点好奇，为什么不能这样写？问了下 Copilot Chat 得到如下回复：
->
+###### `ignore` 与闭包：每次 Effect 都有自己的变量
+
+这里的 `ignore` 不是多个 Effect 共享的“锁”。`useEffect` 的回调函数会在某次 render 中被创建；回调里的局部变量，以及它返回的 cleanup 函数，会通过 **闭包** 保留这一次 Effect 执行所对应的变量。
+
+可以把依赖 `userId` 的两次执行想象成两个完全独立的 Effect：
+
+| 时序 | 发生的事情 | 各自闭包中的变量 |
+| --- | --- | --- |
+| `userId = 'Alice'` | Effect A 创建并发起请求 A | `ignoreA = false` |
+| `userId` 变为 `'Bob'` | React 先执行 A 的 cleanup，再运行 Effect B | `ignoreA = true`；`ignoreB = false` |
+| 请求 A 返回 | A 的 `.then` 读取的是 `ignoreA` | 结果被忽略 |
+| 请求 B 返回 | B 的 `.then` 读取的是 `ignoreB` | 更新为 Bob 的数据 |
+
+因此，cleanup 中的 `ignore = true` 并不是“把同一个变量恢复”或“给请求加锁”，而是只修改旧 Effect 自己闭包里的变量。旧请求的回调也引用着同一个旧闭包，所以它之后执行 `if (!ignore)` 时会读到 `true`；新 Effect 则拥有全新的 `ignore`，初始值仍是 `false`。
+
+这段保护代码解决的是异步请求的**竞态问题**：如果请求 Alice 比较慢，请求 Bob 先返回，页面先显示 Bob；随后 Alice 返回时，不能让旧数据再次覆盖新数据。`ignore` 只会忽略过期结果，并不会真的停止已经发出的网络请求。若还需要尽早停止请求，可以额外使用 `AbortController`；但即使请求支持取消，保留结果检查也能让状态更新更稳妥。
+
+> [!TIP]
+> 
+> 关于上面的示例，没有使用 `useEffect(async () => { await fn() })` 的写法，有点好奇，为什么不能这样写？问了下 Copilot Chat 得到如下回复：
 > <img src="https://s2.loli.net/2024/02/23/zKHFg72f58vtQBb.png" alt="Snipaste_2024-01-30_01-07-47" style="zoom:50%;" />
 >
 > 回复中说的很清楚：`useEffect` 期待返回一个 cleanup fn 或者 null，而不是 async 的 Promise 。返回一个 Promise，显然不符合 `useEffect` 的预期，感觉也会使其功能错乱。
@@ -7619,6 +7637,65 @@ const Home = forwardRef(function(prop, ref) {
 
 而在 React 中，可变状态 ( mutable state ) 通常保存在组件的 state 属性中，并且只能通过使用 `setState()` 来更新。将两者结合起来，使 React 的 state 成为“唯一数据源”；渲染表单的 React 组件还控制着用户输入过程中表单发生的操作；被 React 以这种方式控制取值的表单输入元素就叫做“受控组件”。
 
+###### 受控组件的数据流
+
+受控组件的核心是 React state 与表单元素之间形成了一个闭环：
+
+```text
+用户输入
+→ onChange 读取 event.target.value
+→ setForm(...) 更新 React state
+→ React 重新 render
+→ value 将最新 state 写回 input
+```
+
+也就是说，`value` 是输入框当前显示值的唯一依据。若绑定了 `value` 却没有绑定 `onChange`，输入框会变成只读，并产生 React 警告。
+
+```jsx
+function ProfileForm() {
+  const [form, setForm] = useState({ name: '', email: '' })
+
+  const onNameChange = (name) => {
+    setForm(form => ({
+      ...form,
+      name
+    }))
+  }
+
+  const onMailChange = (email) => {
+    setForm(form => ({
+      ...form,
+      email
+    }))
+  }
+
+  return <>
+    <input
+      type="text"
+      value={form.name}
+      onChange={event => onNameChange(event.target.value)}
+    />
+    <input
+      type="email"
+      value={form.email}
+      onChange={event => onMailChange(event.target.value)}
+    />
+  </>
+}
+```
+
+这里 `setForm(form => ...)` 使用了函数式 updater，参数 `form` 是 React 处理该更新时队列中的最新 state。由于 state setter 会替换整个对象，更新单个字段时必须保留其他字段：
+
+```jsx
+setForm({
+  name: event.target.value,
+})
+```
+
+上面的写法会用一个只有 `name` 的新对象替换整个 `form`，因此原来的 `email` 会丢失。使用 `{ ...form, name }` 才能在更新 `name` 的同时保留其他字段。
+
+对于不同的表单元素，受控属性也有所不同：文本框、`textarea` 和 `select` 通常使用 `value`，复选框和单选框通常使用 `checked`；它们都需要配合 `onChange` 更新 state。
+
 ##### 非受控组件定义
 
 <font color=red>React **推荐大多数情况下使用受控组件**来处理表单数据</font>： 一个受控组件中，表单数据是由 React 组件来管理的。
@@ -7626,6 +7703,14 @@ const Home = forwardRef(function(prop, ref) {
 <font color=red>另一种替代方案是使用非受控组件</font>，这时表单数据将交由 DOM 节点来处理（相当于直接操控 DOM ）
 
 <font color=dodgerBlue>如果要使用非受控组件中的数据</font>，那么<font color=fuchsia>**需要使用 ref 来从 DOM 节点中获取表单数据**</font>。在非受控组件中通常使用`defaultValue` / `defaultChecked` 来设置默认值
+
+例如：
+
+```jsx
+<input defaultValue="Ada" />
+```
+
+`defaultValue` 只负责设置元素**初次挂载时**的值。挂载之后，输入框的值由 DOM 自己维护；即使 React 中的 `name` 后续变成了 `"Grace"`，也不会自动覆盖用户当前输入。与之相对，`value={name}` 会在每次 render 时由 React 决定输入框显示什么。
 
 
 
