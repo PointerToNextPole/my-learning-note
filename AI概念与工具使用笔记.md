@@ -4764,7 +4764,7 @@ codex features enable goals
 ##### 如何在一个 session 中引用另一个 session 中的内容
 
 > [!NOTE]
-> 这个问题，我是直接在 codex 中问的 gpt5.5xh，codex 告诉我不是叫会话 session，而是叫 thread；但是找不到要复制的 thread ID，只能找到 session ID ；但是会话的链接( deeplink ) 的格式是 `codex://threads/<thread-session-uuid>`；总感觉 codex 内部也将 session 和 thread 混淆了，所以将下面的 thread 都改成我认为更合适的 session
+> 这个问题，我是直接在 codex 中问的 gpt5.5xh，codex 告诉我不是叫会话 session，而是叫 thread；但是找不到要复制的 thread ID，只能找到 session ID ；但是会话的链接( deeplink ) 的格式是 `codex://threads/<thread-session-uuid>`；总感觉 codex 内部也将 session 和 thread 混淆了。不过，和 codex 沟通时，还是需要将其称为 thread ID 而非 session ID
 
 ###### 可以用自然语言来描述
 
