@@ -1823,7 +1823,7 @@ Git 丢弃了 9e78i 和 035cc 引入的修改，并将状态重置到了 ec5be �
 
 - **`git restore <file>...`** ：对于工作区中被修改的特定文件，<font color=red>**进行还原**</font>
 
-- **`git restore --staged <file>...`** ：将从工作区被添加到 暂存区中的文件，回滚到工作区中；但是<font color=fuchsia>修改的内容不变（不还原）</font>。即：`git add <file>...` 的逆操作。
+- **`git restore --staged <file>...`** ：将从工作区被添加到 暂存区中的文件，回滚到工作区中；但是<font color=fuchsia>修改的内容不变（不还原）</font>。即：**`git add <file>...` 的逆操作**。
 
 ###### 自己试验的示例如下
 

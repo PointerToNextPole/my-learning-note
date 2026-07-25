@@ -150,11 +150,14 @@ $ docker image ls
 $ docker container run hello-world
 ```
 
-> 👀 这里的 container 可以省略，即：`docker run hello-world` 。类似的也有：`docker kill` 、`docker stop` 、`docker start` 、`docker exec` 、`docker logs` 、`docker cp` 、`docker rm` 等，这种写法也更常见的。
+> [!NOTE]
+> 这里的 container 可以省略，即：`docker run hello-world` 。类似的也有：`docker kill` 、`docker stop` 、`docker start` 、`docker exec` 、`docker logs` 、`docker cp` 、`docker rm` 等，这种写法也更常见的。
 
 `docker container run` 命令会从 image 文件，生成一个正在运行的容器实例。
 
-> 💡 补充：`docker run` 如果没有制定名称，则 docker 会给他一个名字；另外，可以通过 `--name` 选项给 当前 container 自定义一个名字：`--name targetName`
+> [!NOTE]
+> 
+> `docker run` 如果没有制定名称，则 docker 会给他一个名字；另外，可以通过 `--name` 选项给 当前 container 自定义一个名字：`--name targetName`
 
 注意：<font color=red>`docker container run` 命令具有自动抓取 image 文件的功能</font>。<font color=LightSeaGreen>如果发现本地没有指定的 image 文件，就会从仓库自动抓取</font>。因此，前面的 `docker image pull`命令并不是必需的步骤。
 
@@ -188,7 +191,9 @@ $ docker container ls
 $ docker container ls --all
 ```
 
-> 👀 补充：`docker ps` 和 `docker container ls`  功能相同，但是语义更明确，简化了用法，更推荐使用 `docekr ps`
+> [!NOTE]
+> 
+> `docker ps` 和 `docker container ls`  功能相同，但是语义更明确，简化了用法，更推荐使用 `docekr ps`
 
 上面命令的输出结果之中，包括容器的 ID。很多地方都需要提供这个 ID，比如上面终止容器运行的 `docker container kill` 命令。
 
@@ -336,7 +341,9 @@ $ docker container rm [containerID]
 $ docker container run --rm -p 8000:3000 -it koa-demo /bin/bash
 ```
 
-> 👀 补充：可以使用 `Ctrl + P` + `Ctrl + Q` 返回本机命令行，而不退出当前 container 的运行。
+> [!NOTE]
+> 
+> 可以使用 `Ctrl + P` + `Ctrl + Q` 返回本机命令行，而不退出当前 container 的运行。
 >
 > 如果之后还想运行上一次的 container（而不是再新建一个），可以使用
 >
