@@ -1014,6 +1014,7 @@
   > 摘自：[Practical Guide To Not Blocking The Event Loop](https://www.bbss.dev/posts/eventloop/)
 
 - **monolithic** ：庞大而单一的，单体化的。monorepo 即 Monolithic Repository
+  另外，monolith 本身就有巨石应用，单体应用的含义
 
 - **geometry** ：几何学
 

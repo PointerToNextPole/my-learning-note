@@ -193,7 +193,7 @@ $ docker container ls --all
 
 > [!NOTE]
 > 
-> `docker ps` 和 `docker container ls`  功能相同，但是语义更明确，简化了用法，更推荐使用 `docekr ps`
+> **`docker ps` 和 `docker container ls`  功能相同**，但是语义更明确，简化了用法，更推荐使用 `docekr ps`
 
 上面命令的输出结果之中，包括容器的 ID。很多地方都需要提供这个 ID，比如上面终止容器运行的 `docker container kill` 命令。
 
@@ -223,7 +223,7 @@ $ docker container rm [containerID]
 
 <font color=dodgerBlue>在项目的根目录下，新建文本文件 `.dockerignore`</font> （和 `.gitignore` 类似），标识 文件/路径 “不要打包进入 image 文件”：
 
-```.gitnode_modulesnpm-debug.log
+```
 .git
 node_modules
 npm-debug.log
@@ -260,6 +260,9 @@ $ docker image build -t koa-demo:0.0.1 .
 ```
 
 上面代码中，<font color=red>**`-t` 参数用来指定 image 文件的名字**</font>，<font color=LightSeaGreen>后面还可以用冒号指定标签</font>。**如果不指定，默认的标签就是`latest` **。<font color=fuchsia>最后的 `.` 表示 Dockerfile 文件所在的路径</font>（ 👀 路径是必填的（没有默认值），注意下，不要漏掉），上例是当前路径，所以是一个点。
+
+> [!NOTE]
+> 虽然上面说 `docker build` 中 `-t` 用来指定 image 的名字，但是 `-t` 的全称是 `--tag`
 
 <font color=red>**如果运行成功，运行 `docker ps` 就可以看到新生成的 image 文件 `koa-demo` 了**</font>。
 
