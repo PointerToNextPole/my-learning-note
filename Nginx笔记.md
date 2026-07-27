@@ -105,6 +105,22 @@ Options:
 
 #### nginx 配置文件
 
+> [!NOTE]
+> 
+> 典型配置树：
+>
+> ```nginx
+> main（配置文件顶层，没有 main {}）
+> ├── events {}
+> └── http {}
+>     └── server {}
+>         ├── listen ...;
+>         ├── server_name ...;
+>         └── location ... {}
+>             ├── try_files ...;
+>             └── proxy_pass ...;
+> ```
+
 nginx 配置文件( `/usr/local/etc/nginx/nginx.conf` ) 由三部分组成：
 
 ##### 全局块
