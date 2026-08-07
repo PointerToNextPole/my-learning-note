@@ -1642,6 +1642,10 @@
   > 
   > 可观测性的工具库 opentelemetry
 
+- **reconciliation** ：和解
+  > [!NOTE] 
+  > 在 React 中， reconciliation 也对应着 diff
+
 ***
 
 
