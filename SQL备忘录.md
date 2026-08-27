@@ -530,7 +530,7 @@ create table tbl_name(
 
 
 
-#### distinct 关键字
+#### DISTINCT 关键字
 
 在表中，一个列可能会包含多个重复值，有时您也许希望仅仅列出不同（distinct）的值。
 
@@ -539,13 +539,69 @@ DISTINCT 关键词用于返回唯一不同的值。
 ##### SQL SELECT DISTINCT 语法
 
 ```sql
-SELECT DISTINCT column_name,column_name
+SELECT DISTINCT column1, column2, ...
 FROM table_name;
 ```
 
 摘自：[RUNOOB - SQL SELECT DISTINCT 语句](https://www.runoob.com/sql/sql-distinct.html)
 
+###### 多列去重
 
+```sql
+SELECT DISTINCT city, gender
+FROM users;
+```
+
+这里去除的是 `(city, gender)` 组合重复的行，而不是分别对两列去重。
+
+###### 统计不重复数量
+
+```sql
+SELECT COUNT(DISTINCT city)
+FROM users;
+```
+
+表示统计有多少个不同的城市。
+
+通常情况下，`COUNT(DISTINCT column)` 不会统计 `NULL`。
+
+###### `DISTINCT` 和 `GROUP BY` 的区别
+
+只去重时，用 `DISTINCT`：
+
+```sql
+SELECT DISTINCT city
+FROM users;
+```
+
+需要分组统计时，用 `GROUP BY`：
+
+```sql
+SELECT city, COUNT(*) AS user_count
+FROM users
+GROUP BY city;
+```
+
+`GROUP BY` 可以配合 `COUNT`、`SUM`、`AVG` 等聚合函数使用。
+
+###### `NULL` 的处理
+
+如果有多个 `NULL`，结果中通常只保留一个 `NULL`，因为它们在去重结果中被视为同一类空值。
+
+###### 注意性能
+
+`DISTINCT` 可能需要数据库进行排序或哈希计算。数据量较大时可能有性能开销。
+
+如果经常按某个字段去重或查询，可以考虑建立索引：
+
+```sql
+CREATE INDEX idx_users_city
+ON users(city);
+```
+
+但是否真的能提升性能，要结合具体数据库和执行计划判断。
+
+学习自：codex://threads/01a037a5-f74f-7ef0-b445-3e931ec20d14 
 
 #### having 关键字
 
