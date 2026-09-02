@@ -4735,6 +4735,38 @@ codex features enable goals
 
 可以使用 `/vim` 切换 vim 模式开启状态
 
+###### 让 Codex 在 Default 模式先问再做
+
+让 Codex 能在 Default 模式下也可以用选择题等“结构化提问”方式（即：`request_user_input`）确认需求，减少因关键假设不一致造成的返工。
+
+```toml
+# ~/.codex/config.toml
+[features]
+default_mode_request_user_input = true
+```
+
+|场景|普通文本提问|`request_user_input`<br><br>结构化提问|
+|---|---|---|
+|需求有多个合理方案|Codex 用一段文字说明，再等你自由回复|可给出互斥选项、推荐项和每个选项的影响|
+|需要确认范围|容易出现“先按默认做”的隐含假设|可把范围、优先级、存储方式等关键选择显式化|
+|你要快速决策|需要自己从段落里抽取选项|直接点选，再继续执行|
+|需求本身已很明确|通常足够|不应为了弹窗而弹窗|
+
+学习自：[Codex 终于会“先问再做”了：一行配置，少走很多返工弯路](https://mp.weixin.qq.com/s/2B3_vxmVmKn1PVBpJhUqVQ)
+
+###### 开启 1M 上下文
+
+```toml
+model = “gpt-5.6-sol”
+model_context_window = 1000000
+model_auto_compact_token_limit = 900000
+```
+
+另外，开启 1M 上下文的功能，在 cc-switch 3.20.0 中已经支持了
+
+学习自：[codex有哪些奇技淫巧？ - ReiiNoki的回答 - 知乎](
+https://www.zhihu.com/question/2063557784394785882/answer/2063638246312122365)
+
 #### Plugins
 
 ##### Chrome 插件
