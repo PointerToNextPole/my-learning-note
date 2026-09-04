@@ -560,6 +560,10 @@ Python 的类型提示（Type Hints）在运行时是保留在类属性里的（
 
 ### uv 
 
+###### CheatSheet
+
+<img src="https://files.seeusercontent.com/2026/09/03/pY6p/AE930689-8A2D-4299-8284-3E056B7A.jpeg" style="zoom:85%;" />
+
 ###### uv 和 npm 命令对比
 
 - `uv add --dev` 类似于 `npm add -D`
