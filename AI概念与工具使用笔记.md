@@ -4767,6 +4767,65 @@ model_auto_compact_token_limit = 900000
 学习自：[codex有哪些奇技淫巧？ - ReiiNoki的回答 - 知乎](
 https://www.zhihu.com/question/2063557784394785882/answer/2063638246312122365)
 
+##### 权限设置
+
+###### 背景
+
+codex App 最近总是出现 “Approve for me” 权限消失的情况，虽然之前选了 “Approve for me”，但是因为选项消失，所以自动回退到 “Ask for approval”，导致很多不必要、可以自动放行的权限，都需要确认。这个 bug 很让人头疼，所以就想看看你能不能通过配置解决。
+
+###### 权限相关
+
+Codex 将“是否请求审批”“由谁审批”和“沙箱权限”分成三个配置维度。
+
+```toml
+# ~/.codex/config.toml
+
+# 遇到需要提升权限的操作时发起审批
+approval_policy = "on-request"
+
+# user = Ask for approval
+# auto_review = Approve for me，由安全审查代理自动判断
+approvals_reviewer = "user"
+
+# read-only | workspace-write | danger-full-access
+sandbox_mode = "workspace-write"
+
+[sandbox_workspace_write]
+network_access = false
+# 工作区以外额外允许写入的目录
+writable_roots = ["/path/to/another/directory"]
+```
+
+对应关系是：
+
+|界面选项|配置|
+|---|---|
+|Ask for approval|`approval_policy = "on-request"` + `approvals_reviewer = "user"`|
+|Approve for me|`approval_policy = "on-request"` + `approvals_reviewer = "auto_review"`|
+|从不询问|`approval_policy = "never"`|
+
+注意：`Approve for me` 不是“全部自动允许”。它会把审批请求交给自动安全审查器，审查器仍可能拒绝。`approval_policy = "never"` 也不是自动批准，而是不弹出审批；沙箱外操作通常会直接失败并返回给模型。
+
+对应 CLI 参数：
+
+```sh
+codex --ask-for-approval on-request
+codex --approve-for-me
+codex --ask-for-approval never
+codex --sandbox workspace-write
+```
+
+如需完全无沙箱且不审批，则是：
+
+```toml
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+```
+
+这相当危险，不建议作为常规默认值。
+
+摘自：codex://threads/01a08513-7084-7982-bb21-d1101b59312f
+
 #### Plugins
 
 ##### Chrome 插件
