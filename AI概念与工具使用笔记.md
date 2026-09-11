@@ -4771,7 +4771,7 @@ https://www.zhihu.com/question/2063557784394785882/answer/2063638246312122365)
 
 ###### 背景
 
-codex App 最近总是出现 “Approve for me” 权限消失的情况，虽然之前选了 “Approve for me”，但是因为选项消失，所以自动回退到 “Ask for approval”，导致很多不必要、可以自动放行的权限，都需要确认。这个 bug 很让人头疼，所以就想看看你能不能通过配置解决。
+codex App 最近总是出现 “Approve for me” 权限消失的情况，虽然之前选了 “Approve for me”，但是因为选项消失，所以自动回退到 “Ask for approval”，导致很多不必要、可以自动放行的权限，都需要确认。这个 bug 很让人头疼，所以就想看看你能不能通过配置解决。结果发现还是不行。
 
 ###### 权限相关
 
