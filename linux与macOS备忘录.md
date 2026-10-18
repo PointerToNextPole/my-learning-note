@@ -1226,7 +1226,7 @@ killall [参数] [进程名]
   ssh hostIP
   ```
 
-- SSH的<font color=FF0000>默认端口是22</font>，也就是说，你的登录请求会送进远程主机的22端口。使用<font color=FF0000>p参数</font>，可以修改这个端口。
+- SSH的<font color=FF0000>默认端口是22</font>，也就是说，你的登录请求会送进远程主机的22端口。使用 <font color=FF0000>`-p` 参数</font>，可以修改这个端口。
 
   ```bash
   ssh -p 2222 userName@hostIP

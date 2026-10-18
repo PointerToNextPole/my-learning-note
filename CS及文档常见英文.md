@@ -1645,6 +1645,8 @@
 - **reconciliation** ：和解
   > [!NOTE] 
   > 在 React 中， reconciliation 也对应着 diff
+  
+- **acoustics** ：声学
 
 ***
 
@@ -1658,7 +1660,9 @@
 
 ### 特殊字符
 
-> 👀 因为 Google 是不支持 特殊字符 搜索的，想要带上 特殊字符 进行搜索，就必须要加上 字符的英文；所以这些就非常有必要记录
+> [!NOTE]
+>
+> 因为 Google 是不支持 特殊字符 搜索的，想要带上 特殊字符 进行搜索，就必须要加上 字符的英文；所以这些就非常有必要记录
 
 ##### 括号 Bracket
 
@@ -1834,12 +1838,30 @@
 > 可以参考 [[linux与macOS备忘录#Linux 命令缩写由来|Linux 命令缩写由来]] 中的内容
 
 - **pt. n** ：第 n 部分
+
 - **Misc** ：杂项，其他。"Misc" 是 “miscellaneous” 的缩写
+
 - **spec** ：规格 specification
+
 - **ver.** ：版本 version
+
 - **promo** ：推广/ 宣传片 promotion 
+
 - **IMHO** ：依我拙见 In My Humble Opinion
+
 - **biz** ：business
+
+- **RSVP** ：请回复、敬请赐复
+
+  > [!NOTE]
+  >
+  > RSVP 是西方请柬和活动邀请中常见的缩写，意思是“请回复”或“敬请赐复”。
+  >
+  > **法语全称**：Répondez s'il vous plaît ，**英语直译**：Please reply 或 Please respond
+  >
+  > **核心目的**：主办方在请柬上标注 RSVP，是希望受邀者在收到后尽快明确告知**“是否会出席”**，以便统计总人数、安排座位、预订餐饮或准备伴手礼。你可以参考剑桥词典了解更多官方释义。
+  >
+  > **常见用法与场景**：请柬上通常会写“RSVP by [日期]”（例如：*RSVP by October 9*），意为 “请务必在10月9日之前回复”。
 
 
 
@@ -2763,26 +2785,40 @@
    > 摘自：[如何看待著名程序员 DHH 宣布不再使用 TypeScript 改回 JavaScript？ - Cat Chen的回答 - 知乎](https://www.zhihu.com/question/623259697/answer/3222950408)
    
 - **surname** ：姓氏
+
 - **de facto** ：事实上的
   **de jure** ：法律上的
+  
 - **escalate** ：逐步上升 / 增强 / 恶化
+
 - **sphere** ：球体
+
 - **vanity** ：虚荣、虚荣心
+
 - **alpine** ：高山的
   > Alpine Linux
+  
 - **prelude** ：序曲、前奏
   **preliminary** ：初步
+  
 - **density** ：密度
   **dense** ：密集的
+  
 - **condescending** ：傲慢的、居高岭下的
+
 - **freed up** ：腾出、释放出
+
 - **ditto** ：同上
+
 - **mesh** ：表格、网格（ three.js 相关）
+
 - **fast-forward** ：快进
   > 👀 此外，git 的 merge 操作也有 fast-forward 模式
   
 - **merch** ：商品
+
 - **epilogue** ：尾声
+
 - **latent** ：潜在的
   
   > latent space ：潜空间
@@ -2799,38 +2835,68 @@
   > 摘自：[JetBrains - TeamCity](https://www.jetbrains.com/teamcity/)
   
 - **sculpt** ：雕刻、使...成形
+
 - **epoch** ：纪元、年代
+
 - **chronic** ：慢性的
   **chronic disease** ：慢性病
+  
 - **piecewise** ：分段的
   > `visualMap.type` 的可选值之一 `"piecewise"`
+  
 - **graspable** ：可感知的、可理解的
+
 - **aesthetics** ：美学
+
 - **polyglot** ：通晓多种语言的、万用语言者
+
 - **sloppy** ：邋遢的
   > sloppy mode ：宽松模式（相较于严格模式 strict mode ）
+  
 - **overhang** ：悬垂
+
 - **mandate** ：授权
+
 - **steer** ：引导；操纵；方向盘
+
 - **acme** ：顶点
+
 - **meander** ：蜿蜒、弯曲
   > Don't use large mode for meandering conversations.
   > 
   >   摘自：[ampcode - news - large mode](https://ampcode.com/news/large-mode)
 
 - **overage** ：超额
+
 - **contrive** ：策划，设计
   **contrived** ：人为的
+  
 - **duh** ：废话
+
 - **stub** ：存根
+
 - **futile** ：徒劳的
+
 - **onboarding** ：入职、入职引导
+
 - **chamber** ：房间、腔室
+
 - **echo chamber** ：回声室
+
 - **rewind** ：倒带
+
 - **bounty** ：赏金
+
 - **modest** ：谦逊的
+
 - **synopsis** ：摘要、梗概
+
 - **overwhelm** ：压倒、吞没
+
 - **decay** ：衰变
+
 - **bailout** ：紧急援助
+
+- **vibrant** ：充满活力的
+
+- **impromptu** ：即兴的
