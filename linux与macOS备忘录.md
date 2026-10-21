@@ -227,11 +227,13 @@
 
 
 
-##### Mac 软件推荐
+#### Mac 软件推荐
 
 [Awesome Mac](https://wangchujiang.com/awesome-mac/README-zh.html)
 
 
+
+#### 一些命令
 
 ##### 修改终端用户名
 
@@ -251,7 +253,7 @@ cd $(brew --prefix go)
 ##### 创建文件夹并进入该文件夹
 
 ```sh
-mkdir folder-name && cd $_
+mkdir <folder-name> && cd $_
 ```
 
 这里的 `&&` 和 `$_`下面都有解释。
@@ -259,10 +261,18 @@ mkdir folder-name && cd $_
 ##### 类似的：`open` 命令
 
 ```bash
-open `brew --prefix go`    #打开软件
-open folder                #在访达中打开文件夹
-open folder/fileName.filetype     #打开默认的打开方式打开文件（如pdf）
+open `brew --prefix go`       # 打开软件
+open folder                   # 在访达中打开文件夹
+open folder/fileName.filetype # 打开默认的打开方式打开文件（如pdf）
 ```
+
+##### 打开标记为“已损坏”的应用
+
+```sh
+sudo xattr -r -d com.apple.quarantine <app-path>
+```
+
+学习自：[安装破解软件提示“文件损坏”的解决方案](https://www.macsky.net/blog/tip01)
 
 
 

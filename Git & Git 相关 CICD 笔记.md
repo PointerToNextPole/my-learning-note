@@ -1533,7 +1533,7 @@ Git Worktree 不只是用来切换分支这么简单，它在更复杂的工作�
 2. 创建远程分支 origin / branch（指向 master 分支的指针）
 3. 创建名为 master 的本地分支
 
-摘自：[删除分支 git branch -d与git branch -D的区别](https://blog.csdn.net/qq_33592641/article/details/103871482)
+摘自：[删除分支 `git branch -d` 与 `git branch -D` 的区别](https://blog.csdn.net/qq_33592641/article/details/103871482)
 
 ##### `git clone --bare`
 
@@ -2235,6 +2235,8 @@ reflog 的意思为 ref + log。
 #### 分支命令补充
 
 - **`git branch -m oldBranchName newBranchName`** ：分支重命名
+
+- **`git branch --show-current`** ：查看当前分支名称
 
 - **`git checkout -`** ：切换到上一个分支。
 
