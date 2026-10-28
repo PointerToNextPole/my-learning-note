@@ -7411,6 +7411,109 @@ Agent 加速了编码——但编码从来就不是瓶颈。设计、判断、�
 
 
 
+### 一些经验
+
+##### 去除页面的 AI slop
+
+在 AGENTS.md 里加上 “Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.”
+
+不加这个的话，这两个模型（尤其是 Opus）生成的页面经常有各种莫名其妙的 slogan 类似的文字，而且界面很容易变得和说明书一样。大部分时候这些说明性文字是可以用更好的设计来避免的。这句话可以让模型把时间花在思考 UI/UX 上，而不是把所有含糊的问题都加上说明。
+
+###### 评论区补充
+
+[@Griffin Wu](https://x.com/Griffin76gc) 给出补充， “Avoid unnecessary supporting text, descriptive copy, and redundant UI microcopy.” ；不过，个人感觉这两个作用是类似的。
+
+Po主 [@Zihua](https://x.com/luinlee) 给出了自己的更多的约束，如下：
+> - Simplicity First
+>     - Build only what was asked: no unrequested features, options or configurability, no abstractions for single-use code, no error handling for impossible scenarios.
+>     - If 50 lines would do what you wrote in 200, rewrite it.
+>     - If you change approach midstream, remove the abandoned path before finishing.
+> - Fix Root Causes
+>     - Fix a bug at its cause, reasoning from first principles and established best practice. Do not patch over the symptom.
+>     - If a confusing design caused the bug, fix the design, and leave the code you touch clearer than you found it.
+>     - This takes precedence over any other guidance that favors a smaller change.
+> - Comments Explain Why
+>     - Write comments as if the current code is the only version a reader will see. Never mention this session, prior attempts, or the editing process.
+>     - Explain *why* (non-obvious constraints, business rules), not *what*. If you'd only write a "what" comment, delete it and improve the names instead.
+>     - Write comments in English.
+
+[@mumunanmu](https://x.com/guoxiaoyang0925) 让 Grok Bot 对整个会话做了下总结，如下：
+
+```markdown
+## Working style
+- Think from first principles: confirm the real goal, constraints, and success criteria first.
+- Fix bugs at the root cause; never patch over symptoms.
+- Log pitfalls in HANDOFF.md and read it before each new task.
+- For production work, include performance cost in design and acceptance.
+
+## UI/UX
+- Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.
+- Every element must serve a clear user purpose; no slogans, decoration, nested cards, or repeated info.
+- Show explanations only for abnormal states or required actions; put secondary details behind progressive disclosure.
+- Stay consistent with existing screens; prefer removing or simplifying over adding, and don't redesign the whole page to change one part.
+```
+
+摘自：https://x.com/luinlee/status/2113085361836744764
+
+##### 防止 Codex 过度设计
+
+Po主 [@Vikine](https://x.com/vikingmute) 推荐了 OpenCode 的 [AGENTS.md](https://github.com/anomalyco/opencode/blob/dev/AGENTS.md)，专治 Codex 的过度设计，尤其是 style guide 一节。
+
+> Before adding complexity for a speculative or vanishingly unlikely race or security edge case, explain the concrete failure mode, likelihood, and complexity cost to the user and get their buy-in. Do not silently expand scope for theoretical robustness.
+
+译为 “在为推测性的、或者几乎不可能发生的竞态条件/安全边界情况增加复杂度之前，先向用户讲清楚：具体会出什么问题、发生的概率有多大、以及增加这些复杂度的成本，并得到用户的明确同意。不要为了理论上的健壮性，就悄悄把范围扩大。”
+
+###### 评论区补充
+
+[@Bruce Van](https://x.com/bruc3van) 总结了一下OpenCode 的 AGENTS.md，给出了 “值得借鉴的通用原则”，如下：
+
+```markdown
+## 通用规则
+
+- 不要为猜测出来、几乎不会发生的竞态或安全边界情况加复杂度。真觉得要加，先说清楚具体会怎么出错、概率多大、要多写多少代码，我同意了再做。不要悄悄扩大改动范围。
+- 外部传进来的数据，只在入口那一层校验一次。往里传已经确定类型的值，内部不要反复做防御性检查。
+- 不要提前抽只用一次的函数。只有会复用、包住了确实复杂的逻辑，或者它代表一个能起清楚名字的概念时才抽。
+- 主函数只写正常流程，校验和细节放到它下面的小函数里。
+- 注释只写不明显的约束和反直觉的行为，不给显而易见的代码写注释。
+- 自动生成的文件不要手改，改源头后重新生成。
+- 测试测真实实现，不要把业务逻辑抄一份进测试。尽量少用 mock。
+- 按仓库现有的流程走，不要引入仓库没在用的工具或流程。
+```
+
+摘自：https://x.com/bruc3van/status/2114002829845418142
+
+##### 提升 UI 视觉设计
+
+1. 不要使用中点 “·”作为文案的分隔符。如果有，移除它。 
+
+2. 不要在界面添加冗余的解释性描述文本，这会弄脏 UI 界面，还会浪费用户的注意力。
+
+   > [!NOTE]
+   >
+   > 1、2 两点感觉可以用 [[#去除页面的 AI slop]] 中的 “Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.” 替代
+
+3. review 界面文案，尽量使其描述符合当前界面面相的人群，容易理解但不要过于口语化，长短适合其功能场景，不要冗余和随意造词。 
+
+4. 将页面所有使用的颜色，<font color=red>都换成 Radix UI Colors 的颜色。同时，使用那套颜色的使用规范来优化颜色使用</font>。
+
+5. 优化界面元素与 UI 的对齐效果，尽量做到光学对齐；有嵌套的地方，尽量做到同心圆圆角处理。 
+
+6. 如果你需要使用线条或者边框，请使用 0.5px 边框。
+
+7. 尽量减少页面中的元素动画过渡效果，如果一定要添加，ease-out 250ms 是个不错的基础设定。
+
+8. 界面的文字大小不要超过 4 种，最好三种。最小可用文字尺寸是 12px。如果不够用，可以考虑使用字重、字体颜色、间距设计来调整页面的关系结构。
+
+9. 尽量减少页面出现需要用户判断才能进行的交互；必须发生时，放在用户本来就打算做选择的地方。同时，重新思考页面中包含的功能和元素，判断信息优先级，使用更有秩序的做法进行组织。
+
+10. <font color=red>尽量不要随意在页面中使用圆角、阴影，**尤其是一个卡片的左边缘带颜色的线条**</font>。如果非要使用圆角和阴影，请注意其值的设定，符合其功能场景。
+
+11. 减少页面中不必要的 Eyebrow（眉题）和 Overline（标题上方的小标签）。不要习惯性地在每个区块的主标题上方添加英文大写的小标题，尤其是与主标题语义重复、仅起装饰作用的内容。只有当 Eyebrow 能够提供主标题未表达的分类、上下文或关键信息时才保留。优先通过字体层级、字重、间距和留白建立清晰的视觉层次，而不是依赖额外的小标题增加设计感。
+
+摘自：https://x.com/zaynhao/status/2113456751915982917
+
+
+
 
 ## Spec Driven Dev ( SDD )
 
