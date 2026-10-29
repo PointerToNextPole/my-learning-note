@@ -2,6 +2,11 @@
 
 
 
+###### AI 内容检验工具
+
+- [SynthID Detector](https://synthid.com/)
+- [OpenAI 官方 - 验证 OpenAI 生成的内容](https://openai.com/zh-Hans-CN/research/verify/)
+
 ## 通用概念
 
 ###### 资料

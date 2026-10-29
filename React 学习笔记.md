@@ -5,6 +5,2101 @@
 - react.dev 官方文档
 - [The History of React Through Code](https://playfulprogramming.com/posts/react-history-through-code) 如题目所述，介绍了 React 的历史与演进；另外看的翻译版 [前端早读课 - 通过代码看 React 的历史](https://mp.weixin.qq.com/s/_iYlKg36UyhFPJDbmBdX_A)
 
+## 从 Vue 3 转向 React：工作开发与工程实践
+
+整理日期：2026-10-29。基于以下两段学习对话及其学习记录，按知识依赖重新编排；原有官方文档摘录保留在后面。
+
+- **A：[学习 React 工作开发](codex://threads/019f6ec9-bec0-7c93-8137-85549d3a0f20)**：React 心智模型、状态、Effect、组件身份、性能、异步 UI、测试与交付。
+- **B：[补充 React 最佳实践技术栈](codex://threads/019ff103-9088-7fc2-8a4b-0f4eec953598)**：React TSX、Compiler、架构、Router、Zod、Query、Zustand、RHF、Radix/shadcn、API 契约与诊断。
+
+文中的 `A#1`、`B#13` 等编号对应各对话学习记录的误区编号，方便回溯。A 记录了 35 项误区，B 记录了 48 项；**“已在练习中纠正”不等于“以后不会再错”**。以下把多轮纠正、跨主题复发的模型放在最前面；明确表示“不知道”的 API 或尚未实作的配置，不冒充已掌握内容。
+
+示例主要用于演算机制或说明局部协作，省略部分 import、请求函数及 UI 封装；不代表已创建并运行完整应用。React 19 与 React 18 的 ref 写法、Query v5 状态命名、Router 不同模式的类型生成均有上下文，不能与后面的历史摘录不加区分地混用。
+
+### 复习优先级：反复混淆的边界
+
+| 优先复习 | 曾经反复混淆的边界 | 本文定位 | 对话依据 |
+| --- | --- | --- | --- |
+| 最高 | 当前 render 的闭包快照 ≠ 更新队列中的上一结果；传函数 ≠ 使用了上一结果 | [[#渲染快照与更新队列：函数必须真正使用 prev]] | A#1、#4–#7；B#11 |
+| 最高 | render、commit、Effect、事件不是同一个阶段；cleanup 属于某一次 setup | [[#Effect：同步外部系统，不是响应式计算的统称]] | A#3、#11、#15–#16；B#10–#13 |
+| 最高 | 内容相同 ≠ 引用相同；重新 render ≠ DOM 一定变化 | [[#引用相等、memo 与 Compiler：同一误区在多个库中复发]] | A#22–#26；B#13、#37、#46 |
+| 最高 | Query 缓存、URL、表单草稿、全局客户端偏好各有所有者 | [[#状态归属：先判断谁拥有，再选工具]] | A#2、#19–#21；B#32–#33、#36、#40–#43、#48 |
+| 最高 | “输入了新值”≠“保存成功”；等待 Promise ≠ 自动重试查询 | [[#测试：验证动作之后的用户结果]] | A#31、#34–#35；B#47–#48 |
+| 高 | 组件身份 ≠ JSX 分支；key ≠ 卸载后的状态缓存 | [[#组件身份与 state 生命周期：key 不是缓存]] | A#12–#13，且后续复习再次出错 |
+| 高 | TS 类型 ≠ 运行时验证；return 错误数据 ≠ throw 错误 | [[#Router 与 Zod：读取、提交、错误、校验分开考虑]] | B#21–#29 |
+| 高 | lint、类型检查、编译优化、生产构建提供不同证据 | [[#调试与交付：先拿证据，再改代码]] | A#33；B#12，及 B 的最终综合实践 |
+
+### 渲染快照与更新队列：函数必须真正使用 prev
+
+> [!danger] 反复错误：把 setter 的回调形状，当成“自动取得最新 state”
+> `setCount(() => count + 1)` 仍然读取当前 render 捕获的 `count`。真正需要检查的是：**计算下一状态时使用了哪个值**，而不是有没有写箭头函数。此问题从数字队列复发到对象更新，再复发到定时器闭包。
+
+#### 一次 render 对应一份 props/state 快照
+
+```tsx
+// 假设当前 render 的 count 是 0
+function handleClick() {
+  setCount(count + 1)
+  setCount(count + 1)
+  console.log(count) // 0：当前闭包里的变量不会被 setter 改写
+}
+// 这两项都是“替换成 1”，下一次提交的 count 为 1。
+```
+
+`setCount` 请求一次状态更新，供后续 render 使用；不是修改当前函数中的变量，也不是“执行一个 useEffect”。后续 render 得到新的 `count`，并建立新的事件处理函数闭包。
+
+#### 用一个累积值演算队列，不要把表达式列表当结果
+
+```tsx
+// 当前 render 的 count = 0
+setCount(count + 1)  // 入队：替换成 1
+setCount(n => n + 1) // 入队：对队列当前结果执行 +1
+setCount(5)          // 入队：替换成 5
+```
+
+| 步骤 | 操作 | 队列中演算出的状态值 |
+| --- | --- | --- |
+| 起点 | 当前状态 | `0` |
+| 1 | 替换成 `1` | `1` |
+| 2 | 调用 updater：`updater(1)` | `2` |
+| 3 | 替换成 `5` | `5` |
+
+这里需要严格区分：`n => n + 1` 是**函数**，`updater(1)` 的返回值是**数字 `2`**；React 使用的是返回值，不是把函数本身当作最终 state。
+
+```tsx
+// 错误：忽略参数，两次都返回快照里的 0 + 1
+setCount(() => count + 1)
+setCount(() => count + 1)
+
+// 正确：每次基于队列当前结果继续计算，最终 +2
+setCount(prev => prev + 1)
+setCount(prev => prev + 1)
+```
+
+#### 对象更新同时检查“基于谁”和“复制到哪一层”
+
+```tsx
+type Form = { name: string; email: string; tags: string[] }
+const [form, setForm] = useState<Form>({ name: '', email: '', tags: [] })
+
+function changeName() {
+  setForm(prev => ({ ...prev, name: 'Ada' }))
+}
+
+function addTag() {
+  setForm(prev => ({ ...prev, tags: [...prev.tags, 'react'] }))
+}
+```
+
+- 连续调用这两个函数时，两次 updater 都基于队列中的上一结果，所以姓名与标签都保留。
+- `setForm(() => ({ ...structuredClone(form), ... }))` 仍然读取旧闭包；**深拷贝不能修复快照问题**。
+- `tags: ['react']` 是替换数组；追加必须保留旧项，例如 `[...prev.tags, 'react']`。
+- 嵌套修改沿变化路径创建新对象即可；不要为了“安全”默认深拷贝整棵状态树。
+- props/state 只读；把对象作为 prop 传给子组件本身没有问题，直接修改该对象才违反约定。
+- updater 应保持纯净，不在其中请求接口、写日志埋点或修改其他对象；开发检查可能重复调用它。
+
+#### 派生值直接计算，不再建第二份 state
+
+```tsx
+const fullName = `${firstName} ${lastName}`
+const results = products.filter(product => product.name.includes(query))
+```
+
+来自现有 props/state 的纯计算，不需要用 `useEffect -> setFullName/setResults` 同步。后者会出现“先提交旧值，再通过 Effect 追加一次更新”的时序，也引入多份事实来源。只有计算确实昂贵、或跨越需要稳定引用的边界时，再考虑性能缓存。
+
+自检：能否逐项写出队列的**输入值、返回值、最终值**？如果只能猜最终 UI，说明机制还没讲清楚。
+
+### Effect：同步外部系统，不是响应式计算的统称
+
+| 工作 | 通常放在哪里 | 例子 |
+| --- | --- | --- |
+| 根据现有输入计算 UI | render | 过滤列表、拼接姓名 |
+| 某次明确用户操作触发的业务动作 | 事件处理函数 | 点击保存发 POST |
+| 已提交的 UI 与外部系统保持同步 | Effect | 按 `userId` 订阅连接、注册计时器、聚焦已出现的 DOM |
+
+浏览器 DOM、定时器、网络连接都是 React 声明式计算之外的系统。通过 ref 调用 `focus()` 也是外部命令，不能因为“没有请求后端”就认为它不属于副作用。
+
+#### 时间线与依赖比较
+
+```text
+render：用快照计算 JSX
+→ commit：把这次结果落实到 DOM，连接 ref
+→ Effect setup：建立本轮外部同步
+
+依赖改变后的同步切换：旧 cleanup → 新 setup
+卸载：运行最后一轮 cleanup
+```
+
+- `useEffect(setup)`：不提供依赖数组，每次相关提交后运行。
+- `useEffect(setup, [])`：同一实例的普通重新渲染不会因依赖变化而重跑；仍须考虑卸载、重挂载和开发期检查。
+- `useEffect(setup, [userId])`：React 对各依赖项分别使用 `Object.is` 比较；不是比较依赖数组本身的引用。
+- cleanup 是 **setup 返回的函数**，不是 `useEffect` 的第二个参数。
+- 写完整依赖：不能为了少执行而漏掉读取的响应式值，也不能把“开启 Compiler”当成漏依赖的补救。
+
+#### 异步竞态：每轮 setup 都有自己的闭包
+
+```tsx
+useEffect(() => {
+  let ignore = false
+  const controller = new AbortController()
+
+  async function load() {
+    try {
+      const response = await fetch(`/api/users/${userId}`, {
+        signal: controller.signal,
+      })
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      const user = await response.json()
+      if (!ignore) setUser(user)
+    } catch (error) {
+      if (!ignore) setError(error)
+    }
+  }
+
+  void load()
+  return () => {
+    ignore = true
+    controller.abort()
+  }
+}, [userId])
+```
+
+此例仅用于理解 Effect 机制；业务项目中的共享服务端状态优先交给 Query 等专门工具。
+
+```text
+setup A：ignoreA = false，请求 A
+userId 改变
+cleanup A：ignoreA = true，取消 A
+setup B：ignoreB = false，请求 B
+A 晚到：只看到自己的 ignoreA，不更新 UI
+B 返回：看到自己的 ignoreB，正常更新 UI
+```
+
+**不要解释成 cleanup 把一个全局 `ignore`“重置”为某个值或用它给请求上锁。** 它标记的是旧闭包已经过期。取消请求与拒绝使用旧结果是不同职责；取消也不保证服务端已执行的写操作被撤销。
+
+#### 定时器：回调捕获的 state 不会自动刷新
+
+```tsx
+function Clock() {
+  const [now, setNow] = useState(() => Date.now())
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(id)
+  }, [])
+
+  return <time>{new Date(now).toLocaleTimeString()}</time>
+}
+```
+
+若写 `setNow(now + 1000)`，`[]` 中的 interval 闭包一直读取初始 `now`，第一次更新后就会反复设置同一值。若做累计计数可用 `prev => prev + 1`；若显示真实时间，应每次读取时钟，避免把定时器延迟累积成时间漂移。计时器 ID 放在创建它的 setup 内，由该轮 cleanup 清理。
+
+#### ref、纯度和 Strict Mode
+
+- `ref.current` 的变化不触发 render；因此不能用它替代需要显示在 UI 上的 state。
+- 不在 render 中 `focus()` 或累加计数：render 尝试可能重放、被中断或放弃，执行过不代表已提交。
+- `setOpen(true)` 后立即 `inputRef.current?.focus()` 时，新输入框可能还没 commit；应在它出现后的 Effect 中聚焦，必要时评估 `useLayoutEffect`。不要先把 `flushSync` 当通用解法。
+- Strict Mode 的额外检查发生于开发环境。出现 `setup → cleanup → setup` 时，重点验证资源能否正确撤销并重新建立。
+- 不用删除 Strict Mode 或 `useRef`“只执行一次锁”掩盖问题：锁可能导致清理后没有重新建立资源，且真正重挂载会创建新的 ref。
+
+### 组件身份与 state 生命周期：key 不是缓存
+
+> [!warning] 多轮复发：不同分支、不同 props，并不自动表示不同实例
+> state 是否保留，关键看协调时的组件类型、树中位置与 key；不是看 JSX 文本写在 `if` 的哪一边。
+
+```tsx
+return mode === 'A'
+  ? <Counter name="A" />
+  : <Counter name="B" />
+```
+
+两边在同一位置都是 `Counter`，切换 `name` 通常保留内部 state。若用 `key={mode}`，切换会重新建立身份、重置该子树 state。
+
+但是：**A 卸载之后，再切回 `key="A"` 不会从 React 的历史缓存里找回 A 的旧 state。** key 是当前协调中的身份线索，不是跨卸载的持久化仓库。
+
+如果要求 A、B 切换后各自保留分数，可以把数据提升到不会卸载的父组件：
+
+```tsx
+const [name, setName] = useState<'A' | 'B'>('A')
+const [scores, setScores] = useState({ A: 0, B: 0 })
+
+<Counter
+  name={name}
+  score={scores[name]}
+  onIncrement={() => {
+    setScores(prev => ({ ...prev, [name]: prev[name] + 1 }))
+  }}
+```
+
+另一种方案是让两棵子树都保持挂载，只隐藏其中一棵；这会保留各自状态，同时也保留其资源和 Effect，不能把“隐藏”当作“卸载”。列表 key 要在兄弟节点间稳定且唯一；不要用随机 key 强制每次重新创建。
+
+### 引用相等、memo 与 Compiler：同一误区在多个库中复发
+
+> [!danger] 跨主题复发：不能拿“业务内容没变”替代库实际采用的比较规则
+> 同一个问题先在 React `memo` 中出现，又在 `useCallback`、Effect、Zustand selector 和 Profiler 诊断中出现。每次都应追问：**谁在比较？比较哪一层？这个表达式是否创建了新引用？**
+
+#### render、commit、repaint 要分开
+
+没有自动优化或显式跳过时，父组件重新执行，通常也会带动子组件重新执行；`<Child label="fixed" />` 不会仅因业务上“与父状态无关”就自动跳过。组件执行后，React 仍会比较结果，DOM 没变化就不必修改 DOM；浏览器绘制又是后续另一层工作。
+
+```tsx
+Object.is('A', 'A') // true
+Object.is({ id: 1 }, { id: 1 }) // false
+Object.is([1, 2], [1, 2]) // false
+```
+
+#### 三种手动 memoization 的职责
+
+| API | 保留或跳过什么 | 判断依据 | 不保证什么 |
+| --- | --- | --- | --- |
+| `memo(Component)` | 在适合时跳过组件重新执行 | 默认逐项比较 props，使用 `Object.is` | 不阻止组件自身 state 或所读 Context 更新 |
+| `useMemo(calculate, deps)` | 复用计算结果，包括对象/数组引用 | 逐项比较依赖 | 不让真正变化的输入免于计算，也不是业务持久化 |
+| `useCallback(fn, deps)` | 复用函数引用 | 逐项比较依赖 | 不自动读取“最新闭包” |
+
+忽略 Strict Mode、假设无 Compiler，以“首次挂载 + 一次无关父状态更新”为例：
+
+| 给 `memo` 子组件传的 prop | 通常执行次数 | 原因 |
+| --- | --- | --- |
+| `label="fixed"` | 1 | 原始值未变 |
+| `options={{ label: 'fixed' }}` | 2 | 每次新建对象 |
+| `options={useMemo(() => ({ label: 'fixed' }), [])}` | 1 | 对象引用复用 |
+| `onSave={() => save(documentId)}` | 2 | 每次新建函数 |
+| 直接传引用未变的 `data` | 1 | 已稳定，不必再包一层 `useMemo` |
+| `rows={data.filter(isEnabled)}` | 2 | 每次 `filter` 生成新数组 |
+
+表中的 Hook 表达式是说明来源的简写；实际代码把 Hook 放在组件顶层，再把返回变量传给 JSX。
+
+```tsx
+const rows = useMemo(() => data.filter(isEnabled), [data])
+// 假设 isEnabled 是模块级纯函数；若来自 props，也必须纳入依赖。
+```
+
+依赖应与计算所读取的响应式值对应。没有依赖数组的 `useMemo(() => ...)` 并不能达到这里“在依赖不变时复用”的目的。已有稳定引用不需要为了过 `memo` 边界重复缓存。
+
+#### useCallback 的闭包依赖，不包括未来调用时的参数
+
+```tsx
+const onSave = useCallback(
+  (draft: Draft) => saveUser(userId, draft),
+  [saveUser, userId],
+)
+```
+
+- `saveUser` 若是 prop/组件作用域里的函数，以及 `userId`，是闭包捕获值。
+- `draft` 是将来调用 `onSave(draft)` 时才传入的参数，不在依赖数组中。
+- 若 `saveUser` 是模块级导入且不随 render 变化，则不属于必须追踪的响应式依赖。
+- 用 `[]` 缓存了读取 `documentId='A'` 的函数，之后 props 变成 `'B'`，旧函数仍读 A；函数从哪里调用并不能改变它捕获的快照。
+
+#### Effect 的依赖语义与 Compiler 缓存不是一回事
+
+```tsx
+// Effect 内仅需要 userId，避免把 render 中临时对象当同步条件。
+useEffect(() => {
+  const options = { userId }
+  const connection = connect(options)
+  return () => connection.disconnect()
+}, [userId])
+```
+
+这项依赖选择来自“外部连接应随哪个值重新同步”，不是为了维护 Compiler 的缓存。若 Effect 还读取 `avatarUrl`，就不能只留 `userId`。**正确性先由数据流与依赖保证，memoization 只优化成本。**
+
+#### React Compiler 的准确定位
+
+两段对话采用 React 19 的学习上下文。Compiler 是构建期的自动 memoization 工具，分析组件/Hook 的依赖并复用计算或 JSX；不要理解成替换 React runtime，也不要简单等同于 Vue 的模板编译器，或“在源码里自动加几个 `useCallback`”。
+
+- 对已确认被 Compiler 覆盖的新代码，默认写直接、纯净的组件，不机械添加手动 `memo`/`useMemo`/`useCallback`。
+- 这不是让旧项目无条件全删手动优化：覆盖范围、第三方集成和实际性能仍需验证。
+- lint 通过只提供静态规则证据，不证明构建确实执行了 Compiler transform。
+- 学习对话使用的直接证据包括 DevTools 的 `Memo ✨` 标记、编译后 compiler-runtime 缓存代码；正常显示页面或通过 `tsc` 都不能替代这些证据。
+- render 不修改 props/state，不读取不受控变化的时间/随机值来决定普通纯计算；“没写入外部对象”并不足以证明纯净。
+- `"use no memo"` 可用于定位问题。关闭优化后症状消失，只能证明与优化行为相关；还应查不纯代码、漏依赖、依赖偶然引用变化的业务逻辑，再做最小复现。
+- Compiler 缓存不是 Query 缓存，也不是多个组件间共享服务端数据的机制。
+
+性能优化先看测量：一次输入造成的 32ms 渲染，往往比一分钟总共约 5ms 的大量微小 render 更值得先处理。不要只比较 render 次数。
+
+### 并发 UI：优先级属于更新，不属于任意函数
+
+对话 A 的连续错误包括：要求新输入与新列表原子一致、把 `startTransition` 当计算包装器、把 `useDeferredValue` 当作任意函数的降优先级工具。
+
+| 控制点 | 选项 | 观察等待状态 |
+| --- | --- | --- |
+| 我拥有要更新的 setter | `useTransition` / `startTransition` | `useTransition` 返回 `isPending` |
+| 我只能消费收到的值，例如父组件的 prop | `useDeferredValue(value)` | 比较原值与 deferred 值 |
+
+```tsx
+const [input, setInput] = useState('')
+const [query, setQuery] = useState('')
+const [isPending, startTransition] = useTransition()
+
+function handleChange(next: string) {
+  setInput(next) // 输入框自身必须及时更新
+  startTransition(() => setQuery(next)) // 结果区域可以稍后更新
+}
+```
+
+```text
+已有结果：query = "rea"
+输入 react 后的紧急提交：input = "react"，query = "rea"，仍显示旧结果
+后台更新完成后的提交：input = "react"，query = "react"，显示新结果
+```
+
+暂时显示旧列表是设计允许的，应提供适当的 pending/stale 提示。Transition 不适合控制文本框的即时 value。
+
+```tsx
+const result = startTransition(() => {
+  return 42
+})
+// result 为 undefined；回调立即调用，但它的返回值不是 API 返回值。
+```
+
+消费端可以这样组织：
+
+```tsx
+const deferredQuery = useDeferredValue(query)
+const rows = useMemo(
+  () => slowFilter(products, deferredQuery),
+  [products, deferredQuery],
+)
+const isStale = query !== deferredQuery
+```
+
+| 阶段 | `query` | `deferredQuery` | 与上轮比，计算依赖是否变化 | 是否重新 `slowFilter` |
+| --- | --- | --- | --- | --- |
+| 已提交 | `rea` | `rea` | 起点 | 已计算 |
+| 紧急 render | `react` | `rea` | 否，假设 products 引用未变 | 复用 |
+| 后台 render | `react` | `react` | 是 | 计算 |
+
+关键原因是紧急 render 的 `useMemo` 依赖没变，**不是 `slowFilter` 本身获得了另一种执行优先级**。`useDeferredValue(slowFilter(...))` 会先按 JavaScript 求值规则执行昂贵实参，已经来不及延后它。
+
+并发更新不等于防抖，也不自动减少网络请求；一个不可分割、运行 80ms 的同步函数也不会被 React 从函数中间切开。必要时还需减少计算、拆分任务、虚拟化或使用 Worker。
+
+### 状态归属：先判断谁拥有，再选工具
+
+> [!danger] 跨库复发：能全局共享，不是把数据放进 Zustand 的充分理由
+> 不要让 URL、Query、RHF、Zustand 各保存一份同样的业务事实，再用 Effect 互相追赶。
+
+以 `/users/:userId/permissions?view=history&page=2` 为例：
+
+| 数据 | 主要所有者 | 理由 |
+| --- | --- | --- |
+| `userId`、可分享的 view/page/filter | Router / URL | 应支持刷新、分享、前进后退 |
+| 后端返回的用户和权限 | TanStack Query | 服务端状态，需要缓存、刷新、去重与失效 |
+| 尚未提交的字段、校验消息 | 本地表单 / RHF | 属于编辑会话，不等同于已保存的资源 |
+| 跨页面的列显示、密度等客户端偏好 | Zustand，按需引入 | 客户端拥有，跨树共享或保留 |
+| 校验规则 | Zod schema | Zod 执行校验与转换，不是状态仓库 |
+| 由以上数据可纯计算的值 | render，必要时 memo | 不创造第二份来源 |
+| 不参与显示的 DOM/定时器引用 | ref / Effect 内局部变量 | 不需要靠变化驱动 UI |
+
+Custom Hook 复用的是逻辑，不自动共享 state。两个组件各调用一次内部带 `useState + useEffect` 的 `useUser(id)`，依然可能各自请求、各自保存数据；把函数命名成 `useX` 不会自动得到 Query 的缓存与去重。真正的共享需要共同所有者或共享缓存。
+
+#### 受控与非受控输入
+
+```tsx
+<input value={name} onChange={event => setName(event.currentTarget.value)} />
+```
+
+受控输入的循环是：用户事件 → setter 请求 state 更新 → 新 render 的 `value` → DOM。`defaultValue` 只提供非受控输入的初始值；之后用户把它改为 Grace，即使父组件中的初始 name 仍是 Ada，也不能推断页面仍显示 Ada。
+
+RHF 对原生表单常使用 `register` 管理非受控输入；不能从 React 的受控组件定义推出“所有 RHF 输入都必须 Controller”。
+
+### TSX、组合与 ref：类型要表达实际契约
+
+#### 可渲染内容、element 与函数是三种东西
+
+| 类型 | 含义 | 典型使用 |
+| --- | --- | --- |
+| `React.ReactNode` | 可以交给 React 渲染的内容 | `children`、内容区域、render prop 的返回值 |
+| `React.ReactElement` | React element 对象 | 明确要求一个 element 的 API |
+| `React.JSX.Element` | React JSX 表达式的结果类型 | 明确返回 JSX 的表达式/函数 |
+| `(item: T) => React.ReactNode` | 接受参数、返回可渲染内容的函数 | `renderRow` / render prop |
+
+不要把前三者当作严格的三层 class 继承关系。`ReactNode` 可以包含字符串、数字、element、节点数组、`null` 等；`null` 与 boolean 不显示可见内容。组件可以返回 `null`，所以把这类组件的返回值硬写成 `React.JSX.Element` 就过窄了。返回类型通常优先让 TypeScript 推导。
+
+```tsx
+type TableProps<T> = {
+  rows: T[]
+  getRowKey: (row: T) => React.Key
+  renderRow: (row: T) => React.ReactNode
+}
+```
+
+`renderRow` 需要调用，因此它不能只标成 `React.JSX.Element`。`rows` 使 `T` 推导为 Permission 时，两个回调参数也随之得到 Permission 类型。
+
+#### 原生事件与值回调要显式适配
+
+```tsx
+type SearchBoxProps = { onChange: (value: string) => void }
+
+function SearchBox({ onChange }: SearchBoxProps) {
+  return <input onChange={event => onChange(event.currentTarget.value)} />
+}
+```
+
+原生 `onChange` 收到 event；业务组件的回调可以约定收 string。两种契约不同，不直接把 `(value: string) => void` 塞给原生事件。
+
+#### 用判别联合表达互斥 props
+
+```tsx
+type AvatarProps =
+  | { kind: 'image'; src: string; alt: string; initials?: never }
+  | { kind: 'initials'; initials: string; src?: never; alt?: never }
+```
+
+- `{}` 不表示“精确空对象”，不能靠 `{}` 的联合实现互斥。
+- `initials: never` 要求必须传入一个不存在的值，分支无法正常构造；禁止字段使用 `initials?: never`，并理解 `exactOptionalPropertyTypes` 对显式 `undefined` 的影响。
+- 不用 `any` 绕过还没想清楚的契约。
+
+#### 包装原生组件：消费自有 props，转发合法 props 与 ref
+
+```tsx
+// React 19 写法；React 18 兼容组件使用 forwardRef。
+type TextFieldProps = React.ComponentPropsWithRef<'input'> & {
+  label: string
+}
+
+function TextField({ label, ref, ...props }: TextFieldProps) {
+  return (
+    <label>
+      <span>{label}</span>
+      <input {...props} ref={ref} />
+    </label>
+  )
+}
+```
+
+`label` 是包装组件的语义属性，不是原生 input 的合法 `label` attribute。`ComponentPropsWithRef` 包含 ref 契约；不支持 ref 的包装层才考虑 `ComponentPropsWithoutRef`。不能把接受外部 ref 的 prop 窄化为仅 `RefObject<HTMLInputElement>`，调用者也可能传 callback ref；更一般的契约是 `React.Ref<HTMLInputElement>`。
+
+| API / 概念 | 职责 |
+| --- | --- |
+| `RefObject` | 持有 `.current` 引用 |
+| callback ref | 节点连接、替换、断开时注册/清理；React 19 也支持返回清理函数 |
+| `ResizeObserver` | 观察尺寸变化 |
+
+callback ref 不会因为 item 高度变化自动触发；虚拟列表中可以在 ref 生命周期注册观察器，尺寸重测由 ResizeObserver 触发。
+
+#### 组合与 Context
+
+默认内容用 `children`；多个命名区域用独立 props，例如 `title`、`footer`，而不是在不同条件里反复渲染同一份 children 来模拟 Vue 的命名插槽。需要由调用者按数据决定内容时，再提供 render prop。
+
+Context 的连接取决于**同一个 Context 对象**：跨文件应导入同一个定义，不是分别 `createContext` 出同名变量。消费者读取逻辑 React 树中最近的 Provider；`createContext(defaultValue)` 的默认值用于没有匹配 Provider 的情况。Context 解决依赖传递，不自动提供服务端缓存或 selector 级订阅。
+
+### 技术栈与目录：业务边界比工具清单重要
+
+这是对话采用的中大型客户端 SPA 方案，不是任何 React 项目都必须照搬的“唯一最佳实践”。Vite/Tailwind/pnpm 已有基础，重点补齐各工具的职责。
+
+| 层次 | 对话中的选项 | 使用边界 |
+| --- | --- | --- |
+| UI 与类型 | React + TS strict；Compiler 验证后启用 | 正确性不依赖缓存 |
+| 构建与样式 | Vite、Tailwind、pnpm | 版本按项目锁文件，不照抄旧对话安装配置 |
+| 路由 | React Router | URL、路由匹配、loader/action/错误边界 |
+| 服务端状态 | TanStack Query | 查询、缓存与 Mutation 后的一致性 |
+| 全局客户端状态 | Zustand，按需 | 不复制服务端资源 |
+| 运行时校验 | Zod | URL、表单、API 输入输出边界 |
+| 表单 | React Hook Form + Zod resolver | 表单草稿、校验、提交、字段错误 |
+| UI 基础设施 | shadcn/ui + Radix、CVA、cn | 通用外观与交互基础；业务流程仍归 feature |
+| API 契约 | OpenAPI + Hey API / Orval / openapi-typescript | 生成传输契约，手写领域适配 |
+| 调试与交付 | DevTools、Sentry、Playwright、CI | 不同层级分别提供证据 |
+
+#### Feature-first：按共同变化的原因组织
+
+```text
+src/
+├── app/                         # 应用组装：Router、Provider、QueryClient
+├── routes/                      # URL 对应页面与 loader/action/边界
+├── features/
+│   └── manage-permissions/
+│       ├── ui/PermissionEditor.tsx
+│       └── index.ts             # 只暴露外部真正需要的 API
+├── entities/
+│   └── permission/
+│       ├── api/                 # 领域查询、更新、对生成 client 的适配
+│       ├── model/               # 领域类型与 schema
+│       └── index.ts
+└── shared/
+    ├── api/generated/           # 可重新生成的后端契约
+    └── ui/                      # 无具体业务知识的组件基础
+```
+
+依赖方向通常由 app/routes/features 指向 entities/shared；shared 不反向 import 业务 feature。技术实现分类仍可在业务目录内部使用，但一个“修改邮箱”的需求不应仅因涉及 UI、schema、API 就被散落到互不相干的顶层目录。
+
+“两个 feature 都用到”不等于放 shared：**权限领域更新**仍包含业务知识，更适合 entities/permission；通用 HTTP transport 才适合 shared/api。`index.ts` 是刻意设计的公共契约，不是目录库存；是否导出 Row/API 取决于真实外部消费者，而不是仅凭组件叫 Editor/Row 就断言私有。
+
+### Router 与 Zod：读取、提交、错误、校验分开考虑
+
+以下以对话中的 React Router Data Mode 为背景；Framework Mode 的 route typegen 等约定不能直接套到所有 Data Mode 项目。
+
+#### 嵌套路由是整条匹配分支的递归组合
+
+```text
+/users/u-42/permissions
+→ UsersLayout
+  → 它的 Outlet 中是 UserDetailLayout
+    → 后者的 Outlet 中是 UserPermissionsPage
+```
+
+`index: true` 在父路径精确匹配时作为默认子路由；`Outlet` 可类比 Vue RouterView，但要把整条布局链展开，不能只描述叶子被塞进直接父级。
+
+相对链接根据匹配的**路由上下文**解析，不根据任意 React 组件的层级推导。给 `UserTabs` 外面再包一层普通 `Panel` 不会多出 URL 段。路由相对与 path 相对的具体行为还可通过 Router 的 `relative` 选项区分。
+
+`useParams().userId` 常见类型是 `string | undefined`，并不说明该路由的实际组件一定会在缺参时渲染；它可能只是普通 Hook 类型与路由配置之间缺少足够静态关联。运行时匹配事实与 TS 的保守类型要分开。
+
+#### Data API 的四个角色
+
+| 配置 | 回答的问题 | 结果如何读取 |
+| --- | --- | --- |
+| `loader` | 当前 URL 对应页面需要读取什么？ | `useLoaderData()` |
+| `action` | 本次写入提交需要执行什么？ | 正常返回数据通过 `useActionData()` |
+| `Component` / `element` | 普通页面如何渲染？ | `Component: Page` / `element: <Page />` |
+| `ErrorBoundary` / `errorElement` | 未处理错误由哪一层接管？ | 边界中 `useRouteError()` |
+
+注意属性名是小写 `element`，不存在配置属性 `Element: <Page />`。`Component` 提供组件类型，`element` 提供已创建的 React element；同一路由不重复声明两套普通页面。
+
+```text
+首次 GET 进入：匹配路由 → loader → Component
+action 正常完成、留在原处：action → 按规则 revalidate loaders → Component
+action redirect：action → 目标路由的数据加载与渲染
+loader/action/路由渲染抛错：最近的错误边界接管
+```
+
+不要套用统一的 `action → loader → Component`：普通首次访问没有理由自动执行 action。嵌套 loaders 也不应想象成从父到子逐个串行请求。
+
+路由 lazy 可延后加载实现，但匹配所需的 path/index/children 骨架必须能供 Router 匹配；不要指望先加载一个未知模块才知道该匹配什么路径。
+
+#### return 字段错误与 throw 是不同通道
+
+```tsx
+// 预期校验失败：留在普通页面，供用户修改。
+return data({ fieldErrors: { title: ['请输入标题'] } }, { status: 422 })
+
+// 无法继续展示的资源或意外失败：交给错误边界。
+throw new Response('Service unavailable', { status: 503 })
+```
+
+**HTTP 状态为 422 不等于自动进入 ErrorBoundary。** 这里决定通道的是正常 return 还是 throw，而不是单看状态码。`useRouteError()` 也不是读取 `useActionData()` 中字段错误的替代品。
+
+```tsx
+const actionData = useActionData<typeof savePermissions>()
+const message = actionData?.fieldErrors.permissionIds?.[0]
+```
+
+首次还没提交，actionData 可以是 undefined；可选链处理的是这个空缺，而不是吞掉实际异常。
+
+#### Zod：输入是外部值，输出才是经过验证的数据
+
+```tsx
+const UserSchema = z.object({ id: z.string(), name: z.string() })
+type User = z.infer<typeof UserSchema>
+
+const raw: unknown = await response.json()
+const user = UserSchema.parse(raw)
+```
+
+`as User` 或 `as Promise<User>` 只是告诉 TS 相信自己，不会检查后端数据。校验放在 API/loader 等输入边界，让内部消费可靠数据，避免到组件深处才发现 wire format 已变。
+
+| 方法 | 成功 | 失败 | 常见选择理由 |
+| --- | --- | --- | --- |
+| `parse` | 返回解析后值 | 抛出 ZodError | 边界数据必须有效，失败交给上层处理 |
+| `safeParse` | `{ success: true, data }` | `{ success: false, error }` | 预期输入错误需要显式转成字段提示 |
+
+选择二者依据是**错误处理策略**，不是“有没有页面跳转”。`parse` 抛错也只有在其执行位置受 Router 边界处理且未被提前捕获时，才会进入路由 ErrorBoundary；事件中的异步错误不能假定由普通 React 边界自动兜底。
+
+```ts
+type ValidationResult<T> =
+  | { success: true; data: T }
+  | { success: false; error: z.ZodError }
+```
+
+这与 `{ success: boolean; data?: T; error?: Error }` 不同：后者没有表达字段间的关联。safeParse 的判别联合使检查 `success` 后能安全访问 data/error。
+
+```tsx
+const result = UserIdSchema.safeParse(params.userId)
+if (!result.success) {
+  throw new Response('User not found', { status: 404 })
+}
+const userId = result.data
+```
+
+schema 若期待 string，就传 `params.userId`，不是整个 params 对象。验证成功后使用 `result.data`，它包含转换/规范化结果；不要假定原输入变量的类型被反向收窄，或原字符串被原地改写。
+
+#### FormData：先过类型检查，再过长度规则
+
+```ts
+formData.get('title') // string | File | null
+formData.getAll('permissionIds') // 多个值
+```
+
+`z.string().min(1, '请输入标题')` 遇到 null，先失败在 string 类型检查，不能保证会用 `.min` 的消息。按业务有意规范化缺失值：
+
+```tsx
+const input = {
+  title: formData.get('title') ?? '',
+  permissionIds: formData.getAll('permissionIds'),
+}
+```
+
+`?? ''` 仅处理缺失值，File 仍由字符串 schema 拒绝。不能用 `String(formData.get('title'))` 一把梭：`String(null)` 是非空的 `"null"`，反而可能通过长度校验。
+
+Zod 的错误对象应在边界转成稳定的 `{ fieldErrors }` 契约。UI 依赖字段与消息，不依赖整份 ZodError；以后更换校验库不应迫使所有表单改实现。
+
+#### 输入类型与输出类型
+
+```tsx
+const PageSchema = z.string().transform(Number)
+type PageInput = z.input<typeof PageSchema>   // string
+type PageOutput = z.output<typeof PageSchema> // number
+type Page = z.infer<typeof PageSchema>        // number，与 output 一致
+```
+
+有 transform/coerce 时，不要认为 input/output 必然相同。此例只说明类型变化；真实页码还要验证整数、范围等业务条件。
+
+#### URL：缺失、空值、规范化与历史记录
+
+| API/输入 | 结果 |
+| --- | --- |
+| `useParams().userId` 缺失 | `undefined` |
+| `searchParams.get('view')` 不存在 | `null` |
+| `?page=` 的 `get('page')` | `''` |
+| `?tag=read&tag=write` 的 `get('tag')` | `'read'` |
+| 同上 `getAll('tag')` | `['read', 'write']` |
+| `queryClient.getQueryData(key)` 没缓存 | `undefined`，不要与 URL API 混用 |
+
+```tsx
+const PageSchema = z.string().regex(/^[1-9]\d*$/).transform(Number).catch(1)
+```
+
+这条**教学示例**按顺序处理：`'12' → 12`；`'03'` 在正则处失败，transform 不执行，catch 得到 `1`；`'0'` 和 null 同样回落到 `1`。catch 处理的是失败，不是“先强行转成功，再校验”。实际产品还应限制数值范围/安全整数。
+
+URL 中已经拥有的 view/page，不再复制进 `useState` 当第二份来源。浏览器后退会更新 Router，但不会重放自定义 `handleViewChange`；双份 state 因此容易失去同步。
+
+```tsx
+function handleQueryChange(query: string) {
+  setSearchParams(previous => {
+    const next = new URLSearchParams(previous)
+    const normalized = query.trim()
+    if (normalized) next.set('query', normalized)
+    else next.delete('query')
+    next.delete('page') // 搜索条件改变，回到默认页码
+    return next
+  }, { replace: true })
+}
+```
+
+要点：
+
+- `setSearchParams({ query })` 通常是替换整个 search，不是自动 merge；复制现有参数再改，才能保留 tag 等字段。
+- 规范化 URL 或连续输入常用 replace，避免历史记录充满中间状态；是否新增历史项由产品导航语义决定。
+- 判断“是否改变”应比较旧值与新值，不是先 `next.set` 再与刚写入的值比较。
+- 解析出的完整状态不必逐项写进 URL。若 serializer 约定省略默认值，`view=effective&page=1` 的 canonical URL 可完全省略 search。
+- 业务字段 `tags` 与 URL 参数名 `tag` 可以不同；重复参数应使用约定好的键名。
+- 数组只有在业务上是无序集合时，才去重排序；不要破坏有业务意义的顺序。
+
+### TanStack Query：缓存身份、生命周期与 Mutation 一致性
+
+本节沿用对话中的 TanStack Query v5 命名。
+
+#### queryKey 是数据身份，不只是请求标签
+
+```tsx
+const permissionKeys = {
+  all: ['permissions'] as const,
+  list: (userId: string, search: PermissionSearch) =>
+    ['permissions', userId, search] as const,
+}
+
+function permissionsQueryOptions(userId: string, search: PermissionSearch) {
+  const normalized = { ...search, tags: [...new Set(search.tags)].sort() }
+  return queryOptions({
+    queryKey: permissionKeys.list(userId, normalized),
+    queryFn: ({ signal }) => getPermissions({ userId, search: normalized, signal }),
+    staleTime: 60_000,
+  })
+}
+```
+
+这里假设 tags 业务上是无序筛选集合。`queryOptions` 提供 TS 类型关联，key factory 则是项目自己定义的普通函数，二者都不是新的数据源。
+
+- key 包含所有会改变请求结果的输入；否则不同用户、分页、筛选会错误共用缓存。
+- Query 的结构化 key 哈希与 React deps 的引用比较不同：对象属性顺序通常不影响 key，数组元素顺序会影响。
+- `['users', '1']` 与 `['users', 1]` 是不同 key，字符串/数字不能随手混用。
+- key 与请求使用**同一份规范化输入**，避免身份与实际请求脱节。
+- `{ search: normalized }` 中 search 是属性名，normalized 是变量值；不是访问 `normalized.search`，也不是对一个对象调用数组的 `slice`。
+- 同一 QueryClient、同一 key 的并发查询通常共享进行中的请求与缓存；多次串行订阅是否再请求，还受 freshness 与其他配置影响。
+
+#### staleTime 不负责删除，gcTime 不负责定时刷新
+
+| 配置/事件 | 准确含义 |
+| --- | --- |
+| `staleTime` | 数据在多久内被视为 fresh |
+| 超过 staleTime | 成为 stale，不等于此刻自动发请求，也不等于删除数据 |
+| stale query 重新挂载/窗口聚焦等触发条件 | 按配置决定是否后台 refetch |
+| `gcTime` | query 非活跃、没有观察者后保留多久，再垃圾回收 |
+| 活跃 query | 不能简单用“超过 gcTime”推断它已被清理 |
+
+例：`staleTime=60s`、`gcTime=300s`，上次成功后 30s 再订阅通常直接用 fresh 缓存；70s 再订阅可能先显示旧缓存再后台刷新。判断会不会 GC，还必须知道最后一个观察者在什么时候离开，不能只拿请求完成时间加 300s。
+
+#### UI 有两条轴：数据状态与请求活动
+
+```text
+status：pending / error / success
+fetchStatus：fetching / paused / idle
+isPending = status === 'pending'
+isFetching = fetchStatus === 'fetching'
+isLoading = isPending && isFetching
+```
+
+首次无数据时可以显示 skeleton；有数据后台刷新时应保留主视图，附加“更新中”；后台失败也可以保留数据并附加“更新失败”。因此 `isFetching` 不是全屏 loading 的充分条件，`isError` 也不总意味着没有旧 data。
+
+手写异步状态可用 loading/error/empty/success 判别联合避免非法布尔组合；但不能把 Query 的数据状态与 fetch 活动强压成同一条互斥枚举。`null` 可以表示成功的空结果，`undefined` 的无数据语义应与之区分。
+
+#### Router 与 Query 共用一个实例，明确导航策略
+
+| QueryClient API | 缓存已存在但 stale 时 | 返回与错误 |
+| --- | --- | --- |
+| `fetchQuery(options)` | 按 staleTime 决定是否请求，需要请求时等待 | 返回数据；失败向调用方抛出 |
+| `ensureQueryData(options)` | 默认直接返回已有数据 | 无缓存时才需要 fetch；可用 `revalidateIfStale` 后台刷新 |
+| `prefetchQuery(options)` | 按 freshness 预取 | 不返回业务数据；不向调用方抛请求失败 |
+
+`fetchQuery` 不是“无条件拿服务器最新值”。若业务必须本次重新请求，需要配置合适 freshness/失效策略，不能仅凭方法名推断。
+
+```tsx
+const queryClient = new QueryClient()
+
+const permissionsLoader = async ({ params, request }: LoaderFunctionArgs) => {
+  const input = parsePermissionUrl(params, request.url)
+  await queryClient.fetchQuery(
+    permissionsQueryOptions(input.userId, input.search),
+  )
+  return input
+}
+
+function UserPermissionsPage() {
+  const input = useLoaderData<typeof permissionsLoader>()
+  const query = useQuery(permissionsQueryOptions(input.userId, input.search))
+  // 按 query 的数据/错误/刷新状态渲染
+}
+
+// Router 配置使用 permissionsLoader，Provider 也必须收到上面的同一实例：
+<QueryClientProvider client={queryClient}>
+  <RouterProvider router={router} />
+</QueryClientProvider>
+```
+
+loader 在 React 组件外，直接使用注入/闭包中的 QueryClient；`useQuery`/`useQueryClient` 在组件或 Hook 中通过 Provider 取实例。
+
+**每次 `new QueryClient()` 都拥有独立缓存，并非类自动单例。** SPA 应让应用实例稳定；不能在每次 render 或 loader 内新建另一个，指望共享缓存。SSR 则要按请求隔离，避免不同用户共用服务端缓存。
+
+阻塞 loader 的 fetchQuery 抛错会进入路由边界；已展示旧数据的 useQuery 后台失败，在未开启 throwOnError 时可由页面自己显示。这是两条不同执行路径，不矛盾。
+
+#### Mutation 成功不等于 Query 自动识别资源变化
+
+```text
+mutationFn 发起写操作
+→ onSuccess 决定如何同步相关查询
+→ Query 缓存变化通知 useQuery
+→ 订阅组件得到新数据
+```
+
+> [!danger] 反复错误：把 key 不匹配误判为 useQuery 不会自动更新
+> `setQueryData` 作用于精确 key，不会把“短 key”当作所有子 key 的批量更新。前缀匹配是 invalidateQueries 等过滤 API 的行为，不要混用。
+
+```tsx
+// 页面订阅
+['permissions', 'u-42', { view: 'effective' }]
+
+// 写的是另一条缓存，不能更新上面的订阅
+queryClient.setQueryData(['permissions', 'u-42'], saved)
+
+// 响应恰好包含该查询所需的完整、可信数据时，写精确 key
+queryClient.setQueryData(currentKey, saved)
+
+// 不掌握完整新数据时，按前缀标记失效并让活跃匹配项刷新
+await queryClient.invalidateQueries({ queryKey: ['permissions', 'u-42'] })
+```
+
+`setQueryData` 同步改缓存，不发 GET；匹配的 useQuery 观察者会收到通知。写入应不可变，不能原地修改 old。
+
+`invalidateQueries` 标记 stale，默认还会 refetch 匹配的活跃查询；不是立即把 Ada 替换成 Grace。请求完成前仍可能显示 Ada；非活跃 query 默认可能只被标记 stale，等后续使用再刷新。若匹配前缀只应命中一条，添加 `exact: true`。
+
+```tsx
+const mutation = useMutation({
+  mutationFn: updateUser,
+  onSuccess: async () => {
+    await queryClient.invalidateQueries({
+      queryKey: userKeys.detail(userId),
+      exact: true,
+    })
+    navigate(`/users/${userId}`)
+  },
+})
+```
+
+时序要放在成功回调里面，不能在配置完 useMutation 后于组件函数体直接 navigate。还要注意：**await 失效并不保证某条非活跃详情查询已经获取新数据**；导航后由详情 useQuery 或 loader 执行选定刷新策略。若业务要求导航前就拿到详情，显式 fetch，或写入已验证的完整响应。
+
+204 No Content 没有资源数据，通常失效重读；不要为了用 setQueryData 凭空编造最新对象。一个接口返回的局部字段，也未必能安全覆盖“effective permissions”等派生视图。
+
+#### 乐观更新：取消旧读 → 快照 → 写入 → 回滚 → 最终校准
+
+```tsx
+const mutation = useMutation({
+  mutationFn: updatePermission,
+  onMutate: async patch => {
+    await queryClient.cancelQueries({ queryKey: key, exact: true })
+    const previous = queryClient.getQueryData<Permission[]>(key)
+    queryClient.setQueryData<Permission[]>(key, old =>
+      old?.map(item => item.id === patch.id
+        ? { ...item, enabled: patch.enabled }
+        : item),
+    )
+    return { previous }
+  },
+  onError: (_error, _patch, context) => {
+    if (context?.previous !== undefined) {
+      queryClient.setQueryData(key, context.previous)
+    }
+  },
+  onSettled: () => queryClient.invalidateQueries({ queryKey: key, exact: true }),
+})
+```
+
+此例按已有缓存、同一资源单次写入说明机制；多个并发乐观写入需要额外协调，不能让较早失败回滚掉较新的成功操作。
+
+- `onMutate`/`onError`/`onSettled` 是 Mutation 回调；`cancelQueries` 是其中调用的 QueryClient 命令，不是生命周期 Hook。
+- await 取消，是为了防止旧 GET 的结果覆盖乐观缓存；不是“取消 mutation”。
+- 清空/删除缓存与取消请求不是一回事，还可能把回滚快照删掉。
+- queryFn 必须把 Query 传来的 signal 交给 fetch 等请求实现，才能中止底层 HTTP；不同 key 对结果的隔离，与是否取消网络，是两项能力。
+- retry 的 failureCount 是库传入的计数，返回是否继续重试，不要 `--failureCount`。仅对 5xx 最多重试两次的教学规则为 `500 <= status && status < 600 && failureCount < 2`，总尝试最多 3 次；这不是任意写操作都应自动重试的建议。
+
+### Zustand：selector 的输入与输出都要说清楚
+
+对应 B#36–#39；它再次暴露了“全局共享就放 store”“对象内容一样就算相等”“回调里面赋值就是更新”三类混淆。
+
+```tsx
+import { create } from 'zustand'
+import { useShallow } from 'zustand/react/shallow'
+
+type TablePrefs = {
+  visibleColumns: string[]
+  density: 'comfortable' | 'compact'
+  setVisibleColumns: (columns: string[]) => void
+  toggleDensity: () => void
+  reset: () => void
+}
+
+const useTablePrefs = create<TablePrefs>()(set => ({
+  visibleColumns: [],
+  density: 'comfortable',
+  setVisibleColumns: columns => set({ visibleColumns: columns }),
+  toggleDensity: () => set(state => ({
+    density: state.density === 'comfortable' ? 'compact' : 'comfortable',
+  })),
+  reset: () => set({ visibleColumns: [], density: 'comfortable' }),
+}))
+
+// 放在组件或自定义 Hook 顶层：
+const { visibleColumns, density } = useTablePrefs(
+  useShallow(state => ({
+    visibleColumns: state.visibleColumns,
+    density: state.density,
+  })),
+)
+```
+
+三个参数角色必须分清：
+
+1. `create(set => ...)` 中 set 是更新 store 的函数。
+2. `set(state => ({ ... }))` 中 state 是当前状态；返回**部分状态对象**。
+3. `useTablePrefs(state => ...)` 中 state 是被选择的完整 store，不是 `{ state: ... }` 包装。
+
+`set(state => state.density = 'compact')` 同时修改旧对象，并返回字符串，违背 vanilla set 的契约；启用 Immer middleware 后的写法另论，不能混为一谈。
+
+默认比较 selector 结果的引用/原始值相等，不深比较新对象内部。`state => ({ density: state.density })` 每次产生新对象；多字段聚合可用 `useShallow` 稳定浅相等的结果，或分别选择原始字段。不要为了读一个 density 就订阅整份 store。也不要把“所有版本都只是多 render 一次”当保证：不同版本对 selector 输出稳定性有具体约束。
+
+reset 客户端状态与清除持久化 storage 是不同动作；对话没有完成 persist、rehydration、迁移的实作，见后面的待补项目。
+
+### React Hook Form：服务端资源与编辑草稿之间需要同步策略
+
+> [!danger] 多轮纠正：错误来自哪里，与 UI 最终从哪里读取，是两件事
+> 后端 `error.fieldErrors.role` 是 transport 数据；`form.setError('role', ...)` 之后，字段组件应读 RHF 的 `fieldState.error` 或 `formState.errors`，不继续绕回原始错误对象。不要把 Router action 与 RHF + Mutation 两条方案的错误通道混在一起。
+
+#### 一条提交链只有一个写入所有者
+
+```text
+RHF handleSubmit
+→ Zod resolver 校验草稿
+→ 校验通过才调用 mutation
+→ mutationFn 发 POST
+→ 成功：同步 Query cache；失败：映射字段/表单错误
+```
+
+如果已经选择这条链，就不再让 route action 对同一次意图发送相同 POST。另一种有效方案是 Router Form/action 主导提交；关键是明确所有者，不能两套同时请求。POST 不能被假定为幂等，重复提交可能造成真实业务错误。
+
+#### form、control、Controller、field 不是同一个对象
+
+| 名称 | 来源与职责 |
+| --- | --- |
+| `form` | useForm 返回的对象，含 register/control/reset/setError/handleSubmit/formState |
+| `form.control` | 供 Controller 等接入的表单控制对象 |
+| `Controller` | 将非原生受控组件适配到 RHF 的组件 |
+| `field` | 当前字段的 value/onChange/onBlur/name/ref |
+| `fieldState` | 当前字段的 error/invalid/isDirty/isTouched 等 |
+
+原生输入通常可用 `<input {...form.register('name')} />`；Radix/shadcn Select 等值回调契约不同，用 Controller 显式连接。
+
+```tsx
+<Controller
+  control={form.control}
+  name="role"
+  render={({ field, fieldState }) => (
+    <>
+      <label htmlFor="role">角色</label>
+      <Select value={field.value} onValueChange={field.onChange}>
+        <SelectTrigger
+          id="role"
+          ref={field.ref}
+          onBlur={field.onBlur}
+          aria-invalid={fieldState.invalid}
+          aria-describedby={fieldState.error ? 'role-error' : undefined}
+        >
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="admin">管理员</SelectItem>
+          <SelectItem value="editor">编辑者</SelectItem>
+          <SelectItem value="viewer">查看者</SelectItem>
+        </SelectContent>
+      </Select>
+      {fieldState.error && <p id="role-error">{fieldState.error.message}</p>}
+    </>
+  )}
+/>
+```
+
+上面是使用项目内 shadcn 风格封装的局部片段。关键桥接是 `Select.onValueChange = field.onChange`，**field 并没有 `onValueChange`**。直接操作 Radix primitives 时使用相应 Root/Trigger/ItemText 等完整结构，不把封装组件代码原样当作 Radix 原生 API。
+
+#### 204 与字段错误的最小协作
+
+```tsx
+const RoleSchema = z.object({ role: z.enum(['admin', 'editor', 'viewer']) })
+type RoleValues = z.infer<typeof RoleSchema>
+type SaveRoleError = Error & {
+  status: number
+  fieldErrors?: { role?: string }
+}
+
+// 组件内；saveRole 的约定是 Promise<void>，成功返回 204。
+const form = useForm<RoleValues>({
+  resolver: zodResolver(RoleSchema),
+  defaultValues: { role: initialRole },
+})
+const mutation = useMutation<void, SaveRoleError, RoleValues>({
+  mutationFn: values => saveRole({ userId, role: values.role }),
+  onSuccess: () => queryClient.invalidateQueries({
+    queryKey: userKeys.detail(userId),
+    exact: true,
+  }),
+  onError: error => {
+    const message = error.fieldErrors?.role
+    if (error.status === 422 && message) {
+      form.setError('role', { type: 'server', message })
+    } else {
+      form.setError('root.server', { type: 'server', message: '保存失败，请重试' })
+    }
+  },
+})
+const onSubmit = form.handleSubmit(values => mutation.mutate(values))
+
+// 对应 UI 中：
+<button type="submit" disabled={mutation.isPending}>保存</button>
+// 字段：fieldState.error?.message
+// 整体错误：form.formState.errors.root?.server?.message
+```
+
+缓存 key 复用正在使用的 `userKeys.detail(userId)`，不能临时猜一个 `['role', userId]`。错误类型只是请求封装的契约，实际网络错误仍需在 transport 层规范化，不是写了 TS 类型就会自动变成此结构。
+
+#### mutate 与 mutateAsync 影响 RHF 等待范围
+
+```tsx
+form.handleSubmit(values => {
+  mutation.mutate(values) // 返回 void，回调不会等网络完成
+})
+
+form.handleSubmit(async values => {
+  await mutation.mutateAsync(values) // 返回/等待请求的 Promise
+})
+```
+
+第一种场景网络继续时，RHF 的 isSubmitting 可能已恢复 false，应以 mutation.isPending 表达请求中；第二种能让 RHF 跟踪 Promise 的整个等待期。**isSubmitting 不是“不准确”，而是它准确跟踪的对象不是凭空识别出的后端请求。** mutateAsync 的拒绝也要按调用链处理，不留未处理 Promise。
+
+#### 异步初始化、后台刷新、切换用户、保存成功是四种不同事件
+
+| 场景 | 表单处理 | 原因 |
+| --- | --- | --- |
+| 数据晚于首次 mount 到达 | `reset(mapUserToForm(user))` | defaultValues 不会因普通 prop 更新自动重置 |
+| 同一用户后台刷新，正在编辑 | `reset(values, { keepDirtyValues: true })` | 更新未编辑字段，保留当前草稿 |
+| 从 u-42 切换到 u-43 | 普通 reset 为 u-43 数据，或 `key={userId}` 换实例 | 不能把旧用户脏字段带给新用户 |
+| 保存成功、服务端已接受草稿 | 按产品策略 reset 到已确认的数据并建立新基准 | 已保存的数据不该永久显示为未保存 |
+
+`reset` 是整份表单替换/同步，不需要随后再用 setValue 逐字段重复赋值。dirtyFields 来自 `form.formState`，不是独立 import；使用 keepDirtyValues 时应按 RHF 要求订阅 dirtyFields，并在真正使用的组件中读取它，不能只写无用途的解构假装完成订阅设计。
+
+特别注意：
+
+```text
+Query 收到新的 user 对象
+→ Effect 无条件 reset(user)
+→ 正在编辑的 role 被后台旧值覆盖
+```
+
+这发生在本地草稿同步边界，修复是 reset 策略；**不能用 mutation.mutate“保护草稿”**，那会把尚未决定保存的内容真的写入后端。
+
+`<UserForm key={userId} />` 仍可只有一个显示中的表单：key 变化是替换实例，不等于页面同时渲染多份表单。
+
+### shadcn/ui 与 Radix：DOM 位置、React 树和转发契约
+
+#### Portal 不会切断 Context
+
+Portal 改变真实 DOM 的落点，例如移动到 body；组件仍在原来的逻辑 React 树中，因此可以读取外层 FormProvider，事件也按 React 树传播。不要把“DOM 不在父元素下面”推成“没有逻辑父子关系”。
+
+#### asChild / Slot 不是 Vue 的内容插槽
+
+```tsx
+<DialogTrigger asChild>
+  <Button>打开</Button>
+</DialogTrigger>
+```
+
+asChild 让 Radix 不创建默认宿主元素，而把事件、ARIA、ref 等行为合并到单个子元素。避免 `<button><button /></button>` 只是一个结果；**自定义 Button 还必须把接到的 props/ref 继续交给 DOM**，否则看起来是按钮，却可能没有触发、焦点或无障碍行为。
+
+React 自定义组件不自动具备 Vue `$attrs` 式的原生属性透传，需要自己解构和 spread。Radix Slot 更接近“把行为交给指定宿主”，不是 `<slot>`/命名 slot 的内容分发。
+
+#### className 不会因为 JSX spread 自动合并
+
+```tsx
+const { className, ...props } = incoming
+return <button {...props} className={cn(defaultClasses, className)} />
+```
+
+若不先取出 className，而在后面 `{...props}`，其中同名属性可能覆盖前面写好的值。JSX 的属性覆盖顺序是普通对象合并规则，不会自动调用 cn。
+
+| 工具 | 职责 |
+| --- | --- |
+| `clsx` | 条件地拼接 class 输入 |
+| `tailwind-merge` | 按其识别的 Tailwind 规则移除冲突类 |
+| 项目内 `cn` | 通常组合以上两步；以本项目实现为准 |
+| `cva` | 声明 variants、默认值、组合变体，生成可复用的类型化样式 API |
+| `VariantProps<typeof buttonVariants>` | 从 CVA 配置提取 variant/size 联合类型 |
+
+```tsx
+type ButtonProps = React.ComponentPropsWithRef<'button'> &
+  VariantProps<typeof buttonVariants> & { asChild?: boolean }
+
+function Button({ asChild, variant, size, className, ref, ...props }: ButtonProps) {
+  const Comp = asChild ? Slot : 'button'
+  return (
+    <Comp
+      {...props}
+      ref={ref}
+      className={cn(buttonVariants({ variant, size }), className)}
+    />
+  )
+}
+```
+
+该片段沿用 React 19 的 ref-as-prop；React 18 封装需相应 forwardRef。使用 asChild 时遵守 Slot 的单子元素等契约。Tailwind 冲突不简单等于“后写的任意 class 永远胜出”，以 CSS、variant、important 及合并器实际规则为准。
+
+通用 Dialog 圆角等视觉规则在通用 UI 层改；“输入用户名后确认删除”属于业务 feature。具体无障碍 Dialog 的标题、描述、焦点恢复仍需实际实现与验证，不能只因使用 Radix 就认定业务组合一定正确。
+
+### API 契约：生成 DTO，不生成前端业务决策
+
+```text
+后端 OpenAPI
+→ 生成 DTO / client / 可选 schema、query 辅助
+→ entities 内手写验证与 DTO-to-domain mapper
+→ 稳定的领域模型 / queryOptions
+→ feature / route
+```
+
+| 代码 | 谁维护 | 典型变化 |
+| --- | --- | --- |
+| `shared/api/generated/types.gen.ts` 等生成物 | 生成器 | 后端 wire 字段、参数、响应变化时重新生成 |
+| `entities/user/model/User` | 前端手写 | 页面业务需要的模型 |
+| `mapUserResponse` | 前端手写 | 字段适配、归一化、兼容策略 |
+| 页面 | 依赖领域公开入口 | 不直接依赖生成目录的内部结构 |
+
+生成器知道后端传什么，不知道前端为什么把它映射成某种模型。不要因为 mapper 使用了生成类型，就认为 mapper 也应自动生成。字段重命名后，重新生成可让 mapper 的不匹配暴露为编译错误；旧客户端直接收到新格式时，应由运行时 schema 发现异常。
+
+对话中的选型线索：Hey API 用于评估 Fetch/Query/Zod 一体化生成；Orval 用于评估已有 Axios、mutator、MSW 工作流；只想生成类型、请求层保留手写时看 `openapi-typescript`。这些是按现有项目选择的依据，不是工具永久能力排名；名字是 **openapi-typescript**，不是 openai-typescript。`pnpm add -E` 表示保存精确版本范围，不等于免去锁文件和升级验证。
+
+生成配置、脚本、生成结果与 CI 漂移检测在对话中没有完整落地，不能从“知道边界”推成“整条链已实现”。
+
+### 测试：验证动作之后的用户结果
+
+> [!danger] 在 A 中反复出现，又在 B 的 E2E 中复发
+> 输入框已经显示 Grace，只证明“输入成功”，不证明“保存成功”；缓存里出现新数据，也不证明服务端真的接受了写入。断言必须落在当前测试想证明的业务链路终点。
+
+#### 先选测试边界，再选断言
+
+| 要验证的内容 | 常用边界 | 主要证据 |
+| --- | --- | --- |
+| 纯解析、映射、状态转换函数 | 单元测试 | 输入到输出 |
+| 编辑 → 提交 → 错误/跳转 → 详情展示 | 组件/页面集成测试 | 用户操作后的可见结果 |
+| 浏览器、后端、部署产物串起来的关键流程 | E2E | 网络行为与最终 UI，必要时刷新后复验 |
+
+A 涉及 Vitest + Testing Library + MSW 的工作流；B 明确暂缓单元测试，最后加入的是 Playwright 冒烟**设计**。这两个范围应分别记录，不要把“暂缓单元测试”写成“任何测试都不需要”。
+
+#### Testing Library：谁负责等待，谁负责重试？
+
+| 查询 | 找不到时 | 适合 |
+| --- | --- | --- |
+| `getByRole` | 同步抛错，不重试 | 现在应该已经存在的元素 |
+| `queryByRole` | 同步返回 null，不重试 | 断言不存在；多个匹配仍会抛错 |
+| `findByRole` | 返回 Promise，内部重试直到找到或超时 | 异步结果最终出现 |
+
+```tsx
+const user = userEvent.setup()
+const input = await screen.findByRole('textbox', { name: /name/i })
+await user.clear(input)
+await user.type(input, 'Grace')
+await user.click(screen.getByRole('button', { name: /save/i }))
+
+expect(
+  await screen.findByRole('heading', { name: 'Grace' }),
+).toBeInTheDocument()
+```
+
+这里通过详情页标题证明保存后的跳转与数据显示，而不是再次断言编辑框的值。
+
+```tsx
+await screen.getByRole('heading', { name: 'Grace' })
+```
+
+仍不会重试：JavaScript 先调用 getByRole，它找不到立即 throw，之后的 await 不会把同步查询改造成轮询。**findByRole 提供重试；await 只等待它返回的 Promise。**
+
+失败分支至少验证：
+
+```tsx
+expect(await screen.findByRole('alert')).toHaveTextContent('Save failed')
+expect(screen.getByRole('heading', { name: 'Edit user' })).toBeInTheDocument()
+expect(screen.getByRole('textbox', { name: /name/i })).toHaveValue('Grace')
+```
+
+这分别证明错误可见、留在编辑页、草稿没丢。`toHaveTextContent` 是正确 matcher，不是 `toHaveTextContext`。Query cache 可作为针对缓存层的专门测试对象，但不替代这条页面行为回归的终点断言。
+
+#### Playwright：成功、客户端校验失败、服务端失败分开设计
+
+假设规则为 `permissions: z.array(...).min(1)`：
+
+| 场景 | 最终草稿 | 是否发送目标 POST | 用户结果 |
+| --- | --- | --- | --- |
+| 合法保存 | 至少一个权限 | 是，单次提交应只有一次 | 保存后的权限可见，刷新后仍一致 |
+| 客户端校验失败 | 空数组，关闭全部权限 | 否 | 显示“至少开启一个权限”，保留编辑现场 |
+| 服务端业务拒绝，例如 422 | 客户端合法但服务端拒绝 | 已经发送 | 显示服务端字段错误，保留草稿 |
+| 意外失败，例如 500/断网 | 取决于输入 | 已尝试发送 | 可恢复错误 UI，必要时监控上报 |
+
+**只保留一个开启，在 min(1) 下是合法输入**，不能拿它当客户端校验失败测试。测试数据必须先满足题设的真假条件，不能凭“看起来权限很少”推导失败。
+
+保存成功的黑盒证据链：
+
+1. 建立可控后端初始数据；进入权限页，确认初始 UI。
+2. **点击前**开始记录精确匹配目标 URL 与 method 的 POST，不统计登录、埋点等所有 POST。
+3. 修改并保存；等待目标响应及成功 UI；在该完整提交流程的观察范围内确认目标 POST 恰好一次。
+4. 刷新前建立目标 GET 的等待/观察；刷新，确认重新读取后端。
+5. 等 GET 与页面展示完成，再断言权限仍为保存后的结果。
+
+监听必须早于触发动作，避免错过快速请求；等待业务完成条件，不用固定“睡两秒”掩盖时序。客户端校验失败则等待字段错误出现，再检查目标 POST 未发送；不能等待一个按预期根本不应发生的成功 POST。
+
+#### 刷新后仍用 Query，怎么证明数据来自后端？
+
+```text
+useQuery：组件订阅与读取 Query 状态
+queryFn：执行 HTTP GET
+Query cache：客户端缓存
+后端资源：持久化事实
+```
+
+正确目标是“刷新后观察到新的 GET，并且 UI 反映该读取结果”，不是“刷新后不调用 Query”。默认纯内存场景下，新页面的 QueryClient 会重新建立；如项目启用持久化、Service Worker 或其他缓存，应控制测试上下文与响应来源，不能仅凭 reload 就断言已绕过所有缓存。
+
+### 调试与交付：先拿证据，再改代码
+
+#### 保存 200，但页面仍旧：按三层排查
+
+| 层 | 查什么 | 不能只凭什么下结论 |
+| --- | --- | --- |
+| 请求/Mutation | method、URL、userId、body、HTTP 状态、响应数据 | mutation 某个布尔值 |
+| Router | 地址栏、params、navigate 的目标、loader 路径 | “我点了保存，应该已跳转” |
+| Query | 同一个 QueryClient、完整 key、data、stale、fetchStatus | “调用过 setQueryData，所以界面一定对” |
+
+典型故障：页面观察 `['permissions','u-42',{view:'effective'}]`，onSuccess 却写 `['permissions','u-42']`。这是精确 key 写错，不是 Mutation 自动写错，也不是 useQuery 不会通知。复用 key factory，选择完整数据写入或适当范围失效，随后检查实际订阅与用户结果。
+
+#### DevTools 的名字不是诊断结论
+
+- React DevTools Profiler：哪些组件在什么交互后 commit，成本多高；再追 props/state/Context/引用变化。
+- Query Devtools：查精确 key、缓存与 freshness、status/fetchStatus；判断是无数据首载还是后台刷新。
+- Network：请求是否真的发出、是否取消、返回了什么；调试写操作还要确认后端结果。
+- Console 的 render 日志：只能说明函数执行过，不能单独证明 DOM 改动或生产性能问题。
+
+#### Strict Mode 与生产构建对照
+
+```text
+开发：setup → cleanup → setup
+Network：第一个 GET canceled，第二个 GET 200
+生产构建：一次正常 GET
+```
+
+这组证据支持开发期检查，而不是生产重复请求缺陷。只看“两行日志”无法判定；cleanup 不仅要被调用，还要真正撤销订阅、计时器或旧读取，并允许新 setup 重新建立。
+
+```sh
+pnpm build
+pnpm preview
+```
+
+preview 本地托管已生成的产物，不替代 build，也不是正式部署服务器。常规 Vite 配置下 `vite build --mode staging` 仍是生产构建，mode 主要选择环境输入；`NODE_ENV` 的显式覆盖等项目配置仍需另查。不能只看 mode 名字，或文件夹恰好叫 dist，就断言运行的是生产 React。
+
+#### lint、tsc、Compiler、build 不能互相代替
+
+| 关卡 | 能证明什么 | 不能据此证明什么 |
+| --- | --- | --- |
+| ESLint / Hooks 规则 | 约定、可疑模式、Hooks 与部分语义约束 | 完整 TS 类型正确、Compiler 已执行 |
+| `tsc --noEmit` | TS 项目级类型检查 | API 运行时数据有效、业务正确 |
+| Compiler 构建与诊断证据 | 优化确实在相应代码生效 | 所有组件已优化、原代码一定正确 |
+| 相关自动化测试 | 被覆盖的行为满足预期 | 所有分支、所有浏览器都没有问题 |
+| `vite build` / `pnpm build` | 生产 bundle 可解析、生成 | 业务正确、类型必然通过、发布环境一定正确 |
+| 冒烟与最终 diff 审阅 | 关键链路与本次修改范围可复核 | 替代其他关卡 |
+
+Commitlint 检查提交信息格式，不是源码质量。Vite 常规转译也不能替代 tsc；即使启用了 type-aware ESLint，仍不能把它当完整 TypeScript 编译检查。
+
+```sh
+pnpm lint
+pnpm typecheck
+pnpm build
+pnpm e2e
+```
+
+这是 B 最终练习给定 scripts 的发布门禁顺序；任一步失败都阻止发布。真实命令先查本项目 package.json，而不是假定脚本名一定存在；再按风险补相关测试、成功/失败路径冒烟、最终 diff 与生成物审查。
+
+#### ErrorBoundary、Sentry、source map 各补一段证据
+
+| 机制 | 解决的问题 |
+| --- | --- |
+| 路由 ErrorBoundary | 为当前用户显示失败 UI，限制故障影响 |
+| Sentry 等监控平台 | 收集远程异常、环境、release、breadcrumbs 与相关上下文 |
+| 对应构建的 source map | 把压缩代码位置映射回源码 |
+| CI 发布集成 | 生成/上传映射，正确关联本次构建并检查门禁 |
+
+看到 `assets/index-xxx.js:1:28411` 却没有 TSX 信息，应检查映射是否生成、上传、匹配当前构建；不要只添加一个 ErrorBoundary 就认定可定位。source map 不必公开部署给所有用户；是否保留/上传与监控方案有关。
+
+正常的字段校验失败通常走用户提示，不把每次预期 422 都作为事故上报；意外 TypeError 等才需要异常证据。依据是业务预期，不是“所有 4xx 都无视、所有 5xx 都自动上报”的机械规则。不要把敏感表单内容原样塞进远程上下文。
+
+### 误区回查索引
+
+这里只汇总原学习记录的编号，详细纠偏在前面对应章节。标为“最高优先”的主题来自多轮纠正或跨场景复发，不把每个不会的工具名都计成反复错误。
+
+| 主题 | A 误区编号 | B 误区编号 | 复习重点 |
+| --- | --- | --- | --- |
+| 快照、队列、对象与数组更新 | A#1、A#4–A#8 | — | 真正消费 prev；函数返回值；追加与替换 |
+| 派生状态与受控输入 | A#2、A#9–A#10 | — | 一个来源；value 与 defaultValue |
+| Effect、纯度、cleanup | A#3、A#11、A#15–A#16 | B#10–B#13 | 每轮闭包；资源生命周期；静态规则与缓存分开 |
+| 组件身份与只读 props | A#12–A#14 | — | 分支不等于身份；key 不持久化；共享引用不等于修改 |
+| 组合、Custom Hook、TSX 契约 | A#17–A#18 | B#1–B#7、B#14 | 内容/element/函数；事件适配；ref 与 observer |
+| 异步 UI 与缓存操作 | A#19–A#21 | B#31–B#35、B#42 | 两条状态轴；key；实例；失效/写入/取消 |
+| 引用比较与渲染优化 | A#22–A#26 | B#8–B#9、B#37、B#46 | Object.is；闭包；Compiler 的准确职责 |
+| 并发 UI | A#27–A#30 | — | 更新与消费的控制点；同步回调；memo 依赖演算 |
+| 行为测试与提交时序 | A#31–A#32、A#34–A#35 | B#47–B#48 | 后置条件；findBy；客户端拒绝；新 GET |
+| 类型与交付检查 | A#33 | — | lint 不替代 tsc，build 另验 |
+| 模块组织 | — | B#15–B#17 | 业务内聚；最小公开 API；复用不等于 shared |
+| Router 生命周期 | — | B#18–B#23 | 匹配分支；相对路径；loader/action/错误通道 |
+| Zod 与 URL | — | B#24–B#30 | 判别联合；类型先于 refinement；转换顺序；默认值序列化 |
+| Zustand | — | B#36、B#38–B#39 | 服务端状态不搬 store；返回 partial；selector 参数 |
+| 表单草稿与错误归属 | — | B#40–B#41、B#43 | reset 策略；setError 后从 RHF 读；不滥发 mutation |
+| UI 样式与代码生成 | — | B#44–B#45 | 显式合并 class；DTO 与手写 mapper |
+
+### 待补实作：对话已经指出，但没有完整落地的部分
+
+B 最后一次通读审计明确区分“概念小练习通过”和“真实项目可运行”。下面六组保持待完成，不能被课程的 16/16 完成标记遮住：
+
+- [ ] **Compiler 工程接入**：按实际 Vite/plugin 版本安装配置、逐步启用，并做真实项目的启用前后验证。不要照抄对话中某个版本的 plugin 示例当通用配置。
+- [ ] **Zustand persist**：rehydration 时序、存储版本迁移、退出/重置时清理持久化状态；区分内存 reset 与 storage 清除。
+- [ ] **RHF 完整原生与跨层表单**：register 路径、FormProvider/useFormContext、字段焦点与错误聚合；不止是 Controller 的局部片段。
+- [ ] **shadcn/Radix 工程化与完整无障碍 Dialog**：CLI 初始化、安装/更新/定制；标题与可访问名称、必要描述、键盘交互、焦点进入与恢复。
+- [ ] **OpenAPI 生成流水线**：具体生成配置、重生成脚本、实际产物、生成漂移检查、手写 mapper 的失败暴露与 CI。
+- [ ] **监控与交付流水线**：Sentry.init、environment/release 或对应构建关联、source map 上传/过滤；可运行 Playwright config/spec 与真实 CI workflow。
+
+当时明确延期或范围外的内容：单元测试（B）、Storybook、SSR/RSC、Router 高级 fetcher/pending UI、Query 分页/无限查询/持久化缓存、大型 monorepo。记录为后续学习方向，不写成“已系统学习”。
+
+### 开发前的十个自检问题
+
+1. 这份数据的最终所有者是谁？是否在 URL、Query、表单、store 间重复保存？
+2. setter/updater 读的是闭包快照，还是 React/store 传入的上一结果？
+3. 这项工作是纯计算、用户事件，还是已提交 UI 的外部同步？
+4. Effect 读取了哪些响应式值？每轮 setup 的资源由哪轮 cleanup 清理？
+5. 组件 state 应保留还是重置？它的身份边界和数据寿命是否一致？
+6. 这里谁在比较？是 React Object.is、Zustand selector，还是 Query 的 key 哈希？
+7. Mutation 返回的是完整资源、局部信息还是 204？应该更新哪一个 key，还是失效重读？
+8. 后台刷新会不会覆盖草稿？切换实体时会不会错误保留旧草稿？
+9. 测试证明的是输入状态、内部缓存，还是这次动作之后的用户可见结果？
+10. 这次“通过”的证据是哪一层提供的？还缺类型、构建、运行时校验或关键链路验证吗？
+
+## Next.js App Router 学习笔记
+
+整理与版本校对：2026-10-29。主要来源：[学习 Next.js](codex://threads/01a02f5f-9031-7223-8902-160963e8300b)，共 36 轮对话，覆盖 10 个核心主题。这里接在 React SPA 工程实践之后，重点记录从 Vue/Nuxt 与 React SPA 迁移时容易混淆的机制。
+
+本文的 `N#1` 等编号对应原对话 `session.md` 中的误区编号。原记录有重复的 #15/#16，以及部分没有同步更新的状态；下文按问题内容合并、以实际回答和纠正为依据，不照抄“全部解决”的统计。特别是 `days` 是否内置、cacheLife 配置写法等，是**教学说明需要纠正**，不应计成学习者反复犯错。
+
+> [!important] 先确认版本与缓存模型
+> 本次校对参照官方 App Router 文档所示 Next.js 16.4.3。原对话混合了旧的 `dynamic/revalidate/fetchCache` 配置与 Cache Components 新模型，使用前必须检查本项目版本和 `cacheComponents`。文中把原练习模型与新的配置方式分开，示例为局部代码，不代表已经建好并运行实战项目。
+
+### Next.js 复习优先级
+
+| 优先级 | 反复混淆的问题 | 详细笔记 | 来源 |
+| --- | --- | --- | --- |
+| 最高 | `use client`、服务器首屏 HTML、hydration、Effect 与数据请求位置 | [[#Next.js 渲染模型：组件边界不等于渲染时机]] | N#1–N#2、N#4、N#7–N#8；多轮追问 |
+| 最高 | 数据缓存、页面输出、SWR、当前浏览器画面是否更新 | [[#Next.js 缓存：先问缓存了什么，再问何时刷新]] | N#3、N#5、N#12–N#13；兼有教学纠正 |
+| 最高 | Server Action、Route Handler、普通服务端函数、server-only | [[#Next.js 写入边界：Action、HTTP 接口与服务端模块]] | N#10–N#11、N#14–N#16；连续多轮澄清 |
+| 最高 | 返回图片不等于静态处理；CDN、Edge、Node、Serverless 不在同一维度 | [[#Next.js 部署：静态分发、运行时、部署形态分开判断]] | N#18–N#19；纠正后再次复发 |
+| 高 | `page.tsx` 不进入 URL，`[id]` 不原样进入实际地址 | [[#Next.js 文件路由与 URL 状态]] | N#6、N#9；分两轮纠正 |
+| 高 | redirect、rewrite 与客户端导航不是两两等价 | [[#Next.js Proxy：请求控制不能替代数据授权]] | N#17；与 Vue Router 守卫迁移有关 |
+| 巩固 | Suspense 边界在哪里，真正的 await 就应该在哪里发生 | [[#Next.js Streaming：让等待发生在边界里面]] | 迁移练习通过；另有代码笔误，不能误标成概念反复错误 |
+
+### Next.js 渲染模型：组件边界不等于渲染时机
+
+> [!danger] 多轮混淆：把“是否在浏览器交互”当成“是否有服务器 HTML”
+> `use client` 声明客户端模块边界；它不等于关闭服务端预渲染，也不自动把所有数据请求移动到浏览器。Next.js 不是给 React SPA 打开一个 SSR 开关就结束了。
+
+#### 用四个问题拆开一次页面请求
+
+| 问题 | 需要区分的概念 |
+| --- | --- |
+| 组件实现在哪边执行？ | Server / Client 模块边界 |
+| 输出在什么时候生成？ | 构建/预渲染、请求时动态渲染、缓存复用 |
+| 浏览器先收到什么？ | 首屏 HTML、RSC payload、必要的 JS/CSS 等资源 |
+| 页面什么时候获得 React 交互？ | 客户端 hydration；之后的 state 更新与事件 |
+
+Server Component 可以在构建期间或服务端请求处理中执行，不必每次访问都重新运行；“默认 Server Component”也不等于“每请求一次上游 API”。缓存和渲染策略是另外的维度。
+
+#### 首次完整访问的简化时间线
+
+```text
+服务端计算 Server Component，读取所需数据
+→ 得到 RSC payload：服务端组件结果、Client 边界引用、跨边界 props 等
+→ 使用结果与 Client Component 参与生成首屏 HTML
+→ 浏览器先显示 HTML；异步区域还可能是 fallback
+→ 浏览器加载 Client Component 所需 JavaScript
+→ hydration 接上 React 的事件与交互
+→ 后续点击、state 更新、Effect 在客户端工作
+```
+
+HTML 和 RSC payload 不是同一种东西。RSC 结果用来描述/协调组件树，不是把 Server Component 的数据库代码发给浏览器执行。后续通过 Link 的客户端导航，也不必重新下载整份文档；会按框架策略取得需要的路由/RSC 内容。
+
+**注意初始化与交互的区别**：Client Component 初次可参与服务端预渲染，组件函数及部分 Hook 初始化也可能在服务端发生；点击事件和 Effect 不会在服务端预渲染时执行。不要把原练习中“Counter 的 state 在浏览器”扩大成“Client Component 的任何代码都绝不在服务器运行”。
+
+#### 一个页面同时包含 Server 与 Client 部分
+
+```tsx
+// app/products/[id]/page.tsx：默认 Server Component
+import LikeButton from './LikeButton'
+import { getProduct } from '@/lib/products'
+
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = await params
+  const product = await getProduct(id)
+
+  return (
+    <>
+      <h1>{product.name}</h1>
+      <LikeButton productId={product.id} />
+    </>
+  )
+}
+```
+
+```tsx
+// app/products/[id]/LikeButton.tsx
+'use client'
+
+import { useState } from 'react'
+
+export default function LikeButton({ productId }: { productId: string }) {
+  const [liked, setLiked] = useState(false)
+  return (
+    <button
+      type="button"
+      aria-pressed={liked}
+      data-product-id={productId}
+      onClick={() => setLiked(previous => !previous)}
+    >
+      {liked ? '已喜欢' : '喜欢'}
+    </button>
+  )
+}
+```
+
+商品读取发生在服务端；LikeButton 管理本地交互。这个按钮例子没有保存后端，也没有从浏览器自动再请求商品。**有交互的组件完全可以消费服务端先取好的数据。**
+
+#### `use client`、`useEffect`、浏览器 fetch 的关系
+
+| 写法/位置 | 含义 |
+| --- | --- |
+| 文件顶部 `'use client'` | 建立客户端模块入口，其导入依赖进入相应客户端模块图 |
+| Client Component 的 render | 可能参与首屏预渲染；不能随意执行请求、读 window 或修改 DOM |
+| `useEffect(() => fetch(...), deps)` | Effect 在客户端提交之后执行，所以这里的 fetch 由浏览器发出 |
+| `onClick` 等事件中的 fetch | 用户交互后由浏览器发出 |
+| Server Component 中 await 数据函数 | 服务端执行数据读取；是否每次执行看渲染与缓存策略 |
+
+`useEffect` 的语义来自 React，不是 Next 把它与 use client 组合后新创造的功能。App Router 只是要求使用这类客户端 Hook 的组件处于 Client 边界。复习 [[#Effect：同步外部系统，不是响应式计算的统称]]。
+
+把本来在服务端获取的正文改成 `useEffect` 请求时，首屏一般只有加载占位，正文要等 JS、hydration、Effect 和请求。这会影响内容到达时机与可索引性；但**不能据此断言所有 Client Component 都没有首屏内容或 SEO**。比较的是实际正文在哪里、何时生成，不是只看指令名。
+
+#### 模块导入边界，不等于所有视觉后代都变成 Client
+
+- Server Component 可以导入并渲染 Client Component。
+- Client 入口的普通依赖会进入客户端模块图；不能直接拉入数据库、密钥、Node-only 服务模块。
+- 可以由 Server Component 组合 UI，把服务端生成的内容通过 children/内容 prop 交给 Client 外壳，而不是让 Client 外壳 import 那个服务端实现。
+- 因此“Client 外壳的视觉后代”与“被它 import 的模块”要分开看。
+
+```tsx
+// Server Component 中组合：Modal 是 Client，ProductDetails 是 Server。
+return (
+  <Modal>
+    <ProductDetails productId={id} />
+  </Modal>
+)
+```
+
+#### 跨 RSC 边界的是数据/受支持引用，不是任意对象共享
+
+```tsx
+<Profile user={{ id: 'u-42', name: 'Grace', roles: ['admin'] }} />
+```
+
+user 能过去，是因为值符合 React 的序列化协议，不是因为“第一次都在服务端，所以共享一个任意对象”。保守做法是显式映射成 UI 需要的 DTO；序列化能力也不等于只有 JSON 那几种类型。
+
+| 传递对象 | 判断 |
+| --- | --- |
+| 必要的普通用户数据 | 可传，但只选择 UI 应看到的字段 |
+| `() => saveUser()` 普通闭包 | 不能作为普通函数跨 Server → Client 边界 |
+| 数据库连接、ORM 实例、服务端资源句柄 | 不可当普通 UI props 传递 |
+| 明确声明的 Server Function 引用 | 通过专用调用协议传递，见 Action 章节 |
+
+可序列化不代表可以公开：只要传给 Client 的数据，就应按浏览器可见数据评估。数据库密码、内部 token 等即使只是字符串也不能传。
+
+### Next.js 文件路由与 URL 状态
+
+对应 N#6、N#9。这里曾把 page 文件名与动态参数占位符都当成实际地址的一部分，需要直接对照目录、匹配模式与具体 URL。
+
+```text
+app/
+├── layout.tsx
+├── page.tsx
+├── dashboard/
+│   ├── layout.tsx
+│   └── settings/page.tsx
+├── products/
+│   └── [id]/page.tsx
+└── (marketing)/
+    └── pricing/page.tsx
+```
+
+| 文件 | 实际 URL 或角色 |
+| --- | --- |
+| `app/page.tsx` | `/`，不是 `/page` |
+| `app/dashboard/settings/page.tsx` | `/dashboard/settings`，没有最后的 `/page` |
+| `app/products/[id]/page.tsx` | 匹配 `/products/42` 等；`[id]` 是占位符 |
+| `app/(marketing)/pricing/page.tsx` | `/pricing`，group 名不进入 URL |
+| `app/layout.tsx` | 根布局；通常包含 html/body 并包裹后代页面 |
+| `app/dashboard/layout.tsx` | dashboard 段共享布局，嵌套在其上层布局中 |
+
+Nuxt 的 pages/index.vue 可以帮助记忆 page.tsx 的默认页面角色，但不要照搬所有框架约定。普通目录提供 URL 段，特殊文件决定页面、布局或 HTTP 入口的角色；不是每个放在 app 下的任意文件都会暴露成路径。
+
+#### params 与 searchParams
+
+对 `/products/42?tab=reviews&sort=latest`：
+
+```ts
+// await 页面 props 后得到的普通对象
+params = { id: '42' }
+searchParams = { tab: 'reviews', sort: 'latest' }
+```
+
+`id` 是字符串 `'42'`，不是数字。`Number(id)` 也不是完整校验；需要正整数/UUID 等规则时，沿用前面 Zod 的运行时边界。
+
+```tsx
+type ProductPageProps = {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ tab?: string | string[]; sort?: string | string[] }>
+}
+
+export default async function Page({ params, searchParams }: ProductPageProps) {
+  const [{ id }, search] = await Promise.all([params, searchParams])
+  const tab = search.tab === 'reviews' ? 'reviews' : 'overview'
+  return <ProductView productId={id} tab={tab} />
+}
+```
+
+这是现代 App Router 页面 prop 的异步形式。重复 query key 可成为数组，缺失字段可能为 undefined；不能把页面的 searchParams 普通对象与客户端 `useSearchParams()` 返回的 URLSearchParams 风格对象混为一谈，后者 `.get()` 缺失时是 null。
+
+两种 tab 仍对应同一个 page 文件；query 不是新的文件路由。需要分享、刷新、前进后退的筛选/分页优先由 URL 拥有，不再复制一份本地 state 互相同步。
+
+#### 内部导航
+
+```tsx
+import Link from 'next/link'
+
+<Link href="/products/42?tab=reviews">评论</Link>
+```
+
+Link 支持框架客户端导航与适当预取；普通 a 是浏览器文档导航。命令式导航从 `next/navigation` 导入 useRouter，使用 push/replace；不是 SPA 章节中的 React Router useNavigate。导航时哪些状态保留，仍受组件身份与布局生命周期约束，不能理解为“所有 state 永远保留”。
+
+### Next.js Streaming：让等待发生在边界里面
+
+这部分的迁移题机制判断已经正确；原回答中的重复 `const reviews =`、传了未定义 reviews 等属于代码笔误，整理时直接给出一致示例，不把笔误升级成新的概念误区。
+
+#### Suspense 提供边界，Streaming 是渲染与传输机制
+
+```tsx
+import { Suspense } from 'react'
+
+export default function ProductPage() {
+  return (
+    <>
+      <ProductHeader />
+      <ProductOverview />
+      <Suspense fallback={<ReviewsSkeleton />}>
+        <Reviews productId="42" />
+      </Suspense>
+      <Suspense fallback={<RecommendationsSkeleton />}>
+        <Recommendations productId="42" />
+      </Suspense>
+    </>
+  )
+}
+
+async function Reviews({ productId }: { productId: string }) {
+  const reviews = await getSlowReviews(productId)
+  return <ReviewList reviews={reviews} />
+}
+```
+
+两个独立边界表示两个区域可以分别完成、分别显示。它不是调用某个 `<Streaming>` 组件，也不表示浏览器开始代替服务器请求评论。
+
+```text
+服务端：能完成的内容 + 两个 fallback 先发送
+→ 评论服务端读取完成：补发评论区域
+→ 推荐服务端读取完成：补发推荐区域
+```
+
+谁先完成谁先替换自己的 fallback；单个大边界则通常把里面的区域作为一组揭示。是否发出多个 HTTP 请求、请求如何并发，与展示边界相关但不是同一件事。
+
+#### 父组件提前 await，内部边界来不及接住
+
+```tsx
+// 不利于这个局部边界提前出现：
+export default async function Page() {
+  const reviews = await getSlowReviews('42')
+  return (
+    <>
+      <ProductHeader />
+      <Suspense fallback={<ReviewsSkeleton />}>
+        <ReviewList reviews={reviews} />
+      </Suspense>
+    </>
+  )
+}
+```
+
+Page 在返回 JSX 前已经等待了慢读取，所以它自己的 ProductHeader 与 ReviewsSkeleton 都还没提供给渲染器。**这不代表应用最外层 layout 或更上层 loading.tsx 也一定完全不能显示**，只是 Page 内这个边界没帮上忙。
+
+修复如前例：把等待移到边界内的异步子组件；也可先启动 Promise，再交给边界内消费，但不要先 await 完再期待内部 fallback 提前出现。独立请求的 Promise.all 可避免串行瀑布，却不自动提供不同区域的逐个揭示。
+
+### Next.js 缓存：先问缓存了什么，再问何时刷新
+
+> [!danger] 高频混淆：一次“更新”不等于所有层立刻得到新值
+> 上游数据库、服务端数据缓存、路由输出、浏览器路由缓存、Query 缓存和当前 DOM 是不同对象。时间到期、数据失效、重新渲染、浏览器接收新内容，也不是同一步。
+
+#### 先分层，再查项目采用哪套 API
+
+| 层次 | 缓存的是什么 | 不能与什么混同 |
+| --- | --- | --- |
+| 一轮 React 服务端渲染中的请求去重/记忆 | 本轮重复读取 | 跨请求持久化缓存 |
+| Data Cache / 显式服务端数据缓存 | 数据读取结果 | 完整页面 HTML |
+| 路由输出或可预渲染内容 | 生成的 HTML、RSC 等输出 | 每次都重新请求数据库 |
+| 浏览器路由缓存 | 导航、预取获得的路由内容 | 服务端数据源 |
+| TanStack Query cache | QueryClient 管理的客户端/特定实例状态 | Next 服务端缓存 |
+| 浏览器当前画面 | 上次已提交的 DOM 与组件状态 | 数据源改变后自动全网推送 |
+
+ISR 是增量静态再生成：缓存输出可按时间或事件重新生成，不必每次重新构建整个应用。它不是一个定时器到点就向所有打开页面广播的机制。
+
+#### 原对话中的 fetch 练习：按旧模型理解
+
+下面两种是原练习的数据请求策略；讨论前提是没有启用 Cache Components 的旧缓存模型。
+
+```tsx
+// 服务端数据读取：允许缓存与按时间重新验证
+const response = await fetch('https://api.example.com/news', {
+  next: { revalidate: 60, tags: ['news'] },
+})
+
+// 服务端数据读取：不复用 Next 的持久 Data Cache
+const liveResponse = await fetch('https://api.example.com/price', {
+  cache: 'no-store',
+})
+```
+
+N#5 的答案要明确：`next` 是 **Next.js 服务端 fetch 的扩展选项**，不是浏览器标准 Fetch API 的参数。在普通浏览器 fetch 中写同名配置，不会自动获得 Next 的服务端缓存能力。
+
+也不要在服务端照抄 `fetch('/api/news')` 这种浏览器相对 URL 示例。服务端 fetch 通常需要完整 URL；Server Component 本来就能调用数据层时，优先直接调用，不为了“统一接口”绕一圈请求自己的 Route Handler。
+
+#### revalidate 的 SWR 时间线：第 70 秒仍可能先看到 A
+
+给定条件：单份共享缓存，首次数据 A，`revalidate: 60`；t=70 上游已变为 B，后台更新在 t=71 前完成。
+
+| 时刻 | 本次先返回什么 | 上游读取累计次数 | 正在发生什么 |
+| --- | --- | --- | --- |
+| t=0 | A | 1 | 首次读取并建立缓存 |
+| t=30 | A | 1 | 缓存仍在复用窗口 |
+| t=70 | A | 2 | 先用 stale 内容，触发后台重新验证 |
+| t=71 | B | 2 | 假设更新已成功完成，之后读取新缓存 |
+
+最初答对了总请求次数，但把 t=70 写成 B；错误在于把 stale-while-revalidate 想成同步阻塞。`revalidate: 60` **不保证展示内容永远不超过 60 秒，也不是每 60 秒自动发一次请求**；没有访问时不等于后台一直在刷新。
+
+这张表是简化实验条件，不是多地域、多实例、开发 HMR、失败重试、并发命中下的精确请求计数承诺。要证明真实缓存行为，应在生产构建、指定部署和可控上游日志中观察。
+
+#### 后台缓存变 B，已经打开的页面不自动变 B
+
+```text
+用户甲在 t=70 收到 A
+→ 服务端后台把缓存更新成 B
+→ 甲的当前页面仍可显示 A
+→ 下一次实际读取到新服务端输出时，才有机会显示 B
+```
+
+普通后台 revalidation 不是 WebSocket，也不是 Query useQuery 订阅通知。router.refresh 会请求并合并新的服务端路由内容，但**不会仅凭这次调用就清空所有服务端数据缓存**；若服务器仍命中旧数据，刷新也可能返回旧值。
+
+要分清“请求 UI 刷新”和“使数据源缓存失效”。反向也一样：在 webhook 中失效服务端缓存，不会主动把每个在线浏览器都刷新。Server Action 则可能把本次失效与当前 UI 更新结合到响应里，这不等于给所有其他用户推送。
+
+#### `force-dynamic`：不能沿用对话早期的过度简化
+
+原对话先出了一道“主要控制输出还是 fetch”的选择题，后面才补完整。应保留后面的精确解释：
+
+```tsx
+// 旧模型中的路由段配置；不用于已开启 Cache Components 的页面。
+export const dynamic = 'force-dynamic'
+```
+
+它强制请求时动态渲染，且在该旧模型中相当于把该段 fetch 按 no-store/revalidate:0 处理。**不能记成“只控制输出，完全不影响数据缓存”**。但“影响这一段读取策略”也不是把其他路由、Query、数据库或外部 CDN 的所有缓存都清空。
+
+在原 B 示例中，每次独立请求重新读取未缓存上游，所以 100 次访问可得到 100 次上游读取；这个结论依赖示例条件，不来自“Next 的所有缓存都失效”这一说法。动态路由在其他配置下也可以使用明确缓存的数据；要看具体 opt-out 方式。
+
+#### Cache Components：显式缓存可复用函数或组件
+
+已启用 `cacheComponents: true` 时，不继续混用旧的 dynamic/revalidate/fetchCache 路由开关；按新模型界定缓存作用域与请求时内容。以下是**本次为纠正配置而补充的最小示例**，不是原对话完成过的工程接入。
+
+```tsx
+// next.config.ts
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
+  cacheComponents: true,
+  cacheLife: {
+    quarterly: {
+      stale: 300,
+      revalidate: 86_400,
+      expire: 7_776_000,
+    },
+  },
+}
+
+export default nextConfig
+```
+
+```tsx
+// lib/news.ts
+import 'server-only'
+import { cacheLife, cacheTag } from 'next/cache'
+import { db } from '@/lib/db'
+
+export async function getNews() {
+  'use cache'
+  cacheLife('quarterly')
+  cacheTag('news')
+  return db.news.findMany({ orderBy: { publishedAt: 'desc' } })
+}
+```
+
+quarterly 是项目定义的策略名称，不表示每个时间字段都必须是一个季度。自定义名称写在 **next.config 的 cacheLife 属性**里；`cacheLife('quarterly')` 是缓存作用域内选择策略的函数。原对话的 `cacheLife({ quarterly: { ... } })` 不是定义命名策略的正确写法。
+
+内置名称包括 `default`、`seconds`、`minutes`、`hours`、`days`、`weeks`、`max`。**days 本来就是内置项，无须先注册**；这次是用户指出教学说明前后矛盾，不是用户误解。也不要把 max 当“永远不更新”。
+
+缓存字段分别表达客户端复用、服务端重新验证与硬过期的时间语义；不能把 stale/revalidate/expire 都翻译成“缓存多久”。此外，默认内存缓存是否跨实例持久、是否需要 remote cache/平台 cache handler，属于部署配置，不能只写 use cache 就假设 Serverless 全局共享。
+
+用户专属信息不能错误进入公共缓存。请求时 cookies/headers 与共享缓存作用域有约束，身份校验和缓存 key 设计必须一起考虑；不能把“新闻可共享缓存”的策略套到所有个人面板。
+
+新模型中的请求时内容还需要正确的 Suspense 边界；读取 params/searchParams、cookies/headers 或未缓存数据时，要结合静态参数生成与请求时渲染设计。前面的页面片段用于说明参数与组件边界，不意味着打开 cacheComponents 后，不加其他边界就能预渲染所有示例。
+
+#### 按 tag、path 和立即一致性选择失效 API
+
+| 需求 | 选择 | 关键条件 |
+| --- | --- | --- |
+| news 数据被首页、列表、预览多处使用；可接受旧值 | `revalidateTag('news', 'max')` | 标记 stale，后续访问触发后台刷新 |
+| 当前写入者下一次读取必须看到自己的修改 | Server Action 中 `updateTag('news')` | 立即过期，后续读取等待新数据 |
+| 只针对某个页面/布局路径 | `revalidatePath('/pricing')` | 路径级失效，不能替代跨页面数据 tag |
+| webhook/Route Handler 需要立即过期 | `revalidateTag('news', { expire: 0 })` | updateTag 不能在 Route Handler 中使用 |
+
+```tsx
+// 使所有匹配的商品详情页面失效：动态模式需要 type。
+revalidatePath('/products/[id]', 'page')
+
+// 只针对某一个具体页面：
+revalidatePath('/products/42')
+```
+
+几个容易继续混淆的点：
+
+- tag 必须先绑定到对应缓存数据：旧 fetch 的 next.tags，或 use cache 中的 cacheTag。失效一个没人使用的标签没有目标。
+- revalidateTag 的第二参数可用内置或已定义的 profile，也可传 expire 对象；不是随便一个字符串，更不是“seconds 类型的 revalidate 值”。
+- profile 在 revalidateTag 的语境用于确定旧内容还能被服务多久，不等于把整个缓存配置重新设置一遍。
+- 单参数 `revalidateTag(tag)` 是已弃用的旧用法，不再作为新代码默认例子。
+- 失效调用不会立即把所有相关页面都重新计算一遍；还要看后续访问与调用上下文。
+- revalidatePath 在 Server Action 与 Route Handler 中对当前 UI/下一次访问的时机不同；不要只看方法名就承诺实时更新。
+- 如果“改 pricing 文案”是修改源代码，仍要构建与发布新代码；缓存失效不会让线上自动得到尚未部署的 TSX。只有数据源内容改变，才是单纯重验证可读取的对象。
+
+关联前文：[[#TanStack Query：缓存身份、生命周期与 Mutation 一致性]]。Next 服务端 tag 失效不会自动清空一个独立 QueryClient；同一资源若两侧都有缓存，必须设计各自同步策略。
+
+### Next.js loading、error 与 not-found：三条结果通道
+
+| 情况 | 文件/API | 本质 |
+| --- | --- | --- |
+| 对应段尚未完成 | loading.tsx 或手动 Suspense fallback | 等待 UI |
+| 没有匹配资源 | notFound() → not-found.tsx | 资源不存在 |
+| 未处理的渲染/数据异常 | error.tsx | 错误隔离与恢复 |
+| 用户能修正的表单输入不合法 | Action 返回字段错误等数据 | 正常业务结果，不机械 throw 成整页错误 |
+
+```tsx
+import { notFound } from 'next/navigation'
+
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = await params
+  const product = await getProduct(id)
+  if (!product) notFound()
+  return <ProductView product={product} />
+}
+```
+
+后端查询成功但 product 为 null，更适合不存在页面；不要把“没有这件商品”伪装成“数据库崩了，点重试”。真正网络/数据库异常不能吞掉之后统一返回 null，否则又会把故障伪装成不存在。
+
+```tsx
+// app/products/error.tsx
+'use client'
+
+export default function ErrorPage({ reset }: { reset: () => void }) {
+  return <button onClick={reset}>重试</button>
+}
+```
+
+reset 重新尝试边界内容，不是返回上一页，也不是清空全部数据缓存。边界是否能恢复，取决于底层错误是否消失。
+
+loading.tsx 自动在布局内部围住对应 page/后代等待区域；同段 error.tsx 也不能捕获它外面的同段 layout 自身错误，后者需要上层边界。根布局级错误有 global-error.tsx 等单独约定。事件处理器、任意异步回调的错误也不能一概指望渲染边界自动捕获。
+
+### Next.js 写入边界：Action、HTTP 接口与服务端模块
+
+> [!danger] 连续多轮混淆：都在服务器执行，不代表是同一种接口
+> 先说清谁定义 URL、谁定义函数实现、谁发起网络请求，再选 Action 或 Route Handler。有没有手写 fetch、Network 能不能看见请求，都不是区分标准。
+
+#### 四类代码分别负责什么
+
+| 代码 | 框架赋予的角色 | 是否由此建立 HTTP 调用入口 |
+| --- | --- | --- |
+| 普通 `lib/products.ts` 数据函数 | 开发者自己定义的数据访问/业务能力 | 不自动建立 |
+| `app/api/products/route.ts` 导出的 GET/POST | 按文件路径处理明确 HTTP 方法 | 是，稳定路径 `/api/products` |
+| 带 use server 的 Server Function | 可经框架协议从客户端触发的服务端函数 | 是，框架调用机制；不作为手写 REST URL 合同 |
+| Server Component | 服务端计算 UI，可直接调用数据层 | 页面/RSC 渲染的一部分，不因普通函数名生成 API |
+
+Server Action 是 Server Function 用于 action/数据变更的使用方式；不要把每一个普通服务端函数都叫 Action，也不要把 Server Function 误当成只有 Next.js 名称的一种普通 JavaScript 函数。
+
+#### `/api/products` 由路径决定，getProducts 由开发者定义
+
+```tsx
+// lib/products.ts：示例为可公开读取的商品目录
+import 'server-only'
+import { db } from '@/lib/db'
+
+export async function getProducts() {
+  return db.product.findMany({
+    select: { id: true, name: true },
+  })
+}
+```
+
+```tsx
+// app/api/products/route.ts
+import { getProducts } from '@/lib/products'
+
+export async function GET() {
+  const products = await getProducts()
+  return Response.json(products)
+}
+```
+
+```text
+客户端 GET /api/products
+→ Next 匹配 route.ts
+→ 调用导出的 GET
+→ GET 调用自己定义/导入的 getProducts
+→ JSON 响应
+```
+
+`getProducts` 不是框架内置函数，也不是“写在 GET 中就由框架帮忙实现”。db 连接同样由项目建立。需要 POST 时，在相同 route.ts 中明确导出 POST；路径不会替你生成全部业务方法。私有商品/后台资源需要在读取前校验身份和资源权限，不直接套公开目录例子。
+
+Server Component 可以直接调用 getProducts；无需为了取到同进程的数据先 fetch 自己的 `/api/products`。同一领域能力可以被 HTTP 入口和页面复用，入口仍分别处理其契约。
+
+#### `server-only`、`use server`、`use strict` 三者不能互换
+
+| 标记 | 所属层 | 实际作用 | 不提供什么 |
+| --- | --- | --- | --- |
+| `import 'server-only'` | 模块导入/构建边界 | 阻止该服务端模块被客户端模块图错误导入 | 不生成 API，不自动变 Action，不是授权 |
+| `'use server'` | React Server Function 指令，由框架支持 | 声明异步服务端函数，建立可调用引用/协议 | 不自动验证调用者与输入，不自动赋予完整 Node 能力 |
+| `'use strict'` | JavaScript 严格模式 | 改变部分语言运行语义 | 不声明服务端位置，也不建立 RSC/Action 边界 |
+
+用户原批注已经把“比较 use strict”更正为“比较 use server”；原记录仍留下那条 active，不应把这次文字更正当成新的错误答案。
+
+普通服务端查询函数只需正确放在服务端模块中；不为“确保在服务器运行”给所有查询都加 use server，从而无意扩大可调用入口。函数可用哪些 Node API，还要看实际运行时，而不是由指令保证。
+
+#### Server Action 的调用链与缓存更新
+
+```tsx
+// app/actions/products.ts
+'use server'
+
+import { updateTag } from 'next/cache'
+import { redirect } from 'next/navigation'
+import { createProductForCurrentUser } from '@/lib/products-write'
+
+export async function createProduct(formData: FormData) {
+  // 下层函数必须实现：当前用户认证、输入校验、创建权限与数据库写入。
+  const product = await createProductForCurrentUser(formData)
+  updateTag('products')
+  redirect(`/products/${product.id}`)
+}
+```
+
+```tsx
+// Server Component 中的最小提交入口
+import { createProduct } from '@/app/actions/products'
+
+export default function CreateProductForm() {
+  return (
+    <form action={createProduct}>
+      <label>
+        商品名
+        <input name="name" required />
+      </label>
+      <button type="submit">创建</button>
+    </form>
+  )
+}
+```
+
+createProductForCurrentUser 是**项目必须实现的领域函数契约**，不是内置 API；这段只展示边界、写入后失效和导航。完整的预期字段错误、pending、失败重试仍需补实作。`required` 只是浏览器辅助校验，服务端必须重新验证；不要沿用旧示例的 `String(formData.get('name'))` 充当校验。
+
+```text
+表单提交
+→ 框架发起 Action POST
+→ 服务端验证身份、输入和资源权限
+→ 执行写入
+→ 按读取时序选择 updateTag/revalidateTag/revalidatePath
+→ 返回状态/更新 UI，或 redirect
+```
+
+对预期输入失败，应设计稳定的字段错误结果供表单显示；意外失败才走异常处理。使用 useActionState 时的 action 签名会加入 previousState，与直接接收 FormData 的例子不同，不把不同示例的参数顺序混用。
+
+一次用户意图只保留一个写入所有者：若选 Server Action，不再额外让 onSubmit/useMutation 请求相同 POST。参照 [[#React Hook Form：服务端资源与编辑草稿之间需要同步策略]] 的同一原则。
+
+#### Network 看得见，不等于 `/api/products`
+
+| 触发 | Network 中 | 谁承诺请求格式 |
+| --- | --- | --- |
+| `<form action={createProduct}>` 调用 Action | 有服务端 POST | Next/React 协议；不作为第三方稳定合同 |
+| `fetch('/api/products', { method: 'POST', ... })` | 有该 URL 的 POST | 自己的 route.ts HTTP API |
+| Server Component 直接调用 db/getProducts | 浏览器不直接看到这次服务端内部调用 | 服务端内部接口 |
+
+Action 的实际 POST 可走使用它的路由，而不是某个手写 `/api` 路径；内部标识/编码随构建与框架实现而变化。**不承诺第三方 API 合同，不等于“不公开、不能被直接攻击”**：Server Functions 可由直接 POST 调用，必须在每个可调用写入路径做认证与授权，不能依赖按钮隐藏或 Proxy 恰好拦住。
+
+#### iOS 不需要 WebView 才能调用 Route Handler
+
+Route Handler 提供 HTTP 服务，浏览器、iOS 原生网络库、Android、其他服务器都可消费；“Next 写的是 Web UI”不限制它的 JSON API 调用者。显示 React 页面与请求 JSON 是两件事。
+
+“有公开 URL”只说明能定位并按契约调用，不代表匿名开放。是否让移动端复用同一接口，由认证方式、版本兼容、限流、部署与独立演进需求决定；Next 可以做全栈或 BFF，但并不会自动提供所有后端业务能力。
+
+### Next.js Proxy：请求控制不能替代数据授权
+
+对应 N#17。先把三种“跳转”动作分开，不用 redirect/navigate 两个词去硬套重定向/重写。
+
+| 行为 | 地址栏 | 发生的事 |
+| --- | --- | --- |
+| `NextResponse.redirect(...)` | 浏览器按重定向访问后会变化 | 请求被引导到另一个 URL |
+| `NextResponse.rewrite(...)` | 仍是原 URL | 请求内部交给另一条路径处理 |
+| Link / router.push / router.replace | 发生客户端导航时变化 | 浏览器中的框架导航 |
+
+例子：未登录 `/dashboard` → 地址变 `/login` 是 redirect；`/legacy/docs` 仍显示原地址但使用 `/docs` 内容，是 rewrite。rewrite 不等于 router.push，也不是靠浏览器执行一次隐藏导航。
+
+```tsx
+// proxy.ts：项目根或 src 下，与 app 同级
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+
+export function proxy(request: NextRequest) {
+  if (!request.cookies.get('session')?.value) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+  return NextResponse.next()
+}
+
+export const config = {
+  matcher: ['/dashboard/:path*'],
+}
+```
+
+这是“Cookie 有无”的早期门禁示例，不是会话真实性校验。它也不为任意其他路径提供保护。
+
+- config 是约定文件的特殊导出，Next 读取 matcher 后决定是否运行 proxy；不需要在 proxy 函数里自己调用 config。
+- matcher 使用能被构建期静态分析的常量；随便在别处导出同名变量不会生效。
+- `/dashboard/:path*` 覆盖该段与后代；此例不覆盖 login/api。没有正确限定时，还可能误拦 JS、CSS、图片等请求。
+- Next 16 将 middleware 文件约定改称 proxy；旧项目看版本，不机械把旧 middleware 的 runtime 假设迁移过来。
+- **本次官方校对：proxy 默认 Node.js runtime，不能在 proxy 文件中设置 runtime 配置。** 不因为有 Cookie/rewrite 就把它归为 Edge runtime。
+
+与 Vue Router 浏览器守卫的对照：
+
+| 维度 | Vue Router 客户端守卫 | Next Proxy |
+| --- | --- | --- |
+| 执行层 | 浏览器 SPA 导航 | 服务端请求路由层 |
+| 首次直接访问 | 需要应用运行后才有客户端守卫逻辑 | 可以在页面响应前 redirect/rewrite |
+| 适合的问题 | 离开确认、客户端导航体验 | 请求范围、语言/区域路由、粗粒度门禁 |
+| 最终资源授权 | 不能替代后端授权 | 同样不能替代 Action/Handler/DAL 授权 |
+
+Cookie 存在不代表签名有效、会话未过期、用户有权修改目标记录。Proxy 放行后，敏感读写仍应在接近数据处验证；不要只在布局或前端判断一次就认为所有入口受保护。
+
+### Next.js 部署：静态分发、运行时、部署形态分开判断
+
+> [!danger] 最明确的复发点：先答对“静态文件走 CDN”，之后又改成“Edge runtime + CDN”
+> 先判断请求是否需要执行自己的业务代码，再判断代码需要什么 API，最后才判断平台如何承载。响应类型是 PNG/HTML/JSON，不能替代这三个问题。
+
+#### 三个坐标
+
+| 问题 | 可选答案举例 | 不是在回答什么 |
+| --- | --- | --- |
+| 这次是否需要执行应用逻辑？ | 已有文件直接托管 / 需要计算、查询、生成 | 不由图片扩展名决定 |
+| 代码需要哪些运行能力？ | Node API、原生模块、Web API 子集 | 不是选择是否长期占用一个进程 |
+| 平台如何部署与伸缩？ | 长期服务、Serverless Function、特定平台边缘函数 | 不等于自动选定某个 JS runtime |
+
+CDN 是分发/缓存基础设施，不是 JavaScript runtime。Edge runtime 描述执行环境与 API 约束；Serverless 描述实例生命周期与平台管理，不是“没有服务器”。边缘节点的位置也不等于必然执行 Edge runtime。
+
+#### 用原题的三个场景演算
+
+| 场景 | 是否需要业务函数 | 运行时判断 | 部署判断 |
+| --- | --- | --- | --- |
+| 已存在的 logo.png | 为返回该文件本身不需要 | 不必专门选择 Node/Edge 业务函数 | 静态资源托管，可经 CDN 分发 |
+| Route Handler 使用 sharp/fs/数据库生成图片 | 需要 | Node 能力；不能因输出是图片就当静态 | 可是长期 Node 服务，也可是支持依赖的 Node Serverless |
+| 只用 Web Crypto 与请求头的函数 | 需要 | Web API 兼容，并不排斥 Node | 依平台支持与版本决策；不能只凭“轻量”认定 Edge 更优 |
+
+路径也校正一次：文件是 **`public/logo.png`，通常访问 URL 为 `/logo.png`**，不是原对话反复写的 `/public/logo.png`。若额外让 Proxy/重写介入，链路当然可能执行代码，但不是图片字节本身必须由一个 SSR 函数生成。
+
+```text
+已有文件：浏览器 → 静态资源服务/CDN → 文件
+动态图片：浏览器 → 应用函数 → sharp/数据库等计算 → 结果
+```
+
+#### Node runtime 为什么不等于长期 Node 服务器
+
+```text
+Node runtime + 长期进程
+  进程持续运行，例如自托管 Next 服务
+
+Node runtime + Serverless Function
+  平台按请求调度或复用 Node 实例，并管理伸缩与回收
+```
+
+Node 决定可用 API，不决定进程寿命。Serverless 可复用暖实例，也可能冷启动；内存全局变量和本地文件不能因此当作可靠持久化仓库。fs 的读写限制、原生模块支持、数据库连接与执行时限，都要看平台，不是“支持 Node”就等于一台无限制 VM。
+
+只做静态导出与托管时，也不能期待运行请求时数据库、Action 或 Proxy；需要哪些服务器能力，就要选择支持这些能力的部署方案。Next 应用并不强制只能部署到 Vercel。
+
+#### 版本校对：八月的 Edge 练习不直接作为十月底的新项目建议
+
+原课程里，“只用 Web Crypto → 可以选择 Edge runtime”用于区分 API 能力，可以保留为历史兼容性练习；但最后一句“只用 Web API，所以 Edge 更好”不是普遍推论，Node 也提供 Web API。
+
+**2026-10-29 查阅的官方 runtime 专页已把 Edge runtime 标为 deprecated，建议移除路由文件的 runtime 导出。** 开启 Cache Components 时，连显式 `runtime = 'nodejs'` 也应移除，由默认 Node 环境工作。Proxy 本身亦不接受 runtime 配置。
+
+所以新笔记不能继续推荐所有轻量鉴权都写 `export const runtime = 'edge'`。判断顺序应是：项目/框架版本 → 依赖能力 → 平台支持与地理位置 → 延迟与部署成本；旧项目的 Edge 代码则按对应版本做迁移。
+
+### Next.js 误区回查与教学纠正
+
+这份索引覆盖原记录 N#1–N#19；#15/#16 的重复行按内容合并。它不是“19 个都反复犯过”的清单：有的是一次澄清，有的是明确未知，有的是教学说明本身有误。真正多轮混淆的组已在章节前用重点标注。
+
+| 原编号 | 需要记住的结论 | 复习位置/性质 |
+| --- | --- | --- |
+| N#1–N#2、N#4 | Next 不仅是 SSR；Server/Client 可以组合；Client 首屏仍可有 HTML | 渲染模型；多轮澄清 |
+| N#3 | 旧模型 force-dynamic 影响渲染与 fetch 策略，不能只背早期选择题 | 缓存；教学先简化、后补完整 |
+| N#5 | next.revalidate/next.tags 是 Next 服务端 fetch 扩展，不是浏览器标准参数 | 缓存；原表 active，本文给出明确答案 |
+| N#6、N#9 | 特殊文件名 page 不进入 URL；动态段取实际值，如 `'42'` | 文件路由；连续两轮纠正 |
+| N#7–N#8 | 交互组件可接收服务端数据；useEffect 语义来自 React | 渲染模型；与原 React 心智模型衔接 |
+| N#10–N#11 | 跨边界遵守序列化与模块边界；数据库导入问题不只是点击失效 | 渲染与写入边界 |
+| N#12 | SWR 过期访问可先看到旧内容；更新服务器缓存不自动推送当前 UI | 缓存时间线 |
+| N#13 | days 是内置 profile；自定义 profile 在 next.config 中定义 | 用户指出教学矛盾，不列为用户反复错误 |
+| N#14–N#16 | 普通数据函数、server-only、Action 协议、稳定 HTTP endpoint 分开 | 写入边界；重复行及已撤回提问不另计错误 |
+| N#17 | redirect 改变访问目标；rewrite 保留外部 URL；客户端导航是另一层 | Proxy 与客户端守卫对照 |
+| N#18–N#19 | 先问是否执行代码，再问能力与部署；CDN 不等于 Edge runtime | 部署；纠正后又复发，最高优先复习 |
+
+其他不能原样抄回来的教学细节：
+
+- 最初示例同步读取 params/searchParams，后来已补 Promise 写法；本文使用异步形式。
+- `cacheLife({ quarterly: {...} })` 不能用来注册名为 quarterly 的策略；区分 next.config 属性与作用域内函数。
+- `public/logo.png` 的默认公开路径为 `/logo.png`，不能把物理目录名原样放进 URL。
+- “只使用 Web API”只说明兼容能力，不能推出“必须 Edge”或“Edge 一定更好”；当前版本还需看弃用状态。
+- “10/10 概念掌握”说明当时练习通过，不说明已完成一个项目部署。原 session 的 Current Round 局部计数也不能当作整门课程统计。
+
+### Next.js 后续实作清单
+
+原对话主要完成机制判断与局部练习，结尾也建议再做真实项目。以下作为待验证能力，不冒充已运行结果：
+
+- [ ] **可运行的商品页**：固定 Next 版本，完成 Server 页面、最小 Client 交互、Promise params、URL tab 与运行时 schema；检查首屏 HTML 与客户端导航。
+- [ ] **Streaming 实验**：在生产构建中为评论/推荐分别制造延迟，对照父层提前 await 与边界内 await；观察首批响应、fallback 与后续补发。
+- [ ] **缓存一致性实验**：选定旧模型或 Cache Components；用可控数据验证 SWR 时间线、cacheLife、tags、updateTag、revalidateTag 与 router.refresh 的区别。
+- [ ] **完整写入与错误反馈**：实际实现领域函数、身份/资源授权、表单校验、预期字段错误和 pending；验证一次提交只写一次、成功后看到新值、失败保留输入。
+- [ ] **HTTP 与 Proxy 入口**：实现有明确契约的 Route Handler；从独立 HTTP 客户端调用；验证 matcher 范围、redirect/rewrite 与绕过页面后的最终授权。
+- [ ] **真实部署验证**：在目标平台验证 Node 依赖、原生模块、连接、持久化/cache handler 和执行限制；使用生产日志与少量关键流程 E2E 提供证据。
+
+仅了解名字、并未在这条对话系统完成的方向包括：完整认证方案、数据库事务与迁移、复杂 Action 表单状态、完整缓存部署、生产监控与 CI/E2E、SEO metadata、图片/字体优化、并行/拦截路由等。需要时另开学习专题，不把框架能力清单当作学习完成清单。
+
+### Next.js 排查时的十个问题
+
+1. 现在讨论的是模块执行位置、输出生成时间，还是浏览器接管交互？
+2. 这次 fetch 写在 Server Component、Effect、事件、Action 还是 Route Handler 中？
+3. Client 首屏已有 HTML，是否仍要等 hydration 才有 React 事件？
+4. params/searchParams 是否按当前版本读取并在运行时验证？
+5. 慢读取是不是在返回 Suspense 边界之前就被父组件 await 了？
+6. 缓存的是数据、输出、浏览器导航内容还是 Query 状态？用的哪套缓存模型？
+7. 这次操作只标记 stale、立即过期，还是确实让当前浏览器重新取得了新结果？
+8. 这是普通数据函数、Action 调用还是稳定 HTTP API？每条可调用入口在哪里校验权限？
+9. Proxy 做的是请求控制还是被错误地当成最终数据授权？
+10. 返回的是已有文件，还是要执行代码生成？依赖能力和实际部署形态分别是什么？
+
+### Next.js 官方校对资料
+
+这些链接用于本次版本与边界校对；学习过程与反复出错的证据仍以来源对话为准。
+
+- [Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components)：首屏 HTML、RSC、hydration、模块与 props 边界。
+- [Mutating Data](https://nextjs.org/docs/app/getting-started/mutating-data)：Server Functions/Actions、POST、可直接调用的入口、表单状态与授权。
+- [cacheLife](https://nextjs.org/docs/app/api-reference/functions/cacheLife)：内置 profile、配置注册与作用域内使用。
+- [revalidateTag](https://nextjs.org/docs/app/api-reference/functions/revalidateTag) 与 [updateTag](https://nextjs.org/docs/app/api-reference/functions/updateTag)：SWR 与立即过期、调用上下文限制。
+- [revalidatePath](https://nextjs.org/docs/app/api-reference/functions/revalidatePath)：路径/布局失效及当前 UI 与后续访问的区别。
+- [Proxy](https://nextjs.org/docs/app/api-reference/file-conventions/proxy)：matcher、redirect/rewrite、文件位置与 runtime 限制。
+- [Route Segment Config](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config) 与 [runtime](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config/runtime)：旧配置迁移与当前运行时约束。
+
 ## 官方文档阅读笔记
 
 
@@ -102,9 +2197,11 @@ Functions starting with `use` are called *Hooks*. `useState` is a built-in Hook 
 > > > 这是因为在更新过程中，如果通过 if 条件语句，增加或者删除 hooks，那么在复用 hooks 的过程中，会产生复用 hooks 状态和当前 hooks 不一致的问题。所以在开发时一定要注意 hooks 顺序的一致性。
 > 
 >
-> 看起来应该是为了保证 Hooks 纯函数的特性。
+> 更正：普通 Hooks 要在组件或自定义 Hook 顶层、以稳定顺序调用，关键是让每次 render 的 Hook 调用与对应状态位置一致；不能只归因于“保证纯函数”。render 纯度是另一项相关但不同的规则。React 19 的 `use` API 有单独规则，不直接套用普通 Hook 的所有限制。
 > 
 > > 在 [一道React Hook的面试题【渡一教育】](https://www.bilibili.com/video/BV177xkzwE5P) 中也有说明：`<StrictMode />` 运行两次，判断结果是否一致，也算是监测 hooks 没有放到顶层的判断机制。其次，每次调用 hook，都会放到链表中，后续重新执行时，去链表中依次取，如果不放在顶层，则会出现多或少的情况，显然会出错；这是为什么 hook 为什么必须放到顶层
+>
+> 上面的 StrictMode 解释也需限定：开发期重复调用主要暴露不纯 render、缺少 cleanup 等问题；不能把“运行两次检查结果”当作 Hook 顶层调用约束的原理。Hook 顺序由运行时对应关系与 lint 等机制约束。
 >
 > <font color=dodgerBlue>另外感觉文章中关于 hooks 的介绍和总结很不错，这里做下摘抄：</font>
 >
@@ -7874,7 +9971,7 @@ To dynamically load a component `LazyComponent.js` we would need to dynamically 
 ```react
 import { lazy } from 'react';
 ...
-const LazyLoadComponent = lazy(() => import('./LazyComponent');
+const LazyLoadComponent = lazy(() => import('./LazyComponent'));
 ```
 
 <font color=red>`React.lazy` is only supported for default imports</font>. We have to modify the promise returned by the dynamic import to have a default for named imports.
@@ -7896,7 +9993,7 @@ const LazyLoadComponent = lazy(() => import('./LazyComponent')
 `React.Suspense` lets you specify the loading indicator in case some components in the tree below it are not yet ready to render.
 
 ```react
-import { lazy, Suspense } from 'react;
+import { lazy, Suspense } from 'react';
 const Content = lazy(() => import("./Content"));
 
 export const AppComponent = () => (
@@ -7908,7 +10005,10 @@ export const AppComponent = () => (
 
 ##### Use of Intersection Observer API
 
-<font color=dodgerBlue>`React.Suspense` APIs don’t support lazy data fetching</font>. Using [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) we <font color=red>can under the hood fetch data **only if the component comes in the visibility**</font>. This way we can reduce the load time again on top of lazy loading, we are also lazy fetching the component. We can also use the same principle to supply data for the component.
+> [!warning] 旧摘录的版本与范围
+> “Suspense 不支持数据获取”不能作为通用结论。Suspense 可以配合支持它的数据源/框架工作，但不会自动识别任意 Effect 或事件中发起的 fetch。普通 `useQuery` 的 loading 状态与 Suspense 专用用法也应区分；Intersection Observer 则解决“何时进入可视范围、何时开始加载”的另一层问题。
+
+Using [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) we <font color=red>can under the hood fetch data **only if the component comes in the visibility**</font>. This way we can reduce the load time again on top of lazy loading, we are also lazy fetching the component. We can also use the same principle to supply data for the component.
 
 To use Intersection Observer API we can create an observer as below:
 

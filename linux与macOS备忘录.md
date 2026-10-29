@@ -762,7 +762,9 @@ https://web.archive.org/web/20160812022408/https://www.zhihu.com/question/490738
 
 #### 命令行 flags、switches、options 区别
 
-> 👀 由于在中文网中没有搜索到解答，甚至感觉完全混为一谈；英文网中没找到找到权威的解答，且解答与解答间相互矛盾...所以，<font color=fuchsia>**当前的笔记，<font size=4>只供参考</font>**</font>
+> [!NOTE]
+>
+> 由于在中文网中没有搜索到解答，甚至感觉完全混为一谈；英文网中没找到找到权威的解答，且解答与解答间相互矛盾...所以，<font color=fuchsia>**当前的笔记，只供参考**</font>
 
 ##### 关于 flags & switches
 
@@ -792,7 +794,7 @@ https://web.archive.org/web/20160812022408/https://www.zhihu.com/question/490738
 ```bash
 sudo su
 sudo -i  # 进入root目录
-su root # 存疑
+su root  # 存疑
 
 # 退出管理员模式
 exit
@@ -800,15 +802,23 @@ exit
 
 
 
+#### `sudo -i`
+
+
+
+
+
 #### 打开外接存储设备
 
 进入根目录，进入 Volume 文件夹，这里存放所有外接存储设备
 
+
+
 #### bc命令 ( Basic Calculator )
 
-开启一个 CLI 下的计算器，同时：按下 quit 以退出。如下示图：
+开启一个 CLI 下的计算器，输入 `quit` 退出。如下示图：
 
-<img src="https://i.loli.net/2020/10/26/z8nFIPWBCyDaef9.png" alt="BuATWn.png" style="zoom:50%;" />
+<img src="https://files.seeusercontent.com/2026/10/29/6mKq/image-20261029172244864.png" alt="image-20261029172244864" style="zoom:50%;" />
 
 
 
@@ -816,10 +826,10 @@ exit
 
 ```bash
 # >> 表示在文件末尾追加命令
-echo 'add content'>>filename
+echo 'add content' >> filename
 
 # > 表示删除原有内容，并添加
-echo 'add content'>filename
+echo 'add content' > filename
 ```
 
 #### rm 命令
