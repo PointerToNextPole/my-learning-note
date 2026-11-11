@@ -1637,6 +1637,7 @@
   > > 在软件领域，( parity ) 通常用来指两个软件在功能、规则或性能上达到了完全一致的水平。
 
 - **workaround** ：变通方法
+
 - **telemetry** ：遥测
   > [!NBOTE]
   > 
@@ -2902,3 +2903,9 @@
 - **impromptu** ：即兴的
 
 - **testimonials** ：用户评价
+
+- **dogfooding** ：内部测试
+
+   > [!NOTE]
+   >
+   > 可以参考：https://gemini.google.com/app/3028b00b7ceb32b3

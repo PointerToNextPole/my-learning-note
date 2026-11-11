@@ -2,12 +2,13 @@
 > 尚硅谷Spring Boot教程
 
 
-## From 1
+#### From 1
 
 Spring Boot简化Spring应用开发，整个Spring技术栈的一个大整合，约定大于配置，去繁从简，just run就能创建一个独立的产品级别的应用
 Spring Boot -> J2EE一站式解决方案
 Spring Cloud -> 分布式整体解决方案
-**优点**
+
+###### 优点
 
 - 快速创建独立运行的Spring项目以及与主流框架集成
 - 使用嵌入式的Servlet容器，应用无需打包成WAR包
@@ -19,15 +20,19 @@ Spring Cloud -> 分布式整体解决方案
 
 
 
-## <font color=FF0000>**From 2**</font>
-<font size=3>**微服务**</br>
-微服务Mircoservices是由Martin Fowler在2014年提出，是一种架构风格</br>
-一个应用应该是一组小型服务，可以通过HTTP的方式进行互联</br>
-每一个功能元素最终都是一个可独立替换和独立升级的软件单元</br>
-</font>
+#### From 2
+##### 微服务
 
-## <font color=FF0000>**From 4**</font>
-<font size=3>**spring boot Helloworld**</br>
+微服务Mircoservices是由Martin Fowler在2014年提出，是一种架构风格
+一个应用应该是一组小型服务，可以通过HTTP的方式进行互联
+每一个功能元素最终都是一个可独立替换和独立升级的软件单元
+
+
+
+#### From 4
+
+##### spring boot Helloworld
+
 1. 创建一个maven工程
 2. 在pom.xml文件下导入spring-boot相关依赖
    ```xml
@@ -78,11 +83,13 @@ Spring Cloud -> 分布式整体解决方案
     </build>
    ```
    之后在IDEA界面右侧的Maven Projects选项中在对应的项目名下选择Lifecycle选项，并选择package选项，在项目target文件夹下生成了jar包，比如：spring-boot-01-helloworld-1.0-SNAPSHOT.jar。这时候在Terminal中键入 ```java -jar jar包名``` 即可在浏览器中运行（因为jar中内置Tomcat所以运行环境中无需安装Tomcat）
-   </font>
+   
 
-## <font color=FF0000>**From 5**</font>
-<font size=3>**pom.xml文件**</br>
+#### From 5
+##### pom.xml 文件
+
 如下是pom.xml文件关于父项目的配置，该项目依赖于父项目spring-boot-starter-parent<mark>（这种关系类似于：子类依赖于父类）</mark>
+
 ```
 <parent>
     <groupId>org.springframework.boot</groupId>
@@ -115,8 +122,11 @@ spring-boot-starter是spring-boot启动器（starter），<mark>**帮我们导�
 更多启动器见[**Spring Boot官方文档**](https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/)中的**3.1.5.Starters**
 </font>
 
-## <font color=FF0000>**From 6**</font>
-<font size=3>**主程序类/主入口类**</br>
+
+
+#### From 6
+##### 主程序类/主入口类
+
 ```java
 @SpringBootApplication
 public class HelloWorldMainApplication{
@@ -158,11 +168,13 @@ public @interface SpringBootApplication {...} //...表示省略
   <font style=color:lime>@EnableAutoConfiguration</font>是由<font style=color:olive>@Import</font>(<font style=color:navy>AutoConfigurationPackages.Registrar.class</font>)实现</br>
   <font style=color:olive>@Import</font>是Spring的底层注解，<mark>其作用是给容器中导入一个组件</mark>，导入的组件是括号中的内容，这里的是<font style=color:navy>AutoConfigurationPackages.Registrar.class</font>
   - <font style=color:lime>@EnableAutoConfiguration</font>的<mark style=background-color:aqua;color:red>**实际原理**</mark>是<mark>将主配置类（@SpringBootApplication标注的类）所在包及其包含的所有子包内的所有组件扫描到Spring容器中</mark>
-  - <font style=color:olive>@Import</font>(<font style=color:navy>AutoConfigurationPackages.Registrar.class</font>)是给容器中导入组件，<font style=color:navy>AutoConfigurationPackages</font>是开启自动导包的选择器，将所有需要导入的组件以全类名的形式返回，这些组件就会被添加容器中；最后会给容器中导入非常多的自动配置类（xxxAutoConfiguration），这些自动配置类的作用就是给容器中导入这些场景需要的所有组件，并配置好这些组件。有来自动配置类，免去了我们手动编写配置、注入功能组件等的工作。<mark>Spring Boot在启动的时候从类路径下的META-INF/spring.factories中获取EnableAutoConfiguration指定的值，将这些值作为自动配置类导入容器中，自动配置类就会生效，帮我们进行自动配置工作</mark>；以前我们需要自己配置的东西，现在自动配置类都帮我们自动配置了。J2EE的整体整合解决方案和自动配置都在Spring-boot-autoconfigure-1.5.9.RELEASE.jar中
-  </font>
+  - `@Import</font>(AutoConfigurationPackages.Registrar.class)` 是给容器中导入组件，<font style=color:navy>AutoConfigurationPackages</font>是开启自动导包的选择器，将所有需要导入的组件以全类名的形式返回，这些组件就会被添加容器中；最后会给容器中导入非常多的自动配置类（xxxAutoConfiguration），这些自动配置类的作用就是给容器中导入这些场景需要的所有组件，并配置好这些组件。有来自动配置类，免去了我们手动编写配置、注入功能组件等的工作。<mark>Spring Boot在启动的时候从类路径下的META-INF/spring.factories中获取EnableAutoConfiguration指定的值，将这些值作为自动配置类导入容器中，自动配置类就会生效，帮我们进行自动配置工作</mark>；以前我们需要自己配置的东西，现在自动配置类都帮我们自动配置了。J2EE的整体整合解决方案和自动配置都在Spring-boot-autoconfigure-1.5.9.RELEASE.jar中
 
-## <font color=FF0000>**From 7**</font>
-<font size=3>IDE都支持使用Spring的项目创建向导（Spring Initializer）快速创建Spring Boot程序（与在 https://start.spring.io/ 生成类似）</br>
+
+
+#### From 7
+
+IDE都支持使用Spring的项目创建向导（Spring Initializer）快速创建Spring Boot程序（与在 https://start.spring.io/ 生成类似）
 ```java
 // @ResponseBody  //表明这个类的所有方法返回的数据以json的形式直接写给浏览器
 // @Controller
@@ -176,38 +188,45 @@ public class HelloController {
     }
 }
 ```
-**默认生成的Spring Boot项目有如下特点：**</br>
+默认生成的Spring Boot项目有如下特点
 - 主程序都生成好了，我们只需要编写逻辑
 - resources文件夹中的目录结构
   - static：保存所有的静态资源，js css images等
   - template：保存所有的模板页面（Spring Boot默认jar包使用嵌入式Tomcat，默认不支持JSP页面），可以使用模板引擎（freemarker、thymeleaf）
   - application.properties：Spring Boot应用的配置文件：比如修改使用的端口号只需写入```server.port=8081```，修改sql端口、密码、驱动等。该文件可以修改一些默认设置。
-  </font>
+  
 
-## <font color=FF0000>**From 8**</font>
-<font size=3>**Spring Boot的配置文件**</br>
+#### From 8
+##### Spring Boot的配置文件
+
 Spring Boot使用两种形式的配置文件作为全局配置文件，且配置文件名是固定的，如下：
+
 - application.properties
 - application.yml
 
-**配置文件的作用**：修改Spring Boot自动配置的默认值（默认值即为Spring Boot在底层给我们配置好的配置）</br>
+**配置文件的作用**：修改Spring Boot自动配置的默认值（默认值即为Spring Boot在底层给我们配置好的配置）
+
 yml是YAML(YAML Ain't Markup Language)语言的文件，**是以数据为中心**（更加简洁），比json、xml等更适合做配置文件。yml配置格式示例如下：
+
 ```yaml
 server:
     port: 8081
 ```
-</font>
 
-## <font color=FF0000>**From 9**</font>
-<font size=3>**YAML基本语法**</br>
-```key: value``` 表示一对键值对（<font color=FF0000>key和value之间空格必须有</font>）</br>
-以**空格**的缩进来控制层级关系，只要是左对齐的一列数据都是同一层级的；<font color=FF0000>同时属性和值也是大小写敏感的</font>，示例如下：
+
+#### From 9
+##### YAML基本语法
+
+key: value 表示一对键值对（key和value之间空格必须有）</br>
+以空格的缩进来控制层级关系，只要是左对齐的一列数据都是同一层级的；同时属性和值也是大小写敏感的，示例如下：
+
 ```yaml
 server:
     port: 8081
     path: /hello
 ```
-**值（value）的写法**
+###### 值（value）的写法
+
 - value是<font color=FF0000>**字面量**</font>：k: v 字面量直接来写。字符串默认<mark><font color=FF0000>**不用**</font></mark>加上<mark>单引号或者双引号</mark>
   - ""：双引号；<mark><font color=FF0000>**不会**</font>转义字符串里面的特殊字符：**特殊字符会作为本身想要表达的意思**</mark>，比如：name: "zhangsan \n lisi" -> 输出： zhangsan 换行 lisi
   - ''：单引号；<mark><font color=FF0000>**会**</font>转义字符串里面的特殊字符，**特殊字符最终只是一个普通得字符串数据**</mark>，比如：name: "zhangsan \n lisi" -> 输出： zhangsan \n lisi
@@ -234,11 +253,13 @@ server:
   ```yaml
   pets: [cat,dog,pig]
   ```
-  </font>
+  
 
-## <font color=FF0000>**From 10**</font>
-<font size=3>**使用yaml在配置文件生成对象的数据，并将其与对应的类绑定**</br>
+#### From 10
+使用yaml在配置文件生成对象的数据，并将其与对应的类绑定
+
 使用<font color=FF0000>注解@ConfigurationProperties(prefix="属性名")标注在需要绑定的类的定义上方</font>，将配置文件中的配置的每一个属性的值，映射到这个组件中。@ConfigurationProperties告诉Spring Boot将本类中的所有属性和配置文件中相关的配置进行绑定。<mark>另外，<font color=FF0000>非常重要的是</font>：只有这个组件（类）是容器的组件（加上@Component），才能使用容器所提供的@ConfigurationProperties功能。</mark>示例如下：
+
 ```java
 @Component
 @ConfigurationProperties(prefix="person")
@@ -253,12 +274,14 @@ prefix="person"：配置文件中哪个下面的所有属性进行一一对应�
     <optional>true</optional>
 </dependency>
 ```
-这样的话，<mark>导入配置文件处理器</mark>，配置文件进行绑定就会有提示。
-</font>
+这样的话，导入配置文件处理器，配置文件进行绑定就会有提示。
 
-## <font color=FF0000>**From 11**</font>
-<font size=3>**在application.properties中配置组件的值**</br>
+#### From 11
+
+##### 在application.properties中配置组件的值
+
 示例如下：
+
 ```java
 #idea的properties文件默认使用utf-8，需要在运行时进行编码转换
 # 配置person的值
@@ -273,8 +296,11 @@ person.dog.name=dog
 person.dog.age=15
 </font>
 ```
-## <font color=FF0000>**From 12**</font>
-<font size=3>**其他获取值的方法。使用@Value，示例如下：**
+
+
+#### From 12
+
+其他获取值的方法。使用@Value，示例如下：
 
 ```java
 @Component
@@ -310,11 +336,12 @@ public class Person{
 - 如果说，我们只是在某个业务逻辑中需要获取一下配置文件的某项值，使用@Value
 - 如果说，我们专门编写了一个JavaBean来与配置文件进行映射，我们就使用@ConfigurationProperties
 
-</font>
 
-## <font color=FF0000>**From 13**</font>
-<font size=3>**@PropertySource**</br>
-因为<mark>@ConfigurationProperties默认是从全局配置文件中获取数据</mark>，这样配置文件将会很大，且耦合度过高。而<mark>**@PropertySource功能是加载指定的配置文件**</mark>。</br>
+
+#### From 13
+##### @PropertySource
+
+因为@ConfigurationProperties默认是从全局配置文件中获取数据，这样配置文件将会很大，且耦合度过高。而@PropertySource功能是加载指定的配置文件。</br>
 @PropertySource用法示例如下：
 
 ```java
@@ -343,13 +370,11 @@ public class MyAppConfig{
 }
 ```
 
-</font>
 
 
+#### From 14
 
-## <font color=FF0000>**From 14**</font>
-
-<font size=3>**配置文件中的占位符**</br>
+##### 配置文件中的占位符
 
 - RandomValuePropertySource：配置文件中可以使用<mark>随机数</mark>
 
@@ -365,15 +390,12 @@ public class MyAppConfig{
   person.dog.name=${person.hello:hello}_dog
   ```
 
-  
-
-</font>
 
 
 
-## <font color=FF0000>**From 15**</font>
+#### From 15
 
-<font size=3>**Profile**</br>
+##### Profile
 
 Profile是Spring对不同环境（开发环境、生产环境、测试环境）提供不同配置功能的支持，可以通过激活、指定参数等方式<mark style=color:red>**快速切换环境**</mark>（比如在不同环境下使用不同的端口号）。
 
@@ -431,7 +453,7 @@ Profile是Spring对不同环境（开发环境、生产环境、测试环境）�
 
 
 
-## <font color=FF0000>**From 16**</font>
+#### From 16
 
 <font size=3>配置文件加载位置</br>
 
@@ -450,11 +472,9 @@ Spring Boot<mark>会<font color=FF0000>**依次扫描**</font>（<font color=FF0
 java -jar jar包名.jar --spring.config.location=配置文件地址
 ```
 
-</font>
 
 
-
-## <font color=FF0000>**From 17**</font>
+#### From 17
 
 **外部配置加载顺序**
 
@@ -475,11 +495,9 @@ Spring Boot也可以从以下顺序（<mark>按照优先级从高到低</mark>�
 
 如要了解详细的可以看官方文档 https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features  4.2. Externalized Configuration的内容
 
-</font>
 
 
-
-## <font color=FF0000>**From 18**</font>
+#### From 18
 
 配置文件到底能写什么，怎么写：可见官方文档 [**Appendix A: Common Application properties**](https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#common-application-properties)  
 
@@ -495,13 +513,3 @@ Spring Boot也可以从以下顺序（<mark>按照优先级从高到低</mark>�
 
   以上总结：将类路径下META-INF/Spring-factories里面配置的所有EnableAutoConfiguration的值加入到容器中
 
-  
-
-
-
-
-## <font color=FF0000>**From 19**</font>
-
-<font size=3></br>
-
-</font>

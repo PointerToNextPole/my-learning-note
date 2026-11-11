@@ -308,7 +308,7 @@ sudo xattr -r -d com.apple.quarantine <app-path>
   open -t fileName
   ```
 
-- 打开文件， 如果是macOS则使用Finder打开文件夹
+- 打开文件， 如果是 macOS 则使用 Finder 打开文件夹
 
   ```sh
   open foldName
@@ -321,7 +321,7 @@ sudo xattr -r -d com.apple.quarantine <app-path>
   open -R fileName
   ```
 
-- 打开某个url，注意：要加上 `http://` 或 `https://`
+- 打开某个 url，注意：要加上 `http://` 或 `https://`
 
   ```sh
   open https://url
@@ -473,6 +473,36 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 
 // TODO 可以参考下 [使用brew services管理服务](https://www.jianshu.com/p/6c3b26490861) ，其中提及了 Mac 的 `launchctl` 加载开机自动运行的服务的命令
 
+##### brew uses 和 brew deps 命令
+
+在 Homebrew 中，查看一个包被哪些其他包依赖（即该包的“反向依赖”），可以使用 `brew uses` 命令。
+
+```sh
+# 查看已安装的包中，有哪些依赖了该包
+brew uses <package_name> --installed
+
+# 查看所有公式（无论是否已安装）中，有哪些依赖了该包
+brew uses <package_name> --eval-all
+```
+
+对应的，还有 `brew deps` 命令，用于查看某个包自己依赖了哪些包
+
+```sh
+# 查看某个包自己依赖了哪些包
+brew deps <package_name>
+
+# 以树状图查看所有已安装包的依赖关系
+brew deps --tree --installed
+```
+
+###### brew leaves 命令
+
+查看没有被任何其他包依赖的“孤立包”（可以安全考虑清理的包）
+
+```sh
+brew leaves
+```
+
 ##### 一些有用的命令
 ###### `brew cleanup --prune=all; brew autoremove`
 
@@ -483,6 +513,8 @@ tap命令的仓库源默认来至于Github，但是这个命令也不限制于�
 搜索所有 “已经通过 brew 安装的、且使用 `dep-name` ” 的软件。另外，`brew uses` 应该还有更多配置，等以后再探索
 
 另外，这个命令也是 Gemini 的问答中学到的，详见 🔗 https://g.co/gemini/share/37c4d0a65e21
+
+
 
 
 #### 数码测色计 digital color meter 使用
@@ -760,6 +792,8 @@ https://web.archive.org/web/20160812022408/https://www.zhihu.com/question/490738
 
 有点点 类似于转义。
 
+
+
 #### 命令行 flags、switches、options 区别
 
 > [!NOTE]
@@ -814,7 +848,7 @@ exit
 
 
 
-#### bc命令 ( Basic Calculator )
+#### bc 命令 ( Basic Calculator )
 
 开启一个 CLI 下的计算器，输入 `quit` 退出。如下示图：
 
@@ -837,13 +871,13 @@ echo 'add content' > filename
 ##### 删除文件
 
 ```bash
-rm -f fileName  # -f表示强行删除
+rm -f fileName  # -f 表示强行删除
 ```
 
 ##### 删除文件夹
 
 ```bash
-rm -rf folderName # -r表示递归，-f表示强行删除
+rm -rf folderName # -r 表示递归，-f 表示强行删除
 ```
 
 #### file 命令
@@ -877,19 +911,19 @@ rm -rf folderName # -r表示递归，-f表示强行删除
 重定向一般透过在命令间插入特定的符号来实现。特别的，<font color=dodgerBlue>这些符号的语法如下所示</font>：
 
 ```bash
-command1 >file1
+command1 > file1
 ```
 
 上面这个命令执行 `command1` 然后将输出的内容存入 `file1` 。注意<font color=red>任何 `file1` 内的已经存在的内容将被新内容替代</font>（ 👀 覆盖）。如果<font color=fuchsia>要将新内容添加在文件末尾，请使用 `>>` 操作符</font>。
 
 ```
-command1 <file1
+command1 < file1
 ```
 
 执行 `command1` ，使用 `file1` 作为用来替代键盘的输入源。
 
 ```
-command1  <infile > outfile
+command1  < infile > outfile
 ```
 
 同时替换输入和输出，执行 `command1` ，从文件 `infile` 读取内容，然后将输出写入到 `outfile` 中。
@@ -955,7 +989,7 @@ command1 || command2 [|| command3 ...]
 { command1; command2; command3 [; ...] }
 ```
 
-<font color=FF0000>**注意：**在使用 `{}` 时，`{}` 与命令之间必须使用一个空格</font>
+**注意：**<font color=red>在使用 `{}` 时，`{}` 与命令之间必须使用一个空格</font>
 
 摘自：[Linux 命令行 &&与||](https://www.jianshu.com/p/25b0d6c9dc9f)
 
@@ -1938,6 +1972,46 @@ rsync -av --exclude-from='exclude-file.txt' source/ destination
 
 
 摘自：[rsync 用法教程](https://www.ruanyifeng.com/blog/2020/08/rsync.html)
+
+
+
+#### cron 表达式
+
+标准的 Unix/Linux Cron 表达式通常包含 **5 个字段**（部分高级调度器如 Quartz 支持 6 或 7 个字段）。结构如下：
+
+```
+分   时   日   月   星期
+*    *    *    *    *
+```
+
+| **字段位置** | **含义 (标准 5 位)** | **取值范围**                  | **允许的特殊字符** |
+| ------------ | -------------------- | ----------------------------- | ------------------ |
+| **1**        | 分钟 (Minute)        | 0 - 59                        | `* , - /`          |
+| **2**        | 小时 (Hour)          | 0 - 23                        | `* , - /`          |
+| **3**        | 日期 (Day of Month)  | 1 - 31                        | `* , - / ? L W`    |
+| **4**        | 月份 (Month)         | 1 - 12 或 JAN-DEC             | `* , - /`          |
+| **5**        | 星期 (Day of Week)   | 0 - 6（0 表示周日）或 SUN-SAT | `* , - / ? L #`    |
+
+###### 常用特殊字符详解
+
+- `*` (星号)：匹配该字段的**所有取值**。例如在分钟位上表示“每分钟”。
+- `,` (逗号)：表示**列举**不连续的值。例如在小时位写 `1,3,5`，表示 1 点、3 点、5 点。
+- `-` (连字符)：表示一个**范围**。例如在小时位写 `9-17`，表示从 9 点到 17 点（包含 9 和 17）。
+- `/` (斜杠)：表示**步长**（频率）。例如在分钟位写 `*/15`，表示“每隔 15 分钟”（即第 0、15、30、45 分）。
+- `?` (问号)：仅用于“日期”和“星期”字段，表示不指定具体值（当其中一个字段明确指定时，另一个通常用 `?` 以避免冲突）。
+- `L` (Last)：表示“最后”，在日期中表示月末，在星期中表示当月的最后一个星期几（如 `5L` 表示最后一个星期五）。
+- `W` (Weekday)：表示最接近指定日期的工作日（周一至周五）。
+
+###### 常见示例与解析
+
+- `0 * * * *`：每小时的第 0 分钟执行一次（即每个整点执行）。
+- `*/15 * * * *`：每隔 15 分钟执行一次。
+- `0 0 * * *`：每天午夜（0 点 0 分）执行一次。
+- `30 8 * * 1`：每周一上午 8:30 执行一次。
+- `0 0 1 1 *`：每年 1 月 1 日午夜执行一次（元旦）。
+- `0 9-17 * * 1-5`：周一到周五，每天上午 9 点到下午 5 点之间，每个整点执行一次。
+
+摘自：https://gemini.google.com/app/3a2f847e5c12d697
 
 
 
