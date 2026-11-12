@@ -24,3 +24,9 @@ private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(Us
 
 
 #### Logback
+
+
+
+#### Maven
+
+类似于 https://www.npmjs.com 搜索 node 生态下第三方依赖，可以使用 Maven Central 官方搜索 https://central.sonatype.com 获取第三方组件，并获取第三方组件的`groupId`、`artifactId` 和 `version`
